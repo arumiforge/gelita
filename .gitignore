@@ -1,0 +1,17 @@
+/vendor/
+/writable/cache/*
+/writable/logs/*
+/writable/session/*
+/writable/uploads/*
+.env
+.env.*
+!.env.example
+
+.phpunit.result.cache
+.phpunit.cache/
+
+.idea/
+.vscode/
+
+.DS_Store
+Thumbs.db
