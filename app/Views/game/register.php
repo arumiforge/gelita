@@ -62,7 +62,8 @@ $classes['lainnya'] = lang('Game.classOther');
         <div class="field<?= $invalid('display_name') ?>">
           <label for="display_name"><?= esc(lang('Game.displayName')) ?> <span class="req" aria-hidden="true">*</span></label>
           <input type="text" id="display_name" name="display_name" required minlength="2" maxlength="150"
-                 value="<?= esc(old('display_name'), 'attr') ?>">
+                 aria-describedby="display_name-help" value="<?= esc(old('display_name'), 'attr') ?>">
+          <p class="field-help" id="display_name-help"><?= esc(lang('Game.displayNameHelp')) ?></p>
           <?php if ($err('display_name')): ?><p class="field-error"><?= esc($err('display_name')) ?></p><?php endif ?>
         </div>
 

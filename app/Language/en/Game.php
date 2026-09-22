@@ -81,7 +81,7 @@ return [
 
     // Consent & registration
     'consentTitle'           => 'Research consent',
-    'consentBody'            => 'This game is also used for the study "{0}". What gets recorded is your answers, how long you take, and the steps you make inside the game — not your full name or address. You may stop at any time without losing marks.',
+    'consentBody'            => 'This game is also used for the study "{0}". What gets recorded is your full name, age, gender, class, school, home region, and your parent or guardian\'s name if given, plus your answers, how long you take, and the steps you make inside the game — not your home address. Only your teacher and the research team can see your full name; other players never see it. You may stop at any time without losing marks.',
     'consentParticipant'     => 'I agree to play and to let my data be used for the research.',
     'consentGuardian'        => 'My parent or guardian has given permission.',
     'consentGuardianName'    => 'Parent or guardian name',
@@ -97,7 +97,8 @@ return [
     'regStep1'          => 'About you',
     'regStep2'          => 'School and region',
     'regStep3'          => 'Your secret account',
-    'displayName'       => 'Nickname',
+    'displayName'       => 'Full name',
+    'displayNameHelp'   => 'Write your full name as it appears on the class list.',
     'age'               => 'Age',
     'ageUnit'           => 'years old',
     'gender'            => 'Gender',
@@ -206,6 +207,7 @@ return [
     'multiCheckNote'   => 'You checked your answers {0} times. That is fine — every check helps you learn.',
     'regionDone'       => '{0} shines bright again!',
     'nextRegionOpen'   => 'The next region is now open.',
+    'goToRegion'       => 'Continue to {0}',
     'allShardsDone'    => 'All {0} light shards are gathered!',
     'shardEarned'      => 'Light shards: {0} of {1}',
     'backToRegion'     => 'Region map',

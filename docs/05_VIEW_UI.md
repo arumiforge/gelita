@@ -457,7 +457,7 @@ Bagian 3 dibuka dengan kotak perkamen kecil **"Mengapa kata sandi harus kuat?"**
 * Gambar peta Kedu dengan 3 titik pada posisi `levels.map_x` / `map_y`.
 * Tiap titik: ikon status (lampu menyala = terbuka, gembok = terkunci, bintang = tuntas), nama wilayah, urutan, dan progres `n/5`.
 * Jaka berdiri di sisi kiri peta dengan balon narasi.
-* Klik titik terbuka → `/dialog/{code}` bila dialog belum pernah dilihat, selain itu `/wilayah/{code}`.
+* Klik titik wilayah yang **baru terbuka** (status `open`: terbuka, belum ada tantangan yang selesai) → **selalu** `/dialog/{code}` lebih dulu; wilayah yang sedang dijelajahi atau sudah tuntas → langsung `/wilayah/{code}`. Tujuan ini dihitung satu kali di `GameProgress::regionEntryPath()` dan dikirim sebagai `entry` pada setiap baris `levelOverview()`, sehingga peta, layar selesai, dan API memakai aturan yang sama.
 * Klik titik terkunci → toast "Selesaikan wilayah sebelumnya dulu."
 * Tombol Pustaka melayang di pojok kiri bawah.
 
@@ -619,7 +619,7 @@ Objek jebakan dirender sama persis dengan objek asli — tidak ada penanda visua
 * Orb cahaya, bintang 0–3, judul "Tantangan Selesai!".
 * Tiga statistik: Waktu, Tepat sejak awal (%), Skor.
 * Catatan kecil bila lebih dari satu pemeriksaan.
-* Bila wilayah tuntas: panel Mbah Kedu bangga + "Wilayah berikutnya kini terbuka".
+* Bila wilayah tuntas: panel Mbah Kedu bangga + "Wilayah berikutnya kini terbuka", dan tombol utama "Lanjut ke {wilayah berikutnya}" yang menuju `entry` wilayah itu — untuk wilayah yang baru terbuka berarti dialog pembukanya.
 * Bila 15 node tuntas: tombol **Balai Refleksi**.
 * Jaka senang, konfeti.
 
@@ -913,11 +913,11 @@ View tahap ini membutuhkan data yang belum dikirim controller tahap 4. Perubahan
 * **Perbaikan bug yang ditemukan saat merender halaman nyata:** `StudyController::releases()` mengurutkan `game_releases` menurut `created_at` yang tidak ada di tabel itu (500); `saveLibrary()` menulis `NULL` ke `library_pages.body_en` yang `NOT NULL` (500) — kini `''` dan permainan jatuh ke teks Indonesia; reset sandi staf dikirim dengan `Cache-Control: no-store` seperti reset sandi siswa.
 * Form teks bacaan dan dialog tahap 4 tidak mengirim `title_en`, `reference_source`, atau judul slide sehingga nilai itu terhapus setiap kali disimpan; form baru mengirim semua kolom yang dikelola controller.
 
-### Hal yang perlu diputuskan pada tahap 6
+### Keputusan yang sudah diambil
 
-* **Arena Cari objek:** payload `challenge-data` saat ini memuat objek jebakan beserta `prompt`-nya, sehingga siswa yang membuka sumber halaman dapat membedakan jebakan. View sengaja tidak merender prompt maupun penanda jebakan; label objek netral. Pemisahan payload (jebakan tanpa prompt, atau petunjuk pertama dikirim lewat API) perlu diputuskan bersama mesin arena.
-* **Tautan pin Peta Kedu:** wilayah berstatus `open` menuju `/dialog/{code}`, selebihnya langsung ke `/wilayah/{code}`. Bila tahap 6 mencatat "dialog sudah dilihat", aturan ini sebaiknya membaca catatan itu.
-* **Registrasi:** kolom nama tetap "Nama panggilan" (bukan nama lengkap) karena teks persetujuan menyatakan nama lengkap tidak direkam.
+* **Arena Cari objek — payload tanpa pembeda jebakan.** Payload `cari` tidak memakai `items`. `objects` memuat semua objek (target maupun jebakan) dengan bentuk identik `{ ref, x, y, w, media }`, diurutkan menurut posisi di layar; `ref` adalah token HMAC per attempt dari `encryption.key`. `clues` hanya berisi petunjuk target (`{ item_id, text }`). Server hanya menerima `answer.object` dan menerjemahkannya sendiri ke id butir — id mentah kiriman klien diabaikan, karena id butir target memang terlihat di `clues`. Jalur `/check` memakai aturan yang sama, dan `progress.total` tidak menghitung jebakan. Kontrak API lengkap di [06_JAVASCRIPT.md → *Fitur: Cari Objek Budaya*](06_JAVASCRIPT.md). Dikunci oleh `tests/unit/HuntPayloadTest.php`.
+* **Dialog selalu muncul saat wilayah baru terbuka.** Ini aturan permanen, bukan pengganti sementara untuk catatan "dialog sudah dilihat": wilayah berstatus `open` selalu masuk lewat `/dialog/{code}`. Layar selesai yang menuntaskan satu wilayah kini menawarkan "Lanjut ke {wilayah berikutnya}" menuju dialog pembuka wilayah itu, bukan kembali ke Peta Kedu. Dikunci oleh `tests/unit/RegionEntryTest.php`.
+* **Registrasi memakai nama lengkap.** Label kolom `display_name` adalah "Nama lengkap" / "Full name". Teks persetujuan (`Game.consentBody`) kini menyebut seluruh data profil yang dicatat — termasuk nama lengkap — dan bahwa nama hanya dapat dilihat guru dan tim peneliti. Versi teks persetujuan naik menjadi `2` (`RegisterController::CONSENT_VERSION`); persetujuan yang sudah tersimpan tetap bertanda versi `1`.
 * **Kolom sandi** sengaja tanpa atribut `minlength`: sandi lemah harus sampai ke server agar metrik `pw_weak_submit_count` tercatat.
 
 ### Aset

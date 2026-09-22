@@ -2,11 +2,12 @@
 /**
  * 7. Peta Kedu — `/peta` → MapController::kedu
  *
- * Tiga titik pada posisi `levels.map_x` / `map_y` (persen). Titik terbuka
- * menuju dialog pembuka bila wilayah belum dijelajahi, selain itu langsung ke
- * peta wilayah. Titik terkunci tetap berupa tautan: server menolaknya dengan
- * toast "Selesaikan wilayah sebelumnya dulu" (map.js tahap 6 menampilkan toast
- * yang sama tanpa berpindah halaman).
+ * Tiga titik pada posisi `levels.map_x` / `map_y` (persen). Tujuan tautan
+ * datang dari `entry` (GameProgress::regionEntryPath()): wilayah yang baru
+ * terbuka selalu menuju dialog pembuka, wilayah yang sedang dijelajahi atau
+ * tuntas langsung ke peta wilayah. Titik terkunci tetap berupa tautan: server
+ * menolaknya dengan toast "Selesaikan wilayah sebelumnya dulu" (map.js tahap 6
+ * menampilkan toast yang sama tanpa berpindah halaman).
  *
  * Di bawah peta ada daftar kartu wilayah yang sama — terbaca di ponsel,
  * pembaca layar, dan saat gambar peta belum diunggah.
@@ -18,7 +19,7 @@
  */
 $mapSrc = media_key_src('map.kedu');
 $icons  = ['open' => 'lantern', 'in_progress' => 'lantern', 'completed' => 'star', 'locked' => 'lock'];
-$href   = static fn (array $l): string => base_url(($l['status'] === 'open' ? 'dialog/' : 'wilayah/') . $l['code']);
+$href   = static fn (array $l): string => base_url($l['entry']);
 
 // Pustaka: wilayah terakhir yang sudah terbuka
 $libraryCode = null;

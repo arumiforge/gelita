@@ -36,7 +36,7 @@ $genders = ['laki-laki' => 'L', 'perempuan' => 'P', 'lainnya' => 'Lainnya'];
     'columns' => [
         'participant_code' => ['label' => 'Kode', 'render' => static fn (array $r): string => '<a href="' . base_url('admin/peserta/' . $r['id']) . '"><code>' . esc($r['participant_code']) . '</code></a>'],
         'username'         => 'Nama pengguna',
-        'display_name'     => 'Nama',
+        'display_name'     => 'Nama lengkap',
         'age'              => ['label' => 'Umur', 'format' => 'num'],
         'gender'           => ['label' => 'JK', 'render' => static fn (array $r): string => esc($genders[$r['gender']] ?? ($r['gender'] ?? '—'))],
         'class_level'      => 'Kelas',
