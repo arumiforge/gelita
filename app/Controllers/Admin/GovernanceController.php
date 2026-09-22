@@ -7,6 +7,7 @@ use App\Models\DataDeletionRequestModel;
 use App\Models\DataExportModel;
 use App\Models\GameEventLogModel;
 use App\Models\GameSessionModel;
+use App\Models\StaffUserModel;
 use CodeIgniter\HTTP\RedirectResponse;
 
 /**
@@ -180,6 +181,11 @@ class GovernanceController extends BaseAdminController
             'from'    => $from,
             'to'      => $to,
             'actions' => $this->knownActions(),
+            'staff'   => array_column(
+                model(StaffUserModel::class)->asArray()->select('id, username')->findAll(),
+                'username',
+                'id',
+            ),
         ]);
     }
 

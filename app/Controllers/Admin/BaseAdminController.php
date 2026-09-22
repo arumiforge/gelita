@@ -4,6 +4,9 @@ namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
 use App\Controllers\Concerns\StaffScope;
+use App\Models\ParticipantModel;
+use App\Models\ResearchStudyModel;
+use App\Models\SchoolModel;
 use CodeIgniter\HTTP\RedirectResponse;
 
 /**
@@ -25,10 +28,44 @@ abstract class BaseAdminController extends BaseController
     protected function panel(string $view, string $title, array $data = []): string
     {
         return view($view, $data + [
-            'pageTitle' => $title,
-            'filters'   => $data['filters'] ?? $this->readFilters(),
-            'errors'    => session('errors') ?? [],
+            'pageTitle'     => $title,
+            'filters'       => $data['filters'] ?? $this->readFilters(),
+            'errors'        => session('errors') ?? [],
+            'activeStudy'   => model(ResearchStudyModel::class)->activeStudy(),
+            // Dievaluasi hanya oleh halaman yang merender admin-filter-bar.
+            'filterOptions' => fn (): array => $this->filterOptions(),
         ]);
+    }
+
+    /**
+     * Pilihan untuk components/admin-filter-bar: studi, wilayah, sekolah, provinsi.
+     * Provinsi diambil dari data peserta dalam cakupan pemanggil, sehingga
+     * guru hanya melihat provinsi yang memang ada di sekolahnya.
+     *
+     * @return array<string, mixed>
+     */
+    protected function filterOptions(): array
+    {
+        $scope = $this->schoolScope();
+
+        $provinces = model(ParticipantModel::class)->scopedForStaff($scope)
+            ->select('province_code, MAX(province_name_snapshot) AS province_name', false)
+            ->where('participants.deleted_at', null)
+            ->where('province_code IS NOT NULL')
+            ->groupBy('province_code')
+            ->orderBy('province_name', 'ASC')
+            ->get()
+            ->getResultArray();
+
+        $ownSchool = $scope === null ? null : model(SchoolModel::class)->find($scope);
+
+        return [
+            'studies'    => model(ResearchStudyModel::class)->orderBy('id', 'DESC')->findAll(),
+            'levels'     => service('contentRepository')->levels(),
+            'schools'    => $scope === null ? model(SchoolModel::class)->activeList() : [],
+            'own_school' => $ownSchool['name'] ?? null,
+            'provinces'  => array_column($provinces, 'province_name', 'province_code'),
+        ];
     }
 
     /** Kembali ke halaman panel dengan pesan galat. */

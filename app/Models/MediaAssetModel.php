@@ -44,6 +44,29 @@ class MediaAssetModel extends Model
         return $out;
     }
 
+    /**
+     * Peta asset_key => storage_path seluruh media aktif, untuk aset yang
+     * dirujuk lewat kunci resmi (latar, karakter, peta Kedu, logo) alih-alih FK.
+     *
+     * @return array<string, string>
+     */
+    public function activeKeyMap(): array
+    {
+        $rows = $this->db->table($this->table)
+            ->select('asset_key, storage_path')
+            ->where('is_active', 1)
+            ->get()
+            ->getResultArray();
+
+        $out = [];
+
+        foreach ($rows as $row) {
+            $out[(string) $row['asset_key']] = (string) $row['storage_path'];
+        }
+
+        return $out;
+    }
+
     public function findByKey(string $key): ?array
     {
         return $this->where('asset_key', trim($key))->first();

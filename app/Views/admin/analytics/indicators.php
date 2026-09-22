@@ -1,26 +1,86 @@
+<?php
+/**
+ * Penguasaan indikator — `/admin/analitik/indikator` → AnalyticsController::indicators
+ *
+ * Matriks indikator × wilayah berisi rasio jawaban benar pertama beserta
+ * JUMLAH BUKTI — bukan label biner lulus/tidak.
+ *
+ * @var array<string, array<string, mixed>>               $rows      keseluruhan
+ * @var list<App\Entities\Level>                          $levels
+ * @var array<int, array<string, array<string, mixed>>>   $perLevel  level_id → indikator
+ * @var array<string, mixed>                              $filters
+ */
+?>
 <?= $this->extend('layouts/admin') ?>
 
-<?= $this->section('title') ?><?= esc($pageTitle) ?> · Panel GELITA<?= $this->endSection() ?>
+<?= $this->section('charts') ?>1<?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<h1><?= esc($pageTitle) ?></h1>
+<?= component('partials/admin-head', [
+    'title'   => 'Penguasaan indikator',
+    'eyebrow' => 'Analitik',
+    'lead'    => 'Rasio jawaban benar pada percobaan pertama per indikator pembelajaran. Angka kecil di tiap sel adalah jumlah bukti (jawaban) yang mendasarinya.',
+]) ?>
 <?= $this->include('partials/flash') ?>
+<?= component('admin-filter-bar', ['filters' => $filters, 'only' => ['study_id', 'phase_code', 'school_id', 'class_level', 'province_code', 'date_from', 'locale']]) ?>
 
-<form method="get" class="filter-bar">
-  <label for="study_id">Studi</label>
-  <input type="number" id="study_id" name="study_id" value="<?= esc($filters['study_id'] ?? '') ?>">
-  <label for="phase_code">Fase</label>
-  <input type="text" id="phase_code" name="phase_code" value="<?= esc($filters['phase_code'] ?? '') ?>">
-  <label for="class_level">Kelas</label>
-  <input type="text" id="class_level" name="class_level" value="<?= esc($filters['class_level'] ?? '') ?>">
-  <label for="date_from">Dari</label>
-  <input type="date" id="date_from" name="date_from" value="<?= esc($filters['date_from'] ?? '') ?>">
-  <label for="date_to">Sampai</label>
-  <input type="date" id="date_to" name="date_to" value="<?= esc($filters['date_to'] ?? '') ?>">
-  <button class="btn btn-primary" type="submit">Terapkan</button>
-</form>
+<?php if ($rows === []): ?>
+  <div class="empty-state"><?= icon('target') ?><p>Belum ada jawaban yang terkait indikator pada filter ini. Matriks terisi setelah siswa menjawab butir yang punya indikator.</p></div>
+<?php else: ?>
+  <?php ob_start() ?>
+  <div class="table-wrap">
+    <table class="heatmap matrix">
+      <caption class="visually-hidden">Rasio penguasaan indikator per wilayah</caption>
+      <thead>
+        <tr>
+          <th scope="col">Indikator</th>
+          <?php foreach ($levels as $level): ?>
+            <th scope="col"><?= esc($level->text('name', 'id')) ?></th>
+          <?php endforeach ?>
+          <th scope="col">Keseluruhan</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php foreach ($rows as $code => $row): ?>
+          <tr>
+            <th scope="row"><code><?= esc($code) ?></code><span class="cell-sub"><?= esc($row['name']) ?></span></th>
+            <?php foreach (array_merge(array_map(static fn ($l) => $perLevel[$l->id][$code] ?? null, $levels), [$row]) as $cell): ?>
+              <?php if ($cell === null || (int) $cell['evidence_count'] === 0): ?>
+                <td class="heat-cell is-empty">—<small>0 bukti</small></td>
+              <?php else: ?>
+                <td class="heat-cell" style="--heat: <?= round((float) $cell['mastery_ratio'], 3) ?>">
+                  <?= esc(fmt_pct($cell['mastery_ratio'], true, 0)) ?>
+                  <small><?= esc($cell['correct_count'] . '/' . $cell['evidence_count']) ?> bukti</small>
+                </td>
+              <?php endif ?>
+            <?php endforeach ?>
+          </tr>
+        <?php endforeach ?>
+      </tbody>
+    </table>
+  </div>
+  <?php $matrix = ob_get_clean() ?>
 
-<pre class="json-block"><?= esc(json_encode($rows, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)) ?></pre>
-<div id="chart-indicators" class="admin-chart" data-endpoint="<?= base_url('api/admin/indicators') ?>"></div>
-<?= $this->include('partials/stage-note') ?>
+  <?= component('admin-chart', [
+      'id'       => 'chart-indicators',
+      'title'    => 'Matriks indikator × wilayah',
+      'type'     => 'matrix',
+      'endpoint' => 'api/admin/indicators',
+      'size'     => 'lg',
+      'fallback' => $matrix,
+  ]) ?>
+
+  <?= component('admin-table', [
+      'rows'    => array_values($rows),
+      'caption' => 'Penguasaan indikator keseluruhan',
+      'columns' => [
+          'code'             => ['label' => 'Kode', 'format' => 'code'],
+          'name'             => 'Indikator',
+          'evidence_count'   => ['label' => 'Bukti', 'format' => 'num'],
+          'correct_count'    => ['label' => 'Benar awal', 'format' => 'num'],
+          'mastery_ratio'    => ['label' => 'Rasio', 'format' => 'ratio'],
+          'mean_response_ms' => ['label' => 'Rata-rata waktu', 'format' => 'ms'],
+      ],
+  ]) ?>
+<?php endif ?>
 <?= $this->endSection() ?>

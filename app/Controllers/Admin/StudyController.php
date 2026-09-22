@@ -79,7 +79,7 @@ class StudyController extends BaseAdminController
     public function releases(): string
     {
         return $this->panel('admin/study/releases', 'Rilis konten', [
-            'releases' => model(GameReleaseModel::class)->orderBy('created_at', 'DESC')->findAll(),
+            'releases' => model(GameReleaseModel::class)->orderBy('id', 'DESC')->findAll(),
             'active'   => model(GameReleaseModel::class)->activeOrNull(),
         ]);
     }

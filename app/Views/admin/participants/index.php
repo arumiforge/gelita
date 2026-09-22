@@ -1,43 +1,54 @@
+<?php
+/**
+ * Daftar peserta — `/admin/peserta` → ParticipantController::index
+ *
+ * Guru terkunci pada sekolahnya: kolom sekolah tetap tampil sebagai
+ * keterangan, tetapi filter sekolah tidak dirender dan server memaksa cakupan.
+ *
+ * @var list<array<string, mixed>>      $rows    bentuk aman, tanpa password_hash
+ * @var CodeIgniter\Pager\Pager|null     $pager
+ * @var array<string, mixed>             $filters
+ * @var string                           $search
+ */
+$genders = ['laki-laki' => 'L', 'perempuan' => 'P', 'lainnya' => 'Lainnya'];
+?>
 <?= $this->extend('layouts/admin') ?>
 
-<?= $this->section('title') ?><?= esc($pageTitle) ?> · Panel GELITA<?= $this->endSection() ?>
-
 <?= $this->section('content') ?>
-<h1><?= esc($pageTitle) ?></h1>
+<?= component('partials/admin-head', [
+    'title'   => 'Peserta',
+    'eyebrow' => 'Data penelitian',
+    'lead'    => 'Nama pengguna hanya untuk keperluan guru; ekspor anonim memakai kode peserta.',
+]) ?>
 <?= $this->include('partials/flash') ?>
+<?= component('admin-filter-bar', [
+    'filters' => $filters,
+    'only'    => ['school_id', 'class_level', 'province_code'],
+    'extra'   => ['q' => $search],
+]) ?>
 
-<form method="get" class="filter-bar">
-  <label for="q">Cari</label>
-  <input type="search" id="q" name="q" value="<?= esc($search) ?>" placeholder="kode, nama pengguna, nama">
-  <label for="class_level">Kelas</label>
-  <input type="text" id="class_level" name="class_level" value="<?= esc($filters['class_level'] ?? '') ?>">
-  <button class="btn btn-primary" type="submit">Terapkan</button>
-</form>
+<?= component('admin-table', [
+    'rows'         => $rows,
+    'caption'      => 'Daftar peserta',
+    'emptyMessage' => $search !== '' || $filters !== []
+        ? 'Tidak ada peserta yang cocok dengan pencarian atau filter ini. Coba kata kunci lain atau atur ulang filter.'
+        : 'Belum ada peserta. Peserta muncul setelah siswa mendaftar di halaman permainan.',
+    'columns' => [
+        'participant_code' => ['label' => 'Kode', 'render' => static fn (array $r): string => '<a href="' . base_url('admin/peserta/' . $r['id']) . '"><code>' . esc($r['participant_code']) . '</code></a>'],
+        'username'         => 'Nama pengguna',
+        'display_name'     => 'Nama',
+        'age'              => ['label' => 'Umur', 'format' => 'num'],
+        'gender'           => ['label' => 'JK', 'render' => static fn (array $r): string => esc($genders[$r['gender']] ?? ($r['gender'] ?? '—'))],
+        'class_level'      => 'Kelas',
+        'school_name'      => 'Sekolah',
+        'province_name'    => 'Provinsi',
+        'session_count'    => ['label' => 'Sesi', 'format' => 'num'],
+        'shards'           => ['label' => 'Serpihan', 'format' => 'num'],
+        'mean_first_pass'  => ['label' => 'Tepat awal', 'format' => 'pct'],
+        'last_active_at'   => ['label' => 'Terakhir aktif', 'format' => 'datetime'],
+        'id'               => ['label' => '', 'render' => static fn (array $r): string => '<a class="btn btn-quiet btn-sm" href="' . base_url('admin/peserta/' . $r['id']) . '">Profil</a>'],
+    ],
+]) ?>
 
-<table class="data-table">
-  <thead>
-    <tr>
-      <th scope="col">Kode</th><th scope="col">Nama pengguna</th><th scope="col">Nama</th>
-      <th scope="col">Kelas</th><th scope="col">Sekolah</th><th scope="col">Terdaftar</th><th scope="col"></th>
-    </tr>
-  </thead>
-  <tbody>
-    <?php foreach ($rows as $row): ?>
-      <tr>
-        <td><?= esc($row->participant_code) ?></td>
-        <td><?= esc($row->username) ?></td>
-        <td><?= esc($row->display_name ?? '—') ?></td>
-        <td><?= esc($row->class_level ?? '—') ?></td>
-        <td><?= esc($row->school_name_snapshot ?? '—') ?></td>
-        <td><?= esc($row->created_at) ?></td>
-        <td><a class="btn btn-quiet" href="<?= base_url('admin/peserta/' . $row->id) ?>">Buka</a></td>
-      </tr>
-    <?php endforeach ?>
-    <?php if ($rows === []): ?>
-      <tr><td colspan="7"><?= esc(lang('Admin.emptyDefault')) ?></td></tr>
-    <?php endif ?>
-  </tbody>
-</table>
-
-<?= $pager?->links() ?>
+<?= component('admin-pagination', ['pager' => $pager]) ?>
 <?= $this->endSection() ?>

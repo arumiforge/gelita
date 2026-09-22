@@ -1,41 +1,74 @@
+<?php
+/**
+ * Kritik & saran — `/admin/masukan` → FeedbackController::index
+ *
+ * Ringkasan sebaran bintang + kartu masukan (bintang, empat jawaban, kode
+ * peserta, fase, waktu). Nama pengguna siswa tidak ditampilkan di sini.
+ *
+ * @var list<array<string, mixed>>   $rows
+ * @var CodeIgniter\Pager\Pager|null  $pager
+ * @var array<string, mixed>          $distribution
+ * @var array<string, mixed>          $filters
+ */
+$questions = [
+    'liked_most'   => 'Paling disukai',
+    'hardest_part' => 'Paling sulit',
+    'new_learning' => 'Hal baru',
+    'suggestion'   => 'Saran',
+];
+?>
 <?= $this->extend('layouts/admin') ?>
 
-<?= $this->section('title') ?><?= esc($pageTitle) ?> · Panel GELITA<?= $this->endSection() ?>
-
 <?= $this->section('content') ?>
-<h1><?= esc($pageTitle) ?></h1>
+<?= component('partials/admin-head', [
+    'title'   => 'Kritik & saran',
+    'eyebrow' => 'Laporan',
+    'lead'    => 'Masukan siswa dari Balai Refleksi setelah seluruh tantangan selesai.',
+]) ?>
 <?= $this->include('partials/flash') ?>
+<?= component('admin-filter-bar', ['filters' => $filters, 'only' => ['phase_code', 'school_id', 'class_level']]) ?>
 
-<dl class="detail">
-  <dt>Jumlah masukan</dt><dd><?= esc($distribution['count']) ?></dd>
-  <dt>Rata-rata bintang</dt><dd><?= esc($distribution['mean']) ?></dd>
-</dl>
+<div class="split-grid">
+  <section class="panel">
+    <h2 class="panel-title"><?= icon('star') ?> Sebaran bintang</h2>
+    <?= component('partials/bar-list', ['rows' => array_map(
+        static fn (int $stars, int $total): array => ['label' => str_repeat('★', $stars), 'value' => $total, 'display' => (string) $total],
+        array_reverse(array_keys($distribution['distribution'])),
+        array_reverse(array_values($distribution['distribution'])),
+    )]) ?>
+  </section>
+  <section class="panel">
+    <h2 class="panel-title"><?= icon('message') ?> Ringkasan</h2>
+    <div class="stat-grid">
+      <?= component('stat-tile', ['label' => 'Jumlah masukan', 'value' => fmt_num($distribution['count'], 0, 'id')]) ?>
+      <?= component('stat-tile', ['label' => 'Rata-rata bintang', 'value' => $distribution['count'] > 0 ? fmt_num($distribution['mean'], 2, 'id') . ' / 5' : '—']) ?>
+    </div>
+  </section>
+</div>
 
-<table class="data-table">
-  <thead>
-    <tr>
-      <th scope="col">Peserta</th><th scope="col">Bintang</th><th scope="col">Paling disukai</th>
-      <th scope="col">Paling sulit</th><th scope="col">Hal baru</th><th scope="col">Saran</th>
-      <th scope="col">Waktu</th>
-    </tr>
-  </thead>
-  <tbody>
+<?php if ($rows === []): ?>
+  <div class="empty-state"><?= icon('message') ?>
+    <p>Belum ada masukan. Siswa dapat mengirim kritik & saran setelah menyelesaikan seluruh tantangan di Balai Refleksi.</p>
+  </div>
+<?php else: ?>
+  <div class="feedback-grid">
     <?php foreach ($rows as $row): ?>
-      <tr>
-        <td><?= esc($row['participant_code'] ?? $row['participant_id']) ?></td>
-        <td><?= esc($row['rating']) ?></td>
-        <td><?= esc($row['liked_most'] ?? '—') ?></td>
-        <td><?= esc($row['hardest_part'] ?? '—') ?></td>
-        <td><?= esc($row['new_learning'] ?? '—') ?></td>
-        <td><?= esc($row['suggestion'] ?? '—') ?></td>
-        <td><?= esc($row['submitted_at']) ?></td>
-      </tr>
+      <article class="panel feedback-card">
+        <header class="feedback-card-head">
+          <?= stars_html((int) $row['rating'], 5) ?>
+          <span class="muted"><code><?= esc($row['participant_code'] ?? '#' . $row['participant_id']) ?></code>
+            · <?= esc($row['phase_code'] ?? '—') ?> · <?= esc(fmt_date($row['submitted_at'], false, 'id')) ?></span>
+        </header>
+        <dl>
+          <?php foreach ($questions as $field => $label): ?>
+            <?php if (trim((string) ($row[$field] ?? '')) !== ''): ?>
+              <div><dt><?= esc($label) ?></dt><dd><?= nl2br(esc($row[$field])) ?></dd></div>
+            <?php endif ?>
+          <?php endforeach ?>
+        </dl>
+      </article>
     <?php endforeach ?>
-    <?php if ($rows === []): ?>
-      <tr><td colspan="7"><?= esc(lang('Admin.emptyDefault')) ?></td></tr>
-    <?php endif ?>
-  </tbody>
-</table>
-
-<?= $pager?->links() ?>
+  </div>
+  <?= component('admin-pagination', ['pager' => $pager]) ?>
+<?php endif ?>
 <?= $this->endSection() ?>

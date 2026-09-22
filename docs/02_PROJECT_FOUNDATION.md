@@ -507,14 +507,16 @@ Aturan folder aset:
 * `public/assets/vendor/` — library frontend yang di-host sendiri. Tidak ada CDN.
 * `writable/exports/` — **tidak** boleh berada di bawah `public/`. Unduhan dilayani controller yang memeriksa otorisasi lebih dulu.
 
-#### Status `public/assets/vendor/` — masih kosong
+#### Status `public/assets/vendor/` — terisi sejak tahap 5
 
-Folder ini **belum berisi berkas library apa pun**; saat ini hanya `.gitkeep` dan sebuah `README.md`. Berkas binernya ditambahkan pada tahap view/JavaScript (tahap 5–6), bukan sekarang.
+Kedua library sudah di-commit apa adanya dari paket rilis resmi, beserta berkas lisensinya (`LICENSE-echarts.txt`, `NOTICE-echarts.txt`, `LICENSE-howler.md`).
 
 | Berkas | Library | Versi yang dipakai | Sumber |
 |---|---|---|---|
-| `echarts.min.js` | Apache ECharts | `6.x` — versi dikunci di repo, diperbarui manual | unduhan rilis resmi |
-| `howler.min.js` | Howler.js | `2.2.x` — dikunci di repo | unduhan rilis resmi |
+| `echarts.min.js` | Apache ECharts | `6.1.0` — dikunci pada 6.x, diperbarui manual | paket rilis resmi `echarts@6.1.0` (`dist/`) |
+| `howler.min.js` | Howler.js | `2.2.4` — dikunci pada 2.2.x | paket rilis resmi `howler@2.2.4` (`dist/`) |
+
+Checksum SHA-256 dan langkah memperbarui versi ada di [`public/assets/vendor/README.md`](../public/assets/vendor/README.md). Font lokal (Cinzel, Plus Jakarta Sans, IBM Plex Mono, `.woff2` subset latin + lisensi OFL) ada di `public/assets/fonts/`.
 
 Alasan pemilihan kedua library dan daftar halaman yang memakainya ada di [05_VIEW_UI.md → *External CSS/JS Library*](05_VIEW_UI.md) dan [06_JAVASCRIPT.md → *Library JavaScript*](06_JAVASCRIPT.md).
 

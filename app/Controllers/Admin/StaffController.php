@@ -19,7 +19,7 @@ class StaffController extends BaseAdminController
     public function index(): string
     {
         return $this->panel('admin/staff/index', 'Akun staf', [
-            'rows'      => model(StaffUserModel::class)->orderBy('display_name', 'ASC')->findAll(),
+            'rows'      => $this->viewRows(),
             'schools'   => model(SchoolModel::class)->activeList(),
             'temporary' => null,
         ]);
@@ -137,10 +137,14 @@ class StaffController extends BaseAdminController
 
         $this->audit('staff_password_reset', $staffId);
 
+        // Respons berisi sandi sementara: jangan disimpan cache browser/proxy
+        $this->response->setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+        $this->response->setHeader('Pragma', 'no-cache');
+
         return $this->panel('admin/staff/index', 'Akun staf', [
-            'rows'      => $staff->orderBy('display_name', 'ASC')->findAll(),
+            'rows'      => $this->viewRows(),
             'schools'   => model(SchoolModel::class)->activeList(),
-            'temporary' => ['staff' => $target, 'password' => $temporary],
+            'temporary' => ['staff' => $target->toSafeArray(), 'password' => $temporary],
         ]);
     }
 
@@ -163,6 +167,25 @@ class StaffController extends BaseAdminController
     }
 
     // -------------------------------------------------------------- bantuan
+
+    /**
+     * Baris tabel staf tanpa password_hash; status kunci login ikut dihitung.
+     *
+     * @return list<array<string, mixed>>
+     */
+    private function viewRows(): array
+    {
+        $rows = [];
+
+        foreach (model(StaffUserModel::class)->orderBy('display_name', 'ASC')->findAll() as $staff) {
+            $rows[] = $staff->toSafeArray() + [
+                'locked'        => $staff->isLocked(),
+                'last_login_at' => $staff->last_login_at,
+            ];
+        }
+
+        return $rows;
+    }
 
     /** Sandi sementara staf: 16 karakter acak yang memenuhi kebijakan sandi. */
     private function temporaryPassword(): string

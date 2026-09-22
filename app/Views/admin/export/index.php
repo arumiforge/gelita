@@ -1,93 +1,118 @@
+<?php
+/**
+ * Ekspor data — `/admin/ekspor` → ExportController::index
+ *
+ * Filter sama dengan halaman analitik (nama field identik), tetapi dikirim
+ * lewat POST. Guru: sekolah terkunci, mode anonim dipaksa server, dan sheet
+ * Raw Events tidak tersedia — form hanya mencerminkan aturan itu.
+ * Baris dengan status queued/running diperbarui export-status.js (tahap 6)
+ * lewat data-export-id; tanpa JavaScript, muat ulang halaman.
+ *
+ * @var array<string, mixed>        $filters   filter dari query string (dari halaman analitik)
+ * @var list<string>                $sheets
+ * @var list<string>                $adminOnly
+ * @var bool                        $isAdmin
+ * @var list<array<string, mixed>>  $recent
+ * @var int                         $retention hari
+ */
+$sheetNotes = [
+    'Participants'        => 'Profil peserta (kode, kelas, sekolah, wilayah)',
+    'Sessions'            => 'Satu baris per sesi bermain',
+    'Levels'              => 'Skor & bintang per wilayah',
+    'Challenge Summary'   => 'Ringkasan per percobaan tantangan',
+    'Item Responses'      => 'Jawaban per butir, termasuk perubahan jawaban',
+    'Raw Events'          => 'Log peristiwa mentah — besar, hanya admin',
+    'Audio Usage'         => 'Pemakaian audio & transkrip',
+    'Indicators'          => 'Capaian per indikator literasi',
+    'Demographic Summary' => 'Ringkasan jumlah per kelompok',
+    'Feedback'            => 'Refleksi & rating siswa',
+];
+$statusNames = ['queued' => 'antre', 'running' => 'diproses', 'done' => 'siap', 'failed' => 'gagal'];
+?>
 <?= $this->extend('layouts/admin') ?>
 
-<?= $this->section('title') ?><?= esc($pageTitle) ?> · Panel GELITA<?= $this->endSection() ?>
-
 <?= $this->section('content') ?>
-<h1><?= esc($pageTitle) ?></h1>
+<?= component('partials/admin-head', [
+    'title'   => 'Ekspor data',
+    'eyebrow' => 'Laporan',
+    'lead'    => 'Unduh data penelitian sebagai workbook XLSX atau ringkasan PDF. Setiap permintaan dan unduhan tercatat di log audit.',
+]) ?>
 <?= $this->include('partials/flash') ?>
 
-<form method="post" action="<?= base_url('admin/ekspor/xlsx') ?>" class="form">
+<form method="post" action="<?= base_url('admin/ekspor/xlsx') ?>" class="form-section">
   <?= csrf_field() ?>
+  <h2><?= icon('search') ?> Cakupan data</h2>
+  <?= component('components/admin-filter-bar', [
+      'filters'       => $filters,
+      'filterOptions' => $filterOptions,
+      'bare'          => true,
+  ]) ?>
 
-  <div class="field">
-    <label for="study_id">Studi</label>
-    <select id="study_id" name="study_id">
-      <option value="">— semua —</option>
-      <?php foreach ($studies as $study): ?>
-        <option value="<?= esc($study['id']) ?>"><?= esc($study['code']) ?></option>
+  <fieldset class="repeat-row">
+    <legend><?= icon('list') ?> Sheet yang disertakan</legend>
+    <div class="check-grid">
+      <?php foreach ($sheets as $sheet): ?>
+        <?php $onlyAdmin = in_array($sheet, $adminOnly, true); ?>
+        <?php if ($onlyAdmin && ! $isAdmin) {
+            continue;
+        } ?>
+        <label class="check">
+          <input type="checkbox" name="sheets[]" value="<?= esc($sheet, 'attr') ?>" <?= $onlyAdmin ? '' : 'checked' ?>>
+          <span><b><?= esc($sheet) ?></b><span class="cell-sub"><?= esc($sheetNotes[$sheet] ?? '') ?></span></span>
+        </label>
       <?php endforeach ?>
-    </select>
-  </div>
-
-  <div class="field"><label for="phase_code">Fase</label><input type="text" id="phase_code" name="phase_code"></div>
-
-  <div class="field">
-    <label for="school_id">Sekolah</label>
-    <select id="school_id" name="school_id" <?= $isAdmin ? '' : 'disabled' ?>>
-      <option value="">— semua yang boleh saya lihat —</option>
-      <?php foreach ($schools as $school): ?>
-        <option value="<?= esc($school['id']) ?>"><?= esc($school['name']) ?></option>
-      <?php endforeach ?>
-    </select>
-    <?php if (! $isAdmin): ?>
-      <small>Guru selalu dibatasi pada sekolahnya sendiri.</small>
-    <?php endif ?>
-  </div>
-  <div class="field"><label for="class_level">Kelas</label><input type="text" id="class_level" name="class_level"></div>
-  <div class="field"><label for="date_from">Dari</label><input type="date" id="date_from" name="date_from"></div>
-  <div class="field"><label for="date_to">Sampai</label><input type="date" id="date_to" name="date_to"></div>
-
-  <fieldset class="field">
-    <legend>Sheet yang disertakan</legend>
-    <?php foreach ($sheets as $sheet): ?>
-      <?php $adminOnlySheet = in_array($sheet, $adminOnly, true); ?>
-      <?php if ($adminOnlySheet && ! $isAdmin) {
-          continue;
-      } ?>
-      <label class="check">
-        <input type="checkbox" name="sheets[]" value="<?= esc($sheet) ?>" checked>
-        <?= esc($sheet) ?><?= $adminOnlySheet ? ' (admin saja)' : '' ?>
-      </label>
-    <?php endforeach ?>
+    </div>
+    <p class="field-help">Tidak memilih apa pun berarti semua sheet yang Anda boleh terima.</p>
   </fieldset>
 
-  <label class="check">
-    <input type="checkbox" name="anonymized" value="1" <?= $isAdmin ? '' : 'checked disabled' ?>>
-    Mode anonim
-  </label>
-  <?php if (! $isAdmin): ?>
-    <p><small>Guru selalu mengekspor dalam mode anonim.</small></p>
-  <?php endif ?>
+  <fieldset class="repeat-row">
+    <legend><?= icon('shield') ?> Identitas peserta</legend>
+    <?php if ($isAdmin): ?>
+      <label class="check">
+        <input type="checkbox" name="anonymized" value="1" checked>
+        <span><b>Mode anonim</b><span class="cell-sub">Nama panggilan &amp; nama pengguna diganti kode peserta. Matikan hanya untuk kebutuhan penelitian yang sah.</span></span>
+      </label>
+    <?php else: ?>
+      <p class="filter-locked"><?= icon('lock') ?> Mode anonim selalu aktif untuk akun guru, dan data terbatas pada sekolah Anda.</p>
+    <?php endif ?>
+  </fieldset>
 
-  <button class="btn btn-primary" type="submit" formaction="<?= base_url('admin/ekspor/xlsx') ?>">Ekspor XLSX</button>
-  <button class="btn btn-ghost" type="submit" formaction="<?= base_url('admin/ekspor/pdf') ?>">Ekspor PDF</button>
+  <div class="form-actions">
+    <button class="btn btn-primary" type="submit" formaction="<?= base_url('admin/ekspor/xlsx') ?>"><?= icon('download') ?> Buat XLSX</button>
+    <button class="btn btn-ghost" type="submit" formaction="<?= base_url('admin/ekspor/pdf') ?>"><?= icon('download') ?> Buat ringkasan PDF</button>
+  </div>
 </form>
 
-<h2>Ekspor terakhir</h2>
-<p><small>Berkas ekspor dihapus otomatis setelah <?= esc($retention) ?> hari.</small></p>
-<table class="data-table">
-  <thead>
-    <tr><th scope="col">#</th><th scope="col">Format</th><th scope="col">Anonim</th>
-        <th scope="col">Status</th><th scope="col">Dibuat</th><th scope="col"></th></tr>
-  </thead>
-  <tbody>
-    <?php foreach ($recent as $export): ?>
-      <tr data-export="<?= esc($export['id']) ?>">
-        <td><?= esc($export['id']) ?></td>
-        <td><?= esc($export['format']) ?></td>
-        <td><?= $export['anonymized'] ? 'ya' : 'tidak' ?></td>
-        <td><?= esc($export['status']) ?><?= $export['error_message'] ? ' — ' . esc($export['error_message']) : '' ?></td>
-        <td><?= esc($export['created_at']) ?></td>
-        <td>
-          <?php if ($export['status'] === 'done'): ?>
-            <a class="btn btn-quiet" href="<?= base_url('admin/ekspor/unduh/' . $export['id']) ?>">Unduh</a>
-          <?php endif ?>
-        </td>
-      </tr>
-    <?php endforeach ?>
-    <?php if ($recent === []): ?>
-      <tr><td colspan="6"><?= esc(lang('Admin.emptyDefault')) ?></td></tr>
-    <?php endif ?>
-  </tbody>
-</table>
+<section class="panel">
+  <h2 class="panel-title"><?= icon('clock') ?> Ekspor terakhir</h2>
+  <p class="muted">Berkas dihapus otomatis <?= esc($retention) ?> hari setelah dibuat.<?= $isAdmin ? '' : ' Hanya ekspor milik Anda yang tampil.' ?></p>
+  <?= component('components/admin-table', [
+      'caption'      => 'Daftar ekspor terakhir',
+      'emptyMessage' => 'Belum ada ekspor.',
+      'rows'         => $recent,
+      'rowClass'     => static fn (array $row): string => $row['status'] === 'failed' ? 'is-bad' : '',
+      'columns'      => [
+          'id'         => ['label' => '#', 'format' => 'num'],
+          'created_at' => ['label' => 'Diminta', 'format' => 'datetime'],
+          'format'     => ['label' => 'Format', 'render' => static fn (array $row): string => '<span class="badge">' . esc(strtoupper((string) $row['format'])) . '</span>' . ($row['anonymized'] ? '<span class="cell-sub">anonim</span>' : '<span class="cell-sub">beridentitas</span>')],
+          'status'     => ['label' => 'Status', 'render' => static fn (array $row): string => '<span class="badge is-' . esc($row['status'], 'attr') . '" data-export-id="' . (int) $row['id'] . '" data-status="' . esc($row['status'], 'attr') . '">' . esc($statusNames[$row['status']] ?? $row['status']) . '</span>' . ($row['error_message'] ? '<span class="cell-sub">' . esc($row['error_message']) . '</span>' : '')],
+          'row_count'  => ['label' => 'Baris', 'format' => 'num'],
+          'file_sha256' => ['label' => 'SHA-256', 'render' => static fn (array $row): string => $row['file_sha256'] ? '<code title="' . esc($row['file_sha256'], 'attr') . '">' . esc(substr((string) $row['file_sha256'], 0, 12)) . '…</code>' : '—'],
+          'expires_at' => ['label' => 'Kedaluwarsa', 'format' => 'date'],
+          'actions'    => ['label' => '', 'render' => static function (array $row): string {
+              $expired = $row['expires_at'] !== null && strtotime((string) $row['expires_at']) < time();
+
+              if ($row['status'] !== 'done') {
+                  return '';
+              }
+
+              if ($expired) {
+                  return '<span class="cell-sub">sudah dihapus</span>';
+              }
+
+              return '<a class="btn btn-quiet btn-sm" href="' . esc(base_url('admin/ekspor/unduh/' . $row['id']), 'attr') . '">' . icon('download') . ' Unduh</a>';
+          }],
+      ],
+  ]) ?>
+</section>
 <?= $this->endSection() ?>

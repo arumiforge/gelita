@@ -2,6 +2,8 @@
 
 namespace App\Controllers\Game;
 
+use App\Entities\GameSession;
+use App\Models\ChallengeAttemptModel;
 use App\Models\ParticipantFeedbackModel;
 use CodeIgniter\HTTP\RedirectResponse;
 
@@ -29,8 +31,76 @@ class ReflectionController extends BaseGameController
         return view('game/reflection', $this->hudData() + [
             'session'  => $session,
             'existing' => $existing,
+            'journey'  => $this->journey($session),
             'errors'   => session('errors') ?? [],
         ]);
+    }
+
+    /**
+     * Ringkasan perjalanan untuk Balai Refleksi, dari attempt terbaik tiap node
+     * yang sudah dinilai ScoringService — rata-rata tampilan, bukan angka
+     * penelitian baru.
+     *
+     * @return array<string, mixed>
+     */
+    private function journey(GameSession $session): array
+    {
+        $best    = model(ChallengeAttemptModel::class)->completedForSession($session->id);
+        $content = service('contentRepository');
+        $locale  = $session->resolvedLocale();
+
+        $regions = [];
+        $engines = [];
+        $missed  = null;
+        $sum     = 0.0;
+        $correct = 0;
+
+        foreach ($content->levels() as $level) {
+            $values = [];
+
+            foreach ($content->nodesForLevel($level->id) as $node) {
+                $attempt = $best[$node->id] ?? null;
+
+                if ($attempt === null) {
+                    continue;
+                }
+
+                $accuracy  = (float) $attempt->first_pass_accuracy;
+                $values[]  = $accuracy;
+                $sum      += $accuracy;
+                $correct  += (int) $attempt->final_correct;
+
+                $engines[(string) $node->engine_type][] = $accuracy;
+
+                if ($missed === null || $accuracy < $missed['accuracy']) {
+                    $missed = [
+                        'title'    => $level->text('name', $locale) . ' · ' . $node->text('title', $locale),
+                        'accuracy' => $accuracy,
+                    ];
+                }
+            }
+
+            $regions[] = [
+                'name'     => $level->text('name', $locale),
+                'accuracy' => $values === [] ? 0.0 : round(array_sum($values) / count($values), 1),
+            ];
+        }
+
+        $engineRows = [];
+
+        foreach ($engines as $engine => $values) {
+            $engineRows[] = ['engine' => $engine, 'accuracy' => round(array_sum($values) / count($values), 1)];
+        }
+
+        return [
+            'first_pass'    => $best === [] ? 0.0 : round($sum / count($best), 1),
+            'completed'     => count($best),
+            'duration_ms'   => (int) $session->duration_ms,
+            'correct_items' => $correct,
+            'regions'       => $regions,
+            'engines'       => $engineRows,
+            'most_missed'   => $missed,
+        ];
     }
 
     public function store(): RedirectResponse

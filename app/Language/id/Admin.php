@@ -10,6 +10,11 @@ return [
     'mainMenu'   => 'Menu utama',
     'loginTitle' => 'Masuk Panel',
 
+    'closeMenu'        => 'Tutup menu',
+    'groupData'        => 'Data penelitian',
+    'groupReport'      => 'Laporan',
+    'groupManage'      => 'Pengelolaan',
+
     'menuDashboard'    => 'Beranda',
     'menuParticipants' => 'Peserta',
     'menuSessions'     => 'Sesi',
