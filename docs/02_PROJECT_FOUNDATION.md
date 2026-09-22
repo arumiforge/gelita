@@ -111,6 +111,8 @@ php spark serve
 
 ### `.env`
 
+Templat berisi seluruh kunci di bawah tersedia sebagai berkas `env` di root proyek dan dilacak Git. Salin dengan `cp env .env`, lalu isi nilainya. `.env` sendiri tidak pernah di-commit.
+
 ```ini
 #--------------------------------------------------------------------
 # ENVIRONMENT
@@ -119,12 +121,13 @@ CI_ENVIRONMENT = development
 
 #--------------------------------------------------------------------
 # APP
+# app.supportedLocales tidak dapat diisi lewat .env karena bernilai array;
+# nilainya ['id', 'en'] ditetapkan di app/Config/App.php.
 #--------------------------------------------------------------------
 app.baseURL = 'http://localhost:8080/'
 app.forceGlobalSecureRequests = false
 app.appTimezone = 'Asia/Jakarta'
 app.defaultLocale = 'id'
-app.supportedLocales = ['id','en']
 app.indexPage = ''
 
 #--------------------------------------------------------------------
@@ -153,11 +156,14 @@ session.savePath = 'ci_sessions'
 session.cookieName = 'gelita_session'
 session.expiration = 14400
 session.regenerateDestroy = true
+session.matchIP = false
 
 # Satu mekanisme sesi untuk siswa dan staf: session CI4 berbasis database.
 # Siswa: session('participant_id') + session('game_session_id').
 # Staf : session('staff_id') + session('staff_role') + session('staff_school_id').
 # Tidak ada cookie "ingat saya" — komputer kelas dipakai bergantian.
+# matchIP tetap false: lab sekolah sering ber-NAT/DHCP, dan PK ci_sessions
+# hanya `id` sehingga mengaktifkannya butuh perubahan skema.
 
 #--------------------------------------------------------------------
 # SECURITY (CSRF)
@@ -179,12 +185,20 @@ cookie.secure = false
 cookie.httponly = true
 
 #--------------------------------------------------------------------
-# LOGGER
+# LOGGER — production: 4, development: 9
 #--------------------------------------------------------------------
-logger.threshold = 4
+logger.threshold = 9
+
+#--------------------------------------------------------------------
+# DEBUG TOOLBAR
+# Jangan simpan isi request (formulir sandi) ke writable/debugbar.
+#--------------------------------------------------------------------
+toolbar.collectVarData = false
 
 #--------------------------------------------------------------------
 # GELITA
+# gelita.ipSalt WAJIB diganti string acak panjang per pemasangan; salt ini
+# yang membuat hash IP tidak dapat dibalik.
 #--------------------------------------------------------------------
 gelita.ipSalt = 'ganti-dengan-string-acak-panjang'
 gelita.exportRetentionDays = 7
@@ -481,7 +495,8 @@ gelita/
 │   ├── cache/  logs/  session/  uploads/
 │   └── exports/                   ← hasil XLSX/PDF, di luar public/
 ├── tests/
-├── .env
+├── env                            ← templat, dilacak Git
+├── .env                           ← hasil `cp env .env`, tidak pernah di-commit
 └── composer.json
 ```
 

@@ -931,9 +931,14 @@ Nama file mengikuti konvensi CI4 `YYYY-MM-DD-HHMMSS_ClassName.php` di `app/Datab
 2026-01-01-002700_CreateDataExports
 2026-01-01-002800_CreateDataDeletionRequests
 2026-01-01-002900_AddLevelMediaForeignKeys
+2026-01-01-003000_CreateCiSessions
+2026-01-01-003100_AlignChallengeAttemptMetrics
+2026-01-01-003200_EnforceChallengeAttemptMetricDefaults
 ```
 
-> Migration terakhir menambahkan FK dari `levels` ke `media_assets`. Ini dipisah karena `levels` dibuat setelah `media_assets`, tetapi beberapa FK silang (`challenge_nodes.audio_intro_id` → `audio_assets`) lebih aman dipasang belakangan agar `up()`/`down()` bersih.
+> `002900` menambahkan FK dari `levels` ke `media_assets`. Ini dipisah karena `levels` dibuat setelah `media_assets`, tetapi beberapa FK silang (`challenge_nodes.audio_intro_id` → `audio_assets`) lebih aman dipasang belakangan agar `up()`/`down()` bersih.
+
+> `003000` membuat tabel sesi CI4 `ci_sessions`. Kolom `ip_address` berisi hash SHA-256 ber-garam, bukan IP mentah.
 
 Contoh satu migration lengkap (dipakai sebagai pola untuk semua tabel lain):
 
@@ -1008,6 +1013,21 @@ Foreign key:
 ```php
 $this->forge->addForeignKey('level_id', 'levels', 'id', '', 'CASCADE');
 ```
+
+### Koreksi `challenge_attempts` (`003100` dan `003200`)
+
+`002100` dibuat dengan nama kolom awal `first_pass_rate`/`final_rate` dan belum memuat tiga kolom metrik proses. Dua migration berikut yang menyelaraskannya dengan §21 di atas, dan **keduanya kanonik** — `002100` tidak diubah:
+
+| Versi | Peran |
+|---|---|
+| `003100` | mengganti nama `first_pass_rate` → `first_pass_accuracy` dan `final_rate` → `final_accuracy`, lalu menambahkan `check_count`, `answer_change_count`, `audio_use_count` |
+| `003200` | menegakkan `NOT NULL` + default pada kelima kolom tersebut, termasuk mengisi baris lama yang masih `NULL` |
+
+`003200` diperlukan karena `Forge` CodeIgniter hanya memaksakan `NOT NULL` saat `CREATE TABLE`; pada `ALTER` (`addColumn`/`modifyColumn`) atribut `null` yang tidak disebutkan membuat kolom menjadi nullable. Tanpa `003200`, kelima kolom hasil `003100` menyimpang dari tabel §21 yang menetapkannya `NO`.
+
+`003200` juga memanggil `resetDataCache()` sebelum memeriksa kolom: `BaseConnection` meng-cache daftar kolom per tabel dan `Forge` tidak pernah membersihkannya sesudah `ALTER`, sehingga pada satu proses `spark migrate` yang sama seluruh pemeriksaan `fieldExists()` masih membaca nama kolom versi sebelum `003100`.
+
+> **Jangan melakukan rollback ke bawah `003100`.** Model, Entity, dan Service tahap 3 memakai nama kolom hasil migration tersebut. `down()` milik `003200` sengaja hanya mengembalikan kelima kolom ke keadaan nullable yang ditinggalkan `003100`, agar rollback berantai tetap bersih.
 
 ---
 
