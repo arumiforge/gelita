@@ -504,7 +504,21 @@ Aturan folder aset:
 
 * `public/assets/{ui,char,bg,map,challenge,library,reward,audio}/` — aset yang dikirim bersama source (seed).
 * `public/assets/uploads/` — aset yang diunggah lewat panel admin. Ditulis dengan nama resmi dari `media_assets.asset_key`, bukan nama asli berkas pengguna.
+* `public/assets/vendor/` — library frontend yang di-host sendiri. Tidak ada CDN.
 * `writable/exports/` — **tidak** boleh berada di bawah `public/`. Unduhan dilayani controller yang memeriksa otorisasi lebih dulu.
+
+#### Status `public/assets/vendor/` — masih kosong
+
+Folder ini **belum berisi berkas library apa pun**; saat ini hanya `.gitkeep` dan sebuah `README.md`. Berkas binernya ditambahkan pada tahap view/JavaScript (tahap 5–6), bukan sekarang.
+
+| Berkas | Library | Versi yang dipakai | Sumber |
+|---|---|---|---|
+| `echarts.min.js` | Apache ECharts | `6.x` — versi dikunci di repo, diperbarui manual | unduhan rilis resmi |
+| `howler.min.js` | Howler.js | `2.2.x` — dikunci di repo | unduhan rilis resmi |
+
+Alasan pemilihan kedua library dan daftar halaman yang memakainya ada di [05_VIEW_UI.md → *External CSS/JS Library*](05_VIEW_UI.md) dan [06_JAVASCRIPT.md → *Library JavaScript*](06_JAVASCRIPT.md).
+
+> Folder ini sempat terabaikan Git karena pola `vendor/` pada `.gitignore` cocok dengan folder bernama `vendor` di kedalaman mana pun. Pola tersebut sudah dipersempit menjadi `/vendor/` (khusus folder Composer di root), jadi berkas di bawah `public/assets/vendor/` kini dapat di-commit. Jangan mengembalikan pola lama.
 
 ---
 
