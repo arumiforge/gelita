@@ -81,4 +81,40 @@ final class GelitaHelperTest extends CIUnitTestCase
         $this->assertSame(2, substr_count($html, 'is-on'));
         $this->assertStringContainsString('aria-label="2 / 3"', $html);
     }
+
+    public function testSafeInternalUrlKeepsInternalPaths(): void
+    {
+        helper('url');
+
+        $this->assertSame(site_url('peta'), safe_internal_url('peta'));
+        $this->assertSame(site_url('peta'), safe_internal_url('/peta'));
+        $this->assertSame(site_url('misi/temanggung/1'), safe_internal_url('misi/temanggung/1'));
+    }
+
+    /**
+     * Aturan 11 (04_CONTROLLER_ROUTE.md): redirect_to dari pengguna tidak boleh
+     * dapat mengarahkan pemain ke domain lain.
+     *
+     * @dataProvider unsafeRedirectTargets
+     */
+    public function testSafeInternalUrlRejectsExternalTargets(?string $target): void
+    {
+        helper('url');
+
+        $this->assertSame(site_url('masuk'), safe_internal_url($target, 'masuk'));
+    }
+
+    /** @return iterable<string, array{0: ?string}> */
+    public static function unsafeRedirectTargets(): iterable
+    {
+        yield 'absolut http'     => ['http://jahat.example/curi'];
+        yield 'absolut https'    => ['https://jahat.example'];
+        yield 'protocol relatif' => ['//jahat.example/curi'];
+        yield 'skema javascript' => ['javascript:alert(1)'];
+        yield 'skema data'       => ['data:text/html,<script>alert(1)</script>'];
+        yield 'backslash'        => ['\\\\jahat.example\\curi'];
+        yield 'baris baru'       => ["peta\nLocation: https://jahat.example"];
+        yield 'kosong'           => [''];
+        yield 'null'             => [null];
+    }
 }

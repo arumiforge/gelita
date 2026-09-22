@@ -25,10 +25,14 @@ class GelitaRules
         return in_array((string) $str, config('Gelita')->locales, true);
     }
 
-    /** Item harus milik attempt yang disebut (ChallengeAttemptModel dibuat tahap 3) */
+    /**
+     * Item harus milik attempt yang disebut (ChallengeAttemptModel dibuat tahap 3).
+     * Parameter = nama field yang memuat id attempt, mis. item_in_attempt[attempt_id].
+     */
     public function item_in_attempt(?string $itemId, string $params, array $data): bool
     {
-        $attemptId = (int) ($data['attempt_id'] ?? 0);
+        $field     = trim($params) === '' ? 'attempt_id' : trim($params);
+        $attemptId = (int) ($data[$field] ?? 0);
         $attempt   = model(ChallengeAttemptModel::class)->find($attemptId);
 
         return $attempt && in_array((int) $itemId, $attempt->selectedItemIds(), true);
