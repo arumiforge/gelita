@@ -415,7 +415,7 @@ Soal yang punya `source_text` menampilkan teks sumber di atas pertanyaan, dengan
 ```text
 Feature   Cari objek budaya (engine cari)
 Trigger   Peserta mengetuk objek di dalam adegan
-Input     { item_id: <objek yang diklik>, answer: { target_item_id: <petunjuk aktif> } }
+Input     { item_id: <clues[i].item_id petunjuk aktif>, answer: { object: <objects[j].ref objek yang diketuk> } }
 Request   POST /api/attempts/{id}/responses
 Response  benar  → { correct: true, next_clue: { index: 2, text: "…" }, … }
           salah  → { correct: false, decoy: true, explanation: "…",
@@ -435,6 +435,9 @@ Detail:
 
 * Objek diposisikan dengan persen (`left`, `top`, `width`) supaya adegan tetap benar pada semua ukuran layar.
 * Objek jebakan dirender identik dengan objek asli. Tidak ada kelas CSS, atribut, atau urutan DOM yang membocorkan status jebakan — status itu hanya ada di server.
+* Payload `challenge-data` engine ini tidak memakai `items`. Isinya `objects` (semua objek, target maupun jebakan, berbentuk identik `{ ref, x, y, w, media }` dan diurutkan menurut posisi di layar) dan `clues` (`{ item_id, text }`, hanya untuk target yang dinilai). `ref` adalah token HMAC per attempt yang diturunkan dari `encryption.key`, jadi id butir petunjuk tidak dapat dicocokkan dengan objek mana pun di sisi klien.
+* Server hanya menerima `answer.object`. `answer.item_id` mentah diabaikan — klien mengetahui id butir target dari `clues`, sehingga menerimanya sama dengan membocorkan kunci jawaban. Token yang tidak dikenal ditolak `422 INVALID_RESPONSE`. Bila butir `find_object` dikirim lewat `/check`, jawabannya juga hanya dibaca dari token; token yang tidak dikenal dinilai salah.
+* `progress.total` pada respons tidak menghitung objek jebakan.
 * Petunjuk aktif dibacakan lewat audio player Mbah Kedu bila asetnya tersedia.
 * Keyboard: `Tab` berpindah antar objek, `Enter` memilih. Daftar sisa juga dapat dipakai untuk melompat ke petunjuk tertentu.
 

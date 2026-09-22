@@ -20,8 +20,12 @@ use CodeIgniter\HTTP\RedirectResponse;
  */
 class RegisterController extends BaseController
 {
-    /** Versi teks persetujuan yang sedang ditayangkan; ikut disimpan per peserta. */
-    private const CONSENT_VERSION = '1';
+    /**
+     * Versi teks persetujuan yang sedang ditayangkan; ikut disimpan per peserta.
+     * Naikkan setiap kali isi Game.consentBody berubah. Versi 2: nama lengkap
+     * kini direkam dan teks menyebut seluruh data profil yang dicatat.
+     */
+    private const CONSENT_VERSION = '2';
 
     public function consent(): string
     {

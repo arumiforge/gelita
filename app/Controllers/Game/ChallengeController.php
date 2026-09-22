@@ -25,6 +25,10 @@ class ChallengeController extends BaseGameController
             return redirect()->to(site_url('wilayah/' . $level->code))->with('error', lang('Game.nodeLocked'));
         }
 
+        if ($gate = $this->dialogueGate($session, $level)) {
+            return $gate;
+        }
+
         return view('game/mission-brief', $this->hudData() + [
             'level'    => $level,
             'node'     => $node,
@@ -41,6 +45,10 @@ class ChallengeController extends BaseGameController
 
         if (! $this->levelUnlocked($session, $level->sequence) || ! $this->nodeUnlocked($session, $node)) {
             return redirect()->to(site_url('wilayah/' . $level->code))->with('error', lang('Game.nodeLocked'));
+        }
+
+        if ($gate = $this->dialogueGate($session, $level)) {
+            return $gate;
         }
 
         // Engine diperiksa SEBELUM openNode(): membuka attempt lalu gagal
@@ -107,6 +115,19 @@ class ChallengeController extends BaseGameController
             ? ['score' => 0.0, 'stars' => 0, 'completed_nodes' => 0, 'total_nodes' => 0]
             : service('scoringService')->levelScore($session->id, $level->id);
 
+        // Wilayah sesudahnya (baris levelOverview, beserta `entry`): bila baru
+        // terbuka, tombol lanjut langsung menuju dialog pembukanya
+        $nextRegion = null;
+
+        if ($level !== null) {
+            foreach ($this->levelOverview($session) as $row) {
+                if ($row['sequence'] === $level->sequence + 1) {
+                    $nextRegion = $row;
+                    break;
+                }
+            }
+        }
+
         return view('game/challenge-finished', $this->hudData() + [
             'attempt'        => $attempt,
             'node'           => $node,
@@ -115,6 +136,7 @@ class ChallengeController extends BaseGameController
             'levelCompleted' => $levelScore['total_nodes'] > 0
                 && $levelScore['completed_nodes'] >= $levelScore['total_nodes'],
             'allCompleted' => $this->allNodesCompleted($session),
+            'nextRegion'   => $nextRegion,
         ]);
     }
 }

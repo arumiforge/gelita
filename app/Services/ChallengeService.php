@@ -143,6 +143,10 @@ class ChallengeService
         $item    = $this->itemOf($node->id, $itemId);
         $locale  = $session->resolvedLocale();
 
+        if ($item->interaction_type === 'find_object') {
+            $answer = $this->resolveObjectAnswer($attempt, $answer);
+        }
+
         $db = db_connect();
         $db->transBegin();
 
@@ -236,6 +240,16 @@ class ChallengeService
 
                 if ($item->isDecoy()) {
                     continue;
+                }
+
+                // `cari` dinilai lewat token objek, juga di jalur batch: id butir
+                // mentah dari klien tidak pernah dipercaya (lihat resolveObjectAnswer())
+                if ($item->interaction_type === 'find_object') {
+                    try {
+                        $answer = $this->resolveObjectAnswer($attempt, $answer);
+                    } catch (\InvalidArgumentException) {
+                        $answer = ['item_id' => 0];
+                    }
                 }
 
                 $correct         = $this->grade($node, $item, $answer, $locale);
@@ -728,6 +742,8 @@ class ChallengeService
     /**
      * Payload pemain: tanpa kunci jawaban, tanpa pemetaan bank kata,
      * tanpa penanda decoy, dan tanpa umpan balik salah-klik.
+     * Engine `cari` tidak memakai `items`, melainkan `objects` + `clues`
+     * (lihat huntPayload()).
      *
      * @param list<ChallengeItem> $items
      *
@@ -763,6 +779,11 @@ class ChallengeService
             'hints_count' => count(service('contentRepository')->hintsFor($node->id)),
         ];
 
+        if ($node->engine_type === 'cari') {
+            unset($payload['items']);
+            $payload += $this->huntPayload($attempt, $items, $locale);
+        }
+
         if ($node->engine_type === 'rumpang' && $node->config('use_word_bank')) {
             $payload['word_bank'] = $this->wordBank($node, $items, $locale);
         }
@@ -779,6 +800,87 @@ class ChallengeService
         }
 
         return $payload;
+    }
+
+    /**
+     * Payload engine `cari`.
+     *
+     * `objects` memuat SEMUA objek di adegan — target maupun jebakan — dengan
+     * bentuk yang identik: token buram per attempt (`ref`, bukan id butir),
+     * posisi, dan gambar. Urutannya mengikuti posisi di layar, bukan urutan
+     * pemilihan (yang menaruh jebakan di akhir). Tidak ada prompt, id butir,
+     * `scorable`, atau penanda jebakan.
+     *
+     * `clues` hanya untuk target yang dinilai. `item_id`-nya dikirim klien
+     * sebagai butir yang sedang dijawab, tetapi tidak dapat dicocokkan dengan
+     * objek mana pun karena `ref` diturunkan dari kunci server (objectRef()).
+     *
+     * @param list<ChallengeItem> $items
+     *
+     * @return array{objects: list<array<string, mixed>>, clues: list<array{item_id: int, text: string}>}
+     */
+    private function huntPayload(ChallengeAttempt $attempt, array $items, string $locale): array
+    {
+        $objects = [];
+        $clues   = [];
+
+        foreach ($items as $item) {
+            if ($item->interaction_type !== 'find_object') {
+                continue;
+            }
+
+            $objects[] = ['ref' => $this->objectRef($attempt->id, $item->id)] + $item->position() + [
+                'media' => $item->media_asset_id ? media_src($item->media_asset_id) : null,
+            ];
+
+            if ($item->scorable && ! $item->isDecoy()) {
+                $clues[] = ['item_id' => $item->id, 'text' => $item->text('prompt', $locale)];
+            }
+        }
+
+        usort($objects, static fn (array $a, array $b): int => [$a['y'], $a['x'], $a['ref']] <=> [$b['y'], $b['x'], $b['ref']]);
+
+        return ['objects' => $objects, 'clues' => $clues];
+    }
+
+    /**
+     * Token objek `cari` untuk satu attempt: HMAC atas (attempt, butir) dengan
+     * kunci enkripsi aplikasi. Klien tidak dapat membalik token menjadi id
+     * butir, dan token berbeda pada setiap attempt.
+     */
+    private function objectRef(int $attemptId, int $itemId): string
+    {
+        $key = (string) config('Encryption')->key;
+
+        if ($key === '') {
+            throw new \RuntimeException('encryption.key wajib diisi: token objek engine cari diturunkan darinya.');
+        }
+
+        return substr(hash_hmac('sha256', 'cari-object|' . $attemptId . '|' . $itemId, $key), 0, 20);
+    }
+
+    /**
+     * Jawaban `find_object` dari klien: `{ object: <ref> }`. Diterjemahkan ke
+     * id butir yang diklik di server; `item_id` mentah kiriman klien selalu
+     * diabaikan, karena klien mengetahui id butir target dari `clues`.
+     *
+     * @param array<string, mixed> $answer
+     *
+     * @return array{item_id: int}
+     */
+    private function resolveObjectAnswer(ChallengeAttempt $attempt, array $answer): array
+    {
+        $ref = (string) ($answer['object'] ?? '');
+
+        if ($ref !== '') {
+            foreach ($attempt->selectedItemIds() as $candidate) {
+                if (hash_equals($this->objectRef($attempt->id, $candidate), $ref)) {
+                    return ['item_id' => $candidate];
+                }
+            }
+        }
+
+        throw new \InvalidArgumentException('Objek tidak dikenal pada percobaan ini.');
     }
 
     /**
@@ -960,19 +1062,40 @@ class ChallengeService
         return isset($answer['item_id']) && (int) $answer['item_id'] !== $itemId && ! $item->isDecoy();
     }
 
-    /** @return array{answered: int, total: int} */
+    /**
+     * Objek jebakan `cari` punya baris item_responses tetapi tidak pernah
+     * dijawab, jadi tidak ikut dihitung — `total` tidak boleh membocorkan
+     * jumlah jebakan maupun membuat progres tidak pernah penuh.
+     *
+     * @return array{answered: int, total: int}
+     */
     private function progressOf(ChallengeAttempt $attempt): array
     {
         $responses = model(ItemResponseModel::class)->forAttempt($attempt->id);
-        $answered  = 0;
+        $decoys    = [];
 
-        foreach ($responses as $response) {
+        foreach (service('contentRepository')->itemBank($attempt->challenge_node_id) as $bankItem) {
+            if ($bankItem->isDecoy()) {
+                $decoys[$bankItem->id] = true;
+            }
+        }
+
+        $answered = 0;
+        $total    = 0;
+
+        foreach ($responses as $itemId => $response) {
+            if (isset($decoys[$itemId])) {
+                continue;
+            }
+
+            $total++;
+
             if ($response->isAnswered()) {
                 $answered++;
             }
         }
 
-        return ['answered' => $answered, 'total' => count($responses)];
+        return ['answered' => $answered, 'total' => $total];
     }
 
     /** Benih pemilihan item: peserta yang sama mendapat butir sama pada pretest & posttest. */

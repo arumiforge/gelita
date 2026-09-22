@@ -19,6 +19,9 @@ class DialogueController extends BaseGameController
             return redirect()->to(site_url('peta'))->with('error', lang('Game.levelLocked'));
         }
 
+        // Membuka gerbang halaman di dalam wilayah (lihat dialogueGate())
+        $this->markDialogueShown($session, $level);
+
         return view('game/dialogue', $this->hudData() + [
             'level'  => $level,
             'slides' => service('contentRepository')->dialogues($level->id, 'level_open'),

@@ -29,6 +29,10 @@ class MapController extends BaseGameController
             return redirect()->to(site_url('peta'))->with('error', lang('Game.levelLocked'));
         }
 
+        if ($gate = $this->dialogueGate($session, $level)) {
+            return $gate;
+        }
+
         return view('game/map-level', $this->hudData() + [
             'level'      => $level,
             'levelScore' => service('scoringService')->levelScore($session->id, $level->id),

@@ -42,8 +42,9 @@ trait GameProgress
         $out = [];
 
         foreach (service('contentRepository')->levels() as $level) {
-            $score = $scoring->levelScore($session->id, $level->id);
-            $open  = $free || $level->sequence <= $unlocked;
+            $score  = $scoring->levelScore($session->id, $level->id);
+            $open   = $free || $level->sequence <= $unlocked;
+            $status = $this->levelStatus($score, $open);
 
             $out[] = [
                 'id'              => $level->id,
@@ -51,7 +52,8 @@ trait GameProgress
                 'sequence'        => $level->sequence,
                 'name'            => $level->text('name', $locale),
                 'difficulty'      => (string) $level->difficulty,
-                'status'          => $this->levelStatus($score, $open),
+                'status'          => $status,
+                'entry'           => $this->regionEntryPath((string) $level->code, $status),
                 'score'           => $score['score'],
                 'stars'           => $score['stars'],
                 'completed_nodes' => $score['completed_nodes'],
@@ -220,6 +222,27 @@ trait GameProgress
         $summary = $this->progressSummary($session);
 
         return $summary['shards_total'] > 0 && $summary['completed_nodes'] >= $summary['shards_total'];
+    }
+
+    /**
+     * Jalan masuk ke wilayah dari peta dan dari layar selesai.
+     *
+     * Wilayah yang baru terbuka SELALU lewat dialog pembuka Jaka & Mbah Kedu
+     * lebih dulu; tombol di akhir dialog membawa ke peta wilayah. Wilayah yang
+     * sedang dijelajahi atau sudah tuntas langsung ke peta wilayahnya. Wilayah
+     * terkunci tetap menuju peta wilayah, yang menolaknya dengan pesan
+     * "selesaikan wilayah sebelumnya". URL yang diketik langsung dijaga
+     * BaseGameController::dialogueGate() dengan aturan yang sama.
+     */
+    private function regionEntryPath(string $code, string $status): string
+    {
+        return ($this->isNewRegion($status) ? 'dialog/' : 'wilayah/') . $code;
+    }
+
+    /** Wilayah baru terbuka: status `open` — terbuka, belum ada tantangan yang selesai. */
+    private function isNewRegion(string $status): bool
+    {
+        return $status === 'open';
     }
 
     /** @param array{completed_nodes: int, total_nodes: int} $score */

@@ -913,7 +913,7 @@ class ChallengeService
 | `verdict_reason` | sama seperti di atas; `reason_text` disimpan, `reason_review_status = 'pending'`, **alasan tidak memengaruhi benar/salah** |
 | `single_choice` | `answer.option_key === answer_key_json.option_key` |
 | `source_trust` | sama seperti `single_choice` |
-| `find_object` | `answer.item_id === target item id`. Klik objek salah → `wrong_click_count++`, event `wrong_target_clicked`, tidak mengubah `first_pass_correct` target yang sedang dicari |
+| `find_object` | Klien mengirim `answer.object` (token objek per attempt); `ChallengeService::resolveObjectAnswer()` menerjemahkannya ke id butir yang diklik, lalu benar bila id itu = id butir target. `answer.item_id` mentah dari klien diabaikan. Klik objek salah → `wrong_click_count++`, event `wrong_target_clicked`, tidak mengubah `first_pass_correct` target yang sedang dicari |
 
 **Aturan first-pass per engine** (ini menentukan ukuran utama penelitian):
 
