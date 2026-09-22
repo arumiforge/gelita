@@ -4,9 +4,23 @@
 
 ## Status pengembangan
 
-Proyek berada pada **tahap 3 dari 8: Model, Entity, dan Service**.
+Proyek berada pada **tahap 4 dari 8: Route, Controller, Autentikasi, dan Otorisasi**.
 
-Tahap ini membangun seluruh data layer: 29 Model CodeIgniter, 11 Entity dengan casting dan aksesor dwibahasa, serta 8 Service (pembaca konten ber-cache, konteks permainan per request, sesi & akun siswa, tantangan, skor, event, analitik, dan impor bank soal). Tahap berikutnya berfokus pada controller dan route.
+Tahap ini membuka seluruh URL aplikasi: satu berkas route (auto-route mati), 9 controller game, 12 controller admin, 8 controller API, plus tiga kelas dasar bersama (`Game\BaseGameController`, `Admin\BaseAdminController`, `Api\BaseApiController`) dan dua trait (`Concerns\GameProgress` untuk status buka/kunci level & node, `Concerns\StaffScope` untuk cakupan sekolah). Tujuh filter tahap 2 kini dipakai langsung dari route.
+
+Yang berlaku sejak tahap ini:
+
+- **Siswa mendaftar dengan nama pengguna + kata sandi kuat.** Halaman `/daftar` menolak sandi yang belum memenuhi kelima syarat, dan dua metrik proses — jumlah syarat terpenuhi pada percobaan pertama serta jumlah penolakan sandi lemah — ikut disimpan sebagai data literasi keamanan digital. Isi kata sandi tidak pernah masuk `old()`, flash, log, atau event.
+- **Otorisasi berlapis tiga**: filter route (`staffAuth`, lalu `staffRole:admin`), `schoolScope()` di controller, dan `school_id` yang wajib diterima Service. Guru yang membuka `/admin/konten` mendapat `404`, bukan `403`, agar struktur panel tidak terpetakan.
+- **Bentuk respons API seragam** untuk sukses dan gagal, dengan `request_id` yang sama di respons dan di `writable/logs/`. Rate limit per sesi (120/menit) berlaku untuk `/api/events` dan `/api/attempts/*`; `/api/auth/username-available` dibatasi 20/menit per hash IP.
+- **Redirect dari input pengguna** (`redirect_to`) melewati `safe_internal_url()`: skema, URL protocol-relative, backslash, dan karakter baris baru ditolak.
+
+Dua catatan ruang lingkup:
+
+- **View masih placeholder.** Seluruh halaman sudah punya berkas view di jalur yang ditetapkan [`docs/05_VIEW_UI.md`](docs/05_VIEW_UI.md) beserta form yang berfungsi, tetapi tampilannya dikerjakan tahap 5 dan mesin arena tantangan pada tahap 6. Payload soal sudah ditanam sebagai `<script type="application/json" id="challenge-data">`.
+- **`ExportController` belum dapat membangun berkas.** `App\Services\ExportService` baru dipasang pada tahap 7. Sampai kelas itu ada, permintaan ekspor tetap tercatat di `data_exports` dan `audit_logs`, lalu langsung ditandai `failed` dengan alasan yang jelas — bukan dibiarkan menggantung di status `running`. `GovernanceController::runRetention()` sudah menjalankan dua pekerjaan yang penopangnya ada (menandai sesi menganggur `paused`, membuang berkas ekspor kedaluwarsa); pembersihan per `retention_days` menyusul bersama `RetentionService`.
+
+Pratinjau layout tahap 2 (`App\Controllers\DevPreview` beserta route `dev/*` dan dua view-nya) dihapus karena tugasnya — menampilkan layout sebelum controller tahap 4 ada — sudah selesai.
 
 ### Perbaikan pasca-tahap 3
 
@@ -97,6 +111,8 @@ vendor/bin/phpunit --no-coverage
 
 Suite memakai grup database `tests` (SQLite3 in-memory) dan hanya menjalankan migration bernamespace `Tests\Support`, bukan migration aplikasi. Sesi pada pengujian di-mock dengan `ArrayHandler` oleh `CIUnitTestCase`, jadi konfigurasi sesi produksi tidak ikut dijalankan.
 
+`RouteWiringTest` memeriksa seluruh route tahap 4 tanpa database: auto-route tetap mati, setiap handler menunjuk kelas dan method publik yang benar-benar ada, dan setiap nama view yang disebut controller punya berkasnya. Karena tabel aplikasi tidak dibuat pada suite ini, **alur HTTP ujung-ke-ujung belum tercakup pengujian otomatis**; jalankan penelusuran manual di atas database MySQL/MariaDB sungguhan setelah `php spark migrate` dan `php spark db:seed DatabaseSeeder`.
+
 Untuk memverifikasi migration terhadap MySQL/MariaDB sungguhan, jalankan `php spark migrate` pada database scratch terpisah dengan kredensial yang dioper lewat environment:
 
 ```bash
@@ -113,7 +129,14 @@ Dokumen spesifikasi dan panduan rinci tersedia di folder [`docs`](docs/):
 - [Struktur database](docs/01_DATABASE.md)
 - [Fondasi proyek](docs/02_PROJECT_FOUNDATION.md)
 - [Model, entity, dan service](docs/03_MODEL_ENTITY.md)
+- [Route, controller, autentikasi, otorisasi](docs/04_CONTROLLER_ROUTE.md)
 - [Deployment dan operasional](docs/08_DEPLOYMENT.md)
+
+Daftar route lengkap dapat dilihat kapan saja tanpa membaca kode:
+
+```bash
+php spark routes
+```
 
 ## Catatan keamanan
 

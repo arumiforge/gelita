@@ -27,4 +27,9 @@ return [
     'showPassword'     => 'Lihat kata sandi',
     'hidePassword'     => 'Sembunyikan kata sandi',
     'capsLock'         => 'Tombol Caps Lock sedang menyala.',
+    'sameAsOld'        => 'Kata sandi baru harus berbeda dari yang lama.',
+    'wrongCurrent'     => 'Kata sandi lamamu belum tepat.',
+    'passwordChanged'  => 'Kata sandi baru tersimpan. Ingat baik-baik, ya.',
+    'currentPassword'  => 'Kata sandi sekarang',
+    'changeTitle'      => 'Ganti kata sandi',
 ];

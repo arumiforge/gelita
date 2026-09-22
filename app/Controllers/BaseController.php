@@ -59,6 +59,27 @@ abstract class BaseController extends Controller
         ], $extra));
     }
 
+    /**
+     * Keterangan perangkat untuk baris `game_sessions`.
+     * Nilai dari JavaScript dipakai bila ada; selain itu ditebak dari user agent.
+     *
+     * @return array<string, mixed>
+     */
+    protected function deviceInfo(): array
+    {
+        $agent = $this->request instanceof IncomingRequest ? $this->request->getUserAgent() : null;
+
+        return [
+            'device_type' => $this->request->getPost('device_type')
+                ?? ($agent === null ? null : ($agent->isMobile() ? 'mobile' : 'desktop')),
+            'os_name'            => $this->request->getPost('os_name') ?? $agent?->getPlatform(),
+            'browser_name'       => $this->request->getPost('browser_name') ?? $agent?->getBrowser(),
+            'screen_size'        => $this->request->getPost('screen_size'),
+            'is_touch'           => $this->request->getPost('is_touch'),
+            'app_client_version' => $this->request->getPost('app_client_version'),
+        ];
+    }
+
     /** Ambil payload JSON sebagai array; JSON rusak → array kosong (validasi akan menolak). */
     protected function jsonBody(): array
     {

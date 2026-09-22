@@ -27,4 +27,9 @@ return [
     'showPassword'     => 'Show password',
     'hidePassword'     => 'Hide password',
     'capsLock'         => 'Caps Lock is on.',
+    'sameAsOld'        => 'Your new password must be different from the old one.',
+    'wrongCurrent'     => 'That is not your current password.',
+    'passwordChanged'  => 'Your new password is saved. Remember it well.',
+    'currentPassword'  => 'Current password',
+    'changeTitle'      => 'Change password',
 ];
