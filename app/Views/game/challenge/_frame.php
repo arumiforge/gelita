@@ -5,7 +5,8 @@
  *
  * Payload soal ditanam sebagai <script type="application/json" id="challenge-data">
  * dan sudah disaring ChallengeService: tanpa kunci jawaban, tanpa penanda
- * decoy, dan tanpa pemetaan bank kata. challenge.js (tahap 6) membacanya dan
+ * decoy, dan tanpa pemetaan bank kata (engine `cari` memakai `objects` +
+ * `clues`, bukan `items`). challenge.js (tahap 6) membacanya dan
  * memasang mesin tantangan pada markup arena.
  *
  * Satu-satunya jalan keluar adalah tombol Keluar yang harus dikonfirmasi
@@ -74,7 +75,7 @@ $hints      = (int) ($payload['hints_count'] ?? 0);
       <?php endif ?>
       <noscript><div class="alert alert-warn"><?= icon('warn') ?><p><?= esc(lang('Game.needsJs')) ?></p></div></noscript>
 
-      <?php if (($payload['items'] ?? []) === []): ?>
+      <?php if (($payload['items'] ?? $payload['objects'] ?? []) === []): ?>
         <div class="empty-state"><?= icon('info') ?><p><?= esc(lang('Game.noItems')) ?></p></div>
       <?php else: ?>
         <?= $this->renderSection('arena') ?>

@@ -13,6 +13,7 @@
  * @var bool                             $levelCompleted
  * @var bool                             $allCompleted
  * @var array<string, mixed>             $progress
+ * @var array<string, mixed>|null        $nextRegion baris levelOverview wilayah sesudahnya
  * @var string                           $locale
  */
 $region = $level?->text('name', $locale) ?? '';
@@ -83,6 +84,9 @@ $checks = (int) ($attempt->check_count ?? 0);
           <a class="btn btn-primary btn-xl" href="<?= base_url('refleksi') ?>"><?= icon('sparkle') ?> <?= esc(lang('Game.reflection')) ?></a>
         <?php elseif ($next !== null): ?>
           <a class="btn btn-primary btn-lg" href="<?= base_url('misi/' . $level->code . '/' . $next->sequence) ?>"><?= esc(lang('Game.next')) ?> <?= icon('right') ?></a>
+        <?php elseif ($levelCompleted && $nextRegion !== null && $nextRegion['status'] !== 'locked'): ?>
+          <?php // `entry`: wilayah yang baru terbuka → dialog pembukanya, selain itu peta wilayah ?>
+          <a class="btn btn-primary btn-lg" href="<?= base_url($nextRegion['entry']) ?>"><?= esc(lang('Game.goToRegion', [$nextRegion['name']])) ?> <?= icon('right') ?></a>
         <?php elseif ($levelCompleted): ?>
           <a class="btn btn-primary btn-lg" href="<?= base_url('peta') ?>"><?= icon('map') ?> <?= esc(lang('Game.mapKedu')) ?></a>
         <?php endif ?>

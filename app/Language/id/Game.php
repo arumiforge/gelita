@@ -81,7 +81,7 @@ return [
 
     // Persetujuan & pendaftaran
     'consentTitle'           => 'Persetujuan penelitian',
-    'consentBody'            => 'Permainan ini juga dipakai untuk penelitian "{0}". Yang dicatat adalah jawaban, waktu mengerjakan, dan langkahmu di dalam permainan — bukan nama lengkap atau alamatmu. Kamu boleh berhenti kapan saja tanpa nilai berkurang.',
+    'consentBody'            => 'Permainan ini juga dipakai untuk penelitian "{0}". Yang dicatat adalah nama lengkapmu, umur, jenis kelamin, kelas, sekolah, daerah asalmu, dan nama orang tua atau wali bila diisi, serta jawaban, waktu mengerjakan, dan langkahmu di dalam permainan — bukan alamat rumahmu. Nama lengkapmu hanya dapat dilihat gurumu dan tim peneliti, tidak ditampilkan kepada pemain lain. Kamu boleh berhenti kapan saja tanpa nilai berkurang.',
     'consentParticipant'     => 'Saya bersedia ikut bermain dan datanya dipakai untuk penelitian.',
     'consentGuardian'        => 'Orang tua atau wali saya sudah mengizinkan.',
     'consentGuardianName'    => 'Nama orang tua atau wali',
@@ -97,7 +97,8 @@ return [
     'regStep1'          => 'Tentang kamu',
     'regStep2'          => 'Sekolah dan daerah',
     'regStep3'          => 'Akun rahasiamu',
-    'displayName'       => 'Nama panggilan',
+    'displayName'       => 'Nama lengkap',
+    'displayNameHelp'   => 'Tulis nama lengkapmu seperti di daftar kelas.',
     'age'               => 'Umur',
     'ageUnit'           => 'tahun',
     'gender'            => 'Jenis kelamin',
@@ -206,6 +207,7 @@ return [
     'multiCheckNote'   => 'Kamu memeriksa jawaban {0} kali. Tidak apa-apa — setiap pemeriksaan membantumu belajar.',
     'regionDone'       => 'Wilayah {0} sudah terang kembali!',
     'nextRegionOpen'   => 'Wilayah berikutnya kini terbuka.',
+    'goToRegion'       => 'Lanjut ke {0}',
     'allShardsDone'    => 'Semua {0} serpihan cahaya sudah terkumpul!',
     'shardEarned'      => 'Serpihan cahaya: {0} dari {1}',
     'backToRegion'     => 'Peta wilayah',

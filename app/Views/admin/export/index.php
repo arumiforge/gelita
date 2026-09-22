@@ -70,7 +70,7 @@ $statusNames = ['queued' => 'antre', 'running' => 'diproses', 'done' => 'siap', 
     <?php if ($isAdmin): ?>
       <label class="check">
         <input type="checkbox" name="anonymized" value="1" checked>
-        <span><b>Mode anonim</b><span class="cell-sub">Nama panggilan &amp; nama pengguna diganti kode peserta. Matikan hanya untuk kebutuhan penelitian yang sah.</span></span>
+        <span><b>Mode anonim</b><span class="cell-sub">Nama lengkap &amp; nama pengguna diganti kode peserta. Matikan hanya untuk kebutuhan penelitian yang sah.</span></span>
       </label>
     <?php else: ?>
       <p class="filter-locked"><?= icon('lock') ?> Mode anonim selalu aktif untuk akun guru, dan data terbatas pada sekolah Anda.</p>
