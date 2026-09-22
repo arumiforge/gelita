@@ -3,8 +3,14 @@
 namespace Config;
 
 use App\Libraries\RequestId;
+use App\Services\AnalyticsService;
+use App\Services\ChallengeService;
+use App\Services\ContentImportService;
 use App\Services\ContentRepository;
+use App\Services\EventService;
 use App\Services\GameContext;
+use App\Services\ScoringService;
+use App\Services\SessionService;
 use CodeIgniter\Config\BaseService;
 
 class Services extends BaseService
@@ -23,7 +29,7 @@ class Services extends BaseService
         return new RequestId();
     }
 
-    /** State sesi + progres aktif untuk request ini (kelas dibuat tahap 3). */
+    /** State sesi + progres aktif untuk request ini. */
     public static function gameContext(bool $getShared = true): GameContext
     {
         if ($getShared) {
@@ -63,7 +69,7 @@ class Services extends BaseService
         return $staff;
     }
 
-    /** Pembaca konten ber-cache: level, node, item, media (kelas dibuat tahap 3). */
+    /** Pembaca konten ber-cache: level, node, item, media. */
     public static function contentRepository(bool $getShared = true): ContentRepository
     {
         if ($getShared) {
@@ -71,5 +77,72 @@ class Services extends BaseService
         }
 
         return new ContentRepository();
+    }
+
+    /** Siklus hidup akun siswa dan sesi permainan. */
+    public static function sessionService(bool $getShared = true): SessionService
+    {
+        if ($getShared) {
+            return static::getSharedInstance('sessionService');
+        }
+
+        return new SessionService();
+    }
+
+    /** Inti permainan: buka node, terima jawaban, tutup attempt. */
+    public static function challengeService(bool $getShared = true): ChallengeService
+    {
+        if ($getShared) {
+            return static::getSharedInstance('challengeService');
+        }
+
+        return new ChallengeService();
+    }
+
+    /** Satu-satunya tempat rumus skor ditulis. */
+    public static function scoringService(bool $getShared = true): ScoringService
+    {
+        if ($getShared) {
+            return static::getSharedInstance('scoringService');
+        }
+
+        return new ScoringService();
+    }
+
+    /** Penulis raw event penelitian. */
+    public static function eventService(bool $getShared = true): EventService
+    {
+        if ($getShared) {
+            return static::getSharedInstance('eventService');
+        }
+
+        return new EventService();
+    }
+
+    /**
+     * Dataset dasbor & export. $schoolScope NULL = admin (semua sekolah),
+     * terisi = guru (dibatasi sekolahnya).
+     */
+    public static function analyticsService(
+        ?int $schoolScope = null,
+        bool $anonymous = false,
+        bool $getShared = true,
+    ): AnalyticsService {
+        if ($getShared) {
+            return static::getSharedInstance('analyticsService', $schoolScope, $anonymous)
+                ->forStaff($schoolScope, $anonymous);
+        }
+
+        return new AnalyticsService($schoolScope, $anonymous);
+    }
+
+    /** Pemuat workbook bank soal. */
+    public static function contentImportService(bool $getShared = true): ContentImportService
+    {
+        if ($getShared) {
+            return static::getSharedInstance('contentImportService');
+        }
+
+        return new ContentImportService();
     }
 }
