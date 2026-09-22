@@ -13,9 +13,12 @@ class Security extends BaseConfig
      *
      * Protection Method for Cross Site Request Forgery protection.
      *
+     * 'session': token disimpan di sesi, bukan cookie terpisah. Sesi GELITA
+     * sudah berbasis database sehingga tidak ada state tambahan di browser.
+     *
      * @var string 'cookie' or 'session'
      */
-    public string $csrfProtection = 'cookie';
+    public string $csrfProtection = 'session';
 
     /**
      * --------------------------------------------------------------------------
@@ -24,7 +27,7 @@ class Security extends BaseConfig
      *
      * Randomize the CSRF Token for added security.
      */
-    public bool $tokenRandomize = false;
+    public bool $tokenRandomize = true;
 
     /**
      * --------------------------------------------------------------------------
@@ -33,7 +36,7 @@ class Security extends BaseConfig
      *
      * Token name for Cross Site Request Forgery protection.
      */
-    public string $tokenName = 'csrf_test_name';
+    public string $tokenName = 'gelita_csrf';
 
     /**
      * --------------------------------------------------------------------------
@@ -51,7 +54,7 @@ class Security extends BaseConfig
      *
      * Cookie name for Cross Site Request Forgery protection.
      */
-    public string $cookieName = 'csrf_cookie_name';
+    public string $cookieName = 'gelita_csrf_cookie';
 
     /**
      * --------------------------------------------------------------------------
@@ -70,8 +73,12 @@ class Security extends BaseConfig
      * --------------------------------------------------------------------------
      *
      * Regenerate CSRF Token on every submission.
+     *
+     * false disengaja: game mengirim banyak request AJAX beruntun; token yang
+     * berubah setiap request membuat request paralel gagal. Token tetap acak
+     * per-request lewat $tokenRandomize sehingga tetap aman terhadap BREACH.
      */
-    public bool $regenerate = true;
+    public bool $regenerate = false;
 
     /**
      * --------------------------------------------------------------------------
@@ -80,7 +87,11 @@ class Security extends BaseConfig
      *
      * Redirect to previous page with error on failure.
      *
+     * false: kegagalan CSRF menghasilkan 403, bukan redirect. Sebagian besar
+     * request yang dilindungi adalah AJAX dari mesin permainan; redirect akan
+     * terbaca sebagai respons HTML yang tidak dapat diproses klien.
+     *
      * @see https://codeigniter4.github.io/userguide/libraries/security.html#redirection-on-failure
      */
-    public bool $redirect = (ENVIRONMENT === 'production');
+    public bool $redirect = false;
 }
