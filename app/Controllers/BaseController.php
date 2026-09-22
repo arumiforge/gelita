@@ -20,7 +20,7 @@ abstract class BaseController extends Controller
     /**
      * @var list<string>
      */
-    protected $helpers = ['url', 'form', 'text', 'gelita', 'content'];
+    protected $helpers = ['url', 'form', 'text', 'gelita', 'content', 'ui'];
 
     protected string $locale = 'id';
 

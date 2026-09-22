@@ -23,5 +23,5 @@ class Autoload extends AutoloadConfig
      *
      * @var list<string>
      */
-    public $helpers = ['url', 'gelita', 'content'];
+    public $helpers = ['url', 'gelita', 'content', 'ui'];
 }

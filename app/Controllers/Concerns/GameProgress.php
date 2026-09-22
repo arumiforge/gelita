@@ -91,6 +91,7 @@ trait GameProgress
                 'id'          => $node->id,
                 'sequence'    => $node->sequence,
                 'engine_type' => (string) $node->engine_type,
+                'variant'     => (string) ($node->variant_code ?? ''),
                 'title'       => $node->text('title', $locale),
                 'description' => $node->text('description', $locale),
                 'status'      => $completed ? 'completed' : ($open ? 'open' : 'locked'),
@@ -101,6 +102,54 @@ trait GameProgress
             ];
 
             $previousDone = $completed;
+        }
+
+        return $out;
+    }
+
+    /**
+     * Status seluruh node per wilayah untuk rincian lentera di HUD.
+     *
+     * Aturan buka/kunci sama dengan levelOverview() + nodeOverview(), tetapi
+     * attempt selesai dibaca SEKALI untuk semua wilayah karena HUD ada di
+     * setiap layar permainan.
+     *
+     * @return list<array{code: string, name: string, nodes: list<array{sequence: int, title: string, status: string}>}>
+     */
+    protected function lanternMap(GameSession $session): array
+    {
+        $done     = model(ChallengeAttemptModel::class)->completedForSession($session->id);
+        $free     = $this->unlockMode($session) === 'free';
+        $progress = model(SessionProgressModel::class)->ensure($session->id);
+        $unlocked = (int) $progress['unlocked_level_sequence'];
+        $locale   = $session->resolvedLocale();
+        $content  = service('contentRepository');
+
+        $out = [];
+
+        foreach ($content->levels() as $level) {
+            $levelOpen    = $free || $level->sequence <= $unlocked;
+            $previousDone = true;
+            $nodes        = [];
+
+            foreach ($content->nodesForLevel($level->id) as $node) {
+                $completed = isset($done[$node->id]);
+                $open      = $levelOpen && ($free || $completed || $previousDone);
+
+                $nodes[] = [
+                    'sequence' => $node->sequence,
+                    'title'    => $node->text('title', $locale),
+                    'status'   => $completed ? 'completed' : ($open ? 'open' : 'locked'),
+                ];
+
+                $previousDone = $completed;
+            }
+
+            $out[] = [
+                'code'  => (string) $level->code,
+                'name'  => $level->text('name', $locale),
+                'nodes' => $nodes,
+            ];
         }
 
         return $out;

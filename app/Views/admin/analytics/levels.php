@@ -1,35 +1,48 @@
+<?php
+/**
+ * Analitik level — `/admin/analitik/level` → AnalyticsController::levels
+ *
+ * @var array<int, array<string, mixed>> $rows    AnalyticsService::levelBreakdown()
+ * @var array<string, mixed>             $filters
+ */
+?>
 <?= $this->extend('layouts/admin') ?>
 
-<?= $this->section('title') ?><?= esc($pageTitle) ?> · Panel GELITA<?= $this->endSection() ?>
+<?= $this->section('charts') ?>1<?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<h1><?= esc($pageTitle) ?></h1>
+<?= component('partials/admin-head', [
+    'title'   => 'Analitik wilayah',
+    'eyebrow' => 'Analitik',
+    'lead'    => 'Rata-rata dari percobaan yang selesai pada setiap wilayah.',
+]) ?>
 <?= $this->include('partials/flash') ?>
+<?= component('admin-filter-bar', ['filters' => $filters]) ?>
 
-<form method="get" class="filter-bar">
-  <label for="study_id">Studi</label>
-  <input type="number" id="study_id" name="study_id" value="<?= esc($filters['study_id'] ?? '') ?>">
-  <label for="phase_code">Fase</label>
-  <input type="text" id="phase_code" name="phase_code" value="<?= esc($filters['phase_code'] ?? '') ?>">
-  <label for="class_level">Kelas</label>
-  <input type="text" id="class_level" name="class_level" value="<?= esc($filters['class_level'] ?? '') ?>">
-  <label for="date_from">Dari</label>
-  <input type="date" id="date_from" name="date_from" value="<?= esc($filters['date_from'] ?? '') ?>">
-  <label for="date_to">Sampai</label>
-  <input type="date" id="date_to" name="date_to" value="<?= esc($filters['date_to'] ?? '') ?>">
-  <button class="btn btn-primary" type="submit">Terapkan</button>
-</form>
-
-<?= $this->include('components/admin-table', [
-    'columns' => [
-        'name'               => 'Wilayah',
-        'avg_score'          => 'Rata-rata skor',
-        'avg_first_pass'     => 'Tepat sejak awal',
-        'completed_attempts' => 'Percobaan selesai',
-        'avg_duration_ms'    => 'Rata-rata durasi (ms)',
-    ],
-    'rows' => $rows,
+<?= component('admin-chart', [
+    'id'       => 'chart-levels',
+    'title'    => 'Rata-rata skor & tepat sejak awal per wilayah',
+    'type'     => 'bar',
+    'endpoint' => 'api/admin/levels',
+    'size'     => 'lg',
+    'fallback' => component('partials/bar-list', ['max' => 100, 'rows' => array_values(array_map(
+        static fn (array $l): array => ['label' => $l['name'], 'value' => $l['avg_score'], 'display' => fmt_num($l['avg_score'], 1, 'id') . ' · ' . fmt_pct($l['avg_first_pass'], false, 0)],
+        $rows,
+    ))]),
 ]) ?>
 
-<div id="chart-levels" class="admin-chart" data-endpoint="<?= base_url('api/admin/levels') ?>"></div>
+<?= component('admin-table', [
+    'rows'         => array_values($rows),
+    'caption'      => 'Ringkasan per wilayah',
+    'emptyMessage' => 'Belum ada wilayah aktif.',
+    'rowClass'     => static fn (array $r): string => (int) $r['completed_attempts'] === 0 ? 'is-muted' : '',
+    'columns'      => [
+        'name'               => 'Wilayah',
+        'completed_attempts' => ['label' => 'Percobaan selesai', 'format' => 'num'],
+        'avg_score'          => ['label' => 'Rata-rata skor', 'format' => 'num', 'decimals' => 1],
+        'avg_first_pass'     => ['label' => 'Tepat sejak awal', 'format' => 'pct'],
+        'avg_duration_ms'    => ['label' => 'Rata-rata durasi', 'format' => 'ms'],
+        'level_id'           => ['label' => '', 'render' => static fn (array $r): string => '<a class="btn btn-quiet btn-sm" href="' . base_url('admin/analitik/node?level_id=' . $r['level_id']) . '">Tantangan</a>'],
+    ],
+]) ?>
 <?= $this->endSection() ?>

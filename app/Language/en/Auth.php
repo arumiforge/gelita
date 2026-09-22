@@ -32,4 +32,12 @@ return [
     'passwordChanged'  => 'Your new password is saved. Remember it well.',
     'currentPassword'  => 'Current password',
     'changeTitle'      => 'Change password',
+    'newPassword'      => 'New password',
+    'currentHelp'      => 'Use the temporary password from your teacher, or your current password.',
+    'saveNew'          => 'Save new password',
+    'rulesTitle'       => 'Rules for a strong password',
+    'matchOk'          => 'The passwords match.',
+    'usernameAvailable'   => 'This username is free to use.',
+    'usernameUnavailable' => 'Already taken — try adding a number.',
+    'usernameFormat'      => 'Use 3–30 lowercase letters, numbers, dots, or underscores.',
 ];

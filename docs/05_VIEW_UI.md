@@ -856,7 +856,7 @@ Narasi audio (dialog Jaka dan Mbah Kedu) memakai elemen `<audio>` bawaan, bukan 
 
 Tidak ada CDN. Semua berkas vendor ada di repositori dan dimuat dari domain sendiri.
 
-> **Status:** `public/assets/vendor/` masih kosong — kedua berkas di atas ditambahkan pada tahap ini, belum ada di repo. Lihat [02_PROJECT_FOUNDATION.md → *Status `public/assets/vendor/`*](02_PROJECT_FOUNDATION.md).
+> **Status:** sudah ada di repo sejak tahap ini — ECharts 6.1.0 dan Howler.js 2.2.4, lengkap dengan lisensinya. `layouts/admin.php` memuat ECharts hanya bila halaman mengisi section `charts`; `layouts/game.php` memuat Howler. Lihat [02_PROJECT_FOUNDATION.md → *Status `public/assets/vendor/`*](02_PROJECT_FOUNDATION.md) dan [`public/assets/vendor/README.md`](../public/assets/vendor/README.md).
 
 ---
 
@@ -874,6 +874,55 @@ Tidak ada CDN. Semua berkas vendor ada di repositori dan dimuat dari domain send
 10. Aset vendor di-host sendiri; tidak ada permintaan ke domain pihak ketiga dari halaman yang diakses anak.
 11. Kolom kata sandi tidak pernah diisi ulang oleh server, dan `password_hash` tidak pernah dikirim ke view mana pun.
 12. Nama pengguna siswa tidak tampil di export anonim maupun di layar publik (papan skor, dsb.); di HUD hanya terlihat oleh siswa itu sendiri.
+
+---
+
+## Catatan Implementasi Tahap 5
+
+Keputusan dan temuan selama tahap ini, supaya tahap 6–7 tidak mengulang penelusurannya.
+
+### Merender komponen: `component()`, bukan `$this->include()`
+
+* `$this->include($view, $options)` milik CodeIgniter menerima **options** (cache) sebagai argumen kedua, bukan data — array yang dioper ke sana diabaikan diam-diam. Beberapa view tahap 4 memakai pola itu sehingga datanya tidak pernah sampai.
+* Helper `component($name, $data)` (`gelita_helper.php`) merender dengan renderer **terpisah**: komponen hanya melihat `$data` yang dioper. Data halaman tidak ikut, karena variabel halaman bernama sama pernah menimpa variabel opsional komponen (contoh nyata: `$actions` berisi daftar aksi audit menimpa `$actions` HTML tombol di `partials/admin-head` → galat 500).
+* Satu pengecualian yang disengaja: kunci konteks panel `filters` dan `filterOptions` diwariskan bila tidak dioper ulang, agar `admin-filter-bar` dan `admin-chart` di halaman ber-filter selalu memakai filter yang sama.
+* `$this->include()` tetap dipakai untuk bagian yang memang berbagi data halaman tanpa data tambahan (HUD, sidebar, `partials/flash`).
+* `tests/unit/ViewHelperTest.php` mengunci perilaku ini.
+
+### Pola tanpa JavaScript
+
+Semua informasi dasar terbaca dan semua form dapat dikirim tanpa JS; tahap 6 hanya menambah perilaku.
+
+| Kebutuhan | Teknik |
+|---|---|
+| Slide intro, dialog, dan buku Pustaka | anchor + CSS `:target`; slide aktif disembunyikan yang lain lewat `:has(.slide:target)` |
+| Konfirmasi keluar tantangan, hapus butir, nonaktifkan akun, aktifkan rilis | `<details class="confirm">`; di dalam sel tabel memakai `.confirm-inline` agar tidak terpotong `overflow` |
+| Panduan bentuk JSON per `interaction_type`, kolom sekolah hanya untuk guru, pembicara dialog | CSS `:has()` pada pilihan `<select>`/radio |
+| Tombol kirim persetujuan redup sampai semua wajib tercentang | `form:invalid` |
+| Transkrip audio, detail lentera, metadata audit | `<details>` |
+| Toast | memudar otomatis lewat animasi CSS |
+| Chart admin | `admin-chart` berisi visual cadangan dari server (bar-list, heatmap, scatter) yang diganti ECharts pada tahap 6 |
+
+### Penyesuaian controller yang dibutuhkan view
+
+View tahap ini membutuhkan data yang belum dikirim controller tahap 4. Perubahannya menambah data, bukan mengubah perilaku route:
+
+* **Game:** HUD memakai `Participant::toSafeArray()` + peta lentera (`GameProgress::lanternMap()`); `nodeOverview` menyertakan `variant`; registrasi mengirim daftar nama sekolah (datalist) dan sapaan selamat datang lewat flash `welcome`; ganti sandi mengirim `username`; refleksi mengirim ringkasan perjalanan (`journey`).
+* **Admin:** `BaseAdminController::panel()` menambah `activeStudy` dan `filterOptions` (closure, dievaluasi hanya bila dirender). Controller peserta, sesi, dashboard, analitik, masukan, dan staf mengirim baris yang sudah aman untuk view — `password_hash` tidak pernah ikut (`toSafeArray()`).
+* **Konten:** form node kini menyimpan `indicator_id`, `scoring_profile_id`, dan field konfigurasi terpandu `cfg[...]` yang menimpa kunci yang sama di JSON mentah tanpa menghapus kunci lain. `node()` mengelompokkan opsi per butir (`$options[$itemId]`); sebelumnya daftar datar sehingga editor opsi selalu kosong dan menyimpan ulang ditolak "tepat satu opsi benar".
+* **Perbaikan bug yang ditemukan saat merender halaman nyata:** `StudyController::releases()` mengurutkan `game_releases` menurut `created_at` yang tidak ada di tabel itu (500); `saveLibrary()` menulis `NULL` ke `library_pages.body_en` yang `NOT NULL` (500) — kini `''` dan permainan jatuh ke teks Indonesia; reset sandi staf dikirim dengan `Cache-Control: no-store` seperti reset sandi siswa.
+* Form teks bacaan dan dialog tahap 4 tidak mengirim `title_en`, `reference_source`, atau judul slide sehingga nilai itu terhapus setiap kali disimpan; form baru mengirim semua kolom yang dikelola controller.
+
+### Hal yang perlu diputuskan pada tahap 6
+
+* **Arena Cari objek:** payload `challenge-data` saat ini memuat objek jebakan beserta `prompt`-nya, sehingga siswa yang membuka sumber halaman dapat membedakan jebakan. View sengaja tidak merender prompt maupun penanda jebakan; label objek netral. Pemisahan payload (jebakan tanpa prompt, atau petunjuk pertama dikirim lewat API) perlu diputuskan bersama mesin arena.
+* **Tautan pin Peta Kedu:** wilayah berstatus `open` menuju `/dialog/{code}`, selebihnya langsung ke `/wilayah/{code}`. Bila tahap 6 mencatat "dialog sudah dilihat", aturan ini sebaiknya membaca catatan itu.
+* **Registrasi:** kolom nama tetap "Nama panggilan" (bukan nama lengkap) karena teks persetujuan menyatakan nama lengkap tidak direkam.
+* **Kolom sandi** sengaja tanpa atribut `minlength`: sandi lemah harus sampai ke server agar metrik `pw_weak_submit_count` tercatat.
+
+### Aset
+
+Selama berkas gambar belum diunggah, baris slot di `media_assets` berstatus nonaktif. `media_key_src()`/`media_first()` lalu mengembalikan `null`/string kosong dan view memakai penggantinya sendiri (gradien latar, monogram tokoh, logo teks) — tidak ada permintaan gambar yang berakhir 404. Halaman Media juga tidak meminta pratinjau untuk slot nonaktif.
 
 ---
 

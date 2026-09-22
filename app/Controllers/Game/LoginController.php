@@ -67,6 +67,8 @@ class LoginController extends BaseController
         return view('game/change-password', [
             'locale'         => $this->locale,
             'mustChange'     => $participant !== null && $participant->mustChangePassword(),
+            // hanya nama pengguna: dipakai pemeriksaan "sandi memuat nama pengguna"
+            'username'       => $participant?->username,
             'passwordPolicy' => (new PasswordPolicy())->toClient(),
             'errors'         => session('errors') ?? [],
         ]);

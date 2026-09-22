@@ -4,23 +4,22 @@
 
 ## Status pengembangan
 
-Proyek berada pada **tahap 4 dari 8: Route, Controller, Autentikasi, dan Otorisasi**.
+Proyek berada pada **tahap 5 dari 8: View, UI, dan CSS**.
 
-Tahap ini membuka seluruh URL aplikasi: satu berkas route (auto-route mati), 9 controller game, 12 controller admin, 8 controller API, plus tiga kelas dasar bersama (`Game\BaseGameController`, `Admin\BaseAdminController`, `Api\BaseApiController`) dan dua trait (`Concerns\GameProgress` untuk status buka/kunci level & node, `Concerns\StaffScope` untuk cakupan sekolah). Tujuh filter tahap 2 kini dipakai langsung dari route.
+Tahap ini memberi wajah pada seluruh URL yang dibuka tahap 4, sesuai [`docs/05_VIEW_UI.md`](docs/05_VIEW_UI.md):
 
-Yang berlaku sejak tahap ini:
+- **3 layout, 17 komponen bersama, 17 halaman game + 5 arena tantangan, dan 33 view admin** merender data sungguhan dari database. Alur siswa dapat ditelusuri dengan klik dari halaman sambutan, persetujuan, registrasi, intro, peta, dialog, kartu misi, kelima arena, sampai profil, pustaka, dan ganti sandi.
+- **Enam berkas CSS** (`tokens`, `base`, `layout`, `components`, `game`, `admin`) tanpa framework CSS. Layar tantangan muat tanpa gulir pada 1366×768; seluruh halaman tetap terpakai pada tablet dan ponsel 390 px tanpa gulir horizontal.
+- **Tanpa JavaScript tetap terbaca**: slide memakai `:target`, konfirmasi memakai `<details>`, panduan form memakai `:has()`, dan setiap chart admin punya visual cadangan dari server. Perilaku (AJAX, mesin arena, ECharts, Howler) menyusul pada tahap 6.
+- **Aset di-host sendiri**: ECharts 6.1.0 dan Howler.js 2.2.4 di `public/assets/vendor/`, font Cinzel/Plus Jakarta Sans/IBM Plex Mono di `public/assets/fonts/` — tidak ada permintaan ke domain pihak ketiga. Selama gambar belum diunggah, view memakai pengganti (gradien, monogram) alih-alih gambar rusak.
+- **`component()`** merender komponen dengan data yang dioper saja; lihat [*Catatan Implementasi Tahap 5*](docs/05_VIEW_UI.md#catatan-implementasi-tahap-5) untuk alasannya, penyesuaian controller yang dibutuhkan view, dan bug tahap 4 yang ikut diperbaiki.
 
-- **Siswa mendaftar dengan nama pengguna + kata sandi kuat.** Halaman `/daftar` menolak sandi yang belum memenuhi kelima syarat, dan dua metrik proses — jumlah syarat terpenuhi pada percobaan pertama serta jumlah penolakan sandi lemah — ikut disimpan sebagai data literasi keamanan digital. Isi kata sandi tidak pernah masuk `old()`, flash, log, atau event.
-- **Otorisasi berlapis tiga**: filter route (`staffAuth`, lalu `staffRole:admin`), `schoolScope()` di controller, dan `school_id` yang wajib diterima Service. Guru yang membuka `/admin/konten` mendapat `404`, bukan `403`, agar struktur panel tidak terpetakan.
-- **Bentuk respons API seragam** untuk sukses dan gagal, dengan `request_id` yang sama di respons dan di `writable/logs/`. Rate limit per sesi (120/menit) berlaku untuk `/api/events` dan `/api/attempts/*`; `/api/auth/username-available` dibatasi 20/menit per hash IP.
-- **Redirect dari input pengguna** (`redirect_to`) melewati `safe_internal_url()`: skema, URL protocol-relative, backslash, dan karakter baris baru ditolak.
+Tetap berlaku dari tahap 4: registrasi dengan kata sandi kuat beserta dua metrik literasi keamanan digitalnya, otorisasi berlapis tiga (guru mendapat `404` untuk halaman khusus admin), bentuk respons API seragam, dan `safe_internal_url()` untuk setiap `redirect_to`.
 
 Dua catatan ruang lingkup:
 
-- **View masih placeholder.** Seluruh halaman sudah punya berkas view di jalur yang ditetapkan [`docs/05_VIEW_UI.md`](docs/05_VIEW_UI.md) beserta form yang berfungsi, tetapi tampilannya dikerjakan tahap 5 dan mesin arena tantangan pada tahap 6. Payload soal sudah ditanam sebagai `<script type="application/json" id="challenge-data">`.
+- **Tombol Periksa di arena belum berfungsi.** Markup, gaya, dan payload `<script type="application/json" id="challenge-data">` sudah lengkap; mesin arena dikerjakan tahap 6.
 - **`ExportController` belum dapat membangun berkas.** `App\Services\ExportService` baru dipasang pada tahap 7. Sampai kelas itu ada, permintaan ekspor tetap tercatat di `data_exports` dan `audit_logs`, lalu langsung ditandai `failed` dengan alasan yang jelas — bukan dibiarkan menggantung di status `running`. `GovernanceController::runRetention()` sudah menjalankan dua pekerjaan yang penopangnya ada (menandai sesi menganggur `paused`, membuang berkas ekspor kedaluwarsa); pembersihan per `retention_days` menyusul bersama `RetentionService`.
-
-Pratinjau layout tahap 2 (`App\Controllers\DevPreview` beserta route `dev/*` dan dua view-nya) dihapus karena tugasnya — menampilkan layout sebelum controller tahap 4 ada — sudah selesai.
 
 ### Perbaikan pasca-tahap 3
 
@@ -93,7 +92,7 @@ Tiga migration terakhir perlu diperhatikan saat menelusuri riwayat skema `challe
 
 ## Aset vendor
 
-Library frontend di-host sendiri di [`public/assets/vendor/`](public/assets/vendor/); tidak ada CDN. Dua berkas yang diperlukan — `echarts.min.js` (ECharts 6.x) dan `howler.min.js` (Howler.js 2.2.x) — ditambahkan pada tahap view/JavaScript. Folder ini sempat terabaikan Git karena pola `vendor/` yang terlalu luas; pola tersebut sudah dipersempit.
+Library frontend di-host sendiri di [`public/assets/vendor/`](public/assets/vendor/); tidak ada CDN. Isinya `echarts.min.js` (ECharts 6.1.0) dan `howler.min.js` (Howler.js 2.2.4) dari paket rilis resmi, beserta lisensinya; versi, checksum, dan cara memperbaruinya ada di [`public/assets/vendor/README.md`](public/assets/vendor/README.md). Font lokal ada di `public/assets/fonts/`. Folder vendor sempat terabaikan Git karena pola `vendor/` yang terlalu luas; pola tersebut sudah dipersempit.
 
 ## Sesi dan CSRF
 
@@ -110,6 +109,8 @@ vendor/bin/phpunit --no-coverage
 ```
 
 Suite memakai grup database `tests` (SQLite3 in-memory) dan hanya menjalankan migration bernamespace `Tests\Support`, bukan migration aplikasi. Sesi pada pengujian di-mock dengan `ArrayHandler` oleh `CIUnitTestCase`, jadi konfigurasi sesi produksi tidak ikut dijalankan.
+
+`ViewHelperTest` mengunci helper tampilan tahap 5: ikon SVG dekoratif, format angka/persen/tanggal, dan `component()` yang tidak mewarisi data halaman selain konteks filter.
 
 `RouteWiringTest` memeriksa seluruh route tahap 4 tanpa database: auto-route tetap mati, setiap handler menunjuk kelas dan method publik yang benar-benar ada, dan setiap nama view yang disebut controller punya berkasnya. Karena tabel aplikasi tidak dibuat pada suite ini, **alur HTTP ujung-ke-ujung belum tercakup pengujian otomatis**; jalankan penelusuran manual di atas database MySQL/MariaDB sungguhan setelah `php spark migrate` dan `php spark db:seed DatabaseSeeder`.
 

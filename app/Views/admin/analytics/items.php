@@ -1,26 +1,31 @@
+<?php
+/**
+ * Analisis butir — `/admin/analitik/butir` → AnalyticsController::items
+ *
+ * @var list<array<string, mixed>> $rows
+ * @var array<string, mixed>       $filters
+ */
+?>
 <?= $this->extend('layouts/admin') ?>
 
-<?= $this->section('title') ?><?= esc($pageTitle) ?> · Panel GELITA<?= $this->endSection() ?>
-
 <?= $this->section('content') ?>
-<h1><?= esc($pageTitle) ?></h1>
+<?= component('partials/admin-head', [
+    'title'   => 'Analisis butir soal',
+    'eyebrow' => 'Analitik',
+    'lead'    => 'Tingkat kesukaran dan daya beda tiap butir dari jawaban pertama siswa.',
+]) ?>
 <?= $this->include('partials/flash') ?>
+<?= component('admin-filter-bar', ['filters' => $filters]) ?>
 
-<form method="get" class="filter-bar">
-  <label for="study_id">Studi</label>
-  <input type="number" id="study_id" name="study_id" value="<?= esc($filters['study_id'] ?? '') ?>">
-  <label for="phase_code">Fase</label>
-  <input type="text" id="phase_code" name="phase_code" value="<?= esc($filters['phase_code'] ?? '') ?>">
-  <label for="class_level">Kelas</label>
-  <input type="text" id="class_level" name="class_level" value="<?= esc($filters['class_level'] ?? '') ?>">
-  <label for="date_from">Dari</label>
-  <input type="date" id="date_from" name="date_from" value="<?= esc($filters['date_from'] ?? '') ?>">
-  <label for="date_to">Sampai</label>
-  <input type="date" id="date_to" name="date_to" value="<?= esc($filters['date_to'] ?? '') ?>">
-  <button class="btn btn-primary" type="submit">Terapkan</button>
-</form>
+<aside class="explain" aria-labelledby="explain-title">
+  <h2 id="explain-title"><?= icon('info') ?> Cara membaca p dan D</h2>
+  <p><b>Kesukaran p</b> = proporsi siswa yang menjawab benar pada percobaan pertama (0–1).
+    p &lt; 0,30 <b>sukar</b> · 0,30–0,70 <b>sedang</b> · p &gt; 0,70 <b>mudah</b>. Butir yang baik untuk tes umumnya berada di rentang sedang.</p>
+  <p><b>Daya beda D</b> = ketepatan kelompok 27% teratas dikurangi 27% terbawah (menurut ketepatan keseluruhan).
+    D &lt; 0 <b>buruk</b> (siswa lemah justru lebih sering benar — periksa kunci) · 0–0,19 <b>lemah</b> · 0,20–0,39 <b>cukup</b> · ≥ 0,40 <b>baik</b>.
+    D baru dihitung bila ada sedikitnya 4 peserta.</p>
+  <p>Baris merah: benar &lt; 50%. Baris hijau: benar &gt; 85%.</p>
+</aside>
 
-<pre class="json-block"><?= esc(json_encode($rows, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)) ?></pre>
-<div id="chart-items" class="admin-chart" data-endpoint="<?= base_url('api/admin/items') ?>"></div>
-<?= $this->include('partials/stage-note') ?>
+<?= component('partials/item-analysis-table', ['rows' => $rows, 'showLocation' => true]) ?>
 <?= $this->endSection() ?>
