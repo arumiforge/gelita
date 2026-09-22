@@ -91,6 +91,54 @@ if (! function_exists('seeded_shuffle')) {
     }
 }
 
+if (! function_exists('apply_research_filters')) {
+    /**
+     * Menerapkan filter penelitian baku (03_MODEL_ENTITY.md) pada builder yang sudah
+     * men-join game_sessions, participants, research_phases, dan challenge_nodes.
+     *
+     * Filter yang tabelnya tidak ikut di-join disebutkan di $skip agar dilewati.
+     *
+     * @param array<string, mixed> $filters
+     * @param list<string>         $skip
+     */
+    function apply_research_filters(
+        CodeIgniter\Database\BaseBuilder $builder,
+        array $filters,
+        array $skip = [],
+    ): CodeIgniter\Database\BaseBuilder {
+        $map = [
+            'study_id'       => 'game_sessions.study_id',
+            'participant_id' => 'game_sessions.participant_id',
+            'phase_code'     => 'research_phases.code',
+            'level_id'      => 'challenge_nodes.level_id',
+            'node_id'       => 'challenge_nodes.id',
+            'school_id'     => 'participants.school_id',
+            'class_level'   => 'participants.class_level',
+            'province_code' => 'participants.province_code',
+            'locale'        => 'game_sessions.locale',
+        ];
+
+        foreach ($map as $key => $column) {
+            if (in_array($key, $skip, true)) {
+                continue;
+            }
+
+            if (isset($filters[$key]) && $filters[$key] !== '' && $filters[$key] !== null) {
+                $builder->where($column, $filters[$key]);
+            }
+        }
+
+        if (! in_array('date_from', $skip, true) && ! empty($filters['date_from'])) {
+            $builder->where('game_sessions.started_at >=', $filters['date_from'] . ' 00:00:00');
+        }
+        if (! in_array('date_to', $skip, true) && ! empty($filters['date_to'])) {
+            $builder->where('game_sessions.started_at <=', $filters['date_to'] . ' 23:59:59');
+        }
+
+        return $builder;
+    }
+}
+
 if (! function_exists('is_api_path')) {
     /** Path relatif request (tanpa garis miring depan) termasuk area /api? */
     function is_api_path(string $path): bool
