@@ -689,6 +689,41 @@ class PasswordPolicy
 
 JavaScript di halaman registrasi (tahap 6) menjalankan aturan yang sama untuk umpan balik langsung; **keputusan akhir selalu dari server**.
 
+### 3b. Library `HashedIpSessionHandler` — BELUM DIPASANG
+
+`app/Libraries/HashedIpSessionHandler.php` sudah ada, tetapi **sengaja belum dijadikan `session.driver`**. `app/Config/Session.php` memakai `CodeIgniter\Session\Handlers\DatabaseHandler` bawaan. Catatan ini merekam hasil inspeksi kompatibilitasnya agar tidak hilang; enam butir di bawah harus diselesaikan lebih dulu sebelum handler ini diaktifkan.
+
+Bentuk kelas saat ini:
+
+```php
+class HashedIpSessionHandler extends MySQLiHandler
+{
+    public function __construct(SessionConfig $config, string $ipAddress)
+    {
+        helper('gelita');
+
+        parent::__construct($config, (string) hash_ip($ipAddress));
+    }
+}
+```
+
+#### Yang sudah terbukti bekerja
+
+Diuji langsung terhadap MariaDB 10.11: satu siklus `open()` → `read()` → `write()` → `close()` menulis baris `ci_sessions` dengan `ip_address` berisi 64 karakter heksadesimal, dan IP mentah `10.1.2.3` tidak muncul di mana pun. `ci_sessions.ip_address` bertipe `VARCHAR(64)` — persis selebar SHA-256 heksadesimal, jadi tidak perlu perubahan skema. Kolom `id` `VARCHAR(128)` juga cukup untuk awalan `gelita_session:` + ID sesi.
+
+#### Enam perubahan yang diperlukan
+
+| # | Masalah | Bukti | Perubahan yang diperlukan |
+|---|---|---|---|
+| 1 | Kelas mewarisi `MySQLiHandler`, yang mengunci sesi dengan `GET_LOCK`/`RELEASE_LOCK` — fungsi khusus MySQL | Terhadap grup `tests` (SQLite3): `DatabaseException: Unable to prepare statement: no such function: GET_LOCK` | Strategi kunci yang sadar platform: pilih handler basis saat runtime, atau bungkus penghashan IP sebagai dekorator di atas handler yang dipilih `Services::session()` |
+| 2 | `Services::session()` hanya memetakan handler per-platform ketika driver **persis** `DatabaseHandler::class` (`system/Config/Services.php:677`). Driver kustom melewati cabang itu — sekaligus melewati exception "Only MySQLi and Postgre are supported" yang seharusnya memperingatkan | Perbandingan kelas diuji langsung: driver kustom → tidak dipetakan | Override `Services::session()` di `app/Config/Services.php`, atau pertahankan `$driver = DatabaseHandler::class` dan lakukan penghashan IP sebelum nilainya sampai ke handler |
+| 3 | Basis data uji (`Config\Database::$tests`) memakai SQLite3 `:memory:`, yang tidak akan pernah bisa menjalankan handler MySQLi | Sama dengan butir 1 | Sesi harus jatuh ke `ArrayHandler`/`FileHandler` saat `ENVIRONMENT === 'testing'`, atau selesaikan butir 1–2. **Saat ini aman hanya karena `CIUnitTestCase` otomatis menyuntikkan `MockSession` ber-`ArrayHandler`** — begitu ada test yang memakai sesi sungguhan, ini pecah |
+| 4 | `hash_ip()` mengembalikan `null` untuk IP `null`/`''`; `(string) null` menjadi `''` dan itulah yang tersimpan | `hash_ip(null) === NULL`, `hash_ip('') === NULL`, baris tersimpan dengan `ip_address = ''` | Kolomnya `NOT NULL` sehingga `''` diterima, tetapi "tidak ada IP" jadi tidak terbedakan dari hash. Tetapkan penanda eksplisit, atau nyatakan `''` sebagai keputusan sadar |
+| 5 | `Config\Gelita::$ipSalt` bernilai `''` secara bawaan | `config('Gelita')->ipSalt === ''` | Salt kosong membuat hash menjadi SHA-256 tanpa garam — dapat dibalik dengan pencarian menyeluruh ruang IPv4 dalam hitungan detik. Harus gagal cepat (lempar exception) bila salt kosong, sebelum handler boleh dipasang |
+| 6 | `session.matchIP` harus tetap `false` | PK `ci_sessions` hanya `id` (migration `003000`) | CI4 mensyaratkan `ip_address` ikut dalam PK bila `matchIP` aktif. Mengaktifkannya butuh perubahan skema |
+
+Butir 1, 2, dan 3 adalah penghalang pemasangan. Butir 5 adalah prasyarat keamanan. Butir 4 dan 6 adalah keputusan yang perlu dicatat, bukan cacat.
+
 ### 4. Services kustom — `app/Config/Services.php`
 
 ```php
