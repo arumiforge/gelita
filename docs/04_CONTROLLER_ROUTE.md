@@ -301,10 +301,10 @@ $routes->group('api/admin', [
 | POST | `/bahasa` | HomeController::setLocale | — | opsional | — | ganti bahasa | redirect balik |
 | GET | `/intro` | HomeController::intro | — | ya | — | cerita pembuka | HTML |
 | GET | `/peta` | MapController::kedu | — | ya | — | peta 3 wilayah | HTML |
-| GET | `/wilayah/{code}` | MapController::level | level code | ya | — | peta 5 pos | HTML |
-| GET | `/dialog/{code}` | DialogueController::show | level code | ya | — | dialog pembuka wilayah | HTML |
-| GET | `/misi/{code}/{seq}` | ChallengeController::brief | code, 1..5 | ya | — | kartu misi | HTML |
-| GET | `/tantangan/{code}/{seq}` | ChallengeController::play | code, 1..5 | ya | — | layar tantangan | HTML |
+| GET | `/wilayah/{code}` | MapController::level | level code | ya | — | peta 5 pos | HTML; wilayah baru terbuka yang dialognya belum tampil → redirect `/dialog/{code}` |
+| GET | `/dialog/{code}` | DialogueController::show | level code | ya | — | dialog pembuka wilayah; menandai dialog sudah tampil di sesi login | HTML |
+| GET | `/misi/{code}/{seq}` | ChallengeController::brief | code, 1..5 | ya | — | kartu misi | HTML; gerbang dialog sama dengan `/wilayah` |
+| GET | `/tantangan/{code}/{seq}` | ChallengeController::play | code, 1..5 | ya | — | layar tantangan | HTML; gerbang dialog sama dengan `/wilayah`, diperiksa sebelum attempt dibuka |
 | GET | `/hasil/{code}/{seq}` | ChallengeController::result | code, 1..5 | ya | — | riwayat hasil node | HTML |
 | GET | `/selesai/{attemptId}` | ChallengeController::finished | attempt id | ya | — | layar bintang & skor | HTML |
 | GET | `/pustaka/{code}` | LibraryController::show | level code | ya | — | Pustaka Kedu | HTML |

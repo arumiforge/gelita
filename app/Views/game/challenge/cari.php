@@ -3,14 +3,17 @@
  * Engine `cari` — cari objek budaya di dalam adegan.
  *
  * Objek jebakan dirender SAMA PERSIS dengan objek asli: tanpa kelas, atribut,
- * label, atau urutan DOM yang membedakannya — justru itulah yang diuji. Karena
- * itu teks `prompt` objek tidak dirender di sini, label tombol netral
- * ("Objek 3"), dan urutan DOM mengikuti posisi di layar (atas → bawah,
- * kiri → kanan), bukan urutan payload. Posisi memakai persen
- * (left/top/width) agar tetap tepat pada semua ukuran layar.
+ * label, atau urutan DOM yang membedakannya — justru itulah yang diuji.
+ * Payload (ChallengeService::huntPayload) sudah menjamin hal yang sama di
+ * sumber halaman: `objects` hanya berisi token buram per attempt + posisi,
+ * diurutkan menurut posisi di layar; teks petunjuk (`clues`) hanya untuk
+ * target dan tidak terhubung ke objek mana pun. Label tombol netral
+ * ("Objek 3"). Posisi memakai persen (left/top/width) agar tetap tepat pada
+ * semua ukuran layar.
  *
- * Teks petunjuk diisi engines/cari.js (tahap 6); jumlah petunjuk = jumlah
- * butir yang dinilai pada attempt ini.
+ * Jawaban dikirim engines/cari.js (tahap 6) sebagai
+ * `{ item_id: <clues[i].item_id>, answer: { object: <data-object> } }`.
+ * Petunjuk pertama dirender server agar terbaca tanpa JavaScript.
  *
  * @var App\Entities\ChallengeNode    $node
  * @var App\Entities\Level            $level
@@ -18,13 +21,10 @@
  * @var array<string, mixed>          $payload
  * @var string                        $locale
  */
-$items   = $payload['items'] ?? [];
+$objects = $payload['objects'] ?? [];
+$clues   = $payload['clues'] ?? [];
 $scene   = $payload['node']['scene'] ?? null;
-$clues   = max(1, (int) ($attempt->scorable_items ?? 0));
-$objects = array_values(array_filter($items, static fn (array $i): bool => isset($i['config']['x'], $i['config']['y'])));
-
-usort($objects, static fn (array $a, array $b): int => [(float) $a['config']['y'], (float) $a['config']['x']]
-    <=> [(float) $b['config']['y'], (float) $b['config']['x']]);
+$total   = max(1, count($clues));
 ?>
 <?= $this->extend('layouts/game') ?>
 
@@ -39,10 +39,10 @@ usort($objects, static fn (array $a, array $b): int => [(float) $a['config']['y'
     <div class="hunt-clue-body">
       <span class="eyebrow"><?= str_replace(
           ['{0}', '{1}'],
-          ['<b id="clue-index">1</b>', '<span id="clue-total">' . $clues . '</span>'],
+          ['<b id="clue-index">1</b>', '<span id="clue-total">' . $total . '</span>'],
           esc(lang('Game.clueOf', ['{0}', '{1}'])),
       ) ?></span>
-      <p class="clue-text" id="clue-text" aria-live="polite"><?= esc(lang('Game.clueWaiting')) ?></p>
+      <p class="clue-text" id="clue-text" aria-live="polite"><?= esc(($clues[0]['text'] ?? '') !== '' ? $clues[0]['text'] : lang('Game.clueWaiting')) ?></p>
     </div>
   </div>
 
@@ -51,8 +51,8 @@ usort($objects, static fn (array $a, array $b): int => [(float) $a['config']['y'
       <img class="scene-bg" src="<?= esc($scene, 'attr') ?>" alt="<?= esc(lang('Game.huntSceneAlt'), 'attr') ?>">
     <?php endif ?>
     <?php foreach ($objects as $index => $object): ?>
-      <button type="button" class="object" data-item="<?= esc($object['id'], 'attr') ?>"
-              style="left: <?= (float) $object['config']['x'] ?>%; top: <?= (float) $object['config']['y'] ?>%; width: <?= (float) ($object['config']['w'] ?? 12) ?>%"
+      <button type="button" class="object" data-object="<?= esc($object['ref'], 'attr') ?>"
+              style="left: <?= (float) $object['x'] ?>%; top: <?= (float) $object['y'] ?>%; width: <?= (float) $object['w'] ?>%"
               aria-label="<?= esc(lang('Game.objectN', [$index + 1]), 'attr') ?>">
         <?php if (! empty($object['media'])): ?>
           <img src="<?= esc($object['media'], 'attr') ?>" alt="" loading="lazy">
@@ -64,7 +64,7 @@ usort($objects, static fn (array $a, array $b): int => [(float) $a['config']['y'
   <div class="hunt-side">
     <p class="hunt-list-title"><?= esc(lang('Game.huntList')) ?></p>
     <ol class="hunt-list" id="hunt-list">
-      <?php for ($i = 1; $i <= $clues; $i++): ?>
+      <?php for ($i = 1; $i <= $total; $i++): ?>
         <li class="hunt-target<?= $i === 1 ? ' is-current' : '' ?>"><?= esc(lang('Game.huntPending', [$i])) ?></li>
       <?php endfor ?>
     </ol>

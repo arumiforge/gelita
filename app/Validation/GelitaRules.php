@@ -28,12 +28,21 @@ class GelitaRules
     /**
      * Item harus milik attempt yang disebut (ChallengeAttemptModel dibuat tahap 3).
      * Parameter = nama field yang memuat id attempt, mis. item_in_attempt[attempt_id].
+     *
+     * `$itemId` menerima int: body JSON API mengirim angka apa adanya, dan
+     * Validation CodeIgniter memanggil aturan dengan strict_types — tipe
+     * `?string` saja membuat setiap jawaban dari JavaScript berakhir 500.
      */
-    public function item_in_attempt(?string $itemId, string $params, array $data): bool
+    public function item_in_attempt(int|string|null $itemId, string $params, array $data): bool
     {
         $field     = trim($params) === '' ? 'attempt_id' : trim($params);
         $attemptId = (int) ($data[$field] ?? 0);
-        $attempt   = model(ChallengeAttemptModel::class)->find($attemptId);
+
+        if ($attemptId <= 0) {
+            return false;
+        }
+
+        $attempt = model(ChallengeAttemptModel::class)->find($attemptId);
 
         return $attempt && in_array((int) $itemId, $attempt->selectedItemIds(), true);
     }
