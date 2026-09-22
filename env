@@ -1,0 +1,108 @@
+#--------------------------------------------------------------------
+# CONTOH KONFIGURASI ENVIRONMENT — GELITA
+#
+# Salin berkas ini menjadi `.env` di root proyek, lalu sesuaikan nilainya:
+#
+#     cp env .env
+#
+# `.env` TIDAK PERNAH di-commit (lihat .gitignore); berkas ini adalah
+# templat yang dilacak Git. Acuan: docs/02_PROJECT_FOUNDATION.md →
+# Configuration.
+#--------------------------------------------------------------------
+
+#--------------------------------------------------------------------
+# ENVIRONMENT
+# development untuk kerja lokal, production untuk server sekolah.
+#--------------------------------------------------------------------
+CI_ENVIRONMENT = development
+
+#--------------------------------------------------------------------
+# APP
+# app.supportedLocales tidak dapat diisi lewat .env karena bernilai array;
+# nilainya ['id', 'en'] ditetapkan di app/Config/App.php.
+#--------------------------------------------------------------------
+app.baseURL = 'http://localhost:8080/'
+app.forceGlobalSecureRequests = false
+app.appTimezone = 'Asia/Jakarta'
+app.defaultLocale = 'id'
+app.indexPage = ''
+
+#--------------------------------------------------------------------
+# DATABASE
+#--------------------------------------------------------------------
+database.default.hostname = localhost
+database.default.database = gelita
+database.default.username = gelita_app
+database.default.password = ''
+database.default.DBDriver = MySQLi
+database.default.DBPrefix =
+database.default.port = 3306
+database.default.charset = utf8mb4
+database.default.DBCollat = utf8mb4_unicode_ci
+
+#--------------------------------------------------------------------
+# ENCRYPTION — bangkitkan dengan: php spark key:generate
+#--------------------------------------------------------------------
+encryption.key =
+
+#--------------------------------------------------------------------
+# SESSION
+# Satu mekanisme sesi untuk siswa dan staf: session CI4 berbasis database.
+# Siswa: session('participant_id') + session('game_session_id').
+# Staf : session('staff_id') + session('staff_role') + session('staff_school_id').
+# Tidak ada cookie "ingat saya" — komputer kelas dipakai bergantian.
+#
+# Handler penyimpan hash IP (App\Libraries\HashedIpSessionHandler) BELUM
+# dipasang; lihat catatan kompatibilitas di README.md sebelum menggantinya.
+#--------------------------------------------------------------------
+session.driver = 'CodeIgniter\Session\Handlers\DatabaseHandler'
+session.savePath = 'ci_sessions'
+session.cookieName = 'gelita_session'
+session.expiration = 14400
+session.regenerateDestroy = true
+session.matchIP = false
+
+#--------------------------------------------------------------------
+# SECURITY (CSRF)
+# security.regenerate = false penting: game mengirim banyak request AJAX
+# beruntun; token yang berubah tiap request membuat request paralel gagal.
+# Token tetap acak per-request (tokenRandomize = true) sehingga tetap aman
+# terhadap BREACH.
+#--------------------------------------------------------------------
+security.csrfProtection = 'session'
+security.tokenRandomize = true
+security.tokenName = 'gelita_csrf'
+security.headerName = 'X-CSRF-TOKEN'
+security.cookieName = 'gelita_csrf_cookie'
+security.expires = 7200
+security.regenerate = false
+security.redirect = false
+
+#--------------------------------------------------------------------
+# COOKIE
+# cookie.secure = true bila situs dilayani lewat HTTPS.
+#--------------------------------------------------------------------
+cookie.samesite = 'Lax'
+cookie.secure = false
+cookie.httponly = true
+
+#--------------------------------------------------------------------
+# LOGGER — production: 4, development: 9
+#--------------------------------------------------------------------
+logger.threshold = 9
+
+#--------------------------------------------------------------------
+# DEBUG TOOLBAR
+# Jangan simpan isi request (formulir sandi) ke writable/debugbar.
+#--------------------------------------------------------------------
+toolbar.collectVarData = false
+
+#--------------------------------------------------------------------
+# GELITA
+# gelita.ipSalt WAJIB diganti string acak panjang per pemasangan; salt ini
+# yang membuat hash IP tidak dapat dibalik.
+#--------------------------------------------------------------------
+gelita.ipSalt = 'ganti-dengan-string-acak-panjang'
+gelita.exportRetentionDays = 7
+gelita.maxEventsPerBatch = 50
+gelita.assetVersion = '1'

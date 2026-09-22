@@ -4,7 +4,7 @@ namespace Config;
 
 use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Session\Handlers\BaseHandler;
-use CodeIgniter\Session\Handlers\FileHandler;
+use CodeIgniter\Session\Handlers\DatabaseHandler;
 
 class Session extends BaseConfig
 {
@@ -20,9 +20,13 @@ class Session extends BaseConfig
      * - `CodeIgniter\Session\Handlers\MemcachedHandler`
      * - `CodeIgniter\Session\Handlers\RedisHandler`
      *
+     * GELITA memakai DatabaseHandler (tabel `ci_sessions`, migration 003000)
+     * agar sesi tahan restart dan dapat dipakai lintas worker. Services::session()
+     * memetakan DatabaseHandler ke MySQLiHandler sesuai platform koneksi.
+     *
      * @var class-string<BaseHandler>
      */
-    public string $driver = FileHandler::class;
+    public string $driver = DatabaseHandler::class;
 
     /**
      * --------------------------------------------------------------------------
@@ -31,7 +35,7 @@ class Session extends BaseConfig
      *
      * The session cookie name, must contain only [0-9a-z_-] characters
      */
-    public string $cookieName = 'ci_session';
+    public string $cookieName = 'gelita_session';
 
     /**
      * --------------------------------------------------------------------------
@@ -40,8 +44,11 @@ class Session extends BaseConfig
      *
      * The number of SECONDS you want the session to last.
      * Setting to 0 (zero) means expire when the browser is closed.
+     *
+     * 14400 detik (4 jam) menutup satu sesi bermain di kelas tanpa memaksa
+     * siswa login ulang di tengah tantangan.
      */
-    public int $expiration = 7200;
+    public int $expiration = 14400;
 
     /**
      * --------------------------------------------------------------------------
@@ -58,7 +65,7 @@ class Session extends BaseConfig
      *
      * IMPORTANT: You are REQUIRED to set a valid save path!
      */
-    public string $savePath = WRITEPATH . 'session';
+    public string $savePath = 'ci_sessions';
 
     /**
      * --------------------------------------------------------------------------
@@ -69,6 +76,10 @@ class Session extends BaseConfig
      *
      * WARNING: If you're using the database driver, don't forget to update
      *          your session table's PRIMARY KEY when changing this setting.
+     *
+     * Tetap false: lab sekolah sering ber-NAT/DHCP sehingga IP peserta dapat
+     * berubah di tengah sesi. `ci_sessions` juga ber-PK `id` saja (migration
+     * 003000), jadi mengaktifkan ini butuh perubahan skema.
      */
     public bool $matchIP = false;
 
@@ -89,8 +100,11 @@ class Session extends BaseConfig
      * Whether to destroy session data associated with the old session ID
      * when auto-regenerating the session ID. When set to FALSE, the data
      * will be later deleted by the garbage collector.
+     *
+     * true: baris sesi lama langsung dihapus saat ID diregenerasi, sehingga
+     * komputer kelas yang dipakai bergantian tidak meninggalkan sesi yatim.
      */
-    public bool $regenerateDestroy = false;
+    public bool $regenerateDestroy = true;
 
     /**
      * --------------------------------------------------------------------------

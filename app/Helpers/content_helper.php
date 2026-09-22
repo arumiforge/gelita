@@ -48,7 +48,13 @@ if (! function_exists('media_src')) {
 }
 
 if (! function_exists('audio_src')) {
-    /** URL audio; NULL bila approval_status != 'approved' atau aset nonaktif. */
+    /**
+     * URL audio; NULL bila approval_status != 'approved' atau media nonaktif.
+     *
+     * `audio_assets` tidak punya kolom `is_active` (lihat migration 001100);
+     * status tayang aset audio ditentukan `approval_status` miliknya sendiri
+     * dan `is_active` pada `media_assets` induknya.
+     */
     function audio_src(?int $audioAssetId): ?string
     {
         if ($audioAssetId === null || $audioAssetId <= 0) {
@@ -60,7 +66,6 @@ if (! function_exists('audio_src')) {
             ->join('media_assets ma', 'ma.id = aa.media_asset_id')
             ->where('aa.id', $audioAssetId)
             ->where('aa.approval_status', 'approved')
-            ->where('aa.is_active', 1)
             ->where('ma.is_active', 1)
             ->get()
             ->getRow();
