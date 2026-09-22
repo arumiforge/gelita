@@ -4,9 +4,9 @@
 
 ## Status pengembangan
 
-Proyek berada pada **tahap 2 dari 8: Fondasi Proyek**.
+Proyek berada pada **tahap 3 dari 8: Model, Entity, dan Service**.
 
-Tahap ini menyiapkan environment, konfigurasi, struktur aplikasi, helper, filter, layout, localization, dan fondasi keamanan. Tahap berikutnya berfokus pada model dan entity.
+Tahap ini membangun seluruh data layer: 29 Model CodeIgniter, 11 Entity dengan casting dan aksesor dwibahasa, serta 8 Service (pembaca konten ber-cache, konteks permainan per request, sesi & akun siswa, tantangan, skor, event, analitik, dan impor bank soal). Tahap berikutnya berfokus pada controller dan route.
 
 ## Prasyarat lokal
 
@@ -52,6 +52,7 @@ Dokumen spesifikasi dan panduan rinci tersedia di folder [`docs`](docs/):
 
 - [Struktur database](docs/01_DATABASE.md)
 - [Fondasi proyek](docs/02_PROJECT_FOUNDATION.md)
+- [Model, entity, dan service](docs/03_MODEL_ENTITY.md)
 - [Deployment dan operasional](docs/08_DEPLOYMENT.md)
 
 ## Catatan keamanan
