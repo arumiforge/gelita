@@ -1,274 +1,275 @@
+<?php
+/**
+ * Sunting tantangan — `/admin/konten/node/{id}` → ContentController::node
+ *
+ * Form node (judul, instruksi, deskripsi ID/EN berdampingan, indikator,
+ * profil skoring, config dengan field terpandu) + bank butir dengan status
+ * tinjauan berwarna (draf abu, perlu verifikasi kuning, terverifikasi hijau)
+ * + tambah butir.
+ *
+ * @var App\Entities\ChallengeNode                         $node
+ * @var App\Entities\Level|null                            $level
+ * @var list<App\Entities\ChallengeItem>                   $items
+ * @var array<int, list<App\Entities\ChallengeOption>>     $options
+ * @var array<string, array<string, mixed>>                $indicators
+ * @var list<App\Entities\ReadingPassage>                  $passages
+ * @var list<array<string, mixed>>                         $profiles
+ * @var list<string>                                       $interactions
+ * @var bool                                               $locked
+ */
+$engine      = (string) $node->engine_type;
+$verdicts    = $node->verdictOptions();
+$distractors = (array) $node->config('distractors', []);
+$reviewLabel = ['draft' => 'draf', 'needs_verification' => 'perlu verifikasi', 'verified' => 'terverifikasi'];
+$reviewClass = ['draft' => 'is-draft', 'needs_verification' => 'is-needs_verification', 'verified' => 'is-verified'];
+$texts = [
+    'title'       => ['Judul', 1, true],
+    'instruction' => ['Instruksi', 2, false],
+    'description' => ['Deskripsi (kartu misi)', 3, false],
+];
+// Data bersama form butir (admin/content/items), dioper eksplisit ke component()
+$itemFormData = [
+    'node'         => $node,
+    'interactions' => $interactions,
+    'passages'     => $passages,
+    'indicators'   => $indicators,
+];
+?>
 <?= $this->extend('layouts/admin') ?>
 
-<?= $this->section('title') ?><?= esc($pageTitle) ?> · Panel GELITA<?= $this->endSection() ?>
-
 <?= $this->section('content') ?>
-<h1><?= esc($pageTitle) ?></h1>
+<?= component('partials/admin-head', [
+    'title'   => $node->text('title', 'id'),
+    'eyebrow' => ($level?->text('name', 'id') ?? '') . ' · tantangan ' . $node->sequence . ' · ' . $engine,
+    'actions' => '<a class="btn btn-quiet btn-sm" href="' . base_url('admin/analitik/node/' . $node->id) . '">' . icon('chart') . ' Analitik</a>',
+]) ?>
+<?php if ($level !== null): ?>
+  <?= component('partials/content-nav', ['level' => $level, 'active' => 'level']) ?>
+<?php endif ?>
 <?= $this->include('partials/flash') ?>
 
-<form method="post" action="<?= base_url('admin/konten/node/' . $node->id) ?>" class="form">
+<form method="post" action="<?= base_url('admin/konten/node/' . $node->id) ?>" class="form-section">
   <?= csrf_field() ?>
+  <h2>Tantangan</h2>
 
-  <?php foreach (['title' => 'Judul', 'instruction' => 'Instruksi', 'description' => 'Deskripsi'] as $field => $label): ?>
-    <div class="field">
-      <label for="<?= esc($field) ?>_id"><?= esc($label) ?> (ID)</label>
-      <textarea id="<?= esc($field) ?>_id" name="<?= esc($field) ?>_id" rows="2"><?= esc($node->{$field . '_id'} ?? '') ?></textarea>
-    </div>
-    <div class="field">
-      <label for="<?= esc($field) ?>_en"><?= esc($label) ?> (EN)</label>
-      <textarea id="<?= esc($field) ?>_en" name="<?= esc($field) ?>_en" rows="2"><?= esc($node->{$field . '_en'} ?? '') ?></textarea>
+  <?php foreach ($texts as $field => [$label, $rows, $required]): ?>
+    <div class="bilingual">
+      <span class="bilingual-label"><?= esc($label) ?><?php if ($required): ?> <span class="req">*</span><?php endif ?></span>
+      <div class="field">
+        <label for="<?= $field ?>_id"><span class="lang-tag">ID</span> Indonesia</label>
+        <?php if ($rows === 1): ?>
+          <input type="text" id="<?= $field ?>_id" name="<?= $field ?>_id" <?= $required ? 'required' : '' ?> maxlength="150" value="<?= esc($node->{$field . '_id'} ?? '', 'attr') ?>">
+        <?php else: ?>
+          <textarea id="<?= $field ?>_id" name="<?= $field ?>_id" rows="<?= $rows ?>"><?= esc($node->{$field . '_id'} ?? '') ?></textarea>
+        <?php endif ?>
+      </div>
+      <div class="field">
+        <label for="<?= $field ?>_en"><span class="lang-tag">EN</span> English</label>
+        <?php if ($rows === 1): ?>
+          <input type="text" id="<?= $field ?>_en" name="<?= $field ?>_en" <?= $required ? 'required' : '' ?> maxlength="150" value="<?= esc($node->{$field . '_en'} ?? '', 'attr') ?>">
+        <?php else: ?>
+          <textarea id="<?= $field ?>_en" name="<?= $field ?>_en" rows="<?= $rows ?>"><?= esc($node->{$field . '_en'} ?? '') ?></textarea>
+        <?php endif ?>
+      </div>
     </div>
   <?php endforeach ?>
 
-  <div class="field">
-    <label for="engine_type">Engine</label>
-    <select id="engine_type" name="engine_type" <?= $locked ? 'disabled' : '' ?>>
-      <?php foreach (config('Gelita')->engineTypes as $option): ?>
-        <option value="<?= esc($option) ?>" <?= $node->engine_type === $option ? 'selected' : '' ?>><?= esc($option) ?></option>
-      <?php endforeach ?>
-    </select>
-    <?php if ($locked): ?>
-      <input type="hidden" name="engine_type" value="<?= esc($node->engine_type) ?>">
-      <small>Node ini sudah punya percobaan, jadi engine tidak dapat diubah.</small>
-    <?php endif ?>
-  </div>
-
-  <div class="field">
-    <label for="variant_code">Varian</label>
-    <input type="text" id="variant_code" name="variant_code" value="<?= esc($node->variant_code ?? '') ?>">
-  </div>
-
-  <div class="field">
-    <label for="config_json">config_json</label>
-    <textarea id="config_json" name="config_json" rows="6"><?= esc(json_encode($node->config_json ?: [], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)) ?></textarea>
-  </div>
-
-  <label class="check">
-    <input type="checkbox" name="is_active" value="1" <?= $node->is_active ? 'checked' : '' ?>> Aktif
-  </label>
-
-  <button class="btn btn-primary" type="submit">Simpan tantangan</button>
-</form>
-
-<h2>Bank soal (<?= count($items) ?> butir)</h2>
-<?php foreach ($items as $item): ?>
-  <section class="item-editor">
-    <h3><code><?= esc($item->item_key) ?></code> — <?= esc($item->interaction_type) ?></h3>
-
-    <form method="post" action="<?= base_url('admin/konten/item/' . $item->id) ?>" class="form">
-      <?= csrf_field() ?>
-
-      <div class="field">
-        <label for="it<?= esc($item->id) ?>-type">Jenis interaksi</label>
-        <select id="it<?= esc($item->id) ?>-type" name="interaction_type" required>
-          <?php foreach ($interactions as $option): ?>
-            <option value="<?= esc($option) ?>" <?= $item->interaction_type === $option ? 'selected' : '' ?>>
-              <?= esc($option) ?>
-            </option>
-          <?php endforeach ?>
-        </select>
-      </div>
-
-      <div class="field">
-        <label for="it<?= esc($item->id) ?>-prompt">Pertanyaan (ID)</label>
-        <textarea id="it<?= esc($item->id) ?>-prompt" name="prompt_id" rows="2"><?= esc($item->prompt_id ?? '') ?></textarea>
-      </div>
-
-      <div class="field">
-        <label for="it<?= esc($item->id) ?>-prompt-en">Pertanyaan (EN)</label>
-        <textarea id="it<?= esc($item->id) ?>-prompt-en" name="prompt_en" rows="2"><?= esc($item->prompt_en ?? '') ?></textarea>
-      </div>
-
-      <div class="field">
-        <label for="it<?= esc($item->id) ?>-seq">Urutan</label>
-        <input type="number" id="it<?= esc($item->id) ?>-seq" name="sequence" min="0"
-               value="<?= esc($item->sequence) ?>">
-      </div>
-
-      <div class="field">
-        <label for="it<?= esc($item->id) ?>-source">Teks sumber (ID)</label>
-        <textarea id="it<?= esc($item->id) ?>-source" name="source_text_id" rows="2"><?= esc($item->source_text_id ?? '') ?></textarea>
-      </div>
-
-      <div class="field">
-        <label for="it<?= esc($item->id) ?>-source-en">Teks sumber (EN)</label>
-        <textarea id="it<?= esc($item->id) ?>-source-en" name="source_text_en" rows="2"><?= esc($item->source_text_en ?? '') ?></textarea>
-      </div>
-
-      <div class="field">
-        <label for="it<?= esc($item->id) ?>-config">config_json</label>
-        <textarea id="it<?= esc($item->id) ?>-config" name="config_json" rows="3"><?= esc(json_encode($item->config_json ?: [], JSON_UNESCAPED_UNICODE)) ?></textarea>
-      </div>
-
-      <div class="field">
-        <label for="it<?= esc($item->id) ?>-ref">Sumber rujukan</label>
-        <input type="text" id="it<?= esc($item->id) ?>-ref" name="reference_source"
-               value="<?= esc($item->reference_source ?? '') ?>">
-      </div>
-
-      <div class="field">
-        <label for="it<?= esc($item->id) ?>-note">Catatan tinjauan</label>
-        <input type="text" id="it<?= esc($item->id) ?>-note" name="review_note"
-               value="<?= esc($item->review_note ?? '') ?>">
-      </div>
-
-      <div class="field">
-        <label for="it<?= esc($item->id) ?>-key">answer_key_json</label>
-        <textarea id="it<?= esc($item->id) ?>-key" name="answer_key_json" rows="3"><?= esc(json_encode($item->answerKey(), JSON_UNESCAPED_UNICODE)) ?></textarea>
-      </div>
-
-      <div class="field">
-        <label for="it<?= esc($item->id) ?>-indicator">Indikator</label>
-        <select id="it<?= esc($item->id) ?>-indicator" name="indicator_id">
-          <option value="">— tanpa indikator —</option>
-          <?php foreach ($indicators as $code => $indicator): ?>
-            <option value="<?= esc($indicator['id']) ?>"
-                    <?= (int) $item->indicator_id === (int) $indicator['id'] ? 'selected' : '' ?>>
-              <?= esc($code) ?> — <?= esc($indicator['name_id']) ?>
-            </option>
-          <?php endforeach ?>
-        </select>
-      </div>
-
-      <div class="field">
-        <label for="it<?= esc($item->id) ?>-passage">Teks bacaan</label>
-        <select id="it<?= esc($item->id) ?>-passage" name="passage_id">
-          <option value="">— tanpa bacaan —</option>
-          <?php foreach ($passages as $passage): ?>
-            <option value="<?= esc($passage->id) ?>" <?= (int) $item->passage_id === $passage->id ? 'selected' : '' ?>>
-              <?= esc($passage->passage_key) ?>
-            </option>
-          <?php endforeach ?>
-        </select>
-      </div>
-
-      <div class="field">
-        <label for="it<?= esc($item->id) ?>-review">Status tinjauan</label>
-        <select id="it<?= esc($item->id) ?>-review" name="review_status">
-          <?php foreach (['draft', 'needs_verification', 'verified'] as $option): ?>
-            <option value="<?= esc($option) ?>" <?= $item->review_status === $option ? 'selected' : '' ?>><?= esc($option) ?></option>
-          <?php endforeach ?>
-        </select>
-      </div>
-
-      <label class="check"><input type="checkbox" name="scorable" value="1" <?= $item->scorable ? 'checked' : '' ?>> Dinilai</label>
-      <label class="check"><input type="checkbox" name="is_active" value="1" <?= $item->is_active ? 'checked' : '' ?>> Aktif</label>
-
-      <button class="btn btn-primary btn-sm" type="submit">Simpan butir</button>
-    </form>
-
-    <?php if (in_array($item->interaction_type, ['single_choice', 'source_trust'], true)): ?>
-      <form method="post" action="<?= base_url('admin/konten/item/' . $item->id . '/opsi') ?>" class="form">
-        <?= csrf_field() ?>
-        <h4>Opsi jawaban — tepat satu harus benar</h4>
-
-        <?php $optionRows = $options[$item->id] ?? []; ?>
-        <?php foreach (array_values($optionRows) as $index => $option): ?>
-          <fieldset class="option-row">
-            <legend><code><?= esc($option->option_key) ?></code></legend>
-            <input type="hidden" name="options[<?= $index ?>][option_key]" value="<?= esc($option->option_key) ?>">
-            <input type="hidden" name="options[<?= $index ?>][display_order]" value="<?= esc($option->display_order) ?>">
-            <div class="field">
-              <label for="op<?= esc($option->id) ?>-label">Label (ID)</label>
-              <input type="text" id="op<?= esc($option->id) ?>-label" name="options[<?= $index ?>][label_id]"
-                     value="<?= esc($option->label_id ?? '') ?>">
-            </div>
-            <div class="field">
-              <label for="op<?= esc($option->id) ?>-label-en">Label (EN)</label>
-              <input type="text" id="op<?= esc($option->id) ?>-label-en" name="options[<?= $index ?>][label_en]"
-                     value="<?= esc($option->label_en ?? '') ?>" required>
-            </div>
-            <div class="field">
-              <label for="op<?= esc($option->id) ?>-feedback">Umpan balik (ID)</label>
-              <input type="text" id="op<?= esc($option->id) ?>-feedback" name="options[<?= $index ?>][feedback_id]"
-                     value="<?= esc($option->feedback_id ?? '') ?>">
-            </div>
-            <div class="field">
-              <label for="op<?= esc($option->id) ?>-feedback-en">Umpan balik (EN)</label>
-              <input type="text" id="op<?= esc($option->id) ?>-feedback-en" name="options[<?= $index ?>][feedback_en]"
-                     value="<?= esc($option->feedback_en ?? '') ?>">
-            </div>
-            <label class="check">
-              <input type="radio" name="correct_option" value="<?= esc($option->option_key) ?>"
-                     <?= $option->is_correct ? 'checked' : '' ?>>
-              Jawaban benar
-            </label>
-          </fieldset>
+  <div class="form-grid">
+    <div class="field">
+      <label for="engine_type">Jenis engine</label>
+      <select id="engine_type" name="engine_type" <?= $locked ? 'disabled' : '' ?>>
+        <?php foreach (config('Gelita')->engineTypes as $option): ?>
+          <option value="<?= esc($option, 'attr') ?>" <?= $engine === $option ? 'selected' : '' ?>><?= esc($option) ?></option>
         <?php endforeach ?>
+      </select>
+      <?php if ($locked): ?>
+        <input type="hidden" name="engine_type" value="<?= esc($engine, 'attr') ?>">
+        <p class="field-help"><?= icon('lock') ?> Sudah ada percobaan, jadi engine tidak dapat diubah.</p>
+      <?php endif ?>
+    </div>
+    <div class="field">
+      <label for="variant_code">Kode varian</label>
+      <input type="text" id="variant_code" name="variant_code" maxlength="60" value="<?= esc($node->variant_code ?? '', 'attr') ?>">
+    </div>
+    <div class="field">
+      <label for="indicator_id">Indikator</label>
+      <select id="indicator_id" name="indicator_id">
+        <option value="">— tanpa indikator —</option>
+        <?php foreach ($indicators as $code => $indicator): ?>
+          <option value="<?= esc($indicator['id'], 'attr') ?>" <?= (int) $node->indicator_id === (int) $indicator['id'] ? 'selected' : '' ?>><?= esc($code) ?> — <?= esc($indicator['name_id']) ?></option>
+        <?php endforeach ?>
+      </select>
+    </div>
+    <div class="field">
+      <label for="scoring_profile_id">Profil skoring</label>
+      <select id="scoring_profile_id" name="scoring_profile_id">
+        <option value="">— profil aktif studi —</option>
+        <?php foreach ($profiles as $profile): ?>
+          <option value="<?= esc($profile['id'], 'attr') ?>" <?= (int) $node->scoring_profile_id === (int) $profile['id'] ? 'selected' : '' ?>><?= esc($profile['code'] . ' v' . $profile['version']) ?></option>
+        <?php endforeach ?>
+      </select>
+    </div>
+  </div>
 
-        <?php if ($optionRows === []): ?>
-          <p><?= esc(lang('Admin.emptyDefault')) ?></p>
-        <?php endif ?>
+  <fieldset class="form-section">
+    <legend class="panel-subtitle">Pengaturan terpandu</legend>
+    <div class="form-grid">
+      <div class="field">
+        <label for="cfg-items">Butir per ronde</label>
+        <input type="number" id="cfg-items" name="cfg[items_per_round]" min="1" value="<?= esc($node->itemsPerRound(), 'attr') ?>">
+      </div>
+      <input type="hidden" name="cfg[allow_retry]" value="0">
+      <label class="check"><input type="checkbox" name="cfg[allow_retry]" value="1" <?= $node->allowsRetry() ? 'checked' : '' ?>> Boleh memeriksa ulang</label>
 
-        <button class="btn btn-primary btn-sm" type="submit">Simpan opsi</button>
-      </form>
+      <?php if ($engine === 'puzzle'): ?>
+        <div class="field">
+          <label for="cfg-grid">Ukuran kisi puzzle</label>
+          <input type="number" id="cfg-grid" name="cfg[grid]" min="2" max="5" value="<?= esc($node->config('grid') ?? 3, 'attr') ?>">
+        </div>
+      <?php elseif ($engine === 'rumpang'): ?>
+        <input type="hidden" name="cfg[use_word_bank]" value="0">
+        <label class="check"><input type="checkbox" name="cfg[use_word_bank]" value="1" <?= $node->config('use_word_bank') ? 'checked' : '' ?>> Pakai bank kata</label>
+        <div class="field">
+          <label for="cfg-distractor-count">Jumlah pengecoh di bank kata</label>
+          <input type="number" id="cfg-distractor-count" name="cfg[distractor_count]" min="0" value="<?= esc($node->config('distractor_count') ?? 0, 'attr') ?>">
+        </div>
+      <?php elseif ($engine === 'boleh'): ?>
+        <fieldset class="field">
+          <legend class="label">Pilihan penilaian (verdict_options)</legend>
+          <div class="check-row">
+            <?php foreach (['benar' => 'Benar', 'salah' => 'Salah', 'pendapat' => 'Pendapat'] as $value => $label): ?>
+              <label class="check"><input type="checkbox" name="cfg[verdict_options][]" value="<?= $value ?>" <?= in_array($value, $verdicts, true) ? 'checked' : '' ?>> <?= $label ?></label>
+            <?php endforeach ?>
+          </div>
+        </fieldset>
+        <input type="hidden" name="cfg[require_reason]" value="0">
+        <label class="check"><input type="checkbox" name="cfg[require_reason]" value="1" <?= $node->requiresReason() ? 'checked' : '' ?>> Siswa menulis alasan</label>
+      <?php elseif ($engine === 'pilihan'): ?>
+        <input type="hidden" name="cfg[shuffle_options]" value="0">
+        <label class="check"><input type="checkbox" name="cfg[shuffle_options]" value="1" <?= $node->config('shuffle_options') ? 'checked' : '' ?>> Acak urutan opsi</label>
+      <?php elseif ($engine === 'cari'): ?>
+        <input type="hidden" name="cfg[show_decoys]" value="0">
+        <label class="check"><input type="checkbox" name="cfg[show_decoys]" value="1" <?= $node->config('show_decoys') ? 'checked' : '' ?>> Tampilkan objek jebakan</label>
+      <?php endif ?>
+    </div>
+
+    <?php if ($engine === 'rumpang'): ?>
+      <div class="field">
+        <span class="label">Daftar pengecoh bank kata (ID / EN) — baris kosong diabaikan</span>
+        <?php $rows = array_merge(array_values($distractors), array_fill(0, 3, ['id' => '', 'en' => ''])); ?>
+        <?php foreach ($rows as $index => $entry): ?>
+          <?php $entryId = is_array($entry) ? ($entry['id'] ?? $entry['text_id'] ?? '') : (string) $entry; ?>
+          <?php $entryEn = is_array($entry) ? ($entry['en'] ?? $entry['text_en'] ?? '') : ''; ?>
+          <div class="bilingual">
+            <input type="text" name="cfg[distractors][<?= $index ?>][id]" value="<?= esc($entryId, 'attr') ?>" aria-label="Pengecoh <?= $index + 1 ?> (Indonesia)" placeholder="ID">
+            <input type="text" name="cfg[distractors][<?= $index ?>][en]" value="<?= esc($entryEn, 'attr') ?>" aria-label="Pengecoh <?= $index + 1 ?> (English)" placeholder="EN">
+          </div>
+        <?php endforeach ?>
+      </div>
     <?php endif ?>
 
-    <form method="post" action="<?= base_url('admin/konten/item/' . $item->id . '/hapus') ?>"
-          onsubmit="return confirm('Hapus butir ini?')">
-      <?= csrf_field() ?>
-      <button class="btn btn-danger btn-sm" type="submit">Hapus butir</button>
-    </form>
-  </section>
-<?php endforeach ?>
+    <details class="disclosure">
+      <summary>config_json mentah (lanjutan)</summary>
+      <div class="field json-field">
+        <label for="config_json">Kunci lain disimpan apa adanya; field terpandu di atas menimpa kunci yang sama.</label>
+        <textarea id="config_json" name="config_json" rows="8" spellcheck="false"><?= esc(json_encode($node->config_json ?: [], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)) ?></textarea>
+      </div>
+    </details>
+  </fieldset>
 
-<?php if ($items === []): ?>
-  <p><?= esc(lang('Admin.emptyDefault')) ?></p>
-<?php endif ?>
+  <label class="check"><input type="checkbox" name="is_active" value="1" <?= $node->is_active ? 'checked' : '' ?>> Tantangan aktif</label>
 
-<h2>Tambah butir</h2>
-<form method="post" action="<?= base_url('admin/konten/node/' . $node->id . '/item') ?>" class="form">
-  <?= csrf_field() ?>
-
-  <div class="field">
-    <label for="item_key">item_key</label>
-    <input type="text" id="item_key" name="item_key" required maxlength="60">
+  <div class="form-actions">
+    <button class="btn btn-primary" type="submit"><?= icon('check') ?> Simpan tantangan</button>
   </div>
-
-  <div class="field">
-    <label for="interaction_type">Jenis interaksi</label>
-    <select id="interaction_type" name="interaction_type" required>
-      <?php foreach ($interactions as $option): ?>
-        <option value="<?= esc($option) ?>"><?= esc($option) ?></option>
-      <?php endforeach ?>
-    </select>
-  </div>
-
-  <div class="field">
-    <label for="prompt_id">Pertanyaan (ID)</label>
-    <textarea id="prompt_id" name="prompt_id" rows="2"></textarea>
-  </div>
-
-  <div class="field">
-    <label for="prompt_en">Pertanyaan (EN)</label>
-    <textarea id="prompt_en" name="prompt_en" rows="2"></textarea>
-  </div>
-
-  <div class="field">
-    <label for="sequence">Urutan</label>
-    <input type="number" id="sequence" name="sequence" min="0" value="0">
-  </div>
-
-  <div class="field">
-    <label for="answer_key_json">answer_key_json</label>
-    <textarea id="answer_key_json" name="answer_key_json" rows="3"></textarea>
-  </div>
-
-  <div class="field">
-    <label for="passage_id">Teks bacaan</label>
-    <select id="passage_id" name="passage_id">
-      <option value="">— tanpa bacaan —</option>
-      <?php foreach ($passages as $passage): ?>
-        <option value="<?= esc($passage->id) ?>"><?= esc($passage->passage_key) ?></option>
-      <?php endforeach ?>
-    </select>
-  </div>
-
-  <label class="check"><input type="checkbox" name="scorable" value="1" checked> Dinilai</label>
-  <label class="check"><input type="checkbox" name="is_active" value="1" checked> Aktif</label>
-
-  <button class="btn btn-primary" type="submit">Tambah butir</button>
 </form>
 
-<a class="btn btn-quiet" href="<?= base_url('admin/konten') ?>">Kembali</a>
+<section class="stack">
+  <h2 class="panel-title"><?= icon('list') ?> Bank butir <span class="chip num"><?= count($items) ?> butir · perlu <?= $node->itemsPerRound() ?> per ronde</span></h2>
+
+  <?php if ($items === []): ?>
+    <div class="empty-state"><?= icon('info') ?><p>Belum ada butir. Tambahkan butir di bawah atau impor workbook bank soal.</p></div>
+  <?php endif ?>
+
+  <div class="item-list">
+    <?php foreach ($items as $item): ?>
+      <details class="item-card" id="item-<?= esc($item->id, 'attr') ?>">
+        <summary>
+          <code><?= esc($item->item_key) ?></code>
+          <span class="item-prompt"><?= esc($item->text('prompt', 'id') ?: '—') ?></span>
+          <span class="item-meta">
+            <span class="badge is-muted"><?= esc($item->interaction_type) ?></span>
+            <span class="badge <?= $reviewClass[$item->review_status] ?? 'is-muted' ?>"><?= esc($reviewLabel[$item->review_status] ?? $item->review_status) ?></span>
+            <?php if (! $item->scorable): ?><span class="badge is-muted">tidak dinilai</span><?php endif ?>
+            <?php if (! $item->is_active): ?><span class="badge is-inactive">nonaktif</span><?php endif ?>
+          </span>
+        </summary>
+        <div class="item-card-body">
+          <?= component('admin/content/items', ['item' => $item] + $itemFormData) ?>
+
+          <?php if (in_array($item->interaction_type, ['single_choice', 'source_trust'], true)): ?>
+            <?php
+            $optionRows = array_values($options[$item->id] ?? []);
+            $keys       = array_map(static fn ($o): string => (string) $o->option_key, $optionRows);
+            foreach (['a', 'b', 'c', 'd'] as $key) {
+                if (count($optionRows) >= 4) {
+                    break;
+                }
+                if (! in_array($key, $keys, true)) {
+                    $optionRows[] = null;
+                    $keys[]       = $key;
+                }
+            }
+            ?>
+            <form method="post" action="<?= base_url('admin/konten/item/' . $item->id . '/opsi') ?>" class="form-section option-editor">
+              <?= csrf_field() ?>
+              <h3 class="panel-subtitle">Opsi jawaban — tepat satu harus benar</h3>
+              <?php foreach ($optionRows as $index => $option): ?>
+                <?php $key = $option?->option_key ?? $keys[$index]; ?>
+                <fieldset class="option-row">
+                  <legend class="visually-hidden">Opsi <?= esc($key) ?></legend>
+                  <span class="option-key"><?= esc(strtoupper((string) $key)) ?></span>
+                  <div class="stack">
+                    <input type="hidden" name="options[<?= $index ?>][option_key]" value="<?= esc($key, 'attr') ?>">
+                    <input type="hidden" name="options[<?= $index ?>][display_order]" value="<?= esc($option?->display_order ?? $index + 1, 'attr') ?>">
+                    <div class="bilingual">
+                      <input type="text" name="options[<?= $index ?>][label_id]" value="<?= esc($option?->label_id ?? '', 'attr') ?>" aria-label="Label opsi <?= esc($key, 'attr') ?> (Indonesia)" placeholder="Label ID">
+                      <input type="text" name="options[<?= $index ?>][label_en]" value="<?= esc($option?->label_en ?? '', 'attr') ?>" aria-label="Label opsi <?= esc($key, 'attr') ?> (English)" placeholder="Label EN">
+                      <input type="text" name="options[<?= $index ?>][feedback_id]" value="<?= esc($option?->feedback_id ?? '', 'attr') ?>" aria-label="Umpan balik opsi <?= esc($key, 'attr') ?> (Indonesia)" placeholder="Umpan balik ID (opsional)">
+                      <input type="text" name="options[<?= $index ?>][feedback_en]" value="<?= esc($option?->feedback_en ?? '', 'attr') ?>" aria-label="Umpan balik opsi <?= esc($key, 'attr') ?> (English)" placeholder="Umpan balik EN (opsional)">
+                    </div>
+                    <label class="check"><input type="radio" name="correct_option" value="<?= esc($key, 'attr') ?>" <?= $option?->is_correct ? 'checked' : '' ?>> Jawaban benar</label>
+                  </div>
+                </fieldset>
+              <?php endforeach ?>
+              <p class="field-help">Baris tanpa label Indonesia diabaikan. Label English wajib untuk opsi yang disimpan.</p>
+              <div class="form-actions">
+                <button class="btn btn-primary btn-sm" type="submit"><?= icon('check') ?> Simpan opsi</button>
+              </div>
+            </form>
+          <?php endif ?>
+
+          <details class="confirm">
+            <summary class="btn btn-quiet btn-sm"><?= icon('trash') ?> Hapus butir</summary>
+            <div class="confirm-box">
+              <h3>Hapus <?= esc($item->item_key) ?>?</h3>
+              <p>Butir yang sudah pernah dijawab siswa hanya dinonaktifkan agar data penelitian tetap utuh.</p>
+              <form method="post" action="<?= base_url('admin/konten/item/' . $item->id . '/hapus') ?>">
+                <?= csrf_field() ?>
+                <button class="btn btn-danger btn-sm" type="submit">Ya, hapus</button>
+              </form>
+            </div>
+          </details>
+        </div>
+      </details>
+    <?php endforeach ?>
+  </div>
+
+  <details class="item-card" <?= $items === [] ? 'open' : '' ?>>
+    <summary><?= icon('check') ?> <b>Tambah butir</b> <span class="item-meta muted">butir baru berstatus draf</span></summary>
+    <div class="item-card-body">
+      <?= component('admin/content/items', ['item' => null] + $itemFormData) ?>
+    </div>
+  </details>
+</section>
 <?= $this->endSection() ?>

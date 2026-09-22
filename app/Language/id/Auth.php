@@ -32,4 +32,12 @@ return [
     'passwordChanged'  => 'Kata sandi baru tersimpan. Ingat baik-baik, ya.',
     'currentPassword'  => 'Kata sandi sekarang',
     'changeTitle'      => 'Ganti kata sandi',
+    'newPassword'      => 'Kata sandi baru',
+    'currentHelp'      => 'Pakai kata sandi sementara dari gurumu, atau kata sandimu yang sekarang.',
+    'saveNew'          => 'Simpan kata sandi baru',
+    'rulesTitle'       => 'Syarat kata sandi kuat',
+    'matchOk'          => 'Kata sandi sudah sama.',
+    'usernameAvailable'   => 'Nama pengguna bisa dipakai.',
+    'usernameUnavailable' => 'Sudah dipakai, coba tambahkan angka.',
+    'usernameFormat'      => 'Pakai 3–30 huruf kecil, angka, titik, atau garis bawah.',
 ];

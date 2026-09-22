@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use App\Libraries\PasswordPolicy;
 use App\Models\ParticipantModel;
 use App\Models\ResearchStudyModel;
+use App\Models\SchoolModel;
 use CodeIgniter\HTTP\RedirectResponse;
 
 /**
@@ -87,6 +88,7 @@ class RegisterController extends BaseController
             'allowPhase'     => (int) $study['allow_phase_choice'] === 1,
             'phases'         => config('Gelita')->phases,
             'provinces'      => $this->regionDirectory()['provinces'] ?? [],
+            'schools'        => array_column(model(SchoolModel::class)->activeList(), 'name'),
             'passwordPolicy' => (new PasswordPolicy())->toClient(),
             'errors'         => session('errors') ?? [],
         ]);
@@ -162,8 +164,10 @@ class RegisterController extends BaseController
         // 6–7. metrik pendaftaran selesai dipakai; sesi PHP sudah diperbarui service
         session()->remove(['reg_first_criteria', 'reg_weak_count', 'reg_consent']);
 
-        // 8. sambutan; nama pengguna ditampilkan, kata sandi tidak pernah
-        return redirect()->to(site_url('intro'))->with('message', lang('Game.registerWelcome', [
+        // 8. sambutan; nama pengguna ditampilkan, kata sandi tidak pernah.
+        // Kunci flash tersendiri: intro menampilkannya sebagai kartu sambutan,
+        // bukan toast yang memudar.
+        return redirect()->to(site_url('intro'))->with('welcome', lang('Game.registerWelcome', [
             $result['participant']->username,
         ]));
     }

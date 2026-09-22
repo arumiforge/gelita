@@ -1,0 +1,57 @@
+/* ==========================================================================
+   GELITA — tokens.css
+   Custom property: warna, tipografi, spasi, radius, bayangan, ukuran layout.
+   Dimuat pertama oleh ketiga layout; berkas lain hanya memakai token ini.
+   ========================================================================== */
+
+:root {
+  /* Warna — identitas navy gelap + emas */
+  --navy-900: #0B1320; --navy-800: #121C2E; --navy-700: #1B2740;
+  --navy-600: #26355A;
+  --gold-500: #DFC087; --gold-600: #C7A265; --gold-300: #F0DFB8;
+  --parchment: #F4E7CB; --parchment-dark: #E6D3A8;
+  --brown-700: #4A3218; --brown-500: #8A6A32;
+  --ok: #8FD14F; --bad: #D9704A; --warn: #F0A868;
+  --ok-ink: #2F5A12; --bad-ink: #8A2E12; --warn-ink: #7A4310;
+  --ink: #EAF0FA; --ink-dim: rgba(234, 240, 250, .72);
+
+  /* Lapisan & garis */
+  --veil: rgba(11, 19, 32, .55);
+  --veil-strong: rgba(11, 19, 32, .82);
+  --line: rgba(223, 192, 135, .22);
+  --line-strong: rgba(223, 192, 135, .45);
+  --line-ink: rgba(234, 240, 250, .12);
+  --surface: rgba(18, 28, 46, .92);
+  --surface-2: rgba(27, 39, 64, .92);
+  --glow: rgba(223, 192, 135, .35);
+
+  /* Tipografi */
+  --font-display: 'Cinzel', Georgia, 'Times New Roman', serif;
+  --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Consolas, monospace;
+
+  --step--1: clamp(.82rem, .78rem + .2vw, .92rem);
+  --step-0: clamp(.95rem, .9rem + .25vw, 1.05rem);
+  --step-1: clamp(1.15rem, 1.05rem + .5vw, 1.4rem);
+  --step-2: clamp(1.5rem, 1.3rem + 1vw, 2.1rem);
+  --step-3: clamp(2rem, 1.6rem + 2vw, 3rem);
+  --step-4: clamp(2.8rem, 2rem + 5vw, 5.5rem);
+
+  /* Ruang & bentuk */
+  --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
+  --sp-5: 24px; --sp-6: 32px; --sp-7: 48px;
+  --radius: 12px; --radius-lg: 20px; --radius-pill: 999px;
+  --shadow-1: 0 2px 8px rgba(0, 0, 0, .25);
+  --shadow-2: 0 12px 32px rgba(0, 0, 0, .4);
+  --shadow-glow: 0 0 0 1px var(--line-strong), 0 0 24px var(--glow);
+
+  /* Target sentuh minimum */
+  --tap: 44px;
+
+  /* Layout */
+  --hud-h: 72px; --nav-h: 76px; --sidebar-w: 248px;
+  --content-max: 1180px;
+  --arena-max: 900px;
+
+  color-scheme: dark;
+}

@@ -20,10 +20,19 @@ class FeedbackController extends BaseAdminController
 
         $feedback
             ->select('participant_feedback.*, participants.participant_code, participants.display_name, participants.class_level')
-            ->join('participants', 'participants.id = participant_feedback.participant_id');
+            ->select('research_phases.code AS phase_code')
+            ->join('participants', 'participants.id = participant_feedback.participant_id')
+            ->join('game_sessions', 'game_sessions.id = participant_feedback.session_id', 'left')
+            ->join('research_phases', 'research_phases.id = game_sessions.phase_id', 'left');
 
         if ($scope !== null) {
             $feedback->where('participants.school_id', $scope);
+        } elseif (isset($filters['school_id'])) {
+            $feedback->where('participants.school_id', $filters['school_id']);
+        }
+
+        if (isset($filters['phase_code'])) {
+            $feedback->where('research_phases.code', $filters['phase_code']);
         }
 
         if (isset($filters['class_level'])) {

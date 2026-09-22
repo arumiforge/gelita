@@ -170,6 +170,23 @@ class ContentRepository
         );
     }
 
+    /**
+     * Peta asset_key => storage_path seluruh media aktif.
+     *
+     * @return array<string, string>
+     */
+    public function mediaKeyMap(): array
+    {
+        if (isset($this->local['media_keys'])) {
+            return $this->local['media_keys'];
+        }
+
+        return $this->local['media_keys'] = $this->remember(
+            'media_keys',
+            static fn (): array => model(MediaAssetModel::class)->activeKeyMap(),
+        );
+    }
+
     /** Dipanggil setelah konten disunting atau diimpor. */
     public function flush(): void
     {

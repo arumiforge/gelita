@@ -1,48 +1,63 @@
+<?php
+/**
+ * Analitik tantangan — `/admin/analitik/node` → AnalyticsController::nodes
+ *
+ * Heatmap 3×5 kesulitan node + tabel diurutkan dari yang tersulit.
+ * Indeks kesulitan (01_DATABASE.md): 40% ketepatan awal, 20% ulang,
+ * 20% petunjuk, 10% durasi, 10% ditinggalkan.
+ *
+ * @var array<int, array<string, mixed>> $rows        AnalyticsService::nodeDifficulty()
+ * @var list<App\Entities\Level>          $levels
+ * @var array<int, ?string>               $indicators id node → kode indikator
+ * @var array<string, mixed>              $filters
+ */
+$sorted = array_values($rows);
+usort($sorted, static fn (array $a, array $b): int => [$b['attempts'] > 0, $b['difficulty_index']] <=> [$a['attempts'] > 0, $a['difficulty_index']]);
+$levelNames = [];
+foreach ($levels as $level) {
+    $levelNames[$level->id] = $level->text('name', 'id');
+}
+?>
 <?= $this->extend('layouts/admin') ?>
 
-<?= $this->section('title') ?><?= esc($pageTitle) ?> · Panel GELITA<?= $this->endSection() ?>
+<?= $this->section('charts') ?>1<?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<h1><?= esc($pageTitle) ?></h1>
+<?= component('partials/admin-head', [
+    'title'   => 'Analitik tantangan',
+    'eyebrow' => 'Analitik',
+    'lead'    => 'Indeks kesulitan 0–100 (makin tinggi makin sulit) menggabungkan ketepatan awal, pengulangan, petunjuk, durasi, dan tantangan yang ditinggalkan.',
+]) ?>
 <?= $this->include('partials/flash') ?>
+<?= component('admin-filter-bar', ['filters' => $filters, 'only' => ['study_id', 'phase_code', 'school_id', 'class_level', 'province_code', 'date_from', 'locale']]) ?>
 
-<form method="get" class="filter-bar">
-  <label for="study_id">Studi</label>
-  <input type="number" id="study_id" name="study_id" value="<?= esc($filters['study_id'] ?? '') ?>">
-  <label for="phase_code">Fase</label>
-  <input type="text" id="phase_code" name="phase_code" value="<?= esc($filters['phase_code'] ?? '') ?>">
-  <label for="class_level">Kelas</label>
-  <input type="text" id="class_level" name="class_level" value="<?= esc($filters['class_level'] ?? '') ?>">
-  <label for="date_from">Dari</label>
-  <input type="date" id="date_from" name="date_from" value="<?= esc($filters['date_from'] ?? '') ?>">
-  <label for="date_to">Sampai</label>
-  <input type="date" id="date_to" name="date_to" value="<?= esc($filters['date_to'] ?? '') ?>">
-  <button class="btn btn-primary" type="submit">Terapkan</button>
-</form>
+<?= component('admin-chart', [
+    'id'       => 'chart-difficulty',
+    'title'    => 'Heatmap kesulitan (wilayah × urutan tantangan)',
+    'type'     => 'heatmap',
+    'endpoint' => 'api/admin/nodes',
+    'size'     => 'lg',
+    'fallback' => component('partials/node-heatmap', ['levels' => $levels, 'nodes' => $rows, 'links' => true]),
+]) ?>
 
-<table class="data-table">
-  <thead>
-    <tr>
-      <th scope="col">Tantangan</th><th scope="col">Engine</th><th scope="col">Indeks kesulitan</th>
-      <th scope="col">Percobaan</th><th scope="col">Tepat awal</th><th scope="col"></th>
-    </tr>
-  </thead>
-  <tbody>
-    <?php foreach ($rows as $row): ?>
-      <tr>
-        <td><?= esc($row['title'] ?? ($row['node_id'] ?? '—')) ?></td>
-        <td><?= esc($row['engine_type'] ?? '—') ?></td>
-        <td><?= esc($row['difficulty_index'] ?? '—') ?></td>
-        <td><?= esc($row['attempts'] ?? 0) ?></td>
-        <td><?= esc($row['mean_first_pass'] ?? 0) ?>%</td>
-        <td><a class="btn btn-quiet" href="<?= base_url('admin/analitik/node/' . ($row['node_id'] ?? 0)) ?>">Drilldown</a></td>
-      </tr>
-    <?php endforeach ?>
-    <?php if ($rows === []): ?>
-      <tr><td colspan="6"><?= esc(lang('Admin.emptyDefault')) ?></td></tr>
-    <?php endif ?>
-  </tbody>
-</table>
-
-<div id="chart-nodes" class="admin-chart" data-endpoint="<?= base_url('api/admin/nodes') ?>"></div>
+<?= component('admin-table', [
+    'rows'         => $sorted,
+    'caption'      => 'Kesulitan per tantangan, tersulit di atas',
+    'emptyMessage' => 'Belum ada tantangan aktif.',
+    'rowClass'     => static fn (array $r): string => (int) $r['attempts'] === 0 ? 'is-muted' : ($r['difficulty_index'] >= 60 ? 'is-bad' : ''),
+    'columns'      => [
+        'title'              => ['label' => 'Tantangan', 'render' => static fn (array $r): string => '<a href="' . base_url('admin/analitik/node/' . $r['node_id']) . '">' . esc($r['title']) . '</a>'
+            . '<span class="cell-sub">' . esc(($levelNames[$r['level_id']] ?? '') . ' · node ' . $r['sequence']) . '</span>'],
+        'engine_type'        => 'Jenis',
+        'node_id'            => ['label' => 'Indikator', 'render' => static fn (array $r): string => esc($indicators[$r['node_id']] ?? '—')],
+        'attempts'           => ['label' => 'Percobaan', 'format' => 'num'],
+        'mean_first_pass'    => ['label' => 'Tepat awal', 'format' => 'pct'],
+        'mean_final'         => ['label' => 'Akhir', 'format' => 'pct'],
+        'mean_retry'         => ['label' => 'Ulang', 'format' => 'num', 'decimals' => 2],
+        'mean_hint'          => ['label' => 'Petunjuk', 'format' => 'num', 'decimals' => 2],
+        'median_duration_ms' => ['label' => 'Durasi median', 'format' => 'ms'],
+        'skip_rate'          => ['label' => 'Ditinggalkan', 'format' => 'ratio'],
+        'difficulty_index'   => ['label' => 'Indeks', 'format' => 'num', 'decimals' => 1],
+    ],
+]) ?>
 <?= $this->endSection() ?>

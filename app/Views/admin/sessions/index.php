@@ -1,45 +1,44 @@
+<?php
+/**
+ * Daftar sesi — `/admin/sesi` → SessionController::index
+ *
+ * @var list<array<string, mixed>>   $rows
+ * @var CodeIgniter\Pager\Pager|null  $pager
+ * @var array<string, mixed>          $filters
+ */
+?>
 <?= $this->extend('layouts/admin') ?>
 
-<?= $this->section('title') ?><?= esc($pageTitle) ?> · Panel GELITA<?= $this->endSection() ?>
-
 <?= $this->section('content') ?>
-<h1><?= esc($pageTitle) ?></h1>
+<?= component('partials/admin-head', [
+    'title'   => 'Sesi permainan',
+    'eyebrow' => 'Data penelitian',
+    'lead'    => 'Satu sesi = satu peserta pada satu fase. Buka sesi untuk melihat percobaan per tantangan dan linimasa event.',
+]) ?>
 <?= $this->include('partials/flash') ?>
+<?= component('admin-filter-bar', ['filters' => $filters, 'only' => ['study_id', 'phase_code', 'school_id', 'class_level', 'date_from', 'locale']]) ?>
 
-<form method="get" class="filter-bar">
-  <label for="phase_code">Fase</label>
-  <input type="text" id="phase_code" name="phase_code" value="<?= esc($filters['phase_code'] ?? '') ?>">
-  <label for="date_from">Dari</label>
-  <input type="date" id="date_from" name="date_from" value="<?= esc($filters['date_from'] ?? '') ?>">
-  <label for="date_to">Sampai</label>
-  <input type="date" id="date_to" name="date_to" value="<?= esc($filters['date_to'] ?? '') ?>">
-  <button class="btn btn-primary" type="submit">Terapkan</button>
-</form>
+<?= component('admin-table', [
+    'rows'         => $rows,
+    'caption'      => 'Daftar sesi permainan',
+    'emptyMessage' => $filters !== []
+        ? 'Tidak ada sesi untuk filter ini. Longgarkan rentang tanggal atau atur ulang filter.'
+        : 'Belum ada sesi permainan. Sesi dibuat otomatis saat siswa mendaftar atau masuk.',
+    'columns' => [
+        'session_code'     => ['label' => 'Kode', 'render' => static fn (array $r): string => '<a href="' . base_url('admin/sesi/' . $r['id']) . '"><code>' . esc(substr((string) $r['session_code'], 0, 10)) . '</code></a>'],
+        'participant_code' => ['label' => 'Peserta', 'format' => 'code'],
+        'study_code'       => 'Studi',
+        'phase_code'       => 'Fase',
+        'locale'           => 'Bahasa',
+        'status'           => ['label' => 'Status', 'format' => 'badge'],
+        'started_at'       => ['label' => 'Mulai', 'format' => 'datetime'],
+        'duration_ms'      => ['label' => 'Durasi', 'format' => 'ms'],
+        'completed_nodes'  => ['label' => 'Serpihan', 'format' => 'num'],
+        'total_score'      => ['label' => 'Skor', 'format' => 'num', 'decimals' => 1],
+        'device_type'      => ['label' => 'Perangkat', 'render' => static fn (array $r): string => esc(trim(($r['device_type'] ?? '') . ' ' . ($r['browser_name'] ?? '')) ?: '—')],
+        'id'               => ['label' => '', 'render' => static fn (array $r): string => '<a class="btn btn-quiet btn-sm" href="' . base_url('admin/sesi/' . $r['id']) . '">Buka</a>'],
+    ],
+]) ?>
 
-<table class="data-table">
-  <thead>
-    <tr>
-      <th scope="col">Kode sesi</th><th scope="col">Peserta</th><th scope="col">Status</th>
-      <th scope="col">Bahasa</th><th scope="col">Mulai</th><th scope="col">Durasi</th><th scope="col"></th>
-    </tr>
-  </thead>
-  <tbody>
-    <?php foreach ($rows as $row): ?>
-      <tr>
-        <td><code><?= esc(substr((string) $row->session_code, 0, 12)) ?></code></td>
-        <td><?= esc($row->participant_code ?? $row->participant_id) ?></td>
-        <td><?= esc($row->status) ?></td>
-        <td><?= esc($row->locale) ?></td>
-        <td><?= esc($row->started_at) ?></td>
-        <td><?= esc(ms_to_human((int) $row->duration_ms)) ?></td>
-        <td><a class="btn btn-quiet" href="<?= base_url('admin/sesi/' . $row->id) ?>">Buka</a></td>
-      </tr>
-    <?php endforeach ?>
-    <?php if ($rows === []): ?>
-      <tr><td colspan="7"><?= esc(lang('Admin.emptyDefault')) ?></td></tr>
-    <?php endif ?>
-  </tbody>
-</table>
-
-<?= $pager?->links() ?>
+<?= component('admin-pagination', ['pager' => $pager]) ?>
 <?= $this->endSection() ?>
