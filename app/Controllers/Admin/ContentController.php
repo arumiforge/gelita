@@ -12,6 +12,7 @@ use App\Models\LearningIndicatorModel;
 use App\Models\LevelModel;
 use App\Models\LibraryPageModel;
 use App\Models\ReadingPassageModel;
+use App\Models\ScoringProfileModel;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\HTTP\DownloadResponse;
 use CodeIgniter\HTTP\RedirectResponse;
@@ -127,9 +128,14 @@ class ContentController extends BaseAdminController
             ->orderBy('sequence', 'ASC')
             ->findAll();
 
-        $options = model(ChallengeOptionModel::class)->forItems(
+        // Dikelompokkan per butir: editor opsi di view membaca $options[$item->id]
+        $options = [];
+
+        foreach (model(ChallengeOptionModel::class)->forItems(
             array_map(static fn ($item): int => $item->id, $items),
-        );
+        ) as $option) {
+            $options[$option->challenge_item_id][] = $option;
+        }
 
         return $this->panel('admin/content/node', 'Sunting tantangan', [
             'node'         => $node,
@@ -138,6 +144,7 @@ class ContentController extends BaseAdminController
             'options'      => $options,
             'indicators'   => model(LearningIndicatorModel::class)->map(),
             'passages'     => model(ReadingPassageModel::class)->forLevel($node->level_id),
+            'profiles'     => model(ScoringProfileModel::class)->orderBy('code', 'ASC')->orderBy('version', 'ASC')->findAll(),
             'interactions' => self::ENGINE_INTERACTIONS[$node->engine_type] ?? [],
             'locked'       => $this->nodeHasAttempts($nodeId),
         ]);
@@ -176,11 +183,16 @@ class ContentController extends BaseAdminController
             return $this->back($back, 'config_json bukan JSON yang valid.');
         }
 
+        // Field terpandu (cfg[...]) menimpa kunci yang sama di JSON mentah
+        $config = $this->guidedConfig($config ?? []);
+
         $saved = $nodes->update($nodeId, $this->bilingual(['title', 'instruction', 'description']) + [
-            'engine_type'  => $engine,
-            'variant_code' => $this->nullIfBlank($this->request->getPost('variant_code')),
-            'config_json'  => $config,
-            'is_active'    => $this->request->getPost('is_active') ? 1 : 0,
+            'engine_type'        => $engine,
+            'variant_code'       => $this->nullIfBlank($this->request->getPost('variant_code')),
+            'indicator_id'       => $this->idOrNull($this->request->getPost('indicator_id')),
+            'scoring_profile_id' => $this->idOrNull($this->request->getPost('scoring_profile_id')),
+            'config_json'        => $config === [] ? null : $config,
+            'is_active'          => $this->request->getPost('is_active') ? 1 : 0,
         ]);
 
         if (! $saved) {
@@ -561,7 +573,9 @@ class ContentController extends BaseAdminController
                 'title_id'  => $title,
                 'title_en'  => $this->nullIfBlank($row['title_en'] ?? null),
                 'body_id'   => (string) ($row['body_id'] ?? ''),
-                'body_en'   => $this->nullIfBlank($row['body_en'] ?? null),
+                // library_pages.body_en NOT NULL: kosong disimpan '' dan permainan
+                // memakai teks Indonesia (Bilingual::text)
+                'body_en'   => trim((string) ($row['body_en'] ?? '')),
                 'is_active' => empty($row['is_active']) ? 0 : 1,
             ];
 
@@ -838,6 +852,60 @@ class ContentController extends BaseAdminController
         $decoded = json_decode($raw, true);
 
         return is_array($decoded) ? $decoded : false;
+    }
+
+    /**
+     * Menggabungkan field config terpandu dari form node (`cfg[...]`) ke config
+     * JSON. Hanya kunci yang dikirim form yang diubah, sehingga kunci lain di
+     * JSON mentah tetap utuh.
+     *
+     * @param array<string, mixed> $config
+     *
+     * @return array<string, mixed>
+     */
+    private function guidedConfig(array $config): array
+    {
+        $guided = $this->request->getPost('cfg');
+
+        if (! is_array($guided)) {
+            return $config;
+        }
+
+        foreach (['items_per_round', 'distractor_count', 'grid'] as $key) {
+            if (isset($guided[$key]) && trim((string) $guided[$key]) !== '') {
+                $config[$key] = max(0, (int) $guided[$key]);
+            }
+        }
+
+        foreach (['allow_retry', 'use_word_bank', 'require_reason', 'shuffle_options', 'show_decoys'] as $key) {
+            if (array_key_exists($key, $guided)) {
+                $config[$key] = (bool) (int) $guided[$key];
+            }
+        }
+
+        if (isset($guided['verdict_options']) && is_array($guided['verdict_options'])) {
+            $verdicts = array_values(array_intersect(['benar', 'salah', 'pendapat'], $guided['verdict_options']));
+
+            if ($verdicts !== []) {
+                $config['verdict_options'] = $verdicts;
+            }
+        }
+
+        if (isset($guided['distractors']) && is_array($guided['distractors'])) {
+            $distractors = [];
+
+            foreach ($guided['distractors'] as $row) {
+                $id = trim((string) ($row['id'] ?? ''));
+
+                if ($id !== '') {
+                    $distractors[] = ['id' => $id, 'en' => trim((string) ($row['en'] ?? '')) ?: $id];
+                }
+            }
+
+            $config['distractors'] = $distractors;
+        }
+
+        return $config;
     }
 
     /** @return array<int, int> passage_id → jumlah butir yang merujuknya */

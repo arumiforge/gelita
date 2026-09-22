@@ -1,16 +1,50 @@
 /* ==========================================================================
    GELITA — layout.css
-   Kerangka halaman: HUD & app (game), header/sidebar/main (admin), panel auth.
+   Kerangka halaman: HUD, latar, app & nav-bar (game); header, sidebar, main
+   (admin); panel tengah (auth); lapisan modal & toast.
    ========================================================================== */
 
-/* ---------- Game ---------- */
+/* =========================== GAME =========================== */
 body.game {
+  display: flex;
+  flex-direction: column;
   background:
-    radial-gradient(circle at 50% 15%, var(--navy-700), transparent 60%),
+    radial-gradient(ellipse at 50% 0%, var(--navy-600), transparent 60%),
+    radial-gradient(ellipse at 85% 100%, rgba(199, 162, 101, .12), transparent 55%),
     var(--navy-900);
   overflow-x: hidden;
 }
 
+/* ---------- Latar bergambar: dua <img> untuk crossfade ---------- */
+.scene {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.scene-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity .6s ease;
+}
+.scene-img.is-visible { opacity: 1; }
+
+/* Lapisan gelap agar teks di atas gambar tetap kontras ≥ 4.5:1 */
+.scene::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, rgba(11, 19, 32, .35), var(--veil) 40%, rgba(11, 19, 32, .75));
+}
+
+/* ---------- HUD ---------- */
 .hud {
   position: sticky;
   top: 0;
@@ -18,31 +52,68 @@ body.game {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--sp-4);
+  gap: var(--sp-3) var(--sp-4);
   min-height: var(--hud-h);
-  padding: var(--sp-3) max(var(--sp-4), env(safe-area-inset-right)) var(--sp-3) max(var(--sp-4), env(safe-area-inset-left));
-  background: linear-gradient(to bottom, rgba(11, 19, 32, .92), rgba(11, 19, 32, .6));
-  border-bottom: 1px solid rgba(223, 192, 135, .18);
+  padding: var(--sp-2) max(var(--sp-4), env(safe-area-inset-right)) var(--sp-2) max(var(--sp-4), env(safe-area-inset-left));
+  background: linear-gradient(to bottom, rgba(11, 19, 32, .95), rgba(11, 19, 32, .78));
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(6px);
 }
 
-.hud-left, .hud-right { display: flex; align-items: center; gap: var(--sp-3); }
+.hud-left, .hud-right { display: flex; align-items: center; gap: var(--sp-3); min-width: 0; }
+.hud-icons { display: flex; gap: var(--sp-2); }
 
 .hud-brand {
   font-family: var(--font-display);
   font-size: var(--step-1);
   font-weight: 700;
-  letter-spacing: .08em;
+  letter-spacing: .12em;
   color: var(--gold-500);
   text-decoration: none;
 }
+.hud-brand:hover { color: var(--gold-300); }
 
+/* ---------- Area utama ---------- */
 .app {
   position: relative;
   z-index: 1;
-  min-height: calc(100vh - var(--hud-h));
-  padding: var(--sp-5) var(--sp-4) calc(var(--nav-h) + var(--sp-4));
+  flex: 1 0 auto;
+  width: 100%;
+  padding: var(--sp-5) max(var(--sp-4), env(safe-area-inset-right)) calc(var(--nav-h) + var(--sp-5)) max(var(--sp-4), env(safe-area-inset-left));
 }
 
+.screen {
+  width: 100%;
+  max-width: var(--content-max);
+  margin: 0 auto;
+}
+.screen-narrow { max-width: 560px; }
+.screen-medium { max-width: 820px; }
+
+.screen-head { margin-bottom: var(--sp-5); text-align: center; }
+.screen-head p { color: var(--ink-dim); }
+
+/* ---------- Navigasi bawah ---------- */
+.nav-bar {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  min-height: var(--nav-h);
+  padding: var(--sp-3) max(var(--sp-4), env(safe-area-inset-right)) max(var(--sp-3), env(safe-area-inset-bottom)) max(var(--sp-4), env(safe-area-inset-left));
+  background: linear-gradient(to top, rgba(11, 19, 32, .85), rgba(11, 19, 32, .35) 70%, transparent);
+  pointer-events: none;
+}
+.nav-bar > * { pointer-events: auto; }
+.nav-bar-start, .nav-bar-end { display: flex; gap: var(--sp-3); }
+.nav-bar-end { margin-left: auto; }
+
+/* ---------- Lapisan dialog & notifikasi ---------- */
 .modal-layer {
   position: fixed;
   inset: 0;
@@ -50,123 +121,245 @@ body.game {
   display: grid;
   place-items: center;
   padding: var(--sp-4);
-  background: var(--veil);
+  background: var(--veil-strong);
 }
 
 .toast-layer {
   position: fixed;
   right: var(--sp-4);
-  bottom: var(--sp-4);
+  bottom: calc(var(--nav-h) + var(--sp-2));
   z-index: 60;
   display: flex;
   flex-direction: column;
   gap: var(--sp-2);
-  max-width: min(420px, calc(100vw - 2 * var(--sp-4)));
+  width: min(420px, calc(100vw - 2 * var(--sp-4)));
+  pointer-events: none;
 }
+.toast-layer > * { pointer-events: auto; }
+body.admin .toast-layer, body.auth .toast-layer { bottom: var(--sp-4); }
 
-/* ---------- Admin ---------- */
-body.admin { background: var(--navy-900); }
+/* =========================== ADMIN =========================== */
+body.admin {
+  background: var(--navy-900);
+  font-size: var(--step-0);
+}
 
 .admin-head {
   position: sticky;
   top: 0;
   z-index: 20;
   display: grid;
-  grid-template-columns: var(--sidebar-w) 1fr auto;
+  grid-template-columns: var(--sidebar-w) minmax(0, 1fr) auto;
   align-items: center;
   gap: var(--sp-4);
   min-height: 60px;
   padding: 0 var(--sp-5) 0 0;
   background: var(--navy-800);
-  border-bottom: 1px solid rgba(223, 192, 135, .18);
+  border-bottom: 1px solid var(--line);
 }
 
 .admin-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  height: 100%;
   padding: 0 var(--sp-5);
   font-family: var(--font-display);
   font-size: var(--step-1);
   font-weight: 700;
-  letter-spacing: .08em;
+  letter-spacing: .1em;
   color: var(--gold-500);
   text-decoration: none;
 }
+.admin-logo { max-height: 36px; width: auto; }
 
-.admin-sub { color: var(--ink-dim); font-size: var(--step--1); }
+.admin-sub {
+  overflow: hidden;
+  color: var(--ink-dim);
+  font-size: var(--step--1);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.admin-sub b { color: var(--ink); }
 
 .admin-user { display: flex; align-items: center; gap: var(--sp-3); }
-.admin-user small { color: var(--ink-dim); text-transform: capitalize; }
+.admin-user-name { display: grid; line-height: 1.2; text-align: right; }
+.admin-user-name small { color: var(--ink-dim); text-transform: capitalize; }
+
+.menu-toggle { display: none; }
 
 .admin-body {
   display: grid;
-  grid-template-columns: var(--sidebar-w) 1fr;
+  grid-template-columns: var(--sidebar-w) minmax(0, 1fr);
   min-height: calc(100vh - 60px);
 }
 
+/* ---------- Sidebar ---------- */
 .admin-sidebar {
+  position: sticky;
+  top: 60px;
+  align-self: start;
+  max-height: calc(100vh - 60px);
+  overflow-y: auto;
+  padding: var(--sp-4) 0 var(--sp-6);
   background: var(--navy-800);
-  border-right: 1px solid rgba(223, 192, 135, .12);
-  padding: var(--sp-4) 0;
+  border-right: 1px solid var(--line-ink);
 }
 
-.admin-sidebar ul { list-style: none; margin: 0; padding: 0; }
+.admin-sidebar ul { margin: 0; padding: 0; list-style: none; }
 
-.admin-sidebar a {
-  display: block;
+.menu-group {
+  margin: var(--sp-4) var(--sp-5) var(--sp-1);
+  color: var(--ink-dim);
+  font-size: var(--step--1);
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.menu-link {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  min-height: var(--tap);
   padding: var(--sp-2) var(--sp-5);
+  border-left: 3px solid transparent;
   color: var(--ink);
   font-size: var(--step--1);
   text-decoration: none;
-  border-left: 3px solid transparent;
 }
-.admin-sidebar a:hover { background: rgba(255, 255, 255, .04); }
-.admin-sidebar a.is-active { border-left-color: var(--gold-500); background: rgba(223, 192, 135, .08); color: var(--gold-300); }
-.admin-sidebar .is-sub a { padding-left: calc(var(--sp-5) + var(--sp-3)); }
-.admin-sidebar .menu-parent { color: var(--ink-dim); }
+.menu-link:hover { background: rgba(255, 255, 255, .05); color: var(--gold-300); }
+.menu-link.is-active {
+  border-left-color: var(--gold-500);
+  background: rgba(223, 192, 135, .1);
+  color: var(--gold-300);
+  font-weight: 700;
+}
+.menu-link .icon { flex: none; width: 20px; height: 20px; color: var(--gold-600); }
+.menu-sub .menu-link { padding-left: calc(var(--sp-5) + var(--sp-4)); }
 
+.menu-close { display: none; }
+
+/* ---------- Konten admin ---------- */
 .admin-main {
   width: 100%;
-  max-width: var(--content-max);
-  padding: var(--sp-5);
+  max-width: calc(var(--content-max) + 2 * var(--sp-6));
+  padding: var(--sp-5) var(--sp-6) var(--sp-7);
 }
 
-/* ---------- Auth ---------- */
+/* =========================== AUTH =========================== */
 body.auth {
-  background: radial-gradient(circle at 50% 20%, var(--navy-700), var(--navy-900) 70%);
+  background:
+    radial-gradient(ellipse at 50% 10%, var(--navy-600), transparent 60%),
+    var(--navy-900);
+}
+
+.auth-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: .35;
 }
 
 .auth-shell {
+  position: relative;
+  z-index: 1;
   display: grid;
   place-items: center;
   min-height: 100vh;
+  min-height: 100dvh;
   padding: var(--sp-4);
 }
 
-.auth-panel { width: min(420px, 100%); }
+.auth-panel { width: min(440px, 100%); }
 
 .auth-brand {
-  margin-bottom: var(--sp-4);
+  display: grid;
+  justify-items: center;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-5);
   font-family: var(--font-display);
   font-size: var(--step-2);
   font-weight: 700;
-  letter-spacing: .1em;
+  letter-spacing: .14em;
   text-align: center;
   color: var(--gold-500);
 }
-
-/* ---------- Responsif ---------- */
-@media (max-width: 1024px) {
-  :root { --sidebar-w: 200px; }
+.auth-brand small {
+  font-family: var(--font-body);
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: .04em;
+  color: var(--ink-dim);
 }
 
+.auth-foot { margin-top: var(--sp-5); color: var(--ink-dim); font-size: var(--step--1); text-align: center; }
+
+/* =========================== RESPONSIF =========================== */
+
+/* Tablet & papan tulis: sidebar admin menyempit menjadi ikon */
+@media (max-width: 1024px) {
+  :root { --sidebar-w: 72px; }
+
+  .admin-brand { justify-content: center; padding: 0; }
+  .admin-brand-text { display: none; }
+
+  .menu-group { height: 1px; margin: var(--sp-3) var(--sp-3); overflow: hidden; background: var(--line-ink); color: transparent; }
+  .menu-link { justify-content: center; padding: var(--sp-2); }
+  .menu-sub .menu-link { padding-left: var(--sp-2); }
+  .menu-label {
+    position: absolute;
+    width: 1px; height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .admin-main { padding: var(--sp-5) var(--sp-5) var(--sp-7); }
+}
+
+/* Ponsel: HUD dua baris; sidebar admin menjadi drawer (:target, tanpa JS) */
 @media (max-width: 640px) {
+  :root { --hud-h: 112px; --nav-h: 68px; }
+
   .hud { flex-wrap: wrap; }
-  .admin-head { grid-template-columns: 1fr auto; padding: var(--sp-2) var(--sp-4); }
-  .admin-brand { padding: 0; }
+  .hud-left { flex: 1 1 100%; justify-content: space-between; }
+  .hud-right { flex: 1 1 100%; justify-content: space-between; }
+
+  .app { padding-top: var(--sp-4); }
+
+  .admin-head { grid-template-columns: auto minmax(0, 1fr) auto; gap: var(--sp-2); padding: var(--sp-2) var(--sp-3); }
+  .admin-brand { padding: 0 var(--sp-2); }
+  .admin-brand-text { display: inline; }
   .admin-sub { display: none; }
-  .admin-body { grid-template-columns: 1fr; }
-  .admin-sidebar { border-right: 0; border-bottom: 1px solid rgba(223, 192, 135, .12); overflow-x: auto; }
-  .admin-sidebar ul { display: flex; }
-  .admin-sidebar a { white-space: nowrap; border-left: 0; border-bottom: 3px solid transparent; }
-  .admin-sidebar a.is-active { border-bottom-color: var(--gold-500); }
-  .admin-main { padding: var(--sp-4); }
+  .admin-user-name { display: none; }
+  .menu-toggle { display: inline-flex; }
+
+  .admin-body { grid-template-columns: minmax(0, 1fr); }
+
+  .admin-sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 40;
+    display: none;
+    width: min(300px, 85vw);
+    max-height: none;
+    box-shadow: var(--shadow-2);
+  }
+  .admin-sidebar:target { display: block; }
+
+  .menu-close { display: flex; justify-content: flex-end; padding: 0 var(--sp-4) var(--sp-3); }
+  .menu-group { height: auto; margin: var(--sp-4) var(--sp-5) var(--sp-1); background: none; color: var(--ink-dim); }
+  .menu-link { justify-content: flex-start; padding: var(--sp-2) var(--sp-5); }
+  .menu-sub .menu-link { padding-left: calc(var(--sp-5) + var(--sp-4)); }
+  .menu-label { position: static; width: auto; height: auto; overflow: visible; clip: auto; }
+
+  .admin-main { padding: var(--sp-4) var(--sp-4) var(--sp-7); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scene-img { transition: none; }
 }

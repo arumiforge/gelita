@@ -49,6 +49,9 @@ abstract class BaseGameController extends BaseController
     /**
      * Data yang dipakai HUD pada setiap layar dalam permainan.
      *
+     * Peserta dikirim dalam bentuk aman (toSafeArray): `password_hash` tidak
+     * pernah sampai ke view mana pun (aturan 11, 05_VIEW_UI.md).
+     *
      * @return array<string, mixed>
      */
     protected function hudData(): array
@@ -57,8 +60,9 @@ abstract class BaseGameController extends BaseController
 
         return [
             'locale'      => $session->resolvedLocale(),
-            'participant' => $this->participant(),
+            'participant' => $this->participant()->toSafeArray(),
             'progress'    => $this->progressSummary($session),
+            'lantern'     => $this->lanternMap($session),
         ];
     }
 

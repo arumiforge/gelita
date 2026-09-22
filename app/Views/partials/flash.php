@@ -1,23 +1,28 @@
 <?php
 /**
- * Pesan flash bersama: berhasil, galat umum, dan galat per field.
+ * Galat yang harus tetap terlihat: flash `error` dan galat per field.
+ * Pesan berhasil (`message`) tampil sebagai toast dari layout.
  *
- * @var array<string, string> $errors
+ * @var array<string, string>|null $errors
  */
-$flashOk    = session('message');
-$flashError = session('error');
+$flashError  = session('error');
 $fieldErrors = $errors ?? (session('errors') ?? []);
+$fieldErrors = is_array($fieldErrors) ? $fieldErrors : [];
 ?>
-<?php if ($flashOk): ?>
-  <p class="alert alert-ok" role="status"><?= esc($flashOk) ?></p>
+<?php if (is_string($flashError) && $flashError !== ''): ?>
+  <div class="alert alert-error" role="alert"><?= icon('warn') ?><p><?= esc($flashError) ?></p></div>
 <?php endif ?>
-<?php if ($flashError): ?>
-  <p class="alert alert-error" role="alert"><?= esc($flashError) ?></p>
-<?php endif ?>
-<?php if ($fieldErrors): ?>
-  <ul class="alert alert-error" role="alert">
-    <?php foreach ($fieldErrors as $message): ?>
-      <li><?= esc($message) ?></li>
-    <?php endforeach ?>
-  </ul>
+<?php if ($fieldErrors !== []): ?>
+  <div class="alert alert-error" role="alert">
+    <?= icon('warn') ?>
+    <?php if (count($fieldErrors) === 1): ?>
+      <p><?= esc(reset($fieldErrors)) ?></p>
+    <?php else: ?>
+      <ul>
+        <?php foreach ($fieldErrors as $message): ?>
+          <li><?= esc($message) ?></li>
+        <?php endforeach ?>
+      </ul>
+    <?php endif ?>
+  </div>
 <?php endif ?>

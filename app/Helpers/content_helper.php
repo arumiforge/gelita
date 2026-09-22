@@ -47,6 +47,47 @@ if (! function_exists('media_src')) {
     }
 }
 
+if (! function_exists('media_exists')) {
+    /** Media aktif dengan id ini ada? Dipakai view yang punya tampilan pengganti sendiri. */
+    function media_exists(?int $mediaAssetId): bool
+    {
+        return $mediaAssetId !== null && $mediaAssetId > 0
+            && isset(service('contentRepository')->mediaMap()[$mediaAssetId]);
+    }
+}
+
+if (! function_exists('media_first')) {
+    /**
+     * URL media aktif pertama dari beberapa kandidat id (mis. latar node, lalu
+     * latar wilayah). String kosong bila tidak ada satu pun — layout lalu
+     * memakai gradien CSS alih-alih gambar pengganti.
+     */
+    function media_first(?int ...$mediaAssetIds): string
+    {
+        foreach ($mediaAssetIds as $id) {
+            if (media_exists($id)) {
+                return media_src($id);
+            }
+        }
+
+        return '';
+    }
+}
+
+if (! function_exists('media_key_src')) {
+    /**
+     * URL media aktif menurut asset_key resmi (mis. `bg.welcome`, `char.jaka.idle.1`).
+     * NULL bila aset belum diunggah/nonaktif — view memilih penggantinya sendiri
+     * (gradien CSS untuk latar, monogram untuk karakter) alih-alih kotak rusak.
+     */
+    function media_key_src(string $assetKey): ?string
+    {
+        $path = service('contentRepository')->mediaKeyMap()[$assetKey] ?? null;
+
+        return $path ? base_url($path) : null;
+    }
+}
+
 if (! function_exists('audio_src')) {
     /**
      * URL audio; NULL bila approval_status != 'approved' atau media nonaktif.
@@ -75,15 +116,23 @@ if (! function_exists('audio_src')) {
 }
 
 if (! function_exists('stars_html')) {
-    /** Bintang 0..3; ikon + teks alternatif (warna bukan satu-satunya penanda) */
-    function stars_html(int $stars): string
+    /**
+     * Bintang 0..$max sebagai ikon + teks alternatif. Warna bukan satu-satunya
+     * penanda: bintang kosong bergaris, bintang penuh terisi, dan pembaca layar
+     * membaca "2 / 3".
+     */
+    function stars_html(int $stars, int $max = 3): string
     {
-        $stars = max(0, min(3, $stars));
-        $html  = '<span class="stars" role="img" aria-label="' . esc($stars . ' / 3') . '">';
+        if (! function_exists('icon')) {
+            helper('ui');
+        }
 
-        for ($i = 1; $i <= 3; $i++) {
-            $html .= '<span class="star' . ($i <= $stars ? ' is-on' : '') . '" aria-hidden="true">'
-                . ($i <= $stars ? '★' : '☆') . '</span>';
+        $max   = max(1, $max);
+        $stars = max(0, min($max, $stars));
+        $html  = '<span class="stars" role="img" aria-label="' . esc($stars . ' / ' . $max) . '">';
+
+        for ($i = 1; $i <= $max; $i++) {
+            $html .= '<span class="star' . ($i <= $stars ? ' is-on' : '') . '">' . icon('star') . '</span>';
         }
 
         return $html . '</span>';

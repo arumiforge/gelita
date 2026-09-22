@@ -76,6 +76,34 @@ if (! function_exists('asset_url_versioned')) {
     }
 }
 
+if (! function_exists('component')) {
+    /**
+     * Render komponen view dengan data yang dioper — hanya itu.
+     *
+     * `$this->include()` milik CodeIgniter menerima *options* (cache) sebagai
+     * argumen kedua, bukan data — array yang dioper ke sana diabaikan diam-diam.
+     * Sebaliknya `view()` biasa menggabungkan data halaman ke komponen, sehingga
+     * variabel halaman bernama sama (mis. `$actions`, `$id`, `$hint`) bocor ke
+     * komponen yang menganggapnya opsional. Helper ini merender dengan renderer
+     * terpisah: komponen hanya melihat $data, ditambah konteks halaman yang
+     * memang dimaksudkan untuk dibagi ($pageContext) bila tidak dioper ulang.
+     *
+     * @param array<string, mixed> $data
+     */
+    function component(string $name, array $data = []): string
+    {
+        // Konteks filter panel: dipakai admin-filter-bar & admin-chart di halaman yang sama
+        static $pageContext = ['filters', 'filterOptions'];
+
+        $view    = str_contains($name, '/') ? $name : 'components/' . $name;
+        $context = array_intersect_key(service('renderer')->getData(), array_flip($pageContext));
+
+        return \Config\Services::renderer(null, null, false)
+            ->setData($data + $context, 'raw')
+            ->render($view, null, false);
+    }
+}
+
 if (! function_exists('seeded_shuffle')) {
     /**
      * Acak deterministik untuk item_selection_mode = fixed

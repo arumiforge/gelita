@@ -22,14 +22,20 @@ class SessionController extends BaseAdminController
 
         $sessions
             ->select('game_sessions.*, participants.participant_code, participants.display_name, participants.school_id')
+            ->select('research_phases.code AS phase_code, research_studies.code AS study_code')
+            ->select('session_progress.completed_nodes, session_progress.total_score')
             ->join('participants', 'participants.id = game_sessions.participant_id')
-            ->join('research_phases', 'research_phases.id = game_sessions.phase_id', 'left');
+            ->join('research_phases', 'research_phases.id = game_sessions.phase_id', 'left')
+            ->join('research_studies', 'research_studies.id = game_sessions.study_id', 'left')
+            ->join('session_progress', 'session_progress.session_id = game_sessions.id', 'left');
 
         if ($scope !== null) {
             $sessions->where('participants.school_id', $scope);
+        } elseif (isset($filters['school_id'])) {
+            $sessions->where('participants.school_id', $filters['school_id']);
         }
 
-        foreach (['study_id' => 'game_sessions.study_id', 'locale' => 'game_sessions.locale'] as $key => $column) {
+        foreach (['study_id' => 'game_sessions.study_id', 'locale' => 'game_sessions.locale', 'class_level' => 'participants.class_level'] as $key => $column) {
             if (isset($filters[$key])) {
                 $sessions->where($column, $filters[$key]);
             }
@@ -51,7 +57,7 @@ class SessionController extends BaseAdminController
 
         return $this->panel('admin/sessions/index', 'Sesi permainan', [
             'filters' => $filters,
-            'rows'    => $rows,
+            'rows'    => array_map(static fn ($row): array => $row->toArray(), $rows),
             'pager'   => $sessions->pager,
         ]);
     }
@@ -68,19 +74,35 @@ class SessionController extends BaseAdminController
 
         return $this->panel('admin/sessions/show', 'Detail sesi', [
             'session'     => $session,
-            'participant' => $participant,
+            'participant' => $participant?->toSafeArray(),
+            'progress'    => db_connect()->table('session_progress')->where('session_id', $sessionId)->get()->getRowArray(),
+            'phaseCode'   => $this->phaseCode((int) $session->phase_id),
             'attempts'    => $attempts,
+            'responses'   => $this->responsesByAttempt(array_map(static fn ($a): int => $a->id, $attempts)),
             'nodes'       => $this->nodeLabels(),
+            'engines'     => $this->nodeEngines(),
         ]);
     }
 
     public function timeline(int $sessionId): string
     {
         $session = $this->requireInScope($sessionId);
+        $rows    = $this->analytics()->eventTimeline($sessionId);
+        $types   = array_values(array_unique(array_column($rows, 'event_type')));
+        $type    = trim((string) ($this->request->getGet('type') ?? ''));
+
+        sort($types);
+
+        if ($type !== '') {
+            $rows = array_values(array_filter($rows, static fn (array $row): bool => $row['event_type'] === $type));
+        }
 
         return $this->panel('admin/sessions/timeline', 'Linimasa event', [
             'session' => $session,
-            'rows'    => $this->analytics()->eventTimeline($sessionId),
+            'rows'    => $rows,
+            'types'   => $types,
+            'type'    => $type,
+            'nodes'   => $this->nodeLabels(),
         ]);
     }
 
@@ -106,6 +128,46 @@ class SessionController extends BaseAdminController
         return $session;
     }
 
+    /**
+     * Jawaban per butir untuk setiap attempt sesi ini (drilldown baris attempt).
+     *
+     * @param list<int> $attemptIds
+     *
+     * @return array<int, list<array<string, mixed>>>
+     */
+    private function responsesByAttempt(array $attemptIds): array
+    {
+        if ($attemptIds === []) {
+            return [];
+        }
+
+        $rows = db_connect()->table('item_responses ir')
+            ->select('ir.challenge_attempt_id, ir.display_order, ir.status, ir.first_pass_correct, ir.is_correct')
+            ->select('ir.change_count, ir.hint_used, ir.wrong_click_count, ir.duration_ms, ir.final_answer_json, ir.reason_text')
+            ->select('ci.item_key, ci.interaction_type')
+            ->join('challenge_items ci', 'ci.id = ir.challenge_item_id')
+            ->whereIn('ir.challenge_attempt_id', $attemptIds)
+            ->orderBy('ir.challenge_attempt_id', 'ASC')
+            ->orderBy('ir.display_order', 'ASC')
+            ->get()
+            ->getResultArray();
+
+        $out = [];
+
+        foreach ($rows as $row) {
+            $out[(int) $row['challenge_attempt_id']][] = $row;
+        }
+
+        return $out;
+    }
+
+    private function phaseCode(int $phaseId): ?string
+    {
+        $row = db_connect()->table('research_phases')->select('code')->where('id', $phaseId)->get()->getRowArray();
+
+        return $row['code'] ?? null;
+    }
+
     /** @return array<int, string> id node → "Wilayah · judul" untuk label tabel */
     private function nodeLabels(): array
     {
@@ -114,10 +176,25 @@ class SessionController extends BaseAdminController
 
         foreach ($content->levels() as $level) {
             foreach ($content->nodesForLevel($level->id) as $node) {
-                $labels[$node->id] = $level->text('name', 'id') . ' · ' . $node->text('title', 'id');
+                $labels[$node->id] = $level->text('name', 'id') . ' · ' . $node->sequence . '. ' . $node->text('title', 'id');
             }
         }
 
         return $labels;
+    }
+
+    /** @return array<int, string> id node → engine_type */
+    private function nodeEngines(): array
+    {
+        $content = service('contentRepository');
+        $engines = [];
+
+        foreach ($content->levels() as $level) {
+            foreach ($content->nodesForLevel($level->id) as $node) {
+                $engines[$node->id] = (string) $node->engine_type;
+            }
+        }
+
+        return $engines;
     }
 }
