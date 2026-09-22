@@ -1,84 +1,39 @@
+<?php
+/**
+ * 404 bergaya GELITA. Mandiri (CSS inline) agar tetap tampil walau aset gagal dimuat.
+ */
+$locale = service('request') instanceof CodeIgniter\HTTP\IncomingRequest ? service('request')->getLocale() : 'id';
+?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<?= esc($locale) ?>">
 <head>
-    <meta charset="utf-8">
-    <title><?= lang('Errors.pageNotFound') ?></title>
-
-    <style>
-        div.logo {
-            height: 200px;
-            width: 155px;
-            display: inline-block;
-            opacity: 0.08;
-            position: absolute;
-            top: 2rem;
-            left: 50%;
-            margin-left: -73px;
-        }
-        body {
-            height: 100%;
-            background: #fafafa;
-            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-            color: #777;
-            font-weight: 300;
-        }
-        h1 {
-            font-weight: lighter;
-            letter-spacing: normal;
-            font-size: 3rem;
-            margin-top: 0;
-            margin-bottom: 0;
-            color: #222;
-        }
-        .wrap {
-            max-width: 1024px;
-            margin: 5rem auto;
-            padding: 2rem;
-            background: #fff;
-            text-align: center;
-            border: 1px solid #efefef;
-            border-radius: 0.5rem;
-            position: relative;
-        }
-        pre {
-            white-space: normal;
-            margin-top: 1.5rem;
-        }
-        code {
-            background: #fafafa;
-            border: 1px solid #efefef;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            display: block;
-        }
-        p {
-            margin-top: 1.5rem;
-        }
-        .footer {
-            margin-top: 2rem;
-            border-top: 1px solid #efefef;
-            padding: 1em 2em 0 2em;
-            font-size: 85%;
-            color: #999;
-        }
-        a:active,
-        a:link,
-        a:visited {
-            color: #dd4814;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>404 · GELITA</title>
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px;
+           background: radial-gradient(circle at 50% 20%, #1B2740, #0B1320 70%);
+           color: #EAF0FA; font: 1rem/1.6 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; }
+    .card { max-width: 520px; text-align: center; padding: 40px 32px; border-radius: 20px;
+            background: rgba(18, 28, 46, .9); border: 1px solid rgba(223, 192, 135, .35);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, .4); }
+    .code { font: 700 3.5rem/1 'Cinzel', Georgia, serif; color: #DFC087; letter-spacing: .08em; }
+    h1 { font: 700 1.6rem/1.3 'Cinzel', Georgia, serif; color: #F0DFB8; margin: 16px 0 8px; }
+    p { color: rgba(234, 240, 250, .8); margin: 0 0 24px; }
+    a { display: inline-block; min-height: 44px; padding: 12px 24px; border-radius: 999px;
+        background: #DFC087; color: #0B1320; font-weight: 700; text-decoration: none; }
+    a:focus-visible { outline: 3px solid #F0DFB8; outline-offset: 3px; }
+  </style>
 </head>
 <body>
-    <div class="wrap">
-        <h1>404</h1>
-
-        <p>
-            <?php if (ENVIRONMENT !== 'production') : ?>
-                <?= nl2br(esc($message)) ?>
-            <?php else : ?>
-                <?= lang('Errors.sorryCannotFind') ?>
-            <?php endif; ?>
-        </p>
-    </div>
+  <main class="card">
+    <div class="code">404</div>
+    <h1><?= esc(lang('Game.notFoundTitle')) ?></h1>
+    <p><?= esc(lang('Game.notFoundText')) ?></p>
+    <a href="<?= esc(base_url()) ?>"><?= esc(lang('Game.backHome')) ?></a>
+  </main>
 </body>
 </html>

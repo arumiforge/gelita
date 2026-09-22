@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="Gambar belum tersedia">
+  <rect width="400" height="300" fill="#121C2E"/>
+  <rect x="8" y="8" width="384" height="284" rx="16" fill="none" stroke="#DFC087" stroke-opacity=".45" stroke-width="2" stroke-dasharray="10 8"/>
+  <g fill="none" stroke="#DFC087" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" opacity=".8">
+    <path d="M200 92v18"/>
+    <path d="M178 118h44l-6 70h-32z"/>
+    <path d="M172 196h56"/>
+  </g>
+  <circle cx="200" cy="150" r="12" fill="#F0DFB8" opacity=".85"/>
+  <text x="200" y="244" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" fill="#EAF0FA" fill-opacity=".72">Gambar belum tersedia</text>
+</svg>

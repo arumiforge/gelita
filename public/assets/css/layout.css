@@ -1,0 +1,172 @@
+/* ==========================================================================
+   GELITA — layout.css
+   Kerangka halaman: HUD & app (game), header/sidebar/main (admin), panel auth.
+   ========================================================================== */
+
+/* ---------- Game ---------- */
+body.game {
+  background:
+    radial-gradient(circle at 50% 15%, var(--navy-700), transparent 60%),
+    var(--navy-900);
+  overflow-x: hidden;
+}
+
+.hud {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  min-height: var(--hud-h);
+  padding: var(--sp-3) max(var(--sp-4), env(safe-area-inset-right)) var(--sp-3) max(var(--sp-4), env(safe-area-inset-left));
+  background: linear-gradient(to bottom, rgba(11, 19, 32, .92), rgba(11, 19, 32, .6));
+  border-bottom: 1px solid rgba(223, 192, 135, .18);
+}
+
+.hud-left, .hud-right { display: flex; align-items: center; gap: var(--sp-3); }
+
+.hud-brand {
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  font-weight: 700;
+  letter-spacing: .08em;
+  color: var(--gold-500);
+  text-decoration: none;
+}
+
+.app {
+  position: relative;
+  z-index: 1;
+  min-height: calc(100vh - var(--hud-h));
+  padding: var(--sp-5) var(--sp-4) calc(var(--nav-h) + var(--sp-4));
+}
+
+.modal-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: var(--sp-4);
+  background: var(--veil);
+}
+
+.toast-layer {
+  position: fixed;
+  right: var(--sp-4);
+  bottom: var(--sp-4);
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  max-width: min(420px, calc(100vw - 2 * var(--sp-4)));
+}
+
+/* ---------- Admin ---------- */
+body.admin { background: var(--navy-900); }
+
+.admin-head {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: grid;
+  grid-template-columns: var(--sidebar-w) 1fr auto;
+  align-items: center;
+  gap: var(--sp-4);
+  min-height: 60px;
+  padding: 0 var(--sp-5) 0 0;
+  background: var(--navy-800);
+  border-bottom: 1px solid rgba(223, 192, 135, .18);
+}
+
+.admin-brand {
+  padding: 0 var(--sp-5);
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  font-weight: 700;
+  letter-spacing: .08em;
+  color: var(--gold-500);
+  text-decoration: none;
+}
+
+.admin-sub { color: var(--ink-dim); font-size: var(--step--1); }
+
+.admin-user { display: flex; align-items: center; gap: var(--sp-3); }
+.admin-user small { color: var(--ink-dim); text-transform: capitalize; }
+
+.admin-body {
+  display: grid;
+  grid-template-columns: var(--sidebar-w) 1fr;
+  min-height: calc(100vh - 60px);
+}
+
+.admin-sidebar {
+  background: var(--navy-800);
+  border-right: 1px solid rgba(223, 192, 135, .12);
+  padding: var(--sp-4) 0;
+}
+
+.admin-sidebar ul { list-style: none; margin: 0; padding: 0; }
+
+.admin-sidebar a {
+  display: block;
+  padding: var(--sp-2) var(--sp-5);
+  color: var(--ink);
+  font-size: var(--step--1);
+  text-decoration: none;
+  border-left: 3px solid transparent;
+}
+.admin-sidebar a:hover { background: rgba(255, 255, 255, .04); }
+.admin-sidebar a.is-active { border-left-color: var(--gold-500); background: rgba(223, 192, 135, .08); color: var(--gold-300); }
+.admin-sidebar .is-sub a { padding-left: calc(var(--sp-5) + var(--sp-3)); }
+.admin-sidebar .menu-parent { color: var(--ink-dim); }
+
+.admin-main {
+  width: 100%;
+  max-width: var(--content-max);
+  padding: var(--sp-5);
+}
+
+/* ---------- Auth ---------- */
+body.auth {
+  background: radial-gradient(circle at 50% 20%, var(--navy-700), var(--navy-900) 70%);
+}
+
+.auth-shell {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: var(--sp-4);
+}
+
+.auth-panel { width: min(420px, 100%); }
+
+.auth-brand {
+  margin-bottom: var(--sp-4);
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-align: center;
+  color: var(--gold-500);
+}
+
+/* ---------- Responsif ---------- */
+@media (max-width: 1024px) {
+  :root { --sidebar-w: 200px; }
+}
+
+@media (max-width: 640px) {
+  .hud { flex-wrap: wrap; }
+  .admin-head { grid-template-columns: 1fr auto; padding: var(--sp-2) var(--sp-4); }
+  .admin-brand { padding: 0; }
+  .admin-sub { display: none; }
+  .admin-body { grid-template-columns: 1fr; }
+  .admin-sidebar { border-right: 0; border-bottom: 1px solid rgba(223, 192, 135, .12); overflow-x: auto; }
+  .admin-sidebar ul { display: flex; }
+  .admin-sidebar a { white-space: nowrap; border-left: 0; border-bottom: 3px solid transparent; }
+  .admin-sidebar a.is-active { border-bottom-color: var(--gold-500); }
+  .admin-main { padding: var(--sp-4); }
+}

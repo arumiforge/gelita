@@ -1,0 +1,37 @@
+/* ==========================================================================
+   GELITA — game.css
+   Layar permainan. Tahap 2: layar welcome. Peta, dialog, dan lima arena
+   tantangan ditambahkan pada tahap 5.
+   ========================================================================== */
+
+.welcome {
+  display: grid;
+  justify-items: center;
+  gap: var(--sp-4);
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--sp-7) var(--sp-4);
+  text-align: center;
+}
+
+.welcome-title {
+  margin: 0;
+  font-size: clamp(3rem, 2rem + 6vw, 6rem);
+  letter-spacing: .12em;
+  color: var(--gold-500);
+  text-shadow: 0 4px 24px rgba(223, 192, 135, .25);
+}
+
+.welcome-tagline {
+  max-width: 36ch;
+  color: var(--ink-dim);
+  font-size: var(--step-1);
+}
+
+.welcome-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--sp-4);
+  margin-top: var(--sp-4);
+}

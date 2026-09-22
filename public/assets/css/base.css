@@ -1,0 +1,108 @@
+/* ==========================================================================
+   GELITA — base.css
+   Token desain, reset, tipografi, fokus. Dimuat pertama oleh semua layout.
+   Font lokal (@font-face) ditambahkan bersama berkas font di assets/fonts/;
+   sampai saat itu fallback sistem dipakai.
+   ========================================================================== */
+
+:root {
+  /* Warna */
+  --navy-900: #0B1320; --navy-800: #121C2E; --navy-700: #1B2740;
+  --gold-500: #DFC087; --gold-600: #C7A265; --gold-300: #F0DFB8;
+  --parchment: #F4E7CB; --brown-700: #4A3218; --brown-500: #8A6A32;
+  --ok: #8FD14F; --bad: #D9704A; --warn: #F0A868;
+  --ink: #EAF0FA; --ink-dim: rgba(234, 240, 250, .72);
+  --veil: rgba(11, 19, 32, .55);
+
+  /* Tipografi */
+  --font-display: 'Cinzel', Georgia, 'Times New Roman', serif;
+  --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Consolas, monospace;
+
+  --step--1: clamp(.82rem, .78rem + .2vw, .92rem);
+  --step-0: clamp(.95rem, .9rem + .25vw, 1.05rem);
+  --step-1: clamp(1.15rem, 1.05rem + .5vw, 1.4rem);
+  --step-2: clamp(1.5rem, 1.3rem + 1vw, 2.1rem);
+  --step-3: clamp(2rem, 1.6rem + 2vw, 3rem);
+
+  /* Ruang & bentuk */
+  --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
+  --sp-5: 24px; --sp-6: 32px; --sp-7: 48px;
+  --radius: 12px; --radius-lg: 20px;
+  --shadow-1: 0 2px 8px rgba(0, 0, 0, .25);
+  --shadow-2: 0 12px 32px rgba(0, 0, 0, .4);
+
+  /* Layout */
+  --hud-h: 72px; --nav-h: 76px; --sidebar-w: 248px;
+  --content-max: 1180px;
+
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--navy-900);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  margin: 0 0 var(--sp-3);
+  font-family: var(--font-display);
+  line-height: 1.25;
+  color: var(--gold-300);
+}
+h1 { font-size: var(--step-3); }
+h2 { font-size: var(--step-2); }
+h3 { font-size: var(--step-1); }
+
+p { margin: 0 0 var(--sp-4); }
+
+a { color: var(--gold-500); }
+a:hover { color: var(--gold-300); }
+
+img, svg, video, canvas { display: block; max-width: 100%; height: auto; }
+
+button, input, select, textarea { font: inherit; color: inherit; }
+
+code, kbd, samp, pre { font-family: var(--font-mono); font-size: .95em; }
+
+table { border-collapse: collapse; width: 100%; }
+
+/* Fokus keyboard selalu terlihat */
+:focus-visible {
+  outline: 3px solid var(--gold-500);
+  outline-offset: 2px;
+}
+
+/* Utilitas */
+[hidden] { display: none !important; }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms;
+    animation-iteration-count: 1;
+    transition-duration: .01ms;
+    scroll-behavior: auto;
+  }
+}

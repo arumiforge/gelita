@@ -1,0 +1,17 @@
+/* ==========================================================================
+   GELITA — admin.css
+   Panel admin. Tahap 2: dasar halaman. Filter bar, KPI, chart, dan form
+   konten ditambahkan pada tahap 5.
+   ========================================================================== */
+
+.admin-main .panel + .panel { margin-top: var(--sp-5); }
+
+.admin-main .page-title { margin-bottom: var(--sp-4); }
+
+.admin-main p { color: var(--ink-dim); }
+
+.admin-main code {
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, .08);
+}

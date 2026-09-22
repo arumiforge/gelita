@@ -1,0 +1,153 @@
+/* ==========================================================================
+   GELITA — components.css
+   Tombol, panel, form, pemilih bahasa, toast, tabel, kondisi kosong, bintang,
+   meter kata sandi.
+   ========================================================================== */
+
+/* ---------- Tombol (target sentuh min. 44×44) ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  min-height: 44px;
+  padding: var(--sp-2) var(--sp-5);
+  border: 2px solid transparent;
+  border-radius: 999px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform .15s, background-color .15s, border-color .15s;
+}
+.btn:active { transform: translateY(1px); }
+.btn:disabled, .btn.is-disabled { opacity: .55; cursor: not-allowed; }
+
+.btn-primary { background: var(--gold-500); color: var(--navy-900); }
+.btn-primary:hover { background: var(--gold-300); color: var(--navy-900); }
+
+.btn-ghost { background: transparent; border-color: var(--gold-500); color: var(--gold-500); }
+.btn-ghost:hover { background: rgba(223, 192, 135, .12); color: var(--gold-300); }
+
+.btn-quiet { background: rgba(255, 255, 255, .06); color: var(--ink); }
+.btn-quiet:hover { background: rgba(255, 255, 255, .12); color: var(--ink); }
+
+.btn-lg { min-height: 56px; padding: var(--sp-3) var(--sp-6); font-size: var(--step-1); }
+
+/* ---------- Panel & kartu ---------- */
+.panel, .card {
+  padding: var(--sp-5);
+  background: rgba(18, 28, 46, .92);
+  border: 1px solid rgba(223, 192, 135, .22);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-1);
+}
+
+.page-title { font-size: var(--step-2); }
+
+/* ---------- Form ---------- */
+.field { display: grid; gap: var(--sp-1); margin-bottom: var(--sp-4); }
+
+label { font-weight: 600; }
+
+input[type="text"], input[type="password"], input[type="email"], input[type="number"],
+input[type="search"], input[type="date"], select, textarea {
+  width: 100%;
+  min-height: 44px;
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--navy-900);
+  border: 1px solid rgba(234, 240, 250, .25);
+  border-radius: var(--radius);
+}
+input:focus-visible, select:focus-visible, textarea:focus-visible { border-color: var(--gold-500); }
+
+.field-help { color: var(--ink-dim); font-size: var(--step--1); }
+.field-error { color: var(--bad); font-size: var(--step--1); }
+.field-error::before { content: "✗ "; }
+
+/* ---------- Pemilih bahasa ---------- */
+.lang-switch {
+  display: inline-flex;
+  padding: 3px;
+  background: rgba(255, 255, 255, .06);
+  border: 1px solid rgba(223, 192, 135, .3);
+  border-radius: 999px;
+}
+
+.lang-opt {
+  display: inline-grid;
+  place-items: center;
+  min-width: 44px;
+  min-height: 38px;
+  padding: 0 var(--sp-3);
+  border-radius: 999px;
+  color: var(--ink);
+  font-weight: 700;
+  font-size: var(--step--1);
+  text-decoration: none;
+}
+.lang-opt:hover { color: var(--gold-300); }
+.lang-opt.is-active { background: var(--gold-500); color: var(--navy-900); }
+
+/* ---------- Chip ---------- */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  padding: 2px var(--sp-3);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .08);
+  font-size: var(--step--1);
+}
+
+/* ---------- Toast ---------- */
+.toast {
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--radius);
+  border-left: 4px solid var(--gold-500);
+  background: var(--navy-800);
+  box-shadow: var(--shadow-2);
+  animation: toast-in .2s ease-out;
+}
+.toast.is-ok { border-left-color: var(--ok); }
+.toast.is-bad { border-left-color: var(--bad); }
+.toast.is-warn { border-left-color: var(--warn); }
+.toast small { display: block; color: var(--ink-dim); font-family: var(--font-mono); font-size: .75rem; }
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ---------- Tabel & kondisi kosong ---------- */
+.table-wrap { width: 100%; overflow-x: auto; }
+
+.data-table th, .data-table td {
+  padding: var(--sp-2) var(--sp-3);
+  border-bottom: 1px solid rgba(234, 240, 250, .1);
+  text-align: left;
+  vertical-align: top;
+}
+.data-table th { color: var(--gold-300); font-size: var(--step--1); white-space: nowrap; }
+
+.empty-state {
+  padding: var(--sp-6) var(--sp-5);
+  border: 1px dashed rgba(223, 192, 135, .35);
+  border-radius: var(--radius);
+  color: var(--ink-dim);
+  text-align: center;
+}
+
+/* ---------- Bintang ---------- */
+.stars { display: inline-flex; gap: 2px; color: var(--ink-dim); }
+.star.is-on { color: var(--gold-500); }
+
+/* ---------- Meter kata sandi ---------- */
+.pw-meter { height: 8px; border-radius: 4px; background: rgba(255, 255, 255, .15); overflow: hidden; }
+.pw-meter i { display: block; height: 100%; width: 0; transition: width .2s; }
+.pw-meter i[data-level="weak"] { width: 33%; background: var(--bad); }
+.pw-meter i[data-level="medium"] { width: 66%; background: var(--warn); }
+.pw-meter i[data-level="strong"] { width: 100%; background: var(--ok); }
+.pw-rules { padding-left: 0; list-style: none; font-size: var(--step-0); }
+.pw-rules li::before { content: "✗"; margin-right: var(--sp-2); color: var(--ink-dim); }
+.pw-rules li.is-met { color: var(--ok); }
+.pw-rules li.is-met::before { content: "✓"; color: var(--ok); }
