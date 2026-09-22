@@ -504,7 +504,21 @@ Aturan folder aset:
 
 * `public/assets/{ui,char,bg,map,challenge,library,reward,audio}/` — aset yang dikirim bersama source (seed).
 * `public/assets/uploads/` — aset yang diunggah lewat panel admin. Ditulis dengan nama resmi dari `media_assets.asset_key`, bukan nama asli berkas pengguna.
+* `public/assets/vendor/` — library frontend yang di-host sendiri. Tidak ada CDN.
 * `writable/exports/` — **tidak** boleh berada di bawah `public/`. Unduhan dilayani controller yang memeriksa otorisasi lebih dulu.
+
+#### Status `public/assets/vendor/` — masih kosong
+
+Folder ini **belum berisi berkas library apa pun**; saat ini hanya `.gitkeep` dan sebuah `README.md`. Berkas binernya ditambahkan pada tahap view/JavaScript (tahap 5–6), bukan sekarang.
+
+| Berkas | Library | Versi yang dipakai | Sumber |
+|---|---|---|---|
+| `echarts.min.js` | Apache ECharts | `6.x` — versi dikunci di repo, diperbarui manual | unduhan rilis resmi |
+| `howler.min.js` | Howler.js | `2.2.x` — dikunci di repo | unduhan rilis resmi |
+
+Alasan pemilihan kedua library dan daftar halaman yang memakainya ada di [05_VIEW_UI.md → *External CSS/JS Library*](05_VIEW_UI.md) dan [06_JAVASCRIPT.md → *Library JavaScript*](06_JAVASCRIPT.md).
+
+> Folder ini sempat terabaikan Git karena pola `vendor/` pada `.gitignore` cocok dengan folder bernama `vendor` di kedalaman mana pun. Pola tersebut sudah dipersempit menjadi `/vendor/` (khusus folder Composer di root), jadi berkas di bawah `public/assets/vendor/` kini dapat di-commit. Jangan mengembalikan pola lama.
 
 ---
 
@@ -688,6 +702,41 @@ class PasswordPolicy
 ```
 
 JavaScript di halaman registrasi (tahap 6) menjalankan aturan yang sama untuk umpan balik langsung; **keputusan akhir selalu dari server**.
+
+### 3b. Library `HashedIpSessionHandler` — BELUM DIPASANG
+
+`app/Libraries/HashedIpSessionHandler.php` sudah ada, tetapi **sengaja belum dijadikan `session.driver`**. `app/Config/Session.php` memakai `CodeIgniter\Session\Handlers\DatabaseHandler` bawaan. Catatan ini merekam hasil inspeksi kompatibilitasnya agar tidak hilang; enam butir di bawah harus diselesaikan lebih dulu sebelum handler ini diaktifkan.
+
+Bentuk kelas saat ini:
+
+```php
+class HashedIpSessionHandler extends MySQLiHandler
+{
+    public function __construct(SessionConfig $config, string $ipAddress)
+    {
+        helper('gelita');
+
+        parent::__construct($config, (string) hash_ip($ipAddress));
+    }
+}
+```
+
+#### Yang sudah terbukti bekerja
+
+Diuji langsung terhadap MariaDB 10.11: satu siklus `open()` → `read()` → `write()` → `close()` menulis baris `ci_sessions` dengan `ip_address` berisi 64 karakter heksadesimal, dan IP mentah `10.1.2.3` tidak muncul di mana pun. `ci_sessions.ip_address` bertipe `VARCHAR(64)` — persis selebar SHA-256 heksadesimal, jadi tidak perlu perubahan skema. Kolom `id` `VARCHAR(128)` juga cukup untuk awalan `gelita_session:` + ID sesi.
+
+#### Enam perubahan yang diperlukan
+
+| # | Masalah | Bukti | Perubahan yang diperlukan |
+|---|---|---|---|
+| 1 | Kelas mewarisi `MySQLiHandler`, yang mengunci sesi dengan `GET_LOCK`/`RELEASE_LOCK` — fungsi khusus MySQL | Terhadap grup `tests` (SQLite3): `DatabaseException: Unable to prepare statement: no such function: GET_LOCK` | Strategi kunci yang sadar platform: pilih handler basis saat runtime, atau bungkus penghashan IP sebagai dekorator di atas handler yang dipilih `Services::session()` |
+| 2 | `Services::session()` hanya memetakan handler per-platform ketika driver **persis** `DatabaseHandler::class` (`system/Config/Services.php:677`). Driver kustom melewati cabang itu — sekaligus melewati exception "Only MySQLi and Postgre are supported" yang seharusnya memperingatkan | Perbandingan kelas diuji langsung: driver kustom → tidak dipetakan | Override `Services::session()` di `app/Config/Services.php`, atau pertahankan `$driver = DatabaseHandler::class` dan lakukan penghashan IP sebelum nilainya sampai ke handler |
+| 3 | Basis data uji (`Config\Database::$tests`) memakai SQLite3 `:memory:`, yang tidak akan pernah bisa menjalankan handler MySQLi | Sama dengan butir 1 | Sesi harus jatuh ke `ArrayHandler`/`FileHandler` saat `ENVIRONMENT === 'testing'`, atau selesaikan butir 1–2. **Saat ini aman hanya karena `CIUnitTestCase` otomatis menyuntikkan `MockSession` ber-`ArrayHandler`** — begitu ada test yang memakai sesi sungguhan, ini pecah |
+| 4 | `hash_ip()` mengembalikan `null` untuk IP `null`/`''`; `(string) null` menjadi `''` dan itulah yang tersimpan | `hash_ip(null) === NULL`, `hash_ip('') === NULL`, baris tersimpan dengan `ip_address = ''` | Kolomnya `NOT NULL` sehingga `''` diterima, tetapi "tidak ada IP" jadi tidak terbedakan dari hash. Tetapkan penanda eksplisit, atau nyatakan `''` sebagai keputusan sadar |
+| 5 | `Config\Gelita::$ipSalt` bernilai `''` secara bawaan | `config('Gelita')->ipSalt === ''` | Salt kosong membuat hash menjadi SHA-256 tanpa garam — dapat dibalik dengan pencarian menyeluruh ruang IPv4 dalam hitungan detik. Harus gagal cepat (lempar exception) bila salt kosong, sebelum handler boleh dipasang |
+| 6 | `session.matchIP` harus tetap `false` | PK `ci_sessions` hanya `id` (migration `003000`) | CI4 mensyaratkan `ip_address` ikut dalam PK bila `matchIP` aktif. Mengaktifkannya butuh perubahan skema |
+
+Butir 1, 2, dan 3 adalah penghalang pemasangan. Butir 5 adalah prasyarat keamanan. Butir 4 dan 6 adalah keputusan yang perlu dicatat, bukan cacat.
 
 ### 4. Services kustom — `app/Config/Services.php`
 

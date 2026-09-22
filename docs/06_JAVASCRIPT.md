@@ -730,6 +730,8 @@ Itu saja. Alasan library lain **tidak** dipakai:
 
 Tidak ada CDN. Kedua berkas vendor ada di repositori dan dimuat dari domain sendiri.
 
+> **Status:** `public/assets/vendor/` masih kosong — kedua berkas di atas ditambahkan pada tahap ini, belum ada di repo. Lihat [02_PROJECT_FOUNDATION.md → *Status `public/assets/vendor/`*](02_PROJECT_FOUNDATION.md).
+
 ---
 
 ## Aturan Sistem
