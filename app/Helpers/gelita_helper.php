@@ -139,6 +139,27 @@ if (! function_exists('apply_research_filters')) {
     }
 }
 
+if (! function_exists('safe_internal_url')) {
+    /**
+     * URL tujuan untuk redirect yang berasal dari input pengguna (`redirect_to`).
+     *
+     * Hanya path internal yang diterima. Skema (`https:`, `javascript:`),
+     * URL protocol-relative (`//jahat.example`), backslash, dan karakter baris
+     * baru ditolak dan diganti $fallback — aturan 11 pada 04_CONTROLLER_ROUTE.md.
+     */
+    function safe_internal_url(?string $target, string $fallback = '/'): string
+    {
+        $target = trim((string) $target);
+
+        $unsafe = $target === ''
+            || preg_match('/[\x00-\x1F\x7F\\\\]/', $target) === 1
+            || preg_match('#^[a-z][a-z0-9+.\-]*:#i', $target) === 1
+            || str_starts_with($target, '//');
+
+        return site_url($unsafe ? ltrim($fallback, '/') : ltrim($target, '/'));
+    }
+}
+
 if (! function_exists('is_api_path')) {
     /** Path relatif request (tanpa garis miring depan) termasuk area /api? */
     function is_api_path(string $path): bool
