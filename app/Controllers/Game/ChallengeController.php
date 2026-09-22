@@ -25,6 +25,10 @@ class ChallengeController extends BaseGameController
             return redirect()->to(site_url('wilayah/' . $level->code))->with('error', lang('Game.nodeLocked'));
         }
 
+        if ($gate = $this->dialogueGate($session, $level)) {
+            return $gate;
+        }
+
         return view('game/mission-brief', $this->hudData() + [
             'level'    => $level,
             'node'     => $node,
@@ -41,6 +45,10 @@ class ChallengeController extends BaseGameController
 
         if (! $this->levelUnlocked($session, $level->sequence) || ! $this->nodeUnlocked($session, $node)) {
             return redirect()->to(site_url('wilayah/' . $level->code))->with('error', lang('Game.nodeLocked'));
+        }
+
+        if ($gate = $this->dialogueGate($session, $level)) {
+            return $gate;
         }
 
         // Engine diperiksa SEBELUM openNode(): membuka attempt lalu gagal
