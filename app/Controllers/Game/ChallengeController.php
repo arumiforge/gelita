@@ -1,0 +1,120 @@
+<?php
+
+namespace App\Controllers\Game;
+
+use App\Models\ChallengeAttemptModel;
+use CodeIgniter\Exceptions\PageNotFoundException;
+use CodeIgniter\HTTP\RedirectResponse;
+
+/**
+ * Kartu misi, layar tantangan, riwayat hasil, dan layar bintang.
+ *
+ * `play()` tidak menilai apa pun: ia hanya membuka attempt lewat
+ * ChallengeService dan menanamkan payload soal untuk mesin permainan.
+ * Seluruh interaksi jawaban berjalan lewat `/api/attempts/*`.
+ */
+class ChallengeController extends BaseGameController
+{
+    public function brief(string $code, int $sequence): string|RedirectResponse
+    {
+        $session = $this->session();
+        $level   = $this->requireLevel($code);
+        $node    = $this->requireNode($level->id, $sequence);
+
+        if (! $this->levelUnlocked($session, $level->sequence) || ! $this->nodeUnlocked($session, $node)) {
+            return redirect()->to(site_url('wilayah/' . $level->code))->with('error', lang('Game.nodeLocked'));
+        }
+
+        return view('game/mission-brief', $this->hudData() + [
+            'level'    => $level,
+            'node'     => $node,
+            'sequence' => $sequence,
+            'best'     => $this->bestAttempt($session, $node->id),
+        ]);
+    }
+
+    public function play(string $code, int $sequence): string|RedirectResponse
+    {
+        $session = $this->session();
+        $level   = $this->requireLevel($code);
+        $node    = $this->requireNode($level->id, $sequence);
+
+        if (! $this->levelUnlocked($session, $level->sequence) || ! $this->nodeUnlocked($session, $node)) {
+            return redirect()->to(site_url('wilayah/' . $level->code))->with('error', lang('Game.nodeLocked'));
+        }
+
+        // Engine diperiksa SEBELUM openNode(): membuka attempt lalu gagal
+        // merender akan meninggalkan attempt `in_progress` yang tidak pernah
+        // dimainkan dan memindahkan penunjuk progres sesi.
+        $engine = (string) $node->engine_type;
+
+        if (! in_array($engine, config('Gelita')->engineTypes, true)) {
+            throw PageNotFoundException::forPageNotFound("Engine '{$engine}' tidak dikenali.");
+        }
+
+        try {
+            $opened = service('challengeService')->openNode($session, $node->id);
+        } catch (\RuntimeException $e) {
+            log_message('error', 'Gagal membuka node {id}: {msg}', ['id' => $node->id, 'msg' => $e->getMessage()]);
+
+            return redirect()->to(site_url('wilayah/' . $level->code))->with('error', lang('Game.challengeUnavailable'));
+        }
+
+        return view('game/challenge/' . $engine, $this->hudData() + [
+            'level'    => $level,
+            'node'     => $node,
+            'sequence' => $sequence,
+            'attempt'  => $opened['attempt'],
+            'payload'  => $opened['payload'],
+        ]);
+    }
+
+    public function result(string $code, int $sequence): string
+    {
+        $session = $this->session();
+        $level   = $this->requireLevel($code);
+        $node    = $this->requireNode($level->id, $sequence);
+
+        $attempts = model(ChallengeAttemptModel::class)
+            ->where('session_id', $session->id)
+            ->where('challenge_node_id', $node->id)
+            ->where('status', 'completed')
+            ->orderBy('attempt_no', 'ASC')
+            ->findAll();
+
+        return view('game/challenge-result', $this->hudData() + [
+            'level'    => $level,
+            'node'     => $node,
+            'sequence' => $sequence,
+            'attempts' => $attempts,
+            'best'     => $this->bestAttempt($session, $node->id),
+        ]);
+    }
+
+    public function finished(int $attemptId): string
+    {
+        $session = $this->session();
+        $attempt = model(ChallengeAttemptModel::class)->find($attemptId);
+
+        if ($attempt === null || $attempt->session_id !== $session->id || ! $attempt->isCompleted()) {
+            throw PageNotFoundException::forPageNotFound("Hasil {$attemptId} tidak ditemukan pada sesi ini.");
+        }
+
+        $node  = service('contentRepository')->node($attempt->challenge_node_id);
+        $level = $node === null ? null : service('contentRepository')->levelById($node->level_id);
+
+        $levelScore = $level === null
+            ? ['score' => 0.0, 'stars' => 0, 'completed_nodes' => 0, 'total_nodes' => 0]
+            : service('scoringService')->levelScore($session->id, $level->id);
+
+        return view('game/challenge-finished', $this->hudData() + [
+            'attempt'        => $attempt,
+            'node'           => $node,
+            'level'          => $level,
+            'levelScore'     => $levelScore,
+            'levelCompleted' => $levelScore['total_nodes'] > 0
+                && $levelScore['completed_nodes'] >= $levelScore['total_nodes'],
+            'allCompleted' => $this->allNodesCompleted($session),
+        ]);
+    }
+}
