@@ -84,7 +84,11 @@ php_errors.log
 #-------------------------
 # Composer
 #-------------------------
-vendor/
+# Hanya folder vendor Composer di root. Pola tanpa "/" di depan cocok dengan
+# folder bernama vendor di kedalaman mana pun dan ikut mengabaikan
+# public/assets/vendor/ (ECharts & Howler.js yang di-host sendiri dan wajib
+# ada di repositori — lihat docs/06_JAVASCRIPT.md).
+/vendor/
 
 #-------------------------
 # IDE / Development Files
