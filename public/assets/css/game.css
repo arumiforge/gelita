@@ -1040,11 +1040,69 @@ body.is-challenge .app { padding-bottom: var(--sp-4); }
 .book-spread.is-text-only::after { display: none; }
 .book-page { display: grid; align-content: start; gap: var(--sp-3); padding: var(--sp-6); }
 .book-media { gap: var(--sp-3); }
+/* Galeri tetap terlihat saat teks panjang digulir */
+.book-media > .book-gallery { position: sticky; top: calc(var(--hud-h) + var(--sp-4)); }
 .book-figure { margin: 0; overflow: hidden; border: 1px solid rgba(74, 50, 24, .35); border-radius: var(--radius); background: rgba(74, 50, 24, .08); }
 .book-figure img, .book-figure video { width: 100%; }
+
+/* Galeri: media pertama lebar penuh, sisanya dua kolom */
+.book-gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-3); }
+.book-gallery > .book-figure:first-child,
+.book-gallery > .book-figure.is-video,
+.book-gallery.is-single > .book-figure { grid-column: 1 / -1; }
+.book-gallery .book-figure img { aspect-ratio: 4 / 3; height: auto; object-fit: cover; }
+.book-gallery > .book-figure:first-child img { aspect-ratio: 3 / 2; }
+.book-figure figcaption { padding: var(--sp-2) var(--sp-3); font-size: var(--step--1); line-height: 1.45; }
+.book-credit { display: block; margin-top: 2px; color: rgba(74, 50, 24, .7); font-size: .78rem; }
+
+.book-zoom { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; }
+.book-zoom:focus-visible { outline: 3px solid var(--navy-800); outline-offset: -3px; }
+
+.book-embed { position: relative; aspect-ratio: 16 / 9; background: var(--navy-800); }
+.book-embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.embed-play {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  background: radial-gradient(circle at 50% 45%, var(--navy-600), var(--navy-900));
+  color: var(--ink);
+  text-align: left;
+  text-decoration: none;
+}
+.embed-play b { display: block; font-size: var(--step-1); }
+.embed-play small { display: block; color: var(--ink-dim); font-size: var(--step--1); }
+.embed-play-icon { display: grid; place-items: center; flex: none; width: 56px; height: 56px; border-radius: 50%; background: var(--gold-500); color: var(--navy-900); }
+.embed-play:hover .embed-play-icon, .embed-play:focus-visible .embed-play-icon { background: var(--gold-300); transform: scale(1.06); }
+.book-link { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-4); color: var(--brown-700); font-weight: 700; }
+
 .book-text h2 { color: var(--brown-700); }
 .book-spread .eyebrow, .passage .eyebrow, .source-text .eyebrow { color: var(--brown-500); }
 .book-body { font-size: var(--step-0); line-height: 1.75; }
+.book-body p { margin: 0 0 var(--sp-3); }
+.book-body h3 { margin: var(--sp-5) 0 var(--sp-2); color: var(--brown-700); font-size: var(--step-1); }
+.book-body h3:first-child { margin-top: 0; }
+.book-body ul { margin: 0 0 var(--sp-3); padding-left: 1.3em; }
+.book-body li + li { margin-top: var(--sp-1); }
+.book-body strong { color: var(--brown-700); }
+.book-fact {
+  margin: var(--sp-4) 0;
+  padding: var(--sp-3) var(--sp-4);
+  border-left: 4px solid var(--brown-500);
+  border-radius: var(--radius);
+  background: rgba(223, 192, 135, .35);
+}
+.book-source { margin-top: var(--sp-5); color: rgba(74, 50, 24, .72); font-size: var(--step--1); line-height: 1.5; }
+
+/* Perbesar gambar */
+.lightbox { max-width: min(96vw, 1200px); max-height: 94vh; padding: var(--sp-3); border: 2px solid var(--gold-600); border-radius: var(--radius-lg); background: var(--navy-900); color: var(--ink); }
+.lightbox::backdrop { background: rgba(11, 19, 32, .85); }
+.lightbox img { max-width: 100%; max-height: calc(94vh - 120px); margin: 0 auto; object-fit: contain; }
+.lightbox-caption { margin: var(--sp-2) 0 0; font-size: var(--step--1); text-align: center; }
+.lightbox-close { float: right; margin: 0 0 var(--sp-2) var(--sp-2); font-size: 1.6rem; line-height: 1; }
 
 /* =========================== PROFIL =========================== */
 .profile-card { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: var(--sp-4); margin-bottom: var(--sp-4); }
@@ -1274,6 +1332,7 @@ body.is-challenge .app { padding-bottom: var(--sp-4); }
   }
 
   .book-spread { grid-template-columns: 1fr; }
+  .book-media > .book-gallery { position: static; }
   .book-spread::after { display: none; }
   .book-page { padding: var(--sp-4); }
 

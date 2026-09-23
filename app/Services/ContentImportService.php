@@ -21,9 +21,6 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx as XlsxWriter;
  */
 class ContentImportService
 {
-    /** Awalan node_ref → kode level */
-    private const LEVEL_PREFIX = ['tmg' => 'temanggung', 'mgl' => 'magelang', 'wnb' => 'wonosobo'];
-
     private const INTERACTION_TYPES = [
         'puzzle_arrange', 'ordering', 'fill_blank_bank', 'fill_blank_free',
         'verdict_card', 'verdict_reason', 'single_choice', 'source_trust', 'find_object',
@@ -942,7 +939,7 @@ class ContentImportService
 
         foreach (model(ChallengeNodeModel::class)->allActive() as $node) {
             $levelCode = $byLevel[$node->level_id] ?? null;
-            $prefix    = $levelCode === null ? null : array_search($levelCode, self::LEVEL_PREFIX, true);
+            $prefix    = $levelCode === null ? null : array_search($levelCode, config('Gelita')->levelPrefixes, true);
 
             if ($prefix !== false && $prefix !== null) {
                 $out[$prefix . '-' . $node->sequence] = $node->id;
@@ -956,7 +953,7 @@ class ContentImportService
     {
         foreach ($this->levelIdsByCode() as $code => $id) {
             if ($id === $levelId) {
-                $prefix = array_search($code, self::LEVEL_PREFIX, true);
+                $prefix = array_search($code, config('Gelita')->levelPrefixes, true);
 
                 return $prefix === false ? null : $prefix . '-' . $sequence;
             }

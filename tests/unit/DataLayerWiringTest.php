@@ -12,9 +12,9 @@ use CodeIgniter\Test\CIUnitTestCase;
  */
 final class DataLayerWiringTest extends CIUnitTestCase
 {
-    private const MODEL_COUNT = 29;
+    private const MODEL_COUNT = 30;   // + LibraryMediaModel (migration 003500)
 
-    private const ENTITY_COUNT = 11;
+    private const ENTITY_COUNT = 12;  // + LibraryMedia
 
     /** Nama service → kelas yang diharapkan */
     private const SERVICES = [

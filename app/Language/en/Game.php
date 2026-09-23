@@ -224,6 +224,12 @@ return [
     // Library
     'pageOf'        => 'Page {0} of {1}',
     'libraryEmpty'  => 'There are no library pages for this region yet.',
+    'libraryPlayVideo' => 'Play video',
+    'libraryOpenLink' => 'Open {0}',
+    'libraryZoom' => 'Enlarge picture',
+    'libraryEmbedNote' => 'The {0} video only loads after you press Play.',
+    'libraryGallery' => 'Picture and video gallery',
+    'libraryFact' => 'Did you know?',
     'prevPage'      => 'Previous page',
     'nextPage'      => 'Next page',
 
