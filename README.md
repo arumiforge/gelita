@@ -51,7 +51,7 @@ Ekspor, laporan, retensi, dan command kini berfungsi penuh. Rincian dan keputusa
 - **Laporan PDF** (mPDF): ringkasan studi dari halaman ekspor, dan laporan satu peserta dari `/admin/peserta/{id}`.
 - **Penghapusan** (`/admin/tata-kelola`) dipindah ke `RetentionService`: cakupan peserta, sesi, atau studi (dipersempit fase & rentang tanggal); eksekusi dibatalkan bila jumlah baris berubah jauh sejak pratinjau.
 - **Retensi** (`php spark gelita:retention:run`, cron harian): sesi menganggur → `paused`, attempt menggantung > 24 jam → `abandoned`, sesi `paused` > 30 hari → `abandoned`, berkas ekspor kedaluwarsa dibuang, dan data yang melewati `retention_days` **hanya** dibuatkan pratinjau penghapusan + peringatan di dasbor admin.
-- **Command**: `gelita:content:verify`, `gelita:media:scan`, `gelita:score:recompute`, `gelita:bank:import`, `gelita:retention:run` — semuanya mengembalikan kode keluar 1 saat gagal sehingga dapat dipakai di skrip deploy.
+- **Command**: `gelita:content:verify`, `gelita:media:scan`, `gelita:score:recompute`, `gelita:bank:import`, `gelita:retention:run`, `gelita:staff:password` — semuanya mengembalikan kode keluar 1 saat gagal sehingga dapat dipakai di skrip deploy.
 
 ### Tahap 6 — JavaScript
 
@@ -181,7 +181,7 @@ Jalankan test suite tanpa laporan coverage:
 vendor/bin/phpunit --no-coverage
 ```
 
-Suite (138 test) memakai grup database `tests` (SQLite3 in-memory) dan hanya menjalankan migration bernamespace `Tests\Support`, bukan migration aplikasi — skema aplikasi memakai fitur MySQL/MariaDB (`DATETIME(6)`, `ON UPDATE CURRENT_TIMESTAMP(6)`) yang tidak ada di SQLite. Sesi di-mock dengan `ArrayHandler` oleh `CIUnitTestCase`. Yang dikunci suite antara lain:
+Suite (143 test) memakai grup database `tests` (SQLite3 in-memory) dan hanya menjalankan migration bernamespace `Tests\Support`, bukan migration aplikasi — skema aplikasi memakai fitur MySQL/MariaDB (`DATETIME(6)`, `ON UPDATE CURRENT_TIMESTAMP(6)`) yang tidak ada di SQLite. Sesi di-mock dengan `ArrayHandler` oleh `CIUnitTestCase`. Yang dikunci suite antara lain:
 
 - `RouteWiringTest` — auto-route tetap mati, setiap handler menunjuk kelas/method yang ada, setiap view yang disebut controller punya berkasnya, dan ganti sandi staf hanya berfilter `staffAuth` (terbuka untuk guru).
 - `HeadRouteTest` — HEAD memakai rute GET beserta filternya; HEAD ke halaman staf tanpa login dialihkan ke `/admin/login`.
@@ -193,6 +193,7 @@ Suite (138 test) memakai grup database `tests` (SQLite3 in-memory) dan hanya men
 - `ExcelWriterTest` — workbook terbaca ulang PhpSpreadsheet, teks berawalan `=` tidak pernah menjadi rumus, berkas sementara dibersihkan.
 - `ExportRulesTest` — mode anonim tanpa kolom identitas, rahasia tidak pernah diekspor, kunci jawaban hanya admin, guru tanpa Raw Events, cakupan sekolah dipaksa service, cakupan & penjaga drift penghapusan.
 - `Stage7WiringTest` — kelima command `gelita:*` aktif, service baru terdaftar, dan setiap keluaran templat PDF lewat `esc()`.
+- `StaffPasswordCommandTest` — `gelita:staff:password` terdaftar, menolak tanpa nama pengguna, dan memakai jalur reset yang sama dengan `/admin/staf`; sandi sementaranya lolos `PasswordPolicy`.
 - `DeployFilesTest` — skrip Windows hanya ASCII, skrip Bash ber-LF dengan `set -E`, konfigurasi Nginx Linux dan Windows hanya berbeda di baris platform, tidak ada perintah yang merusak production, salinan `.env` di backup Windows tidak langsung terhapus retensi.
 - `ScoringServiceTest`, `PasswordPolicyTest`, `ChallengeEntityTest`, `ViewHelperTest`, `LanguageFilesTest`, `EventTimeTest`, `DebugToolbarRedactionTest`.
 
