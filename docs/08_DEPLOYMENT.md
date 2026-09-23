@@ -25,7 +25,9 @@ Menjalankan GELITA sebagai sistem production. Dokumen ini mencakup:
 - penataan aset, backup, dan tugas terjadwal;
 - langkah operasional harian.
 
-Tahap 8 **tidak mengubah kode aplikasi**. Hasilnya berupa berkas operasional di folder `deploy/` dan dua baris `.gitignore` (lihat [Berkas yang dihasilkan tahap 8](#berkas-yang-dihasilkan-tahap-8)).
+Tahap 8 **tidak mengubah kode aplikasi**. Hasilnya berupa berkas operasional di folder `deploy/`, tiga aturan `.gitignore`, dan satu test yang mengunci berkas tersebut (lihat [Berkas yang dihasilkan tahap 8](#berkas-yang-dihasilkan-tahap-8)).
+
+Status: **selesai**. Semua skrip dijalankan di server uji. Tiga cacat yang baru terlihat saat dijalankan sudah diperbaiki, baik di berkas maupun di dokumen ini. Rinciannya di [Catatan Implementasi Tahap 8](#catatan-implementasi-tahap-8).
 
 ---
 
@@ -628,12 +630,13 @@ Selama berkas ada, semua halaman dan API menjawab **503** dengan pesan dwibahasa
 | `deploy/linux/deploy.sh` | pembaruan: cek kelas aktif → backup → pemeliharaan → pull → composer → migrate (DSN) → cache → `assetVersion` → reload FPM → verifikasi → buka |
 | `deploy/linux/backup.sh` | backup database (tanpa isi `ci_sessions`), unggahan, `.env`; retensi 30 hari; salinan kedua |
 | `deploy/linux/nginx/gelita-http.conf`, `gelita-https.conf` | konfigurasi Nginx Jalur L |
-| `deploy/windows/deploy.ps1`, `backup.ps1`, `retensi.ps1` | padanan PowerShell (kompatibel Windows PowerShell 5.1) |
+| `deploy/windows/deploy.ps1`, `backup.ps1`, `retensi.ps1` | padanan PowerShell (kompatibel Windows PowerShell 5.1; **hanya ASCII**) |
 | `deploy/windows/config.example.psd1` | contoh `config.psd1` |
 | `deploy/windows/nginx/gelita-http.conf`, `gelita-https.conf` | konfigurasi Nginx Jalur W |
 | `.gitignore` | tambah `/public/assets/uploads/*`, `!/public/assets/uploads/.gitkeep`, `/writable/pemeliharaan.flag` |
+| `tests/unit/DeployFilesTest.php` | mengunci cacat yang ditemukan saat skrip dijalankan (lihat [Catatan Implementasi Tahap 8](#catatan-implementasi-tahap-8)) |
 
-Isi skrip ditulis lengkap di dokumen ini. Semua skrip sudah dijalankan di atas MariaDB 10.11: skrip Bash dengan environment kosong seperti cron, skrip PowerShell dengan PowerShell 7.4. Masing-masing diuji lewat jalur sukses, jalur gagal, dan penolakan saat ada kelas aktif.
+Isi skrip ditulis lengkap di dokumen ini dan sama dengan berkas di `deploy/`. Bila keduanya berbeda, berkas di repositori yang berlaku. Skrip Bash dijalankan dengan environment kosong seperti cron di atas Ubuntu 24.04, MariaDB 10.11, Nginx 1.24, dan PHP-FPM 8.3. Skrip PowerShell dijalankan dengan PowerShell 7.4, sedangkan cara Windows PowerShell 5.1 membacanya disimulasikan. Setiap skrip diuji lewat jalur sukses, jalur gagal, dan penolakan saat ada kelas aktif.
 
 ### Deployment pertama — Jalur L
 
@@ -817,6 +820,7 @@ OPS=/home/deploy/.gelita          # backup.cnf, migrate.dsn, ops.conf (chmod 600
 APP=/var/www/gelita
 BRANCH=main
 FPM=php8.3-fpm
+# shellcheck source=/dev/null
 [ -r "$OPS/ops.conf" ] && . "$OPS/ops.conf"
 FLAG="$APP/writable/pemeliharaan.flag"
 
@@ -881,9 +885,13 @@ powershell -NoProfile -ExecutionPolicy Bypass -File C:\laragon\www\gelita\deploy
 
 ```powershell
 <#
-  deploy\windows\deploy.ps1 — pembaruan GELITA di Windows + Laragon.
+  deploy\windows\deploy.ps1 - pembaruan GELITA di Windows + Laragon.
   Jalankan di PowerShell dengan akun Laragon:
     powershell -NoProfile -ExecutionPolicy Bypass -File C:\laragon\www\gelita\deploy\windows\deploy.ps1 [-Paksa]
+
+  Berkas .ps1 di folder ini sengaja hanya berisi ASCII: Windows PowerShell 5.1
+  membaca skrip tanpa BOM sebagai ANSI, dan byte UTF-8 dari tanda panah atau
+  tanda pisah menjadi tanda kutip tipografis yang memutus string.
 #>
 param(
     [string]$Config = 'C:\gelita-ops\config.psd1',
@@ -898,7 +906,7 @@ $spark = Join-Path $c.App 'spark'
 $flag  = [IO.Path]::Combine($c.App, 'writable', 'pemeliharaan.flag')
 
 function Langkah([string]$Nama, [scriptblock]$Blok) {
-    Write-Output "→ $Nama"
+    Write-Output "-> $Nama"
     $global:LASTEXITCODE = 0
     & $Blok
     if ($LASTEXITCODE -ne 0) { throw "$Nama gagal (kode $LASTEXITCODE)" }
@@ -906,7 +914,7 @@ function Langkah([string]$Nama, [scriptblock]$Blok) {
 
 Set-Location $c.App
 
-Write-Output '→ Periksa kelas yang sedang berjalan'
+Write-Output '-> Periksa kelas yang sedang berjalan'
 $aktif = & (Join-Path $c.MySql "mysql$exe") "--defaults-extra-file=$(Join-Path $ops 'backup.cnf')" -N gelita -e "SET time_zone = '+07:00'; SELECT COUNT(*) FROM game_sessions WHERE status = 'active' AND last_active_at > NOW() - INTERVAL 10 MINUTE;"
 if ($LASTEXITCODE -ne 0) { throw 'Tidak dapat memeriksa sesi aktif' }
 if ([int]$aktif -gt 0 -and -not $Paksa) {
@@ -914,18 +922,18 @@ if ([int]$aktif -gt 0 -and -not $Paksa) {
     exit 1
 }
 
-Write-Output '→ Backup database'
+Write-Output '-> Backup database'
 & (Join-Path $PSScriptRoot 'backup.ps1') -Config $Config
 if ($LASTEXITCODE -eq 2) { Write-Warning 'Salinan kedua backup gagal; deploy dilanjutkan dengan backup lokal.' }
 
-Write-Output '→ Mode pemeliharaan'
+Write-Output '-> Mode pemeliharaan'
 New-Item -ItemType File -Force -Path $flag | Out-Null
 
 try {
     Langkah 'Ambil kode terbaru' { git pull --ff-only origin $c.Branch }
     Langkah 'Dependency' { composer install --no-dev --optimize-autoloader --no-interaction }
 
-    # akun gelita_migrate lewat DSN — akun aplikasi tidak punya hak DDL
+    # akun gelita_migrate lewat DSN - akun aplikasi tidak punya hak DDL
     $env:database_default_DSN = (Get-Content (Join-Path $ops 'migrate.dsn') -Raw).Trim()
     try {
         Langkah 'Migration (akun gelita_migrate)' { & $c.Php $spark migrate }
@@ -935,7 +943,7 @@ try {
 
     Langkah 'Bersihkan cache' { & $c.Php $spark cache:clear }
 
-    Write-Output '→ Naikkan versi aset'
+    Write-Output '-> Naikkan versi aset'
     $envFile = Join-Path $c.App '.env'
     $versi   = [DateTimeOffset]::UtcNow.ToUnixTimeSeconds()
     $isi     = [IO.File]::ReadAllText($envFile)
@@ -944,11 +952,11 @@ try {
 
     Langkah 'Verifikasi konten (gagal = situs tetap dalam pemeliharaan)' { & $c.Php $spark gelita:content:verify }
 } catch {
-    Write-Host "DEPLOY GAGAL — situs tetap dalam mode pemeliharaan. Perbaiki, lalu hapus $flag" -ForegroundColor Red
+    Write-Host "DEPLOY GAGAL - situs tetap dalam mode pemeliharaan. Perbaiki, lalu hapus $flag" -ForegroundColor Red
     throw
 }
 
-Write-Output '→ Aktifkan kembali'
+Write-Output '-> Aktifkan kembali'
 Remove-Item $flag
 Write-Output 'Deploy selesai.'
 ```
@@ -957,22 +965,30 @@ Beda dengan Jalur L:
 
 - **Tidak ada reload PHP.** Di Jalur W, opcache memeriksa stempel waktu berkas.
 - **`.env` ditulis `[IO.File]::WriteAllText`** (UTF-8 tanpa BOM, CRLF dipertahankan), bukan `Set-Content`, yang di PowerShell 5.1 menulis ANSI atau ber-BOM.
+- **Skrip `.ps1` hanya berisi ASCII** (`->` dan `-`, bukan `→` dan `—`). Windows PowerShell 5.1 membaca skrip tanpa BOM sebagai ANSI (cp1252). Byte terakhir `—` dalam UTF-8 (`0x94`) menjadi kutip ganda tipografis, dan byte terakhir `→` (`0x92`) menjadi kutip tunggal tipografis. PowerShell memperlakukan keduanya sebagai tanda kutip, jadi string terputus dan skrip gagal di-parse sebelum baris pertamanya dijalankan. Jangan menambahkan karakter non-ASCII saat menyunting; `DeployFilesTest` menolaknya.
 
 ### Rollback
+
+Urutannya penting: **rollback migration dulu, baru kembalikan kode.** `migrate:rollback` menjalankan `down()` dari berkas migration rilis baru. Setelah `git reset`, berkas itu sudah tidak ada. CodeIgniter lalu berhenti dengan `There is a gap in the migration sequence near version number …` tanpa mengubah apa pun, tetapi kode keluarnya tetap **0**. Revisi 3 menulis urutan terbalik (terbukti di server uji).
+
+Nomor batch terlihat di kolom `Batch` pada `php spark migrate:status`. `<batch-sebelumnya>` adalah batch terakhir **sebelum** deploy yang dibatalkan. Di `CI_ENVIRONMENT = production`, `migrate:rollback` meminta konfirmasi `[y, n]`; jawab `y`.
 
 ```bash
 # Jalur L — sebagai deploy
 cd /var/www/gelita
 touch writable/pemeliharaan.flag
-git reset --hard <commit-sebelumnya>
-composer install --no-dev --optimize-autoloader
 
-# Bila deploy menyertakan migration:
+# 1. Bila deploy menyertakan migration — selagi kode rilis baru masih terpasang:
+sudo -u www-data php spark migrate:status                # catat batch sebelum deploy
 export database_default_DSN="$(cat ~/.gelita/migrate.dsn)"
 sudo --preserve-env=database_default_DSN -u www-data php spark migrate:rollback -b <batch-sebelumnya>
 unset database_default_DSN
+sudo -u www-data php spark migrate:status                # batch rilis baru harus sudah hilang
 # atau pulihkan dari backup bila migration tidak reversible (lihat "Backup")
 
+# 2. Baru kembalikan kode
+git reset --hard <commit-sebelumnya>
+composer install --no-dev --optimize-autoloader
 sudo -u www-data php spark cache:clear
 sudo systemctl reload php8.3-fpm
 rm writable/pemeliharaan.flag
@@ -982,14 +998,22 @@ rm writable/pemeliharaan.flag
 # Jalur W — sebagai akun gelita
 Set-Location C:\laragon\www\gelita
 New-Item -ItemType File -Force writable\pemeliharaan.flag | Out-Null
-git reset --hard <commit-sebelumnya>
-composer install --no-dev --optimize-autoloader
+
+# 1. Bila deploy menyertakan migration — selagi kode rilis baru masih terpasang:
+php spark migrate:status
 $env:database_default_DSN = (Get-Content C:\gelita-ops\migrate.dsn -Raw).Trim()
 php spark migrate:rollback -b <batch-sebelumnya>
 Remove-Item Env:\database_default_DSN
+php spark migrate:status
+
+# 2. Baru kembalikan kode
+git reset --hard <commit-sebelumnya>
+composer install --no-dev --optimize-autoloader
 php spark cache:clear
 Remove-Item writable\pemeliharaan.flag
 ```
+
+Bila kode sudah terlanjur di-reset, pasang lagi commit rilis yang gagal (`git reset --hard <commit-rilis-gagal>`), jalankan langkah 1, lalu langkah 2.
 
 Migration yang menghapus kolom sulit di-rollback tanpa kehilangan data. Aturannya: migration yang menghapus kolom atau tabel **tidak pernah digabung** dalam deploy yang sama dengan perubahan lain, dan selalu didahului satu rilis yang berhenti memakai kolom itu.
 
@@ -1096,12 +1120,17 @@ Start-ScheduledTask -TaskPath '\GELITA\' -TaskName 'Backup'     # uji sekali, la
 
 ```powershell
 <#
-  deploy\windows\retensi.ps1 — retensi harian + rotasi log. Dijalankan Task Scheduler.
+  deploy\windows\retensi.ps1 - retensi harian + rotasi log. Dijalankan Task Scheduler.
 #>
 param([string]$Config = 'C:\gelita-ops\config.psd1')
 
 $c    = Import-PowerShellDataFile $Config
 $logs = [IO.Path]::Combine($c.App, 'writable', 'logs')
+
+# Keluaran php.exe adalah UTF-8. Tanpa baris ini PowerShell membacanya dengan
+# code page OEM, dan tanda panah di ringkasan retensi menjadi karakter rusak
+# di cron.log. Dibungkus try: proses tanpa konsol menolak pengaturan ini.
+try { [Console]::OutputEncoding = [Text.Encoding]::UTF8 } catch { }
 
 # 'Continue': di PowerShell 5.1, stderr program yang dialihkan 2>&1 menjadi galat
 # yang menghentikan skrip bila preferensinya 'Stop'.
@@ -1146,6 +1175,7 @@ APP=/var/www/gelita
 DIR=/var/backups/gelita               # milik deploy, chmod 700
 KEDUA=/mnt/backup-eksternal/gelita    # drive eksternal / NAS / mesin lain
 # Nilai khusus server ditulis di ops.conf, bukan di sini: skrip ini dilacak git.
+# shellcheck source=/dev/null
 [ -r "$OPS/ops.conf" ] && . "$OPS/ops.conf"
 STAMP=$(date +%Y%m%d-%H%M)
 DB="$DIR/gelita-db-$STAMP.sql.gz"
@@ -1197,9 +1227,9 @@ Yang diperbaiki terhadap `backup.sh` Revisi 2:
 
 ```powershell
 <#
-  deploy\windows\backup.ps1 — backup GELITA di Windows + Laragon.
+  deploy\windows\backup.ps1 - backup GELITA di Windows + Laragon.
   Dijalankan Task Scheduler (akun yang sama dengan Laragon) dan oleh deploy.ps1.
-  Kode keluar: 0 berhasil · 1 gagal · 2 backup lokal berhasil, salinan kedua gagal.
+  Kode keluar: 0 berhasil; 1 gagal; 2 backup lokal berhasil, salinan kedua gagal.
 #>
 param([string]$Config = 'C:\gelita-ops\config.psd1')
 
@@ -1236,8 +1266,12 @@ try {
 Compress-Archive -Path ([IO.Path]::Combine($c.App, 'public', 'assets', 'uploads')) `
     -DestinationPath (Join-Path $c.Dir "gelita-uploads-$stamp.zip") -Force
 
-# 3. Konfigurasi — memuat encryption.key dan kredensial
-Copy-Item (Join-Path $c.App '.env') (Join-Path $c.Dir "gelita-env-$stamp.txt")
+# 3. Konfigurasi - memuat encryption.key dan kredensial. Copy-Item mewarisi
+#    stempel waktu .env; tanpa baris kedua, salinan dari .env yang tidak berubah
+#    lebih dari 30 hari langsung terhapus langkah 4 dan tidak pernah disalin.
+$salinanEnv = Join-Path $c.Dir "gelita-env-$stamp.txt"
+Copy-Item (Join-Path $c.App '.env') $salinanEnv
+(Get-Item $salinanEnv).LastWriteTime = Get-Date
 
 # 4. Simpan 30 hari di lokasi pertama
 Get-ChildItem $c.Dir -Filter 'gelita-*' |
@@ -1487,6 +1521,8 @@ Persetujuan etik dan penafsiran hukumnya tetap urusan institusi. Aplikasi menyed
 18. Bank soal production dimuat lewat impor workbook dengan pratinjau; tidak ada penyuntingan langsung ke database.
 19. Lupa sandi siswa diselesaikan dengan reset oleh guru, tidak pernah dengan mencatat sandi anak.
 20. Skrip di `deploy/` tidak diedit di server; nilai khusus server ditulis di `ops.conf` / `config.psd1`. `composer update` dan `php spark optimize` tidak dijalankan di server.
+21. Rollback selalu dimulai dari migration (selagi kode rilis baru terpasang), baru kemudian kode.
+22. Skrip `.ps1` dan `.psd1` hanya berisi ASCII, agar Windows PowerShell 5.1 membacanya sama dengan PowerShell 7.
 
 ---
 
@@ -1569,6 +1605,80 @@ Hal berikut butuh mesin Windows atau domain sungguhan. Karena itu semuanya masuk
 - penerbitan sertifikat nyata (Certbot/simple-acme);
 - pendaftaran Task Scheduler;
 - Windows PowerShell 5.1 itu sendiri (skrip ditulis tanpa fitur khusus PowerShell 7).
+
+Tahap 8 mempersempit daftar ini. Daftar terkini ada di [Catatan Implementasi Tahap 8 → Masih belum teruji](#masih-belum-teruji).
+
+---
+
+## Catatan Implementasi Tahap 8
+
+Tahap 8 memasang berkas `deploy/` sesuai Revisi 3, lalu menjalankannya di server uji: dari server kosong, lewat pembaruan, sampai rollback. Tiga cacat baru terlihat saat skrip benar-benar dijalankan. Ketiganya diperbaiki di berkas dan di dokumen ini.
+
+Lingkungan uji:
+
+- Ubuntu 24.04 berzona waktu Asia/Jakarta, MariaDB 10.11.14, Nginx 1.24.0, PHP-FPM 8.3.6 untuk web, PHP 8.4 CLI, dan CodeIgniter 4.7.4 dari `composer.lock`;
+- user `deploy` + `www-data`, sudoers, `.env` 640, dan tiga akun database, persis seperti di [Model pengguna dan izin](#model-pengguna-dan-izin) dan [Akun database](#akun-database);
+- repositori *origin* lokal, supaya `git pull` di skrip deploy menarik commit pembaruan sungguhan (perubahan view + satu migration uji);
+- sertifikat self-signed di path Let's Encrypt, sebagai pengganti certbot;
+- PowerShell 7.4 untuk skrip `.ps1`, dengan `config.psd1` berisi path Linux.
+
+Bank soal uji memakai `SampleItemSeeder`, dengan `items_per_round` diturunkan **hanya di database uji**. Dengan begitu `gelita:content:verify` dapat dibuat lolos atau gagal sesuai skenario.
+
+### Yang diuji
+
+| Skenario | Hasil |
+|---|---|
+| Deployment pertama Jalur L: migrate lewat DSN → seed → `media:scan` | 35 migration, 31 tabel. `.env` 640 tidak memutus situs. Working tree tetap bersih setelah `chown`/`chmod` |
+| `nginx -t` dengan blok 443 sebelum sertifikat ada | gagal (`cannot load certificate`), sesuai alasan urutan port 80 → sertifikat → 443 |
+| Delapan [pemeriksaan otomatis](#verifikasi-setelah-deploy) | semua lolos. Empat header keamanan muncul tepat sekali di halaman, aset, dan 404. Login admin lewat HTTPS (CSRF, sesi database, cookie `Secure`) berhasil |
+| `backup.sh` dengan environment kosong seperti cron | tanpa lokasi kedua: kode 2 dan backup lokal tetap jadi. Dengan `ops.conf`: kode 0. Semua berkas bermode 600 |
+| Uji pemulihan Jalur L | 31 tabel. `ci_sessions` kosong. IP yang ditanam di `ci_sessions` tidak ada di dump |
+| `deploy.sh` saat ada sesi aktif ≤ 10 menit | BATAL, kode 1, tanpa backup dan tanpa pemeliharaan. Sesi yang menganggur 11 menit tidak dihitung. `--paksa` melanjutkan |
+| `deploy.sh` jalur sukses | 503 selama deploy, 200 sesudahnya. Migration uji berjalan dengan `gelita_migrate`. View baru terlayani setelah reload FPM. `assetVersion` naik dan `?v=` di halaman ikut berubah. `.env` tetap `640 deploy:www-data` |
+| `deploy.sh` saat `content:verify` gagal | situs tetap 503. Pesan pemulihan dicetak `trap ERR` dari dalam fungsi `spark`. Kode 1 |
+| Baris crontab di dokumen, dijalankan `/bin/sh` dengan environment kosong | backup tercatat di `backup.log`, retensi di `cron.log`, dan rotasi menghapus log > 30 hari |
+| Rollback dengan urutan yang diperbaiki | migration uji di-rollback, kode dan view kembali ke rilis lama, situs 200 |
+| `backup.ps1` | kode 0; kode 2 bila lokasi kedua tak dapat dibuat; kode 1 bila `mysqldump` gagal, tanpa `.sql` tertinggal |
+| `deploy.ps1` | BATAL saat ada sesi aktif. Sukses: pull, migrate, `.env` tanpa BOM, penanda dihapus. Verifikasi gagal: penanda tetap |
+| `retensi.ps1` | kode 0; kode 1 bila database tidak terjangkau; log > 30 hari terhapus |
+| Uji pemulihan Jalur W (`Expand-Archive` + `source`) | semua tabel pulih, `ci_sessions` kosong |
+| Konfigurasi Nginx Jalur W di Nginx Linux (path dipetakan, `http2 on;` dilepas, `upstream php_upstream` → FPM) | `nginx -t` lolos. Halaman 200, header tepat sekali, cache sesuai aturan, berkas sensitif 404, pemeliharaan 503 |
+
+### Cacat yang ditemukan dan diperbaiki
+
+Penomoran melanjutkan tabel [Catatan Revisi 3](#catatan-revisi-3--hasil-audit).
+
+| # | Revisi 3 | Yang terjadi | Perbaikan |
+|---:|---|---|---|
+| 25 | Skrip `.ps1` memuat `→`, `—`, `·` dan disimpan sebagai UTF-8 tanpa BOM | Windows PowerShell 5.1 membacanya sebagai cp1252. Byte terakhir `—` menjadi kutip ganda tipografis, dan `deploy.ps1` gagal di-parse (3 galat di baris `"DEPLOY GAGAL — …"`). Di PowerShell 7.4 skrip yang sama lolos, sehingga cacat ini tidak terlihat saat audit | Skrip `.ps1`/`.psd1` hanya berisi ASCII. `DeployFilesTest` menolak karakter non-ASCII |
+| 26 | Langkah 3 `backup.ps1`: `Copy-Item .env` | `Copy-Item` mewarisi stempel waktu `.env`. Bila `.env` tidak berubah lebih dari 30 hari, salinannya langsung dihapus langkah 4 dan tidak pernah sampai ke lokasi kedua. Akibatnya backup Windows tidak memuat `encryption.key` (terbukti dengan `.env` berumur 40 hari) | `LastWriteTime` salinan disetel ke waktu backup. Jalur L tidak terdampak: `cp` tanpa `-p` memberi stempel waktu baru |
+| 27 | Rollback: `git reset` lalu `migrate:rollback` | Berkas migration rilis baru sudah hilang, sehingga muncul `There is a gap in the migration sequence`, tidak ada yang di-rollback, dan kode keluar tetap 0. Di production perintah itu juga menunggu konfirmasi `[y, n]` | [Rollback](#rollback): migration dulu, kode kemudian; `migrate:status` sebelum dan sesudah |
+
+Perbaikan kecil lain:
+
+- `retensi.ps1` menyetel `[Console]::OutputEncoding` ke UTF-8. Tanpa itu, PowerShell membaca keluaran `php.exe` dengan code page OEM, dan tanda panah di ringkasan `gelita:retention:run` menjadi karakter rusak di `cron.log`.
+- `# shellcheck source=/dev/null` ditambahkan sebelum `. "$OPS/ops.conf"`. Kedua skrip Bash kini lolos `shellcheck` tanpa temuan.
+
+`tests/unit/DeployFilesTest.php` mengunci hal-hal berikut:
+
+- skrip Windows hanya ASCII;
+- skrip Bash ber-LF dan memakai `set -E`;
+- konfigurasi Nginx kedua jalur hanya berbeda di baris khusus platform;
+- tidak ada `spark down`, `spark optimize`, `composer update`, atau `DB_USER`;
+- stempel waktu salinan `.env` disegarkan;
+- tiga aturan `.gitignore` ada.
+
+Setiap aturan diuji balik dengan menyuntikkan kembali cacatnya.
+
+### Masih belum teruji
+
+Hal berikut butuh mesin Windows atau domain sungguhan, dan tetap masuk daftar verifikasi saat pemasangan pertama:
+
+- Windows PowerShell 5.1 sungguhan. Cara 5.1 membaca skrip (cp1252) sudah disimulasikan dengan parser PowerShell, tetapi skripnya belum pernah dijalankan di 5.1;
+- GUI dan menu Laragon, `nginx -s reload` Laragon, dan php-cgi Laragon di balik `php_upstream`;
+- direktif `http2 on;` (butuh Nginx ≥ 1.25; Nginx uji 1.24);
+- penerbitan sertifikat nyata (Certbot/simple-acme);
+- pendaftaran Task Scheduler, termasuk `[Console]::OutputEncoding` pada tugas yang berjalan tanpa login.
 
 ---
 
