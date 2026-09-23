@@ -3,6 +3,7 @@
 namespace Config;
 
 use App\Filters\ApiSessionFilter;
+use App\Filters\DebugToolbar;
 use App\Filters\GameSessionFilter;
 use App\Filters\JsonResponseFilter;
 use App\Filters\LocaleFilter;
@@ -12,7 +13,6 @@ use App\Filters\StaffRoleFilter;
 use CodeIgniter\Config\Filters as BaseFilters;
 use CodeIgniter\Filters\Cors;
 use CodeIgniter\Filters\CSRF;
-use CodeIgniter\Filters\DebugToolbar;
 use CodeIgniter\Filters\ForceHTTPS;
 use CodeIgniter\Filters\Honeypot;
 use CodeIgniter\Filters\InvalidChars;
@@ -25,6 +25,7 @@ class Filters extends BaseFilters
     /** @var array<string, class-string|list<class-string>> */
     public array $aliases = [
         'csrf'            => CSRF::class,
+        // App\Filters\DebugToolbar: toolbar bawaan + penyamaran field kata sandi
         'toolbar'         => DebugToolbar::class,
         'honeypot'        => Honeypot::class,
         'invalidchars'    => InvalidChars::class,

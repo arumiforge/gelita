@@ -35,7 +35,9 @@ Events::on('pre_system', static function (): void {
 /*
  * Samakan time_zone koneksi MySQL dengan Config\App::$appTimezone (Asia/Jakarta),
  * agar DEFAULT CURRENT_TIMESTAMP(6) dan waktu yang ditulis PHP berada di zona yang sama.
- * Command spark GELITA memanggil db_sync_timezone() sendiri di awal run().
+ * Event pre_system hanya terpicu pada request web, tidak pada `php spark`:
+ * command GELITA yang menulis waktu (diisi tahap 7) wajib memanggil
+ * db_sync_timezone() sendiri di awal run().
  */
 Events::on('pre_system', static function (): void {
     if (ENVIRONMENT !== 'testing') {

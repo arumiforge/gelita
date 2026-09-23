@@ -113,6 +113,11 @@ class LoginController extends BaseController
             return redirect()->to(site_url('ganti-sandi'))->with('errors', $this->validator->getErrors());
         }
 
+        // Setelah reset guru belum ada sesi permainan: event `password_changed`
+        // dicatat pada sesi yang dibuka login di bawah (SessionService hanya
+        // dapat mencatatnya bila sesi sudah ada).
+        $hadGameSession = (int) session('game_session_id') > 0;
+
         $result = service('sessionService')->changePassword(
             $participant->id,
             $data['current_password'],
@@ -131,13 +136,17 @@ class LoginController extends BaseController
         // setelah reset guru, session('game_session_id') memang sengaja kosong.
         $study = model(ResearchStudyModel::class)->requireActiveStudy();
 
-        service('sessionService')->login(
+        $login = service('sessionService')->login(
             $participant->username,
             $new,
             (string) $study['active_phase_code'],
             (string) (session('locale') ?? $this->locale),
             $this->deviceInfo(),
         );
+
+        if (! $hadGameSession && ($login['session'] ?? null) !== null) {
+            service('eventService')->record($login['session'], 'password_changed', ['via' => 'reset']);
+        }
 
         return redirect()->to(site_url('peta'))->with('message', lang('Auth.passwordChanged'));
     }

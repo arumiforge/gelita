@@ -30,10 +30,11 @@ class AudioApiController extends BaseApiController
             return $this->fail('TOO_MANY_EVENTS', lang('Game.errTooManyEvents', [$max]), 413);
         }
 
-        $session  = $this->gameSession();
-        $service  = service('eventService');
-        $accepted = 0;
-        $rejected = [];
+        $session   = $this->gameSession();
+        $service   = service('eventService');
+        $accepted  = 0;
+        $duplicate = 0;
+        $rejected  = [];
 
         foreach (array_values($events) as $index => $event) {
             if (! is_array($event)) {
@@ -42,7 +43,8 @@ class AudioApiController extends BaseApiController
                 continue;
             }
 
-            $attemptId = isset($event['challenge_attempt_id']) ? (int) $event['challenge_attempt_id'] : 0;
+            // Kontrak klien (06): attempt_id; nama kolom lengkap tetap diterima
+            $attemptId = (int) ($event['challenge_attempt_id'] ?? $event['attempt_id'] ?? 0);
 
             if ($attemptId > 0 && ! $this->ownsAttempt($attemptId)) {
                 $rejected[] = ['index' => $index, 'reason' => 'attempt_not_in_session'];
@@ -51,8 +53,11 @@ class AudioApiController extends BaseApiController
             }
 
             try {
-                $service->recordAudio($session, $event);
-                $accepted++;
+                if ($service->recordAudio($session, $event)) {
+                    $accepted++;
+                } else {
+                    $duplicate++;
+                }
             } catch (\InvalidArgumentException) {
                 $rejected[] = ['index' => $index, 'reason' => 'audio_event_invalid'];
             }
@@ -60,6 +65,7 @@ class AudioApiController extends BaseApiController
 
         return $this->ok([
             'accepted'    => $accepted,
+            'duplicate'   => $duplicate,
             'rejected'    => $rejected,
             'server_time' => $this->serverTime(),
         ]);
