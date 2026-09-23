@@ -28,8 +28,16 @@ class AudioUsageEventModel extends Model
             ->findAll();
     }
 
-    /** Pemutaran ke-n berikutnya untuk satu aset dalam satu sesi. */
-    public function nextPlayIndex(int $sessionId, int $audioAssetId): int
+    /**
+     * Nomor pemutaran ke-n untuk aset ini dalam sesi (01_DATABASE: `play_index`
+     * = "pemutaran ke-n untuk aset itu").
+     *
+     * `play` dan `replay` membuka pemutaran baru; `pause` dan `complete`
+     * termasuk pemutaran yang sedang berjalan. Klien tidak mengirim `play`
+     * saat melanjutkan dari jeda, jadi `play` selalu berarti mulai dari awal.
+     * Nomor dihitung server — hitungan klien dimulai ulang setiap halaman.
+     */
+    public function nextPlayIndex(int $sessionId, int $audioAssetId, string $action = 'play'): int
     {
         $row = $this->db->table($this->table)
             ->selectMax('play_index', 'max_index')
@@ -38,7 +46,9 @@ class AudioUsageEventModel extends Model
             ->get()
             ->getRowArray();
 
-        return ((int) ($row['max_index'] ?? 0)) + 1;
+        $current = (int) ($row['max_index'] ?? 0);
+
+        return in_array($action, ['play', 'replay'], true) ? $current + 1 : max(1, $current);
     }
 
     /**

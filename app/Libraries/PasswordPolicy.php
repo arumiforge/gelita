@@ -67,10 +67,13 @@ class PasswordPolicy
         ];
     }
 
-    /** Konfigurasi yang dikirim ke JavaScript (tanpa data rahasia) */
+    /**
+     * Konfigurasi yang dikirim ke JavaScript (tanpa data rahasia), ditambah
+     * batas byte bcrypt agar syarat panjang di layar sama persis dengan check().
+     */
     public function toClient(): array
     {
-        return $this->cfg;
+        return $this->cfg + ['max_bytes' => self::BCRYPT_MAX_BYTES];
     }
 
     private function levelFor(int $met): string

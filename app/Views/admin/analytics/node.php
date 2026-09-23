@@ -52,6 +52,7 @@ foreach ($attempts as $attempt) {
       'id'       => 'chart-node-scores',
       'title'    => 'Sebaran skor',
       'type'     => 'bar',
+      'data'     => \App\Libraries\ChartData::distribution($attempts === [] ? [] : $bins, 'Percobaan'),
       'fallback' => $attempts === [] ? null : component('partials/bar-list', ['rows' => array_map(
           static fn (string $range, int $total): array => ['label' => $range, 'value' => $total, 'display' => (string) $total],
           array_keys($bins),
@@ -74,6 +75,11 @@ foreach ($attempts as $attempt) {
       'id'          => 'chart-node-scatter',
       'title'       => 'Durasi vs ketepatan awal (per percobaan)',
       'type'        => 'scatter',
+      'data'        => \App\Libraries\ChartData::scatter(array_map(static fn (array $a): array => [
+          'x'     => round((int) $a['duration_ms'] / 1000, 1),
+          'y'     => round((float) $a['first_pass_accuracy'], 1),
+          'label' => '#' . $a['id'] . ' · skor ' . fmt_num($a['score'], 1, 'id'),
+      ], $attempts), 'Durasi (detik)', 'Tepat sejak awal (%)'),
       'description' => count($attempts) . ' percobaan selesai',
       'fallback'    => $scatter,
   ]) ?>

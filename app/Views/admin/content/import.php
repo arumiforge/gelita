@@ -150,7 +150,8 @@ $issueTable = static function (array $rows, string $level): string {
     <?php endif ?>
 
     <?php if (! empty($preview['ok'])): ?>
-      <form method="post" action="<?= base_url('admin/konten/impor-bank/jalankan') ?>" class="form-actions">
+      <form method="post" action="<?= base_url('admin/konten/impor-bank/jalankan') ?>" class="form-actions"
+            data-import-run data-items="<?= (int) ($summary['items'] ?? 0) ?>" data-nodes="<?= count($perNode) ?>">
         <?= csrf_field() ?>
         <button class="btn btn-primary btn-lg" type="submit"><?= icon('play') ?> Jalankan impor</button>
         <span class="muted">Berkas: <code><?= esc($preview['file'] ?? '') ?></code></span>

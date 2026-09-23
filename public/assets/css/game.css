@@ -1116,6 +1116,94 @@ body.is-challenge .app { padding-bottom: var(--sp-4); }
 .rating-stars:has(input[value="4"]:checked) .rating-star:nth-child(-n + 4),
 .rating-stars:has(input[value="5"]:checked) .rating-star:nth-child(-n + 5) { --star-fill: currentColor; color: var(--brown-500); }
 
+/* =========================== PERILAKU JAVASCRIPT (tahap 6) ===========================
+   Kelas state yang hanya dipasang JavaScript. Tanpa JavaScript tidak ada yang
+   bergantung pada aturan di bawah ini. */
+
+/* Lentera berkedip sekali saat angka serpihan diperbarui dari server */
+.lantern.is-updated .lantern-count b { animation: shard-pop .6s ease-out 1; }
+@keyframes shard-pop {
+  40% { color: #FFF4D6; text-shadow: 0 0 12px var(--gold-300); }
+}
+
+/* Puzzle */
+.piece[aria-pressed="true"] { z-index: 1; }
+.piece.is-dragging { opacity: .45; }
+.piece:disabled { opacity: 1; cursor: default; }
+.puzzle-board.is-solved { gap: 0; }
+.puzzle-board.is-solved .piece { border-color: transparent; border-radius: 0; }
+.puzzle-board.is-solved .piece-no { display: none; }
+.piece.is-misplaced::after {
+  content: "✗";
+  position: absolute;
+  right: 4px;
+  bottom: 2px;
+  color: var(--bad);
+  font-weight: 700;
+  text-shadow: 0 0 3px var(--navy-900);
+}
+.order-card.is-correct .order-no { background: var(--ok); color: var(--navy-900); }
+
+/* Rumpang: tanda ✓/✗ (::after) di samping kata, bukan baris baru di dalam kotak */
+.blank.is-correct, .blank.is-wrong { grid-auto-flow: column; gap: var(--sp-1); }
+.blank:disabled { opacity: 1; cursor: default; }
+.blank-input[readonly] { cursor: default; }
+.word:disabled { cursor: default; }
+
+/* Boleh */
+.card-mark { padding: 2px var(--sp-3); border-radius: var(--radius-pill); font-size: var(--step--1); font-weight: 700; }
+.card-mark.is-ok { background: rgba(143, 209, 79, .18); color: var(--ok); }
+.card-mark.is-bad { background: rgba(217, 112, 74, .18); color: var(--bad); }
+.choice { grid-auto-flow: column; column-gap: var(--sp-1); } /* tanda ● di samping label, bukan di atasnya */
+.choice:has(input:disabled) { cursor: default; }
+.reason-saved { margin: 0; color: var(--ok); font-size: var(--step--1); font-weight: 700; }
+.passage-read { margin-left: auto; font-family: var(--font-body); font-size: var(--step--1); }
+.passage[open] .passage-read { display: none; }
+
+/* Pilihan */
+.option-feedback {
+  margin: 0;
+  padding: var(--sp-3) var(--sp-4);
+  border-left: 4px solid var(--gold-500);
+  border-radius: var(--radius);
+  background: rgba(223, 192, 135, .1);
+}
+.question:focus { outline: none; }
+
+/* Cari */
+.hunt-target { padding: 0; }
+.hunt-jump {
+  width: 100%;
+  min-height: var(--tap);
+  padding: var(--sp-2) var(--sp-3);
+  border: 0;
+  border-radius: var(--radius);
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.hunt-jump:hover:not(:disabled) { background: rgba(223, 192, 135, .1); }
+.hunt-jump:disabled { cursor: default; }
+.hunt-target.is-found .hunt-jump::before { content: "✓ "; }
+.object:disabled { cursor: default; }
+
+/* Petunjuk: jumlah yang sudah dipakai */
+.hint-count {
+  min-width: 22px;
+  padding: 0 6px;
+  border-radius: var(--radius-pill);
+  background: rgba(223, 192, 135, .2);
+  font-size: .8rem;
+}
+
+/* Refleksi */
+.reflection-need { margin: 0; }
+
+/* Konfeti canvas (core/confetti.js) */
+.confetti-canvas { position: fixed; inset: 0; z-index: 70; width: 100%; height: 100%; pointer-events: none; }
+
 /* =========================== RESPONSIF =========================== */
 
 /* Layar lebar pendek (papan tulis 1366×768): layar tantangan muat tanpa
@@ -1177,6 +1265,13 @@ body.is-challenge .app { padding-bottom: var(--sp-4); }
   .hunt { grid-template-columns: 1fr; }
   .hunt-guide { display: none; }
   .hunt-clue { grid-template-columns: 1fr; }
+  .passage.is-folded > .passage-title {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    border-radius: var(--radius);
+    background: var(--parchment);
+  }
 
   .book-spread { grid-template-columns: 1fr; }
   .book-spread::after { display: none; }
@@ -1194,4 +1289,5 @@ body.is-challenge .app { padding-bottom: var(--sp-4); }
   .confetti { display: none; }
   .flame-3, .orb, .map-point.is-open .pin-icon, .map-point.is-in_progress .pin-icon { animation: none; }
   .dialogue-stage .character { transition: none; }
+  .object.is-shaking, .lantern.is-updated .lantern-count b { animation: none; }
 }

@@ -25,35 +25,12 @@ class DashboardController extends BaseAdminController
             'levels'          => $analytics->levelBreakdown($filters),
             'nodes'           => $analytics->nodeDifficulty($filters),
             'cohort'          => model(ParticipantModel::class)->cohortSummary($filters),
-            'ages'            => $this->ageDistribution($filters),
+            'ages'            => model(ParticipantModel::class)->ageDistribution($filters),
             'digitalSecurity' => $analytics->digitalSecurityLiteracy($filters),
             'recentSessions'  => $this->recentSessions($filters),
             'study'           => model(ResearchStudyModel::class)->activeStudy(),
             'isAdmin'         => $this->isAdmin(),
         ]);
-    }
-
-    /**
-     * Sebaran umur peserta dalam cakupan pemanggil.
-     *
-     * @return array<int, int> umur → jumlah peserta
-     */
-    private function ageDistribution(array $filters): array
-    {
-        $builder = model(ParticipantModel::class)->scopedForStaff($filters['school_id'] ?? null)
-            ->select('age, COUNT(*) AS total', false)
-            ->where('participants.deleted_at', null)
-            ->where('age IS NOT NULL');
-
-        foreach (['class_level', 'province_code'] as $key) {
-            if (isset($filters[$key])) {
-                $builder->where('participants.' . $key, $filters[$key]);
-            }
-        }
-
-        $rows = $builder->groupBy('age')->orderBy('age', 'ASC')->get()->getResultArray();
-
-        return array_map('intval', array_column($rows, 'total', 'age'));
     }
 
     /**

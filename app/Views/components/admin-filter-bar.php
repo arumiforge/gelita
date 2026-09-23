@@ -3,7 +3,8 @@
  * Filter penelitian yang sama untuk seluruh halaman analitik.
  *
  * Form `method="get"`, sehingga filter tersimpan di URL dan dapat dibagikan
- * atau di-bookmark. filters.js (tahap 6) memuat ulang data chart lewat AJAX
+ * atau di-bookmark. admin/filters.js memuat isi halaman untuk filter baru (KPI,
+ * tabel, dan chart dari /api/admin/*) di latar
  * tanpa memuat ulang halaman; tanpa JavaScript, tombol Terapkan mengirim form.
  *
  * Guru terkunci pada sekolahnya: kontrol sekolah tidak dirender untuk guru,
