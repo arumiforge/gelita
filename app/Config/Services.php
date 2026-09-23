@@ -8,7 +8,10 @@ use App\Services\ChallengeService;
 use App\Services\ContentImportService;
 use App\Services\ContentRepository;
 use App\Services\EventService;
+use App\Services\ExportService;
 use App\Services\GameContext;
+use App\Services\ReportService;
+use App\Services\RetentionService;
 use App\Services\ScoringService;
 use App\Services\SessionService;
 use CodeIgniter\Config\BaseService;
@@ -144,5 +147,35 @@ class Services extends BaseService
         }
 
         return new ContentImportService();
+    }
+
+    /** Pembangun berkas export XLSX/PDF; hak pemohon dibaca ulang dari staff_users. */
+    public static function exportService(bool $getShared = true): ExportService
+    {
+        if ($getShared) {
+            return static::getSharedInstance('exportService');
+        }
+
+        return new ExportService();
+    }
+
+    /** Laporan PDF (mPDF) untuk studi dan satu peserta. */
+    public static function reportService(bool $getShared = true): ReportService
+    {
+        if ($getShared) {
+            return static::getSharedInstance('reportService');
+        }
+
+        return new ReportService();
+    }
+
+    /** Penghapusan data dua langkah dan retensi terjadwal. */
+    public static function retentionService(bool $getShared = true): RetentionService
+    {
+        if ($getShared) {
+            return static::getSharedInstance('retentionService');
+        }
+
+        return new RetentionService();
     }
 }
