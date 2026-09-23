@@ -67,15 +67,17 @@ class EventService
 
             $seen[$clientEventId] = true;
 
+            // Kontrak klien (04/06): node_id, attempt_id, item_id. Nama kolom
+            // lengkap (challenge_*_id) tetap diterima.
             $rows[] = $this->buildRow(
                 $session,
                 $type,
                 (array) ($event['payload'] ?? $event['payload_json'] ?? []),
                 [
                     'level_id'             => $event['level_id'] ?? null,
-                    'challenge_node_id'    => $event['challenge_node_id'] ?? null,
-                    'challenge_attempt_id' => $event['challenge_attempt_id'] ?? null,
-                    'challenge_item_id'    => $event['challenge_item_id'] ?? null,
+                    'challenge_node_id'    => $event['challenge_node_id'] ?? $event['node_id'] ?? null,
+                    'challenge_attempt_id' => $event['challenge_attempt_id'] ?? $event['attempt_id'] ?? null,
+                    'challenge_item_id'    => $event['challenge_item_id'] ?? $event['item_id'] ?? null,
                 ],
                 $clientEventId,
                 isset($event['sequence_no']) ? (int) $event['sequence_no'] : $sequence++,
@@ -123,12 +125,19 @@ class EventService
     }
 
     /**
-     * Telemetry audio terstruktur: baris audio_usage_events + raw event.
+     * Telemetry audio terstruktur: baris audio_usage_events + raw event, dalam
+     * satu transaction.
+     *
+     * Idempotent terhadap `client_event_id` seperti ingest(): kiriman ulang
+     * dengan id yang sama tidak menulis baris apa pun dan mengembalikan false.
      *
      * @param array{audio_asset_id: int, action: string, listened_ms?: ?int, completed?: bool,
-     *              challenge_attempt_id?: ?int, occurred_at?: ?string} $audioEvent
+     *              attempt_id?: ?int, challenge_attempt_id?: ?int, occurred_at?: ?string,
+     *              client_event_id?: ?string} $audioEvent
+     *
+     * @return bool true bila ditulis, false bila duplikat
      */
-    public function recordAudio(GameSession $session, array $audioEvent): void
+    public function recordAudio(GameSession $session, array $audioEvent): bool
     {
         $assetId = (int) ($audioEvent['audio_asset_id'] ?? 0);
         $action  = (string) ($audioEvent['action'] ?? '');
@@ -137,21 +146,22 @@ class EventService
             throw new \InvalidArgumentException('Event audio tidak lengkap atau aksinya tidak dikenali.');
         }
 
-        $usage      = model(AudioUsageEventModel::class);
-        $attemptId  = isset($audioEvent['challenge_attempt_id']) ? (int) $audioEvent['challenge_attempt_id'] : null;
-        $occurredAt = $this->clientTime($audioEvent['occurred_at'] ?? null);
+        $clientEventId = trim((string) ($audioEvent['client_event_id'] ?? ''));
 
-        $usage->insert([
-            'session_id'           => $session->id,
-            'challenge_attempt_id' => $attemptId ?: null,
-            'audio_asset_id'       => $assetId,
-            'action'               => $action,
-            'play_index'           => $usage->nextPlayIndex($session->id, $assetId),
-            'listened_ms'          => isset($audioEvent['listened_ms']) ? (int) $audioEvent['listened_ms'] : null,
-            'completed'            => ! empty($audioEvent['completed']) ? 1 : 0,
-            'occurred_at'          => $occurredAt,
-            'server_received_at'   => $this->now(),
-        ], false);
+        if (mb_strlen($clientEventId) > 120) {
+            throw new \InvalidArgumentException('client_event_id terlalu panjang.');
+        }
+
+        $events = model(GameEventLogModel::class);
+
+        if ($clientEventId !== '' && $events->existsClientEvent($session->id, $clientEventId)) {
+            return false;
+        }
+
+        $usage      = model(AudioUsageEventModel::class);
+        $attemptRef = $audioEvent['challenge_attempt_id'] ?? $audioEvent['attempt_id'] ?? null;
+        $attemptId  = $attemptRef === null ? null : ((int) $attemptRef ?: null);
+        $occurredAt = $this->clientTime($audioEvent['occurred_at'] ?? null);
 
         $eventType = match ($action) {
             'play'     => 'audio_play',
@@ -160,18 +170,54 @@ class EventService
             'complete' => 'audio_completed',
         };
 
-        $this->record($session, $eventType, [
-            'audio_asset_id' => $assetId,
-            'listened_ms'    => $audioEvent['listened_ms'] ?? null,
-            'completed'      => ! empty($audioEvent['completed']),
-        ], ['challenge_attempt_id' => $attemptId]);
+        $db = $this->db();
+        $db->transBegin();
 
-        if ($attemptId) {
-            $this->db()->table('challenge_attempts')
-                ->where('id', $attemptId)
-                ->set('audio_use_count', 'audio_use_count + 1', false)
-                ->update();
+        try {
+            $usage->insert([
+                'session_id'           => $session->id,
+                'challenge_attempt_id' => $attemptId,
+                'audio_asset_id'       => $assetId,
+                'action'               => $action,
+                'play_index'           => $usage->nextPlayIndex($session->id, $assetId),
+                'listened_ms'          => isset($audioEvent['listened_ms']) ? (int) $audioEvent['listened_ms'] : null,
+                'completed'            => ! empty($audioEvent['completed']) ? 1 : 0,
+                'occurred_at'          => $occurredAt,
+                'server_received_at'   => $this->now(),
+            ], false);
+
+            $events->appendBatch([
+                $this->buildRow(
+                    $session,
+                    $eventType,
+                    [
+                        'audio_asset_id' => $assetId,
+                        'listened_ms'    => $audioEvent['listened_ms'] ?? null,
+                        'completed'      => ! empty($audioEvent['completed']),
+                    ],
+                    ['challenge_attempt_id' => $attemptId],
+                    $clientEventId !== '' ? $clientEventId : 'srv-' . uuid4(),
+                    $events->nextSequenceNo($session->id),
+                    $occurredAt,
+                    $this->now(),
+                ),
+            ]);
+
+            if ($attemptId) {
+                $db->table('challenge_attempts')
+                    ->where('id', $attemptId)
+                    ->set('audio_use_count', 'audio_use_count + 1', false)
+                    ->update();
+            }
+
+            $db->transCommit();
+        } catch (\Throwable $e) {
+            $db->transRollback();
+
+            throw $e;
         }
+
+        return true;
     }
 
     /**
@@ -214,14 +260,23 @@ class EventService
         return $value > 0 ? $value : null;
     }
 
-    /** Waktu klien hanya diterima bila dapat diurai; selain itu memakai waktu server. */
+    /**
+     * Waktu klien hanya diterima bila dapat diurai; selain itu memakai waktu server.
+     *
+     * Pecahan detik dipertahankan (kolom DATETIME(6)) dan zona waktunya
+     * dikonversi ke zona aplikasi, mis. `2026-09-21T02:14:22.481Z` →
+     * `2026-09-21 09:14:22.481000` (WIB). Urutan event penelitian bergantung
+     * pada presisi ini.
+     */
     private function clientTime($value): string
     {
         if (is_string($value) && trim($value) !== '') {
-            $timestamp = strtotime($value);
-
-            if ($timestamp !== false) {
-                return date('Y-m-d H:i:s', $timestamp);
+            try {
+                return (new \DateTimeImmutable(trim($value)))
+                    ->setTimezone(new \DateTimeZone(date_default_timezone_get()))
+                    ->format('Y-m-d H:i:s.u');
+            } catch (\Exception) {
+                // tidak dapat diurai → waktu server
             }
         }
 

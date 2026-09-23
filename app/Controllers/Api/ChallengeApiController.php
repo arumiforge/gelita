@@ -2,7 +2,6 @@
 
 namespace App\Controllers\Api;
 
-use App\Entities\ItemResponse;
 use App\Models\ChallengeAttemptModel;
 use App\Models\ItemResponseModel;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -89,12 +88,16 @@ class ChallengeApiController extends BaseApiController
         $response = model(ItemResponseModel::class)->findOne($attempt->id, $itemId);
 
         return $this->ok([
-            'correct'      => $result['correct'],
-            'first_pass'   => $result['first_pass'],
-            'wrong_click'  => $result['wrong_click'],
-            'feedback'     => $result['feedback'],
-            'change_count' => $response?->change_count ?? 0,
-            'progress'     => $result['progress'],
+            'correct'            => $result['correct'],
+            'first_pass'         => $result['first_pass'],
+            'wrong_click'        => $result['wrong_click'],
+            'decoy'              => $result['decoy'],
+            'already_answered'   => $result['already_answered'],
+            'feedback'           => $result['feedback'],
+            'correct_option_key' => $result['correct_option_key'],
+            'change_count'       => $response?->change_count ?? 0,
+            'wrong_click_count'  => $response?->wrong_click_count ?? 0,
+            'progress'           => $result['progress'],
         ]);
     }
 
@@ -193,7 +196,8 @@ class ChallengeApiController extends BaseApiController
             return $attempt;
         }
 
-        $pending = $this->pendingItems($attempt->id);
+        // Objek jebakan `cari` tidak pernah dijawab, jadi tidak menahan attempt
+        $pending = service('challengeService')->pendingItemIds($attempt);
 
         if ($pending !== []) {
             return $this->invalidPayload([
@@ -231,24 +235,5 @@ class ChallengeApiController extends BaseApiController
         $current = model(ChallengeAttemptModel::class)->find($attempt->id);
 
         return $this->ok(['status' => (string) ($current?->status ?? 'abandoned')]);
-    }
-
-    /** @return list<int> id item yang belum dijawab dan belum dilewati */
-    private function pendingItems(int $attemptId): array
-    {
-        $pending = [];
-
-        foreach (model(ItemResponseModel::class)->forAttempt($attemptId) as $itemId => $response) {
-            if (! $this->settled($response)) {
-                $pending[] = (int) $itemId;
-            }
-        }
-
-        return $pending;
-    }
-
-    private function settled(ItemResponse $response): bool
-    {
-        return $response->isAnswered() || $response->status === 'skipped';
     }
 }

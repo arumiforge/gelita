@@ -51,8 +51,13 @@ class Toolbar extends BaseConfig
      *
      * If set to false var data from the views will not be collected. Useful to
      * avoid high memory usage when there are lots of data passed to the view.
+     *
+     * GELITA: false secara bawaan (sama dengan templat `env`), agar data
+     * pribadi peserta yang dioper ke view tidak ikut tersimpan di
+     * writable/debugbar. Isi formulir (POST) diatur terpisah:
+     * App\Filters\DebugToolbar menyamarkan field kata sandi.
      */
-    public bool $collectVarData = true;
+    public bool $collectVarData = false;
 
     /**
      * --------------------------------------------------------------------------

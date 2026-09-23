@@ -80,13 +80,21 @@ class GameEventLogModel extends Model
         return ((int) ($row['max_no'] ?? 0)) + 1;
     }
 
-    /** @return list<array<string, mixed>> */
+    /**
+     * Linimasa satu sesi, diurutkan `occurred_at` lalu `sequence_no`
+     * (01_DATABASE.md, aturan 8). `sequence_no` klien dimulai ulang pada
+     * setiap halaman yang dimuat, jadi tidak dapat menjadi kunci urutan utama.
+     * Didukung index (session_id, occurred_at) dari migration 003300.
+     *
+     * @return list<array<string, mixed>>
+     */
     public function timeline(int $sessionId, int $limit = 500): array
     {
         return $this->where('session_id', $sessionId)
             ->where('deleted_at', null)
-            ->orderBy('sequence_no', 'ASC')
             ->orderBy('occurred_at', 'ASC')
+            ->orderBy('sequence_no', 'ASC')
+            ->orderBy('id', 'ASC')
             ->findAll(max(1, $limit));
     }
 
