@@ -931,6 +931,7 @@ php spark gelita:retention:run                  retensi harian (cron): sesi/atte
 php spark gelita:score:recompute --profile CODE [--version V] [--study ID] [--node ID] [--dry-run]
 php spark gelita:media:scan [--check-only]      MediaAssetSeeder (sinkron folder ↔ tabel) + laporan integritas
 php spark gelita:bank:import FILE [--dry-run] [--staff USERNAME]
+php spark gelita:staff:password USERNAME     sandi sementara untuk staf (mis. admin lupa sandi); wajib diganti saat masuk
 ```
 
 ---

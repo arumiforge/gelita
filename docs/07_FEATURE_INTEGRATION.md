@@ -977,6 +977,7 @@ Tahap 7 menyelesaikan ekspor, laporan PDF, retensi, dan kelima command. Semua di
 | `gelita:score:recompute --profile CODE [--version V] [--study ID] [--node ID] [--dry-run]` | `ScoringService::recompute()` untuk attempt `completed`; `session_progress.total_score/total_stars` diperbarui; satu transaction per sesi; audit `score_recompute` | 1 bila ada sesi gagal |
 | `gelita:media:scan [--check-only]` | `MediaAssetSeeder` (idempoten) lalu `MediaIntegrity`; audit `media_scan` | 1 bila ada temuan |
 | `gelita:bank:import FILE [--dry-run] [--staff USERNAME]` | `ContentImportService::preview()`/`import()`; ringkasan per node, galat & peringatan per baris; pelaku audit = admin `--staff` atau admin aktif pertama | 1 bila ada galat |
+| `gelita:staff:password USERNAME` | `StaffUserModel::resetToTemporary()`, jalur yang sama dengan reset di `/admin/staf`: sandi sementara 16 karakter dicetak sekali, `must_change_password = 1`, kunci login dibuka; audit `staff_password_reset` dengan `via: cli`. Untuk admin yang lupa sandi tanpa admin lain. Sandi tidak diketik karena `CLI::prompt()` menampilkan input | 1 bila nama pengguna kosong atau tidak ditemukan |
 
 ### Pengujian
 
