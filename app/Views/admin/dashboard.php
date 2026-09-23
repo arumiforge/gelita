@@ -15,6 +15,7 @@
  * @var array<int, int>                   $ages
  * @var array<string, mixed>              $digitalSecurity
  * @var list<array<string, mixed>>        $recentSessions
+ * @var list<array<string, mixed>>        $retentionAlerts pratinjau penghapusan dari retensi (admin)
  */
 $password   = $digitalSecurity['password'];
 $strongPct  = $password['participants'] > 0 ? $password['strong_first_try'] / $password['participants'] : null;
@@ -36,6 +37,15 @@ $delta   = $summary['pretest_posttest_delta'];
     'lead'    => 'Angka di halaman ini mengikuti filter dan cakupan akun Anda.',
 ]) ?>
 <?= $this->include('partials/flash') ?>
+<?php if ($retentionAlerts !== []): ?>
+  <div class="alert alert-warn" role="status">
+    <?= icon('warn') ?>
+    <p>
+      <?= count($retentionAlerts) ?> studi punya data yang melewati masa simpan (<?= esc(fmt_num(array_sum(array_map(static fn (array $r): int => (int) $r['affected_count'], $retentionAlerts)))) ?> baris).
+      Data belum dihapus — <a href="<?= base_url('admin/tata-kelola') ?>">periksa pratinjaunya di Tata kelola</a> lalu putuskan.
+    </p>
+  </div>
+<?php endif ?>
 <?= component('admin-filter-bar', ['filters' => $filters, 'only' => ['study_id', 'phase_code', 'school_id', 'class_level', 'province_code', 'date_from', 'locale']]) ?>
 
 <section class="kpi-grid" aria-label="Indikator utama">

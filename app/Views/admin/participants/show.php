@@ -145,6 +145,19 @@ $prePost  = $profile['pre_post'];
   ]) ?>
 </section>
 
+<section class="panel">
+  <h2 class="panel-title"><?= icon('download') ?> Laporan individual</h2>
+  <p class="muted">Ringkasan PDF satu halaman untuk peserta ini: skor per wilayah, penguasaan indikator, dan cara membacanya. Laporan guru selalu anonim (hanya kode peserta).</p>
+  <form method="post" action="<?= base_url('admin/ekspor/pdf') ?>" class="inline-form">
+    <?= csrf_field() ?>
+    <input type="hidden" name="participant_id" value="<?= (int) $participant['id'] ?>">
+    <?php if (session('staff_role') === 'admin'): ?>
+      <label class="check"><input type="checkbox" name="anonymized" value="1" checked> <span>Mode anonim</span></label>
+    <?php endif ?>
+    <button class="btn btn-ghost btn-sm" type="submit"><?= icon('download') ?> Buat laporan PDF</button>
+  </form>
+</section>
+
 <section class="form-section danger-zone">
   <h2><?= icon('key') ?> Reset kata sandi</h2>
   <p class="muted">Sandi sementara ditampilkan sekali. Siswa wajib membuat sandi baru saat masuk berikutnya.</p>

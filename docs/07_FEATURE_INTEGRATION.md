@@ -55,11 +55,12 @@ Empat aturan yang tidak pernah dilanggar di seluruh fitur:
 | `ReportService` (PDF) | `app/Services/ReportService.php` |
 | `RetentionService` | `app/Services/RetentionService.php` |
 | `ExcelWriter` | `app/Libraries/ExcelWriter.php` |
-| Template PDF | `app/Views/pdf/report-study.php`, `report-participant.php` |
+| `ContentVerifier`, `MediaIntegrity` | `app/Libraries/` — aturan verifikasi konten dan pemeriksa media, dipakai panel dan command |
+| Template PDF | `app/Views/pdf/report-study.php`, `report-participant.php` (+ `_style.php`, `_bars.php`) |
 | Spark command | `app/Commands/ContentVerify.php`, `RetentionRun.php`, `ScoreRecompute.php`, `MediaScan.php`, `BankImport.php` |
 | `ContentImportService` + `gelita:bank:import` | service pembaca workbook (FITUR 12a) **sudah ada sejak tahap 3** dan dipakai panel `/admin/konten/impor-bank` (pratinjau, impor, templat); tahap ini menyambungkan command CLI-nya |
 
-Selebihnya tahap ini adalah **merangkai** yang sudah dibuat pada tahap 1–6.
+Selebihnya tahap ini adalah **merangkai** yang sudah dibuat pada tahap 1–6. Status: **selesai** — keputusan implementasinya dicatat di [*Catatan Implementasi Tahap 7*](#catatan-implementasi-tahap-7).
 
 ---
 
@@ -670,12 +671,17 @@ Nomor potongan puzzle gambar di dokumen bank soal ditulis mulai 1 (`[1..9]`); im
      guru → toggle anonim TERKUNCI menyala; sheet Raw Events tidak tersedia
 3. POST /admin/ekspor/xlsx
 4. ExportController::xlsx
-     insert data_exports (status 'running', scope_json, anonymized)
-     ExportService::buildXlsx($exportId)
-5. ExportService menulis berkas ke writable/exports/{id}-{timestamp}.xlsx
+     insert data_exports (status 'running', scope_json {filters, sheets}, anonymized)
+     ExportService::build($exportId) — sinkron di request yang sama
+       hak pemohon DIBACA ULANG dari staff_users (lapis ketiga):
+       guru → school_id sekolahnya, anonim, tanpa Raw Events, tanpa kunci jawaban
+       Raw Events diminta → COUNT(*) dulu; > gelita.exportMaxRawEvents → 'failed'
+5. ExportService menulis berkas ke writable/exports/{id}-{Ymd-His}.xlsx
 6. Selesai: file_sha256, row_count, status 'done',
-   expires_at = now + gelita.exportRetentionDays; audit 'export'
-7. export.js melakukan polling /api/admin/exports/{id}/status tiap 2 detik
+   expires_at = now + gelita.exportRetentionDays; audit 'export' {status, row_count, sha}
+   Gagal: status 'failed' + error_message, berkas setengah jadi dihapus
+7. Redirect ke /admin/ekspor dengan pesan "Ekspor #n siap diunduh" atau alasan gagal;
+   export.js tetap mem-polling /api/admin/exports/{id}/status untuk baris queued/running
 8. Status 'done' → tombol Unduh aktif, SHA-256 ditampilkan
 9. GET /admin/ekspor/unduh/{id}
      validasi pemilik atau admin, validasi belum kedaluwarsa
@@ -697,15 +703,17 @@ Nomor potongan puzzle gambar di dokumen bank soal ditulis mulai 1 (`[1..9]`); im
 | 9 | Demographic Summary | agregat per jenis kelamin, kelas, sekolah, provinsi, fase |
 | 10 | Feedback | kode peserta, fase, bintang, empat jawaban terbuka, waktu |
 
-\* Kolom nama, nama sekolah, dan identitas lain **dihilangkan sepenuhnya** bila `anonymized = 1`. Bukan dikosongkan — kolomnya tidak dibuat, sehingga tidak ada kolom kosong yang menggoda untuk diisi manual.
+\* Kolom nama, nama sekolah, dan identitas lain **dihilangkan sepenuhnya** bila `anonymized = 1`. Bukan dikosongkan — kolomnya tidak dibuat, sehingga tidak ada kolom kosong yang menggoda untuk diisi manual. Sebagai gantinya ada `school_ref` (`SCH-000012`, kode samaran stabil) di sheet Participants dan Demographic Summary agar analisis per sekolah tetap mungkin. Nama wali (`guardian_name`) tidak pernah diekspor.
 
 \** Kolom kunci jawaban hanya disertakan untuk role admin.
 
 `password_hash`, `failed_login_count`, dan `locked_until` **tidak pernah** masuk export dalam mode apa pun.
 
-### `ExcelWriter` — menulis batch
+### `ExcelWriter` — menulis bertahap
 
 Dataset raw event bisa ratusan ribu baris. Jangan membangun seluruh workbook di memori.
+
+> **Implementasi tahap 7:** `ExcelWriter` tidak memakai `PhpSpreadsheet\Writer\Xlsx` untuk menulis — writer itu tetap menyimpan seluruh sel di memori, dan cache sel ke disk memperlambatnya berkali lipat. Sebagai gantinya setiap sheet ditulis langsung sebagai XML SpreadsheetML ke berkas sementara (buffer di-flush tiap 1000 baris) lalu dirangkai menjadi paket XLSX dengan `ZipArchive`. Antarmukanya tetap seperti di bawah. Uji 150.000 baris Raw Events: puncak memori 18 MB. PhpSpreadsheet masih dipakai untuk membaca workbook impor bank soal dan di test untuk membaca ulang hasil export. Teks ditulis sebagai inline string, sehingga nilai berawalan `=`/`+`/`-`/`@` tidak pernah menjadi rumus.
 
 ```php
 class ExcelWriter
@@ -724,24 +732,24 @@ class ExcelWriter
 }
 ```
 
-Implementasi memakai `PhpOffice\PhpSpreadsheet\Writer\Xlsx` dengan `setPreCalculateFormulas(false)`, dan untuk sheet besar memakai iterator query:
+Query dibaca per potongan 2.000 baris dengan keyset (`WHERE id > :terakhir ORDER BY id LIMIT 2000`), bukan hasil unbuffered — portabel antardriver dan tidak menahan koneksi selama sheet ditulis:
 
 ```php
-$query = $db->table('game_event_logs')->where(...)->get(false);   // unbuffered
-while ($row = $query->getUnbufferedRow('array')) {
+foreach ($this->chunked(fn () => $this->eventBuilder($filters)->select('game_event_logs.id AS _id, …'), 'game_event_logs.id') as $row) {
     $writer->row([...]);
 }
 ```
 
-Untuk mencegah kehabisan memori pada dataset sangat besar, aktifkan cache sel ke disk atau batasi Raw Events lewat rentang tanggal yang wajib diisi bila estimasi baris melebihi 200.000. Estimasi dihitung dengan `COUNT(*)` sebelum penulisan dimulai; bila melebihi ambang, export ditolak dengan pesan yang meminta rentang dipersempit.
+Raw Events dibatasi `Config\Gelita::$exportMaxRawEvents` (200.000). Estimasi dihitung dengan `COUNT(*)` sebelum penulisan dimulai; bila melebihi ambang, export ditolak dengan pesan yang meminta rentang dipersempit.
 
 ---
 
 ## FITUR 15: Export PDF
 
 ```text
-1. POST /admin/ekspor/pdf dengan filter + pilihan template
-2. ReportService::build($exportId):
+1. POST /admin/ekspor/pdf dengan filter (laporan studi) atau participant_id
+   (laporan satu peserta, tombol di /admin/peserta/{id})
+2. ExportService::build($exportId) → ReportService::render($path, $context):
      a. AnalyticsService mengumpulkan snapshot: ringkasan, per level,
         per node, indikator, demographic, pre/post
      b. render app/Views/pdf/report-study.php menjadi HTML
@@ -775,9 +783,10 @@ Semua konten yang berasal dari input pengguna (nama sekolah, kritik & saran) di-
 
 ```text
 1. Admin membuka /admin/tata-kelola
-2. Menentukan cakupan: studi, fase, peserta tertentu, sekolah, rentang tanggal
+2. Menentukan cakupan: tepat satu dari peserta, sesi, atau studi;
+   cakupan studi dapat dipersempit ke satu fase dan rentang tanggal mulai sesi
 3. POST /admin/tata-kelola/hapus/pratinjau
-     RetentionService::preview($scope):
+     RetentionService::normalizeScope() → RetentionService::preview($scope, $mode, $reason, $staffId):
        menghitung jumlah baris terdampak PER TABEL tanpa menghapus apa pun
        insert data_deletion_requests (status 'preview', affected_count)
        audit 'delete_preview'
@@ -796,8 +805,11 @@ Semua konten yang berasal dari input pengguna (nama sekolah, kritik & saran) di-
        audit 'delete_execute' dengan rincian per tabel
 7. Bila jumlah terdampak saat eksekusi berbeda jauh dari pratinjau
    (data bertambah di antaranya), eksekusi DIBATALKAN dan admin diminta
-   membuat pratinjau baru
+   membuat pratinjau baru. "Jauh" = |sekarang − pratinjau| >
+   max(gelita.deletionDriftMinRows = 10, gelita.deletionDriftFraction = 10% × pratinjau)
 ```
+
+Mode *soft* menandai `game_event_logs` (deleted_at/by/reason) seluruh sesi dalam cakupan, dan `participants.deleted_at` bila cakupannya satu peserta. Mode *hard* menghapus dari anak ke induk: event, audio, jawaban, attempt, progres, refleksi (per sesi, atau seluruh refleksi peserta pada cakupan peserta), sesi, lalu — hanya pada cakupan peserta — persetujuan dan baris peserta.
 
 Tidak ada endpoint lain di seluruh aplikasi yang menghapus data penelitian.
 
@@ -809,21 +821,27 @@ Tidak ada endpoint lain di seluruh aplikasi yang menghapus data penelitian.
 php spark gelita:retention:run
 ```
 
-Dijalankan cron harian. Langkah:
+Dijalankan cron harian (tombol "Jalankan retensi sekarang" di `/admin/tata-kelola` menjalankan `RetentionService::run()` yang sama). Langkah:
 
 ```text
 1. Sesi 'active' yang last_active_at lebih lama dari sessionIdleMinutes
      → status 'paused' (peserta masih dapat melanjutkan)
-2. Attempt 'in_progress' yang tidak tersentuh > 24 jam
-     → status 'abandoned', stars 0, score 0, event 'challenge_abandoned'
-3. Sesi 'paused' yang tidak tersentuh > 30 hari
-     → status 'abandoned', event 'session_abandoned'
+2. Attempt 'in_progress' yang tidak tersentuh > attemptAbandonHours (24 jam)
+     sentuhan terakhir = MAX(started_at, jawaban terakhir, event terakhir attempt itu)
+     → status 'abandoned', stars 0, score 0,
+       event 'challenge_abandoned' {via:'retention', idle_hours, last_touch}
+3. Sesi 'paused' yang tidak tersentuh > sessionAbandonDays (30 hari)
+     → status 'abandoned', event 'session_abandoned' {via:'retention'}
 4. data_exports dengan expires_at < now
      → hapus berkas fisik, kosongkan file_path, audit
 5. Data penelitian melewati research_studies.retention_days
      → TIDAK dihapus otomatis. Sistem membuat data_deletion_requests
        berstatus 'preview' dan menampilkan peringatan di dashboard admin.
        Penghapusan sungguhan tetap memerlukan konfirmasi manusia.
+       Satu pratinjau per studi: scope {study_id, date_to = hari ini − retention_days − 1},
+       mode hard, scope_json.origin = 'retention'. Run berikutnya MEMPERBARUI
+       pratinjau yang masih menunggu, bukan membuat baru. Pemiliknya admin
+       yang menjalankan tombol, atau admin aktif pertama bila dijalankan cron.
 6. Menulis ringkasan ke audit_logs
 ```
 
@@ -919,6 +937,50 @@ Semua memakai `$db->transStart()` / `$db->transComplete()`. Bila gagal, tidak ad
 11. Pustaka dan audio tidak pernah memengaruhi skor; keduanya dianalisis sebagai perilaku belajar.
 12. Kata sandi siswa tidak pernah disimpan, dicatat, atau diekspor dalam bentuk apa pun selain `password_hash`. Metrik literasi keamanan digital hanya berupa angka jumlah syarat dan jumlah penolakan.
 13. Isi bank soal hanya masuk lewat impor workbook atau editor konten; keduanya memvalidasi kunci jawaban dan tidak mengizinkan perubahan kunci pada item yang sudah dijawab.
+
+---
+
+## Catatan Implementasi Tahap 7
+
+Tahap 7 menyelesaikan ekspor, laporan PDF, retensi, dan kelima command. Semua diverifikasi di atas MariaDB 10.11 dengan data permainan dari service asli (6 peserta, 79 attempt, lima engine) lalu lewat HTTP (`php spark serve`) sebagai admin dan guru.
+
+### Komponen
+
+| Komponen | Peran |
+|---|---|
+| `ExportService` | `build($exportId)` untuk XLSX dan PDF; `context()` membaca ulang hak pemohon dari `staff_users`; `columns()`, `allowedSheets()`, `sanitizeFilters()` adalah aturan murni yang diuji tanpa database; `purgeExpired()` dipakai retensi |
+| `ReportService` | `render($path, $context)` — templat `study` (default) atau `participant`; data dari `AnalyticsService` yang terikat cakupan pemohon, **selalu anonim** untuk laporan studi |
+| `RetentionService` | `normalizeScope`, `countAffected`, `preview`, `execute`, `cancel`, `driftExceeded`, `run`, `pendingRetentionRequests`; logika penghapusan yang sebelumnya ada di `GovernanceController` pindah ke sini |
+| `ExcelWriter` | penulis XLSX streaming (lihat FITUR 14) |
+| `ContentVerifier` | aturan verifikasi konten, dipindah dari `ContentController`; ditambah pemeriksaan media (level, bacaan, node, butir) yang belum ada berkasnya → *peringatan* |
+| `MediaIntegrity` | pemeriksa aset aktif ↔ berkas (hilang, SHA-256, ukuran) + berkas unggahan tanpa baris; dipakai tombol Pindai dan `gelita:media:scan`. Slot nonaktif (memang belum diunggah) tidak lagi dilaporkan |
+
+### Keputusan
+
+- **Export sinkron.** Berkas dibangun di request yang sama (batas waktu dinaikkan ke 300 detik). Kolom `status` tetap melewati `running` → `done`/`failed`, jadi polling `export.js` tetap berlaku bila kelak dipindah ke antrean.
+- **Audit `export` ditulis setelah build**, berisi status, `row_count`, dan SHA-256 — satu baris per permintaan, termasuk yang gagal. Unduhan tetap diaudit `export_download`; pembuangan berkas kedaluwarsa diaudit `export_purge`.
+- **Unduhan** hanya dari `writable/exports/` (path di-`realpath` dan dicek berada di folder itu) dengan MIME XLSX/PDF yang benar.
+- **Sheet Levels** memakai aturan yang sama dengan `ScoringService::levelScore()` (attempt selesai terbaik per node, rata-rata berbobot `scorable_items`), dihitung per potongan sesi.
+- **Filter wilayah** berlaku pada sheet berbasis tantangan (Levels, Challenge Summary, Item Responses, Indicators) dan Raw Events (`game_event_logs.level_id`); tidak pada Participants, Sessions, Audio Usage, Demographic Summary, Feedback.
+- **Feedback** diekspor bila terikat sesi dalam cakupan (`participant_feedback.session_id`).
+- **PDF**: mPDF (`dejavusans`, A4, margin 20 mm, header/footer bernomor halaman). Bar chart digambar sebagai tabel bersarang — mPDF mengabaikan lebar persen pada `<div>` di dalam sel. `Stage7WiringTest` memastikan setiap `<?= … ?>` di `app/Views/pdf/` lewat `esc()`.
+- **`ChallengeService::abandonAttempt($attempt, $payload = [])`** kini menegakkan skor dan bintang 0 dan menulis `via` di payload event (`user_exit` untuk tombol Keluar, `retention` untuk retensi).
+- **`AuditLogModel::record()`** aman dipanggil dari CLI: `ip_hash` NULL bila request bukan request web.
+- **`writable/exports/`** di-ignore Git (kecuali `index.html`).
+
+### Command
+
+| Command | Perilaku | Kode keluar |
+|---|---|---|
+| `gelita:content:verify [--strict]` | tabel temuan `ContentVerifier`; cache konten di-flush dulu | 1 bila ada galat (atau peringatan dengan `--strict`) |
+| `gelita:retention:run` | `RetentionService::run(null)`; ringkasan per langkah + pratinjau masa simpan | 1 hanya bila retensi melempar galat |
+| `gelita:score:recompute --profile CODE [--version V] [--study ID] [--node ID] [--dry-run]` | `ScoringService::recompute()` untuk attempt `completed`; `session_progress.total_score/total_stars` diperbarui; satu transaction per sesi; audit `score_recompute` | 1 bila ada sesi gagal |
+| `gelita:media:scan [--check-only]` | `MediaAssetSeeder` (idempoten) lalu `MediaIntegrity`; audit `media_scan` | 1 bila ada temuan |
+| `gelita:bank:import FILE [--dry-run] [--staff USERNAME]` | `ContentImportService::preview()`/`import()`; ringkasan per node, galat & peringatan per baris; pelaku audit = admin `--staff` atau admin aktif pertama | 1 bila ada galat |
+
+### Pengujian
+
+Unit test baru (tanpa database): `ExcelWriterTest` (paket terbaca PhpSpreadsheet, teks tidak jadi rumus, nama sheet, pembersihan berkas sementara), `ExportRulesTest` (kolom identitas & rahasia, kunci jawaban admin, kolom fase, sheet guru, cakupan sekolah yang dipaksa, cakupan penghapusan, penjaga drift), `Stage7WiringTest` (command aktif, service terdaftar, escape templat PDF). Diverifikasi manual di MariaDB: guru tidak dapat mengambil Raw Events, kunci jawaban, data/laporan sekolah lain, atau ekspor milik staf lain (403 di API status); eksekusi penghapusan dibatalkan saat baris bertambah 103 → 143; retensi dua kali berturut-turut tidak menggandakan pratinjau; ekspor 150.000 Raw Events selesai dengan memori 18 MB.
 
 ---
 

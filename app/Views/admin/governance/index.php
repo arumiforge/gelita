@@ -10,7 +10,10 @@
  * @var list<array<string, mixed>>  $requests
  * @var string                      $confirmWord
  * @var int                         $idleMinutes
+ * @var int                         $attemptHours
+ * @var int                         $sessionDays
  * @var int                         $exportRetention
+ * @var list<string>                $phases
  * @var array<string, mixed>|null   $retention hasil retensi terakhir (flashdata)
  */
 $prefill = [
@@ -39,8 +42,18 @@ $decode      = static function (array $request): array {
 $scopeText = static function (array $scope) use ($scopeNames): string {
     $parts = [];
 
-    foreach ($scope as $key => $id) {
-        $parts[] = ($scopeNames[$key] ?? $key) . ' #' . (int) $id;
+    foreach ($scopeNames as $key => $label) {
+        if (isset($scope[$key])) {
+            $parts[] = $label . ' #' . (int) $scope[$key];
+        }
+    }
+
+    if (isset($scope['phase_code'])) {
+        $parts[] = 'fase ' . $scope['phase_code'];
+    }
+
+    if (isset($scope['date_from']) || isset($scope['date_to'])) {
+        $parts[] = 'sesi ' . ($scope['date_from'] ?? 'awal') . ' s.d. ' . ($scope['date_to'] ?? 'sekarang');
     }
 
     return $parts === [] ? '—' : implode(', ', $parts);
@@ -67,7 +80,7 @@ $history = array_values(array_filter($requests, static fn (array $row): bool => 
   <section class="form-section danger-zone" aria-labelledby="req-<?= (int) $request['id'] ?>">
     <header class="level-card-head">
       <div>
-        <span class="eyebrow">Pratinjau #<?= (int) $request['id'] ?> · <?= esc(fmt_date($request['created_at'], true, 'id')) ?></span>
+        <span class="eyebrow">Pratinjau #<?= (int) $request['id'] ?> · <?= esc(fmt_date($request['created_at'], true, 'id')) ?><?= ($data['origin'] ?? null) === 'retention' ? ' · dibuat otomatis oleh retensi' : '' ?></span>
         <h2 id="req-<?= (int) $request['id'] ?>"><?= icon('warn') ?> <?= esc($scopeText((array) ($data['scope'] ?? []))) ?></h2>
       </div>
       <span class="badge <?= $request['mode'] === 'hard' ? 'is-bad' : 'is-warn' ?>"><?= $request['mode'] === 'hard' ? 'hapus permanen' : 'tandai terhapus' ?></span>
@@ -134,6 +147,30 @@ $history = array_values(array_filter($requests, static fn (array $row): bool => 
   <p class="field-help">ID peserta dan ID sesi tertera di URL halaman detailnya (mis. /admin/peserta/<b>42</b>).</p>
 
   <fieldset class="repeat-row">
+    <legend>Penyempit cakupan studi (opsional)</legend>
+    <p class="field-help">Hanya dipakai bila cakupannya studi: batasi ke satu fase dan/atau sesi yang dimulai dalam rentang tanggal.</p>
+    <div class="form-grid">
+      <div class="field">
+        <label for="phase_code">Fase</label>
+        <select id="phase_code" name="phase_code">
+          <option value="">Semua fase</option>
+          <?php foreach ($phases as $phase): ?>
+            <option value="<?= esc($phase, 'attr') ?>"><?= esc($phase) ?></option>
+          <?php endforeach ?>
+        </select>
+      </div>
+      <div class="field">
+        <label for="date_from">Sesi mulai dari</label>
+        <input type="date" id="date_from" name="date_from">
+      </div>
+      <div class="field">
+        <label for="date_to">Sesi mulai sampai</label>
+        <input type="date" id="date_to" name="date_to">
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset class="repeat-row">
     <legend>Mode penghapusan</legend>
     <label class="check">
       <input type="radio" name="mode" value="soft" checked>
@@ -177,17 +214,27 @@ $history = array_values(array_filter($requests, static fn (array $row): bool => 
 <section class="panel">
   <h2 class="panel-title"><?= icon('replay') ?> Retensi</h2>
   <?php if (is_array($retention)): ?>
-    <p class="alert alert-ok" role="status">
-      <?= icon('check') ?>
-      <?= esc(fmt_num($retention['stale_sessions'])) ?> sesi menganggur ditandai jeda ·
-      <?= esc(fmt_num($retention['expired_exports'])) ?> berkas ekspor kedaluwarsa dibuang
-      (<?= esc(fmt_date($retention['at'], true, 'id')) ?>).
-    </p>
+    <div class="alert alert-ok" role="status">
+      <p><?= icon('check') ?> Retensi dijalankan <?= esc(fmt_date($retention['at'], true, 'id')) ?>:</p>
+      <ul>
+        <li><?= esc(fmt_num($retention['stale_sessions'])) ?> sesi menganggur ditandai jeda</li>
+        <li><?= esc(fmt_num($retention['abandoned_attempts'] ?? 0)) ?> tantangan menggantung ditandai ditinggalkan</li>
+        <li><?= esc(fmt_num($retention['abandoned_sessions'] ?? 0)) ?> sesi jeda lama ditandai ditinggalkan</li>
+        <li><?= esc(fmt_num($retention['expired_exports'])) ?> berkas ekspor kedaluwarsa dibuang</li>
+        <li><?= esc(fmt_num(count($retention['retention_previews'] ?? []))) ?> pratinjau penghapusan karena masa simpan studi</li>
+      </ul>
+      <?php foreach ($retention['warnings'] ?? [] as $warning): ?>
+        <p class="alert alert-warn"><?= icon('warn') ?> <?= esc($warning) ?></p>
+      <?php endforeach ?>
+    </div>
   <?php endif ?>
   <ul class="muted">
-    <li>Sesi tanpa aktivitas lebih dari <?= esc($idleMinutes) ?> menit ditandai <b>jeda</b> (paused).</li>
+    <li>Sesi tanpa aktivitas lebih dari <?= esc($idleMinutes) ?> menit ditandai <b>jeda</b> (paused); peserta tetap dapat melanjutkan.</li>
+    <li>Tantangan yang terbuka tanpa sentuhan lebih dari <?= esc($attemptHours) ?> jam ditandai <b>ditinggalkan</b> (skor 0); jawabannya tetap tersimpan.</li>
+    <li>Sesi jeda yang tidak tersentuh lebih dari <?= esc($sessionDays) ?> hari ditandai <b>ditinggalkan</b>.</li>
     <li>Berkas ekspor yang lebih tua dari <?= esc($exportRetention) ?> hari dibuang dari disk.</li>
-    <li>Perintah terjadwal <code>php spark gelita:retention:run</code> belum aktif (RetentionService tahap 7, cron tahap 8); sampai saat itu jalankan dari tombol ini.</li>
+    <li>Data studi yang melewati masa simpan (<code>retention_days</code>) <b>tidak</b> dihapus otomatis: retensi membuat pratinjau di atas, dan penghapusan tetap menunggu keputusan Anda.</li>
+    <li>Cron harian menjalankan <code>php spark gelita:retention:run</code>; tombol ini menjalankan hal yang sama sekarang.</li>
   </ul>
   <form method="post" action="<?= base_url('admin/tata-kelola/retensi') ?>" class="inline-form">
     <?= csrf_field() ?>

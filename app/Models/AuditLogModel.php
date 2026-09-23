@@ -47,9 +47,17 @@ class AuditLogModel extends Model
             'target_type'   => $opts['target_type'] ?? null,
             'target_id'     => isset($opts['target_id']) ? (string) $opts['target_id'] : null,
             'metadata_json' => $opts['metadata'] ?? null,
-            'ip_hash'       => hash_ip(service('request')->getIPAddress()),
+            'ip_hash'       => $this->requestIpHash(),
             'occurred_at'   => date('Y-m-d H:i:s'),
         ], false);
+    }
+
+    /** Hash IP request web; command CLI (cron) tidak punya IP → NULL. */
+    private function requestIpHash(): ?string
+    {
+        $request = service('request');
+
+        return $request instanceof \CodeIgniter\HTTP\IncomingRequest ? hash_ip($request->getIPAddress()) : null;
     }
 
     /** @return list<array<string, mixed>> */
