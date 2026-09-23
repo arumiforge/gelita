@@ -66,6 +66,13 @@ Vagrantfile
 /writable/exports/*
 !/writable/exports/index.html
 
+# Penanda mode pemeliharaan Nginx (docs/08_DEPLOYMENT.md → Mode pemeliharaan)
+/writable/pemeliharaan.flag
+
+# Aset unggahan admin hanya ada di server dan ikut backup, bukan git
+/public/assets/uploads/*
+!/public/assets/uploads/.gitkeep
+
 php_errors.log
 
 #-------------------------

@@ -6,7 +6,7 @@ Aplikasi dibangun dengan **CodeIgniter 4.7** (PHP 8.2+, MySQL 8 / MariaDB 10.6+)
 
 ## Status pengembangan
 
-**Tahap 1–7 dari 8 selesai; tahap berikutnya adalah 8 (deployment & operasional).**
+**Kedelapan tahap selesai.** Aplikasi siap dipasang di server production mengikuti [`docs/08_DEPLOYMENT.md`](docs/08_DEPLOYMENT.md).
 
 | Tahap | Isi | Status |
 |---:|---|---|
@@ -17,11 +17,30 @@ Aplikasi dibangun dengan **CodeIgniter 4.7** (PHP 8.2+, MySQL 8 / MariaDB 10.6+)
 | 5 | View, UI, CSS: 3 layout, 17 komponen, 17 halaman game + 5 arena, 34 view admin, 6 berkas CSS | selesai |
 | 6 | Perilaku JavaScript: lima mesin arena, antrean event offline, narasi + telemetry audio, chart ECharts, editor konten terpandu | selesai |
 | 7 | Integrasi fitur: `ExportService` (XLSX streaming), `ReportService` (PDF), `RetentionService`, lima command `gelita:*` | selesai |
-| 8 | Deployment & operasional | berikutnya |
+| 8 | Deployment & operasional: skrip deploy/backup/retensi untuk Linux (Bash) dan Windows + Laragon (PowerShell), konfigurasi Nginx, mode pemeliharaan | selesai |
 
 Kelima arena kini dapat dimainkan penuh di browser — Periksa, petunjuk, keluar berkonfirmasi, narasi audio, dan lentera yang bertambah dari respons server — dengan seluruh event gameplay dan telemetry audio tercatat, termasuk saat koneksi sempat putus. Panel admin menggambar seluruh chart dengan ECharts dari `/api/admin/*`, dan filter mengubah isi halaman tanpa memuat ulang.
 
 Yang sudah berfungsi penuh lewat HTTP: persetujuan dan registrasi dengan kata sandi kuat (termasuk dua metrik literasi keamanan digital), masuk/keluar, ganti sandi dan reset sandi oleh guru, ganti sandi sendiri untuk staf (`/admin/akun/sandi`, wajib setelah reset atau pembuatan akun oleh admin), peta Kedu dan peta wilayah dengan kunci berurutan, dialog pembuka wilayah, kelima arena beserta seluruh API penilaiannya, layar selesai dan riwayat hasil, Pustaka Kedu, profil, Balai Refleksi, pergantian bahasa tanpa kehilangan progres, serta seluruh halaman panel admin (dasbor, peserta, sesi, analitik, masukan, konten, impor bank soal, media & audio, studi & rilis, tata kelola, akun staf).
+
+### Tahap 8 — Deployment & operasional
+
+Berkas operasional ada di [`deploy/`](deploy/); kode aplikasi tidak berubah. Langkah pemasangan, alasan tiap aturan, dan hasil uji ada di [`docs/08_DEPLOYMENT.md`](docs/08_DEPLOYMENT.md), terutama [*Catatan Implementasi Tahap 8*](docs/08_DEPLOYMENT.md#catatan-implementasi-tahap-8). Yang perlu diketahui:
+
+- **Dua jalur setara.** Jalur L memakai `deploy/linux/` (Bash, Nginx + PHP-FPM, cron). Jalur W memakai `deploy/windows/` (PowerShell, Nginx Laragon + php-cgi, Task Scheduler).
+- **Deploy satu perintah** (`deploy.sh` / `deploy.ps1`). Urutannya:
+  1. menolak berjalan bila ada sesi kelas aktif dalam 10 menit terakhir;
+  2. membuat backup;
+  3. menyalakan mode pemeliharaan (Nginx menjawab 503 selama `writable/pemeliharaan.flag` ada);
+  4. menarik kode dan dependency;
+  5. menjalankan migration dengan akun `gelita_migrate` lewat `database_default_DSN`;
+  6. menaikkan `gelita.assetVersion`;
+  7. membuka situs kembali hanya bila `gelita:content:verify` lolos.
+- **Backup** (`backup.sh` / `backup.ps1`) memuat database tanpa isi `ci_sessions`, aset unggahan, dan `.env`. Backup disimpan 30 hari lalu disalin ke lokasi kedua. Kegagalan salinan kedua terlihat lewat kode keluar 2.
+- **Rollback: migration dulu, kode kemudian.** Setelah `git reset`, berkas migration rilis baru hilang, dan `migrate:rollback` gagal diam-diam dengan kode keluar 0.
+- **Skrip `.ps1` hanya ASCII.** Windows PowerShell 5.1 membaca skrip tanpa BOM sebagai cp1252, sehingga tanda pisah `—` memutus string.
+
+Semua skrip dijalankan di server uji (Ubuntu 24.04, MariaDB 10.11, Nginx 1.24, PHP-FPM 8.3, PowerShell 7.4) lewat jalur sukses, jalur gagal, dan penolakan saat ada kelas aktif. Yang masih butuh mesin Windows atau domain sungguhan tercatat di [*Masih belum teruji*](docs/08_DEPLOYMENT.md#masih-belum-teruji).
 
 ### Tahap 7 — Integrasi fitur
 
@@ -68,7 +87,7 @@ Rincian keputusan ada di dokumen tahap masing-masing; ringkasan UI di [`docs/05_
 
 - **Narasi petunjuk arena `cari` belum bersuara**: payload `clues` belum membawa aset audio; teks petunjuk tampil dan diumumkan ke pembaca layar.
 - **Ekspor dibangun sinkron** di request yang sama (batas 300 detik). Tahap 8 memutuskan tetap sinkron; ambang `gelita.exportMaxRawEvents` menjaga ukurannya. Alasannya ada di [`docs/08_DEPLOYMENT.md` → *Keputusan yang tercatat*](docs/08_DEPLOYMENT.md#keputusan-yang-tercatat).
-- **Cron belum terpasang** — `gelita:retention:run` siap dipakai; pemasangannya (cron di Linux, Task Scheduler di Windows) adalah bagian tahap 8. Sampai itu, jalankan dari tombol di `/admin/tata-kelola`.
+- **Tugas terjadwal dipasang per server.** Baris cron (Linux) dan perintah pendaftaran Task Scheduler (Windows) untuk backup dan `gelita:retention:run` ada di [`docs/08_DEPLOYMENT.md` → *Tugas Terjadwal*](docs/08_DEPLOYMENT.md#tugas-terjadwal). Di mesin pengembangan, retensi dijalankan dari tombol di `/admin/tata-kelola`.
 - `App\Libraries\HashedIpSessionHandler` **belum dipasang**; alasannya di bagian *Sesi dan CSRF* di bawah.
 
 ## Prasyarat lokal
@@ -162,7 +181,7 @@ Jalankan test suite tanpa laporan coverage:
 vendor/bin/phpunit --no-coverage
 ```
 
-Suite (132 test) memakai grup database `tests` (SQLite3 in-memory) dan hanya menjalankan migration bernamespace `Tests\Support`, bukan migration aplikasi — skema aplikasi memakai fitur MySQL/MariaDB (`DATETIME(6)`, `ON UPDATE CURRENT_TIMESTAMP(6)`) yang tidak ada di SQLite. Sesi di-mock dengan `ArrayHandler` oleh `CIUnitTestCase`. Yang dikunci suite antara lain:
+Suite (138 test) memakai grup database `tests` (SQLite3 in-memory) dan hanya menjalankan migration bernamespace `Tests\Support`, bukan migration aplikasi — skema aplikasi memakai fitur MySQL/MariaDB (`DATETIME(6)`, `ON UPDATE CURRENT_TIMESTAMP(6)`) yang tidak ada di SQLite. Sesi di-mock dengan `ArrayHandler` oleh `CIUnitTestCase`. Yang dikunci suite antara lain:
 
 - `RouteWiringTest` — auto-route tetap mati, setiap handler menunjuk kelas/method yang ada, setiap view yang disebut controller punya berkasnya, dan ganti sandi staf hanya berfilter `staffAuth` (terbuka untuk guru).
 - `HeadRouteTest` — HEAD memakai rute GET beserta filternya; HEAD ke halaman staf tanpa login dialihkan ke `/admin/login`.
@@ -174,6 +193,7 @@ Suite (132 test) memakai grup database `tests` (SQLite3 in-memory) dan hanya men
 - `ExcelWriterTest` — workbook terbaca ulang PhpSpreadsheet, teks berawalan `=` tidak pernah menjadi rumus, berkas sementara dibersihkan.
 - `ExportRulesTest` — mode anonim tanpa kolom identitas, rahasia tidak pernah diekspor, kunci jawaban hanya admin, guru tanpa Raw Events, cakupan sekolah dipaksa service, cakupan & penjaga drift penghapusan.
 - `Stage7WiringTest` — kelima command `gelita:*` aktif, service baru terdaftar, dan setiap keluaran templat PDF lewat `esc()`.
+- `DeployFilesTest` — skrip Windows hanya ASCII, skrip Bash ber-LF dengan `set -E`, konfigurasi Nginx Linux dan Windows hanya berbeda di baris platform, tidak ada perintah yang merusak production, salinan `.env` di backup Windows tidak langsung terhapus retensi.
 - `ScoringServiceTest`, `PasswordPolicyTest`, `ChallengeEntityTest`, `ViewHelperTest`, `LanguageFilesTest`, `EventTimeTest`, `DebugToolbarRedactionTest`.
 
 Karena tabel aplikasi tidak dibuat di suite ini, **alur HTTP ujung ke ujung diverifikasi di atas MySQL/MariaDB sungguhan**. Gunakan database scratch terpisah. Kredensial untuk perintah CLI dioper lewat `database_default_DSN`, satu-satunya cara yang dapat menimpa `.env`:
@@ -199,7 +219,7 @@ Dokumen spesifikasi per tahap ada di folder [`docs`](docs/) dan mencerminkan imp
 5. [View, UI, dan CSS](docs/05_VIEW_UI.md)
 6. [JavaScript](docs/06_JAVASCRIPT.md)
 7. [Integrasi fitur](docs/07_FEATURE_INTEGRATION.md)
-8. [Deployment dan operasional](docs/08_DEPLOYMENT.md) — tahap berikutnya; Revisi 3 mencakup Linux dan Windows + Laragon (Nginx)
+8. [Deployment dan operasional](docs/08_DEPLOYMENT.md) — Linux dan Windows + Laragon (Nginx); skripnya di [`deploy/`](deploy/)
 
 Daftar route lengkap dapat dilihat kapan saja tanpa membaca kode:
 
