@@ -80,7 +80,7 @@ $fields = static function (?array $staff, string $p) use ($schools, $roleNames, 
     <h2 id="temp-title" class="panel-title"><?= icon('key') ?> Sandi sementara untuk <?= esc($temporary['staff']['display_name']) ?></h2>
     <p class="muted">Nama pengguna: <code><?= esc($temporary['staff']['username']) ?></code></p>
     <p class="temp-password" aria-label="Sandi sementara"><?= esc($temporary['password']) ?></p>
-    <p><b>Sampaikan langsung kepada yang bersangkutan.</b> Sandi ini hanya ditampilkan sekali — setelah halaman ini ditutup, sandi tidak dapat dilihat lagi.</p>
+    <p><b>Sampaikan langsung kepada yang bersangkutan.</b> Sandi ini hanya ditampilkan sekali — setelah halaman ini ditutup, sandi tidak dapat dilihat lagi. Pemilik akun sebaiknya segera menggantinya lewat <b>Ubah sandi</b> di pojok kanan atas panel.</p>
     <a class="btn btn-primary" href="<?= base_url('admin/staf') ?>"><?= icon('check') ?> Sudah saya catat</a>
   </section>
 <?php endif ?>

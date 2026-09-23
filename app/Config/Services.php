@@ -2,6 +2,7 @@
 
 namespace Config;
 
+use App\Libraries\HeadAsGetRouteCollection;
 use App\Libraries\RequestId;
 use App\Services\AnalyticsService;
 use App\Services\ChallengeService;
@@ -30,6 +31,16 @@ class Services extends BaseService
         }
 
         return new RequestId();
+    }
+
+    /** Koleksi rute yang melayani HEAD dengan rute GET (lihat kelasnya). */
+    public static function routes(bool $getShared = true): HeadAsGetRouteCollection
+    {
+        if ($getShared) {
+            return static::getSharedInstance('routes');
+        }
+
+        return new HeadAsGetRouteCollection(service('locator'), new Modules(), config(Routing::class));
     }
 
     /** State sesi + progres aktif untuk request ini. */

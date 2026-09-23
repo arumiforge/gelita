@@ -456,6 +456,7 @@ gelita/
 │   │   ├── PasswordPolicy.php     ← aturan & penilaian kekuatan sandi siswa
 │   │   ├── GelitaExceptionHandler.php ← JSON seragam untuk /api, halaman galat bergaya GELITA
 │   │   ├── RequestId.php          ← id acak per request (service gelitaRequestId)
+│   │   ├── HeadAsGetRouteCollection.php ← HEAD dilayani rute GET beserta filternya (service routes)
 │   │   ├── HashedIpSessionHandler.php ← belum dipasang, lihat § 3b
 │   │   ├── ExcelWriter.php        ← penulis XLSX streaming untuk export (tahap 7)
 │   │   ├── ContentVerifier.php    ← aturan verifikasi konten, panel + CLI (tahap 7)
@@ -770,7 +771,12 @@ public static function staffContext(bool $getShared = true): ?object
 
 public static function contentRepository(bool $getShared = true): \App\Services\ContentRepository
     // pembaca konten ber-cache (level, node, item, media)
+
+public static function routes(bool $getShared = true): \App\Libraries\HeadAsGetRouteCollection
+    // menimpa service bawaan: request HEAD memakai handler DAN filter rute GET
 ```
+
+`routes` menimpa service bawaan CodeIgniter. CodeIgniter hanya mencocokkan HEAD dengan rute `$routes->head()`, sehingga tanpa penimpaan ini setiap halaman menjawab HEAD dengan 404, dan pemantau uptime serta `curl -I` melaporkan situs mati. `HeadAsGetRouteCollection` memetakan HEAD ke GET di `getRoutes()` **dan** `loadRoutesOptions()`, sehingga filter `staffAuth`/`staffRole`/`gameSession` tetap berlaku. Uji: `tests/unit/HeadRouteTest.php`.
 
 Service bisnis tahap 3 juga didaftarkan di sini sehingga controller cukup memanggil `service('…')`: `sessionService`, `challengeService`, `scoringService`, `eventService`, `contentImportService`, dan `analyticsService(?int $schoolScope, bool $anonymous)` — yang terakhir menerima cakupan sekolah pemanggil (lapis ketiga otorisasi).
 

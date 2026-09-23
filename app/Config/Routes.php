@@ -91,6 +91,10 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
         $routes->get('/', 'DashboardController::index');
         $routes->get('dashboard', 'DashboardController::index');
 
+        // Akun sendiri — guru & admin
+        $routes->get('akun/sandi', 'AccountController::passwordForm');
+        $routes->post('akun/sandi', 'AccountController::changePassword');
+
         // Data penelitian — guru & admin (scope guru dibatasi sekolahnya)
         $routes->get('peserta', 'ParticipantController::index');
         $routes->get('peserta/(:num)', 'ParticipantController::show/$1');
