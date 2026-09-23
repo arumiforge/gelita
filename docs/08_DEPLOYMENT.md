@@ -1456,6 +1456,7 @@ Pemantau uptime eksternal (bila dipakai) boleh memakai GET maupun HEAD ke `/`. H
 | CSRF "action not allowed" | tab dibiarkan terbuka semalam | muat ulang halaman; `security.expires` 2 jam |
 | Anak keluar / pindah komputer | session berakhir, tab tertutup | masuk lagi di `/masuk`; progres tetap |
 | Staf selalu dikembalikan ke Ubah sandi | sandi sementara dari admin (reset / akun baru) belum diganti | ganti sandi di halaman itu; kewajiban hilang otomatis |
+| Admin lupa kata sandi | tidak ada admin lain yang dapat mereset di `/admin/staf` | L: `sudo -u www-data php spark gelita:staff:password admin`; W: `php spark gelita:staff:password admin` di PowerShell. Masuk dengan sandi sementara yang dicetak, lalu buat sandi baru (reset juga membuka kunci) |
 | Anak lupa kata sandi | — | guru mereset di `/admin/peserta/{id}`; anak membuat sandi baru saat masuk |
 | Anak lupa nama pengguna | — | guru mencarinya di `/admin/peserta` berdasarkan nama & sekolah |
 | "Terlalu banyak percobaan" | 8 kali salah sandi | tunggu 5 menit, atau guru mereset sandi (reset juga membuka kunci) |
