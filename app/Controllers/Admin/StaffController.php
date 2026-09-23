@@ -2,7 +2,6 @@
 
 namespace App\Controllers\Admin;
 
-use App\Libraries\PasswordPolicy;
 use App\Models\AuditLogModel;
 use App\Models\SchoolModel;
 use App\Models\StaffUserModel;
@@ -132,11 +131,8 @@ class StaffController extends BaseAdminController
             return $this->back('admin/staf', 'Ketik RESET pada kotak konfirmasi untuk mengatur ulang kata sandi.');
         }
 
-        $temporary = $this->temporaryPassword();
-
         // sandi sementara diketahui admin → pemilik wajib menggantinya saat masuk
-        $staff->setPassword($staffId, $temporary, true);
-        $staff->update($staffId, ['failed_login_count' => 0, 'locked_until' => null]);
+        $temporary = $staff->resetToTemporary($staffId);
 
         $this->audit('staff_password_reset', $staffId);
 
@@ -189,27 +185,6 @@ class StaffController extends BaseAdminController
         }
 
         return $rows;
-    }
-
-    /** Sandi sementara staf: 16 karakter acak yang memenuhi kebijakan sandi. */
-    private function temporaryPassword(): string
-    {
-        $pool   = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789!@#$%*?';
-        $policy = new PasswordPolicy();
-
-        for ($attempt = 0; $attempt < 10; $attempt++) {
-            $candidate = '';
-
-            for ($i = 0; $i < 16; $i++) {
-                $candidate .= $pool[random_int(0, strlen($pool) - 1)];
-            }
-
-            if ($policy->check($candidate)['acceptable']) {
-                return $candidate;
-            }
-        }
-
-        throw new \RuntimeException('Gagal membuat sandi sementara yang memenuhi kebijakan.');
     }
 
     /** @param array<string, mixed> $metadata */

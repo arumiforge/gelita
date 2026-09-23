@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Entities\StaffUser;
+use App\Libraries\PasswordPolicy;
 use CodeIgniter\Model;
 
 class StaffUserModel extends Model
@@ -77,5 +78,41 @@ class StaffUserModel extends Model
             'password_hash'        => password_hash($plain, PASSWORD_DEFAULT),
             'must_change_password' => $mustChange ? 1 : 0,
         ]);
+    }
+
+    /**
+     * Reset oleh admin (panel `/admin/staf` atau `gelita:staff:password`): sandi
+     * sementara yang wajib diganti saat masuk, dan kunci login dibuka.
+     * Sandi dikembalikan untuk ditampilkan sekali; pemanggil tidak menyimpannya.
+     */
+    public function resetToTemporary(int $id): string
+    {
+        $temporary = self::temporaryPassword();
+
+        $this->setPassword($id, $temporary, true);
+        $this->update($id, ['failed_login_count' => 0, 'locked_until' => null]);
+
+        return $temporary;
+    }
+
+    /** Sandi sementara staf: 16 karakter acak yang memenuhi kebijakan sandi. */
+    public static function temporaryPassword(): string
+    {
+        $pool   = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789!@#$%*?';
+        $policy = new PasswordPolicy();
+
+        for ($attempt = 0; $attempt < 10; $attempt++) {
+            $candidate = '';
+
+            for ($i = 0; $i < 16; $i++) {
+                $candidate .= $pool[random_int(0, strlen($pool) - 1)];
+            }
+
+            if ($policy->check($candidate)['acceptable']) {
+                return $candidate;
+            }
+        }
+
+        throw new \RuntimeException('Gagal membuat sandi sementara yang memenuhi kebijakan.');
     }
 }
