@@ -81,7 +81,12 @@ $total  = count($pages);
                     <?php if ($caption !== '' || $media['credit'] !== ''): ?>
                       <figcaption>
                         <?= esc($caption) ?>
-                        <?php if ($media['credit'] !== ''): ?><small class="book-credit"><?= esc($media['credit']) ?></small><?php endif ?>
+                        <?php if ($media['credit'] !== '' && $media['provider'] !== 'upload'): ?>
+                          <?php // Atribusi lisensi (CC BY-SA dsb.): kredit menaut ke halaman sumber berkas ?>
+                          <small class="book-credit"><a href="<?= esc($media['href'], 'attr') ?>" target="_blank" rel="noopener noreferrer"><?= esc($media['credit']) ?></a></small>
+                        <?php elseif ($media['credit'] !== ''): ?>
+                          <small class="book-credit"><?= esc($media['credit']) ?></small>
+                        <?php endif ?>
                       </figcaption>
                     <?php endif ?>
                   </figure>
