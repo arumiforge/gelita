@@ -51,8 +51,12 @@ Tidak ada rumus skor, tidak ada query analitik, dan tidak ada perhitungan benar/
 
 ```text
 app/Controllers/
-├── BaseController.php                (sudah ada)
+├── BaseController.php                (sudah ada) ok()/fail()/jsonBody()/deviceInfo()
+├── Concerns/
+│   ├── GameProgress.php              status buka/kunci level & node, lentera, `entry` wilayah
+│   └── StaffScope.php                schoolScope(), readFilters(), analytics() — dipakai admin & API admin
 ├── Game/
+│   ├── BaseGameController.php        sesi/peserta request, data HUD, dialogueGate()
 │   ├── HomeController.php            welcome, intro, bahasa
 │   ├── RegisterController.php        persetujuan + pendaftaran akun siswa
 │   ├── LoginController.php           masuk, keluar, ganti kata sandi siswa
@@ -63,6 +67,7 @@ app/Controllers/
 │   ├── ProfileController.php         profil peserta
 │   └── ReflectionController.php      Balai Refleksi + kritik & saran
 ├── Admin/
+│   ├── BaseAdminController.php       panel(): judul, filter, activeStudy, filterOptions
 │   ├── AuthController.php            login/logout staff
 │   ├── DashboardController.php       ringkasan
 │   ├── ParticipantController.php     daftar & profil peserta
@@ -76,6 +81,7 @@ app/Controllers/
 │   ├── GovernanceController.php      deletion request, retention, audit log
 │   └── StaffController.php           akun guru/admin
 └── Api/
+    ├── BaseApiController.php         gameSession(), attemptOrFail(), rateLimited()
     ├── SessionApiController.php
     ├── ContentApiController.php
     ├── ChallengeApiController.php
@@ -263,7 +269,7 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
 // ---------------------------------------------------------------- API ADMIN
 $routes->group('api/admin', [
     'namespace' => 'App\Controllers\Api',
-    'filter'    => 'staffAuth',
+    'filter'    => ['jsonResponse', 'staffAuth'],   // header JSON + X-Request-Id juga untuk API admin
 ], static function ($routes) {
     $routes->get('summary',          'AdminApiController::summary');
     $routes->get('levels',           'AdminApiController::levels');
@@ -438,7 +444,7 @@ Kata sandi tidak pernah ditulis ke flash, `old()`, log, atau event.
 | `form()` | GET | — | bila sudah login → redirect `/peta`; pilihan fase hanya tampil bila `allow_phase_choice = 1` | view `game/login` |
 | `login()` | POST `username`, `password`, `phase?` | `username: required`, `password: required` | `SessionService::login()`. `invalid` → pesan identik `lang('Auth.loginFailed')` tanpa membedakan nama salah/sandi salah; `locked` → `lang('Auth.locked', [menit])`; `must_change` → redirect `/ganti-sandi`; `ok` → redirect ke URL tujuan tersimpan atau `/peta` | redirect |
 | `changePasswordForm()` | GET | — | tampilkan pesan `Auth.mustChange` bila datang dari reset guru; checklist syarat sama dengan registrasi | view `game/change-password` |
-| `changePassword()` | POST `current_password`, `password`, `password_confirm` | `current_password: required`, `password: required|strong_password[username]` (username diambil dari akun), `password_confirm: required|matches[password]`; sandi baru ≠ sandi lama | `SessionService::changePassword()`; `must_change_password = 0`; event `password_changed` | redirect `/peta` + toast |
+| `changePassword()` | POST `current_password`, `password`, `password_confirm` | `current_password: required`, `password: required|strong_password[username]` (username diambil dari akun), `password_confirm: required|matches[password]`; sandi baru ≠ sandi lama | `SessionService::changePassword()`; `must_change_password = 0`; lalu login otomatis untuk melanjutkan/membuat sesi; event `password_changed` (setelah reset guru, sesi baru ada sesudah login, jadi event dicatat pada sesi itu dengan `via: reset`) | redirect `/peta` + toast |
 | `logout()` | GET | — | `SessionService::logout()`: event `session_paused`, attempt `in_progress` **tidak** ditutup agar dapat dilanjutkan; `session()->destroy()` | redirect `/` |
 
 ### `Api\AuthApiController`
@@ -460,7 +466,7 @@ Nama provinsi/kabupaten dikirim bersama kodenya dan disimpan sebagai snapshot. S
 | `kedu()` | ambil 3 level + status dari `session_progress`. Level terkunci bila `unlock_mode = sequential` dan `sequence > unlocked_level_sequence` | view `game/map-kedu` |
 | `level($code)` | validasi level ada & terbuka; bila terkunci → redirect `/peta` + toast; ambil 5 node + status (selesai / terbuka / terkunci) dari `challenge_attempts` | view `game/map-level` |
 
-Status node: node ke-`n` terbuka bila `n = 1` atau node ke-`n-1` sudah `completed`. Bila `unlock_mode = open`, semua terbuka.
+Status node: node ke-`n` terbuka bila `n = 1` atau node ke-`n-1` sudah `completed`. Bila `unlock_mode = free`, semua terbuka (lihat D13 di 01_DATABASE.md; nilai `free` sengaja berbeda dari status wilayah `open`).
 
 ### `Game\ChallengeController`
 
@@ -516,11 +522,11 @@ Bentuk **bootstrap payload** (dipakai `show()`):
 
 | Method | Request body | Validasi | Service | Response |
 |---|---|---|---|---|
-| `open($nodeId)` | `{}` | node ada, aktif, level unlock | `ChallengeService::openNode()` | `{attempt_id, engine_type, config, items:[...], hints_available:n}` |
-| `respond($attemptId)` | `{item_id, answer:{...}, client_event_id, occurred_at, sequence_no, reason_text?}` | `item_id: required|item_in_attempt`, `client_event_id: required|max_length[120]` | `ChallengeService::submitAnswer()` | `{correct, first_pass, change_count, progress:{answered,total}}` |
+| `open($nodeId)` | `{}` | node ada, aktif, level unlock | `ChallengeService::openNode()` | payload yang sama dengan `#challenge-data`: `{attempt_id, attempt_no, resumed, node:{…, engine_type, allow_retry}, items:[…], hints:[{id, item_id, sequence}], hints_count}` + `word_bank` (rumpang ber-bank), `verdict_options`/`require_reason` (boleh), `passages`; engine `cari` memakai `objects` + `clues` alih-alih `items` |
+| `respond($attemptId)` | `{item_id, answer:{...}, client_event_id, occurred_at, sequence_no, reason_text?}` | `item_id: required|item_in_attempt`, `client_event_id: required|max_length[120]` | `ChallengeService::submitAnswer()` | `{correct, first_pass, wrong_click, decoy, already_answered, feedback, correct_option_key, change_count, wrong_click_count, progress:{answered,total}}` — `correct_option_key` hanya terisi sesudah dijawab pada node `allow_retry = false`; `cari` menjawab dengan `answer:{object:<ref>}` |
 | `check($attemptId)` | `{answers:[{item_id, answer}], client_event_id, occurred_at}` | tiap `item_id` harus ada di attempt | `ChallengeService::submitCheck()` | `{results:{itemId:bool}, correct_count, total, all_correct, check_count}` |
 | `hint($attemptId)` | `{hint_id, item_id?, client_event_id}` | hint milik node/item attempt | `ChallengeService::useHint()` | `{text, hint_count}` |
-| `complete($attemptId)` | `{client_event_id, occurred_at}` | attempt `in_progress`, semua item `answered` atau `skipped` | `ChallengeService::completeAttempt()` | `{score, stars, first_pass_accuracy, final_accuracy, duration_ms, shards, level_completed, next_level_unlocked, redirect}` |
+| `complete($attemptId)` | `{client_event_id, occurred_at}` | attempt `in_progress`, semua item yang diminta dijawab sudah `answered` atau `skipped` (`ChallengeService::pendingItemIds()`; objek jebakan `cari` tidak dihitung) | `ChallengeService::completeAttempt()` | `{score, stars, first_pass_accuracy, final_accuracy, duration_ms, shards, level_completed, next_level_unlocked, redirect}` |
 | `abandon($attemptId)` | `{reason}` | — | `ChallengeService::abandonAttempt()` | `{status:"abandoned"}` |
 
 `respond()` dipakai engine `pilihan` dan `cari` (jawab per item). `check()` dipakai engine `puzzle`, `rumpang`, `boleh` (periksa sekaligus).
@@ -533,6 +539,10 @@ ingest()  // POST {events:[{client_event_id, event_type, occurred_at, sequence_n
           // maksimum 50 event per request
           // → {accepted, duplicate, rejected:[{index, reason}]}
 ```
+
+Rujukan per event memakai `level_id`, `node_id`, `attempt_id`, `item_id` (nama kolom lengkap `challenge_*_id` juga diterima).
+
+`AudioApiController::ingest()` memakai amplop yang sama, dengan isi per event `{audio_asset_id, action: play|pause|replay|complete, listened_ms, completed, occurred_at, client_event_id, attempt_id?}`. `attempt_id` hanya diterima bila attempt itu milik sesi berjalan; kiriman ulang dengan `client_event_id` yang sama dihitung `duplicate` tanpa menulis baris. Balasan: `{accepted, duplicate, rejected:[{index, reason}]}`.
 
 Status per event yang mungkin dikembalikan: `accepted`, `duplicate`, `rejected`.
 Status level request: `200` (ada yang diterima), `401 INVALID_SESSION`, `422 INVALID_PAYLOAD`, `413` bila melebihi batas.

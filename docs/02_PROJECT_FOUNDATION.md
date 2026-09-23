@@ -190,8 +190,10 @@ cookie.httponly = true
 logger.threshold = 9
 
 #--------------------------------------------------------------------
-# DEBUG TOOLBAR
-# Jangan simpan isi request (formulir sandi) ke writable/debugbar.
+# DEBUG TOOLBAR (hanya aktif di development)
+# collectVarData = false: data view (profil peserta) tidak disimpan ke
+# writable/debugbar. Field kata sandi pada formulir selalu disamarkan oleh
+# App\Filters\DebugToolbar, apa pun nilai kunci ini.
 #--------------------------------------------------------------------
 toolbar.collectVarData = false
 
@@ -216,12 +218,13 @@ php spark key:generate
 
 ### Tabel session
 
-Session memakai database handler agar tahan restart dan bisa dipakai lintas worker:
+Session memakai database handler agar tahan restart dan bisa dipakai lintas worker. Tabel `ci_sessions` sudah menjadi bagian migration proyek (`2026-01-01-003000_CreateCiSessions`), jadi cukup:
 
 ```bash
-php spark session:migration     # membuat migration tabel ci_sessions
 php spark migrate
 ```
+
+Jangan menjalankan `php spark session:migration`: perintah itu membuat migration `ci_sessions` kedua di `app/Database/Migrations/`.
 
 ### `app/Config/App.php`
 
@@ -269,7 +272,7 @@ public $dateFormat = 'Y-m-d H:i:s.u';
 ```php
 public array $aliases = [
     'csrf'          => \CodeIgniter\Filters\CSRF::class,
-    'toolbar'       => \CodeIgniter\Filters\DebugToolbar::class,
+    'toolbar'       => \App\Filters\DebugToolbar::class,   // toolbar bawaan + penyamaran field kata sandi
     'honeypot'      => \CodeIgniter\Filters\Honeypot::class,
     'secureheaders' => \CodeIgniter\Filters\SecureHeaders::class,
     'staffAuth'     => \App\Filters\StaffAuthFilter::class,
@@ -283,9 +286,13 @@ public array $aliases = [
 
 public array $globals = [
     'before' => ['locale'],
-    'after'  => ['toolbar', 'secureheaders'],
+    'after'  => ['secureheaders'],   // 'toolbar' sudah wajib lewat $required
 ];
+
+public array $methods = ['POST' => ['csrf'], 'PUT' => ['csrf'], 'PATCH' => ['csrf'], 'DELETE' => ['csrf']];
 ```
+
+**Debug Toolbar dan kata sandi.** Toolbar bawaan CodeIgniter menyalin seluruh isi POST ke `writable/debugbar/*.json` tanpa syarat — `toolbar.collectVarData` hanya mengatur data view. Karena templat `env` memakai `CI_ENVIRONMENT = development`, tanpa penanganan khusus setiap kiriman `/daftar`, `/masuk`, `/ganti-sandi`, dan `/admin/login` akan meninggalkan kata sandi mentah di disk. Alias `toolbar` karena itu menunjuk `App\Filters\DebugToolbar`, yang menyamarkan field kredensial (`password`, `password_confirm`, `current_password`, …) sebelum toolbar mengambil potret request. Dikunci `tests/unit/DebugToolbarRedactionTest.php`.
 
 ### `app/Config/Validation.php`
 
@@ -423,15 +430,18 @@ gelita/
 │   ├── Entities/                  ← tahap 3
 │   ├── Filters/
 │   │   ├── ApiSessionFilter.php
+│   │   ├── DebugToolbar.php           ← toolbar development + penyamaran kata sandi
 │   │   ├── GameSessionFilter.php      ← memeriksa login siswa + sesi permainan
 │   │   ├── JsonResponseFilter.php
 │   │   ├── LocaleFilter.php
 │   │   ├── ParticipantAuthFilter.php  ← hanya memeriksa siswa sudah login
+│   │   ├── ParticipantCheck.php       ← trait: satu aturan untuk tiga filter siswa
 │   │   ├── StaffAuthFilter.php
 │   │   └── StaffRoleFilter.php
 │   ├── Helpers/
 │   │   ├── gelita_helper.php
-│   │   └── content_helper.php
+│   │   ├── content_helper.php
+│   │   └── ui_helper.php          ← ikon SVG, format angka/tanggal untuk view (tahap 5)
 │   ├── Language/
 │   │   ├── id/
 │   │   │   ├── Game.php
@@ -441,11 +451,13 @@ gelita/
 │   │   └── en/
 │   │       ├── Game.php
 │   │       ├── Auth.php
-│   │       ├── Admin.php
-│   │       └── Validation.php
+│   │       └── Validation.php     ← panel admin satu bahasa, jadi tidak ada en/Admin.php
 │   ├── Libraries/
 │   │   ├── PasswordPolicy.php     ← aturan & penilaian kekuatan sandi siswa
-│   │   └── ExcelWriter.php        ← wrapper batch PhpSpreadsheet (tahap 7)
+│   │   ├── GelitaExceptionHandler.php ← JSON seragam untuk /api, halaman galat bergaya GELITA
+│   │   ├── RequestId.php          ← id acak per request (service gelitaRequestId)
+│   │   ├── HashedIpSessionHandler.php ← belum dipasang, lihat § 3b
+│   │   └── ExcelWriter.php        ← wrapper batch PhpSpreadsheet (tahap 7, belum ada)
 │   ├── Commands/                  ← spark command gelita:* (kerangka di tahap ini)
 │   ├── Models/                    ← tahap 3
 │   ├── Services/                  ← tahap 3 & 7
@@ -466,6 +478,7 @@ gelita/
 │   ├── .htaccess
 │   └── assets/
 │       ├── css/
+│       │   ├── tokens.css
 │       │   ├── base.css
 │       │   ├── layout.css
 │       │   ├── components.css
@@ -473,6 +486,7 @@ gelita/
 │       │   └── admin.css
 │       ├── js/
 │       │   ├── core/
+│       │   │   ├── config.js
 │       │   │   ├── api.js
 │       │   │   ├── events.js
 │       │   │   ├── audio.js
@@ -756,6 +770,8 @@ public static function contentRepository(bool $getShared = true): \App\Services\
     // pembaca konten ber-cache (level, node, item, media)
 ```
 
+Service bisnis tahap 3 juga didaftarkan di sini sehingga controller cukup memanggil `service('…')`: `sessionService`, `challengeService`, `scoringService`, `eventService`, `contentImportService`, dan `analyticsService(?int $schoolScope, bool $anonymous)` — yang terakhir menerima cakupan sekolah pemanggil (lapis ketiga otorisasi).
+
 ### 5. Layout System
 
 CodeIgniter View Layouts dipakai, bukan include manual.
@@ -888,7 +904,7 @@ return [
 |---|---|
 | CSRF | filter `csrf` pada semua POST/PUT/DELETE non-API; untuk API, token dikirim header `X-CSRF-TOKEN` yang dibaca JS dari `<meta name="csrf-token">` |
 | Session | database handler, cookie `HttpOnly`, `SameSite=Lax`, `Secure` di production |
-| Password | `password_hash($p, PASSWORD_DEFAULT)` + `password_verify` untuk staf **dan siswa**. Throttle: staf 5 gagal → kunci 15 menit; siswa 8 gagal → kunci 5 menit. Sandi siswa wajib lolos `PasswordPolicy` (5 syarat). Sandi mentah tidak pernah dicatat di log, event, maupun audit |
+| Password | `password_hash($p, PASSWORD_DEFAULT)` + `password_verify` untuk staf **dan siswa**. Throttle: staf 5 gagal → kunci 15 menit; siswa 8 gagal → kunci 5 menit. Sandi siswa wajib lolos `PasswordPolicy` (5 syarat). Sandi mentah tidak pernah dicatat di log, event, audit, maupun `writable/debugbar` (field sandi disamarkan `App\Filters\DebugToolbar`) |
 | SQL | Query Builder / prepared statements saja. Tidak ada string SQL yang dirangkai dari input |
 | XSS | `esc()` pada semua output; JSON ke JS lewat `<script type="application/json">` bukan interpolasi string |
 | Upload | whitelist MIME + ekstensi, verifikasi dimensi dengan `getimagesize()`, simpan dengan nama resmi, hitung SHA-256 |
@@ -898,7 +914,7 @@ return [
 
 ### 9. Spark Commands yang akan dibuat
 
-Didaftarkan di `app/Commands/`. Implementasi isinya ada di tahap 7 dan 8; tahap ini hanya menyiapkan kerangka kelasnya.
+Didaftarkan di `app/Commands/`. Implementasi isinya ada di tahap 7 dan 8; tahap ini hanya menyiapkan kerangka kelasnya. Sampai saat itu setiap command menolak dengan pesan "belum aktif" dan kode keluar galat — termasuk `gelita:bank:import`, walau `ContentImportService` sendiri sudah ada sejak tahap 3 dan dipakai panel `/admin/konten/impor-bank`. Event `pre_system` (tempat `db_sync_timezone()` dipanggil) hanya terpicu pada request web, jadi command yang menulis waktu wajib memanggil `db_sync_timezone()` sendiri.
 
 ```text
 php spark gelita:content:verify     memeriksa 3 level × 5 node, engine_type valid, item bank cukup
@@ -929,7 +945,7 @@ php spark gelita:bank:import FILE   memuat workbook bank soal (XLSX) ke tabel ko
 
 Dari **01_DATABASE.md**:
 
-* Database `gelita` sudah ada dengan 29 tabel dan sudah di-seed.
+* Database `gelita` sudah ada dengan 29 tabel domain (+ `ci_sessions`) dan sudah di-seed.
 * Kolom akun siswa di `participants` dan kebijakan kata sandi siswa.
 * Kredensial database untuk diisi ke `.env`.
 * Nama tabel dan kolom untuk konfigurasi Model pada tahap 3.

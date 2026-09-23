@@ -57,7 +57,7 @@ Empat aturan yang tidak pernah dilanggar di seluruh fitur:
 | `ExcelWriter` | `app/Libraries/ExcelWriter.php` |
 | Template PDF | `app/Views/pdf/report-study.php`, `report-participant.php` |
 | Spark command | `app/Commands/ContentVerify.php`, `RetentionRun.php`, `ScoreRecompute.php`, `MediaScan.php`, `BankImport.php` |
-| Isi `ContentImportService` | pembaca sheet workbook bank soal (format di FITUR 12a) |
+| `ContentImportService` + `gelita:bank:import` | service pembaca workbook (FITUR 12a) **sudah ada sejak tahap 3** dan dipakai panel `/admin/konten/impor-bank` (pratinjau, impor, templat); tahap ini menyambungkan command CLI-nya |
 
 Selebihnya tahap ini adalah **merangkai** yang sudah dibuat pada tahap 1–6.
 
@@ -207,8 +207,12 @@ Yang **tidak** berubah: `session_id`, `current_level`, `current_node`, seluruh `
       open       bila sequence <= unlocked_level_sequence
       locked     selain itu (hanya bila study.unlock_mode = 'sequential')
  4. Klik level terbuka:
-      dialog wilayah belum pernah dilihat → /dialog/{code}
-      sudah                                → /wilayah/{code}
+      wilayah baru terbuka (status open: belum ada node selesai) → SELALU /dialog/{code}
+      sedang dijelajahi (in_progress) atau tuntas (completed)      → /wilayah/{code}
+      tujuan dihitung GameProgress::regionEntryPath() dan dikirim sebagai `entry`;
+      URL /wilayah, /misi, /tantangan yang diketik langsung untuk wilayah baru
+      dialihkan ke dialognya sampai dialog itu tampil pada sesi login ini
+      (tanda disimpan di sesi PHP, bukan database)
  5. Klik level terkunci → toast, tidak ada navigasi
  6. MapController::level
       ContentRepository::nodesForLevel() → 5 node
@@ -310,9 +314,12 @@ Ini fitur inti. Alur untuk engine batch (`puzzle`, `rumpang`, `boleh`):
        cari   : bila objek yang diklik = target → benar, lanjut petunjuk berikut
                 bila bukan target → wrong_click_count++,
                                     event 'wrong_target_clicked',
-                                    first_pass_correct target TETAP false,
+                                    bila klik pertama untuk petunjuk ini:
+                                      first_pass_correct target = 0 dan TETAP 0,
                                     tidak menutup item
-11'. Response menyertakan correct_option_key / explanation SETELAH dijawab
+                objek jebakan tidak pernah diminta dijawab dan tidak
+                menahan complete()
+11'. Response menyertakan correct_option_key (pilihan) / feedback + decoy (cari) SETELAH dijawab
 13'. Item terakhir dijawab → client langsung memanggil complete()
 ```
 
@@ -339,7 +346,7 @@ B. Menutup tab / koneksi putus
 ## FITUR 6: Petunjuk
 
 ```text
-1. Tombol 💡 tampil bila payload attempt menyertakan hints_available > 0
+1. Tombol 💡 tampil bila payload attempt menyertakan hints_count > 0; id petunjuk ada di payload.hints
 2. Peserta menekan → POST /api/attempts/{id}/hints { hint_id, item_id? }
 3. Validasi: hint milik node attempt (atau item di dalamnya)
 4. ChallengeService::useHint() — transaction:
@@ -365,7 +372,8 @@ B. Menutup tab / koneksi putus
 4. Pada play / pause / replay / ended:
      POST /api/audio-events { audio_asset_id, action, play_index,
                               listened_ms, completed, client_event_id }
-5. AudioApiController::ingest → EventService::recordAudio():
+5. AudioApiController::ingest → EventService::recordAudio() — satu transaction,
+   idempotent terhadap client_event_id (kiriman ulang → duplicate):
      insert audio_usage_events
      insert game_event_logs (audio_play / audio_pause / audio_replay / audio_completed)
      bila terkait attempt → attempt.audio_use_count++
