@@ -7,7 +7,11 @@
  * pengguna tersembunyi (tanpa `name`) hanya membantu pengelola sandi browser
  * menyimpan sandi baru pada akun yang benar.
  *
+ * $mustChange: sandi sementara dari admin (reset / akun baru). Selama itu
+ * StaffAuthFilter mengalihkan halaman panel lain ke sini.
+ *
  * @var string $username
+ * @var bool   $mustChange
  */
 ?>
 <?= $this->extend('layouts/admin') ?>
@@ -16,8 +20,11 @@
 <?= component('partials/admin-head', [
     'title'   => 'Ubah sandi',
     'eyebrow' => 'Akun Anda',
-    'lead'    => 'Setelah akun dibuat atau sandinya diatur ulang admin, segera ganti sandi sementara di sini.',
+    'lead'    => 'Setelah akun dibuat atau sandinya diatur ulang admin, sandi sementara wajib diganti di sini.',
 ]) ?>
+<?php if ($mustChange): ?>
+  <div class="alert alert-info" role="status"><?= icon('key') ?><p>Anda masuk dengan sandi sementara dari admin. Ganti sandi lebih dulu — halaman panel lain terbuka setelah sandi baru disimpan.</p></div>
+<?php endif ?>
 <?= $this->include('partials/flash') ?>
 
 <section class="panel">

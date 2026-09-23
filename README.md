@@ -10,7 +10,7 @@ Aplikasi dibangun dengan **CodeIgniter 4.7** (PHP 8.2+, MySQL 8 / MariaDB 10.6+)
 
 | Tahap | Isi | Status |
 |---:|---|---|
-| 1 | Database: 29 tabel domain + `ci_sessions`, 34 migration, 9 seeder | selesai |
+| 1 | Database: 29 tabel domain + `ci_sessions`, 35 migration, 9 seeder | selesai |
 | 2 | Fondasi: konfigurasi, filter, helper, berkas bahasa, `PasswordPolicy`, kerangka command | selesai |
 | 3 | Model (29), Entity (11), Service (8) — skor, sesi, tantangan, event, analitik, impor bank soal | selesai |
 | 4 | Route, controller, autentikasi siswa & staf, otorisasi berlapis tiga, API JSON seragam | selesai |
@@ -21,7 +21,7 @@ Aplikasi dibangun dengan **CodeIgniter 4.7** (PHP 8.2+, MySQL 8 / MariaDB 10.6+)
 
 Kelima arena kini dapat dimainkan penuh di browser — Periksa, petunjuk, keluar berkonfirmasi, narasi audio, dan lentera yang bertambah dari respons server — dengan seluruh event gameplay dan telemetry audio tercatat, termasuk saat koneksi sempat putus. Panel admin menggambar seluruh chart dengan ECharts dari `/api/admin/*`, dan filter mengubah isi halaman tanpa memuat ulang.
 
-Yang sudah berfungsi penuh lewat HTTP: persetujuan dan registrasi dengan kata sandi kuat (termasuk dua metrik literasi keamanan digital), masuk/keluar, ganti sandi dan reset sandi oleh guru, ganti sandi sendiri untuk staf (`/admin/akun/sandi`), peta Kedu dan peta wilayah dengan kunci berurutan, dialog pembuka wilayah, kelima arena beserta seluruh API penilaiannya, layar selesai dan riwayat hasil, Pustaka Kedu, profil, Balai Refleksi, pergantian bahasa tanpa kehilangan progres, serta seluruh halaman panel admin (dasbor, peserta, sesi, analitik, masukan, konten, impor bank soal, media & audio, studi & rilis, tata kelola, akun staf).
+Yang sudah berfungsi penuh lewat HTTP: persetujuan dan registrasi dengan kata sandi kuat (termasuk dua metrik literasi keamanan digital), masuk/keluar, ganti sandi dan reset sandi oleh guru, ganti sandi sendiri untuk staf (`/admin/akun/sandi`, wajib setelah reset atau pembuatan akun oleh admin), peta Kedu dan peta wilayah dengan kunci berurutan, dialog pembuka wilayah, kelima arena beserta seluruh API penilaiannya, layar selesai dan riwayat hasil, Pustaka Kedu, profil, Balai Refleksi, pergantian bahasa tanpa kehilangan progres, serta seluruh halaman panel admin (dasbor, peserta, sesi, analitik, masukan, konten, impor bank soal, media & audio, studi & rilis, tata kelola, akun staf).
 
 ### Tahap 7 — Integrasi fitur
 
@@ -130,9 +130,9 @@ Di Windows, Laragon (PHP 8.3 + MySQL) memenuhi semua prasyarat. Pengaturan ekste
 
 ## Migration
 
-Migration dijalankan berurutan dari `000100` sampai `003300` (34 berkas) dan menghasilkan 31 tabel: 29 tabel domain, `ci_sessions`, dan `migrations`. `php spark migrate:rollback -b 0` mengembalikan database ke kosong.
+Migration dijalankan berurutan dari `000100` sampai `003400` (35 berkas) dan menghasilkan 31 tabel: 29 tabel domain, `ci_sessions`, dan `migrations`. `php spark migrate:rollback -b 0` mengembalikan database ke kosong.
 
-Empat migration terakhir adalah koreksi. Perbaikan skema selalu datang sebagai migration baru; migration lama tidak diubah.
+`003100`–`003300` adalah koreksi, `003400` menambah kolom baru. Perubahan skema selalu datang sebagai migration baru; migration lama tidak diubah.
 
 | Versi | Peran |
 |---|---|
@@ -140,6 +140,7 @@ Empat migration terakhir adalah koreksi. Perbaikan skema selalu datang sebagai m
 | `003100` | koreksi kanonik: mengganti nama kedua kolom itu menjadi `first_pass_accuracy` / `final_accuracy` dan menambahkan `check_count`, `answer_change_count`, `audio_use_count` |
 | `003200` | menegakkan `NOT NULL` + default pada kelima kolom di atas (Forge membuatnya nullable saat `ALTER`), termasuk mengisi baris lama yang masih `NULL` |
 | `003300` | menambahkan index wajib `game_event_logs (session_id, occurred_at)` yang tidak dibuat `002400` |
+| `003400` | menambahkan `staff_users.must_change_password`: sandi sementara dari admin (reset / akun baru) wajib diganti sebelum panel terbuka |
 
 `003200` memanggil `resetDataCache()` sebelum memeriksa kolom; tanpa itu seluruh pemeriksaan `fieldExists()` membaca daftar kolom versi sebelum `003100` pada proses `spark migrate` yang sama. Jangan melakukan rollback ke bawah `003100`: tahap 3 bergantung pada penamaan kolom hasil migration tersebut. Rincian lengkap di [`docs/01_DATABASE.md`](docs/01_DATABASE.md#koreksi-challenge_attempts-003100-dan-003200).
 
@@ -161,10 +162,11 @@ Jalankan test suite tanpa laporan coverage:
 vendor/bin/phpunit --no-coverage
 ```
 
-Suite (128 test) memakai grup database `tests` (SQLite3 in-memory) dan hanya menjalankan migration bernamespace `Tests\Support`, bukan migration aplikasi — skema aplikasi memakai fitur MySQL/MariaDB (`DATETIME(6)`, `ON UPDATE CURRENT_TIMESTAMP(6)`) yang tidak ada di SQLite. Sesi di-mock dengan `ArrayHandler` oleh `CIUnitTestCase`. Yang dikunci suite antara lain:
+Suite (132 test) memakai grup database `tests` (SQLite3 in-memory) dan hanya menjalankan migration bernamespace `Tests\Support`, bukan migration aplikasi — skema aplikasi memakai fitur MySQL/MariaDB (`DATETIME(6)`, `ON UPDATE CURRENT_TIMESTAMP(6)`) yang tidak ada di SQLite. Sesi di-mock dengan `ArrayHandler` oleh `CIUnitTestCase`. Yang dikunci suite antara lain:
 
 - `RouteWiringTest` — auto-route tetap mati, setiap handler menunjuk kelas/method yang ada, setiap view yang disebut controller punya berkasnya, dan ganti sandi staf hanya berfilter `staffAuth` (terbuka untuk guru).
 - `HeadRouteTest` — HEAD memakai rute GET beserta filternya; HEAD ke halaman staf tanpa login dialihkan ke `/admin/login`.
+- `StaffPasswordGateTest` — staf bersandi sementara hanya dapat membuka Ubah sandi: halaman lain dialihkan, API membalas 403 `PASSWORD_CHANGE_REQUIRED`.
 - `HuntPayloadTest` — payload arena `cari` tidak membedakan jebakan, jawaban hanya lewat token objek, dan objek jebakan tidak pernah diminta dijawab.
 - `RegionEntryTest`, `DialogueGateTest` — wilayah baru selalu lewat dialog pembukanya.
 - `JsConfigTest` — penanda sesi antrean offline buram dan per sesi, `#app-config` tanpa identitas siswa, dan setiap `t('…')` di JavaScript punya kunci `Js.*`.

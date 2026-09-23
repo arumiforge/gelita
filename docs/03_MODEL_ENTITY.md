@@ -341,6 +341,7 @@ Jangan pernah memanggil `$participant->toArray()` untuk respons atau view — me
 
 ```php
 public function isAdmin(): bool { return $this->role === 'admin'; }
+public function mustChangePassword(): bool { return (bool) $this->must_change_password; }
 public function verifyPassword(string $plain): bool
 {
     return password_verify($plain, $this->password_hash);
@@ -432,9 +433,12 @@ activeStaff(): array
 `password_hash` tidak pernah diisi langsung dari input. Selalu lewat:
 
 ```php
-public function setPassword(int $id, string $plain): bool
+public function setPassword(int $id, string $plain, bool $mustChange = false): bool
 {
-    return $this->update($id, ['password_hash' => password_hash($plain, PASSWORD_DEFAULT)]);
+    return $this->update($id, [
+        'password_hash'        => password_hash($plain, PASSWORD_DEFAULT),
+        'must_change_password' => $mustChange ? 1 : 0,
+    ]);
 }
 ```
 
