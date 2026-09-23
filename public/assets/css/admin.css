@@ -500,6 +500,16 @@ th[aria-sort="descending"] .th-sort-icon::after { content: "↓"; color: var(--g
 
 @media (max-width: 640px) {
   .admin-user .menu-toggle { display: inline-flex; }
+  /* Ubah sandi & Keluar jadi tombol ikon; label tetap terbaca pembaca layar */
+  .admin-user .btn-text {
+    position: absolute;
+    width: 1px; height: 1px;
+    margin: -1px; padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
   .filter-bar { grid-template-columns: 1fr 1fr; }
   .filter-search { grid-column: 1 / -1; }
   .bilingual { grid-template-columns: 1fr; }

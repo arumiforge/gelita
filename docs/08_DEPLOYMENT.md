@@ -795,7 +795,7 @@ Sintaks `GELITA_ADMIN_PASSWORD='…' php spark …` di Revisi 2 adalah sintaks B
 
 ### Langkah terakhir (kedua jalur)
 
-1. **Putar sandi admin.** Sandi awal pernah diketik di terminal. Buka `/admin/staf` → atur ulang sandi akun `admin` (ketik `RESET`), lalu simpan sandi acak 16 karakter yang tampil **sekali** di pengelola sandi. Panel belum punya fitur "ganti sandi sendiri" untuk staf, jadi reset adalah satu-satunya jalan.
+1. **Ganti sandi admin.** Sandi awal pernah diketik di terminal. Masuk sebagai `admin`, buka **Ubah sandi** di kepala panel (`/admin/akun/sandi`), dan ganti dengan sandi baru minimal 12 karakter yang disimpan di pengelola sandi.
 2. Buat akun `guru` terpisah per guru dengan `school_id` terisi.
 3. Jalankan [Verifikasi Setelah Deploy](#verifikasi-setelah-deploy).
 
@@ -1311,7 +1311,7 @@ sudo -u www-data touch /var/www/gelita/writable/uji && \
   rm /var/www/gelita/writable/uji && echo "writable OK"
 
 # 4. HTTPS & header keamanan — pada halaman DAN aset, masing-masing tepat satu kali.
-#    Pakai GET (-D - -o /dev/null), bukan HEAD (-I): rute aplikasi menjawab HEAD dengan 404.
+#    GET (-D - -o /dev/null) menampilkan header yang sama dengan HEAD (-I).
 U=https://gelita.sekolah.sch.id
 curl -s -D - -o /dev/null $U/ | grep -iE 'HTTP/|strict-transport|x-frame|x-content-type'
 curl -s -D - -o /dev/null "$U/assets/css/game.css?v=1" | grep -iE 'strict-transport|x-content-type|cache-control'
@@ -1400,7 +1400,7 @@ Get-PSDrive C, D
 
 Bulanan: periksa tanggal kedaluwarsa sertifikat (pemeriksaan 8) dan jalankan satu uji pemulihan.
 
-Pemantau uptime eksternal (bila dipakai) harus memakai **GET** ke `/`. Rute aplikasi hanya terdaftar untuk GET, jadi pemeriksaan `HEAD` dijawab 404 dan akan melaporkan situs mati padahal tidak.
+Pemantau uptime eksternal (bila dipakai) boleh memakai GET maupun HEAD ke `/`. HEAD dilayani rute GET dengan header yang sama tanpa isi (`App\Libraries\HeadAsGetRouteCollection`); sebelum perbaikan itu, HEAD dijawab 404.
 
 ### Masalah umum
 
@@ -1431,7 +1431,7 @@ Pemantau uptime eksternal (bila dipakai) harus memakai **GET** ke `/`. Rute apli
 
 ### Keamanan operasional
 
-1. Putar sandi admin bawaan **sebelum** aplikasi dipakai di sekolah (lihat [Langkah terakhir](#langkah-terakhir-kedua-jalur)).
+1. Ganti sandi admin bawaan **sebelum** aplikasi dipakai di sekolah (lihat [Langkah terakhir](#langkah-terakhir-kedua-jalur)). Setiap staf yang menerima sandi sementara dari reset segera menggantinya lewat **Ubah sandi**.
 2. Buat akun `guru` terpisah untuk tiap guru, dengan `school_id` terisi. Jangan membagikan akun admin.
 3. Nonaktifkan akun guru yang tidak lagi terlibat lewat `/admin/staf` (tombol *Nonaktifkan*, `is_active = 0`); jangan hapus — audit log-nya masih diperlukan.
 4. Tinjau `/admin/tata-kelola/audit` secara berkala, terutama aksi `export` dan `delete_execute`.
@@ -1528,10 +1528,10 @@ Lingkungan uji:
 | 18 | `composer update --no-dev` di server | `composer.lock` menyimpang dari repositori | hanya di pengembangan |
 | 19 | isi `ci_sessions` ikut backup | IP mentah siswa tersalin ke dua lokasi selama 30 hari | hanya struktur tabel |
 | 20 | `.gitignore` disebut memuat `public/assets/uploads/` | tidak demikian | tahap 8 menambahkannya |
-| 21 | "ganti kata sandi admin lewat panel" | panel belum punya fitur ganti sandi staf | diputar lewat reset di `/admin/staf` (sandi acak 16 karakter) |
+| 21 | "ganti kata sandi admin lewat panel" | panel belum punya fitur ganti sandi staf | fitur **Ubah sandi** (`/admin/akun/sandi`, `AccountController`) ditambahkan setelah Revisi 3 |
 | 22 | "Delapan langkah verifikasi" | daftarnya berisi 10 butir (1, 2, 2a, 3–9) | 8 pemeriksaan otomatis + 10 uji manual, bernomor ulang |
 | 23 | `add_header` Nginx untuk semua respons | halaman aplikasi mengirim `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy` **dua kali** (filter `secureheaders` CodeIgniter juga mengirimnya) | `fastcgi_hide_header` untuk ketiganya |
-| 24 | pemeriksaan header dengan `curl -sI` | rute aplikasi hanya terdaftar untuk GET: `HEAD /` → 404, sehingga pemeriksaan tampak gagal | pemeriksaan memakai GET; pemantau uptime wajib GET (lihat Pemantauan harian) |
+| 24 | pemeriksaan header dengan `curl -sI` | rute aplikasi hanya terdaftar untuk GET: `HEAD /` → 404, sehingga pemeriksaan tampak gagal | pemeriksaan memakai GET; setelah Revisi 3, HEAD dilayani rute GET beserta filternya (`HeadAsGetRouteCollection`) |
 
 ### Skenario dan platform
 

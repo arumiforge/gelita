@@ -96,7 +96,8 @@ app/Views/
 │   ├── study/index.php · releases.php · scoring.php
 │   ├── export/index.php
 │   ├── governance/index.php · audit.php
-│   └── staff/index.php
+│   ├── staff/index.php
+│   └── account/password.php        ← ganti sandi sendiri (guru & admin)
 ├── pdf/
 │   ├── report-study.php
 │   └── report-participant.php
@@ -161,7 +162,9 @@ Data untuk JavaScript dikirim lewat `<script type="application/json">`, **tidak 
     <div class="admin-user">
       <b><?= esc(session('staff_name')) ?></b>
       <small><?= esc(session('staff_role')) ?></small>
-      <a class="btn btn-quiet" href="<?= base_url('admin/logout') ?>">Keluar</a>
+      <!-- ≤ 640px: .btn-text tersembunyi secara visual → tombol ikon -->
+      <a class="btn btn-quiet" href="<?= base_url('admin/akun/sandi') ?>" title="Ubah sandi"><?= icon('key') ?> <span class="btn-text">Ubah sandi</span></a>
+      <a class="btn btn-quiet" href="<?= base_url('admin/logout') ?>" title="Keluar"><?= icon('logout') ?> <span class="btn-text">Keluar</span></a>
     </div>
   </header>
 
@@ -671,7 +674,7 @@ Avatar, nama, nama pengguna, kode peserta (kecil, dengan keterangan "kode peneli
 | Tata kelola | `/admin/tata-kelola` | admin |
 | Akun staf | `/admin/staf` | admin |
 
-Menu yang tidak berhak diakses **tidak dirender** untuk guru.
+Menu yang tidak berhak diakses **tidak dirender** untuk guru. **Ubah sandi** (`/admin/akun/sandi`, guru & admin) tidak ada di sidebar; tautannya ada di kepala panel, di samping Keluar.
 
 ### Isi tiap halaman
 
@@ -727,7 +730,9 @@ Menu yang tidak berhak diakses **tidak dirender** untuk guru.
 
 **`governance/audit.php`** — tabel `audit_logs`.
 
-**`staff/index.php`** — daftar akun, tambah, ubah role/sekolah, reset kata sandi, nonaktifkan.
+**`staff/index.php`** — daftar akun, tambah, ubah role/sekolah, reset kata sandi, nonaktifkan. Kartu sandi sementara mengarahkan pemilik akun ke **Ubah sandi**.
+
+**`account/password.php`** — ganti sandi sendiri: sandi saat ini, sandi baru (12–72 karakter), ulangi. Kolom sandi tidak pernah diisi ulang; kolom nama pengguna tersembunyi tanpa `name` membantu pengelola sandi browser.
 
 ---
 
@@ -946,7 +951,7 @@ Dari **04_CONTROLLER_ROUTE.md**: nama view yang dipanggil tiap controller, varia
 
 Setelah tahap ini selesai:
 
-* Seluruh 17 halaman game dan 33 view admin merender lengkap dengan data sungguhan dari database.
+* Seluruh 17 halaman game dan 34 view admin (33 dari tahap 5, ditambah ubah sandi staf) merender lengkap dengan data sungguhan dari database.
 * Halaman registrasi menampilkan bagian "Akun rahasiamu" dengan daftar 5 syarat, meter kekuatan, dan tips; halaman masuk dan ganti sandi tersedia.
 * Alur peserta dapat ditelusuri penuh dengan klik, dari welcome sampai Balai Refleksi, meski tombol Periksa belum berfungsi (menunggu tahap 6).
 * Lima arena tantangan sudah memiliki markup dan gaya yang benar, tinggal diberi perilaku.
