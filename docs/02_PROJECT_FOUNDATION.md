@@ -457,8 +457,10 @@ gelita/
 │   │   ├── GelitaExceptionHandler.php ← JSON seragam untuk /api, halaman galat bergaya GELITA
 │   │   ├── RequestId.php          ← id acak per request (service gelitaRequestId)
 │   │   ├── HashedIpSessionHandler.php ← belum dipasang, lihat § 3b
-│   │   └── ExcelWriter.php        ← wrapper batch PhpSpreadsheet (tahap 7, belum ada)
-│   ├── Commands/                  ← spark command gelita:* (kerangka di tahap ini)
+│   │   ├── ExcelWriter.php        ← penulis XLSX streaming untuk export (tahap 7)
+│   │   ├── ContentVerifier.php    ← aturan verifikasi konten, panel + CLI (tahap 7)
+│   │   └── MediaIntegrity.php     ← pemeriksa media_assets ↔ berkas (tahap 7)
+│   ├── Commands/                  ← spark command gelita:* (kerangka tahap 2, isi tahap 7)
 │   ├── Models/                    ← tahap 3
 │   ├── Services/                  ← tahap 3 & 7
 │   ├── Validation/
@@ -472,7 +474,7 @@ gelita/
 │       ├── game/                  ← tahap 5
 │       ├── admin/                 ← tahap 5
 │       ├── errors/
-│       └── pdf/                   ← template laporan PDF (tahap 7)
+│       └── pdf/                   ← template laporan PDF: report-study, report-participant (tahap 7)
 ├── public/
 │   ├── index.php
 │   ├── .htaccess
@@ -912,16 +914,17 @@ return [
 | Otorisasi | filter di level route, diulang di Service untuk operasi export/delete |
 | Skor | validasi dan perhitungan mutlak server-side |
 
-### 9. Spark Commands yang akan dibuat
+### 9. Spark Commands
 
-Didaftarkan di `app/Commands/`. Implementasi isinya ada di tahap 7 dan 8; tahap ini hanya menyiapkan kerangka kelasnya. Sampai saat itu setiap command menolak dengan pesan "belum aktif" dan kode keluar galat — termasuk `gelita:bank:import`, walau `ContentImportService` sendiri sudah ada sejak tahap 3 dan dipakai panel `/admin/konten/impor-bank`. Event `pre_system` (tempat `db_sync_timezone()` dipanggil) hanya terpicu pada request web, jadi command yang menulis waktu wajib memanggil `db_sync_timezone()` sendiri.
+Didaftarkan di `app/Commands/`. Kerangka kelasnya dibuat pada tahap ini; isinya dipasang pada tahap 7 (rincian perilaku di 07_FEATURE_INTEGRATION.md → *Catatan Implementasi Tahap 7*). Event `pre_system` (tempat `db_sync_timezone()` dipanggil) hanya terpicu pada request web, jadi command yang menulis waktu wajib memanggil `db_sync_timezone()` sendiri. `spark` berpindah ke folder `public/` sebelum command berjalan; path berkas relatif pada `gelita:bank:import` dicari dari direktori kerja shell lalu dari root proyek.
 
 ```text
-php spark gelita:content:verify     memeriksa 3 level × 5 node, engine_type valid, item bank cukup
-php spark gelita:retention:run      menjalankan retention & menghapus export kedaluwarsa
-php spark gelita:score:recompute    menghitung ulang skor attempt dengan scoring profile tertentu
-php spark gelita:media:scan         menyinkronkan folder assets dengan tabel media_assets
-php spark gelita:bank:import FILE   memuat workbook bank soal (XLSX) ke tabel konten; --dry-run untuk pratinjau
+php spark gelita:content:verify [--strict]      3 level × 5 node, engine, bank, kunci, media; kode keluar 1 bila ada galat
+php spark gelita:retention:run                  retensi harian (cron): sesi/attempt menganggur, export kedaluwarsa,
+                                                pratinjau penghapusan untuk data melewati retention_days
+php spark gelita:score:recompute --profile CODE [--version V] [--study ID] [--node ID] [--dry-run]
+php spark gelita:media:scan [--check-only]      MediaAssetSeeder (sinkron folder ↔ tabel) + laporan integritas
+php spark gelita:bank:import FILE [--dry-run] [--staff USERNAME]
 ```
 
 ---
