@@ -494,7 +494,7 @@ Request   bila ya → POST /api/attempts/{id}/abandon { reason: "user_exit" }
 UI Update navigasi ke /wilayah/{code}
 ```
 
-Selain itu, `beforeunload` memanggil `flush(true)` dan mengirim event `challenge_abandoned` lewat `sendBeacon`. Jangan memasang `event.preventDefault()` pada `beforeunload` — memaksa dialog bawaan browser pada anak SD hanya membingungkan.
+Selain itu, saat halaman ditinggalkan tanpa Keluar/Selesai (tutup tab, muat ulang), `pagehide` mengirim event `challenge_abandoned` { via: 'pagehide', attempt_open: true } lalu `flush(true)` lewat `sendBeacon`; attempt tetap `in_progress`. `pagehide` dipakai karena lebih andal daripada `beforeunload` di tablet dan ponsel. Tidak ada `event.preventDefault()` pada `beforeunload` — memaksa dialog bawaan browser pada anak SD hanya membingungkan.
 
 ---
 
