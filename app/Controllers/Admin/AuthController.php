@@ -3,6 +3,7 @@
 namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
+use App\Filters\StaffAuthFilter;
 use App\Models\AuditLogModel;
 use App\Models\StaffUserModel;
 use CodeIgniter\HTTP\RedirectResponse;
@@ -72,6 +73,11 @@ class AuthController extends BaseController
             'target_id'     => (string) $staff->id,
             'metadata'      => ['role' => $staff->role],
         ]);
+
+        if ($staff->mustChangePassword()) {
+            return redirect()->to(site_url(StaffAuthFilter::PASSWORD_PAGE))
+                ->with('message', 'Ganti sandi sementara Anda sebelum memakai panel.');
+        }
 
         return redirect()->to($target);
     }
