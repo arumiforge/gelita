@@ -370,6 +370,10 @@ Filter yang sama dipakai seluruh halaman analitik:
 
 Form `method="get"`, sehingga filter tersimpan di URL dan bisa dibagikan atau di-bookmark.
 
+### `components/media-field.php`, `media-datalist.php`, `audio-select.php`
+
+Pemilih media di editor konten admin. `media-field` menampilkan pratinjau aset terpasang, kotak `asset_key` (dengan `media-datalist`: seluruh aset terdaftar, termasuk slot yang belum berberkas), dan input berkas baru; server membacanya lewat `MediaStore::resolveField()` — berkas baru disimpan sebagai kunci yang diketik atau kunci bawaan tempat itu, kotak yang dikosongkan melepas media. `audio-select` memilih audio narasi dari `audio_assets` beserta status persetujuannya. Form induk wajib `enctype="multipart/form-data"`.
+
 ### `components/admin-table.php`
 
 Menerima `$columns`, `$rows`, `$emptyMessage`. Wajib punya kondisi kosong yang menjelaskan, bukan tabel kosong:
@@ -632,9 +636,12 @@ Statistik terbaik + tabel seluruh percobaan (waktu, durasi, tepat sejak awal, pe
 
 ### 14. Pustaka Kedu — `/pustaka/{code}` → `game/library.php`
 
-* Tata letak buku dua halaman: kiri media (2 gambar + 1 video dengan poster), kanan judul + teks.
+* Tata letak buku dua halaman: kiri galeri media (berapa pun gambar/video per halaman, dari `library_media`), kanan judul + teks.
+* Gambar dapat diklik untuk diperbesar (`<dialog>`, `game/library.js`). Video YouTube/Vimeo/Drive tampil sebagai kartu **Putar**; iframe baru dipasang setelah tombol ditekan dan dilepas lagi saat halaman berganti. Tanpa JavaScript, kartu itu tautan ke halaman aslinya.
+* Keterangan gambar dwibahasa di bawah media; media pihak lain menampilkan kredit yang menaut ke sumbernya.
+* Teks memakai `rich_text()`: paragraf, subjudul `h3`, daftar, kotak "Tahukah kamu?" (`aside.book-fact`), catatan sumber (`p.book-source`), tebal, miring.
 * Navigasi halaman kiri/kanan + nomor halaman.
-* Media yang berkasnya tidak ada disembunyikan, bukan menampilkan kotak rusak.
+* Media yang berkasnya tidak ada disembunyikan, bukan menampilkan kotak rusak. Gambar tautan yang gagal dimuat (mis. kelas tanpa internet) juga disembunyikan.
 * Tombol tutup kembali ke layar sebelumnya.
 
 ### 15. Profil — `/profil` → `game/profile.php`

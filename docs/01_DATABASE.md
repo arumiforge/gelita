@@ -9,7 +9,7 @@ Stack: CodeIgniter 4.7.x · PHP 8.2+ · MySQL 8.0 / MariaDB 10.6+ · InnoDB · u
 
 ## Tujuan
 
-Membuat seluruh skema database GELITA production dari nol: 29 tabel domain (ditambah tabel sesi CI4 `ci_sessions`), relasi, index, migration, dan seeder. Setelah tahap ini selesai, database siap menerima data konten dan data penelitian tanpa perlu melihat sistem mana pun sebelumnya.
+Membuat seluruh skema database GELITA production dari nol: 30 tabel domain (ditambah tabel sesi CI4 `ci_sessions`), relasi, index, migration, dan seeder. Setelah tahap ini selesai, database siap menerima data konten dan data penelitian tanpa perlu melihat sistem mana pun sebelumnya.
 
 ---
 
@@ -78,7 +78,7 @@ Dokumen sumber sebelumnya mengandung beberapa konflik. Berikut keputusan final u
 ## Yang Harus Dibuat
 
 1. Database `gelita` (utf8mb4_unicode_ci, InnoDB).
-2. 29 migration pembuat tabel + migration pendukung (`002900` FK level, `003000` `ci_sessions`) + migration koreksi (`003100`–`003300`) + `003400` (wajib ganti sandi staf) — total 35 berkas.
+2. 29 migration pembuat tabel + migration pendukung (`002900` FK level, `003000` `ci_sessions`) + migration koreksi (`003100`–`003300`) + `003400` (wajib ganti sandi staf) + `003500` (media Pustaka `library_media`) — total 36 berkas.
 3. 9 seeder data, dijalankan berurutan oleh `DatabaseSeeder` (kelas dasar bersama: `GelitaSeeder`).
 4. File referensi statis `public/assets/data/wilayah-id.json` (tidak masuk DB).
 
@@ -598,15 +598,19 @@ Bacaan mendalam per wilayah. Tidak memengaruhi skor.
 | title_en | VARCHAR(250) | NO | — | |
 | body_id | LONGTEXT | NO | — | |
 | body_en | LONGTEXT | NO | — | |
-| image_a_media_id | BIGINT UNSIGNED | YES | NULL | FK SET NULL |
-| image_b_media_id | BIGINT UNSIGNED | YES | NULL | FK SET NULL |
-| video_media_id | BIGINT UNSIGNED | YES | NULL | FK SET NULL |
-| poster_media_id | BIGINT UNSIGNED | YES | NULL | FK SET NULL |
+| image_a_media_id | BIGINT UNSIGNED | YES | NULL | FK SET NULL — slot lama, lihat `library_media` |
+| image_b_media_id | BIGINT UNSIGNED | YES | NULL | FK SET NULL — slot lama |
+| video_media_id | BIGINT UNSIGNED | YES | NULL | FK SET NULL — slot lama |
+| poster_media_id | BIGINT UNSIGNED | YES | NULL | FK SET NULL — slot lama |
 | is_active | TINYINT(1) | NO | 1 | INDEX |
 | created_at | DATETIME(6) | NO | CURRENT | |
 | updated_at | DATETIME(6) | NO | CURRENT | |
 
 UNIQUE: `(level_id, sequence)`.
+
+Isi `body_*` memakai format ringan tanpa HTML yang dirender `rich_text()`: baris kosong = paragraf, `## ` subjudul, `- ` daftar, `> ` kotak fakta, baris `Sumber:` catatan rujukan, `**tebal**`, `*miring*`. Seluruh teks di-escape lebih dulu.
+
+Sejak `003500`, gambar dan video halaman disimpan di `library_media`. Empat kolom slot lama tidak dihapus (rollback tidak kehilangan data) dan tidak lagi dibaca game; isinya disalin sekali ke `library_media` oleh migration itu.
 
 ### 18a. `reading_passages` (Teks Bacaan Bersama)
 
@@ -628,6 +632,30 @@ Teks bacaan yang dirujuk beberapa item, bahkan lintas node dalam satu level (mis
 | updated_at | DATETIME(6) | NO | CURRENT | |
 
 Aturan: item hanya boleh merujuk passage dari level yang sama dengan node-nya.
+
+### 18b. `library_media` (Media Pustaka Kedu)
+
+Gambar/video per halaman Pustaka, tanpa batas jumlah. Setiap baris berasal dari berkas unggahan **atau** tautan luar.
+
+| Kolom | Tipe | Null | Default | Keterangan |
+|---|---|---|---|---|
+| id | BIGINT UNSIGNED | NO | AUTO | PK |
+| library_page_id | BIGINT UNSIGNED | NO | — | FK `library_pages.id` CASCADE |
+| sequence | SMALLINT UNSIGNED | NO | 1 | urutan tampil dalam galeri halaman |
+| media_kind | VARCHAR(10) | NO | image | `image` \| `video` |
+| media_asset_id | BIGINT UNSIGNED | YES | NULL | FK `media_assets.id` SET NULL — berkas unggahan |
+| external_url | VARCHAR(1000) | YES | NULL | tautan YouTube, Google Drive, Vimeo, Wikimedia Commons, atau berkas `https` langsung; diterjemahkan server lewat `App\Libraries\MediaLink` |
+| poster_media_id | BIGINT UNSIGNED | YES | NULL | FK `media_assets.id` SET NULL — sampul video unggahan |
+| caption_id | VARCHAR(500) | YES | NULL | keterangan & teks alternatif |
+| caption_en | VARCHAR(500) | YES | NULL | |
+| credit | VARCHAR(300) | YES | NULL | pemilik & lisensi media pihak lain |
+| is_active | TINYINT(1) | NO | 1 | |
+| created_at | DATETIME(6) | NO | CURRENT | |
+| updated_at | DATETIME(6) | NO | CURRENT | |
+
+INDEX: `(library_page_id, sequence)`. Tidak UNIQUE: editor admin menyimpan ulang seluruh media satu halaman sekaligus.
+
+Aturan: baris tanpa berkas aktif dan tanpa tautan yang dikenali `MediaLink` tidak dirender. Hanya tautan `http(s)` yang diterima. Pemutar YouTube/Vimeo/Drive baru dimuat setelah siswa menekan Putar.
 
 ### 19. `game_sessions`
 
@@ -880,6 +908,7 @@ game_releases    1—n game_sessions
 
 levels               1—n challenge_nodes  (tepat 5 aktif)
 levels               1—n dialogues, 1—n library_pages, 1—n reading_passages
+library_pages        1—n library_media
 reading_passages     1—n challenge_items (opsional, lewat passage_id)
 challenge_nodes      1—n challenge_items
 challenge_items      1—n challenge_options
@@ -887,6 +916,7 @@ challenge_nodes      1—n hints;  challenge_items 1—n hints
 learning_indicators  1—n challenge_nodes, 1—n challenge_items
 scoring_profiles     1—n challenge_nodes, 1—n challenge_attempts
 media_assets         1—1 audio_assets (opsional)
+media_assets         1—n library_media (berkas dan poster, opsional)
 
 game_sessions   1—1 session_progress
 game_sessions   1—n challenge_attempts, 1—n audio_usage_events, 1—n game_event_logs
@@ -937,6 +967,7 @@ Nama file mengikuti konvensi CI4 `YYYY-MM-DD-HHMMSS_ClassName.php` di `app/Datab
 2026-01-01-003200_EnforceChallengeAttemptMetricDefaults
 2026-01-01-003300_AddEventLogSessionTimeIndex
 2026-01-01-003400_AddStaffMustChangePassword
+2026-01-01-003500_CreateLibraryMedia
 ```
 
 > `002900` menambahkan FK dari `levels` ke `media_assets`. Ini dipisah karena `levels` dibuat setelah `media_assets`, tetapi beberapa FK silang (`challenge_nodes.audio_intro_id` → `audio_assets`) lebih aman dipasang belakangan agar `up()`/`down()` bersih.
@@ -1041,6 +1072,10 @@ $this->forge->addForeignKey('level_id', 'levels', 'id', '', 'CASCADE');
 `003400` menambahkan `staff_users.must_change_password`, padanan `participants.must_change_password`. Nilainya 1 untuk sandi yang diketahui admin: sandi sementara hasil reset di `/admin/staf` dan sandi awal akun baru. Ganti sandi oleh pemiliknya sendiri mengembalikannya ke 0. Akun yang sudah ada saat migration berjalan mendapat 0.
 
 Kolom ditulis dengan `'null' => false` eksplisit karena alasan yang sama dengan `003200`: pada `ALTER`, Forge membuat kolom nullable bila atribut itu tidak disebutkan. `up()`/`down()` memeriksa keberadaan kolom lebih dulu (setelah `resetDataCache()`) sehingga aman dijalankan ulang.
+
+### Media Pustaka Kedu (`003500`)
+
+`library_pages` hanya punya empat slot media tetap (dua gambar, satu video, satu poster) dan tidak dapat memuat tautan YouTube/Drive. `003500` membuat `library_media` (§18b) lalu menyalin slot yang terisi ke sana, berurutan `image_a` → `image_b` → `video` (poster ikut baris video). Kolom lama dibiarkan; `down()` hanya membuang `library_media`, jadi rollback kembali ke keadaan sebelumnya tanpa kehilangan data.
 
 ---
 
@@ -1312,7 +1347,7 @@ Tidak ada. Ini tahap pertama.
 
 Setelah tahap ini selesai:
 
-* Database `gelita` berisi 29 tabel domain + `ci_sessions` (ditambah tabel `migrations` milik CodeIgniter: 31 tabel), dengan FK dan index lengkap.
+* Database `gelita` berisi 30 tabel domain + `ci_sessions` (ditambah tabel `migrations` milik CodeIgniter: 32 tabel), dengan FK dan index lengkap.
 * `php spark migrate` berjalan bersih dari nol dan `php spark migrate:rollback -b 0` mengembalikan ke kosong (hanya tabel `migrations` yang tersisa). Diverifikasi terhadap MariaDB 10.11.
 * `php spark db:seed DatabaseSeeder` menghasilkan: 1 akun admin, 3 indikator, 1 scoring profile, 1 release, 1 study + 3 phase, 3 level, 15 challenge node lengkap dengan judul/instruksi dwibahasa, dan media assets terdaftar. Di development, `SampleItemSeeder` menambah 2 item contoh per node.
 * Tabel `participants` sudah memiliki kolom akun siswa (`username`, `password_hash`, kolom throttle, dan dua kolom metrik literasi keamanan digital).

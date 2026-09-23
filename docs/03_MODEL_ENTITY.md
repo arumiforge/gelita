@@ -6,7 +6,7 @@
 
 ## Tujuan
 
-Membuat seluruh data layer GELITA: Model CodeIgniter untuk 29 tabel, Entity untuk tabel yang butuh casting/accessor, dan Service untuk logika yang tidak boleh berada di controller (scoring, session, event, konten, analitik).
+Membuat seluruh data layer GELITA: Model CodeIgniter untuk 30 tabel, Entity untuk tabel yang butuh casting/accessor, dan Service untuk logika yang tidak boleh berada di controller (scoring, session, event, konten, analitik).
 
 ---
 
@@ -60,6 +60,7 @@ app/Models/
 ├── HintModel.php
 ├── DialogueModel.php
 ├── LibraryPageModel.php
+├── LibraryMediaModel.php
 ├── ReadingPassageModel.php
 ├── GameSessionModel.php
 ├── SessionProgressModel.php
@@ -80,6 +81,7 @@ app/Entities/
 ├── ChallengeItem.php
 ├── ChallengeOption.php
 ├── LibraryPage.php
+├── LibraryMedia.php
 ├── ReadingPassage.php
 ├── GameSession.php
 ├── ChallengeAttempt.php
@@ -606,6 +608,7 @@ softDeleteScope(array $scope, int $staffId, string $reason): int
 | `DialogueModel` | array | `intro(): array`, `forLevel(int $levelId, string $context): array` |
 | `ReadingPassageModel` | `ReadingPassage` | `forLevel(int $levelId): array`, `findByKey(string $key): ?ReadingPassage`, `forIds(array $ids): array` |
 | `LibraryPageModel` | `LibraryPage` | `forLevel(int $levelId): array` |
+| `LibraryMediaModel` | `LibraryMedia` | `forPages(array $pageIds, bool $activeOnly = true): array` (keyed by `library_page_id`, urut `sequence`). `LibraryMedia::resolve()` → bentuk tampil (berkas aktif, atau tautan lewat `App\Libraries\MediaLink`), `null` bila tidak dapat dirender. `ContentRepository::libraryPages()` memasang media ke setiap `LibraryPage` (`loadedMedia()`, `gallery($locale)`) |
 | `SessionProgressModel` | array | `primaryKey = 'session_id'`, `useAutoIncrement = false`, `ensure(int $sessionId): array` |
 | `AudioUsageEventModel` | array | `usageForSession(int $sessionId): array`, `usageStats(array $filters): array` |
 | `ParticipantFeedbackModel` | array | `forStudy(int $studyId): array`, `ratingDistribution(array $filters): array` |
