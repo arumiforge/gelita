@@ -399,13 +399,26 @@ B. Menutup tab / memuat ulang / koneksi putus
 ```text
 1. Tombol Pustaka melayang muncul pada layar peta wilayah dan layar kota
 2. Klik → /pustaka/{level_code}
-3. LibraryController::show → LibraryPageModel::forLevel()
-4. View merender halaman buku: kiri media (2 gambar + video berposter),
-   kanan judul + teks. Media yang berkasnya tidak ada disembunyikan.
+3. LibraryController::show → ContentRepository::libraryPages()
+     halaman aktif + baris library_media aktifnya (LibraryMediaModel::forPages)
+4. View merender halaman buku: kiri galeri media (berapa pun gambar/video),
+   kanan judul + teks rich_text(). Media tanpa berkas aktif atau dengan
+   tautan yang tidak dikenali MediaLink tidak dirender.
+     gambar      : unggahan, Wikimedia Commons, Google Drive, berkas https
+                   langsung (tanpa referrer, loading="lazy"); klik → perbesar
+     video       : unggahan (<video> berposter) atau YouTube/Vimeo/Drive —
+                   iframe baru dipasang setelah siswa menekan Putar;
+                   YouTube lewat youtube-nocookie.com dengan
+                   referrerpolicy="strict-origin-when-cross-origin"
+     media luar  : kredit + tautan ke halaman aslinya di bawah keterangan
 5. emit('library_opened'), lalu emit('library_page_viewed') tiap ganti halaman
 6. Pustaka TIDAK memengaruhi skor, bintang, atau status node.
    Pemakaiannya dianalisis sebagai perilaku belajar, bukan sebagai penilaian.
 ```
+
+Admin mengelola halaman dan medianya di `/admin/konten/pustaka/{level_id}`: tambah/hapus/urutkan halaman, dan per halaman tambah media dari **Berkas** (asset_key atau unggah langsung) atau **Tautan**. Seluruh halaman satu wilayah disimpan dalam satu transaction. Referrer-Policy situs `same-origin` tidak dipakai untuk iframe YouTube karena pemutarnya menolak diputar tanpa referrer (galat 153).
+
+Format teks halaman (ditulis tanpa HTML): baris kosong = paragraf, `## ` subjudul, `- ` daftar, `> ` kotak "Tahukah kamu?", baris `Sumber:` catatan rujukan, `**tebal**`, `*miring*`. `rich_text()` meng-escape seluruh teks lebih dulu.
 
 ---
 
@@ -511,6 +524,13 @@ Nilai `D` negatif ditandai merah dan diberi catatan: biasanya menunjukkan kunci 
                answer_key_json wajib bila scorable = 1;
                single_choice wajib punya tepat satu opsi is_correct
 5. Insert challenge_items (+ challenge_options bila perlu)
+     media langsung dari formulir (komponen media-field, App\Libraries\MediaStore):
+       node   : gambar adegan (arena cari) + latar tantangan + narasi pembuka ID/EN
+       butir  : gambar keping puzzle / objek cari / gambar pendamping
+       opsi   : gambar per opsi;  bacaan: gambar pendamping
+       wilayah: peta, latar, lencana;  dialog: audio per baris
+     pilih asset_key yang ada ATAU unggah berkas baru di baris itu; berkas
+     baru disimpan dengan asset_key bawaan tempat itu (mis. challenge.item.tmg-4-03)
 6. ContentRepository::flush(); audit 'content_create'
 7. Impor massal seluruh bank soal: lihat FITUR 12a
 8. Verifikasi: POST /admin/konten/verifikasi atau `php spark gelita:content:verify`
@@ -528,6 +548,8 @@ Nilai `D` negatif ditandai merah dan diberi catatan: biasanya menunjukkan kunci 
 
 Isi bank soal (119 butir untuk 15 node, beserta teks bacaan, opsi, pengecoh, dan petunjuk) disusun di **Dokumen Bank Soal GELITA**. Admin memindahkannya ke satu workbook XLSX mengikuti templat di bawah, lalu mengimpornya sekaligus.
 
+Workbook produksi yang sudah terisi — 15 tantangan, 131 butir, 30 halaman Pustaka dengan 48 media — ada di [`docs/bank-soal/`](bank-soal/README.md) dan dapat langsung diimpor.
+
 ### Alur
 
 ```text
@@ -535,16 +557,23 @@ Isi bank soal (119 butir untuk 15 node, beserta teks bacaan, opsi, pengecoh, dan
 2. Menyalin isi Dokumen Bank Soal ke sheet templat (pemetaan di bawah)
 3. Unggah → POST /admin/konten/impor-bank/pratinjau
      ContentImportService::preview():
-       baca 8 sheet; validasi setiap baris; TIDAK menulis database
+       baca 10 sheet data (sheet lain, mis. PETUNJUK, diabaikan);
+       validasi setiap baris; TIDAK menulis database
        ringkasan per node: item, passage, opsi, hint, bank vs minimum
        galat (merah)      : sheet + nomor baris + alasan
        peringatan (kuning): review_status needs_verification, bank = minimum persis,
-                            media_asset_key belum ada di media_assets
+                            asset_key belum ada di media_assets (akan dibuat slot)
 4. Galat = 0 → tombol Impor aktif
 5. POST /admin/konten/impor-bank/jalankan → ContentImportService::import()
-     SATU TRANSACTION, urutan: nodes → distractors → passages → items
-                               → options → pieces → sources → hints
-     upsert berdasarkan node_ref / passage_key / item_key / option_key
+     SATU TRANSACTION, urutan: slot media → nodes → distractors → passages
+                               → items → options → pieces → sources → hints
+                               → library → library_media
+     asset_key yang belum terdaftar → baris media_assets is_active = 0
+       (slot kosong; view memakai pengganti sampai berkasnya diunggah)
+     upsert berdasarkan node_ref / passage_key / item_key / option_key /
+       (level_code, sequence) halaman Pustaka
+     library_media: seluruh media halaman yang disebut diganti baris workbook
+     kolom media kosong pada baris yang sudah ada → media lama dipertahankan
      item yang sudah punya item_responses: answer_key TIDAK boleh berubah
        → baris ditolak, seluruh impor dibatalkan, admin diberi tahu item mana
 6. ContentRepository::flush(); audit 'content_import' {file_sha256, jumlah per tabel}
@@ -553,9 +582,18 @@ Isi bank soal (119 butir untuk 15 node, beserta teks bacaan, opsi, pengecoh, dan
 
 CLI setara untuk instalasi awal: `php spark gelita:bank:import writable/uploads/bank-soal.xlsx --dry-run` lalu tanpa `--dry-run`.
 
-### Format workbook (8 sheet)
+### Format workbook (10 sheet data)
 
-Baris pertama tiap sheet = header persis seperti di bawah. Sel kosong = NULL. Nilai `node_ref` = `tmg-1`…`tmg-5`, `mgl-1`…`mgl-5`, `wnb-1`…`wnb-5`.
+Baris pertama tiap sheet = header persis seperti di bawah (`ContentImportService::SHEETS`). Sel kosong = NULL. Nilai `node_ref` = `tmg-1`…`tmg-5`, `mgl-1`…`mgl-5`, `wnb-1`…`wnb-5` (awalan dari `Config\Gelita::$levelPrefixes`). Sheet `library` dan `library_media` boleh tidak ada.
+
+**Templat berpanduan** (`App\Libraries\BankWorkbookGuide`, dipakai templat unduhan dan workbook produksi). Header tetap berbahasa Inggris karena dibaca sistem; panduannya berbahasa Indonesia:
+
+- sheet **PETUNJUK** — langkah mengisi & mengimpor, arti warna header, fungsi setiap sheet beserta jumlah barisnya, format teks Pustaka, dan tabel jenis soal;
+- sheet **KAMUS_KOLOM** — setiap kolom: nama Indonesia, status (Wajib/Bersyarat/Opsional), arti, isian yang boleh, contoh;
+- header sheet data berwarna menurut status, dengan catatan (segitiga merah) dan kotak bantuan yang muncul saat sel dipilih;
+- dropdown untuk kolom berkode (`node_ref`, `interaction_type`, `kind`, 0/1, …) dan batas angka (`x`/`y` 0–100, `items_per_round` ≥ 1) pada 1.000 baris pertama; kolom teks diformat Teks agar `01` atau `1,2,3` tidak diubah Excel.
+
+`tests/unit/BankWorkbookGuideTest.php` menjaga agar setiap kolom importer punya penjelasan, dan workbook produksi ikut dibangun ulang bila kolom berubah.
 
 **1. `nodes`** — satu baris per node (15 baris)
 
@@ -569,6 +607,8 @@ Baris pertama tiap sheet = header persis seperti di bawah. Sel kosong = NULL. Ni
 | verdict_options | khusus node `boleh`: `benar,salah` atau `benar,salah,pendapat` |
 | require_reason | 0/1 |
 | use_word_bank, distractor_count | khusus rumpang |
+| scene_media_key | gambar adegan arena `cari` (wajib untuk tmg-4) |
+| background_media_key | latar layar tantangan; kosong = latar wilayah |
 
 **2. `distractors`** — pengecoh rumpang: `node_ref`, `text_id`, `text_en`
 
@@ -588,7 +628,7 @@ Baris pertama tiap sheet = header persis seperti di bawah. Sel kosong = NULL. Ni
 | passage_key | rujukan ke sheet `passages` |
 | answer_id, answer_en | kunci ringkas, lihat tabel pemetaan kunci |
 | sample_reason_id, sample_reason_en | contoh alasan `verdict_reason` |
-| x, y, w, decoy, wrong_feedback_id, wrong_feedback_en | khusus `find_object` |
+| x, y, w, decoy, wrong_feedback_id, wrong_feedback_en | khusus `find_object` (posisi & lebar dalam persen adegan 16:9) |
 | digital_pillar | khusus Wonosobo node 5 |
 | media_asset_key | gambar item |
 | scorable | 1 (default) / 0 |
@@ -615,6 +655,10 @@ Baris pertama tiap sheet = header persis seperti di bawah. Sel kosong = NULL. Ni
 
 **8. `hints`** — `node_ref` **atau** `item_key` (salah satu), `sequence`, `text_id`, `text_en`
 
+**9. `library`** — halaman Pustaka Kedu: `level_code`, `sequence` (nomor halaman), `title_id`, `title_en`, `body_id`, `body_en` (format teks FITUR 8), `is_active`
+
+**10. `library_media`** — gambar/video halaman: `level_code`, `page_sequence`, `sequence`, `media_kind` (`image` \| `video`), `media_asset_key` **atau** `external_url` (YouTube, Google Drive, Vimeo, Wikimedia Commons, berkas `https`), `poster_media_key` (khusus video unggahan), `caption_id`, `caption_en`, `credit` (wajib untuk media milik pihak lain)
+
 ### Pemetaan dari Dokumen Bank Soal GELITA
 
 | Di dokumen bank soal | Masuk ke |
@@ -639,7 +683,10 @@ Nomor potongan puzzle gambar di dokumen bank soal ditulis mulai 1 (`[1..9]`); im
 ## FITUR 13: Media & Audio
 
 ```text
-1. /admin/media → tabel aset: kunci, jenis, ukuran wajib vs sebenarnya, status
+1. /admin/media → tabel aset: kunci, jenis, ukuran wajib vs sebenarnya, status,
+     dan kolom "Dipakai di" (App\Libraries\MediaUsage): tantangan, butir, opsi,
+     bacaan, wilayah, halaman Pustaka, atau slot tampilan (bg.welcome, logo,
+     karakter, lencana …). Jumlah slot tanpa berkas tampil di kartu "Slot belum berberkas".
 2. Seret berkas ke baris aset → media-upload.js membaca dimensi di client
 3. Ukuran tidak cocok + mode ketat → ditolak di client dengan pesan spesifik
 4. POST /admin/media/unggah (multipart)
@@ -653,10 +700,14 @@ Nomor potongan puzzle gambar di dokumen bank soal ditulis mulai 1 (`[1..9]`); im
 5. Audio: POST /admin/media/audio/unggah dengan locale, character_code,
    context_code, transcript (WAJIB), production_method
      status awal 'draft' → tidak dikirim ke pemain
+     unggah ulang asset_key yang sama → baris audio_assets yang ada diperbarui
+     dan kembali 'draft' (berkas baru wajib didengar ulang sebelum tayang)
 6. Admin memutar pratinjau, menekan Setujui
      approval_status='approved', approved_by, approved_at, audit 'audio_approve'
 7. Baru setelah itu audio_src() mengembalikan path dan pemain mendengarnya
 ```
+
+Unggahan dari editor konten (FITUR 12) memakai jalur yang sama (`App\Libraries\MediaStore`): validasi MIME, dimensi wajib dari `Config\Gelita::$assetSizes`, nama berkas resmi, sha256, dan audit. Audio dialog dan narasi pembuka tantangan dipilih dari audio yang sudah diunggah di `/admin/media/audio`.
 
 ---
 
