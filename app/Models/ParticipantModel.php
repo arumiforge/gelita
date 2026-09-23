@@ -199,6 +199,31 @@ class ParticipantModel extends Model
         ];
     }
 
+    /**
+     * Sebaran umur peserta dalam cakupan pemanggil (dasbor & chart umur).
+     *
+     * @param array<string, mixed> $filters school_id WAJIB diisi untuk guru (StaffScope)
+     *
+     * @return array<int, int> umur → jumlah peserta
+     */
+    public function ageDistribution(array $filters = []): array
+    {
+        $builder = $this->scopedForStaff($filters['school_id'] ?? null)
+            ->select('age, COUNT(*) AS total', false)
+            ->where('participants.deleted_at', null)
+            ->where('age IS NOT NULL');
+
+        foreach (['class_level', 'province_code'] as $key) {
+            if (isset($filters[$key])) {
+                $builder->where('participants.' . $key, $filters[$key]);
+            }
+        }
+
+        $rows = $builder->groupBy('age')->orderBy('age', 'ASC')->get()->getResultArray();
+
+        return array_map('intval', array_column($rows, 'total', 'age'));
+    }
+
     private function countCohort(array $filters): int
     {
         $builder = $this->scopedForStaff($filters['school_id'] ?? null);

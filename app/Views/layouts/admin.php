@@ -69,12 +69,10 @@ $logo     = media_key_src('ui.logo');
   <template id="tpl-modal"><?= $this->include('components/modal') ?></template>
   <?= component('toast', ['withErrors' => false]) ?>
 
-  <script type="application/json" id="app-config"><?= json_encode([
-      'locale'   => 'id',
-      'csrfName' => csrf_token(),
-      'csrfHash' => csrf_hash(),
-      'apiBase'  => base_url('api'),
-  ], JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?></script>
+  <script type="application/json" id="app-config"><?= json_encode(
+      js_config('id'),
+      JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT,
+  ) ?></script>
 
   <?php if ($hasChart): ?>
     <script defer src="<?= asset_url_versioned('vendor/echarts.min.js') ?>"></script>

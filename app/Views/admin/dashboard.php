@@ -4,8 +4,8 @@
  *
  * Filter bar; 9 KPI; 4 chart (pretest→posttest, skor per wilayah, heatmap
  * kesulitan node, sebaran umur); 5 node tersulit; 10 sesi terakhir.
- * Chart diisi ECharts pada tahap 6; sampai saat itu (dan tanpa JavaScript)
- * wadahnya berisi visual cadangan dari data yang sama.
+ * Chart digambar ECharts (admin/charts.js) dari /api/admin/*; tanpa
+ * JavaScript wadahnya berisi visual cadangan dari data yang sama.
  *
  * @var array<string, mixed>              $filters
  * @var array<string, mixed>              $summary
@@ -82,6 +82,7 @@ $delta   = $summary['pretest_posttest_delta'];
       'id'       => 'chart-ages',
       'title'    => 'Sebaran umur peserta',
       'type'     => 'bar',
+      'endpoint' => 'api/admin/participants',
       'fallback' => component('partials/bar-list', ['rows' => array_map(
           static fn (int $age, int $total): array => ['label' => $age . ' tahun', 'value' => $total, 'display' => (string) $total],
           array_keys($ages),

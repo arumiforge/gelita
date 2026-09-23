@@ -62,6 +62,10 @@ final class PasswordPolicyTest extends CIUnitTestCase
 
     public function testClientConfigComesFromGelitaConfig(): void
     {
-        $this->assertSame(config('Gelita')->passwordPolicy, (new PasswordPolicy())->toClient());
+        $client = (new PasswordPolicy())->toClient();
+
+        $this->assertSame(72, $client['max_bytes'], 'batas bcrypt ikut dikirim agar meter sama dengan check()');
+        unset($client['max_bytes']);
+        $this->assertSame(config('Gelita')->passwordPolicy, $client);
     }
 }

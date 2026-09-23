@@ -901,7 +901,7 @@ Semua informasi dasar terbaca dan semua form dapat dikirim tanpa JS; tahap 6 han
 | Tombol kirim persetujuan redup sampai semua wajib tercentang | `form:invalid` |
 | Transkrip audio, detail lentera, metadata audit | `<details>` |
 | Toast | memudar otomatis lewat animasi CSS |
-| Chart admin | `admin-chart` berisi visual cadangan dari server (bar-list, heatmap, scatter) yang diganti ECharts pada tahap 6 |
+| Chart admin | `admin-chart` berisi visual cadangan dari server (bar-list, heatmap, scatter) yang diganti ECharts oleh `admin/charts.js` (tahap 6); chart tanpa endpoint membawa datanya lewat parameter `data` |
 
 ### Penyesuaian controller yang dibutuhkan view
 

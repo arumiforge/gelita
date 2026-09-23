@@ -484,6 +484,20 @@ input[type="checkbox"], input[type="radio"] { width: 22px; height: 22px; margin:
 .panel-parchment .pw-rules li.is-met, .panel-parchment .pw-rules li.is-met::before { color: var(--ok-ink); }
 .pw-match { min-height: 1.6em; margin: 0; font-weight: 700; }
 
+.pw-level.is-weak { color: var(--bad-ink, var(--bad)); }
+.pw-level.is-medium { color: var(--warn-ink, var(--warn)); }
+.pw-level.is-strong { color: var(--ok-ink, var(--ok)); }
+.pw-match.is-ok { color: var(--ok-ink, var(--ok)); }
+.pw-match.is-bad { color: var(--bad-ink, var(--bad)); }
+.pw-match.is-ok::before { content: "✓ "; }
+.pw-match.is-bad::before { content: "✗ "; }
+.username-status.is-ok { color: var(--ok-ink, var(--ok)); }
+.username-status.is-bad { color: var(--bad-ink, var(--bad)); }
+.username-status.is-ok::before { content: "✓ "; }
+.username-status.is-bad::before { content: "✗ "; }
+.pw-toggle.is-on { color: var(--gold-500); }
+button[aria-busy] { cursor: progress; }
+
 /* ---------- Pemutar audio ---------- */
 .audio-player {
   display: flex;
@@ -528,6 +542,14 @@ input[type="checkbox"], input[type="radio"] { width: 22px; height: 22px; margin:
   font-size: var(--step-0);
 }
 .audio-native { width: 100%; }
+.audio-error { flex-basis: 100%; margin: 0; color: var(--warn-ink, var(--warn)); font-weight: 700; }
+/* Dialog/intro/kartu misi: tombol putar besar dan berkedip halus sekali agar terlihat */
+.audio-player.is-attention .audio-btn[data-action="play"] { width: 56px; height: 56px; animation: audio-attention 1.2s ease-in-out 1; }
+@keyframes audio-attention {
+  50% { box-shadow: 0 0 0 8px rgba(223, 192, 135, .35); }
+}
+.modal-extra { margin: 0; color: var(--ink); }
+body.has-modal { overflow: hidden; }
 .audio-player.is-text-only { display: block; }
 .audio-player.is-text-only .audio-transcript-box { margin: 0; }
 .panel-parchment .audio-player { border-color: rgba(138, 106, 50, .4); background: rgba(74, 50, 24, .08); }
@@ -636,5 +658,5 @@ input[type="checkbox"], input[type="radio"] { width: 22px; height: 22px; margin:
 
 @media (prefers-reduced-motion: reduce) {
   .toast.is-flash { animation: toast-out .01ms linear 7s forwards; }
-  .modal-card, .toast { animation: none; }
+  .modal-card, .toast, .audio-player.is-attention .audio-btn[data-action="play"] { animation: none; }
 }

@@ -278,6 +278,7 @@ return [
     'errNotFound'       => 'The data you were looking for was not found.',
     'errForbidden'      => 'You are not allowed to open this part.',
     'errInvalidPayload' => 'The data sent is not valid.',
+    'errPageExpired'    => 'This page has been open for too long. Reload the page, then try again.',
     'errRateLimited'    => 'Too fast. Wait a moment, then try again.',
     'notFoundTitle'     => 'This path does not exist',
     'notFoundText'      => 'The page you are looking for was not found. Let\'s go back to the start of the journey.',

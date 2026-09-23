@@ -59,7 +59,8 @@ $points  = implode(' ', array_map(static fn (array $l): string => (float) $l['ma
         <ol class="map-points">
           <?php foreach ($levels as $level): ?>
             <li class="map-point is-<?= esc($level['status'], 'attr') ?>"
-                style="left: <?= (float) $level['map_x'] ?>%; top: <?= (float) $level['map_y'] ?>%">
+                style="left: <?= (float) $level['map_x'] ?>%; top: <?= (float) $level['map_y'] ?>%"
+                <?= $level['status'] !== 'locked' && ! empty($level['background']) ? 'data-preload="' . esc($level['background'], 'attr') . '"' : '' ?>>
               <a class="map-pin" href="<?= esc($href($level), 'attr') ?>"
                  <?= $level['status'] === 'locked' ? 'aria-disabled="true" data-locked-message="' . esc(lang('Game.levelLocked'), 'attr') . '"' : '' ?>>
                 <span class="pin-icon" aria-hidden="true"><?= icon($icons[$level['status']] ?? 'lantern') ?></span>

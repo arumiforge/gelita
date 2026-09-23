@@ -5,7 +5,7 @@
  * Filter sama dengan halaman analitik (nama field identik), tetapi dikirim
  * lewat POST. Guru: sekolah terkunci, mode anonim dipaksa server, dan sheet
  * Raw Events tidak tersedia — form hanya mencerminkan aturan itu.
- * Baris dengan status queued/running diperbarui export-status.js (tahap 6)
+ * Baris dengan status queued/running diperbarui admin/export.js
  * lewat data-export-id; tanpa JavaScript, muat ulang halaman.
  *
  * @var array<string, mixed>        $filters   filter dari query string (dari halaman analitik)

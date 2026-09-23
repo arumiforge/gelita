@@ -152,6 +152,8 @@ class ChallengeApiController extends BaseApiController
             'all_correct'   => $result['all_correct'],
             'check_count'   => $result['check_count'],
             'retry_count'   => $result['retry_count'],
+            // pieces_correct untuk puzzle/urutan — dihitung server dari kunci
+            'detail'        => (object) $result['detail'],
         ]);
     }
 

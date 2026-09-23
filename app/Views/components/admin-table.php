@@ -9,7 +9,8 @@
  * Kolom `render` menerima closure fn(array $row): string yang mengembalikan
  * HTML yang SUDAH di-escape pemanggil (dipakai untuk tautan & tombol aksi).
  *
- * `table-sort` (tahap 6) menambah pengurutan client untuk tabel ≤ 500 baris.
+ * admin/tables.js menambah pengurutan client untuk tabel ≤ 500 baris dan
+ * kotak saring baris untuk tabel ≥ 10 baris.
  *
  * @var array<string, string|array<string, mixed>> $columns
  * @var iterable<array<string, mixed>|object>      $rows

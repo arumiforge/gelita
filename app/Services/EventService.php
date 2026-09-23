@@ -179,7 +179,7 @@ class EventService
                 'challenge_attempt_id' => $attemptId,
                 'audio_asset_id'       => $assetId,
                 'action'               => $action,
-                'play_index'           => $usage->nextPlayIndex($session->id, $assetId),
+                'play_index'           => $usage->nextPlayIndex($session->id, $assetId, $action),
                 'listened_ms'          => isset($audioEvent['listened_ms']) ? (int) $audioEvent['listened_ms'] : null,
                 'completed'            => ! empty($audioEvent['completed']) ? 1 : 0,
                 'occurred_at'          => $occurredAt,

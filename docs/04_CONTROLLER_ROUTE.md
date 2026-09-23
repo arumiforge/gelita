@@ -522,9 +522,9 @@ Bentuk **bootstrap payload** (dipakai `show()`):
 
 | Method | Request body | Validasi | Service | Response |
 |---|---|---|---|---|
-| `open($nodeId)` | `{}` | node ada, aktif, level unlock | `ChallengeService::openNode()` | payload yang sama dengan `#challenge-data`: `{attempt_id, attempt_no, resumed, node:{…, engine_type, allow_retry}, items:[…], hints:[{id, item_id, sequence}], hints_count}` + `word_bank` (rumpang ber-bank), `verdict_options`/`require_reason` (boleh), `passages`; engine `cari` memakai `objects` + `clues` alih-alih `items` |
+| `open($nodeId)` | `{}` | node ada, aktif, level unlock | `ChallengeService::openNode()` | payload yang sama dengan `#challenge-data`: `{attempt_id, attempt_no, resumed, elapsed_ms, node:{…, engine_type, allow_retry}, items:[…], hints:[{id, item_id, sequence}], hints_count}` + `word_bank` (rumpang ber-bank), `verdict_options`/`require_reason` (boleh), `passages`; engine `cari` memakai `objects` + `clues` alih-alih `items` |
 | `respond($attemptId)` | `{item_id, answer:{...}, client_event_id, occurred_at, sequence_no, reason_text?}` | `item_id: required|item_in_attempt`, `client_event_id: required|max_length[120]` | `ChallengeService::submitAnswer()` | `{correct, first_pass, wrong_click, decoy, already_answered, feedback, correct_option_key, change_count, wrong_click_count, progress:{answered,total}}` — `correct_option_key` hanya terisi sesudah dijawab pada node `allow_retry = false`; `cari` menjawab dengan `answer:{object:<ref>}` |
-| `check($attemptId)` | `{answers:[{item_id, answer}], client_event_id, occurred_at}` | tiap `item_id` harus ada di attempt | `ChallengeService::submitCheck()` | `{results:{itemId:bool}, correct_count, total, all_correct, check_count}` |
+| `check($attemptId)` | `{answers:[{item_id, answer, reason_text?}], client_event_id, occurred_at}` | tiap `item_id` harus ada di attempt | `ChallengeService::submitCheck()` | `{results:{itemId:bool}, correct_count, total, all_correct, check_count, retry_count, detail:{itemId:{pieces_correct, misplaced?}}}` — `detail` hanya untuk `puzzle_arrange`/`ordering`; `misplaced` (slot keliru) hanya untuk puzzle gambar yang susunan benarnya publik |
 | `hint($attemptId)` | `{hint_id, item_id?, client_event_id}` | hint milik node/item attempt | `ChallengeService::useHint()` | `{text, hint_count}` |
 | `complete($attemptId)` | `{client_event_id, occurred_at}` | attempt `in_progress`, semua item yang diminta dijawab sudah `answered` atau `skipped` (`ChallengeService::pendingItemIds()`; objek jebakan `cari` tidak dihitung) | `ChallengeService::completeAttempt()` | `{score, stars, first_pass_accuracy, final_accuracy, duration_ms, shards, level_completed, next_level_unlocked, redirect}` |
 | `abandon($attemptId)` | `{reason}` | — | `ChallengeService::abandonAttempt()` | `{status:"abandoned"}` |
@@ -542,7 +542,9 @@ ingest()  // POST {events:[{client_event_id, event_type, occurred_at, sequence_n
 
 Rujukan per event memakai `level_id`, `node_id`, `attempt_id`, `item_id` (nama kolom lengkap `challenge_*_id` juga diterima).
 
-`AudioApiController::ingest()` memakai amplop yang sama, dengan isi per event `{audio_asset_id, action: play|pause|replay|complete, listened_ms, completed, occurred_at, client_event_id, attempt_id?}`. `attempt_id` hanya diterima bila attempt itu milik sesi berjalan; kiriman ulang dengan `client_event_id` yang sama dihitung `duplicate` tanpa menulis baris. Balasan: `{accepted, duplicate, rejected:[{index, reason}]}`.
+API admin (`/api/admin/*`) yang datanya digambar chart menyertakan kunci `chart` — bentuk netral dari `App\Libraries\ChartData` untuk `admin/charts.js` — di samping baris mentahnya: `levels` (batang), `nodes` (heatmap), `indicators` (matriks, plus `per_level`), `prepost` (garis), `participants` (sebaran umur, plus `ages`).
+
+`AudioApiController::ingest()` memakai amplop yang sama, dengan isi per event `{audio_asset_id, action: play|pause|replay|complete, listened_ms, completed, occurred_at, client_event_id, attempt_id?}`. `attempt_id` hanya diterima bila attempt itu milik sesi berjalan; kiriman ulang dengan `client_event_id` yang sama dihitung `duplicate` tanpa menulis baris. `play_index` dihitung server: `play`/`replay` membuka pemutaran baru, `pause`/`complete` termasuk pemutaran berjalan. Balasan: `{accepted, duplicate, rejected:[{index, reason}]}`.
 
 Status per event yang mungkin dikembalikan: `accepted`, `duplicate`, `rejected`.
 Status level request: `200` (ada yang diterima), `401 INVALID_SESSION`, `422 INVALID_PAYLOAD`, `413` bila melebihi batas.
@@ -745,7 +747,8 @@ Bentuk respons gagal API seragam:
 
 | code | HTTP | Kapan |
 |---|---:|---|
-| `INVALID_SESSION` | 401 | siswa belum login, session kedaluwarsa, atau sesi permainan ditinggalkan |
+| `INVALID_SESSION` | 401 | siswa belum login, session kedaluwarsa, atau sesi permainan ditinggalkan; juga token CSRF ditolak di `/api/*` tanpa login (session sudah habis) |
+| `CSRF_EXPIRED` | 403 | token CSRF ditolak di `/api/*` padahal masih login (halaman terlalu lama terbuka / masuk ulang di tab lain) — JavaScript menawarkan muat ulang |
 | `PASSWORD_CHANGE_REQUIRED` | 403 | sandi siswa baru direset guru dan belum diganti |
 | `INVALID_CREDENTIALS` | 401 | login gagal (pesan identik untuk nama/sandi salah) |
 | `ACCOUNT_LOCKED` | 423 | terlalu banyak percobaan login gagal |
