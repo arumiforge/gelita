@@ -252,6 +252,7 @@ class ChallengeService
             $attempt = $attempts->find($attempt->id);
 
             $results   = [];
+            $detail    = [];
             $responses = $node->allowsRetry() ? [] : model(ItemResponseModel::class)->forAttempt($attempt->id);
 
             foreach ($answers as $itemId => $answer) {
@@ -287,6 +288,10 @@ class ChallengeService
                 $correct         = $this->grade($node, $item, $answer, $locale);
                 $results[$itemId] = $correct;
 
+                if (in_array($item->interaction_type, ['puzzle_arrange', 'ordering'], true)) {
+                    $detail[$itemId] = $this->orderDetail($item, $answer);
+                }
+
                 $this->applyAnswer($attempt, $item, $answer, $correct, [
                     'duration_ms' => $answer['duration_ms'] ?? null,
                     'reason_text' => $answer['reason_text'] ?? null,
@@ -319,7 +324,47 @@ class ChallengeService
             'all_correct'   => $results !== [] && $correctCount === count($results),
             'check_count'   => $checkCount,
             'retry_count'   => max(0, $checkCount - 1),
+            'detail'        => $detail,
         ];
+    }
+
+    /**
+     * Rincian pemeriksaan butir berurutan, dihitung dari kunci di server:
+     * `pieces_correct` = jumlah posisi yang sudah tepat (untuk pesan "masih
+     * ada N keping yang keliru"). Untuk puzzle gambar, susunan benarnya
+     * memang publik (keping 1–9 dari kiri atas), jadi slot yang keliru ikut
+     * dikirim (`misplaced`) agar kepingnya dapat ditandai. Urutan teks
+     * (`ordering`) hanya menerima jumlahnya — posisi mana yang benar tidak
+     * dibocorkan.
+     *
+     * @param array<string, mixed> $answer
+     *
+     * @return array{pieces_correct: int, misplaced?: list<int>}
+     */
+    private function orderDetail(ChallengeItem $item, array $answer): array
+    {
+        $key   = $item->answerKey('order');
+        $given = isset($answer['order']) && is_array($answer['order']) ? array_values($answer['order']) : [];
+
+        if (! is_array($key)) {
+            return ['pieces_correct' => 0];
+        }
+
+        $key       = array_values($key);
+        $correct   = 0;
+        $misplaced = [];
+
+        foreach ($key as $slot => $expected) {
+            if (isset($given[$slot]) && (string) $given[$slot] === (string) $expected) {
+                $correct++;
+            } else {
+                $misplaced[] = $slot;
+            }
+        }
+
+        return $item->interaction_type === 'puzzle_arrange'
+            ? ['pieces_correct' => $correct, 'misplaced' => $misplaced]
+            : ['pieces_correct' => $correct];
     }
 
     /**
@@ -822,10 +867,15 @@ class ChallengeService
     ): array {
         $locale = $session->resolvedLocale();
 
+        // Jam tantangan di layar mulai dari waktu yang dihitung server, jadi
+        // tetap benar setelah muat ulang dan tidak bergantung pada jam komputer.
+        $startedAt = strtotime((string) $attempt->started_at) ?: time();
+
         $payload = [
             'attempt_id'  => $attempt->id,
             'attempt_no'  => $attempt->attempt_no,
             'resumed'     => $resumed,
+            'elapsed_ms'  => max(0, (time() - $startedAt) * 1000),
             'node'        => [
                 'id'           => $node->id,
                 'level_id'     => $node->level_id,

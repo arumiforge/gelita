@@ -33,6 +33,7 @@ $hints      = (int) ($payload['hints_count'] ?? 0);
          data-node="<?= esc($node->id, 'attr') ?>"
          data-level="<?= esc($level->code, 'attr') ?>"
          data-level-id="<?= esc($level->id, 'attr') ?>"
+         data-region-name="<?= esc($region, 'attr') ?>"
          data-sequence="<?= esc($sequence, 'attr') ?>"
          data-exit-url="<?= esc(base_url('wilayah/' . $level->code), 'attr') ?>">
 

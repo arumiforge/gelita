@@ -4,8 +4,9 @@
  *
  * Slide cerita pembuka (dialogues context `intro`), satu per layar.
  * Perpindahan slide memakai jangkar #slide-n dan CSS :target, sehingga tetap
- * berjalan tanpa JavaScript; intro.js (tahap 6) memakai hash yang sama lewat
- * history.replaceState dan mengirim event `dialogue_advanced`.
+ * berjalan tanpa JavaScript; game/intro.js memakai hash yang sama lewat
+ * location.replace() (riwayat tidak bertambah, :target tetap berlaku) dan
+ * mengirim event `dialogue_advanced`.
  *
  * Setelah registrasi, halaman diawali kartu sambutan (flash `welcome`).
  * Kode peserta TIDAK ditampilkan di sini — kode itu untuk penelitian.

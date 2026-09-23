@@ -6,7 +6,7 @@ Aplikasi dibangun dengan **CodeIgniter 4.7** (PHP 8.2+, MySQL 8 / MariaDB 10.6+)
 
 ## Status pengembangan
 
-**Tahap 1–5 dari 8 selesai dan sudah diaudit; proyek siap memulai tahap 6 (JavaScript).**
+**Tahap 1–6 dari 8 selesai; tahap berikutnya adalah 7 (integrasi fitur: ekspor, laporan, retensi, command).**
 
 | Tahap | Isi | Status |
 |---:|---|---|
@@ -15,11 +15,22 @@ Aplikasi dibangun dengan **CodeIgniter 4.7** (PHP 8.2+, MySQL 8 / MariaDB 10.6+)
 | 3 | Model (29), Entity (11), Service (8) — skor, sesi, tantangan, event, analitik, impor bank soal | selesai |
 | 4 | Route, controller, autentikasi siswa & staf, otorisasi berlapis tiga, API JSON seragam | selesai |
 | 5 | View, UI, CSS: 3 layout, 17 komponen, 17 halaman game + 5 arena, 33 view admin, 6 berkas CSS | selesai |
-| 6 | Perilaku JavaScript: mesin arena, antrean event, audio, chart ECharts | berikutnya |
-| 7 | Integrasi fitur: `ExportService`, `ReportService`, `RetentionService`, isi command `gelita:*` | belum |
+| 6 | Perilaku JavaScript: lima mesin arena, antrean event offline, narasi + telemetry audio, chart ECharts, editor konten terpandu | selesai |
+| 7 | Integrasi fitur: `ExportService`, `ReportService`, `RetentionService`, isi command `gelita:*` | berikutnya |
 | 8 | Deployment & operasional | belum |
 
+Kelima arena kini dapat dimainkan penuh di browser — Periksa, petunjuk, keluar berkonfirmasi, narasi audio, dan lentera yang bertambah dari respons server — dengan seluruh event gameplay dan telemetry audio tercatat, termasuk saat koneksi sempat putus. Panel admin menggambar seluruh chart dengan ECharts dari `/api/admin/*`, dan filter mengubah isi halaman tanpa memuat ulang.
+
 Yang sudah berfungsi penuh lewat HTTP: persetujuan dan registrasi dengan kata sandi kuat (termasuk dua metrik literasi keamanan digital), masuk/keluar, ganti sandi dan reset sandi oleh guru, peta Kedu dan peta wilayah dengan kunci berurutan, dialog pembuka wilayah, kelima arena beserta seluruh API penilaiannya, layar selesai dan riwayat hasil, Pustaka Kedu, profil, Balai Refleksi, pergantian bahasa tanpa kehilangan progres, serta seluruh halaman panel admin (dasbor, peserta, sesi, analitik, masukan, konten, impor bank soal, media & audio, studi & rilis, tata kelola, akun staf).
+
+### Tahap 6 — JavaScript
+
+ES modules tanpa bundler di [`public/assets/js/`](public/assets/js/): lapisan inti (`core/`), perilaku halaman game (`game/`), lima mesin (`engines/`), dan panel admin (`admin/`). Rincian dan keputusannya ada di [`docs/06_JAVASCRIPT.md` → *Catatan Implementasi Tahap 6*](docs/06_JAVASCRIPT.md#catatan-implementasi-tahap-6). Yang perlu diketahui:
+
+- **Client tidak pernah menilai.** Benar/salah, skor, bintang, serpihan, dan jumlah keping yang keliru datang dari respons server.
+- **Antrean offline per sesi.** Event yang gagal terkirim disimpan di `localStorage` dengan penanda sesi buram (`sessionTag`, HMAC `game_session_id`) dan hanya dikirim ulang ke sesi yang sama — komputer kelas dipakai bergantian.
+- **Kontrak server yang ditambahkan:** `elapsed_ms` di payload tantangan, `detail.pieces_correct` di respons `/check`, kode `CSRF_EXPIRED` / `INVALID_SESSION` saat token CSRF ditolak di API, kunci `chart` di API admin (`App\Libraries\ChartData`), dan `play_index` audio kini berarti "pemutaran ke-n".
+- Teks yang ditulis JavaScript game ada di `app/Language/{id,en}/Js.php`.
 
 ### Audit pra-tahap 6
 
@@ -43,7 +54,7 @@ Rincian keputusan ada di dokumen tahap masing-masing; ringkasan UI di [`docs/05_
 
 ### Batas ruang lingkup saat ini
 
-- **Tombol Periksa, petunjuk, dan audio di arena belum berperilaku** — markup, gaya, payload, dan seluruh API-nya sudah siap; mesin arena, antrean event, dan chart ECharts dikerjakan tahap 6.
+- **Narasi petunjuk arena `cari` belum bersuara**: payload `clues` belum membawa aset audio; teks petunjuk tampil dan diumumkan ke pembaca layar.
 - **Ekspor belum dapat membangun berkas.** `App\Services\ExportService` baru dipasang tahap 7; sampai itu, permintaan ekspor tercatat di `data_exports` dan `audit_logs` lalu langsung ditandai `failed` dengan alasan yang jelas.
 - **Command `gelita:*` masih kerangka** dan menolak dengan pesan "belum aktif" sampai tahap 7. Impor bank soal sudah dapat dilakukan lewat panel `/admin/konten/impor-bank` (`ContentImportService` sudah ada).
 - **Retensi**: `GovernanceController::runRetention()` sudah menandai sesi menganggur `paused` dan membuang berkas ekspor kedaluwarsa; pembersihan per `retention_days` menyusul bersama `RetentionService`.
@@ -131,11 +142,13 @@ Jalankan test suite tanpa laporan coverage:
 vendor/bin/phpunit --no-coverage
 ```
 
-Suite (94 test) memakai grup database `tests` (SQLite3 in-memory) dan hanya menjalankan migration bernamespace `Tests\Support`, bukan migration aplikasi — skema aplikasi memakai fitur MySQL/MariaDB (`DATETIME(6)`, `ON UPDATE CURRENT_TIMESTAMP(6)`) yang tidak ada di SQLite. Sesi di-mock dengan `ArrayHandler` oleh `CIUnitTestCase`. Yang dikunci suite antara lain:
+Suite (106 test) memakai grup database `tests` (SQLite3 in-memory) dan hanya menjalankan migration bernamespace `Tests\Support`, bukan migration aplikasi — skema aplikasi memakai fitur MySQL/MariaDB (`DATETIME(6)`, `ON UPDATE CURRENT_TIMESTAMP(6)`) yang tidak ada di SQLite. Sesi di-mock dengan `ArrayHandler` oleh `CIUnitTestCase`. Yang dikunci suite antara lain:
 
 - `RouteWiringTest` — auto-route tetap mati, setiap handler menunjuk kelas/method yang ada, dan setiap view yang disebut controller punya berkasnya.
 - `HuntPayloadTest` — payload arena `cari` tidak membedakan jebakan, jawaban hanya lewat token objek, dan objek jebakan tidak pernah diminta dijawab.
 - `RegionEntryTest`, `DialogueGateTest` — wilayah baru selalu lewat dialog pembukanya.
+- `JsConfigTest` — penanda sesi antrean offline buram dan per sesi, `#app-config` tanpa identitas siswa, dan setiap `t('…')` di JavaScript punya kunci `Js.*`.
+- `ChartDataTest` — bentuk data chart admin dan kondisi kosongnya.
 - `ScoringServiceTest`, `PasswordPolicyTest`, `ChallengeEntityTest`, `ViewHelperTest`, `LanguageFilesTest`, `EventTimeTest`, `DebugToolbarRedactionTest`.
 
 Karena tabel aplikasi tidak dibuat di suite ini, **alur HTTP ujung ke ujung diverifikasi di atas MySQL/MariaDB sungguhan**. Gunakan database scratch terpisah (kredensial boleh dioper lewat environment untuk perintah CLI):
@@ -149,6 +162,8 @@ env "database.default.database=gelita_scratch" \
 
 lalu seed, jalankan `php spark serve`, dan telusuri alur siswa (registrasi → tantangan → refleksi) serta halaman admin. `php spark serve` membaca `.env`, jadi untuk penelusuran HTTP isi `.env` lokal dengan database scratch tersebut.
 
+Perilaku JavaScript tahap 6 diverifikasi dengan cara yang sama di browser sungguhan (Playwright + Chromium): alur siswa 15 node beserta jalur galatnya, antrean offline, telemetry audio, dan seluruh halaman admin ber-chart. Konten dialog dan butir di-cache `ContentRepository`; setelah mengubah data langsung di database, jalankan `php spark cache:clear`.
+
 ## Dokumentasi
 
 Dokumen spesifikasi per tahap ada di folder [`docs`](docs/) dan mencerminkan implementasi terkini:
@@ -158,8 +173,8 @@ Dokumen spesifikasi per tahap ada di folder [`docs`](docs/) dan mencerminkan imp
 3. [Model, entity, dan service](docs/03_MODEL_ENTITY.md)
 4. [Route, controller, autentikasi, otorisasi](docs/04_CONTROLLER_ROUTE.md)
 5. [View, UI, dan CSS](docs/05_VIEW_UI.md)
-6. [JavaScript](docs/06_JAVASCRIPT.md) — tahap berikutnya
-7. [Integrasi fitur](docs/07_FEATURE_INTEGRATION.md)
+6. [JavaScript](docs/06_JAVASCRIPT.md)
+7. [Integrasi fitur](docs/07_FEATURE_INTEGRATION.md) — tahap berikutnya
 8. [Deployment dan operasional](docs/08_DEPLOYMENT.md)
 
 Daftar route lengkap dapat dilihat kapan saja tanpa membaca kode:
