@@ -48,14 +48,16 @@ class StaffController extends BaseAdminController
             return $this->back('admin/staf', 'Akun guru wajib terikat pada satu sekolah.');
         }
 
+        // sandi awal dipilih admin → pemilik wajib menggantinya saat pertama masuk
         $staffId = $staff->insert([
-            'username'      => (string) $this->request->getPost('username'),
-            'email'         => $this->nullIfBlank($this->request->getPost('email')),
-            'password_hash' => password_hash((string) $this->request->getPost('password'), PASSWORD_DEFAULT),
-            'role'          => $role,
-            'display_name'  => (string) $this->request->getPost('display_name'),
-            'school_id'     => $role === 'admin' ? null : $schoolId,
-            'is_active'     => 1,
+            'username'             => (string) $this->request->getPost('username'),
+            'email'                => $this->nullIfBlank($this->request->getPost('email')),
+            'password_hash'        => password_hash((string) $this->request->getPost('password'), PASSWORD_DEFAULT),
+            'must_change_password' => 1,
+            'role'                 => $role,
+            'display_name'         => (string) $this->request->getPost('display_name'),
+            'school_id'            => $role === 'admin' ? null : $schoolId,
+            'is_active'            => 1,
         ], true);
 
         if ($staffId === false) {
@@ -132,7 +134,8 @@ class StaffController extends BaseAdminController
 
         $temporary = $this->temporaryPassword();
 
-        $staff->setPassword($staffId, $temporary);
+        // sandi sementara diketahui admin → pemilik wajib menggantinya saat masuk
+        $staff->setPassword($staffId, $temporary, true);
         $staff->update($staffId, ['failed_login_count' => 0, 'locked_until' => null]);
 
         $this->audit('staff_password_reset', $staffId);
@@ -180,6 +183,7 @@ class StaffController extends BaseAdminController
         foreach (model(StaffUserModel::class)->orderBy('display_name', 'ASC')->findAll() as $staff) {
             $rows[] = $staff->toSafeArray() + [
                 'locked'        => $staff->isLocked(),
+                'must_change'   => $staff->mustChangePassword(),
                 'last_login_at' => $staff->last_login_at,
             ];
         }

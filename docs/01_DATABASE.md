@@ -78,7 +78,7 @@ Dokumen sumber sebelumnya mengandung beberapa konflik. Berikut keputusan final u
 ## Yang Harus Dibuat
 
 1. Database `gelita` (utf8mb4_unicode_ci, InnoDB).
-2. 29 migration pembuat tabel + migration pendukung (`002900` FK level, `003000` `ci_sessions`) + migration koreksi (`003100`–`003300`) — total 34 berkas.
+2. 29 migration pembuat tabel + migration pendukung (`002900` FK level, `003000` `ci_sessions`) + migration koreksi (`003100`–`003300`) + `003400` (wajib ganti sandi staf) — total 35 berkas.
 3. 9 seeder data, dijalankan berurutan oleh `DatabaseSeeder` (kelas dasar bersama: `GelitaSeeder`).
 4. File referensi statis `public/assets/data/wilayah-id.json` (tidak masuk DB).
 
@@ -155,6 +155,7 @@ Akun guru/admin. Akun siswa disimpan terpisah di `participants` (bagian 5) — d
 | username | VARCHAR(100) | NO | — | UNIQUE |
 | email | VARCHAR(190) | YES | NULL | UNIQUE |
 | password_hash | VARCHAR(255) | NO | — | `password_hash()` PASSWORD_DEFAULT |
+| must_change_password | TINYINT(1) | NO | 0 | 1 = sandi sementara dari admin (reset / akun baru); panel terkunci ke Ubah sandi sampai diganti. Ditambahkan `003400` |
 | role | VARCHAR(20) | NO | `guru` | `admin` \| `guru`; INDEX |
 | display_name | VARCHAR(150) | NO | — | |
 | school_id | BIGINT UNSIGNED | YES | NULL | FK `schools.id` ON DELETE SET NULL; NULL = semua sekolah |
@@ -935,11 +936,12 @@ Nama file mengikuti konvensi CI4 `YYYY-MM-DD-HHMMSS_ClassName.php` di `app/Datab
 2026-01-01-003100_AlignChallengeAttemptMetrics
 2026-01-01-003200_EnforceChallengeAttemptMetricDefaults
 2026-01-01-003300_AddEventLogSessionTimeIndex
+2026-01-01-003400_AddStaffMustChangePassword
 ```
 
 > `002900` menambahkan FK dari `levels` ke `media_assets`. Ini dipisah karena `levels` dibuat setelah `media_assets`, tetapi beberapa FK silang (`challenge_nodes.audio_intro_id` → `audio_assets`) lebih aman dipasang belakangan agar `up()`/`down()` bersih.
 
-> `003000` membuat tabel sesi CI4 `ci_sessions`. Kolom `ip_address` berisi hash SHA-256 ber-garam, bukan IP mentah.
+> `003000` membuat tabel sesi CI4 `ci_sessions`. Kolom `ip_address` (`VARCHAR(64)`) dirancang untuk hash SHA-256 ber-garam, tetapi selama `HashedIpSessionHandler` belum dipasang (02 § 3b) handler bawaan menyimpan IP **mentah** di sini sampai sesi dibersihkan. Backup tahap 8 tidak membawa isi tabel ini.
 
 Contoh satu migration lengkap (dipakai sebagai pola untuk semua tabel lain):
 
@@ -1033,6 +1035,12 @@ $this->forge->addForeignKey('level_id', 'levels', 'id', '', 'CASCADE');
 ### Index linimasa event (`003300`)
 
 `002400` tidak membuat index gabungan `game_event_logs (session_id, occurred_at)` yang diwajibkan §24 dan prioritas 2 *Index Strategy*. `003300` menambahkannya tanpa mengubah `002400`, dengan pola yang sama seperti `003100`/`003200`. Index ini melayani linimasa sesi, yang diurutkan `occurred_at` lalu `sequence_no` (aturan 8) — `sequence_no` kiriman klien dimulai ulang setiap halaman dimuat, jadi tidak dapat menjadi kunci urutan utama. `up()`/`down()` memeriksa keberadaan index lebih dulu sehingga aman dijalankan ulang.
+
+### Wajib ganti sandi staf (`003400`)
+
+`003400` menambahkan `staff_users.must_change_password`, padanan `participants.must_change_password`. Nilainya 1 untuk sandi yang diketahui admin: sandi sementara hasil reset di `/admin/staf` dan sandi awal akun baru. Ganti sandi oleh pemiliknya sendiri mengembalikannya ke 0. Akun yang sudah ada saat migration berjalan mendapat 0.
+
+Kolom ditulis dengan `'null' => false` eksplisit karena alasan yang sama dengan `003200`: pada `ALTER`, Forge membuat kolom nullable bila atribut itu tidak disebutkan. `up()`/`down()` memeriksa keberadaan kolom lebih dulu (setelah `resetDataCache()`) sehingga aman dijalankan ulang.
 
 ---
 
