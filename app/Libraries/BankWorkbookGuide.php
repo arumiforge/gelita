@@ -156,7 +156,7 @@ class BankWorkbookGuide
             'sequence'   => ['Nomor halaman', 'Wajib', 'Urutan halaman di buku. Nomor yang sudah ada = halaman itu DITIMPA.', 'angka 1–999', '1'],
             'title_id'   => ['Judul halaman (Indonesia)', 'Wajib', 'Judul halaman buku.', 'teks, maks. 250 karakter', 'Mengenal Temanggung'],
             'title_en'   => ['Judul halaman (English)', 'Wajib', 'Terjemahan judul.', 'teks, maks. 250 karakter', 'Getting to Know Temanggung'],
-            'body_id'    => ['Isi halaman (Indonesia)', 'Wajib', 'Teks halaman dengan format ringan (lihat PETUNJUK): baris kosong = paragraf, "## " = subjudul, "- " = daftar, "**tebal**", "> " = kotak fakta, "Sumber:" = catatan rujukan.', 'teks panjang', '## Tanah yang subur …'],
+            'body_id'    => ['Isi halaman (Indonesia)', 'Wajib', 'Teks halaman dengan format ringan (lihat PETUNJUK): baris kosong = paragraf, "## " = subjudul, "- " = daftar, "**tebal**", "*miring*", "> " = kotak fakta, "Sumber:" = catatan rujukan.', 'teks panjang', '## Tanah yang subur …'],
             'body_en'    => ['Isi halaman (English)', 'Opsional', 'Terjemahan isi (format sama). Kosong = pemain English membaca teks Indonesia.', 'teks panjang', '## Fertile land …'],
             'is_active'  => ['Tampil?', 'Opsional', '1 = tampil di permainan (bawaan); 0 = disembunyikan.', '0 atau 1', '1'],
         ],
@@ -363,6 +363,7 @@ class BankWorkbookGuide
             ['## Subjudul', 'subjudul', '## Asal-usul nama', ''],
             ['- teks', 'butir daftar berpoin', '- Tembakau srintil', ''],
             ['**kata**', 'cetak tebal', 'Candi **Borobudur**', ''],
+            ['*kata*', 'cetak miring (istilah daerah/asing)', 'dari kata *senduro*', ''],
             ['> teks', 'kotak "Tahukah kamu?"', '> Tahukah kamu? Dieng berarti tempat para dewa.', ''],
             ['Sumber: …', 'catatan rujukan kecil di akhir halaman', 'Sumber: UNESCO; Pemkab Magelang', ''],
         ]);

@@ -51,17 +51,19 @@ if (! function_exists('rich_text')) {
      *   `> Tahukah kamu? …` → kotak fakta (<aside class="book-fact">)
      *   `Sumber: …`         → catatan rujukan kecil
      *   `**tebal**`         → <strong>
+     *   `*miring*`          → <em> (istilah asing/daerah)
      *
      * Seluruh teks di-escape LEBIH DULU; tag hanya disusun dari penanda di
      * atas, jadi isi database tidak pernah dapat menyisipkan HTML.
      */
     function rich_text(string $text): string
     {
-        $inline = static fn (string $line): string => preg_replace(
-            '/\*\*(.+?)\*\*/u',
-            '<strong>$1</strong>',
-            esc($line),
-        ) ?? esc($line);
+        $inline = static function (string $line): string {
+            $html = preg_replace('/\*\*(.+?)\*\*/u', '<strong>$1</strong>', esc($line)) ?? esc($line);
+
+            // *miring*: bintang tunggal yang menempel pada kata, bukan sisa **tebal**
+            return preg_replace('/(?<![*\w])\*(?=\S)([^*]+?)(?<=\S)\*(?![*\w])/u', '<em>$1</em>', $html) ?? $html;
+        };
 
         $html  = '';
         $para  = [];
