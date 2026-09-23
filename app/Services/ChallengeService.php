@@ -127,7 +127,8 @@ class ChallengeService
      * @param array<string, mixed> $answer
      * @param array<string, mixed> $meta   duration_ms, reason_text
      *
-     * @return array{correct: bool, first_pass: bool, wrong_click: bool, feedback: ?string,
+     * @return array{correct: bool, first_pass: bool, wrong_click: bool, decoy: bool,
+     *               already_answered: bool, feedback: ?string, correct_option_key: ?string,
      *               progress: array{answered: int, total: int}}
      */
     public function submitAnswer(ChallengeAttempt $attempt, int $itemId, array $answer, array $meta = []): array
@@ -142,6 +143,26 @@ class ChallengeService
         $node    = $this->nodeOf($attempt);
         $item    = $this->itemOf($node->id, $itemId);
         $locale  = $session->resolvedLocale();
+
+        // allow_retry = false (engine `pilihan`): jawaban pertama sekaligus
+        // jawaban final. Kiriman ulang untuk butir yang sudah dijawab tidak
+        // mengubah apa pun dan dibalas dengan hasil yang tersimpan.
+        if (! $node->allowsRetry()) {
+            $stored = model(ItemResponseModel::class)->findOne($attempt->id, $itemId);
+
+            if ($stored !== null && $stored->isAnswered()) {
+                return [
+                    'correct'            => (bool) $stored->is_correct,
+                    'first_pass'         => false,
+                    'wrong_click'        => false,
+                    'decoy'              => false,
+                    'already_answered'   => true,
+                    'feedback'           => null,
+                    'correct_option_key' => $this->revealedOptionKey($node, $item),
+                    'progress'           => $this->progressOf($attempt),
+                ];
+            }
+        }
 
         if ($item->interaction_type === 'find_object') {
             $answer = $this->resolveObjectAnswer($attempt, $answer);
@@ -188,11 +209,14 @@ class ChallengeService
         }
 
         return [
-            'correct'     => $correct,
-            'first_pass'  => $applied['first_pass'],
-            'wrong_click' => false,
-            'feedback'    => $feedback,
-            'progress'    => $this->progressOf($attempt),
+            'correct'            => $correct,
+            'first_pass'         => $applied['first_pass'],
+            'wrong_click'        => false,
+            'decoy'              => false,
+            'already_answered'   => false,
+            'feedback'           => $feedback,
+            'correct_option_key' => $this->revealedOptionKey($node, $item),
+            'progress'           => $this->progressOf($attempt),
         ];
     }
 
@@ -227,7 +251,8 @@ class ChallengeService
 
             $attempt = $attempts->find($attempt->id);
 
-            $results = [];
+            $results   = [];
+            $responses = $node->allowsRetry() ? [] : model(ItemResponseModel::class)->forAttempt($attempt->id);
 
             foreach ($answers as $itemId => $answer) {
                 $itemId = (int) $itemId;
@@ -239,6 +264,13 @@ class ChallengeService
                 $item = $this->itemOf($node->id, $itemId);
 
                 if ($item->isDecoy()) {
+                    continue;
+                }
+
+                // allow_retry = false: butir yang sudah dijawab tidak dinilai ulang
+                if (isset($responses[$itemId]) && $responses[$itemId]->isAnswered()) {
+                    $results[$itemId] = (bool) $responses[$itemId]->is_correct;
+
                     continue;
                 }
 
@@ -616,7 +648,8 @@ class ChallengeService
     /**
      * @param array<string, mixed> $answer
      *
-     * @return array{correct: bool, first_pass: bool, wrong_click: bool, feedback: ?string,
+     * @return array{correct: bool, first_pass: bool, wrong_click: bool, decoy: bool,
+     *               already_answered: bool, feedback: ?string, correct_option_key: ?string,
      *               progress: array{answered: int, total: int}}
      */
     private function registerWrongClick(
@@ -626,19 +659,33 @@ class ChallengeService
         array $answer,
         string $locale,
     ): array {
-        $responses = model(ItemResponseModel::class);
-        $response  = $responses->findOne($attempt->id, $target->id);
+        $responses  = model(ItemResponseModel::class);
+        $response   = $responses->findOne($attempt->id, $target->id);
+        $firstClick = $response !== null && $response->isFirstPassOpen();
 
         if ($response !== null) {
-            $responses->update($response->id, ['wrong_click_count' => $response->wrong_click_count + 1]);
+            $update = ['wrong_click_count' => $response->wrong_click_count + 1];
+
+            // First-pass `cari` = klik pertama untuk tiap petunjuk: klik pertama
+            // yang salah menutup first-pass petunjuk ini sebagai salah, dan
+            // klik benar sesudahnya tidak dapat mengubahnya lagi. Butir tetap
+            // terbuka (status/final tidak disentuh) sampai objek yang benar ditemukan.
+            if ($firstClick) {
+                $update['first_answer_json']  = $answer;
+                $update['first_pass_correct'] = 0;
+            }
+
+            $responses->update($response->id, $update);
         }
 
         $clickedId = (int) ($answer['item_id'] ?? 0);
         $clicked   = $clickedId > 0 ? $this->findItemInBank($target->challenge_node_id, $clickedId) : null;
+        $isDecoy   = $clicked !== null && $clicked->isDecoy();
 
         service('eventService')->record($session, 'wrong_target_clicked', [
             'clicked_item_id' => $clickedId ?: null,
-            'decoy'           => $clicked !== null && $clicked->isDecoy(),
+            'decoy'           => $isDecoy,
+            'first_pass'      => $firstClick,
         ], [
             'challenge_node_id'    => $target->challenge_node_id,
             'challenge_attempt_id' => $attempt->id,
@@ -646,12 +693,29 @@ class ChallengeService
         ]);
 
         return [
-            'correct'     => false,
-            'first_pass'  => false,
-            'wrong_click' => true,
-            'feedback'    => $clicked?->wrongFeedback($locale),
-            'progress'    => $this->progressOf($attempt),
+            'correct'            => false,
+            'first_pass'         => $firstClick,
+            'wrong_click'        => true,
+            'decoy'              => $isDecoy,
+            'already_answered'   => false,
+            'feedback'           => $clicked?->wrongFeedback($locale),
+            'correct_option_key' => null,
+            'progress'           => $this->progressOf($attempt),
         ];
+    }
+
+    /**
+     * Kunci opsi dikirim hanya SESUDAH butir dijawab dan hanya pada node tanpa
+     * pemeriksaan ulang (`allow_retry = false`), agar UI dapat menandai opsi
+     * yang benar. Node yang boleh diperiksa ulang tidak pernah menerimanya.
+     */
+    private function revealedOptionKey(ChallengeNode $node, ChallengeItem $item): ?string
+    {
+        if ($node->allowsRetry() || ! in_array($item->interaction_type, ['single_choice', 'source_trust'], true)) {
+            return null;
+        }
+
+        return $item->correctOptionKey();
     }
 
     /** Umpan balik opsi salah dikirim setelah jawaban dinilai, bukan di payload soal. */
@@ -775,9 +839,13 @@ class ChallengeService
                 'background'   => $node->background_media_id ? media_src($node->background_media_id) : null,
                 'scene'        => $node->scene_media_id ? media_src($node->scene_media_id) : null,
             ],
-            'items'       => array_map(static fn (ChallengeItem $i): array => $i->toPlayerArray($locale), $items),
-            'hints_count' => count(service('contentRepository')->hintsFor($node->id)),
+            'items' => array_map(static fn (ChallengeItem $i): array => $i->toPlayerArray($locale), $items),
         ];
+
+        // Id petunjuk tanpa teksnya: teks baru dikirim lewat POST /hints,
+        // yang sekaligus mencatat pemakaian petunjuk untuk skor kemandirian.
+        $payload['hints']       = $this->hintRefs($node, $items);
+        $payload['hints_count'] = count($payload['hints']);
 
         if ($node->engine_type === 'cari') {
             unset($payload['items']);
@@ -833,7 +901,7 @@ class ChallengeService
                 'media' => $item->media_asset_id ? media_src($item->media_asset_id) : null,
             ];
 
-            if ($item->scorable && ! $item->isDecoy()) {
+            if ($this->expectsAnswer($item)) {
                 $clues[] = ['item_id' => $item->id, 'text' => $item->text('prompt', $locale)];
             }
         }
@@ -1063,39 +1131,110 @@ class ChallengeService
     }
 
     /**
-     * Objek jebakan `cari` punya baris item_responses tetapi tidak pernah
-     * dijawab, jadi tidak ikut dihitung — `total` tidak boleh membocorkan
-     * jumlah jebakan maupun membuat progres tidak pernah penuh.
+     * Butir yang memang diminta dijawab pemain. Objek jebakan `cari` (dan
+     * objek `find_object` lain yang tidak dinilai) ikut tampil di adegan dan
+     * punya baris item_responses, tetapi tidak punya petunjuk sehingga tidak
+     * pernah dijawab. Satu aturan ini dipakai petunjuk `cari`, progres, dan
+     * syarat menutup attempt, agar ketiganya tidak pernah berbeda.
+     */
+    private function expectsAnswer(ChallengeItem $item): bool
+    {
+        if ($item->isDecoy()) {
+            return false;
+        }
+
+        return $item->interaction_type !== 'find_object' || $item->scorable;
+    }
+
+    /**
+     * Baris item_responses attempt yang ikut dihitung progres, keyed by item id.
+     * Butir yang sudah tidak ada di bank aktif tidak dapat dijawab lagi,
+     * jadi ikut dilewati.
+     *
+     * @return array<int, ItemResponse>
+     */
+    private function expectedResponses(ChallengeAttempt $attempt): array
+    {
+        $expected = [];
+
+        foreach (service('contentRepository')->itemBank($attempt->challenge_node_id) as $bankItem) {
+            if ($this->expectsAnswer($bankItem)) {
+                $expected[$bankItem->id] = true;
+            }
+        }
+
+        return array_intersect_key(model(ItemResponseModel::class)->forAttempt($attempt->id), $expected);
+    }
+
+    /**
+     * Id butir yang belum dijawab atau dilewati — syarat menutup attempt.
+     * Objek jebakan tidak pernah menahan attempt tetap terbuka.
+     *
+     * @return list<int>
+     */
+    public function pendingItemIds(ChallengeAttempt $attempt): array
+    {
+        $pending = [];
+
+        foreach ($this->expectedResponses($attempt) as $itemId => $response) {
+            if (! $response->isAnswered() && $response->status !== 'skipped') {
+                $pending[] = (int) $itemId;
+            }
+        }
+
+        return $pending;
+    }
+
+    /**
+     * `total` tidak menghitung objek jebakan — tidak boleh membocorkan jumlah
+     * jebakan maupun membuat progres tidak pernah penuh.
      *
      * @return array{answered: int, total: int}
      */
     private function progressOf(ChallengeAttempt $attempt): array
     {
-        $responses = model(ItemResponseModel::class)->forAttempt($attempt->id);
-        $decoys    = [];
+        $responses = $this->expectedResponses($attempt);
+        $answered  = 0;
 
-        foreach (service('contentRepository')->itemBank($attempt->challenge_node_id) as $bankItem) {
-            if ($bankItem->isDecoy()) {
-                $decoys[$bankItem->id] = true;
-            }
-        }
-
-        $answered = 0;
-        $total    = 0;
-
-        foreach ($responses as $itemId => $response) {
-            if (isset($decoys[$itemId])) {
-                continue;
-            }
-
-            $total++;
-
+        foreach ($responses as $response) {
             if ($response->isAnswered()) {
                 $answered++;
             }
         }
 
-        return ['answered' => $answered, 'total' => $total];
+        return ['answered' => $answered, 'total' => count($responses)];
+    }
+
+    /**
+     * Petunjuk yang tersedia untuk attempt ini: petunjuk node, lalu petunjuk
+     * per butir yang diminta dijawab. Hanya id (dan butirnya) — teks dikirim
+     * useHint() saat petunjuk benar-benar dibuka. Butir jebakan tidak pernah
+     * disebut, agar id-nya tidak bocor.
+     *
+     * @param list<ChallengeItem> $items
+     *
+     * @return list<array{id: int, item_id: ?int, sequence: int}>
+     */
+    private function hintRefs(ChallengeNode $node, array $items): array
+    {
+        $content = service('contentRepository');
+        $refs    = [];
+
+        foreach ($content->hintsFor($node->id) as $hint) {
+            $refs[] = ['id' => (int) $hint['id'], 'item_id' => null, 'sequence' => (int) $hint['sequence']];
+        }
+
+        foreach ($items as $item) {
+            if (! $this->expectsAnswer($item)) {
+                continue;
+            }
+
+            foreach ($content->hintsFor($node->id, $item->id) as $hint) {
+                $refs[] = ['id' => (int) $hint['id'], 'item_id' => $item->id, 'sequence' => (int) $hint['sequence']];
+            }
+        }
+
+        return $refs;
     }
 
     /** Benih pemilihan item: peserta yang sama mendapat butir sama pada pretest & posttest. */

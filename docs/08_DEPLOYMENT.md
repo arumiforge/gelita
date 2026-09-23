@@ -304,9 +304,9 @@ cp env .env  →  isi .env production
    ↓
 php spark key:generate
    ↓
-buat tabel session: php spark session:migration && php spark migrate
-   ↓
-php spark migrate                      (29 tabel)
+php spark migrate                      (34 migration: 29 tabel domain + ci_sessions;
+                                        tabel sesi sudah ada di migration 003000 —
+                                        JANGAN menjalankan php spark session:migration)
    ↓
 GELITA_ADMIN_PASSWORD='…' php spark db:seed DatabaseSeeder
    ↓
