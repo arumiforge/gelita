@@ -70,7 +70,7 @@ class Services extends BaseService
 
         if ($staffId > 0) {
             $staff = db_connect()->table('staff_users')
-                ->select('id, username, email, role, display_name, school_id, is_active, last_login_at')
+                ->select('id, username, email, role, display_name, school_id, is_active, must_change_password, last_login_at')
                 ->where('id', $staffId)
                 ->get()
                 ->getRow();

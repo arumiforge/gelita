@@ -9,15 +9,22 @@ class StaffUser extends Entity
     protected $datamap = [];
     protected $dates   = ['created_at', 'updated_at'];
     protected $casts   = [
-        'id'                 => 'int',
-        'school_id'          => '?int',
-        'is_active'          => 'boolean',
-        'failed_login_count' => 'int',
+        'id'                   => 'int',
+        'school_id'            => '?int',
+        'is_active'            => 'boolean',
+        'must_change_password' => 'boolean',
+        'failed_login_count'   => 'int',
     ];
 
     public function isAdmin(): bool
     {
         return $this->role === 'admin';
+    }
+
+    /** Sandi sementara dari admin (reset / akun baru) belum diganti pemiliknya. */
+    public function mustChangePassword(): bool
+    {
+        return (bool) $this->must_change_password;
     }
 
     public function verifyPassword(string $plain): bool

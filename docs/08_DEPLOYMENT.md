@@ -646,7 +646,7 @@ git clone → composer install --no-dev → .env → key:generate
    ↓
 izin (deploy / www-data), sudoers, /home/deploy/.gelita/
    ↓
-migrate lewat DSN gelita_migrate            (34 migration, 31 tabel termasuk ci_sessions;
+migrate lewat DSN gelita_migrate            (35 migration, 31 tabel termasuk ci_sessions;
                                               JANGAN php spark session:migration)
    ↓
 db:seed DatabaseSeeder → media:scan → bank:import (--dry-run lalu sungguhan) → content:verify
@@ -796,7 +796,7 @@ Sintaks `GELITA_ADMIN_PASSWORD='…' php spark …` di Revisi 2 adalah sintaks B
 ### Langkah terakhir (kedua jalur)
 
 1. **Ganti sandi admin.** Sandi awal pernah diketik di terminal. Masuk sebagai `admin`, buka **Ubah sandi** di kepala panel (`/admin/akun/sandi`), dan ganti dengan sandi baru minimal 12 karakter yang disimpan di pengelola sandi.
-2. Buat akun `guru` terpisah per guru dengan `school_id` terisi.
+2. Buat akun `guru` terpisah per guru dengan `school_id` terisi. Sandi awal yang Anda pilih wajib diganti guru saat pertama masuk; panel baru terbuka setelah itu.
 3. Jalankan [Verifikasi Setelah Deploy](#verifikasi-setelah-deploy).
 
 ### Deployment pembaruan
@@ -1421,6 +1421,7 @@ Pemantau uptime eksternal (bila dipakai) boleh memakai GET maupun HEAD ke `/`. H
 | Audio tidak berbunyi | status masih `draft` | `/admin/media/audio` → Setujui |
 | CSRF "action not allowed" | tab dibiarkan terbuka semalam | muat ulang halaman; `security.expires` 2 jam |
 | Anak keluar / pindah komputer | session berakhir, tab tertutup | masuk lagi di `/masuk`; progres tetap |
+| Staf selalu dikembalikan ke Ubah sandi | sandi sementara dari admin (reset / akun baru) belum diganti | ganti sandi di halaman itu; kewajiban hilang otomatis |
 | Anak lupa kata sandi | — | guru mereset di `/admin/peserta/{id}`; anak membuat sandi baru saat masuk |
 | Anak lupa nama pengguna | — | guru mencarinya di `/admin/peserta` berdasarkan nama & sekolah |
 | "Terlalu banyak percobaan" | 8 kali salah sandi | tunggu 5 menit, atau guru mereset sandi (reset juga membuka kunci) |
@@ -1431,7 +1432,7 @@ Pemantau uptime eksternal (bila dipakai) boleh memakai GET maupun HEAD ke `/`. H
 
 ### Keamanan operasional
 
-1. Ganti sandi admin bawaan **sebelum** aplikasi dipakai di sekolah (lihat [Langkah terakhir](#langkah-terakhir-kedua-jalur)). Setiap staf yang menerima sandi sementara dari reset segera menggantinya lewat **Ubah sandi**.
+1. Ganti sandi admin bawaan **sebelum** aplikasi dipakai di sekolah (lihat [Langkah terakhir](#langkah-terakhir-kedua-jalur)). Staf yang menerima sandi sementara (reset atau akun baru) dipaksa menggantinya lewat **Ubah sandi** saat masuk (`staff_users.must_change_password`).
 2. Buat akun `guru` terpisah untuk tiap guru, dengan `school_id` terisi. Jangan membagikan akun admin.
 3. Nonaktifkan akun guru yang tidak lagi terlibat lewat `/admin/staf` (tombol *Nonaktifkan*, `is_active = 0`); jangan hapus — audit log-nya masih diperlukan.
 4. Tinjau `/admin/tata-kelola/audit` secara berkala, terutama aksi `export` dan `delete_execute`.
@@ -1528,7 +1529,7 @@ Lingkungan uji:
 | 18 | `composer update --no-dev` di server | `composer.lock` menyimpang dari repositori | hanya di pengembangan |
 | 19 | isi `ci_sessions` ikut backup | IP mentah siswa tersalin ke dua lokasi selama 30 hari | hanya struktur tabel |
 | 20 | `.gitignore` disebut memuat `public/assets/uploads/` | tidak demikian | tahap 8 menambahkannya |
-| 21 | "ganti kata sandi admin lewat panel" | panel belum punya fitur ganti sandi staf | fitur **Ubah sandi** (`/admin/akun/sandi`, `AccountController`) ditambahkan setelah Revisi 3 |
+| 21 | "ganti kata sandi admin lewat panel" | panel belum punya fitur ganti sandi staf | fitur **Ubah sandi** (`/admin/akun/sandi`, `AccountController`) ditambahkan setelah Revisi 3; sejak migration `003400` sandi sementara dari admin wajib diganti |
 | 22 | "Delapan langkah verifikasi" | daftarnya berisi 10 butir (1, 2, 2a, 3–9) | 8 pemeriksaan otomatis + 10 uji manual, bernomor ulang |
 | 23 | `add_header` Nginx untuk semua respons | halaman aplikasi mengirim `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy` **dua kali** (filter `secureheaders` CodeIgniter juga mengirimnya) | `fastcgi_hide_header` untuk ketiganya |
 | 24 | pemeriksaan header dengan `curl -sI` | rute aplikasi hanya terdaftar untuk GET: `HEAD /` → 404, sehingga pemeriksaan tampak gagal | pemeriksaan memakai GET; setelah Revisi 3, HEAD dilayani rute GET beserta filternya (`HeadAsGetRouteCollection`) |

@@ -10,7 +10,7 @@
  * Sandi sementara hasil reset hanya ada di respons ini (tidak di flash, log,
  * atau audit) dan halaman dikirim dengan Cache-Control: no-store.
  *
- * @var list<array<string, mixed>>                         $rows      toSafeArray() + locked, last_login_at
+ * @var list<array<string, mixed>>                         $rows      toSafeArray() + locked, must_change, last_login_at
  * @var list<array<string, mixed>>                         $schools
  * @var array{staff: array<string, mixed>, password: string}|null $temporary
  */
@@ -80,7 +80,7 @@ $fields = static function (?array $staff, string $p) use ($schools, $roleNames, 
     <h2 id="temp-title" class="panel-title"><?= icon('key') ?> Sandi sementara untuk <?= esc($temporary['staff']['display_name']) ?></h2>
     <p class="muted">Nama pengguna: <code><?= esc($temporary['staff']['username']) ?></code></p>
     <p class="temp-password" aria-label="Sandi sementara"><?= esc($temporary['password']) ?></p>
-    <p><b>Sampaikan langsung kepada yang bersangkutan.</b> Sandi ini hanya ditampilkan sekali — setelah halaman ini ditutup, sandi tidak dapat dilihat lagi. Pemilik akun sebaiknya segera menggantinya lewat <b>Ubah sandi</b> di pojok kanan atas panel.</p>
+    <p><b>Sampaikan langsung kepada yang bersangkutan.</b> Sandi ini hanya ditampilkan sekali — setelah halaman ini ditutup, sandi tidak dapat dilihat lagi. Saat masuk dengan sandi ini, pemilik akun <b>wajib</b> menggantinya lebih dulu; panel baru terbuka setelah itu.</p>
     <a class="btn btn-primary" href="<?= base_url('admin/staf') ?>"><?= icon('check') ?> Sudah saya catat</a>
   </section>
 <?php endif ?>
@@ -99,6 +99,9 @@ $fields = static function (?array $staff, string $p) use ($schools, $roleNames, 
           <span class="badge"><?= esc($roleNames[$staff['role']] ?? $staff['role']) ?></span>
           <?php if ($staff['role'] === 'guru'): ?>
             <span class="badge is-muted"><?= esc($schoolNames[$staff['school_id']] ?? 'tanpa sekolah') ?></span>
+          <?php endif ?>
+          <?php if ($staff['must_change']): ?>
+            <span class="badge is-warn"><?= icon('key') ?> wajib ganti sandi</span>
           <?php endif ?>
           <?php if ($staff['locked']): ?>
             <span class="badge is-warn"><?= icon('lock') ?> terkunci</span>
@@ -158,7 +161,7 @@ $fields = static function (?array $staff, string $p) use ($schools, $roleNames, 
         <div class="field">
           <label for="new-password">Kata sandi awal <span class="req">*</span></label>
           <input type="password" id="new-password" name="password" required minlength="12" maxlength="72" autocomplete="new-password">
-          <p class="field-help">Minimal 12 karakter. Sampaikan langsung kepada pemilik akun, bukan lewat pesan grup.</p>
+          <p class="field-help">Minimal 12 karakter. Sampaikan langsung kepada pemilik akun, bukan lewat pesan grup. Pemilik akun wajib menggantinya saat pertama masuk.</p>
         </div>
         <div class="form-actions">
           <button class="btn btn-primary" type="submit"><?= icon('check') ?> Buat akun</button>

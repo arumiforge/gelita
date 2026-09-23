@@ -2,6 +2,7 @@
 
 namespace App\Controllers\Admin;
 
+use App\Filters\StaffAuthFilter;
 use App\Models\AuditLogModel;
 use App\Models\StaffUserModel;
 use CodeIgniter\HTTP\RedirectResponse;
@@ -14,16 +15,23 @@ use CodeIgniter\HTTP\RedirectResponse;
  * dihitung ke throttle login staf, dan bila akun sampai terkunci, sesi ini
  * diputus — sesi yang dibajak tidak dapat dipakai menebak sandi.
  *
+ * Sandi sementara dari admin (reset / akun baru) menyalakan
+ * `must_change_password`; StaffAuthFilter hanya membuka halaman ini sampai
+ * sandi diganti, lalu staf diarahkan ke dasbor.
+ *
  * Kata sandi tidak pernah masuk flash, `old()`, maupun `audit_logs`.
  */
 class AccountController extends BaseAdminController
 {
-    private const FORM = 'admin/akun/sandi';
+    private const FORM = StaffAuthFilter::PASSWORD_PAGE;
 
     public function passwordForm(): string
     {
+        $staff = service('staffContext');
+
         return $this->panel('admin/account/password', 'Ubah sandi', [
-            'username' => (string) (service('staffContext')->username ?? ''),
+            'username'   => (string) ($staff->username ?? ''),
+            'mustChange' => (int) ($staff->must_change_password ?? 0) === 1,
         ]);
     }
 
@@ -80,21 +88,30 @@ class AccountController extends BaseAdminController
             ]);
         }
 
+        $wasTemporary = $staff->mustChangePassword();
+
+        // setPassword() tanpa $mustChange juga menghapus kewajiban ganti sandi
         $staffModel->setPassword($staff->id, (string) $this->request->getPost('password'));
         $staffModel->update($staff->id, ['failed_login_count' => 0]);
 
         session()->regenerate(true);
-        $this->audit('staff_password_change', $staff->id);
+        $this->audit('staff_password_change', $staff->id, ['after_reset' => $wasTemporary]);
+
+        if ($wasTemporary) {
+            return $this->done('admin/dashboard', 'Kata sandi diperbarui. Panel kini dapat dipakai.');
+        }
 
         return $this->done(self::FORM, 'Kata sandi diperbarui. Pakai sandi baru saat masuk berikutnya.');
     }
 
-    private function audit(string $action, int $staffId): void
+    /** @param array<string, mixed> $metadata */
+    private function audit(string $action, int $staffId, array $metadata = []): void
     {
         model(AuditLogModel::class)->record($action, [
             'staff_user_id' => $staffId,
             'target_type'   => 'staff_user',
             'target_id'     => (string) $staffId,
+            'metadata'      => $metadata,
         ]);
     }
 }

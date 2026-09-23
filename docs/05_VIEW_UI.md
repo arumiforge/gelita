@@ -730,9 +730,9 @@ Menu yang tidak berhak diakses **tidak dirender** untuk guru. **Ubah sandi** (`/
 
 **`governance/audit.php`** — tabel `audit_logs`.
 
-**`staff/index.php`** — daftar akun, tambah, ubah role/sekolah, reset kata sandi, nonaktifkan. Kartu sandi sementara mengarahkan pemilik akun ke **Ubah sandi**.
+**`staff/index.php`** — daftar akun, tambah, ubah role/sekolah, reset kata sandi, nonaktifkan. Lencana *wajib ganti sandi* muncul pada akun yang sandinya masih sementara (akun baru atau hasil reset); kartu sandi sementara menjelaskan bahwa pemilik akun wajib menggantinya saat masuk.
 
-**`account/password.php`** — ganti sandi sendiri: sandi saat ini, sandi baru (12–72 karakter), ulangi. Kolom sandi tidak pernah diisi ulang; kolom nama pengguna tersembunyi tanpa `name` membantu pengelola sandi browser.
+**`account/password.php`** — ganti sandi sendiri: sandi saat ini, sandi baru (12–72 karakter), ulangi. Bila `$mustChange` (sandi sementara dari admin), pemberitahuan `alert-info` menjelaskan bahwa halaman panel lain baru terbuka setelah sandi disimpan. Kolom sandi tidak pernah diisi ulang; kolom nama pengguna tersembunyi tanpa `name` membantu pengelola sandi browser.
 
 ---
 

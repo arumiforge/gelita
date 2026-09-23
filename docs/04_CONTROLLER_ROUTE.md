@@ -589,10 +589,18 @@ Aturan `changePassword()`:
 1. Validasi `current_password: required`; `password: required|min_length[12]|max_length[72]|differs[current_password]` (sama dengan pembuatan akun di `StaffController::store()`; 72 = batas bcrypt); `password_confirm: matches[password]`.
 2. Sandi saat ini salah → `registerFailedLogin()`, audit `staff_password_change_failed`, kembali dengan "Kata sandi saat ini salah.".
 3. Bila salah tebak itu mengunci akun (throttle staf: 5 kali → 15 menit), kunci sesi staf dihapus dan sesi di-`regenerate(true)`, lalu redirect ke `/admin/login` dengan pesan penguncian. Sesi yang dibajak tidak dapat dipakai menebak sandi.
-4. Berhasil → `setPassword()`, `failed_login_count = 0`, `session()->regenerate(true)`, audit `staff_password_change`, kembali dengan pesan berhasil.
-5. Kata sandi tidak pernah masuk flash, `old()`, maupun `audit_logs` (metadata audit kosong).
+4. Berhasil → `setPassword()` (sekaligus `must_change_password = 0`), `failed_login_count = 0`, `session()->regenerate(true)`, audit `staff_password_change` dengan metadata `after_reset`. Bila sebelumnya wajib ganti, redirect ke `/admin/dashboard`; selain itu kembali ke form dengan pesan berhasil.
+5. Kata sandi tidak pernah masuk flash, `old()`, maupun `audit_logs`.
 
-Tautan **Ubah sandi** ada di kepala setiap halaman panel. Sandi sementara hasil reset di `/admin/staf` sebaiknya segera diganti pemiliknya lewat halaman ini.
+Tautan **Ubah sandi** ada di kepala setiap halaman panel.
+
+**Wajib ganti sandi.** Sandi yang diketahui admin menyalakan `staff_users.must_change_password` (migration `003400`): `StaffController::resetPassword()` memanggil `setPassword($id, $temporary, true)`, dan `StaffController::store()` menyimpan akun baru dengan nilai 1. Selama bernilai 1:
+
+* `AuthController::login()` mengarahkan ke `/admin/akun/sandi` (bukan `redirect_to`).
+* `StaffAuthFilter` hanya membuka `/admin/akun/sandi`. Halaman lain dialihkan ke sana, `/api/admin/*` membalas `403 PASSWORD_CHANGE_REQUIRED`. Nilai dibaca dari database setiap request, sehingga reset saat staf sedang login langsung berlaku.
+* Form menampilkan pemberitahuan sandi sementara. `/admin/logout` tetap terbuka (di luar grup `staffAuth`).
+
+Akun `admin` hasil seeder tidak wajib ganti: sandinya dipilih operator lewat `GELITA_ADMIN_PASSWORD`.
 
 ### `Admin\DashboardController` & `AnalyticsController`
 
@@ -713,6 +721,7 @@ Penghapusan tidak pernah senyap. Tidak ada endpoint yang menghapus data peneliti
 * Throttle: 5 kegagalan → `locked_until = NOW + 15 menit`.
 * Semua percobaan login (berhasil dan gagal) masuk `audit_logs` dengan `ip_hash`, bukan IP mentah.
 * Staf mengganti sandinya sendiri di `/admin/akun/sandi` (lihat `AccountController`). Salah tebak sandi saat ini ikut throttle yang sama.
+* Sandi sementara dari admin (reset atau akun baru) wajib diganti sebelum panel terbuka — padanan `/ganti-sandi` siswa.
 * Tidak ada "remember me" — data penelitian tidak layak dibiarkan terbuka di komputer bersama sekolah.
 
 ---
@@ -810,6 +819,7 @@ Di production, `SERVER_ERROR` tidak pernah menyertakan pesan exception, kelas, a
 13. Form login siswa dan staf selalu memberi pesan identik untuk nama pengguna tidak ada dan sandi salah.
 14. Guru hanya dapat mereset sandi siswa di sekolahnya; setiap reset tercatat di `audit_logs`.
 15. Request HEAD dilayani rute GET dengan handler **dan** filter yang sama (`App\Libraries\HeadAsGetRouteCollection`, didaftarkan di `Config\Services::routes()`). Tanpa itu CodeIgniter menjawab HEAD dengan 404; memetakan handler tanpa filter akan membuka halaman staf tanpa login. Filter yang punya efek samping khusus GET (simpan tujuan login, `?lang=`) memeriksa `getMethod() === 'GET'`, sehingga tidak berjalan untuk HEAD.
+16. Sandi staf yang diketahui admin (sandi sementara hasil reset, sandi awal akun baru) wajib diganti pemiliknya sebelum halaman panel lain dan `/api/admin/*` dapat dipakai (`staff_users.must_change_password`, ditegakkan `StaffAuthFilter`).
 
 ---
 

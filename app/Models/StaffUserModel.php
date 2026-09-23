@@ -13,7 +13,7 @@ class StaffUserModel extends Model
     protected $useTimestamps = true;
     protected $dateFormat    = 'datetime';
     protected $allowedFields = [
-        'username', 'email', 'password_hash', 'role', 'display_name', 'school_id',
+        'username', 'email', 'password_hash', 'must_change_password', 'role', 'display_name', 'school_id',
         'is_active', 'failed_login_count', 'locked_until', 'last_login_at',
     ];
     protected $validationRules = [
@@ -66,9 +66,16 @@ class StaffUserModel extends Model
         return $this->where('is_active', 1)->orderBy('display_name', 'ASC')->findAll();
     }
 
-    /** password_hash tidak pernah diisi langsung dari input. */
-    public function setPassword(int $id, string $plain): bool
+    /**
+     * password_hash tidak pernah diisi langsung dari input.
+     * $mustChange = true untuk sandi yang diketahui admin (sandi sementara hasil
+     * reset); ganti sandi oleh pemiliknya sendiri selalu menghapus kewajiban itu.
+     */
+    public function setPassword(int $id, string $plain, bool $mustChange = false): bool
     {
-        return (bool) $this->update($id, ['password_hash' => password_hash($plain, PASSWORD_DEFAULT)]);
+        return (bool) $this->update($id, [
+            'password_hash'        => password_hash($plain, PASSWORD_DEFAULT),
+            'must_change_password' => $mustChange ? 1 : 0,
+        ]);
     }
 }
