@@ -77,13 +77,15 @@ class BankImport extends BaseCommand
             $summary = $result['summary'];
 
             CLI::write(sprintf(
-                'Workbook: %d node, %d bacaan, %d butir, %d opsi, %d petunjuk, %d pengecoh.',
+                'Workbook: %d node, %d bacaan, %d butir, %d opsi, %d petunjuk, %d pengecoh, %d halaman pustaka, %d media pustaka.',
                 $summary['nodes'],
                 $summary['passages'],
                 $summary['items'],
                 $summary['options'],
                 $summary['hints'],
                 $summary['distractors'],
+                $summary['library'] ?? 0,
+                $summary['library_media'] ?? 0,
             ));
 
             $rows = [];

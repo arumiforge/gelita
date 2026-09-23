@@ -20,6 +20,9 @@ $labels = [
     'sources'     => 'Sumber',
     'hints'       => 'Petunjuk',
     'distractors' => 'Pengecoh',
+    'library'       => 'Halaman pustaka',
+    'library_media' => 'Media pustaka',
+    'media_slots'   => 'Slot media baru',
 ];
 $issueTable = static function (array $rows, string $level): string {
     ob_start(); ?>
@@ -44,7 +47,7 @@ $issueTable = static function (array $rows, string $level): string {
 
 <?= $this->section('content') ?>
 <?php ob_start() ?>
-<a class="btn btn-ghost btn-sm" href="<?= base_url('admin/konten/impor-bank/templat') ?>"><?= icon('download') ?> Unduh templat kosong</a>
+<a class="btn btn-ghost btn-sm" href="<?= base_url('admin/konten/impor-bank/templat') ?>"><?= icon('download') ?> Unduh templat berpanduan</a>
 <?php $actions = ob_get_clean() ?>
 <?= component('partials/admin-head', [
     'title'   => 'Impor bank soal',
@@ -82,7 +85,7 @@ $issueTable = static function (array $rows, string $level): string {
   <div class="field">
     <label for="file"><?= icon('upload') ?> Workbook bank soal <span class="req">*</span></label>
     <input type="file" id="file" name="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required>
-    <p class="field-help">Format .xlsx sesuai templat, maksimal 20 MB. Sheet: nodes, passages, items, options, pieces, sources, hints, distractors.</p>
+    <p class="field-help">Format .xlsx sesuai templat, maksimal 20 MB. Sheet: nodes, distractors, passages, items, options, pieces, sources, hints, serta (opsional) library dan library_media untuk Pustaka Kedu. Sheet PETUNJUK, KAMUS_KOLOM, dan lampiran lain diabaikan.</p>
   </div>
   <div class="form-actions">
     <button class="btn btn-primary" type="submit"><?= icon('eye') ?> Pratinjau</button>
@@ -106,7 +109,7 @@ $issueTable = static function (array $rows, string $level): string {
     </div>
 
     <div class="summary-tiles">
-      <?php foreach (['nodes', 'passages', 'items', 'options', 'hints', 'distractors'] as $key): ?>
+      <?php foreach (['nodes', 'passages', 'items', 'options', 'hints', 'distractors', 'library', 'library_media'] as $key): ?>
         <?= component('components/stat-tile', ['label' => $labels[$key], 'value' => fmt_num($summary[$key] ?? 0)]) ?>
       <?php endforeach ?>
     </div>

@@ -1054,6 +1054,7 @@ body.is-challenge .app { padding-bottom: var(--sp-4); }
 .book-gallery > .book-figure:first-child img { aspect-ratio: 3 / 2; }
 .book-figure figcaption { padding: var(--sp-2) var(--sp-3); font-size: var(--step--1); line-height: 1.45; }
 .book-credit { display: block; margin-top: 2px; color: rgba(74, 50, 24, .7); font-size: .78rem; }
+.book-credit a { color: inherit; text-decoration: underline dotted; }
 
 .book-zoom { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; }
 .book-zoom:focus-visible { outline: 3px solid var(--navy-800); outline-offset: -3px; }
