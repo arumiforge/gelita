@@ -28,7 +28,7 @@ $fields = [
 <?= component('partials/content-nav', ['level' => $level, 'active' => 'level']) ?>
 <?= $this->include('partials/flash') ?>
 
-<form method="post" action="<?= base_url('admin/konten/level/' . $level->id) ?>" class="form-section">
+<form method="post" action="<?= base_url('admin/konten/level/' . $level->id) ?>" class="form-section" enctype="multipart/form-data">
   <?= csrf_field() ?>
   <h2>Teks wilayah</h2>
 
@@ -65,6 +65,25 @@ $fields = [
     </div>
     <label class="check"><input type="checkbox" name="is_active" value="1" <?= $level->is_active ? 'checked' : '' ?>> Wilayah aktif</label>
   </div>
+
+  <fieldset class="form-section">
+    <legend class="panel-subtitle">Gambar wilayah</legend>
+    <?= component('components/media-datalist', ['types' => ['image']]) ?>
+    <div class="media-grid">
+      <?= component('components/media-field', [
+          'id' => 'lvl-map', 'label' => 'Peta wilayah (pos tantangan)', 'keyName' => 'media_map_key', 'fileName' => 'media_map_file',
+          'mediaId' => $level->map_media_id, 'defaultKey' => 'map.region.' . $level->code, 'size' => '1400 × 900 px',
+      ]) ?>
+      <?= component('components/media-field', [
+          'id' => 'lvl-bg', 'label' => 'Latar wilayah', 'keyName' => 'media_bg_key', 'fileName' => 'media_bg_file',
+          'mediaId' => $level->background_media_id, 'defaultKey' => 'bg.' . $level->code . '.region', 'size' => 'wajib 1920 × 1080 px',
+      ]) ?>
+      <?= component('components/media-field', [
+          'id' => 'lvl-badge', 'label' => 'Lencana wilayah', 'keyName' => 'media_badge_key', 'fileName' => 'media_badge_file',
+          'mediaId' => $level->badge_media_id, 'defaultKey' => 'reward.badge.' . $level->code, 'size' => '320 × 320 px',
+      ]) ?>
+    </div>
+  </fieldset>
 
   <div class="form-actions">
     <button class="btn btn-primary" type="submit"><?= icon('check') ?> Simpan wilayah</button>

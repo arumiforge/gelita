@@ -7,6 +7,7 @@
  * siswa tanpa audio (atau dengan audio dimatikan) membaca teks yang sama.
  *
  * @var list<array<string, mixed>> $rows       audio_assets + asset_key, storage_path, media_active
+ * @var array<int, list<string>>   $usage      audio_assets.id → slide dialog / kartu misi pemakainya
  * @var list<string>               $characters
  * @var list<string>               $locales
  */
@@ -45,7 +46,7 @@ $pending        = count(array_filter($rows, static fn (array $row): bool => $row
       <div class="field">
         <label for="context_code">Konteks <span class="req">*</span></label>
         <input type="text" id="context_code" name="context_code" required maxlength="80" placeholder="intro.1" spellcheck="false">
-        <p class="field-help">Tempat audio diputar, mis. intro.1, level.2.open.3, mission.tmg-2.</p>
+        <p class="field-help">Label tempat audio diputar, mis. intro.1, level.2.open.3, mission.tmg-2. Audio diputar setelah dipasang ke slide di editor Dialog atau ke kartu misi di editor Tantangan, lalu disetujui.</p>
       </div>
       <div class="field">
         <label for="locale">Bahasa <span class="req">*</span></label>
@@ -107,6 +108,15 @@ $pending        = count(array_filter($rows, static fn (array $row): bool => $row
               return '<code>' . esc($row['asset_key']) . '</code><span class="cell-sub">' . esc($row['context_code']) . ' · ' . esc(strtoupper((string) $row['locale'])) . ' · ' . esc($who) . '</span>';
           }],
           'transcript' => ['label' => 'Transkrip', 'render' => static fn (array $row): string => '<details class="row-details"><summary><span class="cell-clip">' . esc(mb_strimwidth((string) $row['transcript'], 0, 60, '…')) . '</span></summary><p>' . esc($row['transcript']) . '</p></details>'],
+          'usage' => ['label' => 'Dipakai di', 'render' => static function (array $row) use ($usage): string {
+              $where = $usage[(int) $row['id']] ?? [];
+
+              if ($where === []) {
+                  return '<span class="muted">belum dipasang</span><span class="cell-sub">pasang di editor Dialog atau Tantangan</span>';
+              }
+
+              return implode('', array_map(static fn (string $label): string => '<span class="cell-sub">' . esc($label) . '</span>', $where));
+          }],
           'duration_ms' => ['label' => 'Durasi', 'format' => 'ms'],
           'approval_status' => ['label' => 'Status', 'render' => static function (array $row) use ($statusNames): string {
               $html = '<span class="badge is-' . esc($row['approval_status'], 'attr') . '">' . esc($statusNames[$row['approval_status']] ?? $row['approval_status']) . '</span>';

@@ -133,7 +133,7 @@ label, .label { font-weight: 700; }
 .panel-parchment .req { color: var(--bad-ink); }
 
 input[type="text"], input[type="password"], input[type="email"], input[type="number"],
-input[type="search"], input[type="date"], input[type="file"], select, textarea {
+input[type="search"], input[type="url"], input[type="date"], input[type="file"], select, textarea {
   width: 100%;
   min-height: var(--tap);
   padding: var(--sp-2) var(--sp-3);

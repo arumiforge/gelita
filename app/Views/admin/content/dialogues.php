@@ -1,31 +1,44 @@
 <?php
 /**
- * Dialog pembuka wilayah — `/admin/konten/dialog/{levelId}` → ContentController::dialogues
+ * Dialog — `/admin/konten/dialog/{levelId}` → ContentController::dialogues
  *
  * Slide percakapan Jaka & Mbah Kedu yang tampil sebelum peta wilayah
- * (context_code `level_open`). Teks Indonesia dan English wajib; judul slide
- * opsional. Slide yang dinonaktifkan hilang dari daftar ini dan dari permainan.
+ * (context_code `level_open`), atau cerita pembuka permainan (`intro`) bila
+ * levelId = 0. Teks Indonesia dan English wajib; judul slide opsional.
+ * Slide nonaktif tetap tampil di sini (bertanda) agar dapat diaktifkan lagi.
+ * Audio narasi dipilih dari aset audio; pemain baru mendengarnya setelah
+ * audio itu disetujui di halaman Audio.
  *
- * @var App\Entities\Level        $level
+ * @var App\Entities\Level|null   $level  null = cerita pembuka
  * @var list<array<string, mixed>> $dialogues
  * @var list<string>               $characters
  */
-$characterNames = ['jaka' => 'Jaka', 'mbah_kedu' => 'Mbah Kedu'];
+$characterNames = ['jaka' => 'Jaka', 'mbah_kedu' => 'Mbah Kedu', 'narator' => 'Narator'];
+$levelId        = $level?->id ?? 0;
 $rows   = $dialogues;
 $rows[] = null;
 ?>
 <?= $this->extend('layouts/admin') ?>
 
 <?= $this->section('content') ?>
-<?= component('partials/admin-head', [
-    'title'   => 'Dialog wilayah',
-    'eyebrow' => 'Wilayah ' . $level->sequence . ' · ' . $level->text('name', 'id'),
-    'lead'    => 'Percakapan pembuka yang tampil saat siswa masuk wilayah ini, satu slide per baris.',
-]) ?>
-<?= component('partials/content-nav', ['level' => $level, 'active' => 'dialogues']) ?>
+<?php if ($level !== null): ?>
+  <?= component('partials/admin-head', [
+      'title'   => 'Dialog wilayah',
+      'eyebrow' => 'Wilayah ' . $level->sequence . ' · ' . $level->text('name', 'id'),
+      'lead'    => 'Percakapan pembuka yang tampil saat siswa masuk wilayah ini, satu slide per baris.',
+  ]) ?>
+  <?= component('partials/content-nav', ['level' => $level, 'active' => 'dialogues']) ?>
+<?php else: ?>
+  <?= component('partials/admin-head', [
+      'title'   => 'Cerita pembuka',
+      'eyebrow' => 'Konten umum',
+      'lead'    => 'Slide cerita yang dibaca siswa sebelum membuka peta Kedu pertama kali.',
+      'actions' => '<a class="btn btn-quiet btn-sm" href="' . base_url('admin/konten') . '">' . icon('left') . ' Semua konten</a>',
+  ]) ?>
+<?php endif ?>
 <?= $this->include('partials/flash') ?>
 
-<form method="post" action="<?= base_url('admin/konten/dialog/' . $level->id) ?>" class="stack">
+<form method="post" action="<?= base_url('admin/konten/dialog/' . $levelId) ?>" class="stack">
   <?= csrf_field() ?>
 
   <?php foreach ($rows as $index => $row): ?>
@@ -34,11 +47,11 @@ $rows[] = null;
       <legend>
         <?= icon($isNew ? 'sparkle' : 'message') ?>
         <?= $isNew ? 'Slide baru' : 'Slide ' . esc($row['sequence']) . ' · ' . esc($characterNames[$who] ?? $who) ?>
+        <?php if (! $isNew && empty($row['is_active'])): ?><span class="badge is-inactive">nonaktif</span><?php endif ?>
       </legend>
       <?php if (! $isNew): ?>
         <input type="hidden" name="dialogues[<?= $index ?>][id]" value="<?= esc($row['id'], 'attr') ?>">
       <?php endif ?>
-      <input type="hidden" name="dialogues[<?= $index ?>][context_code]" value="<?= esc($isNew ? 'level_open' : $row['context_code'], 'attr') ?>">
 
       <div class="form-grid">
         <div class="field">
@@ -80,6 +93,17 @@ $rows[] = null;
         <?php if ($isNew): ?>
           <p class="field-help">Biarkan ucapan Indonesia kosong bila tidak menambah slide. Bila diisi, ucapan English juga wajib.</p>
         <?php endif ?>
+      </div>
+
+      <div class="form-grid">
+        <?= component('components/audio-select', [
+            'id' => $p . '-audio-id', 'name' => 'dialogues[' . $index . '][audio_id_asset_id]', 'label' => 'Audio narasi (Indonesia)',
+            'audioId' => $isNew ? null : $row['audio_id_asset_id'], 'locale' => 'id',
+        ]) ?>
+        <?= component('components/audio-select', [
+            'id' => $p . '-audio-en', 'name' => 'dialogues[' . $index . '][audio_en_asset_id]', 'label' => 'Audio narasi (English)',
+            'audioId' => $isNew ? null : $row['audio_en_asset_id'], 'locale' => 'en',
+        ]) ?>
       </div>
 
       <div class="check-row">
