@@ -332,14 +332,18 @@ A. Menekan tombol keluar
      event 'challenge_abandoned'
      Jawaban yang sudah diperiksa TETAP tersimpan di item_responses.
 
-B. Menutup tab / koneksi putus
-     beforeunload → sendBeacon flush event
+B. Menutup tab / memuat ulang / koneksi putus
+     pagehide → event 'challenge_abandoned' { via:'pagehide', attempt_open:true }
+     lalu flush antrean lewat sendBeacon (tanpa dialog bawaan browser)
      attempt tetap 'in_progress'
      Saat peserta kembali ke node itu, openNode() menemukan attempt in_progress
-     dan melanjutkannya, bukan membuat attempt baru.
+     dan melanjutkannya, bukan membuat attempt baru; client mencatat
+     'challenge_opened' { resumed:true }.
      RetentionService menandai attempt in_progress yang tidak tersentuh
      lebih dari 24 jam menjadi 'abandoned'.
 ```
+
+`challenge_abandoned` punya tiga sumber: tombol Keluar (A, server), RetentionService (server), dan `pagehide` dari browser (B) — yang terakhir hanya berarti halaman ditinggalkan, attempt-nya masih dapat dilanjutkan. Karena itu **tingkat ditinggalkan dihitung dari `challenge_attempts.status = 'abandoned'`**, bukan dari jumlah event; di sheet Raw Events ketiganya dibedakan lewat `payload.via` dan `client_event_id` (event server berawalan `srv-`).
 
 ---
 
@@ -368,10 +372,16 @@ B. Menutup tab / koneksi putus
      audio_src() mengembalikan path hanya bila approval_status = 'approved'
      bila NULL → hanya kotak transkrip yang dirender
 2. Peserta menekan Putar (tidak ada autoplay sebelum ada interaksi)
-3. audio.js mencatat playIndex, mengakumulasi listenedMs
-4. Pada play / pause / replay / ended:
-     POST /api/audio-events { audio_asset_id, action, play_index,
-                              listened_ms, completed, client_event_id }
+3. audio.js mengakumulasi listenedMs dari waktu putar sungguhan
+4. Pada play (mulai dari awal) / pause / replay / ended:
+     POST /api/audio-events { events: [{ audio_asset_id, action, play_index,
+                              listened_ms, completed, occurred_at,
+                              client_event_id, attempt_id? }] }
+     Melanjutkan dari jeda tidak dikirim sebagai 'play' baru (masih pemutaran
+     yang sama); waktu dengarnya terbawa ke pause/complete berikutnya.
+     play_index yang disimpan dihitung server (nextPlayIndex): play/replay
+     membuka pemutaran ke-n berikutnya, pause/complete memakai pemutaran
+     berjalan — play_index dari client diabaikan.
 5. AudioApiController::ingest → EventService::recordAudio() — satu transaction,
    idempotent terhadap client_event_id (kiriman ulang → duplicate):
      insert audio_usage_events
@@ -682,7 +692,7 @@ Nomor potongan puzzle gambar di dokumen bank soal ditulis mulai 1 (`[1..9]`); im
 | 4 | Challenge Summary | kode sesi, wilayah, node, jenis, varian, attempt, status, item, benar awal, benar akhir, tepat sejak awal %, ketepatan akhir %, pemeriksaan, petunjuk, perubahan jawaban, audio, independence, skor, bintang, scoring_version |
 | 5 | Item Responses | kode sesi, node, item_key, interaction_type, indikator, jawaban pertama, jawaban akhir, kunci**, benar awal, benar akhir, perubahan, petunjuk, klik salah, durasi |
 | 6 | Raw Events | event_uuid, kode sesi, kode peserta, wilayah, node, attempt, item, jenis event, urutan, waktu client, waktu server, payload |
-| 7 | Audio Usage | kode sesi, aset audio, konteks, karakter, bahasa, aksi, indeks putar, listened_ms, selesai, waktu |
+| 7 | Audio Usage | kode sesi, aset audio, konteks, karakter, bahasa, aksi, indeks putar (pemutaran ke-n, dihitung server), listened_ms, selesai, waktu |
 | 8 | Indicators | kode peserta, indikator, bukti, benar, rasio penguasaan, rata durasi |
 | 9 | Demographic Summary | agregat per jenis kelamin, kelas, sekolah, provinsi, fase |
 | 10 | Feedback | kode peserta, fase, bintang, empat jawaban terbuka, waktu |

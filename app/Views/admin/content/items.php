@@ -5,9 +5,10 @@
  *
  * Form berubah sesuai `interaction_type`: panduan bentuk answer_key_json dan
  * config_json untuk jenis yang dipilih ditampilkan lewat CSS :has() (tanpa
- * JavaScript). content-editor.js (tahap 6) menggantinya dengan editor terpandu
- * — editor opsi, kalimat ___, verdict, dua sumber, potongan urutan, dan
- * pemilih koordinat objek — yang tetap menulis ke dua kolom JSON yang sama.
+ * JavaScript). admin/content-editor.js menambah editor terpandu — kalimat ___,
+ * verdict, dua sumber, potongan urutan, dan pemilih koordinat objek (dengan
+ * gambar adegan node dari data-scene) — yang tetap menulis ke dua kolom JSON
+ * yang sama; data-verdicts membatasi kunci verdict pada verdict_options node.
  *
  * @var App\Entities\ChallengeItem|null       $item      null = butir baru
  * @var App\Entities\ChallengeNode            $node
@@ -26,13 +27,15 @@ $guides = [
     'fill_blank_bank'            => ['Rumpang dengan bank kata', 'Tulis kalimat dengan penanda ___ di kolom pertanyaan. Kata jawaban ikut masuk bank kata bersama pengecoh node.', '{"text_id": "kopi", "text_en": "coffee"}', ''],
     'fill_blank_free'            => ['Rumpang isian bebas', 'Tulis kalimat dengan penanda ___. Semua jawaban yang diterima, per bahasa.', '{"accept_id": ["Magelang"], "accept_en": ["Magelang"], "case_sensitive": false}', ''],
     'verdict_card'               => ['Kartu pernyataan', 'Kunci verdict harus salah satu dari verdict_options node: ' . $verdicts . '. Dua sumber (opsional) ditulis di config_json.', '{"verdict": "benar"}', '{"sources": [{"label_id": "Sumber A", "label_en": "Source A", "kind": "official", "text_id": "…", "text_en": "…"}, {"label_id": "Sumber B", "label_en": "Source B", "kind": "anonymous", "text_id": "…", "text_en": "…"}]}'],
-    'verdict_reason'             => ['Kartu pernyataan beralasan', 'Seperti kartu pernyataan; siswa juga menulis alasan. Alasan tidak dinilai otomatis — contoh alasan untuk rubrik guru.', '{"verdict": "pendapat", "reason_example_id": "…", "reason_example_en": "…"}', ''],
+    'verdict_reason'             => ['Kartu pernyataan beralasan', 'Seperti kartu pernyataan; siswa juga menulis alasan. Alasan tidak dinilai otomatis — contoh alasan untuk rubrik guru.', '{"verdict": "pendapat", "sample_reason_id": "…", "sample_reason_en": "…"}', ''],
     'find_object'                => ['Cari objek', 'Posisi dalam persen terhadap gambar adegan. Objek jebakan (decoy: true) wajib punya wrong_feedback dan tidak dinilai.', '{"target": true}', '{"x": 18, "y": 62, "w": 13, "decoy": false, "wrong_feedback_id": "…", "wrong_feedback_en": "…"}'],
     'puzzle_arrange'             => ['Puzzle gambar', 'Pilih gambar lewat media butir; ukuran kisi di config.', '{"order": [0,1,2,3,4,5,6,7,8]}', '{"grid": 3}'],
     'ordering'                   => ['Urutkan potongan', 'Urutan di answer_key_json adalah kunci; server mengacak ulang saat dikirim ke siswa.', '{"order": ["c", "a", "d", "b"]}', '{"pieces": [{"key": "a", "text_id": "…", "text_en": "…"}]}'],
 ];
 ?>
-<form method="post" action="<?= esc($action, 'attr') ?>" class="form item-form">
+<form method="post" action="<?= esc($action, 'attr') ?>" class="form item-form"
+      data-verdicts="<?= esc(json_encode($node->verdictOptions()), 'attr') ?>"
+      <?= $node->scene_media_id && media_exists($node->scene_media_id) ? 'data-scene="' . esc(media_src($node->scene_media_id), 'attr') . '"' : '' ?>>
   <?= csrf_field() ?>
 
   <div class="form-grid">

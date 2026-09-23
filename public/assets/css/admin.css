@@ -386,6 +386,114 @@ details[open] > summary.panel-title::after { content: "−"; }
 .timeline-time { font-family: var(--font-mono); font-size: .85em; white-space: nowrap; }
 
 /* ---------- Responsif ---------- */
+/* ---------- Perilaku JavaScript (tahap 6) ----------
+   Kelas yang hanya dipasang admin/*.js. Tanpa JavaScript tidak ada yang
+   bergantung pada aturan ini. */
+
+/* Chart ECharts */
+.chart-host { width: 100%; height: 260px; }
+.admin-chart.is-lg .chart-host { height: 320px; }
+.chart-canvas.is-loading { opacity: .6; transition: opacity .2s; }
+.admin-main.is-refreshing .chart-canvas,
+.admin-main.is-refreshing .kpi-grid,
+.admin-main.is-refreshing .table-wrap { opacity: .55; transition: opacity .15s; }
+
+/* Tabel: urut kolom & saring baris */
+.th-sort {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: inherit;
+  cursor: pointer;
+}
+.th-sort-icon::after { content: "↕"; color: var(--ink-dim); font-size: .85em; }
+th[aria-sort="ascending"] .th-sort-icon::after { content: "↑"; color: var(--gold-300); }
+th[aria-sort="descending"] .th-sort-icon::after { content: "↓"; color: var(--gold-300); }
+.table-filter { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-3); margin-bottom: var(--sp-2); }
+.table-filter input[type="search"] { max-width: 320px; min-height: 36px; }
+.table-filter-count { color: var(--ink-dim); font-size: var(--step--1); }
+.data-table tr.is-selected td { outline: 2px solid var(--gold-500); outline-offset: -2px; }
+.data-table tr.is-selected td.is-num { color: var(--gold-300); font-weight: 700; }
+
+/* Editor konten terpandu */
+.item-form.is-guided .json-field { display: none; }
+.item-form.is-guided.show-json .json-field { display: grid; }
+.json-toggle-row { display: flex; justify-content: flex-end; }
+.guided-editor { display: grid; gap: var(--sp-3); padding: var(--sp-4); border: 1px solid var(--line); border-radius: var(--radius); background: rgba(223, 192, 135, .04); }
+.guided-editor:empty { display: none; }
+.editor-errors ul { margin: var(--sp-1) 0 0; padding-left: var(--sp-5); }
+.item-preview {
+  display: grid;
+  gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-4);
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius);
+}
+.preview-prompt { margin: 0; font-size: var(--step-0); line-height: 1.9; }
+.preview-blank {
+  display: inline-block;
+  min-width: 64px;
+  margin: 0 var(--sp-1);
+  padding: 0 var(--sp-2);
+  border: 2px dashed var(--gold-500);
+  border-radius: var(--radius);
+  color: var(--gold-300);
+  text-align: center;
+}
+.preview-choices { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+.preview-choices .chip.is-key { border-color: var(--ok); color: var(--ok); }
+.preview-choices .chip.is-key::before { content: "✓ "; }
+.preview-sources { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-2); }
+.preview-sources blockquote { margin: 0; padding: var(--sp-2); border: 1px solid var(--line); border-radius: var(--radius); font-size: var(--step--1); }
+.preview-sources cite { display: block; color: var(--gold-300); font-style: normal; font-weight: 700; }
+.preview-pieces { margin: 0; padding-left: var(--sp-5); }
+.source-editor { display: grid; gap: var(--sp-3); }
+
+.piece-editor { display: grid; gap: var(--sp-2); margin: 0; padding: 0; list-style: none; }
+.piece-editor li { display: grid; grid-template-columns: 32px 1fr 1fr auto; align-items: center; gap: var(--sp-2); }
+.piece-moves { display: flex; gap: var(--sp-1); }
+.bilingual.has-remove { grid-template-columns: 1fr 1fr auto; align-items: center; }
+
+/* Pemilih koordinat objek `cari` — rasio sama dengan .hunt-scene (16:9) */
+.object-picker { display: grid; gap: var(--sp-2); }
+.picker-stage {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  max-width: 720px;
+  overflow: hidden;
+  border: 2px solid var(--gold-600);
+  border-radius: var(--radius);
+  background: var(--navy-700);
+  cursor: crosshair;
+  touch-action: none;
+  user-select: none;
+}
+.picker-stage.is-drawn { background: linear-gradient(160deg, var(--navy-600), var(--navy-800)); }
+.picker-stage img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+.picker-marker {
+  position: absolute;
+  aspect-ratio: 1;
+  min-width: 12px;
+  padding: 0;
+  border: 3px solid var(--gold-300);
+  border-radius: 50%;
+  background: rgba(223, 192, 135, .25);
+  box-shadow: 0 0 0 2px var(--navy-900);
+  cursor: grab;
+}
+.picker-controls { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-4); }
+.picker-controls input[type="range"] { width: 180px; vertical-align: middle; }
+.picker-readout { color: var(--gold-300); font-size: var(--step--1); }
+
+/* Unggah media */
+.upload-box.is-dragover { border-color: var(--gold-300); background: rgba(223, 192, 135, .08); }
+.upload-info { margin: 0; }
+
 @media (max-width: 1024px) {
   .chart-grid { grid-template-columns: 1fr; }
 }

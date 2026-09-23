@@ -61,6 +61,8 @@ trait GameProgress
                 'map_x'           => $level->map_x,
                 'map_y'           => $level->map_y,
                 'map_media'       => media_src($level->map_media_id),
+                // latar wilayah untuk dipra-muat peta (map.js); null bila belum diunggah
+                'background'      => media_exists($level->background_media_id) ? media_src($level->background_media_id) : null,
             ];
         }
 

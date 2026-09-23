@@ -76,6 +76,59 @@ if (! function_exists('asset_url_versioned')) {
     }
 }
 
+if (! function_exists('session_tag')) {
+    /**
+     * Penanda buram sesi permainan untuk antrean event offline di browser.
+     *
+     * HMAC atas game_session_id — tidak dapat dibalik menjadi id sesi, tetapi
+     * stabil selama sesi itu. JavaScript hanya mengirim ulang event yang
+     * tandanya sama dengan sesi yang sedang berjalan, sehingga event siswa A
+     * tidak pernah masuk ke sesi siswa B di komputer kelas yang sama.
+     */
+    function session_tag(?int $gameSessionId): ?string
+    {
+        if ($gameSessionId === null || $gameSessionId <= 0) {
+            return null;
+        }
+
+        $key = (string) config('Encryption')->key;
+        $key = $key !== '' ? $key : (string) config('Gelita')->ipSalt;
+
+        return substr(hash_hmac('sha256', 'gelita-events|' . $gameSessionId, $key !== '' ? $key : 'gelita'), 0, 16);
+    }
+}
+
+if (! function_exists('js_config')) {
+    /**
+     * Isi <script type="application/json" id="app-config"> untuk JavaScript:
+     * locale, token CSRF, alamat API, penanda sesi, dan teks UI dari
+     * lang('Js.*') dalam bahasa aktif. Tidak ada identitas siswa di sini.
+     *
+     * @return array<string, mixed>
+     */
+    function js_config(string $locale): array
+    {
+        $keys = array_keys(require APPPATH . 'Language/id/Js.php');
+        $text = [];
+
+        foreach ($keys as $key) {
+            $text[$key] = lang('Js.' . $key, [], $locale);
+        }
+
+        $gameSessionId = session('participant_id') ? (int) session('game_session_id') : null;
+
+        return [
+            'locale'     => $locale,
+            'csrfName'   => csrf_token(),
+            'csrfHash'   => csrf_hash(),
+            'apiBase'    => base_url('api'),
+            'baseUrl'    => base_url(),
+            'sessionTag' => session_tag($gameSessionId),
+            'text'       => $text,
+        ];
+    }
+}
+
 if (! function_exists('component')) {
     /**
      * Render komponen view dengan data yang dioper — hanya itu.

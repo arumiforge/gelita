@@ -11,11 +11,17 @@ use CodeIgniter\HTTP\Exceptions\HTTPException;
 use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
+use CodeIgniter\Security\Exceptions\SecurityException;
 use Throwable;
 
 /**
  * - /api/*   → JSON seragam {success:false, code, message, request_id}.
  *              Production: tanpa pesan exception, kelas, atau stack trace.
+ *              Token CSRF ditolak (disimpan di session): tanpa login berarti
+ *              sesi sudah berakhir → 401 INVALID_SESSION; dengan login berarti
+ *              halaman sudah terlalu lama terbuka → 403 CSRF_EXPIRED. Dengan
+ *              begitu JavaScript dapat menampilkan langkah yang tepat
+ *              ("masuk lagi" / "muat ulang"), bukan "tidak boleh membuka".
  * - HTML     → error_404.php / error_500.php bergaya GELITA;
  *              development tetap menampilkan halaman detail CI4 (error_exception.php).
  * - CLI & request non-HTML lain → handler bawaan CodeIgniter.
@@ -125,11 +131,16 @@ class GelitaExceptionHandler extends BaseExceptionHandler implements ExceptionHa
         $requestId = service('gelitaRequestId');
         $code      = $statusCode >= 500 ? 'SERVER_ERROR' : (self::API_CODES[$statusCode] ?? 'INVALID_PAYLOAD');
 
+        if ($exception instanceof SecurityException) {
+            [$code, $statusCode] = $this->hasLogin() ? ['CSRF_EXPIRED', 403] : ['INVALID_SESSION', 401];
+        }
+
         $message = match ($code) {
             'SERVER_ERROR'    => lang('Game.errServer'),
             'NOT_FOUND'       => lang('Game.errNotFound'),
             'FORBIDDEN'       => lang('Game.errForbidden'),
             'INVALID_SESSION' => lang('Game.sessionExpired'),
+            'CSRF_EXPIRED'    => lang('Game.errPageExpired'),
             'RATE_LIMITED'    => lang('Game.errRateLimited'),
             default           => lang('Game.errInvalidPayload'),
         };
@@ -154,6 +165,16 @@ class GelitaExceptionHandler extends BaseExceptionHandler implements ExceptionHa
             ->setHeader('X-Request-Id', (string) $requestId)
             ->setJSON($body)
             ->send();
+    }
+
+    /** Masih ada login siswa atau staf pada session request ini? */
+    private function hasLogin(): bool
+    {
+        try {
+            return session('participant_id') !== null || session('staff_id') !== null;
+        } catch (Throwable) {
+            return false;
+        }
     }
 
     private function showsDetails(): bool

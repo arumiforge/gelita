@@ -4,6 +4,7 @@ namespace App\Controllers\Api;
 
 use App\Controllers\BaseController;
 use App\Controllers\Concerns\StaffScope;
+use App\Libraries\ChartData;
 use App\Models\DataExportModel;
 use App\Models\ParticipantModel;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -14,6 +15,9 @@ use CodeIgniter\HTTP\ResponseInterface;
  * Cakupan sekolah diterapkan di sini (lapis controller) dan sekali lagi di
  * AnalyticsService (lapis service); guru tidak pernah menerima baris dari
  * sekolah lain meski memaksa `?school_id=` di query string.
+ *
+ * Setiap dataset ber-chart menyertakan `chart`: bentuk netral untuk
+ * admin/charts.js (App\Libraries\ChartData), di samping baris mentahnya.
  */
 class AdminApiController extends BaseController
 {
@@ -26,12 +30,19 @@ class AdminApiController extends BaseController
 
     public function levels(): ResponseInterface
     {
-        return $this->ok(['rows' => $this->analytics()->levelBreakdown($this->scopedFilters())]);
+        $rows = $this->analytics()->levelBreakdown($this->scopedFilters());
+
+        return $this->ok(['rows' => $rows, 'chart' => ChartData::levels($rows)]);
     }
 
     public function nodes(): ResponseInterface
     {
-        return $this->ok(['rows' => $this->analytics()->nodeDifficulty($this->scopedFilters())]);
+        $rows = $this->analytics()->nodeDifficulty($this->scopedFilters());
+
+        return $this->ok([
+            'rows'  => $rows,
+            'chart' => ChartData::nodeHeatmap($rows, service('contentRepository')->levels()),
+        ]);
     }
 
     public function items(): ResponseInterface
@@ -41,21 +52,40 @@ class AdminApiController extends BaseController
 
     public function indicators(): ResponseInterface
     {
-        return $this->ok(['rows' => $this->analytics()->indicatorMastery($this->scopedFilters())]);
+        $filters   = $this->scopedFilters();
+        $analytics = $this->analytics();
+        $levels    = service('contentRepository')->levels();
+        $overall   = $analytics->indicatorMastery($filters);
+        $perLevel  = [];
+
+        foreach ($levels as $level) {
+            $perLevel[$level->id] = $analytics->indicatorMastery(['level_id' => $level->id] + $filters);
+        }
+
+        return $this->ok([
+            'rows'      => $overall,
+            'per_level' => $perLevel,
+            'chart'     => ChartData::indicatorMatrix($overall, $perLevel, $levels),
+        ]);
     }
 
     public function prePost(): ResponseInterface
     {
-        return $this->ok($this->analytics()->prePostComparison($this->scopedFilters()));
+        $result = $this->analytics()->prePostComparison($this->scopedFilters());
+
+        return $this->ok($result + ['chart' => ChartData::prePost($result)]);
     }
 
     public function participants(): ResponseInterface
     {
         $filters = $this->scopedFilters();
+        $ages    = model(ParticipantModel::class)->ageDistribution($filters);
 
         return $this->ok([
             'cohort'           => model(ParticipantModel::class)->cohortSummary($filters),
             'digital_security' => $this->analytics()->digitalSecurityLiteracy($filters),
+            'ages'             => (object) $ages,
+            'chart'            => ChartData::distribution($ages, 'Peserta', ' th'),
         ]);
     }
 

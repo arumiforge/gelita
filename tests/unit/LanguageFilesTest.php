@@ -13,7 +13,7 @@ use CodeIgniter\Test\CIUnitTestCase;
 final class LanguageFilesTest extends CIUnitTestCase
 {
     /** Berkas yang tampil ke pemain: wajib lengkap di kedua bahasa. */
-    private const BILINGUAL = ['Auth', 'Game'];
+    private const BILINGUAL = ['Auth', 'Game', 'Js'];
 
     /** @return array<string, array{string}> */
     public static function languageFiles(): array

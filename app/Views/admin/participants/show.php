@@ -92,6 +92,10 @@ $prePost  = $profile['pre_post'];
       'id'       => 'chart-participant-levels',
       'title'    => 'Skor per wilayah',
       'type'     => 'bar',
+      'data'     => \App\Libraries\ChartData::bars(array_map(static fn ($level): array => [
+          'label' => $level->text('name', 'id'),
+          'value' => $profile['level_scores'][$level->id] ?? null,
+      ], $levels), 'Skor', 100),
       'fallback' => component('partials/bar-list', ['max' => 100, 'rows' => array_map(
           static fn ($level): array => [
               'label'   => $level->text('name', 'id'),
@@ -105,6 +109,10 @@ $prePost  = $profile['pre_post'];
       'id'       => 'chart-participant-indicators',
       'title'    => 'Penguasaan indikator (rasio bukti benar)',
       'type'     => 'bar',
+      'data'     => \App\Libraries\ChartData::bars(array_map(static fn (array $row): array => [
+          'label' => (string) $row['code'],
+          'value' => $row['evidence_count'] > 0 ? $row['mastery_ratio'] : null,
+      ], array_values($profile['indicators'])), 'Rasio benar', 1),
       'fallback' => component('partials/bar-list', ['max' => 1, 'rows' => array_map(
           static fn (array $row): array => [
               'label'   => $row['code'],

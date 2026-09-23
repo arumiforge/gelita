@@ -151,15 +151,23 @@ foreach ($visual as $row) {
           'file_size' => ['label' => 'Berkas', 'render' => static fn (array $row): string => $row['file_size'] === null ? '—' : '<span class="num">' . esc(fmt_num(((int) $row['file_size']) / 1024, 0, 'id')) . ' KB</span>'],
           'is_active' => ['label' => 'Status', 'render' => static fn (array $row): string => '<span class="badge ' . ($row['is_active'] ? 'is-active">aktif' : 'is-inactive">nonaktif') . '</span>'],
           'actions' => ['label' => '', 'render' => static function (array $row): string {
+              // Tombol Unggah per baris: diberi perilaku admin/media-upload.js (tersembunyi tanpa JavaScript)
+              $upload = '<button type="button" class="btn btn-quiet btn-sm" data-upload-key="' . esc($row['asset_key'], 'attr') . '" hidden>'
+                  . icon('upload') . ' Unggah</button>';
+
               if (! $row['is_active']) {
-                  return '';
+                  return $upload;
               }
 
-              return '<form method="post" action="' . esc(base_url('admin/media/' . $row['id'] . '/nonaktif'), 'attr') . '" class="inline-form">'
+              return $upload . '<form method="post" action="' . esc(base_url('admin/media/' . $row['id'] . '/nonaktif'), 'attr') . '" class="inline-form">'
                   . csrf_field()
                   . '<button class="btn btn-quiet btn-sm" type="submit">Nonaktifkan</button></form>';
           }],
       ],
   ]) ?>
 </section>
+<script type="application/json" id="asset-sizes"><?= json_encode(
+    ['sizes' => $assetSizes, 'strict' => true],
+    JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT,
+) ?></script>
 <?= $this->endSection() ?>

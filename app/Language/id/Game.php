@@ -278,6 +278,7 @@ return [
     'errNotFound'       => 'Data yang dicari tidak ditemukan.',
     'errForbidden'      => 'Kamu tidak boleh membuka bagian ini.',
     'errInvalidPayload' => 'Data yang dikirim tidak valid.',
+    'errPageExpired'    => 'Halaman ini sudah terlalu lama terbuka. Muat ulang halaman, lalu coba lagi.',
     'errRateLimited'    => 'Terlalu cepat. Tunggu sebentar, lalu coba lagi.',
     'notFoundTitle'     => 'Jalan ini tidak ada',
     'notFoundText'      => 'Halaman yang kamu cari tidak ditemukan. Mari kembali ke awal perjalanan.',
