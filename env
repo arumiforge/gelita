@@ -92,8 +92,10 @@ cookie.httponly = true
 logger.threshold = 9
 
 #--------------------------------------------------------------------
-# DEBUG TOOLBAR
-# Jangan simpan isi request (formulir sandi) ke writable/debugbar.
+# DEBUG TOOLBAR (hanya aktif di development)
+# collectVarData = false: data view (profil peserta) tidak disimpan ke
+# writable/debugbar. Field kata sandi pada formulir selalu disamarkan oleh
+# App\Filters\DebugToolbar, apa pun nilai kunci ini.
 #--------------------------------------------------------------------
 toolbar.collectVarData = false
 

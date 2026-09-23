@@ -239,6 +239,8 @@ Telemetry audio yang dikirim:
   "client_event_id": "…", "attempt_id": 118 }
 ```
 
+Dikirim sebagai amplop batch `POST /api/audio-events { events: [ … ] }`. Server idempotent terhadap `client_event_id` (kiriman ulang dibalas `duplicate`) dan menolak `attempt_id` milik sesi lain.
+
 `listened_ms` dihitung dari akumulasi waktu putar sungguhan, bukan dari `duration`. Server tetap memperlakukan angka ini sebagai data client: perbandingan final memakai `duration_ms` aset dari database sebagai pembagi, bukan angka dari browser.
 
 **Kebijakan autoplay:** audio tidak pernah diputar otomatis sebelum ada interaksi pengguna. Pada layar dialog, tombol putar tampil besar dan berkedip halus sekali agar terlihat.
@@ -394,9 +396,11 @@ Trigger   Peserta mengetuk satu opsi
 Input     { item_id, answer: { option_key: "tmg3c" } }
 Process   seluruh opsi langsung dinonaktifkan agar tidak ada klik ganda
 Request   POST /api/attempts/{id}/responses
-Response  { correct: false, first_pass: false,
+Response  { correct: false, first_pass: true, already_answered: false,
             correct_option_key: "tmg3a", feedback: "…",
             progress: { answered: 2, total: 3 } }
+          kiriman ulang untuk butir yang sama → hasil tersimpan,
+            already_answered: true (server tidak menilai ulang)
 UI Update opsi yang dipilih diberi hijau/merah; bila salah, opsi kunci
           ikut ditandai hijau setelah 400 ms; feedback ditampilkan bila ada
           setelah 1.1 detik → soal berikutnya, indikator langkah maju
@@ -417,9 +421,11 @@ Feature   Cari objek budaya (engine cari)
 Trigger   Peserta mengetuk objek di dalam adegan
 Input     { item_id: <clues[i].item_id petunjuk aktif>, answer: { object: <objects[j].ref objek yang diketuk> } }
 Request   POST /api/attempts/{id}/responses
-Response  benar  → { correct: true, next_clue: { index: 2, text: "…" }, … }
-          salah  → { correct: false, decoy: true, explanation: "…",
-                     wrong_click_count: 1 }
+Response  benar  → { correct: true, wrong_click: false, progress: { answered, total }, … }
+                   (petunjuk berikutnya diambil klien dari payload.clues)
+          salah  → { correct: false, wrong_click: true, decoy: true|false,
+                     feedback: "…"|null, wrong_click_count: 1, first_pass: true|false }
+                   first_pass true = klik salah ini menutup first-pass petunjuk aktif
 UI Update benar  → objek diberi tanda temuan, dicoret dari daftar sisa,
                    petunjuk berikutnya muncul + dibacakan
           salah  → objek bergetar 700 ms, modal penjelasan:
@@ -457,7 +463,7 @@ Catatan   Penalti petunjuk diatur scoring_profile di server, bukan JavaScript.
           dapat diubah admin.
 ```
 
-Tombol petunjuk hanya tampil bila `hints_available > 0` pada payload attempt.
+Tombol petunjuk hanya tampil bila `hints_count > 0` pada payload attempt. `hint_id` diambil dari `payload.hints` (`[{ id, item_id, sequence }]`, tanpa teks); petunjuk butir mengirim `item_id`-nya.
 
 ---
 
@@ -733,7 +739,7 @@ Itu saja. Alasan library lain **tidak** dipakai:
 
 Tidak ada CDN. Kedua berkas vendor ada di repositori dan dimuat dari domain sendiri.
 
-> **Status:** `public/assets/vendor/` masih kosong — kedua berkas di atas ditambahkan pada tahap ini, belum ada di repo. Lihat [02_PROJECT_FOUNDATION.md → *Status `public/assets/vendor/`*](02_PROJECT_FOUNDATION.md).
+> **Status:** kedua berkas sudah ada di `public/assets/vendor/` sejak tahap 5 — ECharts 6.1.0 dan Howler.js 2.2.4 beserta lisensinya; `layouts/game.php` sudah memuat Howler dan `layouts/admin.php` memuat ECharts bila halaman mengisi section `charts`. Lihat [02_PROJECT_FOUNDATION.md → *Status `public/assets/vendor/`*](02_PROJECT_FOUNDATION.md).
 
 ---
 

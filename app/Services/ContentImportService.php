@@ -121,10 +121,10 @@ class ContentImportService
             $sheet->setTitle($name);
             $sheet->fromArray($headers, null, 'A1');
 
-            $example = $this->exampleRow($name);
+            $examples = $this->exampleRows($name, $headers);
 
-            if ($example !== []) {
-                $sheet->fromArray($example, null, 'A2');
+            if ($examples !== []) {
+                $sheet->fromArray($examples, null, 'A2');
             }
         }
 
@@ -966,19 +966,70 @@ class ContentImportService
     }
 
     /** @return list<string> */
-    private function exampleRow(string $sheet): array
+    /**
+     * Baris contoh templat, saling konsisten antar-sheet: setiap `item_key`
+     * yang dirujuk sheet options/pieces/sources punya barisnya di sheet
+     * items, sehingga templat yang diunggah apa adanya lolos pratinjau.
+     *
+     * @param list<string> $headers
+     *
+     * @return list<list<string>>
+     */
+    private function exampleRows(string $sheet, array $headers): array
     {
-        return match ($sheet) {
-            'nodes'       => ['tmg-2', 'Teka-teki Rumpang', 'Fill in the Blanks', 'Isi bagian rumpang.', 'Fill in the blanks.', '', '', '4', '', '0', '1', '2'],
-            'distractors' => ['tmg-2', 'salju', 'snow'],
-            'passages'    => ['tmg-teks-a', 'temanggung', 'Tanah Subur', 'Fertile Land', 'Isi teks bacaan…', 'Passage text…', '', 'Dinas Pendidikan Temanggung'],
-            'items'       => ['tmg-2-01', 'tmg-2', '1', 'fill_blank_bank', 'literasi', 'Gunung ___ ada di Temanggung.', 'Mount ___ is in Temanggung.', '', '', 'tmg-teks-a', 'Sumbing', 'Sumbing', '', '', '', '', '', '', '', '', '', '', '1', 'draft', '', ''],
-            'options'     => ['tmg-5-01-a', 'tmg-5-01', 'Sindoro dan Sumbing', 'Sindoro and Sumbing', '1', 'Tepat!', 'Correct!', '', '1'],
-            'pieces'      => ['wnb-1-01', 'a', 'Siapkan bahan.', 'Prepare the ingredients.'],
-            'sources'     => ['wnb-3-01', 'Sumber A', 'Source A', 'official', 'Pengumuman resmi pengelola.', 'Official site notice.'],
-            'hints'       => ['tmg-2', '', '1', 'Baca kalimatnya sampai habis.', 'Read the whole sentence.'],
-            default       => [],
+        $rows = match ($sheet) {
+            'nodes' => [[
+                'node_ref' => 'tmg-2', 'title_id' => 'Teka-teki Rumpang', 'title_en' => 'Fill in the Blanks',
+                'instruction_id' => 'Isi bagian rumpang.', 'instruction_en' => 'Fill in the blanks.',
+                'items_per_round' => '4', 'require_reason' => '0', 'use_word_bank' => '1', 'distractor_count' => '2',
+            ]],
+            'distractors' => [['node_ref' => 'tmg-2', 'text_id' => 'salju', 'text_en' => 'snow']],
+            'passages'    => [[
+                'passage_key' => 'tmg-teks-a', 'level_code' => 'temanggung', 'title_id' => 'Tanah Subur',
+                'title_en' => 'Fertile Land', 'body_id' => 'Isi teks bacaan…', 'body_en' => 'Passage text…',
+                'reference_source' => 'Dinas Pendidikan Temanggung',
+            ]],
+            'items' => [
+                [
+                    'item_key' => 'tmg-2-01', 'node_ref' => 'tmg-2', 'sequence' => '1', 'interaction_type' => 'fill_blank_bank',
+                    'indicator' => 'literasi', 'prompt_id' => 'Gunung ___ ada di Temanggung.', 'prompt_en' => 'Mount ___ is in Temanggung.',
+                    'passage_key' => 'tmg-teks-a', 'answer_id' => 'Sumbing', 'answer_en' => 'Sumbing', 'scorable' => '1', 'review_status' => 'draft',
+                ],
+                [
+                    'item_key' => 'tmg-5-01', 'node_ref' => 'tmg-5', 'sequence' => '1', 'interaction_type' => 'single_choice',
+                    'indicator' => 'literasi', 'prompt_id' => 'Di antara dua gunung apa Temanggung berada?',
+                    'prompt_en' => 'Between which two mountains does Temanggung lie?', 'passage_key' => 'tmg-teks-a',
+                    'scorable' => '1', 'review_status' => 'draft',
+                ],
+                [
+                    'item_key' => 'wnb-1-01', 'node_ref' => 'wnb-1', 'sequence' => '1', 'interaction_type' => 'ordering',
+                    'indicator' => 'literasi', 'prompt_id' => 'Susun langkahnya.', 'prompt_en' => 'Put the steps in order.',
+                    'answer_id' => 'a', 'scorable' => '1', 'review_status' => 'draft',
+                ],
+                [
+                    'item_key' => 'wnb-3-01', 'node_ref' => 'wnb-3', 'sequence' => '1', 'interaction_type' => 'verdict_card',
+                    'indicator' => 'sikap', 'prompt_id' => 'Pengunjung boleh memanjat candi.', 'prompt_en' => 'Visitors may climb the temple.',
+                    'answer_id' => 'salah', 'scorable' => '1', 'review_status' => 'draft',
+                ],
+            ],
+            'options' => [[
+                'option_key' => 'tmg-5-01-a', 'item_key' => 'tmg-5-01', 'label_id' => 'Sindoro dan Sumbing',
+                'label_en' => 'Sindoro and Sumbing', 'is_correct' => '1', 'feedback_id' => 'Tepat!', 'feedback_en' => 'Correct!',
+                'display_order' => '1',
+            ]],
+            'pieces'  => [['item_key' => 'wnb-1-01', 'piece_key' => 'a', 'text_id' => 'Siapkan bahan.', 'text_en' => 'Prepare the ingredients.']],
+            'sources' => [[
+                'item_key' => 'wnb-3-01', 'label_id' => 'Sumber A', 'label_en' => 'Source A', 'kind' => 'official',
+                'text_id' => 'Pengumuman resmi pengelola.', 'text_en' => 'Official site notice.',
+            ]],
+            'hints' => [['node_ref' => 'tmg-2', 'sequence' => '1', 'text_id' => 'Baca kalimatnya sampai habis.', 'text_en' => 'Read the whole sentence.']],
+            default => [],
         };
+
+        return array_map(
+            static fn (array $row): array => array_map(static fn (string $column): string => $row[$column] ?? '', $headers),
+            $rows,
+        );
     }
 
     private function nullIfBlank(?string $value): ?string

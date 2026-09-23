@@ -107,6 +107,23 @@ final class HuntPayloadTest extends CIUnitTestCase
     }
 
     /**
+     * Satu aturan menentukan petunjuk, progres, dan syarat menutup attempt:
+     * objek jebakan (dan objek find_object yang tidak dinilai) tidak pernah
+     * diminta dijawab, jadi tidak boleh menahan attempt `cari` tetap terbuka.
+     */
+    public function testDecoysAreNeverExpectedToBeAnswered(): void
+    {
+        [$tobacco, $temple, $decoy] = $this->items();
+
+        $this->assertTrue($this->call('expectsAnswer', $tobacco));
+        $this->assertTrue($this->call('expectsAnswer', $temple));
+        $this->assertFalse($this->call('expectsAnswer', $decoy));
+
+        $unscored = $this->item(14, 'tmg-4-94', false, '{"x":50,"y":50,"w":12,"decoy":false}', 'Tanpa petunjuk.');
+        $this->assertFalse($this->call('expectsAnswer', $unscored), 'objek tanpa petunjuk tidak dapat dijawab');
+    }
+
+    /**
      * Body JSON membawa item_id sebagai angka; Validation memanggil aturan
      * dengan strict_types, jadi aturan harus menerima int tanpa TypeError.
      */
