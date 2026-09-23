@@ -42,7 +42,7 @@ $spare  = 2;   // baris media kosong per halaman untuk menambah
         <li>Baris kosong = paragraf baru.</li>
         <li><code>## Subjudul</code> di awal baris = subjudul.</li>
         <li><code>- teks</code> di awal baris = butir daftar.</li>
-        <li><code>**kata**</code> = cetak tebal.</li>
+        <li><code>**kata**</code> = cetak tebal; <code>*kata*</code> = cetak miring.</li>
         <li><code>&gt; Tahukah kamu? …</code> = kotak fakta menarik.</li>
         <li><code>Sumber: …</code> di baris terakhir = catatan rujukan kecil.</li>
       </ul>

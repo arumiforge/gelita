@@ -10,8 +10,11 @@ namespace App\Libraries;
  * sehingga hanya bentuk yang dikenali yang pernah dirender, dan alamat
  * `javascript:`/`data:` tidak pernah lolos. Pemutar video pihak ketiga
  * (YouTube, Vimeo, Drive) baru dimuat setelah siswa menekan Putar
- * (lihat game/library.php), jadi membuka Pustaka tidak menghubungi domain
- * luar sama sekali; YouTube memakai domain youtube-nocookie.com.
+ * (lihat game/library.php), jadi tidak ada pemutar/cookie pihak ketiga
+ * sebelum siswa memilih menonton; YouTube memakai youtube-nocookie.com.
+ * Gambar dari tautan (Commons, Drive, berkas langsung) dimuat langsung dari
+ * domain asalnya tanpa referrer — sekolah tanpa internet sebaiknya
+ * mengunggah salinannya di Panel → Media.
  */
 class MediaLink
 {

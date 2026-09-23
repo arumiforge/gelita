@@ -194,6 +194,7 @@ class ContentImportService
             'media'      => $media,
             'passages'   => $this->collect($sheets['passages'], 'passage_key'),
             'items'      => $this->collect($sheets['items'], 'item_key'),
+            'options'    => $this->groupBy($sheets['options'], 'item_key'),
             'library'    => $this->libraryKeys($sheets['library']),
         ];
 
@@ -377,7 +378,8 @@ class ContentImportService
         $existing = model(ChallengeItemModel::class)->findByKey((string) $row['item_key']);
 
         if ($existing !== null && model(ChallengeItemModel::class)->hasResponses($existing->id)) {
-            $incoming = $this->answerKeyFor($row, []);
+            // kunci pilihan ganda diturunkan dari opsi di workbook, sama seperti saat menulis
+            $incoming = $this->answerKeyFor($row, $context['options'][trim((string) $row['item_key'])] ?? []);
 
             if (json_encode($incoming, JSON_UNESCAPED_UNICODE) !== json_encode($existing->answerKey(), JSON_UNESCAPED_UNICODE)) {
                 return "Item {$row['item_key']} sudah punya jawaban peserta; kunci jawabannya tidak boleh diubah.";
