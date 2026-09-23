@@ -6,7 +6,7 @@ Aplikasi dibangun dengan **CodeIgniter 4.7** (PHP 8.2+, MySQL 8 / MariaDB 10.6+)
 
 ## Status pengembangan
 
-**Tahap 1–6 dari 8 selesai; tahap berikutnya adalah 7 (integrasi fitur: ekspor, laporan, retensi, command).**
+**Tahap 1–7 dari 8 selesai; tahap berikutnya adalah 8 (deployment & operasional).**
 
 | Tahap | Isi | Status |
 |---:|---|---|
@@ -16,12 +16,23 @@ Aplikasi dibangun dengan **CodeIgniter 4.7** (PHP 8.2+, MySQL 8 / MariaDB 10.6+)
 | 4 | Route, controller, autentikasi siswa & staf, otorisasi berlapis tiga, API JSON seragam | selesai |
 | 5 | View, UI, CSS: 3 layout, 17 komponen, 17 halaman game + 5 arena, 33 view admin, 6 berkas CSS | selesai |
 | 6 | Perilaku JavaScript: lima mesin arena, antrean event offline, narasi + telemetry audio, chart ECharts, editor konten terpandu | selesai |
-| 7 | Integrasi fitur: `ExportService`, `ReportService`, `RetentionService`, isi command `gelita:*` | berikutnya |
-| 8 | Deployment & operasional | belum |
+| 7 | Integrasi fitur: `ExportService` (XLSX streaming), `ReportService` (PDF), `RetentionService`, lima command `gelita:*` | selesai |
+| 8 | Deployment & operasional | berikutnya |
 
 Kelima arena kini dapat dimainkan penuh di browser — Periksa, petunjuk, keluar berkonfirmasi, narasi audio, dan lentera yang bertambah dari respons server — dengan seluruh event gameplay dan telemetry audio tercatat, termasuk saat koneksi sempat putus. Panel admin menggambar seluruh chart dengan ECharts dari `/api/admin/*`, dan filter mengubah isi halaman tanpa memuat ulang.
 
 Yang sudah berfungsi penuh lewat HTTP: persetujuan dan registrasi dengan kata sandi kuat (termasuk dua metrik literasi keamanan digital), masuk/keluar, ganti sandi dan reset sandi oleh guru, peta Kedu dan peta wilayah dengan kunci berurutan, dialog pembuka wilayah, kelima arena beserta seluruh API penilaiannya, layar selesai dan riwayat hasil, Pustaka Kedu, profil, Balai Refleksi, pergantian bahasa tanpa kehilangan progres, serta seluruh halaman panel admin (dasbor, peserta, sesi, analitik, masukan, konten, impor bank soal, media & audio, studi & rilis, tata kelola, akun staf).
+
+### Tahap 7 — Integrasi fitur
+
+Ekspor, laporan, retensi, dan command kini berfungsi penuh. Rincian dan keputusannya ada di [`docs/07_FEATURE_INTEGRATION.md` → *Catatan Implementasi Tahap 7*](docs/07_FEATURE_INTEGRATION.md#catatan-implementasi-tahap-7). Yang perlu diketahui:
+
+- **Ekspor XLSX** (`/admin/ekspor`): sepuluh sheet, ditulis bertahap oleh `App\Libraries\ExcelWriter` (XML SpreadsheetML + ZipArchive) sehingga 150.000 baris Raw Events hanya memakai ±18 MB memori. Berkas di `writable/exports/`, ber-SHA-256, kedaluwarsa setelah `gelita.exportRetentionDays`. Raw Events di atas `gelita.exportMaxRawEvents` (200.000) ditolak dengan permintaan mempersempit rentang.
+- **Hak dibaca ulang di service.** `ExportService` mengambil role dan sekolah pemohon dari `staff_users`: guru selalu anonim, hanya sekolahnya, tanpa Raw Events dan tanpa kunci jawaban — apa pun isi formulirnya. Mode anonim tidak membuat kolom nama/nama pengguna/nama sekolah sama sekali; `school_ref` (`SCH-000012`) tetap ada untuk analisis per sekolah.
+- **Laporan PDF** (mPDF): ringkasan studi dari halaman ekspor, dan laporan satu peserta dari `/admin/peserta/{id}`.
+- **Penghapusan** (`/admin/tata-kelola`) dipindah ke `RetentionService`: cakupan peserta, sesi, atau studi (dipersempit fase & rentang tanggal); eksekusi dibatalkan bila jumlah baris berubah jauh sejak pratinjau.
+- **Retensi** (`php spark gelita:retention:run`, cron harian): sesi menganggur → `paused`, attempt menggantung > 24 jam → `abandoned`, sesi `paused` > 30 hari → `abandoned`, berkas ekspor kedaluwarsa dibuang, dan data yang melewati `retention_days` **hanya** dibuatkan pratinjau penghapusan + peringatan di dasbor admin.
+- **Command**: `gelita:content:verify`, `gelita:media:scan`, `gelita:score:recompute`, `gelita:bank:import`, `gelita:retention:run` — semuanya mengembalikan kode keluar 1 saat gagal sehingga dapat dipakai di skrip deploy.
 
 ### Tahap 6 — JavaScript
 
@@ -55,9 +66,8 @@ Rincian keputusan ada di dokumen tahap masing-masing; ringkasan UI di [`docs/05_
 ### Batas ruang lingkup saat ini
 
 - **Narasi petunjuk arena `cari` belum bersuara**: payload `clues` belum membawa aset audio; teks petunjuk tampil dan diumumkan ke pembaca layar.
-- **Ekspor belum dapat membangun berkas.** `App\Services\ExportService` baru dipasang tahap 7; sampai itu, permintaan ekspor tercatat di `data_exports` dan `audit_logs` lalu langsung ditandai `failed` dengan alasan yang jelas.
-- **Command `gelita:*` masih kerangka** dan menolak dengan pesan "belum aktif" sampai tahap 7. Impor bank soal sudah dapat dilakukan lewat panel `/admin/konten/impor-bank` (`ContentImportService` sudah ada).
-- **Retensi**: `GovernanceController::runRetention()` sudah menandai sesi menganggur `paused` dan membuang berkas ekspor kedaluwarsa; pembersihan per `retention_days` menyusul bersama `RetentionService`.
+- **Ekspor dibangun sinkron** di request yang sama (batas 300 detik). Untuk dataset yang jauh lebih besar dari ambang Raw Events, pemindahan ke antrean kerja dibahas pada tahap 8.
+- **Cron belum terpasang** — `gelita:retention:run` siap dipakai; pemasangan crontab adalah bagian tahap 8. Sampai itu, jalankan dari tombol di `/admin/tata-kelola`.
 - `App\Libraries\HashedIpSessionHandler` **belum dipasang**; alasannya di bagian *Sesi dan CSRF* di bawah.
 
 ## Prasyarat lokal
@@ -142,13 +152,16 @@ Jalankan test suite tanpa laporan coverage:
 vendor/bin/phpunit --no-coverage
 ```
 
-Suite (106 test) memakai grup database `tests` (SQLite3 in-memory) dan hanya menjalankan migration bernamespace `Tests\Support`, bukan migration aplikasi — skema aplikasi memakai fitur MySQL/MariaDB (`DATETIME(6)`, `ON UPDATE CURRENT_TIMESTAMP(6)`) yang tidak ada di SQLite. Sesi di-mock dengan `ArrayHandler` oleh `CIUnitTestCase`. Yang dikunci suite antara lain:
+Suite (123 test) memakai grup database `tests` (SQLite3 in-memory) dan hanya menjalankan migration bernamespace `Tests\Support`, bukan migration aplikasi — skema aplikasi memakai fitur MySQL/MariaDB (`DATETIME(6)`, `ON UPDATE CURRENT_TIMESTAMP(6)`) yang tidak ada di SQLite. Sesi di-mock dengan `ArrayHandler` oleh `CIUnitTestCase`. Yang dikunci suite antara lain:
 
 - `RouteWiringTest` — auto-route tetap mati, setiap handler menunjuk kelas/method yang ada, dan setiap view yang disebut controller punya berkasnya.
 - `HuntPayloadTest` — payload arena `cari` tidak membedakan jebakan, jawaban hanya lewat token objek, dan objek jebakan tidak pernah diminta dijawab.
 - `RegionEntryTest`, `DialogueGateTest` — wilayah baru selalu lewat dialog pembukanya.
 - `JsConfigTest` — penanda sesi antrean offline buram dan per sesi, `#app-config` tanpa identitas siswa, dan setiap `t('…')` di JavaScript punya kunci `Js.*`.
 - `ChartDataTest` — bentuk data chart admin dan kondisi kosongnya.
+- `ExcelWriterTest` — workbook terbaca ulang PhpSpreadsheet, teks berawalan `=` tidak pernah menjadi rumus, berkas sementara dibersihkan.
+- `ExportRulesTest` — mode anonim tanpa kolom identitas, rahasia tidak pernah diekspor, kunci jawaban hanya admin, guru tanpa Raw Events, cakupan sekolah dipaksa service, cakupan & penjaga drift penghapusan.
+- `Stage7WiringTest` — kelima command `gelita:*` aktif, service baru terdaftar, dan setiap keluaran templat PDF lewat `esc()`.
 - `ScoringServiceTest`, `PasswordPolicyTest`, `ChallengeEntityTest`, `ViewHelperTest`, `LanguageFilesTest`, `EventTimeTest`, `DebugToolbarRedactionTest`.
 
 Karena tabel aplikasi tidak dibuat di suite ini, **alur HTTP ujung ke ujung diverifikasi di atas MySQL/MariaDB sungguhan**. Gunakan database scratch terpisah (kredensial boleh dioper lewat environment untuk perintah CLI):
@@ -174,8 +187,8 @@ Dokumen spesifikasi per tahap ada di folder [`docs`](docs/) dan mencerminkan imp
 4. [Route, controller, autentikasi, otorisasi](docs/04_CONTROLLER_ROUTE.md)
 5. [View, UI, dan CSS](docs/05_VIEW_UI.md)
 6. [JavaScript](docs/06_JAVASCRIPT.md)
-7. [Integrasi fitur](docs/07_FEATURE_INTEGRATION.md) — tahap berikutnya
-8. [Deployment dan operasional](docs/08_DEPLOYMENT.md)
+7. [Integrasi fitur](docs/07_FEATURE_INTEGRATION.md)
+8. [Deployment dan operasional](docs/08_DEPLOYMENT.md) — tahap berikutnya
 
 Daftar route lengkap dapat dilihat kapan saja tanpa membaca kode:
 

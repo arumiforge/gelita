@@ -90,6 +90,23 @@ class Gelita extends BaseConfig
     public int $exportRetentionDays = 7;
     public int $sessionIdleMinutes  = 45;   // lewat ini → status 'paused'
 
+    /** Retensi terjadwal (gelita:retention:run) */
+    public int $attemptAbandonHours = 24;   // attempt in_progress tak tersentuh → 'abandoned'
+    public int $sessionAbandonDays  = 30;   // sesi 'paused' tak tersentuh → 'abandoned'
+
+    /**
+     * Ambang estimasi baris sheet Raw Events. Di atas ini export ditolak dan
+     * pemohon diminta mempersempit rentang tanggal.
+     */
+    public int $exportMaxRawEvents = 200000;
+
+    /**
+     * Penghapusan dibatalkan bila total baris terdampak saat eksekusi
+     * menyimpang dari pratinjau lebih dari max(minimum, persen × pratinjau).
+     */
+    public int $deletionDriftMinRows    = 10;
+    public float $deletionDriftFraction = 0.10;
+
     /** Garam hash IP (gelita.ipSalt di .env). IP mentah tidak pernah disimpan. */
     public string $ipSalt = '';
 

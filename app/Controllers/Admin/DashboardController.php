@@ -30,6 +30,8 @@ class DashboardController extends BaseAdminController
             'recentSessions'  => $this->recentSessions($filters),
             'study'           => model(ResearchStudyModel::class)->activeStudy(),
             'isAdmin'         => $this->isAdmin(),
+            // pratinjau penghapusan buatan retensi: hanya admin yang boleh memutuskan
+            'retentionAlerts' => $this->isAdmin() ? service('retentionService')->pendingRetentionRequests() : [],
         ]);
     }
 

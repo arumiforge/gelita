@@ -498,8 +498,14 @@ class ChallengeService
         ];
     }
 
-    /** Attempt ditinggalkan (pindah layar / tutup tab). */
-    public function abandonAttempt(ChallengeAttempt $attempt): void
+    /**
+     * Attempt ditinggalkan: tombol Keluar (`via: user_exit`) atau retensi
+     * terjadwal (`via: retention`). Skor dan bintang attempt ditinggalkan
+     * selalu 0; jawaban yang sudah diperiksa tetap tersimpan.
+     *
+     * @param array<string, mixed> $payload tambahan payload event, mis. ['via' => 'retention']
+     */
+    public function abandonAttempt(ChallengeAttempt $attempt, array $payload = []): void
     {
         if (! $attempt->isInProgress()) {
             return;
@@ -510,10 +516,13 @@ class ChallengeService
 
         model(ChallengeAttemptModel::class)->update($attempt->id, [
             'status'       => 'abandoned',
+            'score'        => 0,
+            'stars'        => 0,
             'completed_at' => date('Y-m-d H:i:s'),
         ]);
 
-        service('eventService')->record($session, 'challenge_abandoned', [
+        service('eventService')->record($session, 'challenge_abandoned', $payload + [
+            'via'        => 'user_exit',
             'attempt_no' => $attempt->attempt_no,
         ], [
             'level_id'             => $node->level_id,

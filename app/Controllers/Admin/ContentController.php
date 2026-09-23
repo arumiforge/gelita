@@ -2,6 +2,7 @@
 
 namespace App\Controllers\Admin;
 
+use App\Libraries\ContentVerifier;
 use App\Models\AuditLogModel;
 use App\Models\ChallengeAttemptModel;
 use App\Models\ChallengeItemModel;
@@ -659,130 +660,11 @@ class ContentController extends BaseAdminController
     public function verify(): string
     {
         return $this->panel('admin/content/verify', 'Verifikasi konten', [
-            'findings' => $this->runVerification(),
+            'findings' => (new ContentVerifier())->run(),
         ]);
     }
 
-    /**
-     * Pemeriksaan kelengkapan konten sebelum rilis.
-     *
-     * @return list<array{level: string, scope: string, message: string}>
-     */
-    private function runVerification(): array
-    {
-        $content  = service('contentRepository');
-        $levels   = $content->levels();
-        $findings = [];
-        $answers  = [];
-
-        if (count($levels) !== 3) {
-            $findings[] = $this->finding('error', 'struktur', 'Jumlah wilayah aktif ' . count($levels) . ', seharusnya 3.');
-        }
-
-        foreach ($levels as $level) {
-            $nodes = $content->nodesForLevel($level->id);
-            $scope = 'wilayah ' . $level->code;
-
-            if (count($nodes) !== 5) {
-                $findings[] = $this->finding('error', $scope, 'Jumlah tantangan ' . count($nodes) . ', seharusnya 5.');
-            }
-
-            $passageIds = [];
-
-            foreach ($content->passagesForLevel($level->id) as $passage) {
-                $passageIds[$passage->id] = true;
-            }
-
-            foreach ($nodes as $node) {
-                $nodeScope = $scope . ' · node ' . $node->sequence;
-                $bank      = $content->itemBank($node->id);
-                $perRound  = $node->itemsPerRound();
-
-                if (! in_array($node->engine_type, config('Gelita')->engineTypes, true)) {
-                    $findings[] = $this->finding('error', $nodeScope, "engine_type '{$node->engine_type}' tidak dikenali.");
-                }
-
-                if (count($bank) < $perRound) {
-                    $findings[] = $this->finding('error', $nodeScope, 'Bank soal ' . count($bank) . " butir, minimal {$perRound}.");
-                }
-
-                $distractors = count($node->distractors('id'));
-                $needed      = (int) $node->config('distractor_count');
-
-                if ($node->engine_type === 'rumpang' && $needed > 0 && $distractors < $needed) {
-                    $findings[] = $this->finding('error', $nodeScope, "Pengecoh rumpang {$distractors}, minimal {$needed}.");
-                }
-
-                foreach ($bank as $item) {
-                    $itemScope = $nodeScope . ' · ' . $item->item_key;
-
-                    if ($item->scorable && $item->answerKey() === []) {
-                        $findings[] = $this->finding('error', $itemScope, 'Butir dinilai tetapi tanpa answer_key_json.');
-                    }
-
-                    if (in_array($item->interaction_type, ['single_choice', 'source_trust'], true)) {
-                        $correct = 0;
-
-                        foreach ($item->loadedOptions() as $option) {
-                            $correct += $option->is_correct ? 1 : 0;
-                        }
-
-                        if ($correct !== 1) {
-                            $findings[] = $this->finding('error', $itemScope, "Opsi benar {$correct}, seharusnya tepat 1.");
-                        }
-                    }
-
-                    if (in_array($item->interaction_type, ['verdict_card', 'verdict_reason'], true)
-                        && ! in_array((string) $item->verdict(), $node->verdictOptions(), true)) {
-                        $findings[] = $this->finding('error', $itemScope, 'Kunci verdict di luar verdict_options node.');
-                    }
-
-                    if ($item->passage_id !== null && ! isset($passageIds[$item->passage_id])) {
-                        $findings[] = $this->finding('error', $itemScope, 'passage_id berasal dari wilayah lain.');
-                    }
-
-                    if ($item->review_status === 'needs_verification') {
-                        $findings[] = $this->finding('warning', $itemScope, 'Butir masih berstatus needs_verification.');
-                    }
-
-                    $signature = $this->answerSignature($item);
-
-                    if ($signature !== null) {
-                        if (isset($answers[$signature]) && $answers[$signature] !== $node->id) {
-                            $findings[] = $this->finding(
-                                'warning',
-                                $itemScope,
-                                'Jawaban kembar dengan butir di node lain — analisis butir akan menghitung konsep ganda.',
-                            );
-                        }
-
-                        $answers[$signature] ??= $node->id;
-                    }
-                }
-            }
-        }
-
-        return $findings;
-    }
-
     // -------------------------------------------------------------- bantuan
-
-    /** @return array{level: string, scope: string, message: string} */
-    private function finding(string $level, string $scope, string $message): array
-    {
-        return ['level' => $level, 'scope' => $scope, 'message' => $message];
-    }
-
-    private function answerSignature(\App\Entities\ChallengeItem $item): ?string
-    {
-        $key = $item->answerKey();
-
-        if ($key === []) {
-            return null;
-        }
-
-        return $item->interaction_type . '|' . json_encode($key, JSON_UNESCAPED_UNICODE);
-    }
 
     private function nodeHasAttempts(int $nodeId): bool
     {

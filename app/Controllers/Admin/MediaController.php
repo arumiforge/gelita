@@ -2,6 +2,7 @@
 
 namespace App\Controllers\Admin;
 
+use App\Libraries\MediaIntegrity;
 use App\Models\AudioAssetModel;
 use App\Models\AuditLogModel;
 use App\Models\MediaAssetModel;
@@ -240,27 +241,7 @@ class MediaController extends BaseAdminController
      */
     public function scan(): RedirectResponse
     {
-        $findings = [];
-
-        foreach (model(MediaAssetModel::class)->findAll() as $asset) {
-            $path = FCPATH . ltrim((string) $asset['storage_path'], '/');
-
-            if (! is_file($path)) {
-                $findings[] = ['asset_key' => $asset['asset_key'], 'issue' => 'berkas tidak ada'];
-
-                continue;
-            }
-
-            if ($asset['sha256'] !== null && hash_file('sha256', $path) !== $asset['sha256']) {
-                $findings[] = ['asset_key' => $asset['asset_key'], 'issue' => 'sha256 tidak cocok'];
-
-                continue;
-            }
-
-            if ($asset['file_size'] !== null && (int) filesize($path) !== (int) $asset['file_size']) {
-                $findings[] = ['asset_key' => $asset['asset_key'], 'issue' => 'ukuran berkas berubah'];
-            }
-        }
+        $findings = (new MediaIntegrity())->check();
 
         session()->setFlashdata('media_scan', [
             'at'       => date('Y-m-d H:i:s'),

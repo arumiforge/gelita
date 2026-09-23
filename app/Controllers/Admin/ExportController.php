@@ -6,27 +6,23 @@ use App\Models\AuditLogModel;
 use App\Models\DataExportModel;
 use App\Models\ResearchStudyModel;
 use App\Models\SchoolModel;
+use App\Services\ExportService;
 use CodeIgniter\HTTP\DownloadResponse;
 use CodeIgniter\HTTP\RedirectResponse;
 
 /**
  * Permintaan ekspor XLSX/PDF beserta unduhannya.
  *
- * Controller ini mencatat permintaan, menegakkan aturan anonimitas, dan
- * mengaudit setiap unduhan. Pembangunan berkasnya sendiri dikerjakan
- * `App\Services\ExportService` yang dipasang pada tahap 7; selama kelas itu
- * belum ada, baris `data_exports` ditandai `failed` dengan alasan yang jelas
- * alih-alih menggantung di status `running`.
+ * Controller ini mencatat permintaan, menegakkan aturan anonimitas (lapis
+ * kedua), dan mengaudit setiap unduhan. Berkasnya dibangun
+ * `App\Services\ExportService`, yang membaca ulang hak pemohon dari
+ * `staff_users` sebagai lapis ketiga.
  */
 class ExportController extends BaseAdminController
 {
-    /** Sheet yang dapat dipilih; `Raw Events` hanya untuk admin. */
-    private const SHEETS = [
-        'Participants', 'Sessions', 'Levels', 'Challenge Summary', 'Item Responses',
-        'Raw Events', 'Audio Usage', 'Indicators', 'Demographic Summary', 'Feedback',
-    ];
+    private const SHEETS = ExportService::SHEETS;
 
-    private const ADMIN_ONLY_SHEETS = ['Raw Events'];
+    private const ADMIN_ONLY_SHEETS = ExportService::ADMIN_ONLY_SHEETS;
 
     public function index(): string
     {
@@ -37,14 +33,15 @@ class ExportController extends BaseAdminController
         }
 
         return $this->panel('admin/export/index', 'Ekspor data', [
-            'filters'    => $this->readFilters(),
-            'sheets'     => self::SHEETS,
-            'adminOnly'  => self::ADMIN_ONLY_SHEETS,
-            'isAdmin'    => $this->isAdmin(),
-            'studies'    => model(ResearchStudyModel::class)->findAll(),
-            'schools'    => model(SchoolModel::class)->activeList(),
-            'recent'     => $exports->orderBy('created_at', 'DESC')->findAll(20),
-            'retention'  => config('Gelita')->exportRetentionDays,
+            'filters'       => $this->readFilters(),
+            'sheets'        => self::SHEETS,
+            'adminOnly'     => self::ADMIN_ONLY_SHEETS,
+            'isAdmin'       => $this->isAdmin(),
+            'studies'       => model(ResearchStudyModel::class)->findAll(),
+            'schools'       => model(SchoolModel::class)->activeList(),
+            'recent'        => $exports->orderBy('created_at', 'DESC')->findAll(20),
+            'retention'     => config('Gelita')->exportRetentionDays,
+            'rawEventLimit' => config('Gelita')->exportMaxRawEvents,
         ]);
     }
 
@@ -77,7 +74,7 @@ class ExportController extends BaseAdminController
 
         $path = (string) $export['file_path'];
 
-        if ($path === '' || ! is_file($path)) {
+        if ($path === '' || ! is_file($path) || ! service('exportService')->isInsideExportDir($path)) {
             return $this->back('admin/ekspor', 'Berkas ekspor belum tersedia.');
         }
 
@@ -88,58 +85,81 @@ class ExportController extends BaseAdminController
             'metadata'      => ['format' => $export['format'], 'anonymized' => (int) $export['anonymized']],
         ]);
 
-        return $this->response->download($path, null)->setFileName(basename($path));
+        $mime = $export['format'] === 'pdf'
+            ? 'application/pdf'
+            : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+
+        return $this->response->download($path, null)->setFileName(basename($path))->setContentType($mime);
     }
 
     /**
-     * Mencatat permintaan ekspor lalu menyerahkannya ke ExportService.
+     * Mencatat permintaan ekspor lalu membangunnya lewat ExportService.
      * Guru selalu dipaksa mode anonim dan tidak pernah mendapat sheet
      * `Raw Events`, berapa pun isi formulir yang dikirim.
+     *
+     * PDF memakai templat `study` (default) atau `participant` dengan
+     * `participant_id` — laporan individual dari halaman detail peserta.
      */
     private function queue(string $format): RedirectResponse
     {
         $isAdmin    = $this->isAdmin();
         $anonymized = $isAdmin ? ($this->request->getPost('anonymized') ? 1 : 0) : 1;
-        $sheets     = $this->requestedSheets($isAdmin);
+        $sheets     = $format === 'xlsx' ? $this->requestedSheets($isAdmin) : [];
         $filters    = $this->scopedFilters($this->postFilters());
+        $scope      = ['filters' => $filters, 'sheets' => $sheets];
+        $back       = 'admin/ekspor';
 
-        $exports   = model(DataExportModel::class);
-        $exportId  = $exports->insert([
+        if ($format === 'pdf') {
+            $participantId = (int) ($this->request->getPost('participant_id') ?? 0);
+            $scope['template'] = $participantId > 0 ? 'participant' : 'study';
+
+            if ($participantId > 0) {
+                $scope['participant_id'] = $participantId;
+            }
+        }
+
+        $exports  = model(DataExportModel::class);
+        $exportId = $exports->insert([
             'requested_by' => $this->staffId(),
-            'study_id'     => $filters['study_id'] ?? null,
+            'study_id'     => isset($filters['study_id']) ? (int) $filters['study_id'] : null,
             'format'       => $format,
-            'scope_json'   => ['filters' => $filters, 'sheets' => $sheets],
+            'scope_json'   => $scope,
             'anonymized'   => $anonymized,
             'status'       => 'running',
         ], true);
 
         if ($exportId === false) {
-            return $this->back('admin/ekspor', 'Permintaan ekspor ditolak: ' . $this->modelErrors($exports));
+            return $this->back($back, 'Permintaan ekspor ditolak: ' . $this->modelErrors($exports));
         }
 
         $exportId = (int) $exportId;
+
+        @set_time_limit(300);
+
+        $export = service('exportService')->build($exportId);
 
         model(AuditLogModel::class)->record('export', [
             'staff_user_id' => $this->staffId(),
             'target_type'   => 'data_export',
             'target_id'     => (string) $exportId,
-            'metadata'      => ['format' => $format, 'anonymized' => $anonymized, 'sheets' => $sheets],
+            'metadata'      => [
+                'format'      => $format,
+                'anonymized'  => (int) $export['anonymized'],
+                'sheets'      => $sheets,
+                'template'    => $scope['template'] ?? null,
+                'status'      => $export['status'],
+                'row_count'   => $export['row_count'] === null ? null : (int) $export['row_count'],
+                'file_sha256' => $export['file_sha256'],
+            ],
         ]);
 
-        if (! class_exists('App\Services\ExportService')) {
-            $exports->markFailed($exportId, 'ExportService belum tersedia (dipasang pada tahap 7).');
-
-            return $this->back(
-                'admin/ekspor',
-                'Permintaan tercatat, tetapi mesin ekspor belum aktif pada tahap ini.',
-            );
+        if ($export['status'] !== 'done') {
+            return $this->back($back, 'Ekspor #' . $exportId . ' gagal: ' . $export['error_message']);
         }
 
-        // @codeCoverageIgnoreStart — jalur ini aktif setelah ExportService dipasang (tahap 7)
-        service('exportService')->build($exportId);
+        $label = ($scope['template'] ?? null) === 'participant' ? 'Laporan peserta' : 'Ekspor';
 
-        return $this->done('admin/ekspor', 'Ekspor sedang dibuat. Status diperbarui otomatis.');
-        // @codeCoverageIgnoreEnd
+        return $this->done($back, $label . ' #' . $exportId . ' siap diunduh.');
     }
 
     /**
@@ -149,12 +169,10 @@ class ExportController extends BaseAdminController
      */
     private function requestedSheets(bool $isAdmin): array
     {
-        $requested = (array) ($this->request->getPost('sheets') ?? self::SHEETS);
-        $allowed   = $isAdmin ? self::SHEETS : array_diff(self::SHEETS, self::ADMIN_ONLY_SHEETS);
-
-        $sheets = array_values(array_intersect($allowed, array_map('strval', $requested)));
-
-        return $sheets === [] ? array_values($allowed) : $sheets;
+        return service('exportService')->allowedSheets(
+            (array) ($this->request->getPost('sheets') ?? self::SHEETS),
+            $isAdmin,
+        );
     }
 
     /**

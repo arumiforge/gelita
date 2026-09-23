@@ -14,6 +14,7 @@
  * @var bool                        $isAdmin
  * @var list<array<string, mixed>>  $recent
  * @var int                         $retention hari
+ * @var int                         $rawEventLimit ambang baris Raw Events
  */
 $sheetNotes = [
     'Participants'        => 'Profil peserta (kode, kelas, sekolah, wilayah)',
@@ -62,7 +63,7 @@ $statusNames = ['queued' => 'antre', 'running' => 'diproses', 'done' => 'siap', 
         </label>
       <?php endforeach ?>
     </div>
-    <p class="field-help">Tidak memilih apa pun berarti semua sheet yang Anda boleh terima.</p>
+    <p class="field-help">Tidak memilih apa pun berarti semua sheet yang Anda boleh terima.<?php if ($isAdmin): ?> Raw Events ditolak bila melebihi <?= esc(fmt_num($rawEventLimit)) ?> baris — persempit rentang tanggal.<?php endif ?></p>
   </fieldset>
 
   <fieldset class="repeat-row">
@@ -81,6 +82,7 @@ $statusNames = ['queued' => 'antre', 'running' => 'diproses', 'done' => 'siap', 
     <button class="btn btn-primary" type="submit" formaction="<?= base_url('admin/ekspor/xlsx') ?>"><?= icon('download') ?> Buat XLSX</button>
     <button class="btn btn-ghost" type="submit" formaction="<?= base_url('admin/ekspor/pdf') ?>"><?= icon('download') ?> Buat ringkasan PDF</button>
   </div>
+  <p class="field-help">Ringkasan PDF memakai filter di atas, selalu tanpa nama peserta dan tanpa raw event. Laporan satu peserta dibuat dari halaman detail peserta.</p>
 </form>
 
 <section class="panel">
