@@ -510,7 +510,7 @@ Kerangka bersama (`game/challenge/_frame.php` di-include tiap engine):
 <script type="application/json" id="challenge-data"><?= $challengeJson ?></script>
 ```
 
-`$challengeJson` adalah payload dari `ChallengeService::openNode()` — **tanpa kunci jawaban**.
+`$challengeJson` adalah payload dari `ChallengeService::openNode()` — **tanpa kunci jawaban**. Di implementasi, `_frame.php` meng-encode `$payload` sendiri (`JSON_HEX_*`), dan tombol 💡 dirender tersembunyi dengan `data-hints` = `hints_count`; daftar id petunjuk ada di `payload.hints` (tanpa teks — teks baru dikirim `POST /api/attempts/{id}/hints`).
 
 Markup arena per engine:
 
@@ -919,6 +919,12 @@ View tahap ini membutuhkan data yang belum dikirim controller tahap 4. Perubahan
 * **Dialog selalu muncul saat wilayah baru terbuka.** Ini aturan permanen: wilayah berstatus `open` selalu masuk lewat `/dialog/{code}`. Tautan peta memakai `entry`, dan layar selesai yang menuntaskan satu wilayah menawarkan "Lanjut ke {wilayah berikutnya}" menuju dialog pembuka wilayah itu. URL yang diketik langsung juga dijaga: `/wilayah/{code}`, `/misi/{code}/{n}`, dan `/tantangan/{code}/{n}` untuk wilayah yang baru terbuka dialihkan ke dialognya (`BaseGameController::dialogueGate()`) sampai dialog itu tampil. Tanda "sudah tampil" disimpan di sesi PHP per sesi permainan dan per wilayah, bukan di database, sehingga setelah keluar-masuk lagi dialog wilayah yang masih baru terbuka tampil kembali. Pustaka sengaja tidak dijaga. Dikunci oleh `tests/unit/RegionEntryTest.php` dan `tests/unit/DialogueGateTest.php`.
 * **Registrasi memakai nama lengkap.** Label kolom `display_name` adalah "Nama lengkap" / "Full name". Teks persetujuan (`Game.consentBody`) kini menyebut seluruh data profil yang dicatat — termasuk nama lengkap — dan bahwa nama hanya dapat dilihat guru dan tim peneliti. Versi teks persetujuan naik menjadi `2` (`RegisterController::CONSENT_VERSION`); persetujuan yang sudah tersimpan tetap bertanda versi `1`.
 * **Kolom sandi** sengaja tanpa atribut `minlength`: sandi lemah harus sampai ke server agar metrik `pw_weak_submit_count` tercatat.
+* **Audit pra-tahap 6 (23 September 2026).** Penelusuran alur nyata di MariaDB menemukan beberapa cacat di lapisan server yang menopang view ini; semuanya diperbaiki tanpa mengubah markup:
+  * attempt `cari` tidak dapat ditutup karena baris objek jebakan dihitung "belum dijawab" — kini petunjuk, progres, dan syarat `/complete` memakai satu aturan (`ChallengeService::expectsAnswer()`);
+  * first-pass `cari` kini ditutup salah oleh klik pertama yang keliru, dan `allow_retry = false` (arena `pilihan`) ditegakkan server;
+  * payload menambahkan `hints` (id petunjuk) sehingga tombol 💡 dapat dipakai tahap 6; `hints_count` kini menghitung petunjuk node dan petunjuk butir yang diminta dijawab;
+  * Debug Toolbar development tidak lagi menyimpan kata sandi dari form registrasi, masuk, ganti sandi, dan login staf (`App\Filters\DebugToolbar`).
+  Rinciannya di 03_MODEL_ENTITY.md dan 04_CONTROLLER_ROUTE.md.
 
 ### Aset
 

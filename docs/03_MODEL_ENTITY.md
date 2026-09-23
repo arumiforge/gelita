@@ -588,14 +588,14 @@ softDeleteScope(array $scope, int $staffId, string $reason): int
 | Model | returnType | Method khusus |
 |---|---|---|
 | `SchoolModel` | array | `activeList()`, `findOrCreateByName(string $name, array $region): int` |
-| `ResearchStudyModel` | array | `activeStudy(): ?array` |
+| `ResearchStudyModel` | array | `activeStudy(): ?array`, `requireActiveStudy(): array`; validasi `unlock_mode in_list[sequential,free]` (D13) |
 | `ResearchPhaseModel` | array | `forStudy(int $studyId): array`, `findByCode(int $studyId, string $code): ?array` |
 | `ParticipantConsentModel` | array | `latestFor(int $participantId): ?array` |
 | `GameReleaseModel` | array | `active(): array` (throw bila tidak ada) |
 | `LevelModel` | `Level` | `ordered(): array` (orderBy sequence), `findByCode(string $code): ?Level` |
 | `LearningIndicatorModel` | array | `map(): array` (keyed by code) |
 | `ScoringProfileModel` | array | `active(): array`, `findVersion(string $code, string $version): ?array` |
-| `MediaAssetModel` | array | `map(): array` (keyed by id, di-cache), `findByKey(string $key): ?array` |
+| `MediaAssetModel` | array | `map(): array` (keyed by id, di-cache), `activeKeyMap(): array` (asset_key → path), `findByKey(string $key): ?array`; `asset_type in_list[image,audio,video,sprite_frame]` sesuai §11 skema |
 | `AudioAssetModel` | array | `approvedFor(string $context, string $locale): ?array` |
 | `ChallengeOptionModel` | `ChallengeOption` | `forItems(array $itemIds): array` |
 | `HintModel` | array | `forNode(int $nodeId): array`, `forItem(int $itemId): array` |
@@ -852,6 +852,11 @@ class ChallengeService
      *                             Pemetaan kata→rumpang TIDAK dikirim.
      *   boleh                   → 'verdict_options' dari config node, 'require_reason'
      *   item ber-passage        → 'passages': {id: {title, body, media}} sekali per passage
+     *   cari                    → TANPA 'items'; 'objects' [{ref, x, y, w, media}] (target &
+     *                             jebakan identik, ref = token HMAC per attempt) + 'clues'
+     *                             [{item_id, text}] hanya untuk target yang dinilai
+     *   semua engine            → 'hints': [{id, item_id|null, sequence}] (id saja, teks baru
+     *                             dikirim useHint()) + 'hints_count'
      */
     public function openNode(GameSession $session, int $nodeId): array;
 
@@ -870,7 +875,13 @@ class ChallengeService
      *  8. tulis event answer_submitted / answer_changed
      * Semua dalam satu transaction.
      *
-     * Output: ['correct'=>bool, 'first_pass'=>bool, 'progress'=>[...]]
+     * allow_retry = false (pilihan): butir yang sudah dijawab tidak dinilai ulang;
+     * kiriman ulang dibalas hasil tersimpan dengan already_answered = true.
+     *
+     * Output: ['correct'=>bool, 'first_pass'=>bool, 'wrong_click'=>bool, 'decoy'=>bool,
+     *          'already_answered'=>bool, 'feedback'=>?string,
+     *          'correct_option_key'=>?string  // hanya sesudah dijawab & hanya bila allow_retry = false
+     *          'progress'=>['answered'=>n, 'total'=>n]]   // total tidak menghitung jebakan
      */
     public function submitAnswer(ChallengeAttempt $attempt, int $itemId, array $answer, array $meta): array;
 
@@ -884,6 +895,13 @@ class ChallengeService
      * Output: ['results'=>[itemId=>bool], 'correct_count'=>n, 'total'=>n, 'all_correct'=>bool]
      */
     public function submitCheck(ChallengeAttempt $attempt, array $answers): array;
+
+    /**
+     * Id butir yang belum dijawab/dilewati — syarat ChallengeApiController::complete().
+     * Hanya butir yang memang diminta dijawab (expectsAnswer): objek jebakan `cari`
+     * punya baris item_responses tetapi tidak pernah menahan attempt tetap terbuka.
+     */
+    public function pendingItemIds(ChallengeAttempt $attempt): array;
 
     /** Mencatat pemakaian hint. attempt.hint_count++, item_responses.hint_used = 1 */
     public function useHint(ChallengeAttempt $attempt, int $hintId, ?int $itemId): array;
@@ -913,7 +931,7 @@ class ChallengeService
 | `verdict_reason` | sama seperti di atas; `reason_text` disimpan, `reason_review_status = 'pending'`, **alasan tidak memengaruhi benar/salah** |
 | `single_choice` | `answer.option_key === answer_key_json.option_key` |
 | `source_trust` | sama seperti `single_choice` |
-| `find_object` | Klien mengirim `answer.object` (token objek per attempt); `ChallengeService::resolveObjectAnswer()` menerjemahkannya ke id butir yang diklik, lalu benar bila id itu = id butir target. `answer.item_id` mentah dari klien diabaikan. Klik objek salah → `wrong_click_count++`, event `wrong_target_clicked`, tidak mengubah `first_pass_correct` target yang sedang dicari |
+| `find_object` | Klien mengirim `answer.object` (token objek per attempt); `ChallengeService::resolveObjectAnswer()` menerjemahkannya ke id butir yang diklik, lalu benar bila id itu = id butir target. `answer.item_id` mentah dari klien diabaikan. Klik objek salah → `wrong_click_count++`, event `wrong_target_clicked`; bila itu klik **pertama** untuk petunjuk tersebut, `first_answer_json` diisi dan `first_pass_correct = 0` (tetap 0 walau objek benar ditemukan sesudahnya). Butir tetap terbuka sampai objek benar diklik |
 
 **Aturan first-pass per engine** (ini menentukan ukuran utama penelitian):
 
@@ -922,8 +940,8 @@ class ChallengeService
 | `puzzle` | pada pemeriksaan pertama |
 | `rumpang` | pada pemeriksaan pertama, per blank |
 | `boleh` | pada pemeriksaan pertama, per kartu (termasuk pilihan Pendapat) |
-| `pilihan` | jawaban pertama = jawaban final (`allow_retry = false`) |
-| `cari` | klik pertama untuk tiap petunjuk |
+| `pilihan` | jawaban pertama = jawaban final (`allow_retry = false`, ditegakkan server: jawaban berikutnya untuk butir yang sama diabaikan) |
+| `cari` | klik pertama untuk tiap petunjuk — klik pertama yang salah menutup first-pass sebagai salah |
 
 ### 5. `ScoringService`
 
@@ -994,10 +1012,19 @@ class EventService
     /** Menulis satu event dari sisi server (dipanggil Service lain). */
     public function record(GameSession $session, string $type, array $payload = [], array $refs = []): void;
 
-    /** Telemetry audio terstruktur → audio_usage_events + raw event. */
-    public function recordAudio(GameSession $session, array $audioEvent): void;
+    /**
+     * Telemetry audio terstruktur → audio_usage_events + raw event dalam satu transaction.
+     * Idempotent terhadap client_event_id; true = ditulis, false = duplikat.
+     */
+    public function recordAudio(GameSession $session, array $audioEvent): bool;
 }
 ```
+
+Rincian yang dikunci implementasi:
+
+* Rujukan event dari klien memakai nama kontrak 04/06 — `level_id`, `node_id`, `attempt_id`, `item_id` — dan nama kolom lengkap (`challenge_node_id`, …) tetap diterima.
+* `occurred_at` klien (ISO 8601, mis. `2026-09-21T02:14:22.481Z`) dikonversi ke zona aplikasi dengan pecahan detik utuh (`2026-09-21 09:14:22.481000`); waktu yang tidak dapat diurai diganti waktu server. Dikunci `tests/unit/EventTimeTest.php`.
+* `GameEventLogModel::timeline()` mengurutkan `occurred_at`, lalu `sequence_no`, lalu `id` (aturan 8 di 01_DATABASE.md): `sequence_no` klien dimulai ulang setiap halaman dimuat.
 
 `record()` dipanggil di dalam transaction milik Service pemanggil, sehingga "simpan jawaban + simpan event + update progres" benar-benar atomik.
 

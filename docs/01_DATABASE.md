@@ -9,7 +9,7 @@ Stack: CodeIgniter 4.7.x · PHP 8.2+ · MySQL 8.0 / MariaDB 10.6+ · InnoDB · u
 
 ## Tujuan
 
-Membuat seluruh skema database GELITA production dari nol: 29 tabel, relasi, index, migration, dan seeder. Setelah tahap ini selesai, database siap menerima data konten dan data penelitian tanpa perlu melihat sistem mana pun sebelumnya.
+Membuat seluruh skema database GELITA production dari nol: 29 tabel domain (ditambah tabel sesi CI4 `ci_sessions`), relasi, index, migration, dan seeder. Setelah tahap ini selesai, database siap menerima data konten dan data penelitian tanpa perlu melihat sistem mana pun sebelumnya.
 
 ---
 
@@ -61,7 +61,7 @@ Dokumen sumber sebelumnya mengandung beberapa konflik. Berikut keputusan final u
 | D10 | Analitik kunjungan sebagai tabel terpisah | **Digabung** ke `game_sessions` (device/os/browser) + `game_event_logs` |
 | D11 | Scope guru | `staff_users.school_id` nullable. `admin` = semua data, `guru` = hanya peserta pada sekolah yang sama |
 | D12 | Boleh ada >1 sesi pada fase yang sama | **Boleh.** Analitik memakai sesi `completed` terakhir per (participant, study, phase) sebagai default |
-| D13 | Unlock level | **Sequential** secara default; `research_studies.unlock_mode` = `sequential` \| `open` |
+| D13 | Unlock level | **Sequential** secara default; `research_studies.unlock_mode` = `sequential` \| `free`. Nilai `free` (bukan `open`) dipakai agar tidak tertukar dengan status wilayah/node `open` di layar peta |
 | D14 | Retention period | Default **1825 hari (5 tahun)** di `research_studies.retention_days`, dapat diubah admin |
 | D15 | `district` = kabupaten saja atau termasuk kota | **Kabupaten dan kota**, satu kolom `district_*` |
 | D16 | Master wilayah Indonesia sebagai tabel DB | **Tidak.** Dipakai file statis `public/assets/data/wilayah-id.json`; yang disimpan di DB hanya kode + snapshot nama |
@@ -78,8 +78,8 @@ Dokumen sumber sebelumnya mengandung beberapa konflik. Berikut keputusan final u
 ## Yang Harus Dibuat
 
 1. Database `gelita` (utf8mb4_unicode_ci, InnoDB).
-2. 29 migration CodeIgniter.
-3. 8 seeder.
+2. 29 migration pembuat tabel + migration pendukung (`002900` FK level, `003000` `ci_sessions`) + migration koreksi (`003100`–`003300`) — total 34 berkas.
+3. 9 seeder data, dijalankan berurutan oleh `DatabaseSeeder` (kelas dasar bersama: `GelitaSeeder`).
 4. File referensi statis `public/assets/data/wilayah-id.json` (tidak masuk DB).
 
 ---
@@ -177,7 +177,7 @@ Akun guru/admin. Akun siswa disimpan terpisah di `participants` (bagian 5) — d
 | status | VARCHAR(20) | NO | `draft` | `draft` \| `active` \| `closed`; INDEX |
 | retention_days | INT UNSIGNED | NO | 1825 | D14 |
 | default_locale | VARCHAR(5) | NO | `id` | `id` \| `en` |
-| unlock_mode | VARCHAR(20) | NO | `sequential` | `sequential` \| `open` (D13) |
+| unlock_mode | VARCHAR(20) | NO | `sequential` | `sequential` \| `free` (D13) |
 | item_selection_mode | VARCHAR(20) | NO | `fixed` | `fixed` (seeded per participant) \| `random` |
 | require_consent | TINYINT(1) | NO | 1 | |
 | active_phase_code | VARCHAR(20) | NO | `umum` | fase yang sedang berjalan: `umum` \| `pretest` \| `posttest`; dipakai saat siswa registrasi/login |
@@ -527,7 +527,7 @@ Konvensi kunci: `item_key` = `{tmg|mgl|wnb}-{node}-{nomor 2 digit}`, mis. `mgl-4
 { "grid": 3 }
 ```
 
-> `decoy: true` = objek jebakan dari daerah lain. Objek jebakan wajib `scorable: 0` dan tidak pernah menjadi target; klik padanya dicatat sebagai `answer_changed`/salah dan memunculkan penjelasan.
+> `decoy: true` = objek jebakan dari daerah lain. Objek jebakan wajib `scorable: 0` dan tidak pernah menjadi target, tidak punya petunjuk, dan tidak pernah menahan attempt tetap terbuka. Klik pada objek yang salah (jebakan atau target lain) dicatat sebagai `wrong_target_clicked` dan `wrong_click_count`; bila itu klik pertama untuk petunjuk yang sedang dicari, first-pass petunjuk itu tertutup sebagai salah, lalu klik benar sesudahnya dihitung sebagai perubahan jawaban. Penjelasan (`wrong_feedback_*`) dikirim sesudah klik.
 
 ### 15. `challenge_options`
 
@@ -776,7 +776,7 @@ Raw event, source of truth penelitian. **Tidak boleh diganti oleh agregat.**
 | delete_reason | VARCHAR(255) | YES | NULL | |
 
 UNIQUE: `(session_id, client_event_id)`.
-INDEX gabungan wajib:
+INDEX gabungan wajib (`(session_id, occurred_at)` ditambahkan migration koreksi `003300`, karena `002400` tidak membuatnya):
 
 * `(session_id, sequence_no)`
 * `(session_id, occurred_at)`
@@ -934,6 +934,7 @@ Nama file mengikuti konvensi CI4 `YYYY-MM-DD-HHMMSS_ClassName.php` di `app/Datab
 2026-01-01-003000_CreateCiSessions
 2026-01-01-003100_AlignChallengeAttemptMetrics
 2026-01-01-003200_EnforceChallengeAttemptMetricDefaults
+2026-01-01-003300_AddEventLogSessionTimeIndex
 ```
 
 > `002900` menambahkan FK dari `levels` ke `media_assets`. Ini dipisah karena `levels` dibuat setelah `media_assets`, tetapi beberapa FK silang (`challenge_nodes.audio_intro_id` → `audio_assets`) lebih aman dipasang belakangan agar `up()`/`down()` bersih.
@@ -1028,6 +1029,10 @@ $this->forge->addForeignKey('level_id', 'levels', 'id', '', 'CASCADE');
 `003200` juga memanggil `resetDataCache()` sebelum memeriksa kolom: `BaseConnection` meng-cache daftar kolom per tabel dan `Forge` tidak pernah membersihkannya sesudah `ALTER`, sehingga pada satu proses `spark migrate` yang sama seluruh pemeriksaan `fieldExists()` masih membaca nama kolom versi sebelum `003100`.
 
 > **Jangan melakukan rollback ke bawah `003100`.** Model, Entity, dan Service tahap 3 memakai nama kolom hasil migration tersebut. `down()` milik `003200` sengaja hanya mengembalikan kelima kolom ke keadaan nullable yang ditinggalkan `003100`, agar rollback berantai tetap bersih.
+
+### Index linimasa event (`003300`)
+
+`002400` tidak membuat index gabungan `game_event_logs (session_id, occurred_at)` yang diwajibkan §24 dan prioritas 2 *Index Strategy*. `003300` menambahkannya tanpa mengubah `002400`, dengan pola yang sama seperti `003100`/`003200`. Index ini melayani linimasa sesi, yang diurutkan `occurred_at` lalu `sequence_no` (aturan 8) — `sequence_no` kiriman klien dimulai ulang setiap halaman dimuat, jadi tidak dapat menjadi kunci urutan utama. `up()`/`down()` memeriksa keberadaan index lebih dulu sehingga aman dijalankan ulang.
 
 ---
 
@@ -1200,7 +1205,7 @@ Ini peta node final. `items_per_round` menentukan berapa item diambil dari bank.
 | wnb-4 | Pilih Sumber Terpercaya | Choose the Trusted Source | Pilih sumber yang paling dapat dipercaya. |
 | wnb-5 | Apa yang Sebaiknya Kamu Lakukan? | What Should You Do? | Pilih tindakan yang paling tepat dan bertanggung jawab. |
 
-`ContentSeeder` hanya membuat struktur dan metadata node. `SampleItemSeeder` (development saja) menambah 2 item contoh per node agar alur dapat diuji. Isi bank soal production dimuat lewat impor workbook.
+`ContentSeeder` hanya membuat struktur dan metadata node (judul, instruksi, config, posisi); `description_*` (teks kartu misi) diisi dari sheet `nodes` workbook bank soal atau editor konten, dan kartu misi tetap tampil tanpa deskripsi. `SampleItemSeeder` (development saja) menambah 2 item contoh per node agar alur dapat diuji. Isi bank soal production dimuat lewat impor workbook.
 
 ---
 
@@ -1210,7 +1215,7 @@ Ini peta node final. `items_per_round` menentukan berapa item diambil dari bank.
 2. Setiap level wajib punya tepat **5** `challenge_nodes` dengan `is_active = 1` untuk release production. Divalidasi lewat `php spark gelita:content:verify`.
 3. `challenge_nodes.engine_type` hanya boleh salah satu dari 5 nilai baseline.
 4. `challenge_items` hanya boleh milik node aktif. `challenge_options` hanya boleh milik item aktif.
-5. `item_responses` hanya boleh menunjuk item yang ada di `challenge_attempts.selected_item_ids_json` pada attempt tersebut. Ditolak `403` bila tidak.
+5. `item_responses` hanya boleh menunjuk item yang ada di `challenge_attempts.selected_item_ids_json` pada attempt tersebut. Ditolak `422 INVALID_RESPONSE` bila tidak (lihat 04_CONTROLLER_ROUTE.md).
 6. Skor akhir **hanya** dihitung server. Nilai `correct` yang dikirim browser diabaikan sepenuhnya.
 7. `client_event_id` bersifat idempotent: duplikat dibalas `200 {status:"duplicate"}` tanpa menulis baris baru.
 8. `sequence_no` per session harus monoton naik. Event yang datang out-of-order tetap disimpan apa adanya; urutan analitik memakai `occurred_at` lalu `sequence_no`.
@@ -1299,8 +1304,8 @@ Tidak ada. Ini tahap pertama.
 
 Setelah tahap ini selesai:
 
-* Database `gelita` berisi 29 tabel dengan FK dan index lengkap.
-* `php spark migrate` berjalan bersih dari nol dan `php spark migrate:rollback` mengembalikan ke kosong.
+* Database `gelita` berisi 29 tabel domain + `ci_sessions` (ditambah tabel `migrations` milik CodeIgniter: 31 tabel), dengan FK dan index lengkap.
+* `php spark migrate` berjalan bersih dari nol dan `php spark migrate:rollback -b 0` mengembalikan ke kosong (hanya tabel `migrations` yang tersisa). Diverifikasi terhadap MariaDB 10.11.
 * `php spark db:seed DatabaseSeeder` menghasilkan: 1 akun admin, 3 indikator, 1 scoring profile, 1 release, 1 study + 3 phase, 3 level, 15 challenge node lengkap dengan judul/instruksi dwibahasa, dan media assets terdaftar. Di development, `SampleItemSeeder` menambah 2 item contoh per node.
 * Tabel `participants` sudah memiliki kolom akun siswa (`username`, `password_hash`, kolom throttle, dan dua kolom metrik literasi keamanan digital).
 * Query verifikasi ini mengembalikan tepat `3` dan `15`:
