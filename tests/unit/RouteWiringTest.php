@@ -14,7 +14,7 @@ final class RouteWiringTest extends CIUnitTestCase
 {
     private const CONTROLLER_COUNT = [
         'Game'  => 10,  // 9 controller + BaseGameController
-        'Admin' => 13,  // 12 controller + BaseAdminController
+        'Admin' => 14,  // 13 controller + BaseAdminController
         'Api'   => 9,   // 8 controller + BaseApiController
     ];
 
@@ -27,12 +27,14 @@ final class RouteWiringTest extends CIUnitTestCase
             'api/auth/username-available' => 'Api\AuthApiController::usernameAvailable',
             'admin/login'                 => 'Admin\AuthController::loginForm',
             'admin/dashboard'             => 'Admin\DashboardController::index',
+            'admin/akun/sandi'            => 'Admin\AccountController::passwordForm',
         ],
         'POST' => [
             'daftar'                 => 'Game\RegisterController::store',
             'masuk'                  => 'Game\LoginController::login',
             'api/events'             => 'Api\EventApiController::ingest',
             'admin/konten/verifikasi' => 'Admin\ContentController::verify',
+            'admin/akun/sandi'       => 'Admin\AccountController::changePassword',
         ],
     ];
 
@@ -92,6 +94,18 @@ final class RouteWiringTest extends CIUnitTestCase
                 $this->assertArrayHasKey($from, $defined, "Route {$method} {$from} tidak terdaftar");
                 $this->assertStringContainsString($handler, (string) $defined[$from]);
             }
+        }
+    }
+
+    /** Ganti sandi sendiri: wajib login staf, tetapi terbuka untuk guru (bukan khusus admin). */
+    public function testOwnPasswordChangeNeedsLoginButNotAdminRole(): void
+    {
+        $routes = $this->routes();
+
+        foreach (['GET', 'POST'] as $method) {
+            $routes->setHTTPVerb($method);
+
+            $this->assertSame(['staffAuth'], $routes->getFiltersForRoute('admin/akun/sandi'), $method);
         }
     }
 

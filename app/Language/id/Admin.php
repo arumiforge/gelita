@@ -5,10 +5,11 @@
  * untuk /admin dan /api/admin, sehingga tidak ada berkas en/Admin.php.
  */
 return [
-    'panelTitle' => 'Panel GELITA',
-    'logout'     => 'Keluar',
-    'mainMenu'   => 'Menu utama',
-    'loginTitle' => 'Masuk Panel',
+    'panelTitle'     => 'Panel GELITA',
+    'logout'         => 'Keluar',
+    'changePassword' => 'Ubah sandi',
+    'mainMenu'       => 'Menu utama',
+    'loginTitle'     => 'Masuk Panel',
 
     'closeMenu'        => 'Tutup menu',
     'groupData'        => 'Data penelitian',

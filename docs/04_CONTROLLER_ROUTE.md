@@ -69,6 +69,7 @@ app/Controllers/
 ├── Admin/
 │   ├── BaseAdminController.php       panel(): judul, filter, activeStudy, filterOptions
 │   ├── AuthController.php            login/logout staff
+│   ├── AccountController.php         ganti sandi sendiri (guru & admin)
 │   ├── DashboardController.php       ringkasan
 │   ├── ParticipantController.php     daftar & profil peserta
 │   ├── SessionController.php         daftar sesi + drilldown event
@@ -187,6 +188,10 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
 
         $routes->get('/',            'DashboardController::index');
         $routes->get('dashboard',    'DashboardController::index');
+
+        // Akun sendiri — guru & admin
+        $routes->get('akun/sandi',   'AccountController::passwordForm');
+        $routes->post('akun/sandi',  'AccountController::changePassword');
 
         // Data penelitian — guru & admin (scope guru dibatasi sekolahnya)
         $routes->get('peserta',                  'ParticipantController::index');
@@ -348,6 +353,8 @@ $routes->group('api/admin', [
 | GET | `/admin/login` | AuthController::loginForm | — | form login |
 | POST | `/admin/login` | AuthController::login | — | proses login |
 | GET | `/admin/logout` | AuthController::logout | staff | keluar |
+| GET | `/admin/akun/sandi` | AccountController::passwordForm | guru, admin | form ganti sandi sendiri |
+| POST | `/admin/akun/sandi` | AccountController::changePassword | guru, admin | ganti sandi sendiri |
 | GET | `/admin/dashboard` | DashboardController::index | guru, admin | KPI + chart |
 | GET | `/admin/peserta` | ParticipantController::index | guru, admin | daftar peserta (scoped) |
 | GET | `/admin/peserta/{id}` | ParticipantController::show | guru, admin | profil & capaian |
@@ -570,6 +577,23 @@ Aturan `login()`:
 
 `logout()`: audit `logout`, `session()->destroy()`, redirect `/admin/login`.
 
+### `Admin\AccountController`
+
+```php
+passwordForm()     // GET  /admin/akun/sandi — guru & admin (filter staffAuth saja)
+changePassword()   // POST {current_password, password, password_confirm}
+```
+
+Aturan `changePassword()`:
+
+1. Validasi `current_password: required`; `password: required|min_length[12]|max_length[72]|differs[current_password]` (sama dengan pembuatan akun di `StaffController::store()`; 72 = batas bcrypt); `password_confirm: matches[password]`.
+2. Sandi saat ini salah → `registerFailedLogin()`, audit `staff_password_change_failed`, kembali dengan "Kata sandi saat ini salah.".
+3. Bila salah tebak itu mengunci akun (throttle staf: 5 kali → 15 menit), kunci sesi staf dihapus dan sesi di-`regenerate(true)`, lalu redirect ke `/admin/login` dengan pesan penguncian. Sesi yang dibajak tidak dapat dipakai menebak sandi.
+4. Berhasil → `setPassword()`, `failed_login_count = 0`, `session()->regenerate(true)`, audit `staff_password_change`, kembali dengan pesan berhasil.
+5. Kata sandi tidak pernah masuk flash, `old()`, maupun `audit_logs` (metadata audit kosong).
+
+Tautan **Ubah sandi** ada di kepala setiap halaman panel. Sandi sementara hasil reset di `/admin/staf` sebaiknya segera diganti pemiliknya lewat halaman ini.
+
 ### `Admin\DashboardController` & `AnalyticsController`
 
 Semua method mengikuti pola yang sama:
@@ -688,6 +712,7 @@ Penghapusan tidak pernah senyap. Tidak ada endpoint yang menghapus data peneliti
 * Session CI4 dengan DatabaseHandler; `regenerate(true)` setelah login berhasil.
 * Throttle: 5 kegagalan → `locked_until = NOW + 15 menit`.
 * Semua percobaan login (berhasil dan gagal) masuk `audit_logs` dengan `ip_hash`, bukan IP mentah.
+* Staf mengganti sandinya sendiri di `/admin/akun/sandi` (lihat `AccountController`). Salah tebak sandi saat ini ikut throttle yang sama.
 * Tidak ada "remember me" — data penelitian tidak layak dibiarkan terbuka di komputer bersama sekolah.
 
 ---
@@ -784,6 +809,7 @@ Di production, `SERVER_ERROR` tidak pernah menyertakan pesan exception, kelas, a
 12. Kata sandi (siswa maupun staf, termasuk sandi sementara hasil reset) tidak pernah ditulis ke flash data, `old()`, log, `game_event_logs`, maupun `audit_logs`.
 13. Form login siswa dan staf selalu memberi pesan identik untuk nama pengguna tidak ada dan sandi salah.
 14. Guru hanya dapat mereset sandi siswa di sekolahnya; setiap reset tercatat di `audit_logs`.
+15. Request HEAD dilayani rute GET dengan handler **dan** filter yang sama (`App\Libraries\HeadAsGetRouteCollection`, didaftarkan di `Config\Services::routes()`). Tanpa itu CodeIgniter menjawab HEAD dengan 404; memetakan handler tanpa filter akan membuka halaman staf tanpa login. Filter yang punya efek samping khusus GET (simpan tujuan login, `?lang=`) memeriksa `getMethod() === 'GET'`, sehingga tidak berjalan untuk HEAD.
 
 ---
 

@@ -53,7 +53,8 @@ $logo     = media_key_src('ui.logo');
           <b><?= esc(session('staff_name') ?? '') ?></b>
           <small><?= esc(lang(session('staff_role') === 'admin' ? 'Admin.roleAdmin' : 'Admin.roleGuru')) ?></small>
         </span>
-        <a class="btn btn-quiet btn-sm" href="<?= base_url('admin/logout') ?>"><?= icon('logout') ?> <?= esc(lang('Admin.logout')) ?></a>
+        <a class="btn btn-quiet btn-sm" href="<?= base_url('admin/akun/sandi') ?>" title="<?= esc(lang('Admin.changePassword'), 'attr') ?>"><?= icon('key') ?> <span class="btn-text"><?= esc(lang('Admin.changePassword')) ?></span></a>
+        <a class="btn btn-quiet btn-sm" href="<?= base_url('admin/logout') ?>" title="<?= esc(lang('Admin.logout'), 'attr') ?>"><?= icon('logout') ?> <span class="btn-text"><?= esc(lang('Admin.logout')) ?></span></a>
       <?php endif ?>
     </div>
   </header>
