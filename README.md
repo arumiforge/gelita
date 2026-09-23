@@ -66,8 +66,8 @@ Rincian keputusan ada di dokumen tahap masing-masing; ringkasan UI di [`docs/05_
 ### Batas ruang lingkup saat ini
 
 - **Narasi petunjuk arena `cari` belum bersuara**: payload `clues` belum membawa aset audio; teks petunjuk tampil dan diumumkan ke pembaca layar.
-- **Ekspor dibangun sinkron** di request yang sama (batas 300 detik). Untuk dataset yang jauh lebih besar dari ambang Raw Events, pemindahan ke antrean kerja dibahas pada tahap 8.
-- **Cron belum terpasang** — `gelita:retention:run` siap dipakai; pemasangan crontab adalah bagian tahap 8. Sampai itu, jalankan dari tombol di `/admin/tata-kelola`.
+- **Ekspor dibangun sinkron** di request yang sama (batas 300 detik). Tahap 8 memutuskan tetap sinkron; ambang `gelita.exportMaxRawEvents` menjaga ukurannya. Alasannya ada di [`docs/08_DEPLOYMENT.md` → *Keputusan yang tercatat*](docs/08_DEPLOYMENT.md#keputusan-yang-tercatat).
+- **Cron belum terpasang** — `gelita:retention:run` siap dipakai; pemasangannya (cron di Linux, Task Scheduler di Windows) adalah bagian tahap 8. Sampai itu, jalankan dari tombol di `/admin/tata-kelola`.
 - `App\Libraries\HashedIpSessionHandler` **belum dipasang**; alasannya di bagian *Sesi dan CSRF* di bawah.
 
 ## Prasyarat lokal
@@ -77,6 +77,8 @@ Rincian keputusan ada di dokumen tahap masing-masing; ringkasan UI di [`docs/05_
 - MySQL 8.0+ atau MariaDB 10.6+
 - Web server lokal, atau server bawaan CodeIgniter untuk pengembangan
 - Ekstensi PHP: `intl`, `mbstring`, `json`, `mysqli`/`mysqlnd`, `curl`, `gd`, `zip`, `fileinfo`, `openssl`, `iconv`, `dom`, `xml`, `xmlwriter`, dan `simplexml`
+
+Di Windows, Laragon (PHP 8.3 + MySQL) memenuhi semua prasyarat. Pengaturan ekstensinya ada di [`docs/08_DEPLOYMENT.md` → Jalur W](docs/08_DEPLOYMENT.md#ekstensi-php-wajib). Perintah di bawah ditulis untuk Bash; padanan PowerShell diberikan bila sintaksnya berbeda.
 
 ## Menjalankan secara lokal
 
@@ -89,7 +91,7 @@ Rincian keputusan ada di dokumen tahap masing-masing; ringkasan UI di [`docs/05_
 2. Salin templat environment, lalu sesuaikan isinya:
 
    ```bash
-   cp env .env
+   cp env .env                 # PowerShell: Copy-Item env .env
    ```
 
    Berkas `env` adalah templat yang dilacak Git; `.env` hasil salinannya **tidak pernah** di-commit. Yang wajib diisi sebelum aplikasi dijalankan:
@@ -107,6 +109,12 @@ Rincian keputusan ada di dokumen tahap masing-masing; ringkasan UI di [`docs/05_
    mysql -u root -p -e "CREATE DATABASE gelita CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
    php spark migrate
    GELITA_ADMIN_PASSWORD='SandiKuatAnda123!' php spark db:seed DatabaseSeeder
+   ```
+
+   Di PowerShell, sintaks `VAR='…' perintah` tidak ada:
+
+   ```powershell
+   $env:GELITA_ADMIN_PASSWORD = 'SandiKuatAnda123!'; php spark db:seed DatabaseSeeder; Remove-Item Env:\GELITA_ADMIN_PASSWORD
    ```
 
    Tabel sesi `ci_sessions` sudah termasuk migration proyek — jangan menjalankan `php spark session:migration`. Pada `CI_ENVIRONMENT = development`, `DatabaseSeeder` juga menjalankan `SampleItemSeeder` (2 butir contoh per node) agar kelima belas tantangan dapat dimainkan sebelum bank soal diimpor.
@@ -164,14 +172,13 @@ Suite (123 test) memakai grup database `tests` (SQLite3 in-memory) dan hanya men
 - `Stage7WiringTest` — kelima command `gelita:*` aktif, service baru terdaftar, dan setiap keluaran templat PDF lewat `esc()`.
 - `ScoringServiceTest`, `PasswordPolicyTest`, `ChallengeEntityTest`, `ViewHelperTest`, `LanguageFilesTest`, `EventTimeTest`, `DebugToolbarRedactionTest`.
 
-Karena tabel aplikasi tidak dibuat di suite ini, **alur HTTP ujung ke ujung diverifikasi di atas MySQL/MariaDB sungguhan**. Gunakan database scratch terpisah (kredensial boleh dioper lewat environment untuk perintah CLI):
+Karena tabel aplikasi tidak dibuat di suite ini, **alur HTTP ujung ke ujung diverifikasi di atas MySQL/MariaDB sungguhan**. Gunakan database scratch terpisah. Kredensial untuk perintah CLI dioper lewat `database_default_DSN`, satu-satunya cara yang dapat menimpa `.env`:
 
 ```bash
-env "database.default.database=gelita_scratch" \
-    "database.default.username=..." \
-    "database.default.password=..." \
-    php spark migrate
+database_default_DSN='MySQLi://user:sandi-url-encoded@localhost/gelita_scratch' php spark migrate
 ```
+
+`env "database.default.database=…"` atau `database_default_username=…` **tidak** berlaku bila kunci itu sudah ada di `.env`, karena nilai `.env` dibaca lebih dulu. DSN ditulis tanpa port: CodeIgniter 4.7.4 meneruskan port dari DSN sebagai string, dan `mysqli` menolaknya. Rinciannya di [`docs/08_DEPLOYMENT.md` → *Kredensial migration lewat DSN*](docs/08_DEPLOYMENT.md#kredensial-migration-lewat-dsn).
 
 lalu seed, jalankan `php spark serve`, dan telusuri alur siswa (registrasi → tantangan → refleksi) serta halaman admin. `php spark serve` membaca `.env`, jadi untuk penelusuran HTTP isi `.env` lokal dengan database scratch tersebut.
 
@@ -188,7 +195,7 @@ Dokumen spesifikasi per tahap ada di folder [`docs`](docs/) dan mencerminkan imp
 5. [View, UI, dan CSS](docs/05_VIEW_UI.md)
 6. [JavaScript](docs/06_JAVASCRIPT.md)
 7. [Integrasi fitur](docs/07_FEATURE_INTEGRATION.md)
-8. [Deployment dan operasional](docs/08_DEPLOYMENT.md) — tahap berikutnya
+8. [Deployment dan operasional](docs/08_DEPLOYMENT.md) — tahap berikutnya; Revisi 3 mencakup Linux dan Windows + Laragon (Nginx)
 
 Daftar route lengkap dapat dilihat kapan saja tanpa membaca kode:
 
