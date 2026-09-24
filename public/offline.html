@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0B1320">
+  <title>GELITA · Tanpa koneksi</title>
+  <!-- Ditampilkan service worker (sw.js) saat jaringan putus. Mandiri: tanpa
+       CSS/JS/font luar, karena semuanya tidak dapat diambil saat offline. -->
+  <style>
+    html, body { height: 100%; margin: 0; }
+    body {
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      box-sizing: border-box;
+      background: radial-gradient(ellipse at 50% 0%, #26355A, transparent 60%), #0B1320;
+      color: #EAF0FA;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.5;
+      text-align: center;
+    }
+    main { display: grid; justify-items: center; gap: 12px; max-width: 460px; }
+    svg { width: 72px; height: 72px; color: #DFC087; }
+    h1 { margin: 0; color: #F0DFB8; font-family: Georgia, "Times New Roman", serif; font-size: 1.6rem; letter-spacing: .04em; }
+    p { margin: 0; font-size: 1.05rem; }
+    .en { color: #B7C2D6; font-size: .95rem; font-style: italic; }
+    button {
+      min-height: 48px;
+      margin-top: 8px;
+      padding: 8px 28px;
+      border: 0;
+      border-radius: 999px;
+      background: linear-gradient(#F0DFB8, #C7A265);
+      color: #0B1320;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    button:focus-visible { outline: 3px solid #DFC087; outline-offset: 3px; }
+  </style>
+</head>
+<body>
+  <main>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M12 2v3"/><path d="M8 7h8l-1 12H9z"/><path d="M7 21h10"/><path d="M12 11v4"/>
+    </svg>
+    <h1>Lentera belum tersambung</h1>
+    <p>GELITA butuh internet. Periksa koneksi, lalu coba lagi. Jawabanmu yang sudah diperiksa tetap tersimpan.</p>
+    <p class="en" lang="en">GELITA needs the internet. Check the connection, then try again. Answers you already checked are saved.</p>
+    <button type="button" onclick="location.reload()">Coba lagi · Try again</button>
+  </main>
+  <script>
+    // Muat ulang sendiri begitu koneksi kembali
+    window.addEventListener('online', () => location.reload());
+  </script>
+</body>
+</html>

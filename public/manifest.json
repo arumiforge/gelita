@@ -1,0 +1,21 @@
+{
+  "id": "./",
+  "name": "GELITA — Game Edukasi Literasi dan Etnopedagogi Kedu",
+  "short_name": "GELITA",
+  "description": "Game edukasi literasi dan budaya Kedu: Temanggung, Magelang, Wonosobo.",
+  "lang": "id",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "fullscreen",
+  "display_override": ["fullscreen", "standalone"],
+  "orientation": "landscape",
+  "background_color": "#0B1320",
+  "theme_color": "#0B1320",
+  "categories": ["education", "games"],
+  "icons": [
+    { "src": "assets/app/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/app/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "assets/app/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
