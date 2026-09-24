@@ -78,7 +78,7 @@ Dokumen sumber sebelumnya mengandung beberapa konflik. Berikut keputusan final u
 ## Yang Harus Dibuat
 
 1. Database `gelita` (utf8mb4_unicode_ci, InnoDB).
-2. 29 migration pembuat tabel + migration pendukung (`002900` FK level, `003000` `ci_sessions`) + migration koreksi (`003100`–`003300`) + `003400` (wajib ganti sandi staf) + `003500` (media Pustaka `library_media`) — total 36 berkas.
+2. 29 migration pembuat tabel + migration pendukung (`002900` FK level, `003000` `ci_sessions`) + migration koreksi (`003100`–`003300`) + `003400` (wajib ganti sandi staf) + `003500` (media Pustaka `library_media`) + `003600` (`participants.intro_seen_at`) — total 37 berkas.
 3. 9 seeder data, dijalankan berurutan oleh `DatabaseSeeder` (kelas dasar bersama: `GelitaSeeder`).
 4. File referensi statis `public/assets/data/wilayah-id.json` (tidak masuk DB).
 
@@ -245,6 +245,7 @@ UNIQUE: `(study_id, code)`.
 | locked_until | DATETIME(6) | YES | NULL | |
 | last_login_at | DATETIME(6) | YES | NULL | |
 | password_changed_at | DATETIME(6) | YES | NULL | |
+| intro_seen_at | DATETIME(6) | YES | NULL | pertama kali menyelesaikan cerita pembuka (`/intro/selesai`); NULL = pemain baru, wajib menonton sebelum peta terbuka. Diisi sekali, tidak pernah ditimpa |
 | created_at | DATETIME(6) | NO | CURRENT | |
 | updated_at | DATETIME(6) | NO | CURRENT | |
 | deleted_at | DATETIME(6) | YES | NULL | INDEX (soft delete) |
@@ -825,8 +826,10 @@ challenge_skipped    challenge_abandoned
 answer_submitted     answer_changed      wrong_target_clicked
 hint_opened          audio_play          audio_pause
 audio_replay         audio_completed     feedback_submitted
-password_changed
+password_changed     intro_completed
 ```
+
+`intro_completed` dicatat server setiap kali cerita pembuka selesai (`/intro/selesai`), dengan `payload_json.first` = `true` pada tontonan pertama (saat `participants.intro_seen_at` diisi) dan `false` pada tontonan ulang.
 
 `session_started` dan `session_resumed` menyertakan `payload_json.via` = `register` \| `login`. Kegagalan login tidak ditulis ke tabel ini (belum ada sesi); jejaknya ada di `participants.failed_login_count`.
 
@@ -968,6 +971,7 @@ Nama file mengikuti konvensi CI4 `YYYY-MM-DD-HHMMSS_ClassName.php` di `app/Datab
 2026-01-01-003300_AddEventLogSessionTimeIndex
 2026-01-01-003400_AddStaffMustChangePassword
 2026-01-01-003500_CreateLibraryMedia
+2026-01-01-003600_AddParticipantIntroSeen
 ```
 
 > `002900` menambahkan FK dari `levels` ke `media_assets`. Ini dipisah karena `levels` dibuat setelah `media_assets`, tetapi beberapa FK silang (`challenge_nodes.audio_intro_id` → `audio_assets`) lebih aman dipasang belakangan agar `up()`/`down()` bersih.
@@ -1076,6 +1080,14 @@ Kolom ditulis dengan `'null' => false` eksplisit karena alasan yang sama dengan 
 ### Media Pustaka Kedu (`003500`)
 
 `library_pages` hanya punya empat slot media tetap (dua gambar, satu video, satu poster) dan tidak dapat memuat tautan YouTube/Drive. `003500` membuat `library_media` (§18b) lalu menyalin slot yang terisi ke sana, berurutan `image_a` → `image_b` → `video` (poster ikut baris video). Kolom lama dibiarkan; `down()` hanya membuang `library_media`, jadi rollback kembali ke keadaan sebelumnya tanpa kehilangan data.
+
+### Cerita pembuka sudah ditonton (`003600`)
+
+`003600` menambahkan `participants.intro_seen_at` (`DATETIME(6) NULL`, setelah `password_changed_at`). Kolom ini memisahkan pemain baru — wajib menonton cerita pembuka sampai selesai, tanpa tombol "Lewati", dan `/peta` menolak mereka — dari pemain lama yang boleh memilih di `/gerbang`.
+
+Backfill: peserta yang punya progres (`session_progress.completed_nodes > 0` pada sesi mana pun miliknya) diisi `intro_seen_at = created_at`, agar tidak dipaksa menonton ulang. Waktu menonton yang sebenarnya tidak tercatat sebelum migration ini. `updated_at` ditulis ulang dengan nilainya sendiri supaya `ON UPDATE CURRENT_TIMESTAMP` tidak menandai semua peserta lama "baru diubah". `down()` membuang kolom; `up()` memeriksa keberadaannya lebih dulu sehingga aman dijalankan ulang.
+
+Kolom ini tidak ikut ekspor (sheet Participants memilih kolomnya satu per satu) dan tidak memengaruhi penghapusan data: soft delete hanya mengisi `deleted_at`, hard delete menghapus barisnya utuh.
 
 ---
 

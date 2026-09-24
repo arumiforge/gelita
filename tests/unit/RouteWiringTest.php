@@ -13,7 +13,7 @@ use CodeIgniter\Test\CIUnitTestCase;
 final class RouteWiringTest extends CIUnitTestCase
 {
     private const CONTROLLER_COUNT = [
-        'Game'  => 10,  // 9 controller + BaseGameController
+        'Game'  => 11,  // 10 controller + BaseGameController
         'Admin' => 14,  // 13 controller + BaseAdminController
         'Api'   => 9,   // 8 controller + BaseApiController
     ];
@@ -23,6 +23,11 @@ final class RouteWiringTest extends CIUnitTestCase
         'GET'  => [
             '/'                           => 'Game\HomeController::index',
             'peta'                        => 'Game\MapController::kedu',
+            'mulai'                       => 'Game\HomeController::start',
+            'gerbang'                     => 'Game\GateController::index',
+            'gerbang/peta'                => 'Game\GateController::map',
+            'intro'                       => 'Game\GateController::intro',
+            'intro/selesai'               => 'Game\GateController::finishIntro',
             'api/session'                 => 'Api\SessionApiController::show',
             'api/auth/username-available' => 'Api\AuthApiController::usernameAvailable',
             'admin/login'                 => 'Admin\AuthController::loginForm',

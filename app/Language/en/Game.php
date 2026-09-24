@@ -7,7 +7,6 @@ return [
     'start'           => 'Start',
     'login'           => 'Log in',
     'continue'        => 'Continue',
-    'continueJourney' => 'Continue the journey',
     'back'            => 'Back',
     'next'            => 'Next',
     'previous'        => 'Previous',
@@ -81,13 +80,20 @@ return [
     'variant_urutkan_informasi' => 'Put in Order',
 
     // Welcome & start
-    'welcomeLead'        => 'The Kedu lantern has gone out. Help Jaka gather the light shards in Temanggung, Magelang, and Wonosobo!',
-    'staffLink'          => 'Teacher panel',
     'startTitle'         => 'Ready for an adventure?',
     'startNew'           => 'I am new',
     'startNewText'       => 'Make your account first, then set off with Jaka.',
     'startReturning'     => 'I already have an account',
     'startReturningText' => 'Log in with your username and password.',
+
+    // Returning player choice (/gerbang)
+    'startChoiceTitle'   => 'Continue the adventure',
+    'welcomeBack'        => 'Welcome back, {0}!',
+    'startChoiceLead'    => 'Where would you like to start today?',
+    'watchIntro'         => 'Watch the opening story',
+    'watchIntroText'     => 'Hear the tale of Jaka and the Kedu Lantern again from the start.',
+    'goToMap'            => 'Go straight to the map',
+    'goToMapText'        => 'Carry on with your journey on the Kedu map.',
 
     // Consent & registration
     'consentTitle'           => 'Research consent',

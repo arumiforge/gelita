@@ -7,10 +7,12 @@
  *
  * Bagian peserta hanya dirender bila controller mengirim data HUD
  * (BaseGameController::hudData()); layar sebelum login cukup merek + bahasa.
+ * Halaman awal mengirim `hideBrand`: logonya sudah besar, merek tidak diulang.
  * Nama pengguna di sini hanya terlihat oleh siswa itu sendiri (aturan 12).
  *
  * @var array<string, mixed>|null $participant bentuk aman (toSafeArray), tanpa password_hash
  * @var array<string, mixed>|null $progress
+ * @var bool|null                 $hideBrand
  */
 $inGame = isset($participant, $progress) && is_array($participant) && is_array($progress);
 ?>
@@ -29,7 +31,7 @@ $inGame = isset($participant, $progress) && is_array($participant) && is_array($
 
     <?php if ($inGame): ?>
       <?= $this->include('components/lantern') ?>
-    <?php else: ?>
+    <?php elseif (empty($hideBrand)): ?>
       <a class="hud-brand" href="<?= base_url() ?>"><?= esc(lang('Game.appName')) ?></a>
     <?php endif ?>
   </div>

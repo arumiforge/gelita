@@ -7,7 +7,7 @@ use CodeIgniter\Entity\Entity;
 class Participant extends Entity
 {
     protected $datamap = [];
-    protected $dates   = ['created_at', 'updated_at', 'deleted_at'];
+    protected $dates   = ['created_at', 'updated_at', 'deleted_at', 'intro_seen_at'];
     protected $casts   = [
         'id'                       => 'int',
         'age'                      => '?int',
@@ -53,6 +53,12 @@ class Participant extends Entity
     public function mustChangePassword(): bool
     {
         return (bool) $this->must_change_password;
+    }
+
+    /** Sudah pernah menyelesaikan cerita pembuka (`/intro/selesai`)? */
+    public function hasSeenIntro(): bool
+    {
+        return $this->intro_seen_at !== null;
     }
 
     public function isActive(): bool

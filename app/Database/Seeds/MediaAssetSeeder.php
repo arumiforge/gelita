@@ -42,6 +42,11 @@ class MediaAssetSeeder extends GelitaSeeder
     /** [asset_key, path tanpa ekstensi, ekstensi default] */
     private const SLOTS = [
         ['ui.logo', 'assets/ui/logo-gelita', 'png'],
+        // Halaman awal: logo landscape dan tombol Mulai bergambar. Tombol
+        // memuat tulisan, jadi punya varian bahasa (akhiran -en → locale en).
+        ['ui.logo-hero', 'assets/ui/logo-hero', 'png'],
+        ['ui.btn-start', 'assets/ui/btn-start', 'png'],
+        ['ui.btn-start.en', 'assets/ui/btn-start-en', 'png'],
         ['ui.placeholder', 'assets/ui/placeholder', 'svg'],
         ['map.kedu', 'assets/map/map-kedu', 'png'],
         // Latar layar umum yang dibaca view lewat media_key_src()
