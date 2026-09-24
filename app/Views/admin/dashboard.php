@@ -48,7 +48,7 @@ $delta   = $summary['pretest_posttest_delta'];
 <?php endif ?>
 <?= component('admin-filter-bar', ['filters' => $filters, 'only' => ['study_id', 'phase_code', 'school_id', 'class_level', 'province_code', 'date_from', 'locale']]) ?>
 
-<section class="kpi-grid" aria-label="Indikator utama">
+<section class="kpi-grid kpi-grid-nine" aria-label="Indikator utama">
   <?= component('stat-tile', ['label' => 'Peserta', 'value' => fmt_num($summary['participant_count'], 0, 'id'), 'icon' => 'users']) ?>
   <?= component('stat-tile', ['label' => 'Sesi', 'value' => fmt_num($summary['session_count'], 0, 'id'), 'icon' => 'clock']) ?>
   <?= component('stat-tile', ['label' => 'Tingkat penyelesaian', 'value' => fmt_pct($summary['completion_rate'], true), 'icon' => 'check', 'hint' => 'sesi berstatus selesai']) ?>
