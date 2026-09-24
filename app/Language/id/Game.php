@@ -308,6 +308,27 @@ return [
     'serverErrorText'   => 'Ada yang salah di server. Coba lagi sebentar lagi, atau sampaikan kode ini kepada gurumu.',
     'backHome'          => 'Kembali ke awal',
 
+    // Tahap 2 — layar bernarasi (ketuk untuk mulai), tirai, narasi peta
+    'char_narator'       => 'Narator',
+    'tapToStart'         => 'Ketuk untuk mulai',
+    'tapToStartHint'     => 'Nyalakan suaramu. Ceritanya akan dibacakan.',
+    'narratorControls'   => 'Kendali narasi',
+    'narratorPrev'       => 'Bagian sebelumnya',
+    'narratorNext'       => 'Bagian berikutnya',
+    'narratorPause'      => 'Jeda narasi',
+    'narratorPlay'       => 'Putar narasi',
+    'narratorReplay'     => 'Ulangi narasi',
+    'narratorAuto'       => 'Otomatis',
+    'narratorAutoHint'   => 'Lanjut sendiri setelah narasi selesai dibacakan',
+    'curtainMapTitle'    => 'Membuka Peta Kedu',
+    'curtainMapStatus1'  => 'Menyalakan lentera…',
+    'curtainMapStatus2'  => 'Menyibak Kabut Lupa…',
+    'curtainMapStatus3'  => 'Memanggil Serpihan Cahaya…',
+    'curtainMapTap'      => 'Ketuk untuk membuka peta',
+    'curtainProgress'    => 'Kemajuan memuat',
+    'mapStoryTitle'      => 'Cerita Jaka tentang Dataran Kedu',
+    'mapStoryListen'     => 'Dengarkan Jaka',
+
     // Tahap 4 — Pustaka per wilayah
     'libraryRegion'        => 'Pustaka {0}',
     'libraryIndexLead'     => 'Setiap wilayah punya pustakanya sendiri. Pustaka sebuah wilayah terbuka setelah semua tantangan di wilayah itu selesai.',

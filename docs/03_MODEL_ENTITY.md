@@ -605,12 +605,12 @@ softDeleteScope(array $scope, int $staffId, string $reason): int
 | `AudioAssetModel` | array | `approvedFor(string $context, string $locale): ?array` |
 | `ChallengeOptionModel` | `ChallengeOption` | `forItems(array $itemIds): array` |
 | `HintModel` | array | `forNode(int $nodeId): array`, `forItem(int $itemId): array` |
-| `DialogueModel` | array | `intro(): array`, `forLevel(int $levelId, string $context): array` |
+| `DialogueModel` | array | `global(string $context): array` (level_id NULL: `intro`, `map_intro`, `ending`), `forLevel(int $levelId, string $context): array`; validasi pose per tokoh & efek |
 | `ReadingPassageModel` | `ReadingPassage` | `forLevel(int $levelId): array`, `findByKey(string $key): ?ReadingPassage`, `forIds(array $ids): array` |
 | `LibraryPageModel` | `LibraryPage` | `forLevel(int $levelId): array` |
 | `LibraryMediaModel` | `LibraryMedia` | `forPages(array $pageIds, bool $activeOnly = true): array` (keyed by `library_page_id`, urut `sequence`). `LibraryMedia::resolve()` → bentuk tampil (berkas aktif, atau tautan lewat `App\Libraries\MediaLink`), `null` bila tidak dapat dirender. `ContentRepository::libraryPages()` memasang media ke setiap `LibraryPage` (`loadedMedia()`, `gallery($locale)`) |
 | `SessionProgressModel` | array | `primaryKey = 'session_id'`, `useAutoIncrement = false`, `ensure(int $sessionId): array` |
-| `AudioUsageEventModel` | array | `usageForSession(int $sessionId): array`, `usageStats(array $filters): array` |
+| `AudioUsageEventModel` | array | `ACTIONS` (`play`, `autoplay`, `pause`, `replay`, `complete`), `usageForSession(int $sessionId): array`, `usageStats(array $filters): array` — `total_plays` hanya putar manual, putar otomatis di `total_autoplays` |
 | `ParticipantFeedbackModel` | array | `forStudy(int $studyId): array`, `ratingDistribution(array $filters): array` |
 | `AuditLogModel` | array | `record(string $action, array $opts = []): void` |
 | `DataExportModel` | array | `expired(): array`, `markDone(int $id, string $path, string $sha, int $rows): void` |

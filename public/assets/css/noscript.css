@@ -1,0 +1,6 @@
+/* ==========================================================================
+   GELITA — noscript.css
+   Hanya dimuat lewat <noscript> di layouts/game.php. Tanpa JavaScript tidak
+   ada yang dapat menutup tirai, jadi tirai tidak pernah ditampilkan.
+   ========================================================================== */
+.curtain { display: none !important; }

@@ -31,6 +31,25 @@ Yang sudah berfungsi penuh lewat HTTP: persetujuan dan registrasi dengan kata sa
 - **Buku yang lebih rapi.** Kredit pindah ke ikon ⓘ di pojok gambar (`<details>`, berjalan tanpa JS). Gambar dimuat dengan skeleton perkamen lalu memudar masuk, halaman berikutnya dipramuat, dan lightbox menampilkan pemutar tunggu. Video YouTube/Vimeo/Drive tampil sebagai facade berposter dengan tombol Putar besar.
 - **Thumbnail video diunduh server** (`App\Libraries\VideoThumbnail`) saat Pustaka disimpan atau diimpor, lalu dipakai sebagai poster. Perangkat siswa tidak menghubungi domain luar sebelum Putar ditekan. Server butuh HTTPS keluar ke `i.ytimg.com`, `vimeo.com`, `i.vimeocdn.com`, dan `drive.google.com` ([`docs/08` → *Akses keluar server*](docs/08_DEPLOYMENT.md#akses-keluar-server-thumbnail-video-pustaka)). Untuk baris yang sudah ada: `php spark gelita:library:thumbnails [--force]`.
 
+### Pembaruan cerita: naskah lengkap, cerita pembuka sinematik, tirai peta
+
+- **Naskah lengkap di permainan.** Seluruh 88 baris [`docs/naskah-cerita.md`](docs/naskah-cerita.md) (cerita pembuka, narasi peta, kenali wilayah, dialog masuk wilayah, wilayah tuntas, penutup) kini satu sumber data: `app/Database/Seeds/data/story.php`, lengkap dengan tokoh, pose, efek, dan judul. Migration `003700` menambah `dialogues.pose` dan `dialogues.effect`.
+- **Cerita pembuka sinematik.** Layar penuh dengan latar per slide (Ken Burns pelan), tokoh sesuai pose, kotak teks bergaya subtitle, dan efek layar. Kartu **"Ketuk untuk mulai"** membuka kunci audio (Safari iPad memblokir suara sampai halaman itu diketuk), lalu narasi diputar otomatis dengan efek mesin ketik dan maju sendiri setelah audio selesai (sakelar Otomatis). Tanpa audio yang disetujui, teks tetap tampil dan slide dilanjutkan manual.
+- **Tirai "Membuka Peta Kedu".** Dari gerbang atau akhir cerita pembuka, peta dibuka dengan tirai yang memuat aset peta dengan progres nyata (2,5–8 detik); ketukannya memulai musik peta dan narasi Jaka di panduan peta. Kunjungan lain menampilkan narasi sebagai teks dengan tombol ▶. Tanpa JavaScript tirai tidak pernah menutupi halaman.
+- **Telemetry:** putar otomatis dicatat sebagai `autoplay`, terpisah dari `play` (pemain menekan putar), dan ditampilkan terpisah di dasbor, profil peserta, dan laporan PDF.
+- **Admin** menyunting keenam konteks naskah di `/admin/konten/dialog/{level}?konteks=…`, termasuk pose dan efek.
+- Rincian di [`docs/05_VIEW_UI.md`](docs/05_VIEW_UI.md) (*§Tirai*, *§Pola ketuk-untuk-mulai*) dan [`docs/06_JAVASCRIPT.md`](docs/06_JAVASCRIPT.md) (`core/curtain.js`, `game/narrator.js`).
+
+**Server yang sudah berjalan** perlu memindahkan naskah baru ke basis datanya, karena seeder tidak pernah menimpa baris yang sudah ada:
+
+```bash
+php spark migrate                       # 003700: kolom pose & efek
+php spark gelita:story:update --dry-run # lihat dulu yang akan berubah
+php spark gelita:story:update           # sisipkan baris baru, perbarui teks bawaan lama
+```
+
+Urutannya wajib `migrate` lalu `gelita:story:update` (perintah itu menulis kolom `pose`/`effect`). Baris yang teksnya masih teks seeder lama diperbarui; baris yang sudah disunting admin — teks, tokoh, pose, efek, atau judul — dilewati dan dilaporkan (tambahkan `--force` untuk menimpanya); baris di luar jumlah naskah dinonaktifkan, tidak dihapus. Audio dan latar yang sudah dipasang admin tidak pernah disentuh. Perintah ini aman dijalankan berulang.
+
 ### Pembaruan alur masuk: satu tombol Mulai, cerita pembuka wajib
 
 - **Halaman awal hanya logo dan tombol Mulai.** Logo landscape dari slot `ui.logo-hero` (cadangan `ui.logo`, lalu judul teks), tombol dari gambar `ui.btn-start` beserta varian bahasa `ui.btn-start.en` (cadangan tombol CSS emas). Merek di HUD tidak diulang di halaman ini. Tautan panel guru dihapus: staf masuk lewat `/admin/login`.
@@ -83,7 +102,7 @@ Ekspor, laporan, retensi, dan command kini berfungsi penuh. Rincian dan keputusa
 - **Laporan PDF** (mPDF): ringkasan studi dari halaman ekspor, dan laporan satu peserta dari `/admin/peserta/{id}`.
 - **Penghapusan** (`/admin/tata-kelola`) dipindah ke `RetentionService`: cakupan peserta, sesi, atau studi (dipersempit fase & rentang tanggal); eksekusi dibatalkan bila jumlah baris berubah jauh sejak pratinjau.
 - **Retensi** (`php spark gelita:retention:run`, cron harian): sesi menganggur → `paused`, attempt menggantung > 24 jam → `abandoned`, sesi `paused` > 30 hari → `abandoned`, berkas ekspor kedaluwarsa dibuang, dan data yang melewati `retention_days` **hanya** dibuatkan pratinjau penghapusan + peringatan di dasbor admin.
-- **Command**: `gelita:content:verify`, `gelita:media:scan`, `gelita:score:recompute`, `gelita:bank:import`, `gelita:retention:run`, `gelita:staff:password`, `gelita:library:thumbnails` — semuanya mengembalikan kode keluar 1 saat gagal sehingga dapat dipakai di skrip deploy.
+- **Command**: `gelita:content:verify`, `gelita:media:scan`, `gelita:score:recompute`, `gelita:bank:import`, `gelita:retention:run`, `gelita:staff:password`, `gelita:story:update`, `gelita:library:thumbnails` — semuanya mengembalikan kode keluar 1 saat gagal sehingga dapat dipakai di skrip deploy.
 
 ### Tahap 6 — JavaScript
 
@@ -181,9 +200,9 @@ Di Windows, Laragon (PHP 8.3 + MySQL) memenuhi semua prasyarat. Pengaturan ekste
 
 ## Migration
 
-Migration dijalankan berurutan dari `000100` sampai `003600` (37 berkas) dan menghasilkan 32 tabel: 30 tabel domain, `ci_sessions`, dan `migrations`. `php spark migrate:rollback -b 0` mengembalikan database ke kosong.
+Migration dijalankan berurutan dari `000100` sampai `003700` (38 berkas) dan menghasilkan 32 tabel: 30 tabel domain, `ci_sessions`, dan `migrations`. `php spark migrate:rollback -b 0` mengembalikan database ke kosong.
 
-`003100`–`003300` adalah koreksi, `003400` dan `003600` menambah kolom baru, `003500` menambah tabel baru. Perubahan skema selalu datang sebagai migration baru; migration lama tidak diubah.
+`003100`–`003300` adalah koreksi, `003400`, `003600`, dan `003700` menambah kolom baru, `003500` menambah tabel baru. Perubahan skema selalu datang sebagai migration baru; migration lama tidak diubah.
 
 | Versi | Peran |
 |---|---|
@@ -194,6 +213,7 @@ Migration dijalankan berurutan dari `000100` sampai `003600` (37 berkas) dan men
 | `003400` | menambahkan `staff_users.must_change_password`: sandi sementara dari admin (reset / akun baru) wajib diganti sebelum panel terbuka |
 | `003500` | membuat `library_media` (banyak gambar/video per halaman Pustaka Kedu, dari unggahan atau tautan YouTube/Drive/Vimeo/Commons) dan menyalin isi kolom lama `image_a`/`image_b`/`video` ke sana |
 | `003600` | menambahkan `participants.intro_seen_at`: pemain baru wajib menonton cerita pembuka; peserta yang sudah punya progres diisi saat migration (backfill) |
+| `003700` | menambahkan `dialogues.pose` dan `dialogues.effect` (pose tokoh dan efek layar dari naskah); isinya diisi `php spark gelita:story:update` |
 
 `003200` memanggil `resetDataCache()` sebelum memeriksa kolom; tanpa itu seluruh pemeriksaan `fieldExists()` membaca daftar kolom versi sebelum `003100` pada proses `spark migrate` yang sama. Jangan melakukan rollback ke bawah `003100`: tahap 3 bergantung pada penamaan kolom hasil migration tersebut. Rincian lengkap di [`docs/01_DATABASE.md`](docs/01_DATABASE.md#koreksi-challenge_attempts-003100-dan-003200).
 

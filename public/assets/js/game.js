@@ -9,6 +9,7 @@
 import { CONFIG } from './core/config.js';
 import { resendQueued } from './core/events.js';
 import { Sfx, initAudioPlayers } from './core/audio.js';
+import { initCurtains } from './core/curtain.js';
 import { initHud } from './game/hud.js';
 import { initRotateGate } from './game/rotate-gate.js';
 import { initInstall } from './game/install.js';
@@ -33,6 +34,7 @@ if (CONFIG.sessionTag) {
 initHud();
 initRotateGate();
 initInstall();
+initCurtains();
 
 const screen = document.querySelector('[data-screen]')?.dataset.screen ?? '';
 const attemptId = Number(document.querySelector('[data-screen="challenge"]')?.dataset.attempt) || null;
@@ -43,7 +45,7 @@ initAudioPlayers(document, {
 });
 
 const pages = {
-  intro: () => import('./game/intro.js').then((m) => m.initStory('intro')),
+  intro: () => import('./game/intro.js').then((m) => m.initStory()),
   dialogue: () => import('./game/dialogue.js').then((m) => m.initDialogue()),
   'map-kedu': () => import('./game/map.js').then((m) => m.initMap()),
   'map-level': () => import('./game/map.js').then((m) => m.initMap()),

@@ -8,6 +8,11 @@ use CodeIgniter\HTTP\ResponseInterface;
 /**
  * Telemetry audio: baris `audio_usage_events` + raw event pendampingnya.
  * `challenge_attempt_id` hanya diterima bila attempt itu milik sesi berjalan.
+ *
+ * Aksi yang diterima: AudioUsageEventModel::ACTIONS — `play` (pemain menekan
+ * putar), `autoplay` (layar bernarasi memutar sendiri), `pause`, `replay`,
+ * `complete`. Aksi lain ditolak per event (`audio_event_invalid`) oleh
+ * EventService::recordAudio().
  */
 class AudioApiController extends BaseApiController
 {
