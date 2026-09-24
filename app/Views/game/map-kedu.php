@@ -18,30 +18,53 @@
  * dan narasi otomatis (mode `external`). Kunjungan lain: teks utuh dengan
  * tombol ▶ (mode `manual`). Tanpa slide `map_intro`: balon Game.mapLead.
  *
- * @var list<array<string, mixed>> $levels
- * @var array<string, mixed>       $progress
- * @var string                     $unlockMode
- * @var string                     $locale
- * @var list<array<string, mixed>> $story          dialogues map_intro
- * @var bool                       $curtain        tampilkan tirai peta
- * @var list<string>               $curtainAssets  URL yang dimuat tirai
+ * Tahap 3:
+ * - Tombol lentera "Kenali {wilayah}" pada setiap pin dan kartu wilayah
+ *   membuka overlay "Mengenal {wilayah}" (partials/region-intro, narasi
+ *   `region_intro`); lencana "Belum didengar" berdenyut sampai narasi wilayah
+ *   itu pernah didengar sampai slide terakhir ($heard, dari server).
+ * - Pin dan kartu wilayah yang terbuka memutar tirai wilayah "Menuju
+ *   {wilayah}…" (<template id="tpl-curtain-region">) sebelum berpindah.
+ * - Semua tantangan tuntas: "Tonton penutup" di samping Balai Refleksi.
+ *
+ * @var list<array<string, mixed>>                 $levels         + `curtain` (GameProgress::regionCurtain())
+ * @var array<string, mixed>                       $progress
+ * @var string                                     $unlockMode
+ * @var string                                     $locale
+ * @var list<array<string, mixed>>                 $story          dialogues map_intro
+ * @var bool                                       $curtain        tampilkan tirai peta
+ * @var list<string>                               $curtainAssets  URL yang dimuat tirai
+ * @var array<string, list<array<string, mixed>>>  $regionIntros   dialogues region_intro per kode wilayah
+ * @var list<int>                                  $heard          level_id yang Kenali-nya sudah didengar
  */
-$mapSrc = media_key_src('map.kedu');
-$icons  = ['open' => 'lantern', 'in_progress' => 'lantern', 'completed' => 'star', 'locked' => 'lock'];
-$href   = static fn (array $l): string => base_url($l['entry']);
+$mapSrc  = media_key_src('map.kedu');
+$icons   = ['open' => 'lantern', 'in_progress' => 'lantern', 'completed' => 'star', 'locked' => 'lock'];
+$href    = static fn (array $l): string => base_url($l['entry']);
 $allDone = $progress['shards_total'] > 0 && $progress['completed_nodes'] >= $progress['shards_total'];
 $points  = implode(' ', array_map(static fn (array $l): string => (float) $l['map_x'] . ',' . (float) $l['map_y'], $levels));
+$intros  = $regionIntros ?? [];
+$heardIds = $heard ?? [];
+// Atribut tirai wilayah pada tautan masuk wilayah (pin, kartu); wilayah terkunci tanpa tirai
+$curtainOf = static fn (array $l): string => $l['status'] !== 'locked' && isset($l['curtain'])
+    ? curtain_attrs('region', $l['curtain']['text'], $l['curtain']['preload'])
+    : '';
 ?>
 <?= $this->extend('layouts/game') ?>
 
 <?= $this->section('title') ?><?= esc(lang('Game.mapKedu')) ?><?= $this->endSection() ?>
 <?= $this->section('background') ?><?= media_key_src('bg.map') ?? '' ?><?= $this->endSection() ?>
 
-<?php if (! empty($curtain)): ?>
 <?= $this->section('overlay') ?>
+<?php if (! empty($curtain)): ?>
 <?= component('curtain', ['kind' => 'map', 'preload' => $curtainAssets ?? []]) ?>
-<?= $this->endSection() ?>
 <?php endif ?>
+<template id="tpl-curtain-region"><?= component('curtain', ['kind' => 'region']) ?></template>
+<?php foreach ($levels as $level): ?>
+  <?php if (($intros[$level['code']] ?? []) !== []): ?>
+    <?= component('partials/region-intro', ['level' => $level, 'slides' => $intros[$level['code']], 'locale' => $locale]) ?>
+  <?php endif ?>
+<?php endforeach ?>
+<?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
 <section class="screen map-screen map-kedu" data-screen="map-kedu" data-unlock-mode="<?= esc($unlockMode, 'attr') ?>">
@@ -116,7 +139,7 @@ $points  = implode(' ', array_map(static fn (array $l): string => (float) $l['ma
             <li class="map-point is-<?= esc($level['status'], 'attr') ?>"
                 style="left: <?= (float) $level['map_x'] ?>%; top: <?= (float) $level['map_y'] ?>%"
                 <?= $level['status'] !== 'locked' && ! empty($level['background']) ? 'data-preload="' . esc($level['background'], 'attr') . '"' : '' ?>>
-              <a class="map-pin" href="<?= esc($href($level), 'attr') ?>"
+              <a class="map-pin" href="<?= esc($href($level), 'attr') ?>"<?= $curtainOf($level) ?>
                  <?= $level['status'] === 'locked' ? 'aria-disabled="true" data-locked-message="' . esc(lang('Game.levelLocked'), 'attr') . '"' : '' ?>>
                 <span class="pin-icon" aria-hidden="true"><?= icon($icons[$level['status']] ?? 'lantern') ?></span>
                 <span class="pin-label">
@@ -124,6 +147,17 @@ $points  = implode(' ', array_map(static fn (array $l): string => (float) $l['ma
                   <small><?= esc(lang('Game.levelStatus_' . $level['status'])) ?> · <span class="num"><?= esc($level['completed_nodes']) ?>/<?= esc($level['total_nodes']) ?></span></small>
                 </span>
               </a>
+              <?php if (($intros[$level['code']] ?? []) !== []): ?>
+                <?php $unheard = ! in_array((int) $level['id'], $heardIds, true); ?>
+                <a class="kenal-btn<?= $unheard ? ' is-unheard' : '' ?>" href="#kenal-<?= esc($level['code'], 'attr') ?>"
+                   data-kenal-open="<?= esc($level['code'], 'attr') ?>" title="<?= esc(lang('Game.kenalRegion', [$level['name']]), 'attr') ?>">
+                  <span class="kenal-btn-face" aria-hidden="true"><?= icon('lantern') ?></span>
+                  <span class="visually-hidden"><?= esc(lang('Game.kenalRegion', [$level['name']])) ?></span>
+                  <?php if ($unheard): ?>
+                    <span class="kenal-dot" data-kenal-badge><span class="visually-hidden"><?= esc(lang('Game.kenalUnheard')) ?></span></span>
+                  <?php endif ?>
+                </a>
+              <?php endif ?>
             </li>
           <?php endforeach ?>
         </ol>
@@ -133,7 +167,7 @@ $points  = implode(' ', array_map(static fn (array $l): string => (float) $l['ma
 
   <ol class="region-list">
     <?php foreach ($levels as $level): ?>
-      <li class="region-card panel is-<?= esc($level['status'], 'attr') ?>">
+      <li class="region-card panel is-<?= esc($level['status'], 'attr') ?>" id="region-<?= esc($level['code'], 'attr') ?>">
         <div class="region-card-head">
           <span class="region-seq num" aria-hidden="true"><?= esc($level['sequence']) ?></span>
           <div>
@@ -147,13 +181,25 @@ $points  = implode(' ', array_map(static fn (array $l): string => (float) $l['ma
           <span><?= esc(lang('Game.nodesProgress', [$level['completed_nodes'], $level['total_nodes']])) ?></span>
           <?= stars_html((int) $level['stars']) ?>
         </div>
-        <?php if ($level['status'] !== 'locked'): ?>
-          <a class="btn <?= $level['status'] === 'completed' ? 'btn-ghost' : 'btn-primary' ?>" href="<?= esc($href($level), 'attr') ?>">
-            <?= esc($level['status'] === 'open' ? lang('Game.start') : lang('Game.continue')) ?> <?= icon('right') ?>
-          </a>
-        <?php else: ?>
-          <p class="region-locked muted"><?= icon('lock') ?> <?= esc(lang('Game.levelLocked')) ?></p>
-        <?php endif ?>
+        <div class="region-card-actions">
+          <?php if (($intros[$level['code']] ?? []) !== []): ?>
+            <?php $unheard = ! in_array((int) $level['id'], $heardIds, true); ?>
+            <a class="btn btn-quiet kenal-card-btn<?= $unheard ? ' is-unheard' : '' ?>" href="#kenal-<?= esc($level['code'], 'attr') ?>"
+               data-kenal-open="<?= esc($level['code'], 'attr') ?>">
+              <?= icon('lantern') ?> <span><?= esc(lang('Game.kenalRegion', [$level['name']])) ?></span>
+              <?php if ($unheard): ?>
+                <span class="kenal-badge" data-kenal-badge><?= esc(lang('Game.kenalUnheard')) ?></span>
+              <?php endif ?>
+            </a>
+          <?php endif ?>
+          <?php if ($level['status'] !== 'locked'): ?>
+            <a class="btn <?= $level['status'] === 'completed' ? 'btn-ghost' : 'btn-primary' ?>" href="<?= esc($href($level), 'attr') ?>"<?= $curtainOf($level) ?>>
+              <?= esc($level['status'] === 'open' ? lang('Game.start') : lang('Game.continue')) ?> <?= icon('right') ?>
+            </a>
+          <?php else: ?>
+            <p class="region-locked muted"><?= icon('lock') ?> <?= esc(lang('Game.levelLocked')) ?></p>
+          <?php endif ?>
+        </div>
       </li>
     <?php endforeach ?>
   </ol>
@@ -163,10 +209,15 @@ $points  = implode(' ', array_map(static fn (array $l): string => (float) $l['ma
 <?= $this->section('nav') ?>
 <?php
 // Pustaka Kedu: rak semua wilayah; kunci per wilayah dijelaskan di sana
-$nav   = [['label' => lang('Game.library'), 'href' => base_url('pustaka'), 'style' => 'ghost', 'arrow' => 'left', 'icon' => 'book']];
-$nav[] = $allDone
-    ? ['label' => lang('Game.reflection'), 'href' => base_url('refleksi'), 'style' => 'primary', 'arrow' => 'right']
-    : ['label' => lang('Game.profile'), 'href' => base_url('profil'), 'style' => 'quiet', 'icon' => 'user'];
+$nav = [['label' => lang('Game.library'), 'href' => base_url('pustaka'), 'style' => 'ghost', 'arrow' => 'left', 'icon' => 'book']];
+
+if ($allDone) {
+    // Penutup cerita boleh ditonton ulang kapan saja setelah semua wilayah tuntas
+    $nav[] = ['label' => lang('Game.watchEnding'), 'href' => base_url('penutup'), 'style' => 'ghost', 'icon' => 'sparkle'];
+    $nav[] = ['label' => lang('Game.reflection'), 'href' => base_url('refleksi'), 'style' => 'primary', 'arrow' => 'right'];
+} else {
+    $nav[] = ['label' => lang('Game.profile'), 'href' => base_url('profil'), 'style' => 'quiet', 'icon' => 'user'];
+}
 ?>
 <?= component('nav-bar', ['nav' => $nav]) ?>
 <?= $this->endSection() ?>

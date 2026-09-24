@@ -28,6 +28,9 @@ final class RouteWiringTest extends CIUnitTestCase
             'gerbang/peta'                => 'Game\GateController::map',
             'intro'                       => 'Game\GateController::intro',
             'intro/selesai'               => 'Game\GateController::finishIntro',
+            'dialog/([^/]+)'              => 'Game\DialogueController::show',
+            'tuntas/([^/]+)'              => 'Game\DialogueController::done',
+            'penutup'                     => 'Game\DialogueController::ending',
             'pustaka'                     => 'Game\LibraryController::index',
             'pustaka/([^/]+)'             => 'Game\LibraryController::show',
             'api/session'                 => 'Api\SessionApiController::show',
@@ -101,6 +104,18 @@ final class RouteWiringTest extends CIUnitTestCase
                 $this->assertArrayHasKey($from, $defined, "Route {$method} {$from} tidak terdaftar");
                 $this->assertStringContainsString($handler, (string) $defined[$from]);
             }
+        }
+    }
+
+    /** Tahap 3: adegan wilayah tuntas dan penutup hanya untuk peserta dengan sesi permainan. */
+    public function testStoryScenesNeedAGameSession(): void
+    {
+        $routes = $this->routes();
+        $routes->setHTTPVerb('GET');
+
+        // getFiltersForRoute() menerima pola route, bukan URI
+        foreach (['tuntas/([^/]+)', 'penutup'] as $path) {
+            $this->assertSame(['gameSession'], $routes->getFiltersForRoute($path), $path);
         }
     }
 

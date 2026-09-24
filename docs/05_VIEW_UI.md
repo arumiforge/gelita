@@ -1,5 +1,7 @@
 # 05_VIEW_UI.md — View, UI, dan CSS
 
+> **Revisi 3 (24 September 2026) — Tahap 3 alur cerita.** Ditambahkan: overlay "Kenali {wilayah}" di peta, tirai wilayah `region` dan tirai tantangan `challenge`, dialog wilayah bernarasi (kartu bab, pose per baris, efek), halaman wilayah tuntas `/tuntas/{code}` dan penutup `/penutup`. Lihat *Keputusan yang sudah diambil* → Tahap 3.
+>
 > **Revisi 2 (21 September 2026).** Ditambahkan: halaman registrasi siswa dengan nama pengguna, kata sandi, ulangi sandi, **indikator kekuatan + daftar syarat + keterangan bila sandi belum kuat**; halaman masuk dan ganti sandi siswa; komponen `password-field`; arena `boleh` dengan tombol Benar/Salah/Pendapat dan panel teks bacaan/dua sumber; halaman admin impor bank soal, teks bacaan, reset sandi siswa. Halaman `/lanjutkan` dihapus. Jumlah halaman dikoreksi.
 
 ---
@@ -50,8 +52,8 @@ app/Views/
 │   ├── character.php            gambar Jaka / Mbah Kedu
 │   ├── narration.php            balon narasi karakter
 │   ├── narrator-controls.php    ◀ ⏸/▶ ↻ ▶ + sakelar Otomatis (layar bernarasi)
-│   ├── narrator-tap.php         kartu "Ketuk untuk mulai"
-│   ├── curtain.php              tirai pemuatan layar penuh (mis. "Membuka Peta Kedu")
+│   ├── narrator-tap.php         kartu "Ketuk untuk mulai" (Tahap 3: berjudul — kartu bab, kartu wilayah tuntas)
+│   ├── curtain.php              tirai pemuatan layar penuh: `map` "Membuka Peta Kedu", `region` "Menuju {wilayah}…", `challenge`
 │   ├── audio-player.php         play / pause / ulangi / transkrip
 │   ├── nav-bar.php              tombol navigasi bawah layar game
 │   ├── modal.php                kerangka dialog tengah layar
@@ -75,7 +77,9 @@ app/Views/
 │   ├── intro.php
 │   ├── map-kedu.php
 │   ├── map-level.php
-│   ├── dialogue.php
+│   ├── dialogue.php             dialog pembuka wilayah bernarasi (partials/dialogue-scene)
+│   ├── region-done.php          ← wilayah tuntas (/tuntas/{code}, Tahap 3)
+│   ├── ending.php               ← penutup (/penutup, Tahap 3)
 │   ├── mission-brief.php
 │   ├── challenge/
 │   │   ├── puzzle.php
@@ -104,6 +108,13 @@ app/Views/
 │   ├── governance/index.php · audit.php
 │   ├── staff/index.php
 │   └── account/password.php        ← ganti sandi sendiri (guru & admin)
+├── partials/                    (sebagian; Tahap 3)
+│   ├── region-intro.php         overlay "Mengenal {wilayah}" (region_intro)
+│   ├── dialogue-scene.php       panggung dialog Jaka & Mbah Kedu (level_open, level_done)
+│   ├── cine-slides.php          slide sinematik layar penuh (intro, ending)
+│   ├── footsteps.php            jejak kaki kiri–kanan (tirai wilayah, kartu bab)
+│   ├── challenge-art.php        visual tirai tantangan per engine
+│   └── slide-nav.php            Kembali · titik · Lanjut / tombol akhir (+ tombol sekunder)
 ├── pdf/
 │   ├── report-study.php
 │   └── report-participant.php
@@ -503,13 +514,24 @@ Cerita pembuka **sinematik** (Tahap 2), `body.is-cinematic`, pemutar `game/narra
 * Klik titik wilayah yang **baru terbuka** (status `open`: terbuka, belum ada tantangan yang selesai) → **selalu** `/dialog/{code}` lebih dulu; wilayah yang sedang dijelajahi atau sudah tuntas → langsung `/wilayah/{code}`. Tujuan ini dihitung satu kali di `GameProgress::regionEntryPath()` dan dikirim sebagai `entry` pada setiap baris `levelOverview()`, sehingga peta, layar selesai, dan API memakai aturan yang sama.
 * Klik titik terkunci → toast "Selesaikan wilayah sebelumnya dulu."
 * Tombol **Pustaka Kedu** di nav kiri bawah selalu tampil dan menuju rak `/pustaka` (sebelumnya: Pustaka wilayah terakhir yang terbuka).
+* **Kenali wilayah (Tahap 3).** Setiap pin dan kartu wilayah punya tombol ikon lentera "Kenali {wilayah}" (`.kenal-btn` pada pin: area sentuh 44px, wajah 30px; `.kenal-card-btn` pada kartu), juga untuk wilayah terkunci. Tombol membuka overlay layar penuh "Mengenal {wilayah}" (`partials/region-intro`, di section `overlay`, di luar `<main>`): 4 slide `region_intro` Mbah Kedu dengan pose, efek, dan audio; latar wilayah bila ada, selain itu gradien; monogram bila frame tokoh belum ada. Narrator mode `external` dimulai `start({ userInitiated: true })` di dalam ketukan tombol itu (ketukan = interaksi, jadi narasi langsung berbunyi). Esc, tombol ✕, atau "Tutup" menghentikan narasi dan mengembalikan fokus ke tombol pembukanya; selama terbuka HUD, `<main>`, dan nav bar `inert`. Slide akhir: **Masuk ke {wilayah}** (tirai wilayah, menuju `entry`) bila wilayah terbuka, selain itu **Tutup**. Tanpa JavaScript overlay adalah target `:target` `#kenal-{code}` (slide `#kenal-{code}-{n}`), dan Tutup menuju `#region-{code}` (kartu wilayahnya).
+* **Lencana "Belum didengar"** berdenyut pada tombol Kenali (titik oranye di pin, pil bertulisan di kartu) sampai narasi wilayah itu pernah didengar sampai slide terakhir oleh peserta ini. Statusnya dihitung server dari `dialogue_advanced` context `region_intro` (`index >= total`), lintas sesi; mencapai slide terakhir juga langsung menghapus lencana di halaman.
+* **Tirai wilayah.** Tautan pin dan tombol kartu wilayah yang terbuka membawa `data-curtain="region"` (`curtain_attrs()`): "Menuju {wilayah}…", tagline, chip tingkat kesulitan, dan aset tujuan dipramuat (lihat §Tirai).
+* **Semua tantangan tuntas:** nav kanan menampilkan **Tonton penutup** (`/penutup`) di samping **Balai Refleksi**.
+* Ponsel mendatar (844×390): kartu wilayah tetap tiga kolom sempit; lencana status turun ke baris sendiri dan isi kartu tidak lagi meluber ke kartu sebelahnya (cacat lama yang terlihat saat tombol Kenali ditambahkan). Tombol Kenali pada pin berada di kanan atas ikon agar tidak menutupi label pin yang berdekatan.
 
 ### 8. Dialog — `/dialog/{code}` → `game/dialogue.php`
 
-* Latar `bg-dialog-{level}`.
-* Dua karakter berhadapan: yang berbicara maju dan terang, yang mendengar mundur dan meredup.
-* Kotak teks dengan nama tokoh, teks dialog, dan audio player.
-* Tombol Lanjut; dialog terakhir → `/wilayah/{code}`.
+Dialog pembuka wilayah (`level_open`, 15–16 baris) sebagai adegan dramatis (Tahap 3), markup bersama `partials/dialogue-scene` (dipakai juga wilayah tuntas).
+
+* Latar wilayah (`levels.background_media_id`), cadangan gradien layout.
+* **Kartu bab** sebagai kartu ketuk narrator (`narrator-tap` varian `chapter`): "Bab {n} · {wilayah}", tagline (judul slide pertama `region_intro`, sama dengan tirai wilayah), tombol "Ketuk untuk mendengar kisahnya", dan jejak kaki yang melanjutkan langkah tirai wilayah. Ketukannya membuka kunci audio.
+* **Panggung dua tokoh** tetap: Jaka kiri, Mbah Kedu kanan; yang berbicara maju dan terang, yang mendengar mundur dan meredup (CSS `:target` tanpa JS, `.is-speaking`/`.is-listening` dengan JS).
+* **Pose per baris.** Server merender URL frame pose tiap baris sebagai `data-pose-src` (`character_frame_src()`: `char.{jaka|kedu}.{pose}.1`, cadangan `idle`, kosong bila belum ada gambar); `dialogue.js` menukar gambar tokoh yang berbicara. Selama gambar belum ada tokoh tetap monogram, dengan isyarat pose ringan (melompat, gemetar, tertunduk, bersinar).
+* **Efek baris** (`data-effect`) diputar lapisan efek narrator; audio otomatis, mesin ketik, dan maju otomatis lewat `initNarrator` mode `tap` (kontrol ◀ ⏸/▶ ↻ ▶ Otomatis melayang di kiri atas).
+* Kotak teks perkamen: papan nama tokoh, teks, navigasi slide. Slide akhir: **Masuk ke {wilayah}** → `/wilayah/{code}`.
+* Nav **Peta Kedu** dan **Lewati** (→ `/wilayah/{code}`) serta gerbang dialog (`dialogueGate()`/`markDialogueShown()`) tidak berubah.
+* Ponsel mendatar: kepala satu baris, titik slide kecil, tombol Kembali disembunyikan (◀ ada di kontrol), agar tombol akhir tetap sebaris.
 * State: `data-index` menunjuk baris dialog ke-n.
 
 ### 9. Peta Wilayah — `/wilayah/{code}` → `game/map-level.php`
@@ -523,7 +545,7 @@ Cerita pembuka **sinematik** (Tahap 2), `body.is-cinematic`, pemutar `game/narra
 ### 10. Kartu Misi — `/misi/{code}/{seq}` → `game/mission-brief.php`
 
 * Panel perkamen di tengah: eyebrow "Tantangan 2 dari 5 · Temanggung", judul node, deskripsi, audio player.
-* Tombol besar **Mulai tantangan**.
+* Tombol besar **Mulai tantangan** (`data-curtain="challenge"`, Tahap 3): tirai tantangan diputar di halaman ini **sebelum** berpindah ke `/tantangan` — `ChallengeController::play()` membuka attempt (`openNode()`) saat halaman tantangan dirender, jadi animasi di sana akan menambah waktu attempt. Isi tirai: judul node, label engine, ajakan singkat per engine (`Game.challengeLead_{engine}`, varian `urutkan_informasi` punya ajakannya sendiri), dan visual per engine. Tombol **Ulangi** di halaman hasil menuju kartu misi ini, jadi tirainya ikut tampil. Tanpa JavaScript tautannya langsung ke `/tantangan`.
 
 ### 11. Layar Tantangan — `/tantangan/{code}/{seq}` → `game/challenge/{engine}.php`
 
@@ -666,6 +688,14 @@ Objek jebakan dirender sama persis dengan objek asli — tidak ada penanda visua
 * Bila 15 node tuntas: tombol **Balai Refleksi**.
 * Jaka senang, konfeti.
 * Bila attempt ini yang **menuntaskan** wilayah (penyelesaian pertama terakhir di antara node wilayah; mengulang tantangan di wilayah yang sudah tuntas tidak memunculkannya lagi) dan wilayahnya punya halaman Pustaka: sorotan **"Pustaka {wilayah} terbuka!"** (`aside.library-unlocked`) dengan tombol **Baca Pustaka** — momen "Pustaka {wilayah} kini terbuka untukmu" di naskah cerita.
+* **Tahap 3:** bila attempt ini yang menuntaskan wilayah, tombol utama **Lanjut** menuju adegan `/tuntas/{code}` (juga untuk wilayah terakhir; dari sana ke penutup). Sorotan Pustaka tetap ada. "Lanjut ke {wilayah berikutnya}" (saat mengulang di wilayah yang sudah tuntas) memutar tirai wilayah.
+
+### 12a. Wilayah tuntas — `/tuntas/{code}` → `game/region-done.php`
+
+* Adegan bernarasi bergaya dialog (`partials/dialogue-scene`, context `level_done`, 4 baris): kartu ketuk varian `done` "Wilayah n · Tuntas" + **"Serpihan {wilayah} kembali!"**, lalu Jaka & Mbah Kedu dengan pose, efek, audio, dan maju otomatis.
+* Slide akhir berisi dua tombol: **Baca Pustaka {wilayah}** (`/pustaka/{code}`, bila wilayah punya Pustaka) dan **Lanjut ke {wilayah berikutnya}** (tirai wilayah, `entry` dari `GameProgress`: wilayah baru terbuka → dialog pembukanya). Wilayah terakhir: **Lanjut** ke `/penutup` (mode `free` yang belum semua tuntas: Peta Kedu).
+* Nav: Peta wilayah (kiri), Peta Kedu. Boleh ditonton ulang; wilayah yang belum tuntas diredirect ke peta wilayahnya.
+* Tanpa JavaScript: baris lewat `#line-n` + `:target`, semua tombol berupa tautan biasa.
 
 ### 13. Hasil Node — `/hasil/{code}/{seq}` → `game/challenge-result.php`
 
@@ -701,6 +731,11 @@ Statistik terbaik + tabel seluruh percobaan (waktu, durasi, tepat sejak awal, pe
 ### 15. Profil — `/profil` → `game/profile.php`
 
 Avatar, nama, nama pengguna, kode peserta (kecil, dengan keterangan "kode penelitianmu"), tombol **Ganti kata sandi**, lalu grid data: umur, jenis kelamin, sekolah, serpihan, rata-rata tepat sejak awal, total waktu, total skor, tantangan selesai. Lencana per wilayah. Tabel riwayat attempt.
+
+### 16a. Penutup — `/penutup` → `game/ending.php`
+
+* Layar sinematik seperti cerita pembuka (Tahap 3, `partials/cine-slides` yang juga dipakai `/intro`): 5 slide `ending`, kartu "Ketuk untuk mulai", narator/tokoh sesuai pose, efek layar, audio. Slide akhir **Balai Refleksi** → `/refleksi`; "Lewati" di kanan atas menuju tempat yang sama.
+* Hanya terbuka bila seluruh node tuntas (`allNodesCompleted()`), selain itu redirect ke peta. Dibuka dari "Lanjut" di wilayah tuntas terakhir dan dari "Tonton penutup" di peta.
 
 ### 16. Balai Refleksi — `/refleksi` → `game/reflection.php`
 
@@ -810,7 +845,7 @@ public/assets/css/
 ├── layout.css        hud, app, scene, sidebar admin, grid halaman
 ├── components.css    tombol, panel, kartu, tabel, modal, toast, chip, form
 ├── game.css          layar permainan dan lima arena tantangan
-├── cinematic.css     tirai, pemutar narasi, efek layar, cerita pembuka & narasi peta (Tahap 2)
+├── cinematic.css     tirai, pemutar narasi, efek layar, cerita pembuka & narasi peta (Tahap 2); Kenali wilayah, tirai wilayah & tantangan, kartu bab, dialog bernarasi (Tahap 3)
 ├── noscript.css      hanya lewat <noscript>: tirai disembunyikan
 └── admin.css         panel, tabel data, filter bar, chart, form konten
 ```
@@ -937,7 +972,7 @@ Teks aturan tetap berukuran `--step-0` — ini materi yang harus dibaca anak, bu
 
 ### Tirai — `components/curtain.php` + `core/curtain.js`
 
-Layar pemuatan layar penuh untuk perpindahan yang berat aset. Tahap 2 memakai jenis `map` ("Membuka Peta Kedu"); jenis `region` dan `challenge` menyusul di Tahap 3 dengan API yang sama.
+Layar pemuatan layar penuh untuk perpindahan yang berat aset. Tahap 2 memakai jenis `map` ("Membuka Peta Kedu"); Tahap 3 menambah `region` ("Menuju {wilayah}…") dan `challenge` (sebelum tantangan) dengan API yang sama.
 
 * **Markup.** `data-curtain-layer="{kind}"`, `data-preload` (JSON URL), `data-statuses` (JSON baris status bergilir), `data-tap`. Isi jenis `map`: latar `bg.loading` (1920×1080, cadangan gradien cahaya CSS), lentera dengan cahaya berdenyut yang membesar mengikuti progres (`--p` 0…1), tiga Serpihan Cahaya mengorbit, judul Cinzel, baris status bergilir ("Menyalakan lentera…", "Menyibak Kabut Lupa…", "Memanggil Serpihan Cahaya…"), progres berupa berkas cahaya emas (`role="progressbar"`), lalu tombol "Ketuk untuk membuka peta".
 * **Letak.** Dirender lewat section `overlay` layout, di luar `<main>`; selama tirai tampil HUD, `<main>`, dan nav bar diberi `inert`.
@@ -945,7 +980,17 @@ Layar pemuatan layar penuh untuk perpindahan yang berat aset. Tahap 2 memakai je
 * **Ketukan penutup** (opsional, bawaan ya) memanggil `Sfx.unlock()` di dalam ketukan, jadi musik dan narasi boleh langsung berbunyi setelahnya.
 * **Tanpa JavaScript** tirai tidak pernah menutupi halaman: `noscript.css` menyembunyikannya. Bila modul JS gagal dimuat, animasi pengaman CSS memudarkan tirai sendiri setelah ±10 detik (`curtain-failsafe`); `curtain.js` membatalkannya dengan kelas `is-live`. Dengan `prefers-reduced-motion`, pengaman tetap berjalan tanpa pudar, dan orbit/denyut/kilau dimatikan.
 * **bfcache.** Tirai yang masih aktif dibersihkan saat `pageshow` dengan `persisted`.
-* **Tautan bertirai (Tahap 3).** `a[data-curtain="{kind}"]` (opsional `data-curtain-preload`) memutar tirai jenis itu dari `<template id="tpl-curtain-{kind}">` sebelum berpindah halaman; tanpa template, tautan berjalan biasa.
+* **Tautan bertirai (Tahap 3).** `a[data-curtain="{kind}"]` (opsional `data-curtain-preload`, `data-curtain-text`) memutar tirai jenis itu dari `<template id="tpl-curtain-{kind}">` sebelum berpindah halaman; tanpa template atau tanpa JavaScript, tautan berjalan biasa. Atributnya dirakit helper `curtain_attrs($kind, $text, $preload)`. Selama tirai, event yang masih antre dikirim (`flush()`), dan perpindahan menunggunya paling lama 1,5 detik lagi.
+* **Durasi per jenis** dari atribut lapisan: `data-min-ms`, `data-max-ms`, `data-skip` (ketukan/Enter/Spasi/Esc melewati tirai).
+
+| Jenis | Isi | Durasi | Ketukan | Dipasang di |
+|---|---|---|---|---|
+| `map` | lentera, serpihan mengorbit, status bergilir, progres nyata | 2,5–8 detik | penutup, membuka kunci audio | `/peta` dengan flash `curtain=map` |
+| `region` | "Menuju {wilayah}…", tagline (judul slide pertama `region_intro`: "Di Antara Dua Gunung", "Tanah Candi Agung", "Negeri di Atas Awan"), chip tingkat kesulitan, jejak kaki kiri–kanan bergantian melintasi layar (`partials/footsteps`) | ±1,8 detik (1,8–2,4) | tidak ada | pin & kartu wilayah, slide akhir Kenali, "Lanjut ke {wilayah berikutnya}" di layar selesai dan wilayah tuntas |
+| `challenge` | judul node, label engine, ajakan per engine, visual `data-engine` (`partials/challenge-art`): puzzle keping menyatu, rumpang huruf jatuh mengisi celah, boleh kartu berputar ✓/✗, pilihan tiga kartu mengipas lalu satu bersinar, cari sorot lentera menyapu siluet | 1,2–1,5 detik | melewati | "Mulai tantangan" di kartu misi |
+
+* Satu `<template id="tpl-curtain-region">` melayani semua wilayah: teksnya dari tautan (`data-curtain-text`, JSON slot → teks, diisi `textContent`), aset dari `data-curtain-preload` (latar wilayah; frame tokoh sesuai pose dialog pembuka bila `entry` dialog, gambar peta wilayah bila `entry` peta wilayah; yang belum diunggah tidak ikut). Tirai tantangan dirender utuh oleh kartu misi karena satu halaman = satu node.
+* `prefers-reduced-motion`: jejak kaki dan visual engine tampil diam dalam keadaan akhirnya (keping tersusun, huruf di tempat, kartu ✓, kartu tengah bersinar, sorot di tengah).
 
 ### Pola ketuk-untuk-mulai
 
@@ -1024,6 +1069,7 @@ Semua informasi dasar terbaca dan semua form dapat dikirim tanpa JS; tahap 6 han
 |---|---|
 | Slide intro, dialog, dan buku Pustaka | anchor + CSS `:target`; slide aktif disembunyikan yang lain lewat `:has(.slide:target)` |
 | Layar bernarasi (kartu ketuk, kontrol narasi) | atribut `hidden` di markup; `narrator.js` yang membukanya |
+| Overlay Kenali wilayah (Tahap 3) | `.kenal:target, .kenal:has(.slide:target)`; dengan JS hanya `.is-open` (`html.js .kenal`), slide berpindah lewat `.is-current` (`data-managed="class"`) |
 | Tirai pemuatan | `<noscript>` memuat `noscript.css` (tirai `display: none`); animasi pengaman memudarkannya bila modul JS gagal |
 | Konfirmasi keluar tantangan, hapus butir, nonaktifkan akun, aktifkan rilis | `<details class="confirm">`; di dalam sel tabel memakai `.confirm-inline` agar tidak terpotong `overflow` |
 | Panduan bentuk JSON per `interaction_type`, kolom sekolah hanya untuk guru, pembicara dialog | CSS `:has()` pada pilihan `<select>`/radio |
@@ -1051,6 +1097,14 @@ View tahap ini membutuhkan data yang belum dikirim controller tahap 4. Perubahan
 * **Cerita pembuka wajib bagi pemain baru; halaman awal hanya satu tombol.** `/` berisi logo dan satu tombol Mulai → `/mulai`. Belum login → pilih akun baru/lama; sudah login → `/gerbang`. Pemain yang belum pernah menonton cerita pembuka sampai selesai (`participants.intro_seen_at` kosong) selalu dibawa ke `/intro` tanpa tombol "Lewati", dan `/peta` menolak mereka (`introGate()`). Pemain lama memilih di `/gerbang`: lihat cerita pembuka (kini dengan "Lewati") atau langsung ke peta. Peserta yang sudah punya progres saat migrasi `003600` dianggap sudah menonton (backfill), jadi tidak dipaksa. Setiap jalan ke peta dari gerbang/intro membawa flash `curtain=map` untuk layar tirai tahap berikutnya. Dikunci oleh `tests/unit/StartGateTest.php`.
 * **Kolom sandi** sengaja tanpa atribut `minlength`: sandi lemah harus sampai ke server agar metrik `pw_weak_submit_count` tercatat.
 * **Tahap 2 — layar bernarasi dan tirai.** Karena autoplay bersuara diblokir sampai halaman itu sendiri diketuk (Safari iPad) dan GELITA multi-halaman, setiap layar bernarasi dibuka kartu "Ketuk untuk mulai", dan perpindahan berat aset memakai tirai yang ketukan penutupnya membuka kunci audio. Putar otomatis dicatat terpisah (`audio_usage_events.action = autoplay`) agar peneliti dapat membedakannya dari putar manual. Teks seluruh narasi berasal dari satu sumber (`app/Database/Seeds/data/story.php` = `docs/naskah-cerita.md`); server lama memperbaruinya dengan `gelita:story:update` tanpa menimpa suntingan admin. Dialog wilayah `level_open` yang baru (15–16 baris per wilayah) sudah tampil di halaman dialog sekarang; tampilan dramatisnya (pose, efek, kartu bab) menyusul di Tahap 3. Dikunci oleh `CinematicViewTest`, `StoryDataTest`, `StoryUpdateCommandTest`, dan `DialogueModelTest`.
+* **Tahap 3 — Kenali wilayah, tirai, dialog dramatis, tuntas, penutup.**
+  * *Kenali wilayah* bersifat pilihan dan boleh untuk wilayah terkunci; lencana "Belum didengar" dihitung server dari `dialogue_advanced` (murah: index `participant_id, event_type`), bukan localStorage, jadi berlaku per peserta di perangkat mana pun. Narasi Kenali yang dibuka lewat tombol langsung berbunyi (`userInitiated`) — tombol itu sendiri interaksinya; tidak ada kartu ketuk kedua.
+  * Beberapa pemutar dalam satu halaman (narasi peta + tiga overlay): slide overlay tidak memakai hash URL (`data-hash="0"`), dan pintasan keyboard global dimatikan; panah/Spasi/Esc ditangani `map.js` hanya selama overlay terbuka.
+  * *Tirai tantangan* diputar di kartu misi, bukan di halaman tantangan: attempt dibuka saat `/tantangan` dirender, jadi tirai tidak masuk ke `duration_ms` maupun `started_at` (diverifikasi: tidak ada attempt baru selama tirai; `started_at` tercatat setelah tirai selesai).
+  * *Dialog* dipindah ke narrator: `dialogue.js` tidak lagi mengirim `dialogue_advanced` sendiri (context lamanya `region` diganti `level_open`), sehingga tidak ada event ganda.
+  * *Wilayah tuntas* menjadi halaman sendiri, bukan panel di layar selesai: adegannya boleh ditonton ulang dan tautannya bisa diikuti tanpa JavaScript. Layar selesai tetap menampilkan sorotan Pustaka.
+  * *Aset belum ada*: overlay, tirai, kartu bab, dialog, tuntas, dan penutup memakai gradien, monogram tokoh, dan pose `idle`; frame pose yang diunggah kemudian langsung dipakai tanpa perubahan kode.
+  * Dikunci oleh `tests/unit/RegionStoryTest.php` (gerbang `/tuntas` dan `/penutup`, data Kenali per wilayah, lencana, tirai, layar selesai), `LanguageFilesTest` (blok `// Tahap 3`), dan `RouteWiringTest`.
 * **Audit pra-tahap 6 (23 September 2026).** Penelusuran alur nyata di MariaDB menemukan beberapa cacat di lapisan server yang menopang view ini; semuanya diperbaiki tanpa mengubah markup:
   * attempt `cari` tidak dapat ditutup karena baris objek jebakan dihitung "belum dijawab" — kini petunjuk, progres, dan syarat `/complete` memakai satu aturan (`ChallengeService::expectsAnswer()`);
   * first-pass `cari` kini ditutup salah oleh klik pertama yang keliru, dan `allow_retry = false` (arena `pilihan`) ditegakkan server;

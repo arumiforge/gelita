@@ -115,28 +115,19 @@ class ChallengeController extends BaseGameController
             ? ['score' => 0.0, 'stars' => 0, 'completed_nodes' => 0, 'total_nodes' => 0]
             : service('scoringService')->levelScore($session->id, $level->id);
 
-        // Wilayah sesudahnya (baris levelOverview, beserta `entry`): bila baru
-        // terbuka, tombol lanjut langsung menuju dialog pembukanya
-        $nextRegion = null;
-
-        if ($level !== null) {
-            foreach ($this->levelOverview($session) as $row) {
-                if ($row['sequence'] === $level->sequence + 1) {
-                    $nextRegion = $row;
-                    break;
-                }
-            }
-        }
+        // Wilayah sesudahnya (baris levelOverview, beserta `entry` dan isi tirai
+        // wilayah): bila baru terbuka, tombol lanjut langsung menuju dialog pembukanya
+        $nextRegion = $level === null ? null : $this->nextRegion($session, $level->sequence);
 
         $levelCompleted = $levelScore['total_nodes'] > 0
             && $levelScore['completed_nodes'] >= $levelScore['total_nodes'];
 
-        // Momen "Pustaka {wilayah} terbuka!": hanya pada attempt yang menuntaskan
-        // wilayah (bukan saat mengulang tantangan di wilayah yang sudah tuntas),
-        // dan hanya bila wilayah itu memang punya halaman Pustaka.
-        $libraryUnlocked = $levelCompleted
-            && service('contentRepository')->libraryPages($level->id) !== []
-            && $this->closesLevel($session->id, $level->id, $attempt->id);
+        // Attempt yang menuntaskan wilayah (bukan saat mengulang tantangan di
+        // wilayah yang sudah tuntas): tombol utama "Lanjut" menuju adegan
+        // /tuntas/{code}, dan momen "Pustaka {wilayah} terbuka!" bila wilayah
+        // itu memang punya halaman Pustaka.
+        $closesRegion    = $levelCompleted && $this->closesLevel($session->id, $level->id, $attempt->id);
+        $libraryUnlocked = $closesRegion && service('contentRepository')->libraryPages($level->id) !== [];
 
         return view('game/challenge-finished', $this->hudData() + [
             'attempt'        => $attempt,
@@ -144,6 +135,7 @@ class ChallengeController extends BaseGameController
             'level'          => $level,
             'levelScore'     => $levelScore,
             'levelCompleted'  => $levelCompleted,
+            'closesRegion'    => $closesRegion,
             'libraryUnlocked' => $libraryUnlocked,
             'allCompleted'    => $this->allNodesCompleted($session),
             'nextRegion'      => $nextRegion,

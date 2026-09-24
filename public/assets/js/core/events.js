@@ -12,6 +12,12 @@
  * `client_event_id` dibuat sekali saat event lahir dan ikut tersimpan di
  * antrean offline, jadi pengiriman ulang dibalas `duplicate` oleh server —
  * tidak pernah menggandakan data.
+ *
+ * Batch yang sedang dikirim (fetch biasa) dibatalkan browser bila halaman
+ * berpindah di tengah jalan — makin mungkin sejak tirai (Tahap 3) menunda
+ * perpindahan ±1,8 detik. Karena itu batch itu diingat sampai server
+ * menjawab, dan ikut dikirim lewat sendBeacon saat halaman ditutup;
+ * bila ternyata sudah sampai, server membalasnya `duplicate`.
  */
 import { CONFIG, t } from './config.js';
 import { apiRequest, ApiError } from './api.js';
@@ -44,7 +50,8 @@ class EventQueue {
     this.path = path;
     this.queue = [];
     this.timer = null;
-    this.sending = false;
+    this.sending = null;  // Promise pengiriman yang sedang berjalan
+    this.inflight = [];   // batch yang dikirim fetch dan belum dijawab server
   }
 
   push(event) {
@@ -60,25 +67,31 @@ class EventQueue {
     this.timer = null;
 
     if (force) {
-      while (this.queue.length) this.beacon(this.queue.splice(0, BATCH_MAX));
+      // Batch yang masih di jalan ikut dikirim: fetch-nya batal bila halaman ditutup
+      const pending = this.inflight.concat(this.queue);
+      this.queue = [];
+      while (pending.length) this.beacon(pending.splice(0, BATCH_MAX));
       return;
     }
 
-    if (this.sending) return;
-    this.sending = true;
+    // Pengiriman yang sedang berjalan ikut mengambil event yang masuk sesudahnya;
+    // pemanggil yang menunggu (tirai sebelum pindah halaman) menunggu yang sama
+    if (!this.sending) this.sending = this.drain().finally(() => { this.sending = null; });
+    await this.sending;
+  }
 
-    try {
-      while (this.queue.length) {
-        const batch = this.queue.splice(0, BATCH_MAX);
-        try {
-          await apiRequest(this.path, { method: 'POST', body: { events: batch } });
-        } catch (error) {
-          this.keepForLater(batch, error);
-          return;
-        }
+  async drain() {
+    while (this.queue.length) {
+      const batch = this.queue.splice(0, BATCH_MAX);
+      this.inflight = batch;
+      try {
+        await apiRequest(this.path, { method: 'POST', body: { events: batch } });
+      } catch (error) {
+        this.keepForLater(batch, error);
+        return;
+      } finally {
+        this.inflight = [];
       }
-    } finally {
-      this.sending = false;
     }
   }
 

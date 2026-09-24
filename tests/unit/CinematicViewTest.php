@@ -195,7 +195,9 @@ final class CinematicViewTest extends CIUnitTestCase
     {
         $page = $this->map(curtain: false);
 
-        $this->assertStringNotContainsString('data-curtain-layer', $page);
+        // Tirai peta tidak tampil; tirai wilayah hanya ada sebagai <template> (Tahap 3)
+        $this->assertStringNotContainsString('data-curtain-layer="map"', $page);
+        $this->assertStringContainsString('<template id="tpl-curtain-region">', $page);
         $this->assertStringContainsString('data-mode="manual"', $page);
         $this->assertStringContainsString('data-narrator="toggle"', $page);
         $this->assertStringContainsString('Inilah Dataran Kedu.', $page);

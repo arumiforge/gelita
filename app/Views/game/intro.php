@@ -30,7 +30,6 @@
  * @var bool                       $canSkip sudah pernah menonton (intro_seen_at terisi)
  */
 $welcome = session('welcome');
-$total   = count($slides);
 ?>
 <?= $this->extend('layouts/game') ?>
 
@@ -62,55 +61,13 @@ $total   = count($slides);
   <?php else: ?>
     <div class="narrator-fx" data-narrator-fx aria-hidden="true"></div>
 
-    <ol class="slides cine-slides">
-      <?php foreach ($slides as $index => $slide): ?>
-        <?php
-        $n         = $index + 1;
-        $character = (string) ($slide['character_code'] ?? 'narator');
-        $pose      = (string) ($slide['pose'] ?? '') ?: 'idle';
-        $effect    = (string) ($slide['effect'] ?? '');
-        $title     = tr($slide, 'title', $locale);
-        $text      = tr($slide, 'text', $locale);
-        $audioId   = (int) ($locale === 'en' ? ($slide['audio_en_asset_id'] ?? 0) : ($slide['audio_id_asset_id'] ?? 0));
-        $bgId      = (int) ($slide['background_media_id'] ?? 0);
-        ?>
-        <li class="slide cine-slide<?= $character === 'narator' ? ' is-narrator' : '' ?>" id="slide-<?= $n ?>" data-index="<?= $n ?>"
-            data-character="<?= esc($character, 'attr') ?>" data-pose="<?= esc($pose, 'attr') ?>"
-            <?= $effect !== '' ? 'data-effect="' . esc($effect, 'attr') . '"' : '' ?>
-            aria-label="<?= esc(lang('Game.slideOf', [$n, $total]), 'attr') ?>">
-          <?php if (media_exists($bgId)): ?>
-            <img class="cine-bg" src="<?= esc(media_src($bgId), 'attr') ?>" alt="" <?= $n === 1 ? 'fetchpriority="high"' : 'loading="lazy"' ?>>
-          <?php endif ?>
-          <?php if ($character !== 'narator'): ?>
-            <div class="cine-stage">
-              <?= component('character', ['character' => $character, 'pose' => $pose, 'class' => 'pose-' . $pose]) ?>
-            </div>
-          <?php endif ?>
-          <div class="cine-caption" data-narrator-advance>
-            <div class="cine-caption-head">
-              <span class="eyebrow"><?= esc(lang('Game.slideOf', [$n, $total])) ?></span>
-              <?php if ($character !== 'narator'): ?>
-                <span class="cine-speaker"><?= esc(lang_or('Game.char_' . $character, $character)) ?></span>
-              <?php endif ?>
-            </div>
-            <?php if ($title !== ''): ?>
-              <h2 class="cine-title"><?= esc($title) ?></h2>
-            <?php endif ?>
-            <p class="slide-text"><?= esc($text) ?></p>
-            <?php if (($audioSrc = audio_src($audioId ?: null)) !== null): ?>
-              <?= component('audio-player', ['audioId' => $audioId, 'audioSrc' => $audioSrc, 'transcript' => $text]) ?>
-            <?php endif ?>
-            <?= component('partials/slide-nav', [
-                'n'        => $n,
-                'total'    => $total,
-                'prefix'   => 'slide-',
-                'finalUrl' => base_url('intro/selesai'),
-                'final'    => lang('Game.startJourney'),
-            ]) ?>
-          </div>
-        </li>
-      <?php endforeach ?>
-    </ol>
+    <?= component('partials/cine-slides', [
+        'slides'   => $slides,
+        'locale'   => $locale,
+        'prefix'   => 'slide-',
+        'finalUrl' => base_url('intro/selesai'),
+        'final'    => lang('Game.startJourney'),
+    ]) ?>
 
     <?= component('narrator-controls') ?>
     <?= component('narrator-tap') ?>
