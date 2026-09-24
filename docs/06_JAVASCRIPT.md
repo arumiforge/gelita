@@ -40,7 +40,8 @@ public/assets/js/
 │   ├── storage.js           antrean offline di localStorage
 │   ├── modal.js             dialog tengah layar
 │   ├── toast.js             notifikasi sementara
-│   ├── audio.js             pemutar narasi + efek suara (Howler)
+│   ├── audio.js             pemutar narasi + efek suara (Howler); autoplay & elemen narasi bersama
+│   ├── curtain.js           tirai pemuatan layar penuh: playCurtain() + tautan a[data-curtain]
 │   ├── timer.js             jam tantangan
 │   ├── confetti.js          efek konfeti ringan (canvas)
 │   └── dom.js               pembantu kecil: $, $$, on, el, esc, readJson, announce
@@ -50,7 +51,8 @@ public/assets/js/
 │   ├── password-meter.js    meter kekuatan & daftar syarat sandi (registrasi + ganti sandi)
 │   ├── login.js             form masuk: lihat sandi, Caps Lock, cegah kirim ganda
 │   ├── slides.js            slide bersama intro/dialog/pustaka (hash + keyboard)
-│   ├── intro.js             slide cerita
+│   ├── narrator.js          pemutar narasi sinematik: ketuk-untuk-mulai, mesin ketik, maju otomatis, efek
+│   ├── intro.js             cerita pembuka (narrator mode tap)
 │   ├── dialogue.js          dialog karakter
 │   ├── map.js               peta Kedu & peta wilayah
 │   ├── library.js           Pustaka Kedu
@@ -222,7 +224,8 @@ Dua peran terpisah.
 
 ```js
 export const Sfx = {
-  unlock(),            // dipanggil pada interaksi pertama pengguna
+  unlock(),            // dipanggil pada interaksi pengguna; juga membuka elemen narasi bersama
+  isUnlocked(),
   play(name),          // correct, wrong, click, shard, region-done, page, lock
   music(name),         // map, region, challenge, library
   stopMusic(),
@@ -257,9 +260,29 @@ Dikirim sebagai amplop batch `POST /api/audio-events { events: [ … ] }`. Serve
 
 `play_index` yang disimpan dihitung **server** (`AudioUsageEventModel::nextPlayIndex()`): `play`/`replay` membuka pemutaran baru, `pause`/`complete` termasuk pemutaran berjalan — hitungan klien dimulai ulang setiap halaman. Melanjutkan dari jeda tidak dikirim sebagai `play` baru (masih pemutaran yang sama; waktu dengarnya terbawa ke `pause`/`complete` berikutnya), sehingga `total_plays` di analitik tidak membengkak oleh jeda.
 
+**Autoplay (Tahap 2).** `NarrationPlayer` menerima opsi `{ autoplay, shared, onEnded, onError, onState }`; `narrationPlayer(node, opsi)` mengembalikan pemutar milik satu `.audio-player` (membuatnya bila belum ada) dan memasang opsi itu. `player.autoplay()` memutar dari awal tanpa tombol dan mengirim action **`autoplay`** — bukan `play` — lewat jalur telemetry yang sama (`/api/audio-events`); server menghitungnya terpisah (`total_autoplays`), dan `play` tetap berarti pemain menekan putar. `autoplay()` mengembalikan `Promise<boolean>` dan menolak berbunyi sebelum `Sfx.unlock()`, saat suara dimatikan, tanpa berkas, atau setelah berkas gagal: kebijakan "tidak ada yang berbunyi sebelum interaksi" tetap berlaku. `onEnded` dipanggil sesudah telemetry `complete`.
+
+**Elemen narasi bersama.** Safari iOS/iPadOS hanya mengizinkan `play()` tanpa ketukan pada elemen yang pernah diputar di dalam ketukan; elemen `<audio>` baru per slide akan ditolak. Pemutar ber-`shared: true` memakai satu elemen bersama: pemutar yang mengambilnya menjeda pemilik sebelumnya lebih dulu (telemetry `pause` pemilik lama tetap terkirim), dan event elemen hanya diproses pemiliknya. `Sfx.unlock()` membuka elemen itu dengan memutar WAV hening 10 ms, jadi harus dipanggil **di dalam** handler ketukan (kartu ketuk, tirai) — pointerdown saja tidak cukup di iOS.
+
 `listened_ms` dihitung dari akumulasi waktu putar sungguhan, bukan dari `duration`. Server tetap memperlakukan angka ini sebagai data client: perbandingan final memakai `duration_ms` aset dari database sebagai pembagi, bukan angka dari browser.
 
 **Kebijakan autoplay:** audio tidak pernah diputar otomatis sebelum ada interaksi pengguna. Pada layar dialog, tombol putar tampil besar dan berkedip halus sekali agar terlihat.
+
+### `core/curtain.js`
+
+```js
+playCurtain(kind, { urls?, minMs = 2500, maxMs = 8000, tap = true, keep = false, onProgress? })
+  // → Promise<{ loaded, failed, timedOut, skipped }>
+initCurtains()   // game.js: pembersihan bfcache + delegasi a[data-curtain]
+```
+
+* Memakai `[data-curtain-layer="{kind}"]` di halaman (tampil sejak paint pertama) atau `<template id="tpl-curtain-{kind}">`; tanpa keduanya langsung `{ skipped: true }`.
+* Menambah `.is-live` untuk membatalkan animasi pengaman CSS; bila pengaman sudah memudarkan tirai (JS datang terlambat), tirai dibuang dan hasilnya `skipped`.
+* Progres **nyata**: tiap URL dimuat (`Image()` untuk gambar, `fetch` selain itu); `--p` dan `aria-valuenow` = selesai / total, termasuk yang gagal. Selesai setelah semua termuat **dan** `minMs`, atau paling lambat `maxMs` (dihitung sejak halaman dibuka untuk tirai bawaan halaman) walau ada aset yang gagal.
+* Baris status bergilir tiap 1,8 detik dari `data-statuses`.
+* `tap`: menampilkan tombol ketuk; ketukan di mana pun pada tirai memanggil `Sfx.unlock()` lalu tirai memudar. HUD, `<main>`, dan nav bar `inert` selama tirai tampil.
+* `keep`: tirai dibiarkan menutupi (sebelum berpindah halaman); `pageshow` dari bfcache membersihkannya.
+* Tautan `a[data-curtain="{kind}"]` (klik kiri tanpa pengubah) memutar tirai jenis itu tanpa ketukan lalu berpindah halaman — disiapkan untuk jenis `region`/`challenge` Tahap 3.
 
 ### `core/timer.js`, `core/toast.js`, `core/confetti.js`, `core/dom.js`
 
@@ -573,18 +596,43 @@ Yang **tidak** dilakukan skrip ini: menyimpan sandi ke `localStorage`, mengirimn
 * Tombol **Masuk** dinonaktifkan setelah diklik agar tidak terkirim dua kali.
 * Form POST biasa; seluruh keputusan (gagal, terkunci, wajib ganti sandi) datang dari server.
 
+### `game/narrator.js` — pemutar narasi sinematik
+
+Dipakai cerita pembuka dan narasi peta; Tahap 3 memakainya ulang untuk layar bernarasi lain.
+
+```js
+initNarrator(root, { onFinish? }) // root = [data-narrator][data-context][data-prefix][data-mode][data-keyboard?][data-level-id?]
+  // → { start({ userInitiated }), stop(), show(n), started } | null
+```
+
+| Mode (`data-mode`) | Mulai | Action audio pertama |
+|---|---|---|
+| `tap` | kartu "Ketuk untuk mulai" (`[data-narrator-tap]`); ketukannya memanggil `Sfx.unlock()` | `autoplay` |
+| `external` | pemanggil memanggil `start()` (map.js, setelah tirai) | `autoplay` |
+| `manual` | tombol ▶ pada kontrol | `play` |
+
+* **Mesin ketik** pada `.slide-text` (±35 karakter/detik): teks utuh tetap untuk pembaca layar (`visually-hidden`), sisa teks memakan tempat agar kotak tidak melompat. Ketukan pertama pada `[data-narrator-advance]` menampilkan teks penuh, ketukan kedua lanjut; Spasi/→/Enter saat mengetik juga menuntaskan teks lebih dulu.
+* **Maju otomatis** 1,2 detik setelah audio selesai bila sakelar Otomatis menyala (`Storage` pref `narrationAuto`, bawaan `true`). Slide terakhir tidak berpindah halaman sendiri; root diberi `.is-finished` dan tombol akhirnya berdenyut.
+* **Kontrol** `[data-narrator-controls]`: ◀ (`prev`), ⏸/▶ (`toggle`), ↻ (`replay`, action `replay`), ▶ (`next`), Otomatis (`auto`). ⏸/▶ dan ↻ disembunyikan pada slide tanpa audio; sakelar Otomatis disembunyikan bila tak satu slide pun beraudio.
+* **Efek layar** dari `data-effect` slide → kelas `fx-{effect}` pada `[data-narrator-fx]` (diputar ulang tiap slide).
+* **Event** `dialogue_advanced` { index, total, context, character } (+ `levelId` dari `data-level-id`) tiap perpindahan.
+* Memakai ulang `initSlides()` dan pola `:target`, sehingga tanpa JavaScript slide tetap berjalan; kartu ketuk dan kontrol tersembunyi lewat atribut `hidden`. Audio setiap slide lewat `narrationPlayer(..., { shared: true })`.
+* `prefers-reduced-motion`: tanpa mesin ketik dan tanpa efek (Ken Burns dimatikan CSS).
+
 ### `game/intro.js` dan `game/dialogue.js`
 
+* `intro.js` hanya memanggil `initNarrator()` pada `[data-screen="intro"]` (mode `tap`); event `dialogue_advanced` dengan `context: 'intro'`.
 * Maju/mundur slide tanpa memuat ulang halaman (`game/slides.js`, dipakai juga Pustaka). Hash `#slide-n` diganti lewat `location.replace('#…')`: seperti `history.replaceState`, riwayat browser tidak bertambah per slide, tetapi `:target` ikut berubah sehingga aturan CSS tanpa-JavaScript tetap satu-satunya penentu slide yang tampil.
 * `emit('dialogue_advanced', { payload: { index } })` tiap perpindahan.
 * Karakter yang berbicara diberi kelas `.is-speaking`, yang mendengar `.is-listening`.
-* `Space` dan panah kanan = lanjut; ini cara tercepat di papan tulis interaktif.
+* `Space` dan panah kanan = lanjut; ini cara tercepat di papan tulis interaktif. `initSlides({ keyboard: false })` mematikannya untuk slide yang hanya sebagian layar (narasi peta), dan `show(n, { focus: false })` dipakai perpindahan otomatis agar fokus pengguna tidak direbut.
 
 ### `game/map.js`
 
 * Titik terkunci → toast, bukan navigasi.
 * Pra-muat gambar latar wilayah yang terbuka (`[data-preload]`, dari `levelOverview()['background']`) saat peta dibuka, agar perpindahan mulus.
 * `emit('level_opened', { levelId })` saat peta wilayah dibuka.
+* **Peta Kedu (Tahap 2):** narasi Jaka `map_intro` lewat `initNarrator()` pada panduan peta. Bila halaman membawa tirai peta (`[data-curtain-layer="map"]`, dari flash `curtain=map`): `playCurtain('map')` → setelah ketukan, `Sfx.music('map')` lalu `story.start()` (autoplay). Tanpa tirai: musik diminta seperti biasa (baru berbunyi setelah interaksi) dan narasi menunggu ▶.
 * Tombol "Pustaka {wilayah}" yang masih terkunci (`a[data-library-locked]`, di nav-bar — di luar `<section>` layar) → `showModal()` dari `core/modal.js` dengan ikon gembok: judul, penjelasan, dan progres dari atribut `data-locked-*`, tombol **Mengerti** dan tautan **Pustaka Kedu**. Tanpa JavaScript tautannya membuka halaman terkunci `/pustaka/{code}`.
 
 ### `game/library.js`
@@ -827,6 +875,14 @@ Keputusan dan temuan selama tahap ini. Semua perilaku di atas diuji di browser (
 
 * PHPUnit (106 test): ditambah `ChartDataTest` (bentuk data chart, kondisi kosong, sel per wilayah) dan `JsConfigTest` (`sessionTag` buram & per sesi, `js_config()` tanpa identitas, setiap `t('…')` punya kunci `Js.*`).
 * Browser (Playwright, skrip di luar repo): alur siswa penuh 15 node termasuk sandi lemah ditolak, meter sandi, cek nama pengguna, slide keyboard, titik peta terkunci, antrean offline → kirim ulang → `duplicate`, petunjuk, puzzle salah → benar, rumpang kosong/sebagian/perbaiki, kartu kosong/salah, jebakan `cari`, pilihan salah → kunci ditandai, keluar berkonfirmasi, tombol Back, lanjut attempt setelah muat ulang, refleksi minimal dua jawaban, dan sesi berakhir di tengah tantangan; panel admin (chart ECharts + tabel aksesibel, filter tanpa muat ulang, urut/saring tabel, salin sandi sementara, editor terpandu, penolakan ukuran gambar & berkas non-.xlsx di client); pemutar narasi dengan aset sementara (play/complete/replay/pause, `listened_ms`, `play_index`, berkas hilang → transkrip). Tidak ada galat JavaScript di konsol.
+
+---
+
+## Catatan Implementasi Tahap 2 (alur cerita)
+
+* **Modul baru:** `core/curtain.js`, `game/narrator.js`; `core/audio.js` mendapat `autoplay()`, `narrationPlayer()`, dan elemen narasi bersama; `game/slides.js` mendapat opsi `keyboard` dan `focus`; `game/intro.js` dan `game/map.js` memakai keduanya. Gaya di `css/cinematic.css`.
+* **Telemetry:** action audio `autoplay` (lihat `core/audio.js`) diterima `AudioApiController` lewat `EventService::recordAudio()`; raw event pendampingnya `audio_autoplay`.
+* **Pengujian browser** (Playwright + Chromium, MariaDB 10.11, aset gambar & audio sementara di luar repo) pada 844×390 dan 1440×900: pemain baru → kartu ketuk (tanpa "Lewati", kartu sambutan di dalamnya) → narasi slide 1 berbunyi dan maju otomatis ke slide 2 → `/intro/selesai` → tirai peta dengan jaringan diperlambat (progres berhenti di aset yang belum termuat, lalu lanjut di batas 8 detik) → ketukan → narasi peta berbunyi dan maju → kunjungan ulang tanpa tirai dengan tombol ▶. Juga `prefers-reduced-motion` (tanpa mesin ketik/efek) dan JavaScript mati (tirai tidak menutupi, slide `:target` berjalan). `audio_usage_events` mencatat `autoplay`/`complete`/`pause` dan `game_event_logs` mencatat `dialogue_advanced` dengan `context`.
 
 ---
 

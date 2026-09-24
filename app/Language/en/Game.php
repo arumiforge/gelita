@@ -308,6 +308,27 @@ return [
     'serverErrorText'   => 'Something went wrong on the server. Try again soon, or tell your teacher this code.',
     'backHome'          => 'Back to the start',
 
+    // Tahap 2 — narrated screens (tap to start), curtain, map narration
+    'char_narator'       => 'Narrator',
+    'tapToStart'         => 'Tap to start',
+    'tapToStartHint'     => 'Turn your sound on. The story will be read aloud.',
+    'narratorControls'   => 'Narration controls',
+    'narratorPrev'       => 'Previous part',
+    'narratorNext'       => 'Next part',
+    'narratorPause'      => 'Pause narration',
+    'narratorPlay'       => 'Play narration',
+    'narratorReplay'     => 'Replay narration',
+    'narratorAuto'       => 'Auto',
+    'narratorAutoHint'   => 'Move on by itself after the narration is read',
+    'curtainMapTitle'    => 'Opening the Kedu Map',
+    'curtainMapStatus1'  => 'Lighting the lantern…',
+    'curtainMapStatus2'  => 'Parting the Mist of Forgetting…',
+    'curtainMapStatus3'  => 'Calling the Shards of Light…',
+    'curtainMapTap'      => 'Tap to open the map',
+    'curtainProgress'    => 'Loading progress',
+    'mapStoryTitle'      => "Jaka's story about the Kedu Plain",
+    'mapStoryListen'     => 'Listen to Jaka',
+
     // Tahap 4 — Pustaka per wilayah
     'libraryRegion'        => '{0} Library',
     'libraryIndexLead'     => 'Every region has its own library. A region\'s library opens once every challenge in that region is finished.',

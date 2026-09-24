@@ -6,6 +6,10 @@
  * - Pra-muat gambar latar wilayah/pos yang terbuka ([data-preload]) agar
  *   perpindahan halaman mulus.
  * - Peta wilayah: event `level_opened` { levelId }.
+ * - Peta Kedu: narasi Jaka `map_intro` di panduan peta (game/narrator.js).
+ *   Bila halaman membawa tirai peta (flash `curtain=map`), tirai memuat aset
+ *   peta dengan progres nyata; ketukan penutupnya membuka kunci audio, lalu
+ *   musik peta dan narasi dimulai otomatis. Tanpa tirai, narasi menunggu ▶.
  * - Peta wilayah: tombol "Pustaka {wilayah}" yang masih terkunci
  *   ([data-library-locked]) membuka modal penjelasan + progres, bukan
  *   berpindah halaman. Tanpa JavaScript tautannya menuju halaman terkunci.
@@ -15,6 +19,8 @@ import { toast } from '../core/toast.js';
 import { showModal } from '../core/modal.js';
 import { emit } from '../core/events.js';
 import { Sfx } from '../core/audio.js';
+import { playCurtain } from '../core/curtain.js';
+import { initNarrator } from './narrator.js';
 
 function preload(root) {
   const urls = new Set($$('[data-preload]', root).map((node) => node.dataset.preload).filter(Boolean));
@@ -48,6 +54,17 @@ export function initMap() {
   if (screen.dataset.screen === 'map-level') {
     emit('level_opened', { levelId: Number(screen.dataset.levelId) || null, payload: { code: screen.dataset.level || null } });
     Sfx.music('region');
+    return;
+  }
+
+  const guide = $('[data-narrator]', screen);
+  const story = guide ? initNarrator(guide) : null;
+
+  if ($('[data-curtain-layer="map"]')) {
+    playCurtain('map').then(() => {
+      Sfx.music('map');
+      story?.start();
+    });
   } else {
     Sfx.music('map');
   }

@@ -18,7 +18,7 @@
   <button class="btn btn-primary btn-sm" type="submit"><?= icon('check') ?> Verifikasi konten</button>
 </form>
 <a class="btn btn-ghost btn-sm" href="<?= base_url('admin/konten/impor-bank') ?>"><?= icon('upload') ?> Impor bank soal</a>
-<a class="btn btn-ghost btn-sm" href="<?= base_url('admin/konten/dialog/0') ?>"><?= icon('message') ?> Cerita pembuka</a>
+<a class="btn btn-ghost btn-sm" href="<?= base_url('admin/konten/dialog/0') ?>"><?= icon('message') ?> Cerita &amp; narasi</a>
 <a class="btn btn-ghost btn-sm" href="<?= base_url('admin/media') ?>"><?= icon('image') ?> Media</a>
 <?php $actions = ob_get_clean() ?>
 <?= component('partials/admin-head', [

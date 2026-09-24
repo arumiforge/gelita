@@ -56,7 +56,7 @@ $delta   = $summary['pretest_posttest_delta'];
   <?= component('stat-tile', ['label' => 'Tepat sejak awal', 'value' => fmt_pct($summary['avg_first_pass_accuracy']), 'icon' => 'target']) ?>
   <?= component('stat-tile', ['label' => 'Rata-rata durasi sesi', 'value' => ms_to_human($summary['avg_duration_ms']), 'icon' => 'clock']) ?>
   <?= component('stat-tile', ['label' => 'Pemakaian petunjuk', 'value' => fmt_num($summary['hint_usage'], 2, 'id'), 'icon' => 'hint', 'hint' => 'rata-rata per percobaan']) ?>
-  <?= component('stat-tile', ['label' => 'Pemakaian audio', 'value' => fmt_pct($audioShare, true), 'icon' => 'sound', 'hint' => fmt_num($audio['total_plays'], 0, 'id') . ' kali diputar']) ?>
+  <?= component('stat-tile', ['label' => 'Pemakaian audio', 'value' => fmt_pct($audioShare, true), 'icon' => 'sound', 'hint' => fmt_num($audio['total_plays'], 0, 'id') . ' kali diputar siswa · ' . fmt_num($audio['total_autoplays'] ?? 0, 0, 'id') . ' otomatis']) ?>
   <?= component('stat-tile', ['label' => 'Sandi kuat sejak awal', 'value' => fmt_pct($strongPct, true), 'icon' => 'key', 'hint' => 'siswa memenuhi 5 syarat pada percobaan pertama']) ?>
 </section>
 
