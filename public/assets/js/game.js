@@ -48,6 +48,7 @@ const pages = {
   'map-kedu': () => import('./game/map.js').then((m) => m.initMap()),
   'map-level': () => import('./game/map.js').then((m) => m.initMap()),
   library: () => import('./game/library.js').then((m) => m.initLibrary()),
+  'library-index': () => import('./game/library.js').then((m) => m.initLibraryIndex()),
   reflection: () => import('./game/reflection.js').then((m) => m.initReflection()),
   challenge: () => import('./game/challenge.js').then((m) => m.bootChallenge()),
   finished: () => import('./game/finished.js').then((m) => m.initFinished()),

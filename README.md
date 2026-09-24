@@ -23,6 +23,14 @@ Kelima arena kini dapat dimainkan penuh di browser — Periksa, petunjuk, keluar
 
 Yang sudah berfungsi penuh lewat HTTP: persetujuan dan registrasi dengan kata sandi kuat (termasuk dua metrik literasi keamanan digital), masuk/keluar, ganti sandi dan reset sandi oleh guru, ganti sandi sendiri untuk staf (`/admin/akun/sandi`, wajib setelah reset atau pembuatan akun oleh admin), peta Kedu dan peta wilayah dengan kunci berurutan, dialog pembuka wilayah, kelima arena beserta seluruh API penilaiannya, layar selesai dan riwayat hasil, Pustaka Kedu, profil, Balai Refleksi, pergantian bahasa tanpa kehilangan progres, serta seluruh halaman panel admin (dasbor, peserta, sesi, analitik, masukan, konten, impor bank soal, media & audio, studi & rilis, tata kelola, akun staf).
 
+### Pembaruan Pustaka per wilayah (Tahap 4)
+
+- **Pustaka terkunci per wilayah.** Pustaka sebuah wilayah baru terbuka setelah kelima tantangannya selesai pada sesi pemain, apa pun unlock mode studinya. Sebelum itu `/pustaka/{code}` menampilkan halaman terkunci berisi progres x/5 dan tombol "Lanjutkan tantangan" (tetap terbaca tanpa JavaScript), dan `/api/library/{levelId}` membalas `LIBRARY_LOCKED`. **Catatan peneliti:** event `library_opened` kini hanya muncul setelah wilayahnya tuntas ([`docs/07` → FITUR 8](docs/07_FEATURE_INTEGRATION.md#fitur-8-pustaka-kedu)).
+- **Nama sesuai tempat.** Di peta, tombol **Pustaka Kedu** membuka rak `/pustaka`: satu kartu per wilayah (terbuka → Baca, terkunci → progres + penjelasan, belum terbuka → keterangan). Di dalam wilayah namanya **Pustaka {wilayah}**, dan selama masih terkunci, tombolnya membuka modal penjelasan.
+- **Momen "Pustaka {wilayah} terbuka!"** di layar selesai, hanya pada tantangan yang menuntaskan wilayah.
+- **Buku yang lebih rapi.** Kredit pindah ke ikon ⓘ di pojok gambar (`<details>`, berjalan tanpa JS). Gambar dimuat dengan skeleton perkamen lalu memudar masuk, halaman berikutnya dipramuat, dan lightbox menampilkan pemutar tunggu. Video YouTube/Vimeo/Drive tampil sebagai facade berposter dengan tombol Putar besar.
+- **Thumbnail video diunduh server** (`App\Libraries\VideoThumbnail`) saat Pustaka disimpan atau diimpor, lalu dipakai sebagai poster. Perangkat siswa tidak menghubungi domain luar sebelum Putar ditekan. Server butuh HTTPS keluar ke `i.ytimg.com`, `vimeo.com`, `i.vimeocdn.com`, dan `drive.google.com` ([`docs/08` → *Akses keluar server*](docs/08_DEPLOYMENT.md#akses-keluar-server-thumbnail-video-pustaka)). Untuk baris yang sudah ada: `php spark gelita:library:thumbnails [--force]`.
+
 ### Pembaruan alur masuk: satu tombol Mulai, cerita pembuka wajib
 
 - **Halaman awal hanya logo dan tombol Mulai.** Logo landscape dari slot `ui.logo-hero` (cadangan `ui.logo`, lalu judul teks), tombol dari gambar `ui.btn-start` beserta varian bahasa `ui.btn-start.en` (cadangan tombol CSS emas). Merek di HUD tidak diulang di halaman ini. Tautan panel guru dihapus: staf masuk lewat `/admin/login`.
@@ -75,7 +83,7 @@ Ekspor, laporan, retensi, dan command kini berfungsi penuh. Rincian dan keputusa
 - **Laporan PDF** (mPDF): ringkasan studi dari halaman ekspor, dan laporan satu peserta dari `/admin/peserta/{id}`.
 - **Penghapusan** (`/admin/tata-kelola`) dipindah ke `RetentionService`: cakupan peserta, sesi, atau studi (dipersempit fase & rentang tanggal); eksekusi dibatalkan bila jumlah baris berubah jauh sejak pratinjau.
 - **Retensi** (`php spark gelita:retention:run`, cron harian): sesi menganggur → `paused`, attempt menggantung > 24 jam → `abandoned`, sesi `paused` > 30 hari → `abandoned`, berkas ekspor kedaluwarsa dibuang, dan data yang melewati `retention_days` **hanya** dibuatkan pratinjau penghapusan + peringatan di dasbor admin.
-- **Command**: `gelita:content:verify`, `gelita:media:scan`, `gelita:score:recompute`, `gelita:bank:import`, `gelita:retention:run`, `gelita:staff:password` — semuanya mengembalikan kode keluar 1 saat gagal sehingga dapat dipakai di skrip deploy.
+- **Command**: `gelita:content:verify`, `gelita:media:scan`, `gelita:score:recompute`, `gelita:bank:import`, `gelita:retention:run`, `gelita:staff:password`, `gelita:library:thumbnails` — semuanya mengembalikan kode keluar 1 saat gagal sehingga dapat dipakai di skrip deploy.
 
 ### Tahap 6 — JavaScript
 
@@ -214,6 +222,8 @@ Suite (161 test) memakai grup database `tests` (SQLite3 in-memory) dan hanya men
 - `StaffPasswordGateTest` — staf bersandi sementara hanya dapat membuka Ubah sandi: halaman lain dialihkan, API membalas 403 `PASSWORD_CHANGE_REQUIRED`.
 - `HuntPayloadTest` — payload arena `cari` tidak membedakan jebakan, jawaban hanya lewat token objek, dan objek jebakan tidak pernah diminta dijawab.
 - `RegionEntryTest`, `DialogueGateTest` — wilayah baru selalu lewat dialog pembukanya.
+- `LibraryLockTest` — Pustaka terbuka per wilayah hanya setelah wilayahnya tuntas (juga pada unlock mode `free`), halaman terkunci dirender tanpa mencatat `library_opened`, wilayah yang belum terbuka tetap ditolak, rak `/pustaka` dan tombol bergembok di peta wilayah, serta momen "Pustaka terbuka" hanya milik attempt penuntas.
+- `VideoThumbnailTest` — alamat thumbnail per penyedia (YouTube maxres → hq, Vimeo oEmbed, Drive), respons HTML/non-gambar/SVG/terlalu besar ditolak, galat jaringan tidak melempar; memakai HTTP tiruan, tanpa jaringan.
 - `JsConfigTest` — penanda sesi antrean offline buram dan per sesi, `#app-config` tanpa identitas siswa, dan setiap `t('…')` di JavaScript punya kunci `Js.*`.
 - `ChartDataTest` — bentuk data chart admin dan kondisi kosongnya.
 - `ExcelWriterTest` — workbook terbaca ulang PhpSpreadsheet, teks berawalan `=` tidak pernah menjadi rumus, berkas sementara dibersihkan.

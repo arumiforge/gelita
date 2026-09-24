@@ -20,14 +20,6 @@
 $mapSrc = media_key_src('map.kedu');
 $icons  = ['open' => 'lantern', 'in_progress' => 'lantern', 'completed' => 'star', 'locked' => 'lock'];
 $href   = static fn (array $l): string => base_url($l['entry']);
-
-// Pustaka: wilayah terakhir yang sudah terbuka
-$libraryCode = null;
-foreach ($levels as $level) {
-    if ($level['status'] !== 'locked') {
-        $libraryCode = $level['code'];
-    }
-}
 $allDone = $progress['shards_total'] > 0 && $progress['completed_nodes'] >= $progress['shards_total'];
 $points  = implode(' ', array_map(static fn (array $l): string => (float) $l['map_x'] . ',' . (float) $l['map_y'], $levels));
 ?>
@@ -107,10 +99,8 @@ $points  = implode(' ', array_map(static fn (array $l): string => (float) $l['ma
 
 <?= $this->section('nav') ?>
 <?php
-$nav = [];
-if ($libraryCode !== null) {
-    $nav[] = ['label' => lang('Game.library'), 'href' => base_url('pustaka/' . $libraryCode), 'style' => 'ghost', 'arrow' => 'left', 'icon' => 'book'];
-}
+// Pustaka Kedu: rak semua wilayah; kunci per wilayah dijelaskan di sana
+$nav   = [['label' => lang('Game.library'), 'href' => base_url('pustaka'), 'style' => 'ghost', 'arrow' => 'left', 'icon' => 'book']];
 $nav[] = $allDone
     ? ['label' => lang('Game.reflection'), 'href' => base_url('refleksi'), 'style' => 'primary', 'arrow' => 'right']
     : ['label' => lang('Game.profile'), 'href' => base_url('profil'), 'style' => 'quiet', 'icon' => 'user'];

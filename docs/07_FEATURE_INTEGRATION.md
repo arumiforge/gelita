@@ -406,24 +406,52 @@ B. Menutup tab / memuat ulang / koneksi putus
 ## FITUR 8: Pustaka Kedu
 
 ```text
-1. Tombol Pustaka melayang muncul pada layar peta wilayah dan layar kota
-2. Klik → /pustaka/{level_code}
+1. Tombol "Pustaka Kedu" di peta Kedu → /pustaka (rak semua wilayah,
+   LibraryController::index). Tombol "Pustaka {wilayah}" di peta wilayah
+   → /pustaka/{level_code}; bergembok selama wilayah belum tuntas (modal
+   penjelasan di map.js, tanpa JS → halaman terkunci).
+2. Kunci per wilayah (GameProgress::libraryStatus/libraryAccess):
+     wilayah belum terbuka              → /peta + toast (seperti sebelumnya)
+     wilayah terbuka, belum semua node  → game/library-locked: progres x/5,
+       selesai (levelScore)               penjelasan, "Lanjutkan tantangan" →
+                                          `entry` wilayah. TIDAK dicatat
+                                          library_opened. Berlaku juga pada
+                                          unlock_mode = free.
+     semua node wilayah selesai         → buku (langkah 3–5)
+   /api/library/{levelId} memakai aturan yang sama → 409 LIBRARY_LOCKED.
 3. LibraryController::show → ContentRepository::libraryPages()
      halaman aktif + baris library_media aktifnya (LibraryMediaModel::forPages)
-4. View merender halaman buku: kiri galeri media (berapa pun gambar/video),
+4. View merender halaman buku "Pustaka {wilayah}": kiri galeri media (berapa
+   pun gambar/video, tiap media di bingkai berasio tetap dengan skeleton),
    kanan judul + teks rich_text(). Media tanpa berkas aktif atau dengan
    tautan yang tidak dikenali MediaLink tidak dirender.
      gambar      : unggahan, Wikimedia Commons, Google Drive, berkas https
                    langsung (tanpa referrer, loading="lazy"); klik → perbesar
      video       : unggahan (<video> berposter) atau YouTube/Vimeo/Drive —
+                   facade berposter (thumbnail yang diunduh SERVER, di bawah);
                    iframe baru dipasang setelah siswa menekan Putar;
                    YouTube lewat youtube-nocookie.com dengan
                    referrerpolicy="strict-origin-when-cross-origin"
-     media luar  : kredit + tautan ke halaman aslinya di bawah keterangan
-5. emit('library_opened'), lalu emit('library_page_viewed') tiap ganti halaman
-6. Pustaka TIDAK memengaruhi skor, bintang, atau status node.
+     media luar  : ikon ⓘ di pojok bingkai → kredit + "Lihat sumber ↗"
+5. Server mencatat library_opened (hanya bila isi buku tampil), lalu
+   emit('library_page_viewed') tiap ganti halaman
+6. Attempt yang menuntaskan wilayah menampilkan "Pustaka {wilayah} terbuka!"
+   + tombol Baca Pustaka di layar selesai.
+7. Pustaka TIDAK memengaruhi skor, bintang, atau status node.
    Pemakaiannya dianalisis sebagai perilaku belajar, bukan sebagai penilaian.
 ```
+
+**Catatan untuk peneliti — `library_opened` sejak Tahap 4.** Event `library_opened` kini **hanya** tercatat setelah seluruh tantangan wilayah itu selesai pada sesi tersebut; membuka `/pustaka/{code}` sebelum itu menampilkan halaman terkunci tanpa event. Akibatnya:
+
+* data sebelum Tahap 4 dan sesudahnya tidak sebanding langsung: sebelumnya siswa dapat membaca Pustaka *di tengah* mengerjakan wilayah (mis. sebagai rujukan jawaban), sekarang Pustaka menjadi bacaan *sesudah* wilayah tuntas. Pisahkan analisis menurut tanggal rilis atau `game_releases`;
+* setiap `library_opened` dan `library_page_viewed` pada wilayah X selalu terjadi setelah kelima tantangan wilayah X selesai pada sesi yang sama — pemakaian Pustaka tidak lagi dapat memengaruhi attempt pertama tantangan wilayah itu (mengulang tantangan tetap boleh);
+* upaya membuka Pustaka yang masih terkunci tidak tercatat sebagai event.
+
+**Thumbnail video (`App\Libraries\VideoThumbnail`).** Poster kartu video YouTube/Vimeo/Drive diunduh **server** satu kali, bukan oleh perangkat siswa: YouTube `i.ytimg.com/vi/{id}/maxresdefault.jpg` (cadangan `hqdefault.jpg`, juga bila maxres berupa gambar abu-abu 120×90), Vimeo lewat oEmbed `vimeo.com/api/oembed.json` → `thumbnail_url` (hanya https di `*.vimeocdn.com`), Drive `drive.google.com/thumbnail?id={id}&sz=w1280`. Respons diterima hanya bila status 200, `Content-Type: image/*` bukan SVG, ≤ 4 MB, dan terbaca `getimagesizefromstring()` — Drive privat mengembalikan halaman HTML masuk Google dan ditolak. Timeout 6 detik (sambung 3 detik), maksimal 3 pengalihan https. Gambar disimpan `MediaStore::storeBytes()` sebagai aset gambar `library.thumb.{penyedia}.{id}-{sha1}` (satu berkas per video, dipakai bersama bila video sama muncul di beberapa halaman) lalu dipasang di `library_media.poster_media_id`.
+
+* Dipanggil setelah commit oleh `Admin\ContentController::saveLibrary()` dan `ContentImportService::import()` untuk video luar yang posternya masih kosong. Kegagalan tidak pernah menggagalkan penyimpanan: dicatat `log_message()`, admin melihat catatan (flash `notice`), impor menambah peringatan di sheet `library_media`.
+* `php spark gelita:library:thumbnails [--force]` mengisi baris yang sudah ada (atau yang gagal karena server sedang tanpa internet) dan mencetak ringkasan terisi/dilewati/gagal; `--force` mengunduh ulang juga yang sudah berposter. Kode keluar 1 bila ada yang gagal.
+* Poster yang diunggah admin tidak pernah ditimpa kecuali dengan `--force`.
 
 Admin mengelola halaman dan medianya di `/admin/konten/pustaka/{level_id}`: tambah/hapus/urutkan halaman, dan per halaman tambah media dari **Berkas** (asset_key atau unggah langsung) atau **Tautan**. Seluruh halaman satu wilayah disimpan dalam satu transaction. Referrer-Policy situs `same-origin` tidak dipakai untuk iframe YouTube karena pemutarnya menolak diputar tanpa referrer (galat 153).
 
