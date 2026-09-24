@@ -80,6 +80,46 @@ final class LanguageFilesTest extends CIUnitTestCase
         }
     }
 
+    /** Kunci Tahap 3 berada di blok berkomentar `// Tahap 3` sendiri di kedua bahasa. */
+    public function testStageThreeKeysLiveInTheirOwnBlock(): void
+    {
+        $keys = ['kenalRegion', 'kenalTitle', 'kenalUnheard', 'enterRegionName', 'curtainRegionTitle', 'curtainSkip',
+            'challengeLead_puzzle', 'challengeLead_cari', 'chapterOf', 'chapterTap', 'doneTitle', 'readLibraryRegion', 'watchEnding'];
+
+        foreach (['id', 'en'] as $locale) {
+            $source = (string) file_get_contents(APPPATH . "Language/{$locale}/Game.php");
+            $block  = strstr($source, '// Tahap 3');
+
+            $this->assertNotFalse($block, "{$locale}: blok // Tahap 3 tidak ada");
+
+            foreach ($keys as $key) {
+                $this->assertStringContainsString("'{$key}'", $block, "{$locale}: {$key} di luar blok Tahap 3");
+            }
+        }
+    }
+
+    /** Teks Tahap 3 yang memakai argumen terformat dengan benar di kedua bahasa. */
+    public function testStageThreeTextFormat(): void
+    {
+        $language = service('language');
+
+        try {
+            $language->setLocale('id');
+            $this->assertSame('Kenali Magelang', lang('Game.kenalRegion', ['Magelang']));
+            $this->assertSame('Menuju Magelang…', lang('Game.curtainRegionTitle', ['Magelang']));
+            $this->assertSame('Bab 2 · Magelang', lang('Game.chapterOf', [2, 'Magelang']));
+            $this->assertSame('Serpihan Magelang kembali!', lang('Game.doneTitle', ['Magelang']));
+            $this->assertSame('Baca Pustaka Magelang', lang('Game.readLibraryRegion', ['Magelang']));
+
+            $language->setLocale('en');
+            $this->assertSame('Heading to Magelang…', lang('Game.curtainRegionTitle', ['Magelang']));
+            $this->assertSame('Chapter 2 · Magelang', lang('Game.chapterOf', [2, 'Magelang']));
+            $this->assertSame('Read the Magelang Library', lang('Game.readLibraryRegion', ['Magelang']));
+        } finally {
+            $language->setLocale(config('App')->defaultLocale);
+        }
+    }
+
     /** Kunci Tahap 4 berada di blok berkomentar `// Tahap 4` sendiri di kedua bahasa. */
     public function testStageFourKeysLiveInTheirOwnBlock(): void
     {

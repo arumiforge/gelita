@@ -137,6 +137,8 @@ $routes->group('', ['namespace' => 'App\Controllers\Game'], static function ($ro
         $routes->get('peta',                     'MapController::kedu');
         $routes->get('wilayah/(:segment)',        'MapController::level/$1');
         $routes->get('dialog/(:segment)',         'DialogueController::show/$1');
+        $routes->get('tuntas/(:segment)',         'DialogueController::done/$1');     // Tahap 3
+        $routes->get('penutup',                   'DialogueController::ending');      // Tahap 3
         $routes->get('misi/(:segment)/(:num)',    'ChallengeController::brief/$1/$2');
         $routes->get('tantangan/(:segment)/(:num)','ChallengeController::play/$1/$2');
         $routes->get('hasil/(:segment)/(:num)',   'ChallengeController::result/$1/$2');
@@ -319,9 +321,10 @@ $routes->group('api/admin', [
 | GET | `/gerbang/peta` | GateController::map | — | ya | — | flash `curtain=map` | redirect `/peta` |
 | GET | `/intro` | GateController::intro | — | ya | — | cerita pembuka; "Lewati" hanya bila sudah pernah menonton | HTML |
 | GET | `/intro/selesai` | GateController::finishIntro | — | ya | — | isi `intro_seen_at` (idempoten), event `intro_completed`, flash `curtain=map` | redirect `/peta` |
-| GET | `/peta` | MapController::kedu | — | ya | — | peta 3 wilayah + narasi `map_intro`; flash `curtain=map` → tirai "Membuka Peta Kedu"; belum menonton cerita pembuka → `/intro` | HTML / redirect |
+| GET | `/peta` | MapController::kedu | — | ya | — | peta 3 wilayah + narasi `map_intro`; flash `curtain=map` → tirai "Membuka Peta Kedu"; overlay "Kenali {wilayah}" (`region_intro`) per wilayah + lencana "Belum didengar"; tirai wilayah pada pin/kartu; belum menonton cerita pembuka → `/intro` | HTML / redirect |
 | GET | `/wilayah/{code}` | MapController::level | level code | ya | — | peta 5 pos | HTML; wilayah baru terbuka yang dialognya belum tampil → redirect `/dialog/{code}` |
-| GET | `/dialog/{code}` | DialogueController::show | level code | ya | — | dialog pembuka wilayah; menandai dialog sudah tampil di sesi login | HTML |
+| GET | `/dialog/{code}` | DialogueController::show | level code | ya | — | dialog pembuka wilayah bernarasi (kartu bab, pose, efek, audio); menandai dialog sudah tampil di sesi login | HTML |
+| GET | `/tuntas/{code}` | DialogueController::done | level code | ya | — | adegan wilayah tuntas (`level_done`, Tahap 3); boleh ditonton ulang | HTML; wilayah belum tuntas → redirect `/wilayah/{code}` |
 | GET | `/misi/{code}/{seq}` | ChallengeController::brief | code, 1..5 | ya | — | kartu misi | HTML; gerbang dialog sama dengan `/wilayah` |
 | GET | `/tantangan/{code}/{seq}` | ChallengeController::play | code, 1..5 | ya | — | layar tantangan | HTML; gerbang dialog sama dengan `/wilayah`, diperiksa sebelum attempt dibuka |
 | GET | `/hasil/{code}/{seq}` | ChallengeController::result | code, 1..5 | ya | — | riwayat hasil node | HTML |
@@ -329,6 +332,7 @@ $routes->group('api/admin', [
 | GET | `/pustaka` | LibraryController::index | — | ya | — | rak Pustaka Kedu: satu kartu per wilayah beserta status Pustakanya | HTML |
 | GET | `/pustaka/{code}` | LibraryController::show | level code | ya | — | buku Pustaka {wilayah}; wilayah belum tuntas → halaman terkunci (tanpa `library_opened`) | HTML; wilayah belum terbuka → redirect `/peta` |
 | GET | `/profil` | ProfileController::index | — | ya | — | profil peserta | HTML |
+| GET | `/penutup` | DialogueController::ending | — | ya | — | penutup cerita sinematik (`ending`, Tahap 3); slide akhir ke `/refleksi`; boleh ditonton ulang | HTML; belum semua node tuntas → redirect `/peta` |
 | GET | `/refleksi` | ReflectionController::index | — | ya | — | Balai Refleksi | HTML |
 | POST | `/refleksi` | ReflectionController::store | — | ya | — | simpan kritik & saran | redirect |
 
@@ -489,10 +493,22 @@ Nama provinsi/kabupaten dikirim bersama kodenya dan disimpan sebagai snapshot. S
 
 | Method | Business rule | Response |
 |---|---|---|
-| `kedu()` | `introGate()` lebih dulu: peserta yang belum menonton cerita pembuka dialihkan ke `/intro`, juga lewat URL yang diketik atau redirect setelah login. Lalu ambil 3 level + status dari `session_progress`. Level terkunci bila `unlock_mode = sequential` dan `sequence > unlocked_level_sequence`. Narasi Jaka dari `ContentRepository::dialogues(null, 'map_intro')`. Flash `curtain` = `map` (dari `toMap()`) → `curtain = true` dan `curtainAssets`: URL `map.kedu`, `bg.map`, frame tokoh sesuai pose narasi (cadangan idle), latar wilayah, dan audio narasi peta bahasa aktif yang disetujui — dimuat tirai dengan progres nyata | view `game/map-kedu` |
+| `kedu()` | `introGate()` lebih dulu: peserta yang belum menonton cerita pembuka dialihkan ke `/intro`, juga lewat URL yang diketik atau redirect setelah login. Lalu ambil 3 level + status dari `session_progress`. Level terkunci bila `unlock_mode = sequential` dan `sequence > unlocked_level_sequence`. Narasi Jaka dari `ContentRepository::dialogues(null, 'map_intro')`. Flash `curtain` = `map` (dari `toMap()`) → `curtain = true` dan `curtainAssets`: URL `map.kedu`, `bg.map`, frame tokoh sesuai pose narasi (cadangan idle), latar wilayah, dan audio narasi peta bahasa aktif yang disetujui — dimuat tirai dengan progres nyata. **Tahap 3:** `regionIntros` (kode → `dialogues($levelId, 'region_intro')`, termasuk wilayah terkunci), `heard` (`GameEventLogModel::heardRegionIntros()`: level_id yang narasi Kenali-nya pernah mencapai slide terakhir oleh peserta ini, di sesi mana pun), dan `curtain` per baris level (`GameProgress::regionCurtain()`: "Menuju {wilayah}…", tagline = judul slide pertama `region_intro`, chip tingkat kesulitan, aset halaman `entry`) | view `game/map-kedu` |
 | `level($code)` | validasi level ada & terbuka; bila terkunci → redirect `/peta` + toast; ambil 5 node + status (selesai / terbuka / terkunci) dari `challenge_attempts` | view `game/map-level` |
 
 Status node: node ke-`n` terbuka bila `n = 1` atau node ke-`n-1` sudah `completed`. Bila `unlock_mode = free`, semua terbuka (lihat D13 di 01_DATABASE.md; nilai `free` sengaja berbeda dari status wilayah `open`).
+
+### `Game\DialogueController` (Tahap 3)
+
+Adegan cerita bernarasi dari tabel `dialogues`, diputar `game/narrator.js` (kartu ketuk, pose, efek, audio, maju otomatis).
+
+| Method | Business rule | Response |
+|---|---|---|
+| `show($code)` | wilayah belum terbuka → redirect `/peta` + toast; `markDialogueShown()` (gerbang dialog tidak berubah); baris `level_open` + `tagline` (judul slide pertama `region_intro`, untuk kartu bab) | view `game/dialogue` |
+| `done($code)` | `GameProgress::regionStatus()` ≠ `completed` → redirect `/wilayah/{code}` (yang menolak wilayah terkunci dan menjaga dialog pembuka); selain itu baris `level_done`, `hasLibrary`, `nextRegion` (`GameProgress::nextRegion()`), `allCompleted`. Tidak mencatat event server; boleh dibuka berulang | view `game/region-done` |
+| `ending()` | `allNodesCompleted()` salah → redirect `/peta`; selain itu slide `ending` + `hudData()` | view `game/ending` |
+
+Tanda "sudah didengar" dan "sudah ditonton" tidak disimpan di tabel mana pun: dibaca dari `dialogue_advanced` yang dikirim klien (lihat 07 §Catatan analitik Tahap 3).
 
 ### `Game\ChallengeController`
 
@@ -501,7 +517,7 @@ Status node: node ke-`n` terbuka bila `n = 1` atau node ke-`n-1` sudah `complete
 | `brief($code, $seq)` | tampilkan judul + deskripsi node, tombol Mulai | view `game/mission-brief` |
 | `play($code, $seq)` | panggil `ChallengeService::openNode()`; render layar sesuai `engine_type`; payload soal ditanam sebagai `<script type="application/json" id="challenge-data">` | view `game/challenge/{engine}` |
 | `result($code, $seq)` | daftar attempt `completed` untuk node itu pada sesi ini + terbaik | view `game/challenge-result` |
-| `finished($attemptId)` | validasi attempt milik sesi ini & `completed`; tampilkan bintang, skor, ketepatan awal, durasi; bila level tuntas tampilkan pesan Mbah Kedu; bila attempt ini yang menuntaskan wilayah (`GameProgress::closingAttemptId()`: penyelesaian pertama terakhir di antara node wilayah) dan wilayah punya halaman Pustaka → `libraryUnlocked` (sorotan "Pustaka {wilayah} terbuka!"); bila 15 node tuntas → tombol Balai Refleksi | view `game/challenge-finished` |
+| `finished($attemptId)` | validasi attempt milik sesi ini & `completed`; tampilkan bintang, skor, ketepatan awal, durasi; bila level tuntas tampilkan pesan Mbah Kedu; bila attempt ini yang menuntaskan wilayah (`GameProgress::closingAttemptId()`: penyelesaian pertama terakhir di antara node wilayah) → `closesRegion` (tombol utama "Lanjut" ke `/tuntas/{code}`, Tahap 3) dan, bila wilayah punya halaman Pustaka, `libraryUnlocked` (sorotan "Pustaka {wilayah} terbuka!"); mengulang tantangan setelah 15 node tuntas → tombol Balai Refleksi; `nextRegion` dari `GameProgress::nextRegion()` (baris `levelOverview()` + `curtain`) | view `game/challenge-finished` |
 
 Perhatian: `play()` **tidak** melakukan penilaian apa pun. Ia hanya membuka attempt dan menyiapkan payload. Seluruh interaksi jawaban lewat API.
 
@@ -864,6 +880,7 @@ Setelah tahap ini selesai:
 
 * `php spark routes` menampilkan seluruh route di atas tanpa konflik, dengan auto-route mati.
 * Alur siswa berjalan penuh lewat HTTP: `/` → `/persetujuan` → `/daftar` (nama pengguna + sandi kuat) → `/intro` → `/intro/selesai` → `/peta` → `/wilayah/temanggung` → `/misi/temanggung/1` → `/tantangan/temanggung/1` → API jawab → `/selesai/{id}` → `/keluar` → `/masuk` → kembali ke progres terakhir.
+* Tahap 3: attempt penuntas wilayah → `/selesai/{id}` → "Lanjut" → `/tuntas/{code}` → "Lanjut ke {wilayah berikutnya}" (dialog pembukanya) atau, di wilayah terakhir, `/penutup` → `/refleksi`.
 * Registrasi dengan sandi `kedu2026` ditolak dengan pesan syarat yang belum terpenuhi; `pw_weak_submit_count` bertambah; registrasi berikutnya dengan `Kedu#2026` diterima.
 * Reset sandi oleh guru memaksa siswa ke `/ganti-sandi` pada login berikutnya.
 * Impor workbook bank soal menampilkan pratinjau per node sebelum menulis database.

@@ -267,6 +267,78 @@ trait GameProgress
     }
 
     /**
+     * Status satu wilayah pada sesi ini (`locked` | `open` | `in_progress` |
+     * `completed`), aturan yang sama dengan levelOverview(). Dipakai gerbang
+     * adegan wilayah tuntas (`/tuntas/{code}`).
+     */
+    protected function regionStatus(GameSession $session, Level $level): string
+    {
+        $score = service('scoringService')->levelScore($session->id, $level->id);
+
+        return $this->levelStatus($score, $this->levelUnlocked($session, $level->sequence));
+    }
+
+    /**
+     * Isi tirai wilayah `region` untuk satu baris levelOverview(): judul
+     * "Menuju {wilayah}…", tagline (judul slide pertama `region_intro`
+     * wilayah itu, mis. "Tanah Candi Agung"), chip tingkat kesulitan, dan aset
+     * yang dipramuat untuk halaman tujuannya (`entry`): latar wilayah, lalu
+     * frame tokoh sesuai pose dialog pembuka (wilayah baru terbuka) atau
+     * gambar peta wilayah (selain itu). Aset yang belum diunggah tidak ikut.
+     *
+     * @param array<string, mixed> $row baris levelOverview()
+     *
+     * @return array{text: array{title: string, tagline: string, chip: string}, preload: list<string>}
+     */
+    protected function regionCurtain(array $row, string $locale): array
+    {
+        $content = service('contentRepository');
+        $levelId = (int) $row['id'];
+        $intro   = $content->dialogues($levelId, 'region_intro');
+        $urls    = [$row['background'] ?? null];
+
+        if (str_starts_with((string) ($row['entry'] ?? ''), 'dialog/')) {
+            foreach (['jaka', 'mbah_kedu'] as $character) {
+                $urls[] = character_frame_src($character, 'idle');
+            }
+
+            foreach ($content->dialogues($levelId, 'level_open') as $line) {
+                $urls[] = character_frame_src((string) ($line['character_code'] ?? ''), (string) ($line['pose'] ?? ''));
+            }
+        } elseif (! empty($row['map_media']) && ! str_ends_with((string) $row['map_media'], 'placeholder.svg')) {
+            $urls[] = $row['map_media'];
+        }
+
+        $difficulty = (string) ($row['difficulty'] ?? '');
+
+        return [
+            'text' => [
+                'title'   => lang('Game.curtainRegionTitle', [(string) $row['name']]),
+                'tagline' => $intro === [] ? '' : tr($intro[0], 'title', $locale),
+                'chip'    => $difficulty === '' ? '' : lang_or('Game.difficulty_' . $difficulty, $difficulty),
+            ],
+            'preload' => array_values(array_unique(array_filter($urls, static fn ($url): bool => is_string($url) && $url !== ''))),
+        ];
+    }
+
+    /**
+     * Baris levelOverview() wilayah sesudah $sequence (beserta `entry` dan
+     * `curtain`), atau null untuk wilayah terakhir.
+     *
+     * @return array<string, mixed>|null
+     */
+    protected function nextRegion(GameSession $session, int $sequence): ?array
+    {
+        foreach ($this->levelOverview($session) as $row) {
+            if ($row['sequence'] === $sequence + 1) {
+                return $row + ['curtain' => $this->regionCurtain($row, $session->resolvedLocale())];
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Attempt yang menuntaskan wilayah: di antara penyelesaian PERTAMA tiap
      * node wilayah, yang paling akhir. Null bila masih ada node yang belum
      * pernah selesai. Mengulang node yang sudah tuntas tidak pernah menjadi

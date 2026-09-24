@@ -41,7 +41,7 @@ public/assets/js/
 │   ├── modal.js             dialog tengah layar
 │   ├── toast.js             notifikasi sementara
 │   ├── audio.js             pemutar narasi + efek suara (Howler); autoplay & elemen narasi bersama
-│   ├── curtain.js           tirai pemuatan layar penuh: playCurtain() + tautan a[data-curtain]
+│   ├── curtain.js           tirai pemuatan layar penuh: playCurtain() + tautan a[data-curtain] (map, region, challenge)
 │   ├── timer.js             jam tantangan
 │   ├── confetti.js          efek konfeti ringan (canvas)
 │   └── dom.js               pembantu kecil: $, $$, on, el, esc, readJson, announce
@@ -50,11 +50,11 @@ public/assets/js/
 │   ├── register.js          form pendaftaran bertingkat + cek nama pengguna
 │   ├── password-meter.js    meter kekuatan & daftar syarat sandi (registrasi + ganti sandi)
 │   ├── login.js             form masuk: lihat sandi, Caps Lock, cegah kirim ganda
-│   ├── slides.js            slide bersama intro/dialog/pustaka (hash + keyboard)
+│   ├── slides.js            slide bersama intro/dialog/pustaka (hash + keyboard; `hash: false` untuk overlay)
 │   ├── narrator.js          pemutar narasi sinematik: ketuk-untuk-mulai, mesin ketik, maju otomatis, efek
-│   ├── intro.js             cerita pembuka (narrator mode tap)
-│   ├── dialogue.js          dialog karakter
-│   ├── map.js               peta Kedu & peta wilayah
+│   ├── intro.js             cerita pembuka & penutup (narrator mode tap)
+│   ├── dialogue.js          dialog wilayah & wilayah tuntas (narrator + pose tokoh)
+│   ├── map.js               peta Kedu (narasi peta, overlay Kenali wilayah) & peta wilayah
 │   ├── library.js           Pustaka Kedu
 │   ├── reflection.js        formulir kritik & saran
 │   ├── finished.js          layar selesai (bunyi serpihan)
@@ -271,8 +271,9 @@ Dikirim sebagai amplop batch `POST /api/audio-events { events: [ … ] }`. Serve
 ### `core/curtain.js`
 
 ```js
-playCurtain(kind, { urls?, minMs = 2500, maxMs = 8000, tap = true, keep = false, onProgress? })
-  // → Promise<{ loaded, failed, timedOut, skipped }>
+playCurtain(kind, { urls?, minMs = 2500, maxMs = 8000, tap = true, skip?, keep = false, text?, onProgress? })
+  // → Promise<{ loaded, failed, timedOut, skipped, cut }>
+  // minMs/maxMs/skip bawaan dari lapisan: data-min-ms, data-max-ms, data-skip
 initCurtains()   // game.js: pembersihan bfcache + delegasi a[data-curtain]
 ```
 
@@ -282,7 +283,9 @@ initCurtains()   // game.js: pembersihan bfcache + delegasi a[data-curtain]
 * Baris status bergilir tiap 1,8 detik dari `data-statuses`.
 * `tap`: menampilkan tombol ketuk; ketukan di mana pun pada tirai memanggil `Sfx.unlock()` lalu tirai memudar. HUD, `<main>`, dan nav bar `inert` selama tirai tampil.
 * `keep`: tirai dibiarkan menutupi (sebelum berpindah halaman); `pageshow` dari bfcache membersihkannya.
-* Tautan `a[data-curtain="{kind}"]` (klik kiri tanpa pengubah) memutar tirai jenis itu tanpa ketukan lalu berpindah halaman — disiapkan untuk jenis `region`/`challenge` Tahap 3.
+* Tautan `a[data-curtain="{kind}"]` (klik kiri tanpa pengubah) memutar tirai jenis itu tanpa ketukan lalu berpindah halaman. `data-curtain-text` (JSON slot → teks) mengisi `[data-curtain-text="slot"]` di tirai lewat `textContent` (slot kosong disembunyikan); `data-curtain-preload` mengganti daftar aset. Klik/Enter kedua selama tirai berjalan diabaikan.
+* **Tahap 3.** `region`: ±1,8 detik (1,8–2,4), tanpa ketukan, satu template untuk semua wilayah. `challenge`: 1,2–1,5 detik; `skip` — ketukan di mana pun atau Enter/Spasi/Esc mengakhirinya lebih awal (`cut: true`).
+* Sebelum berpindah, tirai tautan memanggil `flush()` (`core/events.js`) dan menunggunya paling lama 1,5 detik setelah tirai selesai, agar event terakhir (mis. slide terakhir Kenali) terkirim dengan fetch biasa, bukan bergantung pada beacon saat `pagehide`.
 
 ### `core/timer.js`, `core/toast.js`, `core/confetti.js`, `core/dom.js`
 
@@ -601,8 +604,10 @@ Yang **tidak** dilakukan skrip ini: menyimpan sandi ke `localStorage`, mengirimn
 Dipakai cerita pembuka dan narasi peta; Tahap 3 memakainya ulang untuk layar bernarasi lain.
 
 ```js
-initNarrator(root, { onFinish? }) // root = [data-narrator][data-context][data-prefix][data-mode][data-keyboard?][data-level-id?]
-  // → { start({ userInitiated }), stop(), show(n), started } | null
+initNarrator(root, { onFinish?, onSlide? })
+  // root = [data-narrator][data-context][data-prefix][data-mode][data-keyboard?][data-hash?][data-level-id?]
+  // → { start({ userInitiated }), stop(), show(n, { notify, focus }), next(), prev(), advance(),
+  //     current, total, started } | null
 ```
 
 | Mode (`data-mode`) | Mulai | Action audio pertama |
@@ -617,13 +622,15 @@ initNarrator(root, { onFinish? }) // root = [data-narrator][data-context][data-p
 * **Efek layar** dari `data-effect` slide → kelas `fx-{effect}` pada `[data-narrator-fx]` (diputar ulang tiap slide).
 * **Event** `dialogue_advanced` { index, total, context, character } (+ `levelId` dari `data-level-id`) tiap perpindahan.
 * Memakai ulang `initSlides()` dan pola `:target`, sehingga tanpa JavaScript slide tetap berjalan; kartu ketuk dan kontrol tersembunyi lewat atribut `hidden`. Audio setiap slide lewat `narrationPlayer(..., { shared: true })`.
+* **Tahap 3.** `onSlide(index, slide, total)` dipanggil setelah event terkirim (dialog menukar pose di sini, Kenali menghapus lencana), sehingga modul halaman tidak pernah mengirim `dialogue_advanced` sendiri. `data-hash="0"` → `initSlides({ hash: false })` untuk beberapa pemutar dalam satu halaman. `stop()` mengembalikan pemutar ke keadaan belum mulai, jadi `start()` berikutnya memutar ulang (overlay dibuka lagi). `advance()` = ketukan kotak teks: tuntaskan ketikan dulu, baru lanjut. Mencapai slide terakhir memanggil `flush()` agar tanda "didengar sampai habis" segera sampai di server.
 * `prefers-reduced-motion`: tanpa mesin ketik dan tanpa efek (Ken Burns dimatikan CSS).
 
 ### `game/intro.js` dan `game/dialogue.js`
 
-* `intro.js` hanya memanggil `initNarrator()` pada `[data-screen="intro"]` (mode `tap`); event `dialogue_advanced` dengan `context: 'intro'`.
+* `intro.js` — `initStory(screenName)` memanggil `initNarrator()` pada `[data-screen="intro"]` atau (Tahap 3) `[data-screen="ending"]` (mode `tap`); event `dialogue_advanced` dengan `context: 'intro'`/`'ending'`.
+* `dialogue.js` (Tahap 3) — `initDialogue()` pada `[data-screen="dialogue"]` dan `[data-screen="region-done"]`: `initNarrator(screen, { onSlide })` mode `tap` (kartu bab / kartu "Serpihan … kembali!"). `onSlide` memberi `.is-speaking`/`.is-listening` dan menukar gambar tokoh yang berbicara ke `data-pose-src` baris itu (monogram diganti `<img>` begitu ada frame; baris tanpa frame membiarkan tokoh apa adanya); frame pose dipramuat saat idle. Event `dialogue_advanced` hanya dari narrator (`context: 'level_open'`/`'level_done'`; sebelum Tahap 3 `dialogue.js` mengirim `context: 'region'`).
 * Maju/mundur slide tanpa memuat ulang halaman (`game/slides.js`, dipakai juga Pustaka). Hash `#slide-n` diganti lewat `location.replace('#…')`: seperti `history.replaceState`, riwayat browser tidak bertambah per slide, tetapi `:target` ikut berubah sehingga aturan CSS tanpa-JavaScript tetap satu-satunya penentu slide yang tampil.
-* `emit('dialogue_advanced', { payload: { index } })` tiap perpindahan.
+* `emit('dialogue_advanced', { payload: { index, total, context, character } })` tiap perpindahan, hanya dari `narrator.js`.
 * Karakter yang berbicara diberi kelas `.is-speaking`, yang mendengar `.is-listening`.
 * `Space` dan panah kanan = lanjut; ini cara tercepat di papan tulis interaktif. `initSlides({ keyboard: false })` mematikannya untuk slide yang hanya sebagian layar (narasi peta), dan `show(n, { focus: false })` dipakai perpindahan otomatis agar fokus pengguna tidak direbut.
 
@@ -634,6 +641,8 @@ initNarrator(root, { onFinish? }) // root = [data-narrator][data-context][data-p
 * `emit('level_opened', { levelId })` saat peta wilayah dibuka.
 * **Peta Kedu (Tahap 2):** narasi Jaka `map_intro` lewat `initNarrator()` pada panduan peta. Bila halaman membawa tirai peta (`[data-curtain-layer="map"]`, dari flash `curtain=map`): `playCurtain('map')` → setelah ketukan, `Sfx.music('map')` lalu `story.start()` (autoplay). Tanpa tirai: musik diminta seperti biasa (baru berbunyi setelah interaksi) dan narasi menunggu ▶.
 * Tombol "Pustaka {wilayah}" yang masih terkunci (`a[data-library-locked]`, di nav-bar — di luar `<section>` layar) → `showModal()` dari `core/modal.js` dengan ikon gembok: judul, penjelasan, dan progres dari atribut `data-locked-*`, tombol **Mengerti** dan tautan **Pustaka Kedu**. Tanpa JavaScript tautannya membuka halaman terkunci `/pustaka/{code}`.
+* **Kenali wilayah (Tahap 3).** Setiap `[data-kenal]` (overlay di luar `<main>`) diberi `initNarrator()` mode `external`, `data-hash="0"`, `data-keyboard="0"`. Klik `[data-kenal-open]` (pin & kartu): `Sfx.unlock()` di dalam ketukan, narasi peta dihentikan, overlay `.is-open`, HUD/`<main>`/nav/skip-link `inert`, kembali ke slide 1 tanpa event, lalu `start({ userInitiated: true })`; fokus ke tombol ✕. Selama terbuka: Esc menutup, →/Spasi `advance()`, ← `prev()`. Tutup (`[data-kenal-close]`, ✕, Esc) → `stop()`, `flush()`, fokus kembali ke tombol pembuka. `onSlide` di slide terakhir menghapus `[data-kenal-badge]` wilayah itu; `onFinish` (▶ di slide terakhir) mengklik tombol akhirnya — "Masuk ke {wilayah}" memutar tirai wilayah lewat `initCurtains()`. Kembali lewat bfcache menutup overlay.
+* Pin & kartu wilayah membawa `data-curtain="region"`; tirainya dari `<template id="tpl-curtain-region">`.
 
 ### `game/library.js`
 
@@ -885,6 +894,12 @@ Keputusan dan temuan selama tahap ini. Semua perilaku di atas diuji di browser (
 * **Pengujian browser** (Playwright + Chromium, MariaDB 10.11, aset gambar & audio sementara di luar repo) pada 844×390 dan 1440×900: pemain baru → kartu ketuk (tanpa "Lewati", kartu sambutan di dalamnya) → narasi slide 1 berbunyi dan maju otomatis ke slide 2 → `/intro/selesai` → tirai peta dengan jaringan diperlambat (progres berhenti di aset yang belum termuat, lalu lanjut di batas 8 detik) → ketukan → narasi peta berbunyi dan maju → kunjungan ulang tanpa tirai dengan tombol ▶. Juga `prefers-reduced-motion` (tanpa mesin ketik/efek) dan JavaScript mati (tirai tidak menutupi, slide `:target` berjalan). `audio_usage_events` mencatat `autoplay`/`complete`/`pause` dan `game_event_logs` mencatat `dialogue_advanced` dengan `context`.
 
 ---
+
+## Catatan Implementasi Tahap 3 (alur cerita)
+
+* **Modul yang berubah:** `game/slides.js` (opsi `hash`), `game/narrator.js` (`onSlide`, `next`/`prev`/`advance`, `stop()` dapat dimulai ulang, `data-hash`, `flush()` di slide terakhir), `core/curtain.js` (jenis `region`/`challenge`, slot teks, durasi & lewati per lapisan, `flush()` sebelum berpindah), `game/map.js` (overlay Kenali), `game/dialogue.js` (ditulis ulang di atas narrator), `game/intro.js` (`initStory('ending')`), `game.js` (layar `ending`, `region-done`). Gaya di `css/cinematic.css`.
+* **`core/events.js` — batch di jalan.** `flush()` kini mengembalikan Promise pengiriman yang sedang berjalan (pemanggil dapat menunggunya), dan batch yang sedang dikirim diingat (`inflight`) sampai server menjawab; `flush(true)` saat `pagehide`/tab tersembunyi mengirim `inflight` + antrean lewat beacon. Sebelumnya batch itu hilang bila halaman berpindah di tengah fetch (`ERR_ABORTED`) — makin sering sejak tirai menunda perpindahan. Kiriman ganda dibalas `duplicate` oleh server.
+* **Pengujian browser** (Playwright + Chromium, MariaDB 10.11, tanpa aset gambar/audio kecuali uji pose dengan frame sementara) pada 844×390 dan 1440×900: overlay Kenali (fokus, `inert`, Esc, lencana hilang di slide terakhir lalu tetap hilang setelah muat ulang karena dihitung server), tirai wilayah dari slide akhir Kenali/pin/kartu/"Lanjut ke" (±2 detik termasuk pemuatan halaman), kartu bab dan dialog 15 baris (pembicara & pose berganti per baris, frame pose sementara benar-benar ditukar), layar selesai penuntas → `/tuntas/{code}` → Lanjut ke wilayah berikutnya, Wonosobo → `/penutup` → Balai Refleksi, tirai tantangan kelima engine (±1,25 detik; ketukan melewatinya dalam ±0,25 detik; tidak ada attempt baru selama tirai), `prefers-reduced-motion` (tanpa mesin ketik/efek, visual diam), dan JavaScript mati (overlay `:target`, slide, tautan akhir dan Tutup). Tidak ada galat JavaScript di konsol.
 
 ## Dependency
 
