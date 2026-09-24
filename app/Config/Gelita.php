@@ -13,6 +13,12 @@ class Gelita extends BaseConfig
     /** Tipe engine tantangan yang dikenali sistem */
     public array $engineTypes = ['puzzle', 'rumpang', 'boleh', 'pilihan', 'cari'];
 
+    /**
+     * Awalan node_ref / item_key per wilayah (tmg-1 … wnb-5). Satu-satunya
+     * peta kode: dipakai impor workbook, editor konten, dan kunci aset.
+     */
+    public array $levelPrefixes = ['tmg' => 'temanggung', 'mgl' => 'magelang', 'wnb' => 'wonosobo'];
+
     /** Locale yang didukung konten permainan */
     public array $locales = ['id', 'en'];
 

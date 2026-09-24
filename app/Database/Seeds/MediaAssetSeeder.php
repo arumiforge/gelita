@@ -44,6 +44,12 @@ class MediaAssetSeeder extends GelitaSeeder
         ['ui.logo', 'assets/ui/logo-gelita', 'png'],
         ['ui.placeholder', 'assets/ui/placeholder', 'svg'],
         ['map.kedu', 'assets/map/map-kedu', 'png'],
+        // Latar layar umum yang dibaca view lewat media_key_src()
+        ['bg.welcome', 'assets/bg/bg-welcome', 'jpg'],
+        ['bg.auth', 'assets/bg/bg-auth', 'jpg'],
+        ['bg.intro', 'assets/bg/bg-intro', 'jpg'],
+        ['bg.map', 'assets/bg/bg-map', 'jpg'],
+        ['bg.reflection', 'assets/bg/bg-reflection', 'jpg'],
     ];
 
     /** Dipakai bila Config\Gelita belum ada; isinya sama dengan $characterAnimations */

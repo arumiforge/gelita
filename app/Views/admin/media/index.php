@@ -9,6 +9,7 @@
  *
  * @var list<array<string, mixed>>        $assets
  * @var array<string, array{0: int, 1: int}> $assetSizes pola asset_key → [lebar, tinggi]
+ * @var array<int, list<string>>              $usage      media_asset_id → tempat pemakaian (MediaUsage)
  * @var array{at: string, findings: list<array{asset_key: string, issue: string}>}|null $scan
  */
 $requiredFor = static function (string $key) use ($assetSizes): ?array {
@@ -23,6 +24,9 @@ $requiredFor = static function (string $key) use ($assetSizes): ?array {
 $visual  = array_values(array_filter($assets, static fn (array $row): bool => $row['asset_type'] !== 'audio'));
 $audios  = count($assets) - count($visual);
 $active  = count(array_filter($visual, static fn (array $row): bool => (bool) $row['is_active']));
+$empty   = count($visual) - $active;
+$unused  = count(array_filter($visual, static fn (array $row): bool => $row['is_active']
+    && ! isset($usage[(int) $row['id']]) && App\Libraries\MediaUsage::slotLabel((string) $row['asset_key']) === null));
 $wrong   = 0;
 
 foreach ($visual as $row) {
@@ -72,6 +76,8 @@ foreach ($visual as $row) {
 <div class="kpi-grid">
   <?= component('components/stat-tile', ['label' => 'Gambar & video', 'value' => fmt_num(count($visual)), 'icon' => 'image']) ?>
   <?= component('components/stat-tile', ['label' => 'Aktif', 'value' => fmt_num($active), 'icon' => 'check']) ?>
+  <?= component('components/stat-tile', ['label' => 'Slot belum berberkas', 'value' => fmt_num($empty), 'icon' => 'image', 'hint' => 'permainan memakai pengganti']) ?>
+  <?= component('components/stat-tile', ['label' => 'Belum dipakai', 'value' => fmt_num($unused), 'icon' => 'info', 'hint' => 'aktif tetapi tidak dirujuk konten']) ?>
   <?= component('components/stat-tile', ['label' => 'Ukuran tidak sesuai', 'value' => fmt_num($wrong), 'icon' => 'warn']) ?>
   <?= component('components/stat-tile', ['label' => 'Berkas audio', 'value' => fmt_num($audios), 'icon' => 'sound', 'hint' => 'dikelola di halaman Audio']) ?>
 </div>
@@ -88,12 +94,12 @@ foreach ($visual as $row) {
           <option value="<?= esc($asset['asset_key'], 'attr') ?>"></option>
         <?php endforeach ?>
       </datalist>
-      <p class="field-help">Pilih asset_key yang ada untuk mengganti berkasnya, atau tulis yang baru.</p>
+      <p class="field-help">Pilih asset_key yang ada untuk mengganti berkasnya, atau tulis yang baru. Gambar tantangan, opsi, bacaan, dan Pustaka juga dapat diunggah langsung dari editor kontennya.</p>
     </div>
     <div class="field">
       <label for="file">Berkas <span class="req">*</span></label>
-      <input type="file" id="file" name="file" required accept="image/png,image/jpeg,image/webp,image/svg+xml,video/mp4,video/webm">
-      <p class="field-help">PNG, JPEG, WebP, SVG, MP4, atau WebM; maksimal 64 MB.</p>
+      <input type="file" id="file" name="file" required accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml,video/mp4,video/webm,video/ogg">
+      <p class="field-help">PNG, JPEG, WebP, GIF, SVG, MP4, WebM, atau OGV; maksimal 64 MB.</p>
     </div>
     <div class="form-actions">
       <button class="btn btn-primary" type="submit"><?= icon('upload') ?> Unggah</button>
@@ -134,6 +140,22 @@ foreach ($visual as $row) {
               return '<span class="media-thumb"><img src="' . esc(base_url($row['storage_path']), 'attr') . '" alt="" loading="lazy" decoding="async"></span>';
           }],
           'asset_key' => ['label' => 'asset_key', 'render' => static fn (array $row): string => '<code>' . esc($row['asset_key']) . '</code><span class="cell-sub">' . esc($row['mime_type'] ?? $row['asset_type']) . '</span>'],
+          'usage' => ['label' => 'Dipakai di', 'render' => static function (array $row) use ($usage): string {
+              $slot  = App\Libraries\MediaUsage::slotLabel((string) $row['asset_key']);
+              $where = $usage[(int) $row['id']] ?? [];
+
+              if ($slot === null && $where === []) {
+                  return '<span class="muted">belum dipakai</span>';
+              }
+
+              $html = $slot === null ? '' : '<span class="cell-sub">slot: ' . esc($slot) . '</span>';
+
+              foreach (array_slice($where, 0, 4) as $label) {
+                  $html .= '<span class="cell-sub">' . esc($label) . '</span>';
+              }
+
+              return $html . (count($where) > 4 ? '<span class="cell-sub">+' . (count($where) - 4) . ' lainnya</span>' : '');
+          }],
           'size' => ['label' => 'Ukuran', 'render' => static function (array $row) use ($requiredFor): string {
               $need = $requiredFor((string) $row['asset_key']);
               $has  = $row['width_px'] === null ? null : [(int) $row['width_px'], (int) $row['height_px']];

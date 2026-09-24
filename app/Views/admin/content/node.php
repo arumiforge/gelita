@@ -16,6 +16,7 @@
  * @var list<array<string, mixed>>                         $profiles
  * @var list<string>                                       $interactions
  * @var bool                                               $locked
+ * @var string                                             $ref          kode workbook, mis. tmg-4
  */
 $engine      = (string) $node->engine_type;
 $verdicts    = $node->verdictOptions();
@@ -40,7 +41,7 @@ $itemFormData = [
 <?= $this->section('content') ?>
 <?= component('partials/admin-head', [
     'title'   => $node->text('title', 'id'),
-    'eyebrow' => ($level?->text('name', 'id') ?? '') . ' · tantangan ' . $node->sequence . ' · ' . $engine,
+    'eyebrow' => ($level?->text('name', 'id') ?? '') . ' · tantangan ' . $node->sequence . ' · ' . $ref . ' · ' . $engine,
     'actions' => '<a class="btn btn-quiet btn-sm" href="' . base_url('admin/analitik/node/' . $node->id) . '">' . icon('chart') . ' Analitik</a>',
 ]) ?>
 <?php if ($level !== null): ?>
@@ -48,7 +49,8 @@ $itemFormData = [
 <?php endif ?>
 <?= $this->include('partials/flash') ?>
 
-<form method="post" action="<?= base_url('admin/konten/node/' . $node->id) ?>" class="form-section">
+<?= component('components/media-datalist', ['types' => ['image']]) ?>
+<form method="post" action="<?= base_url('admin/konten/node/' . $node->id) ?>" class="form-section" enctype="multipart/form-data">
   <?= csrf_field() ?>
   <h2>Tantangan</h2>
 
@@ -177,6 +179,32 @@ $itemFormData = [
     </details>
   </fieldset>
 
+  <fieldset class="form-section">
+    <legend class="panel-subtitle">Gambar & audio tantangan</legend>
+    <div class="media-grid">
+      <?= component('components/media-field', [
+          'id' => 'node-scene', 'label' => $engine === 'cari' ? 'Gambar adegan (wajib untuk cari objek)' : 'Gambar adegan / utama',
+          'keyName' => 'media_scene_key', 'fileName' => 'media_scene_file', 'mediaId' => $node->scene_media_id,
+          'defaultKey' => 'challenge.' . $ref . '.scene', 'size' => '1280 × 720 px (16:9)',
+          'help' => match ($engine) {
+              'cari'    => 'Objek dicari di atas gambar ini; posisinya diatur per butir.',
+              'puzzle'  => 'Dipakai bila butir puzzle tidak punya gambar sendiri.',
+              'rumpang' => 'Tampil di samping kalimat rumpang.',
+              default   => 'Opsional.',
+          },
+      ]) ?>
+      <?= component('components/media-field', [
+          'id' => 'node-bg', 'label' => 'Latar tantangan (opsional)', 'keyName' => 'media_bg_key', 'fileName' => 'media_bg_file',
+          'mediaId' => $node->background_media_id, 'defaultKey' => 'challenge.' . $ref . '.bg', 'size' => '1920 × 1080 px',
+          'help' => 'Kosong = memakai latar wilayah.',
+      ]) ?>
+    </div>
+    <div class="form-grid">
+      <?= component('components/audio-select', ['id' => 'node-audio-id', 'name' => 'audio_intro_id', 'label' => 'Narasi kartu misi (Indonesia)', 'audioId' => $node->audio_intro_id, 'locale' => 'id']) ?>
+      <?= component('components/audio-select', ['id' => 'node-audio-en', 'name' => 'audio_intro_en_id', 'label' => 'Narasi kartu misi (English)', 'audioId' => $node->audio_intro_en_id, 'locale' => 'en']) ?>
+    </div>
+  </fieldset>
+
   <label class="check"><input type="checkbox" name="is_active" value="1" <?= $node->is_active ? 'checked' : '' ?>> Tantangan aktif</label>
 
   <div class="form-actions">
@@ -221,7 +249,7 @@ $itemFormData = [
                 }
             }
             ?>
-            <form method="post" action="<?= base_url('admin/konten/item/' . $item->id . '/opsi') ?>" class="form-section option-editor">
+            <form method="post" action="<?= base_url('admin/konten/item/' . $item->id . '/opsi') ?>" class="form-section option-editor" enctype="multipart/form-data">
               <?= csrf_field() ?>
               <h3 class="panel-subtitle">Opsi jawaban — tepat satu harus benar</h3>
               <?php foreach ($optionRows as $index => $option): ?>
@@ -238,6 +266,15 @@ $itemFormData = [
                       <input type="text" name="options[<?= $index ?>][feedback_id]" value="<?= esc($option?->feedback_id ?? '', 'attr') ?>" aria-label="Umpan balik opsi <?= esc($key, 'attr') ?> (Indonesia)" placeholder="Umpan balik ID (opsional)">
                       <input type="text" name="options[<?= $index ?>][feedback_en]" value="<?= esc($option?->feedback_en ?? '', 'attr') ?>" aria-label="Umpan balik opsi <?= esc($key, 'attr') ?> (English)" placeholder="Umpan balik EN (opsional)">
                     </div>
+                    <?= component('components/media-field', [
+                        'id'         => 'opt' . $item->id . '-' . $index,
+                        'label'      => 'Gambar opsi ' . strtoupper((string) $key) . ' (opsional)',
+                        'keyName'    => 'options[' . $index . '][media_key]',
+                        'fileName'   => 'option_media[' . $index . ']',
+                        'mediaId'    => $option?->media_asset_id,
+                        'defaultKey' => 'challenge.option.' . App\Libraries\MediaStore::slug(str_starts_with((string) $key, (string) $item->item_key) ? (string) $key : $item->item_key . '-' . $key),
+                        'size'       => '400 × 400 px',
+                    ]) ?>
                     <label class="check"><input type="radio" name="correct_option" value="<?= esc($key, 'attr') ?>" <?= $option?->is_correct ? 'checked' : '' ?>> Jawaban benar</label>
                   </div>
                 </fieldset>

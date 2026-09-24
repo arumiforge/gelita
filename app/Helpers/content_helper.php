@@ -28,6 +28,104 @@ if (! function_exists('tr')) {
     }
 }
 
+if (! function_exists('node_ref')) {
+    /**
+     * Kode tantangan workbook dari kode wilayah + urutan: ('magelang', 4) → 'mgl-4'.
+     * Wilayah di luar Config\Gelita::$levelPrefixes memakai kodenya sendiri.
+     */
+    function node_ref(string $levelCode, int $sequence): string
+    {
+        $prefix = array_search($levelCode, config('Gelita')->levelPrefixes, true);
+
+        return ($prefix === false ? $levelCode : $prefix) . '-' . $sequence;
+    }
+}
+
+if (! function_exists('rich_text')) {
+    /**
+     * Format ringan untuk teks panjang Pustaka Kedu, ditulis admin tanpa HTML:
+     *
+     *   baris kosong        → paragraf baru
+     *   `## Subjudul`       → <h3>
+     *   `- butir`           → daftar berpoin
+     *   `> Tahukah kamu? …` → kotak fakta (<aside class="book-fact">)
+     *   `Sumber: …`         → catatan rujukan kecil
+     *   `**tebal**`         → <strong>
+     *   `*miring*`          → <em> (istilah asing/daerah)
+     *
+     * Seluruh teks di-escape LEBIH DULU; tag hanya disusun dari penanda di
+     * atas, jadi isi database tidak pernah dapat menyisipkan HTML.
+     */
+    function rich_text(string $text): string
+    {
+        $inline = static function (string $line): string {
+            $html = preg_replace('/\*\*(.+?)\*\*/u', '<strong>$1</strong>', esc($line)) ?? esc($line);
+
+            // *miring*: bintang tunggal yang menempel pada kata, bukan sisa **tebal**
+            return preg_replace('/(?<![*\w])\*(?=\S)([^*]+?)(?<=\S)\*(?![*\w])/u', '<em>$1</em>', $html) ?? $html;
+        };
+
+        $html  = '';
+        $para  = [];
+        $list  = [];
+        $quote = [];
+
+        $flush = static function () use (&$html, &$para, &$list, &$quote, $inline): void {
+            if ($para !== []) {
+                $html .= '<p>' . implode('<br>', array_map($inline, $para)) . '</p>';
+                $para = [];
+            }
+
+            if ($list !== []) {
+                $html .= '<ul>' . implode('', array_map(static fn (string $item): string => '<li>' . $inline($item) . '</li>', $list)) . '</ul>';
+                $list = [];
+            }
+
+            if ($quote !== []) {
+                $html .= '<aside class="book-fact">' . implode('<br>', array_map($inline, $quote)) . '</aside>';
+                $quote = [];
+            }
+        };
+
+        foreach (preg_split('/\R/u', trim($text)) ?: [] as $raw) {
+            $line = trim($raw);
+
+            if ($line === '') {
+                $flush();
+
+                continue;
+            }
+
+            if (preg_match('/^#{2,3}\s+(.+)$/u', $line, $m)) {
+                $flush();
+                $html .= '<h3>' . $inline($m[1]) . '</h3>';
+            } elseif (preg_match('/^[-*•]\s+(.+)$/u', $line, $m)) {
+                if ($para !== [] || $quote !== []) {
+                    $flush();
+                }
+                $list[] = $m[1];
+            } elseif (preg_match('/^>\s?(.*)$/u', $line, $m)) {
+                if ($para !== [] || $list !== []) {
+                    $flush();
+                }
+                $quote[] = $m[1];
+            } elseif (preg_match('/^(Sumber|Rujukan|Source|Sources|References?)\s*:/iu', $line)) {
+                $flush();
+                $html .= '<p class="book-source">' . $inline($line) . '</p>';
+            } else {
+                if ($list !== [] || $quote !== []) {
+                    $flush();
+                }
+                $para[] = $line;
+            }
+        }
+
+        $flush();
+
+        return $html;
+    }
+}
+
 if (! function_exists('media_src')) {
     /**
      * URL media aktif dari peta media ber-cache (ContentRepository::mediaMap()).
@@ -85,6 +183,58 @@ if (! function_exists('media_key_src')) {
         $path = service('contentRepository')->mediaKeyMap()[$assetKey] ?? null;
 
         return $path ? base_url($path) : null;
+    }
+}
+
+if (! function_exists('media_catalog')) {
+    /**
+     * Seluruh baris media_assets (aktif maupun belum berberkas) per id, untuk
+     * pemilih media di panel admin. Dibaca sekali per request.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    function media_catalog(bool $refresh = false): array
+    {
+        static $rows = null;
+
+        if ($rows === null || $refresh) {
+            $rows = [];
+
+            foreach (model(\App\Models\MediaAssetModel::class)->orderBy('asset_key', 'ASC')->findAll() as $row) {
+                $rows[(int) $row['id']] = $row;
+            }
+        }
+
+        return $rows;
+    }
+}
+
+if (! function_exists('audio_catalog')) {
+    /**
+     * Seluruh audio_assets + asset_key, untuk pemilih audio di panel admin.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    function audio_catalog(): array
+    {
+        static $rows = null;
+
+        if ($rows === null) {
+            $rows = [];
+            $list = db_connect()->table('audio_assets aa')
+                ->select('aa.id, aa.locale, aa.context_code, aa.character_code, aa.approval_status, ma.asset_key')
+                ->join('media_assets ma', 'ma.id = aa.media_asset_id')
+                ->orderBy('aa.context_code', 'ASC')
+                ->orderBy('aa.locale', 'ASC')
+                ->get()
+                ->getResultArray();
+
+            foreach ($list as $row) {
+                $rows[(int) $row['id']] = $row;
+            }
+        }
+
+        return $rows;
     }
 }
 

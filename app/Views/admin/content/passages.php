@@ -24,7 +24,8 @@ $rows[] = null;
 <?= component('partials/content-nav', ['level' => $level, 'active' => 'passages']) ?>
 <?= $this->include('partials/flash') ?>
 
-<form method="post" action="<?= base_url('admin/konten/bacaan/' . $level->id) ?>" class="stack">
+<?= component('components/media-datalist', ['types' => ['image']]) ?>
+<form method="post" action="<?= base_url('admin/konten/bacaan/' . $level->id) ?>" class="stack" enctype="multipart/form-data">
   <?= csrf_field() ?>
 
   <?php foreach ($rows as $index => $passage): ?>
@@ -79,6 +80,17 @@ $rows[] = null;
           <textarea id="<?= $p ?>-body-en" name="passages[<?= $index ?>][body_en]" rows="7" <?= $isNew ? '' : 'required' ?>><?= esc($isNew ? '' : ($passage->body_en ?? '')) ?></textarea>
         </div>
       </div>
+
+      <?= component('components/media-field', [
+          'id'         => $p . '-media',
+          'label'      => 'Gambar bacaan (opsional)',
+          'keyName'    => 'passages[' . $index . '][media_key]',
+          'fileName'   => 'passage_media[' . $index . ']',
+          'mediaId'    => $isNew ? null : $passage->media_asset_id,
+          'defaultKey' => $isNew ? 'passage.{passage_key}' : 'passage.' . App\Libraries\MediaStore::slug((string) $passage->passage_key),
+          'size'       => '960 × 640 px',
+          'help'       => 'Tampil di atas teks bacaan di arena.',
+      ]) ?>
 
       <div class="form-grid">
         <div class="field span-all">

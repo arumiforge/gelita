@@ -3,6 +3,8 @@
 namespace App\Controllers\Admin;
 
 use App\Libraries\ContentVerifier;
+use App\Libraries\MediaLink;
+use App\Libraries\MediaStore;
 use App\Models\AuditLogModel;
 use App\Models\ChallengeAttemptModel;
 use App\Models\ChallengeItemModel;
@@ -10,7 +12,9 @@ use App\Models\ChallengeNodeModel;
 use App\Models\ChallengeOptionModel;
 use App\Models\DialogueModel;
 use App\Models\LearningIndicatorModel;
+use App\Models\AudioAssetModel;
 use App\Models\LevelModel;
+use App\Models\LibraryMediaModel;
 use App\Models\LibraryPageModel;
 use App\Models\ReadingPassageModel;
 use App\Models\ScoringProfileModel;
@@ -81,8 +85,9 @@ class ContentController extends BaseAdminController
     public function updateLevel(int $levelId): RedirectResponse
     {
         $levels = model(LevelModel::class);
+        $level  = $levels->find($levelId);
 
-        if ($levels->find($levelId) === null) {
+        if ($level === null) {
             throw PageNotFoundException::forPageNotFound("Level {$levelId} tidak ditemukan.");
         }
 
@@ -99,7 +104,17 @@ class ContentController extends BaseAdminController
                 ->with('errors', $this->validator->getErrors());
         }
 
-        $saved = $levels->update($levelId, $this->bilingual(['name', 'focus', 'cp', 'tp', 'intro']) + [
+        $media = $this->mediaFields([
+            'map_media_id'        => ['media_map', 'map.region.' . $level->code],
+            'background_media_id' => ['media_bg', 'bg.' . $level->code . '.region'],
+            'badge_media_id'      => ['media_badge', 'reward.badge.' . $level->code],
+        ]);
+
+        if (is_string($media)) {
+            return $this->back('admin/konten/level/' . $levelId, $media);
+        }
+
+        $saved = $levels->update($levelId, $this->bilingual(['name', 'focus', 'cp', 'tp', 'intro']) + $media + [
             'difficulty' => (string) $this->request->getPost('difficulty'),
             'is_active'  => $this->request->getPost('is_active') ? 1 : 0,
         ]);
@@ -138,9 +153,12 @@ class ContentController extends BaseAdminController
             $options[$option->challenge_item_id][] = $option;
         }
 
+        $level = model(LevelModel::class)->find($node->level_id);
+
         return $this->panel('admin/content/node', 'Sunting tantangan', [
             'node'         => $node,
-            'level'        => model(LevelModel::class)->find($node->level_id),
+            'level'        => $level,
+            'ref'          => node_ref((string) ($level?->code ?? ''), $node->sequence),
             'items'        => $items,
             'options'      => $options,
             'indicators'   => model(LearningIndicatorModel::class)->map(),
@@ -187,7 +205,23 @@ class ContentController extends BaseAdminController
         // Field terpandu (cfg[...]) menimpa kunci yang sama di JSON mentah
         $config = $this->guidedConfig($config ?? []);
 
-        $saved = $nodes->update($nodeId, $this->bilingual(['title', 'instruction', 'description']) + [
+        $ref   = $this->nodeRef($node->level_id, $node->sequence);
+        $media = $this->mediaFields([
+            'scene_media_id'      => ['media_scene', 'challenge.' . $ref . '.scene'],
+            'background_media_id' => ['media_bg', 'challenge.' . $ref . '.bg'],
+        ]);
+
+        if (is_string($media)) {
+            return $this->back($back, $media);
+        }
+
+        $audio = $this->audioFields(['audio_intro_id', 'audio_intro_en_id']);
+
+        if (is_string($audio)) {
+            return $this->back($back, $audio);
+        }
+
+        $saved = $nodes->update($nodeId, $this->bilingual(['title', 'instruction', 'description']) + $media + $audio + [
             'engine_type'        => $engine,
             'variant_code'       => $this->nullIfBlank($this->request->getPost('variant_code')),
             'indicator_id'       => $this->idOrNull($this->request->getPost('indicator_id')),
@@ -229,10 +263,10 @@ class ContentController extends BaseAdminController
             return redirect()->to(site_url($back))->with('errors', $this->validator->getErrors());
         }
 
-        $payload = $this->itemPayload();
+        $payload = $this->itemPayload((string) $this->request->getPost('item_key'));
 
-        if ($payload === null) {
-            return $this->back($back, 'answer_key_json atau config_json bukan JSON yang valid.');
+        if (is_string($payload)) {
+            return $this->back($back, $payload);
         }
 
         if ((int) $payload['scorable'] === 1 && $payload['answer_key_json'] === null) {
@@ -274,10 +308,10 @@ class ContentController extends BaseAdminController
             return redirect()->to(site_url($back))->with('errors', $this->validator->getErrors());
         }
 
-        $payload = $this->itemPayload();
+        $payload = $this->itemPayload((string) $item->item_key);
 
-        if ($payload === null) {
-            return $this->back($back, 'answer_key_json atau config_json bukan JSON yang valid.');
+        if (is_string($payload)) {
+            return $this->back($back, $payload);
         }
 
         if ((int) $payload['scorable'] === 1 && $payload['answer_key_json'] === null) {
@@ -357,6 +391,18 @@ class ContentController extends BaseAdminController
                 : (int) ($key === $correctKey);
             $correct += $isCorrect;
 
+            $media = (new MediaStore())->resolve(
+                (string) ($row['media_key'] ?? ''),
+                $this->request->getFile('option_media.' . $index),
+                'challenge.option.' . MediaStore::slug(str_starts_with($key, (string) $item->item_key) ? $key : $item->item_key . '-' . $key),
+                ['image'],
+                $this->staffId(),
+            );
+
+            if ($media['error'] !== null) {
+                return $this->back($back, "Gambar opsi {$key}: " . $media['error']);
+            }
+
             $payloads[$key] = [
                 'challenge_item_id' => $itemId,
                 'option_key'        => $key,
@@ -365,6 +411,7 @@ class ContentController extends BaseAdminController
                 'feedback_id'       => $this->nullIfBlank($row['feedback_id'] ?? null),
                 'feedback_en'       => $this->nullIfBlank($row['feedback_en'] ?? null),
                 'is_correct'        => $isCorrect,
+                'media_asset_id'    => $media['id'],
                 'display_order'     => (int) ($row['display_order'] ?? $index + 1),
             ];
         }
@@ -490,7 +537,7 @@ class ContentController extends BaseAdminController
         $usage    = $this->passageUsage($levelId);
         $saved    = 0;
 
-        foreach ((array) ($this->request->getPost('passages') ?? []) as $row) {
+        foreach ((array) ($this->request->getPost('passages') ?? []) as $index => $row) {
             $key = trim((string) ($row['passage_key'] ?? ''));
 
             if ($key === '') {
@@ -513,8 +560,21 @@ class ContentController extends BaseAdminController
                 continue;
             }
 
+            $media = (new MediaStore())->resolve(
+                (string) ($row['media_key'] ?? ''),
+                $this->request->getFile('passage_media.' . $index),
+                'passage.' . MediaStore::slug($key),
+                ['image'],
+                $this->staffId(),
+            );
+
+            if ($media['error'] !== null) {
+                return $this->back($back, "Gambar bacaan {$key}: " . $media['error']);
+            }
+
             $payload = [
                 'level_id'         => $levelId,
+                'media_asset_id'   => $media['id'],
                 'title_id'         => trim((string) ($row['title_id'] ?? '')),
                 'title_en'         => $this->nullIfBlank($row['title_en'] ?? null),
                 'body_id'          => (string) ($row['body_id'] ?? ''),
@@ -550,55 +610,26 @@ class ContentController extends BaseAdminController
             throw PageNotFoundException::forPageNotFound("Level {$levelId} tidak ditemukan.");
         }
 
+        // Halaman & media nonaktif ikut tampil agar dapat diaktifkan kembali
+        $pages = model(LibraryPageModel::class)->where('level_id', $levelId)->orderBy('sequence', 'ASC')->findAll();
+
         return $this->panel('admin/content/library', 'Pustaka Kedu', [
             'level' => $level,
-            'pages' => model(LibraryPageModel::class)->forLevel($levelId),
+            'pages' => $pages,
+            'media' => model(LibraryMediaModel::class)->forPages(
+                array_map(static fn ($page): int => $page->id, $pages),
+                false,
+            ),
         ]);
     }
 
+    /**
+     * Menyimpan seluruh halaman Pustaka satu wilayah beserta medianya dalam
+     * satu transaction. Urutan halaman dapat ditukar: urutan lama dipindah
+     * sementara ke nomor tinggi dulu agar indeks unik (level_id, sequence)
+     * tidak menolak pertukaran.
+     */
     public function saveLibrary(int $levelId): RedirectResponse
-    {
-        $pages = model(LibraryPageModel::class);
-        $saved = 0;
-
-        foreach ((array) ($this->request->getPost('pages') ?? []) as $index => $row) {
-            $title = trim((string) ($row['title_id'] ?? ''));
-
-            if ($title === '') {
-                continue;
-            }
-
-            $payload = [
-                'level_id'  => $levelId,
-                'sequence'  => (int) ($row['sequence'] ?? $index + 1),
-                'title_id'  => $title,
-                'title_en'  => $this->nullIfBlank($row['title_en'] ?? null),
-                'body_id'   => (string) ($row['body_id'] ?? ''),
-                // library_pages.body_en NOT NULL: kosong disimpan '' dan permainan
-                // memakai teks Indonesia (Bilingual::text)
-                'body_en'   => trim((string) ($row['body_en'] ?? '')),
-                'is_active' => empty($row['is_active']) ? 0 : 1,
-            ];
-
-            $id      = (int) ($row['id'] ?? 0);
-            $written = $id > 0 ? $pages->update($id, $payload) : $pages->insert($payload, false);
-
-            if ($written === false) {
-                return $this->back(
-                    'admin/konten/pustaka/' . $levelId,
-                    'Halaman "' . $title . '" ditolak: ' . $this->modelErrors($pages),
-                );
-            }
-
-            $saved++;
-        }
-
-        $this->afterContentChange('library', $levelId);
-
-        return $this->done('admin/konten/pustaka/' . $levelId, "{$saved} halaman pustaka disimpan.");
-    }
-
-    public function dialogues(int $levelId): string
     {
         $level = model(LevelModel::class)->find($levelId);
 
@@ -606,15 +637,222 @@ class ContentController extends BaseAdminController
             throw PageNotFoundException::forPageNotFound("Level {$levelId} tidak ditemukan.");
         }
 
-        return $this->panel('admin/content/dialogues', 'Dialog wilayah', [
+        $back  = 'admin/konten/pustaka/' . $levelId;
+        $pages = model(LibraryPageModel::class);
+        $rows  = (array) ($this->request->getPost('pages') ?? []);
+        $owned = array_map(static fn ($page): int => $page->id, $pages->where('level_id', $levelId)->findAll());
+        $db    = db_connect();
+        $saved = 0;
+        $media = 0;
+
+        $db->transBegin();
+
+        try {
+            $parked = 0;
+
+            foreach ($rows as $row) {
+                $id = (int) ($row['id'] ?? 0);
+
+                if ($id > 0 && ! in_array($id, $owned, true)) {
+                    throw new \RuntimeException('Halaman pustaka bukan milik wilayah ini.');
+                }
+
+                // sequence SMALLINT UNSIGNED: nomor parkir 60000+ tetap di bawah batas 65535
+                if ($id > 0) {
+                    $pages->builder()->where('id', $id)->update(['sequence' => 60000 + $parked++]);
+                }
+            }
+
+            foreach ($rows as $index => $row) {
+                $id    = (int) ($row['id'] ?? 0);
+                $title = trim((string) ($row['title_id'] ?? ''));
+
+                if ($id > 0 && ! empty($row['_delete'])) {
+                    $pages->delete($id);   // media halaman ikut terhapus (FK CASCADE)
+
+                    continue;
+                }
+
+                if ($title === '') {
+                    if ($id > 0) {
+                        throw new \RuntimeException('Judul Indonesia halaman ' . ($index + 1) . ' wajib diisi.');
+                    }
+
+                    continue;
+                }
+
+                $payload = [
+                    'level_id'  => $levelId,
+                    'sequence'  => max(1, (int) ($row['sequence'] ?? $index + 1)),
+                    'title_id'  => $title,
+                    'title_en'  => $this->nullIfBlank($row['title_en'] ?? null),
+                    'body_id'   => (string) ($row['body_id'] ?? ''),
+                    // library_pages.body_en NOT NULL: kosong disimpan '' dan permainan
+                    // memakai teks Indonesia (Bilingual::text)
+                    'body_en'   => trim((string) ($row['body_en'] ?? '')),
+                    'is_active' => empty($row['is_active']) ? 0 : 1,
+                ];
+
+                $written = $id > 0 ? $pages->update($id, $payload) : $pages->insert($payload, false);
+
+                if ($written === false) {
+                    throw new \RuntimeException('Halaman "' . $title . '" ditolak: ' . $this->modelErrors($pages));
+                }
+
+                $pageId = $id > 0 ? $id : (int) $pages->getInsertID();
+                $media += $this->saveLibraryMedia($pageId, (string) $level->code, $payload['sequence'], $index, (array) ($row['media'] ?? []));
+                $saved++;
+            }
+
+            $db->transCommit();
+        } catch (\Throwable $e) {
+            $db->transRollback();
+
+            return $this->back($back, $e->getMessage());
+        }
+
+        $this->afterContentChange('library', $levelId);
+
+        return $this->done($back, "{$saved} halaman pustaka dan {$media} media disimpan.");
+    }
+
+    /**
+     * Media satu halaman Pustaka. Tiap baris berupa berkas (asset_key terdaftar
+     * atau unggahan baru) ATAU tautan luar; baris yang dikosongkan dihapus.
+     *
+     * @param list<array<string, mixed>>|array<int, array<string, mixed>> $rows
+     */
+    private function saveLibraryMedia(int $pageId, string $levelCode, int $pageSequence, int $pageIndex, array $rows): int
+    {
+        $model = model(LibraryMediaModel::class);
+        $store = new MediaStore();
+        $count = 0;
+
+        foreach ($rows as $index => $row) {
+            $id       = (int) ($row['id'] ?? 0);
+            $existing = $id > 0 ? $model->find($id) : null;
+
+            if ($id > 0 && ($existing === null || $existing->library_page_id !== $pageId)) {
+                throw new \RuntimeException('Media pustaka tidak ditemukan di halaman ini.');
+            }
+
+            $url     = trim((string) ($row['external_url'] ?? ''));
+            $kind    = ($row['media_kind'] ?? 'image') === 'video' ? 'video' : 'image';
+            $label   = 'Media ' . ($index + 1) . ' halaman ' . $pageSequence;
+            $file    = $this->request->getFile("library_file.{$pageIndex}.{$index}");
+            $hasFile = $file !== null && $file->getError() !== UPLOAD_ERR_NO_FILE;
+            $key     = trim((string) ($row['media_key'] ?? ''));
+            // Sumber dipilih eksplisit; kotak sumber lain tetap terkirim walau tersembunyi
+            $source  = (string) ($row['source'] ?? ($url !== '' ? 'url' : 'upload'));
+            $isUrl   = $source === 'url';
+            $isEmpty = $isUrl ? $url === '' : ($key === '' && ! $hasFile);
+
+            if (! empty($row['_delete']) || $isEmpty) {
+                if ($existing !== null) {
+                    $model->delete($id);
+                }
+
+                continue;
+            }
+
+            $mediaId = null;
+
+            if ($isUrl) {
+                $link = MediaLink::parse($url, $kind);
+
+                if ($link === null) {
+                    throw new \RuntimeException("{$label}: tautan harus alamat http(s) yang sah.");
+                }
+
+                $kind = $link['kind'];
+            } else {
+                $url    = '';
+                $result = $store->resolve(
+                    $key,
+                    $file,
+                    'library.' . MediaStore::slug($levelCode) . '.p' . $pageSequence . '.' . ($index + 1),
+                    [$kind],
+                    $this->staffId(),
+                );
+
+                if ($result['error'] !== null) {
+                    throw new \RuntimeException("{$label}: " . $result['error']);
+                }
+
+                $mediaId = $result['id'];
+            }
+
+            $poster = $store->resolve(
+                (string) ($row['poster_key'] ?? ''),
+                $this->request->getFile("library_poster.{$pageIndex}.{$index}"),
+                'library.' . MediaStore::slug($levelCode) . '.p' . $pageSequence . '.' . ($index + 1) . '.poster',
+                ['image'],
+                $this->staffId(),
+            );
+
+            if ($poster['error'] !== null) {
+                throw new \RuntimeException("{$label} (poster): " . $poster['error']);
+            }
+
+            $payload = [
+                'library_page_id' => $pageId,
+                'sequence'        => max(1, (int) ($row['sequence'] ?? $index + 1)),
+                'media_kind'      => $kind,
+                'media_asset_id'  => $mediaId,
+                'external_url'    => $url === '' ? null : $url,
+                'poster_media_id' => $kind === 'video' ? $poster['id'] : null,
+                'caption_id'      => $this->nullIfBlank($row['caption_id'] ?? null),
+                'caption_en'      => $this->nullIfBlank($row['caption_en'] ?? null),
+                'credit'          => $this->nullIfBlank($row['credit'] ?? null),
+                'is_active'       => array_key_exists('is_active', $row) ? (empty($row['is_active']) ? 0 : 1) : 1,
+            ];
+
+            $written = $existing !== null ? $model->update($id, $payload) : $model->insert($payload, false);
+
+            if ($written === false) {
+                throw new \RuntimeException("{$label} ditolak: " . $this->modelErrors($model));
+            }
+
+            $count++;
+        }
+
+        return $count;
+    }
+
+    /**
+     * Dialog pembuka wilayah (`level_open`), atau cerita pembuka permainan
+     * (`intro`, level_id NULL) bila $levelId = 0. Slide nonaktif tetap
+     * tampil di editor agar dapat diaktifkan kembali.
+     */
+    public function dialogues(int $levelId): string
+    {
+        $level = $levelId === 0 ? null : model(LevelModel::class)->find($levelId);
+
+        if ($levelId !== 0 && $level === null) {
+            throw PageNotFoundException::forPageNotFound("Level {$levelId} tidak ditemukan.");
+        }
+
+        $rows = model(DialogueModel::class)
+            ->where('level_id', $level?->id)
+            ->where('context_code', $level === null ? 'intro' : 'level_open')
+            ->orderBy('sequence', 'ASC')
+            ->findAll();
+
+        return $this->panel('admin/content/dialogues', $level === null ? 'Cerita pembuka' : 'Dialog wilayah', [
             'level'      => $level,
-            'dialogues'  => model(DialogueModel::class)->forLevel($levelId, 'level_open'),
-            'characters' => config('Gelita')->characters,
+            'dialogues'  => $rows,
+            'characters' => $level === null ? ['narator', ...config('Gelita')->characters] : config('Gelita')->characters,
         ]);
     }
 
     public function saveDialogues(int $levelId): RedirectResponse
     {
+        if ($levelId !== 0 && model(LevelModel::class)->find($levelId) === null) {
+            throw PageNotFoundException::forPageNotFound("Level {$levelId} tidak ditemukan.");
+        }
+
+        $back      = 'admin/konten/dialog/' . $levelId;
+        $context   = $levelId === 0 ? 'intro' : 'level_open';
         $dialogues = model(DialogueModel::class);
         $saved     = 0;
 
@@ -625,9 +863,19 @@ class ContentController extends BaseAdminController
                 continue;
             }
 
+            $audio = [];
+
+            foreach (['audio_id_asset_id', 'audio_en_asset_id'] as $column) {
+                $audio[$column] = $this->audioIdOrNull($row[$column] ?? null);
+
+                if ($audio[$column] === false) {
+                    return $this->back($back, 'Audio yang dipilih untuk slide ' . ($index + 1) . ' tidak ditemukan.');
+                }
+            }
+
             $payload = [
-                'level_id'       => $levelId,
-                'context_code'   => (string) ($row['context_code'] ?? 'level_open'),
+                'level_id'       => $levelId === 0 ? null : $levelId,
+                'context_code'   => $context,
                 'sequence'       => (int) ($row['sequence'] ?? $index + 1),
                 'character_code' => (string) ($row['character_code'] ?? 'jaka'),
                 'title_id'       => $this->nullIfBlank($row['title_id'] ?? null),
@@ -635,14 +883,14 @@ class ContentController extends BaseAdminController
                 'text_id'        => $text,
                 'text_en'        => $this->nullIfBlank($row['text_en'] ?? null),
                 'is_active'      => empty($row['is_active']) ? 0 : 1,
-            ];
+            ] + $audio;
 
             $id      = (int) ($row['id'] ?? 0);
             $written = $id > 0 ? $dialogues->update($id, $payload) : $dialogues->insert($payload, false);
 
             if ($written === false) {
                 return $this->back(
-                    'admin/konten/dialog/' . $levelId,
+                    $back,
                     'Dialog slide ' . $payload['sequence'] . ' ditolak: ' . $this->modelErrors($dialogues),
                 );
             }
@@ -652,7 +900,7 @@ class ContentController extends BaseAdminController
 
         $this->afterContentChange('dialogues', $levelId);
 
-        return $this->done('admin/konten/dialog/' . $levelId, "{$saved} dialog disimpan.");
+        return $this->done($back, "{$saved} dialog disimpan.");
     }
 
     // ----------------------------------------------------------- verifikasi
@@ -691,20 +939,29 @@ class ContentController extends BaseAdminController
     }
 
     /**
-     * Payload butir dari POST, atau null bila salah satu kolom JSON rusak.
+     * Payload butir dari POST, atau pesan galat bila kolom JSON rusak atau
+     * gambar butir ditolak.
      *
-     * @return array<string, mixed>|null
+     * @return array<string, mixed>|string
      */
-    private function itemPayload(): ?array
+    private function itemPayload(string $itemKey): array|string
     {
         $answerKey = $this->jsonField('answer_key_json');
         $config    = $this->jsonField('config_json');
 
         if ($answerKey === false || $config === false) {
-            return null;
+            return 'answer_key_json atau config_json bukan JSON yang valid.';
         }
 
-        return $this->bilingual(['prompt', 'source_text']) + [
+        $media = $this->mediaFields([
+            'media_asset_id' => ['media_item', 'challenge.item.' . MediaStore::slug($itemKey)],
+        ]);
+
+        if (is_string($media)) {
+            return $media;
+        }
+
+        return $this->bilingual(['prompt', 'source_text']) + $media + [
             'sequence'         => (int) ($this->request->getPost('sequence') ?? 0),
             'passage_id'       => $this->idOrNull($this->request->getPost('passage_id')),
             'indicator_id'     => $this->idOrNull($this->request->getPost('indicator_id')),
@@ -808,6 +1065,73 @@ class ContentController extends BaseAdminController
         }
 
         return $usage;
+    }
+
+    /**
+     * Kolom media dari components/media-field: `{field}_key` + berkas `{field}_file`.
+     *
+     * @param array<string, array{0: string, 1: string}> $spec kolom → [nama field, asset_key bawaan]
+     * @param list<string>                              $types
+     *
+     * @return array<string, int|null>|string kolom → id media, atau pesan galat
+     */
+    private function mediaFields(array $spec, array $types = ['image']): array|string
+    {
+        $store = new MediaStore();
+        $out   = [];
+
+        foreach ($spec as $column => [$field, $defaultKey]) {
+            $result = $store->resolveField($this->request, $field . '_key', $field . '_file', $defaultKey, $types, $this->staffId());
+
+            if ($result['error'] !== null) {
+                return $result['error'];
+            }
+
+            $out[$column] = $result['id'];
+        }
+
+        return $out;
+    }
+
+    /**
+     * Kolom audio (select id audio_assets) dari POST.
+     *
+     * @param list<string> $columns
+     *
+     * @return array<string, int|null>|string
+     */
+    private function audioFields(array $columns): array|string
+    {
+        $out = [];
+
+        foreach ($columns as $column) {
+            $id = $this->audioIdOrNull($this->request->getPost($column));
+
+            if ($id === false) {
+                return 'Audio yang dipilih tidak ditemukan.';
+            }
+
+            $out[$column] = $id;
+        }
+
+        return $out;
+    }
+
+    /** Id audio_assets yang sah, null bila kosong, false bila tidak ada. */
+    private function audioIdOrNull($value): int|false|null
+    {
+        $id = (int) $value;
+
+        if ($id <= 0) {
+            return null;
+        }
+
+        return model(AudioAssetModel::class)->find($id) === null ? false : $id;
+    }
+
+    private function nodeRef(int $levelId, int $sequence): string
+    {
+        return node_ref((string) (model(LevelModel::class)->find($levelId)?->code ?? 'level' . $levelId), $sequence);
     }
 
     private function afterContentChange(string $targetType, int $targetId): void
