@@ -13,6 +13,7 @@ use App\Models\DialogueModel;
 use App\Models\GameReleaseModel;
 use App\Models\HintModel;
 use App\Models\LevelModel;
+use App\Models\LibraryMediaModel;
 use App\Models\LibraryPageModel;
 use App\Models\MediaAssetModel;
 use App\Models\ReadingPassageModel;
@@ -122,13 +123,25 @@ class ContentRepository
             : model(DialogueModel::class)->forLevel($levelId, $context));
     }
 
-    /** @return list<LibraryPage> */
+    /**
+     * Halaman Pustaka satu wilayah, media tiap halaman sudah ikut dimuat.
+     *
+     * @return list<LibraryPage>
+     */
     public function libraryPages(int $levelId): array
     {
-        return $this->remember(
-            'library.' . $levelId,
-            static fn (): array => model(LibraryPageModel::class)->forLevel($levelId),
-        );
+        return $this->remember('library.' . $levelId, static function () use ($levelId): array {
+            $pages = model(LibraryPageModel::class)->forLevel($levelId);
+            $media = model(LibraryMediaModel::class)->forPages(
+                array_map(static fn (LibraryPage $page): int => $page->id, $pages),
+            );
+
+            foreach ($pages as $page) {
+                $page->setLoadedMedia($media[$page->id] ?? []);
+            }
+
+            return $pages;
+        });
     }
 
     /** @return list<ReadingPassage> */

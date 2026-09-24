@@ -520,3 +520,36 @@ th[aria-sort="descending"] .th-sort-icon::after { content: "↓"; color: var(--g
   .item-meta { justify-content: flex-start; }
   .temp-password { font-size: var(--step-2); }
 }
+
+/* ---------- Pemilih media di editor konten ---------- */
+.media-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: var(--sp-4); }
+.media-field-body { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: var(--sp-3); }
+.media-field .media-thumb { width: 96px; height: 64px; }
+.media-field-inputs { display: grid; gap: var(--sp-2); min-width: 0; }
+.media-field-inputs input[type="text"] { font-family: var(--font-mono); font-size: var(--step--1); }
+.media-field-inputs input[type="file"] { font-size: var(--step--1); }
+.media-field .field-help { margin: 0; }
+
+/* ---------- Editor Pustaka ---------- */
+.library-media-list { display: grid; gap: var(--sp-3); margin: 0; padding: 0; list-style: none; }
+.library-media-row {
+  display: grid;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  border: 1px solid var(--line-ink);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, .02);
+}
+.library-media-row.is-new { border-style: dashed; }
+.library-media-head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2) var(--sp-4); }
+.library-media-head b { color: var(--gold-300); }
+.source-switch { display: flex; flex-wrap: wrap; gap: var(--sp-1) var(--sp-4); }
+/* Sumber berkas vs tautan: yang tidak dipilih disembunyikan (tanpa JavaScript) */
+.library-media-row:has(.source-switch input[value="url"]:checked) .source-upload,
+.library-media-row:has(.source-switch input[value="upload"]:checked) .source-url { display: none; }
+.library-media-row:not(:has(select[name$="[media_kind]"] option[value="video"]:checked)) .poster-field,
+.library-media-row:has(.source-switch input[value="url"]:checked) .poster-field { display: none; }
+.link-preview { display: inline-flex; align-items: center; gap: var(--sp-1); color: var(--gold-300); font-size: var(--step--1); }
+.format-help { margin: 0; padding: var(--sp-3) var(--sp-4); border-left: 3px solid var(--gold-600); border-radius: var(--radius); background: rgba(223, 192, 135, .06); font-size: var(--step--1); }
+.format-help code { white-space: nowrap; }
+.library-page-card > summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2) var(--sp-3); cursor: pointer; }

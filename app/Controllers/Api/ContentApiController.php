@@ -98,10 +98,10 @@ class ContentApiController extends BaseApiController
             'sequence' => $page->sequence,
             'title'    => $page->text('title', $locale),
             'body'     => $page->text('body', $locale),
-            'image_a'  => $page->image_a_media_id === null ? null : media_src($page->image_a_media_id),
-            'image_b'  => $page->image_b_media_id === null ? null : media_src($page->image_b_media_id),
-            'poster'   => $page->poster_media_id === null ? null : media_src($page->poster_media_id),
-            'video'    => $page->video_media_id === null ? null : media_src($page->video_media_id),
+            // Galeri tanpa batas jumlah (library_media); `embed` hanya dimuat
+            // setelah pemain menekan Putar. Empat slot lama sudah disalin ke
+            // galeri oleh migration 003500.
+            'media'    => $page->gallery($locale),
         ], service('contentRepository')->libraryPages($levelId));
 
         return $this->ok([

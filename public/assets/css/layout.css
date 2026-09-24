@@ -240,10 +240,13 @@ body.admin {
 
 .menu-close { display: none; }
 
-/* ---------- Konten admin ---------- */
+/* ---------- Konten admin ----------
+   Lebar penuh kolom di samping sidebar: tabel, chart, dan form dwibahasa
+   memakai seluruh layar lebar. Paragraf panjang tetap dibatasi lebar
+   bacanya sendiri (.page-lead 70ch, .empty-state p 52ch). */
 .admin-main {
   width: 100%;
-  max-width: calc(var(--content-max) + 2 * var(--sp-6));
+  min-width: 0;
   padding: var(--sp-5) var(--sp-6) var(--sp-7);
 }
 

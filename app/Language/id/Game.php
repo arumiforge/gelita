@@ -224,6 +224,12 @@ return [
     // Pustaka
     'pageOf'        => 'Halaman {0} dari {1}',
     'libraryEmpty'  => 'Belum ada halaman pustaka untuk wilayah ini.',
+    'libraryPlayVideo' => 'Putar video',
+    'libraryOpenLink' => 'Buka {0}',
+    'libraryZoom' => 'Perbesar gambar',
+    'libraryEmbedNote' => 'Video dari {0} baru dimuat setelah kamu menekan Putar.',
+    'libraryGallery' => 'Galeri gambar dan video',
+    'libraryFact' => 'Tahukah kamu?',
     'prevPage'      => 'Halaman sebelumnya',
     'nextPage'      => 'Halaman berikutnya',
 

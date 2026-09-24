@@ -8,7 +8,11 @@ use App\Models\ChallengeNodeModel;
 use App\Models\ChallengeOptionModel;
 use App\Models\HintModel;
 use App\Models\LearningIndicatorModel;
+use App\Libraries\BankWorkbookGuide;
+use App\Libraries\MediaLink;
 use App\Models\LevelModel;
+use App\Models\LibraryMediaModel;
+use App\Models\LibraryPageModel;
 use App\Models\MediaAssetModel;
 use App\Models\ReadingPassageModel;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -17,21 +21,22 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx as XlsxWriter;
 
 /**
  * Memuat workbook bank soal (XLSX) ke tabel konten dalam satu transaction.
- * Format 8 sheet ditetapkan di 07_FEATURE_INTEGRATION.md (FITUR 12a).
+ * Format sheet ditetapkan di 07_FEATURE_INTEGRATION.md (FITUR 12a); arti
+ * tiap kolom (dipakai sheet PETUNJUK di templat) ada di BankWorkbookGuide.
+ *
+ * Sheet `library` dan `library_media` (Pustaka Kedu) opsional: workbook
+ * lama tanpa keduanya tetap terbaca seperti sebelumnya.
  */
 class ContentImportService
 {
-    /** Awalan node_ref → kode level */
-    private const LEVEL_PREFIX = ['tmg' => 'temanggung', 'mgl' => 'magelang', 'wnb' => 'wonosobo'];
-
     private const INTERACTION_TYPES = [
         'puzzle_arrange', 'ordering', 'fill_blank_bank', 'fill_blank_free',
         'verdict_card', 'verdict_reason', 'single_choice', 'source_trust', 'find_object',
     ];
 
-    /** Header per sheet; kolom di luar daftar ini diabaikan. */
-    private const SHEETS = [
-        'nodes'       => ['node_ref', 'title_id', 'title_en', 'instruction_id', 'instruction_en', 'description_id', 'description_en', 'items_per_round', 'verdict_options', 'require_reason', 'use_word_bank', 'distractor_count'],
+    /** Header per sheet; kolom di luar daftar ini diabaikan. Sheet lain (mis. PETUNJUK) juga diabaikan. */
+    public const SHEETS = [
+        'nodes'       => ['node_ref', 'title_id', 'title_en', 'instruction_id', 'instruction_en', 'description_id', 'description_en', 'items_per_round', 'verdict_options', 'require_reason', 'use_word_bank', 'distractor_count', 'scene_media_key', 'background_media_key'],
         'distractors' => ['node_ref', 'text_id', 'text_en'],
         'passages'    => ['passage_key', 'level_code', 'title_id', 'title_en', 'body_id', 'body_en', 'media_asset_key', 'reference_source'],
         'items'       => ['item_key', 'node_ref', 'sequence', 'interaction_type', 'indicator', 'prompt_id', 'prompt_en', 'source_text_id', 'source_text_en', 'passage_key', 'answer_id', 'answer_en', 'sample_reason_id', 'sample_reason_en', 'x', 'y', 'w', 'decoy', 'wrong_feedback_id', 'wrong_feedback_en', 'digital_pillar', 'media_asset_key', 'scorable', 'review_status', 'review_note', 'reference_source'],
@@ -39,7 +44,12 @@ class ContentImportService
         'pieces'      => ['item_key', 'piece_key', 'text_id', 'text_en'],
         'sources'     => ['item_key', 'label_id', 'label_en', 'kind', 'text_id', 'text_en'],
         'hints'       => ['node_ref', 'item_key', 'sequence', 'text_id', 'text_en'],
+        'library'       => ['level_code', 'sequence', 'title_id', 'title_en', 'body_id', 'body_en', 'is_active'],
+        'library_media' => ['level_code', 'page_sequence', 'sequence', 'media_kind', 'media_asset_key', 'external_url', 'poster_media_key', 'caption_id', 'caption_en', 'credit'],
     ];
+
+    /** Sheet yang boleh tidak ada tanpa peringatan (fitur yang ditambahkan belakangan). */
+    private const OPTIONAL_SHEETS = ['library', 'library_media'];
 
     /**
      * Membaca workbook, memvalidasi seluruh baris, TANPA menulis database.
@@ -110,22 +120,18 @@ class ContentImportService
         return ['ok' => true, 'written' => $written, 'errors' => [], 'warnings' => $parsed['warnings']];
     }
 
-    /** Workbook templat kosong dengan header dan satu baris contoh per sheet. */
+    /**
+     * Workbook templat: sheet PETUNJUK (cara mengisi, arti tiap sheet dan
+     * kolom dalam bahasa Indonesia), header berwarna dengan catatan per kolom,
+     * daftar pilihan untuk kolom berkode, dan baris contoh yang saling
+     * konsisten sehingga templat yang diunggah apa adanya lolos pratinjau.
+     */
     public function template(): string
     {
-        $spreadsheet = new Spreadsheet();
-        $spreadsheet->removeSheetByIndex(0);
+        $rows = [];
 
         foreach (self::SHEETS as $name => $headers) {
-            $sheet = $spreadsheet->createSheet();
-            $sheet->setTitle($name);
-            $sheet->fromArray($headers, null, 'A1');
-
-            $examples = $this->exampleRows($name, $headers);
-
-            if ($examples !== []) {
-                $sheet->fromArray($examples, null, 'A2');
-            }
+            $rows[$name] = $this->exampleRows($name, $headers);
         }
 
         $path = WRITEPATH . 'uploads/gelita-bank-soal-template.xlsx';
@@ -134,9 +140,10 @@ class ContentImportService
             mkdir(dirname($path), 0775, true);
         }
 
-        $writer = new XlsxWriter($spreadsheet);
-        $writer->setPreCalculateFormulas(false);
-        $writer->save($path);
+        (new BankWorkbookGuide())->write($rows, $path, [
+            'title'    => 'Templat Bank Soal GELITA',
+            'subtitle' => 'Baris contoh boleh dihapus atau ditimpa. Baca sheet PETUNJUK sebelum mengisi.',
+        ]);
 
         return $path;
     }
@@ -170,7 +177,7 @@ class ContentImportService
                 ? $this->readSheet($book->getSheetByName($name)->toArray(null, true, false, false), $headers)
                 : [];
 
-            if (! $book->sheetNameExists($name)) {
+            if (! $book->sheetNameExists($name) && ! in_array($name, self::OPTIONAL_SHEETS, true)) {
                 $warnings[] = ['sheet' => $name, 'row' => 0, 'message' => 'Sheet tidak ada di workbook, dilewati.'];
             }
         }
@@ -187,9 +194,11 @@ class ContentImportService
             'media'      => $media,
             'passages'   => $this->collect($sheets['passages'], 'passage_key'),
             'items'      => $this->collect($sheets['items'], 'item_key'),
+            'options'    => $this->groupBy($sheets['options'], 'item_key'),
+            'library'    => $this->libraryKeys($sheets['library']),
         ];
 
-        foreach (['nodes', 'distractors', 'passages', 'items', 'options', 'pieces', 'sources', 'hints'] as $name) {
+        foreach (array_keys(self::SHEETS) as $name) {
             foreach ($sheets[$name] as $row) {
                 $message = $this->validateRow($name, $row, $context);
 
@@ -197,6 +206,12 @@ class ContentImportService
                     $errors[] = ['sheet' => $name, 'row' => $row['__row'], 'message' => $message];
                 }
             }
+        }
+
+        $warnings = [...$warnings, ...$this->mediaWarnings($sheets, $media)];
+
+        foreach ($this->duplicateLibraryPages($sheets['library']) as $row) {
+            $errors[] = ['sheet' => 'library', 'row' => $row['__row'], 'message' => "Halaman {$row['level_code']} nomor {$row['sequence']} ditulis lebih dari sekali."];
         }
 
         foreach ($sheets['items'] as $row) {
@@ -208,15 +223,6 @@ class ContentImportService
                 ];
             }
 
-            $mediaKey = trim((string) ($row['media_asset_key'] ?? ''));
-
-            if ($mediaKey !== '' && ! isset($media[$mediaKey])) {
-                $warnings[] = [
-                    'sheet'   => 'items',
-                    'row'     => $row['__row'],
-                    'message' => "media_asset_key '{$mediaKey}' belum terdaftar di media_assets.",
-                ];
-            }
         }
 
         $summary = $this->summarize($sheets, $warnings);
@@ -292,6 +298,8 @@ class ContentImportService
                     ? "kind '{$row['kind']}' tidak dikenali."
                     : null),
             'hints'  => $this->validateHint($row, $context),
+            'library'       => $this->validateLibraryPage($row, $context),
+            'library_media' => $this->validateLibraryMedia($row, $context),
             default  => null,
         };
     }
@@ -370,7 +378,8 @@ class ContentImportService
         $existing = model(ChallengeItemModel::class)->findByKey((string) $row['item_key']);
 
         if ($existing !== null && model(ChallengeItemModel::class)->hasResponses($existing->id)) {
-            $incoming = $this->answerKeyFor($row, []);
+            // kunci pilihan ganda diturunkan dari opsi di workbook, sama seperti saat menulis
+            $incoming = $this->answerKeyFor($row, $context['options'][trim((string) $row['item_key'])] ?? []);
 
             if (json_encode($incoming, JSON_UNESCAPED_UNICODE) !== json_encode($existing->answerKey(), JSON_UNESCAPED_UNICODE)) {
                 return "Item {$row['item_key']} sudah punya jawaban peserta; kunci jawabannya tidak boleh diubah.";
@@ -412,6 +421,175 @@ class ContentImportService
         return null;
     }
 
+    private function validateLibraryPage(array $row, array $context): ?string
+    {
+        if (! isset($context['levels'][$row['level_code']])) {
+            return "level_code '{$row['level_code']}' tidak dikenali.";
+        }
+
+        if (! ctype_digit((string) $row['sequence']) || (int) $row['sequence'] < 1 || (int) $row['sequence'] > 999) {
+            return 'sequence wajib angka 1–999.';
+        }
+
+        foreach (['title_id', 'title_en', 'body_id'] as $column) {
+            if (trim((string) $row[$column]) === '') {
+                return "{$column} wajib diisi.";
+            }
+        }
+
+        if (mb_strlen((string) $row['title_id']) > 250 || mb_strlen((string) $row['title_en']) > 250) {
+            return 'Judul maksimal 250 karakter.';
+        }
+
+        if (! in_array((string) $row['is_active'], ['', '0', '1'], true)) {
+            return 'is_active hanya 0 atau 1 (kosong = 1).';
+        }
+
+        return null;
+    }
+
+    private function validateLibraryMedia(array $row, array $context): ?string
+    {
+        if (! isset($context['levels'][$row['level_code']])) {
+            return "level_code '{$row['level_code']}' tidak dikenali.";
+        }
+
+        if (! ctype_digit((string) $row['page_sequence']) || (int) $row['page_sequence'] < 1) {
+            return 'page_sequence wajib nomor halaman (angka).';
+        }
+
+        if ($row['sequence'] !== '' && (! ctype_digit((string) $row['sequence']) || (int) $row['sequence'] < 1)) {
+            return 'sequence wajib angka 1 ke atas.';
+        }
+
+        $pageKey = $row['level_code'] . '#' . (int) $row['page_sequence'];
+
+        if (! isset($context['library'][$pageKey]) && model(LibraryPageModel::class)
+            ->where('level_id', $context['levels'][$row['level_code']])
+            ->where('sequence', (int) $row['page_sequence'])
+            ->first() === null) {
+            return "Halaman {$row['level_code']} nomor {$row['page_sequence']} tidak ada di sheet library maupun di database.";
+        }
+
+        if (! in_array($row['media_kind'], ['', 'image', 'video'], true)) {
+            return "media_kind '{$row['media_kind']}' tidak dikenali (image atau video).";
+        }
+
+        $key = trim((string) $row['media_asset_key']);
+        $url = trim((string) $row['external_url']);
+
+        if (($key === '') === ($url === '')) {
+            return 'Isi SALAH SATU: media_asset_key (berkas terunggah) atau external_url (tautan).';
+        }
+
+        if ($url !== '' && MediaLink::parse($url, $row['media_kind'] === 'video' ? 'video' : 'image') === null) {
+            return 'external_url harus alamat http(s) yang sah.';
+        }
+
+        foreach (['caption_id' => 500, 'caption_en' => 500, 'credit' => 300] as $column => $max) {
+            if (mb_strlen((string) $row[$column]) > $max) {
+                return "{$column} maksimal {$max} karakter.";
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Peringatan media: kunci yang belum terdaftar tidak menggagalkan impor.
+     * Saat impor kunci itu dibuat sebagai slot kosong (media_assets nonaktif)
+     * dan langsung ditautkan; permainan memakai tampilan pengganti sampai
+     * admin mengunggah berkas dengan asset_key yang sama.
+     *
+     * @param array<string, list<array<string, string>>> $sheets
+     * @param array<string, int>                         $media
+     *
+     * @return list<array{sheet: string, row: int, message: string}>
+     */
+    private function mediaWarnings(array $sheets, array $media): array
+    {
+        $warnings = [];
+        $columns  = [
+            'nodes'         => ['scene_media_key', 'background_media_key'],
+            'passages'      => ['media_asset_key'],
+            'items'         => ['media_asset_key'],
+            'options'       => ['media_asset_key'],
+            'library_media' => ['media_asset_key', 'poster_media_key'],
+        ];
+
+        foreach ($columns as $sheet => $keys) {
+            foreach ($sheets[$sheet] as $row) {
+                foreach ($keys as $column) {
+                    $key = trim((string) ($row[$column] ?? ''));
+
+                    if ($key !== '' && ! isset($media[$key])) {
+                        $warnings[] = [
+                            'sheet'   => $sheet,
+                            'row'     => $row['__row'],
+                            'message' => "{$column} '{$key}' belum ada di Media: dibuat sebagai slot kosong saat impor. Unggah berkasnya di Panel → Media dengan asset_key yang sama — langsung tampil tanpa impor ulang.",
+                        ];
+                    }
+                }
+            }
+        }
+
+        foreach ($sheets['library_media'] as $row) {
+            $url  = trim((string) $row['external_url']);
+            $link = $url === '' ? null : MediaLink::parse($url, $row['media_kind'] === 'video' ? 'video' : 'image');
+
+            if ($link !== null && $link['provider'] === 'link') {
+                $warnings[] = [
+                    'sheet'   => 'library_media',
+                    'row'     => $row['__row'],
+                    'message' => "Tautan {$link['label']} bukan YouTube/Drive/Vimeo/Commons/berkas langsung — tampil sebagai tombol tautan, bukan gambar/video.",
+                ];
+            }
+        }
+
+        return $warnings;
+    }
+
+    /**
+     * @param list<array<string, string>> $rows
+     *
+     * @return array<string, true> "level_code#sequence" halaman di sheet library
+     */
+    private function libraryKeys(array $rows): array
+    {
+        $out = [];
+
+        foreach ($rows as $row) {
+            if (ctype_digit((string) $row['sequence'])) {
+                $out[$row['level_code'] . '#' . (int) $row['sequence']] = true;
+            }
+        }
+
+        return $out;
+    }
+
+    /**
+     * @param list<array<string, string>> $rows
+     *
+     * @return list<array<string, string>> baris kedua dst. dari pasangan (level_code, sequence) yang sama
+     */
+    private function duplicateLibraryPages(array $rows): array
+    {
+        $seen = [];
+        $out  = [];
+
+        foreach ($rows as $row) {
+            $key = $row['level_code'] . '#' . (int) $row['sequence'];
+
+            if (isset($seen[$key])) {
+                $out[] = $row;
+            }
+
+            $seen[$key] = true;
+        }
+
+        return $out;
+    }
+
     private function validateReference(string $value, array $known, string $label): ?string
     {
         $value = trim($value);
@@ -430,10 +608,10 @@ class ContentImportService
     {
         $sheets  = $parsed['sheets'];
         $nodes   = $parsed['nodes'];
-        $media   = $parsed['media'];
+        $media   = $this->createMediaSlots($sheets, $parsed['media']);
         $written = array_fill_keys(array_keys(self::SHEETS), 0);
 
-        $written['nodes'] = $this->writeNodes($sheets['nodes'], $sheets['distractors'], $nodes);
+        $written['nodes'] = $this->writeNodes($sheets['nodes'], $sheets['distractors'], $nodes, $media);
 
         $passageIds        = $this->writePassages($sheets['passages'], $parsed['levels'], $media);
         $written['passages'] = count($passageIds);
@@ -462,6 +640,12 @@ class ContentImportService
 
         $written['distractors'] = count($sheets['distractors']);
 
+        $written['media_slots'] = count($media) - count($parsed['media']);
+
+        $pageIds                  = $this->writeLibrary($sheets['library'], $parsed['levels']);
+        $written['library']       = count($pageIds);
+        $written['library_media'] = $this->writeLibraryMedia($sheets['library_media'], $parsed['levels'], $pageIds, $media);
+
         return $written;
     }
 
@@ -469,8 +653,9 @@ class ContentImportService
      * @param list<array<string, string>> $rows
      * @param list<array<string, string>> $distractorRows
      * @param array<string, int>          $nodes
+     * @param array<string, int>          $media
      */
-    private function writeNodes(array $rows, array $distractorRows, array $nodes): int
+    private function writeNodes(array $rows, array $distractorRows, array $nodes, array $media): int
     {
         $model       = model(ChallengeNodeModel::class);
         $distractors = $this->groupBy($distractorRows, 'node_ref');
@@ -509,7 +694,9 @@ class ContentImportService
                 'instruction_en' => $row['instruction_en'],
                 'description_id' => $row['description_id'],
                 'description_en' => $row['description_en'],
-            ], static fn ($value): bool => $value !== '') + ['config_json' => $config]);
+            ], static fn ($value): bool => $value !== '')
+                + $this->mediaColumns($row, ['scene_media_key' => 'scene_media_id', 'background_media_key' => 'background_media_id'], $media)
+                + ['config_json' => $config]);
 
             $count++;
         }
@@ -537,10 +724,9 @@ class ContentImportService
                 'title_en'         => $this->nullIfBlank($row['title_en']),
                 'body_id'          => $row['body_id'],
                 'body_en'          => $row['body_en'],
-                'media_asset_id'   => $media[$row['media_asset_key']] ?? null,
                 'reference_source' => $this->nullIfBlank($row['reference_source']),
                 'is_active'        => 1,
-            ];
+            ] + $this->mediaColumns($row, ['media_asset_key' => 'media_asset_id'], $media);
 
             $existing = $model->findByKey($row['passage_key']);
 
@@ -597,14 +783,13 @@ class ContentImportService
                 'passage_id'        => $passageId,
                 'answer_key_json'   => $this->answerKeyFor($row, $optionsByItem[$itemKey] ?? []),
                 'config_json'       => $this->itemConfigFor($row, $piecesByItem[$itemKey] ?? [], $sourcesByItem[$itemKey] ?? []),
-                'media_asset_id'    => $media[$row['media_asset_key']] ?? null,
                 'indicator_id'      => $indicators[$row['indicator']] ?? null,
                 'reference_source'  => $this->nullIfBlank($row['reference_source']),
                 'review_status'     => $row['review_status'] !== '' ? $row['review_status'] : 'draft',
                 'review_note'       => $this->nullIfBlank($row['review_note']),
                 'scorable'          => $row['scorable'] !== '' ? (int) $row['scorable'] : 1,
                 'is_active'         => 1,
-            ];
+            ] + $this->mediaColumns($row, ['media_asset_key' => 'media_asset_id'], $media);
 
             $existing = $model->findByKey($itemKey);
 
@@ -647,12 +832,11 @@ class ContentImportService
                 'option_key'        => $row['option_key'],
                 'label_id'          => $row['label_id'],
                 'label_en'          => $row['label_en'] !== '' ? $row['label_en'] : $row['label_id'],
-                'media_asset_id'    => $media[$row['media_asset_key']] ?? null,
                 'is_correct'        => (int) ($row['is_correct'] !== '' ? $row['is_correct'] : 0),
                 'feedback_id'       => $this->nullIfBlank($row['feedback_id']),
                 'feedback_en'       => $this->nullIfBlank($row['feedback_en']),
                 'display_order'     => $row['display_order'] !== '' ? (int) $row['display_order'] : 1,
-            ];
+            ] + $this->mediaColumns($row, ['media_asset_key' => 'media_asset_id'], $media);
 
             $existing = $model->findByKey($itemId, $row['option_key']);
 
@@ -711,6 +895,197 @@ class ContentImportService
         }
 
         return $count;
+    }
+
+    /**
+     * Halaman Pustaka: upsert berdasarkan (level_code, sequence).
+     *
+     * @param list<array<string, string>> $rows
+     * @param array<string, int>          $levels
+     *
+     * @return array<string, int> "level_code#sequence" => library_pages.id
+     */
+    private function writeLibrary(array $rows, array $levels): array
+    {
+        $model = model(LibraryPageModel::class);
+        $out   = [];
+
+        foreach ($rows as $row) {
+            $levelId  = $levels[$row['level_code']];
+            $sequence = (int) $row['sequence'];
+            $data     = [
+                'level_id'  => $levelId,
+                'sequence'  => $sequence,
+                'title_id'  => $row['title_id'],
+                'title_en'  => $row['title_en'],
+                'body_id'   => $row['body_id'],
+                'body_en'   => $row['body_en'],
+                'is_active' => $row['is_active'] === '0' ? 0 : 1,
+            ];
+
+            $existing = $model->where('level_id', $levelId)->where('sequence', $sequence)->first();
+
+            if ($existing !== null) {
+                if (! $model->update($existing->id, $data)) {
+                    throw new \RuntimeException("Halaman pustaka {$row['level_code']} #{$sequence} ditolak: " . implode(' ', $model->errors()));
+                }
+
+                $out[$row['level_code'] . '#' . $sequence] = $existing->id;
+
+                continue;
+            }
+
+            if ($model->insert($data, false) === false) {
+                throw new \RuntimeException("Halaman pustaka {$row['level_code']} #{$sequence} ditolak: " . implode(' ', $model->errors()));
+            }
+
+            $out[$row['level_code'] . '#' . $sequence] = (int) $model->getInsertID();
+        }
+
+        return $out;
+    }
+
+    /**
+     * Media Pustaka. Setiap halaman yang punya baris di sheet ini diganti
+     * seluruh medianya dengan isi sheet, sehingga impor ulang tidak
+     * menggandakan galeri. Halaman tanpa baris di sheet tidak disentuh.
+     *
+     * @param list<array<string, string>> $rows
+     * @param array<string, int>          $levels
+     * @param array<string, int>          $pageIds
+     * @param array<string, int>          $media
+     */
+    private function writeLibraryMedia(array $rows, array $levels, array $pageIds, array $media): int
+    {
+        $model  = model(LibraryMediaModel::class);
+        $pages  = model(LibraryPageModel::class);
+        $count  = 0;
+        $groups = [];
+
+        foreach ($rows as $row) {
+            $groups[$row['level_code'] . '#' . (int) $row['page_sequence']][] = $row;
+        }
+
+        foreach ($groups as $pageKey => $group) {
+            [$levelCode, $pageSequence] = explode('#', $pageKey);
+
+            $pageId = $pageIds[$pageKey]
+                ?? $pages->where('level_id', $levels[$levelCode])->where('sequence', (int) $pageSequence)->first()?->id;
+
+            if ($pageId === null) {
+                continue;
+            }
+
+            $model->where('library_page_id', $pageId)->delete();
+
+            foreach ($group as $index => $row) {
+                $key = trim((string) $row['media_asset_key']);
+                $url = trim((string) $row['external_url']);
+
+                $kind = $row['media_kind'] === 'video' ? 'video' : 'image';
+
+                if ($url !== '') {
+                    $kind = MediaLink::parse($url, $kind)['kind'] ?? $kind;
+                }
+
+                $written = $model->insert([
+                    'library_page_id' => $pageId,
+                    'sequence'        => $row['sequence'] !== '' ? (int) $row['sequence'] : $index + 1,
+                    'media_kind'      => $kind,
+                    'media_asset_id'  => $key !== '' ? $media[$key] : null,
+                    'external_url'    => $url !== '' ? $url : null,
+                    'poster_media_id' => $media[trim((string) $row['poster_media_key'])] ?? null,
+                    'caption_id'      => $this->nullIfBlank($row['caption_id']),
+                    'caption_en'      => $this->nullIfBlank($row['caption_en']),
+                    'credit'          => $this->nullIfBlank($row['credit']),
+                    'is_active'       => 1,
+                ], false);
+
+                if ($written === false) {
+                    throw new \RuntimeException("Media pustaka {$pageKey} baris {$row['__row']} ditolak: " . implode(' ', $model->errors()));
+                }
+
+                $count++;
+            }
+        }
+
+        return $count;
+    }
+
+    /**
+     * Kunci media yang dirujuk workbook tetapi belum ada di media_assets
+     * dibuat sebagai slot kosong (is_active = 0, berkas belum ada). Unggahan
+     * berikutnya dengan asset_key yang sama mengisi baris ini (MediaStore),
+     * sehingga tautan konten tidak perlu dibuat ulang.
+     *
+     * @param array<string, list<array<string, string>>> $sheets
+     * @param array<string, int>                         $media
+     *
+     * @return array<string, int> peta asset_key => id, termasuk slot baru
+     */
+    private function createMediaSlots(array $sheets, array $media): array
+    {
+        $wanted = [];
+
+        foreach (['nodes' => ['scene_media_key', 'background_media_key'], 'passages' => ['media_asset_key'],
+            'items' => ['media_asset_key'], 'options' => ['media_asset_key'], 'library_media' => ['media_asset_key', 'poster_media_key']] as $sheet => $columns) {
+            foreach ($sheets[$sheet] as $row) {
+                foreach ($columns as $column) {
+                    $key = trim((string) ($row[$column] ?? ''));
+
+                    if ($key !== '' && ! isset($media[$key])) {
+                        $isVideo      = $sheet === 'library_media' && $column === 'media_asset_key' && $row['media_kind'] === 'video';
+                        $wanted[$key] = $isVideo ? 'video' : 'image';
+                    }
+                }
+            }
+        }
+
+        $model = model(MediaAssetModel::class);
+
+        foreach ($wanted as $key => $type) {
+            $id = $model->insert([
+                'asset_key'    => $key,
+                'asset_type'   => $type,
+                'storage_path' => 'assets/uploads/' . (preg_replace('/[^a-z0-9._-]+/i', '-', $key) ?? $key) . ($type === 'video' ? '.mp4' : '.png'),
+                'mime_type'    => $type === 'video' ? 'video/mp4' : 'image/png',
+                'is_active'    => 0,
+            ], true);
+
+            if ($id === false) {
+                throw new \RuntimeException("Slot media {$key} ditolak: " . implode(' ', $model->errors()));
+            }
+
+            $media[$key] = (int) $id;
+        }
+
+        return $media;
+    }
+
+    /**
+     * Kolom FK media dari kolom kunci workbook. Sel kosong TIDAK menyentuh
+     * kolomnya: gambar yang dipasang dari editor konten tidak hilang saat
+     * workbook tanpa kunci media diimpor ulang.
+     *
+     * @param array<string, string> $row
+     * @param array<string, string> $map    kolom workbook => kolom tabel
+     * @param array<string, int>    $media
+     *
+     * @return array<string, int>
+     */
+    private function mediaColumns(array $row, array $map, array $media): array
+    {
+        $out = [];
+
+        foreach ($map as $sheetColumn => $tableColumn) {
+            $key = trim((string) ($row[$sheetColumn] ?? ''));
+
+            if ($key !== '' && isset($media[$key])) {
+                $out[$tableColumn] = $media[$key];
+            }
+        }
+
+        return $out;
     }
 
     // -------------------------------------------------------------- bantu
@@ -912,6 +1287,8 @@ class ContentImportService
                 'options'     => count($sheets['options']),
                 'hints'       => count($sheets['hints']),
                 'distractors' => count($sheets['distractors']),
+                'library'       => count($sheets['library']),
+                'library_media' => count($sheets['library_media']),
                 'per_node'    => $perNode,
             ],
             'warnings' => $warnings,
@@ -942,7 +1319,7 @@ class ContentImportService
 
         foreach (model(ChallengeNodeModel::class)->allActive() as $node) {
             $levelCode = $byLevel[$node->level_id] ?? null;
-            $prefix    = $levelCode === null ? null : array_search($levelCode, self::LEVEL_PREFIX, true);
+            $prefix    = $levelCode === null ? null : array_search($levelCode, config('Gelita')->levelPrefixes, true);
 
             if ($prefix !== false && $prefix !== null) {
                 $out[$prefix . '-' . $node->sequence] = $node->id;
@@ -956,7 +1333,7 @@ class ContentImportService
     {
         foreach ($this->levelIdsByCode() as $code => $id) {
             if ($id === $levelId) {
-                $prefix = array_search($code, self::LEVEL_PREFIX, true);
+                $prefix = array_search($code, config('Gelita')->levelPrefixes, true);
 
                 return $prefix === false ? null : $prefix . '-' . $sequence;
             }
@@ -1023,6 +1400,18 @@ class ContentImportService
                 'text_id' => 'Pengumuman resmi pengelola.', 'text_en' => 'Official site notice.',
             ]],
             'hints' => [['node_ref' => 'tmg-2', 'sequence' => '1', 'text_id' => 'Baca kalimatnya sampai habis.', 'text_en' => 'Read the whole sentence.']],
+            'library' => [[
+                'level_code' => 'temanggung', 'sequence' => '1', 'title_id' => 'Mengenal Temanggung', 'title_en' => 'Getting to Know Temanggung',
+                'body_id'    => "Temanggung berada di antara Gunung Sindoro dan Gunung Sumbing.\n\n## Tanah yang subur\n- Kopi\n- Tembakau\n\n> Tahukah kamu? Hari jadi Temanggung diperingati tiap 10 November.\n\nSumber: Pemerintah Kabupaten Temanggung",
+                'body_en'    => "Temanggung lies between Mount Sindoro and Mount Sumbing.\n\n## Fertile land\n- Coffee\n- Tobacco\n\n> Did you know? Temanggung celebrates its anniversary every 10 November.\n\nSource: Temanggung Regency Government",
+                'is_active'  => '1',
+            ]],
+            'library_media' => [[
+                'level_code' => 'temanggung', 'page_sequence' => '1', 'sequence' => '1', 'media_kind' => 'image',
+                'external_url' => 'https://commons.wikimedia.org/wiki/File:Sindoro_sumbing.jpg',
+                'caption_id' => 'Gunung Sindoro dan Sumbing', 'caption_en' => 'Mount Sindoro and Mount Sumbing',
+                'credit' => 'Wikimedia Commons (lisensi bebas; pengarang di halaman berkas)',
+            ]],
             default => [],
         };
 

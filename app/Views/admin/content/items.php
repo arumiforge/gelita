@@ -33,7 +33,7 @@ $guides = [
     'ordering'                   => ['Urutkan potongan', 'Urutan di answer_key_json adalah kunci; server mengacak ulang saat dikirim ke siswa.', '{"order": ["c", "a", "d", "b"]}', '{"pieces": [{"key": "a", "text_id": "…", "text_en": "…"}]}'],
 ];
 ?>
-<form method="post" action="<?= esc($action, 'attr') ?>" class="form item-form"
+<form method="post" action="<?= esc($action, 'attr') ?>" class="form item-form" enctype="multipart/form-data"
       data-verdicts="<?= esc(json_encode($node->verdictOptions()), 'attr') ?>"
       <?= $node->scene_media_id && media_exists($node->scene_media_id) ? 'data-scene="' . esc(media_src($node->scene_media_id), 'attr') . '"' : '' ?>>
   <?= csrf_field() ?>
@@ -97,6 +97,24 @@ $guides = [
     </div>
     <p class="field-help">Rumpang: tandai bagian kosong dengan <code>___</code>. English boleh dikosongkan — permainan memakai teks Indonesia.</p>
   </div>
+
+  <?= component('components/media-field', [
+      'id'         => $prefix . '-media',
+      'label'      => match ($node->engine_type) {
+          'puzzle' => 'Gambar puzzle',
+          'cari'   => 'Gambar objek',
+          default  => 'Gambar butir (opsional)',
+      },
+      'keyName'    => 'media_item_key',
+      'fileName'   => 'media_item_file',
+      'mediaId'    => $isNew ? null : $item->media_asset_id,
+      'defaultKey' => $isNew ? 'challenge.item.{item_key}' : 'challenge.item.' . App\Libraries\MediaStore::slug((string) $item->item_key),
+      'size'       => match ($node->engine_type) {
+          'puzzle' => '900 × 900 px (persegi)',
+          'cari'   => '240 × 240 px, latar transparan (PNG/WebP)',
+          default  => '960 × 640 px',
+      },
+  ]) ?>
 
   <div class="bilingual">
     <span class="bilingual-label">Teks sumber (opsional)</span>

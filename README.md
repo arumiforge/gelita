@@ -10,11 +10,11 @@ Aplikasi dibangun dengan **CodeIgniter 4.7** (PHP 8.2+, MySQL 8 / MariaDB 10.6+)
 
 | Tahap | Isi | Status |
 |---:|---|---|
-| 1 | Database: 29 tabel domain + `ci_sessions`, 35 migration, 9 seeder | selesai |
+| 1 | Database: 30 tabel domain + `ci_sessions`, 36 migration, 9 seeder | selesai |
 | 2 | Fondasi: konfigurasi, filter, helper, berkas bahasa, `PasswordPolicy`, kerangka command | selesai |
-| 3 | Model (29), Entity (11), Service (8) — skor, sesi, tantangan, event, analitik, impor bank soal | selesai |
+| 3 | Model (30), Entity (12), Service (8) — skor, sesi, tantangan, event, analitik, impor bank soal | selesai |
 | 4 | Route, controller, autentikasi siswa & staf, otorisasi berlapis tiga, API JSON seragam | selesai |
-| 5 | View, UI, CSS: 3 layout, 17 komponen, 17 halaman game + 5 arena, 34 view admin, 6 berkas CSS | selesai |
+| 5 | View, UI, CSS: 3 layout, 20 komponen, 17 halaman game + 5 arena, 34 view admin, 6 berkas CSS | selesai |
 | 6 | Perilaku JavaScript: lima mesin arena, antrean event offline, narasi + telemetry audio, chart ECharts, editor konten terpandu | selesai |
 | 7 | Integrasi fitur: `ExportService` (XLSX streaming), `ReportService` (PDF), `RetentionService`, lima command `gelita:*` | selesai |
 | 8 | Deployment & operasional: skrip deploy/backup/retensi untuk Linux (Bash) dan Windows + Laragon (PowerShell), konfigurasi Nginx, mode pemeliharaan | selesai |
@@ -22,6 +22,14 @@ Aplikasi dibangun dengan **CodeIgniter 4.7** (PHP 8.2+, MySQL 8 / MariaDB 10.6+)
 Kelima arena kini dapat dimainkan penuh di browser — Periksa, petunjuk, keluar berkonfirmasi, narasi audio, dan lentera yang bertambah dari respons server — dengan seluruh event gameplay dan telemetry audio tercatat, termasuk saat koneksi sempat putus. Panel admin menggambar seluruh chart dengan ECharts dari `/api/admin/*`, dan filter mengubah isi halaman tanpa memuat ulang.
 
 Yang sudah berfungsi penuh lewat HTTP: persetujuan dan registrasi dengan kata sandi kuat (termasuk dua metrik literasi keamanan digital), masuk/keluar, ganti sandi dan reset sandi oleh guru, ganti sandi sendiri untuk staf (`/admin/akun/sandi`, wajib setelah reset atau pembuatan akun oleh admin), peta Kedu dan peta wilayah dengan kunci berurutan, dialog pembuka wilayah, kelima arena beserta seluruh API penilaiannya, layar selesai dan riwayat hasil, Pustaka Kedu, profil, Balai Refleksi, pergantian bahasa tanpa kehilangan progres, serta seluruh halaman panel admin (dasbor, peserta, sesi, analitik, masukan, konten, impor bank soal, media & audio, studi & rilis, tata kelola, akun staf).
+
+### Pembaruan media, Pustaka Kedu, dan bank soal produksi
+
+- **Unggah media langsung dari editor konten.** Gambar adegan & latar tantangan, gambar butir (keping puzzle, objek cari), gambar opsi, gambar bacaan, peta & latar & lencana wilayah, serta audio dialog dan narasi pembuka tantangan dipilih atau diunggah di formulir masing-masing (`App\Libraries\MediaStore`, komponen `media-field` / `audio-select`). Halaman Media menampilkan di mana setiap aset dipakai dan slot mana yang masih kosong (`App\Libraries\MediaUsage`).
+- **Pustaka Kedu multi-media.** Setiap halaman boleh memuat banyak gambar/video (tabel `library_media`, migration `003500`): berkas unggahan atau tautan YouTube, Google Drive, Vimeo, Wikimedia Commons, dan berkas gambar/video langsung (`App\Libraries\MediaLink`). Isi halaman mendukung subjudul, daftar, kotak fakta, catatan sumber, tebal, dan miring (`rich_text()`).
+- **Bank soal produksi siap impor**: [`docs/bank-soal/gelita-bank-soal-produksi.xlsx`](docs/bank-soal/gelita-bank-soal-produksi.xlsx) — 15 tantangan, 131 butir, 11 bacaan, 30 halaman Pustaka dwibahasa beserta 48 media dan rujukannya. Workbook dibangun dari data PHP yang dapat ditinjau; cara membangun ulang dan daftar gambar yang masih perlu diunggah ada di [`docs/bank-soal/README.md`](docs/bank-soal/README.md).
+- **Templat impor berpanduan.** Workbook templat dan workbook produksi memuat sheet PETUNJUK dan KAMUS_KOLOM (arti setiap kolom dalam bahasa Indonesia), header berwarna menurut status wajib/bersyarat/opsional dengan catatan per kolom, serta dropdown untuk kolom berkode (`App\Libraries\BankWorkbookGuide`). asset_key media yang belum terdaftar dibuatkan slot kosong saat impor.
+- Isi panel admin kini selebar layar.
 
 ### Tahap 8 — Deployment & operasional
 
@@ -79,7 +87,7 @@ Rincian keputusan ada di dokumen tahap masing-masing; ringkasan UI di [`docs/05_
 - **Server adalah sumber kebenaran.** Skor, bintang, status buka/kunci, dan serpihan dihitung server; kunci jawaban tidak pernah dikirim ke browser. Payload soal ditanam sebagai `<script type="application/json" id="challenge-data">`. Arena `cari` hanya mengirim token objek per attempt (HMAC dari `encryption.key`), sehingga objek jebakan tidak dapat dibedakan dari sumber halaman.
 - **Wilayah yang baru terbuka selalu dibuka lewat dialog pembukanya**, juga bila URL di dalamnya diketik langsung; tanda "dialog sudah tampil" disimpan per sesi login.
 - **Tanpa JavaScript tetap terbaca**: slide memakai `:target`, konfirmasi memakai `<details>`, setiap chart admin punya visual cadangan dari server.
-- **Aset di-host sendiri**: ECharts 6.1.0, Howler.js 2.2.4, dan font Cinzel/Plus Jakarta Sans/IBM Plex Mono ada di repositori; tidak ada permintaan ke domain pihak ketiga. Selama gambar belum diunggah, view memakai pengganti (gradien, monogram).
+- **Aset di-host sendiri**: ECharts 6.1.0, Howler.js 2.2.4, dan font Cinzel/Plus Jakarta Sans/IBM Plex Mono ada di repositori; tidak ada permintaan ke domain pihak ketiga. Selama gambar belum diunggah, view memakai pengganti (gradien, monogram). Satu-satunya pengecualian adalah media **tautan** di Pustaka Kedu: gambar Commons/Drive dimuat dari domain asalnya tanpa referrer, sedangkan pemutar YouTube/Vimeo/Drive baru dimuat setelah siswa menekan Putar. Media yang diunggah ke server tetap lokal.
 - **Otorisasi berlapis tiga** (route → controller → service): guru hanya melihat sekolahnya, ekspor guru selalu anonim, dan halaman khusus admin membalas `404` untuk guru.
 - **HEAD dilayani rute GET** dengan handler dan filter yang sama (`App\Libraries\HeadAsGetRouteCollection`), sehingga `curl -I` dan pemantau uptime tidak lagi mendapat 404, dan HEAD tidak pernah melewati filter login.
 
@@ -149,9 +157,9 @@ Di Windows, Laragon (PHP 8.3 + MySQL) memenuhi semua prasyarat. Pengaturan ekste
 
 ## Migration
 
-Migration dijalankan berurutan dari `000100` sampai `003400` (35 berkas) dan menghasilkan 31 tabel: 29 tabel domain, `ci_sessions`, dan `migrations`. `php spark migrate:rollback -b 0` mengembalikan database ke kosong.
+Migration dijalankan berurutan dari `000100` sampai `003500` (36 berkas) dan menghasilkan 32 tabel: 30 tabel domain, `ci_sessions`, dan `migrations`. `php spark migrate:rollback -b 0` mengembalikan database ke kosong.
 
-`003100`–`003300` adalah koreksi, `003400` menambah kolom baru. Perubahan skema selalu datang sebagai migration baru; migration lama tidak diubah.
+`003100`–`003300` adalah koreksi, `003400` menambah kolom baru, `003500` menambah tabel baru. Perubahan skema selalu datang sebagai migration baru; migration lama tidak diubah.
 
 | Versi | Peran |
 |---|---|
@@ -160,6 +168,7 @@ Migration dijalankan berurutan dari `000100` sampai `003400` (35 berkas) dan men
 | `003200` | menegakkan `NOT NULL` + default pada kelima kolom di atas (Forge membuatnya nullable saat `ALTER`), termasuk mengisi baris lama yang masih `NULL` |
 | `003300` | menambahkan index wajib `game_event_logs (session_id, occurred_at)` yang tidak dibuat `002400` |
 | `003400` | menambahkan `staff_users.must_change_password`: sandi sementara dari admin (reset / akun baru) wajib diganti sebelum panel terbuka |
+| `003500` | membuat `library_media` (banyak gambar/video per halaman Pustaka Kedu, dari unggahan atau tautan YouTube/Drive/Vimeo/Commons) dan menyalin isi kolom lama `image_a`/`image_b`/`video` ke sana |
 
 `003200` memanggil `resetDataCache()` sebelum memeriksa kolom; tanpa itu seluruh pemeriksaan `fieldExists()` membaca daftar kolom versi sebelum `003100` pada proses `spark migrate` yang sama. Jangan melakukan rollback ke bawah `003100`: tahap 3 bergantung pada penamaan kolom hasil migration tersebut. Rincian lengkap di [`docs/01_DATABASE.md`](docs/01_DATABASE.md#koreksi-challenge_attempts-003100-dan-003200).
 
@@ -181,7 +190,7 @@ Jalankan test suite tanpa laporan coverage:
 vendor/bin/phpunit --no-coverage
 ```
 
-Suite (143 test) memakai grup database `tests` (SQLite3 in-memory) dan hanya menjalankan migration bernamespace `Tests\Support`, bukan migration aplikasi — skema aplikasi memakai fitur MySQL/MariaDB (`DATETIME(6)`, `ON UPDATE CURRENT_TIMESTAMP(6)`) yang tidak ada di SQLite. Sesi di-mock dengan `ArrayHandler` oleh `CIUnitTestCase`. Yang dikunci suite antara lain:
+Suite (161 test) memakai grup database `tests` (SQLite3 in-memory) dan hanya menjalankan migration bernamespace `Tests\Support`, bukan migration aplikasi — skema aplikasi memakai fitur MySQL/MariaDB (`DATETIME(6)`, `ON UPDATE CURRENT_TIMESTAMP(6)`) yang tidak ada di SQLite. Sesi di-mock dengan `ArrayHandler` oleh `CIUnitTestCase`. Yang dikunci suite antara lain:
 
 - `RouteWiringTest` — auto-route tetap mati, setiap handler menunjuk kelas/method yang ada, setiap view yang disebut controller punya berkasnya, dan ganti sandi staf hanya berfilter `staffAuth` (terbuka untuk guru).
 - `HeadRouteTest` — HEAD memakai rute GET beserta filternya; HEAD ke halaman staf tanpa login dialihkan ke `/admin/login`.
@@ -191,6 +200,8 @@ Suite (143 test) memakai grup database `tests` (SQLite3 in-memory) dan hanya men
 - `JsConfigTest` — penanda sesi antrean offline buram dan per sesi, `#app-config` tanpa identitas siswa, dan setiap `t('…')` di JavaScript punya kunci `Js.*`.
 - `ChartDataTest` — bentuk data chart admin dan kondisi kosongnya.
 - `ExcelWriterTest` — workbook terbaca ulang PhpSpreadsheet, teks berawalan `=` tidak pernah menjadi rumus, berkas sementara dibersihkan.
+- `BankWorkbookGuideTest` — setiap kolom yang dibaca importer punya penjelasan Indonesia di templat, header sheet data sama persis dengan importer, dan workbook produksi `docs/bank-soal/` ikut dibangun ulang bila kolom impor berubah.
+- `MediaLinkTest`, `RichTextTest` — tautan media Pustaka hanya http(s) dan YouTube lewat domain nocookie; format teks Pustaka selalu meng-escape HTML lebih dulu.
 - `ExportRulesTest` — mode anonim tanpa kolom identitas, rahasia tidak pernah diekspor, kunci jawaban hanya admin, guru tanpa Raw Events, cakupan sekolah dipaksa service, cakupan & penjaga drift penghapusan.
 - `Stage7WiringTest` — kelima command `gelita:*` aktif, service baru terdaftar, dan setiap keluaran templat PDF lewat `esc()`.
 - `StaffPasswordCommandTest` — `gelita:staff:password` terdaftar, menolak tanpa nama pengguna, dan memakai jalur reset yang sama dengan `/admin/staf`; sandi sementaranya lolos `PasswordPolicy`.
