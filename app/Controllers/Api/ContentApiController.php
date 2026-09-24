@@ -93,6 +93,14 @@ class ContentApiController extends BaseApiController
 
         $locale = $session->resolvedLocale();
 
+        // Kunci yang sama dengan /pustaka/{code}: isi baru terbuka setelah
+        // semua tantangan wilayah selesai, apa pun unlock mode studinya
+        $access = $this->libraryAccess($session, $level);
+
+        if ($access['status'] !== 'open') {
+            return $this->fail('LIBRARY_LOCKED', lang('Game.libraryLockedText', [$level->text('name', $locale), $access['total_nodes']]), 409);
+        }
+
         $pages = array_map(static fn (LibraryPage $page): array => [
             'id'       => $page->id,
             'sequence' => $page->sequence,

@@ -45,6 +45,7 @@ $routes->group('', ['namespace' => 'App\Controllers\Game'], static function ($ro
         $routes->get('tantangan/(:segment)/(:num)', 'ChallengeController::play/$1/$2');
         $routes->get('hasil/(:segment)/(:num)', 'ChallengeController::result/$1/$2');
         $routes->get('selesai/(:num)', 'ChallengeController::finished/$1');
+        $routes->get('pustaka', 'LibraryController::index');
         $routes->get('pustaka/(:segment)', 'LibraryController::show/$1');
         $routes->get('profil', 'ProfileController::index');
         $routes->get('refleksi', 'ReflectionController::index');

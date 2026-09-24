@@ -42,6 +42,9 @@ class ContentController extends BaseAdminController
     /** Berkas pratinjau impor; disimpan di luar public/. */
     private const UPLOAD_DIR = WRITEPATH . 'uploads/';
 
+    /** @var list<int> id library_media video luar tanpa poster yang disimpan request ini */
+    private array $thumbnailQueue = [];
+
     // ------------------------------------------------------------ ringkasan
 
     public function index(): string
@@ -713,7 +716,18 @@ class ContentController extends BaseAdminController
 
         $this->afterContentChange('library', $levelId);
 
-        return $this->done($back, "{$saved} halaman pustaka dan {$media} media disimpan.");
+        // Poster video luar diunduh SETELAH transaksi: permintaan jaringan tidak
+        // menahan kunci tabel, dan kegagalannya tidak membatalkan penyimpanan.
+        $thumbs   = service('videoThumbnail')->fillMissing($this->thumbnailQueue, false, $this->staffId());
+        $redirect = $this->done($back, "{$saved} halaman pustaka dan {$media} media disimpan."
+            . ($thumbs['filled'] > 0 ? " {$thumbs['filled']} poster video diisi dari thumbnail." : ''));
+
+        if ($thumbs['failed'] > 0) {
+            $redirect->with('notice', "{$thumbs['failed']} thumbnail video belum dapat diunduh server (video privat/dihapus, atau server tanpa akses internet). "
+                . 'Kartu videonya tetap tampil dengan latar gradien; unggah poster manual, atau jalankan `php spark gelita:library:thumbnails` nanti.');
+        }
+
+        return $redirect;
     }
 
     /**
@@ -811,6 +825,11 @@ class ContentController extends BaseAdminController
 
             if ($written === false) {
                 throw new \RuntimeException("{$label} ditolak: " . $this->modelErrors($model));
+            }
+
+            // Video YouTube/Vimeo/Drive tanpa poster: thumbnail diunduh setelah commit
+            if ($kind === 'video' && $url !== '' && $payload['poster_media_id'] === null) {
+                $this->thumbnailQueue[] = $existing !== null ? $id : (int) $model->getInsertID();
             }
 
             $count++;

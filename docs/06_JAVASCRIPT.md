@@ -633,12 +633,21 @@ initNarrator(root, { onFinish? }) // root = [data-narrator][data-context][data-p
 * Pra-muat gambar latar wilayah yang terbuka (`[data-preload]`, dari `levelOverview()['background']`) saat peta dibuka, agar perpindahan mulus.
 * `emit('level_opened', { levelId })` saat peta wilayah dibuka.
 * **Peta Kedu (Tahap 2):** narasi Jaka `map_intro` lewat `initNarrator()` pada panduan peta. Bila halaman membawa tirai peta (`[data-curtain-layer="map"]`, dari flash `curtain=map`): `playCurtain('map')` → setelah ketukan, `Sfx.music('map')` lalu `story.start()` (autoplay). Tanpa tirai: musik diminta seperti biasa (baru berbunyi setelah interaksi) dan narasi menunggu ▶.
+* Tombol "Pustaka {wilayah}" yang masih terkunci (`a[data-library-locked]`, di nav-bar — di luar `<section>` layar) → `showModal()` dari `core/modal.js` dengan ikon gembok: judul, penjelasan, dan progres dari atribut `data-locked-*`, tombol **Mengerti** dan tautan **Pustaka Kedu**. Tanpa JavaScript tautannya membuka halaman terkunci `/pustaka/{code}`.
 
 ### `game/library.js`
 
+Dua titik masuk: `initLibrary()` untuk buku (`data-screen="library"`) dan `initLibraryIndex()` untuk rak Pustaka Kedu (`data-screen="library-index"`). Halaman terkunci (`library-locked`) tidak punya modul halaman; isinya sepenuhnya dari server.
+
 * Navigasi halaman, video dimuat `preload="none"`.
 * Gambar/video yang gagal dimuat disembunyikan beserta bingkainya.
-* `emit('library_page_viewed', { levelId, payload: { page } })`.
+* **Pudar masuk**: `img` di `.book-frame` diberi `.is-loaded` saat `load` (gambar yang sudah `complete` langsung), bingkainya ikut `.is-loaded` sehingga skeleton berhenti. CSS menyembunyikan gambar (`opacity: 0`) hanya di bawah `html.js`, jadi tanpa modul ini gambar tetap tampil.
+* **Pramuat**: setiap pindah halaman (dan saat buku dibuka), gambar `loading="lazy"` di halaman sesudahnya diubah menjadi `eager`.
+* **Kredit**: `details.media-credit` — mengetuk ⓘ yang akan membuka langsung menutup panel lain (event `toggle` datang asinkron, jadi ditangani juga di `click`); ketuk di luar panel atau Esc menutup semuanya; pindah halaman menutup panel. Kredit bukan anak `.book-zoom`, jadi tidak memicu perbesar.
+* **Lightbox**: `<dialog class="lightbox is-loading">` dengan pemutar tunggu (`role="status"`, label `Game.libraryLoading`) sampai gambar besar `load`/`error`.
+* **Facade video**: iframe dibuat hanya setelah `.embed-play` ditekan; saat halaman berganti facade (poster + tombol Putar) dikembalikan.
+* `emit('library_page_viewed', { levelId, payload: { page, total, page_id } })`.
+* Rak: sampul yang gagal dimuat disembunyikan sehingga gradien kartu tampil.
 
 ### `game/reflection.js`
 

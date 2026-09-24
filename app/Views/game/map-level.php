@@ -9,6 +9,7 @@
  * @var array<string, mixed>       $levelScore
  * @var list<array<string, mixed>> $nodes
  * @var bool                       $hasLibrary
+ * @var array<string, mixed>       $library    GameProgress::libraryAccess() wilayah ini
  * @var string                     $locale
  */
 $region = $level->text('name', $locale);
@@ -107,7 +108,26 @@ $points = implode(' ', array_map(static fn (array $n): string => (float) $n['map
 <?php
 $nav = [['label' => lang('Game.mapKedu'), 'href' => base_url('peta'), 'style' => 'quiet', 'arrow' => 'left']];
 if ($hasLibrary) {
-    $nav[] = ['label' => lang('Game.library'), 'href' => base_url('pustaka/' . $level->code), 'style' => 'ghost', 'icon' => 'book'];
+    // "Pustaka {wilayah}" terkunci sampai kelima tantangan selesai: map.js
+    // menampilkan penjelasannya di modal; tanpa JavaScript tautannya membuka
+    // halaman terkunci /pustaka/{code} yang berisi penjelasan yang sama.
+    $book = ['label' => lang('Game.libraryRegion', [$region]), 'href' => base_url('pustaka/' . $level->code), 'style' => 'ghost', 'icon' => 'book'];
+
+    if ($library['status'] !== 'open') {
+        $book['icon']  = 'lock';
+        $book['attrs'] = [
+            'aria-disabled'        => 'true',
+            'data-library-locked'  => (string) $level->code,
+            'data-locked-title'    => lang('Game.libraryLockedTitle', [$region]),
+            'data-locked-message'  => lang('Game.libraryLockedText', [$region, $total]),
+            'data-locked-progress' => lang('Game.nodesProgress', [$done, $total]),
+            'data-locked-ok'       => lang('Game.libraryUnderstood'),
+            'data-index-label'     => lang('Game.library'),
+            'data-index-href'      => base_url('pustaka'),
+        ];
+    }
+
+    $nav[] = $book;
 }
 ?>
 <?= component('nav-bar', ['nav' => $nav]) ?>

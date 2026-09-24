@@ -608,6 +608,28 @@ sudo certbot renew --dry-run                # pastikan perpanjangan otomatis ber
    Sesuaikan folder versi Nginx. Uji skrip ini sekali secara manual. Tanpa reload, Nginx terus memakai sertifikat lama sampai kedaluwarsa.
 6. Klien mendaftarkan tugas perpanjangan di Task Scheduler. Pastikan tugas itu ada.
 
+### Akses keluar server (thumbnail video Pustaka)
+
+Poster kartu video YouTube/Vimeo/Google Drive di Pustaka diunduh **oleh server**, sekali, lalu disimpan di `public/assets/uploads/library.thumb.*` (`App\Libraries\VideoThumbnail`, 07 → FITUR 8). Perangkat siswa tidak pernah meminta thumbnail ke domain luar; mereka baru menghubungi penyedia video setelah menekan Putar. Karena itu **server** (bukan jaringan kelas) butuh HTTPS keluar (port 443) ke:
+
+| Host | Untuk |
+|---|---|
+| `i.ytimg.com` | thumbnail YouTube (`maxresdefault.jpg`, cadangan `hqdefault.jpg`) |
+| `vimeo.com` | oEmbed Vimeo (`/api/oembed.json`) |
+| `i.vimeocdn.com` | berkas thumbnail Vimeo dari oEmbed |
+| `drive.google.com` | thumbnail Google Drive (`/thumbnail?id=…`) |
+| `*.googleusercontent.com` | tujuan pengalihan thumbnail Drive |
+
+Proxy/firewall sekolah yang menolak host itu tidak merusak apa pun: penyimpanan konten tetap berhasil, admin melihat catatan "thumbnail video belum dapat diunduh", dan kartu video tampil dengan latar gradien. Setelah akses dibuka, atau sekali setelah memperbarui ke rilis ini, isi poster yang masih kosong:
+
+```bash
+sudo -u www-data php spark gelita:library:thumbnails          # Jalur L
+php spark gelita:library:thumbnails                           # Jalur W (PowerShell)
+php spark gelita:library:thumbnails --force                   # unduh ulang semua, mis. setelah video diganti
+```
+
+Ringkasannya "n terisi, n dilewati, n gagal"; kode keluar 1 bila ada yang gagal. Server tanpa internet sama sekali dapat mengisi poster secara manual di `/admin/konten/pustaka/{level_id}` (kolom poster tiap video).
+
 ### Mode pemeliharaan
 
 CodeIgniter 4.7 tidak punya `php spark down`/`up` (keduanya "Command not found", kode keluar 1). Di Revisi 2 perintah itu menghentikan `deploy.sh` tepat setelah backup. Pengganti tahap 8 bekerja di tingkat Nginx, sama di kedua jalur, tanpa kode aplikasi:

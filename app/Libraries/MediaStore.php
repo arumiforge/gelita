@@ -88,37 +88,62 @@ class MediaStore
             ));
         }
 
-        $media    = model(MediaAssetModel::class);
-        $existing = $media->findByKey($assetKey);
+        $existing = model(MediaAssetModel::class)->findByKey($assetKey);
         $stored   = $this->moveWithOfficialName($file, $assetKey);
 
         if ($stored === null) {
             return $this->fail('Berkas gagal disimpan.');
         }
 
-        $mediaId = $this->upsert($existing, $assetKey, $type, $stored, $mime, is_array($size) ? $size : null);
+        return $this->commit($existing, $assetKey, $type, $stored, $mime, is_array($size) ? $size : null, $staffId);
+    }
 
-        if ($mediaId === null) {
-            return $this->fail('Aset ditolak: ' . implode(' ', $media->errors()));
+    /**
+     * Simpan gambar yang diunduh server (bukan unggahan browser) sebagai
+     * `asset_key`, mis. thumbnail video Pustaka (VideoThumbnail). Aturannya
+     * sama dengan store(): jenis dibaca dari isi berkas, bukan dari header
+     * penyedia; hanya gambar raster yang dapat dibaca getimagesize() (SVG
+     * dari luar tidak pernah diterima); batas ukuran unggahan tetap berlaku.
+     *
+     * @return array{id: int|null, type: string|null, error: string|null}
+     */
+    public function storeBytes(string $bytes, string $assetKey, ?int $staffId = null, string $via = 'download'): array
+    {
+        $assetKey = trim($assetKey);
+
+        if ($assetKey === '' || mb_strlen($assetKey) > 160) {
+            return $this->fail('asset_key wajib diisi, maksimal 160 karakter.');
         }
 
-        // Berkas lama berekstensi lain (mis. .png diganti .jpg) tidak dibiarkan menjadi yatim
-        if ($existing !== null && $existing['storage_path'] !== $stored
-            && str_starts_with((string) $existing['storage_path'], self::UPLOAD_DIR)
-            && is_file(FCPATH . $existing['storage_path'])) {
-            @unlink(FCPATH . $existing['storage_path']);
+        if ($bytes === '' || strlen($bytes) > config('Gelita')->maxUploadBytes) {
+            return $this->fail('Berkas kosong atau melebihi batas unggahan.');
         }
 
-        service('contentRepository')->flush();
+        $size = @getimagesizefromstring($bytes);
+        $mime = is_array($size) ? (string) ($size['mime'] ?? '') : '';
 
-        model(AuditLogModel::class)->record('media_upload', [
-            'staff_user_id' => $staffId,
-            'target_type'   => 'media_asset',
-            'target_id'     => (string) $mediaId,
-            'metadata'      => ['asset_key' => $assetKey, 'mime' => $mime],
-        ]);
+        if (! is_array($size) || $mime === 'image/svg+xml' || $this->typeForMime($mime) !== 'image') {
+            return $this->fail('Berkas bukan gambar yang dapat dibaca.');
+        }
 
-        return ['id' => $mediaId, 'type' => $type, 'error' => null];
+        $dir = FCPATH . self::UPLOAD_DIR;
+
+        if (! is_dir($dir) && ! mkdir($dir, 0775, true) && ! is_dir($dir)) {
+            return $this->fail('Berkas gagal disimpan.');
+        }
+
+        $extension = ['image/png' => 'png', 'image/jpeg' => 'jpg', 'image/webp' => 'webp', 'image/gif' => 'gif'][$mime] ?? 'bin';
+        $name      = preg_replace('/[^a-z0-9._-]+/i', '-', $assetKey) . '.' . $extension;
+
+        if (file_put_contents($dir . $name, $bytes, LOCK_EX) !== strlen($bytes)) {
+            @unlink($dir . $name);
+
+            return $this->fail('Berkas gagal disimpan.');
+        }
+
+        $existing = model(MediaAssetModel::class)->findByKey($assetKey);
+
+        return $this->commit($existing, $assetKey, 'image', self::UPLOAD_DIR . $name, $mime, [(int) $size[0], (int) $size[1]], $staffId, $via);
     }
 
     /**
@@ -293,6 +318,42 @@ class MediaStore
         $file->move($dir, $name, true);
 
         return is_file($target) ? self::UPLOAD_DIR . $name : null;
+    }
+
+    /**
+     * Langkah akhir store()/storeBytes(): baris `media_assets`, berkas lama
+     * berekstensi lain, cache konten, dan jejak audit.
+     *
+     * @param array<string, mixed>|null  $existing
+     * @param array{0: int, 1: int}|null $size
+     *
+     * @return array{id: int|null, type: string|null, error: string|null}
+     */
+    private function commit(?array $existing, string $assetKey, string $type, string $stored, string $mime, ?array $size, ?int $staffId, string $via = 'upload'): array
+    {
+        $mediaId = $this->upsert($existing, $assetKey, $type, $stored, $mime, $size);
+
+        if ($mediaId === null) {
+            return $this->fail('Aset ditolak: ' . implode(' ', model(MediaAssetModel::class)->errors()));
+        }
+
+        // Berkas lama berekstensi lain (mis. .png diganti .jpg) tidak dibiarkan menjadi yatim
+        if ($existing !== null && $existing['storage_path'] !== $stored
+            && str_starts_with((string) $existing['storage_path'], self::UPLOAD_DIR)
+            && is_file(FCPATH . $existing['storage_path'])) {
+            @unlink(FCPATH . $existing['storage_path']);
+        }
+
+        service('contentRepository')->flush();
+
+        model(AuditLogModel::class)->record('media_upload', [
+            'staff_user_id' => $staffId,
+            'target_type'   => 'media_asset',
+            'target_id'     => (string) $mediaId,
+            'metadata'      => ['asset_key' => $assetKey, 'mime' => $mime] + ($via !== 'upload' ? ['via' => $via] : []),
+        ]);
+
+        return ['id' => $mediaId, 'type' => $type, 'error' => null];
     }
 
     /**
