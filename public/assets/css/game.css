@@ -1058,7 +1058,7 @@ body.is-challenge .app { padding-bottom: var(--sp-4); }
 .book-media { gap: var(--sp-3); }
 /* Galeri tetap terlihat saat teks panjang digulir */
 .book-media > .book-gallery { position: sticky; top: calc(var(--hud-h) + var(--sp-4)); }
-.book-figure { margin: 0; overflow: hidden; border: 1px solid rgba(74, 50, 24, .35); border-radius: var(--radius); background: rgba(74, 50, 24, .08); }
+.book-figure { position: relative; margin: 0; overflow: hidden; border: 1px solid rgba(74, 50, 24, .35); border-radius: var(--radius); background: rgba(74, 50, 24, .08); }
 .book-figure img, .book-figure video { width: 100%; }
 
 /* Galeri: media pertama lebar penuh, sisanya dua kolom */
@@ -1066,34 +1066,130 @@ body.is-challenge .app { padding-bottom: var(--sp-4); }
 .book-gallery > .book-figure:first-child,
 .book-gallery > .book-figure.is-video,
 .book-gallery.is-single > .book-figure { grid-column: 1 / -1; }
-.book-gallery .book-figure img { aspect-ratio: 4 / 3; height: auto; object-fit: cover; }
-.book-gallery > .book-figure:first-child img { aspect-ratio: 3 / 2; }
 .book-figure figcaption { padding: var(--sp-2) var(--sp-3); font-size: var(--step--1); line-height: 1.45; }
-.book-credit { display: block; margin-top: 2px; color: rgba(74, 50, 24, .7); font-size: .78rem; }
-.book-credit a { color: inherit; text-decoration: underline dotted; }
+.book-credit { margin: 0; padding: 0 var(--sp-4) var(--sp-3); color: rgba(74, 50, 24, .7); font-size: .78rem; }
 
-.book-zoom { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; }
+/* Bingkai berasio tetap + skeleton perkamen selama gambar dimuat.
+   Rasio ada di bingkai (bukan di <img>) agar tata letak tidak melompat. */
+.book-frame {
+  position: relative;
+  overflow: hidden;
+  background-color: rgba(223, 192, 135, .45);
+  background-image: linear-gradient(100deg, transparent 20%, rgba(255, 246, 225, .55) 50%, transparent 80%);
+  background-size: 220% 100%;
+  background-position: 120% 0;
+  background-repeat: no-repeat;
+}
+.book-figure.is-image .book-frame { aspect-ratio: 4 / 3; }
+.book-gallery > .book-figure.is-image:first-child .book-frame { aspect-ratio: 3 / 2; }
+.book-frame.is-video, .book-frame.is-embed { background: var(--navy-800); }
+.book-frame.is-loaded { background-image: none; }
+html.js .book-frame:not(.is-loaded) { animation: book-shimmer 1.4s ease-in-out infinite; }
+@keyframes book-shimmer { to { background-position: -120% 0; } }
+
+.book-zoom { display: block; width: 100%; height: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; }
 .book-zoom:focus-visible { outline: 3px solid var(--navy-800); outline-offset: -3px; }
+.book-frame .book-zoom img { width: 100%; height: 100%; object-fit: cover; }
+/* Memudar masuk hanya bila JavaScript jalan; tanpa JS gambar langsung terlihat */
+html.js .book-frame img { opacity: 0; transition: opacity .35s ease; }
+html.js .book-frame img.is-loaded { opacity: 1; }
 
+/* Kredit ⓘ: <details> di pojok kanan atas bingkai, saudara .book-zoom */
+.media-credit { position: absolute; top: 0; right: 0; z-index: 2; display: flex; flex-direction: column; align-items: flex-end; max-width: 100%; }
+.media-credit > summary {
+  display: grid;
+  place-items: center;
+  /* area sentuh 44px, lingkaran terlihat 26px */
+  width: 44px;
+  height: 44px;
+  list-style: none;
+  cursor: pointer;
+}
+.media-credit > summary::-webkit-details-marker { display: none; }
+.media-credit > summary > span {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border: 1.5px solid rgba(255, 246, 225, .85);
+  border-radius: 50%;
+  background: rgba(11, 19, 32, .55);
+  color: #fff6e1;
+  /* huruf i kecil bergaya "ⓘ"; Cinzel (font judul) hanya punya kapital */
+  font: italic 700 15px/1 Georgia, "Times New Roman", serif;
+  transition: background .2s ease;
+}
+.media-credit > summary:hover > span,
+.media-credit[open] > summary > span { background: rgba(11, 19, 32, .85); }
+.media-credit > summary:focus-visible { outline: none; }
+.media-credit > summary:focus-visible > span { outline: 3px solid var(--gold-300); outline-offset: 2px; }
+.media-credit-panel {
+  display: grid;
+  gap: var(--sp-1);
+  max-width: min(280px, calc(100% - var(--sp-3)));
+  margin: 0 var(--sp-2) var(--sp-2);
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--radius);
+  background: rgba(11, 19, 32, .92);
+  box-shadow: var(--shadow-1);
+  color: var(--ink);
+  font-size: .8rem;
+  line-height: 1.45;
+}
+.media-credit-panel p { margin: 0; overflow-wrap: anywhere; }
+.media-credit-panel a { color: var(--gold-300); font-weight: 700; }
+.book-frame.is-playing .media-credit { display: none; }
+
+/* Facade video YouTube/Vimeo/Drive: poster server 16:9, tombol Putar besar */
 .book-embed { position: relative; aspect-ratio: 16 / 9; background: var(--navy-800); }
 .book-embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .embed-play {
   position: absolute;
   inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--sp-3);
-  padding: var(--sp-4);
-  background: radial-gradient(circle at 50% 45%, var(--navy-600), var(--navy-900));
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 40%, var(--navy-600), var(--navy-900) 75%);
   color: var(--ink);
-  text-align: left;
   text-decoration: none;
 }
-.embed-play b { display: block; font-size: var(--step-1); }
-.embed-play small { display: block; color: var(--ink-dim); font-size: var(--step--1); }
-.embed-play-icon { display: grid; place-items: center; flex: none; width: 56px; height: 56px; border-radius: 50%; background: var(--gold-500); color: var(--navy-900); }
+.embed-poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* Selubung gelap agar tombol dan teks terbaca di atas poster apa pun */
+.embed-play::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(11, 19, 32, .85), rgba(11, 19, 32, .15) 55%, rgba(11, 19, 32, .3)); }
+.embed-play-icon {
+  display: grid;
+  place-items: center;
+  position: relative;
+  z-index: 1;
+  width: clamp(56px, 16%, 76px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--gold-500);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, .45);
+  color: var(--navy-900);
+  transition: transform .2s ease, background .2s ease;
+}
+.embed-play-icon .icon { width: 44%; height: 44%; margin-left: 6%; }
 .embed-play:hover .embed-play-icon, .embed-play:focus-visible .embed-play-icon { background: var(--gold-300); transform: scale(1.06); }
+.embed-play:focus-visible { outline: 3px solid var(--gold-300); outline-offset: -3px; }
+.embed-provider {
+  position: absolute;
+  z-index: 1;
+  top: var(--sp-2);
+  left: var(--sp-2);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px var(--sp-2);
+  border-radius: var(--radius-pill);
+  background: rgba(11, 19, 32, .75);
+  font-size: .75rem;
+  font-weight: 700;
+}
+.embed-provider .icon { width: 14px; height: 14px; }
+.embed-text { position: absolute; z-index: 1; right: var(--sp-3); bottom: var(--sp-2); left: var(--sp-3); text-align: left; text-shadow: 0 1px 3px rgba(0, 0, 0, .6); }
+.embed-text b { display: block; font-size: var(--step-0); }
+.embed-text small { display: block; color: var(--ink-dim); font-size: .75rem; }
 .book-link { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-4); color: var(--brown-700); font-weight: 700; }
 
 .book-text h2 { color: var(--brown-700); }
@@ -1117,9 +1213,113 @@ body.is-challenge .app { padding-bottom: var(--sp-4); }
 /* Perbesar gambar */
 .lightbox { max-width: min(96vw, 1200px); max-height: 94vh; padding: var(--sp-3); border: 2px solid var(--gold-600); border-radius: var(--radius-lg); background: var(--navy-900); color: var(--ink); }
 .lightbox::backdrop { background: rgba(11, 19, 32, .85); }
+.lightbox-stage { position: relative; display: grid; place-items: center; min-width: min(60vw, 320px); min-height: 120px; }
 .lightbox img { max-width: 100%; max-height: calc(94vh - 120px); margin: 0 auto; object-fit: contain; }
+.lightbox-spinner { position: absolute; top: 50%; left: 50%; display: none; width: 44px; height: 44px; margin: -22px 0 0 -22px; border: 4px solid rgba(223, 192, 135, .25); border-top-color: var(--gold-300); border-radius: 50%; animation: book-spin .8s linear infinite; }
+.lightbox.is-loading .lightbox-spinner { display: block; }
+.lightbox.is-loading img { opacity: 0; }
+@keyframes book-spin { to { transform: rotate(360deg); } }
 .lightbox-caption { margin: var(--sp-2) 0 0; font-size: var(--step--1); text-align: center; }
 .lightbox-close { float: right; margin: 0 0 var(--sp-2) var(--sp-2); font-size: 1.6rem; line-height: 1; }
+
+/* ---------- Rak Pustaka Kedu (/pustaka) ---------- */
+.library-lead { max-width: 60ch; margin: var(--sp-2) 0 0; color: var(--ink-dim); }
+.library-shelf { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--sp-4); margin: 0; padding: 0; list-style: none; }
+.shelf-card {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  overflow: hidden;
+  border: 2px solid var(--brown-500);
+  border-radius: var(--radius-lg);
+  background: var(--parchment);
+  box-shadow: var(--shadow-2);
+  color: var(--brown-700);
+}
+.shelf-cover {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: radial-gradient(circle at 30% 20%, rgba(223, 192, 135, .9), transparent 60%), linear-gradient(135deg, var(--brown-500), var(--navy-700));
+}
+.shelf-cover img { width: 100%; height: 100%; object-fit: cover; }
+.shelf-card:not(.is-open) .shelf-cover img { filter: grayscale(.75) brightness(.8); }
+.shelf-badge {
+  position: absolute;
+  top: var(--sp-2);
+  left: var(--sp-2);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px var(--sp-2);
+  border-radius: var(--radius-pill);
+  background: rgba(11, 19, 32, .78);
+  color: var(--ink);
+  font-size: .78rem;
+  font-weight: 700;
+}
+.shelf-badge.is-open { background: var(--gold-500); color: var(--navy-900); }
+.shelf-badge .icon { width: 14px; height: 14px; }
+.shelf-body { display: grid; align-content: start; gap: var(--sp-3); padding: var(--sp-4); }
+.shelf-body h2 { margin: 0; color: var(--brown-700); font-size: var(--step-1); }
+.shelf-body .eyebrow { color: var(--brown-500); }
+.shelf-body .btn { justify-self: start; white-space: nowrap; }
+.shelf-note { display: flex; align-items: flex-start; gap: var(--sp-2); margin: 0; color: rgba(74, 50, 24, .75); }
+.shelf-card.is-unavailable { opacity: .78; }
+
+/* Penjelasan Pustaka terkunci — kartu rak dan halaman terkunci */
+.library-lock { display: grid; gap: var(--sp-2); }
+.library-lock p { margin: 0; line-height: 1.55; }
+.library-lock-progress { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: var(--sp-3); font-size: var(--step--1); font-weight: 700; }
+.shelf-card .progress, .library-locked-card .progress { background: rgba(74, 50, 24, .15); }
+
+/* ---------- Halaman terkunci (/pustaka/{code}) ---------- */
+.library-locked-card { display: grid; justify-items: center; gap: var(--sp-3); max-width: 560px; margin: var(--sp-5) auto 0; text-align: center; }
+.library-locked-card h1 { margin: 0; color: var(--brown-700); font-size: var(--step-2); }
+.library-locked-card .eyebrow { display: inline-flex; align-items: center; gap: var(--sp-2); color: var(--brown-500); }
+.library-locked-card .library-lock { width: 100%; text-align: left; }
+.library-locked-icon { display: grid; place-items: center; width: 64px; height: 64px; border: 2px solid var(--brown-500); border-radius: 50%; background: rgba(223, 192, 135, .45); color: var(--brown-700); }
+.library-locked-icon .icon { width: 30px; height: 30px; }
+.library-locked-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--sp-3); }
+
+/* ---------- Sorotan "Pustaka {wilayah} terbuka!" di layar selesai ---------- */
+.library-unlocked {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--sp-3);
+  margin: var(--sp-4) 0;
+  padding: var(--sp-3) var(--sp-4);
+  border: 2px solid var(--gold-500);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(120deg, rgba(223, 192, 135, .22), rgba(223, 192, 135, .06));
+  box-shadow: var(--shadow-glow);
+  text-align: left;
+}
+.library-unlocked h2 { margin: 0; color: var(--gold-300); font-size: var(--step-0); }
+.library-unlocked .btn { white-space: nowrap; }
+.library-unlocked p { margin: 2px 0 0; color: var(--ink-dim); font-size: var(--step--1); }
+.library-unlocked-icon { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; background: var(--gold-500); color: var(--navy-900); }
+
+@media (max-width: 1024px) {
+  .library-unlocked { grid-template-columns: auto 1fr; }
+  .library-unlocked .btn { grid-column: 1 / -1; justify-self: center; }
+}
+@media (orientation: landscape) and (max-height: 500px) {
+  .library-shelf { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sp-3); }
+  .shelf-body { gap: var(--sp-2); padding: var(--sp-3); }
+  .shelf-body h2 { font-size: var(--step-0); }
+  .shelf-body .btn { min-height: 38px; padding: var(--sp-1) var(--sp-3); font-size: var(--step--1); }
+  .library-lock p { font-size: var(--step--1); }
+  .library-locked-card { margin-top: 0; gap: var(--sp-2); }
+  .library-locked-icon { width: 48px; height: 48px; }
+  .library-unlocked { margin: var(--sp-2) 0; padding: var(--sp-2) var(--sp-3); }
+}
+/* Tanpa gerak: skeleton tetap tampil, tetapi diam */
+@media (prefers-reduced-motion: reduce) {
+  html.js .book-frame:not(.is-loaded) { animation: none; background-image: none; }
+  html.js .book-frame img { transition: none; }
+  .lightbox-spinner { animation: none; border-top-color: rgba(223, 192, 135, .25); border-color: var(--gold-300); }
+}
 
 /* =========================== PROFIL =========================== */
 .profile-card { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: var(--sp-4); margin-bottom: var(--sp-4); }

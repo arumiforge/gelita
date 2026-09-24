@@ -4,6 +4,7 @@ namespace Config;
 
 use App\Libraries\HeadAsGetRouteCollection;
 use App\Libraries\RequestId;
+use App\Libraries\VideoThumbnail;
 use App\Services\AnalyticsService;
 use App\Services\ChallengeService;
 use App\Services\ContentImportService;
@@ -188,5 +189,18 @@ class Services extends BaseService
         }
 
         return new RetentionService();
+    }
+
+    /**
+     * Pengunduh thumbnail video Pustaka (YouTube/Vimeo/Drive) di sisi server.
+     * Uji mengganti instans ini dengan HTTP tiruan lewat injectMock().
+     */
+    public static function videoThumbnail(bool $getShared = true): VideoThumbnail
+    {
+        if ($getShared) {
+            return static::getSharedInstance('videoThumbnail');
+        }
+
+        return new VideoThumbnail();
     }
 }

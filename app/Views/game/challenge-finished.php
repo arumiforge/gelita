@@ -3,14 +3,18 @@
  * 12. Selesai — `/selesai/{attemptId}` → ChallengeController::finished
  *
  * Orb cahaya, bintang 0–3, tiga statistik (Waktu, Tepat sejak awal, Skor).
- * Bila wilayah tuntas: panel Mbah Kedu bangga. Bila semua node tuntas: tombol
- * Balai Refleksi. Konfeti CSS mati otomatis pada prefers-reduced-motion.
+ * Bila wilayah tuntas: panel Mbah Kedu bangga. Bila attempt ini yang
+ * menuntaskan wilayah (dan wilayahnya punya Pustaka): sorotan
+ * "Pustaka {wilayah} terbuka!" dengan tombol Baca Pustaka. Bila semua node
+ * tuntas: tombol Balai Refleksi. Konfeti CSS mati otomatis pada
+ * prefers-reduced-motion.
  *
  * @var App\Entities\ChallengeAttempt    $attempt
  * @var App\Entities\ChallengeNode|null  $node
  * @var App\Entities\Level|null          $level
  * @var array<string, mixed>             $levelScore
  * @var bool                             $levelCompleted
+ * @var bool                             $libraryUnlocked attempt ini membuka Pustaka wilayahnya
  * @var bool                             $allCompleted
  * @var array<string, mixed>             $progress
  * @var array<string, mixed>|null        $nextRegion baris levelOverview wilayah sesudahnya
@@ -77,6 +81,17 @@ $checks = (int) ($attempt->check_count ?? 0);
                   . ($allCompleted ? lang('Game.allShardsDone', [$progress['shards_total']]) : lang('Game.nextRegionOpen')),
           ]) ?>
         </div>
+      <?php endif ?>
+
+      <?php if ($libraryUnlocked && $level !== null): ?>
+        <aside class="library-unlocked" role="status">
+          <span class="library-unlocked-icon" aria-hidden="true"><?= icon('book') ?></span>
+          <div>
+            <h2><?= esc(lang('Game.libraryUnlockedTitle', [$region])) ?></h2>
+            <p><?= esc(lang('Game.libraryUnlockedText', [$region])) ?></p>
+          </div>
+          <a class="btn btn-ghost" href="<?= base_url('pustaka/' . $level->code) ?>"><?= icon('book') ?> <?= esc(lang('Game.libraryReadNow')) ?></a>
+        </aside>
       <?php endif ?>
 
       <div class="finished-actions">

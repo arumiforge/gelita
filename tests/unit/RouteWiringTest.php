@@ -28,6 +28,8 @@ final class RouteWiringTest extends CIUnitTestCase
             'gerbang/peta'                => 'Game\GateController::map',
             'intro'                       => 'Game\GateController::intro',
             'intro/selesai'               => 'Game\GateController::finishIntro',
+            'pustaka'                     => 'Game\LibraryController::index',
+            'pustaka/([^/]+)'             => 'Game\LibraryController::show',
             'api/session'                 => 'Api\SessionApiController::show',
             'api/auth/username-available' => 'Api\AuthApiController::usernameAvailable',
             'admin/login'                 => 'Admin\AuthController::loginForm',

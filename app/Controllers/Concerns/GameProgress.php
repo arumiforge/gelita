@@ -5,6 +5,7 @@ namespace App\Controllers\Concerns;
 use App\Entities\ChallengeAttempt;
 use App\Entities\ChallengeNode;
 use App\Entities\GameSession;
+use App\Entities\Level;
 use App\Models\ChallengeAttemptModel;
 use App\Models\ResearchStudyModel;
 use App\Models\SessionProgressModel;
@@ -224,6 +225,77 @@ trait GameProgress
         $summary = $this->progressSummary($session);
 
         return $summary['shards_total'] > 0 && $summary['completed_nodes'] >= $summary['shards_total'];
+    }
+
+    /**
+     * Pustaka sebuah wilayah baru terbuka setelah SEMUA tantangannya selesai
+     * pada sesi ini — apa pun `unlock_mode` studinya (mode `free` membuka
+     * wilayah dan tantangan, bukan Pustaka). Status Pustaka diturunkan dari
+     * status wilayah (levelStatus()):
+     *
+     * - `open`        wilayah tuntas → isi Pustaka boleh dibaca;
+     * - `locked`      wilayah terbuka tetapi belum tuntas → penjelasan + progres;
+     * - `unavailable` wilayah belum terbuka → keterangan saja.
+     */
+    protected function libraryStatus(string $levelStatus): string
+    {
+        return match ($levelStatus) {
+            'completed' => 'open',
+            'locked'    => 'unavailable',
+            default     => 'locked',
+        };
+    }
+
+    /**
+     * Status Pustaka satu wilayah beserta progres dan jalan untuk melanjutkan
+     * tantangannya (`entry`, aturan dialog pembuka yang sama dengan peta).
+     *
+     * @return array{status: string, level_status: string, entry: string, completed_nodes: int, total_nodes: int}
+     */
+    protected function libraryAccess(GameSession $session, Level $level): array
+    {
+        $score  = service('scoringService')->levelScore($session->id, $level->id);
+        $status = $this->levelStatus($score, $this->levelUnlocked($session, $level->sequence));
+
+        return [
+            'status'          => $this->libraryStatus($status),
+            'level_status'    => $status,
+            'entry'           => $this->regionEntryPath((string) $level->code, $status),
+            'completed_nodes' => (int) $score['completed_nodes'],
+            'total_nodes'     => (int) $score['total_nodes'],
+        ];
+    }
+
+    /**
+     * Attempt yang menuntaskan wilayah: di antara penyelesaian PERTAMA tiap
+     * node wilayah, yang paling akhir. Null bila masih ada node yang belum
+     * pernah selesai. Mengulang node yang sudah tuntas tidak pernah menjadi
+     * attempt penuntas, jadi momen "Pustaka terbuka" hanya muncul sekali.
+     *
+     * @param list<ChallengeAttempt> $attempts attempt `completed` sesi ini,
+     *                                         urut completed_at lalu id (naik)
+     * @param list<int>              $nodeIds  node aktif wilayah itu
+     */
+    protected static function closingAttemptId(array $attempts, array $nodeIds): ?int
+    {
+        if ($nodeIds === []) {
+            return null;
+        }
+
+        $wanted  = array_flip($nodeIds);
+        $first   = [];
+        $closing = null;
+
+        foreach ($attempts as $attempt) {
+            $node = (int) $attempt->challenge_node_id;
+
+            if (isset($wanted[$node]) && ! isset($first[$node])) {
+                $first[$node] = true;
+                $closing      = (int) $attempt->id;
+            }
+        }
+
+        return count($first) === count($wanted) ? $closing : null;
     }
 
     /**

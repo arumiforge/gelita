@@ -82,7 +82,9 @@ app/Views/
 │   │   └── cari.php
 │   ├── challenge-finished.php
 │   ├── challenge-result.php
-│   ├── library.php
+│   ├── library.php              buku Pustaka {wilayah}
+│   ├── library-index.php        rak Pustaka Kedu (/pustaka)
+│   ├── library-locked.php       Pustaka wilayah yang belum tuntas
 │   ├── profile.php
 │   └── reflection.php
 ├── admin/
@@ -486,7 +488,7 @@ Bagian 3 dibuka dengan kotak perkamen kecil **"Mengapa kata sandi harus kuat?"**
 * Jaka berdiri di sisi kiri peta dengan balon narasi.
 * Klik titik wilayah yang **baru terbuka** (status `open`: terbuka, belum ada tantangan yang selesai) → **selalu** `/dialog/{code}` lebih dulu; wilayah yang sedang dijelajahi atau sudah tuntas → langsung `/wilayah/{code}`. Tujuan ini dihitung satu kali di `GameProgress::regionEntryPath()` dan dikirim sebagai `entry` pada setiap baris `levelOverview()`, sehingga peta, layar selesai, dan API memakai aturan yang sama.
 * Klik titik terkunci → toast "Selesaikan wilayah sebelumnya dulu."
-* Tombol Pustaka melayang di pojok kiri bawah.
+* Tombol **Pustaka Kedu** di nav kiri bawah selalu tampil dan menuju rak `/pustaka` (sebelumnya: Pustaka wilayah terakhir yang terbuka).
 
 ### 8. Dialog — `/dialog/{code}` → `game/dialogue.php`
 
@@ -502,7 +504,7 @@ Bagian 3 dibuka dengan kotak perkamen kecil **"Mengapa kata sandi harus kuat?"**
 * Tiap pos: nomor (atau ✓ bila selesai, 🔒 bila terkunci), nama jenis tantangan, dan bintang yang sudah diperoleh.
 * Pos selesai → `/hasil/{code}/{seq}`; pos terbuka → `/misi/{code}/{seq}`.
 * Teks bawah: "3 dari 5 tantangan selesai".
-* Tombol Pustaka wilayah dan tombol kembali ke peta Kedu.
+* Tombol kembali ke peta Kedu dan tombol **Pustaka {wilayah}** (`Game.libraryRegion`, mis. "Pustaka Magelang"), tampil bila wilayah punya halaman Pustaka. Selama tantangan wilayah belum semua selesai, tombol itu bergembok dan bertanda `aria-disabled="true"` + `data-library-locked`/`data-locked-*`: `map.js` membuka modal penjelasan (`core/modal.js`, ikon gembok) berisi kalimat yang sama dengan halaman terkunci, progres x/5, dan tautan ke Pustaka Kedu. Tanpa JavaScript tautannya membuka `/pustaka/{code}` yang merender halaman terkunci.
 
 ### 10. Kartu Misi — `/misi/{code}/{seq}` → `game/mission-brief.php`
 
@@ -649,20 +651,38 @@ Objek jebakan dirender sama persis dengan objek asli — tidak ada penanda visua
 * Bila wilayah tuntas: panel Mbah Kedu bangga + "Wilayah berikutnya kini terbuka", dan tombol utama "Lanjut ke {wilayah berikutnya}" yang menuju `entry` wilayah itu — untuk wilayah yang baru terbuka berarti dialog pembukanya.
 * Bila 15 node tuntas: tombol **Balai Refleksi**.
 * Jaka senang, konfeti.
+* Bila attempt ini yang **menuntaskan** wilayah (penyelesaian pertama terakhir di antara node wilayah; mengulang tantangan di wilayah yang sudah tuntas tidak memunculkannya lagi) dan wilayahnya punya halaman Pustaka: sorotan **"Pustaka {wilayah} terbuka!"** (`aside.library-unlocked`) dengan tombol **Baca Pustaka** — momen "Pustaka {wilayah} kini terbuka untukmu" di naskah cerita.
 
 ### 13. Hasil Node — `/hasil/{code}/{seq}` → `game/challenge-result.php`
 
 Statistik terbaik + tabel seluruh percobaan (waktu, durasi, tepat sejak awal, pemeriksaan, skor, bintang). Tombol Ulangi. Catatan: "Mengulang tidak menghapus catatan lama, setiap percobaan tetap tersimpan sebagai data penelitian."
 
-### 14. Pustaka Kedu — `/pustaka/{code}` → `game/library.php`
+### 14. Pustaka {wilayah} — `/pustaka/{code}` → `game/library.php`
+
+**Kunci per wilayah.** Isi Pustaka sebuah wilayah baru terbuka setelah **semua** tantangan wilayah itu selesai pada sesi pemain (`ScoringService::levelScore()`: `completed_nodes >= total_nodes`), apa pun `unlock_mode` studinya — mode `free` membuka wilayah dan tantangan, bukan Pustaka. Aturannya satu tempat: `GameProgress::libraryStatus()` / `libraryAccess()`; `/api/library/{levelId}` memakai aturan yang sama (`LIBRARY_LOCKED`).
+
+**Nama kontekstual.** Di dalam wilayah namanya "Pustaka {wilayah}" (`Game.libraryRegion`: eyebrow header buku, judul tab, tombol nav peta wilayah) dan hanya berisi wilayah itu. Di peta dan rak namanya tetap "Pustaka Kedu" (`Game.library`).
 
 * Tata letak buku dua halaman: kiri galeri media (berapa pun gambar/video per halaman, dari `library_media`), kanan judul + teks.
-* Gambar dapat diklik untuk diperbesar (`<dialog>`, `game/library.js`). Video YouTube/Vimeo/Drive tampil sebagai kartu **Putar**; iframe baru dipasang setelah tombol ditekan dan dilepas lagi saat halaman berganti. Tanpa JavaScript, kartu itu tautan ke halaman aslinya.
-* Keterangan gambar dwibahasa di bawah media; media pihak lain menampilkan kredit yang menaut ke sumbernya.
+* **Bingkai berasio tetap** (`.book-frame`: 3/2 untuk media pertama, 4/3 sisanya, 16/9 video) dengan skeleton perkamen bergaris kilau selama gambar dimuat. Gambar mulai `opacity: 0` **hanya di bawah `html.js`** lalu memudar masuk saat `load` (gambar yang sudah di cache langsung tampil); tanpa JavaScript gambar langsung terlihat. `prefers-reduced-motion`: skeleton diam, tanpa pudar. Gambar halaman berikutnya dipramuat setiap pindah halaman (slide tersembunyi ber-`loading=lazy` baru termuat saat tampil).
+* Gambar dapat diklik untuk diperbesar (`<dialog>`, `game/library.js`); lightbox menampilkan pemutar tunggu sampai gambar besar termuat.
+* **Kredit** tidak lagi di `figcaption`: `<details class="media-credit">` (`partials/media-credit`) di pojok kanan atas bingkai — ikon ⓘ bulat kecil semi-transparan, area sentuh 44px, label aksesibel "Sumber gambar". Panelnya berisi teks kredit dan "Lihat sumber ↗" (`href` media, `target=_blank rel="noopener noreferrer"`) untuk media pihak lain. `<details>` dipilih karena berjalan tanpa JavaScript; `library.js` menutup panel lain saat satu dibuka, menutup saat mengetuk di luar atau Esc. Ikon kredit adalah **saudara** `.book-zoom`, bukan anaknya, sehingga mengetuknya tidak memperbesar gambar. `figcaption` hanya berisi keterangan dwibahasa.
+* **Facade video** YouTube/Vimeo/Drive: poster (`poster_media_id` → `media_src()`, thumbnail yang diunduh server — lihat `VideoThumbnail` di 07) sebagai latar 16:9, tombol Putar besar di tengah, lencana penyedia di kiri atas, dan keterangan "Video dari {penyedia} baru dimuat setelah kamu menekan Putar". Tanpa poster tampil gradien biru malam. Iframe tetap baru dibuat setelah Putar ditekan dan dilepas lagi saat halaman berganti; tanpa JavaScript, facade itu tautan ke halaman aslinya. Perangkat siswa tidak menghubungi domain penyedia sebelum Putar ditekan (aturan 10).
 * Teks memakai `rich_text()`: paragraf, subjudul `h3`, daftar, kotak "Tahukah kamu?" (`aside.book-fact`), catatan sumber (`p.book-source`), tebal, miring.
 * Navigasi halaman kiri/kanan + nomor halaman.
 * Media yang berkasnya tidak ada disembunyikan, bukan menampilkan kotak rusak. Gambar tautan yang gagal dimuat (mis. kelas tanpa internet) juga disembunyikan.
-* Tombol tutup kembali ke layar sebelumnya.
+* Tombol tutup dan nav kiri kembali ke peta wilayah; nav kanan menuju Pustaka Kedu (`/pustaka`).
+
+### 14a. Pustaka Kedu (rak) — `/pustaka` → `game/library-index.php`
+
+* Satu kartu per wilayah (`.shelf-card`): sampul (gambar pertama galeri halaman pertama → latar wilayah → gradien; sampul yang gagal dimuat disembunyikan `library.js`), "Pustaka {wilayah}", jumlah halaman, lencana status.
+* **Terbuka** (wilayah tuntas) → tombol **Baca**. **Terkunci** (wilayah terbuka, belum tuntas) → gembok, progres x/5 (bar + teks), penjelasan "Selesaikan kelima tantangan di Magelang untuk membuka Pustaka Magelang. Isinya bacaan, gambar, dan video tentang Magelang.", dan **Lanjutkan tantangan** ke `entry` wilayah (wilayah yang baru terbuka tetap lewat dialog pembukanya). **Belum terbuka** → keterangan saja, tanpa tombol; sampul redup.
+* Progres + penjelasan dirender `partials/library-lock`, dipakai juga halaman terkunci, sehingga keduanya selalu berkata sama.
+
+### 14b. Pustaka terkunci — `/pustaka/{code}` → `game/library-locked.php`
+
+* Dirender (bukan redirect) bila wilayah terbuka tetapi belum tuntas, supaya penjelasannya terbaca tanpa JavaScript. Isi: ikon gembok, "Pustaka Magelang masih terkunci", `partials/library-lock`, tombol **Lanjutkan tantangan** (`entry`) dan **Pustaka Kedu**. Event `library_opened` tidak dicatat.
+* Wilayah yang belum terbuka tetap dialihkan ke `/peta` dengan toast "Selesaikan wilayah sebelumnya dulu."
 
 ### 15. Profil — `/profil` → `game/profile.php`
 
@@ -984,7 +1004,8 @@ View tahap ini membutuhkan data yang belum dikirim controller tahap 4. Perubahan
 ### Keputusan yang sudah diambil
 
 * **Arena Cari objek — payload tanpa pembeda jebakan.** Payload `cari` tidak memakai `items`. `objects` memuat semua objek (target maupun jebakan) dengan bentuk identik `{ ref, x, y, w, media }`, diurutkan menurut posisi di layar; `ref` adalah token HMAC per attempt dari `encryption.key`. `clues` hanya berisi petunjuk target (`{ item_id, text }`). Server hanya menerima `answer.object` dan menerjemahkannya sendiri ke id butir — id mentah kiriman klien diabaikan, karena id butir target memang terlihat di `clues`. Jalur `/check` memakai aturan yang sama, dan `progress.total` tidak menghitung jebakan. Kontrak API lengkap di [06_JAVASCRIPT.md → *Fitur: Cari Objek Budaya*](06_JAVASCRIPT.md). Dikunci oleh `tests/unit/HuntPayloadTest.php`.
-* **Dialog selalu muncul saat wilayah baru terbuka.** Ini aturan permanen: wilayah berstatus `open` selalu masuk lewat `/dialog/{code}`. Tautan peta memakai `entry`, dan layar selesai yang menuntaskan satu wilayah menawarkan "Lanjut ke {wilayah berikutnya}" menuju dialog pembuka wilayah itu. URL yang diketik langsung juga dijaga: `/wilayah/{code}`, `/misi/{code}/{n}`, dan `/tantangan/{code}/{n}` untuk wilayah yang baru terbuka dialihkan ke dialognya (`BaseGameController::dialogueGate()`) sampai dialog itu tampil. Tanda "sudah tampil" disimpan di sesi PHP per sesi permainan dan per wilayah, bukan di database, sehingga setelah keluar-masuk lagi dialog wilayah yang masih baru terbuka tampil kembali. Pustaka sengaja tidak dijaga. Dikunci oleh `tests/unit/RegionEntryTest.php` dan `tests/unit/DialogueGateTest.php`.
+* **Dialog selalu muncul saat wilayah baru terbuka.** Ini aturan permanen: wilayah berstatus `open` selalu masuk lewat `/dialog/{code}`. Tautan peta memakai `entry`, dan layar selesai yang menuntaskan satu wilayah menawarkan "Lanjut ke {wilayah berikutnya}" menuju dialog pembuka wilayah itu. URL yang diketik langsung juga dijaga: `/wilayah/{code}`, `/misi/{code}/{n}`, dan `/tantangan/{code}/{n}` untuk wilayah yang baru terbuka dialihkan ke dialognya (`BaseGameController::dialogueGate()`) sampai dialog itu tampil. Tanda "sudah tampil" disimpan di sesi PHP per sesi permainan dan per wilayah, bukan di database, sehingga setelah keluar-masuk lagi dialog wilayah yang masih baru terbuka tampil kembali. Pustaka tidak lewat gerbang dialog, tetapi punya kuncinya sendiri: isinya baru terbuka setelah wilayah tuntas (lihat keputusan berikut). Dikunci oleh `tests/unit/RegionEntryTest.php` dan `tests/unit/DialogueGateTest.php`.
+* **Pustaka per wilayah (Tahap 4).** Keputusan lama "Pustaka sengaja tidak dijaga" (selalu dapat dibuka bila wilayahnya terbuka) diganti: Pustaka sebuah wilayah terbuka setelah **semua** tantangan wilayah itu selesai pada sesi pemain, apa pun `unlock_mode`. Sebelum itu `/pustaka/{code}` merender halaman terkunci — bukan redirect, agar penjelasannya tetap terbaca tanpa JavaScript — dan `library_opened` tidak dicatat; `/api/library/{levelId}` membalas `LIBRARY_LOCKED`. Di dalam wilayah namanya "Pustaka {wilayah}"; di peta namanya "Pustaka Kedu" dan tombolnya membuka rak `/pustaka`. Thumbnail video diunduh server sekali lalu disimpan sebagai poster, sehingga perangkat siswa tidak menghubungi domain luar sebelum Putar ditekan. Dikunci oleh `tests/unit/LibraryLockTest.php` dan `tests/unit/VideoThumbnailTest.php`.
 * **Registrasi memakai nama lengkap.** Label kolom `display_name` adalah "Nama lengkap" / "Full name". Teks persetujuan (`Game.consentBody`) kini menyebut seluruh data profil yang dicatat — termasuk nama lengkap — dan bahwa nama hanya dapat dilihat guru dan tim peneliti. Versi teks persetujuan naik menjadi `2` (`RegisterController::CONSENT_VERSION`); persetujuan yang sudah tersimpan tetap bertanda versi `1`.
 * **Cerita pembuka wajib bagi pemain baru; halaman awal hanya satu tombol.** `/` berisi logo dan satu tombol Mulai → `/mulai`. Belum login → pilih akun baru/lama; sudah login → `/gerbang`. Pemain yang belum pernah menonton cerita pembuka sampai selesai (`participants.intro_seen_at` kosong) selalu dibawa ke `/intro` tanpa tombol "Lewati", dan `/peta` menolak mereka (`introGate()`). Pemain lama memilih di `/gerbang`: lihat cerita pembuka (kini dengan "Lewati") atau langsung ke peta. Peserta yang sudah punya progres saat migrasi `003600` dianggap sudah menonton (backfill), jadi tidak dipaksa. Setiap jalan ke peta dari gerbang/intro membawa flash `curtain=map` untuk layar tirai tahap berikutnya. Dikunci oleh `tests/unit/StartGateTest.php`.
 * **Kolom sandi** sengaja tanpa atribut `minlength`: sandi lemah harus sampai ke server agar metrik `pw_weak_submit_count` tercatat.
