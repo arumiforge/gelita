@@ -78,7 +78,7 @@ Dokumen sumber sebelumnya mengandung beberapa konflik. Berikut keputusan final u
 ## Yang Harus Dibuat
 
 1. Database `gelita` (utf8mb4_unicode_ci, InnoDB).
-2. 29 migration pembuat tabel + migration pendukung (`002900` FK level, `003000` `ci_sessions`) + migration koreksi (`003100`–`003300`) + `003400` (wajib ganti sandi staf) + `003500` (media Pustaka `library_media`) + `003600` (`participants.intro_seen_at`) — total 37 berkas.
+2. 29 migration pembuat tabel + migration pendukung (`002900` FK level, `003000` `ci_sessions`) + migration koreksi (`003100`–`003300`) + `003400` (wajib ganti sandi staf) + `003500` (media Pustaka `library_media`) + `003600` (`participants.intro_seen_at`) + `003700` (`dialogues.pose`/`effect`) — total 38 berkas.
 3. 9 seeder data, dijalankan berurutan oleh `DatabaseSeeder` (kelas dasar bersama: `GelitaSeeder`).
 4. File referensi statis `public/assets/data/wilayah-id.json` (tidak masuk DB).
 
@@ -566,16 +566,18 @@ Aturan: minimal salah satu dari `challenge_node_id` / `challenge_item_id` harus 
 
 ### 17. `dialogues`
 
-Dialog Jaka & Mbah Kedu, termasuk cerita pembuka.
+Narasi dan dialog Jaka, Mbah Kedu, dan narator: seluruh isi `docs/naskah-cerita.md` (88 baris, 6 konteks). Sumber datanya satu: `app/Database/Seeds/data/story.php` (lihat §8 dan `gelita:story:update`).
 
 | Kolom | Tipe | Null | Default | Keterangan |
 |---|---|---|---|---|
 | id | BIGINT UNSIGNED | NO | AUTO | PK |
-| level_id | BIGINT UNSIGNED | YES | NULL | FK CASCADE; NULL = cerita pembuka global |
-| context_code | VARCHAR(50) | NO | `level_open` | `intro`\|`level_open`\|`level_done`\|`ending`; INDEX |
+| level_id | BIGINT UNSIGNED | YES | NULL | FK CASCADE; NULL = konteks global |
+| context_code | VARCHAR(50) | NO | `level_open` | global (level_id NULL): `intro`\|`map_intro`\|`ending`; per wilayah: `region_intro`\|`level_open`\|`level_done` (`Config\Gelita::$dialogueContexts`); INDEX |
 | sequence | INT UNSIGNED | NO | 1 | INDEX |
 | character_code | VARCHAR(30) | NO | — | `jaka`\|`mbah_kedu`\|`narator` |
-| title_id | VARCHAR(200) | YES | NULL | dipakai slide intro |
+| pose | VARCHAR(30) | YES | NULL | pose tokoh (`Config\Gelita::$characterPoses`): Jaka `idle`\|`happy`\|`bow`\|`sad`\|`afraid`\|`determined`, Mbah Kedu `idle`\|`smile`\|`worried`\|`weak`; NULL = `idle`, narator selalu NULL. Gambar pose yang belum diunggah memakai `idle` |
+| effect | VARCHAR(30) | YES | NULL | efek layar saat baris muncul (`Config\Gelita::$dialogueEffects`): `fog`\|`fog-lift`\|`glow`\|`flash`\|`shake`\|`dim`; NULL = tanpa efek |
+| title_id | VARCHAR(200) | YES | NULL | judul slide (intro, peta, kenali wilayah, penutup); baris dialog wilayah tidak berjudul |
 | title_en | VARCHAR(200) | YES | NULL | |
 | text_id | LONGTEXT | NO | — | |
 | text_en | LONGTEXT | NO | — | |
@@ -585,6 +587,8 @@ Dialog Jaka & Mbah Kedu, termasuk cerita pembuka.
 | is_active | TINYINT(1) | NO | 1 | |
 
 UNIQUE: `(level_id, context_code, sequence)` — gunakan `level_id = 0` sentinel tidak diperlukan karena MySQL mengizinkan NULL berulang pada UNIQUE; tambahkan index biasa saja bila level_id NULL banyak.
+
+Karena NULL berulang lolos UNIQUE, baris global bernomor urut ganda mungkin ada. `DialogueModel::global($context)` mengurutkan `sequence` lalu `id`; `gelita:story:update` memakai id terkecil dan menonaktifkan sisanya. Nilai `pose` dan `effect` dijaga `DialogueModel` (aturan `valid_dialogue_pose[character_code]` dan `valid_dialogue_effect`), bukan ENUM, agar kamus pose dapat bertambah tanpa migration.
 
 ### 18. `library_pages` (Pustaka Kedu)
 
@@ -772,7 +776,7 @@ UNIQUE: `(challenge_attempt_id, challenge_item_id)`.
 | session_id | BIGINT UNSIGNED | NO | — | FK CASCADE; INDEX |
 | challenge_attempt_id | BIGINT UNSIGNED | YES | NULL | FK CASCADE |
 | audio_asset_id | BIGINT UNSIGNED | NO | — | FK RESTRICT; INDEX |
-| action | VARCHAR(20) | NO | — | `play`\|`pause`\|`replay`\|`complete` |
+| action | VARCHAR(20) | NO | — | `play`\|`autoplay`\|`pause`\|`replay`\|`complete` — `play` = pemain menekan putar; `autoplay` = layar bernarasi memutar sendiri (setelah "Ketuk untuk mulai" atau maju otomatis) |
 | play_index | INT UNSIGNED | NO | 1 | pemutaran ke-n untuk aset itu |
 | listened_ms | BIGINT UNSIGNED | YES | NULL | |
 | completed | TINYINT(1) | NO | 0 | |
@@ -972,6 +976,7 @@ Nama file mengikuti konvensi CI4 `YYYY-MM-DD-HHMMSS_ClassName.php` di `app/Datab
 2026-01-01-003400_AddStaffMustChangePassword
 2026-01-01-003500_CreateLibraryMedia
 2026-01-01-003600_AddParticipantIntroSeen
+2026-01-01-003700_AddDialoguePoseEffect
 ```
 
 > `002900` menambahkan FK dari `levels` ke `media_assets`. Ini dipisah karena `levels` dibuat setelah `media_assets`, tetapi beberapa FK silang (`challenge_nodes.audio_intro_id` → `audio_assets`) lebih aman dipasang belakangan agar `up()`/`down()` bersih.
@@ -1089,6 +1094,12 @@ Backfill: peserta yang punya progres (`session_progress.completed_nodes > 0` pad
 
 Kolom ini tidak ikut ekspor (sheet Participants memilih kolomnya satu per satu) dan tidak memengaruhi penghapusan data: soft delete hanya mengisi `deleted_at`, hard delete menghapus barisnya utuh.
 
+### Pose dan efek dialog (`003700`)
+
+`003700` menambahkan `dialogues.pose` dan `dialogues.effect` (`VARCHAR(30) NULL`, setelah `character_code`). Isinya dari "Kamus pose dan efek" di `docs/naskah-cerita.md`. Baris yang sudah ada dibiarkan NULL oleh migration; server yang sudah berjalan mengisinya dengan `php spark gelita:story:update` setelah `php spark migrate`. `up()` memeriksa keberadaan kolom lebih dulu; `down()` membuang keduanya.
+
+Slot frame tokoh untuk pose baru (`char.jaka.{sad|afraid|determined}.{1-3}`, `char.kedu.{smile|worried|weak}.{1-3}`) didaftarkan `MediaAssetSeeder` dari `Config\Gelita::$characterAnimations`.
+
 ---
 
 ## Seeder
@@ -1103,7 +1114,7 @@ Letak: `app/Database/Seeds/`. Dijalankan berurutan lewat `DatabaseSeeder`.
 5. ResearchStudySeeder      (termasuk research_phases)
 6. LevelSeeder
 7. MediaAssetSeeder
-8. ContentSeeder            (15 challenge_nodes + dialogues + library_pages)
+8. ContentSeeder            (15 challenge_nodes + dialogues dari data/story.php + library_pages)
 9. SampleItemSeeder         (HANYA development: 2 item contoh per node)
 ```
 
@@ -1196,6 +1207,8 @@ Mendaftarkan berkas yang sudah ada di `public/assets/`. Seeder memindai folder d
 
 Folder yang dipindai: `assets/ui`, `assets/char`, `assets/bg`, `assets/map`, `assets/challenge`, `assets/library`, `assets/reward`, `assets/audio`.
 
+Slot `bg.loading` (`assets/bg/bg-loading`, 1920×1080) adalah latar tirai pemuatan layar penuh (05_VIEW_UI.md §Tirai); tanpa berkas, tirai memakai gradien cahaya CSS.
+
 ### 8. ContentSeeder — 15 Challenge Node
 
 Ini peta node final. `items_per_round` menentukan berapa item diambil dari bank.
@@ -1259,6 +1272,18 @@ Ini peta node final. `items_per_round` menentukan berapa item diambil dari bank.
 | wnb-3 | Sumber Mana yang Benar? | Which Source Is Right? | Bandingkan dua sumber, lalu nilai pernyataannya. |
 | wnb-4 | Pilih Sumber Terpercaya | Choose the Trusted Source | Pilih sumber yang paling dapat dipercaya. |
 | wnb-5 | Apa yang Sebaiknya Kamu Lakukan? | What Should You Do? | Pilih tindakan yang paling tepat dan bertanggung jawab. |
+
+**Cerita.** `ContentSeeder::seedDialogues()` menyisipkan 88 baris `app/Database/Seeds/data/story.php` — salinan persis `docs/naskah-cerita.md` (`StoryDataTest` mencocokkannya baris demi baris) — lengkap dengan tokoh, pose, efek, dan judul. Seperti seeder lain, baris yang sudah ada tidak ditimpa. Server yang sudah berjalan memperbarui ceritanya dengan `php spark gelita:story:update` (`App\Libraries\StorySync`):
+
+| Keadaan baris (dicocokkan per level, konteks, urutan) | Tindakan |
+|---|---|
+| belum ada | disisipkan, aktif |
+| teksnya masih teks seeder lama (`data/story-legacy.php`) | diperbarui seluruhnya |
+| teksnya sudah sama dengan naskah | tokoh/pose/efek/judul yang masih kosong diisi; nilai berbeda yang sudah terisi = suntingan admin |
+| disunting admin (teks, atau tokoh/pose/efek/judul) | dilewati dan dilaporkan; `--force` menimpanya |
+| urutan melebihi jumlah baris naskah | `is_active = 0` (tidak dihapus) |
+
+Kolom `audio_id_asset_id`, `audio_en_asset_id`, `background_media_id`, dan `is_active` baris yang diperbarui tidak pernah disentuh. Semua perubahan satu transaction; `--dry-run` hanya melaporkan. Bila naskah diubah lagi kelak, teks versi sebelumnya ditambahkan ke `story-legacy.php` agar baris lama dikenali sebagai teks bawaan, bukan suntingan admin.
 
 `ContentSeeder` hanya membuat struktur dan metadata node (judul, instruksi, config, posisi); `description_*` (teks kartu misi) diisi dari sheet `nodes` workbook bank soal atau editor konten, dan kartu misi tetap tampil tanpa deskripsi. `SampleItemSeeder` (development saja) menambah 2 item contoh per node agar alur dapat diuji. Isi bank soal production dimuat lewat impor workbook.
 

@@ -49,6 +49,9 @@ app/Views/
 │   ├── lang-switch.php          tombol ID / EN
 │   ├── character.php            gambar Jaka / Mbah Kedu
 │   ├── narration.php            balon narasi karakter
+│   ├── narrator-controls.php    ◀ ⏸/▶ ↻ ▶ + sakelar Otomatis (layar bernarasi)
+│   ├── narrator-tap.php         kartu "Ketuk untuk mulai"
+│   ├── curtain.php              tirai pemuatan layar penuh (mis. "Membuka Peta Kedu")
 │   ├── audio-player.php         play / pause / ulangi / transkrip
 │   ├── nav-bar.php              tombol navigasi bawah layar game
 │   ├── modal.php                kerangka dialog tengah layar
@@ -146,6 +149,8 @@ Sudah dijelaskan kerangkanya di 02_PROJECT_FOUNDATION.md. Tambahan yang wajib ad
 ```
 
 Dua `<img>` latar dipakai agar pergantian latar antar-halaman bisa dilakukan dengan crossfade, bukan berkedip.
+
+Section `overlay` (Tahap 2) dirender tepat setelah `rotate-gate`, **di luar** `<main>`, untuk lapisan layar penuh seperti tirai: lapisan itu tampil sejak paint pertama, dan `<main>`/HUD/nav dapat dibuat `inert` selama tirai menutupi tanpa ikut menonaktifkan tirainya. `cinematic.css` dimuat sesudah `game.css`, dan `<noscript><link rel="stylesheet" href="css/noscript.css"></noscript>` di `<head>` memastikan tirai tidak pernah tampil tanpa JavaScript (CSP-aman: tanpa `<style>`/skrip inline). Halaman dapat menambah kelas `is-cinematic` pada `<body>` lewat section `bodyClass` untuk tata letak layar penuh.
 
 Data untuk JavaScript dikirim lewat `<script type="application/json">`, **tidak pernah** dengan menyisipkan variabel PHP ke dalam string JavaScript. Ini mencegah XSS lewat konten yang diketik admin.
 
@@ -470,12 +475,19 @@ Bagian 3 dibuka dengan kotak perkamen kecil **"Mengapa kata sandi harus kuat?"**
 
 ### 6. Intro — `/intro` → `GateController::intro` → `game/intro.php`
 
-* Slide cerita pembuka dari `dialogues` context `intro`, satu per layar.
-* Gambar Jaka intro, judul, paragraf, `components/audio-player`.
-* Tombol Kembali / Lanjut, indikator titik halaman.
-* Slide terakhir (dan tombol pada kondisi tanpa slide) → `/intro/selesai`: `intro_seen_at` diisi bila masih kosong (idempoten), event `intro_completed` { first } dicatat, lalu redirect `/peta` dengan flash `curtain=map`.
-* **Pemain baru wajib menonton.** Controller mengirim `canSkip` (= `intro_seen_at` sudah terisi). Bila `false`, nav "Lewati" tidak dirender sama sekali; tiap slide tetap dapat dilanjut. Bila `true`, "Lewati" → `/peta`.
-* Setelah registrasi, halaman diawali kartu sambutan (flash `welcome`).
+Cerita pembuka **sinematik** (Tahap 2), `body.is-cinematic`, pemutar `game/narrator.js` mode `tap`.
+
+* Sembilan slide dari `dialogues` context `intro` (naskah §1), satu per layar penuh.
+* **Latar per slide** dari `dialogues.background_media_id` (`<img class="cine-bg">` di dalam slide), dengan Ken Burns pelan. Slide tanpa latar sendiri memakai latar layout: `bg.intro`, cadangan `bg.welcome`, lalu gradien CSS.
+* **Tokoh sesuai pose** (`components/character` dengan `pose`, jatuh ke `idle` bila frame pose belum diunggah) di kiri panggung. Narator tidak tampil sebagai gambar: slide narator memakai satu kolom.
+* **Kotak teks bergaya subtitle** di bawah: "Bagian n dari 9", papan nama tokoh, judul slide (Cinzel), teks, navigasi slide (Kembali · titik · Lanjut).
+* **Efek layar** dari `dialogues.effect` (`data-effect`): lapisan `.narrator-fx` (kabut, kabut tersibak, cahaya, kilat, getar, redup).
+* **Audio** per slide dari `audio_id_asset_id`/`audio_en_asset_id` lewat `audio_src()` (hanya yang `approved`). Slide tanpa audio yang tersedia tetap tampil sebagai teks dan dilanjutkan manual.
+* **Kartu "Ketuk untuk mulai"** menutupi layar sampai diketuk (pola di bawah). Kontrol narasi (◀ ⏸/▶ ↻ ▶ Otomatis) melayang di kiri atas; "Lewati" (bila boleh) di kanan atas seperti tombol lewati video.
+* Slide terakhir (dan tombol pada kondisi tanpa slide) → `/intro/selesai`: `intro_seen_at` diisi bila masih kosong (idempoten), event `intro_completed` { first } dicatat, lalu redirect `/peta` dengan flash `curtain=map`. Setelah narasi slide terakhir selesai, tombol "Mulai petualangan" berdenyut; halaman tidak pindah sendiri.
+* **Pemain baru wajib menonton.** Controller mengirim `canSkip` (= `intro_seen_at` sudah terisi). Bila `false`, nav "Lewati" tidak dirender sama sekali; tiap slide tetap dapat dilanjut. Bila `true`, "Lewati" → `/gerbang/peta` (tirai peta ikut tampil).
+* Setelah registrasi, halaman diawali kartu sambutan (flash `welcome`); dengan JavaScript kartu itu dipindah ke dalam kartu ketuk agar tetap terbaca.
+* Tanpa JavaScript: kartu ketuk dan kontrol tersembunyi, slide berpindah lewat `#slide-n` + `:target`, audio lewat `<audio controls>`.
 
 ### 7. Peta Kedu — `/peta` → `game/map-kedu.php`
 
@@ -483,7 +495,9 @@ Bagian 3 dibuka dengan kotak perkamen kecil **"Mengapa kata sandi harus kuat?"**
 
 * Gambar peta Kedu dengan 3 titik pada posisi `levels.map_x` / `map_y`.
 * Tiap titik: ikon status (lampu menyala = terbuka, gembok = terkunci, bintang = tuntas), nama wilayah, urutan, dan progres `n/5`.
-* Jaka berdiri di sisi kiri peta dengan balon narasi.
+* **Narasi Jaka** (`dialogues` context `map_intro`, 3 slide) di panduan kiri peta, menggantikan balon `Game.mapLead` (balon itu tetap dipakai bila narasi kosong): tokoh sesuai pose, balon berisi nama tokoh · judul dan teks, kontrol narasi, dan efek layar (`peta-01` kabut menutupi peta). Pintasan keyboard slide dimatikan (`data-keyboard="0"`) agar Spasi tetap menggulir halaman.
+* **Datang dari gerbang atau akhir cerita pembuka** (flash `curtain=map`): tirai "Membuka Peta Kedu" tampil sejak paint pertama sambil memuat `curtainAssets` (peta, latar, frame tokoh, latar wilayah, audio narasi) dengan progres nyata. Ketukan penutupnya membuka kunci audio, lalu musik peta dimulai dan narasi diputar otomatis (narrator mode `external`).
+* **Kunjungan lain** (tanpa flash, mis. muat ulang atau tombol beranda): tanpa tirai; narasi tampil sebagai teks utuh dengan tombol ▶ (mode `manual`). Menekan ▶ memulai narasi (`play`), slide berikutnya diputar otomatis (`autoplay`).
 * Klik titik wilayah yang **baru terbuka** (status `open`: terbuka, belum ada tantangan yang selesai) → **selalu** `/dialog/{code}` lebih dulu; wilayah yang sedang dijelajahi atau sudah tuntas → langsung `/wilayah/{code}`. Tujuan ini dihitung satu kali di `GameProgress::regionEntryPath()` dan dikirim sebagai `entry` pada setiap baris `levelOverview()`, sehingga peta, layar selesai, dan API memakai aturan yang sama.
 * Klik titik terkunci → toast "Selesaikan wilayah sebelumnya dulu."
 * Tombol Pustaka melayang di pojok kiri bawah.
@@ -767,7 +781,7 @@ Menu yang tidak berhak diakses **tidak dirender** untuk guru. **Ubah sandi** (`/
 
 ### Arsitektur
 
-Enam berkas, dimuat berurutan. Tidak ada framework CSS, tidak ada build step.
+Delapan berkas, dimuat berurutan. Tidak ada framework CSS, tidak ada build step.
 
 ```text
 public/assets/css/
@@ -776,10 +790,12 @@ public/assets/css/
 ├── layout.css        hud, app, scene, sidebar admin, grid halaman
 ├── components.css    tombol, panel, kartu, tabel, modal, toast, chip, form
 ├── game.css          layar permainan dan lima arena tantangan
+├── cinematic.css     tirai, pemutar narasi, efek layar, cerita pembuka & narasi peta (Tahap 2)
+├── noscript.css      hanya lewat <noscript>: tirai disembunyikan
 └── admin.css         panel, tabel data, filter bar, chart, form konten
 ```
 
-Halaman game memuat: `tokens, base, layout, components, game`.
+Halaman game memuat: `tokens, base, layout, components, game, cinematic` (+ `noscript` tanpa JavaScript).
 Halaman admin memuat: `tokens, base, layout, components, admin`.
 
 ### `tokens.css`
@@ -899,6 +915,29 @@ Teks aturan tetap berukuran `--step-0` — ini materi yang harus dibaca anak, bu
 * Warna tidak pernah menjadi satu-satunya penanda benar/salah: selalu disertai ikon ✓/✗ dan teks.
 * Elemen interaktif memakai `<button>` dan `<a>`, bukan `<div>` dengan handler klik.
 
+### Tirai — `components/curtain.php` + `core/curtain.js`
+
+Layar pemuatan layar penuh untuk perpindahan yang berat aset. Tahap 2 memakai jenis `map` ("Membuka Peta Kedu"); jenis `region` dan `challenge` menyusul di Tahap 3 dengan API yang sama.
+
+* **Markup.** `data-curtain-layer="{kind}"`, `data-preload` (JSON URL), `data-statuses` (JSON baris status bergilir), `data-tap`. Isi jenis `map`: latar `bg.loading` (1920×1080, cadangan gradien cahaya CSS), lentera dengan cahaya berdenyut yang membesar mengikuti progres (`--p` 0…1), tiga Serpihan Cahaya mengorbit, judul Cinzel, baris status bergilir ("Menyalakan lentera…", "Menyibak Kabut Lupa…", "Memanggil Serpihan Cahaya…"), progres berupa berkas cahaya emas (`role="progressbar"`), lalu tombol "Ketuk untuk membuka peta".
+* **Letak.** Dirender lewat section `overlay` layout, di luar `<main>`; selama tirai tampil HUD, `<main>`, dan nav bar diberi `inert`.
+* **Progres nyata.** `playCurtain()` memuat setiap URL (gambar lewat `Image()`, selain itu `fetch`) dan lebar berkas cahaya = aset selesai / total, berhasil maupun gagal. Durasi minimal 2,5 detik dan maksimal 8 detik, dihitung sejak halaman dibuka; lewat 8 detik tirai tetap lanjut walau ada aset yang belum/gagal dimuat.
+* **Ketukan penutup** (opsional, bawaan ya) memanggil `Sfx.unlock()` di dalam ketukan, jadi musik dan narasi boleh langsung berbunyi setelahnya.
+* **Tanpa JavaScript** tirai tidak pernah menutupi halaman: `noscript.css` menyembunyikannya. Bila modul JS gagal dimuat, animasi pengaman CSS memudarkan tirai sendiri setelah ±10 detik (`curtain-failsafe`); `curtain.js` membatalkannya dengan kelas `is-live`. Dengan `prefers-reduced-motion`, pengaman tetap berjalan tanpa pudar, dan orbit/denyut/kilau dimatikan.
+* **bfcache.** Tirai yang masih aktif dibersihkan saat `pageshow` dengan `persisted`.
+* **Tautan bertirai (Tahap 3).** `a[data-curtain="{kind}"]` (opsional `data-curtain-preload`) memutar tirai jenis itu dari `<template id="tpl-curtain-{kind}">` sebelum berpindah halaman; tanpa template, tautan berjalan biasa.
+
+### Pola ketuk-untuk-mulai
+
+Browser (terutama Safari iPad) memblokir audio bersuara sampai pengguna mengetuk halaman *itu*, dan GELITA adalah aplikasi multi-halaman: ketukan di halaman sebelumnya tidak berlaku. Karena itu setiap layar bernarasi dibuka kartu **"Ketuk untuk mulai"** (`components/narrator-tap.php`), atau ketukan penutup tirai.
+
+1. Ketukan itu memanggil `Sfx.unlock()`, yang juga "membuka" satu elemen `<audio>` bersama untuk narasi (memutar hening sesaat di dalam ketukan). Semua slide layar itu memakai elemen yang sama, sehingga slide berikutnya boleh berbunyi tanpa ketukan baru.
+2. Narasi slide diputar otomatis (telemetry `autoplay`). Teks diketik mesin ketik: ketukan pertama pada kotak teks menampilkan teks penuh, ketukan kedua lanjut.
+3. Sakelar **Otomatis** (bawaan menyala, disimpan sebagai preferensi perangkat) memajukan slide 1,2 detik setelah audio selesai. Slide terakhir tidak pindah halaman sendiri.
+4. Semua narasi punya audio **dan** teks. Bila audio bahasa aktif belum ada atau belum disetujui, teks tetap tampil dan slide dilanjutkan manual; tombol ⏸/▶ dan ↻ disembunyikan, begitu juga sakelar Otomatis bila tak satu slide pun beraudio.
+5. Tidak ada yang berbunyi sebelum interaksi: `NarrationPlayer#autoplay()` menolak berbunyi sebelum `Sfx.unlock()` atau saat suara dimatikan di HUD.
+6. `prefers-reduced-motion`: tanpa mesin ketik, tanpa efek layar, tanpa Ken Burns.
+
 ### Kondisi aset hilang
 
 Aplikasi harus tetap terpakai saat berkas gambar belum diunggah. Aturan:
@@ -964,6 +1003,8 @@ Semua informasi dasar terbaca dan semua form dapat dikirim tanpa JS; tahap 6 han
 | Kebutuhan | Teknik |
 |---|---|
 | Slide intro, dialog, dan buku Pustaka | anchor + CSS `:target`; slide aktif disembunyikan yang lain lewat `:has(.slide:target)` |
+| Layar bernarasi (kartu ketuk, kontrol narasi) | atribut `hidden` di markup; `narrator.js` yang membukanya |
+| Tirai pemuatan | `<noscript>` memuat `noscript.css` (tirai `display: none`); animasi pengaman memudarkannya bila modul JS gagal |
 | Konfirmasi keluar tantangan, hapus butir, nonaktifkan akun, aktifkan rilis | `<details class="confirm">`; di dalam sel tabel memakai `.confirm-inline` agar tidak terpotong `overflow` |
 | Panduan bentuk JSON per `interaction_type`, kolom sekolah hanya untuk guru, pembicara dialog | CSS `:has()` pada pilihan `<select>`/radio |
 | Tombol kirim persetujuan redup sampai semua wajib tercentang | `form:invalid` |
@@ -988,6 +1029,7 @@ View tahap ini membutuhkan data yang belum dikirim controller tahap 4. Perubahan
 * **Registrasi memakai nama lengkap.** Label kolom `display_name` adalah "Nama lengkap" / "Full name". Teks persetujuan (`Game.consentBody`) kini menyebut seluruh data profil yang dicatat — termasuk nama lengkap — dan bahwa nama hanya dapat dilihat guru dan tim peneliti. Versi teks persetujuan naik menjadi `2` (`RegisterController::CONSENT_VERSION`); persetujuan yang sudah tersimpan tetap bertanda versi `1`.
 * **Cerita pembuka wajib bagi pemain baru; halaman awal hanya satu tombol.** `/` berisi logo dan satu tombol Mulai → `/mulai`. Belum login → pilih akun baru/lama; sudah login → `/gerbang`. Pemain yang belum pernah menonton cerita pembuka sampai selesai (`participants.intro_seen_at` kosong) selalu dibawa ke `/intro` tanpa tombol "Lewati", dan `/peta` menolak mereka (`introGate()`). Pemain lama memilih di `/gerbang`: lihat cerita pembuka (kini dengan "Lewati") atau langsung ke peta. Peserta yang sudah punya progres saat migrasi `003600` dianggap sudah menonton (backfill), jadi tidak dipaksa. Setiap jalan ke peta dari gerbang/intro membawa flash `curtain=map` untuk layar tirai tahap berikutnya. Dikunci oleh `tests/unit/StartGateTest.php`.
 * **Kolom sandi** sengaja tanpa atribut `minlength`: sandi lemah harus sampai ke server agar metrik `pw_weak_submit_count` tercatat.
+* **Tahap 2 — layar bernarasi dan tirai.** Karena autoplay bersuara diblokir sampai halaman itu sendiri diketuk (Safari iPad) dan GELITA multi-halaman, setiap layar bernarasi dibuka kartu "Ketuk untuk mulai", dan perpindahan berat aset memakai tirai yang ketukan penutupnya membuka kunci audio. Putar otomatis dicatat terpisah (`audio_usage_events.action = autoplay`) agar peneliti dapat membedakannya dari putar manual. Teks seluruh narasi berasal dari satu sumber (`app/Database/Seeds/data/story.php` = `docs/naskah-cerita.md`); server lama memperbaruinya dengan `gelita:story:update` tanpa menimpa suntingan admin. Dialog wilayah `level_open` yang baru (15–16 baris per wilayah) sudah tampil di halaman dialog sekarang; tampilan dramatisnya (pose, efek, kartu bab) menyusul di Tahap 3. Dikunci oleh `CinematicViewTest`, `StoryDataTest`, `StoryUpdateCommandTest`, dan `DialogueModelTest`.
 * **Audit pra-tahap 6 (23 September 2026).** Penelusuran alur nyata di MariaDB menemukan beberapa cacat di lapisan server yang menopang view ini; semuanya diperbaiki tanpa mengubah markup:
   * attempt `cari` tidak dapat ditutup karena baris objek jebakan dihitung "belum dijawab" — kini petunjuk, progres, dan syarat `/complete` memakai satu aturan (`ChallengeService::expectsAnswer()`);
   * first-pass `cari` kini ditutup salah oleh klik pertama yang keliru, dan `allow_retry = false` (arena `pilihan`) ditegakkan server;

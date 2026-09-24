@@ -235,6 +235,22 @@ final class StoryUpdateCommandTest extends CIUnitTestCase
         $this->assertSame('glow', $row['effect']);
     }
 
+    public function testAdminPoseEditIsKeptUnlessForced(): void
+    {
+        command('gelita:story:update');
+        $where = ['level_id' => null, 'context_code' => 'map_intro', 'sequence' => 1];
+        $this->sqlite->table('dialogues')->where($where)->update(['pose' => 'afraid', 'effect' => 'glow']);
+
+        $report = (new StorySync($this->sqlite))->run();
+        $this->assertSame(['map_intro #1'], $report['skipped']);
+        $this->assertSame('afraid', $this->row(null, 'map_intro', 1)['pose']);
+
+        (new StorySync($this->sqlite))->run(force: true);
+        $row = $this->row(null, 'map_intro', 1);
+        $this->assertSame('idle', $row['pose']);
+        $this->assertSame('fog', $row['effect']);
+    }
+
     public function testDryRunWritesNothing(): void
     {
         $this->seedLegacy();

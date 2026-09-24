@@ -12,11 +12,16 @@ use CodeIgniter\Database\BaseConnection;
  * Aturan per baris naskah, dicocokkan lewat (level, konteks, urutan):
  *
  * - belum ada di tabel → disisipkan (aktif);
- * - teksnya masih teks seeder lama (data/story-legacy.php) → diperbarui;
- * - teksnya sudah sama dengan naskah → tokoh, pose, efek, dan judul
- *   diselaraskan bila berbeda (tanpa perubahan: "sudah sesuai");
- * - teksnya lain lagi = disunting admin → dilewati dan dilaporkan, kecuali
- *   $force.
+ * - teksnya masih teks seeder lama (data/story-legacy.php) → diperbarui
+ *   seluruhnya (tokoh, pose, efek, judul, teks);
+ * - teksnya sudah sama dengan naskah → tokoh, pose, efek, atau judul yang
+ *   masih kosong diisi (mis. pose/efek setelah migration 003700). Nilai lain
+ *   yang berbeda dari naskah dianggap suntingan admin;
+ * - teksnya lain lagi, atau tokoh/pose/efek/judulnya disunting = suntingan
+ *   admin → dilewati dan dilaporkan, kecuali $force.
+ *
+ * Bila naskah diubah lagi kelak, teks versi sebelumnya perlu ditambahkan ke
+ * data/story-legacy.php; tanpa itu baris lama terbaca sebagai suntingan admin.
  *
  * Kolom audio dan latar (`audio_id_asset_id`, `audio_en_asset_id`,
  * `background_media_id`) tidak pernah disentuh, begitu juga `is_active`
@@ -197,15 +202,27 @@ final class StorySync
         }
 
         $changes = [];
+        $edited  = false;
 
         foreach ($data as $column => $value) {
             $old = $row[$column] ?? null;
+            $old = $old === null || $old === '' ? null : (string) $old;
 
-            if (in_array($column, ['text_id', 'text_en'], true)
-                ? $this->normalize((string) $old) !== $this->normalize((string) $value)
-                : ($old === null ? null : (string) $old) !== $value) {
+            if (in_array($column, ['text_id', 'text_en'], true)) {
+                if ($this->normalize((string) $old) !== $this->normalize((string) $value)) {
+                    $changes[$column] = $value;
+                }
+            } elseif ($old !== $value) {
+                // Teks naskah + kolom lain yang sudah terisi berbeda = suntingan admin
+                $edited = $edited || ($current === $story && $old !== null);
                 $changes[$column] = $value;
             }
+        }
+
+        if ($edited && ! $isOld && ! $force) {
+            $report['skipped'][] = $label;
+
+            return;
         }
 
         if ($changes === []) {

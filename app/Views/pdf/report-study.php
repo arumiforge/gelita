@@ -97,7 +97,7 @@ $distribution = static function (array $groups, int $total) use ($num): array {
   </tr>
   <tr>
     <td><div class="kpi-value"><?= esc($num($summary['hint_usage'], 2)) ?></div><div class="kpi-label">petunjuk per tantangan</div></td>
-    <td><div class="kpi-value"><?= esc($num($summary['audio_usage']['total_plays'])) ?></div><div class="kpi-label">pemutaran audio (<?= esc($num($summary['audio_usage']['total_replays'])) ?> diulang)</div></td>
+    <td><div class="kpi-value"><?= esc($num($summary['audio_usage']['total_plays'])) ?></div><div class="kpi-label">pemutaran audio oleh siswa (<?= esc($num($summary['audio_usage']['total_replays'])) ?> diulang, <?= esc($num($summary['audio_usage']['total_autoplays'] ?? 0)) ?> otomatis)</div></td>
     <td><div class="kpi-value"><?= esc($pct($security['password']['participants'] > 0 ? $security['password']['strong_first_try'] / $security['password']['participants'] : 0, true)) ?></div><div class="kpi-label">langsung membuat sandi kuat</div></td>
   </tr>
 </table>

@@ -82,7 +82,7 @@ $prePost  = $profile['pre_post'];
       <div><dt>Petunjuk dipakai</dt><dd class="num"><?= esc($profile['hint_uses']) ?></dd></div>
       <div><dt>Tersulit</dt><dd><?= $hardest === null ? '—' : esc(($nodeTitles[$hardest['node_id']] ?? '#' . $hardest['node_id']) . ' (' . fmt_pct($hardest['first_pass_accuracy'], false, 0) . ')') ?></dd></div>
       <div><dt>Pretest → posttest</dt><dd class="num"><?= $prePost['delta'] === null ? '—' : esc(fmt_num($prePost['pretest'], 1, 'id') . ' → ' . fmt_num($prePost['posttest'], 1, 'id')) ?></dd></div>
-      <div><dt>Audio diputar</dt><dd class="num"><?= esc($profile['audio']['total_plays']) ?> kali</dd></div>
+      <div><dt>Audio diputar</dt><dd class="num"><?= esc($profile['audio']['total_plays']) ?> kali<?php if (! empty($profile['audio']['total_autoplays'])): ?> <small class="muted">+ <?= esc($profile['audio']['total_autoplays']) ?> otomatis</small><?php endif ?></dd></div>
     </dl>
   </section>
 </div>
