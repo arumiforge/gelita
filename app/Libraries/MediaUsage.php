@@ -30,6 +30,7 @@ class MediaUsage
         'bg.intro'             => 'Latar cerita pembuka',
         'bg.map'               => 'Latar peta Kedu',
         'bg.reflection'        => 'Latar Balai Refleksi',
+        'bg.loading'           => 'Latar tirai pemuatan layar penuh (mis. Membuka Peta Kedu)',
         'map.kedu'             => 'Peta Karesidenan Kedu (halaman peta)',
         'map.region.*'         => 'Peta wilayah (pos tantangan)',
         'bg.*.region'          => 'Latar wilayah (dialog, peta wilayah, tantangan)',
