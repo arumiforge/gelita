@@ -60,7 +60,7 @@ class Gelita extends BaseConfig
         'challenge_opened', 'challenge_checked', 'challenge_completed',
         'challenge_skipped', 'challenge_abandoned', 'answer_submitted',
         'answer_changed', 'wrong_target_clicked', 'hint_opened',
-        'audio_play', 'audio_pause', 'audio_replay', 'audio_completed',
+        'audio_play', 'audio_autoplay', 'audio_pause', 'audio_replay', 'audio_completed',
         'feedback_submitted', 'password_changed', 'intro_completed',
     ];
 

@@ -9,6 +9,8 @@
  *
  * Spasi dan panah kanan = lanjut, panah kiri = kembali (cara tercepat di
  * papan tulis interaktif). Slide terakhir: lanjut mengikuti tautan akhirnya.
+ * `keyboard: false` mematikan pintasan itu untuk slide yang hanya sebagian
+ * layar (narasi di panduan peta), agar Spasi tetap menggulir halaman.
  */
 import { $, $$ } from '../core/dom.js';
 import { pauseNarration } from '../core/audio.js';
@@ -16,9 +18,10 @@ import { pauseNarration } from '../core/audio.js';
 const INTERACTIVE = 'input, textarea, select, button, summary, video, audio, [contenteditable="true"]';
 
 /**
- * @param {{ list: HTMLElement, prefix: string, onChange?: (index: number, slide: HTMLElement, total: number) => void }} options
+ * @param {{ list: HTMLElement, prefix: string, keyboard?: boolean,
+ *           onChange?: (index: number, slide: HTMLElement, total: number) => void }} options
  */
-export function initSlides({ list, prefix, onChange = null }) {
+export function initSlides({ list, prefix, keyboard = true, onChange = null }) {
   if (!list) return null;
 
   const slides = $$(':scope > .slide', list);
@@ -33,7 +36,8 @@ export function initSlides({ list, prefix, onChange = null }) {
 
   let current = indexFromHash();
 
-  const show = (n, { notify = true } = {}) => {
+  /** focus: false untuk perpindahan otomatis (narasi maju sendiri) — fokus pengguna tidak direbut. */
+  const show = (n, { notify = true, focus = true } = {}) => {
     const target = Math.min(total, Math.max(1, n));
     const changed = target !== current;
     current = target;
@@ -48,7 +52,7 @@ export function initSlides({ list, prefix, onChange = null }) {
     const slide = slides[target - 1];
     // Fokus ke isi slide agar pembaca layar membaca slide baru
     const focusTarget = $('h2, .slide-text, .dialogue-text', slide) || slide;
-    if (changed && focusTarget) {
+    if (changed && focus && focusTarget) {
       focusTarget.setAttribute('tabindex', '-1');
       focusTarget.focus({ preventScroll: true });
     }
@@ -66,7 +70,7 @@ export function initSlides({ list, prefix, onChange = null }) {
     show(n);
   });
 
-  document.addEventListener('keydown', (event) => {
+  if (keyboard) document.addEventListener('keydown', (event) => {
     if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey) return;
     if (document.body.classList.contains('has-modal')) return;
     if (event.target instanceof Element && event.target.closest(INTERACTIVE)) return;

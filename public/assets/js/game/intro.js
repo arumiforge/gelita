@@ -1,20 +1,15 @@
 /**
- * Cerita pembuka (/intro): slide tanpa memuat ulang halaman + event
- * `dialogue_advanced` { index, total, context: 'intro' } tiap perpindahan.
+ * Cerita pembuka (/intro): pemutar narasi sinematik mode `tap`
+ * (game/narrator.js). Kartu "Ketuk untuk mulai" membuka kunci audio, lalu
+ * narasi diputar otomatis; event `dialogue_advanced` { index, total,
+ * context: 'intro' } tiap perpindahan slide.
  */
 import { $ } from '../core/dom.js';
-import { emit } from '../core/events.js';
-import { initSlides } from './slides.js';
+import { initNarrator } from './narrator.js';
 
-export function initStory(context = 'intro') {
-  const screen = $('[data-screen="intro"]');
-  if (!screen) return;
+export function initStory() {
+  const screen = $('[data-screen="intro"][data-narrator]');
+  if (!screen) return null;
 
-  initSlides({
-    list: $('ol.slides', screen),
-    prefix: 'slide-',
-    onChange: (index, slide, total) => {
-      emit('dialogue_advanced', { payload: { index, total, context, character: slide.dataset.character || null } });
-    },
-  });
+  return initNarrator(screen);
 }
