@@ -72,6 +72,33 @@ if (! function_exists('icon')) {
     }
 }
 
+if (! function_exists('curtain_attrs')) {
+    /**
+     * Atribut tautan bertirai (core/curtain.js, initCurtains()): jenis tirai,
+     * isi slot teksnya, dan aset yang dipramuat. Tirai jenis itu harus ada di
+     * halaman sebagai <template id="tpl-curtain-{kind}">; tanpa template atau
+     * tanpa JavaScript tautan berpindah halaman seperti biasa.
+     *
+     * @param array<string, string> $text    slot → teks, mis. ['title' => 'Menuju Magelang…']
+     * @param list<string>          $preload URL aset halaman tujuan
+     */
+    function curtain_attrs(string $kind, array $text = [], array $preload = []): string
+    {
+        $preload = array_values(array_unique(array_filter($preload, static fn ($url): bool => is_string($url) && $url !== '')));
+        $html    = ' data-curtain="' . esc($kind, 'attr') . '"';
+
+        if ($text !== []) {
+            $html .= ' data-curtain-text="' . esc(json_encode($text, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), 'attr') . '"';
+        }
+
+        if ($preload !== []) {
+            $html .= ' data-curtain-preload="' . esc(json_encode($preload, JSON_UNESCAPED_SLASHES), 'attr') . '"';
+        }
+
+        return $html;
+    }
+}
+
 if (! function_exists('lang_or')) {
     /**
      * lang() dengan cadangan: kunci yang belum diterjemahkan tampil sebagai

@@ -98,6 +98,63 @@ class GameEventLogModel extends Model
             ->findAll(max(1, $limit));
     }
 
+    /**
+     * Wilayah yang narasi "Kenali wilayah"-nya pernah didengar peserta ini
+     * sampai slide terakhir, di sesi mana pun: event `dialogue_advanced`
+     * dengan payload `context = region_intro` dan `index >= total`.
+     * Memakai index (participant_id, event_type, occurred_at); satu peserta
+     * hanya punya puluhan event dialog, jadi murah dibaca di setiap peta.
+     *
+     * @return list<int> level_id
+     */
+    public function heardRegionIntros(int $participantId): array
+    {
+        $rows = $this->db->table($this->table)
+            ->select('level_id, payload_json')
+            ->where('participant_id', $participantId)
+            ->where('event_type', 'dialogue_advanced')
+            ->where('level_id IS NOT NULL', null, false)
+            ->where('deleted_at', null)
+            ->like('payload_json', '"context":"region_intro"')
+            ->get()
+            ->getResultArray();
+
+        return self::reachedLastSlide($rows, 'region_intro');
+    }
+
+    /**
+     * level_id dari baris event dialog yang mencapai slide terakhir konteks itu.
+     *
+     * @param list<array{level_id: int|string|null, payload_json: array<string, mixed>|string|null}> $rows
+     *
+     * @return list<int>
+     */
+    public static function reachedLastSlide(array $rows, string $context): array
+    {
+        $levels = [];
+
+        foreach ($rows as $row) {
+            $payload = is_array($row['payload_json'] ?? null)
+                ? $row['payload_json']
+                : json_decode((string) ($row['payload_json'] ?? ''), true);
+            $levelId = (int) ($row['level_id'] ?? 0);
+
+            if ($levelId <= 0 || ! is_array($payload) || ($payload['context'] ?? null) !== $context) {
+                continue;
+            }
+
+            $total = (int) ($payload['total'] ?? 0);
+
+            if ($total > 0 && (int) ($payload['index'] ?? 0) >= $total) {
+                $levels[$levelId] = $levelId;
+            }
+        }
+
+        sort($levels);
+
+        return array_values($levels);
+    }
+
     public function existsClientEvent(int $sessionId, string $clientEventId): bool
     {
         return $this->db->table($this->table)

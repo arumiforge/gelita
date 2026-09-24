@@ -186,6 +186,25 @@ if (! function_exists('media_key_src')) {
     }
 }
 
+if (! function_exists('character_frame_src')) {
+    /**
+     * Frame pertama tokoh dalam pose tertentu (`char.{jaka|kedu}.{pose}.1`),
+     * cadangan pose `idle`. NULL bila keduanya belum diunggah (view memakai
+     * monogram) atau untuk narator, yang tidak tampil sebagai gambar.
+     */
+    function character_frame_src(string $character, ?string $pose = null): ?string
+    {
+        if ($character === '' || $character === 'narator') {
+            return null;
+        }
+
+        $slug = $character === 'mbah_kedu' ? 'kedu' : $character;
+        $pose = $pose === null || $pose === '' ? 'idle' : $pose;
+
+        return media_key_src("char.{$slug}.{$pose}.1") ?? media_key_src("char.{$slug}.idle.1");
+    }
+}
+
 if (! function_exists('media_key_src_locale')) {
     /**
      * media_key_src() untuk gambar bertulisan yang punya varian bahasa

@@ -1,10 +1,12 @@
 /**
  * Pemutar narasi sinematik — dipakai cerita pembuka (/intro), narasi peta
- * (map_intro), dan layar bernarasi Tahap 3.
+ * (map_intro), dan layar bernarasi Tahap 3: Kenali wilayah (region_intro),
+ * dialog wilayah (level_open), wilayah tuntas (level_done), penutup (ending).
  *
  * Markup (lihat game/intro.php dan game/map-kedu.php):
  *
  *   [data-narrator][data-context][data-prefix][data-mode][data-level-id?]
+ *                  [data-keyboard="0"?][data-hash="0"?]
  *     ol.slides > li.slide#{prefix}{n}[data-effect][data-character]
  *       .slide-text            teks yang diketik mesin ketik
  *       .audio-player[data-src] narasi slide (tidak ada = teks saja)
@@ -24,14 +26,19 @@
  * aktif) slide maju sendiri 1,2 detik setelah audio selesai. Slide tanpa
  * audio yang tersedia/disetujui tetap tampil sebagai teks dan dilanjutkan
  * manual. Setiap perpindahan mengirim `dialogue_advanced` { index, total,
- * context, character }.
+ * context, character } — hanya di sini, jadi modul halaman (dialogue.js,
+ * map.js) cukup memakai `onSlide` tanpa mengirim event sendiri.
+ *
+ * `data-hash="0"`: slide tidak memakai hash URL (slides.js `hash: false`),
+ * untuk beberapa pemutar dalam satu halaman (overlay Kenali di peta).
+ * Pemutar yang sudah `stop()` boleh `start()` lagi (overlay dibuka ulang).
  *
  * Tanpa JavaScript slide tetap berpindah lewat #{prefix}{n} + CSS :target;
  * kartu ketuk dan kontrol tetap tersembunyi. Dengan prefers-reduced-motion:
  * tanpa mesin ketik, tanpa efek layar, tanpa Ken Burns (CSS).
  */
 import { $, $$ } from '../core/dom.js';
-import { emit } from '../core/events.js';
+import { emit, flush } from '../core/events.js';
 import { Sfx, narrationPlayer, pauseNarration } from '../core/audio.js';
 import { Storage } from '../core/storage.js';
 import { initSlides } from './slides.js';
@@ -45,11 +52,16 @@ const reducedMotion = () => window.matchMedia?.('(prefers-reduced-motion: reduce
 
 /**
  * @param {HTMLElement} root [data-narrator]
- * @param {{ onFinish?: () => void }} [options] onFinish: pemain meminta lanjut di slide terakhir
+ * @param {{ onFinish?: () => void,
+ *           onSlide?: (index: number, slide: HTMLElement, total: number) => void }} [options]
+ *   onFinish: pemain meminta lanjut di slide terakhir;
+ *   onSlide: setiap perpindahan slide (sesudah event dikirim), mis. menukar pose tokoh
  * @returns {{ start: (opts?: { userInitiated?: boolean }) => void, stop: () => void,
- *             show: (n: number) => void, get started(): boolean } | null}
+ *             show: (n: number, opts?: { notify?: boolean, focus?: boolean }) => void,
+ *             next: () => void, prev: () => void, advance: () => void,
+ *             readonly current: number, readonly total: number, readonly started: boolean } | null}
  */
-export function initNarrator(root, { onFinish = null } = {}) {
+export function initNarrator(root, { onFinish = null, onSlide = null } = {}) {
   const list = $('ol.slides', root);
   if (!root || !list) return null;
 
@@ -75,12 +87,17 @@ export function initNarrator(root, { onFinish = null } = {}) {
     list,
     prefix,
     keyboard: root.dataset.keyboard !== '0',
+    hash: root.dataset.hash !== '0',
     onChange: (index, slide, total) => {
       emit('dialogue_advanced', {
         levelId,
         payload: { index, total, context, character: slide.dataset.character || null },
       });
+      // Slide terakhir = narasi didengar sampai habis (lencana Kenali, analitik):
+      // kirim sekarang, jangan menunggu antrean 3 detik atau beacon saat halaman ditutup
+      if (index >= total) flush();
       enter(slide);
+      onSlide?.(index, slide, total);
     },
   });
   if (!slides) return null;
@@ -219,11 +236,18 @@ export function initNarrator(root, { onFinish = null } = {}) {
     if (slides.current > 1) slides.show(slides.current - 1);
   }
 
+  /** Ketukan/tombol lanjut: teks yang masih diketik ditampilkan penuh dulu, baru lanjut. */
+  function advance() {
+    if (finishTyping()) return;
+    next();
+  }
+
   function start({ userInitiated = false } = {}) {
     if (started) return;
     started = true;
     paused = false;
     root.classList.add('is-started');
+    root.classList.remove('is-finished');
     if (tapCard) tapCard.hidden = true;
     const slide = current();
     applyEffect(slide);
@@ -232,10 +256,16 @@ export function initNarrator(root, { onFinish = null } = {}) {
     refresh();
   }
 
+  /** Hentikan narasi; start() berikutnya memulai lagi (overlay yang dibuka ulang). */
   function stop() {
     clearAdvance();
     finishTyping();
     pauseNarration();
+    started = false;
+    paused = false;
+    root.classList.remove('is-started', 'is-playing', 'is-finished');
+    if (fx) fx.className = fx.className.replace(/\bfx-[a-z-]+\b/g, '').trim();
+    refresh();
   }
 
   // ------------------------------------------------------------ kontrol
@@ -314,8 +344,7 @@ export function initNarrator(root, { onFinish = null } = {}) {
     const target = event.target instanceof Element ? event.target : null;
     if (!target || !started || !target.closest('[data-narrator-advance]')) return;
     if (target.closest('a, button, summary, input, select, textarea, details, .audio-player')) return;
-    if (finishTyping()) return;
-    next();
+    advance();
   });
 
   // Spasi/→ saat mengetik: tuntaskan teks dulu (slides.js mengabaikan event yang sudah ditangani)
@@ -356,7 +385,12 @@ export function initNarrator(root, { onFinish = null } = {}) {
   return {
     start,
     stop,
-    show: (n) => slides.show(n),
+    next,
+    prev,
+    advance,
+    show: (n, opts) => slides.show(n, opts),
+    get current() { return slides.current; },
+    get total() { return slides.total; },
     get started() { return started; },
   };
 }

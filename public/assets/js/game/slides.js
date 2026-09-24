@@ -11,6 +11,11 @@
  * papan tulis interaktif). Slide terakhir: lanjut mengikuti tautan akhirnya.
  * `keyboard: false` mematikan pintasan itu untuk slide yang hanya sebagian
  * layar (narasi di panduan peta), agar Spasi tetap menggulir halaman.
+ *
+ * `hash: false` (Tahap 3) untuk slide yang berbagi halaman dengan slide lain
+ * (overlay Kenali wilayah di peta): URL tidak disentuh, slide ditentukan
+ * kelas .is-current (`data-managed="class"`, lihat cinematic.css), dan hash
+ * milik daftar slide lain diabaikan. Tanpa JavaScript tetap :target.
  */
 import { $, $$ } from '../core/dom.js';
 import { pauseNarration } from '../core/audio.js';
@@ -18,23 +23,23 @@ import { pauseNarration } from '../core/audio.js';
 const INTERACTIVE = 'input, textarea, select, button, summary, video, audio, [contenteditable="true"]';
 
 /**
- * @param {{ list: HTMLElement, prefix: string, keyboard?: boolean,
+ * @param {{ list: HTMLElement, prefix: string, keyboard?: boolean, hash?: boolean,
  *           onChange?: (index: number, slide: HTMLElement, total: number) => void }} options
  */
-export function initSlides({ list, prefix, keyboard = true, onChange = null }) {
+export function initSlides({ list, prefix, keyboard = true, hash = true, onChange = null }) {
   if (!list) return null;
 
   const slides = $$(':scope > .slide', list);
   const total = slides.length;
   if (!total) return null;
 
-  const indexFromHash = () => {
+  /** Nomor slide dari hash milik daftar ini, atau null bila hash bukan miliknya. */
+  const hashIndex = () => {
     const match = window.location.hash.match(new RegExp(`^#${prefix}(\\d+)$`));
-    const n = match ? Number(match[1]) : 1;
-    return Math.min(total, Math.max(1, n));
+    return match ? Math.min(total, Math.max(1, Number(match[1]))) : null;
   };
 
-  let current = indexFromHash();
+  let current = hash ? hashIndex() ?? 1 : 1;
 
   /** focus: false untuk perpindahan otomatis (narasi maju sendiri) — fokus pengguna tidak direbut. */
   const show = (n, { notify = true, focus = true } = {}) => {
@@ -42,7 +47,7 @@ export function initSlides({ list, prefix, keyboard = true, onChange = null }) {
     const changed = target !== current;
     current = target;
 
-    if (window.location.hash !== `#${prefix}${target}`) {
+    if (hash && window.location.hash !== `#${prefix}${target}`) {
       window.location.replace(`#${prefix}${target}`);
     }
 
@@ -90,14 +95,15 @@ export function initSlides({ list, prefix, keyboard = true, onChange = null }) {
     }
   });
 
-  // Tombol Back/Forward browser di dalam hash yang sama
-  window.addEventListener('hashchange', () => {
-    const n = indexFromHash();
+  // Tombol Back/Forward browser di dalam hash yang sama. Hash lain membuat CSS
+  // menampilkan slide pertama, jadi keadaan JS ikut kembali ke slide pertama.
+  if (hash) window.addEventListener('hashchange', () => {
+    const n = hashIndex() ?? 1;
     if (n !== current) show(n);
   });
 
   // Keadaan awal: tanpa mengubah URL (dan tanpa menggulir melewati kartu sambutan)
-  list.dataset.managed = '1';
+  list.dataset.managed = hash ? '1' : 'class';
   slides.forEach((slide, i) => slide.classList.toggle('is-current', i + 1 === current));
 
   return { show, get current() { return current; }, total };

@@ -224,6 +224,9 @@ Yang **tidak** berubah: `session_id`, `current_level`, `current_node`, seluruh `
       dialihkan ke dialognya sampai dialog itu tampil pada sesi login ini
       (tanda disimpan di sesi PHP, bukan database)
  5. Klik level terkunci → toast, tidak ada navigasi
+    (Tahap 3) klik level terbuka memutar tirai wilayah "Menuju {wilayah}…"
+    ±1,8 detik lebih dulu; tombol lentera "Kenali {wilayah}" membuka narasi
+    region_intro di overlay, untuk wilayah terbuka maupun terkunci
  6. MapController::level
       ContentRepository::nodesForLevel() → 5 node
       status node: node 1 selalu terbuka; node n terbuka bila node n-1 completed
@@ -1027,6 +1030,29 @@ Semua memakai `$db->transStart()` / `$db->transComplete()`. Bila gagal, tidak ad
 13. Isi bank soal hanya masuk lewat impor workbook atau editor konten; keduanya memvalidasi kunci jawaban dan tidak mengizinkan perubahan kunci pada item yang sudah dijawab.
 
 ---
+
+## Catatan Implementasi Tahap 3 (alur cerita)
+
+Tahap 3 menambah layar bernarasi Kenali wilayah, dialog wilayah dramatis, wilayah tuntas (`/tuntas/{code}`), dan penutup (`/penutup`), serta tirai wilayah dan tirai tantangan. Tidak ada tabel atau kolom baru; semua jejak tercatat lewat event yang sudah ada.
+
+### Catatan analitik untuk peneliti
+
+* **`dialogue_advanced`** dikirim `game/narrator.js` setiap kali slide berpindah (bukan saat layar dibuka), dengan payload `{ index, total, context, character }` dan `level_id` untuk konteks wilayah. Nilai `context`:
+
+  | `context` | Layar | `level_id` | Catatan |
+  |---|---|---|---|
+  | `intro` | cerita pembuka | — | sejak Tahap 2 |
+  | `map_intro` | narasi Jaka di peta | — | sejak Tahap 2 |
+  | `region_intro` | overlay "Kenali {wilayah}" | wilayah | Tahap 3; boleh untuk wilayah terkunci |
+  | `level_open` | dialog pembuka wilayah | wilayah | **sebelum Tahap 3 bernilai `region`** (dikirim `dialogue.js`); sekarang dikirim narrator saja, tidak ganda |
+  | `level_done` | wilayah tuntas | wilayah | Tahap 3 |
+  | `ending` | penutup | — | Tahap 3 |
+
+* **"Didengar sampai habis"** = ada event konteks itu dengan `index >= total`. Aturan ini juga dipakai server untuk lencana "Belum didengar" (`GameEventLogModel::heardRegionIntros()`, per peserta lintas sesi). Membuka overlay Kenali lalu menutupnya di slide pertama tidak meninggalkan `dialogue_advanced` (hanya audio `play` bila slide itu beraudio).
+* **Audio Kenali:** slide pertama dicatat `play` (overlay dibuka dengan ketukan tombol, `userInitiated`), slide berikutnya `autoplay`. Dialog wilayah, wilayah tuntas, dan penutup dibuka kartu ketuk, jadi slide pertamanya `autoplay`.
+* **Tonton ulang.** `/tuntas/{code}` dan `/penutup` boleh dibuka berkali-kali; setiap tontonan menambah `dialogue_advanced`. Untuk "pernah menonton", ambil kemunculan pertama per peserta/sesi. Keduanya tidak menulis event server sendiri.
+* **Tirai tantangan tidak memengaruhi waktu attempt.** Tirai diputar di kartu misi (`/misi`), sebelum berpindah; attempt baru dibuka `ChallengeService::openNode()` saat `/tantangan` dirender, jadi `started_at` dan `duration_ms` tidak memuat durasi tirai. Diverifikasi di MariaDB: selama tirai tidak ada baris `challenge_attempts` baru, dan `started_at` tercatat ±1 detik setelah klik (sesudah tirai 1,2–1,5 detik selesai). Tirai wilayah sama sekali tidak menyentuh attempt.
+* **Pengiriman event saat berpindah halaman (perbaikan `core/events.js`).** Pengujian menemukan event yang hilang bila halaman berpindah ketika batch sedang dikirim: fetch-nya dibatalkan browser dan antrean sudah kosong saat `pagehide`. Kini batch yang sedang di jalan ikut dikirim ulang lewat beacon saat halaman ditutup (server membalas `duplicate` bila ternyata sudah sampai), tirai menunggu `flush()` selesai sebelum berpindah (paling lama 1,5 detik), dan narrator langsung mengirim antrean saat slide terakhir tercapai. Data sebelum perbaikan ini dapat kehilangan beberapa event terakhir sebelum perpindahan halaman.
 
 ## Catatan Implementasi Tahap 7
 

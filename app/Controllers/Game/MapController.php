@@ -2,12 +2,14 @@
 
 namespace App\Controllers\Game;
 
+use App\Models\GameEventLogModel;
 use CodeIgniter\HTTP\RedirectResponse;
 
 /**
  * Peta Kedu (tiga wilayah) dan peta wilayah (lima pos tantangan).
  * Status buka/kunci disusun GameProgress dari `session_progress`.
  * Peta Kedu baru terbuka setelah cerita pembuka ditonton (introGate()).
+ * Tahap 3: overlay "Kenali wilayah" (region_intro) dan tirai wilayah.
  */
 class MapController extends BaseGameController
 {
@@ -24,17 +26,56 @@ class MapController extends BaseGameController
         }
 
         $session = $this->session();
+        $locale  = $session->resolvedLocale();
         $levels  = $this->levelOverview($session);
         $story   = service('contentRepository')->dialogues(null, 'map_intro');
         $curtain = session()->getFlashdata('curtain') === 'map';
+
+        // Tirai wilayah (tpl-curtain-region) pada pin dan kartu wilayah
+        foreach ($levels as $index => $row) {
+            $levels[$index]['curtain'] = $this->regionCurtain($row, $locale);
+        }
 
         return view('game/map-kedu', $this->hudData() + [
             'levels'        => $levels,
             'unlockMode'    => $this->unlockMode($session),
             'story'         => $story,
             'curtain'       => $curtain,
-            'curtainAssets' => $curtain ? $this->mapCurtainAssets($levels, $story, $session->resolvedLocale()) : [],
+            'curtainAssets' => $curtain ? $this->mapCurtainAssets($levels, $story, $locale) : [],
+            'regionIntros'  => $this->regionIntros($levels),
+            'heard'         => $this->heardRegionIntros(),
         ]);
+    }
+
+    /**
+     * Narasi "Kenali wilayah" (dialogues `region_intro`, Mbah Kedu) per kode
+     * wilayah. Wilayah terkunci ikut: boleh dikenali sebelum dimasuki.
+     *
+     * @param list<array<string, mixed>> $levels
+     *
+     * @return array<string, list<array<string, mixed>>>
+     */
+    private function regionIntros(array $levels): array
+    {
+        $intros = [];
+
+        foreach ($levels as $level) {
+            $intros[$level['code']] = service('contentRepository')->dialogues((int) $level['id'], 'region_intro');
+        }
+
+        return $intros;
+    }
+
+    /**
+     * level_id wilayah yang narasi Kenali-nya sudah didengar peserta ini sampai
+     * slide terakhir (dihitung dari `dialogue_advanced`); lencana "Belum
+     * didengar" berdenyut pada wilayah lainnya.
+     *
+     * @return list<int>
+     */
+    protected function heardRegionIntros(): array
+    {
+        return model(GameEventLogModel::class)->heardRegionIntros($this->participant()->id);
     }
 
     /**

@@ -41,12 +41,14 @@ const attemptId = Number(document.querySelector('[data-screen="challenge"]')?.da
 
 initAudioPlayers(document, {
   attemptId,
-  attention: ['dialogue', 'intro', 'mission-brief'].includes(screen),
+  attention: ['dialogue', 'region-done', 'intro', 'ending', 'mission-brief'].includes(screen),
 });
 
 const pages = {
-  intro: () => import('./game/intro.js').then((m) => m.initStory()),
+  intro: () => import('./game/intro.js').then((m) => m.initStory('intro')),
+  ending: () => import('./game/intro.js').then((m) => m.initStory('ending')),
   dialogue: () => import('./game/dialogue.js').then((m) => m.initDialogue()),
+  'region-done': () => import('./game/dialogue.js').then((m) => m.initDialogue()),
   'map-kedu': () => import('./game/map.js').then((m) => m.initMap()),
   'map-level': () => import('./game/map.js').then((m) => m.initMap()),
   library: () => import('./game/library.js').then((m) => m.initLibrary()),

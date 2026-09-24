@@ -22,17 +22,30 @@
  * Tirai dibersihkan saat halaman dipulihkan dari bfcache (`pageshow`
  * persisted), agar tombol Back tidak menampilkan tirai yang macet.
  *
- * Jenis baru (Tahap 3: `region`, `challenge`) cukup menambah markup/template
- * dan gaya `.curtain-{kind}`; tautan `a[data-curtain="{kind}"]` memutar
- * tirainya sebelum berpindah halaman (initCurtains()).
+ * Jenis baru cukup menambah markup/template dan gaya `.curtain-{kind}`;
+ * tautan `a[data-curtain="{kind}"]` memutar tirainya sebelum berpindah
+ * halaman (initCurtains()). Tahap 3:
+ *
+ * - `region` "Menuju {wilayah}…" (±1,8 detik, tanpa ketukan). Satu template
+ *   untuk semua wilayah: teksnya dari tautan (`data-curtain-text`, JSON
+ *   { slot: teks } → elemen [data-curtain-text="slot"]; slot kosong
+ *   disembunyikan), aset dari `data-curtain-preload`.
+ * - `challenge` sebelum /tantangan (≤1,5 detik): ketukan atau tombol apa pun
+ *   melewatinya (`data-skip="1"`). Attempt baru dibuka server saat halaman
+ *   tantangan dirender, jadi tirai ini tidak menambah waktu attempt.
+ *
+ * Durasi per jenis dibaca dari lapisan: `data-min-ms`, `data-max-ms`.
  */
 import { $, $$ } from './dom.js';
 import { Sfx } from './audio.js';
+import { flush } from './events.js';
 
 const MIN_MS = 2500;
 const MAX_MS = 8000;
 const STATUS_MS = 1800;
 const FADE_MS = 600;
+/** Batas tunggu event yang masih terkirim setelah tirai tautan selesai. */
+const FLUSH_WAIT_MS = 1500;
 
 const reducedMotion = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
 const wait = (ms) => new Promise((resolve) => { setTimeout(resolve, Math.max(0, ms)); });
@@ -43,6 +56,27 @@ function parseList(value) {
     return Array.isArray(list) ? list.filter((item) => typeof item === 'string' && item !== '') : [];
   } catch {
     return [];
+  }
+}
+
+/** JSON { slot: teks } dari atribut tautan; selain objek berisi string → {}. */
+function parseText(value) {
+  try {
+    const data = JSON.parse(value || '{}');
+    if (!data || typeof data !== 'object' || Array.isArray(data)) return {};
+    return Object.fromEntries(Object.entries(data).filter(([, text]) => typeof text === 'string'));
+  } catch {
+    return {};
+  }
+}
+
+/** Isi slot teks tirai (textContent, bukan HTML); slot yang tidak diisi disembunyikan. */
+function fillText(layer, text) {
+  for (const node of $$('[data-curtain-text]', layer)) {
+    const value = text[node.dataset.curtainText];
+    if (value === undefined) continue;
+    node.textContent = value;
+    node.hidden = value === '';
   }
 }
 
@@ -110,10 +144,15 @@ function dismiss(layer, { remove = false } = {}) {
 
 /**
  * @param {string} kind  jenis tirai, mis. 'map'
- * @param {{ urls?: string[], minMs?: number, maxMs?: number, tap?: boolean,
- *           keep?: boolean, onProgress?: (ratio: number) => void }} [opts]
+ * @param {{ urls?: string[], minMs?: number, maxMs?: number, tap?: boolean, skip?: boolean,
+ *           keep?: boolean, text?: Record<string, string>,
+ *           onProgress?: (ratio: number) => void }} [opts]
  *   keep: biarkan tirai menutupi halaman saat selesai (sebelum berpindah
  *         halaman); pageshow dari bfcache membersihkannya.
+ *   skip: ketukan/tombol apa pun mengakhiri tirai lebih awal (bawaan dari data-skip).
+ *   text: isi slot [data-curtain-text] (mis. nama wilayah pada tirai `region`).
+ * @returns {Promise<{ loaded: number, failed: number, timedOut: boolean, skipped: boolean, cut?: boolean }>}
+ *   cut: tirai dilewati dengan ketukan.
  */
 export async function playCurtain(kind, opts = {}) {
   const { layer, fromPage } = findLayer(kind);
@@ -126,10 +165,13 @@ export async function playCurtain(kind, opts = {}) {
     return { loaded: 0, failed: 0, timedOut: false, skipped: true };
   }
 
+  if (opts.text) fillText(layer, opts.text);
+
   const urls = [...new Set(opts.urls ?? parseList(layer.dataset.preload))];
-  const minMs = opts.minMs ?? MIN_MS;
-  const maxMs = opts.maxMs ?? MAX_MS;
+  const minMs = opts.minMs ?? (Number(layer.dataset.minMs) || MIN_MS);
+  const maxMs = Math.max(minMs, opts.maxMs ?? (Number(layer.dataset.maxMs) || MAX_MS));
   const tap = opts.tap ?? layer.dataset.tap !== '0';
+  const skip = opts.skip ?? layer.dataset.skip === '1';
   // Tirai bawaan halaman sudah tampil sejak halaman dibuka: hitung dari sana
   const origin = fromPage ? 0 : performance.now();
   const elapsed = () => performance.now() - origin;
@@ -164,10 +206,13 @@ export async function playCurtain(kind, opts = {}) {
 
   let result = { loaded: 0, failed: 0 };
   const loading = preload(urls, (done, total) => progress(done / total)).then((r) => { result = r; return 'loaded'; });
+  const cut = skip ? waitForSkip(layer) : null;
   const outcome = await Promise.race([
     Promise.all([loading, wait(minMs - elapsed())]).then(() => 'loaded'),
     wait(maxMs - elapsed()).then(() => 'timeout'),
+    ...(cut ? [cut.promise] : []),
   ]);
+  cut?.cancel();
 
   clearInterval(rotate);
   layer.classList.add('is-ready');
@@ -177,7 +222,28 @@ export async function playCurtain(kind, opts = {}) {
 
   if (!opts.keep) await close(layer, { remove: !fromPage });
 
-  return { ...result, timedOut: outcome === 'timeout', skipped: false };
+  return { ...result, timedOut: outcome === 'timeout', skipped: false, cut: outcome === 'cut' };
+}
+
+/** Ketukan di mana pun pada tirai, atau Enter/Spasi/Esc, mengakhiri tirai lebih awal. */
+function waitForSkip(layer) {
+  let cancel = () => {};
+  const promise = new Promise((resolve) => {
+    const done = (event) => {
+      if (event.type === 'keydown' && !['Enter', ' ', 'Escape'].includes(event.key)) return;
+      event.preventDefault();
+      cancel();
+      resolve('cut');
+    };
+    layer.addEventListener('click', done);
+    document.addEventListener('keydown', done);
+    cancel = () => {
+      layer.removeEventListener('click', done);
+      document.removeEventListener('keydown', done);
+    };
+  });
+
+  return { promise, cancel: () => cancel() };
 }
 
 function waitForTap(layer) {
@@ -212,12 +278,15 @@ function close(layer, { remove }) {
 
 /**
  * Dipanggil sekali oleh game.js: pembersihan bfcache dan delegasi
- * a[data-curtain="{kind}"] (untuk Tahap 3). Tautan tanpa tirai untuk
- * jenisnya berpindah halaman seperti biasa.
+ * a[data-curtain="{kind}"] (+ `data-curtain-preload`, `data-curtain-text`).
+ * Tautan tanpa tirai untuk jenisnya berpindah halaman seperti biasa.
  */
 export function initCurtains() {
+  let leaving = false;
+
   window.addEventListener('pageshow', (event) => {
     if (!event.persisted) return;
+    leaving = false;
     for (const layer of $$('[data-curtain-layer]')) {
       if (layer.dataset.active) dismiss(layer, { remove: Boolean(layer.dataset.curtainTemp) });
     }
@@ -234,7 +303,20 @@ export function initCurtains() {
     if (!kind || !(document.getElementById(`tpl-curtain-${kind}`) || $(`[data-curtain-layer="${CSS.escape(kind)}"]`))) return;
 
     event.preventDefault();
-    playCurtain(kind, { urls: parseList(link.dataset.curtainPreload), tap: false, keep: true })
+    if (leaving) return; // tirai sudah berjalan: klik/Enter kedua tidak memutar tirai kedua
+    leaving = true;
+
+    // Event yang masih antre (mis. dialogue_advanced slide terakhir Kenali) dikirim
+    // selama tirai, bukan saat halaman ditutup: beacon di pagehide tidak selalu sampai
+    const sent = flush().catch(() => {});
+
+    playCurtain(kind, {
+      urls: parseList(link.dataset.curtainPreload),
+      text: parseText(link.dataset.curtainText),
+      tap: false,
+      keep: true,
+    })
+      .then(() => Promise.race([sent, wait(FLUSH_WAIT_MS)]))
       .then(() => { window.location.assign(link.href); });
   });
 }
