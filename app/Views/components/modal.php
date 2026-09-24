@@ -22,4 +22,5 @@
   <template data-modal-icon="hint"><?= icon('hint') ?></template>
   <template data-modal-icon="confirm"><?= icon('question') ?></template>
   <template data-modal-icon="info"><?= icon('info') ?></template>
+  <template data-modal-icon="lock"><?= icon('lock') ?></template>
 </div>

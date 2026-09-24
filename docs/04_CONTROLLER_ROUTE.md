@@ -64,7 +64,7 @@ app/Controllers/
 │   ├── MapController.php             peta Kedu & peta wilayah
 │   ├── DialogueController.php        dialog Jaka & Mbah Kedu
 │   ├── ChallengeController.php       kartu misi, layar tantangan, hasil
-│   ├── LibraryController.php         Pustaka Kedu
+│   ├── LibraryController.php         Pustaka Kedu (rak) & Pustaka {wilayah} (buku, terkunci per wilayah)
 │   ├── ProfileController.php         profil peserta
 │   └── ReflectionController.php      Balai Refleksi + kritik & saran
 ├── Admin/
@@ -141,6 +141,7 @@ $routes->group('', ['namespace' => 'App\Controllers\Game'], static function ($ro
         $routes->get('tantangan/(:segment)/(:num)','ChallengeController::play/$1/$2');
         $routes->get('hasil/(:segment)/(:num)',   'ChallengeController::result/$1/$2');
         $routes->get('selesai/(:num)',            'ChallengeController::finished/$1');
+        $routes->get('pustaka',                   'LibraryController::index');
         $routes->get('pustaka/(:segment)',        'LibraryController::show/$1');
         $routes->get('profil',                    'ProfileController::index');
         $routes->get('refleksi',                  'ReflectionController::index');
@@ -325,7 +326,8 @@ $routes->group('api/admin', [
 | GET | `/tantangan/{code}/{seq}` | ChallengeController::play | code, 1..5 | ya | — | layar tantangan | HTML; gerbang dialog sama dengan `/wilayah`, diperiksa sebelum attempt dibuka |
 | GET | `/hasil/{code}/{seq}` | ChallengeController::result | code, 1..5 | ya | — | riwayat hasil node | HTML |
 | GET | `/selesai/{attemptId}` | ChallengeController::finished | attempt id | ya | — | layar bintang & skor | HTML |
-| GET | `/pustaka/{code}` | LibraryController::show | level code | ya | — | Pustaka Kedu | HTML |
+| GET | `/pustaka` | LibraryController::index | — | ya | — | rak Pustaka Kedu: satu kartu per wilayah beserta status Pustakanya | HTML |
+| GET | `/pustaka/{code}` | LibraryController::show | level code | ya | — | buku Pustaka {wilayah}; wilayah belum tuntas → halaman terkunci (tanpa `library_opened`) | HTML; wilayah belum terbuka → redirect `/peta` |
 | GET | `/profil` | ProfileController::index | — | ya | — | profil peserta | HTML |
 | GET | `/refleksi` | ReflectionController::index | — | ya | — | Balai Refleksi | HTML |
 | POST | `/refleksi` | ReflectionController::store | — | ya | — | simpan kritik & saran | redirect |
@@ -342,7 +344,7 @@ $routes->group('api/admin', [
 | GET | `/api/levels` | ContentApiController::levels | sesi | 3 level + status unlock |
 | GET | `/api/levels/{id}/nodes` | ContentApiController::nodes | sesi | 5 node + status |
 | GET | `/api/nodes/{id}` | ContentApiController::node | sesi | metadata node (tanpa item) |
-| GET | `/api/library/{levelId}` | ContentApiController::library | sesi | halaman pustaka |
+| GET | `/api/library/{levelId}` | ContentApiController::library | sesi | halaman pustaka; kunci sama dengan `/pustaka/{code}` → `LIBRARY_LOCKED` sebelum wilayah tuntas |
 | POST | `/api/nodes/{id}/attempts` | ChallengeApiController::open | sesi | buka node → attempt + payload soal |
 | POST | `/api/attempts/{id}/responses` | ChallengeApiController::respond | sesi | satu jawaban item |
 | POST | `/api/attempts/{id}/check` | ChallengeApiController::check | sesi | periksa batch jawaban |
@@ -499,7 +501,7 @@ Status node: node ke-`n` terbuka bila `n = 1` atau node ke-`n-1` sudah `complete
 | `brief($code, $seq)` | tampilkan judul + deskripsi node, tombol Mulai | view `game/mission-brief` |
 | `play($code, $seq)` | panggil `ChallengeService::openNode()`; render layar sesuai `engine_type`; payload soal ditanam sebagai `<script type="application/json" id="challenge-data">` | view `game/challenge/{engine}` |
 | `result($code, $seq)` | daftar attempt `completed` untuk node itu pada sesi ini + terbaik | view `game/challenge-result` |
-| `finished($attemptId)` | validasi attempt milik sesi ini & `completed`; tampilkan bintang, skor, ketepatan awal, durasi; bila level tuntas tampilkan pesan Mbah Kedu; bila 15 node tuntas → tombol Balai Refleksi | view `game/challenge-finished` |
+| `finished($attemptId)` | validasi attempt milik sesi ini & `completed`; tampilkan bintang, skor, ketepatan awal, durasi; bila level tuntas tampilkan pesan Mbah Kedu; bila attempt ini yang menuntaskan wilayah (`GameProgress::closingAttemptId()`: penyelesaian pertama terakhir di antara node wilayah) dan wilayah punya halaman Pustaka → `libraryUnlocked` (sorotan "Pustaka {wilayah} terbuka!"); bila 15 node tuntas → tombol Balai Refleksi | view `game/challenge-finished` |
 
 Perhatian: `play()` **tidak** melakukan penilaian apa pun. Ia hanya membuka attempt dan menyiapkan payload. Seluruh interaksi jawaban lewat API.
 
@@ -507,7 +509,8 @@ Perhatian: `play()` **tidak** melakukan penilaian apa pun. Ia hanya membuka atte
 
 | Controller::method | Business rule |
 |---|---|
-| `LibraryController::show($code)` | halaman pustaka level; catat event `library_opened`; tidak memengaruhi skor sama sekali |
+| `LibraryController::index()` | rak Pustaka Kedu: baris `levelOverview()` + `library` (`GameProgress::libraryStatus()`), jumlah halaman, sampul (gambar pertama galeri halaman pertama → latar wilayah → gradien). Tidak mencatat event |
+| `LibraryController::show($code)` | wilayah belum terbuka → redirect `/peta` (tetap seperti sebelumnya). Wilayah terbuka tetapi belum tuntas (`GameProgress::libraryAccess()` ≠ `open`) → view `game/library-locked` berisi progres dan tombol "Lanjutkan tantangan" ke `entry` wilayah; **bukan redirect**, dan `library_opened` tidak dicatat. Wilayah tuntas → catat `library_opened`, view `game/library`. Aturan kunci berlaku juga pada `unlock_mode = free`. Tidak memengaruhi skor sama sekali |
 | `ProfileController::index()` | ringkasan capaian peserta pada sesi berjalan: serpihan, ketepatan rata-rata, total waktu, daftar attempt |
 | `ReflectionController::index()` | hanya dapat diakses bila `session_progress.completed_nodes` = jumlah node aktif; bila belum → redirect `/peta` |
 | `ReflectionController::store()` | validasi `rating: required|integer|greater_than[0]|less_than[6]`; minimal 2 dari 4 textarea terisi; simpan `participant_feedback` + event `feedback_submitted` |
@@ -815,6 +818,7 @@ Bentuk respons gagal API seragam:
 | `INVALID_RESPONSE` | 422 | item tidak termasuk attempt, atau bentuk `answer` tidak sesuai `interaction_type` |
 | `ATTEMPT_CLOSED` | 409 | attempt sudah `completed`/`abandoned` |
 | `LEVEL_LOCKED` | 409 | level belum terbuka |
+| `LIBRARY_LOCKED` | 409 | `/api/library/{levelId}`: wilayah terbuka tetapi tantangannya belum semua selesai (kunci Pustaka per wilayah) |
 | `TOO_MANY_EVENTS` | 413 | melebihi `maxEventsPerBatch` |
 | `RATE_LIMITED` | 429 | terlalu banyak request dari satu sesi |
 | `SERVER_ERROR` | 500 | exception tak tertangani |

@@ -23,12 +23,14 @@ class MediaLink
     private const VIDEO_EXT = ['mp4', 'webm', 'ogv', 'ogg', 'm4v'];
 
     /**
-     * @return array{provider: string, kind: string, src: string|null, embed: string|null, href: string, label: string}|null
+     * @return array{provider: string, kind: string, src: string|null, embed: string|null, href: string, label: string, video_id?: string}|null
      *         null bila bukan tautan http(s) yang sah.
      *         provider: youtube | vimeo | drive | commons | file | link
      *         kind    : image | video (bentuk akhir yang dirender)
      *         src     : alamat <img>/<video> (tampil langsung)
      *         embed   : alamat <iframe> (dimuat setelah tombol Putar ditekan)
+     *         video_id: id berkas di penyedia (YouTube, Vimeo, Drive) untuk
+     *                   mengunduh thumbnail di server (VideoThumbnail)
      */
     public static function parse(string $url, string $kind = 'image'): ?array
     {
@@ -64,6 +66,7 @@ class MediaLink
                 'embed'    => 'https://www.youtube-nocookie.com/embed/' . $youtube . '?rel=0&modestbranding=1&playsinline=1' . ($start > 0 ? '&start=' . $start : ''),
                 'href'     => 'https://www.youtube.com/watch?v=' . $youtube . ($start > 0 ? '&t=' . $start . 's' : ''),
                 'label'    => 'YouTube',
+                'video_id' => $youtube,
             ];
         }
 
@@ -78,6 +81,7 @@ class MediaLink
                     'embed'    => 'https://player.vimeo.com/video/' . $m[1] . '?dnt=1' . ($hash !== '' ? '&h=' . rawurlencode((string) $hash) : ''),
                     'href'     => 'https://vimeo.com/' . $m[1] . ($hash !== '' ? '/' . $hash : ''),
                     'label'    => 'Vimeo',
+                    'video_id' => $m[1],
                 ];
             }
         }
@@ -92,6 +96,7 @@ class MediaLink
                 'embed'    => $kind === 'video' ? 'https://drive.google.com/file/d/' . $drive . '/preview' : null,
                 'href'     => 'https://drive.google.com/file/d/' . $drive . '/view',
                 'label'    => 'Google Drive',
+                'video_id' => $drive,
             ];
         }
 

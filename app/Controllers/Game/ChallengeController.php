@@ -128,15 +128,48 @@ class ChallengeController extends BaseGameController
             }
         }
 
+        $levelCompleted = $levelScore['total_nodes'] > 0
+            && $levelScore['completed_nodes'] >= $levelScore['total_nodes'];
+
+        // Momen "Pustaka {wilayah} terbuka!": hanya pada attempt yang menuntaskan
+        // wilayah (bukan saat mengulang tantangan di wilayah yang sudah tuntas),
+        // dan hanya bila wilayah itu memang punya halaman Pustaka.
+        $libraryUnlocked = $levelCompleted
+            && service('contentRepository')->libraryPages($level->id) !== []
+            && $this->closesLevel($session->id, $level->id, $attempt->id);
+
         return view('game/challenge-finished', $this->hudData() + [
             'attempt'        => $attempt,
             'node'           => $node,
             'level'          => $level,
             'levelScore'     => $levelScore,
-            'levelCompleted' => $levelScore['total_nodes'] > 0
-                && $levelScore['completed_nodes'] >= $levelScore['total_nodes'],
-            'allCompleted' => $this->allNodesCompleted($session),
-            'nextRegion'   => $nextRegion,
+            'levelCompleted'  => $levelCompleted,
+            'libraryUnlocked' => $libraryUnlocked,
+            'allCompleted'    => $this->allNodesCompleted($session),
+            'nextRegion'      => $nextRegion,
         ]);
+    }
+
+    /** Attempt ini yang membuat seluruh tantangan wilayah selesai? (closingAttemptId()) */
+    private function closesLevel(int $sessionId, int $levelId, int $attemptId): bool
+    {
+        $nodeIds = array_map(
+            static fn ($node): int => (int) $node->id,
+            service('contentRepository')->nodesForLevel($levelId),
+        );
+
+        if ($nodeIds === []) {
+            return false;
+        }
+
+        $attempts = model(ChallengeAttemptModel::class)
+            ->where('session_id', $sessionId)
+            ->where('status', 'completed')
+            ->whereIn('challenge_node_id', $nodeIds)
+            ->orderBy('completed_at', 'ASC')
+            ->orderBy('id', 'ASC')
+            ->findAll();
+
+        return self::closingAttemptId($attempts, $nodeIds) === $attemptId;
     }
 }

@@ -34,6 +34,9 @@ class ContentImportService
         'verdict_card', 'verdict_reason', 'single_choice', 'source_trust', 'find_object',
     ];
 
+    /** @var list<int> id library_media video luar tanpa poster yang ditulis impor ini */
+    private array $thumbnailQueue = [];
+
     /** Header per sheet; kolom di luar daftar ini diabaikan. Sheet lain (mis. PETUNJUK) juga diabaikan. */
     public const SHEETS = [
         'nodes'       => ['node_ref', 'title_id', 'title_en', 'instruction_id', 'instruction_en', 'description_id', 'description_en', 'items_per_round', 'verdict_options', 'require_reason', 'use_word_bank', 'distractor_count', 'scene_media_key', 'background_media_key'],
@@ -93,6 +96,8 @@ class ContentImportService
         $db = db_connect();
         $db->transBegin();
 
+        $this->thumbnailQueue = [];
+
         try {
             $written = $this->write($parsed, $mode);
 
@@ -109,6 +114,14 @@ class ContentImportService
         }
 
         service('contentRepository')->flush();
+
+        // Poster video luar diunduh server setelah commit; gagal = peringatan saja
+        $thumbs = service('videoThumbnail')->fillMissing($this->thumbnailQueue, false, $staffId);
+
+        foreach ($thumbs['errors'] as $message) {
+            $parsed['warnings'][] = ['sheet' => 'library_media', 'row' => 0, 'message' => 'Thumbnail video belum terunduh — ' . rtrim($message, '.')
+                . '. Isi poster_media_key, atau jalankan `php spark gelita:library:thumbnails` nanti.'];
+        }
 
         model(AuditLogModel::class)->record('content_import', [
             'staff_user_id' => $staffId,
@@ -1003,6 +1016,10 @@ class ContentImportService
 
                 if ($written === false) {
                     throw new \RuntimeException("Media pustaka {$pageKey} baris {$row['__row']} ditolak: " . implode(' ', $model->errors()));
+                }
+
+                if ($kind === 'video' && $url !== '' && ! isset($media[trim((string) $row['poster_media_key'])])) {
+                    $this->thumbnailQueue[] = (int) $model->getInsertID();
                 }
 
                 $count++;
