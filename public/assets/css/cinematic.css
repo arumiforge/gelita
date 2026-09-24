@@ -1,7 +1,9 @@
 /* ==========================================================================
-   GELITA — cinematic.css (Tahap 2)
+   GELITA — cinematic.css (Tahap 2 & 3)
    Tirai pemuatan layar penuh, pemutar narasi (kartu ketuk, kontrol, mesin
    ketik, efek layar), cerita pembuka sinematik, dan narasi di panduan peta.
+   Tahap 3: overlay Kenali wilayah, tirai wilayah & tantangan, kartu bab,
+   panggung dialog bernarasi, wilayah tuntas, dan penutup.
    Dimuat layouts/game.php sesudah game.css; hanya memakai token tokens.css.
    docs/05_VIEW_UI.md §Tirai, §Pola ketuk-untuk-mulai.
    ========================================================================== */
@@ -503,6 +505,400 @@ body.is-cinematic .nav-bar {
   .map-story .narration-down::before { display: none; }
 }
 
+/* =================== TAHAP 3 · SLIDE TANPA HASH =================== */
+/* slides.js `hash: false` (overlay Kenali): .is-current menentukan slide,
+   bukan :target, karena beberapa pemutar berbagi satu halaman. Tanpa
+   JavaScript aturan :target di game.css tetap berlaku. */
+.kenal-slides[data-managed="class"] > .slide:not(.is-current) { display: none; }
+.kenal-slides[data-managed="class"]:not(:has(.slide:target)) > .slide.is-current:not(:first-child),
+.kenal-slides[data-managed="class"]:has(.slide:target) > .slide.is-current:not(:target) { display: grid; }
+
+/* ================== TAHAP 3 · KENALI WILAYAH ================== */
+/* Tombol lentera pada pin: area sentuh 44px, wajah 30px di kanan atas pin */
+.map-point > .kenal-btn {
+  position: absolute;
+  top: -10px;
+  left: calc(50% + 14px);
+  display: grid;
+  place-items: center;
+  width: var(--tap);
+  height: var(--tap);
+  border-radius: 50%;
+  color: var(--gold-300);
+  text-decoration: none;
+}
+.kenal-btn-face {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 2px solid var(--gold-500);
+  border-radius: 50%;
+  background: var(--navy-800);
+  box-shadow: 0 0 0 3px rgba(11, 19, 32, .55), 0 0 12px var(--glow);
+  transition: transform .15s ease;
+}
+.kenal-btn-face .icon { width: 16px; height: 16px; }
+.kenal-btn:hover .kenal-btn-face, .kenal-btn:focus-visible .kenal-btn-face { transform: scale(1.1); }
+.kenal-btn:focus-visible { outline: 3px solid var(--gold-500); outline-offset: 0; }
+
+/* Lencana "Belum didengar": titik berdenyut pada ikon, pil bertulisan pada kartu */
+.kenal-dot {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--navy-900);
+  border-radius: 50%;
+  background: var(--warn);
+  animation: kenal-ping 1.6s ease-out infinite;
+}
+.region-card-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2) var(--sp-3); }
+.region-card-actions > .btn:last-child:not(.kenal-card-btn), .region-card-actions > .region-locked { margin-left: auto; }
+.kenal-card-btn { position: relative; gap: var(--sp-2); min-height: var(--tap); color: var(--gold-300); }
+/* Pil menempel di pojok tombol, jadi label "Kenali {wilayah}" tidak terlipat */
+.kenal-badge {
+  position: absolute;
+  top: -9px;
+  right: -6px;
+  padding: 0 var(--sp-2);
+  border-radius: var(--radius-pill);
+  background: var(--warn);
+  color: var(--navy-900);
+  font-size: .72rem;
+  font-weight: 700;
+  line-height: 1.6;
+  white-space: nowrap;
+  animation: kenal-ping 1.6s ease-out infinite;
+}
+
+@keyframes kenal-ping {
+  0% { box-shadow: 0 0 0 0 rgba(240, 168, 104, .7); }
+  70%, 100% { box-shadow: 0 0 0 10px rgba(240, 168, 104, 0); }
+}
+
+/* Overlay layar penuh "Mengenal {wilayah}". Tanpa JavaScript: :target;
+   dengan JavaScript hanya .is-open (map.js), agar hash lama tidak membukanya. */
+.kenal {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: none;
+  grid-template-rows: auto minmax(0, 1fr);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background:
+    radial-gradient(ellipse at 30% 90%, rgba(143, 209, 79, .12), transparent 55%),
+    radial-gradient(ellipse at 70% 20%, rgba(223, 192, 135, .14), transparent 50%),
+    linear-gradient(160deg, var(--navy-700), var(--navy-900) 70%);
+  color: var(--ink);
+}
+.kenal:target, .kenal:has(.slide:target) { display: grid; }
+html.js .kenal { display: none; }
+html.js .kenal.is-open { display: grid; animation: cine-in .35s ease both; }
+body.has-kenal { overflow: hidden; }
+
+.kenal-bg { position: fixed; inset: 0; z-index: -1; width: 100%; height: 100%; object-fit: cover; opacity: .55; }
+.kenal::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(to bottom, rgba(11, 19, 32, .55), rgba(11, 19, 32, .2) 40%, rgba(11, 19, 32, .78));
+  pointer-events: none;
+}
+.kenal-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  padding: max(var(--sp-4), env(safe-area-inset-top)) max(var(--sp-5), env(safe-area-inset-right)) 0 max(var(--sp-5), env(safe-area-inset-left));
+}
+.kenal-head .eyebrow { margin: 0; color: var(--ink-dim); }
+.kenal-head h2 { margin: 0; color: var(--gold-300); font-family: var(--font-display); font-size: var(--step-2); }
+.kenal-close { flex: none; width: var(--tap); height: var(--tap); background: rgba(11, 19, 32, .6); }
+.kenal .narrator-controls {
+  position: absolute;
+  top: max(var(--sp-4), env(safe-area-inset-top));
+  right: calc(max(var(--sp-5), env(safe-area-inset-right)) + var(--tap) + var(--sp-3));
+  z-index: 13;
+  padding: var(--sp-1);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: rgba(11, 19, 32, .66);
+}
+.kenal-slides { align-self: end; }
+.kenal-slide {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2.4fr);
+  grid-template-areas: "stage caption";
+  align-items: end;
+  gap: var(--sp-5);
+  padding: var(--sp-5) max(var(--sp-6), env(safe-area-inset-right)) var(--sp-6) max(var(--sp-6), env(safe-area-inset-left));
+  animation: cine-in .6s ease both;
+}
+.kenal-slide.is-narrator { grid-template-columns: minmax(0, 1fr); grid-template-areas: "caption"; }
+.kenal-stage { grid-area: stage; display: grid; justify-items: center; align-self: end; }
+.kenal-stage .character-img { width: auto; max-height: min(58vh, 520px); filter: drop-shadow(0 16px 24px rgba(0, 0, 0, .55)); animation: cine-rise .6s ease both; }
+.kenal-stage .character-fallback { width: 120px; font-size: var(--step-3); }
+.kenal-caption {
+  grid-area: caption;
+  justify-self: center;
+  width: 100%;
+  max-width: 900px;
+  padding: var(--sp-4) var(--sp-5) var(--sp-3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(to bottom, rgba(11, 19, 32, .8), rgba(11, 19, 32, .92));
+  box-shadow: var(--shadow-2);
+}
+.kenal .slide-text { margin: 0; color: var(--ink); font-size: var(--step-1); line-height: 1.6; text-wrap: pretty; }
+.kenal .slide-nav { margin-top: var(--sp-3); }
+.kenal .slide-nav .btn-quiet { background: rgba(255, 255, 255, .08); color: var(--gold-300); }
+.kenal .slide-dot { border-color: var(--gold-600); }
+.kenal .slide-dot.is-current { background: var(--gold-500); border-color: var(--gold-500); }
+.kenal.is-live .slide-nav > .btn-quiet { visibility: hidden; }
+.narrator:has(> .narrator-fx.fx-shake) .slide.is-current :is(.kenal-stage, .kenal-caption, .dialogue-box) {
+  animation: fx-shake .55s cubic-bezier(.36, .07, .19, .97) both;
+}
+
+/* ==================== TAHAP 3 · JEJAK KAKI ==================== */
+/* Kiri–kanan bergantian melintasi layar (tirai wilayah), berlanjut di kartu bab */
+.footsteps { position: relative; height: 72px; color: var(--gold-300); pointer-events: none; }
+.footstep {
+  position: absolute;
+  top: 50%;
+  left: calc(4% + var(--i) * (92% / (var(--steps) - 1)));
+  width: 26px;
+  height: 44px;
+  margin: -22px 0 0 -13px;
+  fill: currentColor;
+  opacity: 0;
+  filter: drop-shadow(0 0 6px rgba(240, 223, 184, .55));
+  animation: footstep-in 1.8s ease-out both;
+  animation-delay: calc(var(--i) * .17s);
+}
+.footstep.is-left { transform: translateY(-14px) rotate(90deg); }
+.footstep.is-right { transform: translateY(14px) rotate(90deg) scaleX(-1); }
+
+@keyframes footstep-in {
+  0% { opacity: 0; scale: .5; }
+  12% { opacity: .95; scale: 1.08; }
+  22% { scale: 1; }
+  100% { opacity: .38; scale: 1; }
+}
+
+/* ===================== TAHAP 3 · TIRAI WILAYAH ===================== */
+.curtain-region {
+  background:
+    radial-gradient(ellipse at 50% 120%, rgba(143, 209, 79, .16), transparent 55%),
+    radial-gradient(circle at 50% 40%, rgba(240, 223, 184, calc(.1 + var(--p, 0) * .12)), transparent 45%),
+    linear-gradient(170deg, var(--navy-700), var(--navy-900) 65%);
+}
+.curtain-trail { position: absolute; top: 68%; right: 0; left: 0; z-index: 1; }
+.curtain-region .curtain-core { gap: var(--sp-3); margin-bottom: 12vh; }
+.curtain-tagline { margin: 0; color: var(--gold-300); font-family: var(--font-display); font-size: var(--step-1); font-style: italic; }
+.curtain-chip { justify-self: center; border-color: var(--line-strong); background: rgba(11, 19, 32, .6); color: var(--ink); }
+.curtain-region .curtain-title, .curtain-region .curtain-tagline { animation: cine-rise .6s ease both; }
+.curtain-region .curtain-tagline { animation-delay: .15s; }
+.curtain-region .curtain-beam { width: min(260px, 60vw); height: 4px; }
+
+/* ==================== TAHAP 3 · TIRAI TANTANGAN ==================== */
+.curtain-challenge { cursor: pointer; }
+.curtain-challenge .curtain-core { gap: var(--sp-2); }
+.curtain-eyebrow { margin: var(--sp-2) 0 0; color: var(--gold-500); font-size: var(--step--1); font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.curtain-challenge .curtain-title { font-size: var(--step-2); }
+.curtain-lead { margin: 0; color: var(--ink); font-size: var(--step-1); }
+.curtain-skip { margin: var(--sp-2) 0 0; color: var(--ink-dim); font-size: var(--step--1); }
+.curtain-challenge .curtain-beam { width: min(240px, 60vw); height: 4px; }
+
+.cc-art { position: relative; display: grid; place-items: center; width: 150px; height: 120px; }
+
+/* puzzle: keping-keping menyatu */
+.cc-puzzle { grid-template-columns: repeat(3, 34px); grid-auto-rows: 34px; gap: 3px; place-content: center; }
+.cc-puzzle i {
+  width: 34px;
+  height: 34px;
+  border-radius: 4px;
+  background: linear-gradient(135deg, var(--gold-300), var(--gold-600));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .35);
+  animation: cc-piece .9s cubic-bezier(.2, .8, .3, 1.2) both, cc-glow 1.2s ease 1s both;
+  animation-delay: calc(var(--i) * .05s), 1s;
+}
+.cc-puzzle i:nth-child(1) { --dx: -60px; --dy: -40px; --r: -40deg; }
+.cc-puzzle i:nth-child(2) { --dx: 0; --dy: -70px; --r: 25deg; }
+.cc-puzzle i:nth-child(3) { --dx: 60px; --dy: -45px; --r: 50deg; }
+.cc-puzzle i:nth-child(4) { --dx: -75px; --dy: 0; --r: 30deg; }
+.cc-puzzle i:nth-child(5) { --dx: 0; --dy: 0; --r: 90deg; }
+.cc-puzzle i:nth-child(6) { --dx: 75px; --dy: 5px; --r: -35deg; }
+.cc-puzzle i:nth-child(7) { --dx: -55px; --dy: 50px; --r: 45deg; }
+.cc-puzzle i:nth-child(8) { --dx: 5px; --dy: 70px; --r: -20deg; }
+.cc-puzzle i:nth-child(9) { --dx: 60px; --dy: 45px; --r: -55deg; }
+
+@keyframes cc-piece {
+  from { opacity: 0; transform: translate(var(--dx), var(--dy)) rotate(var(--r)) scale(.7); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes cc-glow {
+  50% { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .6), 0 0 18px var(--gold-500); }
+}
+
+/* rumpang: huruf jatuh mengisi celah kalimat */
+.cc-rumpang { grid-auto-flow: column; gap: 6px; align-items: end; }
+.cc-line { width: 34px; height: 8px; margin-bottom: 8px; border-radius: 4px; background: var(--ink-dim); }
+.cc-line.is-short { width: 22px; }
+.cc-gap { display: flex; gap: 3px; padding: 0 4px 4px; border-bottom: 2px dashed var(--gold-500); }
+.cc-gap b {
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 26px;
+  color: var(--gold-300);
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  animation: cc-fall .5s cubic-bezier(.3, 1.4, .6, 1) both;
+  animation-delay: calc(.1s + var(--i) * .16s);
+}
+
+@keyframes cc-fall {
+  from { opacity: 0; transform: translateY(-56px) rotate(-12deg); }
+  to { opacity: 1; transform: none; }
+}
+
+/* boleh: kartu berputar antara ✓ dan ✗ */
+.cc-boleh { perspective: 500px; }
+.cc-card {
+  position: relative;
+  width: 76px;
+  height: 100px;
+  transform-style: preserve-3d;
+  animation: cc-flip 1.4s ease-in-out both;
+}
+.cc-face {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius);
+  backface-visibility: hidden;
+  box-shadow: var(--shadow-1);
+}
+.cc-face .icon { width: 42px; height: 42px; stroke-width: 3; }
+.cc-face.is-ok { background: var(--parchment); color: var(--ok-ink); }
+.cc-face.is-bad { background: var(--parchment-dark); color: var(--bad-ink); transform: rotateY(180deg); }
+
+@keyframes cc-flip {
+  0% { transform: rotateY(0); }
+  35% { transform: rotateY(180deg); }
+  70%, 100% { transform: rotateY(360deg); }
+}
+
+/* pilihan: tiga kartu mengipas lalu satu bersinar */
+.cc-pilihan i {
+  grid-area: 1 / 1;
+  width: 46px;
+  height: 64px;
+  border: 2px solid var(--gold-600);
+  border-radius: 8px;
+  background: var(--navy-600);
+  transform-origin: 50% 110%;
+  animation: cc-fan .7s cubic-bezier(.2, .8, .3, 1.1) both;
+}
+.cc-pilihan i:nth-child(1) { --fan: -24deg; --x: -30px; }
+.cc-pilihan i:nth-child(2) { --fan: 0deg; --x: 0; animation: cc-fan .7s cubic-bezier(.2, .8, .3, 1.1) both, cc-chosen .8s ease .75s both; }
+.cc-pilihan i:nth-child(3) { --fan: 24deg; --x: 30px; }
+
+@keyframes cc-fan {
+  from { transform: none; }
+  to { transform: translateX(var(--x)) rotate(var(--fan)); }
+}
+@keyframes cc-chosen {
+  to { border-color: #FFF6DD; background: var(--gold-500); box-shadow: 0 0 24px var(--gold-500); }
+}
+
+/* cari: sorot lentera menyapu siluet gelap */
+.cc-cari { overflow: hidden; border-radius: var(--radius); background: #070B13; box-shadow: inset 0 0 0 1px var(--line); }
+.cc-shape { position: absolute; bottom: 14px; background: #1A2233; }
+.cc-shape.is-temple { left: 14px; width: 44px; height: 54px; clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+.cc-shape.is-mask { left: 66px; bottom: 26px; width: 30px; height: 36px; border-radius: 50% 50% 45% 45%; }
+.cc-shape.is-drum { right: 14px; width: 30px; height: 30px; border-radius: 6px; }
+.cc-light {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 84px;
+  height: 84px;
+  margin: -42px 0 0 -42px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 244, 214, .85), rgba(223, 192, 135, .35) 45%, transparent 70%);
+  mix-blend-mode: screen;
+  animation: cc-sweep 1.4s ease-in-out both;
+}
+
+@keyframes cc-sweep {
+  0% { transform: translateX(-10px); opacity: 0; }
+  15% { opacity: 1; }
+  100% { transform: translateX(150px); opacity: .9; }
+}
+
+/* ================= TAHAP 3 · KARTU BAB & DIALOG ================= */
+.narrator-tap-eyebrow { color: var(--gold-500); font-size: var(--step--1); font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.narrator-tap-title {
+  margin: 0;
+  background: linear-gradient(to bottom, #FFF6DD, var(--gold-500));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-family: var(--font-display);
+  font-size: var(--step-3);
+  line-height: 1.15;
+  text-wrap: balance;
+}
+.narrator-tap.is-chapter .narrator-tap-label, .narrator-tap.is-done .narrator-tap-label { font-size: var(--step-1); }
+.tap-trail { width: min(520px, 80vw); height: 56px; }
+.narrator-tap.is-done .narrator-tap-glow { background: radial-gradient(circle, #FFF6DD 0%, var(--gold-500) 40%, rgba(143, 209, 79, .3) 64%, transparent 74%); }
+
+/* Panggung dialog bernarasi: kontrol melayang di kiri atas seperti layar sinematik */
+.dialogue .narrator-controls {
+  position: fixed;
+  top: calc(var(--hud-h) + var(--sp-3));
+  left: max(var(--sp-4), env(safe-area-inset-left));
+  z-index: 5;
+  padding: var(--sp-1);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: rgba(11, 19, 32, .66);
+  backdrop-filter: blur(4px);
+}
+/* ◀ ada di kontrol narasi: tombol Kembali dan pengganjalnya tidak memakan tempat */
+.dialogue.is-live .slide-nav > .btn-quiet, .dialogue.is-live .slide-nav-spacer { display: none; }
+.dialogue .dialogue-box { cursor: default; }
+.dialogue.is-started .dialogue-box { cursor: pointer; }
+.slide-nav-final { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--sp-2); margin-left: auto; }
+/* Tombol sekunder (Baca Pustaka {wilayah}) di atas perkamen dialog */
+.dialogue-box .slide-nav-final .btn-ghost { border-color: var(--brown-500); background: rgba(74, 50, 24, .08); color: var(--brown-700); }
+.dialogue-box .slide-nav-final .btn-ghost:hover { background: rgba(74, 50, 24, .16); }
+
+/* Pose tokoh yang berbicara terasa juga saat gambar pose belum diunggah (monogram) */
+.dialogue-stage .character.is-speaking.pose-happy { animation: pose-hop .5s ease both; }
+.dialogue-stage .character.is-speaking.pose-afraid { animation: pose-shiver .6s linear both; }
+.dialogue-stage .character.is-speaking.pose-determined { translate: 0 -4px; }
+.dialogue-stage .character.pose-sad, .dialogue-stage .character.pose-weak { rotate: -3deg; filter: saturate(.7) brightness(.9); }
+.dialogue-stage .character.is-speaking.pose-smile .character-fallback,
+:is(.kenal-stage, .cine-stage) .pose-smile .character-fallback { box-shadow: 0 0 0 3px var(--gold-500), 0 0 24px var(--glow); }
+:is(.kenal-stage, .cine-stage) :is(.pose-worried, .pose-weak, .pose-sad) .character-fallback { rotate: -4deg; filter: saturate(.7) brightness(.9); }
+
+@keyframes pose-hop {
+  40% { translate: 0 -12px; }
+  70% { translate: 0 2px; }
+}
+@keyframes pose-shiver {
+  20%, 60% { translate: -3px 0; }
+  40%, 80% { translate: 3px 0; }
+}
+
 /* ======================= RESPONSIF ======================= */
 @media (max-width: 1024px) {
   .cine-slide { grid-template-columns: minmax(0, 1fr) minmax(0, 2.2fr); gap: var(--sp-4); padding-left: var(--sp-5); padding-right: var(--sp-5); }
@@ -513,6 +909,10 @@ body.is-cinematic .nav-bar {
   .cine-slide { grid-template-columns: minmax(0, 1fr); grid-template-areas: "stage" "caption"; padding: calc(var(--sp-7) + var(--sp-3)) var(--sp-3) var(--sp-5); }
   .cine-stage .character-img { max-height: 30vh; }
   .curtain-title { font-size: var(--step-2); }
+  .kenal-slide { grid-template-columns: minmax(0, 1fr); grid-template-areas: "stage" "caption"; padding: var(--sp-4) var(--sp-3) var(--sp-5); }
+  .kenal-stage .character-img { max-height: 28vh; }
+  .kenal .narrator-controls { position: static; justify-self: start; margin: var(--sp-2) var(--sp-3) 0; }
+  .narrator-tap-title { font-size: var(--step-2); }
 }
 
 /* Ponsel mendatar (844×390): tokoh di kiri setinggi layar, subtitle di kanan */
@@ -559,6 +959,52 @@ body.is-cinematic .nav-bar {
   .map-story-title { display: none; }
   .map-story .narrator-controls .icon-btn { width: 32px; height: 32px; }
   .map-story .narrator-controls { margin-top: 0; }
+
+  /* Tahap 3: kartu wilayah (kini dengan tombol Kenali) muat di tiga kolom sempit —
+     lencana status turun ke baris sendiri, isi tidak meluber ke kartu sebelah */
+  .region-card { min-width: 0; padding: var(--sp-3); }
+  .region-card-head { grid-template-columns: auto minmax(0, 1fr); gap: var(--sp-1) var(--sp-2); }
+  .region-card-head > .badge { grid-column: 1 / -1; justify-self: start; }
+  .region-card-actions { gap: var(--sp-2); }
+  .region-card-actions > .btn { max-width: 100%; }
+
+  /* Tahap 3: Kenali wilayah — tokoh di kiri setinggi layar, teks di kanan */
+  .map-point > .kenal-btn { top: -14px; left: calc(50% + 6px); }
+  .kenal-head { padding-top: max(var(--sp-2), env(safe-area-inset-top)); }
+  .kenal-head h2 { font-size: var(--step-1); }
+  .kenal .narrator-controls { top: max(var(--sp-2), env(safe-area-inset-top)); }
+  .kenal .narrator-controls .icon-btn { width: 34px; height: 34px; }
+  .kenal-slide { grid-template-columns: minmax(0, 1fr) minmax(0, 3.2fr); gap: var(--sp-3); padding: var(--sp-2) max(var(--sp-4), env(safe-area-inset-right)) var(--sp-3) max(var(--sp-4), env(safe-area-inset-left)); }
+  .kenal-stage .character-img { max-height: calc(100dvh - 110px); }
+  .kenal-stage .character-fallback { width: 80px; font-size: var(--step-2); }
+  .kenal-caption { padding: var(--sp-2) var(--sp-4); }
+  .kenal .cine-title { margin-bottom: var(--sp-1); font-size: var(--step-1); }
+  .kenal .slide-text { font-size: var(--step-0); line-height: 1.45; }
+  .kenal .slide-nav { margin-top: var(--sp-1); }
+  .kenal .slide-nav .btn { min-height: 38px; padding-top: 4px; padding-bottom: 4px; }
+
+  /* Tirai wilayah & tantangan, kartu bab, panggung dialog */
+  .footsteps { height: 56px; }
+  .curtain-trail { top: 74%; }
+  .curtain-region .curtain-core { margin-bottom: 18vh; }
+  .cc-art { transform: scale(.8); margin: -12px 0; }
+  .curtain-challenge .curtain-title { font-size: var(--step-1); }
+  .curtain-lead { font-size: var(--step-0); }
+  .narrator-tap-title { font-size: var(--step-2); }
+  .tap-trail { height: 40px; }
+  .narrator-tap.is-chapter .narrator-tap-hint, .narrator-tap.is-done .narrator-tap-hint { display: none; }
+  .dialogue .narrator-controls { top: calc(var(--hud-h) + var(--sp-1)); }
+  .dialogue .narrator-controls .icon-btn { width: 34px; height: 34px; }
+  /* 15–16 baris: kepala satu baris, titik kecil, ◀ cukup di kontrol — tombol akhir tetap sebaris */
+  .dialogue.narrator > .screen-head { display: flex; align-items: baseline; justify-content: center; gap: var(--sp-2); margin-bottom: var(--sp-1); }
+  .dialogue.narrator > .screen-head h1 { margin: 0; font-size: var(--step-1); }
+  .dialogue.is-live .slide-nav { flex-wrap: nowrap; }
+  .dialogue.is-live .slide-nav:has([data-slide-final]) { flex-wrap: wrap; }
+  .dialogue.is-live .slide-nav > [data-slide-final] { margin-left: auto; }
+  .dialogue .slide-nav .btn { white-space: nowrap; }
+  .dialogue.is-live .slide-dots { gap: 4px; }
+  .dialogue.is-live .slide-dot { width: 9px; height: 9px; border-width: 1.5px; }
+  .dialogue .dialogue-box { gap: var(--sp-2); }
 }
 
 /* ======================= GERAK DIKURANGI ======================= */
@@ -576,4 +1022,17 @@ body.is-cinematic .nav-bar {
   .curtain-shard:nth-child(2) { transform: translate(60px, -30px) rotate(45deg); }
   .curtain-shard:nth-child(3) { transform: translate(0, 62px) rotate(45deg); }
   .narrator-fx { display: none; }
+
+  /* Tahap 3: tanpa gerak, hanya pudar — tiap visual tampil dalam keadaan akhirnya */
+  .kenal-dot, .kenal-badge, .kenal-slide, .kenal-stage .character-img, .footstep,
+  .curtain-region .curtain-title, .curtain-region .curtain-tagline,
+  .cc-puzzle i, .cc-gap b, .cc-card, .cc-pilihan i, .cc-light,
+  .dialogue-stage .character.is-speaking.pose-happy, .dialogue-stage .character.is-speaking.pose-afraid,
+  .narrator:has(> .narrator-fx.fx-shake) .slide.is-current :is(.kenal-stage, .kenal-caption, .dialogue-box) { animation: none; }
+  .kenal-btn-face { transition: none; }
+  .footstep { opacity: .6; }
+  .cc-pilihan i { transform: translateX(var(--x)) rotate(var(--fan)); }
+  .cc-pilihan i:nth-child(2) { border-color: #FFF6DD; background: var(--gold-500); box-shadow: 0 0 24px var(--gold-500); }
+  .cc-light { left: 50%; }
+  .dialogue-stage .character.is-speaking.pose-determined { translate: none; }
 }

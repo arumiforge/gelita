@@ -2,18 +2,19 @@
 /**
  * 8. Dialog — `/dialog/{code}` → DialogueController::show
  *
- * Dua tokoh berhadapan: yang berbicara maju dan terang, yang mendengar mundur
- * dan meredup. Tokoh yang berbicara ditentukan CSS dari baris yang sedang
- * ditampilkan (:target + :has), jadi tanpa JavaScript pun tetap benar;
- * dialogue.js (tahap 6) menambah kelas .is-speaking / .is-listening, pintasan
- * Spasi/panah kanan, dan event `dialogue_advanced`.
+ * Dialog pembuka wilayah (`level_open`, 15–16 baris) sebagai adegan
+ * dramatis (Tahap 3, partials/dialogue-scene): kartu bab "Bab {n} ·
+ * {wilayah}" + tagline + "Ketuk untuk mendengar kisahnya" dengan jejak kaki
+ * yang melanjutkan tirai wilayah; panggung dua tokoh; gambar tokoh yang
+ * berbicara berganti sesuai pose baris; efek, audio, dan maju otomatis lewat
+ * game/narrator.js. Slide akhir "Masuk ke {wilayah}" → `/wilayah/{code}`.
+ * Nav "Lewati" dan gerbang dialog (dialogueGate()/markDialogueShown()) tetap.
  *
  * @var App\Entities\Level         $level
  * @var list<array<string, mixed>> $slides
+ * @var string                     $tagline judul slide pertama region_intro wilayah ini
  * @var string                     $locale
  */
-$total  = count($slides);
-$first  = (string) ($slides[0]['character_code'] ?? 'jaka');
 $bg     = media_exists($level->background_media_id) ? media_src($level->background_media_id) : '';
 $region = $level->text('name', $locale);
 ?>
@@ -23,53 +24,25 @@ $region = $level->text('name', $locale);
 <?= $this->section('background') ?><?= $bg ?><?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<section class="screen screen-medium story dialogue" data-screen="dialogue"
-         data-level="<?= esc($level->code, 'attr') ?>" data-level-id="<?= esc($level->id, 'attr') ?>"
-         data-first="<?= esc($first, 'attr') ?>" data-index="1">
-  <header class="screen-head">
-    <span class="eyebrow"><?= esc(lang('Game.levelOrder', [$level->sequence])) ?></span>
-    <h1><?= esc($region) ?></h1>
-  </header>
-
-  <div class="dialogue-stage" aria-hidden="true">
-    <?= component('character', ['character' => 'jaka', 'showName' => true, 'class' => 'stage-left']) ?>
-    <?= component('character', ['character' => 'mbah_kedu', 'showName' => true, 'class' => 'stage-right']) ?>
-  </div>
-
-  <?php if ($slides === []): ?>
-    <div class="panel-parchment story-empty">
-      <p><?= esc(lang('Game.dialogueEmpty')) ?></p>
-      <a class="btn btn-primary btn-lg" href="<?= base_url('wilayah/' . $level->code) ?>"><?= esc(lang('Game.enterRegion')) ?> <?= icon('right') ?></a>
-    </div>
-  <?php else: ?>
-    <ol class="slides dialogue-lines">
-      <?php foreach ($slides as $index => $slide): ?>
-        <?php
-        $n         = $index + 1;
-        $character = (string) ($slide['character_code'] ?? 'jaka');
-        $text      = tr($slide, 'text', $locale);
-        $audioId   = (int) ($locale === 'en' ? ($slide['audio_en_asset_id'] ?? 0) : ($slide['audio_id_asset_id'] ?? 0));
-        ?>
-        <li class="slide dialogue-line" id="line-<?= $n ?>" data-index="<?= $n ?>" data-character="<?= esc($character, 'attr') ?>">
-          <div class="dialogue-box panel-parchment">
-            <cite class="dialogue-speaker"><?= esc(lang_or('Game.char_' . $character, $character)) ?></cite>
-            <p class="dialogue-text"><?= esc($text) ?></p>
-            <?php if (($audioSrc = audio_src($audioId ?: null)) !== null): ?>
-              <?= component('audio-player', ['audioId' => $audioId, 'audioSrc' => $audioSrc, 'transcript' => $text]) ?>
-            <?php endif ?>
-            <?= component('partials/slide-nav', [
-                'n'        => $n,
-                'total'    => $total,
-                'prefix'   => 'line-',
-                'finalUrl' => base_url('wilayah/' . $level->code),
-                'final'    => lang('Game.enterRegion'),
-            ]) ?>
-          </div>
-        </li>
-      <?php endforeach ?>
-    </ol>
-  <?php endif ?>
-</section>
+<?= component('partials/dialogue-scene', [
+    'level'   => $level,
+    'slides'  => $slides,
+    'locale'  => $locale,
+    'context' => 'level_open',
+    'screen'  => 'dialogue',
+    'eyebrow' => lang('Game.levelOrder', [$level->sequence]),
+    'tap'     => [
+        'variant' => 'chapter',
+        'trail'   => true,
+        'eyebrow' => lang('Game.chapterOf', [$level->sequence, $region]),
+        'title'   => $tagline ?? '',
+        'label'   => lang('Game.chapterTap'),
+    ],
+    'final' => [
+        'url'   => base_url('wilayah/' . $level->code),
+        'label' => lang('Game.enterRegionName', [$region]),
+    ],
+]) ?>
 <?= $this->endSection() ?>
 
 <?= $this->section('nav') ?>

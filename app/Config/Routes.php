@@ -41,6 +41,8 @@ $routes->group('', ['namespace' => 'App\Controllers\Game'], static function ($ro
         $routes->get('peta', 'MapController::kedu');
         $routes->get('wilayah/(:segment)', 'MapController::level/$1');
         $routes->get('dialog/(:segment)', 'DialogueController::show/$1');
+        $routes->get('tuntas/(:segment)', 'DialogueController::done/$1');
+        $routes->get('penutup', 'DialogueController::ending');
         $routes->get('misi/(:segment)/(:num)', 'ChallengeController::brief/$1/$2');
         $routes->get('tantangan/(:segment)/(:num)', 'ChallengeController::play/$1/$2');
         $routes->get('hasil/(:segment)/(:num)', 'ChallengeController::result/$1/$2');

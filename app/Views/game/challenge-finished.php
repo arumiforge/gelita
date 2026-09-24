@@ -4,20 +4,23 @@
  *
  * Orb cahaya, bintang 0–3, tiga statistik (Waktu, Tepat sejak awal, Skor).
  * Bila wilayah tuntas: panel Mbah Kedu bangga. Bila attempt ini yang
- * menuntaskan wilayah (dan wilayahnya punya Pustaka): sorotan
- * "Pustaka {wilayah} terbuka!" dengan tombol Baca Pustaka. Bila semua node
- * tuntas: tombol Balai Refleksi. Konfeti CSS mati otomatis pada
- * prefers-reduced-motion.
+ * menuntaskan wilayah: tombol utama "Lanjut" ke adegan /tuntas/{code}
+ * ("Serpihan {wilayah} kembali!", Tahap 3), dan bila wilayahnya punya
+ * Pustaka, sorotan "Pustaka {wilayah} terbuka!" dengan tombol Baca Pustaka.
+ * Bila semua node tuntas (mengulang tantangan sesudahnya): tombol Balai
+ * Refleksi. "Lanjut ke {wilayah berikutnya}" memutar tirai wilayah.
+ * Konfeti CSS mati otomatis pada prefers-reduced-motion.
  *
  * @var App\Entities\ChallengeAttempt    $attempt
  * @var App\Entities\ChallengeNode|null  $node
  * @var App\Entities\Level|null          $level
  * @var array<string, mixed>             $levelScore
  * @var bool                             $levelCompleted
+ * @var bool|null                        $closesRegion    attempt ini yang menuntaskan wilayahnya
  * @var bool                             $libraryUnlocked attempt ini membuka Pustaka wilayahnya
  * @var bool                             $allCompleted
  * @var array<string, mixed>             $progress
- * @var array<string, mixed>|null        $nextRegion baris levelOverview wilayah sesudahnya
+ * @var array<string, mixed>|null        $nextRegion baris levelOverview wilayah sesudahnya (+ `curtain`)
  * @var string                           $locale
  */
 $region = $level?->text('name', $locale) ?? '';
@@ -32,13 +35,23 @@ if ($level !== null && $node !== null && ! $levelCompleted) {
     }
 }
 
-$checks = (int) ($attempt->check_count ?? 0);
+$checks       = (int) ($attempt->check_count ?? 0);
+$closesRegion = ! empty($closesRegion);
+// "Lanjut ke {wilayah berikutnya}" (mengulang tantangan di wilayah yang sudah tuntas)
+$toNext = ! $closesRegion && ! $allCompleted && $next === null && $levelCompleted
+    && $nextRegion !== null && $nextRegion['status'] !== 'locked';
 ?>
 <?= $this->extend('layouts/game') ?>
 
 <?= $this->section('title') ?><?= esc(lang('Game.finishedTitle')) ?><?= $this->endSection() ?>
 <?= $this->section('background') ?><?= $level !== null ? media_first($level->background_media_id) : '' ?><?= $this->endSection() ?>
 <?= $this->section('bodyClass') ?>is-celebrate<?= $this->endSection() ?>
+
+<?php if ($toNext): ?>
+<?= $this->section('overlay') ?>
+<template id="tpl-curtain-region"><?= component('curtain', ['kind' => 'region']) ?></template>
+<?= $this->endSection() ?>
+<?php endif ?>
 
 <?= $this->section('content') ?>
 <div class="confetti" aria-hidden="true">
@@ -95,13 +108,16 @@ $checks = (int) ($attempt->check_count ?? 0);
       <?php endif ?>
 
       <div class="finished-actions">
-        <?php if ($allCompleted): ?>
+        <?php if ($closesRegion && $level !== null): ?>
+          <?php // Wilayah baru saja tuntas: adegan "Serpihan {wilayah} kembali!" lebih dulu ?>
+          <a class="btn btn-primary btn-xl" href="<?= base_url('tuntas/' . $level->code) ?>"><?= esc(lang('Game.continue')) ?> <?= icon('right') ?></a>
+        <?php elseif ($allCompleted): ?>
           <a class="btn btn-primary btn-xl" href="<?= base_url('refleksi') ?>"><?= icon('sparkle') ?> <?= esc(lang('Game.reflection')) ?></a>
         <?php elseif ($next !== null): ?>
           <a class="btn btn-primary btn-lg" href="<?= base_url('misi/' . $level->code . '/' . $next->sequence) ?>"><?= esc(lang('Game.next')) ?> <?= icon('right') ?></a>
-        <?php elseif ($levelCompleted && $nextRegion !== null && $nextRegion['status'] !== 'locked'): ?>
+        <?php elseif ($toNext): ?>
           <?php // `entry`: wilayah yang baru terbuka → dialog pembukanya, selain itu peta wilayah ?>
-          <a class="btn btn-primary btn-lg" href="<?= base_url($nextRegion['entry']) ?>"><?= esc(lang('Game.goToRegion', [$nextRegion['name']])) ?> <?= icon('right') ?></a>
+          <a class="btn btn-primary btn-lg" href="<?= base_url($nextRegion['entry']) ?>"<?= isset($nextRegion['curtain']) ? curtain_attrs('region', $nextRegion['curtain']['text'], $nextRegion['curtain']['preload']) : '' ?>><?= esc(lang('Game.goToRegion', [$nextRegion['name']])) ?> <?= icon('right') ?></a>
         <?php elseif ($levelCompleted): ?>
           <a class="btn btn-primary btn-lg" href="<?= base_url('peta') ?>"><?= icon('map') ?> <?= esc(lang('Game.mapKedu')) ?></a>
         <?php endif ?>
