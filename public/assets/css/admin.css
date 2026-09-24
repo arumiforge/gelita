@@ -52,10 +52,12 @@ details[open] > summary.panel-title::after { content: "−"; }
 .split-grid > .panel { margin: 0; }
 .stack { display: grid; gap: var(--sp-4); }
 
-/* ---------- Filter bar ---------- */
+/* ---------- Filter bar ----------
+   Grid admin memakai auto-fit, bukan auto-fill: kolom yang tidak terisi
+   dilipat sehingga item yang sedikit tetap melebar sampai tepi kanan. */
 .filter-bar {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   align-items: end;
   gap: var(--sp-3);
   padding: var(--sp-4);
@@ -71,11 +73,16 @@ details[open] > summary.panel-title::after { content: "−"; }
 .filter-locked { display: inline-flex; align-items: center; gap: var(--sp-1); min-height: 38px; color: var(--gold-300); font-size: var(--step--1); font-weight: 700; }
 
 /* ---------- KPI ---------- */
-.kpi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: var(--sp-3); }
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: var(--sp-3); }
 .kpi-grid .stat-value { font-size: var(--step-2); }
+/* Beranda (9 KPI): 3 × 3 agar tidak ada ubin sendirian di baris kedua;
+   satu baris bila kesembilannya muat ≥ 190px. Ponsel: aturan .kpi-grid. */
+@media (min-width: 641px) { .kpi-grid-nine { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 2120px) { .kpi-grid-nine { grid-template-columns: repeat(9, minmax(0, 1fr)); } }
 
 /* ---------- Chart & visual cadangan ---------- */
-.chart-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); gap: var(--sp-4); }
+/* Paling banyak 2 kolom: 4 chart beranda selalu 2 × 2, bukan 3 + 1 */
+.chart-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(max(420px, calc((100% - var(--sp-4)) / 2)), 1fr)); gap: var(--sp-4); }
 .admin-chart {
   display: grid;
   grid-template-rows: auto 1fr;
@@ -145,7 +152,7 @@ details[open] > summary.panel-title::after { content: "−"; }
 .cohort-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--sp-4); }
 
 /* ---------- Detail (dl) ---------- */
-.detail-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--sp-3) var(--sp-5); margin: 0; }
+.detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--sp-3) var(--sp-5); margin: 0; }
 .detail-grid div { display: grid; gap: 2px; }
 .detail-grid dt { color: var(--ink-dim); font-size: var(--step--1); font-weight: 600; }
 .detail-grid dd { margin: 0; font-weight: 700; overflow-wrap: anywhere; }
@@ -193,7 +200,7 @@ details[open] > summary.panel-title::after { content: "−"; }
   background: var(--surface);
 }
 .form-section > h2 { margin: 0; }
-.form-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); align-items: start; gap: var(--sp-4); }
+.form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); align-items: start; gap: var(--sp-4); }
 .form-grid .span-all { grid-column: 1 / -1; }
 
 /* Dwibahasa: Indonesia di kiri, English di kanan */
@@ -213,7 +220,7 @@ details[open] > summary.panel-title::after { content: "−"; }
 }
 .bilingual .field-help { grid-column: 1 / -1; }
 
-.check-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: var(--sp-2) var(--sp-4); }
+.check-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--sp-2) var(--sp-4); }
 .check-grid .check, .repeat-row > .check { align-items: flex-start; }
 .check .cell-sub { font-weight: 400; }
 .check-row { display: flex; flex-wrap: wrap; gap: var(--sp-1) var(--sp-5); }
@@ -335,7 +342,7 @@ details[open] > summary.panel-title::after { content: "−"; }
   border-radius: var(--radius-lg);
   background: rgba(223, 192, 135, .04);
 }
-.summary-tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--sp-3); }
+.summary-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--sp-3); }
 .findings-summary { display: flex; flex-wrap: wrap; gap: var(--sp-3); }
 
 /* ---------- Media ---------- */
@@ -374,7 +381,7 @@ details[open] > summary.panel-title::after { content: "−"; }
 }
 
 /* ---------- Masukan ---------- */
-.feedback-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: var(--sp-4); }
+.feedback-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--sp-4); }
 .feedback-card { display: grid; align-content: start; gap: var(--sp-3); }
 .feedback-card-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sp-2); }
 .feedback-card dl { display: grid; gap: var(--sp-2); }
@@ -522,7 +529,7 @@ th[aria-sort="descending"] .th-sort-icon::after { content: "↓"; color: var(--g
 }
 
 /* ---------- Pemilih media di editor konten ---------- */
-.media-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: var(--sp-4); }
+.media-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--sp-4); }
 .media-field-body { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: var(--sp-3); }
 .media-field .media-thumb { width: 96px; height: 64px; }
 .media-field-inputs { display: grid; gap: var(--sp-2); min-width: 0; }
