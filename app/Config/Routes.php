@@ -34,7 +34,10 @@ $routes->group('', ['namespace' => 'App\Controllers\Game'], static function ($ro
 
     // Login + sandi sudah sah + sesi permainan aktif
     $routes->group('', ['filter' => 'gameSession'], static function ($routes): void {
-        $routes->get('intro', 'HomeController::intro');
+        $routes->get('gerbang', 'GateController::index');
+        $routes->get('gerbang/peta', 'GateController::map');
+        $routes->get('intro', 'GateController::intro');
+        $routes->get('intro/selesai', 'GateController::finishIntro');
         $routes->get('peta', 'MapController::kedu');
         $routes->get('wilayah/(:segment)', 'MapController::level/$1');
         $routes->get('dialog/(:segment)', 'DialogueController::show/$1');

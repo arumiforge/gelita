@@ -64,6 +64,7 @@ app/Views/
 ├── game/
 │   ├── welcome.php
 │   ├── start.php
+│   ├── start-choice.php         ← pilihan pemain lama (/gerbang)
 │   ├── consent.php
 │   ├── register.php
 │   ├── login.php
@@ -197,6 +198,7 @@ Isi:
 * Kiri: tombol suara (aktif/nonaktif), tombol beranda, tombol kembali.
 * Tengah-kiri: **lentera** (`components/lantern.php`).
 * Kanan: chip peserta (nama + kode), tombol keluar, `components/lang-switch.php`.
+* Sebelum login, posisi lentera diisi merek teks **GELITA** (`.hud-brand`, tautan ke `/`). Halaman awal mengirim `hideBrand => true` sehingga merek tidak dirender di sana: logonya sudah besar di tengah layar. HUD di-include dengan `$this->include()`, jadi variabel halaman ini sampai ke HUD.
 
 ```php
 <header class="hud">
@@ -395,14 +397,26 @@ Untuk tiap halaman: URL → controller → view, dan apa yang ditampilkan.
 
 ### 1. Welcome — `/` → `HomeController::index` → `game/welcome.php`
 
-* Latar `bg-welcome`, logo GELITA besar, Jaka berdiri memegang lentera.
-* Belum login: tombol **Mulai** (→ `/mulai`) dan **Masuk** (→ `/masuk`). Sudah login: tombol **Lanjutkan perjalanan** (→ `/peta`).
-* Tautan kecil ke panel admin di pojok.
-* Data: `$isLoggedIn`, `$logo`.
+* Latar `bg-welcome`, logo di tengah, dan **satu** tombol **Mulai** (→ `/mulai`). Tombol ini sama untuk siswa yang sudah maupun belum login; `/mulai` yang memilah.
+* Logo: slot `ui.logo-hero` (landscape 1600×600, PNG transparan, `max-width: min(880px, 92vw)`, `max-height: 46vh`; 40vh di ponsel mendatar). Cadangannya berurutan `ui.logo`, lalu judul teks GELITA + tagline. Bila logo berupa gambar, tagline tetap ada sebagai teks `visually-hidden`.
+* Tombol Mulai `<a class="btn-start">` berisi gambar slot `ui.btn-start` (720×240, alt "Mulai"/"Start"). Gambarnya bertulisan, jadi mengikuti varian bahasa: locale `en` memakai `ui.btn-start.en` bila ada, selain itu `ui.btn-start` (`media_key_src_locale()`). Tanpa gambar, tombol jatuh ke `btn btn-primary btn-xl` bertuliskan Mulai. Efek: kilau berdenyut pelan, hover naik + bercahaya, `:active` mengecil (`scale(.96)`), cincin fokus emas, target sentuh ≥ 44px.
+* HUD tanpa merek (`hideBrand`). Tidak ada lagi Jaka + narasi, daftar wilayah, tombol Masuk, maupun tautan panel guru — staf masuk lewat `/admin/login` langsung.
+* Tawaran memasang aplikasi (`.welcome-install`, `game/install.js`) tetap ada di bawah tombol.
+* Data: `$locale`, `$hideBrand`.
 
-### 2. Start — `/mulai` → `game/start.php`
+### 2. Start — `/mulai` → `HomeController::start` → `game/start.php`
 
-Dua kartu: "Saya baru" → `/persetujuan`; "Saya sudah punya akun" → `/masuk`.
+* Belum login: dua kartu, "Saya baru" → `/persetujuan`; "Saya sudah punya akun" → `/masuk`.
+* Sudah login (`participant_id` dan `game_session_id` ada di sesi): redirect ke `/gerbang`.
+
+### 2b. Gerbang — `/gerbang` → `GateController::index` → `game/start-choice.php`
+
+Grup filter `gameSession`, data HUD lengkap.
+
+* `participants.intro_seen_at` kosong (pemain baru) → redirect `/intro`: cerita pembuka wajib ditonton.
+* Selain itu: sapaan "Selamat datang kembali, {nama}!" (`display_name ?: username`) dan dua kartu `.start-card`:
+  * **Lihat cerita pembuka** → `/intro`;
+  * **Langsung ke peta** → `/gerbang/peta`, yang men-set flash `curtain=map` lalu redirect ke `/peta`. Flash itu dibaca layar tirai "Membuka Peta Kedu" (tahap berikutnya); kartu tidak menautkan `/peta` langsung karena flash hanya dapat diset server.
 
 ### 3. Persetujuan — `/persetujuan` → `game/consent.php`
 
@@ -446,21 +460,26 @@ Bagian 3 dibuka dengan kotak perkamen kecil **"Mengapa kata sandi harus kuat?"**
 * Tombol **Masuk**. Tautan kecil "Belum punya akun? Daftar".
 * Galat: satu pesan netral `Auth.loginFailed`, atau `Auth.locked` dengan sisa menit.
 * Teks bantuan: "Lupa kata sandi? Minta gurumu mengatur ulang."
+* Setelah berhasil: halaman yang sempat diminta sebelum login (`redirect_after_login`), selain itu `/mulai`. Siswa yang sudah login dan membuka `/masuk` juga diarahkan ke `/mulai`.
 
 ### 5a. Ganti Sandi — `/ganti-sandi` → `game/change-password.php`
 
 * Pesan `Auth.mustChange` bila datang dari reset guru.
 * Kolom sandi saat ini (sandi sementara dari guru), lalu `components/password-field` untuk sandi baru.
-* Setelah berhasil: toast "Kata sandi barumu sudah tersimpan." lalu ke `/peta`.
+* Setelah berhasil: toast "Kata sandi barumu sudah tersimpan." lalu ke `/mulai` (→ cerita pembuka atau pilihan pemain lama).
 
-### 6. Intro — `/intro` → `game/intro.php`
+### 6. Intro — `/intro` → `GateController::intro` → `game/intro.php`
 
 * Slide cerita pembuka dari `dialogues` context `intro`, satu per layar.
 * Gambar Jaka intro, judul, paragraf, `components/audio-player`.
 * Tombol Kembali / Lanjut, indikator titik halaman.
-* Slide terakhir → `/peta`.
+* Slide terakhir (dan tombol pada kondisi tanpa slide) → `/intro/selesai`: `intro_seen_at` diisi bila masih kosong (idempoten), event `intro_completed` { first } dicatat, lalu redirect `/peta` dengan flash `curtain=map`.
+* **Pemain baru wajib menonton.** Controller mengirim `canSkip` (= `intro_seen_at` sudah terisi). Bila `false`, nav "Lewati" tidak dirender sama sekali; tiap slide tetap dapat dilanjut. Bila `true`, "Lewati" → `/peta`.
+* Setelah registrasi, halaman diawali kartu sambutan (flash `welcome`).
 
 ### 7. Peta Kedu — `/peta` → `game/map-kedu.php`
+
+* Peserta yang belum menonton cerita pembuka (`intro_seen_at` kosong) dialihkan ke `/intro`, juga bila `/peta` dibuka lewat URL yang diketik atau redirect setelah login (`BaseGameController::introGate()`).
 
 * Gambar peta Kedu dengan 3 titik pada posisi `levels.map_x` / `map_y`.
 * Tiap titik: ikon status (lampu menyala = terbuka, gembok = terkunci, bintang = tuntas), nama wilayah, urutan, dan progres `n/5`.
@@ -886,7 +905,7 @@ Aplikasi harus tetap terpakai saat berkas gambar belum diunggah. Aturan:
 
 * `media_src()` mengembalikan `assets/ui/placeholder.svg` bila aset tidak aktif/ada.
 * Tombol yang punya versi gambar (`btn-*.png`) jatuh ke gaya CSS emas-navy bila gambarnya tidak ada. Ini default: gaya CSS dipakai kecuali admin memilih sebaliknya.
-* Gambar dengan tulisan punya varian bahasa: `media_assets.locale`. Bila varian `en` tidak ada, varian `id` dipakai.
+* Gambar dengan tulisan punya varian bahasa: `media_assets.locale`. Bila varian `en` tidak ada, varian `id` dipakai. Karena `asset_key` unik, varian disimpan sebagai kunci berakhiran bahasa: `ui.btn-start` (Indonesia) dan `ui.btn-start.en`, atau berkas `assets/ui/btn-start-en.png` saat seeding. Seeder dan unggahan Media mengisi `locale` dari akhiran itu (`MediaStore::localeFromKey()`), dan view membacanya lewat `media_key_src_locale($key, $locale)`.
 
 ---
 
@@ -967,6 +986,7 @@ View tahap ini membutuhkan data yang belum dikirim controller tahap 4. Perubahan
 * **Arena Cari objek — payload tanpa pembeda jebakan.** Payload `cari` tidak memakai `items`. `objects` memuat semua objek (target maupun jebakan) dengan bentuk identik `{ ref, x, y, w, media }`, diurutkan menurut posisi di layar; `ref` adalah token HMAC per attempt dari `encryption.key`. `clues` hanya berisi petunjuk target (`{ item_id, text }`). Server hanya menerima `answer.object` dan menerjemahkannya sendiri ke id butir — id mentah kiriman klien diabaikan, karena id butir target memang terlihat di `clues`. Jalur `/check` memakai aturan yang sama, dan `progress.total` tidak menghitung jebakan. Kontrak API lengkap di [06_JAVASCRIPT.md → *Fitur: Cari Objek Budaya*](06_JAVASCRIPT.md). Dikunci oleh `tests/unit/HuntPayloadTest.php`.
 * **Dialog selalu muncul saat wilayah baru terbuka.** Ini aturan permanen: wilayah berstatus `open` selalu masuk lewat `/dialog/{code}`. Tautan peta memakai `entry`, dan layar selesai yang menuntaskan satu wilayah menawarkan "Lanjut ke {wilayah berikutnya}" menuju dialog pembuka wilayah itu. URL yang diketik langsung juga dijaga: `/wilayah/{code}`, `/misi/{code}/{n}`, dan `/tantangan/{code}/{n}` untuk wilayah yang baru terbuka dialihkan ke dialognya (`BaseGameController::dialogueGate()`) sampai dialog itu tampil. Tanda "sudah tampil" disimpan di sesi PHP per sesi permainan dan per wilayah, bukan di database, sehingga setelah keluar-masuk lagi dialog wilayah yang masih baru terbuka tampil kembali. Pustaka sengaja tidak dijaga. Dikunci oleh `tests/unit/RegionEntryTest.php` dan `tests/unit/DialogueGateTest.php`.
 * **Registrasi memakai nama lengkap.** Label kolom `display_name` adalah "Nama lengkap" / "Full name". Teks persetujuan (`Game.consentBody`) kini menyebut seluruh data profil yang dicatat — termasuk nama lengkap — dan bahwa nama hanya dapat dilihat guru dan tim peneliti. Versi teks persetujuan naik menjadi `2` (`RegisterController::CONSENT_VERSION`); persetujuan yang sudah tersimpan tetap bertanda versi `1`.
+* **Cerita pembuka wajib bagi pemain baru; halaman awal hanya satu tombol.** `/` berisi logo dan satu tombol Mulai → `/mulai`. Belum login → pilih akun baru/lama; sudah login → `/gerbang`. Pemain yang belum pernah menonton cerita pembuka sampai selesai (`participants.intro_seen_at` kosong) selalu dibawa ke `/intro` tanpa tombol "Lewati", dan `/peta` menolak mereka (`introGate()`). Pemain lama memilih di `/gerbang`: lihat cerita pembuka (kini dengan "Lewati") atau langsung ke peta. Peserta yang sudah punya progres saat migrasi `003600` dianggap sudah menonton (backfill), jadi tidak dipaksa. Setiap jalan ke peta dari gerbang/intro membawa flash `curtain=map` untuk layar tirai tahap berikutnya. Dikunci oleh `tests/unit/StartGateTest.php`.
 * **Kolom sandi** sengaja tanpa atribut `minlength`: sandi lemah harus sampai ke server agar metrik `pw_weak_submit_count` tercatat.
 * **Audit pra-tahap 6 (23 September 2026).** Penelusuran alur nyata di MariaDB menemukan beberapa cacat di lapisan server yang menopang view ini; semuanya diperbaiki tanpa mengubah markup:
   * attempt `cari` tidak dapat ditutup karena baris objek jebakan dihitung "belum dijawab" — kini petunjuk, progres, dan syarat `/complete` memakai satu aturan (`ChallengeService::expectsAnswer()`);

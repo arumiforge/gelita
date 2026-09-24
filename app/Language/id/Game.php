@@ -7,7 +7,6 @@ return [
     'start'           => 'Mulai',
     'login'           => 'Masuk',
     'continue'        => 'Lanjut',
-    'continueJourney' => 'Lanjutkan perjalanan',
     'back'            => 'Kembali',
     'next'            => 'Berikutnya',
     'previous'        => 'Sebelumnya',
@@ -81,13 +80,20 @@ return [
     'variant_urutkan_informasi' => 'Susun Urutan',
 
     // Welcome & mulai
-    'welcomeLead'       => 'Lentera Kedu padam. Bantu Jaka mengumpulkan serpihan cahaya di Temanggung, Magelang, dan Wonosobo!',
-    'staffLink'         => 'Panel guru',
     'startTitle'        => 'Siap berpetualang?',
     'startNew'          => 'Saya baru',
     'startNewText'      => 'Buat akunmu dulu, lalu mulai berpetualang bersama Jaka.',
     'startReturning'    => 'Saya sudah punya akun',
     'startReturningText' => 'Masuk dengan nama pengguna dan kata sandimu.',
+
+    // Pilihan pemain lama (/gerbang)
+    'startChoiceTitle'  => 'Lanjutkan petualangan',
+    'welcomeBack'       => 'Selamat datang kembali, {0}!',
+    'startChoiceLead'   => 'Mau mulai dari mana hari ini?',
+    'watchIntro'        => 'Lihat cerita pembuka',
+    'watchIntroText'    => 'Simak lagi kisah Jaka dan Lentera Kedu dari awal.',
+    'goToMap'           => 'Langsung ke peta',
+    'goToMapText'       => 'Lanjutkan perjalananmu di peta Kedu.',
 
     // Persetujuan & pendaftaran
     'consentTitle'           => 'Persetujuan penelitian',

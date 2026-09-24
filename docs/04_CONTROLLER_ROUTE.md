@@ -39,7 +39,7 @@ Tidak ada rumus skor, tidak ada query analitik, dan tidak ada perhitungan benar/
 
 | Kategori | Jumlah | Folder |
 |---|---:|---|
-| Controller Game | 9 | `app/Controllers/Game/` |
+| Controller Game | 10 | `app/Controllers/Game/` |
 | Controller Admin | 11 | `app/Controllers/Admin/` |
 | Controller API | 8 | `app/Controllers/Api/` |
 | Filter | 7 | `app/Filters/` (kerangka sudah ada dari tahap 2) |
@@ -56,8 +56,9 @@ app/Controllers/
 │   ├── GameProgress.php              status buka/kunci level & node, lentera, `entry` wilayah
 │   └── StaffScope.php                schoolScope(), readFilters(), analytics() — dipakai admin & API admin
 ├── Game/
-│   ├── BaseGameController.php        sesi/peserta request, data HUD, dialogueGate()
-│   ├── HomeController.php            welcome, intro, bahasa
+│   ├── BaseGameController.php        sesi/peserta request, data HUD, dialogueGate(), introGate(), toMap()
+│   ├── HomeController.php            welcome, pilihan akun (/mulai), bahasa
+│   ├── GateController.php            gerbang pemain lama, cerita pembuka wajib, jalan ke peta
 │   ├── RegisterController.php        persetujuan + pendaftaran akun siswa
 │   ├── LoginController.php           masuk, keluar, ganti kata sandi siswa
 │   ├── MapController.php             peta Kedu & peta wilayah
@@ -129,7 +130,10 @@ $routes->group('', ['namespace' => 'App\Controllers\Game'], static function ($ro
 
     // Login + sandi sudah sah + sesi permainan aktif
     $routes->group('', ['filter' => 'gameSession'], static function ($routes) {
-        $routes->get('intro',                    'HomeController::intro');
+        $routes->get('gerbang',                  'GateController::index');
+        $routes->get('gerbang/peta',             'GateController::map');
+        $routes->get('intro',                    'GateController::intro');
+        $routes->get('intro/selesai',            'GateController::finishIntro');
         $routes->get('peta',                     'MapController::kedu');
         $routes->get('wilayah/(:segment)',        'MapController::level/$1');
         $routes->get('dialog/(:segment)',         'DialogueController::show/$1');
@@ -298,20 +302,23 @@ $routes->group('api/admin', [
 
 | Method | URI | Controller::method | Param | Auth | Role | Tujuan | Response |
 |---|---|---|---|---|---|---|---|
-| GET | `/` | HomeController::index | — | tidak | — | layar welcome | HTML |
-| GET | `/mulai` | HomeController::start | — | tidak | — | pilih "Saya baru" / "Saya sudah punya akun" | HTML |
+| GET | `/` | HomeController::index | — | tidak | — | logo + satu tombol Mulai | HTML |
+| GET | `/mulai` | HomeController::start | — | tidak | — | belum login: pilih "Saya baru" / "Saya sudah punya akun"; sudah login: redirect `/gerbang` | HTML / redirect |
 | GET | `/persetujuan` | RegisterController::consent | — | tidak | — | layar persetujuan penelitian | HTML |
 | POST | `/persetujuan` | RegisterController::storeConsent | — | tidak | — | simpan centang consent ke session | redirect `/daftar` |
 | GET | `/daftar` | RegisterController::form | — | tidak | — | formulir demographic | HTML |
 | POST | `/daftar` | RegisterController::store | — | tidak | — | buat akun siswa + participant + sesi | redirect `/intro` |
 | GET | `/masuk` | LoginController::form | — | tidak | — | form login siswa | HTML |
-| POST | `/masuk` | LoginController::login | — | tidak | — | login + lanjutkan/buat sesi | redirect `/peta` atau `/ganti-sandi` |
+| POST | `/masuk` | LoginController::login | — | tidak | — | login + lanjutkan/buat sesi | redirect tujuan tersimpan atau `/mulai`, atau `/ganti-sandi` |
 | GET | `/ganti-sandi` | LoginController::changePasswordForm | — | login | — | form ganti sandi | HTML |
-| POST | `/ganti-sandi` | LoginController::changePassword | — | login | — | simpan sandi baru | redirect `/peta` |
+| POST | `/ganti-sandi` | LoginController::changePassword | — | login | — | simpan sandi baru | redirect `/mulai` |
 | GET | `/keluar` | LoginController::logout | — | login | — | keluar akun | redirect `/` |
 | POST | `/bahasa` | HomeController::setLocale | — | opsional | — | ganti bahasa | redirect balik |
-| GET | `/intro` | HomeController::intro | — | ya | — | cerita pembuka | HTML |
-| GET | `/peta` | MapController::kedu | — | ya | — | peta 3 wilayah | HTML |
+| GET | `/gerbang` | GateController::index | — | ya | — | belum menonton cerita pembuka → `/intro`; selain itu pilihan pemain lama | HTML / redirect |
+| GET | `/gerbang/peta` | GateController::map | — | ya | — | flash `curtain=map` | redirect `/peta` |
+| GET | `/intro` | GateController::intro | — | ya | — | cerita pembuka; "Lewati" hanya bila sudah pernah menonton | HTML |
+| GET | `/intro/selesai` | GateController::finishIntro | — | ya | — | isi `intro_seen_at` (idempoten), event `intro_completed`, flash `curtain=map` | redirect `/peta` |
+| GET | `/peta` | MapController::kedu | — | ya | — | peta 3 wilayah; belum menonton cerita pembuka → `/intro` | HTML / redirect |
 | GET | `/wilayah/{code}` | MapController::level | level code | ya | — | peta 5 pos | HTML; wilayah baru terbuka yang dialognya belum tampil → redirect `/dialog/{code}` |
 | GET | `/dialog/{code}` | DialogueController::show | level code | ya | — | dialog pembuka wilayah; menandai dialog sudah tampil di sesi login | HTML |
 | GET | `/misi/{code}/{seq}` | ChallengeController::brief | code, 1..5 | ya | — | kartu misi | HTML; gerbang dialog sama dengan `/wilayah` |
@@ -384,11 +391,21 @@ $routes->group('api/admin', [
 
 | Method | Request | Validasi | Service/Model | Business rule | Response |
 |---|---|---|---|---|---|
-| `index()` | GET | — | `ContentRepository` | bila siswa sudah login → tombol "Lanjutkan perjalanan" ke `/peta`; bila belum → "Mulai" dan "Masuk" | view `game/welcome` |
-| `start()` | GET | — | — | — | view `game/start` |
-| `intro()` | GET | — | `DialogueModel::intro()` | slide intro dibaca dari `dialogues` context `intro` | view `game/intro` |
+| `index()` | GET | — | — | satu tombol Mulai → `/mulai`, sama untuk siswa yang sudah maupun belum login; kirim `hideBrand => true` agar HUD tidak mengulang merek | view `game/welcome` |
+| `start()` | GET | — | — | `participant_id` dan `game_session_id` ada di sesi → redirect `/gerbang`; selain itu pilihan akun | view `game/start` atau redirect |
 | `setLocale()` | POST `locale`, `redirect_to` | `locale: required|valid_locale` | `SessionService::setLocale()` | bila ada sesi → simpan ke `game_sessions.locale` + event `locale_changed`. **Tidak** membuat sesi baru, tidak mereset progres. Selalu simpan juga ke `session('locale')` | redirect ke `redirect_to` yang sudah divalidasi berada di domain sendiri |
 
+
+### `Game\GateController`
+
+Turunan `BaseGameController`; seluruh route-nya di grup `gameSession`, jadi kepemilikan sesi dan data HUD terjamin.
+
+| Method | Service/Model | Business rule | Response |
+|---|---|---|---|
+| `index()` | — | `introGate()`: `participants.intro_seen_at` kosong → redirect `/intro`; selain itu sapaan "Selamat datang kembali, {display_name ?: username}!" + kartu "Lihat cerita pembuka" (`/intro`) dan "Langsung ke peta" (`/gerbang/peta`) | view `game/start-choice` + `hudData()` |
+| `map()` | — | `toMap()`: flash `curtain=map` untuk layar tirai "Membuka Peta Kedu" | redirect `/peta` |
+| `intro()` | `DialogueModel::intro()` | slide dari `dialogues` context `intro`; `canSkip` = `intro_seen_at` terisi — bila `false` nav "Lewati" tidak dirender | view `game/intro` |
+| `finishIntro()` | `ParticipantModel::markIntroSeen()`, `EventService` | isi `intro_seen_at` hanya bila masih kosong; event `intro_completed` { first: bool } setiap kali | `toMap()` → redirect `/peta` + flash `curtain=map` |
 
 ### `Game\RegisterController`
 
@@ -448,10 +465,10 @@ Kata sandi tidak pernah ditulis ke flash, `old()`, log, atau event.
 
 | Method | Request | Validasi | Business rule | Response |
 |---|---|---|---|---|
-| `form()` | GET | — | bila sudah login → redirect `/peta`; pilihan fase hanya tampil bila `allow_phase_choice = 1` | view `game/login` |
-| `login()` | POST `username`, `password`, `phase?` | `username: required`, `password: required` | `SessionService::login()`. `invalid` → pesan identik `lang('Auth.loginFailed')` tanpa membedakan nama salah/sandi salah; `locked` → `lang('Auth.locked', [menit])`; `must_change` → redirect `/ganti-sandi`; `ok` → redirect ke URL tujuan tersimpan atau `/peta` | redirect |
+| `form()` | GET | — | bila sudah login → redirect `/mulai`; pilihan fase hanya tampil bila `allow_phase_choice = 1` | view `game/login` |
+| `login()` | POST `username`, `password`, `phase?` | `username: required`, `password: required` | `SessionService::login()`. `invalid` → pesan identik `lang('Auth.loginFailed')` tanpa membedakan nama salah/sandi salah; `locked` → `lang('Auth.locked', [menit])`; `must_change` → redirect `/ganti-sandi`; `ok` → redirect ke URL tujuan tersimpan (`redirect_after_login`) atau `/mulai` | redirect |
 | `changePasswordForm()` | GET | — | tampilkan pesan `Auth.mustChange` bila datang dari reset guru; checklist syarat sama dengan registrasi | view `game/change-password` |
-| `changePassword()` | POST `current_password`, `password`, `password_confirm` | `current_password: required`, `password: required|strong_password[username]` (username diambil dari akun), `password_confirm: required|matches[password]`; sandi baru ≠ sandi lama | `SessionService::changePassword()`; `must_change_password = 0`; lalu login otomatis untuk melanjutkan/membuat sesi; event `password_changed` (setelah reset guru, sesi baru ada sesudah login, jadi event dicatat pada sesi itu dengan `via: reset`) | redirect `/peta` + toast |
+| `changePassword()` | POST `current_password`, `password`, `password_confirm` | `current_password: required`, `password: required|strong_password[username]` (username diambil dari akun), `password_confirm: required|matches[password]`; sandi baru ≠ sandi lama | `SessionService::changePassword()`; `must_change_password = 0`; lalu login otomatis untuk melanjutkan/membuat sesi; event `password_changed` (setelah reset guru, sesi baru ada sesudah login, jadi event dicatat pada sesi itu dengan `via: reset`) | redirect `/mulai` + toast |
 | `logout()` | GET | — | `SessionService::logout()`: event `session_paused`, attempt `in_progress` **tidak** ditutup agar dapat dilanjutkan; `session()->destroy()` | redirect `/` |
 
 ### `Api\AuthApiController`
@@ -470,7 +487,7 @@ Nama provinsi/kabupaten dikirim bersama kodenya dan disimpan sebagai snapshot. S
 
 | Method | Business rule | Response |
 |---|---|---|
-| `kedu()` | ambil 3 level + status dari `session_progress`. Level terkunci bila `unlock_mode = sequential` dan `sequence > unlocked_level_sequence` | view `game/map-kedu` |
+| `kedu()` | `introGate()` lebih dulu: peserta yang belum menonton cerita pembuka dialihkan ke `/intro`, juga lewat URL yang diketik atau redirect setelah login. Lalu ambil 3 level + status dari `session_progress`. Level terkunci bila `unlock_mode = sequential` dan `sequence > unlocked_level_sequence` | view `game/map-kedu` |
 | `level($code)` | validasi level ada & terbuka; bila terkunci → redirect `/peta` + toast; ambil 5 node + status (selesai / terbuka / terkunci) dari `challenge_attempts` | view `game/map-level` |
 
 Status node: node ke-`n` terbuka bila `n = 1` atau node ke-`n-1` sudah `completed`. Bila `unlock_mode = free`, semua terbuka (lihat D13 di 01_DATABASE.md; nilai `free` sengaja berbeda dari status wilayah `open`).
@@ -838,7 +855,7 @@ Dari **03_MODEL_ENTITY.md**: seluruh Model, Entity, dan delapan Service — khus
 Setelah tahap ini selesai:
 
 * `php spark routes` menampilkan seluruh route di atas tanpa konflik, dengan auto-route mati.
-* Alur siswa berjalan penuh lewat HTTP: `/` → `/persetujuan` → `/daftar` (nama pengguna + sandi kuat) → `/intro` → `/peta` → `/wilayah/temanggung` → `/misi/temanggung/1` → `/tantangan/temanggung/1` → API jawab → `/selesai/{id}` → `/keluar` → `/masuk` → kembali ke progres terakhir.
+* Alur siswa berjalan penuh lewat HTTP: `/` → `/persetujuan` → `/daftar` (nama pengguna + sandi kuat) → `/intro` → `/intro/selesai` → `/peta` → `/wilayah/temanggung` → `/misi/temanggung/1` → `/tantangan/temanggung/1` → API jawab → `/selesai/{id}` → `/keluar` → `/masuk` → kembali ke progres terakhir.
 * Registrasi dengan sandi `kedu2026` ditolak dengan pesan syarat yang belum terpenuhi; `pw_weak_submit_count` bertambah; registrasi berikutnya dengan `Kedu#2026` diterima.
 * Reset sandi oleh guru memaksa siswa ke `/ganti-sandi` pada login berikutnya.
 * Impor workbook bank soal menampilkan pratinjau per node sebelum menulis database.

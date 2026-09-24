@@ -111,6 +111,30 @@ abstract class BaseGameController extends BaseController
         return redirect()->to(site_url('dialog/' . $level->code));
     }
 
+    /**
+     * Cerita pembuka wajib ditonton sampai selesai sebelum peta Kedu terbuka,
+     * juga bila `/peta` dibuka lewat URL yang diketik atau redirect setelah
+     * login. Mengembalikan redirect ke `/intro` bila `intro_seen_at` peserta
+     * masih kosong, atau null.
+     */
+    protected function introGate(): ?RedirectResponse
+    {
+        if ($this->participant()->hasSeenIntro()) {
+            return null;
+        }
+
+        return redirect()->to(site_url('intro'));
+    }
+
+    /**
+     * Masuk peta Kedu dengan flash `curtain=map`: layar tirai "Membuka Peta
+     * Kedu" (tahap berikutnya) membacanya untuk menutupi pemuatan peta.
+     */
+    protected function toMap(): RedirectResponse
+    {
+        return redirect()->to(site_url('peta'))->with('curtain', 'map');
+    }
+
     /** Dipanggil DialogueController saat dialog pembuka wilayah ditampilkan. */
     protected function markDialogueShown(GameSession $session, Level $level): void
     {

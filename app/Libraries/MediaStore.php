@@ -324,6 +324,7 @@ class MediaStore
             'sha256'       => is_file($absolute) ? hash_file('sha256', $absolute) : null,
             'width_px'     => $size[0] ?? null,
             'height_px'    => $size[1] ?? null,
+            'locale'       => self::localeFromKey($assetKey),
             'is_active'    => 1,
         ];
 
@@ -334,6 +335,16 @@ class MediaStore
         }
 
         return $media->update((int) $existing['id'], $payload) ? (int) $existing['id'] : null;
+    }
+
+    /**
+     * Varian bahasa gambar bertulisan ditandai akhiran kunci `.en` / `-en`
+     * (mis. `ui.btn-start.en`), sama dengan aturan MediaAssetSeeder untuk
+     * nama berkas. Kunci tanpa akhiran berlaku untuk semua bahasa (NULL).
+     */
+    public static function localeFromKey(string $assetKey): ?string
+    {
+        return preg_match('/[-_.](id|en)$/', strtolower(trim($assetKey)), $m) ? $m[1] : null;
     }
 
     /** @return array{id: null, type: null, error: string} */

@@ -20,7 +20,10 @@ class MediaUsage
      * @var array<string, string>
      */
     public const SLOTS = [
-        'ui.logo'              => 'Logo di halaman awal dan panel admin',
+        'ui.logo'              => 'Logo panel admin & halaman masuk; cadangan logo halaman awal',
+        'ui.logo-hero'         => 'Logo landscape di halaman awal',
+        'ui.btn-start'         => 'Tombol Mulai di halaman awal (bertulisan, bahasa Indonesia)',
+        'ui.btn-start.*'       => 'Tombol Mulai di halaman awal, varian bahasa (mis. .en)',
         'ui.placeholder'       => 'Gambar pengganti saat aset belum ada',
         'bg.welcome'           => 'Latar halaman sambutan / mulai',
         'bg.auth'              => 'Latar halaman masuk & daftar',
