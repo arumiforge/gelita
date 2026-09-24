@@ -114,12 +114,17 @@ class ContentRepository
             : model(HintModel::class)->forItem($itemId));
     }
 
+    /**
+     * Slide narasi/dialog aktif. $levelId null = konteks global (`intro`,
+     * `map_intro`, `ending`); selain itu konteks wilayah (`region_intro`,
+     * `level_open`, `level_done`).
+     */
     public function dialogues(?int $levelId, string $context = 'level_open'): array
     {
         $key = 'dialogues.' . ($levelId ?? 0) . '.' . $context;
 
         return $this->remember($key, static fn (): array => $levelId === null
-            ? model(DialogueModel::class)->intro()
+            ? model(DialogueModel::class)->global($context)
             : model(DialogueModel::class)->forLevel($levelId, $context));
     }
 

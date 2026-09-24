@@ -142,7 +142,7 @@ class EventService
         $assetId = (int) ($audioEvent['audio_asset_id'] ?? 0);
         $action  = (string) ($audioEvent['action'] ?? '');
 
-        if ($assetId <= 0 || ! in_array($action, ['play', 'pause', 'replay', 'complete'], true)) {
+        if ($assetId <= 0 || ! in_array($action, AudioUsageEventModel::ACTIONS, true)) {
             throw new \InvalidArgumentException('Event audio tidak lengkap atau aksinya tidak dikenali.');
         }
 
@@ -165,6 +165,7 @@ class EventService
 
         $eventType = match ($action) {
             'play'     => 'audio_play',
+            'autoplay' => 'audio_autoplay',
             'pause'    => 'audio_pause',
             'replay'   => 'audio_replay',
             'complete' => 'audio_completed',

@@ -48,7 +48,7 @@ $code   = (string) ($person['participant_code'] ?? $person['code'] ?? '');
   <tr>
     <td><div class="kpi-value"><?= esc($num($profile['hint_uses'])) ?></div><div class="kpi-label">petunjuk dibuka</div></td>
     <td><div class="kpi-value"><?= esc($num($profile['answer_changes'])) ?></div><div class="kpi-label">perubahan jawaban</div></td>
-    <td><div class="kpi-value"><?= esc($num($profile['audio']['total_plays'])) ?></div><div class="kpi-label">pemutaran audio</div></td>
+    <td><div class="kpi-value"><?= esc($num($profile['audio']['total_plays'])) ?></div><div class="kpi-label">pemutaran audio oleh siswa (<?= esc($num($profile['audio']['total_autoplays'] ?? 0)) ?> otomatis)</div></td>
   </tr>
 </table>
 
