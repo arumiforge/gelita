@@ -42,6 +42,7 @@ $title      = trim($this->renderSection('title'));
 <body class="game <?= esc($bodyClass) ?>"
       data-locale="<?= esc($locale) ?>"
       data-base="<?= esc(base_url()) ?>">
+  <?= $this->include('components/rotate-gate') ?>
   <a class="skip-link" href="#app"><?= esc(lang('Game.skipToContent')) ?></a>
 
   <?= $this->include('components/hud') ?>

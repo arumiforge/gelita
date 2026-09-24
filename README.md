@@ -23,6 +23,13 @@ Kelima arena kini dapat dimainkan penuh di browser — Periksa, petunjuk, keluar
 
 Yang sudah berfungsi penuh lewat HTTP: persetujuan dan registrasi dengan kata sandi kuat (termasuk dua metrik literasi keamanan digital), masuk/keluar, ganti sandi dan reset sandi oleh guru, ganti sandi sendiri untuk staf (`/admin/akun/sandi`, wajib setelah reset atau pembuatan akun oleh admin), peta Kedu dan peta wilayah dengan kunci berurutan, dialog pembuka wilayah, kelima arena beserta seluruh API penilaiannya, layar selesai dan riwayat hasil, Pustaka Kedu, profil, Balai Refleksi, pergantian bahasa tanpa kehilangan progres, serta seluruh halaman panel admin (dasbor, peserta, sesi, analitik, masukan, konten, impor bank soal, media & audio, studi & rilis, tata kelola, akun staf).
 
+### Pembaruan orientasi layar: game hanya dimainkan mendatar
+
+- **Aset cukup satu versi mendatar.** Peta, adegan cari, dan latar tidak perlu varian potret: kanvas mengunci rasio gambar, lalu pin dan objek diletakkan dalam persen.
+- **Layar putar.** Ponsel dan tablet yang dipegang tegak melihat layar "Putar perangkatmu" di semua halaman game (`components/rotate-gate.php`), tanpa tombol lewati. Desktop/laptop dengan jendela sempit dan panel admin tidak terpengaruh. Rotasi tidak dapat dikunci dari web (iOS tidak mendukung, Android hanya dalam layar penuh), jadi layar ini juga menjelaskan cara menyalakan *Putar otomatis*.
+- **Tata letak ponsel mendatar.** Tinggi ponsel mendatar hanya ±280–430px. HUD diringkas, navigasi bawah tidak lagi menutupi isi, kepala tantangan dan instruksi pindah ke kolom kiri, dan peta, adegan cari, serta papan puzzle diukur dari tinggi layar. Tampilan desktop, papan tulis, dan tablet mendatar tidak berubah.
+- Aturan dan panduan asetnya ada di [`docs/05_VIEW_UI.md` → *Orientasi layar*](docs/05_VIEW_UI.md#orientasi-layar).
+
 ### Pembaruan media, Pustaka Kedu, dan bank soal produksi
 
 - **Unggah media langsung dari editor konten.** Gambar adegan & latar tantangan, gambar butir (keping puzzle, objek cari), gambar opsi, gambar bacaan, peta & latar & lencana wilayah, serta audio dialog dan narasi pembuka tantangan dipilih atau diunggah di formulir masing-masing (`App\Libraries\MediaStore`, komponen `media-field` / `audio-select`). Halaman Media menampilkan di mana setiap aset dipakai dan slot mana yang masih kosong (`App\Libraries\MediaUsage`).
