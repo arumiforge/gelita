@@ -37,7 +37,7 @@ class Gelita extends BaseConfig
         'challenge_skipped', 'challenge_abandoned', 'answer_submitted',
         'answer_changed', 'wrong_target_clicked', 'hint_opened',
         'audio_play', 'audio_pause', 'audio_replay', 'audio_completed',
-        'feedback_submitted', 'password_changed',
+        'feedback_submitted', 'password_changed', 'intro_completed',
     ];
 
     /**
@@ -89,6 +89,9 @@ class Gelita extends BaseConfig
         'challenge.option' => [400, 400],
         'library.image'    => [960, 640],
         'reward.badge'     => [320, 320],
+        'ui.logo-hero'     => [1600, 600],
+        'ui.btn-start'     => [720, 240],
+        'ui.btn-start.*'   => [720, 240],   // varian bahasa: ui.btn-start.en
     ];
 
     public int $maxUploadBytes      = 64 * 1024 * 1024;

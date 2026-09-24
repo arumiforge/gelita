@@ -186,6 +186,25 @@ if (! function_exists('media_key_src')) {
     }
 }
 
+if (! function_exists('media_key_src_locale')) {
+    /**
+     * media_key_src() untuk gambar bertulisan yang punya varian bahasa
+     * (05_VIEW_UI.md §Kondisi aset hilang): `{kunci}.{locale}` dicoba lebih
+     * dulu, lalu kunci dasar (varian Indonesia). `ui.btn-start` + en →
+     * `ui.btn-start.en`, bila tidak ada → `ui.btn-start`.
+     */
+    function media_key_src_locale(string $assetKey, ?string $locale = null): ?string
+    {
+        $locale ??= service('request')->getLocale() ?: 'id';
+
+        if ($locale !== 'id' && ($localized = media_key_src($assetKey . '.' . $locale)) !== null) {
+            return $localized;
+        }
+
+        return media_key_src($assetKey);
+    }
+}
+
 if (! function_exists('media_catalog')) {
     /**
      * Seluruh baris media_assets (aktif maupun belum berberkas) per id, untuk

@@ -7,11 +7,16 @@ use CodeIgniter\HTTP\RedirectResponse;
 /**
  * Peta Kedu (tiga wilayah) dan peta wilayah (lima pos tantangan).
  * Status buka/kunci disusun GameProgress dari `session_progress`.
+ * Peta Kedu baru terbuka setelah cerita pembuka ditonton (introGate()).
  */
 class MapController extends BaseGameController
 {
-    public function kedu(): string
+    public function kedu(): string|RedirectResponse
     {
+        if ($gate = $this->introGate()) {
+            return $gate;
+        }
+
         $session = $this->session();
 
         return view('game/map-kedu', $this->hudData() + [

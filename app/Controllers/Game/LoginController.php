@@ -19,7 +19,7 @@ class LoginController extends BaseController
     public function form(): string|RedirectResponse
     {
         if ((int) session('participant_id') > 0 && (int) session('game_session_id') > 0) {
-            return redirect()->to(site_url('peta'));
+            return redirect()->to(site_url('mulai'));
         }
 
         // tujuan yang disimpan GameSessionFilter harus bertahan sampai POST
@@ -148,7 +148,7 @@ class LoginController extends BaseController
             service('eventService')->record($login['session'], 'password_changed', ['via' => 'reset']);
         }
 
-        return redirect()->to(site_url('peta'))->with('message', lang('Auth.passwordChanged'));
+        return redirect()->to(site_url('mulai'))->with('message', lang('Auth.passwordChanged'));
     }
 
     public function logout(): RedirectResponse
@@ -158,12 +158,16 @@ class LoginController extends BaseController
         return redirect()->to(site_url('/'));
     }
 
-    /** Kembali ke halaman yang sempat diminta sebelum login, selain itu peta. */
+    /**
+     * Kembali ke halaman yang sempat diminta sebelum login; selain itu `/mulai`,
+     * yang meneruskan ke cerita pembuka (belum pernah menonton) atau pilihan
+     * pemain lama.
+     */
     private function afterLogin(): RedirectResponse
     {
         $target = session('redirect_after_login');
         session()->remove('redirect_after_login');
 
-        return redirect()->to(safe_internal_url(is_string($target) ? $target : null, 'peta'));
+        return redirect()->to(safe_internal_url(is_string($target) ? $target : null, 'mulai'));
     }
 }

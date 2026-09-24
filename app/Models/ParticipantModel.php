@@ -24,6 +24,7 @@ class ParticipantModel extends Model
         'district_code', 'district_name_snapshot',
         'pw_first_submit_criteria', 'pw_weak_submit_count',
         'failed_login_count', 'locked_until', 'last_login_at', 'password_changed_at',
+        'intro_seen_at',
     ];
     protected $validationRules = [
         'participant_code' => 'required|max_length[40]|is_unique[participants.participant_code,id,{id}]',
@@ -86,6 +87,20 @@ class ParticipantModel extends Model
             'password_changed_at'  => date('Y-m-d H:i:s'),
             'must_change_password' => $mustChange ? 1 : 0,
         ]);
+    }
+
+    /**
+     * Tandai cerita pembuka sudah ditonton. Idempoten: waktu pertama tidak
+     * pernah ditimpa. TRUE bila baris ini baru saja ditandai.
+     */
+    public function markIntroSeen(int $id): bool
+    {
+        $this->builder()
+            ->where('id', $id)
+            ->where('intro_seen_at', null)
+            ->update(['intro_seen_at' => date('Y-m-d H:i:s')]);
+
+        return $this->db->affectedRows() > 0;
     }
 
     /** Gagal login: increment; melewati batas → kunci sementara dan reset pencacah. */
