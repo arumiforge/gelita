@@ -1,8 +1,11 @@
 <?php
 /**
- * 6. Intro — `/intro` → HomeController::intro
+ * 6. Intro — `/intro` → GateController::intro
  *
  * Slide cerita pembuka (dialogues context `intro`), satu per layar.
+ * Slide terakhir → `/intro/selesai` (isi `intro_seen_at`, lalu peta dengan
+ * tirai). Pemain yang belum pernah menonton sampai selesai wajib menonton:
+ * "Lewati" hanya dirender bila `canSkip`; tiap slide tetap dapat dilanjut.
  * Perpindahan slide memakai jangkar #slide-n dan CSS :target, sehingga tetap
  * berjalan tanpa JavaScript; game/intro.js memakai hash yang sama lewat
  * location.replace() (riwayat tidak bertambah, :target tetap berlaku) dan
@@ -13,6 +16,7 @@
  *
  * @var list<array<string, mixed>> $slides
  * @var string                     $locale
+ * @var bool                       $canSkip sudah pernah menonton (intro_seen_at terisi)
  */
 $welcome = session('welcome');
 $total   = count($slides);
@@ -40,7 +44,7 @@ $total   = count($slides);
   <?php if ($slides === []): ?>
     <div class="panel-parchment story-empty">
       <p><?= esc(lang('Game.introEmpty')) ?></p>
-      <a class="btn btn-primary btn-lg" href="<?= base_url('peta') ?>"><?= esc(lang('Game.startJourney')) ?> <?= icon('right') ?></a>
+      <a class="btn btn-primary btn-lg" href="<?= base_url('intro/selesai') ?>"><?= esc(lang('Game.startJourney')) ?> <?= icon('right') ?></a>
     </div>
   <?php else: ?>
     <ol class="slides">
@@ -70,7 +74,7 @@ $total   = count($slides);
                 'n'        => $n,
                 'total'    => $total,
                 'prefix'   => 'slide-',
-                'finalUrl' => base_url('peta'),
+                'finalUrl' => base_url('intro/selesai'),
                 'final'    => lang('Game.startJourney'),
             ]) ?>
           </div>
@@ -81,8 +85,10 @@ $total   = count($slides);
 </section>
 <?= $this->endSection() ?>
 
+<?php if ($canSkip): ?>
 <?= $this->section('nav') ?>
 <?= component('nav-bar', ['nav' => [
     ['label' => lang('Game.skip'), 'href' => base_url('peta'), 'style' => 'quiet', 'arrow' => 'right'],
 ]]) ?>
 <?= $this->endSection() ?>
+<?php endif ?>

@@ -7,35 +7,32 @@ use App\Models\GameSessionModel;
 use CodeIgniter\HTTP\RedirectResponse;
 
 /**
- * Layar welcome, pilihan masuk/daftar, cerita pembuka, dan pemilih bahasa.
- *
- * index(), start(), dan setLocale() dapat dibuka tanpa login; intro() berada
- * di grup filter `gameSession`, jadi GameContext sudah dimuat saat dipanggil.
+ * Layar welcome, pilihan masuk/daftar, dan pemilih bahasa — semuanya dapat
+ * dibuka tanpa login. Cerita pembuka dan pilihan pemain lama ada di
+ * GateController (grup filter `gameSession`).
  */
 class HomeController extends BaseController
 {
+    /** Halaman awal: logo dan satu tombol Mulai; HUD tanpa merek (logo sudah besar). */
     public function index(): string
     {
-        $levels = service('contentRepository')->levels();
-
         return view('game/welcome', [
-            'locale'     => $this->locale,
-            'isLoggedIn' => (int) session('participant_id') > 0,
-            'levels'     => $levels,
+            'locale'    => $this->locale,
+            'hideBrand' => true,
         ]);
     }
 
-    public function start(): string
+    /**
+     * Tujuan tombol Mulai. Belum login → pilihan "Saya baru" / "Sudah punya
+     * akun"; sudah login → `/gerbang` (cerita pembuka atau pilihan pemain lama).
+     */
+    public function start(): string|RedirectResponse
     {
+        if ((int) session('participant_id') > 0 && (int) session('game_session_id') > 0) {
+            return redirect()->to(site_url('gerbang'));
+        }
+
         return view('game/start', ['locale' => $this->locale]);
-    }
-
-    public function intro(): string
-    {
-        return view('game/intro', [
-            'locale' => $this->locale,
-            'slides' => service('contentRepository')->dialogues(null, 'intro'),
-        ]);
     }
 
     /**

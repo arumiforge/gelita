@@ -23,6 +23,14 @@ Kelima arena kini dapat dimainkan penuh di browser — Periksa, petunjuk, keluar
 
 Yang sudah berfungsi penuh lewat HTTP: persetujuan dan registrasi dengan kata sandi kuat (termasuk dua metrik literasi keamanan digital), masuk/keluar, ganti sandi dan reset sandi oleh guru, ganti sandi sendiri untuk staf (`/admin/akun/sandi`, wajib setelah reset atau pembuatan akun oleh admin), peta Kedu dan peta wilayah dengan kunci berurutan, dialog pembuka wilayah, kelima arena beserta seluruh API penilaiannya, layar selesai dan riwayat hasil, Pustaka Kedu, profil, Balai Refleksi, pergantian bahasa tanpa kehilangan progres, serta seluruh halaman panel admin (dasbor, peserta, sesi, analitik, masukan, konten, impor bank soal, media & audio, studi & rilis, tata kelola, akun staf).
 
+### Pembaruan alur masuk: satu tombol Mulai, cerita pembuka wajib
+
+- **Halaman awal hanya logo dan tombol Mulai.** Logo landscape dari slot `ui.logo-hero` (cadangan `ui.logo`, lalu judul teks), tombol dari gambar `ui.btn-start` beserta varian bahasa `ui.btn-start.en` (cadangan tombol CSS emas). Merek di HUD tidak diulang di halaman ini. Tautan panel guru dihapus: staf masuk lewat `/admin/login`.
+- **`/mulai` memilah.** Belum login → "Saya baru" / "Sudah punya akun". Sudah login → `/gerbang`. Login dan ganti sandi kini berakhir di `/mulai` (tujuan tersimpan sebelum login tetap dihormati).
+- **Cerita pembuka wajib bagi pemain baru.** Selama `participants.intro_seen_at` kosong (migration `003600`), `/gerbang` dan `/peta` mengarah ke `/intro`, dan tombol "Lewati" tidak ada. Slide terakhir menuju `/intro/selesai`, yang mengisi kolom itu dan mencatat event `intro_completed`. Peserta yang sudah punya progres saat migration dianggap sudah menonton.
+- **Pemain lama memilih** di `/gerbang`: lihat cerita pembuka (dengan "Lewati") atau langsung ke peta. Jalan ke peta membawa flash `curtain=map` untuk layar tirai tahap berikutnya.
+- Rincian di [`docs/05_VIEW_UI.md` → *Halaman Game*](docs/05_VIEW_UI.md#halaman-game) dan [`docs/04_CONTROLLER_ROUTE.md`](docs/04_CONTROLLER_ROUTE.md).
+
 ### Pembaruan orientasi layar: game hanya dimainkan mendatar
 
 - **Aset cukup satu versi mendatar.** Peta, adegan cari, dan latar tidak perlu varian potret: kanvas mengunci rasio gambar, lalu pin dan objek diletakkan dalam persen.
@@ -165,9 +173,9 @@ Di Windows, Laragon (PHP 8.3 + MySQL) memenuhi semua prasyarat. Pengaturan ekste
 
 ## Migration
 
-Migration dijalankan berurutan dari `000100` sampai `003500` (36 berkas) dan menghasilkan 32 tabel: 30 tabel domain, `ci_sessions`, dan `migrations`. `php spark migrate:rollback -b 0` mengembalikan database ke kosong.
+Migration dijalankan berurutan dari `000100` sampai `003600` (37 berkas) dan menghasilkan 32 tabel: 30 tabel domain, `ci_sessions`, dan `migrations`. `php spark migrate:rollback -b 0` mengembalikan database ke kosong.
 
-`003100`–`003300` adalah koreksi, `003400` menambah kolom baru, `003500` menambah tabel baru. Perubahan skema selalu datang sebagai migration baru; migration lama tidak diubah.
+`003100`–`003300` adalah koreksi, `003400` dan `003600` menambah kolom baru, `003500` menambah tabel baru. Perubahan skema selalu datang sebagai migration baru; migration lama tidak diubah.
 
 | Versi | Peran |
 |---|---|
@@ -177,6 +185,7 @@ Migration dijalankan berurutan dari `000100` sampai `003500` (36 berkas) dan men
 | `003300` | menambahkan index wajib `game_event_logs (session_id, occurred_at)` yang tidak dibuat `002400` |
 | `003400` | menambahkan `staff_users.must_change_password`: sandi sementara dari admin (reset / akun baru) wajib diganti sebelum panel terbuka |
 | `003500` | membuat `library_media` (banyak gambar/video per halaman Pustaka Kedu, dari unggahan atau tautan YouTube/Drive/Vimeo/Commons) dan menyalin isi kolom lama `image_a`/`image_b`/`video` ke sana |
+| `003600` | menambahkan `participants.intro_seen_at`: pemain baru wajib menonton cerita pembuka; peserta yang sudah punya progres diisi saat migration (backfill) |
 
 `003200` memanggil `resetDataCache()` sebelum memeriksa kolom; tanpa itu seluruh pemeriksaan `fieldExists()` membaca daftar kolom versi sebelum `003100` pada proses `spark migrate` yang sama. Jangan melakukan rollback ke bawah `003100`: tahap 3 bergantung pada penamaan kolom hasil migration tersebut. Rincian lengkap di [`docs/01_DATABASE.md`](docs/01_DATABASE.md#koreksi-challenge_attempts-003100-dan-003200).
 

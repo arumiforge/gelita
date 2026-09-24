@@ -109,7 +109,11 @@ Registrasi sekaligus materi literasi keamanan digital: anak belajar membuat kata
 13. session()->regenerate(true); set participant_id, game_session_id
 14. Redirect /intro dengan kartu sambutan:
       "Ingat nama pengguna dan kata sandimu, ya. Jangan beri tahu teman."
-15. View intro merender slide dari dialogues context 'intro'
+15. View intro merender slide dari dialogues context 'intro', tanpa tombol
+    "Lewati" (intro_seen_at masih kosong)
+16. Slide terakhir → /intro/selesai → ParticipantModel::markIntroSeen()
+    (isi intro_seen_at sekali), EventService::record('intro_completed', {first})
+    → redirect /peta dengan flash curtain=map
 ```
 
 Bila consent ditolak atau tidak lengkap, registrasi dibatalkan seluruhnya — tidak ada baris `participants` yang tertinggal. Kata sandi tidak pernah ditulis ke session, flash, `old()`, log, atau event; yang disimpan hanya jumlah syarat terpenuhi dan jumlah penolakan.
@@ -119,7 +123,8 @@ Bila consent ditolak atau tidak lengkap, registrasi dibatalkan seluruhnya — ti
 ## FITUR 2: Masuk dan Melanjutkan Perjalanan
 
 ```text
- 1. Siswa membuka / → "Masuk" → /masuk (komputer mana pun di kelas)
+ 1. Siswa membuka / → "Mulai" → /mulai → "Saya sudah punya akun" → /masuk
+    (komputer mana pun di kelas)
  2. Mengisi nama pengguna + kata sandi (+ fase bila allow_phase_choice = 1)
  3. POST /masuk → LoginController::login → SessionService::login()
  4. findByUsername (huruf kecil)
@@ -134,9 +139,13 @@ Bila consent ditolak atau tidak lengkap, registrasi dibatalkan seluruhnya — ti
       ada   → status 'active', EventService::record('session_resumed', {via:'login'})
       tidak → SessionService::startNewSession(), record('session_started', {via:'login'})
  8. session()->regenerate(true); set participant_id, game_session_id
- 9. Redirect ke URL tujuan tersimpan atau /peta
+ 9. Redirect ke URL tujuan tersimpan atau /mulai → /gerbang
+      intro_seen_at kosong → /intro (cerita pembuka wajib, tanpa "Lewati")
+      selain itu           → pilihan "Lihat cerita pembuka" / "Langsung ke peta"
+                             (/gerbang/peta → /peta + flash curtain=map)
 10. Peta dirender dari session_progress: lentera, status level, dan status node
-    langsung sesuai keadaan terakhir; attempt in_progress dilanjutkan saat node dibuka
+    langsung sesuai keadaan terakhir; attempt in_progress dilanjutkan saat node dibuka.
+    /peta sendiri juga mengalihkan ke /intro selama intro_seen_at kosong
 ```
 
 **Keluar** (`/keluar`): event `session_paused`, attempt `in_progress` tidak ditutup, `session()->destroy()`, kembali ke `/`. Komputer kelas yang ditinggal tanpa keluar tetap aman karena session berakhir sendiri setelah `session.expiration` (4 jam).
@@ -167,7 +176,7 @@ GANTI SANDI OLEH SISWA
       verifikasi sandi saat ini; sandi baru lolos PasswordPolicy dan ≠ sandi lama
       password_hash baru, must_change_password = 0, password_changed_at = now
       EventService::record('password_changed')
- 9. Redirect /peta + toast "Kata sandi barumu sudah tersimpan."
+ 9. Redirect /mulai + toast "Kata sandi barumu sudah tersimpan."
 ```
 
 Siswa juga dapat mengganti sandi sukarela dari halaman Profil lewat alur yang sama (langkah 7–9).
