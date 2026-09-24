@@ -116,6 +116,7 @@ Sudah dijelaskan kerangkanya di 02_PROJECT_FOUNDATION.md. Tambahan yang wajib ad
 <body class="game"
       data-locale="<?= esc($locale) ?>"
       data-base="<?= esc(base_url()) ?>">
+  <?= $this->include('components/rotate-gate') ?>
   <?= $this->include('components/hud') ?>
 
   <div class="scene" aria-hidden="true">
@@ -812,11 +813,29 @@ Font dimuat **lokal** dari `public/assets/fonts/`, bukan dari Google Fonts CDN. 
 
 | Breakpoint | Perilaku |
 |---|---|
-| `< 640px` | HUD menjadi dua baris; grid opsi 1 kolom; kartu perilaku 1 kolom; sidebar admin menjadi drawer; tabel admin menggulir horizontal di dalam `.table-wrap` |
+| perangkat sentuh potret — `(orientation: portrait) and (pointer: coarse)` | area game ditutup layar putar (lihat *Orientasi layar* di bawah); panel admin tidak terpengaruh |
+| mendatar pendek — `(orientation: landscape) and (max-height: 500px)` | ponsel mendatar: HUD 52px satu baris, navigasi bawah mengalir di akhir halaman, kepala tantangan + instruksi di kolom kiri, arena bergulir di kolom kanan, peta/adegan cari/papan puzzle diukur dari tinggi layar |
+| `< 640px` | HUD menjadi dua baris; grid opsi 1 kolom; kartu perilaku 1 kolom; sidebar admin menjadi drawer; tabel admin menggulir horizontal di dalam `.table-wrap`. Di area game kini hanya dicapai jendela sempit desktop/laptop, karena perangkat sentuh selalu mendatar |
 | `640–1024px` | grid opsi 2 kolom; puzzle maksimum 420px; sidebar admin menyempit menjadi ikon |
 | `> 1024px` | tata letak penuh; arena tantangan maksimum 900px; konten admin maksimum `--content-max` |
 
 Papan tulis interaktif dan proyektor kelas sering berjalan pada 1366×768 — pastikan layar tantangan muat tanpa menggulir pada tinggi 768px.
+
+### Orientasi layar
+
+Area game **hanya dilayani mendatar** di perangkat sentuh. Alasannya aset: peta wilayah 1400×900, adegan cari 16:9, latar 1920×1080 — semuanya mendatar, dan membuat versi potret untuk setiap aset (beserta koordinat pin dan objek yang berbeda) menggandakan pekerjaan konten.
+
+* **Layar putar** (`components/rotate-gate.php`) ada di setiap halaman `layouts/game.php`. Tampil/hilangnya murni CSS dengan media query `(orientation: portrait) and (pointer: coarse)` di `layout.css`, jadi bekerja tanpa JavaScript dan hilang sendiri begitu perangkat diputar. Tidak ada tombol lewati. `pointer: coarse` membuat desktop/laptop dengan jendela sempit tidak ikut dihalangi.
+* **Aksesibilitas** (`game/rotate-gate.js`): selama penghalang tampil, isi `<body>` lainnya `inert` dan fokus pindah ke penghalang (`role="alertdialog"`); setelah diputar, fokus dikembalikan. Media query di CSS dan JS wajib sama — dijaga `tests/unit/RotateGateTest.php`.
+* **Rotasi tidak dikunci.** `screen.orientation.lock()` hanya berlaku dalam layar penuh di Android, dan layar penuh lepas setiap kali halaman berganti (GELITA multi-halaman); iOS tidak mendukungnya. Karena itu penghalang menjelaskan cara menyalakan *Putar otomatis* bila layar tidak ikut berputar.
+* **Ponsel mendatar itu pendek.** Setelah dipotong bilah status dan bilah alamat, tinggi yang tersisa ±280–430px. Aturannya: tinggi untuk isi utama, lebar untuk kelengkapan. `--stage-h` (tinggi kolom arena) dipakai untuk mengukur adegan cari dan papan puzzle; lebar peta dihitung dari tinggi layar dengan rasio 14/9. Tes tampilan dilakukan pada 844×390, 740×340, dan 568×320 (iPhone SE mendatar, yang juga terkena aturan `< 640px`).
+* Waktu selama penghalang tampil di tengah tantangan tetap terhitung dalam durasi tantangan; tidak ada event telemetry khusus.
+
+**Panduan aset (satu versi mendatar):**
+
+* Setiap aset cukup satu versi pada ukuran `Config\Gelita::$assetSizes`; tidak ada varian potret.
+* Pin peta (`map_x`/`map_y`) dan objek cari (`x`/`y`/`w`) disimpan dalam **persen** terhadap gambar, dan kanvasnya mengunci rasio (`--map-ratio`, `.hunt-scene` 16:9). Gambar boleh tampil lebih kecil atau lebih besar tanpa mengubah koordinat.
+* Latar `bg.*` digambar `object-fit: cover`: di layar yang lebih sempit dari 16:9 kiri-kanannya terpotong. Letakkan bagian penting di tengah.
 
 ### Gaya komponen kata sandi (`components.css`)
 

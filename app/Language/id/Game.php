@@ -23,6 +23,11 @@ return [
     'skipToContent'   => 'Langsung ke isi halaman',
     'minutes'         => '{0} menit',
 
+    // Layar putar (perangkat sentuh dalam posisi potret)
+    'rotateTitle'     => 'Putar perangkatmu',
+    'rotateText'      => 'GELITA dimainkan dalam posisi mendatar. Putar HP atau tabletmu ke samping.',
+    'rotateStuck'     => 'Layar tidak ikut berputar? Buka pengaturan cepat, lalu nyalakan Putar otomatis atau matikan kunci rotasi layar.',
+
     // HUD & lentera
     'shards'          => 'Serpihan Cahaya',
     'lanternToggle'   => 'Lihat serpihan cahaya per wilayah',

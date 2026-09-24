@@ -10,6 +10,7 @@ import { CONFIG } from './core/config.js';
 import { resendQueued } from './core/events.js';
 import { Sfx, initAudioPlayers } from './core/audio.js';
 import { initHud } from './game/hud.js';
+import { initRotateGate } from './game/rotate-gate.js';
 
 document.documentElement.classList.add('js');
 
@@ -29,6 +30,7 @@ if (CONFIG.sessionTag) {
 }
 
 initHud();
+initRotateGate();
 
 const screen = document.querySelector('[data-screen]')?.dataset.screen ?? '';
 const attemptId = Number(document.querySelector('[data-screen="challenge"]')?.dataset.attempt) || null;
