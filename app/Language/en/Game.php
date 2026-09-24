@@ -28,6 +28,11 @@ return [
     'rotateText'      => 'GELITA is played sideways. Turn your phone or tablet on its side.',
     'rotateStuck'     => 'Screen not turning? Open quick settings, then switch on Auto-rotate or turn off the rotation lock.',
 
+    // Installed app (welcome page)
+    'installApp'      => 'Install GELITA',
+    'installHint'     => 'Add it to the home screen: the screen stays sideways and full, with no address bar.',
+    'installIos'      => 'On iPhone/iPad: tap Share, then choose Add to Home Screen.',
+
     // HUD & lantern
     'shards'          => 'Light Shards',
     'lanternToggle'   => 'See the light shards for each region',

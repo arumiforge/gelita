@@ -1400,6 +1400,7 @@ Baru setelah **delapan pemeriksaan otomatis dan sepuluh uji manual** ini lolos, 
 7. Sediakan **10–15 menit** di awal pertemuan pertama untuk registrasi. Membuat kata sandi kuat adalah bagian pembelajaran literasi keamanan digital, bukan hambatan teknis: biarkan anak membaca syaratnya dan memperbaiki sendiri sandi yang ditolak.
 8. Pastikan guru tahu cara mereset sandi di `/admin/peserta/{id}`. Jangan meminta anak menuliskan sandinya di daftar kelas — bila lupa, reset.
 9. Untuk anak kelas bawah yang kesulitan mengetik simbol, tunjukkan letak tombol simbol di papan ketik atau papan ketik layar tablet sebelum mulai.
+10. **HP/tablet kelas: pasang GELITA di layar utama** sekali per perangkat. Buka alamat GELITA di Chrome (Android), lalu ketuk **Pasang GELITA** di halaman awal (atau menu ⋮ → *Instal aplikasi* / *Tambahkan ke layar utama*). Di iPhone/iPad buka di Safari, ketuk **Bagikan → Tambah ke Layar Utama**. Setelah itu anak membuka GELITA dari ikon lentera. Di Android layar terkunci mendatar dan tampil penuh tanpa bilah alamat; di iPhone/iPad rotasi tidak terkunci, jadi nyalakan *Putar otomatis*. Catatan: di iPhone/iPad, login aplikasi terpasang terpisah dari login di Safari.
 
 ### Setelah sesi kelas
 
