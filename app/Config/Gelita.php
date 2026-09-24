@@ -25,6 +25,30 @@ class Gelita extends BaseConfig
     /** Karakter yang punya suara & sprite */
     public array $characters = ['jaka', 'mbah_kedu'];
 
+    /**
+     * Pose sah per tokoh untuk `dialogues.pose` (docs/naskah-cerita.md,
+     * "Kamus pose dan efek"). Narator tidak tampil sebagai gambar, jadi tanpa
+     * pose. Gambar tiap pose ada di slot `char.{jaka|kedu}.{pose}.{n}`
+     * ($characterAnimations); bila belum diunggah, tokoh tampil dengan `idle`.
+     */
+    public array $characterPoses = [
+        'narator'   => [],
+        'jaka'      => ['idle', 'happy', 'bow', 'sad', 'afraid', 'determined'],
+        'mbah_kedu' => ['idle', 'smile', 'worried', 'weak'],
+    ];
+
+    /** Efek layar sah untuk `dialogues.effect`; tidak diputar bila gerak dikurangi */
+    public array $dialogueEffects = ['fog', 'fog-lift', 'glow', 'flash', 'shake', 'dim'];
+
+    /**
+     * Konteks `dialogues.context_code`: global (level_id NULL) atau per
+     * wilayah. Urutannya mengikuti alur permainan dan naskah.
+     */
+    public array $dialogueContexts = [
+        'global' => ['intro', 'map_intro', 'ending'],
+        'level'  => ['region_intro', 'level_open', 'level_done'],
+    ];
+
     /** Fase penelitian */
     public array $phases = ['umum', 'pretest', 'posttest'];
 
@@ -73,10 +97,16 @@ class Gelita extends BaseConfig
      * Menggantikan tabel sprite_sheets/sprite_animations.
      */
     public array $characterAnimations = [
-        'jaka.idle'  => ['frames' => 3, 'fps' => 4, 'loop' => true],
-        'jaka.bow'   => ['frames' => 3, 'fps' => 6, 'loop' => false],
-        'jaka.happy' => ['frames' => 3, 'fps' => 6, 'loop' => false],
-        'kedu.idle'  => ['frames' => 3, 'fps' => 3, 'loop' => true],
+        'jaka.idle'       => ['frames' => 3, 'fps' => 4, 'loop' => true],
+        'jaka.bow'        => ['frames' => 3, 'fps' => 6, 'loop' => false],
+        'jaka.happy'      => ['frames' => 3, 'fps' => 6, 'loop' => false],
+        'jaka.sad'        => ['frames' => 3, 'fps' => 4, 'loop' => false],
+        'jaka.afraid'     => ['frames' => 3, 'fps' => 6, 'loop' => false],
+        'jaka.determined' => ['frames' => 3, 'fps' => 6, 'loop' => false],
+        'kedu.idle'       => ['frames' => 3, 'fps' => 3, 'loop' => true],
+        'kedu.smile'      => ['frames' => 3, 'fps' => 4, 'loop' => false],
+        'kedu.worried'    => ['frames' => 3, 'fps' => 4, 'loop' => false],
+        'kedu.weak'       => ['frames' => 3, 'fps' => 3, 'loop' => false],
     ];
 
     /** Ukuran piksel wajib per slot aset, dipakai validasi upload */
@@ -92,6 +122,7 @@ class Gelita extends BaseConfig
         'ui.logo-hero'     => [1600, 600],
         'ui.btn-start'     => [720, 240],
         'ui.btn-start.*'   => [720, 240],   // varian bahasa: ui.btn-start.en
+        'bg.loading'       => [1920, 1080], // tirai layar penuh (components/curtain.php)
     ];
 
     public int $maxUploadBytes      = 64 * 1024 * 1024;

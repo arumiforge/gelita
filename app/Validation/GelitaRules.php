@@ -74,4 +74,27 @@ class GelitaRules
 
         return $result['acceptable'];
     }
+
+    /**
+     * Pose tokoh sah (Config\Gelita::$characterPoses). Parameter = nama field
+     * tokoh, mis. valid_dialogue_pose[character_code]. Bila tokohnya tidak ikut
+     * dikirim (update sebagian), pose cukup sah untuk salah satu tokoh.
+     */
+    public function valid_dialogue_pose(?string $str, string $characterField, array $data): bool
+    {
+        $poses     = config('Gelita')->characterPoses;
+        $character = $data[trim($characterField) ?: 'character_code'] ?? null;
+
+        if ($character !== null) {
+            return in_array((string) $str, $poses[(string) $character] ?? [], true);
+        }
+
+        return in_array((string) $str, array_merge(...array_values($poses)), true);
+    }
+
+    /** Efek layar dialog sah (Config\Gelita::$dialogueEffects) */
+    public function valid_dialogue_effect(?string $str): bool
+    {
+        return in_array((string) $str, config('Gelita')->dialogueEffects, true);
+    }
 }

@@ -820,8 +820,11 @@ class ContentController extends BaseAdminController
     }
 
     /**
-     * Dialog pembuka wilayah (`level_open`), atau cerita pembuka permainan
-     * (`intro`, level_id NULL) bila $levelId = 0. Slide nonaktif tetap
+     * Slide narasi dan dialog satu konteks (docs/naskah-cerita.md). $levelId
+     * = 0 untuk konteks global (`intro`, `map_intro`, `ending`, level_id
+     * NULL); selain itu konteks wilayah (`region_intro`, `level_open`,
+     * `level_done`). Konteks dipilih lewat `?konteks=`; bawaannya `intro`
+     * untuk global dan `level_open` untuk wilayah. Slide nonaktif tetap
      * tampil di editor agar dapat diaktifkan kembali.
      */
     public function dialogues(int $levelId): string
@@ -832,16 +835,25 @@ class ContentController extends BaseAdminController
             throw PageNotFoundException::forPageNotFound("Level {$levelId} tidak ditemukan.");
         }
 
+        $context = $this->dialogueContext($level === null, $this->request->getGet('konteks'));
+
         $rows = model(DialogueModel::class)
             ->where('level_id', $level?->id)
-            ->where('context_code', $level === null ? 'intro' : 'level_open')
+            ->where('context_code', $context)
             ->orderBy('sequence', 'ASC')
+            ->orderBy('id', 'ASC')
             ->findAll();
 
-        return $this->panel('admin/content/dialogues', $level === null ? 'Cerita pembuka' : 'Dialog wilayah', [
+        $config = config('Gelita');
+
+        return $this->panel('admin/content/dialogues', $level === null ? 'Cerita & narasi umum' : 'Dialog wilayah', [
             'level'      => $level,
+            'context'    => $context,
+            'contexts'   => $config->dialogueContexts[$level === null ? 'global' : 'level'],
             'dialogues'  => $rows,
-            'characters' => $level === null ? ['narator', ...config('Gelita')->characters] : config('Gelita')->characters,
+            'characters' => ['narator', ...$config->characters],
+            'poses'      => $config->characterPoses,
+            'effects'    => $config->dialogueEffects,
         ]);
     }
 
@@ -851,8 +863,8 @@ class ContentController extends BaseAdminController
             throw PageNotFoundException::forPageNotFound("Level {$levelId} tidak ditemukan.");
         }
 
-        $back      = 'admin/konten/dialog/' . $levelId;
-        $context   = $levelId === 0 ? 'intro' : 'level_open';
+        $context   = $this->dialogueContext($levelId === 0, $this->request->getPost('context'));
+        $back      = 'admin/konten/dialog/' . $levelId . '?konteks=' . $context;
         $dialogues = model(DialogueModel::class);
         $saved     = 0;
 
@@ -878,6 +890,8 @@ class ContentController extends BaseAdminController
                 'context_code'   => $context,
                 'sequence'       => (int) ($row['sequence'] ?? $index + 1),
                 'character_code' => (string) ($row['character_code'] ?? 'jaka'),
+                'pose'           => $this->nullIfBlank($row['pose'] ?? null),
+                'effect'         => $this->nullIfBlank($row['effect'] ?? null),
                 'title_id'       => $this->nullIfBlank($row['title_id'] ?? null),
                 'title_en'       => $this->nullIfBlank($row['title_en'] ?? null),
                 'text_id'        => $text,
@@ -913,6 +927,22 @@ class ContentController extends BaseAdminController
     }
 
     // -------------------------------------------------------------- bantuan
+
+    /**
+     * Konteks dialog yang diminta bila sah untuk cakupannya (global atau
+     * wilayah). Selain itu dipakai bawaannya: `intro` untuk global,
+     * `level_open` untuk wilayah.
+     */
+    private function dialogueContext(bool $global, mixed $requested): string
+    {
+        $allowed = config('Gelita')->dialogueContexts[$global ? 'global' : 'level'];
+
+        if (is_string($requested) && in_array($requested, $allowed, true)) {
+            return $requested;
+        }
+
+        return $global ? 'intro' : 'level_open';
+    }
 
     private function nodeHasAttempts(int $nodeId): bool
     {
