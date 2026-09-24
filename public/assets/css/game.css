@@ -177,6 +177,11 @@ body.is-challenge .hud-leave { display: none; }
   color: var(--navy-900);
   font-weight: 600;
 }
+/* Tawaran memasang di layar utama (game/install.js) */
+.welcome-install { display: grid; justify-items: center; gap: var(--sp-2); max-width: 46ch; }
+.welcome-install-hint { display: flex; align-items: flex-start; gap: var(--sp-2); margin: 0; color: var(--ink-dim); font-size: var(--step--1); }
+.welcome-install-hint .icon { margin-top: 2px; color: var(--gold-500); }
+
 .welcome-staff {
   display: inline-flex;
   align-items: center;
@@ -591,6 +596,8 @@ body.is-challenge .app { padding-bottom: var(--sp-4); }
 .challenge-exit > summary { cursor: pointer; }
 
 .arena { display: grid; align-content: start; gap: var(--sp-4); min-height: 0; padding-top: var(--sp-4); }
+/* Pembungkus isi engine: tak terlihat di sini, menjadi kolom bergulir di ponsel mendatar */
+.arena-body { display: contents; }
 .instruction {
   display: flex;
   align-items: flex-start;
@@ -1343,6 +1350,220 @@ body.is-challenge .app { padding-bottom: var(--sp-4); }
   .reflection-hero .character { display: none; }
   .bar-row { grid-template-columns: 1fr auto; }
   .bar-row .progress { grid-column: 1 / -1; grid-row: 2; }
+}
+
+/* Ponsel mendatar. Perangkat sentuh selalu dimainkan mendatar (layar putar,
+   layout.css), jadi inilah tampilan ponsel: lebar 640–930px, tinggi hanya
+   ±280–430px. Tinggi untuk isi utama, lebar untuk kelengkapan: kepala
+   tantangan dan instruksi pindah ke kolom kiri, gambar mendatar (adegan
+   cari, papan puzzle, peta) diukur dari tinggi layar agar utuh terlihat,
+   tokoh dan judul diperkecil. --stage-h = tinggi kolom arena. */
+@media (orientation: landscape) and (max-height: 500px) {
+  :root { --stage-h: calc(100vh - var(--hud-h) - 4 * var(--sp-2) - 4px); }
+  @supports (height: 100dvh) {
+    :root { --stage-h: calc(100dvh - var(--hud-h) - 4 * var(--sp-2) - 4px); }
+  }
+
+  /* HUD tetap satu baris setinggi --hud-h */
+  .lantern-toggle { padding-top: 2px; padding-bottom: 2px; }
+  .lantern-bar { display: none; }
+  .lantern-text .eyebrow { white-space: nowrap; }
+  .user-chip { max-width: 190px; }
+
+  h1 { font-size: var(--step-2); }
+  .screen-head { margin-bottom: var(--sp-3); }
+  .screen-head h1 { margin-bottom: 0; }
+  .panel-parchment { padding: var(--sp-4) var(--sp-5); }
+
+  /* Welcome */
+  .welcome { gap: var(--sp-3); padding-top: 0; }
+  .welcome-title { font-size: var(--step-3); }
+  .welcome-jaka .character-img { max-height: 150px; }
+  .welcome-jaka .character-fallback { width: 96px; font-size: var(--step-2); }
+
+  /* Akun */
+  .login-jaka .character-img { max-height: 80px; }
+  .login-jaka .character-fallback { width: 64px; font-size: var(--step-1); }
+  .why-strong-jaka .character-img { max-height: 110px; }
+
+  /* Cerita: tokoh di kiri, teks di kanan, selayar */
+  .welcome-card { margin-bottom: var(--sp-3); padding: var(--sp-3) var(--sp-4); }
+  .story .slide { grid-template-columns: minmax(100px, 180px) minmax(0, 1fr); align-items: center; gap: var(--sp-4); }
+  .story .dialogue-line { grid-template-columns: minmax(0, 1fr); }
+  .slide-art .character-img { max-height: calc(100dvh - var(--hud-h) - 96px); }
+  .slide-art .character-fallback,
+  .dialogue-stage .character-fallback { width: 88px; font-size: var(--step-2); }
+  .slide-body { gap: var(--sp-2); }
+  .slide-body h2 { font-size: var(--step-1); }
+  .slide-text, .dialogue-text { font-size: var(--step-0); line-height: 1.5; }
+
+  /* Dialog: dua tokoh mengapit balon, bukan di atasnya */
+  .dialogue {
+    display: grid;
+    grid-template-columns: minmax(96px, 150px) minmax(0, 1fr) minmax(96px, 150px);
+    align-items: end;
+    column-gap: var(--sp-3);
+  }
+  .dialogue > .screen-head { grid-column: 1 / -1; }
+  .dialogue-stage { grid-area: 2 / 1 / 3 / -1; min-height: 0; margin: 0; padding: 0; }
+  .dialogue-stage .character { max-width: 150px; }
+  .dialogue-stage .character-img { max-height: calc(100dvh - var(--hud-h) - 150px); }
+  .dialogue > .slides, .dialogue > .story-empty { position: relative; z-index: 1; grid-area: 2 / 2 / 3 / 3; }
+
+  /* Peta: judul & pemandu di kiri, peta setinggi layar di kanan */
+  .map-screen {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: var(--sp-3) var(--sp-5);
+  }
+  .map-screen > * { grid-column: 1 / -1; }
+  .map-layout { display: contents; }
+  .map-screen > .map-head { grid-area: 1 / 1; margin: 0; text-align: left; }
+  .map-head p { margin: 0; font-size: var(--step--1); }
+  .map-guide { display: grid; grid-area: 2 / 1; grid-template-columns: auto minmax(0, 1fr); justify-items: start; align-items: center; }
+  .map-guide .character-img { max-height: 110px; }
+  .map-guide .character-fallback { width: 64px; font-size: var(--step-1); }
+  .map-guide .narration { padding: var(--sp-3) var(--sp-4); }
+  .map-screen > .map-progress { grid-area: 2 / 1; margin: 0; text-align: left; }
+  .map-screen .map-frame {
+    grid-area: 1 / 2 / 4 / 3;
+    width: calc((100vh - var(--hud-h) - 48px) * 14 / 9 + 20px);
+    width: calc((100dvh - var(--hud-h) - 48px) * 14 / 9 + 20px);
+    max-width: calc(100vw - 300px);
+    margin: 0;
+  }
+  .map-screen > .region-list, .map-screen > .node-list { grid-row: 4; margin-top: var(--sp-2); }
+  .pin-icon { width: 40px; height: 40px; border-width: 2px; }
+  .pin-icon .icon { width: 20px; height: 20px; }
+  .node-point .pin-icon { width: 40px; height: 40px; }
+  .pin-label { padding: 0 var(--sp-2); font-size: var(--step--1); }
+
+  /* Kartu misi: segel nomor tidak boleh tertutup HUD */
+  .mission { padding-top: var(--sp-6); }
+  .mission-card, .panel-parchment.mission-card { gap: var(--sp-2); padding-top: var(--sp-6); }
+  .mission-description { font-size: var(--step-0); }
+
+  /* Layar tantangan: selayar penuh, kolom kiri = kepala + instruksi,
+     kolom kanan = arena yang bergulir sendiri */
+  body.is-challenge .app { padding-top: var(--sp-2); padding-bottom: var(--sp-2); }
+  body.is-challenge .challenge {
+    height: calc(100vh - var(--hud-h) - 2 * var(--sp-2));
+    height: calc(100dvh - var(--hud-h) - 2 * var(--sp-2));
+  }
+  .challenge { grid-template-columns: minmax(0, 1fr); }
+  .challenge-character { display: none; }
+  .arena-panel {
+    display: grid;
+    grid-template-columns: minmax(172px, 24%) minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    column-gap: var(--sp-3);
+    height: 100%;
+    padding: var(--sp-2) var(--sp-3);
+  }
+  .challenge-head {
+    grid-area: 1 / 1;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+    gap: var(--sp-2);
+    padding-bottom: var(--sp-2);
+  }
+  .badge-pos { width: 36px; height: 36px; font-size: var(--step-0); }
+  /* Wilayah & jenis tantangan sudah tampil di kartu misi; nomornya ada di lencana */
+  .challenge-info .eyebrow { display: none; }
+  .challenge-info .title {
+    display: -webkit-box;
+    overflow: hidden;
+    font-size: var(--step-0);
+    line-height: 1.25;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+  .challenge-chips { grid-column: 1 / -1; justify-content: flex-start; gap: var(--sp-1); }
+  /* Konfirmasi keluar di tengah layar: dibuka ke bawah dari kolom kiri ia keluar layar */
+  .challenge-exit .confirm-box {
+    position: fixed;
+    top: 50%;
+    right: auto;
+    bottom: auto;
+    left: 50%;
+    gap: var(--sp-2);
+    padding: var(--sp-3) var(--sp-4);
+    transform: translate(-50%, -50%);
+  }
+  .challenge-exit .confirm-box h2 { margin: 0; font-size: var(--step-1); }
+  .arena { display: contents; }
+  .instruction {
+    grid-area: 2 / 1;
+    align-self: start;
+    max-height: 100%;
+    margin-top: var(--sp-2);
+    overflow-y: auto;
+    padding: var(--sp-2) var(--sp-3);
+    font-size: var(--step--1);
+  }
+  .arena > .empty-state { grid-area: 1 / 2 / 3 / 3; }
+  .arena-body {
+    display: grid;
+    grid-area: 1 / 2 / 3 / 3;
+    align-content: start;
+    gap: var(--sp-3);
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-right: var(--sp-1);
+  }
+  .arena-actions { padding-top: var(--sp-2); }
+  .arena-actions .btn-lg { min-height: 48px; padding: var(--sp-2) var(--sp-5); font-size: var(--step-0); }
+  .question, .card-text, .sentence { font-size: var(--step-0); }
+
+  /* Puzzle: papan setinggi arena, petunjuk & tombol di sampingnya */
+  .puzzle-wrap { grid-template-columns: auto minmax(140px, 1fr); align-items: center; justify-content: start; gap: var(--sp-2) var(--sp-4); }
+  .puzzle-board { grid-row: 1 / span 2; width: var(--stage-h); min-width: 180px; max-width: calc(100vw - 420px); }
+  .puzzle-wrap .hint-text { align-self: end; text-align: left; }
+  .puzzle-wrap .arena-actions { position: static; align-self: start; justify-content: flex-start; padding: 0; background: none; }
+
+  /* Pilihan & boleh */
+  .question-img { max-height: 120px; }
+  .option { min-height: 52px; padding: var(--sp-2) var(--sp-3); }
+  .option img { max-height: 90px; }
+  .passage-img { max-height: 110px; }
+
+  /* Cari: adegan setinggi arena dan tetap terlihat; petunjuk & daftar di kanan */
+  .hunt { grid-template-columns: minmax(0, 1fr) minmax(140px, 30%); grid-template-rows: auto minmax(0, 1fr); align-items: start; }
+  .hunt-scene {
+    position: sticky;
+    top: 0;
+    grid-area: 1 / 1 / 3 / 2;
+    justify-self: center;
+    width: min(100%, calc(var(--stage-h) * 16 / 9));
+  }
+  .hunt-clue { grid-area: 1 / 2; grid-template-columns: minmax(0, 1fr); padding: var(--sp-2) var(--sp-3); }
+  .hunt-guide { display: none; }
+  .clue-text { font-size: var(--step-0); line-height: 1.35; }
+  .hunt-side { grid-area: 2 / 2; }
+
+  /* Dialog tengah (benar/salah/petunjuk/keluar): diringkas; bila tetap lebih
+     tinggi dari layar, lapisannya yang bergulir (margin auto = rata atas) */
+  .modal-layer { overflow-y: auto; }
+  .modal-layer > .modal { margin-block: auto; padding-top: var(--sp-5); }
+  .modal-card { gap: var(--sp-2); padding: var(--sp-6) var(--sp-4) var(--sp-4); }
+  .modal-character { max-height: 80px; }
+  .modal-title { font-size: var(--step-1); }
+
+  /* Selesai, refleksi */
+  .finished-card { padding-top: var(--sp-6); }
+  .finished-card h1 { font-size: var(--step-2); }
+  .finished-kedu .character-img { max-height: 90px; }
+  .reflection-hero .character-img { max-height: 150px; }
+}
+
+/* Ponsel mendatar yang juga sempit (iPhone SE 568×320): chip peserta cukup avatarnya */
+@media (orientation: landscape) and (max-height: 500px) and (max-width: 640px) {
+  .user-text { display: none; }
+  .user-chip { padding-right: 3px; }
+  .map-guide .character { display: none; }
+  .region-list { grid-template-columns: minmax(0, 1fr); }
 }
 
 @media (prefers-reduced-motion: reduce) {

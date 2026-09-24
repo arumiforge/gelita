@@ -138,6 +138,63 @@ body.game {
 .toast-layer > * { pointer-events: auto; }
 body.admin .toast-layer, body.auth .toast-layer { bottom: var(--sp-4); }
 
+/* ---------- Layar putar ----------
+   GELITA hanya dilayani mendatar: perangkat sentuh yang dipegang tegak
+   ditutup penghalang ini. `pointer: coarse` menjaga desktop/laptop dengan
+   jendela sempit tetap dapat dipakai. Tanpa JavaScript pun penghalang
+   muncul dan hilang sendiri saat perangkat diputar. */
+.rotate-gate { display: none; }
+
+@media (orientation: portrait) and (pointer: coarse) {
+  body.game { overflow: hidden; }
+
+  .rotate-gate {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: grid;
+    place-items: center;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: max(var(--sp-5), env(safe-area-inset-top)) var(--sp-5) max(var(--sp-5), env(safe-area-inset-bottom));
+    background:
+      radial-gradient(circle at 50% 35%, rgba(223, 192, 135, .16), transparent 55%),
+      var(--navy-900);
+    color: var(--ink);
+    text-align: center;
+  }
+}
+.rotate-gate:focus { outline: none; }
+.rotate-gate-card { display: grid; justify-items: center; gap: var(--sp-3); max-width: 420px; }
+.rotate-gate-art { width: 120px; height: 120px; color: var(--gold-500); }
+.rotate-gate-arrow { color: var(--gold-300); }
+.rotate-gate-phone {
+  transform-box: view-box;
+  transform-origin: 60px 68px;
+  animation: rotate-hint 3s ease-in-out infinite;
+}
+@keyframes rotate-hint {
+  0%, 20% { transform: rotate(0); }
+  50%, 80% { transform: rotate(90deg); }
+  100% { transform: rotate(0); }
+}
+.rotate-gate-title { margin: 0; color: var(--gold-300); font-size: var(--step-2); }
+.rotate-gate-text { margin: 0; font-size: var(--step-1); line-height: 1.5; }
+.rotate-gate-stuck {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-2);
+  margin: var(--sp-3) 0 0;
+  padding: var(--sp-3) var(--sp-4);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, .05);
+  color: var(--ink-dim);
+  font-size: var(--step--1);
+  text-align: left;
+}
+.rotate-gate-stuck .icon { margin-top: 2px; color: var(--gold-500); }
+
 /* =========================== ADMIN =========================== */
 body.admin {
   background: var(--navy-900);
@@ -363,6 +420,27 @@ body.auth {
   .admin-main { padding: var(--sp-4) var(--sp-4) var(--sp-7); }
 }
 
+/* Ponsel mendatar: tinggi hanya ±280–430px setelah dipotong bilah status
+   dan bilah alamat browser. HUD diringkas, dan navigasi bawah ikut mengalir
+   di akhir halaman agar tidak menutupi isi (tombolnya tetap sama). */
+@media (orientation: landscape) and (max-height: 500px) {
+  :root { --hud-h: 52px; }
+
+  /* Tetap satu baris walau lebar ≤ 640px (iPhone SE mendatar: 568×320) */
+  .hud { flex-wrap: nowrap; padding-top: 2px; padding-bottom: 2px; }
+  .hud-left, .hud-right { flex: 0 1 auto; }
+  .app { padding-top: var(--sp-3); padding-bottom: var(--sp-3); }
+
+  .nav-bar {
+    position: static;
+    padding-top: var(--sp-2);
+    padding-bottom: max(var(--sp-2), env(safe-area-inset-bottom));
+    background: none;
+  }
+  .toast-layer { bottom: var(--sp-3); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .scene-img { transition: none; }
+  .rotate-gate-phone { animation: none; transform: rotate(90deg); }
 }

@@ -79,7 +79,7 @@ $hints      = (int) ($payload['hints_count'] ?? 0);
       <?php if (($payload['items'] ?? $payload['objects'] ?? []) === []): ?>
         <div class="empty-state"><?= icon('info') ?><p><?= esc(lang('Game.noItems')) ?></p></div>
       <?php else: ?>
-        <?= $this->renderSection('arena') ?>
+        <div class="arena-body"><?= $this->renderSection('arena') ?></div>
       <?php endif ?>
     </div>
   </div>

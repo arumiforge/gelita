@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Ikon aplikasi GELITA (sementara): lentera emas di langit malam Kedu.
+       Sumber untuk icon-192/512, icon-maskable-512, dan apple-touch-icon.
+       Lentera berada di dalam zona aman maskable (lingkaran r = 40% dari tepi). -->
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="45%" r="72%">
+      <stop offset="0" stop-color="#26355A"/>
+      <stop offset=".55" stop-color="#121C2E"/>
+      <stop offset="1" stop-color="#0B1320"/>
+    </radialGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#DFC087" stop-opacity=".42"/>
+      <stop offset="1" stop-color="#F0DFB8" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F0DFB8"/>
+      <stop offset="1" stop-color="#C7A265"/>
+    </linearGradient>
+    <radialGradient id="flame" cx="50%" cy="62%" r="55%">
+      <stop offset="0" stop-color="#FFF8E6"/>
+      <stop offset=".55" stop-color="#F0DFB8"/>
+      <stop offset="1" stop-color="#DFC087"/>
+    </radialGradient>
+  </defs>
+  <rect width="512" height="512" fill="url(#bg)"/>
+  <circle cx="256" cy="270" r="180" fill="url(#glow)"/>
+  <path d="M218 148a38 38 0 0 1 76 0" fill="none" stroke="url(#gold)" stroke-width="16" stroke-linecap="round"/>
+  <path d="M188 148h136l-16 34H204z" fill="url(#gold)"/>
+  <path d="M206 182h100l-12 168H218z" fill="#F0DFB8" fill-opacity=".16" stroke="url(#gold)" stroke-width="14" stroke-linejoin="round"/>
+  <path d="M256 220c24 30 34 50 34 70a34 34 0 0 1-68 0c0-20 10-40 34-70z" fill="url(#flame)"/>
+  <rect x="184" y="350" width="144" height="26" rx="12" fill="url(#gold)"/>
+</svg>
