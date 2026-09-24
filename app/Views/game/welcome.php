@@ -38,6 +38,13 @@ $logo = media_key_src('ui.logo');
     <?php endif ?>
   </div>
 
+  <?php /* Tawaran memasang di layar utama; game/install.js yang memutuskan tampil atau tidak */ ?>
+  <div class="welcome-install" data-install hidden>
+    <button type="button" class="btn btn-ghost" data-install-button hidden><?= icon('download') ?> <?= esc(lang('Game.installApp')) ?></button>
+    <p class="welcome-install-hint" data-install-hint hidden><?= esc(lang('Game.installHint')) ?></p>
+    <p class="welcome-install-hint" data-install-ios hidden><?= icon('info') ?> <span><?= esc(lang('Game.installIos')) ?></span></p>
+  </div>
+
   <?php if ($levels !== []): ?>
     <ol class="welcome-regions" aria-label="<?= esc(lang('Game.mapKedu'), 'attr') ?>">
       <?php foreach ($levels as $level): ?>

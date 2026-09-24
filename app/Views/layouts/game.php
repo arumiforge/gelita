@@ -30,6 +30,13 @@ $title      = trim($this->renderSection('title'));
   <meta name="csrf-token" content="<?= csrf_hash() ?>">
   <meta name="csrf-name" content="<?= csrf_token() ?>">
   <link rel="icon" href="<?= base_url('favicon.ico') ?>">
+  <?php /* Aplikasi terpasang: di Android manifest mengunci mendatar + layar penuh (docs/05 §Orientasi layar) */ ?>
+  <link rel="manifest" href="<?= base_url('manifest.json') ?>">
+  <link rel="apple-touch-icon" href="<?= base_url('assets/app/apple-touch-icon.png') ?>">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="GELITA">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <link rel="preload" href="<?= base_url('assets/fonts/plus-jakarta-sans-latin-400-normal.woff2') ?>" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="<?= base_url('assets/fonts/cinzel-latin-700-normal.woff2') ?>" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="<?= asset_url_versioned('css/tokens.css') ?>">

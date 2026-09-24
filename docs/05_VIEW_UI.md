@@ -827,7 +827,7 @@ Area game **hanya dilayani mendatar** di perangkat sentuh. Alasannya aset: peta 
 
 * **Layar putar** (`components/rotate-gate.php`) ada di setiap halaman `layouts/game.php`. Tampil/hilangnya murni CSS dengan media query `(orientation: portrait) and (pointer: coarse)` di `layout.css`, jadi bekerja tanpa JavaScript dan hilang sendiri begitu perangkat diputar. Tidak ada tombol lewati. `pointer: coarse` membuat desktop/laptop dengan jendela sempit tidak ikut dihalangi.
 * **Aksesibilitas** (`game/rotate-gate.js`): selama penghalang tampil, isi `<body>` lainnya `inert` dan fokus pindah ke penghalang (`role="alertdialog"`); setelah diputar, fokus dikembalikan. Media query di CSS dan JS wajib sama — dijaga `tests/unit/RotateGateTest.php`.
-* **Rotasi tidak dikunci.** `screen.orientation.lock()` hanya berlaku dalam layar penuh di Android, dan layar penuh lepas setiap kali halaman berganti (GELITA multi-halaman); iOS tidak mendukungnya. Karena itu penghalang menjelaskan cara menyalakan *Putar otomatis* bila layar tidak ikut berputar.
+* **Di browser, rotasi tidak dikunci.** `screen.orientation.lock()` hanya berlaku dalam layar penuh di Android, dan layar penuh lepas setiap kali halaman berganti (GELITA multi-halaman); iOS tidak mendukungnya. Karena itu penghalang menjelaskan cara menyalakan *Putar otomatis* bila layar tidak ikut berputar. Penguncian yang sungguhan hanya tersedia lewat aplikasi terpasang (di bawah).
 * **Ponsel mendatar itu pendek.** Setelah dipotong bilah status dan bilah alamat, tinggi yang tersisa ±280–430px. Aturannya: tinggi untuk isi utama, lebar untuk kelengkapan. `--stage-h` (tinggi kolom arena) dipakai untuk mengukur adegan cari dan papan puzzle; lebar peta dihitung dari tinggi layar dengan rasio 14/9. Tes tampilan dilakukan pada 844×390, 740×340, dan 568×320 (iPhone SE mendatar, yang juga terkena aturan `< 640px`).
 * Waktu selama penghalang tampil di tengah tantangan tetap terhitung dalam durasi tantangan; tidak ada event telemetry khusus.
 
@@ -836,6 +836,24 @@ Area game **hanya dilayani mendatar** di perangkat sentuh. Alasannya aset: peta 
 * Setiap aset cukup satu versi pada ukuran `Config\Gelita::$assetSizes`; tidak ada varian potret.
 * Pin peta (`map_x`/`map_y`) dan objek cari (`x`/`y`/`w`) disimpan dalam **persen** terhadap gambar, dan kanvasnya mengunci rasio (`--map-ratio`, `.hunt-scene` 16:9). Gambar boleh tampil lebih kecil atau lebih besar tanpa mengubah koordinat.
 * Latar `bg.*` digambar `object-fit: cover`: di layar yang lebih sempit dari 16:9 kiri-kanannya terpotong. Letakkan bagian penting di tengah.
+
+#### Aplikasi terpasang (layar utama)
+
+GELITA dapat dipasang ke layar utama HP/tablet. Untuk aplikasi terpasang, **Android mengunci posisi mendatar** (`orientation: landscape` di manifest) dan menampilkannya **layar penuh** tanpa bilah alamat maupun bilah status, sehingga ponsel mendatar mendapat tinggi penuh ±360–412px. iPhone/iPad mengabaikan `orientation` dan membuka aplikasi sebagai `standalone` (tanpa bilah Safari), sehingga layar putar tetap berlaku di sana.
+
+| Berkas | Isi |
+|---|---|
+| `public/manifest.json` | `display: fullscreen` (cadangan `standalone`), `orientation: landscape`, warna `--navy-900`. Semua URL relatif (`./`, `assets/app/…`) agar pemasangan di subdirektori tetap benar. Nama `.json`, bukan `.webmanifest`, supaya `mime.types` Nginx di Jalur L dan W pasti mengenalinya |
+| `public/assets/app/` | `icon.svg` (sumber), `icon-192.png`, `icon-512.png`, `icon-maskable-512.png` (latar penuh, lentera di dalam zona aman 80%), `apple-touch-icon.png` 180×180 |
+| `public/sw.js` | service worker; hanya menangani navigasi `GET`: jaringan dulu (dengan *navigation preload*), dan `offline.html` bila jaringan putus |
+| `public/offline.html` | halaman "Lentera belum tersambung", dwibahasa, tanpa berkas luar |
+| `game/install.js` | mendaftarkan `sw.js`; tombol **Pasang GELITA** di halaman welcome (Chrome/Android, dari `beforeinstallprompt`) atau petunjuk *Bagikan → Tambah ke Layar Utama* (iPhone/iPad). Hanya di perangkat sentuh yang belum menjalankan aplikasi terpasang |
+
+* **Service worker sengaja minimal.** Chrome baru menawarkan pemasangan bila ada penangan `fetch`, dan penangan itu diberi satu tugas nyata: halaman offline. API, event gameplay, POST formulir, dan aset tidak pernah melewatinya, sehingga tidak ada respons berisi data anak yang tersimpan di cache perangkat kelas yang dipakai bergantian, dan antrean event offline (`localStorage`) bekerja seperti di browser. Aturan ini dijaga `tests/unit/InstallableAppTest.php`. Mengubah `offline.html`? Naikkan versi `CACHE` di `sw.js`.
+* **Hanya `layouts/game.php`** yang menautkan manifest. Panel admin tidak ditawarkan untuk dipasang.
+* **Mengganti ikon sementara:** timpa keempat PNG di `public/assets/app/` dengan ukuran yang sama (192, 512, 512 maskable dengan latar penuh, 180), dan perbarui `icon.svg` bila masih dipakai sebagai sumber. Kode tidak perlu diubah. Bila ikon di perangkat yang sudah memasang tidak ikut berganti, hapus aplikasinya lalu pasang ulang.
+* Pemasangan butuh HTTPS; `gelita-https.conf` sudah memenuhinya (`http://localhost` juga dihitung aman untuk pengujian).
+* Apakah sebuah sesi dimainkan lewat aplikasi terpasang atau browser belum dicatat sebagai data penelitian.
 
 ### Gaya komponen kata sandi (`components.css`)
 

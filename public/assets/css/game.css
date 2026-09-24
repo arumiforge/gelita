@@ -177,6 +177,11 @@ body.is-challenge .hud-leave { display: none; }
   color: var(--navy-900);
   font-weight: 600;
 }
+/* Tawaran memasang di layar utama (game/install.js) */
+.welcome-install { display: grid; justify-items: center; gap: var(--sp-2); max-width: 46ch; }
+.welcome-install-hint { display: flex; align-items: flex-start; gap: var(--sp-2); margin: 0; color: var(--ink-dim); font-size: var(--step--1); }
+.welcome-install-hint .icon { margin-top: 2px; color: var(--gold-500); }
+
 .welcome-staff {
   display: inline-flex;
   align-items: center;

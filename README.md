@@ -28,7 +28,8 @@ Yang sudah berfungsi penuh lewat HTTP: persetujuan dan registrasi dengan kata sa
 - **Aset cukup satu versi mendatar.** Peta, adegan cari, dan latar tidak perlu varian potret: kanvas mengunci rasio gambar, lalu pin dan objek diletakkan dalam persen.
 - **Layar putar.** Ponsel dan tablet yang dipegang tegak melihat layar "Putar perangkatmu" di semua halaman game (`components/rotate-gate.php`), tanpa tombol lewati. Desktop/laptop dengan jendela sempit dan panel admin tidak terpengaruh. Rotasi tidak dapat dikunci dari web (iOS tidak mendukung, Android hanya dalam layar penuh), jadi layar ini juga menjelaskan cara menyalakan *Putar otomatis*.
 - **Tata letak ponsel mendatar.** Tinggi ponsel mendatar hanya ±280–430px. HUD diringkas, navigasi bawah tidak lagi menutupi isi, kepala tantangan dan instruksi pindah ke kolom kiri, dan peta, adegan cari, serta papan puzzle diukur dari tinggi layar. Tampilan desktop, papan tulis, dan tablet mendatar tidak berubah.
-- Aturan dan panduan asetnya ada di [`docs/05_VIEW_UI.md` → *Orientasi layar*](docs/05_VIEW_UI.md#orientasi-layar).
+- **Dapat dipasang di layar utama.** Manifest (`public/manifest.json`) mengunci posisi mendatar dan layar penuh untuk aplikasi terpasang di Android, sehingga ponsel mendapat tinggi penuh tanpa bilah alamat. Halaman awal menawarkan tombol **Pasang GELITA** (Android) atau petunjuk *Tambah ke Layar Utama* (iPhone/iPad). Service worker hanya menampilkan halaman offline, dan data penelitian tidak pernah di-cache. Ikon lentera di `public/assets/app/` masih sementara dan bisa ditimpa dengan ukuran yang sama.
+- Aturan dan panduan asetnya ada di [`docs/05_VIEW_UI.md` → *Orientasi layar*](docs/05_VIEW_UI.md#orientasi-layar); langkah memasang di perangkat kelas ada di [`docs/08_DEPLOYMENT.md` → *Sebelum sesi kelas*](docs/08_DEPLOYMENT.md#sebelum-sesi-kelas).
 
 ### Pembaruan media, Pustaka Kedu, dan bank soal produksi
 
