@@ -1,19 +1,44 @@
 <?php
 /**
- * Dialog — `/admin/konten/dialog/{levelId}` → ContentController::dialogues
+ * Dialog — `/admin/konten/dialog/{levelId}?konteks=…` → ContentController::dialogues
  *
- * Slide percakapan Jaka & Mbah Kedu yang tampil sebelum peta wilayah
- * (context_code `level_open`), atau cerita pembuka permainan (`intro`) bila
- * levelId = 0. Teks Indonesia dan English wajib; judul slide opsional.
- * Slide nonaktif tetap tampil di sini (bertanda) agar dapat diaktifkan lagi.
- * Audio narasi dipilih dari aset audio; pemain baru mendengarnya setelah
- * audio itu disetujui di halaman Audio.
+ * Satu konteks naskah (docs/naskah-cerita.md) per halaman. levelId = 0:
+ * konteks global `intro`, `map_intro`, `ending`; selain itu konteks wilayah
+ * `region_intro`, `level_open`, `level_done`. Teks Indonesia dan English
+ * wajib; judul slide, pose, dan efek opsional. Slide nonaktif tetap tampil
+ * di sini (bertanda) agar dapat diaktifkan lagi. Audio narasi dipilih dari
+ * aset audio; pemain baru mendengarnya setelah audio itu disetujui di
+ * halaman Audio.
  *
- * @var App\Entities\Level|null   $level  null = cerita pembuka
- * @var list<array<string, mixed>> $dialogues
- * @var list<string>               $characters
+ * Teks bawaan berasal dari naskah lewat `php spark gelita:story:update`.
+ * Slide yang teksnya disunting di sini dilewati perintah itu (kecuali
+ * `--force`), jadi suntingan admin tidak tertimpa diam-diam.
+ *
+ * @var App\Entities\Level|null      $level     null = konteks global
+ * @var string                       $context
+ * @var list<string>                 $contexts
+ * @var list<array<string, mixed>>   $dialogues
+ * @var list<string>                 $characters
+ * @var array<string, list<string>>  $poses     tokoh → pose sah
+ * @var list<string>                 $effects
  */
 $characterNames = ['jaka' => 'Jaka', 'mbah_kedu' => 'Mbah Kedu', 'narator' => 'Narator'];
+$contextNames   = [
+    'intro'        => ['Cerita pembuka', 'Slide cerita yang dibaca siswa sebelum membuka peta Kedu pertama kali.'],
+    'map_intro'    => ['Narasi peta', 'Narasi Jaka setelah tirai "Membuka Peta Kedu".'],
+    'ending'       => ['Penutup', 'Slide setelah seluruh wilayah tuntas, sebelum Balai Refleksi.'],
+    'region_intro' => ['Kenali wilayah', 'Cerita Mbah Kedu dari ikon lentera wilayah ini di peta.'],
+    'level_open'   => ['Dialog masuk', 'Percakapan yang tampil saat wilayah ini baru terbuka, satu slide per baris.'],
+    'level_done'   => ['Wilayah tuntas', 'Percakapan saat tantangan kelima wilayah ini selesai.'],
+];
+$poseNames   = [
+    'idle' => 'diam', 'happy' => 'senang', 'bow' => 'membungkuk', 'sad' => 'sedih', 'afraid' => 'takut',
+    'determined' => 'bertekad', 'smile' => 'tersenyum', 'worried' => 'cemas', 'weak' => 'lemah',
+];
+$effectNames = [
+    'fog' => 'kabut datang', 'fog-lift' => 'kabut tersibak', 'glow' => 'cahaya berdenyut',
+    'flash' => 'kilat cahaya', 'shake' => 'layar bergetar', 'dim' => 'layar meredup',
+];
 $levelId        = $level?->id ?? 0;
 $rows   = $dialogues;
 $rows[] = null;
@@ -23,23 +48,32 @@ $rows[] = null;
 <?= $this->section('content') ?>
 <?php if ($level !== null): ?>
   <?= component('partials/admin-head', [
-      'title'   => 'Dialog wilayah',
+      'title'   => $contextNames[$context][0] ?? 'Dialog wilayah',
       'eyebrow' => 'Wilayah ' . $level->sequence . ' · ' . $level->text('name', 'id'),
-      'lead'    => 'Percakapan pembuka yang tampil saat siswa masuk wilayah ini, satu slide per baris.',
+      'lead'    => $contextNames[$context][1] ?? null,
   ]) ?>
   <?= component('partials/content-nav', ['level' => $level, 'active' => 'dialogues']) ?>
 <?php else: ?>
   <?= component('partials/admin-head', [
-      'title'   => 'Cerita pembuka',
+      'title'   => $contextNames[$context][0] ?? 'Cerita pembuka',
       'eyebrow' => 'Konten umum',
-      'lead'    => 'Slide cerita yang dibaca siswa sebelum membuka peta Kedu pertama kali.',
+      'lead'    => $contextNames[$context][1] ?? null,
       'actions' => '<a class="btn btn-quiet btn-sm" href="' . base_url('admin/konten') . '">' . icon('left') . ' Semua konten</a>',
   ]) ?>
 <?php endif ?>
 <?= $this->include('partials/flash') ?>
 
+<nav class="btn-row" aria-label="Konteks naskah">
+  <?php foreach ($contexts as $code): ?>
+    <a class="btn btn-sm <?= $code === $context ? 'btn-primary' : 'btn-ghost' ?>"
+       href="<?= base_url('admin/konten/dialog/' . $levelId) ?>?konteks=<?= esc($code, 'url') ?>"
+       <?= $code === $context ? 'aria-current="page"' : '' ?>><?= esc($contextNames[$code][0] ?? $code) ?></a>
+  <?php endforeach ?>
+</nav>
+
 <form method="post" action="<?= base_url('admin/konten/dialog/' . $levelId) ?>" class="stack">
   <?= csrf_field() ?>
+  <input type="hidden" name="context" value="<?= esc($context, 'attr') ?>">
 
   <?php foreach ($rows as $index => $row): ?>
     <?php $isNew = $row === null; $p = 'dlg' . $index; $who = $isNew ? '' : (string) $row['character_code']; ?>
@@ -63,6 +97,34 @@ $rows[] = null;
           <select id="<?= $p ?>-char" name="dialogues[<?= $index ?>][character_code]">
             <?php foreach ($characters as $character): ?>
               <option value="<?= esc($character, 'attr') ?>" <?= $who === $character ? 'selected' : '' ?>><?= esc($characterNames[$character] ?? $character) ?></option>
+            <?php endforeach ?>
+          </select>
+        </div>
+        <div class="field">
+          <?php $pose = $isNew ? '' : (string) ($row['pose'] ?? ''); ?>
+          <label for="<?= $p ?>-pose">Pose tokoh</label>
+          <select id="<?= $p ?>-pose" name="dialogues[<?= $index ?>][pose]">
+            <option value="">Bawaan (diam; narator tanpa gambar)</option>
+            <?php foreach ($poses as $character => $list): ?>
+              <?php if ($list === []) {
+                  continue;
+              } ?>
+              <optgroup label="<?= esc($characterNames[$character] ?? $character, 'attr') ?>">
+                <?php foreach ($list as $code): ?>
+                  <option value="<?= esc($code, 'attr') ?>" <?= $pose === $code && ($who === $character || $who === '') ? 'selected' : '' ?>><?= esc($code) ?> · <?= esc($poseNames[$code] ?? $code) ?></option>
+                <?php endforeach ?>
+              </optgroup>
+            <?php endforeach ?>
+          </select>
+          <p class="field-help">Pose harus milik tokoh yang berbicara. Gambar pose yang belum diunggah memakai pose diam.</p>
+        </div>
+        <div class="field">
+          <?php $effect = $isNew ? '' : (string) ($row['effect'] ?? ''); ?>
+          <label for="<?= $p ?>-effect">Efek layar</label>
+          <select id="<?= $p ?>-effect" name="dialogues[<?= $index ?>][effect]">
+            <option value="">Tanpa efek</option>
+            <?php foreach ($effects as $code): ?>
+              <option value="<?= esc($code, 'attr') ?>" <?= $effect === $code ? 'selected' : '' ?>><?= esc($code) ?> · <?= esc($effectNames[$code] ?? $code) ?></option>
             <?php endforeach ?>
           </select>
         </div>

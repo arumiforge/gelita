@@ -55,14 +55,22 @@ class MediaAssetSeeder extends GelitaSeeder
         ['bg.intro', 'assets/bg/bg-intro', 'jpg'],
         ['bg.map', 'assets/bg/bg-map', 'jpg'],
         ['bg.reflection', 'assets/bg/bg-reflection', 'jpg'],
+        // Tirai pemuatan layar penuh (components/curtain.php); tanpa berkas → gradien cahaya CSS
+        ['bg.loading', 'assets/bg/bg-loading', 'jpg'],
     ];
 
     /** Dipakai bila Config\Gelita belum ada; isinya sama dengan $characterAnimations */
     private const DEFAULT_ANIMATIONS = [
-        'jaka.idle'  => ['frames' => 3],
-        'jaka.bow'   => ['frames' => 3],
-        'jaka.happy' => ['frames' => 3],
-        'kedu.idle'  => ['frames' => 3],
+        'jaka.idle'       => ['frames' => 3],
+        'jaka.bow'        => ['frames' => 3],
+        'jaka.happy'      => ['frames' => 3],
+        'jaka.sad'        => ['frames' => 3],
+        'jaka.afraid'     => ['frames' => 3],
+        'jaka.determined' => ['frames' => 3],
+        'kedu.idle'       => ['frames' => 3],
+        'kedu.smile'      => ['frames' => 3],
+        'kedu.worried'    => ['frames' => 3],
+        'kedu.weak'       => ['frames' => 3],
     ];
 
     /** @var array<string,string> asset_key => storage_path yang sudah dipakai run ini */

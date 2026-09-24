@@ -318,7 +318,7 @@ $routes->group('api/admin', [
 | GET | `/gerbang/peta` | GateController::map | — | ya | — | flash `curtain=map` | redirect `/peta` |
 | GET | `/intro` | GateController::intro | — | ya | — | cerita pembuka; "Lewati" hanya bila sudah pernah menonton | HTML |
 | GET | `/intro/selesai` | GateController::finishIntro | — | ya | — | isi `intro_seen_at` (idempoten), event `intro_completed`, flash `curtain=map` | redirect `/peta` |
-| GET | `/peta` | MapController::kedu | — | ya | — | peta 3 wilayah; belum menonton cerita pembuka → `/intro` | HTML / redirect |
+| GET | `/peta` | MapController::kedu | — | ya | — | peta 3 wilayah + narasi `map_intro`; flash `curtain=map` → tirai "Membuka Peta Kedu"; belum menonton cerita pembuka → `/intro` | HTML / redirect |
 | GET | `/wilayah/{code}` | MapController::level | level code | ya | — | peta 5 pos | HTML; wilayah baru terbuka yang dialognya belum tampil → redirect `/dialog/{code}` |
 | GET | `/dialog/{code}` | DialogueController::show | level code | ya | — | dialog pembuka wilayah; menandai dialog sudah tampil di sesi login | HTML |
 | GET | `/misi/{code}/{seq}` | ChallengeController::brief | code, 1..5 | ya | — | kartu misi | HTML; gerbang dialog sama dengan `/wilayah` |
@@ -404,7 +404,7 @@ Turunan `BaseGameController`; seluruh route-nya di grup `gameSession`, jadi kepe
 |---|---|---|---|
 | `index()` | — | `introGate()`: `participants.intro_seen_at` kosong → redirect `/intro`; selain itu sapaan "Selamat datang kembali, {display_name ?: username}!" + kartu "Lihat cerita pembuka" (`/intro`) dan "Langsung ke peta" (`/gerbang/peta`) | view `game/start-choice` + `hudData()` |
 | `map()` | — | `toMap()`: flash `curtain=map` untuk layar tirai "Membuka Peta Kedu" | redirect `/peta` |
-| `intro()` | `DialogueModel::intro()` | slide dari `dialogues` context `intro`; `canSkip` = `intro_seen_at` terisi — bila `false` nav "Lewati" tidak dirender | view `game/intro` |
+| `intro()` | `ContentRepository::dialogues(null, 'intro')` → `DialogueModel::global('intro')` | slide dari `dialogues` context `intro` (tokoh, pose, efek, judul, latar, audio disetujui); `canSkip` = `intro_seen_at` terisi — bila `false` nav "Lewati" tidak dirender. "Lewati" menuju `/gerbang/peta` agar tirai peta ikut tampil | view `game/intro` |
 | `finishIntro()` | `ParticipantModel::markIntroSeen()`, `EventService` | isi `intro_seen_at` hanya bila masih kosong; event `intro_completed` { first: bool } setiap kali | `toMap()` → redirect `/peta` + flash `curtain=map` |
 
 ### `Game\RegisterController`
@@ -487,7 +487,7 @@ Nama provinsi/kabupaten dikirim bersama kodenya dan disimpan sebagai snapshot. S
 
 | Method | Business rule | Response |
 |---|---|---|
-| `kedu()` | `introGate()` lebih dulu: peserta yang belum menonton cerita pembuka dialihkan ke `/intro`, juga lewat URL yang diketik atau redirect setelah login. Lalu ambil 3 level + status dari `session_progress`. Level terkunci bila `unlock_mode = sequential` dan `sequence > unlocked_level_sequence` | view `game/map-kedu` |
+| `kedu()` | `introGate()` lebih dulu: peserta yang belum menonton cerita pembuka dialihkan ke `/intro`, juga lewat URL yang diketik atau redirect setelah login. Lalu ambil 3 level + status dari `session_progress`. Level terkunci bila `unlock_mode = sequential` dan `sequence > unlocked_level_sequence`. Narasi Jaka dari `ContentRepository::dialogues(null, 'map_intro')`. Flash `curtain` = `map` (dari `toMap()`) → `curtain = true` dan `curtainAssets`: URL `map.kedu`, `bg.map`, frame tokoh sesuai pose narasi (cadangan idle), latar wilayah, dan audio narasi peta bahasa aktif yang disetujui — dimuat tirai dengan progres nyata | view `game/map-kedu` |
 | `level($code)` | validasi level ada & terbuka; bila terkunci → redirect `/peta` + toast; ambil 5 node + status (selesai / terbuka / terkunci) dari `challenge_attempts` | view `game/map-level` |
 
 Status node: node ke-`n` terbuka bila `n = 1` atau node ke-`n-1` sudah `completed`. Bila `unlock_mode = free`, semua terbuka (lihat D13 di 01_DATABASE.md; nilai `free` sengaja berbeda dari status wilayah `open`).
@@ -568,7 +568,9 @@ Rujukan per event memakai `level_id`, `node_id`, `attempt_id`, `item_id` (nama k
 
 API admin (`/api/admin/*`) yang datanya digambar chart menyertakan kunci `chart` — bentuk netral dari `App\Libraries\ChartData` untuk `admin/charts.js` — di samping baris mentahnya: `levels` (batang), `nodes` (heatmap), `indicators` (matriks, plus `per_level`), `prepost` (garis), `participants` (sebaran umur, plus `ages`).
 
-`AudioApiController::ingest()` memakai amplop yang sama, dengan isi per event `{audio_asset_id, action: play|pause|replay|complete, listened_ms, completed, occurred_at, client_event_id, attempt_id?}`. `attempt_id` hanya diterima bila attempt itu milik sesi berjalan; kiriman ulang dengan `client_event_id` yang sama dihitung `duplicate` tanpa menulis baris. `play_index` dihitung server: `play`/`replay` membuka pemutaran baru, `pause`/`complete` termasuk pemutaran berjalan. Balasan: `{accepted, duplicate, rejected:[{index, reason}]}`.
+`AudioApiController::ingest()` memakai amplop yang sama, dengan isi per event `{audio_asset_id, action: play|autoplay|pause|replay|complete, listened_ms, completed, occurred_at, client_event_id, attempt_id?}`. `attempt_id` hanya diterima bila attempt itu milik sesi berjalan; kiriman ulang dengan `client_event_id` yang sama dihitung `duplicate` tanpa menulis baris. `play_index` dihitung server: `play`/`autoplay`/`replay` membuka pemutaran baru, `pause`/`complete` termasuk pemutaran berjalan. Aksi lain ditolak per event (`audio_event_invalid`). Balasan: `{accepted, duplicate, rejected:[{index, reason}]}`.
+
+`play` berarti pemain menekan tombol putar; `autoplay` berarti layar bernarasi (cerita pembuka, narasi peta) memutar slide sendiri setelah ketukan "Ketuk untuk mulai" atau saat maju otomatis. Raw event pendampingnya `audio_play` dan `audio_autoplay`. Analitik (`AudioUsageEventModel::usageStats()`) menghitung `total_plays` hanya dari `play` dan menaruh putar otomatis di `total_autoplays`, sehingga dasbor, profil peserta, dan laporan PDF menampilkan keduanya terpisah; sheet ekspor Audio Usage membawa kolom `action` apa adanya.
 
 Status per event yang mungkin dikembalikan: `accepted`, `duplicate`, `rejected`.
 Status level request: `200` (ada yang diterima), `401 INVALID_SESSION`, `422 INVALID_PAYLOAD`, `413` bila melebihi batas.
@@ -672,6 +674,8 @@ protected function schoolScope(): ?int
 | `verify()` | jalankan pemeriksaan: 3 level, 5 node per level, engine valid, bank item ≥ `items_per_round`, tiap item scorable punya `answer_key_json`, tiap `single_choice`/`source_trust` punya tepat 1 opsi benar, `verdict` kunci termasuk `verdict_options` node, `passage_id` satu level dengan node, jumlah pengecoh rumpang ≥ `distractor_count`, dan daftar item `needs_verification`; tampilkan daftar temuan |
 
 Pemeriksaan konten kembar (jawaban yang sama muncul di dua node) ikut dilaporkan `verify()` — ini menjaga analisis butir tidak menghitung konsep ganda.
+
+`dialogues($levelId)` / `saveDialogues($levelId)` mengelola satu konteks naskah per halaman, dipilih lewat `?konteks=` (POST: field `context`). `levelId = 0`: konteks global `intro` (bawaan), `map_intro`, `ending`; selain itu konteks wilayah `region_intro`, `level_open` (bawaan), `level_done`. Konteks di luar daftar `Config\Gelita::$dialogueContexts` jatuh ke bawaannya. Selain teks, judul, tokoh, dan audio, admin menyunting pose dan efek; `DialogueModel` menolak pose yang bukan milik tokohnya. Suntingan di sini dilindungi dari `gelita:story:update` (dilewati kecuali `--force`).
 
 ### `Admin\MediaController`
 

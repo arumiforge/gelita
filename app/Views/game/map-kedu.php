@@ -12,10 +12,19 @@
  * Di bawah peta ada daftar kartu wilayah yang sama — terbaca di ponsel,
  * pembaca layar, dan saat gambar peta belum diunggah.
  *
+ * Panduan peta berisi narasi Jaka (dialogues `map_intro`, game/narrator.js).
+ * Datang dari gerbang atau akhir cerita pembuka (flash `curtain=map`): tirai
+ * "Membuka Peta Kedu" memuat aset peta, lalu ketukannya memulai musik peta
+ * dan narasi otomatis (mode `external`). Kunjungan lain: teks utuh dengan
+ * tombol ▶ (mode `manual`). Tanpa slide `map_intro`: balon Game.mapLead.
+ *
  * @var list<array<string, mixed>> $levels
  * @var array<string, mixed>       $progress
  * @var string                     $unlockMode
  * @var string                     $locale
+ * @var list<array<string, mixed>> $story          dialogues map_intro
+ * @var bool                       $curtain        tampilkan tirai peta
+ * @var list<string>               $curtainAssets  URL yang dimuat tirai
  */
 $mapSrc = media_key_src('map.kedu');
 $icons  = ['open' => 'lantern', 'in_progress' => 'lantern', 'completed' => 'star', 'locked' => 'lock'];
@@ -36,6 +45,12 @@ $points  = implode(' ', array_map(static fn (array $l): string => (float) $l['ma
 <?= $this->section('title') ?><?= esc(lang('Game.mapKedu')) ?><?= $this->endSection() ?>
 <?= $this->section('background') ?><?= media_key_src('bg.map') ?? '' ?><?= $this->endSection() ?>
 
+<?php if (! empty($curtain)): ?>
+<?= $this->section('overlay') ?>
+<?= component('curtain', ['kind' => 'map', 'preload' => $curtainAssets ?? []]) ?>
+<?= $this->endSection() ?>
+<?php endif ?>
+
 <?= $this->section('content') ?>
 <section class="screen map-screen map-kedu" data-screen="map-kedu" data-unlock-mode="<?= esc($unlockMode, 'attr') ?>">
   <header class="map-head">
@@ -43,10 +58,58 @@ $points  = implode(' ', array_map(static fn (array $l): string => (float) $l['ma
   </header>
 
   <div class="map-layout">
-    <aside class="map-guide">
-      <?= component('character', ['character' => 'jaka', 'pose' => 'idle']) ?>
-      <?= component('narration', ['text' => lang('Game.mapLead'), 'speaker' => 'jaka', 'tail' => 'down']) ?>
-    </aside>
+    <?php if (($story ?? []) === []): ?>
+      <aside class="map-guide">
+        <?= component('character', ['character' => 'jaka', 'pose' => 'idle']) ?>
+        <?= component('narration', ['text' => lang('Game.mapLead'), 'speaker' => 'jaka', 'tail' => 'down']) ?>
+      </aside>
+    <?php else: ?>
+      <?php $storyTotal = count($story); ?>
+      <aside class="map-guide map-story narrator" aria-labelledby="map-story-title"
+             data-narrator data-context="map_intro" data-prefix="peta-" data-keyboard="0"
+             data-mode="<?= ! empty($curtain) ? 'external' : 'manual' ?>">
+        <h2 class="visually-hidden" id="map-story-title"><?= esc(lang('Game.mapStoryTitle')) ?></h2>
+        <div class="narrator-fx" data-narrator-fx aria-hidden="true"></div>
+        <ol class="slides map-story-slides">
+          <?php foreach ($story as $index => $line): ?>
+            <?php
+            $n         = $index + 1;
+            $character = (string) ($line['character_code'] ?? 'jaka');
+            $pose      = (string) ($line['pose'] ?? '') ?: 'idle';
+            $effect    = (string) ($line['effect'] ?? '');
+            $title     = tr($line, 'title', $locale);
+            $text      = tr($line, 'text', $locale);
+            $audioId   = (int) ($locale === 'en' ? ($line['audio_en_asset_id'] ?? 0) : ($line['audio_id_asset_id'] ?? 0));
+            ?>
+            <li class="slide map-story-slide" id="peta-<?= $n ?>" data-index="<?= $n ?>"
+                data-character="<?= esc($character, 'attr') ?>" data-pose="<?= esc($pose, 'attr') ?>"
+                <?= $effect !== '' ? 'data-effect="' . esc($effect, 'attr') . '"' : '' ?>
+                aria-label="<?= esc(lang('Game.slideOf', [$n, $storyTotal]), 'attr') ?>">
+              <?php if ($character !== 'narator'): ?>
+                <?= component('character', ['character' => $character, 'pose' => $pose, 'class' => 'pose-' . $pose]) ?>
+              <?php endif ?>
+              <blockquote class="narration narration-down map-story-line" data-narrator-advance>
+                <cite><?= esc(lang_or('Game.char_' . $character, $character)) ?><?php if ($title !== ''): ?><span class="map-story-title">· <?= esc($title) ?></span><?php endif ?></cite>
+                <p class="slide-text"><?= esc($text) ?></p>
+              </blockquote>
+              <?php if (($audioSrc = audio_src($audioId ?: null)) !== null): ?>
+                <?= component('audio-player', ['audioId' => $audioId, 'audioSrc' => $audioSrc, 'transcript' => $text]) ?>
+              <?php endif ?>
+              <nav class="map-story-nav" aria-label="<?= esc(lang('Game.slideOf', [$n, $storyTotal]), 'attr') ?>">
+                <?php if ($n > 1): ?>
+                  <a class="icon-btn" href="#peta-<?= $n - 1 ?>" aria-label="<?= esc(lang('Game.narratorPrev'), 'attr') ?>"><?= icon('left') ?></a>
+                <?php endif ?>
+                <span class="num"><?= $n ?>/<?= $storyTotal ?></span>
+                <?php if ($n < $storyTotal): ?>
+                  <a class="icon-btn" href="#peta-<?= $n + 1 ?>" aria-label="<?= esc(lang('Game.narratorNext'), 'attr') ?>"><?= icon('right') ?></a>
+                <?php endif ?>
+              </nav>
+            </li>
+          <?php endforeach ?>
+        </ol>
+        <?= component('narrator-controls') ?>
+      </aside>
+    <?php endif ?>
 
     <div class="map-frame">
       <div class="map-canvas<?= $mapSrc === null ? ' is-drawn' : '' ?>" style="--map-ratio: 1400 / 900">

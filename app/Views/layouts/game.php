@@ -6,6 +6,8 @@
  *   title       judul tab
  *   background  URL latar (opsional; tanpa gambar dipakai gradien CSS)
  *   bodyClass   kelas tambahan <body>, mis. `is-challenge`
+ *   overlay     lapisan layar penuh di luar <main>, mis. tirai (components/curtain);
+ *               dirender paling awal agar tampil sejak paint pertama
  *   content     isi halaman
  *   nav         komponen nav-bar (opsional)
  *   scripts     skrip khusus halaman (tahap 6)
@@ -44,12 +46,16 @@ $title      = trim($this->renderSection('title'));
   <link rel="stylesheet" href="<?= asset_url_versioned('css/layout.css') ?>">
   <link rel="stylesheet" href="<?= asset_url_versioned('css/components.css') ?>">
   <link rel="stylesheet" href="<?= asset_url_versioned('css/game.css') ?>">
+  <link rel="stylesheet" href="<?= asset_url_versioned('css/cinematic.css') ?>">
+  <?php /* Tanpa JavaScript: tirai tidak pernah menutupi halaman (docs/05 §Tirai) */ ?>
+  <noscript><link rel="stylesheet" href="<?= asset_url_versioned('css/noscript.css') ?>"></noscript>
   <?= $this->renderSection('head') ?>
 </head>
 <body class="game <?= esc($bodyClass) ?>"
       data-locale="<?= esc($locale) ?>"
       data-base="<?= esc(base_url()) ?>">
   <?= $this->include('components/rotate-gate') ?>
+  <?= $this->renderSection('overlay') ?>
   <a class="skip-link" href="#app"><?= esc(lang('Game.skipToContent')) ?></a>
 
   <?= $this->include('components/hud') ?>

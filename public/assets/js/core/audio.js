@@ -6,14 +6,26 @@
  *    berjalan tanpa bunyi — tidak ada nada sintetis pengganti.
  *
  * 2. Narasi — elemen <audio> bawaan per .audio-player + telemetry ke
- *    /api/audio-events (play, pause, replay, complete). Melanjutkan dari
- *    jeda tidak dikirim sebagai `play` baru: masih pemutaran yang sama, dan
- *    waktu dengarnya ikut terhitung pada pause/complete berikutnya. `listened_ms` adalah
- *    akumulasi waktu putar sungguhan (jam dinding selama benar-benar
- *    berbunyi), bukan `duration`; server tetap memakai duration_ms aset dari
- *    database sebagai pembagi.
+ *    /api/audio-events (play, autoplay, pause, replay, complete). Melanjutkan
+ *    dari jeda tidak dikirim sebagai `play` baru: masih pemutaran yang sama,
+ *    dan waktu dengarnya ikut terhitung pada pause/complete berikutnya.
+ *    `listened_ms` adalah akumulasi waktu putar sungguhan (jam dinding selama
+ *    benar-benar berbunyi), bukan `duration`; server tetap memakai
+ *    duration_ms aset dari database sebagai pembagi.
+ *
+ *    `play` = pemain menekan tombol putar. `autoplay` = layar bernarasi
+ *    (game/narrator.js) memutar slide sendiri setelah kartu "Ketuk untuk
+ *    mulai" atau saat maju otomatis. Server menghitung keduanya terpisah
+ *    (audio_usage_events.action), agar peneliti dapat membedakannya.
  *
  * Kebijakan autoplay: tidak ada yang berbunyi sebelum interaksi pengguna.
+ * NarrationPlayer#autoplay() menolak berbunyi sebelum Sfx.unlock().
+ *
+ * Narasi bersama (`shared`): layar bernarasi memakai SATU elemen <audio>
+ * untuk semua slidenya. Safari iOS/iPadOS hanya mengizinkan play() tanpa
+ * ketukan pada elemen yang pernah diputar di dalam ketukan; elemen baru per
+ * slide akan ditolak. Sfx.unlock() "membuka" elemen bersama itu dengan
+ * memutar hening sesaat, jadi harus dipanggil di dalam handler ketukan.
  */
 import { Storage } from './storage.js';
 import { emitAudio } from './events.js';
@@ -26,6 +38,35 @@ const SFX_BASE = `${(document.body.dataset.base || '/').replace(/\/?$/, '/')}ass
 const sounds = new Map();
 let music = null;
 let unlocked = false;
+
+// WAV hening 10 ms (8 kHz, 8-bit mono): cukup untuk membuka elemen bersama di dalam ketukan
+const SILENT = 'data:audio/wav;base64,UklGRnQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YVAAAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgA==';
+let sharedAudio = null;
+let sharedOwner = null;
+let sharedPrimed = false;
+
+function sharedElement() {
+  if (!sharedAudio) {
+    sharedAudio = new Audio();
+    sharedAudio.preload = 'none';
+  }
+  return sharedAudio;
+}
+
+/** Putar hening pada elemen bersama selagi masih di dalam ketukan pengguna. */
+function primeShared() {
+  if (sharedPrimed || sharedOwner) return;
+  const audio = sharedElement();
+  audio.src = SILENT;
+  const attempt = audio.play();
+  sharedPrimed = true;
+  attempt?.then?.(() => {
+    if (!sharedOwner) audio.pause();
+  }).catch(() => {
+    // Ditolak (belum dalam ketukan) atau diganti narasi sungguhan: coba lagi pada ketukan berikutnya
+    if (!sharedOwner) sharedPrimed = false;
+  });
+}
 let enabled = Storage.getPref('sound', true);
 let volume = Storage.getPref('volume', 0.8);
 
@@ -47,10 +88,19 @@ function load(name, { loop = false, folder = 'sfx' } = {}) {
 }
 
 export const Sfx = {
-  /** Dipanggil pada interaksi pertama pengguna */
+  /**
+   * Dipanggil pada interaksi pengguna. Aman dipanggil berulang: kartu
+   * "Ketuk untuk mulai" dan tirai memanggilnya lagi di dalam handler klik
+   * agar elemen narasi bersama ikut terbuka (lihat primeShared()).
+   */
   unlock() {
     unlocked = true;
     if (hasHowler()) window.Howler.volume(volume);
+    primeShared();
+  },
+
+  isUnlocked() {
+    return unlocked;
   },
 
   /** correct, wrong, click, shard, region-done, page, lock */
@@ -97,6 +147,7 @@ export const Sfx = {
 // ------------------------------------------------------------- Narasi
 
 const players = new Set();
+const playersByNode = new WeakMap();
 
 function stopAllNarration(except = null) {
   for (const player of players) {
@@ -104,8 +155,17 @@ function stopAllNarration(except = null) {
   }
 }
 
+/**
+ * Opsi:
+ *   autoplay  langsung memutar dari awal saat dibuat (action `autoplay`),
+ *             hanya bila audio sudah dibuka oleh interaksi pengguna
+ *   shared    memakai elemen <audio> bersama (layar bernarasi)
+ *   onEnded   dipanggil setelah audio selesai (sesudah telemetry `complete`)
+ *   onError   dipanggil bila berkas gagal dimuat
+ *   onState   dipanggil (playing: boolean) setiap kali mulai/berhenti berbunyi
+ */
 class NarrationPlayer {
-  constructor(root, attemptId) {
+  constructor(root, attemptId, { autoplay = false, shared = false, onEnded = null, onError = null, onState = null } = {}) {
     this.root = root;
     this.assetId = Number(root.dataset.audioId) || 0;
     this.src = root.dataset.src || '';
@@ -115,6 +175,11 @@ class NarrationPlayer {
     this.listenedMs = 0;
     this.playingSince = null;
     this.completed = false;
+    this.shared = shared;
+    this.onEnded = onEnded;
+    this.onError = onError;
+    this.onState = onState;
+    this.focusOnPlay = true;
 
     this.btnPlay = $('[data-action="play"]', root);
     this.btnPause = $('[data-action="pause"]', root);
@@ -124,36 +189,79 @@ class NarrationPlayer {
     this.btnPlay?.addEventListener('click', () => this.play());
     this.btnPause?.addEventListener('click', () => this.pause());
     this.btnReplay?.addEventListener('click', () => this.replay());
+
+    if (autoplay) this.autoplay();
+  }
+
+  /** Elemen bersama sedang dipegang pemutar lain → event-nya bukan milik pemutar ini. */
+  owns() {
+    return !this.shared || sharedOwner === this;
+  }
+
+  get isPlaying() {
+    return Boolean(this.audio && this.owns() && !this.audio.paused && !this.audio.ended);
   }
 
   element() {
+    if (this.shared) return this.claimShared();
     if (this.audio) return this.audio;
 
     const audio = new Audio();
     audio.preload = 'none';
     audio.src = this.src;
+    this.listen(audio);
+    this.audio = audio;
+    return audio;
+  }
 
+  /** Ambil alih elemen bersama; pemutar sebelumnya dijeda dulu (telemetry `pause`-nya tetap terkirim). */
+  claimShared() {
+    const audio = sharedElement();
+
+    if (sharedOwner !== this) {
+      sharedOwner?.pause();
+      sharedOwner = this;
+      audio.src = this.src;
+    }
+
+    if (!this.audio) {
+      this.listen(audio);
+      this.audio = audio;
+    }
+
+    return audio;
+  }
+
+  listen(audio) {
     audio.addEventListener('playing', () => {
+      if (!this.owns()) return;
       this.playingSince = performance.now();
       this.toggle(true);
     });
     audio.addEventListener('pause', () => {
+      if (!this.owns()) return;
       this.accumulate();
       this.toggle(false);
     });
-    audio.addEventListener('waiting', () => this.accumulate());
-    audio.addEventListener('timeupdate', () => this.progress());
+    audio.addEventListener('waiting', () => {
+      if (this.owns()) this.accumulate();
+    });
+    audio.addEventListener('timeupdate', () => {
+      if (this.owns()) this.progress();
+    });
     audio.addEventListener('ended', () => {
+      if (!this.owns()) return;
       this.accumulate();
       this.completed = true;
       this.toggle(false);
       this.progress(1);
       this.send('complete');
+      this.onEnded?.(this);
     });
-    audio.addEventListener('error', () => this.fail());
-
-    this.audio = audio;
-    return audio;
+    audio.addEventListener('error', () => {
+      // src hening dari primeShared() bukan milik narasi mana pun
+      if (this.owns() && audio.src && !audio.src.startsWith('data:')) this.fail();
+    });
   }
 
   accumulate() {
@@ -175,27 +283,47 @@ class NarrationPlayer {
     });
   }
 
-  /** @param {'play'|'replay'|null} action null = lanjut dari jeda (tidak dikirim: masih pemutaran yang sama) */
+  /**
+   * @param {'play'|'autoplay'|'replay'|null} action null = lanjut dari jeda (tidak dikirim: masih pemutaran yang sama)
+   * @returns {Promise<boolean>} true bila audio benar-benar mulai berbunyi
+   */
   async start(action) {
     if (!Sfx.isEnabled()) {
       this.root.querySelector('details.audio-transcript')?.setAttribute('open', '');
-      return;
+      return false;
     }
 
-    const audio = this.element();
     stopAllNarration(this);
+    const audio = this.element();
     this.root.classList.remove('is-attention');
+    this.focusOnPlay = action !== 'autoplay';
 
     try {
       await audio.play();
       if (action) this.send(action);
+      return true;
     } catch (error) {
       // NotAllowedError: kebijakan autoplay — tombol tetap dapat ditekan lagi
       if (error?.name !== 'NotAllowedError' && error?.name !== 'AbortError') this.fail();
+      return false;
     }
   }
 
+  /**
+   * Putar dari awal tanpa tombol, untuk layar bernarasi. Tidak berbunyi
+   * sebelum interaksi pengguna, saat suara dimatikan, atau tanpa berkas.
+   *
+   * @returns {Promise<boolean>}
+   */
+  autoplay() {
+    if (!unlocked || !enabled || !this.src || this.root.classList.contains('is-error')) return Promise.resolve(false);
+    return this.restart('autoplay');
+  }
+
   play() {
+    // Elemen bersama sempat dipakai slide lain: posisi lama hilang, mulai dari awal
+    if (this.shared && sharedOwner !== this && this.playIndex > 0) return this.replay();
+
     const audio = this.element();
     const fresh = this.playIndex === 0 || audio.ended || this.completed;
 
@@ -208,13 +336,20 @@ class NarrationPlayer {
   }
 
   pause() {
-    if (!this.audio || this.audio.paused) return;
+    if (!this.audio || !this.owns() || this.audio.paused) return;
     this.audio.pause();
     this.accumulate(); // event 'pause' browser datang belakangan; hitung waktu dengar sekarang
+    this.toggle(false);
     this.send('pause');
   }
 
   replay() {
+    return this.restart(this.playIndex === 0 ? 'play' : 'replay');
+  }
+
+  /** @param {'play'|'autoplay'|'replay'} action */
+  restart(action) {
+    stopAllNarration(this);
     const audio = this.element();
     this.accumulate();
     audio.pause();
@@ -223,14 +358,15 @@ class NarrationPlayer {
     this.listenedMs = 0;
     this.completed = false;
     this.progress(0);
-    return this.start(this.playIndex === 1 ? 'play' : 'replay');
+    return this.start(action);
   }
 
   toggle(playing) {
     if (this.btnPlay) this.btnPlay.hidden = playing;
     if (this.btnPause) this.btnPause.hidden = !playing;
     this.root.classList.toggle('is-playing', playing);
-    if (playing) this.btnPause?.focus({ preventScroll: true });
+    if (playing && this.focusOnPlay) this.btnPause?.focus({ preventScroll: true });
+    this.onState?.(playing, this);
   }
 
   progress(ratio = null) {
@@ -250,6 +386,7 @@ class NarrationPlayer {
     if (!$('.audio-error', this.root)) {
       this.root.prepend(el('p', { class: 'audio-error', role: 'status' }, t('audioNoSound')));
     }
+    this.onError?.(this);
   }
 }
 
@@ -263,8 +400,35 @@ export function initAudioPlayers(root = document, { attemptId = null, attention 
     node.dataset.ready = '1';
     const player = new NarrationPlayer(node, attemptId);
     players.add(player);
+    playersByNode.set(node, player);
     if (attention) node.classList.add('is-attention');
   }
+}
+
+/**
+ * Pemutar milik satu .audio-player[data-src] (dibuat bila belum ada), dengan
+ * opsi tambahan { shared, onEnded, onError, onState } untuk layar bernarasi. Opsi
+ * dipasang sebelum audio pertama berbunyi, jadi aman diubah di sini.
+ *
+ * @returns {NarrationPlayer|null}
+ */
+export function narrationPlayer(node, { attemptId = null, ...options } = {}) {
+  if (!node?.dataset?.src) return null;
+
+  let player = playersByNode.get(node);
+  if (!player) {
+    node.dataset.ready = '1';
+    player = new NarrationPlayer(node, attemptId);
+    players.add(player);
+    playersByNode.set(node, player);
+  }
+
+  for (const key of ['shared', 'onEnded', 'onError', 'onState']) {
+    if (key in options) player[key] = options[key];
+  }
+  if (options.autoplay) player.autoplay();
+
+  return player;
 }
 
 /** Hentikan narasi yang sedang berbunyi (mis. saat berganti slide). */
