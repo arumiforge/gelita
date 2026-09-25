@@ -23,6 +23,7 @@ $menu = [
     ['admin/ekspor',             'Admin.menuExport',       'download', false, 'Admin.groupReport'],
     ['admin/konten',             'Admin.menuContent',      'book',     true,  'Admin.groupManage'],
     ['admin/konten/impor-bank',  'Admin.menuBankImport',   'upload',   true,  'Admin.groupManage'],
+    ['admin/konten/narasi',      'Admin.menuNarration',    'sound',    true,  'Admin.groupManage'],
     ['admin/media',              'Admin.menuMedia',        'image',    true,  'Admin.groupManage'],
     ['admin/studi',              'Admin.menuStudy',        'flask',    true,  'Admin.groupManage'],
     ['admin/tata-kelola',        'Admin.menuGovernance',   'shield',   true,  'Admin.groupManage'],
@@ -56,7 +57,7 @@ $group = null;
           <li class="menu-group" role="presentation"><?= esc(lang($group)) ?></li>
         <?php endif ?>
       <?php endif ?>
-      <li class="<?= $href === 'admin/konten/impor-bank' ? 'menu-sub' : '' ?>">
+      <li class="<?= in_array($href, ['admin/konten/impor-bank', 'admin/konten/narasi'], true) ? 'menu-sub' : '' ?>">
         <a href="<?= base_url($href) ?>" class="menu-link<?= $active === $href ? ' is-active' : '' ?>"
            title="<?= esc(lang($label), 'attr') ?>"
            <?= $active === $href ? 'aria-current="page"' : '' ?>>

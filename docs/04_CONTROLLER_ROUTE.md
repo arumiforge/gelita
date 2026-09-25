@@ -77,7 +77,8 @@ app/Controllers/
 │   ├── AnalyticsController.php       level, node, item, indikator
 │   ├── FeedbackController.php        kritik & saran
 │   ├── ContentController.php         level, node, item, option, hint
-│   ├── MediaController.php           media & audio (upload, approve)
+│   ├── MediaController.php           media & audio (upload, approve), kelengkapan aset
+│   ├── NarrationController.php       narasi naskah: status, unggah banyak, setujui massal (Tahap 5)
 │   ├── StudyController.php           study, phase, release, scoring profile
 │   ├── ExportController.php          XLSX & PDF
 │   ├── GovernanceController.php      deletion request, retention, audit log
@@ -243,9 +244,16 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
             $routes->post('konten/pustaka/(:num)',       'ContentController::saveLibrary/$1');
             $routes->get('konten/dialog/(:num)',         'ContentController::dialogues/$1');
             $routes->post('konten/dialog/(:num)',        'ContentController::saveDialogues/$1');
+            $routes->get('konten/narasi',                'NarrationController::index');
+            $routes->get('konten/narasi/unggah',         'NarrationController::uploadForm');
+            $routes->post('konten/narasi/unggah',        'NarrationController::upload');
+            $routes->post('konten/narasi/impor-folder',  'NarrationController::importFolder');
+            $routes->post('konten/narasi/setujui',       'NarrationController::approveAll');
+            $routes->get('konten/narasi/daftar-rekaman', 'NarrationController::recordingList');
             $routes->post('konten/verifikasi',           'ContentController::verify');
 
             $routes->get('media',                        'MediaController::index');
+            $routes->get('media/kelengkapan',            'MediaController::checklist');
             $routes->post('media/unggah',                'MediaController::upload');
             $routes->post('media/(:num)/nonaktif',       'MediaController::deactivate/$1');
             $routes->get('media/audio',                  'MediaController::audioIndex');
@@ -384,6 +392,12 @@ $routes->group('api/admin', [
 | GET | `/admin/masukan` | FeedbackController::index | guru, admin | kritik & saran |
 | GET/POST | `/admin/ekspor*` | ExportController | guru, admin | export XLSX/PDF |
 | GET/POST | `/admin/konten*` | ContentController | **admin** | kelola konten, teks bacaan, impor workbook bank soal |
+| GET | `/admin/konten/narasi` | NarrationController::index | **admin** | status rekaman 88 baris naskah per bahasa |
+| GET/POST | `/admin/konten/narasi/unggah` | NarrationController::uploadForm / upload | **admin** | unggah banyak rekaman sekaligus + laporan hasil |
+| POST | `/admin/konten/narasi/impor-folder` | NarrationController::importFolder | **admin** | impor dari `public/assets/audio/narasi/{id\|en}/` |
+| POST | `/admin/konten/narasi/setujui` | NarrationController::approveAll | **admin** | setujui semua narasi draft satu bahasa |
+| GET | `/admin/konten/narasi/daftar-rekaman` | NarrationController::recordingList | **admin** | unduh daftar rekaman (XLSX) untuk pengisi suara |
+| GET | `/admin/media/kelengkapan` | MediaController::checklist | **admin** | daftar aset yang belum diunggah |
 | GET/POST | `/admin/media*` | MediaController | **admin** | kelola media & audio |
 | GET/POST | `/admin/studi*` | StudyController | **admin** | studi, fase, rilis, skoring |
 | GET/POST | `/admin/tata-kelola*` | GovernanceController | **admin** | hapus data, retensi, audit |
@@ -494,7 +508,7 @@ Nama provinsi/kabupaten dikirim bersama kodenya dan disimpan sebagai snapshot. S
 | Method | Business rule | Response |
 |---|---|---|
 | `kedu()` | `introGate()` lebih dulu: peserta yang belum menonton cerita pembuka dialihkan ke `/intro`, juga lewat URL yang diketik atau redirect setelah login. Lalu ambil 3 level + status dari `session_progress`. Level terkunci bila `unlock_mode = sequential` dan `sequence > unlocked_level_sequence`. Narasi Jaka dari `ContentRepository::dialogues(null, 'map_intro')`. Flash `curtain` = `map` (dari `toMap()`) → `curtain = true` dan `curtainAssets`: URL `map.kedu`, `bg.map`, frame tokoh sesuai pose narasi (cadangan idle), latar wilayah, dan audio narasi peta bahasa aktif yang disetujui — dimuat tirai dengan progres nyata. **Tahap 3:** `regionIntros` (kode → `dialogues($levelId, 'region_intro')`, termasuk wilayah terkunci), `heard` (`GameEventLogModel::heardRegionIntros()`: level_id yang narasi Kenali-nya pernah mencapai slide terakhir oleh peserta ini, di sesi mana pun), dan `curtain` per baris level (`GameProgress::regionCurtain()`: "Menuju {wilayah}…", tagline = judul slide pertama `region_intro`, chip tingkat kesulitan, aset halaman `entry`) | view `game/map-kedu` |
-| `level($code)` | validasi level ada & terbuka; bila terkunci → redirect `/peta` + toast; ambil 5 node + status (selesai / terbuka / terkunci) dari `challenge_attempts` | view `game/map-level` |
+| `level($code)` | `introGate()` lebih dulu (Tahap 5: juga di `DialogueController::show()`, sehingga pemain baru tidak dapat melewati cerita pembuka lewat URL wilayah); validasi level ada & terbuka; bila terkunci → redirect `/peta` + toast; ambil 5 node + status (selesai / terbuka / terkunci) dari `challenge_attempts` | view `game/map-level` |
 
 Status node: node ke-`n` terbuka bila `n = 1` atau node ke-`n-1` sudah `completed`. Bila `unlock_mode = free`, semua terbuka (lihat D13 di 01_DATABASE.md; nilai `free` sengaja berbeda dari status wilayah `open`).
 
@@ -710,6 +724,23 @@ Pemeriksaan konten kembar (jawaban yang sama muncul di dua node) ikut dilaporkan
 `uploadAudio()`: tambah field `locale`, `character_code`, `context_code`, `transcript` (wajib), `production_method`. Status awal `draft`. Durasi dibaca server-side; bila gagal dibaca, dibiarkan NULL.
 
 `approveAudio($id)`: set `approval_status = 'approved'`, `approved_by`, `approved_at`. Audit `audio_approve`. **Hanya audio approved yang dikirim ke pemain.**
+
+`checklist()` (Tahap 5): `App\Libraries\AssetChecklist::groups()` — slot UI & latar (`ui.logo-hero`, `ui.btn-start` + `.en`, `ui.logo`, `map.kedu`, `bg.loading`, `bg.*`), frame pose tokoh (`Config\Gelita::$characterAnimations`), latar/peta/lencana wilayah (kolom `levels`), musik & efek suara (`public/assets/audio/{music,sfx}/`), poster video Pustaka yang kosong, dan kemajuan narasi per bahasa. Setiap butir: status `missing` / `wrong` (ukuran salah, narasi masih draft) / `ok`, ukuran wajib, dan tautan ke tempat mengunggahnya (`/admin/media?asset_key=…` mengisi kotak asset_key, editor wilayah, editor Pustaka, halaman Narasi).
+
+`audioIndex()` kini juga mengirim `drafts` (jumlah narasi naskah draft per bahasa) untuk tombol persetujuan massal.
+
+### `Admin\NarrationController` (Tahap 5)
+
+Aturan impor di `App\Libraries\NarrationImporter` (dipakai juga `gelita:narration:import`), status dan persetujuan massal di `App\Libraries\NarrationCatalog`.
+
+| Method | Business rule |
+|---|---|
+| `index()` | baris `dialogues` aktif keenam konteks naskah, urut naskah, dikelompokkan per konteks dan wilayah; status audio ID/EN (`none` / `draft` / `review` / `rejected` / `inactive` / `approved`); kemajuan per bahasa; jumlah draft per bahasa |
+| `uploadForm()` | batas unggahan (`uploadLimits()`: terkecil dari `Config\Gelita::$maxUploadBytes` dan `upload_max_filesize`, `post_max_size`, `max_file_uploads`) + laporan hasil dari flash `narration_report` |
+| `upload()` | `locale` wajib id/en; `getFileMultiple('files')`; hanya berkas `isValid()` (is_uploaded_file) yang diteruskan, sisanya dilaporkan gagal dengan pesan galat PHP; `dry_run` = cocokkan nama saja; jumlah berkas ≥ `max_file_uploads` → peringatan "berkas di atas batas tidak terkirim"; audit `narration_import` (bila ada yang baru/diganti) |
+| `importFolder()` | sama, sumber `public/assets/audio/narasi/{locale}/` |
+| `approveAll()` | `NarrationCatalog::approveDrafts($locale)`: hanya audio draft yang ditautkan ke baris naskah atau ber-asset_key `audio.narasi.{locale}.*`; isi `approved_by`/`approved_at`; `flush()`; audit `audio_approve_bulk` + `count`. `back=audio` kembali ke halaman Audio |
+| `recordingList()` | XLSX (`ExcelWriter`): kode berkas, konteks, wilayah, urutan, tokoh, pose, efek, judul ID/EN, teks ID/EN, status audio ID/EN; dikirim dari memori, berkas sementara dihapus; audit `narration_list_download` |
 
 ### `Admin\ExportController`
 

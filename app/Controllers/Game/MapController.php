@@ -112,6 +112,10 @@ class MapController extends BaseGameController
 
     public function level(string $code): string|RedirectResponse
     {
+        if ($gate = $this->introGate()) {
+            return $gate;
+        }
+
         $session = $this->session();
         $level   = $this->requireLevel($code);
 
