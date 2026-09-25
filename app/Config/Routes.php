@@ -143,9 +143,16 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
             $routes->post('konten/pustaka/(:num)', 'ContentController::saveLibrary/$1');
             $routes->get('konten/dialog/(:num)', 'ContentController::dialogues/$1');
             $routes->post('konten/dialog/(:num)', 'ContentController::saveDialogues/$1');
+            $routes->get('konten/narasi', 'NarrationController::index');
+            $routes->get('konten/narasi/unggah', 'NarrationController::uploadForm');
+            $routes->post('konten/narasi/unggah', 'NarrationController::upload');
+            $routes->post('konten/narasi/impor-folder', 'NarrationController::importFolder');
+            $routes->post('konten/narasi/setujui', 'NarrationController::approveAll');
+            $routes->get('konten/narasi/daftar-rekaman', 'NarrationController::recordingList');
             $routes->post('konten/verifikasi', 'ContentController::verify');
 
             $routes->get('media', 'MediaController::index');
+            $routes->get('media/kelengkapan', 'MediaController::checklist');
             $routes->post('media/unggah', 'MediaController::upload');
             $routes->post('media/(:num)/nonaktif', 'MediaController::deactivate/$1');
             $routes->get('media/audio', 'MediaController::audioIndex');

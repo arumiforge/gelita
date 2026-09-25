@@ -46,6 +46,7 @@ foreach ($visual as $row) {
   <?= csrf_field() ?>
   <button class="btn btn-ghost btn-sm" type="submit"><?= icon('search') ?> Pindai berkas</button>
 </form>
+<a class="btn btn-ghost btn-sm" href="<?= base_url('admin/media/kelengkapan') ?>"><?= icon('list') ?> Kelengkapan aset</a>
 <a class="btn btn-ghost btn-sm" href="<?= base_url('admin/media/audio') ?>"><?= icon('sound') ?> Aset audio</a>
 <?php $actions = ob_get_clean() ?>
 <?= component('partials/admin-head', [
@@ -88,7 +89,7 @@ foreach ($visual as $row) {
     <h2 class="panel-title"><?= icon('upload') ?> Unggah aset</h2>
     <div class="field">
       <label for="asset_key">asset_key <span class="req">*</span></label>
-      <input type="text" id="asset_key" name="asset_key" required maxlength="160" placeholder="bg.temanggung" spellcheck="false" list="asset-keys">
+      <input type="text" id="asset_key" name="asset_key" required maxlength="160" placeholder="bg.temanggung" spellcheck="false" list="asset-keys" value="<?= esc((string) (service('request')->getGet('asset_key') ?? ''), 'attr') ?>">
       <datalist id="asset-keys">
         <?php foreach ($assets as $asset): ?>
           <option value="<?= esc($asset['asset_key'], 'attr') ?>"></option>

@@ -14,7 +14,7 @@ final class RouteWiringTest extends CIUnitTestCase
 {
     private const CONTROLLER_COUNT = [
         'Game'  => 11,  // 10 controller + BaseGameController
-        'Admin' => 14,  // 13 controller + BaseAdminController
+        'Admin' => 15,  // 14 controller + BaseAdminController
         'Api'   => 9,   // 8 controller + BaseApiController
     ];
 
@@ -38,6 +38,10 @@ final class RouteWiringTest extends CIUnitTestCase
             'admin/login'                 => 'Admin\AuthController::loginForm',
             'admin/dashboard'             => 'Admin\DashboardController::index',
             'admin/akun/sandi'            => 'Admin\AccountController::passwordForm',
+            'admin/konten/narasi'         => 'Admin\NarrationController::index',
+            'admin/konten/narasi/unggah'  => 'Admin\NarrationController::uploadForm',
+            'admin/konten/narasi/daftar-rekaman' => 'Admin\NarrationController::recordingList',
+            'admin/media/kelengkapan'     => 'Admin\MediaController::checklist',
         ],
         'POST' => [
             'daftar'                 => 'Game\RegisterController::store',
@@ -45,6 +49,9 @@ final class RouteWiringTest extends CIUnitTestCase
             'api/events'             => 'Api\EventApiController::ingest',
             'admin/konten/verifikasi' => 'Admin\ContentController::verify',
             'admin/akun/sandi'       => 'Admin\AccountController::changePassword',
+            'admin/konten/narasi/unggah'      => 'Admin\NarrationController::upload',
+            'admin/konten/narasi/impor-folder' => 'Admin\NarrationController::importFolder',
+            'admin/konten/narasi/setujui'     => 'Admin\NarrationController::approveAll',
         ],
     ];
 
@@ -128,6 +135,24 @@ final class RouteWiringTest extends CIUnitTestCase
             $routes->setHTTPVerb($method);
 
             $this->assertSame(['staffAuth'], $routes->getFiltersForRoute('admin/akun/sandi'), $method);
+        }
+    }
+
+    /** Tahap 5: narasi naskah dan kelengkapan aset hanya untuk admin. */
+    public function testNarrationAndChecklistAreAdminOnly(): void
+    {
+        $routes = $this->routes();
+        $paths  = [
+            'GET'  => ['admin/konten/narasi', 'admin/konten/narasi/unggah', 'admin/konten/narasi/daftar-rekaman', 'admin/media/kelengkapan'],
+            'POST' => ['admin/konten/narasi/unggah', 'admin/konten/narasi/impor-folder', 'admin/konten/narasi/setujui'],
+        ];
+
+        foreach ($paths as $method => $list) {
+            $routes->setHTTPVerb($method);
+
+            foreach ($list as $path) {
+                $this->assertSame(['staffAuth', 'staffRole:admin'], $routes->getFiltersForRoute($path), $method . ' ' . $path);
+            }
         }
     }
 

@@ -3,7 +3,7 @@
  *
  * Perilaku umum (chart, tabel, salin) dipasang ulang setiap kali filters.js
  * mengganti isi halaman untuk filter baru; perilaku halaman tertentu
- * (editor konten, impor bank soal, unggah media, status ekspor) dipasang
+ * (editor konten, impor bank soal, unggah media, unggah narasi, status ekspor) dipasang
  * sekali. Semua halaman tetap berfungsi tanpa JavaScript.
  */
 import { $$ } from './core/dom.js';
@@ -60,6 +60,9 @@ if (document.querySelector('form[action$="impor-bank/pratinjau"]')) {
 }
 if (document.querySelector('form.upload-box[action$="media/unggah"]')) {
   import('./admin/media-upload.js').then((m) => m.initMediaUpload());
+}
+if (document.querySelector('form[data-narration-upload]')) {
+  import('./admin/narration-upload.js').then((m) => m.initNarrationUpload());
 }
 if (document.querySelector('[data-export-id]')) {
   import('./admin/export.js').then((m) => m.initExport());
