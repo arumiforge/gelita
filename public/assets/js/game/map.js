@@ -20,7 +20,9 @@
  *   mengembalikan fokus. Mencapai slide terakhir menghapus lencana "Belum
  *   didengar" wilayah itu; server menghitung ulang dari event
  *   `dialogue_advanced` (context `region_intro`) pada kunjungan berikutnya.
- *   Tanpa JavaScript overlay adalah target :target #kenal-{code}.
+ *   Tanpa JavaScript overlay adalah target :target #kenal-{code}. Hash
+ *   #kenal-{code}[-n] yang sudah ada saat modul siap membuka overlay itu
+ *   tanpa suara (▶ menunggu ketukan), lalu hash dibersihkan.
  * - Tautan pin/kartu wilayah memutar tirai wilayah (core/curtain.js).
  */
 import { $, $$, on } from '../core/dom.js';
@@ -40,6 +42,7 @@ const PAGE_LAYERS = 'body > .skip-link, body > .hud, body > main, body > .nav-ba
  * tombol panah/Spasi/Esc ditangani di sini hanya selama overlay terbuka.
  *
  * @param {{ stop: () => void } | null} mapStory narasi peta, dihentikan saat overlay dibuka
+ * @returns {() => boolean} apakah sebuah overlay Kenali sedang terbuka
  */
 function initRegionIntros(mapStory) {
   const intros = new Map();
@@ -64,20 +67,22 @@ function initRegionIntros(mapStory) {
     trigger?.focus({ preventScroll: true });
   };
 
-  const show = (code, trigger) => {
+  /** gesture: dibuka ketukan tombol Kenali (bukan dari hash URL saat halaman siap). */
+  const show = (code, trigger, { slide = 1, gesture = true } = {}) => {
     const entry = intros.get(code);
     if (!entry) return;
     if (open) close();
 
-    Sfx.unlock(); // di dalam ketukan: elemen narasi bersama terbuka (Safari iPad)
+    if (gesture) Sfx.unlock(); // di dalam ketukan: elemen narasi bersama terbuka (Safari iPad)
     mapStory?.stop();
     open = { ...entry, trigger };
     entry.root.classList.add('is-open');
     document.body.classList.add('has-kenal');
     for (const node of $$(PAGE_LAYERS)) node.setAttribute('inert', '');
 
-    entry.story.show(1, { notify: false, focus: false });
-    entry.story.start({ userInitiated: true });
+    entry.story.show(slide, { notify: false, focus: false });
+    // Tanpa ketukan di halaman ini narasi tidak boleh berbunyi: teks + tombol ▶
+    entry.story.start({ userInitiated: gesture || Sfx.isUnlocked() });
     $('.kenal-close', entry.root)?.focus({ preventScroll: true });
   };
 
@@ -90,7 +95,7 @@ function initRegionIntros(mapStory) {
     });
     if (story) intros.set(code, { root, story });
   }
-  if (!intros.size) return;
+  if (!intros.size) return () => false;
 
   document.addEventListener('click', (event) => {
     const target = event.target instanceof Element ? event.target : null;
@@ -105,6 +110,19 @@ function initRegionIntros(mapStory) {
       close();
     }
   });
+
+  // Tombol Kenali diketuk sebelum modul ini siap (perangkat lambat): tautannya
+  // sempat berjalan biasa dan hanya mengubah hash #kenal-{code}, sementara
+  // html.js menyembunyikan overlay :target. Buka overlay itu sekarang, lalu
+  // bersihkan hash. Berlaku juga untuk tautan langsung /peta#kenal-{code}[-n].
+  const target = window.location.hash.slice(1);
+  for (const code of intros.keys()) {
+    const match = target.match(new RegExp(`^kenal-${code}(?:-(\\d+))?$`));
+    if (!match) continue;
+    window.history.replaceState(window.history.state, '', window.location.pathname + window.location.search);
+    show(code, $(`[data-kenal-open="${CSS.escape(code)}"]`), { slide: Number(match[1]) || 1, gesture: false });
+    break;
+  }
 
   // Kembali ke peta lewat tombol Back (bfcache): overlay tidak dibiarkan terbuka
   window.addEventListener('pageshow', (event) => { if (event.persisted) close(); });
@@ -124,6 +142,8 @@ function initRegionIntros(mapStory) {
       open.story.prev();
     }
   });
+
+  return () => Boolean(open);
 }
 
 function preload(root) {
@@ -164,12 +184,12 @@ export function initMap() {
   const guide = $('[data-narrator]', screen);
   const story = guide ? initNarrator(guide) : null;
 
-  initRegionIntros(story);
+  const introOpen = initRegionIntros(story);
 
   if ($('[data-curtain-layer="map"]')) {
     playCurtain('map').then(() => {
       Sfx.music('map');
-      story?.start();
+      if (!introOpen()) story?.start(); // overlay Kenali yang terbuka memegang narasi
     });
   } else {
     Sfx.music('map');

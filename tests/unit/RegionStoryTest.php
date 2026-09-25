@@ -391,6 +391,23 @@ final class RegionStoryTest extends CIUnitTestCase
         $this->assertMatchesRegularExpression('/@media \(prefers-reduced-motion: reduce\).*\.footstep,.*\.cc-puzzle i, \.cc-gap b, \.cc-card, \.cc-pilihan i, \.cc-light/s', $css);
     }
 
+    public function testKenaliHashOpensTheOverlayOnceTheMapIsReady(): void
+    {
+        $map = (string) file_get_contents(FCPATH . 'assets/js/game/map.js');
+
+        // Ketukan Kenali sebelum modul siap hanya mengubah hash #kenal-{code}[-n]:
+        // overlay dibuka saat init, lalu hash dibersihkan agar :target tidak tertinggal
+        $this->assertStringContainsString('window.location.hash.slice(1)', $map);
+        $this->assertStringContainsString('`^kenal-${code}(?:-(', $map);
+        $this->assertStringContainsString('window.history.replaceState(', $map);
+        $this->assertStringContainsString('gesture: false }', $map);
+        // Tanpa ketukan di halaman ini narasi tidak berbunyi sendiri: teks + tombol ▶
+        $this->assertStringContainsString('if (gesture) Sfx.unlock();', $map);
+        $this->assertStringContainsString('userInitiated: gesture || Sfx.isUnlocked()', $map);
+        // Narasi peta tidak dimulai di balik overlay yang sudah terbuka
+        $this->assertStringContainsString('if (!introOpen()) story?.start();', $map);
+    }
+
     // ------------------------------------------------------------ bantuan
 
     public function media(): array
