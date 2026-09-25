@@ -765,6 +765,7 @@ Avatar, nama, nama pengguna, kode peserta (kecil, dengan keterangan "kode peneli
 | Ekspor | `/admin/ekspor` | guru, admin |
 | Konten | `/admin/konten` | admin |
 | Konten ▸ Impor bank soal | `/admin/konten/impor-bank` | admin |
+| Konten ▸ Narasi | `/admin/konten/narasi` | admin |
 | Media & audio | `/admin/media` | admin |
 | Studi & rilis | `/admin/studi` | admin |
 | Tata kelola | `/admin/tata-kelola` | admin |
@@ -814,9 +815,15 @@ Menu yang tidak berhak diakses **tidak dirender** untuk guru. **Ubah sandi** (`/
 
 **`content/verify.php`** — daftar temuan: node kurang/lebih, bank item kurang dari `items_per_round`, item tanpa kunci, `single_choice` tanpa opsi benar, kunci verdict di luar `verdict_options`, pengecoh rumpang kurang, jawaban kembar antar node, media hilang, dan item `needs_verification` yang masih aktif.
 
+**`narration/index.php`** (Tahap 5) — halaman **Narasi**. Kepala: **Unggah narasi**, **Unduh daftar rekaman** (XLSX untuk pengisi suara), **Kelengkapan aset**. Panel kemajuan per bahasa ("ID: 40/88 disetujui, 12 draft, 36 belum ada") dengan batang bertumpuk (disetujui hijau, draft emas; `role="img"` + label teks) dan tombol **Setujui semua narasi draft {ID|EN} (n)** berkonfirmasi `<details class="confirm">` (`narration/approve-all.php`, dipakai juga di halaman Audio). Lalu satu tabel per konteks dan wilayah (urut naskah): kode berkas, tokoh + pose + efek, judul dan cuplikan teks ID, status audio ID dan EN (lencana teks + pemutar kecil `audio-preview-sm` bila ada rekaman, apa pun statusnya), dan **Sunting** ke `/admin/konten/dialog/{level|0}?konteks=…#slide-{n}` (fieldset editor dialog kini ber-`id="slide-{n}"`).
+
+**`narration/upload.php`** (Tahap 5) — halaman **Unggah narasi**. Formulir `<input type="file" name="files[]" multiple accept="audio/*">` + pilihan bahasa + centang *Periksa nama saja*; panel **Batas unggahan server ini** menampilkan batas per berkas (terkecil dari `Config\Gelita::$maxUploadBytes` dan `upload_max_filesize`), jumlah berkas (`max_file_uploads`), dan total (`post_max_size`), serta perkiraan berapa kali unggah untuk 88 baris. `admin/narration-upload.js` memperingatkan dan menahan kiriman yang melampaui batas itu sebelum dikirim (tanpa JavaScript formulir tetap bekerja; server tetap memeriksa). Setelah unggah: laporan hasil (baru, diganti/kembali draft, sama, nama tidak dikenal dengan kolom *Maksudnya?* berisi saran nama, gagal, dan daftar baris yang belum punya rekaman dalam `<details>`). Bagian **Impor dari folder server**: tombol Impor/Periksa folder ID dan EN.
+
+**`media/checklist.php`** (Tahap 5) — **Kelengkapan aset** (`/admin/media/kelengkapan`, ditautkan dari Media dan Narasi): kartu jumlah belum ada / perlu diperiksa / lengkap, lalu tabel per kelompok (tampilan & latar umum, frame pose tokoh, latar & peta wilayah, musik & efek suara, poster video Pustaka, audio narasi). Status ditulis sebagai ikon + teks, bukan warna saja; setiap butir menyebut ukuran wajib dan tombol ke tempat mengunggahnya. Halaman Media membaca `?asset_key=` untuk mengisi kotak asset_key.
+
 **`media/index.php`** — tabel media: kunci aset, jenis, path, ukuran wajib vs ukuran sebenarnya, status ada/hilang, pratinjau. Unggah per baris; nama berkas diperbaiki otomatis menjadi nama resmi aset.
 
-**`media/audio.php`** — tabel audio: konteks, karakter, bahasa, durasi, metode produksi, transkrip, status persetujuan, tombol setujui. Pemutar pratinjau.
+**`media/audio.php`** — tabel audio: konteks, karakter, bahasa, durasi, metode produksi, transkrip, status persetujuan, tombol setujui. Pemutar pratinjau. Tahap 5: panel **Narasi naskah cerita** dengan tautan ke Narasi/Unggah narasi dan tombol persetujuan massal per bahasa (hanya narasi naskah).
 
 **`study/index.php`**, **`releases.php`**, **`scoring.php`** — form studi (retensi, mode unlock, mode pemilihan item, wajib consent), daftar rilis dengan tombol aktifkan, daftar profil skoring dengan bobot dan ambang bintang.
 

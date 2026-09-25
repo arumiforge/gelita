@@ -50,6 +50,26 @@ final class LanguageFilesTest extends CIUnitTestCase
     }
 
     /**
+     * Setiap label menu sidebar panel (termasuk "Narasi", tahap 5) harus ada
+     * di Language/id/Admin.php; kunci yang hilang tampil mentah (Admin.menuX).
+     */
+    public function testEveryAdminSidebarLabelExists(): void
+    {
+        $admin  = require APPPATH . 'Language/id/Admin.php';
+        $source = (string) file_get_contents(APPPATH . 'Views/components/admin-sidebar.php');
+
+        preg_match_all("/'Admin\\.([A-Za-z]+)'/", $source, $matches);
+
+        $this->assertContains('menuNarration', $matches[1]);
+
+        foreach (array_unique($matches[1]) as $key) {
+            $this->assertArrayHasKey($key, $admin, "Admin.{$key}");
+        }
+
+        $this->assertSame('Narasi', $admin['menuNarration']);
+    }
+
+    /**
      * Tahap 4: di dalam wilayah namanya "Pustaka {wilayah}", di peta tetap
      * "Pustaka Kedu". Kalimat kunci memakai pola ICU (MessageFormatter), jadi
      * pola yang rusak baru ketahuan saat diformat — diuji di sini.

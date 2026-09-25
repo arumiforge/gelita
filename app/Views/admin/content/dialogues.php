@@ -63,6 +63,8 @@ $rows[] = null;
 <?php endif ?>
 <?= $this->include('partials/flash') ?>
 
+<p class="field-help">Rekaman narasi seluruh baris naskah dapat diunggah sekaligus dan disetujui massal di halaman <a href="<?= base_url('admin/konten/narasi') ?>">Narasi</a>.</p>
+
 <nav class="btn-row" aria-label="Konteks naskah">
   <?php foreach ($contexts as $code): ?>
     <a class="btn btn-sm <?= $code === $context ? 'btn-primary' : 'btn-ghost' ?>"
@@ -77,7 +79,7 @@ $rows[] = null;
 
   <?php foreach ($rows as $index => $row): ?>
     <?php $isNew = $row === null; $p = 'dlg' . $index; $who = $isNew ? '' : (string) $row['character_code']; ?>
-    <fieldset class="repeat-row<?= $isNew ? ' is-new' : '' ?>">
+    <fieldset class="repeat-row<?= $isNew ? ' is-new' : '' ?>"<?= $isNew ? '' : ' id="slide-' . (int) $row['sequence'] . '"' ?>>
       <legend>
         <?= icon($isNew ? 'sparkle' : 'message') ?>
         <?= $isNew ? 'Slide baru' : 'Slide ' . esc($row['sequence']) . ' · ' . esc($characterNames[$who] ?? $who) ?>

@@ -23,6 +23,55 @@ Kelima arena kini dapat dimainkan penuh di browser — Periksa, petunjuk, keluar
 
 Yang sudah berfungsi penuh lewat HTTP: persetujuan dan registrasi dengan kata sandi kuat (termasuk dua metrik literasi keamanan digital), masuk/keluar, ganti sandi dan reset sandi oleh guru, ganti sandi sendiri untuk staf (`/admin/akun/sandi`, wajib setelah reset atau pembuatan akun oleh admin), peta Kedu dan peta wilayah dengan kunci berurutan, Kenali wilayah, dialog pembuka wilayah, kelima arena beserta seluruh API penilaiannya, layar selesai dan riwayat hasil, adegan wilayah tuntas dan penutup, Pustaka Kedu, profil, Balai Refleksi, pergantian bahasa tanpa kehilangan progres, serta seluruh halaman panel admin (dasbor, peserta, sesi, analitik, masukan, konten, impor bank soal, media & audio, studi & rilis, tata kelola, akun staf).
 
+### Perombakan alur sinematik (Tahap 1–5) — ringkasan
+
+Alur permainan kini bercerita dari awal sampai akhir, dengan satu naskah dwibahasa ([`docs/naskah-cerita.md`](docs/naskah-cerita.md), 88 baris) sebagai sumber teks, pose, efek, dan nama berkas rekaman:
+
+| Tahap | Isi |
+|---:|---|
+| 1 | Halaman awal satu tombol **Mulai** → `/mulai` → daftar/masuk; cerita pembuka **wajib** bagi pemain baru (`intro_seen_at`); pemain lama memilih di `/gerbang` |
+| 2 | Cerita pembuka sinematik dengan kartu "Ketuk untuk mulai", audio `autoplay`, tirai "Membuka Peta Kedu", narasi Jaka di peta; naskah di basis data (`gelita:story:update`) |
+| 3 | **Kenali wilayah**, tirai wilayah dan tantangan, dialog wilayah dramatis, `/tuntas/{code}`, `/penutup` |
+| 4 | Pustaka per wilayah (terbuka setelah wilayah tuntas), thumbnail video dari server |
+| 5 | Impor rekaman narasi otomatis, persetujuan massal, halaman **Narasi**, **Kelengkapan aset**, dan audit alur ujung ke ujung |
+
+Alurnya: halaman awal → `/mulai` → daftar → cerita pembuka → peta (tirai + narasi Jaka) → Kenali wilayah → tirai wilayah → dialog pembuka → peta wilayah → kartu misi (tirai tantangan) → tantangan → selesai → wilayah tuntas → Pustaka → wilayah berikutnya → … → penutup → Balai Refleksi.
+
+### Pembaruan narasi & kelengkapan aset (Tahap 5)
+
+- **Rekaman narasi dipasang otomatis.** Nama berkas = kode baris naskah (`intro-01.mp3`, `kenal-magelang-03.mp3`, `dialog-wonosobo-16.mp3`, …). `App\Libraries\NarrationImporter` mencocokkannya ke baris `dialogues` (kode wilayah dari tabel `levels`), membuat aset `audio.narasi.{id|en}.{kode}` dan `audio_assets` berstatus **draft** dengan transkrip = teks baris itu, lalu menautkannya. Dua sumber: folder `public/assets/audio/narasi/{id|en}/` (`php spark gelita:narration:import [--locale=id|en] [--dry-run]`) atau unggahan banyak berkas di panel. Rekaman yang berubah kembali ke draft; berkas yang sama persis dilewati sehingga persetujuan tidak hilang. Laporannya memuat nama tidak dikenal beserta saran nama terdekat dan baris yang belum punya rekaman.
+- **Panel admin baru** (khusus admin): **Konten → Narasi** (`/admin/konten/narasi`: 88 baris per konteks dan wilayah, status audio ID/EN dengan pemutar kecil, tautan Sunting, kemajuan per bahasa, **Unduh daftar rekaman** XLSX untuk pengisi suara), **Unggah narasi** (batas unggahan PHP dijelaskan), tombol **Setujui semua narasi draft** per bahasa (hanya narasi naskah; audit `audio_approve_bulk`), dan **Media → Kelengkapan aset** (`/admin/media/kelengkapan`).
+- **Audit alur Tahap 1–4** di MariaDB + Chromium: satu cacat diperbaiki (pemain baru dapat melewati cerita pembuka wajib lewat URL `/dialog/{code}` atau `/wilayah/{code}`); telemetry `dialogue_advanced` per konteks, `autoplay`, `started_at` setelah tirai tantangan, dan `library_opened` sudah benar ([`docs/07` → *Catatan Implementasi Tahap 5*](docs/07_FEATURE_INTEGRATION.md#catatan-implementasi-tahap-5-narasi--audit-alur)).
+- `MediaStore` kini membaca durasi MP3 dan mengenali audio dari isi berkas. Tidak ada migration baru.
+
+**Urutan pemasangan di server yang sudah berjalan** (sekali, setelah menarik kode terbaru; semua aman diulang):
+
+```bash
+php spark migrate                          # 003600 intro_seen_at, 003700 pose & efek dialog
+php spark gelita:story:update              # naskah 88 baris ke tabel dialogues (--dry-run untuk melihat dulu)
+php spark gelita:library:thumbnails        # poster video Pustaka (butuh HTTPS keluar)
+php spark gelita:narration:import          # rekaman di public/assets/audio/narasi/{id,en}/ → audio draft
+```
+
+Lalu buka **Konten → Narasi**, dengarkan, dan setujui per bahasa. Rincian di [`docs/08` → *Memperbarui server yang sudah berjalan*](docs/08_DEPLOYMENT.md#memperbarui-server-yang-sudah-berjalan-ke-alur-sinematik-tahap-15). Tambahkan `max_file_uploads = 100` di `php.ini` agar satu unggahan narasi dapat memuat lebih dari 20 berkas.
+
+**Aset yang masih perlu disiapkan** (permainan berjalan tanpanya dengan pengganti; daftar hidupnya ada di **Media → Kelengkapan aset**):
+
+| Aset | Slot / lokasi | Ukuran |
+|---|---|---|
+| Logo landscape halaman awal | `ui.logo-hero` | 1600 × 600 px |
+| Tombol Mulai bergambar ID & EN | `ui.btn-start`, `ui.btn-start.en` | 720 × 240 px |
+| Logo panel & halaman masuk | `ui.logo` | bebas |
+| Peta Karesidenan Kedu | `map.kedu` | bebas (mendatar) |
+| Latar layar umum | `bg.loading`, `bg.welcome`, `bg.auth`, `bg.intro`, `bg.map`, `bg.reflection` | 1920 × 1080 px |
+| Frame pose tokoh (3 frame per pose, PNG transparan) | Jaka: `idle`, `happy`, `bow`, `sad`, `afraid`, `determined`; Mbah Kedu: `idle`, `smile`, `worried`, `weak` → `char.jaka.{pose}.{1–3}`, `char.kedu.{pose}.{1–3}` | 700 × 900 px |
+| Latar, peta, dan lencana tiap wilayah | `bg.{wilayah}.region`, `map.region.{wilayah}`, `reward.badge.{wilayah}` | 1920 × 1080, 1400 × 900, 320 × 320 px |
+| Musik | `public/assets/audio/music/{map,region,challenge}.mp3` | MP3, berulang |
+| Efek suara | `public/assets/audio/sfx/{click,correct,wrong,lock}.mp3` | MP3 pendek |
+| Poster video Pustaka yang kosong | editor Pustaka, atau `gelita:library:thumbnails` untuk video tautan | 960 × 640 px |
+| Rekaman narasi | 88 baris × 2 bahasa, [`docs/naskah-cerita.md`](docs/naskah-cerita.md) | MP3 mono 64–96 kbps |
+| Gambar bank soal & Pustaka | [`docs/bank-soal/README.md`](docs/bank-soal/README.md) | per slot |
+
 ### Pembaruan cerita wilayah: Kenali wilayah, tirai, dialog dramatis, tuntas, penutup (Tahap 3)
 
 - **Kenali wilayah.** Setiap pin dan kartu wilayah di Peta Kedu punya tombol lentera "Kenali {wilayah}" (juga untuk wilayah terkunci) yang membuka overlay layar penuh "Mengenal {wilayah}": 4 slide narasi Mbah Kedu dengan pose, efek, dan audio, langsung diputar karena ketukan tombol itu interaksinya. Slide akhir: "Masuk ke {wilayah}" bila terbuka, selain itu "Tutup". Lencana **"Belum didengar"** berdenyut sampai narasinya pernah didengar sampai slide terakhir; statusnya dihitung server dari event `dialogue_advanced` per peserta. Tanpa JavaScript overlay adalah target `#kenal-{code}`.
@@ -113,7 +162,7 @@ Ekspor, laporan, retensi, dan command kini berfungsi penuh. Rincian dan keputusa
 - **Laporan PDF** (mPDF): ringkasan studi dari halaman ekspor, dan laporan satu peserta dari `/admin/peserta/{id}`.
 - **Penghapusan** (`/admin/tata-kelola`) dipindah ke `RetentionService`: cakupan peserta, sesi, atau studi (dipersempit fase & rentang tanggal); eksekusi dibatalkan bila jumlah baris berubah jauh sejak pratinjau.
 - **Retensi** (`php spark gelita:retention:run`, cron harian): sesi menganggur → `paused`, attempt menggantung > 24 jam → `abandoned`, sesi `paused` > 30 hari → `abandoned`, berkas ekspor kedaluwarsa dibuang, dan data yang melewati `retention_days` **hanya** dibuatkan pratinjau penghapusan + peringatan di dasbor admin.
-- **Command**: `gelita:content:verify`, `gelita:media:scan`, `gelita:score:recompute`, `gelita:bank:import`, `gelita:retention:run`, `gelita:staff:password`, `gelita:story:update`, `gelita:library:thumbnails` — semuanya mengembalikan kode keluar 1 saat gagal sehingga dapat dipakai di skrip deploy.
+- **Command**: `gelita:content:verify`, `gelita:media:scan`, `gelita:score:recompute`, `gelita:bank:import`, `gelita:retention:run`, `gelita:staff:password`, `gelita:story:update`, `gelita:library:thumbnails`, `gelita:narration:import` — semuanya mengembalikan kode keluar 1 saat gagal sehingga dapat dipakai di skrip deploy.
 
 ### Tahap 6 — JavaScript
 
