@@ -306,8 +306,10 @@ final class NarrationImporter
             return;
         }
 
-        // Rekaman yang sama persis: status persetujuannya dipertahankan
-        if ($media !== null && $audio !== null && (string) $media['sha256'] === $sha && (int) $media['is_active'] === 1) {
+        // Rekaman yang sama persis dan berkasnya masih ada: status persetujuannya dipertahankan.
+        // Berkas terpasang yang hilang dari disk dipulihkan (diganti) dari berkas ini.
+        if ($media !== null && $audio !== null && (string) $media['sha256'] === $sha && (int) $media['is_active'] === 1
+            && is_file(FCPATH . $media['storage_path']) && hash_file('sha256', FCPATH . $media['storage_path']) === $sha) {
             $this->link($line, $column, (int) $audio['id'], $dryRun, $report);
             $report['unchanged'][] = $code;
 

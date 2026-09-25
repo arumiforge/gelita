@@ -45,8 +45,10 @@ final class NarrationImporterTest extends CIUnitTestCase
     {
         $this->removeTree(FCPATH . $this->folder);
 
-        foreach (glob(FCPATH . MediaStore::UPLOAD_DIR . 'audio.narasi.*') ?: [] as $file) {
-            @unlink($file);
+        // Hanya salinan unggahan yang dibuat uji ini (tercatat di basis data uji),
+        // bukan unggahan sungguhan di public/assets/uploads/ mesin pengembang
+        foreach ($this->sqlite->table('media_assets')->like('storage_path', MediaStore::UPLOAD_DIR, 'after')->get()->getResultArray() as $row) {
+            @unlink(FCPATH . $row['storage_path']);
         }
 
         $this->dropNarrationTables();
@@ -174,6 +176,12 @@ final class NarrationImporterTest extends CIUnitTestCase
         $this->assertSame(['peta-02'], $same['unchanged']);
         $this->assertSame('approved', $this->audioByKey('audio.narasi.id.peta-02')['approval_status']);
 
+        // Berkas terpasang hilang dari disk: dipulihkan, bukan dilaporkan "sama"
+        $this->sqlite->table('media_assets')->update(['storage_path' => 'assets/uploads/hilang-uji.wav']);
+        $restored = $this->importer()->importFolder('id');
+        $this->assertSame(['peta-02'], $restored['replaced']);
+        $this->assertSame($this->folder . 'id/peta-02.wav', $this->sqlite->table('media_assets')->get()->getRow('storage_path'));
+
         // Rekaman berubah: baris audio yang sama, kembali draft
         $before = $this->audioByKey('audio.narasi.id.peta-02');
         $this->folderFile('id', 'peta-02.wav', 7, 12000);
@@ -191,6 +199,8 @@ final class NarrationImporterTest extends CIUnitTestCase
 
     public function testUploadedFilesAreCopiedToUploadsAndReportedPerName(): void
     {
+        $this->skipIfUploadExists('audio.narasi.en.tuntas-wonosobo-02');
+
         $files = [
             ['name' => 'tuntas-wonosobo-02.wav', 'path' => $this->tempWav(1)],
             ['name' => 'tuntas-wonosobo-2.wav', 'path' => $this->tempWav(2)],
@@ -229,6 +239,8 @@ final class NarrationImporterTest extends CIUnitTestCase
 
     public function testFolderDoesNotOverwriteANewerPanelUpload(): void
     {
+        $this->skipIfUploadExists('audio.narasi.id.intro-03');
+
         $this->folderFile('id', 'intro-03.wav', 1);
         touch(FCPATH . $this->folder . 'id/intro-03.wav', time() - 3600);
 
@@ -267,13 +279,13 @@ final class NarrationImporterTest extends CIUnitTestCase
         command('gelita:narration:import --locale=fr');
         $this->assertStringContainsString('--locale harus salah satu dari', $this->getStreamFilterBuffer());
 
-        // Folder konvensi di repositori kosong: tidak ada yang ditulis
+        // Folder konvensi (kosong di repositori, mungkin berisi rekaman di mesin pengembang): tidak ada yang ditulis
         $this->resetStreamFilterBuffer();
         command('gelita:narration:import --dry-run');
         $output = $this->getStreamFilterBuffer();
         $this->assertStringContainsString('Uji coba (--dry-run)', $output);
-        $this->assertStringContainsString('88 baris naskah belum punya rekaman ID', $output);
-        $this->assertStringContainsString('88 baris naskah belum punya rekaman EN', $output);
+        $this->assertMatchesRegularExpression('/\d+ baris naskah belum punya rekaman ID/', $output);
+        $this->assertMatchesRegularExpression('/\d+ baris naskah belum punya rekaman EN/', $output);
         $this->assertSame(0, $this->sqlite->table('audit_logs')->countAllResults());
     }
 
@@ -368,6 +380,14 @@ final class NarrationImporterTest extends CIUnitTestCase
     }
 
     // -------------------------------------------------------------- bantuan
+
+    /** Uji yang menyalin ke public/assets/uploads/ tidak boleh menimpa unggahan sungguhan. */
+    private function skipIfUploadExists(string $assetKey): void
+    {
+        if ((glob(FCPATH . MediaStore::UPLOAD_DIR . $assetKey . '.*') ?: []) !== []) {
+            $this->markTestSkipped("Unggahan sungguhan {$assetKey} sudah ada di public/assets/uploads/; uji ini tidak menimpanya.");
+        }
+    }
 
     private function importer(): NarrationImporter
     {

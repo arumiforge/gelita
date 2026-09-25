@@ -20,8 +20,9 @@ use Config\Services;
  * - `/mulai`: belum login → pilihan "Saya baru / Sudah punya akun";
  *   sudah login → `/gerbang`.
  * - `/gerbang`: belum pernah menonton cerita pembuka → `/intro`.
- * - `/peta` tidak terbuka sebelum cerita pembuka ditonton, juga lewat URL
- *   yang diketik langsung atau redirect setelah login.
+ * - `/peta`, `/dialog/{code}`, dan `/wilayah/{code}` tidak terbuka sebelum
+ *   cerita pembuka ditonton, juga lewat URL yang diketik langsung atau
+ *   redirect setelah login.
  * - "Lewati" di `/intro` hanya untuk yang sudah pernah menonton.
  * - Jalan ke peta dari gerbang membawa flash `curtain=map`.
  *
@@ -132,6 +133,22 @@ final class StartGateTest extends CIUnitTestCase
 
         $this->assertInstanceOf(RedirectResponse::class, $map);
         $this->assertStringEndsWith('/intro', $map->getHeaderLine('Location'));
+    }
+
+    /** Tahap 5 (audit): URL wilayah yang diketik langsung juga tidak melewati cerita pembuka. */
+    public function testRegionUrlsRedirectToIntroUntilItWasWatched(): void
+    {
+        $this->play(introSeen: false);
+
+        foreach ([
+            'dialog'  => static fn () => (new App\Controllers\Game\DialogueController())->show('temanggung'),
+            'wilayah' => static fn () => (new MapController())->level('temanggung'),
+        ] as $path => $open) {
+            $response = $open();
+
+            $this->assertInstanceOf(RedirectResponse::class, $response, $path);
+            $this->assertStringEndsWith('/intro', $response->getHeaderLine('Location'), $path);
+        }
     }
 
     public function testIntroGateOpensAfterTheIntroWasWatched(): void
