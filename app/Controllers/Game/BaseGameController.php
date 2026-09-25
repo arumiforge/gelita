@@ -127,8 +127,9 @@ abstract class BaseGameController extends BaseController
     }
 
     /**
-     * Masuk peta Kedu dengan flash `curtain=map`: layar tirai "Membuka Peta
-     * Kedu" (tahap berikutnya) membacanya untuk menutupi pemuatan peta.
+     * Masuk peta Kedu dengan flash `curtain=map`: tirai "Membuka Peta Kedu"
+     * (components/curtain.php, core/curtain.js) membacanya untuk menutupi
+     * pemuatan peta.
      */
     protected function toMap(): RedirectResponse
     {
