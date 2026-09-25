@@ -2,9 +2,11 @@
 
 namespace App\Controllers\Admin;
 
+use App\Libraries\AssetChecklist;
 use App\Libraries\MediaIntegrity;
 use App\Libraries\MediaStore;
 use App\Libraries\MediaUsage;
+use App\Libraries\NarrationCatalog;
 use App\Models\AudioAssetModel;
 use App\Models\AuditLogModel;
 use App\Models\MediaAssetModel;
@@ -27,6 +29,21 @@ class MediaController extends BaseAdminController
             'assetSizes' => config('Gelita')->assetSizes,
             'usage'      => (new MediaUsage())->forMedia(),
             'scan'       => session('media_scan'),
+        ]);
+    }
+
+    /**
+     * Daftar kelengkapan aset: slot yang belum berberkas, frame pose tokoh,
+     * latar & peta wilayah, poster video Pustaka, dan rekaman narasi.
+     */
+    public function checklist(): string
+    {
+        $checklist = new AssetChecklist();
+        $groups    = $checklist->groups();
+
+        return $this->panel('admin/media/checklist', 'Kelengkapan aset', [
+            'groups'  => $groups,
+            'summary' => $checklist->summary($groups),
         ]);
     }
 
@@ -87,8 +104,14 @@ class MediaController extends BaseAdminController
             ->get()
             ->getResultArray();
 
+        $catalog = new NarrationCatalog();
+
         return $this->panel('admin/media/audio', 'Audio', [
             'rows'       => $rows,
+            'drafts'     => array_combine(
+                config('Gelita')->locales,
+                array_map(static fn (string $locale): int => count($catalog->draftIds($locale)), config('Gelita')->locales),
+            ),
             'usage'      => (new MediaUsage())->forAudio(),
             'characters' => config('Gelita')->characters,
             'locales'    => config('Gelita')->locales,

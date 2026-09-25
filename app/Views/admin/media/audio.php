@@ -10,6 +10,7 @@
  * @var array<int, list<string>>   $usage      audio_assets.id → slide dialog / kartu misi pemakainya
  * @var list<string>               $characters
  * @var list<string>               $locales
+ * @var array<string, int>         $drafts     locale → narasi naskah draft (tombol "Setujui semua")
  */
 $characterNames = ['jaka' => 'Jaka', 'mbah_kedu' => 'Mbah Kedu'];
 $statusNames    = ['draft' => 'draf', 'review' => 'ditinjau', 'approved' => 'disetujui', 'rejected' => 'ditolak'];
@@ -19,6 +20,7 @@ $pending        = count(array_filter($rows, static fn (array $row): bool => $row
 
 <?= $this->section('content') ?>
 <?php ob_start() ?>
+<a class="btn btn-ghost btn-sm" href="<?= base_url('admin/konten/narasi') ?>"><?= icon('message') ?> Narasi naskah</a>
 <a class="btn btn-ghost btn-sm" href="<?= base_url('admin/media') ?>"><?= icon('image') ?> Gambar & video</a>
 <?php $actions = ob_get_clean() ?>
 <?= component('partials/admin-head', [
@@ -33,6 +35,16 @@ $pending        = count(array_filter($rows, static fn (array $row): bool => $row
   <?= component('components/stat-tile', ['label' => 'Berkas audio', 'value' => fmt_num(count($rows)), 'icon' => 'sound']) ?>
   <?= component('components/stat-tile', ['label' => 'Menunggu persetujuan', 'value' => fmt_num($pending), 'icon' => 'clock']) ?>
 </div>
+
+<section class="panel">
+  <h2 class="panel-title"><?= icon('message') ?> Narasi naskah cerita</h2>
+  <p>Rekaman 88 baris naskah diunggah sekaligus di halaman <a href="<?= base_url('admin/konten/narasi/unggah') ?>">Unggah narasi</a> dan dipantau di halaman <a href="<?= base_url('admin/konten/narasi') ?>">Narasi</a>. Persetujuan massal hanya mencakup narasi naskah, bukan audio lain di daftar ini.</p>
+  <div class="btn-row">
+    <?php foreach ($locales as $code): ?>
+      <?= component('admin/narration/approve-all', ['locale' => $code, 'count' => $drafts[$code] ?? 0, 'back' => 'audio']) ?>
+    <?php endforeach ?>
+  </div>
+</section>
 
 <details class="panel" <?= $rows === [] ? 'open' : '' ?>>
   <summary class="panel-title"><?= icon('upload') ?> Unggah audio baru</summary>

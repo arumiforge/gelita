@@ -560,3 +560,21 @@ th[aria-sort="descending"] .th-sort-icon::after { content: "↓"; color: var(--g
 .format-help { margin: 0; padding: var(--sp-3) var(--sp-4); border-left: 3px solid var(--gold-600); border-radius: var(--radius); background: rgba(223, 192, 135, .06); font-size: var(--step--1); }
 .format-help code { white-space: nowrap; }
 .library-page-card > summary { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2) var(--sp-3); cursor: pointer; }
+
+/* ---------- Narasi naskah & kelengkapan aset ---------- */
+.plain-list { display: grid; gap: var(--sp-2); margin: 0; padding-left: 1.2em; }
+.narration-progress { display: grid; gap: var(--sp-4); }
+.narration-progress-row { display: grid; grid-template-columns: minmax(0, 18rem) minmax(8rem, 1fr) auto; align-items: center; gap: var(--sp-2) var(--sp-4); }
+.narration-progress-text { margin: 0; }
+/* Batang kemajuan bertumpuk: disetujui (hijau) + draft (emas); sisanya = belum ada */
+.progress-stack { display: flex; height: 12px; overflow: hidden; border: 1px solid var(--line-ink); border-radius: 999px; background: rgba(255, 255, 255, .04); }
+.progress-seg.is-approved { background: var(--ok); }
+.progress-seg.is-draft { background: var(--gold-500); }
+.audio-preview-sm { display: block; width: 180px; max-width: 100%; height: 32px; margin-top: var(--sp-1); }
+.checklist-group .data-table td:first-child { white-space: nowrap; }
+.checklist-status.is-missing { color: var(--bad); }
+.checklist-status.is-wrong { color: var(--warn); }
+.checklist-status.is-ok { color: var(--ok); }
+@media (max-width: 900px) {
+  .narration-progress-row { grid-template-columns: 1fr; }
+}

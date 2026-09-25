@@ -29,6 +29,7 @@ return [
     'menuExport'       => 'Ekspor',
     'menuContent'      => 'Konten',
     'menuBankImport'   => 'Impor bank soal',
+    'menuNarration'    => 'Narasi',
     'menuMedia'        => 'Media & audio',
     'menuStudy'        => 'Studi & rilis',
     'menuGovernance'   => 'Tata kelola',
