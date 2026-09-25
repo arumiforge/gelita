@@ -115,7 +115,7 @@ Urutannya wajib `migrate` lalu `gelita:story:update` (perintah itu menulis kolom
 - **Halaman awal hanya logo dan tombol Mulai.** Logo landscape dari slot `ui.logo-hero` (cadangan `ui.logo`, lalu judul teks), tombol dari gambar `ui.btn-start` beserta varian bahasa `ui.btn-start.en` (cadangan tombol CSS emas). Merek di HUD tidak diulang di halaman ini. Tautan panel guru dihapus: staf masuk lewat `/admin/login`.
 - **`/mulai` memilah.** Belum login → "Saya baru" / "Sudah punya akun". Sudah login → `/gerbang`. Login dan ganti sandi kini berakhir di `/mulai` (tujuan tersimpan sebelum login tetap dihormati).
 - **Cerita pembuka wajib bagi pemain baru.** Selama `participants.intro_seen_at` kosong (migration `003600`), `/gerbang` dan `/peta` mengarah ke `/intro`, dan tombol "Lewati" tidak ada. Slide terakhir menuju `/intro/selesai`, yang mengisi kolom itu dan mencatat event `intro_completed`. Peserta yang sudah punya progres saat migration dianggap sudah menonton.
-- **Pemain lama memilih** di `/gerbang`: lihat cerita pembuka (dengan "Lewati") atau langsung ke peta. Jalan ke peta membawa flash `curtain=map` untuk layar tirai tahap berikutnya.
+- **Pemain lama memilih** di `/gerbang`: lihat cerita pembuka (dengan "Lewati") atau langsung ke peta. Jalan ke peta membawa flash `curtain=map` untuk tirai "Membuka Peta Kedu".
 - Rincian di [`docs/05_VIEW_UI.md` → *Halaman Game*](docs/05_VIEW_UI.md#halaman-game) dan [`docs/04_CONTROLLER_ROUTE.md`](docs/04_CONTROLLER_ROUTE.md).
 
 ### Pembaruan orientasi layar: game hanya dimainkan mendatar
