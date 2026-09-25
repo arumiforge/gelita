@@ -20,6 +20,11 @@ class DialogueController extends BaseGameController
 {
     public function show(string $code): string|RedirectResponse
     {
+        // Cerita pembuka tetap wajib bila URL wilayah diketik langsung
+        if ($gate = $this->introGate()) {
+            return $gate;
+        }
+
         $session = $this->session();
         $level   = $this->requireLevel($code);
 

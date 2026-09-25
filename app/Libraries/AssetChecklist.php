@@ -32,6 +32,22 @@ final class AssetChecklist
         'bg.reflection'   => 'Latar Balai Refleksi',
     ];
 
+    /**
+     * Musik & efek suara yang diputar core/audio.js (Sfx) dari
+     * public/assets/audio/{music|sfx}/{nama}.mp3. Bukan media_assets: berkas
+     * disalin langsung ke folder itu (git atau salin berkas). Berkas yang tidak
+     * ada membuat suara itu diam, permainan tetap berjalan.
+     */
+    public const SOUNDS = [
+        'music/map'       => 'Musik Peta Kedu',
+        'music/region'    => 'Musik peta wilayah',
+        'music/challenge' => 'Musik tantangan',
+        'sfx/click'       => 'Efek klik tombol',
+        'sfx/correct'     => 'Efek jawaban benar',
+        'sfx/wrong'       => 'Efek jawaban salah',
+        'sfx/lock'        => 'Efek wilayah/tantangan terkunci',
+    ];
+
     /** Ukuran slot yang tidak tercakup pola Config\Gelita::$assetSizes. */
     private const FALLBACK_SIZES = [
         'map.region'   => 'map.region',
@@ -65,6 +81,7 @@ final class AssetChecklist
             $this->uiGroup(),
             $this->characterGroup(),
             $this->regionGroup(),
+            $this->soundGroup(),
             $this->posterGroup(),
             $this->narrationGroup(),
         ]));
@@ -189,6 +206,37 @@ final class AssetChecklist
         ];
     }
 
+    /** @return array<string, mixed> */
+    private function soundGroup(): array
+    {
+        $items = [];
+
+        foreach (self::SOUNDS as $name => $label) {
+            $path    = 'assets/audio/' . $name . '.mp3';
+            $items[] = [
+                'label'      => $label,
+                'key'        => 'public/' . $path,
+                'size'       => 'MP3, musik berulang (loop)',
+                'status'     => is_file(FCPATH . $path) ? 'ok' : 'missing',
+                'note'       => 'salin berkas ke folder ini di server (tidak diunggah lewat panel)',
+                'link'       => base_url($path),
+                'link_label' => 'Periksa berkas',
+            ];
+        }
+
+        foreach ($items as $i => $item) {
+            if (str_contains($item['key'], '/sfx/')) {
+                $items[$i]['size'] = 'MP3 pendek (< 1 detik)';
+            }
+        }
+
+        return [
+            'title' => 'Musik & efek suara',
+            'help'  => 'Diputar dari public/assets/audio/music/ dan sfx/ setelah pemain mengetuk layar. Tanpa berkas, suara itu diam.',
+            'items' => $items,
+        ];
+    }
+
     /** @return array<string, mixed>|null */
     private function posterGroup(): ?array
     {
@@ -216,7 +264,7 @@ final class AssetChecklist
 
             $items[] = [
                 'label'      => 'Pustaka ' . $row['name_id'] . ' hlm ' . $row['page'] . ' · video ' . $row['sequence'],
-                'key'        => $poster['asset_key'] ?? '—',
+                'key'        => $poster['asset_key'] ?? 'poster belum dipasang',
                 'size'       => $this->sizeText('library.image'),
                 'status'     => 'missing',
                 'note'       => $row['external_url'] !== null && $row['external_url'] !== ''

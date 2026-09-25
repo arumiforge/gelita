@@ -751,6 +751,43 @@ Unggahan dari editor konten (FITUR 12) memakai jalur yang sama (`App\Libraries\M
 
 ---
 
+## FITUR 13a: Narasi Naskah — Impor Otomatis & Persetujuan Massal (Tahap 5)
+
+```text
+1. Pengisi suara merekam dari daftar rekaman (/admin/konten/narasi/daftar-rekaman,
+   XLSX: kode berkas, konteks, wilayah, tokoh, pose, efek, judul, teks ID/EN, status)
+2. Nama berkas = kode baris naskah (intro-01.mp3, kenal-magelang-03.mp3, …)
+3a. Panel: POST /admin/konten/narasi/unggah (banyak berkas, satu bahasa)
+3b. Folder: public/assets/audio/narasi/{id|en}/ → php spark gelita:narration:import
+      atau tombol "Impor folder" (POST /admin/konten/narasi/impor-folder)
+4. NarrationImporter, per berkas:
+     cocokkan nama → baris dialogues aktif (kode wilayah dari tabel levels)
+     berkas sama persis & masih ada di disk  → "sama" (persetujuan tetap)
+     folder lebih tua dari rekaman panel     → "dilewati" (tidak menimpa)
+     selain itu:
+       media_assets  audio.narasi.{locale}.{kode}  (MediaStore::registerFile di tempat
+                     | MediaStore::storeCopy ke uploads/)
+       audio_assets  locale, character_code (narator = NULL), context_code = konteks
+                     baris, transcript = teks baris bahasa itu, duration_ms,
+                     production_method own_recording, status 'draft'
+       dialogues.audio_{locale}_asset_id ← audio_assets.id
+     ContentRepository::flush() sekali di akhir; audit 'narration_import'
+5. Laporan: baru, diganti, sama, dilewati, nama tidak dikenal (+ saran Levenshtein),
+   gagal, baris naskah yang belum punya rekaman
+6. /admin/konten/narasi → dengarkan draft → "Setujui semua narasi draft ID|EN"
+     NarrationCatalog::approveDrafts(): hanya audio narasi naskah berstatus draft,
+     approved_by/approved_at, flush, audit 'audio_approve_bulk' {locale, count}
+7. audio_src() kini mengembalikan rekaman itu; layar bernarasi memutarnya
+```
+
+* **Narasi naskah vs audio lain.** Persetujuan massal hanya menyentuh `audio_assets` berstatus `draft` pada bahasa itu yang ditautkan ke baris `dialogues` keenam konteks naskah **atau** ber-asset_key `audio.narasi.{locale}.*`. Narasi kartu misi (`challenge_nodes.audio_intro_*`) dan audio lain tetap disetujui satu per satu.
+* **`context_code` audio** = konteks baris (`intro`, `map_intro`, `region_intro`, `level_open`, `level_done`, `ending`), sama dengan `payload.context` event `dialogue_advanced`; baris spesifiknya terbaca dari asset_key (`audio.narasi.id.dialog-magelang-07`). Ekspor XLSX (sheet audio) ikut membawa nilai ini.
+* **Durasi.** `MediaStore::durationMs()` kini membaca MP3 (header Xing/Info atau VBRI; tanpa itu dihitung sebagai CBR) selain WAV. OGG/M4A tetap NULL.
+* **Jenis berkas dibaca dari isinya** (`MediaStore::detectMime()`): finfo, lalu tanda tangan ID3/sinkronisasi MPEG, OggS, RIFF…WAVE, ftyp M4A. Berkas yang bukan audio ditolak walau namanya `.mp3`.
+* **Rekaman yang hilang dari disk** (mis. `uploads/` tidak ikut dipindah) dipulihkan saat impor ulang dan kembali ke draft, bukan dilaporkan "sama".
+
+---
+
 ## FITUR 14: Export XLSX
 
 ### Alur
@@ -1054,6 +1091,24 @@ Tahap 3 menambah layar bernarasi Kenali wilayah, dialog wilayah dramatis, wilaya
 * **Tirai tantangan tidak memengaruhi waktu attempt.** Tirai diputar di kartu misi (`/misi`), sebelum berpindah; attempt baru dibuka `ChallengeService::openNode()` saat `/tantangan` dirender, jadi `started_at` dan `duration_ms` tidak memuat durasi tirai. Diverifikasi di MariaDB: selama tirai tidak ada baris `challenge_attempts` baru, dan `started_at` tercatat ±1 detik setelah klik (sesudah tirai 1,2–1,5 detik selesai). Tirai wilayah sama sekali tidak menyentuh attempt.
 * **Pengiriman event saat berpindah halaman (perbaikan `core/events.js`).** Pengujian menemukan event yang hilang bila halaman berpindah ketika batch sedang dikirim: fetch-nya dibatalkan browser dan antrean sudah kosong saat `pagehide`. Kini batch yang sedang di jalan ikut dikirim ulang lewat beacon saat halaman ditutup (server membalas `duplicate` bila ternyata sudah sampai), tirai menunggu `flush()` selesai sebelum berpindah (paling lama 1,5 detik), dan narrator langsung mengirim antrean saat slide terakhir tercapai. Data sebelum perbaikan ini dapat kehilangan beberapa event terakhir sebelum perpindahan halaman.
 
+## Catatan Implementasi Tahap 5 (narasi & audit alur)
+
+Tahap 5 menambah impor rekaman narasi (FITUR 13a), persetujuan massal, halaman Narasi, daftar kelengkapan aset, dan mengaudit alur Tahap 1–4 ujung ke ujung. Tidak ada migration baru.
+
+### Audit alur
+
+Ditelusuri di MariaDB 10.11 dengan data produksi (`DatabaseSeeder`, bank soal produksi, `gelita:story:update`) lewat `php spark serve` dan Chromium (Playwright): halaman awal → `/mulai` → persetujuan → daftar → cerita pembuka wajib (tanpa Lewati) → `/intro/selesai` → tirai "Membuka Peta Kedu" → peta + narasi Jaka → Kenali Temanggung → tirai wilayah → dialog pembuka → peta wilayah → kartu misi → tirai tantangan → tantangan; lalu (penyelesaian disimulasikan lewat `challenge_attempts`) `/tuntas/temanggung` → Pustaka → Lanjut ke Magelang (tirai, dialog pembuka) → … → `/tuntas/wonosobo` → `/penutup` → Balai Refleksi; pemain lama: keluar → masuk → `/gerbang` (pilihan). Juga bahasa EN, JavaScript mati, dan `prefers-reduced-motion`.
+
+| Temuan | Tindakan |
+|---|---|
+| Pemain baru dapat melewati cerita pembuka wajib dengan mengetik `/dialog/{code}` atau `/wilayah/{code}` (hanya `/peta` dan `/gerbang` yang memeriksa `intro_seen_at`) | **Diperbaiki**: `introGate()` juga di `DialogueController::show()` dan `MapController::level()`. Kartu misi dan tantangan sudah terlindungi karena wilayah baru selalu lewat dialog pembukanya |
+| Musik/efek suara (`public/assets/audio/{music,sfx}/*.mp3`) belum ada di repositori; peta meminta `music/map.mp3` dan mendapat 404, lalu diam | Sesuai desain (gagal dimuat → diam). Kini tercantum di daftar kelengkapan aset |
+| Telemetry | Sesuai: `dialogue_advanced` per konteks (`intro`, `map_intro`, `region_intro`, `level_open`, `level_done`, `ending`) dikirim saat slide berpindah; narasi yang disetujui tercatat `autoplay` lalu `complete` dan slide maju sendiri; `challenge_attempts.started_at` ±0,6 detik setelah klik tombol Mulai di kartu misi (sesudah tirai); `library_opened` hanya saat Pustaka wilayah tuntas dibuka (tidak saat halaman terkunci) |
+| Tanpa JavaScript | Cerita pembuka (`:target`, tautan akhir ke `/intro/selesai`), peta, overlay Kenali (`#kenal-{code}`), wilayah tuntas, dan kartu misi terbaca; tirai tidak pernah menutupi halaman |
+| Gerak dikurangi | Tidak ada animasi berjalan pada tirai peta |
+
+Belum terverifikasi otomatis: pengiriman beacon event tepat saat berpindah halaman. Di server bawaan PHP (satu proses) Chromium headless kadang melaporkan beacon `ERR_ABORTED` dan event terakhir tidak tercatat; dengan tab yang tetap hidup beacon selalu sampai. Perlu dicek sekali di Nginx + PHP-FPM sebelum pengambilan data.
+
 ## Catatan Implementasi Tahap 7
 
 Tahap 7 menyelesaikan ekspor, laporan PDF, retensi, dan kelima command. Semua diverifikasi di atas MariaDB 10.11 dengan data permainan dari service asli (6 peserta, 79 attempt, lima engine) lalu lewat HTTP (`php spark serve`) sebagai admin dan guru.
@@ -1092,6 +1147,7 @@ Tahap 7 menyelesaikan ekspor, laporan PDF, retensi, dan kelima command. Semua di
 | `gelita:media:scan [--check-only]` | `MediaAssetSeeder` (idempoten) lalu `MediaIntegrity`; audit `media_scan` | 1 bila ada temuan |
 | `gelita:bank:import FILE [--dry-run] [--staff USERNAME]` | `ContentImportService::preview()`/`import()`; ringkasan per node, galat & peringatan per baris; pelaku audit = admin `--staff` atau admin aktif pertama | 1 bila ada galat |
 | `gelita:staff:password USERNAME` | `StaffUserModel::resetToTemporary()`, jalur yang sama dengan reset di `/admin/staf`: sandi sementara 16 karakter dicetak sekali, `must_change_password = 1`, kunci login dibuka; audit `staff_password_reset` dengan `via: cli`. Untuk admin yang lupa sandi tanpa admin lain. Sandi tidak diketik karena `CLI::prompt()` menampilkan input | 1 bila nama pengguna kosong atau tidak ditemukan |
+| `gelita:narration:import [--locale=id\|en] [--dry-run]` | Tahap 5: `App\Libraries\NarrationImporter::importFolder()` untuk `public/assets/audio/narasi/{id,en}/` (bawaan kedua bahasa; `--locale en` juga diterima). Laporan per bahasa: baru, diganti, sama, nama tidak dikenal (+ saran), gagal, jumlah baris tanpa rekaman. Rekaman baru/berubah berstatus draft; berkas sama dilewati sehingga aman diulang. Audit `narration_import` (`via: cli`). Jalankan setelah `gelita:story:update` | 1 bila ada berkas gagal atau `--locale` tidak dikenal |
 | `gelita:story:update [--force] [--dry-run]` | `App\Libraries\StorySync`: menyelaraskan `dialogues` dengan `app/Database/Seeds/data/story.php` (salinan `docs/naskah-cerita.md`). Sisipkan baris baru, perbarui baris berteks seeder lama, lewati & laporkan suntingan admin (kecuali `--force`), nonaktifkan baris di luar jumlah naskah; audio dan latar tidak disentuh. Satu transaction; cache konten di-flush; audit `content_update` (`target_type: dialogues`, `via: cli`). Jalankan setelah `php spark migrate` (docs/01 §8) | 1 bila transaction gagal (tidak ada yang diubah) |
 
 ### Pengujian

@@ -150,6 +150,7 @@ memory_limit = 512M
 max_execution_time = 300
 upload_max_filesize = 64M
 post_max_size = 72M
+max_file_uploads = 100
 date.timezone = Asia/Jakarta
 display_errors = Off
 display_startup_errors = Off
@@ -630,6 +631,23 @@ php spark gelita:library:thumbnails --force                   # unduh ulang semu
 
 Ringkasannya "n terisi, n dilewati, n gagal"; kode keluar 1 bila ada yang gagal. Server tanpa internet sama sekali dapat mengisi poster secara manual di `/admin/konten/pustaka/{level_id}` (kolom poster tiap video).
 
+### Memperbarui server yang sudah berjalan ke alur sinematik (Tahap 1–5)
+
+Server yang dipasang sebelum perombakan alur cerita menjalankan urutan ini **sekali**, setelah kode terbaru ditarik (deploy biasa sudah menjalankan langkah 1). Semua perintah aman diulang.
+
+```bash
+sudo -u www-data php spark migrate                          # 1. kolom intro_seen_at (003600), pose & efek dialog (003700)
+sudo -u www-data php spark gelita:story:update --dry-run    # 2a. lihat baris naskah yang akan berubah
+sudo -u www-data php spark gelita:story:update              # 2b. 88 baris naskah ke tabel dialogues
+sudo -u www-data php spark gelita:library:thumbnails        # 3. poster video Pustaka (butuh HTTPS keluar, lihat di atas)
+sudo -u www-data php spark gelita:narration:import --dry-run  # 4a. cocokkan nama rekaman di public/assets/audio/narasi/
+sudo -u www-data php spark gelita:narration:import          # 4b. rekaman narasi → audio draft, ditautkan ke naskah
+```
+
+Jalur W: perintah yang sama tanpa `sudo -u www-data`. Urutannya wajib: `gelita:story:update` menulis kolom dari migration, dan `gelita:narration:import` memetakan rekaman ke baris naskah yang dibuat `gelita:story:update`. Langkah 4 boleh dilewati bila rekaman akan diunggah lewat panel (**Konten → Narasi → Unggah narasi**). Setelah itu buka **Konten → Narasi**, dengarkan, lalu **Setujui semua narasi draft** per bahasa; rekaman draft tidak pernah terdengar pemain. Periksa sisa aset di **Media → Kelengkapan aset**.
+
+**Rekaman narasi di server.** Dua jalan masuk, sama dengan aset lain: commit ke `public/assets/audio/narasi/{id,en}/` di repositori lalu `gelita:narration:import` (didaftarkan di tempatnya), atau unggah lewat panel (disalin ke `public/assets/uploads/`, ikut backup). Unggahan panel dibatasi `max_file_uploads` (bawaan PHP 20; pengaturan di atas 100), `post_max_size`, dan `client_max_body_size` Nginx (72M, cukup untuk ±100 MP3 narasi). Halaman Unggah narasi menampilkan batas yang berlaku.
+
 ### Mode pemeliharaan
 
 CodeIgniter 4.7 tidak punya `php spark down`/`up` (keduanya "Command not found", kode keluar 1). Di Revisi 2 perintah itu menghentikan `deploy.sh` tepat setelah backup. Pengganti tahap 8 bekerja di tingkat Nginx, sama di kedua jalur, tanpa kode aplikasi:
@@ -1054,7 +1072,9 @@ Migration yang menghapus kolom sulit di-rollback tanpa kehilangan data. Aturanny
 | Font | `public/assets/fonts/` (Cinzel, Plus Jakarta Sans, IBM Plex Mono) | git | revalidasi |
 | Data referensi | `public/assets/data/wilayah-id.json` | git | revalidasi |
 | Aset resmi | `public/assets/{ui,char,bg,map,challenge,library,reward,audio}/` | **git** — saat ini baru `ui/placeholder.svg`; view memakai pengganti | revalidasi |
-| Unggahan admin | `public/assets/uploads/{asset_key}.{ext}` | panel `/admin/media` — **hanya di server** | revalidasi |
+| Unggahan admin | `public/assets/uploads/{asset_key}.{ext}` | panel `/admin/media`, editor konten, Unggah narasi — **hanya di server** | revalidasi |
+| Rekaman narasi (folder) | `public/assets/audio/narasi/{id,en}/{kode}.mp3` | git, lalu `gelita:narration:import` | revalidasi |
+| Musik & efek suara | `public/assets/audio/{music,sfx}/{nama}.mp3` | git (dibaca langsung `core/audio.js`, bukan `media_assets`) | revalidasi |
 | Berkas export | `writable/exports/` | aplikasi | tidak publik; dilayani controller berotorisasi |
 | Log / cache | `writable/logs/`, `writable/cache/` | aplikasi | tidak publik |
 
@@ -1415,7 +1435,7 @@ Baru setelah **delapan pemeriksaan otomatis dan sepuluh uji manual** ini lolos, 
 
 1. Tetapkan **fase penelitian** yang benar di `/admin/studi` (`active_phase_code` = `umum` / `pretest` / `posttest`) sebelum anak mulai. Fase sebuah sesi tidak dapat diubah setelah ada event gameplay.
 2. Untuk desain pretest–posttest, pastikan `item_selection_mode = fixed`. Tanpa ini, butir soal diacak dan kedua sesi tidak setara.
-3. Periksa `gelita:content:verify` bersih.
+3. Periksa `gelita:content:verify` bersih, lalu buka **Media → Kelengkapan aset**: aset yang belum ada tidak menghentikan permainan (dipakai pengganti), tetapi narasi yang masih draft tidak terdengar siswa.
 4. Pastikan ruang disk cukup: `df -h` (L) / `Get-PSDrive C, D` (W).
 5. Jalankan backup manual: `bash /var/www/gelita/deploy/linux/backup.sh` (L) / `Start-ScheduledTask -TaskPath '\GELITA\' -TaskName 'Backup'` (W).
 6. Jalur W: pastikan Laragon menyala (Nginx + MySQL hijau) dan tidak ada restart Windows Update yang tertunda.

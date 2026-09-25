@@ -39,7 +39,7 @@ $codeList    = static fn (array $codes): string => implode(', ', array_map(stati
   $lang   = strtoupper((string) $report['locale']);
   $source = $report['source'] === 'folder' ? 'folder server' : 'unggahan';
   ?>
-  <section class="panel narration-report" aria-labelledby="narration-report-title">
+  <section class="panel narration-report stack" aria-labelledby="narration-report-title">
     <h2 class="panel-title" id="narration-report-title">
       <?= icon('list') ?> Hasil <?= $report['dry_run'] ? 'pemeriksaan' : 'impor' ?> narasi <?= esc($lang) ?>
       <span class="muted">dari <?= esc($source) ?> · <?= esc($report['files']) ?> berkas</span>

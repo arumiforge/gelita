@@ -174,6 +174,10 @@ final class NarrationPagesTest extends CIUnitTestCase
         $dir = FCPATH . 'assets/audio/narasi/en/';
         $new = ! is_dir($dir);
 
+        if (glob($dir . 'penutup-02.*') ?: []) {
+            $this->markTestSkipped('Rekaman sungguhan penutup-02 sudah ada di folder narasi EN; uji ini tidak menimpanya.');
+        }
+
         if ($new) {
             mkdir($dir, 0775, true);
         }
@@ -183,7 +187,9 @@ final class NarrationPagesTest extends CIUnitTestCase
         try {
             $result = $this->asAdmin()->call(Method::POST, 'admin/konten/narasi/impor-folder', ['locale' => 'en'] + self::CSRF);
             $result->assertRedirectTo(site_url('admin/konten/narasi/unggah'));
-            $result->assertSessionHas('message', 'Narasi EN: 1 baru, 0 diganti, 0 sama, 0 nama tidak dikenal, 0 gagal.');
+            // Folder konvensi bisa berisi rekaman lain di mesin pengembang: cukup periksa berkas uji ini
+            $this->assertStringStartsWith('Narasi EN: ', (string) session('message'));
+            $this->assertSame(1, $this->sqlite->table('media_assets')->where('asset_key', 'audio.narasi.en.penutup-02')->countAllResults());
         } finally {
             unlink($dir . 'penutup-02.wav');
 
@@ -204,7 +210,7 @@ final class NarrationPagesTest extends CIUnitTestCase
         $result->assertOK();
         $html = html_entity_decode((string) $result->getBody(), ENT_QUOTES | ENT_HTML5);
 
-        foreach (['ui.logo-hero', 'ui.btn-start.en', 'bg.loading', 'map.kedu', 'char.kedu.worried.1…3', 'Peta wilayah Magelang', 'map.region.magelang', 'Rekaman narasi EN'] as $text) {
+        foreach (['ui.logo-hero', 'ui.btn-start.en', 'bg.loading', 'map.kedu', 'char.kedu.worried.1…3', 'Peta wilayah Magelang', 'map.region.magelang', 'Rekaman narasi EN', 'public/assets/audio/music/map.mp3', 'Efek jawaban benar'] as $text) {
             $this->assertStringContainsString($text, $html);
         }
 

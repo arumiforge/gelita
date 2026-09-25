@@ -36,6 +36,7 @@ Di teks Inggris, Jaka tetap memanggil "Mbah" agar nuansa lokalnya terjaga, semen
 - Format yang disarankan: MP3 mono, 44,1 kHz, 64–96 kbps. Kenyaringan sekitar −16 LUFS, dengan jeda hening ±0,3 detik di awal dan akhir.
 - Rekam suara saja, tanpa musik latar. Musik dan efek suara diputar terpisah oleh permainan.
 - Satu berkas berisi satu baris. Jangan menggabungkan beberapa baris ke satu berkas, karena teks di layar maju mengikuti selesainya audio.
+- Format yang diterima saat impor: MP3 (disarankan), M4A, OGG, dan WAV.
 - Audio Inggris boleh menyusul. Bila berkasnya belum ada, layar tetap menampilkan teksnya dan pemain melanjutkan slide secara manual.
 
 | Konteks (`context_code`) | Awalan berkas | Jumlah per bahasa | Tampil di |
@@ -47,6 +48,38 @@ Di teks Inggris, Jaka tetap memanggil "Mbah" agar nuansa lokalnya terjaga, semen
 | `level_done` | `tuntas-{wilayah}-NN` | 12 | Saat wilayah tuntas |
 | `ending` | `penutup-NN` | 5 | Setelah seluruh wilayah tuntas |
 | **Total** | | **88** | Durasi rekaman sekitar 12–14 menit per bahasa |
+
+## Mengimpor dan menyetujui audio
+
+Rekaman tidak perlu dipasang satu per satu. Selama nama berkasnya sama dengan kode baris (huruf besar/kecil tidak berpengaruh), GELITA menemukan barisnya sendiri. Kode wilayah dibaca dari tabel `levels`.
+
+**Daftar kerja pengisi suara.** Panel admin → **Konten → Narasi → Unduh daftar rekaman** menghasilkan XLSX berisi kode berkas, konteks, wilayah, tokoh, pose, efek, judul, teks ID, teks EN, dan status audio ID/EN setiap baris. Teksnya diambil dari basis data, jadi suntingan admin ikut terbawa.
+
+**Cara memasang rekaman** (pilih salah satu; keduanya memakai `App\Libraries\NarrationImporter`):
+
+1. **Unggah lewat panel.** Konten → Narasi → **Unggah narasi**: pilih bahasa, pilih banyak berkas sekaligus, lalu **Unggah sebagai draft**. Centang *Periksa nama saja* untuk mencocokkan nama tanpa menyimpan. Berkas disalin ke `public/assets/uploads/` dan ikut backup. Batas per unggahan mengikuti `upload_max_filesize`, `post_max_size`, dan `max_file_uploads` PHP (bawaan PHP 20 berkas); halaman itu menampilkan batas server yang berlaku.
+2. **Lewat folder.** Taruh berkas di `public/assets/audio/narasi/{id|en}/` (commit ke repositori, lalu deploy), kemudian jalankan:
+
+   ```bash
+   php spark gelita:narration:import --dry-run        # lihat dulu hasilnya
+   php spark gelita:narration:import                  # kedua bahasa
+   php spark gelita:narration:import --locale=en      # satu bahasa
+   ```
+
+   Tombol **Impor folder ID/EN** di halaman Unggah narasi melakukan hal yang sama. Berkas didaftarkan di tempatnya, tidak disalin.
+
+**Yang terjadi pada setiap berkas yang cocok:** aset `audio.narasi.{locale}.{kode}` dibuat atau diganti; baris `audio_assets` berisi bahasa, tokoh baris itu (narator = kosong), konteks, transkrip = teks baris pada bahasa itu, durasi (MP3 dan WAV terbaca otomatis), cara produksi *rekaman sendiri*, dan status **draft**; lalu rekaman ditautkan ke baris naskahnya.
+
+**Laporan hasil** memisahkan: baru, diganti (kembali ke draft), sama persis (dilewati, persetujuan tetap), nama tidak dikenal beserta saran nama terdekat (mis. `intro-1.mp3` → `intro-01.mp3`, `dialog-temangung-03.mp3` → `dialog-temanggung-03.mp3`), gagal (mis. bukan berkas audio), dan baris naskah yang belum punya rekaman.
+
+**Aturan impor ulang:**
+
+- Rekaman yang isinya berubah mengganti rekaman lama dan **kembali ke draft**, jadi harus didengar dan disetujui ulang.
+- Berkas yang sama persis dengan rekaman terpasang dilewati. Perintah ini aman dijalankan berulang tanpa menghapus persetujuan.
+- Dari folder, rekaman yang diunggah lewat panel dan lebih baru dari berkas folder tidak ditimpa.
+- Satu kode dengan beberapa berkas (mis. `.mp3` dan `.wav`) memakai satu berkas menurut urutan mp3, m4a, ogg, wav; sisanya dilaporkan ganda.
+
+**Menyetujui.** Rekaman draft belum terdengar pemain. Di halaman **Narasi** setiap baris punya pemutar kecil untuk ID dan EN beserta statusnya (belum ada / draft / disetujui), dan tautan **Sunting** ke baris itu di editor dialog. Setelah didengarkan, tombol **Setujui semua narasi draft ID/EN** menyetujui seluruh narasi draft satu bahasa sekaligus (dengan konfirmasi). Yang ikut hanya audio narasi naskah; audio lain seperti narasi kartu misi tetap disetujui satu per satu di halaman Audio. Persetujuan massal tercatat di audit log sebagai `audio_approve_bulk` beserta jumlahnya.
 
 ## Kamus pose dan efek
 
