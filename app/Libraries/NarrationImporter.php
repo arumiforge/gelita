@@ -21,6 +21,18 @@ use CodeIgniter\Database\BaseConnection;
  * NN = `sequence` dua digit. Kode wilayah dibaca dari tabel `levels`, jadi
  * wilayah baru tidak perlu mengubah kelas ini.
  *
+ * Narasi petunjuk arena `cari` memakai pola yang sama, tetapi barisnya
+ * butir bank soal, bukan `dialogues`:
+ *
+ *   petunjuk-{node}-NN    → challenge_items.audio_prompt_id / audio_prompt_en_id
+ *
+ * {node} = kode tantangan (node_ref(), mis. `tmg-4`) setiap node `cari`
+ * aktif. NN = urutan petunjuk target (find_object aktif, dinilai, bukan
+ * jebakan) menurut urutan butir (`sequence`, lalu id), dimulai dari 01.
+ * Transkripnya teks `prompt_id` / `prompt_en` butir, tokohnya Mbah Kedu,
+ * context_code audio `hunt_clue`. Objek jebakan tidak punya petunjuk,
+ * jadi tidak punya kode berkas.
+ *
  * Dua sumber berkas, satu aturan:
  * - folder public/assets/audio/narasi/{id|en}/ (`php spark
  *   gelita:narration:import`, atau tombol "Impor dari folder" di panel):
@@ -33,7 +45,7 @@ use CodeIgniter\Database\BaseConnection;
  * `audio.narasi.{locale}.{kode}` dibuat atau diganti (MediaStore),
  * `audio_assets` dibuat atau diganti (transkrip = teks baris pada bahasa itu,
  * tokoh dari baris, narator = NULL, status `draft`), lalu ditautkan ke
- * `dialogues.audio_{locale}_asset_id`.
+ * `dialogues.audio_{locale}_asset_id` (atau kolom audio petunjuk butir).
  *
  * Rekaman yang berubah kembali ke draft dan harus disetujui ulang. Berkas
  * yang isinya (sha256) sama dengan rekaman terpasang dilewati sehingga
@@ -65,6 +77,15 @@ final class NarrationImporter
     /** Awalan kode yang tidak memuat wilayah. */
     private const GLOBAL_PREFIXES = ['intro', 'peta', 'penutup'];
 
+    /** Awalan kode berkas narasi petunjuk arena `cari`: `petunjuk-{node}-NN`. */
+    public const CLUE_PREFIX = 'petunjuk';
+
+    /** context_code audio petunjuk (audio_assets) dan konteks barisnya di halaman Narasi. */
+    public const CLUE_CONTEXT = 'hunt_clue';
+
+    /** Kolom tautan audio petunjuk per bahasa pada `challenge_items`. */
+    public const CLUE_COLUMNS = ['id' => 'audio_prompt_id', 'en' => 'audio_prompt_en_id'];
+
     private BaseConnection $db;
 
     private MediaStore $store;
@@ -77,11 +98,16 @@ final class NarrationImporter
     /** @var list<string>|null */
     private ?array $levelCodes = null;
 
+    /** @var list<string>|null kode node `cari` aktif, mis. `tmg-4` */
+    private ?array $clueNodes = null;
+
     public function __construct(?BaseConnection $db = null, ?MediaStore $store = null, string $folder = self::FOLDER)
     {
         $this->db     = $db ?? db_connect();
         $this->store  = $store ?? new MediaStore();
         $this->folder = rtrim(str_replace('\\', '/', $folder), '/') . '/';
+
+        helper('content');   // node_ref()
     }
 
     /** Kode berkas satu baris naskah, mis. `dialog-magelang-07`; null untuk konteks lain. */
@@ -102,6 +128,12 @@ final class NarrationImporter
         return $prefix . ($global ? '' : '-' . $levelCode) . '-' . sprintf('%02d', $sequence);
     }
 
+    /** Kode berkas petunjuk ke-$number (mulai 1) satu node `cari`, mis. `petunjuk-tmg-4-01`. */
+    public static function clueCode(string $nodeRef, int $number): string
+    {
+        return self::CLUE_PREFIX . '-' . $nodeRef . '-' . sprintf('%02d', $number);
+    }
+
     public static function assetKey(string $locale, string $code): string
     {
         return 'audio.narasi.' . $locale . '.' . $code;
@@ -114,9 +146,10 @@ final class NarrationImporter
     }
 
     /**
-     * Baris naskah aktif per kode berkas, urut naskah: konteks, wilayah, urutan.
+     * Baris naskah aktif per kode berkas, urut naskah: konteks, wilayah, urutan;
+     * petunjuk arena `cari` (clueLines()) di akhir.
      *
-     * @return array<string, array<string, mixed>> kolom dialogues + `code`, `level_code`, `level_name`
+     * @return array<string, array<string, mixed>> kolom dialogues + `code`, `level_code`, `level_name`, `table`
      */
     public function lines(): array
     {
@@ -152,11 +185,84 @@ final class NarrationImporter
 
             // Nomor urut ganda pada baris global: id terkecil yang dipakai (sama dengan StorySync)
             if ($code !== null && ! isset($this->lines[$code])) {
-                $this->lines[$code] = $row + ['code' => $code];
+                $this->lines[$code] = $row + ['code' => $code, 'table' => 'dialogues'];
             }
         }
 
+        $this->lines += $this->clueLines();
+
         return $this->lines;
+    }
+
+    /**
+     * Petunjuk arena `cari` sebagai baris narasi, urut wilayah, node, butir.
+     * Bentuknya sama dengan baris dialogues agar katalog dan laporan tidak
+     * perlu membedakannya: `text_*` = prompt butir, `audio_{locale}_asset_id`
+     * = kolom CLUE_COLUMNS; `table`, `node_id`, `node_ref`, dan `item_key`
+     * menunjuk butirnya.
+     *
+     * @return array<string, array<string, mixed>>
+     */
+    private function clueLines(): array
+    {
+        $rows = $this->db->table('challenge_items ci')
+            ->select('ci.id, ci.item_key, ci.prompt_id, ci.prompt_en, ci.config_json, ci.audio_prompt_id, ci.audio_prompt_en_id')
+            ->select('n.id AS node_id, n.sequence AS node_sequence, n.level_id, l.code AS level_code, l.name_id AS level_name, l.sequence AS level_sequence')
+            ->join('challenge_nodes n', 'n.id = ci.challenge_node_id')
+            ->join('levels l', 'l.id = n.level_id')
+            ->where('n.engine_type', 'cari')
+            ->where('n.is_active', 1)
+            ->where('ci.is_active', 1)
+            ->where('ci.scorable', 1)
+            ->where('ci.interaction_type', 'find_object')
+            ->orderBy('l.sequence', 'ASC')
+            ->orderBy('n.sequence', 'ASC')
+            ->orderBy('ci.sequence', 'ASC')
+            ->orderBy('ci.id', 'ASC')
+            ->get()
+            ->getResultArray();
+
+        $lines   = [];
+        $counter = [];
+
+        foreach ($rows as $row) {
+            $config = json_decode((string) ($row['config_json'] ?? ''), true);
+
+            // Jebakan tidak punya petunjuk (ChallengeItem::isDecoy())
+            if (is_array($config) && ($config['decoy'] ?? null) === true) {
+                continue;
+            }
+
+            $nodeRef = node_ref((string) $row['level_code'], (int) $row['node_sequence']);
+            $number  = $counter[$nodeRef] = ($counter[$nodeRef] ?? 0) + 1;
+            $code    = self::clueCode($nodeRef, $number);
+
+            $lines[$code] = [
+                'id'                => (int) $row['id'],
+                'table'             => 'challenge_items',
+                'level_id'          => (int) $row['level_id'],
+                'level_code'        => (string) $row['level_code'],
+                'level_name'        => (string) $row['level_name'],
+                'level_sequence'    => (int) $row['level_sequence'],
+                'context_code'      => self::CLUE_CONTEXT,
+                'sequence'          => $number,
+                'character_code'    => 'mbah_kedu',
+                'pose'              => null,
+                'effect'            => null,
+                'title_id'          => null,
+                'title_en'          => null,
+                'text_id'           => (string) $row['prompt_id'],
+                'text_en'           => $row['prompt_en'],
+                'audio_id_asset_id' => $row['audio_prompt_id'],
+                'audio_en_asset_id' => $row['audio_prompt_en_id'],
+                'node_id'           => (int) $row['node_id'],
+                'node_ref'          => $nodeRef,
+                'item_key'          => (string) $row['item_key'],
+                'code'              => $code,
+            ];
+        }
+
+        return $lines;
     }
 
     /**
@@ -186,12 +292,20 @@ final class NarrationImporter
             }
 
             $code = $base;
+        } elseif (preg_match('/^' . self::CLUE_PREFIX . '-(.+)-(\d{2})$/', $base, $m) === 1) {
+            if (! in_array($m[1], $this->clueNodes(), true)) {
+                return $this->unknown('tantangan "' . $m[1] . '" bukan arena cari yang aktif', $this->suggest($base, $extension));
+            }
+
+            $code = $base;
         } else {
             return $this->unknown('nama tidak sesuai pola kode berkas naskah', $this->suggest($base, $extension));
         }
 
         if (! isset($lines[$code])) {
-            return $this->unknown('baris ' . $code . ' tidak ada di naskah aktif', $this->suggest($base, $extension));
+            $where = str_starts_with($code, self::CLUE_PREFIX . '-') ? 'di petunjuk target bank soal aktif' : 'di naskah aktif';
+
+            return $this->unknown('baris ' . $code . ' tidak ada ' . $where, $this->suggest($base, $extension));
         }
 
         return ['code' => $code, 'error' => null, 'suggestion' => null];
@@ -294,7 +408,6 @@ final class NarrationImporter
     private function importOne(string $code, string $source, string $name, ?string $relative, string $locale, bool $dryRun, ?int $staffId, array &$report): void
     {
         $line   = $this->lines()[$code];
-        $column = 'audio_' . $locale . '_asset_id';
         $key    = self::assetKey($locale, $code);
         $media  = $this->db->table('media_assets')->where('asset_key', $key)->get()->getRowArray();
         $audio  = $media === null ? null : $this->db->table('audio_assets')->where('media_asset_id', (int) $media['id'])->get()->getRowArray();
@@ -310,7 +423,7 @@ final class NarrationImporter
         // Berkas terpasang yang hilang dari disk dipulihkan (diganti) dari berkas ini.
         if ($media !== null && $audio !== null && (string) $media['sha256'] === $sha && (int) $media['is_active'] === 1
             && is_file(FCPATH . $media['storage_path']) && hash_file('sha256', FCPATH . $media['storage_path']) === $sha) {
-            $this->link($line, $column, (int) $audio['id'], $dryRun, $report);
+            $this->link($line, $locale, (int) $audio['id'], $dryRun, $report);
             $report['unchanged'][] = $code;
 
             return;
@@ -321,7 +434,7 @@ final class NarrationImporter
             && is_file(FCPATH . $media['storage_path'])
             && strtotime((string) ($media['updated_at'] ?? '')) >= (int) filemtime($source)) {
             if ($audio !== null) {
-                $this->link($line, $column, (int) $audio['id'], $dryRun, $report);
+                $this->link($line, $locale, (int) $audio['id'], $dryRun, $report);
             }
 
             $report['kept'][] = $code;
@@ -378,24 +491,31 @@ final class NarrationImporter
         }
 
         $report['written'] = true;
-        $this->link($line, $column, (int) $audioId, false, $report);
+        $this->link($line, $locale, (int) $audioId, false, $report);
         $report[$category][] = $code;
     }
 
     /**
+     * Tautkan audio ke baris: `dialogues.audio_{locale}_asset_id`, atau kolom
+     * CLUE_COLUMNS butir untuk petunjuk arena `cari`.
+     *
      * @param array<string, mixed> $line
      * @param array<string, mixed> $report
      */
-    private function link(array $line, string $column, int $audioId, bool $dryRun, array &$report): void
+    private function link(array $line, string $locale, int $audioId, bool $dryRun, array &$report): void
     {
         $report['linked'][$line['code']] = true;
+        $column = 'audio_' . $locale . '_asset_id';
 
         if ((int) ($line[$column] ?? 0) === $audioId) {
             return;
         }
 
         if (! $dryRun) {
-            $this->db->table('dialogues')->where('id', (int) $line['id'])->update([$column => $audioId]);
+            $table = ($line['table'] ?? 'dialogues') === 'challenge_items' ? 'challenge_items' : 'dialogues';
+            $this->db->table($table)->where('id', (int) $line['id'])->update([
+                $table === 'challenge_items' ? self::CLUE_COLUMNS[$locale] : $column => $audioId,
+            ]);
             $this->lines[$line['code']][$column] = $audioId;
             $report['written'] = true;
         }
@@ -462,6 +582,24 @@ final class NarrationImporter
         unset($report['linked']);
 
         return $report;
+    }
+
+    /** @return list<string> kode node `cari` aktif (node_ref()) */
+    private function clueNodes(): array
+    {
+        if ($this->clueNodes !== null) {
+            return $this->clueNodes;
+        }
+
+        $rows = $this->db->table('challenge_nodes n')
+            ->select('n.sequence, l.code')
+            ->join('levels l', 'l.id = n.level_id')
+            ->where('n.engine_type', 'cari')
+            ->where('n.is_active', 1)
+            ->get()
+            ->getResultArray();
+
+        return $this->clueNodes = array_map(static fn (array $row): string => node_ref((string) $row['code'], (int) $row['sequence']), $rows);
     }
 
     /** @return list<string> */

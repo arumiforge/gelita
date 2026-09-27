@@ -79,6 +79,30 @@ final class NarrationPagesTest extends CIUnitTestCase
         $this->assertStringContainsString('admin/konten/narasi/daftar-rekaman', $html);
     }
 
+    public function testClueRecordingsGetTheirOwnGroupAndCountInTheChecklist(): void
+    {
+        $nodeId = $this->seedHuntNode($this->sqlite);
+        $draft  = $this->audio('audio.narasi.id.petunjuk-tmg-4-01', 'id', 'draft', 'hunt_clue');
+        $this->sqlite->table('challenge_items')->where('item_key', 'tmg-4-01')->update(['audio_prompt_id' => $draft]);
+        $itemId = (int) $this->sqlite->table('challenge_items')->where('item_key', 'tmg-4-01')->get()->getRow('id');
+
+        $html = html_entity_decode((string) $this->asAdmin()->call(Method::GET, 'admin/konten/narasi')->getBody(), ENT_QUOTES | ENT_HTML5);
+
+        $this->assertSame(96, substr_count($html, 'Sunting</a>'));
+        $this->assertStringContainsString('Petunjuk arena cari · Temanggung (tmg-4)', $html);
+        $this->assertStringContainsString('<code>petunjuk-tmg-4-08</code>', $html);
+        $this->assertStringNotContainsString('petunjuk-tmg-4-09', $html, 'jebakan tanpa petunjuk');
+        $this->assertStringContainsString('Temukan rigen, anyaman bambu tempat menjemur tembakau rajangan.', $html);
+        $this->assertStringContainsString('admin/konten/node/' . $nodeId . '#item-' . $itemId, $html);
+        $this->assertStringContainsString('Teks petunjuk berasal dari bank soal', $html);
+        $this->assertStringContainsString('0/96 disetujui, 1 draft, 95 belum ada', $html);
+        $this->assertStringContainsString('Setujui semua narasi draft ID (1)', $html);
+
+        $checklist = html_entity_decode((string) $this->asAdmin()->call(Method::GET, 'admin/media/kelengkapan')->getBody(), ENT_QUOTES | ENT_HTML5);
+        $this->assertStringContainsString('0/96 disetujui, 1 draft, 95 belum ada', $checklist);
+        $this->assertStringContainsString('0/96 disetujui, 0 draft, 96 belum ada', $checklist);
+    }
+
     public function testTeacherCannotOpenNarrationPages(): void
     {
         $this->injectStaff('guru');

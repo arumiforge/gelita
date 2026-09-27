@@ -15,16 +15,18 @@ class ChallengeItem extends Entity
     protected $datamap = [];
     protected $dates   = ['created_at', 'updated_at'];
     protected $casts   = [
-        'id'                => 'int',
-        'challenge_node_id' => 'int',
-        'sequence'          => 'int',
-        'passage_id'        => '?int',
-        'answer_key_json'   => '?json-array',
-        'config_json'       => '?json-array',
-        'media_asset_id'    => '?int',
-        'indicator_id'      => '?int',
-        'scorable'          => 'boolean',
-        'is_active'         => 'boolean',
+        'id'                 => 'int',
+        'challenge_node_id'  => 'int',
+        'sequence'           => 'int',
+        'passage_id'         => '?int',
+        'answer_key_json'    => '?json-array',
+        'config_json'        => '?json-array',
+        'media_asset_id'     => '?int',
+        'audio_prompt_id'    => '?int',
+        'audio_prompt_en_id' => '?int',
+        'indicator_id'       => '?int',
+        'scorable'           => 'boolean',
+        'is_active'          => 'boolean',
     ];
 
     /** Opsi jawaban yang di-eager-load ContentRepository (hindari N+1) */
@@ -62,6 +64,17 @@ class ChallengeItem extends Entity
             'y' => (float) $this->conf('y', 50),
             'w' => (float) $this->conf('w', 12),
         ];
+    }
+
+    /**
+     * Id audio narasi petunjuk (engine `cari`) pada bahasa itu; tidak jatuh
+     * ke rekaman bahasa lain, karena suaranya harus sama dengan teks yang tampil.
+     */
+    public function promptAudioId(string $locale): ?int
+    {
+        $id = $locale === 'en' ? $this->audio_prompt_en_id : $this->audio_prompt_id;
+
+        return $id === null || (int) $id <= 0 ? null : (int) $id;
     }
 
     /**

@@ -636,13 +636,15 @@ Ringkasannya "n terisi, n dilewati, n gagal"; kode keluar 1 bila ada yang gagal.
 Server yang dipasang sebelum perombakan alur cerita menjalankan urutan ini **sekali**, setelah kode terbaru ditarik (deploy biasa sudah menjalankan langkah 1). Semua perintah aman diulang.
 
 ```bash
-sudo -u www-data php spark migrate                          # 1. kolom intro_seen_at (003600), pose & efek dialog (003700)
+sudo -u www-data php spark migrate                          # 1. intro_seen_at (003600), pose & efek dialog (003700), audio petunjuk cari (003800)
 sudo -u www-data php spark gelita:story:update --dry-run    # 2a. lihat baris naskah yang akan berubah
 sudo -u www-data php spark gelita:story:update              # 2b. 88 baris naskah ke tabel dialogues
 sudo -u www-data php spark gelita:library:thumbnails        # 3. poster video Pustaka (butuh HTTPS keluar, lihat di atas)
 sudo -u www-data php spark gelita:narration:import --dry-run  # 4a. cocokkan nama rekaman di public/assets/audio/narasi/
-sudo -u www-data php spark gelita:narration:import          # 4b. rekaman narasi → audio draft, ditautkan ke naskah
+sudo -u www-data php spark gelita:narration:import          # 4b. rekaman narasi → audio draft, ditautkan ke naskah & petunjuk cari
 ```
+
+**Narasi petunjuk arena `cari`** (migration `003800`) memakai jalur yang sama: berkas `petunjuk-{node}-NN.mp3` (mis. `petunjuk-tmg-4-01.mp3`) di folder narasi atau unggahan panel, ditautkan ke `challenge_items.audio_prompt_id` / `audio_prompt_en_id`. Karena barisnya butir bank soal, langkah 4 dijalankan **sesudah** `migrate` dan sesudah bank soal produksi diimpor (`gelita:bank:import` atau `/admin/konten/impor-bank`). Server yang sudah menjalankan Tahap 1–5 cukup menjalankan langkah 1 (deploy biasa sudah melakukannya) lalu langkah 4 atau unggah lewat panel, kemudian menyetujui rekamannya di **Konten → Narasi**.
 
 Jalur W: perintah yang sama tanpa `sudo -u www-data`. Urutannya wajib: `gelita:story:update` menulis kolom dari migration, dan `gelita:narration:import` memetakan rekaman ke baris naskah yang dibuat `gelita:story:update`. Langkah 4 boleh dilewati bila rekaman akan diunggah lewat panel (**Konten → Narasi → Unggah narasi**). Setelah itu buka **Konten → Narasi**, dengarkan, lalu **Setujui semua narasi draft** per bahasa; rekaman draft tidak pernah terdengar pemain. Periksa sisa aset di **Media → Kelengkapan aset**.
 

@@ -988,8 +988,8 @@ class ContentController extends BaseAdminController
     }
 
     /**
-     * Payload butir dari POST, atau pesan galat bila kolom JSON rusak atau
-     * gambar butir ditolak.
+     * Payload butir dari POST, atau pesan galat bila kolom JSON rusak,
+     * gambar butir ditolak, atau audio petunjuk tidak ditemukan.
      *
      * @return array<string, mixed>|string
      */
@@ -1010,7 +1010,16 @@ class ContentController extends BaseAdminController
             return $media;
         }
 
-        return $this->bilingual(['prompt', 'source_text']) + $media + [
+        // Narasi petunjuk hanya untuk find_object (engine `cari`); jenis lain selalu tanpa audio
+        $audio = $this->request->getPost('interaction_type') === 'find_object'
+            ? $this->audioFields(['audio_prompt_id', 'audio_prompt_en_id'])
+            : ['audio_prompt_id' => null, 'audio_prompt_en_id' => null];
+
+        if (is_string($audio)) {
+            return $audio;
+        }
+
+        return $this->bilingual(['prompt', 'source_text']) + $media + $audio + [
             'sequence'         => (int) ($this->request->getPost('sequence') ?? 0),
             'passage_id'       => $this->idOrNull($this->request->getPost('passage_id')),
             'indicator_id'     => $this->idOrNull($this->request->getPost('indicator_id')),

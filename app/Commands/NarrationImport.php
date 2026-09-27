@@ -10,8 +10,9 @@ use CodeIgniter\CLI\CLI;
 /**
  * Mengimpor rekaman narasi dari public/assets/audio/narasi/{id|en}/ ke
  * permainan: nama berkas = kode berkas baris naskah (docs/naskah-cerita.md),
- * mis. `intro-01.mp3`. Jalankan setelah `gelita:story:update`, karena
- * berkas dipetakan ke baris `dialogues` yang sudah ada.
+ * mis. `intro-01.mp3`, atau petunjuk arena `cari` (`petunjuk-tmg-4-01.mp3`).
+ * Jalankan setelah `gelita:story:update` dan impor bank soal, karena berkas
+ * dipetakan ke baris `dialogues` dan butir `challenge_items` yang sudah ada.
  *
  * Rekaman baru atau yang berubah berstatus draft: dengarkan dan setujui di
  * panel (Konten → Narasi). Berkas yang sama persis dengan rekaman terpasang

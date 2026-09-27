@@ -914,6 +914,16 @@ body.is-challenge .app { padding-bottom: var(--sp-4); }
 .hunt-guide .character-img { max-height: 90px; }
 .hunt-guide .character-fallback { width: 64px; font-size: var(--step-1); }
 .clue-text { margin: 0; font-size: var(--step-1); font-weight: 700; }
+/* Narasi petunjuk (engines/cari.js): tombol ▶/⏸ di samping teks, hanya bila ada rekaman yang disetujui */
+.hunt-clue-body.has-voice { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; column-gap: var(--sp-2); }
+.hunt-clue-body.has-voice > .eyebrow { grid-column: 1 / -1; }
+.hunt-clue-body.has-voice > .clue-text { grid-column: 2; }
+.clue-voice:not(:has(> .audio-player:not([hidden]))) { display: none; }
+.clue-voice .audio-player { padding: 0; border: 0; background: none; }
+.clue-voice .audio-controls { flex: none; }
+.clue-voice .audio-btn { background: rgba(74, 50, 24, .12); color: var(--brown-700); }
+.clue-voice .audio-btn[data-action="play"] { background: var(--brown-700); color: var(--parchment); }
+.clue-voice .audio-error { font-size: var(--step--1); }
 
 .hunt-scene {
   position: relative;
