@@ -10,7 +10,8 @@ use CodeIgniter\Database\BaseConnection;
  * rekaman untuk pengisi suara, dan persetujuan massal.
  *
  * "Audio narasi" = audio yang ditautkan ke baris `dialogues` keenam konteks
- * naskah, atau yang diimpor NarrationImporter (asset_key
+ * naskah atau ke petunjuk arena `cari` (`challenge_items.audio_prompt_id` /
+ * `audio_prompt_en_id`), atau yang diimpor NarrationImporter (asset_key
  * `audio.narasi.{locale}.*`). Audio lain (mis. narasi pembuka kartu misi)
  * tidak pernah ikut persetujuan massal.
  */
@@ -24,6 +25,7 @@ final class NarrationCatalog
         'level_open'   => 'Dialog masuk wilayah',
         'level_done'   => 'Wilayah tuntas',
         'ending'       => 'Penutup',
+        'hunt_clue'    => 'Petunjuk arena cari',
     ];
 
     public const CHARACTER_LABELS = ['narator' => 'Narator', 'jaka' => 'Jaka', 'mbah_kedu' => 'Mbah Kedu'];
@@ -135,7 +137,7 @@ final class NarrationCatalog
 
     /**
      * Baris per kelompok tampilan: konteks global satu kelompok, konteks
-     * wilayah satu kelompok per wilayah.
+     * wilayah satu kelompok per wilayah, petunjuk `cari` satu kelompok per node.
      *
      * @param list<array<string, mixed>> $rows
      *
@@ -146,13 +148,15 @@ final class NarrationCatalog
         $groups = [];
 
         foreach ($rows as $row) {
-            $key = $row['context_code'] . '|' . ($row['level_code'] ?? '');
+            $node = $row['node_ref'] ?? null;
+            $key  = $row['context_code'] . '|' . ($row['level_code'] ?? '') . '|' . ($node ?? '');
 
             $groups[$key] ??= [
                 'context'    => (string) $row['context_code'],
                 'level_code' => $row['level_code'],
                 'label'      => (self::CONTEXT_LABELS[$row['context_code']] ?? $row['context_code'])
-                    . ($row['level_name'] === null ? '' : ' · ' . $row['level_name']),
+                    . ($row['level_name'] === null ? '' : ' · ' . $row['level_name'])
+                    . ($node === null ? '' : ' (' . $node . ')'),
                 'rows'       => [],
             ];
 
@@ -180,6 +184,18 @@ final class NarrationCatalog
                 ->getResultArray(),
             $column,
         ));
+
+        // Audio petunjuk arena `cari` yang dipilih manual di form butir
+        $clueColumn = NarrationImporter::CLUE_COLUMNS[$locale];
+        $linked     = array_merge($linked, array_map('intval', array_column(
+            $this->db->table('challenge_items')
+                ->select($clueColumn)
+                ->where($clueColumn . ' IS NOT NULL')
+                ->where('interaction_type', 'find_object')
+                ->get()
+                ->getResultArray(),
+            $clueColumn,
+        )));
 
         $builder = $this->db->table('audio_assets aa')
             ->select('aa.id')

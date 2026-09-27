@@ -483,10 +483,14 @@ Detail:
 
 * Objek diposisikan dengan persen (`left`, `top`, `width`) supaya adegan tetap benar pada semua ukuran layar.
 * Objek jebakan dirender identik dengan objek asli. Tidak ada kelas CSS, atribut, atau urutan DOM yang membocorkan status jebakan — status itu hanya ada di server.
-* Payload `challenge-data` engine ini tidak memakai `items`. Isinya `objects` (semua objek, target maupun jebakan, berbentuk identik `{ ref, x, y, w, media }` dan diurutkan menurut posisi di layar) dan `clues` (`{ item_id, text }`, hanya untuk target yang dinilai). `ref` adalah token HMAC per attempt yang diturunkan dari `encryption.key`, jadi id butir petunjuk tidak dapat dicocokkan dengan objek mana pun di sisi klien.
+* Payload `challenge-data` engine ini tidak memakai `items`. Isinya `objects` (semua objek, target maupun jebakan, berbentuk identik `{ ref, x, y, w, media }` dan diurutkan menurut posisi di layar) dan `clues` (`{ item_id, text, audio, audio_id }`, hanya untuk target yang dinilai). `ref` adalah token HMAC per attempt yang diturunkan dari `encryption.key`, jadi id butir petunjuk tidak dapat dicocokkan dengan objek mana pun di sisi klien.
 * Server hanya menerima `answer.object`. `answer.item_id` mentah diabaikan — klien mengetahui id butir target dari `clues`, sehingga menerimanya sama dengan membocorkan kunci jawaban. Token yang tidak dikenal ditolak `422 INVALID_RESPONSE`. Bila butir `find_object` dikirim lewat `/check`, jawabannya juga hanya dibaca dari token; token yang tidak dikenal dinilai salah.
 * `progress.total` pada respons tidak menghitung objek jebakan.
-* Petunjuk aktif dibacakan lewat audio player Mbah Kedu bila asetnya tersedia.
+* **Narasi petunjuk.** `clues[i].audio` = URL rekaman Mbah Kedu pada bahasa aktif (hanya `approved` dengan media aktif), `audio_id` = id `audio_assets`-nya; keduanya `null` tanpa rekaman. Tombol ▶/⏸ dari `<template id="tpl-clue-voice">` dipasang di samping teks, satu `NarrationPlayer` per petunjuk (`narrationPlayer(node, { attemptId, shared: true })` — elemen `<audio>` bersama yang sudah dibuka ketukan pertama, agar Safari iPad mengizinkan putar otomatis sesudah respons server).
+  * Petunjuk pertama hanya diputar lewat tombol (action `play`): sebelum halaman disentuh, audio bersuara diblokir browser.
+  * Setelah jawaban benar, petunjuk berikutnya diputar sendiri 600 ms kemudian (action `autoplay`, sesudah bunyi "benar"), hanya bila `Sfx.isEnabled()` dan audio sudah dibuka interaksi (`NarrationPlayer#autoplay()`).
+  * Berganti petunjuk (maju atau lompat dari daftar sisa) memanggil `pauseNarration()` (telemetry `pause` terkirim); lompat tidak memutar otomatis. Semua ketemu → narasi dihentikan sebelum modal selesai.
+  * Petunjuk tanpa rekaman: tanpa tombol, perilaku sama seperti sebelumnya. Tidak ada animasi tambahan, jadi `prefers-reduced-motion` tidak mengubah apa pun.
 * Keyboard: `Tab` berpindah antar objek, `Enter` memilih. Daftar sisa juga dapat dipakai untuk melompat ke petunjuk tertentu.
 
 ---
@@ -877,7 +881,7 @@ Keputusan dan temuan selama tahap ini. Semua perilaku di atas diuji di browser (
 * **Petunjuk**: setiap petunjuk baru didahului konfirmasi penalti netral; teks yang sudah dibuka disimpan di halaman dan tidak diminta ulang (setiap permintaan dihitung server). Urutan: petunjuk butir yang sedang dikerjakan, lalu petunjuk node.
 * **Angka ✓/✗ di bar** menghitung hasil dari respons server pada tampilan halaman ini; setelah muat ulang dimulai dari 0 (catatan per butir tetap utuh di server).
 * **Pilihan** dapat dijawab dengan huruf A–D / angka 1–4 selain klik.
-* **Cari objek**: petunjuk aktif belum dibacakan audio karena payload `clues` belum membawa aset audio; teksnya tampil dan diumumkan ke pembaca layar.
+* **Cari objek**: teks petunjuk aktif tampil dan diumumkan ke pembaca layar; bila petunjuknya punya rekaman yang disetujui, tombol ▶ membacakannya dan petunjuk berikutnya diputar otomatis setelah jawaban benar (lihat *Fitur: Cari Objek Budaya*; ditambahkan setelah Tahap 5).
 * **Konfirmasi keluar** dan tombol Back memakai `confirmDialog`; `<details>` tanpa-JavaScript tetap ada di markup.
 
 ### Pengujian

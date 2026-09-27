@@ -19,7 +19,8 @@ class ChallengeItemModel extends Model
     protected $allowedFields = [
         'challenge_node_id', 'item_key', 'sequence', 'interaction_type',
         'prompt_id', 'prompt_en', 'source_text_id', 'source_text_en', 'passage_id',
-        'answer_key_json', 'media_asset_id', 'indicator_id', 'config_json',
+        'answer_key_json', 'media_asset_id', 'audio_prompt_id', 'audio_prompt_en_id',
+        'indicator_id', 'config_json',
         'reference_source', 'review_status', 'review_note', 'scorable', 'is_active',
     ];
     protected $validationRules = [

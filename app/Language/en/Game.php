@@ -213,6 +213,7 @@ return [
     'sourceText'        => 'Source text',
     'clueOf'            => 'Clue {0} of {1}',
     'clueWaiting'       => 'The clue appears here when the search begins.',
+    'clueListen'        => 'Listen to the clue',
     'huntSceneAlt'      => 'Search scene',
     'objectN'           => 'Object {0}',
     'huntList'          => 'Things to find',

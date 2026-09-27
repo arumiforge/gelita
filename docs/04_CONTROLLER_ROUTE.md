@@ -392,7 +392,7 @@ $routes->group('api/admin', [
 | GET | `/admin/masukan` | FeedbackController::index | guru, admin | kritik & saran |
 | GET/POST | `/admin/ekspor*` | ExportController | guru, admin | export XLSX/PDF |
 | GET/POST | `/admin/konten*` | ContentController | **admin** | kelola konten, teks bacaan, impor workbook bank soal |
-| GET | `/admin/konten/narasi` | NarrationController::index | **admin** | status rekaman 88 baris naskah per bahasa |
+| GET | `/admin/konten/narasi` | NarrationController::index | **admin** | status rekaman per bahasa: 88 baris naskah + petunjuk arena `cari` (96 baris dengan bank soal produksi) |
 | GET/POST | `/admin/konten/narasi/unggah` | NarrationController::uploadForm / upload | **admin** | unggah banyak rekaman sekaligus + laporan hasil |
 | POST | `/admin/konten/narasi/impor-folder` | NarrationController::importFolder | **admin** | impor dari `public/assets/audio/narasi/{id\|en}/` |
 | POST | `/admin/konten/narasi/setujui` | NarrationController::approveAll | **admin** | setujui semua narasi draft satu bahasa |

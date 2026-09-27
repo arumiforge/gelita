@@ -15,6 +15,12 @@
  * `{ item_id: <clues[i].item_id>, answer: { object: <data-object> } }`.
  * Petunjuk pertama dirender server agar terbaca tanpa JavaScript.
  *
+ * Narasi petunjuk: bila ada petunjuk dengan rekaman yang disetujui
+ * (`clues[i].audio`), <template id="tpl-clue-voice"> berisi tombol ▶/⏸
+ * yang dipasang engines/cari.js di samping teks petunjuk. Template tidak
+ * dirender browser: tanpa JavaScript atau tanpa rekaman yang disetujui,
+ * tampilannya sama dengan petunjuk teks saja.
+ *
  * @var App\Entities\ChallengeNode    $node
  * @var App\Entities\Level            $level
  * @var App\Entities\ChallengeAttempt $attempt
@@ -25,6 +31,7 @@ $objects = $payload['objects'] ?? [];
 $clues   = $payload['clues'] ?? [];
 $scene   = $payload['node']['scene'] ?? null;
 $total   = max(1, count($clues));
+$voiced  = array_filter(array_column($clues, 'audio')) !== [];
 ?>
 <?= $this->extend('layouts/game') ?>
 
@@ -44,6 +51,16 @@ $total   = max(1, count($clues));
       ) ?></span>
       <p class="clue-text" id="clue-text" aria-live="polite"><?= esc(($clues[0]['text'] ?? '') !== '' ? $clues[0]['text'] : lang('Game.clueWaiting')) ?></p>
     </div>
+    <?php if ($voiced): ?>
+      <template id="tpl-clue-voice">
+        <div class="audio-player clue-audio">
+          <div class="audio-controls">
+            <button type="button" class="audio-btn" data-action="play" aria-label="<?= esc(lang('Game.clueListen'), 'attr') ?>"><?= icon('play') ?></button>
+            <button type="button" class="audio-btn" data-action="pause" aria-label="<?= esc(lang('Game.audioPause'), 'attr') ?>" hidden><?= icon('pause') ?></button>
+          </div>
+        </div>
+      </template>
+    <?php endif ?>
   </div>
 
   <div class="hunt-scene<?= $scene ? '' : ' is-drawn' ?>" id="hunt-scene">

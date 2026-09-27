@@ -3,8 +3,11 @@
 use App\Entities\ChallengeAttempt;
 use App\Entities\ChallengeItem;
 use App\Services\ChallengeService;
+use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\Test\CIUnitTestCase;
+use Config\Database;
 use Config\Encryption;
+use Tests\Support\Database\NarrationTables;
 
 /**
  * Engine `cari`: sumber halaman tidak boleh membedakan jebakan dari target,
@@ -14,6 +17,8 @@ use Config\Encryption;
  */
 final class HuntPayloadTest extends CIUnitTestCase
 {
+    use NarrationTables;
+
     private ChallengeService $service;
     private string $originalKey;
 
@@ -65,9 +70,58 @@ final class HuntPayloadTest extends CIUnitTestCase
         $payload = $this->hunt($this->attempt(501), $this->items(), 'id');
 
         $this->assertSame([
-            ['item_id' => 11, 'text' => 'Temukan tembakau.'],
-            ['item_id' => 12, 'text' => 'Temukan candi.'],
+            ['item_id' => 11, 'text' => 'Temukan tembakau.', 'audio' => null, 'audio_id' => null],
+            ['item_id' => 12, 'text' => 'Temukan candi.', 'audio' => null, 'audio_id' => null],
         ], $payload['clues']);
+    }
+
+    /**
+     * Narasi petunjuk: hanya rekaman `approved` dengan media aktif, sesuai
+     * bahasa, dan id audio hanya dikirim bersama URL-nya. Objek (termasuk
+     * jebakan) tetap tanpa audio, jadi bentuknya tetap identik.
+     */
+    public function testClueAudioOnlyForApprovedRecordingInThatLocale(): void
+    {
+        $db = Database::connect('tests');
+        $this->createNarrationTables($db);
+
+        try {
+            $approved = $this->audioAsset($db, 'audio.narasi.id.petunjuk-tmg-4-01', 'id', 'approved');
+            $english  = $this->audioAsset($db, 'audio.narasi.en.petunjuk-tmg-4-01', 'en', 'approved');
+            $draft    = $this->audioAsset($db, 'audio.narasi.id.petunjuk-tmg-4-02', 'id', 'draft');
+            $decoy    = $this->audioAsset($db, 'audio.narasi.id.jebakan', 'id', 'approved');
+
+            [$tobacco, $temple, $trap] = $this->items();
+            $tobacco->audio_prompt_id    = $approved;
+            $tobacco->audio_prompt_en_id = $english;
+            $temple->audio_prompt_id     = $draft;
+            $trap->audio_prompt_id       = $decoy;
+            $items                       = [$tobacco, $temple, $trap];
+
+            $id = $this->hunt($this->attempt(501), $items, 'id');
+            $this->assertSame(base_url('assets/audio/narasi/id/audio.narasi.id.petunjuk-tmg-4-01.mp3'), $id['clues'][0]['audio']);
+            $this->assertSame($approved, $id['clues'][0]['audio_id']);
+            $this->assertNull($id['clues'][1]['audio'], 'draft belum terdengar pemain');
+            $this->assertNull($id['clues'][1]['audio_id'], 'id draft tidak ikut terkirim');
+
+            $en = $this->hunt($this->attempt(501), $items, 'en');
+            $this->assertSame($english, $en['clues'][0]['audio_id']);
+            $this->assertNull($en['clues'][1]['audio_id'], 'tidak jatuh ke rekaman bahasa lain');
+
+            foreach ($id['objects'] as $object) {
+                $this->assertSame(['ref', 'x', 'y', 'w', 'media'], array_keys($object));
+            }
+
+            $encoded = json_encode($id);
+            $this->assertStringNotContainsString('jebakan', $encoded, 'audio jebakan tidak pernah dikirim');
+            $this->assertStringNotContainsString((string) $decoy, implode(',', array_column($id['clues'], 'audio_id')));
+
+            // Media nonaktif: tidak diputar walau audionya disetujui
+            $db->table('media_assets')->where('asset_key', 'audio.narasi.id.petunjuk-tmg-4-01')->update(['is_active' => 0]);
+            $this->assertNull($this->hunt($this->attempt(501), $items, 'id')['clues'][0]['audio']);
+        } finally {
+            $this->dropNarrationTables();
+        }
     }
 
     public function testRefsDoNotRevealItemIdsAndChangePerAttempt(): void
@@ -163,6 +217,20 @@ final class HuntPayloadTest extends CIUnitTestCase
         ]);
 
         return $item;
+    }
+
+    private function audioAsset(BaseConnection $db, string $key, string $locale, string $status): int
+    {
+        $db->table('media_assets')->insert([
+            'asset_key' => $key, 'asset_type' => 'audio', 'mime_type' => 'audio/mpeg',
+            'storage_path' => 'assets/audio/narasi/' . $locale . '/' . $key . '.mp3',
+        ]);
+        $db->table('audio_assets')->insert([
+            'media_asset_id' => $db->insertID(), 'locale' => $locale, 'context_code' => 'hunt_clue',
+            'transcript' => 'Uji', 'approval_status' => $status,
+        ]);
+
+        return (int) $db->insertID();
     }
 
     private function attempt(int $id): ChallengeAttempt

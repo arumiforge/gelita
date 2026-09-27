@@ -10,6 +10,11 @@
  * gambar adegan node dari data-scene) — yang tetap menulis ke dua kolom JSON
  * yang sama; data-verdicts membatasi kunci verdict pada verdict_options node.
  *
+ * Node `cari`: dua pemilih audio narasi petunjuk (ID/EN) untuk butir
+ * `find_object`, yang dibacakan di samping teks pertanyaan. Rekaman biasanya
+ * diimpor dari halaman Narasi (`petunjuk-{node}-NN.mp3`); objek jebakan tidak
+ * punya petunjuk, jadi audionya tidak pernah diputar.
+ *
  * @var App\Entities\ChallengeItem|null       $item      null = butir baru
  * @var App\Entities\ChallengeNode            $node
  * @var list<string>                          $interactions
@@ -97,6 +102,15 @@ $guides = [
     </div>
     <p class="field-help">Rumpang: tandai bagian kosong dengan <code>___</code>. English boleh dikosongkan — permainan memakai teks Indonesia.</p>
   </div>
+
+  <?php if ($node->engine_type === 'cari'): ?>
+    <div class="bilingual">
+      <span class="bilingual-label">Narasi petunjuk (dibacakan Mbah Kedu)</span>
+      <?= component('components/audio-select', ['id' => $prefix . '-audio-id', 'name' => 'audio_prompt_id', 'label' => 'Audio petunjuk (Indonesia)', 'audioId' => $isNew ? null : $item->audio_prompt_id, 'locale' => 'id']) ?>
+      <?= component('components/audio-select', ['id' => $prefix . '-audio-en', 'name' => 'audio_prompt_en_id', 'label' => 'Audio petunjuk (English)', 'audioId' => $isNew ? null : $item->audio_prompt_en_id, 'locale' => 'en']) ?>
+      <p class="field-help">Transkripnya teks pertanyaan di atas. Unggah rekaman <code>petunjuk-{node}-NN.mp3</code> di halaman <a href="<?= base_url('admin/konten/narasi') ?>">Narasi</a>; pemain baru mendengarnya setelah disetujui. Objek jebakan tidak butuh audio.</p>
+    </div>
+  <?php endif ?>
 
   <?= component('components/media-field', [
       'id'         => $prefix . '-media',

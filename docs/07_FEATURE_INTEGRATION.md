@@ -400,6 +400,8 @@ B. Menutup tab / memuat ulang / koneksi putus
      insert audio_usage_events
      insert game_event_logs (audio_play / audio_pause / audio_replay / audio_completed)
      bila terkait attempt → attempt.audio_use_count++
+       (setiap event, bukan setiap pemutaran; termasuk narasi petunjuk
+        arena cari — lihat FITUR 13a § Narasi petunjuk arena cari)
 6. Analitik audio memakai audio_usage_events, dengan durasi pembanding
    diambil dari audio_assets.duration_ms (data server), bukan dari browser
 ```
@@ -785,6 +787,41 @@ Unggahan dari editor konten (FITUR 12) memakai jalur yang sama (`App\Libraries\M
 * **Durasi.** `MediaStore::durationMs()` kini membaca MP3 (header Xing/Info atau VBRI; tanpa itu dihitung sebagai CBR) selain WAV. OGG/M4A tetap NULL.
 * **Jenis berkas dibaca dari isinya** (`MediaStore::detectMime()`): finfo, lalu tanda tangan ID3/sinkronisasi MPEG, OggS, RIFF…WAVE, ftyp M4A. Berkas yang bukan audio ditolak walau namanya `.mp3`.
 * **Rekaman yang hilang dari disk** (mis. `uploads/` tidak ikut dipindah) dipulihkan saat impor ulang dan kembali ke draft, bukan dilaporkan "sama".
+
+### Narasi petunjuk arena `cari`
+
+Petunjuk target arena `cari` diimpor dengan jalur yang sama, tetapi barisnya butir bank soal, bukan `dialogues`:
+
+```text
+1. Nama berkas petunjuk-{node}-NN.mp3, mis. petunjuk-tmg-4-01.mp3
+     {node} = node_ref() node `cari` aktif (tmg-4)
+     NN     = urutan petunjuk target (find_object aktif, scorable = 1, bukan decoy)
+              menurut challenge_items.sequence lalu id, mulai 01
+     objek jebakan tidak punya petunjuk → tidak punya kode berkas
+2. NarrationImporter::match(): node bukan arena cari aktif, atau NN di luar jumlah
+   target → "nama tidak dikenal" + saran nama terdekat
+3. media_assets audio.narasi.{locale}.petunjuk-{node}-NN
+   audio_assets  context_code = 'hunt_clue', character_code = 'mbah_kedu',
+                 transcript = prompt_{locale} butir (EN kosong → prompt_id), 'draft'
+   challenge_items.audio_prompt_id | audio_prompt_en_id ← audio_assets.id
+4. Halaman Narasi: kelompok "Petunjuk arena cari · {wilayah} ({node})", Sunting →
+   /admin/konten/node/{id}#item-{id}; ikut kemajuan, daftar rekaman XLSX,
+   persetujuan massal, dan Kelengkapan aset (88 + 8 = 96 baris per bahasa)
+5. ChallengeService::huntPayload(): clues[i] = { item_id, text, audio, audio_id }
+     audio    = audio_src(audio_prompt_{locale}) — hanya approved + media aktif
+     audio_id = id itu, hanya bila audio tidak null (draft tidak terlihat)
+6. engines/cari.js: ▶ manual pada petunjuk pertama (`play`); setelah jawaban
+   benar petunjuk berikutnya diputar sendiri (`autoplay`); ganti petunjuk → `pause`
+```
+
+* **Admin manual.** Form butir node `cari` punya dua pemilih audio (ID/EN) untuk `find_object`; `ContentController::itemPayload()` mengosongkan kedua kolom untuk jenis lain. Audio yang dipilih manual ikut persetujuan massal, dan halaman Audio menulis "Dipakai di: Petunjuk tmg-4-01 (ID)".
+* **Nomor NN tidak melekat pada butir.** Menonaktifkan, menyisipkan, atau mengurutkan ulang target menggeser nomor sesudahnya; impor ulang berkas yang sama akan menautkannya ke butir baru dengan transkrip lama. Setelah perubahan seperti itu, cocokkan ulang daftar rekaman dan halaman Narasi. Workbook bank soal tidak membawa kolom audio; audio petunjuk hanya lewat jalur narasi atau form butir.
+
+**Catatan peneliti (telemetry).**
+
+* Pemutaran narasi petunjuk dicatat di `audio_usage_events` dengan `challenge_attempt_id` attempt `cari` yang sedang berjalan; `action` membedakan `play` (pemain menekan ▶) dari `autoplay` (petunjuk berikutnya setelah jawaban benar). Tabel itu tidak punya kolom butir: butirnya diturunkan dari `audio_asset_id` → `challenge_items.audio_prompt_id` / `audio_prompt_en_id` (atau dari asset_key `audio.narasi.{locale}.petunjuk-{node}-NN`), dan `audio_assets.context_code = 'hunt_clue'`.
+* `EventService::recordAudio()` menambah `challenge_attempts.audio_use_count` untuk **setiap** event audio yang membawa `attempt_id` — `play`, `autoplay`, `pause`, `replay`, dan `complete` — bukan jumlah pemutaran. Perilaku ini dipertahankan agar sama dengan audio lain. Satu petunjuk yang diputar lalu diganti karena jawaban benar biasanya menghasilkan dua event (`play`/`autoplay` + `pause`, atau + `complete`). Mulai dengan rilis ini, attempt `cari` dengan rekaman petunjuk yang disetujui cenderung punya `audio_use_count` lebih tinggi daripada attempt sebelum rilis atau tanpa rekaman; bandingkan antar-kelompok dengan membaca `audio_usage_events` (mis. hanya `action IN ('play','autoplay','replay')`), bukan angka mentah itu.
+* Pemutaran otomatis tidak terjadi saat suara dimatikan (sakelar suara HUD) atau sebelum pemain berinteraksi dengan halaman; dalam kasus itu tidak ada event.
 
 ---
 

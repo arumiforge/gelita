@@ -3,7 +3,7 @@
  * Unggah narasi — `/admin/konten/narasi/unggah` → NarrationController::uploadForm
  *
  * Banyak rekaman sekaligus: nama berkas = kode berkas baris naskah
- * (intro-01.mp3, kenal-magelang-03.mp3, …). Hasil impor (baru, diganti,
+ * (intro-01.mp3, kenal-magelang-03.mp3, petunjuk-tmg-4-01.mp3, …). Hasil impor (baru, diganti,
  * sama, nama tidak dikenal beserta saran, gagal, dan baris yang belum punya
  * rekaman) ditampilkan setelah unggah. "Periksa nama saja" menjalankan
  * pencocokan tanpa menyimpan. Tanpa JavaScript formulir tetap bekerja;
@@ -14,6 +14,7 @@
  * @var array<string, int>        $limits  NarrationController::uploadLimits()
  * @var array<string, mixed>|null $report  NarrationImporter::importFiles()/importFolder()
  * @var string                    $folder  folder rekaman di server, relatif public/
+ * @var int                       $lines   jumlah baris rekaman per bahasa (naskah + petunjuk arena cari)
  */
 $localeNames = ['id' => 'Indonesia', 'en' => 'English'];
 $mb          = static fn (int $bytes): string => $bytes <= 0 ? 'tanpa batas' : rtrim(rtrim(number_format($bytes / 1048576, 1, ',', '.'), '0'), ',') . ' MB';
@@ -29,7 +30,7 @@ $codeList    = static fn (array $codes): string => implode(', ', array_map(stati
 <?= component('partials/admin-head', [
     'title'   => 'Unggah narasi',
     'eyebrow' => 'Konten · rekaman naskah cerita',
-    'lead'    => 'Pilih banyak rekaman sekaligus. Nama setiap berkas harus sama dengan kode berkas baris naskah, misalnya intro-01.mp3 atau dialog-magelang-09.mp3. Rekaman masuk sebagai draft.',
+    'lead'    => 'Pilih banyak rekaman sekaligus. Nama setiap berkas harus sama dengan kode berkas baris naskah, misalnya intro-01.mp3, dialog-magelang-09.mp3, atau petunjuk-tmg-4-01.mp3 (petunjuk arena cari). Rekaman masuk sebagai draft.',
     'actions' => $actions,
 ]) ?>
 <?= $this->include('partials/flash') ?>
@@ -145,7 +146,7 @@ $codeList    = static fn (array $codes): string => implode(', ', array_map(stati
     <ul class="plain-list">
       <li><b>Per berkas: <?= esc($mb($limits['file_bytes'])) ?></b>, yang terkecil dari batas GELITA (<code>Config\Gelita::$maxUploadBytes</code>, <?= esc($mb($limits['gelita_bytes'])) ?>) dan PHP (<code>upload_max_filesize</code>, <?= esc($mb($limits['php_file_bytes'])) ?>).</li>
       <li><b>Per unggahan: <?= $limits['max_files'] > 0 ? esc($limits['max_files']) . ' berkas' : 'tanpa batas jumlah' ?></b> (<code>max_file_uploads</code>) dan <b><?= esc($mb($limits['post_bytes'])) ?> total</b> (<code>post_max_size</code>).</li>
-      <li>Rekaman MP3 mono 64–96 kbps berukuran ±0,1–0,5 MB per baris, jadi 88 baris satu bahasa biasanya perlu <?= $limits['max_files'] > 0 ? esc((int) ceil(88 / $limits['max_files'])) . ' kali unggah' : 'satu kali unggah' ?>. Pilih berkas per konteks (mis. semua <code>dialog-temanggung-*</code>) agar mudah dilacak.</li>
+      <li>Rekaman MP3 mono 64–96 kbps berukuran ±0,1–0,5 MB per baris, jadi <?= esc($lines) ?> baris satu bahasa biasanya perlu <?= $limits['max_files'] > 0 ? esc((int) ceil(max(1, $lines) / $limits['max_files'])) . ' kali unggah' : 'satu kali unggah' ?>. Pilih berkas per konteks (mis. semua <code>dialog-temanggung-*</code>) agar mudah dilacak.</li>
       <li>Bila jumlah total melebihi <code>post_max_size</code>, PHP membuang seluruh kiriman dan halaman menolak permintaan. Kurangi jumlah berkas per unggahan.</li>
     </ul>
     <p class="field-help">Batas PHP diubah di <code>php.ini</code> server (lihat docs/08_DEPLOYMENT.md).</p>

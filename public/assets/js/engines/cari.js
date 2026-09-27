@@ -13,13 +13,27 @@
  * (umpan balik dari server bila ada). Semua ketemu (`progress` dari server)
  * → konfeti + modal + complete(). Daftar sisa dapat dipakai untuk melompat
  * ke petunjuk tertentu. Tab berpindah antar objek, Enter memilih.
+ *
+ * Narasi petunjuk (`clues[i].audio` / `audio_id`, hanya rekaman yang
+ * disetujui): tombol ▶/⏸ dari <template id="tpl-clue-voice"> dipasang di
+ * samping teks petunjuk, satu pemutar per petunjuk (core/audio.js, elemen
+ * <audio> bersama agar Safari iPad mengizinkan putar otomatis). Petunjuk
+ * pertama hanya diputar lewat tombol (action `play`): sebelum halaman
+ * disentuh, browser menolak audio bersuara. Setelah jawaban benar, petunjuk
+ * berikutnya diputar sendiri (action `autoplay`) bila suara aktif — setelah
+ * jeda singkat agar tidak menimpa bunyi "benar". Berganti petunjuk
+ * (maju atau lompat) selalu menghentikan narasi sebelumnya; lompat tidak
+ * memutar otomatis. Telemetry membawa attempt_id, jadi setiap event narasi
+ * petunjuk ikut menambah challenge_attempts.audio_use_count. Petunjuk tanpa
+ * rekaman: tanpa tombol, sama seperti sebelumnya.
  */
 import { $, $$, el, announce } from '../core/dom.js';
 import { showModal } from '../core/modal.js';
 import { confetti } from '../core/confetti.js';
-import { Sfx } from '../core/audio.js';
+import { Sfx, narrationPlayer, pauseNarration } from '../core/audio.js';
 
 const SHAKE_MS = 700;
+const VOICE_DELAY_MS = 600; // bunyi "benar" selesai dulu sebelum petunjuk berikutnya dibacakan
 
 export function mount(ctx) {
   const scene = $('#hunt-scene', ctx.section);
@@ -34,6 +48,48 @@ export function mount(ctx) {
   let current = 0;
   let shownAt = performance.now();
   let busy = false;
+  let voiceTimer = null;
+
+  // Narasi petunjuk: slot di samping teks, pemutar dibuat saat petunjuknya tampil
+  const voiceTemplate = $('#tpl-clue-voice', ctx.section);
+  const voiceSlot = voiceTemplate && clueText && clues.some((clue) => clue?.audio)
+    ? el('div', { class: 'clue-voice' })
+    : null;
+  const voices = new Map(); // indeks petunjuk → NarrationPlayer
+
+  if (voiceSlot) {
+    clueText.parentElement.classList.add('has-voice');
+    clueText.before(voiceSlot);
+  }
+
+  const voiceOf = (i) => {
+    const clue = clues[i];
+    if (!voiceSlot || !clue?.audio) return null;
+    if (!voices.has(i)) {
+      const node = voiceTemplate.content.firstElementChild.cloneNode(true);
+      node.dataset.src = clue.audio;
+      node.dataset.audioId = String(clue.audio_id ?? '');
+      node.hidden = true;
+      voiceSlot.append(node);
+      // Berkas gagal dimuat: tombol disembunyikan (NarrationPlayer#fail), teks tetap ada
+      voices.set(i, narrationPlayer(node, { attemptId: ctx.attemptId, shared: true }));
+    }
+    return voices.get(i);
+  };
+
+  const showVoice = (i, { autoplay = false } = {}) => {
+    clearTimeout(voiceTimer);
+    pauseNarration();
+    voices.forEach((player, index) => { player.root.hidden = index !== i; });
+    const player = voiceOf(i);
+    if (!player) return;
+    player.root.hidden = false;
+    if (autoplay) {
+      voiceTimer = setTimeout(() => {
+        if (current === i && !found.has(i)) player.autoplay();
+      }, VOICE_DELAY_MS);
+    }
+  };
 
   // Daftar sisa → tombol lompat ke petunjuk
   listItems.forEach((li, i) => {
@@ -57,10 +113,12 @@ export function mount(ctx) {
     shownAt = performance.now();
   };
 
-  const goTo = (i) => {
+  /** autoplay: hanya setelah jawaban benar, bukan saat pemain melompat. */
+  const goTo = (i, { autoplay = false } = {}) => {
     if (found.has(i)) return;
     current = i;
     render();
+    showVoice(i, { autoplay });
     announce(`${ctx.t('clueLabel', i + 1)}: ${clues[i]?.text ?? ''}`);
   };
 
@@ -109,6 +167,8 @@ export function mount(ctx) {
 
       const done = result.progress && result.progress.total > 0 && result.progress.answered >= result.progress.total;
       if (done || found.size >= clues.length) {
+        clearTimeout(voiceTimer);
+        pauseNarration();
         render();
         confetti();
         await showModal({
@@ -123,7 +183,7 @@ export function mount(ctx) {
       }
 
       const next = nextUnfound();
-      if (next !== null) goTo(next);
+      if (next !== null) goTo(next, { autoplay: true });
       return;
     }
 
@@ -153,4 +213,5 @@ export function mount(ctx) {
   });
 
   render();
+  showVoice(current); // petunjuk pertama: tombol ▶ saja, tanpa putar otomatis
 }
