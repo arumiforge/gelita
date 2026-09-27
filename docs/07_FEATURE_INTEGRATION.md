@@ -1144,7 +1144,37 @@ Ditelusuri di MariaDB 10.11 dengan data produksi (`DatabaseSeeder`, bank soal pr
 | Tanpa JavaScript | Cerita pembuka (`:target`, tautan akhir ke `/intro/selesai`), peta, overlay Kenali (`#kenal-{code}`), wilayah tuntas, dan kartu misi terbaca; tirai tidak pernah menutupi halaman |
 | Gerak dikurangi | Tidak ada animasi berjalan pada tirai peta |
 
-Belum terverifikasi otomatis: pengiriman beacon event tepat saat berpindah halaman. Di server bawaan PHP (satu proses) Chromium headless kadang melaporkan beacon `ERR_ABORTED` dan event terakhir tidak tercatat; dengan tab yang tetap hidup beacon selalu sampai. Perlu dicek sekali di Nginx + PHP-FPM sebelum pengambilan data.
+### Verifikasi beacon di Nginx + PHP-FPM
+
+Pengiriman event tepat saat berpindah halaman diverifikasi di tumpukan produksi Jalur L tanpa TLS: Nginx 1.24 (blok aplikasi `gelita-https.conf` dipindah ke port 80 tanpa `ssl_*` dan HSTS, karena `gelita-http.conf` hanya mengalihkan ke HTTPS), PHP-FPM 8.3.6 (pool dan `99-gelita.ini` sesuai 08, `opcache.validate_timestamps = 0`), MariaDB 10.11.14, `.env` dari templat dengan `CI_ENVIRONMENT = production`. Data: `DatabaseSeeder`, bank soal produksi, `gelita:story:update`. Agar event audio lahir, setiap baris naskah diberi rekaman sintetis (nada 1,2 detik, `.wav`) lewat `gelita:narration:import` lalu disetujui; rekaman itu tidak di-commit.
+
+**Metode.** Skrip Playwright (Chromium headless 1194, `--autoplay-policy=no-user-gesture-required`) memainkan alur siswa sungguhan, satu siswa baru per putaran: daftar → cerita pembuka (9 slide, klik Lanjut tiap 250 ms, tombol akhir diklik seketika) → tirai peta → Kenali Temanggung (4 slide, Esc, langsung klik Mulai bertirai) → dialog pembuka (15 slide) → peta wilayah → … → tantangan. Selama uji, `EventQueue.push()` diberi satu baris `console.log` sementara (dikembalikan sesudahnya) sehingga setiap event yang **lahir** di klien tercatat beserta skenarionya. Setelah putaran, setiap `client_event_id` dicocokkan dengan `game_event_logs` (event audio juga di sana sebagai `audio_*`), dan jumlah baris `audio_usage_events` dibandingkan dengan jumlah `audio_*` per peserta. Tunda = `server_received_at` − saat event lahir.
+
+**Hasil, 25 putaran** (tanpa intersepsi request):
+
+| Skenario | Event (audio) | Hilang | Tunda maks. |
+|---|---|---|---|
+| S1 slide terakhir cerita pembuka → `/intro/selesai` | 625 (425) | 0 | 3,0 s |
+| S2 tirai "Membuka Peta Kedu" + narasi peta | 50 (50) | 0 | 3,0 s |
+| S3 Kenali wilayah → tirai wilayah | 275 (200) | 0 | 1,1 s |
+| S4 dialog `level_open` terakhir → peta wilayah | 1075 (725) | 0 | 3,0 s |
+| S5 kartu misi → tirai tantangan → `/tantangan` | 25 (0) | 0 | 0,1 s |
+| S6 tombol Keluar tepat setelah `challenge_opened` {resumed} | 50 (0) | 0 | 0,5 s |
+| S7 klik tautan tanpa tirai tepat setelah `level_opened` | 50 (0) | 0 | 0,1 s |
+| S8 tutup tab (`page.close({runBeforeUnload:true})`, `challenge_abandoned` via `pagehide`) | 25 (0) | 0 | 0,02 s |
+| S9 tab tersembunyi (`visibilitychange` → hidden, tab tetap hidup) | 74 (0) | 0 | 0,04 s |
+| **Jumlah** | **2249 (1400)** | **0** | |
+
+Semua 763 `POST /api/events` dan `/api/audio-events` dijawab 200: tidak ada 403 (CSRF), 429 (throttle 120/menit), atau 401. Token CSRF tidak basi karena `security.regenerate = false`, dan beacon `application/json` dengan `gelita_csrf` di badan diterima filter CSRF. `audio_usage_events` selalu sama dengan jumlah `audio_*`. Tunda sampai ±3 detik adalah siklus antrean biasa (`FLUSH_MS`), bukan beacon yang tertahan.
+
+Catatan uji:
+
+* **`ERR_ABORTED` bukan tanda event hilang.** Chromium melaporkan beacon dari dokumen yang sedang ditutup sebagai `ERR_ABORTED`, padahal log Nginx mencatat request itu 200 beberapa milidetik kemudian dan barisnya ada di database.
+* **Intersepsi Playwright membuat hasil palsu.** Dengan `context.route()` aktif (walau polanya tidak cocok dengan request mana pun), dalam 10 putaran pembanding 20 event beacon dari halaman yang ditinggalkan (S5, S7) tertahan browser 5–7,6 detik, bahkan ada yang baru dilepas saat tab ditutup, dan 1 dari 10 `challenge_abandoned` saat tutup tab tidak pernah sampai ke Nginx. General log MariaDB membuktikan tiga request yang tiba saat tutup tab berisi `level_opened` dari 26 detik sebelumnya. Bila audit sebelumnya memakai intersepsi request, hal ini dapat menjelaskan event hilang yang terlihat saat itu. Uji beacon harus dijalankan tanpa `page.route`/`context.route`.
+* **S9 disimulasikan.** Chromium headless tidak mengubah `document.visibilityState` saat tab lain dibawa ke depan. Jalurnya dipicu dengan `visibilityState = 'hidden'` dan `visibilitychange` sintetis; handler `events.js` yang dijalankan sama.
+* Server bawaan PHP (`php spark serve`) tidak diuji ulang. Production memakai PHP-FPM.
+
+Kesimpulan: tidak ada event yang hilang di Nginx + PHP-FPM, jadi kode tidak diubah.
 
 ## Catatan Implementasi Tahap 7
 
