@@ -144,6 +144,19 @@ class MediaUsage
             }
         }
 
+        $items = $db->table('challenge_items')
+            ->select('item_key, audio_prompt_id, audio_prompt_en_id')
+            ->groupStart()->where('audio_prompt_id IS NOT NULL')->orWhere('audio_prompt_en_id IS NOT NULL')->groupEnd()
+            ->get()->getResultArray();
+
+        foreach ($items as $row) {
+            foreach (['audio_prompt_id' => 'ID', 'audio_prompt_en_id' => 'EN'] as $column => $lang) {
+                if (($id = $this->int($row[$column])) !== null) {
+                    $uses[$id][] = 'Petunjuk ' . $row['item_key'] . ' (' . $lang . ')';
+                }
+            }
+        }
+
         return $uses;
     }
 

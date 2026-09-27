@@ -303,7 +303,7 @@ final class AssetChecklist
 
         return [
             'title' => 'Audio narasi naskah',
-            'help'  => 'Tanpa rekaman yang disetujui, teks tetap tampil dan slide dilanjutkan manual. Draft belum terdengar pemain.',
+            'help'  => 'Baris naskah cerita dan petunjuk arena cari (jumlahnya dihitung dari data). Tanpa rekaman yang disetujui, teks tetap tampil dan slide dilanjutkan manual. Draft belum terdengar pemain.',
             'items' => $items,
         ];
     }

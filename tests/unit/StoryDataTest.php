@@ -1,5 +1,6 @@
 <?php
 
+use App\Libraries\NarrationImporter;
 use App\Libraries\StorySync;
 use CodeIgniter\Test\CIUnitTestCase;
 
@@ -155,7 +156,10 @@ final class StoryDataTest extends CIUnitTestCase
         $counts = [];
 
         foreach ($m as [, $context, $count]) {
-            $counts[$context] = (int) $count;
+            // `hunt_clue` (petunjuk-*) ada di tabel yang sama, tetapi teksnya dari bank soal, bukan baris dialogues
+            if ($context !== NarrationImporter::CLUE_CONTEXT) {
+                $counts[$context] = (int) $count;
+            }
         }
 
         return $counts;

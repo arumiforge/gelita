@@ -47,7 +47,11 @@ Di teks Inggris, Jaka tetap memanggil "Mbah" agar nuansa lokalnya terjaga, semen
 | `level_open` | `dialog-{wilayah}-NN` | 47 | Saat wilayah baru terbuka |
 | `level_done` | `tuntas-{wilayah}-NN` | 12 | Saat wilayah tuntas |
 | `ending` | `penutup-NN` | 5 | Setelah seluruh wilayah tuntas |
-| **Total** | | **88** | Durasi rekaman sekitar 12–14 menit per bahasa |
+| **Total naskah** | | **88** | Durasi rekaman sekitar 12–14 menit per bahasa |
+| `hunt_clue` | `petunjuk-{node}-NN` | 8 | Petunjuk Mbah Kedu di arena `cari` (`tmg-4`), di samping teks petunjuk — teks dari bank soal, bukan naskah ini |
+| **Total rekaman** | | **96** | |
+
+Baris `petunjuk-*` **tidak ada di naskah ini**: teksnya berasal dari bank soal, yaitu kolom pertanyaan (`prompt_id` / `prompt_en`) butir `find_object` target di [`docs/bank-soal/data/temanggung.php`](bank-soal/data/temanggung.php) (node `tmg-4`). Dibacakan Mbah Kedu. `{node}` = kode tantangan (`tmg-4`); NN = urutan petunjuk target menurut urutan butir, dimulai 01 — untuk bank soal produksi `petunjuk-tmg-4-01` … `-08` sama dengan butir `tmg-4-01` … `tmg-4-08`. Ketiga objek jebakan (`tmg-4-09` … `-11`) tidak punya petunjuk dan tidak direkam. Teks terkini ada di daftar rekaman XLSX (kelompok "Petunjuk arena cari"), karena admin dapat menyuntingnya di bank soal.
 
 ## Mengimpor dan menyetujui audio
 
