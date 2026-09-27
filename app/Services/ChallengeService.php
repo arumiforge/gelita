@@ -941,10 +941,12 @@ class ChallengeService
      * `clues` hanya untuk target yang dinilai. `item_id`-nya dikirim klien
      * sebagai butir yang sedang dijawab, tetapi tidak dapat dicocokkan dengan
      * objek mana pun karena `ref` diturunkan dari kunci server (objectRef()).
+     * `audio` / `audio_id` = narasi petunjuk pada bahasa itu (clueAudio()),
+     * keduanya null bila belum ada rekaman yang disetujui.
      *
      * @param list<ChallengeItem> $items
      *
-     * @return array{objects: list<array<string, mixed>>, clues: list<array{item_id: int, text: string}>}
+     * @return array{objects: list<array<string, mixed>>, clues: list<array{item_id: int, text: string, audio: string|null, audio_id: int|null}>}
      */
     private function huntPayload(ChallengeAttempt $attempt, array $items, string $locale): array
     {
@@ -961,13 +963,28 @@ class ChallengeService
             ];
 
             if ($this->expectsAnswer($item)) {
-                $clues[] = ['item_id' => $item->id, 'text' => $item->text('prompt', $locale)];
+                $clues[] = ['item_id' => $item->id, 'text' => $item->text('prompt', $locale)] + $this->clueAudio($item, $locale);
             }
         }
 
         usort($objects, static fn (array $a, array $b): int => [$a['y'], $a['x'], $a['ref']] <=> [$b['y'], $b['x'], $b['ref']]);
 
         return ['objects' => $objects, 'clues' => $clues];
+    }
+
+    /**
+     * Narasi satu petunjuk: URL (audio_src(): hanya `approved` dengan media
+     * aktif) dan id audio_assets untuk telemetry. Id hanya dikirim bersama
+     * URL-nya, jadi rekaman draft tidak terlihat di sumber halaman.
+     *
+     * @return array{audio: string|null, audio_id: int|null}
+     */
+    private function clueAudio(ChallengeItem $item, string $locale): array
+    {
+        $audioId = $item->promptAudioId($locale);
+        $src     = audio_src($audioId);
+
+        return ['audio' => $src, 'audio_id' => $src === null ? null : $audioId];
     }
 
     /**

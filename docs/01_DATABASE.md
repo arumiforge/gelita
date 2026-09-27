@@ -78,7 +78,7 @@ Dokumen sumber sebelumnya mengandung beberapa konflik. Berikut keputusan final u
 ## Yang Harus Dibuat
 
 1. Database `gelita` (utf8mb4_unicode_ci, InnoDB).
-2. 29 migration pembuat tabel + migration pendukung (`002900` FK level, `003000` `ci_sessions`) + migration koreksi (`003100`–`003300`) + `003400` (wajib ganti sandi staf) + `003500` (media Pustaka `library_media`) + `003600` (`participants.intro_seen_at`) + `003700` (`dialogues.pose`/`effect`) — total 38 berkas.
+2. 29 migration pembuat tabel + migration pendukung (`002900` FK level, `003000` `ci_sessions`) + migration koreksi (`003100`–`003300`) + `003400` (wajib ganti sandi staf) + `003500` (media Pustaka `library_media`) + `003600` (`participants.intro_seen_at`) + `003700` (`dialogues.pose`/`effect`) + `003800` (`challenge_items.audio_prompt_id`/`audio_prompt_en_id`) — total 39 berkas.
 3. 9 seeder data, dijalankan berurutan oleh `DatabaseSeeder` (kelas dasar bersama: `GelitaSeeder`).
 4. File referensi statis `public/assets/data/wilayah-id.json` (tidak masuk DB).
 
@@ -478,6 +478,8 @@ Unit atomic yang dinilai. Ini adalah **bank soal**, bukan jawaban peserta.
 | passage_id | BIGINT UNSIGNED | YES | NULL | FK `reading_passages.id` SET NULL — teks bacaan bersama |
 | answer_key_json | JSON | YES | NULL | bentuk berbeda per interaction_type |
 | media_asset_id | BIGINT UNSIGNED | YES | NULL | FK SET NULL — gambar puzzle/kartu/objek |
+| audio_prompt_id | BIGINT UNSIGNED | YES | NULL | FK `audio_assets.id` SET NULL — narasi petunjuk `find_object` (locale id); `003800` |
+| audio_prompt_en_id | BIGINT UNSIGNED | YES | NULL | FK `audio_assets.id` SET NULL — narasi petunjuk (locale en); `003800` |
 | indicator_id | BIGINT UNSIGNED | YES | NULL | FK SET NULL — indikator per butir |
 | config_json | JSON | YES | NULL | koordinat objek `cari`, flag decoy, dll |
 | reference_source | VARCHAR(500) | YES | NULL | sumber rujukan konten (lembaga/judul + URL) |
@@ -977,6 +979,7 @@ Nama file mengikuti konvensi CI4 `YYYY-MM-DD-HHMMSS_ClassName.php` di `app/Datab
 2026-01-01-003500_CreateLibraryMedia
 2026-01-01-003600_AddParticipantIntroSeen
 2026-01-01-003700_AddDialoguePoseEffect
+2026-01-01-003800_AddChallengeItemPromptAudio
 ```
 
 > `002900` menambahkan FK dari `levels` ke `media_assets`. Ini dipisah karena `levels` dibuat setelah `media_assets`, tetapi beberapa FK silang (`challenge_nodes.audio_intro_id` → `audio_assets`) lebih aman dipasang belakangan agar `up()`/`down()` bersih.
@@ -1099,6 +1102,10 @@ Kolom ini tidak ikut ekspor (sheet Participants memilih kolomnya satu per satu) 
 `003700` menambahkan `dialogues.pose` dan `dialogues.effect` (`VARCHAR(30) NULL`, setelah `character_code`). Isinya dari "Kamus pose dan efek" di `docs/naskah-cerita.md`. Baris yang sudah ada dibiarkan NULL oleh migration; server yang sudah berjalan mengisinya dengan `php spark gelita:story:update` setelah `php spark migrate`. `up()` memeriksa keberadaan kolom lebih dulu; `down()` membuang keduanya.
 
 Slot frame tokoh untuk pose baru (`char.jaka.{sad|afraid|determined}.{1-3}`, `char.kedu.{smile|worried|weak}.{1-3}`) didaftarkan `MediaAssetSeeder` dari `Config\Gelita::$characterAnimations`.
+
+### Narasi petunjuk arena `cari` (`003800`)
+
+`003800` menambahkan `challenge_items.audio_prompt_id` dan `audio_prompt_en_id` (`BIGINT UNSIGNED NULL`, setelah `media_asset_id`), masing-masing FK ke `audio_assets.id` dengan `ON DELETE SET NULL`, meniru `challenge_nodes.audio_intro_id` / `audio_intro_en_id`. Hanya dipakai butir `find_object` target (bukan jebakan): rekaman Mbah Kedu yang membacakan `prompt_id` / `prompt_en`. Baris lama dibiarkan NULL; `NarrationImporter` menautkan rekaman `petunjuk-{node}-NN` ke kolom ini (audio `context_code` = `hunt_clue`), atau admin memilihnya di form butir. Pemain hanya menerima rekaman `approved` dengan media aktif (`audio_src()`). `up()` memeriksa keberadaan kolom lebih dulu; `down()` membuang FK, index implisitnya, dan kolomnya. `audio_usage_events` tidak berubah: butirnya diturunkan dari `audio_asset_id`.
 
 ---
 

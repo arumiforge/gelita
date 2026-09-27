@@ -213,6 +213,7 @@ return [
     'sourceText'        => 'Teks sumber',
     'clueOf'            => 'Petunjuk {0} dari {1}',
     'clueWaiting'       => 'Petunjuk muncul di sini saat pencarian dimulai.',
+    'clueListen'        => 'Dengarkan petunjuk',
     'huntSceneAlt'      => 'Adegan pencarian',
     'objectN'           => 'Objek {0}',
     'huntList'          => 'Yang harus ditemukan',

@@ -9,7 +9,8 @@ use CodeIgniter\HTTP\DownloadResponse;
 use CodeIgniter\HTTP\RedirectResponse;
 
 /**
- * Narasi naskah cerita di panel: status rekaman 88 baris, unggah banyak
+ * Narasi naskah cerita di panel: status rekaman baris naskah dan petunjuk
+ * arena `cari` (88 + 8 baris), unggah banyak
  * rekaman sekaligus, impor dari folder server, persetujuan massal, dan
  * daftar rekaman untuk pengisi suara. Hanya role `admin`.
  *
@@ -42,6 +43,7 @@ class NarrationController extends BaseAdminController
             'limits'  => self::uploadLimits(),
             'report'  => session('narration_report'),
             'folder'  => (new NarrationImporter())->folderFor('{id|en}'),
+            'lines'   => count((new NarrationImporter())->lines()),
         ]);
     }
 

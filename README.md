@@ -37,6 +37,23 @@ Alur permainan kini bercerita dari awal sampai akhir, dengan satu naskah dwibaha
 
 Alurnya: halaman awal → `/mulai` → daftar → cerita pembuka → peta (tirai + narasi Jaka) → Kenali wilayah → tirai wilayah → dialog pembuka → peta wilayah → kartu misi (tirai tantangan) → tantangan → selesai → wilayah tuntas → Pustaka → wilayah berikutnya → … → penutup → Balai Refleksi.
 
+### Pembaruan narasi petunjuk arena `cari`
+
+- **Petunjuk Mbah Kedu kini bersuara.** Setiap petunjuk target arena `cari` (`tmg-4`: 8 petunjuk; ketiga objek jebakan tidak punya petunjuk) dapat diberi rekaman ID dan EN di kolom baru `challenge_items.audio_prompt_id` / `audio_prompt_en_id` (migration `003800`). Payload `clues` membawa `audio` (URL, hanya rekaman **disetujui** dengan media aktif) dan `audio_id` sesuai bahasa; tanpa rekaman keduanya `null`. Kunci jawaban dan pembeda jebakan tetap tidak dikirim.
+- **Di arena:** tombol ▶/⏸ di samping teks petunjuk. Petunjuk pertama diputar lewat tombol (`play`), karena browser — terutama Safari iPad — menolak audio bersuara sebelum halaman disentuh. Setelah jawaban benar, petunjuk berikutnya diputar sendiri (`autoplay`) bila suara aktif. Berganti atau melompat petunjuk menghentikan narasi sebelumnya; melompat tidak memutar otomatis. Tanpa rekaman yang disetujui atau tanpa JavaScript, tampilan sama seperti sebelumnya.
+- **Rekaman diimpor seperti narasi naskah.** Nama berkas `petunjuk-{node}-NN.mp3` (mis. `petunjuk-tmg-4-01.mp3`), NN = urutan petunjuk target menurut urutan butir; transkrip = teks pertanyaan butir, tokoh Mbah Kedu, `context_code` `hunt_clue`. Lewat folder (`gelita:narration:import`) atau **Konten → Narasi → Unggah narasi**; kelompok baru **Petunjuk arena cari · Temanggung (tmg-4)** ikut kemajuan, daftar rekaman XLSX, persetujuan massal, dan **Kelengkapan aset** (96 baris per bahasa, dihitung dari data). Form butir `find_object` juga punya dua pemilih audio (ID/EN).
+- **Catatan peneliti:** pemutaran narasi petunjuk tercatat di `audio_usage_events` dengan `challenge_attempt_id`, dan — seperti audio lain di layar tantangan — **setiap** event audionya (`play`, `autoplay`, `pause`, `replay`, `complete`) menambah `challenge_attempts.audio_use_count`. Butirnya diturunkan dari `audio_asset_id` ([`docs/07` → FITUR 13a § *Narasi petunjuk arena `cari`*](docs/07_FEATURE_INTEGRATION.md#narasi-petunjuk-arena-cari)).
+- **Nomor NN mengikuti urutan target aktif.** Menonaktifkan, menyisipkan, atau mengubah urutan butir target menggeser nomor berikutnya; periksa ulang rekaman di halaman Narasi setelah perubahan seperti itu.
+
+**Server yang sudah berjalan:**
+
+```bash
+php spark migrate                          # 003800: kolom audio petunjuk di challenge_items
+php spark gelita:narration:import          # rekaman petunjuk-*.mp3 di public/assets/audio/narasi/{id,en}/ → audio draft
+```
+
+Atau unggah berkas `petunjuk-*` di **Konten → Narasi → Unggah narasi**. Lalu dengarkan dan setujui di **Konten → Narasi**; petunjuk baru bersuara setelah rekamannya disetujui.
+
 ### Pembaruan narasi & kelengkapan aset (Tahap 5)
 
 - **Rekaman narasi dipasang otomatis.** Nama berkas = kode baris naskah (`intro-01.mp3`, `kenal-magelang-03.mp3`, `dialog-wonosobo-16.mp3`, …). `App\Libraries\NarrationImporter` mencocokkannya ke baris `dialogues` (kode wilayah dari tabel `levels`), membuat aset `audio.narasi.{id|en}.{kode}` dan `audio_assets` berstatus **draft** dengan transkrip = teks baris itu, lalu menautkannya. Dua sumber: folder `public/assets/audio/narasi/{id|en}/` (`php spark gelita:narration:import [--locale=id|en] [--dry-run]`) atau unggahan banyak berkas di panel. Rekaman yang berubah kembali ke draft; berkas yang sama persis dilewati sehingga persetujuan tidak hilang. Laporannya memuat nama tidak dikenal beserta saran nama terdekat dan baris yang belum punya rekaman.
@@ -69,7 +86,7 @@ Lalu buka **Konten → Narasi**, dengarkan, dan setujui per bahasa. Rincian di [
 | Musik | `public/assets/audio/music/{map,region,challenge}.mp3` | MP3, berulang |
 | Efek suara | `public/assets/audio/sfx/{click,correct,wrong,lock}.mp3` | MP3 pendek |
 | Poster video Pustaka yang kosong | editor Pustaka, atau `gelita:library:thumbnails` untuk video tautan | 960 × 640 px |
-| Rekaman narasi | 88 baris × 2 bahasa, [`docs/naskah-cerita.md`](docs/naskah-cerita.md) | MP3 mono 64–96 kbps |
+| Rekaman narasi | 88 baris naskah + 8 petunjuk arena cari = 96 baris × 2 bahasa, [`docs/naskah-cerita.md`](docs/naskah-cerita.md) | MP3 mono 64–96 kbps |
 | Gambar bank soal & Pustaka | [`docs/bank-soal/README.md`](docs/bank-soal/README.md) | per slot |
 
 ### Pembaruan cerita wilayah: Kenali wilayah, tirai, dialog dramatis, tuntas, penutup (Tahap 3)
@@ -196,7 +213,6 @@ Rincian keputusan ada di dokumen tahap masing-masing; ringkasan UI di [`docs/05_
 
 ### Batas ruang lingkup saat ini
 
-- **Narasi petunjuk arena `cari` belum bersuara**: payload `clues` belum membawa aset audio; teks petunjuk tampil dan diumumkan ke pembaca layar.
 - **Ekspor dibangun sinkron** di request yang sama (batas 300 detik). Tahap 8 memutuskan tetap sinkron; ambang `gelita.exportMaxRawEvents` menjaga ukurannya. Alasannya ada di [`docs/08_DEPLOYMENT.md` → *Keputusan yang tercatat*](docs/08_DEPLOYMENT.md#keputusan-yang-tercatat).
 - **Tugas terjadwal dipasang per server.** Baris cron (Linux) dan perintah pendaftaran Task Scheduler (Windows) untuk backup dan `gelita:retention:run` ada di [`docs/08_DEPLOYMENT.md` → *Tugas Terjadwal*](docs/08_DEPLOYMENT.md#tugas-terjadwal). Di mesin pengembangan, retensi dijalankan dari tombol di `/admin/tata-kelola`.
 - `App\Libraries\HashedIpSessionHandler` **belum dipasang**; alasannya di bagian *Sesi dan CSRF* di bawah.
@@ -260,9 +276,9 @@ Di Windows, Laragon (PHP 8.3 + MySQL) memenuhi semua prasyarat. Pengaturan ekste
 
 ## Migration
 
-Migration dijalankan berurutan dari `000100` sampai `003700` (38 berkas) dan menghasilkan 32 tabel: 30 tabel domain, `ci_sessions`, dan `migrations`. `php spark migrate:rollback -b 0` mengembalikan database ke kosong.
+Migration dijalankan berurutan dari `000100` sampai `003800` (39 berkas) dan menghasilkan 32 tabel: 30 tabel domain, `ci_sessions`, dan `migrations`. `php spark migrate:rollback -b 0` mengembalikan database ke kosong.
 
-`003100`–`003300` adalah koreksi, `003400`, `003600`, dan `003700` menambah kolom baru, `003500` menambah tabel baru. Perubahan skema selalu datang sebagai migration baru; migration lama tidak diubah.
+`003100`–`003300` adalah koreksi, `003400`, `003600`, `003700`, dan `003800` menambah kolom baru, `003500` menambah tabel baru. Perubahan skema selalu datang sebagai migration baru; migration lama tidak diubah.
 
 | Versi | Peran |
 |---|---|
@@ -274,6 +290,7 @@ Migration dijalankan berurutan dari `000100` sampai `003700` (38 berkas) dan men
 | `003500` | membuat `library_media` (banyak gambar/video per halaman Pustaka Kedu, dari unggahan atau tautan YouTube/Drive/Vimeo/Commons) dan menyalin isi kolom lama `image_a`/`image_b`/`video` ke sana |
 | `003600` | menambahkan `participants.intro_seen_at`: pemain baru wajib menonton cerita pembuka; peserta yang sudah punya progres diisi saat migration (backfill) |
 | `003700` | menambahkan `dialogues.pose` dan `dialogues.effect` (pose tokoh dan efek layar dari naskah); isinya diisi `php spark gelita:story:update` |
+| `003800` | menambahkan `challenge_items.audio_prompt_id` dan `audio_prompt_en_id` (FK `audio_assets`, `SET NULL`): narasi petunjuk arena `cari`; isinya ditautkan `gelita:narration:import` dari berkas `petunjuk-{node}-NN` |
 
 `003200` memanggil `resetDataCache()` sebelum memeriksa kolom; tanpa itu seluruh pemeriksaan `fieldExists()` membaca daftar kolom versi sebelum `003100` pada proses `spark migrate` yang sama. Jangan melakukan rollback ke bawah `003100`: tahap 3 bergantung pada penamaan kolom hasil migration tersebut. Rincian lengkap di [`docs/01_DATABASE.md`](docs/01_DATABASE.md#koreksi-challenge_attempts-003100-dan-003200).
 

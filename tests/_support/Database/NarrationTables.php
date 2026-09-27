@@ -7,15 +7,16 @@ use Config\Database;
 
 /**
  * Tabel ringkas (SQLite, grup `tests`) untuk uji narasi naskah: levels,
- * dialogues, media_assets, audio_assets, audit_logs, research_studies, dan
- * game_releases (keduanya dibaca layout panel). Kolom yang dibaca/ditulis kode sama dengan
- * migration MySQL. levels diisi tiga wilayah; baris dialogues diisi
- * pemanggil (StorySync).
+ * dialogues, challenge_nodes, challenge_items, media_assets, audio_assets,
+ * audit_logs, research_studies, dan game_releases (keduanya dibaca layout
+ * panel). Kolom yang dibaca/ditulis kode sama dengan migration MySQL. levels
+ * diisi tiga wilayah; baris dialogues diisi pemanggil (StorySync); tabel
+ * tantangan kosong kecuali pemanggil memanggil seedHuntNode().
  */
 trait NarrationTables
 {
     /** @var list<string> */
-    private array $narrationTables = ['dialogues', 'levels', 'media_assets', 'audio_assets', 'audit_logs', 'research_studies', 'game_releases'];
+    private array $narrationTables = ['dialogues', 'challenge_items', 'challenge_nodes', 'levels', 'media_assets', 'audio_assets', 'audit_logs', 'research_studies', 'game_releases'];
 
     private function createNarrationTables(BaseConnection $db): void
     {
@@ -50,6 +51,33 @@ trait NarrationTables
             'background_media_id' => ['type' => 'INTEGER', 'null' => true],
             'is_active'           => ['type' => 'INTEGER', 'default' => 1],
         ])->addPrimaryKey('id')->createTable('dialogues');
+
+        $forge->addField([
+            'id'                => ['type' => 'INTEGER', 'auto_increment' => true],
+            'level_id'          => ['type' => 'INTEGER'],
+            'sequence'          => ['type' => 'INTEGER'],
+            'engine_type'       => ['type' => 'VARCHAR', 'constraint' => 20],
+            'title_id'          => ['type' => 'VARCHAR', 'constraint' => 200],
+            // Narasi kartu misi: dibaca kolom "Dipakai di" halaman Audio
+            'audio_intro_id'    => ['type' => 'INTEGER', 'null' => true],
+            'audio_intro_en_id' => ['type' => 'INTEGER', 'null' => true],
+            'is_active'         => ['type' => 'INTEGER', 'default' => 1],
+        ])->addPrimaryKey('id')->createTable('challenge_nodes');
+
+        $forge->addField([
+            'id'                 => ['type' => 'INTEGER', 'auto_increment' => true],
+            'challenge_node_id'  => ['type' => 'INTEGER'],
+            'item_key'           => ['type' => 'VARCHAR', 'constraint' => 100],
+            'sequence'           => ['type' => 'INTEGER', 'default' => 0],
+            'interaction_type'   => ['type' => 'VARCHAR', 'constraint' => 30],
+            'prompt_id'          => ['type' => 'TEXT', 'null' => true],
+            'prompt_en'          => ['type' => 'TEXT', 'null' => true],
+            'config_json'        => ['type' => 'TEXT', 'null' => true],
+            'audio_prompt_id'    => ['type' => 'INTEGER', 'null' => true],
+            'audio_prompt_en_id' => ['type' => 'INTEGER', 'null' => true],
+            'scorable'           => ['type' => 'INTEGER', 'default' => 1],
+            'is_active'          => ['type' => 'INTEGER', 'default' => 1],
+        ])->addPrimaryKey('id')->createTable('challenge_items');
 
         $forge->addField([
             'id'           => ['type' => 'INTEGER', 'auto_increment' => true],
@@ -110,6 +138,38 @@ trait NarrationTables
             'content_version' => ['type' => 'VARCHAR', 'constraint' => 20],
             'is_active'       => ['type' => 'INTEGER', 'default' => 0],
         ])->addPrimaryKey('id')->createTable('game_releases');
+    }
+
+    /**
+     * Node `cari` tmg-4 dari bank soal produksi (docs/bank-soal/data/
+     * temanggung.php): 8 target + 3 jebakan, kode butir tmg-4-01…11 seperti
+     * build-workbook.php. Mengembalikan id node.
+     */
+    private function seedHuntNode(BaseConnection $db): int
+    {
+        $bank    = require ROOTPATH . 'docs/bank-soal/data/temanggung.php';
+        $node    = $bank['nodes']['tmg-4'];
+        $levelId = (int) $db->table('levels')->where('code', 'temanggung')->get()->getRow('id');
+
+        $db->table('challenge_nodes')->insert(['level_id' => $levelId, 'sequence' => 4, 'engine_type' => 'cari', 'title_id' => $node['title'][0]]);
+        $nodeId = (int) $db->insertID();
+
+        foreach ($node['items'] as $i => $item) {
+            $decoy = ! empty($item['decoy']);
+
+            $db->table('challenge_items')->insert([
+                'challenge_node_id' => $nodeId,
+                'item_key'          => sprintf('tmg-4-%02d', $i + 1),
+                'sequence'          => $i + 1,
+                'interaction_type'  => $item['type'],
+                'prompt_id'         => $item['prompt'][0],
+                'prompt_en'         => $item['prompt'][1],
+                'config_json'       => json_encode(['x' => $item['x'], 'y' => $item['y'], 'w' => $item['w'], 'decoy' => $decoy]),
+                'scorable'          => $decoy ? 0 : 1,
+            ]);
+        }
+
+        return $nodeId;
     }
 
     private function dropNarrationTables(): void
