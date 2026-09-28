@@ -46,6 +46,17 @@ final class AssetChecklist
         'sfx/correct'     => 'Efek jawaban benar',
         'sfx/wrong'       => 'Efek jawaban salah',
         'sfx/lock'        => 'Efek wilayah/tantangan terkunci',
+        'sfx/shard'       => 'Efek serpihan kembali (layar selesai)',
+        'sfx/region-done' => 'Efek wilayah tuntas (layar selesai penuntas)',
+    ];
+
+    /** Keterangan format per bunyi; efek lain: MP3 pendek (< 1 detik). */
+    private const SOUND_SIZES = [
+        'music/map'       => 'MP3, musik berulang (loop)',
+        'music/region'    => 'MP3, musik berulang (loop)',
+        'music/challenge' => 'MP3, musik berulang (loop)',
+        'sfx/shard'       => 'MP3 pendek (± 3 detik)',
+        'sfx/region-done' => 'MP3 pendek (± 5 detik)',
     ];
 
     /** Ukuran slot yang tidak tercakup pola Config\Gelita::$assetSizes. */
@@ -216,23 +227,17 @@ final class AssetChecklist
             $items[] = [
                 'label'      => $label,
                 'key'        => 'public/' . $path,
-                'size'       => 'MP3, musik berulang (loop)',
+                'size'       => self::SOUND_SIZES[$name] ?? 'MP3 pendek (< 1 detik)',
                 'status'     => is_file(FCPATH . $path) ? 'ok' : 'missing',
-                'note'       => 'salin berkas ke folder ini di server (tidak diunggah lewat panel)',
+                'note'       => 'bawaan ikut repositori; untuk mengganti, timpa berkas bernama sama di server (tidak diunggah lewat panel)',
                 'link'       => base_url($path),
                 'link_label' => 'Periksa berkas',
             ];
         }
 
-        foreach ($items as $i => $item) {
-            if (str_contains($item['key'], '/sfx/')) {
-                $items[$i]['size'] = 'MP3 pendek (< 1 detik)';
-            }
-        }
-
         return [
             'title' => 'Musik & efek suara',
-            'help'  => 'Diputar dari public/assets/audio/music/ dan sfx/ setelah pemain mengetuk layar. Tanpa berkas, suara itu diam.',
+            'help'  => 'Diputar dari public/assets/audio/music/ dan sfx/ setelah pemain mengetuk layar. Tanpa berkas, suara itu diam. Berkas bawaan disintesis dari nol (gamelan), lihat docs/audio.md.',
             'items' => $items,
         ];
     }
