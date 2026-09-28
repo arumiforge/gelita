@@ -593,7 +593,7 @@ softDeleteScope(array $scope, int $staffId, string $reason): int
 
 | Model | returnType | Method khusus |
 |---|---|---|
-| `SchoolModel` | array | `activeList()`, `findOrCreateByName(string $name, array $region): int` |
+| `SchoolModel` | array | `inUseList()` — sekolah aktif yang dipakai peserta/staf (pilihan filter, ekspor, akun guru). Tabel berisi puluhan ribu sekolah resmi, jadi tidak ada method "semua sekolah"; pencocokan & penggabungan ada di `SchoolDirectory` (§9) |
 | `ResearchStudyModel` | array | `activeStudy(): ?array`, `requireActiveStudy(): array`; validasi `unlock_mode in_list[sequential,free]` (D13) |
 | `ResearchPhaseModel` | array | `forStudy(int $studyId): array`, `findByCode(int $studyId, string $code): ?array` |
 | `ParticipantConsentModel` | array | `latestFor(int $participantId): ?array` |
@@ -772,7 +772,8 @@ class SessionService
      * Input : demographic + username + password + consent + phaseCode + locale + deviceInfo
      *         + registrationMetrics ['first_submit_criteria'=>0..5, 'weak_submit_count'=>n]
      * Output: ['participant' => Participant, 'session' => GameSession]
-     * Transaction: schools(findOrCreate) → participants (username, password_hash, metrik)
+     * Transaction: SchoolDirectory::resolve() (NPSN / nama ketikan → schools)
+     *              → participants (username, password_hash, metrik)
      *              → participant_consents → game_sessions → session_progress
      *              → event session_started {via:'register'}
      * Setelah commit: session()->regenerate(true), set participant_id + game_session_id.
@@ -1131,6 +1132,33 @@ class ContentImportService
 }
 ```
 
+
+### 9. `SchoolDirectory`
+
+**Tanggung jawab:** satu sekolah = satu baris `schools`. Sekolah resmi ber-NPSN dipasang `App\Libraries\SchoolImporter` (`php spark gelita:schools:import`, docs/sekolah/); nama ketikan siswa dicocokkan dengan kunci `App\Libraries\SchoolName::key()` ("SD NEGERI 1 CENDONO" = "sdn 01 cendono" = "SD 1 CENDONO").
+
+```php
+class SchoolDirectory
+{
+    public function requiresNpsn(?string $countryCode, ?string $provinceCode): bool; // provinsi berdirektori yang daftarnya sudah terpasang
+    public function directoryProvinces(): array;               // Config\Gelita::$schoolDirectoryProvinces yang sudah berisi data
+    public function findByNpsn(string $npsn): ?array;          // resmi & aktif saja
+    public function describe(array $school): array;            // data publik kartu konfirmasi + baris `meta`
+    public function matchByName(string $name, ?string $district, ?string $province = null): ?array;
+    //   1) match_key sama & tunggal di kab/kota, 2) sama setelah kecamatan/kab-kota sekolah dibuang,
+    //   3) match_key tunggal se-provinsi; ambigu → null (tidak pernah menebak)
+    public function resolve(array $input): array;              // ['id','name','verified'] untuk SessionService
+    //   NPSN → alias hasil gabung admin → matchByName → entri belum terverifikasi (satu per wilayah + match_key)
+    public function search(string $q, array $filters = [], int $limit = 50): array;  // panel: NPSN / awal kata nama, kecamatan, desa
+    public function unverified(): array;                       // + participant_count, terbanyak dulu
+    public function suggestions(array $school, int $limit = 3): array;
+    public function merge(int $fromId, int $toId): array;      // hanya asal belum terverifikasi; audit school_merge
+    public function verify(int $id, string $npsn, ?string $name = null): array; // NPSN unik; audit school_verify
+    public function autoMerge(bool $dryRun = false): array;    // gabung semua yang cocok jelas
+}
+```
+
+Didaftarkan sebagai `service('schoolDirectory')`. Dipakai `RegisterController` (aturan `known_npsn`), `SessionService::registerAndStart()`, `Api\SchoolApiController`, `Admin\SchoolController`, `Admin\StaffController` (sekolah guru lewat NPSN), dan command `gelita:schools:import --link-existing`.
 ---
 
 ## Aturan Sistem

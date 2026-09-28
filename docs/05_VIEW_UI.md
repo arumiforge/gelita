@@ -454,11 +454,13 @@ Form (POST `/daftar`):
 | `age` | number 5–80 | |
 | `gender` | select | laki-laki / perempuan / lainnya |
 | `class_level` | select | Kelas 1–6 SD, 7–9 SMP, lainnya |
-| `school_name` | text + datalist | datalist dari `schools` aktif |
 | `country_code` | select | Indonesia / negara lain |
-| `province_code` | select | dari `wilayah-id.json`, muncul bila Indonesia |
+| `province_code` | select | dari `wilayah-id.json`, muncul bila Indonesia; provinsi berdirektori (Jawa Tengah) diberi `data-directory` |
 | `district_code` | select | terisi setelah provinsi dipilih |
 | `country_other` | text | muncul bila negara lain |
+| `school_npsn` | text 8 angka (`inputmode="numeric"`) | **hanya** bila provinsi `data-directory` (ditukar CSS `:has()`, juga tanpa JavaScript); 8 angka → kartu `role="status"` "Benar ini sekolahmu?" berisi nama resmi + "SD Negeri · Kec. Dawe · Kabupaten Kudus", dengan peringatan bila kab/kota atau jenjang tidak cocok dengan pilihan siswa |
+| `school_manual` | checkbox | "Sekolahku tidak ada di daftar" — muncul setelah NPSN tidak ditemukan (JavaScript, atau galat server); membuka `school_name` |
+| `school_name` | text | provinsi lain / negara lain, atau setelah `school_manual` dicentang. Tidak ada `<datalist>`: daftar resmi berisi 28 ribu sekolah |
 | `phase` | select | umum / pretest / posttest — **hanya tampil bila `allow_phase_choice = 1`**; selain itu tidak dirender sama sekali |
 | `locale` | hidden | locale saat ini |
 | `username` | text | `autocomplete="username"`, huruf kecil otomatis, keterangan `Auth.usernameHelp`, status ketersediaan di bawahnya |
