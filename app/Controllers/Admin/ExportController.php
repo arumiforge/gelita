@@ -38,7 +38,7 @@ class ExportController extends BaseAdminController
             'adminOnly'     => self::ADMIN_ONLY_SHEETS,
             'isAdmin'       => $this->isAdmin(),
             'studies'       => model(ResearchStudyModel::class)->findAll(),
-            'schools'       => model(SchoolModel::class)->activeList(),
+            'schools'       => model(SchoolModel::class)->inUseList(),
             'recent'        => $exports->orderBy('created_at', 'DESC')->findAll(20),
             'retention'     => config('Gelita')->exportRetentionDays,
             'rawEventLimit' => config('Gelita')->exportMaxRawEvents,

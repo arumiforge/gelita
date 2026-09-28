@@ -14,8 +14,8 @@ final class RouteWiringTest extends CIUnitTestCase
 {
     private const CONTROLLER_COUNT = [
         'Game'  => 11,  // 10 controller + BaseGameController
-        'Admin' => 15,  // 14 controller + BaseAdminController
-        'Api'   => 9,   // 8 controller + BaseApiController
+        'Admin' => 16,  // 15 controller + BaseAdminController
+        'Api'   => 10,  // 9 controller + BaseApiController
     ];
 
     /** Route yang wajib ada beserta handlernya. */
@@ -35,6 +35,7 @@ final class RouteWiringTest extends CIUnitTestCase
             'pustaka/([^/]+)'             => 'Game\LibraryController::show',
             'api/session'                 => 'Api\SessionApiController::show',
             'api/auth/username-available' => 'Api\AuthApiController::usernameAvailable',
+            'api/schools/lookup'          => 'Api\SchoolApiController::lookup',
             'admin/login'                 => 'Admin\AuthController::loginForm',
             'admin/dashboard'             => 'Admin\DashboardController::index',
             'admin/akun/sandi'            => 'Admin\AccountController::passwordForm',
@@ -42,6 +43,7 @@ final class RouteWiringTest extends CIUnitTestCase
             'admin/konten/narasi/unggah'  => 'Admin\NarrationController::uploadForm',
             'admin/konten/narasi/daftar-rekaman' => 'Admin\NarrationController::recordingList',
             'admin/media/kelengkapan'     => 'Admin\MediaController::checklist',
+            'admin/sekolah'               => 'Admin\SchoolController::index',
         ],
         'POST' => [
             'daftar'                 => 'Game\RegisterController::store',
@@ -52,6 +54,9 @@ final class RouteWiringTest extends CIUnitTestCase
             'admin/konten/narasi/unggah'      => 'Admin\NarrationController::upload',
             'admin/konten/narasi/impor-folder' => 'Admin\NarrationController::importFolder',
             'admin/konten/narasi/setujui'     => 'Admin\NarrationController::approveAll',
+            'admin/sekolah/gabung-otomatis'   => 'Admin\SchoolController::autoMerge',
+            'admin/sekolah/([0-9]+)/gabung'   => 'Admin\SchoolController::merge',
+            'admin/sekolah/([0-9]+)/sahkan'   => 'Admin\SchoolController::verify',
         ],
     ];
 

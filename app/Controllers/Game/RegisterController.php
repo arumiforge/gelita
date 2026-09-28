@@ -4,9 +4,10 @@ namespace App\Controllers\Game;
 
 use App\Controllers\BaseController;
 use App\Libraries\PasswordPolicy;
+use App\Libraries\RegionDirectory;
 use App\Models\ParticipantModel;
 use App\Models\ResearchStudyModel;
-use App\Models\SchoolModel;
+use App\Services\SchoolDirectory;
 use CodeIgniter\HTTP\RedirectResponse;
 
 /**
@@ -17,6 +18,12 @@ use CodeIgniter\HTTP\RedirectResponse;
  * (syarat terpenuhi pada percobaan pertama, jumlah penolakan sandi lemah)
  * ikut disimpan. Isi kata sandi sendiri tidak pernah ditulis ke flash,
  * `old()`, log, maupun event.
+ *
+ * Sekolah: siswa di provinsi berdirektori (Jawa Tengah) wajib mengisi NPSN
+ * sehingga semua siswa satu sekolah tertaut ke satu baris `schools` resmi;
+ * bila NPSN-nya tidak ada di daftar, siswa mencentang "Sekolahku tidak ada di
+ * daftar" lalu menulis nama sekolah. Provinsi lain menulis nama sekolah
+ * sendiri. Pencocokan nama: App\Services\SchoolDirectory.
  */
 class RegisterController extends BaseController
 {
@@ -86,15 +93,23 @@ class RegisterController extends BaseController
             return redirect()->to(site_url('persetujuan'));
         }
 
+        // Kembali dari galat: kartu sekolah dari NPSN lama, atau centang manual
+        // bila NPSN itu tidak ada di daftar.
+        $directory = service('schoolDirectory');
+        $oldNpsn   = trim((string) old('school_npsn'));
+        $school    = $oldNpsn === '' ? null : $directory->findByNpsn($oldNpsn);
+
         return view('game/register', [
-            'locale'         => $this->locale,
-            'study'          => $study,
-            'allowPhase'     => (int) $study['allow_phase_choice'] === 1,
-            'phases'         => config('Gelita')->phases,
-            'provinces'      => $this->regionDirectory()['provinces'] ?? [],
-            'schools'        => array_column(model(SchoolModel::class)->activeList(), 'name'),
-            'passwordPolicy' => (new PasswordPolicy())->toClient(),
-            'errors'         => session('errors') ?? [],
+            'locale'          => $this->locale,
+            'study'           => $study,
+            'allowPhase'      => (int) $study['allow_phase_choice'] === 1,
+            'phases'          => config('Gelita')->phases,
+            'provinces'       => RegionDirectory::provinces(),
+            'schoolProvinces' => $directory->directoryProvinces(),
+            'selectedSchool'  => $school === null ? null : $directory->describe($school),
+            'npsnNotFound'    => $school === null && preg_match(SchoolDirectory::NPSN_PATTERN, $oldNpsn) === 1,
+            'passwordPolicy'  => (new PasswordPolicy())->toClient(),
+            'errors'          => session('errors') ?? [],
         ]);
     }
 
@@ -110,8 +125,9 @@ class RegisterController extends BaseController
         $username = model(ParticipantModel::class)->normalizeUsername((string) ($post['username'] ?? ''));
         $password = (string) ($post['password'] ?? '');
 
-        $input             = is_array($post) ? $post : [];
-        $input['username'] = $username;
+        $input                = is_array($post) ? $post : [];
+        $input['username']    = $username;
+        $input['school_npsn'] = (string) preg_replace('/\s+/', '', (string) ($input['school_npsn'] ?? ''));
 
         // 1–3. metrik literasi keamanan digital, dihitung sebelum validasi lain
         $check = (new PasswordPolicy())->check($password, $username);
@@ -125,7 +141,7 @@ class RegisterController extends BaseController
         }
 
         // 4. validasi penuh
-        if (! $this->validateData($input, $this->rules(), $this->messages($check))) {
+        if (! $this->validateData($input, $this->rules($input), $this->messages($check))) {
             return $this->backToForm($input, $this->validator->getErrors());
         }
 
@@ -136,6 +152,8 @@ class RegisterController extends BaseController
         // 5. buat akun + peserta + sesi pertama
         $consent = (array) (session('reg_consent') ?? []);
         $region  = $this->verifiedRegion($input);
+        $byNpsn  = service('schoolDirectory')->requiresNpsn($region['country_code'], $region['province_code']);
+        $manual  = $byNpsn && ! empty($input['school_manual']);
 
         $result = service('sessionService')->registerAndStart([
             'username'                  => $username,
@@ -144,7 +162,9 @@ class RegisterController extends BaseController
             'age'                       => $input['age'] ?? null,
             'gender'                    => $input['gender'] ?? null,
             'class_level'               => $input['class_level'] ?? null,
-            'school_name'               => $input['school_name'] ?? null,
+            // NPSN hanya berlaku di provinsi berdirektori; nama hanya bila bukan jalur NPSN
+            'school_npsn'               => $byNpsn ? ($input['school_npsn'] ?? null) : null,
+            'school_name'               => $byNpsn && ! $manual ? null : ($input['school_name'] ?? null),
             'country_code'              => $region['country_code'],
             'country_name'              => $region['country_name'],
             'province_code'             => $region['province_code'],
@@ -176,15 +196,24 @@ class RegisterController extends BaseController
         ]));
     }
 
-    /** @return array<string, string> */
-    private function rules(): array
+    /**
+     * @param array<string, mixed> $input
+     *
+     * @return array<string, string>
+     */
+    private function rules(array $input): array
     {
+        $byNpsn = service('schoolDirectory')->requiresNpsn((string) ($input['country_code'] ?? ''), (string) ($input['province_code'] ?? ''))
+            && empty($input['school_manual']);
+
         return [
             'display_name'     => 'required|min_length[2]|max_length[150]',
             'age'              => 'required|integer|greater_than[4]|less_than[81]',
             'gender'           => 'required|in_list[laki-laki,perempuan,lainnya]',
             'class_level'      => 'required|max_length[20]',
-            'school_name'      => 'required|min_length[3]|max_length[200]',
+            'school_npsn'      => $byNpsn ? 'required|is_natural|exact_length[8]|known_npsn' : 'permit_empty|max_length[20]',
+            'school_manual'    => 'permit_empty|in_list[1]',
+            'school_name'      => $byNpsn ? 'permit_empty|max_length[200]' : 'required|min_length[3]|max_length[200]',
             'country_code'     => 'required|max_length[5]',
             'province_code'    => 'required_without[country_other]|permit_empty|max_length[10]',
             'district_code'    => 'required_without[country_other]|permit_empty|max_length[10]',
@@ -205,6 +234,16 @@ class RegisterController extends BaseController
     private function messages(array $check): array
     {
         return [
+            'school_npsn' => [
+                'required'     => lang('Game.schoolNpsnRequired'),
+                'is_natural'   => lang('Game.schoolNpsnFormat'),
+                'exact_length' => lang('Game.schoolNpsnFormat'),
+                'known_npsn'   => lang('Game.schoolNpsnUnknown'),
+            ],
+            'school_name' => [
+                'required'   => lang('Game.schoolNameRequired'),
+                'min_length' => lang('Game.schoolNameRequired'),
+            ],
             'username' => [
                 'is_unique' => lang('Game.usernameTaken'),
             ],
@@ -245,7 +284,7 @@ class RegisterController extends BaseController
      */
     private function verifiedRegion(array $input): array
     {
-        $directory   = $this->regionDirectory();
+        $directory   = RegionDirectory::all();
         $countryCode = trim((string) ($input['country_code'] ?? 'ID')) ?: 'ID';
         $other       = trim((string) ($input['country_other'] ?? ''));
 
@@ -287,27 +326,6 @@ class RegisterController extends BaseController
             'district_code' => $district === null ? null : $districtCode,
             'district_name' => $district['name'] ?? null,
         ];
-    }
-
-    /**
-     * Daftar wilayah resmi (`public/assets/data/wilayah-id.json`), dibaca sekali
-     * per request. Nama dari client tidak pernah dipercaya begitu saja.
-     *
-     * @return array<string, mixed>
-     */
-    private function regionDirectory(): array
-    {
-        static $directory = null;
-
-        if ($directory !== null) {
-            return $directory;
-        }
-
-        $path = FCPATH . 'assets/data/wilayah-id.json';
-        $raw  = is_file($path) ? file_get_contents($path) : false;
-        $data = $raw === false ? null : json_decode($raw, true);
-
-        return $directory = is_array($data) ? $data : [];
     }
 
     /** @param array<string, mixed> $study */

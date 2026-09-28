@@ -31,8 +31,8 @@ class ExportService
 
     public const ADMIN_ONLY_SHEETS = ['Raw Events'];
 
-    /** Kolom yang hanya ada pada export beridentitas. */
-    public const IDENTITY_COLUMNS = ['display_name', 'username', 'school_name'];
+    /** Kolom yang hanya ada pada export beridentitas (NPSN menunjuk sekolah nyata). */
+    public const IDENTITY_COLUMNS = ['display_name', 'username', 'school_name', 'school_npsn'];
 
     /** Kolom yang hanya ada untuk role admin. */
     public const ADMIN_ONLY_COLUMNS = ['answer_key'];
@@ -121,7 +121,7 @@ class ExportService
     {
         $columns = match ($sheet) {
             'Participants' => [
-                'participant_code', 'display_name', 'username', 'school_name', 'school_ref',
+                'participant_code', 'display_name', 'username', 'school_name', 'school_npsn', 'school_ref',
                 'age', 'class_level', 'gender', 'country', 'province', 'district', 'registered_at',
                 'consent_version', 'participant_consented', 'guardian_consented', 'consented_at',
                 'consent_withdrawn_at', 'pw_first_submit_criteria', 'pw_weak_submit_count',
@@ -389,7 +389,9 @@ class ExportService
                 ->whereIn('participants.id', $sessionFilter);
 
             if (! $anonymized) {
-                $builder->select('participants.display_name, participants.username, participants.school_name_snapshot');
+                $builder->select('participants.display_name, participants.username, participants.school_name_snapshot')
+                    ->select('schools.code AS school_npsn')
+                    ->join('schools', 'schools.id = participants.school_id', 'left');
             }
 
             return $builder;
@@ -419,6 +421,7 @@ class ExportService
                 $out['display_name'] = $row['display_name'];
                 $out['username']     = $row['username'];
                 $out['school_name']  = $row['school_name_snapshot'];
+                $out['school_npsn']  = $row['school_npsn'];
             }
 
             yield $out;

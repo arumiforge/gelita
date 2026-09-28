@@ -650,6 +650,19 @@ Jalur W: perintah yang sama tanpa `sudo -u www-data`. Urutannya wajib: `gelita:s
 
 **Rekaman narasi di server.** Dua jalan masuk, sama dengan aset lain: commit ke `public/assets/audio/narasi/{id,en}/` di repositori lalu `gelita:narration:import` (didaftarkan di tempatnya), atau unggah lewat panel (disalin ke `public/assets/uploads/`, ikut backup). Unggahan panel dibatasi `max_file_uploads` (bawaan PHP 20; pengaturan di atas 100), `post_max_size`, dan `client_max_body_size` Nginx (72M, cukup untuk ±100 MP3 narasi). Halaman Unggah narasi menampilkan batas yang berlaku.
 
+### Memperbarui server yang sudah berjalan ke pendaftaran NPSN
+
+Siswa yang memilih Jawa Tengah kini wajib mengisi **NPSN**, dan nama resmi sekolah muncul otomatis. Deploy biasa sudah menjalankan migration `003900` dan `gelita:schools:import` (28.487 sekolah SD/MI/SMP/MTs/SLB Jawa Tengah dari [`docs/sekolah/`](sekolah/README.md)). Sebelum impor itu jalan, siswa tetap bisa mendaftar dengan menulis nama sekolah. Nama sekolah yang **sudah** diketik siswa sebelum pembaruan ini tetap ada sebagai entri "belum terverifikasi"; tautkan yang cocok jelas ke sekolah resmi:
+
+```bash
+sudo -u www-data php spark gelita:schools:import --link-existing --dry-run   # lihat pasangan "ketikan → sekolah resmi"
+sudo -u www-data php spark gelita:schools:import --link-existing             # gabungkan (siswa & akun guru ikut pindah)
+```
+
+Sisanya (nama ambigu, salah ketik, sekolah di luar daftar) dirapikan di **Panel → Sekolah → Rapikan nama sekolah**: gabungkan ke saran atau ke NPSN tertentu, atau sahkan sebagai sekolah baru ber-NPSN. Akun guru yang menunjuk entri lama ikut pindah saat entrinya digabung; akun guru lain dapat dipindah ke sekolah resmi lewat kolom **NPSN** di **Akun staf**. Semua penggabungan tercatat di audit log (`school_merge`, `school_verify`). Jalur W: perintah yang sama tanpa `sudo -u www-data`.
+
+Memperbarui daftar sekolah resmi (mis. tiap semester): `php docs/sekolah/build-sekolah-jateng.php` di mesin pengembang, commit berkas CSV yang berubah, lalu deploy — impor hanya menulis sekolah yang berubah dan tidak pernah menghapus sekolah yang sudah dipakai siswa.
+
 ### Mode pemeliharaan
 
 CodeIgniter 4.7 tidak punya `php spark down`/`up` (keduanya "Command not found", kode keluar 1). Di Revisi 2 perintah itu menghentikan `deploy.sh` tepat setelah backup. Pengganti tahap 8 bekerja di tingkat Nginx, sama di kedua jalur, tanpa kode aplikasi:
@@ -736,7 +749,7 @@ sudo --preserve-env=database_default_DSN -u www-data php spark migrate
 unset database_default_DSN
 
 read -rsp 'Sandi admin pertama: ' GELITA_ADMIN_PASSWORD && echo && export GELITA_ADMIN_PASSWORD
-sudo --preserve-env=GELITA_ADMIN_PASSWORD -u www-data php spark db:seed DatabaseSeeder
+sudo --preserve-env=GELITA_ADMIN_PASSWORD -u www-data php spark db:seed DatabaseSeeder   # termasuk 28.487 sekolah resmi Jateng (SchoolSeeder)
 unset GELITA_ADMIN_PASSWORD
 
 sudo -u www-data php spark gelita:media:scan
@@ -841,7 +854,7 @@ Sintaks `GELITA_ADMIN_PASSWORD='…' php spark …` di Revisi 2 adalah sintaks B
 ### Langkah terakhir (kedua jalur)
 
 1. **Ganti sandi admin.** Sandi awal pernah diketik di terminal. Masuk sebagai `admin`, buka **Ubah sandi** di kepala panel (`/admin/akun/sandi`), dan ganti dengan sandi baru minimal 12 karakter yang disimpan di pengelola sandi.
-2. Buat akun `guru` terpisah per guru dengan `school_id` terisi. Sandi awal yang Anda pilih wajib diganti guru saat pertama masuk; panel baru terbuka setelah itu.
+2. Buat akun `guru` terpisah per guru dan isi **NPSN sekolahnya** (cari di **Panel → Sekolah** bila belum tahu). Guru dan siswanya lalu menunjuk baris sekolah resmi yang sama, sehingga cakupan data guru pasti lengkap. Sandi awal yang Anda pilih wajib diganti guru saat pertama masuk; panel baru terbuka setelah itu.
 3. Jalankan [Verifikasi Setelah Deploy](#verifikasi-setelah-deploy).
 
 ### Deployment pembaruan
@@ -898,6 +911,9 @@ export database_default_DSN
 database_default_DSN=$(cat "$OPS/migrate.dsn")
 sudo --preserve-env=database_default_DSN -u www-data php "$APP/spark" migrate
 unset database_default_DSN
+
+echo "→ Daftar sekolah resmi (NPSN; hanya baris yang berubah)"
+spark gelita:schools:import
 
 echo "→ Bersihkan cache"
 spark cache:clear
@@ -983,6 +999,7 @@ try {
         Remove-Item Env:\database_default_DSN -ErrorAction SilentlyContinue
     }
 
+    Langkah 'Daftar sekolah resmi (NPSN; hanya baris yang berubah)' { & $c.Php $spark gelita:schools:import }
     Langkah 'Bersihkan cache' { & $c.Php $spark cache:clear }
 
     Write-Output '-> Naikkan versi aset'
@@ -1439,18 +1456,20 @@ Baru setelah **delapan pemeriksaan otomatis dan sepuluh uji manual** ini lolos, 
 2. Untuk desain pretest–posttest, pastikan `item_selection_mode = fixed`. Tanpa ini, butir soal diacak dan kedua sesi tidak setara.
 3. Periksa `gelita:content:verify` bersih, lalu buka **Media → Kelengkapan aset**: aset yang belum ada tidak menghentikan permainan (dipakai pengganti), tetapi narasi yang masih draft tidak terdengar siswa.
 4. Pastikan ruang disk cukup: `df -h` (L) / `Get-PSDrive C, D` (W).
-5. Jalankan backup manual: `bash /var/www/gelita/deploy/linux/backup.sh` (L) / `Start-ScheduledTask -TaskPath '\GELITA\' -TaskName 'Backup'` (W).
-6. Jalur W: pastikan Laragon menyala (Nginx + MySQL hijau) dan tidak ada restart Windows Update yang tertunda.
-7. Sediakan **10–15 menit** di awal pertemuan pertama untuk registrasi. Membuat kata sandi kuat adalah bagian pembelajaran literasi keamanan digital, bukan hambatan teknis: biarkan anak membaca syaratnya dan memperbaiki sendiri sandi yang ditolak.
-8. Pastikan guru tahu cara mereset sandi di `/admin/peserta/{id}`. Jangan meminta anak menuliskan sandinya di daftar kelas — bila lupa, reset.
-9. Untuk anak kelas bawah yang kesulitan mengetik simbol, tunjukkan letak tombol simbol di papan ketik atau papan ketik layar tablet sebelum mulai.
-10. **HP/tablet kelas: pasang GELITA di layar utama** sekali per perangkat. Buka alamat GELITA di Chrome (Android), lalu ketuk **Pasang GELITA** di halaman awal (atau menu ⋮ → *Instal aplikasi* / *Tambahkan ke layar utama*). Di iPhone/iPad buka di Safari, ketuk **Bagikan → Tambah ke Layar Utama**. Setelah itu anak membuka GELITA dari ikon lentera. Di Android layar terkunci mendatar dan tampil penuh tanpa bilah alamat; di iPhone/iPad rotasi tidak terkunci, jadi nyalakan *Putar otomatis*. Catatan: di iPhone/iPad, login aplikasi terpasang terpisah dari login di Safari.
+5. **Siapkan NPSN sekolah.** Siswa Jawa Tengah wajib mengisi NPSN saat mendaftar; siswa SD jarang hafal. Cari NPSN di **Panel → Sekolah** (ketik nama atau desa), lalu tuliskan di papan bersama nama sekolahnya. Saat 8 angka diketik, nama resmi sekolah muncul untuk dicocokkan anak.
+6. Jalankan backup manual: `bash /var/www/gelita/deploy/linux/backup.sh` (L) / `Start-ScheduledTask -TaskPath '\GELITA\' -TaskName 'Backup'` (W).
+7. Jalur W: pastikan Laragon menyala (Nginx + MySQL hijau) dan tidak ada restart Windows Update yang tertunda.
+8. Sediakan **10–15 menit** di awal pertemuan pertama untuk registrasi. Membuat kata sandi kuat adalah bagian pembelajaran literasi keamanan digital, bukan hambatan teknis: biarkan anak membaca syaratnya dan memperbaiki sendiri sandi yang ditolak.
+9. Pastikan guru tahu cara mereset sandi di `/admin/peserta/{id}`. Jangan meminta anak menuliskan sandinya di daftar kelas — bila lupa, reset.
+10. Untuk anak kelas bawah yang kesulitan mengetik simbol, tunjukkan letak tombol simbol di papan ketik atau papan ketik layar tablet sebelum mulai.
+11. **HP/tablet kelas: pasang GELITA di layar utama** sekali per perangkat. Buka alamat GELITA di Chrome (Android), lalu ketuk **Pasang GELITA** di halaman awal (atau menu ⋮ → *Instal aplikasi* / *Tambahkan ke layar utama*). Di iPhone/iPad buka di Safari, ketuk **Bagikan → Tambah ke Layar Utama**. Setelah itu anak membuka GELITA dari ikon lentera. Di Android layar terkunci mendatar dan tampil penuh tanpa bilah alamat; di iPhone/iPad rotasi tidak terkunci, jadi nyalakan *Putar otomatis*. Catatan: di iPhone/iPad, login aplikasi terpasang terpisah dari login di Safari.
 
 ### Setelah sesi kelas
 
 1. Unduh export XLSX sebagai salinan kerja.
 2. Periksa `/admin/sesi` — sesi yang masih `active` padahal kelas sudah selesai menandakan tab yang tidak ditutup; biarkan, retention akan menandainya `paused`.
 3. Catat hal tak biasa (anak yang berhenti di tengah, perangkat bermasalah) di catatan penelitian, bukan di aplikasi.
+4. Buka **Panel → Sekolah**: bila ada nama sekolah "belum terverifikasi" (NPSN tidak ditemukan, atau siswa luar Jawa Tengah), gabungkan atau sahkan sebelum menarik laporan per sekolah.
 
 ### Pemantauan harian
 

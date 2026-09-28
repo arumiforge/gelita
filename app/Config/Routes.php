@@ -60,8 +60,9 @@ $routes->group('api', [
     'namespace' => 'App\Controllers\Api',
     'filter'    => 'jsonResponse',
 ], static function ($routes): void {
-    // Tanpa login — dibatasi 20 request/menit per IP di controller
+    // Tanpa login — dibatasi per IP di controller (20 dan 60 request/menit)
     $routes->get('auth/username-available', 'AuthApiController::usernameAvailable');
+    $routes->get('schools/lookup', 'SchoolApiController::lookup');
 
     $routes->group('', ['filter' => 'apiSession'], static function ($routes): void {
         $routes->get('session', 'SessionApiController::show');
@@ -175,6 +176,11 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
             $routes->post('tata-kelola/hapus/(:num)/batal', 'GovernanceController::deleteCancel/$1');
             $routes->get('tata-kelola/audit', 'GovernanceController::audit');
             $routes->post('tata-kelola/retensi', 'GovernanceController::runRetention');
+
+            $routes->get('sekolah', 'SchoolController::index');
+            $routes->post('sekolah/gabung-otomatis', 'SchoolController::autoMerge');
+            $routes->post('sekolah/(:num)/gabung', 'SchoolController::merge/$1');
+            $routes->post('sekolah/(:num)/sahkan', 'SchoolController::verify/$1');
 
             $routes->get('staf', 'StaffController::index');
             $routes->post('staf', 'StaffController::store');

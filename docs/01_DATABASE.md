@@ -78,7 +78,7 @@ Dokumen sumber sebelumnya mengandung beberapa konflik. Berikut keputusan final u
 ## Yang Harus Dibuat
 
 1. Database `gelita` (utf8mb4_unicode_ci, InnoDB).
-2. 29 migration pembuat tabel + migration pendukung (`002900` FK level, `003000` `ci_sessions`) + migration koreksi (`003100`–`003300`) + `003400` (wajib ganti sandi staf) + `003500` (media Pustaka `library_media`) + `003600` (`participants.intro_seen_at`) + `003700` (`dialogues.pose`/`effect`) + `003800` (`challenge_items.audio_prompt_id`/`audio_prompt_en_id`) — total 39 berkas.
+2. 29 migration pembuat tabel + migration pendukung (`002900` FK level, `003000` `ci_sessions`) + migration koreksi (`003100`–`003300`) + `003400` (wajib ganti sandi staf) + `003500` (media Pustaka `library_media`) + `003600` (`participants.intro_seen_at`) + `003700` (`dialogues.pose`/`effect`) + `003800` (`challenge_items.audio_prompt_id`/`audio_prompt_en_id`) + `003900` (direktori sekolah resmi di `schools`) — total 40 berkas.
 3. 9 seeder data, dijalankan berurutan oleh `DatabaseSeeder` (kelas dasar bersama: `GelitaSeeder`).
 4. File referensi statis `public/assets/data/wilayah-id.json` (tidak masuk DB).
 
@@ -209,14 +209,24 @@ UNIQUE: `(study_id, code)`.
 | Kolom | Tipe | Null | Default | Keterangan |
 |---|---|---|---|---|
 | id | BIGINT UNSIGNED | NO | AUTO | PK |
-| code | VARCHAR(80) | YES | NULL | UNIQUE (NPSN bila ada) |
-| name | VARCHAR(200) | NO | — | INDEX |
+| code | VARCHAR(80) | YES | NULL | UNIQUE — NPSN (8 angka) sekolah resmi; NULL untuk nama ketikan siswa |
+| name | VARCHAR(200) | NO | — | INDEX; nama resmi dari data induk, atau nama yang diketik siswa |
+| level | VARCHAR(20) | YES | NULL | bentuk pendidikan: `SD`, `MI`, `SMP`, `MTS`, `SLB`, `SPK SD`, …; `003900` |
+| stage | VARCHAR(10) | YES | NULL | jenjang `sd` \| `smp` \| `slb` — untuk peringatan "kelas tidak cocok"; `003900` |
+| status | VARCHAR(10) | YES | NULL | `NEGERI` \| `SWASTA`; `003900` |
 | country_code | VARCHAR(5) | YES | `ID` | INDEX |
 | province_code | VARCHAR(10) | YES | NULL | INDEX |
-| district_code | VARCHAR(10) | YES | NULL | INDEX |
-| is_active | TINYINT(1) | NO | 1 | |
+| district_code | VARCHAR(10) | YES | NULL | INDEX; kode Kemendagri (`33.19`) |
+| subdistrict_name | VARCHAR(120) | YES | NULL | kecamatan, tanpa awalan "KEC."; `003900` |
+| village_name | VARCHAR(120) | YES | NULL | desa/kelurahan; `003900` |
+| is_active | TINYINT(1) | NO | 1 | 0 = sudah digabung ke sekolah lain |
+| is_verified | TINYINT(1) | NO | 0 | 1 = sekolah resmi (`gelita:schools:import`) atau disahkan admin; `003900` |
+| match_key | VARCHAR(200) | YES | NULL | kunci nama ternormalisasi (`App\Libraries\SchoolName::key()`); `003900` |
+| merged_into_id | BIGINT UNSIGNED | YES | NULL | FK `schools.id` SET NULL — tujuan penggabungan; `003900` |
 | created_at | DATETIME(6) | NO | CURRENT | |
 | updated_at | DATETIME(6) | NO | CURRENT | |
+
+Index tambahan `003900`: `(district_code, match_key)`, `(match_key)`, `(is_verified, is_active)`. Isi resminya berasal dari [`docs/sekolah/`](sekolah/README.md): 28.487 sekolah SD/MI/SMP/MTs/SLB Jawa Tengah.
 
 ### 5. `participants`
 
@@ -980,6 +990,7 @@ Nama file mengikuti konvensi CI4 `YYYY-MM-DD-HHMMSS_ClassName.php` di `app/Datab
 2026-01-01-003600_AddParticipantIntroSeen
 2026-01-01-003700_AddDialoguePoseEffect
 2026-01-01-003800_AddChallengeItemPromptAudio
+2026-01-01-003900_ExtendSchoolsDirectory
 ```
 
 > `002900` menambahkan FK dari `levels` ke `media_assets`. Ini dipisah karena `levels` dibuat setelah `media_assets`, tetapi beberapa FK silang (`challenge_nodes.audio_intro_id` → `audio_assets`) lebih aman dipasang belakangan agar `up()`/`down()` bersih.
@@ -1106,6 +1117,15 @@ Slot frame tokoh untuk pose baru (`char.jaka.{sad|afraid|determined}.{1-3}`, `ch
 ### Narasi petunjuk arena `cari` (`003800`)
 
 `003800` menambahkan `challenge_items.audio_prompt_id` dan `audio_prompt_en_id` (`BIGINT UNSIGNED NULL`, setelah `media_asset_id`), masing-masing FK ke `audio_assets.id` dengan `ON DELETE SET NULL`, meniru `challenge_nodes.audio_intro_id` / `audio_intro_en_id`. Hanya dipakai butir `find_object` target (bukan jebakan): rekaman Mbah Kedu yang membacakan `prompt_id` / `prompt_en`. Baris lama dibiarkan NULL; `NarrationImporter` menautkan rekaman `petunjuk-{node}-NN` ke kolom ini (audio `context_code` = `hunt_clue`), atau admin memilihnya di form butir. Pemain hanya menerima rekaman `approved` dengan media aktif (`audio_src()`). `up()` memeriksa keberadaan kolom lebih dulu; `down()` membuang FK, index implisitnya, dan kolomnya. `audio_usage_events` tidak berubah: butirnya diturunkan dari `audio_asset_id`.
+
+### Direktori sekolah resmi (`003900`)
+
+`003900` menjadikan `schools` direktori sekolah untuk pendaftaran. Masalah yang diselesaikan: nama sekolah teks bebas membuat satu sekolah tercatat berkali-kali ("SD 1 CENDONO", "SD NEGERI 1 CENDONO", "sd 1 cendono"), sehingga laporan per `participants.school_id` terpecah dan guru tidak melihat sebagian siswanya.
+
+- Baris resmi (`is_verified = 1`, NPSN di `code`) dipasang `php spark gelita:schools:import` dari `app/Database/Seeds/data/sekolah-jateng.csv`; impor hanya menulis yang berubah dan tidak pernah menghapus.
+- Siswa yang memilih provinsi berdirektori (`Config\Gelita::$schoolDirectoryProvinces`, Jawa Tengah) wajib mengisi NPSN; nama ketikan (NPSN tidak ada di daftar, atau provinsi lain) dicocokkan lewat `match_key` oleh `App\Services\SchoolDirectory::resolve()` dan hanya ditautkan ke sekolah resmi bila kandidatnya tunggal. Selain itu tersimpan sebagai `is_verified = 0`, satu baris per (wilayah, `match_key`).
+- Admin merapikan sisanya di **Panel → Sekolah**: gabung (siswa dan akun guru pindah, `school_name_snapshot` ikut nama tujuan, asal `is_active = 0` + `merged_into_id` dan menjadi alias bagi ketikan yang sama berikutnya) atau sahkan (NPSN wajib unik). Keduanya tercatat di `audit_logs` (`school_merge`, `school_verify`).
+- `up()` memeriksa setiap kolom/index/FK lebih dulu dan mengisi `match_key` baris lama tanpa menyentuh `updated_at`; `down()` membuang FK, index, lalu kolomnya.
 
 ---
 

@@ -15,6 +15,7 @@ use App\Services\GameContext;
 use App\Services\ReportService;
 use App\Services\RetentionService;
 use App\Services\ScoringService;
+use App\Services\SchoolDirectory;
 use App\Services\SessionService;
 use CodeIgniter\Config\BaseService;
 
@@ -102,6 +103,16 @@ class Services extends BaseService
         }
 
         return new SessionService();
+    }
+
+    /** Direktori sekolah: NPSN resmi, pencocokan nama ketikan, penggabungan. */
+    public static function schoolDirectory(bool $getShared = true): SchoolDirectory
+    {
+        if ($getShared) {
+            return static::getSharedInstance('schoolDirectory');
+        }
+
+        return new SchoolDirectory();
     }
 
     /** Inti permainan: buka node, terima jawaban, tutup attempt. */
