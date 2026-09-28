@@ -66,7 +66,7 @@ export function initMediaUpload(root = document) {
 
   const describe = () => {
     const need = requiredSize(sizes, keyInput.value.trim());
-    info.textContent = need ? `Ukuran wajib untuk slot ini: ${need[0]} × ${need[1]} px.` : '';
+    info.textContent = need ? `Gambar untuk kode berkas ini wajib berukuran ${need[0]} × ${need[1]} piksel.` : '';
   };
 
   const check = async () => {
@@ -74,14 +74,14 @@ export function initMediaUpload(root = document) {
     const file = fileInput.files?.[0];
     if (!file) return true;
     if (file.size > MAX_BYTES) {
-      fail(`Berkas ${(file.size / 1048576).toFixed(1)} MB melebihi batas 64 MB.`);
+      fail(`Berkas ini ${(file.size / 1048576).toFixed(1).replace('.', ',')} MB, lebih besar dari batas 64 MB.`);
       return false;
     }
     const need = requiredSize(sizes, keyInput.value.trim());
     if (!need) return true;
     const has = await dimensions(file);
     if (has && (has[0] !== need[0] || has[1] !== need[1])) {
-      fail(`Ukuran gambar ${has[0]}×${has[1]} px tidak sesuai ketentuan ${need[0]}×${need[1]} px untuk ${keyInput.value.trim()}.`);
+      fail(`Gambar ini berukuran ${has[0]} × ${has[1]} piksel, padahal untuk ${keyInput.value.trim()} harus ${need[0]} × ${need[1]} piksel. Ubah ukurannya dulu, lalu unggah lagi.`);
       return false;
     }
     return true;

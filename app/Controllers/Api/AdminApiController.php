@@ -94,7 +94,7 @@ class AdminApiController extends BaseController
         try {
             $rows = $this->analytics()->eventTimeline($sessionId);
         } catch (\RuntimeException) {
-            return $this->fail('FORBIDDEN', 'Sesi ini di luar cakupan akses Anda.', 403);
+            return $this->fail('FORBIDDEN', 'Sesi ini bukan milik siswa di sekolah Anda.', 403);
         }
 
         return $this->ok(['rows' => $rows]);
@@ -106,11 +106,11 @@ class AdminApiController extends BaseController
         $export = model(DataExportModel::class)->find($exportId);
 
         if ($export === null) {
-            return $this->fail('NOT_FOUND', 'Ekspor tidak ditemukan.', 404);
+            return $this->fail('NOT_FOUND', 'Unduhan tidak ditemukan.', 404);
         }
 
         if (! $this->isAdmin() && (int) $export['requested_by'] !== $this->staffId()) {
-            return $this->fail('FORBIDDEN', 'Ekspor ini bukan milik Anda.', 403);
+            return $this->fail('FORBIDDEN', 'Unduhan ini dibuat oleh akun lain.', 403);
         }
 
         return $this->ok([

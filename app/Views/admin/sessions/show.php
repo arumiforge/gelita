@@ -22,7 +22,7 @@
 <?= component('partials/admin-head', [
     'title'   => 'Detail sesi',
     'eyebrow' => 'Sesi ' . substr((string) $session->session_code, 0, 12),
-    'actions' => '<a class="btn btn-primary btn-sm" href="' . base_url('admin/sesi/' . $session->id . '/event') . '">' . icon('list') . ' Linimasa event</a>'
+    'actions' => '<a class="btn btn-primary btn-sm" href="' . base_url('admin/sesi/' . $session->id . '/event') . '">' . icon('list') . ' Catatan aktivitas</a>'
         . '<a class="btn btn-quiet btn-sm" href="' . base_url('admin/sesi') . '">' . icon('left') . ' Daftar sesi</a>',
 ]) ?>
 <?= $this->include('partials/flash') ?>
@@ -34,32 +34,32 @@
         <a href="<?= base_url('admin/peserta/' . $participant['id']) ?>"><code><?= esc($participant['participant_code']) ?></code></a>
       <?php else: ?>—<?php endif ?>
     </dd></div>
-    <div><dt>Fase</dt><dd><?= esc($phaseCode ?? '—') ?></dd></div>
-    <div><dt>Status</dt><dd><span class="badge is-<?= esc($session->status, 'attr') ?>"><?= esc($session->status) ?></span></dd></div>
-    <div><dt>Bahasa</dt><dd><?= esc($session->locale) ?></dd></div>
+    <div><dt>Fase</dt><dd><?= esc(admin_label('phase', $phaseCode)) ?></dd></div>
+    <div><dt>Status</dt><dd><span class="badge is-<?= esc($session->status, 'attr') ?>"><?= esc(admin_label('status', (string) $session->status)) ?></span></dd></div>
+    <div><dt>Bahasa</dt><dd><?= esc(admin_label('locale', (string) $session->locale)) ?></dd></div>
     <div><dt>Mulai</dt><dd><?= esc(fmt_date($session->started_at, true, 'id')) ?></dd></div>
     <div><dt>Selesai</dt><dd><?= esc(fmt_date($session->ended_at, true, 'id')) ?></dd></div>
-    <div><dt>Durasi</dt><dd class="num"><?= esc(ms_to_human((int) $session->duration_ms)) ?></dd></div>
-    <div><dt>Serpihan</dt><dd class="num"><?= esc($progress['completed_nodes'] ?? 0) ?></dd></div>
+    <div><dt>Lama bermain</dt><dd class="num"><?= esc(ms_to_human((int) $session->duration_ms)) ?></dd></div>
+    <div><dt>Tantangan selesai</dt><dd class="num"><?= esc($progress['completed_nodes'] ?? 0) ?></dd></div>
     <div><dt>Total skor</dt><dd class="num"><?= esc(fmt_num($progress['total_score'] ?? 0, 1, 'id')) ?></dd></div>
-    <div><dt>Perangkat</dt><dd><?= esc(trim(implode(' · ', array_filter([$session->device_type, $session->os_name, $session->browser_name, $session->screen_size]))) ?: '—') ?></dd></div>
+    <div><dt>Perangkat</dt><dd><?= esc(trim(implode(' · ', array_filter([(string) $session->device_type === '' ? null : admin_label('device', (string) $session->device_type), $session->os_name, $session->browser_name, $session->screen_size]))) ?: '—') ?></dd></div>
   </dl>
 </section>
 
 <section class="panel">
-  <h2 class="panel-title"><?= icon('puzzle') ?> Percobaan per tantangan</h2>
+  <h2 class="panel-title"><?= icon('puzzle') ?> Hasil tiap tantangan</h2>
   <?php if ($attempts === []): ?>
-    <div class="empty-state"><?= icon('info') ?><p>Belum ada percobaan pada sesi ini. Percobaan tercatat saat siswa membuka layar tantangan.</p></div>
+    <div class="empty-state"><?= icon('info') ?><p>Belum ada tantangan yang dikerjakan pada sesi ini. Hasil tercatat begitu siswa membuka layar tantangan.</p></div>
   <?php else: ?>
     <div class="table-wrap">
       <table class="data-table">
-        <caption class="visually-hidden">Percobaan per tantangan</caption>
+        <caption class="visually-hidden">Hasil tiap tantangan</caption>
         <thead>
           <tr>
-            <th scope="col">Tantangan</th><th scope="col">Jenis</th><th scope="col">#</th><th scope="col">Status</th>
-            <th scope="col" class="is-num">Butir</th><th scope="col" class="is-num">Tepat awal</th><th scope="col" class="is-num">Akhir</th>
-            <th scope="col" class="is-num">Periksa</th><th scope="col" class="is-num">Petunjuk</th><th scope="col" class="is-num">Ubah</th>
-            <th scope="col" class="is-num">Durasi</th><th scope="col" class="is-num">Skor</th><th scope="col">Bintang</th>
+            <th scope="col">Tantangan</th><th scope="col">Jenis</th><th scope="col">Percobaan ke-</th><th scope="col">Status</th>
+            <th scope="col" class="is-num">Soal dinilai</th><th scope="col" class="is-num">Tepat sejak awal</th><th scope="col" class="is-num">Benar di akhir</th>
+            <th scope="col" class="is-num">Menekan Periksa</th><th scope="col" class="is-num">Petunjuk</th><th scope="col" class="is-num">Ubah jawaban</th>
+            <th scope="col" class="is-num">Lama</th><th scope="col" class="is-num">Skor</th><th scope="col">Bintang</th>
           </tr>
         </thead>
         <tbody>
@@ -69,28 +69,28 @@
                 <?= esc($nodes[$attempt->challenge_node_id] ?? ('#' . $attempt->challenge_node_id)) ?>
                 <?php if (! empty($responses[$attempt->id])): ?>
                   <details class="row-details">
-                    <summary>Jawaban per butir (<?= count($responses[$attempt->id]) ?>)</summary>
+                    <summary>Jawaban tiap soal (<?= count($responses[$attempt->id]) ?>)</summary>
                     <?= component('admin-table', [
                         'rows'    => $responses[$attempt->id],
                         'columns' => [
-                            'display_order'      => ['label' => '#', 'format' => 'num'],
-                            'item_key'           => ['label' => 'Butir', 'format' => 'code'],
+                            'display_order'      => ['label' => 'No.', 'format' => 'num'],
+                            'item_key'           => ['label' => 'Kode soal', 'format' => 'code'],
                             'status'             => ['label' => 'Status', 'format' => 'badge'],
-                            'first_pass_correct' => ['label' => 'Tepat awal', 'render' => static fn (array $r): string => $r['first_pass_correct'] === null ? '—' : ((int) $r['first_pass_correct'] === 1 ? '✓ ya' : '✗ tidak')],
-                            'is_correct'         => ['label' => 'Akhir', 'render' => static fn (array $r): string => $r['is_correct'] === null ? '—' : ((int) $r['is_correct'] === 1 ? '✓ benar' : '✗ salah')],
-                            'change_count'       => ['label' => 'Ubah', 'format' => 'num'],
-                            'wrong_click_count'  => ['label' => 'Salah klik', 'format' => 'num'],
-                            'duration_ms'        => ['label' => 'Durasi', 'format' => 'ms'],
-                            'final_answer_json'  => ['label' => 'Jawaban akhir', 'format' => 'json'],
-                            'reason_text'        => 'Alasan',
+                            'first_pass_correct' => ['label' => 'Tepat sejak awal', 'render' => static fn (array $r): string => $r['first_pass_correct'] === null ? '—' : ((int) $r['first_pass_correct'] === 1 ? '✓ ya' : '✗ tidak')],
+                            'is_correct'         => ['label' => 'Benar di akhir', 'render' => static fn (array $r): string => $r['is_correct'] === null ? '—' : ((int) $r['is_correct'] === 1 ? '✓ benar' : '✗ salah')],
+                            'change_count'       => ['label' => 'Ubah jawaban', 'format' => 'num'],
+                            'wrong_click_count'  => ['label' => 'Salah pilih', 'format' => 'num'],
+                            'duration_ms'        => ['label' => 'Lama', 'format' => 'ms'],
+                            'final_answer_json'  => ['label' => 'Jawaban terakhir', 'format' => 'json'],
+                            'reason_text'        => 'Alasan siswa',
                         ],
                     ]) ?>
                   </details>
                 <?php endif ?>
               </td>
-              <td><?= esc($engines[$attempt->challenge_node_id] ?? '—') ?></td>
+              <td><?= esc(isset($engines[$attempt->challenge_node_id]) ? engine_label($engines[$attempt->challenge_node_id]) : '—') ?></td>
               <td class="num"><?= esc($attempt->attempt_no) ?></td>
-              <td><span class="badge is-<?= esc($attempt->status, 'attr') ?>"><?= esc($attempt->status) ?></span></td>
+              <td><span class="badge is-<?= esc($attempt->status, 'attr') ?>"><?= esc(admin_label('status', (string) $attempt->status)) ?></span></td>
               <td class="is-num"><?= esc($attempt->scorable_items) ?></td>
               <td class="is-num"><?= esc(fmt_pct($attempt->first_pass_accuracy, false, 0)) ?></td>
               <td class="is-num"><?= esc(fmt_pct($attempt->final_accuracy, false, 0)) ?></td>

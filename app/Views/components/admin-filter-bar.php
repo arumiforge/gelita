@@ -35,7 +35,7 @@ $bare    = ! empty($bare);
     <div class="field filter-search">
       <label for="f-q">Cari</label>
       <input type="search" id="f-q" name="q" value="<?= esc($extra['q'], 'attr') ?>"
-             placeholder="<?= esc($extra['q_placeholder'] ?? 'kode, nama pengguna, nama', 'attr') ?>">
+             placeholder="<?= esc($extra['q_placeholder'] ?? 'kode peserta, nama pengguna, atau nama', 'attr') ?>">
     </div>
   <?php endif ?>
 
@@ -46,7 +46,7 @@ $bare    = ! empty($bare);
         <option value="">Semua studi</option>
         <?php foreach ($options['studies'] ?? [] as $study): ?>
           <option value="<?= esc($study['id'], 'attr') ?>" <?= $value('study_id') === (string) $study['id'] ? 'selected' : '' ?>>
-            <?= esc($study['code']) ?><?= $study['status'] === 'active' ? ' (aktif)' : '' ?>
+            <?= esc(($study['name'] ?? '') !== '' ? $study['name'] : $study['code']) ?><?= $study['status'] === 'active' ? ' (sedang berjalan)' : '' ?>
           </option>
         <?php endforeach ?>
       </select>
@@ -59,7 +59,7 @@ $bare    = ! empty($bare);
       <select id="f-phase" name="phase_code">
         <option value="">Semua fase</option>
         <?php foreach (config('Gelita')->phases as $phase): ?>
-          <option value="<?= esc($phase, 'attr') ?>" <?= $value('phase_code') === $phase ? 'selected' : '' ?>><?= esc(ucfirst($phase)) ?></option>
+          <option value="<?= esc($phase, 'attr') ?>" <?= $value('phase_code') === $phase ? 'selected' : '' ?>><?= esc(admin_label('phase', $phase)) ?></option>
         <?php endforeach ?>
       </select>
     </div>
@@ -135,7 +135,7 @@ $bare    = ! empty($bare);
       <select id="f-locale" name="locale">
         <option value="">Semua bahasa</option>
         <?php foreach (config('Gelita')->locales as $code): ?>
-          <option value="<?= esc($code, 'attr') ?>" <?= $value('locale') === $code ? 'selected' : '' ?>><?= esc(strtoupper($code)) ?></option>
+          <option value="<?= esc($code, 'attr') ?>" <?= $value('locale') === $code ? 'selected' : '' ?>><?= esc(admin_label('locale', $code)) ?></option>
         <?php endforeach ?>
       </select>
     </div>

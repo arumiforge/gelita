@@ -119,8 +119,8 @@ class ContentImportService
         $thumbs = service('videoThumbnail')->fillMissing($this->thumbnailQueue, false, $staffId);
 
         foreach ($thumbs['errors'] as $message) {
-            $parsed['warnings'][] = ['sheet' => 'library_media', 'row' => 0, 'message' => 'Thumbnail video belum terunduh — ' . rtrim($message, '.')
-                . '. Isi poster_media_key, atau jalankan `php spark gelita:library:thumbnails` nanti.'];
+            $parsed['warnings'][] = ['sheet' => 'library_media', 'row' => 0, 'message' => 'Gambar sampul video belum berhasil diambil — ' . rtrim($message, '.')
+                . '. Isi kolom poster_media_key (gambar sampul video), atau minta petugas teknis menjalankan `php spark gelita:library:thumbnails` nanti.'];
         }
 
         model(AuditLogModel::class)->record('content_import', [
@@ -155,7 +155,7 @@ class ContentImportService
 
         (new BankWorkbookGuide())->write($rows, $path, [
             'title'    => 'Templat Bank Soal GELITA',
-            'subtitle' => 'Baris contoh boleh dihapus atau ditimpa. Baca sheet PETUNJUK sebelum mengisi.',
+            'subtitle' => 'Baris yang sudah terisi di setiap sheet hanyalah contoh: boleh dihapus atau ditimpa. Baca sheet PETUNJUK ini dulu sebelum mengisi.',
         ]);
 
         return $path;
@@ -174,7 +174,7 @@ class ContentImportService
     private function parse(string $xlsxPath): array
     {
         if (! is_file($xlsxPath)) {
-            throw new \RuntimeException("Workbook tidak ditemukan: {$xlsxPath}");
+            throw new \RuntimeException("Berkas Excel tidak ditemukan: {$xlsxPath}");
         }
 
         $reader = IOFactory::createReaderForFile($xlsxPath);
@@ -191,7 +191,7 @@ class ContentImportService
                 : [];
 
             if (! $book->sheetNameExists($name) && ! in_array($name, self::OPTIONAL_SHEETS, true)) {
-                $warnings[] = ['sheet' => $name, 'row' => 0, 'message' => 'Sheet tidak ada di workbook, dilewati.'];
+                $warnings[] = ['sheet' => $name, 'row' => 0, 'message' => 'Sheet ' . $name . ' tidak ada di berkas, jadi dilewati.'];
             }
         }
 
@@ -224,7 +224,7 @@ class ContentImportService
         $warnings = [...$warnings, ...$this->mediaWarnings($sheets, $media)];
 
         foreach ($this->duplicateLibraryPages($sheets['library']) as $row) {
-            $errors[] = ['sheet' => 'library', 'row' => $row['__row'], 'message' => "Halaman {$row['level_code']} nomor {$row['sequence']} ditulis lebih dari sekali."];
+            $errors[] = ['sheet' => 'library', 'row' => $row['__row'], 'message' => "Halaman Pustaka {$row['level_code']} nomor {$row['sequence']} ditulis lebih dari sekali. Satu nomor halaman cukup satu baris."];
         }
 
         foreach ($sheets['items'] as $row) {
@@ -232,7 +232,7 @@ class ContentImportService
                 $warnings[] = [
                     'sheet'   => 'items',
                     'row'     => $row['__row'],
-                    'message' => "Item {$row['item_key']} masih berstatus needs_verification.",
+                    'message' => "Soal {$row['item_key']} masih bertanda needs_verification (fakta perlu dicek). Soal tetap disimpan; ubah menjadi verified setelah faktanya dicek.",
                 ];
             }
 
@@ -299,16 +299,16 @@ class ContentImportService
         return match ($sheet) {
             'nodes'       => $this->validateNodeRef($row['node_ref'] ?? '', $context),
             'distractors' => $this->validateNodeRef($row['node_ref'] ?? '', $context)
-                ?? ($row['text_id'] === '' ? 'text_id wajib diisi.' : null),
+                ?? ($row['text_id'] === '' ? self::missing('distractors', 'text_id') : null),
             'passages' => $this->validatePassage($row, $context),
             'items'    => $this->validateItem($row, $context),
-            'options'  => $this->validateReference($row['item_key'] ?? '', $context['items'], 'item_key')
-                ?? ($row['label_id'] === '' ? 'label_id wajib diisi.' : null),
-            'pieces' => $this->validateReference($row['item_key'] ?? '', $context['items'], 'item_key')
-                ?? ($row['piece_key'] === '' ? 'piece_key wajib diisi.' : null),
-            'sources' => $this->validateReference($row['item_key'] ?? '', $context['items'], 'item_key')
+            'options'  => $this->validateReference($row['item_key'] ?? '', $context['items'], 'options')
+                ?? ($row['label_id'] === '' ? self::missing('options', 'label_id') : null),
+            'pieces' => $this->validateReference($row['item_key'] ?? '', $context['items'], 'pieces')
+                ?? ($row['piece_key'] === '' ? self::missing('pieces', 'piece_key') : null),
+            'sources' => $this->validateReference($row['item_key'] ?? '', $context['items'], 'sources')
                 ?? (! in_array($row['kind'], ['official', 'anonymous', 'chain_message', 'blog'], true)
-                    ? "kind '{$row['kind']}' tidak dikenali."
+                    ? self::unknown('sources', 'kind', $row['kind'], 'Pilih official, anonymous, chain_message, atau blog.')
                     : null),
             'hints'  => $this->validateHint($row, $context),
             'library'       => $this->validateLibraryPage($row, $context),
@@ -322,11 +322,11 @@ class ContentImportService
         $nodeRef = trim($nodeRef);
 
         if ($nodeRef === '') {
-            return 'node_ref wajib diisi.';
+            return 'Kolom node_ref (kode tantangan) belum diisi.';
         }
 
         if (! isset($context['nodes'][$nodeRef])) {
-            return "node_ref '{$nodeRef}' tidak cocok dengan challenge_nodes mana pun.";
+            return "Kode tantangan (node_ref) '{$nodeRef}' tidak ada di permainan. Pakai tmg-1 … tmg-5, mgl-1 … mgl-5, atau wnb-1 … wnb-5.";
         }
 
         return null;
@@ -335,15 +335,15 @@ class ContentImportService
     private function validatePassage(array $row, array $context): ?string
     {
         if (trim((string) $row['passage_key']) === '') {
-            return 'passage_key wajib diisi.';
+            return self::missing('passages', 'passage_key');
         }
 
         if (! isset($context['levels'][$row['level_code']])) {
-            return "level_code '{$row['level_code']}' tidak dikenali.";
+            return self::unknownLevel($row['level_code']);
         }
 
         if (trim((string) $row['body_id']) === '' || trim((string) $row['body_en']) === '') {
-            return 'body_id dan body_en wajib diisi.';
+            return 'Isi bacaan bahasa Indonesia (body_id) dan bahasa Inggris (body_en) keduanya wajib diisi.';
         }
 
         return null;
@@ -352,7 +352,7 @@ class ContentImportService
     private function validateItem(array $row, array $context): ?string
     {
         if (trim((string) $row['item_key']) === '') {
-            return 'item_key wajib diisi.';
+            return self::missing('items', 'item_key');
         }
 
         $nodeError = $this->validateNodeRef($row['node_ref'] ?? '', $context);
@@ -362,11 +362,13 @@ class ContentImportService
         }
 
         if (! in_array($row['interaction_type'], self::INTERACTION_TYPES, true)) {
-            return "interaction_type '{$row['interaction_type']}' tidak dikenali.";
+            return $row['interaction_type'] === ''
+                ? self::missing('items', 'interaction_type')
+                : self::unknown('items', 'interaction_type', $row['interaction_type'], 'Pilih salah satu dari daftar pilihan di sel tersebut.');
         }
 
         if ($row['indicator'] !== '' && ! isset($context['indicators'][$row['indicator']])) {
-            return "indicator '{$row['indicator']}' tidak terdaftar di learning_indicators.";
+            return self::unknown('items', 'indicator', $row['indicator'], 'Pakai ' . implode(', ', array_keys($context['indicators'])) . ', atau kosongkan.');
         }
 
         $passageKey = trim((string) $row['passage_key']);
@@ -374,17 +376,17 @@ class ContentImportService
         if ($passageKey !== ''
             && ! isset($context['passages'][$passageKey])
             && model(ReadingPassageModel::class)->findByKey($passageKey) === null) {
-            return "passage_key '{$passageKey}' tidak ada di sheet passages maupun di database.";
+            return "Kode bacaan (passage_key) '{$passageKey}' tidak ditemukan, baik di sheet passages maupun di bacaan yang sudah ada.";
         }
 
         if (in_array($row['interaction_type'], ['verdict_card', 'verdict_reason'], true)
             && ! in_array(mb_strtolower((string) $row['answer_id']), ['benar', 'salah', 'pendapat'], true)) {
-            return "answer_id untuk {$row['interaction_type']} harus benar, salah, atau pendapat.";
+            return 'Kunci jawaban (answer_id) untuk soal benar/salah harus diisi benar, salah, atau pendapat.';
         }
 
         if (in_array($row['interaction_type'], ['fill_blank_bank', 'fill_blank_free'], true)
             && trim((string) $row['answer_id']) === '') {
-            return 'answer_id wajib diisi untuk butir isian.';
+            return 'Kunci jawaban (answer_id) wajib diisi untuk soal isi rumpang.';
         }
 
         // Item yang sudah pernah dijawab tidak boleh berganti kunci, agar data lama tetap sebanding.
@@ -395,7 +397,7 @@ class ContentImportService
             $incoming = $this->answerKeyFor($row, $context['options'][trim((string) $row['item_key'])] ?? []);
 
             if (json_encode($incoming, JSON_UNESCAPED_UNICODE) !== json_encode($existing->answerKey(), JSON_UNESCAPED_UNICODE)) {
-                return "Item {$row['item_key']} sudah punya jawaban peserta; kunci jawabannya tidak boleh diubah.";
+                return "Soal {$row['item_key']} sudah pernah dijawab siswa, jadi kunci jawabannya tidak boleh diubah (supaya data penelitian tetap sebanding). Bila perlu kunci baru, buat soal baru dengan kode baru.";
             }
         }
 
@@ -408,7 +410,7 @@ class ContentImportService
         $itemKey = trim((string) $row['item_key']);
 
         if ($nodeRef === '' && $itemKey === '') {
-            return 'Isi salah satu: node_ref atau item_key.';
+            return 'Isi salah satu: kolom node_ref (petunjuk untuk satu tantangan) atau item_key (petunjuk untuk satu soal).';
         }
 
         if ($nodeRef !== '') {
@@ -420,7 +422,7 @@ class ContentImportService
         }
 
         if ($itemKey !== '') {
-            $error = $this->validateReference($itemKey, $context['items'], 'item_key');
+            $error = $this->validateReference($itemKey, $context['items'], 'hints');
 
             if ($error !== null && model(ChallengeItemModel::class)->findByKey($itemKey) === null) {
                 return $error;
@@ -428,7 +430,7 @@ class ContentImportService
         }
 
         if (trim((string) $row['text_id']) === '') {
-            return 'text_id wajib diisi.';
+            return self::missing('hints', 'text_id');
         }
 
         return null;
@@ -437,25 +439,25 @@ class ContentImportService
     private function validateLibraryPage(array $row, array $context): ?string
     {
         if (! isset($context['levels'][$row['level_code']])) {
-            return "level_code '{$row['level_code']}' tidak dikenali.";
+            return self::unknownLevel($row['level_code']);
         }
 
         if (! ctype_digit((string) $row['sequence']) || (int) $row['sequence'] < 1 || (int) $row['sequence'] > 999) {
-            return 'sequence wajib angka 1–999.';
+            return 'Nomor halaman (sequence) harus berupa angka 1–999.';
         }
 
         foreach (['title_id', 'title_en', 'body_id'] as $column) {
             if (trim((string) $row[$column]) === '') {
-                return "{$column} wajib diisi.";
+                return self::missing('library', $column);
             }
         }
 
         if (mb_strlen((string) $row['title_id']) > 250 || mb_strlen((string) $row['title_en']) > 250) {
-            return 'Judul maksimal 250 karakter.';
+            return 'Judul halaman terlalu panjang (paling banyak 250 huruf).';
         }
 
         if (! in_array((string) $row['is_active'], ['', '0', '1'], true)) {
-            return 'is_active hanya 0 atau 1 (kosong = 1).';
+            return 'Kolom is_active (tampil?) hanya boleh 0 atau 1. Bila kosong, halaman tampil.';
         }
 
         return null;
@@ -464,15 +466,15 @@ class ContentImportService
     private function validateLibraryMedia(array $row, array $context): ?string
     {
         if (! isset($context['levels'][$row['level_code']])) {
-            return "level_code '{$row['level_code']}' tidak dikenali.";
+            return self::unknownLevel($row['level_code']);
         }
 
         if (! ctype_digit((string) $row['page_sequence']) || (int) $row['page_sequence'] < 1) {
-            return 'page_sequence wajib nomor halaman (angka).';
+            return 'Nomor halaman (page_sequence) harus berupa angka 1 ke atas.';
         }
 
         if ($row['sequence'] !== '' && (! ctype_digit((string) $row['sequence']) || (int) $row['sequence'] < 1)) {
-            return 'sequence wajib angka 1 ke atas.';
+            return 'Urutan media (sequence) harus berupa angka 1 ke atas, atau dikosongkan.';
         }
 
         $pageKey = $row['level_code'] . '#' . (int) $row['page_sequence'];
@@ -481,27 +483,27 @@ class ContentImportService
             ->where('level_id', $context['levels'][$row['level_code']])
             ->where('sequence', (int) $row['page_sequence'])
             ->first() === null) {
-            return "Halaman {$row['level_code']} nomor {$row['page_sequence']} tidak ada di sheet library maupun di database.";
+            return "Halaman Pustaka {$row['level_code']} nomor {$row['page_sequence']} tidak ditemukan, baik di sheet library maupun di Pustaka yang sudah ada.";
         }
 
         if (! in_array($row['media_kind'], ['', 'image', 'video'], true)) {
-            return "media_kind '{$row['media_kind']}' tidak dikenali (image atau video).";
+            return self::unknown('library_media', 'media_kind', $row['media_kind'], 'Pakai image (gambar) atau video.');
         }
 
         $key = trim((string) $row['media_asset_key']);
         $url = trim((string) $row['external_url']);
 
         if (($key === '') === ($url === '')) {
-            return 'Isi SALAH SATU: media_asset_key (berkas terunggah) atau external_url (tautan).';
+            return 'Isi SALAH SATU saja: kolom media_asset_key (berkas yang sudah diunggah) atau external_url (tautan).';
         }
 
         if ($url !== '' && MediaLink::parse($url, $row['media_kind'] === 'video' ? 'video' : 'image') === null) {
-            return 'external_url harus alamat http(s) yang sah.';
+            return 'Tautan (external_url) harus alamat web lengkap yang diawali http:// atau https://.';
         }
 
         foreach (['caption_id' => 500, 'caption_en' => 500, 'credit' => 300] as $column => $max) {
             if (mb_strlen((string) $row[$column]) > $max) {
-                return "{$column} maksimal {$max} karakter.";
+                return ucfirst(self::column('library_media', $column)) . " terlalu panjang (paling banyak {$max} huruf).";
             }
         }
 
@@ -539,7 +541,7 @@ class ContentImportService
                         $warnings[] = [
                             'sheet'   => $sheet,
                             'row'     => $row['__row'],
-                            'message' => "{$column} '{$key}' belum ada di Media: dibuat sebagai slot kosong saat impor. Unggah berkasnya di Panel → Media dengan asset_key yang sama — langsung tampil tanpa impor ulang.",
+                            'message' => "Berkas dengan kode '{$key}' di " . self::column($sheet, $column) . ' belum diunggah. Tempatnya tetap disiapkan saat impor; unggah berkasnya di menu Gambar & suara dengan kode berkas yang sama, maka langsung tampil tanpa impor ulang.',
                         ];
                     }
                 }
@@ -554,7 +556,7 @@ class ContentImportService
                 $warnings[] = [
                     'sheet'   => 'library_media',
                     'row'     => $row['__row'],
-                    'message' => "Tautan {$link['label']} bukan YouTube/Drive/Vimeo/Commons/berkas langsung — tampil sebagai tombol tautan, bukan gambar/video.",
+                    'message' => "Tautan {$link['label']} bukan dari YouTube, Google Drive, Vimeo, Wikimedia Commons, atau alamat langsung berkas gambar/video, jadi tampil sebagai tombol tautan, bukan sebagai gambar/video.",
                 ];
             }
         }
@@ -603,15 +605,49 @@ class ContentImportService
         return $out;
     }
 
-    private function validateReference(string $value, array $known, string $label): ?string
+    /** Kolom item_key di sheet $sheet harus merujuk soal di sheet items. */
+    private function validateReference(string $value, array $known, string $sheet): ?string
     {
         $value = trim($value);
 
         if ($value === '') {
-            return "{$label} wajib diisi.";
+            return self::missing($sheet, 'item_key');
         }
 
-        return isset($known[$value]) ? null : "{$label} '{$value}' tidak ada di sheet terkait.";
+        return isset($known[$value]) ? null : "Kode soal (item_key) '{$value}' tidak ditemukan di sheet items.";
+    }
+
+    /**
+     * "kolom node_ref (kode tantangan)", "kolom title_id (judul halaman bahasa
+     * Indonesia)": kode header di Excel beserta nama Indonesianya dari
+     * BankWorkbookGuide, supaya guru dapat menemukan kolomnya.
+     */
+    private static function column(string $sheet, string $column): string
+    {
+        $label = BankWorkbookGuide::COLUMNS[$sheet][$column][0] ?? null;
+
+        if ($label === null) {
+            return 'kolom ' . $column;
+        }
+
+        return 'kolom ' . $column . ' (' . lcfirst((string) preg_replace('/\s*\((Indonesia|Inggris)\)$/u', ' bahasa $1', $label)) . ')';
+    }
+
+    private static function missing(string $sheet, string $column): string
+    {
+        return ucfirst(self::column($sheet, $column)) . ' belum diisi.';
+    }
+
+    private static function unknown(string $sheet, string $column, string $value, string $hint): string
+    {
+        return 'Isian ' . "'{$value}'" . ' di ' . self::column($sheet, $column) . ' tidak dikenal. ' . $hint;
+    }
+
+    private static function unknownLevel(string $value): string
+    {
+        return $value === ''
+            ? 'Kolom level_code (wilayah) belum diisi. Pakai temanggung, magelang, atau wonosobo.'
+            : "Wilayah (level_code) '{$value}' tidak dikenal. Pakai temanggung, magelang, atau wonosobo.";
     }
 
     // -------------------------------------------------------------- tulis
@@ -808,7 +844,7 @@ class ContentImportService
 
             if ($existing !== null) {
                 if ($mode === 'insert') {
-                    throw new \RuntimeException("Item {$itemKey} sudah ada; mode 'insert' tidak menimpa baris.");
+                    throw new \RuntimeException("Soal {$itemKey} sudah ada; mode 'insert' tidak menimpa soal yang sudah ada.");
                 }
 
                 $model->update($existing->id, $data);
@@ -940,7 +976,7 @@ class ContentImportService
 
             if ($existing !== null) {
                 if (! $model->update($existing->id, $data)) {
-                    throw new \RuntimeException("Halaman pustaka {$row['level_code']} #{$sequence} ditolak: " . implode(' ', $model->errors()));
+                    throw new \RuntimeException("Halaman Pustaka {$row['level_code']} nomor {$sequence} tidak dapat disimpan: " . implode(' ', $model->errors()));
                 }
 
                 $out[$row['level_code'] . '#' . $sequence] = $existing->id;
@@ -949,7 +985,7 @@ class ContentImportService
             }
 
             if ($model->insert($data, false) === false) {
-                throw new \RuntimeException("Halaman pustaka {$row['level_code']} #{$sequence} ditolak: " . implode(' ', $model->errors()));
+                throw new \RuntimeException("Halaman Pustaka {$row['level_code']} nomor {$sequence} tidak dapat disimpan: " . implode(' ', $model->errors()));
             }
 
             $out[$row['level_code'] . '#' . $sequence] = (int) $model->getInsertID();
@@ -1015,7 +1051,7 @@ class ContentImportService
                 ], false);
 
                 if ($written === false) {
-                    throw new \RuntimeException("Media pustaka {$pageKey} baris {$row['__row']} ditolak: " . implode(' ', $model->errors()));
+                    throw new \RuntimeException("Media Pustaka di sheet library_media baris {$row['__row']} tidak dapat disimpan: " . implode(' ', $model->errors()));
                 }
 
                 if ($kind === 'video' && $url !== '' && ! isset($media[trim((string) $row['poster_media_key'])])) {
@@ -1070,7 +1106,7 @@ class ContentImportService
             ], true);
 
             if ($id === false) {
-                throw new \RuntimeException("Slot media {$key} ditolak: " . implode(' ', $model->errors()));
+                throw new \RuntimeException("Tempat berkas dengan kode '{$key}' tidak dapat disiapkan: " . implode(' ', $model->errors()));
             }
 
             $media[$key] = (int) $id;
@@ -1291,7 +1327,7 @@ class ContentImportService
                 $warnings[] = [
                     'sheet'   => 'items',
                     'row'     => 0,
-                    'message' => "Node {$ref} hanya punya {$items} butir, persis sebesar items_per_round. Bank soal tidak punya cadangan.",
+                    'message' => "Tantangan {$ref} hanya punya {$items} soal, sama persis dengan jumlah soal per permainan (items_per_round). Tambahkan soal cadangan (sebaiknya 1,5–2 kali lipat) agar siswa tidak selalu mendapat soal yang sama.",
                 ];
             }
         }

@@ -10,6 +10,8 @@
  * petunjuk arena `cari` (`petunjuk-{node}-NN`, teks dari bank soal) membuka
  * butirnya di halaman tantangan.
  *
+ * Di layar, status `draft` disebut "menunggu persetujuan".
+ *
  * @var list<array{context: string, level_code: string|null, label: string, rows: list<array<string, mixed>>}> $groups
  * @var array<string, array{total: int, approved: int, draft: int, none: int}> $progress
  * @var array<string, int> $drafts  locale → jumlah narasi draft yang ikut "Setujui semua"
@@ -17,7 +19,6 @@
  */
 use App\Libraries\NarrationCatalog;
 
-$localeNames = ['id' => 'Indonesia', 'en' => 'English'];
 $editUrl     = static fn (array $row): string => ($row['table'] ?? 'dialogues') === 'challenge_items'
     ? base_url('admin/konten/node/' . (int) $row['node_id']) . '#item-' . (int) $row['id']
     : base_url('admin/konten/dialog/' . ($row['level_id'] === null ? 0 : (int) $row['level_id'])) . '?konteks=' . rawurlencode((string) $row['context_code']) . '#slide-' . (int) $row['sequence'];
@@ -26,7 +27,7 @@ $audioCell   = static function (array $audio, string $code, string $locale) use 
     $html = '<span class="badge ' . ($statusBadge[$audio['status']] ?? '') . '">' . esc(NarrationCatalog::STATUS_LABELS[$audio['status']] ?? $audio['status']) . '</span>';
 
     if ($audio['src'] !== null) {
-        $html .= '<audio class="audio-preview audio-preview-sm" controls preload="none" src="' . esc(base_url($audio['src']), 'attr') . '" aria-label="' . esc('Dengar ' . $code . ' ' . strtoupper($locale), 'attr') . '"></audio>';
+        $html .= '<audio class="audio-preview audio-preview-sm" controls preload="none" src="' . esc(base_url($audio['src']), 'attr') . '" aria-label="' . esc('Dengar ' . $code . ' bahasa ' . admin_label('locale', $locale), 'attr') . '"></audio>';
     }
 
     return $html;
@@ -36,14 +37,14 @@ $audioCell   = static function (array $audio, string $code, string $locale) use 
 
 <?= $this->section('content') ?>
 <?php ob_start() ?>
-<a class="btn btn-primary btn-sm" href="<?= base_url('admin/konten/narasi/unggah') ?>"><?= icon('upload') ?> Unggah narasi</a>
-<a class="btn btn-ghost btn-sm" href="<?= base_url('admin/konten/narasi/daftar-rekaman') ?>"><?= icon('download') ?> Unduh daftar rekaman</a>
-<a class="btn btn-ghost btn-sm" href="<?= base_url('admin/media/kelengkapan') ?>"><?= icon('list') ?> Kelengkapan aset</a>
+<a class="btn btn-primary btn-sm" href="<?= base_url('admin/konten/narasi/unggah') ?>"><?= icon('upload') ?> Unggah rekaman</a>
+<a class="btn btn-ghost btn-sm" href="<?= base_url('admin/konten/narasi/daftar-rekaman') ?>"><?= icon('download') ?> Unduh daftar rekaman (Excel)</a>
+<a class="btn btn-ghost btn-sm" href="<?= base_url('admin/media/kelengkapan') ?>"><?= icon('list') ?> Kelengkapan gambar &amp; suara</a>
 <?php $actions = ob_get_clean() ?>
 <?= component('partials/admin-head', [
-    'title'   => 'Narasi',
-    'eyebrow' => 'Konten · rekaman naskah cerita',
-    'lead'    => 'Setiap baris naskah dan setiap petunjuk arena cari punya satu rekaman per bahasa, bernama sesuai kode berkasnya (mis. intro-01.mp3, petunjuk-tmg-4-01.mp3). Rekaman baru berstatus draft dan baru terdengar pemain setelah disetujui.',
+    'title'   => 'Rekaman narasi',
+    'eyebrow' => 'Konten · suara cerita',
+    'lead'    => 'Setiap baris cerita dan setiap petunjuk tantangan Cari Objek punya satu rekaman untuk tiap bahasa. Nama berkas rekaman harus sama dengan kodenya (mis. intro-01.mp3, petunjuk-tmg-4-01.mp3). Rekaman yang baru diunggah menunggu persetujuan, dan baru terdengar oleh siswa setelah disetujui.',
     'actions' => $actions,
 ]) ?>
 <?= $this->include('partials/flash') ?>
@@ -55,10 +56,10 @@ $audioCell   = static function (array $audio, string $code, string $locale) use 
       <?php $p = $progress[$locale]; $total = max(1, $p['total']); ?>
       <div class="narration-progress-row">
         <p class="narration-progress-text">
-          <b><?= esc(strtoupper($locale)) ?>:</b>
-          <?= esc($p['approved']) ?>/<?= esc($p['total']) ?> disetujui, <?= esc($p['draft']) ?> draft, <?= esc($p['none']) ?> belum ada
+          <b>Bahasa <?= esc(admin_label('locale', $locale)) ?> (<?= esc(strtoupper($locale)) ?>):</b>
+          <?= esc($p['approved']) ?>/<?= esc($p['total']) ?> disetujui, <?= esc($p['draft']) ?> menunggu persetujuan, <?= esc($p['none']) ?> belum ada
         </p>
-        <div class="progress-stack" role="img" aria-label="<?= esc(sprintf('%s: %d disetujui, %d draft, %d belum ada dari %d baris', $localeNames[$locale] ?? $locale, $p['approved'], $p['draft'], $p['none'], $p['total']), 'attr') ?>">
+        <div class="progress-stack" role="img" aria-label="<?= esc(sprintf('Bahasa %s: %d disetujui, %d menunggu persetujuan, %d belum ada dari %d baris', admin_label('locale', $locale), $p['approved'], $p['draft'], $p['none'], $p['total']), 'attr') ?>">
           <span class="progress-seg is-approved" style="width: <?= round($p['approved'] / $total * 100, 2) ?>%"></span>
           <span class="progress-seg is-draft" style="width: <?= round($p['draft'] / $total * 100, 2) ?>%"></span>
         </div>
@@ -66,11 +67,11 @@ $audioCell   = static function (array $audio, string $code, string $locale) use 
       </div>
     <?php endforeach ?>
   </div>
-  <p class="field-help">Draft menghitung semua rekaman terpasang yang belum terdengar pemain (draft, ditinjau, ditolak, atau asetnya nonaktif).</p>
+  <p class="field-help">“Menunggu persetujuan” menghitung semua rekaman yang sudah dipasang tetapi belum terdengar oleh siswa (belum disetujui, sedang ditinjau, ditolak, atau berkasnya dinonaktifkan).</p>
 </section>
 
 <?php if ($groups === []): ?>
-  <div class="empty-state"><?= icon('message') ?><p>Belum ada baris naskah. Jalankan <code>php spark gelita:story:update</code>.</p></div>
+  <div class="empty-state"><?= icon('message') ?><p>Naskah cerita belum dipasang. Minta petugas teknis memasangnya (perintah <code>php spark gelita:story:update</code> di server).</p></div>
 <?php endif ?>
 
 <?php foreach ($groups as $group): ?>
@@ -88,27 +89,27 @@ $audioCell   = static function (array $audio, string $code, string $locale) use 
         'rows'     => $group['rows'],
         'rowClass' => static fn (array $row): string => $row['audio']['id']['status'] === 'approved' ? '' : 'is-warn',
         'columns'  => [
-            'code' => ['label' => 'Kode berkas', 'render' => static fn (array $row): string => '<code>' . esc($row['code']) . '</code>'],
+            'code' => ['label' => 'Nama berkas', 'render' => static fn (array $row): string => '<code>' . esc($row['code']) . '</code>'],
             'who'  => ['label' => 'Tokoh', 'render' => static function (array $row): string {
                 $name = NarrationCatalog::CHARACTER_LABELS[$row['character_code']] ?? $row['character_code'];
 
                 return esc($name)
-                    . ($row['pose'] !== null ? '<span class="cell-sub">pose ' . esc($row['pose']) . '</span>' : '')
-                    . ($row['effect'] !== null ? '<span class="cell-sub">efek ' . esc($row['effect']) . '</span>' : '');
+                    . ($row['pose'] !== null ? '<span class="cell-sub">pose ' . esc(admin_label('pose', (string) $row['pose'])) . '</span>' : '')
+                    . ($row['effect'] !== null ? '<span class="cell-sub">efek ' . esc(admin_label('effect', (string) $row['effect'])) . '</span>' : '');
             }],
-            'text' => ['label' => 'Teks ID', 'render' => static fn (array $row): string => ($row['title_id'] !== null ? '<b>' . esc($row['title_id']) . '</b><br>' : '')
+            'text' => ['label' => 'Teks (Indonesia)', 'render' => static fn (array $row): string => ($row['title_id'] !== null ? '<b>' . esc($row['title_id']) . '</b><br>' : '')
                 . '<span class="cell-clip" title="' . esc($row['text_id'], 'attr') . '">' . esc(mb_strimwidth((string) $row['text_id'], 0, 90, '…')) . '</span>'],
-            'audio_id' => ['label' => 'Audio ID', 'render' => static fn (array $row): string => $audioCell($row['audio']['id'], $row['code'], 'id')],
-            'audio_en' => ['label' => 'Audio EN', 'render' => static fn (array $row): string => $audioCell($row['audio']['en'], $row['code'], 'en')],
+            'audio_id' => ['label' => 'Rekaman Indonesia', 'render' => static fn (array $row): string => $audioCell($row['audio']['id'], $row['code'], 'id')],
+            'audio_en' => ['label' => 'Rekaman Inggris', 'render' => static fn (array $row): string => $audioCell($row['audio']['en'], $row['code'], 'en')],
             'edit' => ['label' => '', 'render' => static fn (array $row): string => '<a class="btn btn-quiet btn-sm" href="'
                 . esc($editUrl($row), 'attr')
                 . '">' . icon('edit') . ' Sunting</a>'],
         ],
     ]) ?>
     <?php if (($first['table'] ?? 'dialogues') === 'challenge_items'): ?>
-      <p class="field-help">Teks petunjuk berasal dari bank soal (kolom pertanyaan butir). <a href="<?= base_url('admin/konten/node/' . (int) $first['node_id']) ?>">Buka tantangan <?= esc($first['node_ref']) ?></a></p>
+      <p class="field-help">Teks petunjuk berasal dari bank soal (kolom pertanyaan pada soal). <a href="<?= base_url('admin/konten/node/' . (int) $first['node_id']) ?>">Buka tantangan <?= esc($first['node_ref']) ?></a></p>
     <?php else: ?>
-      <p class="field-help"><a href="<?= base_url('admin/konten/dialog/' . $levelId) ?>?konteks=<?= esc($group['context'], 'url') ?>">Buka editor <?= esc($group['label']) ?></a></p>
+      <p class="field-help"><a href="<?= base_url('admin/konten/dialog/' . $levelId) ?>?konteks=<?= esc($group['context'], 'url') ?>">Ubah teks <?= esc($group['label']) ?></a></p>
     <?php endif ?>
   </section>
 <?php endforeach ?>

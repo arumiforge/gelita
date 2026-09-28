@@ -7,6 +7,8 @@
  * ditandai merah (teks + warna). "Pindai berkas" mencocokkan baris database
  * dengan berkas di disk (hilang, sha256, ukuran berkas).
  *
+ * Di layar, asset_key disebut "kode berkas" dan slot disebut "tempat".
+ *
  * @var list<array<string, mixed>>        $assets
  * @var array<string, array{0: int, 1: int}> $assetSizes pola asset_key → [lebar, tinggi]
  * @var array<int, list<string>>              $usage      media_asset_id → tempat pemakaian (MediaUsage)
@@ -44,29 +46,29 @@ foreach ($visual as $row) {
 <?php ob_start() ?>
 <form method="post" action="<?= base_url('admin/media/pindai') ?>" class="inline-form">
   <?= csrf_field() ?>
-  <button class="btn btn-ghost btn-sm" type="submit"><?= icon('search') ?> Pindai berkas</button>
+  <button class="btn btn-ghost btn-sm" type="submit"><?= icon('search') ?> Cek berkas hilang/rusak</button>
 </form>
-<a class="btn btn-ghost btn-sm" href="<?= base_url('admin/media/kelengkapan') ?>"><?= icon('list') ?> Kelengkapan aset</a>
-<a class="btn btn-ghost btn-sm" href="<?= base_url('admin/media/audio') ?>"><?= icon('sound') ?> Aset audio</a>
+<a class="btn btn-ghost btn-sm" href="<?= base_url('admin/media/kelengkapan') ?>"><?= icon('list') ?> Kelengkapan gambar &amp; suara</a>
+<a class="btn btn-ghost btn-sm" href="<?= base_url('admin/media/audio') ?>"><?= icon('sound') ?> Rekaman suara</a>
 <?php $actions = ob_get_clean() ?>
 <?= component('partials/admin-head', [
-    'title'   => 'Media',
-    'eyebrow' => 'Pengelolaan · gambar & video',
-    'lead'    => 'Berkas disimpan dengan nama resmi turunan asset_key, bukan nama asli unggahan. Mengunggah ulang asset_key yang sama mengganti berkasnya.',
+    'title'   => 'Gambar & video',
+    'eyebrow' => 'Pengelolaan · gambar & suara',
+    'lead'    => 'Setiap gambar punya kode berkas, mis. bg.temanggung, yang menentukan di mana gambar itu tampil. Nama berkas di komputer Anda tidak berpengaruh. Mengunggah ulang dengan kode yang sama akan mengganti gambar lamanya.',
     'actions' => $actions,
 ]) ?>
 <?= $this->include('partials/flash') ?>
 
 <?php if (is_array($scan)): ?>
   <section class="panel">
-    <h2 class="panel-title"><?= icon('search') ?> Hasil pindai <span class="muted"><?= esc(fmt_date($scan['at'], true)) ?></span></h2>
+    <h2 class="panel-title"><?= icon('search') ?> Hasil pengecekan berkas <span class="muted"><?= esc(fmt_date($scan['at'], true)) ?></span></h2>
     <?php if ($scan['findings'] === []): ?>
-      <p class="alert alert-ok" role="status"><?= icon('check') ?> Semua berkas aset cocok dengan catatan database.</p>
+      <p class="alert alert-ok" role="status"><?= icon('check') ?> Semua berkas lengkap dan utuh.</p>
     <?php else: ?>
-      <p class="alert alert-error" role="alert"><?= count($scan['findings']) ?> aset bermasalah. Unggah ulang berkasnya atau nonaktifkan asetnya.</p>
+      <p class="alert alert-error" role="alert"><?= count($scan['findings']) ?> berkas bermasalah. Unggah ulang berkasnya, atau nonaktifkan bila tidak dipakai lagi.</p>
       <?= component('components/admin-table', [
-          'caption'  => 'Temuan pindai berkas',
-          'columns'  => ['asset_key' => ['label' => 'asset_key', 'format' => 'code'], 'issue' => 'Masalah'],
+          'caption'  => 'Berkas yang bermasalah',
+          'columns'  => ['asset_key' => ['label' => 'Kode berkas', 'format' => 'code'], 'issue' => 'Masalah'],
           'rows'     => $scan['findings'],
           'rowClass' => static fn (): string => 'is-error',
       ]) ?>
@@ -76,31 +78,31 @@ foreach ($visual as $row) {
 
 <div class="kpi-grid">
   <?= component('components/stat-tile', ['label' => 'Gambar & video', 'value' => fmt_num(count($visual)), 'icon' => 'image']) ?>
-  <?= component('components/stat-tile', ['label' => 'Aktif', 'value' => fmt_num($active), 'icon' => 'check']) ?>
-  <?= component('components/stat-tile', ['label' => 'Slot belum berberkas', 'value' => fmt_num($empty), 'icon' => 'image', 'hint' => 'permainan memakai pengganti']) ?>
-  <?= component('components/stat-tile', ['label' => 'Belum dipakai', 'value' => fmt_num($unused), 'icon' => 'info', 'hint' => 'aktif tetapi tidak dirujuk konten']) ?>
-  <?= component('components/stat-tile', ['label' => 'Ukuran tidak sesuai', 'value' => fmt_num($wrong), 'icon' => 'warn']) ?>
-  <?= component('components/stat-tile', ['label' => 'Berkas audio', 'value' => fmt_num($audios), 'icon' => 'sound', 'hint' => 'dikelola di halaman Audio']) ?>
+  <?= component('components/stat-tile', ['label' => 'Sudah ada berkasnya', 'value' => fmt_num($active), 'icon' => 'check']) ?>
+  <?= component('components/stat-tile', ['label' => 'Belum ada berkasnya', 'value' => fmt_num($empty), 'icon' => 'image', 'hint' => 'permainan memakai tampilan pengganti']) ?>
+  <?= component('components/stat-tile', ['label' => 'Belum dipakai', 'value' => fmt_num($unused), 'icon' => 'info', 'hint' => 'sudah diunggah, tetapi belum dipasang di konten']) ?>
+  <?= component('components/stat-tile', ['label' => 'Ukurannya tidak sesuai', 'value' => fmt_num($wrong), 'icon' => 'warn']) ?>
+  <?= component('components/stat-tile', ['label' => 'Rekaman suara', 'value' => fmt_num($audios), 'icon' => 'sound', 'hint' => 'dikelola di halaman Rekaman suara']) ?>
 </div>
 
 <div class="split-grid">
   <form method="post" action="<?= base_url('admin/media/unggah') ?>" class="upload-box" enctype="multipart/form-data">
     <?= csrf_field() ?>
-    <h2 class="panel-title"><?= icon('upload') ?> Unggah aset</h2>
+    <h2 class="panel-title"><?= icon('upload') ?> Unggah gambar atau video</h2>
     <div class="field">
-      <label for="asset_key">asset_key <span class="req">*</span></label>
+      <label for="asset_key">Kode berkas <span class="req">*</span></label>
       <input type="text" id="asset_key" name="asset_key" required maxlength="160" placeholder="bg.temanggung" spellcheck="false" list="asset-keys" value="<?= esc((string) (service('request')->getGet('asset_key') ?? ''), 'attr') ?>">
       <datalist id="asset-keys">
         <?php foreach ($assets as $asset): ?>
           <option value="<?= esc($asset['asset_key'], 'attr') ?>"></option>
         <?php endforeach ?>
       </datalist>
-      <p class="field-help">Pilih asset_key yang ada untuk mengganti berkasnya, atau tulis yang baru. Gambar tantangan, opsi, bacaan, dan Pustaka juga dapat diunggah langsung dari editor kontennya.</p>
+      <p class="field-help">Pilih kode dari daftar untuk mengganti gambarnya (tekan tombol Unggah di baris tabel bawah juga bisa), atau tulis kode baru. Gambar tantangan, pilihan jawaban, bacaan, dan Pustaka lebih mudah diunggah langsung dari halaman konten masing-masing.</p>
     </div>
     <div class="field">
       <label for="file">Berkas <span class="req">*</span></label>
       <input type="file" id="file" name="file" required accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml,video/mp4,video/webm,video/ogg">
-      <p class="field-help">PNG, JPEG, WebP, GIF, SVG, MP4, WebM, atau OGV; maksimal 64 MB.</p>
+      <p class="field-help">Gambar PNG, JPG, WebP, GIF, atau SVG; video MP4, WebM, atau OGV. Paling besar 64 MB.</p>
     </div>
     <div class="form-actions">
       <button class="btn btn-primary" type="submit"><?= icon('upload') ?> Unggah</button>
@@ -108,12 +110,12 @@ foreach ($visual as $row) {
   </form>
 
   <section class="panel">
-    <h2 class="panel-title"><?= icon('grid') ?> Ukuran wajib per slot</h2>
-    <p class="muted">Gambar dengan ukuran lain ditolak saat diunggah. Tanda * berarti semua kunci dengan awalan itu.</p>
+    <h2 class="panel-title"><?= icon('grid') ?> Ukuran gambar yang wajib</h2>
+    <p class="muted">Beberapa tempat butuh ukuran gambar yang pas; gambar dengan ukuran lain akan ditolak saat diunggah. Tanda * berarti semua kode yang diawali tulisan itu.</p>
     <div class="table-wrap">
       <table class="data-table">
-        <caption class="visually-hidden">Ukuran wajib aset gambar</caption>
-        <thead><tr><th scope="col">Pola asset_key</th><th scope="col" class="is-num">Lebar × tinggi (px)</th></tr></thead>
+        <caption class="visually-hidden">Ukuran wajib gambar</caption>
+        <thead><tr><th scope="col">Kode berkas</th><th scope="col" class="is-num">Lebar × tinggi (piksel)</th></tr></thead>
         <tbody>
           <?php foreach ($assetSizes as $pattern => $size): ?>
             <tr><td><code><?= esc($pattern) ?></code></td><td class="is-num"><?= esc($size[0]) ?> × <?= esc($size[1]) ?></td></tr>
@@ -125,10 +127,10 @@ foreach ($visual as $row) {
 </div>
 
 <section class="panel">
-  <h2 class="panel-title"><?= icon('image') ?> Aset gambar & video</h2>
+  <h2 class="panel-title"><?= icon('image') ?> Semua gambar & video</h2>
   <?= component('components/admin-table', [
-      'caption'      => 'Daftar aset gambar dan video',
-      'emptyMessage' => 'Belum ada aset gambar. Permainan memakai latar gradien bawaan sampai aset diunggah.',
+      'caption'      => 'Daftar gambar dan video',
+      'emptyMessage' => 'Belum ada gambar. Permainan memakai latar warna bawaan sampai gambar diunggah.',
       'rows'         => $visual,
       'rowClass'     => static fn (array $row): string => $row['is_active'] ? '' : 'is-muted',
       'columns'      => [
@@ -140,7 +142,7 @@ foreach ($visual as $row) {
 
               return '<span class="media-thumb"><img src="' . esc(base_url($row['storage_path']), 'attr') . '" alt="" loading="lazy" decoding="async"></span>';
           }],
-          'asset_key' => ['label' => 'asset_key', 'render' => static fn (array $row): string => '<code>' . esc($row['asset_key']) . '</code><span class="cell-sub">' . esc($row['mime_type'] ?? $row['asset_type']) . '</span>'],
+          'asset_key' => ['label' => 'Kode berkas', 'render' => static fn (array $row): string => '<code>' . esc($row['asset_key']) . '</code><span class="cell-sub">' . esc($row['asset_type'] === 'video' ? 'video' : 'gambar') . '</span>'],
           'usage' => ['label' => 'Dipakai di', 'render' => static function (array $row) use ($usage): string {
               $slot  = App\Libraries\MediaUsage::slotLabel((string) $row['asset_key']);
               $where = $usage[(int) $row['id']] ?? [];
@@ -149,13 +151,13 @@ foreach ($visual as $row) {
                   return '<span class="muted">belum dipakai</span>';
               }
 
-              $html = $slot === null ? '' : '<span class="cell-sub">slot: ' . esc($slot) . '</span>';
+              $html = $slot === null ? '' : '<span class="cell-sub">' . esc($slot) . '</span>';
 
               foreach (array_slice($where, 0, 4) as $label) {
                   $html .= '<span class="cell-sub">' . esc($label) . '</span>';
               }
 
-              return $html . (count($where) > 4 ? '<span class="cell-sub">+' . (count($where) - 4) . ' lainnya</span>' : '');
+              return $html . (count($where) > 4 ? '<span class="cell-sub">dan ' . (count($where) - 4) . ' tempat lain</span>' : '');
           }],
           'size' => ['label' => 'Ukuran', 'render' => static function (array $row) use ($requiredFor): string {
               $need = $requiredFor((string) $row['asset_key']);
@@ -171,8 +173,8 @@ foreach ($visual as $row) {
               return '<span class="num ' . ($ok ? 'size-ok' : 'size-bad') . '">' . icon($ok ? 'check' : 'cross') . ' ' . esc($text) . '</span>'
                   . ($ok ? '' : '<span class="cell-sub">wajib ' . $need[0] . '×' . $need[1] . '</span>');
           }],
-          'file_size' => ['label' => 'Berkas', 'render' => static fn (array $row): string => $row['file_size'] === null ? '—' : '<span class="num">' . esc(fmt_num(((int) $row['file_size']) / 1024, 0, 'id')) . ' KB</span>'],
-          'is_active' => ['label' => 'Status', 'render' => static fn (array $row): string => '<span class="badge ' . ($row['is_active'] ? 'is-active">aktif' : 'is-inactive">nonaktif') . '</span>'],
+          'file_size' => ['label' => 'Besar berkas', 'render' => static fn (array $row): string => $row['file_size'] === null ? '—' : '<span class="num">' . esc(fmt_num(((int) $row['file_size']) / 1024, 0, 'id')) . ' KB</span>'],
+          'is_active' => ['label' => 'Status', 'render' => static fn (array $row): string => '<span class="badge ' . ($row['is_active'] ? 'is-active">sudah ada' : 'is-inactive">belum ada berkas') . '</span>'],
           'actions' => ['label' => '', 'render' => static function (array $row): string {
               // Tombol Unggah per baris: diberi perilaku admin/media-upload.js (tersembunyi tanpa JavaScript)
               $upload = '<button type="button" class="btn btn-quiet btn-sm" data-upload-key="' . esc($row['asset_key'], 'attr') . '" hidden>'

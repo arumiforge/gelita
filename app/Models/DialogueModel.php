@@ -23,13 +23,13 @@ class DialogueModel extends Model
     ];
     protected $validationRules = [
         'context_code'   => 'required|max_length[50]',
-        'sequence'       => 'required|is_natural_no_zero',
-        'character_code' => 'required|max_length[30]',
+        'sequence'       => ['label' => 'Urutan slide', 'rules' => 'required|is_natural_no_zero'],
+        'character_code' => ['label' => 'Tokoh', 'rules' => 'required|max_length[30]'],
         // NULL = pose `idle` (narator: tanpa gambar) · NULL = tanpa efek
         'pose'           => 'permit_empty|max_length[30]|valid_dialogue_pose[character_code]',
         'effect'         => 'permit_empty|max_length[30]|valid_dialogue_effect',
-        'text_id'        => 'required',
-        'text_en'        => 'required',
+        'text_id'        => ['label' => 'Ucapan (Indonesia)', 'rules' => 'required'],
+        'text_en'        => ['label' => 'Ucapan (Inggris)', 'rules' => 'required'],
     ];
     protected $validationMessages = [
         'pose'   => ['valid_dialogue_pose' => 'Pose tidak dikenal untuk tokoh ini.'],

@@ -45,12 +45,12 @@ class StudyController extends BaseAdminController
         $studyId = $studies->insert($this->studyPayload(), true);
 
         if ($studyId === false) {
-            return $this->back('admin/studi', 'Studi ditolak: ' . $this->modelErrors($studies));
+            return $this->back('admin/studi', 'Studi belum dapat disimpan: ' . $this->modelErrors($studies));
         }
 
         $this->audit('study_create', 'research_study', (int) $studyId);
 
-        return $this->done('admin/studi', 'Studi dibuat.');
+        return $this->done('admin/studi', 'Studi baru sudah dibuat.');
     }
 
     public function update(int $studyId): RedirectResponse
@@ -66,19 +66,19 @@ class StudyController extends BaseAdminController
         }
 
         if (! $studies->update($studyId, $this->studyPayload(true))) {
-            return $this->back('admin/studi', 'Studi ditolak: ' . $this->modelErrors($studies));
+            return $this->back('admin/studi', 'Studi belum dapat disimpan: ' . $this->modelErrors($studies));
         }
 
         $this->audit('study_update', 'research_study', $studyId);
 
-        return $this->done('admin/studi', 'Studi diperbarui.');
+        return $this->done('admin/studi', 'Perubahan studi sudah disimpan.');
     }
 
     // ---------------------------------------------------------------- rilis
 
     public function releases(): string
     {
-        return $this->panel('admin/study/releases', 'Rilis konten', [
+        return $this->panel('admin/study/releases', 'Versi permainan', [
             'releases' => model(GameReleaseModel::class)->orderBy('id', 'DESC')->findAll(),
             'active'   => model(GameReleaseModel::class)->activeOrNull(),
         ]);
@@ -89,10 +89,10 @@ class StudyController extends BaseAdminController
         $releases = model(GameReleaseModel::class);
 
         $rules = [
-            'release_code'    => 'required|max_length[50]|is_unique[game_releases.release_code]',
-            'app_version'     => 'required|max_length[20]',
-            'content_version' => 'required|max_length[20]',
-            'scoring_version' => 'required|max_length[20]',
+            'release_code'    => ['label' => 'Nama versi', 'rules' => 'required|max_length[50]|is_unique[game_releases.release_code]'],
+            'app_version'     => ['label' => 'Versi aplikasi', 'rules' => 'required|max_length[20]'],
+            'content_version' => ['label' => 'Versi konten', 'rules' => 'required|max_length[20]'],
+            'scoring_version' => ['label' => 'Versi aturan penilaian', 'rules' => 'required|max_length[20]'],
         ];
 
         if (! $this->validate($rules)) {
@@ -110,12 +110,12 @@ class StudyController extends BaseAdminController
         ], true);
 
         if ($releaseId === false) {
-            return $this->back('admin/studi/rilis', 'Rilis ditolak: ' . $this->modelErrors($releases));
+            return $this->back('admin/studi/rilis', 'Versi permainan belum dapat disimpan: ' . $this->modelErrors($releases));
         }
 
         $this->audit('release_create', 'game_release', (int) $releaseId);
 
-        return $this->done('admin/studi/rilis', 'Rilis dibuat. Aktifkan bila sudah siap.');
+        return $this->done('admin/studi/rilis', 'Versi baru sudah disimpan. Tekan Aktifkan bila sudah siap dipakai.');
     }
 
     public function activateRelease(int $releaseId): RedirectResponse
@@ -123,7 +123,7 @@ class StudyController extends BaseAdminController
         $releases = model(GameReleaseModel::class);
 
         if ($releases->find($releaseId) === null) {
-            return $this->back('admin/studi/rilis', 'Rilis tidak ditemukan.');
+            return $this->back('admin/studi/rilis', 'Versi permainan tidak ditemukan.');
         }
 
         $releases->activate($releaseId);
@@ -133,14 +133,14 @@ class StudyController extends BaseAdminController
 
         $this->audit('release_activate', 'game_release', $releaseId);
 
-        return $this->done('admin/studi/rilis', 'Rilis diaktifkan.');
+        return $this->done('admin/studi/rilis', 'Versi permainan sudah diaktifkan. Sesi bermain baru memakai versi ini.');
     }
 
     // -------------------------------------------------------------- skoring
 
     public function scoringProfiles(): string
     {
-        return $this->panel('admin/study/scoring', 'Profil skoring', [
+        return $this->panel('admin/study/scoring', 'Aturan penilaian', [
             'profiles' => model(ScoringProfileModel::class)->orderBy('code', 'ASC')->orderBy('version', 'ASC')->findAll(),
             'active'   => model(ScoringProfileModel::class)->active(),
         ]);
@@ -152,11 +152,11 @@ class StudyController extends BaseAdminController
         $back     = 'admin/studi/skoring';
 
         $rules = [
-            'code'                => 'required|max_length[50]',
-            'version'             => 'required|max_length[20]',
-            'first_pass_weight'   => 'required|decimal',
-            'final_weight'        => 'required|decimal',
-            'independence_weight' => 'required|decimal',
+            'code'                => ['label' => 'Nama aturan', 'rules' => 'required|max_length[50]'],
+            'version'             => ['label' => 'Nomor versi baru', 'rules' => 'required|max_length[20]'],
+            'first_pass_weight'   => ['label' => 'Bobot benar sejak percobaan pertama', 'rules' => 'required|decimal'],
+            'final_weight'        => ['label' => 'Bobot benar di akhir', 'rules' => 'required|decimal'],
+            'independence_weight' => ['label' => 'Bobot kemandirian', 'rules' => 'required|decimal'],
         ];
 
         if (! $this->validate($rules)) {
@@ -180,13 +180,13 @@ class StudyController extends BaseAdminController
         $existing = $profiles->findVersion($payload['code'], $payload['version']);
 
         if ($existing !== null) {
-            return $this->back($back, 'Profil dengan kode dan versi itu sudah ada. Buat versi baru.');
+            return $this->back($back, 'Aturan dengan nama dan nomor versi itu sudah ada. Pakai nomor versi lain.');
         }
 
         $profileId = $profiles->insert($payload, true);
 
         if ($profileId === false) {
-            return $this->back($back, 'Profil ditolak: ' . $this->modelErrors($profiles));
+            return $this->back($back, 'Aturan penilaian belum dapat disimpan: ' . $this->modelErrors($profiles));
         }
 
         if ($this->request->getPost('activate')) {
@@ -196,12 +196,12 @@ class StudyController extends BaseAdminController
 
         $this->audit('scoring_create', 'scoring_profile', (int) $profileId);
 
-        return $this->done($back, 'Profil skoring disimpan.');
+        return $this->done($back, 'Versi aturan penilaian sudah disimpan.');
     }
 
     // -------------------------------------------------------------- bantuan
 
-    /** @return array<string, string> */
+    /** @return array<string, array{label: string, rules: string}> */
     private function studyRules(?int $studyId = null): array
     {
         $unique = $studyId === null
@@ -209,14 +209,14 @@ class StudyController extends BaseAdminController
             : 'is_unique[research_studies.code,id,' . $studyId . ']';
 
         return [
-            'code'               => 'required|max_length[50]|' . $unique,
-            'name'               => 'required|max_length[200]',
-            'status'             => 'required|in_list[draft,active,closed]',
-            'default_locale'     => 'required|valid_locale',
-            'unlock_mode'        => 'required|in_list[sequential,free]',
-            'item_selection_mode' => 'required|in_list[fixed,random]',
-            'active_phase_code'  => 'required|in_list[umum,pretest,posttest]',
-            'retention_days'     => 'permit_empty|is_natural',
+            'code'               => ['label' => 'Kode singkat studi', 'rules' => 'required|max_length[50]|' . $unique],
+            'name'               => ['label' => 'Nama studi', 'rules' => 'required|max_length[200]'],
+            'status'             => ['label' => 'Status', 'rules' => 'required|in_list[draft,active,closed]'],
+            'default_locale'     => ['label' => 'Bahasa awal permainan', 'rules' => 'required|valid_locale'],
+            'unlock_mode'        => ['label' => 'Cara wilayah terbuka', 'rules' => 'required|in_list[sequential,free]'],
+            'item_selection_mode' => ['label' => 'Pemilihan soal', 'rules' => 'required|in_list[fixed,random]'],
+            'active_phase_code'  => ['label' => 'Fase yang sedang berjalan', 'rules' => 'required|in_list[umum,pretest,posttest]'],
+            'retention_days'     => ['label' => 'Lama penyimpanan data', 'rules' => 'permit_empty|is_natural'],
         ];
     }
 

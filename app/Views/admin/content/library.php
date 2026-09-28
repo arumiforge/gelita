@@ -28,32 +28,32 @@ $spare  = 2;   // baris media kosong per halaman untuk menambah
 <?= component('partials/admin-head', [
     'title'   => 'Pustaka Kedu',
     'eyebrow' => 'Wilayah ' . $level->sequence . ' · ' . $level->text('name', 'id'),
-    'lead'    => 'Halaman buku yang terbuka untuk siswa di menu Pustaka, lengkap dengan galeri gambar dan video. Judul wajib dwibahasa; isi English yang kosong diganti teks Indonesia saat permainan.',
+    'lead'    => 'Halaman buku bacaan yang terbuka untuk siswa di menu Pustaka, lengkap dengan gambar dan video. Judul wajib diisi dalam bahasa Indonesia dan Inggris; bila isi berbahasa Inggris kosong, pemain berbahasa Inggris membaca isi Indonesia.',
 ]) ?>
 <?= component('partials/content-nav', ['level' => $level, 'active' => 'library']) ?>
 <?= $this->include('partials/flash') ?>
 
 <details class="panel">
-  <summary class="panel-title"><?= icon('info') ?> Cara menulis isi & menambah media</summary>
+  <summary class="panel-title"><?= icon('info') ?> Cara menulis isi halaman & menambah gambar/video</summary>
   <div class="split-grid">
     <div class="format-help">
-      <p><b>Format isi halaman</b> (ditulis biasa, tanpa HTML):</p>
+      <p><b>Cara merapikan tulisan</b> (cukup diketik biasa):</p>
       <ul>
         <li>Baris kosong = paragraf baru.</li>
-        <li><code>## Subjudul</code> di awal baris = subjudul.</li>
-        <li><code>- teks</code> di awal baris = butir daftar.</li>
-        <li><code>**kata**</code> = cetak tebal; <code>*kata*</code> = cetak miring.</li>
-        <li><code>&gt; Tahukah kamu? …</code> = kotak fakta menarik.</li>
-        <li><code>Sumber: …</code> di baris terakhir = catatan rujukan kecil.</li>
+        <li>Awali baris dengan <code>## </code> untuk membuat subjudul, mis. <code>## Asal-usul nama</code>.</li>
+        <li>Awali baris dengan <code>- </code> untuk membuat daftar berpoin.</li>
+        <li>Apit kata dengan <code>**</code> untuk cetak tebal (<code>**Borobudur**</code>) atau dengan <code>*</code> untuk cetak miring (<code>*senduro*</code>).</li>
+        <li>Awali baris dengan <code>&gt; </code> untuk kotak “Tahukah kamu?”.</li>
+        <li>Tulis <code>Sumber: …</code> di baris terakhir untuk catatan sumber kecil.</li>
       </ul>
     </div>
     <div class="format-help">
-      <p><b>Sumber media</b> — pilih salah satu per baris:</p>
+      <p><b>Asal gambar/video</b> — pilih salah satu untuk tiap baris:</p>
       <ul>
-        <li><b>Berkas</b>: pilih asset_key yang sudah diunggah, atau unggah berkas baru (gambar maks. 64 MB; saran 960 × 640 px).</li>
-        <li><b>Tautan</b>: YouTube (<code>youtu.be/…</code>, <code>youtube.com/watch?v=…</code>), Google Drive (berkas dibagikan "Siapa saja yang memiliki link"), Vimeo, Wikimedia Commons (<code>commons.wikimedia.org/wiki/File:…</code>), atau alamat berkas <code>.jpg/.png/.webp/.mp4</code>.</li>
-        <li>Video YouTube, Vimeo, dan Drive baru dimuat setelah siswa menekan Putar.</li>
-        <li>Isi kredit (pemilik/lisensi) untuk setiap media dari pihak lain.</li>
+        <li><b>Berkas</b>: unggah berkas dari komputer (paling besar 64 MB; ukuran gambar yang disarankan 960 × 640 px), atau pilih berkas yang sudah pernah diunggah.</li>
+        <li><b>Tautan</b>: tempel alamat video YouTube, Google Drive (atur berbagi ke “Siapa saja yang memiliki link”), Vimeo, halaman gambar Wikimedia Commons, atau alamat langsung berkas <code>.jpg/.png/.webp/.mp4</code>.</li>
+        <li>Video YouTube, Vimeo, dan Drive baru dimuat setelah siswa menekan Putar, dan butuh internet.</li>
+        <li>Isi kolom kredit (pemilik dan lisensi) untuk setiap gambar/video milik orang lain.</li>
       </ul>
     </div>
   </div>
@@ -79,7 +79,7 @@ $spare  = 2;   // baris media kosong per halaman untuk menambah
         <?= icon($isNew ? 'sparkle' : 'book') ?>
         <b><?= $isNew ? 'Halaman baru' : 'Halaman ' . esc($page->sequence) . ' · ' . esc($page->title_id) ?></b>
         <?php if (! $isNew): ?>
-          <span class="chip"><?= icon('image') ?> <?= count($pageMedia) ?> media</span>
+          <span class="chip"><?= icon('image') ?> <?= count($pageMedia) ?> gambar/video</span>
           <?php if (! $page->is_active): ?><span class="badge is-inactive">nonaktif</span><?php endif ?>
         <?php endif ?>
       </summary>
@@ -90,7 +90,7 @@ $spare  = 2;   // baris media kosong per halaman untuk menambah
 
       <div class="form-grid">
         <div class="field">
-          <label for="<?= $p ?>-seq">Urutan halaman</label>
+          <label for="<?= $p ?>-seq">Nomor halaman</label>
           <input type="number" id="<?= $p ?>-seq" name="pages[<?= $index ?>][sequence]" min="1" max="999" value="<?= esc($sequence, 'attr') ?>">
         </div>
       </div>
@@ -102,7 +102,7 @@ $spare  = 2;   // baris media kosong per halaman untuk menambah
           <input type="text" id="<?= $p ?>-title" name="pages[<?= $index ?>][title_id]" maxlength="250" <?= $isNew ? '' : 'required' ?> value="<?= esc($isNew ? '' : ($page->title_id ?? ''), 'attr') ?>">
         </div>
         <div class="field">
-          <label for="<?= $p ?>-title-en"><span class="lang-tag">EN</span> English</label>
+          <label for="<?= $p ?>-title-en"><span class="lang-tag">EN</span> Inggris</label>
           <input type="text" id="<?= $p ?>-title-en" name="pages[<?= $index ?>][title_en]" maxlength="250" <?= $isNew ? '' : 'required' ?> value="<?= esc($isNew ? '' : ($page->title_en ?? ''), 'attr') ?>">
         </div>
       </div>
@@ -114,16 +114,16 @@ $spare  = 2;   // baris media kosong per halaman untuk menambah
           <textarea id="<?= $p ?>-body" name="pages[<?= $index ?>][body_id]" rows="12"><?= esc($isNew ? '' : ($page->body_id ?? '')) ?></textarea>
         </div>
         <div class="field">
-          <label for="<?= $p ?>-body-en"><span class="lang-tag">EN</span> English</label>
+          <label for="<?= $p ?>-body-en"><span class="lang-tag">EN</span> Inggris</label>
           <textarea id="<?= $p ?>-body-en" name="pages[<?= $index ?>][body_en]" rows="12"><?= esc($isNew ? '' : ($page->body_en ?? '')) ?></textarea>
         </div>
         <?php if ($isNew): ?>
-          <p class="field-help">Biarkan judul Indonesia kosong bila tidak menambah halaman. Bila diisi, judul English juga wajib.</p>
+          <p class="field-help">Biarkan judul Indonesia kosong bila tidak menambah halaman. Bila diisi, judul Inggris juga wajib.</p>
         <?php endif ?>
       </div>
 
       <fieldset class="form-section">
-        <legend class="panel-subtitle"><?= icon('image') ?> Galeri halaman — gambar & video</legend>
+        <legend class="panel-subtitle"><?= icon('image') ?> Gambar & video di halaman ini</legend>
         <ol class="library-media-list">
           <?php foreach ($mediaRows as $m => $item): ?>
             <?php
@@ -139,20 +139,20 @@ $spare  = 2;   // baris media kosong per halaman untuk menambah
                 <input type="hidden" name="<?= $base ?>[id]" value="<?= esc($item->id, 'attr') ?>">
               <?php endif ?>
               <div class="library-media-head">
-                <b><?= $isNewMedia ? 'Media baru' : 'Media ' . esc($item->sequence) ?></b>
+                <b><?= $isNewMedia ? 'Gambar/video baru' : 'Gambar/video ke-' . esc($item->sequence) ?></b>
                 <div class="field">
-                  <label for="<?= $q ?>-seq" class="visually-hidden">Urutan media</label>
-                  <input type="number" id="<?= $q ?>-seq" name="<?= $base ?>[sequence]" min="1" max="999" value="<?= esc($isNewMedia ? $nextMedia + $m - count($pageMedia) : $item->sequence, 'attr') ?>" style="width: 5.5em" title="Urutan media">
+                  <label for="<?= $q ?>-seq" class="visually-hidden">Urutan tampil</label>
+                  <input type="number" id="<?= $q ?>-seq" name="<?= $base ?>[sequence]" min="1" max="999" value="<?= esc($isNewMedia ? $nextMedia + $m - count($pageMedia) : $item->sequence, 'attr') ?>" style="width: 5.5em" title="Urutan tampil">
                 </div>
                 <div class="field">
-                  <label for="<?= $q ?>-kind" class="visually-hidden">Jenis media</label>
+                  <label for="<?= $q ?>-kind" class="visually-hidden">Gambar atau video</label>
                   <select id="<?= $q ?>-kind" name="<?= $base ?>[media_kind]">
                     <option value="image" <?= $kind === 'image' ? 'selected' : '' ?>>Gambar</option>
                     <option value="video" <?= $kind === 'video' ? 'selected' : '' ?>>Video</option>
                   </select>
                 </div>
                 <fieldset class="source-switch">
-                  <legend class="visually-hidden">Sumber media</legend>
+                  <legend class="visually-hidden">Asal gambar/video</legend>
                   <label class="check"><input type="radio" name="<?= $base ?>[source]" value="upload" <?= $source === 'upload' ? 'checked' : '' ?>> <?= icon('upload') ?> Berkas</label>
                   <label class="check"><input type="radio" name="<?= $base ?>[source]" value="url" <?= $source === 'url' ? 'checked' : '' ?>> <?= icon('link') ?> Tautan</label>
                 </fieldset>
@@ -172,27 +172,27 @@ $spare  = 2;   // baris media kosong per halaman untuk menambah
                     'mediaId'    => $isNewMedia ? null : $item->media_asset_id,
                     'defaultKey' => 'library.' . App\Libraries\MediaStore::slug((string) $level->code) . '.p' . $sequence . '.' . ($m + 1),
                     'types'      => ['image', 'video'],
-                    'size'       => 'gambar 960 × 640 px; video MP4/WebM maks. 64 MB',
-                    'help'       => 'Jenis berkas harus sama dengan pilihan Gambar/Video di atas.',
+                    'size'       => 'gambar 960 × 640 px; video MP4/WebM paling besar 64 MB',
+                    'help'       => 'Jenis berkas harus sesuai pilihan Gambar/Video di atas.',
                 ]) ?>
               </div>
 
               <div class="source-url field">
-                <label for="<?= $q ?>-url">Tautan media</label>
+                <label for="<?= $q ?>-url">Tautan gambar/video</label>
                 <input type="url" id="<?= $q ?>-url" name="<?= $base ?>[external_url]" maxlength="1000" spellcheck="false"
                        placeholder="https://youtu.be/… · https://drive.google.com/file/d/… · https://commons.wikimedia.org/wiki/File:…"
                        value="<?= esc($isNewMedia ? '' : ($item->external_url ?? ''), 'attr') ?>">
                 <?php if ($link !== null): ?>
-                  <span class="link-preview"><?= icon($link['kind'] === 'video' ? 'video' : 'image') ?> dikenali sebagai <?= esc($link['label']) ?> · <?= esc($link['kind'] === 'video' ? 'video' : 'gambar') ?><?= $link['provider'] === 'link' ? ' (tampil sebagai tautan)' : '' ?></span>
+                  <span class="link-preview"><?= icon($link['kind'] === 'video' ? 'video' : 'image') ?> terbaca sebagai <?= esc($link['kind'] === 'video' ? 'video' : 'gambar') ?> dari <?= esc($link['label']) ?><?= $link['provider'] === 'link' ? ' (tampil sebagai tombol tautan)' : '' ?></span>
                 <?php elseif (! $isNewMedia && $source === 'url'): ?>
-                  <span class="field-error">Tautan tidak sah — perbaiki atau hapus baris ini.</span>
+                  <span class="field-error">Tautan ini tidak dikenali — perbaiki atau hapus baris ini.</span>
                 <?php endif ?>
               </div>
 
               <div class="poster-field">
                 <?= component('components/media-field', [
                     'id'         => $q . '-poster',
-                    'label'      => 'Poster video (opsional, untuk berkas video)',
+                    'label'      => 'Gambar sampul video (tidak wajib, untuk berkas video)',
                     'keyName'    => $base . '[poster_key]',
                     'fileName'   => 'library_poster[' . $index . '][' . $m . ']',
                     'mediaId'    => $isNewMedia ? null : $item->poster_media_id,
@@ -203,11 +203,11 @@ $spare  = 2;   // baris media kosong per halaman untuk menambah
 
               <div class="bilingual">
                 <div class="field">
-                  <label for="<?= $q ?>-cap"><span class="lang-tag">ID</span> Keterangan gambar</label>
+                  <label for="<?= $q ?>-cap"><span class="lang-tag">ID</span> Keterangan gambar (Indonesia)</label>
                   <input type="text" id="<?= $q ?>-cap" name="<?= $base ?>[caption_id]" maxlength="500" value="<?= esc($isNewMedia ? '' : ($item->caption_id ?? ''), 'attr') ?>">
                 </div>
                 <div class="field">
-                  <label for="<?= $q ?>-cap-en"><span class="lang-tag">EN</span> Caption</label>
+                  <label for="<?= $q ?>-cap-en"><span class="lang-tag">EN</span> Keterangan gambar (Inggris)</label>
                   <input type="text" id="<?= $q ?>-cap-en" name="<?= $base ?>[caption_en]" maxlength="500" value="<?= esc($isNewMedia ? '' : ($item->caption_en ?? ''), 'attr') ?>">
                 </div>
               </div>
@@ -218,20 +218,20 @@ $spare  = 2;   // baris media kosong per halaman untuk menambah
             </li>
           <?php endforeach ?>
         </ol>
-        <p class="field-help">Baris "Media baru" yang dibiarkan kosong diabaikan. Butuh lebih banyak baris? Simpan dulu — dua baris kosong baru selalu tersedia.</p>
+        <p class="field-help">Baris “Gambar/video baru” yang dibiarkan kosong diabaikan. Butuh lebih banyak? Simpan dulu — dua baris kosong baru akan muncul lagi.</p>
       </fieldset>
 
       <div class="check-row">
         <label class="check"><input type="checkbox" name="pages[<?= $index ?>][is_active]" value="1" <?= $isNew || $page->is_active ? 'checked' : '' ?>> Tampil di permainan</label>
         <?php if (! $isNew): ?>
-          <label class="check"><input type="checkbox" name="pages[<?= $index ?>][_delete]" value="1"> <?= icon('trash') ?> Hapus halaman ini beserta medianya</label>
+          <label class="check"><input type="checkbox" name="pages[<?= $index ?>][_delete]" value="1"> <?= icon('trash') ?> Hapus halaman ini beserta gambar/videonya</label>
         <?php endif ?>
       </div>
     </details>
   <?php endforeach ?>
 
   <div class="form-actions">
-    <button class="btn btn-primary" type="submit"><?= icon('check') ?> Simpan pustaka</button>
+    <button class="btn btn-primary" type="submit"><?= icon('check') ?> Simpan Pustaka</button>
   </div>
 </form>
 <?= $this->endSection() ?>

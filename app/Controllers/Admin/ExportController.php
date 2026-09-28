@@ -32,7 +32,7 @@ class ExportController extends BaseAdminController
             $exports->where('requested_by', $this->staffId());
         }
 
-        return $this->panel('admin/export/index', 'Ekspor data', [
+        return $this->panel('admin/export/index', 'Unduh data', [
             'filters'       => $this->readFilters(),
             'sheets'        => self::SHEETS,
             'adminOnly'     => self::ADMIN_ONLY_SHEETS,
@@ -61,21 +61,21 @@ class ExportController extends BaseAdminController
         $export  = $exports->find($exportId);
 
         if ($export === null) {
-            return $this->back('admin/ekspor', 'Ekspor tidak ditemukan.');
+            return $this->back('admin/ekspor', 'Unduhan tidak ditemukan.');
         }
 
         if (! $this->isAdmin() && (int) $export['requested_by'] !== $this->staffId()) {
-            return $this->back('admin/ekspor', 'Ekspor ini bukan milik Anda.');
+            return $this->back('admin/ekspor', 'Unduhan ini dibuat oleh akun lain.');
         }
 
         if ($export['expires_at'] !== null && strtotime((string) $export['expires_at']) < time()) {
-            return $this->back('admin/ekspor', 'Berkas ekspor sudah kedaluwarsa dan dihapus.');
+            return $this->back('admin/ekspor', 'Berkas ini sudah dihapus otomatis karena melewati batas waktu. Silakan buat unduhan baru.');
         }
 
         $path = (string) $export['file_path'];
 
         if ($path === '' || ! is_file($path) || ! service('exportService')->isInsideExportDir($path)) {
-            return $this->back('admin/ekspor', 'Berkas ekspor belum tersedia.');
+            return $this->back('admin/ekspor', 'Berkasnya belum siap. Tunggu sebentar, lalu muat ulang halaman.');
         }
 
         model(AuditLogModel::class)->record('export_download', [
@@ -129,7 +129,7 @@ class ExportController extends BaseAdminController
         ], true);
 
         if ($exportId === false) {
-            return $this->back($back, 'Permintaan ekspor ditolak: ' . $this->modelErrors($exports));
+            return $this->back($back, 'Unduhan gagal dibuat: ' . $this->modelErrors($exports));
         }
 
         $exportId = (int) $exportId;
@@ -154,10 +154,10 @@ class ExportController extends BaseAdminController
         ]);
 
         if ($export['status'] !== 'done') {
-            return $this->back($back, 'Ekspor #' . $exportId . ' gagal: ' . $export['error_message']);
+            return $this->back($back, 'Unduhan #' . $exportId . ' gagal dibuat: ' . $export['error_message']);
         }
 
-        $label = ($scope['template'] ?? null) === 'participant' ? 'Laporan peserta' : 'Ekspor';
+        $label = ($scope['template'] ?? null) === 'participant' ? 'Laporan siswa' : 'Berkas';
 
         return $this->done($back, $label . ' #' . $exportId . ' siap diunduh.');
     }

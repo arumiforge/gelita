@@ -55,7 +55,7 @@ class SessionController extends BaseAdminController
 
         $rows = $sessions->orderBy('game_sessions.started_at', 'DESC')->paginate(self::PER_PAGE);
 
-        return $this->panel('admin/sessions/index', 'Sesi permainan', [
+        return $this->panel('admin/sessions/index', 'Sesi bermain', [
             'filters' => $filters,
             'rows'    => array_map(static fn ($row): array => $row->toArray(), $rows),
             'pager'   => $sessions->pager,
@@ -97,7 +97,7 @@ class SessionController extends BaseAdminController
             $rows = array_values(array_filter($rows, static fn (array $row): bool => $row['event_type'] === $type));
         }
 
-        return $this->panel('admin/sessions/timeline', 'Linimasa event', [
+        return $this->panel('admin/sessions/timeline', 'Catatan aktivitas', [
             'session' => $session,
             'rows'    => $rows,
             'types'   => $types,

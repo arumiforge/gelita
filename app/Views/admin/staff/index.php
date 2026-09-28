@@ -27,11 +27,11 @@ $fields = static function (?array $staff, string $p) use ($schools, $roleNames, 
         <div class="field">
           <label for="<?= $p ?>-username">Nama pengguna <span class="req">*</span></label>
           <input type="text" id="<?= $p ?>-username" name="username" required minlength="3" maxlength="100" pattern="[A-Za-z0-9_\-]+" autocomplete="off" spellcheck="false">
-          <p class="field-help">Huruf, angka, garis bawah, atau tanda hubung. Tidak dapat diubah.</p>
+          <p class="field-help">Dipakai untuk masuk. Hanya huruf, angka, garis bawah (_), atau tanda minus (-), tanpa spasi. Tidak dapat diubah setelah dibuat.</p>
         </div>
       <?php endif ?>
       <div class="field">
-        <label for="<?= $p ?>-name">Nama tampilan <span class="req">*</span></label>
+        <label for="<?= $p ?>-name">Nama yang ditampilkan <span class="req">*</span></label>
         <input type="text" id="<?= $p ?>-name" name="display_name" required maxlength="150" value="<?= esc($staff['display_name'] ?? '', 'attr') ?>">
       </div>
       <div class="field">
@@ -54,14 +54,14 @@ $fields = static function (?array $staff, string $p) use ($schools, $roleNames, 
       <div class="field field-school">
         <label for="<?= $p ?>-school">Sekolah <span class="req">*</span></label>
         <select id="<?= $p ?>-school" name="school_id">
-          <option value="">— pilih sekolah yang sudah dipakai —</option>
+          <option value="">— pilih sekolah yang sudah punya siswa —</option>
           <?php foreach ($schools as $school): ?>
             <option value="<?= esc($school['id'], 'attr') ?>" <?= (int) ($staff['school_id'] ?? 0) === (int) $school['id'] ? 'selected' : '' ?>><?= esc($school['name']) ?><?= ! empty($school['code']) ? ' · NPSN ' . esc($school['code']) : '' ?></option>
           <?php endforeach ?>
         </select>
-        <label for="<?= $p ?>-npsn">atau NPSN sekolah</label>
+        <label for="<?= $p ?>-npsn">atau ketik NPSN sekolah</label>
         <input type="text" id="<?= $p ?>-npsn" name="school_npsn" inputmode="numeric" maxlength="8" pattern="[0-9]{8}" autocomplete="off" placeholder="mis. 20318068">
-        <p class="field-help">Guru hanya melihat data siswa dari sekolah ini. Sekolah yang belum punya siswa dipilih lewat NPSN (cari di menu Sekolah); NPSN yang diisi menggantikan pilihan daftar.</p>
+        <p class="field-help">Guru hanya melihat data siswa dari sekolah ini. Bila sekolahnya belum punya siswa (belum ada di daftar), ketik NPSN-nya — cari di menu Sekolah. NPSN yang diketik dipakai lebih dulu daripada pilihan daftar.</p>
       </div>
     </div>
     <?php return (string) ob_get_clean();
@@ -71,9 +71,9 @@ $fields = static function (?array $staff, string $p) use ($schools, $roleNames, 
 
 <?= $this->section('content') ?>
 <?= component('partials/admin-head', [
-    'title'   => 'Akun staf',
+    'title'   => 'Akun guru & admin',
     'eyebrow' => 'Pengelolaan · akses panel',
-    'lead'    => 'Admin mengelola seluruh panel. Guru hanya melihat data siswa sekolahnya sendiri dan selalu mengekspor dalam mode anonim.',
+    'lead'    => 'Admin dapat membuka seluruh panel. Guru hanya melihat data siswa dari sekolahnya sendiri, dan data yang diunduh guru selalu tanpa nama siswa.',
 ]) ?>
 <?= $this->include('partials/flash') ?>
 
@@ -82,7 +82,7 @@ $fields = static function (?array $staff, string $p) use ($schools, $roleNames, 
     <h2 id="temp-title" class="panel-title"><?= icon('key') ?> Sandi sementara untuk <?= esc($temporary['staff']['display_name']) ?></h2>
     <p class="muted">Nama pengguna: <code><?= esc($temporary['staff']['username']) ?></code></p>
     <p class="temp-password" aria-label="Sandi sementara"><?= esc($temporary['password']) ?></p>
-    <p><b>Sampaikan langsung kepada yang bersangkutan.</b> Sandi ini hanya ditampilkan sekali — setelah halaman ini ditutup, sandi tidak dapat dilihat lagi. Saat masuk dengan sandi ini, pemilik akun <b>wajib</b> menggantinya lebih dulu; panel baru terbuka setelah itu.</p>
+    <p><b>Sampaikan langsung kepada pemilik akun.</b> Sandi ini hanya ditampilkan sekali — setelah halaman ini ditutup, sandi tidak dapat dilihat lagi. Saat masuk dengan sandi ini, pemilik akun <b>wajib</b> menggantinya dulu sebelum dapat memakai panel.</p>
     <a class="btn btn-primary" href="<?= base_url('admin/staf') ?>"><?= icon('check') ?> Sudah saya catat</a>
   </section>
 <?php endif ?>
@@ -95,18 +95,18 @@ $fields = static function (?array $staff, string $p) use ($schools, $roleNames, 
         <span class="node-row-no"><?= icon($staff['role'] === 'admin' ? 'shield' : 'user') ?></span>
         <span class="item-prompt">
           <b><?= esc($staff['display_name']) ?></b><?= $isSelf ? ' <span class="muted">(Anda)</span>' : '' ?>
-          <span class="cell-sub"><code><?= esc($staff['username']) ?></code> · <?= $staff['last_login_at'] ? 'masuk terakhir ' . esc(fmt_date($staff['last_login_at'], true, 'id')) : 'belum pernah masuk' ?></span>
+          <span class="cell-sub"><code><?= esc($staff['username']) ?></code> · <?= $staff['last_login_at'] ? 'terakhir masuk ' . esc(fmt_date($staff['last_login_at'], true, 'id')) : 'belum pernah masuk' ?></span>
         </span>
         <span class="item-meta">
           <span class="badge"><?= esc($roleNames[$staff['role']] ?? $staff['role']) ?></span>
           <?php if ($staff['role'] === 'guru'): ?>
-            <span class="badge is-muted"><?= esc($schoolNames[$staff['school_id']] ?? 'tanpa sekolah') ?></span>
+            <span class="badge is-muted"><?= esc($schoolNames[$staff['school_id']] ?? 'belum ada sekolah') ?></span>
           <?php endif ?>
           <?php if ($staff['must_change']): ?>
-            <span class="badge is-warn"><?= icon('key') ?> wajib ganti sandi</span>
+            <span class="badge is-warn"><?= icon('key') ?> harus ganti sandi</span>
           <?php endif ?>
           <?php if ($staff['locked']): ?>
-            <span class="badge is-warn"><?= icon('lock') ?> terkunci</span>
+            <span class="badge is-warn"><?= icon('lock') ?> terkunci sementara</span>
           <?php endif ?>
           <span class="badge <?= $staff['is_active'] ? 'is-active' : 'is-inactive' ?>"><?= $staff['is_active'] ? 'aktif' : 'nonaktif' ?></span>
         </span>
@@ -120,7 +120,7 @@ $fields = static function (?array $staff, string $p) use ($schools, $roleNames, 
             <?php if ($isSelf): ?>
               <input type="hidden" name="is_active" value="1">
             <?php else: ?>
-              <label class="check"><input type="checkbox" name="is_active" value="1" <?= $staff['is_active'] ? 'checked' : '' ?>> Akun aktif</label>
+              <label class="check"><input type="checkbox" name="is_active" value="1" <?= $staff['is_active'] ? 'checked' : '' ?>> Akun aktif (boleh masuk)</label>
             <?php endif ?>
           </div>
           <div class="form-actions">
@@ -131,7 +131,7 @@ $fields = static function (?array $staff, string $p) use ($schools, $roleNames, 
         <div class="form-actions">
           <form method="post" action="<?= base_url('admin/staf/' . $sid . '/sandi') ?>" class="inline-form">
             <?= csrf_field() ?>
-            <label for="reset-<?= $sid ?>">Ketik <code>RESET</code></label>
+            <label for="reset-<?= $sid ?>">Lupa sandi? Ketik <code>RESET</code></label>
             <input type="text" id="reset-<?= $sid ?>" name="confirm" class="confirm-input" required pattern="RESET" autocomplete="off" spellcheck="false">
             <button class="btn btn-ghost btn-sm" type="submit"><?= icon('key') ?> Buat sandi sementara</button>
           </form>
@@ -141,7 +141,7 @@ $fields = static function (?array $staff, string $p) use ($schools, $roleNames, 
               <summary class="btn btn-quiet btn-sm"><?= icon('lock') ?> Nonaktifkan</summary>
               <div class="confirm-box">
                 <h3>Nonaktifkan <?= esc($staff['username']) ?>?</h3>
-                <p>Akun tidak dapat masuk lagi sampai diaktifkan kembali. Data dan riwayat audit tetap tersimpan.</p>
+                <p>Akun ini tidak dapat masuk lagi sampai diaktifkan kembali. Data dan riwayat aktivitasnya tetap tersimpan.</p>
                 <form method="post" action="<?= base_url('admin/staf/' . $sid . '/nonaktif') ?>">
                   <?= csrf_field() ?>
                   <button class="btn btn-danger btn-sm" type="submit">Ya, nonaktifkan</button>
@@ -155,7 +155,7 @@ $fields = static function (?array $staff, string $p) use ($schools, $roleNames, 
   <?php endforeach ?>
 
   <details class="item-card" <?= $rows === [] ? 'open' : '' ?>>
-    <summary><span class="node-row-no"><?= icon('sparkle') ?></span> <b>Akun baru</b> <span class="item-meta muted">guru atau admin</span></summary>
+    <summary><span class="node-row-no"><?= icon('sparkle') ?></span> <b>Buat akun baru</b> <span class="item-meta muted">untuk guru atau admin</span></summary>
     <div class="item-card-body">
       <form method="post" action="<?= base_url('admin/staf') ?>" class="stack staff-form" autocomplete="off">
         <?= csrf_field() ?>
@@ -163,7 +163,7 @@ $fields = static function (?array $staff, string $p) use ($schools, $roleNames, 
         <div class="field">
           <label for="new-password">Kata sandi awal <span class="req">*</span></label>
           <input type="password" id="new-password" name="password" required minlength="12" maxlength="72" autocomplete="new-password">
-          <p class="field-help">Minimal 12 karakter. Sampaikan langsung kepada pemilik akun, bukan lewat pesan grup. Pemilik akun wajib menggantinya saat pertama masuk.</p>
+          <p class="field-help">Minimal 12 karakter. Sampaikan langsung kepada pemilik akun, jangan lewat grup pesan. Pemilik akun wajib menggantinya saat pertama kali masuk.</p>
         </div>
         <div class="form-actions">
           <button class="btn btn-primary" type="submit"><?= icon('check') ?> Buat akun</button>

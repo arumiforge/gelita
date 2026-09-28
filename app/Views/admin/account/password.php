@@ -18,12 +18,12 @@
 
 <?= $this->section('content') ?>
 <?= component('partials/admin-head', [
-    'title'   => 'Ubah sandi',
+    'title'   => 'Ganti kata sandi',
     'eyebrow' => 'Akun Anda',
-    'lead'    => 'Setelah akun dibuat atau sandinya diatur ulang admin, sandi sementara wajib diganti di sini.',
+    'lead'    => 'Ganti kata sandi Anda kapan saja di sini. Bila Anda baru menerima sandi sementara dari admin, sandi itu wajib diganti dulu.',
 ]) ?>
 <?php if ($mustChange): ?>
-  <div class="alert alert-info" role="status"><?= icon('key') ?><p>Anda masuk dengan sandi sementara dari admin. Ganti sandi lebih dulu — halaman panel lain terbuka setelah sandi baru disimpan.</p></div>
+  <div class="alert alert-info" role="status"><?= icon('key') ?><p>Anda masuk dengan sandi sementara dari admin. Buat sandi baru dulu — halaman panel lain terbuka setelah sandi baru disimpan.</p></div>
 <?php endif ?>
 <?= $this->include('partials/flash') ?>
 
@@ -43,7 +43,7 @@
       <input type="password" id="new-password" name="password" required minlength="12" maxlength="72"
              autocomplete="new-password" aria-describedby="new-password-help"
              <?= isset($errors['password']) ? 'aria-invalid="true"' : '' ?>>
-      <p class="field-help" id="new-password-help">Minimal 12 karakter dan berbeda dari sandi saat ini. Frasa beberapa kata lebih mudah diingat dan tetap sulit ditebak.</p>
+      <p class="field-help" id="new-password-help">Minimal 12 karakter dan berbeda dari sandi yang sekarang. Gabungan beberapa kata yang hanya Anda ketahui mudah diingat tetapi sulit ditebak orang lain.</p>
     </div>
 
     <div class="field<?= isset($errors['password_confirm']) ? ' has-error' : '' ?>">

@@ -14,7 +14,7 @@ $want  = array_map(static fn (string $type): string => $type, $types);
   <?php foreach (media_catalog() as $row): ?>
     <?php $type = $row['asset_type'] === 'sprite_frame' ? 'image' : $row['asset_type']; ?>
     <?php if (in_array($type, $want, true)): ?>
-      <option value="<?= esc($row['asset_key'], 'attr') ?>"><?= $row['is_active'] ? esc($type) : 'belum ada berkas' ?></option>
+      <option value="<?= esc($row['asset_key'], 'attr') ?>"><?= $row['is_active'] ? ($type === 'video' ? 'video' : 'gambar') : 'belum ada berkasnya' ?></option>
     <?php endif ?>
   <?php endforeach ?>
 </datalist>

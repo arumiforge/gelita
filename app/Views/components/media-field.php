@@ -8,6 +8,9 @@
  * kotak kosong); kotak kunci yang dikosongkan melepas media. Form induknya
  * wajib `enctype="multipart/form-data"`.
  *
+ * Di layar, asset_key disebut "kode berkas"; cara paling mudah bagi guru
+ * cukup memilih berkas baru, kodenya diisi otomatis ($defaultKey).
+ *
  * @var string       $id         awalan id elemen (unik di halaman)
  * @var string       $label
  * @var string       $keyName    nama field POST untuk asset_key
@@ -40,16 +43,16 @@ $isVideo  = $row !== null && $row['asset_type'] === 'video';
     <div class="media-field-inputs">
       <input type="text" id="<?= esc($id, 'attr') ?>-key" name="<?= esc($keyName, 'attr') ?>"
              value="<?= esc($row['asset_key'] ?? '', 'attr') ?>" list="<?= esc($listId, 'attr') ?>"
-             maxlength="160" spellcheck="false" placeholder="asset_key terdaftar (kosong = tanpa media)"
+             maxlength="160" spellcheck="false" placeholder="kode berkas (kosongkan untuk melepas gambar)"
              aria-labelledby="<?= esc($id, 'attr') ?>-label">
       <input type="file" id="<?= esc($id, 'attr') ?>-file" name="<?= esc($fileName, 'attr') ?>"
-             accept="<?= esc($accept, 'attr') ?>" aria-label="<?= esc($label . ' — berkas baru', 'attr') ?>">
+             accept="<?= esc($accept, 'attr') ?>" aria-label="<?= esc($label . ' — pilih berkas baru', 'attr') ?>">
     </div>
   </div>
   <p class="field-help">
-    <?php if ($row !== null && ! $hasFile): ?><b class="size-bad">Berkas belum diunggah.</b><?php endif ?>
-    Pilih aset terdaftar, atau unggah berkas baru<?= $defaultKey !== '' ? ' (tersimpan sebagai <code>' . esc($defaultKey) . '</code> bila kotak kunci kosong)' : '' ?>.
-    <?php if ($size !== null): ?>Saran ukuran <?= esc($size) ?>.<?php endif ?>
+    <?php if ($row !== null && ! $hasFile): ?><b class="size-bad">Berkasnya belum diunggah.</b><?php endif ?>
+    Cukup pilih berkas baru dari komputer<?= $defaultKey !== '' ? '; bila kotak kode kosong, kodenya diisi otomatis (<code>' . esc($defaultKey) . '</code>)' : '' ?>. Bisa juga mengetik kode berkas yang sudah pernah diunggah.
+    <?php if ($size !== null): ?>Ukuran yang disarankan: <?= esc($size) ?>.<?php endif ?>
     <?= $help !== null ? esc($help) : '' ?>
   </p>
 </div>

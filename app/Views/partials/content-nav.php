@@ -9,7 +9,7 @@ $links = [
     'level'     => ['admin/konten/level/', 'Wilayah & tantangan', 'map'],
     'passages'  => ['admin/konten/bacaan/', 'Teks bacaan', 'text'],
     'library'   => ['admin/konten/pustaka/', 'Pustaka', 'book'],
-    'dialogues' => ['admin/konten/dialog/', 'Dialog', 'message'],
+    'dialogues' => ['admin/konten/dialog/', 'Cerita & dialog', 'message'],
 ];
 ?>
 <nav aria-label="Konten wilayah <?= esc($level->text('name', 'id'), 'attr') ?>">

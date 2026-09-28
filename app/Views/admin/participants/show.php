@@ -26,7 +26,7 @@ $prePost  = $profile['pre_post'];
 <?= component('partials/admin-head', [
     'title'   => $participant['display_name'] ?: $participant['username'],
     'eyebrow' => 'Profil peserta · ' . $participant['participant_code'],
-    'lead'    => '@' . $participant['username'] . ' · terdaftar ' . fmt_date($participant['created_at'], false, 'id'),
+    'lead'    => 'Nama pengguna: ' . $participant['username'] . ' · mendaftar ' . fmt_date($participant['created_at'], false, 'id'),
     'actions' => '<a class="btn btn-quiet btn-sm" href="' . base_url('admin/peserta') . '">' . icon('left') . ' Daftar peserta</a>',
 ]) ?>
 <?= $this->include('partials/flash') ?>
@@ -39,7 +39,7 @@ $prePost  = $profile['pre_post'];
       <div><dt>Nama pengguna</dt><dd><?= esc($participant['username']) ?></dd></div>
       <div><dt>Nama</dt><dd><?= esc($participant['display_name'] ?? '—') ?></dd></div>
       <div><dt>Umur</dt><dd><?= esc($participant['age'] ?? '—') ?></dd></div>
-      <div><dt>Jenis kelamin</dt><dd><?= esc($participant['gender'] ?? '—') ?></dd></div>
+      <div><dt>Jenis kelamin</dt><dd><?= esc(admin_label('gender', $participant['gender'] ?? null)) ?></dd></div>
       <div><dt>Kelas</dt><dd><?= esc($participant['class_level'] ?? '—') ?></dd></div>
       <div><dt>Sekolah</dt><dd><?= esc($participant['school_name'] ?? '—') ?></dd></div>
       <div><dt>Daerah</dt><dd><?= esc($region !== '' ? $region : '—') ?></dd></div>
@@ -47,17 +47,17 @@ $prePost  = $profile['pre_post'];
   </section>
 
   <section class="panel">
-    <h2 class="panel-title"><?= icon('shield') ?> Persetujuan</h2>
+    <h2 class="panel-title"><?= icon('shield') ?> Persetujuan ikut penelitian</h2>
     <?php if ($consent === null): ?>
       <div class="empty-state"><?= icon('warn') ?><p>Tidak ada catatan persetujuan untuk peserta ini.</p></div>
     <?php else: ?>
       <dl class="detail-grid">
-        <div><dt>Versi teks</dt><dd><?= esc($consent['consent_version']) ?></dd></div>
+        <div><dt>Versi naskah persetujuan</dt><dd><?= esc($consent['consent_version']) ?></dd></div>
         <div><dt>Waktu</dt><dd><?= esc(fmt_date($consent['consented_at'], false, 'id')) ?></dd></div>
-        <div><dt>Peserta setuju</dt><dd><?= $consent['participant_consented'] ? 'ya' : 'tidak' ?></dd></div>
+        <div><dt>Siswa setuju</dt><dd><?= $consent['participant_consented'] ? 'ya' : 'tidak' ?></dd></div>
         <div><dt>Izin orang tua/wali</dt><dd><?= $consent['parent_guardian_consented'] ? 'ya' : 'tidak' ?></dd></div>
         <div><dt>Nama orang tua/wali</dt><dd><?= esc($consent['guardian_name'] ?? '—') ?></dd></div>
-        <div><dt>Ditarik</dt><dd><?= esc(fmt_date($consent['withdrawn_at'], false, 'id')) ?></dd></div>
+        <div><dt>Persetujuan dicabut</dt><dd><?= esc(fmt_date($consent['withdrawn_at'], false, 'id')) ?></dd></div>
       </dl>
     <?php endif ?>
   </section>
@@ -65,10 +65,10 @@ $prePost  = $profile['pre_post'];
   <section class="panel">
     <h2 class="panel-title"><?= icon('key') ?> Literasi keamanan digital</h2>
     <dl class="detail-grid">
-      <div><dt>Syarat terpenuhi (percobaan pertama)</dt><dd class="num"><?= $criteria === null ? '—' : esc($criteria) . ' / 5' ?></dd></div>
-      <div><dt>Penolakan sandi lemah</dt><dd class="num"><?= esc($participant['pw_weak_submit_count']) ?> kali</dd></div>
+      <div><dt>Syarat sandi yang langsung dipenuhi</dt><dd class="num"><?= $criteria === null ? '—' : esc($criteria) . ' dari 5' ?></dd></div>
+      <div><dt>Mencoba sandi yang terlalu lemah</dt><dd class="num"><?= esc($participant['pw_weak_submit_count']) ?> kali</dd></div>
       <div><dt>Terakhir ganti sandi</dt><dd><?= esc(fmt_date($participant['password_changed_at'], false, 'id')) ?></dd></div>
-      <div><dt>Wajib ganti sandi</dt><dd><?= $participant['must_change_password'] ? 'ya (setelah reset guru)' : 'tidak' ?></dd></div>
+      <div><dt>Harus membuat sandi baru</dt><dd><?= $participant['must_change_password'] ? 'ya (setelah guru membuat sandi sementara)' : 'tidak' ?></dd></div>
     </dl>
   </section>
 
@@ -77,12 +77,12 @@ $prePost  = $profile['pre_post'];
     <dl class="detail-grid">
       <div><dt>Tantangan selesai</dt><dd class="num"><?= esc($profile['completed_nodes']) ?></dd></div>
       <div><dt>Rata-rata skor wilayah</dt><dd class="num"><?= esc(fmt_num($profile['total_score'], 1, 'id')) ?></dd></div>
-      <div><dt>Total durasi</dt><dd class="num"><?= esc(ms_to_human($profile['total_duration_ms'])) ?></dd></div>
-      <div><dt>Perubahan jawaban</dt><dd class="num"><?= esc($profile['answer_changes']) ?></dd></div>
-      <div><dt>Petunjuk dipakai</dt><dd class="num"><?= esc($profile['hint_uses']) ?></dd></div>
-      <div><dt>Tersulit</dt><dd><?= $hardest === null ? '—' : esc(($nodeTitles[$hardest['node_id']] ?? '#' . $hardest['node_id']) . ' (' . fmt_pct($hardest['first_pass_accuracy'], false, 0) . ')') ?></dd></div>
+      <div><dt>Total lama bermain</dt><dd class="num"><?= esc(ms_to_human($profile['total_duration_ms'])) ?></dd></div>
+      <div><dt>Mengubah jawaban</dt><dd class="num"><?= esc($profile['answer_changes']) ?> kali</dd></div>
+      <div><dt>Petunjuk dibuka</dt><dd class="num"><?= esc($profile['hint_uses']) ?></dd></div>
+      <div><dt>Tantangan tersulit</dt><dd><?= $hardest === null ? '—' : esc(($nodeTitles[$hardest['node_id']] ?? '#' . $hardest['node_id']) . ' (tepat sejak awal ' . fmt_pct($hardest['first_pass_accuracy'], false, 0) . ')') ?></dd></div>
       <div><dt>Pretest → posttest</dt><dd class="num"><?= $prePost['delta'] === null ? '—' : esc(fmt_num($prePost['pretest'], 1, 'id') . ' → ' . fmt_num($prePost['posttest'], 1, 'id')) ?></dd></div>
-      <div><dt>Audio diputar</dt><dd class="num"><?= esc($profile['audio']['total_plays']) ?> kali<?php if (! empty($profile['audio']['total_autoplays'])): ?> <small class="muted">+ <?= esc($profile['audio']['total_autoplays']) ?> otomatis</small><?php endif ?></dd></div>
+      <div><dt>Suara diputar</dt><dd class="num"><?= esc($profile['audio']['total_plays']) ?> kali<?php if (! empty($profile['audio']['total_autoplays'])): ?> <small class="muted">+ <?= esc($profile['audio']['total_autoplays']) ?> kali otomatis</small><?php endif ?></dd></div>
     </dl>
   </section>
 </div>
@@ -107,17 +107,17 @@ $prePost  = $profile['pre_post'];
   ]) ?>
   <?= component('admin-chart', [
       'id'       => 'chart-participant-indicators',
-      'title'    => 'Penguasaan indikator (rasio bukti benar)',
+      'title'    => 'Persentase benar per indikator',
       'type'     => 'bar',
       'data'     => \App\Libraries\ChartData::bars(array_map(static fn (array $row): array => [
-          'label' => (string) $row['code'],
-          'value' => $row['evidence_count'] > 0 ? $row['mastery_ratio'] : null,
-      ], array_values($profile['indicators'])), 'Rasio benar', 1),
+          'label' => (string) ($row['name'] ?? $row['code']),
+          'value' => $row['evidence_count'] > 0 ? $row['mastery_ratio'] * 100 : null,
+      ], array_values($profile['indicators'])), 'Persentase benar (%)', 100),
       'fallback' => component('partials/bar-list', ['max' => 1, 'rows' => array_map(
           static fn (array $row): array => [
-              'label'   => $row['code'],
+              'label'   => (string) ($row['name'] ?? $row['code']),
               'value'   => $row['mastery_ratio'],
-              'display' => fmt_pct($row['mastery_ratio'], true) . ' · ' . $row['correct_count'] . '/' . $row['evidence_count'],
+              'display' => fmt_pct($row['mastery_ratio'], true) . ' · ' . $row['correct_count'] . ' dari ' . $row['evidence_count'] . ' jawaban',
           ],
           array_values($profile['indicators']),
       )]),
@@ -125,56 +125,56 @@ $prePost  = $profile['pre_post'];
 </div>
 
 <section class="panel">
-  <h2 class="panel-title"><?= icon('clock') ?> Sesi permainan</h2>
+  <h2 class="panel-title"><?= icon('clock') ?> Sesi bermain</h2>
   <?= component('admin-table', [
       'rows'         => $sessions,
-      'emptyMessage' => 'Peserta ini belum punya sesi permainan.',
+      'emptyMessage' => 'Peserta ini belum pernah bermain.',
       'columns'      => [
-          'phase_code'      => 'Fase',
+          'phase_code'      => ['label' => 'Fase', 'format' => 'label', 'group' => 'phase'],
           'status'          => ['label' => 'Status', 'format' => 'badge'],
-          'locale'          => 'Bahasa',
+          'locale'          => ['label' => 'Bahasa', 'format' => 'label', 'group' => 'locale'],
           'started_at'      => ['label' => 'Mulai', 'format' => 'datetime'],
           'last_active_at'  => ['label' => 'Terakhir aktif', 'format' => 'datetime'],
-          'duration_ms'     => ['label' => 'Durasi', 'format' => 'ms'],
-          'completed_nodes' => ['label' => 'Serpihan', 'format' => 'num'],
+          'duration_ms'     => ['label' => 'Lama bermain', 'format' => 'ms'],
+          'completed_nodes' => ['label' => 'Tantangan selesai', 'format' => 'num'],
           'total_score'     => ['label' => 'Skor', 'format' => 'num', 'decimals' => 1],
           'id'              => ['label' => '', 'render' => static fn (array $r): string => '<span class="actions-cell">'
-              . '<a class="btn btn-quiet btn-sm" href="' . base_url('admin/sesi/' . $r['id']) . '">Detail</a>'
-              . '<a class="btn btn-quiet btn-sm" href="' . base_url('admin/sesi/' . $r['id'] . '/event') . '">Event</a></span>'],
+              . '<a class="btn btn-quiet btn-sm" href="' . base_url('admin/sesi/' . $r['id']) . '">Lihat</a>'
+              . '<a class="btn btn-quiet btn-sm" href="' . base_url('admin/sesi/' . $r['id'] . '/event') . '">Catatan aktivitas</a></span>'],
       ],
   ]) ?>
 </section>
 
 <section class="panel">
-  <h2 class="panel-title"><?= icon('download') ?> Laporan individual</h2>
-  <p class="muted">Ringkasan PDF satu halaman untuk peserta ini: skor per wilayah, penguasaan indikator, dan cara membacanya. Laporan guru selalu anonim (hanya kode peserta).</p>
+  <h2 class="panel-title"><?= icon('download') ?> Laporan siswa (PDF)</h2>
+  <p class="muted">Ringkasan satu halaman untuk siswa ini: skor per wilayah, capaian per indikator, dan cara membacanya. Laporan yang dibuat dari akun guru selalu tanpa nama (hanya kode peserta).</p>
   <form method="post" action="<?= base_url('admin/ekspor/pdf') ?>" class="inline-form">
     <?= csrf_field() ?>
     <input type="hidden" name="participant_id" value="<?= (int) $participant['id'] ?>">
     <?php if (session('staff_role') === 'admin'): ?>
-      <label class="check"><input type="checkbox" name="anonymized" value="1" checked> <span>Mode anonim</span></label>
+      <label class="check"><input type="checkbox" name="anonymized" value="1" checked> <span>Sembunyikan nama siswa</span></label>
     <?php endif ?>
     <button class="btn btn-ghost btn-sm" type="submit"><?= icon('download') ?> Buat laporan PDF</button>
   </form>
 </section>
 
 <section class="form-section danger-zone">
-  <h2><?= icon('key') ?> Reset kata sandi</h2>
-  <p class="muted">Sandi sementara ditampilkan sekali. Siswa wajib membuat sandi baru saat masuk berikutnya.</p>
+  <h2><?= icon('key') ?> Siswa lupa kata sandi?</h2>
+  <p class="muted">Buat sandi sementara untuk siswa ini. Sandi hanya ditampilkan sekali, dan siswa harus membuat sandi baru saat masuk berikutnya.</p>
   <form method="post" action="<?= base_url('admin/peserta/' . $participant['id'] . '/reset-sandi') ?>" class="form">
     <?= csrf_field() ?>
     <div class="field">
-      <label for="confirm">Ketik <code>RESET</code> untuk mengatur ulang kata sandi siswa ini</label>
+      <label for="confirm">Ketik <code>RESET</code> (huruf besar) untuk memastikan</label>
       <input type="text" id="confirm" name="confirm" class="confirm-input" required pattern="RESET" autocomplete="off" spellcheck="false">
     </div>
     <div class="form-actions">
-      <button class="btn btn-danger" type="submit"><?= icon('key') ?> Atur ulang kata sandi</button>
+      <button class="btn btn-danger" type="submit"><?= icon('key') ?> Buat sandi sementara</button>
     </div>
   </form>
   <?php if (session('staff_role') === 'admin'): ?>
     <p class="muted">
-      Permintaan penghapusan data dari siswa atau orang tua/wali?
-      <a href="<?= base_url('admin/tata-kelola?participant_id=' . $participant['id']) ?>#hapus"><?= icon('trash') ?> Mulai pratinjau penghapusan untuk peserta ini</a>
+      Siswa atau orang tua/wali meminta datanya dihapus?
+      <a href="<?= base_url('admin/tata-kelola?participant_id=' . $participant['id']) ?>#hapus"><?= icon('trash') ?> Hapus data siswa ini</a>
     </p>
   <?php endif ?>
 </section>

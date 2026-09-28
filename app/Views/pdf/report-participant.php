@@ -73,7 +73,7 @@ $code   = (string) ($person['participant_code'] ?? $person['code'] ?? '');
 
 <h2>Penguasaan indikator</h2>
 <?php if ($profile['indicators'] === []): ?>
-  <p class="muted">Belum ada butir terjawab.</p>
+  <p class="muted">Belum ada soal yang dijawab.</p>
 <?php else: ?>
   <?php
   $bars = [];
@@ -83,7 +83,7 @@ $code   = (string) ($person['participant_code'] ?? $person['code'] ?? '');
           'label' => $indicator['name'],
           'value' => $indicator['mastery_ratio'] * 100,
           'text'  => $pct($indicator['mastery_ratio'], true),
-          'sub'   => $num($indicator['correct_count']) . ' dari ' . $num($indicator['evidence_count']) . ' butir',
+          'sub'   => $num($indicator['correct_count']) . ' dari ' . $num($indicator['evidence_count']) . ' soal',
       ];
   }
   ?>
@@ -96,7 +96,7 @@ $code   = (string) ($person['participant_code'] ?? $person['code'] ?? '');
 <?php endif ?>
 
 <h2>Cara membaca</h2>
-<p class="small">Skor 0–100 dihitung server: 70% tepat sejak awal, 20% ketepatan akhir setelah perbaikan, 10% kemandirian (berkurang oleh petunjuk dan pemeriksaan ulang). Penguasaan indikator adalah rasio butir yang benar sejak awal, bukan label lulus/tidak lulus. Pustaka Kedu dan audio tidak memengaruhi skor.</p>
+<p class="small">Skor 0–100 dihitung otomatis oleh sistem: 70% tepat sejak awal, 20% ketepatan akhir setelah perbaikan, 10% kemandirian (berkurang oleh petunjuk dan pemeriksaan ulang). Penguasaan indikator adalah rasio soal yang benar sejak awal, bukan label lulus/tidak lulus. Pustaka Kedu dan audio tidak memengaruhi skor.</p>
 
 </body>
 </html>

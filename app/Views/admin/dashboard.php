@@ -25,6 +25,11 @@ $hardest    = $nodes;
 uasort($hardest, static fn (array $a, array $b): int => $b['difficulty_index'] <=> $a['difficulty_index']);
 $hardest = array_slice(array_filter($hardest, static fn (array $n): bool => $n['attempts'] > 0), 0, 5);
 $delta   = $summary['pretest_posttest_delta'];
+$bucket  = [
+    'by_gender'      => static fn (string $value): string => admin_label('gender', $value),
+    'by_class_level' => static fn (string $value): string => $value === 'lainnya' ? 'Lainnya' : 'Kelas ' . $value,
+    'by_province'    => static fn (string $value): string => $value,
+];
 ?>
 <?= $this->extend('layouts/admin') ?>
 
@@ -32,44 +37,44 @@ $delta   = $summary['pretest_posttest_delta'];
 
 <?= $this->section('content') ?>
 <?= component('partials/admin-head', [
-    'title'   => 'Beranda penelitian',
+    'title'   => 'Beranda',
     'eyebrow' => 'Ringkasan',
-    'lead'    => 'Angka di halaman ini mengikuti filter dan cakupan akun Anda.',
+    'lead'    => 'Gambaran singkat hasil permainan siswa. Angka di halaman ini mengikuti pilihan filter di bawah. Akun guru hanya melihat siswa dari sekolahnya sendiri.',
 ]) ?>
 <?= $this->include('partials/flash') ?>
 <?php if ($retentionAlerts !== []): ?>
   <div class="alert alert-warn" role="status">
     <?= icon('warn') ?>
     <p>
-      <?= count($retentionAlerts) ?> studi punya data yang melewati masa simpan (<?= esc(fmt_num(array_sum(array_map(static fn (array $r): int => (int) $r['affected_count'], $retentionAlerts)))) ?> baris).
-      Data belum dihapus — <a href="<?= base_url('admin/tata-kelola') ?>">periksa pratinjaunya di Tata kelola</a> lalu putuskan.
+      Ada data dari <?= count($retentionAlerts) ?> studi yang sudah melewati batas lama penyimpanan (<?= esc(fmt_num(array_sum(array_map(static fn (array $r): int => (int) $r['affected_count'], $retentionAlerts)))) ?> catatan).
+      Data ini <b>belum</b> dihapus — <a href="<?= base_url('admin/tata-kelola') ?>">buka menu Hapus data &amp; riwayat</a> untuk memeriksa lalu memutuskannya.
     </p>
   </div>
 <?php endif ?>
 <?= component('admin-filter-bar', ['filters' => $filters, 'only' => ['study_id', 'phase_code', 'school_id', 'class_level', 'province_code', 'date_from', 'locale']]) ?>
 
-<section class="kpi-grid kpi-grid-nine" aria-label="Indikator utama">
-  <?= component('stat-tile', ['label' => 'Peserta', 'value' => fmt_num($summary['participant_count'], 0, 'id'), 'icon' => 'users']) ?>
-  <?= component('stat-tile', ['label' => 'Sesi', 'value' => fmt_num($summary['session_count'], 0, 'id'), 'icon' => 'clock']) ?>
-  <?= component('stat-tile', ['label' => 'Tingkat penyelesaian', 'value' => fmt_pct($summary['completion_rate'], true), 'icon' => 'check', 'hint' => 'sesi berstatus selesai']) ?>
-  <?= component('stat-tile', ['label' => 'Rata-rata skor', 'value' => fmt_num($summary['avg_score'], 1, 'id'), 'icon' => 'star', 'hint' => 'percobaan selesai']) ?>
-  <?= component('stat-tile', ['label' => 'Tepat sejak awal', 'value' => fmt_pct($summary['avg_first_pass_accuracy']), 'icon' => 'target']) ?>
-  <?= component('stat-tile', ['label' => 'Rata-rata durasi sesi', 'value' => ms_to_human($summary['avg_duration_ms']), 'icon' => 'clock']) ?>
-  <?= component('stat-tile', ['label' => 'Pemakaian petunjuk', 'value' => fmt_num($summary['hint_usage'], 2, 'id'), 'icon' => 'hint', 'hint' => 'rata-rata per percobaan']) ?>
-  <?= component('stat-tile', ['label' => 'Pemakaian audio', 'value' => fmt_pct($audioShare, true), 'icon' => 'sound', 'hint' => fmt_num($audio['total_plays'], 0, 'id') . ' kali diputar siswa · ' . fmt_num($audio['total_autoplays'] ?? 0, 0, 'id') . ' otomatis']) ?>
-  <?= component('stat-tile', ['label' => 'Sandi kuat sejak awal', 'value' => fmt_pct($strongPct, true), 'icon' => 'key', 'hint' => 'siswa memenuhi 5 syarat pada percobaan pertama']) ?>
+<section class="kpi-grid kpi-grid-nine" aria-label="Angka utama">
+  <?= component('stat-tile', ['label' => 'Peserta', 'value' => fmt_num($summary['participant_count'], 0, 'id'), 'icon' => 'users', 'hint' => 'siswa yang sudah mendaftar']) ?>
+  <?= component('stat-tile', ['label' => 'Sesi bermain', 'value' => fmt_num($summary['session_count'], 0, 'id'), 'icon' => 'clock']) ?>
+  <?= component('stat-tile', ['label' => 'Sesi yang tuntas', 'value' => fmt_pct($summary['completion_rate'], true), 'icon' => 'check', 'hint' => 'dari semua sesi bermain']) ?>
+  <?= component('stat-tile', ['label' => 'Rata-rata skor', 'value' => fmt_num($summary['avg_score'], 1, 'id'), 'icon' => 'star', 'hint' => 'dari tantangan yang diselesaikan (0–100)']) ?>
+  <?= component('stat-tile', ['label' => 'Tepat sejak awal', 'value' => fmt_pct($summary['avg_first_pass_accuracy']), 'icon' => 'target', 'hint' => 'jawaban benar pada percobaan pertama']) ?>
+  <?= component('stat-tile', ['label' => 'Rata-rata lama bermain', 'value' => ms_to_human($summary['avg_duration_ms']), 'icon' => 'clock', 'hint' => 'per sesi (menit:detik)']) ?>
+  <?= component('stat-tile', ['label' => 'Petunjuk yang dibuka', 'value' => fmt_num($summary['hint_usage'], 2, 'id'), 'icon' => 'hint', 'hint' => 'rata-rata per tantangan']) ?>
+  <?= component('stat-tile', ['label' => 'Sesi yang memakai suara', 'value' => fmt_pct($audioShare, true), 'icon' => 'sound', 'hint' => fmt_num($audio['total_plays'], 0, 'id') . ' kali diputar siswa · ' . fmt_num($audio['total_autoplays'] ?? 0, 0, 'id') . ' kali diputar otomatis']) ?>
+  <?= component('stat-tile', ['label' => 'Langsung membuat sandi kuat', 'value' => fmt_pct($strongPct, true), 'icon' => 'key', 'hint' => 'memenuhi 5 syarat sandi pada percobaan pertama saat mendaftar']) ?>
 </section>
 
 <div class="chart-grid">
   <?= component('admin-chart', [
       'id'          => 'chart-prepost',
-      'title'       => 'Perubahan pretest → posttest',
+      'title'       => 'Perubahan skor pretest → posttest',
       'type'        => 'line',
       'endpoint'    => 'api/admin/prepost',
-      'description' => $delta === null ? 'Belum ada pasangan yang dapat dibandingkan.' : 'Selisih rata-rata posttest dan pretest: ' . fmt_num($delta, 2, 'id'),
+      'description' => $delta === null ? 'Belum ada siswa yang punya skor pretest dan posttest untuk dibandingkan.' : 'Selisih rata-rata skor posttest dan pretest: ' . fmt_num($delta, 2, 'id'),
       'fallback'    => $delta === null
-          ? '<p class="chart-empty">' . icon('trend') . ' Belum ada pasangan pretest–posttest yang kompatibel.</p>'
-          : '<p class="chart-big num">' . esc(($delta >= 0 ? '+' : '') . fmt_num($delta, 2, 'id')) . '</p><p class="chart-note">selisih rata-rata skor posttest − pretest</p>',
+          ? '<p class="chart-empty">' . icon('trend') . ' Belum ada siswa yang menyelesaikan pretest dan posttest pada versi permainan yang sama.</p>'
+          : '<p class="chart-big num">' . esc(($delta >= 0 ? '+' : '') . fmt_num($delta, 2, 'id')) . '</p><p class="chart-note">selisih rata-rata skor (posttest dikurangi pretest)</p>',
   ]) ?>
   <?= component('admin-chart', [
       'id'       => 'chart-levels',
@@ -83,7 +88,7 @@ $delta   = $summary['pretest_posttest_delta'];
   ]) ?>
   <?= component('admin-chart', [
       'id'       => 'chart-difficulty',
-      'title'    => 'Kesulitan tantangan (3 wilayah × 5 node)',
+      'title'    => 'Tingkat kesulitan tiap tantangan (0 = mudah, 100 = sulit)',
       'type'     => 'heatmap',
       'endpoint' => 'api/admin/nodes',
       'fallback' => component('partials/node-heatmap', ['levels' => service('contentRepository')->levels(), 'nodes' => $nodes, 'links' => true]),
@@ -105,14 +110,15 @@ $delta   = $summary['pretest_posttest_delta'];
   <section class="panel">
     <h2 class="panel-title"><?= icon('warn') ?> 5 tantangan tersulit</h2>
     <?php if ($hardest === []): ?>
-      <div class="empty-state"><?= icon('info') ?><p>Belum ada percobaan yang selesai. Data muncul setelah siswa menyelesaikan tantangan.</p></div>
+      <div class="empty-state"><?= icon('info') ?><p>Belum ada tantangan yang diselesaikan siswa. Daftar ini terisi setelah siswa mulai bermain.</p></div>
     <?php else: ?>
+      <p class="muted">Angka di kanan adalah tingkat kesulitan: 0 = mudah, 100 = sulit.</p>
       <ol class="rank-list">
         <?php foreach ($hardest as $node): ?>
           <li>
             <a href="<?= base_url('admin/analitik/node/' . $node['node_id']) ?>"><?= esc($node['title']) ?></a>
-            <span class="rank-meta"><?= esc($node['engine_type']) ?> · <?= esc(fmt_num($node['attempts'], 0, 'id')) ?> percobaan</span>
-            <span class="rank-value num"><?= esc(fmt_num($node['difficulty_index'], 1, 'id')) ?></span>
+            <span class="rank-meta"><?= esc(engine_label((string) $node['engine_type'])) ?> · dicoba <?= esc(fmt_num($node['attempts'], 0, 'id')) ?> kali</span>
+            <span class="rank-value num" title="Tingkat kesulitan (0–100)"><?= esc(fmt_num($node['difficulty_index'], 1, 'id')) ?></span>
           </li>
         <?php endforeach ?>
       </ol>
@@ -121,17 +127,17 @@ $delta   = $summary['pretest_posttest_delta'];
 
   <section class="panel">
     <h2 class="panel-title"><?= icon('key') ?> Literasi keamanan digital</h2>
-    <p class="muted">Syarat sandi yang terpenuhi pada percobaan pertama saat mendaftar (dari 5).</p>
+    <p class="muted">Berapa dari 5 syarat sandi kuat yang langsung dipenuhi siswa saat pertama kali mendaftar.</p>
     <?= component('partials/bar-list', ['rows' => array_map(
-        static fn (int $met, int $total): array => ['label' => $met . ' syarat', 'value' => $total, 'display' => (string) $total],
+        static fn (int $met, int $total): array => ['label' => $met . ' syarat', 'value' => $total, 'display' => $total . ' siswa'],
         array_keys($password['criteria_distribution']),
         array_values($password['criteria_distribution']),
     )]) ?>
-    <p class="muted">Rata-rata penolakan sandi lemah: <b class="num"><?= esc(fmt_num($password['avg_weak_submit'], 2, 'id')) ?></b> kali per siswa.</p>
+    <p class="muted">Rata-rata siswa mencoba sandi yang terlalu lemah (lalu ditolak) sebanyak <b class="num"><?= esc(fmt_num($password['avg_weak_submit'], 2, 'id')) ?></b> kali.</p>
     <?php if (! empty($digitalSecurity['pillars'])): ?>
-      <h3 class="panel-subtitle">Ketepatan per pilar digital</h3>
+      <h3 class="panel-subtitle">Jawaban benar per pilar literasi digital</h3>
       <?= component('partials/bar-list', ['max' => 1, 'rows' => array_map(
-          static fn (string $pillar, array $row): array => ['label' => $pillar, 'value' => $row['accuracy'], 'display' => fmt_pct($row['accuracy'], true)],
+          static fn (string $pillar, array $row): array => ['label' => admin_label('pillar', $pillar), 'value' => $row['accuracy'], 'display' => fmt_pct($row['accuracy'], true)],
           array_keys($digitalSecurity['pillars']),
           array_values($digitalSecurity['pillars']),
       )]) ?>
@@ -149,8 +155,8 @@ $delta   = $summary['pretest_posttest_delta'];
           <p class="muted">—</p>
         <?php else: ?>
           <ul class="chip-list">
-            <?php foreach ($cohort[$key] as $bucket => $total): ?>
-              <li class="chip"><?= esc($bucket === '' ? 'tidak diisi' : $bucket) ?> <b class="num"><?= esc($total) ?></b></li>
+            <?php foreach ($cohort[$key] as $group => $total): ?>
+              <li class="chip"><?= esc((string) $group === '' ? 'tidak diisi' : $bucket[$key]((string) $group)) ?> <b class="num"><?= esc($total) ?></b></li>
             <?php endforeach ?>
           </ul>
         <?php endif ?>
@@ -160,20 +166,20 @@ $delta   = $summary['pretest_posttest_delta'];
 </section>
 
 <section class="panel">
-  <h2 class="panel-title"><?= icon('clock') ?> 10 sesi terakhir</h2>
+  <h2 class="panel-title"><?= icon('clock') ?> 10 sesi bermain terakhir</h2>
   <?= component('admin-table', [
       'rows'         => $recentSessions,
-      'emptyMessage' => 'Belum ada sesi permainan. Sesi muncul setelah siswa mendaftar dan mulai bermain.',
+      'emptyMessage' => 'Belum ada sesi bermain. Sesi muncul setelah siswa mendaftar dan mulai bermain.',
       'columns'      => [
-          'participant_code' => ['label' => 'Peserta', 'format' => 'code'],
-          'phase_code'       => 'Fase',
+          'participant_code' => ['label' => 'Kode peserta', 'format' => 'code'],
+          'phase_code'       => ['label' => 'Fase', 'format' => 'label', 'group' => 'phase'],
           'status'           => ['label' => 'Status', 'format' => 'badge'],
-          'locale'           => 'Bahasa',
+          'locale'           => ['label' => 'Bahasa', 'format' => 'label', 'group' => 'locale'],
           'started_at'       => ['label' => 'Mulai', 'format' => 'datetime'],
-          'duration_ms'      => ['label' => 'Durasi', 'format' => 'ms'],
-          'completed_nodes'  => ['label' => 'Serpihan', 'format' => 'num'],
+          'duration_ms'      => ['label' => 'Lama bermain', 'format' => 'ms'],
+          'completed_nodes'  => ['label' => 'Tantangan selesai', 'format' => 'num'],
           'total_score'      => ['label' => 'Skor', 'format' => 'num', 'decimals' => 1],
-          'id'               => ['label' => '', 'render' => static fn (array $r): string => '<a class="btn btn-quiet btn-sm" href="' . base_url('admin/sesi/' . $r['id']) . '">Buka</a>'],
+          'id'               => ['label' => '', 'render' => static fn (array $r): string => '<a class="btn btn-quiet btn-sm" href="' . base_url('admin/sesi/' . $r['id']) . '">Lihat</a>'],
       ],
   ]) ?>
 </section>

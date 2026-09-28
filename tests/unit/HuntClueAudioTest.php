@@ -154,7 +154,7 @@ final class HuntClueAudioTest extends CIUnitTestCase
         $cari = $this->itemForm($this->node('cari'), $item, ['find_object']);
         $this->assertStringContainsString('name="audio_prompt_id"', $cari);
         $this->assertStringContainsString('name="audio_prompt_en_id"', $cari);
-        $this->assertMatchesRegularExpression('/<option value="' . $audioId . '" selected>\s*ID · hunt_clue · audio\.narasi\.id\.petunjuk-tmg-4-01 \(disetujui\)/', $cari);
+        $this->assertMatchesRegularExpression('/<option value="' . $audioId . '" selected>\s*petunjuk-tmg-4-01 · Indonesia \(disetujui\)/', $cari);
         $this->assertStringContainsString('petunjuk-{node}-NN.mp3', $cari);
 
         $other = $this->itemForm($this->node('pilihan'), null, ['single_choice']);
@@ -170,7 +170,7 @@ final class HuntClueAudioTest extends CIUnitTestCase
         $this->assertNull($find['audio_prompt_id']);
         $this->assertSame($audioId, $find['audio_prompt_en_id']);
 
-        $this->assertSame('Audio yang dipilih tidak ditemukan.', $this->itemPayload(['interaction_type' => 'find_object', 'audio_prompt_id' => '999']));
+        $this->assertSame('Rekaman yang dipilih tidak ditemukan. Pilih ulang dari daftar.', $this->itemPayload(['interaction_type' => 'find_object', 'audio_prompt_id' => '999']));
 
         // Jenis lain tidak pernah membawa audio petunjuk, walau dikirim
         $choice = $this->itemPayload(['interaction_type' => 'single_choice', 'audio_prompt_id' => (string) $audioId]);
@@ -187,8 +187,8 @@ final class HuntClueAudioTest extends CIUnitTestCase
 
         $uses = (new MediaUsage())->forAudio();
 
-        $this->assertSame(['Petunjuk tmg-4-01 (ID)'], $uses[$id]);
-        $this->assertSame(['Petunjuk tmg-4-01 (EN)'], $uses[$en]);
+        $this->assertSame(['Petunjuk soal tmg-4-01 (Indonesia)'], $uses[$id]);
+        $this->assertSame(['Petunjuk soal tmg-4-01 (Inggris)'], $uses[$en]);
     }
 
     // ------------------------------------------------------------- bantuan
