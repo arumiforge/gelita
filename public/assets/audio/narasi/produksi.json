@@ -390,35 +390,35 @@
   },
   "id": {
    "dialog-magelang-01": {
-    "sha256": "4c20bbbb6a786bae5d9a10f879dc1bf71c64e1abb16bdc1b9b22c5e25963ef2b",
+    "sha256": "9a1a9f627866d58377094860fd3d8be0eed3cddc6453719beaad3653f65a80ad",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-magelang-02": {
-    "sha256": "02cd8efc2eaa4c91520900f358c76612694c072ee8095f8f09e8e770e31db76b",
+    "sha256": "ea2fcdf96247662f56614b2f6ba969976575ec2204898d0d30516aa54c925a4b",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-magelang-03": {
-    "sha256": "b4661d051bdc8c76c3d270f4bb82b64ac1d586504870e84f36b7ff1a6f62e649",
+    "sha256": "e6e3331d8e41ec189924f42f67619c693b4c9bbb39cd7258e84da891ec168505",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-magelang-04": {
-    "sha256": "2fe80140d8cecb223959fa31dbfa9624465c890c75810d5afffd3a791f3de242",
+    "sha256": "fc592689b47778503e0679877a11b815bd78367082a404927e17fba5eddd9bea",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-magelang-05": {
-    "sha256": "417b8e02c993ce41e5fa71aa546484058e8593adefeb15ffbbf0bbf3e76e7429",
+    "sha256": "cf5e64b957478068d547d0ca9fc091abad697a1b0e4bb6e6e458ff3650e103ce",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-magelang-06": {
-    "sha256": "a9ee61b8302fdd8ac498af3e64a9e44aaafa5d9f2ffdfc8a37e05abf3d7a0207",
+    "sha256": "91fab8cfec44461b11cf7e3ccfdb89721983bb33ec5f4126208b904bdd07171f",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-magelang-07": {
-    "sha256": "c72aa86d396d4c0554d50ec1056299d3d04aecec123b3de41592dfcc94cc4fef",
+    "sha256": "ea2cf0b89c8179929a1cb04c9396e459cbe37e0e161186b1d5725f673ff3779a",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-magelang-08": {
-    "sha256": "6d3503b94789b35167bb4992ce7b439732009062d8962fb66d86eb7d299e61dc",
+    "sha256": "fb95a1c06e6ea9797de4fa694b629fa2b1d287c4b04312d021de65e00db8e9c8",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-magelang-09": {
@@ -426,7 +426,7 @@
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-magelang-10": {
-    "sha256": "2f547d0ce30f9f1fb82f659dde51fd3d4cbce2858732635a2b343db0ebbadc17",
+    "sha256": "8dd0e7028f7913ceae2b58ac83126f067195d619cb90d77f6107ac22ac14ca30",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-magelang-11": {
@@ -434,107 +434,107 @@
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-magelang-12": {
-    "sha256": "f82cad5195fa3f330492aa0f507d24f810d82ae3b07e9ae54fb715b18fbedb05",
+    "sha256": "73d23baf0eec6a7b11e2ff7f553dacc2dd39a47dfb1a1d21c298f346ede2275a",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-magelang-13": {
-    "sha256": "01b78c91877399bd6dc4f68e9dc0c43f4b8dee7d14d86439009342955c5f1249",
+    "sha256": "41079f5072669824f6aaab8c289179f867e1f9c41b30eabb30e6cc897e7b0cf8",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-magelang-14": {
-    "sha256": "684707c9e6b2cb19dcbfb42ddd941cdf513ee2eb4a64e0abc77788df2d5bf8b9",
+    "sha256": "75aa6fd76e3ed8f4642ed939b29af8cfae416af1213ada713827af6b4915a630",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-magelang-15": {
-    "sha256": "ac93cfafeccc3c831417fcca0b3a0b693485f0e971f58f2d73e4819b6f0b115a",
+    "sha256": "65af31e894630b1f134718adb8b8d108e081593449acf22b66f1cdd2df880275",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-magelang-16": {
-    "sha256": "7e102dde6869403038a9f7d37827b79a51b7465ad6da82627aec57be639da6f2",
+    "sha256": "374a8224273d78910776f789b825701619a2f16ca026d118d55c622338d5e972",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-temanggung-01": {
-    "sha256": "7b1cab453c7ea9ae7bf252d495a269a0b65d10df4bcf05581168b7e28473c737",
+    "sha256": "3f4bee922b2fa617995c38e5cb6a9e97baf9de7b313538c75b3dcd33e16ac2d4",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-temanggung-02": {
-    "sha256": "0b897f1065527ba962bfd70bbc5206764fc27b1432837402a70f932132dcc0e1",
+    "sha256": "e3a260fd3f08f1503ff0261c43578153c1f42d001e0fc5021bb947e5122e3805",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-temanggung-03": {
-    "sha256": "d4344e4566d9f855e7b169d2eb907700a112ee3688dd15abdb9f54e6c61ba5e4",
+    "sha256": "3923b8a996a9e77a23ffa8b82a6341458a278724d36524730b53c63e30e7b4c0",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-temanggung-04": {
-    "sha256": "320813fb2da9c683240fbed71f13508deb67a588c03ac78299d63fa8af60cc03",
+    "sha256": "f5cf5351ecdfe02e37712c5dd477c46834c65d91b23d893931fc97712d6b53d2",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-temanggung-05": {
-    "sha256": "3e2b899e479a2e69cf75759f0ac57d3aa986a1e87c372bab19188f1238c27cbb",
+    "sha256": "c039557952a5f623e89e4a76316c9dd484163f2ad84e211871c5d19c0c0cb17f",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-temanggung-06": {
-    "sha256": "d220b693c721a2ab8e218ce8cb600dc6dfe4f4cdc14c2cce79c8aa43b02062df",
+    "sha256": "8a084c9d9daffa865b1faffd281ac572b2ac7d78913d962ed47ddf0e069291b9",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-temanggung-07": {
-    "sha256": "b7a9c8b4d24bcedb7bc062c6d63fbf6d6fd71a7f0dff028c5c36dff00f185819",
+    "sha256": "abd2c205074a7181a789fca06da40ce69cc7d4dc3d5a86d84450e04b1c36419e",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-temanggung-08": {
-    "sha256": "9867dec733fedfbf35b1d122328f4126bb1266c955d33bb583f1e2cec9d80961",
+    "sha256": "dcb4b977253498d8bbcbfb508de45215062d44e37e6f1205e11db83d0011c241",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-temanggung-09": {
-    "sha256": "e7d63c79931afc03105ff4cc9045186185754b59996897bb60f738c494aaee17",
+    "sha256": "aa17e8985a809c0acb54fd849f4b709caf4fa39c3fa094b72e1287af8349abbb",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-temanggung-10": {
-    "sha256": "e6d170bc4329ab052d71664d76a4af375af00f5e6f251c4b76b6dead591690f0",
+    "sha256": "f7fcd52472ae0c54a532690bc69fa6c7463055f1c3ca4f7e4d78503691907c15",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-temanggung-11": {
-    "sha256": "b4311395c568519f90b4fcd503a108dd2a18672dcebab2408fa7b433cdf34972",
+    "sha256": "524a6d563b0dff7533bd6031f425e96cf95a9ff3f0de677ebe82d699d321af34",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-temanggung-12": {
-    "sha256": "7adbb74af75f3c7dd188a096a7ab0f57193fc8923f254008f787f202f58d2871",
+    "sha256": "9fc89af54a068deff5b98256348516ff97c5e84d5945daeb960d7b58d3e562bc",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-temanggung-13": {
-    "sha256": "f1ba44ed24db1e0473de7ab5c5b9fe12b3cc30a441d94ab99c053b6188f86514",
+    "sha256": "8722f12384eccdbe1df85ff465b0019da7a16cc81a32206b9696ced3c0e5a912",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-temanggung-14": {
-    "sha256": "d97cd226204db47597af0ca6ae59babab1e0c8163358f4c439827d66b61ea3fd",
+    "sha256": "aee5417c7b285cfd32b2cb0349a2945faefc370b247848f90dbfb0bd2988af05",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-temanggung-15": {
-    "sha256": "96af8b8af0301b9e3fa52ebb085b25498662d741f79677747bc01e9419f334b4",
+    "sha256": "e48ace3534d075ebf0f91ee8d3c74e60f3028a45f891df70dbdf1e722d7a4253",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-wonosobo-01": {
-    "sha256": "7598ff451a6acbbea1f930e437020b1499e599eb1021ad16aedb8b83c2894ac2",
+    "sha256": "b0765b688a7cc513d4fd506e754ee98ae7e5b91ac60c196aa3aa8880aea4aa16",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-wonosobo-02": {
-    "sha256": "5689c028b10e626769ed8c5b2d78cabcce63663713f011149e3c1146cec5b8be",
+    "sha256": "7c97e1a25f3370cdc3516308083eb7e296ee65c6101c7aa52d4b7d3016715417",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-wonosobo-03": {
-    "sha256": "9a8c6b8b58796a55974401bf9e45cc8d14eb1de8c39dfa39ba1175c2b62cfea1",
+    "sha256": "3c7d69bbbe43cd812b559ccf979fef022cf6fd851d5dde7ab8875d02da3eb85b",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-wonosobo-04": {
-    "sha256": "71068fa3c21d3ce8c41ea68ceb35f938ece0d670eddcca920f886c1664fc7e3b",
+    "sha256": "f46bb6cfd96574c22d18a98c7938f773e800a62878e6376c26054ab295bb1864",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-wonosobo-05": {
-    "sha256": "b6af20c9d06018023fbd721b3796556cb1cd3e6a48a56f0d2b337515abd6b345",
+    "sha256": "289ecbfa8cae3cc5ebf4dc60390eac6bc231e9e6d3d44ba2aedb2b7e5d3f7261",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-wonosobo-06": {
-    "sha256": "82c58fe1e837101082d3f1af47c36b7943c25d3e779ece8a25c171a9548a23c4",
+    "sha256": "6980d9bf9cf93ca798a9fe858990e96f1bf2beeecb39db5744eb575db1336963",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-wonosobo-07": {
@@ -542,55 +542,55 @@
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-wonosobo-08": {
-    "sha256": "6db56853c8e30447785855c4d57af9792b0b646cee411e725d41c98407e2a363",
+    "sha256": "47461c13e939e75369d3fc4d83ffb2ecd1becd85376ac70df72406d4284ebffa",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-wonosobo-09": {
-    "sha256": "db83a43dd3f20ac83a5e0dedeb1b757df90ffd844012fe5ee6fe641bf5620a22",
+    "sha256": "1bfcfecfef7ad4ef4057068ee7659a50e97daa3da325133c47ecdfcaf69ec1cf",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-wonosobo-10": {
-    "sha256": "1726556b8c0ef48d0abbd3b6fd207f7943f16f72c153c0f133156ee6a58d0bf4",
+    "sha256": "4efc145942342ea7cce7aba2f1fe1397a0caef6a47cee1a7ce9bcfbcb88ae665",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-wonosobo-11": {
-    "sha256": "a3473cbb89048fe7254bc186950fdfc552ea5ecbee58bd182646c8d4bd2f4db6",
+    "sha256": "f751be63369269e3f88150b38c51a934c7de2f159a3e62517530503e323fdea8",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-wonosobo-12": {
-    "sha256": "655e7bef35046c563d991bc5dc8b66c99461508a69da2c7e73cb2fe294015ccc",
+    "sha256": "9b0dea8824a1a166861883a7ce55b37a4b4c776e2b9253aa5af3bb718f44d05c",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-wonosobo-13": {
-    "sha256": "67dca0c7708f9a9f187bd438ad24db6c389e58a44b8f40e5d6929619e83034df",
+    "sha256": "dea996b91966a6f48b772f2539f168e3145521541438a2adae9486979b9d3fb6",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-wonosobo-14": {
-    "sha256": "538967aad743ec1777abb477c679413ebc9c8fb15875a3cdde2047e436c1761c",
+    "sha256": "54adb76f3ccddf21bdf34410ddb34ca9ae715f4b9663fd942fb317d8950bc7a2",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-wonosobo-15": {
-    "sha256": "2f340ec3bcf67aaca47af02a8f7f4b94974d502ac4190388d147815fd5192b45",
+    "sha256": "9a91106af5ee91ed6dd08c78cd3b97a9a0306b41ce349d0d8844aadffb156683",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-wonosobo-16": {
-    "sha256": "839bc3d91579d32bb3364cf8fc928ad1e66aa85d3db9e50a80c3db0c35b3576d",
+    "sha256": "f4e7a27a0f9202965ad0d7a4f6a147262c0827580b2f7e2a6fc4adafa7b77501",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "intro-01": {
-    "sha256": "1da5794ee3322fbaef944753b223c332b48e9e22b855ca6cd8e5f47372de269b",
+    "sha256": "2cdd0cb6ff6a94ec4fc1c7e771d6aa03df077f0d9c21f5aaa9a2bf1351b13006",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #36 · Narator"
    },
    "intro-02": {
-    "sha256": "8b09b6fa718d03fa5b4091e19d8fee8f4861397371250344040858a1b4f5df76",
+    "sha256": "ff0331dea9426e4c9bd69795b68a85bcca991966209cffa8c1102ee26b0a1ebc",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #36 · Narator"
    },
    "intro-03": {
-    "sha256": "4af407be441e1ffabc71ae09a6391f648c4c14520f18e703c23b7395faec721f",
+    "sha256": "e9b1ce0f2a4c50f5934489aa8b9b214acdfaa18c26da1448520adec3a0b46ab9",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #36 · Narator"
    },
    "intro-04": {
-    "sha256": "2c5278fb7c26f3360bdb4b3ea6930b2cd4c8d0dcaf73a597de5fb71c333935d0",
+    "sha256": "c4f352ec13f9b3851ef32f1666a9b9cb2096722c2257953d0989d4c9a9b6d998",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #36 · Narator"
    },
    "intro-05": {
@@ -598,179 +598,179 @@
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "intro-06": {
-    "sha256": "5191a9a544064f71fb6dc1575a7e502dd4425678524bd6bc4de8e2b2e5729a05",
+    "sha256": "6b6f40b7913321750db9216013f168eba122c93ef11d6029d9773fe7178d3ad1",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "intro-07": {
-    "sha256": "fba779351433acce0be5ee82d19307d4b906a2e8476b95615e237cd931fa96a0",
+    "sha256": "3833822e78da437e6c1e4306f62f0e1c20bfa8f6c6570c2df28b0f5301b663b5",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #36 · Narator"
    },
    "intro-08": {
-    "sha256": "f1de82d39e7e9cf8d8f37d554330ab9d1724f3e818da7825b5c6e778ee9b84fc",
+    "sha256": "e29f9b8c37258bfc48faebdd694b8de00637a527b4e17559edf4b6b70f83a396",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "intro-09": {
-    "sha256": "63d4d7743413f14160cd243532cc0cdb7d7961f70616542672449709a19e8c29",
+    "sha256": "3ef16b705f79479ee114e05a9150ac5f25b8a818fe03032fb549ca885d711e45",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #36 · Narator"
    },
    "kenal-magelang-01": {
-    "sha256": "6c7600752fe1e7efe4a1296faebfbb84782a18c2540c709843a1925cc80afa9d",
+    "sha256": "a5ec9105f602c677f12a9d962c7da2f0bef0d8807d7baf774d1e4137221deef6",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "kenal-magelang-02": {
-    "sha256": "069ef5087d4e42fa599c86c596721a03bee758b96d29228f74a3d0f63b46691e",
+    "sha256": "624501de334aecc69c9822bd10af7d95722dfd5e216210f3741d3dcc7bb9cd64",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "kenal-magelang-03": {
-    "sha256": "195dd765d2931ed026b5bf97a6422927e116fda06bc51750dd0a799ac603b103",
+    "sha256": "84ccabfe21f7f99e4bd50eb618719feae0dfc1312223ea6c58d3eaad294a8b0c",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "kenal-magelang-04": {
-    "sha256": "ad9e163d54a27daa4eb83643ef7be2381020c8d46b0a6fda51575d797e91da66",
+    "sha256": "38af6fd7370f885bd94af1022d9a77dbc1f172d93ba910629bb3e72c8ac4fbf4",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "kenal-temanggung-01": {
-    "sha256": "11f80696880bb5841c71efda5e636b86f9deb5381bde9dad3d205e8f2441b387",
+    "sha256": "a244217a3ad6286c62dbe8a272100fd1b0bb866ae5240642a5fb414399c30996",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "kenal-temanggung-02": {
-    "sha256": "b081ee6f4e4d54794598aa0ed7d9e1a2abcd4e579c7fca675ecfafab4fbace9d",
+    "sha256": "124295856ed0398ee41521410bdbade5d4cc5a50cd6a96893a1e2b15074b03bf",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "kenal-temanggung-03": {
-    "sha256": "cb2b62e33befb395ab926ffa38d9145c8e7cbcf9612081b62b5f0a37d899dfb2",
+    "sha256": "e48ea64c673d299d6548088009d31c1a2f56b66fa87d87fffb724254588e7627",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "kenal-temanggung-04": {
-    "sha256": "0e571291d79f91a329f94d2b825032b84465046c0ef6053436c69502fb1b3176",
+    "sha256": "c5293f2d102673a07cd6ac2e47ec0d03cccde4ad71964ce30f9e9880ebca9b42",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "kenal-wonosobo-01": {
-    "sha256": "775ff20e4ada96b4e4be27b15c68289a9d0683499abdddc0862479a89636207d",
+    "sha256": "c6c3ce52a0038b6ed969b6d95cc737922685c23e3e21e0e793927c806568bb5f",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "kenal-wonosobo-02": {
-    "sha256": "3af2fd354c52da53f08d596d9a74cac686db05fb7756b40c757e38d3cfe6f2ae",
+    "sha256": "27cf037cf4b5e1240fcd8f6abe55754298d5fd2bcd55dac6af904011767c5ad8",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "kenal-wonosobo-03": {
-    "sha256": "9b32fe32c9b99a17b8dfb1c48df357ac35b6ecfe0653b4c31adb9134cf6dd57f",
+    "sha256": "9d4aced6fa0afb359133468c968ca042966dcb529bbff59d3dedd1370bde1eaa",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "kenal-wonosobo-04": {
-    "sha256": "8157edf2286e82ed77095c0dfb5af23281376515782f3b4f72997d03e020dcb8",
+    "sha256": "c6c89d5d2c743ecc3ca8aa4e31886fd7019cbd250b19b48f990c4623355199cb",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "penutup-01": {
-    "sha256": "3850b31cfe885b912d08180006a92f4cfe448eecf31186c401e17718937a177e",
+    "sha256": "d40ce1240b3ff96eeb03dfdf2c792362feac18d2ddbb4113f960566056423b6e",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #36 · Narator"
    },
    "penutup-02": {
-    "sha256": "91fef777440730a172df0e0e3e02e903e399a0ab1e6076e8c8f442056e39af21",
+    "sha256": "f3fcfab037451f8b7ed922faa1edd73409823acfaad8e585cff2e5e38a3785ac",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #36 · Narator"
    },
    "penutup-03": {
-    "sha256": "419f53669bfe240af6601a1ba937417f5e67e92576e8b93472695e9e5945c964",
+    "sha256": "4d20675d5add420a9d47a58bfd470b3afa5b91e31221856aa54bb282506e75f6",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "penutup-04": {
-    "sha256": "5e9f0aade31866b7c925e46d3f7a885b76d1d91545481903d3daa7d331521f7b",
+    "sha256": "9563a2808a66542ca24870894d00bc3ce2aa3a0b9d42ed2eb9fbd0632edd1986",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "penutup-05": {
-    "sha256": "b875c6c2c8b3a67b4eb1a8a5a035945fbc6b23b9ad7fc4d6ab27b6fea2f8dae3",
+    "sha256": "918c62b477501c8351cc50daee898e2a882e261506a848303d56fc6a61422b56",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "peta-01": {
-    "sha256": "c85890a439072ab8e091f41142875472d112a59d14d19499057f049e5c612830",
+    "sha256": "5a4381035874a71b2761e4f208f9a31c8b2e81929ca3d0276e775764e271b7cd",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "peta-02": {
-    "sha256": "b75ead4b5960bc2797110378d79af3ffbf8800a3e1c0d864dc60122da15c7778",
+    "sha256": "957b4b5270a82e010a1bd68a44a03e87b694d0697b70599879276234ad344747",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "peta-03": {
-    "sha256": "a25b48116d2e77b2ca1908e34d1634535043dc201d6ee5c50926494add01ac8d",
+    "sha256": "f9ef409e998c7bfc242d4e435c40a47d54a8489b3d6d186f05642a71b6bc7b8f",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "petunjuk-tmg-4-01": {
-    "sha256": "b219ef233b83fe744428003debde73d20849e2db8f665a0cb9fa0343104438de",
+    "sha256": "c265af6fb50655e768f0be8a5751197db77148d764fcdbf2cbbde685e16e8593",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "petunjuk-tmg-4-02": {
-    "sha256": "174be6553229086c493a352973ff0914a8214aadcf305b65edb8ac8013c95d58",
+    "sha256": "2c831940d6fa591f0302e82b0f24b4e85b254cfd4f7e80db1ff2c42d01b8b7e3",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "petunjuk-tmg-4-03": {
-    "sha256": "03d07f376d3823ac7966fd33f9c8fd68d5cb09926d126d8be6ce7a3f8ab350f6",
+    "sha256": "8c05bb45c2051681bf900722e1ed12d57ae3600bae67be2ae479003aede44bc3",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "petunjuk-tmg-4-04": {
-    "sha256": "63138e1eb4c7acb1d7d9fa3521dc2d24614a7616fda0d6c361e3571c9dc3a259",
+    "sha256": "1b59efe1688e70586ff8e8eca92536c1543ebb2b719d8d4d8a8a8eb1bf2abc4f",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "petunjuk-tmg-4-05": {
-    "sha256": "a490a006573d1e278c81b5322de73b4459e5da3eda973dc3f979eabf111a0933",
+    "sha256": "7f6c62dcd01a7415d0bee5226cebeac66258b0c1be4a69495e5175ca2da98834",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "petunjuk-tmg-4-06": {
-    "sha256": "23942e2463c1df828cb7efcd7ce2e3a15731a8cc74c57287df76a1574f285557",
+    "sha256": "08e1de8e587bc7fc167500c71abe08d7ff315c481a8f1fe9df5a5b8689dbe4b5",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "petunjuk-tmg-4-07": {
-    "sha256": "deb669ccf19271374a0dc2e79bc31fbe36e81d17751d3d7a968d73a2b738811a",
+    "sha256": "7519c1c0360133547d0dcb47fc217aa483d61d4c29119c719f34037c53c47c04",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "petunjuk-tmg-4-08": {
-    "sha256": "f37f9ada69b99c79418580433270d89df93f2e80933303847c28544dbbb3c595",
+    "sha256": "84ffe2183b45a02013b0bb0e7521f8c006ea64c9fc818c1bc0136d713ec3e813",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "tuntas-magelang-01": {
-    "sha256": "8e2cbf0e17517f591b07cb484492a025894cb2912c64bbc16c0d284e529126bc",
+    "sha256": "469f21ce5ba5ef25fc2ba6ffd0e176066ea1bd7b272e793efcc4f9419199319a",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "tuntas-magelang-02": {
-    "sha256": "8c1ae7658b8ba1f6751ff590ed0ab755330a0cf1ed6eba9da08addabb599c4f0",
+    "sha256": "2058f6c812fea8b79dbf4e434ff82ca8735a987e44fc83a0d27d7f9b4e65511e",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "tuntas-magelang-03": {
-    "sha256": "2c48daa072ce155d6a10b84ee520429347fe26faa5e72b73b41e09e0370f633d",
+    "sha256": "125ba56b805ccba48422d91d156c4cf7e25df40da6dcef79453f634fb1bbdeb1",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "tuntas-magelang-04": {
-    "sha256": "cf93c9bd99d627d88325075496d861301d5b6912ab8ec639ec2dcaf26835f3de",
+    "sha256": "626e25aa8897530a17695fd99e5784b0a93a410f3e404d919953f6f4d222a050",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "tuntas-temanggung-01": {
-    "sha256": "71b298d3494f22bfbff90874b60d305fc8ac04e20750efbc8e8bb2ea26eda407",
+    "sha256": "f104199131b9590e40beea253b16007bf6e2085ebf58b70805282bf028b35895",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "tuntas-temanggung-02": {
-    "sha256": "5353c1ea312c80d271f1a230f1fdc4ae609ea5751bdbc236a8b3b19a5e8e6b42",
+    "sha256": "921539e507f1995a849343d53016824fee8d95d604694abd6ea170822147e2f2",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "tuntas-temanggung-03": {
-    "sha256": "618b209b27313cebcb67d93dbed7d13952ca06a779e74b57bb8c1eb316892bc9",
+    "sha256": "74f30003c6c733914ae30eb7621483848802c94b328164010b312a2b10f07785",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "tuntas-temanggung-04": {
-    "sha256": "72a0a5aaca26494021c48f3fb8a5ded09a42eb248cc481c1a3d37f6746ad8839",
+    "sha256": "5bb52842165c9bfd03efbf990067ef69d00c2ce41afcb20fbca172df10d6f4e1",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "tuntas-wonosobo-01": {
-    "sha256": "9319f4d8cc635118c44ad493d97aa062ffd1c9b09d82d5c3ed3725c2e372d7d3",
+    "sha256": "2ca41f8474ece4f8eebe567ad60f1ed966b5c2cecdaed4a4225faf0a84eba377",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "tuntas-wonosobo-02": {
-    "sha256": "a95454e35f4024bf92713c1e1b214cbaa6acc060a3b067cc7ca9603262f96317",
+    "sha256": "867490452a57f58866dcf3279c237a0e499f30ccb9d12a43355405028bb0b193",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "tuntas-wonosobo-03": {
-    "sha256": "54cd9ec2220d566373f449937c7b8a2c552c280742bacef4441f1782a1659e4e",
+    "sha256": "41cde47aa3f1a32db5b22630aa4126ea6917c8a892219cee85139ef47875d65a",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "tuntas-wonosobo-04": {
-    "sha256": "fd753f77d77d08319299364726408c09540f4b91ea66e62062a5a976f8af11c5",
+    "sha256": "5736b0cc5144d6db5d96eb5603e99b8d81b328dd7776809f13d01696d8b1f577",
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    }
   }

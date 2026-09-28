@@ -60,9 +60,9 @@ Catatan teknis:
 
 | Tokoh | Bahasa Indonesia | English | Arahan naskah yang dikejar |
 |---|---|---|---|
-| Narator | Mimic 3 `jv_ID/google-gmu_low` penutur #36 (perempuan), tanpa pengolahan nada, tempo ×0,96 | Piper `kristin` (perempuan, gaya buku audio LibriVox) | hangat dan tenang seperti pendongeng |
-| Jaka | penutur #6 → median F0 ±276 Hz, formant ×1,07, tempo ×0,92 | Piper `jenny` → F0 ±262 Hz, formant ×1,12 | anak laki-laki ±11 tahun, bersemangat |
-| Mbah Kedu | penutur #38 (laki-laki) → F0 ±104 Hz, formant ×0,95, getar lansia ringan, tempo ×0,97 | Piper `joe` → F0 ±92 Hz, formant ×0,98, getar lansia | kakek Jawa, lembut, pelan, logat Jawa halus |
+| Narator | Mimic 3 `jv_ID/google-gmu_low` penutur #36 (perempuan), tanpa pengolahan nada | Piper `kristin` (perempuan, gaya buku audio LibriVox) | hangat dan tenang seperti pendongeng |
+| Jaka | penutur #6 → median F0 ±276 Hz, formant ×1,07 | Piper `jenny` → F0 ±262 Hz, formant ×1,12 | anak laki-laki ±11 tahun, bersemangat |
+| Mbah Kedu | penutur #38 (laki-laki) → F0 ±104 Hz, formant ×0,95, getar lansia ringan | Piper `joe` → F0 ±92 Hz, formant ×0,98, getar lansia | kakek Jawa, lembut, pelan, logat Jawa halus |
 
 Pose baris naskah ikut mengatur suara:
 
@@ -90,15 +90,31 @@ Kalimat tanya berbahasa Indonesia diberi intonasi naik, dan kalimat seru rentang
   - Mbah Kedu −16,5 LUFS. Puncak glotal suara beratnya tinggi, jadi −16 hanya tercapai dengan limiter yang terdengar menekan.
   - Pose yang digeser: Jaka `determined` −15,5, `afraid` −16,5, dan `sad` −17; Mbah Kedu `weak` −18, supaya terdengar lirih.
 - Puncak sejati (*true peak*) ≤ −1 dBTP pada master WAV lewat limiter look-ahead 2 ms yang pulih dalam ±20 ms. Setelah dikode ke MP3, puncak sejati paling tinggi −0,5 dBTP.
-  - Pada Narator dan Jaka, limiter hanya menyentuh puncak tunggal (≤ 0,2% durasi).
-  - Pada Mbah Kedu, limiter menekan lebih dari 1 dB di ±6% durasi (paling banyak ±23%). Penekanan terdalam per baris bermedian 1,4 dB (Inggris) dan 3,2 dB (Indonesia), paling banyak 6,4 dB.
+  - Pada Narator dan Jaka, limiter hanya menyentuh puncak tunggal (≤ 0,1% durasi, paling banyak 1,3 dB).
+  - Pada Mbah Kedu, limiter menekan lebih dari 1 dB di ±5% durasi (paling banyak ±23%). Penekanan terdalam per baris bermedian 1,3 dB, paling banyak 3,5 dB.
 - LAME pada mode CBR mengalikan sinyal 0,95× (−0,45 dB). `publish.py` mengompensasinya, sehingga kenyaringan MP3 sama dengan master WAV-nya.
 - Hening 0,3 detik di awal dan akhir.
 - Satu berkas satu baris, nama = kode baris (`intro-01.mp3`, `petunjuk-tmg-4-03.mp3`, …). Transkripnya persis teks naskah pada bahasa itu.
 
 ### Pemeriksaan kejelasan (QA)
 
-Setiap baris dipilih dari beberapa kandidat sintesis: Indonesia 3–5 kandidat, Inggris 1 kandidat, dan 3–6 kandidat tambahan untuk baris yang diulang. Tiap kandidat ditranskripsi Whisper small tanpa diberi teks naskahnya, lalu transkripnya dibandingkan dengan naskah memakai *character error rate* (CER): huruf kecil, tanpa tanda baca, dan angka dieja. Kandidat dengan CER terendah yang dipakai. Rekaman final, sesudah pengolahan tempo dan kenyaringan, ditranskripsi ulang dengan cara yang sama.
+Setiap baris dipilih dari beberapa kandidat sintesis: Indonesia 3–5 kandidat, Inggris 1 kandidat, dan 3–6 kandidat tambahan untuk baris yang diulang. Tiap kandidat ditranskripsi Whisper small tanpa diberi teks naskahnya, lalu transkripnya dibandingkan dengan naskah memakai *character error rate* (CER): huruf kecil, tanpa tanda baca, dan angka dieja. Kandidat dengan CER terendah yang dipakai. Rekaman final, sesudah pengolahan kenyaringan, ditranskripsi ulang dengan cara yang sama:
+
+| Bahasa | Median CER | Rata-rata CER | Median CER per tokoh | Baris dengan CER ≤ 10% | Durasi total |
+|---|---|---|---|---|---|
+| Indonesia | 5,9% | 6,4% | Narator 5,9% · Jaka 5,8% · Mbah Kedu 6,0% | 81/96 | 18,4 menit |
+| Inggris | 3,8% | 4,4% | Narator 2,3% · Jaka 5,7% · Mbah Kedu 2,8% | 91/96 | 13,8 menit |
+
+Hasil per baris, termasuk transkrip Whisper, ada di [`tools/audio/qa-narasi.json`](../tools/audio/qa-narasi.json).
+
+**Tempo.** Narasi Indonesia sempat dipercepat 3–8% agar lebih lincah: Narator 0,96, Jaka 0,92, Mbah Kedu 0,97. Uji A/B dengan Whisper pada 96 baris yang sama, dengan pengolahan lain yang identik, menunjukkan percepatan itu menurunkan kejelasan:
+
+| Tokoh | CER rata-rata dengan percepatan | CER rata-rata tanpa percepatan | Wilcoxon |
+|---|---|---|---|
+| Jaka | 10,0% | 7,5% | p = 0,001 |
+| Mbah Kedu | 6,9% | 5,8% | p = 0,007 |
+
+Karena GELITA melatih membaca, narasi memakai tempo asli model (`TEMPO` di `tools/audio/narrate.py` bernilai 1).
 
 CER di sini lebih tinggi daripada salah dengar yang sebenarnya:
 
@@ -106,7 +122,10 @@ CER di sini lebih tinggi daripada salah dengar yang sebenarnya:
 - **Nama Jawa di narasi Inggris** ditulis Whisper dengan ejaan Inggris, misalnya *Kedu* → "Kudu".
 - **Baris pendek.** Satu kata yang meleset pada baris seperti *"Aku takut, Mbah…"* langsung membuat CER-nya puluhan persen.
 
-QA otomatis tidak menggantikan mendengarkan. Setujui narasi di **Konten → Narasi** setelah didengarkan.
+QA otomatis tidak menggantikan mendengarkan. Setujui narasi di **Konten → Narasi** setelah didengarkan. Baris dengan CER tertinggi layak didengarkan lebih dulu:
+
+- Indonesia: `dialog-wonosobo-10`, `dialog-temanggung-07`, `tuntas-magelang-02`.
+- Inggris: `dialog-wonosobo-10`, `dialog-magelang-07`, `petunjuk-tmg-4-08` (*rigen*).
 
 ### Memasang di server
 

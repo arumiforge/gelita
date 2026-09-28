@@ -67,9 +67,11 @@ POSE = {
 }
 
 # faktor durasi akhir (Praat 'Lengthen (overlap-add)', pitch tetap): < 1 = lebih cepat.
-# Pose 'weak' Mbah Kedu tidak dipercepat.
+# Pose 'weak' Mbah Kedu tidak pernah dipercepat. Uji A/B Whisper pada 96 baris Indonesia:
+# mempercepat 3–8% (narator 0,96, Jaka 0,92, Mbah Kedu 0,97) menaikkan CER rata-rata Jaka
+# 7,5% → 10,0% dan Mbah Kedu 5,8% → 6,9% (Wilcoxon p < 0,01), jadi tempo asli dipertahankan.
 TEMPO = {
-    'id': {'narator': 0.96, 'jaka': 0.92, 'mbah_kedu': 0.97},
+    'id': {'narator': 1.0, 'jaka': 1.0, 'mbah_kedu': 1.0},
     'en': {'narator': 1.0, 'jaka': 1.0, 'mbah_kedu': 1.0},
 }
 
