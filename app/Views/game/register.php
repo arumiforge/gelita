@@ -15,11 +15,19 @@
  * (<optgroup>). register.js (tahap 6) menyaring kabupaten sesuai provinsi dan
  * memeriksa ketersediaan nama pengguna.
  *
+ * Sekolah datang SETELAH wilayah: provinsi berdirektori (data-directory,
+ * Jawa Tengah) meminta NPSN — nama resmi muncul di kartu (register.js,
+ * GET /api/schools/lookup) — sedangkan provinsi lain menulis nama sekolah.
+ * Pertukaran blok NPSN/nama juga memakai CSS :has(), jadi tetap benar tanpa
+ * JavaScript; server memeriksa NPSN saat Daftar.
+ *
  * @var string                     $locale
  * @var bool                       $allowPhase
  * @var list<string>               $phases
  * @var list<array<string, mixed>> $provinces
- * @var list<string>               $schools
+ * @var list<string>               $schoolProvinces
+ * @var array<string, ?string>|null $selectedSchool
+ * @var bool                       $npsnNotFound
  * @var array<string, mixed>       $passwordPolicy
  * @var array<string, string>      $errors
  */
@@ -108,20 +116,6 @@ $classes['lainnya'] = lang('Game.classOther');
       <fieldset class="reg-step">
         <legend class="reg-step-title"><span class="reg-step-no">2</span> <?= esc(lang('Game.regStep2')) ?></legend>
 
-        <div class="field<?= $invalid('school_name') ?>">
-          <label for="school_name"><?= esc(lang('Game.school')) ?> <span class="req" aria-hidden="true">*</span></label>
-          <input type="text" id="school_name" name="school_name" required minlength="3" maxlength="200"
-                 list="school-list" autocomplete="off" aria-describedby="school-help"
-                 value="<?= esc(old('school_name'), 'attr') ?>">
-          <datalist id="school-list">
-            <?php foreach ($schools as $school): ?>
-              <option value="<?= esc($school, 'attr') ?>"></option>
-            <?php endforeach ?>
-          </datalist>
-          <p class="field-help" id="school-help"><?= esc(lang('Game.schoolHelp')) ?></p>
-          <?php if ($err('school_name')): ?><p class="field-error"><?= esc($err('school_name')) ?></p><?php endif ?>
-        </div>
-
         <div class="field<?= $invalid('country_code') ?>">
           <label for="country_code"><?= esc(lang('Game.country')) ?> <span class="req" aria-hidden="true">*</span></label>
           <select id="country_code" name="country_code" required data-region-country>
@@ -136,7 +130,7 @@ $classes['lainnya'] = lang('Game.classOther');
             <select id="province_code" name="province_code" data-region-province>
               <option value=""><?= esc(lang('Game.choose')) ?></option>
               <?php foreach ($provinces as $province): ?>
-                <option value="<?= esc($province['code'], 'attr') ?>" <?= old('province_code') === $province['code'] ? 'selected' : '' ?>>
+                <option value="<?= esc($province['code'], 'attr') ?>" <?= old('province_code') === $province['code'] ? 'selected' : '' ?><?= in_array($province['code'], $schoolProvinces, true) ? ' data-directory' : '' ?>>
                   <?= esc($province['name']) ?>
                 </option>
               <?php endforeach ?>
@@ -165,6 +159,45 @@ $classes['lainnya'] = lang('Game.classOther');
           <input type="text" id="country_other" name="country_other" maxlength="100"
                  value="<?= esc(old('country_other'), 'attr') ?>">
           <?php if ($err('country_other')): ?><p class="field-error"><?= esc($err('country_other')) ?></p><?php endif ?>
+        </div>
+
+        <!-- Sekolah: NPSN di provinsi berdirektori, nama bebas di tempat lain -->
+        <div class="field school-npsn<?= $invalid('school_npsn') ?>" data-school-npsn
+             data-checking="<?= esc(lang('Game.schoolNpsnChecking'), 'attr') ?>"
+             data-card-title="<?= esc(lang('Game.schoolCardTitle'), 'attr') ?>"
+             data-format="<?= esc(lang('Game.schoolNpsnFormat'), 'attr') ?>"
+             data-unknown="<?= esc(lang('Game.schoolNpsnUnknown'), 'attr') ?>"
+             data-warn-district="<?= esc(lang('Game.schoolWarnDistrict'), 'attr') ?>"
+             data-warn-stage="<?= esc(lang('Game.schoolWarnStage'), 'attr') ?>">
+          <label for="school_npsn"><?= esc(lang('Game.schoolNpsn')) ?> <span class="req" aria-hidden="true">*</span></label>
+          <input type="text" id="school_npsn" name="school_npsn" maxlength="8" inputmode="numeric"
+                 autocomplete="off" spellcheck="false" aria-describedby="school_npsn-help school-card"
+                 value="<?= esc(old('school_npsn'), 'attr') ?>">
+          <p class="field-help" id="school_npsn-help"><?= esc(lang('Game.schoolNpsnHelp')) ?></p>
+          <div class="school-card" id="school-card" role="status" aria-live="polite" data-school-card>
+            <?php if ($selectedSchool !== null): ?>
+              <p class="school-card-title"><?= esc(lang('Game.schoolCardTitle')) ?></p>
+              <p class="school-card-name"><?= esc($selectedSchool['name']) ?></p>
+              <p class="school-card-meta"><?= esc($selectedSchool['meta']) ?></p>
+            <?php endif ?>
+          </div>
+          <?php if ($err('school_npsn')): ?><p class="field-error"><?= esc($err('school_npsn')) ?></p><?php endif ?>
+          <div class="school-manual" data-school-manual<?= $npsnNotFound || old('school_manual') ? '' : ' hidden' ?>>
+            <label class="check">
+              <input type="checkbox" name="school_manual" value="1" <?= old('school_manual') ? 'checked' : '' ?>>
+              <span><?= esc(lang('Game.schoolManual')) ?></span>
+            </label>
+            <p class="field-help"><?= esc(lang('Game.schoolManualHelp')) ?></p>
+          </div>
+        </div>
+
+        <div class="field school-name<?= $invalid('school_name') ?>">
+          <label for="school_name"><?= esc(lang('Game.school')) ?> <span class="req" aria-hidden="true">*</span></label>
+          <input type="text" id="school_name" name="school_name" minlength="3" maxlength="200"
+                 autocomplete="off" aria-describedby="school-help"
+                 value="<?= esc(old('school_name'), 'attr') ?>">
+          <p class="field-help" id="school-help"><?= esc(lang('Game.schoolHelp')) ?></p>
+          <?php if ($err('school_name')): ?><p class="field-error"><?= esc($err('school_name')) ?></p><?php endif ?>
         </div>
 
         <?php if ($allowPhase): ?>

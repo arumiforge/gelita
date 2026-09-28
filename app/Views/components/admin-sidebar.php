@@ -27,6 +27,7 @@ $menu = [
     ['admin/media',              'Admin.menuMedia',        'image',    true,  'Admin.groupManage'],
     ['admin/studi',              'Admin.menuStudy',        'flask',    true,  'Admin.groupManage'],
     ['admin/tata-kelola',        'Admin.menuGovernance',   'shield',   true,  'Admin.groupManage'],
+    ['admin/sekolah',            'Admin.menuSchools',      'building', true,  'Admin.groupManage'],
     ['admin/staf',               'Admin.menuStaff',        'key',      true,  'Admin.groupManage'],
 ];
 

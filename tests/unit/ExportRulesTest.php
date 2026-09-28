@@ -37,6 +37,7 @@ final class ExportRulesTest extends CIUnitTestCase
         $this->assertContains('display_name', $named);
         $this->assertContains('username', $named);
         $this->assertContains('school_name', $named);
+        $this->assertContains('school_npsn', $named, 'NPSN sekolah hanya pada export beridentitas');
         $this->assertContains('school_ref', $this->export->columns('Participants', true, false), 'kode samaran sekolah tetap ada untuk analisis');
     }
 

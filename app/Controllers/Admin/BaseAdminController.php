@@ -62,7 +62,7 @@ abstract class BaseAdminController extends BaseController
         return [
             'studies'    => model(ResearchStudyModel::class)->orderBy('id', 'DESC')->findAll(),
             'levels'     => service('contentRepository')->levels(),
-            'schools'    => $scope === null ? model(SchoolModel::class)->activeList() : [],
+            'schools'    => $scope === null ? model(SchoolModel::class)->inUseList() : [],
             'own_school' => $ownSchool['name'] ?? null,
             'provinces'  => array_column($provinces, 'province_name', 'province_code'),
         ];

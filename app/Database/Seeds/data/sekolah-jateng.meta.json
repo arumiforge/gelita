@@ -1,0 +1,30 @@
+{
+    "source": "Data Induk Pendidikan (Kemendikdasmen dan Kemenag) lewat cermin github.com/bahrye/api-sekolah (MIT)",
+    "source_url": "https://raw.githubusercontent.com/bahrye/api-sekolah/main/data_provinsi",
+    "upstream_updated": "2026-09-26T19:39:13.658Z",
+    "generated": "2026-09-27",
+    "province": {
+        "code": "33",
+        "name": "Jawa Tengah"
+    },
+    "total": 28487,
+    "by_stage": {
+        "sd": 22850,
+        "smp": 5449,
+        "slb": 188
+    },
+    "by_form": {
+        "SD": 18520,
+        "MI": 4316,
+        "SMP": 3499,
+        "MTS": 1873,
+        "SLB": 188,
+        "PDF WUSTHA": 35,
+        "SPM WUSTHA": 34,
+        "SPK SD": 10,
+        "SPK SMP": 8,
+        "SDTK": 2,
+        "PDF ULA": 1,
+        "SPM ULA": 1
+    }
+}

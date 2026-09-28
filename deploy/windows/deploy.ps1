@@ -55,6 +55,7 @@ try {
         Remove-Item Env:\database_default_DSN -ErrorAction SilentlyContinue
     }
 
+    Langkah 'Daftar sekolah resmi (NPSN; hanya baris yang berubah)' { & $c.Php $spark gelita:schools:import }
     Langkah 'Bersihkan cache' { & $c.Php $spark cache:clear }
 
     Write-Output '-> Naikkan versi aset'
