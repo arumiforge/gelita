@@ -328,6 +328,34 @@ final class NarrationImporterTest extends CIUnitTestCase
         $this->assertSame(1, $this->sqlite->table('audio_assets')->countAllResults());
     }
 
+    public function testManifestMarksBundledSyntheticRecordingsAsTts(): void
+    {
+        $this->folderFile('id', 'intro-01.wav', 1);
+        $this->folderFile('id', 'intro-02.wav', 2);
+        $this->folderFile('en', 'intro-01.wav', 3);
+        $dir = FCPATH . $this->folder;
+        file_put_contents($dir . NarrationImporter::MANIFEST, json_encode(['files' => [
+            'id' => [
+                'intro-01' => ['sha256' => hash_file('sha256', $dir . 'id/intro-01.wav'), 'voice_profile' => 'TTS · Narator · uji'],
+                'intro-02' => ['sha256' => str_repeat('0', 64), 'voice_profile' => 'isi lain'],
+            ],
+        ]]));
+
+        $importer = $this->importer();
+        $this->assertSame(['intro-01', 'intro-02'], $importer->importFolder('id')['created']);
+        $importer->importFolder('en');
+
+        $tts = $this->audioByKey('audio.narasi.id.intro-01');
+        $this->assertSame('tts', $tts['production_method']);
+        $this->assertSame('TTS · Narator · uji', $tts['voice_profile']);
+
+        $own = $this->audioByKey('audio.narasi.id.intro-02');
+        $this->assertSame('own_recording', $own['production_method'], 'isi berbeda dari manifest = rekaman pengganti');
+        $this->assertNull($own['voice_profile']);
+        $this->assertSame('own_recording', $this->audioByKey('audio.narasi.en.intro-01')['production_method'], 'tanpa entri bahasa itu');
+        $this->assertSame(['production_method' => 'own_recording', 'voice_profile' => null], $importer->production('id', 'intro-01', str_repeat('f', 64)));
+    }
+
     public function testUploadedFilesAreCopiedToUploadsAndReportedPerName(): void
     {
         $this->skipIfUploadExists('audio.narasi.en.tuntas-wonosobo-02');
@@ -410,7 +438,7 @@ final class NarrationImporterTest extends CIUnitTestCase
         command('gelita:narration:import --locale=fr');
         $this->assertStringContainsString('--locale harus salah satu dari', $this->getStreamFilterBuffer());
 
-        // Folder konvensi (kosong di repositori, mungkin berisi rekaman di mesin pengembang): tidak ada yang ditulis
+        // Folder konvensi (berisi rekaman bawaan repositori): uji coba tidak menulis apa pun
         $this->resetStreamFilterBuffer();
         command('gelita:narration:import --dry-run');
         $output = $this->getStreamFilterBuffer();
