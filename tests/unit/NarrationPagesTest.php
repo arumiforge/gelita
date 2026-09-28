@@ -197,25 +197,28 @@ final class NarrationPagesTest extends CIUnitTestCase
     {
         $dir = FCPATH . 'assets/audio/narasi/en/';
         $new = ! is_dir($dir);
-
-        if (glob($dir . 'penutup-02.*') ?: []) {
-            $this->markTestSkipped('Rekaman sungguhan penutup-02 sudah ada di folder narasi EN; uji ini tidak menimpanya.');
-        }
+        // Rekaman bawaan (ikut repositori) dipakai apa adanya dan tidak pernah ditimpa;
+        // tanpa rekaman itu, uji menulis WAV kecil lalu menghapusnya lagi.
+        $own = (glob($dir . 'penutup-02.*') ?: []) === [];
 
         if ($new) {
             mkdir($dir, 0775, true);
         }
 
-        file_put_contents($dir . 'penutup-02.wav', 'RIFF' . pack('V', 44) . 'WAVEfmt ' . pack('VvvVVvv', 16, 1, 1, 8000, 8000, 1, 8) . 'data' . pack('V', 8) . str_repeat("\x80", 8));
+        if ($own) {
+            file_put_contents($dir . 'penutup-02.wav', 'RIFF' . pack('V', 44) . 'WAVEfmt ' . pack('VvvVVvv', 16, 1, 1, 8000, 8000, 1, 8) . 'data' . pack('V', 8) . str_repeat("\x80", 8));
+        }
 
         try {
             $result = $this->asAdmin()->call(Method::POST, 'admin/konten/narasi/impor-folder', ['locale' => 'en'] + self::CSRF);
             $result->assertRedirectTo(site_url('admin/konten/narasi/unggah'));
-            // Folder konvensi bisa berisi rekaman lain di mesin pengembang: cukup periksa berkas uji ini
+            // Folder konvensi berisi rekaman lain: cukup periksa berkas penutup-02
             $this->assertStringStartsWith('Narasi EN: ', (string) session('message'));
             $this->assertSame(1, $this->sqlite->table('media_assets')->where('asset_key', 'audio.narasi.en.penutup-02')->countAllResults());
         } finally {
-            unlink($dir . 'penutup-02.wav');
+            if ($own) {
+                unlink($dir . 'penutup-02.wav');
+            }
 
             if ($new) {
                 rmdir($dir);
