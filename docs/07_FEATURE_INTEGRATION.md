@@ -782,7 +782,7 @@ Unggahan dari editor konten (FITUR 12) memakai jalur yang sama (`App\Libraries\M
 7. audio_src() kini mengembalikan rekaman itu; layar bernarasi memutarnya
 ```
 
-* **Narasi naskah vs audio lain.** Persetujuan massal hanya menyentuh `audio_assets` berstatus `draft` pada bahasa itu yang ditautkan ke baris `dialogues` keenam konteks naskah **atau** ber-asset_key `audio.narasi.{locale}.*`. Narasi kartu misi (`challenge_nodes.audio_intro_*`) dan audio lain tetap disetujui satu per satu.
+* **Narasi naskah vs audio lain.** Persetujuan massal hanya menyentuh `audio_assets` berstatus `draft` pada bahasa itu yang ditautkan ke baris `dialogues` keenam konteks naskah, ke kartu misi (`challenge_nodes.audio_intro_*`), atau ke petunjuk arena `cari` (`challenge_items.audio_prompt_*`), **atau** ber-asset_key `audio.narasi.{locale}.*`. Audio lain yang tidak tertaut ke baris mana pun tetap disetujui satu per satu.
 * **`context_code` audio** = konteks baris (`intro`, `map_intro`, `region_intro`, `level_open`, `level_done`, `ending`), sama dengan `payload.context` event `dialogue_advanced`; baris spesifiknya terbaca dari asset_key (`audio.narasi.id.dialog-magelang-07`). Ekspor XLSX (sheet audio) ikut membawa nilai ini.
 * **Durasi.** `MediaStore::durationMs()` kini membaca MP3 (header Xing/Info atau VBRI; tanpa itu dihitung sebagai CBR) selain WAV. OGG/M4A tetap NULL.
 * **Jenis berkas dibaca dari isinya** (`MediaStore::detectMime()`): finfo, lalu tanda tangan ID3/sinkronisasi MPEG, OggS, RIFF…WAVE, ftyp M4A. Berkas yang bukan audio ditolak walau namanya `.mp3`.
@@ -822,6 +822,39 @@ Petunjuk target arena `cari` diimpor dengan jalur yang sama, tetapi barisnya but
 * Pemutaran narasi petunjuk dicatat di `audio_usage_events` dengan `challenge_attempt_id` attempt `cari` yang sedang berjalan; `action` membedakan `play` (pemain menekan ▶) dari `autoplay` (petunjuk berikutnya setelah jawaban benar). Tabel itu tidak punya kolom butir: butirnya diturunkan dari `audio_asset_id` → `challenge_items.audio_prompt_id` / `audio_prompt_en_id` (atau dari asset_key `audio.narasi.{locale}.petunjuk-{node}-NN`), dan `audio_assets.context_code = 'hunt_clue'`.
 * `EventService::recordAudio()` menambah `challenge_attempts.audio_use_count` untuk **setiap** event audio yang membawa `attempt_id` — `play`, `autoplay`, `pause`, `replay`, dan `complete` — bukan jumlah pemutaran. Perilaku ini dipertahankan agar sama dengan audio lain. Satu petunjuk yang diputar lalu diganti karena jawaban benar biasanya menghasilkan dua event (`play`/`autoplay` + `pause`, atau + `complete`). Mulai dengan rilis ini, attempt `cari` dengan rekaman petunjuk yang disetujui cenderung punya `audio_use_count` lebih tinggi daripada attempt sebelum rilis atau tanpa rekaman; bandingkan antar-kelompok dengan membaca `audio_usage_events` (mis. hanya `action IN ('play','autoplay','replay')`), bukan angka mentah itu.
 * Pemutaran otomatis tidak terjadi saat suara dimatikan (sakelar suara HUD) atau sebelum pemain berinteraksi dengan halaman; dalam kasus itu tidak ada event.
+
+### Narasi kartu misi
+
+Kartu Misi (`/misi/{code}/{seq}`, `game/mission-brief.php`) memutar `challenge_nodes.audio_intro_id` / `audio_intro_en_id` lewat `components/audio-player` (tombol ▶, tanpa autoplay). Rekamannya diimpor dengan jalur narasi yang sama:
+
+```text
+1. Nama berkas misi-{node}.mp3, mis. misi-tmg-1.mp3 — satu per node aktif
+     {node} = node_ref() (tmg-1 … wnb-5)
+2. Teks = yang tampil di kartu: description_{locale}, atau instruction_{locale}
+   bila deskripsi kosong; kolom EN kosong → teks Indonesia (Bilingual::text()).
+   Node tanpa deskripsi dan instruksi tidak punya kode berkas.
+3. media_assets audio.narasi.{locale}.misi-{node}
+   audio_assets  context_code = 'mission_brief', character_code = NULL (narator), 'draft'
+   challenge_nodes.audio_intro_id | audio_intro_en_id ← audio_assets.id
+4. Halaman Narasi: kelompok "Narasi kartu misi · {wilayah}", Sunting →
+   /admin/konten/node/{id}#node-audio-id; ikut kemajuan, daftar rekaman XLSX,
+   persetujuan massal, dan Kelengkapan aset (88 + 15 + 8 = 111 baris per bahasa)
+```
+
+Audio kartu misi yang dipilih manual di form tantangan juga ikut persetujuan massal. Pemutarannya dicatat seperti audio lain di luar attempt (`audio_usage_events` tanpa `challenge_attempt_id`, karena attempt baru dibuka di layar tantangan).
+
+### Cara produksi audio narasi (manifest `_produksi.json`)
+
+`audio_assets.production_method` bernilai `own_recording` (rekaman pengisi suara) atau `tts` (text-to-speech). Impor dari folder membaca `public/assets/audio/narasi/{locale}/_produksi.json`:
+
+```text
+{"files": {"intro-01.mp3": {"sha256": "…", "production_method": "tts", "voice_profile": "Kokoro v1.0 (sherpa-onnx) · …"}}}
+```
+
+* Entri dipakai hanya bila sha256-nya sama dengan isi berkas. Berkas yang diganti rekaman manusia (nama sama, isi beda) tercatat `own_recording` dan `voice_profile` dikosongkan pada impor berikutnya; tanpa manifest pun hasilnya sama.
+* Manifest yang tidak terbaca dilaporkan **gagal** (perintah keluar dengan kode galat) dan diabaikan, supaya rekaman TTS tidak diam-diam tercatat sebagai rekaman sendiri.
+* Unggahan panel selalu `own_recording`. Manifest ditulis `docs/audio/build_narration.py`; lihat [`docs/audio/README.md`](audio/README.md).
+* **Catatan peneliti:** narasi di repositori saat ini seluruhnya TTS. Bila sebagian diganti rekaman manusia, bedakan kelompok dengan `audio_assets.production_method` lewat basis data (ekspor XLSX belum membawa kolom itu), bukan dari asset_key.
 
 ---
 

@@ -641,10 +641,12 @@ sudo -u www-data php spark gelita:story:update --dry-run    # 2a. lihat baris na
 sudo -u www-data php spark gelita:story:update              # 2b. 88 baris naskah ke tabel dialogues
 sudo -u www-data php spark gelita:library:thumbnails        # 3. poster video Pustaka (butuh HTTPS keluar, lihat di atas)
 sudo -u www-data php spark gelita:narration:import --dry-run  # 4a. cocokkan nama rekaman di public/assets/audio/narasi/
-sudo -u www-data php spark gelita:narration:import          # 4b. rekaman narasi → audio draft, ditautkan ke naskah & petunjuk cari
+sudo -u www-data php spark gelita:narration:import          # 4b. rekaman narasi → audio draft, ditautkan ke naskah, kartu misi & petunjuk cari
 ```
 
 **Narasi petunjuk arena `cari`** (migration `003800`) memakai jalur yang sama: berkas `petunjuk-{node}-NN.mp3` (mis. `petunjuk-tmg-4-01.mp3`) di folder narasi atau unggahan panel, ditautkan ke `challenge_items.audio_prompt_id` / `audio_prompt_en_id`. Karena barisnya butir bank soal, langkah 4 dijalankan **sesudah** `migrate` dan sesudah bank soal produksi diimpor (`gelita:bank:import` atau `/admin/konten/impor-bank`). Server yang sudah menjalankan Tahap 1–5 cukup menjalankan langkah 1 (deploy biasa sudah melakukannya) lalu langkah 4 atau unggah lewat panel, kemudian menyetujui rekamannya di **Konten → Narasi**.
+
+**Narasi kartu misi dan narasi TTS.** Berkas `misi-{node}.mp3` (15 tantangan) ditautkan ke `challenge_nodes.audio_intro_id` / `audio_intro_en_id` oleh langkah 4 yang sama, jadi juga dijalankan sesudah impor bank soal. Seluruh narasi di repositori saat ini dibuat dengan text-to-speech (`docs/audio/`); `_produksi.json` di folder narasi membuat langkah 4 mencatatnya sebagai `production_method = tts`. Tidak ada migration baru. Hasil `--dry-run` yang benar: 111 cocok per bahasa, tanpa nama tidak dikenal.
 
 Jalur W: perintah yang sama tanpa `sudo -u www-data`. Urutannya wajib: `gelita:story:update` menulis kolom dari migration, dan `gelita:narration:import` memetakan rekaman ke baris naskah yang dibuat `gelita:story:update`. Langkah 4 boleh dilewati bila rekaman akan diunggah lewat panel (**Konten → Narasi → Unggah narasi**). Setelah itu buka **Konten → Narasi**, dengarkan, lalu **Setujui semua narasi draft** per bahasa; rekaman draft tidak pernah terdengar pemain. Periksa sisa aset di **Media → Kelengkapan aset**.
 
@@ -1073,7 +1075,7 @@ Migration yang menghapus kolom sulit di-rollback tanpa kehilangan data. Aturanny
 | Vendor JS | `public/assets/vendor/` (ECharts, Howler.js) | git | `?v=` → immutable |
 | Font | `public/assets/fonts/` (Cinzel, Plus Jakarta Sans, IBM Plex Mono) | git | revalidasi |
 | Data referensi | `public/assets/data/wilayah-id.json` | git | revalidasi |
-| Aset resmi | `public/assets/{ui,char,bg,map,challenge,library,reward,audio}/` | **git** — saat ini baru `ui/placeholder.svg`; view memakai pengganti | revalidasi |
+| Aset resmi | `public/assets/{ui,char,bg,map,challenge,library,reward,audio}/` | **git** — saat ini `ui/placeholder.svg` dan seluruh audio (`audio/{music,sfx,narasi}`); gambar memakai pengganti | revalidasi |
 | Unggahan admin | `public/assets/uploads/{asset_key}.{ext}` | panel `/admin/media`, editor konten, Unggah narasi — **hanya di server** | revalidasi |
 | Rekaman narasi (folder) | `public/assets/audio/narasi/{id,en}/{kode}.mp3` | git, lalu `gelita:narration:import` | revalidasi |
 | Musik & efek suara | `public/assets/audio/{music,sfx}/{nama}.mp3` | git (dibaca langsung `core/audio.js`, bukan `media_assets`) | revalidasi |
@@ -1100,7 +1102,7 @@ Aset gambar dan video mendominasi ukuran instalasi. Anjuran:
 * Latar dan adegan: JPEG kualitas 80, maksimum 1920×1080.
 * Objek dan opsi: PNG dengan transparansi, maksimum 400×400.
 * Video pustaka: MP4 H.264, 720p, bitrate ≤ 1.5 Mbps, durasi ≤ 60 detik.
-* Audio narasi: MP3 96–128 kbps mono.
+* Audio narasi: MP3 mono 64–96 kbps (narasi TTS di repositori: 80 kbps, ±0,1–0,2 MB per baris).
 
 Ukuran piksel resmi tiap slot ada di `Config\Gelita::$assetSizes` dan ditegakkan saat unggah. Batas unggah 64 MB (`Config\Gelita::$maxUploadBytes`, `upload_max_filesize`, `client_max_body_size 72M`).
 

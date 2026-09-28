@@ -48,8 +48,11 @@ Di teks Inggris, Jaka tetap memanggil "Mbah" agar nuansa lokalnya terjaga, semen
 | `level_done` | `tuntas-{wilayah}-NN` | 12 | Saat wilayah tuntas |
 | `ending` | `penutup-NN` | 5 | Setelah seluruh wilayah tuntas |
 | **Total naskah** | | **88** | Durasi rekaman sekitar 12–14 menit per bahasa |
+| `mission_brief` | `misi-{node}` | 15 | Kartu Misi sebelum setiap tantangan (narator) — teks dari bank soal, bukan naskah ini |
 | `hunt_clue` | `petunjuk-{node}-NN` | 8 | Petunjuk Mbah Kedu di arena `cari` (`tmg-4`), di samping teks petunjuk — teks dari bank soal, bukan naskah ini |
-| **Total rekaman** | | **96** | |
+| **Total rekaman** | | **111** | |
+
+Baris `misi-*` juga **tidak ada di naskah ini**: teksnya adalah teks yang tampil di Kartu Misi, yaitu deskripsi tantangan (`description_id` / `description_en`, atau instruksinya bila deskripsi kosong) di [`docs/bank-soal/data/`](bank-soal/data/). Dibacakan narator. `{node}` = kode tantangan (`tmg-1` … `wnb-5`), satu berkas per tantangan aktif.
 
 Baris `petunjuk-*` **tidak ada di naskah ini**: teksnya berasal dari bank soal, yaitu kolom pertanyaan (`prompt_id` / `prompt_en`) butir `find_object` target di [`docs/bank-soal/data/temanggung.php`](bank-soal/data/temanggung.php) (node `tmg-4`). Dibacakan Mbah Kedu. `{node}` = kode tantangan (`tmg-4`); NN = urutan petunjuk target menurut urutan butir, dimulai 01 — untuk bank soal produksi `petunjuk-tmg-4-01` … `-08` sama dengan butir `tmg-4-01` … `tmg-4-08`. Ketiga objek jebakan (`tmg-4-09` … `-11`) tidak punya petunjuk dan tidak direkam. Teks terkini ada di daftar rekaman XLSX (kelompok "Petunjuk arena cari"), karena admin dapat menyuntingnya di bank soal.
 
@@ -72,7 +75,9 @@ Rekaman tidak perlu dipasang satu per satu. Selama nama berkasnya sama dengan ko
 
    Tombol **Impor folder ID/EN** di halaman Unggah narasi melakukan hal yang sama. Berkas didaftarkan di tempatnya, tidak disalin.
 
-**Yang terjadi pada setiap berkas yang cocok:** aset `audio.narasi.{locale}.{kode}` dibuat atau diganti; baris `audio_assets` berisi bahasa, tokoh baris itu (narator = kosong), konteks, transkrip = teks baris pada bahasa itu, durasi (MP3 dan WAV terbaca otomatis), cara produksi *rekaman sendiri*, dan status **draft**; lalu rekaman ditautkan ke baris naskahnya.
+**Yang terjadi pada setiap berkas yang cocok:** aset `audio.narasi.{locale}.{kode}` dibuat atau diganti; baris `audio_assets` berisi bahasa, tokoh baris itu (narator = kosong), konteks, transkrip = teks baris pada bahasa itu, durasi (MP3 dan WAV terbaca otomatis), cara produksi, dan status **draft**; lalu rekaman ditautkan ke baris naskahnya (`dialogues`, `challenge_nodes` untuk kartu misi, atau `challenge_items` untuk petunjuk).
+
+**Cara produksi.** Bawaannya *rekaman sendiri* (`own_recording`). Folder rekaman boleh memuat `_produksi.json` yang ditulis pembuat audio [`docs/audio/`](audio/README.md): berkas yang sha256-nya sama dengan catatan manifest dicatat `tts` beserta profil suaranya. Rekaman di repositori saat ini dibuat dengan text-to-speech; mengganti satu berkas dengan rekaman pengisi suara (nama sama) otomatis mencatatnya sebagai rekaman sendiri pada impor berikutnya.
 
 **Laporan hasil** memisahkan: baru, diganti (kembali ke draft), sama persis (dilewati, persetujuan tetap), nama tidak dikenal beserta saran nama terdekat (mis. `intro-1.mp3` → `intro-01.mp3`, `dialog-temangung-03.mp3` → `dialog-temanggung-03.mp3`), gagal (mis. bukan berkas audio), dan baris naskah yang belum punya rekaman.
 

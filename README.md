@@ -37,6 +37,22 @@ Alur permainan kini bercerita dari awal sampai akhir, dengan satu naskah dwibaha
 
 Alurnya: halaman awal → `/mulai` → daftar → cerita pembuka → peta (tirai + narasi Jaka) → Kenali wilayah → tirai wilayah → dialog pembuka → peta wilayah → kartu misi (tirai tantangan) → tantangan → selesai → wilayah tuntas → Pustaka → wilayah berikutnya → … → penutup → Balai Refleksi.
 
+### Pembaruan audio: musik, efek suara, narasi TTS, dan narasi kartu misi
+
+- **Semua slot audio kini terisi di repositori.** Musik `public/assets/audio/music/{map,region,challenge}.mp3`, enam efek suara `sfx/{click,correct,wrong,lock,shard,region-done}.mp3`, dan narasi **111 baris × 2 bahasa** di `public/assets/audio/narasi/{id,en}/`. Musik dan efek suara disintesis dari nol bernuansa gamelan (slendro/pelog, saron, bonang, kenong, kempul, gong ageng, kendang, suling), jadi bebas lisensi; loop musik dirender melingkar dan dimulai pada pukulan gong. Narasi dibuat dengan **text-to-speech offline Kokoro v1.0 (Apache-2.0)**: satu profil suara per tokoh dan bahasa, bahasa Indonesia lewat fonem espeak-ng `id`. Ini pengisi sementara yang jelas terdengar, bukan akting pengisi suara; setiap berkas bisa diganti rekaman manusia dengan nama yang sama.
+- **Narasi kartu misi** (`misi-{node}.mp3`, mis. `misi-tmg-1.mp3`, 15 tantangan) ikut diimpor otomatis: transkrip = teks yang tampil di Kartu Misi (deskripsi, atau instruksi bila deskripsi kosong), narator, `context_code` `mission_brief`, ditautkan ke `challenge_nodes.audio_intro_id` / `audio_intro_en_id`. Halaman **Narasi** punya kelompok **Narasi kartu misi** per wilayah, dan persetujuan massal ikut menyetujuinya. Tidak ada migration baru.
+- **Cara produksi tercatat jujur untuk penelitian.** Folder narasi memuat `_produksi.json` (sha256, `production_method`, profil suara per berkas). `gelita:narration:import` mencatat berkas yang sha256-nya cocok sebagai `audio_assets.production_method = tts` beserta `voice_profile`; berkas yang kemudian diganti rekaman manusia otomatis tercatat `own_recording`.
+- **Membuat ulang audio** (mis. setelah naskah diubah): `docs/audio/` berisi pembuat narasi, musik, dan efek suara serta pemeriksa kualitas (format, −16 LUFS, puncak, jeda, dan uji keterbacaan Whisper). Lihat [`docs/audio/README.md`](docs/audio/README.md).
+
+**Server yang sudah berjalan** (setelah menarik kode terbaru):
+
+```bash
+php spark gelita:narration:import --dry-run   # 111 cocok per bahasa, 0 nama tidak dikenal
+php spark gelita:narration:import             # narasi naskah, kartu misi, dan petunjuk → audio draft (tts)
+```
+
+Lalu dengarkan dan setujui per bahasa di **Konten → Narasi** (**Setujui semua narasi draft ID/EN**). Musik dan efek suara langsung terdengar tanpa impor.
+
 ### Pembaruan narasi petunjuk arena `cari`
 
 - **Petunjuk Mbah Kedu kini bersuara.** Setiap petunjuk target arena `cari` (`tmg-4`: 8 petunjuk; ketiga objek jebakan tidak punya petunjuk) dapat diberi rekaman ID dan EN di kolom baru `challenge_items.audio_prompt_id` / `audio_prompt_en_id` (migration `003800`). Payload `clues` membawa `audio` (URL, hanya rekaman **disetujui** dengan media aktif) dan `audio_id` sesuai bahasa; tanpa rekaman keduanya `null`. Kunci jawaban dan pembeda jebakan tetap tidak dikirim.
@@ -83,10 +99,8 @@ Lalu buka **Konten → Narasi**, dengarkan, dan setujui per bahasa. Rincian di [
 | Latar layar umum | `bg.loading`, `bg.welcome`, `bg.auth`, `bg.intro`, `bg.map`, `bg.reflection` | 1920 × 1080 px |
 | Frame pose tokoh (3 frame per pose, PNG transparan) | Jaka: `idle`, `happy`, `bow`, `sad`, `afraid`, `determined`; Mbah Kedu: `idle`, `smile`, `worried`, `weak` → `char.jaka.{pose}.{1–3}`, `char.kedu.{pose}.{1–3}` | 700 × 900 px |
 | Latar, peta, dan lencana tiap wilayah | `bg.{wilayah}.region`, `map.region.{wilayah}`, `reward.badge.{wilayah}` | 1920 × 1080, 1400 × 900, 320 × 320 px |
-| Musik | `public/assets/audio/music/{map,region,challenge}.mp3` | MP3, berulang |
-| Efek suara | `public/assets/audio/sfx/{click,correct,wrong,lock}.mp3` | MP3 pendek |
 | Poster video Pustaka yang kosong | editor Pustaka, atau `gelita:library:thumbnails` untuk video tautan | 960 × 640 px |
-| Rekaman narasi | 88 baris naskah + 8 petunjuk arena cari = 96 baris × 2 bahasa, [`docs/naskah-cerita.md`](docs/naskah-cerita.md) | MP3 mono 64–96 kbps |
+| Rekaman pengisi suara (opsional) | narasi TTS yang ada dapat diganti per berkas: 88 baris naskah + 15 kartu misi + 8 petunjuk arena cari = 111 baris × 2 bahasa, [`docs/naskah-cerita.md`](docs/naskah-cerita.md) | MP3 mono 64–96 kbps |
 | Gambar bank soal & Pustaka | [`docs/bank-soal/README.md`](docs/bank-soal/README.md) | per slot |
 
 ### Pembaruan cerita wilayah: Kenali wilayah, tirai, dialog dramatis, tuntas, penutup (Tahap 3)

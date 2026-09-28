@@ -138,3 +138,7 @@ _modules/*
 
 /results/
 /phpunit.xml
+
+# docs/audio/: cache Python dan laporan WER check_audio.py --wer
+/docs/audio/__pycache__/
+/docs/audio/wer-*.json

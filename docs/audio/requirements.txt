@@ -1,0 +1,8 @@
+# Pembuat audio GELITA (docs/audio/). Python 3.10+:
+#   pip install -r docs/audio/requirements.txt
+numpy>=1.26
+scipy>=1.11
+soundfile>=0.12
+pyloudnorm>=0.1.1
+imageio-ffmpeg>=0.5
+sherpa-onnx>=1.12
