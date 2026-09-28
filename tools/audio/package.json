@@ -1,0 +1,10 @@
+{
+  "name": "gelita-audio-qa",
+  "private": true,
+  "description": "Whisper small (ONNX) untuk memeriksa kejelasan narasi hasil sintesis; tidak dipakai permainan.",
+  "type": "module",
+  "dependencies": {
+    "@huggingface/transformers": "4.3.0",
+    "sts-whisper-small": "1.0.0"
+  }
+}

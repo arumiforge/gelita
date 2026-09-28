@@ -52,6 +52,14 @@ use CodeIgniter\Database\BaseConnection;
  * persetujuannya tidak hilang saat perintah dijalankan ulang. Dari folder,
  * rekaman yang diunggah lewat panel dan lebih baru daripada berkas folder
  * juga tidak ditimpa.
+ *
+ * Cara produksi (`audio_assets.production_method`): rekaman bawaan
+ * repositori adalah suara sintetis (TTS) dan tercantum di manifest
+ * `produksi.json` di folder narasi, per bahasa dan kode, beserta sha256 dan
+ * profil suaranya. Berkas yang isinya sama persis dengan entri manifest
+ * tercatat `tts` + `voice_profile`; selain itu `own_recording`. Rekaman
+ * pengisi suara yang menggantikan berkas bawaan (dari folder maupun panel)
+ * otomatis tercatat sebagai rekaman sendiri karena isinya berbeda.
  */
 final class NarrationImporter
 {
@@ -86,6 +94,9 @@ final class NarrationImporter
     /** Kolom tautan audio petunjuk per bahasa pada `challenge_items`. */
     public const CLUE_COLUMNS = ['id' => 'audio_prompt_id', 'en' => 'audio_prompt_en_id'];
 
+    /** Manifest rekaman sintetis bawaan, di folder narasi (bukan subfolder bahasa). */
+    public const MANIFEST = 'produksi.json';
+
     private BaseConnection $db;
 
     private MediaStore $store;
@@ -100,6 +111,9 @@ final class NarrationImporter
 
     /** @var list<string>|null kode node `cari` aktif, mis. `tmg-4` */
     private ?array $clueNodes = null;
+
+    /** @var array<string, array<string, mixed>>|null bahasa → kode → entri manifest produksi */
+    private ?array $manifest = null;
 
     public function __construct(?BaseConnection $db = null, ?MediaStore $store = null, string $folder = self::FOLDER)
     {
@@ -143,6 +157,32 @@ final class NarrationImporter
     public function folderFor(string $locale): string
     {
         return $this->folder . $locale . '/';
+    }
+
+    /**
+     * Cara produksi sebuah berkas menurut manifest produksi.json: `tts` bila
+     * isinya (sha256) sama dengan entri manifest untuk kode itu, selain itu
+     * `own_recording`.
+     *
+     * @return array{production_method: string, voice_profile: string|null}
+     */
+    public function production(string $locale, string $code, string $sha256): array
+    {
+        if ($this->manifest === null) {
+            $path           = FCPATH . $this->folder . self::MANIFEST;
+            $data           = is_file($path) ? json_decode((string) file_get_contents($path), true) : null;
+            $this->manifest = is_array($data) && is_array($data['files'] ?? null) ? $data['files'] : [];
+        }
+
+        $entry = $this->manifest[$locale][$code] ?? null;
+
+        if (is_array($entry) && is_string($entry['sha256'] ?? null) && hash_equals(strtolower($entry['sha256']), $sha256)) {
+            $profile = trim((string) ($entry['voice_profile'] ?? ''));
+
+            return ['production_method' => 'tts', 'voice_profile' => $profile === '' ? null : mb_substr($profile, 0, 200)];
+        }
+
+        return ['production_method' => 'own_recording', 'voice_profile' => null];
     }
 
     /**
@@ -471,7 +511,7 @@ final class NarrationImporter
             'character_code'    => in_array($line['character_code'], config('Gelita')->characters, true) ? (string) $line['character_code'] : null,
             'context_code'      => (string) $line['context_code'],
             'transcript'        => $text,
-            'production_method' => 'own_recording',
+            ...$this->production($locale, $code, $sha),
             'duration_ms'       => $this->store->durationMs(FCPATH . $path),
             'approval_status'   => 'draft',
             'approved_by'       => null,
