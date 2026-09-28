@@ -648,7 +648,7 @@ sudo -u www-data php spark gelita:narration:import          # 4b. rekaman narasi
 
 Jalur W: perintah yang sama tanpa `sudo -u www-data`. Urutannya wajib: `gelita:story:update` menulis kolom dari migration, dan `gelita:narration:import` memetakan rekaman ke baris naskah yang dibuat `gelita:story:update`. Langkah 4 boleh dilewati bila rekaman akan diunggah lewat panel (**Konten → Narasi → Unggah narasi**). Setelah itu buka **Konten → Narasi**, dengarkan, lalu **Setujui semua narasi draft** per bahasa; rekaman draft tidak pernah terdengar pemain. Periksa sisa aset di **Media → Kelengkapan aset**.
 
-**Rekaman narasi di server.** Dua jalan masuk, sama dengan aset lain: commit ke `public/assets/audio/narasi/{id,en}/` di repositori lalu `gelita:narration:import` (didaftarkan di tempatnya), atau unggah lewat panel (disalin ke `public/assets/uploads/`, ikut backup). Unggahan panel dibatasi `max_file_uploads` (bawaan PHP 20; pengaturan di atas 100), `post_max_size`, dan `client_max_body_size` Nginx (72M, cukup untuk ±100 MP3 narasi). Halaman Unggah narasi menampilkan batas yang berlaku.
+**Rekaman narasi di server.** Repositori membawa rekaman sintetis (TTS) bawaan untuk ke-96 baris di kedua bahasa ([`docs/audio.md`](audio.md)); cukup jalankan langkah 4 lalu setujui di **Konten → Narasi**. Rekaman bawaan tercatat `production_method = tts` lewat manifest `public/assets/audio/narasi/produksi.json`. Dua jalan masuk, sama dengan aset lain: commit ke `public/assets/audio/narasi/{id,en}/` di repositori lalu `gelita:narration:import` (didaftarkan di tempatnya), atau unggah lewat panel (disalin ke `public/assets/uploads/`, ikut backup). Unggahan panel dibatasi `max_file_uploads` (bawaan PHP 20; pengaturan di atas 100), `post_max_size`, dan `client_max_body_size` Nginx (72M, cukup untuk ±100 MP3 narasi). Halaman Unggah narasi menampilkan batas yang berlaku.
 
 ### Memperbarui server yang sudah berjalan ke pendaftaran NPSN
 
@@ -1090,7 +1090,7 @@ Migration yang menghapus kolom sulit di-rollback tanpa kehilangan data. Aturanny
 | Vendor JS | `public/assets/vendor/` (ECharts, Howler.js) | git | `?v=` → immutable |
 | Font | `public/assets/fonts/` (Cinzel, Plus Jakarta Sans, IBM Plex Mono) | git | revalidasi |
 | Data referensi | `public/assets/data/wilayah-id.json` | git | revalidasi |
-| Aset resmi | `public/assets/{ui,char,bg,map,challenge,library,reward,audio}/` | **git** — saat ini baru `ui/placeholder.svg`; view memakai pengganti | revalidasi |
+| Aset resmi | `public/assets/{ui,char,bg,map,challenge,library,reward,audio}/` | **git** — gambar: baru `ui/placeholder.svg` (view memakai pengganti); audio: musik, efek suara, dan narasi bawaan lengkap ([`docs/audio.md`](audio.md)) | revalidasi |
 | Unggahan admin | `public/assets/uploads/{asset_key}.{ext}` | panel `/admin/media`, editor konten, Unggah narasi — **hanya di server** | revalidasi |
 | Rekaman narasi (folder) | `public/assets/audio/narasi/{id,en}/{kode}.mp3` | git, lalu `gelita:narration:import` | revalidasi |
 | Musik & efek suara | `public/assets/audio/{music,sfx}/{nama}.mp3` | git (dibaca langsung `core/audio.js`, bukan `media_assets`) | revalidasi |

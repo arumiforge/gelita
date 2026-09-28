@@ -31,6 +31,8 @@ Di teks Inggris, Jaka tetap memanggil "Mbah" agar nuansa lokalnya terjaga, semen
 
 ## Konvensi berkas audio
 
+Repositori sudah membawa **rekaman sintetis (TTS) bawaan** untuk ke-96 baris di kedua bahasa, dengan suara Narator, Jaka, dan Mbah Kedu yang diolah menurut arahan di atas. Asal-usul, pengolahan, dan lisensinya ada di [`docs/audio.md`](audio.md). Rekaman pengisi suara dapat menggantikannya kapan saja dengan konvensi di bawah ini. Rekaman pengganti otomatis tercatat sebagai rekaman sendiri, bukan TTS.
+
 - Folder: `public/assets/audio/narasi/id/` untuk bahasa Indonesia dan `public/assets/audio/narasi/en/` untuk bahasa Inggris.
 - Nama berkas mengikuti kode di setiap judul baris di bawah, ditambah `.mp3`, misalnya `narasi/id/dialog-magelang-09.mp3`.
 - Format yang disarankan: MP3 mono, 44,1 kHz, 64–96 kbps. Kenyaringan sekitar −16 LUFS, dengan jeda hening ±0,3 detik di awal dan akhir.
