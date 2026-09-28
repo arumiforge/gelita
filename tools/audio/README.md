@@ -63,7 +63,7 @@ Setelah `publish.py`, pasang rekamannya di server seperti biasa: `php spark geli
 3. **Efek tokoh** (`voicefx.py`, Praat): pitch, formant, rentang nada, dan tempo per tokoh dan pose.
    - Jaka: suara anak.
    - Mbah Kedu: suara lebih rendah dengan getar lansia. Pada pose `weak` getarnya lebih kuat dan napasnya berdesah.
-   - Narasi Indonesia dipercepat 3–8% (Praat *Lengthen*, nada tetap), kecuali pose `weak`.
+   - Tempo asli model dipertahankan. Uji A/B Whisper menunjukkan percepatan 3–8% (Praat *Lengthen*) menurunkan kejelasan narasi Indonesia; faktornya tetap tersedia di `TEMPO`.
    - Loudness −16 LUFS per berkas (Mbah Kedu −16,5; beberapa pose sedikit berbeda), puncak sejati ≤ −1 dBTP lewat limiter look-ahead 2 ms, hening 0,3 detik di awal dan akhir.
 4. **QA.** Setiap kandidat ditranskripsi Whisper small, lalu kandidat dengan CER terendah disimpan. CER dihitung setelah teks dinormalkan: huruf kecil, tanpa tanda baca, dan angka dieja ("15" sama dengan "lima belas"). Laporan per baris ada di `out/narasi/{locale}/report.json`. Hasil QA rekaman yang ada di repositori tersimpan di `qa-narasi.json`.
 
