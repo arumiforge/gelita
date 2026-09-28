@@ -64,7 +64,7 @@ Setelah `publish.py`, pasang rekamannya di server seperti biasa: `php spark geli
    - Jaka: suara anak.
    - Mbah Kedu: suara lebih rendah dengan getar lansia. Pada pose `weak` getarnya lebih kuat dan napasnya berdesah.
    - Narasi Indonesia dipercepat 3–8% (Praat *Lengthen*, nada tetap), kecuali pose `weak`.
-   - Loudness −16 LUFS per berkas (Mbah Kedu −16,5; beberapa pose sedikit berbeda), puncak ≤ −1 dBFS lewat limiter look-ahead 2 ms, hening 0,3 detik di awal dan akhir.
+   - Loudness −16 LUFS per berkas (Mbah Kedu −16,5; beberapa pose sedikit berbeda), puncak sejati ≤ −1 dBTP lewat limiter look-ahead 2 ms, hening 0,3 detik di awal dan akhir.
 4. **QA.** Setiap kandidat ditranskripsi Whisper small, lalu kandidat dengan CER terendah disimpan. CER dihitung setelah teks dinormalkan: huruf kecil, tanpa tanda baca, dan angka dieja ("15" sama dengan "lima belas"). Laporan per baris ada di `out/narasi/{locale}/report.json`. Hasil QA rekaman yang ada di repositori tersimpan di `qa-narasi.json`.
 
 Pengaturan pemeran (penutur, pitch, tempo, pose) ada di `narrate.py`: `CAST`, `POSE`, dan `TEMPO`.
