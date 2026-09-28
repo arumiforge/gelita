@@ -46,6 +46,8 @@ final class AssetChecklist
         'sfx/correct'     => 'Efek jawaban benar',
         'sfx/wrong'       => 'Efek jawaban salah',
         'sfx/lock'        => 'Efek wilayah/tantangan terkunci',
+        'sfx/shard'       => 'Efek serpihan cahaya didapat',
+        'sfx/region-done' => 'Efek wilayah tuntas',
     ];
 
     /** Ukuran slot yang tidak tercakup pola Config\Gelita::$assetSizes. */
@@ -226,7 +228,7 @@ final class AssetChecklist
 
         foreach ($items as $i => $item) {
             if (str_contains($item['key'], '/sfx/')) {
-                $items[$i]['size'] = 'MP3 pendek (< 1 detik)';
+                $items[$i]['size'] = str_ends_with($item['key'], '/region-done.mp3') ? 'MP3 pendek (± 3 detik)' : 'MP3 pendek (< 1 detik)';
             }
         }
 
@@ -303,7 +305,7 @@ final class AssetChecklist
 
         return [
             'title' => 'Audio narasi naskah',
-            'help'  => 'Baris naskah cerita dan petunjuk arena cari (jumlahnya dihitung dari data). Tanpa rekaman yang disetujui, teks tetap tampil dan slide dilanjutkan manual. Draft belum terdengar pemain.',
+            'help'  => 'Baris naskah cerita, kartu misi, dan petunjuk arena cari (jumlahnya dihitung dari data). Tanpa rekaman yang disetujui, teks tetap tampil dan slide dilanjutkan manual. Draft belum terdengar pemain.',
             'items' => $items,
         ];
     }

@@ -10,9 +10,14 @@ use CodeIgniter\CLI\CLI;
 /**
  * Mengimpor rekaman narasi dari public/assets/audio/narasi/{id|en}/ ke
  * permainan: nama berkas = kode berkas baris naskah (docs/naskah-cerita.md),
- * mis. `intro-01.mp3`, atau petunjuk arena `cari` (`petunjuk-tmg-4-01.mp3`).
- * Jalankan setelah `gelita:story:update` dan impor bank soal, karena berkas
- * dipetakan ke baris `dialogues` dan butir `challenge_items` yang sudah ada.
+ * mis. `intro-01.mp3`, kartu misi (`misi-tmg-1.mp3`), atau petunjuk arena
+ * `cari` (`petunjuk-tmg-4-01.mp3`). Jalankan setelah `gelita:story:update`
+ * dan impor bank soal, karena berkas dipetakan ke baris `dialogues`, node
+ * `challenge_nodes`, dan butir `challenge_items` yang sudah ada.
+ *
+ * Manifest `_produksi.json` di folder (ditulis docs/audio/) menandai
+ * rekaman text-to-speech: `audio_assets.production_method` = `tts` beserta
+ * profil suaranya, selama isi berkas masih sama dengan yang dicatat.
  *
  * Rekaman baru atau yang berubah berstatus draft: dengarkan dan setujui di
  * panel (Konten → Narasi). Berkas yang sama persis dengan rekaman terpasang

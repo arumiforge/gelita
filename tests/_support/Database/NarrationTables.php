@@ -11,7 +11,8 @@ use Config\Database;
  * audit_logs, research_studies, dan game_releases (keduanya dibaca layout
  * panel). Kolom yang dibaca/ditulis kode sama dengan migration MySQL. levels
  * diisi tiga wilayah; baris dialogues diisi pemanggil (StorySync); tabel
- * tantangan kosong kecuali pemanggil memanggil seedHuntNode().
+ * tantangan kosong kecuali pemanggil memanggil seedHuntNode() atau
+ * seedBankNodes().
  */
 trait NarrationTables
 {
@@ -58,6 +59,12 @@ trait NarrationTables
             'sequence'          => ['type' => 'INTEGER'],
             'engine_type'       => ['type' => 'VARCHAR', 'constraint' => 20],
             'title_id'          => ['type' => 'VARCHAR', 'constraint' => 200],
+            'title_en'          => ['type' => 'VARCHAR', 'constraint' => 200, 'null' => true],
+            // Teks kartu misi: transkrip narasi kartu misi (NarrationImporter)
+            'instruction_id'    => ['type' => 'TEXT', 'null' => true],
+            'instruction_en'    => ['type' => 'TEXT', 'null' => true],
+            'description_id'    => ['type' => 'TEXT', 'null' => true],
+            'description_en'    => ['type' => 'TEXT', 'null' => true],
             // Narasi kartu misi: dibaca kolom "Dipakai di" halaman Audio
             'audio_intro_id'    => ['type' => 'INTEGER', 'null' => true],
             'audio_intro_en_id' => ['type' => 'INTEGER', 'null' => true],
@@ -151,7 +158,7 @@ trait NarrationTables
         $node    = $bank['nodes']['tmg-4'];
         $levelId = (int) $db->table('levels')->where('code', 'temanggung')->get()->getRow('id');
 
-        $db->table('challenge_nodes')->insert(['level_id' => $levelId, 'sequence' => 4, 'engine_type' => 'cari', 'title_id' => $node['title'][0]]);
+        $db->table('challenge_nodes')->insert(['level_id' => $levelId, 'sequence' => 4, 'engine_type' => 'cari'] + $this->nodeTexts($node));
         $nodeId = (int) $db->insertID();
 
         foreach ($node['items'] as $i => $item) {
@@ -170,6 +177,50 @@ trait NarrationTables
         }
 
         return $nodeId;
+    }
+
+    /**
+     * Kelima belas node bank soal produksi (tanpa butir), urut wilayah dan
+     * node, dengan judul, instruksi, dan deskripsi dwibahasa. Mengembalikan
+     * id node per kode (tmg-1 … wnb-5).
+     *
+     * @return array<string, int>
+     */
+    private function seedBankNodes(BaseConnection $db): array
+    {
+        $ids = [];
+
+        foreach (['temanggung', 'magelang', 'wonosobo'] as $level) {
+            $bank    = require ROOTPATH . 'docs/bank-soal/data/' . $level . '.php';
+            $levelId = (int) $db->table('levels')->where('code', $level)->get()->getRow('id');
+            $seq     = 0;
+
+            foreach ($bank['nodes'] as $ref => $node) {
+                $db->table('challenge_nodes')->insert(['level_id' => $levelId, 'sequence' => ++$seq, 'engine_type' => $node['engine']] + $this->nodeTexts($node));
+                $ids[$ref] = (int) $db->insertID();
+            }
+        }
+
+        return $ids;
+    }
+
+    /**
+     * Kolom teks node dari data bank soal ([Indonesia, English]).
+     *
+     * @param array<string, mixed> $node
+     *
+     * @return array<string, string|null>
+     */
+    private function nodeTexts(array $node): array
+    {
+        return [
+            'title_id'       => $node['title'][0],
+            'title_en'       => $node['title'][1] ?? null,
+            'instruction_id' => $node['instruction'][0] ?? null,
+            'instruction_en' => $node['instruction'][1] ?? null,
+            'description_id' => $node['description'][0] ?? null,
+            'description_en' => $node['description'][1] ?? null,
+        ];
     }
 
     private function dropNarrationTables(): void

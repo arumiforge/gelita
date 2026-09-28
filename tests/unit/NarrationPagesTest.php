@@ -88,19 +88,44 @@ final class NarrationPagesTest extends CIUnitTestCase
 
         $html = html_entity_decode((string) $this->asAdmin()->call(Method::GET, 'admin/konten/narasi')->getBody(), ENT_QUOTES | ENT_HTML5);
 
-        $this->assertSame(96, substr_count($html, 'Sunting</a>'));
+        // 88 naskah + kartu misi tmg-4 + 8 petunjuk
+        $this->assertSame(97, substr_count($html, 'Sunting</a>'));
         $this->assertStringContainsString('Petunjuk arena cari · Temanggung (tmg-4)', $html);
         $this->assertStringContainsString('<code>petunjuk-tmg-4-08</code>', $html);
         $this->assertStringNotContainsString('petunjuk-tmg-4-09', $html, 'jebakan tanpa petunjuk');
         $this->assertStringContainsString('Temukan rigen, anyaman bambu tempat menjemur tembakau rajangan.', $html);
         $this->assertStringContainsString('admin/konten/node/' . $nodeId . '#item-' . $itemId, $html);
         $this->assertStringContainsString('Teks petunjuk berasal dari bank soal', $html);
-        $this->assertStringContainsString('0/96 disetujui, 1 draft, 95 belum ada', $html);
+        $this->assertStringContainsString('0/97 disetujui, 1 draft, 96 belum ada', $html);
         $this->assertStringContainsString('Setujui semua narasi draft ID (1)', $html);
 
         $checklist = html_entity_decode((string) $this->asAdmin()->call(Method::GET, 'admin/media/kelengkapan')->getBody(), ENT_QUOTES | ENT_HTML5);
-        $this->assertStringContainsString('0/96 disetujui, 1 draft, 95 belum ada', $checklist);
-        $this->assertStringContainsString('0/96 disetujui, 0 draft, 96 belum ada', $checklist);
+        $this->assertStringContainsString('0/97 disetujui, 1 draft, 96 belum ada', $checklist);
+        $this->assertStringContainsString('0/97 disetujui, 0 draft, 97 belum ada', $checklist);
+    }
+
+    public function testMissionCardRecordingsAreGroupedPerRegion(): void
+    {
+        $ids   = $this->seedBankNodes($this->sqlite);
+        $draft = $this->audio('audio.narasi.en.misi-mgl-3', 'en', 'draft', 'mission_brief');
+        $this->sqlite->table('challenge_nodes')->where('id', $ids['mgl-3'])->update(['audio_intro_en_id' => $draft]);
+
+        $html = html_entity_decode((string) $this->asAdmin()->call(Method::GET, 'admin/konten/narasi')->getBody(), ENT_QUOTES | ENT_HTML5);
+
+        $this->assertSame(103, substr_count($html, 'Sunting</a>'));
+        $this->assertStringContainsString('Narasi kartu misi · Temanggung', $html);
+        $this->assertStringContainsString('Narasi kartu misi · Wonosobo', $html);
+        $this->assertStringNotContainsString('Narasi kartu misi · Temanggung (tmg-1)', $html, 'satu kelompok per wilayah, bukan per node');
+        $this->assertStringContainsString('<code>misi-wnb-5</code>', $html);
+        $this->assertStringContainsString('admin/konten/node/' . $ids['mgl-3'] . '#node-audio-id', $html);
+        $this->assertStringContainsString('Teks kartu misi = deskripsi tantangan', $html);
+        $this->assertStringContainsString('0/103 disetujui, 1 draft, 102 belum ada', $html);
+        $this->assertStringContainsString('Setujui semua narasi draft EN (1)', $html);
+
+        $checklist = html_entity_decode((string) $this->asAdmin()->call(Method::GET, 'admin/media/kelengkapan')->getBody(), ENT_QUOTES | ENT_HTML5);
+        $this->assertStringContainsString('0/103 disetujui, 0 draft, 103 belum ada', $checklist);
+        $this->assertStringContainsString('Efek wilayah tuntas', $checklist);
+        $this->assertStringContainsString('public/assets/audio/sfx/shard.mp3', $checklist);
     }
 
     public function testTeacherCannotOpenNarrationPages(): void
@@ -197,16 +222,16 @@ final class NarrationPagesTest extends CIUnitTestCase
     {
         $dir = FCPATH . 'assets/audio/narasi/en/';
         $new = ! is_dir($dir);
-
-        if (glob($dir . 'penutup-02.*') ?: []) {
-            $this->markTestSkipped('Rekaman sungguhan penutup-02 sudah ada di folder narasi EN; uji ini tidak menimpanya.');
-        }
+        // Rekaman penutup-02 di repositori dipakai apa adanya (tidak ditimpa); tanpanya uji menulis WAV kecil sementara
+        $real = (glob($dir . 'penutup-02.*') ?: []) !== [];
 
         if ($new) {
             mkdir($dir, 0775, true);
         }
 
-        file_put_contents($dir . 'penutup-02.wav', 'RIFF' . pack('V', 44) . 'WAVEfmt ' . pack('VvvVVvv', 16, 1, 1, 8000, 8000, 1, 8) . 'data' . pack('V', 8) . str_repeat("\x80", 8));
+        if (! $real) {
+            file_put_contents($dir . 'penutup-02.wav', 'RIFF' . pack('V', 44) . 'WAVEfmt ' . pack('VvvVVvv', 16, 1, 1, 8000, 8000, 1, 8) . 'data' . pack('V', 8) . str_repeat("\x80", 8));
+        }
 
         try {
             $result = $this->asAdmin()->call(Method::POST, 'admin/konten/narasi/impor-folder', ['locale' => 'en'] + self::CSRF);
@@ -215,7 +240,9 @@ final class NarrationPagesTest extends CIUnitTestCase
             $this->assertStringStartsWith('Narasi EN: ', (string) session('message'));
             $this->assertSame(1, $this->sqlite->table('media_assets')->where('asset_key', 'audio.narasi.en.penutup-02')->countAllResults());
         } finally {
-            unlink($dir . 'penutup-02.wav');
+            if (! $real) {
+                unlink($dir . 'penutup-02.wav');
+            }
 
             if ($new) {
                 rmdir($dir);

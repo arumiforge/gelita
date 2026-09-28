@@ -10,22 +10,24 @@ use CodeIgniter\Database\BaseConnection;
  * rekaman untuk pengisi suara, dan persetujuan massal.
  *
  * "Audio narasi" = audio yang ditautkan ke baris `dialogues` keenam konteks
- * naskah atau ke petunjuk arena `cari` (`challenge_items.audio_prompt_id` /
- * `audio_prompt_en_id`), atau yang diimpor NarrationImporter (asset_key
- * `audio.narasi.{locale}.*`). Audio lain (mis. narasi pembuka kartu misi)
- * tidak pernah ikut persetujuan massal.
+ * naskah, ke kartu misi (`challenge_nodes.audio_intro_id` /
+ * `audio_intro_en_id`), atau ke petunjuk arena `cari`
+ * (`challenge_items.audio_prompt_id` / `audio_prompt_en_id`), atau yang
+ * diimpor NarrationImporter (asset_key `audio.narasi.{locale}.*`). Audio lain
+ * yang tidak tertaut ke baris mana pun tidak pernah ikut persetujuan massal.
  */
 final class NarrationCatalog
 {
     /** Nama konteks naskah di panel, urut alur permainan (docs/naskah-cerita.md). */
     public const CONTEXT_LABELS = [
-        'intro'        => 'Cerita pembuka',
-        'map_intro'    => 'Narasi Peta Kedu',
-        'region_intro' => 'Kenali wilayah',
-        'level_open'   => 'Dialog masuk wilayah',
-        'level_done'   => 'Wilayah tuntas',
-        'ending'       => 'Penutup',
-        'hunt_clue'    => 'Petunjuk arena cari',
+        'intro'         => 'Cerita pembuka',
+        'map_intro'     => 'Narasi Peta Kedu',
+        'region_intro'  => 'Kenali wilayah',
+        'level_open'    => 'Dialog masuk wilayah',
+        'level_done'    => 'Wilayah tuntas',
+        'ending'        => 'Penutup',
+        'mission_brief' => 'Narasi kartu misi',
+        'hunt_clue'     => 'Petunjuk arena cari',
     ];
 
     public const CHARACTER_LABELS = ['narator' => 'Narator', 'jaka' => 'Jaka', 'mbah_kedu' => 'Mbah Kedu'];
@@ -137,7 +139,8 @@ final class NarrationCatalog
 
     /**
      * Baris per kelompok tampilan: konteks global satu kelompok, konteks
-     * wilayah satu kelompok per wilayah, petunjuk `cari` satu kelompok per node.
+     * wilayah (termasuk kartu misi) satu kelompok per wilayah, petunjuk
+     * `cari` satu kelompok per node.
      *
      * @param list<array<string, mixed>> $rows
      *
@@ -148,7 +151,7 @@ final class NarrationCatalog
         $groups = [];
 
         foreach ($rows as $row) {
-            $node = $row['node_ref'] ?? null;
+            $node = $row['context_code'] === NarrationImporter::CLUE_CONTEXT ? ($row['node_ref'] ?? null) : null;
             $key  = $row['context_code'] . '|' . ($row['level_code'] ?? '') . '|' . ($node ?? '');
 
             $groups[$key] ??= [
@@ -184,6 +187,17 @@ final class NarrationCatalog
                 ->getResultArray(),
             $column,
         ));
+
+        // Audio kartu misi yang dipilih manual di form tantangan
+        $missionColumn = NarrationImporter::MISSION_COLUMNS[$locale];
+        $linked        = array_merge($linked, array_map('intval', array_column(
+            $this->db->table('challenge_nodes')
+                ->select($missionColumn)
+                ->where($missionColumn . ' IS NOT NULL')
+                ->get()
+                ->getResultArray(),
+            $missionColumn,
+        )));
 
         // Audio petunjuk arena `cari` yang dipilih manual di form butir
         $clueColumn = NarrationImporter::CLUE_COLUMNS[$locale];

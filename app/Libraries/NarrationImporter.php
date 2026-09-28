@@ -33,6 +33,16 @@ use CodeIgniter\Database\BaseConnection;
  * context_code audio `hunt_clue`. Objek jebakan tidak punya petunjuk,
  * jadi tidak punya kode berkas.
  *
+ * Narasi kartu misi juga begitu, satu baris per tantangan aktif:
+ *
+ *   misi-{node}           → challenge_nodes.audio_intro_id / audio_intro_en_id
+ *
+ * Transkripnya sama dengan teks yang tampil di kartu misi
+ * (game/mission-brief.php): deskripsi tantangan, atau instruksinya bila
+ * deskripsi kosong. Dibacakan narator (tokoh NULL), context_code audio
+ * `mission_brief`. Tantangan tanpa deskripsi dan instruksi tidak punya kode
+ * berkas.
+ *
  * Dua sumber berkas, satu aturan:
  * - folder public/assets/audio/narasi/{id|en}/ (`php spark
  *   gelita:narration:import`, atau tombol "Impor dari folder" di panel):
@@ -52,6 +62,15 @@ use CodeIgniter\Database\BaseConnection;
  * persetujuannya tidak hilang saat perintah dijalankan ulang. Dari folder,
  * rekaman yang diunggah lewat panel dan lebih baru daripada berkas folder
  * juga tidak ditimpa.
+ *
+ * Cara produksi (`audio_assets.production_method`) bawaannya `own_recording`.
+ * Folder boleh memuat manifest `_produksi.json` (ditulis pembuat audio
+ * docs/audio/, mis. untuk narasi text-to-speech):
+ *
+ *   {"files": {"intro-01.mp3": {"sha256": "…", "production_method": "tts", "voice_profile": "…"}}}
+ *
+ * Entri dipakai hanya bila sha256-nya sama dengan isi berkas, jadi rekaman
+ * yang kemudian diganti suara manusia otomatis tercatat `own_recording`.
  */
 final class NarrationImporter
 {
@@ -86,6 +105,21 @@ final class NarrationImporter
     /** Kolom tautan audio petunjuk per bahasa pada `challenge_items`. */
     public const CLUE_COLUMNS = ['id' => 'audio_prompt_id', 'en' => 'audio_prompt_en_id'];
 
+    /** Awalan kode berkas narasi kartu misi: `misi-{node}`. */
+    public const MISSION_PREFIX = 'misi';
+
+    /** context_code audio kartu misi (audio_assets) dan konteks barisnya di halaman Narasi. */
+    public const MISSION_CONTEXT = 'mission_brief';
+
+    /** Kolom tautan audio kartu misi per bahasa pada `challenge_nodes`. */
+    public const MISSION_COLUMNS = ['id' => 'audio_intro_id', 'en' => 'audio_intro_en_id'];
+
+    /** Manifest cara produksi di folder rekaman satu bahasa (bukan rekaman). */
+    public const MANIFEST = '_produksi.json';
+
+    /** Nilai `production_method` yang diterima dari manifest (sama dengan form Audio). */
+    public const PRODUCTION_METHODS = ['own_recording', 'tts'];
+
     private BaseConnection $db;
 
     private MediaStore $store;
@@ -98,8 +132,8 @@ final class NarrationImporter
     /** @var list<string>|null */
     private ?array $levelCodes = null;
 
-    /** @var list<string>|null kode node `cari` aktif, mis. `tmg-4` */
-    private ?array $clueNodes = null;
+    /** @var array<string, list<string>> jenis arena (`*` = semua) → kode node aktif, mis. `tmg-4` */
+    private array $activeNodes = [];
 
     public function __construct(?BaseConnection $db = null, ?MediaStore $store = null, string $folder = self::FOLDER)
     {
@@ -134,6 +168,12 @@ final class NarrationImporter
         return self::CLUE_PREFIX . '-' . $nodeRef . '-' . sprintf('%02d', $number);
     }
 
+    /** Kode berkas narasi kartu misi satu node, mis. `misi-tmg-1`. */
+    public static function missionCode(string $nodeRef): string
+    {
+        return self::MISSION_PREFIX . '-' . $nodeRef;
+    }
+
     public static function assetKey(string $locale, string $code): string
     {
         return 'audio.narasi.' . $locale . '.' . $code;
@@ -147,7 +187,8 @@ final class NarrationImporter
 
     /**
      * Baris naskah aktif per kode berkas, urut naskah: konteks, wilayah, urutan;
-     * petunjuk arena `cari` (clueLines()) di akhir.
+     * lalu kartu misi (missionLines()) dan petunjuk arena `cari` (clueLines())
+     * di akhir.
      *
      * @return array<string, array<string, mixed>> kolom dialogues + `code`, `level_code`, `level_name`, `table`
      */
@@ -189,9 +230,96 @@ final class NarrationImporter
             }
         }
 
+        $this->lines += $this->missionLines();
         $this->lines += $this->clueLines();
 
         return $this->lines;
+    }
+
+    /**
+     * Kartu misi setiap tantangan aktif sebagai baris narasi, urut wilayah,
+     * node. Bentuknya sama dengan baris dialogues: `text_*` = transkrip kartu
+     * misi (briefText()), `audio_{locale}_asset_id` = kolom MISSION_COLUMNS;
+     * `table`, `node_id`, dan `node_ref` menunjuk node-nya.
+     *
+     * @return array<string, array<string, mixed>>
+     */
+    private function missionLines(): array
+    {
+        $rows = $this->db->table('challenge_nodes n')
+            ->select('n.id, n.sequence, n.title_id, n.title_en, n.description_id, n.description_en, n.instruction_id, n.instruction_en, n.audio_intro_id, n.audio_intro_en_id')
+            ->select('n.level_id, l.code AS level_code, l.name_id AS level_name, l.sequence AS level_sequence')
+            ->join('levels l', 'l.id = n.level_id')
+            ->where('n.is_active', 1)
+            ->orderBy('l.sequence', 'ASC')
+            ->orderBy('n.sequence', 'ASC')
+            ->orderBy('n.id', 'ASC')
+            ->get()
+            ->getResultArray();
+
+        $lines = [];
+
+        foreach ($rows as $row) {
+            $textId = self::briefText($row, 'id');
+
+            // Kartu tanpa teks: tidak ada yang dibacakan (transkrip audio wajib)
+            if (trim($textId) === '') {
+                continue;
+            }
+
+            $nodeRef = node_ref((string) $row['level_code'], (int) $row['sequence']);
+            $code    = self::missionCode($nodeRef);
+
+            // Nomor urut ganda di satu wilayah: node id terkecil yang dipakai
+            if (isset($lines[$code])) {
+                continue;
+            }
+
+            $lines[$code] = [
+                'id'                => (int) $row['id'],
+                'table'             => 'challenge_nodes',
+                'level_id'          => (int) $row['level_id'],
+                'level_code'        => (string) $row['level_code'],
+                'level_name'        => (string) $row['level_name'],
+                'level_sequence'    => (int) $row['level_sequence'],
+                'context_code'      => self::MISSION_CONTEXT,
+                'sequence'          => (int) $row['sequence'],
+                'character_code'    => 'narator',
+                'pose'              => null,
+                'effect'            => null,
+                'title_id'          => $row['title_id'],
+                'title_en'          => $row['title_en'],
+                'text_id'           => $textId,
+                'text_en'           => self::briefText($row, 'en'),
+                'audio_id_asset_id' => $row['audio_intro_id'],
+                'audio_en_asset_id' => $row['audio_intro_en_id'],
+                'node_id'           => (int) $row['id'],
+                'node_ref'          => $nodeRef,
+                'code'              => $code,
+            ];
+        }
+
+        return $lines;
+    }
+
+    /**
+     * Teks kartu misi satu bahasa, persis seperti game/mission-brief.php:
+     * deskripsi, atau instruksi bila deskripsi kosong; kolom bahasa yang
+     * kosong jatuh ke Indonesia (Entities\Traits\Bilingual::text()).
+     *
+     * @param array<string, mixed> $row baris challenge_nodes
+     */
+    private static function briefText(array $row, string $locale): string
+    {
+        $text = static function (string $field) use ($row, $locale): string {
+            $value = (string) ($row[$field . '_' . $locale] ?? '');
+
+            return trim($value) === '' ? (string) ($row[$field . '_id'] ?? '') : $value;
+        };
+
+        $description = $text('description');
+
+        return $description !== '' ? $description : $text('instruction');
     }
 
     /**
@@ -293,8 +421,14 @@ final class NarrationImporter
 
             $code = $base;
         } elseif (preg_match('/^' . self::CLUE_PREFIX . '-(.+)-(\d{2})$/', $base, $m) === 1) {
-            if (! in_array($m[1], $this->clueNodes(), true)) {
+            if (! in_array($m[1], $this->activeNodes('cari'), true)) {
                 return $this->unknown('tantangan "' . $m[1] . '" bukan arena cari yang aktif', $this->suggest($base, $extension));
+            }
+
+            $code = $base;
+        } elseif (preg_match('/^' . self::MISSION_PREFIX . '-(.+)$/', $base, $m) === 1) {
+            if (! in_array($m[1], $this->activeNodes(), true)) {
+                return $this->unknown('tantangan "' . $m[1] . '" tidak ada atau nonaktif', $this->suggest($base, $extension));
             }
 
             $code = $base;
@@ -303,7 +437,11 @@ final class NarrationImporter
         }
 
         if (! isset($lines[$code])) {
-            $where = str_starts_with($code, self::CLUE_PREFIX . '-') ? 'di petunjuk target bank soal aktif' : 'di naskah aktif';
+            $where = match (true) {
+                str_starts_with($code, self::CLUE_PREFIX . '-')   => 'di petunjuk target bank soal aktif',
+                str_starts_with($code, self::MISSION_PREFIX . '-') => 'di kartu misi (deskripsi dan instruksi tantangan kosong)',
+                default                                            => 'di naskah aktif',
+            };
 
             return $this->unknown('baris ' . $code . ' tidak ada ' . $where, $this->suggest($base, $extension));
         }
@@ -318,13 +456,14 @@ final class NarrationImporter
      */
     public function importFolder(string $locale, bool $dryRun = false, ?int $staffId = null): array
     {
-        $report = $this->report($locale, 'folder', $dryRun);
-        $dir    = FCPATH . $this->folderFor($locale);
-        $names  = is_dir($dir) ? (scandir($dir) ?: []) : [];
-        $byCode = [];
+        $report   = $this->report($locale, 'folder', $dryRun);
+        $dir      = FCPATH . $this->folderFor($locale);
+        $names    = is_dir($dir) ? (scandir($dir) ?: []) : [];
+        $byCode   = [];
+        $manifest = $this->manifest($dir, $report);
 
         foreach ($names as $name) {
-            if (str_starts_with($name, '.') || ! is_file($dir . $name)) {
+            if (str_starts_with($name, '.') || strtolower($name) === self::MANIFEST || ! is_file($dir . $name)) {
                 continue;
             }
 
@@ -349,7 +488,7 @@ final class NarrationImporter
                 $report['unknown'][] = ['file' => $duplicate, 'reason' => 'ganda: ' . $code . ' sudah diambil dari ' . $files[0], 'suggestion' => null];
             }
 
-            $this->importOne($code, $dir . $files[0], $files[0], $this->folderFor($locale) . $files[0], $locale, $dryRun, $staffId, $report);
+            $this->importOne($code, $dir . $files[0], $files[0], $this->folderFor($locale) . $files[0], $locale, $dryRun, $staffId, $report, $manifest[strtolower($files[0])] ?? null);
         }
 
         return $this->finish($report);
@@ -402,10 +541,56 @@ final class NarrationImporter
     // -------------------------------------------------------------- bantuan
 
     /**
-     * @param string|null          $relative path relatif public/ bila berkas didaftarkan di tempat (folder)
+     * Entri manifest `_produksi.json` di folder rekaman, per nama berkas
+     * (huruf kecil). Manifest yang tidak terbaca dilaporkan gagal dan
+     * diabaikan: rekamannya tetap diimpor sebagai `own_recording`.
+     *
      * @param array<string, mixed> $report
+     *
+     * @return array<string, array{sha256: string, production_method: string, voice_profile: string|null}>
      */
-    private function importOne(string $code, string $source, string $name, ?string $relative, string $locale, bool $dryRun, ?int $staffId, array &$report): void
+    private function manifest(string $dir, array &$report): array
+    {
+        $path = $dir . self::MANIFEST;
+
+        if (! is_file($path)) {
+            return [];
+        }
+
+        $data = json_decode((string) file_get_contents($path), true);
+
+        if (! is_array($data) || ! is_array($data['files'] ?? null)) {
+            $report['failed'][] = ['file' => self::MANIFEST, 'error' => 'manifest produksi tidak terbaca (JSON dengan kunci "files"); cara produksi dicatat own_recording'];
+
+            return [];
+        }
+
+        $entries = [];
+
+        foreach ($data['files'] as $file => $entry) {
+            if (! is_array($entry) || ! is_string($entry['sha256'] ?? null)
+                || ! in_array($entry['production_method'] ?? null, self::PRODUCTION_METHODS, true)) {
+                continue;
+            }
+
+            $profile = trim((string) ($entry['voice_profile'] ?? ''));
+
+            $entries[strtolower((string) $file)] = [
+                'sha256'            => strtolower($entry['sha256']),
+                'production_method' => $entry['production_method'],
+                'voice_profile'     => $profile === '' ? null : mb_substr($profile, 0, 200),
+            ];
+        }
+
+        return $entries;
+    }
+
+    /**
+     * @param string|null                                                                          $relative   path relatif public/ bila berkas didaftarkan di tempat (folder)
+     * @param array<string, mixed>                                                                 $report
+     * @param array{sha256: string, production_method: string, voice_profile: string|null}|null $production entri manifest berkas ini
+     */
+    private function importOne(string $code, string $source, string $name, ?string $relative, string $locale, bool $dryRun, ?int $staffId, array &$report, ?array $production = null): void
     {
         $line   = $this->lines()[$code];
         $key    = self::assetKey($locale, $code);
@@ -465,13 +650,18 @@ final class NarrationImporter
         $path    = (string) $this->db->table('media_assets')->select('storage_path')->where('id', $mediaId)->get()->getRow('storage_path');
         $text    = trim((string) ($line['text_' . $locale] ?? '')) ?: (string) $line['text_id'];
         $models  = model(AudioAssetModel::class, false);
+
+        // Manifest hanya berlaku untuk isi berkas yang ia catat
+        $production = $production !== null && hash_equals($production['sha256'], $sha) ? $production : null;
+
         $payload = [
             'media_asset_id'    => $mediaId,
             'locale'            => $locale,
             'character_code'    => in_array($line['character_code'], config('Gelita')->characters, true) ? (string) $line['character_code'] : null,
             'context_code'      => (string) $line['context_code'],
             'transcript'        => $text,
-            'production_method' => 'own_recording',
+            'production_method' => $production['production_method'] ?? 'own_recording',
+            'voice_profile'     => $production['voice_profile'] ?? null,
             'duration_ms'       => $this->store->durationMs(FCPATH . $path),
             'approval_status'   => 'draft',
             'approved_by'       => null,
@@ -496,8 +686,9 @@ final class NarrationImporter
     }
 
     /**
-     * Tautkan audio ke baris: `dialogues.audio_{locale}_asset_id`, atau kolom
-     * CLUE_COLUMNS butir untuk petunjuk arena `cari`.
+     * Tautkan audio ke baris: `dialogues.audio_{locale}_asset_id`, kolom
+     * CLUE_COLUMNS butir untuk petunjuk arena `cari`, atau kolom
+     * MISSION_COLUMNS node untuk kartu misi.
      *
      * @param array<string, mixed> $line
      * @param array<string, mixed> $report
@@ -512,10 +703,12 @@ final class NarrationImporter
         }
 
         if (! $dryRun) {
-            $table = ($line['table'] ?? 'dialogues') === 'challenge_items' ? 'challenge_items' : 'dialogues';
-            $this->db->table($table)->where('id', (int) $line['id'])->update([
-                $table === 'challenge_items' ? self::CLUE_COLUMNS[$locale] : $column => $audioId,
-            ]);
+            [$table, $target] = match ($line['table'] ?? 'dialogues') {
+                'challenge_items' => ['challenge_items', self::CLUE_COLUMNS[$locale]],
+                'challenge_nodes' => ['challenge_nodes', self::MISSION_COLUMNS[$locale]],
+                default           => ['dialogues', $column],
+            };
+            $this->db->table($table)->where('id', (int) $line['id'])->update([$target => $audioId]);
             $this->lines[$line['code']][$column] = $audioId;
             $report['written'] = true;
         }
@@ -584,22 +777,28 @@ final class NarrationImporter
         return $report;
     }
 
-    /** @return list<string> kode node `cari` aktif (node_ref()) */
-    private function clueNodes(): array
+    /** @return list<string> kode node aktif (node_ref()), hanya jenis arena $engine bila diisi */
+    private function activeNodes(?string $engine = null): array
     {
-        if ($this->clueNodes !== null) {
-            return $this->clueNodes;
+        $key = $engine ?? '*';
+
+        if (isset($this->activeNodes[$key])) {
+            return $this->activeNodes[$key];
         }
 
-        $rows = $this->db->table('challenge_nodes n')
+        $builder = $this->db->table('challenge_nodes n')
             ->select('n.sequence, l.code')
             ->join('levels l', 'l.id = n.level_id')
-            ->where('n.engine_type', 'cari')
-            ->where('n.is_active', 1)
-            ->get()
-            ->getResultArray();
+            ->where('n.is_active', 1);
 
-        return $this->clueNodes = array_map(static fn (array $row): string => node_ref((string) $row['code'], (int) $row['sequence']), $rows);
+        if ($engine !== null) {
+            $builder->where('n.engine_type', $engine);
+        }
+
+        return $this->activeNodes[$key] = array_map(
+            static fn (array $row): string => node_ref((string) $row['code'], (int) $row['sequence']),
+            $builder->get()->getResultArray(),
+        );
     }
 
     /** @return list<string> */

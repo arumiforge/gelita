@@ -17,7 +17,8 @@ use Tests\Support\Database\NarrationTables;
  * Memakai grup basis data `tests` (SQLite di memori) dengan tabel versi
  * ringkas; baris `dialogues` diisi StorySync dari naskah (88 baris), dan
  * uji petunjuk arena `cari` menambah node tmg-4 dari bank soal (8 petunjuk
- * target + 3 jebakan, seedHuntNode()). Berkas
+ * target + 3 jebakan, seedHuntNode(); node itu juga punya satu kartu misi).
+ * Uji kartu misi memakai kelima belas node bank soal (seedBankNodes()). Berkas
  * folder ditulis ke folder uji di bawah public/ dan salinan unggahan ke
  * public/assets/uploads/, lalu dibersihkan.
  *
@@ -128,8 +129,8 @@ final class NarrationImporterTest extends CIUnitTestCase
         $importer = $this->importer();
         $lines    = $importer->lines();
 
-        // 88 baris naskah + 8 petunjuk target tmg-4; ketiga jebakan tanpa kode berkas
-        $this->assertCount(96, $lines);
+        // 88 baris naskah + kartu misi tmg-4 + 8 petunjuk target tmg-4; ketiga jebakan tanpa kode berkas
+        $this->assertCount(97, $lines);
         $clues = array_filter($lines, static fn (array $line): bool => $line['context_code'] === NarrationImporter::CLUE_CONTEXT);
         $this->assertSame(array_map(static fn (int $n): string => sprintf('petunjuk-tmg-4-%02d', $n), range(1, 8)), array_keys($clues));
         $this->assertSame(array_map(static fn (int $n): string => sprintf('tmg-4-%02d', $n), range(1, 8)), array_column($clues, 'item_key'));
@@ -192,7 +193,7 @@ final class NarrationImporterTest extends CIUnitTestCase
 
         $this->assertSame(['petunjuk-tmg-4-01', 'petunjuk-tmg-4-08'], $id['created']);
         $this->assertSame(['petunjuk-tmg-4-01'], $en['created']);
-        $this->assertCount(94, $id['missing']);
+        $this->assertCount(95, $id['missing'], '88 naskah + misi-tmg-4 + 6 petunjuk');
         $this->assertContains('petunjuk-tmg-4-02', $id['missing']);
 
         $item    = $this->sqlite->table('challenge_items')->where('item_key', 'tmg-4-01')->get()->getRowArray();
@@ -231,22 +232,211 @@ final class NarrationImporterTest extends CIUnitTestCase
         $rows     = $catalog->rows();
         $progress = $catalog->progress($rows);
 
-        $this->assertSame(['total' => 96, 'approved' => 0, 'draft' => 1, 'none' => 95], $progress['id']);
-        $this->assertSame(['total' => 96, 'approved' => 0, 'draft' => 0, 'none' => 96], $progress['en']);
+        $this->assertSame(['total' => 97, 'approved' => 0, 'draft' => 1, 'none' => 96], $progress['id']);
+        $this->assertSame(['total' => 97, 'approved' => 0, 'draft' => 0, 'none' => 97], $progress['en']);
 
         $groups = $catalog->groups($rows);
-        $this->assertCount(13, $groups);
+        $this->assertCount(14, $groups, '12 kelompok naskah + kartu misi Temanggung + petunjuk tmg-4');
         $this->assertSame('Petunjuk arena cari · Temanggung (tmg-4)', end($groups)['label']);
         $this->assertCount(8, end($groups)['rows']);
 
         $list = $catalog->recordingList();
-        $this->assertCount(96, $list['rows']);
-        $this->assertSame(['petunjuk-tmg-4-03', 'hunt_clue', 'temanggung', 3, 'Mbah Kedu'], array_slice($list['rows'][90], 0, 5));
-        $this->assertSame('Temukan kuda-kudaan anyaman bambu untuk menari jaran kepang.', $list['rows'][90][9]);
-        $this->assertSame(['draft', 'belum ada'], array_slice($list['rows'][90], 11));
+        $this->assertCount(97, $list['rows']);
+        $this->assertSame(['petunjuk-tmg-4-03', 'hunt_clue', 'temanggung', 3, 'Mbah Kedu'], array_slice($list['rows'][91], 0, 5));
+        $this->assertSame('Temukan kuda-kudaan anyaman bambu untuk menari jaran kepang.', $list['rows'][91][9]);
+        $this->assertSame(['draft', 'belum ada'], array_slice($list['rows'][91], 11));
 
         $this->assertSame([$manual], $catalog->draftIds('id'));
         $this->assertSame(1, $catalog->approveDrafts('id', 5));
+    }
+
+    // ------------------------------------------------------------ kartu misi
+
+    public function testMissionFileNamesMapToActiveNodesInMapOrder(): void
+    {
+        $ids      = $this->seedBankNodes($this->sqlite);
+        $importer = $this->importer();
+        $lines    = $importer->lines();
+
+        // 88 baris naskah + 15 kartu misi, urut wilayah lalu node, sesudah naskah
+        $this->assertCount(103, $lines);
+        $missions = array_filter($lines, static fn (array $line): bool => $line['context_code'] === NarrationImporter::MISSION_CONTEXT);
+        $expected = [];
+
+        foreach (['tmg', 'mgl', 'wnb'] as $prefix) {
+            foreach (range(1, 5) as $n) {
+                $expected[] = 'misi-' . $prefix . '-' . $n;
+            }
+        }
+
+        $this->assertSame($expected, array_keys($missions));
+        $this->assertSame(88, array_search('misi-tmg-1', array_keys($lines), true));
+
+        $bank  = require ROOTPATH . 'docs/bank-soal/data/temanggung.php';
+        $first = $lines['misi-tmg-1'];
+        $this->assertSame('challenge_nodes', $first['table']);
+        $this->assertSame($ids['tmg-1'], $first['node_id']);
+        $this->assertSame('tmg-1', $first['node_ref']);
+        $this->assertSame('temanggung', $first['level_code']);
+        $this->assertSame(1, $first['sequence']);
+        $this->assertSame('narator', $first['character_code']);
+        $this->assertSame($bank['nodes']['tmg-1']['title'][0], $first['title_id']);
+        $this->assertSame($bank['nodes']['tmg-1']['description'][0], $first['text_id']);
+        $this->assertSame($bank['nodes']['tmg-1']['description'][1], $first['text_en']);
+
+        foreach (['misi-tmg-1.mp3', 'MISI-WNB-5.MP3', 'misi-mgl-3.ogg'] as $file) {
+            $this->assertNull($importer->match($file)['error'], $file);
+        }
+    }
+
+    public function testMissionTextFollowsTheMissionCard(): void
+    {
+        $ids = $this->seedBankNodes($this->sqlite);
+
+        // Deskripsi kosong → instruksi; EN kosong → teks Indonesia (seperti game/mission-brief.php)
+        $this->sqlite->table('challenge_nodes')->where('id', $ids['tmg-2'])->update(['description_id' => '', 'description_en' => '']);
+        $this->sqlite->table('challenge_nodes')->where('id', $ids['tmg-3'])->update(['description_en' => null]);
+        // Tanpa deskripsi dan instruksi: tidak ada yang dibacakan, tidak ada kode berkas
+        $this->sqlite->table('challenge_nodes')->where('id', $ids['tmg-5'])->update(['description_id' => null, 'description_en' => null, 'instruction_id' => ' ', 'instruction_en' => null]);
+        // Node nonaktif tidak punya kartu misi
+        $this->sqlite->table('challenge_nodes')->where('id', $ids['wnb-5'])->update(['is_active' => 0]);
+
+        $importer = $this->importer();
+        $lines    = $importer->lines();
+        $tmg2     = $this->sqlite->table('challenge_nodes')->where('id', $ids['tmg-2'])->get()->getRowArray();
+        $tmg3     = $this->sqlite->table('challenge_nodes')->where('id', $ids['tmg-3'])->get()->getRowArray();
+
+        $this->assertSame($tmg2['instruction_id'], $lines['misi-tmg-2']['text_id']);
+        $this->assertSame($tmg2['instruction_en'], $lines['misi-tmg-2']['text_en']);
+        $this->assertSame($tmg3['description_id'], $lines['misi-tmg-3']['text_en']);
+        $this->assertArrayNotHasKey('misi-tmg-5', $lines);
+        $this->assertArrayNotHasKey('misi-wnb-5', $lines);
+        $this->assertCount(101, $lines);
+
+        $empty = $importer->match('misi-tmg-5.mp3');
+        $this->assertNull($empty['code']);
+        $this->assertStringContainsString('misi-tmg-5 tidak ada di kartu misi', $empty['error']);
+
+        $inactive = $importer->match('misi-wnb-5.mp3');
+        $this->assertStringContainsString('tantangan "wnb-5" tidak ada atau nonaktif', $inactive['error']);
+        $this->assertMatchesRegularExpression('/^misi-wnb-[1-4]\.mp3$/', (string) $inactive['suggestion']);
+
+        $typo = $importer->match('misi-tmg1.mp3');
+        $this->assertStringContainsString('tantangan "tmg1" tidak ada', $typo['error']);
+        $this->assertSame('misi-tmg-1.mp3', $typo['suggestion']);
+        $this->assertSame('misi-mgl-2.mp3', $importer->match('misi_mgl-2.mp3')['suggestion']);
+    }
+
+    public function testMissionImportLinksTheNodeColumnsPerLocale(): void
+    {
+        $ids = $this->seedBankNodes($this->sqlite);
+        $this->folderFile('id', 'misi-tmg-1.wav', 1);
+        $this->folderFile('en', 'misi-tmg-1.wav', 2);
+        $this->folderFile('id', 'misi-wnb-5.wav', 3);
+
+        $importer = $this->importer();
+        $id       = $importer->importFolder('id');
+        $en       = $importer->importFolder('en');
+
+        $this->assertSame(['misi-tmg-1', 'misi-wnb-5'], $id['created']);
+        $this->assertSame(['misi-tmg-1'], $en['created']);
+        $this->assertCount(101, $id['missing']);
+        $this->assertContains('misi-mgl-1', $id['missing']);
+
+        $node    = $this->sqlite->table('challenge_nodes')->where('id', $ids['tmg-1'])->get()->getRowArray();
+        $audioId = $this->audioByKey('audio.narasi.id.misi-tmg-1');
+        $audioEn = $this->audioByKey('audio.narasi.en.misi-tmg-1');
+
+        $this->assertSame((int) $audioId['id'], (int) $node['audio_intro_id']);
+        $this->assertSame((int) $audioEn['id'], (int) $node['audio_intro_en_id']);
+        $this->assertSame('draft', $audioId['approval_status']);
+        $this->assertSame('mission_brief', $audioId['context_code']);
+        $this->assertNull($audioId['character_code'], 'dibacakan narator');
+        $this->assertSame($node['description_id'], $audioId['transcript']);
+        $this->assertSame($node['description_en'], $audioEn['transcript']);
+        $this->assertSame(0, $this->sqlite->table('dialogues')->where('audio_id_asset_id IS NOT NULL')->countAllResults());
+
+        // Audio kartu misi yang dipilih manual di form tantangan ikut persetujuan massal
+        $manual = $this->audioRow('audio.misi-manual.id', 'mission_brief', 'id');
+        $this->sqlite->table('challenge_nodes')->where('id', $ids['mgl-2'])->update(['audio_intro_id' => $manual]);
+        $catalog = new NarrationCatalog($this->sqlite, $this->importer());
+        $this->assertSame(3, $catalog->approveDrafts('id', 5));
+        $this->assertSame('approved', $this->sqlite->table('audio_assets')->where('id', $manual)->get()->getRow('approval_status'));
+
+        // Impor ulang berkas yang sama: tetap tertaut, persetujuan tidak hilang
+        $again = $this->importer()->importFolder('id');
+        $this->assertSame(['misi-tmg-1', 'misi-wnb-5'], $again['unchanged']);
+        $this->assertSame('approved', $this->audioByKey('audio.narasi.id.misi-wnb-5')['approval_status']);
+    }
+
+    public function testCatalogGroupsMissionCardsPerRegion(): void
+    {
+        $this->seedBankNodes($this->sqlite);
+        $catalog = new NarrationCatalog($this->sqlite, $this->importer());
+        $groups  = $catalog->groups($catalog->rows());
+
+        $this->assertCount(15, $groups, '12 kelompok naskah + kartu misi tiga wilayah');
+        $this->assertSame(['Narasi kartu misi · Temanggung', 'Narasi kartu misi · Magelang', 'Narasi kartu misi · Wonosobo'], array_column(array_slice($groups, 12), 'label'));
+        $this->assertCount(5, $groups[12]['rows']);
+
+        $list = $catalog->recordingList();
+        $this->assertCount(103, $list['rows']);
+        $this->assertSame(['misi-mgl-1', 'mission_brief', 'magelang', 1, 'Narator'], array_slice($list['rows'][93], 0, 5));
+        $this->assertSame(['belum ada', 'belum ada'], array_slice($list['rows'][93], 11));
+    }
+
+    // ------------------------------------------------ manifest cara produksi
+
+    public function testManifestMarksTextToSpeechOnlyForMatchingFiles(): void
+    {
+        $this->folderFile('id', 'intro-01.wav', 1);
+        $this->folderFile('id', 'intro-02.wav', 2);
+        $this->manifestFile('id', [
+            'intro-01.wav' => ['sha256' => strtoupper($this->folderSha('id', 'intro-01.wav')), 'production_method' => 'tts', 'voice_profile' => 'Kokoro v1.0 · bm_george'],
+            // Isi berkas sudah berbeda dari yang dicatat manifest
+            'intro-02.wav' => ['sha256' => str_repeat('0', 64), 'production_method' => 'tts', 'voice_profile' => 'Kokoro v1.0 · bm_george'],
+        ]);
+
+        $report = $this->importer()->importFolder('id');
+
+        $this->assertSame(['intro-01', 'intro-02'], $report['created']);
+        $this->assertSame([], $report['unknown'], 'manifest bukan rekaman');
+        $this->assertSame(2, $report['files']);
+
+        $tts = $this->audioByKey('audio.narasi.id.intro-01');
+        $this->assertSame('tts', $tts['production_method']);
+        $this->assertSame('Kokoro v1.0 · bm_george', $tts['voice_profile']);
+        $this->assertSame('draft', $tts['approval_status']);
+
+        $other = $this->audioByKey('audio.narasi.id.intro-02');
+        $this->assertSame('own_recording', $other['production_method']);
+        $this->assertNull($other['voice_profile']);
+
+        // Rekaman TTS diganti suara manusia: manifest tidak berlaku lagi
+        $this->folderFile('id', 'intro-01.wav', 9);
+        $replaced = $this->importer()->importFolder('id');
+        $this->assertSame(['intro-01'], $replaced['replaced']);
+        $this->assertSame('own_recording', $this->audioByKey('audio.narasi.id.intro-01')['production_method']);
+        $this->assertNull($this->audioByKey('audio.narasi.id.intro-01')['voice_profile']);
+    }
+
+    public function testInvalidManifestIsReportedAndIgnored(): void
+    {
+        $this->folderFile('en', 'peta-01.wav', 1);
+        file_put_contents(FCPATH . $this->folder . 'en/' . NarrationImporter::MANIFEST, '{"files": [rusak');
+
+        $report = $this->importer()->importFolder('en');
+
+        $this->assertSame(['peta-01'], $report['created']);
+        $this->assertSame(NarrationImporter::MANIFEST, $report['failed'][0]['file']);
+        $this->assertStringContainsString('manifest produksi tidak terbaca', $report['failed'][0]['error']);
+        $this->assertSame('own_recording', $this->audioByKey('audio.narasi.en.peta-01')['production_method']);
+
+        // Cara produksi di luar daftar form Audio diabaikan
+        $this->folderFile('en', 'peta-02.wav', 2);
+        $this->manifestFile('en', ['peta-02.wav' => ['sha256' => $this->folderSha('en', 'peta-02.wav'), 'production_method' => 'robot']]);
+        $this->importer()->importFolder('en');
+        $this->assertSame('own_recording', $this->audioByKey('audio.narasi.en.peta-02')['production_method']);
     }
 
     // ---------------------------------------------------------------- impor
@@ -431,7 +621,7 @@ final class NarrationImporterTest extends CIUnitTestCase
         $importer->importFolder('id');
         $importer->importFolder('en');
 
-        // Audio lain: narasi pembuka misi (bukan naskah) dan audio manual yang ditautkan ke baris naskah
+        // Audio lain: narasi misi yang tidak tertaut ke node mana pun, dan audio manual yang ditautkan ke baris naskah
         $mission = $this->audioRow('audio.mission.tmg-1.id', 'mission.tmg-1', 'id');
         $manual  = $this->audioRow('audio.jaka.peta.1.id', 'map_intro.1', 'id');
         $this->sqlite->table('dialogues')->where(['level_id' => null, 'context_code' => 'map_intro', 'sequence' => 1])->update(['audio_id_asset_id' => $manual]);
@@ -443,7 +633,7 @@ final class NarrationImporterTest extends CIUnitTestCase
         $this->assertSame('5', (string) $this->audioByKey('audio.narasi.id.intro-02')['approved_by']);
         $this->assertNotNull($this->audioByKey('audio.narasi.id.intro-02')['approved_at']);
         $this->assertSame('approved', $this->sqlite->table('audio_assets')->where('id', $manual)->get()->getRow('approval_status'));
-        $this->assertSame('draft', $this->sqlite->table('audio_assets')->where('id', $mission)->get()->getRow('approval_status'), 'audio misi tidak ikut');
+        $this->assertSame('draft', $this->sqlite->table('audio_assets')->where('id', $mission)->get()->getRow('approval_status'), 'audio yang tidak tertaut tidak ikut');
         $this->assertSame('draft', $this->audioByKey('audio.narasi.en.intro-01')['approval_status'], 'bahasa lain tidak ikut');
 
         $audit = $this->sqlite->table('audit_logs')->where('action', 'audio_approve_bulk')->get()->getRowArray();
@@ -542,6 +732,17 @@ final class NarrationImporterTest extends CIUnitTestCase
         }
 
         file_put_contents($dir . $name, str_ends_with($name, '.wav') ? $this->wavBytes($seed, $dataBytes) : 'catatan');
+    }
+
+    /** @param array<string, array<string, string>> $files */
+    private function manifestFile(string $locale, array $files): void
+    {
+        file_put_contents(FCPATH . $this->folder . $locale . '/' . NarrationImporter::MANIFEST, json_encode(['files' => $files], JSON_UNESCAPED_UNICODE));
+    }
+
+    private function folderSha(string $locale, string $name): string
+    {
+        return hash_file('sha256', FCPATH . $this->folder . $locale . '/' . $name);
     }
 
     private function tempWav(int $seed): string
