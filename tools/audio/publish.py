@@ -34,11 +34,16 @@ PROFILES = {
 }
 
 
+# LAME mode CBR ≤ 160 kbps mengalikan sinyal 0,95× (kolom `scale` tabel presetnya, −0,45 dB).
+# Dikompensasi agar MP3 yang didekode sama keras dengan WAV-nya (puncak −1 dBFS tetap −1 dBFS).
+LAME_CBR_SCALE = 0.95
+
+
 def encode(wav, mp3) -> None:
     mp3.parent.mkdir(parents=True, exist_ok=True)
     subprocess.run(['ffmpeg', '-hide_banner', '-loglevel', 'error', '-y', '-i', str(wav), '-map_metadata', '-1',
-                    '-ac', '1', '-ar', '44100', '-codec:a', 'libmp3lame', '-b:a', '96k', '-write_xing', '1',
-                    '-id3v2_version', '0', str(mp3)], check=True)
+                    '-af', f'volume={1 / LAME_CBR_SCALE:.6f}', '-ac', '1', '-ar', '44100', '-codec:a', 'libmp3lame',
+                    '-b:a', '96k', '-write_xing', '1', '-id3v2_version', '0', str(mp3)], check=True)
 
 
 def main() -> None:

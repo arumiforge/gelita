@@ -121,11 +121,11 @@ def trim_silence(x: np.ndarray, sr: int, thresh_db: float = -45.0) -> np.ndarray
 
 
 def finalize(x: np.ndarray, sr: int, lufs: float = -16.0, pad_s: float = 0.3, peak_db: float = -1.0) -> np.ndarray:
-    """Resample ke 44,1 kHz, hening ±0,3 s di awal & akhir, loudness `lufs`, puncak ≤ `peak_db` dBFS.
+    """Resample ke 44,1 kHz, hening ±0,3 s di awal & akhir, loudness `lufs`, puncak sejati ≤ `peak_db` dBTP.
 
     Limiter hanya menjinakkan puncak sesaat, jadi loudness dicapai bertahap: ukur, beri gain,
-    batasi puncak, ukur lagi (suara berat dengan puncak glotal tinggi, seperti Mbah Kedu,
-    kehilangan hingga ±0,7 LU di limiter pada putaran pertama).
+    batasi puncak, ukur lagi. Suara berat dengan puncak glotal tinggi, seperti Mbah Kedu,
+    kehilangan sebagian loudness di limiter pada putaran pertama.
     """
     if sr != OUT_SR:
         from math import gcd
@@ -146,7 +146,7 @@ def finalize(x: np.ndarray, sr: int, lufs: float = -16.0, pad_s: float = 0.3, pe
     gain_db, prev = lufs - loudness(x), None
     for _ in range(8):
         y = x * 10 ** (gain_db / 20)
-        if np.max(np.abs(y)) > lim:
+        if np.max(peak_envelope(y)) > lim:
             y = soft_limit(y, lim)
         loud = loudness(y)
         if abs(lufs - loud) < 0.05:
@@ -160,13 +160,20 @@ def finalize(x: np.ndarray, sr: int, lufs: float = -16.0, pad_s: float = 0.3, pe
     return np.concatenate([pad, y, pad]).astype(np.float32)
 
 
+def peak_envelope(x: np.ndarray, oversample: int = 4) -> np.ndarray:
+    """|x| termasuk puncak antarsampel (true peak): maksimum sinyal yang di-oversample 4× di sekitar
+    tiap sampel. Desis kuat (mis. suara kristin) bisa berpuncak ±1,5 dB di atas sampelnya."""
+    up = np.abs(resample_poly(x, oversample, 1)[: len(x) * oversample]).reshape(len(x), oversample)
+    return np.maximum(np.abs(x), up.max(axis=1))
+
+
 def soft_limit(x: np.ndarray, ceiling: float, look_ms: float = 2.0, release_ms: float = 20.0) -> np.ndarray:
-    """Limiter puncak dengan look-ahead: gain turun landai selama `look_ms` sebelum puncak lalu pulih
+    """Limiter true peak dengan look-ahead: gain turun landai selama `look_ms` sebelum puncak lalu pulih
     dengan konstanta waktu `release_ms`. Cukup cepat agar suku kata di sekitar puncak tidak ikut
     melemah, cukup lambat (±2 periode suara pria ±100 Hz) agar tidak membentuk ulang tiap denyut glotal."""
     from scipy.ndimage import minimum_filter1d
     look = max(1, int(look_ms / 1000 * OUT_SR))
-    need = np.minimum(1.0, ceiling / np.maximum(np.abs(x), 1e-9))
+    need = np.minimum(1.0, ceiling / np.maximum(peak_envelope(x), 1e-9))
     # min-hold ±look, lalu rata-rata look sampel ke belakang: gain menurun landai sebelum puncak
     # dan tetap ≤ kebutuhan tepat di puncaknya (semua nilai yang dirata-rata ≤ kebutuhan itu)
     need = minimum_filter1d(need, size=2 * look + 1)

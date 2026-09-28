@@ -14,7 +14,9 @@ import paths
 
 # core/audio.js memakai volume Howler dua kali (per bunyi × global; bawaan 0,8 × 0,8 ≈ −3,9 dB),
 # sedangkan narasi (−16 LUFS) tidak. Target di bawah sudah memperhitungkannya: musik tetap
-# ±8–9 LU di bawah narasi yang diputar di atasnya.
+# ±8–9 LU di bawah narasi yang diputar di atasnya. Target berlaku untuk WAV sebelum dikode: LAME
+# mode CBR mengalikan sinyal 0,95×, jadi MP3-nya terukur ±0,45 LU lebih pelan (angka di
+# docs/audio.md diukur dari MP3 yang didekode).
 MUSIC_LUFS = {'map': -20.0, 'region': -20.5, 'challenge': -21.5}
 # SFX diukur dengan hening dibantalkan ke 3 s agar bunyi pendek punya blok gating
 SFX_LUFS = {'click': -24.0, 'lock': -20.0, 'wrong': -19.0, 'correct': -17.0, 'shard': -16.5, 'region-done': -15.0}
