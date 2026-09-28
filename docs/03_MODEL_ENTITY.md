@@ -1145,7 +1145,8 @@ class SchoolDirectory
     public function findByNpsn(string $npsn): ?array;          // resmi & aktif saja
     public function describe(array $school): array;            // data publik kartu konfirmasi + baris `meta`
     public function matchByName(string $name, ?string $district, ?string $province = null): ?array;
-    //   1) match_key sama & tunggal di kab/kota, 2) sama setelah kecamatan/kab-kota sekolah dibuang,
+    //   1) match_key sama & tunggal di kab/kota, 2) sama setelah kecamatan/kab-kota sekolah dibuang
+    //      (ketikan harus masih punya kata nama; "SD 1" saja tidak ditautkan),
     //   3) match_key tunggal se-provinsi; ambigu → null (tidak pernah menebak)
     public function resolve(array $input): array;              // ['id','name','verified'] untuk SessionService
     //   NPSN → alias hasil gabung admin → matchByName → entri belum terverifikasi (satu per wilayah + match_key)

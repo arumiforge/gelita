@@ -126,7 +126,8 @@ class SchoolDirectory
      *
      * 1. kunci nama sama, di kab/kota yang dipilih;
      * 2. sama setelah nama kecamatan & kab/kota sekolah dibuang dari kedua sisi
-     *    ("SD N 3 Tumiyang" ≡ "SD NEGERI 3 TUMIYANG KECAMATAN PEKUNCEN");
+     *    ("SD N 3 Tumiyang" ≡ "SD NEGERI 3 TUMIYANG KECAMATAN PEKUNCEN"), asal
+     *    ketikan masih punya kata nama — "SD 1" saja terlalu umum;
      * 3. kunci nama sama dan satu-satunya se-provinsi.
      *
      * @return array<string, mixed>|null
