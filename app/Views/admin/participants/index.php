@@ -17,8 +17,8 @@ $genders = ['laki-laki' => 'L', 'perempuan' => 'P', 'lainnya' => 'Lainnya'];
 <?= $this->section('content') ?>
 <?= component('partials/admin-head', [
     'title'   => 'Peserta',
-    'eyebrow' => 'Data penelitian',
-    'lead'    => 'Nama pengguna hanya untuk keperluan guru; ekspor anonim memakai kode peserta.',
+    'eyebrow' => 'Data siswa',
+    'lead'    => 'Siswa yang sudah mendaftar di permainan. Nama pengguna dan nama lengkap hanya untuk keperluan guru; data yang diunduh tanpa nama memakai kode peserta.',
 ]) ?>
 <?= $this->include('partials/flash') ?>
 <?= component('admin-filter-bar', [
@@ -31,22 +31,22 @@ $genders = ['laki-laki' => 'L', 'perempuan' => 'P', 'lainnya' => 'Lainnya'];
     'rows'         => $rows,
     'caption'      => 'Daftar peserta',
     'emptyMessage' => $search !== '' || $filters !== []
-        ? 'Tidak ada peserta yang cocok dengan pencarian atau filter ini. Coba kata kunci lain atau atur ulang filter.'
-        : 'Belum ada peserta. Peserta muncul setelah siswa mendaftar di halaman permainan.',
+        ? 'Tidak ada peserta yang cocok dengan pencarian atau filter ini. Coba kata lain atau tekan Atur ulang.'
+        : 'Belum ada peserta. Peserta muncul di sini setelah siswa mendaftar di halaman permainan.',
     'columns' => [
-        'participant_code' => ['label' => 'Kode', 'render' => static fn (array $r): string => '<a href="' . base_url('admin/peserta/' . $r['id']) . '"><code>' . esc($r['participant_code']) . '</code></a>'],
+        'participant_code' => ['label' => 'Kode peserta', 'render' => static fn (array $r): string => '<a href="' . base_url('admin/peserta/' . $r['id']) . '"><code>' . esc($r['participant_code']) . '</code></a>'],
         'username'         => 'Nama pengguna',
         'display_name'     => 'Nama lengkap',
         'age'              => ['label' => 'Umur', 'format' => 'num'],
-        'gender'           => ['label' => 'JK', 'render' => static fn (array $r): string => esc($genders[$r['gender']] ?? ($r['gender'] ?? '—'))],
+        'gender'           => ['label' => 'L/P', 'render' => static fn (array $r): string => esc($genders[$r['gender']] ?? ($r['gender'] ?? '—'))],
         'class_level'      => 'Kelas',
         'school_name'      => 'Sekolah',
         'province_name'    => 'Provinsi',
         'session_count'    => ['label' => 'Sesi', 'format' => 'num'],
-        'shards'           => ['label' => 'Serpihan', 'format' => 'num'],
-        'mean_first_pass'  => ['label' => 'Tepat awal', 'format' => 'pct'],
+        'shards'           => ['label' => 'Tantangan selesai', 'format' => 'num'],
+        'mean_first_pass'  => ['label' => 'Tepat sejak awal', 'format' => 'pct'],
         'last_active_at'   => ['label' => 'Terakhir aktif', 'format' => 'datetime'],
-        'id'               => ['label' => '', 'render' => static fn (array $r): string => '<a class="btn btn-quiet btn-sm" href="' . base_url('admin/peserta/' . $r['id']) . '">Profil</a>'],
+        'id'               => ['label' => '', 'render' => static fn (array $r): string => '<a class="btn btn-quiet btn-sm" href="' . base_url('admin/peserta/' . $r['id']) . '">Lihat profil</a>'],
     ],
 ]) ?>
 

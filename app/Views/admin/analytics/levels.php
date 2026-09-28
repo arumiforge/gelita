@@ -12,9 +12,9 @@
 
 <?= $this->section('content') ?>
 <?= component('partials/admin-head', [
-    'title'   => 'Analitik wilayah',
-    'eyebrow' => 'Analitik',
-    'lead'    => 'Rata-rata dari percobaan yang selesai pada setiap wilayah.',
+    'title'   => 'Hasil per wilayah',
+    'eyebrow' => 'Hasil belajar',
+    'lead'    => 'Rata-rata hasil siswa di tiap wilayah, dihitung dari tantangan yang sudah mereka selesaikan.',
 ]) ?>
 <?= $this->include('partials/flash') ?>
 <?= component('admin-filter-bar', ['filters' => $filters]) ?>
@@ -34,15 +34,15 @@
 <?= component('admin-table', [
     'rows'         => array_values($rows),
     'caption'      => 'Ringkasan per wilayah',
-    'emptyMessage' => 'Belum ada wilayah aktif.',
+    'emptyMessage' => 'Belum ada wilayah yang aktif.',
     'rowClass'     => static fn (array $r): string => (int) $r['completed_attempts'] === 0 ? 'is-muted' : '',
     'columns'      => [
         'name'               => 'Wilayah',
-        'completed_attempts' => ['label' => 'Percobaan selesai', 'format' => 'num'],
+        'completed_attempts' => ['label' => 'Tantangan diselesaikan', 'format' => 'num'],
         'avg_score'          => ['label' => 'Rata-rata skor', 'format' => 'num', 'decimals' => 1],
         'avg_first_pass'     => ['label' => 'Tepat sejak awal', 'format' => 'pct'],
-        'avg_duration_ms'    => ['label' => 'Rata-rata durasi', 'format' => 'ms'],
-        'level_id'           => ['label' => '', 'render' => static fn (array $r): string => '<a class="btn btn-quiet btn-sm" href="' . base_url('admin/analitik/node?level_id=' . $r['level_id']) . '">Tantangan</a>'],
+        'avg_duration_ms'    => ['label' => 'Rata-rata lama', 'format' => 'ms'],
+        'level_id'           => ['label' => '', 'render' => static fn (array $r): string => '<a class="btn btn-quiet btn-sm" href="' . base_url('admin/analitik/node?level_id=' . $r['level_id']) . '">Lihat tantangannya</a>'],
     ],
 ]) ?>
 <?= $this->endSection() ?>

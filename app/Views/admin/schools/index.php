@@ -27,14 +27,14 @@ $dataDate  = isset($dataMeta['upstream_updated']) ? substr((string) $dataMeta['u
 <?= component('partials/admin-head', [
     'title'   => 'Sekolah',
     'eyebrow' => 'Pengelolaan · direktori sekolah',
-    'lead'    => 'Siswa di Jawa Tengah mendaftar dengan NPSN, sehingga satu sekolah selalu menjadi satu baris data di laporan. Di sini Anda mencari NPSN untuk sesi kelas dan merapikan nama sekolah yang diketik siswa.',
+    'lead'    => 'Siswa di Jawa Tengah mendaftar dengan NPSN, jadi satu sekolah selalu tercatat dengan satu nama yang sama di laporan. Di halaman ini Anda mencari NPSN untuk sesi kelas dan merapikan nama sekolah yang diketik sendiri oleh siswa.',
 ]) ?>
 <?= $this->include('partials/flash') ?>
 
 <?php if ($stats['official'] === 0): ?>
   <div class="alert alert-warn" role="status">
     <?= icon('warn') ?>
-    <p><b>Daftar sekolah resmi belum dipasang</b> — siswa Jawa Tengah menulis nama sekolah sendiri. Jalankan <code>php spark gelita:schools:import</code> di server (deploy menjalankannya otomatis).</p>
+    <p><b>Daftar sekolah resmi belum dipasang</b>, jadi siswa Jawa Tengah masih menulis nama sekolahnya sendiri. Minta petugas teknis memasang daftar sekolah (perintah <code>php spark gelita:schools:import</code> di server).</p>
   </div>
 <?php endif ?>
 
@@ -43,15 +43,15 @@ $dataDate  = isset($dataMeta['upstream_updated']) ? substr((string) $dataMeta['u
       'label' => 'Sekolah resmi',
       'value' => fmt_num($stats['official'], 0, 'id'),
       'icon'  => 'building',
-      'hint'  => $dataDate !== null ? 'data induk per ' . $dataDate : null,
+      'hint'  => $dataDate !== null ? 'data Kemendikdasmen per ' . $dataDate : null,
   ]) ?>
   <?= component('stat-tile', ['label' => 'Sekolah dengan siswa', 'value' => fmt_num($stats['in_use'], 0, 'id'), 'icon' => 'users']) ?>
-  <?= component('stat-tile', ['label' => 'Belum terverifikasi', 'value' => fmt_num($stats['unverified'], 0, 'id'), 'icon' => 'warn', 'hint' => 'nama ketikan siswa']) ?>
+  <?= component('stat-tile', ['label' => 'Nama sekolah perlu dirapikan', 'value' => fmt_num($stats['unverified'], 0, 'id'), 'icon' => 'warn', 'hint' => 'diketik sendiri oleh siswa']) ?>
 </div>
 
 <section class="form-section" aria-labelledby="school-search-title">
   <h2 id="school-search-title"><?= icon('search') ?> Cari sekolah</h2>
-  <p class="muted">Ketik NPSN, nama sekolah, kecamatan, atau desa. Tuliskan NPSN hasil pencarian di papan saat sesi kelas — siswa mengetik NPSN itu saat mendaftar.</p>
+  <p class="muted">Ketik NPSN, nama sekolah, kecamatan, atau desa. Tulis NPSN sekolah Anda di papan tulis saat sesi kelas — siswa mengetik NPSN itu saat mendaftar.</p>
   <form method="get" action="<?= base_url('admin/sekolah') ?>" class="filter-bar" role="search">
     <div class="field">
       <label for="school-q">NPSN atau nama</label>
@@ -60,7 +60,7 @@ $dataDate  = isset($dataMeta['upstream_updated']) ? substr((string) $dataMeta['u
     <div class="field">
       <label for="school-kab">Kabupaten / kota</label>
       <select id="school-kab" name="kab">
-        <option value="">Semua kab/kota</option>
+        <option value="">Semua kabupaten/kota</option>
         <?php foreach ($districts as $code => $name): ?>
           <option value="<?= esc($code, 'attr') ?>" <?= $district === $code ? 'selected' : '' ?>><?= esc($name) ?></option>
         <?php endforeach ?>
@@ -73,7 +73,7 @@ $dataDate  = isset($dataMeta['upstream_updated']) ? substr((string) $dataMeta['u
 
   <?php if ($results !== null): ?>
     <?php if ($results === []): ?>
-      <p class="alert alert-info"><?= icon('info') ?> Tidak ada sekolah yang cocok. Coba kata lain, atau cek di <a href="https://referensi.data.kemendikdasmen.go.id/pendidikan/dikdas" target="_blank" rel="noopener">Data Referensi Kemendikdasmen</a>.</p>
+      <p class="alert alert-info"><?= icon('info') ?> Tidak ada sekolah yang cocok. Coba kata lain, atau cari NPSN-nya di <a href="https://referensi.data.kemendikdasmen.go.id/pendidikan/dikdas" target="_blank" rel="noopener">Data Referensi Kemendikdasmen</a>.</p>
     <?php else: ?>
       <div class="table-wrap">
         <table class="data-table">
@@ -82,8 +82,8 @@ $dataDate  = isset($dataMeta['upstream_updated']) ? substr((string) $dataMeta['u
             <tr>
               <th scope="col">NPSN</th>
               <th scope="col">Sekolah</th>
-              <th scope="col">Kab/kota</th>
-              <th scope="col" class="is-num">Siswa</th>
+              <th scope="col">Kabupaten/kota</th>
+              <th scope="col" class="is-num">Jumlah siswa</th>
               <th scope="col">Status</th>
             </tr>
           </thead>
@@ -97,14 +97,14 @@ $dataDate  = isset($dataMeta['upstream_updated']) ? substr((string) $dataMeta['u
                 </td>
                 <td><?= esc(\App\Libraries\RegionDirectory::districtName($school['district_code']) ?? '—') ?></td>
                 <td class="is-num"><?= esc(fmt_num($school['participant_count'], 0, 'id')) ?></td>
-                <td><span class="badge <?= (int) $school['is_verified'] === 1 ? 'is-verified' : 'is-warn' ?>"><?= (int) $school['is_verified'] === 1 ? 'resmi' : 'belum terverifikasi' ?></span></td>
+                <td><span class="badge <?= (int) $school['is_verified'] === 1 ? 'is-verified' : 'is-warn' ?>"><?= (int) $school['is_verified'] === 1 ? 'resmi' : 'perlu dirapikan' ?></span></td>
               </tr>
             <?php endforeach ?>
           </tbody>
         </table>
       </div>
       <?php if (count($results) >= $limit): ?>
-        <p class="muted">Menampilkan <?= $limit ?> sekolah pertama. Persempit pencarian dengan kata lain atau pilih kab/kota.</p>
+        <p class="muted">Menampilkan <?= $limit ?> sekolah pertama. Persempit pencarian dengan kata lain atau pilih kabupaten/kota.</p>
       <?php endif ?>
     <?php endif ?>
   <?php endif ?>
@@ -113,9 +113,9 @@ $dataDate  = isset($dataMeta['upstream_updated']) ? substr((string) $dataMeta['u
 <section class="form-section" aria-labelledby="school-tidy-title">
   <h2 id="school-tidy-title"><?= icon('edit') ?> Rapikan nama sekolah</h2>
   <p class="muted">
-    Nama di bawah diketik siswa karena NPSN-nya tidak ada di daftar, atau sekolahnya di luar Jawa Tengah.
-    <b>Gabungkan</b> memindahkan siswa (dan akun guru) ke sekolah tujuan; ketikan yang sama berikutnya langsung tertaut ke sana.
-    <b>Sahkan</b> menjadikannya sekolah baru ber-NPSN yang bisa dipakai siswa berikutnya.
+    Nama-nama di bawah diketik sendiri oleh siswa, karena NPSN-nya tidak ada di daftar atau sekolahnya di luar Jawa Tengah.
+    <b>Gabungkan</b> bila nama itu sebenarnya sekolah yang sudah ada: siswanya (dan akun guru) dipindahkan ke sekolah itu, dan ketikan yang sama berikutnya langsung ikut ke sana.
+    <b>Sahkan</b> bila nama itu memang sekolah baru: sekolah itu didaftarkan dengan NPSN-nya sehingga bisa dipilih siswa berikutnya.
   </p>
 
   <?php if ($unverified === []): ?>
@@ -123,7 +123,7 @@ $dataDate  = isset($dataMeta['upstream_updated']) ? substr((string) $dataMeta['u
   <?php else: ?>
     <form method="post" action="<?= base_url('admin/sekolah/gabung-otomatis') ?>" class="form-actions">
       <?= csrf_field() ?>
-      <button class="btn btn-primary btn-sm" type="submit" <?= $clearMatches === 0 ? 'disabled' : '' ?>><?= icon('check') ?> Gabungkan otomatis yang cocok jelas (<?= $clearMatches ?>)</button>
+      <button class="btn btn-primary btn-sm" type="submit" <?= $clearMatches === 0 ? 'disabled' : '' ?>><?= icon('check') ?> Gabungkan otomatis yang sudah jelas (<?= $clearMatches ?>)</button>
       <span class="muted">Hanya nama yang pasti menunjuk satu sekolah resmi, mis. "SDN 01 Cendono" → SD 1 CENDONO.</span>
     </form>
 
@@ -148,14 +148,14 @@ $dataDate  = isset($dataMeta['upstream_updated']) ? substr((string) $dataMeta['u
           <div class="item-card-body">
             <?php if ($school['suggestions'] !== []): ?>
               <div class="stack">
-                <p class="muted">Mungkin maksudnya:</p>
+                <p class="muted">Mungkin yang dimaksud:</p>
                 <?php foreach ($school['suggestions'] as $candidate): ?>
                   <form method="post" action="<?= base_url('admin/sekolah/' . $sid . '/gabung') ?>" class="inline-form">
                     <?= csrf_field() ?>
                     <input type="hidden" name="target_id" value="<?= (int) $candidate['id'] ?>">
                     <button class="btn btn-quiet btn-sm" type="submit"><?= icon('right') ?> Gabungkan ke <b><?= esc($candidate['name']) ?></b></button>
                     <span class="cell-sub">
-                      <?= $candidate['code'] !== null ? 'NPSN ' . esc($candidate['code']) . ' · ' : 'belum terverifikasi · ' ?>
+                      <?= $candidate['code'] !== null ? 'NPSN ' . esc($candidate['code']) . ' · ' : 'belum resmi · ' ?>
                       <?= ! empty($candidate['subdistrict_name']) ? 'Kec. ' . esc(mb_convert_case($candidate['subdistrict_name'], MB_CASE_TITLE)) : '' ?>
                       <?= ! empty($candidate['village_name']) ? ' · Desa ' . esc(mb_convert_case($candidate['village_name'], MB_CASE_TITLE)) : '' ?>
                     </span>
@@ -166,7 +166,7 @@ $dataDate  = isset($dataMeta['upstream_updated']) ? substr((string) $dataMeta['u
 
             <form method="post" action="<?= base_url('admin/sekolah/' . $sid . '/gabung') ?>" class="inline-form">
               <?= csrf_field() ?>
-              <label for="merge-<?= $sid ?>">Gabungkan ke NPSN</label>
+              <label for="merge-<?= $sid ?>">Gabungkan ke sekolah dengan NPSN</label>
               <input type="text" id="merge-<?= $sid ?>" name="target_npsn" inputmode="numeric" maxlength="8" pattern="[0-9]{8}" required autocomplete="off">
               <button class="btn btn-primary btn-sm" type="submit"><?= icon('check') ?> Gabungkan</button>
             </form>
@@ -174,11 +174,11 @@ $dataDate  = isset($dataMeta['upstream_updated']) ? substr((string) $dataMeta['u
             <form method="post" action="<?= base_url('admin/sekolah/' . $sid . '/sahkan') ?>" class="form-grid">
               <?= csrf_field() ?>
               <div class="field">
-                <label for="verify-npsn-<?= $sid ?>">NPSN sekolah baru <span class="req">*</span></label>
+                <label for="verify-npsn-<?= $sid ?>">NPSN sekolah ini <span class="req">*</span></label>
                 <input type="text" id="verify-npsn-<?= $sid ?>" name="npsn" inputmode="numeric" maxlength="8" pattern="[0-9]{8}" required autocomplete="off">
               </div>
               <div class="field">
-                <label for="verify-name-<?= $sid ?>">Nama resmi</label>
+                <label for="verify-name-<?= $sid ?>">Nama resmi sekolah</label>
                 <input type="text" id="verify-name-<?= $sid ?>" name="name" maxlength="200" value="<?= esc($school['name'], 'attr') ?>">
               </div>
               <div class="field">
@@ -194,8 +194,11 @@ $dataDate  = isset($dataMeta['upstream_updated']) ? substr((string) $dataMeta['u
 
 <?php if ($dataMeta !== null): ?>
   <p class="muted">
-    Sumber daftar resmi: <?= esc((string) ($dataMeta['source'] ?? '')) ?><?= $dataDate !== null ? ', data per ' . esc($dataDate) : '' ?>.
-    Memperbarui: <code>php docs/sekolah/build-sekolah-jateng.php</code> lalu <code>php spark gelita:schools:import</code>.
+    Sumber daftar sekolah resmi: <?= esc((string) ($dataMeta['source'] ?? '')) ?><?= $dataDate !== null ? ', data per ' . esc($dataDate) : '' ?>.
   </p>
+  <details class="row-details muted">
+    <summary>Catatan untuk petugas teknis</summary>
+    <p>Memperbarui daftar sekolah: jalankan <code>php docs/sekolah/build-sekolah-jateng.php</code> lalu <code>php spark gelita:schools:import</code> di server.</p>
+  </details>
 <?php endif ?>
 <?= $this->endSection() ?>

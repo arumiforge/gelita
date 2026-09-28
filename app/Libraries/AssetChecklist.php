@@ -21,7 +21,7 @@ final class AssetChecklist
     public const UI_SLOTS = [
         'ui.logo-hero'    => 'Logo landscape halaman awal',
         'ui.btn-start'    => 'Tombol Mulai bergambar (Indonesia)',
-        'ui.btn-start.en' => 'Tombol Mulai bergambar (English)',
+        'ui.btn-start.en' => 'Tombol Mulai bergambar (Inggris)',
         'ui.logo'         => 'Logo panel admin & halaman masuk',
         'map.kedu'        => 'Peta Karesidenan Kedu',
         'bg.loading'      => 'Latar tirai pemuatan (Membuka Peta Kedu)',
@@ -52,9 +52,9 @@ final class AssetChecklist
 
     /** Keterangan format per bunyi; efek lain: MP3 pendek (< 1 detik). */
     private const SOUND_SIZES = [
-        'music/map'       => 'MP3, musik berulang (loop)',
-        'music/region'    => 'MP3, musik berulang (loop)',
-        'music/challenge' => 'MP3, musik berulang (loop)',
+        'music/map'       => 'MP3, musik yang diputar berulang',
+        'music/region'    => 'MP3, musik yang diputar berulang',
+        'music/challenge' => 'MP3, musik yang diputar berulang',
         'sfx/shard'       => 'MP3 pendek (± 3 detik)',
         'sfx/region-done' => 'MP3 pendek (± 5 detik)',
     ];
@@ -128,8 +128,8 @@ final class AssetChecklist
         }
 
         return [
-            'title' => 'Tampilan & latar umum',
-            'help'  => 'Tanpa berkas, halaman memakai gradien, tombol CSS, atau judul teks.',
+            'title' => 'Logo, tombol, dan latar umum',
+            'help'  => 'Bila belum ada, halaman memakai latar warna polos, tombol biasa, atau judul berupa tulisan.',
             'items' => $items,
         ];
     }
@@ -158,7 +158,7 @@ final class AssetChecklist
             [$who, $pose] = explode('.', $name, 2);
             $status       = $missing !== [] ? 'missing' : ($wrong !== [] ? 'wrong' : 'ok');
             $note         = sprintf('%d/%d frame', $frames - count($missing), $frames)
-                . ($missing !== [] ? ' · belum: ' . implode(', ', $missing) : '')
+                . ($missing !== [] ? ' · belum ada: ' . implode(', ', $missing) : '')
                 . ($wrong !== [] ? ' · ukuran salah: ' . implode(', ', $wrong) : '');
 
             $items[] = [
@@ -166,15 +166,15 @@ final class AssetChecklist
                 'key'        => 'char.' . $name . '.1…' . $frames,
                 'size'       => $this->sizeText('char.' . $name . '.1'),
                 'status'     => $status,
-                'note'       => $note . ($pose !== 'idle' && $status === 'missing' ? ' (tampil sebagai pose idle)' : ''),
+                'note'       => $note . ($pose !== 'idle' && $status === 'missing' ? ' (sementara tampil dengan pose diam)' : ''),
                 'link'       => site_url('admin/media') . '?asset_key=' . rawurlencode('char.' . $name . '.' . ($missing[0] ?? $wrong[0] ?? 1)),
-                'link_label' => 'Unggah di Media',
+                'link_label' => 'Unggah gambar',
             ];
         }
 
         return [
-            'title' => 'Frame pose tokoh',
-            'help'  => 'Setiap pose butuh semua frame (PNG transparan). Pose yang belum lengkap tampil sebagai pose idle, lalu monogram.',
+            'title' => 'Gambar gerak tokoh (per pose)',
+            'help'  => 'Setiap pose butuh semua gambar geraknya (PNG berlatar transparan). Pose yang belum lengkap tampil dengan pose diam; bila itu pun belum ada, tampil inisial nama tokoh.',
             'items' => $items,
         ];
     }
@@ -203,16 +203,16 @@ final class AssetChecklist
                     'key'        => $key,
                     'size'       => $this->sizeText($key),
                     'status'     => $status,
-                    'note'       => $row === null ? 'belum dipasang di wilayah' : ($status === 'missing' ? 'aset terpasang tanpa berkas' : ''),
+                    'note'       => $row === null ? 'belum dipasang di wilayah' : ($status === 'missing' ? 'sudah dipasang, tetapi berkasnya belum diunggah' : ''),
                     'link'       => $link,
-                    'link_label' => 'Sunting wilayah',
+                    'link_label' => 'Buka wilayah',
                 ];
             }
         }
 
         return [
             'title' => 'Latar & peta wilayah',
-            'help'  => 'Diunggah dari editor wilayah. Tanpa latar, dialog dan peta wilayah memakai gradien.',
+            'help'  => 'Diunggah dari halaman wilayah (menu Konten). Bila belum ada, dialog dan peta wilayah memakai latar warna polos.',
             'items' => $items,
         ];
     }
@@ -229,7 +229,7 @@ final class AssetChecklist
                 'key'        => 'public/' . $path,
                 'size'       => self::SOUND_SIZES[$name] ?? 'MP3 pendek (< 1 detik)',
                 'status'     => is_file(FCPATH . $path) ? 'ok' : 'missing',
-                'note'       => 'bawaan ikut repositori; untuk mengganti, timpa berkas bernama sama di server (tidak diunggah lewat panel)',
+                'note'       => 'sudah tersedia bawaan; untuk menggantinya, petugas teknis menimpa berkas bernama sama di server (tidak lewat panel)',
                 'link'       => base_url($path),
                 'link_label' => 'Periksa berkas',
             ];
@@ -237,7 +237,7 @@ final class AssetChecklist
 
         return [
             'title' => 'Musik & efek suara',
-            'help'  => 'Diputar dari public/assets/audio/music/ dan sfx/ setelah pemain mengetuk layar. Tanpa berkas, suara itu diam. Berkas bawaan disintesis dari nol (gamelan), lihat docs/audio.md.',
+            'help'  => 'Musik dan bunyi bawaan (musik gamelan buatan komputer) sudah tersedia dan diputar setelah siswa mengetuk layar. Bila sebuah berkas tidak ada, bagian itu hanya tanpa suara. Petugas teknis: cara mengganti berkas bawaan ada di docs/audio.md.',
             'items' => $items,
         ];
     }
@@ -268,21 +268,21 @@ final class AssetChecklist
             }
 
             $items[] = [
-                'label'      => 'Pustaka ' . $row['name_id'] . ' hlm ' . $row['page'] . ' · video ' . $row['sequence'],
-                'key'        => $poster['asset_key'] ?? 'poster belum dipasang',
+                'label'      => 'Pustaka ' . $row['name_id'] . ' halaman ' . $row['page'] . ' · video ke-' . $row['sequence'],
+                'key'        => $poster['asset_key'] ?? 'gambar sampul belum dipasang',
                 'size'       => $this->sizeText('library.image'),
                 'status'     => 'missing',
                 'note'       => $row['external_url'] !== null && $row['external_url'] !== ''
-                    ? 'video tautan: jalankan php spark gelita:library:thumbnails atau unggah poster'
-                    : 'video berkas: unggah poster',
+                    ? 'video dari tautan: unggah gambar sampul, atau minta petugas teknis mengambilnya otomatis'
+                    : 'video berkas: unggah gambar sampul',
                 'link'       => site_url('admin/konten/pustaka/' . (int) $row['level_id']),
                 'link_label' => 'Sunting Pustaka',
             ];
         }
 
         return [
-            'title' => 'Poster video Pustaka',
-            'help'  => $rows === [] ? 'Belum ada video di Pustaka.' : 'Video tanpa poster tampil dengan kartu polos.',
+            'title' => 'Gambar sampul video Pustaka',
+            'help'  => $rows === [] ? 'Belum ada video di Pustaka.' : 'Video tanpa gambar sampul tampil dengan kotak polos.',
             'items' => $items,
         ];
     }
@@ -296,19 +296,19 @@ final class AssetChecklist
 
         foreach ($progress as $locale => $p) {
             $items[] = [
-                'label'      => 'Rekaman narasi ' . strtoupper($locale),
+                'label'      => 'Rekaman narasi ' . strtoupper($locale) . ' (bahasa ' . admin_label('locale', $locale) . ')',
                 'key'        => 'audio.narasi.' . $locale . '.*',
                 'size'       => 'MP3 mono 64–96 kbps',
                 'status'     => $p['none'] > 0 ? 'missing' : ($p['draft'] > 0 ? 'wrong' : 'ok'),
-                'note'       => sprintf('%d/%d disetujui, %d draft, %d belum ada', $p['approved'], $p['total'], $p['draft'], $p['none']),
+                'note'       => sprintf('%d/%d disetujui, %d menunggu persetujuan, %d belum ada', $p['approved'], $p['total'], $p['draft'], $p['none']),
                 'link'       => site_url('admin/konten/narasi'),
-                'link_label' => 'Buka Narasi',
+                'link_label' => 'Buka Rekaman narasi',
             ];
         }
 
         return [
-            'title' => 'Audio narasi naskah',
-            'help'  => 'Baris naskah cerita dan petunjuk arena cari (jumlahnya dihitung dari data). Tanpa rekaman yang disetujui, teks tetap tampil dan slide dilanjutkan manual. Draft belum terdengar pemain.',
+            'title' => 'Rekaman narasi cerita',
+            'help'  => 'Rekaman untuk semua baris cerita dan petunjuk tantangan Cari Objek. Tanpa rekaman yang disetujui, teksnya tetap tampil dan siswa melanjutkan slide sendiri. Rekaman yang menunggu persetujuan belum terdengar oleh siswa.',
             'items' => $items,
         ];
     }
@@ -326,9 +326,9 @@ final class AssetChecklist
             'key'        => $key,
             'size'       => $this->sizeText($key),
             'status'     => $state,
-            'note'       => $state === 'wrong' ? 'sekarang ' . $row['width_px'] . '×' . $row['height_px'] : '',
+            'note'       => $state === 'wrong' ? 'ukurannya sekarang ' . $row['width_px'] . '×' . $row['height_px'] : '',
             'link'       => $link,
-            'link_label' => 'Unggah di Media',
+            'link_label' => 'Unggah gambar',
         ];
     }
 

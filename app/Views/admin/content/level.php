@@ -23,7 +23,8 @@ $fields = [
 <?= $this->section('content') ?>
 <?= component('partials/admin-head', [
     'title'   => $level->text('name', 'id'),
-    'eyebrow' => 'Sunting wilayah ' . $level->sequence,
+    'eyebrow' => 'Ubah wilayah ' . $level->sequence,
+    'lead'    => 'Kolom bahasa Inggris boleh dikosongkan; pemain berbahasa Inggris akan membaca teks Indonesia. Hanya nama wilayah yang wajib diisi dalam dua bahasa.',
 ]) ?>
 <?= component('partials/content-nav', ['level' => $level, 'active' => 'level']) ?>
 <?= $this->include('partials/flash') ?>
@@ -44,7 +45,7 @@ $fields = [
         <?php endif ?>
       </div>
       <div class="field<?= isset($errors[$field . '_en']) ? ' has-error' : '' ?>">
-        <label for="<?= esc($field) ?>_en"><span class="lang-tag">EN</span> English</label>
+        <label for="<?= esc($field) ?>_en"><span class="lang-tag">EN</span> Inggris</label>
         <?php if ($rows === 1): ?>
           <input type="text" id="<?= esc($field) ?>_en" name="<?= esc($field) ?>_en" <?= $required ? 'required' : '' ?> value="<?= esc($level->{$field . '_en'} ?? '', 'attr') ?>">
         <?php else: ?>
@@ -63,7 +64,7 @@ $fields = [
         <?php endforeach ?>
       </select>
     </div>
-    <label class="check"><input type="checkbox" name="is_active" value="1" <?= $level->is_active ? 'checked' : '' ?>> Wilayah aktif</label>
+    <label class="check"><input type="checkbox" name="is_active" value="1" <?= $level->is_active ? 'checked' : '' ?>> Wilayah aktif (tampil di permainan)</label>
   </div>
 
   <fieldset class="form-section">
@@ -71,7 +72,7 @@ $fields = [
     <?= component('components/media-datalist', ['types' => ['image']]) ?>
     <div class="media-grid">
       <?= component('components/media-field', [
-          'id' => 'lvl-map', 'label' => 'Peta wilayah (pos tantangan)', 'keyName' => 'media_map_key', 'fileName' => 'media_map_file',
+          'id' => 'lvl-map', 'label' => 'Peta wilayah (tempat pos-pos tantangan)', 'keyName' => 'media_map_key', 'fileName' => 'media_map_file',
           'mediaId' => $level->map_media_id, 'defaultKey' => 'map.region.' . $level->code, 'size' => '1400 × 900 px',
       ]) ?>
       <?= component('components/media-field', [
@@ -97,7 +98,7 @@ $fields = [
       <li>
         <a class="node-row" href="<?= base_url('admin/konten/node/' . $node->id) ?>">
           <span class="node-row-no"><?= esc($node->sequence) ?></span>
-          <span><?= esc($node->text('title', 'id')) ?><span class="node-row-meta"><?= esc($node->engine_type) ?> · <?= esc($node->variant_code ?? '—') ?></span></span>
+          <span><?= esc($node->text('title', 'id')) ?><span class="node-row-meta"><?= esc(engine_label((string) $node->engine_type, $node->variant_code)) ?></span></span>
           <?= icon('edit') ?>
         </a>
       </li>

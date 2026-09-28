@@ -23,7 +23,7 @@ class GovernanceController extends BaseAdminController
     {
         $config = config('Gelita');
 
-        return $this->panel('admin/governance/index', 'Tata kelola data', [
+        return $this->panel('admin/governance/index', 'Hapus data', [
             'requests'        => model(DataDeletionRequestModel::class)->orderBy('created_at', 'DESC')->findAll(30),
             'confirmWord'     => self::CONFIRM_WORD,
             'idleMinutes'     => $config->sessionIdleMinutes,
@@ -42,7 +42,7 @@ class GovernanceController extends BaseAdminController
         $scope     = $retention->normalizeScope((array) $this->request->getPost());
 
         if ($scope === null) {
-            return $this->back('admin/tata-kelola', 'Pilih cakupan: peserta, sesi, atau studi.');
+            return $this->back('admin/tata-kelola', 'Isi salah satu: nomor peserta, nomor sesi, atau nomor studi.');
         }
 
         $preview = $retention->preview(
@@ -53,10 +53,10 @@ class GovernanceController extends BaseAdminController
         );
 
         if ($preview['total'] === 0) {
-            return $this->done('admin/tata-kelola', 'Pratinjau tersimpan, tetapi tidak ada baris yang cocok dengan cakupan ini.');
+            return $this->done('admin/tata-kelola', 'Tidak ada data yang cocok dengan pilihan ini. Permintaannya tetap dicatat di bawah; Anda dapat membatalkannya.');
         }
 
-        return $this->done('admin/tata-kelola', 'Pratinjau tersimpan. Periksa jumlah baris sebelum mengeksekusi.');
+        return $this->done('admin/tata-kelola', 'Data sudah dihitung dan belum ada yang dihapus. Periksa jumlahnya di bawah sebelum menghapus.');
     }
 
     public function deleteExecute(int $requestId): RedirectResponse
@@ -64,7 +64,7 @@ class GovernanceController extends BaseAdminController
         $back = 'admin/tata-kelola';
 
         if ((string) $this->request->getPost('confirm') !== self::CONFIRM_WORD) {
-            return $this->back($back, 'Ketik ' . self::CONFIRM_WORD . ' pada kotak konfirmasi untuk melanjutkan.');
+            return $this->back($back, 'Ketik ' . self::CONFIRM_WORD . ' (huruf besar) di kotak konfirmasi untuk melanjutkan.');
         }
 
         try {
@@ -73,7 +73,7 @@ class GovernanceController extends BaseAdminController
             return $this->back($back, $e->getMessage());
         }
 
-        return $this->done($back, 'Penghapusan selesai: ' . $result['total'] . ' baris terdampak.');
+        return $this->done($back, 'Penghapusan selesai: ' . $result['total'] . ' catatan terdampak.');
     }
 
     public function deleteCancel(int $requestId): RedirectResponse
@@ -84,7 +84,7 @@ class GovernanceController extends BaseAdminController
             return $this->back('admin/tata-kelola', $e->getMessage());
         }
 
-        return $this->done('admin/tata-kelola', 'Pratinjau dibatalkan.');
+        return $this->done('admin/tata-kelola', 'Permintaan penghapusan dibatalkan.');
     }
 
     public function audit(): string
@@ -108,7 +108,7 @@ class GovernanceController extends BaseAdminController
 
         $rows = $logs->orderBy('occurred_at', 'DESC')->paginate(50);
 
-        return $this->panel('admin/governance/audit', 'Audit log', [
+        return $this->panel('admin/governance/audit', 'Riwayat aktivitas', [
             'rows'    => $rows,
             'pager'   => $logs->pager,
             'action'  => $action,
@@ -130,7 +130,7 @@ class GovernanceController extends BaseAdminController
 
         return redirect()->to(site_url('admin/tata-kelola'))
             ->with('retention_result', $result)
-            ->with('message', 'Retensi dijalankan.');
+            ->with('message', 'Perawatan data selesai dijalankan.');
     }
 
     // -------------------------------------------------------------- bantuan

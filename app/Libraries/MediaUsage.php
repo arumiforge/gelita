@@ -68,7 +68,7 @@ class MediaUsage
         }
 
         foreach ($db->table('challenge_items')->select('item_key, media_asset_id')->where('media_asset_id IS NOT NULL')->get()->getResultArray() as $row) {
-            $add($this->int($row['media_asset_id']), 'Butir ' . $row['item_key']);
+            $add($this->int($row['media_asset_id']), 'Soal ' . $row['item_key']);
         }
 
         $options = $db->table('challenge_options co')
@@ -78,7 +78,7 @@ class MediaUsage
             ->get()->getResultArray();
 
         foreach ($options as $row) {
-            $add($this->int($row['media_asset_id']), 'Opsi ' . $row['item_key'] . ' / ' . $row['option_key']);
+            $add($this->int($row['media_asset_id']), 'Pilihan jawaban ' . $row['option_key'] . ' (soal ' . $row['item_key'] . ')');
         }
 
         foreach ($db->table('reading_passages')->select('passage_key, media_asset_id')->where('media_asset_id IS NOT NULL')->get()->getResultArray() as $row) {
@@ -86,12 +86,11 @@ class MediaUsage
         }
 
         foreach ($db->table('dialogues')->select('level_id, context_code, sequence, background_media_id')->where('background_media_id IS NOT NULL')->get()->getResultArray() as $row) {
-            $where = $row['level_id'] === null ? 'umum' : ($levels[(int) $row['level_id']] ?? '?');
-            $add($this->int($row['background_media_id']), "Latar dialog {$where} {$row['context_code']} #{$row['sequence']}");
+            $add($this->int($row['background_media_id']), 'Latar ' . self::slideLabel($row['context_code'], $row['level_id'] === null ? null : ($levels[(int) $row['level_id']] ?? '?'), (int) $row['sequence']));
         }
 
         foreach ($db->table('library_pages')->select('level_id, sequence, image_a_media_id, image_b_media_id, video_media_id, poster_media_id')->get()->getResultArray() as $row) {
-            $label = 'Pustaka ' . ($levels[(int) $row['level_id']] ?? '?') . ' hlm ' . $row['sequence'];
+            $label = 'Pustaka ' . ($levels[(int) $row['level_id']] ?? '?') . ' halaman ' . $row['sequence'];
 
             foreach (['image_a_media_id', 'image_b_media_id', 'video_media_id', 'poster_media_id'] as $column) {
                 $add($this->int($row[$column]), $label);
@@ -105,9 +104,9 @@ class MediaUsage
                 ->get()->getResultArray();
 
             foreach ($rows as $row) {
-                $label = 'Pustaka ' . ($levels[(int) $row['level_id']] ?? '?') . ' hlm ' . $row['sequence'];
+                $label = 'Pustaka ' . ($levels[(int) $row['level_id']] ?? '?') . ' halaman ' . $row['sequence'];
                 $add($this->int($row['media_asset_id']), $label);
-                $add($this->int($row['poster_media_id']), $label . ' (poster)');
+                $add($this->int($row['poster_media_id']), $label . ' (gambar sampul)');
             }
         }
 
@@ -124,10 +123,9 @@ class MediaUsage
         $levels = array_column($db->table('levels')->select('id, code')->get()->getResultArray(), 'code', 'id');
 
         foreach ($db->table('dialogues')->select('level_id, context_code, sequence, audio_id_asset_id, audio_en_asset_id')->get()->getResultArray() as $row) {
-            $where = $row['level_id'] === null ? 'umum' : ($levels[$row['level_id']] ?? '?');
-            $label = "Dialog {$where} {$row['context_code']} #{$row['sequence']}";
+            $label = self::slideLabel($row['context_code'], $row['level_id'] === null ? null : ($levels[$row['level_id']] ?? '?'), (int) $row['sequence']);
 
-            foreach (['audio_id_asset_id' => 'ID', 'audio_en_asset_id' => 'EN'] as $column => $lang) {
+            foreach (['audio_id_asset_id' => 'Indonesia', 'audio_en_asset_id' => 'Inggris'] as $column => $lang) {
                 if (($id = $this->int($row[$column])) !== null) {
                     $uses[$id][] = $label . ' (' . $lang . ')';
                 }
@@ -135,9 +133,9 @@ class MediaUsage
         }
 
         foreach ($db->table('challenge_nodes')->select('level_id, sequence, audio_intro_id, audio_intro_en_id')->get()->getResultArray() as $row) {
-            $label = 'Misi ' . node_ref((string) ($levels[$row['level_id']] ?? '?'), (int) $row['sequence']);
+            $label = 'Kartu misi ' . node_ref((string) ($levels[$row['level_id']] ?? '?'), (int) $row['sequence']);
 
-            foreach (['audio_intro_id' => 'ID', 'audio_intro_en_id' => 'EN'] as $column => $lang) {
+            foreach (['audio_intro_id' => 'Indonesia', 'audio_intro_en_id' => 'Inggris'] as $column => $lang) {
                 if (($id = $this->int($row[$column])) !== null) {
                     $uses[$id][] = $label . ' (' . $lang . ')';
                 }
@@ -150,9 +148,9 @@ class MediaUsage
             ->get()->getResultArray();
 
         foreach ($items as $row) {
-            foreach (['audio_prompt_id' => 'ID', 'audio_prompt_en_id' => 'EN'] as $column => $lang) {
+            foreach (['audio_prompt_id' => 'Indonesia', 'audio_prompt_en_id' => 'Inggris'] as $column => $lang) {
                 if (($id = $this->int($row[$column])) !== null) {
-                    $uses[$id][] = 'Petunjuk ' . $row['item_key'] . ' (' . $lang . ')';
+                    $uses[$id][] = 'Petunjuk soal ' . $row['item_key'] . ' (' . $lang . ')';
                 }
             }
         }
@@ -170,6 +168,14 @@ class MediaUsage
         }
 
         return null;
+    }
+
+    /** "Cerita pembuka slide 3" / "Dialog masuk wilayah · temanggung slide 2". */
+    private static function slideLabel(string $context, ?string $levelCode, int $sequence): string
+    {
+        return (NarrationCatalog::CONTEXT_LABELS[$context] ?? $context)
+            . ($levelCode === null ? '' : ' · ' . $levelCode)
+            . ' slide ' . $sequence;
     }
 
     private function int(mixed $value): ?int

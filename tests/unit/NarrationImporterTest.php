@@ -104,7 +104,7 @@ final class NarrationImporterTest extends CIUnitTestCase
         $this->assertStringContainsString('intro-12 tidak ada di naskah', $beyond['error']);
 
         $extension = $importer->match('intro-02.flac');
-        $this->assertStringContainsString('ekstensi .flac tidak didukung', $extension['error']);
+        $this->assertStringContainsString('jenis berkas .flac tidak didukung', $extension['error']);
         $this->assertSame('intro-02.mp3', $extension['suggestion']);
 
         $this->assertNull($importer->match('rekaman-baru.mp3')['suggestion'], 'nama yang jauh tidak diberi saran');
@@ -164,7 +164,7 @@ final class NarrationImporterTest extends CIUnitTestCase
         $this->assertStringContainsString('petunjuk-tmg-4-09 tidak ada di petunjuk target', $beyond['error']);
 
         $node = $importer->match('petunjuk-tmg-3-01.mp3');
-        $this->assertStringContainsString('tantangan "tmg-3" bukan arena cari', $node['error']);
+        $this->assertStringContainsString('tantangan "tmg-3" bukan tantangan Cari Objek', $node['error']);
         $this->assertSame('petunjuk-tmg-4-01.mp3', $node['suggestion']);
 
         $digits = $importer->match('petunjuk-tmg-4-1.mp3');
@@ -176,7 +176,7 @@ final class NarrationImporterTest extends CIUnitTestCase
 
         // Node `cari` nonaktif tidak menerima rekaman
         $this->sqlite->table('challenge_nodes')->update(['is_active' => 0]);
-        $this->assertStringContainsString('bukan arena cari', (string) $this->importer()->match('petunjuk-tmg-4-01.mp3')['error']);
+        $this->assertStringContainsString('bukan tantangan Cari Objek', (string) $this->importer()->match('petunjuk-tmg-4-01.mp3')['error']);
     }
 
     public function testClueImportLinksTheItemColumnsPerLocale(): void
@@ -236,14 +236,14 @@ final class NarrationImporterTest extends CIUnitTestCase
 
         $groups = $catalog->groups($rows);
         $this->assertCount(13, $groups);
-        $this->assertSame('Petunjuk arena cari · Temanggung (tmg-4)', end($groups)['label']);
+        $this->assertSame('Petunjuk Cari Objek · Temanggung (tmg-4)', end($groups)['label']);
         $this->assertCount(8, end($groups)['rows']);
 
         $list = $catalog->recordingList();
         $this->assertCount(96, $list['rows']);
         $this->assertSame(['petunjuk-tmg-4-03', 'hunt_clue', 'temanggung', 3, 'Mbah Kedu'], array_slice($list['rows'][90], 0, 5));
         $this->assertSame('Temukan kuda-kudaan anyaman bambu untuk menari jaran kepang.', $list['rows'][90][9]);
-        $this->assertSame(['draft', 'belum ada'], array_slice($list['rows'][90], 11));
+        $this->assertSame(['menunggu persetujuan', 'belum ada'], array_slice($list['rows'][90], 11));
 
         $this->assertSame([$manual], $catalog->draftIds('id'));
         $this->assertSame(1, $catalog->approveDrafts('id', 5));
@@ -371,7 +371,7 @@ final class NarrationImporterTest extends CIUnitTestCase
 
         $this->assertSame(['tuntas-wonosobo-02'], $report['created']);
         $this->assertSame('tuntas-wonosobo-02.wav', $report['unknown'][0]['suggestion']);
-        $this->assertStringStartsWith('ganda', $report['unknown'][1]['reason']);
+        $this->assertStringStartsWith('berkas ganda', $report['unknown'][1]['reason']);
         $this->assertSame('penutup-01.wav', $report['failed'][0]['file']);
 
         $media = $this->sqlite->table('media_assets')->where('asset_key', 'audio.narasi.en.tuntas-wonosobo-02')->get()->getRowArray();
@@ -506,7 +506,7 @@ final class NarrationImporterTest extends CIUnitTestCase
         $this->assertSame(['kode_berkas', 'konteks', 'wilayah', 'urutan', 'tokoh', 'pose', 'efek', 'judul_id', 'judul_en', 'teks_id', 'teks_en', 'audio_id', 'audio_en'], $list['headers']);
         $this->assertCount(88, $list['rows']);
         $this->assertSame(['intro-03', 'intro', null, 3, 'Narator', null, 'fog'], array_slice($list['rows'][2], 0, 7));
-        $this->assertSame(['draft', 'belum ada'], array_slice($list['rows'][2], 11));
+        $this->assertSame(['menunggu persetujuan', 'belum ada'], array_slice($list['rows'][2], 11));
 
         $path = $catalog->writeRecordingList(WRITEPATH . 'exports/uji-daftar-rekaman.xlsx');
         $zip  = new ZipArchive();

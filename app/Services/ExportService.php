@@ -85,7 +85,7 @@ class ExportService
             } elseif ($export['format'] === 'pdf') {
                 ['sha' => $sha, 'rows' => $rows] = service('reportService')->render($path, $context);
             } else {
-                throw new \DomainException("Format export '{$export['format']}' belum didukung.");
+                throw new \DomainException("Jenis berkas '{$export['format']}' belum didukung.");
             }
 
             $exports->markDone($exportId, $path, $sha, $rows);
@@ -98,7 +98,7 @@ class ExportService
 
             $message = $e instanceof \DomainException || $e instanceof \OverflowException
                 ? $e->getMessage()
-                : 'Export gagal dibuat: ' . $e->getMessage();
+                : 'Terjadi kesalahan saat membuat berkas. Coba lagi; bila tetap gagal, hubungi petugas teknis.';
 
             $exports->markFailed($exportId, $message);
         }
@@ -256,7 +256,7 @@ class ExportService
             ->getRowArray();
 
         if ($staff === null || ! (int) $staff['is_active']) {
-            throw new \DomainException('Pemohon export tidak ditemukan atau sudah nonaktif.');
+            throw new \DomainException('Akun yang meminta unduhan ini tidak ditemukan atau sudah dinonaktifkan.');
         }
 
         $isAdmin     = $staff['role'] === 'admin';
@@ -330,7 +330,7 @@ class ExportService
 
         if ($count > $limit) {
             throw new \OverflowException(sprintf(
-                'Raw Events berisi sekitar %s baris, melebihi batas %s. Persempit rentang tanggal atau cakupan, lalu minta export lagi.',
+                'Catatan aktivitas lengkap (Raw Events) berisi sekitar %s baris, melebihi batas %s. Persempit rentang tanggal atau pilihan data, lalu coba lagi.',
                 number_format($count, 0, ',', '.'),
                 number_format($limit, 0, ',', '.'),
             ));
@@ -1057,7 +1057,7 @@ class ExportService
             // (queued|running|done|failed). Yang hilang adalah berkasnya.
             $exports->update((int) $export['id'], [
                 'file_path'     => null,
-                'error_message' => 'Berkas kedaluwarsa dan sudah dihapus.',
+                'error_message' => 'Berkas sudah dihapus otomatis karena melewati batas waktu.',
             ]);
 
             $removed[] = (int) $export['id'];

@@ -24,16 +24,16 @@ foreach ($levels as $level) {
 
 <?= $this->section('content') ?>
 <?= component('partials/admin-head', [
-    'title'   => 'Analitik tantangan',
-    'eyebrow' => 'Analitik',
-    'lead'    => 'Indeks kesulitan 0–100 (makin tinggi makin sulit) menggabungkan ketepatan awal, pengulangan, petunjuk, durasi, dan tantangan yang ditinggalkan.',
+    'title'   => 'Hasil per tantangan',
+    'eyebrow' => 'Hasil belajar',
+    'lead'    => 'Tingkat kesulitan 0–100 (makin tinggi makin sulit) dihitung dari seberapa sering siswa salah pada percobaan pertama, mengulang, membuka petunjuk, lamanya mengerjakan, dan meninggalkan tantangan.',
 ]) ?>
 <?= $this->include('partials/flash') ?>
 <?= component('admin-filter-bar', ['filters' => $filters, 'only' => ['study_id', 'phase_code', 'school_id', 'class_level', 'province_code', 'date_from', 'locale']]) ?>
 
 <?= component('admin-chart', [
     'id'       => 'chart-difficulty',
-    'title'    => 'Heatmap kesulitan (wilayah × urutan tantangan)',
+    'title'    => 'Peta warna kesulitan (wilayah × urutan tantangan)',
     'type'     => 'heatmap',
     'endpoint' => 'api/admin/nodes',
     'size'     => 'lg',
@@ -42,22 +42,22 @@ foreach ($levels as $level) {
 
 <?= component('admin-table', [
     'rows'         => $sorted,
-    'caption'      => 'Kesulitan per tantangan, tersulit di atas',
-    'emptyMessage' => 'Belum ada tantangan aktif.',
+    'caption'      => 'Kesulitan tiap tantangan, yang tersulit di atas',
+    'emptyMessage' => 'Belum ada tantangan yang aktif.',
     'rowClass'     => static fn (array $r): string => (int) $r['attempts'] === 0 ? 'is-muted' : ($r['difficulty_index'] >= 60 ? 'is-bad' : ''),
     'columns'      => [
         'title'              => ['label' => 'Tantangan', 'render' => static fn (array $r): string => '<a href="' . base_url('admin/analitik/node/' . $r['node_id']) . '">' . esc($r['title']) . '</a>'
-            . '<span class="cell-sub">' . esc(($levelNames[$r['level_id']] ?? '') . ' · node ' . $r['sequence']) . '</span>'],
-        'engine_type'        => 'Jenis',
+            . '<span class="cell-sub">' . esc(($levelNames[$r['level_id']] ?? '') . ' · tantangan ke-' . $r['sequence']) . '</span>'],
+        'engine_type'        => ['label' => 'Jenis', 'render' => static fn (array $r): string => esc(engine_label((string) $r['engine_type']))],
         'node_id'            => ['label' => 'Indikator', 'render' => static fn (array $r): string => esc($indicators[$r['node_id']] ?? '—')],
-        'attempts'           => ['label' => 'Percobaan', 'format' => 'num'],
-        'mean_first_pass'    => ['label' => 'Tepat awal', 'format' => 'pct'],
-        'mean_final'         => ['label' => 'Akhir', 'format' => 'pct'],
-        'mean_retry'         => ['label' => 'Ulang', 'format' => 'num', 'decimals' => 2],
-        'mean_hint'          => ['label' => 'Petunjuk', 'format' => 'num', 'decimals' => 2],
-        'median_duration_ms' => ['label' => 'Durasi median', 'format' => 'ms'],
+        'attempts'           => ['label' => 'Dicoba', 'format' => 'num'],
+        'mean_first_pass'    => ['label' => 'Tepat sejak awal', 'format' => 'pct'],
+        'mean_final'         => ['label' => 'Benar di akhir', 'format' => 'pct'],
+        'mean_retry'         => ['label' => 'Rata-rata mengulang', 'format' => 'num', 'decimals' => 2],
+        'mean_hint'          => ['label' => 'Rata-rata petunjuk', 'format' => 'num', 'decimals' => 2],
+        'median_duration_ms' => ['label' => 'Lama mengerjakan (nilai tengah)', 'format' => 'ms'],
         'skip_rate'          => ['label' => 'Ditinggalkan', 'format' => 'ratio'],
-        'difficulty_index'   => ['label' => 'Indeks', 'format' => 'num', 'decimals' => 1],
+        'difficulty_index'   => ['label' => 'Kesulitan (0–100)', 'format' => 'num', 'decimals' => 1],
     ],
 ]) ?>
 <?= $this->endSection() ?>

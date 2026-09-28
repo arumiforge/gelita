@@ -19,12 +19,12 @@ foreach ($nodes as $row) {
   <p class="chart-empty"><?= icon('chart') ?> Belum ada data untuk filter ini.</p>
 <?php else: ?>
   <table class="heatmap" style="--cols: <?= $maxSeq ?>">
-    <caption class="visually-hidden">Indeks kesulitan per node (0 = mudah, 100 = sulit)</caption>
+    <caption class="visually-hidden">Tingkat kesulitan tiap tantangan (0 = mudah, 100 = sulit)</caption>
     <thead>
       <tr>
         <th scope="col"><span class="visually-hidden">Wilayah</span></th>
         <?php for ($seq = 1; $seq <= $maxSeq; $seq++): ?>
-          <th scope="col">Node <?= $seq ?></th>
+          <th scope="col">Tantangan <?= $seq ?></th>
         <?php endfor ?>
       </tr>
     </thead>
@@ -39,7 +39,7 @@ foreach ($nodes as $row) {
             <?php else: ?>
               <?php $empty = (int) $cell['attempts'] === 0; ?>
               <td class="heat-cell<?= $empty ? ' is-empty' : '' ?>" style="--heat: <?= $empty ? 0 : round((float) $cell['difficulty_index'] / 100, 3) ?>"
-                  title="<?= esc($cell['title'] . ' — indeks ' . fmt_num($cell['difficulty_index'], 1, 'id') . ', ' . $cell['attempts'] . ' percobaan', 'attr') ?>">
+                  title="<?= esc($cell['title'] . ' — tingkat kesulitan ' . fmt_num($cell['difficulty_index'], 1, 'id') . ', dicoba ' . $cell['attempts'] . ' kali', 'attr') ?>">
                 <?php if (! empty($links)): ?>
                   <a href="<?= base_url('admin/analitik/node/' . $cell['node_id']) ?>"><?= $empty ? '—' : esc(fmt_num($cell['difficulty_index'], 0, 'id')) ?></a>
                 <?php else: ?>

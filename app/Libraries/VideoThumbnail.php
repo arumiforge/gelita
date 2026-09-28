@@ -123,7 +123,7 @@ class VideoThumbnail
         $image = $this->download($url);
 
         if ($image === null) {
-            return $this->failed($media, $link['label'] . ': thumbnail tidak dapat diunduh (video privat, dihapus, atau server tanpa akses internet).');
+            return $this->failed($media, $link['label'] . ': gambar sampul tidak dapat diunduh (videonya mungkin privat atau sudah dihapus, atau server tidak tersambung ke internet).');
         }
 
         $key    = self::assetKey($link['provider'], (string) $link['video_id']);
@@ -136,7 +136,7 @@ class VideoThumbnail
         $model = model(LibraryMediaModel::class);
 
         if (! $model->update($media->id, ['poster_media_id' => $stored['id']])) {
-            return $this->failed($media, 'Poster ditolak: ' . implode(' ', $model->errors()));
+            return $this->failed($media, 'Gambar sampul tidak dapat disimpan: ' . implode(' ', $model->errors()));
         }
 
         service('contentRepository')->flush();
@@ -295,7 +295,7 @@ class VideoThumbnail
     {
         log_message('warning', 'Poster media pustaka {id} tidak terisi: {reason}', ['id' => $media->id, 'reason' => $reason]);
 
-        $this->errors[] = 'Media pustaka #' . $media->id . ': ' . $reason;
+        $this->errors[] = 'Video Pustaka #' . $media->id . ': ' . $reason;
 
         return 'failed';
     }

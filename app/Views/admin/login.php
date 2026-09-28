@@ -10,8 +10,7 @@
 ?>
 <?= $this->extend('layouts/auth') ?>
 
-<?= $this->section('title') ?><?= esc(lang('Admin.loginTitle')) ?><?= $this->endSection() ?>
-
+<?php // Judul tab memakai bawaan layouts/auth (Admin.loginTitle), yang sudah di-esc() di sana ?>
 <?= $this->section('content') ?>
 <h1 class="auth-title"><?= esc(lang('Admin.loginTitle')) ?></h1>
 <?= $this->include('partials/flash') ?>

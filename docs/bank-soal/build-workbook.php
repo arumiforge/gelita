@@ -69,7 +69,7 @@ foreach ($data as $levelCode => $region) {
         ];
 
         if (isset($node['scene'])) {
-            $media[$node['scene']['key']] = ['WAJIB', "Adegan tantangan {$ref}", $node['scene']['note'], '1280 × 720 px (16:9), JPG/WebP', $node['scene']['source'] ?? ''];
+            $media[$node['scene']['key']] = ['WAJIB', "Gambar adegan tantangan {$ref}", $node['scene']['note'], '1280 × 720 px (16:9), JPG/WebP', $node['scene']['source'] ?? ''];
         }
 
         foreach ($node['distractors'] ?? [] as [$id, $en]) {
@@ -124,7 +124,7 @@ foreach ($data as $levelCode => $region) {
             if (isset($item['media'])) {
                 $media[$item['media']['key']] = [
                     'WAJIB',
-                    ($type === 'find_object' ? 'Objek cari ' : 'Gambar puzzle ') . $key,
+                    ($type === 'find_object' ? 'Benda Cari Objek, soal ' : 'Gambar Susun Gambar, soal ') . $key,
                     $item['media']['note'],
                     $type === 'find_object' ? '240 × 240 px, PNG/WebP latar transparan' : '900 × 900 px (persegi), JPG/WebP',
                     $item['media']['source'] ?? '',
@@ -295,7 +295,7 @@ foreach ($media as $key => [$priority, $usedBy, $note, $size, $source]) {
 (new BankWorkbookGuide())->write($rows, $output, [
     'title'    => 'Bank Soal GELITA — Produksi',
     'subtitle' => sprintf(
-        'Isi lengkap 15 tantangan (%d butir, %d opsi, %d bacaan, %d petunjuk) dan Pustaka Kedu (%d halaman, %d media) untuk Temanggung, Magelang, dan Wonosobo. Profil skoring: bawaan studi (tidak diatur di workbook). Unggah gambar di sheet DAFTAR_MEDIA agar tantangan puzzle dan cari objek tampil utuh.',
+        'Isi lengkap 15 tantangan (%d soal, %d pilihan jawaban, %d teks bacaan, %d petunjuk) dan Pustaka Kedu (%d halaman, %d gambar/video) untuk Temanggung, Magelang, dan Wonosobo. Aturan penilaian tidak diatur di berkas ini (memakai aturan bawaan penelitian). Unggah gambar yang tercantum di sheet DAFTAR_MEDIA agar tantangan Susun Gambar dan Cari Objek tampil utuh.',
         count($rows['items']),
         count($rows['options']),
         count($rows['passages']),
@@ -305,8 +305,8 @@ foreach ($media as $key => [$priority, $usedBy, $note, $size, $source]) {
     ),
 ], [
     'DAFTAR_MEDIA' => [
-        'note'    => 'Gambar yang harus diunggah admin di Panel → Media dengan asset_key persis seperti kolom pertama. Impor workbook membuat slot kosongnya; begitu berkas diunggah, gambar langsung tampil. Pakai foto sendiri atau berlisensi bebas dan catat kreditnya.',
-        'headers' => ['asset_key', 'Prioritas', 'Dipakai di', 'Isi gambar yang dibutuhkan', 'Ukuran & format', 'Saran sumber (lisensi bebas) / catatan'],
+        'note'    => 'Gambar yang perlu diunggah admin di Panel GELITA → menu Gambar & suara, dengan kode berkas persis seperti kolom pertama. Saat berkas Excel ini diimpor, tempat gambarnya sudah disiapkan; begitu gambar diunggah, gambar langsung tampil. Pakai foto sendiri atau foto berlisensi bebas, dan catat pemiliknya.',
+        'headers' => ['Kode berkas', 'Prioritas', 'Dipakai di', 'Isi gambar yang dibutuhkan', 'Ukuran & format', 'Saran sumber (lisensi bebas) / catatan'],
         'rows'    => $mediaRows,
         'widths'  => [30, 11, 22, 60, 26, 60],
     ],

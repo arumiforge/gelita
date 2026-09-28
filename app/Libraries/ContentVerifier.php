@@ -24,57 +24,57 @@ class ContentVerifier
         $answers  = [];
 
         if (count($levels) !== 3) {
-            $findings[] = $this->finding('error', 'struktur', 'Jumlah wilayah aktif ' . count($levels) . ', seharusnya 3.');
+            $findings[] = $this->finding('error', 'Keseluruhan', 'Ada ' . count($levels) . ' wilayah aktif; seharusnya 3.');
         }
 
         foreach ($levels as $level) {
             $nodes = $content->nodesForLevel($level->id);
-            $scope = 'wilayah ' . $level->code;
+            $scope = 'Wilayah ' . $level->text('name', 'id');
 
             if (count($nodes) !== 5) {
-                $findings[] = $this->finding('error', $scope, 'Jumlah tantangan ' . count($nodes) . ', seharusnya 5.');
+                $findings[] = $this->finding('error', $scope, 'Ada ' . count($nodes) . ' tantangan aktif; seharusnya 5.');
             }
 
             foreach (['map_media_id' => 'peta', 'background_media_id' => 'latar', 'badge_media_id' => 'lencana'] as $column => $label) {
-                $findings = [...$findings, ...$this->mediaFindings($level->{$column}, $scope, "Media {$label} wilayah")];
+                $findings = [...$findings, ...$this->mediaFindings($level->{$column}, $scope, "Gambar {$label} wilayah")];
             }
 
             $passageIds = [];
 
             foreach ($content->passagesForLevel($level->id) as $passage) {
                 $passageIds[$passage->id] = true;
-                $findings = [...$findings, ...$this->mediaFindings($passage->media_asset_id, $scope . ' · bacaan ' . $passage->id, 'Media bacaan')];
+                $findings = [...$findings, ...$this->mediaFindings($passage->media_asset_id, $scope . ' · bacaan ' . $passage->passage_key, 'Gambar bacaan')];
             }
 
             foreach ($nodes as $node) {
-                $nodeScope = $scope . ' · node ' . $node->sequence;
+                $nodeScope = $scope . ' · tantangan ' . $node->sequence . ' (' . $node->text('title', 'id') . ')';
                 $bank      = $content->itemBank($node->id);
                 $perRound  = $node->itemsPerRound();
 
                 if (! in_array($node->engine_type, config('Gelita')->engineTypes, true)) {
-                    $findings[] = $this->finding('error', $nodeScope, "engine_type '{$node->engine_type}' tidak dikenali.");
+                    $findings[] = $this->finding('error', $nodeScope, "Jenis tantangan '{$node->engine_type}' tidak dikenali.");
                 }
 
                 if (count($bank) < $perRound) {
-                    $findings[] = $this->finding('error', $nodeScope, 'Bank soal ' . count($bank) . " butir, minimal {$perRound}.");
+                    $findings[] = $this->finding('error', $nodeScope, 'Baru ada ' . count($bank) . " soal aktif; perlu minimal {$perRound} (jumlah soal tiap kali bermain).");
                 }
 
                 $distractors = count($node->distractors('id'));
                 $needed      = (int) $node->config('distractor_count');
 
                 if ($node->engine_type === 'rumpang' && $needed > 0 && $distractors < $needed) {
-                    $findings[] = $this->finding('error', $nodeScope, "Pengecoh rumpang {$distractors}, minimal {$needed}.");
+                    $findings[] = $this->finding('error', $nodeScope, "Baru ada {$distractors} kata pengecoh; perlu minimal {$needed}.");
                 }
 
                 foreach (['background_media_id' => 'latar', 'scene_media_id' => 'adegan'] as $column => $label) {
-                    $findings = [...$findings, ...$this->mediaFindings($node->{$column}, $nodeScope, "Media {$label} tantangan")];
+                    $findings = [...$findings, ...$this->mediaFindings($node->{$column}, $nodeScope, "Gambar {$label} tantangan")];
                 }
 
                 foreach ($bank as $item) {
-                    $itemScope = $nodeScope . ' · ' . $item->item_key;
+                    $itemScope = $nodeScope . ' · soal ' . $item->item_key;
 
                     if ($item->scorable && $item->answerKey() === []) {
-                        $findings[] = $this->finding('error', $itemScope, 'Butir dinilai tetapi tanpa answer_key_json.');
+                        $findings[] = $this->finding('error', $itemScope, 'Soal ini dinilai tetapi belum punya kunci jawaban.');
                     }
 
                     if (in_array($item->interaction_type, ['single_choice', 'source_trust'], true)) {
@@ -85,24 +85,24 @@ class ContentVerifier
                         }
 
                         if ($correct !== 1) {
-                            $findings[] = $this->finding('error', $itemScope, "Opsi benar {$correct}, seharusnya tepat 1.");
+                            $findings[] = $this->finding('error', $itemScope, "Ada {$correct} pilihan yang ditandai benar; seharusnya tepat 1.");
                         }
                     }
 
                     if (in_array($item->interaction_type, ['verdict_card', 'verdict_reason'], true)
                         && ! in_array((string) $item->verdict(), $node->verdictOptions(), true)) {
-                        $findings[] = $this->finding('error', $itemScope, 'Kunci verdict di luar verdict_options node.');
+                        $findings[] = $this->finding('error', $itemScope, 'Kunci jawabannya tidak termasuk tombol pilihan yang tampil di tantangan ini (benar/salah/pendapat).');
                     }
 
                     if ($item->passage_id !== null && ! isset($passageIds[$item->passage_id])) {
-                        $findings[] = $this->finding('error', $itemScope, 'passage_id berasal dari wilayah lain.');
+                        $findings[] = $this->finding('error', $itemScope, 'Soal ini memakai teks bacaan dari wilayah lain.');
                     }
 
                     if ($item->review_status === 'needs_verification') {
-                        $findings[] = $this->finding('warning', $itemScope, 'Butir masih berstatus needs_verification.');
+                        $findings[] = $this->finding('warning', $itemScope, 'Fakta di soal ini masih ditandai "perlu dicek".');
                     }
 
-                    $findings = [...$findings, ...$this->mediaFindings($item->media_asset_id, $itemScope, 'Media butir')];
+                    $findings = [...$findings, ...$this->mediaFindings($item->media_asset_id, $itemScope, 'Gambar soal')];
 
                     $signature = $this->answerSignature($item);
 
@@ -111,7 +111,7 @@ class ContentVerifier
                             $findings[] = $this->finding(
                                 'warning',
                                 $itemScope,
-                                'Jawaban kembar dengan butir di node lain — analisis butir akan menghitung konsep ganda.',
+                                'Jawabannya sama persis dengan soal di tantangan lain — hasil per soal bisa menghitung materi yang sama dua kali.',
                             );
                         }
 
@@ -145,11 +145,11 @@ class ContentVerifier
         $path = service('contentRepository')->mediaMap()[$mediaId] ?? null;
 
         if ($path === null) {
-            return [$this->finding('warning', $scope, "{$label} #{$mediaId} belum ada berkasnya (media nonaktif atau tidak terdaftar).")];
+            return [$this->finding('warning', $scope, "{$label} belum diunggah; permainan memakai tampilan pengganti.")];
         }
 
         if (! is_file(FCPATH . ltrim($path, '/'))) {
-            return [$this->finding('warning', $scope, "{$label} hilang: berkas {$path} belum diunggah.")];
+            return [$this->finding('warning', $scope, "{$label}: berkasnya hilang dari server ({$path}). Unggah ulang di menu Gambar & suara.")];
         }
 
         return [];

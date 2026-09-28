@@ -11,9 +11,9 @@
  * @var array<string, mixed>          $filters
  */
 $questions = [
-    'liked_most'   => 'Paling disukai',
-    'hardest_part' => 'Paling sulit',
-    'new_learning' => 'Hal baru',
+    'liked_most'   => 'Yang paling disukai',
+    'hardest_part' => 'Yang paling sulit',
+    'new_learning' => 'Hal baru yang dipelajari',
     'suggestion'   => 'Saran',
 ];
 ?>
@@ -23,7 +23,7 @@ $questions = [
 <?= component('partials/admin-head', [
     'title'   => 'Kritik & saran',
     'eyebrow' => 'Laporan',
-    'lead'    => 'Masukan siswa dari Balai Refleksi setelah seluruh tantangan selesai.',
+    'lead'    => 'Pendapat siswa yang ditulis di Balai Refleksi setelah menyelesaikan semua tantangan.',
 ]) ?>
 <?= $this->include('partials/flash') ?>
 <?= component('admin-filter-bar', ['filters' => $filters, 'only' => ['phase_code', 'school_id', 'class_level']]) ?>
@@ -57,7 +57,7 @@ $questions = [
         <header class="feedback-card-head">
           <?= stars_html((int) $row['rating'], 5) ?>
           <span class="muted"><code><?= esc($row['participant_code'] ?? '#' . $row['participant_id']) ?></code>
-            · <?= esc($row['phase_code'] ?? '—') ?> · <?= esc(fmt_date($row['submitted_at'], false, 'id')) ?></span>
+            · <?= esc(admin_label('phase', $row['phase_code'] ?? null)) ?> · <?= esc(fmt_date($row['submitted_at'], false, 'id')) ?></span>
         </header>
         <dl>
           <?php foreach ($questions as $field => $label): ?>

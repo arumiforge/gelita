@@ -762,27 +762,30 @@ Avatar, nama, nama pengguna, kode peserta (kecil, dengan keterangan "kode peneli
 
 ### Sidebar
 
+Label menu diambil dari `app/Language/id/Admin.php`. Pembaca panel adalah guru dan admin sekolah, bukan orang teknis, jadi label dan teks panel memakai bahasa sehari-hari (mis. "Hasil belajar", bukan "Analitik"; "soal", bukan "butir"; "kesalahan", bukan "galat"). Kode yang tersimpan di database (status, fase, jenis soal, jenis catatan aktivitas, …) ditampilkan lewat `admin_label()`.
+
 | Menu | URL | Role |
 |---|---|---|
 | Beranda | `/admin/dashboard` | guru, admin |
-| Peserta | `/admin/peserta` | guru, admin |
-| Sesi | `/admin/sesi` | guru, admin |
-| Analitik ▸ Level | `/admin/analitik/level` | guru, admin |
-| Analitik ▸ Tantangan | `/admin/analitik/node` | guru, admin |
-| Analitik ▸ Butir soal | `/admin/analitik/butir` | guru, admin |
-| Analitik ▸ Indikator | `/admin/analitik/indikator` | guru, admin |
-| Analitik ▸ Pretest/Posttest | `/admin/analitik/prepost` | guru, admin |
-| Kritik & saran | `/admin/masukan` | guru, admin |
-| Ekspor | `/admin/ekspor` | guru, admin |
-| Konten | `/admin/konten` | admin |
-| Konten ▸ Impor bank soal | `/admin/konten/impor-bank` | admin |
-| Konten ▸ Narasi | `/admin/konten/narasi` | admin |
-| Media & audio | `/admin/media` | admin |
-| Studi & rilis | `/admin/studi` | admin |
-| Tata kelola | `/admin/tata-kelola` | admin |
-| Akun staf | `/admin/staf` | admin |
+| Data siswa ▸ Peserta | `/admin/peserta` | guru, admin |
+| Data siswa ▸ Sesi bermain | `/admin/sesi` | guru, admin |
+| Hasil belajar ▸ Per wilayah | `/admin/analitik/level` | guru, admin |
+| Hasil belajar ▸ Per tantangan | `/admin/analitik/node` | guru, admin |
+| Hasil belajar ▸ Per soal | `/admin/analitik/butir` | guru, admin |
+| Hasil belajar ▸ Per indikator | `/admin/analitik/indikator` | guru, admin |
+| Hasil belajar ▸ Pretest & posttest | `/admin/analitik/prepost` | guru, admin |
+| Laporan ▸ Kritik & saran | `/admin/masukan` | guru, admin |
+| Laporan ▸ Unduh data | `/admin/ekspor` | guru, admin |
+| Pengelolaan ▸ Konten permainan | `/admin/konten` | admin |
+| Pengelolaan ▸ Impor soal (Excel) | `/admin/konten/impor-bank` | admin |
+| Pengelolaan ▸ Rekaman narasi | `/admin/konten/narasi` | admin |
+| Pengelolaan ▸ Gambar & suara | `/admin/media` | admin |
+| Pengelolaan ▸ Pengaturan penelitian | `/admin/studi` | admin |
+| Pengelolaan ▸ Hapus data & riwayat | `/admin/tata-kelola` | admin |
+| Pengelolaan ▸ Sekolah | `/admin/sekolah` | admin |
+| Pengelolaan ▸ Akun guru & admin | `/admin/staf` | admin |
 
-Menu yang tidak berhak diakses **tidak dirender** untuk guru. **Ubah sandi** (`/admin/akun/sandi`, guru & admin) tidak ada di sidebar; tautannya ada di kepala panel, di samping Keluar.
+Menu yang tidak berhak diakses **tidak dirender** untuk guru. **Ganti kata sandi** (`/admin/akun/sandi`, guru & admin) tidak ada di sidebar; tautannya ada di kepala panel, di samping Keluar.
 
 ### Isi tiap halaman
 

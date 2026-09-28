@@ -25,9 +25,9 @@ class ChallengeItemModel extends Model
     ];
     protected $validationRules = [
         'challenge_node_id' => 'required|is_natural_no_zero',
-        'item_key'          => 'required|max_length[100]',
-        'interaction_type'  => 'required|in_list[puzzle_arrange,ordering,fill_blank_bank,fill_blank_free,verdict_card,verdict_reason,single_choice,source_trust,find_object]',
-        'review_status'     => 'permit_empty|in_list[draft,needs_verification,verified]',
+        'item_key'          => ['label' => 'Kode soal', 'rules' => 'required|max_length[100]'],
+        'interaction_type'  => ['label' => 'Jenis soal', 'rules' => 'required|in_list[puzzle_arrange,ordering,fill_blank_bank,fill_blank_free,verdict_card,verdict_reason,single_choice,source_trust,find_object]'],
+        'review_status'     => ['label' => 'Status pemeriksaan isi', 'rules' => 'permit_empty|in_list[draft,needs_verification,verified]'],
     ];
     protected $beforeInsert      = ['encodeJson'];
     protected $beforeUpdate      = ['encodeJson'];

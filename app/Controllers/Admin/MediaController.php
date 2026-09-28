@@ -22,9 +22,15 @@ use CodeIgniter\HTTP\RedirectResponse;
  */
 class MediaController extends BaseAdminController
 {
+    /** Pesan galat kolom berkas unggahan (bawaan CodeIgniter menyebut nama field). */
+    private const FILE_ERRORS = [
+        'uploaded' => 'Pilih berkas yang akan diunggah.',
+        'max_size' => 'Berkas terlalu besar (paling besar 64 MB).',
+    ];
+
     public function index(): string
     {
-        return $this->panel('admin/media/index', 'Media', [
+        return $this->panel('admin/media/index', 'Gambar & video', [
             'assets'     => model(MediaAssetModel::class)->orderBy('asset_key', 'ASC')->findAll(),
             'assetSizes' => config('Gelita')->assetSizes,
             'usage'      => (new MediaUsage())->forMedia(),
@@ -41,7 +47,7 @@ class MediaController extends BaseAdminController
         $checklist = new AssetChecklist();
         $groups    = $checklist->groups();
 
-        return $this->panel('admin/media/checklist', 'Kelengkapan aset', [
+        return $this->panel('admin/media/checklist', 'Kelengkapan gambar & suara', [
             'groups'  => $groups,
             'summary' => $checklist->summary($groups),
         ]);
@@ -52,8 +58,8 @@ class MediaController extends BaseAdminController
         $back = 'admin/media';
 
         if (! $this->validate([
-            'asset_key' => 'required|max_length[160]',
-            'file'      => 'uploaded[file]|max_size[file,65536]',
+            'asset_key' => ['label' => 'Kode berkas', 'rules' => 'required|max_length[160]'],
+            'file'      => ['label' => 'Berkas', 'rules' => 'uploaded[file]|max_size[file,65536]', 'errors' => self::FILE_ERRORS],
         ])) {
             return redirect()->to(site_url($back))->with('errors', $this->validator->getErrors());
         }
@@ -62,7 +68,7 @@ class MediaController extends BaseAdminController
         $assetKey = trim((string) $this->request->getPost('asset_key'));
 
         if ($file === null) {
-            return $this->back($back, 'Berkas unggahan tidak valid.');
+            return $this->back($back, 'Berkas gagal diunggah. Coba pilih dan unggah lagi.');
         }
 
         $result = (new MediaStore())->store($file, $assetKey, ['image', 'video'], $this->staffId());
@@ -71,7 +77,7 @@ class MediaController extends BaseAdminController
             return $this->back($back, $result['error']);
         }
 
-        return $this->done($back, "Aset {$assetKey} tersimpan.");
+        return $this->done($back, "Berkas {$assetKey} sudah tersimpan.");
     }
 
     public function deactivate(int $mediaId): RedirectResponse
@@ -79,7 +85,7 @@ class MediaController extends BaseAdminController
         $media = model(MediaAssetModel::class);
 
         if ($media->find($mediaId) === null) {
-            return $this->back('admin/media', 'Aset tidak ditemukan.');
+            return $this->back('admin/media', 'Berkas tidak ditemukan.');
         }
 
         $media->update($mediaId, ['is_active' => 0]);
@@ -91,7 +97,7 @@ class MediaController extends BaseAdminController
             'target_id'     => (string) $mediaId,
         ]);
 
-        return $this->done('admin/media', 'Aset dinonaktifkan.');
+        return $this->done('admin/media', 'Berkas dinonaktifkan; permainan kembali memakai tampilan pengganti.');
     }
 
     public function audioIndex(): string
@@ -106,7 +112,7 @@ class MediaController extends BaseAdminController
 
         $catalog = new NarrationCatalog();
 
-        return $this->panel('admin/media/audio', 'Audio', [
+        return $this->panel('admin/media/audio', 'Rekaman suara', [
             'rows'       => $rows,
             'drafts'     => array_combine(
                 config('Gelita')->locales,
@@ -124,11 +130,11 @@ class MediaController extends BaseAdminController
         $back = 'admin/media/audio';
 
         $rules = [
-            'asset_key'   => 'required|max_length[160]',
-            'locale'      => 'required|valid_locale',
-            'context_code' => 'required|max_length[80]',
-            'transcript'  => 'required|min_length[3]',
-            'file'        => 'uploaded[file]|max_size[file,65536]',
+            'asset_key'    => ['label' => 'Kode rekaman', 'rules' => 'required|max_length[160]'],
+            'locale'       => ['label' => 'Bahasa', 'rules' => 'required|valid_locale'],
+            'context_code' => ['label' => 'Tempat diputar', 'rules' => 'required|max_length[80]'],
+            'transcript'   => ['label' => 'Teks rekaman', 'rules' => 'required|min_length[3]'],
+            'file'         => ['label' => 'Berkas rekaman', 'rules' => 'uploaded[file]|max_size[file,65536]', 'errors' => self::FILE_ERRORS],
         ];
 
         if (! $this->validate($rules)) {
@@ -138,7 +144,7 @@ class MediaController extends BaseAdminController
         $file = $this->request->getFile('file');
 
         if ($file === null || ! $file->isValid()) {
-            return $this->back($back, 'Berkas unggahan tidak valid.');
+            return $this->back($back, 'Berkas gagal diunggah. Coba pilih dan unggah lagi.');
         }
 
         $assetKey = trim((string) $this->request->getPost('asset_key'));
@@ -177,7 +183,7 @@ class MediaController extends BaseAdminController
         service('contentRepository')->flush();
 
         if ($audioId === false) {
-            return $this->back($back, 'Audio ditolak: ' . $this->modelErrors($audio));
+            return $this->back($back, 'Rekaman belum dapat disimpan: ' . $this->modelErrors($audio));
         }
 
         model(AuditLogModel::class)->record('audio_upload', [
@@ -187,7 +193,7 @@ class MediaController extends BaseAdminController
             'metadata'      => ['asset_key' => $assetKey, 'locale' => $this->request->getPost('locale')],
         ]);
 
-        return $this->done($back, 'Audio tersimpan sebagai draft. Setujui dulu agar terdengar pemain.');
+        return $this->done($back, 'Rekaman tersimpan dan menunggu persetujuan. Dengarkan dulu, lalu tekan Setujui agar terdengar oleh siswa.');
     }
 
     public function approveAudio(int $audioId): RedirectResponse
@@ -195,7 +201,7 @@ class MediaController extends BaseAdminController
         $audio = model(AudioAssetModel::class);
 
         if ($audio->find($audioId) === null) {
-            return $this->back('admin/media/audio', 'Audio tidak ditemukan.');
+            return $this->back('admin/media/audio', 'Rekaman tidak ditemukan.');
         }
 
         $audio->update($audioId, [
@@ -212,7 +218,7 @@ class MediaController extends BaseAdminController
             'target_id'     => (string) $audioId,
         ]);
 
-        return $this->done('admin/media/audio', 'Audio disetujui.');
+        return $this->done('admin/media/audio', 'Rekaman disetujui dan kini terdengar oleh siswa.');
     }
 
     /**

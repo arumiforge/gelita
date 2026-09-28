@@ -16,8 +16,8 @@ class ScoringProfileModel extends Model
         'three_star_min_score', 'three_star_min_first_pass', 'two_star_min_score', 'is_active',
     ];
     protected $validationRules = [
-        'code'    => 'required|max_length[50]',
-        'version' => 'required|max_length[20]',
+        'code'    => ['label' => 'Nama aturan', 'rules' => 'required|max_length[50]'],
+        'version' => ['label' => 'Nomor versi', 'rules' => 'required|max_length[20]'],
     ];
 
     /** Profil skor aktif; tanpa ini skor tidak dapat dihitung. */
