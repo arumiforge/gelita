@@ -87,7 +87,7 @@ VOICES: dict[str, dict[str, Voice]] = {
     },
     "en": {
         "narator": Voice("bf_emma", 0.95),
-        "jaka": Voice("am_puck", 1.0, 4.0),
+        "jaka": Voice("af_heart", 1.0, 3.0),
         "mbah_kedu": Voice("bm_george", 0.88, -1.5),
     },
 }
@@ -188,7 +188,7 @@ def ensure_model() -> Path:
 
 
 class Engine:
-    """Satu instans Kokoro per varian bahasa (id, en-us, en-gb)."""
+    """Satu instans Kokoro per varian bahasa espeak-ng (id, en-us, en = Inggris British)."""
 
     def __init__(self) -> None:
         import sherpa_onnx
@@ -200,7 +200,7 @@ class Engine:
     def tts(self, lang: str):
         if lang not in self.cache:
             k = self.model
-            lexicon = {"en-gb": "lexicon-gb-en.txt", "en-us": "lexicon-us-en.txt"}.get(lang, "lexicon-us-en.txt")
+            lexicon = "lexicon-gb-en.txt" if lang == "en" else "lexicon-us-en.txt"
             so = self.sherpa
             self.cache[lang] = so.OfflineTts(so.OfflineTtsConfig(
                 model=so.OfflineTtsModelConfig(
@@ -219,10 +219,12 @@ class Engine:
         speed_mul, extra = POSES.get(pose or "", (1.0, 0.0))
         semis = voice.semitones + extra
         ratio = 2 ** (semis / 12)
-        lang = "id" if locale == "id" else ("en-gb" if voice.speaker[0] == "b" else "en-us")
+        lang = "id" if locale == "id" else ("en" if voice.speaker[0] == "b" else "en-us")
         audio = self.tts(lang).generate(text, sid=SPEAKERS.index(voice.speaker), speed=voice.speed * speed_mul / ratio)
         x = np.asarray(audio.samples, dtype=np.float32)
         sr = audio.sample_rate
+        if x.size == 0:
+            raise RuntimeError(f"Kokoro tidak menghasilkan audio ({voice.speaker}, {lang}): {text[:60]}")
         if semis:
             # Geser nada ala pita: disintesis lebih lambat r kali, lalu diputar r kali lebih cepat
             frac = Fraction(ratio).limit_denominator(400)

@@ -45,7 +45,7 @@ Mesin: **Kokoro v1.0** (82M parameter, [hexgrad/Kokoro-82M](https://huggingface.
 | Tokoh | Arahan ([naskah](../naskah-cerita.md#tokoh-dan-arahan-suara)) | ID | EN |
 |---|---|---|---|
 | Narator | hangat, pendongeng | `jf_gongitsune`, tempo 0,95, nada −1,5 st | `bf_emma`, tempo 0,95 |
-| Jaka | anak laki-laki ±11 tahun, bersemangat | `jf_nezumi`, nada +1 st | `am_puck`, nada +4 st |
+| Jaka | anak laki-laki ±11 tahun, bersemangat | `jf_nezumi`, nada +1 st | `af_heart`, nada +3 st |
 | Mbah Kedu | kakek lembut, pelan | `bm_george`, tempo 0,88, nada −1,5 st | `bm_george`, tempo 0,88, nada −1,5 st |
 
 - **Geser nada** ala pita: baris disintesis lebih lambat lalu diputar lebih cepat (atau sebaliknya), jadi formant ikut bergeser. Nada naik membuat suara terdengar lebih muda, nada turun lebih tua.

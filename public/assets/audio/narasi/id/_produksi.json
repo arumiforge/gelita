@@ -1,0 +1,671 @@
+{
+ "keterangan": "Dibuat docs/audio/build_narration.py. Dibaca App\\Libraries\\NarrationImporter: berkas yang sha256-nya cocok dicatat production_method=tts.",
+ "files": {
+  "dialog-magelang-01.mp3": {
+   "sha256": "aca3525a3f5159af138afcb81f22554fbc5433dab71b377ccc5f60af9fa24f5b",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_nezumi · id · tempo 1 · nada +1 st · pose happy",
+   "source": "11002c629eb99bb66ea4286cf77b73dd8ed4aee7c4fe7d190ecf79275b2f6f7e"
+  },
+  "dialog-magelang-02.mp3": {
+   "sha256": "efb6b778c421e15afe5fa87d14cb1d1af02ebe8632bebbd50a6fd0bfab92f667",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose idle",
+   "source": "f1372e0f98bd5d39f3ad432fcfb26721687d05dc12920ad92e5390c01dba852d"
+  },
+  "dialog-magelang-03.mp3": {
+   "sha256": "01639e70e14f3249a73df61f4cda63bffe922f154500b8149495553a87a92546",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_nezumi · id · tempo 1 · nada +1 st · pose idle",
+   "source": "e8edcb55a4cb4db67518193cf502c242072c5e004721b2d2c38e162c1d8b7475"
+  },
+  "dialog-magelang-04.mp3": {
+   "sha256": "2f00a8f6030489f843f0970fc9d8e1727f0f83bd9e2575d71e7c048f8fb69eb9",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose worried",
+   "source": "cfa630b075d0e6ac8ad381b7b77ef230c63850a7fa86573e204e964611b138d7"
+  },
+  "dialog-magelang-05.mp3": {
+   "sha256": "98b51ca65f762cd33093b9aec2363887da1e6f72f7f3ab385bb4d2834710a4d5",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_nezumi · id · tempo 1 · nada +1 st · pose afraid",
+   "source": "48a837d6c0796312d44d70782a381020a26d8934634a5f795c7f67c4f2f40e36"
+  },
+  "dialog-magelang-06.mp3": {
+   "sha256": "f689691131b35adcf7868f872054df9044b2480244cd7a76a156653216eb8072",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose worried",
+   "source": "257ee96fbf92ebf3ed217a381bc5849a2dd9798ae8960ad14c23d6b87e5ef166"
+  },
+  "dialog-magelang-07.mp3": {
+   "sha256": "6cbefddaf4e3d9630a648ba03e1036b9f40cda194891bf87b47b2bfc2a39985e",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_nezumi · id · tempo 1 · nada +1 st · pose idle",
+   "source": "307647575631af7f90b239d9290ae2a93d4f5bb1b12fd667b5287e2f83a08dda"
+  },
+  "dialog-magelang-08.mp3": {
+   "sha256": "05a6b6c16d2fc894fbc50b040fdd79598ce1ee9f7857bea98e93a8a58d4e2952",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose smile",
+   "source": "eb155af092b30aba376971643826e284417c43448c68129add535eed0a250502"
+  },
+  "dialog-magelang-09.mp3": {
+   "sha256": "6dbc5c7c96bfa1d49baba162bc55817aa9fe260a33e7f0c4256da3904723e23c",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose weak",
+   "source": "b2980722f24b1ae9defec1f95887e58309f531beeea28743fe537c72cdc7c178"
+  },
+  "dialog-magelang-10.mp3": {
+   "sha256": "ad29c1446b002e2ce190340a507be4a04acf415befe18334075bf1aa283a1a5f",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_nezumi · id · tempo 1 · nada +1 st · pose afraid",
+   "source": "fd1ba20a97221afd778a30b190c23cac4aa57eac015e7923677075d52bf2990d"
+  },
+  "dialog-magelang-11.mp3": {
+   "sha256": "eaa5886454d6f31b208ea501b8c2016553074a64a66491c5a0038722be9c0085",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose weak",
+   "source": "02c32331b5fb55a1434b8219bde50dab2c41c86a93dc69dcca8a4326dae27514"
+  },
+  "dialog-magelang-12.mp3": {
+   "sha256": "808bd1fd4a70797775d9eb66ce238648718687af2a6ad88386bdb125f8aecc68",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_nezumi · id · tempo 1 · nada +1 st · pose determined",
+   "source": "bd4e32d70f24f981a659454c8109821ba576008ff764184b7f5047fecc17c8f0"
+  },
+  "dialog-magelang-13.mp3": {
+   "sha256": "f9040da8c37a2b777a7230eeaf161433af3b982331811a8a9b5af5290d9b0bff",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose smile",
+   "source": "88d333f1384038da16041dd3cdb9b0547d6c01c6f31bc8680a78db4fa8ea9e62"
+  },
+  "dialog-magelang-14.mp3": {
+   "sha256": "20c476e598c13542827d365a7211d054df5104fe0dc20a1b44a3cf94daf544a7",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_nezumi · id · tempo 1 · nada +1 st · pose happy",
+   "source": "071eeff14c07dd27a0fdcb6a0ba0f92d68d0307a48a1f6eee451aa62760a9f51"
+  },
+  "dialog-magelang-15.mp3": {
+   "sha256": "47e91f67ed4a44539bcd735939e49b87b41e63f562cc4c22f1b46d0c0079867f",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose smile",
+   "source": "9fd401b83bfb660ff59b2151e2f31fa6e14a041f9d723026ba0ebc97513afbbc"
+  },
+  "dialog-magelang-16.mp3": {
+   "sha256": "fde780bd065509a035ce3b8ff09902c0fc72e24188c9ff806cade48d25f6b1c1",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_nezumi · id · tempo 1 · nada +1 st · pose determined",
+   "source": "bff0edcc81c5600ddab7bc2144cbe458de911b765d9850e23315c81707503b2e"
+  },
+  "dialog-temanggung-01.mp3": {
+   "sha256": "188af964ae9ab537e61e2cbfc490a303455dd742c55d0e04c79dd04445b0d575",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose worried",
+   "source": "99dcca254e84e775583ca2788eccd6b8828ecc455a3b7340989e84b2dca60105"
+  },
+  "dialog-temanggung-02.mp3": {
+   "sha256": "f42aa67a9699380f0b8212fff11b3f1d8a4c7302ff8ca9d4fe09f51b1c6d3743",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_nezumi · id · tempo 1 · nada +1 st · pose afraid",
+   "source": "0dada9b75daac0e961eb5c9a649587c033a5eb639402ee2b5382c560d273b858"
+  },
+  "dialog-temanggung-03.mp3": {
+   "sha256": "fe4fe322e7625e6d394e86c155c4d286b35b772ff75b569ccc0388c56c99d7de",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose worried",
+   "source": "51c12bfbf2fbfdad0eeb165438115c6fbcac63f8cb9fe6ad754c20dd53586768"
+  },
+  "dialog-temanggung-04.mp3": {
+   "sha256": "93ebde8c0d51328dc2c749df15624c093488d9657ab47b78389089aec4335f3b",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_nezumi · id · tempo 1 · nada +1 st · pose idle",
+   "source": "2258327a07190fe8ec2acbf94301d45af4ade7fe1c2bc4a81364a42793508d26"
+  },
+  "dialog-temanggung-05.mp3": {
+   "sha256": "20a9194b875a992c630af5872fc418b9db3d57fe54e2ce56313b03aaef979327",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose worried",
+   "source": "db6066b1340cf58df81ab43bf537a732a504e31308fd56067d7394b232fac249"
+  },
+  "dialog-temanggung-06.mp3": {
+   "sha256": "dfa89e318a654362dcc5b7fb01b249f11e56bdfc84eae8e65960d58725cba47c",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_nezumi · id · tempo 1 · nada +1 st · pose determined",
+   "source": "e639ce37d2a9ea2ba00e6dc332deaffcea17bd34ae886b7ca77f1d20f044d335"
+  },
+  "dialog-temanggung-07.mp3": {
+   "sha256": "1e4147366e2327b3795d76e44597b9b78f5258a9e142d002799fa10221ed808a",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_nezumi · id · tempo 1 · nada +1 st · pose happy",
+   "source": "1e43fcb129f0fb181e530031186adec407ba4e69c2831ed22d185fa35444f68e"
+  },
+  "dialog-temanggung-08.mp3": {
+   "sha256": "3f414a75f704bbb9502a27650aa37398fba18020666c335cf33162bb635f881f",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose worried",
+   "source": "7de7e86c9c44ebebf58398ac0db0b92c7bbc13c5d28552a4ab75eb29ad8a245c"
+  },
+  "dialog-temanggung-09.mp3": {
+   "sha256": "53b6652f4b73290d927ca5ac8b21371e887611debe23d5562bd218d1ee22aaaa",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_nezumi · id · tempo 1 · nada +1 st · pose sad",
+   "source": "068f366413e194dba21e1f7bc9c1ef5cb329dd35787f7b544259a57232fd881e"
+  },
+  "dialog-temanggung-10.mp3": {
+   "sha256": "e3ff8bddb369cd613619d67ed1f89b32e8030711a165eb0e6068325e44077fe2",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose smile",
+   "source": "a2095bc83c2a9ebae1b5d8b472059a985e0b6b39c6b09118717644ddbacc0eef"
+  },
+  "dialog-temanggung-11.mp3": {
+   "sha256": "8a7f617bf0d1b6138c968f602561225c959c440c536e6318b2c9e3f841b6fe16",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_nezumi · id · tempo 1 · nada +1 st · pose sad",
+   "source": "b8e24512709ea1874ae8abc5209a0c6ce503c9762249328c1af3c285a036a457"
+  },
+  "dialog-temanggung-12.mp3": {
+   "sha256": "1b7a6d52da125253236e15138b5c83a02831a44145184ef8d32d0012b50476dd",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose smile",
+   "source": "5f8aa3b1fd8162fa0b3bacc62d03500a63710065fa6dc41ac6650639e95ffe93"
+  },
+  "dialog-temanggung-13.mp3": {
+   "sha256": "d4556813324bf30cb8bb4531b25f27ddc706314962fcc24a03bad40d510d5144",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_nezumi · id · tempo 1 · nada +1 st · pose determined",
+   "source": "6f23f52332f702ff612f9a113f193b38a24c3d8a132380cf944d1c246418b27a"
+  },
+  "dialog-temanggung-14.mp3": {
+   "sha256": "d470b5f4696b4377d5fa301e4cf9a7ea8eea96cd8fd7723c865a579fc63c3556",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose idle",
+   "source": "1424de4ce449060efc1d0231fc65031fc817926bd4086c0f965442549fb2c6a6"
+  },
+  "dialog-temanggung-15.mp3": {
+   "sha256": "e81be4e9c2e8c5c8964a0d737eab00357fe1b7b03e17436be19822eeb73e4fbc",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_nezumi · id · tempo 1 · nada +1 st · pose determined",
+   "source": "1c0aa83aeb8c06c93847fc59dd5e488b7a852bdf566a7ca646da9e84335a8d68"
+  },
+  "dialog-wonosobo-01.mp3": {
+   "sha256": "396952b5f9be6874738321973dd0d08092ff9bba74ece07570392da236329aad",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_nezumi · id · tempo 1 · nada +1 st · pose afraid",
+   "source": "d8ac11cebf1053f5ddf57815ec88e5df4bc40eaf5fd92231fdcdd8bc33d196b2"
+  },
+  "dialog-wonosobo-02.mp3": {
+   "sha256": "cdd9b4243de5d704fddf7c608d74e8897e3a3af5b42db99fe87a4961a0b3992b",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose worried",
+   "source": "63ac4e6df8a1d4403d6b2c2687851c76e81a87e204d4a6c04f8fbbdc10973ac1"
+  },
+  "dialog-wonosobo-03.mp3": {
+   "sha256": "e9cb4be80ff39994bdb6ea346e3e47ebda801f726528e59d14f2cfff761bf5a9",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_nezumi · id · tempo 1 · nada +1 st · pose afraid",
+   "source": "54ed89c1b9bb379d36f69de0638fe5309a705bab35229035f6d4db45a556c08d"
+  },
+  "dialog-wonosobo-04.mp3": {
+   "sha256": "8cc949eaf8223d0993151395d2ef06b0dcd9e4d3b6accea34edf0419013507e5",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose worried",
+   "source": "e8d4649b7d1efb2926a1a163a1ce775e97ddea126d3780856c78aef8479fda17"
+  },
+  "dialog-wonosobo-05.mp3": {
+   "sha256": "10c29b0e3e5916986bdce28098792dd6c6e0290774789cc7e1f2b21ed4e0417e",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_nezumi · id · tempo 1 · nada +1 st · pose afraid",
+   "source": "b570703dbc910ebd872a95930cf38cd69e6449fc70633efaada8b7f22d200a19"
+  },
+  "dialog-wonosobo-06.mp3": {
+   "sha256": "1649da6c57833dbc5a7274422cc37533751678e41090376d0f4fa28d18ea3d5d",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose idle",
+   "source": "f40b70064dfcae779a819c454e3ab36f134a10666c90f6dd89c6ee3d62e403a8"
+  },
+  "dialog-wonosobo-07.mp3": {
+   "sha256": "acbda10681ad2e4a0ca66ada9ad5db9e7f4b327b2fff552296e08c391eae1336",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose weak",
+   "source": "18fd663d1321e23fa9a587b69b089fb7b8cc37a54f153225f1b4d8d0d445d929"
+  },
+  "dialog-wonosobo-08.mp3": {
+   "sha256": "b2ed0a55fdd536049fbdc33794512cdcc0737cce3e11306f935acab9bc110f41",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_nezumi · id · tempo 1 · nada +1 st · pose sad",
+   "source": "5ef2778d0a85c3034ec3b3b856afba8614775d39892458fd98cee723f25cf9e1"
+  },
+  "dialog-wonosobo-09.mp3": {
+   "sha256": "aea95413758d0ea86591c00eb9cec609d888b7f8bc8f343323d8573cd729771d",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose smile",
+   "source": "8145ea784554648080081814997737c2bae3873920a9717db291ae9a39c0363f"
+  },
+  "dialog-wonosobo-10.mp3": {
+   "sha256": "5576f1507cdece9d0a6c71e1baa6e73ac30998646f24040aceb3a6cb3e922f93",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_nezumi · id · tempo 1 · nada +1 st · pose afraid",
+   "source": "b2e51fc96de8d8a4cb3b890aa934753953c708123f92463d298c12bc521ae5f2"
+  },
+  "dialog-wonosobo-11.mp3": {
+   "sha256": "0a76be649d4ac8178819e96fe6777f31ab8c58c52330a17b20f56bbcdecd7c2a",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose smile",
+   "source": "4aa1de6639a1cccefd23980812550d9dcd4ebc46ce008cf58927292f4ff0edd1"
+  },
+  "dialog-wonosobo-12.mp3": {
+   "sha256": "136ae2b154caceb23a7e1cfad383741499ded8eab2bb97bc8d1cf11c844070e6",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose idle",
+   "source": "c661e2a5c4a50854e1deceea3f5c5caa6d45c46120847c7f13cdcce12e51e9f6"
+  },
+  "dialog-wonosobo-13.mp3": {
+   "sha256": "72b60d133bfe5496b362096f09b3e124c632a2a0021d87a4fa98bb0f80d2bcc6",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_nezumi · id · tempo 1 · nada +1 st · pose idle",
+   "source": "9ba26c70f87b365fdd1d79d360515018c494f5b92f0a3a2896c056ea7316a801"
+  },
+  "dialog-wonosobo-14.mp3": {
+   "sha256": "b54a0e2c1dba3dd67e1ee89e91f2ea5e37d8644fcbf36f88e13bef90fc22591d",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_nezumi · id · tempo 1 · nada +1 st · pose determined",
+   "source": "a8e8601d5aa9824949331a4d2e6b51ea5f14f900b57882ff79812ee5c443b9d0"
+  },
+  "dialog-wonosobo-15.mp3": {
+   "sha256": "4d6a6f8e91f341adfb98d76aff34923981269905ec8b5435fe35141a231526ac",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose smile",
+   "source": "97376ac66b2ae58f7b035545fa2ca6f8deeafbbd419b59ac0f62c18938d8f238"
+  },
+  "dialog-wonosobo-16.mp3": {
+   "sha256": "74d3dd263a8c236409f4b98e5f438f439fd2551e1e4ea7d8f2370dbdb0422727",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_nezumi · id · tempo 1 · nada +1 st · pose determined",
+   "source": "c9474d93cee3dd9e397f30631327f9c3ed5d94253b9bacce4523585352630853"
+  },
+  "intro-01.mp3": {
+   "sha256": "405fae5e01fe69ffca2634ddbc1f030c0bf5bbd251927114ccd8bd1baa4d865b",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_gongitsune · id · tempo 0.95 · nada -1.5 st",
+   "source": "21cefdb67a0bafc548a4c90f1e630a4665908cfac06eb1e63b5093baa1f8cd8b"
+  },
+  "intro-02.mp3": {
+   "sha256": "d0a79957f69b30af9e7bc03b8da517e6fd5cf60c162dcf6404d219e0b966a7c9",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_gongitsune · id · tempo 0.95 · nada -1.5 st",
+   "source": "1e889ce7641234c18445e7518f6c6bfba18f7db03a40b9d9f6c1d0afc942be67"
+  },
+  "intro-03.mp3": {
+   "sha256": "aa638bd6937c99fd40be5fc25a77dfe9bcab17a72a6072162ebabd3137f2ee83",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_gongitsune · id · tempo 0.95 · nada -1.5 st",
+   "source": "6f47ae42dd8557e43c20ca07bd597d8c28d49e3e6cd0536fe8dbb0ccd6441c10"
+  },
+  "intro-04.mp3": {
+   "sha256": "c0c222ddbbb4ada10c0cda79bdbffaf04593c3519e28c522bf00cfebc1aa3177",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_gongitsune · id · tempo 0.95 · nada -1.5 st",
+   "source": "60026628d5710cdd3ffd2787145b5d2c2ea2979cb47a667054c3609d341bee70"
+  },
+  "intro-05.mp3": {
+   "sha256": "1cfcf359d8356c6a1ca8bfcec1246c49d4c7213f644f5b705eb85d558b9be9ee",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose weak",
+   "source": "3e6e9065892a132c7bb46f4c66335d70ad0044468d092f17af3a34d5443ea748"
+  },
+  "intro-06.mp3": {
+   "sha256": "8ace456e05d124a6074c8596a101489a544f71ab4de5481687309aaf5714a2d7",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_nezumi · id · tempo 1 · nada +1 st · pose determined",
+   "source": "62575aa9f4c393ccc3fba3dd1727c330a085a74f90ee4ebdf843d133f3289d4e"
+  },
+  "intro-07.mp3": {
+   "sha256": "f7fbb4e1ff1b757a8bbc4cf5e976857d51284dde7931d22036c3af8dea621cec",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_gongitsune · id · tempo 0.95 · nada -1.5 st",
+   "source": "94f6d7bb95eb01732d1ce329dbb6e4cf2dba02a1f1c782df3c9779c8165934aa"
+  },
+  "intro-08.mp3": {
+   "sha256": "abc47d60116beacf740518c1e5ddfb31081d3cf36a494361c518ec9e503c73e9",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose smile",
+   "source": "1d0195b0ae1ed01a9bee2c78fe15ce8ce230d9d026bea95ecbf53d46ed4c7fe3"
+  },
+  "intro-09.mp3": {
+   "sha256": "c80cd7e2f85b7fef7e114e74d845b25529cca32682d9f219276eae54362e4eee",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_gongitsune · id · tempo 0.95 · nada -1.5 st",
+   "source": "3192164b11aee20a76c137c949078e8b29d8317848d908fc8225d080ac71e21f"
+  },
+  "kenal-magelang-01.mp3": {
+   "sha256": "ef2240d23b21dd7aceb245ae41c2d5322c604e99ee30a1e2a9b70fe1f5c388de",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose smile",
+   "source": "9cc57b29f30317baceeff00b597da1786da20cc1f8ae8e94c2146ae57936bc11"
+  },
+  "kenal-magelang-02.mp3": {
+   "sha256": "e859453d2b18952ec8cce6706c906d52ac3f26c0cc9f4e84060204300a5f04ee",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose idle",
+   "source": "07f9d9001a63c054b5d01ed1fbc28325015620cf6c3346c4347b87a57694bd6e"
+  },
+  "kenal-magelang-03.mp3": {
+   "sha256": "43ab0f53d0a1bdfe08013c72266b4f32db7a8939ea33043a3581a1f19fd5024a",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose idle",
+   "source": "0376c7b3f9fd63b3192de966c33f2284f834506d8caa2ab88f3f478d96621db5"
+  },
+  "kenal-magelang-04.mp3": {
+   "sha256": "8befcefaa13945accd296584bdd27bf24181f0f6254c012e069e7fcb54be89f0",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose smile",
+   "source": "4b467f018919774be10dfaf668820eefa778aae4d9384412f8b41dbd4f5babd6"
+  },
+  "kenal-temanggung-01.mp3": {
+   "sha256": "629f3b12c98a2135ce97ef7ea069f85ee12b0511559b57de4d56b11444c13022",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose smile",
+   "source": "4ca4a4cf559c1e8a05c832ba7af0bd82bf57f8d86ee53e901d38dd14593a9460"
+  },
+  "kenal-temanggung-02.mp3": {
+   "sha256": "93cfaf80f0d9fede1aeb39289843eef53f5a83c3368a925c5cdd03e06c460a43",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose idle",
+   "source": "c030e06efd5e9e33d06fe171ba4cdd2e917dbae32f5b27db5e74eb7557a50a82"
+  },
+  "kenal-temanggung-03.mp3": {
+   "sha256": "23276aefa35bdd9f24d3c04a3c5228b0965387b2e93a399535ff2a12ad7963c5",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose idle",
+   "source": "ff7ee953c83513b6c343a3bf0f673be8ccf78f1cfd93062041247b11c2c0318d"
+  },
+  "kenal-temanggung-04.mp3": {
+   "sha256": "be3f60bebddf658d26ff271d3146a483f11943bc4c96e027d290f8c195ae4769",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose smile",
+   "source": "ba3857e804f031f9d9a675a1cf589e086ba0c6badda612f2379c0132f0e325fe"
+  },
+  "kenal-wonosobo-01.mp3": {
+   "sha256": "ca109ec3226ef8754d54572a71b70395df62a3ddcbec5f0c0ba06e7a0f6bfd80",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose smile",
+   "source": "fd61d94eae1693326e35ce73d2ce2dd896563f4fa75b6a24895a8190ef155fc9"
+  },
+  "kenal-wonosobo-02.mp3": {
+   "sha256": "00d3c606dcef4243e2559d0c3005f72a35f646d944fbe064b993e9fe230d0315",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose idle",
+   "source": "702af64bdbe70d51c6126410f6796d0eb4e44a0b35f5792d2e61d406381470ad"
+  },
+  "kenal-wonosobo-03.mp3": {
+   "sha256": "d5fdd627d555db274609a856dd4889832030f57db9c76f4050d8df0d9e664a36",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose idle",
+   "source": "4b8c1a1ace5315000541280e1d0016cb624706729f2a83af0943c855985c605d"
+  },
+  "kenal-wonosobo-04.mp3": {
+   "sha256": "c781c6ef82be7ce9309ee4627aca00d0b4eff3c51146c7dc63184e2987aae52f",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose worried",
+   "source": "258d11c09c96119d4d2fadc7e0d61d851712921c8886d70aaf27f91d44a9f9ba"
+  },
+  "misi-mgl-1.mp3": {
+   "sha256": "e493fd3386535ea8bdec712a63495a7d297877186b3fa091adc3604c6927f0a3",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_gongitsune · id · tempo 0.95 · nada -1.5 st",
+   "source": "2b4db9a300eca7fe19aff610f7b47671a47c1b61fbf85e8dbc59e2a81d2ecb84"
+  },
+  "misi-mgl-2.mp3": {
+   "sha256": "84b6f1bb8edb4a73fd2a87bcb36cc2f99eac503a52f4ceb85c6217c236ab8d6e",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_gongitsune · id · tempo 0.95 · nada -1.5 st",
+   "source": "39c4c727711af6c9143b792eb2d5875585cc5971276021d68a4a4a00d2ce3f48"
+  },
+  "misi-mgl-3.mp3": {
+   "sha256": "30ca265e9f914072645ecf8ba9c7b39e1121d85e949604c1d7cf8a408ed21ccf",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_gongitsune · id · tempo 0.95 · nada -1.5 st",
+   "source": "c30abc671e43d0d019cafd40bd373258779296b7bbf460d946201d4d82035060"
+  },
+  "misi-mgl-4.mp3": {
+   "sha256": "cc8deba8728de0d161eb6fcce18e98944059e32f096e6e4902d57638a760c161",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_gongitsune · id · tempo 0.95 · nada -1.5 st",
+   "source": "65e1a7656593d0efc27844794945ec46c536be508479de6a39879c8da5c076f1"
+  },
+  "misi-mgl-5.mp3": {
+   "sha256": "9815b131784bde5c13f70a8de7a4302d4290167bb28347280e14c943797c4d57",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_gongitsune · id · tempo 0.95 · nada -1.5 st",
+   "source": "59c4ac85d8abea87d13dafa825bb37a3b608cc578003e53890b5ae54c7bbb204"
+  },
+  "misi-tmg-1.mp3": {
+   "sha256": "4c235e7043dc77316c9999705b736eb1b2c89390b122588b1cbda8b3a2223bb0",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_gongitsune · id · tempo 0.95 · nada -1.5 st",
+   "source": "c685b24f60cc1010ef7c961f53cf4e7dfd5b93b1d104cf6fbfa8892cc1178a17"
+  },
+  "misi-tmg-2.mp3": {
+   "sha256": "e48536b2d1c60acf634b804293fc345883dfa159aa15fb3a0792163f4a61e1c0",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_gongitsune · id · tempo 0.95 · nada -1.5 st",
+   "source": "4e030706820166e4bda9eeba52cd36e0518a8a86fa04714e4748d6774ab1ef21"
+  },
+  "misi-tmg-3.mp3": {
+   "sha256": "4ce5d759584e92151182cf1a18d0cb99af712df2e30561fb1a74ed018f0e2ba9",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_gongitsune · id · tempo 0.95 · nada -1.5 st",
+   "source": "f9258b9e7177d48ed87655790a7caed90bd660cb7823ec5a813133e69dc54d2a"
+  },
+  "misi-tmg-4.mp3": {
+   "sha256": "28866941439c4696ddad637f3d576e8befa70f67f3363de353958c5b1247a6f9",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_gongitsune · id · tempo 0.95 · nada -1.5 st",
+   "source": "752981811d90a871a2c26ecef5c63f4451aa3b4914c6bdb31cebe262246c6590"
+  },
+  "misi-tmg-5.mp3": {
+   "sha256": "c7ad806130133c6b74a7687769c85f9d4d8e5a800be2e4e87d329fedc60aaf71",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_gongitsune · id · tempo 0.95 · nada -1.5 st",
+   "source": "e2419ef479699672e0d8492b27d247f6dc56661e3bf4a1b21e63365d7400d7a2"
+  },
+  "misi-wnb-1.mp3": {
+   "sha256": "d082cab98b7006c088b21b159f03f9220f05efcb766cca7c36e18b5db7a38951",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_gongitsune · id · tempo 0.95 · nada -1.5 st",
+   "source": "73f39183c5d8852bd9ead3e3774815873ad27e19b32007d3af2c0004c7237033"
+  },
+  "misi-wnb-2.mp3": {
+   "sha256": "c19894ae17a542bcb5bf4d80e0779bd899cc7dd3df76699f3cec0d7fb892f526",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_gongitsune · id · tempo 0.95 · nada -1.5 st",
+   "source": "f1b1ed0999a6475ab0f290716fa9c7efee7507998d368a0c49fff7ec2eda2a03"
+  },
+  "misi-wnb-3.mp3": {
+   "sha256": "9c39d2faf53618e5cf87e09645929fb50ddd081f6e0b1c6869920fab72c17c02",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_gongitsune · id · tempo 0.95 · nada -1.5 st",
+   "source": "84e120b49450dd83eebd08c19918fd936062fa7867880abace4db4656b43cb54"
+  },
+  "misi-wnb-4.mp3": {
+   "sha256": "5a81036a620043af480929fdd037de50a64b9d62e08f8a9ee34ae9e089c33ad8",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_gongitsune · id · tempo 0.95 · nada -1.5 st",
+   "source": "c65287348725ceffaa0883a7a89a23db4560ff80f5a02a9353e4353997233c8e"
+  },
+  "misi-wnb-5.mp3": {
+   "sha256": "80c2ff9b6e666cf81e39e2408a585a011c7c36726925f16060026d23fa1663db",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_gongitsune · id · tempo 0.95 · nada -1.5 st",
+   "source": "3db2dfadac72cc66aa0e9aed3548cc7ddba349f79c7a40fb5bb1bc08314cdf2d"
+  },
+  "penutup-01.mp3": {
+   "sha256": "d5cf64ead120d7baf7df05a05796c27d6d71768d62e096a9b5a570047cfe5957",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_gongitsune · id · tempo 0.95 · nada -1.5 st",
+   "source": "58b82c04f09e4bdc9caf283e92efcf958f097ebee8369a0986bfa7e05976e31e"
+  },
+  "penutup-02.mp3": {
+   "sha256": "37faab900ba10b91b3d92d82bb2bc3f176c17f6417f3d0cddaf7fd18ce59fe95",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_gongitsune · id · tempo 0.95 · nada -1.5 st",
+   "source": "efd490fdeba83e49435433ee6f9d4030063646fd1e47e8d112ec81e5a6c5431b"
+  },
+  "penutup-03.mp3": {
+   "sha256": "d23e405421f3dceb9f3164a1add81f833793feb148441c3c042ccbcc42fc4e6c",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose smile",
+   "source": "0a9e55b379c5be5fa01efd19c5aff868ca9ecec383e484cceccba0228c8e786d"
+  },
+  "penutup-04.mp3": {
+   "sha256": "4def2f7dac608da83f0abc434ca0045075cffd3a7d81c03eb83ce23868d7de12",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_nezumi · id · tempo 1 · nada +1 st · pose bow",
+   "source": "742ffa69db5144c4e1691fa92ea65512a70d8ce112049e98d45d2ceced153b7a"
+  },
+  "penutup-05.mp3": {
+   "sha256": "390999458be43b37680f8c311ee2067f1ddef878ee30b15140f8839ba887b622",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose smile",
+   "source": "cf8a1930c1e5f62a485b1c81e74551df1cb17cf99eef44bc5416266726d71c70"
+  },
+  "peta-01.mp3": {
+   "sha256": "0634a532cd84b5abfee6687c9e97fd63da36249a3e3b3bbbd9549bd72ae98a66",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_nezumi · id · tempo 1 · nada +1 st · pose idle",
+   "source": "a9025439d252b84f9409232c64e8081677e0603dcb862824f80bffdd502fe020"
+  },
+  "peta-02.mp3": {
+   "sha256": "6da81d6e036180ccb19821dc1a24d61540c32f9afb8148b87f82b71b17c0b4e0",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_nezumi · id · tempo 1 · nada +1 st · pose determined",
+   "source": "6c3ef827cda832b1cccab4cfb7daf9350b789a012f5aec6f59aeea36af113878"
+  },
+  "peta-03.mp3": {
+   "sha256": "67e035e59b8479bf450e3602d0cd472a845f1c5a36bc36d5fd58459eceaa1151",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_nezumi · id · tempo 1 · nada +1 st · pose happy",
+   "source": "f23df7b8b25191d5d1fbd490b04555ea38747a3bf29cb7eabc0a0f300d9431ae"
+  },
+  "petunjuk-tmg-4-01.mp3": {
+   "sha256": "c8e128faa377ddbebbd870e62a3597a0a297a712c214143100a772f24981bb94",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st",
+   "source": "28408ba431028c3c7a20b0861d222f5080c5e67d1c3bf8710f4d582ccec92c62"
+  },
+  "petunjuk-tmg-4-02.mp3": {
+   "sha256": "fd9a3e47351a3b4c026dc737ed0e0a985da6a5287cfeae967d6e4089aad939e7",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st",
+   "source": "77cdf500ae3eab9a89077300799fbb7adfd8557ece07520d83cd4dce2cdefa67"
+  },
+  "petunjuk-tmg-4-03.mp3": {
+   "sha256": "76a08bf43d128f2ecd1a39eff421be767c66eb69aae2be9b8c2c45e16feb90bf",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st",
+   "source": "8bde77be078d7013e68fb8881523f2ad105df28dcc4ed617548c534966d9a273"
+  },
+  "petunjuk-tmg-4-04.mp3": {
+   "sha256": "9234eab0841d4f1d34146968aabea7477b4054affdc760ac4e3f3dc2150ec2ea",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st",
+   "source": "62dd4f0f2dbe4f2b179d45e414e3e999eda79ca588dc6feff1c7653c82ea44fe"
+  },
+  "petunjuk-tmg-4-05.mp3": {
+   "sha256": "d8c57ff68586c920fc4e75685ca3df3d86b3a55e2e5483c7e0a9b5d6d091b159",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st",
+   "source": "e8fa860b31d1c3aecb4f4abf97b65d43e7c74d12bfbe1e7efdd3a80143070b38"
+  },
+  "petunjuk-tmg-4-06.mp3": {
+   "sha256": "753565a7dbedb4d97de374d51dea7f61e85b6fe32ee99f13de7e7f163ccba069",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st",
+   "source": "9eee68c2361844df636a864e8f02694100229c53d659a085d23e7a934f87d629"
+  },
+  "petunjuk-tmg-4-07.mp3": {
+   "sha256": "ffb1485d80333a6dd69d185b5c3da0f4fb00f6add71b4daf6b345d45c56d2be0",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st",
+   "source": "c20c160efd5c175464cad0ef71811b5b857fa7c1e00860525ee30e8a699f4b39"
+  },
+  "petunjuk-tmg-4-08.mp3": {
+   "sha256": "1756e08066cf7991cc5a0a84da38083c028b50ad6cb6d48e98086152047663c9",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st",
+   "source": "d4ea95457d355e27ab2e7d9c4981a12e58b372a281157d23074114ddf44ab89d"
+  },
+  "tuntas-magelang-01.mp3": {
+   "sha256": "6890e44d6dfb1d8d958c852bf6a6480bf73c880a770ddb5a80c0fb49f72265e3",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose smile",
+   "source": "6d8e64733af2cec4d8be2abbd51b20a0d6bd2b0c17fba9d06b888ed3b92bf8f7"
+  },
+  "tuntas-magelang-02.mp3": {
+   "sha256": "67006a4f42bbb5cfb8b14819c044710cdce552e20f66c6d947bf086ac2d168b5",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_nezumi · id · tempo 1 · nada +1 st · pose happy",
+   "source": "c9dbf2395c604d52d199bc6588bc4479450a6273bade1b2f5aed37b921e63948"
+  },
+  "tuntas-magelang-03.mp3": {
+   "sha256": "bb37679bba667189611d377e15a2ea80b18c1b6fc1413609156ff29febcfb191",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose smile",
+   "source": "108eea12769c868cb1eb12fb75f9a2d85a114cd8104276dc98a215b6afbcf12d"
+  },
+  "tuntas-magelang-04.mp3": {
+   "sha256": "85a79e93f8d89658f31005d20e4c4b29e489c7e22bb17b4e197d8825f20f1fc8",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_nezumi · id · tempo 1 · nada +1 st · pose determined",
+   "source": "307212c657fbc992f41d29e785950589e9797c54da5bf42f92bd01abcbd25ef6"
+  },
+  "tuntas-temanggung-01.mp3": {
+   "sha256": "9542e169b5579b34d138d56e798f42dba6d357716d77659051ccebb487b2e784",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose smile",
+   "source": "da504dc7d358389c3e75f36c5ce4274871d71778b0cca6309ac9e8d2c2844bd2"
+  },
+  "tuntas-temanggung-02.mp3": {
+   "sha256": "602ce2060e87054a7c348f5af3f0c41e874a696040afe44e81167c1b60eac67a",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_nezumi · id · tempo 1 · nada +1 st · pose happy",
+   "source": "96206aa4eafbfc08a26550b18b0a230bf295303a7dc5172d9500c26f7c7ee60e"
+  },
+  "tuntas-temanggung-03.mp3": {
+   "sha256": "5a52f9ab12379301c1ffb608af1a65cf2ede520c0a5b45b499d18b79fb4a4ac0",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose smile",
+   "source": "e4fc6de36bb52e630bec7c51b233ad8ba6a7d8b6117d92ed769056592df44f1d"
+  },
+  "tuntas-temanggung-04.mp3": {
+   "sha256": "31456e8241677b092a81aa5c9ff87118e1d7c32a4cdebe0009723c6533c0c8ca",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_nezumi · id · tempo 1 · nada +1 st · pose determined",
+   "source": "bbb08c6de057d7e70aa9b8240efc30b7f78194e8d9c90fbbdfc69e42c0ffe344"
+  },
+  "tuntas-wonosobo-01.mp3": {
+   "sha256": "4ead23f1c222f86933e0ef98b23b180a60708a53e963e340747cd137a0ad45ed",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_nezumi · id · tempo 1 · nada +1 st · pose happy",
+   "source": "c73dbd207cb508cb939da400cfdd60062d39ffd995ebdcdfaea05b9a4245bc49"
+  },
+  "tuntas-wonosobo-02.mp3": {
+   "sha256": "340915171aa872e121d29104cf2d5b02e3a81c23e9210cccfa2319f42dd4b66b",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose smile",
+   "source": "2675b1ede7847fc5b90587d0f3e702ebf3dc5b47a6e642ac322c2f4276e2c40d"
+  },
+  "tuntas-wonosobo-03.mp3": {
+   "sha256": "98f62d63e8c9a0b90bfd7e8f99e6b94594de9df8a370536779aa9f480d1cd07e",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · jf_nezumi · id · tempo 1 · nada +1 st · pose happy",
+   "source": "db6c51a5227b577d0ff7585425a2b941da407e7002a6c7a25e45ee66df7c823a"
+  },
+  "tuntas-wonosobo-04.mp3": {
+   "sha256": "b3e22c2adb1ea44c3a96cff862f69ddaac161cd566b8f29ab087d732953863d8",
+   "production_method": "tts",
+   "voice_profile": "Kokoro v1.0 (sherpa-onnx) · bm_george · id · tempo 0.88 · nada -1.5 st · pose smile",
+   "source": "c1148b403ef54df0fa7b833d66fd2c995240f91c03b01f820f45a680e830f7da"
+  }
+ }
+}

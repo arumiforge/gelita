@@ -2,6 +2,7 @@
 
     python3 docs/audio/check_audio.py          # format, kenyaringan, puncak, jeda, loop
     python3 docs/audio/check_audio.py --wer    # + keterbacaan narasi lewat Whisper (lambat)
+    python3 docs/audio/check_audio.py --wer --locale id
 
 Pemeriksaan teknis:
 - narasi/{id,en}: setiap baris export-lines.php punya berkas; mono 44,1 kHz,
@@ -170,8 +171,9 @@ def check_wer(lines: list[dict], found: dict[str, list[Path]], limit: float) -> 
             stream = asr.create_stream()
             stream.accept_waveform(16000, x)
             asr.decode_stream(stream)
+            # Whisper menulis angka sebagai digit: eja keduanya dengan aturan yang sama
             ref = speakable(texts[code][locale], locale)
-            score = wer(ref, stream.result.text)
+            score = wer(ref, speakable(stream.result.text, locale))
             rows.append({"code": code, "wer": round(score, 3), "ref": ref, "hyp": stream.result.text.strip()})
             if score > limit:
                 flagged.append(f"{locale}/{code}: WER {score:.2f} — {stream.result.text.strip()}")
@@ -187,6 +189,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Periksa audio GELITA.")
     parser.add_argument("--wer", action="store_true", help="uji keterbacaan narasi dengan Whisper")
     parser.add_argument("--wer-limit", type=float, default=0.25, help="baris di atas ambang ini dilaporkan")
+    parser.add_argument("--locale", choices=["id", "en"], help="uji WER hanya satu bahasa")
     args = parser.parse_args()
 
     lines = json.loads(subprocess.run(["php", str(ROOT / "docs" / "audio" / "export-lines.php")],
@@ -195,6 +198,8 @@ def main() -> int:
     found = check_narration(lines, problems)
     check_music(problems)
     check_sfx(problems)
+    if args.locale:
+        found = {args.locale: found[args.locale]}
     flagged = check_wer(lines, found, args.wer_limit) if args.wer else []
 
     for p in problems:
