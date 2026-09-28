@@ -12,7 +12,6 @@ use App\Models\ParticipantConsentModel;
 use App\Models\ParticipantModel;
 use App\Models\ResearchPhaseModel;
 use App\Models\ResearchStudyModel;
-use App\Models\SchoolModel;
 use App\Models\SessionProgressModel;
 
 /**
@@ -59,16 +58,15 @@ class SessionService
         $db->transBegin();
 
         try {
-            $schoolId   = null;
-            $schoolName = trim((string) ($input['school_name'] ?? ''));
-
-            if ($schoolName !== '') {
-                $schoolId = model(SchoolModel::class)->findOrCreateByName($schoolName, [
-                    'country_code'  => $input['country_code'] ?? 'ID',
-                    'province_code' => $input['province_code'] ?? null,
-                    'district_code' => $input['district_code'] ?? null,
-                ]);
-            }
+            // NPSN → sekolah resmi; nama ketikan → sekolah resmi bila jelas, selain itu
+            // entri "belum terverifikasi" (SchoolDirectory::resolve)
+            $school = service('schoolDirectory')->resolve([
+                'npsn'          => $input['school_npsn'] ?? null,
+                'name'          => $input['school_name'] ?? null,
+                'country_code'  => $input['country_code'] ?? 'ID',
+                'province_code' => $input['province_code'] ?? null,
+                'district_code' => $input['district_code'] ?? null,
+            ]);
 
             $metrics = (array) ($input['registration_metrics'] ?? []);
 
@@ -82,8 +80,8 @@ class SessionService
                 'age'                      => isset($input['age']) && $input['age'] !== '' ? (int) $input['age'] : null,
                 'gender'                   => $this->nullIfBlank($input['gender'] ?? null),
                 'class_level'              => $this->nullIfBlank($input['class_level'] ?? null),
-                'school_id'                => $schoolId,
-                'school_name_snapshot'     => $schoolName !== '' ? $schoolName : null,
+                'school_id'                => $school['id'],
+                'school_name_snapshot'     => $school['name'],
                 'country_code'             => $input['country_code'] ?? 'ID',
                 'country_name_snapshot'    => $this->nullIfBlank($input['country_name'] ?? null),
                 'province_code'            => $this->nullIfBlank($input['province_code'] ?? null),

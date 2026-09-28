@@ -64,6 +64,12 @@ class GelitaRules
         return ! in_array(strtolower(trim((string) $str)), config('Gelita')->reservedUsernames, true);
     }
 
+    /** NPSN 8 angka milik sekolah resmi yang aktif (App\Services\SchoolDirectory) */
+    public function known_npsn(?string $str): bool
+    {
+        return service('schoolDirectory')->findByNpsn((string) $str) !== null;
+    }
+
     /**
      * Kata sandi siswa kuat. Parameter = nama field username, mis. strong_password[username].
      * Memakai PasswordPolicy — aturan yang sama dengan yang dikirim ke JavaScript.

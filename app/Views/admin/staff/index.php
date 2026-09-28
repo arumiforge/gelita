@@ -11,7 +11,7 @@
  * atau audit) dan halaman dikirim dengan Cache-Control: no-store.
  *
  * @var list<array<string, mixed>>                         $rows      toSafeArray() + locked, must_change, last_login_at
- * @var list<array<string, mixed>>                         $schools
+ * @var list<array<string, mixed>>                         $schools   SchoolModel::inUseList()
  * @var array{staff: array<string, mixed>, password: string}|null $temporary
  */
 $me          = (int) session('staff_id');
@@ -54,12 +54,14 @@ $fields = static function (?array $staff, string $p) use ($schools, $roleNames, 
       <div class="field field-school">
         <label for="<?= $p ?>-school">Sekolah <span class="req">*</span></label>
         <select id="<?= $p ?>-school" name="school_id">
-          <option value="">— pilih sekolah —</option>
+          <option value="">— pilih sekolah yang sudah dipakai —</option>
           <?php foreach ($schools as $school): ?>
-            <option value="<?= esc($school['id'], 'attr') ?>" <?= (int) ($staff['school_id'] ?? 0) === (int) $school['id'] ? 'selected' : '' ?>><?= esc($school['name']) ?></option>
+            <option value="<?= esc($school['id'], 'attr') ?>" <?= (int) ($staff['school_id'] ?? 0) === (int) $school['id'] ? 'selected' : '' ?>><?= esc($school['name']) ?><?= ! empty($school['code']) ? ' · NPSN ' . esc($school['code']) : '' ?></option>
           <?php endforeach ?>
         </select>
-        <p class="field-help">Guru hanya melihat data siswa dari sekolah ini.</p>
+        <label for="<?= $p ?>-npsn">atau NPSN sekolah</label>
+        <input type="text" id="<?= $p ?>-npsn" name="school_npsn" inputmode="numeric" maxlength="8" pattern="[0-9]{8}" autocomplete="off" placeholder="mis. 20318068">
+        <p class="field-help">Guru hanya melihat data siswa dari sekolah ini. Sekolah yang belum punya siswa dipilih lewat NPSN (cari di menu Sekolah); NPSN yang diisi menggantikan pilihan daftar.</p>
       </div>
     </div>
     <?php return (string) ob_get_clean();

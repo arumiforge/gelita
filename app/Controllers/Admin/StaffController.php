@@ -19,7 +19,7 @@ class StaffController extends BaseAdminController
     {
         return $this->panel('admin/staff/index', 'Akun staf', [
             'rows'      => $this->viewRows(),
-            'schools'   => model(SchoolModel::class)->activeList(),
+            'schools'   => model(SchoolModel::class)->inUseList(),
             'temporary' => null,
         ]);
     }
@@ -40,8 +40,12 @@ class StaffController extends BaseAdminController
             return redirect()->to(site_url('admin/staf'))->with('errors', $this->validator->getErrors());
         }
 
-        $role      = (string) $this->request->getPost('role');
-        $schoolId  = $this->idOrNull($this->request->getPost('school_id'));
+        $role                = (string) $this->request->getPost('role');
+        [$schoolId, $problem] = $this->postedSchool();
+
+        if ($role === 'guru' && $problem !== null) {
+            return $this->back('admin/staf', $problem);
+        }
 
         if ($role === 'guru' && $schoolId === null) {
             return $this->back('admin/staf', 'Akun guru wajib terikat pada satu sekolah.');
@@ -86,9 +90,13 @@ class StaffController extends BaseAdminController
             return redirect()->to(site_url('admin/staf'))->with('errors', $this->validator->getErrors());
         }
 
-        $role     = (string) $this->request->getPost('role');
-        $schoolId = $this->idOrNull($this->request->getPost('school_id'));
-        $active   = $this->request->getPost('is_active') ? 1 : 0;
+        $role                = (string) $this->request->getPost('role');
+        [$schoolId, $problem] = $this->postedSchool();
+        $active              = $this->request->getPost('is_active') ? 1 : 0;
+
+        if ($role === 'guru' && $problem !== null) {
+            return $this->back('admin/staf', $problem);
+        }
 
         if ($role === 'guru' && $schoolId === null) {
             return $this->back('admin/staf', 'Akun guru wajib terikat pada satu sekolah.');
@@ -142,7 +150,7 @@ class StaffController extends BaseAdminController
 
         return $this->panel('admin/staff/index', 'Akun staf', [
             'rows'      => $this->viewRows(),
-            'schools'   => model(SchoolModel::class)->activeList(),
+            'schools'   => model(SchoolModel::class)->inUseList(),
             'temporary' => ['staff' => $target->toSafeArray(), 'password' => $temporary],
         ]);
     }
@@ -166,6 +174,28 @@ class StaffController extends BaseAdminController
     }
 
     // -------------------------------------------------------------- bantuan
+
+    /**
+     * Sekolah guru dari formulir: NPSN (daftar sekolah resmi) didahulukan,
+     * selain itu pilihan daftar sekolah yang sudah dipakai. Guru dan siswanya
+     * harus menunjuk baris `schools` yang sama agar cakupan data guru benar.
+     *
+     * @return array{0: ?int, 1: ?string} [school_id, pesan galat]
+     */
+    private function postedSchool(): array
+    {
+        $npsn = trim((string) $this->request->getPost('school_npsn'));
+
+        if ($npsn === '') {
+            return [$this->idOrNull($this->request->getPost('school_id')), null];
+        }
+
+        $school = service('schoolDirectory')->findByNpsn($npsn);
+
+        return $school === null
+            ? [null, "NPSN {$npsn} tidak ada di daftar sekolah resmi. Cari sekolahnya di menu Sekolah."]
+            : [(int) $school['id'], null];
+    }
 
     /**
      * Baris tabel staf tanpa password_hash; status kunci login ikut dihitung.

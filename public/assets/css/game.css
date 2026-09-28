@@ -293,6 +293,33 @@ body.is-welcome .app { padding-bottom: var(--sp-5); }
 .register-form:has(#country_code option[value="XX"]:checked) .region-other { display: grid; }
 .register-form:has(#country_code option[value="XX"]:checked) .region-id { display: none; }
 
+/* Sekolah: NPSN di provinsi berdirektori (option[data-directory]), nama bebas di
+   tempat lain — ditukar tanpa JavaScript. Aturan negara lain harus paling akhir. */
+.school-npsn { display: none; }
+.register-form:has(#province_code option[data-directory]:checked) .school-npsn { display: grid; }
+.register-form:has(#province_code option[data-directory]:checked) .school-name { display: none; }
+.register-form:has(#province_code option[data-directory]:checked):has(input[name="school_manual"]:checked) .school-name { display: grid; }
+.register-form:has(#country_code option[value="XX"]:checked) .school-npsn { display: none; }
+.register-form:has(#country_code option[value="XX"]:checked) .school-name { display: grid; }
+
+#school_npsn { max-width: 14ch; font-family: var(--font-mono); font-size: var(--step-1); letter-spacing: .12em; }
+/* wadah role="status" selalu ada (agar pembaca layar mengumumkan isinya); kartunya baru tampak bila berisi */
+.school-card { display: grid; gap: var(--sp-1); }
+.school-card:has(p) {
+  padding: var(--sp-3) var(--sp-4);
+  border: 2px solid var(--brown-500);
+  border-radius: var(--radius-lg);
+  background: var(--parchment-dark);
+}
+.school-card p { margin: 0; }
+.school-card-title { color: rgba(74, 50, 24, .78); font-size: var(--step--1); font-weight: 700; }
+.school-card-name { font-family: var(--font-display); font-size: var(--step-1); font-weight: 700; overflow-wrap: anywhere; }
+.school-card-meta { font-size: var(--step--1); }
+.school-card-warn { color: var(--bad-ink, var(--bad)); font-weight: 700; }
+.school-card.is-checking:has(p) { border-style: dashed; }
+.school-card.is-missing:has(p) { border-color: var(--bad); }
+.school-manual { display: grid; gap: var(--sp-1); }
+
 .why-strong {
   display: grid;
   grid-template-columns: auto 1fr;
