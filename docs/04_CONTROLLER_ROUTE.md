@@ -40,8 +40,8 @@ Tidak ada rumus skor, tidak ada query analitik, dan tidak ada perhitungan benar/
 | Kategori | Jumlah | Folder |
 |---|---:|---|
 | Controller Game | 10 | `app/Controllers/Game/` |
-| Controller Admin | 11 | `app/Controllers/Admin/` |
-| Controller API | 8 | `app/Controllers/Api/` |
+| Controller Admin | 15 | `app/Controllers/Admin/` (+ `BaseAdminController`) |
+| Controller API | 9 | `app/Controllers/Api/` (+ `BaseApiController`) |
 | Filter | 7 | `app/Filters/` (kerangka sudah ada dari tahap 2) |
 | File route | 1 | `app/Config/Routes.php` |
 
@@ -82,6 +82,7 @@ app/Controllers/
 │   ├── StudyController.php           study, phase, release, scoring profile
 │   ├── ExportController.php          XLSX & PDF
 │   ├── GovernanceController.php      deletion request, retention, audit log
+│   ├── SchoolController.php          direktori sekolah: cari NPSN, gabung, sahkan
 │   └── StaffController.php           akun guru/admin
 └── Api/
     ├── BaseApiController.php         gameSession(), attemptOrFail(), rateLimited()
@@ -92,6 +93,7 @@ app/Controllers/
     ├── AudioApiController.php
     ├── ProgressApiController.php
     ├── AuthApiController.php         cek ketersediaan nama pengguna
+    ├── SchoolApiController.php       cek NPSN saat daftar (nama resmi sekolah)
     └── AdminApiController.php        data untuk chart dashboard
 ```
 
@@ -158,8 +160,9 @@ $routes->group('api', [
     'filter'    => 'jsonResponse',
 ], static function ($routes) {
 
-    // Tanpa login — dibatasi 20 request/menit per IP
+    // Tanpa login — dibatasi per IP (20 dan 60 request/menit)
     $routes->get('auth/username-available', 'AuthApiController::usernameAvailable');
+    $routes->get('schools/lookup',          'SchoolApiController::lookup');
 
     $routes->group('', ['filter' => 'apiSession'], static function ($routes) {
         $routes->get('session',               'SessionApiController::show');
@@ -277,6 +280,11 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
             $routes->get('tata-kelola/audit',                'GovernanceController::audit');
             $routes->post('tata-kelola/retensi',             'GovernanceController::runRetention');
 
+            $routes->get('sekolah',                  'SchoolController::index');
+            $routes->post('sekolah/gabung-otomatis', 'SchoolController::autoMerge');
+            $routes->post('sekolah/(:num)/gabung',   'SchoolController::merge/$1');
+            $routes->post('sekolah/(:num)/sahkan',   'SchoolController::verify/$1');
+
             $routes->get('staf',                  'StaffController::index');
             $routes->post('staf',                 'StaffController::store');
             $routes->post('staf/(:num)',          'StaffController::update/$1');
@@ -349,6 +357,7 @@ $routes->group('api/admin', [
 | Method | URI | Controller::method | Auth | Tujuan |
 |---|---|---|---|---|
 | GET | `/api/auth/username-available?u=` | AuthApiController::usernameAvailable | tidak (rate-limited) | `{available: bool}` untuk umpan balik saat mengetik |
+| GET | `/api/schools/lookup?npsn=` | SchoolApiController::lookup | tidak (rate-limited) | `{found, school: {npsn, name, level, stage, status, subdistrict, village, district_code, district_name, meta}}` — kartu "Benar ini sekolahmu?" |
 | GET | `/api/session` | SessionApiController::show | sesi | bootstrap payload |
 | POST | `/api/session/locale` | SessionApiController::setLocale | sesi | ganti bahasa |
 | POST | `/api/session/heartbeat` | SessionApiController::heartbeat | sesi | update aktivitas |
@@ -401,7 +410,8 @@ $routes->group('api/admin', [
 | GET/POST | `/admin/media*` | MediaController | **admin** | kelola media & audio |
 | GET/POST | `/admin/studi*` | StudyController | **admin** | studi, fase, rilis, skoring |
 | GET/POST | `/admin/tata-kelola*` | GovernanceController | **admin** | hapus data, retensi, audit |
-| GET/POST | `/admin/staf*` | StaffController | **admin** | akun guru/admin |
+| GET/POST | `/admin/sekolah*` | SchoolController | **admin** | cari NPSN, gabung/sahkan nama sekolah ketikan siswa |
+| GET/POST | `/admin/staf*` | StaffController | **admin** | akun guru/admin; sekolah guru lewat NPSN atau daftar sekolah yang dipakai |
 
 ---
 
@@ -444,7 +454,10 @@ Turunan `BaseGameController`; seluruh route-nya di grup `gameSession`, jadi kepe
   'age'            => 'required|integer|greater_than[4]|less_than[81]',
   'gender'         => 'required|in_list[laki-laki,perempuan,lainnya]',
   'class_level'    => 'required|max_length[20]',
-  'school_name'    => 'required|min_length[3]|max_length[200]',
+  // Jalur NPSN = provinsi berdirektori (SchoolDirectory::requiresNpsn) dan tidak mencentang school_manual
+  'school_npsn'    => $byNpsn ? 'required|is_natural|exact_length[8]|known_npsn' : 'permit_empty|max_length[20]',
+  'school_manual'  => 'permit_empty|in_list[1]',
+  'school_name'    => $byNpsn ? 'permit_empty|max_length[200]' : 'required|min_length[3]|max_length[200]',
   'country_code'   => 'required|max_length[5]',
   'province_code'  => 'required_without[country_other]|permit_empty|max_length[10]',
   'district_code'  => 'required_without[country_other]|permit_empty|max_length[10]',
@@ -500,6 +513,18 @@ usernameAvailable()   // GET ?u=nama
                       // dipakai → {available:false, reason:'taken'}
                       // rate limit 20/menit per ip_hash (cache CI4) → 429 RATE_LIMITED
 ```
+
+### `Api\SchoolApiController`
+
+```php
+lookup()   // GET ?npsn=20318068
+           // bukan 8 angka → {found:false, reason:'format'}
+           // tidak ada / belum terverifikasi / nonaktif → {found:false, reason:'unknown'}
+           // ada → {found:true, school: SchoolDirectory::describe()} — hanya data direktori publik
+           // rate limit 60/menit per ip_hash: satu lab sekolah biasanya satu IP publik
+```
+
+**Sekolah saat daftar.** Siswa di provinsi berdirektori (`Config\Gelita::$schoolDirectoryProvinces` yang daftar resminya sudah terpasang) wajib mengisi NPSN; NPSN divalidasi `known_npsn`. Bila NPSN-nya tidak ada di daftar, formulir menampilkan centang `school_manual` dan siswa menulis `school_name`. Provinsi lain selalu menulis `school_name`. `SessionService::registerAndStart()` menyerahkan keduanya ke `SchoolDirectory::resolve()`: NPSN → sekolah resmi; nama → alias hasil gabung admin, lalu sekolah resmi yang cocok tunggal, selain itu entri belum terverifikasi. `school_name_snapshot` = nama resmi bila tertaut.
 
 Nama provinsi/kabupaten dikirim bersama kodenya dan disimpan sebagai snapshot. Server **tidak** mempercayai nama dari client begitu saja: nama diverifikasi terhadap `public/assets/data/wilayah-id.json` yang dimuat server-side; bila kode tidak dikenal, nama snapshot dikosongkan.
 
@@ -750,6 +775,15 @@ Aturan impor di `App\Libraries\NarrationImporter` (dipakai juga `gelita:narratio
 | `xlsx()` | buat baris `data_exports` status `running`; panggil `ExportService`; pada sukses `markDone()` + audit `export`; **guru dipaksa `anonymized = 1`**; sheet `Raw Events` hanya untuk admin |
 | `pdf()` | sama, template laporan; raw event tidak masuk PDF |
 | `download($id)` | validasi export milik pemohon atau pemohon adalah admin; validasi `expires_at` belum lewat; kirim file dari `writable/exports/` lewat `$this->response->download()`; audit |
+
+### `Admin\SchoolController` (admin saja)
+
+| Method | Business rule | Response |
+|---|---|---|
+| `index()` | ringkasan (sekolah resmi, sekolah dengan siswa, belum terverifikasi) + sumber data dari `sekolah-jateng.meta.json`; cari `?q=` (NPSN / kata nama, kecamatan, desa) dan `?kab=` → maks. 50 baris + jumlah siswa; daftar entri belum terverifikasi + 3 saran per entri; jumlah yang cocok jelas (`autoMerge(true)`) | view `admin/schools/index` |
+| `merge($id)` | POST `target_id` (saran) atau `target_npsn`; asal harus belum terverifikasi; siswa + akun guru pindah; audit `school_merge` | redirect + toast |
+| `autoMerge()` | gabung semua entri yang cocok jelas (`SchoolDirectory::matchByName`) | redirect + toast |
+| `verify($id)` | POST `npsn` (8 angka, belum dipakai) + `name`; audit `school_verify` | redirect + toast |
 
 ### `Admin\GovernanceController`
 

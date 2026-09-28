@@ -37,6 +37,17 @@ Alur permainan kini bercerita dari awal sampai akhir, dengan satu naskah dwibaha
 
 Alurnya: halaman awal → `/mulai` → daftar → cerita pembuka → peta (tirai + narasi Jaka) → Kenali wilayah → tirai wilayah → dialog pembuka → peta wilayah → kartu misi (tirai tantangan) → tantangan → selesai → wilayah tuntas → Pustaka → wilayah berikutnya → … → penutup → Balai Refleksi.
 
+### Pembaruan pendaftaran: sekolah lewat NPSN (Jawa Tengah)
+
+Nama sekolah teks bebas membuat satu sekolah tercatat berkali-kali — "SD 1 CENDONO", "SD NEGERI 1 CENDONO", "sd 1 cendono" — sehingga laporan per sekolah terpecah dan guru tidak melihat sebagian siswanya. Sekarang:
+
+- **Daftar sekolah resmi Jawa Tengah** (28.487 sekolah SD, MI, SMP, MTs, SLB; NPSN, kecamatan, desa) ikut di repositori: [`docs/sekolah/`](docs/sekolah/README.md), dari Data Induk Pendidikan lewat cermin `bahrye/api-sekolah` (MIT). Dipasang `php spark gelita:schools:import` — juga oleh `db:seed` dan skrip deploy; hanya menulis yang berubah, tidak pernah menghapus.
+- **Siswa yang memilih Jawa Tengah wajib mengisi NPSN.** Setelah 8 angka, nama resmi muncul di kartu "Benar ini sekolahmu?" (`GET /api/schools/lookup`), dengan peringatan bila kab/kota atau jenjangnya tidak cocok — tanda salah ketik. NPSN yang tidak ada di daftar membuka centang **"Sekolahku tidak ada di daftar"** untuk menulis nama. Provinsi lain tetap menulis nama sekolah. Berjalan juga tanpa JavaScript.
+- **Nama ketikan tetap dirapikan.** `SchoolDirectory` menautkan nama ketikan ke sekolah resmi hanya bila kandidatnya tunggal (1.174 sekolah resmi Jateng bernama sama dengan sekolah lain di kab/kota yang sama, jadi nama saja memang tidak cukup); sisanya menjadi entri "belum terverifikasi", satu per varian. Admin merapikannya di **Panel → Sekolah** (cari NPSN untuk sesi kelas, gabung, sahkan); entri yang digabung menjadi alias sehingga ketikan yang sama berikutnya langsung tertaut.
+- Akun guru dipilih lewat **NPSN**, filter/ekspor hanya memuat sekolah yang dipakai, dan ekspor beridentitas memuat kolom `school_npsn`.
+
+Server yang sudah berjalan: deploy biasa, lalu `php spark gelita:schools:import --link-existing` untuk menautkan nama sekolah lama yang cocok jelas ([`docs/08` → *Memperbarui server yang sudah berjalan ke pendaftaran NPSN*](docs/08_DEPLOYMENT.md#memperbarui-server-yang-sudah-berjalan-ke-pendaftaran-npsn)).
+
 ### Pembaruan narasi petunjuk arena `cari`
 
 - **Petunjuk Mbah Kedu kini bersuara.** Setiap petunjuk target arena `cari` (`tmg-4`: 8 petunjuk; ketiga objek jebakan tidak punya petunjuk) dapat diberi rekaman ID dan EN di kolom baru `challenge_items.audio_prompt_id` / `audio_prompt_en_id` (migration `003800`). Payload `clues` membawa `audio` (URL, hanya rekaman **disetujui** dengan media aktif) dan `audio_id` sesuai bahasa; tanpa rekaman keduanya `null`. Kunci jawaban dan pembeda jebakan tetap tidak dikirim.
@@ -276,9 +287,9 @@ Di Windows, Laragon (PHP 8.3 + MySQL) memenuhi semua prasyarat. Pengaturan ekste
 
 ## Migration
 
-Migration dijalankan berurutan dari `000100` sampai `003800` (39 berkas) dan menghasilkan 32 tabel: 30 tabel domain, `ci_sessions`, dan `migrations`. `php spark migrate:rollback -b 0` mengembalikan database ke kosong.
+Migration dijalankan berurutan dari `000100` sampai `003900` (40 berkas) dan menghasilkan 32 tabel: 30 tabel domain, `ci_sessions`, dan `migrations`. `php spark migrate:rollback -b 0` mengembalikan database ke kosong.
 
-`003100`–`003300` adalah koreksi, `003400`, `003600`, `003700`, dan `003800` menambah kolom baru, `003500` menambah tabel baru. Perubahan skema selalu datang sebagai migration baru; migration lama tidak diubah.
+`003100`–`003300` adalah koreksi, `003400`, `003600`, `003700`, `003800`, dan `003900` menambah kolom baru, `003500` menambah tabel baru. Perubahan skema selalu datang sebagai migration baru; migration lama tidak diubah.
 
 | Versi | Peran |
 |---|---|
@@ -291,6 +302,7 @@ Migration dijalankan berurutan dari `000100` sampai `003800` (39 berkas) dan men
 | `003600` | menambahkan `participants.intro_seen_at`: pemain baru wajib menonton cerita pembuka; peserta yang sudah punya progres diisi saat migration (backfill) |
 | `003700` | menambahkan `dialogues.pose` dan `dialogues.effect` (pose tokoh dan efek layar dari naskah); isinya diisi `php spark gelita:story:update` |
 | `003800` | menambahkan `challenge_items.audio_prompt_id` dan `audio_prompt_en_id` (FK `audio_assets`, `SET NULL`): narasi petunjuk arena `cari`; isinya ditautkan `gelita:narration:import` dari berkas `petunjuk-{node}-NN` |
+| `003900` | menjadikan `schools` direktori sekolah resmi: `level`, `stage`, `status`, `subdistrict_name`, `village_name`, `is_verified`, `match_key`, `merged_into_id` (FK ke `schools`, `SET NULL`); `match_key` baris lama diisi saat migration. Isinya dipasang `gelita:schools:import` |
 
 `003200` memanggil `resetDataCache()` sebelum memeriksa kolom; tanpa itu seluruh pemeriksaan `fieldExists()` membaca daftar kolom versi sebelum `003100` pada proses `spark migrate` yang sama. Jangan melakukan rollback ke bawah `003100`: tahap 3 bergantung pada penamaan kolom hasil migration tersebut. Rincian lengkap di [`docs/01_DATABASE.md`](docs/01_DATABASE.md#koreksi-challenge_attempts-003100-dan-003200).
 
@@ -312,7 +324,7 @@ Jalankan test suite tanpa laporan coverage:
 vendor/bin/phpunit --no-coverage
 ```
 
-Suite (161 test) memakai grup database `tests` (SQLite3 in-memory) dan hanya menjalankan migration bernamespace `Tests\Support`, bukan migration aplikasi — skema aplikasi memakai fitur MySQL/MariaDB (`DATETIME(6)`, `ON UPDATE CURRENT_TIMESTAMP(6)`) yang tidak ada di SQLite. Sesi di-mock dengan `ArrayHandler` oleh `CIUnitTestCase`. Yang dikunci suite antara lain:
+Suite (343 test) memakai grup database `tests` (SQLite3 in-memory) dan hanya menjalankan migration bernamespace `Tests\Support`, bukan migration aplikasi — skema aplikasi memakai fitur MySQL/MariaDB (`DATETIME(6)`, `ON UPDATE CURRENT_TIMESTAMP(6)`) yang tidak ada di SQLite. Sesi di-mock dengan `ArrayHandler` oleh `CIUnitTestCase`. Yang dikunci suite antara lain:
 
 - `RouteWiringTest` — auto-route tetap mati, setiap handler menunjuk kelas/method yang ada, setiap view yang disebut controller punya berkasnya, dan ganti sandi staf hanya berfilter `staffAuth` (terbuka untuk guru).
 - `HeadRouteTest` — HEAD memakai rute GET beserta filternya; HEAD ke halaman staf tanpa login dialihkan ke `/admin/login`.
@@ -327,7 +339,10 @@ Suite (161 test) memakai grup database `tests` (SQLite3 in-memory) dan hanya men
 - `ExcelWriterTest` — workbook terbaca ulang PhpSpreadsheet, teks berawalan `=` tidak pernah menjadi rumus, berkas sementara dibersihkan.
 - `BankWorkbookGuideTest` — setiap kolom yang dibaca importer punya penjelasan Indonesia di templat, header sheet data sama persis dengan importer, dan workbook produksi `docs/bank-soal/` ikut dibangun ulang bila kolom impor berubah.
 - `MediaLinkTest`, `RichTextTest` — tautan media Pustaka hanya http(s) dan YouTube lewat domain nocookie; format teks Pustaka selalu meng-escape HTML lebih dulu.
-- `ExportRulesTest` — mode anonim tanpa kolom identitas, rahasia tidak pernah diekspor, kunci jawaban hanya admin, guru tanpa Raw Events, cakupan sekolah dipaksa service, cakupan & penjaga drift penghapusan.
+- `ExportRulesTest` — mode anonim tanpa kolom identitas (termasuk `school_npsn`), rahasia tidak pernah diekspor, kunci jawaban hanya admin, guru tanpa Raw Events, cakupan sekolah dipaksa service, cakupan & penjaga drift penghapusan.
+- `SchoolNameTest` — varian penulisan satu sekolah ("SD NEGERI 1 CENDONO", "sdn 01 Cendono", "S.D.N. 1 Cendono", MTs/MI/SDIT, Muhammadiyah, kecamatan di nama resmi) berkunci sama; SD 1 vs SD 2 vs SD 11 vs MI tetap berbeda.
+- `SchoolDataFileTest` — daftar sekolah resmi `docs/sekolah/`: kolom, NPSN 8 angka unik, ke-35 kab/kota Jawa Tengah ada di `wilayah-id.json`, contoh peneliti (NPSN 20318068 = SD 1 CENDONO), berkas meta sesuai isi.
+- `SchoolDirectoryTest` — impor hanya menulis yang berubah dan tidak menghapus, berkas rusak ditolak utuh, cek NPSN & aturan `known_npsn`, NPSN wajib hanya setelah daftar terpasang, pencocokan nama yang tidak menebak saat ambigu, satu entri belum terverifikasi per varian, pencarian panel, gabung (siswa + guru pindah, alias), sahkan, gabung otomatis.
 - `Stage7WiringTest` — kelima command `gelita:*` aktif, service baru terdaftar, dan setiap keluaran templat PDF lewat `esc()`.
 - `StaffPasswordCommandTest` — `gelita:staff:password` terdaftar, menolak tanpa nama pengguna, dan memakai jalur reset yang sama dengan `/admin/staf`; sandi sementaranya lolos `PasswordPolicy`.
 - `DeployFilesTest` — skrip Windows hanya ASCII, skrip Bash ber-LF dengan `set -E`, konfigurasi Nginx Linux dan Windows hanya berbeda di baris platform, tidak ada perintah yang merusak production, salinan `.env` di backup Windows tidak langsung terhapus retensi.

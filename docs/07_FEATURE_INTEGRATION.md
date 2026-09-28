@@ -78,6 +78,13 @@ Registrasi sekaligus materi literasi keamanan digital: anak belajar membuat kata
  4. Redirect /daftar → formulir tiga bagian:
       1. Tentang kamu  2. Sekolah dan daerah  3. Akun rahasiamu
  5. register.js memuat wilayah-id.json (provinsi → kabupaten bertingkat)
+ 5a. Sekolah (setelah wilayah):
+      provinsi berdirektori (Jawa Tengah) → kolom NPSN wajib;
+        8 angka → GET /api/schools/lookup (debounce 300 ms) → kartu "Benar ini
+        sekolahmu?" dengan nama resmi, peringatan bila kab/kota atau jenjang
+        tidak cocok; NPSN tak dikenal → centang "Sekolahku tidak ada di daftar"
+        → kolom nama sekolah
+      provinsi lain / negara lain → kolom nama sekolah
  6. Mengetik nama pengguna → GET /api/auth/username-available (debounce 500 ms)
       ✓ bisa dipakai / ✗ sudah dipakai, coba tambahkan angka
  7. Mengetik kata sandi → password-meter.js (lokal, tanpa request):
@@ -94,7 +101,10 @@ Registrasi sekaligus materi literasi keamanan digital: anak belajar membuat kata
               → kembali ke langkah 7
 11. Lolos → SessionService::registerAndStart() — SATU TRANSACTION:
       a. PasswordPolicy::check() diulang di service (pertahanan kedua)
-      b. SchoolModel::findOrCreateByName() → school_id
+      b. SchoolDirectory::resolve() → school_id + snapshot nama:
+           NPSN (wajib di Jawa Tengah) → sekolah resmi;
+           nama ketikan → alias hasil gabung admin → sekolah resmi yang cocok tunggal
+           → selain itu entri belum terverifikasi (dirapikan di Panel → Sekolah)
       c. ParticipantModel::generateCode() → GLT-000123
       d. insert participants: username (huruf kecil), password_hash,
          snapshot sekolah/wilayah, pw_first_submit_criteria, pw_weak_submit_count,
