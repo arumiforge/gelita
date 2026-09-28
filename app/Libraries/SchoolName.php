@@ -178,11 +178,16 @@ final class SchoolName
         return array_values(array_filter($tokens, static fn (string $token): bool => ! isset($drop[$token])));
     }
 
-    /** @param list<string> $tokens */
+    /**
+     * Masih ada kata nama (bukan jenjang, bukan angka)? "SD 1" saja terlalu umum
+     * untuk ditautkan otomatis, "SD 3 TUMIYANG" cukup.
+     *
+     * @param list<string> $tokens
+     */
     public static function hasIdentity(array $tokens): bool
     {
         foreach ($tokens as $token) {
-            if (! in_array($token, self::STAGE_TOKENS, true)) {
+            if (! ctype_digit($token) && ! in_array($token, self::STAGE_TOKENS, true)) {
                 return true;
             }
         }

@@ -73,5 +73,6 @@ final class SchoolNameTest extends CIUnitTestCase
         $this->assertSame('SD 3 TUMIYANG', SchoolName::keyFromTokens($typed));
         $this->assertTrue(SchoolName::hasIdentity($typed));
         $this->assertFalse(SchoolName::hasIdentity(SchoolName::withoutPlaces(SchoolName::tokens('SDN Pekuncen'), $places)));
+        $this->assertFalse(SchoolName::hasIdentity(SchoolName::withoutPlaces(SchoolName::tokens('SDN 1 Pekuncen'), $places)), 'hanya jenjang + angka: terlalu umum');
     }
 }

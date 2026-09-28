@@ -31,6 +31,7 @@ final class SchoolDirectoryTest extends CIUnitTestCase
         ['20302001', 'SD NEGERI 1 KARANGGEDANG', 'SD', 'sd', 'NEGERI', '33.03', 'BUKATEJA', 'KARANGGEDANG'],
         ['20302002', 'SD NEGERI 1 KARANGGEDANG', 'SD', 'sd', 'NEGERI', '33.03', 'KARANGANYAR', 'KARANGGEDANG'],
         ['20301003', 'SEKOLAH DASAR NEGERI 3 TUMIYANG KECAMATAN PEKUNCEN', 'SD', 'sd', 'NEGERI', '33.02', 'PEKUNCEN', 'TUMIYANG'],
+        ['20301004', 'SD NEGERI 1 PEKUNCEN', 'SD', 'sd', 'NEGERI', '33.02', 'PEKUNCEN', 'PEKUNCEN'],
     ];
 
     private const KUDUS = ['country_code' => 'ID', 'province_code' => '33', 'district_code' => '33.19'];
@@ -68,17 +69,17 @@ final class SchoolDirectoryTest extends CIUnitTestCase
         $importer = new SchoolImporter($this->sqlite);
 
         $first = $importer->import($this->csv(self::OFFICIAL));
-        $this->assertSame([7, 7, 0, 0], [$first['total'], $first['added'], $first['updated'], $first['unchanged']]);
+        $this->assertSame([8, 8, 0, 0], [$first['total'], $first['added'], $first['updated'], $first['unchanged']]);
 
         $again = $importer->import($this->csv(self::OFFICIAL));
-        $this->assertSame([0, 0, 7], [$again['added'], $again['updated'], $again['unchanged']], 'impor ulang berkas yang sama = 0 perubahan');
+        $this->assertSame([0, 0, 8], [$again['added'], $again['updated'], $again['unchanged']], 'impor ulang berkas yang sama = 0 perubahan');
 
         $renamed       = self::OFFICIAL;
         $renamed[1][1] = 'SD 4 CENDONO DAWE';
         unset($renamed[3]);
 
         $third = $importer->import($this->csv(array_values($renamed)));
-        $this->assertSame([0, 1, 5], [$third['added'], $third['updated'], $third['unchanged']]);
+        $this->assertSame([0, 1, 6], [$third['added'], $third['updated'], $third['unchanged']]);
         $this->assertSame(['20364140'], $third['missing']);
         $this->assertSame('SD 4 CENDONO DAWE', $this->school('20337844')['name']);
         $this->assertNotNull($this->school('20364140'), 'sekolah yang hilang dari berkas tidak dihapus');
@@ -91,7 +92,7 @@ final class SchoolDirectoryTest extends CIUnitTestCase
     {
         $report = (new SchoolImporter($this->sqlite))->import($this->csv(self::OFFICIAL), true);
 
-        $this->assertSame(7, $report['added']);
+        $this->assertSame(8, $report['added']);
         $this->assertSame(0, $this->sqlite->table('schools')->countAllResults());
     }
 
@@ -199,6 +200,8 @@ final class SchoolDirectoryTest extends CIUnitTestCase
         $this->assertNull($directory->matchByName('SD 2 Cendono', '33.19', '33'), 'SD 2 bukan SD 1 atau SD 4');
         $this->assertNull($directory->matchByName('SD Cendono', '33.19', '33'));
         $this->assertNull($directory->matchByName('SMP 1 Cendono', '33.19', '33'));
+        $this->assertNull($directory->matchByName('SD 1', '33.02', '33'), 'jenjang + angka saja tidak ditautkan lewat aturan kecamatan');
+        $this->assertSame('20301004', $directory->matchByName('SDN 1 Pekuncen', '33.02', '33')['code'] ?? null, 'nama lengkap tetap cocok persis');
     }
 
     public function testResolveByNpsnUsesOfficialName(): void
@@ -220,7 +223,7 @@ final class SchoolDirectoryTest extends CIUnitTestCase
 
         $this->assertTrue($result['verified']);
         $this->assertSame('SD 1 CENDONO', $result['name']);
-        $this->assertSame(7, $this->sqlite->table('schools')->countAllResults(), 'tidak ada baris baru');
+        $this->assertSame(8, $this->sqlite->table('schools')->countAllResults(), 'tidak ada baris baru');
     }
 
     public function testResolveKeepsOneUnverifiedRowPerVariant(): void
