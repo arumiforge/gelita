@@ -11,6 +11,7 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
+        $this->call('SchoolSeeder');
         $this->call('StaffUserSeeder');
         $this->call('LearningIndicatorSeeder');
         $this->call('ScoringProfileSeeder');

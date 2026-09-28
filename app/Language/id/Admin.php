@@ -33,6 +33,7 @@ return [
     'menuMedia'        => 'Media & audio',
     'menuStudy'        => 'Studi & rilis',
     'menuGovernance'   => 'Tata kelola',
+    'menuSchools'      => 'Sekolah',
     'menuStaff'        => 'Akun staf',
 
     'roleAdmin'    => 'Admin',

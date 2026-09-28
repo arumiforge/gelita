@@ -69,7 +69,7 @@ class ParticipantController extends BaseAdminController
             'rows'    => $rows,
             'pager'   => $participants->pager,
             'search'  => $search,
-            'schools' => model(SchoolModel::class)->activeList(),
+            'schools' => model(SchoolModel::class)->inUseList(),
             'isAdmin' => $this->isAdmin(),
         ]);
     }

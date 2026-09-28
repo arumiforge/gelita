@@ -44,6 +44,9 @@ database_default_DSN=$(cat "$OPS/migrate.dsn")
 sudo --preserve-env=database_default_DSN -u www-data php "$APP/spark" migrate
 unset database_default_DSN
 
+echo "→ Daftar sekolah resmi (NPSN; hanya baris yang berubah)"
+spark gelita:schools:import
+
 echo "→ Bersihkan cache"
 spark cache:clear
 

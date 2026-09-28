@@ -83,6 +83,13 @@ class Gelita extends BaseConfig
         'accept_level' => 'strong',   // registrasi hanya diterima bila kuat
     ];
 
+    /**
+     * Provinsi yang daftar sekolah resminya ada di tabel `schools`
+     * (`gelita:schools:import`, docs/sekolah/). Siswa yang memilih provinsi ini
+     * wajib mengisi NPSN; provinsi lain menulis nama sekolah sendiri.
+     */
+    public array $schoolDirectoryProvinces = ['33'];
+
     /** Nama pengguna siswa yang tidak boleh dipakai */
     public array $reservedUsernames = ['admin', 'guru', 'gelita', 'root', 'system', 'test'];
 

@@ -9,6 +9,12 @@
  * - Cek nama pengguna: huruf kecil & tanpa spasi saat mengetik, pola dicek
  *   di client dulu, lalu GET /api/auth/username-available (debounce 500 ms).
  *   429/jaringan gagal → diam; server tetap memeriksa saat Daftar.
+ * - Sekolah: di provinsi berdirektori (option[data-directory], Jawa Tengah)
+ *   siswa mengetik NPSN; 8 angka → GET /api/schools/lookup → nama resmi tampil
+ *   di kartu, dengan peringatan bila kab/kota atau jenjangnya tidak cocok
+ *   (tanda salah ketik). NPSN tak dikenal → muncul centang "Sekolahku tidak
+ *   ada di daftar" untuk menulis nama. Pertukaran blok NPSN/nama dilakukan CSS
+ *   :has(); di sini hanya `required` yang diselaraskan.
  * - Kolom wajib yang kosong ditandai .has-error dan digulirkan ke tampak;
  *   validasi yang mengikat tetap di server.
  *
@@ -16,11 +22,20 @@
  * sandi belum kuat: penolakan server adalah bagian dari pembelajaran dan
  * tercatat sebagai pw_weak_submit_count.
  */
-import { $, $$, debounce, scrollToCenter } from '../core/dom.js';
+import { $, $$, debounce, el, scrollToCenter } from '../core/dom.js';
 import { apiRequest } from '../core/api.js';
 import { initPasswordField } from './password-meter.js';
 
 const USERNAME_PATTERN = /^[a-z0-9._]{3,30}$/;
+const NPSN_PATTERN = /^\d{8}$/;
+
+/** Kelas → jenjang sekolah yang wajar (SLB cocok untuk semua kelas). */
+function stageOfGrade(value) {
+  const grade = Number(value);
+  if (grade >= 1 && grade <= 6) return 'sd';
+  if (grade >= 7 && grade <= 9) return 'smp';
+  return null;
+}
 
 function initRegion(form) {
   const country = $('[data-region-country]', form);
@@ -116,6 +131,109 @@ function initUsername(form) {
   if (input.value) check();
 }
 
+function initSchool(form) {
+  const block = $('[data-school-npsn]', form);
+  const npsn = $('#school_npsn', form);
+  const card = $('[data-school-card]', form);
+  const manualBox = $('[data-school-manual]', form);
+  const manual = $('input[name="school_manual"]', form);
+  const name = $('#school_name', form);
+  const country = $('[data-region-country]', form);
+  const province = $('[data-region-province]', form);
+  const district = $('[data-region-district]', form);
+  const grade = $('#class_level', form);
+  if (!block || !npsn || !card || !name || !province) return;
+
+  const text = block.dataset;
+  let school = null; // hasil cek terakhir yang ditemukan
+  let lastQuery = '';
+
+  const inDirectory = () => (country?.value ?? 'ID') === 'ID'
+    && Boolean(province.selectedOptions[0]?.hasAttribute('data-directory'));
+
+  // blok yang tampak diatur CSS :has(); kolom tersembunyi tidak boleh required
+  const syncMode = () => {
+    const byNpsn = inDirectory();
+    npsn.required = byNpsn && !manual?.checked;
+    name.required = !byNpsn || Boolean(manual?.checked);
+  };
+
+  const showManual = (visible) => {
+    if (!manualBox) return;
+    manualBox.hidden = !visible;
+    if (!visible && manual) manual.checked = false;
+  };
+
+  const render = (state, lines) => {
+    card.className = `school-card${state ? ` is-${state}` : ''}`;
+    card.replaceChildren(...lines.map(([cls, value]) => el('p', { class: cls, text: value })));
+  };
+
+  const warnings = () => {
+    const out = [];
+    if (district?.value && school.district_code && district.value !== school.district_code) {
+      out.push(['school-card-warn', text.warnDistrict.replace('{0}', school.district_name || school.district_code)]);
+    }
+    const expected = stageOfGrade(grade?.value);
+    if (expected && school.stage && school.stage !== 'slb' && school.stage !== expected) {
+      out.push(['school-card-warn', text.warnStage.replace('{0}', school.level || school.stage.toUpperCase())]);
+    }
+    return out;
+  };
+
+  const showSchool = () => render('', [
+    ['school-card-title', text.cardTitle],
+    ['school-card-name', school.name],
+    ['school-card-meta', school.meta],
+    ...warnings(),
+  ]);
+
+  const lookup = debounce(async () => {
+    const value = npsn.value;
+    if (!NPSN_PATTERN.test(value) || value === lastQuery) return;
+    lastQuery = value;
+    render('checking', [['school-card-meta', text.checking]]);
+
+    try {
+      const data = await apiRequest(`/schools/lookup?npsn=${encodeURIComponent(value)}`, { retry: false });
+      if (npsn.value !== value) return; // siswa sudah mengetik lagi
+      if (data.found) {
+        school = data.school;
+        showSchool();
+        showManual(false);
+      } else {
+        school = null;
+        render('missing', [['school-card-warn', text.unknown.replace('{value}', value)]]);
+        showManual(true);
+      }
+    } catch {
+      lastQuery = '';
+      render('', []); // diam: server tetap memeriksa NPSN saat Daftar
+    }
+    syncMode();
+  }, 300);
+
+  npsn.addEventListener('input', () => {
+    const digits = npsn.value.replace(/\D+/g, '').slice(0, 8);
+    if (digits !== npsn.value) npsn.value = digits;
+    if (digits !== lastQuery) {
+      school = null;
+      lastQuery = '';
+      render('', []);
+    }
+    lookup();
+  });
+
+  manual?.addEventListener('change', syncMode);
+  country?.addEventListener('change', syncMode);
+  province.addEventListener('change', syncMode);
+  district?.addEventListener('change', () => { if (school) showSchool(); });
+  grade?.addEventListener('change', () => { if (school) showSchool(); });
+
+  syncMode();
+  if (NPSN_PATTERN.test(npsn.value)) lookup(); // kembali dari galat: cek ulang + peringatan
+}
+
 /** Kolom wajib kosong → .has-error + gulir ke kolom pertama. */
 export function markInvalidFields(form) {
   let first = true;
@@ -174,6 +292,7 @@ export function initRegister() {
   if (!form) return;
 
   initRegion(form);
+  initSchool(form);
   initUsername(form);
   initPasswordField($('.password-field', form));
   markInvalidFields(form);
