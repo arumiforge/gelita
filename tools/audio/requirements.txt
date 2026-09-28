@@ -1,0 +1,9 @@
+# Generator audio GELITA (Python 3.11+). Pasang di virtualenv:
+#   python3 -m venv .venv && . .venv/bin/activate && pip install -r requirements.txt
+numpy==2.4.6
+scipy==1.17.1
+soundfile==0.14.0
+onnxruntime==1.30.0
+praat-parselmouth==0.4.7
+pyloudnorm==0.2.0
+piper-tts==1.8.0

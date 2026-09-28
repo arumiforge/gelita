@@ -1,0 +1,7 @@
+# Model TTS/ASR diunduh setup-models.sh; keluaran sementara di out/
+/models/
+/out/
+/node_modules/
+/package-lock.json
+/.venv/
+__pycache__/
