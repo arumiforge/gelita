@@ -37,6 +37,32 @@ Alur permainan kini bercerita dari awal sampai akhir, dengan satu naskah dwibaha
 
 Alurnya: halaman awal → `/mulai` → daftar → cerita pembuka → peta (tirai + narasi Jaka) → Kenali wilayah → tirai wilayah → dialog pembuka → peta wilayah → kartu misi (tirai tantangan) → tantangan → selesai → wilayah tuntas → Pustaka → wilayah berikutnya → … → penutup → Balai Refleksi.
 
+### Pembaruan audio: musik gamelan, efek suara, dan narasi ID/EN
+
+Seluruh audio permainan kini ikut di repositori. Rinciannya ada di [`docs/audio.md`](docs/audio.md), dan generatornya di [`tools/audio/`](tools/audio/README.md).
+
+- **Musik gamelan**, tiga gending orisinal yang berulang tanpa jeda:
+  - `map`: ladrang slendro manyura, megah, untuk Peta Kedu.
+  - `region`: ketawang pelog nem dengan gender, gambang, siter, dan suling, untuk peta wilayah.
+  - `challenge`: ketawang slendro sanga yang hening, untuk tantangan.
+
+  Semua disintesis dari nol dengan laras pelog/slendro, ombak gong, dan garap bonang–peking–kendang. Tidak ada sampel rekaman, dan kenyaringannya di bawah narasi agar narasi tetap jelas.
+- **Efek suara** bernuansa gamelan: `click` (gambang), `correct` (bonang naik), `wrong` (demung teredam), `lock` (kethuk + kecrek), dan dua efek yang dipanggil `game/finished.js` tetapi belum tercantum: `shard` (kilau peking–gender) dan `region-done` (suwuk bergong). **Media → Kelengkapan aset** kini juga memeriksa `shard` dan `region-done`.
+- **Narasi 96 baris × 2 bahasa** (88 baris naskah + 8 petunjuk arena `cari`), MP3 mono 96 kbps, sekitar −16 LUFS. Suaranya sintetis (TTS) dan diolah per tokoh:
+  - **Narator**: pendongeng perempuan yang hangat.
+  - **Jaka**: anak laki-laki; nada dan formant dinaikkan, gaya bicara mengikuti pose.
+  - **Mbah Kedu**: kakek yang pelan, bergetar, dan lemah pada pose `weak`.
+
+  Narasi Indonesia memakai model suara bahasa Jawa, sehingga berlogat Jawa sesuai latar Kedu. Nama Jawa di narasi Inggris dilafalkan dengan IPA. Setiap baris dipilih dari beberapa kandidat lewat pemeriksaan Whisper.
+- **Tercatat sebagai TTS.** Manifest `public/assets/audio/narasi/produksi.json` memuat sha256 dan profil suara setiap rekaman. `NarrationImporter` mencatat berkas yang cocok sebagai `production_method = tts` beserta `voice_profile`. Rekaman pengisi suara yang menggantikannya otomatis tercatat sebagai rekaman sendiri.
+
+**Server yang sudah berjalan:** deploy biasa, lalu jalankan perintah di bawah. Setelah itu, di **Konten → Narasi** tekan **Setujui semua narasi draft** untuk ID dan EN. Musik dan efek suara langsung terdengar tanpa langkah tambahan.
+
+```bash
+php spark gelita:narration:import --dry-run   # 96 rekaman per bahasa dikenali
+php spark gelita:narration:import             # audio draft, ditautkan ke naskah & petunjuk cari
+```
+
 ### Pembaruan pendaftaran: sekolah lewat NPSN (Jawa Tengah)
 
 Nama sekolah teks bebas membuat satu sekolah tercatat berkali-kali — "SD 1 CENDONO", "SD NEGERI 1 CENDONO", "sd 1 cendono" — sehingga laporan per sekolah terpecah dan guru tidak melihat sebagian siswanya. Sekarang:
@@ -83,7 +109,7 @@ php spark gelita:narration:import          # rekaman di public/assets/audio/nara
 
 Lalu buka **Konten → Narasi**, dengarkan, dan setujui per bahasa. Rincian di [`docs/08` → *Memperbarui server yang sudah berjalan*](docs/08_DEPLOYMENT.md#memperbarui-server-yang-sudah-berjalan-ke-alur-sinematik-tahap-15). Tambahkan `max_file_uploads = 100` di `php.ini` agar satu unggahan narasi dapat memuat lebih dari 20 berkas.
 
-**Aset yang masih perlu disiapkan** (permainan berjalan tanpanya dengan pengganti; daftar hidupnya ada di **Media → Kelengkapan aset**):
+**Aset yang masih perlu disiapkan** (permainan berjalan tanpanya dengan pengganti; daftar hidupnya ada di **Media → Kelengkapan aset**). Musik, efek suara, dan rekaman narasi kedua bahasa sudah tersedia (lihat *Pembaruan audio* di atas); rekaman narasi masih perlu diimpor dan disetujui di server.
 
 | Aset | Slot / lokasi | Ukuran |
 |---|---|---|
@@ -94,10 +120,7 @@ Lalu buka **Konten → Narasi**, dengarkan, dan setujui per bahasa. Rincian di [
 | Latar layar umum | `bg.loading`, `bg.welcome`, `bg.auth`, `bg.intro`, `bg.map`, `bg.reflection` | 1920 × 1080 px |
 | Frame pose tokoh (3 frame per pose, PNG transparan) | Jaka: `idle`, `happy`, `bow`, `sad`, `afraid`, `determined`; Mbah Kedu: `idle`, `smile`, `worried`, `weak` → `char.jaka.{pose}.{1–3}`, `char.kedu.{pose}.{1–3}` | 700 × 900 px |
 | Latar, peta, dan lencana tiap wilayah | `bg.{wilayah}.region`, `map.region.{wilayah}`, `reward.badge.{wilayah}` | 1920 × 1080, 1400 × 900, 320 × 320 px |
-| Musik | `public/assets/audio/music/{map,region,challenge}.mp3` | MP3, berulang |
-| Efek suara | `public/assets/audio/sfx/{click,correct,wrong,lock}.mp3` | MP3 pendek |
 | Poster video Pustaka yang kosong | editor Pustaka, atau `gelita:library:thumbnails` untuk video tautan | 960 × 640 px |
-| Rekaman narasi | 88 baris naskah + 8 petunjuk arena cari = 96 baris × 2 bahasa, [`docs/naskah-cerita.md`](docs/naskah-cerita.md) | MP3 mono 64–96 kbps |
 | Gambar bank soal & Pustaka | [`docs/bank-soal/README.md`](docs/bank-soal/README.md) | per slot |
 
 ### Pembaruan cerita wilayah: Kenali wilayah, tirai, dialog dramatis, tuntas, penutup (Tahap 3)
@@ -324,7 +347,7 @@ Jalankan test suite tanpa laporan coverage:
 vendor/bin/phpunit --no-coverage
 ```
 
-Suite (343 test) memakai grup database `tests` (SQLite3 in-memory) dan hanya menjalankan migration bernamespace `Tests\Support`, bukan migration aplikasi — skema aplikasi memakai fitur MySQL/MariaDB (`DATETIME(6)`, `ON UPDATE CURRENT_TIMESTAMP(6)`) yang tidak ada di SQLite. Sesi di-mock dengan `ArrayHandler` oleh `CIUnitTestCase`. Yang dikunci suite antara lain:
+Suite (344 test) memakai grup database `tests` (SQLite3 in-memory) dan hanya menjalankan migration bernamespace `Tests\Support`, bukan migration aplikasi — skema aplikasi memakai fitur MySQL/MariaDB (`DATETIME(6)`, `ON UPDATE CURRENT_TIMESTAMP(6)`) yang tidak ada di SQLite. Sesi di-mock dengan `ArrayHandler` oleh `CIUnitTestCase`. Yang dikunci suite antara lain:
 
 - `RouteWiringTest` — auto-route tetap mati, setiap handler menunjuk kelas/method yang ada, setiap view yang disebut controller punya berkasnya, dan ganti sandi staf hanya berfilter `staffAuth` (terbuka untuk guru).
 - `HeadRouteTest` — HEAD memakai rute GET beserta filternya; HEAD ke halaman staf tanpa login dialihkan ke `/admin/login`.
@@ -372,6 +395,8 @@ Dokumen spesifikasi per tahap ada di folder [`docs`](docs/) dan mencerminkan imp
 6. [JavaScript](docs/06_JAVASCRIPT.md)
 7. [Integrasi fitur](docs/07_FEATURE_INTEGRATION.md)
 8. [Deployment dan operasional](docs/08_DEPLOYMENT.md) — Linux dan Windows + Laragon (Nginx); skripnya di [`deploy/`](deploy/)
+
+Audio permainan (musik gamelan, efek suara, narasi TTS ID/EN) dijelaskan di [`docs/audio.md`](docs/audio.md); generatornya di [`tools/audio/`](tools/audio/README.md).
 
 Daftar route lengkap dapat dilihat kapan saja tanpa membaca kode:
 
