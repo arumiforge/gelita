@@ -15,10 +15,10 @@ class GameReleaseModel extends Model
         'scoring_version', 'published_at', 'notes', 'is_active',
     ];
     protected $validationRules = [
-        'release_code'    => 'required|max_length[80]|is_unique[game_releases.release_code,id,{id}]',
-        'app_version'     => 'required|max_length[30]',
-        'content_version' => 'required|max_length[30]',
-        'scoring_version' => 'required|max_length[30]',
+        'release_code'    => ['label' => 'Nama versi', 'rules' => 'required|max_length[80]|is_unique[game_releases.release_code,id,{id}]'],
+        'app_version'     => ['label' => 'Versi aplikasi', 'rules' => 'required|max_length[30]'],
+        'content_version' => ['label' => 'Versi konten', 'rules' => 'required|max_length[30]'],
+        'scoring_version' => ['label' => 'Versi aturan penilaian', 'rules' => 'required|max_length[30]'],
     ];
 
     /** Release aktif; tanpa ini sesi tidak boleh dibuat. */

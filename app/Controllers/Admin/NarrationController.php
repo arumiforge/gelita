@@ -3,6 +3,7 @@
 namespace App\Controllers\Admin;
 
 use App\Libraries\NarrationCatalog;
+use App\Libraries\MediaStore;
 use App\Libraries\NarrationImporter;
 use App\Models\AuditLogModel;
 use CodeIgniter\HTTP\DownloadResponse;
@@ -25,7 +26,7 @@ class NarrationController extends BaseAdminController
         $catalog = new NarrationCatalog();
         $rows    = $catalog->rows();
 
-        return $this->panel('admin/narration/index', 'Narasi', [
+        return $this->panel('admin/narration/index', 'Rekaman narasi', [
             'groups'   => $catalog->groups($rows),
             'progress' => $catalog->progress($rows),
             'drafts'   => array_combine(
@@ -38,7 +39,7 @@ class NarrationController extends BaseAdminController
 
     public function uploadForm(): string
     {
-        return $this->panel('admin/narration/upload', 'Unggah narasi', [
+        return $this->panel('admin/narration/upload', 'Unggah rekaman narasi', [
             'locales' => config('Gelita')->locales,
             'limits'  => self::uploadLimits(),
             'report'  => session('narration_report'),
@@ -67,11 +68,11 @@ class NarrationController extends BaseAdminController
             // Hanya berkas unggahan sah (is_uploaded_file) yang diteruskan ke importer
             $incoming[] = $file->isValid()
                 ? ['name' => $file->getClientName(), 'path' => $file->getTempName()]
-                : ['name' => $file->getClientName(), 'path' => '', 'error' => $file->getErrorString()];
+                : ['name' => $file->getClientName(), 'path' => '', 'error' => 'gagal diunggah: ' . MediaStore::uploadErrorText($file->getError())];
         }
 
         if ($incoming === []) {
-            return $this->back($back, 'Tidak ada berkas yang terkirim. Pilih satu atau beberapa berkas rekaman.');
+            return $this->back($back, 'Belum ada berkas yang terkirim. Pilih satu atau beberapa berkas rekaman.');
         }
 
         $dryRun = (bool) $this->request->getPost('dry_run');
@@ -121,8 +122,8 @@ class NarrationController extends BaseAdminController
         $count = (new NarrationCatalog())->approveDrafts($locale, $this->staffId() ?: null);
 
         return $this->done($back, $count === 0
-            ? 'Tidak ada narasi ' . strtoupper($locale) . ' berstatus draft.'
-            : "{$count} narasi " . strtoupper($locale) . ' disetujui dan kini terdengar pemain.');
+            ? 'Tidak ada rekaman ' . self::localeName($locale) . ' yang menunggu persetujuan.'
+            : "{$count} rekaman " . self::localeName($locale) . ' disetujui dan kini terdengar oleh siswa.');
     }
 
     /** Daftar rekaman (XLSX) untuk pengisi suara. */
@@ -184,12 +185,18 @@ class NarrationController extends BaseAdminController
         };
     }
 
+    /** "bahasa Indonesia" / "bahasa Inggris" untuk kode locale. */
+    public static function localeName(string $locale): string
+    {
+        return 'bahasa ' . admin_label('locale', $locale);
+    }
+
     /** @param array<string, mixed> $report */
     public static function summary(array $report): string
     {
         return sprintf(
-            '%sNarasi %s: %d baru, %d diganti, %d sama, %d nama tidak dikenal, %d gagal.',
-            $report['dry_run'] ? 'Pemeriksaan (tidak disimpan) — ' : '',
+            '%sNarasi %s: %d rekaman baru, %d diganti, %d sama (dilewati), %d nama berkas tidak dikenal, %d gagal.',
+            $report['dry_run'] ? 'Hanya diperiksa, belum disimpan — ' : '',
             strtoupper((string) $report['locale']),
             count($report['created']),
             count($report['replaced']),

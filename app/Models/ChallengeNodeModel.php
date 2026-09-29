@@ -27,10 +27,10 @@ class ChallengeNodeModel extends Model
     ];
     protected $validationRules = [
         'level_id'    => 'required|is_natural_no_zero',
-        'sequence'    => 'required|greater_than[0]|less_than[6]',
-        'engine_type' => 'required|valid_engine_type',
-        'title_id'    => 'required|max_length[250]',
-        'title_en'    => 'required|max_length[250]',
+        'sequence'    => ['label' => 'Urutan tantangan', 'rules' => 'required|greater_than[0]|less_than[6]'],
+        'engine_type' => ['label' => 'Jenis tantangan', 'rules' => 'required|valid_engine_type'],
+        'title_id'    => ['label' => 'Judul (Indonesia)', 'rules' => 'required|max_length[250]'],
+        'title_en'    => ['label' => 'Judul (Inggris)', 'rules' => 'required|max_length[250]'],
     ];
     protected $beforeInsert      = ['encodeJson'];
     protected $beforeUpdate      = ['encodeJson'];

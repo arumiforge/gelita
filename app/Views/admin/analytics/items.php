@@ -10,21 +10,22 @@
 
 <?= $this->section('content') ?>
 <?= component('partials/admin-head', [
-    'title'   => 'Analisis butir soal',
-    'eyebrow' => 'Analitik',
-    'lead'    => 'Tingkat kesukaran dan daya beda tiap butir dari jawaban pertama siswa.',
+    'title'   => 'Hasil per soal',
+    'eyebrow' => 'Hasil belajar',
+    'lead'    => 'Seberapa sulit tiap soal, dan seberapa baik soal itu membedakan siswa yang sudah paham dari yang belum. Dihitung dari jawaban pertama siswa.',
 ]) ?>
 <?= $this->include('partials/flash') ?>
 <?= component('admin-filter-bar', ['filters' => $filters]) ?>
 
 <aside class="explain" aria-labelledby="explain-title">
-  <h2 id="explain-title"><?= icon('info') ?> Cara membaca p dan D</h2>
-  <p><b>Kesukaran p</b> = proporsi siswa yang menjawab benar pada percobaan pertama (0–1).
-    p &lt; 0,30 <b>sukar</b> · 0,30–0,70 <b>sedang</b> · p &gt; 0,70 <b>mudah</b>. Butir yang baik untuk tes umumnya berada di rentang sedang.</p>
-  <p><b>Daya beda D</b> = ketepatan kelompok 27% teratas dikurangi 27% terbawah (menurut ketepatan keseluruhan).
-    D &lt; 0 <b>buruk</b> (siswa lemah justru lebih sering benar — periksa kunci) · 0–0,19 <b>lemah</b> · 0,20–0,39 <b>cukup</b> · ≥ 0,40 <b>baik</b>.
-    D baru dihitung bila ada sedikitnya 4 peserta.</p>
-  <p>Baris merah: benar &lt; 50%. Baris hijau: benar &gt; 85%.</p>
+  <h2 id="explain-title"><?= icon('info') ?> Cara membaca angka p dan D</h2>
+  <p><b>p (tingkat kesukaran)</b> = bagian siswa yang langsung menjawab benar, dari 0 sampai 1. Contoh: p = 0,80 berarti 8 dari 10 siswa benar.
+    p di bawah 0,30 <b>sukar</b> · 0,30–0,70 <b>sedang</b> · di atas 0,70 <b>mudah</b>. Soal yang baik untuk tes umumnya berada di tingkat sedang.</p>
+  <p><b>D (daya beda)</b> = seberapa jauh siswa yang nilainya tinggi lebih sering benar dibanding siswa yang nilainya rendah
+    (27% siswa teratas dibanding 27% terbawah).
+    D di bawah 0 <b>buruk</b> — siswa yang lemah justru lebih sering benar, periksa kunci jawabannya · 0–0,19 <b>lemah</b> · 0,20–0,39 <b>cukup</b> · 0,40 ke atas <b>baik</b>.
+    D baru dihitung bila soal itu sudah dijawab sedikitnya 4 siswa.</p>
+  <p>Baris merah: kurang dari separuh siswa menjawab benar. Baris hijau: lebih dari 85% siswa menjawab benar.</p>
 </aside>
 
 <?= component('partials/item-analysis-table', ['rows' => $rows, 'showLocation' => true]) ?>

@@ -25,7 +25,7 @@ final class NarrationCatalog
         'level_open'   => 'Dialog masuk wilayah',
         'level_done'   => 'Wilayah tuntas',
         'ending'       => 'Penutup',
-        'hunt_clue'    => 'Petunjuk arena cari',
+        'hunt_clue'    => 'Petunjuk Cari Objek',
     ];
 
     public const CHARACTER_LABELS = ['narator' => 'Narator', 'jaka' => 'Jaka', 'mbah_kedu' => 'Mbah Kedu'];
@@ -33,10 +33,10 @@ final class NarrationCatalog
     /** Status audio satu bahasa → label panel. */
     public const STATUS_LABELS = [
         'none'     => 'belum ada',
-        'draft'    => 'draft',
-        'review'   => 'ditinjau',
+        'draft'    => 'menunggu persetujuan',
+        'review'   => 'sedang ditinjau',
         'rejected' => 'ditolak',
-        'inactive' => 'aset nonaktif',
+        'inactive' => 'berkas dinonaktifkan',
         'approved' => 'disetujui',
     ];
 

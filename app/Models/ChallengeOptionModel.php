@@ -17,9 +17,9 @@ class ChallengeOptionModel extends Model
     ];
     protected $validationRules = [
         'challenge_item_id' => 'required|is_natural_no_zero',
-        'option_key'        => 'required|max_length[60]',
-        'label_id'          => 'required',
-        'label_en'          => 'required',
+        'option_key'        => ['label' => 'Kode pilihan', 'rules' => 'required|max_length[60]'],
+        'label_id'          => ['label' => 'Teks pilihan (Indonesia)', 'rules' => 'required'],
+        'label_en'          => ['label' => 'Teks pilihan (Inggris)', 'rules' => 'required'],
     ];
 
     /**

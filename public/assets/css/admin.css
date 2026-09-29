@@ -389,7 +389,7 @@ details[open] > summary.panel-title::after { content: "−"; }
 .feedback-card dd { margin: 0; }
 
 /* ---------- Linimasa ---------- */
-.timeline-type { font-family: var(--font-mono); font-size: .9em; }
+.timeline-type { font-weight: 600; }
 .timeline-time { font-family: var(--font-mono); font-size: .85em; white-space: nowrap; }
 
 /* ---------- Responsif ---------- */
@@ -430,6 +430,7 @@ th[aria-sort="descending"] .th-sort-icon::after { content: "↓"; color: var(--g
 /* Editor konten terpandu */
 .item-form.is-guided .json-field { display: none; }
 .item-form.is-guided.show-json .json-field { display: grid; }
+.item-form.is-guided:not(.show-json) .json-example { display: none; }
 .json-toggle-row { display: flex; justify-content: flex-end; }
 .guided-editor { display: grid; gap: var(--sp-3); padding: var(--sp-4); border: 1px solid var(--line); border-radius: var(--radius); background: rgba(223, 192, 135, .04); }
 .guided-editor:empty { display: none; }

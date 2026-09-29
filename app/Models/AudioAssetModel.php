@@ -17,9 +17,9 @@ class AudioAssetModel extends Model
     ];
     protected $validationRules = [
         'media_asset_id'  => 'required|is_natural_no_zero',
-        'locale'          => 'required|valid_locale',
-        'context_code'    => 'required|max_length[80]',
-        'transcript'      => 'required',
+        'locale'          => ['label' => 'Bahasa', 'rules' => 'required|valid_locale'],
+        'context_code'    => ['label' => 'Tempat diputar', 'rules' => 'required|max_length[80]'],
+        'transcript'      => ['label' => 'Teks rekaman', 'rules' => 'required'],
         'approval_status' => 'permit_empty|in_list[draft,review,approved,rejected]',
     ];
 

@@ -18,9 +18,9 @@ class ReadingPassageModel extends Model
     ];
     protected $validationRules = [
         'level_id'    => 'required|is_natural_no_zero',
-        'passage_key' => 'required|max_length[60]|is_unique[reading_passages.passage_key,id,{id}]',
-        'body_id'     => 'required',
-        'body_en'     => 'required',
+        'passage_key' => ['label' => 'Kode bacaan', 'rules' => 'required|max_length[60]|is_unique[reading_passages.passage_key,id,{id}]'],
+        'body_id'     => ['label' => 'Isi bacaan (Indonesia)', 'rules' => 'required'],
+        'body_en'     => ['label' => 'Isi bacaan (Inggris)', 'rules' => 'required'],
     ];
 
     /** @return list<ReadingPassage> */

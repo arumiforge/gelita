@@ -18,8 +18,8 @@ $delta = $result['delta'];
 <?= $this->section('content') ?>
 <?= component('partials/admin-head', [
     'title'   => 'Pretest & posttest',
-    'eyebrow' => 'Analitik',
-    'lead'    => 'Perbandingan skor sesi pretest dan posttest yang sudah selesai, per peserta yang punya keduanya.',
+    'eyebrow' => 'Hasil belajar',
+    'lead'    => 'Membandingkan skor pretest (tes awal) dan posttest (tes akhir) dari siswa yang sudah menyelesaikan keduanya.',
 ]) ?>
 <?= $this->include('partials/flash') ?>
 <?= component('admin-filter-bar', ['filters' => $filters, 'only' => ['study_id', 'school_id', 'class_level', 'province_code', 'date_from', 'locale']]) ?>
@@ -27,8 +27,8 @@ $delta = $result['delta'];
 <section class="kpi-grid" aria-label="Ringkasan pretest dan posttest">
   <?= component('stat-tile', ['label' => 'Rata-rata pretest', 'value' => $result['pairs'] > 0 ? fmt_num($result['pretest'], 1, 'id') : '—', 'icon' => 'flask']) ?>
   <?= component('stat-tile', ['label' => 'Rata-rata posttest', 'value' => $result['pairs'] > 0 ? fmt_num($result['posttest'], 1, 'id') : '—', 'icon' => 'flask']) ?>
-  <?= component('stat-tile', ['label' => 'Selisih', 'value' => $delta === null ? '—' : ($delta >= 0 ? '+' : '') . fmt_num($delta, 2, 'id'), 'icon' => 'trend']) ?>
-  <?= component('stat-tile', ['label' => 'Pasangan dibandingkan', 'value' => fmt_num($result['pairs'], 0, 'id'), 'icon' => 'users']) ?>
+  <?= component('stat-tile', ['label' => 'Perubahan skor', 'value' => $delta === null ? '—' : ($delta >= 0 ? '+' : '') . fmt_num($delta, 2, 'id'), 'icon' => 'trend', 'hint' => 'posttest dikurangi pretest']) ?>
+  <?= component('stat-tile', ['label' => 'Siswa yang dibandingkan', 'value' => fmt_num($result['pairs'], 0, 'id'), 'icon' => 'users']) ?>
 </section>
 
 <?= component('admin-chart', [
@@ -45,18 +45,18 @@ $delta = $result['delta'];
 
 <?php if ($result['pairs'] === 0): ?>
   <div class="empty-state"><?= icon('info') ?>
-    <p>Belum ada peserta yang menyelesaikan sesi pretest dan posttest pada rilis yang sama. Pastikan fase aktif studi sudah diganti ke posttest setelah pretest selesai.</p>
+    <p>Belum ada siswa yang menyelesaikan pretest dan posttest dengan versi permainan yang sama. Setelah pretest selesai, ganti fase studi ke Posttest di menu Pengaturan penelitian.</p>
   </div>
 <?php endif ?>
 
 <section class="panel">
-  <h2 class="panel-title"><?= icon('warn') ?> Pasangan tidak kompatibel <span class="chip num"><?= esc($result['incompatible_pairs']) ?></span></h2>
+  <h2 class="panel-title"><?= icon('warn') ?> Tidak dapat dibandingkan <span class="chip num"><?= esc($result['incompatible_pairs']) ?></span></h2>
   <?php if ($result['incompatible_pairs'] === 0): ?>
-    <p class="muted">Tidak ada. Semua pasangan pretest–posttest memakai rilis konten dan versi skoring yang sama.</p>
+    <p class="muted">Tidak ada. Semua siswa mengerjakan pretest dan posttest dengan versi permainan yang sama.</p>
   <?php else: ?>
-    <p class="muted"><?= esc($result['incompatible_pairs']) ?> peserta punya pretest dan posttest pada rilis konten yang berbeda
-      (soal, bobot, atau versi skoring dapat berubah di antara keduanya). Pasangan ini <b>tidak</b> dihitung dalam rata-rata dan selisih di atas.
-      Analisis mereka secara terpisah atau ulangi posttest pada rilis yang sama.</p>
+    <p class="muted"><?= esc($result['incompatible_pairs']) ?> siswa mengerjakan pretest dan posttest dengan versi permainan yang berbeda
+      (soal atau cara penilaiannya bisa berubah di antara keduanya), jadi <b>tidak</b> ikut dihitung dalam rata-rata dan perubahan skor di atas.
+      Bandingkan mereka secara terpisah, atau minta mereka mengulang posttest dengan versi yang sama.</p>
   <?php endif ?>
 </section>
 <?= $this->endSection() ?>

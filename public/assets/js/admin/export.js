@@ -14,7 +14,7 @@ import { toast } from '../core/toast.js';
 
 const INTERVAL = 2000;
 const MAX_MS = 5 * 60 * 1000;
-const LABELS = { queued: 'antre', running: 'diproses', done: 'siap', failed: 'gagal' };
+const LABELS = { queued: 'menunggu', running: 'sedang dibuat', done: 'siap diunduh', failed: 'gagal' };
 
 async function refreshTable(badge) {
   const panel = badge.closest('section.panel');
@@ -40,14 +40,14 @@ function watch(badge) {
 
   const tick = async () => {
     if (Date.now() - started > MAX_MS) {
-      badge.textContent = `${LABELS[badge.dataset.status] || badge.dataset.status} · muat ulang untuk memeriksa`;
+      badge.textContent = `${LABELS[badge.dataset.status] || badge.dataset.status} · muat ulang halaman untuk melihat hasilnya`;
       return;
     }
     try {
       const status = await apiRequest(`/admin/exports/${id}/status`, { retry: false });
       delay = INTERVAL;
       if (status.status === 'done' || status.status === 'failed') {
-        toast(status.status === 'done' ? `Ekspor #${id} siap diunduh.` : `Ekspor #${id} gagal: ${status.error || 'lihat log'}`, status.status === 'done' ? 'ok' : 'bad');
+        toast(status.status === 'done' ? `Berkas #${id} siap diunduh.` : `Berkas #${id} gagal dibuat: ${status.error || 'coba lagi beberapa saat lagi.'}`, status.status === 'done' ? 'ok' : 'bad');
         await refreshTable(badge);
         return;
       }

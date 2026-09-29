@@ -194,14 +194,14 @@ class RetentionService
         }
 
         if ($request['status'] !== 'preview') {
-            throw new \DomainException('Hanya permintaan berstatus pratinjau yang dapat dieksekusi.');
+            throw new \DomainException('Permintaan ini sudah dijalankan atau dibatalkan sebelumnya.');
         }
 
         $stored = $this->decode($request);
         $scope  = $this->normalizeScope((array) ($stored['scope'] ?? []));
 
         if ($scope === null) {
-            throw new \DomainException('Cakupan permintaan ini kosong.');
+            throw new \DomainException('Permintaan ini tidak menyebut data yang akan dihapus.');
         }
 
         $previewTotal = (int) ($request['affected_count'] ?? 0);
@@ -210,7 +210,7 @@ class RetentionService
 
         if ($this->driftExceeded($previewTotal, $nowTotal)) {
             throw new \DomainException(sprintf(
-                'Jumlah baris terdampak berubah dari %d menjadi %d sejak pratinjau dibuat. Eksekusi dibatalkan; batalkan pratinjau ini lalu buat pratinjau baru.',
+                'Jumlah data yang akan dihapus berubah dari %d menjadi %d sejak dihitung. Demi keamanan penghapusan dibatalkan; batalkan permintaan ini lalu hitung ulang.',
                 $previewTotal,
                 $nowTotal,
             ));
@@ -257,7 +257,7 @@ class RetentionService
 
             log_message('error', 'Penghapusan data #{id} gagal: {msg}', ['id' => $requestId, 'msg' => $e->getMessage()]);
 
-            throw new \DomainException('Penghapusan dibatalkan karena galat; tidak ada baris yang berubah.', 0, $e);
+            throw new \DomainException('Penghapusan gagal karena kesalahan sistem; tidak ada data yang berubah.', 0, $e);
         }
 
         return ['mode' => $mode, 'affected' => $affected, 'total' => array_sum($affected)];
@@ -269,7 +269,7 @@ class RetentionService
         $request  = $requests->find($requestId);
 
         if ($request === null || $request['status'] !== 'preview') {
-            throw new \DomainException('Hanya pratinjau yang dapat dibatalkan.');
+            throw new \DomainException('Permintaan ini sudah dijalankan atau dibatalkan sebelumnya.');
         }
 
         $requests->update($requestId, ['status' => 'cancelled']);
@@ -455,7 +455,7 @@ class RetentionService
             $requester = $staffId ?? $this->systemRequester();
 
             if ($requester === null) {
-                $warnings[] = "Studi {$study['code']} punya data melewati masa simpan, tetapi tidak ada akun admin aktif untuk mencatat pratinjau.";
+                $warnings[] = "Studi {$study['code']} punya data yang melewati batas lama penyimpanan, tetapi tidak ada akun admin aktif untuk mencatat permintaan penghapusannya.";
 
                 continue;
             }

@@ -10,7 +10,7 @@
 $pLabel = static fn (float $p): array => $p < 0.30 ? ['sukar', 'is-bad'] : ($p <= 0.70 ? ['sedang', 'is-warn'] : ['mudah', 'is-ok']);
 $dLabel = static function (?float $d): array {
     if ($d === null) {
-        return ['belum cukup data', 'is-muted'];
+        return ['data belum cukup', 'is-muted'];
     }
 
     return match (true) {
@@ -24,14 +24,14 @@ $columns = [
     'item_key' => ['label' => 'Soal', 'render' => static fn (array $r): string => '<code>' . esc($r['item_key']) . '</code>'
         . '<span class="cell-sub cell-clip" title="' . esc($r['prompt'], 'attr') . '">' . esc($r['prompt'] !== '' ? $r['prompt'] : '—') . '</span>'],
     'indicator'        => 'Indikator',
-    'interaction_type' => ['label' => 'Jenis', 'format' => 'code'],
+    'interaction_type' => ['label' => 'Jenis soal', 'format' => 'label', 'group' => 'interaction'],
 ];
 if (! empty($showLocation)) {
     $columns['level_name'] = ['label' => 'Wilayah', 'render' => static fn (array $r): string => esc($r['level_name'] ?? '—')
         . ($r['node_id'] ? '<span class="cell-sub"><a href="' . base_url('admin/analitik/node/' . $r['node_id']) . '">' . esc($r['node_label']) . '</a></span>' : '')];
 }
 $columns += [
-    'answer_key'       => ['label' => 'Kunci', 'render' => static fn (array $r): string => '<span class="cell-clip">' . esc($r['answer_key'] ?? '—') . '</span>'],
+    'answer_key'       => ['label' => 'Kunci jawaban', 'render' => static fn (array $r): string => '<span class="cell-clip">' . esc($r['answer_key'] ?? '—') . '</span>'],
     'appeared'         => ['label' => 'Muncul', 'format' => 'num'],
     'correct'          => ['label' => 'Benar', 'format' => 'num'],
     'p'                => ['label' => 'Kesukaran p', 'render' => static function (array $r) use ($pLabel): string {
@@ -44,14 +44,14 @@ $columns += [
 
         return '<span class="num">' . ($r['d'] === null ? '—' : esc(fmt_num($r['d'], 2, 'id'))) . '</span> <span class="badge ' . $class . '">' . $text . '</span>';
     }],
-    'mean_duration_ms' => ['label' => 'Rata-rata detik', 'render' => static fn (array $r): string => '<span class="num">' . esc(fmt_num($r['mean_duration_ms'] / 1000, 1, 'id')) . '</span>'],
-    'top_wrong'        => ['label' => 'Salah tersering', 'format' => 'json'],
+    'mean_duration_ms' => ['label' => 'Rata-rata waktu (detik)', 'render' => static fn (array $r): string => '<span class="num">' . esc(fmt_num($r['mean_duration_ms'] / 1000, 1, 'id')) . '</span>'],
+    'top_wrong'        => ['label' => 'Jawaban salah tersering', 'format' => 'json'],
 ];
 ?>
 <?= component('admin-table', [
     'rows'         => $rows,
-    'caption'      => 'Analisis butir soal',
-    'emptyMessage' => 'Belum ada jawaban untuk dianalisis pada filter ini. Butir muncul setelah siswa menjawabnya.',
+    'caption'      => 'Hasil per soal',
+    'emptyMessage' => 'Belum ada jawaban untuk pilihan filter ini. Soal muncul di sini setelah siswa menjawabnya.',
     'rowClass'     => static fn (array $r): string => (float) $r['p'] < 0.5 ? 'is-bad' : ((float) $r['p'] > 0.85 ? 'is-good' : ''),
     'columns'      => $columns,
 ]) ?>

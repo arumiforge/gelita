@@ -45,7 +45,7 @@ final class ChartDataTest extends CIUnitTestCase
 
         $chart = ChartData::nodeHeatmap($rows, $levels);
 
-        $this->assertSame(['Node 1', 'Node 2'], $chart['x']);
+        $this->assertSame(['Tantangan 1', 'Tantangan 2'], $chart['x']);
         $this->assertSame(['Temanggung', 'Magelang'], $chart['y']);
         $this->assertSame([[0, 0, 61.3], [1, 1, null]], $chart['values'], 'node tanpa percobaan bernilai null, bukan 0 (= "mudah")');
         $this->assertStringEndsWith('admin/analitik/node/10', $chart['links']->{'0,0'});
@@ -71,8 +71,16 @@ final class ChartDataTest extends CIUnitTestCase
         $this->assertSame(['Temanggung', 'Keseluruhan'], $chart['x']);
         $this->assertSame(['LIT-1'], $chart['y']);
         $this->assertSame([[0, 0, 0.8], [1, 0, 0.8]], $chart['values']);
-        $this->assertSame('80% · 4/5 bukti', $chart['labels'][0][2], 'jumlah bukti ikut tertulis, bukan label biner');
+        $this->assertSame('80% · 4/5 jawaban', $chart['labels'][0][2], 'jumlah jawaban (bukti) ikut tertulis, bukan label biner');
         $this->assertTrue($chart['ratio']);
+    }
+
+    public function testIndicatorMatrixShowsIndicatorNamesForTeachers(): void
+    {
+        $row   = ['name' => 'Literasi membaca', 'evidence_count' => 2, 'correct_count' => 1, 'mastery_ratio' => 0.5];
+        $chart = ChartData::indicatorMatrix(['literasi' => $row], [1 => ['literasi' => $row]], [$this->level(1, 'Temanggung')]);
+
+        $this->assertSame(['Literasi membaca'], $chart['y'], 'nama indikator, bukan kodenya');
     }
 
     public function testDistributionIsIntegerAxis(): void

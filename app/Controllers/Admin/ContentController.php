@@ -63,7 +63,7 @@ class ContentController extends BaseAdminController
             $levels[] = ['level' => $level, 'nodes' => $nodes, 'bank' => $bank];
         }
 
-        return $this->panel('admin/content/index', 'Konten', [
+        return $this->panel('admin/content/index', 'Konten permainan', [
             'levels'  => $levels,
             'version' => $content->version(),
         ]);
@@ -79,7 +79,7 @@ class ContentController extends BaseAdminController
             throw PageNotFoundException::forPageNotFound("Level {$levelId} tidak ditemukan.");
         }
 
-        return $this->panel('admin/content/level', 'Sunting wilayah', [
+        return $this->panel('admin/content/level', 'Ubah wilayah', [
             'level' => $level,
             'nodes' => model(ChallengeNodeModel::class)->forLevel($levelId),
         ]);
@@ -97,9 +97,9 @@ class ContentController extends BaseAdminController
         // name_en wajib karena LevelModel mewajibkannya; tanpa aturan ini
         // simpanan akan ditolak model secara diam-diam.
         $rules = [
-            'name_id'    => 'required|max_length[100]',
-            'name_en'    => 'required|max_length[100]',
-            'difficulty' => 'required|in_list[mudah,sedang,sulit]',
+            'name_id'    => ['label' => 'Nama wilayah (Indonesia)', 'rules' => 'required|max_length[100]'],
+            'name_en'    => ['label' => 'Nama wilayah (Inggris)', 'rules' => 'required|max_length[100]'],
+            'difficulty' => ['label' => 'Tingkat kesulitan', 'rules' => 'required|in_list[mudah,sedang,sulit]'],
         ];
 
         if (! $this->validate($rules)) {
@@ -123,12 +123,12 @@ class ContentController extends BaseAdminController
         ]);
 
         if (! $saved) {
-            return $this->back('admin/konten/level/' . $levelId, 'Wilayah ditolak: ' . $this->modelErrors($levels));
+            return $this->back('admin/konten/level/' . $levelId, 'Wilayah belum dapat disimpan: ' . $this->modelErrors($levels));
         }
 
         $this->afterContentChange('level', $levelId);
 
-        return $this->done('admin/konten/level/' . $levelId, 'Wilayah diperbarui.');
+        return $this->done('admin/konten/level/' . $levelId, 'Perubahan wilayah sudah disimpan.');
     }
 
     // ----------------------------------------------------------------- node
@@ -158,7 +158,7 @@ class ContentController extends BaseAdminController
 
         $level = model(LevelModel::class)->find($node->level_id);
 
-        return $this->panel('admin/content/node', 'Sunting tantangan', [
+        return $this->panel('admin/content/node', 'Ubah tantangan', [
             'node'         => $node,
             'level'        => $level,
             'ref'          => node_ref((string) ($level?->code ?? ''), $node->sequence),
@@ -185,9 +185,9 @@ class ContentController extends BaseAdminController
 
         // title_en wajib: ChallengeNodeModel menolak baris tanpa judul Inggris
         if (! $this->validate([
-            'title_id'    => 'required|max_length[150]',
-            'title_en'    => 'required|max_length[150]',
-            'engine_type' => 'required|valid_engine_type',
+            'title_id'    => ['label' => 'Judul (Indonesia)', 'rules' => 'required|max_length[150]'],
+            'title_en'    => ['label' => 'Judul (Inggris)', 'rules' => 'required|max_length[150]'],
+            'engine_type' => ['label' => 'Jenis tantangan', 'rules' => 'required|valid_engine_type'],
         ])) {
             return redirect()->to(site_url($back))->with('errors', $this->validator->getErrors());
         }
@@ -196,13 +196,13 @@ class ContentController extends BaseAdminController
 
         // Mengubah engine setelah ada attempt akan membuat data lama tidak sebanding
         if ($engine !== $node->engine_type && $this->nodeHasAttempts($nodeId)) {
-            return $this->back($back, 'Jenis tantangan tidak dapat diubah: node ini sudah punya percobaan.');
+            return $this->back($back, 'Jenis tantangan tidak dapat diubah karena tantangan ini sudah pernah dimainkan siswa.');
         }
 
         $config = $this->jsonField('config_json');
 
         if ($config === false) {
-            return $this->back($back, 'config_json bukan JSON yang valid.');
+            return $this->back($back, 'Isian "Pengaturan teknis" tidak dapat dibaca. Kembalikan seperti semula, atau minta bantuan petugas teknis.');
         }
 
         // Field terpandu (cfg[...]) menimpa kunci yang sama di JSON mentah
@@ -234,12 +234,12 @@ class ContentController extends BaseAdminController
         ]);
 
         if (! $saved) {
-            return $this->back($back, 'Tantangan ditolak: ' . $this->modelErrors($nodes));
+            return $this->back($back, 'Tantangan belum dapat disimpan: ' . $this->modelErrors($nodes));
         }
 
         $this->afterContentChange('node', $nodeId);
 
-        return $this->done($back, 'Tantangan diperbarui.');
+        return $this->done($back, 'Perubahan tantangan sudah disimpan.');
     }
 
     // ----------------------------------------------------------------- item
@@ -256,10 +256,10 @@ class ContentController extends BaseAdminController
         $allowed = self::ENGINE_INTERACTIONS[$node->engine_type] ?? [];
 
         $rules = [
-            'item_key'         => 'required|max_length[60]|is_unique[challenge_items.item_key]',
-            'interaction_type' => 'required|in_list[' . implode(',', $allowed) . ']',
-            'prompt_id'        => 'permit_empty|max_length[1000]',
-            'sequence'         => 'permit_empty|is_natural',
+            'item_key'         => ['label' => 'Kode soal', 'rules' => 'required|max_length[60]|is_unique[challenge_items.item_key]'],
+            'interaction_type' => ['label' => 'Jenis soal', 'rules' => 'required|in_list[' . implode(',', $allowed) . ']'],
+            'prompt_id'        => ['label' => 'Pertanyaan (Indonesia)', 'rules' => 'permit_empty|max_length[1000]'],
+            'sequence'         => ['label' => 'Urutan di daftar', 'rules' => 'permit_empty|is_natural'],
         ];
 
         if (! $this->validate($rules)) {
@@ -273,7 +273,7 @@ class ContentController extends BaseAdminController
         }
 
         if ((int) $payload['scorable'] === 1 && $payload['answer_key_json'] === null) {
-            return $this->back($back, 'Butir yang dinilai wajib punya answer_key_json.');
+            return $this->back($back, 'Soal yang dinilai wajib punya kunci jawaban. Isi kunci jawabannya, atau hilangkan centang "Dinilai".');
         }
 
         $items  = model(ChallengeItemModel::class);
@@ -284,12 +284,12 @@ class ContentController extends BaseAdminController
         ], true);
 
         if ($itemId === false) {
-            return $this->back($back, 'Butir ditolak: ' . $this->modelErrors($items));
+            return $this->back($back, 'Soal belum dapat disimpan: ' . $this->modelErrors($items));
         }
 
         $this->afterContentChange('item', (int) $itemId);
 
-        return $this->done($back, 'Butir ditambahkan.');
+        return $this->done($back, 'Soal baru sudah ditambahkan.');
     }
 
     public function updateItem(int $itemId): RedirectResponse
@@ -306,7 +306,7 @@ class ContentController extends BaseAdminController
         $allowed = self::ENGINE_INTERACTIONS[$node?->engine_type] ?? [];
 
         if (! $this->validate([
-            'interaction_type' => 'required|in_list[' . implode(',', $allowed) . ']',
+            'interaction_type' => ['label' => 'Jenis soal', 'rules' => 'required|in_list[' . implode(',', $allowed) . ']'],
         ])) {
             return redirect()->to(site_url($back))->with('errors', $this->validator->getErrors());
         }
@@ -318,7 +318,7 @@ class ContentController extends BaseAdminController
         }
 
         if ((int) $payload['scorable'] === 1 && $payload['answer_key_json'] === null) {
-            return $this->back($back, 'Butir yang dinilai wajib punya answer_key_json.');
+            return $this->back($back, 'Soal yang dinilai wajib punya kunci jawaban. Isi kunci jawabannya, atau hilangkan centang "Dinilai".');
         }
 
         $saved = $items->update($itemId, $payload + [
@@ -326,12 +326,12 @@ class ContentController extends BaseAdminController
         ]);
 
         if (! $saved) {
-            return $this->back($back, 'Butir ditolak: ' . $this->modelErrors($items));
+            return $this->back($back, 'Soal belum dapat disimpan: ' . $this->modelErrors($items));
         }
 
         $this->afterContentChange('item', $itemId);
 
-        return $this->done($back, 'Butir diperbarui.');
+        return $this->done($back, 'Perubahan soal sudah disimpan.');
     }
 
     public function deleteItem(int $itemId): RedirectResponse
@@ -350,13 +350,13 @@ class ContentController extends BaseAdminController
             $items->update($itemId, ['is_active' => 0]);
             $this->afterContentChange('item', $itemId);
 
-            return $this->done($back, 'Butir sudah pernah dijawab, jadi dinonaktifkan — bukan dihapus.');
+            return $this->done($back, 'Soal ini sudah pernah dijawab siswa, jadi hanya dinonaktifkan (tidak dihapus) agar data penelitian tetap utuh.');
         }
 
         $items->delete($itemId);
         $this->afterContentChange('item', $itemId);
 
-        return $this->done($back, 'Butir dihapus.');
+        return $this->done($back, 'Soal sudah dihapus.');
     }
 
     public function saveOptions(int $itemId): RedirectResponse
@@ -403,7 +403,7 @@ class ContentController extends BaseAdminController
             );
 
             if ($media['error'] !== null) {
-                return $this->back($back, "Gambar opsi {$key}: " . $media['error']);
+                return $this->back($back, "Gambar pilihan {$key}: " . $media['error']);
             }
 
             $payloads[$key] = [
@@ -420,7 +420,7 @@ class ContentController extends BaseAdminController
         }
 
         if (in_array($item->interaction_type, ['single_choice', 'source_trust'], true) && $correct !== 1) {
-            return $this->back($back, 'Butir pilihan wajib punya tepat satu opsi benar.');
+            return $this->back($back, 'Tandai tepat satu pilihan sebagai jawaban yang benar.');
         }
 
         foreach ($payloads as $key => $payload) {
@@ -431,7 +431,7 @@ class ContentController extends BaseAdminController
                 : $options->update($existing->id, $payload);
 
             if ($written === false) {
-                return $this->back($back, "Opsi {$key} ditolak: " . $this->modelErrors($options));
+                return $this->back($back, "Pilihan {$key} belum dapat disimpan: " . $this->modelErrors($options));
             }
 
             $saved++;
@@ -439,14 +439,14 @@ class ContentController extends BaseAdminController
 
         $this->afterContentChange('options', $itemId);
 
-        return $this->done($back, "{$saved} opsi disimpan.");
+        return $this->done($back, "{$saved} pilihan jawaban sudah disimpan.");
     }
 
     // ------------------------------------------------------- impor bank soal
 
     public function importForm(): string
     {
-        return $this->panel('admin/content/import', 'Impor bank soal', [
+        return $this->panel('admin/content/import', 'Impor soal dari Excel', [
             'preview' => session('import_preview'),
             'history' => model(AuditLogModel::class)
                 ->where('action', 'content_import')
@@ -457,7 +457,17 @@ class ContentController extends BaseAdminController
 
     public function importPreview(): RedirectResponse
     {
-        if (! $this->validate(['file' => 'uploaded[file]|ext_in[file,xlsx]|max_size[file,20480]'])) {
+        $rules = ['file' => [
+            'label'  => 'Berkas Excel',
+            'rules'  => 'uploaded[file]|ext_in[file,xlsx]|max_size[file,20480]',
+            'errors' => [
+                'uploaded' => 'Pilih berkas Excel (.xlsx) yang akan diperiksa.',
+                'ext_in'   => 'Berkas harus berformat Excel .xlsx. Bila berkas Anda .xls atau .csv, buka di Excel lalu simpan ulang sebagai "Excel Workbook (.xlsx)".',
+                'max_size' => 'Berkas Excel terlalu besar (maksimal 20 MB).',
+            ],
+        ]];
+
+        if (! $this->validate($rules)) {
             return redirect()->to(site_url('admin/konten/impor-bank'))
                 ->with('errors', $this->validator->getErrors());
         }
@@ -466,7 +476,7 @@ class ContentController extends BaseAdminController
         $path = $this->storeUpload($file);
 
         if ($path === null) {
-            return $this->back('admin/konten/impor-bank', 'Berkas gagal disimpan sementara.');
+            return $this->back('admin/konten/impor-bank', 'Berkas gagal diunggah. Coba pilih dan unggah lagi.');
         }
 
         $result = service('contentImportService')->preview($path);
@@ -482,7 +492,7 @@ class ContentController extends BaseAdminController
         $back    = 'admin/konten/impor-bank';
 
         if (! is_array($preview) || empty($preview['ok'])) {
-            return $this->back($back, 'Jalankan pratinjau tanpa galat lebih dulu.');
+            return $this->back($back, 'Periksa berkasnya dulu sampai tidak ada kesalahan, baru simpan soal ke permainan.');
         }
 
         $path = self::UPLOAD_DIR . basename((string) $preview['file']);
@@ -490,7 +500,7 @@ class ContentController extends BaseAdminController
         if (! is_file($path)) {
             session()->remove('import_preview');
 
-            return $this->back($back, 'Berkas pratinjau sudah tidak ada. Unggah ulang.');
+            return $this->back($back, 'Berkas yang tadi diperiksa sudah tidak tersedia. Unggah dan periksa ulang berkasnya.');
         }
 
         $result = service('contentImportService')->import($path, $this->staffId());
@@ -500,13 +510,13 @@ class ContentController extends BaseAdminController
 
         if (! $result['ok']) {
             return redirect()->to(site_url($back))->with('import_result', $result)
-                ->with('error', 'Impor dibatalkan: ada galat pada workbook.');
+                ->with('error', 'Soal belum disimpan karena ada kesalahan di berkas Excel. Tidak ada yang diubah.');
         }
 
         service('contentRepository')->flush();
 
         return redirect()->to(site_url($back))->with('import_result', $result)
-            ->with('message', 'Impor bank soal selesai.');
+            ->with('message', 'Soal dari Excel sudah disimpan dan langsung dipakai permainan.');
     }
 
     public function importTemplate(): DownloadResponse
@@ -555,7 +565,7 @@ class ContentController extends BaseAdminController
                 }
 
                 if (($usage[$existing->id] ?? 0) > 0) {
-                    return $this->back($back, "Teks bacaan {$key} masih dirujuk butir soal, jadi tidak dihapus.");
+                    return $this->back($back, "Bacaan {$key} masih dipakai soal, jadi tidak dihapus. Lepaskan dulu dari soal yang memakainya.");
                 }
 
                 $passages->delete($existing->id);
@@ -594,7 +604,7 @@ class ContentController extends BaseAdminController
                 : $passages->update($existing->id, $payload);
 
             if ($written === false) {
-                return $this->back($back, "Teks bacaan {$key} ditolak: " . $this->modelErrors($passages));
+                return $this->back($back, "Bacaan {$key} belum dapat disimpan: " . $this->modelErrors($passages));
             }
 
             $saved++;
@@ -602,7 +612,7 @@ class ContentController extends BaseAdminController
 
         $this->afterContentChange('passages', $levelId);
 
-        return $this->done($back, "{$saved} teks bacaan disimpan.");
+        return $this->done($back, "{$saved} teks bacaan sudah disimpan.");
     }
 
     public function library(int $levelId): string
@@ -657,7 +667,7 @@ class ContentController extends BaseAdminController
                 $id = (int) ($row['id'] ?? 0);
 
                 if ($id > 0 && ! in_array($id, $owned, true)) {
-                    throw new \RuntimeException('Halaman pustaka bukan milik wilayah ini.');
+                    throw new \RuntimeException('Halaman Pustaka ini bukan milik wilayah yang sedang dibuka. Muat ulang halaman lalu coba lagi.');
                 }
 
                 // sequence SMALLINT UNSIGNED: nomor parkir 60000+ tetap di bawah batas 65535
@@ -699,7 +709,7 @@ class ContentController extends BaseAdminController
                 $written = $id > 0 ? $pages->update($id, $payload) : $pages->insert($payload, false);
 
                 if ($written === false) {
-                    throw new \RuntimeException('Halaman "' . $title . '" ditolak: ' . $this->modelErrors($pages));
+                    throw new \RuntimeException('Halaman "' . $title . '" belum dapat disimpan: ' . $this->modelErrors($pages));
                 }
 
                 $pageId = $id > 0 ? $id : (int) $pages->getInsertID();
@@ -719,12 +729,12 @@ class ContentController extends BaseAdminController
         // Poster video luar diunduh SETELAH transaksi: permintaan jaringan tidak
         // menahan kunci tabel, dan kegagalannya tidak membatalkan penyimpanan.
         $thumbs   = service('videoThumbnail')->fillMissing($this->thumbnailQueue, false, $this->staffId());
-        $redirect = $this->done($back, "{$saved} halaman pustaka dan {$media} media disimpan."
-            . ($thumbs['filled'] > 0 ? " {$thumbs['filled']} poster video diisi dari thumbnail." : ''));
+        $redirect = $this->done($back, "{$saved} halaman Pustaka dan {$media} gambar/video sudah disimpan."
+            . ($thumbs['filled'] > 0 ? " {$thumbs['filled']} gambar sampul video diambil otomatis." : ''));
 
         if ($thumbs['failed'] > 0) {
-            $redirect->with('notice', "{$thumbs['failed']} thumbnail video belum dapat diunduh server (video privat/dihapus, atau server tanpa akses internet). "
-                . 'Kartu videonya tetap tampil dengan latar gradien; unggah poster manual, atau jalankan `php spark gelita:library:thumbnails` nanti.');
+            $redirect->with('notice', "{$thumbs['failed']} gambar sampul video belum dapat diambil otomatis (videonya mungkin privat atau sudah dihapus, atau server sedang tidak tersambung ke internet). "
+                . 'Videonya tetap tampil dengan latar polos; unggah gambar sampul sendiri bila perlu.');
         }
 
         return $redirect;
@@ -747,7 +757,7 @@ class ContentController extends BaseAdminController
             $existing = $id > 0 ? $model->find($id) : null;
 
             if ($id > 0 && ($existing === null || $existing->library_page_id !== $pageId)) {
-                throw new \RuntimeException('Media pustaka tidak ditemukan di halaman ini.');
+                throw new \RuntimeException('Gambar/video ini tidak ditemukan di halaman tersebut. Muat ulang halaman lalu coba lagi.');
             }
 
             $url     = trim((string) ($row['external_url'] ?? ''));
@@ -775,7 +785,7 @@ class ContentController extends BaseAdminController
                 $link = MediaLink::parse($url, $kind);
 
                 if ($link === null) {
-                    throw new \RuntimeException("{$label}: tautan harus alamat http(s) yang sah.");
+                    throw new \RuntimeException("{$label}: tautan harus berupa alamat web lengkap yang diawali https://");
                 }
 
                 $kind = $link['kind'];
@@ -805,7 +815,7 @@ class ContentController extends BaseAdminController
             );
 
             if ($poster['error'] !== null) {
-                throw new \RuntimeException("{$label} (poster): " . $poster['error']);
+                throw new \RuntimeException("{$label} (gambar sampul): " . $poster['error']);
             }
 
             $payload = [
@@ -824,7 +834,7 @@ class ContentController extends BaseAdminController
             $written = $existing !== null ? $model->update($id, $payload) : $model->insert($payload, false);
 
             if ($written === false) {
-                throw new \RuntimeException("{$label} ditolak: " . $this->modelErrors($model));
+                throw new \RuntimeException("{$label} belum dapat disimpan: " . $this->modelErrors($model));
             }
 
             // Video YouTube/Vimeo/Drive tanpa poster: thumbnail diunduh setelah commit
@@ -900,7 +910,7 @@ class ContentController extends BaseAdminController
                 $audio[$column] = $this->audioIdOrNull($row[$column] ?? null);
 
                 if ($audio[$column] === false) {
-                    return $this->back($back, 'Audio yang dipilih untuk slide ' . ($index + 1) . ' tidak ditemukan.');
+                    return $this->back($back, 'Rekaman yang dipilih untuk slide ' . ($index + 1) . ' tidak ditemukan. Pilih ulang dari daftar.');
                 }
             }
 
@@ -924,7 +934,7 @@ class ContentController extends BaseAdminController
             if ($written === false) {
                 return $this->back(
                     $back,
-                    'Dialog slide ' . $payload['sequence'] . ' ditolak: ' . $this->modelErrors($dialogues),
+                    'Slide ' . $payload['sequence'] . ' belum dapat disimpan: ' . $this->modelErrors($dialogues),
                 );
             }
 
@@ -933,14 +943,14 @@ class ContentController extends BaseAdminController
 
         $this->afterContentChange('dialogues', $levelId);
 
-        return $this->done($back, "{$saved} dialog disimpan.");
+        return $this->done($back, "{$saved} slide cerita/dialog sudah disimpan.");
     }
 
     // ----------------------------------------------------------- verifikasi
 
     public function verify(): string
     {
-        return $this->panel('admin/content/verify', 'Verifikasi konten', [
+        return $this->panel('admin/content/verify', 'Periksa kelengkapan konten', [
             'findings' => (new ContentVerifier())->run(),
         ]);
     }
@@ -999,7 +1009,7 @@ class ContentController extends BaseAdminController
         $config    = $this->jsonField('config_json');
 
         if ($answerKey === false || $config === false) {
-            return 'answer_key_json atau config_json bukan JSON yang valid.';
+            return 'Data teknis soal (kunci jawaban atau pengaturan) tidak dapat dibaca. Isi ulang lewat formulir, atau minta bantuan petugas teknis.';
         }
 
         $media = $this->mediaFields([
@@ -1166,7 +1176,7 @@ class ContentController extends BaseAdminController
             $id = $this->audioIdOrNull($this->request->getPost($column));
 
             if ($id === false) {
-                return 'Audio yang dipilih tidak ditemukan.';
+                return 'Rekaman yang dipilih tidak ditemukan. Pilih ulang dari daftar.';
             }
 
             $out[$column] = $id;

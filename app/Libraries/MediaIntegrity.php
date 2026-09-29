@@ -34,25 +34,25 @@ class MediaIntegrity
             }
 
             if (! is_file($path)) {
-                $findings[] = ['asset_key' => (string) $asset['asset_key'], 'issue' => 'berkas tidak ada'];
+                $findings[] = ['asset_key' => (string) $asset['asset_key'], 'issue' => 'berkasnya hilang dari server'];
 
                 continue;
             }
 
             if ($asset['sha256'] !== null && hash_file('sha256', $path) !== $asset['sha256']) {
-                $findings[] = ['asset_key' => (string) $asset['asset_key'], 'issue' => 'sha256 tidak cocok'];
+                $findings[] = ['asset_key' => (string) $asset['asset_key'], 'issue' => 'isi berkas berubah di luar panel'];
 
                 continue;
             }
 
             if ($asset['file_size'] !== null && (int) filesize($path) !== (int) $asset['file_size']) {
-                $findings[] = ['asset_key' => (string) $asset['asset_key'], 'issue' => 'ukuran berkas berubah'];
+                $findings[] = ['asset_key' => (string) $asset['asset_key'], 'issue' => 'besar berkas berubah di luar panel'];
             }
         }
 
         foreach ($this->uploadedFiles() as $relative) {
             if (! isset($registered[$relative])) {
-                $findings[] = ['asset_key' => $relative, 'issue' => 'berkas unggahan tanpa baris media_assets'];
+                $findings[] = ['asset_key' => $relative, 'issue' => 'berkas ada di server tetapi tidak terdaftar di panel'];
             }
         }
 

@@ -319,7 +319,7 @@ final class NarrationImporter
 
         if (! in_array($extension, self::EXTENSIONS, true)) {
             return $this->unknown(
-                $extension === '' ? 'tanpa ekstensi' : 'ekstensi .' . $extension . ' tidak didukung (hanya ' . implode(', ', self::EXTENSIONS) . ')',
+                $extension === '' ? 'nama berkas tanpa jenis berkas (mis. .mp3)' : 'jenis berkas .' . $extension . ' tidak didukung (yang diterima: ' . implode(', ', self::EXTENSIONS) . ')',
                 in_array($base, array_keys($lines), true) ? $base . '.mp3' : null,
             );
         }
@@ -328,22 +328,22 @@ final class NarrationImporter
             $code = $base;
         } elseif (preg_match('/^(kenal|dialog|tuntas)-(.+)-(\d{2})$/', $base, $m) === 1) {
             if (! in_array($m[2], $this->levelCodes(), true)) {
-                return $this->unknown('wilayah "' . $m[2] . '" tidak ada di tabel levels', $this->suggest($base, $extension));
+                return $this->unknown('wilayah "' . $m[2] . '" tidak ada di permainan', $this->suggest($base, $extension));
             }
 
             $code = $base;
         } elseif (preg_match('/^' . self::CLUE_PREFIX . '-(.+)-(\d{2})$/', $base, $m) === 1) {
             if (! in_array($m[1], $this->clueNodes(), true)) {
-                return $this->unknown('tantangan "' . $m[1] . '" bukan arena cari yang aktif', $this->suggest($base, $extension));
+                return $this->unknown('tantangan "' . $m[1] . '" bukan tantangan Cari Objek yang aktif', $this->suggest($base, $extension));
             }
 
             $code = $base;
         } else {
-            return $this->unknown('nama tidak sesuai pola kode berkas naskah', $this->suggest($base, $extension));
+            return $this->unknown('nama berkas tidak sesuai pola nama rekaman (lihat Unduh daftar rekaman)', $this->suggest($base, $extension));
         }
 
         if (! isset($lines[$code])) {
-            $where = str_starts_with($code, self::CLUE_PREFIX . '-') ? 'di petunjuk target bank soal aktif' : 'di naskah aktif';
+            $where = str_starts_with($code, self::CLUE_PREFIX . '-') ? 'di petunjuk target (soal Cari Objek yang aktif)' : 'di naskah cerita';
 
             return $this->unknown('baris ' . $code . ' tidak ada ' . $where, $this->suggest($base, $extension));
         }
@@ -386,7 +386,7 @@ final class NarrationImporter
                 <=> array_search(strtolower(pathinfo($b, PATHINFO_EXTENSION)), self::EXTENSIONS, true));
 
             foreach (array_slice($files, 1) as $duplicate) {
-                $report['unknown'][] = ['file' => $duplicate, 'reason' => 'ganda: ' . $code . ' sudah diambil dari ' . $files[0], 'suggestion' => null];
+                $report['unknown'][] = ['file' => $duplicate, 'reason' => 'berkas ganda: ' . $code . ' sudah diambil dari ' . $files[0], 'suggestion' => null];
             }
 
             $this->importOne($code, $dir . $files[0], $files[0], $this->folderFor($locale) . $files[0], $locale, $dryRun, $staffId, $report);
@@ -427,7 +427,7 @@ final class NarrationImporter
             }
 
             if (isset($seen[$match['code']])) {
-                $report['unknown'][] = ['file' => $name, 'reason' => 'ganda: ' . $match['code'] . ' sudah diambil dari ' . $seen[$match['code']], 'suggestion' => null];
+                $report['unknown'][] = ['file' => $name, 'reason' => 'berkas ganda: ' . $match['code'] . ' sudah diambil dari ' . $seen[$match['code']], 'suggestion' => null];
 
                 continue;
             }
@@ -525,7 +525,7 @@ final class NarrationImporter
             : ($models->update((int) $existing['id'], $payload) ? (int) $existing['id'] : false);
 
         if ($audioId === false) {
-            $report['failed'][] = ['file' => $name, 'error' => 'audio ditolak: ' . implode(' ', $models->errors())];
+            $report['failed'][] = ['file' => $name, 'error' => 'rekaman belum dapat disimpan: ' . implode(' ', $models->errors())];
 
             return;
         }

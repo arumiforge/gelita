@@ -50,8 +50,9 @@ final class LanguageFilesTest extends CIUnitTestCase
     }
 
     /**
-     * Setiap label menu sidebar panel (termasuk "Narasi", tahap 5) harus ada
-     * di Language/id/Admin.php; kunci yang hilang tampil mentah (Admin.menuX).
+     * Setiap label menu sidebar panel (termasuk "Rekaman narasi", tahap 5)
+     * harus ada di Language/id/Admin.php; kunci yang hilang tampil mentah
+     * (Admin.menuX).
      */
     public function testEveryAdminSidebarLabelExists(): void
     {
@@ -66,7 +67,7 @@ final class LanguageFilesTest extends CIUnitTestCase
             $this->assertArrayHasKey($key, $admin, "Admin.{$key}");
         }
 
-        $this->assertSame('Narasi', $admin['menuNarration']);
+        $this->assertSame('Rekaman narasi', $admin['menuNarration']);
     }
 
     /**

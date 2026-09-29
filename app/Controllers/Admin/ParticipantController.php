@@ -107,7 +107,7 @@ class ParticipantController extends BaseAdminController
         if ((string) $this->request->getPost('confirm') !== 'RESET') {
             return $this->back(
                 'admin/peserta/' . $participantId,
-                'Ketik RESET pada kotak konfirmasi untuk mengatur ulang kata sandi.',
+                'Ketik RESET (huruf besar) di kotak konfirmasi untuk membuat sandi sementara.',
             );
         }
 

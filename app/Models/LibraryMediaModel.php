@@ -18,12 +18,12 @@ class LibraryMediaModel extends Model
     ];
     protected $validationRules = [
         'library_page_id' => 'required|is_natural_no_zero',
-        'sequence'        => 'required|is_natural_no_zero',
-        'media_kind'      => 'required|in_list[image,video]',
-        'external_url'    => 'permit_empty|max_length[1000]',
-        'caption_id'      => 'permit_empty|max_length[500]',
-        'caption_en'      => 'permit_empty|max_length[500]',
-        'credit'          => 'permit_empty|max_length[300]',
+        'sequence'        => ['label' => 'Urutan media', 'rules' => 'required|is_natural_no_zero'],
+        'media_kind'      => ['label' => 'Jenis media', 'rules' => 'required|in_list[image,video]'],
+        'external_url'    => ['label' => 'Tautan media', 'rules' => 'permit_empty|max_length[1000]'],
+        'caption_id'      => ['label' => 'Keterangan (Indonesia)', 'rules' => 'permit_empty|max_length[500]'],
+        'caption_en'      => ['label' => 'Keterangan (Inggris)', 'rules' => 'permit_empty|max_length[500]'],
+        'credit'          => ['label' => 'Kredit / lisensi', 'rules' => 'permit_empty|max_length[300]'],
     ];
 
     /**

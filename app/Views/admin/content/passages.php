@@ -19,7 +19,7 @@ $rows[] = null;
 <?= component('partials/admin-head', [
     'title'   => 'Teks bacaan',
     'eyebrow' => 'Wilayah ' . $level->sequence . ' · ' . $level->text('name', 'id'),
-    'lead'    => 'Bacaan yang tampil di samping soal. Kunci bacaan (passage_key) tidak dapat diubah setelah disimpan karena dipakai workbook bank soal.',
+    'lead'    => 'Bacaan panjang yang tampil di samping soal. Isi Indonesia dan Inggris wajib diisi. Kode bacaan tidak dapat diubah setelah disimpan, karena dipakai soal dan berkas Excel impor soal.',
 ]) ?>
 <?= component('partials/content-nav', ['level' => $level, 'active' => 'passages']) ?>
 <?= $this->include('partials/flash') ?>
@@ -41,16 +41,16 @@ $rows[] = null;
           Teks bacaan baru
         <?php else: ?>
           <code><?= esc($passage->passage_key) ?></code>
-          <span class="badge <?= $used > 0 ? 'is-open' : 'is-muted' ?>"><?= $used > 0 ? 'dirujuk ' . $used . ' butir' : 'belum dirujuk' ?></span>
+          <span class="badge <?= $used > 0 ? 'is-open' : 'is-muted' ?>"><?= $used > 0 ? 'dipakai ' . $used . ' soal' : 'belum dipakai soal' ?></span>
         <?php endif ?>
       </legend>
 
       <?php if ($isNew): ?>
         <div class="form-grid">
           <div class="field">
-            <label for="<?= $p ?>-key">Kunci bacaan (passage_key)</label>
+            <label for="<?= $p ?>-key">Kode bacaan</label>
             <input type="text" id="<?= $p ?>-key" name="passages[<?= $index ?>][passage_key]" maxlength="60" spellcheck="false" placeholder="psg-tmg-01">
-            <p class="field-help">Unik di seluruh konten, mis. psg-tmg-01. Kosongkan bila tidak menambah bacaan.</p>
+            <p class="field-help">Kode singkat yang belum pernah dipakai, mis. psg-tmg-01 (huruf kecil, angka, tanda minus). Biarkan kosong bila tidak menambah bacaan.</p>
           </div>
         </div>
       <?php else: ?>
@@ -64,7 +64,7 @@ $rows[] = null;
           <input type="text" id="<?= $p ?>-title" name="passages[<?= $index ?>][title_id]" maxlength="200" value="<?= esc($isNew ? '' : ($passage->title_id ?? ''), 'attr') ?>">
         </div>
         <div class="field">
-          <label for="<?= $p ?>-title-en"><span class="lang-tag">EN</span> English</label>
+          <label for="<?= $p ?>-title-en"><span class="lang-tag">EN</span> Inggris</label>
           <input type="text" id="<?= $p ?>-title-en" name="passages[<?= $index ?>][title_en]" maxlength="200" value="<?= esc($isNew ? '' : ($passage->title_en ?? ''), 'attr') ?>">
         </div>
       </div>
@@ -76,20 +76,20 @@ $rows[] = null;
           <textarea id="<?= $p ?>-body" name="passages[<?= $index ?>][body_id]" rows="7" <?= $isNew ? '' : 'required' ?>><?= esc($isNew ? '' : ($passage->body_id ?? '')) ?></textarea>
         </div>
         <div class="field">
-          <label for="<?= $p ?>-body-en"><span class="lang-tag">EN</span> English</label>
+          <label for="<?= $p ?>-body-en"><span class="lang-tag">EN</span> Inggris</label>
           <textarea id="<?= $p ?>-body-en" name="passages[<?= $index ?>][body_en]" rows="7" <?= $isNew ? '' : 'required' ?>><?= esc($isNew ? '' : ($passage->body_en ?? '')) ?></textarea>
         </div>
       </div>
 
       <?= component('components/media-field', [
           'id'         => $p . '-media',
-          'label'      => 'Gambar bacaan (opsional)',
+          'label'      => 'Gambar bacaan (tidak wajib)',
           'keyName'    => 'passages[' . $index . '][media_key]',
           'fileName'   => 'passage_media[' . $index . ']',
           'mediaId'    => $isNew ? null : $passage->media_asset_id,
-          'defaultKey' => $isNew ? 'passage.{passage_key}' : 'passage.' . App\Libraries\MediaStore::slug((string) $passage->passage_key),
+          'defaultKey' => $isNew ? 'passage.{kode bacaan}' : 'passage.' . App\Libraries\MediaStore::slug((string) $passage->passage_key),
           'size'       => '960 × 640 px',
-          'help'       => 'Tampil di atas teks bacaan di arena.',
+          'help'       => 'Tampil di atas teks bacaan saat siswa bermain.',
       ]) ?>
 
       <div class="form-grid">
@@ -100,11 +100,11 @@ $rows[] = null;
       </div>
 
       <div class="check-row">
-        <label class="check"><input type="checkbox" name="passages[<?= $index ?>][is_active]" value="1" <?= $isNew || $passage->is_active ? 'checked' : '' ?>> Aktif</label>
+        <label class="check"><input type="checkbox" name="passages[<?= $index ?>][is_active]" value="1" <?= $isNew || $passage->is_active ? 'checked' : '' ?>> Aktif (dipakai di permainan)</label>
         <?php if (! $isNew): ?>
           <label class="check">
             <input type="checkbox" name="passages[<?= $index ?>][_delete]" value="1" <?= $used > 0 ? 'disabled' : '' ?>>
-            Hapus bacaan ini<?php if ($used > 0): ?> <span class="muted">(masih dirujuk butir)</span><?php endif ?>
+            Hapus bacaan ini<?php if ($used > 0): ?> <span class="muted">(tidak bisa: masih dipakai soal)</span><?php endif ?>
           </label>
         <?php endif ?>
       </div>

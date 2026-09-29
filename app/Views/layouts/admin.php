@@ -43,7 +43,7 @@ $logo     = media_key_src('ui.logo');
     <div class="admin-sub">
       <b><?= esc($pageTitle ?? lang('Admin.panelTitle')) ?></b>
       <?php if (! empty($activeStudy)): ?>
-        · studi aktif <code><?= esc($activeStudy['code']) ?></code> · fase <?= esc($activeStudy['active_phase_code']) ?>
+        · studi berjalan: <?= esc($activeStudy['name'] ?: $activeStudy['code']) ?> · fase <?= esc(admin_label('phase', $activeStudy['active_phase_code'])) ?>
       <?php endif ?>
     </div>
     <div class="admin-user">

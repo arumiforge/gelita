@@ -27,6 +27,10 @@ class MediaStore
 
     public const VIDEO_MIMES = ['video/mp4', 'video/webm', 'video/ogg'];
 
+    private const UNREADABLE_IMAGE = 'Berkas ini bukan gambar yang dapat dibuka. Simpan ulang sebagai PNG atau JPG, lalu unggah lagi.';
+
+    private const NOT_SAVED = 'Berkas gagal disimpan di server. Coba lagi; bila tetap gagal, hubungi petugas teknis.';
+
     /** Nilai atribut `accept` input berkas per jenis aset. */
     public const ACCEPT = [
         'image' => 'image/png,image/jpeg,image/webp,image/gif,image/svg+xml',
@@ -46,15 +50,15 @@ class MediaStore
         $assetKey = trim($assetKey);
 
         if ($assetKey === '' || mb_strlen($assetKey) > 160) {
-            return $this->fail('asset_key wajib diisi, maksimal 160 karakter.');
+            return $this->fail('Kode berkas wajib diisi (paling panjang 160 karakter).');
         }
 
         if (! $file->isValid()) {
-            return $this->fail('Berkas unggahan tidak valid: ' . $file->getErrorString());
+            return $this->fail('Berkas gagal diunggah: ' . self::uploadErrorText($file->getError()));
         }
 
         if ($file->getSize() > config('Gelita')->maxUploadBytes) {
-            return $this->fail(sprintf('Berkas %s melebihi batas %d MB.', $file->getClientName(), (int) (config('Gelita')->maxUploadBytes / 1048576)));
+            return $this->fail(sprintf('Berkas %s terlalu besar (paling besar %d MB).', $file->getClientName(), (int) (config('Gelita')->maxUploadBytes / 1048576)));
         }
 
         $mime = (string) $file->getMimeType();
@@ -66,38 +70,27 @@ class MediaStore
         $type = $this->typeForMime($mime);
 
         if ($type === null || ! in_array($type, $allowedTypes, true)) {
-            return $this->fail(sprintf(
-                'Jenis berkas %s tidak diizinkan di sini (hanya %s).',
-                $mime,
-                implode(', ', $allowedTypes),
-            ));
+            return $this->fail(sprintf('Jenis berkas ini tidak diizinkan di sini; yang diterima hanya %s.', self::typeList($allowedTypes)));
         }
 
         $size = $type === 'image' ? @getimagesize($file->getTempName()) : false;
 
         if ($type === 'image' && $size === false && $mime !== 'image/svg+xml') {
-            return $this->fail('Berkas bukan gambar yang dapat dibaca.');
+            return $this->fail(self::UNREADABLE_IMAGE);
         }
 
         $required = $this->requiredSize($assetKey);
 
         if ($required !== null && is_array($size)
             && ((int) $size[0] !== $required[0] || (int) $size[1] !== $required[1])) {
-            return $this->fail(sprintf(
-                'Ukuran gambar %d×%d tidak sesuai ketentuan %d×%d untuk %s.',
-                $size[0],
-                $size[1],
-                $required[0],
-                $required[1],
-                $assetKey,
-            ));
+            return $this->fail(self::sizeMismatch([(int) $size[0], (int) $size[1]], $required, $assetKey));
         }
 
         $existing = model(MediaAssetModel::class)->findByKey($assetKey);
         $stored   = $this->moveWithOfficialName($file, $assetKey, $type === 'audio' ? $this->extensionFor($mime, $file->getClientExtension()) : null);
 
         if ($stored === null) {
-            return $this->fail('Berkas gagal disimpan.');
+            return $this->fail(self::NOT_SAVED);
         }
 
         return $this->commit($existing, $assetKey, $type, $stored, $mime, is_array($size) ? $size : null, $staffId, 'upload', $quiet);
@@ -117,24 +110,24 @@ class MediaStore
         $assetKey = trim($assetKey);
 
         if ($assetKey === '' || mb_strlen($assetKey) > 160) {
-            return $this->fail('asset_key wajib diisi, maksimal 160 karakter.');
+            return $this->fail('Kode berkas wajib diisi (paling panjang 160 karakter).');
         }
 
         if ($bytes === '' || strlen($bytes) > config('Gelita')->maxUploadBytes) {
-            return $this->fail('Berkas kosong atau melebihi batas unggahan.');
+            return $this->fail('Berkas kosong atau terlalu besar.');
         }
 
         $size = @getimagesizefromstring($bytes);
         $mime = is_array($size) ? (string) ($size['mime'] ?? '') : '';
 
         if (! is_array($size) || $mime === 'image/svg+xml' || $this->typeForMime($mime) !== 'image') {
-            return $this->fail('Berkas bukan gambar yang dapat dibaca.');
+            return $this->fail(self::UNREADABLE_IMAGE);
         }
 
         $dir = FCPATH . self::UPLOAD_DIR;
 
         if (! is_dir($dir) && ! mkdir($dir, 0775, true) && ! is_dir($dir)) {
-            return $this->fail('Berkas gagal disimpan.');
+            return $this->fail(self::NOT_SAVED);
         }
 
         $extension = ['image/png' => 'png', 'image/jpeg' => 'jpg', 'image/webp' => 'webp', 'image/gif' => 'gif'][$mime] ?? 'bin';
@@ -143,7 +136,7 @@ class MediaStore
         if (file_put_contents($dir . $name, $bytes, LOCK_EX) !== strlen($bytes)) {
             @unlink($dir . $name);
 
-            return $this->fail('Berkas gagal disimpan.');
+            return $this->fail(self::NOT_SAVED);
         }
 
         $existing = model(MediaAssetModel::class)->findByKey($assetKey);
@@ -201,7 +194,7 @@ class MediaStore
         $dir = FCPATH . self::UPLOAD_DIR;
 
         if (! is_dir($dir) && ! mkdir($dir, 0775, true) && ! is_dir($dir)) {
-            return $this->fail('Berkas gagal disimpan.');
+            return $this->fail(self::NOT_SAVED);
         }
 
         $assetKey  = trim($assetKey);
@@ -209,7 +202,7 @@ class MediaStore
         $name      = preg_replace('/[^a-z0-9._-]+/i', '-', $assetKey) . '.' . $extension;
 
         if (! @copy($sourcePath, $dir . $name)) {
-            return $this->fail('Berkas gagal disimpan.');
+            return $this->fail(self::NOT_SAVED);
         }
 
         $existing = model(MediaAssetModel::class)->findByKey($assetKey);
@@ -308,13 +301,13 @@ class MediaStore
         $row = model(MediaAssetModel::class)->findByKey($assetKey);
 
         if ($row === null) {
-            return $this->fail("asset_key '{$assetKey}' belum terdaftar. Pilih dari daftar atau unggah berkasnya.");
+            return $this->fail("Kode berkas '{$assetKey}' belum ada. Pilih kode dari daftar, atau unggah berkasnya sekalian.");
         }
 
         $type = $row['asset_type'] === 'sprite_frame' ? 'image' : (string) $row['asset_type'];
 
         if (! in_array($type, $allowedTypes, true)) {
-            return $this->fail("Aset '{$assetKey}' berjenis {$type}; di sini hanya " . implode(', ', $allowedTypes) . '.');
+            return $this->fail("Berkas '{$assetKey}' berupa " . self::typeList([$type]) . ', padahal di sini hanya boleh ' . self::typeList($allowedTypes) . '.');
         }
 
         return ['id' => (int) $row['id'], 'error' => null];
@@ -523,7 +516,7 @@ class MediaStore
         $mediaId = $this->upsert($existing, $assetKey, $type, $stored, $mime, $size, $locale);
 
         if ($mediaId === null) {
-            return $this->fail('Aset ditolak: ' . implode(' ', model(MediaAssetModel::class)->errors()));
+            return $this->fail('Berkas belum dapat disimpan: ' . implode(' ', model(MediaAssetModel::class)->errors()));
         }
 
         // Berkas lama berekstensi lain (mis. .png diganti .jpg) tidak dibiarkan menjadi yatim
@@ -614,7 +607,7 @@ class MediaStore
         $assetKey = trim($assetKey);
 
         if ($assetKey === '' || mb_strlen($assetKey) > 160) {
-            return 'asset_key wajib diisi, maksimal 160 karakter.';
+            return 'Kode berkas wajib diisi (paling panjang 160 karakter).';
         }
 
         if (! is_file($path)) {
@@ -624,14 +617,14 @@ class MediaStore
         $bytes = (int) filesize($path);
 
         if ($bytes === 0 || $bytes > config('Gelita')->maxUploadBytes) {
-            return sprintf('Berkas %s kosong atau melebihi batas %d MB.', basename($path), (int) (config('Gelita')->maxUploadBytes / 1048576));
+            return sprintf('Berkas %s kosong atau terlalu besar (paling besar %d MB).', basename($path), (int) (config('Gelita')->maxUploadBytes / 1048576));
         }
 
         $mime = $this->detectMime($path);
         $type = $this->typeForMime($mime);
 
         if ($type === null || ! in_array($type, $allowedTypes, true)) {
-            return sprintf('Jenis berkas %s tidak diizinkan di sini (hanya %s).', $mime === '' ? 'tak dikenal' : $mime, implode(', ', $allowedTypes));
+            return sprintf('Jenis berkas ini tidak diizinkan di sini; yang diterima hanya %s.', self::typeList($allowedTypes));
         }
 
         $size = null;
@@ -640,14 +633,14 @@ class MediaStore
             $read = @getimagesize($path);
 
             if ($read === false && $mime !== 'image/svg+xml') {
-                return 'Berkas bukan gambar yang dapat dibaca.';
+                return self::UNREADABLE_IMAGE;
             }
 
             $size     = is_array($read) ? [(int) $read[0], (int) $read[1]] : null;
             $required = $this->requiredSize($assetKey);
 
             if ($required !== null && $size !== null && $size !== $required) {
-                return sprintf('Ukuran gambar %d×%d tidak sesuai ketentuan %d×%d untuk %s.', $size[0], $size[1], $required[0], $required[1], $assetKey);
+                return self::sizeMismatch($size, $required, $assetKey);
             }
         }
 
@@ -682,6 +675,45 @@ class MediaStore
             'audio/mp4'   => 'm4a',
             'audio/x-m4a' => 'm4a',
         ][$mime] ?? (strtolower(preg_replace('/[^a-z0-9]+/i', '', $fallback) ?? '') ?: 'bin');
+    }
+
+    /**
+     * Sebab gagal unggah (UPLOAD_ERR_*) dalam kalimat untuk guru/admin.
+     * Pesan bawaan PHP berbahasa Inggris dan menyebut pengaturan server.
+     */
+    public static function uploadErrorText(int $code): string
+    {
+        return match ($code) {
+            UPLOAD_ERR_INI_SIZE, UPLOAD_ERR_FORM_SIZE => 'berkasnya lebih besar dari batas yang diizinkan server.',
+            UPLOAD_ERR_PARTIAL                        => 'berkas hanya terkirim sebagian. Periksa internet lalu coba lagi.',
+            UPLOAD_ERR_NO_FILE                        => 'belum ada berkas yang dipilih.',
+            default                                   => 'terjadi kesalahan di server. Coba lagi; bila tetap gagal, hubungi petugas teknis.',
+        };
+    }
+
+    /** "gambar, video, atau rekaman suara" untuk daftar jenis aset. */
+    private static function typeList(array $types): string
+    {
+        $names = array_map(static fn (string $type): string => ['image' => 'gambar', 'video' => 'video', 'audio' => 'rekaman suara'][$type] ?? $type, $types);
+        $last  = array_pop($names);
+
+        return $names === [] ? (string) $last : implode(', ', $names) . ' atau ' . $last;
+    }
+
+    /**
+     * @param array{0: int, 1: int} $has
+     * @param array{0: int, 1: int} $need
+     */
+    private static function sizeMismatch(array $has, array $need, string $assetKey): string
+    {
+        return sprintf(
+            'Ukuran gambar %d × %d piksel, padahal untuk %s harus tepat %d × %d piksel. Ubah dulu ukuran gambarnya, lalu unggah lagi.',
+            $has[0],
+            $has[1],
+            $assetKey,
+            $need[0],
+            $need[1],
+        );
     }
 
     /** @return array{id: null, type: null, error: string} */

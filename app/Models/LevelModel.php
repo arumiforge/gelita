@@ -20,9 +20,9 @@ class LevelModel extends Model
     protected $validationRules = [
         'sequence'   => 'required|is_natural_no_zero|is_unique[levels.sequence,id,{id}]',
         'code'       => 'required|max_length[40]|is_unique[levels.code,id,{id}]',
-        'name_id'    => 'required|max_length[100]',
-        'name_en'    => 'required|max_length[100]',
-        'difficulty' => 'required|in_list[mudah,sedang,sulit]',
+        'name_id'    => ['label' => 'Nama wilayah (Indonesia)', 'rules' => 'required|max_length[100]'],
+        'name_en'    => ['label' => 'Nama wilayah (Inggris)', 'rules' => 'required|max_length[100]'],
+        'difficulty' => ['label' => 'Tingkat kesulitan', 'rules' => 'required|in_list[mudah,sedang,sulit]'],
     ];
 
     /** @return list<Level> */

@@ -17,7 +17,7 @@ class StaffController extends BaseAdminController
 {
     public function index(): string
     {
-        return $this->panel('admin/staff/index', 'Akun staf', [
+        return $this->panel('admin/staff/index', 'Akun guru & admin', [
             'rows'      => $this->viewRows(),
             'schools'   => model(SchoolModel::class)->inUseList(),
             'temporary' => null,
@@ -29,11 +29,11 @@ class StaffController extends BaseAdminController
         $staff = model(StaffUserModel::class);
 
         $rules = [
-            'username'     => 'required|alpha_dash|min_length[3]|max_length[100]|is_unique[staff_users.username]',
-            'display_name' => 'required|max_length[150]',
-            'role'         => 'required|in_list[admin,guru]',
-            'email'        => 'permit_empty|valid_email|max_length[150]',
-            'password'     => 'required|min_length[12]|max_length[72]',
+            'username'     => ['label' => 'Nama pengguna', 'rules' => 'required|alpha_dash|min_length[3]|max_length[100]|is_unique[staff_users.username]'],
+            'display_name' => ['label' => 'Nama yang ditampilkan', 'rules' => 'required|max_length[150]'],
+            'role'         => ['label' => 'Peran', 'rules' => 'required|in_list[admin,guru]'],
+            'email'        => ['label' => 'Email', 'rules' => 'permit_empty|valid_email|max_length[150]'],
+            'password'     => ['label' => 'Kata sandi awal', 'rules' => 'required|min_length[12]|max_length[72]'],
         ];
 
         if (! $this->validate($rules)) {
@@ -48,7 +48,7 @@ class StaffController extends BaseAdminController
         }
 
         if ($role === 'guru' && $schoolId === null) {
-            return $this->back('admin/staf', 'Akun guru wajib terikat pada satu sekolah.');
+            return $this->back('admin/staf', 'Akun guru harus punya sekolah. Pilih sekolahnya atau ketik NPSN-nya.');
         }
 
         // sandi awal dipilih admin → pemilik wajib menggantinya saat pertama masuk
@@ -64,12 +64,12 @@ class StaffController extends BaseAdminController
         ], true);
 
         if ($staffId === false) {
-            return $this->back('admin/staf', 'Akun ditolak: ' . $this->modelErrors($staff));
+            return $this->back('admin/staf', 'Akun belum dapat disimpan: ' . $this->modelErrors($staff));
         }
 
         $this->audit('staff_create', (int) $staffId, ['role' => $role]);
 
-        return $this->done('admin/staf', 'Akun staf dibuat.');
+        return $this->done('admin/staf', 'Akun baru sudah dibuat. Sampaikan nama pengguna dan kata sandi awalnya kepada pemilik akun.');
     }
 
     public function update(int $staffId): RedirectResponse
@@ -81,9 +81,9 @@ class StaffController extends BaseAdminController
         }
 
         $rules = [
-            'display_name' => 'required|max_length[150]',
-            'role'         => 'required|in_list[admin,guru]',
-            'email'        => 'permit_empty|valid_email|max_length[150]',
+            'display_name' => ['label' => 'Nama yang ditampilkan', 'rules' => 'required|max_length[150]'],
+            'role'         => ['label' => 'Peran', 'rules' => 'required|in_list[admin,guru]'],
+            'email'        => ['label' => 'Email', 'rules' => 'permit_empty|valid_email|max_length[150]'],
         ];
 
         if (! $this->validate($rules)) {
@@ -99,13 +99,13 @@ class StaffController extends BaseAdminController
         }
 
         if ($role === 'guru' && $schoolId === null) {
-            return $this->back('admin/staf', 'Akun guru wajib terikat pada satu sekolah.');
+            return $this->back('admin/staf', 'Akun guru harus punya sekolah. Pilih sekolahnya atau ketik NPSN-nya.');
         }
 
         // Sama seperti deactivate(): admin tidak boleh mengunci dirinya sendiri
         // keluar dari panel dengan menurunkan role atau menonaktifkan akunnya.
         if ($staffId === $this->staffId() && ($role !== 'admin' || $active !== 1)) {
-            return $this->back('admin/staf', 'Anda tidak dapat menurunkan role atau menonaktifkan akun Anda sendiri.');
+            return $this->back('admin/staf', 'Anda tidak dapat mengubah peran atau menonaktifkan akun Anda sendiri.');
         }
 
         $saved = $staff->update($staffId, [
@@ -117,12 +117,12 @@ class StaffController extends BaseAdminController
         ]);
 
         if (! $saved) {
-            return $this->back('admin/staf', 'Akun ditolak: ' . $this->modelErrors($staff));
+            return $this->back('admin/staf', 'Akun belum dapat disimpan: ' . $this->modelErrors($staff));
         }
 
         $this->audit('staff_update', $staffId, ['role' => $role]);
 
-        return $this->done('admin/staf', 'Akun staf diperbarui.');
+        return $this->done('admin/staf', 'Perubahan akun sudah disimpan.');
     }
 
     /** Sandi sementara ditampilkan sekali pada respons ini, lalu tidak tersimpan. */
@@ -136,7 +136,7 @@ class StaffController extends BaseAdminController
         }
 
         if ((string) $this->request->getPost('confirm') !== 'RESET') {
-            return $this->back('admin/staf', 'Ketik RESET pada kotak konfirmasi untuk mengatur ulang kata sandi.');
+            return $this->back('admin/staf', 'Ketik RESET (huruf besar) di kotak konfirmasi untuk membuat sandi sementara.');
         }
 
         // sandi sementara diketahui admin → pemilik wajib menggantinya saat masuk
@@ -148,7 +148,7 @@ class StaffController extends BaseAdminController
         $this->response->setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
         $this->response->setHeader('Pragma', 'no-cache');
 
-        return $this->panel('admin/staff/index', 'Akun staf', [
+        return $this->panel('admin/staff/index', 'Akun guru & admin', [
             'rows'      => $this->viewRows(),
             'schools'   => model(SchoolModel::class)->inUseList(),
             'temporary' => ['staff' => $target->toSafeArray(), 'password' => $temporary],
@@ -170,7 +170,7 @@ class StaffController extends BaseAdminController
         $staff->update($staffId, ['is_active' => 0]);
         $this->audit('staff_deactivate', $staffId);
 
-        return $this->done('admin/staf', 'Akun dinonaktifkan.');
+        return $this->done('admin/staf', 'Akun sudah dinonaktifkan dan tidak dapat masuk lagi.');
     }
 
     // -------------------------------------------------------------- bantuan
@@ -193,7 +193,7 @@ class StaffController extends BaseAdminController
         $school = service('schoolDirectory')->findByNpsn($npsn);
 
         return $school === null
-            ? [null, "NPSN {$npsn} tidak ada di daftar sekolah resmi. Cari sekolahnya di menu Sekolah."]
+            ? [null, "NPSN {$npsn} tidak ada di daftar sekolah resmi. Periksa lagi angkanya, atau cari sekolahnya di menu Sekolah."]
             : [(int) $school['id'], null];
     }
 

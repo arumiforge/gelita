@@ -84,7 +84,7 @@ final class ChartData
             $hasData  = (int) $row['attempts'] > 0;
             $any      = $any || $hasData;
             $values[] = [$xi, $yi, $hasData ? round((float) $row['difficulty_index'], 1) : null];
-            $labels[] = [$xi, $yi, (string) $row['title'] . ' — ' . ($hasData ? (int) $row['attempts'] . ' percobaan' : 'belum ada percobaan')];
+            $labels[] = [$xi, $yi, (string) $row['title'] . ' — ' . ($hasData ? 'dicoba ' . (int) $row['attempts'] . ' kali' : 'belum pernah dicoba')];
 
             $links[$xi . ',' . $yi] = site_url('admin/analitik/node/' . (int) $row['node_id']);
         }
@@ -94,7 +94,7 @@ final class ChartData
         }
 
         return [
-            'x'      => array_map(static fn (int $n): string => 'Node ' . $n, $maxSeq > 0 ? range(1, $maxSeq) : []),
+            'x'      => array_map(static fn (int $n): string => 'Tantangan ' . $n, $maxSeq > 0 ? range(1, $maxSeq) : []),
             'y'      => array_map(static fn (Level $l): string => $l->text('name', 'id'), array_values($levels)),
             'values' => $values,
             'labels' => $labels,
@@ -121,7 +121,7 @@ final class ChartData
         return [
             'labels' => ['Pretest', 'Posttest'],
             'series' => [
-                ['name' => 'Rata-rata skor (' . (int) $result['pairs'] . ' pasangan)', 'values' => [(float) $result['pretest'], (float) $result['posttest']]],
+                ['name' => 'Rata-rata skor (' . (int) $result['pairs'] . ' siswa)', 'values' => [(float) $result['pretest'], (float) $result['posttest']]],
             ],
             'max' => 100,
         ];
@@ -158,14 +158,15 @@ final class ChartData
                 $evidence = (int) ($cell['evidence_count'] ?? 0);
                 $values[] = [$xi, $yi, $evidence > 0 ? round((float) $cell['mastery_ratio'], 3) : null];
                 $labels[] = [$xi, $yi, $evidence > 0
-                    ? round((float) $cell['mastery_ratio'] * 100) . '% · ' . (int) $cell['correct_count'] . '/' . $evidence . ' bukti'
-                    : '0 bukti'];
+                    ? round((float) $cell['mastery_ratio'] * 100) . '% · ' . (int) $cell['correct_count'] . '/' . $evidence . ' jawaban'
+                    : '0 jawaban'];
             }
         }
 
         return [
             'x'      => $x,
-            'y'      => array_map('strval', $codes),
+            // Nama indikator (mis. "Literasi membaca") bila ada; kodenya hanya cadangan
+            'y'      => array_map(static fn ($code): string => (string) ($overall[$code]['name'] ?? $code), $codes),
             'values' => $values,
             'labels' => $labels,
             'max'    => 1,
