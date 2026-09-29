@@ -5,8 +5,8 @@
  *   (umpan balik cepat saja — server memvalidasi ulang `ext_in` & `max_size`).
  * - Tabel galat/peringatan dapat difilter per sheet; klik baris menyorot
  *   nomor barisnya agar mudah dicari di workbook.
- * - Tombol Jalankan impor (hanya dirender server bila pratinjau tanpa galat)
- *   meminta konfirmasi "Impor N butir ke M node?".
+ * - Tombol "Simpan soal ke permainan" (hanya dirender server bila pratinjau
+ *   tanpa galat) meminta konfirmasi berisi jumlah soal dan tantangan.
  */
 import { $, $$, el } from '../core/dom.js';
 import { confirmDialog } from '../core/modal.js';
@@ -23,8 +23,8 @@ function guardUpload(form) {
   const check = () => {
     const chosen = file.files?.[0];
     let message = '';
-    if (chosen && !/\.xlsx$/i.test(chosen.name)) message = `Berkas "${chosen.name}" bukan workbook .xlsx.`;
-    else if (chosen && chosen.size > MAX_BYTES) message = `Berkas ${(chosen.size / 1048576).toFixed(1)} MB melebihi batas 20 MB.`;
+    if (chosen && !/\.xlsx$/i.test(chosen.name)) message = `Berkas "${chosen.name}" bukan berkas Excel .xlsx. Bila berkas Anda .xls atau .csv, buka di Excel lalu simpan ulang sebagai "Excel Workbook (.xlsx)".`;
+    else if (chosen && chosen.size > MAX_BYTES) message = `Berkas ini ${(chosen.size / 1048576).toFixed(1).replace('.', ',')} MB, lebih besar dari batas 20 MB.`;
     error.textContent = message;
     error.hidden = message === '';
     file.closest('.field')?.classList.toggle('has-error', message !== '');
@@ -45,13 +45,15 @@ function sheetFilters(root) {
     const rows = $$('tbody tr', table).filter((row) => row.classList.contains('is-error') || row.classList.contains('is-warning'));
     if (rows.length < 2) continue;
 
-    const sheets = [...new Set(rows.map((row) => row.cells[0]?.textContent.trim()).filter(Boolean))];
+    // Sel pertama: kode sheet + nama Indonesianya (data-sheet), mis. "items · Soal"
+    const sheetOf = (row) => (row.cells[0]?.dataset.sheet ?? row.cells[0]?.textContent ?? '').trim();
+    const sheets = [...new Set(rows.map(sheetOf).filter(Boolean))];
     if (sheets.length > 1) {
       const select = el('select', { 'aria-label': 'Tampilkan sheet' },
         el('option', { value: '' }, `Semua sheet (${rows.length})`),
-        sheets.map((sheet) => el('option', { value: sheet }, `${sheet} (${rows.filter((r) => r.cells[0]?.textContent.trim() === sheet).length})`)));
+        sheets.map((sheet) => el('option', { value: sheet }, `${sheet} (${rows.filter((r) => sheetOf(r) === sheet).length})`)));
       select.addEventListener('change', () => {
-        rows.forEach((row) => { row.hidden = select.value !== '' && row.cells[0]?.textContent.trim() !== select.value; });
+        rows.forEach((row) => { row.hidden = select.value !== '' && sheetOf(row) !== select.value; });
       });
       table.closest('.table-wrap')?.before(el('div', { class: 'table-filter' }, el('label', {}, 'Sheet ', select)));
     }
@@ -71,10 +73,11 @@ function confirmRun(root) {
   form.addEventListener('submit', async (event) => {
     if (form.dataset.confirmed) return;
     event.preventDefault();
+    const items = Number(form.dataset.items || 0);
     const ok = await confirmDialog({
-      title: 'Jalankan impor?',
-      text: `Impor ${form.dataset.items} butir ke ${form.dataset.nodes} node? Impor berjalan dalam satu transaksi.`,
-      confirmLabel: 'Ya, impor',
+      title: 'Simpan soal ke permainan?',
+      text: `${items > 0 ? `${items} soal untuk ${form.dataset.nodes} tantangan` : 'Isi berkas ini'} akan disimpan dan langsung dipakai siswa yang mulai bermain setelahnya. Bila ada satu baris yang gagal, tidak ada yang disimpan.`,
+      confirmLabel: 'Ya, simpan',
       cancelLabel: 'Batal',
     });
     if (!ok) return;

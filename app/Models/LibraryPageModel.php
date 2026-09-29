@@ -18,9 +18,9 @@ class LibraryPageModel extends Model
     ];
     protected $validationRules = [
         'level_id' => 'required|is_natural_no_zero',
-        'sequence' => 'required|is_natural_no_zero',
-        'title_id' => 'required|max_length[250]',
-        'title_en' => 'required|max_length[250]',
+        'sequence' => ['label' => 'Nomor halaman', 'rules' => 'required|is_natural_no_zero'],
+        'title_id' => ['label' => 'Judul halaman (Indonesia)', 'rules' => 'required|max_length[250]'],
+        'title_en' => ['label' => 'Judul halaman (Inggris)', 'rules' => 'required|max_length[250]'],
     ];
 
     /** @return list<LibraryPage> */

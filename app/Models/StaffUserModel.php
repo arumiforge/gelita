@@ -18,9 +18,9 @@ class StaffUserModel extends Model
         'is_active', 'failed_login_count', 'locked_until', 'last_login_at',
     ];
     protected $validationRules = [
-        'username'     => 'required|alpha_dash|min_length[3]|max_length[100]|is_unique[staff_users.username,id,{id}]',
-        'role'         => 'required|in_list[admin,guru]',
-        'display_name' => 'required|max_length[150]',
+        'username'     => ['label' => 'Nama pengguna', 'rules' => 'required|alpha_dash|min_length[3]|max_length[100]|is_unique[staff_users.username,id,{id}]'],
+        'role'         => ['label' => 'Peran', 'rules' => 'required|in_list[admin,guru]'],
+        'display_name' => ['label' => 'Nama yang ditampilkan', 'rules' => 'required|max_length[150]'],
     ];
 
     public function findByUsername(string $username): ?StaffUser

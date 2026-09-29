@@ -11,32 +11,32 @@
 
 <?= $this->section('content') ?>
 <?= component('partials/admin-head', [
-    'title'   => 'Sesi permainan',
-    'eyebrow' => 'Data penelitian',
-    'lead'    => 'Satu sesi = satu peserta pada satu fase. Buka sesi untuk melihat percobaan per tantangan dan linimasa event.',
+    'title'   => 'Sesi bermain',
+    'eyebrow' => 'Data siswa',
+    'lead'    => 'Satu sesi berisi permainan satu siswa pada satu fase (misalnya pretest). Buka sesi untuk melihat hasil tiap tantangan dan catatan aktivitasnya.',
 ]) ?>
 <?= $this->include('partials/flash') ?>
 <?= component('admin-filter-bar', ['filters' => $filters, 'only' => ['study_id', 'phase_code', 'school_id', 'class_level', 'date_from', 'locale']]) ?>
 
 <?= component('admin-table', [
     'rows'         => $rows,
-    'caption'      => 'Daftar sesi permainan',
+    'caption'      => 'Daftar sesi bermain',
     'emptyMessage' => $filters !== []
-        ? 'Tidak ada sesi untuk filter ini. Longgarkan rentang tanggal atau atur ulang filter.'
-        : 'Belum ada sesi permainan. Sesi dibuat otomatis saat siswa mendaftar atau masuk.',
+        ? 'Tidak ada sesi untuk pilihan filter ini. Coba perlebar rentang tanggal atau tekan Atur ulang.'
+        : 'Belum ada sesi bermain. Sesi dibuat otomatis saat siswa mendaftar atau masuk ke permainan.',
     'columns' => [
-        'session_code'     => ['label' => 'Kode', 'render' => static fn (array $r): string => '<a href="' . base_url('admin/sesi/' . $r['id']) . '"><code>' . esc(substr((string) $r['session_code'], 0, 10)) . '</code></a>'],
-        'participant_code' => ['label' => 'Peserta', 'format' => 'code'],
+        'session_code'     => ['label' => 'Kode sesi', 'render' => static fn (array $r): string => '<a href="' . base_url('admin/sesi/' . $r['id']) . '"><code>' . esc(substr((string) $r['session_code'], 0, 10)) . '</code></a>'],
+        'participant_code' => ['label' => 'Kode peserta', 'format' => 'code'],
         'study_code'       => 'Studi',
-        'phase_code'       => 'Fase',
-        'locale'           => 'Bahasa',
+        'phase_code'       => ['label' => 'Fase', 'format' => 'label', 'group' => 'phase'],
+        'locale'           => ['label' => 'Bahasa', 'format' => 'label', 'group' => 'locale'],
         'status'           => ['label' => 'Status', 'format' => 'badge'],
         'started_at'       => ['label' => 'Mulai', 'format' => 'datetime'],
-        'duration_ms'      => ['label' => 'Durasi', 'format' => 'ms'],
-        'completed_nodes'  => ['label' => 'Serpihan', 'format' => 'num'],
+        'duration_ms'      => ['label' => 'Lama bermain', 'format' => 'ms'],
+        'completed_nodes'  => ['label' => 'Tantangan selesai', 'format' => 'num'],
         'total_score'      => ['label' => 'Skor', 'format' => 'num', 'decimals' => 1],
-        'device_type'      => ['label' => 'Perangkat', 'render' => static fn (array $r): string => esc(trim(($r['device_type'] ?? '') . ' ' . ($r['browser_name'] ?? '')) ?: '—')],
-        'id'               => ['label' => '', 'render' => static fn (array $r): string => '<a class="btn btn-quiet btn-sm" href="' . base_url('admin/sesi/' . $r['id']) . '">Buka</a>'],
+        'device_type'      => ['label' => 'Perangkat', 'render' => static fn (array $r): string => esc(trim((($r['device_type'] ?? '') === '' ? '' : admin_label('device', (string) $r['device_type'])) . ' ' . ($r['browser_name'] ?? '')) ?: '—')],
+        'id'               => ['label' => '', 'render' => static fn (array $r): string => '<a class="btn btn-quiet btn-sm" href="' . base_url('admin/sesi/' . $r['id']) . '">Lihat</a>'],
     ],
 ]) ?>
 

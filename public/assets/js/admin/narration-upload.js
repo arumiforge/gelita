@@ -28,10 +28,10 @@ export function initNarrationUpload(root = document) {
     const files = Array.from(input.files || []);
     const total = files.reduce((sum, file) => sum + file.size, 0);
     const out = [];
-    if (maxFiles > 0 && files.length > maxFiles) out.push(`${files.length} berkas dipilih, server hanya menerima ${maxFiles} per unggahan. Bagi menjadi beberapa kali unggah.`);
-    if (maxPost > 0 && total > maxPost) out.push(`Total ${mb(total)} melebihi batas kiriman ${mb(maxPost)}.`);
+    if (maxFiles > 0 && files.length > maxFiles) out.push(`${files.length} berkas dipilih, padahal sekali unggah paling banyak ${maxFiles} berkas. Bagi menjadi beberapa kali unggah.`);
+    if (maxPost > 0 && total > maxPost) out.push(`Ukuran totalnya ${mb(total)}, lebih besar dari batas sekali unggah (${mb(maxPost)}). Kurangi jumlah berkas.`);
     const big = files.filter((file) => maxFile > 0 && file.size > maxFile).map((file) => file.name);
-    if (big.length) out.push(`Melebihi ${mb(maxFile)} per berkas: ${big.join(', ')}.`);
+    if (big.length) out.push(`Berkas berikut lebih besar dari ${mb(maxFile)}: ${big.join(', ')}.`);
     info.textContent = files.length ? `${files.length} berkas, total ${mb(total)}.` : '';
     return out;
   };

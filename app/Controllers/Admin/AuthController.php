@@ -35,7 +35,10 @@ class AuthController extends BaseController
     {
         $target = safe_internal_url($this->request->getPost('redirect_to'), 'admin/dashboard');
 
-        if (! $this->validate(['username' => 'required', 'password' => 'required'])) {
+        if (! $this->validate([
+            'username' => ['label' => 'Nama pengguna', 'rules' => 'required'],
+            'password' => ['label' => 'Kata sandi', 'rules' => 'required'],
+        ])) {
             return redirect()->to(site_url('admin/login'))->with('errors', $this->validator->getErrors());
         }
 
@@ -45,7 +48,7 @@ class AuthController extends BaseController
         $staff = model(StaffUserModel::class)->findByUsername($username);
 
         if ($staff !== null && $staff->isLocked()) {
-            return $this->reject($staff->id, 'Akun terkunci sementara. Coba lagi dalam beberapa menit.', 'locked');
+            return $this->reject($staff->id, 'Terlalu banyak percobaan yang salah, jadi akun dikunci sementara. Coba lagi beberapa menit lagi.', 'locked');
         }
 
         if ($staff === null || ! $staff->verifyPassword($password) || ! $staff->is_active) {
@@ -76,7 +79,7 @@ class AuthController extends BaseController
 
         if ($staff->mustChangePassword()) {
             return redirect()->to(site_url(StaffAuthFilter::PASSWORD_PAGE))
-                ->with('message', 'Ganti sandi sementara Anda sebelum memakai panel.');
+                ->with('message', 'Ganti dulu sandi sementara Anda sebelum memakai panel.');
         }
 
         return redirect()->to($target);

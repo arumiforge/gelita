@@ -30,20 +30,20 @@ foreach ($attempts as $attempt) {
 <?= $this->section('content') ?>
 <?= component('partials/admin-head', [
     'title'   => $node->text('title', 'id'),
-    'eyebrow' => ($level?->text('name', 'id') ?? '') . ' · node ' . $node->sequence . ' · ' . $node->engine_type,
+    'eyebrow' => ($level?->text('name', 'id') ?? '') . ' · tantangan ke-' . $node->sequence . ' · ' . engine_label((string) $node->engine_type),
     'actions' => '<a class="btn btn-quiet btn-sm" href="' . base_url('admin/analitik/node') . '">' . icon('left') . ' Semua tantangan</a>'
-        . (session('staff_role') === 'admin' ? '<a class="btn btn-quiet btn-sm" href="' . base_url('admin/konten/node/' . $node->id) . '">' . icon('edit') . ' Sunting konten</a>' : ''),
+        . (session('staff_role') === 'admin' ? '<a class="btn btn-quiet btn-sm" href="' . base_url('admin/konten/node/' . $node->id) . '">' . icon('edit') . ' Ubah isi tantangan</a>' : ''),
 ]) ?>
 <?= $this->include('partials/flash') ?>
 
 <?php if ($stats !== null): ?>
   <section class="kpi-grid" aria-label="Ringkasan tantangan">
-    <?= component('stat-tile', ['label' => 'Percobaan', 'value' => fmt_num($stats['attempts'], 0, 'id')]) ?>
+    <?= component('stat-tile', ['label' => 'Dicoba', 'value' => fmt_num($stats['attempts'], 0, 'id'), 'hint' => 'kali']) ?>
     <?= component('stat-tile', ['label' => 'Tepat sejak awal', 'value' => fmt_pct($stats['mean_first_pass'])]) ?>
-    <?= component('stat-tile', ['label' => 'Ketepatan akhir', 'value' => fmt_pct($stats['mean_final'])]) ?>
-    <?= component('stat-tile', ['label' => 'Petunjuk / percobaan', 'value' => fmt_num($stats['mean_hint'], 2, 'id')]) ?>
-    <?= component('stat-tile', ['label' => 'Durasi median', 'value' => ms_to_human((int) $stats['median_duration_ms'])]) ?>
-    <?= component('stat-tile', ['label' => 'Indeks kesulitan', 'value' => fmt_num($stats['difficulty_index'], 1, 'id')]) ?>
+    <?= component('stat-tile', ['label' => 'Benar di akhir', 'value' => fmt_pct($stats['mean_final'])]) ?>
+    <?= component('stat-tile', ['label' => 'Petunjuk dibuka', 'value' => fmt_num($stats['mean_hint'], 2, 'id'), 'hint' => 'rata-rata per percobaan']) ?>
+    <?= component('stat-tile', ['label' => 'Lama mengerjakan', 'value' => ms_to_human((int) $stats['median_duration_ms']), 'hint' => 'nilai tengah (menit:detik)']) ?>
+    <?= component('stat-tile', ['label' => 'Tingkat kesulitan', 'value' => fmt_num($stats['difficulty_index'], 1, 'id'), 'hint' => '0 = mudah, 100 = sulit']) ?>
   </section>
 <?php endif ?>
 
@@ -52,7 +52,7 @@ foreach ($attempts as $attempt) {
       'id'       => 'chart-node-scores',
       'title'    => 'Sebaran skor',
       'type'     => 'bar',
-      'data'     => \App\Libraries\ChartData::distribution($attempts === [] ? [] : $bins, 'Percobaan'),
+      'data'     => \App\Libraries\ChartData::distribution($attempts === [] ? [] : $bins, 'Jumlah percobaan'),
       'fallback' => $attempts === [] ? null : component('partials/bar-list', ['rows' => array_map(
           static fn (string $range, int $total): array => ['label' => $range, 'value' => $total, 'display' => (string) $total],
           array_keys($bins),
@@ -68,25 +68,25 @@ foreach ($attempts as $attempt) {
           $y = round(100 - (float) $attempt['first_pass_accuracy'], 2);
           $scatter .= '<i style="left: ' . $x . '%; top: ' . $y . '%" title="' . esc(ms_to_human((int) $attempt['duration_ms']) . ' · ' . fmt_pct($attempt['first_pass_accuracy'], false, 0), 'attr') . '"></i>';
       }
-      $scatter .= '<span class="scatter-x">durasi →</span><span class="scatter-y">tepat awal →</span></div>';
+      $scatter .= '<span class="scatter-x">lama mengerjakan →</span><span class="scatter-y">tepat sejak awal →</span></div>';
   }
   ?>
   <?= component('admin-chart', [
       'id'          => 'chart-node-scatter',
-      'title'       => 'Durasi vs ketepatan awal (per percobaan)',
+      'title'       => 'Lama mengerjakan dibanding ketepatan awal (satu titik = satu percobaan)',
       'type'        => 'scatter',
       'data'        => \App\Libraries\ChartData::scatter(array_map(static fn (array $a): array => [
           'x'     => round((int) $a['duration_ms'] / 1000, 1),
           'y'     => round((float) $a['first_pass_accuracy'], 1),
-          'label' => '#' . $a['id'] . ' · skor ' . fmt_num($a['score'], 1, 'id'),
-      ], $attempts), 'Durasi (detik)', 'Tepat sejak awal (%)'),
+          'label' => 'Percobaan #' . $a['id'] . ' · skor ' . fmt_num($a['score'], 1, 'id'),
+      ], $attempts), 'Lama mengerjakan (detik)', 'Tepat sejak awal (%)'),
       'description' => count($attempts) . ' percobaan selesai',
       'fallback'    => $scatter,
   ]) ?>
 </div>
 
 <section class="panel">
-  <h2 class="panel-title"><?= icon('list') ?> Butir pada tantangan ini</h2>
+  <h2 class="panel-title"><?= icon('list') ?> Soal pada tantangan ini</h2>
   <?= component('partials/item-analysis-table', ['rows' => $items]) ?>
 </section>
 
@@ -94,16 +94,16 @@ foreach ($attempts as $attempt) {
   <h2 class="panel-title"><?= icon('clock') ?> Percobaan terbaru</h2>
   <?= component('admin-table', [
       'rows'         => array_slice($attempts, 0, 20),
-      'emptyMessage' => 'Belum ada percobaan selesai pada filter ini.',
+      'emptyMessage' => 'Belum ada percobaan yang selesai untuk pilihan filter ini.',
       'columns'      => [
-          'id'                  => ['label' => '#', 'format' => 'num'],
+          'id'                  => ['label' => 'No. percobaan', 'format' => 'num'],
           'score'               => ['label' => 'Skor', 'format' => 'num', 'decimals' => 1],
           'stars'               => ['label' => 'Bintang', 'render' => static fn (array $r): string => stars_html((int) $r['stars'])],
-          'first_pass_accuracy' => ['label' => 'Tepat awal', 'format' => 'pct'],
-          'duration_ms'         => ['label' => 'Durasi', 'format' => 'ms'],
+          'first_pass_accuracy' => ['label' => 'Tepat sejak awal', 'format' => 'pct'],
+          'duration_ms'         => ['label' => 'Lama', 'format' => 'ms'],
           'session_id'          => ['label' => '', 'render' => static fn (array $r): string => '<span class="actions-cell">'
-              . '<a class="btn btn-quiet btn-sm" href="' . base_url('admin/sesi/' . $r['session_id']) . '">Sesi</a>'
-              . '<a class="btn btn-quiet btn-sm" href="' . base_url('admin/sesi/' . $r['session_id'] . '/event') . '">Event</a></span>'],
+              . '<a class="btn btn-quiet btn-sm" href="' . base_url('admin/sesi/' . $r['session_id']) . '">Lihat sesi</a>'
+              . '<a class="btn btn-quiet btn-sm" href="' . base_url('admin/sesi/' . $r['session_id'] . '/event') . '">Catatan aktivitas</a></span>'],
       ],
   ]) ?>
 </section>

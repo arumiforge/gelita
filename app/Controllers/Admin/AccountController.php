@@ -29,7 +29,7 @@ class AccountController extends BaseAdminController
     {
         $staff = service('staffContext');
 
-        return $this->panel('admin/account/password', 'Ubah sandi', [
+        return $this->panel('admin/account/password', 'Ganti kata sandi', [
             'username'   => (string) ($staff->username ?? ''),
             'mustChange' => (int) ($staff->must_change_password ?? 0) === 1,
         ]);

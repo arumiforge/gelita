@@ -28,10 +28,10 @@ export function createObjectPicker({ scene = '', value = {}, onChange }) {
   const stage = el('div', { class: `picker-stage${scene ? '' : ' is-drawn'}` });
   if (scene) stage.append(el('img', { src: scene, alt: 'Gambar adegan', draggable: 'false' }));
 
-  const marker = el('button', { type: 'button', class: 'picker-marker', 'aria-label': 'Posisi objek — geser dengan panah' });
-  const width = el('input', { type: 'range', min: '3', max: '40', step: '0.5', value: String(w), 'aria-label': 'Lebar objek (persen)' });
+  const marker = el('button', { type: 'button', class: 'picker-marker', 'aria-label': 'Posisi benda — geser dengan tombol panah' });
+  const width = el('input', { type: 'range', min: '3', max: '40', step: '0.5', value: String(w), 'aria-label': 'Lebar benda (persen)' });
   const readout = el('output', { class: 'picker-readout num' });
-  const help = el('p', { class: 'field-help' }, 'Ketuk gambar untuk menaruh objek, geser penandanya, atur lebar dengan slider. Panah memindahkan 0,5% (Shift: 2%).');
+  const help = el('p', { class: 'field-help' }, 'Ketuk gambar untuk menaruh benda, geser penandanya, lalu atur lebarnya dengan penggeser. Tombol panah memindahkan 0,5% (tahan Shift: 2%).');
 
   stage.append(marker);
 
@@ -42,7 +42,7 @@ export function createObjectPicker({ scene = '', value = {}, onChange }) {
     marker.style.left = `${x}%`;
     marker.style.top = `${y}%`;
     marker.style.width = `${w}%`;
-    readout.textContent = placed ? `x ${round(x)}% · y ${round(y)}% · lebar ${round(w)}%` : 'Belum ditempatkan';
+    readout.textContent = placed ? `dari kiri ${round(x)}% · dari atas ${round(y)}% · lebar ${round(w)}%` : 'Belum ditempatkan';
   };
 
   const emit = () => {

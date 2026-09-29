@@ -69,13 +69,13 @@ final class NarrationPagesTest extends CIUnitTestCase
         $this->assertSame(88, substr_count($html, 'Sunting</a>'));
         $this->assertStringContainsString('<code>kenal-wonosobo-04</code>', $html);
         $this->assertStringContainsString('Kenali wilayah · Magelang', $html);
-        $this->assertStringContainsString('0/88 disetujui, 1 draft, 87 belum ada', $html);
-        $this->assertStringContainsString('1/88 disetujui, 0 draft, 87 belum ada', $html);
+        $this->assertStringContainsString('0/88 disetujui, 1 menunggu persetujuan, 87 belum ada', $html);
+        $this->assertStringContainsString('1/88 disetujui, 0 menunggu persetujuan, 87 belum ada', $html);
         $this->assertStringContainsString('admin/konten/dialog/0?konteks=intro#slide-1', $html);
         $this->assertStringContainsString('audio-preview-sm', $html);
         // Tombol massal hanya untuk bahasa yang punya draft
-        $this->assertStringContainsString('Setujui semua narasi draft ID (1)', $html);
-        $this->assertStringNotContainsString('Setujui semua narasi draft EN', $html);
+        $this->assertStringContainsString('Setujui semua rekaman bahasa Indonesia (1)', $html);
+        $this->assertStringNotContainsString('Setujui semua rekaman bahasa Inggris', $html);
         $this->assertStringContainsString('admin/konten/narasi/daftar-rekaman', $html);
     }
 
@@ -89,18 +89,18 @@ final class NarrationPagesTest extends CIUnitTestCase
         $html = html_entity_decode((string) $this->asAdmin()->call(Method::GET, 'admin/konten/narasi')->getBody(), ENT_QUOTES | ENT_HTML5);
 
         $this->assertSame(96, substr_count($html, 'Sunting</a>'));
-        $this->assertStringContainsString('Petunjuk arena cari · Temanggung (tmg-4)', $html);
+        $this->assertStringContainsString('Petunjuk Cari Objek · Temanggung (tmg-4)', $html);
         $this->assertStringContainsString('<code>petunjuk-tmg-4-08</code>', $html);
         $this->assertStringNotContainsString('petunjuk-tmg-4-09', $html, 'jebakan tanpa petunjuk');
         $this->assertStringContainsString('Temukan rigen, anyaman bambu tempat menjemur tembakau rajangan.', $html);
         $this->assertStringContainsString('admin/konten/node/' . $nodeId . '#item-' . $itemId, $html);
         $this->assertStringContainsString('Teks petunjuk berasal dari bank soal', $html);
-        $this->assertStringContainsString('0/96 disetujui, 1 draft, 95 belum ada', $html);
-        $this->assertStringContainsString('Setujui semua narasi draft ID (1)', $html);
+        $this->assertStringContainsString('0/96 disetujui, 1 menunggu persetujuan, 95 belum ada', $html);
+        $this->assertStringContainsString('Setujui semua rekaman bahasa Indonesia (1)', $html);
 
         $checklist = html_entity_decode((string) $this->asAdmin()->call(Method::GET, 'admin/media/kelengkapan')->getBody(), ENT_QUOTES | ENT_HTML5);
-        $this->assertStringContainsString('0/96 disetujui, 1 draft, 95 belum ada', $checklist);
-        $this->assertStringContainsString('0/96 disetujui, 0 draft, 96 belum ada', $checklist);
+        $this->assertStringContainsString('0/96 disetujui, 1 menunggu persetujuan, 95 belum ada', $checklist);
+        $this->assertStringContainsString('0/96 disetujui, 0 menunggu persetujuan, 96 belum ada', $checklist);
     }
 
     public function testTeacherCannotOpenNarrationPages(): void
@@ -167,7 +167,7 @@ final class NarrationPagesTest extends CIUnitTestCase
         $report = [
             'locale' => 'id', 'source' => 'upload', 'dry_run' => false, 'files' => 2,
             'created' => ['intro-01'], 'replaced' => [], 'unchanged' => [], 'kept' => [],
-            'unknown' => [['file' => 'intro-1.mp3', 'reason' => 'nama tidak sesuai pola kode berkas naskah', 'suggestion' => 'intro-01.mp3']],
+            'unknown' => [['file' => 'intro-1.mp3', 'reason' => 'nama berkas tidak sesuai pola nama rekaman (lihat Unduh daftar rekaman)', 'suggestion' => 'intro-01.mp3']],
             'failed' => [], 'missing' => ['intro-02'],
         ];
 
@@ -181,7 +181,7 @@ final class NarrationPagesTest extends CIUnitTestCase
         $this->assertStringContainsString('Config\Gelita::$maxUploadBytes', $html);
         $this->assertStringContainsString('data-max-files="' . (int) ini_get('max_file_uploads') . '"', $html);
         $this->assertStringContainsString('<code>intro-01.mp3</code>', $html, 'saran nama');
-        $this->assertStringContainsString('1 baris naskah belum punya rekaman ID', $html);
+        $this->assertStringContainsString('1 baris naskah belum punya rekaman bahasa Indonesia', $html);
         $this->assertStringContainsString('admin/konten/narasi/impor-folder', $html);
     }
 
@@ -244,7 +244,7 @@ final class NarrationPagesTest extends CIUnitTestCase
         $this->assertStringContainsString('1600 × 600 px', $html);
         $this->assertStringContainsString('700 × 900 px', $html);
         $this->assertStringContainsString('1400 × 900 px', $html, 'peta wilayah');
-        $this->assertStringContainsString('0/88 disetujui, 0 draft, 88 belum ada', $html);
+        $this->assertStringContainsString('0/88 disetujui, 0 menunggu persetujuan, 88 belum ada', $html);
         $this->assertStringContainsString('admin/media?asset_key=ui.logo-hero', $html);
         $this->assertStringContainsString('admin/konten/level/2', $html);
     }

@@ -16,7 +16,7 @@ class MediaAssetModel extends Model
         'width_px', 'height_px', 'locale', 'credit', 'version', 'is_active',
     ];
     protected $validationRules = [
-        'asset_key'    => 'required|max_length[160]|is_unique[media_assets.asset_key,id,{id}]',
+        'asset_key'    => ['label' => 'Kode berkas', 'rules' => 'required|max_length[160]|is_unique[media_assets.asset_key,id,{id}]'],
         // nilai sesuai 01_DATABASE.md §11; sprite_frame dipakai frame karakter (MediaAssetSeeder)
         'asset_type'   => 'required|in_list[image,audio,video,sprite_frame]',
         'storage_path' => 'required|max_length[500]',

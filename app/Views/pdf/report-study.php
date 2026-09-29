@@ -24,6 +24,18 @@ foreach ($levels as $level) {
     $levelNames[$level['level_id']] = $level['name'];
 }
 
+/** Kunci sebaran (kode tersimpan) → label ramah; kunci kosong dibiarkan agar tampil "(kosong)". */
+$relabel = static function (array $groups, callable $label): array {
+    $out = [];
+
+    foreach ($groups as $key => $count) {
+        $name       = (string) $key === '' ? '' : $label((string) $key);
+        $out[$name] = ($out[$name] ?? 0) + $count;
+    }
+
+    return $out;
+};
+
 $distribution = static function (array $groups, int $total) use ($num): array {
     $bars = [];
 
@@ -48,22 +60,22 @@ $distribution = static function (array $groups, int $total) use ($num): array {
 <div class="cover">
   <div class="eyebrow">GELITA · Game Edukasi Literasi dan Etnopedagogi Kedu</div>
   <h1><?= esc($title) ?></h1>
-  <p class="muted">Ringkasan proses dan capaian belajar dari data permainan yang tercatat server.</p>
+  <p class="muted">Ringkasan proses dan capaian belajar dari data permainan yang tercatat oleh sistem.</p>
 
   <table class="meta">
     <tr><td class="key">Studi</td><td><?= esc($meta['study']) ?></td></tr>
-    <tr><td class="key">Fase</td><td><?= esc($meta['phase']) ?></td></tr>
+    <tr><td class="key">Fase</td><td><?= esc(admin_label('phase', $meta['phase'])) ?></td></tr>
     <tr><td class="key">Rentang tanggal</td><td><?= esc(($meta['date_from'] ?? 'awal') . ' s.d. ' . ($meta['date_to'] ?? 'sekarang')) ?></td></tr>
     <?php if ($meta['school'] !== null): ?><tr><td class="key">Sekolah</td><td><?= esc($meta['school']) ?></td></tr><?php endif ?>
     <?php if ($meta['level'] !== null): ?><tr><td class="key">Wilayah</td><td><?= esc($meta['level']) ?></td></tr><?php endif ?>
     <?php if ($meta['class_level'] !== null): ?><tr><td class="key">Kelas</td><td><?= esc($meta['class_level']) ?></td></tr><?php endif ?>
-    <?php if ($meta['locale'] !== null): ?><tr><td class="key">Bahasa</td><td><?= esc($meta['locale']) ?></td></tr><?php endif ?>
+    <?php if ($meta['locale'] !== null): ?><tr><td class="key">Bahasa</td><td><?= esc(admin_label('locale', $meta['locale'])) ?></td></tr><?php endif ?>
     <tr><td class="key">Dibuat oleh</td><td><?= esc($meta['requester']) ?></td></tr>
     <tr><td class="key">Waktu dibuat</td><td><?= esc(fmt_date($meta['generated_at'], false, 'id')) ?></td></tr>
-    <tr><td class="key">Nomor export</td><td>#<?= (int) $meta['export_id'] ?></td></tr>
+    <tr><td class="key">Nomor berkas</td><td>#<?= (int) $meta['export_id'] ?></td></tr>
   </table>
 
-  <div class="note small">Laporan ini tidak memuat nama peserta, nama pengguna, kata sandi, atau raw event. Data lengkap untuk analisis lanjutan tersedia sebagai workbook XLSX.</div>
+  <div class="note small">Laporan ini tidak memuat nama peserta, nama pengguna, kata sandi, atau catatan aktivitas lengkap. Data lengkap untuk analisis lanjutan tersedia sebagai berkas Excel (XLSX) di menu Unduh data.</div>
 </div>
 
 <pagebreak />
@@ -79,9 +91,9 @@ $distribution = static function (array $groups, int $total) use ($num): array {
 
 <?php if ((int) $cohort['total'] > 0): ?>
   <h3>Jenis kelamin</h3>
-  <?= view('pdf/_bars', ['bars' => $distribution($cohort['by_gender'], (int) $cohort['total']), 'caption' => 'Sebaran jenis kelamin'], ['saveData' => false]) ?>
+  <?= view('pdf/_bars', ['bars' => $distribution($relabel($cohort['by_gender'], static fn (string $code): string => admin_label('gender', $code)), (int) $cohort['total']), 'caption' => 'Sebaran jenis kelamin'], ['saveData' => false]) ?>
   <h3>Kelas</h3>
-  <?= view('pdf/_bars', ['bars' => $distribution($cohort['by_class_level'], (int) $cohort['total']), 'caption' => 'Sebaran kelas', 'alt' => true], ['saveData' => false]) ?>
+  <?= view('pdf/_bars', ['bars' => $distribution($relabel($cohort['by_class_level'], static fn (string $class): string => ctype_digit($class) ? 'Kelas ' . $class : $class), (int) $cohort['total']), 'caption' => 'Sebaran kelas', 'alt' => true], ['saveData' => false]) ?>
   <h3>Provinsi</h3>
   <?= view('pdf/_bars', ['bars' => $distribution($cohort['by_province'], (int) $cohort['total']), 'caption' => 'Sebaran provinsi'], ['saveData' => false]) ?>
 <?php else: ?>
@@ -127,7 +139,7 @@ foreach ($levels as $level) {
     <?php foreach ($nodes as $node): ?>
       <tr>
         <td><?= esc($levelNames[$node['level_id']] ?? '') ?></td>
-        <td><?= (int) $node['sequence'] ?>. <?= esc($node['title']) ?><br><span class="muted small"><?= esc($node['engine_type']) ?></span></td>
+        <td><?= (int) $node['sequence'] ?>. <?= esc($node['title']) ?><br><span class="muted small"><?= esc(engine_label((string) $node['engine_type'])) ?></span></td>
         <td class="num"><?= esc($num($node['attempts'])) ?></td>
         <td class="num"><?= esc($pct($node['mean_first_pass'])) ?></td>
         <td class="num"><?= esc($pct($node['mean_final'])) ?></td>
@@ -141,7 +153,7 @@ foreach ($levels as $level) {
 
 <h2>5. Penguasaan indikator</h2>
 <?php if ($indicators === []): ?>
-  <p class="muted">Belum ada butir terjawab dalam cakupan ini.</p>
+  <p class="muted">Belum ada soal yang dijawab dalam cakupan ini.</p>
 <?php else: ?>
   <?php
   $indicatorBars = [];
@@ -164,7 +176,7 @@ foreach ($levels as $level) {
   $pillarBars = [];
 
   foreach ($security['pillars'] as $pillar => $stats) {
-      $pillarBars[] = ['label' => (string) $pillar, 'value' => $stats['accuracy'] * 100, 'text' => $pct($stats['accuracy'], true), 'sub' => $num($stats['appeared']) . ' jawaban'];
+      $pillarBars[] = ['label' => admin_label('pillar', (string) $pillar), 'value' => $stats['accuracy'] * 100, 'text' => $pct($stats['accuracy'], true), 'sub' => $num($stats['appeared']) . ' jawaban'];
   }
   ?>
   <?= view('pdf/_bars', ['bars' => $pillarBars, 'caption' => 'Ketepatan per pilar literasi digital', 'alt' => true], ['saveData' => false]) ?>
@@ -187,10 +199,10 @@ foreach ($levels as $level) {
 <?php endif ?>
 
 <h2>7. Catatan metodologis</h2>
-<p><b>Tepat sejak awal</b> (first-pass accuracy) adalah persentase butir yang dijawab benar pada pemeriksaan pertama, sebelum peserta memperbaiki jawabannya. Ukuran ini paling dekat dengan pemahaman awal dan menjadi bobot terbesar skor (70%).</p>
-<p><b>Ketepatan akhir</b> adalah persentase butir yang benar setelah perbaikan; <b>kemandirian</b> berkurang oleh penggunaan petunjuk dan pengulangan pemeriksaan. Skor = 70% tepat sejak awal + 20% ketepatan akhir + 10% kemandirian, dihitung server dengan profil skor bernomor versi.</p>
-<p><b>p</b> (indeks kesukaran butir) = proporsi jawaban benar di antara peserta yang menjawab butir itu; makin kecil makin sulit. <b>D</b> (daya beda) = p kelompok 27% teratas dikurangi p kelompok 27% terbawah berdasarkan total ketepatan: &lt;0 buruk, &lt;0,20 lemah, 0,20–0,40 cukup, &gt;0,40 baik. Nilai D negatif biasanya menandakan kunci jawaban keliru atau kalimat yang membingungkan.</p>
-<p><b>Penguasaan indikator</b> adalah rasio bukti — butir benar sejak awal dibagi butir terjawab — bukan label lulus/tidak lulus. Pustaka Kedu dan audio tidak memengaruhi skor; keduanya dianalisis sebagai perilaku belajar.</p>
+<p><b>Tepat sejak awal</b> (first-pass accuracy) adalah persentase soal yang dijawab benar pada pemeriksaan pertama, sebelum peserta memperbaiki jawabannya. Ukuran ini paling dekat dengan pemahaman awal dan menjadi bobot terbesar skor (70%).</p>
+<p><b>Ketepatan akhir</b> adalah persentase soal yang benar setelah perbaikan; <b>kemandirian</b> berkurang oleh penggunaan petunjuk dan pengulangan pemeriksaan. Skor = 70% tepat sejak awal + 20% ketepatan akhir + 10% kemandirian, dihitung otomatis oleh sistem dengan aturan penilaian yang bernomor versi.</p>
+<p><b>p</b> (indeks kesukaran soal) = proporsi jawaban benar di antara peserta yang menjawab soal itu; makin kecil makin sulit. <b>D</b> (daya beda) = p kelompok 27% teratas dikurangi p kelompok 27% terbawah berdasarkan total ketepatan: &lt;0 buruk, &lt;0,20 lemah, 0,20–0,40 cukup, &gt;0,40 baik. Nilai D negatif biasanya menandakan kunci jawaban keliru atau kalimat yang membingungkan.</p>
+<p><b>Penguasaan indikator</b> adalah rasio bukti — soal yang benar sejak awal dibagi soal yang dijawab — bukan label lulus/tidak lulus. Pustaka Kedu dan audio tidak memengaruhi skor; keduanya dianalisis sebagai perilaku belajar.</p>
 <p class="muted small">Sesi berfase "umum" tidak pernah dicampur ke perbandingan pretest–posttest. Perbandingan hanya dilakukan pada sesi dengan versi rilis yang sama.</p>
 
 </body>

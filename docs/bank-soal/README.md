@@ -1,6 +1,6 @@
 # Bank Soal Produksi GELITA
 
-Isi lengkap kelima belas tantangan dan Pustaka Kedu untuk Temanggung, Magelang, dan Wonosobo, dalam bahasa Indonesia dan Inggris, siap diimpor lewat **Panel Admin → Konten → Impor bank soal**.
+Isi lengkap kelima belas tantangan dan Pustaka Kedu untuk Temanggung, Magelang, dan Wonosobo, dalam bahasa Indonesia dan Inggris, siap diimpor lewat **Panel GELITA → Impor soal (Excel)** (juga dari halaman Konten permainan → *Impor soal dari Excel*).
 
 | Berkas | Isi |
 |---|---|
@@ -8,7 +8,7 @@ Isi lengkap kelima belas tantangan dan Pustaka Kedu untuk Temanggung, Magelang, 
 | [`data/temanggung.php`](data/temanggung.php), [`data/magelang.php`](data/magelang.php), [`data/wonosobo.php`](data/wonosobo.php) | sumber isi yang mudah ditinjau (satu wilayah per berkas) |
 | [`build-workbook.php`](build-workbook.php) | penyusun workbook dari berkas data, beserta pemeriksaan aturan dasar |
 
-Profil skoring tidak diatur di workbook; tantangan memakai profil bawaan studi.
+Aturan penilaian (profil skoring) tidak diatur di workbook; tantangan memakai aturan bawaan penelitian.
 
 ## Isi
 
@@ -42,10 +42,10 @@ Semua butir diimpor berstatus **`draft`**, bukan `verified`. Fakta di setiap but
 
 ## Mengimpor
 
-1. Unggah gambar di Panel Admin → Media sesuai sheet **DAFTAR_MEDIA** (boleh dilakukan setelah impor; lihat bagian berikut).
-2. Panel Admin → Konten → Impor bank soal → pilih `gelita-bank-soal-produksi.xlsx` → **Pratinjau**. Hasil yang diharapkan: 0 galat.
-3. **Jalankan impor**. Seluruh isi masuk dalam satu transaksi.
-4. Konten → Verifikasi konten, lalu mainkan tiap wilayah sebagai siswa.
+1. Unggah gambar di Panel GELITA → **Gambar & suara** sesuai sheet **DAFTAR_MEDIA** (boleh dilakukan setelah impor; lihat bagian berikut).
+2. Panel GELITA → **Impor soal (Excel)** → pilih `gelita-bank-soal-produksi.xlsx` → **Periksa berkas**. Hasil yang diharapkan: 0 kesalahan.
+3. **Simpan soal ke permainan**. Seluruh isi masuk dalam satu transaksi: satu baris gagal, tidak ada yang berubah.
+4. **Konten permainan → Periksa kelengkapan**, lalu mainkan tiap wilayah sebagai siswa.
 
 Lewat server:
 
@@ -61,7 +61,7 @@ Di server pengembangan, `SampleItemSeeder` sudah mengisi dua butir contoh per ta
 
 ## Gambar yang harus diunggah
 
-Tantangan puzzle dan cari objek butuh gambar sungguhan. Impor membuat **slot kosong** untuk setiap `asset_key` yang belum terdaftar, dan Panel → Media menandai slot yang masih kosong. Begitu berkas diunggah dengan asset_key yang sama, gambar langsung tampil.
+Tantangan puzzle dan cari objek butuh gambar sungguhan. Impor membuat **slot kosong** untuk setiap `asset_key` (di panel disebut *kode berkas*) yang belum terdaftar, dan halaman Gambar & suara menandai slot yang masih kosong. Begitu berkas diunggah dengan kode berkas yang sama, gambar langsung tampil.
 
 | asset_key | Dipakai di | Ukuran |
 |---|---|---|
@@ -75,7 +75,7 @@ Isi setiap gambar dan saran sumbernya dirinci di sheet DAFTAR_MEDIA. Selama gamb
 
 mgl-5 tidak butuh berkas: setiap butir memuat deskripsi gambar dalam teks sumbernya. Gambar pendamping per butir tetap dapat ditambahkan lewat editor butir.
 
-**Sekolah tanpa internet.** Gambar Commons dan video YouTube di Pustaka dimuat dari internet oleh browser siswa. Untuk kelas luring, unduh berkasnya (patuhi lisensi di kolom `credit`), unggah di Panel → Media, lalu di editor Pustaka ganti sumber media dari *Tautan* ke *Berkas*.
+**Sekolah tanpa internet.** Gambar Commons dan video YouTube di Pustaka dimuat dari internet oleh browser siswa. Untuk kelas luring, unduh berkasnya (patuhi lisensi di kolom `credit`), unggah di Panel GELITA → Gambar & suara, lalu di editor Pustaka ganti sumber media dari *Tautan* ke *Berkas*.
 
 ## Mengubah isi
 

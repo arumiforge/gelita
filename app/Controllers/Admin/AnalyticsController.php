@@ -20,7 +20,7 @@ class AnalyticsController extends BaseAdminController
     {
         $filters = $this->scopedFilters();
 
-        return $this->panel('admin/analytics/levels', 'Analitik level', [
+        return $this->panel('admin/analytics/levels', 'Hasil per wilayah', [
             'filters' => $filters,
             'rows'    => $this->analytics()->levelBreakdown($filters),
         ]);
@@ -30,7 +30,7 @@ class AnalyticsController extends BaseAdminController
     {
         $filters = $this->scopedFilters();
 
-        return $this->panel('admin/analytics/nodes', 'Analitik tantangan', [
+        return $this->panel('admin/analytics/nodes', 'Hasil per tantangan', [
             'filters'    => $filters,
             'rows'       => $this->analytics()->nodeDifficulty($filters),
             'levels'     => service('contentRepository')->levels(),
@@ -50,7 +50,7 @@ class AnalyticsController extends BaseAdminController
         $filters['node_id'] = $nodeId;
         $analytics          = $this->analytics();
 
-        return $this->panel('admin/analytics/node', 'Drilldown tantangan', [
+        return $this->panel('admin/analytics/node', 'Rincian tantangan', [
             'filters'  => $filters,
             'node'     => $node,
             'level'    => service('contentRepository')->levelById($node->level_id),
@@ -64,7 +64,7 @@ class AnalyticsController extends BaseAdminController
     {
         $filters = $this->scopedFilters();
 
-        return $this->panel('admin/analytics/items', 'Analisis butir', [
+        return $this->panel('admin/analytics/items', 'Hasil per soal', [
             'filters' => $filters,
             'rows'    => $this->describeItems($this->analytics()->itemAnalysis($filters)),
         ]);
@@ -81,7 +81,7 @@ class AnalyticsController extends BaseAdminController
             $perLevel[$level->id] = $analytics->indicatorMastery(['level_id' => $level->id] + $filters);
         }
 
-        return $this->panel('admin/analytics/indicators', 'Penguasaan indikator', [
+        return $this->panel('admin/analytics/indicators', 'Hasil per indikator', [
             'filters'  => $filters,
             'rows'     => $analytics->indicatorMastery($filters),
             'levels'   => $levels,
@@ -149,15 +149,22 @@ class AnalyticsController extends BaseAdminController
         return $out;
     }
 
-    /** Kunci jawaban dalam bentuk singkat yang dapat dibaca. */
+    /** Kunci jawaban dalam bentuk singkat yang dapat dibaca guru. */
     private function keyLabel(\App\Entities\ChallengeItem $item): string
     {
+        $option = (string) ($item->correctOptionKey() ?? '');
+        $prefix = (string) $item->item_key . '-';
+        $order  = $item->answerKey()['order'] ?? null;
+
         return match ($item->interaction_type) {
-            'single_choice', 'source_trust' => (string) ($item->correctOptionKey() ?? '—'),
+            'single_choice', 'source_trust' => $option === '' ? '—'
+                : 'pilihan ' . strtoupper(str_starts_with($option, $prefix) ? substr($option, strlen($prefix)) : $option),
             'verdict_card', 'verdict_reason' => (string) ($item->verdict() ?? '—'),
             'fill_blank_bank', 'fill_blank_free' => implode(' / ', $item->acceptedAnswers('id')) ?: '—',
-            'find_object'  => $item->isDecoy() ? 'jebakan' : 'target',
-            default        => json_encode($item->answerKey(), JSON_UNESCAPED_UNICODE) ?: '—',
+            'find_object'    => $item->isDecoy() ? 'benda jebakan' : 'benda yang dicari',
+            'puzzle_arrange' => 'susunan gambar yang utuh',
+            'ordering'       => is_array($order) ? implode(', ', array_map('strval', $order)) : '—',
+            default          => json_encode($item->answerKey(), JSON_UNESCAPED_UNICODE) ?: '—',
         };
     }
 

@@ -24,20 +24,12 @@
  */
 $characterNames = ['jaka' => 'Jaka', 'mbah_kedu' => 'Mbah Kedu', 'narator' => 'Narator'];
 $contextNames   = [
-    'intro'        => ['Cerita pembuka', 'Slide cerita yang dibaca siswa sebelum membuka peta Kedu pertama kali.'],
-    'map_intro'    => ['Narasi peta', 'Narasi Jaka setelah tirai "Membuka Peta Kedu".'],
-    'ending'       => ['Penutup', 'Slide setelah seluruh wilayah tuntas, sebelum Balai Refleksi.'],
-    'region_intro' => ['Kenali wilayah', 'Cerita Mbah Kedu dari ikon lentera wilayah ini di peta.'],
-    'level_open'   => ['Dialog masuk', 'Percakapan yang tampil saat wilayah ini baru terbuka, satu slide per baris.'],
-    'level_done'   => ['Wilayah tuntas', 'Percakapan saat tantangan kelima wilayah ini selesai.'],
-];
-$poseNames   = [
-    'idle' => 'diam', 'happy' => 'senang', 'bow' => 'membungkuk', 'sad' => 'sedih', 'afraid' => 'takut',
-    'determined' => 'bertekad', 'smile' => 'tersenyum', 'worried' => 'cemas', 'weak' => 'lemah',
-];
-$effectNames = [
-    'fog' => 'kabut datang', 'fog-lift' => 'kabut tersibak', 'glow' => 'cahaya berdenyut',
-    'flash' => 'kilat cahaya', 'shake' => 'layar bergetar', 'dim' => 'layar meredup',
+    'intro'        => ['Cerita pembuka', 'Slide cerita yang dilihat siswa sebelum membuka peta Kedu untuk pertama kali.'],
+    'map_intro'    => ['Narasi peta', 'Ucapan Jaka saat peta Kedu pertama kali terbuka.'],
+    'ending'       => ['Penutup', 'Slide cerita setelah semua wilayah tuntas, sebelum siswa masuk Balai Refleksi.'],
+    'region_intro' => ['Kenali wilayah', 'Cerita Mbah Kedu saat siswa menekan ikon lentera wilayah ini di peta.'],
+    'level_open'   => ['Dialog masuk', 'Percakapan yang tampil saat siswa pertama kali masuk wilayah ini; satu slide untuk satu ucapan.'],
+    'level_done'   => ['Wilayah tuntas', 'Percakapan setelah siswa menyelesaikan tantangan kelima di wilayah ini.'],
 ];
 $levelId        = $level?->id ?? 0;
 $rows   = $dialogues;
@@ -63,9 +55,9 @@ $rows[] = null;
 <?php endif ?>
 <?= $this->include('partials/flash') ?>
 
-<p class="field-help">Rekaman narasi seluruh baris naskah dapat diunggah sekaligus dan disetujui massal di halaman <a href="<?= base_url('admin/konten/narasi') ?>">Narasi</a>.</p>
+<p class="field-help">Rekaman suara untuk semua slide dapat diunggah sekaligus dan disetujui bersamaan di halaman <a href="<?= base_url('admin/konten/narasi') ?>">Rekaman narasi</a>. Kolom Indonesia dan Inggris wajib diisi untuk setiap ucapan.</p>
 
-<nav class="btn-row" aria-label="Konteks naskah">
+<nav class="btn-row" aria-label="Bagian cerita">
   <?php foreach ($contexts as $code): ?>
     <a class="btn btn-sm <?= $code === $context ? 'btn-primary' : 'btn-ghost' ?>"
        href="<?= base_url('admin/konten/dialog/' . $levelId) ?>?konteks=<?= esc($code, 'url') ?>"
@@ -106,19 +98,19 @@ $rows[] = null;
           <?php $pose = $isNew ? '' : (string) ($row['pose'] ?? ''); ?>
           <label for="<?= $p ?>-pose">Pose tokoh</label>
           <select id="<?= $p ?>-pose" name="dialogues[<?= $index ?>][pose]">
-            <option value="">Bawaan (diam; narator tanpa gambar)</option>
+            <option value="">Biasa (diam; narator tanpa gambar)</option>
             <?php foreach ($poses as $character => $list): ?>
               <?php if ($list === []) {
                   continue;
               } ?>
               <optgroup label="<?= esc($characterNames[$character] ?? $character, 'attr') ?>">
                 <?php foreach ($list as $code): ?>
-                  <option value="<?= esc($code, 'attr') ?>" <?= $pose === $code && ($who === $character || $who === '') ? 'selected' : '' ?>><?= esc($code) ?> · <?= esc($poseNames[$code] ?? $code) ?></option>
+                  <option value="<?= esc($code, 'attr') ?>" <?= $pose === $code && ($who === $character || $who === '') ? 'selected' : '' ?>><?= esc(admin_label('pose', $code)) ?></option>
                 <?php endforeach ?>
               </optgroup>
             <?php endforeach ?>
           </select>
-          <p class="field-help">Pose harus milik tokoh yang berbicara. Gambar pose yang belum diunggah memakai pose diam.</p>
+          <p class="field-help">Pilih pose milik tokoh yang sedang berbicara. Bila gambar pose itu belum diunggah, tokoh tampil dengan pose diam.</p>
         </div>
         <div class="field">
           <?php $effect = $isNew ? '' : (string) ($row['effect'] ?? ''); ?>
@@ -126,20 +118,20 @@ $rows[] = null;
           <select id="<?= $p ?>-effect" name="dialogues[<?= $index ?>][effect]">
             <option value="">Tanpa efek</option>
             <?php foreach ($effects as $code): ?>
-              <option value="<?= esc($code, 'attr') ?>" <?= $effect === $code ? 'selected' : '' ?>><?= esc($code) ?> · <?= esc($effectNames[$code] ?? $code) ?></option>
+              <option value="<?= esc($code, 'attr') ?>" <?= $effect === $code ? 'selected' : '' ?>><?= esc(admin_label('effect', $code)) ?></option>
             <?php endforeach ?>
           </select>
         </div>
       </div>
 
       <div class="bilingual">
-        <span class="bilingual-label">Judul slide (opsional)</span>
+        <span class="bilingual-label">Judul slide (tidak wajib)</span>
         <div class="field">
           <label for="<?= $p ?>-title"><span class="lang-tag">ID</span> Indonesia</label>
           <input type="text" id="<?= $p ?>-title" name="dialogues[<?= $index ?>][title_id]" maxlength="150" value="<?= esc($isNew ? '' : ($row['title_id'] ?? ''), 'attr') ?>">
         </div>
         <div class="field">
-          <label for="<?= $p ?>-title-en"><span class="lang-tag">EN</span> English</label>
+          <label for="<?= $p ?>-title-en"><span class="lang-tag">EN</span> Inggris</label>
           <input type="text" id="<?= $p ?>-title-en" name="dialogues[<?= $index ?>][title_en]" maxlength="150" value="<?= esc($isNew ? '' : ($row['title_en'] ?? ''), 'attr') ?>">
         </div>
       </div>
@@ -151,21 +143,21 @@ $rows[] = null;
           <textarea id="<?= $p ?>-text" name="dialogues[<?= $index ?>][text_id]" rows="3" <?= $isNew ? '' : 'required' ?>><?= esc($isNew ? '' : ($row['text_id'] ?? '')) ?></textarea>
         </div>
         <div class="field">
-          <label for="<?= $p ?>-text-en"><span class="lang-tag">EN</span> English</label>
+          <label for="<?= $p ?>-text-en"><span class="lang-tag">EN</span> Inggris</label>
           <textarea id="<?= $p ?>-text-en" name="dialogues[<?= $index ?>][text_en]" rows="3" <?= $isNew ? '' : 'required' ?>><?= esc($isNew ? '' : ($row['text_en'] ?? '')) ?></textarea>
         </div>
         <?php if ($isNew): ?>
-          <p class="field-help">Biarkan ucapan Indonesia kosong bila tidak menambah slide. Bila diisi, ucapan English juga wajib.</p>
+          <p class="field-help">Biarkan ucapan Indonesia kosong bila tidak menambah slide. Bila diisi, ucapan Inggris juga wajib.</p>
         <?php endif ?>
       </div>
 
       <div class="form-grid">
         <?= component('components/audio-select', [
-            'id' => $p . '-audio-id', 'name' => 'dialogues[' . $index . '][audio_id_asset_id]', 'label' => 'Audio narasi (Indonesia)',
+            'id' => $p . '-audio-id', 'name' => 'dialogues[' . $index . '][audio_id_asset_id]', 'label' => 'Rekaman suara (Indonesia)',
             'audioId' => $isNew ? null : $row['audio_id_asset_id'], 'locale' => 'id',
         ]) ?>
         <?= component('components/audio-select', [
-            'id' => $p . '-audio-en', 'name' => 'dialogues[' . $index . '][audio_en_asset_id]', 'label' => 'Audio narasi (English)',
+            'id' => $p . '-audio-en', 'name' => 'dialogues[' . $index . '][audio_en_asset_id]', 'label' => 'Rekaman suara (Inggris)',
             'audioId' => $isNew ? null : $row['audio_en_asset_id'], 'locale' => 'en',
         ]) ?>
       </div>
@@ -177,7 +169,7 @@ $rows[] = null;
   <?php endforeach ?>
 
   <div class="form-actions">
-    <button class="btn btn-primary" type="submit"><?= icon('check') ?> Simpan dialog</button>
+    <button class="btn btn-primary" type="submit"><?= icon('check') ?> Simpan cerita & dialog</button>
   </div>
 </form>
 <?= $this->endSection() ?>

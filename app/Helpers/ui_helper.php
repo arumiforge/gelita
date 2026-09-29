@@ -125,6 +125,26 @@ if (! function_exists('engine_label')) {
     }
 }
 
+if (! function_exists('admin_label')) {
+    /**
+     * Label panel admin untuk kode yang tersimpan di database — status sesi,
+     * fase, jenis soal, jenis catatan aktivitas, dan sebagainya — dari
+     * kelompok `$group` di Language/id/Admin.php. Panel admin selalu
+     * berbahasa Indonesia, jadi locale dipatok 'id'. Kode yang belum punya
+     * label tampil apa adanya; nilai kosong menjadi tanda pisah.
+     */
+    function admin_label(string $group, ?string $code): string
+    {
+        if ($code === null || $code === '') {
+            return '—';
+        }
+
+        $labels = lang('Admin.' . $group, [], 'id');
+
+        return is_array($labels) && isset($labels[$code]) ? (string) $labels[$code] : $code;
+    }
+}
+
 if (! function_exists('fmt_pct')) {
     /**
      * Angka 0–100 (atau rasio 0–1 bila $ratio) → "73,5%" gaya Indonesia.

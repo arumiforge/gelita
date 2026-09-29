@@ -17,8 +17,8 @@ class ResearchStudyModel extends Model
         'active_phase_code', 'allow_phase_choice',
     ];
     protected $validationRules = [
-        'code'                => 'required|max_length[50]|is_unique[research_studies.code,id,{id}]',
-        'name'                => 'required|max_length[200]',
+        'code'                => ['label' => 'Kode singkat studi', 'rules' => 'required|max_length[50]|is_unique[research_studies.code,id,{id}]'],
+        'name'                => ['label' => 'Nama studi', 'rules' => 'required|max_length[200]'],
         'status'              => 'required|in_list[draft,active,closed]',
         'unlock_mode'         => 'required|in_list[sequential,free]',
         'item_selection_mode' => 'required|in_list[fixed,random]',

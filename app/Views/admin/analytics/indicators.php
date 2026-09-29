@@ -17,20 +17,20 @@
 
 <?= $this->section('content') ?>
 <?= component('partials/admin-head', [
-    'title'   => 'Penguasaan indikator',
-    'eyebrow' => 'Analitik',
-    'lead'    => 'Rasio jawaban benar pada percobaan pertama per indikator pembelajaran. Angka kecil di tiap sel adalah jumlah bukti (jawaban) yang mendasarinya.',
+    'title'   => 'Hasil per indikator',
+    'eyebrow' => 'Hasil belajar',
+    'lead'    => 'Persentase jawaban yang langsung benar untuk tiap indikator pembelajaran. Angka kecil di tiap kotak menunjukkan dari berapa jawaban persentase itu dihitung, misalnya 8/10 = 8 benar dari 10 jawaban.',
 ]) ?>
 <?= $this->include('partials/flash') ?>
 <?= component('admin-filter-bar', ['filters' => $filters, 'only' => ['study_id', 'phase_code', 'school_id', 'class_level', 'province_code', 'date_from', 'locale']]) ?>
 
 <?php if ($rows === []): ?>
-  <div class="empty-state"><?= icon('target') ?><p>Belum ada jawaban yang terkait indikator pada filter ini. Matriks terisi setelah siswa menjawab butir yang punya indikator.</p></div>
+  <div class="empty-state"><?= icon('target') ?><p>Belum ada jawaban yang terkait indikator untuk pilihan filter ini. Tabel terisi setelah siswa menjawab soal yang punya indikator.</p></div>
 <?php else: ?>
   <?php ob_start() ?>
   <div class="table-wrap">
     <table class="heatmap matrix">
-      <caption class="visually-hidden">Rasio penguasaan indikator per wilayah</caption>
+      <caption class="visually-hidden">Persentase benar tiap indikator per wilayah</caption>
       <thead>
         <tr>
           <th scope="col">Indikator</th>
@@ -46,11 +46,11 @@
             <th scope="row"><code><?= esc($code) ?></code><span class="cell-sub"><?= esc($row['name']) ?></span></th>
             <?php foreach (array_merge(array_map(static fn ($l) => $perLevel[$l->id][$code] ?? null, $levels), [$row]) as $cell): ?>
               <?php if ($cell === null || (int) $cell['evidence_count'] === 0): ?>
-                <td class="heat-cell is-empty">—<small>0 bukti</small></td>
+                <td class="heat-cell is-empty">—<small>0 jawaban</small></td>
               <?php else: ?>
                 <td class="heat-cell" style="--heat: <?= round((float) $cell['mastery_ratio'], 3) ?>">
                   <?= esc(fmt_pct($cell['mastery_ratio'], true, 0)) ?>
-                  <small><?= esc($cell['correct_count'] . '/' . $cell['evidence_count']) ?> bukti</small>
+                  <small><?= esc($cell['correct_count'] . '/' . $cell['evidence_count']) ?> jawaban</small>
                 </td>
               <?php endif ?>
             <?php endforeach ?>
@@ -63,7 +63,7 @@
 
   <?= component('admin-chart', [
       'id'       => 'chart-indicators',
-      'title'    => 'Matriks indikator × wilayah',
+      'title'    => 'Persentase benar: indikator × wilayah',
       'type'     => 'matrix',
       'endpoint' => 'api/admin/indicators',
       'size'     => 'lg',
@@ -72,14 +72,14 @@
 
   <?= component('admin-table', [
       'rows'    => array_values($rows),
-      'caption' => 'Penguasaan indikator keseluruhan',
+      'caption' => 'Hasil per indikator secara keseluruhan',
       'columns' => [
           'code'             => ['label' => 'Kode', 'format' => 'code'],
           'name'             => 'Indikator',
-          'evidence_count'   => ['label' => 'Bukti', 'format' => 'num'],
-          'correct_count'    => ['label' => 'Benar awal', 'format' => 'num'],
-          'mastery_ratio'    => ['label' => 'Rasio', 'format' => 'ratio'],
-          'mean_response_ms' => ['label' => 'Rata-rata waktu', 'format' => 'ms'],
+          'evidence_count'   => ['label' => 'Jumlah jawaban', 'format' => 'num'],
+          'correct_count'    => ['label' => 'Benar sejak awal', 'format' => 'num'],
+          'mastery_ratio'    => ['label' => 'Persentase benar', 'format' => 'ratio'],
+          'mean_response_ms' => ['label' => 'Rata-rata waktu menjawab', 'format' => 'ms'],
       ],
   ]) ?>
 <?php endif ?>

@@ -27,7 +27,7 @@ class SchoolModel extends Model
         'is_active', 'is_verified', 'match_key', 'merged_into_id',
     ];
     protected $validationRules = [
-        'name' => 'required|max_length[200]',
+        'name' => ['label' => 'Nama sekolah', 'rules' => 'required|max_length[200]'],
     ];
 
     /**
