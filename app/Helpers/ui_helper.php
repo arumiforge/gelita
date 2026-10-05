@@ -145,6 +145,40 @@ if (! function_exists('admin_label')) {
     }
 }
 
+if (! function_exists('class_label')) {
+    /**
+     * Kelas siswa (participants.class_level) → "Kelas 5 SD/MI". Pendaftaran
+     * kini hanya menerima kelas 5, tetapi data lama (kelas 1–9, `lainnya`)
+     * tetap tampil dengan namanya. Nilai kosong menjadi tanda pisah.
+     */
+    function class_label(?string $code, ?string $locale = 'id'): string
+    {
+        $code = trim((string) $code);
+
+        if ($code === '') {
+            return '—';
+        }
+
+        if ($code === 'lainnya') {
+            return lang('Game.classOther', [], $locale);
+        }
+
+        if (ctype_digit($code)) {
+            $grade = (int) $code;
+
+            if ($grade >= 1 && $grade <= 6) {
+                return lang('Game.classSd', [$grade], $locale);
+            }
+
+            if ($grade >= 7 && $grade <= 9) {
+                return lang('Game.classSmp', [$grade], $locale);
+            }
+        }
+
+        return $code;
+    }
+}
+
 if (! function_exists('fmt_pct')) {
     /**
      * Angka 0–100 (atau rasio 0–1 bila $ratio) → "73,5%" gaya Indonesia.
