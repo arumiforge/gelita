@@ -3,7 +3,7 @@
  * Kritik & saran — `/admin/masukan` → FeedbackController::index
  *
  * Ringkasan sebaran bintang + kartu masukan (bintang, empat jawaban, kode
- * peserta, fase, waktu). Nama pengguna siswa tidak ditampilkan di sini.
+ * peserta, waktu). Nama pengguna siswa tidak ditampilkan di sini.
  *
  * @var list<array<string, mixed>>   $rows
  * @var CodeIgniter\Pager\Pager|null  $pager

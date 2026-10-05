@@ -125,7 +125,7 @@ class Services extends BaseService
         return new ChallengeService();
     }
 
-    /** Satu-satunya tempat rumus skor ditulis. */
+    /** Satu-satunya tempat aturan bintang (`bintang-1`) ditulis. */
     public static function scoringService(bool $getShared = true): ScoringService
     {
         if ($getShared) {

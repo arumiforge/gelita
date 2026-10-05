@@ -6,7 +6,7 @@
  *
  * Pembaca panel adalah guru dan admin sekolah, bukan orang teknis: pakai
  * kata sehari-hari, hindari istilah pemrograman. Kelompok label di bagian
- * bawah menerjemahkan kode yang tersimpan di database (status, fase, jenis
+ * bawah menerjemahkan kode yang tersimpan di database (status, alasan selesai, jenis
  * soal, …) lewat admin_label(); kode yang belum punya label tampil apa adanya.
  */
 return [

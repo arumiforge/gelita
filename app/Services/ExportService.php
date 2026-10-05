@@ -817,7 +817,7 @@ class ExportService
 
     // ------------------------------------------------------------ builder
 
-    /** Sesi + peserta + fase, terfilter. Filter wilayah tidak berlaku pada sesi. */
+    /** Sesi + peserta, terfilter. Filter wilayah tidak berlaku pada sesi. */
     private function sessionBuilder(array $filters): BaseBuilder
     {
         $builder = $this->db()->table('game_sessions')
