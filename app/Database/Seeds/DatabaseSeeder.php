@@ -14,7 +14,6 @@ class DatabaseSeeder extends Seeder
         $this->call('SchoolSeeder');
         $this->call('StaffUserSeeder');
         $this->call('LearningIndicatorSeeder');
-        $this->call('ScoringProfileSeeder');
         $this->call('GameReleaseSeeder');
         $this->call('ResearchStudySeeder');
         $this->call('LevelSeeder');
