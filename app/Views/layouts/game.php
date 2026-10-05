@@ -21,6 +21,9 @@ $locale     = service('request')->getLocale();
 $background = trim($this->renderSection('background'));
 $bodyClass  = trim($this->renderSection('bodyClass'));
 $title      = trim($this->renderSection('title'));
+$request    = service('request');
+// Kode layar Dok 1 §12.4 (sama dengan screen_viewed di server) untuk event page_hidden/visible
+$screenCode = method_exists($request, 'getPath') ? (App\Filters\ScreenViewFilter::resolve(trim((string) $request->getPath(), '/'))[0] ?? null) : null;
 ?>
 <!DOCTYPE html>
 <html lang="<?= esc($locale) ?>">
@@ -53,7 +56,7 @@ $title      = trim($this->renderSection('title'));
 </head>
 <body class="game <?= esc($bodyClass) ?>"
       data-locale="<?= esc($locale) ?>"
-      data-base="<?= esc(base_url()) ?>">
+      data-base="<?= esc(base_url()) ?>"<?= $screenCode !== null ? ' data-screen-code="' . esc($screenCode, 'attr') . '"' : '' ?>>
   <?= $this->include('components/rotate-gate') ?>
   <?= $this->renderSection('overlay') ?>
   <a class="skip-link" href="#app"><?= esc(lang('Game.skipToContent')) ?></a>
