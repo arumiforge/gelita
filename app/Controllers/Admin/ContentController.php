@@ -1033,6 +1033,7 @@ class ContentController extends BaseAdminController
             'sequence'         => (int) ($this->request->getPost('sequence') ?? 0),
             'passage_id'       => $this->idOrNull($this->request->getPost('passage_id')),
             'indicator_id'     => $this->idOrNull($this->request->getPost('indicator_id')),
+            'bloom_level'      => $this->nullIfBlank(strtoupper(trim((string) $this->request->getPost('bloom_level')))),
             'answer_key_json'  => $answerKey,
             'config_json'      => $config,
             'reference_source' => $this->nullIfBlank($this->request->getPost('reference_source')),
@@ -1078,13 +1079,15 @@ class ContentController extends BaseAdminController
             return $config;
         }
 
-        foreach (['items_per_round', 'distractor_count', 'grid'] as $key) {
+        // Ukuran papan susun gambar tidak diatur per tantangan: mengikuti tingkat
+        // kesulitan wilayah dan tersimpan per soal (DifficultyRules).
+        foreach (['items_per_round', 'distractor_count'] as $key) {
             if (isset($guided[$key]) && trim((string) $guided[$key]) !== '') {
                 $config[$key] = max(0, (int) $guided[$key]);
             }
         }
 
-        foreach (['allow_retry', 'use_word_bank', 'require_reason', 'shuffle_options', 'show_decoys'] as $key) {
+        foreach (['allow_retry', 'use_word_bank', 'require_reason', 'shuffle_options', 'show_decoys', 'as_reading'] as $key) {
             if (array_key_exists($key, $guided)) {
                 $config[$key] = (bool) (int) $guided[$key];
             }

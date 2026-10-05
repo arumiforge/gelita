@@ -33,6 +33,7 @@ $itemFormData = [
     'interactions' => $interactions,
     'passages'     => $passages,
     'indicators'   => $indicators,
+    'difficulty'   => (string) ($level?->difficulty ?? ''),
 ];
 ?>
 <?= $this->extend('layouts/admin') ?>

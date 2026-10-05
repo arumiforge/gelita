@@ -9,6 +9,7 @@ use App\Models\ChallengeOptionModel;
 use App\Models\HintModel;
 use App\Models\LearningIndicatorModel;
 use App\Libraries\BankWorkbookGuide;
+use App\Libraries\DifficultyRules;
 use App\Libraries\MediaLink;
 use App\Models\LevelModel;
 use App\Models\LibraryMediaModel;
@@ -39,10 +40,10 @@ class ContentImportService
 
     /** Header per sheet; kolom di luar daftar ini diabaikan. Sheet lain (mis. PETUNJUK) juga diabaikan. */
     public const SHEETS = [
-        'nodes'       => ['node_ref', 'title_id', 'title_en', 'instruction_id', 'instruction_en', 'description_id', 'description_en', 'items_per_round', 'verdict_options', 'require_reason', 'use_word_bank', 'distractor_count', 'scene_media_key', 'background_media_key'],
+        'nodes'       => ['node_ref', 'title_id', 'title_en', 'instruction_id', 'instruction_en', 'description_id', 'description_en', 'items_per_round', 'verdict_options', 'require_reason', 'use_word_bank', 'distractor_count', 'as_reading', 'scene_media_key', 'background_media_key', 'variant_code'],
         'distractors' => ['node_ref', 'text_id', 'text_en'],
         'passages'    => ['passage_key', 'level_code', 'title_id', 'title_en', 'body_id', 'body_en', 'media_asset_key', 'reference_source'],
-        'items'       => ['item_key', 'node_ref', 'sequence', 'interaction_type', 'indicator', 'prompt_id', 'prompt_en', 'source_text_id', 'source_text_en', 'passage_key', 'answer_id', 'answer_en', 'sample_reason_id', 'sample_reason_en', 'x', 'y', 'w', 'decoy', 'wrong_feedback_id', 'wrong_feedback_en', 'digital_pillar', 'media_asset_key', 'scorable', 'review_status', 'review_note', 'reference_source'],
+        'items'       => ['item_key', 'node_ref', 'sequence', 'interaction_type', 'indicator', 'bloom_level', 'prompt_id', 'prompt_en', 'source_text_id', 'source_text_en', 'passage_key', 'answer_id', 'answer_en', 'sample_reason_id', 'sample_reason_en', 'x', 'y', 'w', 'decoy', 'wrong_feedback_id', 'wrong_feedback_en', 'digital_pillar', 'media_asset_key', 'scorable', 'is_active', 'review_status', 'review_note', 'reference_source'],
         'options'     => ['option_key', 'item_key', 'label_id', 'label_en', 'is_correct', 'feedback_id', 'feedback_en', 'media_asset_key', 'display_order'],
         'pieces'      => ['item_key', 'piece_key', 'text_id', 'text_en'],
         'sources'     => ['item_key', 'label_id', 'label_en', 'kind', 'text_id', 'text_en'],
@@ -195,6 +196,11 @@ class ContentImportService
             }
         }
 
+        // Tingkat Bloom ditulis huruf besar (c2 → C2) sebelum diperiksa dan ditulis.
+        foreach ($sheets['items'] as $index => $row) {
+            $sheets['items'][$index]['bloom_level'] = strtoupper((string) $row['bloom_level']);
+        }
+
         $levels     = $this->levelIdsByCode();
         $nodes      = $this->nodeIdsByRef($levels);
         $indicators = array_map(static fn ($row): int => (int) $row['id'], model(LearningIndicatorModel::class)->map());
@@ -209,6 +215,7 @@ class ContentImportService
             'items'      => $this->collect($sheets['items'], 'item_key'),
             'options'    => $this->groupBy($sheets['options'], 'item_key'),
             'library'    => $this->libraryKeys($sheets['library']),
+            'difficulty' => $this->difficultyByPrefix(),
         ];
 
         foreach (array_keys(self::SHEETS) as $name) {
@@ -242,6 +249,7 @@ class ContentImportService
 
         return [
             'sheets'     => $sheets,
+            'difficulty' => $context['difficulty'],
             'summary'    => $summary['summary'],
             'errors'     => $errors,
             'warnings'   => $summary['warnings'],
@@ -297,7 +305,7 @@ class ContentImportService
     private function validateRow(string $sheet, array $row, array $context): ?string
     {
         return match ($sheet) {
-            'nodes'       => $this->validateNodeRef($row['node_ref'] ?? '', $context),
+            'nodes'       => $this->validateNodeRef($row['node_ref'] ?? '', $context) ?? $this->validateNodeSettings($row),
             'distractors' => $this->validateNodeRef($row['node_ref'] ?? '', $context)
                 ?? ($row['text_id'] === '' ? self::missing('distractors', 'text_id') : null),
             'passages' => $this->validatePassage($row, $context),
@@ -327,6 +335,19 @@ class ContentImportService
 
         if (! isset($context['nodes'][$nodeRef])) {
             return "Kode tantangan (node_ref) '{$nodeRef}' tidak ada di permainan. Pakai tmg-1 … tmg-5, mgl-1 … mgl-5, atau wnb-1 … wnb-5.";
+        }
+
+        return null;
+    }
+
+    private function validateNodeSettings(array $row): ?string
+    {
+        if (! in_array((string) $row['as_reading'], ['', '0', '1'], true)) {
+            return 'Kolom as_reading (tampil sebagai bacaan) hanya boleh 0 atau 1, atau dikosongkan.';
+        }
+
+        if ($row['variant_code'] !== '' && preg_match('/^[a-z0-9_]{1,60}$/', (string) $row['variant_code']) !== 1) {
+            return 'Kolom variant_code (kode variasi tampilan) hanya boleh berisi huruf kecil, angka, dan garis bawah (paling banyak 60).';
         }
 
         return null;
@@ -371,6 +392,14 @@ class ContentImportService
             return self::unknown('items', 'indicator', $row['indicator'], 'Pakai ' . implode(', ', array_keys($context['indicators'])) . ', atau kosongkan.');
         }
 
+        if ($row['bloom_level'] !== '' && ! DifficultyRules::isBloom($row['bloom_level'])) {
+            return self::unknown('items', 'bloom_level', $row['bloom_level'], 'Pakai C1, C2, C3, C4, C5, atau C6, atau kosongkan.');
+        }
+
+        if (! in_array((string) $row['is_active'], ['', '0', '1'], true)) {
+            return 'Kolom is_active (soal dipakai?) hanya boleh 0 atau 1, atau dikosongkan.';
+        }
+
         $passageKey = trim((string) $row['passage_key']);
 
         if ($passageKey !== ''
@@ -384,9 +413,26 @@ class ContentImportService
             return 'Kunci jawaban (answer_id) untuk soal benar/salah harus diisi benar, salah, atau pendapat.';
         }
 
-        if (in_array($row['interaction_type'], ['fill_blank_bank', 'fill_blank_free'], true)
-            && trim((string) $row['answer_id']) === '') {
-            return 'Kunci jawaban (answer_id) wajib diisi untuk soal isi rumpang.';
+        if (in_array($row['interaction_type'], ['fill_blank_bank', 'fill_blank_free'], true)) {
+            if (trim((string) $row['answer_id']) === '') {
+                return 'Kunci jawaban (answer_id) wajib diisi untuk soal isi rumpang.';
+            }
+
+            foreach (['prompt_id' => 'bahasa Indonesia', 'prompt_en' => 'bahasa Inggris'] as $column => $language) {
+                if (($column === 'prompt_id' || $row[$column] !== '') && self::blankCount((string) $row[$column]) !== 1) {
+                    return "Soal isi rumpang {$row['item_key']} harus punya TEPAT SATU tempat kosong ___ di teks {$language}.";
+                }
+            }
+        }
+
+        $layout = null;
+
+        if ($row['interaction_type'] === 'puzzle_arrange') {
+            $layout = $this->puzzleLayoutFor($row, model(ChallengeItemModel::class)->findByKey((string) $row['item_key']), $context['difficulty']);
+
+            if ($layout['grid'] < 2) {
+                return "Kunci susun gambar {$row['item_key']} (answer_id) harus berisi nomor keping sebanyak n × n (9 untuk 3 × 3, 16 untuk 4 × 4). Kosongkan saja: sistem membuatnya otomatis.";
+            }
         }
 
         // Item yang sudah pernah dijawab tidak boleh berganti kunci, agar data lama tetap sebanding.
@@ -394,7 +440,7 @@ class ContentImportService
 
         if ($existing !== null && model(ChallengeItemModel::class)->hasResponses($existing->id)) {
             // kunci pilihan ganda diturunkan dari opsi di workbook, sama seperti saat menulis
-            $incoming = $this->answerKeyFor($row, $context['options'][trim((string) $row['item_key'])] ?? []);
+            $incoming = $this->answerKeyFor($row, $context['options'][trim((string) $row['item_key'])] ?? [], $layout);
 
             if (json_encode($incoming, JSON_UNESCAPED_UNICODE) !== json_encode($existing->answerKey(), JSON_UNESCAPED_UNICODE)) {
                 return "Soal {$row['item_key']} sudah pernah dijawab siswa, jadi kunci jawabannya tidak boleh diubah (supaya data penelitian tetap sebanding). Bila perlu kunci baru, buat soal baru dengan kode baru.";
@@ -679,6 +725,7 @@ class ContentImportService
             $sourcesByItem,
             $optionsByItem,
             $mode,
+            $parsed['difficulty'],
         );
 
         $written['items']   = count($itemIds);
@@ -716,7 +763,7 @@ class ContentImportService
             $config = $node->config_json ?: [];
 
             foreach (['items_per_round' => 'int', 'distractor_count' => 'int',
-                'require_reason' => 'bool', 'use_word_bank' => 'bool'] as $key => $type) {
+                'require_reason' => 'bool', 'use_word_bank' => 'bool', 'as_reading' => 'bool'] as $key => $type) {
                 if ($row[$key] !== '') {
                     $config[$key] = $type === 'int' ? (int) $row[$key] : (bool) (int) $row[$key];
                 }
@@ -734,9 +781,13 @@ class ContentImportService
                     'text_id' => $d['text_id'],
                     'text_en' => $d['text_en'] !== '' ? $d['text_en'] : $d['text_id'],
                 ], $distractors[$row['node_ref']]);
+            } elseif ($row['distractor_count'] === '0') {
+                // 0 pengecoh tanpa baris di sheet distractors = daftar lama dikosongkan
+                $config['distractors'] = [];
             }
 
             $model->update($nodeId, array_filter([
+                'variant_code'   => $row['variant_code'],
                 'title_id'       => $row['title_id'],
                 'title_en'       => $row['title_en'],
                 'instruction_id' => $row['instruction_id'],
@@ -806,6 +857,7 @@ class ContentImportService
         array $sourcesByItem,
         array $optionsByItem,
         string $mode,
+        array $difficulty = [],
     ): array {
         $model     = model(ChallengeItemModel::class);
         $passages  = model(ReadingPassageModel::class);
@@ -820,6 +872,13 @@ class ContentImportService
                 $passageId = $passages->findByKey($passageKey)?->id;
             }
 
+            // Soal lama dicari lebih dulu: ukuran papan dan kunci susun gambar
+            // yang sudah ada tidak pernah dihitung ulang.
+            $existing = $model->findByKey($itemKey);
+            $layout   = $row['interaction_type'] === 'puzzle_arrange'
+                ? $this->puzzleLayoutFor($row, $existing, $difficulty)
+                : null;
+
             $data = [
                 'challenge_node_id' => $nodes[$row['node_ref']],
                 'item_key'          => $itemKey,
@@ -830,17 +889,23 @@ class ContentImportService
                 'source_text_id'    => $this->nullIfBlank($row['source_text_id']),
                 'source_text_en'    => $this->nullIfBlank($row['source_text_en']),
                 'passage_id'        => $passageId,
-                'answer_key_json'   => $this->answerKeyFor($row, $optionsByItem[$itemKey] ?? []),
-                'config_json'       => $this->itemConfigFor($row, $piecesByItem[$itemKey] ?? [], $sourcesByItem[$itemKey] ?? []),
+                'answer_key_json'   => $this->answerKeyFor($row, $optionsByItem[$itemKey] ?? [], $layout),
+                'config_json'       => $this->itemConfigFor($row, $piecesByItem[$itemKey] ?? [], $sourcesByItem[$itemKey] ?? [], $layout),
                 'indicator_id'      => $indicators[$row['indicator']] ?? null,
+                'bloom_level'       => $this->nullIfBlank($row['bloom_level']),
                 'reference_source'  => $this->nullIfBlank($row['reference_source']),
                 'review_status'     => $row['review_status'] !== '' ? $row['review_status'] : 'draft',
                 'review_note'       => $this->nullIfBlank($row['review_note']),
                 'scorable'          => $row['scorable'] !== '' ? (int) $row['scorable'] : 1,
-                'is_active'         => 1,
             ] + $this->mediaColumns($row, ['media_asset_key' => 'media_asset_id'], $media);
 
-            $existing = $model->findByKey($itemKey);
+            // is_active kosong: soal baru dipakai, soal lama tidak diubah — workbook
+            // lama tidak boleh menghidupkan lagi soal yang sudah diistirahatkan.
+            if ($row['is_active'] !== '') {
+                $data['is_active'] = (int) $row['is_active'];
+            } elseif ($existing === null) {
+                $data['is_active'] = 1;
+            }
 
             if ($existing !== null) {
                 if ($mode === 'insert') {
@@ -1150,15 +1215,15 @@ class ContentImportService
      *
      * @return array<string, mixed>
      */
-    private function answerKeyFor(array $row, array $options): array
+    private function answerKeyFor(array $row, array $options, ?array $layout = null): array
     {
         $answerId = trim((string) $row['answer_id']);
         $answerEn = trim((string) $row['answer_en']);
 
         return match ($row['interaction_type']) {
-            'puzzle_arrange' => ['order' => $answerId !== ''
+            'puzzle_arrange' => ['order' => $layout['key'] ?? ($answerId !== ''
                 ? array_map('intval', $this->splitList($answerId))
-                : range(0, 8)],
+                : range(0, 8))],
             'ordering'        => ['order' => $this->splitList($answerId)],
             'fill_blank_bank' => ['text_id' => $answerId, 'text_en' => $answerEn !== '' ? $answerEn : $answerId],
             'fill_blank_free' => [
@@ -1184,9 +1249,9 @@ class ContentImportService
      *
      * @return array<string, mixed>|null
      */
-    private function itemConfigFor(array $row, array $pieces, array $sources): ?array
+    private function itemConfigFor(array $row, array $pieces, array $sources, ?array $layout = null): ?array
     {
-        $config = [];
+        $config = $layout === null ? [] : ['grid' => $layout['grid'], 'shape' => $layout['shape']];
 
         foreach (['x', 'y', 'w'] as $key) {
             if ($row[$key] !== '') {
@@ -1295,9 +1360,23 @@ class ContentImportService
     private function summarize(array $sheets, array $warnings): array
     {
         $perNode = [];
+        $active  = [];
 
         foreach ($sheets['items'] as $row) {
             $perNode[$row['node_ref']]['items'] = ($perNode[$row['node_ref']]['items'] ?? 0) + 1;
+
+            if ($row['is_active'] !== '0') {
+                $active[$row['node_ref']] = ($active[$row['node_ref']] ?? 0) + 1;
+            }
+        }
+
+        // Tantangan bacaan memakai SEMUA soalnya sekaligus, jadi tidak butuh soal cadangan.
+        $reading = [];
+
+        foreach ($sheets['nodes'] as $row) {
+            if ($row['as_reading'] !== '') {
+                $reading[$row['node_ref']] = $row['as_reading'] === '1';
+            }
         }
 
         foreach ($sheets['hints'] as $row) {
@@ -1321,7 +1400,11 @@ class ContentImportService
         foreach ($nodes as $node) {
             $ref     = $this->nodeRefFor($node->level_id, $node->sequence);
             $minimum = $node->itemsPerRound();
-            $items   = $perNode[$ref]['items'] ?? 0;
+            $items   = $active[$ref] ?? 0;
+
+            if ($reading[$ref] ?? $node->isReading()) {
+                continue;
+            }
 
             if ($ref !== null && $items > 0 && $items === $minimum) {
                 $warnings[] = [
@@ -1349,6 +1432,73 @@ class ContentImportService
     }
 
     /** @return array<string, int> kode level => id */
+    /**
+     * Ukuran papan, bentuk keping, dan kunci soal Susun Gambar. Ditetapkan
+     * sekali saat soal dibuat, mengikuti tingkat kesulitan wilayahnya
+     * (DifficultyRules: mudah 3 × 3 kotak, sedang 4 × 4 kotak, sulit 4 × 4
+     * jigsaw). Soal yang sudah ada tetap memakai ukuran dan kuncinya sendiri,
+     * sehingga jawaban siswa lama tetap sebanding. Kunci yang ditulis di
+     * answer_id (cara lama) dihormati; ukurannya = akar jumlah keping.
+     *
+     * @param array<string, string> $difficulty awalan kode tantangan → tingkat
+     *
+     * @return array{grid: int, shape: string, key: list<int>}
+     */
+    private function puzzleLayoutFor(array $row, ?\App\Entities\ChallengeItem $existing, array $difficulty): array
+    {
+        $prefix = explode('-', (string) $row['node_ref'])[0];
+        $rule   = DifficultyRules::puzzle($difficulty[$prefix] ?? null);
+        $answer = trim((string) $row['answer_id']);
+
+        $storedKey   = $existing?->interaction_type === 'puzzle_arrange' ? $existing->answerKey('order') : null;
+        $storedShape = $existing?->conf('shape');
+        $shape       = in_array($storedShape, DifficultyRules::SHAPES, true) ? $storedShape : null;
+
+        if ($answer !== '') {
+            $key = array_map('intval', $this->splitList($answer));
+        } elseif (is_array($storedKey) && $storedKey !== []) {
+            $key = array_map('intval', array_values($storedKey));
+        } else {
+            $key = range(0, $rule['grid'] * $rule['grid'] - 1);
+        }
+
+        $grid = (int) round(sqrt(count($key)));
+
+        if ($grid * $grid !== count($key)) {
+            $grid = 0;   // bukan n × n keping: ditolak validateItem
+        }
+
+        if ($shape === null) {
+            // soal lama tanpa catatan bentuk = kotak; soal baru mengikuti wilayahnya
+            $shape = $existing !== null || $grid !== $rule['grid'] ? 'square' : $rule['shape'];
+        }
+
+        return ['grid' => $grid, 'shape' => $shape, 'key' => $key];
+    }
+
+    /** @return array<string, string> awalan kode tantangan (tmg, mgl, wnb) → tingkat kesulitan wilayah */
+    private function difficultyByPrefix(): array
+    {
+        $prefixes = array_flip(config('Gelita')->levelPrefixes);
+        $out      = [];
+
+        foreach (model(LevelModel::class)->ordered() as $level) {
+            $prefix = $prefixes[(string) $level->code] ?? null;
+
+            if ($prefix !== null) {
+                $out[$prefix] = (string) $level->difficulty;
+            }
+        }
+
+        return $out;
+    }
+
+    /** Jumlah tempat kosong (tiga garis bawah atau lebih) dalam satu teks soal. */
+    private static function blankCount(string $text): int
+    {
+        return preg_match_all('/_{3,}/', $text);
+    }
+
     private function levelIdsByCode(): array
     {
         $out = [];
