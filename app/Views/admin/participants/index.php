@@ -10,7 +10,7 @@
  * @var array<string, mixed>             $filters
  * @var string                           $search
  */
-$genders = ['laki-laki' => 'L', 'perempuan' => 'P', 'lainnya' => 'Lainnya'];
+$genders = ['laki-laki' => 'L', 'perempuan' => 'P'];
 ?>
 <?= $this->extend('layouts/admin') ?>
 
@@ -44,7 +44,6 @@ $genders = ['laki-laki' => 'L', 'perempuan' => 'P', 'lainnya' => 'Lainnya'];
         'province_name'    => 'Provinsi',
         'session_count'    => ['label' => 'Sesi', 'format' => 'num'],
         'shards'           => ['label' => 'Tantangan selesai', 'format' => 'num'],
-        'mean_first_pass'  => ['label' => 'Benar sejak awal', 'format' => 'pct'],
         'last_active_at'   => ['label' => 'Terakhir aktif', 'format' => 'datetime'],
         'id'               => ['label' => '', 'render' => static fn (array $r): string => '<a class="btn btn-quiet btn-sm" href="' . base_url('admin/peserta/' . $r['id']) . '">Lihat profil</a>'],
     ],

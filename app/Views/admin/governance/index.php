@@ -16,7 +16,6 @@
  * @var int                         $attemptHours
  * @var int                         $sessionDays
  * @var int                         $exportRetention
- * @var list<string>                $phases
  * @var array<string, mixed>|null   $retention hasil retensi terakhir (flashdata)
  */
 $prefill = [
@@ -42,10 +41,6 @@ $scopeText = static function (array $scope) use ($scopeNames): string {
         if (isset($scope[$key])) {
             $parts[] = $label . ' nomor ' . (int) $scope[$key];
         }
-    }
-
-    if (isset($scope['phase_code'])) {
-        $parts[] = 'tahap ' . admin_label('phase', (string) $scope['phase_code']);
     }
 
     if (isset($scope['date_from']) || isset($scope['date_to'])) {
@@ -145,17 +140,8 @@ $history = array_values(array_filter($requests, static fn (array $row): bool => 
 
   <fieldset class="repeat-row">
     <legend>Persempit data penelitian (tidak wajib)</legend>
-    <p class="field-help">Hanya dipakai bila Anda mengisi nomor penelitian: batasi ke satu tahap dan/atau sesi yang dimulai pada rentang tanggal tertentu.</p>
+    <p class="field-help">Hanya dipakai bila Anda mengisi nomor penelitian: batasi ke sesi yang dimulai pada rentang tanggal tertentu.</p>
     <div class="form-grid">
-      <div class="field">
-        <label for="phase_code">Tahap</label>
-        <select id="phase_code" name="phase_code">
-          <option value="">Semua tahap</option>
-          <?php foreach ($phases as $phase): ?>
-            <option value="<?= esc($phase, 'attr') ?>"><?= esc(admin_label('phase', $phase)) ?></option>
-          <?php endforeach ?>
-        </select>
-      </div>
       <div class="field">
         <label for="date_from">Sesi mulai dari tanggal</label>
         <input type="date" id="date_from" name="date_from">

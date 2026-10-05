@@ -12,7 +12,6 @@ use App\Models\AuditLogModel;
 use App\Models\ChallengeAttemptModel;
 use App\Models\ChallengeItemModel;
 use App\Models\ChallengeNodeModel;
-use App\Models\ChallengeOptionModel;
 use App\Models\DialogueModel;
 use App\Models\LearningIndicatorModel;
 use App\Models\AudioAssetModel;
@@ -20,25 +19,23 @@ use App\Models\LevelModel;
 use App\Models\LibraryMediaModel;
 use App\Models\LibraryPageModel;
 use App\Models\ReadingPassageModel;
-use App\Models\ScoringProfileModel;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\HTTP\DownloadResponse;
 use CodeIgniter\HTTP\RedirectResponse;
 
 /**
- * Kelola konten permainan: level, node, butir, opsi, teks bacaan, pustaka,
+ * Kelola konten permainan: level, node, butir (per variasi), teks bacaan, pustaka,
  * dialog, dan impor workbook bank soal. Hanya role `admin`.
  *
  * Setiap perubahan mem-flush cache ContentRepository dan menulis `audit_logs`.
  */
 class ContentController extends BaseAdminController
 {
-    /** interaction_type yang sah untuk tiap engine (01_DATABASE.md). */
+    /** interaction_type yang sah untuk tiap engine (perombakan kelas 5: satu per engine). */
     private const ENGINE_INTERACTIONS = [
-        'puzzle'  => ['puzzle_arrange', 'ordering'],
-        'rumpang' => ['fill_blank_bank', 'fill_blank_free'],
-        'boleh'   => ['verdict_card', 'verdict_reason'],
-        'pilihan' => ['single_choice', 'source_trust'],
+        'puzzle'  => ['puzzle_arrange'],
+        'rumpang' => ['fill_blank_bank'],
+        'boleh'   => ['verdict_card'],
         'cari'    => ['find_object'],
     ];
 
@@ -57,13 +54,16 @@ class ContentController extends BaseAdminController
 
         foreach ($content->levels() as $level) {
             $nodes = $content->nodesForLevel($level->id);
-            $bank  = [];
+            $bank     = [];
+            $variants = [];
 
             foreach ($nodes as $node) {
-                $bank[$node->id] = count($content->itemBank($node->id));
+                $items              = $content->itemBank($node->id);
+                $bank[$node->id]     = count($items);
+                $variants[$node->id] = count(ChallengeItemModel::groupByVariant($items));
             }
 
-            $levels[] = ['level' => $level, 'nodes' => $nodes, 'bank' => $bank];
+            $levels[] = ['level' => $level, 'nodes' => $nodes, 'bank' => $bank, 'variants' => $variants];
         }
 
         return $this->panel('admin/content/index', 'Konten permainan', [
@@ -147,17 +147,9 @@ class ContentController extends BaseAdminController
 
         $items = model(ChallengeItemModel::class)
             ->where('challenge_node_id', $nodeId)
+            ->orderBy('variant_group', 'ASC')
             ->orderBy('sequence', 'ASC')
             ->findAll();
-
-        // Dikelompokkan per butir: editor opsi di view membaca $options[$item->id]
-        $options = [];
-
-        foreach (model(ChallengeOptionModel::class)->forItems(
-            array_map(static fn ($item): int => $item->id, $items),
-        ) as $option) {
-            $options[$option->challenge_item_id][] = $option;
-        }
 
         $level = model(LevelModel::class)->find($node->level_id);
 
@@ -166,10 +158,8 @@ class ContentController extends BaseAdminController
             'level'        => $level,
             'ref'          => node_ref((string) ($level?->code ?? ''), $node->sequence),
             'items'        => $items,
-            'options'      => $options,
             'indicators'   => model(LearningIndicatorModel::class)->map(),
             'passages'     => model(ReadingPassageModel::class)->forLevel($node->level_id),
-            'profiles'     => model(ScoringProfileModel::class)->orderBy('code', 'ASC')->orderBy('version', 'ASC')->findAll(),
             'interactions' => self::ENGINE_INTERACTIONS[$node->engine_type] ?? [],
             'locked'       => $this->nodeHasAttempts($nodeId),
         ]);
@@ -231,7 +221,6 @@ class ContentController extends BaseAdminController
             'engine_type'        => $engine,
             'variant_code'       => $this->nullIfBlank($this->request->getPost('variant_code')),
             'indicator_id'       => $this->idOrNull($this->request->getPost('indicator_id')),
-            'scoring_profile_id' => $this->idOrNull($this->request->getPost('scoring_profile_id')),
             'config_json'        => $config === [] ? null : $config,
             'is_active'          => $this->request->getPost('is_active') ? 1 : 0,
         ]);
@@ -368,89 +357,6 @@ class ContentController extends BaseAdminController
         $this->afterContentChange('item', $itemId);
 
         return $this->done($back, 'Soal sudah dihapus.');
-    }
-
-    public function saveOptions(int $itemId): RedirectResponse
-    {
-        $item = model(ChallengeItemModel::class)->find($itemId);
-
-        if ($item === null) {
-            throw PageNotFoundException::forPageNotFound("Butir {$itemId} tidak ditemukan.");
-        }
-
-        $back    = 'admin/konten/node/' . $item->challenge_node_id;
-        $rows    = (array) ($this->request->getPost('options') ?? []);
-        $options = model(ChallengeOptionModel::class);
-        $correct = 0;
-        $saved   = 0;
-
-        // Butir pilihan memakai satu radio `correct_option` agar tepat satu opsi
-        // dapat ditandai benar; butir lain menandainya per baris.
-        $correctKey = trim((string) ($this->request->getPost('correct_option') ?? ''));
-
-        // Kumpulkan dulu, baru tulis: aturan "tepat satu opsi benar" harus
-        // memutuskan sebelum ada baris yang tersentuh.
-        $payloads = [];
-
-        foreach ($rows as $index => $row) {
-            $key   = trim((string) ($row['option_key'] ?? ''));
-            $label = trim((string) ($row['label_id'] ?? ''));
-
-            if ($key === '' || $label === '') {
-                continue;
-            }
-
-            $isCorrect = $correctKey === ''
-                ? (! empty($row['is_correct']) ? 1 : 0)
-                : (int) ($key === $correctKey);
-            $correct += $isCorrect;
-
-            $media = (new MediaStore())->resolve(
-                (string) ($row['media_key'] ?? ''),
-                $this->request->getFile('option_media.' . $index),
-                'challenge.option.' . MediaStore::slug(str_starts_with($key, (string) $item->item_key) ? $key : $item->item_key . '-' . $key),
-                ['image'],
-                $this->staffId(),
-            );
-
-            if ($media['error'] !== null) {
-                return $this->back($back, "Gambar pilihan {$key}: " . $media['error']);
-            }
-
-            $payloads[$key] = [
-                'challenge_item_id' => $itemId,
-                'option_key'        => $key,
-                'label_id'          => $label,
-                'label_en'          => $this->nullIfBlank($row['label_en'] ?? null),
-                'feedback_id'       => $this->nullIfBlank($row['feedback_id'] ?? null),
-                'feedback_en'       => $this->nullIfBlank($row['feedback_en'] ?? null),
-                'is_correct'        => $isCorrect,
-                'media_asset_id'    => $media['id'],
-                'display_order'     => (int) ($row['display_order'] ?? $index + 1),
-            ];
-        }
-
-        if (in_array($item->interaction_type, ['single_choice', 'source_trust'], true) && $correct !== 1) {
-            return $this->back($back, 'Tandai tepat satu pilihan sebagai jawaban yang benar.');
-        }
-
-        foreach ($payloads as $key => $payload) {
-            $existing = $options->findByKey($itemId, $key);
-
-            $written = $existing === null
-                ? $options->insert($payload, false)
-                : $options->update($existing->id, $payload);
-
-            if ($written === false) {
-                return $this->back($back, "Pilihan {$key} belum dapat disimpan: " . $this->modelErrors($options));
-            }
-
-            $saved++;
-        }
-
-        $this->afterContentChange('options', $itemId);
-
-        return $this->done($back, "{$saved} pilihan jawaban sudah disimpan.");
     }
 
     // ------------------------------------------------------- impor bank soal
@@ -1040,8 +946,11 @@ class ContentController extends BaseAdminController
             return $audio;
         }
 
+        $variant = strtolower(trim((string) $this->request->getPost('variant_group')));
+
         return $this->bilingual(['prompt', 'source_text']) + $media + $audio + [
             'sequence'         => (int) ($this->request->getPost('sequence') ?? 0),
+            'variant_group'    => preg_match('/^[a-z0-9]{1,10}$/', $variant) === 1 ? $variant : 'a',
             'passage_id'       => $this->idOrNull($this->request->getPost('passage_id')),
             'indicator_id'     => $this->idOrNull($this->request->getPost('indicator_id')),
             'bloom_level'      => $this->nullIfBlank(strtoupper(trim((string) $this->request->getPost('bloom_level')))),
@@ -1120,38 +1029,67 @@ class ContentController extends BaseAdminController
 
         // Ukuran papan susun gambar tidak diatur per tantangan: mengikuti tingkat
         // kesulitan wilayah dan tersimpan per soal (DifficultyRules).
-        foreach (['items_per_round', 'distractor_count'] as $key) {
-            if (isset($guided[$key]) && trim((string) $guided[$key]) !== '') {
-                $config[$key] = max(0, (int) $guided[$key]);
-            }
+        if (isset($guided['distractor_count']) && trim((string) $guided['distractor_count']) !== '') {
+            $config['distractor_count'] = max(0, (int) $guided['distractor_count']);
         }
 
-        foreach (['allow_retry', 'use_word_bank', 'require_reason', 'shuffle_options', 'show_decoys', 'as_reading'] as $key) {
+        foreach (['use_word_bank', 'as_reading'] as $key) {
             if (array_key_exists($key, $guided)) {
                 $config[$key] = (bool) (int) $guided[$key];
             }
         }
 
-        if (isset($guided['verdict_options']) && is_array($guided['verdict_options'])) {
-            $verdicts = array_values(array_intersect(['benar', 'salah', 'pendapat'], $guided['verdict_options']));
+        // Kunci lama yang tidak dibaca lagi sejak perombakan kelas 5
+        unset($config['items_per_round'], $config['allow_retry'], $config['require_reason'],
+            $config['shuffle_options'], $config['show_decoys'], $config['distractors']);
 
-            if ($verdicts !== []) {
-                $config['verdict_options'] = $verdicts;
-            }
-        }
+        $config['selection'] = 'variant';
 
-        if (isset($guided['distractors']) && is_array($guided['distractors'])) {
-            $distractors = [];
+        if (isset($guided['variants']) && is_array($guided['variants'])) {
+            $variants = (array) ($config['variants'] ?? []);
 
-            foreach ($guided['distractors'] as $row) {
-                $id = trim((string) ($row['id'] ?? ''));
+            foreach ($guided['variants'] as $group => $row) {
+                $group = strtolower(trim((string) $group));
 
-                if ($id !== '') {
-                    $distractors[] = ['id' => $id, 'en' => trim((string) ($row['en'] ?? '')) ?: $id];
+                if (preg_match('/^[a-z0-9]{1,10}$/', $group) !== 1 || ! is_array($row)) {
+                    continue;
+                }
+
+                $entry = is_array($variants[$group] ?? null) ? $variants[$group] : [];
+
+                foreach (['title_id', 'title_en'] as $key) {
+                    $value = trim((string) ($row[$key] ?? ''));
+
+                    if ($value === '') {
+                        unset($entry[$key]);
+                    } else {
+                        $entry[$key] = $value;
+                    }
+                }
+
+                if (isset($row['distractors']) && is_array($row['distractors'])) {
+                    $distractors = [];
+
+                    foreach ($row['distractors'] as $item) {
+                        $id = trim((string) ($item['id'] ?? ''));
+
+                        if ($id !== '') {
+                            $distractors[] = ['id' => $id, 'en' => trim((string) ($item['en'] ?? '')) ?: $id];
+                        }
+                    }
+
+                    $entry['distractors'] = $distractors;
+                }
+
+                if ($entry === [] || $entry === ['distractors' => []]) {
+                    unset($variants[$group]);
+                } else {
+                    $variants[$group] = $entry;
                 }
             }
 
-            $config['distractors'] = $distractors;
+            ksort($variants);
+            $config['variants'] = $variants;
         }
 
         return $config;

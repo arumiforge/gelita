@@ -2,15 +2,13 @@
 /**
  * Layout panel admin — header, sidebar, konten. Satu bahasa (Indonesia).
  *
- * Section: title, head, content, scripts. ECharts hanya dimuat halaman yang
- * mengisi section `charts` (dashboard, analitik, profil peserta).
+ * Section: title, head, content, scripts.
  *
  * @var CodeIgniter\View\View $this
  * @var string|null           $pageTitle
  * @var array<string, mixed>|null $activeStudy  BaseAdminController::panel()
  */
 $title    = trim($this->renderSection('title'));
-$hasChart = trim($this->renderSection('charts')) !== '';
 $logo     = media_key_src('ui.logo');
 ?>
 <!DOCTYPE html>
@@ -43,7 +41,7 @@ $logo     = media_key_src('ui.logo');
     <div class="admin-sub">
       <b><?= esc($pageTitle ?? lang('Admin.panelTitle')) ?></b>
       <?php if (! empty($activeStudy)): ?>
-        · penelitian berjalan: <?= esc($activeStudy['name'] ?: $activeStudy['code']) ?> · tahap <?= esc(admin_label('phase', $activeStudy['active_phase_code'])) ?>
+        · penelitian berjalan: <?= esc($activeStudy['name'] ?: $activeStudy['code']) ?>
       <?php endif ?>
     </div>
     <div class="admin-user">
@@ -75,9 +73,6 @@ $logo     = media_key_src('ui.logo');
       JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT,
   ) ?></script>
 
-  <?php if ($hasChart): ?>
-    <script defer src="<?= asset_url_versioned('vendor/echarts.min.js') ?>"></script>
-  <?php endif ?>
   <script type="module" src="<?= asset_url_versioned('js/admin.js') ?>"></script>
   <?= $this->renderSection('scripts') ?>
 </body>

@@ -20,11 +20,16 @@ final class AnswerText
         'level_id' => 'wilayah nomor', 'node_id' => 'tantangan nomor', 'duration_ms' => 'lama',
         'x' => 'kiri %', 'y' => 'atas %', 'w' => 'lebar %', 'from' => 'dari', 'to' => 'ke', 'first' => 'pertama kali',
         // Isi catatan aktivitas (game_event_logs.payload_json)
-        'attempt_no' => 'percobaan ke', 'item_count' => 'jumlah soal', 'check_count' => 'pemeriksaan ke',
-        'correct_count' => 'benar', 'total' => 'dari', 'correct' => 'benar', 'first_pass' => 'sejak awal',
-        'change_count' => 'jawaban diubah', 'score' => 'skor', 'stars' => 'bintang',
-        'first_pass_accuracy' => 'benar sejak awal (%)', 'level_score' => 'skor wilayah', 'total_score' => 'skor total',
-        'total_stars' => 'jumlah bintang', 'level_code' => 'wilayah', 'code' => 'kode', 'asset_key' => 'kode berkas',
+        'attempt_no' => 'pengerjaan ke', 'item_count' => 'jumlah soal', 'check_count' => 'cek ke',
+        'check_no' => 'cek ke', 'try_no' => 'percobaan ke', 'exhausted' => 'kesempatan habis',
+        'correct_count' => 'benar', 'total' => 'dari', 'correct' => 'benar', 'first_pass' => 'pada percobaan pertama',
+        'change_count' => 'jawaban diubah', 'stars' => 'bintang', 'variant_group' => 'variasi',
+        'first_pass_correct' => 'berhasil pada percobaan pertama', 'final_correct' => 'benar di akhir',
+        'scorable_items' => 'soal dinilai', 'completion_reason' => 'alasan selesai', 'level_stars' => 'bintang wilayah',
+        'total_stars' => 'jumlah bintang', 'screen' => 'layar', 'path' => 'alamat', 'params' => 'parameter',
+        'overlay' => 'jendela', 'level' => 'wilayah', 'seq' => 'tantangan ke', 'action' => 'tindakan',
+        't_ms' => 'ms sejak dibuka', 'percent' => 'persen', 'passage_id' => 'bacaan nomor', 'try_count' => 'jumlah percobaan',
+        'orientation' => 'orientasi', 'rotate_gate' => 'layar putar tampil', 'scale' => 'skala', 'level_code' => 'wilayah', 'code' => 'kode', 'asset_key' => 'kode berkas',
         'via' => 'lewat', 'clicked_item_id' => 'benda yang diklik nomor', 'decoy' => 'jebakan',
         'rating' => 'nilai bintang', 'open_answers' => 'isian yang diisi', 'resumed' => 'dilanjutkan',
         'attempt_open' => 'tantangan masih terbuka', 'index' => 'slide ke', 'context' => 'bagian cerita',
@@ -43,7 +48,7 @@ final class AnswerText
         ],
     ];
 
-    private const VERDICTS = ['benar' => 'Benar', 'salah' => 'Salah', 'pendapat' => 'Pendapat'];
+    private const VERDICTS = ['benar' => 'Benar', 'salah' => 'Salah'];
 
     /**
      * Data JSON → teks biasa: {"text":"kopi"} → "kopi", {"order":["c","a"]} →
@@ -101,17 +106,13 @@ final class AnswerText
         $order = $item->answerKey('order');
 
         $text = match ((string) $item->interaction_type) {
-            'single_choice', 'source_trust'  => self::option($item, (string) ($item->correctOptionKey() ?? '')),
-            'verdict_card', 'verdict_reason' => self::verdict($item->verdict()),
-            'fill_blank_bank'                => trim((string) ($item->answerKey('text_id') ?? '')),
-            // ejaan asli dari kunci; acceptedAnswers() sudah dikecilkan untuk penilaian
-            'fill_blank_free'                => implode(' / ', array_map('strval', (array) ($item->answerKey('accept_id') ?: $item->acceptedAnswers('id')))),
-            'find_object'                    => $item->isDecoy() ? 'benda jebakan' : 'benda yang dicari',
-            'puzzle_arrange'                 => is_array($order) && $order !== []
+            'verdict_card'    => self::verdict($item->verdict()),
+            'fill_blank_bank' => trim((string) ($item->answerKey('text_id') ?? '')),
+            'find_object'     => $item->isDecoy() ? 'benda jebakan' : 'benda yang dicari',
+            'puzzle_arrange'  => is_array($order) && $order !== []
                 ? 'gambar utuh (' . count($order) . ' keping)'
                 : 'gambar utuh',
-            'ordering' => is_array($order) ? implode(', ', array_map('strval', $order)) : '',
-            default    => self::fromData($item->answerKey()),
+            default => self::fromData($item->answerKey()),
         };
 
         return $text === '' ? '—' : $text;
@@ -138,19 +139,10 @@ final class AnswerText
 
         switch ((string) $item->interaction_type) {
             case 'fill_blank_bank':
-            case 'fill_blank_free':
                 return trim((string) ($answer['text'] ?? ''));
 
             case 'verdict_card':
-            case 'verdict_reason':
-                $verdict = self::verdict(isset($answer['verdict']) ? (string) $answer['verdict'] : null);
-                $reason  = trim((string) ($answer['reason_text'] ?? ''));
-
-                return $reason === '' ? $verdict : $verdict . ' · alasan: ' . $reason;
-
-            case 'single_choice':
-            case 'source_trust':
-                return self::option($item, (string) ($answer['option_key'] ?? ''));
+                return self::verdict(isset($answer['verdict']) ? (string) $answer['verdict'] : null);
 
             case 'puzzle_arrange':
                 [$correct, $total] = self::orderMatch($answer['order'] ?? null, $item->answerKey('order'));
@@ -162,13 +154,6 @@ final class AnswerText
                 return $correct === $total
                     ? 'gambar utuh (' . $total . ' keping tepat)'
                     : $correct . ' dari ' . $total . ' keping di tempat yang benar';
-
-            case 'ordering':
-                $order = array_map('strval', (array) ($answer['order'] ?? []));
-
-                [$correct, $total] = self::orderMatch($order, $item->answerKey('order'));
-
-                return implode(', ', $order) . ($total > 0 ? ' (' . $correct . ' dari ' . $total . ' kartu tepat)' : '');
 
             case 'find_object':
                 $clicked = (int) ($answer['item_id'] ?? 0);
@@ -196,27 +181,6 @@ final class AnswerText
         $rest    = (int) round($seconds) % 60;
 
         return $minutes . ' menit' . ($rest > 0 ? ' ' . $rest . ' detik' : '');
-    }
-
-    /** "B · Candi Mendut"; tanpa label bila pilihan jawaban belum dimuat. */
-    private static function option(ChallengeItem $item, string $optionKey): string
-    {
-        if ($optionKey === '') {
-            return '';
-        }
-
-        $prefix = (string) $item->item_key . '-';
-        $letter = strtoupper(str_starts_with($optionKey, $prefix) ? substr($optionKey, strlen($prefix)) : $optionKey);
-
-        foreach ($item->loadedOptions() as $option) {
-            if ((string) $option->option_key === $optionKey) {
-                $label = trim((string) $option->text('label', 'id'));
-
-                return $label === '' ? 'pilihan ' . $letter : $letter . ' · ' . $label;
-            }
-        }
-
-        return 'pilihan ' . $letter;
     }
 
     private static function verdict(?string $verdict): string

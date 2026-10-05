@@ -3,7 +3,7 @@
 namespace App\Controllers\Admin;
 
 use App\Entities\Participant;
-use App\Models\ParticipantConsentModel;
+use App\Models\DeviceLogModel;
 use App\Models\ParticipantModel;
 use App\Models\SchoolModel;
 use CodeIgniter\Exceptions\PageNotFoundException;
@@ -61,7 +61,7 @@ class ParticipantController extends BaseAdminController
         $stats    = $this->listStats(array_map(static fn (Participant $p): int => $p->id, $entities));
 
         $rows = array_map(fn (Participant $p): array => $this->viewRow($p) + ($stats[$p->id] ?? [
-            'session_count' => 0, 'shards' => 0, 'mean_first_pass' => null, 'last_active_at' => null,
+            'session_count' => 0, 'shards' => 0, 'last_active_at' => null,
         ]), $entities);
 
         return $this->panel('admin/participants/index', 'Siswa', [
@@ -87,7 +87,7 @@ class ParticipantController extends BaseAdminController
         return $this->panel('admin/participants/show', 'Profil siswa', [
             'participant' => $this->viewRow($participant),
             'profile'     => $profile,
-            'consent'     => model(ParticipantConsentModel::class)->latestFor($participantId),
+            'devices'     => model(DeviceLogModel::class)->forParticipant($participantId),
             'sessions'    => $this->sessionsOf($participantId),
             'levels'      => service('contentRepository')->levels(),
             'nodeTitles'  => $this->nodeTitles(),
@@ -152,13 +152,14 @@ class ParticipantController extends BaseAdminController
             'password_changed_at'      => $participant->password_changed_at,
             'must_change_password'     => $participant->mustChangePassword(),
             'last_login_at'            => $participant->last_login_at,
+            'assented_at'              => $participant->assented_at,
             'created_at'               => $participant->created_at,
         ];
     }
 
     /**
      * Ringkasan per peserta untuk satu halaman daftar: jumlah sesi, serpihan
-     * terbanyak dalam satu sesi, rata-rata tepat sejak awal, dan aktivitas terakhir.
+     * terbanyak dalam satu sesi, dan aktivitas terakhir.
      *
      * @param list<int> $ids
      *
@@ -187,32 +188,14 @@ class ParticipantController extends BaseAdminController
                 'session_count'   => (int) $row['session_count'],
                 'shards'          => (int) $row['shards'],
                 'last_active_at'  => $row['last_active_at'],
-                'mean_first_pass' => null,
             ];
-        }
-
-        $accuracy = $db->table('challenge_attempts ca')
-            ->select('gs.participant_id, AVG(ca.first_pass_accuracy) AS mean_first_pass', false)
-            ->join('game_sessions gs', 'gs.id = ca.session_id')
-            ->whereIn('gs.participant_id', $ids)
-            ->where('ca.status', 'completed')
-            ->groupBy('gs.participant_id')
-            ->get()
-            ->getResultArray();
-
-        foreach ($accuracy as $row) {
-            $id = (int) $row['participant_id'];
-
-            if (isset($out[$id])) {
-                $out[$id]['mean_first_pass'] = round((float) $row['mean_first_pass'], 1);
-            }
         }
 
         return $out;
     }
 
     /**
-     * Sesi peserta beserta fase dan progres, terbaru dulu.
+     * Sesi peserta beserta progres, terbaru dulu.
      *
      * @return list<array<string, mixed>>
      */
@@ -220,8 +203,7 @@ class ParticipantController extends BaseAdminController
     {
         return db_connect()->table('game_sessions gs')
             ->select('gs.id, gs.session_code, gs.status, gs.locale, gs.started_at, gs.last_active_at, gs.duration_ms', false)
-            ->select('rp.code AS phase_code, sp.completed_nodes, sp.total_score, sp.total_stars', false)
-            ->join('research_phases rp', 'rp.id = gs.phase_id', 'left')
+            ->select('sp.completed_nodes, sp.total_stars', false)
             ->join('session_progress sp', 'sp.session_id = gs.id', 'left')
             ->where('gs.participant_id', $participantId)
             ->orderBy('gs.started_at', 'DESC')

@@ -71,16 +71,6 @@ class MediaUsage
             $add($this->int($row['media_asset_id']), 'Soal ' . $row['item_key']);
         }
 
-        $options = $db->table('challenge_options co')
-            ->select('co.option_key, co.media_asset_id, ci.item_key')
-            ->join('challenge_items ci', 'ci.id = co.challenge_item_id')
-            ->where('co.media_asset_id IS NOT NULL')
-            ->get()->getResultArray();
-
-        foreach ($options as $row) {
-            $add($this->int($row['media_asset_id']), 'Pilihan jawaban ' . $row['option_key'] . ' (soal ' . $row['item_key'] . ')');
-        }
-
         foreach ($db->table('reading_passages')->select('passage_key, media_asset_id')->where('media_asset_id IS NOT NULL')->get()->getResultArray() as $row) {
             $add($this->int($row['media_asset_id']), 'Bacaan ' . $row['passage_key']);
         }

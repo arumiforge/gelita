@@ -40,7 +40,7 @@ $sheetNotes = [
 <?= component('partials/admin-head', [
     'title'   => 'Unduh data',
     'eyebrow' => 'Laporan',
-    'lead'    => 'Unduh data hasil permainan sebagai berkas Excel untuk diolah, atau sebagai ringkasan PDF yang siap dibaca. Setiap unduhan tercatat di riwayat aktivitas.',
+    'lead'    => 'Unduh data mentah hasil permainan sebagai berkas Excel untuk diolah. Setiap unduhan tercatat di riwayat aktivitas.',
 ]) ?>
 <?= $this->include('partials/flash') ?>
 
@@ -84,9 +84,8 @@ $sheetNotes = [
 
   <div class="form-actions">
     <button class="btn btn-primary" type="submit" formaction="<?= base_url('admin/ekspor/xlsx') ?>"><?= icon('download') ?> Buat berkas Excel</button>
-    <button class="btn btn-ghost" type="submit" formaction="<?= base_url('admin/ekspor/pdf') ?>"><?= icon('download') ?> Buat ringkasan PDF</button>
   </div>
-  <p class="field-help">Ringkasan PDF memakai pilihan data di atas dan selalu tanpa nama siswa. Laporan untuk satu siswa dibuat dari halaman profil siswa.</p>
+  <p class="field-help">Laporan PDF untuk satu siswa dibuat dari halaman profil siswa.</p>
 </form>
 
 <section class="panel">

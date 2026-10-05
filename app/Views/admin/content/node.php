@@ -3,24 +3,28 @@
  * Sunting tantangan — `/admin/konten/node/{id}` → ContentController::node
  *
  * Form node (judul, instruksi, deskripsi ID/EN berdampingan, indikator,
- * profil skoring, config dengan field terpandu) + bank butir dengan status
- * tinjauan berwarna (draf abu, perlu verifikasi kuning, terverifikasi hijau)
- * + tambah butir.
+ * config dengan field terpandu, judul + pengecoh per variasi) + bank soal
+ * dikelompokkan per variasi dengan status tinjauan berwarna (draf abu, perlu
+ * verifikasi kuning, terverifikasi hijau) + tambah soal. Setiap pengerjaan
+ * siswa memakai SATU variasi yang dipilih acak (perombakan kelas 5).
  *
  * @var App\Entities\ChallengeNode                         $node
  * @var App\Entities\Level|null                            $level
  * @var list<App\Entities\ChallengeItem>                   $items
- * @var array<int, list<App\Entities\ChallengeOption>>     $options
  * @var array<string, array<string, mixed>>                $indicators
  * @var list<App\Entities\ReadingPassage>                  $passages
- * @var list<array<string, mixed>>                         $profiles
  * @var list<string>                                       $interactions
  * @var bool                                               $locked
  * @var string                                             $ref          kode workbook, mis. tmg-4
  */
 $engine      = (string) $node->engine_type;
-$verdicts    = $node->verdictOptions();
-$distractors = (array) $node->config('distractors', []);
+$variants    = $node->variants();
+$groups      = array_values(array_unique(array_merge(
+    ['a', 'b', 'c'],
+    array_keys($variants),
+    array_filter(array_map(static fn ($item): string => (string) $item->variant_group, $items)),
+)));
+sort($groups);
 $reviewClass = ['draft' => 'is-draft', 'needs_verification' => 'is-needs_verification', 'verified' => 'is-verified'];
 $texts = [
     'title'       => ['Judul', 1, true],
@@ -42,7 +46,6 @@ $itemFormData = [
 <?= component('partials/admin-head', [
     'title'   => $node->text('title', 'id'),
     'eyebrow' => ($level?->text('name', 'id') ?? '') . ' · tantangan ke-' . $node->sequence . ' · kode ' . $ref . ' · ' . engine_label($engine),
-    'actions' => '<a class="btn btn-quiet btn-sm" href="' . base_url('admin/analitik/node/' . $node->id) . '">' . icon('chart') . ' Lihat hasil siswa</a>',
 ]) ?>
 <?php if ($level !== null): ?>
   <?= component('partials/content-nav', ['level' => $level, 'active' => 'level']) ?>
@@ -103,88 +106,56 @@ $itemFormData = [
         <?php endforeach ?>
       </select>
     </div>
-    <div class="field">
-      <label for="scoring_profile_id">Aturan penilaian</label>
-      <select id="scoring_profile_id" name="scoring_profile_id">
-        <option value="">— ikut aturan yang sedang aktif (disarankan) —</option>
-        <?php foreach ($profiles as $profile): ?>
-          <option value="<?= esc($profile['id'], 'attr') ?>" <?= (int) $node->scoring_profile_id === (int) $profile['id'] ? 'selected' : '' ?>><?= esc($profile['code'] . ' versi ' . $profile['version']) ?></option>
-        <?php endforeach ?>
-      </select>
-    </div>
   </div>
 
   <fieldset class="form-section">
     <legend class="panel-subtitle">Pengaturan tantangan</legend>
     <div class="form-grid">
-      <?php if ($engine === 'puzzle'): ?>
-        <input type="hidden" name="cfg[items_per_round]" value="1">
-      <?php else: ?>
-        <div class="field">
-          <label for="cfg-items">Jumlah soal tiap kali bermain</label>
-          <input type="number" id="cfg-items" name="cfg[items_per_round]" min="1" value="<?= esc($node->itemsPerRound(), 'attr') ?>">
-          <p class="field-help">
-            <?php if ($node->isReading()): ?>
-              Tantangan ini tampil sebagai satu bacaan: SEMUA soal aktif dipakai berurutan, jadi angka ini tidak dipakai (samakan dengan jumlah rumpang).
-            <?php else: ?>
-              Diambil dari kumpulan soal di bawah. Sediakan soal 1,5–2 kali lebih banyak dari angka ini.
-            <?php endif ?>
-          </p>
-        </div>
-      <?php endif ?>
-      <input type="hidden" name="cfg[allow_retry]" value="0">
-      <label class="check"><input type="checkbox" name="cfg[allow_retry]" value="1" <?= $node->allowsRetry() ? 'checked' : '' ?>> Siswa boleh memperbaiki jawaban setelah menekan Periksa</label>
-
+      <p class="field-help span-all">Setiap kali bermain, siswa mendapat SATU variasi (a, b, atau c) yang dipilih acak — variasi yang sudah pernah didapat siswa itu dihindari selama masih ada yang lain. Semua soal aktif variasi itu dipakai, urut nomor urutnya. Siswa boleh mencoba sampai <?= (int) config('Gelita')->maxTries ?> kali per soal.</p>
       <?php if ($engine === 'puzzle'): ?>
         <?php $puzzleRule = App\Libraries\DifficultyRules::puzzle($level?->difficulty); ?>
         <div class="field">
           <span class="label">Ukuran papan</span>
           <p><b><?= esc(App\Libraries\DifficultyRules::layoutLabel($puzzleRule['grid'], $puzzleRule['shape'])) ?></b> — mengikuti tingkat kesulitan wilayah (<?= esc((string) ($level?->difficulty ?? 'mudah')) ?>).</p>
-          <p class="field-help">Setiap kali bermain, siswa mendapat SATU gambar yang dipilih acak dari kumpulan gambar di bawah (sediakan 3 gambar). Admin cukup mengunggah gambar utuh; sistem memotongnya otomatis. Soal yang sudah pernah dijawab tetap memakai ukuran saat soal itu dibuat.</p>
+          <p class="field-help">Setiap variasi berisi SATU gambar (sediakan 3 variasi: a, b, c). Admin cukup mengunggah gambar utuh; sistem memotongnya otomatis. Soal yang sudah pernah dijawab tetap memakai ukuran saat soal itu dibuat.</p>
         </div>
       <?php elseif ($engine === 'rumpang'): ?>
-        <input type="hidden" name="cfg[use_word_bank]" value="0">
-        <label class="check"><input type="checkbox" name="cfg[use_word_bank]" value="1" <?= $node->config('use_word_bank') ? 'checked' : '' ?>> Siswa memilih jawaban dari daftar kata (bank kata)</label>
+        <input type="hidden" name="cfg[use_word_bank]" value="1">
         <input type="hidden" name="cfg[as_reading]" value="0">
-        <label class="check"><input type="checkbox" name="cfg[as_reading]" value="1" <?= $node->isReading() ? 'checked' : '' ?>> Tampilkan semua soal sebagai satu bacaan berurutan (setiap soal = satu potongan bacaan dengan satu ___)</label>
+        <label class="check"><input type="checkbox" name="cfg[as_reading]" value="1" <?= $node->isReading() ? 'checked' : '' ?>> Tampilkan soal satu variasi sebagai satu bacaan berurutan (setiap soal = satu potongan bacaan dengan satu ___)</label>
         <div class="field">
           <label for="cfg-distractor-count">Jumlah kata pengecoh yang ikut ditampilkan</label>
           <input type="number" id="cfg-distractor-count" name="cfg[distractor_count]" min="0" value="<?= esc($node->config('distractor_count') ?? 0, 'attr') ?>">
         </div>
       <?php elseif ($engine === 'boleh'): ?>
-        <fieldset class="field">
-          <legend class="label">Tombol jawaban yang tampil untuk siswa</legend>
-          <div class="check-row">
-            <?php foreach (['benar' => 'Benar', 'salah' => 'Salah', 'pendapat' => 'Pendapat'] as $value => $label): ?>
-              <label class="check"><input type="checkbox" name="cfg[verdict_options][]" value="<?= $value ?>" <?= in_array($value, $verdicts, true) ? 'checked' : '' ?>> <?= $label ?></label>
-            <?php endforeach ?>
-          </div>
-        </fieldset>
-        <input type="hidden" name="cfg[require_reason]" value="0">
-        <label class="check"><input type="checkbox" name="cfg[require_reason]" value="1" <?= $node->requiresReason() ? 'checked' : '' ?>> Siswa juga menulis alasan</label>
-      <?php elseif ($engine === 'pilihan'): ?>
-        <input type="hidden" name="cfg[shuffle_options]" value="0">
-        <label class="check"><input type="checkbox" name="cfg[shuffle_options]" value="1" <?= $node->config('shuffle_options') ? 'checked' : '' ?>> Acak urutan pilihan jawaban</label>
-      <?php elseif ($engine === 'cari'): ?>
-        <input type="hidden" name="cfg[show_decoys]" value="0">
-        <label class="check"><input type="checkbox" name="cfg[show_decoys]" value="1" <?= $node->config('show_decoys') ? 'checked' : '' ?>> Tampilkan benda jebakan (benda dari daerah lain)</label>
+        <p class="field-help">Tombol jawaban siswa selalu <b>Benar</b> dan <b>Salah</b>. Setiap variasi berisi satu bacaan beserta pernyataannya.</p>
       <?php endif ?>
     </div>
 
-    <?php if ($engine === 'rumpang'): ?>
-      <div class="field">
-        <span class="label">Kata pengecoh — kata yang salah tetapi masuk akal (Indonesia / Inggris). Baris kosong diabaikan.</span>
-        <?php $rows = array_merge(array_values($distractors), array_fill(0, 3, ['id' => '', 'en' => ''])); ?>
-        <?php foreach ($rows as $index => $entry): ?>
-          <?php $entryId = is_array($entry) ? ($entry['id'] ?? $entry['text_id'] ?? '') : (string) $entry; ?>
-          <?php $entryEn = is_array($entry) ? ($entry['en'] ?? $entry['text_en'] ?? '') : ''; ?>
+    <div class="variant-list">
+      <span class="label">Variasi soal — judul tampil<?= $engine === 'rumpang' ? ' dan kata pengecoh (kata yang salah tetapi masuk akal)' : '' ?>. Kosongkan judul untuk memakai judul tantangan.</span>
+      <?php foreach ($groups as $group): ?>
+        <?php $entry = $variants[$group] ?? []; ?>
+        <fieldset class="variant-row">
+          <legend>Variasi <code><?= esc($group) ?></code></legend>
           <div class="bilingual">
-            <input type="text" name="cfg[distractors][<?= $index ?>][id]" value="<?= esc($entryId, 'attr') ?>" aria-label="Pengecoh <?= $index + 1 ?> (Indonesia)" placeholder="Indonesia">
-            <input type="text" name="cfg[distractors][<?= $index ?>][en]" value="<?= esc($entryEn, 'attr') ?>" aria-label="Pengecoh <?= $index + 1 ?> (Inggris)" placeholder="Inggris">
+            <input type="text" name="cfg[variants][<?= esc($group, 'attr') ?>][title_id]" maxlength="150" value="<?= esc((string) ($entry['title_id'] ?? ''), 'attr') ?>" aria-label="Judul variasi <?= esc($group, 'attr') ?> (Indonesia)" placeholder="Judul (Indonesia)">
+            <input type="text" name="cfg[variants][<?= esc($group, 'attr') ?>][title_en]" maxlength="150" value="<?= esc((string) ($entry['title_en'] ?? ''), 'attr') ?>" aria-label="Judul variasi <?= esc($group, 'attr') ?> (Inggris)" placeholder="Judul (Inggris)">
           </div>
-        <?php endforeach ?>
-      </div>
-    <?php endif ?>
+          <?php if ($engine === 'rumpang'): ?>
+            <?php $rows = array_merge(array_values((array) ($entry['distractors'] ?? [])), array_fill(0, 3, ['id' => '', 'en' => ''])); ?>
+            <?php foreach ($rows as $index => $row): ?>
+              <?php $rowId = is_array($row) ? ($row['id'] ?? $row['text_id'] ?? '') : (string) $row; ?>
+              <?php $rowEn = is_array($row) ? ($row['en'] ?? $row['text_en'] ?? '') : ''; ?>
+              <div class="bilingual">
+                <input type="text" name="cfg[variants][<?= esc($group, 'attr') ?>][distractors][<?= $index ?>][id]" value="<?= esc($rowId, 'attr') ?>" aria-label="Pengecoh <?= $index + 1 ?> variasi <?= esc($group, 'attr') ?> (Indonesia)" placeholder="Pengecoh (Indonesia)">
+                <input type="text" name="cfg[variants][<?= esc($group, 'attr') ?>][distractors][<?= $index ?>][en]" value="<?= esc($rowEn, 'attr') ?>" aria-label="Pengecoh <?= $index + 1 ?> variasi <?= esc($group, 'attr') ?> (Inggris)" placeholder="Pengecoh (Inggris)">
+              </div>
+            <?php endforeach ?>
+          <?php endif ?>
+        </fieldset>
+      <?php endforeach ?>
+    </div>
 
     <details class="disclosure">
       <summary>Pengaturan teknis (biasanya tidak perlu diubah)</summary>
@@ -229,7 +200,7 @@ $itemFormData = [
 </form>
 
 <section class="stack">
-  <h2 class="panel-title"><?= icon('list') ?> Kumpulan soal <span class="chip num"><?= count($items) ?> soal · <?= $node->itemsPerRound() ?> dipakai tiap bermain</span></h2>
+  <h2 class="panel-title"><?= icon('list') ?> Kumpulan soal <span class="chip num"><?= count($items) ?> soal · satu variasi tiap bermain</span></h2>
 
   <?php if ($items === []): ?>
     <div class="empty-state"><?= icon('info') ?><p>Belum ada soal. Tambahkan soal di bawah, atau impor soal dari Excel.</p></div>
@@ -240,6 +211,7 @@ $itemFormData = [
       <details class="item-card" id="item-<?= esc($item->id, 'attr') ?>">
         <summary>
           <code><?= esc($item->item_key) ?></code>
+          <span class="badge is-muted">variasi <?= esc($item->variant_group ?? '—') ?></span>
           <span class="item-prompt"><?= esc($item->text('prompt', 'id') ?: '—') ?></span>
           <span class="item-meta">
             <span class="badge is-muted"><?= esc(admin_label('interaction', (string) $item->interaction_type)) ?></span>
@@ -250,57 +222,6 @@ $itemFormData = [
         </summary>
         <div class="item-card-body">
           <?= component('admin/content/items', ['item' => $item] + $itemFormData) ?>
-
-          <?php if (in_array($item->interaction_type, ['single_choice', 'source_trust'], true)): ?>
-            <?php
-            $optionRows = array_values($options[$item->id] ?? []);
-            $keys       = array_map(static fn ($o): string => (string) $o->option_key, $optionRows);
-            foreach (['a', 'b', 'c', 'd'] as $key) {
-                if (count($optionRows) >= 4) {
-                    break;
-                }
-                if (! in_array($key, $keys, true)) {
-                    $optionRows[] = null;
-                    $keys[]       = $key;
-                }
-            }
-            ?>
-            <form method="post" action="<?= base_url('admin/konten/item/' . $item->id . '/opsi') ?>" class="form-section option-editor" enctype="multipart/form-data">
-              <?= csrf_field() ?>
-              <h3 class="panel-subtitle">Pilihan jawaban — tandai tepat satu yang benar</h3>
-              <?php foreach ($optionRows as $index => $option): ?>
-                <?php $key = $option?->option_key ?? $keys[$index]; ?>
-                <fieldset class="option-row">
-                  <legend class="visually-hidden">Pilihan <?= esc($key) ?></legend>
-                  <span class="option-key"><?= esc(strtoupper((string) $key)) ?></span>
-                  <div class="stack">
-                    <input type="hidden" name="options[<?= $index ?>][option_key]" value="<?= esc($key, 'attr') ?>">
-                    <input type="hidden" name="options[<?= $index ?>][display_order]" value="<?= esc($option?->display_order ?? $index + 1, 'attr') ?>">
-                    <div class="bilingual">
-                      <input type="text" name="options[<?= $index ?>][label_id]" value="<?= esc($option?->label_id ?? '', 'attr') ?>" aria-label="Teks pilihan <?= esc($key, 'attr') ?> (Indonesia)" placeholder="Teks pilihan (Indonesia)">
-                      <input type="text" name="options[<?= $index ?>][label_en]" value="<?= esc($option?->label_en ?? '', 'attr') ?>" aria-label="Teks pilihan <?= esc($key, 'attr') ?> (Inggris)" placeholder="Teks pilihan (Inggris)">
-                      <input type="text" name="options[<?= $index ?>][feedback_id]" value="<?= esc($option?->feedback_id ?? '', 'attr') ?>" aria-label="Penjelasan pilihan <?= esc($key, 'attr') ?> (Indonesia)" placeholder="Penjelasan setelah dipilih (Indonesia, tidak wajib)">
-                      <input type="text" name="options[<?= $index ?>][feedback_en]" value="<?= esc($option?->feedback_en ?? '', 'attr') ?>" aria-label="Penjelasan pilihan <?= esc($key, 'attr') ?> (Inggris)" placeholder="Penjelasan setelah dipilih (Inggris, tidak wajib)">
-                    </div>
-                    <?= component('components/media-field', [
-                        'id'         => 'opt' . $item->id . '-' . $index,
-                        'label'      => 'Gambar pilihan ' . strtoupper((string) $key) . ' (tidak wajib)',
-                        'keyName'    => 'options[' . $index . '][media_key]',
-                        'fileName'   => 'option_media[' . $index . ']',
-                        'mediaId'    => $option?->media_asset_id,
-                        'defaultKey' => 'challenge.option.' . App\Libraries\MediaStore::slug(str_starts_with((string) $key, (string) $item->item_key) ? (string) $key : $item->item_key . '-' . $key),
-                        'size'       => '400 × 400 px',
-                    ]) ?>
-                    <label class="check"><input type="radio" name="correct_option" value="<?= esc($key, 'attr') ?>" <?= $option?->is_correct ? 'checked' : '' ?>> Ini jawaban yang benar</label>
-                  </div>
-                </fieldset>
-              <?php endforeach ?>
-              <p class="field-help">Pilihan yang teks Indonesianya kosong tidak disimpan. Setiap pilihan yang disimpan wajib punya teks Inggris juga.</p>
-              <div class="form-actions">
-                <button class="btn btn-primary btn-sm" type="submit"><?= icon('check') ?> Simpan pilihan jawaban</button>
-              </div>
-            </form>
-          <?php endif ?>
 
           <details class="confirm">
             <summary class="btn btn-quiet btn-sm"><?= icon('trash') ?> Hapus soal</summary>

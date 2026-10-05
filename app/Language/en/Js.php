@@ -38,11 +38,10 @@ return [
 
     // Challenge frame
     'itemsPending'  => 'Some questions are not answered yet.',
-    'noRetry'       => 'This challenge can only be answered once. Your answers are saved.',
     'fixAnswers'    => 'Fix it',
     'finishAnyway'  => 'Finish with these answers',
     'hintTitle'     => 'Hint',
-    'hintPenalty'   => 'Using a hint will slightly lower your independence score. Open the hint?',
+    'hintPenalty'   => 'A hint does not take away your stars. Open the hint?',
     'hintOpen'      => 'Open hint',
     'hintAllOpened' => 'You have opened all the hints:',
     'hintNone'      => 'There is no hint for this question yet.',
@@ -59,12 +58,6 @@ return [
     'puzzleWrongTitle' => 'Not complete yet',
     'puzzleWrongText'  => 'The picture is not complete yet — {0} pieces are still in the wrong place. Pieces marked ✗ are misplaced.',
     'puzzleWrongPlain' => 'The picture is not complete yet. Swap the pieces again.',
-    'cardMoved'        => 'Card moved to position {0} of {1}.',
-    'orderOkTitle'     => 'The order is right!',
-    'orderOkText'      => 'All the steps are in order.',
-    'orderWrongTitle'  => 'Not in order yet',
-    'orderWrongText'   => '{0} of {1} cards are in the right place. Move the cards again.',
-    'orderWrongPlain'  => 'The order is not right yet. Move the cards again.',
 
     // Fill in the blanks
     'blankFilled'     => '{0} filled: {1}',
@@ -83,7 +76,6 @@ return [
     'cardsOkText'      => 'You judged every statement correctly.',
     'cardsWrongTitle'  => 'Not all right yet',
     'cardsWrongText'   => '{0} of {1} cards are right. Think again about the cards with a red border.',
-    'reasonSaved'      => 'Your reason is saved',
 
     // Find the object
     'clueLabel'      => 'Clue {0}',

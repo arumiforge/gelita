@@ -24,12 +24,6 @@ return [
     'menuDashboard'    => 'Beranda',
     'menuParticipants' => 'Siswa',
     'menuSessions'     => 'Sesi bermain',
-    'menuAnalytics'    => 'Hasil belajar',
-    'menuAnLevel'      => 'Per wilayah',
-    'menuAnNode'       => 'Per tantangan',
-    'menuAnItem'       => 'Per soal',
-    'menuAnIndicator'  => 'Per indikator',
-    'menuAnPrePost'    => 'Tes awal & tes akhir',
     'menuFeedback'     => 'Kritik & saran',
     'menuExport'       => 'Unduh data',
     'menuContent'      => 'Konten permainan',
@@ -59,11 +53,10 @@ return [
         'skipped'     => 'dilewati',
     ],
 
-    /** Tahap penelitian (research_phases.code). */
-    'phase' => [
-        'umum'     => 'Bermain biasa',
-        'pretest'  => 'Tes awal',
-        'posttest' => 'Tes akhir',
+    /** Alasan pengerjaan selesai (challenge_attempts.completion_reason). */
+    'completion' => [
+        'solved'          => 'Semua soal benar',
+        'tries_exhausted' => 'Kesempatan habis',
     ],
 
     'locale' => [
@@ -74,7 +67,6 @@ return [
     'gender' => [
         'laki-laki' => 'Laki-laki',
         'perempuan' => 'Perempuan',
-        'lainnya'   => 'Lainnya',
     ],
 
     /** Pose tokoh dan efek layar pada slide cerita (dialogues.pose / dialogues.effect). */
@@ -109,22 +101,9 @@ return [
     /** Jenis soal (interaction_type). */
     'interaction' => [
         'puzzle_arrange'  => 'Susun kepingan gambar',
-        'ordering'        => 'Urutkan kartu',
         'fill_blank_bank' => 'Isi rumpang (pilih kata)',
-        'fill_blank_free' => 'Isi rumpang (ketik jawaban)',
         'verdict_card'    => 'Kartu benar/salah',
-        'verdict_reason'  => 'Kartu benar/salah/pendapat + alasan',
-        'single_choice'   => 'Pilihan ganda',
-        'source_trust'    => 'Pilih sumber tepercaya',
         'find_object'     => 'Cari benda di gambar',
-    ],
-
-    /** Pilar literasi digital (Wonosobo tantangan 5). */
-    'pillar' => [
-        'digital_skills'  => 'Cakap digital',
-        'digital_ethics'  => 'Etika digital',
-        'digital_safety'  => 'Aman digital',
-        'digital_culture' => 'Budaya digital',
     ],
 
     /** Status tinjauan isi soal. */
@@ -167,12 +146,13 @@ return [
     'dataTable' => [
         'game_event_logs'      => 'Catatan aktivitas bermain',
         'audio_usage_events'   => 'Catatan pemakaian suara',
+        'item_tries'           => 'Percobaan per soal',
         'item_responses'       => 'Jawaban per soal',
-        'challenge_attempts'   => 'Percobaan tantangan',
+        'challenge_attempts'   => 'Pengerjaan tantangan',
+        'device_logs'          => 'Catatan perangkat',
         'session_progress'     => 'Kemajuan sesi',
         'participant_feedback' => 'Kritik & saran',
         'game_sessions'        => 'Sesi bermain',
-        'participant_consents' => 'Persetujuan orang tua/wali',
         'participants'         => 'Data siswa',
     ],
 
@@ -221,7 +201,6 @@ return [
         'class_level' => 'Kelas',
         'school'      => 'Sekolah',
         'province'    => 'Provinsi',
-        'phase'       => 'Tahap',
     ],
 
     /** Jenis catatan aktivitas di linimasa sesi (game_event_logs). */
@@ -238,13 +217,21 @@ return [
         'library_page_viewed'  => 'Membaca halaman Pustaka',
         'dialogue_advanced'    => 'Melanjutkan cerita/dialog',
         'challenge_opened'     => 'Membuka tantangan',
-        'challenge_checked'    => 'Menekan Periksa',
+        'challenge_checked'    => 'Menekan Cek jawabanku',
         'challenge_completed'  => 'Tantangan selesai',
-        'challenge_skipped'    => 'Melewati tantangan',
         'challenge_abandoned'  => 'Tantangan ditinggalkan',
+        'challenge_tries_exhausted' => 'Kesempatan habis',
         'answer_submitted'     => 'Mengirim jawaban',
         'answer_changed'       => 'Mengubah jawaban',
+        'answer_selected'      => 'Mengisi/mengubah soal',
         'wrong_target_clicked' => 'Salah pilih benda',
+        'clue_failed'          => 'Benda tidak ditemukan (kesempatan habis)',
+        'reading_progress'     => 'Menggulir bacaan',
+        'screen_viewed'        => 'Membuka layar',
+        'overlay_opened'       => 'Membuka jendela',
+        'page_hidden'          => 'Meninggalkan halaman',
+        'page_visible'         => 'Kembali ke halaman',
+        'viewport_changed'     => 'Ukuran tampilan berubah',
         'hint_opened'          => 'Membuka petunjuk',
         'audio_play'           => 'Memutar suara',
         'audio_autoplay'       => 'Suara diputar otomatis',
@@ -289,9 +276,7 @@ return [
         'study_update'                 => 'Mengubah penelitian',
         'release_create'               => 'Membuat versi permainan',
         'release_activate'             => 'Mengaktifkan versi permainan',
-        'scoring_create'               => 'Membuat aturan penilaian',
-        'scoring_activate'             => 'Mengaktifkan aturan penilaian',
-        'score_recompute'              => 'Menghitung ulang skor',
+        'system_reset'                 => 'Reset total (gelita:reset)',
         'school_merge'                 => 'Menggabungkan nama sekolah',
         'school_verify'                => 'Mengesahkan sekolah baru',
     ],

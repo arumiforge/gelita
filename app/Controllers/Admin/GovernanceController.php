@@ -30,7 +30,6 @@ class GovernanceController extends BaseAdminController
             'attemptHours'    => $config->attemptAbandonHours,
             'sessionDays'     => $config->sessionAbandonDays,
             'exportRetention' => $config->exportRetentionDays,
-            'phases'          => $config->phases,
             'retention'       => session('retention_result'),
         ]);
     }

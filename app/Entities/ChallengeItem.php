@@ -110,15 +110,7 @@ class ChallengeItem extends Entity
         return trim($text) === '' ? null : $text;
     }
 
-    /** Pilar literasi digital (Wonosobo node 5) — tetap di server, dipakai analitik */
-    public function digitalPillar(): ?string
-    {
-        $pillar = (string) $this->conf('digital_pillar', '');
-
-        return $pillar === '' ? null : $pillar;
-    }
-
-    /** Hanya kunci tampilan; `decoy`, `wrong_feedback_*`, `digital_pillar` tetap di server. */
+    /** Hanya kunci tampilan; `decoy`, `wrong_feedback_*`, dan kunci lain tetap di server. */
     public function safeConfig(): array
     {
         $config = $this->config_json ?: [];

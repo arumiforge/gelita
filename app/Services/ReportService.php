@@ -2,18 +2,18 @@
 
 namespace App\Services;
 
-use App\Models\ParticipantModel;
 use App\Models\ResearchStudyModel;
 use Mpdf\Mpdf;
 use Mpdf\Output\Destination;
 
 /**
- * Laporan PDF (FITUR 15): ringkasan penelitian dan laporan satu siswa.
+ * Laporan PDF satu siswa (hitungan data mentah). Laporan penelitian olahan
+ * (skor per wilayah, indikator, pretest–posttest) dihapus pada perombakan
+ * kelas 5 (Dok 1 §14); peneliti mengolah data dari ekspor Excel.
  *
  * Data diambil lewat AnalyticsService yang terikat cakupan sekolah dan mode
  * anonim pemohon, dirender dari view `pdf/*` (setiap nilai lewat esc()), lalu
- * dicetak mPDF. Chart berupa bar horizontal dari tabel + blok berwarna yang
- * dibuat server; tidak ada screenshot browser dan tidak ada raw event.
+ * dicetak mPDF.
  */
 class ReportService
 {
@@ -26,12 +26,12 @@ class ReportService
      */
     public function render(string $path, array $context): array
     {
-        $data = $context['template'] === 'participant'
-            ? $this->participantData($context)
-            : $this->studyData($context);
+        if (($context['template'] ?? null) !== 'participant') {
+            throw new \DomainException('Ringkasan PDF penelitian sudah tidak tersedia. Unduh data mentah sebagai Excel, atau buat laporan satu siswa dari halaman profil siswa.');
+        }
 
-        $view = $context['template'] === 'participant' ? 'pdf/report-participant' : 'pdf/report-study';
-        $html = view($view, $data, ['saveData' => false]);
+        $data = $this->participantData($context);
+        $html = view('pdf/report-participant', $data, ['saveData' => false]);
 
         $this->writePdf($html, $path, $data['title']);
 
@@ -42,33 +42,6 @@ class ReportService
         }
 
         return ['sha' => $sha, 'rows' => (int) $data['rows']];
-    }
-
-    /**
-     * Snapshot laporan studi.
-     *
-     * @param array<string, mixed> $context
-     *
-     * @return array<string, mixed>
-     */
-    public function studyData(array $context): array
-    {
-        $filters   = $context['filters'];
-        $analytics = new AnalyticsService($context['school_scope'], true);
-        $summary   = $analytics->summary($filters);
-
-        return [
-            'title'      => 'Laporan Penelitian GELITA',
-            'meta'       => $this->meta($context),
-            'summary'    => $summary,
-            'cohort'     => model(ParticipantModel::class)->cohortSummary($filters),
-            'levels'     => $analytics->levelBreakdown($filters),
-            'nodes'      => $analytics->nodeDifficulty($filters),
-            'indicators' => $analytics->indicatorMastery($filters),
-            'security'   => $analytics->digitalSecurityLiteracy($filters),
-            'prePost'    => $analytics->prePostComparison($filters),
-            'rows'       => $summary['participant_count'],
-        ];
     }
 
     /**
@@ -95,32 +68,16 @@ class ReportService
             throw new \DomainException($e->getMessage(), 0, $e);
         }
 
-        $levels = [];
-
-        foreach (service('contentRepository')->levels() as $level) {
-            $levels[$level->id] = ['code' => (string) $level->code, 'name' => (string) $level->name_id];
-        }
-
-        $node = $profile['hardest_node'] === null
-            ? null
-            : service('contentRepository')->node((int) $profile['hardest_node']['node_id']);
-
         return [
-            'title'       => 'Laporan Siswa GELITA',
-            'meta'        => $this->meta($context),
-            'profile'     => $profile,
-            'levels'      => $levels,
-            'hardestNode' => $node === null ? null : [
-                'title'               => (string) $node->title_id,
-                'level'               => $levels[$node->level_id]['name'] ?? '',
-                'first_pass_accuracy' => $profile['hardest_node']['first_pass_accuracy'],
-            ],
-            'rows' => 1,
+            'title'   => 'Laporan Siswa GELITA',
+            'meta'    => $this->meta($context),
+            'profile' => $profile,
+            'rows'    => 1,
         ];
     }
 
     /**
-     * Keterangan sampul: studi, fase, rentang, pemohon, waktu cetak, cakupan.
+     * Keterangan sampul: studi, rentang, pemohon, waktu cetak, cakupan.
      *
      * @param array<string, mixed> $context
      *
@@ -149,7 +106,6 @@ class ReportService
         return [
             'export_id'    => $context['export_id'],
             'study'        => $study === null ? 'Semua penelitian' : ($study['name'] . ' (' . $study['code'] . ')'),
-            'phase'        => $filters['phase_code'] ?? 'semua tahap',
             'date_from'    => $filters['date_from'] ?? null,
             'date_to'      => $filters['date_to'] ?? null,
             'school'       => $school,

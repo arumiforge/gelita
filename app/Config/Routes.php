@@ -110,12 +110,6 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
         $routes->get('sesi', 'SessionController::index');
         $routes->get('sesi/(:num)', 'SessionController::show/$1');
         $routes->get('sesi/(:num)/event', 'SessionController::timeline/$1');
-        $routes->get('analitik/level', 'AnalyticsController::levels');
-        $routes->get('analitik/node', 'AnalyticsController::nodes');
-        $routes->get('analitik/node/(:num)', 'AnalyticsController::node/$1');
-        $routes->get('analitik/butir', 'AnalyticsController::items');
-        $routes->get('analitik/indikator', 'AnalyticsController::indicators');
-        $routes->get('analitik/prepost', 'AnalyticsController::prePost');
         $routes->get('masukan', 'FeedbackController::index');
 
         // Export — guru & admin, tetapi mode non-anonim hanya admin
@@ -134,7 +128,6 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
             $routes->post('konten/node/(:num)/item', 'ContentController::createItem/$1');
             $routes->post('konten/item/(:num)', 'ContentController::updateItem/$1');
             $routes->post('konten/item/(:num)/hapus', 'ContentController::deleteItem/$1');
-            $routes->post('konten/item/(:num)/opsi', 'ContentController::saveOptions/$1');
             $routes->get('konten/impor-bank', 'ContentController::importForm');
             $routes->post('konten/impor-bank/pratinjau', 'ContentController::importPreview');
             $routes->post('konten/impor-bank/jalankan', 'ContentController::importRun');
@@ -168,8 +161,6 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
             $routes->get('studi/rilis', 'StudyController::releases');
             $routes->post('studi/rilis', 'StudyController::storeRelease');
             $routes->post('studi/rilis/(:num)/aktifkan', 'StudyController::activateRelease/$1');
-            $routes->get('studi/skoring', 'StudyController::scoringProfiles');
-            $routes->post('studi/skoring', 'StudyController::storeScoringProfile');
 
             $routes->get('tata-kelola', 'GovernanceController::index');
             $routes->post('tata-kelola/hapus/pratinjau', 'GovernanceController::deletePreview');
@@ -198,11 +189,6 @@ $routes->group('api/admin', [
     'filter'    => ['jsonResponse', 'staffAuth'],
 ], static function ($routes): void {
     $routes->get('summary', 'AdminApiController::summary');
-    $routes->get('levels', 'AdminApiController::levels');
-    $routes->get('nodes', 'AdminApiController::nodes');
-    $routes->get('items', 'AdminApiController::items');
-    $routes->get('indicators', 'AdminApiController::indicators');
-    $routes->get('prepost', 'AdminApiController::prePost');
     $routes->get('participants', 'AdminApiController::participants');
     $routes->get('sessions/(:num)/timeline', 'AdminApiController::timeline/$1');
     $routes->get('exports/(:num)/status', 'AdminApiController::exportStatus/$1');

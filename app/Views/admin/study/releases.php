@@ -4,7 +4,7 @@
  *
  * Satu rilis aktif pada satu waktu. Setiap sesi mencatat release_id-nya,
  * sehingga analisis pretest–posttest dapat memisahkan sesi yang dimainkan
- * dengan konten atau skoring berbeda. Rilis baru selalu dibuat nonaktif.
+ * dengan konten atau aturan bintang berbeda. Rilis baru selalu dibuat nonaktif.
  * Di layar, "rilis" disebut versi permainan.
  *
  * @var list<array<string, mixed>> $releases
@@ -27,9 +27,8 @@
     'actions' => $actions,
 ]) ?>
 <ul class="sub-nav">
-  <li><a href="<?= base_url('admin/studi') ?>"><?= icon('flask') ?> Penelitian & tahap</a></li>
+  <li><a href="<?= base_url('admin/studi') ?>"><?= icon('flask') ?> Penelitian</a></li>
   <li><a href="<?= base_url('admin/studi/rilis') ?>" aria-current="page"><?= icon('list') ?> Versi permainan</a></li>
-  <li><a href="<?= base_url('admin/studi/skoring') ?>"><?= icon('target') ?> Aturan penilaian</a></li>
 </ul>
 <?= $this->include('partials/flash') ?>
 
@@ -39,7 +38,7 @@
   <div class="kpi-grid">
     <?= component('components/stat-tile', ['label' => 'Versi aktif', 'value' => $active['release_code'], 'icon' => 'play', 'hint' => $active['published_at'] ? 'sejak ' . fmt_date($active['published_at'], false, 'id') : null]) ?>
     <?= component('components/stat-tile', ['label' => 'Versi konten', 'value' => $active['content_version'], 'icon' => 'book', 'hint' => 'soal, cerita, dan bacaan']) ?>
-    <?= component('components/stat-tile', ['label' => 'Versi aturan penilaian', 'value' => $active['scoring_version'], 'icon' => 'target']) ?>
+    <?= component('components/stat-tile', ['label' => 'Versi aturan bintang', 'value' => $active['scoring_version'], 'icon' => 'target']) ?>
     <?= component('components/stat-tile', ['label' => 'Versi aplikasi', 'value' => $active['app_version'], 'icon' => 'grid']) ?>
   </div>
 <?php endif ?>
@@ -56,7 +55,7 @@
           'app_version'     => 'Aplikasi',
           'content_version' => 'Konten',
           'asset_version'   => 'Gambar & suara',
-          'scoring_version' => 'Penilaian',
+          'scoring_version' => 'Aturan bintang',
           'published_at'    => ['label' => 'Diaktifkan', 'format' => 'datetime'],
           'actions'         => ['label' => '', 'render' => static function (array $row): string {
               if ($row['is_active']) {
@@ -100,7 +99,7 @@
         <input type="text" id="asset_version" name="asset_version" maxlength="20" value="<?= esc($active['asset_version'] ?? '1', 'attr') ?>">
       </div>
       <div class="field">
-        <label for="scoring_version">Versi aturan penilaian <span class="req">*</span></label>
+        <label for="scoring_version">Versi aturan bintang <span class="req">*</span></label>
         <input type="text" id="scoring_version" name="scoring_version" required maxlength="20" value="<?= esc($active['scoring_version'] ?? '', 'attr') ?>">
         <p class="field-help">Samakan dengan versi aturan penilaian yang aktif (lihat menu Aturan penilaian).</p>
       </div>
