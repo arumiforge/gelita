@@ -128,6 +128,8 @@ class RegisterController extends BaseController
         $input                = is_array($post) ? $post : [];
         $input['username']    = $username;
         $input['school_npsn'] = (string) preg_replace('/\s+/', '', (string) ($input['school_npsn'] ?? ''));
+        // Sasaran penelitian: kelas 5 SD/MI saja; formulir tidak menawarkan kelas lain.
+        $input['class_level'] = config('Gelita')->registrationClass;
 
         // 1–3. metrik literasi keamanan digital, dihitung sebelum validasi lain
         $check = (new PasswordPolicy())->check($password, $username);
@@ -210,8 +212,8 @@ class RegisterController extends BaseController
             'display_name'     => 'required|min_length[2]|max_length[150]',
             'age'              => 'required|integer|greater_than[4]|less_than[81]',
             'gender'           => 'required|in_list[laki-laki,perempuan,lainnya]',
-            'class_level'      => 'required|max_length[20]',
-            'school_npsn'      => $byNpsn ? 'required|is_natural|exact_length[8]|known_npsn' : 'permit_empty|max_length[20]',
+            'class_level'      => 'required|in_list[' . config('Gelita')->registrationClass . ']',
+            'school_npsn'      => $byNpsn ? 'required|is_natural|exact_length[8]|known_npsn|allowed_school_stage' : 'permit_empty|max_length[20]',
             'school_manual'    => 'permit_empty|in_list[1]',
             'school_name'      => $byNpsn ? 'permit_empty|max_length[200]' : 'required|min_length[3]|max_length[200]',
             'country_code'     => 'required|max_length[5]',
@@ -239,6 +241,10 @@ class RegisterController extends BaseController
                 'is_natural'   => lang('Game.schoolNpsnFormat'),
                 'exact_length' => lang('Game.schoolNpsnFormat'),
                 'known_npsn'   => lang('Game.schoolNpsnUnknown'),
+                'allowed_school_stage' => lang('Game.schoolStageNotAllowed'),
+            ],
+            'class_level' => [
+                'in_list' => lang('Game.classOnly'),
             ],
             'school_name' => [
                 'required'   => lang('Game.schoolNameRequired'),

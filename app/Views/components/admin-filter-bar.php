@@ -23,13 +23,13 @@ $show    = static fn (string $key): bool => ! isset($only) || in_array($key, $on
 $value   = static fn (string $key): string => (string) ($filters[$key] ?? '');
 $isAdmin = session('staff_role') === 'admin';
 $active  = array_diff_key($filters, ['school_id' => true]);
-$classes = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'lainnya'];
+$classes = $options['classes'] ?? [config('Gelita')->registrationClass];
 $bare    = ! empty($bare);
 ?>
 <?php if ($bare): ?>
 <div class="filter-bar">
 <?php else: ?>
-<form method="get" class="filter-bar" aria-label="Filter data">
+<form method="get" class="filter-bar" aria-label="Pilihan data">
 <?php endif ?>
   <?php if (isset($extra['q'])): ?>
     <div class="field filter-search">
@@ -100,7 +100,7 @@ $bare    = ! empty($bare);
       <select id="f-class" name="class_level">
         <option value="">Semua kelas</option>
         <?php foreach ($classes as $class): ?>
-          <option value="<?= esc($class, 'attr') ?>" <?= $value('class_level') === $class ? 'selected' : '' ?>><?= $class === 'lainnya' ? 'Lainnya' : 'Kelas ' . esc($class) ?></option>
+          <option value="<?= esc($class, 'attr') ?>" <?= $value('class_level') === $class ? 'selected' : '' ?>><?= esc(class_label($class)) ?></option>
         <?php endforeach ?>
       </select>
     </div>

@@ -33,7 +33,7 @@ $code   = (string) ($person['participant_code'] ?? $person['code'] ?? '');
     <?php if (! empty($person['display_name'])): ?><tr><td class="key">Nama</td><td><?= esc($person['display_name']) ?></td></tr><?php endif ?>
     <?php if (! empty($person['school_name'])): ?><tr><td class="key">Sekolah</td><td><?= esc($person['school_name']) ?></td></tr><?php endif ?>
   <?php endif ?>
-  <?php if (isset($person['class_level'])): ?><tr><td class="key">Kelas</td><td><?= esc($person['class_level']) ?></td></tr><?php endif ?>
+  <?php if (isset($person['class_level'])): ?><tr><td class="key">Kelas</td><td><?= esc(class_label($person['class_level'])) ?></td></tr><?php endif ?>
   <tr><td class="key">Studi</td><td><?= esc($meta['study']) ?></td></tr>
   <tr><td class="key">Dibuat oleh</td><td><?= esc($meta['requester']) ?> · <?= esc(fmt_date($meta['generated_at'], false, 'id')) ?></td></tr>
 </table>

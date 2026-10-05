@@ -95,7 +95,20 @@ class SchoolDirectory
             'district_code' => $school['district_code'] ?? null,
             'district_name' => RegionDirectory::districtName($school['district_code'] ?? null),
             'meta'          => $this->metaLine($school),
+            'allowed'       => $this->stageAllowed($school),
         ];
+    }
+
+    /**
+     * Jenjang sekolah ini boleh dipakai mendaftar (Config\Gelita::
+     * $registrationSchoolStages: SD/MI dan SLB). Sekolah tanpa data jenjang
+     * tidak dapat diperiksa, jadi diterima.
+     */
+    public function stageAllowed(array $school): bool
+    {
+        $stage = strtolower(trim((string) ($school['stage'] ?? '')));
+
+        return $stage === '' || in_array($stage, config('Gelita')->registrationSchoolStages, true);
     }
 
     /**

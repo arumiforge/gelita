@@ -65,7 +65,36 @@ abstract class BaseAdminController extends BaseController
             'schools'    => $scope === null ? model(SchoolModel::class)->inUseList() : [],
             'own_school' => $ownSchool['name'] ?? null,
             'provinces'  => array_column($provinces, 'province_name', 'province_code'),
+            'classes'    => $this->classOptions($scope),
         ];
+    }
+
+    /**
+     * Kelas yang benar-benar ada di data siswa dalam cakupan staf, selalu
+     * memuat kelas sasaran (5). Data lama dari kelas lain tetap dapat dipilih.
+     *
+     * @return list<string>
+     */
+    private function classOptions(?int $scope): array
+    {
+        $rows = model(ParticipantModel::class)->scopedForStaff($scope)
+            ->select('class_level')
+            ->distinct()
+            ->where('participants.deleted_at', null)
+            ->where('class_level IS NOT NULL')
+            ->where('class_level !=', '')
+            ->get()
+            ->getResultArray();
+
+        $classes = array_values(array_unique(array_merge(
+            [config('Gelita')->registrationClass],
+            array_map('strval', array_column($rows, 'class_level')),
+        )));
+
+        // 1, 2, …, 9 lalu "lainnya" di akhir
+        usort($classes, static fn (string $a, string $b): int => [! ctype_digit($a), (int) $a, $a] <=> [! ctype_digit($b), (int) $b, $b]);
+
+        return $classes;
     }
 
     /** Kembali ke halaman panel dengan pesan galat. */

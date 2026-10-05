@@ -40,7 +40,7 @@ $prePost  = $profile['pre_post'];
       <div><dt>Nama</dt><dd><?= esc($participant['display_name'] ?? '—') ?></dd></div>
       <div><dt>Umur</dt><dd><?= esc($participant['age'] ?? '—') ?></dd></div>
       <div><dt>Jenis kelamin</dt><dd><?= esc(admin_label('gender', $participant['gender'] ?? null)) ?></dd></div>
-      <div><dt>Kelas</dt><dd><?= esc($participant['class_level'] ?? '—') ?></dd></div>
+      <div><dt>Kelas</dt><dd><?= esc(class_label($participant['class_level'] ?? null)) ?></dd></div>
       <div><dt>Sekolah</dt><dd><?= esc($participant['school_name'] ?? '—') ?></dd></div>
       <div><dt>Daerah</dt><dd><?= esc($region !== '' ? $region : '—') ?></dd></div>
     </dl>
