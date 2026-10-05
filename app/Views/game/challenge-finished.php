@@ -2,7 +2,8 @@
 /**
  * 12. Selesai — `/selesai/{attemptId}` → ChallengeController::finished
  *
- * Orb cahaya, bintang 0–3, tiga statistik (Waktu, Tepat sejak awal, Skor).
+ * Orb cahaya, bintang 0–3, tiga statistik (Waktu, Berhasil pada Percobaan
+ * Pertama, Benar di akhir).
  * Bila wilayah tuntas: panel Mbah Kedu bangga. Bila attempt ini yang
  * menuntaskan wilayah: tombol utama "Lanjut" ke adegan /tuntas/{code}
  * ("Serpihan {wilayah} kembali!", Tahap 3), dan bila wilayahnya punya

@@ -176,7 +176,11 @@ class SystemResetService
      * konfirmasi menjadi tanggung jawab pemanggil (command).
      *
      * @param array{hapus_guru?: bool, tanpa_bank?: bool, bank?: ?string, tanpa_mockup?: bool,
-     *              bersihkan_media?: bool, staff_id?: ?int} $options
+     *              bersihkan_media?: bool, konfirmasi_media?: callable(list<array{id: int, asset_key: string, storage_path: string}>): bool} $options
+     *
+     * `konfirmasi_media`: dipanggil dengan daftar media tantangan yang tidak
+     * terpakai SESUDAH impor bank soal (daftar akhirnya baru diketahui saat
+     * itu); false = tidak ada yang dihapus. Tanpa callback: langsung dihapus.
      *
      * @return array{mode: string, cleared: array<string, int>, schools_removed: int, teachers_removed: int,
      *               bank: array<string, mixed>, mockups: array<string, mixed>, media_removed: list<string>,
@@ -210,7 +214,16 @@ class SystemResetService
             ? ['status' => 'skipped', 'count' => 0, 'message' => 'Gambar mockup tidak dibuat (--tanpa-mockup).']
             : $this->generateMockups();
 
-        $mediaRemoved = ! empty($options['bersihkan_media']) ? $this->removeUnusedChallengeMedia() : [];
+        $mediaRemoved = [];
+
+        if (! empty($options['bersihkan_media'])) {
+            $unused  = $this->unusedChallengeMedia();
+            $confirm = $options['konfirmasi_media'] ?? null;
+
+            if ($unused !== [] && ($confirm === null || $confirm($unused) === true)) {
+                $mediaRemoved = $this->removeUnusedChallengeMedia($unused);
+            }
+        }
 
         // 9. Bersihkan cache
         $this->flushCaches();
@@ -220,7 +233,7 @@ class SystemResetService
         $errors   = ContentVerifier::errorCount($findings);
 
         // 11. Audit
-        $this->audit($counts, $options, $mode, $bank);
+        $this->audit($counts, $options, $mode, $bank, $mediaRemoved);
 
         return [
             'mode'             => $mode,
@@ -458,12 +471,16 @@ class SystemResetService
         return $out;
     }
 
-    /** @return list<string> asset_key yang dihapus */
-    private function removeUnusedChallengeMedia(): array
+    /**
+     * @param list<array{id: int, asset_key: string, storage_path: string}> $rows hasil unusedChallengeMedia()
+     *
+     * @return list<string> asset_key yang dihapus
+     */
+    private function removeUnusedChallengeMedia(array $rows): array
     {
         $removed = [];
 
-        foreach ($this->unusedChallengeMedia() as $row) {
+        foreach ($rows as $row) {
             $file = FCPATH . ltrim($row['storage_path'], '/');
 
             if (str_starts_with($row['storage_path'], 'assets/uploads/') && is_file($file)) {
@@ -498,8 +515,9 @@ class SystemResetService
      * @param array<string, int>   $counts
      * @param array<string, mixed> $options
      * @param array<string, mixed> $bank
+     * @param list<string>         $mediaRemoved asset_key media tantangan yang dihapus
      */
-    private function audit(array $counts, array $options, string $mode, array $bank): void
+    private function audit(array $counts, array $options, string $mode, array $bank, array $mediaRemoved): void
     {
         $this->db->table('audit_logs')->insert([
             'staff_user_id' => null,
@@ -509,10 +527,11 @@ class SystemResetService
             'metadata_json' => json_encode([
                 'cleared'     => $counts,
                 'mode'        => $mode,
-                'options'     => array_filter($options, static fn ($value): bool => $value !== null && $value !== false),
+                'options'     => array_filter($options, static fn ($value): bool => $value !== null && $value !== false && ! $value instanceof \Closure),
                 'host'        => gethostname() ?: null,
                 'bank_sha256' => $bank['sha256'] ?? null,
                 'bank_status' => $bank['status'] ?? null,
+                'media_removed' => $mediaRemoved,
             ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
             'occurred_at' => date('Y-m-d H:i:s'),
         ]);

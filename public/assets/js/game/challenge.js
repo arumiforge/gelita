@@ -13,9 +13,11 @@
  *
  * Waktu isian per soal (Dok 1 §12.5): ms sejak tantangan dibuka
  * (performance.now()) saat siswa pertama kali dan terakhir kali mengisi/
- * mengubah soal itu; ikut dikirim pada setiap /check sebagai
- * `first_input_ms` / `last_input_ms`. Hanya catatan proses — urutan dan waktu
- * resmi tetap occurred_at server.
+ * mengubah soal itu dalam satu percobaan; ikut dikirim pada setiap /check
+ * sebagai `first_input_ms` / `last_input_ms` (satu baris item_tries), lalu
+ * dihitung ulang untuk percobaan berikutnya. Soal yang tidak disentuh dalam
+ * satu percobaan dikirim tanpa waktu. Hanya catatan proses — urutan dan
+ * waktu resmi tetap occurred_at server.
  *   complete()                     → POST /api/attempts/{id}/complete → /selesai/{id}
  *   useHint()                      → POST /api/attempts/{id}/hints
  *
@@ -94,12 +96,15 @@ export async function bootChallenge() {
     });
   }
 
-  function check(answers) {
+  async function check(answers) {
     const rows = answers.map((row) => {
       const times = inputTimes.get(row.item_id);
       return times ? { ...row, first_input_ms: times.first, last_input_ms: times.last } : row;
     });
-    return post('check', { answers: rows, client_event_id: uuid(), occurred_at: now() });
+    const result = await post('check', { answers: rows, client_event_id: uuid(), occurred_at: now() });
+    // Waktu isian per percobaan: percobaan berikutnya dihitung dari isian berikutnya
+    for (const row of answers) inputTimes.delete(row.item_id);
+    return result;
   }
 
   async function complete() {

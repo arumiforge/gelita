@@ -75,15 +75,11 @@ class SystemReset extends BaseCommand
         $plan = $service->plan();
         $this->printPlan($plan);
 
-        $media = $flag('bersihkan-media-tantangan') ? $service->unusedChallengeMedia() : [];
+        $cleanMedia = $flag('bersihkan-media-tantangan');
 
-        if ($media !== []) {
-            CLI::newLine();
-            CLI::write('Media tantangan tidak terpakai yang akan DIHAPUS (' . count($media) . '):', 'yellow');
-
-            foreach ($media as $row) {
-                CLI::write('  ' . $row['asset_key'] . '  (' . $row['storage_path'] . ')');
-            }
+        if ($cleanMedia) {
+            // Daftar akhir baru diketahui sesudah impor bank soal; ini perkiraan dari isi sekarang
+            $this->printMedia($service->unusedChallengeMedia(), 'Media tantangan yang SAAT INI tidak terpakai (daftar akhir dihitung ulang sesudah impor bank soal)');
         }
 
         if ($dryRun) {
@@ -122,7 +118,13 @@ class SystemReset extends BaseCommand
                 'tanpa_bank'      => $flag('tanpa-bank'),
                 'bank'            => $this->bankPath($params),
                 'tanpa_mockup'    => $flag('tanpa-mockup'),
-                'bersihkan_media' => $flag('bersihkan-media-tantangan'),
+                'bersihkan_media' => $cleanMedia,
+                // Sesudah impor: tampilkan daftar akhir, lalu minta konfirmasi kecuali --ya
+                'konfirmasi_media' => function (array $media) use ($yes): bool {
+                    $this->printMedia($media, 'Media tantangan tidak terpakai yang akan DIHAPUS');
+
+                    return $yes || strtolower(trim((string) CLI::prompt('Hapus ' . count($media) . ' media ini?', ['y', 'n']))) === 'y';
+                },
             ]);
         } catch (\Throwable $e) {
             CLI::error('Reset gagal: ' . $e->getMessage());
@@ -145,6 +147,17 @@ class SystemReset extends BaseCommand
         }
 
         return EXIT_SUCCESS;
+    }
+
+    /** @param list<array{id: int, asset_key: string, storage_path: string}> $media */
+    private function printMedia(array $media, string $title): void
+    {
+        CLI::newLine();
+        CLI::write($title . ' (' . count($media) . '):', 'yellow');
+
+        foreach ($media as $row) {
+            CLI::write('  ' . $row['asset_key'] . '  (' . $row['storage_path'] . ')');
+        }
     }
 
     /** @param array<string, mixed> $plan */
