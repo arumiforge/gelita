@@ -9,6 +9,7 @@ use App\Models\ChallengeOptionModel;
 use App\Models\HintModel;
 use App\Models\LearningIndicatorModel;
 use App\Libraries\BankWorkbookGuide;
+use App\Libraries\ClozeReading;
 use App\Libraries\DifficultyRules;
 use App\Libraries\MediaLink;
 use App\Models\LevelModel;
@@ -423,7 +424,7 @@ class ContentImportService
             }
 
             foreach (['prompt_id' => 'bahasa Indonesia', 'prompt_en' => 'bahasa Inggris'] as $column => $language) {
-                if (($column === 'prompt_id' || $row[$column] !== '') && self::blankCount((string) $row[$column]) !== 1) {
+                if (($column === 'prompt_id' || $row[$column] !== '') && ClozeReading::blankCount((string) $row[$column]) !== 1) {
                     return "Soal isi rumpang {$row['item_key']} harus punya TEPAT SATU tempat kosong ___ di teks {$language}.";
                 }
             }
@@ -1367,9 +1368,11 @@ class ContentImportService
     {
         $perNode = [];
         $active  = [];
+        $keys    = [];
 
         foreach ($sheets['items'] as $row) {
             $perNode[$row['node_ref']]['items'] = ($perNode[$row['node_ref']]['items'] ?? 0) + 1;
+            $keys[$row['node_ref']][]           = trim((string) $row['item_key']);
 
             if ($row['is_active'] !== '0') {
                 $active[$row['node_ref']] = ($active[$row['node_ref']] ?? 0) + 1;
@@ -1409,6 +1412,21 @@ class ContentImportService
             $items   = $active[$ref] ?? 0;
 
             if ($reading[$ref] ?? $node->isReading()) {
+                // Semua soal aktif tantangan bacaan tersambung menjadi satu bacaan,
+                // termasuk soal yang tidak ada di workbook (mis. soal contoh -91).
+                $extra = array_values(array_diff(
+                    array_map(static fn ($item): string => (string) $item->item_key, model(ChallengeItemModel::class)->bankForNode((int) $node->id)),
+                    $keys[$ref] ?? [],
+                ));
+
+                if ($ref !== null && $extra !== []) {
+                    $warnings[] = [
+                        'sheet'   => 'items',
+                        'row'     => 0,
+                        'message' => "Tantangan bacaan {$ref} masih punya soal aktif yang tidak ada di workbook ini (" . implode(', ', $extra) . '). Soal itu ikut tersambung ke bacaan dan jawabannya masuk bank kata. Istirahatkan soal itu di editor soal (atau tulis barisnya dengan is_active = 0) bila bukan bagian bacaan.',
+                    ];
+                }
+
                 continue;
             }
 
@@ -1437,7 +1455,6 @@ class ContentImportService
         ];
     }
 
-    /** @return array<string, int> kode level => id */
     /**
      * Ukuran papan, bentuk keping, dan kunci soal Susun Gambar. Ditetapkan
      * sekali saat soal dibuat, mengikuti tingkat kesulitan wilayahnya
@@ -1499,12 +1516,7 @@ class ContentImportService
         return $out;
     }
 
-    /** Jumlah tempat kosong (tiga garis bawah atau lebih) dalam satu teks soal. */
-    private static function blankCount(string $text): int
-    {
-        return preg_match_all('/_{3,}/', $text);
-    }
-
+    /** @return array<string, int> kode level => id */
     private function levelIdsByCode(): array
     {
         $out = [];

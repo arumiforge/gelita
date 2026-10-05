@@ -1190,7 +1190,7 @@ is_active: 1 · published_at: NOW()
 ### 5. ResearchStudySeeder
 
 ```text
-code: STUDI-KEDU-2026 · name: Studi GELITA Kedu 2026 · status: active
+code: STUDI-KEDU-2026 · name: Penelitian GELITA Kedu 2026 · status: active
 retention_days: 1825 · default_locale: id · unlock_mode: sequential
 item_selection_mode: fixed · require_consent: 1
 active_phase_code: umum · allow_phase_choice: 0

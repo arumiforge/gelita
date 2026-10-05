@@ -138,7 +138,7 @@ foreach ($levels as $level) {
 <p class="muted small">Tingkat kesulitan 0–100 dihitung dari: salah pada jawaban pertama (40%), mengulang (20%), membuka petunjuk (20%), lama mengerjakan (10%), dan tantangan yang ditinggalkan (10%). Makin tinggi, makin sulit.</p>
 <table class="data compact">
   <thead>
-    <tr><th style="width: 13%">Wilayah</th><th style="width: 27%">Tantangan</th><th class="num" style="width: 10%">Dikerjakan (kali)</th><th class="num" style="width: 10%">Benar sejak awal</th><th class="num" style="width: 10%">Benar di akhir</th><th class="num" style="width: 10%">Petunjuk per kali</th><th class="num" style="width: 10%">Lama (nilai tengah)</th><th class="num" style="width: 10%">Tingkat kesulitan</th></tr>
+    <tr><th style="width: 12%">Wilayah</th><th style="width: 25%">Tantangan</th><th class="num" style="width: 13%">Dikerjakan (kali)</th><th class="num" style="width: 10%">Benar sejak awal</th><th class="num" style="width: 10%">Benar di akhir</th><th class="num" style="width: 10%">Petunjuk per kali</th><th class="num" style="width: 10%">Lama (nilai tengah)</th><th class="num" style="width: 10%">Tingkat kesulitan</th></tr>
   </thead>
   <tbody>
     <?php foreach ($nodes as $node): ?>

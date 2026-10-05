@@ -701,6 +701,9 @@ body.is-challenge .app { padding-bottom: var(--sp-4); }
   inset: calc(var(--overhang, 0%) * -1);
   width: calc(100% + 2 * var(--overhang, 0%));
   height: calc(100% + 2 * var(--overhang, 0%));
+  /* base.css membatasi svg selebar wadahnya; keping jigsaw harus melebar */
+  max-width: none;
+  max-height: none;
   overflow: visible;
   pointer-events: none;
 }

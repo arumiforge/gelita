@@ -83,6 +83,20 @@ final class ClozeReadingTest extends CIUnitTestCase
         $this->assertStringContainsString('kurang dari', $result['errors'][3]);
     }
 
+    public function testTheSameDuplicateInBothLanguagesIsReportedOnce(): void
+    {
+        $blanks                 = $this->blanks(3, ['C1', 'C2', 'C2']);
+        $blanks[2]['answer_id'] = 'Sumbing';
+        $blanks[2]['answer_en'] = 'Sumbing';
+        $blanks[0]['answer_id'] = 'sumbing';
+        $blanks[0]['answer_en'] = 'Sumbing';
+
+        $errors = ClozeReading::problems($blanks, [], 0, true, 'mudah')['errors'];
+
+        $this->assertCount(1, $errors, 'kata yang sama di ID dan EN cukup satu pesan');
+        $this->assertStringContainsString("'sumbing'", $errors[0]);
+    }
+
     public function testDeviationsFromTheGradeFiveRulesAreWarnings(): void
     {
         $result = ClozeReading::problems($this->blanks(3, ['C1', null, 'C4']), [['id' => 'lain', 'en' => 'other']], 1, false, 'sulit');

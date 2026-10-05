@@ -149,7 +149,8 @@ final class ClozeReading
             $warnings[] = "Jumlah kata pengecoh yang tampil {$distractorCount}; aturan tingkat {$level} adalah " . ($dMin === $dMax ? $dMin : "{$dMin}–{$dMax}") . '.';
         }
 
-        return ['errors' => $errors, 'warnings' => $warnings];
+        // jawaban yang sama di bahasa Indonesia dan Inggris cukup dilaporkan sekali
+        return ['errors' => array_values(array_unique($errors)), 'warnings' => array_values(array_unique($warnings))];
     }
 
     /**
