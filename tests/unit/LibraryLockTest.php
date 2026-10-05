@@ -242,7 +242,7 @@ final class LibraryLockTest extends CIUnitTestCase
         $level = self::level(2, 'magelang');
         $data  = self::hud() + [
             'level'      => $level,
-            'levelScore' => ['stars' => 0, 'completed_nodes' => 3, 'total_nodes' => 5],
+            'levelSummary' => ['stars' => 0, 'completed_nodes' => 3, 'total_nodes' => 5],
             'nodes'      => [],
             'hasLibrary' => true,
         ];
@@ -290,7 +290,7 @@ final class LibraryLockTest extends CIUnitTestCase
         return [
             'locale'      => 'id',
             'participant' => ['id' => 5, 'username' => 'jaka', 'display_name' => 'Jaka', 'avatar_code' => null],
-            'progress'    => ['completed_nodes' => 0, 'completed_levels' => 0, 'unlocked_level_sequence' => 1, 'total_score' => 0.0,
+            'progress'    => ['completed_nodes' => 0, 'completed_levels' => 0, 'unlocked_level_sequence' => 1,
                 'total_stars' => 0, 'shards' => 0, 'shards_total' => 15, 'current_level_id' => null, 'current_node_id' => null],
             'lantern' => [],
         ];

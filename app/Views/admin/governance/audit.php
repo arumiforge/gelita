@@ -20,9 +20,9 @@ $filtered = $action !== '' || $from !== '' || $to !== '';
 $targets  = [
     'staff_user' => 'akun', 'workbook' => 'berkas Excel', 'media_asset' => 'gambar/berkas', 'audio_asset' => 'rekaman',
     'data_export' => 'unduhan', 'data_deletion_request' => 'permintaan penghapusan', 'research_study' => 'penelitian',
-    'game_release' => 'versi permainan', 'scoring_profile' => 'aturan penilaian', 'participant' => 'siswa',
-    'level' => 'wilayah', 'node' => 'tantangan', 'item' => 'soal', 'options' => 'pilihan jawaban soal', 'passages' => 'bacaan wilayah',
-    'library' => 'Pustaka wilayah', 'dialogues' => 'dialog', 'school' => 'sekolah',
+    'game_release' => 'versi permainan', 'participant' => 'siswa',
+    'level' => 'wilayah', 'node' => 'tantangan', 'item' => 'soal', 'passages' => 'bacaan wilayah',
+    'library' => 'Pustaka wilayah', 'dialogues' => 'dialog', 'school' => 'sekolah', 'system' => 'seluruh sistem',
 ];
 ?>
 <?= $this->extend('layouts/admin') ?>

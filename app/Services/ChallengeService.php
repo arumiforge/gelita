@@ -953,7 +953,9 @@ class ChallengeService
      * pemilihan (yang menaruh jebakan di akhir). Tidak ada prompt, id butir,
      * `scorable`, atau penanda jebakan.
      *
-     * `clues` hanya untuk target yang dinilai. `item_id`-nya dikirim klien
+     * `clues` hanya untuk target yang dinilai, diacak dengan benih id
+     * pengerjaan (Dok 1 §9.2): urutannya tetap saat halaman dimuat ulang,
+     * tetapi berbeda antarpengerjaan. `item_id`-nya dikirim klien
      * sebagai butir yang sedang dijawab, tetapi tidak dapat dicocokkan dengan
      * objek mana pun karena `ref` diturunkan dari kunci server (objectRef()).
      * `audio` / `audio_id` = narasi petunjuk pada bahasa itu (clueAudio()),
@@ -984,7 +986,7 @@ class ChallengeService
 
         usort($objects, static fn (array $a, array $b): int => [$a['y'], $a['x'], $a['ref']] <=> [$b['y'], $b['x'], $b['ref']]);
 
-        return ['objects' => $objects, 'clues' => $clues];
+        return ['objects' => $objects, 'clues' => seeded_shuffle($clues, 'cari|' . $attempt->id)];
     }
 
     /**

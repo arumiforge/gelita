@@ -8,7 +8,7 @@
  *         | ms (durasi) | bool | badge | code | json
  * `badge` menampilkan kode status sebagai label ramah (admin_label('status'))
  * dengan kelas warna dari kodenya; `label` menerjemahkan kode lewat kelompok
- * `group` (mis. ['format' => 'label', 'group' => 'phase']); `json` meringkas
+ * `group` (mis. ['format' => 'label', 'group' => 'status']); `json` meringkas
  * data menjadi teks biasa ("jawaban: kopi") dan menyimpan bentuk aslinya di
  * tooltip.
  * Kolom `render` menerima closure fn(array $row): string yang mengembalikan

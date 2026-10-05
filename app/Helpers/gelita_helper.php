@@ -162,9 +162,9 @@ if (! function_exists('component')) {
 
 if (! function_exists('seeded_shuffle')) {
     /**
-     * Acak deterministik untuk item_selection_mode = fixed
-     * (benih participant_code|node_id → butir identik pada pretest & posttest).
-     * Memakai Randomizer ber-engine sendiri, sehingga state mt_rand global
+     * Acak deterministik: urutan bank kata dan keping puzzle tetap untuk satu
+     * pengerjaan (benih id pengerjaan), sehingga halaman yang dimuat ulang
+     * tidak berubah. Memakai Randomizer ber-engine sendiri, sehingga state mt_rand global
      * tidak tersentuh dan tidak perlu di-reseed.
      */
     function seeded_shuffle(array $items, string $seed): array

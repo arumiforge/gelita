@@ -69,7 +69,7 @@ function initRegionIntros(mapStory) {
     const entry = intros.get(code);
     if (!entry) return;
     if (open) close();
-    overlayOpened('kenal', { level: code });
+    overlayOpened('kenal', { level: code, levelId: Number(entry.root.dataset.levelId) || null });
 
     Sfx.unlock(); // di dalam ketukan: elemen narasi bersama terbuka (Safari iPad)
     mapStory?.stop();

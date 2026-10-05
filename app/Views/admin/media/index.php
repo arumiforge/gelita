@@ -97,7 +97,7 @@ foreach ($visual as $row) {
           <option value="<?= esc($asset['asset_key'], 'attr') ?>"></option>
         <?php endforeach ?>
       </datalist>
-      <p class="field-help">Pilih kode dari daftar untuk mengganti gambarnya (tekan tombol Unggah di baris tabel bawah juga bisa), atau tulis kode baru. Gambar tantangan, pilihan jawaban, bacaan, dan Pustaka lebih mudah diunggah langsung dari halaman konten masing-masing.</p>
+      <p class="field-help">Pilih kode dari daftar untuk mengganti gambarnya (tekan tombol Unggah di baris tabel bawah juga bisa), atau tulis kode baru. Gambar tantangan, bacaan, dan Pustaka lebih mudah diunggah langsung dari halaman konten masing-masing.</p>
     </div>
     <div class="field">
       <label for="file">Berkas <span class="req">*</span></label>
