@@ -34,15 +34,9 @@
 $err     = static fn (string $field): ?string => $errors[$field] ?? null;
 $invalid = static fn (string $field): string => isset($errors[$field]) ? ' has-error' : '';
 $country = (string) (old('country_code') ?: 'ID');
-// Kunci numerik ('1'…'9') menjadi int di array PHP — bandingkan sebagai string.
-$classes = [];
-for ($grade = 1; $grade <= 6; $grade++) {
-    $classes[(string) $grade] = lang('Game.classSd', [$grade]);
-}
-for ($grade = 7; $grade <= 9; $grade++) {
-    $classes[(string) $grade] = lang('Game.classSmp', [$grade]);
-}
-$classes['lainnya'] = lang('Game.classOther');
+// Sasaran penelitian: kelas 5 SD/MI saja (Config\Gelita::$registrationClass).
+// Server memaksa nilai yang sama; pilihan tunggal ini hanya memperlihatkannya.
+$targetClass = config('Gelita')->registrationClass;
 ?>
 <?= $this->extend('layouts/game') ?>
 
@@ -88,12 +82,10 @@ $classes['lainnya'] = lang('Game.classOther');
 
           <div class="field<?= $invalid('class_level') ?>">
             <label for="class_level"><?= esc(lang('Game.classLevel')) ?> <span class="req" aria-hidden="true">*</span></label>
-            <select id="class_level" name="class_level" required>
-              <option value=""><?= esc(lang('Game.classChoose')) ?></option>
-              <?php foreach ($classes as $value => $label): ?>
-                <option value="<?= esc((string) $value, 'attr') ?>" <?= (string) old('class_level') === (string) $value ? 'selected' : '' ?>><?= esc($label) ?></option>
-              <?php endforeach ?>
+            <select id="class_level" name="class_level" required aria-describedby="class_level-help">
+              <option value="<?= esc($targetClass, 'attr') ?>" selected><?= esc(class_label($targetClass, service('request')->getLocale())) ?></option>
             </select>
+            <p class="field-help" id="class_level-help"><?= esc(lang('Game.classOnlyHelp')) ?></p>
             <?php if ($err('class_level')): ?><p class="field-error"><?= esc($err('class_level')) ?></p><?php endif ?>
           </div>
         </div>
@@ -179,6 +171,9 @@ $classes['lainnya'] = lang('Game.classOther');
               <p class="school-card-title"><?= esc(lang('Game.schoolCardTitle')) ?></p>
               <p class="school-card-name"><?= esc($selectedSchool['name']) ?></p>
               <p class="school-card-meta"><?= esc($selectedSchool['meta']) ?></p>
+              <?php if (($selectedSchool['allowed'] ?? true) === false): ?>
+                <p class="school-card-warn"><?= esc(lang('Game.schoolWarnStage', [$selectedSchool['level'] ?: strtoupper((string) $selectedSchool['stage'])])) ?></p>
+              <?php endif ?>
             <?php endif ?>
           </div>
           <?php if ($err('school_npsn')): ?><p class="field-error"><?= esc($err('school_npsn')) ?></p><?php endif ?>

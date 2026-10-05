@@ -27,7 +27,7 @@ $hardest = array_slice(array_filter($hardest, static fn (array $n): bool => $n['
 $delta   = $summary['pretest_posttest_delta'];
 $bucket  = [
     'by_gender'      => static fn (string $value): string => admin_label('gender', $value),
-    'by_class_level' => static fn (string $value): string => $value === 'lainnya' ? 'Lainnya' : 'Kelas ' . $value,
+    'by_class_level' => static fn (string $value): string => class_label($value),
     'by_province'    => static fn (string $value): string => $value,
 ];
 ?>

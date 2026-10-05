@@ -39,7 +39,7 @@ $genders = ['laki-laki' => 'L', 'perempuan' => 'P', 'lainnya' => 'Lainnya'];
         'display_name'     => 'Nama lengkap',
         'age'              => ['label' => 'Umur', 'format' => 'num'],
         'gender'           => ['label' => 'L/P', 'render' => static fn (array $r): string => esc($genders[$r['gender']] ?? ($r['gender'] ?? '—'))],
-        'class_level'      => 'Kelas',
+        'class_level'      => ['label' => 'Kelas', 'render' => static fn (array $r): string => esc(class_label($r['class_level'] ?? null))],
         'school_name'      => 'Sekolah',
         'province_name'    => 'Provinsi',
         'session_count'    => ['label' => 'Sesi', 'format' => 'num'],

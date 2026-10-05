@@ -68,7 +68,7 @@ $distribution = static function (array $groups, int $total) use ($num): array {
     <tr><td class="key">Rentang tanggal</td><td><?= esc(($meta['date_from'] ?? 'awal') . ' s.d. ' . ($meta['date_to'] ?? 'sekarang')) ?></td></tr>
     <?php if ($meta['school'] !== null): ?><tr><td class="key">Sekolah</td><td><?= esc($meta['school']) ?></td></tr><?php endif ?>
     <?php if ($meta['level'] !== null): ?><tr><td class="key">Wilayah</td><td><?= esc($meta['level']) ?></td></tr><?php endif ?>
-    <?php if ($meta['class_level'] !== null): ?><tr><td class="key">Kelas</td><td><?= esc($meta['class_level']) ?></td></tr><?php endif ?>
+    <?php if ($meta['class_level'] !== null): ?><tr><td class="key">Kelas</td><td><?= esc(class_label($meta['class_level'])) ?></td></tr><?php endif ?>
     <?php if ($meta['locale'] !== null): ?><tr><td class="key">Bahasa</td><td><?= esc(admin_label('locale', $meta['locale'])) ?></td></tr><?php endif ?>
     <tr><td class="key">Dibuat oleh</td><td><?= esc($meta['requester']) ?></td></tr>
     <tr><td class="key">Waktu dibuat</td><td><?= esc(fmt_date($meta['generated_at'], false, 'id')) ?></td></tr>
@@ -93,7 +93,7 @@ $distribution = static function (array $groups, int $total) use ($num): array {
   <h3>Jenis kelamin</h3>
   <?= view('pdf/_bars', ['bars' => $distribution($relabel($cohort['by_gender'], static fn (string $code): string => admin_label('gender', $code)), (int) $cohort['total']), 'caption' => 'Sebaran jenis kelamin'], ['saveData' => false]) ?>
   <h3>Kelas</h3>
-  <?= view('pdf/_bars', ['bars' => $distribution($relabel($cohort['by_class_level'], static fn (string $class): string => ctype_digit($class) ? 'Kelas ' . $class : $class), (int) $cohort['total']), 'caption' => 'Sebaran kelas', 'alt' => true], ['saveData' => false]) ?>
+  <?= view('pdf/_bars', ['bars' => $distribution($relabel($cohort['by_class_level'], static fn (string $class): string => class_label($class)), (int) $cohort['total']), 'caption' => 'Sebaran kelas', 'alt' => true], ['saveData' => false]) ?>
   <h3>Provinsi</h3>
   <?= view('pdf/_bars', ['bars' => $distribution($cohort['by_province'], (int) $cohort['total']), 'caption' => 'Sebaran provinsi'], ['saveData' => false]) ?>
 <?php else: ?>

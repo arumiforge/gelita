@@ -29,14 +29,6 @@ import { initPasswordField } from './password-meter.js';
 const USERNAME_PATTERN = /^[a-z0-9._]{3,30}$/;
 const NPSN_PATTERN = /^\d{8}$/;
 
-/** Kelas → jenjang sekolah yang wajar (SLB cocok untuk semua kelas). */
-function stageOfGrade(value) {
-  const grade = Number(value);
-  if (grade >= 1 && grade <= 6) return 'sd';
-  if (grade >= 7 && grade <= 9) return 'smp';
-  return null;
-}
-
 function initRegion(form) {
   const country = $('[data-region-country]', form);
   const province = $('[data-region-province]', form);
@@ -141,7 +133,6 @@ function initSchool(form) {
   const country = $('[data-region-country]', form);
   const province = $('[data-region-province]', form);
   const district = $('[data-region-district]', form);
-  const grade = $('#class_level', form);
   if (!block || !npsn || !card || !name || !province) return;
 
   const text = block.dataset;
@@ -174,14 +165,15 @@ function initSchool(form) {
     if (district?.value && school.district_code && district.value !== school.district_code) {
       out.push(['school-card-warn', text.warnDistrict.replace('{0}', school.district_name || school.district_code)]);
     }
-    const expected = stageOfGrade(grade?.value);
-    if (expected && school.stage && school.stage !== 'slb' && school.stage !== expected) {
-      out.push(['school-card-warn', text.warnStage.replace('{0}', school.level || school.stage.toUpperCase())]);
+    // GELITA khusus kelas 5 SD/MI: server menandai sekolah SMP/MTs `allowed: false`
+    // dan menolak pendaftarannya; kartu ini hanya memberi tahu lebih awal.
+    if (school.allowed === false) {
+      out.push(['school-card-warn', text.warnStage.replace('{0}', school.level || String(school.stage || '').toUpperCase())]);
     }
     return out;
   };
 
-  const showSchool = () => render('', [
+  const showSchool = () => render(school.allowed === false ? 'missing' : '', [
     ['school-card-title', text.cardTitle],
     ['school-card-name', school.name],
     ['school-card-meta', school.meta],
@@ -228,7 +220,6 @@ function initSchool(form) {
   country?.addEventListener('change', syncMode);
   province.addEventListener('change', syncMode);
   district?.addEventListener('change', () => { if (school) showSchool(); });
-  grade?.addEventListener('change', () => { if (school) showSchool(); });
 
   syncMode();
   if (NPSN_PATTERN.test(npsn.value)) lookup(); // kembali dari galat: cek ulang + peringatan
