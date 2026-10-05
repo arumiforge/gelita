@@ -199,7 +199,7 @@ final class RegisterWizardTest extends CIUnitTestCase
     {
         $this->send(Method::POST, 'daftar/1', self::ABOUT);
 
-        $abroad = ['country_code' => 'MY', 'country_other' => 'Malaysia'];
+        $abroad = ['country_code' => 'XX', 'country_other' => 'Malaysia'];   // "negara lain" di formulir
 
         $this->assertRedirectsTo('daftar/2', $this->send(Method::POST, 'daftar/2', $abroad + ['school_name' => '']));
         $this->assertArrayHasKey('school_name', $_SESSION['errors']);
@@ -207,7 +207,7 @@ final class RegisterWizardTest extends CIUnitTestCase
         $this->assertRedirectsTo('intro', $this->send(Method::POST, 'daftar/3', $this->account(self::STRONG)));
 
         $participant = $this->conn->table('participants')->get()->getRowArray();
-        $this->assertSame(['MY', 'Malaysia', null], [$participant['country_code'], $participant['country_name_snapshot'], $participant['province_code']]);
+        $this->assertSame(['XX', 'Malaysia', null], [$participant['country_code'], $participant['country_name_snapshot'], $participant['province_code']]);
         $this->assertSame('Sekolah Indonesia Kuala Lumpur', $participant['school_name_snapshot']);
         $this->assertSame(0, (int) $this->conn->table('schools')->where('name', 'Sekolah Indonesia Kuala Lumpur')->get()->getRow('is_verified'), 'nama ketikan = sekolah belum terverifikasi');
     }

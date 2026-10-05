@@ -31,7 +31,7 @@
  * @var string|null         $tagline   `region`: tagline wilayah
  * @var string|null         $chip      `region`: tingkat kesulitan
  * @var string|null         $lead      `challenge`: ajakan singkat per engine
- * @var string|null         $engine    `challenge`: puzzle | rumpang | boleh | pilihan | cari
+ * @var string|null         $engine    `challenge`: puzzle | rumpang | boleh | cari
  */
 $kind     = in_array($kind ?? 'map', ['map', 'region', 'challenge'], true) ? ($kind ?? 'map') : 'map';
 $defaults = [

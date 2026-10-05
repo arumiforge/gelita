@@ -6,7 +6,7 @@
  * pos terbuka → kartu misi, pos terkunci → server menolak dengan toast.
  *
  * @var App\Entities\Level         $level
- * @var array<string, mixed>       $levelScore
+ * @var array<string, mixed>       $levelSummary
  * @var list<array<string, mixed>> $nodes
  * @var bool                       $hasLibrary
  * @var array<string, mixed>       $library    GameProgress::libraryAccess() wilayah ini
@@ -17,8 +17,8 @@ $mapSrc = media_exists($level->map_media_id) ? media_src($level->map_media_id) :
 $bg     = media_exists($level->background_media_id) ? media_src($level->background_media_id) : '';
 $icons  = ['completed' => 'check', 'open' => 'right', 'locked' => 'lock'];
 $href   = static fn (array $n): string => base_url(($n['status'] === 'completed' ? 'hasil/' : 'misi/') . $level->code . '/' . $n['sequence']);
-$done   = (int) $levelScore['completed_nodes'];
-$total  = (int) $levelScore['total_nodes'];
+$done   = (int) $levelSummary['completed_nodes'];
+$total  = (int) $levelSummary['total_nodes'];
 $points = implode(' ', array_map(static fn (array $n): string => (float) $n['map_x'] . ',' . (float) $n['map_y'], $nodes));
 ?>
 <?= $this->extend('layouts/game') ?>

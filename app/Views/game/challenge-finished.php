@@ -14,7 +14,7 @@
  * @var App\Entities\ChallengeAttempt    $attempt
  * @var App\Entities\ChallengeNode|null  $node
  * @var App\Entities\Level|null          $level
- * @var array<string, mixed>             $levelScore
+ * @var array<string, mixed>             $levelSummary
  * @var bool                             $levelCompleted
  * @var bool|null                        $closesRegion    attempt ini yang menuntaskan wilayahnya
  * @var bool                             $libraryUnlocked attempt ini membuka Pustaka wilayahnya

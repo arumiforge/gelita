@@ -19,11 +19,9 @@ use App\Libraries\BankWorkbookGuide;
 $result = session('import_result');
 $labels = [
     'nodes'         => 'Tantangan',
+    'variants'      => 'Variasi soal',
     'passages'      => 'Teks bacaan',
     'items'         => 'Soal',
-    'options'       => 'Pilihan jawaban',
-    'pieces'        => 'Kartu urutan',
-    'sources'       => 'Kartu sumber',
     'hints'         => 'Petunjuk',
     'distractors'   => 'Kata pengecoh',
     'library'       => 'Halaman Pustaka',
@@ -105,7 +103,7 @@ $issueTable = static function (array $rows, string $level): string {
   <div class="field">
     <label for="file"><?= icon('upload') ?> Berkas Excel bank soal <span class="req">*</span></label>
     <input type="file" id="file" name="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required>
-    <p class="field-help">Berkas Excel (.xlsx) yang dibuat dari templat, paling besar 20 MB. Yang dibaca hanya sheet nodes, distractors, passages, items, options, pieces, sources, hints, serta library dan library_media (untuk Pustaka Kedu, boleh tidak ada). Sheet PETUNJUK, KAMUS_KOLOM, dan sheet lain tidak dibaca.</p>
+    <p class="field-help">Berkas Excel (.xlsx) yang dibuat dari templat, paling besar 20 MB. Yang dibaca hanya sheet nodes, variants, distractors, passages, items, hints, serta library dan library_media (untuk Pustaka Kedu, boleh tidak ada). Sheet PETUNJUK, KAMUS_KOLOM, dan sheet lain tidak dibaca.</p>
   </div>
   <div class="form-actions">
     <button class="btn btn-primary" type="submit"><?= icon('eye') ?> Periksa berkas</button>

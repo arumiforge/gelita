@@ -388,7 +388,7 @@ final class RegionStoryTest extends CIUnitTestCase
         $this->assertStringContainsString('html.js .kenal { display: none; }', $css);
         $this->assertStringContainsString('html.js .kenal.is-open { display: grid;', $css);
         // Gerak dikurangi: jejak kaki dan visual engine tanpa animasi
-        $this->assertMatchesRegularExpression('/@media \(prefers-reduced-motion: reduce\).*\.footstep,.*\.cc-puzzle i, \.cc-gap b, \.cc-card, \.cc-pilihan i, \.cc-light/s', $css);
+        $this->assertMatchesRegularExpression('/@media \(prefers-reduced-motion: reduce\).*\.footstep,.*\.cc-puzzle i, \.cc-gap b, \.cc-card, \.cc-light/s', $css);
     }
 
     // ------------------------------------------------------------ bantuan
@@ -410,7 +410,7 @@ final class RegionStoryTest extends CIUnitTestCase
         return [
             'locale'      => 'id',
             'participant' => ['id' => 5, 'username' => 'jaka', 'display_name' => 'Jaka', 'avatar_code' => null],
-            'progress'    => ['completed_nodes' => $allDone ? 15 : 5, 'completed_levels' => 1, 'unlocked_level_sequence' => 2, 'total_score' => 0.0,
+            'progress'    => ['completed_nodes' => $allDone ? 15 : 5, 'completed_levels' => 1, 'unlocked_level_sequence' => 2,
                 'total_stars' => 0, 'shards' => $allDone ? 15 : 5, 'shards_total' => 15, 'current_level_id' => null, 'current_node_id' => null],
             'lantern' => [],
         ];
@@ -577,7 +577,7 @@ final class RegionStoryTest extends CIUnitTestCase
             'attempt'         => $attempt,
             'node'            => $node,
             'level'           => self::level('temanggung'),
-            'levelScore'      => ['stars' => 12, 'completed_nodes' => 4, 'total_nodes' => 4],
+            'levelSummary'      => ['stars' => 12, 'completed_nodes' => 4, 'total_nodes' => 4],
             'levelCompleted'  => true,
             'closesRegion'    => $closes,
             'libraryUnlocked' => $closes,

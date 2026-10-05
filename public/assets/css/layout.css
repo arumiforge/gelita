@@ -298,7 +298,7 @@ body.admin {
 .menu-close { display: none; }
 
 /* ---------- Konten admin ----------
-   Lebar penuh kolom di samping sidebar: tabel, chart, dan form dwibahasa
+   Lebar penuh kolom di samping sidebar: tabel dan form dwibahasa
    memakai seluruh layar lebar. Paragraf panjang tetap dibatasi lebar
    bacanya sendiri (.page-lead 70ch, .empty-state p 52ch). */
 .admin-main {

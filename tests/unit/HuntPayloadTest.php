@@ -69,10 +69,25 @@ final class HuntPayloadTest extends CIUnitTestCase
     {
         $payload = $this->hunt($this->attempt(501), $this->items(), 'id');
 
-        $this->assertSame([
+        $this->assertEqualsCanonicalizing([
             ['item_id' => 11, 'text' => 'Temukan tembakau.', 'audio' => null, 'audio_id' => null],
             ['item_id' => 12, 'text' => 'Temukan candi.', 'audio' => null, 'audio_id' => null],
         ], $payload['clues']);
+    }
+
+    /** Dok 1 §9.2: urutan petunjuk diacak per pengerjaan, tetap saat dimuat ulang. */
+    public function testClueOrderIsSeededByTheAttempt(): void
+    {
+        $orders = [];
+
+        foreach (range(501, 540) as $attemptId) {
+            $order = array_column($this->hunt($this->attempt($attemptId), $this->items(), 'id')['clues'], 'item_id');
+
+            $this->assertSame($order, array_column($this->hunt($this->attempt($attemptId), $this->items(), 'id')['clues'], 'item_id'), 'muat ulang');
+            $orders[implode(',', $order)] = true;
+        }
+
+        $this->assertCount(2, $orders, 'kedua urutan muncul di antara 40 pengerjaan');
     }
 
     /**
@@ -99,14 +114,14 @@ final class HuntPayloadTest extends CIUnitTestCase
             $items                       = [$tobacco, $temple, $trap];
 
             $id = $this->hunt($this->attempt(501), $items, 'id');
-            $this->assertSame(base_url('assets/audio/narasi/id/audio.narasi.id.petunjuk-tmg-4-01.mp3'), $id['clues'][0]['audio']);
-            $this->assertSame($approved, $id['clues'][0]['audio_id']);
-            $this->assertNull($id['clues'][1]['audio'], 'draft belum terdengar pemain');
-            $this->assertNull($id['clues'][1]['audio_id'], 'id draft tidak ikut terkirim');
+            $this->assertSame(base_url('assets/audio/narasi/id/audio.narasi.id.petunjuk-tmg-4-01.mp3'), $this->clue($id, 11)['audio']);
+            $this->assertSame($approved, $this->clue($id, 11)['audio_id']);
+            $this->assertNull($this->clue($id, 12)['audio'], 'draft belum terdengar pemain');
+            $this->assertNull($this->clue($id, 12)['audio_id'], 'id draft tidak ikut terkirim');
 
             $en = $this->hunt($this->attempt(501), $items, 'en');
-            $this->assertSame($english, $en['clues'][0]['audio_id']);
-            $this->assertNull($en['clues'][1]['audio_id'], 'tidak jatuh ke rekaman bahasa lain');
+            $this->assertSame($english, $this->clue($en, 11)['audio_id']);
+            $this->assertNull($this->clue($en, 12)['audio_id'], 'tidak jatuh ke rekaman bahasa lain');
 
             foreach ($id['objects'] as $object) {
                 $this->assertSame(['ref', 'x', 'y', 'w', 'media'], array_keys($object));
@@ -118,7 +133,7 @@ final class HuntPayloadTest extends CIUnitTestCase
 
             // Media nonaktif: tidak diputar walau audionya disetujui
             $db->table('media_assets')->where('asset_key', 'audio.narasi.id.petunjuk-tmg-4-01')->update(['is_active' => 0]);
-            $this->assertNull($this->hunt($this->attempt(501), $items, 'id')['clues'][0]['audio']);
+            $this->assertNull($this->clue($this->hunt($this->attempt(501), $items, 'id'), 11)['audio']);
         } finally {
             $this->dropNarrationTables();
         }
@@ -265,5 +280,17 @@ final class HuntPayloadTest extends CIUnitTestCase
         $reflection = new ReflectionMethod(ChallengeService::class, $method);
 
         return $reflection->invoke($this->service, ...$args);
+    }
+
+    /** @return array<string, mixed> petunjuk untuk butir $itemId (urutan petunjuk diacak per pengerjaan) */
+    private function clue(array $payload, int $itemId): array
+    {
+        foreach ($payload['clues'] as $clue) {
+            if ($clue['item_id'] === $itemId) {
+                return $clue;
+            }
+        }
+
+        $this->fail("Tidak ada petunjuk untuk butir {$itemId}");
     }
 }

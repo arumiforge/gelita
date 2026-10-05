@@ -7,7 +7,6 @@
  * - puzzle   keping-keping menyatu
  * - rumpang  huruf jatuh mengisi celah kalimat
  * - boleh    kartu berputar antara ✓ dan ✗
- * - pilihan  tiga kartu mengipas lalu satu bersinar
  * - cari     sorot lentera menyapu siluet gelap
  *
  * @var string $engine
@@ -25,8 +24,6 @@
       <b class="cc-face is-ok"><?= icon('check') ?></b>
       <b class="cc-face is-bad"><?= icon('cross') ?></b>
     </span>
-  <?php elseif ($engine === 'pilihan'): ?>
-    <?php for ($i = 0; $i < 3; $i++): ?><i style="--i: <?= $i ?>"></i><?php endfor ?>
   <?php else: ?>
     <span class="cc-shape is-temple"></span><span class="cc-shape is-mask"></span><span class="cc-shape is-drum"></span>
     <span class="cc-light"></span>

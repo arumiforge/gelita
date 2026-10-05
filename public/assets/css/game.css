@@ -226,17 +226,6 @@ body.is-welcome .app { padding-bottom: var(--sp-5); }
 .start-go { color: var(--gold-500); }
 
 /* =========================== AKUN (perkamen) =========================== */
-.consent-text {
-  margin-bottom: var(--sp-5);
-  padding: var(--sp-4);
-  border-left: 4px solid var(--brown-500);
-  background: rgba(255, 251, 241, .6);
-  font-size: var(--step-0);
-}
-.consent-hint { display: flex; align-items: center; gap: var(--sp-2); margin: 0; }
-.consent-form:valid .consent-hint { visibility: hidden; }
-.consent-form:invalid .consent-submit { opacity: .55; }
-.consent-version { margin: var(--sp-4) 0 0; color: rgba(74, 50, 24, .7); }
 
 .login-head { display: flex; align-items: center; gap: var(--sp-4); margin-bottom: var(--sp-4); }
 .login-head h1 { margin: 0; }
@@ -248,37 +237,6 @@ body.is-welcome .app { padding-bottom: var(--sp-5); }
 /* ---------- Pendaftaran ---------- */
 .register-head { margin-bottom: var(--sp-4); }
 .register-form { gap: var(--sp-5); }
-
-.reg-step {
-  display: grid;
-  gap: var(--sp-4);
-  padding: var(--sp-5);
-  border: 1px solid rgba(138, 106, 50, .35);
-  border-radius: var(--radius-lg);
-  background: rgba(255, 251, 241, .45);
-}
-.reg-step-title {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-3);
-  margin-bottom: var(--sp-2);
-  padding: 0 var(--sp-2);
-  color: var(--brown-700);
-  font-family: var(--font-display);
-  font-size: var(--step-1);
-  font-weight: 700;
-}
-.reg-step-no {
-  display: grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: var(--brown-700);
-  color: var(--parchment);
-  font-family: var(--font-mono);
-  font-size: var(--step-0);
-}
 
 /* Stepper 3 langkah (Dok 1 §10.3; tata letak 16:9 di Dok 3 §4) */
 .reg-stepper ol {
@@ -676,7 +634,6 @@ body.is-challenge .app { padding-bottom: var(--sp-4); }
   font-size: var(--step-0);
   font-weight: 600;
 }
-.question { margin: 0; font-size: var(--step-1); font-weight: 700; }
 .hint-text { margin: 0; color: var(--ink-dim); font-size: var(--step--1); text-align: center; }
 .arena-actions {
   position: sticky;
@@ -765,26 +722,6 @@ body.is-challenge .app { padding-bottom: var(--sp-4); }
 .puzzle-caption b { color: var(--gold-300); font-size: var(--step--1); }
 .puzzle-caption p { margin: var(--sp-1) 0 0; }
 
-.order-wrap { display: grid; gap: var(--sp-3); }
-.order-list { display: grid; gap: var(--sp-2); margin: 0; padding: 0; list-style: none; counter-reset: order; }
-.order-card {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: var(--sp-3);
-  padding: var(--sp-2) var(--sp-2) var(--sp-2) var(--sp-3);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background: var(--surface-2);
-  cursor: grab;
-}
-.order-card.is-dragging { opacity: .5; }
-.order-card.is-correct { border-color: var(--ok); }
-.order-card.is-wrong { border-color: var(--bad); }
-.order-no { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: rgba(223, 192, 135, .16); color: var(--gold-300); }
-.order-text { font-size: var(--step-0); font-weight: 600; }
-.order-moves { display: flex; gap: var(--sp-1); }
-
 /* ---------- Rumpang ---------- */
 .rumpang { display: grid; gap: var(--sp-4); }
 .rumpang.has-media { grid-template-columns: minmax(180px, 34%) 1fr; align-items: start; }
@@ -812,11 +749,10 @@ body.is-challenge .app { padding-bottom: var(--sp-4); }
 }
 .blank.is-active { border-style: solid; box-shadow: 0 0 0 3px rgba(223, 192, 135, .35); }
 .blank.is-filled { border-style: solid; background: rgba(223, 192, 135, .18); color: var(--ink); }
-.blank.is-correct, .blank-input.is-correct { border: 2px solid var(--ok); background: rgba(143, 209, 79, .14); }
-.blank.is-wrong, .blank-input.is-wrong { border: 2px solid var(--bad); background: rgba(217, 112, 74, .14); }
+.blank.is-correct { border: 2px solid var(--ok); background: rgba(143, 209, 79, .14); }
+.blank.is-wrong { border: 2px solid var(--bad); background: rgba(217, 112, 74, .14); }
 .blank.is-correct::after { content: " ✓"; color: var(--ok); }
 .blank.is-wrong::after { content: " ✗"; color: var(--bad); }
-.blank-input { display: inline-block; width: 11em; min-height: var(--tap); margin: 0 var(--sp-1); vertical-align: middle; font-size: var(--step-0); }
 
 /* Bacaan rumpang (kelas 5): paragraf utuh, rumpang bernomor di dalam kalimat */
 .rumpang-reading {
@@ -835,7 +771,6 @@ body.is-challenge .app { padding-bottom: var(--sp-4); }
 .rumpang-reading .blank { min-width: 6.5em; margin: 0 2px; border-color: var(--brown-500); background: rgba(255, 255, 255, .55); color: var(--brown-700); }
 .rumpang-reading .blank.is-active { border-color: var(--gold-600); box-shadow: 0 0 0 3px rgba(178, 130, 52, .35); }
 .rumpang-reading .blank.is-filled { background: #FFF6DF; color: var(--brown-700); }
-.rumpang-reading .blank-input { width: 9em; }
 
 .word-bank {
   display: flex;
@@ -859,7 +794,7 @@ body.is-challenge .app { padding-bottom: var(--sp-4); }
 .word:hover { background: rgba(223, 192, 135, .16); }
 .word.is-used { opacity: .35; text-decoration: line-through; }
 
-/* ---------- Boleh (Benar / Salah / Pendapat) ---------- */
+/* ---------- Boleh (Benar / Salah) ---------- */
 .passage {
   border: 1px solid var(--brown-500);
   border-radius: var(--radius);
@@ -881,19 +816,8 @@ body.is-challenge .app { padding-bottom: var(--sp-4); }
 .passage-img { max-height: 180px; width: auto; border-radius: var(--radius); }
 .passage-body { max-height: 30vh; overflow-y: auto; font-size: var(--step-0); line-height: 1.7; }
 
-.fact-opinion {
-  display: flex;
-  gap: var(--sp-2);
-  margin: 0;
-  padding: var(--sp-3) var(--sp-4);
-  border: 1px dashed var(--gold-500);
-  border-radius: var(--radius);
-  color: var(--gold-300);
-}
-
 .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: var(--sp-3); }
 .card-grid.is-single { grid-template-columns: minmax(0, 560px); justify-content: center; }
-.card-grid:has(.sources) { grid-template-columns: minmax(0, 1fr); }
 .verdict-card {
   display: grid;
   align-content: start;
@@ -913,18 +837,6 @@ body.is-challenge .app { padding-bottom: var(--sp-4); }
 .card-passage { color: var(--gold-300); text-decoration: none; white-space: normal; }
 .card-image img { width: 100%; max-height: 160px; object-fit: cover; border-radius: var(--radius); }
 .card-text { margin: 0; font-size: var(--step-1); font-weight: 600; line-height: 1.45; }
-
-.sources { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-2); }
-.source {
-  margin: 0;
-  padding: var(--sp-3);
-  border: 1px solid var(--line-ink);
-  border-radius: var(--radius);
-  background: rgba(11, 19, 32, .45);
-  font-size: var(--step--1);
-}
-.source cite { display: flex; align-items: center; gap: var(--sp-1); margin-bottom: var(--sp-1); color: var(--gold-300); font-style: normal; font-weight: 700; }
-.source p { margin: 0; }
 
 .card-choices { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
 .choice {
@@ -947,64 +859,6 @@ body.is-challenge .app { padding-bottom: var(--sp-4); }
 .choice:has(input:checked) { border-color: var(--gold-300); background: var(--gold-500); color: var(--navy-900); }
 .choice:has(input:checked)::before { content: "●"; margin-right: var(--sp-1); }
 .choice:has(input:focus-visible) { outline: 3px solid var(--gold-500); outline-offset: 2px; }
-.card-reason-field label { font-size: var(--step--1); }
-.card-reason { min-height: 64px; }
-
-/* ---------- Pilihan ---------- */
-.steps { display: flex; justify-content: center; gap: var(--sp-2); margin: 0; padding: 0; list-style: none; }
-.step { width: 36px; height: 8px; border-radius: var(--radius-pill); background: rgba(255, 255, 255, .15); }
-.step.is-current { background: var(--gold-500); }
-.step.is-done { background: var(--gold-600); }
-
-.questions { display: grid; }
-.question-card { display: grid; gap: var(--sp-3); }
-.question-card:not(.is-current) { display: none; }
-.question-img { max-height: 200px; width: auto; justify-self: center; border-radius: var(--radius); }
-.source-text {
-  padding: var(--sp-2) var(--sp-4);
-  border: 1px solid var(--brown-500);
-  border-radius: var(--radius);
-  background: var(--parchment);
-  color: var(--brown-700);
-}
-.source-text summary { min-height: 36px; font-weight: 700; cursor: pointer; }
-.source-text p { margin: var(--sp-2) 0; }
-
-.option-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--sp-3); }
-.option {
-  position: relative;
-  display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: center;
-  gap: var(--sp-3);
-  min-height: 64px;
-  padding: var(--sp-3) var(--sp-4);
-  border: 2px solid var(--gold-600);
-  border-radius: var(--radius-lg);
-  background: var(--surface-2);
-  color: var(--ink);
-  font-size: var(--step-0);
-  font-weight: 700;
-  text-align: left;
-  transition: transform .12s, border-color .12s, background-color .12s;
-}
-.option:hover { border-color: var(--gold-300); background: rgba(223, 192, 135, .12); transform: translateY(-1px); }
-.option img { grid-column: 1 / -1; width: 100%; max-height: 140px; object-fit: contain; border-radius: var(--radius); }
-.option-letter {
-  display: grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: var(--gold-500);
-  color: var(--navy-900);
-  font-family: var(--font-mono);
-}
-.option.is-correct { border-color: var(--ok); background: rgba(143, 209, 79, .16); }
-.option.is-correct::after { content: "✓"; position: absolute; right: var(--sp-4); color: var(--ok); font-size: var(--step-1); }
-.option.is-wrong { border-color: var(--bad); background: rgba(217, 112, 74, .16); }
-.option.is-wrong::after { content: "✗"; position: absolute; right: var(--sp-4); color: var(--bad); font-size: var(--step-1); }
-.option:disabled { cursor: default; transform: none; }
 
 /* ---------- Cari ---------- */
 .hunt { display: grid; grid-template-columns: minmax(0, 1fr) minmax(160px, 220px); gap: var(--sp-3); }
@@ -1313,7 +1167,7 @@ html.js .book-frame img.is-loaded { opacity: 1; }
 .book-link { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-4); color: var(--brown-700); font-weight: 700; }
 
 .book-text h2 { color: var(--brown-700); }
-.book-spread .eyebrow, .passage .eyebrow, .source-text .eyebrow { color: var(--brown-500); }
+.book-spread .eyebrow, .passage .eyebrow { color: var(--brown-500); }
 .book-body { font-size: var(--step-0); line-height: 1.75; }
 .book-body p { margin: 0 0 var(--sp-3); }
 .book-body h3 { margin: var(--sp-5) 0 var(--sp-2); color: var(--brown-700); font-size: var(--step-1); }
@@ -1537,12 +1391,10 @@ html.js .book-frame img.is-loaded { opacity: 1; }
   font-weight: 700;
   text-shadow: 0 0 3px var(--navy-900);
 }
-.order-card.is-correct .order-no { background: var(--ok); color: var(--navy-900); }
 
 /* Rumpang: tanda ✓/✗ (::after) di samping kata, bukan baris baru di dalam kotak */
 .blank.is-correct, .blank.is-wrong { grid-auto-flow: column; gap: var(--sp-1); }
 .blank:disabled { opacity: 1; cursor: default; }
-.blank-input[readonly] { cursor: default; }
 .word:disabled { cursor: default; }
 
 /* Boleh */
@@ -1551,19 +1403,8 @@ html.js .book-frame img.is-loaded { opacity: 1; }
 .card-mark.is-bad { background: rgba(217, 112, 74, .18); color: var(--bad); }
 .choice { grid-auto-flow: column; column-gap: var(--sp-1); } /* tanda ● di samping label, bukan di atasnya */
 .choice:has(input:disabled) { cursor: default; }
-.reason-saved { margin: 0; color: var(--ok); font-size: var(--step--1); font-weight: 700; }
 .passage-read { margin-left: auto; font-family: var(--font-body); font-size: var(--step--1); }
 .passage[open] .passage-read { display: none; }
-
-/* Pilihan */
-.option-feedback {
-  margin: 0;
-  padding: var(--sp-3) var(--sp-4);
-  border-left: 4px solid var(--gold-500);
-  border-radius: var(--radius);
-  background: rgba(223, 192, 135, .1);
-}
-.question:focus { outline: none; }
 
 /* Cari */
 .hunt-target { padding: 0; }
@@ -1629,7 +1470,6 @@ html.js .book-frame img.is-loaded { opacity: 1; }
      atau menabrak HUD */
   .mission { padding-top: var(--sp-6); }
   .panel-parchment.mission-card { padding-top: var(--sp-7); }
-  .reg-step { padding: var(--sp-4) var(--sp-3); }
   .why-strong { grid-template-columns: 1fr; }
   .why-strong-jaka { display: none; }
 
@@ -1655,8 +1495,6 @@ html.js .book-frame img.is-loaded { opacity: 1; }
   .arena-panel { padding: var(--sp-3); }
   .rumpang.has-media { grid-template-columns: 1fr; }
   .card-grid { grid-template-columns: 1fr; }
-  .sources { grid-template-columns: 1fr; }
-  .option-grid { grid-template-columns: 1fr; }
   .hunt { grid-template-columns: 1fr; }
   .hunt-guide { display: none; }
   .hunt-clue { grid-template-columns: 1fr; }
@@ -1852,7 +1690,7 @@ html.js .book-frame img.is-loaded { opacity: 1; }
   }
   .arena-actions { padding-top: var(--sp-2); }
   .arena-actions .btn-lg { min-height: 48px; padding: var(--sp-2) var(--sp-5); font-size: var(--step-0); }
-  .question, .card-text, .sentence { font-size: var(--step-0); }
+  .card-text, .sentence { font-size: var(--step-0); }
 
   /* Puzzle: papan setinggi arena, petunjuk & tombol di sampingnya */
   .puzzle-wrap { grid-template-columns: auto minmax(140px, 1fr); align-items: center; justify-content: start; gap: var(--sp-2) var(--sp-4); }
@@ -1861,10 +1699,7 @@ html.js .book-frame img.is-loaded { opacity: 1; }
   .puzzle-wrap .hint-text { align-self: end; text-align: left; }
   .puzzle-wrap .arena-actions { position: static; align-self: start; justify-content: flex-start; padding: 0; background: none; }
 
-  /* Pilihan & boleh */
-  .question-img { max-height: 120px; }
-  .option { min-height: 52px; padding: var(--sp-2) var(--sp-3); }
-  .option img { max-height: 90px; }
+  /* Boleh */
   .passage-img { max-height: 110px; }
 
   /* Cari: adegan setinggi arena dan tetap terlihat; petunjuk & daftar di kanan */

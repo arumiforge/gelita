@@ -2,8 +2,8 @@
 /**
  * Konten — `/admin/konten` → ContentController::index
  *
- * Tiga kartu wilayah; tiap kartu memuat node dengan jenis, jumlah butir di
- * bank (merah bila kurang dari items_per_round), dan status aktif.
+ * Tiga kartu wilayah; tiap kartu memuat node dengan jenis, jumlah butir dan
+ * variasi di bank, dan status aktif.
  *
  * @var list<array{level: App\Entities\Level, nodes: list<App\Entities\ChallengeNode>, bank: array<int, int>}> $levels
  * @var string $version
