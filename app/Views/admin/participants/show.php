@@ -2,25 +2,22 @@
 /**
  * Profil peserta — `/admin/peserta/{id}` → ParticipantController::show
  *
- * Demografi, nama pengguna, persetujuan, literasi keamanan digital, sesi per
- * fase, skor per wilayah, penguasaan indikator, node tersulit, dan tautan ke
- * linimasa event tiap sesi. Reset sandi wajib diketik `RESET`.
+ * Demografi, nama pengguna, persetujuan siswa (assented_at), literasi
+ * keamanan digital, ringkasan data mentah pengerjaan, perangkat, sesi, dan
+ * tautan ke linimasa event tiap sesi. Tanpa skor dan chart (perombakan
+ * kelas 5). Reset sandi wajib diketik `RESET`.
  *
  * @var array<string, mixed>              $participant bentuk aman, tanpa password_hash
  * @var array<string, mixed>              $profile     AnalyticsService::participantProfile()
- * @var array<string, mixed>|null         $consent
+ * @var list<array<string, mixed>>        $devices     device_logs siswa ini
  * @var list<array<string, mixed>>        $sessions
  * @var list<App\Entities\Level>          $levels
  * @var array<int, string>                $nodeTitles
  */
 $criteria = $participant['pw_first_submit_criteria'];
 $region   = implode(', ', array_filter([$participant['district_name'], $participant['province_name'], $participant['country_name']]));
-$hardest  = $profile['hardest_node'];
-$prePost  = $profile['pre_post'];
 ?>
 <?= $this->extend('layouts/admin') ?>
-
-<?= $this->section('charts') ?>1<?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
 <?= component('partials/admin-head', [
@@ -47,19 +44,10 @@ $prePost  = $profile['pre_post'];
   </section>
 
   <section class="panel">
-    <h2 class="panel-title"><?= icon('shield') ?> Persetujuan ikut penelitian</h2>
-    <?php if ($consent === null): ?>
-      <div class="empty-state"><?= icon('warn') ?><p>Tidak ada catatan persetujuan untuk siswa ini.</p></div>
-    <?php else: ?>
-      <dl class="detail-grid">
-        <div><dt>Versi naskah persetujuan</dt><dd><?= esc($consent['consent_version']) ?></dd></div>
-        <div><dt>Waktu</dt><dd><?= esc(fmt_date($consent['consented_at'], false, 'id')) ?></dd></div>
-        <div><dt>Siswa setuju</dt><dd><?= $consent['participant_consented'] ? 'ya' : 'tidak' ?></dd></div>
-        <div><dt>Izin orang tua/wali</dt><dd><?= $consent['parent_guardian_consented'] ? 'ya' : 'tidak' ?></dd></div>
-        <div><dt>Nama orang tua/wali</dt><dd><?= esc($consent['guardian_name'] ?? '—') ?></dd></div>
-        <div><dt>Persetujuan dicabut</dt><dd><?= esc(fmt_date($consent['withdrawn_at'], false, 'id')) ?></dd></div>
-      </dl>
-    <?php endif ?>
+    <h2 class="panel-title"><?= icon('shield') ?> Persetujuan ikut bermain</h2>
+    <dl class="detail-grid">
+      <div><dt>Setuju ikut bermain</dt><dd><?= empty($participant['assented_at']) ? 'tidak tercatat' : 'ya · ' . esc(fmt_date($participant['assented_at'], true, 'id')) ?></dd></div>
+    </dl>
   </section>
 
   <section class="panel">
@@ -73,56 +61,39 @@ $prePost  = $profile['pre_post'];
   </section>
 
   <section class="panel">
-    <h2 class="panel-title"><?= icon('chart') ?> Capaian</h2>
+    <h2 class="panel-title"><?= icon('chart') ?> Ringkasan data mentah</h2>
     <dl class="detail-grid">
-      <div><dt>Tantangan selesai</dt><dd class="num"><?= esc($profile['completed_nodes']) ?></dd></div>
-      <div><dt>Rata-rata skor wilayah</dt><dd class="num"><?= esc(fmt_num($profile['total_score'], 1, 'id')) ?></dd></div>
+      <div><dt>Pengerjaan selesai</dt><dd class="num"><?= esc($profile['completed_attempts']) ?></dd></div>
+      <div><dt>Berhasil pada Percobaan Pertama</dt><dd class="num"><?= esc($profile['first_pass_correct']) ?> dari <?= esc($profile['scorable_items']) ?> soal</dd></div>
+      <div><dt>Benar di akhir</dt><dd class="num"><?= esc($profile['final_correct']) ?> dari <?= esc($profile['scorable_items']) ?> soal</dd></div>
+      <div><dt>Bintang</dt><dd class="num"><?= esc($profile['stars']) ?></dd></div>
       <div><dt>Total lama bermain</dt><dd class="num"><?= esc(ms_to_human($profile['total_duration_ms'])) ?></dd></div>
       <div><dt>Mengubah jawaban</dt><dd class="num"><?= esc($profile['answer_changes']) ?> kali</dd></div>
       <div><dt>Petunjuk dibuka</dt><dd class="num"><?= esc($profile['hint_uses']) ?></dd></div>
-      <div><dt>Tantangan tersulit</dt><dd><?= $hardest === null ? '—' : esc(($nodeTitles[$hardest['node_id']] ?? '#' . $hardest['node_id']) . ' (benar sejak awal ' . fmt_pct($hardest['first_pass_accuracy'], false, 0) . ')') ?></dd></div>
-      <div><dt>Tes awal → tes akhir</dt><dd class="num"><?= $prePost['delta'] === null ? '—' : esc(fmt_num($prePost['pretest'], 1, 'id') . ' → ' . fmt_num($prePost['posttest'], 1, 'id')) ?></dd></div>
       <div><dt>Suara diputar</dt><dd class="num"><?= esc($profile['audio']['total_plays']) ?> kali<?php if (! empty($profile['audio']['total_autoplays'])): ?> <small class="muted">+ <?= esc($profile['audio']['total_autoplays']) ?> kali otomatis</small><?php endif ?></dd></div>
     </dl>
   </section>
 </div>
 
-<div class="chart-grid">
-  <?= component('admin-chart', [
-      'id'       => 'chart-participant-levels',
-      'title'    => 'Skor per wilayah',
-      'type'     => 'bar',
-      'data'     => \App\Libraries\ChartData::bars(array_map(static fn ($level): array => [
-          'label' => $level->text('name', 'id'),
-          'value' => $profile['level_scores'][$level->id] ?? null,
-      ], $levels), 'Skor', 100),
-      'fallback' => component('partials/bar-list', ['max' => 100, 'rows' => array_map(
-          static fn ($level): array => [
-              'label'   => $level->text('name', 'id'),
-              'value'   => $profile['level_scores'][$level->id] ?? 0,
-              'display' => isset($profile['level_scores'][$level->id]) ? fmt_num($profile['level_scores'][$level->id], 1, 'id') : '—',
-          ],
-          $levels,
-      )]),
+<?php if ($devices !== []): ?>
+<section class="panel">
+  <h2 class="panel-title"><?= icon('grid') ?> Perangkat</h2>
+  <?= component('admin-table', [
+      'rows'    => $devices,
+      'columns' => [
+          'created_at'      => ['label' => 'Waktu', 'format' => 'datetime'],
+          'via'             => 'Lewat',
+          'device_type'     => 'Jenis',
+          'device_brand'    => 'Merek',
+          'device_model'    => 'Model',
+          'os_name'         => 'Sistem operasi',
+          'browser_name'    => 'Peramban',
+          'screen_w'        => ['label' => 'Layar', 'render' => static fn (array $r): string => $r['screen_w'] === null ? '—' : $r['screen_w'] . ' × ' . $r['screen_h']],
+          'corrected'       => 'Koreksi',
+      ],
   ]) ?>
-  <?= component('admin-chart', [
-      'id'       => 'chart-participant-indicators',
-      'title'    => 'Persentase benar per indikator',
-      'type'     => 'bar',
-      'data'     => \App\Libraries\ChartData::bars(array_map(static fn (array $row): array => [
-          'label' => (string) ($row['name'] ?? $row['code']),
-          'value' => $row['evidence_count'] > 0 ? $row['mastery_ratio'] * 100 : null,
-      ], array_values($profile['indicators'])), 'Persentase benar (%)', 100),
-      'fallback' => component('partials/bar-list', ['max' => 1, 'rows' => array_map(
-          static fn (array $row): array => [
-              'label'   => (string) ($row['name'] ?? $row['code']),
-              'value'   => $row['mastery_ratio'],
-              'display' => fmt_pct($row['mastery_ratio'], true) . ' · ' . $row['correct_count'] . ' dari ' . $row['evidence_count'] . ' jawaban',
-          ],
-          array_values($profile['indicators']),
-      )]),
-  ]) ?>
-</div>
+</section>
+<?php endif ?>
 
 <section class="panel">
   <h2 class="panel-title"><?= icon('clock') ?> Sesi bermain</h2>
@@ -130,14 +101,13 @@ $prePost  = $profile['pre_post'];
       'rows'         => $sessions,
       'emptyMessage' => 'Siswa ini belum pernah bermain.',
       'columns'      => [
-          'phase_code'      => ['label' => 'Tahap', 'format' => 'label', 'group' => 'phase'],
           'status'          => ['label' => 'Status', 'format' => 'badge'],
           'locale'          => ['label' => 'Bahasa', 'format' => 'label', 'group' => 'locale'],
           'started_at'      => ['label' => 'Mulai', 'format' => 'datetime'],
           'last_active_at'  => ['label' => 'Terakhir aktif', 'format' => 'datetime'],
           'duration_ms'     => ['label' => 'Lama bermain', 'format' => 'ms'],
           'completed_nodes' => ['label' => 'Tantangan selesai', 'format' => 'num'],
-          'total_score'     => ['label' => 'Skor', 'format' => 'num', 'decimals' => 1],
+          'total_stars'     => ['label' => 'Bintang', 'format' => 'num'],
           'id'              => ['label' => '', 'render' => static fn (array $r): string => '<span class="actions-cell">'
               . '<a class="btn btn-quiet btn-sm" href="' . base_url('admin/sesi/' . $r['id']) . '">Lihat</a>'
               . '<a class="btn btn-quiet btn-sm" href="' . base_url('admin/sesi/' . $r['id'] . '/event') . '">Catatan aktivitas</a></span>'],
@@ -147,7 +117,7 @@ $prePost  = $profile['pre_post'];
 
 <section class="panel">
   <h2 class="panel-title"><?= icon('download') ?> Laporan siswa (PDF)</h2>
-  <p class="muted">Ringkasan satu halaman untuk siswa ini: skor per wilayah, capaian per indikator, dan cara membacanya. Laporan yang dibuat dari akun guru selalu tanpa nama (hanya kode siswa).</p>
+  <p class="muted">Ringkasan satu halaman untuk siswa ini: data mentah pengerjaan per tantangan. Laporan yang dibuat dari akun guru selalu tanpa nama (hanya kode siswa).</p>
   <form method="post" action="<?= base_url('admin/ekspor/pdf') ?>" class="inline-form">
     <?= csrf_field() ?>
     <input type="hidden" name="participant_id" value="<?= (int) $participant['id'] ?>">

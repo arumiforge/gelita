@@ -148,7 +148,7 @@ if (! function_exists('component')) {
      */
     function component(string $name, array $data = []): string
     {
-        // Konteks filter panel: dipakai admin-filter-bar & admin-chart di halaman yang sama
+        // Konteks filter panel: dipakai admin-filter-bar di halaman yang sama
         static $pageContext = ['filters', 'filterOptions'];
 
         $view    = str_contains($name, '/') ? $name : 'components/' . $name;

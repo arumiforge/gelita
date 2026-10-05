@@ -1,11 +1,11 @@
 <?php
 /**
- * Filter penelitian yang sama untuk seluruh halaman analitik.
+ * Filter penelitian yang sama untuk halaman data panel admin.
  *
  * Form `method="get"`, sehingga filter tersimpan di URL dan dapat dibagikan
- * atau di-bookmark. admin/filters.js memuat isi halaman untuk filter baru (KPI,
- * tabel, dan chart dari /api/admin/*) di latar
- * tanpa memuat ulang halaman; tanpa JavaScript, tombol Terapkan mengirim form.
+ * atau di-bookmark. admin/filters.js memuat isi halaman untuk filter baru (KPI
+ * dan tabel) di latar tanpa memuat ulang halaman; tanpa JavaScript, tombol
+ * Terapkan mengirim form.
  *
  * Guru terkunci pada sekolahnya: kontrol sekolah tidak dirender untuk guru,
  * dan server tetap memaksa cakupan lewat StaffScope::scopedFilters().
@@ -48,18 +48,6 @@ $bare    = ! empty($bare);
           <option value="<?= esc($study['id'], 'attr') ?>" <?= $value('study_id') === (string) $study['id'] ? 'selected' : '' ?>>
             <?= esc(($study['name'] ?? '') !== '' ? $study['name'] : $study['code']) ?><?= $study['status'] === 'active' ? ' (sedang berjalan)' : '' ?>
           </option>
-        <?php endforeach ?>
-      </select>
-    </div>
-  <?php endif ?>
-
-  <?php if ($show('phase_code')): ?>
-    <div class="field">
-      <label for="f-phase">Tahap</label>
-      <select id="f-phase" name="phase_code">
-        <option value="">Semua tahap</option>
-        <?php foreach (config('Gelita')->phases as $phase): ?>
-          <option value="<?= esc($phase, 'attr') ?>" <?= $value('phase_code') === $phase ? 'selected' : '' ?>><?= esc(admin_label('phase', $phase)) ?></option>
         <?php endforeach ?>
       </select>
     </div>

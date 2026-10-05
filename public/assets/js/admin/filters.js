@@ -98,7 +98,7 @@ function clear(form) {
 }
 
 /**
- * @param {(phase: 'dispose'|'init', root: HTMLElement) => void} onSwap
+ * @param {(stage: 'dispose'|'init', root: HTMLElement) => void} onSwap
  */
 export function initFilters(onSwap) {
   const forms = $$('form.filter-bar[method="get"], form.filter-bar:not([method])');

@@ -41,7 +41,6 @@ class ParticipantFeedbackModel extends Model
         $builder = $this->db->table('participant_feedback pf')
             ->join('game_sessions', 'game_sessions.id = pf.session_id')
             ->join('participants', 'participants.id = pf.participant_id')
-            ->join('research_phases', 'research_phases.id = game_sessions.phase_id')
             ->where('participants.deleted_at', null);
 
         apply_research_filters($builder, $filters, ['level_id', 'node_id']);

@@ -39,7 +39,7 @@ trait StaffScope
     protected function readFilters(): array
     {
         $allowed = [
-            'study_id', 'participant_id', 'phase_code', 'level_id', 'node_id',
+            'study_id', 'participant_id', 'level_id', 'node_id',
             'school_id', 'class_level', 'province_code', 'locale', 'date_from', 'date_to',
         ];
 

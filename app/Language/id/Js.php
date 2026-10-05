@@ -39,17 +39,16 @@ return [
 
     // Kerangka tantangan
     'itemsPending'  => 'Masih ada soal yang belum dijawab.',
-    'noRetry'       => 'Tantangan ini hanya boleh dijawab sekali. Jawabanmu sudah tersimpan.',
     'fixAnswers'    => 'Perbaiki',
     'finishAnyway'  => 'Selesaikan dengan jawaban ini',
     'hintTitle'     => 'Petunjuk',
-    'hintPenalty'   => 'Memakai petunjuk akan sedikit menurunkan nilai kemandirianmu. Buka petunjuk?',
+    'hintPenalty'   => 'Petunjuk tidak mengurangi bintangmu. Buka petunjuk?',
     'hintOpen'      => 'Buka petunjuk',
     'hintAllOpened' => 'Semua petunjuk sudah kamu buka:',
     'hintNone'      => 'Belum ada petunjuk untuk soal ini.',
     'hintUsed'      => 'petunjuk dipakai',
     'exitTitle'     => 'Tinggalkan tantangan ini?',
-    'exitText'      => 'Jawabanmu yang sudah diperiksa tetap tersimpan, tetapi tantangan ini belum selesai.',
+    'exitText'      => 'Jawabanmu yang sudah dicek tetap tersimpan, tetapi tantangan ini belum selesai.',
     'exitYes'       => 'Ya, keluar',
     'exitNo'        => 'Lanjutkan tantangan',
 
@@ -60,12 +59,6 @@ return [
     'puzzleWrongTitle' => 'Belum utuh',
     'puzzleWrongText'  => 'Gambarnya belum utuh, masih ada {0} keping yang keliru. Keping bertanda ✗ belum di tempatnya.',
     'puzzleWrongPlain' => 'Gambarnya belum utuh. Tukar lagi kepingnya, ya.',
-    'cardMoved'        => 'Kartu dipindah ke urutan {0} dari {1}.',
-    'orderOkTitle'     => 'Urutannya tepat!',
-    'orderOkText'      => 'Semua langkah sudah berurutan.',
-    'orderWrongTitle'  => 'Urutan belum tepat',
-    'orderWrongText'   => '{0} dari {1} kartu sudah di tempat yang benar. Geser lagi kartunya, ya.',
-    'orderWrongPlain'  => 'Urutannya belum tepat. Geser lagi kartunya, ya.',
 
     // Rumpang
     'blankFilled'     => '{0} diisi: {1}',
@@ -84,7 +77,6 @@ return [
     'cardsOkText'      => 'Kamu menilai semua pernyataan dengan tepat.',
     'cardsWrongTitle'  => 'Belum semuanya tepat',
     'cardsWrongText'   => '{0} dari {1} kartu sudah tepat. Kartu bergaris merah perlu kamu pikirkan lagi.',
-    'reasonSaved'      => 'Alasanmu tersimpan',
 
     // Cari
     'clueLabel'      => 'Petunjuk {0}',

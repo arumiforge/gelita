@@ -13,10 +13,10 @@
 <?= component('partials/admin-head', [
     'title'   => 'Sesi bermain',
     'eyebrow' => 'Data siswa',
-    'lead'    => 'Satu sesi berisi permainan satu siswa pada satu tahap (misalnya tes awal). Buka sesi untuk melihat hasil tiap tantangan dan catatan aktivitasnya.',
+    'lead'    => 'Satu sesi berisi permainan satu siswa pada penelitian yang berjalan. Buka sesi untuk melihat hasil tiap tantangan dan catatan aktivitasnya.',
 ]) ?>
 <?= $this->include('partials/flash') ?>
-<?= component('admin-filter-bar', ['filters' => $filters, 'only' => ['study_id', 'phase_code', 'school_id', 'class_level', 'date_from', 'locale']]) ?>
+<?= component('admin-filter-bar', ['filters' => $filters, 'only' => ['study_id', 'school_id', 'class_level', 'date_from', 'locale']]) ?>
 
 <?= component('admin-table', [
     'rows'         => $rows,
@@ -28,13 +28,12 @@
         'session_code'     => ['label' => 'Kode sesi', 'render' => static fn (array $r): string => '<a href="' . base_url('admin/sesi/' . $r['id']) . '"><code>' . esc(substr((string) $r['session_code'], 0, 10)) . '</code></a>'],
         'participant_code' => ['label' => 'Kode siswa', 'format' => 'code'],
         'study_code'       => 'Penelitian',
-        'phase_code'       => ['label' => 'Tahap', 'format' => 'label', 'group' => 'phase'],
         'locale'           => ['label' => 'Bahasa', 'format' => 'label', 'group' => 'locale'],
         'status'           => ['label' => 'Status', 'format' => 'badge'],
         'started_at'       => ['label' => 'Mulai', 'format' => 'datetime'],
         'duration_ms'      => ['label' => 'Lama bermain', 'format' => 'ms'],
         'completed_nodes'  => ['label' => 'Tantangan selesai', 'format' => 'num'],
-        'total_score'      => ['label' => 'Skor', 'format' => 'num', 'decimals' => 1],
+        'total_stars'      => ['label' => 'Bintang', 'format' => 'num'],
         'device_type'      => ['label' => 'Perangkat', 'render' => static fn (array $r): string => esc(trim((($r['device_type'] ?? '') === '' ? '' : admin_label('device', (string) $r['device_type'])) . ' ' . ($r['browser_name'] ?? '')) ?: '—')],
         'id'               => ['label' => '', 'render' => static fn (array $r): string => '<a class="btn btn-quiet btn-sm" href="' . base_url('admin/sesi/' . $r['id']) . '">Lihat</a>'],
     ],

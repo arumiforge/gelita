@@ -38,22 +38,24 @@ class BankWorkbookGuide
 {
     public const LEVELS = ['temanggung', 'magelang', 'wonosobo'];
 
+    /** 4 tantangan per wilayah (perombakan kelas 5): 1 Susun Gambar, 2 Isi Rumpang, 3 Benar atau Salah, 4 Cari Objek */
     public const NODE_REFS = [
-        'tmg-1', 'tmg-2', 'tmg-3', 'tmg-4', 'tmg-5',
-        'mgl-1', 'mgl-2', 'mgl-3', 'mgl-4', 'mgl-5',
-        'wnb-1', 'wnb-2', 'wnb-3', 'wnb-4', 'wnb-5',
+        'tmg-1', 'tmg-2', 'tmg-3', 'tmg-4',
+        'mgl-1', 'mgl-2', 'mgl-3', 'mgl-4',
+        'wnb-1', 'wnb-2', 'wnb-3', 'wnb-4',
     ];
+
+    /** Variasi soal; setiap pengerjaan memakai satu variasi acak. */
+    public const VARIANT_GROUPS = ['a', 'b', 'c'];
 
     /** Urutan & kegunaan sheet data. [judul Indonesia, fungsi, cara mengisi] */
     public const SHEETS = [
-        'nodes'         => ['Tantangan', 'Judul, perintah, kartu misi, dan pengaturan 15 tantangan yang SUDAH ADA (tmg-1 … wnb-5). Sheet ini tidak membuat tantangan baru.', 'Satu baris untuk satu tantangan. Sel yang dikosongkan = isi lama tetap dipakai.'],
-        'distractors'   => ['Kata pengecoh', 'Kata-kata yang SALAH tetapi ikut muncul di pilihan kata tantangan Isi Rumpang (tmg-2, wnb-2), supaya siswa perlu berpikir.', 'Satu baris untuk satu kata. Semua kata pengecoh satu tantangan diganti dengan isi sheet ini.'],
+        'nodes'         => ['Tantangan', 'Judul, perintah, kartu misi, dan pengaturan 12 tantangan yang SUDAH ADA (tmg-1 … wnb-4). Sheet ini tidak membuat tantangan baru.', 'Satu baris untuk satu tantangan. Sel yang dikosongkan = isi lama tetap dipakai.'],
+        'variants'      => ['Judul variasi', 'Judul tampil setiap variasi soal (a, b, c) satu tantangan. Setiap kali bermain, siswa mendapat SATU variasi yang dipilih acak.', 'Satu baris untuk satu variasi. Kosong = judul tantangan yang dipakai.'],
+        'distractors'   => ['Kata pengecoh', 'Kata-kata yang SALAH tetapi ikut muncul di pilihan kata tantangan Isi Rumpang, per variasi, supaya siswa perlu berpikir.', 'Satu baris untuk satu kata. Semua kata pengecoh satu variasi diganti dengan isi sheet ini.'],
         'passages'      => ['Teks bacaan', 'Bacaan panjang yang tampil di samping soal. Soal memakainya lewat kolom passage_key di sheet items.', 'Satu baris untuk satu bacaan. Isi bahasa Indonesia dan Inggris wajib diisi.'],
-        'items'         => ['Soal', 'Bank soal: setiap pertanyaan, pernyataan, gambar Susun Gambar, benda yang dicari, atau urutan yang disusun.', 'Satu baris untuk satu soal. Setiap kali bermain, siswa mendapat soal acak sebanyak angka items_per_round di sheet nodes.'],
-        'options'       => ['Pilihan jawaban', 'Pilihan A–D untuk soal pilihan ganda (single_choice) dan soal sumber tepercaya (source_trust).', 'Satu baris untuk satu pilihan; setiap soal punya tepat SATU pilihan yang benar.'],
-        'pieces'        => ['Kartu urutan', 'Kartu-kartu yang disusun siswa pada soal urutkan kartu (ordering, Wonosobo tantangan 1).', 'Satu baris untuk satu kartu.'],
-        'sources'       => ['Kartu sumber', 'Sumber A dan Sumber B yang dibandingkan siswa pada soal pernyataan Wonosobo tantangan 3.', 'Dua baris untuk satu soal.'],
-        'hints'         => ['Petunjuk', 'Petunjuk yang boleh dibuka siswa saat kesulitan (membuka petunjuk mengurangi nilai kemandirian siswa).', 'Satu baris untuk satu petunjuk: untuk satu tantangan (isi node_ref) ATAU untuk satu soal (isi item_key).'],
+        'items'         => ['Soal', 'Bank soal: setiap rumpang, pernyataan, gambar Susun Gambar, atau benda yang dicari — dikelompokkan per variasi.', 'Satu baris untuk satu soal. Setiap kali bermain, siswa mendapat SEMUA soal aktif dari satu variasi yang dipilih acak.'],
+        'hints'         => ['Petunjuk', 'Petunjuk yang boleh dibuka siswa saat kesulitan (tercatat sebagai data pemakaian bantuan; tidak mengurangi bintang).', 'Satu baris untuk satu petunjuk: untuk satu tantangan (isi node_ref) ATAU untuk satu soal (isi item_key).'],
         'library'       => ['Pustaka Kedu — halaman', 'Halaman buku bacaan setiap wilayah di menu Pustaka.', 'Satu baris untuk satu halaman. Halaman dengan nomor yang sudah ada akan ditimpa.'],
         'library_media' => ['Pustaka Kedu — gambar & video', 'Galeri gambar/video setiap halaman Pustaka: berkas yang sudah diunggah ATAU tautan YouTube, Google Drive, Vimeo, atau Wikimedia Commons.', 'Satu baris untuk satu gambar/video. Galeri halaman yang punya baris di sini diganti seluruhnya.'],
     ];
@@ -67,28 +69,32 @@ class BankWorkbookGuide
      */
     public const COLUMNS = [
         'nodes' => [
-            'node_ref'             => ['Kode tantangan', 'Wajib', 'Tantangan yang diubah: singkatan wilayah + nomor pos di peta.', 'tmg-1 … tmg-5 (Temanggung), mgl-1 … mgl-5 (Magelang), wnb-1 … wnb-5 (Wonosobo)', 'tmg-2'],
+            'node_ref'             => ['Kode tantangan', 'Wajib', 'Tantangan yang diubah: singkatan wilayah + nomor pos di peta.', 'tmg-1 … tmg-4 (Temanggung), mgl-1 … mgl-4 (Magelang), wnb-1 … wnb-4 (Wonosobo)', 'tmg-2'],
             'title_id'             => ['Judul (Indonesia)', 'Opsional', 'Judul tantangan di peta wilayah dan di kartu misi. Kosong = judul lama tetap dipakai.', 'teks, paling banyak 150 huruf', 'Lengkapi Kalimat Temanggung'],
             'title_en'             => ['Judul (Inggris)', 'Opsional', 'Terjemahan judul untuk siswa yang memilih bahasa Inggris.', 'teks, paling banyak 150 huruf', 'Complete the Temanggung Sentence'],
             'instruction_id'       => ['Perintah (Indonesia)', 'Opsional', 'Perintah singkat yang tampil di atas area permainan.', 'teks', 'Pilih satu kata yang tepat dari bank kata.'],
             'instruction_en'       => ['Perintah (Inggris)', 'Opsional', 'Terjemahan perintah.', 'teks', 'Choose the one correct word from the word bank.'],
             'description_id'       => ['Kartu misi (Indonesia)', 'Opsional', 'Cerita atau tujuan singkat di kartu misi sebelum tantangan dimulai.', 'teks, 1–3 kalimat', 'Mbah Kedu meminta Jaka melengkapi catatan perjalanan.'],
             'description_en'       => ['Kartu misi (Inggris)', 'Opsional', 'Terjemahan kartu misi.', 'teks', 'Mbah Kedu asks Jaka to complete the travel notes.'],
-            'items_per_round'      => ['Soal per permainan', 'Opsional', 'Jumlah soal yang diambil acak dari bank soal setiap kali siswa memainkan tantangan ini. Sebaiknya bank soal berisi 1,5–2 kali angka ini supaya ada cadangan.', 'angka bulat 1 ke atas', '4'],
-            'verdict_options'      => ['Tombol jawaban', 'Bersyarat', 'Khusus tantangan Benar atau Salah (tmg-3, mgl-3, wnb-3): tombol jawaban yang tampil. Tulis dipisah koma tanpa spasi.', 'benar,salah   ATAU   benar,salah,pendapat', 'benar,salah,pendapat'],
-            'require_reason'       => ['Wajib menulis alasan', 'Bersyarat', 'Khusus tantangan Benar atau Salah: 1 = siswa wajib menulis alasan (soal jenis verdict_reason); 0 = tidak.', '0 atau 1', '1'],
-            'use_word_bank'        => ['Pakai pilihan kata', 'Bersyarat', 'Khusus tantangan Isi Rumpang: 1 = siswa memilih dari kumpulan kata (bank kata); 0 = siswa mengetik sendiri jawabannya.', '0 atau 1', '1'],
-            'distractor_count'     => ['Jumlah kata pengecoh', 'Bersyarat', 'Khusus Isi Rumpang dengan pilihan kata: berapa kata pengecoh (dari sheet distractors) yang ikut ditampilkan. Sediakan kata pengecoh paling sedikit sebanyak angka ini. Isi 0 tanpa baris di sheet distractors = semua kata pengecoh lama dihapus. Aturan kelas 5: Temanggung 0, Magelang dan Wonosobo 2.', 'angka bulat 0 ke atas', '2'],
-            'as_reading'           => ['Tampil sebagai bacaan', 'Bersyarat', 'Khusus Isi Rumpang: 1 = SEMUA soal aktif tantangan ini tampil berurutan sebagai satu bacaan utuh (setiap soal = satu potongan bacaan dengan satu ___), dan bank kata berisi semua jawaban + kata pengecoh. 0 = soal kalimat lepas yang diambil acak. Kosong = tidak diubah.', '0 atau 1', '1'],
-            'scene_media_key'      => ['Gambar adegan', 'Opsional', 'Kode berkas gambar adegan tantangan — WAJIB untuk Cari Objek (tmg-4), karena di gambar inilah benda-benda disembunyikan. Unggah gambarnya di menu Gambar & suara.', 'kode berkas gambar', 'challenge.tmg-4.scene'],
+            'use_word_bank'        => ['Pakai pilihan kata', 'Bersyarat', 'Khusus tantangan Isi Rumpang: selalu 1 (siswa memilih dari kumpulan kata).', '1', '1'],
+            'distractor_count'     => ['Jumlah kata pengecoh', 'Bersyarat', 'Khusus Isi Rumpang: berapa kata pengecoh (dari sheet distractors, per variasi) yang ikut ditampilkan. Sediakan kata pengecoh paling sedikit sebanyak angka ini di setiap variasi.', 'angka bulat 0 ke atas', '2'],
+            'as_reading'           => ['Tampil sebagai bacaan', 'Bersyarat', 'Khusus Isi Rumpang: 1 = soal satu variasi tampil berurutan sebagai satu bacaan utuh (setiap soal = satu potongan bacaan dengan satu ___), dan bank kata berisi semua jawaban + kata pengecoh variasi itu. Kosong = tidak diubah.', '0 atau 1', '1'],
+            'scene_media_key'      => ['Gambar adegan', 'Opsional', 'Kode berkas gambar adegan tantangan — untuk Cari Objek (tantangan 4), karena di gambar inilah benda-benda disembunyikan. Unggah gambarnya di menu Gambar & suara.', 'kode berkas gambar', 'challenge.tmg-4.scene'],
             'background_media_key' => ['Gambar latar tantangan', 'Opsional', 'Kode berkas gambar latar layar tantangan. Kosong = memakai latar wilayah.', 'kode berkas gambar', 'challenge.tmg-4.bg'],
             'variant_code'         => ['Kode variasi tampilan', 'Opsional', 'Nama variasi tantangan untuk keperluan tampilan (mis. puzzle_gambar, puzzle_jigsaw, rumpang_bacaan). Kosong = tidak diubah. Biarkan seperti di workbook produksi bila ragu.', 'huruf kecil, angka, dan garis bawah', 'rumpang_bacaan'],
             'indicator'            => ['Indikator tantangan', 'Opsional', 'Indikator pembelajaran yang diukur tantangan ini; dipakai untuk soal yang kolom indicator-nya kosong. Kosong = tidak diubah. Bila indikator tantangan diganti, isi indikator soal lama secara tertulis agar hasil lama tetap terhitung di indikator semula.', 'literasi | budaya | sikap', 'budaya'],
         ],
+        'variants' => [
+            'node_ref'      => ['Kode tantangan', 'Wajib', 'Tantangan pemilik variasi.', 'tmg-1 … wnb-4', 'tmg-2'],
+            'variant_group' => ['Variasi', 'Wajib', 'Kode variasi; sama dengan kolom variant_group di sheet items.', 'a | b | c', 'a'],
+            'title_id'      => ['Judul variasi (Indonesia)', 'Opsional', 'Judul yang tampil saat siswa mendapat variasi ini. Kosong = judul tantangan.', 'teks, paling banyak 150 huruf', 'Gunung Kembar'],
+            'title_en'      => ['Judul variasi (Inggris)', 'Opsional', 'Terjemahan judul variasi.', 'teks, paling banyak 150 huruf', 'The Twin Mountains'],
+        ],
         'distractors' => [
-            'node_ref' => ['Kode tantangan', 'Wajib', 'Tantangan Isi Rumpang yang memakai pilihan kata.', 'tmg-2, wnb-2 (atau tantangan Isi Rumpang lain dengan use_word_bank = 1)', 'tmg-2'],
-            'text_id'  => ['Kata pengecoh (Indonesia)', 'Wajib', 'Kata yang TIDAK tepat untuk tempat kosong mana pun, tetapi masuk akal sehingga siswa perlu berpikir.', 'satu kata / frasa pendek', 'salju'],
-            'text_en'  => ['Kata pengecoh (Inggris)', 'Opsional', 'Terjemahan kata pengecoh. Kosong = sama dengan kolom Indonesia.', 'satu kata / frasa pendek', 'snow'],
+            'node_ref'      => ['Kode tantangan', 'Wajib', 'Tantangan Isi Rumpang.', 'tmg-2, mgl-2, wnb-2', 'tmg-2'],
+            'variant_group' => ['Variasi', 'Wajib', 'Variasi pemilik kata pengecoh ini.', 'a | b | c', 'a'],
+            'text_id'       => ['Kata pengecoh (Indonesia)', 'Wajib', 'Kata yang TIDAK tepat untuk tempat kosong mana pun, tetapi masuk akal sehingga siswa perlu berpikir.', 'satu kata / frasa pendek', 'salju'],
+            'text_en'       => ['Kata pengecoh (Inggris)', 'Opsional', 'Terjemahan kata pengecoh. Kosong = sama dengan kolom Indonesia.', 'satu kata / frasa pendek', 'snow'],
         ],
         'passages' => [
             'passage_key'      => ['Kode bacaan', 'Wajib', 'Kode unik teks bacaan; ditulis juga di kolom passage_key sheet items untuk menyambungkan soal dengan bacaannya. Jangan diubah setelah dipakai.', 'huruf kecil, angka, dan tanda minus; tidak boleh kembar', 'tmg-teks-a'],
@@ -101,10 +107,11 @@ class BankWorkbookGuide
             'reference_source' => ['Sumber rujukan', 'Opsional', 'Asal fakta dalam bacaan (buku, situs resmi, jurnal).', 'teks', 'Pemkab Temanggung; BPS Temanggung 2024'],
         ],
         'items' => [
-            'item_key'          => ['Kode soal', 'Wajib', 'Kode unik soal: kode tantangan + nomor 2 angka. JANGAN diubah setelah soal dijawab siswa, karena jawaban siswa tersambung ke kode ini (data penelitian).', 'kode tantangan diikuti -01, -02, dan seterusnya', 'tmg-2-01'],
-            'node_ref'          => ['Kode tantangan', 'Wajib', 'Tantangan tempat soal ini muncul.', 'tmg-1 … wnb-5', 'tmg-2'],
-            'sequence'          => ['Urutan di bank soal', 'Opsional', 'Urutan tampil di halaman pengelolaan soal. Tidak memengaruhi soal acak yang diterima siswa.', 'angka bulat', '1'],
-            'interaction_type'  => ['Jenis soal', 'Wajib', 'Harus cocok dengan jenis tantangannya. Susun Gambar: puzzle_arrange/ordering · Isi Rumpang: fill_blank_bank/fill_blank_free · Benar/Salah: verdict_card/verdict_reason · Kuis Pilihan: single_choice/source_trust · Cari Objek: find_object.', 'puzzle_arrange | ordering | fill_blank_bank | fill_blank_free | verdict_card | verdict_reason | single_choice | source_trust | find_object', 'fill_blank_bank'],
+            'item_key'          => ['Kode soal', 'Wajib', 'Kode unik soal: kode tantangan + variasi + nomor 2 angka. JANGAN diubah setelah soal dijawab siswa, karena jawaban siswa tersambung ke kode ini (data penelitian).', '{tantangan}-{variasi}{nn}', 'tmg-2-a01'],
+            'node_ref'          => ['Kode tantangan', 'Wajib', 'Tantangan tempat soal ini muncul.', 'tmg-1 … wnb-4', 'tmg-2'],
+            'variant_group'     => ['Variasi', 'Wajib', 'Kelompok soal yang tampil bersama dalam satu pengerjaan. Kosong = a.', 'a | b | c', 'a'],
+            'sequence'          => ['Urutan dalam variasi', 'Opsional', 'Urutan tampil soal di dalam variasinya (Isi Rumpang: urutan potongan bacaan).', 'angka bulat', '1'],
+            'interaction_type'  => ['Jenis soal', 'Wajib', 'Harus cocok dengan jenis tantangannya. Susun Gambar: puzzle_arrange · Isi Rumpang: fill_blank_bank · Benar atau Salah: verdict_card · Cari Objek: find_object.', 'puzzle_arrange | fill_blank_bank | verdict_card | find_object', 'fill_blank_bank'],
             'indicator'         => ['Indikator', 'Opsional', 'Indikator pembelajaran yang diukur soal ini. Kosong = mengikuti indikator tantangannya.', 'literasi | budaya | sikap', 'literasi'],
             'bloom_level'       => ['Tingkat berpikir (Bloom)', 'Bersyarat', 'Tingkat berpikir soal menurut Taksonomi Bloom revisi: C1 mengingat, C2 memahami, C3 menerapkan, C4 menganalisis, C5 mengevaluasi, C6 mencipta. WAJIB untuk Isi Rumpang bacaan; rentang yang dianjurkan untuk kelas 5: Temanggung C1–C2, Magelang C2–C3, Wonosobo C3–C4.', 'C1 | C2 | C3 | C4 | C5 | C6', 'C2'],
             'prompt_id'         => ['Soal / pernyataan (Indonesia)', 'Wajib', 'Isi Rumpang: tandai tempat kosong dengan ___ (tiga garis bawah), TEPAT SATU per soal; pada tantangan bacaan, soal-soal berurutan disambung menjadi satu bacaan, dan baris kosong DI TENGAH sel (setelah ___) memulai paragraf baru. Cari Objek: petunjuk benda yang harus dicari. Susun Gambar: keterangan gambar yang tampil setelah gambar tersusun. Benar atau Salah: pernyataan yang dinilai.', 'teks', 'Temanggung terletak di antara Gunung Sindoro dan Gunung ___.'],
@@ -112,52 +119,24 @@ class BankWorkbookGuide
             'source_text_id'    => ['Teks sumber soal (Indonesia)', 'Opsional', 'Kutipan atau informasi pendek khusus soal ini, tampil di atas soal (bila soal tidak memakai teks bacaan).', 'teks', 'Pengumuman: Festival dimulai pukul 08.00.'],
             'source_text_en'    => ['Teks sumber soal (Inggris)', 'Opsional', 'Terjemahan teks sumber.', 'teks', 'Notice: The festival starts at 08.00.'],
             'passage_key'       => ['Kode bacaan', 'Opsional', 'Teks bacaan yang dipakai soal ini: kode dari sheet passages, atau kode bacaan yang sudah ada di permainan.', 'kode bacaan', 'tmg-teks-a'],
-            'answer_id'         => ['Kunci jawaban (Indonesia)', 'Bersyarat', 'Lihat tabel "Kunci jawaban untuk setiap jenis soal" di sheet PETUNJUK. Untuk single_choice dan source_trust: KOSONGKAN (kunci diambil dari pilihan jawaban yang is_correct = 1).', 'tergantung jenis soal', 'Sumbing'],
+            'answer_id'         => ['Kunci jawaban (Indonesia)', 'Bersyarat', 'Lihat tabel "Kunci jawaban untuk setiap jenis soal" di sheet PETUNJUK.', 'tergantung jenis soal', 'Sumbing'],
             'answer_en'         => ['Kunci jawaban (Inggris)', 'Bersyarat', 'Untuk Isi Rumpang: jawaban dalam bahasa Inggris. Kosong = sama dengan kolom Indonesia.', 'tergantung jenis soal', 'Sumbing'],
-            'sample_reason_id'  => ['Contoh alasan (Indonesia)', 'Bersyarat', 'Khusus verdict_reason: contoh alasan yang benar sebagai pegangan guru. Tidak dinilai otomatis.', 'teks', 'Kata "paling indah" adalah pendapat pribadi.'],
-            'sample_reason_en'  => ['Contoh alasan (Inggris)', 'Bersyarat', 'Terjemahan contoh alasan.', 'teks', 'The words "most beautiful" are a personal opinion.'],
             'x'                 => ['Posisi dari kiri (%)', 'Bersyarat', 'Khusus find_object: jarak benda dari tepi KIRI gambar adegan, dalam persen lebar gambar.', 'angka 0–100', '18'],
             'y'                 => ['Posisi dari atas (%)', 'Bersyarat', 'Khusus find_object: jarak benda dari tepi ATAS gambar adegan, dalam persen tinggi gambar.', 'angka 0–100', '62'],
             'w'                 => ['Lebar benda (%)', 'Bersyarat', 'Khusus find_object: lebar benda dalam persen lebar gambar adegan. Jaga agar benda-benda tidak saling bertumpuk.', 'angka 5–30', '12'],
             'decoy'             => ['Benda jebakan', 'Bersyarat', 'Khusus find_object: 1 = benda jebakan (bukan dari wilayah ini). Jebakan selalu tampil, tidak dinilai (scorable = 0), dan wajib punya penjelasan jebakan (wrong_feedback_id).', '0 atau 1', '0'],
             'wrong_feedback_id' => ['Penjelasan jebakan (Indonesia)', 'Bersyarat', 'Khusus benda jebakan: penjelasan yang tampil saat siswa mengklik jebakan.', 'teks', 'Angklung berasal dari Jawa Barat, bukan Temanggung.'],
             'wrong_feedback_en' => ['Penjelasan jebakan (Inggris)', 'Bersyarat', 'Terjemahan penjelasan jebakan.', 'teks', 'Angklung comes from West Java, not Temanggung.'],
-            'digital_pillar'    => ['Pilar literasi digital', 'Bersyarat', 'Khusus Wonosobo tantangan 5: pilar literasi digital yang diukur soal ini (untuk laporan hasil belajar).', 'digital_skills (cakap digital) | digital_ethics (etika digital) | digital_safety (aman digital) | digital_culture (budaya digital)', 'digital_safety'],
             'media_asset_key'   => ['Gambar soal', 'Bersyarat', 'WAJIB untuk puzzle_arrange (satu gambar utuh, sebaiknya persegi; sistem memotongnya otomatis sesuai tingkat wilayah: Temanggung 3 × 3 kotak, Magelang 4 × 4 kotak, Wonosobo 4 × 4 jigsaw) dan find_object (gambar benda, PNG berlatar transparan). Unggah di menu Gambar & suara, atau pasang belakangan dari halaman tantangan.', 'kode berkas gambar', 'challenge.item.tmg-1-01'],
-            'scorable'          => ['Dinilai?', 'Opsional', '1 = dihitung dalam skor (bawaan). 0 = tidak dinilai (wajib untuk benda jebakan).', '0 atau 1', '1'],
+            'scorable'          => ['Dinilai?', 'Opsional', '1 = soal dinilai (bawaan). 0 = tidak dinilai (wajib untuk benda jebakan).', '0 atau 1', '1'],
             'is_active'         => ['Soal dipakai?', 'Opsional', '1 = soal dipakai di permainan; 0 = soal diistirahatkan (tidak muncul lagi, tetapi jawaban siswa yang sudah ada tetap tersimpan). Jangan menghapus baris soal lama: istirahatkan dengan 0. Kosong = soal baru dipakai, soal lama tidak diubah.', '0 atau 1', '1'],
             'review_status'     => ['Status pemeriksaan isi', 'Opsional', 'draft = masih draf; needs_verification = fakta perlu dicek (muncul peringatan saat diimpor); verified = sudah dicek ahli/guru.', 'draft | needs_verification | verified', 'verified'],
             'review_note'       => ['Catatan pemeriksaan', 'Opsional', 'Catatan untuk pemeriksa isi: apa yang perlu dicek atau sudah dicek.', 'teks', 'Tinggi gunung dicek dengan data PVMBG.'],
             'reference_source'  => ['Sumber rujukan', 'Opsional', 'Asal fakta dalam soal (disarankan untuk soal budaya/sejarah).', 'teks', 'UNESCO World Heritage Centre, Borobudur'],
         ],
-        'options' => [
-            'option_key'      => ['Kode pilihan', 'Wajib', 'Kode unik pilihan jawaban: kode soal + huruf.', 'kode soal diikuti -a, -b, -c, -d', 'tmg-5-01-a'],
-            'item_key'        => ['Kode soal', 'Wajib', 'Soal pemilik pilihan jawaban ini (harus ada di sheet items).', 'kode soal', 'tmg-5-01'],
-            'label_id'        => ['Teks pilihan (Indonesia)', 'Wajib', 'Teks pilihan jawaban.', 'teks singkat', 'Sindoro dan Sumbing'],
-            'label_en'        => ['Teks pilihan (Inggris)', 'Opsional', 'Terjemahan pilihan jawaban. Kosong = sama dengan kolom Indonesia.', 'teks singkat', 'Sindoro and Sumbing'],
-            'is_correct'      => ['Jawaban benar?', 'Wajib', '1 = pilihan ini jawaban yang benar; 0 = salah. Setiap soal wajib punya TEPAT SATU pilihan bernilai 1.', '0 atau 1', '1'],
-            'feedback_id'     => ['Umpan balik (Indonesia)', 'Opsional', 'Penjelasan yang tampil setelah siswa memilih pilihan ini. Sangat disarankan untuk pilihan yang benar.', 'teks', 'Tepat! Teks menyebut kedua gunung itu.'],
-            'feedback_en'     => ['Umpan balik (Inggris)', 'Opsional', 'Terjemahan umpan balik.', 'teks', 'Correct! The text names both mountains.'],
-            'media_asset_key' => ['Gambar pilihan', 'Opsional', 'Kode berkas gambar untuk pilihan ini (400 × 400 px).', 'kode berkas gambar', 'challenge.option.mgl-4-01-a'],
-            'display_order'   => ['Urutan tampil', 'Opsional', 'Urutan pilihan A–D bila tidak diacak.', '1–4', '1'],
-        ],
-        'pieces' => [
-            'item_key'  => ['Kode soal', 'Wajib', 'Soal urutkan kartu (ordering) pemilik kartu ini.', 'kode soal', 'wnb-1-01'],
-            'piece_key' => ['Kode kartu', 'Wajib', 'Kode kartu. Urutan yang benar ditulis di kolom answer_id soal tersebut, dipisah koma.', 'a, b, c, … atau 1, 2, 3, …', 'a'],
-            'text_id'   => ['Teks kartu (Indonesia)', 'Wajib', 'Isi satu langkah atau kejadian.', 'teks singkat', 'Siapkan mi dan kol.'],
-            'text_en'   => ['Teks kartu (Inggris)', 'Opsional', 'Terjemahan. Kosong = sama dengan kolom Indonesia.', 'teks singkat', 'Prepare the noodles and cabbage.'],
-        ],
-        'sources' => [
-            'item_key' => ['Kode soal', 'Wajib', 'Soal pernyataan (verdict_card) yang membandingkan dua sumber.', 'kode soal', 'wnb-3-01'],
-            'label_id' => ['Nama sumber (Indonesia)', 'Wajib', 'Judul kartu sumber.', 'teks singkat', 'Sumber A'],
-            'label_en' => ['Nama sumber (Inggris)', 'Opsional', 'Terjemahan judul kartu sumber.', 'teks singkat', 'Source A'],
-            'kind'     => ['Jenis sumber', 'Wajib', 'official = resmi (pemerintah/pengelola); anonymous = akun/komentar tanpa nama; chain_message = pesan berantai; blog = blog/tulisan pribadi.', 'official | anonymous | chain_message | blog', 'official'],
-            'text_id'  => ['Isi sumber (Indonesia)', 'Wajib', 'Kutipan isi sumber.', 'teks', 'Pengumuman pengelola: pengunjung dilarang memanjat candi.'],
-            'text_en'  => ['Isi sumber (Inggris)', 'Opsional', 'Terjemahan isi sumber.', 'teks', 'Management notice: visitors must not climb the temple.'],
-        ],
         'hints' => [
-            'node_ref' => ['Kode tantangan', 'Bersyarat', 'Isi untuk petunjuk umum satu tantangan. Isi SALAH SATU saja: node_ref atau item_key.', 'tmg-1 … wnb-5', 'tmg-2'],
-            'item_key' => ['Kode soal', 'Bersyarat', 'Isi untuk petunjuk khusus satu soal.', 'kode soal', 'tmg-2-01'],
+            'node_ref' => ['Kode tantangan', 'Bersyarat', 'Isi untuk petunjuk umum satu tantangan. Isi SALAH SATU saja: node_ref atau item_key.', 'tmg-1 … wnb-4', 'tmg-2'],
+            'item_key' => ['Kode soal', 'Bersyarat', 'Isi untuk petunjuk khusus satu soal.', 'kode soal', 'tmg-2-a01'],
             'sequence' => ['Urutan petunjuk', 'Opsional', '1 = petunjuk yang terbuka pertama, 2 = berikutnya, dan seterusnya.', 'angka bulat 1 ke atas', '1'],
             'text_id'  => ['Petunjuk (Indonesia)', 'Wajib', 'Arahan cara berpikir — jangan langsung memberi jawaban.', 'teks', 'Baca seluruh kalimat dulu.'],
             'text_en'  => ['Petunjuk (Inggris)', 'Opsional', 'Terjemahan petunjuk.', 'teks', 'Read the whole sentence first.'],
@@ -196,17 +175,14 @@ class BankWorkbookGuide
     public const CHOICES = [
         'node_ref'         => self::NODE_REFS,
         'level_code'       => self::LEVELS,
-        'interaction_type' => ['puzzle_arrange', 'ordering', 'fill_blank_bank', 'fill_blank_free', 'verdict_card', 'verdict_reason', 'single_choice', 'source_trust', 'find_object'],
+        'variant_group'    => self::VARIANT_GROUPS,
+        'interaction_type' => ['puzzle_arrange', 'fill_blank_bank', 'verdict_card', 'find_object'],
         'indicator'        => ['literasi', 'budaya', 'sikap'],
         'review_status'    => ['draft', 'needs_verification', 'verified'],
-        'kind'             => ['official', 'anonymous', 'chain_message', 'blog'],
-        'digital_pillar'   => ['digital_skills', 'digital_ethics', 'digital_safety', 'digital_culture'],
         'media_kind'       => ['image', 'video'],
-        'require_reason'   => ['0', '1'],
-        'use_word_bank'    => ['0', '1'],
+        'use_word_bank'    => ['1'],
         'decoy'            => ['0', '1'],
         'scorable'         => ['0', '1'],
-        'is_correct'       => ['0', '1'],
         'is_active'        => ['0', '1'],
         'as_reading'       => ['0', '1'],
         'bloom_level'      => ['C1', 'C2', 'C3', 'C4', 'C5', 'C6'],
@@ -214,11 +190,9 @@ class BankWorkbookGuide
 
     /** Kolom angka: [jenis, min, maks]. */
     private const NUMBERS = [
-        'items_per_round'  => ['whole', 1, 50],
         'distractor_count' => ['whole', 0, 50],
         'sequence'         => ['whole', 1, 999],
         'page_sequence'    => ['whole', 1, 999],
-        'display_order'    => ['whole', 1, 20],
         'x'                => ['decimal', 0, 100],
         'y'                => ['decimal', 0, 100],
         'w'                => ['decimal', 1, 60],
@@ -227,9 +201,9 @@ class BankWorkbookGuide
     /** Kolom teks panjang: lebar kolom besar + teks terbungkus. */
     private const LONG = [
         'body_id', 'body_en', 'prompt_id', 'prompt_en', 'source_text_id', 'source_text_en', 'description_id', 'description_en',
-        'instruction_id', 'instruction_en', 'text_id', 'text_en', 'feedback_id', 'feedback_en', 'sample_reason_id', 'sample_reason_en',
+        'instruction_id', 'instruction_en', 'text_id', 'text_en',
         'wrong_feedback_id', 'wrong_feedback_en', 'reference_source', 'review_note', 'caption_id', 'caption_en', 'credit', 'external_url',
-        'label_id', 'label_en', 'title_id', 'title_en',
+        'title_id', 'title_en',
     ];
 
     private const ROWS_WITH_VALIDATION = 1000;
@@ -324,13 +298,13 @@ class BankWorkbookGuide
         $r = $this->heading($sheet, $r, 'Langkah mengisi dan mengimpor');
         foreach ([
             'Siapkan gambar lebih dulu. Unggah gambar yang dibutuhkan (adegan Cari Objek, gambar Susun Gambar, gambar benda, gambar Pustaka) di Panel GELITA → menu Gambar & suara, lalu catat kode berkasnya (mis. challenge.tmg-4.scene). Kode itulah yang ditulis di kolom gambar (kolom yang namanya memuat kata media, mis. media_asset_key atau scene_media_key). Daftar gambar yang dibutuhkan berkas ini ada di sheet DAFTAR_MEDIA (bila ada). Gambar juga boleh diunggah belakangan dengan kode yang sama.',
-            'Isi sheet dari kiri ke kanan: nodes → distractors → passages → items → options / pieces / sources → hints → library → library_media. Sheet yang tidak diperlukan boleh dibiarkan kosong. Satu baris = satu data. Jangan menggabungkan sel (merge) dan jangan memakai rumus.',
+            'Isi sheet dari kiri ke kanan: nodes → variants → distractors → passages → items → hints → library → library_media. Sheet yang tidak diperlukan boleh dibiarkan kosong. Satu baris = satu data. Jangan menggabungkan sel (merge) dan jangan memakai rumus.',
             'Untuk kolom berkode (jenis soal, wilayah, 0/1, dan sebagainya), klik selnya lalu pilih dari daftar pilihan yang muncul, supaya tidak salah ketik.',
             'Simpan sebagai berkas Excel (.xlsx atau "Excel Workbook"), paling besar 20 MB.',
             'Buka Panel GELITA → Konten permainan → Impor soal dari Excel, pilih berkas, lalu tekan Periksa berkas. Pemeriksaan TIDAK mengubah apa pun. Hasilnya berupa kesalahan (merah, harus diperbaiki) dan peringatan (kuning, boleh dilanjutkan); setiap temuan menyebut nama sheet dan nomor barisnya.',
             'Bila tidak ada kesalahan, tekan Simpan soal ke permainan. Semua isi disimpan sekaligus: bila ada satu baris yang gagal, tidak ada yang berubah.',
             'Setelah disimpan: buka Konten permainan → Periksa kelengkapan untuk memastikan setiap tantangan punya soal yang cukup, lalu coba mainkan sendiri sebagai siswa.',
-            'Mengimpor ulang berkas yang sama aman: data dicocokkan lewat kodenya (node_ref, passage_key, item_key, option_key, nomor halaman) lalu diperbarui, bukan digandakan. Kunci jawaban soal yang SUDAH dijawab siswa tidak dapat diubah — buat soal baru dengan kode baru.',
+            'Mengimpor ulang berkas yang sama aman: data dicocokkan lewat kodenya (node_ref, passage_key, item_key, nomor halaman) lalu diperbarui, bukan digandakan. Kunci jawaban soal yang SUDAH dijawab siswa tidak dapat diubah — buat soal baru dengan kode baru.',
             'Untuk petugas teknis: impor juga dapat dijalankan di server dengan perintah php spark gelita:bank:import berkas.xlsx --dry-run (periksa saja), lalu tanpa --dry-run.',
         ] as $index => $text) {
             $r = $this->step($sheet, $r, (string) ($index + 1), $text);
@@ -353,27 +327,18 @@ class BankWorkbookGuide
         $r++;
         $r = $this->heading($sheet, $r, 'Jenis tantangan dan jenis soal');
         $r = $this->table($sheet, $r, ['Tantangan', 'Jenis tantangan', 'Jenis soal (interaction_type)', 'Catatan'], [
-            ['tmg-1, mgl-1', 'Susun Gambar — kepingan 3×3', 'puzzle_arrange', 'Setiap soal WAJIB punya gambar (kolom media_asset_key), berbentuk persegi ±900×900 px. Kolom prompt_id berisi keterangan gambar yang dibaca setelah gambar tersusun.'],
-            ['wnb-1', 'Susun Urutan — urutkan kartu', 'ordering', 'Kartu diisi di sheet pieces. answer_id = urutan benar kode kartu, dipisah koma, mis. c,a,d,b,e.'],
-            ['tmg-2, wnb-2', 'Isi Rumpang — pilih kata', 'fill_blank_bank', 'Kalimat dengan ___ (tiga garis bawah) sebagai tempat kosong; jawabannya satu kata; kata pengecoh diisi di sheet distractors.'],
-            ['mgl-2', 'Isi Rumpang — ketik jawaban', 'fill_blank_free', 'Beberapa jawaban yang diterima dipisah | (garis tegak), mis. Syailendra|Sailendra. Huruf besar/kecil tidak dibedakan.'],
-            ['tmg-3, wnb-3', 'Benar atau Salah', 'verdict_card', 'answer_id = benar atau salah. wnb-3 memakai dua kartu sumber (sheet sources).'],
-            ['mgl-3', 'Benar atau Salah — dengan pendapat & alasan', 'verdict_reason', 'answer_id = benar, salah, atau pendapat. Isi sample_reason_id sebagai contoh alasan untuk guru.'],
-            ['tmg-5, mgl-4, mgl-5, wnb-5', 'Kuis Pilihan — pilihan ganda', 'single_choice', 'Empat pilihan jawaban di sheet options, tepat satu yang is_correct = 1. Kolom answer_id dikosongkan.'],
-            ['wnb-4', 'Kuis Pilihan — sumber tepercaya', 'source_trust', 'Seperti pilihan ganda, tetapi pilihannya berupa jenis sumber informasi.'],
-            ['tmg-4', 'Cari Objek — cari benda di gambar', 'find_object', 'Perlu gambar adegan (kolom scene_media_key di sheet nodes) dan gambar setiap benda. Benda yang dicari: answer_id = target, decoy = 0. Benda jebakan: answer_id = decoy, decoy = 1, scorable = 0, dan isi wrong_feedback_id.'],
+            ['tmg-1, mgl-1, wnb-1', 'Susun Gambar', 'puzzle_arrange', 'Satu gambar per variasi (kolom media_asset_key), sebaiknya persegi. Kolom prompt_id berisi keterangan gambar yang dibaca setelah gambar tersusun.'],
+            ['tmg-2, mgl-2, wnb-2', 'Isi Rumpang — pilih kata', 'fill_blank_bank', 'Satu variasi = satu bacaan rumpang; setiap soal satu potongan bacaan dengan ___ (tiga garis bawah). Kata pengecoh diisi di sheet distractors per variasi.'],
+            ['tmg-3, mgl-3, wnb-3', 'Benar atau Salah', 'verdict_card', 'Satu variasi = satu bacaan (passage_key) + pernyataannya. answer_id = benar atau salah.'],
+            ['tmg-4, mgl-4, wnb-4', 'Cari Objek — cari benda di gambar', 'find_object', 'Perlu gambar adegan dan gambar setiap benda. Benda yang dicari: answer_id = target, decoy = 0. Benda jebakan: answer_id = decoy, decoy = 1, scorable = 0, dan isi wrong_feedback_id.'],
         ]);
 
         $r++;
         $r = $this->heading($sheet, $r, 'Kunci jawaban untuk setiap jenis soal (kolom answer_id / answer_en)');
         $r = $this->table($sheet, $r, ['Jenis soal', 'Isi answer_id', 'Isi answer_en', 'Contoh'], [
-            ['puzzle_arrange', 'kosongkan (susunan benar selalu 1–9 dari kiri atas)', 'kosongkan', '—'],
-            ['ordering', 'kode kartu sesuai urutan yang benar, dipisah koma', 'kosongkan', 'c,a,d,b'],
+            ['puzzle_arrange', 'kosongkan (susunan benar dibuat otomatis)', 'kosongkan', '—'],
             ['fill_blank_bank', 'satu kata/frasa jawaban (otomatis masuk pilihan kata)', 'kata jawaban dalam bahasa Inggris', 'kopi / coffee'],
-            ['fill_blank_free', 'semua jawaban yang diterima, dipisah |', 'jawaban bahasa Inggris, dipisah |', 'stupa|stupha / stupa'],
             ['verdict_card', 'benar atau salah', 'kosongkan', 'salah'],
-            ['verdict_reason', 'benar, salah, atau pendapat', 'kosongkan', 'pendapat'],
-            ['single_choice / source_trust', 'KOSONGKAN — kunci diambil dari sheet options', 'kosongkan', '—'],
             ['find_object', 'target (benda yang dicari) atau decoy (jebakan)', 'kosongkan', 'target'],
         ]);
 
@@ -393,12 +358,11 @@ class BankWorkbookGuide
         $r = $this->heading($sheet, $r, 'Hal yang sering keliru');
         foreach ([
             'Menerjemahkan atau mengganti judul kolom / nama sheet → kolom dianggap kosong atau sheet dilewati.',
-            'Menulis "benar"/"salah" atau "ya"/"tidak" di kolom 0/1 → untuk kolom is_correct, scorable, decoy, is_active, require_reason, dan use_word_bank pakai 0 (tidak) atau 1 (ya).',
-            'Soal pilihan ganda dengan dua jawaban benar atau tanpa jawaban benar → muncul sebagai kesalahan saat diperiksa.',
+            'Menulis "benar"/"salah" atau "ya"/"tidak" di kolom 0/1 → untuk kolom scorable, decoy, is_active, as_reading, dan use_word_bank pakai 0 (tidak) atau 1 (ya).',
             'Soal Isi Rumpang tanpa ___ (tiga garis bawah) di kalimatnya → siswa tidak melihat tempat kosong.',
             'Kode soal (item_key) diubah setelah dijawab siswa → dianggap soal baru, dan jawaban lama tidak tersambung lagi.',
-            'Jumlah soal sama persis dengan items_per_round → tidak ada soal cadangan; sediakan 1,5–2 kali lipat.',
-            'Aturan penilaian (skor & bintang) TIDAK diatur di berkas ini: setiap tantangan memakai aturan penilaian yang aktif (bawaan GELITA_V2). Aturan itu hanya diubah lewat Panel GELITA → Pengaturan penelitian → Aturan penilaian bila penelitian memerlukannya.',
+            'Variasi tidak lengkap → sediakan tiga variasi (a, b, c) di setiap tantangan, supaya pengerjaan ulang mendapat soal lain.',
+            'Bintang TIDAK diatur di berkas ini: ★★★ semua soal Berhasil pada Percobaan Pertama, ★★ semua benar di akhir, ★ selesai dengan kesempatan habis. Siswa boleh mencoba sampai 3 kali per soal.',
         ] as $text) {
             $r = $this->step($sheet, $r, '•', $text);
         }
