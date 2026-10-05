@@ -58,11 +58,16 @@ class ContentSeeder extends GelitaSeeder
 
     private function nodes(): array
     {
-        $puzzle   = static fn (array $extra = []) => $extra + ['items_per_round' => 1, 'grid' => 3, 'allow_retry' => true];
-        $rumpang  = static fn (bool $bank) => [
-            'items_per_round'  => 4,
-            'use_word_bank'    => $bank,
-            'distractor_count' => $bank ? 2 : 0,
+        // Ukuran papan Susun Gambar mengikuti tingkat wilayah (DifficultyRules)
+        // dan dibekukan per soal saat soal dibuat, jadi tidak disimpan di sini.
+        $puzzle   = static fn (array $extra = []) => $extra + ['items_per_round' => 1, 'allow_retry' => true];
+        // Isi Rumpang kelas 5 = satu bacaan: semua soal aktif tampil, bank kata
+        // berisi semua jawaban + sejumlah kata pengecoh.
+        $bacaan   = static fn (int $blanks, int $distractors) => [
+            'items_per_round'  => $blanks,
+            'as_reading'       => true,
+            'use_word_bank'    => true,
+            'distractor_count' => $distractors,
             'allow_retry'      => true,
             'distractors'      => [],
         ];
@@ -81,16 +86,16 @@ class ContentSeeder extends GelitaSeeder
                     'config' => $puzzle(),
                     'title_id' => 'Susun Gambar Budaya Temanggung',
                     'title_en' => 'Arrange the Temanggung Culture Picture',
-                    'instruction_id' => 'Susun kepingan gambar (kisi 3×3) hingga utuh, lalu baca keterangannya.',
-                    'instruction_en' => 'Arrange the picture pieces (3×3 grid) until the picture is complete, then read the caption.',
+                    'instruction_id' => 'Tukar dua kepingan gambar (3 × 3) sampai gambarnya utuh, lalu baca keterangannya.',
+                    'instruction_en' => 'Swap two picture pieces at a time (3 × 3) until the picture is complete, then read the caption.',
                 ],
                 2 => [
-                    'engine' => 'rumpang', 'variant' => 'rumpang_bank_kata', 'indicator' => 'literasi',
-                    'config' => $rumpang(true),
-                    'title_id' => 'Lengkapi Kalimat Temanggung',
-                    'title_en' => 'Complete the Temanggung Sentence',
-                    'instruction_id' => 'Pilih satu kata yang tepat dari bank kata untuk mengisi ___.',
-                    'instruction_en' => 'Choose the one correct word from the word bank to fill in the ___.',
+                    'engine' => 'rumpang', 'variant' => 'rumpang_bacaan', 'indicator' => 'literasi',
+                    'config' => $bacaan(3, 0),
+                    'title_id' => 'Lengkapi Bacaan: Gunung Kembar',
+                    'title_en' => 'Complete the Reading: The Twin Mountains',
+                    'instruction_id' => 'Baca paragrafnya. Ketuk kotak kosong, lalu pilih kata yang tepat dari bank kata. Setiap kata dipakai satu kali.',
+                    'instruction_en' => 'Read the paragraph. Tap an empty box, then choose the right word from the word bank. Each word is used once.',
                 ],
                 3 => [
                     'engine' => 'boleh', 'variant' => 'benar_salah_teks', 'indicator' => 'literasi',
@@ -119,20 +124,20 @@ class ContentSeeder extends GelitaSeeder
             ],
             'magelang' => [
                 1 => [
-                    'engine' => 'puzzle', 'variant' => 'puzzle_topeng_ireng', 'indicator' => 'budaya',
+                    'engine' => 'puzzle', 'variant' => 'puzzle_gambar', 'indicator' => 'budaya',
                     'config' => $puzzle(),
-                    'title_id' => 'Susun Topeng Ireng',
-                    'title_en' => 'Arrange the Topeng Ireng',
-                    'instruction_id' => 'Susun kepingan (3×3), lalu baca kisahnya.',
-                    'instruction_en' => 'Arrange the pieces (3×3), then read the story.',
+                    'title_id' => 'Susun Gambar Magelang',
+                    'title_en' => 'Arrange the Magelang Picture',
+                    'instruction_id' => 'Tukar dua kepingan gambar (4 × 4) sampai gambarnya utuh, lalu baca kisahnya.',
+                    'instruction_en' => 'Swap two picture pieces at a time (4 × 4) until the picture is complete, then read its story.',
                 ],
                 2 => [
-                    'engine' => 'rumpang', 'variant' => 'rumpang_tanpa_bank', 'indicator' => 'literasi',
-                    'config' => $rumpang(false),
-                    'title_id' => 'Ketik Jawabanmu',
-                    'title_en' => 'Type Your Answer',
-                    'instruction_id' => 'Ketik satu kata untuk mengisi ___.',
-                    'instruction_en' => 'Type one word to fill in the ___.',
+                    'engine' => 'rumpang', 'variant' => 'rumpang_bacaan', 'indicator' => 'literasi',
+                    'config' => $bacaan(5, 2),
+                    'title_id' => 'Lengkapi Bacaan: Candi Borobudur',
+                    'title_en' => 'Complete the Reading: Borobudur Temple',
+                    'instruction_id' => 'Baca bacaannya sampai habis. Pilih kata yang tepat untuk setiap kotak kosong; ada dua kata yang tidak terpakai.',
+                    'instruction_en' => 'Read the whole text. Choose the right word for each empty box; two words will not be used.',
                 ],
                 3 => [
                     'engine' => 'boleh', 'variant' => 'benar_salah_beralasan', 'indicator' => 'sikap',
@@ -161,20 +166,20 @@ class ContentSeeder extends GelitaSeeder
             ],
             'wonosobo' => [
                 1 => [
-                    'engine' => 'puzzle', 'variant' => 'urutkan_informasi', 'indicator' => 'literasi',
-                    'config' => ['items_per_round' => 1, 'allow_retry' => true],
-                    'title_id' => 'Susun Urutan yang Benar',
-                    'title_en' => 'Put in the Right Order',
-                    'instruction_id' => 'Baca teks, lalu susun tahapan sesuai urutan.',
-                    'instruction_en' => 'Read the text, then put the steps in the right order.',
+                    'engine' => 'puzzle', 'variant' => 'puzzle_jigsaw', 'indicator' => 'budaya',
+                    'config' => $puzzle(),
+                    'title_id' => 'Susun Gambar Wonosobo',
+                    'title_en' => 'Arrange the Wonosobo Picture',
+                    'instruction_id' => 'Kepingannya berbentuk puzzle (4 × 4). Tukar dua keping sampai gambarnya utuh, lalu baca keterangannya.',
+                    'instruction_en' => 'The pieces are jigsaw-shaped (4 × 4). Swap two pieces at a time until the picture is complete, then read the caption.',
                 ],
                 2 => [
-                    'engine' => 'rumpang', 'variant' => 'rumpang_kesimpulan', 'indicator' => 'literasi',
-                    'config' => $rumpang(true),
-                    'title_id' => 'Lengkapi Kesimpulan',
-                    'title_en' => 'Complete the Conclusion',
-                    'instruction_id' => 'Baca paragraf, lalu pilih kata untuk kesimpulan yang tepat.',
-                    'instruction_en' => 'Read the paragraph, then choose the word that makes the correct conclusion.',
+                    'engine' => 'rumpang', 'variant' => 'rumpang_bacaan', 'indicator' => 'literasi',
+                    'config' => $bacaan(7, 2),
+                    'title_id' => 'Lengkapi Bacaan: Negeri di Atas Awan',
+                    'title_en' => 'Complete the Reading: The Land Above the Clouds',
+                    'instruction_id' => 'Baca bacaannya sampai habis. Pilih kata yang tepat untuk setiap kotak kosong; ada dua kata yang tidak terpakai.',
+                    'instruction_en' => 'Read the whole text. Choose the right word for each empty box; two words will not be used.',
                 ],
                 3 => [
                     'engine' => 'boleh', 'variant' => 'nilai_dua_sumber', 'indicator' => 'sikap',

@@ -83,6 +83,7 @@ class BankWorkbookGuide
             'scene_media_key'      => ['Gambar adegan', 'Opsional', 'Kode berkas gambar adegan tantangan — WAJIB untuk Cari Objek (tmg-4), karena di gambar inilah benda-benda disembunyikan. Unggah gambarnya di menu Gambar & suara.', 'kode berkas gambar', 'challenge.tmg-4.scene'],
             'background_media_key' => ['Gambar latar tantangan', 'Opsional', 'Kode berkas gambar latar layar tantangan. Kosong = memakai latar wilayah.', 'kode berkas gambar', 'challenge.tmg-4.bg'],
             'variant_code'         => ['Kode variasi tampilan', 'Opsional', 'Nama variasi tantangan untuk keperluan tampilan (mis. puzzle_gambar, puzzle_jigsaw, rumpang_bacaan). Kosong = tidak diubah. Biarkan seperti di workbook produksi bila ragu.', 'huruf kecil, angka, dan garis bawah', 'rumpang_bacaan'],
+            'indicator'            => ['Indikator tantangan', 'Opsional', 'Indikator pembelajaran yang diukur tantangan ini; dipakai untuk soal yang kolom indicator-nya kosong. Kosong = tidak diubah. Bila indikator tantangan diganti, isi indikator soal lama secara tertulis agar hasil lama tetap terhitung di indikator semula.', 'literasi | budaya | sikap', 'budaya'],
         ],
         'distractors' => [
             'node_ref' => ['Kode tantangan', 'Wajib', 'Tantangan Isi Rumpang yang memakai pilihan kata.', 'tmg-2, wnb-2 (atau tantangan Isi Rumpang lain dengan use_word_bank = 1)', 'tmg-2'],

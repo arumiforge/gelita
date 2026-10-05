@@ -77,6 +77,7 @@ foreach ($data as $levelCode => $region) {
             'scene_media_key'      => $node['scene']['key'] ?? '',
             'background_media_key' => '',
             'variant_code'         => $node['variant'] ?? '',
+            'indicator'            => $node['indicator'],
         ];
 
         if (isset($node['scene'])) {
