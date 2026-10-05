@@ -2,8 +2,12 @@
 
 namespace App\Services;
 
+use App\Entities\ChallengeItem;
+use App\Libraries\AnswerText;
 use App\Libraries\ExcelWriter;
+use App\Libraries\ExportLabels;
 use App\Models\AuditLogModel;
+use App\Models\ChallengeItemModel;
 use App\Models\DataExportModel;
 use CodeIgniter\Database\BaseBuilder;
 use CodeIgniter\Database\BaseConnection;
@@ -20,6 +24,12 @@ use CodeIgniter\Database\BaseConnection;
  * Kolom identitas (nama, nama pengguna, nama sekolah) pada mode anonim tidak
  * dikosongkan melainkan tidak dibuat sama sekali; `password_hash`,
  * `failed_login_count`, dan `locked_until` tidak pernah dibaca.
+ *
+ * Kode lembar dan kode kolom di bawah ini kode internal. Berkas Excel ditulis
+ * seluruhnya dalam bahasa Indonesia (nama lembar, judul kolom, dan nilai
+ * berkode) lewat App\Libraries\ExportLabels. Baris sudah memuat nama, bukan
+ * kode: nama wilayah, judul tantangan, teks soal, nama indikator, serta
+ * jawaban dan kunci dalam kalimat (AnswerText).
  */
 class ExportService
 {
@@ -127,43 +137,43 @@ class ExportService
                 'consent_withdrawn_at', 'pw_first_submit_criteria', 'pw_weak_submit_count',
             ],
             'Sessions' => [
-                'session_code', 'participant_code', 'study_code', 'phase_code', 'release_code',
-                'content_version', 'scoring_version', 'locale', 'status', 'started_at', 'last_active_at',
-                'ended_at', 'duration_ms', 'device_type', 'os_name', 'browser_name', 'screen_size',
-                'is_touch', 'shards', 'completed_levels', 'total_stars', 'total_score',
+                'session_code', 'participant_code', 'study', 'phase_code', 'release_code',
+                'locale', 'status', 'started_at', 'last_active_at', 'ended_at', 'duration_ms',
+                'device_type', 'os_name', 'browser_name', 'screen_size', 'is_touch', 'shards',
+                'completed_levels', 'total_stars', 'total_score',
             ],
             'Levels' => [
-                'session_code', 'participant_code', 'phase_code', 'level_code', 'level_sequence',
+                'session_code', 'participant_code', 'phase_code', 'level', 'level_sequence',
                 'completed_nodes', 'total_nodes', 'level_score', 'stars', 'duration_ms',
             ],
             'Challenge Summary' => [
-                'attempt_id', 'session_code', 'participant_code', 'phase_code', 'level_code',
-                'node_sequence', 'engine_type', 'variant_code', 'attempt_no', 'status',
+                'attempt_id', 'session_code', 'participant_code', 'phase_code', 'level',
+                'node_sequence', 'node_title', 'engine_type', 'item_types', 'attempt_no', 'status',
                 'scorable_items', 'first_pass_correct', 'final_correct', 'first_pass_accuracy',
                 'final_accuracy', 'check_count', 'hint_count', 'retry_count', 'answer_change_count',
-                'audio_use_count', 'independence', 'score', 'stars', 'scoring_version',
-                'started_at', 'completed_at', 'duration_ms',
+                'audio_use_count', 'independence', 'score', 'stars', 'started_at', 'completed_at',
+                'duration_ms',
             ],
             'Item Responses' => [
-                'response_id', 'attempt_id', 'session_code', 'participant_code', 'phase_code',
-                'level_code', 'node_sequence', 'item_key', 'interaction_type', 'indicator',
-                'display_order', 'status', 'first_answer', 'final_answer', 'answer_key',
+                'attempt_id', 'session_code', 'participant_code', 'phase_code', 'level',
+                'node_sequence', 'node_title', 'item_key', 'prompt', 'interaction_type', 'indicator',
+                'bloom_level', 'display_order', 'status', 'first_answer', 'final_answer', 'answer_key',
                 'reason_text', 'first_pass_correct', 'is_correct', 'change_count', 'hint_used',
                 'wrong_click_count', 'answered_at', 'duration_ms',
             ],
             'Raw Events' => [
-                'event_uuid', 'session_code', 'participant_code', 'phase_code', 'level_code',
-                'node_sequence', 'attempt_id', 'item_key', 'event_type', 'sequence_no',
-                'client_event_id', 'occurred_at', 'server_received_at', 'payload',
+                'session_code', 'participant_code', 'phase_code', 'level', 'node_sequence',
+                'attempt_id', 'item_key', 'event_type', 'sequence_no', 'occurred_at',
+                'server_received_at', 'payload',
             ],
             'Audio Usage' => [
-                'session_code', 'participant_code', 'phase_code', 'audio_asset_id', 'asset_key',
-                'context_code', 'character_code', 'audio_locale', 'asset_duration_ms', 'attempt_id',
-                'action', 'play_index', 'listened_ms', 'completed', 'occurred_at',
+                'session_code', 'participant_code', 'phase_code', 'asset_key', 'context_code',
+                'character_code', 'audio_locale', 'asset_duration_ms', 'attempt_id', 'action',
+                'play_index', 'listened_ms', 'completed', 'occurred_at',
             ],
             'Indicators' => [
-                'participant_code', 'phase_code', 'indicator_code', 'indicator_name',
-                'evidence_count', 'correct_count', 'mastery_ratio', 'mean_response_ms',
+                'participant_code', 'phase_code', 'indicator', 'evidence_count', 'correct_count',
+                'mastery_ratio', 'mean_response_ms',
             ],
             'Demographic Summary' => [
                 'dimension', 'group', 'participants', 'sessions', 'completed_sessions',
@@ -301,10 +311,17 @@ class ExportService
             foreach ($context['sheets'] as $sheet) {
                 $columns = $this->columns($sheet, $context['anonymized'], $context['is_admin']);
 
-                $writer->startSheet($sheet, $columns);
+                $writer->startSheet(
+                    ExportLabels::sheetTitle($sheet),
+                    ExportLabels::headers($sheet, $columns),
+                    ExportLabels::widths($sheet, $columns),
+                );
 
                 foreach ($this->rows($sheet, $context) as $row) {
-                    $writer->row(array_map(static fn (string $col) => $row[$col] ?? null, $columns));
+                    $writer->row(array_map(
+                        static fn (string $col): mixed => ExportLabels::value($sheet, $col, $row[$col] ?? null, $row),
+                        $columns,
+                    ));
                 }
             }
 
@@ -330,7 +347,7 @@ class ExportService
 
         if ($count > $limit) {
             throw new \OverflowException(sprintf(
-                'Catatan aktivitas lengkap (Raw Events) berisi sekitar %s baris, melebihi batas %s. Persempit rentang tanggal atau pilihan data, lalu coba lagi.',
+                'Lembar Catatan aktivitas berisi sekitar %s baris, melebihi batas %s. Persempit rentang tanggal atau pilihan data, lalu coba lagi.',
                 number_format($count, 0, ',', '.'),
                 number_format($limit, 0, ',', '.'),
             ));
@@ -446,11 +463,9 @@ class ExportService
             yield [
                 'session_code'     => $row['session_code'],
                 'participant_code' => $row['participant_code'],
-                'study_code'       => $studies[(int) $row['study_id']] ?? null,
+                'study'            => $studies[(int) $row['study_id']] ?? null,
                 'phase_code'       => $row['phase_code'],
                 'release_code'     => $release['release_code'] ?? null,
-                'content_version'  => $release['content_version'] ?? null,
-                'scoring_version'  => $release['scoring_version'] ?? null,
                 'locale'           => $row['locale'],
                 'status'           => $row['status'],
                 'started_at'       => $row['started_at'],
@@ -528,7 +543,7 @@ class ExportService
                         'session_code'     => $session['session_code'],
                         'participant_code' => $session['participant_code'],
                         'phase_code'       => $session['phase_code'],
-                        'level_code'       => $level['code'],
+                        'level'            => $level['name'],
                         'level_sequence'   => $level['sequence'],
                         'completed_nodes'  => count($attempts),
                         'total_nodes'      => $nodeCounts[$levelId] ?? 0,
@@ -541,28 +556,46 @@ class ExportService
         }
     }
 
-    /** @return \Generator<array<string, mixed>> */
+    /**
+     * Jenis soal diambil dari soal milik percobaan itu sendiri
+     * (selected_item_ids_json), bukan dari tantangan sekarang: percobaan wnb-1
+     * lama tetap tercatat sebagai "Urutkan kartu" walau tantangannya kini
+     * Susun Gambar.
+     *
+     * @return \Generator<array<string, mixed>>
+     */
     private function attemptRows(array $filters): \Generator
     {
         $levels = $this->levelMap();
+        $nodes  = $this->nodeMap();
+        $items  = $this->itemMap();
 
         $query = fn (): BaseBuilder => $this->attemptBuilder($filters)
             ->select('challenge_attempts.id AS _id, challenge_attempts.*', false)
             ->select('game_sessions.session_code, participants.participant_code', false)
             ->select('research_phases.code AS phase_code', false)
             ->select('challenge_nodes.level_id, challenge_nodes.sequence AS node_sequence', false)
-            ->select('challenge_nodes.engine_type, challenge_nodes.variant_code', false);
+            ->select('challenge_nodes.engine_type', false);
 
         foreach ($this->chunked($query, 'challenge_attempts.id') as $row) {
+            $types = [];
+
+            foreach ((array) json_decode((string) ($row['selected_item_ids_json'] ?? ''), true) as $itemId) {
+                if (is_scalar($itemId) && isset($items[(int) $itemId])) {
+                    $types[] = $items[(int) $itemId]['interaction_type'];
+                }
+            }
+
             yield [
                 'attempt_id'          => (int) $row['_id'],
                 'session_code'        => $row['session_code'],
                 'participant_code'    => $row['participant_code'],
                 'phase_code'          => $row['phase_code'],
-                'level_code'          => $levels[(int) $row['level_id']]['code'] ?? null,
+                'level'               => $levels[(int) $row['level_id']]['name'] ?? null,
                 'node_sequence'       => (int) $row['node_sequence'],
+                'node_title'          => $nodes[(int) $row['challenge_node_id']]['title'] ?? null,
                 'engine_type'         => $row['engine_type'],
-                'variant_code'        => $row['variant_code'],
+                'item_types'          => array_values(array_unique($types)),
                 'attempt_no'          => (int) $row['attempt_no'],
                 'status'              => $row['status'],
                 'scorable_items'      => (int) $row['scorable_items'],
@@ -578,7 +611,6 @@ class ExportService
                 'independence'        => (float) $row['independence'],
                 'score'               => (float) $row['score'],
                 'stars'               => (int) $row['stars'],
-                'scoring_version'     => $row['scoring_version'],
                 'started_at'          => $row['started_at'],
                 'completed_at'        => $row['completed_at'],
                 'duration_ms'         => $this->intOrNull($row['duration_ms']),
@@ -586,10 +618,17 @@ class ExportService
         }
     }
 
-    /** @return \Generator<array<string, mixed>> */
+    /**
+     * Jawaban dan kunci ditulis dalam kalimat menurut jenis soalnya
+     * (AnswerText), mis. "8 dari 9 keping di tempat yang benar" atau
+     * "B · Candi Mendut".
+     *
+     * @return \Generator<array<string, mixed>>
+     */
     private function responseRows(array $filters, bool $isAdmin): \Generator
     {
         $levels = $this->levelMap();
+        $nodes  = $this->nodeMap();
         $items  = $this->itemMap();
 
         $query = fn (): BaseBuilder => $this->attemptBuilder($filters)
@@ -600,25 +639,29 @@ class ExportService
             ->select('ir.wrong_click_count, ir.answered_at, ir.duration_ms', false)
             ->select('challenge_attempts.id AS attempt_id, game_sessions.session_code', false)
             ->select('participants.participant_code, research_phases.code AS phase_code', false)
-            ->select('challenge_nodes.level_id, challenge_nodes.sequence AS node_sequence', false);
+            ->select('challenge_nodes.level_id, challenge_nodes.sequence AS node_sequence', false)
+            ->select('challenge_attempts.challenge_node_id', false);
 
         foreach ($this->chunked($query, 'ir.id') as $row) {
-            $item = $items[(int) $row['challenge_item_id']] ?? [];
-            $out  = [
-                'response_id'        => (int) $row['_id'],
+            $item   = $items[(int) $row['challenge_item_id']] ?? [];
+            $entity = $item['entity'] ?? null;
+            $out    = [
                 'attempt_id'         => (int) $row['attempt_id'],
                 'session_code'       => $row['session_code'],
                 'participant_code'   => $row['participant_code'],
                 'phase_code'         => $row['phase_code'],
-                'level_code'         => $levels[(int) $row['level_id']]['code'] ?? null,
+                'level'              => $levels[(int) $row['level_id']]['name'] ?? null,
                 'node_sequence'      => (int) $row['node_sequence'],
+                'node_title'         => $nodes[(int) $row['challenge_node_id']]['title'] ?? null,
                 'item_key'           => $item['item_key'] ?? null,
+                'prompt'             => $item['prompt'] ?? null,
                 'interaction_type'   => $item['interaction_type'] ?? null,
                 'indicator'          => $item['indicator'] ?? null,
+                'bloom_level'        => $item['bloom_level'] ?? null,
                 'display_order'      => (int) $row['display_order'],
                 'status'             => $row['status'],
-                'first_answer'       => $row['first_answer_json'],
-                'final_answer'       => $row['final_answer_json'],
+                'first_answer'       => $entity === null ? AnswerText::fromData($row['first_answer_json']) : AnswerText::response($entity, $row['first_answer_json']),
+                'final_answer'       => $entity === null ? AnswerText::fromData($row['final_answer_json']) : AnswerText::response($entity, $row['final_answer_json']),
                 'reason_text'        => $row['reason_text'],
                 'first_pass_correct' => $this->intOrNull($row['first_pass_correct']),
                 'is_correct'         => $this->intOrNull($row['is_correct']),
@@ -630,7 +673,7 @@ class ExportService
             ];
 
             if ($isAdmin) {
-                $out['answer_key'] = $item['answer_key'] ?? null;
+                $out['answer_key'] = $entity === null ? null : AnswerText::key($entity);
             }
 
             yield $out;
@@ -645,10 +688,10 @@ class ExportService
         $items  = $this->itemMap();
 
         $query = fn (): BaseBuilder => $this->eventBuilder($filters)
-            ->select('game_event_logs.id AS _id, game_event_logs.event_uuid, game_event_logs.level_id', false)
+            ->select('game_event_logs.id AS _id, game_event_logs.level_id', false)
             ->select('game_event_logs.challenge_node_id, game_event_logs.challenge_attempt_id', false)
             ->select('game_event_logs.challenge_item_id, game_event_logs.event_type', false)
-            ->select('game_event_logs.sequence_no, game_event_logs.client_event_id', false)
+            ->select('game_event_logs.sequence_no', false)
             ->select('game_event_logs.occurred_at, game_event_logs.server_received_at', false)
             ->select('game_event_logs.payload_json, game_sessions.session_code', false)
             ->select('participants.participant_code, research_phases.code AS phase_code', false);
@@ -657,17 +700,15 @@ class ExportService
             $nodeId = $this->intOrNull($row['challenge_node_id']);
 
             yield [
-                'event_uuid'         => $row['event_uuid'],
                 'session_code'       => $row['session_code'],
                 'participant_code'   => $row['participant_code'],
                 'phase_code'         => $row['phase_code'],
-                'level_code'         => $levels[(int) $row['level_id']]['code'] ?? null,
+                'level'              => $levels[(int) $row['level_id']]['name'] ?? null,
                 'node_sequence'      => $nodeId === null ? null : ($nodes[$nodeId]['sequence'] ?? null),
                 'attempt_id'         => $this->intOrNull($row['challenge_attempt_id']),
                 'item_key'           => $items[(int) $row['challenge_item_id']]['item_key'] ?? null,
                 'event_type'         => $row['event_type'],
                 'sequence_no'        => (int) $row['sequence_no'],
-                'client_event_id'    => $row['client_event_id'],
                 'occurred_at'        => $row['occurred_at'],
                 'server_received_at' => $row['server_received_at'],
                 'payload'            => $row['payload_json'],
@@ -682,7 +723,7 @@ class ExportService
             ->join('audio_usage_events aue', 'aue.session_id = game_sessions.id')
             ->join('audio_assets aa', 'aa.id = aue.audio_asset_id', 'left')
             ->join('media_assets ma', 'ma.id = aa.media_asset_id', 'left')
-            ->select('aue.id AS _id, aue.audio_asset_id, aue.challenge_attempt_id, aue.action', false)
+            ->select('aue.id AS _id, aue.challenge_attempt_id, aue.action', false)
             ->select('aue.play_index, aue.listened_ms, aue.completed, aue.occurred_at', false)
             ->select('aa.context_code, aa.character_code, aa.locale AS audio_locale, aa.duration_ms', false)
             ->select('ma.asset_key, game_sessions.session_code, participants.participant_code', false)
@@ -693,7 +734,6 @@ class ExportService
                 'session_code'      => $row['session_code'],
                 'participant_code'  => $row['participant_code'],
                 'phase_code'        => $row['phase_code'],
-                'audio_asset_id'    => (int) $row['audio_asset_id'],
                 'asset_key'         => $row['asset_key'],
                 'context_code'      => $row['context_code'],
                 'character_code'    => $row['character_code'],
@@ -740,8 +780,7 @@ class ExportService
             yield [
                 'participant_code' => $row['participant_code'],
                 'phase_code'       => $row['phase_code'],
-                'indicator_code'   => $row['indicator_code'],
-                'indicator_name'   => $row['name_id'],
+                'indicator'        => $row['name_id'] ?: $row['indicator_code'],
                 'evidence_count'   => $evidence,
                 'correct_count'    => (int) $row['correct_count'],
                 'mastery_ratio'    => $evidence > 0 ? round((int) $row['correct_count'] / $evidence, 4) : 0.0,
@@ -922,21 +961,31 @@ class ExportService
 
     // --------------------------------------------------------------- peta
 
-    /** @return array<int, array{code: string, sequence: int}> */
+    /** @return array<int, array{code: string, name: string, sequence: int}> */
     private function levelMap(): array
     {
         return $this->maps['levels'] ??= array_column(array_map(
-            static fn (array $r): array => ['id' => (int) $r['id'], 'code' => (string) $r['code'], 'sequence' => (int) $r['sequence']],
-            $this->db()->table('levels')->select('id, code, sequence')->orderBy('sequence', 'ASC')->get()->getResultArray(),
+            static fn (array $r): array => [
+                'id'       => (int) $r['id'],
+                'code'     => (string) $r['code'],
+                'name'     => (string) ($r['name_id'] ?: $r['code']),
+                'sequence' => (int) $r['sequence'],
+            ],
+            $this->db()->table('levels')->select('id, code, name_id, sequence')->orderBy('sequence', 'ASC')->get()->getResultArray(),
         ), null, 'id');
     }
 
-    /** @return array<int, array{level_id: int, sequence: int}> */
+    /** @return array<int, array{level_id: int, sequence: int, title: string}> */
     private function nodeMap(): array
     {
         return $this->maps['nodes'] ??= array_column(array_map(
-            static fn (array $r): array => ['id' => (int) $r['id'], 'level_id' => (int) $r['level_id'], 'sequence' => (int) $r['sequence']],
-            $this->db()->table('challenge_nodes')->select('id, level_id, sequence')->get()->getResultArray(),
+            static fn (array $r): array => [
+                'id'       => (int) $r['id'],
+                'level_id' => (int) $r['level_id'],
+                'sequence' => (int) $r['sequence'],
+                'title'    => (string) $r['title_id'],
+            ],
+            $this->db()->table('challenge_nodes')->select('id, level_id, sequence, title_id')->get()->getResultArray(),
         ), null, 'id');
     }
 
@@ -953,30 +1002,47 @@ class ExportService
         return array_map('intval', array_column($rows, 'total', 'level_id'));
     }
 
-    /** @return array<int, array{item_key: string, interaction_type: string, indicator: ?string, answer_key: ?string}> */
+    /**
+     * Semua soal (termasuk yang sudah diistirahatkan) dengan pilihan
+     * jawabannya, untuk menulis jawaban dan kunci dalam kalimat. Bank soal
+     * hanya ratusan baris, jadi dimuat sekali per berkas.
+     *
+     * @return array<int, array{item_key: string, interaction_type: string, indicator: ?string,
+     *                          bloom_level: ?string, prompt: ?string, entity: ChallengeItem}>
+     */
     private function itemMap(): array
     {
         if (isset($this->maps['items'])) {
             return $this->maps['items'];
         }
 
-        $rows = $this->db()->table('challenge_items ci')
-            ->select('ci.id, ci.item_key, ci.interaction_type, ci.answer_key_json')
-            ->select('COALESCE(li.code, lin.code) AS indicator', false)
-            ->join('challenge_nodes cn', 'cn.id = ci.challenge_node_id')
-            ->join('learning_indicators li', 'li.id = ci.indicator_id', 'left')
-            ->join('learning_indicators lin', 'lin.id = cn.indicator_id', 'left')
-            ->get()
-            ->getResultArray();
+        $indicators = array_column(
+            $this->db()->table('learning_indicators')->select('id, code, name_id')->get()->getResultArray(),
+            null,
+            'id',
+        );
+        $nodeIndicators = array_column(
+            $this->db()->table('challenge_nodes')->select('id, indicator_id')->get()->getResultArray(),
+            'indicator_id',
+            'id',
+        );
 
-        $out = [];
+        $model   = model(ChallengeItemModel::class);
+        $items   = $model->findAll();
+        $options = $model->withOptions(array_map(static fn (ChallengeItem $item): int => (int) $item->id, $items));
+        $out     = [];
 
-        foreach ($rows as $row) {
-            $out[(int) $row['id']] = [
-                'item_key'         => (string) $row['item_key'],
-                'interaction_type' => (string) $row['interaction_type'],
-                'indicator'        => $row['indicator'],
-                'answer_key'       => $row['answer_key_json'],
+        foreach ($items as $item) {
+            $indicatorId = $item->indicator_id ?? ($nodeIndicators[$item->challenge_node_id] ?? null);
+            $indicator   = $indicators[(int) $indicatorId] ?? null;
+
+            $out[(int) $item->id] = [
+                'item_key'         => (string) $item->item_key,
+                'interaction_type' => (string) $item->interaction_type,
+                'indicator'        => $indicator === null ? null : (string) ($indicator['name_id'] ?: $indicator['code']),
+                'bloom_level'      => $item->bloom_level,
+                'prompt'           => $item->prompt_id,
+                'entity'           => $item->setLoadedOptions($options[(int) $item->id] ?? []),
             ];
         }
 
@@ -987,18 +1053,18 @@ class ExportService
     private function releaseMap(): array
     {
         return $this->maps['releases'] ??= array_column(
-            $this->db()->table('game_releases')->select('id, release_code, content_version, scoring_version')->get()->getResultArray(),
+            $this->db()->table('game_releases')->select('id, release_code')->get()->getResultArray(),
             null,
             'id',
         );
     }
 
-    /** @return array<int, string> */
+    /** @return array<int, string> id penelitian → nama */
     private function studyMap(): array
     {
         return $this->maps['studies'] ??= array_column(
-            $this->db()->table('research_studies')->select('id, code')->get()->getResultArray(),
-            'code',
+            $this->db()->table('research_studies')->select('id, name')->get()->getResultArray(),
+            'name',
             'id',
         );
     }
