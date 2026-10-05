@@ -329,7 +329,7 @@ class RetentionService
 
     /**
      * Attempt `in_progress` yang tidak tersentuh lebih dari $hours jam →
-     * `abandoned` (skor 0, bintang 0) + event `challenge_abandoned {via: retention}`.
+     * `abandoned` (bintang 0) + event `challenge_abandoned {via: retention}`.
      * Sentuhan terakhir = waktu mulai, jawaban terakhir, atau event terakhir attempt itu.
      */
     public function abandonStaleAttempts(int $hours): int

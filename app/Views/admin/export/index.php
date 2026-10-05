@@ -24,7 +24,7 @@
 $sheetNotes = [
     'Participants'        => 'Kode siswa, kelas, sekolah, dan daerah',
     'Sessions'            => 'Satu baris untuk tiap sesi bermain',
-    'Levels'              => 'Skor dan bintang di tiap wilayah',
+    'Levels'              => 'Tantangan selesai dan bintang di tiap wilayah',
     'Challenge Summary'   => 'Hasil tiap kali siswa mengerjakan tantangan',
     'Item Responses'      => 'Jawaban tiap soal, termasuk perubahan jawaban',
     'Raw Events'          => 'Semua klik dan aktivitas siswa — berkasnya besar, khusus admin',

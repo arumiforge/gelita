@@ -202,7 +202,7 @@ $guides = [
   </div>
 
   <div class="check-row">
-    <label class="check"><input type="checkbox" name="scorable" value="1" <?= $isNew || $item->scorable ? 'checked' : '' ?>> Dinilai (masuk skor)</label>
+    <label class="check"><input type="checkbox" name="scorable" value="1" <?= $isNew || $item->scorable ? 'checked' : '' ?>> Dinilai (masuk hitungan bintang)</label>
     <label class="check"><input type="checkbox" name="is_active" value="1" <?= $isNew || $item->is_active ? 'checked' : '' ?>> Aktif (dipakai di permainan)</label>
   </div>
 

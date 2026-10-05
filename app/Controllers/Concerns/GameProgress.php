@@ -43,9 +43,9 @@ trait GameProgress
         $out = [];
 
         foreach (service('contentRepository')->levels() as $level) {
-            $score  = $scoring->levelSummary($session->id, $level->id);
+            $summary  = $scoring->levelSummary($session->id, $level->id);
             $open   = $free || $level->sequence <= $unlocked;
-            $status = $this->levelStatus($score, $open);
+            $status = $this->levelStatus($summary, $open);
 
             $out[] = [
                 'id'              => $level->id,
@@ -55,9 +55,9 @@ trait GameProgress
                 'difficulty'      => (string) $level->difficulty,
                 'status'          => $status,
                 'entry'           => $this->regionEntryPath((string) $level->code, $status),
-                'stars'           => $score['stars'],
-                'completed_nodes' => $score['completed_nodes'],
-                'total_nodes'     => $score['total_nodes'],
+                'stars'           => $summary['stars'],
+                'completed_nodes' => $summary['completed_nodes'],
+                'total_nodes'     => $summary['total_nodes'],
                 'map_x'           => $level->map_x,
                 'map_y'           => $level->map_y,
                 'map_media'       => media_src($level->map_media_id),
@@ -251,15 +251,15 @@ trait GameProgress
      */
     protected function libraryAccess(GameSession $session, Level $level): array
     {
-        $score  = service('scoringService')->levelSummary($session->id, $level->id);
-        $status = $this->levelStatus($score, $this->levelUnlocked($session, $level->sequence));
+        $summary  = service('scoringService')->levelSummary($session->id, $level->id);
+        $status = $this->levelStatus($summary, $this->levelUnlocked($session, $level->sequence));
 
         return [
             'status'          => $this->libraryStatus($status),
             'level_status'    => $status,
             'entry'           => $this->regionEntryPath((string) $level->code, $status),
-            'completed_nodes' => (int) $score['completed_nodes'],
-            'total_nodes'     => (int) $score['total_nodes'],
+            'completed_nodes' => (int) $summary['completed_nodes'],
+            'total_nodes'     => (int) $summary['total_nodes'],
         ];
     }
 
@@ -270,9 +270,9 @@ trait GameProgress
      */
     protected function regionStatus(GameSession $session, Level $level): string
     {
-        $score = service('scoringService')->levelSummary($session->id, $level->id);
+        $summary = service('scoringService')->levelSummary($session->id, $level->id);
 
-        return $this->levelStatus($score, $this->levelUnlocked($session, $level->sequence));
+        return $this->levelStatus($summary, $this->levelUnlocked($session, $level->sequence));
     }
 
     /**
@@ -388,17 +388,17 @@ trait GameProgress
         return $status === 'open';
     }
 
-    /** @param array{completed_nodes: int, total_nodes: int} $score */
-    private function levelStatus(array $score, bool $open): string
+    /** @param array{completed_nodes: int, total_nodes: int} $summary */
+    private function levelStatus(array $summary, bool $open): string
     {
         if (! $open) {
             return 'locked';
         }
 
-        if ($score['total_nodes'] > 0 && $score['completed_nodes'] >= $score['total_nodes']) {
+        if ($summary['total_nodes'] > 0 && $summary['completed_nodes'] >= $summary['total_nodes']) {
             return 'completed';
         }
 
-        return $score['completed_nodes'] > 0 ? 'in_progress' : 'open';
+        return $summary['completed_nodes'] > 0 ? 'in_progress' : 'open';
     }
 }

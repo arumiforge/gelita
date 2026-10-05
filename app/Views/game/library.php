@@ -28,7 +28,7 @@
  * mati. Iframe baru dibuat setelah siswa menekannya, jadi membuka Pustaka
  * tidak menghubungi domain luar.
  *
- * Membuka pustaka tidak memengaruhi skor, bintang, atau status node.
+ * Membuka pustaka tidak memengaruhi bintang atau status node.
  *
  * @var App\Entities\Level             $level
  * @var list<App\Entities\LibraryPage> $pages

@@ -226,11 +226,26 @@ final class SystemResetTest extends CIUnitTestCase
 
         $this->assertSame(['challenge.tmg-4.scene-lama'], array_column($service->unusedChallengeMedia(), 'asset_key'));
 
+        // Daftar akhir ditanyakan sesudah impor; menolak = tidak ada yang dihapus
+        $asked   = [];
+        $decline = $service->run(['tanpa_bank' => true, 'tanpa_mockup' => true, 'bersihkan_media' => true, 'konfirmasi_media' => static function (array $media) use (&$asked): bool {
+            $asked = array_column($media, 'asset_key');
+
+            return false;
+        }]);
+
+        $this->assertSame(['challenge.tmg-4.scene-lama'], $asked);
+        $this->assertSame([], $decline['media_removed']);
+        $this->assertSame(1, $this->conn->table('media_assets')->where('asset_key', 'challenge.tmg-4.scene-lama')->countAllResults());
+
         $result = $service->run(['tanpa_bank' => true, 'tanpa_mockup' => true, 'bersihkan_media' => true]);
 
         $this->assertSame(['challenge.tmg-4.scene-lama'], $result['media_removed']);
         $this->assertSame(0, $this->conn->table('media_assets')->where('asset_key', 'challenge.tmg-4.scene-lama')->countAllResults());
         $this->assertSame(1, $this->conn->table('media_assets')->where('asset_key', 'library.tmg.candi')->countAllResults(), 'media lain tetap');
+
+        $meta = json_decode((string) $this->conn->table('audit_logs')->where('action', 'system_reset')->get()->getRow('metadata_json'), true);
+        $this->assertSame(['challenge.tmg-4.scene-lama'], $meta['media_removed']);
     }
 
     // ------------------------------------------------------------ bantu
