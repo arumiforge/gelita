@@ -24,7 +24,7 @@ $pre = static fn (string $key, string $default = '0') => (string) ($active[$key]
     'lead'    => 'Cara skor dan bintang setiap tantangan dihitung. Aturan yang sudah dipakai tidak pernah diubah langsung: perubahan selalu disimpan sebagai versi baru, sehingga skor lama tetap dapat dijelaskan dengan aturan yang menghasilkannya.',
 ]) ?>
 <ul class="sub-nav">
-  <li><a href="<?= base_url('admin/studi') ?>"><?= icon('flask') ?> Studi & fase</a></li>
+  <li><a href="<?= base_url('admin/studi') ?>"><?= icon('flask') ?> Penelitian & tahap</a></li>
   <li><a href="<?= base_url('admin/studi/rilis') ?>"><?= icon('list') ?> Versi permainan</a></li>
   <li><a href="<?= base_url('admin/studi/skoring') ?>" aria-current="page"><?= icon('target') ?> Aturan penilaian</a></li>
 </ul>

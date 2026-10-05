@@ -27,7 +27,7 @@
     'actions' => $actions,
 ]) ?>
 <ul class="sub-nav">
-  <li><a href="<?= base_url('admin/studi') ?>"><?= icon('flask') ?> Studi & fase</a></li>
+  <li><a href="<?= base_url('admin/studi') ?>"><?= icon('flask') ?> Penelitian & tahap</a></li>
   <li><a href="<?= base_url('admin/studi/rilis') ?>" aria-current="page"><?= icon('list') ?> Versi permainan</a></li>
   <li><a href="<?= base_url('admin/studi/skoring') ?>"><?= icon('target') ?> Aturan penilaian</a></li>
 </ul>

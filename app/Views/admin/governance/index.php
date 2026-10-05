@@ -24,11 +24,11 @@ $prefill = [
     'session_id'     => (int) (service('request')->getGet('session_id') ?? 0),
     'study_id'       => (int) (service('request')->getGet('study_id') ?? 0),
 ];
-$scopeNames  = ['participant_id' => 'Peserta', 'session_id' => 'Sesi', 'study_id' => 'Studi'];
+$scopeNames  = ['participant_id' => 'Siswa', 'session_id' => 'Sesi', 'study_id' => 'Penelitian'];
 $scopeHelp   = [
     'participant_id' => 'Satu siswa beserta semua sesi dan jawabannya.',
     'session_id'     => 'Satu sesi bermain saja.',
-    'study_id'       => 'Seluruh data satu studi (bisa dipersempit di bawah).',
+    'study_id'       => 'Seluruh data satu penelitian (bisa dipersempit di bawah).',
 ];
 $decode      = static function (array $request): array {
     $data = json_decode((string) ($request['scope_json'] ?? ''), true);
@@ -45,7 +45,7 @@ $scopeText = static function (array $scope) use ($scopeNames): string {
     }
 
     if (isset($scope['phase_code'])) {
-        $parts[] = 'fase ' . admin_label('phase', (string) $scope['phase_code']);
+        $parts[] = 'tahap ' . admin_label('phase', (string) $scope['phase_code']);
     }
 
     if (isset($scope['date_from']) || isset($scope['date_to'])) {
@@ -130,7 +130,7 @@ $history = array_values(array_filter($requests, static fn (array $row): bool => 
 <form method="post" action="<?= base_url('admin/tata-kelola/hapus/pratinjau') ?>" class="form-section" id="hapus">
   <?= csrf_field() ?>
   <h2><?= icon('search') ?> Langkah 1 — hitung data yang akan dihapus</h2>
-  <p class="muted">Isi <b>salah satu</b> kotak di bawah. Langkah ini hanya menghitung; belum ada data yang dihapus. Bila lebih dari satu kotak terisi, yang dipakai berurutan: peserta, sesi, lalu studi.</p>
+  <p class="muted">Isi <b>salah satu</b> kotak di bawah. Langkah ini hanya menghitung; belum ada data yang dihapus. Bila lebih dari satu kotak terisi, yang dipakai berurutan: siswa, sesi, lalu penelitian.</p>
 
   <div class="form-grid">
     <?php foreach ($scopeNames as $key => $label) : ?>
@@ -141,16 +141,16 @@ $history = array_values(array_filter($requests, static fn (array $row): bool => 
       </div>
     <?php endforeach ?>
   </div>
-  <p class="field-help">Nomor peserta dan nomor sesi terlihat di alamat halamannya, misalnya /admin/peserta/<b>42</b>. Cara termudah: buka profil peserta, lalu tekan “Hapus data siswa ini”.</p>
+  <p class="field-help">Nomor siswa dan nomor sesi terlihat di alamat halamannya, misalnya /admin/peserta/<b>42</b>. Cara termudah: buka profil siswa, lalu tekan “Hapus data siswa ini”.</p>
 
   <fieldset class="repeat-row">
-    <legend>Persempit data studi (tidak wajib)</legend>
-    <p class="field-help">Hanya dipakai bila Anda mengisi nomor studi: batasi ke satu fase dan/atau sesi yang dimulai pada rentang tanggal tertentu.</p>
+    <legend>Persempit data penelitian (tidak wajib)</legend>
+    <p class="field-help">Hanya dipakai bila Anda mengisi nomor penelitian: batasi ke satu tahap dan/atau sesi yang dimulai pada rentang tanggal tertentu.</p>
     <div class="form-grid">
       <div class="field">
-        <label for="phase_code">Fase</label>
+        <label for="phase_code">Tahap</label>
         <select id="phase_code" name="phase_code">
-          <option value="">Semua fase</option>
+          <option value="">Semua tahap</option>
           <?php foreach ($phases as $phase): ?>
             <option value="<?= esc($phase, 'attr') ?>"><?= esc(admin_label('phase', $phase)) ?></option>
           <?php endforeach ?>
@@ -231,7 +231,7 @@ $history = array_values(array_filter($requests, static fn (array $row): bool => 
     <li>Tantangan yang dibuka tetapi tidak disentuh lebih dari <?= esc($attemptHours) ?> jam ditandai <b>ditinggalkan</b> (skor 0); jawabannya tetap tersimpan.</li>
     <li>Sesi jeda yang tidak disentuh lebih dari <?= esc($sessionDays) ?> hari ditandai <b>ditinggalkan</b>.</li>
     <li>Berkas unduhan data yang lebih tua dari <?= esc($exportRetention) ?> hari dibuang.</li>
-    <li>Data studi yang melewati batas lama penyimpanan (diatur di Pengaturan penelitian) <b>tidak</b> dihapus otomatis: sistem hanya membuat permintaan penghapusan di atas, dan Anda yang memutuskan.</li>
+    <li>Data penelitian yang melewati batas lama penyimpanan (diatur di Pengaturan penelitian) <b>tidak</b> dihapus otomatis: sistem hanya membuat permintaan penghapusan di atas, dan Anda yang memutuskan.</li>
   </ul>
   <p class="muted">Tombol di bawah menjalankan perawatan ini sekarang juga, tanpa menunggu jadwal harian.</p>
   <form method="post" action="<?= base_url('admin/tata-kelola/retensi') ?>" class="inline-form">

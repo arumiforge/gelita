@@ -22,7 +22,7 @@ use App\Entities\Level;
 final class ChartData
 {
     /**
-     * Skor rata-rata & tepat sejak awal per wilayah.
+     * Skor rata-rata & benar sejak awal per wilayah.
      *
      * @param array<int, array<string, mixed>> $rows AnalyticsService::levelBreakdown()
      *
@@ -40,7 +40,7 @@ final class ChartData
             'labels' => array_map(static fn (array $r): string => (string) $r['name'], $rows),
             'series' => [
                 ['name' => 'Rata-rata skor', 'values' => array_map(static fn (array $r): float => round((float) $r['avg_score'], 1), $rows)],
-                ['name' => 'Tepat sejak awal (%)', 'values' => array_map(static fn (array $r): float => round((float) $r['avg_first_pass'], 1), $rows)],
+                ['name' => 'Benar sejak awal (%)', 'values' => array_map(static fn (array $r): float => round((float) $r['avg_first_pass'], 1), $rows)],
             ],
             'max' => 100,
         ];
@@ -119,7 +119,7 @@ final class ChartData
         }
 
         return [
-            'labels' => ['Pretest', 'Posttest'],
+            'labels' => ['Tes awal', 'Tes akhir'],
             'series' => [
                 ['name' => 'Rata-rata skor (' . (int) $result['pairs'] . ' siswa)', 'values' => [(float) $result['pretest'], (float) $result['posttest']]],
             ],

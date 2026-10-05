@@ -25,9 +25,9 @@ $prePost  = $profile['pre_post'];
 <?= $this->section('content') ?>
 <?= component('partials/admin-head', [
     'title'   => $participant['display_name'] ?: $participant['username'],
-    'eyebrow' => 'Profil peserta · ' . $participant['participant_code'],
+    'eyebrow' => 'Profil siswa · ' . $participant['participant_code'],
     'lead'    => 'Nama pengguna: ' . $participant['username'] . ' · mendaftar ' . fmt_date($participant['created_at'], false, 'id'),
-    'actions' => '<a class="btn btn-quiet btn-sm" href="' . base_url('admin/peserta') . '">' . icon('left') . ' Daftar peserta</a>',
+    'actions' => '<a class="btn btn-quiet btn-sm" href="' . base_url('admin/peserta') . '">' . icon('left') . ' Daftar siswa</a>',
 ]) ?>
 <?= $this->include('partials/flash') ?>
 
@@ -35,7 +35,7 @@ $prePost  = $profile['pre_post'];
   <section class="panel">
     <h2 class="panel-title"><?= icon('user') ?> Data diri</h2>
     <dl class="detail-grid">
-      <div><dt>Kode peserta</dt><dd><code><?= esc($participant['participant_code']) ?></code></dd></div>
+      <div><dt>Kode siswa</dt><dd><code><?= esc($participant['participant_code']) ?></code></dd></div>
       <div><dt>Nama pengguna</dt><dd><?= esc($participant['username']) ?></dd></div>
       <div><dt>Nama</dt><dd><?= esc($participant['display_name'] ?? '—') ?></dd></div>
       <div><dt>Umur</dt><dd><?= esc($participant['age'] ?? '—') ?></dd></div>
@@ -49,7 +49,7 @@ $prePost  = $profile['pre_post'];
   <section class="panel">
     <h2 class="panel-title"><?= icon('shield') ?> Persetujuan ikut penelitian</h2>
     <?php if ($consent === null): ?>
-      <div class="empty-state"><?= icon('warn') ?><p>Tidak ada catatan persetujuan untuk peserta ini.</p></div>
+      <div class="empty-state"><?= icon('warn') ?><p>Tidak ada catatan persetujuan untuk siswa ini.</p></div>
     <?php else: ?>
       <dl class="detail-grid">
         <div><dt>Versi naskah persetujuan</dt><dd><?= esc($consent['consent_version']) ?></dd></div>
@@ -80,8 +80,8 @@ $prePost  = $profile['pre_post'];
       <div><dt>Total lama bermain</dt><dd class="num"><?= esc(ms_to_human($profile['total_duration_ms'])) ?></dd></div>
       <div><dt>Mengubah jawaban</dt><dd class="num"><?= esc($profile['answer_changes']) ?> kali</dd></div>
       <div><dt>Petunjuk dibuka</dt><dd class="num"><?= esc($profile['hint_uses']) ?></dd></div>
-      <div><dt>Tantangan tersulit</dt><dd><?= $hardest === null ? '—' : esc(($nodeTitles[$hardest['node_id']] ?? '#' . $hardest['node_id']) . ' (tepat sejak awal ' . fmt_pct($hardest['first_pass_accuracy'], false, 0) . ')') ?></dd></div>
-      <div><dt>Pretest → posttest</dt><dd class="num"><?= $prePost['delta'] === null ? '—' : esc(fmt_num($prePost['pretest'], 1, 'id') . ' → ' . fmt_num($prePost['posttest'], 1, 'id')) ?></dd></div>
+      <div><dt>Tantangan tersulit</dt><dd><?= $hardest === null ? '—' : esc(($nodeTitles[$hardest['node_id']] ?? '#' . $hardest['node_id']) . ' (benar sejak awal ' . fmt_pct($hardest['first_pass_accuracy'], false, 0) . ')') ?></dd></div>
+      <div><dt>Tes awal → tes akhir</dt><dd class="num"><?= $prePost['delta'] === null ? '—' : esc(fmt_num($prePost['pretest'], 1, 'id') . ' → ' . fmt_num($prePost['posttest'], 1, 'id')) ?></dd></div>
       <div><dt>Suara diputar</dt><dd class="num"><?= esc($profile['audio']['total_plays']) ?> kali<?php if (! empty($profile['audio']['total_autoplays'])): ?> <small class="muted">+ <?= esc($profile['audio']['total_autoplays']) ?> kali otomatis</small><?php endif ?></dd></div>
     </dl>
   </section>
@@ -128,9 +128,9 @@ $prePost  = $profile['pre_post'];
   <h2 class="panel-title"><?= icon('clock') ?> Sesi bermain</h2>
   <?= component('admin-table', [
       'rows'         => $sessions,
-      'emptyMessage' => 'Peserta ini belum pernah bermain.',
+      'emptyMessage' => 'Siswa ini belum pernah bermain.',
       'columns'      => [
-          'phase_code'      => ['label' => 'Fase', 'format' => 'label', 'group' => 'phase'],
+          'phase_code'      => ['label' => 'Tahap', 'format' => 'label', 'group' => 'phase'],
           'status'          => ['label' => 'Status', 'format' => 'badge'],
           'locale'          => ['label' => 'Bahasa', 'format' => 'label', 'group' => 'locale'],
           'started_at'      => ['label' => 'Mulai', 'format' => 'datetime'],
@@ -147,7 +147,7 @@ $prePost  = $profile['pre_post'];
 
 <section class="panel">
   <h2 class="panel-title"><?= icon('download') ?> Laporan siswa (PDF)</h2>
-  <p class="muted">Ringkasan satu halaman untuk siswa ini: skor per wilayah, capaian per indikator, dan cara membacanya. Laporan yang dibuat dari akun guru selalu tanpa nama (hanya kode peserta).</p>
+  <p class="muted">Ringkasan satu halaman untuk siswa ini: skor per wilayah, capaian per indikator, dan cara membacanya. Laporan yang dibuat dari akun guru selalu tanpa nama (hanya kode siswa).</p>
   <form method="post" action="<?= base_url('admin/ekspor/pdf') ?>" class="inline-form">
     <?= csrf_field() ?>
     <input type="hidden" name="participant_id" value="<?= (int) $participant['id'] ?>">
