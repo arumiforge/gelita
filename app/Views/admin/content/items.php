@@ -22,12 +22,14 @@
  * @var list<string>                          $interactions
  * @var list<App\Entities\ReadingPassage>     $passages
  * @var array<string, array<string, mixed>>   $indicators kode → baris indikator
+ * @var string|null                           $difficulty tingkat kesulitan wilayah (mudah/sedang/sulit)
  */
 $isNew  = $item === null;
 $prefix = $isNew ? 'new' : 'it' . $item->id;
 $action = $isNew ? base_url('admin/konten/node/' . $node->id . '/item') : base_url('admin/konten/item/' . $item->id);
 $json   = static fn ($value): string => $value === null || $value === [] ? '' : (string) json_encode($value, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 $verdicts = implode(' / ', $node->verdictOptions());
+$bloomNow = $isNew ? '' : (string) ($item->bloom_level ?? '');
 
 $guides = [
     'single_choice source_trust' => ['Pilihan ganda', 'Pilihan jawaban A–D diisi di bagian “Pilihan jawaban” di bawah formulir ini (muncul setelah soal disimpan). Tandai tepat satu yang benar.', '{"option_key": "a"}', ''],
@@ -90,6 +92,22 @@ $guides = [
           <option value="<?= esc($indicator['id'], 'attr') ?>" <?= ! $isNew && (int) $item->indicator_id === (int) $indicator['id'] ? 'selected' : '' ?>><?= esc($code) ?> — <?= esc($indicator['name_id']) ?></option>
         <?php endforeach ?>
       </select>
+    </div>
+    <div class="field">
+      <label for="<?= $prefix ?>-bloom">Tingkat berpikir (Taksonomi Bloom)</label>
+      <select id="<?= $prefix ?>-bloom" name="bloom_level" aria-describedby="<?= $prefix ?>-bloom-help">
+        <option value="">— belum ditentukan —</option>
+        <?php foreach (App\Libraries\DifficultyRules::BLOOM as $code => $name): ?>
+          <option value="<?= esc($code, 'attr') ?>" <?= $bloomNow === $code ? 'selected' : '' ?>><?= esc($code . ' · ' . $name) ?></option>
+        <?php endforeach ?>
+      </select>
+      <p class="field-help" id="<?= $prefix ?>-bloom-help">
+        <?php if ($node->engine_type === 'rumpang' && ($difficulty ?? '') !== ''): ?>
+          Wajib untuk Isi Rumpang bacaan. Anjuran untuk wilayah ini (tingkat <?= esc($difficulty) ?>): <?= esc(App\Libraries\DifficultyRules::bloomRangeLabel($difficulty)) ?>.
+        <?php else: ?>
+          Tidak wajib. Anjuran Isi Rumpang kelas 5: Temanggung C1–C2, Magelang C2–C3, Wonosobo C3–C4.
+        <?php endif ?>
+      </p>
     </div>
   </div>
 

@@ -42,13 +42,16 @@ class ChallengeNode extends Entity
     public static function defaultConfig(string $engine): array
     {
         return match ($engine) {
-            'puzzle'  => ['items_per_round' => 1, 'grid' => 3, 'allow_retry' => true, 'mode' => 'arrange'],
+            // Ukuran papan susun gambar tersimpan per soal (config_json.grid/shape),
+            // ditetapkan dari tingkat kesulitan wilayah saat soal dibuat.
+            'puzzle'  => ['items_per_round' => 1, 'allow_retry' => true, 'mode' => 'arrange'],
             'rumpang' => [
                 'items_per_round'  => 4,
                 'use_word_bank'    => true,
                 'distractor_count' => 2,
                 'allow_retry'      => true,
                 'distractors'      => [],
+                'as_reading'       => false,
             ],
             'boleh' => [
                 'items_per_round' => 8,
@@ -65,6 +68,16 @@ class ChallengeNode extends Entity
     public function itemsPerRound(): int
     {
         return max(1, (int) $this->config('items_per_round'));
+    }
+
+    /**
+     * Isi Rumpang sebagai satu bacaan: semua soal aktif tampil berurutan
+     * (setiap soal = satu potongan bacaan dengan satu rumpang), tanpa
+     * pengambilan acak; bank kata berisi semua jawaban + kata pengecoh.
+     */
+    public function isReading(): bool
+    {
+        return $this->engine_type === 'rumpang' && (bool) $this->config('as_reading');
     }
 
     public function allowsRetry(): bool
