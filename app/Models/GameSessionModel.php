@@ -12,7 +12,7 @@ class GameSessionModel extends Model
     protected $returnType    = GameSession::class;
     protected $useTimestamps = false;
     protected $allowedFields = [
-        'session_code', 'participant_id', 'study_id', 'phase_id', 'release_id',
+        'session_code', 'participant_id', 'study_id', 'release_id',
         'locale', 'status', 'started_at', 'last_active_at', 'ended_at', 'duration_ms',
         'last_level_id', 'last_challenge_node_id',
         'device_type', 'os_name', 'browser_name', 'screen_size', 'is_touch',
@@ -22,7 +22,6 @@ class GameSessionModel extends Model
         'session_code'   => 'required|max_length[64]|is_unique[game_sessions.session_code,id,{id}]',
         'participant_id' => 'required|is_natural_no_zero',
         'study_id'       => 'required|is_natural_no_zero',
-        'phase_id'       => 'required|is_natural_no_zero',
         'release_id'     => 'required|is_natural_no_zero',
         'locale'         => 'required|valid_locale',
         'status'         => 'permit_empty|in_list[active,paused,completed,abandoned]',
@@ -33,22 +32,20 @@ class GameSessionModel extends Model
         return $this->where('session_code', trim($sessionCode))->first();
     }
 
-    /** Sesi yang masih dapat dilanjutkan pada fase tertentu */
-    public function resumable(int $participantId, int $studyId, int $phaseId): ?GameSession
+    /** Sesi yang masih dapat dilanjutkan (satu tahap bermain per studi) */
+    public function resumable(int $participantId, int $studyId): ?GameSession
     {
         return $this->where('participant_id', $participantId)
             ->where('study_id', $studyId)
-            ->where('phase_id', $phaseId)
             ->whereIn('status', ['active', 'paused'])
             ->orderBy('last_active_at', 'DESC')
             ->first();
     }
 
-    public function latestCompleted(int $participantId, int $studyId, int $phaseId): ?GameSession
+    public function latestCompleted(int $participantId, int $studyId): ?GameSession
     {
         return $this->where('participant_id', $participantId)
             ->where('study_id', $studyId)
-            ->where('phase_id', $phaseId)
             ->where('status', 'completed')
             ->orderBy('ended_at', 'DESC')
             ->first();

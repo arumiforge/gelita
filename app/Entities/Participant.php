@@ -7,7 +7,7 @@ use CodeIgniter\Entity\Entity;
 class Participant extends Entity
 {
     protected $datamap = [];
-    protected $dates   = ['created_at', 'updated_at', 'deleted_at', 'intro_seen_at'];
+    protected $dates   = ['created_at', 'updated_at', 'deleted_at', 'intro_seen_at', 'assented_at'];
     protected $casts   = [
         'id'                       => 'int',
         'age'                      => '?int',

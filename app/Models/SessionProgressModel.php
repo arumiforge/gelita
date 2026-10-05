@@ -13,7 +13,7 @@ class SessionProgressModel extends Model
     protected $useTimestamps    = false;
     protected $allowedFields    = [
         'session_id', 'current_level_id', 'current_node_id', 'unlocked_level_sequence',
-        'completed_nodes', 'completed_levels', 'total_score', 'total_stars',
+        'completed_nodes', 'completed_levels', 'total_stars',
     ];
 
     /** Baris progres sesi; dibuat bila belum ada. */
@@ -30,7 +30,6 @@ class SessionProgressModel extends Model
             'unlocked_level_sequence' => 1,
             'completed_nodes'         => 0,
             'completed_levels'        => 0,
-            'total_score'             => 0,
             'total_stars'             => 0,
         ], false);
 
