@@ -3,16 +3,21 @@
 namespace App\Database\Seeds;
 
 /**
- * HANYA development: 2 item contoh per node (30 item) + 1 teks bacaan + 1 petunjuk per node,
- * agar alur permainan dapat diuji sebelum bank soal diimpor.
+ * HANYA development: item contoh per node (2 per node; bacaan Isi Rumpang
+ * 3/4/6 potongan sesuai tingkat wilayah) + 1 teks bacaan + 1 petunjuk per
+ * node, agar alur permainan dapat diuji sebelum bank soal diimpor.
  *
- * item_key memakai nomor 91–92 (mis. tmg-2-91) supaya tidak bertabrakan dengan
- * bank soal production (01, 02, …). Semua item berstatus review 'draft' dan
- * diawali label [Contoh]/[Sample].
+ * item_key memakai nomor 91 ke atas (mis. tmg-2-91) supaya tidak bertabrakan
+ * dengan bank soal production (01, 02, …). Semua item berstatus review
+ * 'draft' dan diawali label [Contoh]/[Sample] (bacaan: hanya potongan
+ * pertama, supaya paragrafnya tetap terbaca).
  */
 class SampleItemSeeder extends GelitaSeeder
 {
     private const LEVEL_CODES = ['tmg' => 'temanggung', 'mgl' => 'magelang', 'wnb' => 'wonosobo'];
+
+    /** Tantangan Isi Rumpang yang tampil sebagai satu bacaan (ContentSeeder). */
+    private const READINGS = ['tmg-2', 'mgl-2', 'wnb-2'];
 
     /** @var array<string,int> */
     private array $indicators = [];
@@ -79,12 +84,15 @@ class SampleItemSeeder extends GelitaSeeder
         return ['tmg-teks-contoh' => $id];
     }
 
-    /** Pengecoh bank kata contoh, hanya bila node belum punya pengecoh */
+    /**
+     * Pengecoh bank kata contoh, hanya bila node belum punya pengecoh.
+     * Temanggung (mudah) tanpa pengecoh.
+     */
     private function seedDistractors(array $levels): void
     {
         $sets = [
-            'tmg-2' => [['id' => 'salju', 'en' => 'snow'], ['id' => 'laut', 'en' => 'sea'], ['id' => 'pasir', 'en' => 'sand']],
-            'wnb-2' => [['id' => 'panas', 'en' => 'hot'], ['id' => 'rendah', 'en' => 'low'], ['id' => 'kering', 'en' => 'dry']],
+            'mgl-2' => [['id' => 'enam', 'en' => 'six'], ['id' => 'Wonosobo', 'en' => 'Wonosobo']],
+            'wnb-2' => [['id' => 'panas', 'en' => 'hot'], ['id' => 'agar', 'en' => 'unless']],
         ];
 
         foreach ($sets as $nodeRef => $distractors) {
@@ -109,18 +117,22 @@ class SampleItemSeeder extends GelitaSeeder
             return;
         }
 
+        // Bacaan: label hanya di potongan pertama agar paragrafnya tetap utuh
+        $label = ! in_array($nodeRef, self::READINGS, true) || $sequence === 1;
+
         $this->db->table('challenge_items')->insert([
             'challenge_node_id' => $nodeId,
             'item_key'          => $itemKey,
             'sequence'          => $sequence,
             'interaction_type'  => $item['type'],
-            'prompt_id'         => '[Contoh] ' . $item['prompt'][0],
-            'prompt_en'         => '[Sample] ' . $item['prompt'][1],
+            'prompt_id'         => ($label ? '[Contoh] ' : '') . $item['prompt'][0],
+            'prompt_en'         => ($label ? '[Sample] ' : '') . $item['prompt'][1],
             'source_text_id'    => $item['source'][0] ?? null,
             'source_text_en'    => $item['source'][1] ?? null,
             'passage_id'        => isset($item['passage']) ? $passages[$item['passage']] : null,
             'answer_key_json'   => $this->toJson($item['answer']),
             'indicator_id'      => $this->indicators[$item['indicator']],
+            'bloom_level'       => $item['bloom'] ?? null,
             'config_json'       => isset($item['config']) ? $this->toJson($item['config']) : null,
             'review_status'     => 'draft',
             'review_note'       => 'Item contoh development — bukan bagian bank soal production.',
@@ -155,23 +167,30 @@ class SampleItemSeeder extends GelitaSeeder
 
     private function items(): array
     {
-        $order9 = ['order' => [0, 1, 2, 3, 4, 5, 6, 7, 8]];
+        // Ukuran papan dibekukan per soal: mudah 3 × 3 kotak, sedang 4 × 4
+        // kotak, sulit 4 × 4 jigsaw (DifficultyRules).
+        $board = static fn (int $grid, string $shape): array => [
+            'answer' => ['order' => range(0, $grid * $grid - 1)],
+            'config' => ['grid' => $grid, 'shape' => $shape],
+        ];
+        $blank = static fn (string $id, string $en): array => ['text_id' => $id, 'text_en' => $en];
 
         return [
             // ---------------- TEMANGGUNG ----------------
             'tmg-1' => [
-                ['no' => '91', 'type' => 'puzzle_arrange', 'indicator' => 'budaya', 'answer' => $order9, 'config' => ['grid' => 3],
-                    'prompt' => ['Gambar ini menunjukkan lereng Gunung Sindoro dan Sumbing di Temanggung.', 'This picture shows the slopes of Mount Sindoro and Sumbing in Temanggung.']],
-                ['no' => '92', 'type' => 'puzzle_arrange', 'indicator' => 'budaya', 'answer' => $order9, 'config' => ['grid' => 3],
-                    'prompt' => ['Gambar ini menunjukkan kebun kopi di lereng gunung Temanggung.', 'This picture shows a coffee garden on a mountain slope in Temanggung.']],
+                ['no' => '91', 'type' => 'puzzle_arrange', 'indicator' => 'budaya',
+                    'prompt' => ['Gambar ini menunjukkan lereng Gunung Sindoro dan Sumbing di Temanggung.', 'This picture shows the slopes of Mount Sindoro and Sumbing in Temanggung.']] + $board(3, 'square'),
+                ['no' => '92', 'type' => 'puzzle_arrange', 'indicator' => 'budaya',
+                    'prompt' => ['Gambar ini menunjukkan kebun kopi di lereng gunung Temanggung.', 'This picture shows a coffee garden on a mountain slope in Temanggung.']] + $board(3, 'square'),
             ],
+            // Bacaan mudah: 3 rumpang, tanpa pengecoh, C1–C2
             'tmg-2' => [
-                ['no' => '91', 'type' => 'fill_blank_bank', 'indicator' => 'literasi',
-                    'answer' => ['text_id' => 'Sumbing', 'text_en' => 'Sumbing'],
+                ['no' => '91', 'type' => 'fill_blank_bank', 'indicator' => 'literasi', 'bloom' => 'C1', 'answer' => $blank('Sumbing', 'Sumbing'),
                     'prompt' => ['Temanggung terletak di antara Gunung Sindoro dan Gunung ___.', 'Temanggung lies between Mount Sindoro and Mount ___.']],
-                ['no' => '92', 'type' => 'fill_blank_bank', 'indicator' => 'literasi',
-                    'answer' => ['text_id' => 'kopi', 'text_en' => 'coffee'],
-                    'prompt' => ['Di lereng gunung Temanggung, warga menanam tembakau dan ___.', 'On the mountain slopes of Temanggung, people grow tobacco and ___.']],
+                ['no' => '92', 'type' => 'fill_blank_bank', 'indicator' => 'literasi', 'bloom' => 'C1', 'answer' => $blank('kopi', 'coffee'),
+                    'prompt' => ['Di lereng gunung, warga menanam tembakau dan ___.', 'On the mountain slopes, people grow tobacco and ___.']],
+                ['no' => '93', 'type' => 'fill_blank_bank', 'indicator' => 'literasi', 'bloom' => 'C2', 'answer' => $blank('subur', 'fertile'),
+                    'prompt' => ['Tanaman tumbuh baik karena tanahnya ___.', 'Plants grow well because the soil is ___.']],
             ],
             'tmg-3' => [
                 ['no' => '91', 'type' => 'verdict_card', 'indicator' => 'literasi', 'passage' => 'tmg-teks-contoh',
@@ -214,18 +233,21 @@ class SampleItemSeeder extends GelitaSeeder
 
             // ---------------- MAGELANG ----------------
             'mgl-1' => [
-                ['no' => '91', 'type' => 'puzzle_arrange', 'indicator' => 'budaya', 'answer' => $order9, 'config' => ['grid' => 3],
-                    'prompt' => ['Topeng Ireng adalah kesenian tari dari Magelang.', 'Topeng Ireng is a dance art from Magelang.']],
-                ['no' => '92', 'type' => 'puzzle_arrange', 'indicator' => 'budaya', 'answer' => $order9, 'config' => ['grid' => 3],
-                    'prompt' => ['Candi Borobudur berdiri megah di Magelang.', 'Borobudur Temple stands grandly in Magelang.']],
+                ['no' => '91', 'type' => 'puzzle_arrange', 'indicator' => 'budaya',
+                    'prompt' => ['Topeng Ireng adalah kesenian tari dari Magelang.', 'Topeng Ireng is a dance art from Magelang.']] + $board(4, 'square'),
+                ['no' => '92', 'type' => 'puzzle_arrange', 'indicator' => 'budaya',
+                    'prompt' => ['Candi Borobudur berdiri megah di Magelang.', 'Borobudur Temple stands grandly in Magelang.']] + $board(4, 'square'),
             ],
+            // Bacaan sedang: 4 rumpang + 2 pengecoh, C2–C3
             'mgl-2' => [
-                ['no' => '91', 'type' => 'fill_blank_free', 'indicator' => 'literasi',
-                    'answer' => ['accept_id' => ['Magelang'], 'accept_en' => ['Magelang'], 'case_sensitive' => false],
-                    'prompt' => ['Candi Borobudur berada di Kabupaten ___.', 'Borobudur Temple is located in ___ Regency.']],
-                ['no' => '92', 'type' => 'fill_blank_free', 'indicator' => 'literasi',
-                    'answer' => ['accept_id' => ['stupa'], 'accept_en' => ['stupa'], 'case_sensitive' => false],
-                    'prompt' => ['Bangunan berbentuk seperti lonceng di Candi Borobudur disebut ___.', 'The bell-shaped structures at Borobudur Temple are called ___.']],
+                ['no' => '91', 'type' => 'fill_blank_bank', 'indicator' => 'literasi', 'bloom' => 'C2', 'answer' => $blank('Magelang', 'Magelang'),
+                    'prompt' => ['Candi Borobudur berdiri di Kabupaten ___.', 'Borobudur Temple stands in ___ Regency.']],
+                ['no' => '92', 'type' => 'fill_blank_bank', 'indicator' => 'literasi', 'bloom' => 'C3', 'answer' => $blank('sembilan', 'nine'),
+                    'prompt' => ['Ada enam teras persegi dan tiga teras bundar, jadi semuanya ada ___ teras.', 'There are six square terraces and three round ones, so there are ___ terraces in all.']],
+                ['no' => '93', 'type' => 'fill_blank_bank', 'indicator' => 'literasi', 'bloom' => 'C2', 'answer' => $blank('stupa', 'stupas'),
+                    'prompt' => ['Bangunan berbentuk lonceng di teras bundar disebut ___.', 'The bell-shaped structures on the round terraces are called ___.']],
+                ['no' => '94', 'type' => 'fill_blank_bank', 'indicator' => 'literasi', 'bloom' => 'C3', 'answer' => $blank('dilarang', 'forbidden'),
+                    'prompt' => ['Batu candi mudah rusak, jadi pengunjung ___ memanjat stupa.', 'The temple stones break easily, so visitors are ___ to climb the stupas.']],
             ],
             'mgl-3' => [
                 ['no' => '91', 'type' => 'verdict_reason', 'indicator' => 'sikap',
@@ -282,36 +304,25 @@ class SampleItemSeeder extends GelitaSeeder
 
             // ---------------- WONOSOBO ----------------
             'wnb-1' => [
-                ['no' => '91', 'type' => 'ordering', 'indicator' => 'literasi',
-                    'answer' => ['order' => ['c', 'a', 'd', 'b']],
-                    'config' => ['pieces' => [
-                        ['key' => 'a', 'text_id' => 'Rebus mie dan kol sebentar.', 'text_en' => 'Boil the noodles and cabbage briefly.'],
-                        ['key' => 'b', 'text_id' => 'Sajikan selagi hangat.', 'text_en' => 'Serve while warm.'],
-                        ['key' => 'c', 'text_id' => 'Siapkan mie dan kol.', 'text_en' => 'Prepare the noodles and cabbage.'],
-                        ['key' => 'd', 'text_id' => 'Tuang ke mangkuk, lalu siram dengan kuah kental.', 'text_en' => 'Pour into a bowl, then add the thick sauce.'],
-                    ]],
-                    'prompt' => ['Susun langkah menyajikan mie berkuah kental.', 'Put the steps for serving noodles in thick sauce in order.']],
-                ['no' => '92', 'type' => 'ordering', 'indicator' => 'literasi',
-                    'answer' => ['order' => ['b', 'd', 'a', 'c']],
-                    'config' => ['pieces' => [
-                        ['key' => 'a', 'text_id' => 'Bandingkan dengan sumber lain.', 'text_en' => 'Compare it with other sources.'],
-                        ['key' => 'b', 'text_id' => 'Baca judul dan isi berita sampai habis.', 'text_en' => 'Read the headline and the whole story.'],
-                        ['key' => 'c', 'text_id' => 'Putuskan: bagikan atau tidak.', 'text_en' => 'Decide: share it or not.'],
-                        ['key' => 'd', 'text_id' => 'Periksa siapa yang menulis berita.', 'text_en' => 'Check who wrote the story.'],
-                    ]],
-                    'prompt' => ['Susun langkah memeriksa sebuah berita.', 'Put the steps for checking a news story in order.']],
+                ['no' => '91', 'type' => 'puzzle_arrange', 'indicator' => 'budaya',
+                    'prompt' => ['Telaga Warna di Dieng airnya tampak berganti warna.', 'The water of Telaga Warna in Dieng seems to change colour.']] + $board(4, 'jigsaw'),
+                ['no' => '92', 'type' => 'puzzle_arrange', 'indicator' => 'budaya',
+                    'prompt' => ['Dari Bukit Sikunir, matahari terbit tampak di atas awan.', 'From Sikunir Hill, the sunrise appears above the clouds.']] + $board(4, 'jigsaw'),
             ],
+            // Bacaan sulit: 6 rumpang + 2 pengecoh, C3–C4
             'wnb-2' => [
-                ['no' => '91', 'type' => 'fill_blank_bank', 'indicator' => 'literasi',
-                    'source' => ['Udara di Dataran Tinggi Dieng terasa dingin, terutama pada pagi hari. Wisatawan disarankan membawa jaket tebal.',
-                        'The air on the Dieng Plateau feels cold, especially in the morning. Visitors are advised to bring a thick jacket.'],
-                    'answer' => ['text_id' => 'dingin', 'text_en' => 'cold'],
-                    'prompt' => ['Kesimpulan: wisatawan perlu membawa jaket karena udara Dieng ___.', 'Conclusion: visitors need a jacket because the air in Dieng is ___.']],
-                ['no' => '92', 'type' => 'fill_blank_bank', 'indicator' => 'literasi',
-                    'source' => ['Dieng sering tertutup kabut dan awan karena letaknya jauh di atas permukaan laut.',
-                        'Dieng is often covered in mist and clouds because it lies far above sea level.'],
-                    'answer' => ['text_id' => 'tinggi', 'text_en' => 'high'],
-                    'prompt' => ['Kesimpulan: Dieng disebut negeri di atas awan karena letaknya ___.', 'Conclusion: Dieng is called the land above the clouds because it is ___.']],
+                ['no' => '91', 'type' => 'fill_blank_bank', 'indicator' => 'literasi', 'bloom' => 'C4', 'answer' => $blank('sehingga', 'so'),
+                    'prompt' => ['Dieng terletak lebih dari 2.000 meter di atas permukaan laut ___ udaranya dingin.', 'Dieng is more than 2,000 metres above sea level, ___ its air is cold.']],
+                ['no' => '92', 'type' => 'fill_blank_bank', 'indicator' => 'literasi', 'bloom' => 'C4', 'answer' => $blank('karena', 'because'),
+                    'prompt' => ['Wisatawan membawa jaket tebal ___ suhu pagi bisa sangat rendah.', 'Visitors bring thick jackets ___ the morning temperature can be very low.']],
+                ['no' => '93', 'type' => 'fill_blank_bank', 'indicator' => 'literasi', 'bloom' => 'C4', 'answer' => $blank('tetapi', 'but'),
+                    'prompt' => ['Carica tumbuh baik di tempat sejuk, ___ sulit tumbuh di tempat panas.', 'Carica grows well in cool places, ___ it struggles in hot places.']],
+                ['no' => '94', 'type' => 'fill_blank_bank', 'indicator' => 'literasi', 'bloom' => 'C3', 'answer' => $blank('dapat', 'can'),
+                    'prompt' => ['Desa Sembungan tinggi dan sejuk, jadi carica ___ tumbuh di sana.', 'Sembungan Village is high and cool, so carica ___ grow there.']],
+                ['no' => '95', 'type' => 'fill_blank_bank', 'indicator' => 'literasi', 'bloom' => 'C3', 'answer' => $blank('sulit', 'hard'),
+                    'prompt' => ['Pantai itu panas, jadi carica ___ tumbuh di pantai.', 'The beach is hot, so carica is ___ to grow on the beach.']],
+                ['no' => '96', 'type' => 'fill_blank_bank', 'indicator' => 'literasi', 'bloom' => 'C3', 'answer' => $blank('sejuk', 'cool'),
+                    'prompt' => ['Jadi, carica membutuhkan udara yang ___.', 'So carica needs ___ air.']],
             ],
             'wnb-3' => [
                 ['no' => '91', 'type' => 'verdict_card', 'indicator' => 'sikap',
@@ -380,7 +391,7 @@ class SampleItemSeeder extends GelitaSeeder
     private function hints(): array
     {
         $puzzle  = ['Mulailah dari kepingan sudut, lalu cocokkan warnanya.', 'Start with the corner pieces, then match the colours.'];
-        $rumpang = ['Baca seluruh kalimat dulu, lalu cari kata yang paling cocok.', 'Read the whole sentence first, then find the word that fits best.'];
+        $rumpang = ['Baca seluruh bacaan dulu, lalu cari kata yang paling cocok untuk setiap kotak.', 'Read the whole text first, then find the word that fits each box best.'];
         $pilihan = ['Temukan kata kunci pertanyaan di dalam teks.', 'Find the key words of the question in the text.'];
 
         return [
@@ -394,8 +405,8 @@ class SampleItemSeeder extends GelitaSeeder
             'mgl-3' => ["Pendapat biasanya memakai kata penilaian seperti 'paling indah' atau 'bagus'.", "Opinions usually use judging words such as 'most beautiful' or 'nice'."],
             'mgl-4' => ['Ingat kembali asal dan kegunaan setiap benda budaya.', 'Recall where each cultural object comes from and what it is used for.'],
             'mgl-5' => ['Cari bagian yang sama pada gambar dan pada teks.', 'Look for what appears in both the picture and the text.'],
-            'wnb-1' => ['Cari langkah yang harus dilakukan paling awal.', 'Find the step that must be done first.'],
-            'wnb-2' => ['Kesimpulan harus sesuai dengan isi paragraf.', 'The conclusion must match what the paragraph says.'],
+            'wnb-1' => ['Cari keping yang punya sisi lurus: keping itu ada di tepi gambar.', 'Find the pieces with a straight side: they belong on the edge of the picture.'],
+            'wnb-2' => ['Apakah kalimatnya menunjukkan sebab, akibat, atau pertentangan?', 'Does the sentence show a cause, a result, or a contrast?'],
             'wnb-3' => ['Periksa siapa yang membuat setiap sumber.', 'Check who made each source.'],
             'wnb-4' => ['Sumber terpercaya jelas siapa pembuatnya dan masih baru.', 'A trustworthy source clearly shows who made it and is up to date.'],
             'wnb-5' => ['Pikirkan akibat setiap tindakan bagi dirimu dan orang lain.', 'Think about what each action means for you and for others.'],

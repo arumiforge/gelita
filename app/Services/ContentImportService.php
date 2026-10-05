@@ -40,7 +40,7 @@ class ContentImportService
 
     /** Header per sheet; kolom di luar daftar ini diabaikan. Sheet lain (mis. PETUNJUK) juga diabaikan. */
     public const SHEETS = [
-        'nodes'       => ['node_ref', 'title_id', 'title_en', 'instruction_id', 'instruction_en', 'description_id', 'description_en', 'items_per_round', 'verdict_options', 'require_reason', 'use_word_bank', 'distractor_count', 'as_reading', 'scene_media_key', 'background_media_key', 'variant_code'],
+        'nodes'       => ['node_ref', 'title_id', 'title_en', 'instruction_id', 'instruction_en', 'description_id', 'description_en', 'items_per_round', 'verdict_options', 'require_reason', 'use_word_bank', 'distractor_count', 'as_reading', 'scene_media_key', 'background_media_key', 'variant_code', 'indicator'],
         'distractors' => ['node_ref', 'text_id', 'text_en'],
         'passages'    => ['passage_key', 'level_code', 'title_id', 'title_en', 'body_id', 'body_en', 'media_asset_key', 'reference_source'],
         'items'       => ['item_key', 'node_ref', 'sequence', 'interaction_type', 'indicator', 'bloom_level', 'prompt_id', 'prompt_en', 'source_text_id', 'source_text_en', 'passage_key', 'answer_id', 'answer_en', 'sample_reason_id', 'sample_reason_en', 'x', 'y', 'w', 'decoy', 'wrong_feedback_id', 'wrong_feedback_en', 'digital_pillar', 'media_asset_key', 'scorable', 'is_active', 'review_status', 'review_note', 'reference_source'],
@@ -305,7 +305,7 @@ class ContentImportService
     private function validateRow(string $sheet, array $row, array $context): ?string
     {
         return match ($sheet) {
-            'nodes'       => $this->validateNodeRef($row['node_ref'] ?? '', $context) ?? $this->validateNodeSettings($row),
+            'nodes'       => $this->validateNodeRef($row['node_ref'] ?? '', $context) ?? $this->validateNodeSettings($row, $context),
             'distractors' => $this->validateNodeRef($row['node_ref'] ?? '', $context)
                 ?? ($row['text_id'] === '' ? self::missing('distractors', 'text_id') : null),
             'passages' => $this->validatePassage($row, $context),
@@ -340,7 +340,7 @@ class ContentImportService
         return null;
     }
 
-    private function validateNodeSettings(array $row): ?string
+    private function validateNodeSettings(array $row, array $context): ?string
     {
         if (! in_array((string) $row['as_reading'], ['', '0', '1'], true)) {
             return 'Kolom as_reading (tampil sebagai bacaan) hanya boleh 0 atau 1, atau dikosongkan.';
@@ -348,6 +348,10 @@ class ContentImportService
 
         if ($row['variant_code'] !== '' && preg_match('/^[a-z0-9_]{1,60}$/', (string) $row['variant_code']) !== 1) {
             return 'Kolom variant_code (kode variasi tampilan) hanya boleh berisi huruf kecil, angka, dan garis bawah (paling banyak 60).';
+        }
+
+        if ($row['indicator'] !== '' && ! isset($context['indicators'][$row['indicator']])) {
+            return self::unknown('nodes', 'indicator', $row['indicator'], 'Pakai ' . implode(', ', array_keys($context['indicators'])) . ', atau kosongkan.');
         }
 
         return null;
@@ -706,7 +710,7 @@ class ContentImportService
         $media   = $this->createMediaSlots($sheets, $parsed['media']);
         $written = array_fill_keys(array_keys(self::SHEETS), 0);
 
-        $written['nodes'] = $this->writeNodes($sheets['nodes'], $sheets['distractors'], $nodes, $media);
+        $written['nodes'] = $this->writeNodes($sheets['nodes'], $sheets['distractors'], $nodes, $media, $parsed['indicators']);
 
         $passageIds        = $this->writePassages($sheets['passages'], $parsed['levels'], $media);
         $written['passages'] = count($passageIds);
@@ -750,8 +754,9 @@ class ContentImportService
      * @param list<array<string, string>> $distractorRows
      * @param array<string, int>          $nodes
      * @param array<string, int>          $media
+     * @param array<string, int>          $indicators
      */
-    private function writeNodes(array $rows, array $distractorRows, array $nodes, array $media): int
+    private function writeNodes(array $rows, array $distractorRows, array $nodes, array $media, array $indicators): int
     {
         $model       = model(ChallengeNodeModel::class);
         $distractors = $this->groupBy($distractorRows, 'node_ref');
@@ -795,6 +800,7 @@ class ContentImportService
                 'description_id' => $row['description_id'],
                 'description_en' => $row['description_en'],
             ], static fn ($value): bool => $value !== '')
+                + ($row['indicator'] !== '' ? ['indicator_id' => $indicators[$row['indicator']]] : [])
                 + $this->mediaColumns($row, ['scene_media_key' => 'scene_media_id', 'background_media_key' => 'background_media_id'], $media)
                 + ['config_json' => $config]);
 

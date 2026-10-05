@@ -6,6 +6,11 @@
  * menyimpulkan, dan bertindak bertanggung jawab (empat pilar literasi
  * digital: cakap, etika, aman, budaya).
  *
+ * Kelas 5 SD (Okt 2026): tantangan 1 menjadi Susun Gambar 4 × 4 berkeping
+ * jigsaw dengan 3 gambar baru (kartu urutan lama diistirahatkan); Isi
+ * Rumpang = satu bacaan, 7 rumpang + 2 pengecoh (9 kata), Bloom C3–C4.
+ * Soal lama diberi 'active' => false, tidak dihapus.
+ *
  * Bentuk data: lihat docs/bank-soal/README.md. Teks berpasangan
  * [Indonesia, English]. Tambahkan butir baru di AKHIR daftar agar kode
  * butir yang sudah dipakai siswa tidak bergeser.
@@ -23,8 +28,11 @@ $ref = [
 $checked = 'Fakta dicocokkan dengan sumber pada kolom reference_source (Sep 2026). Tinjau oleh guru/ahli, lalu ubah review_status menjadi verified.';
 $scenario = 'Butir skenario literasi digital/sikap. Kunci dicek tim terhadap pedoman 4 pilar literasi digital.';
 $commons  = 'Wikimedia Commons — lisensi bebas; pengarang & lisensi di halaman berkas';
+$reading  = 'Draf bacaan Isi Rumpang kelas 5 (Okt 2026), fakta dari bank soal dan Pustaka Wonosobo (Dieng, carica, Sembungan). Tinjau bahasa, kunci, dan tingkat Bloom bersama guru, lalu ubah review_status menjadi verified.';
 
 return [
+    'difficulty' => 'sulit',
+
     // Tantangan Wonosobo memakai teks sumber per butir (sumber A/B, informasi
     // pendek) alih-alih bacaan panjang, jadi tidak ada sheet passages.
     'passages' => [],
@@ -34,27 +42,30 @@ return [
         // ----------------------------------------------------------- wnb-1
         'wnb-1' => [
             'engine'          => 'puzzle',
-            'indicator'       => 'literasi',
+            'variant'         => 'puzzle_jigsaw',
+            'indicator'       => 'budaya',
             'items_per_round' => 1,
             'note'            => $checked,
             'ref'             => $ref['food'],
-            'title'           => ['Susun Urutan yang Benar', 'Put in the Right Order'],
-            'instruction'     => ['Seret kartu atau pakai tombol panah untuk menyusun langkah dari yang pertama sampai terakhir.', 'Drag the cards or use the arrow buttons to put the steps in order from first to last.'],
+            'title'           => ['Susun Gambar Wonosobo', 'Arrange the Wonosobo Picture'],
+            'instruction'     => ['Kepingannya berbentuk puzzle (4 × 4). Tukar dua keping sampai gambarnya utuh, lalu baca keterangannya.', 'The pieces are jigsaw-shaped (4 × 4). Swap two pieces at a time until the picture is complete, then read the caption.'],
             'description'     => [
-                'Di negeri di atas awan, semua butuh urutan yang tepat — dari menyajikan mi ongklok sampai memeriksa kabar. Susun langkahnya agar tidak ada yang terlewat.',
-                'In the land above the clouds, everything needs the right order — from serving ongklok noodles to checking the news. Arrange the steps so that nothing is missed.',
+                'Kabut tebal Dieng memotong-motong sebuah lukisan Wonosobo seperti kepingan puzzle. Susun kembali kepingnya, lalu kenali tempat di gambar itu.',
+                'The thick Dieng mist has cut a painting of Wonosobo into jigsaw pieces. Put the pieces back together, then get to know the place in the picture.',
             ],
             'hints' => [
-                ['Cari langkah yang harus dilakukan paling awal: biasanya menyiapkan atau membaca.', 'Find the step that must come first: usually preparing or reading.'],
-                ['Cari langkah terakhir: biasanya menyajikan, memutuskan, atau membereskan.', 'Find the last step: usually serving, deciding, or tidying up.'],
-                ['Tanyakan pada setiap kartu: "Bisakah ini dilakukan sebelum kartu sebelumnya?"', 'Ask about each card: "Could this be done before the card before it?"'],
+                ['Cari keping yang punya sisi lurus: keping itu ada di tepi gambar.', 'Find the pieces with a straight side: they belong on the edge of the picture.'],
+                ['Tonjolan sebuah keping harus pas masuk ke lekukan keping di sebelahnya.', 'Each piece\'s tab must fit into the gap of the piece next to it.'],
+                ['Cocokkan warna langit, air, atau tanah, lalu susun baris demi baris.', 'Match the colours of the sky, water, or ground, then build the picture row by row.'],
             ],
             'items' => [
                 [
-                    'type'   => 'ordering',
-                    'prompt' => ['Susun langkah menyajikan mi ongklok khas Wonosobo.', 'Put the steps for serving Wonosobo\'s ongklok noodles in order.'],
-                    'order'  => 'c,e,a,d,b',
-                    'pieces' => [
+                    'active'    => false,
+                    'type'      => 'ordering',
+                    'indicator' => 'literasi',   // soal lama: urutan teks (literasi)
+                    'prompt'    => ['Susun langkah menyajikan mi ongklok khas Wonosobo.', 'Put the steps for serving Wonosobo\'s ongklok noodles in order.'],
+                    'order'     => 'c,e,a,d,b',
+                    'pieces'    => [
                         ['a', 'Tiriskan mi dan sayur, lalu tuang ke mangkuk.', 'Drain the noodles and vegetables, then pour them into a bowl.'],
                         ['b', 'Sajikan bersama sate sapi dan tempe kemul.', 'Serve with beef satay and tempe kemul.'],
                         ['c', 'Siapkan mi kuning, kol, dan daun kucai.', 'Prepare the yellow noodles, cabbage, and chives.'],
@@ -63,6 +74,7 @@ return [
                     ],
                 ],
                 [
+                    'active'    => false,
                     'type'      => 'ordering',
                     'indicator' => 'sikap',
                     'ref'       => $ref['digital'],
@@ -78,11 +90,13 @@ return [
                     ],
                 ],
                 [
-                    'type'   => 'ordering',
-                    'ref'    => $ref['dieng'],
-                    'prompt' => ['Susun urutan perjalanan melihat matahari terbit di Bukit Sikunir.', 'Put the steps of a trip to see the sunrise at Sikunir Hill in order.'],
-                    'order'  => 'c,e,a,d,b',
-                    'pieces' => [
+                    'active'    => false,
+                    'type'      => 'ordering',
+                    'indicator' => 'literasi',   // soal lama: urutan teks (literasi)
+                    'ref'       => $ref['dieng'],
+                    'prompt'    => ['Susun urutan perjalanan melihat matahari terbit di Bukit Sikunir.', 'Put the steps of a trip to see the sunrise at Sikunir Hill in order.'],
+                    'order'     => 'c,e,a,d,b',
+                    'pieces'    => [
                         ['a', 'Mendaki jalan setapak menuju puncak Bukit Sikunir.', 'Climb the footpath to the top of Sikunir Hill.'],
                         ['b', 'Turun kembali sambil membawa pulang semua sampah.', 'Walk back down, taking all your rubbish home.'],
                         ['c', 'Tiba di Desa Sembungan sebelum subuh dengan jaket tebal dan senter.', 'Arrive in Sembungan Village before dawn with a thick jacket and a torch.'],
@@ -91,6 +105,7 @@ return [
                     ],
                 ],
                 [
+                    'active'    => false,
                     'type'      => 'ordering',
                     'indicator' => 'sikap',
                     'ref'       => $ref['digital'],
@@ -105,59 +120,88 @@ return [
                         ['e', 'Periksa lagi: jangan memuat nama, tanggal lahir, atau nama pengguna.', 'Check again: it must not contain your name, birthday, or username.'],
                     ],
                 ],
+
+                // ---- Kelas 5: Susun Gambar 4 × 4 jigsaw, tiga gambar yang tampil acak
+                [
+                    'type'      => 'puzzle_arrange',
+                    'indicator' => 'budaya',
+                    'ref'       => $ref['dieng'],
+                    'prompt'    => ['Air Telaga Warna di Dieng mengandung belerang. Saat terkena cahaya matahari, warnanya tampak berganti: hijau, kebiruan, atau putih. Airnya tidak untuk diminum.', 'The water of Telaga Warna in Dieng contains sulphur. In sunlight its colour seems to change: green, bluish, or white. The water is not for drinking.'],
+                    'media'     => ['key' => 'challenge.item.wnb-1-05', 'note' => 'Foto Telaga Warna dari tepi atau dari bukit; warna air hijau kebiruan tampak jelas.', 'source' => 'https://commons.wikimedia.org/wiki/File:Telaga_Warna_Dieng_Jawa_Tengah.jpg'],
+                ],
+                [
+                    'type'      => 'puzzle_arrange',
+                    'indicator' => 'budaya',
+                    'ref'       => $ref['dieng'],
+                    'prompt'    => ['Bukit Sikunir ada di Desa Sembungan, desa tertinggi di Pulau Jawa (sekitar 2.300 meter). Wisatawan mendaki sebelum subuh untuk melihat matahari terbit di atas awan.', 'Sikunir Hill is in Sembungan Village, the highest village in Java (about 2,300 metres). Visitors climb before dawn to watch the sun rise above the clouds.'],
+                    'media'     => ['key' => 'challenge.item.wnb-1-06', 'note' => 'Foto matahari terbit dari puncak Bukit Sikunir dengan lautan awan.', 'source' => 'https://commons.wikimedia.org/wiki/File:Sunrise_di_Bukit_Sikunir.jpg'],
+                ],
+                [
+                    'type'      => 'puzzle_arrange',
+                    'indicator' => 'budaya',
+                    'ref'       => $ref['food'],
+                    'prompt'    => ['Mi ongklok adalah makanan khas Wonosobo. Mi dan sayur direbus di keranjang bambu kecil bernama ongklok, lalu disiram kuah kental dan disajikan bersama sate sapi.', 'Ongklok noodles are Wonosobo\'s special dish. The noodles and vegetables are boiled in a small bamboo basket called an ongklok, then covered with a thick sauce and served with beef satay.'],
+                    'media'     => ['key' => 'challenge.item.wnb-1-07', 'note' => 'Foto semangkuk mi ongklok dengan sate sapi, tampak dari atas.', 'source' => 'https://commons.wikimedia.org/wiki/File:Mi_ongklok_sate_sapi_Wonosobo.JPG'],
+                ],
             ],
         ],
 
         // ----------------------------------------------------------- wnb-2
         'wnb-2' => [
             'engine'           => 'rumpang',
+            'variant'          => 'rumpang_bacaan',
+            'reading'          => true,
             'indicator'        => 'literasi',
-            'items_per_round'  => 4,
+            'items_per_round'  => 7,
             'use_word_bank'    => true,
-            'distractor_count' => 3,
+            'distractor_count' => 2,
             'note'             => $checked,
             'ref'              => $ref['dieng'],
-            'title'            => ['Lengkapi Kesimpulan', 'Complete the Conclusion'],
-            'instruction'      => ['Baca informasinya, lalu pilih kata yang membuat kesimpulan menjadi tepat.', 'Read the information, then choose the word that makes the conclusion correct.'],
+            'title'            => ['Lengkapi Bacaan: Negeri di Atas Awan', 'Complete the Reading: The Land Above the Clouds'],
+            'instruction'      => ['Baca bacaannya sampai habis. Pilih kata yang tepat untuk setiap kotak kosong; ada dua kata yang tidak terpakai.', 'Read the whole text. Choose the right word for each empty box; two words will not be used.'],
             'description'      => [
-                'Kesimpulan yang baik lahir dari informasi, bukan dari tebakan. Bantu Jaka menyimpulkan apa yang ia pelajari di Wonosobo.',
-                'A good conclusion comes from information, not from guessing. Help Jaka draw conclusions from what he learned in Wonosobo.',
+                'Mbah Kedu menyiapkan catatan tentang Dieng, tetapi beberapa kata penghubungnya hilang. Pikirkan hubungan antarkalimat, lalu lengkapi catatannya.',
+                'Mbah Kedu prepared notes about Dieng, but some connecting words are missing. Think about how the sentences are connected, then complete the notes.',
             ],
             'distractors' => [
-                ['tipis', 'thin'], ['garam', 'salt'], ['gelap', 'dark'], ['terendah', 'lowest'],
-                ['Jepang', 'Japanese'], ['hiasan', 'decoration'], ['piring', 'plate'],
+                ['panas', 'hot'], ['agar', 'unless'],
             ],
             'hints' => [
-                ['Kesimpulan harus sesuai isi informasi, tidak boleh menambah hal yang tidak ada.', 'The conclusion must match the information and must not add anything new.'],
-                ['Cari kata di informasi yang menjelaskan "karena" atau "sehingga".', 'Look for words in the information that explain "because" or "so".'],
-                ['Kata pengecoh sering berlawanan arti dengan jawaban, misalnya tinggi–rendah.', 'Decoy words often mean the opposite of the answer, such as high and low.'],
+                ['Baca kalimat sebelum dan sesudah kotak kosong. Apakah isinya sebab, akibat, atau pertentangan?', 'Read the sentence before and after the empty box. Does it show a cause, a result, or a contrast?'],
+                ['"Sehingga" menunjukkan akibat, "karena" menunjukkan sebab, dan "tetapi" menunjukkan pertentangan.', '"So" shows a result, "because" shows a cause, and "but" shows a contrast.'],
+                ['Ada dua kata pengecoh. Setelah semua kotak terisi, baca lagi: apakah setiap kalimat masuk akal?', 'There are two decoy words. When every box is filled, read it again: does each sentence make sense?'],
             ],
             'items' => [
                 [
+                    'active' => false,
                     'type'   => 'fill_blank_bank',
                     'source' => ['Pada musim kemarau, suhu pagi di Dieng bisa turun di bawah 0 °C sehingga embun membeku menjadi es.', 'In the dry season, morning temperatures in Dieng can drop below 0 °C, so the dew freezes into ice.'],
                     'prompt' => ['Kesimpulan: wisatawan yang datang pada musim kemarau sebaiknya membawa pakaian ___.', 'Conclusion: visitors who come in the dry season should bring ___ clothes.'],
                     'answer' => ['hangat', 'warm'],
                 ],
                 [
+                    'active' => false,
                     'type'   => 'fill_blank_bank',
                     'source' => ['Dataran Tinggi Dieng berada lebih dari 2.000 meter di atas permukaan laut dan sering tertutup kabut.', 'The Dieng Plateau is more than 2,000 metres above sea level and is often covered in mist.'],
                     'prompt' => ['Kesimpulan: Dieng dijuluki negeri di atas awan karena letaknya sangat ___.', 'Conclusion: Dieng is called the land above the clouds because it is very ___.'],
                     'answer' => ['tinggi', 'high'],
                 ],
                 [
+                    'active' => false,
                     'type'   => 'fill_blank_bank',
                     'source' => ['Air Telaga Warna mengandung belerang. Karena itu warnanya tampak berubah-ubah saat terkena cahaya matahari.', 'The water of Telaga Warna contains sulphur. That is why its colour seems to change in the sunlight.'],
                     'prompt' => ['Kesimpulan: warna Telaga Warna berubah karena kandungan ___ dalam airnya.', 'Conclusion: the colour of Telaga Warna changes because of the ___ in its water.'],
                     'answer' => ['belerang', 'sulphur'],
                 ],
                 [
+                    'active' => false,
                     'type'   => 'fill_blank_bank',
                     'source' => ['Air Telaga Pengilon sangat jernih sehingga memantulkan pemandangan di sekitarnya seperti kaca.', 'The water of Telaga Pengilon is so clear that it reflects the scenery around it like glass.'],
                     'prompt' => ['Kesimpulan: nama "pengilon" cocok karena telaga itu seperti ___ raksasa.', 'Conclusion: the name "pengilon" fits because the lake is like a giant ___.'],
                     'answer' => ['cermin', 'mirror'],
                 ],
                 [
+                    'active' => false,
                     'type'   => 'fill_blank_bank',
                     'ref'    => $ref['food'],
                     'source' => ['Carica atau pepaya gunung tumbuh baik di ketinggian 1.400–2.400 meter yang berudara sejuk, seperti Dieng.', 'Carica, or mountain papaya, grows well at 1,400–2,400 metres where the air is cool, like Dieng.'],
@@ -165,6 +209,7 @@ return [
                     'answer' => ['rendah', 'lowland'],
                 ],
                 [
+                    'active' => false,
                     'type'   => 'fill_blank_bank',
                     'ref'    => $ref['food'],
                     'source' => ['Mi ongklok direbus di dalam keranjang bambu kecil bernama ongklok yang dicelup-celupkan ke air mendidih.', 'Ongklok noodles are boiled in a small bamboo basket called an ongklok, which is dipped again and again into boiling water.'],
@@ -172,6 +217,7 @@ return [
                     'answer' => ['alat', 'tool'],
                 ],
                 [
+                    'active' => false,
                     'type'   => 'fill_blank_bank',
                     'ref'    => $ref['food'],
                     'source' => ['Kebun Teh Tambi dibuka tahun 1865, ketika Wonosobo masih berada di bawah pemerintahan Hindia Belanda.', 'Tambi Tea Estate was opened in 1865, when Wonosobo was still under the Dutch East Indies government.'],
@@ -179,6 +225,7 @@ return [
                     'answer' => ['Belanda', 'Dutch'],
                 ],
                 [
+                    'active' => false,
                     'type'   => 'fill_blank_bank',
                     'ref'    => $ref['culture'],
                     'source' => ['Bundengan berasal dari kowangan, tudung anyaman bambu yang dipakai penggembala bebek untuk berlindung dari panas dan hujan.', 'The bundengan comes from the kowangan, a woven bamboo hood worn by duck herders to shelter from the sun and rain.'],
@@ -186,12 +233,14 @@ return [
                     'answer' => ['pelindung', 'shelter'],
                 ],
                 [
+                    'active' => false,
                     'type'   => 'fill_blank_bank',
                     'source' => ['Desa Sembungan berada di ketinggian sekitar 2.300 meter, lebih tinggi daripada desa-desa lain di Pulau Jawa.', 'Sembungan Village lies at about 2,300 metres, higher than any other village in Java.'],
                     'prompt' => ['Kesimpulan: Desa Sembungan adalah desa ___ di Pulau Jawa.', 'Conclusion: Sembungan is the ___ village in Java.'],
                     'answer' => ['tertinggi', 'highest'],
                 ],
                 [
+                    'active' => false,
                     'type'      => 'fill_blank_bank',
                     'indicator' => 'sikap',
                     'ref'       => $ref['sources'],
@@ -199,6 +248,68 @@ return [
                     'source'    => ['Pesan berantai itu tidak mencantumkan sumber, tanggal, maupun nama pembuatnya.', 'The chain message does not show a source, a date, or the name of whoever made it.'],
                     'prompt'    => ['Kesimpulan: isi pesan itu belum dapat ___ sebelum diperiksa.', 'Conclusion: the message cannot be ___ until it has been checked.'],
                     'answer'    => ['dipercaya', 'trusted'],
+                ],
+
+                // ---- Bacaan kelas 5 (C3–C4): 7 rumpang + 2 pengecoh (panas, agar)
+                [
+                    'type'   => 'fill_blank_bank',
+                    'bloom'  => 'C4',
+                    'prompt' => ['Sebagian Dataran Tinggi Dieng berada di Kabupaten Wonosobo. Dataran tinggi ini terletak lebih dari 2.000 meter di atas permukaan laut. Dieng sering tertutup kabut ___ dijuluki negeri di atas awan.', 'Part of the Dieng Plateau lies in Wonosobo Regency. The plateau is more than 2,000 metres above sea level. Dieng is often covered in mist, ___ it is called the land above the clouds.'],
+                    'answer' => ['sehingga', 'so'],
+                    'note'   => $reading,
+                    'status' => 'needs_verification',
+                ],
+                [
+                    'type'   => 'fill_blank_bank',
+                    'bloom'  => 'C4',
+                    'prompt' => ['Pada musim kemarau, embun pagi bisa membeku menjadi es ___ suhunya turun di bawah 0 °C.', 'In the dry season, the morning dew can freeze into ice ___ the temperature drops below 0 °C.'],
+                    'answer' => ['karena', 'because'],
+                    'note'   => $reading,
+                    'status' => 'needs_verification',
+                ],
+                [
+                    'type'   => 'fill_blank_bank',
+                    'bloom'  => 'C3',
+                    'prompt' => ["Wisatawan yang datang pada musim itu sebaiknya membawa pakaian ___.\n\nDieng juga cocok untuk carica, yaitu pepaya gunung.", "Visitors who come in that season should bring ___ clothes.\n\nDieng is also good for carica, a mountain papaya."],
+                    'answer' => ['hangat', 'warm'],
+                    'note'   => $reading,
+                    'status' => 'needs_verification',
+                ],
+                [
+                    'type'   => 'fill_blank_bank',
+                    'bloom'  => 'C4',
+                    'ref'    => $ref['food'],
+                    'prompt' => ['Carica tumbuh baik di ketinggian 1.400–2.400 meter, ___ sulit tumbuh di dataran rendah yang panas.', 'Carica grows well at 1,400–2,400 metres, ___ it struggles to grow in hot lowlands.'],
+                    'answer' => ['tetapi', 'but'],
+                    'note'   => $reading,
+                    'status' => 'needs_verification',
+                ],
+                [
+                    'type'   => 'fill_blank_bank',
+                    'bloom'  => 'C3',
+                    'ref'    => $ref['food'],
+                    'prompt' => ['Desa Sembungan berada di ketinggian sekitar 2.300 meter, jadi carica ___ tumbuh di desa itu.', 'Sembungan Village is about 2,300 metres high, so carica ___ grow in that village.'],
+                    'answer' => ['dapat', 'can'],
+                    'note'   => $reading,
+                    'status' => 'needs_verification',
+                ],
+                [
+                    'type'   => 'fill_blank_bank',
+                    'bloom'  => 'C3',
+                    'ref'    => $ref['food'],
+                    'prompt' => ['Daerah pantai termasuk dataran rendah yang panas, jadi carica ___ tumbuh di sana.', 'Beaches are hot lowlands, so carica is ___ to grow there.'],
+                    'answer' => ['sulit', 'hard'],
+                    'note'   => $reading,
+                    'status' => 'needs_verification',
+                ],
+                [
+                    'type'   => 'fill_blank_bank',
+                    'bloom'  => 'C4',
+                    'ref'    => $ref['food'],
+                    'prompt' => ['Dari semua keterangan itu, kita tahu bahwa carica membutuhkan udara yang ___.', 'From all this information, we know that carica needs ___ air.'],
+                    'answer' => ['sejuk', 'cool'],
+                    'note'   => $reading,
+                    'status' => 'needs_verification',
                 ],
             ],
         ],
