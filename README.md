@@ -19,6 +19,15 @@ Aplikasi dibangun dengan **CodeIgniter 4.7** (PHP 8.2+, MySQL 8 / MariaDB 10.6+)
 | 7 | Integrasi fitur: `ExportService` (XLSX streaming), `ReportService` (PDF), `RetentionService`, lima command `gelita:*` | selesai |
 | 8 | Deployment & operasional: skrip deploy/backup/retensi untuk Linux (Bash) dan Windows + Laragon (PowerShell), konfigurasi Nginx, mode pemeliharaan | selesai |
 
+### Perombakan kelas 5 — Dokumen 1 (branch `perombakan-kelas5`, sedang berjalan)
+
+Fondasi data untuk penelitian kelas 5 ([`docs/perombakan-kelas5/01_FONDASI_DATA_DAN_RESET.md`](docs/perombakan-kelas5/01_FONDASI_DATA_DAN_RESET.md); catatan pelaksanaan di [`CATATAN_IMPLEMENTASI.md`](docs/perombakan-kelas5/CATATAN_IMPLEMENTASI.md)). Bagian lain README ini masih menggambarkan keadaan sebelum perombakan (lima tantangan per wilayah, chart, persetujuan wali) dan ditulis ulang di Dok 3 §11.
+
+- **Migration baru `004100`–`004600`.** Dihapus: tabel `research_phases`, `participant_consents`, `scoring_profiles`, `challenge_options` beserta kolom fase, consent, dan skor 0–100. Baru: tabel `item_tries` (setiap percobaan soal) dan `device_logs` (perangkat siswa), kolom `variant_group`, `completion_reason`, `max_tries`, `try_count`, `solved_on_try`, `assented_at`, `media_assets.is_placeholder`.
+- **Command baru `php spark gelita:reset`** — reset total data uji coba dan pengaturan; Pustaka, cerita, level, media, audio, sekolah resmi, dan akun staf tetap. Selalu `--dry-run` dulu dan buat backup. `gelita:score:recompute` dihapus.
+- **Permainan:** 4 tantangan per wilayah (12), satu variasi soal acak per pengerjaan, satu tahap bermain (tanpa pretest/posttest), bintang `bintang-1` ("Berhasil pada Percobaan Pertama"), pendaftaran tiga langkah `/daftar/1–3` yang tetap jalan tanpa JavaScript.
+- **Data mentah penelitian:** setiap percobaan (`item_tries`), perangkat (`matomo/device-detector` + Client Hints, koreksi iPad), dan event baru `screen_viewed`, `answer_selected`, `overlay_opened`, `reading_progress`, `page_hidden`/`page_visible`, `viewport_changed`. Analitik olahan, chart, dan ECharts dihapus dari panel.
+
 Kelima arena kini dapat dimainkan penuh di browser — Periksa, petunjuk, keluar berkonfirmasi, narasi audio, dan lentera yang bertambah dari respons server — dengan seluruh event gameplay dan telemetry audio tercatat, termasuk saat koneksi sempat putus. Panel admin menggambar seluruh chart dengan ECharts dari `/api/admin/*`, dan filter mengubah isi halaman tanpa memuat ulang.
 
 Yang sudah berfungsi penuh lewat HTTP: persetujuan dan registrasi dengan kata sandi kuat (termasuk dua metrik literasi keamanan digital), masuk/keluar, ganti sandi dan reset sandi oleh guru, ganti sandi sendiri untuk staf (`/admin/akun/sandi`, wajib setelah reset atau pembuatan akun oleh admin), peta Kedu dan peta wilayah dengan kunci berurutan, Kenali wilayah, dialog pembuka wilayah, kelima arena beserta seluruh API penilaiannya, layar selesai dan riwayat hasil, adegan wilayah tuntas dan penutup, Pustaka Kedu, profil, Balai Refleksi, pergantian bahasa tanpa kehilangan progres, serta seluruh halaman panel admin (dasbor, peserta, sesi, analitik, masukan, konten, impor bank soal, media & audio, studi & rilis, tata kelola, akun staf).
@@ -343,7 +352,7 @@ Di Windows, Laragon (PHP 8.3 + MySQL) memenuhi semua prasyarat. Pengaturan ekste
 
 ## Migration
 
-Migration dijalankan berurutan dari `000100` sampai `004000` (41 berkas) dan menghasilkan 32 tabel: 30 tabel domain, `ci_sessions`, dan `migrations`. `php spark migrate:rollback -b 0` mengembalikan database ke kosong.
+Migration dijalankan berurutan dari `000100` sampai `004600` (47 berkas) dan menghasilkan 30 tabel: 28 tabel domain, `ci_sessions`, dan `migrations` (perombakan kelas 5 menghapus 4 tabel dan menambah 2, lihat baris `004100`–`004600`). `php spark migrate:rollback -b 0` mengembalikan database ke kosong.
 
 `003100`–`003300` adalah koreksi, `003400`, `003600`, `003700`, `003800`, `003900`, dan `004000` menambah kolom baru, `003500` menambah tabel baru. Perubahan skema selalu datang sebagai migration baru; migration lama tidak diubah.
 
@@ -360,6 +369,12 @@ Migration dijalankan berurutan dari `000100` sampai `004000` (41 berkas) dan men
 | `003800` | menambahkan `challenge_items.audio_prompt_id` dan `audio_prompt_en_id` (FK `audio_assets`, `SET NULL`): narasi petunjuk arena `cari`; isinya ditautkan `gelita:narration:import` dari berkas `petunjuk-{node}-NN` |
 | `004000` | menambahkan `challenge_items.bloom_level` (`VARCHAR(2)`, ber-index): tingkat berpikir Taksonomi Bloom `C1` … `C6` per soal, diisi dari kolom `bloom_level` workbook atau editor soal |
 | `003900` | menjadikan `schools` direktori sekolah resmi: `level`, `stage`, `status`, `subdistrict_name`, `village_name`, `is_verified`, `match_key`, `merged_into_id` (FK ke `schools`, `SET NULL`); `match_key` baris lama diisi saat migration. Isinya dipasang `gelita:schools:import` |
+| `004100` | perombakan kelas 5 (Dok 1 §5.2): hapus `research_phases`, `participant_consents`, `game_sessions.phase_id`, dan kolom fase/consent di `research_studies`; tambah `participants.assented_at` |
+| `004200` | Dok 1 §5.3: hapus `scoring_profiles` dan kolom skor 0–100; tambah `challenge_attempts.variant_group`, `completion_reason`, `max_tries`, `item_responses.try_count`, `solved_on_try` |
+| `004300` | Dok 1 §5.4: tabel `item_tries` (satu baris per percobaan soal) |
+| `004400` | Dok 1 §5.5: `challenge_items.variant_group`; hapus `challenge_options` |
+| `004500` | Dok 1 §5.6: tabel `device_logs` (perangkat siswa saat daftar/masuk/lanjut sesi) |
+| `004600` | Dok 1 §5.7: `media_assets.is_placeholder`, `label`, `description` (gambar mockup, Dok 2) |
 
 `003200` memanggil `resetDataCache()` sebelum memeriksa kolom; tanpa itu seluruh pemeriksaan `fieldExists()` membaca daftar kolom versi sebelum `003100` pada proses `spark migrate` yang sama. Jangan melakukan rollback ke bawah `003100`: tahap 3 bergantung pada penamaan kolom hasil migration tersebut. Rincian lengkap di [`docs/01_DATABASE.md`](docs/01_DATABASE.md#koreksi-challenge_attempts-003100-dan-003200).
 
@@ -381,7 +396,7 @@ Jalankan test suite tanpa laporan coverage:
 vendor/bin/phpunit --no-coverage
 ```
 
-Suite (384 test) memakai grup database `tests` (SQLite3 in-memory) dan hanya menjalankan migration bernamespace `Tests\Support`, bukan migration aplikasi — skema aplikasi memakai fitur MySQL/MariaDB (`DATETIME(6)`, `ON UPDATE CURRENT_TIMESTAMP(6)`) yang tidak ada di SQLite. Sesi di-mock dengan `ArrayHandler` oleh `CIUnitTestCase`. Yang dikunci suite antara lain:
+Suite (419 test) memakai grup database `tests` (SQLite3 in-memory) dan hanya menjalankan migration bernamespace `Tests\Support`, bukan migration aplikasi — skema aplikasi memakai fitur MySQL/MariaDB (`DATETIME(6)`, `ON UPDATE CURRENT_TIMESTAMP(6)`) yang tidak ada di SQLite. Sesi di-mock dengan `ArrayHandler` oleh `CIUnitTestCase`. Yang dikunci suite antara lain:
 
 - `RouteWiringTest` — auto-route tetap mati, setiap handler menunjuk kelas/method yang ada, setiap view yang disebut controller punya berkasnya, dan ganti sandi staf hanya berfilter `staffAuth` (terbuka untuk guru).
 - `HeadRouteTest` — HEAD memakai rute GET beserta filternya; HEAD ke halaman staf tanpa login dialihkan ke `/admin/login`.
@@ -392,23 +407,26 @@ Suite (384 test) memakai grup database `tests` (SQLite3 in-memory) dan hanya men
 - `LibraryLockTest` — Pustaka terbuka per wilayah hanya setelah wilayahnya tuntas (juga pada unlock mode `free`), halaman terkunci dirender tanpa mencatat `library_opened`, wilayah yang belum terbuka tetap ditolak, rak `/pustaka` dan tombol bergembok di peta wilayah, serta momen "Pustaka terbuka" hanya milik attempt penuntas.
 - `VideoThumbnailTest` — alamat thumbnail per penyedia (YouTube maxres → hq, Vimeo oEmbed, Drive), respons HTML/non-gambar/SVG/terlalu besar ditolak, galat jaringan tidak melempar; memakai HTTP tiruan, tanpa jaringan.
 - `JsConfigTest` — penanda sesi antrean offline buram dan per sesi, `#app-config` tanpa identitas siswa, dan setiap `t('…')` di JavaScript punya kunci `Js.*`.
-- `ChartDataTest` — bentuk data chart admin dan kondisi kosongnya; label Tes awal/Tes akhir.
+- `SystemResetTest` (perombakan kelas 5) — `gelita:reset` di atas skema lengkap SQLite (`tests/_support/Database/ResetTables.php`, salinan skema `004600`): `--dry-run` tidak menulis apa pun, tanpa kata konfirmasi berhenti dengan kode 1, data uji coba kosong, isi Pustaka/cerita/level/media sama persis, sekolah belum terverifikasi dan `--hapus-guru`, 12 tantangan, satu studi aktif, audit `system_reset`, impor workbook uji kecil.
+- `RegisterWizardTest` — pendaftaran `/daftar/1–3` lewat router: urutan dan penjaga langkah, umur 8–15, gender dua pilihan, NPSN dan jenjang, kembali ke langkah sebelumnya, metrik sandi, kata sandi tidak pernah masuk session, validasi ulang langkah 1–2.
+- `DeviceProfileTest`, `ScreenViewFilterTest` — perangkat dari User-Agent nyata + Client Hints (koreksi iPad, bot, `device_json` rusak/terlalu besar, pemangkasan kolom); kode layar `screen_viewed`.
+- `ItemTryWritesTest`, `StarsTest` — satu baris `item_tries` per percobaan, `try_count`/`solved_on_try`, soal terkunci, kesempatan habis; aturan bintang `bintang-1`.
 - `ExcelWriterTest` — workbook terbaca ulang PhpSpreadsheet, teks berawalan `=` tidak pernah menjadi rumus, berkas sementara dibersihkan.
-- `ExportLabelsTest` — setiap kolom setiap lembar punya judul Indonesia (bukan kode), nama lembar Indonesia ≤ 31 karakter, kolom teknis tidak diunduh, kode menjadi kata, satuan detik/menit/persen, kelompok per dimensi, sel tanggal Excel tanpa geser jam.
-- `AnswerTextTest` — jawaban dan kunci dalam kalimat: keping tepat, huruf + pilihan, rumpang, alasan, kartu urutan, isi catatan aktivitas.
+- `ExportLabelsTest` — setiap kolom setiap lembar punya judul Indonesia (bukan kode), nama lembar Indonesia ≤ 31 karakter, kolom teknis tidak diunduh, kode menjadi kata, satuan detik/menit, kelompok per dimensi, sel tanggal Excel tanpa geser jam.
+- `AnswerTextTest` — jawaban dan kunci dalam kalimat: keping tepat, rumpang, kartu benar/salah, benda yang dicari, isi catatan aktivitas.
 - `PuzzleCutTest` — ukuran papan per tingkat (3 × 3 / 4 × 4 / jigsaw), urutan penentuan ukuran per soal, keping jigsaw bersebelahan memakai kurva yang sama, tepi papan lurus, potongan tetap per soal, dan aturan CSS keping jigsaw yang tidak dikecilkan base.css.
 - `ClozeReadingTest` — potongan bacaan menjadi paragraf dengan rumpang di dalam kalimat, aturan rumpang/pengecoh/Bloom per tingkat, semua soal bacaan dalam urutan bank, bank kata stabil per percobaan.
 - `BankReadingDataTest` — isi bank soal kelas 5 di `docs/bank-soal/data/`: tiga gambar aktif per Susun Gambar, ketiga bacaan memenuhi aturan wilayahnya tanpa peringatan, jeda paragraf sesudah rumpang, butir lama diistirahatkan bukan dihapus.
-- `BankWorkbookGuideTest` — setiap kolom yang dibaca importer punya penjelasan Indonesia di templat, header sheet data sama persis dengan importer, dan workbook produksi `docs/bank-soal/` ikut dibangun ulang bila kolom impor berubah.
+- `BankWorkbookGuideTest` — setiap kolom yang dibaca importer punya penjelasan Indonesia di templat, header sheet data sama persis dengan importer, baik di templat unduhan maupun di workbook kelas 5 (`docs/bank-soal/gelita-bank-soal-kelas5.xlsx`, Dok 2) bila sudah ada.
 - `MediaLinkTest`, `RichTextTest` — tautan media Pustaka hanya http(s) dan YouTube lewat domain nocookie; format teks Pustaka selalu meng-escape HTML lebih dulu.
 - `ExportRulesTest` — mode anonim tanpa kolom identitas (termasuk `school_npsn`), rahasia tidak pernah diekspor, kunci jawaban hanya admin, guru tanpa lembar Catatan aktivitas (`Raw Events`), cakupan sekolah dipaksa service, cakupan & penjaga drift penghapusan.
 - `SchoolNameTest` — varian penulisan satu sekolah ("SD NEGERI 1 CENDONO", "sdn 01 Cendono", "S.D.N. 1 Cendono", MTs/MI/SDIT, Muhammadiyah, kecamatan di nama resmi) berkunci sama; SD 1 vs SD 2 vs SD 11 vs MI tetap berbeda.
 - `SchoolDataFileTest` — daftar sekolah resmi `docs/sekolah/`: kolom, NPSN 8 angka unik, ke-35 kab/kota Jawa Tengah ada di `wilayah-id.json`, contoh peneliti (NPSN 20318068 = SD 1 CENDONO), berkas meta sesuai isi.
 - `SchoolDirectoryTest` — impor hanya menulis yang berubah dan tidak menghapus, berkas rusak ditolak utuh, cek NPSN & aturan `known_npsn`, NPSN wajib hanya setelah daftar terpasang, pencocokan nama yang tidak menebak saat ambigu, satu entri belum terverifikasi per varian, pencarian panel, gabung (siswa + guru pindah, alias), sahkan, gabung otomatis.
-- `Stage7WiringTest` — kelima command `gelita:*` aktif, service baru terdaftar, dan setiap keluaran templat PDF lewat `esc()`.
+- `Stage7WiringTest` — command `gelita:*` aktif (termasuk `gelita:reset`; `gelita:score:recompute` sudah dihapus), service baru terdaftar, dan setiap keluaran templat PDF lewat `esc()`.
 - `StaffPasswordCommandTest` — `gelita:staff:password` terdaftar, menolak tanpa nama pengguna, dan memakai jalur reset yang sama dengan `/admin/staf`; sandi sementaranya lolos `PasswordPolicy`.
 - `DeployFilesTest` — skrip Windows hanya ASCII, skrip Bash ber-LF dengan `set -E`, konfigurasi Nginx Linux dan Windows hanya berbeda di baris platform, tidak ada perintah yang merusak production, salinan `.env` di backup Windows tidak langsung terhapus retensi.
-- `ScoringServiceTest`, `PasswordPolicyTest`, `ChallengeEntityTest`, `ViewHelperTest`, `LanguageFilesTest`, `EventTimeTest`, `DebugToolbarRedactionTest`.
+- `PasswordPolicyTest`, `ChallengeEntityTest`, `ViewHelperTest`, `LanguageFilesTest`, `EventTimeTest`, `DebugToolbarRedactionTest`.
 
 Karena tabel aplikasi tidak dibuat di suite ini, **alur HTTP ujung ke ujung diverifikasi di atas MySQL/MariaDB sungguhan**. Gunakan database scratch terpisah. Kredensial untuk perintah CLI dioper lewat `database_default_DSN`, satu-satunya cara yang dapat menimpa `.env`:
 

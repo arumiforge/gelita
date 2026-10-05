@@ -78,8 +78,15 @@ export function overlayOpened(overlay, extra = {}) {
   emit('overlay_opened', { levelId: extra.levelId ?? null, payload: { overlay, ...(extra.level ? { level: extra.level } : {}) } });
 }
 
-/** Kode layar dari data-screen (cocok dengan screen_viewed di server bila ada). */
-const screenName = () => document.querySelector('[data-screen]')?.dataset.screen ?? null;
+/**
+ * Kode layar Dok 1 §12.4 dari <body data-screen-code> (dirender layout dengan
+ * resolver yang sama dengan screen_viewed di server). Pustaka terkunci
+ * dikenali dari halamannya, seperti di ScreenViewFilter.
+ */
+const screenName = () => {
+  const code = document.body?.dataset.screenCode || null;
+  return code === 'library' && document.querySelector('[data-screen="library-locked"]') ? 'library_locked' : code;
+};
 
 export function initScreenTracking() {
   const rotate = window.matchMedia ? window.matchMedia(ROTATE_QUERY) : null;
