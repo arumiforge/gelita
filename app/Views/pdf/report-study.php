@@ -1,10 +1,14 @@
 <?php
 /**
- * Laporan studi (PDF) — ReportService::studyData().
+ * Laporan penelitian (PDF) — ReportService::studyData().
+ *
+ * Pembacanya guru dan peneliti: istilah memakai kata sehari-hari (tahap, tes
+ * awal/akhir, benar sejak awal, tingkat kesulitan), bukan istilah teknis.
  *
  * Seluruh nilai yang berasal dari database atau input pengguna (nama sekolah,
- * nama studi, judul node) lewat esc(): mPDF memproses HTML, jadi HTML yang
- * tidak bersih adalah lubang injeksi. Raw event tidak pernah masuk laporan ini.
+ * nama penelitian, judul tantangan) lewat esc(): mPDF memproses HTML, jadi
+ * HTML yang tidak bersih adalah lubang injeksi. Catatan aktivitas lengkap
+ * tidak pernah masuk laporan ini.
  *
  * @var string               $title
  * @var array<string, mixed> $meta
@@ -63,8 +67,9 @@ $distribution = static function (array $groups, int $total) use ($num): array {
   <p class="muted">Ringkasan proses dan capaian belajar dari data permainan yang tercatat oleh sistem.</p>
 
   <table class="meta">
-    <tr><td class="key">Studi</td><td><?= esc($meta['study']) ?></td></tr>
-    <tr><td class="key">Fase</td><td><?= esc(admin_label('phase', $meta['phase'])) ?></td></tr>
+    <tr><td class="key">Sasaran</td><td>Siswa kelas 5 SD/MI</td></tr>
+    <tr><td class="key">Penelitian</td><td><?= esc($meta['study']) ?></td></tr>
+    <tr><td class="key">Tahap</td><td><?= esc(admin_label('phase', $meta['phase'])) ?></td></tr>
     <tr><td class="key">Rentang tanggal</td><td><?= esc(($meta['date_from'] ?? 'awal') . ' s.d. ' . ($meta['date_to'] ?? 'sekarang')) ?></td></tr>
     <?php if ($meta['school'] !== null): ?><tr><td class="key">Sekolah</td><td><?= esc($meta['school']) ?></td></tr><?php endif ?>
     <?php if ($meta['level'] !== null): ?><tr><td class="key">Wilayah</td><td><?= esc($meta['level']) ?></td></tr><?php endif ?>
@@ -75,17 +80,17 @@ $distribution = static function (array $groups, int $total) use ($num): array {
     <tr><td class="key">Nomor berkas</td><td>#<?= (int) $meta['export_id'] ?></td></tr>
   </table>
 
-  <div class="note small">Laporan ini tidak memuat nama peserta, nama pengguna, kata sandi, atau catatan aktivitas lengkap. Data lengkap untuk analisis lanjutan tersedia sebagai berkas Excel (XLSX) di menu Unduh data.</div>
+  <div class="note small">Laporan ini tidak memuat nama siswa, nama pengguna, kata sandi, atau catatan aktivitas lengkap. Data lengkap untuk diolah lebih lanjut tersedia sebagai berkas Excel di menu Unduh data.</div>
 </div>
 
 <pagebreak />
 
-<h2>1. Ringkasan peserta</h2>
+<h2>1. Ringkasan siswa</h2>
 <table class="kpi">
   <tr>
-    <td><div class="kpi-value"><?= esc($num($summary['participant_count'])) ?></div><div class="kpi-label">peserta</div></td>
+    <td><div class="kpi-value"><?= esc($num($summary['participant_count'])) ?></div><div class="kpi-label">siswa</div></td>
     <td><div class="kpi-value"><?= esc($num($summary['session_count'])) ?></div><div class="kpi-label">sesi bermain</div></td>
-    <td><div class="kpi-value"><?= esc($pct($summary['completion_rate'], true)) ?></div><div class="kpi-label">sesi tuntas 15 tantangan</div></td>
+    <td><div class="kpi-value"><?= esc($pct($summary['completion_rate'], true)) ?></div><div class="kpi-label">sesi yang menuntaskan 15 tantangan</div></td>
   </tr>
 </table>
 
@@ -97,19 +102,19 @@ $distribution = static function (array $groups, int $total) use ($num): array {
   <h3>Provinsi</h3>
   <?= view('pdf/_bars', ['bars' => $distribution($cohort['by_province'], (int) $cohort['total']), 'caption' => 'Sebaran provinsi'], ['saveData' => false]) ?>
 <?php else: ?>
-  <p class="muted">Belum ada peserta dalam cakupan ini.</p>
+  <p class="muted">Belum ada siswa dalam cakupan ini.</p>
 <?php endif ?>
 
 <h2>2. Ringkasan proses</h2>
 <table class="kpi">
   <tr>
     <td><div class="kpi-value"><?= esc($num($summary['avg_score'], 1)) ?></div><div class="kpi-label">rata-rata skor tantangan (0–100)</div></td>
-    <td><div class="kpi-value"><?= esc($pct($summary['avg_first_pass_accuracy'])) ?></div><div class="kpi-label">rata-rata tepat sejak awal</div></td>
-    <td><div class="kpi-value"><?= esc(ms_to_human((int) $summary['avg_duration_ms'])) ?></div><div class="kpi-label">rata-rata durasi sesi</div></td>
+    <td><div class="kpi-value"><?= esc($pct($summary['avg_first_pass_accuracy'])) ?></div><div class="kpi-label">rata-rata benar sejak awal</div></td>
+    <td><div class="kpi-value"><?= esc(ms_to_human((int) $summary['avg_duration_ms'])) ?></div><div class="kpi-label">rata-rata lama satu sesi</div></td>
   </tr>
   <tr>
-    <td><div class="kpi-value"><?= esc($num($summary['hint_usage'], 2)) ?></div><div class="kpi-label">petunjuk per tantangan</div></td>
-    <td><div class="kpi-value"><?= esc($num($summary['audio_usage']['total_plays'])) ?></div><div class="kpi-label">pemutaran audio oleh siswa (<?= esc($num($summary['audio_usage']['total_replays'])) ?> diulang, <?= esc($num($summary['audio_usage']['total_autoplays'] ?? 0)) ?> otomatis)</div></td>
+    <td><div class="kpi-value"><?= esc($num($summary['hint_usage'], 2)) ?></div><div class="kpi-label">petunjuk dibuka per tantangan</div></td>
+    <td><div class="kpi-value"><?= esc($num($summary['audio_usage']['total_plays'])) ?></div><div class="kpi-label">suara diputar oleh siswa (<?= esc($num($summary['audio_usage']['total_replays'])) ?> diulang, <?= esc($num($summary['audio_usage']['total_autoplays'] ?? 0)) ?> otomatis)</div></td>
     <td><div class="kpi-value"><?= esc($pct($security['password']['participants'] > 0 ? $security['password']['strong_first_try'] / $security['password']['participants'] : 0, true)) ?></div><div class="kpi-label">langsung membuat sandi kuat</div></td>
   </tr>
 </table>
@@ -126,14 +131,14 @@ foreach ($levels as $level) {
 ?>
 <h3>Rata-rata skor</h3>
 <?= view('pdf/_bars', ['bars' => $levelBars, 'caption' => 'Rata-rata skor per wilayah'], ['saveData' => false]) ?>
-<h3>Tepat sejak awal</h3>
-<?= view('pdf/_bars', ['bars' => $passBars, 'caption' => 'Tepat sejak awal per wilayah', 'alt' => true], ['saveData' => false]) ?>
+<h3>Benar sejak awal</h3>
+<?= view('pdf/_bars', ['bars' => $passBars, 'caption' => 'Benar sejak awal per wilayah', 'alt' => true], ['saveData' => false]) ?>
 
 <h2>4. Kesulitan tantangan</h2>
-<p class="muted small">Indeks kesulitan 0–100: 40% ketidaktepatan awal, 20% pengulangan, 20% petunjuk, 10% durasi, 10% tantangan ditinggalkan. Makin tinggi makin sulit.</p>
+<p class="muted small">Tingkat kesulitan 0–100 dihitung dari: salah pada jawaban pertama (40%), mengulang (20%), membuka petunjuk (20%), lama mengerjakan (10%), dan tantangan yang ditinggalkan (10%). Makin tinggi, makin sulit.</p>
 <table class="data compact">
   <thead>
-    <tr><th style="width: 13%">Wilayah</th><th style="width: 29%">Tantangan</th><th class="num" style="width: 11%">Percobaan</th><th class="num" style="width: 9%">Tepat awal</th><th class="num" style="width: 9%">Tepat akhir</th><th class="num" style="width: 11%">Petunjuk</th><th class="num" style="width: 9%">Median durasi</th><th class="num" style="width: 9%">Indeks</th></tr>
+    <tr><th style="width: 13%">Wilayah</th><th style="width: 27%">Tantangan</th><th class="num" style="width: 10%">Dikerjakan (kali)</th><th class="num" style="width: 10%">Benar sejak awal</th><th class="num" style="width: 10%">Benar di akhir</th><th class="num" style="width: 10%">Petunjuk per kali</th><th class="num" style="width: 10%">Lama (nilai tengah)</th><th class="num" style="width: 10%">Tingkat kesulitan</th></tr>
   </thead>
   <tbody>
     <?php foreach ($nodes as $node): ?>
@@ -151,7 +156,7 @@ foreach ($levels as $level) {
   </tbody>
 </table>
 
-<h2>5. Penguasaan indikator</h2>
+<h2>5. Capaian indikator</h2>
 <?php if ($indicators === []): ?>
   <p class="muted">Belum ada soal yang dijawab dalam cakupan ini.</p>
 <?php else: ?>
@@ -163,11 +168,11 @@ foreach ($levels as $level) {
           'label' => $indicator['name'],
           'value' => $indicator['mastery_ratio'] * 100,
           'text'  => $pct($indicator['mastery_ratio'], true),
-          'sub'   => $num($indicator['correct_count']) . ' dari ' . $num($indicator['evidence_count']) . ' bukti',
+          'sub'   => $num($indicator['correct_count']) . ' dari ' . $num($indicator['evidence_count']) . ' jawaban benar sejak awal',
       ];
   }
   ?>
-  <?= view('pdf/_bars', ['bars' => $indicatorBars, 'caption' => 'Rasio penguasaan per indikator'], ['saveData' => false]) ?>
+  <?= view('pdf/_bars', ['bars' => $indicatorBars, 'caption' => 'Capaian per indikator'], ['saveData' => false]) ?>
 <?php endif ?>
 
 <?php if ($security['pillars'] !== []): ?>
@@ -179,31 +184,30 @@ foreach ($levels as $level) {
       $pillarBars[] = ['label' => admin_label('pillar', (string) $pillar), 'value' => $stats['accuracy'] * 100, 'text' => $pct($stats['accuracy'], true), 'sub' => $num($stats['appeared']) . ' jawaban'];
   }
   ?>
-  <?= view('pdf/_bars', ['bars' => $pillarBars, 'caption' => 'Ketepatan per pilar literasi digital', 'alt' => true], ['saveData' => false]) ?>
+  <?= view('pdf/_bars', ['bars' => $pillarBars, 'caption' => 'Jawaban benar per pilar literasi digital', 'alt' => true], ['saveData' => false]) ?>
 <?php endif ?>
 
-<h2>6. Pretest dan posttest</h2>
+<h2>6. Tes awal dan tes akhir</h2>
 <?php if ((int) $prePost['pairs'] === 0 && (int) $prePost['incompatible_pairs'] === 0): ?>
-  <p class="muted">Belum ada peserta yang menuntaskan sesi pretest dan posttest dalam cakupan ini.</p>
+  <p class="muted">Belum ada siswa yang menuntaskan tes awal dan tes akhir dalam cakupan ini.</p>
 <?php else: ?>
   <table class="kpi">
     <tr>
-      <td><div class="kpi-value"><?= esc($num($prePost['pretest'], 1)) ?></div><div class="kpi-label">rata-rata skor pretest</div></td>
-      <td><div class="kpi-value"><?= esc($num($prePost['posttest'], 1)) ?></div><div class="kpi-label">rata-rata skor posttest</div></td>
-      <td><div class="kpi-value"><?= $prePost['delta'] === null ? '—' : esc(($prePost['delta'] >= 0 ? '+' : '') . $num($prePost['delta'], 1)) ?></div><div class="kpi-label">selisih, dari <?= esc($num($prePost['pairs'])) ?> pasangan</div></td>
+      <td><div class="kpi-value"><?= esc($num($prePost['pretest'], 1)) ?></div><div class="kpi-label">rata-rata skor tes awal</div></td>
+      <td><div class="kpi-value"><?= esc($num($prePost['posttest'], 1)) ?></div><div class="kpi-label">rata-rata skor tes akhir</div></td>
+      <td><div class="kpi-value"><?= $prePost['delta'] === null ? '—' : esc(($prePost['delta'] >= 0 ? '+' : '') . $num($prePost['delta'], 1)) ?></div><div class="kpi-label">selisih, dari <?= esc($num($prePost['pairs'])) ?> siswa yang mengikuti kedua tes</div></td>
     </tr>
   </table>
   <?php if ((int) $prePost['incompatible_pairs'] > 0): ?>
-    <p class="note small"><?= esc($num($prePost['incompatible_pairs'])) ?> pasangan tidak ikut dihitung karena pretest dan posttest-nya memakai versi rilis yang berbeda.</p>
+    <p class="note small"><?= esc($num($prePost['incompatible_pairs'])) ?> siswa tidak ikut dihitung karena tes awal dan tes akhirnya memakai versi permainan yang berbeda.</p>
   <?php endif ?>
 <?php endif ?>
 
-<h2>7. Catatan metodologis</h2>
-<p><b>Tepat sejak awal</b> (first-pass accuracy) adalah persentase soal yang dijawab benar pada pemeriksaan pertama, sebelum peserta memperbaiki jawabannya. Ukuran ini paling dekat dengan pemahaman awal dan menjadi bobot terbesar skor (70%).</p>
-<p><b>Ketepatan akhir</b> adalah persentase soal yang benar setelah perbaikan; <b>kemandirian</b> berkurang oleh penggunaan petunjuk dan pengulangan pemeriksaan. Skor = 70% tepat sejak awal + 20% ketepatan akhir + 10% kemandirian, dihitung otomatis oleh sistem dengan aturan penilaian yang bernomor versi.</p>
-<p><b>p</b> (indeks kesukaran soal) = proporsi jawaban benar di antara peserta yang menjawab soal itu; makin kecil makin sulit. <b>D</b> (daya beda) = p kelompok 27% teratas dikurangi p kelompok 27% terbawah berdasarkan total ketepatan: &lt;0 buruk, &lt;0,20 lemah, 0,20–0,40 cukup, &gt;0,40 baik. Nilai D negatif biasanya menandakan kunci jawaban keliru atau kalimat yang membingungkan.</p>
-<p><b>Penguasaan indikator</b> adalah rasio bukti — soal yang benar sejak awal dibagi soal yang dijawab — bukan label lulus/tidak lulus. Pustaka Kedu dan audio tidak memengaruhi skor; keduanya dianalisis sebagai perilaku belajar.</p>
-<p class="muted small">Sesi berfase "umum" tidak pernah dicampur ke perbandingan pretest–posttest. Perbandingan hanya dilakukan pada sesi dengan versi rilis yang sama.</p>
+<h2>7. Cara membaca angka</h2>
+<p><b>Benar sejak awal</b> adalah persentase soal yang langsung benar saat siswa pertama kali menekan Periksa, sebelum memperbaiki jawabannya. Angka ini paling dekat dengan pemahaman awal siswa, jadi bobotnya paling besar dalam skor (70%).</p>
+<p><b>Benar di akhir</b> adalah persentase soal yang benar setelah diperbaiki. <b>Kemandirian</b> berkurang setiap kali siswa membuka petunjuk atau mengulang. Skor tantangan = 70% benar sejak awal + 20% benar di akhir + 10% kemandirian, dihitung otomatis oleh sistem.</p>
+<p><b>Capaian indikator</b> adalah persentase jawaban yang benar sejak awal untuk soal-soal indikator itu. Angka ini bukan nilai lulus/tidak lulus. Membaca Pustaka Kedu dan memutar suara tidak memengaruhi skor; keduanya dicatat sebagai kebiasaan belajar.</p>
+<p class="muted small">Sesi bermain biasa tidak pernah dicampur ke perbandingan tes awal dan tes akhir. Perbandingan hanya dilakukan bila kedua tes memakai versi permainan yang sama.</p>
 
 </body>
 </html>

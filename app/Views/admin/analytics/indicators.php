@@ -1,9 +1,10 @@
 <?php
 /**
- * Penguasaan indikator — `/admin/analitik/indikator` → AnalyticsController::indicators
+ * Capaian indikator — `/admin/analitik/indikator` → AnalyticsController::indicators
  *
- * Matriks indikator × wilayah berisi rasio jawaban benar pertama beserta
- * JUMLAH BUKTI — bukan label biner lulus/tidak.
+ * Matriks indikator × wilayah berisi persentase jawaban yang benar sejak
+ * awal beserta JUMLAH JAWABAN-nya — bukan label lulus/tidak lulus. Indikator
+ * ditulis dengan namanya, bukan kodenya.
  *
  * @var array<string, array<string, mixed>>               $rows      keseluruhan
  * @var list<App\Entities\Level>                          $levels
@@ -43,7 +44,7 @@
       <tbody>
         <?php foreach ($rows as $code => $row): ?>
           <tr>
-            <th scope="row"><code><?= esc($code) ?></code><span class="cell-sub"><?= esc($row['name']) ?></span></th>
+            <th scope="row"><?= esc($row['name'] !== '' ? $row['name'] : $code) ?></th>
             <?php foreach (array_merge(array_map(static fn ($l) => $perLevel[$l->id][$code] ?? null, $levels), [$row]) as $cell): ?>
               <?php if ($cell === null || (int) $cell['evidence_count'] === 0): ?>
                 <td class="heat-cell is-empty">—<small>0 jawaban</small></td>
@@ -74,12 +75,11 @@
       'rows'    => array_values($rows),
       'caption' => 'Hasil per indikator secara keseluruhan',
       'columns' => [
-          'code'             => ['label' => 'Kode', 'format' => 'code'],
           'name'             => 'Indikator',
           'evidence_count'   => ['label' => 'Jumlah jawaban', 'format' => 'num'],
           'correct_count'    => ['label' => 'Benar sejak awal', 'format' => 'num'],
           'mastery_ratio'    => ['label' => 'Persentase benar', 'format' => 'ratio'],
-          'mean_response_ms' => ['label' => 'Rata-rata waktu menjawab', 'format' => 'ms'],
+          'mean_response_ms' => ['label' => 'Rata-rata lama menjawab', 'format' => 'ms'],
       ],
   ]) ?>
 <?php endif ?>

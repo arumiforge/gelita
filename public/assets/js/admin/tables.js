@@ -40,8 +40,8 @@ export function sortValue(cell) {
       : Number(clock[1]) * 60 + Number(clock[2]);
   }
 
-  // "1.234,5" · "85,0%" · "512 KB" · "12 tahun" · "3 kali"
-  const bare = text.replace(/\s*(%|KB|th|tahun|kali|detik|percobaan|bukti)$/i, '');
+  // "1.234,5" · "85,0%" · "512 KB" · "12 tahun" · "3 kali" · "4 siswa"
+  const bare = text.replace(/\s*(%|KB|th|tahun|kali|detik|menit|percobaan|bukti|jawaban|siswa|soal)$/i, '');
   if (/^[+-]?(\d{1,3}(\.\d{3})+|\d+)(,\d+)?$/.test(bare)) {
     return Number(bare.replace(/\./g, '').replace(',', '.'));
   }

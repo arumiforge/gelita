@@ -1,6 +1,6 @@
 <?php
 /**
- * Studi & fase — `/admin/studi` → StudyController::index
+ * Penelitian & tahap — `/admin/studi` → StudyController::index
  *
  * Permainan memakai studi berstatus `active` dengan id terbesar. Pengaturan
  * di sini langsung memengaruhi siswa berikutnya: fase aktif, mode buka
@@ -34,7 +34,7 @@ $fields = static function (?array $study, string $p) use ($choices, $locales, $p
     <div class="form-grid">
       <?php if ($study === null): ?>
         <div class="field">
-          <label for="<?= $p ?>-code">Kode singkat studi <span class="req">*</span></label>
+          <label for="<?= $p ?>-code">Kode singkat penelitian <span class="req">*</span></label>
           <input type="text" id="<?= $p ?>-code" name="code" required maxlength="50" spellcheck="false" placeholder="gelita-2026">
           <p class="field-help">Tanpa spasi, mis. gelita-2026. Tidak dapat diubah setelah dibuat.</p>
         </div>
@@ -42,7 +42,7 @@ $fields = static function (?array $study, string $p) use ($choices, $locales, $p
         <input type="hidden" name="code" value="<?= esc($study['code'], 'attr') ?>">
       <?php endif ?>
       <div class="field">
-        <label for="<?= $p ?>-name">Nama studi <span class="req">*</span></label>
+        <label for="<?= $p ?>-name">Nama penelitian <span class="req">*</span></label>
         <input type="text" id="<?= $p ?>-name" name="name" required maxlength="200" value="<?= esc($value('name'), 'attr') ?>">
       </div>
       <div class="field">
@@ -58,13 +58,13 @@ $fields = static function (?array $study, string $p) use ($choices, $locales, $p
         </select>
       </div>
       <div class="field">
-        <label for="<?= $p ?>-phase">Fase yang sedang berjalan</label>
+        <label for="<?= $p ?>-phase">Tahap yang sedang berjalan</label>
         <select id="<?= $p ?>-phase" name="active_phase_code">
           <?php foreach ($phaseCodes as $code): ?>
             <option value="<?= esc($code, 'attr') ?>" <?= $value('active_phase_code', 'umum') === $code ? 'selected' : '' ?>><?= esc(admin_label('phase', $code)) ?></option>
           <?php endforeach ?>
         </select>
-        <p class="field-help">Sesi bermain baru dicatat pada fase ini. Ganti ke Posttest setelah pretest selesai.</p>
+        <p class="field-help">Sesi bermain baru dicatat pada tahap ini. Ganti ke Tes akhir setelah tes awal selesai.</p>
       </div>
       <div class="field">
         <label for="<?= $p ?>-locale">Bahasa awal permainan</label>
@@ -93,7 +93,7 @@ $fields = static function (?array $study, string $p) use ($choices, $locales, $p
       <div class="field">
         <label for="<?= $p ?>-retention">Lama penyimpanan data (hari)</label>
         <input type="number" id="<?= $p ?>-retention" name="retention_days" min="1" max="3650" value="<?= esc($value('retention_days', 1825), 'attr') ?>">
-        <p class="field-help">Setelah lewat, sistem mengingatkan admin untuk menghapus data siswa studi ini (tidak dihapus otomatis). 1825 hari = 5 tahun.</p>
+        <p class="field-help">Setelah lewat, sistem mengingatkan admin untuk menghapus data siswa penelitian ini (tidak dihapus otomatis). 1825 hari = 5 tahun.</p>
       </div>
       <div class="field span-all">
         <label for="<?= $p ?>-desc">Keterangan</label>
@@ -111,19 +111,19 @@ $fields = static function (?array $study, string $p) use ($choices, $locales, $p
 
 <?= $this->section('content') ?>
 <?= component('partials/admin-head', [
-    'title'   => 'Studi & fase',
+    'title'   => 'Penelitian & tahap',
     'eyebrow' => 'Pengelolaan · pengaturan penelitian',
-    'lead'    => 'Permainan memakai studi berstatus Aktif yang paling baru dibuat. Perubahan di sini berlaku untuk sesi bermain berikutnya; sesi yang sedang berjalan tidak berubah.',
+    'lead'    => 'Permainan memakai penelitian berstatus Aktif yang paling baru dibuat. Perubahan di sini berlaku untuk sesi bermain berikutnya; sesi yang sedang berjalan tidak berubah.',
 ]) ?>
 <ul class="sub-nav">
-  <li><a href="<?= base_url('admin/studi') ?>" aria-current="page"><?= icon('flask') ?> Studi & fase</a></li>
+  <li><a href="<?= base_url('admin/studi') ?>" aria-current="page"><?= icon('flask') ?> Penelitian & tahap</a></li>
   <li><a href="<?= base_url('admin/studi/rilis') ?>"><?= icon('list') ?> Versi permainan</a></li>
   <li><a href="<?= base_url('admin/studi/skoring') ?>"><?= icon('target') ?> Aturan penilaian</a></li>
 </ul>
 <?= $this->include('partials/flash') ?>
 
 <?php if ($used === null): ?>
-  <p class="alert alert-error" role="alert"><?= icon('warn') ?> Belum ada studi berstatus Aktif. Siswa belum dapat mulai bermain sampai satu studi diaktifkan.</p>
+  <p class="alert alert-error" role="alert"><?= icon('warn') ?> Belum ada penelitian berstatus Aktif. Siswa belum dapat mulai bermain sampai satu penelitian diaktifkan.</p>
 <?php endif ?>
 
 <?php foreach ($studies as $study): ?>
@@ -145,7 +145,7 @@ $fields = static function (?array $study, string $p) use ($choices, $locales, $p
     <?= $fields($study, 's' . $sid) ?>
 
     <div>
-      <span class="field-help">Fase penelitian studi ini:</span>
+      <span class="field-help">Tahap penelitian ini:</span>
       <ul class="chip-list">
         <?php foreach ($phases[$sid] ?? [] as $phase): ?>
           <li class="chip<?= $phase['code'] === $study['active_phase_code'] ? ' is-on' : '' ?>">
@@ -154,24 +154,24 @@ $fields = static function (?array $study, string $p) use ($choices, $locales, $p
           </li>
         <?php endforeach ?>
         <?php if (($phases[$sid] ?? []) === []): ?>
-          <li class="muted">Studi ini belum punya daftar fase.</li>
+          <li class="muted">Penelitian ini belum punya daftar tahap.</li>
         <?php endif ?>
       </ul>
     </div>
 
     <div class="form-actions">
-      <button class="btn btn-primary" type="submit"><?= icon('check') ?> Simpan studi</button>
+      <button class="btn btn-primary" type="submit"><?= icon('check') ?> Simpan penelitian</button>
     </div>
   </form>
 <?php endforeach ?>
 
 <details class="form-section" <?= $studies === [] ? 'open' : '' ?>>
-  <summary class="panel-title"><?= icon('sparkle') ?> Buat studi baru</summary>
+  <summary class="panel-title"><?= icon('sparkle') ?> Buat penelitian baru</summary>
   <form method="post" action="<?= base_url('admin/studi') ?>" class="stack">
     <?= csrf_field() ?>
     <?= $fields(null, 'new') ?>
     <div class="form-actions">
-      <button class="btn btn-primary" type="submit"><?= icon('check') ?> Buat studi</button>
+      <button class="btn btn-primary" type="submit"><?= icon('check') ?> Buat penelitian</button>
     </div>
   </form>
 </details>

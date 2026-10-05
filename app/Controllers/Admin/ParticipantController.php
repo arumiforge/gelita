@@ -64,7 +64,7 @@ class ParticipantController extends BaseAdminController
             'session_count' => 0, 'shards' => 0, 'mean_first_pass' => null, 'last_active_at' => null,
         ]), $entities);
 
-        return $this->panel('admin/participants/index', 'Peserta', [
+        return $this->panel('admin/participants/index', 'Siswa', [
             'filters' => $filters,
             'rows'    => $rows,
             'pager'   => $participants->pager,
@@ -81,10 +81,10 @@ class ParticipantController extends BaseAdminController
         try {
             $profile = $this->analytics()->participantProfile($participantId, $this->schoolScope());
         } catch (\RuntimeException) {
-            throw PageNotFoundException::forPageNotFound("Peserta {$participantId} tidak ditemukan.");
+            throw PageNotFoundException::forPageNotFound("Siswa {$participantId} tidak ditemukan.");
         }
 
-        return $this->panel('admin/participants/show', 'Profil peserta', [
+        return $this->panel('admin/participants/show', 'Profil siswa', [
             'participant' => $this->viewRow($participant),
             'profile'     => $profile,
             'consent'     => model(ParticipantConsentModel::class)->latestFor($participantId),
@@ -129,7 +129,7 @@ class ParticipantController extends BaseAdminController
         $scope       = $this->schoolScope();
 
         if ($participant === null || ($scope !== null && (int) $participant->school_id !== $scope)) {
-            throw PageNotFoundException::forPageNotFound("Peserta {$participantId} tidak ditemukan.");
+            throw PageNotFoundException::forPageNotFound("Siswa {$participantId} tidak ditemukan.");
         }
 
         return $participant;

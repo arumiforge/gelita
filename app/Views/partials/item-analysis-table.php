@@ -1,13 +1,15 @@
 <?php
 /**
- * Tabel analisis butir: kesukaran p dan daya beda D beserta tafsirnya.
+ * Tabel hasil per soal untuk guru: persentase benar (indeks kesukaran p,
+ * ditulis sebagai persen) dan daya pembeda (indeks daya beda D, ditulis
+ * sebagai selisih persen) beserta tafsirnya, serta tingkat berpikir Bloom.
  * Baris merah bila benar < 50%, hijau bila > 85%. Tafsir selalu tertulis,
  * warna hanya penegas.
  *
  * @var list<array<string, mixed>> $rows          AnalyticsController::describeItems()
  * @var bool|null                  $showLocation  tampilkan kolom wilayah/node
  */
-$pLabel = static fn (float $p): array => $p < 0.30 ? ['sukar', 'is-bad'] : ($p <= 0.70 ? ['sedang', 'is-warn'] : ['mudah', 'is-ok']);
+$pLabel = static fn (float $p): array => $p < 0.30 ? ['sulit', 'is-bad'] : ($p <= 0.70 ? ['sedang', 'is-warn'] : ['mudah', 'is-ok']);
 $dLabel = static function (?float $d): array {
     if ($d === null) {
         return ['data belum cukup', 'is-muted'];
@@ -25,6 +27,7 @@ $columns = [
         . '<span class="cell-sub cell-clip" title="' . esc($r['prompt'], 'attr') . '">' . esc($r['prompt'] !== '' ? $r['prompt'] : '—') . '</span>'],
     'indicator'        => 'Indikator',
     'interaction_type' => ['label' => 'Jenis soal', 'format' => 'label', 'group' => 'interaction'],
+    'bloom_level'      => ['label' => 'Tingkat berpikir', 'format' => 'label', 'group' => 'bloom'],
 ];
 if (! empty($showLocation)) {
     $columns['level_name'] = ['label' => 'Wilayah', 'render' => static fn (array $r): string => esc($r['level_name'] ?? '—')
@@ -32,19 +35,19 @@ if (! empty($showLocation)) {
 }
 $columns += [
     'answer_key'       => ['label' => 'Kunci jawaban', 'render' => static fn (array $r): string => '<span class="cell-clip">' . esc($r['answer_key'] ?? '—') . '</span>'],
-    'appeared'         => ['label' => 'Muncul', 'format' => 'num'],
-    'correct'          => ['label' => 'Benar', 'format' => 'num'],
-    'p'                => ['label' => 'Kesukaran p', 'render' => static function (array $r) use ($pLabel): string {
+    'appeared'         => ['label' => 'Dijawab (siswa)', 'format' => 'num'],
+    'correct'          => ['label' => 'Benar sejak awal', 'format' => 'num'],
+    'p'                => ['label' => 'Persentase benar', 'render' => static function (array $r) use ($pLabel): string {
         [$text, $class] = $pLabel((float) $r['p']);
 
-        return '<span class="num">' . esc(fmt_num($r['p'], 2, 'id')) . '</span> <span class="badge ' . $class . '">' . $text . '</span>';
+        return '<span class="num">' . esc(fmt_pct($r['p'], true, 0)) . '</span> <span class="badge ' . $class . '">' . $text . '</span>';
     }],
-    'd'                => ['label' => 'Daya beda D', 'render' => static function (array $r) use ($dLabel): string {
+    'd'                => ['label' => 'Daya pembeda', 'render' => static function (array $r) use ($dLabel): string {
         [$text, $class] = $dLabel($r['d'] === null ? null : (float) $r['d']);
 
-        return '<span class="num">' . ($r['d'] === null ? '—' : esc(fmt_num($r['d'], 2, 'id'))) . '</span> <span class="badge ' . $class . '">' . $text . '</span>';
+        return '<span class="num">' . ($r['d'] === null ? '—' : esc(fmt_num((float) $r['d'] * 100, 0, 'id'))) . '</span> <span class="badge ' . $class . '">' . $text . '</span>';
     }],
-    'mean_duration_ms' => ['label' => 'Rata-rata waktu (detik)', 'render' => static fn (array $r): string => '<span class="num">' . esc(fmt_num($r['mean_duration_ms'] / 1000, 1, 'id')) . '</span>'],
+    'mean_duration_ms' => ['label' => 'Rata-rata lama menjawab (detik)', 'render' => static fn (array $r): string => '<span class="num">' . esc(fmt_num($r['mean_duration_ms'] / 1000, 1, 'id')) . '</span>'],
     'top_wrong'        => ['label' => 'Jawaban salah tersering', 'format' => 'json'],
 ];
 ?>
