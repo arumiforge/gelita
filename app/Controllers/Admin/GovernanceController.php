@@ -42,7 +42,7 @@ class GovernanceController extends BaseAdminController
         $scope     = $retention->normalizeScope((array) $this->request->getPost());
 
         if ($scope === null) {
-            return $this->back('admin/tata-kelola', 'Isi salah satu: nomor peserta, nomor sesi, atau nomor studi.');
+            return $this->back('admin/tata-kelola', 'Isi salah satu: nomor siswa, nomor sesi, atau nomor penelitian.');
         }
 
         $preview = $retention->preview(

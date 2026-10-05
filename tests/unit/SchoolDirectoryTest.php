@@ -158,6 +158,29 @@ final class SchoolDirectoryTest extends CIUnitTestCase
         $this->assertFalse($rules->known_npsn(''));
     }
 
+    /**
+     * GELITA kini khusus kelas 5 SD/MI: NPSN SMP/MTs ditolak saat mendaftar,
+     * SD, MI, dan SLB diterima; NPSN tak dikenal diserahkan ke known_npsn.
+     */
+    public function testRegistrationAcceptsOnlyElementarySchools(): void
+    {
+        $this->import();
+        $directory = $this->directory();
+        $rules     = new GelitaRules();
+
+        $this->assertTrue($rules->allowed_school_stage('20318068'), 'SD');
+        $this->assertTrue($rules->allowed_school_stage('60712310'), 'MI');
+        $this->assertFalse($rules->allowed_school_stage('20364140'), 'MTs ditolak');
+        $this->assertTrue($rules->allowed_school_stage('12345678'), 'NPSN tak dikenal: urusan known_npsn');
+
+        $this->assertTrue($directory->describe($directory->findByNpsn('20318068'))['allowed']);
+        $this->assertFalse($directory->describe($directory->findByNpsn('20364140'))['allowed']);
+
+        $this->assertTrue($directory->stageAllowed(['stage' => 'slb']), 'SLB memuat SDLB');
+        $this->assertTrue($directory->stageAllowed(['stage' => null]), 'jenjang tak diketahui tidak dapat diperiksa');
+        $this->assertFalse($directory->stageAllowed(['stage' => 'SMP']));
+    }
+
     public function testRequiresNpsnOnlyForDirectoryProvinces(): void
     {
         $this->assertFalse($this->directory()->requiresNpsn('ID', '33'), 'daftar resmi belum dipasang: siswa menulis nama');

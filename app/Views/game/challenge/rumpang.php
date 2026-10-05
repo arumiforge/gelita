@@ -2,11 +2,16 @@
 /**
  * Engine `rumpang` — isi bagian rumpang.
  *
- * Tiap kalimat memuat penanda `___` yang diganti kotak rumpang. Varian bank
+ * Tiap soal memuat penanda `___` yang diganti kotak rumpang. Varian bank
  * kata: kotak berupa tombol, diisi dengan mengetuk kata dari bank
  * (payload.word_bank — jawaban + pengecoh yang sudah diacak server; client
  * tidak tahu kata mana milik rumpang mana). Varian tanpa bank kata: kotak
- * berupa input teks. engines/rumpang.js (tahap 6) memasang perilakunya.
+ * berupa input teks. engines/rumpang.js memasang perilakunya.
+ *
+ * Tantangan bacaan (config as_reading, kelas 5): semua soal adalah
+ * potongan satu bacaan, disambung menjadi paragraf utuh dengan rumpang
+ * bernomor di dalam kalimat (App\Libraries\ClozeReading). Selain itu,
+ * soal tampil sebagai daftar kalimat lepas.
  *
  * @var App\Entities\ChallengeNode $node
  * @var App\Entities\Level         $level
@@ -16,6 +21,20 @@
 $items       = $payload['items'] ?? [];
 $useWordBank = isset($payload['word_bank']);
 $media       = $payload['node']['scene'] ?? ($items[0]['media'] ?? null);
+$reading     = $node->isReading();
+
+// Satu rumpang: tombol (bank kata) atau kotak isian. Dirakit sebagai string
+// agar tidak ada spasi templat di antara rumpang dan tanda baca sesudahnya.
+$blankHtml = static function (int|string $itemId, int $number) use ($useWordBank): string {
+    $label = lang('Game.blank', [$number]);
+
+    $field = $useWordBank
+        ? '<button type="button" class="blank" data-item="' . esc((string) $itemId, 'attr') . '" aria-label="' . esc($label, 'attr') . '">?</button>'
+        : '<input type="text" class="blank-input" data-item="' . esc((string) $itemId, 'attr') . '" aria-label="' . esc($label, 'attr') . '"'
+            . ' placeholder="' . esc(lang('Game.typeAnswer'), 'attr') . '" autocomplete="off" autocapitalize="none" spellcheck="false" maxlength="100">';
+
+    return '<span class="blank-wrap"><sup class="blank-no num" aria-hidden="true">' . $number . '</sup>' . $field . '</span>';
+};
 ?>
 <?= $this->extend('layouts/game') ?>
 
@@ -32,6 +51,13 @@ $media       = $payload['node']['scene'] ?? ($items[0]['media'] ?? null);
   <?php endif ?>
 
   <div class="rumpang-main">
+    <?php if ($reading): ?>
+    <div class="rumpang-reading">
+      <?php foreach (App\Libraries\ClozeReading::paragraphs(array_map(static fn (array $item): array => ['id' => $item['id'], 'prompt' => (string) ($item['prompt'] ?? '')], $items)) as $paragraph): ?>
+        <p><?php foreach ($paragraph as $token): ?><?= $token['type'] === 'text' ? esc($token['text']) : $blankHtml($token['id'], (int) $token['index']) ?><?php endforeach ?></p>
+      <?php endforeach ?>
+    </div>
+    <?php else: ?>
     <ol class="sentences">
       <?php foreach ($items as $index => $item): ?>
         <?php
@@ -56,6 +82,7 @@ $media       = $payload['node']['scene'] ?? ($items[0]['media'] ?? null);
         </li>
       <?php endforeach ?>
     </ol>
+    <?php endif ?>
 
     <?php if ($useWordBank): ?>
       <div class="word-bank" id="word-bank" role="group" aria-label="<?= esc(lang('Game.wordBank'), 'attr') ?>">

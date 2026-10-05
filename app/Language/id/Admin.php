@@ -22,14 +22,14 @@ return [
     'groupManage'      => 'Pengelolaan',
 
     'menuDashboard'    => 'Beranda',
-    'menuParticipants' => 'Peserta',
+    'menuParticipants' => 'Siswa',
     'menuSessions'     => 'Sesi bermain',
     'menuAnalytics'    => 'Hasil belajar',
     'menuAnLevel'      => 'Per wilayah',
     'menuAnNode'       => 'Per tantangan',
     'menuAnItem'       => 'Per soal',
     'menuAnIndicator'  => 'Per indikator',
-    'menuAnPrePost'    => 'Pretest & posttest',
+    'menuAnPrePost'    => 'Tes awal & tes akhir',
     'menuFeedback'     => 'Kritik & saran',
     'menuExport'       => 'Unduh data',
     'menuContent'      => 'Konten permainan',
@@ -59,10 +59,11 @@ return [
         'skipped'     => 'dilewati',
     ],
 
+    /** Tahap penelitian (research_phases.code). */
     'phase' => [
-        'umum'     => 'Umum',
-        'pretest'  => 'Pretest (tes awal)',
-        'posttest' => 'Posttest (tes akhir)',
+        'umum'     => 'Bermain biasa',
+        'pretest'  => 'Tes awal',
+        'posttest' => 'Tes akhir',
     ],
 
     'locale' => [
@@ -172,21 +173,55 @@ return [
         'participant_feedback' => 'Kritik & saran',
         'game_sessions'        => 'Sesi bermain',
         'participant_consents' => 'Persetujuan orang tua/wali',
-        'participants'         => 'Data peserta',
+        'participants'         => 'Data siswa',
     ],
 
     /** Lembar pada berkas Excel hasil unduhan data. */
     'exportSheet' => [
-        'Participants'        => 'Data peserta',
+        'Participants'        => 'Data siswa',
         'Sessions'            => 'Sesi bermain',
-        'Levels'              => 'Skor per wilayah',
-        'Challenge Summary'   => 'Ringkasan per tantangan',
+        'Levels'              => 'Hasil per wilayah',
+        'Challenge Summary'   => 'Hasil per tantangan',
         'Item Responses'      => 'Jawaban per soal',
-        'Raw Events'          => 'Catatan aktivitas lengkap',
+        'Raw Events'          => 'Catatan aktivitas',
         'Audio Usage'         => 'Pemakaian suara',
-        'Indicators'          => 'Capaian per indikator',
-        'Demographic Summary' => 'Ringkasan per kelompok',
-        'Feedback'            => 'Kritik & saran',
+        'Indicators'          => 'Capaian indikator',
+        'Demographic Summary' => 'Ringkasan kelompok',
+        'Feedback'            => 'Kritik dan saran',
+    ],
+
+    /** Tingkat berpikir Taksonomi Bloom revisi per soal (challenge_items.bloom_level). */
+    'bloom' => [
+        'C1' => 'C1 · Mengingat',
+        'C2' => 'C2 · Memahami',
+        'C3' => 'C3 · Menerapkan',
+        'C4' => 'C4 · Menganalisis',
+        'C5' => 'C5 · Mengevaluasi',
+        'C6' => 'C6 · Mencipta',
+    ],
+
+    /** Bentuk keping Susun Gambar (config_json.shape soal). */
+    'shape' => [
+        'square' => 'kotak',
+        'jigsaw' => 'jigsaw (bertonjolan)',
+    ],
+
+    /** Tindakan pada catatan pemakaian suara (audio_usage_events.action). */
+    'audioAction' => [
+        'play'     => 'diputar siswa',
+        'autoplay' => 'diputar otomatis',
+        'pause'    => 'dijeda',
+        'replay'   => 'diputar ulang',
+        'complete' => 'didengar sampai habis',
+    ],
+
+    /** Pengelompokan pada lembar Ringkasan kelompok. */
+    'exportDimension' => [
+        'gender'      => 'Jenis kelamin',
+        'class_level' => 'Kelas',
+        'school'      => 'Sekolah',
+        'province'    => 'Provinsi',
+        'phase'       => 'Tahap',
     ],
 
     /** Jenis catatan aktivitas di linimasa sesi (game_event_logs). */
@@ -250,8 +285,8 @@ return [
         'staff_password_reset'         => 'Membuat sandi sementara guru/admin',
         'staff_password_change'        => 'Mengganti kata sandi sendiri',
         'staff_password_change_failed' => 'Gagal mengganti kata sandi',
-        'study_create'                 => 'Membuat studi',
-        'study_update'                 => 'Mengubah studi',
+        'study_create'                 => 'Membuat penelitian',
+        'study_update'                 => 'Mengubah penelitian',
         'release_create'               => 'Membuat versi permainan',
         'release_activate'             => 'Mengaktifkan versi permainan',
         'scoring_create'               => 'Membuat aturan penilaian',

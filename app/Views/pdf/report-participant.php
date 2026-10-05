@@ -1,9 +1,9 @@
 <?php
 /**
- * Laporan satu peserta (PDF) — ReportService::participantData().
+ * Laporan satu siswa (PDF) — ReportService::participantData().
  *
  * Dipakai guru untuk laporan individual. Pada mode anonim (selalu untuk guru)
- * hanya kode peserta yang tampil; nama dan nama pengguna tidak pernah dibaca.
+ * hanya kode siswa yang tampil; nama dan nama pengguna tidak pernah dibaca.
  *
  * @var string                    $title
  * @var array<string, mixed>      $meta
@@ -28,13 +28,13 @@ $code   = (string) ($person['participant_code'] ?? $person['code'] ?? '');
 <h1><?= esc($title) ?></h1>
 
 <table class="meta">
-  <tr><td class="key">Kode peserta</td><td><b><?= esc($code) ?></b></td></tr>
+  <tr><td class="key">Kode siswa</td><td><b><?= esc($code) ?></b></td></tr>
   <?php if (! $meta['anonymized']): ?>
     <?php if (! empty($person['display_name'])): ?><tr><td class="key">Nama</td><td><?= esc($person['display_name']) ?></td></tr><?php endif ?>
     <?php if (! empty($person['school_name'])): ?><tr><td class="key">Sekolah</td><td><?= esc($person['school_name']) ?></td></tr><?php endif ?>
   <?php endif ?>
-  <?php if (isset($person['class_level'])): ?><tr><td class="key">Kelas</td><td><?= esc($person['class_level']) ?></td></tr><?php endif ?>
-  <tr><td class="key">Studi</td><td><?= esc($meta['study']) ?></td></tr>
+  <?php if (isset($person['class_level'])): ?><tr><td class="key">Kelas</td><td><?= esc(class_label($person['class_level'])) ?></td></tr><?php endif ?>
+  <tr><td class="key">Penelitian</td><td><?= esc($meta['study']) ?></td></tr>
   <tr><td class="key">Dibuat oleh</td><td><?= esc($meta['requester']) ?> · <?= esc(fmt_date($meta['generated_at'], false, 'id')) ?></td></tr>
 </table>
 
@@ -47,8 +47,8 @@ $code   = (string) ($person['participant_code'] ?? $person['code'] ?? '');
   </tr>
   <tr>
     <td><div class="kpi-value"><?= esc($num($profile['hint_uses'])) ?></div><div class="kpi-label">petunjuk dibuka</div></td>
-    <td><div class="kpi-value"><?= esc($num($profile['answer_changes'])) ?></div><div class="kpi-label">perubahan jawaban</div></td>
-    <td><div class="kpi-value"><?= esc($num($profile['audio']['total_plays'])) ?></div><div class="kpi-label">pemutaran audio oleh siswa (<?= esc($num($profile['audio']['total_autoplays'] ?? 0)) ?> otomatis)</div></td>
+    <td><div class="kpi-value"><?= esc($num($profile['answer_changes'])) ?></div><div class="kpi-label">jawaban diubah</div></td>
+    <td><div class="kpi-value"><?= esc($num($profile['audio']['total_plays'])) ?></div><div class="kpi-label">suara diputar oleh siswa (<?= esc($num($profile['audio']['total_autoplays'] ?? 0)) ?> otomatis)</div></td>
   </tr>
 </table>
 
@@ -68,10 +68,10 @@ $code   = (string) ($person['participant_code'] ?? $person['code'] ?? '');
 <?php endif ?>
 
 <?php if ($hardestNode !== null): ?>
-  <p class="note">Tantangan yang paling menantang: <b><?= esc($hardestNode['title']) ?></b> (<?= esc($hardestNode['level']) ?>), tepat sejak awal <?= esc($pct($hardestNode['first_pass_accuracy'])) ?>.</p>
+  <p class="note">Tantangan yang paling menantang: <b><?= esc($hardestNode['title']) ?></b> (<?= esc($hardestNode['level']) ?>), benar sejak awal <?= esc($pct($hardestNode['first_pass_accuracy'])) ?>.</p>
 <?php endif ?>
 
-<h2>Penguasaan indikator</h2>
+<h2>Capaian indikator</h2>
 <?php if ($profile['indicators'] === []): ?>
   <p class="muted">Belum ada soal yang dijawab.</p>
 <?php else: ?>
@@ -83,20 +83,20 @@ $code   = (string) ($person['participant_code'] ?? $person['code'] ?? '');
           'label' => $indicator['name'],
           'value' => $indicator['mastery_ratio'] * 100,
           'text'  => $pct($indicator['mastery_ratio'], true),
-          'sub'   => $num($indicator['correct_count']) . ' dari ' . $num($indicator['evidence_count']) . ' soal',
+          'sub'   => $num($indicator['correct_count']) . ' dari ' . $num($indicator['evidence_count']) . ' soal benar sejak awal',
       ];
   }
   ?>
-  <?= view('pdf/_bars', ['bars' => $bars, 'caption' => 'Penguasaan indikator', 'alt' => true], ['saveData' => false]) ?>
+  <?= view('pdf/_bars', ['bars' => $bars, 'caption' => 'Capaian indikator', 'alt' => true], ['saveData' => false]) ?>
 <?php endif ?>
 
 <?php if ((int) $profile['pre_post']['pairs'] > 0): ?>
-  <h2>Pretest dan posttest</h2>
-  <p>Skor pretest <b><?= esc($num($profile['pre_post']['pretest'], 1)) ?></b>, posttest <b><?= esc($num($profile['pre_post']['posttest'], 1)) ?></b>, selisih <b><?= esc(($profile['pre_post']['delta'] >= 0 ? '+' : '') . $num($profile['pre_post']['delta'], 1)) ?></b>.</p>
+  <h2>Tes awal dan tes akhir</h2>
+  <p>Skor tes awal <b><?= esc($num($profile['pre_post']['pretest'], 1)) ?></b>, tes akhir <b><?= esc($num($profile['pre_post']['posttest'], 1)) ?></b>, selisih <b><?= esc(($profile['pre_post']['delta'] >= 0 ? '+' : '') . $num($profile['pre_post']['delta'], 1)) ?></b>.</p>
 <?php endif ?>
 
 <h2>Cara membaca</h2>
-<p class="small">Skor 0–100 dihitung otomatis oleh sistem: 70% tepat sejak awal, 20% ketepatan akhir setelah perbaikan, 10% kemandirian (berkurang oleh petunjuk dan pemeriksaan ulang). Penguasaan indikator adalah rasio soal yang benar sejak awal, bukan label lulus/tidak lulus. Pustaka Kedu dan audio tidak memengaruhi skor.</p>
+<p class="small">Skor 0–100 dihitung otomatis oleh sistem: 70% benar sejak awal (langsung benar saat pertama kali menekan Periksa), 20% benar di akhir setelah diperbaiki, dan 10% kemandirian (berkurang bila membuka petunjuk atau mengulang). Capaian indikator adalah persentase soal yang benar sejak awal, bukan nilai lulus/tidak lulus. Membaca Pustaka Kedu dan memutar suara tidak memengaruhi skor.</p>
 
 </body>
 </html>

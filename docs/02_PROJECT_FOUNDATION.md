@@ -95,7 +95,7 @@ php spark serve
 | Paket | Alasan |
 |---|---|
 | `codeigniter4/framework` | framework |
-| `phpoffice/phpspreadsheet` | export XLSX multi-sheet untuk SPSS/R |
+| `phpoffice/phpspreadsheet` | membaca workbook impor bank soal; export XLSX multi-sheet berbahasa Indonesia ditulis `ExcelWriter` dan dibaca ulang PhpSpreadsheet di tes |
 | `mpdf/mpdf` | export PDF laporan HTML/CSS berbahasa Indonesia |
 
 **Yang sengaja TIDAK dipakai:**

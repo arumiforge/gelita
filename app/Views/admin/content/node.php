@@ -33,6 +33,7 @@ $itemFormData = [
     'interactions' => $interactions,
     'passages'     => $passages,
     'indicators'   => $indicators,
+    'difficulty'   => (string) ($level?->difficulty ?? ''),
 ];
 ?>
 <?= $this->extend('layouts/admin') ?>
@@ -116,22 +117,36 @@ $itemFormData = [
   <fieldset class="form-section">
     <legend class="panel-subtitle">Pengaturan tantangan</legend>
     <div class="form-grid">
-      <div class="field">
-        <label for="cfg-items">Jumlah soal tiap kali bermain</label>
-        <input type="number" id="cfg-items" name="cfg[items_per_round]" min="1" value="<?= esc($node->itemsPerRound(), 'attr') ?>">
-        <p class="field-help">Diambil dari kumpulan soal di bawah. Sediakan soal 1,5–2 kali lebih banyak dari angka ini.</p>
-      </div>
+      <?php if ($engine === 'puzzle'): ?>
+        <input type="hidden" name="cfg[items_per_round]" value="1">
+      <?php else: ?>
+        <div class="field">
+          <label for="cfg-items">Jumlah soal tiap kali bermain</label>
+          <input type="number" id="cfg-items" name="cfg[items_per_round]" min="1" value="<?= esc($node->itemsPerRound(), 'attr') ?>">
+          <p class="field-help">
+            <?php if ($node->isReading()): ?>
+              Tantangan ini tampil sebagai satu bacaan: SEMUA soal aktif dipakai berurutan, jadi angka ini tidak dipakai (samakan dengan jumlah rumpang).
+            <?php else: ?>
+              Diambil dari kumpulan soal di bawah. Sediakan soal 1,5–2 kali lebih banyak dari angka ini.
+            <?php endif ?>
+          </p>
+        </div>
+      <?php endif ?>
       <input type="hidden" name="cfg[allow_retry]" value="0">
       <label class="check"><input type="checkbox" name="cfg[allow_retry]" value="1" <?= $node->allowsRetry() ? 'checked' : '' ?>> Siswa boleh memperbaiki jawaban setelah menekan Periksa</label>
 
       <?php if ($engine === 'puzzle'): ?>
+        <?php $puzzleRule = App\Libraries\DifficultyRules::puzzle($level?->difficulty); ?>
         <div class="field">
-          <label for="cfg-grid">Jumlah keping per sisi (3 = 3 × 3 keping)</label>
-          <input type="number" id="cfg-grid" name="cfg[grid]" min="2" max="5" value="<?= esc($node->config('grid') ?? 3, 'attr') ?>">
+          <span class="label">Ukuran papan</span>
+          <p><b><?= esc(App\Libraries\DifficultyRules::layoutLabel($puzzleRule['grid'], $puzzleRule['shape'])) ?></b> — mengikuti tingkat kesulitan wilayah (<?= esc((string) ($level?->difficulty ?? 'mudah')) ?>).</p>
+          <p class="field-help">Setiap kali bermain, siswa mendapat SATU gambar yang dipilih acak dari kumpulan gambar di bawah (sediakan 3 gambar). Admin cukup mengunggah gambar utuh; sistem memotongnya otomatis. Soal yang sudah pernah dijawab tetap memakai ukuran saat soal itu dibuat.</p>
         </div>
       <?php elseif ($engine === 'rumpang'): ?>
         <input type="hidden" name="cfg[use_word_bank]" value="0">
         <label class="check"><input type="checkbox" name="cfg[use_word_bank]" value="1" <?= $node->config('use_word_bank') ? 'checked' : '' ?>> Siswa memilih jawaban dari daftar kata (bank kata)</label>
+        <input type="hidden" name="cfg[as_reading]" value="0">
+        <label class="check"><input type="checkbox" name="cfg[as_reading]" value="1" <?= $node->isReading() ? 'checked' : '' ?>> Tampilkan semua soal sebagai satu bacaan berurutan (setiap soal = satu potongan bacaan dengan satu ___)</label>
         <div class="field">
           <label for="cfg-distractor-count">Jumlah kata pengecoh yang ikut ditampilkan</label>
           <input type="number" id="cfg-distractor-count" name="cfg[distractor_count]" min="0" value="<?= esc($node->config('distractor_count') ?? 0, 'attr') ?>">

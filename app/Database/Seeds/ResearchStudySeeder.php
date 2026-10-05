@@ -7,7 +7,7 @@ class ResearchStudySeeder extends GelitaSeeder
     public function run(): void
     {
         $studyId = $this->insertIfMissing('research_studies', ['code' => 'STUDI-KEDU-2026'], [
-            'name'                => 'Studi GELITA Kedu 2026',
+            'name'                => 'Penelitian GELITA Kedu 2026',
             'year_label'          => '2026',
             'status'              => 'active',
             'retention_days'      => 1825,

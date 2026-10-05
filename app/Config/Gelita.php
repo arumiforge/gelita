@@ -90,6 +90,26 @@ class Gelita extends BaseConfig
      */
     public array $schoolDirectoryProvinces = ['33'];
 
+    /**
+     * Sasaran penelitian: siswa kelas 5 SD/MI. Pendaftaran hanya menerima
+     * kelas ini; data lama dengan kelas lain tetap tersimpan dan tampil.
+     */
+    public string $registrationClass = '5';
+
+    /**
+     * Jenjang sekolah (`schools.stage`) yang boleh dipakai mendaftar lewat
+     * NPSN. SLB tetap boleh karena memuat SDLB. Sekolah yang diketik manual
+     * atau di luar provinsi berdirektori tidak dapat diperiksa.
+     */
+    public array $registrationSchoolStages = ['sd', 'slb'];
+
+    /*
+     * Aturan per tingkat kesulitan wilayah (ukuran papan Susun Gambar,
+     * jumlah rumpang & pengecoh bacaan, rentang Taksonomi Bloom) ada di
+     * App\Libraries\DifficultyRules, karena dibaca juga oleh skrip
+     * docs/bank-soal/build-workbook.php yang berjalan tanpa framework.
+     */
+
     /** Nama pengguna siswa yang tidak boleh dipakai */
     public array $reservedUsernames = ['admin', 'guru', 'gelita', 'root', 'system', 'test'];
 

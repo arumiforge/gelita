@@ -10,6 +10,12 @@ use App\Entities\ChallengeItem;
  * Satu sumber aturan untuk panel `/admin/konten/verifikasi` dan
  * `php spark gelita:content:verify`. Temuan `error` membuat konten belum
  * layak dirilis; `warning` perlu diperiksa tetapi tidak menghalangi permainan.
+ *
+ * Aturan kelas 5 per tingkat kesulitan wilayah (DifficultyRules) — ukuran
+ * papan Susun Gambar, jumlah rumpang/pengecoh bacaan, tingkat Bloom — hanya
+ * menghasilkan peringatan, karena server yang baru diperbarui belum tentu
+ * sudah mengimpor workbook barunya (skrip deploy menolak membuka situs bila
+ * ada galat).
  */
 class ContentVerifier
 {
@@ -55,8 +61,16 @@ class ContentVerifier
                     $findings[] = $this->finding('error', $nodeScope, "Jenis tantangan '{$node->engine_type}' tidak dikenali.");
                 }
 
-                if (count($bank) < $perRound) {
+                if (! $node->isReading() && count($bank) < $perRound) {
                     $findings[] = $this->finding('error', $nodeScope, 'Baru ada ' . count($bank) . " soal aktif; perlu minimal {$perRound} (jumlah soal tiap kali bermain).");
+                }
+
+                if ($node->engine_type === 'puzzle') {
+                    $findings = [...$findings, ...$this->puzzleFindings($node, $bank, (string) $level->difficulty, $nodeScope)];
+                }
+
+                if ($node->isReading()) {
+                    $findings = [...$findings, ...$this->readingFindings($node, $bank, (string) $level->difficulty, $nodeScope)];
                 }
 
                 $distractors = count($node->distractors('id'));
@@ -104,7 +118,10 @@ class ContentVerifier
 
                     $findings = [...$findings, ...$this->mediaFindings($item->media_asset_id, $itemScope, 'Gambar soal')];
 
-                    $signature = $this->answerSignature($item);
+                    // Kunci susun gambar dan benar/salah memang sama di banyak soal
+                    $signature = in_array($item->interaction_type, ['fill_blank_bank', 'fill_blank_free', 'ordering'], true)
+                        ? $this->answerSignature($item)
+                        : null;
 
                     if ($signature !== null) {
                         if (isset($answers[$signature]) && $answers[$signature] !== $node->id) {
@@ -122,6 +139,98 @@ class ContentVerifier
         }
 
         return $findings;
+    }
+
+    /**
+     * Susun Gambar: satu gambar per permainan (tampilan hanya merender soal
+     * pertama), tiga variasi gambar aktif, dan ukuran papan setiap soal
+     * sesuai tingkat wilayahnya.
+     *
+     * @param list<ChallengeItem> $bank
+     *
+     * @return list<array{level: string, scope: string, message: string}>
+     */
+    private function puzzleFindings(\App\Entities\ChallengeNode $node, array $bank, string $difficulty, string $scope): array
+    {
+        $findings = [];
+        $rule     = DifficultyRules::puzzle($difficulty);
+        $images   = array_filter($bank, static fn (ChallengeItem $item): bool => $item->interaction_type === 'puzzle_arrange');
+
+        if ($node->itemsPerRound() !== 1) {
+            $findings[] = $this->finding('error', $scope, 'Susun Gambar hanya menampilkan satu gambar per permainan; ubah "jumlah soal tiap kali bermain" menjadi 1.');
+        }
+
+        if ($images !== [] && count($images) !== 3) {
+            $findings[] = $this->finding('warning', $scope, 'Ada ' . count($images) . ' gambar aktif; aturan kelas 5 memakai 3 variasi gambar yang tampil acak.');
+        }
+
+        foreach ($images as $item) {
+            $layout = $item->puzzleLayout($difficulty, $node->config('grid'));
+            $order  = $item->answerKey('order');
+
+            if (! is_array($order) || array_map('intval', $order) !== range(0, $layout['grid'] * $layout['grid'] - 1)) {
+                $findings[] = $this->finding('error', $scope . ' · soal ' . $item->item_key, 'Kunci susun gambar tidak cocok dengan ukuran papannya; buat ulang soal ini.');
+            }
+
+            if ($layout !== $rule) {
+                $findings[] = $this->finding(
+                    'warning',
+                    $scope . ' · soal ' . $item->item_key,
+                    'Papan soal ini ' . DifficultyRules::layoutLabel($layout['grid'], $layout['shape']) . ', padahal tingkat wilayahnya memakai '
+                    . DifficultyRules::layoutLabel($rule['grid'], $rule['shape']) . '. Buat soal baru (ukurannya otomatis) dan istirahatkan soal ini.',
+                );
+            }
+        }
+
+        return $findings;
+    }
+
+    /**
+     * Isi Rumpang bacaan: tepat satu ___ per potongan, jawaban unik, pengecoh
+     * tidak sama dengan jawaban (galat), serta jumlah rumpang/pengecoh dan
+     * tingkat Bloom sesuai aturan tingkat wilayah (peringatan).
+     *
+     * @param list<ChallengeItem> $bank
+     *
+     * @return list<array{level: string, scope: string, message: string}>
+     */
+    private function readingFindings(\App\Entities\ChallengeNode $node, array $bank, string $difficulty, string $scope): array
+    {
+        $blanks = [];
+
+        foreach ($bank as $item) {
+            if (! in_array($item->interaction_type, ['fill_blank_bank', 'fill_blank_free'], true)) {
+                continue;
+            }
+
+            $blanks[] = [
+                'key'       => (string) $item->item_key,
+                'prompt_id' => (string) ($item->prompt_id ?? ''),
+                'prompt_en' => (string) ($item->prompt_en ?? ''),
+                'answer_id' => (string) ($item->answerKey('text_id') ?? ''),
+                'answer_en' => (string) ($item->answerKey('text_en') ?? ''),
+                'bloom'     => $item->bloom_level,
+            ];
+        }
+
+        $distractors = array_map(
+            static fn (string $id, string $en): array => ['id' => $id, 'en' => $en],
+            $node->distractors('id'),
+            array_pad($node->distractors('en'), count($node->distractors('id')), ''),
+        );
+
+        $problems = ClozeReading::problems(
+            $blanks,
+            $distractors,
+            (int) $node->config('distractor_count'),
+            (bool) $node->config('use_word_bank'),
+            $difficulty,
+        );
+
+        return [
+            ...array_map(fn (string $message): array => $this->finding('error', $scope, $message), $problems['errors']),
+            ...array_map(fn (string $message): array => $this->finding('warning', $scope, $message), $problems['warnings']),
+        ];
     }
 
     /** @param list<array{level: string}> $findings */

@@ -4,6 +4,11 @@
  * Isi bank soal & Pustaka — TEMANGGUNG (wilayah 1, mudah).
  * Fokus literasi: menemukan informasi yang TERSURAT dalam teks.
  *
+ * Kelas 5 SD (Okt 2026): Susun Gambar 3 × 3 kotak dengan 3 gambar aktif;
+ * Isi Rumpang = satu paragraf, 3 rumpang, 3 kata tanpa pengecoh, Bloom
+ * C1–C2. Soal lama tidak dihapus: diberi 'active' => false agar kodenya
+ * (dan jawaban siswa yang sudah ada) tetap tersambung.
+ *
  * Bentuk data dijelaskan di docs/bank-soal/README.md. Teks berpasangan
  * [Indonesia, English]. Kode butir (tmg-2-01, …) dan opsi (…-a … -d)
  * diberi otomatis oleh build-workbook.php sesuai urutan di berkas ini —
@@ -21,8 +26,11 @@ $ref = [
 ];
 
 $checked = 'Fakta dicocokkan dengan sumber pada kolom reference_source (Sep 2026). Tinjau oleh guru/ahli, lalu ubah review_status menjadi verified.';
+$reading = 'Draf bacaan Isi Rumpang kelas 5 (Okt 2026), fakta dari bacaan tmg-teks-a. Tinjau bahasa, kunci, dan tingkat Bloom bersama guru, lalu ubah review_status menjadi verified.';
 
 return [
+    'difficulty' => 'mudah',
+
     // ================================================================ BACAAN
     'passages' => [
         'tmg-teks-a' => [
@@ -80,20 +88,21 @@ return [
         // ----------------------------------------------------------- tmg-1
         'tmg-1' => [
             'engine'          => 'puzzle',
+            'variant'         => 'puzzle_gambar',
             'indicator'       => 'budaya',
             'items_per_round' => 1,
             'note'            => $checked,
             'ref'             => $ref['geo'],
             'title'           => ['Susun Gambar Budaya Temanggung', 'Arrange the Temanggung Culture Picture'],
-            'instruction'     => ['Tukar kepingan gambar (kisi 3×3) hingga utuh, lalu baca keterangannya.', 'Swap the picture pieces (3×3 grid) until the picture is complete, then read the caption.'],
+            'instruction'     => ['Tukar dua kepingan gambar (3 × 3) sampai gambarnya utuh, lalu baca keterangannya.', 'Swap two picture pieces at a time (3 × 3) until the picture is complete, then read the caption.'],
             'description'     => [
                 'Angin gunung mengacak sebuah lukisan tentang Temanggung. Bantu Jaka menyusunnya kembali, lalu baca keterangan di bawahnya untuk mengenal wilayah pertama ini.',
                 'A mountain wind has scrambled a painting of Temanggung. Help Jaka put it back together, then read the caption below it to get to know this first region.',
             ],
             'hints' => [
-                ['Mulailah dari kepingan sudut: sudut punya dua sisi lurus.', 'Start with the corner pieces: corners have two straight edges.'],
+                ['Mulailah dari kepingan sudut: sudut punya dua sisi gambar yang menyentuh bingkai.', 'Start with the corner pieces: a corner touches the frame on two sides.'],
                 ['Cocokkan warna langit, gunung, dan tanah pada kepingan yang bersebelahan.', 'Match the colours of the sky, mountains, and ground on neighbouring pieces.'],
-                ['Angka kecil di kepingan menunjukkan letak benarnya: 1 di kiri atas sampai 9 di kanan bawah.', 'The small number on each piece shows where it belongs: 1 at the top left to 9 at the bottom right.'],
+                ['Selesaikan baris paling atas dulu, lalu turun baris demi baris.', 'Finish the top row first, then work down row by row.'],
             ],
             'items' => [
                 [
@@ -102,6 +111,7 @@ return [
                     'media'  => ['key' => 'challenge.item.tmg-1-01', 'note' => 'Foto lanskap Gunung Sindoro dan Sumbing dari arah Temanggung/Kledung, langit cerah, kebun di kaki gunung.', 'source' => 'https://commons.wikimedia.org/wiki/File:Sindoro_sumbing.jpg (cek lisensi & catat kredit)'],
                 ],
                 [
+                    'active' => false,
                     'type'   => 'puzzle_arrange',
                     'prompt' => ['Petani Temanggung menanam tembakau di lereng Sindoro–Sumbing. Daun tembakau dipanen sekitar bulan Agustus, lalu dirajang dan dijemur di atas rigen.', 'Temanggung farmers grow tobacco on the slopes of Sindoro and Sumbing. The leaves are harvested around August, then shredded and dried on bamboo rigen trays.'],
                     'ref'    => $ref['tobacco'],
@@ -125,41 +135,43 @@ return [
         // ----------------------------------------------------------- tmg-2
         'tmg-2' => [
             'engine'           => 'rumpang',
+            'variant'          => 'rumpang_bacaan',
+            'reading'          => true,
             'indicator'        => 'literasi',
-            'items_per_round'  => 4,
+            'items_per_round'  => 3,
             'use_word_bank'    => true,
-            'distractor_count' => 3,
+            'distractor_count' => 0,
             'note'             => $checked,
             'ref'              => $ref['geo'],
-            'title'            => ['Lengkapi Kalimat Temanggung', 'Complete the Temanggung Sentence'],
-            'instruction'      => ['Baca informasinya, lalu pilih satu kata dari bank kata untuk mengisi ___.', 'Read the information, then choose one word from the word bank to fill in the ___.'],
+            'title'            => ['Lengkapi Bacaan: Gunung Kembar', 'Complete the Reading: The Twin Mountains'],
+            'instruction'      => ['Baca paragrafnya. Ketuk kotak kosong, lalu pilih kata yang tepat dari bank kata. Setiap kata dipakai satu kali.', 'Read the paragraph. Tap an empty box, then choose the right word from the word bank. Each word is used once.'],
             'description'      => [
-                'Catatan perjalanan Jaka di Temanggung ada yang terhapus hujan. Temukan kata yang hilang dari informasi yang tertulis jelas.',
-                'Some of Jaka\'s travel notes about Temanggung were washed away by the rain. Find the missing words in the information that is written clearly.',
+                'Catatan Jaka tentang Temanggung ada yang terhapus hujan. Lengkapi paragrafnya supaya catatan itu bisa dibaca lagi.',
+                'Some of Jaka\'s notes about Temanggung were washed away by the rain. Complete the paragraph so the notes can be read again.',
             ],
-            'distractors' => [
-                ['Merapi', 'Merapi'], ['salju', 'snow'], ['Juli', 'July'], ['rotan', 'rattan'],
-                ['rendah', 'lower'], ['danau', 'lake'], ['desa', 'villages'],
-            ],
+            'distractors' => [],
             'hints' => [
-                ['Baca kalimat informasinya dulu, lalu cari kata yang sama maknanya dengan bagian yang kosong.', 'Read the information sentence first, then look for the word that fits the blank.'],
-                ['Jawabannya tertulis di informasi. Jangan menebak dari ingatan.', 'The answer is written in the information. Do not guess from memory.'],
-                ['Hati-hati dengan kata pengecoh: kata itu terdengar cocok, tetapi tidak ada di informasi.', 'Watch out for decoy words: they sound right but are not in the information.'],
+                ['Baca seluruh paragraf sampai habis dulu, baru isi kotaknya.', 'Read the whole paragraph to the end first, then fill in the boxes.'],
+                ['Perhatikan kata di sekitar kotak kosong. Kata "mirip" dan "karena" memberi petunjuk.', 'Look at the words around each box. The words "look alike" and "because" give clues.'],
+                ['Setiap kata di bank kata hanya dipakai satu kali.', 'Each word in the word bank is used only once.'],
             ],
             'items' => [
                 [
+                    'active' => false,
                     'type'   => 'fill_blank_bank',
                     'source' => ['Gunung Sindoro tingginya 3.136 meter, sedangkan Gunung Sumbing 3.371 meter.', 'Mount Sindoro is 3,136 metres high, while Mount Sumbing is 3,371 metres.'],
                     'prompt' => ['Di antara kedua gunung itu, Gunung ___ adalah yang lebih tinggi.', 'Of the two mountains, Mount ___ is the higher one.'],
                     'answer' => ['Sumbing', 'Sumbing'],
                 ],
                 [
+                    'active' => false,
                     'type'   => 'fill_blank_bank',
                     'source' => ['Hari jadi Kabupaten Temanggung diperingati setiap tanggal 10 November.', 'The anniversary of Temanggung Regency is celebrated every 10 November.'],
                     'prompt' => ['Warga Temanggung merayakan hari jadi kabupatennya pada bulan ___.', 'The people of Temanggung celebrate their regency\'s anniversary in ___.'],
                     'answer' => ['November', 'November'],
                 ],
                 [
+                    'active' => false,
                     'type'   => 'fill_blank_bank',
                     'source' => ['Tembakau terbaik Temanggung berwarna hitam keemasan dan harum. Namanya tembakau srintil.', 'Temanggung\'s best tobacco is golden black and fragrant. It is called srintil tobacco.'],
                     'prompt' => ['Tembakau Temanggung yang hitam keemasan disebut tembakau ___.', 'Temanggung\'s golden-black tobacco is called ___ tobacco.'],
@@ -167,6 +179,7 @@ return [
                     'ref'    => $ref['tobacco'],
                 ],
                 [
+                    'active' => false,
                     'type'   => 'fill_blank_bank',
                     'source' => ['Umbul Jumprit adalah mata air di lereng Sindoro. Airnya menjadi hulu Sungai Progo.', 'Umbul Jumprit is a spring on the slopes of Sindoro. Its water is the source of the Progo River.'],
                     'prompt' => ['Air dari Umbul Jumprit mengalir menjadi Sungai ___.', 'The water from Umbul Jumprit flows on to become the ___ River.'],
@@ -174,6 +187,7 @@ return [
                     'ref'    => $ref['jumprit'],
                 ],
                 [
+                    'active' => false,
                     'type'   => 'fill_blank_bank',
                     'source' => ['Situs Liyangan adalah permukiman kuno yang tertimbun material letusan Gunung Sindoro.', 'The Liyangan Site is an ancient settlement buried by material from an eruption of Mount Sindoro.'],
                     'prompt' => ['Permukiman Liyangan tertimbun letusan Gunung ___.', 'The Liyangan settlement was buried by an eruption of Mount ___.'],
@@ -181,6 +195,7 @@ return [
                     'ref'    => $ref['history'],
                 ],
                 [
+                    'active' => false,
                     'type'   => 'fill_blank_bank',
                     'source' => ['Penari kuda lumping menunggang kuda-kudaan yang dibuat dari anyaman bambu.', 'Kuda lumping dancers ride horses made of woven bamboo.'],
                     'prompt' => ['Kuda-kudaan untuk tari jaran kepang dibuat dari ___ yang dianyam.', 'The horses for the jaran kepang dance are made of woven ___.'],
@@ -188,6 +203,7 @@ return [
                     'ref'    => $ref['art'],
                 ],
                 [
+                    'active' => false,
                     'type'   => 'fill_blank_bank',
                     'source' => ['Kiai Subchi dari Parakan mendoakan bambu runcing para pejuang, sehingga ia dijuluki Kiai Bambu Runcing.', 'Kiai Subchi of Parakan prayed over the fighters\' sharpened bamboo, so he was nicknamed the Kiai of the Bamboo Spear.'],
                     'prompt' => ['Kiai Subchi dijuluki Kiai Bambu ___.', 'Kiai Subchi was nicknamed the Kiai of the Bamboo ___.'],
@@ -195,6 +211,7 @@ return [
                     'ref'    => $ref['parakan'],
                 ],
                 [
+                    'active' => false,
                     'type'   => 'fill_blank_bank',
                     'source' => ['Kopi arabika Java Sindoro Sumbing tumbuh di ketinggian lebih dari 900 meter di atas permukaan laut.', 'Java Sindoro Sumbing arabica coffee grows more than 900 metres above sea level.'],
                     'prompt' => ['Kopi arabika Sindoro Sumbing tumbuh lebih dari 900 meter di atas permukaan ___.', 'Sindoro Sumbing arabica coffee grows more than 900 metres above ___ level.'],
@@ -202,17 +219,45 @@ return [
                     'ref'    => $ref['tobacco'],
                 ],
                 [
+                    'active' => false,
                     'type'   => 'fill_blank_bank',
                     'source' => ['Kabupaten Temanggung terbagi menjadi 20 kecamatan.', 'Temanggung Regency is divided into 20 districts.'],
                     'prompt' => ['Temanggung memiliki 20 ___.', 'Temanggung has 20 ___.'],
                     'answer' => ['kecamatan', 'districts'],
                 ],
                 [
+                    'active' => false,
                     'type'   => 'fill_blank_bank',
                     'source' => ['Setelah dirajang, tembakau dijemur di atas rigen, yaitu anyaman bambu berbentuk persegi panjang.', 'After shredding, the tobacco is dried on a rigen, a rectangular sheet of woven bamboo.'],
                     'prompt' => ['Tembakau rajangan dijemur di atas ___.', 'Shredded tobacco is dried on a ___.'],
                     'answer' => ['rigen', 'rigen'],
                     'ref'    => $ref['tobacco'] . '; ANTARA Jateng: Ruwat Rigen',
+                ],
+
+                // ---- Bacaan kelas 5 (C1–C2): satu paragraf, 3 rumpang, tanpa pengecoh
+                [
+                    'type'   => 'fill_blank_bank',
+                    'bloom'  => 'C1',
+                    'prompt' => ['Kabupaten Temanggung berada di Provinsi Jawa Tengah. Wilayahnya diapit dua gunung besar, yaitu Gunung Sindoro dan Gunung ___.', 'Temanggung Regency is in the province of Central Java. It lies between two large mountains, Mount Sindoro and Mount ___.'],
+                    'answer' => ['Sumbing', 'Sumbing'],
+                    'note'   => $reading,
+                    'status' => 'needs_verification',
+                ],
+                [
+                    'type'   => 'fill_blank_bank',
+                    'bloom'  => 'C2',
+                    'prompt' => ['Karena bentuknya mirip, kedua gunung itu sering disebut gunung ___.', 'Because they look alike, the two mountains are often called the ___ mountains.'],
+                    'answer' => ['kembar', 'twin'],
+                    'note'   => $reading,
+                    'status' => 'needs_verification',
+                ],
+                [
+                    'type'   => 'fill_blank_bank',
+                    'bloom'  => 'C2',
+                    'prompt' => ['Tanah di lerengnya ___ karena berasal dari abu gunung api. Petani pun dapat menanam kopi dan sayuran di sana.', 'The soil on their slopes is ___ because it comes from volcanic ash, so farmers can grow coffee and vegetables there.'],
+                    'answer' => ['subur', 'fertile'],
+                    'note'   => $reading,
+                    'status' => 'needs_verification',
                 ],
             ],
         ],

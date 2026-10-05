@@ -20,6 +20,8 @@
 declare(strict_types=1);
 
 use App\Libraries\BankWorkbookGuide;
+use App\Libraries\ClozeReading;
+use App\Libraries\DifficultyRules;
 
 require __DIR__ . '/../../vendor/autoload.php';
 
@@ -30,13 +32,20 @@ $data   = [
     'wonosobo'   => require __DIR__ . '/data/wonosobo.php',
 ];
 
-$sheets = array_fill_keys(array_keys(BankWorkbookGuide::COLUMNS), []);
-$media  = [];   // asset_key => [prioritas, dipakai di, isi gambar, ukuran, saran sumber]
-$errors = [];
+$sheets   = array_fill_keys(array_keys(BankWorkbookGuide::COLUMNS), []);
+$media    = [];   // asset_key => [prioritas, dipakai di, isi gambar, ukuran, saran sumber]
+$errors   = [];
+$warnings = [];
+
+// Tingkat kesulitan wilayah, sama dengan LevelSeeder (levels.difficulty)
+$difficulties = ['temanggung' => 'mudah', 'magelang' => 'sedang', 'wonosobo' => 'sulit'];
 
 $bi = static fn (array|string|null $pair, int $i): string => is_array($pair) ? (string) ($pair[$i] ?? '') : ($i === 0 ? (string) $pair : '');
 
 foreach ($data as $levelCode => $region) {
+    $difficulty = $region['difficulty'] ?? $difficulties[$levelCode];
+    $puzzleRule = DifficultyRules::puzzle($difficulty);
+
     foreach ($region['passages'] as $key => $passage) {
         $sheets['passages'][] = [
             'passage_key'      => $key,
@@ -64,8 +73,11 @@ foreach ($data as $levelCode => $region) {
             'require_reason'       => isset($node['require_reason']) ? (string) (int) $node['require_reason'] : '',
             'use_word_bank'        => isset($node['use_word_bank']) ? (string) (int) $node['use_word_bank'] : '',
             'distractor_count'     => isset($node['distractor_count']) ? (string) $node['distractor_count'] : '',
+            'as_reading'           => $node['engine'] === 'rumpang' ? (string) (int) ! empty($node['reading']) : '',
             'scene_media_key'      => $node['scene']['key'] ?? '',
             'background_media_key' => '',
+            'variant_code'         => $node['variant'] ?? '',
+            'indicator'            => $node['indicator'],
         ];
 
         if (isset($node['scene'])) {
@@ -81,10 +93,12 @@ foreach ($data as $levelCode => $region) {
         }
 
         $answers = [];
+        $blanks  = [];   // soal rumpang aktif, untuk pemeriksaan bacaan
 
         foreach ($node['items'] as $index => $item) {
-            $key  = sprintf('%s-%02d', $ref, $index + 1);
-            $type = $item['type'];
+            $key    = sprintf('%s-%02d', $ref, $index + 1);
+            $type   = $item['type'];
+            $active = $item['active'] ?? true;
 
             $answer = match ($type) {
                 'ordering'     => $item['order'],
@@ -98,6 +112,7 @@ foreach ($data as $levelCode => $region) {
                 'sequence'          => (string) ($index + 1),
                 'interaction_type'  => $type,
                 'indicator'         => $item['indicator'] ?? $node['indicator'],
+                'bloom_level'       => $item['bloom'] ?? '',
                 'prompt_id'         => $bi($item['prompt'], 0),
                 'prompt_en'         => $bi($item['prompt'], 1),
                 'source_text_id'    => $bi($item['source'] ?? null, 0),
@@ -116,17 +131,21 @@ foreach ($data as $levelCode => $region) {
                 'digital_pillar'    => $item['pillar'] ?? '',
                 'media_asset_key'   => isset($item['media']) ? $item['media']['key'] : '',
                 'scorable'          => $type === 'find_object' && ! empty($item['decoy']) ? '0' : '1',
+                'is_active'         => $active ? '1' : '0',
                 'review_status'     => $item['status'] ?? 'draft',   // verified hanya setelah ditinjau guru/ahli
                 'review_note'       => $item['note'] ?? $node['note'],
                 'reference_source'  => $item['ref'] ?? $node['ref'],
             ];
 
-            if (isset($item['media'])) {
+            // Soal yang diistirahatkan tidak perlu gambar baru
+            if (isset($item['media']) && $active) {
                 $media[$item['media']['key']] = [
                     'WAJIB',
-                    ($type === 'find_object' ? 'Benda Cari Objek, soal ' : 'Gambar Susun Gambar, soal ') . $key,
+                    ($type === 'find_object' ? 'Benda Cari Objek, soal ' : 'Gambar Susun Gambar ' . DifficultyRules::layoutLabel($puzzleRule['grid'], $puzzleRule['shape']) . ', soal ') . $key,
                     $item['media']['note'],
-                    $type === 'find_object' ? '240 × 240 px, PNG/WebP latar transparan' : '900 × 900 px (persegi), JPG/WebP',
+                    $type === 'find_object'
+                        ? '240 × 240 px, PNG/WebP latar transparan'
+                        : 'persegi, minimal ' . ($puzzleRule['grid'] * 300) . ' × ' . ($puzzleRule['grid'] * 300) . ' px, JPG/WebP (gambar tidak persegi dipotong bagian tengahnya)',
                     $item['media']['source'] ?? '',
                 ];
             }
@@ -161,6 +180,14 @@ foreach ($data as $levelCode => $region) {
             // ------------------------------------------------ pemeriksaan
             $where = "{$key} ({$type})";
 
+            if (isset($item['bloom']) && ! DifficultyRules::isBloom($item['bloom'])) {
+                $errors[] = "{$where}: tingkat Bloom '{$item['bloom']}' tidak dikenal (C1–C6).";
+            }
+
+            if (! $active) {
+                continue;   // soal istirahat: hanya disimpan agar kodenya tetap; tidak ikut diperiksa
+            }
+
             if (in_array($type, ['single_choice', 'source_trust'], true)) {
                 $correct = count(array_filter($item['options'] ?? [], static fn ($o): bool => (bool) $o[2]));
 
@@ -182,6 +209,17 @@ foreach ($data as $levelCode => $region) {
                 }
 
                 $answers[$word] = $key;
+            }
+
+            if (in_array($type, ['fill_blank_bank', 'fill_blank_free'], true)) {
+                $blanks[] = [
+                    'key'       => $key,
+                    'prompt_id' => $bi($item['prompt'], 0),
+                    'prompt_en' => $bi($item['prompt'], 1),
+                    'answer_id' => $bi($item['answer'], 0),
+                    'answer_en' => $bi($item['answer'], 1),
+                    'bloom'     => $item['bloom'] ?? null,
+                ];
             }
 
             if (in_array($type, ['verdict_card', 'verdict_reason'], true)
@@ -217,10 +255,36 @@ foreach ($data as $levelCode => $region) {
             }
         }
 
-        $targets = count(array_filter($node['items'], static fn ($i): bool => empty($i['decoy'])));
+        if ($node['engine'] === 'rumpang' && ! empty($node['reading'])) {
+            $problems = ClozeReading::problems(
+                $blanks,
+                array_map(static fn (array $d): array => ['id' => $d[0], 'en' => $d[1] ?? ''], $node['distractors'] ?? []),
+                (int) ($node['distractor_count'] ?? 0),
+                ! empty($node['use_word_bank']),
+                $difficulty,
+            );
+
+            foreach ($problems['errors'] as $message) {
+                $errors[] = "{$ref}: {$message}";
+            }
+
+            foreach ($problems['warnings'] as $message) {
+                $warnings[] = "{$ref}: {$message}";
+            }
+
+            if ((int) $node['items_per_round'] !== count($blanks)) {
+                $errors[] = "{$ref}: items_per_round ({$node['items_per_round']}) harus sama dengan jumlah rumpang bacaan (" . count($blanks) . ').';
+            }
+        }
+
+        if ($node['engine'] === 'puzzle' && (int) $node['items_per_round'] !== 1) {
+            $errors[] = "{$ref}: Susun Gambar hanya menampilkan satu gambar per permainan; items_per_round harus 1.";
+        }
+
+        $targets = count(array_filter($node['items'], static fn ($i): bool => empty($i['decoy']) && ($i['active'] ?? true)));
 
         if ($targets < $node['items_per_round']) {
-            $errors[] = "{$ref}: bank {$targets} butir < items_per_round {$node['items_per_round']}.";
+            $errors[] = "{$ref}: bank {$targets} butir aktif < items_per_round {$node['items_per_round']}.";
         }
     }
 
@@ -267,6 +331,10 @@ foreach ($sheets['items'] as $row) {
 if ($errors !== []) {
     fwrite(STDERR, "Workbook TIDAK ditulis — perbaiki data:\n - " . implode("\n - ", $errors) . "\n");
     exit(1);
+}
+
+if ($warnings !== []) {
+    fwrite(STDERR, "Peringatan (workbook tetap ditulis):\n - " . implode("\n - ", $warnings) . "\n");
 }
 
 // Baris asosiatif → urutan header resmi

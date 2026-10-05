@@ -26,7 +26,7 @@ class StudyController extends BaseAdminController
             $phases[(int) $study['id']] = model(ResearchPhaseModel::class)->forStudy((int) $study['id']);
         }
 
-        return $this->panel('admin/study/index', 'Studi & fase', [
+        return $this->panel('admin/study/index', 'Penelitian & tahap', [
             'studies' => $studies,
             'phases'  => $phases,
             'locales' => config('Gelita')->locales,
@@ -45,12 +45,12 @@ class StudyController extends BaseAdminController
         $studyId = $studies->insert($this->studyPayload(), true);
 
         if ($studyId === false) {
-            return $this->back('admin/studi', 'Studi belum dapat disimpan: ' . $this->modelErrors($studies));
+            return $this->back('admin/studi', 'Penelitian belum dapat disimpan: ' . $this->modelErrors($studies));
         }
 
         $this->audit('study_create', 'research_study', (int) $studyId);
 
-        return $this->done('admin/studi', 'Studi baru sudah dibuat.');
+        return $this->done('admin/studi', 'Penelitian baru sudah dibuat.');
     }
 
     public function update(int $studyId): RedirectResponse
@@ -58,7 +58,7 @@ class StudyController extends BaseAdminController
         $studies = model(ResearchStudyModel::class);
 
         if ($studies->find($studyId) === null) {
-            return $this->back('admin/studi', 'Studi tidak ditemukan.');
+            return $this->back('admin/studi', 'Penelitian tidak ditemukan.');
         }
 
         if (! $this->validate($this->studyRules($studyId))) {
@@ -66,12 +66,12 @@ class StudyController extends BaseAdminController
         }
 
         if (! $studies->update($studyId, $this->studyPayload(true))) {
-            return $this->back('admin/studi', 'Studi belum dapat disimpan: ' . $this->modelErrors($studies));
+            return $this->back('admin/studi', 'Penelitian belum dapat disimpan: ' . $this->modelErrors($studies));
         }
 
         $this->audit('study_update', 'research_study', $studyId);
 
-        return $this->done('admin/studi', 'Perubahan studi sudah disimpan.');
+        return $this->done('admin/studi', 'Perubahan penelitian sudah disimpan.');
     }
 
     // ---------------------------------------------------------------- rilis
@@ -209,8 +209,8 @@ class StudyController extends BaseAdminController
             : 'is_unique[research_studies.code,id,' . $studyId . ']';
 
         return [
-            'code'               => ['label' => 'Kode singkat studi', 'rules' => 'required|max_length[50]|' . $unique],
-            'name'               => ['label' => 'Nama studi', 'rules' => 'required|max_length[200]'],
+            'code'               => ['label' => 'Kode singkat penelitian', 'rules' => 'required|max_length[50]|' . $unique],
+            'name'               => ['label' => 'Nama penelitian', 'rules' => 'required|max_length[200]'],
             'status'             => ['label' => 'Status', 'rules' => 'required|in_list[draft,active,closed]'],
             'default_locale'     => ['label' => 'Bahasa awal permainan', 'rules' => 'required|valid_locale'],
             'unlock_mode'        => ['label' => 'Cara wilayah terbuka', 'rules' => 'required|in_list[sequential,free]'],

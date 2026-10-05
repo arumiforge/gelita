@@ -2,13 +2,14 @@
 
 namespace App\Controllers\Admin;
 
+use App\Libraries\AnswerText;
 use App\Models\ChallengeAttemptModel;
 use App\Models\ChallengeItemModel;
 use App\Models\LearningIndicatorModel;
 use CodeIgniter\Exceptions\PageNotFoundException;
 
 /**
- * Analitik penelitian: level, node, butir, indikator, dan pretest–posttest.
+ * Hasil belajar: per wilayah, tantangan, soal, indikator, dan tes awal–tes akhir.
  *
  * Semua method mengikuti pola yang sama: baca filter → tambahkan cakupan
  * sekolah → panggil AnalyticsService → render. Query di sini hanya
@@ -43,7 +44,7 @@ class AnalyticsController extends BaseAdminController
         $node = service('contentRepository')->node($nodeId);
 
         if ($node === null) {
-            throw PageNotFoundException::forPageNotFound("Node {$nodeId} tidak ditemukan.");
+            throw PageNotFoundException::forPageNotFound("Tantangan nomor {$nodeId} tidak ditemukan.");
         }
 
         $filters            = $this->scopedFilters();
@@ -93,7 +94,7 @@ class AnalyticsController extends BaseAdminController
     {
         $filters = $this->scopedFilters();
 
-        return $this->panel('admin/analytics/prepost', 'Pretest & posttest', [
+        return $this->panel('admin/analytics/prepost', 'Tes awal & tes akhir', [
             'filters' => $filters,
             'result'  => $this->analytics()->prePostComparison($filters),
         ]);
@@ -114,18 +115,16 @@ class AnalyticsController extends BaseAdminController
             return [];
         }
 
-        $items      = model(ChallengeItemModel::class)->whereIn('id', array_keys($rows))->findAll();
-        $indicators = [];
-
-        foreach (model(LearningIndicatorModel::class)->findAll() as $indicator) {
-            $indicators[(int) $indicator['id']] = $indicator['code'];
-        }
+        $model      = model(ChallengeItemModel::class);
+        $items      = $model->whereIn('id', array_keys($rows))->findAll();
+        $options    = $model->withOptions(array_keys($rows));
+        $indicators = $this->indicatorNames();
 
         $content = service('contentRepository');
         $byId    = [];
 
         foreach ($items as $item) {
-            $byId[$item->id] = $item;
+            $byId[$item->id] = $item->setLoadedOptions($options[$item->id] ?? []);
         }
 
         $out = [];
@@ -139,43 +138,33 @@ class AnalyticsController extends BaseAdminController
                 'prompt'           => $item?->text('prompt', 'id') ?? '',
                 'interaction_type' => $item?->interaction_type,
                 'indicator'        => $indicators[$item?->indicator_id ?? $node?->indicator_id ?? 0] ?? null,
+                'bloom_level'      => $item?->bloom_level,
                 'level_name'       => $level?->text('name', 'id'),
                 'node_id'          => $node?->id,
                 'node_label'       => $node === null ? null : $node->sequence . '. ' . $node->text('title', 'id'),
-                'answer_key'       => $item === null ? null : $this->keyLabel($item),
+                'answer_key'       => $item === null ? null : AnswerText::key($item),
             ];
         }
 
         return $out;
     }
 
-    /** Kunci jawaban dalam bentuk singkat yang dapat dibaca guru. */
-    private function keyLabel(\App\Entities\ChallengeItem $item): string
+    /** @return array<int, string> id indikator → nama indikator (bukan kodenya) */
+    private function indicatorNames(): array
     {
-        $option = (string) ($item->correctOptionKey() ?? '');
-        $prefix = (string) $item->item_key . '-';
-        $order  = $item->answerKey()['order'] ?? null;
-
-        return match ($item->interaction_type) {
-            'single_choice', 'source_trust' => $option === '' ? '—'
-                : 'pilihan ' . strtoupper(str_starts_with($option, $prefix) ? substr($option, strlen($prefix)) : $option),
-            'verdict_card', 'verdict_reason' => (string) ($item->verdict() ?? '—'),
-            'fill_blank_bank', 'fill_blank_free' => implode(' / ', $item->acceptedAnswers('id')) ?: '—',
-            'find_object'    => $item->isDecoy() ? 'benda jebakan' : 'benda yang dicari',
-            'puzzle_arrange' => 'susunan gambar yang utuh',
-            'ordering'       => is_array($order) ? implode(', ', array_map('strval', $order)) : '—',
-            default          => json_encode($item->answerKey(), JSON_UNESCAPED_UNICODE) ?: '—',
-        };
-    }
-
-    /** @return array<int, ?string> id node → kode indikator */
-    private function nodeIndicators(): array
-    {
-        $codes = [];
+        $names = [];
 
         foreach (model(LearningIndicatorModel::class)->findAll() as $indicator) {
-            $codes[(int) $indicator['id']] = $indicator['code'];
+            $names[(int) $indicator['id']] = (string) ($indicator['name_id'] ?: $indicator['code']);
         }
+
+        return $names;
+    }
+
+    /** @return array<int, ?string> id node → nama indikator */
+    private function nodeIndicators(): array
+    {
+        $codes = $this->indicatorNames();
 
         $out     = [];
         $content = service('contentRepository');

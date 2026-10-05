@@ -213,7 +213,7 @@ Templat dipakai sebagai lapisan acuan di aplikasi gambar (Krita, Photoshop, Figm
 | `templat/ikon-aplikasi-512.svg` | zona aman *maskable* Ø 409,6 px; margin ikon *any* 32 px |
 | `templat/pustaka-960x640.svg` | potongan 4:3 (x 53–907); potongan sampul rak 16:9 (y 50–590) |
 | `templat/kartu-480x360.svg` | pita yang tampil pada kartu `boleh` (y 70–290) |
-| `templat/puzzle-900x900.svg` | kisi 3 × 3 (300 px); area nomor keping 50 × 38 px di pojok kiri atas tiap keping |
+| `templat/puzzle-900x900.svg` | kisi 3 × 3 (300 px). Sejak pembaruan kelas 5 SD keping tidak bernomor, dan Magelang/Wonosobo memakai 4 × 4 (Wonosobo jigsaw), jadi area nomor tidak perlu dikosongkan |
 
 ## 5. Fase pengerjaan
 
@@ -520,7 +520,7 @@ Setiap kartu memuat daftar periksa dari aturan ini. Kolom `pemeriksa` di lembar 
 | Tombol Mulai | `ui.btn-start`, `ui.btn-start.en` | 720 × 240 | 3:1 | PNG-32 | ya | 80 KB | wajib | lebar `min(360px, 64vw)` |
 | Lencana wilayah | `reward.badge.{wilayah}` | 320 × 320 | 1:1 | PNG-32 | ya (sudut) | 60 KB | disarankan | 72 × 72 di atas cakram emas |
 | Adegan tantangan | `challenge.{ref}.scene` | 1280 × 720 | 16:9 | JPG q80 | tidak | 350 KB | disarankan | `cari`: kanvas 16:9 tanpa potong; `rumpang`: kolom kiri 34% |
-| Gambar puzzle | `challenge.item.{tmg,mgl}-1-0N` | 900 × 900 | 1:1 | JPG q85 | tidak | 350 KB | disarankan | papan persegi maks. 480 px, 3 × 3 keping |
+| Gambar puzzle | `challenge.item.{tmg,mgl,wnb}-1-0N` | 900 × 900 (Temanggung), 1200 × 1200 (Magelang, Wonosobo) | 1:1 | JPG q85 | tidak | 350 KB | disarankan | papan persegi maks. 480 px; 3 × 3 kotak / 4 × 4 kotak / 4 × 4 jigsaw sesuai wilayah |
 | Objek cari | `challenge.item.tmg-4-NN` | 240 × 240 | 1:1 | PNG-32 | ya | 80 KB | disarankan | tombol bundar selebar 12% adegan (±154 px pada 1280), `contain` |
 | Gambar soal pilihan | `challenge.item.{ref}-NN` | 960 × 640 | 3:2 | JPG q80 | tidak | 200 KB | bebas | tinggi maks. 200 px, tanpa potong |
 | Gambar kartu boleh | `challenge.item.{ref}-NN` | 480 × 360 | 4:3 | JPG q80 | tidak | 80 KB | disarankan (`challenge.card`) | lebar kartu, tinggi maks. 160 px, `cover` → pita |
@@ -545,7 +545,7 @@ Anggaran ukuran berkas punya alasan: tirai "Membuka Peta Kedu" memuat peta, lata
 | Latar tirai `bg.loading` | opasitas 45% + Ken Burns (`cinematic.css:42`); lentera, orbit serpihan, judul, dan status di tengah | zona aman sinematik; tengah tenang tanpa detail; keseluruhan bernada sedang, bukan gelap, agar tetap tampak pada 45% |
 | Peta Kedu / wilayah | tidak terpotong; sudut membulat 12 px; label pin berlatar `--veil-strong` | zona tenang ±130 × ±90 px (Kedu) / ±110 × ±80 px (wilayah) di sekitar setiap titik pin; tepi 24 px bebas detail penting |
 | Adegan `cari` | tidak terpotong; 11 tombol objek bundar di posisi tetap | kotak objek di §11.8.2 kosong dari benda; area lain bebas "benda palsu" |
-| Puzzle | tidak terpotong; 3 × 3 keping bercelah 3 px; nomor keping di pojok kiri atas | pojok kiri atas 50 × 38 px tiap keping (300 × 300) tanpa detail penting; setiap keping punya ciri pembeda |
+| Puzzle | tidak terpotong; satu gambar utuh dipotong otomatis (3 × 3 / 4 × 4 kotak bercelah 3 px, atau 4 × 4 jigsaw tanpa celah); tanpa nomor | setiap keping punya ciri pembeda; gambar tidak persegi dipotong bagian tengahnya |
 | Frame tokoh | tidak terpotong; dicerminkan (Mbah Kedu di dialog) | §9.4 |
 | Logo & tombol | tidak terpotong; `drop-shadow` + kilau | margin 48 px (logo), 16 px (tombol) |
 | Lencana | 72 px di atas cakram emas | lingkaran medali Ø 312 px memenuhi kanvas |
@@ -1047,11 +1047,15 @@ Impor bank soal membuat slot kosong untuk setiap `asset_key` di bank. Begitu ber
 
 **Catatan penelitian.** Mengganti gambar puzzle, objek `cari`, atau menambah gambar `mgl-5` dapat mengubah tingkat kesulitan butir. Putuskan bersama peneliti. Untuk butir yang sudah dijawab siswa, catat sebagai rilis baru.
 
-#### 11.8.1 Gambar puzzle (8) · 900 × 900 (1:1), JPG q85, ≤ 350 KB
+#### 11.8.1 Gambar puzzle (9 aktif: 3 per wilayah) · 900 × 900 atau 1200 × 1200 (1:1), JPG q85, ≤ 350 KB
 
-- **Tampil di:** papan 3 × 3 (maks. 480 px, celah 3 px). Setiap butir membawa teks keterangan (`prompt`) berisi fakta tentang gambarnya, jadi gambar harus sesuai fakta itu.
-- Setiap keping (300 × 300 px) harus punya ciri pembeda. Hindari sepertiga atas yang seluruhnya langit polos.
-- Nomor keping menutup pojok kiri atas tiap keping (±50 × 38 px).
+- **Tampil di** papan maks. 480 px:
+  - Temanggung 3 × 3 kotak;
+  - Magelang 4 × 4 kotak;
+  - Wonosobo 4 × 4 jigsaw, dengan 3 gambar baru `wnb-1-05…07` (lihat [`bank-soal/README.md`](bank-soal/README.md#pembaruan-kelas-5-sd-oktober-2026)).
+- **Keterangan gambar.** Setiap butir membawa teks keterangan (`prompt`) berisi fakta tentang gambarnya, jadi gambar harus sesuai fakta itu. Keterangan tampil setelah gambar utuh.
+- **Setiap keping harus punya ciri pembeda.** Hindari sepertiga atas yang seluruhnya langit polos; makin kecil kepingnya (4 × 4), makin penting.
+- **Keping tidak bernomor**, jadi tidak ada pojok yang tertutup.
 - **Dua jalur:**
   - **A. Foto Commons** dari bank soal, dipotong persegi. Layar puzzle tidak punya tempat kredit, sedangkan foto CC BY/BY-SA wajib diberi atribusi. Jadi pilih foto CC0/domain publik, atau cantumkan kreditnya di halaman Pustaka wilayah yang sama.
   - **B. Ilustrasi `{GAYA}` (disarankan).** Gayanya seragam dan tanpa urusan atribusi. Pakai beberapa foto sebagai rujukan bentuk, jangan menjiplak satu foto.

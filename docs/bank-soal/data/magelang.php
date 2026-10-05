@@ -5,6 +5,11 @@
  * Fokus literasi: MENGHUBUNGKAN informasi (gambar ↔ teks, sebab ↔ akibat)
  * dan membedakan FAKTA dari PENDAPAT.
  *
+ * Kelas 5 SD (Okt 2026): Susun Gambar 4 × 4 kotak dengan 3 gambar aktif
+ * (soal baru mgl-1-05…07 memakai ulang gambar 01–03); Isi Rumpang = satu
+ * bacaan, 5 rumpang + 2 pengecoh (7 kata), Bloom C2–C3. Soal lama diberi
+ * 'active' => false, tidak dihapus.
+ *
  * Bentuk data: lihat docs/bank-soal/README.md. Teks berpasangan
  * [Indonesia, English]. Tambahkan butir baru di AKHIR daftar agar kode
  * butir yang sudah dipakai siswa tidak bergeser.
@@ -22,8 +27,11 @@ $ref = [
 $checked = 'Fakta dicocokkan dengan sumber pada kolom reference_source (Sep 2026). Tinjau oleh guru/ahli, lalu ubah review_status menjadi verified.';
 $opinion  = 'Butir literasi (fakta vs pendapat). Kunci & contoh alasan dicek tim; alasan siswa dinilai guru dengan rubrik.';
 $commons  = 'Wikimedia Commons — lisensi bebas; pengarang & lisensi di halaman berkas';
+$reading  = 'Draf bacaan Isi Rumpang kelas 5 (Okt 2026), fakta dari bacaan mgl-teks-a. Tinjau bahasa, kunci, dan tingkat Bloom bersama guru, lalu ubah review_status menjadi verified.';
 
 return [
+    'difficulty' => 'sedang',
+
     // ================================================================ BACAAN
     'passages' => [
         'mgl-teks-a' => [
@@ -73,12 +81,13 @@ return [
         // ----------------------------------------------------------- mgl-1
         'mgl-1' => [
             'engine'          => 'puzzle',
+            'variant'         => 'puzzle_gambar',
             'indicator'       => 'budaya',
             'items_per_round' => 1,
             'note'            => $checked,
             'ref'             => $ref['borobudur'],
             'title'           => ['Susun Gambar Magelang', 'Arrange the Magelang Picture'],
-            'instruction'     => ['Tukar kepingan gambar (kisi 3×3) hingga utuh, lalu baca kisahnya.', 'Swap the picture pieces (3×3 grid) until the picture is complete, then read its story.'],
+            'instruction'     => ['Tukar dua kepingan gambar (4 × 4) sampai gambarnya utuh, lalu baca kisahnya.', 'Swap two picture pieces at a time (4 × 4) until the picture is complete, then read its story.'],
             'description'     => [
                 'Di Magelang, gambar-gambar warisan budaya berserakan seperti kepingan relief. Susun kembali, lalu hubungkan gambar itu dengan kisah di bawahnya.',
                 'In Magelang, pictures of cultural heritage are scattered like pieces of a relief. Put them back together, then connect the picture with the story below it.',
@@ -86,9 +95,38 @@ return [
             'hints' => [
                 ['Mulai dari kepingan yang punya garis langit atau garis tanah.', 'Start with the pieces that show the sky line or the ground line.'],
                 ['Kepingan dengan warna dan garis yang bersambung pasti bersebelahan.', 'Pieces whose colours and lines continue must sit next to each other.'],
-                ['Angka kecil di kepingan menunjukkan letak benarnya: 1 di kiri atas sampai 9 di kanan bawah.', 'The small number on each piece shows where it belongs: 1 at the top left to 9 at the bottom right.'],
+                ['Kerjakan baris demi baris: lengkapi dulu empat keping di baris paling atas.', 'Work row by row: first complete the four pieces of the top row.'],
             ],
             'items' => [
+                [
+                    'active' => false,
+                    'type'   => 'puzzle_arrange',
+                    'prompt' => ['Candi Borobudur dibangun pada abad ke-8 dan ke-9. Di teras bundarnya berdiri 72 stupa berlubang, masing-masing berisi arca Buddha.', 'Borobudur Temple was built in the 8th and 9th centuries. On its round terraces stand 72 perforated stupas, each holding a Buddha statue.'],
+                    'media'  => ['key' => 'challenge.item.mgl-1-01', 'note' => 'Foto stupa-stupa berlubang di teras atas Borobudur dengan stupa induk di latar.', 'source' => 'https://commons.wikimedia.org/wiki/File:Borobudur_stupas_on_upper_terrace.jpg'],
+                ],
+                [
+                    'active' => false,
+                    'type'   => 'puzzle_arrange',
+                    'ref'    => $ref['topeng'],
+                    'prompt' => ['Penari Topeng Ireng memakai hiasan kepala dari bulu berwarna-warni dan lonceng kecil di kaki. Tarian ini tumbuh di Desa Tuksongo, Borobudur.', 'Topeng Ireng dancers wear colourful feather headdresses and small bells on their ankles. The dance grew in Tuksongo Village, Borobudur.'],
+                    'media'  => ['key' => 'challenge.item.mgl-1-02', 'note' => 'Foto penari Topeng Ireng dengan kuluk bulu warna-warni, tampak jelas.', 'source' => 'https://commons.wikimedia.org/wiki/File:Penari_Topeng_Ireng_03.jpg'],
+                ],
+                [
+                    'active' => false,
+                    'type'   => 'puzzle_arrange',
+                    'ref'    => $ref['mendut'],
+                    'prompt' => ['Candi Mendut menyimpan arca Buddha setinggi sekitar tiga meter. Setiap Waisak, prosesi umat Buddha dimulai dari candi ini.', 'Mendut Temple holds a Buddha statue about three metres tall. Every Vesak, the Buddhist procession starts from this temple.'],
+                    'media'  => ['key' => 'challenge.item.mgl-1-03', 'note' => 'Foto Candi Mendut tampak depan dengan tangga masuk.', 'source' => 'https://commons.wikimedia.org/wiki/File:Mendut_Temple.jpg'],
+                ],
+                [
+                    'active' => false,
+                    'type'   => 'puzzle_arrange',
+                    'ref'    => $ref['craft'],
+                    'prompt' => ['Magelang dijuluki Kota Getuk. Getuk dibuat dari singkong yang dikukus, ditumbuk, lalu diberi gula.', 'Magelang is nicknamed the Getuk Town. Getuk is made from cassava that is steamed, pounded, and sweetened.'],
+                    'media'  => ['key' => 'challenge.item.mgl-1-04', 'note' => 'Foto getuk Magelang warna-warni (cokelat, putih, hijau) di atas piring/daun pisang.', 'source' => 'https://commons.wikimedia.org/wiki/File:Getuk_Magelang.JPG'],
+                ],
+
+                // ---- Kelas 5: papan 4 × 4 kotak (soal baru, gambar sama dengan 01–03)
                 [
                     'type'   => 'puzzle_arrange',
                     'prompt' => ['Candi Borobudur dibangun pada abad ke-8 dan ke-9. Di teras bundarnya berdiri 72 stupa berlubang, masing-masing berisi arca Buddha.', 'Borobudur Temple was built in the 8th and 9th centuries. On its round terraces stand 72 perforated stupas, each holding a Buddha statue.'],
@@ -106,36 +144,37 @@ return [
                     'prompt' => ['Candi Mendut menyimpan arca Buddha setinggi sekitar tiga meter. Setiap Waisak, prosesi umat Buddha dimulai dari candi ini.', 'Mendut Temple holds a Buddha statue about three metres tall. Every Vesak, the Buddhist procession starts from this temple.'],
                     'media'  => ['key' => 'challenge.item.mgl-1-03', 'note' => 'Foto Candi Mendut tampak depan dengan tangga masuk.', 'source' => 'https://commons.wikimedia.org/wiki/File:Mendut_Temple.jpg'],
                 ],
-                [
-                    'type'   => 'puzzle_arrange',
-                    'ref'    => $ref['craft'],
-                    'prompt' => ['Magelang dijuluki Kota Getuk. Getuk dibuat dari singkong yang dikukus, ditumbuk, lalu diberi gula.', 'Magelang is nicknamed the Getuk Town. Getuk is made from cassava that is steamed, pounded, and sweetened.'],
-                    'media'  => ['key' => 'challenge.item.mgl-1-04', 'note' => 'Foto getuk Magelang warna-warni (cokelat, putih, hijau) di atas piring/daun pisang.', 'source' => 'https://commons.wikimedia.org/wiki/File:Getuk_Magelang.JPG'],
-                ],
             ],
         ],
 
         // ----------------------------------------------------------- mgl-2
         'mgl-2' => [
-            'engine'          => 'rumpang',
-            'indicator'       => 'literasi',
-            'items_per_round' => 4,
-            'use_word_bank'   => false,
-            'note'            => $checked,
-            'ref'             => $ref['borobudur'],
-            'title'           => ['Ketik Jawabanmu', 'Type Your Answer'],
-            'instruction'     => ['Baca informasinya, lalu ketik satu kata atau angka untuk mengisi ___.', 'Read the information, then type one word or number to fill in the ___.'],
-            'description'     => [
-                'Juru kunci candi menitipkan catatan yang belum selesai. Tidak ada bank kata kali ini — hubungkan informasi dan tulis sendiri jawabannya.',
-                'The temple keeper left some unfinished notes. There is no word bank this time — connect the information and write the answer yourself.',
+            'engine'           => 'rumpang',
+            'variant'          => 'rumpang_bacaan',
+            'reading'          => true,
+            'indicator'        => 'literasi',
+            'items_per_round'  => 5,
+            'use_word_bank'    => true,
+            'distractor_count' => 2,
+            'note'             => $checked,
+            'ref'              => $ref['borobudur'],
+            'title'            => ['Lengkapi Bacaan: Candi Borobudur', 'Complete the Reading: Borobudur Temple'],
+            'instruction'      => ['Baca bacaannya sampai habis. Pilih kata yang tepat untuk setiap kotak kosong; ada dua kata yang tidak terpakai.', 'Read the whole text. Choose the right word for each empty box; two words will not be used.'],
+            'description'      => [
+                'Juru kunci candi menitipkan catatan tentang Borobudur, tetapi beberapa katanya hilang. Hubungkan informasi di dalam bacaan, lalu lengkapi catatannya.',
+                'The temple keeper left some notes about Borobudur, but some words are missing. Connect the information in the text, then complete the notes.',
             ],
-            'hints' => [
-                ['Jawabannya ada di kalimat informasi, tetapi mungkin ditulis dengan susunan yang berbeda.', 'The answer is in the information sentence, but it may be written in a different order.'],
-                ['Ketik satu kata atau angka saja, tanpa titik di akhir.', 'Type just one word or number, without a full stop at the end.'],
-                ['Periksa ejaanmu. Huruf besar atau kecil tidak masalah.', 'Check your spelling. Capital or small letters do not matter.'],
+            'distractors'      => [
+                ['enam', 'six'], ['arca', 'statues'],
+            ],
+            'hints'            => [
+                ['Jawabannya tidak selalu tertulis langsung. Hubungkan dua informasi di bacaan, misalnya jumlah teras di bagian bawah dan di bagian atas.', 'The answer is not always written directly. Connect two pieces of information, such as the terraces at the bottom and at the top.'],
+                ['Gunakan penjelasan di bacaan: apa itu stupa, dan di mana pahatan bercerita berada.', 'Use the explanations in the text: what a stupa is, and where the carved story pictures are.'],
+                ['Ada dua kata pengecoh. Setiap kata hanya dipakai satu kali.', 'There are two decoy words. Each word is used only once.'],
             ],
             'items' => [
                 [
+                    'active' => false,
                     'type'   => 'fill_blank_free',
                     'source' => ['Candi Borobudur dibangun pada abad ke-8 dan ke-9, pada masa pemerintahan Wangsa Syailendra.', 'Borobudur Temple was built in the 8th and 9th centuries, during the reign of the Syailendra dynasty.'],
                     'prompt' => ['Raja-raja yang membangun Borobudur berasal dari Wangsa ___.', 'The kings who built Borobudur came from the ___ dynasty.'],
@@ -143,6 +182,7 @@ return [
                     'hints'  => [['Nama wangsanya diawali huruf S.', 'The dynasty\'s name starts with the letter S.']],
                 ],
                 [
+                    'active' => false,
                     'type'   => 'fill_blank_free',
                     'source' => ['Di teras bundar Borobudur berdiri 72 stupa berlubang. Stupa adalah bangunan berbentuk lonceng.', 'On Borobudur\'s round terraces stand 72 perforated stupas. A stupa is a bell-shaped structure.'],
                     'prompt' => ['Bangunan berbentuk lonceng di teras bundar Borobudur disebut ___.', 'The bell-shaped structures on Borobudur\'s round terraces are called ___.'],
@@ -150,6 +190,7 @@ return [
                     'hints'  => [['Kata itu terdiri atas lima huruf.', 'It is the same word in English and Indonesian.']],
                 ],
                 [
+                    'active' => false,
                     'type'   => 'fill_blank_free',
                     'source' => ['UNESCO menetapkan Borobudur sebagai Warisan Dunia pada tahun 1991.', 'UNESCO named Borobudur a World Heritage Site in 1991.'],
                     'prompt' => ['Borobudur menjadi Warisan Dunia UNESCO pada tahun ___.', 'Borobudur became a UNESCO World Heritage Site in ___.'],
@@ -157,6 +198,7 @@ return [
                     'hints'  => [['Tulis empat angka tahunnya.', 'Write the four digits of the year.']],
                 ],
                 [
+                    'active' => false,
                     'type'   => 'fill_blank_free',
                     'ref'    => $ref['topeng'],
                     'source' => ['Tari Topeng Ireng tumbuh di Desa Tuksongo, Kecamatan Borobudur, Kabupaten Magelang.', 'The Topeng Ireng dance grew in Tuksongo Village, Borobudur District, Magelang Regency.'],
@@ -165,6 +207,7 @@ return [
                     'hints'  => [['Cari kata setelah "Kabupaten" dalam informasi.', 'Look for the word after "Regency" in the information.']],
                 ],
                 [
+                    'active' => false,
                     'type'   => 'fill_blank_free',
                     'ref'    => $ref['mendut'],
                     'source' => ['Saat Waisak, umat Buddha berjalan dari Candi Mendut ke Candi Pawon, lalu berakhir di Candi Borobudur.', 'At Vesak, Buddhists walk from Mendut Temple to Pawon Temple, ending at Borobudur Temple.'],
@@ -173,6 +216,7 @@ return [
                     'hints'  => [['Perhatikan kata "berakhir" di informasi.', 'Look at the word "ending" in the information.']],
                 ],
                 [
+                    'active' => false,
                     'type'   => 'fill_blank_free',
                     'ref'    => $ref['tidar'],
                     'source' => ['Dalam cerita rakyat, Gunung Tidar di Magelang dijuluki paku tanah Jawa.', 'In folklore, Mount Tidar in Magelang is called the nail of Java.'],
@@ -181,6 +225,7 @@ return [
                     'hints'  => [['Nama sebuah pulau besar di Indonesia.', 'The name of a large island in Indonesia.']],
                 ],
                 [
+                    'active' => false,
                     'type'   => 'fill_blank_free',
                     'ref'    => $ref['craft'],
                     'source' => ['Getuk dibuat dari singkong yang dikukus, ditumbuk halus, lalu diberi gula.', 'Getuk is made from cassava that is steamed, pounded smooth, and sweetened.'],
@@ -189,6 +234,7 @@ return [
                     'hints'  => [['Bahan ini adalah umbi dari tanaman yang juga disebut ketela pohon.', 'It is a root crop also called manioc.']],
                 ],
                 [
+                    'active' => false,
                     'type'   => 'fill_blank_free',
                     'ref'    => $ref['craft'],
                     'source' => ['Warga Dusun Klipoh membuat kendil, cobek, dan kuali dari tanah liat. Kerajinan tanah liat yang dibakar itu disebut gerabah.', 'The people of Klipoh make pots, grinding bowls, and woks from clay. This fired clay craft is called pottery.'],
@@ -197,6 +243,7 @@ return [
                     'hints'  => [['Kata itu ada di kalimat kedua informasi.', 'The word is in the second sentence of the information.']],
                 ],
                 [
+                    'active' => false,
                     'type'   => 'fill_blank_free',
                     'source' => ['Dinding Borobudur dihiasi 2.672 panel relief, yaitu gambar pahatan pada batu yang menceritakan kisah.', 'Borobudur\'s walls are decorated with 2,672 relief panels, pictures carved in stone that tell stories.'],
                     'prompt' => ['Gambar pahatan bercerita pada dinding candi disebut ___.', 'A carved picture on a temple wall that tells a story is called a ___.'],
@@ -204,12 +251,55 @@ return [
                     'hints'  => [['Kata itu muncul sebelum kata "yaitu" dalam informasi.', 'The word comes just before the explanation in the information.']],
                 ],
                 [
+                    'active' => false,
                     'type'   => 'fill_blank_free',
                     'ref'    => $ref['region'],
                     'source' => ['Kabupaten Magelang beribu kota di Kota Mungkid.', 'The capital of Magelang Regency is Mungkid.'],
                     'prompt' => ['Pusat pemerintahan Kabupaten Magelang berada di ___.', 'The seat of government of Magelang Regency is in ___.'],
                     'answer' => ['Mungkid|Kota Mungkid', 'Mungkid'],
                     'hints'  => [['Ibu kota kabupaten sama dengan pusat pemerintahannya.', 'A regency\'s capital is the same as its seat of government.']],
+                ],
+
+                // ---- Bacaan kelas 5 (C2–C3): 5 rumpang + 2 pengecoh (enam, arca)
+                [
+                    'type'   => 'fill_blank_bank',
+                    'bloom'  => 'C3',
+                    'prompt' => ['Candi Borobudur berdiri di Kabupaten Magelang. Candi Buddha ini dibangun pada abad ke-8 dan ke-9. Bangunannya bertingkat-tingkat. Di bagian bawah ada enam teras persegi, lalu di atasnya ada tiga teras bundar. Jadi, Borobudur memiliki ___ teras.', 'Borobudur Temple stands in Magelang Regency. This Buddhist temple was built in the 8th and 9th centuries. The building rises in levels. At the bottom there are six square terraces, and above them there are three round terraces. So Borobudur has ___ terraces.'],
+                    'answer' => ['sembilan', 'nine'],
+                    'note'   => $reading,
+                    'status' => 'needs_verification',
+                ],
+                [
+                    'type'   => 'fill_blank_bank',
+                    'bloom'  => 'C3',
+                    'prompt' => ["Di teras bundar berdiri 72 stupa berlubang. Stupa adalah bangunan berbentuk lonceng. Bangunan berbentuk lonceng yang paling besar ada di puncak candi dan disebut ___ induk.\n\nDinding candi dihiasi ribuan pahatan gambar yang menceritakan sebuah kisah.", "On the round terraces stand 72 perforated stupas. A stupa is a bell-shaped structure. The largest bell-shaped structure is at the top of the temple and is called the main ___.\n\nThe temple walls are decorated with thousands of carved pictures that tell a story."],
+                    'answer' => ['stupa', 'stupa'],
+                    'note'   => $reading,
+                    'status' => 'needs_verification',
+                ],
+                [
+                    'type'   => 'fill_blank_bank',
+                    'bloom'  => 'C2',
+                    'prompt' => ['Pahatan bercerita seperti itu disebut ___.', 'Carved story pictures like these are called ___.'],
+                    'answer' => ['relief', 'reliefs'],
+                    'note'   => $reading,
+                    'status' => 'needs_verification',
+                ],
+                [
+                    'type'   => 'fill_blank_bank',
+                    'bloom'  => 'C3',
+                    'prompt' => ['Bila ingin melihatnya, perhatikan bagian ___ candi.', 'To see them, look at the temple ___.'],
+                    'answer' => ['dinding', 'walls'],
+                    'note'   => $reading,
+                    'status' => 'needs_verification',
+                ],
+                [
+                    'type'   => 'fill_blank_bank',
+                    'bloom'  => 'C2',
+                    'prompt' => ['Batu-batu candi bisa rusak bila diinjak dan dipanjat. Oleh karena itu, pengunjung ___ memanjat stupa.', 'The temple stones can be damaged when people step or climb on them. That is why visitors are ___ to climb the stupas.'],
+                    'answer' => ['dilarang', 'forbidden'],
+                    'note'   => $reading,
+                    'status' => 'needs_verification',
                 ],
             ],
         ],
