@@ -23,14 +23,14 @@ class ParticipantModel extends Model
         'province_code', 'province_name_snapshot',
         'district_code', 'district_name_snapshot',
         'pw_first_submit_criteria', 'pw_weak_submit_count',
-        'failed_login_count', 'locked_until', 'last_login_at', 'password_changed_at',
+        'failed_login_count', 'locked_until', 'last_login_at', 'password_changed_at', 'assented_at',
         'intro_seen_at',
     ];
     protected $validationRules = [
         'participant_code' => 'required|max_length[40]|is_unique[participants.participant_code,id,{id}]',
         'username'         => 'required|valid_username|not_reserved_username|is_unique[participants.username,id,{id}]',
         'age'              => 'permit_empty|integer|greater_than[4]|less_than[81]',
-        'gender'           => 'permit_empty|in_list[laki-laki,perempuan,lainnya]',
+        'gender'           => 'permit_empty|in_list[laki-laki,perempuan]',
         'class_level'      => 'permit_empty|max_length[20]',
         'display_name'     => 'permit_empty|max_length[150]',
     ];

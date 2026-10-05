@@ -2,9 +2,9 @@
 /**
  * Verifikasi konten — POST `/admin/konten/verifikasi` → ContentController::verify
  *
- * Pemeriksaan kelengkapan sebelum rilis: 3 wilayah × 5 tantangan, bank soal
- * ≥ items_per_round, pengecoh rumpang, kunci jawaban, satu opsi benar, verdict
- * sah, bacaan satu wilayah, dan butir yang belum diverifikasi.
+ * Pemeriksaan kelengkapan sebelum rilis: 3 wilayah × 4 tantangan, tiga
+ * variasi per tantangan, pengecoh rumpang per variasi, kunci jawaban, verdict
+ * benar/salah, bacaan satu wilayah, dan butir yang belum diverifikasi.
  * Galat harus diperbaiki sebelum rilis; peringatan boleh diterima dengan sadar.
  *
  * @var list<array{level: string, scope: string, message: string}> $findings

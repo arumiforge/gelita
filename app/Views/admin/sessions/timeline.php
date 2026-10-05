@@ -2,7 +2,7 @@
 /**
  * Linimasa event — `/admin/sesi/{id}/event` → SessionController::timeline
  *
- * Jalur drilldown terdalam: Ringkasan → Fase → Peserta → Level → Node → Item
+ * Jalur drilldown terdalam: Ringkasan → Peserta → Sesi → Wilayah → Tantangan → Soal
  * → Event. Waktu ditampilkan hingga milidetik; filter jenis event lewat GET.
  * Jenis event tampil dengan nama Indonesia (admin_label('event')); kodenya
  * tetap tertulis kecil untuk peneliti yang mencocokkan dengan data unduhan.

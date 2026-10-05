@@ -22,10 +22,9 @@ class SessionController extends BaseAdminController
 
         $sessions
             ->select('game_sessions.*, participants.participant_code, participants.display_name, participants.school_id')
-            ->select('research_phases.code AS phase_code, research_studies.code AS study_code')
-            ->select('session_progress.completed_nodes, session_progress.total_score')
+            ->select('research_studies.code AS study_code')
+            ->select('session_progress.completed_nodes, session_progress.total_stars')
             ->join('participants', 'participants.id = game_sessions.participant_id')
-            ->join('research_phases', 'research_phases.id = game_sessions.phase_id', 'left')
             ->join('research_studies', 'research_studies.id = game_sessions.study_id', 'left')
             ->join('session_progress', 'session_progress.session_id = game_sessions.id', 'left');
 
@@ -39,10 +38,6 @@ class SessionController extends BaseAdminController
             if (isset($filters[$key])) {
                 $sessions->where($column, $filters[$key]);
             }
-        }
-
-        if (isset($filters['phase_code'])) {
-            $sessions->where('research_phases.code', $filters['phase_code']);
         }
 
         if (isset($filters['date_from'])) {
@@ -76,7 +71,8 @@ class SessionController extends BaseAdminController
             'session'     => $session,
             'participant' => $participant?->toSafeArray(),
             'progress'    => db_connect()->table('session_progress')->where('session_id', $sessionId)->get()->getRowArray(),
-            'phaseCode'   => $this->phaseCode((int) $session->phase_id),
+            'tries'       => $this->triesByAttempt(array_map(static fn ($a): int => $a->id, $attempts)),
+            'devices'     => model(\App\Models\DeviceLogModel::class)->where('session_id', $sessionId)->orderBy('id', 'ASC')->findAll(),
             'attempts'    => $attempts,
             'responses'   => $this->responsesByAttempt(array_map(static fn ($a): int => $a->id, $attempts)),
             'nodes'       => $this->nodeLabels(),
@@ -143,7 +139,7 @@ class SessionController extends BaseAdminController
 
         $rows = db_connect()->table('item_responses ir')
             ->select('ir.challenge_attempt_id, ir.display_order, ir.status, ir.first_pass_correct, ir.is_correct')
-            ->select('ir.change_count, ir.hint_used, ir.wrong_click_count, ir.duration_ms, ir.final_answer_json, ir.reason_text')
+            ->select('ir.change_count, ir.try_count, ir.solved_on_try, ir.hint_used, ir.wrong_click_count, ir.duration_ms, ir.final_answer_json')
             ->select('ci.item_key, ci.interaction_type')
             ->join('challenge_items ci', 'ci.id = ir.challenge_item_id')
             ->whereIn('ir.challenge_attempt_id', $attemptIds)
@@ -161,11 +157,35 @@ class SessionController extends BaseAdminController
         return $out;
     }
 
-    private function phaseCode(int $phaseId): ?string
+    /**
+     * Setiap percobaan per soal (item_tries) untuk attempt sesi ini.
+     *
+     * @param list<int> $attemptIds
+     *
+     * @return array<int, list<array<string, mixed>>>
+     */
+    private function triesByAttempt(array $attemptIds): array
     {
-        $row = db_connect()->table('research_phases')->select('code')->where('id', $phaseId)->get()->getRowArray();
+        if ($attemptIds === []) {
+            return [];
+        }
 
-        return $row['code'] ?? null;
+        $rows = db_connect()->table('item_tries it')
+            ->select('it.*, ci.item_key')
+            ->join('challenge_items ci', 'ci.id = it.challenge_item_id')
+            ->whereIn('it.challenge_attempt_id', $attemptIds)
+            ->orderBy('it.challenge_attempt_id', 'ASC')
+            ->orderBy('it.id', 'ASC')
+            ->get()
+            ->getResultArray();
+
+        $out = [];
+
+        foreach ($rows as $row) {
+            $out[(int) $row['challenge_attempt_id']][] = $row;
+        }
+
+        return $out;
     }
 
     /** @return array<int, string> id node → "Wilayah · judul" untuk label tabel */

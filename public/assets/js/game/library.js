@@ -16,6 +16,7 @@
 import { $, $$, el } from '../core/dom.js';
 import { emit } from '../core/events.js';
 import { initSlides } from './slides.js';
+import { overlayOpened } from '../core/device.js';
 
 function hideBrokenMedia(root) {
   const hide = (node) => {
@@ -186,6 +187,8 @@ function initZoom(root) {
       caption.textContent = figcaption ? figcaption.textContent.replace(/\s+/g, ' ').trim() : '';
       caption.hidden = caption.textContent === '';
       dialog.showModal();
+      const shelf = button.closest('[data-screen="library"]');
+      overlayOpened('lightbox', { level: shelf?.dataset.level || null, levelId: Number(shelf?.dataset.levelId) || null });
     });
   }
 }

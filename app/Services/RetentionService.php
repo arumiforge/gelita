@@ -22,16 +22,16 @@ class RetentionService
 {
     /** Urutan penghapusan keras: anak lebih dulu, induk terakhir. */
     public const HARD_ORDER = [
-        'game_event_logs', 'audio_usage_events', 'item_responses', 'challenge_attempts',
-        'session_progress', 'participant_feedback', 'game_sessions',
-        'participant_consents', 'participants',
+        'game_event_logs', 'audio_usage_events', 'item_tries', 'item_responses', 'challenge_attempts',
+        'device_logs', 'session_progress', 'participant_feedback', 'game_sessions',
+        'participants',
     ];
 
     /** Jenis cakupan utama; tepat satu yang dipakai. */
     public const SCOPE_KEYS = ['participant_id', 'session_id', 'study_id'];
 
     /** Penyempit cakupan studi. */
-    public const NARROWING_KEYS = ['phase_code', 'date_from', 'date_to'];
+    public const NARROWING_KEYS = ['date_from', 'date_to'];
 
     public const ORIGIN_RETENTION = 'retention';
 
@@ -39,8 +39,8 @@ class RetentionService
 
     /**
      * Cakupan penghapusan yang sah dari input bebas, atau null.
-     * Tepat satu kunci utama (peserta → sesi → studi); penyempit fase dan
-     * rentang tanggal hanya berlaku untuk cakupan studi.
+     * Tepat satu kunci utama (peserta → sesi → studi); penyempit rentang
+     * tanggal hanya berlaku untuk cakupan studi.
      *
      * @param array<string, mixed> $input
      *
@@ -59,12 +59,6 @@ class RetentionService
 
             if ($key !== 'study_id') {
                 return $scope;
-            }
-
-            $phase = trim((string) ($input['phase_code'] ?? ''));
-
-            if (in_array($phase, config('Gelita')->phases, true)) {
-                $scope['phase_code'] = $phase;
             }
 
             foreach (['date_from', 'date_to'] as $dateKey) {
@@ -118,11 +112,6 @@ class RetentionService
             $builder->where('game_sessions.participant_id', (int) $scope['participant_id']);
         } elseif (isset($scope['study_id'])) {
             $builder->where('game_sessions.study_id', (int) $scope['study_id']);
-
-            if (isset($scope['phase_code'])) {
-                $builder->join('research_phases', 'research_phases.id = game_sessions.phase_id')
-                    ->where('research_phases.code', (string) $scope['phase_code']);
-            }
 
             if (isset($scope['date_from'])) {
                 $builder->where('game_sessions.started_at >=', $scope['date_from'] . ' 00:00:00');
@@ -340,7 +329,7 @@ class RetentionService
 
     /**
      * Attempt `in_progress` yang tidak tersentuh lebih dari $hours jam →
-     * `abandoned` (skor 0, bintang 0) + event `challenge_abandoned {via: retention}`.
+     * `abandoned` (bintang 0) + event `challenge_abandoned {via: retention}`.
      * Sentuhan terakhir = waktu mulai, jawaban terakhir, atau event terakhir attempt itu.
      */
     public function abandonStaleAttempts(int $hours): int
@@ -574,13 +563,13 @@ class RetentionService
      */
     private function scopedBuilder(BaseConnection $db, string $table, array $scope, array $sessionIds): ?BaseBuilder
     {
-        $bySession = ['game_event_logs', 'audio_usage_events', 'challenge_attempts', 'session_progress'];
+        $bySession = ['game_event_logs', 'audio_usage_events', 'challenge_attempts', 'session_progress', 'device_logs'];
 
         if (in_array($table, $bySession, true)) {
             return $sessionIds === [] ? null : $db->table($table)->whereIn('session_id', $sessionIds);
         }
 
-        if ($table === 'item_responses') {
+        if ($table === 'item_responses' || $table === 'item_tries') {
             if ($sessionIds === []) {
                 return null;
             }
@@ -609,8 +598,7 @@ class RetentionService
         }
 
         return match ($table) {
-            'participant_consents' => $db->table($table)->where('participant_id', (int) $scope['participant_id']),
-            'participants'         => $db->table($table)->where('id', (int) $scope['participant_id']),
+            'participants' => $db->table($table)->where('id', (int) $scope['participant_id']),
             default                => null,
         };
     }

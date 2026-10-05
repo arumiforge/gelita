@@ -9,7 +9,7 @@ use CodeIgniter\HTTP\ResponseInterface;
 /**
  * Inti permainan dari sisi HTTP: membuka node, menerima jawaban, menutup attempt.
  *
- * Tidak ada penilaian di sini. Seluruh benar/salah, skor, dan status level
+ * Tidak ada penilaian di sini. Seluruh benar/salah, bintang, dan status level
  * ditentukan ChallengeService memakai kunci dari database; field `correct`
  * yang dikirim browser tidak pernah dipakai.
  *
@@ -79,7 +79,6 @@ class ChallengeApiController extends BaseApiController
         try {
             $result = service('challengeService')->submitAnswer($attempt, $itemId, $body['answer'], [
                 'duration_ms' => $body['duration_ms'] ?? null,
-                'reason_text' => $body['reason_text'] ?? null,
             ]);
         } catch (\InvalidArgumentException $e) {
             return $this->invalidPayload(['item_id' => $e->getMessage()], 'INVALID_RESPONSE');
@@ -94,7 +93,7 @@ class ChallengeApiController extends BaseApiController
             'decoy'              => $result['decoy'],
             'already_answered'   => $result['already_answered'],
             'feedback'           => $result['feedback'],
-            'correct_option_key' => $result['correct_option_key'],
+            'try_no'             => $result['try_no'],
             'change_count'       => $response?->change_count ?? 0,
             'wrong_click_count'  => $response?->wrong_click_count ?? 0,
             'progress'           => $result['progress'],
@@ -137,9 +136,10 @@ class ChallengeApiController extends BaseApiController
                 );
             }
 
+            // waktu isian per soal (ms sejak tantangan dibuka) — catatan proses dari klien
             $map[$itemId] = $row['answer'] + [
-                'duration_ms' => $row['duration_ms'] ?? null,
-                'reason_text' => $row['reason_text'] ?? null,
+                'first_input_ms' => $row['first_input_ms'] ?? null,
+                'last_input_ms'  => $row['last_input_ms'] ?? null,
             ];
         }
 
@@ -151,8 +151,10 @@ class ChallengeApiController extends BaseApiController
             'total'         => $result['total'],
             'all_correct'   => $result['all_correct'],
             'check_count'   => $result['check_count'],
-            'retry_count'   => $result['retry_count'],
-            // pieces_correct untuk puzzle/urutan — dihitung server dari kunci
+            'try_no'        => $result['try_no'],
+            'tries_left'    => $result['tries_left'],
+            'exhausted'     => $result['exhausted'],
+            // pieces_correct untuk Susun Gambar — dihitung server dari kunci
             'detail'        => (object) $result['detail'],
         ]);
     }
@@ -211,10 +213,11 @@ class ChallengeApiController extends BaseApiController
         $closed = model(ChallengeAttemptModel::class)->find($attempt->id);
 
         return $this->ok([
-            'score'               => $result['score'],
             'stars'               => $result['stars'],
-            'first_pass_accuracy' => $result['first_pass_accuracy'],
-            'final_accuracy'      => $result['final_accuracy'],
+            'first_pass_correct'  => $result['first_pass_correct'],
+            'final_correct'       => $result['final_correct'],
+            'scorable_items'      => $result['scorable_items'],
+            'completion_reason'   => $result['completion_reason'],
             'duration_ms'         => (int) ($closed?->duration_ms ?? 0),
             'shards'              => $result['shards'],
             'level_completed'     => $result['level_completed'],

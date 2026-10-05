@@ -157,7 +157,7 @@ final class HuntClueAudioTest extends CIUnitTestCase
         $this->assertMatchesRegularExpression('/<option value="' . $audioId . '" selected>\s*petunjuk-tmg-4-01 · Indonesia \(disetujui\)/', $cari);
         $this->assertStringContainsString('petunjuk-{node}-NN.mp3', $cari);
 
-        $other = $this->itemForm($this->node('pilihan'), null, ['single_choice']);
+        $other = $this->itemForm($this->node('boleh'), null, ['verdict_card']);
         $this->assertStringNotContainsString('audio_prompt_id', $other);
     }
 
@@ -173,7 +173,7 @@ final class HuntClueAudioTest extends CIUnitTestCase
         $this->assertSame('Rekaman yang dipilih tidak ditemukan. Pilih ulang dari daftar.', $this->itemPayload(['interaction_type' => 'find_object', 'audio_prompt_id' => '999']));
 
         // Jenis lain tidak pernah membawa audio petunjuk, walau dikirim
-        $choice = $this->itemPayload(['interaction_type' => 'single_choice', 'audio_prompt_id' => (string) $audioId]);
+        $choice = $this->itemPayload(['interaction_type' => 'verdict_card', 'audio_prompt_id' => (string) $audioId]);
         $this->assertNull($choice['audio_prompt_id']);
         $this->assertNull($choice['audio_prompt_en_id']);
     }

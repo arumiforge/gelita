@@ -46,9 +46,9 @@ foreach (service('contentRepository')->levels() as $entity) {
     <?= component('stat-tile', ['label' => lang('Game.classLevel'), 'value' => $classTxt]) ?>
     <?= component('stat-tile', ['label' => lang('Game.school'), 'value' => $participant['school_name'] ?? '—']) ?>
     <?= component('stat-tile', ['label' => lang('Game.shards'), 'value' => $progress['shards'] . '/' . $progress['shards_total'], 'icon' => 'lantern']) ?>
-    <?= component('stat-tile', ['label' => lang('Game.meanFirstPass'), 'value' => fmt_pct($meanFirstPass, false, 0), 'icon' => 'target']) ?>
+    <?= component('stat-tile', ['label' => lang('Game.firstPass'), 'value' => lang('Game.firstPassCount', [$firstPass, $scorable]), 'icon' => 'target']) ?>
     <?= component('stat-tile', ['label' => lang('Game.totalTime'), 'value' => ms_to_human($durationMs), 'icon' => 'clock']) ?>
-    <?= component('stat-tile', ['label' => lang('Game.totalScore'), 'value' => fmt_num($progress['total_score'], 0, $locale), 'icon' => 'star']) ?>
+    <?= component('stat-tile', ['label' => lang('Game.stars'), 'value' => (string) $progress['total_stars'], 'icon' => 'star']) ?>
     <?= component('stat-tile', ['label' => lang('Game.challengesDone'), 'value' => $progress['completed_nodes'] . '/' . $progress['shards_total'], 'icon' => 'check']) ?>
   </div>
 
@@ -86,7 +86,7 @@ foreach (service('contentRepository')->levels() as $entity) {
             <th scope="col"><?= esc(lang('Game.challenge')) ?></th>
             <th scope="col"><?= esc(lang('Game.attempt')) ?></th>
             <th scope="col"><?= esc(lang('Game.status')) ?></th>
-            <th scope="col" class="is-num"><?= esc(lang('Game.score')) ?></th>
+            <th scope="col"><?= esc(lang('Game.firstPass')) ?></th>
             <th scope="col"><?= esc(lang('Game.stars')) ?></th>
             <th scope="col"><?= esc(lang('Game.startedAt')) ?></th>
           </tr>
@@ -97,7 +97,7 @@ foreach (service('contentRepository')->levels() as $entity) {
               <td><?= esc($nodes[$attempt->challenge_node_id] ?? ('#' . $attempt->challenge_node_id)) ?></td>
               <td class="num">#<?= esc($attempt->attempt_no) ?></td>
               <td><span class="badge is-<?= esc($attempt->status, 'attr') ?>"><?= esc(lang_or('Game.status_' . $attempt->status, (string) $attempt->status)) ?></span></td>
-              <td class="is-num"><?= $attempt->isCompleted() ? esc(fmt_num($attempt->score, 0, $locale)) : '—' ?></td>
+              <td><?= $attempt->isCompleted() ? esc(first_pass_text($attempt, $locale)) : '—' ?></td>
               <td><?= $attempt->isCompleted() ? stars_html((int) $attempt->stars) : '—' ?></td>
               <td><?= esc(fmt_date($attempt->started_at, false, $locale)) ?></td>
             </tr>

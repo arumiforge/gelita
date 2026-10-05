@@ -4,33 +4,23 @@ namespace App\Controllers\Admin;
 
 use App\Models\AuditLogModel;
 use App\Models\GameReleaseModel;
-use App\Models\ResearchPhaseModel;
 use App\Models\ResearchStudyModel;
-use App\Models\ScoringProfileModel;
 use CodeIgniter\HTTP\RedirectResponse;
 
 /**
- * Studi penelitian, fase aktif, rilis konten, dan profil skoring.
+ * Studi penelitian dan rilis konten. Satu tahap bermain (tanpa fase, tanpa
+ * pengaturan persetujuan atau mode pemilihan soal — perombakan kelas 5).
  *
- * Mengaktifkan rilis atau profil skoring mengubah cara data berikutnya
- * diberi skor, jadi setiap perubahan dicatat di `audit_logs`.
+ * Mengaktifkan rilis mengubah konten yang dipakai sesi berikutnya, jadi
+ * setiap perubahan dicatat di `audit_logs`.
  */
 class StudyController extends BaseAdminController
 {
     public function index(): string
     {
-        $studies = model(ResearchStudyModel::class)->orderBy('created_at', 'DESC')->findAll();
-        $phases  = [];
-
-        foreach ($studies as $study) {
-            $phases[(int) $study['id']] = model(ResearchPhaseModel::class)->forStudy((int) $study['id']);
-        }
-
-        return $this->panel('admin/study/index', 'Penelitian & tahap', [
-            'studies' => $studies,
-            'phases'  => $phases,
+        return $this->panel('admin/study/index', 'Penelitian', [
+            'studies' => model(ResearchStudyModel::class)->orderBy('created_at', 'DESC')->findAll(),
             'locales' => config('Gelita')->locales,
-            'phaseCodes' => config('Gelita')->phases,
         ]);
     }
 
@@ -92,7 +82,7 @@ class StudyController extends BaseAdminController
             'release_code'    => ['label' => 'Nama versi', 'rules' => 'required|max_length[50]|is_unique[game_releases.release_code]'],
             'app_version'     => ['label' => 'Versi aplikasi', 'rules' => 'required|max_length[20]'],
             'content_version' => ['label' => 'Versi konten', 'rules' => 'required|max_length[20]'],
-            'scoring_version' => ['label' => 'Versi aturan penilaian', 'rules' => 'required|max_length[20]'],
+            'scoring_version' => ['label' => 'Versi aturan bintang', 'rules' => 'required|max_length[20]'],
         ];
 
         if (! $this->validate($rules)) {
@@ -136,69 +126,6 @@ class StudyController extends BaseAdminController
         return $this->done('admin/studi/rilis', 'Versi permainan sudah diaktifkan. Sesi bermain baru memakai versi ini.');
     }
 
-    // -------------------------------------------------------------- skoring
-
-    public function scoringProfiles(): string
-    {
-        return $this->panel('admin/study/scoring', 'Aturan penilaian', [
-            'profiles' => model(ScoringProfileModel::class)->orderBy('code', 'ASC')->orderBy('version', 'ASC')->findAll(),
-            'active'   => model(ScoringProfileModel::class)->active(),
-        ]);
-    }
-
-    public function storeScoringProfile(): RedirectResponse
-    {
-        $profiles = model(ScoringProfileModel::class);
-        $back     = 'admin/studi/skoring';
-
-        $rules = [
-            'code'                => ['label' => 'Nama aturan', 'rules' => 'required|max_length[50]'],
-            'version'             => ['label' => 'Nomor versi baru', 'rules' => 'required|max_length[20]'],
-            'first_pass_weight'   => ['label' => 'Bobot benar sejak percobaan pertama', 'rules' => 'required|decimal'],
-            'final_weight'        => ['label' => 'Bobot benar di akhir', 'rules' => 'required|decimal'],
-            'independence_weight' => ['label' => 'Bobot kemandirian', 'rules' => 'required|decimal'],
-        ];
-
-        if (! $this->validate($rules)) {
-            return redirect()->to(site_url($back))->with('errors', $this->validator->getErrors());
-        }
-
-        $payload = [
-            'code'                           => (string) $this->request->getPost('code'),
-            'version'                        => (string) $this->request->getPost('version'),
-            'first_pass_weight'              => (float) $this->request->getPost('first_pass_weight'),
-            'final_weight'                   => (float) $this->request->getPost('final_weight'),
-            'independence_weight'            => (float) $this->request->getPost('independence_weight'),
-            'hint_penalty_per_use'           => (float) ($this->request->getPost('hint_penalty_per_use') ?? 0),
-            'retry_penalty_per_extra_attempt' => (float) ($this->request->getPost('retry_penalty_per_extra_attempt') ?? 0),
-            'three_star_min_score'           => (float) ($this->request->getPost('three_star_min_score') ?? 0),
-            'three_star_min_first_pass'      => (float) ($this->request->getPost('three_star_min_first_pass') ?? 0),
-            'two_star_min_score'             => (float) ($this->request->getPost('two_star_min_score') ?? 0),
-            'is_active'                      => 0,
-        ];
-
-        $existing = $profiles->findVersion($payload['code'], $payload['version']);
-
-        if ($existing !== null) {
-            return $this->back($back, 'Aturan dengan nama dan nomor versi itu sudah ada. Pakai nomor versi lain.');
-        }
-
-        $profileId = $profiles->insert($payload, true);
-
-        if ($profileId === false) {
-            return $this->back($back, 'Aturan penilaian belum dapat disimpan: ' . $this->modelErrors($profiles));
-        }
-
-        if ($this->request->getPost('activate')) {
-            $profiles->activate((int) $profileId);
-            $this->audit('scoring_activate', 'scoring_profile', (int) $profileId);
-        }
-
-        $this->audit('scoring_create', 'scoring_profile', (int) $profileId);
-
-        return $this->done($back, 'Versi aturan penilaian sudah disimpan.');
-    }
-
     // -------------------------------------------------------------- bantuan
 
     /** @return array<string, array{label: string, rules: string}> */
@@ -214,8 +141,6 @@ class StudyController extends BaseAdminController
             'status'             => ['label' => 'Status', 'rules' => 'required|in_list[draft,active,closed]'],
             'default_locale'     => ['label' => 'Bahasa awal permainan', 'rules' => 'required|valid_locale'],
             'unlock_mode'        => ['label' => 'Cara wilayah terbuka', 'rules' => 'required|in_list[sequential,free]'],
-            'item_selection_mode' => ['label' => 'Pemilihan soal', 'rules' => 'required|in_list[fixed,random]'],
-            'active_phase_code'  => ['label' => 'Fase yang sedang berjalan', 'rules' => 'required|in_list[umum,pretest,posttest]'],
             'retention_days'     => ['label' => 'Lama penyimpanan data', 'rules' => 'permit_empty|is_natural'],
         ];
     }
@@ -239,10 +164,6 @@ class StudyController extends BaseAdminController
             'retention_days'      => (int) ($this->request->getPost('retention_days') ?: 365),
             'default_locale'      => (string) $this->request->getPost('default_locale'),
             'unlock_mode'         => (string) $this->request->getPost('unlock_mode'),
-            'item_selection_mode' => (string) $this->request->getPost('item_selection_mode'),
-            'require_consent'     => $this->request->getPost('require_consent') ? 1 : 0,
-            'active_phase_code'   => (string) $this->request->getPost('active_phase_code'),
-            'allow_phase_choice'  => $this->request->getPost('allow_phase_choice') ? 1 : 0,
         ];
 
         if ($forUpdate) {

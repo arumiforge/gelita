@@ -14,6 +14,13 @@ use App\Models\GameEventLogModel;
 class EventService
 {
     /**
+     * Event yang hanya boleh ditulis server (Dok 1 §12.3). Kiriman klien
+     * dengan tipe ini ditolak agar data mentah navigasi dan batas percobaan
+     * tidak dapat dipalsukan.
+     */
+    public const SERVER_ONLY = ['screen_viewed', 'challenge_tries_exhausted', 'clue_failed'];
+
+    /**
      * Menerima batch event dari klien.
      *
      * @param list<array<string, mixed>> $events
@@ -47,6 +54,12 @@ class EventService
 
             if (! in_array($type, $config->eventTypes, true)) {
                 $rejected[] = ['index' => $index, 'reason' => 'event_type_unknown'];
+
+                continue;
+            }
+
+            if (in_array($type, self::SERVER_ONLY, true)) {
+                $rejected[] = ['index' => $index, 'reason' => 'event_type_server_only'];
 
                 continue;
             }

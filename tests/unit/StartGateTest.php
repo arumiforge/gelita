@@ -80,7 +80,8 @@ final class StartGateTest extends CIUnitTestCase
         $page = (new HomeController())->start();
 
         $this->assertIsString($page);
-        $this->assertStringContainsString(base_url('persetujuan'), $page);
+        $this->assertStringContainsString(base_url('daftar'), $page);
+        $this->assertStringNotContainsString(base_url('persetujuan'), $page, 'halaman persetujuan wali sudah dihapus');
         $this->assertStringContainsString(base_url('masuk'), $page);
     }
 

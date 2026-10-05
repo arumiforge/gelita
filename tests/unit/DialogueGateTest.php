@@ -16,8 +16,8 @@ use Config\Services;
  */
 final class DialogueGateTest extends CIUnitTestCase
 {
-    /** Skor wilayah tiruan yang dikembalikan ScoringService::levelScore() */
-    private array $score = ['score' => 0.0, 'stars' => 0, 'completed_nodes' => 0, 'total_nodes' => 5];
+    /** Skor wilayah tiruan yang dikembalikan ScoringService::levelSummary() */
+    private array $score = ['stars' => 0, 'completed_nodes' => 0, 'total_nodes' => 5];
 
     protected function setUp(): void
     {
@@ -31,7 +31,7 @@ final class DialogueGateTest extends CIUnitTestCase
             {
             }
 
-            public function levelScore(int $sessionId, int $levelId): array
+            public function levelSummary(int $sessionId, int $levelId): array
             {
                 return $this->test->currentScore();
             }

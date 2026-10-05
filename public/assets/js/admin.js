@@ -1,14 +1,13 @@
 /**
  * Titik masuk panel admin.
  *
- * Perilaku umum (chart, tabel, salin) dipasang ulang setiap kali filters.js
+ * Perilaku umum (tabel, salin) dipasang ulang setiap kali filters.js
  * mengganti isi halaman untuk filter baru; perilaku halaman tertentu
  * (editor konten, impor bank soal, unggah media, unggah narasi, status ekspor) dipasang
  * sekali. Semua halaman tetap berfungsi tanpa JavaScript.
  */
 import { $$ } from './core/dom.js';
 import { toast } from './core/toast.js';
-import { initCharts, disposeCharts } from './admin/charts.js';
 import { initTables } from './admin/tables.js';
 import { initFilters } from './admin/filters.js';
 
@@ -40,19 +39,17 @@ function initCopy(root) {
 }
 
 function initPage(root) {
-  initCharts(root);
   initTables(root);
   initCopy(root);
 }
 
 initPage(document);
-initFilters((phase, root) => {
-  if (phase === 'dispose') disposeCharts(root);
-  else initPage(root);
+initFilters((stage, root) => {
+  if (stage !== 'dispose') initPage(root);
 });
 
 // Modul khusus halaman — dimuat hanya bila markup-nya ada
-if (document.querySelector('form.item-form, form.option-editor, [name="engine_type"]')) {
+if (document.querySelector('form.item-form, [name="engine_type"]')) {
   import('./admin/content-editor.js').then((m) => m.initContentEditor());
 }
 if (document.querySelector('form[action$="impor-bank/pratinjau"]')) {

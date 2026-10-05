@@ -17,23 +17,24 @@ $routes->get('/', 'Game\HomeController::index');
 $routes->group('', ['namespace' => 'App\Controllers\Game'], static function ($routes): void {
     // Tanpa login
     $routes->get('mulai', 'HomeController::start');
-    $routes->get('persetujuan', 'RegisterController::consent');
-    $routes->post('persetujuan', 'RegisterController::storeConsent');
-    $routes->get('daftar', 'RegisterController::form');
-    $routes->post('daftar', 'RegisterController::store');
+    // Pendaftaran 3 langkah (Dok 1 §10); halaman persetujuan lama dialihkan
+    $routes->get('persetujuan', 'RegisterController::consentMoved');
+    $routes->get('daftar', 'RegisterController::index');
+    $routes->get('daftar/(:num)', 'RegisterController::step/$1');
+    $routes->post('daftar/(:num)', 'RegisterController::saveStep/$1');
     $routes->get('masuk', 'LoginController::form');
     $routes->post('masuk', 'LoginController::login');
     $routes->post('bahasa', 'HomeController::setLocale');
 
     // Sudah login, belum tentu boleh bermain (mis. wajib ganti sandi)
-    $routes->group('', ['filter' => 'participantAuth'], static function ($routes): void {
+    $routes->group('', ['filter' => ['participantAuth', 'screenView']], static function ($routes): void {
         $routes->get('ganti-sandi', 'LoginController::changePasswordForm');
         $routes->post('ganti-sandi', 'LoginController::changePassword');
         $routes->get('keluar', 'LoginController::logout');
     });
 
-    // Login + sandi sudah sah + sesi permainan aktif
-    $routes->group('', ['filter' => 'gameSession'], static function ($routes): void {
+    // Login + sandi sudah sah + sesi permainan aktif; setiap layar → screen_viewed
+    $routes->group('', ['filter' => ['gameSession', 'screenView']], static function ($routes): void {
         $routes->get('gerbang', 'GateController::index');
         $routes->get('gerbang/peta', 'GateController::map');
         $routes->get('intro', 'GateController::intro');
@@ -109,12 +110,6 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
         $routes->get('sesi', 'SessionController::index');
         $routes->get('sesi/(:num)', 'SessionController::show/$1');
         $routes->get('sesi/(:num)/event', 'SessionController::timeline/$1');
-        $routes->get('analitik/level', 'AnalyticsController::levels');
-        $routes->get('analitik/node', 'AnalyticsController::nodes');
-        $routes->get('analitik/node/(:num)', 'AnalyticsController::node/$1');
-        $routes->get('analitik/butir', 'AnalyticsController::items');
-        $routes->get('analitik/indikator', 'AnalyticsController::indicators');
-        $routes->get('analitik/prepost', 'AnalyticsController::prePost');
         $routes->get('masukan', 'FeedbackController::index');
 
         // Export — guru & admin, tetapi mode non-anonim hanya admin
@@ -133,7 +128,6 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
             $routes->post('konten/node/(:num)/item', 'ContentController::createItem/$1');
             $routes->post('konten/item/(:num)', 'ContentController::updateItem/$1');
             $routes->post('konten/item/(:num)/hapus', 'ContentController::deleteItem/$1');
-            $routes->post('konten/item/(:num)/opsi', 'ContentController::saveOptions/$1');
             $routes->get('konten/impor-bank', 'ContentController::importForm');
             $routes->post('konten/impor-bank/pratinjau', 'ContentController::importPreview');
             $routes->post('konten/impor-bank/jalankan', 'ContentController::importRun');
@@ -167,8 +161,6 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
             $routes->get('studi/rilis', 'StudyController::releases');
             $routes->post('studi/rilis', 'StudyController::storeRelease');
             $routes->post('studi/rilis/(:num)/aktifkan', 'StudyController::activateRelease/$1');
-            $routes->get('studi/skoring', 'StudyController::scoringProfiles');
-            $routes->post('studi/skoring', 'StudyController::storeScoringProfile');
 
             $routes->get('tata-kelola', 'GovernanceController::index');
             $routes->post('tata-kelola/hapus/pratinjau', 'GovernanceController::deletePreview');
@@ -197,11 +189,6 @@ $routes->group('api/admin', [
     'filter'    => ['jsonResponse', 'staffAuth'],
 ], static function ($routes): void {
     $routes->get('summary', 'AdminApiController::summary');
-    $routes->get('levels', 'AdminApiController::levels');
-    $routes->get('nodes', 'AdminApiController::nodes');
-    $routes->get('items', 'AdminApiController::items');
-    $routes->get('indicators', 'AdminApiController::indicators');
-    $routes->get('prepost', 'AdminApiController::prePost');
     $routes->get('participants', 'AdminApiController::participants');
     $routes->get('sessions/(:num)/timeline', 'AdminApiController::timeline/$1');
     $routes->get('exports/(:num)/status', 'AdminApiController::exportStatus/$1');

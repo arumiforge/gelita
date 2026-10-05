@@ -12,9 +12,10 @@ use CodeIgniter\Test\CIUnitTestCase;
  */
 final class DataLayerWiringTest extends CIUnitTestCase
 {
-    private const MODEL_COUNT = 30;   // + LibraryMediaModel (migration 003500)
+    // kelas 5 (Dok 1): − ResearchPhase, ParticipantConsent, ScoringProfile, ChallengeOption; + ItemTry, DeviceLog
+    private const MODEL_COUNT = 28;
 
-    private const ENTITY_COUNT = 12;  // + LibraryMedia
+    private const ENTITY_COUNT = 11;  // − ChallengeOption
 
     /** Nama service → kelas yang diharapkan */
     private const SERVICES = [
@@ -41,6 +42,21 @@ final class DataLayerWiringTest extends CIUnitTestCase
             $this->assertInstanceOf(Model::class, $model, $class);
             $this->assertNotSame('', $this->propertyOf($model, 'table'), "{$class} tanpa tabel");
         }
+    }
+
+    public function testGradeFiveModelsReplaceThePhaseConsentAndScoreModels(): void
+    {
+        foreach (['ItemTryModel' => 'item_tries', 'DeviceLogModel' => 'device_logs'] as $name => $table) {
+            $class = 'App\\Models\\' . $name;
+
+            $this->assertSame($table, $this->propertyOf(new $class(), 'table'), $class);
+        }
+
+        foreach (['ResearchPhaseModel', 'ParticipantConsentModel', 'ScoringProfileModel', 'ChallengeOptionModel'] as $gone) {
+            $this->assertFileDoesNotExist(APPPATH . "Models/{$gone}.php");
+        }
+
+        $this->assertFileDoesNotExist(APPPATH . 'Entities/ChallengeOption.php');
     }
 
     public function testEveryEntityLoads(): void

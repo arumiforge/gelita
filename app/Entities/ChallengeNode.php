@@ -16,7 +16,6 @@ class ChallengeNode extends Entity
         'level_id'            => 'int',
         'sequence'            => 'int',
         'indicator_id'        => '?int',
-        'scoring_profile_id'  => '?int',
         'background_media_id' => '?int',
         'scene_media_id'      => '?int',
         'audio_intro_id'      => '?int',
@@ -39,77 +38,100 @@ class ChallengeNode extends Entity
         return $default ?? (self::defaultConfig((string) $this->engine_type)[$key] ?? null);
     }
 
+    /**
+     * Konfigurasi bawaan per engine (perombakan kelas 5). Setiap pengerjaan
+     * memakai satu variasi soal (`selection = variant`); aturan per tingkat
+     * (ukuran papan, jumlah pengecoh) dibaca dari App\Libraries\DifficultyRules.
+     */
     public static function defaultConfig(string $engine): array
     {
         return match ($engine) {
-            // Ukuran papan susun gambar tersimpan per soal (config_json.grid/shape),
-            // ditetapkan dari tingkat kesulitan wilayah saat soal dibuat.
-            'puzzle'  => ['items_per_round' => 1, 'allow_retry' => true, 'mode' => 'arrange'],
             'rumpang' => [
-                'items_per_round'  => 4,
+                'selection'        => 'variant',
+                'variants'         => [],
+                'as_reading'       => true,
                 'use_word_bank'    => true,
-                'distractor_count' => 2,
-                'allow_retry'      => true,
-                'distractors'      => [],
-                'as_reading'       => false,
+                'distractor_count' => 0,
             ],
             'boleh' => [
-                'items_per_round' => 8,
-                'allow_retry'     => true,
+                'selection'       => 'variant',
+                'variants'        => [],
                 'verdict_options' => ['benar', 'salah'],
-                'require_reason'  => false,
             ],
-            'pilihan' => ['items_per_round' => 3, 'allow_retry' => false, 'shuffle_options' => true],
-            'cari'    => ['items_per_round' => 4, 'allow_retry' => true, 'show_decoys' => true],
-            default   => ['items_per_round' => 1, 'allow_retry' => true],
+            default => ['selection' => 'variant', 'variants' => []],
         };
     }
 
-    public function itemsPerRound(): int
-    {
-        return max(1, (int) $this->config('items_per_round'));
-    }
-
     /**
-     * Isi Rumpang sebagai satu bacaan: semua soal aktif tampil berurutan
-     * (setiap soal = satu potongan bacaan dengan satu rumpang), tanpa
-     * pengambilan acak; bank kata berisi semua jawaban + kata pengecoh.
+     * Isi Rumpang sebagai satu bacaan: semua soal variasi tampil berurutan
+     * (setiap soal = satu potongan bacaan dengan satu rumpang); bank kata
+     * berisi semua jawaban + kata pengecoh variasi itu.
      */
     public function isReading(): bool
     {
         return $this->engine_type === 'rumpang' && (bool) $this->config('as_reading');
     }
 
-    public function allowsRetry(): bool
-    {
-        return (bool) $this->config('allow_retry');
-    }
-
-    /** Pilihan penilaian untuk engine `boleh` (Benar / Salah / Pendapat) */
+    /** Pilihan penilaian engine `boleh`: selalu Benar / Salah. */
     public function verdictOptions(): array
     {
-        $options = $this->config('verdict_options');
-
-        return is_array($options) && $options !== [] ? array_values($options) : ['benar', 'salah'];
-    }
-
-    public function requiresReason(): bool
-    {
-        return (bool) $this->config('require_reason');
+        return ['benar', 'salah'];
     }
 
     /**
-     * Pengecoh bank kata engine `rumpang`, dari config_json['distractors'].
+     * Pengaturan per variasi dari config_json['variants'].
      *
-     * @return list<string> teks pengecoh pada locale yang diminta
+     * @return array<string, array<string, mixed>> keyed by variant_group
      */
-    public function distractors(string $locale): array
+    public function variants(): array
     {
         $out = [];
 
-        foreach ((array) $this->config('distractors', []) as $entry) {
+        foreach ((array) $this->config('variants', []) as $group => $entry) {
+            if (is_array($entry) && trim((string) $group) !== '') {
+                $out[(string) $group] = $entry;
+            }
+        }
+
+        return $out;
+    }
+
+    /**
+     * Judul tampil satu variasi; jatuh ke judul node bila variasi tidak
+     * memberi judul pada bahasa itu.
+     */
+    public function variantTitle(?string $group, string $locale): string
+    {
+        $entry = $group === null ? [] : ($this->variants()[$group] ?? []);
+        $title = trim((string) ($entry['title_' . $locale] ?? ''));
+
+        if ($title === '') {
+            $title = trim((string) ($entry['title_id'] ?? ''));
+        }
+
+        return $title !== '' ? $title : $this->text('title', $locale);
+    }
+
+    /**
+     * Pengecoh bank kata Isi Rumpang satu variasi, dari
+     * config_json['variants'][$group]['distractors']. Kunci lama tingkat node
+     * (`distractors`) tidak dibaca lagi.
+     *
+     * @return list<string> teks pengecoh pada locale yang diminta
+     */
+    public function distractors(string $locale, ?string $group = null): array
+    {
+        if ($group === null) {
+            return [];
+        }
+
+        $out = [];
+
+        foreach ((array) ($this->variants()[$group]['distractors'] ?? []) as $entry) {
             if (is_string($entry)) {
-                $out[] = $entry;
+                if (trim($entry) !== '') {
+                    $out[] = $entry;
+                }
 
                 continue;
             }

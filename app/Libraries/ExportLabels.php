@@ -4,9 +4,9 @@ namespace App\Libraries;
 
 /**
  * Isi berkas Excel unduhan data dalam bahasa Indonesia sehari-hari: nama
- * lembar, judul kolom, dan nilai berkode (status, tahap, jenis soal, …).
+ * lembar, judul kolom, dan nilai berkode (status, jenis soal, …).
  *
- * Kode lembar (`Participants`, …) dan kode kolom (`phase_code`, …) tetap
+ * Kode lembar (`Participants`, …) dan kode kolom (`attempt_id`, …) tetap
  * kode internal: keduanya dipakai formulir, scope_json, riwayat aktivitas,
  * dan tes. Terjemahan terjadi saat berkas ditulis (ExportService::writeXlsx).
  * Judul kolom ditetapkan per lembar karena satu kode bisa berbeda arti:
@@ -27,8 +27,7 @@ final class ExportLabels
     private const COMMON = [
         'participant_code' => ['Kode siswa', 'text'],
         'session_code'     => ['Kode sesi', 'text'],
-        'phase_code'       => ['Tahap', 'label:phase'],
-        'attempt_id'       => ['No. percobaan', 'int'],
+        'attempt_id'       => ['No. pengerjaan', 'int'],
         'level'            => ['Wilayah', 'text'],
         'node_sequence'    => ['Tantangan ke-', 'int'],
         'node_title'       => ['Nama tantangan', 'text', 28],
@@ -54,11 +53,7 @@ final class ExportLabels
             'province'                 => ['Provinsi', 'text', 18],
             'district'                 => ['Kabupaten/kota', 'text', 22],
             'registered_at'            => ['Tanggal daftar', 'date'],
-            'consent_version'          => ['Versi naskah persetujuan', 'text'],
-            'participant_consented'    => ['Siswa setuju ikut', 'yesno'],
-            'guardian_consented'       => ['Orang tua/wali setuju', 'yesno'],
-            'consented_at'             => ['Tanggal persetujuan', 'date'],
-            'consent_withdrawn_at'     => ['Persetujuan ditarik', 'date'],
+            'assented_at'              => ['Setuju ikut bermain', 'date'],
             'pw_first_submit_criteria' => ['Syarat sandi yang langsung dipenuhi (dari 5)', 'int'],
             'pw_weak_submit_count'     => ['Mencoba sandi terlalu lemah (kali)', 'int'],
         ],
@@ -79,39 +74,36 @@ final class ExportLabels
             'shards'           => ['Serpihan cahaya (tantangan tuntas)', 'int'],
             'completed_levels' => ['Wilayah tuntas', 'int'],
             'total_stars'      => ['Jumlah bintang', 'int'],
-            'total_score'      => ['Skor total', 'number'],
         ],
         'Levels' => [
             'level_sequence'  => ['Wilayah ke-', 'int'],
             'completed_nodes' => ['Tantangan selesai', 'int'],
             'total_nodes'     => ['Jumlah tantangan', 'int'],
-            'level_score'     => ['Skor wilayah (0–100)', 'number'],
             'stars'           => ['Bintang', 'int'],
             'duration_ms'     => ['Lama mengerjakan (menit)', 'minutes'],
         ],
         'Challenge Summary' => [
             'engine_type'         => ['Jenis tantangan', 'engine', 18],
             'item_types'          => ['Jenis soal', 'label:interaction', 28],
-            'attempt_no'          => ['Percobaan ke-', 'int'],
+            'attempt_no'          => ['Pengerjaan ke-', 'int'],
+            'variant_group'       => ['Variasi', 'text'],
             'status'              => ['Status', 'label:status'],
+            'completion_reason'   => ['Alasan selesai', 'label:completion', 20],
             'scorable_items'      => ['Jumlah soal dinilai', 'int'],
-            'first_pass_correct'  => ['Soal benar sejak awal', 'int'],
+            'first_pass_correct'  => ['Soal Berhasil pada Percobaan Pertama', 'int'],
             'final_correct'       => ['Soal benar di akhir', 'int'],
-            'first_pass_accuracy' => ['Benar sejak awal (%)', 'number'],
-            'final_accuracy'      => ['Benar di akhir (%)', 'number'],
-            'check_count'         => ['Menekan Periksa (kali)', 'int'],
+            'check_count'         => ['Menekan Cek jawabanku (kali)', 'int'],
+            'max_tries'           => ['Batas percobaan per soal', 'int'],
             'hint_count'          => ['Membuka petunjuk (kali)', 'int'],
-            'retry_count'         => ['Mengulang (kali)', 'int'],
             'answer_change_count' => ['Mengubah jawaban (kali)', 'int'],
             'audio_use_count'     => ['Memutar suara (kali)', 'int'],
-            'independence'        => ['Kemandirian (%)', 'number'],
-            'score'               => ['Skor (0–100)', 'number'],
             'stars'               => ['Bintang', 'int'],
             'started_at'          => ['Mulai', 'date'],
             'completed_at'        => ['Selesai', 'date'],
             'duration_ms'         => ['Lama mengerjakan (detik)', 'seconds'],
         ],
         'Item Responses' => [
+            'variant_group'      => ['Variasi', 'text'],
             'prompt'             => ['Soal', 'text', 50],
             'interaction_type'   => ['Jenis soal', 'label:interaction', 26],
             'indicator'          => ['Indikator', 'text', 22],
@@ -121,9 +113,10 @@ final class ExportLabels
             'first_answer'       => ['Jawaban pertama', 'text', 30],
             'final_answer'       => ['Jawaban akhir', 'text', 30],
             'answer_key'         => ['Kunci jawaban', 'text', 30],
-            'reason_text'        => ['Alasan siswa', 'text', 40],
-            'first_pass_correct' => ['Benar sejak awal', 'yesno'],
+            'first_pass_correct' => ['Berhasil pada Percobaan Pertama', 'yesno'],
             'is_correct'         => ['Benar di akhir', 'yesno'],
+            'try_count'          => ['Jumlah percobaan', 'int'],
+            'solved_on_try'      => ['Benar pada percobaan ke-', 'int'],
             'change_count'       => ['Mengubah jawaban (kali)', 'int'],
             'hint_used'          => ['Memakai petunjuk', 'yesno'],
             'wrong_click_count'  => ['Salah pilih benda (kali)', 'int'],
@@ -152,9 +145,7 @@ final class ExportLabels
         'Indicators' => [
             'indicator'        => ['Indikator', 'text', 24],
             'evidence_count'   => ['Jumlah jawaban', 'int'],
-            'correct_count'    => ['Benar sejak awal', 'int'],
-            'mastery_ratio'    => ['Capaian (%)', 'ratio'],
-            'mean_response_ms' => ['Rata-rata lama menjawab (detik)', 'seconds'],
+            'correct_count'    => ['Berhasil pada Percobaan Pertama', 'int'],
         ],
         'Demographic Summary' => [
             'dimension'          => ['Dikelompokkan menurut', 'label:exportDimension'],
@@ -162,8 +153,6 @@ final class ExportLabels
             'participants'       => ['Jumlah siswa', 'int'],
             'sessions'           => ['Jumlah sesi', 'int'],
             'completed_sessions' => ['Sesi selesai', 'int'],
-            'completion_rate'    => ['Sesi selesai (%)', 'ratio'],
-            'mean_total_score'   => ['Rata-rata skor total', 'number'],
         ],
         'Feedback' => [
             'rating'       => ['Bintang (1–5)', 'int'],
@@ -243,10 +232,8 @@ final class ExportLabels
 
         return match ($format) {
             'int'           => (int) $value,
-            'number'        => round((float) $value, 2),
             'seconds'       => round((float) $value / 1000, 1),
             'minutes'       => round((float) $value / 60000, 1),
-            'ratio'         => round((float) $value * 100, 1),
             'yesno'         => (bool) (int) $value ? 'ya' : 'tidak',
             'date'          => self::date($value),
             'class'         => class_label((string) $value, 'id'),
@@ -304,7 +291,6 @@ final class ExportLabels
         return match ($dimension) {
             'gender'      => admin_label('gender', $value),
             'class_level' => class_label($value, 'id'),
-            'phase'       => admin_label('phase', $value),
             default       => $value,
         };
     }

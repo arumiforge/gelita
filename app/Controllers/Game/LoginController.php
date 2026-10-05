@@ -5,7 +5,6 @@ namespace App\Controllers\Game;
 use App\Controllers\BaseController;
 use App\Libraries\PasswordPolicy;
 use App\Models\ParticipantModel;
-use App\Models\ResearchStudyModel;
 use CodeIgniter\HTTP\RedirectResponse;
 
 /**
@@ -25,13 +24,9 @@ class LoginController extends BaseController
         // tujuan yang disimpan GameSessionFilter harus bertahan sampai POST
         session()->keepFlashdata('redirect_after_login');
 
-        $study = model(ResearchStudyModel::class)->requireActiveStudy();
-
         return view('game/login', [
-            'locale'     => $this->locale,
-            'allowPhase' => (int) $study['allow_phase_choice'] === 1,
-            'phases'     => config('Gelita')->phases,
-            'errors'     => session('errors') ?? [],
+            'locale' => $this->locale,
+            'errors' => session('errors') ?? [],
         ]);
     }
 
@@ -41,11 +36,9 @@ class LoginController extends BaseController
             return redirect()->to(site_url('masuk'))->with('errors', $this->validator->getErrors());
         }
 
-        $study  = model(ResearchStudyModel::class)->requireActiveStudy();
         $result = service('sessionService')->login(
             model(ParticipantModel::class)->normalizeUsername((string) $this->request->getPost('username')),
             (string) $this->request->getPost('password'),
-            (int) $study['allow_phase_choice'] === 1 ? (string) $this->request->getPost('phase') : '',
             (string) (session('locale') ?? $this->locale),
             $this->deviceInfo(),
         );
@@ -134,12 +127,9 @@ class LoginController extends BaseController
 
         // Sandi baru langsung dipakai untuk melanjutkan/membuat sesi permainan:
         // setelah reset guru, session('game_session_id') memang sengaja kosong.
-        $study = model(ResearchStudyModel::class)->requireActiveStudy();
-
         $login = service('sessionService')->login(
             $participant->username,
             $new,
-            (string) $study['active_phase_code'],
             (string) (session('locale') ?? $this->locale),
             $this->deviceInfo(),
         );

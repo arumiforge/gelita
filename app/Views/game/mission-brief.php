@@ -66,7 +66,6 @@ $engineName  = engine_label($engine, $node->variant_code);
       <div class="mission-best">
         <span><?= esc(lang('Game.bestResult')) ?></span>
         <?= stars_html((int) $best->stars) ?>
-        <b class="num"><?= esc(fmt_num($best->score, 0, $locale)) ?></b>
       </div>
     <?php endif ?>
 

@@ -3,12 +3,12 @@
  * Tabel data panel + kondisi kosong yang menjelaskan.
  *
  * `$columns` berisi kunci kolom → label, atau kunci → definisi:
- *   ['label' => 'Skor', 'format' => 'num', 'decimals' => 2]
+ *   ['label' => 'Lama (detik)', 'format' => 'num', 'decimals' => 1]
  * Format: text (bawaan) | num | pct (0–100) | ratio (0–1 → %) | date | datetime
  *         | ms (durasi) | bool | badge | code | json
  * `badge` menampilkan kode status sebagai label ramah (admin_label('status'))
  * dengan kelas warna dari kodenya; `label` menerjemahkan kode lewat kelompok
- * `group` (mis. ['format' => 'label', 'group' => 'phase']); `json` meringkas
+ * `group` (mis. ['format' => 'label', 'group' => 'status']); `json` meringkas
  * data menjadi teks biasa ("jawaban: kopi") dan menyimpan bentuk aslinya di
  * tooltip.
  * Kolom `render` menerima closure fn(array $row): string yang mengembalikan

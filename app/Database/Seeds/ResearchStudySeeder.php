@@ -2,36 +2,22 @@
 
 namespace App\Database\Seeds;
 
+/**
+ * Satu studi penelitian kelas 5, satu tahap bermain (tanpa fase).
+ */
 class ResearchStudySeeder extends GelitaSeeder
 {
+    public const STUDY_CODE = 'STUDI-KEDU-KELAS5-2026';
+
     public function run(): void
     {
-        $studyId = $this->insertIfMissing('research_studies', ['code' => 'STUDI-KEDU-2026'], [
-            'name'                => 'Penelitian GELITA Kedu 2026',
-            'year_label'          => '2026',
-            'status'              => 'active',
-            'retention_days'      => 1825,
-            'default_locale'      => 'id',
-            'unlock_mode'         => 'sequential',
-            'item_selection_mode' => 'fixed',
-            'require_consent'     => 1,
-            'active_phase_code'   => 'umum',
-            'allow_phase_choice'  => 0,
+        $this->insertIfMissing('research_studies', ['code' => self::STUDY_CODE], [
+            'name'           => 'Penelitian GELITA Kelas 5 SD/MI 2026',
+            'year_label'     => '2026',
+            'status'         => 'active',
+            'retention_days' => 1825,
+            'default_locale' => 'id',
+            'unlock_mode'    => 'sequential',
         ]);
-
-        $phases = [
-            ['sequence' => 1, 'code' => 'umum', 'label_id' => 'Umum', 'label_en' => 'General'],
-            ['sequence' => 2, 'code' => 'pretest', 'label_id' => 'Pretest', 'label_en' => 'Pretest'],
-            ['sequence' => 3, 'code' => 'posttest', 'label_id' => 'Posttest', 'label_en' => 'Posttest'],
-        ];
-
-        foreach ($phases as $phase) {
-            $this->insertIfMissing('research_phases', ['study_id' => $studyId, 'code' => $phase['code']], [
-                'sequence'  => $phase['sequence'],
-                'label_id'  => $phase['label_id'],
-                'label_en'  => $phase['label_en'],
-                'is_active' => 1,
-            ]);
-        }
     }
 }

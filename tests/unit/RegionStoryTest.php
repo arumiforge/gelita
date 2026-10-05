@@ -388,7 +388,7 @@ final class RegionStoryTest extends CIUnitTestCase
         $this->assertStringContainsString('html.js .kenal { display: none; }', $css);
         $this->assertStringContainsString('html.js .kenal.is-open { display: grid;', $css);
         // Gerak dikurangi: jejak kaki dan visual engine tanpa animasi
-        $this->assertMatchesRegularExpression('/@media \(prefers-reduced-motion: reduce\).*\.footstep,.*\.cc-puzzle i, \.cc-gap b, \.cc-card, \.cc-pilihan i, \.cc-light/s', $css);
+        $this->assertMatchesRegularExpression('/@media \(prefers-reduced-motion: reduce\).*\.footstep,.*\.cc-puzzle i, \.cc-gap b, \.cc-card, \.cc-light/s', $css);
     }
 
     // ------------------------------------------------------------ bantuan
@@ -410,7 +410,7 @@ final class RegionStoryTest extends CIUnitTestCase
         return [
             'locale'      => 'id',
             'participant' => ['id' => 5, 'username' => 'jaka', 'display_name' => 'Jaka', 'avatar_code' => null],
-            'progress'    => ['completed_nodes' => $allDone ? 15 : 5, 'completed_levels' => 1, 'unlocked_level_sequence' => 2, 'total_score' => 0.0,
+            'progress'    => ['completed_nodes' => $allDone ? 15 : 5, 'completed_levels' => 1, 'unlocked_level_sequence' => 2,
                 'total_stars' => 0, 'shards' => $allDone ? 15 : 5, 'shards_total' => 15, 'current_level_id' => null, 'current_node_id' => null],
             'lantern' => [],
         ];
@@ -482,7 +482,7 @@ final class RegionStoryTest extends CIUnitTestCase
             $state  = $status[$code] ?? 'locked';
             $rows[] = [
                 'id' => $id, 'code' => $code, 'sequence' => $id, 'name' => ucfirst($code), 'difficulty' => self::DIFFICULTY[$id],
-                'status' => $state, 'entry' => ($state === 'open' ? 'dialog/' : 'wilayah/') . $code, 'score' => 0.0, 'stars' => 0,
+                'status' => $state, 'entry' => ($state === 'open' ? 'dialog/' : 'wilayah/') . $code, 'stars' => 0,
                 'completed_nodes' => $state === 'completed' ? 5 : 0, 'total_nodes' => 5, 'map_x' => 20 * $id, 'map_y' => 40,
                 'map_media' => base_url('assets/ui/placeholder.svg'), 'background' => null,
             ];
@@ -565,10 +565,10 @@ final class RegionStoryTest extends CIUnitTestCase
     {
         $attempt = new ChallengeAttempt();
         $attempt->injectRawData(['id' => 105, 'session_id' => 9, 'challenge_node_id' => 15, 'status' => 'completed', 'stars' => 3,
-            'duration_ms' => 50000, 'first_pass_accuracy' => 100, 'score' => 90, 'check_count' => 1]);
+            'duration_ms' => 50000, 'first_pass_correct' => 4, 'final_correct' => 4, 'scorable_items' => 4, 'check_count' => 1]);
 
         $node = new ChallengeNode();
-        $node->injectRawData(['id' => 15, 'level_id' => 1, 'sequence' => 5, 'engine_type' => 'pilihan', 'title_id' => 'Kuis Temanggung']);
+        $node->injectRawData(['id' => 15, 'level_id' => 1, 'sequence' => 4, 'engine_type' => 'cari', 'title_id' => 'Cari Objek Temanggung']);
 
         $next = self::overview(['temanggung' => 'completed', 'magelang' => 'in_progress'])[1];
         $next['curtain'] = ['text' => ['title' => 'Menuju Magelang…', 'tagline' => 'Tanah Candi Agung', 'chip' => 'Sedang'], 'preload' => []];
@@ -577,7 +577,7 @@ final class RegionStoryTest extends CIUnitTestCase
             'attempt'         => $attempt,
             'node'            => $node,
             'level'           => self::level('temanggung'),
-            'levelScore'      => ['score' => 90.0, 'stars' => 15, 'completed_nodes' => 5, 'total_nodes' => 5],
+            'levelSummary'      => ['stars' => 12, 'completed_nodes' => 4, 'total_nodes' => 4],
             'levelCompleted'  => true,
             'closesRegion'    => $closes,
             'libraryUnlocked' => $closes,

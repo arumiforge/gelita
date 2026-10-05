@@ -97,7 +97,6 @@ class AudioUsageEventModel extends Model
         $builder = $this->db->table('audio_usage_events aue')
             ->join('game_sessions', 'game_sessions.id = aue.session_id')
             ->join('participants', 'participants.id = game_sessions.participant_id')
-            ->join('research_phases', 'research_phases.id = game_sessions.phase_id')
             ->where('participants.deleted_at', null);
 
         return apply_research_filters($builder, $filters, ['level_id', 'node_id']);

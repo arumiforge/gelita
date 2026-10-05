@@ -63,16 +63,16 @@ class ContentApiController extends BaseApiController
                 'title'        => $node->text('title', $locale),
                 'instruction'  => $node->text('instruction', $locale),
                 'description'  => $node->text('description', $locale),
-                'allow_retry'  => $node->allowsRetry(),
+                'max_tries'    => config('Gelita')->maxTries,
                 'background'   => media_src($node->background_media_id),
                 'scene'        => media_src($node->scene_media_id),
                 'hints_count'  => count(service('contentRepository')->hintsFor($node->id)),
             ],
             'best' => $best === null ? null : [
-                'attempt_id'          => $best->id,
-                'score'               => (float) $best->score,
-                'stars'               => (int) $best->stars,
-                'first_pass_accuracy' => (float) $best->first_pass_accuracy,
+                'attempt_id'         => $best->id,
+                'stars'              => (int) $best->stars,
+                'first_pass_correct' => (int) $best->first_pass_correct,
+                'scorable_items'     => (int) $best->scorable_items,
             ],
         ]);
     }

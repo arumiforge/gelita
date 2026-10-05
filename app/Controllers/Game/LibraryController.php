@@ -17,7 +17,7 @@ use CodeIgniter\HTTP\RedirectResponse;
  * halaman terkunci — bukan redirect — agar penjelasannya tetap terbaca tanpa
  * JavaScript; `library_opened` hanya dicatat bila isi buku benar-benar tampil.
  *
- * Membuka pustaka tidak memengaruhi skor, bintang, atau status node sama sekali.
+ * Membuka pustaka tidak memengaruhi bintang atau status node sama sekali.
  */
 class LibraryController extends BaseGameController
 {

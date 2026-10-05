@@ -1,14 +1,23 @@
 /**
  * Kerangka bersama layar tantangan: pemilih mesin + fungsi yang dipakai
- * kelima engine.
+ * keempat engine.
  *
  * Payload dibaca dari <script type="application/json" id="challenge-data">
  * (ChallengeService::openNode, tanpa kunci jawaban). Client tidak pernah
  * menghitung benar/salah, skor, bintang, atau unlock: semua tampilan hasil
  * datang dari respons server (aturan 1).
  *
- *   submit(itemId, answer, extra)  → POST /api/attempts/{id}/responses  (pilihan, cari)
+ *   submit(itemId, answer, extra)  → POST /api/attempts/{id}/responses  (cari)
  *   check(answers)                 → POST /api/attempts/{id}/check      (puzzle, rumpang, boleh)
+ *   selected(itemId, change)       → event `answer_selected` + waktu isian per soal
+ *
+ * Waktu isian per soal (Dok 1 §12.5): ms sejak tantangan dibuka
+ * (performance.now()) saat siswa pertama kali dan terakhir kali mengisi/
+ * mengubah soal itu dalam satu percobaan; ikut dikirim pada setiap /check
+ * sebagai `first_input_ms` / `last_input_ms` (satu baris item_tries), lalu
+ * dihitung ulang untuk percobaan berikutnya. Soal yang tidak disentuh dalam
+ * satu percobaan dikirim tanpa waktu. Hanya catatan proses — urutan dan
+ * waktu resmi tetap occurred_at server.
  *   complete()                     → POST /api/attempts/{id}/complete → /selesai/{id}
  *   useHint()                      → POST /api/attempts/{id}/hints
  *
@@ -26,12 +35,12 @@ import { Sfx } from '../core/audio.js';
 import { t } from '../core/config.js';
 import { toast } from '../core/toast.js';
 import { updateLantern } from './hud.js';
+import { trackReading } from '../core/device.js';
 
 const ENGINES = {
   puzzle: () => import('../engines/puzzle.js'),
   rumpang: () => import('../engines/rumpang.js'),
   boleh: () => import('../engines/boleh.js'),
-  pilihan: () => import('../engines/pilihan.js'),
   cari: () => import('../engines/cari.js'),
 };
 
@@ -50,11 +59,27 @@ export async function bootChallenge() {
   const attemptId = data.attempt_id;
   const nodeId = data.node?.id ?? (Number(section.dataset.node) || null);
   const levelId = data.node?.level_id ?? (Number(section.dataset.levelId) || null);
+  const levelCode = section.dataset.level || null; // payload overlay_opened `level` (kode, seperti "kenal")
   const exitUrl = section.dataset.exitUrl;
   const state = { leaving: false, completed: false, correct: 0, wrong: 0 };
 
   const refs = { levelId, nodeId, attemptId };
   const timer = startTimer($('#timer'), data.elapsed_ms);
+
+  // ------------------------------------------------------ waktu isian
+
+  const openedAt = performance.now();
+  const inputTimes = new Map(); // itemId → { first, last } (ms sejak tantangan dibuka)
+  const sinceOpen = () => Math.max(0, Math.round(performance.now() - openedAt));
+
+  /** Siswa mengisi/mengubah satu soal sebelum mengecek (event answer_selected). */
+  function selected(itemId, change = {}) {
+    const ms = sinceOpen();
+    const times = inputTimes.get(itemId) ?? { first: ms, last: ms };
+    times.last = ms;
+    inputTimes.set(itemId, times);
+    emit('answer_selected', { ...refs, itemId, payload: { ...change, t_ms: ms } });
+  }
 
   // ---------------------------------------------------------- permintaan
 
@@ -72,8 +97,15 @@ export async function bootChallenge() {
     });
   }
 
-  function check(answers) {
-    return post('check', { answers, client_event_id: uuid(), occurred_at: now() });
+  async function check(answers) {
+    const rows = answers.map((row) => {
+      const times = inputTimes.get(row.item_id);
+      return times ? { ...row, first_input_ms: times.first, last_input_ms: times.last } : row;
+    });
+    const result = await post('check', { answers: rows, client_event_id: uuid(), occurred_at: now() });
+    // Waktu isian per percobaan: percobaan berikutnya dihitung dari isian berikutnya
+    for (const row of answers) inputTimes.delete(row.item_id);
+    return result;
   }
 
   async function complete() {
@@ -141,19 +173,6 @@ export async function bootChallenge() {
 
     Sfx.play('wrong');
 
-    // allow_retry = false: jawaban pertama sudah final — tidak ada perbaikan
-    if (data.node?.allow_retry === false) {
-      await showModal({
-        type: 'info',
-        title: partialTitle,
-        text: [partialText, t('noRetry')],
-        dismissible: false,
-        buttons: [{ label: t('next'), style: 'primary', value: 'next' }],
-      });
-      await complete();
-      return 'complete';
-    }
-
     const buttons = [{ label: t('fixAnswers'), style: 'primary', value: 'fix' }];
     if ((result.check_count ?? 0) >= FINISH_OFFER_AFTER) {
       buttons.unshift({ label: t('finishAnyway'), style: 'quiet', value: 'finish' });
@@ -181,10 +200,10 @@ export async function bootChallenge() {
     nodeId,
     levelId,
     items: Array.isArray(data.items) ? data.items : [],
-    allowRetry: data.node?.allow_retry !== false,
     refs,
     submit,
     check,
+    selected,
     complete,
     tally,
     setBusy,
@@ -218,6 +237,7 @@ export async function bootChallenge() {
       return;
     }
 
+    emit('overlay_opened', { ...refs, payload: { overlay: 'hint', ...(levelCode ? { level: levelCode } : {}) } });
     const ok = await confirmDialog({
       title: t('hintTitle'),
       text: t('hintPenalty'),
@@ -258,6 +278,7 @@ export async function bootChallenge() {
 
   async function confirmExit() {
     if (isModalOpen()) return false;
+    emit('overlay_opened', { ...refs, payload: { overlay: 'exit', ...(levelCode ? { level: levelCode } : {}) } });
     const ok = await confirmDialog({
       title: t('exitTitle'),
       text: t('exitText'),
@@ -316,6 +337,9 @@ export async function bootChallenge() {
   }
 
   Sfx.music('challenge');
+
+  // Bacaan (rumpang / benar–salah): batas gulir 25/50/75/100 % → reading_progress
+  trackReading(section, refs);
 
   const engine = await load();
   engine.mount(ctx);

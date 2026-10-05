@@ -32,7 +32,7 @@ $rating    = (int) old('rating');
   </header>
 
   <div class="stat-grid">
-    <?= component('stat-tile', ['label' => lang('Game.accuracyFirst'), 'value' => fmt_pct($journey['first_pass'], false, 0), 'icon' => 'target']) ?>
+    <?= component('stat-tile', ['label' => lang('Game.firstPass'), 'value' => lang('Game.firstPassCount', [$journey['first_pass'], $journey['scorable']]), 'icon' => 'target']) ?>
     <?= component('stat-tile', ['label' => lang('Game.challengesDone'), 'value' => (string) $journey['completed'], 'icon' => 'check']) ?>
     <?= component('stat-tile', ['label' => lang('Game.totalTime'), 'value' => ms_to_human($journey['duration_ms']), 'icon' => 'clock']) ?>
     <?= component('stat-tile', ['label' => lang('Game.correctItems'), 'value' => (string) $journey['correct_items'], 'icon' => 'star']) ?>

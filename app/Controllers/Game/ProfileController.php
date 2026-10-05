@@ -30,31 +30,10 @@ class ProfileController extends BaseGameController
             'attempts'      => $attempts,
             'nodes'         => $this->nodeTitles(),
             'durationMs'    => (int) $session->duration_ms,
-            'meanFirstPass' => $this->mean($completed, 'first_pass_accuracy'),
-            'meanFinal'     => $this->mean($completed, 'final_accuracy'),
+            'firstPass'     => array_sum(array_map(static fn (ChallengeAttempt $a): int => (int) $a->first_pass_correct, $completed)),
+            'scorable'      => array_sum(array_map(static fn (ChallengeAttempt $a): int => (int) $a->scorable_items, $completed)),
             'canReflect'    => $this->allNodesCompleted($session),
         ]);
-    }
-
-    /**
-     * Rata-rata sederhana atas metrik yang sudah dihitung ScoringService saat
-     * attempt ditutup — untuk ditampilkan, bukan angka penelitian baru.
-     *
-     * @param list<ChallengeAttempt> $attempts
-     */
-    private function mean(array $attempts, string $field): float
-    {
-        if ($attempts === []) {
-            return 0.0;
-        }
-
-        $sum = 0.0;
-
-        foreach ($attempts as $attempt) {
-            $sum += (float) $attempt->{$field};
-        }
-
-        return round($sum / count($attempts), 2);
     }
 
     /** @return array<int, string> id node → judul, untuk label daftar attempt */

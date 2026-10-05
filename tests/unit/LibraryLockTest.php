@@ -48,7 +48,7 @@ final class LibraryLockTest extends CIUnitTestCase
             {
             }
 
-            public function levelScore(int $sessionId, int $levelId): array
+            public function levelSummary(int $sessionId, int $levelId): array
             {
                 return $this->test->score($levelId);
             }
@@ -242,7 +242,7 @@ final class LibraryLockTest extends CIUnitTestCase
         $level = self::level(2, 'magelang');
         $data  = self::hud() + [
             'level'      => $level,
-            'levelScore' => ['score' => 0.0, 'stars' => 0, 'completed_nodes' => 3, 'total_nodes' => 5],
+            'levelSummary' => ['stars' => 0, 'completed_nodes' => 3, 'total_nodes' => 5],
             'nodes'      => [],
             'hasLibrary' => true,
         ];
@@ -281,7 +281,7 @@ final class LibraryLockTest extends CIUnitTestCase
     {
         [$done, $total] = $this->scores[$levelId] ?? [0, 5];
 
-        return ['score' => 0.0, 'stars' => 0, 'completed_nodes' => $done, 'total_nodes' => $total];
+        return ['stars' => 0, 'completed_nodes' => $done, 'total_nodes' => $total];
     }
 
     /** Data HUD tetap (hudData() asli membaca database). */
@@ -290,7 +290,7 @@ final class LibraryLockTest extends CIUnitTestCase
         return [
             'locale'      => 'id',
             'participant' => ['id' => 5, 'username' => 'jaka', 'display_name' => 'Jaka', 'avatar_code' => null],
-            'progress'    => ['completed_nodes' => 0, 'completed_levels' => 0, 'unlocked_level_sequence' => 1, 'total_score' => 0.0,
+            'progress'    => ['completed_nodes' => 0, 'completed_levels' => 0, 'unlocked_level_sequence' => 1,
                 'total_stars' => 0, 'shards' => 0, 'shards_total' => 15, 'current_level_id' => null, 'current_node_id' => null],
             'lantern' => [],
         ];
@@ -367,7 +367,7 @@ final class LibraryLockTest extends CIUnitTestCase
                     $access = $this->libraryAccess($session, LibraryLockTest::level($id, $code));
                     $rows[] = [
                         'id' => $id, 'code' => $code, 'sequence' => $id, 'name' => ucfirst($code), 'difficulty' => 'easy',
-                        'status' => $access['level_status'], 'entry' => $access['entry'], 'score' => 0.0, 'stars' => 0,
+                        'status' => $access['level_status'], 'entry' => $access['entry'], 'stars' => 0,
                         'completed_nodes' => $access['completed_nodes'], 'total_nodes' => $access['total_nodes'],
                         'map_x' => 0, 'map_y' => 0, 'map_media' => null, 'background' => null,
                     ];

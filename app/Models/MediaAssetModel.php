@@ -13,7 +13,8 @@ class MediaAssetModel extends Model
     protected $dateFormat    = 'datetime';
     protected $allowedFields = [
         'asset_key', 'asset_type', 'storage_path', 'mime_type', 'file_size', 'sha256',
-        'width_px', 'height_px', 'locale', 'credit', 'version', 'is_active',
+        'width_px', 'height_px', 'locale', 'credit', 'label', 'description',
+        'version', 'is_active', 'is_placeholder',
     ];
     protected $validationRules = [
         'asset_key'    => ['label' => 'Kode berkas', 'rules' => 'required|max_length[160]|is_unique[media_assets.asset_key,id,{id}]'],
@@ -84,5 +85,15 @@ class MediaAssetModel extends Model
         }
 
         return $out;
+    }
+
+    /**
+     * Gambar contoh (mockup) buatan sistem yang belum diganti gambar asli.
+     *
+     * @return list<array<string, mixed>>
+     */
+    public function placeholders(): array
+    {
+        return $this->where('is_placeholder', 1)->orderBy('asset_key', 'ASC')->findAll();
     }
 }

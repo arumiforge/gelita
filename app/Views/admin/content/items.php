@@ -6,9 +6,9 @@
  * Form berubah sesuai `interaction_type`: panduan bentuk answer_key_json dan
  * config_json untuk jenis yang dipilih ditampilkan lewat CSS :has() (tanpa
  * JavaScript). admin/content-editor.js menambah editor terpandu — kalimat ___,
- * verdict, dua sumber, potongan urutan, dan pemilih koordinat objek (dengan
- * gambar adegan node dari data-scene) — yang tetap menulis ke dua kolom JSON
- * yang sama; data-verdicts membatasi kunci verdict pada verdict_options node.
+ * verdict Benar/Salah, dan pemilih koordinat objek (dengan gambar adegan node
+ * dari data-scene) — yang tetap menulis ke dua kolom JSON yang sama.
+ * Setiap soal masuk satu variasi (`variant_group` a/b/c).
  * Selama editor terpandu aktif, contoh JSON (`.json-example`) dan kedua kolom
  * JSON disembunyikan sampai admin membuka "data teknis".
  *
@@ -28,7 +28,6 @@ $isNew  = $item === null;
 $prefix = $isNew ? 'new' : 'it' . $item->id;
 $action = $isNew ? base_url('admin/konten/node/' . $node->id . '/item') : base_url('admin/konten/item/' . $item->id);
 $json   = static fn ($value): string => $value === null || $value === [] ? '' : (string) json_encode($value, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-$verdicts = implode(' / ', $node->verdictOptions());
 $bloomNow = $isNew ? '' : (string) ($item->bloom_level ?? '');
 // Ukuran papan Susun Gambar: soal lama memakai ukurannya sendiri, soal baru mengikuti wilayah
 $puzzle   = $node->engine_type === 'puzzle'
@@ -38,14 +37,10 @@ $puzzle   = $node->engine_type === 'puzzle'
     : null;
 
 $guides = [
-    'single_choice source_trust' => ['Pilihan ganda', 'Pilihan jawaban A–D diisi di bagian “Pilihan jawaban” di bawah formulir ini (muncul setelah soal disimpan). Tandai tepat satu yang benar.', '{"option_key": "a"}', ''],
-    'fill_blank_bank'            => ['Isi rumpang — pilih kata', 'Tulis kalimat dengan ___ (tiga garis bawah) di bagian yang kosong. Kata jawabannya ikut masuk daftar pilihan kata bersama kata pengecoh tantangan ini.', '{"text_id": "kopi", "text_en": "coffee"}', ''],
-    'fill_blank_free'            => ['Isi rumpang — ketik jawaban', 'Tulis kalimat dengan ___ (tiga garis bawah) di bagian yang kosong, lalu tulis semua jawaban yang boleh diterima.', '{"accept_id": ["Magelang"], "accept_en": ["Magelang"], "case_sensitive": false}', ''],
-    'verdict_card'               => ['Kartu benar/salah', 'Siswa menilai sebuah pernyataan. Pilih kunci jawabannya dari tombol yang tampil di tantangan ini: ' . $verdicts . '. Boleh ditambah dua kartu sumber untuk dibandingkan.', '{"verdict": "benar"}', '{"sources": [{"label_id": "Sumber A", "label_en": "Source A", "kind": "official", "text_id": "…", "text_en": "…"}, {"label_id": "Sumber B", "label_en": "Source B", "kind": "anonymous", "text_id": "…", "text_en": "…"}]}'],
-    'verdict_reason'             => ['Kartu benar/salah/pendapat + alasan', 'Seperti kartu benar/salah, tetapi siswa juga menulis alasannya. Alasan tidak dinilai otomatis; isi contoh alasan yang baik sebagai pegangan guru.', '{"verdict": "pendapat", "sample_reason_id": "…", "sample_reason_en": "…"}', ''],
+    'fill_blank_bank'            => ['Isi rumpang — pilih kata', 'Tulis kalimat dengan ___ (tiga garis bawah) di bagian yang kosong. Kata jawabannya ikut masuk daftar pilihan kata bersama kata pengecoh variasi ini.', '{"text_id": "kopi", "text_en": "coffee"}', ''],
+    'verdict_card'               => ['Kartu benar/salah', 'Siswa menilai sebuah pernyataan tentang bacaan variasi ini dengan tombol Benar atau Salah.', '{"verdict": "benar"}', ''],
     'find_object'                => ['Cari benda di gambar', 'Letakkan benda pada gambar adegan tantangan. Benda jebakan (dari daerah lain) tidak dinilai dan wajib diberi penjelasan yang muncul saat siswa salah memilihnya.', '{"target": true}', '{"x": 18, "y": 62, "w": 13, "decoy": false, "wrong_feedback_id": "…", "wrong_feedback_en": "…"}'],
     'puzzle_arrange'             => ['Susun kepingan gambar', 'Unggah satu gambar utuh (sebaiknya persegi). Sistem memotongnya otomatis menjadi keping sesuai tingkat kesulitan wilayah: Temanggung 3 × 3 kotak, Magelang 4 × 4 kotak, Wonosobo 4 × 4 jigsaw. Kunci jawaban dibuat otomatis. Tulis keterangan gambar di kolom pertanyaan; keterangan itu tampil setelah gambar utuh.', '{"order": [0,1,2,3,4,5,6,7,8]}', '{"grid": 3, "shape": "square"}'],
-    'ordering'                   => ['Urutkan kartu', 'Tulis kartu-kartunya dalam urutan yang benar; permainan mengacak urutannya untuk siswa.', '{"order": ["c", "a", "d", "b"]}', '{"pieces": [{"key": "a", "text_id": "…", "text_en": "…"}]}'],
 ];
 ?>
 <form method="post" action="<?= esc($action, 'attr') ?>" class="form item-form" enctype="multipart/form-data"
@@ -69,6 +64,12 @@ $guides = [
           <option value="<?= esc($option, 'attr') ?>" <?= ! $isNew && $item->interaction_type === $option ? 'selected' : '' ?>><?= esc(admin_label('interaction', $option)) ?></option>
         <?php endforeach ?>
       </select>
+    </div>
+    <div class="field">
+      <label for="<?= $prefix ?>-variant">Variasi <span class="req">*</span></label>
+      <input type="text" id="<?= $prefix ?>-variant" name="variant_group" required maxlength="10" pattern="[A-Za-z0-9]+" list="variant-groups" value="<?= esc($isNew ? 'a' : (string) ($item->variant_group ?? 'a'), 'attr') ?>">
+      <datalist id="variant-groups"><option value="a"><option value="b"><option value="c"></datalist>
+      <p class="field-help">Soal satu variasi tampil bersama dalam satu pengerjaan.</p>
     </div>
     <div class="field">
       <label for="<?= $prefix ?>-seq">Urutan di daftar</label>
@@ -201,7 +202,7 @@ $guides = [
   </div>
 
   <div class="check-row">
-    <label class="check"><input type="checkbox" name="scorable" value="1" <?= $isNew || $item->scorable ? 'checked' : '' ?>> Dinilai (masuk skor)</label>
+    <label class="check"><input type="checkbox" name="scorable" value="1" <?= $isNew || $item->scorable ? 'checked' : '' ?>> Dinilai (masuk hitungan bintang)</label>
     <label class="check"><input type="checkbox" name="is_active" value="1" <?= $isNew || $item->is_active ? 'checked' : '' ?>> Aktif (dipakai di permainan)</label>
   </div>
 

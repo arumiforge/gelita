@@ -97,8 +97,8 @@ class ExportController extends BaseAdminController
      * Guru selalu dipaksa mode anonim dan tidak pernah mendapat sheet
      * `Raw Events`, berapa pun isi formulir yang dikirim.
      *
-     * PDF memakai templat `study` (default) atau `participant` dengan
-     * `participant_id` — laporan individual dari halaman detail peserta.
+     * PDF hanya templat `participant` dengan `participant_id` — laporan
+     * individual dari halaman detail peserta.
      */
     private function queue(string $format): RedirectResponse
     {
@@ -110,12 +110,15 @@ class ExportController extends BaseAdminController
         $back       = 'admin/ekspor';
 
         if ($format === 'pdf') {
+            // Hanya laporan satu siswa; ringkasan PDF penelitian dihapus (Dok 1 §14)
             $participantId = (int) ($this->request->getPost('participant_id') ?? 0);
-            $scope['template'] = $participantId > 0 ? 'participant' : 'study';
 
-            if ($participantId > 0) {
-                $scope['participant_id'] = $participantId;
+            if ($participantId <= 0) {
+                return redirect()->to(site_url($back))->with('error', 'Ringkasan PDF penelitian sudah tidak tersedia. Unduh data mentah sebagai Excel, atau buat laporan satu siswa dari halaman profil siswa.');
             }
+
+            $scope['template']       = 'participant';
+            $scope['participant_id'] = $participantId;
         }
 
         $exports  = model(DataExportModel::class);
@@ -183,7 +186,7 @@ class ExportController extends BaseAdminController
     private function postFilters(): array
     {
         $allowed = [
-            'study_id', 'phase_code', 'level_id', 'school_id',
+            'study_id', 'level_id', 'school_id',
             'class_level', 'province_code', 'locale', 'date_from', 'date_to',
         ];
 

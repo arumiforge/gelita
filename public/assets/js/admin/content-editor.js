@@ -7,27 +7,21 @@
  * adanya (sama dengan aturan form node di server). JSON mentah tetap dapat
  * dibuka lewat tombol "Lihat format teknis".
  *
- * Teks untuk guru memakai bahasa sehari-hari: "soal" (bukan butir), "pilihan
- * jawaban" (bukan opsi), "kartu" (bukan potongan), "benda" (bukan objek),
- * "format teknis" (bukan JSON).
+ * Teks untuk guru memakai bahasa sehari-hari: "soal" (bukan butir), "benda"
+ * (bukan objek), "format teknis" (bukan JSON).
  *
- *   single_choice / source_trust → opsi A–D di editor opsi (tepat satu kunci)
  *   fill_blank_bank  → kalimat dengan ___ + jawaban ID/EN
- *   fill_blank_free  → kalimat + daftar jawaban diterima (satu per baris)
- *   verdict_card     → kunci verdict (hanya dari verdict_options node) + dua sumber opsional
- *   verdict_reason   → sama + contoh alasan ID/EN (rubrik guru)
+ *   verdict_card     → kunci Benar / Salah
  *   find_object      → pemilih koordinat (object-picker) + centang jebakan + umpan balik
  *   puzzle_arrange   → keterangan ukuran papan (ditetapkan server dari tingkat wilayah)
- *   ordering         → potongan teks ID/EN; urutan di editor = kunci jawaban
  *
  * Validasi client hanya umpan balik cepat; server selalu memeriksa ulang.
  */
 import { $, $$, el, scrollToCenter } from '../core/dom.js';
 import { createObjectPicker } from './object-picker.js';
 
-const VERDICT_LABELS = { benar: 'Benar', salah: 'Salah', pendapat: 'Pendapat' };
+const VERDICT_LABELS = { benar: 'Benar', salah: 'Salah' };
 const verdictList = (verdicts) => verdicts.map((v) => VERDICT_LABELS[v] || v).join(' / ');
-const SOURCE_KINDS = { official: 'Resmi (ikon gedung)', anonymous: 'Tanpa nama (ikon tanda tanya)', unknown: 'Lainnya' };
 
 function parse(text) {
   const value = text.trim();
@@ -61,7 +55,7 @@ class ItemEditor {
     this.type = $('[name="interaction_type"]', form);
     this.answerTa = $('[name="answer_key_json"]', form);
     this.configTa = $('[name="config_json"]', form);
-    this.verdicts = readJsonAttr(form.dataset.verdicts) || ['benar', 'salah'];
+    this.verdicts = ['benar', 'salah'];
     this.scene = form.dataset.scene || '';
     if (!this.type || !this.answerTa || !this.configTa) return;
 
@@ -123,15 +117,10 @@ class ItemEditor {
     }
 
     const builders = {
-      single_choice: () => this.choice(),
-      source_trust: () => this.choice(),
       fill_blank_bank: () => this.fillBank(answer),
-      fill_blank_free: () => this.fillFree(answer),
-      verdict_card: () => this.verdict(answer, config, false),
-      verdict_reason: () => this.verdict(answer, config, true),
+      verdict_card: () => this.verdict(answer),
       find_object: () => this.findObject(answer, config),
       puzzle_arrange: () => this.puzzle(config),
-      ordering: () => this.ordering(answer, config),
     };
     (builders[this.type.value] || (() => {}))();
     this.renderPreview();
@@ -139,41 +128,17 @@ class ItemEditor {
 
   // ---------------------------------------------------------- per jenis
 
-  choice() {
-    const saved = this.form.closest('.item-card-body')?.querySelector('form.option-editor');
-    this.host.append(el('p', { class: 'field-help' }, saved
-      ? 'Pilihan jawaban A–D dan kuncinya diatur di bagian "Pilihan jawaban" di bawah formulir ini — tandai tepat satu yang benar.'
-      : 'Simpan soal ini dulu; bagian pilihan jawaban A–D muncul setelah soal tersimpan.'));
-  }
-
   fillBank(answer) {
     const id = input(answer.text_id, { required: true });
     const en = input(answer.text_en);
     const sync = () => this.write({ text_id: id.value.trim(), text_en: en.value.trim() });
     [id, en].forEach((n) => n.addEventListener('input', sync));
     this.host.append(el('div', { class: 'bilingual' },
-      field('Jawaban (Indonesia)', id, 'Kata ini ikut masuk pilihan kata bersama kata pengecoh tantangan.'),
+      field('Jawaban (Indonesia)', id, 'Kata ini ikut masuk pilihan kata bersama kata pengecoh variasi ini.'),
       field('Jawaban (Inggris)', en, 'Boleh kosong — permainan memakai jawaban Indonesia.')));
   }
 
-  fillFree(answer) {
-    const lines = (list) => (Array.isArray(list) ? list.join('\n') : '');
-    const id = area(lines(answer.accept_id), 3);
-    const en = area(lines(answer.accept_en), 3);
-    const caseSensitive = el('input', { type: 'checkbox', checked: Boolean(answer.case_sensitive) });
-    const split = (text) => text.split('\n').map((s) => s.trim()).filter(Boolean);
-    const sync = () => this.write({ accept_id: split(id.value), accept_en: split(en.value), case_sensitive: caseSensitive.checked ? true : null });
-    [id, en].forEach((n) => n.addEventListener('input', sync));
-    caseSensitive.addEventListener('change', sync);
-    this.host.append(
-      el('div', { class: 'bilingual' },
-        field('Jawaban yang diterima (Indonesia) — satu per baris', id),
-        field('Jawaban yang diterima (Inggris) — satu per baris', en)),
-      el('label', { class: 'check' }, caseSensitive, ' Bedakan huruf besar/kecil'),
-    );
-  }
-
-  verdict(answer, config, withReason) {
+  verdict(answer) {
     const name = `verdict-${Math.random().toString(36).slice(2, 8)}`;
     const group = el('fieldset', { class: 'field' }, el('legend', { class: 'label' }, 'Kunci jawaban'));
     const row = el('div', { class: 'check-row' });
@@ -182,55 +147,8 @@ class ItemEditor {
       radio.addEventListener('change', () => this.write({ verdict }));
       row.append(el('label', { class: 'check' }, radio, ` ${VERDICT_LABELS[verdict] || verdict}`));
     }
-    group.append(row, el('p', { class: 'field-help' }, `Pilihannya mengikuti tombol jawaban tantangan ini: ${verdictList(this.verdicts)}.`));
+    group.append(row, el('p', { class: 'field-help' }, `Tombol jawaban siswa: ${verdictList(this.verdicts)}.`));
     this.host.append(group);
-
-    if (withReason) {
-      const id = area(answer.sample_reason_id, 2);
-      const en = area(answer.sample_reason_en, 2);
-      const sync = () => this.write({ sample_reason_id: id.value.trim(), sample_reason_en: en.value.trim() });
-      [id, en].forEach((n) => n.addEventListener('input', sync));
-      this.host.append(el('div', { class: 'bilingual' },
-        field('Contoh alasan (Indonesia) — pegangan guru', id),
-        field('Contoh alasan (Inggris)', en)));
-    }
-
-    // Dua sumber berdampingan (opsional)
-    const sources = Array.isArray(config.sources) ? config.sources : [];
-    const enable = el('input', { type: 'checkbox', checked: sources.length > 0 });
-    const box = el('div', { class: 'source-editor', hidden: sources.length === 0 });
-    const rows = [0, 1].map((i) => {
-      const src = sources[i] || { kind: i === 0 ? 'official' : 'anonymous' };
-      const kind = el('select', {}, Object.entries(SOURCE_KINDS).map(([value, label]) => el('option', { value, selected: src.kind === value }, label)));
-      const parts = {
-        label_id: input(src.label_id), label_en: input(src.label_en), kind,
-        text_id: area(src.text_id, 2), text_en: area(src.text_en, 2),
-      };
-      box.append(el('fieldset', { class: 'repeat-row' }, el('legend', {}, `Sumber ${i === 0 ? 'A' : 'B'}`),
-        el('div', { class: 'bilingual' }, field('Nama sumber (Indonesia)', parts.label_id), field('Nama sumber (Inggris)', parts.label_en)),
-        field('Jenis sumber', kind),
-        el('div', { class: 'bilingual' }, field('Isi sumber (Indonesia)', parts.text_id), field('Isi sumber (Inggris)', parts.text_en))));
-      return parts;
-    });
-    const sync = () => {
-      if (!enable.checked) {
-        this.write({}, { sources: null });
-        return;
-      }
-      this.write({}, {
-        sources: rows.map((p) => ({
-          label_id: p.label_id.value.trim(), label_en: p.label_en.value.trim(), kind: p.kind.value,
-          text_id: p.text_id.value.trim(), text_en: p.text_en.value.trim(),
-        })),
-      });
-    };
-    enable.addEventListener('change', () => {
-      box.hidden = !enable.checked;
-      sync();
-    });
-    box.addEventListener('input', sync);
-    box.addEventListener('change', sync);
-    this.host.append(el('label', { class: 'check' }, enable, ' Tampilkan dua sumber berdampingan'), box);
   }
 
   findObject(answer, config) {
@@ -276,62 +194,6 @@ class ItemEditor {
     }
   }
 
-  ordering(answer, config) {
-    const pieces = Array.isArray(config.pieces) ? config.pieces.slice() : [];
-    const order = Array.isArray(answer.order) ? answer.order.map(String) : [];
-    pieces.sort((a, b) => {
-      const ia = order.indexOf(String(a.key));
-      const ib = order.indexOf(String(b.key));
-      return (ia < 0 ? 999 : ia) - (ib < 0 ? 999 : ib);
-    });
-
-    const list = el('ol', { class: 'piece-editor' });
-    const nextKey = () => {
-      const used = new Set($$('li', list).map((li) => li.dataset.key));
-      for (const ch of 'abcdefghijklmnopqrstuvwxyz') if (!used.has(ch)) return ch;
-      return `p${used.size + 1}`;
-    };
-
-    const sync = () => {
-      const rows = $$('li', list).map((li) => ({
-        key: li.dataset.key,
-        text_id: $('[data-part="id"]', li).value.trim(),
-        text_en: $('[data-part="en"]', li).value.trim(),
-      }));
-      this.write({ order: rows.map((r) => r.key) }, { pieces: rows });
-    };
-
-    const addRow = (piece = {}) => {
-      const key = String(piece.key ?? nextKey());
-      const id = input(piece.text_id, { 'data-part': 'id', 'aria-label': `Kartu ${key} (Indonesia)`, placeholder: 'Teks Indonesia' });
-      const en = input(piece.text_en, { 'data-part': 'en', 'aria-label': `Kartu ${key} (Inggris)`, placeholder: 'Teks Inggris' });
-      const up = el('button', { type: 'button', class: 'btn btn-quiet btn-sm', 'aria-label': `Naikkan kartu ${key}` }, '▲');
-      const down = el('button', { type: 'button', class: 'btn btn-quiet btn-sm', 'aria-label': `Turunkan kartu ${key}` }, '▼');
-      const remove = el('button', { type: 'button', class: 'btn btn-quiet btn-sm', 'aria-label': `Hapus kartu ${key}` }, '✕');
-      const li = el('li', { dataset: { key } }, el('code', {}, key), id, en, el('span', { class: 'piece-moves' }, up, down, remove));
-      up.addEventListener('click', () => { li.previousElementSibling?.before(li); sync(); up.focus(); });
-      down.addEventListener('click', () => { li.nextElementSibling?.after(li); sync(); down.focus(); });
-      remove.addEventListener('click', () => { li.remove(); sync(); });
-      [id, en].forEach((n) => n.addEventListener('input', sync));
-      list.append(li);
-      return li;
-    };
-
-    pieces.forEach((piece) => addRow(piece));
-    const add = el('button', { type: 'button', class: 'btn btn-ghost btn-sm' }, '+ Tambah kartu');
-    add.addEventListener('click', () => {
-      const li = addRow();
-      sync();
-      $('input', li).focus();
-    });
-
-    this.host.append(
-      el('p', { class: 'label' }, 'Kartu urutan — susun dari langkah pertama sampai terakhir (urutan di sini menjadi kunci jawaban; siswa melihatnya dalam urutan acak)'),
-      list,
-      add,
-    );
-  }
-
   // --------------------------------------------------------- pratinjau
 
   renderPreview() {
@@ -350,23 +212,14 @@ class ItemEditor {
       body.push(text);
     }
 
-    if (type.startsWith('verdict')) {
-      if (Array.isArray(config.sources) && config.sources.length) {
-        body.push(el('div', { class: 'preview-sources' }, config.sources.map((s) => el('blockquote', {}, el('cite', {}, s.label_id || s.kind), s.text_id || ''))));
-      }
+    if (type === 'verdict_card') {
       body.push(el('div', { class: 'preview-choices' }, this.verdicts.map((v) => el('span', { class: `chip${answer.verdict === v ? ' is-key' : ''}` }, VERDICT_LABELS[v] || v))));
-      if (type === 'verdict_reason') body.push(el('p', { class: 'muted' }, '+ kolom "Alasanmu" (tidak dinilai otomatis)'));
-    } else if (type === 'ordering' && Array.isArray(config.pieces)) {
-      body.push(el('ol', { class: 'preview-pieces' }, config.pieces.map((p) => el('li', {}, p.text_id || '—'))));
-      body.push(el('p', { class: 'muted' }, 'Siswa melihat kartu-kartu ini dalam urutan acak.'));
     } else if (type === 'puzzle_arrange') {
       const n = Number(this.form.dataset.puzzleGrid) || Number(config.grid) || 3;
       const jigsaw = (this.form.dataset.puzzleShape || config.shape) === 'jigsaw';
       body.push(el('p', { class: 'muted' }, `Susun gambar ${n} × ${n} keping ${jigsaw ? 'jigsaw' : 'kotak'}, tanpa nomor. Keterangan di atas tampil setelah gambar utuh.`));
     } else if (type === 'find_object') {
       body.push(el('p', { class: 'muted' }, config.decoy ? 'Benda jebakan: tampil sama persis dengan benda lain, tanpa petunjuk.' : 'Petunjuk di atas dibacakan kepada siswa; bendanya dicari di gambar adegan.'));
-    } else if (type === 'fill_blank_free') {
-      body.push(el('p', { class: 'muted' }, 'Siswa mengetik jawabannya di kotak rumpang.'));
     }
 
     this.preview.replaceChildren(el('span', { class: 'eyebrow' }, 'Pratinjau untuk siswa'), ...(body.length ? body : [el('p', { class: 'muted' }, 'Isi pertanyaan untuk melihat pratinjau.')]));
@@ -385,21 +238,15 @@ class ItemEditor {
     if (config === null) errors.push('Isian "Pengaturan soal (format teknis)" tidak dapat dibaca.');
 
     if (answer && config) {
-      if (type.startsWith('fill_blank')) {
+      if (type === 'fill_blank_bank') {
         if (!prompts[0]?.value.includes('___')) errors.push('Kalimat soal (Indonesia) harus memuat tanda ___ (tiga garis bawah) sebagai tempat kosong.');
         if (prompts[1]?.value.trim() && !prompts[1].value.includes('___')) errors.push('Kalimat soal (Inggris) harus memuat tanda ___ atau dikosongkan.');
       }
       if (type === 'fill_blank_bank' && !String(answer.text_id || '').trim()) errors.push('Jawaban (Indonesia) wajib diisi.');
-      if (type === 'fill_blank_free' && !(Array.isArray(answer.accept_id) && answer.accept_id.length)) errors.push('Isi paling sedikit satu jawaban yang diterima (Indonesia).');
-      if (type.startsWith('verdict') && !this.verdicts.includes(answer.verdict)) errors.push(`Pilih kunci jawaban: ${verdictList(this.verdicts)}.`);
+      if (type === 'verdict_card' && !this.verdicts.includes(answer.verdict)) errors.push(`Pilih kunci jawaban: ${verdictList(this.verdicts)}.`);
       if (type === 'find_object') {
         if (![config.x, config.y, config.w].every((v) => Number.isFinite(Number(v)) && v !== '')) errors.push('Tempatkan benda pada gambar adegan (ketuk gambarnya atau geser penandanya).');
         if (config.decoy && !String(config.wrong_feedback_id || '').trim()) errors.push('Benda jebakan wajib punya penjelasan saat diklik (Indonesia).');
-      }
-      if (type === 'ordering') {
-        const pieces = Array.isArray(config.pieces) ? config.pieces : [];
-        if (pieces.length < 2) errors.push('Soal urutan butuh paling sedikit dua kartu.');
-        if (pieces.some((p) => !String(p.text_id || '').trim())) errors.push('Setiap kartu wajib punya teks Indonesia.');
       }
       if (type === 'puzzle_arrange' && !Array.isArray(answer.order)) errors.push('Kunci susun gambar belum terbentuk. Muat ulang halaman, lalu coba lagi.');
     }
@@ -416,51 +263,22 @@ class ItemEditor {
   }
 }
 
-function readJsonAttr(value) {
-  if (!value) return null;
-  try {
-    const parsed = JSON.parse(value);
-    return Array.isArray(parsed) && parsed.length ? parsed : null;
-  } catch {
-    return null;
-  }
-}
-
-/** Editor pilihan jawaban A–D: tepat satu pilihan benar, dan pilihan itu harus berteks. */
-function initOptionEditors(root) {
-  for (const form of $$('form.option-editor', root)) {
-    form.addEventListener('submit', (event) => {
-      const checked = $('input[name="correct_option"]:checked', form);
-      let message = null;
-      if (!checked) message = 'Tandai tepat satu pilihan sebagai jawaban yang benar.';
-      else {
-        const label = $('input[name$="[label_id]"]', checked.closest('.option-row'));
-        if (label && !label.value.trim()) message = 'Pilihan yang ditandai benar belum punya teks bahasa Indonesia.';
-      }
-      $('.editor-errors', form)?.remove();
-      if (!message) return;
-      event.preventDefault();
-      const box = el('p', { class: 'alert alert-error editor-errors', role: 'alert' }, message);
-      form.prepend(box);
-      scrollToCenter(box);
-    });
-  }
-}
-
-/** Form node: pengecoh rumpang (tambah/hapus baris) + minimal dua verdict_options. */
+/** Form node: tambah/hapus baris kata pengecoh per variasi (Isi Rumpang). */
 function initNodeForm(root) {
   const form = $$('form.form-section', root).find((f) => $('[name="engine_type"]', f));
   if (!form) return;
 
-  const rows = $$('.bilingual', form).filter((row) => $('input[name^="cfg[distractors]"]', row));
-  if (rows.length) {
-    const container = rows[0].parentElement;
+  for (const fieldset of $$('fieldset.variant-row', form)) {
+    const rows = $$('.bilingual', fieldset).filter((row) => $('input[name*="[distractors]"]', row));
+    if (!rows.length) continue;
+
+    const prefix = $('input[name*="[distractors]"]', rows[0]).name.replace(/\[distractors\].*$/, '[distractors]');
     let index = rows.length;
 
     const decorate = (row) => {
       const remove = el('button', { type: 'button', class: 'btn btn-quiet btn-sm', 'aria-label': 'Hapus kata pengecoh ini' }, '✕');
       remove.addEventListener('click', () => {
-        if ($$('input[name^="cfg[distractors]"]', container).length <= 2) {
+        if ($$('input[name*="[distractors]"]', fieldset).length <= 2) {
           $$('input', row).forEach((i) => { i.value = ''; });
         } else {
           row.remove();
@@ -474,26 +292,15 @@ function initNodeForm(root) {
     const add = el('button', { type: 'button', class: 'btn btn-ghost btn-sm' }, '+ Tambah kata pengecoh');
     add.addEventListener('click', () => {
       const row = el('div', { class: 'bilingual' },
-        el('input', { type: 'text', name: `cfg[distractors][${index}][id]`, placeholder: 'Indonesia', 'aria-label': `Pengecoh ${index + 1} (Indonesia)` }),
-        el('input', { type: 'text', name: `cfg[distractors][${index}][en]`, placeholder: 'Inggris', 'aria-label': `Pengecoh ${index + 1} (Inggris)` }));
+        el('input', { type: 'text', name: `${prefix}[${index}][id]`, placeholder: 'Pengecoh (Indonesia)', 'aria-label': `Pengecoh ${index + 1} (Indonesia)` }),
+        el('input', { type: 'text', name: `${prefix}[${index}][en]`, placeholder: 'Pengecoh (Inggris)', 'aria-label': `Pengecoh ${index + 1} (Inggris)` }));
       index++;
       decorate(row);
       add.before(row);
       $('input', row).focus();
     });
-    container.append(add);
+    fieldset.append(add);
   }
-
-  form.addEventListener('submit', (event) => {
-    const verdicts = $$('input[name="cfg[verdict_options][]"]', form);
-    if (!verdicts.length || verdicts.filter((v) => v.checked).length >= 2) return;
-    event.preventDefault();
-    const box = verdicts[0].closest('fieldset');
-    box.classList.add('has-error');
-    $('.editor-errors', box)?.remove();
-    box.append(el('p', { class: 'field-error editor-errors', role: 'alert' }, 'Pilih paling sedikit dua tombol jawaban.'));
-    scrollToCenter(box);
-  });
 }
 
 export function initContentEditor(root = document) {
@@ -502,7 +309,6 @@ export function initContentEditor(root = document) {
     form.dataset.guided = '1';
     new ItemEditor(form);
   }
-  initOptionEditors(root);
   initNodeForm(root);
 }
 

@@ -111,17 +111,31 @@ final class ClozeReadingTest extends CIUnitTestCase
         $this->assertStringContainsString('6–7 rumpang', $text);
     }
 
-    public function testReadingNodeUsesEveryActiveItemInBankOrder(): void
+    public function testReadingNodeUsesEveryActiveItemOfOneVariantInSequence(): void
     {
-        $bank = [$this->item(31, 'mgl-2-11'), $this->item(32, 'mgl-2-12'), $this->item(33, 'mgl-2-13')];
+        $bank = [
+            $this->item(31, 'mgl-2-a02', 'kata', 'a', 2),
+            $this->item(32, 'mgl-2-a01', 'kata', 'a', 1),
+            $this->item(33, 'mgl-2-b01', 'kata', 'b', 1),
+            $this->item(34, 'mgl-2-a03', 'kata', 'a', 3),
+        ];
 
-        $picked = model(ChallengeItemModel::class)->pickForAttempt(7, 1, 'all', 'seed', $bank);
+        // variasi b sudah pernah didapat siswa → tinggal variasi a
+        $picked = model(ChallengeItemModel::class)->pickVariant(7, ['b'], $bank);
 
-        $this->assertSame([31, 32, 33], array_map(static fn (ChallengeItem $i): int => $i->id, $picked), 'semua soal, urutan bank, abaikan items_per_round');
+        $this->assertSame('a', $picked['group']);
+        $this->assertSame([32, 31, 34], array_map(static fn (ChallengeItem $i): int => $i->id, $picked['items']), 'semua soal variasi, urut sequence');
+
+        // semua variasi sudah pernah didapat → semua boleh lagi
+        $again = model(ChallengeItemModel::class)->pickVariant(7, ['a', 'b'], $bank);
+        $this->assertContains($again['group'], ['a', 'b']);
+
+        $this->assertSame(['group' => '', 'items' => []], model(ChallengeItemModel::class)->pickVariant(7, [], []), 'bank kosong');
 
         $node = $this->node(['as_reading' => true, 'use_word_bank' => true]);
         $this->assertTrue($node->isReading());
-        $this->assertFalse($this->node(['use_word_bank' => true])->isReading());
+        $this->assertTrue($this->node(['use_word_bank' => true])->isReading(), 'rumpang kelas 5 selalu berupa bacaan (bawaan)');
+        $this->assertFalse($this->node(['as_reading' => false])->isReading());
     }
 
     public function testReadingWordBankHasEveryAnswerAndFixedDistractorsInStableOrder(): void
@@ -130,14 +144,18 @@ final class ClozeReadingTest extends CIUnitTestCase
             'as_reading'       => true,
             'use_word_bank'    => true,
             'distractor_count' => 2,
-            'distractors'      => [['id' => 'enam', 'en' => 'six'], ['id' => 'arca', 'en' => 'statues'], ['id' => 'lebih', 'en' => 'more']],
+            'variants'         => [
+                'a' => ['distractors' => [['id' => 'enam', 'en' => 'six'], ['id' => 'arca', 'en' => 'statues'], ['id' => 'lebih', 'en' => 'more']]],
+                'b' => ['distractors' => [['id' => 'salju', 'en' => 'snow']]],
+            ],
         ]);
-        $items = [$this->item(31, 'mgl-2-11', 'sembilan'), $this->item(32, 'mgl-2-12', 'stupa'), $this->item(33, 'mgl-2-13', 'relief')];
+        $items = [$this->item(31, 'mgl-2-a01', 'sembilan'), $this->item(32, 'mgl-2-a02', 'stupa'), $this->item(33, 'mgl-2-a03', 'relief')];
 
-        $bank = $this->call('wordBank', $node, $items, 'id', 901);
+        $bank = $this->call('wordBank', $node, $items, 'id', 901, 'a');
 
-        $this->assertEqualsCanonicalizing(['sembilan', 'stupa', 'relief', 'enam', 'arca'], $bank, 'dua pengecoh pertama, bukan acak');
-        $this->assertSame($bank, $this->call('wordBank', $node, $items, 'id', 901), 'urutan tetap saat dimuat ulang');
+        $this->assertEqualsCanonicalizing(['sembilan', 'stupa', 'relief', 'enam', 'arca'], $bank, 'dua pengecoh pertama variasi a, bukan acak');
+        $this->assertSame($bank, $this->call('wordBank', $node, $items, 'id', 901, 'a'), 'urutan tetap saat dimuat ulang');
+        $this->assertEqualsCanonicalizing(['sembilan', 'stupa', 'relief', 'salju'], $this->call('wordBank', $node, $items, 'id', 901, 'b'), 'pengecoh mengikuti variasinya');
     }
 
     /** @return list<array<string, mixed>> */
@@ -159,12 +177,14 @@ final class ClozeReadingTest extends CIUnitTestCase
         return $out;
     }
 
-    private function item(int $id, string $key, string $answer = 'kata'): ChallengeItem
+    private function item(int $id, string $key, string $answer = 'kata', string $group = 'a', int $sequence = 1): ChallengeItem
     {
         $item = new ChallengeItem();
         $item->injectRawData([
             'id'               => $id,
             'item_key'         => $key,
+            'variant_group'    => $group,
+            'sequence'         => $sequence,
             'interaction_type' => 'fill_blank_bank',
             'prompt_id'        => 'Potongan ___.',
             'answer_key_json'  => json_encode(['text_id' => $answer, 'text_en' => $answer]),

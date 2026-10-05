@@ -16,7 +16,6 @@
  * @var int                         $attemptHours
  * @var int                         $sessionDays
  * @var int                         $exportRetention
- * @var list<string>                $phases
  * @var array<string, mixed>|null   $retention hasil retensi terakhir (flashdata)
  */
 $prefill = [
@@ -42,10 +41,6 @@ $scopeText = static function (array $scope) use ($scopeNames): string {
         if (isset($scope[$key])) {
             $parts[] = $label . ' nomor ' . (int) $scope[$key];
         }
-    }
-
-    if (isset($scope['phase_code'])) {
-        $parts[] = 'tahap ' . admin_label('phase', (string) $scope['phase_code']);
     }
 
     if (isset($scope['date_from']) || isset($scope['date_to'])) {
@@ -105,7 +100,7 @@ $history = array_values(array_filter($requests, static fn (array $row): bool => 
         <?php if ($request['mode'] === 'hard'): ?>
           <b>Hapus selamanya</b>: semua catatan di atas dihapus dan <b>tidak dapat dikembalikan</b>.
         <?php else: ?>
-          <b>Sembunyikan</b>: siswa dan catatan aktivitasnya disembunyikan dari panel, tetapi jawaban dan skornya tetap dipakai untuk rekap penelitian. Jumlah yang benar-benar berubah bisa lebih sedikit dari tabel ini.
+          <b>Sembunyikan</b>: siswa dan catatan aktivitasnya disembunyikan dari panel, tetapi jawaban dan data bermainnya tetap dipakai untuk rekap penelitian. Jumlah yang benar-benar berubah bisa lebih sedikit dari tabel ini.
         <?php endif ?>
       </p>
     <?php endif ?>
@@ -145,17 +140,8 @@ $history = array_values(array_filter($requests, static fn (array $row): bool => 
 
   <fieldset class="repeat-row">
     <legend>Persempit data penelitian (tidak wajib)</legend>
-    <p class="field-help">Hanya dipakai bila Anda mengisi nomor penelitian: batasi ke satu tahap dan/atau sesi yang dimulai pada rentang tanggal tertentu.</p>
+    <p class="field-help">Hanya dipakai bila Anda mengisi nomor penelitian: batasi ke sesi yang dimulai pada rentang tanggal tertentu.</p>
     <div class="form-grid">
-      <div class="field">
-        <label for="phase_code">Tahap</label>
-        <select id="phase_code" name="phase_code">
-          <option value="">Semua tahap</option>
-          <?php foreach ($phases as $phase): ?>
-            <option value="<?= esc($phase, 'attr') ?>"><?= esc(admin_label('phase', $phase)) ?></option>
-          <?php endforeach ?>
-        </select>
-      </div>
       <div class="field">
         <label for="date_from">Sesi mulai dari tanggal</label>
         <input type="date" id="date_from" name="date_from">
@@ -171,7 +157,7 @@ $history = array_values(array_filter($requests, static fn (array $row): bool => 
     <legend>Cara menghapus</legend>
     <label class="check">
       <input type="radio" name="mode" value="soft" checked>
-      <span><b>Sembunyikan</b><span class="cell-sub">Siswa tidak lagi tampil di panel dan catatan aktivitasnya ditandai terhapus, tetapi jawaban dan skornya tetap dipakai untuk rekap penelitian.</span></span>
+      <span><b>Sembunyikan</b><span class="cell-sub">Siswa tidak lagi tampil di panel dan catatan aktivitasnya ditandai terhapus, tetapi jawaban dan data bermainnya tetap dipakai untuk rekap penelitian.</span></span>
     </label>
     <label class="check">
       <input type="radio" name="mode" value="hard">
@@ -228,7 +214,7 @@ $history = array_values(array_filter($requests, static fn (array $row): bool => 
   <p class="muted">Sistem merapikan data secara otomatis setiap hari:</p>
   <ul class="muted">
     <li>Sesi yang tidak aktif lebih dari <?= esc($idleMinutes) ?> menit ditandai <b>jeda</b>; siswa tetap dapat melanjutkannya.</li>
-    <li>Tantangan yang dibuka tetapi tidak disentuh lebih dari <?= esc($attemptHours) ?> jam ditandai <b>ditinggalkan</b> (skor 0); jawabannya tetap tersimpan.</li>
+    <li>Tantangan yang dibuka tetapi tidak disentuh lebih dari <?= esc($attemptHours) ?> jam ditandai <b>ditinggalkan</b> (bintang 0); jawabannya tetap tersimpan.</li>
     <li>Sesi jeda yang tidak disentuh lebih dari <?= esc($sessionDays) ?> hari ditandai <b>ditinggalkan</b>.</li>
     <li>Berkas unduhan data yang lebih tua dari <?= esc($exportRetention) ?> hari dibuang.</li>
     <li>Data penelitian yang melewati batas lama penyimpanan (diatur di Pengaturan penelitian) <b>tidak</b> dihapus otomatis: sistem hanya membuat permintaan penghapusan di atas, dan Anda yang memutuskan.</li>

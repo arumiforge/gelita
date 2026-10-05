@@ -49,7 +49,7 @@ class ExportService
 
     /** Kunci filter yang diterima dari scope_json. */
     public const FILTER_KEYS = [
-        'study_id', 'phase_code', 'level_id', 'school_id', 'class_level',
+        'study_id', 'level_id', 'school_id', 'class_level',
         'province_code', 'locale', 'date_from', 'date_to',
     ];
 
@@ -133,54 +133,50 @@ class ExportService
             'Participants' => [
                 'participant_code', 'display_name', 'username', 'school_name', 'school_npsn', 'school_ref',
                 'age', 'class_level', 'gender', 'country', 'province', 'district', 'registered_at',
-                'consent_version', 'participant_consented', 'guardian_consented', 'consented_at',
-                'consent_withdrawn_at', 'pw_first_submit_criteria', 'pw_weak_submit_count',
+                'assented_at', 'pw_first_submit_criteria', 'pw_weak_submit_count',
             ],
             'Sessions' => [
-                'session_code', 'participant_code', 'study', 'phase_code', 'release_code',
+                'session_code', 'participant_code', 'study', 'release_code',
                 'locale', 'status', 'started_at', 'last_active_at', 'ended_at', 'duration_ms',
                 'device_type', 'os_name', 'browser_name', 'screen_size', 'is_touch', 'shards',
-                'completed_levels', 'total_stars', 'total_score',
+                'completed_levels', 'total_stars',
             ],
             'Levels' => [
-                'session_code', 'participant_code', 'phase_code', 'level', 'level_sequence',
-                'completed_nodes', 'total_nodes', 'level_score', 'stars', 'duration_ms',
+                'session_code', 'participant_code', 'level', 'level_sequence',
+                'completed_nodes', 'total_nodes', 'stars', 'duration_ms',
             ],
             'Challenge Summary' => [
-                'attempt_id', 'session_code', 'participant_code', 'phase_code', 'level',
-                'node_sequence', 'node_title', 'engine_type', 'item_types', 'attempt_no', 'status',
-                'scorable_items', 'first_pass_correct', 'final_correct', 'first_pass_accuracy',
-                'final_accuracy', 'check_count', 'hint_count', 'retry_count', 'answer_change_count',
-                'audio_use_count', 'independence', 'score', 'stars', 'started_at', 'completed_at',
-                'duration_ms',
+                'attempt_id', 'session_code', 'participant_code', 'level',
+                'node_sequence', 'node_title', 'engine_type', 'item_types', 'attempt_no', 'variant_group',
+                'status', 'completion_reason', 'scorable_items', 'first_pass_correct', 'final_correct',
+                'check_count', 'max_tries', 'hint_count', 'answer_change_count', 'audio_use_count',
+                'stars', 'started_at', 'completed_at', 'duration_ms',
             ],
             'Item Responses' => [
-                'attempt_id', 'session_code', 'participant_code', 'phase_code', 'level',
-                'node_sequence', 'node_title', 'item_key', 'prompt', 'interaction_type', 'indicator',
+                'attempt_id', 'session_code', 'participant_code', 'level',
+                'node_sequence', 'node_title', 'item_key', 'variant_group', 'prompt', 'interaction_type', 'indicator',
                 'bloom_level', 'display_order', 'status', 'first_answer', 'final_answer', 'answer_key',
-                'reason_text', 'first_pass_correct', 'is_correct', 'change_count', 'hint_used',
+                'first_pass_correct', 'is_correct', 'try_count', 'solved_on_try', 'change_count', 'hint_used',
                 'wrong_click_count', 'answered_at', 'duration_ms',
             ],
             'Raw Events' => [
-                'session_code', 'participant_code', 'phase_code', 'level', 'node_sequence',
+                'session_code', 'participant_code', 'level', 'node_sequence',
                 'attempt_id', 'item_key', 'event_type', 'sequence_no', 'occurred_at',
                 'server_received_at', 'payload',
             ],
             'Audio Usage' => [
-                'session_code', 'participant_code', 'phase_code', 'asset_key', 'context_code',
+                'session_code', 'participant_code', 'asset_key', 'context_code',
                 'character_code', 'audio_locale', 'asset_duration_ms', 'attempt_id', 'action',
                 'play_index', 'listened_ms', 'completed', 'occurred_at',
             ],
             'Indicators' => [
-                'participant_code', 'phase_code', 'indicator', 'evidence_count', 'correct_count',
-                'mastery_ratio', 'mean_response_ms',
+                'participant_code', 'indicator', 'evidence_count', 'correct_count',
             ],
             'Demographic Summary' => [
                 'dimension', 'group', 'participants', 'sessions', 'completed_sessions',
-                'completion_rate', 'mean_total_score',
             ],
             'Feedback' => [
-                'participant_code', 'session_code', 'phase_code', 'rating', 'liked_most',
+                'participant_code', 'session_code', 'rating', 'liked_most',
                 'hardest_part', 'new_learning', 'suggestion', 'submitted_at',
             ],
             default => throw new \InvalidArgumentException("Sheet '{$sheet}' tidak dikenali."),
@@ -394,14 +390,7 @@ class ExportService
                 ->select('participants.country_name_snapshot, participants.province_name_snapshot')
                 ->select('participants.district_name_snapshot, participants.created_at')
                 ->select('participants.pw_first_submit_criteria, participants.pw_weak_submit_count')
-                ->select('pc.consent_version, pc.participant_consented, pc.parent_guardian_consented')
-                ->select('pc.consented_at, pc.withdrawn_at')
-                ->join(
-                    'participant_consents pc',
-                    'pc.id = (SELECT MAX(c2.id) FROM participant_consents c2 WHERE c2.participant_id = participants.id)',
-                    'left',
-                    false,
-                )
+                ->select('participants.assented_at')
                 ->where('participants.deleted_at', null)
                 ->whereIn('participants.id', $sessionFilter);
 
@@ -425,11 +414,7 @@ class ExportService
                 'province'                 => $row['province_name_snapshot'],
                 'district'                 => $row['district_name_snapshot'],
                 'registered_at'            => $row['created_at'],
-                'consent_version'          => $row['consent_version'],
-                'participant_consented'    => $this->intOrNull($row['participant_consented']),
-                'guardian_consented'       => $this->intOrNull($row['parent_guardian_consented']),
-                'consented_at'             => $row['consented_at'],
-                'consent_withdrawn_at'     => $row['withdrawn_at'],
+                'assented_at'              => $row['assented_at'],
                 'pw_first_submit_criteria' => $this->intOrNull($row['pw_first_submit_criteria']),
                 'pw_weak_submit_count'     => (int) $row['pw_weak_submit_count'],
             ];
@@ -453,8 +438,7 @@ class ExportService
 
         $query = fn (): BaseBuilder => $this->sessionBuilder($filters)
             ->select('game_sessions.id AS _id, game_sessions.*, participants.participant_code', false)
-            ->select('research_phases.code AS phase_code', false)
-            ->select('sp.completed_nodes, sp.completed_levels, sp.total_stars, sp.total_score', false)
+            ->select('sp.completed_nodes, sp.completed_levels, sp.total_stars', false)
             ->join('session_progress sp', 'sp.session_id = game_sessions.id', 'left');
 
         foreach ($this->chunked($query, 'game_sessions.id') as $row) {
@@ -464,7 +448,6 @@ class ExportService
                 'session_code'     => $row['session_code'],
                 'participant_code' => $row['participant_code'],
                 'study'            => $studies[(int) $row['study_id']] ?? null,
-                'phase_code'       => $row['phase_code'],
                 'release_code'     => $release['release_code'] ?? null,
                 'locale'           => $row['locale'],
                 'status'           => $row['status'],
@@ -480,15 +463,14 @@ class ExportService
                 'shards'           => (int) ($row['completed_nodes'] ?? 0),
                 'completed_levels' => (int) ($row['completed_levels'] ?? 0),
                 'total_stars'      => (int) ($row['total_stars'] ?? 0),
-                'total_score'      => (float) ($row['total_score'] ?? 0),
             ];
         }
     }
 
     /**
-     * Skor level mengikuti ScoringService::levelScore(): attempt completed
-     * terbaik per node (skor tertinggi, attempt_no terbesar bila seri), rata-rata
-     * berbobot scorable_items. Dihitung per potongan sesi agar tidak N×3 query.
+     * Ringkasan wilayah mengikuti ScoringService::levelSummary(): pengerjaan
+     * completed terbaik per node (bintang terbanyak, pengerjaan paling awal
+     * bila sama). Dihitung per potongan sesi agar tidak N×3 query.
      *
      * @return \Generator<array<string, mixed>>
      */
@@ -502,20 +484,19 @@ class ExportService
         }
 
         $sessionQuery = fn (): BaseBuilder => $this->sessionBuilder($filters)
-            ->select('game_sessions.id AS _id, game_sessions.session_code, participants.participant_code', false)
-            ->select('research_phases.code AS phase_code', false);
+            ->select('game_sessions.id AS _id, game_sessions.session_code, participants.participant_code', false);
 
         foreach ($this->chunkedBatches($sessionQuery, 'game_sessions.id') as $sessions) {
             $best = [];
             $rows = $this->db()->table('challenge_attempts ca')
-                ->select('ca.session_id, ca.challenge_node_id, ca.score, ca.stars, ca.scorable_items, ca.duration_ms, cn.level_id')
+                ->select('ca.session_id, ca.challenge_node_id, ca.stars, ca.scorable_items, ca.duration_ms, cn.level_id')
                 ->join('challenge_nodes cn', 'cn.id = ca.challenge_node_id')
                 ->whereIn('ca.session_id', array_column($sessions, '_id'))
                 ->where('ca.status', 'completed')
                 ->orderBy('ca.session_id', 'ASC')
                 ->orderBy('ca.challenge_node_id', 'ASC')
-                ->orderBy('ca.score', 'ASC')
-                ->orderBy('ca.attempt_no', 'ASC')
+                ->orderBy('ca.stars', 'ASC')
+                ->orderBy('ca.attempt_no', 'DESC')
                 ->get()
                 ->getResultArray();
 
@@ -526,15 +507,10 @@ class ExportService
             foreach ($sessions as $session) {
                 foreach ($levels as $levelId => $level) {
                     $attempts = $best[(int) $session['_id']][$levelId] ?? [];
-                    $weighted = 0.0;
-                    $weight   = 0;
                     $stars    = 0;
                     $duration = 0;
 
                     foreach ($attempts as $attempt) {
-                        $items = max(1, (int) $attempt['scorable_items']);
-                        $weighted += (float) $attempt['score'] * $items;
-                        $weight += $items;
                         $stars += (int) $attempt['stars'];
                         $duration += (int) $attempt['duration_ms'];
                     }
@@ -542,12 +518,10 @@ class ExportService
                     yield [
                         'session_code'     => $session['session_code'],
                         'participant_code' => $session['participant_code'],
-                        'phase_code'       => $session['phase_code'],
                         'level'            => $level['name'],
                         'level_sequence'   => $level['sequence'],
                         'completed_nodes'  => count($attempts),
                         'total_nodes'      => $nodeCounts[$levelId] ?? 0,
-                        'level_score'      => $weight > 0 ? round($weighted / $weight, 2) : 0.0,
                         'stars'            => $stars,
                         'duration_ms'      => $duration,
                     ];
@@ -557,10 +531,8 @@ class ExportService
     }
 
     /**
-     * Jenis soal diambil dari soal milik percobaan itu sendiri
-     * (selected_item_ids_json), bukan dari tantangan sekarang: percobaan wnb-1
-     * lama tetap tercatat sebagai "Urutkan kartu" walau tantangannya kini
-     * Susun Gambar.
+     * Jenis soal diambil dari soal milik pengerjaan itu sendiri
+     * (selected_item_ids_json), bukan dari tantangan sekarang.
      *
      * @return \Generator<array<string, mixed>>
      */
@@ -573,7 +545,6 @@ class ExportService
         $query = fn (): BaseBuilder => $this->attemptBuilder($filters)
             ->select('challenge_attempts.id AS _id, challenge_attempts.*', false)
             ->select('game_sessions.session_code, participants.participant_code', false)
-            ->select('research_phases.code AS phase_code', false)
             ->select('challenge_nodes.level_id, challenge_nodes.sequence AS node_sequence', false)
             ->select('challenge_nodes.engine_type', false);
 
@@ -590,26 +561,23 @@ class ExportService
                 'attempt_id'          => (int) $row['_id'],
                 'session_code'        => $row['session_code'],
                 'participant_code'    => $row['participant_code'],
-                'phase_code'          => $row['phase_code'],
                 'level'               => $levels[(int) $row['level_id']]['name'] ?? null,
                 'node_sequence'       => (int) $row['node_sequence'],
                 'node_title'          => $nodes[(int) $row['challenge_node_id']]['title'] ?? null,
                 'engine_type'         => $row['engine_type'],
                 'item_types'          => array_values(array_unique($types)),
                 'attempt_no'          => (int) $row['attempt_no'],
+                'variant_group'       => $row['variant_group'],
                 'status'              => $row['status'],
+                'completion_reason'   => $row['completion_reason'],
                 'scorable_items'      => (int) $row['scorable_items'],
                 'first_pass_correct'  => (int) $row['first_pass_correct'],
                 'final_correct'       => (int) $row['final_correct'],
-                'first_pass_accuracy' => (float) $row['first_pass_accuracy'],
-                'final_accuracy'      => (float) $row['final_accuracy'],
                 'check_count'         => (int) $row['check_count'],
+                'max_tries'           => (int) $row['max_tries'],
                 'hint_count'          => (int) $row['hint_count'],
-                'retry_count'         => (int) $row['retry_count'],
                 'answer_change_count' => (int) $row['answer_change_count'],
                 'audio_use_count'     => (int) $row['audio_use_count'],
-                'independence'        => (float) $row['independence'],
-                'score'               => (float) $row['score'],
                 'stars'               => (int) $row['stars'],
                 'started_at'          => $row['started_at'],
                 'completed_at'        => $row['completed_at'],
@@ -634,11 +602,11 @@ class ExportService
         $query = fn (): BaseBuilder => $this->attemptBuilder($filters)
             ->join('item_responses ir', 'ir.challenge_attempt_id = challenge_attempts.id')
             ->select('ir.id AS _id, ir.challenge_item_id, ir.display_order, ir.status', false)
-            ->select('ir.first_answer_json, ir.final_answer_json, ir.reason_text', false)
-            ->select('ir.first_pass_correct, ir.is_correct, ir.change_count, ir.hint_used', false)
+            ->select('ir.first_answer_json, ir.final_answer_json', false)
+            ->select('ir.first_pass_correct, ir.is_correct, ir.try_count, ir.solved_on_try, ir.change_count, ir.hint_used', false)
             ->select('ir.wrong_click_count, ir.answered_at, ir.duration_ms', false)
             ->select('challenge_attempts.id AS attempt_id, game_sessions.session_code', false)
-            ->select('participants.participant_code, research_phases.code AS phase_code', false)
+            ->select('participants.participant_code', false)
             ->select('challenge_nodes.level_id, challenge_nodes.sequence AS node_sequence', false)
             ->select('challenge_attempts.challenge_node_id', false);
 
@@ -649,11 +617,11 @@ class ExportService
                 'attempt_id'         => (int) $row['attempt_id'],
                 'session_code'       => $row['session_code'],
                 'participant_code'   => $row['participant_code'],
-                'phase_code'         => $row['phase_code'],
                 'level'              => $levels[(int) $row['level_id']]['name'] ?? null,
                 'node_sequence'      => (int) $row['node_sequence'],
                 'node_title'         => $nodes[(int) $row['challenge_node_id']]['title'] ?? null,
                 'item_key'           => $item['item_key'] ?? null,
+                'variant_group'      => $item['variant_group'] ?? null,
                 'prompt'             => $item['prompt'] ?? null,
                 'interaction_type'   => $item['interaction_type'] ?? null,
                 'indicator'          => $item['indicator'] ?? null,
@@ -662,9 +630,10 @@ class ExportService
                 'status'             => $row['status'],
                 'first_answer'       => $entity === null ? AnswerText::fromData($row['first_answer_json']) : AnswerText::response($entity, $row['first_answer_json']),
                 'final_answer'       => $entity === null ? AnswerText::fromData($row['final_answer_json']) : AnswerText::response($entity, $row['final_answer_json']),
-                'reason_text'        => $row['reason_text'],
                 'first_pass_correct' => $this->intOrNull($row['first_pass_correct']),
                 'is_correct'         => $this->intOrNull($row['is_correct']),
+                'try_count'          => (int) $row['try_count'],
+                'solved_on_try'      => $this->intOrNull($row['solved_on_try']),
                 'change_count'       => (int) $row['change_count'],
                 'hint_used'          => (int) $row['hint_used'],
                 'wrong_click_count'  => (int) $row['wrong_click_count'],
@@ -694,7 +663,7 @@ class ExportService
             ->select('game_event_logs.sequence_no', false)
             ->select('game_event_logs.occurred_at, game_event_logs.server_received_at', false)
             ->select('game_event_logs.payload_json, game_sessions.session_code', false)
-            ->select('participants.participant_code, research_phases.code AS phase_code', false);
+            ->select('participants.participant_code', false);
 
         foreach ($this->chunked($query, 'game_event_logs.id') as $row) {
             $nodeId = $this->intOrNull($row['challenge_node_id']);
@@ -702,7 +671,6 @@ class ExportService
             yield [
                 'session_code'       => $row['session_code'],
                 'participant_code'   => $row['participant_code'],
-                'phase_code'         => $row['phase_code'],
                 'level'              => $levels[(int) $row['level_id']]['name'] ?? null,
                 'node_sequence'      => $nodeId === null ? null : ($nodes[$nodeId]['sequence'] ?? null),
                 'attempt_id'         => $this->intOrNull($row['challenge_attempt_id']),
@@ -726,14 +694,12 @@ class ExportService
             ->select('aue.id AS _id, aue.challenge_attempt_id, aue.action', false)
             ->select('aue.play_index, aue.listened_ms, aue.completed, aue.occurred_at', false)
             ->select('aa.context_code, aa.character_code, aa.locale AS audio_locale, aa.duration_ms', false)
-            ->select('ma.asset_key, game_sessions.session_code, participants.participant_code', false)
-            ->select('research_phases.code AS phase_code', false);
+            ->select('ma.asset_key, game_sessions.session_code, participants.participant_code', false);
 
         foreach ($this->chunked($query, 'aue.id') as $row) {
             yield [
                 'session_code'      => $row['session_code'],
                 'participant_code'  => $row['participant_code'],
-                'phase_code'        => $row['phase_code'],
                 'asset_key'         => $row['asset_key'],
                 'context_code'      => $row['context_code'],
                 'character_code'    => $row['character_code'],
@@ -750,8 +716,8 @@ class ExportService
     }
 
     /**
-     * Penguasaan per peserta × fase × indikator. Bukti = butir terjawab;
-     * benar = tepat sejak awal (first_pass_correct), sama dengan dasbor.
+     * Hitungan per peserta × indikator (tanpa rasio olahan). Bukti = soal
+     * terjawab; benar = Berhasil pada Percobaan Pertama (first_pass_correct).
      *
      * @return \Generator<array<string, mixed>>
      */
@@ -761,30 +727,23 @@ class ExportService
             ->join('item_responses ir', 'ir.challenge_attempt_id = challenge_attempts.id')
             ->join('challenge_items ci', 'ci.id = ir.challenge_item_id')
             ->join('learning_indicators li', 'li.id = COALESCE(ci.indicator_id, challenge_nodes.indicator_id)', 'inner', false)
-            ->select('participants.participant_code, research_phases.code AS phase_code', false)
+            ->select('participants.participant_code', false)
             ->select('li.code AS indicator_code, li.name_id', false)
             ->select('COUNT(*) AS evidence_count', false)
             ->select('SUM(CASE WHEN ir.first_pass_correct = 1 THEN 1 ELSE 0 END) AS correct_count', false)
-            ->select('AVG(ir.duration_ms) AS mean_response_ms', false)
             ->where('ir.status', 'answered')
-            ->groupBy('participants.participant_code, research_phases.code, li.code, li.name_id')
+            ->groupBy('participants.participant_code, li.code, li.name_id')
             ->orderBy('participants.participant_code', 'ASC')
-            ->orderBy('research_phases.code', 'ASC')
             ->orderBy('li.code', 'ASC')
             ->get()
             ->getResultArray();
 
         foreach ($rows as $row) {
-            $evidence = (int) $row['evidence_count'];
-
             yield [
                 'participant_code' => $row['participant_code'],
-                'phase_code'       => $row['phase_code'],
                 'indicator'        => $row['name_id'] ?: $row['indicator_code'],
-                'evidence_count'   => $evidence,
+                'evidence_count'   => (int) $row['evidence_count'],
                 'correct_count'    => (int) $row['correct_count'],
-                'mastery_ratio'    => $evidence > 0 ? round((int) $row['correct_count'] / $evidence, 4) : 0.0,
-                'mean_response_ms' => (int) round((float) ($row['mean_response_ms'] ?? 0)),
             ];
         }
     }
@@ -797,7 +756,6 @@ class ExportService
             'class_level' => 'participants.class_level',
             'school'      => 'participants.school_id',
             'province'    => 'participants.province_name_snapshot',
-            'phase'       => 'research_phases.code',
         ];
 
         $schools = $anonymized ? [] : $this->schoolNames();
@@ -809,7 +767,6 @@ class ExportService
                 ->select('COUNT(DISTINCT game_sessions.participant_id) AS participants', false)
                 ->select('COUNT(*) AS sessions', false)
                 ->select("SUM(CASE WHEN game_sessions.status = 'completed' THEN 1 ELSE 0 END) AS completed_sessions", false)
-                ->select("AVG(CASE WHEN game_sessions.status = 'completed' THEN sp.total_score END) AS mean_total_score", false)
                 ->groupBy($column)
                 ->orderBy($column, 'ASC')
                 ->get()
@@ -824,17 +781,12 @@ class ExportService
                         : ($schools[(int) $bucket] ?? $this->schoolRef($bucket));
                 }
 
-                $sessions  = (int) $row['sessions'];
-                $completed = (int) $row['completed_sessions'];
-
                 yield [
                     'dimension'          => $dimension,
                     'group'              => $bucket === null || $bucket === '' ? '(kosong)' : (string) $bucket,
                     'participants'       => (int) $row['participants'],
-                    'sessions'           => $sessions,
-                    'completed_sessions' => $completed,
-                    'completion_rate'    => $sessions > 0 ? round($completed / $sessions, 4) : 0.0,
-                    'mean_total_score'   => $row['mean_total_score'] === null ? null : round((float) $row['mean_total_score'], 2),
+                    'sessions'           => (int) $row['sessions'],
+                    'completed_sessions' => (int) $row['completed_sessions'],
                 ];
             }
         }
@@ -847,13 +799,12 @@ class ExportService
             ->join('participant_feedback pf', 'pf.session_id = game_sessions.id')
             ->select('pf.id AS _id, pf.rating, pf.liked_most, pf.hardest_part, pf.new_learning', false)
             ->select('pf.suggestion, pf.submitted_at, game_sessions.session_code', false)
-            ->select('participants.participant_code, research_phases.code AS phase_code', false);
+            ->select('participants.participant_code', false);
 
         foreach ($this->chunked($query, 'pf.id') as $row) {
             yield [
                 'participant_code' => $row['participant_code'],
                 'session_code'     => $row['session_code'],
-                'phase_code'       => $row['phase_code'],
                 'rating'           => (int) $row['rating'],
                 'liked_most'       => $row['liked_most'],
                 'hardest_part'     => $row['hardest_part'],
@@ -866,12 +817,11 @@ class ExportService
 
     // ------------------------------------------------------------ builder
 
-    /** Sesi + peserta + fase, terfilter. Filter wilayah tidak berlaku pada sesi. */
+    /** Sesi + peserta, terfilter. Filter wilayah tidak berlaku pada sesi. */
     private function sessionBuilder(array $filters): BaseBuilder
     {
         $builder = $this->db()->table('game_sessions')
             ->join('participants', 'participants.id = game_sessions.participant_id')
-            ->join('research_phases', 'research_phases.id = game_sessions.phase_id')
             ->where('participants.deleted_at', null);
 
         return apply_research_filters($builder, $filters, ['level_id', 'node_id']);
@@ -882,7 +832,6 @@ class ExportService
         $builder = $this->db()->table('challenge_attempts')
             ->join('game_sessions', 'game_sessions.id = challenge_attempts.session_id')
             ->join('participants', 'participants.id = game_sessions.participant_id')
-            ->join('research_phases', 'research_phases.id = game_sessions.phase_id')
             ->join('challenge_nodes', 'challenge_nodes.id = challenge_attempts.challenge_node_id')
             ->where('participants.deleted_at', null);
 
@@ -895,7 +844,6 @@ class ExportService
         $builder = $this->db()->table('game_event_logs')
             ->join('game_sessions', 'game_sessions.id = game_event_logs.session_id')
             ->join('participants', 'participants.id = game_sessions.participant_id')
-            ->join('research_phases', 'research_phases.id = game_sessions.phase_id')
             ->where('participants.deleted_at', null)
             ->where('game_event_logs.deleted_at', null);
 
@@ -912,8 +860,7 @@ class ExportService
         return static function (BaseBuilder $sub) use ($filters): BaseBuilder {
             $sub->select('game_sessions.participant_id')
                 ->from('game_sessions')
-                ->join('participants', 'participants.id = game_sessions.participant_id')
-                ->join('research_phases', 'research_phases.id = game_sessions.phase_id');
+                ->join('participants', 'participants.id = game_sessions.participant_id');
 
             return apply_research_filters($sub, $filters, ['level_id', 'node_id']);
         };
@@ -1007,7 +954,7 @@ class ExportService
      * jawabannya, untuk menulis jawaban dan kunci dalam kalimat. Bank soal
      * hanya ratusan baris, jadi dimuat sekali per berkas.
      *
-     * @return array<int, array{item_key: string, interaction_type: string, indicator: ?string,
+     * @return array<int, array{item_key: string, variant_group: ?string, interaction_type: string, indicator: ?string,
      *                          bloom_level: ?string, prompt: ?string, entity: ChallengeItem}>
      */
     private function itemMap(): array
@@ -1027,10 +974,8 @@ class ExportService
             'id',
         );
 
-        $model   = model(ChallengeItemModel::class);
-        $items   = $model->findAll();
-        $options = $model->withOptions(array_map(static fn (ChallengeItem $item): int => (int) $item->id, $items));
-        $out     = [];
+        $items = model(ChallengeItemModel::class)->findAll();
+        $out   = [];
 
         foreach ($items as $item) {
             $indicatorId = $item->indicator_id ?? ($nodeIndicators[$item->challenge_node_id] ?? null);
@@ -1038,11 +983,12 @@ class ExportService
 
             $out[(int) $item->id] = [
                 'item_key'         => (string) $item->item_key,
+                'variant_group'    => $item->variant_group,
                 'interaction_type' => (string) $item->interaction_type,
                 'indicator'        => $indicator === null ? null : (string) ($indicator['name_id'] ?: $indicator['code']),
                 'bloom_level'      => $item->bloom_level,
                 'prompt'           => $item->prompt_id,
-                'entity'           => $item->setLoadedOptions($options[(int) $item->id] ?? []),
+                'entity'           => $item,
             ];
         }
 

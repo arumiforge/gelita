@@ -3,11 +3,13 @@
 namespace Config;
 
 use App\Filters\ApiSessionFilter;
+use App\Filters\ClientHintsFilter;
 use App\Filters\DebugToolbar;
 use App\Filters\GameSessionFilter;
 use App\Filters\JsonResponseFilter;
 use App\Filters\LocaleFilter;
 use App\Filters\ParticipantAuthFilter;
+use App\Filters\ScreenViewFilter;
 use App\Filters\StaffAuthFilter;
 use App\Filters\StaffRoleFilter;
 use CodeIgniter\Config\Filters as BaseFilters;
@@ -41,6 +43,8 @@ class Filters extends BaseFilters
         'apiSession'      => ApiSessionFilter::class,
         'locale'          => LocaleFilter::class,
         'jsonResponse'    => JsonResponseFilter::class,
+        'clientHints'     => ClientHintsFilter::class,
+        'screenView'      => ScreenViewFilter::class,
     ];
 
     /**
@@ -84,6 +88,12 @@ class Filters extends BaseFilters
         'DELETE' => ['csrf'],
     ];
 
-    /** @var array<string, array<string, list<string>>> */
-    public array $filters = [];
+    /**
+     * Client Hints entropi tinggi diminta sebelum masuk/daftar (Dok 1 §11.4).
+     *
+     * @var array<string, array<string, list<string>>>
+     */
+    public array $filters = [
+        'clientHints' => ['after' => ['/', 'mulai', 'masuk', 'daftar', 'daftar/*']],
+    ];
 }

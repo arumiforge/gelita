@@ -12,7 +12,6 @@ class GameSession extends Entity
         'id'                     => 'int',
         'participant_id'         => 'int',
         'study_id'               => 'int',
-        'phase_id'               => 'int',
         'release_id'             => 'int',
         'duration_ms'            => 'int',
         'last_level_id'          => '?int',

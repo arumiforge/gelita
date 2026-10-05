@@ -111,16 +111,16 @@ class ChallengeController extends BaseGameController
         $node  = service('contentRepository')->node($attempt->challenge_node_id);
         $level = $node === null ? null : service('contentRepository')->levelById($node->level_id);
 
-        $levelScore = $level === null
-            ? ['score' => 0.0, 'stars' => 0, 'completed_nodes' => 0, 'total_nodes' => 0]
-            : service('scoringService')->levelScore($session->id, $level->id);
+        $levelSummary = $level === null
+            ? ['stars' => 0, 'completed_nodes' => 0, 'total_nodes' => 0]
+            : service('scoringService')->levelSummary($session->id, $level->id);
 
         // Wilayah sesudahnya (baris levelOverview, beserta `entry` dan isi tirai
         // wilayah): bila baru terbuka, tombol lanjut langsung menuju dialog pembukanya
         $nextRegion = $level === null ? null : $this->nextRegion($session, $level->sequence);
 
-        $levelCompleted = $levelScore['total_nodes'] > 0
-            && $levelScore['completed_nodes'] >= $levelScore['total_nodes'];
+        $levelCompleted = $levelSummary['total_nodes'] > 0
+            && $levelSummary['completed_nodes'] >= $levelSummary['total_nodes'];
 
         // Attempt yang menuntaskan wilayah (bukan saat mengulang tantangan di
         // wilayah yang sudah tuntas): tombol utama "Lanjut" menuju adegan
@@ -133,7 +133,7 @@ class ChallengeController extends BaseGameController
             'attempt'        => $attempt,
             'node'           => $node,
             'level'          => $level,
-            'levelScore'     => $levelScore,
+            'levelSummary'     => $levelSummary,
             'levelCompleted'  => $levelCompleted,
             'closesRegion'    => $closesRegion,
             'libraryUnlocked' => $libraryUnlocked,

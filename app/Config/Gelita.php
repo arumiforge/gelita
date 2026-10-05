@@ -10,8 +10,26 @@ use CodeIgniter\Config\BaseConfig;
  */
 class Gelita extends BaseConfig
 {
-    /** Tipe engine tantangan yang dikenali sistem */
-    public array $engineTypes = ['puzzle', 'rumpang', 'boleh', 'pilihan', 'cari'];
+    /** Engine tantangan (urutan = urutan node di setiap wilayah) */
+    public array $engineTypes = ['puzzle', 'rumpang', 'boleh', 'cari'];
+
+    /** Jenis interaksi soal yang dikenali sistem */
+    public array $interactionTypes = ['puzzle_arrange', 'fill_blank_bank', 'verdict_card', 'find_object'];
+
+    /** Batas percobaan per soal; lewat dari ini jawaban disimpan apa adanya (Dok 2 §5) */
+    public int $maxTries = 3;
+
+    /** Nilai jenis kelamin yang diterima pendaftaran */
+    public array $genders = ['laki-laki', 'perempuan'];
+
+    /** Rentang umur pendaftaran siswa kelas 5 (inklusif) */
+    public array $registrationAge = [8, 15];
+
+    /** Client Hints yang diminta lewat header Accept-CH (App\Filters\ClientHintsFilter) */
+    public array $clientHints = [
+        'Sec-CH-UA-Model', 'Sec-CH-UA-Platform-Version', 'Sec-CH-UA-Full-Version-List',
+        'Sec-CH-UA-Arch', 'Sec-CH-UA-Bitness',
+    ];
 
     /**
      * Awalan node_ref / item_key per wilayah (tmg-1 … wnb-5). Satu-satunya
@@ -49,19 +67,24 @@ class Gelita extends BaseConfig
         'level'  => ['region_intro', 'level_open', 'level_done'],
     ];
 
-    /** Fase penelitian */
-    public array $phases = ['umum', 'pretest', 'posttest'];
-
-    /** Event type yang boleh ditulis ke game_event_logs */
+    /**
+     * Event type yang boleh ditulis ke game_event_logs (perombakan kelas 5,
+     * Dok 1 §12.3). Data mentah: tidak ada skor atau indeks yang dihitung.
+     */
     public array $eventTypes = [
+        // sesi & navigasi
         'session_started', 'session_resumed', 'session_paused', 'session_abandoned',
         'session_completed', 'locale_changed', 'level_opened', 'level_completed',
-        'library_opened', 'library_page_viewed', 'dialogue_advanced',
-        'challenge_opened', 'challenge_checked', 'challenge_completed',
-        'challenge_skipped', 'challenge_abandoned', 'answer_submitted',
-        'answer_changed', 'wrong_target_clicked', 'hint_opened',
+        'library_opened', 'library_page_viewed', 'dialogue_advanced', 'intro_completed',
+        'screen_viewed', 'overlay_opened', 'page_hidden', 'page_visible', 'viewport_changed',
+        // tantangan
+        'challenge_opened', 'challenge_checked', 'challenge_completed', 'challenge_abandoned',
+        'challenge_tries_exhausted', 'answer_submitted', 'answer_changed', 'answer_selected',
+        'wrong_target_clicked', 'clue_failed', 'reading_progress', 'hint_opened',
+        // audio
         'audio_play', 'audio_autoplay', 'audio_pause', 'audio_replay', 'audio_completed',
-        'feedback_submitted', 'password_changed', 'intro_completed',
+        // lain-lain
+        'feedback_submitted', 'password_changed',
     ];
 
     /**
@@ -141,9 +164,12 @@ class Gelita extends BaseConfig
         'bg.*'             => [1920, 1080],
         'char.*'           => [700, 900],
         'map.region'       => [1400, 900],
-        'challenge.scene'  => [1280, 720],
-        'challenge.card'   => [480, 360],
-        'challenge.option' => [400, 400],
+        // tantangan (Dok 1 §6): adegan Cari Objek, gambar Susun Gambar (node 1,
+        // minimal), benda Cari Objek (node 4), gambar pernyataan (node 3)
+        'challenge.*.scene'     => [1280, 720],
+        'challenge.item.*-1-*'  => [1200, 1200],
+        'challenge.item.*-4-*'  => [240, 240],
+        'challenge.item.*-3-*'  => [480, 360],
         'library.image'    => [960, 640],
         'reward.badge'     => [320, 320],
         'ui.logo-hero'     => [1600, 600],

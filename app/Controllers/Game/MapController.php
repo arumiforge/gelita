@@ -129,7 +129,7 @@ class MapController extends BaseGameController
 
         return view('game/map-level', $this->hudData() + [
             'level'      => $level,
-            'levelScore' => service('scoringService')->levelScore($session->id, $level->id),
+            'levelSummary' => service('scoringService')->levelSummary($session->id, $level->id),
             'nodes'      => $this->nodeOverview($session, $level->id),
             'hasLibrary' => service('contentRepository')->libraryPages($level->id) !== [],
             'library'    => $this->libraryAccess($session, $level),

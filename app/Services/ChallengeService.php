@@ -11,11 +11,15 @@ use App\Models\ChallengeAttemptModel;
 use App\Models\ChallengeItemModel;
 use App\Models\GameSessionModel;
 use App\Models\ItemResponseModel;
+use App\Models\ItemTryModel;
 use App\Models\ResearchStudyModel;
 use App\Models\SessionProgressModel;
 
 /**
- * Inti permainan: membuka node, menerima jawaban, menutup attempt.
+ * Inti permainan: membuka node, menerima jawaban, menutup pengerjaan.
+ *
+ * Setiap pengerjaan memakai satu variasi soal yang dipilih acak (Dok 1 §9.2).
+ * Setiap percobaan soal ditulis apa adanya ke `item_tries` (Dok 1 §12.2).
  *
  * Seluruh penilaian benar/salah dilakukan di sini memakai kunci dari database.
  * Field `correct` yang dikirim browser selalu diabaikan, dan `answer_key_json`
@@ -57,17 +61,11 @@ class ChallengeService
         }
 
         if (! $resumed) {
-            $study = model(ResearchStudyModel::class)->find($session->study_id);
-            $seed  = $this->seedFor($session, $nodeId);
-
-            // Bacaan rumpang memakai SEMUA soalnya berurutan, tanpa pengambilan acak.
-            $items = model(ChallengeItemModel::class)->pickForAttempt(
-                $nodeId,
-                $node->itemsPerRound(),
-                $node->isReading() ? 'all' : (string) ($study['item_selection_mode'] ?? 'fixed'),
-                $seed,
-                $bank,
-            );
+            // Satu variasi acak; variasi yang sudah pernah didapat siswa ini
+            // (di semua sesinya) dihindari selama masih ada yang lain.
+            $seen   = $attempts->variantsSeen($session->participant_id, $nodeId);
+            $picked = model(ChallengeItemModel::class)->pickVariant($nodeId, $seen, $bank);
+            $items  = $picked['items'];
 
             if ($items === []) {
                 throw new \RuntimeException("Bank soal node {$nodeId} kosong.");
@@ -81,9 +79,11 @@ class ChallengeService
                     'session_id'             => $session->id,
                     'challenge_node_id'      => $nodeId,
                     'attempt_no'             => $attempts->nextAttemptNo($session->id, $nodeId),
+                    'variant_group'          => $picked['group'],
                     'status'                 => 'in_progress',
                     'selected_item_ids_json' => array_map(static fn (ChallengeItem $i): int => $i->id, $items),
                     'scorable_items'         => $this->countScorable($items),
+                    'max_tries'              => config('Gelita')->maxTries,
                     'started_at'             => date('Y-m-d H:i:s'),
                 ], true);
 
@@ -96,8 +96,9 @@ class ChallengeService
                 model(ItemResponseModel::class)->createPlaceholders($attempt->id, $items);
 
                 service('eventService')->record($session, 'challenge_opened', [
-                    'attempt_no' => $attempt->attempt_no,
-                    'item_count' => count($items),
+                    'attempt_no'    => $attempt->attempt_no,
+                    'variant_group' => $attempt->variant_group,
+                    'item_count'    => count($items),
                 ], [
                     'level_id'             => $node->level_id,
                     'challenge_node_id'    => $nodeId,
@@ -132,14 +133,14 @@ class ChallengeService
     }
 
     /**
-     * Menerima satu jawaban item (engine `pilihan` dan `cari`), atau dipanggil
-     * berulang oleh submitCheck() untuk engine batch.
+     * Menerima satu ketukan benda pada Cari Objek. Setiap ketukan adalah satu
+     * percobaan untuk petunjuk yang sedang dicari (satu baris `item_tries`).
      *
      * @param array<string, mixed> $answer
-     * @param array<string, mixed> $meta   duration_ms, reason_text
+     * @param array<string, mixed> $meta   duration_ms (sejak petunjuk tampil)
      *
      * @return array{correct: bool, first_pass: bool, wrong_click: bool, decoy: bool,
-     *               already_answered: bool, feedback: ?string, correct_option_key: ?string,
+     *               already_answered: bool, feedback: ?string, try_no: int,
      *               progress: array{answered: int, total: int}}
      */
     public function submitAnswer(ChallengeAttempt $attempt, int $itemId, array $answer, array $meta = []): array
@@ -155,26 +156,6 @@ class ChallengeService
         $item    = $this->itemOf($node->id, $itemId);
         $locale  = $session->resolvedLocale();
 
-        // allow_retry = false (engine `pilihan`): jawaban pertama sekaligus
-        // jawaban final. Kiriman ulang untuk butir yang sudah dijawab tidak
-        // mengubah apa pun dan dibalas dengan hasil yang tersimpan.
-        if (! $node->allowsRetry()) {
-            $stored = model(ItemResponseModel::class)->findOne($attempt->id, $itemId);
-
-            if ($stored !== null && $stored->isAnswered()) {
-                return [
-                    'correct'            => (bool) $stored->is_correct,
-                    'first_pass'         => false,
-                    'wrong_click'        => false,
-                    'decoy'              => false,
-                    'already_answered'   => true,
-                    'feedback'           => null,
-                    'correct_option_key' => $this->revealedOptionKey($node, $item),
-                    'progress'           => $this->progressOf($attempt),
-                ];
-            }
-        }
-
         if ($item->interaction_type === 'find_object') {
             $answer = $this->resolveObjectAnswer($attempt, $answer);
         }
@@ -186,20 +167,23 @@ class ChallengeService
             // Klik objek yang salah pada engine `cari`: dicatat, tetapi tidak
             // mengubah first_pass_correct petunjuk yang sedang dicari.
             if ($item->interaction_type === 'find_object' && $this->isWrongTargetClick($item, $answer, $itemId)) {
-                $result = $this->registerWrongClick($session, $attempt, $item, $answer, $locale);
+                $result = $this->registerWrongClick($session, $attempt, $item, $answer, $locale, $meta);
                 $db->transCommit();
 
                 return $result;
             }
 
             $correct  = $this->grade($node, $item, $answer, $locale);
-            $applied  = $this->applyAnswer($attempt, $item, $answer, $correct, $meta);
-            $feedback = $correct ? null : $this->wrongFeedbackFor($item, $answer, $locale);
+            $applied  = $this->applyAnswer($attempt, $item, $answer, $correct, [
+                'last_input_ms' => $meta['duration_ms'] ?? null,
+            ]);
+            $feedback = $correct ? null : $item->wrongFeedback($locale);
 
             service('eventService')->record(
                 $session,
                 $applied['changed'] ? 'answer_changed' : 'answer_submitted',
                 [
+                    'try_no'       => $applied['try_no'],
                     'correct'      => $correct,
                     'first_pass'   => $applied['first_pass'],
                     'change_count' => $applied['change_count'],
@@ -220,25 +204,31 @@ class ChallengeService
         }
 
         return [
-            'correct'            => $correct,
-            'first_pass'         => $applied['first_pass'],
-            'wrong_click'        => false,
-            'decoy'              => false,
-            'already_answered'   => false,
-            'feedback'           => $feedback,
-            'correct_option_key' => $this->revealedOptionKey($node, $item),
-            'progress'           => $this->progressOf($attempt),
+            'correct'          => $correct,
+            'first_pass'       => $applied['first_pass'],
+            'wrong_click'      => false,
+            'decoy'            => false,
+            'already_answered' => false,
+            'feedback'         => $feedback,
+            'try_no'           => $applied['try_no'],
+            'progress'         => $this->progressOf($attempt),
         ];
     }
 
     /**
-     * Tombol "Periksa jawaban" untuk engine batch (rumpang, boleh, puzzle).
-     * Pemeriksaan pertama menetapkan first_pass_correct seluruh item.
+     * Tombol "Cek jawabanku" untuk engine batch (rumpang, boleh, puzzle).
+     * Percobaan pertama menetapkan first_pass_correct seluruh soal. Setiap
+     * soal yang dicek menulis satu baris `item_tries`; soal yang sudah benar
+     * terkunci dan tidak dicek ulang.
+     *
+     * $answers[itemId] boleh memuat `first_input_ms` / `last_input_ms` (ms
+     * sejak tantangan dibuka, dari klien); keduanya tidak ikut answer_json.
      *
      * @param array<int, array<string, mixed>> $answers keyed by challenge_item_id
      *
      * @return array{results: array<int, bool>, correct_count: int, total: int, all_correct: bool,
-     *               check_count: int, retry_count: int}
+     *               check_count: int, try_no: int, tries_left: int, exhausted: bool,
+     *               detail: array<int, array<string, mixed>>}
      */
     public function submitCheck(ChallengeAttempt $attempt, array $answers): array
     {
@@ -255,16 +245,14 @@ class ChallengeService
         try {
             $checkCount = $attempt->check_count + 1;
 
-            $attempts->update($attempt->id, [
-                'check_count' => $checkCount,
-                'retry_count' => max(0, $checkCount - 1),
-            ]);
+            $attempts->update($attempt->id, ['check_count' => $checkCount]);
 
             $attempt = $attempts->find($attempt->id);
 
             $results   = [];
             $detail    = [];
-            $responses = $node->allowsRetry() ? [] : model(ItemResponseModel::class)->forAttempt($attempt->id);
+            $tryNo     = 0;
+            $responses = model(ItemResponseModel::class)->forAttempt($attempt->id);
 
             foreach ($answers as $itemId => $answer) {
                 $itemId = (int) $itemId;
@@ -279,12 +267,19 @@ class ChallengeService
                     continue;
                 }
 
-                // allow_retry = false: butir yang sudah dijawab tidak dinilai ulang
-                if (isset($responses[$itemId]) && $responses[$itemId]->isAnswered()) {
-                    $results[$itemId] = (bool) $responses[$itemId]->is_correct;
+                // Soal yang sudah benar terkunci: tidak dicek ulang, tanpa percobaan baru
+                if (isset($responses[$itemId]) && $responses[$itemId]->isAnswered() && $responses[$itemId]->is_correct) {
+                    $results[$itemId] = true;
 
                     continue;
                 }
+
+                $timing = [
+                    'first_input_ms' => $answer['first_input_ms'] ?? null,
+                    'last_input_ms'  => $answer['last_input_ms'] ?? null,
+                    'check_no'       => $checkCount,
+                ];
+                unset($answer['first_input_ms'], $answer['last_input_ms'], $answer['duration_ms']);
 
                 // `cari` dinilai lewat token objek, juga di jalur batch: id butir
                 // mentah dari klien tidak pernah dipercaya (lihat resolveObjectAnswer())
@@ -299,22 +294,25 @@ class ChallengeService
                 $correct         = $this->grade($node, $item, $answer, $locale);
                 $results[$itemId] = $correct;
 
-                if (in_array($item->interaction_type, ['puzzle_arrange', 'ordering'], true)) {
+                if ($item->interaction_type === 'puzzle_arrange') {
                     $detail[$itemId] = $this->orderDetail($item, $answer);
                 }
 
-                $this->applyAnswer($attempt, $item, $answer, $correct, [
-                    'duration_ms' => $answer['duration_ms'] ?? null,
-                    'reason_text' => $answer['reason_text'] ?? null,
-                ]);
+                $applied = $this->applyAnswer($attempt, $item, $answer, $correct, $timing);
+                $tryNo   = max($tryNo, $applied['try_no']);
             }
 
             $correctCount = count(array_filter($results));
+            $allCorrect   = $results !== [] && $correctCount === count($results);
+            $triesLeft    = max(0, $attempt->maxTries() - $checkCount);
+            $exhausted    = ! $allCorrect && $triesLeft === 0;
 
             service('eventService')->record($session, 'challenge_checked', [
-                'check_count'   => $checkCount,
+                'check_no'      => $checkCount,
+                'try_no'        => $tryNo,
                 'correct_count' => $correctCount,
                 'total'         => count($results),
+                'exhausted'     => $exhausted,
             ], [
                 'level_id'             => $node->level_id,
                 'challenge_node_id'    => $node->id,
@@ -332,21 +330,21 @@ class ChallengeService
             'results'       => $results,
             'correct_count' => $correctCount,
             'total'         => count($results),
-            'all_correct'   => $results !== [] && $correctCount === count($results),
+            'all_correct'   => $allCorrect,
             'check_count'   => $checkCount,
-            'retry_count'   => max(0, $checkCount - 1),
+            'try_no'        => $tryNo,
+            'tries_left'    => $triesLeft,
+            'exhausted'     => $exhausted,
             'detail'        => $detail,
         ];
     }
 
     /**
-     * Rincian pemeriksaan butir berurutan, dihitung dari kunci di server:
+     * Rincian cek Susun Gambar, dihitung dari kunci di server:
      * `pieces_correct` = jumlah posisi yang sudah tepat (untuk pesan "masih
-     * ada N keping yang keliru"). Untuk puzzle gambar, susunan benarnya
-     * memang publik (keping 1–9 dari kiri atas), jadi slot yang keliru ikut
-     * dikirim (`misplaced`) agar kepingnya dapat ditandai. Urutan teks
-     * (`ordering`) hanya menerima jumlahnya — posisi mana yang benar tidak
-     * dibocorkan.
+     * ada N keping yang keliru"). Susunan benarnya memang publik (keping 1–9
+     * dari kiri atas), jadi slot yang keliru ikut dikirim (`misplaced`) agar
+     * kepingnya dapat ditandai.
      *
      * @param array<string, mixed> $answer
      *
@@ -373,9 +371,7 @@ class ChallengeService
             }
         }
 
-        return $item->interaction_type === 'puzzle_arrange'
-            ? ['pieces_correct' => $correct, 'misplaced' => $misplaced]
-            : ['pieces_correct' => $correct];
+        return ['pieces_correct' => $correct, 'misplaced' => $misplaced];
     }
 
     /**
@@ -441,11 +437,13 @@ class ChallengeService
     }
 
     /**
-     * Menutup attempt: skor dihitung ScoringService, progres diperbarui,
-     * level berikutnya dibuka bila seluruh node level tuntas.
+     * Menutup pengerjaan: bintang dihitung ScoringService (aturan `bintang-1`),
+     * progres diperbarui, wilayah berikutnya dibuka bila seluruh node tuntas.
+     * `completion_reason` = `solved` bila semua soal benar di akhir, selain itu
+     * `tries_exhausted` (jawaban disimpan apa adanya).
      *
-     * @return array{score: float, stars: int, first_pass_accuracy: float, final_accuracy: float,
-     *               level_completed: bool, next_level_unlocked: ?int, shards: int}
+     * @return array{stars: int, first_pass_correct: int, final_correct: int, scorable_items: int,
+     *               completion_reason: string, level_completed: bool, next_level_unlocked: ?int, shards: int}
      */
     public function completeAttempt(ChallengeAttempt $attempt): array
     {
@@ -461,22 +459,28 @@ class ChallengeService
         try {
             $startedAt = strtotime((string) $attempt->started_at) ?: time();
 
+            $counts = model(ItemResponseModel::class)->countCorrect($attempt->id);
+            $reason = $counts['final'] >= $counts['scorable'] ? 'solved' : 'tries_exhausted';
+
             $attempts->update($attempt->id, [
-                'status'       => 'completed',
-                'completed_at' => date('Y-m-d H:i:s'),
-                'duration_ms'  => max(0, (time() - $startedAt) * 1000),
+                'status'            => 'completed',
+                'completion_reason' => $reason,
+                'completed_at'      => date('Y-m-d H:i:s'),
+                'duration_ms'       => max(0, (time() - $startedAt) * 1000),
             ]);
 
             $attempt = $attempts->find($attempt->id);
-            $scored  = service('scoringService')->scoreAttempt($attempt);
+            $scored  = service('scoringService')->finalize($attempt);
 
             $progress = $this->refreshProgress($session, $node);
 
             service('eventService')->record($session, 'challenge_completed', [
-                'score'               => $scored['score'],
-                'stars'               => $scored['stars'],
-                'first_pass_accuracy' => $scored['first_pass_accuracy'],
-                'attempt_no'          => $attempt->attempt_no,
+                'stars'              => $scored['stars'],
+                'first_pass_correct' => $scored['first_pass_correct'],
+                'final_correct'      => $scored['final_correct'],
+                'scorable_items'     => $scored['scorable_items'],
+                'completion_reason'  => $reason,
+                'attempt_no'         => $attempt->attempt_no,
             ], [
                 'level_id'             => $node->level_id,
                 'challenge_node_id'    => $node->id,
@@ -485,7 +489,7 @@ class ChallengeService
 
             if ($progress['level_completed']) {
                 service('eventService')->record($session, 'level_completed', [
-                    'level_score' => $progress['level_score'],
+                    'level_stars' => $progress['level_stars'],
                 ], ['level_id' => $node->level_id]);
             }
 
@@ -499,10 +503,11 @@ class ChallengeService
         service('sessionService')->completeIfFinished($session->id);
 
         return [
-            'score'               => $scored['score'],
             'stars'               => $scored['stars'],
-            'first_pass_accuracy' => $scored['first_pass_accuracy'],
-            'final_accuracy'      => $scored['final_accuracy'],
+            'first_pass_correct'  => $scored['first_pass_correct'],
+            'final_correct'       => $scored['final_correct'],
+            'scorable_items'      => $scored['scorable_items'],
+            'completion_reason'   => $reason,
             'level_completed'     => $progress['level_completed'],
             'next_level_unlocked' => $progress['next_level_unlocked'],
             'shards'              => $progress['shards'],
@@ -511,8 +516,8 @@ class ChallengeService
 
     /**
      * Attempt ditinggalkan: tombol Keluar (`via: user_exit`) atau retensi
-     * terjadwal (`via: retention`). Skor dan bintang attempt ditinggalkan
-     * selalu 0; jawaban yang sudah diperiksa tetap tersimpan.
+     * terjadwal (`via: retention`). Bintang pengerjaan ditinggalkan selalu
+     * 0; jawaban dan percobaan yang sudah dicek tetap tersimpan.
      *
      * @param array<string, mixed> $payload tambahan payload event, mis. ['via' => 'retention']
      */
@@ -527,7 +532,6 @@ class ChallengeService
 
         model(ChallengeAttemptModel::class)->update($attempt->id, [
             'status'       => 'abandoned',
-            'score'        => 0,
             'stars'        => 0,
             'completed_at' => date('Y-m-d H:i:s'),
         ]);
@@ -552,15 +556,11 @@ class ChallengeService
     private function grade(ChallengeNode $node, ChallengeItem $item, array $answer, string $locale): bool
     {
         return match ($item->interaction_type) {
-            'puzzle_arrange', 'ordering' => $this->gradeOrder($item, $answer),
-            'fill_blank_bank'            => $this->gradeFillBank($item, $answer, $locale),
-            'fill_blank_free'            => $this->gradeFillFree($item, $answer, $locale),
-            'verdict_card',
-            'verdict_reason'             => $this->gradeVerdict($node, $item, $answer),
-            'single_choice',
-            'source_trust'               => $this->gradeChoice($item, $answer),
-            'find_object'                => $this->gradeFindObject($item, $answer),
-            default                      => false,
+            'puzzle_arrange'  => $this->gradeOrder($item, $answer),
+            'fill_blank_bank' => $this->gradeFillBank($item, $answer, $locale),
+            'verdict_card'    => $this->gradeVerdict($node, $item, $answer),
+            'find_object'     => $this->gradeFindObject($item, $answer),
+            default           => false,
         };
     }
 
@@ -590,13 +590,6 @@ class ChallengeService
         return $this->normalize((string) ($answer['text'] ?? '')) === $this->normalize($expected);
     }
 
-    private function gradeFillFree(ChallengeItem $item, array $answer, string $locale): bool
-    {
-        $given = $this->normalize((string) ($answer['text'] ?? ''));
-
-        return $given !== '' && in_array($given, $item->acceptedAnswers($locale), true);
-    }
-
     /** Pilihan penilaian wajib salah satu verdict_options node. */
     private function gradeVerdict(ChallengeNode $node, ChallengeItem $item, array $answer): bool
     {
@@ -607,13 +600,6 @@ class ChallengeService
         }
 
         return $given !== '' && $given === $item->verdict();
-    }
-
-    private function gradeChoice(ChallengeItem $item, array $answer): bool
-    {
-        $key = $item->correctOptionKey();
-
-        return $key !== null && (string) ($answer['option_key'] ?? '') === $key;
     }
 
     /** Objek yang benar adalah item target itu sendiri. */
@@ -634,13 +620,15 @@ class ChallengeService
     // ------------------------------------------------------------ penulisan
 
     /**
-     * Langkah 5–8: mengisi first_answer_json sekali, selalu memperbarui
-     * final_answer_json, dan menghitung perubahan jawaban.
+     * Satu percobaan satu soal: mengisi first_answer_json sekali, selalu
+     * memperbarui final_answer_json, menghitung perubahan jawaban, menambah
+     * try_count, mengisi solved_on_try saat pertama kali benar, dan menulis
+     * satu baris item_tries.
      *
      * @param array<string, mixed> $answer
-     * @param array<string, mixed> $meta
+     * @param array<string, mixed> $meta   check_no, first_input_ms, last_input_ms
      *
-     * @return array{first_pass: bool, changed: bool, change_count: int}
+     * @return array{first_pass: bool, changed: bool, change_count: int, try_no: int}
      */
     private function applyAnswer(
         ChallengeAttempt $attempt,
@@ -658,16 +646,19 @@ class ChallengeService
 
         $isFirstPass = $response->isFirstPassOpen();
         $changed     = ! $isFirstPass && $this->answerDiffers($response, $answer);
+        $tryNo       = $response->try_count + 1;
+        $lastInput   = self::clientMs($meta['last_input_ms'] ?? null);
 
         $update = [
             'final_answer_json' => $answer,
             'is_correct'        => $correct ? 1 : 0,
             'status'            => 'answered',
             'answered_at'       => date('Y-m-d H:i:s'),
+            'try_count'         => $tryNo,
         ];
 
-        if (isset($meta['duration_ms'])) {
-            $update['duration_ms'] = max(0, (int) $meta['duration_ms']);
+        if ($lastInput !== null) {
+            $update['duration_ms'] = $lastInput;
         }
 
         if ($isFirstPass) {
@@ -675,15 +666,11 @@ class ChallengeService
             $update['first_pass_correct'] = $correct ? 1 : 0;
         }
 
-        // Alasan bebas disimpan untuk ditinjau guru, tetapi tidak memengaruhi benar/salah.
-        if ($item->interaction_type === 'verdict_reason') {
-            $reason = trim((string) ($meta['reason_text'] ?? $answer['reason_text'] ?? ''));
-
-            if ($reason !== '') {
-                $update['reason_text']          = $reason;
-                $update['reason_review_status'] = 'pending';
-            }
+        if ($correct && $response->solved_on_try === null) {
+            $update['solved_on_try'] = min(255, $tryNo);
         }
+
+        $this->recordTry($attempt, $item->id, $tryNo, $answer, $correct, $meta);
 
         $changeCount = $response->change_count;
 
@@ -701,7 +688,45 @@ class ChallengeService
                 ->update();
         }
 
-        return ['first_pass' => $isFirstPass, 'changed' => $changed, 'change_count' => $changeCount];
+        return ['first_pass' => $isFirstPass, 'changed' => $changed, 'change_count' => $changeCount, 'try_no' => $tryNo];
+    }
+
+    /**
+     * Satu baris item_tries. `hint_opened_before` dibaca dari hint_count
+     * pengerjaan saat ini (petunjuk yang dibuka sebelum percobaan ini).
+     *
+     * @param array<string, mixed> $answer
+     * @param array<string, mixed> $meta
+     */
+    private function recordTry(ChallengeAttempt $attempt, int $itemId, int $tryNo, array $answer, bool $correct, array $meta): void
+    {
+        $hintCount = (int) (db_connect()->table('challenge_attempts')
+            ->select('hint_count')->where('id', $attempt->id)->get()->getRowArray()['hint_count'] ?? 0);
+
+        model(ItemTryModel::class)->insert([
+            'challenge_attempt_id' => $attempt->id,
+            'challenge_item_id'    => $itemId,
+            'try_no'               => min(255, $tryNo),
+            'check_no'             => isset($meta['check_no']) ? (int) $meta['check_no'] : null,
+            'answer_json'          => $answer,
+            'is_correct'           => $correct ? 1 : 0,
+            'hint_opened_before'   => $hintCount > 0 ? 1 : 0,
+            'first_input_ms'       => self::clientMs($meta['first_input_ms'] ?? null),
+            'last_input_ms'        => self::clientMs($meta['last_input_ms'] ?? null),
+            'occurred_at'          => date('Y-m-d H:i:s'),
+        ]);
+    }
+
+    /** Angka milidetik dari klien: bilangan bulat ≥ 0 dan muat di INT UNSIGNED, selain itu NULL. */
+    private static function clientMs(mixed $value): ?int
+    {
+        if (! is_numeric($value)) {
+            return null;
+        }
+
+        $ms = (int) round((float) $value);
+
+        return $ms < 0 || $ms > 4_294_967_295 ? null : $ms;
     }
 
     private function answerDiffers(ItemResponse $response, array $answer): bool
@@ -723,13 +748,19 @@ class ChallengeService
         ChallengeItem $target,
         array $answer,
         string $locale,
+        array $meta = [],
     ): array {
         $responses  = model(ItemResponseModel::class);
         $response   = $responses->findOne($attempt->id, $target->id);
         $firstClick = $response !== null && $response->isFirstPassOpen();
+        $tryNo      = 0;
 
         if ($response !== null) {
-            $update = ['wrong_click_count' => $response->wrong_click_count + 1];
+            $tryNo  = $response->try_count + 1;
+            $update = [
+                'wrong_click_count' => $response->wrong_click_count + 1,
+                'try_count'         => $tryNo,
+            ];
 
             // First-pass `cari` = klik pertama untuk tiap petunjuk: klik pertama
             // yang salah menutup first-pass petunjuk ini sebagai salah, dan
@@ -741,6 +772,10 @@ class ChallengeService
             }
 
             $responses->update($response->id, $update);
+
+            $this->recordTry($attempt, $target->id, $tryNo, $answer, false, [
+                'last_input_ms' => $meta['duration_ms'] ?? null,
+            ]);
         }
 
         $clickedId = (int) ($answer['item_id'] ?? 0);
@@ -748,6 +783,7 @@ class ChallengeService
         $isDecoy   = $clicked !== null && $clicked->isDecoy();
 
         service('eventService')->record($session, 'wrong_target_clicked', [
+            'try_no'          => $tryNo,
             'clicked_item_id' => $clickedId ?: null,
             'decoy'           => $isDecoy,
             'first_pass'      => $firstClick,
@@ -758,53 +794,21 @@ class ChallengeService
         ]);
 
         return [
-            'correct'            => false,
-            'first_pass'         => $firstClick,
-            'wrong_click'        => true,
-            'decoy'              => $isDecoy,
-            'already_answered'   => false,
-            'feedback'           => $clicked?->wrongFeedback($locale),
-            'correct_option_key' => null,
-            'progress'           => $this->progressOf($attempt),
+            'correct'          => false,
+            'first_pass'       => $firstClick,
+            'wrong_click'      => true,
+            'decoy'            => $isDecoy,
+            'already_answered' => false,
+            'feedback'         => $clicked?->wrongFeedback($locale),
+            'try_no'           => $tryNo,
+            'progress'         => $this->progressOf($attempt),
         ];
-    }
-
-    /**
-     * Kunci opsi dikirim hanya SESUDAH butir dijawab dan hanya pada node tanpa
-     * pemeriksaan ulang (`allow_retry = false`), agar UI dapat menandai opsi
-     * yang benar. Node yang boleh diperiksa ulang tidak pernah menerimanya.
-     */
-    private function revealedOptionKey(ChallengeNode $node, ChallengeItem $item): ?string
-    {
-        if ($node->allowsRetry() || ! in_array($item->interaction_type, ['single_choice', 'source_trust'], true)) {
-            return null;
-        }
-
-        return $item->correctOptionKey();
-    }
-
-    /** Umpan balik opsi salah dikirim setelah jawaban dinilai, bukan di payload soal. */
-    private function wrongFeedbackFor(ChallengeItem $item, array $answer, string $locale): ?string
-    {
-        $optionKey = (string) ($answer['option_key'] ?? '');
-
-        if ($optionKey !== '') {
-            foreach ($item->loadedOptions() as $option) {
-                if ($option->option_key === $optionKey) {
-                    $feedback = $option->text('feedback', $locale);
-
-                    return trim($feedback) === '' ? null : $feedback;
-                }
-            }
-        }
-
-        return $item->wrongFeedback($locale);
     }
 
     // ------------------------------------------------------------- progres
 
     /**
-     * @return array{level_completed: bool, next_level_unlocked: ?int, shards: int, level_score: float}
+     * @return array{level_completed: bool, next_level_unlocked: ?int, shards: int, level_stars: int}
      */
     private function refreshProgress(GameSession $session, ChallengeNode $node): array
     {
@@ -854,7 +858,6 @@ class ChallengeService
             'completed_nodes'         => count($done),
             'completed_levels'        => $completedLevels,
             'unlocked_level_sequence' => $unlockedSequence,
-            'total_score'             => $scoring->totalScore($session->id),
             'total_stars'             => $scoring->totalStars($session->id),
         ]);
 
@@ -862,7 +865,7 @@ class ChallengeService
             'level_completed'     => $levelFinished,
             'next_level_unlocked' => $nextLevelUnlocked,
             'shards'              => count($done),
-            'level_score'         => $scoring->levelScore($session->id, $node->level_id)['score'],
+            'level_stars'         => $scoring->levelSummary($session->id, $node->level_id)['stars'],
         ];
     }
 
@@ -892,20 +895,22 @@ class ChallengeService
         $startedAt = strtotime((string) $attempt->started_at) ?: time();
 
         $payload = [
-            'attempt_id'  => $attempt->id,
-            'attempt_no'  => $attempt->attempt_no,
-            'resumed'     => $resumed,
-            'elapsed_ms'  => max(0, (time() - $startedAt) * 1000),
-            'node'        => [
+            'attempt_id'    => $attempt->id,
+            'attempt_no'    => $attempt->attempt_no,
+            'variant_group' => $attempt->variant_group,
+            'max_tries'     => $attempt->maxTries(),
+            'check_count'   => $attempt->check_count,
+            'resumed'       => $resumed,
+            'elapsed_ms'    => max(0, (time() - $startedAt) * 1000),
+            'node'          => [
                 'id'           => $node->id,
                 'level_id'     => $node->level_id,
                 'sequence'     => $node->sequence,
                 'engine_type'  => $node->engine_type,
                 'variant_code' => $node->variant_code,
-                'title'        => $node->text('title', $locale),
+                'title'        => $node->variantTitle($attempt->variant_group, $locale),
                 'instruction'  => $node->text('instruction', $locale),
                 'description'  => $node->text('description', $locale),
-                'allow_retry'  => $node->allowsRetry(),
                 'background'   => $node->background_media_id ? media_src($node->background_media_id) : null,
                 'scene'        => $node->scene_media_id ? media_src($node->scene_media_id) : null,
             ],
@@ -923,12 +928,11 @@ class ChallengeService
         }
 
         if ($node->engine_type === 'rumpang' && $node->config('use_word_bank')) {
-            $payload['word_bank'] = $this->wordBank($node, $items, $locale, (int) $attempt->id);
+            $payload['word_bank'] = $this->wordBank($node, $items, $locale, (int) $attempt->id, $attempt->variant_group);
         }
 
         if ($node->engine_type === 'boleh') {
             $payload['verdict_options'] = $node->verdictOptions();
-            $payload['require_reason']  = $node->requiresReason();
         }
 
         $passages = $this->passagesFor($items, $locale);
@@ -949,7 +953,9 @@ class ChallengeService
      * pemilihan (yang menaruh jebakan di akhir). Tidak ada prompt, id butir,
      * `scorable`, atau penanda jebakan.
      *
-     * `clues` hanya untuk target yang dinilai. `item_id`-nya dikirim klien
+     * `clues` hanya untuk target yang dinilai, diacak dengan benih id
+     * pengerjaan (Dok 1 §9.2): urutannya tetap saat halaman dimuat ulang,
+     * tetapi berbeda antarpengerjaan. `item_id`-nya dikirim klien
      * sebagai butir yang sedang dijawab, tetapi tidak dapat dicocokkan dengan
      * objek mana pun karena `ref` diturunkan dari kunci server (objectRef()).
      * `audio` / `audio_id` = narasi petunjuk pada bahasa itu (clueAudio()),
@@ -980,7 +986,7 @@ class ChallengeService
 
         usort($objects, static fn (array $a, array $b): int => [$a['y'], $a['x'], $a['ref']] <=> [$b['y'], $b['x'], $b['ref']]);
 
-        return ['objects' => $objects, 'clues' => $clues];
+        return ['objects' => $objects, 'clues' => seeded_shuffle($clues, 'cari|' . $attempt->id)];
     }
 
     /**
@@ -1039,17 +1045,16 @@ class ChallengeService
     }
 
     /**
-     * Bank kata: jawaban item terpilih + pengecoh, seluruhnya diacak dengan
-     * benih percobaan (urutan tetap saat halaman dimuat ulang). Bacaan
-     * memakai `distractor_count` pengecoh pertama sesuai urutan isian, jadi
-     * semua siswa melihat kata yang sama; mode kalimat lepas mengambilnya
-     * acak. Pemetaan kata → rumpang tidak pernah dikirim.
+     * Bank kata: jawaban soal variasi ini + `distractor_count` pengecoh
+     * pertama variasi itu, seluruhnya diacak dengan benih id pengerjaan
+     * (urutan tetap saat halaman dimuat ulang). Pemetaan kata → rumpang tidak
+     * pernah dikirim.
      *
      * @param list<ChallengeItem> $items
      *
      * @return list<string>
      */
-    private function wordBank(ChallengeNode $node, array $items, string $locale, int $attemptId = 0): array
+    private function wordBank(ChallengeNode $node, array $items, string $locale, int $attemptId = 0, ?string $group = null): array
     {
         $words = [];
 
@@ -1065,11 +1070,7 @@ class ChallengeService
             }
         }
 
-        $distractors = $node->distractors($locale);
-
-        if (! $node->isReading()) {
-            $distractors = seeded_shuffle($distractors, 'bank-d|' . $attemptId);
-        }
+        $distractors = $node->distractors($locale, $group);
 
         $words = array_merge($words, array_slice($distractors, 0, max(0, (int) $node->config('distractor_count'))));
         $words = array_values(array_unique($words));
@@ -1326,13 +1327,5 @@ class ChallengeService
         }
 
         return $refs;
-    }
-
-    /** Benih pemilihan item: peserta yang sama mendapat butir sama pada pretest & posttest. */
-    private function seedFor(GameSession $session, int $nodeId): string
-    {
-        $participant = model(\App\Models\ParticipantModel::class)->find($session->participant_id);
-
-        return ($participant?->participant_code ?? (string) $session->participant_id) . '|' . $nodeId;
     }
 }

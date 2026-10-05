@@ -2,7 +2,6 @@
 
 namespace App\Controllers\Api;
 
-use App\Models\ResearchPhaseModel;
 use App\Models\ResearchStudyModel;
 use CodeIgniter\HTTP\ResponseInterface;
 
@@ -16,14 +15,12 @@ class SessionApiController extends BaseApiController
         $session     = $this->gameSession();
         $participant = service('gameContext')->participant;
         $study       = model(ResearchStudyModel::class)->find($session->study_id);
-        $phase       = model(ResearchPhaseModel::class)->find($session->phase_id);
 
         return $this->ok([
             'session' => [
                 'code'   => (string) $session->session_code,
                 'locale' => $session->resolvedLocale(),
                 'status' => (string) $session->status,
-                'phase'  => (string) ($phase['code'] ?? ''),
                 'study'  => (string) ($study['code'] ?? ''),
             ],
             'participant' => [

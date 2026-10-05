@@ -102,9 +102,9 @@ abstract class BaseGameController extends BaseController
             return null;
         }
 
-        $score = service('scoringService')->levelScore($session->id, $level->id);
+        $summary = service('scoringService')->levelSummary($session->id, $level->id);
 
-        if (! $this->isNewRegion($this->levelStatus($score, true))) {
+        if (! $this->isNewRegion($this->levelStatus($summary, true))) {
             return null;
         }
 

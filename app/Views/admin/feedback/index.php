@@ -3,7 +3,7 @@
  * Kritik & saran — `/admin/masukan` → FeedbackController::index
  *
  * Ringkasan sebaran bintang + kartu masukan (bintang, empat jawaban, kode
- * peserta, fase, waktu). Nama pengguna siswa tidak ditampilkan di sini.
+ * peserta, waktu). Nama pengguna siswa tidak ditampilkan di sini.
  *
  * @var list<array<string, mixed>>   $rows
  * @var CodeIgniter\Pager\Pager|null  $pager
@@ -26,16 +26,20 @@ $questions = [
     'lead'    => 'Pendapat siswa yang ditulis di Balai Refleksi setelah menyelesaikan semua tantangan.',
 ]) ?>
 <?= $this->include('partials/flash') ?>
-<?= component('admin-filter-bar', ['filters' => $filters, 'only' => ['phase_code', 'school_id', 'class_level']]) ?>
+<?= component('admin-filter-bar', ['filters' => $filters, 'only' => ['school_id', 'class_level']]) ?>
 
 <div class="split-grid">
   <section class="panel">
     <h2 class="panel-title"><?= icon('star') ?> Sebaran bintang</h2>
-    <?= component('partials/bar-list', ['rows' => array_map(
-        static fn (int $stars, int $total): array => ['label' => str_repeat('★', $stars), 'value' => $total, 'display' => (string) $total],
-        array_reverse(array_keys($distribution['distribution'])),
-        array_reverse(array_values($distribution['distribution'])),
-    )]) ?>
+    <table class="data-table">
+      <caption class="visually-hidden">Jumlah masukan per bintang</caption>
+      <thead><tr><th scope="col">Bintang</th><th scope="col" class="is-num">Jumlah masukan</th></tr></thead>
+      <tbody>
+        <?php foreach (array_reverse($distribution['distribution'], true) as $stars => $total): ?>
+          <tr><td><?= esc(str_repeat('★', (int) $stars)) ?></td><td class="is-num"><?= esc((string) $total) ?></td></tr>
+        <?php endforeach ?>
+      </tbody>
+    </table>
   </section>
   <section class="panel">
     <h2 class="panel-title"><?= icon('message') ?> Ringkasan</h2>
@@ -57,7 +61,7 @@ $questions = [
         <header class="feedback-card-head">
           <?= stars_html((int) $row['rating'], 5) ?>
           <span class="muted"><code><?= esc($row['participant_code'] ?? '#' . $row['participant_id']) ?></code>
-            · <?= esc(admin_label('phase', $row['phase_code'] ?? null)) ?> · <?= esc(fmt_date($row['submitted_at'], false, 'id')) ?></span>
+            · <?= esc(fmt_date($row['submitted_at'], false, 'id')) ?></span>
         </header>
         <dl>
           <?php foreach ($questions as $field => $label): ?>

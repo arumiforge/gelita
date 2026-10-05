@@ -60,7 +60,7 @@ final class ExportLabelsTest extends CIUnitTestCase
         }
 
         foreach (['response_id', 'event_uuid', 'client_event_id', 'audio_asset_id', 'indicator_code', 'variant_code',
-            'content_version', 'scoring_version', 'level_code', 'study_code'] as $technical) {
+            'content_version', 'scoring_version', 'level_code', 'study_code', 'phase_code'] as $technical) {
             $this->assertNotContains($technical, $all, "kolom teknis {$technical} tidak lagi diunduh");
         }
 
@@ -71,8 +71,6 @@ final class ExportLabelsTest extends CIUnitTestCase
 
     public function testCodedValuesBecomeWords(): void
     {
-        $this->assertSame('Tes awal', ExportLabels::value('Sessions', 'phase_code', 'pretest'));
-        $this->assertSame('Bermain biasa', ExportLabels::value('Feedback', 'phase_code', 'umum'));
         $this->assertSame('selesai', ExportLabels::value('Sessions', 'status', 'completed'));
         $this->assertSame('ponsel', ExportLabels::value('Sessions', 'device_type', 'mobile'));
         $this->assertSame('Indonesia', ExportLabels::value('Sessions', 'locale', 'id'));
@@ -81,7 +79,9 @@ final class ExportLabelsTest extends CIUnitTestCase
         $this->assertSame('Isi rumpang (pilih kata)', ExportLabels::value('Item Responses', 'interaction_type', 'fill_blank_bank'));
         $this->assertSame('C3 · Menerapkan', ExportLabels::value('Item Responses', 'bloom_level', 'C3'));
         $this->assertSame('Susun Gambar', ExportLabels::value('Challenge Summary', 'engine_type', 'puzzle'));
-        $this->assertSame('Urutkan kartu', ExportLabels::value('Challenge Summary', 'item_types', ['ordering', 'ordering']));
+        $this->assertSame('Kartu benar/salah', ExportLabels::value('Challenge Summary', 'item_types', ['verdict_card', 'verdict_card']));
+        $this->assertSame('Kesempatan habis', ExportLabels::value('Challenge Summary', 'completion_reason', 'tries_exhausted'));
+        $this->assertSame('Semua soal benar', ExportLabels::value('Challenge Summary', 'completion_reason', 'solved'));
         $this->assertSame('Membuka petunjuk', ExportLabels::value('Raw Events', 'event_type', 'hint_opened'));
         $this->assertSame('diputar ulang', ExportLabels::value('Audio Usage', 'action', 'replay'));
         $this->assertSame('Mbah Kedu', ExportLabels::value('Audio Usage', 'character_code', 'mbah_kedu'));
@@ -89,7 +89,7 @@ final class ExportLabelsTest extends CIUnitTestCase
         $this->assertSame('Jenis kelamin', ExportLabels::value('Demographic Summary', 'dimension', 'gender'));
     }
 
-    public function testFlagsUnitsAndRatios(): void
+    public function testFlagsAndUnits(): void
     {
         $this->assertSame('ya', ExportLabels::value('Item Responses', 'is_correct', 1));
         $this->assertSame('tidak', ExportLabels::value('Item Responses', 'first_pass_correct', '0'));
@@ -98,16 +98,16 @@ final class ExportLabelsTest extends CIUnitTestCase
 
         $this->assertSame(12.5, ExportLabels::value('Item Responses', 'duration_ms', 12_480), 'detik, 1 desimal');
         $this->assertSame(2.5, ExportLabels::value('Sessions', 'duration_ms', 150_000), 'lama sesi dalam menit');
-        $this->assertSame(66.7, ExportLabels::value('Indicators', 'mastery_ratio', 0.6667), 'rasio 0–1 → persen');
-        $this->assertSame(80.0, ExportLabels::value('Challenge Summary', 'first_pass_accuracy', '80.00'), 'sudah persen, tetap');
         $this->assertSame(7, ExportLabels::value('Challenge Summary', 'hint_count', '7'));
+        $this->assertSame(2, ExportLabels::value('Item Responses', 'solved_on_try', '2'));
+        $this->assertSame(3, ExportLabels::value('Item Responses', 'try_count', 3));
+        $this->assertNull(ExportLabels::value('Item Responses', 'solved_on_try', null), 'belum pernah benar = sel kosong');
     }
 
     public function testDemographicGroupsFollowTheirDimension(): void
     {
         $this->assertSame('Laki-laki', ExportLabels::value('Demographic Summary', 'group', 'laki-laki', ['dimension' => 'gender']));
         $this->assertSame('Kelas 5 SD/MI', ExportLabels::value('Demographic Summary', 'group', '5', ['dimension' => 'class_level']));
-        $this->assertSame('Tes akhir', ExportLabels::value('Demographic Summary', 'group', 'posttest', ['dimension' => 'phase']));
         $this->assertSame('Jawa Tengah', ExportLabels::value('Demographic Summary', 'group', 'Jawa Tengah', ['dimension' => 'province']));
         $this->assertSame('(tidak diisi)', ExportLabels::value('Demographic Summary', 'group', '(kosong)', ['dimension' => 'gender']));
     }
@@ -116,7 +116,7 @@ final class ExportLabelsTest extends CIUnitTestCase
     {
         $details = ExportLabels::value('Raw Events', 'payload', '{"attempt_no":2,"via":"content_changed","duration_ms":4200}');
 
-        $this->assertSame('percobaan ke: 2 · lewat: isi tantangan diperbarui · lama: 4,2 detik', $details);
+        $this->assertSame('pengerjaan ke: 2 · lewat: isi tantangan diperbarui · lama: 4,2 detik', $details);
 
         $date = ExportLabels::value('Sessions', 'started_at', '2026-10-05 08:30:15');
 

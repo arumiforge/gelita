@@ -2,14 +2,15 @@
 
 use App\Libraries\BankWorkbookGuide;
 use App\Services\ContentImportService;
+use App\Services\SystemResetService;
 use CodeIgniter\Test\CIUnitTestCase;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 /**
  * Workbook berpanduan harus tetap sejalan dengan importer: setiap kolom yang
  * dibaca ContentImportService punya penjelasan Indonesia, header sheet data
- * persis sama dengan yang diharapkan importer, dan workbook produksi di
- * docs/bank-soal ikut diperbarui bila kolom berubah.
+ * persis sama dengan yang diharapkan importer, dan workbook bank soal kelas 5
+ * di docs/bank-soal ikut diperbarui bila kolom berubah.
  *
  * @internal
  */
@@ -94,24 +95,39 @@ final class BankWorkbookGuideTest extends CIUnitTestCase
         $book->disconnectWorksheets();
     }
 
-    public function testProductionWorkbookMatchesImporterHeaders(): void
+    /**
+     * Workbook bank soal kelas 5 (Dok 2 §7) wajib sama header-nya dengan
+     * importer. Templat unduhan importer selalu diperiksa; workbook produksi
+     * lama (15 tantangan, sheet options/pieces/sources) sudah tidak dibaca
+     * importer kelas 5 dan diganti di Dok 2.
+     */
+    public function testWorkbooksMatchImporterHeaders(): void
     {
-        $file = ROOTPATH . 'docs/bank-soal/gelita-bank-soal-produksi.xlsx';
+        $files  = ['templat' => (new ContentImportService())->template()];
+        $kelas5 = ROOTPATH . SystemResetService::DEFAULT_BANK;
 
-        $this->assertFileExists($file, 'Jalankan php docs/bank-soal/build-workbook.php');
-
-        $book = IOFactory::load($file);
-
-        foreach (ContentImportService::SHEETS as $sheet => $headers) {
-            $data = $book->getSheetByName($sheet);
-
-            $this->assertNotNull($data, $sheet);
-
-            $row = $data->rangeToArray('A1:' . $data->getHighestColumn() . '1', null, false, false)[0];
-            $this->assertSame($headers, $row, "{$sheet}: bangun ulang workbook produksi setelah kolom impor berubah");
-            $this->assertGreaterThan(1, $data->getHighestDataRow(), "{$sheet} kosong");
+        if (is_file($kelas5)) {
+            $files['kelas 5'] = $kelas5;
         }
 
-        $book->disconnectWorksheets();
+        foreach ($files as $label => $file) {
+            $book = IOFactory::load($file);
+
+            foreach (ContentImportService::SHEETS as $sheet => $headers) {
+                $data = $book->getSheetByName($sheet);
+
+                $this->assertNotNull($data, "{$label}: {$sheet}");
+
+                $row = $data->rangeToArray('A1:' . $data->getHighestColumn() . '1', null, false, false)[0];
+                $this->assertSame($headers, $row, "{$label} {$sheet}: bangun ulang workbook setelah kolom impor berubah");
+                $this->assertGreaterThan(1, $data->getHighestDataRow(), "{$label}: {$sheet} kosong");
+            }
+
+            foreach (['options', 'pieces', 'sources'] as $gone) {
+                $this->assertNull($book->getSheetByName($gone), "{$label}: sheet {$gone} sudah dihapus (Dok 1 §14)");
+            }
+
+            $book->disconnectWorksheets();
+        }
     }
 }

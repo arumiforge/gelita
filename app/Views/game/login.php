@@ -7,8 +7,9 @@
  * login.js (tahap 6): lihat/sembunyikan sandi, peringatan Caps Lock, dan
  * mencegah kirim ganda.
  *
- * @var bool                  $allowPhase
- * @var list<string>          $phases
+ * `device_json` diisi core/device.js saat dikirim (DeviceProfile); tanpa
+ * JavaScript kosong, server memakai User-Agent + Client Hints header.
+ *
  * @var array<string, string> $errors
  */
 ?>
@@ -52,16 +53,7 @@
         <p class="pw-caps" hidden><?= icon('warn') ?> <?= esc(lang('Auth.capsLock')) ?></p>
       </div>
 
-      <?php if ($allowPhase): ?>
-        <div class="field">
-          <label for="phase"><?= esc(lang('Game.phase')) ?></label>
-          <select id="phase" name="phase">
-            <?php foreach ($phases as $phase): ?>
-              <option value="<?= esc($phase, 'attr') ?>" <?= old('phase') === $phase ? 'selected' : '' ?>><?= esc(lang_or('Game.phase_' . $phase, $phase)) ?></option>
-            <?php endforeach ?>
-          </select>
-        </div>
-      <?php endif ?>
+      <input type="hidden" name="device_json" value="">
 
       <div class="form-actions">
         <button class="btn btn-primary btn-lg btn-block" type="submit"><?= esc(lang('Game.login')) ?> <?= icon('right') ?></button>
@@ -69,7 +61,7 @@
     </form>
 
     <div class="login-foot">
-      <p><?= esc(lang('Game.noAccount')) ?> <a href="<?= base_url('persetujuan') ?>"><?= esc(lang('Game.registerLink')) ?></a></p>
+      <p><?= esc(lang('Game.noAccount')) ?> <a href="<?= base_url('daftar') ?>"><?= esc(lang('Game.registerLink')) ?></a></p>
       <p class="muted"><?= icon('info') ?> <?= esc(lang('Game.forgotPassword')) ?></p>
     </div>
   </div>

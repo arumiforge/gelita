@@ -5,6 +5,15 @@ Stack: CodeIgniter 4.7.x · PHP 8.2+ · MySQL 8.0 / MariaDB 10.6+ · InnoDB · u
 
 > **Revisi 2 (21 September 2026).** Perubahan terhadap versi pertama: (1) siswa **wajib registrasi dengan nama pengguna dan kata sandi kuat** sebagai bagian literasi keamanan digital — kolom akun ditambahkan ke `participants`; (2) tabel baru `reading_passages` untuk teks bacaan yang dipakai beberapa soal; (3) interaksi `boolean_*` diganti `verdict_*` yang mendukung pilihan **Benar / Salah / Pendapat**; (4) kata pengecoh rumpang pindah ke `challenge_nodes.config_json`; (5) kolom `review_status` pada `challenge_items`; (6) metadata 15 node dan isi soal diambil dari **Dokumen Bank Soal GELITA** dan dimuat lewat impor XLSX. Total tabel menjadi **29**.
 
+> **Perombakan kelas 5 — Dokumen 1 (Oktober 2026, branch `perombakan-kelas5`).** Migration `004100`–`004600` mengubah skema di bawah ini; rinciannya ada di [`perombakan-kelas5/01_FONDASI_DATA_DAN_RESET.md`](perombakan-kelas5/01_FONDASI_DATA_DAN_RESET.md) §5, dan penulisan ulang dokumen ini menyusul di Dok 3 §11. Ringkasnya:
+>
+> - **Tabel dihapus:** `research_phases`, `participant_consents`, `scoring_profiles`, `challenge_options` (sisa 28 tabel domain + `ci_sessions` + `migrations`).
+> - **Tabel baru:** `item_tries` (satu baris per percobaan soal: jawaban, benar/salah, nomor percobaan dan cek, waktu isian) dan `device_logs` (perangkat siswa setiap daftar/masuk/lanjut sesi, diurai `matomo/device-detector`).
+> - **Kolom dihapus:** `game_sessions.phase_id`; `research_studies.active_phase_code`, `allow_phase_choice`, `item_selection_mode`, `require_consent`; `challenge_attempts.scoring_profile_id`, `first_pass_accuracy`, `final_accuracy`, `retry_count`, `independence`, `score`, `scoring_version`; `challenge_nodes.scoring_profile_id`; `session_progress.total_score`; `item_responses.reason_*`.
+> - **Kolom baru:** `participants.assented_at`; `challenge_attempts.variant_group`, `completion_reason`, `max_tries`; `item_responses.try_count`, `solved_on_try`; `challenge_items.variant_group`; `media_assets.is_placeholder`, `label`, `description`.
+> - Skor 0–100 diganti aturan bintang `bintang-1` (`ScoringService`); fase pretest/posttest dan persetujuan wali dihapus; tiap wilayah kini 4 tantangan.
+> - Reset total data uji coba: `php spark gelita:reset` (Dok 1 §7).
+
 ---
 
 ## Tujuan
@@ -993,6 +1002,12 @@ Nama file mengikuti konvensi CI4 `YYYY-MM-DD-HHMMSS_ClassName.php` di `app/Datab
 2026-01-01-003800_AddChallengeItemPromptAudio
 2026-01-01-003900_ExtendSchoolsDirectory
 2026-01-01-004000_AddChallengeItemBloomLevel
+2026-01-01-004100_RemovePhasesAndConsent        # perombakan kelas 5, Dok 1 §5
+2026-01-01-004200_SimplifyAttemptScoring
+2026-01-01-004300_CreateItemTries
+2026-01-01-004400_AddVariantGroupsDropOptions
+2026-01-01-004500_CreateDeviceLogs
+2026-01-01-004600_AddMediaPlaceholderFlag
 ```
 
 > `002900` menambahkan FK dari `levels` ke `media_assets`. Ini dipisah karena `levels` dibuat setelah `media_assets`, tetapi beberapa FK silang (`challenge_nodes.audio_intro_id` → `audio_assets`) lebih aman dipasang belakangan agar `up()`/`down()` bersih.

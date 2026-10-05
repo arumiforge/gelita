@@ -2,11 +2,11 @@
 /**
  * Engine `rumpang` — isi bagian rumpang.
  *
- * Tiap soal memuat penanda `___` yang diganti kotak rumpang. Varian bank
- * kata: kotak berupa tombol, diisi dengan mengetuk kata dari bank
- * (payload.word_bank — jawaban + pengecoh yang sudah diacak server; client
- * tidak tahu kata mana milik rumpang mana). Varian tanpa bank kata: kotak
- * berupa input teks. engines/rumpang.js memasang perilakunya.
+ * Tiap soal memuat penanda `___` yang diganti kotak rumpang. Kotak berupa
+ * tombol, diisi dengan mengetuk kata dari bank (payload.word_bank — jawaban +
+ * pengecoh yang sudah diacak server; client tidak tahu kata mana milik
+ * rumpang mana). Tidak ada lagi isian ketik sendiri (perombakan kelas 5).
+ * engines/rumpang.js memasang perilakunya.
  *
  * Tantangan bacaan (config as_reading, kelas 5): semua soal adalah
  * potongan satu bacaan, disambung menjadi paragraf utuh dengan rumpang
@@ -19,19 +19,15 @@
  * @var string                     $locale
  */
 $items       = $payload['items'] ?? [];
-$useWordBank = isset($payload['word_bank']);
+$payload['word_bank'] ??= [];
 $media       = $payload['node']['scene'] ?? ($items[0]['media'] ?? null);
 $reading     = $node->isReading();
 
-// Satu rumpang: tombol (bank kata) atau kotak isian. Dirakit sebagai string
-// agar tidak ada spasi templat di antara rumpang dan tanda baca sesudahnya.
-$blankHtml = static function (int|string $itemId, int $number) use ($useWordBank): string {
+// Satu rumpang (tombol bank kata). Dirakit sebagai string agar tidak ada
+// spasi templat di antara rumpang dan tanda baca sesudahnya.
+$blankHtml = static function (int|string $itemId, int $number): string {
     $label = lang('Game.blank', [$number]);
-
-    $field = $useWordBank
-        ? '<button type="button" class="blank" data-item="' . esc((string) $itemId, 'attr') . '" aria-label="' . esc($label, 'attr') . '">?</button>'
-        : '<input type="text" class="blank-input" data-item="' . esc((string) $itemId, 'attr') . '" aria-label="' . esc($label, 'attr') . '"'
-            . ' placeholder="' . esc(lang('Game.typeAnswer'), 'attr') . '" autocomplete="off" autocapitalize="none" spellcheck="false" maxlength="100">';
+    $field = '<button type="button" class="blank" data-item="' . esc((string) $itemId, 'attr') . '" aria-label="' . esc($label, 'attr') . '">?</button>';
 
     return '<span class="blank-wrap"><sup class="blank-no num" aria-hidden="true">' . $number . '</sup>' . $field . '</span>';
 };
@@ -43,7 +39,7 @@ $blankHtml = static function (int|string $itemId, int $number) use ($useWordBank
 <?= $this->section('bodyClass') ?>is-challenge<?= $this->endSection() ?>
 
 <?= $this->section('arena') ?>
-<div class="rumpang<?= $media ? ' has-media' : '' ?>" data-word-bank="<?= $useWordBank ? '1' : '0' ?>">
+<div class="rumpang<?= $media ? ' has-media' : '' ?>" data-word-bank="1">
   <?php if ($media): ?>
     <figure class="rumpang-media">
       <img src="<?= esc($media, 'attr') ?>" alt="" loading="lazy">
@@ -71,12 +67,7 @@ $blankHtml = static function (int|string $itemId, int $number) use ($useWordBank
           <?php endif ?>
           <span class="sentence-text">
             <?= esc($parts[0]) ?>
-            <?php if ($useWordBank): ?>
-              <button type="button" class="blank" data-item="<?= esc($item['id'], 'attr') ?>" aria-label="<?= esc($label, 'attr') ?>">?</button>
-            <?php else: ?>
-              <input type="text" class="blank-input" data-item="<?= esc($item['id'], 'attr') ?>" aria-label="<?= esc($label, 'attr') ?>"
-                     placeholder="<?= esc(lang('Game.typeAnswer'), 'attr') ?>" autocomplete="off" autocapitalize="none" spellcheck="false" maxlength="100">
-            <?php endif ?>
+            <button type="button" class="blank" data-item="<?= esc($item['id'], 'attr') ?>" aria-label="<?= esc($label, 'attr') ?>">?</button>
             <?= esc($parts[1] ?? '') ?>
           </span>
         </li>
@@ -84,14 +75,12 @@ $blankHtml = static function (int|string $itemId, int $number) use ($useWordBank
     </ol>
     <?php endif ?>
 
-    <?php if ($useWordBank): ?>
-      <div class="word-bank" id="word-bank" role="group" aria-label="<?= esc(lang('Game.wordBank'), 'attr') ?>">
-        <span class="word-bank-title"><?= esc(lang('Game.wordBank')) ?></span>
-        <?php foreach ($payload['word_bank'] as $index => $word): ?>
-          <button type="button" class="word" data-word-id="k<?= $index ?>"><?= esc($word) ?></button>
-        <?php endforeach ?>
-      </div>
-    <?php endif ?>
+    <div class="word-bank" id="word-bank" role="group" aria-label="<?= esc(lang('Game.wordBank'), 'attr') ?>">
+      <span class="word-bank-title"><?= esc(lang('Game.wordBank')) ?></span>
+      <?php foreach ($payload['word_bank'] as $index => $word): ?>
+        <button type="button" class="word" data-word-id="k<?= $index ?>"><?= esc($word) ?></button>
+      <?php endforeach ?>
+    </div>
 
     <div class="arena-actions">
       <button class="btn btn-primary btn-lg" id="btn-check" type="button"><?= icon('check') ?> <?= esc(lang('Game.check')) ?></button>

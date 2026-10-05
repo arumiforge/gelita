@@ -2,8 +2,8 @@
 /**
  * Konten — `/admin/konten` → ContentController::index
  *
- * Tiga kartu wilayah; tiap kartu memuat node dengan jenis, jumlah butir di
- * bank (merah bila kurang dari items_per_round), dan status aktif.
+ * Tiga kartu wilayah; tiap kartu memuat node dengan jenis, jumlah butir dan
+ * variasi di bank, dan status aktif.
  *
  * @var list<array{level: App\Entities\Level, nodes: list<App\Entities\ChallengeNode>, bank: array<int, int>}> $levels
  * @var string $version
@@ -47,7 +47,7 @@
 
         <ul class="node-rows">
           <?php foreach ($entry['nodes'] as $node): ?>
-            <?php $bank = $entry['bank'][$node->id] ?? 0; $need = $node->itemsPerRound(); ?>
+            <?php $bank = $entry['bank'][$node->id] ?? 0; $groups = $entry['variants'][$node->id] ?? 0; ?>
             <li>
               <a class="node-row" href="<?= base_url('admin/konten/node/' . $node->id) ?>">
                 <span class="node-row-no"><?= esc($node->sequence) ?></span>
@@ -55,9 +55,9 @@
                   <?= esc($node->text('title', 'id')) ?>
                   <span class="node-row-meta">
                     <span><?= esc(engine_label((string) $node->engine_type, $node->variant_code)) ?></span>
-                    <span class="bank-count<?= $bank < $need ? ' is-short' : '' ?>"><?= $bank < $need
-                        ? $bank . ' soal — kurang, perlu minimal ' . $need . ' ✗'
-                        : $bank . ' soal · ' . $need . ' dipakai tiap bermain' ?></span>
+                    <span class="bank-count<?= $bank === 0 ? ' is-short' : '' ?>"><?= $bank === 0
+                        ? 'belum ada soal ✗'
+                        : $bank . ' soal · ' . $groups . ' variasi' ?></span>
                   </span>
                 </span>
                 <?= icon('edit') ?>

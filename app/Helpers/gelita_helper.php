@@ -124,6 +124,9 @@ if (! function_exists('js_config')) {
             'apiBase'    => base_url('api'),
             'baseUrl'    => base_url(),
             'sessionTag' => session_tag($gameSessionId),
+            'maxTries'   => config('Gelita')->maxTries,
+            // panggung game 16:9 (dp); dipakai Dok 3 dan event viewport_changed
+            'stage'      => ['w' => 1280, 'h' => 720],
             'text'       => $text,
         ];
     }
@@ -145,7 +148,7 @@ if (! function_exists('component')) {
      */
     function component(string $name, array $data = []): string
     {
-        // Konteks filter panel: dipakai admin-filter-bar & admin-chart di halaman yang sama
+        // Konteks filter panel: dipakai admin-filter-bar di halaman yang sama
         static $pageContext = ['filters', 'filterOptions'];
 
         $view    = str_contains($name, '/') ? $name : 'components/' . $name;
@@ -159,9 +162,9 @@ if (! function_exists('component')) {
 
 if (! function_exists('seeded_shuffle')) {
     /**
-     * Acak deterministik untuk item_selection_mode = fixed
-     * (benih participant_code|node_id → butir identik pada pretest & posttest).
-     * Memakai Randomizer ber-engine sendiri, sehingga state mt_rand global
+     * Acak deterministik: urutan bank kata dan keping puzzle tetap untuk satu
+     * pengerjaan (benih id pengerjaan), sehingga halaman yang dimuat ulang
+     * tidak berubah. Memakai Randomizer ber-engine sendiri, sehingga state mt_rand global
      * tidak tersentuh dan tidak perlu di-reseed.
      */
     function seeded_shuffle(array $items, string $seed): array
@@ -175,7 +178,7 @@ if (! function_exists('seeded_shuffle')) {
 if (! function_exists('apply_research_filters')) {
     /**
      * Menerapkan filter penelitian baku (03_MODEL_ENTITY.md) pada builder yang sudah
-     * men-join game_sessions, participants, research_phases, dan challenge_nodes.
+     * men-join game_sessions, participants, dan challenge_nodes.
      *
      * Filter yang tabelnya tidak ikut di-join disebutkan di $skip agar dilewati.
      *
@@ -190,7 +193,6 @@ if (! function_exists('apply_research_filters')) {
         $map = [
             'study_id'       => 'game_sessions.study_id',
             'participant_id' => 'game_sessions.participant_id',
-            'phase_code'     => 'research_phases.code',
             'level_id'      => 'challenge_nodes.level_id',
             'node_id'       => 'challenge_nodes.id',
             'school_id'     => 'participants.school_id',
