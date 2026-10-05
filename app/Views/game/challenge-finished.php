@@ -73,8 +73,8 @@ $toNext = ! $closesRegion && ! $allCompleted && $next === null && $levelComplete
 
       <div class="stat-grid finished-stats">
         <?= component('stat-tile', ['label' => lang('Game.timeSpent'), 'value' => ms_to_human((int) $attempt->duration_ms), 'icon' => 'clock']) ?>
-        <?= component('stat-tile', ['label' => lang('Game.accuracyFirst'), 'value' => fmt_pct($attempt->first_pass_accuracy, false, 0), 'icon' => 'target']) ?>
-        <?= component('stat-tile', ['label' => lang('Game.score'), 'value' => fmt_num($attempt->score, 0, $locale), 'icon' => 'star']) ?>
+        <?= component('stat-tile', ['label' => lang('Game.firstPass'), 'value' => first_pass_text($attempt, $locale, $node?->engine_type), 'icon' => 'target']) ?>
+        <?= component('stat-tile', ['label' => lang('Game.finalCorrect'), 'value' => lang('Game.firstPassCount', [(int) $attempt->final_correct, (int) $attempt->scorable_items]), 'icon' => 'check']) ?>
       </div>
 
       <?php if ($checks > 1): ?>

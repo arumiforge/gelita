@@ -4,25 +4,30 @@ namespace App\Services;
 
 use App\Entities\GameSession;
 use App\Entities\Participant;
+use App\Libraries\DeviceProfile;
 use App\Libraries\PasswordPolicy;
 use App\Models\AuditLogModel;
+use App\Models\DeviceLogModel;
 use App\Models\GameReleaseModel;
 use App\Models\GameSessionModel;
-use App\Models\ParticipantConsentModel;
 use App\Models\ParticipantModel;
-use App\Models\ResearchPhaseModel;
 use App\Models\ResearchStudyModel;
 use App\Models\SessionProgressModel;
 
 /**
- * Siklus hidup akun siswa dan sesi permainan.
+ * Siklus hidup akun siswa dan sesi permainan. Satu tahap bermain per studi
+ * (perombakan kelas 5: tanpa fase pretest/posttest, tanpa izin wali).
  * Semua operasi menulis memakai transaction; kata sandi mentah tidak pernah
  * disimpan, dicatat, atau dikembalikan kecuali sandi sementara hasil reset guru.
  */
 class SessionService
 {
     /**
-     * Mendaftarkan siswa + akun + consent, lalu membuat sesi pertama.
+     * Mendaftarkan siswa + akun (langkah 3 pendaftaran), mencatat persetujuan
+     * siswa di `participants.assented_at`, lalu membuat sesi pertama dan baris
+     * `device_logs` (`via = register`).
+     *
+     * $input['device'] = hasil DeviceProfile::capture().
      *
      * @param array<string, mixed> $input
      *
@@ -41,17 +46,12 @@ class SessionService
             throw new \InvalidArgumentException('Nama pengguna sudah dipakai.');
         }
 
-        $study = model(ResearchStudyModel::class)->requireActiveStudy();
-
-        $parentConsent = ! empty($input['parent_guardian_consented']);
-
-        if ((int) $study['require_consent'] === 1 && ! $parentConsent) {
-            throw new \RuntimeException('Persetujuan orang tua/wali wajib untuk studi ini.');
+        if (empty($input['assent'])) {
+            throw new \InvalidArgumentException('Persetujuan siswa wajib dicentang.');
         }
 
-        $phaseCode = $this->resolvePhaseCode($study, $input['phase_code'] ?? null);
-        $phase     = model(ResearchPhaseModel::class)->requireByCode((int) $study['id'], $phaseCode);
-        $release   = model(GameReleaseModel::class)->active();
+        $study   = model(ResearchStudyModel::class)->requireActiveStudy();
+        $release = model(GameReleaseModel::class)->active();
         $locale    = $this->resolveLocale($input['locale'] ?? null, $study);
 
         $db = db_connect();
@@ -92,6 +92,7 @@ class SessionService
                     ? max(0, min(5, (int) $metrics['first_submit_criteria']))
                     : null,
                 'pw_weak_submit_count' => max(0, (int) ($metrics['weak_submit_count'] ?? 0)),
+                'assented_at'          => date('Y-m-d H:i:s'),
             ], true);
 
             if ($participantId === false) {
@@ -100,25 +101,16 @@ class SessionService
 
             $participantId = (int) $participantId;
 
-            model(ParticipantConsentModel::class)->insert([
-                'participant_id'            => $participantId,
-                'study_id'                  => (int) $study['id'],
-                'consent_version'           => (string) ($input['consent_version'] ?? '1'),
-                'participant_consented'     => ! empty($input['participant_consented']) ? 1 : 0,
-                'parent_guardian_consented' => $parentConsent ? 1 : 0,
-                'guardian_name'             => $this->nullIfBlank($input['guardian_name'] ?? null),
-                'consent_text_snapshot'     => (string) ($input['consent_text'] ?? ''),
-                'consented_at'              => date('Y-m-d H:i:s'),
-            ], false);
-
+            $device  = (array) ($input['device'] ?? []);
             $session = $this->insertSession(
                 $participantId,
                 (int) $study['id'],
-                (int) $phase['id'],
                 (int) $release['id'],
                 $locale,
-                (array) ($input['device'] ?? []),
+                $device,
             );
+
+            model(DeviceLogModel::class)->record($session->id, $participantId, 'register', $device);
 
             service('eventService')->record($session, 'session_started', ['via' => 'register']);
 
@@ -138,12 +130,16 @@ class SessionService
     }
 
     /**
-     * Login siswa, lalu melanjutkan atau membuat sesi pada fase yang dipilih.
-     * Pesan 'invalid' sengaja identik untuk akun tak ada, sandi salah, dan akun nonaktif.
+     * Login siswa, lalu melanjutkan sesi studi aktif (atau membuat sesi baru)
+     * dan menulis `device_logs` (`via = resume` bila melanjutkan, `login` bila
+     * sesi baru). Pesan 'invalid' sengaja identik untuk akun tak ada, sandi
+     * salah, dan akun nonaktif.
+     *
+     * $device = hasil DeviceProfile::capture().
      *
      * @return array{status: string, session: ?GameSession, participant: ?Participant, lock_minutes?: int}
      */
-    public function login(string $username, string $password, string $phaseCode, string $locale, array $device): array
+    public function login(string $username, string $password, string $locale, array $device): array
     {
         $participants = model(ParticipantModel::class);
         $participant  = $participants->findByUsername($username);
@@ -189,13 +185,11 @@ class SessionService
             return ['status' => 'must_change', 'session' => null, 'participant' => $participant];
         }
 
-        $study     = model(ResearchStudyModel::class)->requireActiveStudy();
-        $phaseCode = $this->resolvePhaseCode($study, $phaseCode);
-        $phase     = model(ResearchPhaseModel::class)->requireByCode((int) $study['id'], $phaseCode);
-        $locale    = $this->resolveLocale($locale, $study);
+        $study  = model(ResearchStudyModel::class)->requireActiveStudy();
+        $locale = $this->resolveLocale($locale, $study);
 
         $sessions = model(GameSessionModel::class);
-        $existing = $sessions->resumable($participant->id, (int) $study['id'], (int) $phase['id']);
+        $existing = $sessions->resumable($participant->id, (int) $study['id']);
 
         if ($existing !== null) {
             $sessions->update($existing->id, [
@@ -206,8 +200,10 @@ class SessionService
 
             $session = $sessions->find($existing->id);
             service('eventService')->record($session, 'session_resumed', ['via' => 'login']);
+            model(DeviceLogModel::class)->record($session->id, $participant->id, 'resume', $device);
         } else {
-            $session = $this->startNewSession($participant->id, $phaseCode, $locale, $device, 'login');
+            $session = $this->startNewSession($participant->id, $locale, $device, 'login');
+            model(DeviceLogModel::class)->record($session->id, $participant->id, 'login', $device);
         }
 
         $this->bindPhpSession($participant->id, $session->id);
@@ -302,18 +298,16 @@ class SessionService
         session()->destroy();
     }
 
-    /** Sesi baru untuk peserta yang sudah terdaftar (mis. posttest). */
+    /** Sesi baru untuk peserta yang sudah terdaftar (sesi lama selesai/ditinggalkan). */
     public function startNewSession(
         int $participantId,
-        string $phaseCode,
         string $locale,
         array $device,
         string $via = 'new_session',
     ): GameSession {
-        $study     = model(ResearchStudyModel::class)->requireActiveStudy();
-        $phase     = model(ResearchPhaseModel::class)->requireByCode((int) $study['id'], $this->resolvePhaseCode($study, $phaseCode));
-        $release   = model(GameReleaseModel::class)->active();
-        $locale    = $this->resolveLocale($locale, $study);
+        $study   = model(ResearchStudyModel::class)->requireActiveStudy();
+        $release = model(GameReleaseModel::class)->active();
+        $locale  = $this->resolveLocale($locale, $study);
 
         $db = db_connect();
         $db->transBegin();
@@ -322,7 +316,6 @@ class SessionService
             $session = $this->insertSession(
                 $participantId,
                 (int) $study['id'],
-                (int) $phase['id'],
                 (int) $release['id'],
                 $locale,
                 $device,
@@ -340,7 +333,7 @@ class SessionService
         return $session;
     }
 
-    /** Mengubah bahasa TANPA menyentuh progres atau skor. */
+    /** Mengubah bahasa TANPA menyentuh progres atau bintang. */
     public function setLocale(int $sessionId, string $locale): void
     {
         if (! in_array($locale, config('Gelita')->locales, true)) {
@@ -404,7 +397,6 @@ class SessionService
         ]);
 
         service('eventService')->record($session, 'session_completed', [
-            'total_score' => (float) $progress['total_score'],
             'total_stars' => (int) $progress['total_stars'],
         ]);
 
@@ -468,33 +460,36 @@ class SessionService
         throw new \RuntimeException('Gagal membuat sandi sementara yang memenuhi kebijakan.');
     }
 
+    /**
+     * @param array<string, mixed> $device hasil DeviceProfile::capture(); kolom ringkas
+     *                                     game_sessions diisi dari sini
+     */
     private function insertSession(
         int $participantId,
         int $studyId,
-        int $phaseId,
         int $releaseId,
         string $locale,
         array $device,
     ): GameSession {
         $sessions = model(GameSessionModel::class);
         $now      = date('Y-m-d H:i:s');
+        $summary  = DeviceProfile::sessionSummary($device);
 
         $sessionId = $sessions->insert([
             'session_code'       => random_code(16),
             'participant_id'     => $participantId,
             'study_id'           => $studyId,
-            'phase_id'           => $phaseId,
             'release_id'         => $releaseId,
             'locale'             => $locale,
             'status'             => 'active',
             'started_at'         => $now,
             'last_active_at'     => $now,
             'duration_ms'        => 0,
-            'device_type'        => $this->nullIfBlank($device['device_type'] ?? null),
-            'os_name'            => $this->nullIfBlank($device['os_name'] ?? null),
-            'browser_name'       => $this->nullIfBlank($device['browser_name'] ?? null),
-            'screen_size'        => $this->nullIfBlank($device['screen_size'] ?? null),
-            'is_touch'           => isset($device['is_touch']) ? (int) (bool) $device['is_touch'] : null,
+            'device_type'        => $this->nullIfBlank($summary['device_type']),
+            'os_name'            => $this->nullIfBlank($summary['os_name']),
+            'browser_name'       => $this->nullIfBlank($summary['browser_name']),
+            'screen_size'        => $this->nullIfBlank($summary['screen_size']),
+            'is_touch'           => $summary['is_touch'],
             'app_client_version' => $this->nullIfBlank($device['app_client_version'] ?? null),
             'ip_hash'            => hash_ip(service('request')->getIPAddress()),
         ], true);
@@ -508,19 +503,6 @@ class SessionService
         model(SessionProgressModel::class)->ensure($session->id);
 
         return $session;
-    }
-
-    /** Studi menentukan fase aktif; siswa hanya boleh memilih bila diizinkan. */
-    private function resolvePhaseCode(array $study, ?string $requested): string
-    {
-        $requested = trim((string) $requested);
-
-        if ((int) $study['allow_phase_choice'] === 1
-            && in_array($requested, config('Gelita')->phases, true)) {
-            return $requested;
-        }
-
-        return (string) $study['active_phase_code'];
     }
 
     private function resolveLocale(?string $locale, array $study): string

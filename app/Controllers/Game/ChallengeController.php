@@ -112,8 +112,8 @@ class ChallengeController extends BaseGameController
         $level = $node === null ? null : service('contentRepository')->levelById($node->level_id);
 
         $levelScore = $level === null
-            ? ['score' => 0.0, 'stars' => 0, 'completed_nodes' => 0, 'total_nodes' => 0]
-            : service('scoringService')->levelScore($session->id, $level->id);
+            ? ['stars' => 0, 'completed_nodes' => 0, 'total_nodes' => 0]
+            : service('scoringService')->levelSummary($session->id, $level->id);
 
         // Wilayah sesudahnya (baris levelOverview, beserta `entry` dan isi tirai
         // wilayah): bila baru terbuka, tombol lanjut langsung menuju dialog pembukanya

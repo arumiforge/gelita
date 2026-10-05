@@ -7,6 +7,7 @@
 import { $ } from '../core/dom.js';
 import { bindCapsLock, bindToggle } from './password-meter.js';
 import { preventDoubleSubmit } from './register.js';
+import { attachDeviceField } from '../core/device.js';
 
 export function initLogin() {
   const form = $('[data-login-form]');
@@ -20,5 +21,6 @@ export function initLogin() {
     hide: field?.dataset.hideLabel ?? '',
   });
   bindCapsLock([password].filter(Boolean), $('.pw-caps', form));
+  attachDeviceField(form);
   preventDoubleSubmit(form);
 }

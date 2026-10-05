@@ -1,13 +1,10 @@
 <?php
 /**
- * Engine `boleh` — kartu pernyataan dengan penilaian Benar / Salah
- * (/ Pendapat pada Magelang 3), teks bacaan bersama (Temanggung 3), dua sumber
- * berdampingan (Wonosobo 3), dan kolom alasan (varian beralasan).
+ * Engine `boleh` — kartu pernyataan dengan penilaian Benar / Salah atas satu
+ * teks bacaan.
  *
  * Pilihan verdict memakai radio bawaan: dapat dipilih dengan keyboard/sentuhan
- * tanpa JavaScript, dan tidak ada kunci jawaban di markup. Tombol dirender dari
- * payload.verdict_options. Sumber `official` diberi ikon gedung, `anonymous`
- * ikon tanda tanya — tanpa menyebut mana yang benar.
+ * tanpa JavaScript, dan tidak ada kunci jawaban di markup.
  *
  * @var App\Entities\ChallengeNode $node
  * @var App\Entities\Level         $level
@@ -16,9 +13,8 @@
  */
 $items    = $payload['items'] ?? [];
 $passages = $payload['passages'] ?? [];
-$verdicts = $payload['verdict_options'] ?? ['benar', 'salah'];
-$reason   = ! empty($payload['require_reason']);
-$labels   = ['benar' => 'Game.verdictBenar', 'salah' => 'Game.verdictSalah', 'pendapat' => 'Game.verdictPendapat'];
+$verdicts = ['benar', 'salah'];
+$labels   = ['benar' => 'Game.verdictBenar', 'salah' => 'Game.verdictSalah'];
 ?>
 <?= $this->extend('layouts/game') ?>
 
@@ -39,12 +35,6 @@ $labels   = ['benar' => 'Game.verdictBenar', 'salah' => 'Game.verdictSalah', 'pe
   </details>
 <?php endforeach ?>
 
-<?php if (in_array('pendapat', $verdicts, true)): ?>
-  <p class="fact-opinion"><?= icon('info') ?>
-    <span><b><?= esc(lang('Game.factWord')) ?></b> · <b><?= esc(lang('Game.opinionWord')) ?></b> — <?= esc(lang('Game.factVsOpinion')) ?></span>
-  </p>
-<?php endif ?>
-
 <div class="card-grid<?= count($items) === 1 ? ' is-single' : '' ?>">
   <?php foreach ($items as $index => $item): ?>
     <?php $itemId = (string) $item['id']; ?>
@@ -62,19 +52,6 @@ $labels   = ['benar' => 'Game.verdictBenar', 'salah' => 'Game.verdictSalah', 'pe
         <div class="card-image"><img src="<?= esc($item['media'], 'attr') ?>" alt="" loading="lazy"></div>
       <?php endif ?>
 
-      <?php if (! empty($item['sources'])): ?>
-        <div class="sources">
-          <?php foreach ($item['sources'] as $source): ?>
-            <?php $official = $source['kind'] === 'official'; ?>
-            <blockquote class="source source-<?= esc($source['kind'], 'attr') ?>">
-              <cite><?= icon($official ? 'building' : 'question') ?>
-                <?= esc($source['label'] !== '' ? $source['label'] : lang($official ? 'Game.sourceOfficial' : 'Game.sourceAnonymous')) ?></cite>
-              <p><?= esc($source['text']) ?></p>
-            </blockquote>
-          <?php endforeach ?>
-        </div>
-      <?php endif ?>
-
       <p class="card-text" id="card-<?= esc($itemId, 'attr') ?>-text"><?= esc($item['prompt']) ?></p>
 
       <fieldset class="card-choices">
@@ -87,13 +64,6 @@ $labels   = ['benar' => 'Game.verdictBenar', 'salah' => 'Game.verdictSalah', 'pe
         <?php endforeach ?>
       </fieldset>
 
-      <?php if ($reason): ?>
-        <div class="field card-reason-field">
-          <label for="reason-<?= esc($itemId, 'attr') ?>"><?= esc(lang('Game.reasonLabel')) ?></label>
-          <textarea class="card-reason" id="reason-<?= esc($itemId, 'attr') ?>" data-item="<?= esc($itemId, 'attr') ?>"
-                    rows="2" maxlength="1000" placeholder="<?= esc(lang('Game.reasonPlaceholder'), 'attr') ?>"></textarea>
-        </div>
-      <?php endif ?>
     </article>
   <?php endforeach ?>
 </div>

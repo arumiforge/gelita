@@ -1,6 +1,6 @@
 <?php
 /**
- * Engine `puzzle` — susun gambar (mode arrange) atau urutkan kartu (ordering).
+ * Engine `puzzle` — Susun Gambar.
  * Perilaku tukar keping, seret, keyboard, dan Periksa dipasang
  * engines/puzzle.js; client hanya menukar posisi, tidak menilai apa pun.
  *
@@ -23,7 +23,6 @@
  * @var string                        $locale
  */
 $item     = $payload['items'][0] ?? [];
-$ordering = ($item['interaction_type'] ?? '') === 'ordering' || $node->config('mode') === 'ordering';
 $layout   = App\Libraries\PuzzleCut::resolve((array) ($item['config'] ?? []), null, $node->config('grid'), (string) $level->difficulty);
 $grid     = $layout['grid'];
 $shape    = $layout['shape'];
@@ -35,7 +34,7 @@ $order = seeded_shuffle(range(0, $count - 1), 'puzzle|' . $attempt->id);
 if ($order === range(0, $count - 1)) {
     $order[] = array_shift($order);   // jangan pernah mulai dari susunan benar
 }
-$pieces = $ordering ? [] : App\Libraries\PuzzleCut::pieces($grid, $shape, (string) ($item['item_key'] ?? 'puzzle'));
+$pieces = App\Libraries\PuzzleCut::pieces($grid, $shape, (string) ($item['item_key'] ?? 'puzzle'));
 $board  = $grid * App\Libraries\PuzzleCut::CELL;
 $clip   = 'pz' . (int) $attempt->id . '-';
 ?>
@@ -46,29 +45,6 @@ $clip   = 'pz' . (int) $attempt->id . '-';
 <?= $this->section('bodyClass') ?>is-challenge<?= $this->endSection() ?>
 
 <?= $this->section('arena') ?>
-<?php if ($ordering): ?>
-  <div class="order-wrap" id="puzzle-wrap" data-mode="ordering" data-item="<?= esc($item['id'] ?? '', 'attr') ?>">
-    <?php if (($item['prompt'] ?? '') !== ''): ?>
-      <p class="question"><?= esc($item['prompt']) ?></p>
-    <?php endif ?>
-    <p class="hint-text"><?= esc(lang('Game.orderHint')) ?></p>
-    <ol class="order-list" id="order-list">
-      <?php foreach ($item['pieces'] ?? [] as $index => $piece): ?>
-        <li class="order-card" draggable="true" data-piece="<?= esc($piece['key'], 'attr') ?>">
-          <span class="order-no num" aria-hidden="true"><?= $index + 1 ?></span>
-          <span class="order-text"><?= esc($piece['text']) ?></span>
-          <span class="order-moves">
-            <button type="button" class="icon-btn" data-move="up" aria-label="<?= esc(lang('Game.moveUp') . ': ' . $piece['text'], 'attr') ?>"><?= icon('up') ?></button>
-            <button type="button" class="icon-btn" data-move="down" aria-label="<?= esc(lang('Game.moveDown') . ': ' . $piece['text'], 'attr') ?>"><?= icon('down') ?></button>
-          </span>
-        </li>
-      <?php endforeach ?>
-    </ol>
-    <div class="arena-actions">
-      <button class="btn btn-primary btn-lg" id="btn-check" type="button"><?= icon('check') ?> <?= esc(lang('Game.check')) ?></button>
-    </div>
-  </div>
-<?php else: ?>
   <div class="puzzle-wrap" id="puzzle-wrap" data-mode="arrange" data-item="<?= esc($item['id'] ?? '', 'attr') ?>">
     <div class="puzzle-board is-<?= esc($shape, 'attr') ?>" id="puzzle-board" role="group" aria-label="<?= esc(lang('Game.puzzleImageAlt'), 'attr') ?>"
          data-grid="<?= $grid ?>" data-shape="<?= esc($shape, 'attr') ?>"
@@ -108,7 +84,6 @@ $clip   = 'pz' . (int) $attempt->id . '-';
       <button class="btn btn-primary btn-lg" id="btn-check" type="button"><?= icon('puzzle') ?> <?= esc(lang('Game.puzzleCheck')) ?></button>
     </div>
   </div>
-<?php endif ?>
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>

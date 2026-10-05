@@ -5,6 +5,7 @@ namespace App\Controllers;
 use CodeIgniter\Controller;
 use CodeIgniter\HTTP\CLIRequest;
 use CodeIgniter\HTTP\Exceptions\HTTPException;
+use App\Libraries\DeviceProfile;
 use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -60,24 +61,21 @@ abstract class BaseController extends Controller
     }
 
     /**
-     * Keterangan perangkat untuk baris `game_sessions`.
-     * Nilai dari JavaScript dipakai bila ada; selain itu ditebak dari user agent.
+     * Profil perangkat untuk `device_logs` dan kolom ringkas `game_sessions`
+     * (App\Libraries\DeviceProfile): User-Agent + Client Hints header +
+     * `device_json` formulir (boleh kosong bila JavaScript mati).
      *
      * @return array<string, mixed>
      */
     protected function deviceInfo(): array
     {
-        $agent = $this->request instanceof IncomingRequest ? $this->request->getUserAgent() : null;
+        if (! $this->request instanceof IncomingRequest) {
+            return [];
+        }
 
-        return [
-            'device_type' => $this->request->getPost('device_type')
-                ?? ($agent === null ? null : ($agent->isMobile() ? 'mobile' : 'desktop')),
-            'os_name'            => $this->request->getPost('os_name') ?? $agent?->getPlatform(),
-            'browser_name'       => $this->request->getPost('browser_name') ?? $agent?->getBrowser(),
-            'screen_size'        => $this->request->getPost('screen_size'),
-            'is_touch'           => $this->request->getPost('is_touch'),
-            'app_client_version' => $this->request->getPost('app_client_version'),
-        ];
+        $client = DeviceProfile::decodeClient((string) $this->request->getPost('device_json'));
+
+        return DeviceProfile::capture($this->request, $client);
     }
 
     /** Ambil payload JSON sebagai array; JSON rusak → array kosong (validasi akan menolak). */
