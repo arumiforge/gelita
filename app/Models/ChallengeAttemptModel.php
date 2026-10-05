@@ -15,17 +15,17 @@ class ChallengeAttemptModel extends Model
     protected $returnType    = ChallengeAttempt::class;
     protected $useTimestamps = false;
     protected $allowedFields = [
-        'session_id', 'challenge_node_id', 'attempt_no', 'status',
-        'selected_item_ids_json', 'scorable_items',
-        'first_pass_correct', 'final_correct', 'first_pass_accuracy', 'final_accuracy',
-        'check_count', 'hint_count', 'retry_count', 'answer_change_count', 'audio_use_count',
-        'independence', 'score', 'stars', 'scoring_profile_id', 'scoring_version',
+        'session_id', 'challenge_node_id', 'attempt_no', 'variant_group', 'status',
+        'completion_reason', 'selected_item_ids_json', 'scorable_items',
+        'first_pass_correct', 'final_correct', 'check_count', 'max_tries',
+        'hint_count', 'answer_change_count', 'audio_use_count', 'stars',
         'started_at', 'completed_at', 'duration_ms',
     ];
     protected $validationRules = [
         'session_id'        => 'required|is_natural_no_zero',
         'challenge_node_id' => 'required|is_natural_no_zero',
         'status'            => 'permit_empty|in_list[in_progress,completed,abandoned]',
+        'completion_reason' => 'permit_empty|in_list[solved,tries_exhausted]',
     ];
     protected $beforeInsert      = ['encodeJson'];
     protected $beforeUpdate      = ['encodeJson'];
@@ -56,7 +56,8 @@ class ChallengeAttemptModel extends Model
     }
 
     /**
-     * Attempt `completed` terbaik per node untuk satu sesi.
+     * Pengerjaan `completed` terbaik per node untuk satu sesi: bintang
+     * terbanyak, lalu yang paling awal bila sama.
      *
      * @return array<int, ChallengeAttempt> keyed by challenge_node_id
      */
@@ -65,8 +66,8 @@ class ChallengeAttemptModel extends Model
         $attempts = $this->where('session_id', $sessionId)
             ->where('status', 'completed')
             ->orderBy('challenge_node_id', 'ASC')
-            ->orderBy('score', 'ASC')
-            ->orderBy('attempt_no', 'ASC')
+            ->orderBy('stars', 'ASC')
+            ->orderBy('attempt_no', 'DESC')
             ->findAll();
 
         $out = [];
@@ -79,66 +80,24 @@ class ChallengeAttemptModel extends Model
     }
 
     /**
-     * Statistik satu node untuk analitik kesulitan.
+     * Variasi yang sudah pernah didapat seorang siswa pada satu node, di semua
+     * sesinya (Dok 1 §9.2 langkah 2).
      *
-     * @return array{attempts: int, mean_first_pass: float, mean_final: float,
-     *               mean_retry: float, mean_hint: float, median_duration_ms: int, skip_rate: float}
+     * @return list<string>
      */
-    public function statsForNode(int $nodeId, array $filters = []): array
+    public function variantsSeen(int $participantId, int $nodeId): array
     {
-        $builder = $this->filteredBuilder($filters)->where('challenge_attempts.challenge_node_id', $nodeId);
-
-        $row = $builder
-            ->select('COUNT(*) AS attempts', false)
-            ->select('AVG(challenge_attempts.first_pass_accuracy) AS mean_first_pass', false)
-            ->select('AVG(challenge_attempts.final_accuracy) AS mean_final', false)
-            ->select('AVG(challenge_attempts.retry_count) AS mean_retry', false)
-            ->select('AVG(challenge_attempts.hint_count) AS mean_hint', false)
-            ->select("SUM(CASE WHEN challenge_attempts.status = 'abandoned' THEN 1 ELSE 0 END) AS abandoned", false)
-            ->get()
-            ->getRowArray();
-
-        $attempts = (int) ($row['attempts'] ?? 0);
-
-        return [
-            'attempts'           => $attempts,
-            'mean_first_pass'    => round((float) ($row['mean_first_pass'] ?? 0), 2),
-            'mean_final'         => round((float) ($row['mean_final'] ?? 0), 2),
-            'mean_retry'         => round((float) ($row['mean_retry'] ?? 0), 2),
-            'mean_hint'          => round((float) ($row['mean_hint'] ?? 0), 2),
-            'median_duration_ms' => $this->medianDuration($nodeId, $filters),
-            'skip_rate'          => $attempts > 0 ? round(((int) ($row['abandoned'] ?? 0)) / $attempts, 4) : 0.0,
-        ];
-    }
-
-    /**
-     * Median durasi attempt selesai. MySQL 8 belum punya fungsi median,
-     * jadi nilai tengah diambil dari daftar durasi yang sudah diurutkan.
-     */
-    public function medianDuration(int $nodeId, array $filters = []): int
-    {
-        $rows = $this->filteredBuilder($filters)
-            ->select('challenge_attempts.duration_ms')
-            ->where('challenge_attempts.challenge_node_id', $nodeId)
-            ->where('challenge_attempts.status', 'completed')
-            ->where('challenge_attempts.duration_ms IS NOT NULL')
-            ->orderBy('challenge_attempts.duration_ms', 'ASC')
+        $rows = $this->db->table('challenge_attempts ca')
+            ->distinct()
+            ->select('ca.variant_group')
+            ->join('game_sessions gs', 'gs.id = ca.session_id')
+            ->where('gs.participant_id', $participantId)
+            ->where('ca.challenge_node_id', $nodeId)
+            ->where('ca.variant_group IS NOT NULL', null, false)
             ->get()
             ->getResultArray();
 
-        $count = count($rows);
-
-        if ($count === 0) {
-            return 0;
-        }
-
-        $middle = intdiv($count, 2);
-
-        if ($count % 2 === 1) {
-            return (int) $rows[$middle]['duration_ms'];
-        }
-
-        return (int) round(((int) $rows[$middle - 1]['duration_ms'] + (int) $rows[$middle]['duration_ms']) / 2);
+        return array_values(array_map(static fn (array $r): string => (string) $r['variant_group'], $rows));
     }
 
     /**
@@ -150,7 +109,6 @@ class ChallengeAttemptModel extends Model
         $builder = $this->db->table('challenge_attempts')
             ->join('game_sessions', 'game_sessions.id = challenge_attempts.session_id')
             ->join('participants', 'participants.id = game_sessions.participant_id')
-            ->join('research_phases', 'research_phases.id = game_sessions.phase_id')
             ->join('challenge_nodes', 'challenge_nodes.id = challenge_attempts.challenge_node_id')
             ->where('participants.deleted_at', null);
 

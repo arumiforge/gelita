@@ -18,12 +18,14 @@ class ItemResponse extends Entity
         'first_pass_correct'   => '?boolean',
         'is_correct'           => '?boolean',
         'change_count'         => 'int',
+        'try_count'            => 'int',
+        'solved_on_try'        => '?int',
         'wrong_click_count'    => 'int',
         'hint_used'            => 'boolean',
         'duration_ms'          => '?int',
     ];
 
-    /** Belum pernah dinilai — pemeriksaan berikutnya menetapkan first_pass_correct */
+    /** Belum pernah dinilai — percobaan berikutnya menetapkan first_pass_correct */
     public function isFirstPassOpen(): bool
     {
         return $this->first_answer_json === null;

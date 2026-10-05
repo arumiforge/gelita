@@ -84,24 +84,13 @@ class ContentRepository
     }
 
     /**
-     * Bank soal satu node, opsi jawaban sudah ikut dimuat (hindari N+1).
+     * Bank soal aktif satu node, urut variasi lalu sequence.
      *
      * @return list<ChallengeItem>
      */
     public function itemBank(int $nodeId): array
     {
-        return $this->remember('items.' . $nodeId, static function () use ($nodeId): array {
-            $model = model(ChallengeItemModel::class);
-            $items = $model->bankForNode($nodeId);
-
-            $optionMap = $model->withOptions(array_map(static fn (ChallengeItem $item): int => $item->id, $items));
-
-            foreach ($items as $item) {
-                $item->setLoadedOptions($optionMap[$item->id] ?? []);
-            }
-
-            return $items;
-        });
+        return $this->remember('items.' . $nodeId, static fn (): array => model(ChallengeItemModel::class)->bankForNode($nodeId));
     }
 
     /** Petunjuk node, atau petunjuk item bila $itemId diisi. */

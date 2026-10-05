@@ -124,6 +124,9 @@ if (! function_exists('js_config')) {
             'apiBase'    => base_url('api'),
             'baseUrl'    => base_url(),
             'sessionTag' => session_tag($gameSessionId),
+            'maxTries'   => config('Gelita')->maxTries,
+            // panggung game 16:9 (dp); dipakai Dok 3 dan event viewport_changed
+            'stage'      => ['w' => 1280, 'h' => 720],
             'text'       => $text,
         ];
     }
@@ -175,7 +178,7 @@ if (! function_exists('seeded_shuffle')) {
 if (! function_exists('apply_research_filters')) {
     /**
      * Menerapkan filter penelitian baku (03_MODEL_ENTITY.md) pada builder yang sudah
-     * men-join game_sessions, participants, research_phases, dan challenge_nodes.
+     * men-join game_sessions, participants, dan challenge_nodes.
      *
      * Filter yang tabelnya tidak ikut di-join disebutkan di $skip agar dilewati.
      *
@@ -190,7 +193,6 @@ if (! function_exists('apply_research_filters')) {
         $map = [
             'study_id'       => 'game_sessions.study_id',
             'participant_id' => 'game_sessions.participant_id',
-            'phase_code'     => 'research_phases.code',
             'level_id'      => 'challenge_nodes.level_id',
             'node_id'       => 'challenge_nodes.id',
             'school_id'     => 'participants.school_id',

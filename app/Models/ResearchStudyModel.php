@@ -13,16 +13,13 @@ class ResearchStudyModel extends Model
     protected $dateFormat    = 'datetime';
     protected $allowedFields = [
         'code', 'name', 'description', 'year_label', 'status', 'retention_days',
-        'default_locale', 'unlock_mode', 'item_selection_mode', 'require_consent',
-        'active_phase_code', 'allow_phase_choice',
+        'default_locale', 'unlock_mode',
     ];
     protected $validationRules = [
         'code'                => ['label' => 'Kode singkat studi', 'rules' => 'required|max_length[50]|is_unique[research_studies.code,id,{id}]'],
         'name'                => ['label' => 'Nama studi', 'rules' => 'required|max_length[200]'],
         'status'              => 'required|in_list[draft,active,closed]',
         'unlock_mode'         => 'required|in_list[sequential,free]',
-        'item_selection_mode' => 'required|in_list[fixed,random]',
-        'active_phase_code'   => 'required|in_list[umum,pretest,posttest]',
     ];
 
     /** Studi yang sedang berjalan; NULL bila belum ada. */
