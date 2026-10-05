@@ -50,6 +50,34 @@ final class LanguageFilesTest extends CIUnitTestCase
     }
 
     /**
+     * Perombakan kelas 5 (Dok 1 §10, §14): fase penelitian, persetujuan wali,
+     * dan gender "lainnya" sudah dihapus. Kunci lama tidak boleh tersisa di
+     * berkas mana pun (termasuk sub-array label panel).
+     */
+    public function testNoPhaseConsentOrThirdGenderKeysRemain(): void
+    {
+        foreach (glob(APPPATH . 'Language/*/*.php') ?: [] as $path) {
+            $label = basename(dirname($path)) . '/' . basename($path);
+
+            foreach ($this->keysOf(require $path) as $key) {
+                $this->assertDoesNotMatchRegularExpression('/^(?:phase|consent)|lainnya$/i', $key, "{$label}: kunci {$key}");
+            }
+        }
+
+        $game = require APPPATH . 'Language/id/Game.php';
+
+        $this->assertArrayHasKey('assentLabel', $game);
+        $this->assertSame(
+            'Aku mau ikut bermain GELITA. Aku tahu jawaban dan langkahku di dalam permainan dicatat untuk penelitian.',
+            $game['assentLabel'],
+        );
+        $this->assertSame(
+            'I want to play GELITA. I know my answers and steps in the game are recorded for research.',
+            (require APPPATH . 'Language/en/Game.php')['assentLabel'],
+        );
+    }
+
+    /**
      * Setiap label menu sidebar panel (termasuk "Rekaman narasi", tahap 5)
      * harus ada di Language/id/Admin.php; kunci yang hilang tampil mentah
      * (Admin.menuX).
@@ -154,5 +182,27 @@ final class LanguageFilesTest extends CIUnitTestCase
                 $this->assertStringContainsString("'{$key}'", $block, "{$locale}: {$key} di luar blok Tahap 4");
             }
         }
+    }
+
+    /**
+     * Semua kunci, termasuk kunci sub-array (bertitik: `event.phase_x` → `phase_x`).
+     *
+     * @param array<string, mixed> $lines
+     *
+     * @return list<string>
+     */
+    private function keysOf(array $lines): array
+    {
+        $keys = [];
+
+        foreach ($lines as $key => $value) {
+            $keys[] = (string) $key;
+
+            if (is_array($value)) {
+                array_push($keys, ...$this->keysOf($value));
+            }
+        }
+
+        return $keys;
     }
 }

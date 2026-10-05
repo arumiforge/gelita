@@ -23,7 +23,8 @@ class GameReleaseSeeder extends GelitaSeeder
             'content_version' => 'kelas5-1',
             'asset_version'   => '1',
             'scoring_version' => ScoringService::VERSION,
-            'published_at'    => new RawSql('CURRENT_TIMESTAMP(6)'),   // jam server DB, sama dengan kolom default
+            // jam server DB, sama dengan kolom default (SQLite uji tidak mengenal presisi (6))
+            'published_at'    => new RawSql($this->db->DBDriver === 'SQLite3' ? 'CURRENT_TIMESTAMP' : 'CURRENT_TIMESTAMP(6)'),
             'notes'           => 'Rilis penelitian GELITA kelas 5 SD/MI (perombakan kelas 5).',
             'is_active'       => $hasActive ? 0 : 1,
         ]);

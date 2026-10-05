@@ -64,12 +64,16 @@ class SystemResetService
 
     private BaseConnection $db;
 
+    /** Folder berkas unduhan data (writable/exports) yang ikut dikosongkan */
+    private string $exportsDir;
+
     /** @var list<string> */
     private array $warnings = [];
 
-    public function __construct(?BaseConnection $db = null)
+    public function __construct(?BaseConnection $db = null, ?string $exportsDir = null)
     {
-        $this->db = $db ?? db_connect();
+        $this->db         = $db ?? db_connect();
+        $this->exportsDir = rtrim($exportsDir ?? WRITEPATH . 'exports', '/\\') . DIRECTORY_SEPARATOR;
     }
 
     // ------------------------------------------------------------ pemeriksaan
@@ -282,7 +286,7 @@ class SystemResetService
             $this->db->table($table)->where('1 = 1', null, false)->delete();
         }
 
-        $this->warnings[] = 'Akun database tidak punya hak TRUNCATE (DROP), jadi data dihapus dengan DELETE: nomor id dan kode siswa melanjutkan nomor lama. Jalankan dengan akun gelita_migrate agar kode siswa mulai lagi dari GLT-000001.';
+        $this->warnings[] = 'Akun database tidak punya hak TRUNCATE (DROP), jadi data dihapus dengan DELETE: nomor id melanjutkan nomor lama, sehingga kode siswa tidak lagi berurutan rapi (siswa pertama GLT-000001, berikutnya melompat ke nomor id lama). Jalankan ulang dengan akun gelita_migrate agar semuanya mulai lagi dari 1.';
 
         return 'delete';
     }
@@ -483,7 +487,7 @@ class SystemResetService
 
         service('contentRepository')->flush();
 
-        foreach (glob(WRITEPATH . 'exports/*') ?: [] as $file) {
+        foreach (glob($this->exportsDir . '*') ?: [] as $file) {
             if (is_file($file) && basename($file) !== 'index.html' && basename($file) !== '.htaccess') {
                 @unlink($file);
             }
