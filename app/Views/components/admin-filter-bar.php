@@ -23,27 +23,27 @@ $show    = static fn (string $key): bool => ! isset($only) || in_array($key, $on
 $value   = static fn (string $key): string => (string) ($filters[$key] ?? '');
 $isAdmin = session('staff_role') === 'admin';
 $active  = array_diff_key($filters, ['school_id' => true]);
-$classes = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'lainnya'];
+$classes = $options['classes'] ?? [config('Gelita')->registrationClass];
 $bare    = ! empty($bare);
 ?>
 <?php if ($bare): ?>
 <div class="filter-bar">
 <?php else: ?>
-<form method="get" class="filter-bar" aria-label="Filter data">
+<form method="get" class="filter-bar" aria-label="Pilihan data">
 <?php endif ?>
   <?php if (isset($extra['q'])): ?>
     <div class="field filter-search">
       <label for="f-q">Cari</label>
       <input type="search" id="f-q" name="q" value="<?= esc($extra['q'], 'attr') ?>"
-             placeholder="<?= esc($extra['q_placeholder'] ?? 'kode peserta, nama pengguna, atau nama', 'attr') ?>">
+             placeholder="<?= esc($extra['q_placeholder'] ?? 'kode siswa, nama pengguna, atau nama', 'attr') ?>">
     </div>
   <?php endif ?>
 
   <?php if ($show('study_id')): ?>
     <div class="field">
-      <label for="f-study">Studi</label>
+      <label for="f-study">Penelitian</label>
       <select id="f-study" name="study_id">
-        <option value="">Semua studi</option>
+        <option value="">Semua penelitian</option>
         <?php foreach ($options['studies'] ?? [] as $study): ?>
           <option value="<?= esc($study['id'], 'attr') ?>" <?= $value('study_id') === (string) $study['id'] ? 'selected' : '' ?>>
             <?= esc(($study['name'] ?? '') !== '' ? $study['name'] : $study['code']) ?><?= $study['status'] === 'active' ? ' (sedang berjalan)' : '' ?>
@@ -55,9 +55,9 @@ $bare    = ! empty($bare);
 
   <?php if ($show('phase_code')): ?>
     <div class="field">
-      <label for="f-phase">Fase</label>
+      <label for="f-phase">Tahap</label>
       <select id="f-phase" name="phase_code">
-        <option value="">Semua fase</option>
+        <option value="">Semua tahap</option>
         <?php foreach (config('Gelita')->phases as $phase): ?>
           <option value="<?= esc($phase, 'attr') ?>" <?= $value('phase_code') === $phase ? 'selected' : '' ?>><?= esc(admin_label('phase', $phase)) ?></option>
         <?php endforeach ?>
@@ -100,7 +100,7 @@ $bare    = ! empty($bare);
       <select id="f-class" name="class_level">
         <option value="">Semua kelas</option>
         <?php foreach ($classes as $class): ?>
-          <option value="<?= esc($class, 'attr') ?>" <?= $value('class_level') === $class ? 'selected' : '' ?>><?= $class === 'lainnya' ? 'Lainnya' : 'Kelas ' . esc($class) ?></option>
+          <option value="<?= esc($class, 'attr') ?>" <?= $value('class_level') === $class ? 'selected' : '' ?>><?= esc(class_label($class)) ?></option>
         <?php endforeach ?>
       </select>
     </div>

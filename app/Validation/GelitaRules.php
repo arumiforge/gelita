@@ -71,6 +71,19 @@ class GelitaRules
     }
 
     /**
+     * Sekolah ber-NPSN ini jenjangnya sesuai sasaran (kelas 5 SD/MI; SLB
+     * boleh). NPSN yang tidak dikenal dilaporkan aturan known_npsn, jadi di
+     * sini dianggap lolos.
+     */
+    public function allowed_school_stage(?string $str): bool
+    {
+        $directory = service('schoolDirectory');
+        $school    = $directory->findByNpsn((string) $str);
+
+        return $school === null || $directory->stageAllowed($school);
+    }
+
+    /**
      * Kata sandi siswa kuat. Parameter = nama field username, mis. strong_password[username].
      * Memakai PasswordPolicy — aturan yang sama dengan yang dikirim ke JavaScript.
      */

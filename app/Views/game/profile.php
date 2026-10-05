@@ -17,9 +17,7 @@
  */
 $name     = (string) ($participant['display_name'] ?: $participant['username']);
 $gender   = (string) ($participant['gender'] ?? '');
-$class    = (string) ($participant['class_level'] ?? '');
-$classTxt = $class === '' ? '—' : ($class === 'lainnya' ? lang('Game.classOther')
-    : (ctype_digit($class) ? lang((int) $class <= 6 ? 'Game.classSd' : 'Game.classSmp', [$class]) : $class));
+$classTxt = class_label((string) ($participant['class_level'] ?? ''), $locale);
 $contentLevels = [];
 foreach (service('contentRepository')->levels() as $entity) {
     $contentLevels[$entity->code] = $entity;

@@ -657,49 +657,83 @@ body.is-challenge .app { padding-bottom: var(--sp-4); }
   background: linear-gradient(to top, rgba(18, 28, 46, .98) 60%, transparent);
 }
 
-/* ---------- Puzzle ---------- */
+/* ---------- Puzzle ----------
+ * Papan n × n keping SVG (App\Libraries\PuzzleCut). Slot = tombol di kisi;
+ * gambar keping (.piece-art) melebar keluar slot sebesar --overhang untuk
+ * tonjolan jigsaw dan tidak menangkap klik, jadi ketukan selalu mengenai
+ * slotnya. Latar tombol transparan: tonjolan keping sebelah tidak tertutup.
+ * --inset menyisakan ruang di tepi papan untuk tonjolan keping yang belum
+ * di tempatnya. */
 .puzzle-wrap { display: grid; justify-items: center; gap: var(--sp-3); }
 .puzzle-board {
-  display: grid;
-  grid-template-columns: repeat(var(--grid, 3), 1fr);
-  gap: 3px;
+  position: relative;
   width: min(100%, 480px, calc(100vh - var(--hud-h) - 330px));
   min-width: 240px;
   aspect-ratio: 1;
-  padding: 3px;
   border: 2px solid var(--gold-600);
   border-radius: var(--radius);
   background: var(--navy-900);
 }
+.puzzle-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+.puzzle-grid {
+  position: absolute;
+  inset: max(3px, var(--inset, 0%));
+  display: grid;
+  grid-template-columns: repeat(var(--grid, 3), minmax(0, 1fr));
+  grid-template-rows: repeat(var(--grid, 3), minmax(0, 1fr));
+  gap: 3px;
+}
+.puzzle-board.is-jigsaw .puzzle-grid { gap: 0; }
 .piece {
   position: relative;
-  min-width: var(--tap);
-  min-height: var(--tap);
+  min-width: 0;
+  min-height: 0;
   padding: 0;
-  border: 2px solid transparent;
-  border-radius: 6px;
-  background-color: var(--navy-700);
-  background-image: var(--puzzle-img);
-  background-size: calc(var(--grid, 3) * 100%) calc(var(--grid, 3) * 100%);
-  background-position: var(--px) var(--py);
-  transition: transform .15s, border-color .15s;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  cursor: pointer;
+  transition: transform .15s;
+  -webkit-tap-highlight-color: transparent;
 }
-.piece:hover { border-color: var(--line-strong); }
-.piece.is-selected { border-color: var(--gold-300); box-shadow: 0 0 0 3px var(--gold-500); transform: scale(.96); }
-.piece.is-misplaced { border-color: var(--bad); }
-.piece.is-locked { border-color: var(--ok); cursor: default; }
-.piece-no {
+.piece-art {
   position: absolute;
-  top: 4px;
-  left: 4px;
-  min-width: 22px;
-  padding: 0 4px;
+  inset: calc(var(--overhang, 0%) * -1);
+  width: calc(100% + 2 * var(--overhang, 0%));
+  height: calc(100% + 2 * var(--overhang, 0%));
+  /* base.css membatasi svg selebar wadahnya; keping jigsaw harus melebar */
+  max-width: none;
+  max-height: none;
+  overflow: visible;
+  pointer-events: none;
+}
+.piece-edge {
+  fill: none;
+  stroke: rgba(11, 19, 32, .55);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+  transition: stroke .15s, stroke-width .15s;
+}
+.puzzle-board.is-square .piece-art { border-radius: 4px; }
+.puzzle-board.is-square .piece-edge { stroke: rgba(255, 244, 214, .25); }
+.piece:hover .piece-edge, .piece:focus-visible .piece-edge { stroke: var(--gold-300); stroke-width: 2.5; }
+.piece:focus-visible { outline: none; z-index: 2; }
+.piece:focus-visible .piece-art { filter: drop-shadow(0 0 3px var(--gold-500)); }
+.piece.is-selected { z-index: 2; transform: scale(.94); }
+.piece.is-selected .piece-edge { stroke: var(--gold-300); stroke-width: 3.5; }
+.piece.is-selected .piece-art { filter: drop-shadow(0 0 4px var(--gold-500)); }
+.piece.is-misplaced .piece-edge { stroke: var(--bad); stroke-width: 3; }
+.piece.is-locked { cursor: default; }
+.puzzle-caption {
+  max-width: 60ch;
+  margin: 0;
+  padding: var(--sp-2) var(--sp-3);
+  border-left: 3px solid var(--gold-500);
   border-radius: 6px;
   background: var(--veil-strong);
-  color: var(--gold-300);
-  font-size: .75rem;
-  line-height: 20px;
 }
+.puzzle-caption b { color: var(--gold-300); font-size: var(--step--1); }
+.puzzle-caption p { margin: var(--sp-1) 0 0; }
 
 .order-wrap { display: grid; gap: var(--sp-3); }
 .order-list { display: grid; gap: var(--sp-2); margin: 0; padding: 0; list-style: none; counter-reset: order; }
@@ -753,6 +787,25 @@ body.is-challenge .app { padding-bottom: var(--sp-4); }
 .blank.is-correct::after { content: " ✓"; color: var(--ok); }
 .blank.is-wrong::after { content: " ✗"; color: var(--bad); }
 .blank-input { display: inline-block; width: 11em; min-height: var(--tap); margin: 0 var(--sp-1); vertical-align: middle; font-size: var(--step-0); }
+
+/* Bacaan rumpang (kelas 5): paragraf utuh, rumpang bernomor di dalam kalimat */
+.rumpang-reading {
+  display: grid;
+  gap: var(--sp-3);
+  max-width: 72ch;
+  padding: var(--sp-3) var(--sp-4);
+  border: 1px solid var(--brown-500);
+  border-radius: var(--radius);
+  background: var(--parchment);
+  color: var(--brown-700);
+}
+.rumpang-reading p { margin: 0; font-size: var(--step-1); line-height: 2.3; }
+.blank-wrap { white-space: nowrap; }
+.blank-no { margin-left: var(--sp-1); color: var(--gold-600); font-size: .7em; font-weight: 700; vertical-align: super; }
+.rumpang-reading .blank { min-width: 6.5em; margin: 0 2px; border-color: var(--brown-500); background: rgba(255, 255, 255, .55); color: var(--brown-700); }
+.rumpang-reading .blank.is-active { border-color: var(--gold-600); box-shadow: 0 0 0 3px rgba(178, 130, 52, .35); }
+.rumpang-reading .blank.is-filled { background: #FFF6DF; color: var(--brown-700); }
+.rumpang-reading .blank-input { width: 9em; }
 
 .word-bank {
   display: flex;
@@ -1439,12 +1492,12 @@ html.js .book-frame img.is-loaded { opacity: 1; }
 }
 
 /* Puzzle */
-.piece[aria-pressed="true"] { z-index: 1; }
+.piece[aria-pressed="true"] { z-index: 2; }
 .piece.is-dragging { opacity: .45; }
 .piece:disabled { opacity: 1; cursor: default; }
-.puzzle-board.is-solved { gap: 0; }
-.puzzle-board.is-solved .piece { border-color: transparent; border-radius: 0; }
-.puzzle-board.is-solved .piece-no { display: none; }
+.puzzle-board.is-solved .puzzle-grid { gap: 0; }
+.puzzle-board.is-solved .piece-edge { stroke: transparent; }
+.puzzle-board.is-solved .piece-art { border-radius: 0; }
 .piece.is-misplaced::after {
   content: "✗";
   position: absolute;
@@ -1773,7 +1826,8 @@ html.js .book-frame img.is-loaded { opacity: 1; }
 
   /* Puzzle: papan setinggi arena, petunjuk & tombol di sampingnya */
   .puzzle-wrap { grid-template-columns: auto minmax(140px, 1fr); align-items: center; justify-content: start; gap: var(--sp-2) var(--sp-4); }
-  .puzzle-board { grid-row: 1 / span 2; width: var(--stage-h); min-width: 180px; max-width: calc(100vw - 420px); }
+  .puzzle-board { grid-row: 1 / span 3; width: var(--stage-h); min-width: 180px; max-width: calc(100vw - 420px); }
+  .puzzle-caption { align-self: start; font-size: var(--step--1); }
   .puzzle-wrap .hint-text { align-self: end; text-align: left; }
   .puzzle-wrap .arena-actions { position: static; align-self: start; justify-content: flex-start; padding: 0; background: none; }
 

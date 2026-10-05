@@ -8,7 +8,7 @@ use Mpdf\Mpdf;
 use Mpdf\Output\Destination;
 
 /**
- * Laporan PDF (FITUR 15): ringkasan studi dan laporan satu peserta.
+ * Laporan PDF (FITUR 15): ringkasan penelitian dan laporan satu siswa.
  *
  * Data diambil lewat AnalyticsService yang terikat cakupan sekolah dan mode
  * anonim pemohon, dirender dari view `pdf/*` (setiap nilai lewat esc()), lalu
@@ -58,7 +58,7 @@ class ReportService
         $summary   = $analytics->summary($filters);
 
         return [
-            'title'      => 'Laporan Studi GELITA',
+            'title'      => 'Laporan Penelitian GELITA',
             'meta'       => $this->meta($context),
             'summary'    => $summary,
             'cohort'     => model(ParticipantModel::class)->cohortSummary($filters),
@@ -84,7 +84,7 @@ class ReportService
         $participantId = (int) ($context['participant_id'] ?? 0);
 
         if ($participantId <= 0) {
-            throw new \DomainException('Laporan peserta memerlukan participant_id.');
+            throw new \DomainException('Laporan siswa memerlukan kode siswa. Buat laporan dari halaman profil siswa.');
         }
 
         $analytics = new AnalyticsService($context['school_scope'], (bool) $context['anonymized']);
@@ -106,7 +106,7 @@ class ReportService
             : service('contentRepository')->node((int) $profile['hardest_node']['node_id']);
 
         return [
-            'title'       => 'Laporan Peserta GELITA',
+            'title'       => 'Laporan Siswa GELITA',
             'meta'        => $this->meta($context),
             'profile'     => $profile,
             'levels'      => $levels,
@@ -148,8 +148,8 @@ class ReportService
 
         return [
             'export_id'    => $context['export_id'],
-            'study'        => $study === null ? 'Semua studi' : ($study['name'] . ' (' . $study['code'] . ')'),
-            'phase'        => $filters['phase_code'] ?? 'semua fase',
+            'study'        => $study === null ? 'Semua penelitian' : ($study['name'] . ' (' . $study['code'] . ')'),
+            'phase'        => $filters['phase_code'] ?? 'semua tahap',
             'date_from'    => $filters['date_from'] ?? null,
             'date_to'      => $filters['date_to'] ?? null,
             'school'       => $school,

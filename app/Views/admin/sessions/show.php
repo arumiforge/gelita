@@ -29,12 +29,12 @@
 
 <section class="panel">
   <dl class="detail-grid">
-    <div><dt>Peserta</dt><dd>
+    <div><dt>Siswa</dt><dd>
       <?php if ($participant !== null): ?>
         <a href="<?= base_url('admin/peserta/' . $participant['id']) ?>"><code><?= esc($participant['participant_code']) ?></code></a>
       <?php else: ?>—<?php endif ?>
     </dd></div>
-    <div><dt>Fase</dt><dd><?= esc(admin_label('phase', $phaseCode)) ?></dd></div>
+    <div><dt>Tahap</dt><dd><?= esc(admin_label('phase', $phaseCode)) ?></dd></div>
     <div><dt>Status</dt><dd><span class="badge is-<?= esc($session->status, 'attr') ?>"><?= esc(admin_label('status', (string) $session->status)) ?></span></dd></div>
     <div><dt>Bahasa</dt><dd><?= esc(admin_label('locale', (string) $session->locale)) ?></dd></div>
     <div><dt>Mulai</dt><dd><?= esc(fmt_date($session->started_at, true, 'id')) ?></dd></div>
@@ -57,7 +57,7 @@
         <thead>
           <tr>
             <th scope="col">Tantangan</th><th scope="col">Jenis</th><th scope="col">Percobaan ke-</th><th scope="col">Status</th>
-            <th scope="col" class="is-num">Soal dinilai</th><th scope="col" class="is-num">Tepat sejak awal</th><th scope="col" class="is-num">Benar di akhir</th>
+            <th scope="col" class="is-num">Soal dinilai</th><th scope="col" class="is-num">Benar sejak awal</th><th scope="col" class="is-num">Benar di akhir</th>
             <th scope="col" class="is-num">Menekan Periksa</th><th scope="col" class="is-num">Petunjuk</th><th scope="col" class="is-num">Ubah jawaban</th>
             <th scope="col" class="is-num">Lama</th><th scope="col" class="is-num">Skor</th><th scope="col">Bintang</th>
           </tr>
@@ -76,7 +76,7 @@
                             'display_order'      => ['label' => 'No.', 'format' => 'num'],
                             'item_key'           => ['label' => 'Kode soal', 'format' => 'code'],
                             'status'             => ['label' => 'Status', 'format' => 'badge'],
-                            'first_pass_correct' => ['label' => 'Tepat sejak awal', 'render' => static fn (array $r): string => $r['first_pass_correct'] === null ? '—' : ((int) $r['first_pass_correct'] === 1 ? '✓ ya' : '✗ tidak')],
+                            'first_pass_correct' => ['label' => 'Benar sejak awal', 'render' => static fn (array $r): string => $r['first_pass_correct'] === null ? '—' : ((int) $r['first_pass_correct'] === 1 ? '✓ ya' : '✗ tidak')],
                             'is_correct'         => ['label' => 'Benar di akhir', 'render' => static fn (array $r): string => $r['is_correct'] === null ? '—' : ((int) $r['is_correct'] === 1 ? '✓ benar' : '✗ salah')],
                             'change_count'       => ['label' => 'Ubah jawaban', 'format' => 'num'],
                             'wrong_click_count'  => ['label' => 'Salah pilih', 'format' => 'num'],

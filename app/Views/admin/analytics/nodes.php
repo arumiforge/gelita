@@ -26,7 +26,7 @@ foreach ($levels as $level) {
 <?= component('partials/admin-head', [
     'title'   => 'Hasil per tantangan',
     'eyebrow' => 'Hasil belajar',
-    'lead'    => 'Tingkat kesulitan 0–100 (makin tinggi makin sulit) dihitung dari seberapa sering siswa salah pada percobaan pertama, mengulang, membuka petunjuk, lamanya mengerjakan, dan meninggalkan tantangan.',
+    'lead'    => 'Tingkat kesulitan 0–100 (makin tinggi makin sulit) dihitung dari seberapa sering siswa salah pada jawaban pertama, mengulang, membuka petunjuk, lamanya mengerjakan, dan meninggalkan tantangan.',
 ]) ?>
 <?= $this->include('partials/flash') ?>
 <?= component('admin-filter-bar', ['filters' => $filters, 'only' => ['study_id', 'phase_code', 'school_id', 'class_level', 'province_code', 'date_from', 'locale']]) ?>
@@ -50,14 +50,14 @@ foreach ($levels as $level) {
             . '<span class="cell-sub">' . esc(($levelNames[$r['level_id']] ?? '') . ' · tantangan ke-' . $r['sequence']) . '</span>'],
         'engine_type'        => ['label' => 'Jenis', 'render' => static fn (array $r): string => esc(engine_label((string) $r['engine_type']))],
         'node_id'            => ['label' => 'Indikator', 'render' => static fn (array $r): string => esc($indicators[$r['node_id']] ?? '—')],
-        'attempts'           => ['label' => 'Dicoba', 'format' => 'num'],
-        'mean_first_pass'    => ['label' => 'Tepat sejak awal', 'format' => 'pct'],
+        'attempts'           => ['label' => 'Dikerjakan (kali)', 'format' => 'num'],
+        'mean_first_pass'    => ['label' => 'Benar sejak awal', 'format' => 'pct'],
         'mean_final'         => ['label' => 'Benar di akhir', 'format' => 'pct'],
         'mean_retry'         => ['label' => 'Rata-rata mengulang', 'format' => 'num', 'decimals' => 2],
         'mean_hint'          => ['label' => 'Rata-rata petunjuk', 'format' => 'num', 'decimals' => 2],
         'median_duration_ms' => ['label' => 'Lama mengerjakan (nilai tengah)', 'format' => 'ms'],
         'skip_rate'          => ['label' => 'Ditinggalkan', 'format' => 'ratio'],
-        'difficulty_index'   => ['label' => 'Kesulitan (0–100)', 'format' => 'num', 'decimals' => 1],
+        'difficulty_index'   => ['label' => 'Tingkat kesulitan (0–100)', 'format' => 'num', 'decimals' => 1],
     ],
 ]) ?>
 <?= $this->endSection() ?>

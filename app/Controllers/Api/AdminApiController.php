@@ -85,7 +85,7 @@ class AdminApiController extends BaseController
             'cohort'           => model(ParticipantModel::class)->cohortSummary($filters),
             'digital_security' => $this->analytics()->digitalSecurityLiteracy($filters),
             'ages'             => (object) $ages,
-            'chart'            => ChartData::distribution($ages, 'Peserta', ' th'),
+            'chart'            => ChartData::distribution($ages, 'Siswa', ' tahun'),
         ]);
     }
 

@@ -865,20 +865,50 @@ Petunjuk target arena `cari` diimpor dengan jalur yang sama, tetapi barisnya but
 
 ### Isi workbook
 
-| # | Sheet | Kolom utama |
-|---:|---|---|
-| 1 | Participants | kode, [nama, nama pengguna, sekolah]*, umur, kelas, jenis kelamin, negara, provinsi, kabupaten, terdaftar, consent, waktu consent, **syarat sandi terpenuhi pada percobaan pertama (0–5), jumlah penolakan sandi lemah** |
-| 2 | Sessions | kode sesi, kode peserta, studi, fase, rilis, bahasa, status, mulai, selesai, durasi, perangkat, OS, peramban, serpihan, total skor |
-| 3 | Levels | kode sesi, wilayah, node selesai, level score, bintang, durasi |
-| 4 | Challenge Summary | kode sesi, wilayah, node, jenis, varian, attempt, status, item, benar awal, benar akhir, tepat sejak awal %, ketepatan akhir %, pemeriksaan, petunjuk, perubahan jawaban, audio, independence, skor, bintang, scoring_version |
-| 5 | Item Responses | kode sesi, node, item_key, interaction_type, indikator, jawaban pertama, jawaban akhir, kunci**, benar awal, benar akhir, perubahan, petunjuk, klik salah, durasi |
-| 6 | Raw Events | event_uuid, kode sesi, kode peserta, wilayah, node, attempt, item, jenis event, urutan, waktu client, waktu server, payload |
-| 7 | Audio Usage | kode sesi, aset audio, konteks, karakter, bahasa, aksi, indeks putar (pemutaran ke-n, dihitung server), listened_ms, selesai, waktu |
-| 8 | Indicators | kode peserta, indikator, bukti, benar, rasio penguasaan, rata durasi |
-| 9 | Demographic Summary | agregat per jenis kelamin, kelas, sekolah, provinsi, fase |
-| 10 | Feedback | kode peserta, fase, bintang, empat jawaban terbuka, waktu |
+Berkas Excel ditulis **seluruhnya dalam bahasa Indonesia sehari-hari** (pembaruan kelas 5 SD, Okt 2026): nama lembar, judul kolom, dan isi berkode, tanpa daftar kode. Kode lembar (`Participants`, …) dan kode kolom (`phase_code`, …) tetap kode internal untuk formulir, `scope_json`, dan tes; terjemahannya ada di `App\Libraries\ExportLabels`. Satuan ditulis di judul kolom:
 
-\* Kolom nama, nama sekolah, dan identitas lain **dihilangkan sepenuhnya** bila `anonymized = 1`. Bukan dikosongkan — kolomnya tidak dibuat, sehingga tidak ada kolom kosong yang menggoda untuk diisi manual. Sebagai gantinya ada `school_ref` (`SCH-000012`, kode samaran stabil) di sheet Participants dan Demographic Summary agar analisis per sekolah tetap mungkin. Nama wali (`guardian_name`) tidak pernah diekspor.
+- lama dalam detik atau menit;
+- persentase 0–100;
+- penanda ya/tidak;
+- waktu sebagai sel tanggal Excel `dd-mm-yyyy jj:mm:dd`, dalam waktu setempat.
+
+Isi berkode tampil dengan namanya:
+
+- tahap: Bermain biasa / Tes awal / Tes akhir;
+- status;
+- jenis tantangan dan jenis soal;
+- aktivitas;
+- kelas: "Kelas 5 SD/MI";
+- nama wilayah;
+- judul tantangan;
+- teks soal;
+- nama indikator;
+- tingkat Bloom.
+
+Jawaban dan kunci ditulis dalam kalimat (`AnswerText`), mis. "8 dari 9 keping di tempat yang benar" atau "B · Candi Mendut".
+
+| # | Lembar (kode internal) | Kolom utama |
+|---:|---|---|
+| 1 | Data siswa (`Participants`) | Kode siswa, [Nama siswa, Nama pengguna, Nama sekolah, NPSN sekolah]*, Kode sekolah (samaran), Umur, Kelas, Jenis kelamin, Negara, Provinsi, Kabupaten/kota, Tanggal daftar, persetujuan siswa & orang tua/wali, **Syarat sandi yang langsung dipenuhi (dari 5), Mencoba sandi terlalu lemah (kali)** |
+| 2 | Sesi bermain (`Sessions`) | Kode sesi, Kode siswa, Penelitian, Tahap, Versi permainan, Bahasa, Status sesi, Mulai/Terakhir aktif/Selesai, Lama bermain (menit), Perangkat, Sistem perangkat, Peramban, Ukuran layar, Layar sentuh, Serpihan cahaya, Wilayah tuntas, Jumlah bintang, Skor total |
+| 3 | Hasil per wilayah (`Levels`) | Kode sesi, Kode siswa, Tahap, Wilayah, Tantangan selesai, Jumlah tantangan, Skor wilayah (0–100), Bintang, Lama mengerjakan (menit) |
+| 4 | Hasil per tantangan (`Challenge Summary`) | No. percobaan, Kode sesi, Kode siswa, Tahap, Wilayah, Tantangan ke-, Nama tantangan, Jenis tantangan, Jenis soal (dari soal milik percobaan itu), Percobaan ke-, Status, soal dinilai/benar sejak awal/benar di akhir, Benar sejak awal (%), Benar di akhir (%), Menekan Periksa, Membuka petunjuk, Mengulang, Mengubah jawaban, Memutar suara, Kemandirian (%), Skor, Bintang, Mulai/Selesai, Lama mengerjakan (detik) |
+| 5 | Jawaban per soal (`Item Responses`) | No. percobaan, Kode sesi, Kode siswa, Tahap, Wilayah, Tantangan, Kode soal, Soal, Jenis soal, Indikator, Tingkat berpikir (Bloom), Status jawaban, Jawaban pertama, Jawaban akhir, Kunci jawaban**, Alasan siswa, Benar sejak awal, Benar di akhir, Mengubah jawaban, Memakai petunjuk, Salah pilih benda, Waktu menjawab, Lama menjawab (detik) |
+| 6 | Catatan aktivitas (`Raw Events`) | Kode sesi, Kode siswa, Tahap, Wilayah, Tantangan ke-, No. percobaan, Kode soal, Aktivitas, Urutan dalam sesi, Waktu kejadian, Waktu diterima server, Rincian (isi catatan dalam kalimat) |
+| 7 | Pemakaian suara (`Audio Usage`) | Kode sesi, Kode siswa, Tahap, Kode rekaman, Bagian permainan, Tokoh, Bahasa rekaman, Panjang rekaman (detik), No. percobaan, Tindakan, Pemutaran ke- (dihitung server), Lama didengar (detik), Didengar sampai habis, Waktu |
+| 8 | Capaian indikator (`Indicators`) | Kode siswa, Tahap, Indikator, Jumlah jawaban, Benar sejak awal, Capaian (%), Rata-rata lama menjawab (detik) |
+| 9 | Ringkasan kelompok (`Demographic Summary`) | Dikelompokkan menurut (jenis kelamin, kelas, sekolah, provinsi, tahap), Kelompok, Jumlah siswa, Jumlah sesi, Sesi selesai, Sesi selesai (%), Rata-rata skor total |
+| 10 | Kritik dan saran (`Feedback`) | Kode siswa, Kode sesi, Tahap, Bintang (1–5), empat jawaban terbuka, Waktu dikirim |
+
+Kolom yang murni teknis tidak diunduh:
+
+- id jawaban;
+- `event_uuid` dan `client_event_id`;
+- id rekaman;
+- kode varian dan kode indikator;
+- `content_version` / `scoring_version`. Kecocokan versi tetap terbaca lewat kolom Versi permainan.
+
+\* Kolom nama, nama sekolah, dan identitas lain **dihilangkan sepenuhnya** bila `anonymized = 1`. Bukan dikosongkan — kolomnya tidak dibuat, sehingga tidak ada kolom kosong yang menggoda untuk diisi manual. Sebagai gantinya ada Kode sekolah (samaran) (`school_ref`, `SCH-000012`, stabil) di lembar Data siswa dan Ringkasan kelompok agar analisis per sekolah tetap mungkin. Nama wali (`guardian_name`) tidak pernah diekspor.
 
 \** Kolom kunci jawaban hanya disertakan untuk role admin.
 
@@ -1045,8 +1075,8 @@ Langkah 5 disengaja. Retensi yang menghapus sendiri data penelitian tanpa seoran
        tidak kompatibel → ditampilkan di bagian terpisah dengan penjelasan,
                         TIDAK ikut dihitung dalam delta
 6. Chart garis pretest → posttest per kelompok dan per peserta
-7. Export XLSX menyertakan kolom fase pada seluruh sheet gameplay,
-   sehingga analisis lanjutan di SPSS/R dapat memisahkannya sendiri
+7. Export XLSX menyertakan kolom Tahap pada seluruh lembar gameplay,
+   sehingga pengolahan lanjutan dapat memisahkan tes awal dan tes akhir
 ```
 
 Sesi berfase `umum` tidak pernah dicampur ke dalam perhitungan efek pretest–posttest.

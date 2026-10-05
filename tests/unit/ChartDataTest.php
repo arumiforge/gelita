@@ -85,12 +85,12 @@ final class ChartDataTest extends CIUnitTestCase
 
     public function testDistributionIsIntegerAxis(): void
     {
-        $chart = ChartData::distribution([10 => 3, 11 => 5], 'Peserta', ' th');
+        $chart = ChartData::distribution([10 => 3, 11 => 5], 'Siswa', ' tahun');
 
-        $this->assertSame(['10 th', '11 th'], $chart['labels']);
+        $this->assertSame(['10 tahun', '11 tahun'], $chart['labels']);
         $this->assertSame([3, 5], $chart['series'][0]['values']);
         $this->assertTrue($chart['integer']);
-        $this->assertSame([], ChartData::distribution([], 'Peserta')['series']);
+        $this->assertSame([], ChartData::distribution([], 'Siswa')['series']);
     }
 
     public function testPrePostWithoutPairsIsEmpty(): void
@@ -99,7 +99,7 @@ final class ChartDataTest extends CIUnitTestCase
         $this->assertSame([], $empty['series']);
 
         $chart = ChartData::prePost(['pretest' => 60.5, 'posttest' => 72.0, 'delta' => 11.5, 'pairs' => 4, 'incompatible_pairs' => 0]);
-        $this->assertSame(['Pretest', 'Posttest'], $chart['labels']);
+        $this->assertSame(['Tes awal', 'Tes akhir'], $chart['labels'], 'istilah sehari-hari, bukan pretest/posttest');
         $this->assertSame([60.5, 72.0], $chart['series'][0]['values']);
     }
 

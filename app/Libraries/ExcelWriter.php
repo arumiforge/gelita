@@ -13,7 +13,8 @@ namespace App\Libraries;
  * Seluruh teks ditulis sebagai inline string (`t="inlineStr"`), tidak pernah
  * sebagai rumus — nilai yang diawali `=`, `+`, `-`, atau `@` tetap teks biasa
  * saat dibuka di Excel/LibreOffice. Angka PHP (int/float) menjadi sel angka;
- * bool menjadi 0/1; null menjadi sel kosong.
+ * bool menjadi 0/1; DateTimeInterface menjadi sel tanggal (dd-mm-yyyy
+ * jj:mm:dd, waktu setempat apa adanya); null menjadi sel kosong.
  */
 class ExcelWriter
 {
@@ -21,6 +22,11 @@ class ExcelWriter
 
     /** Batas baris satu sheet XLSX (termasuk header). */
     public const MAX_ROWS = 1048576;
+
+    /** Gaya sel: 1 = judul kolom, 2 = tanggal. */
+    private const STYLE_HEADER = 1;
+
+    private const STYLE_DATE = 2;
 
     private string $path;
 
@@ -66,9 +72,10 @@ class ExcelWriter
     /**
      * Membuka sheet baru; sheet sebelumnya ditutup otomatis.
      *
-     * @param list<string> $headers baris pertama, ditebalkan dan dibekukan
+     * @param list<string>   $headers baris pertama, ditebalkan dan dibekukan
+     * @param list<int|null> $widths  lebar kolom (karakter); kosong = bawaan Excel
      */
-    public function startSheet(string $name, array $headers): void
+    public function startSheet(string $name, array $headers, array $widths = []): void
     {
         $this->assertOpen();
         $this->closeSheet();
@@ -97,9 +104,10 @@ class ExcelWriter
             . '<pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/>'
             . '</sheetView></sheetViews>'
             . '<sheetFormatPr defaultRowHeight="15"/>'
+            . $this->columnWidths($widths)
             . '<sheetData>');
 
-        $this->writeRow(array_values($headers), 1);
+        $this->writeRow(array_values($headers), self::STYLE_HEADER);
     }
 
     /**
@@ -240,6 +248,10 @@ class ExcelWriter
             $value = $value ? 1 : 0;
         }
 
+        if ($value instanceof \DateTimeInterface) {
+            return '<c r="' . $ref . '" s="' . self::STYLE_DATE . '"><v>' . $this->number(self::serialDate($value)) . '</v></c>';
+        }
+
         if (is_int($value) || (is_float($value) && is_finite($value))) {
             return '<c r="' . $ref . '"' . $s . '><v>' . $this->number($value) . '</v></c>';
         }
@@ -281,6 +293,17 @@ class ExcelWriter
         return htmlspecialchars($value, ENT_XML1 | ENT_QUOTES, 'UTF-8');
     }
 
+    /**
+     * Nomor seri tanggal Excel (hari sejak 30-12-1899) dari jam dinding
+     * tanggal itu, tanpa geser zona waktu: database menyimpan waktu setempat.
+     */
+    public static function serialDate(\DateTimeInterface $date): float
+    {
+        $wall = new \DateTimeImmutable($date->format('Y-m-d H:i:s'), new \DateTimeZone('UTC'));
+
+        return $wall->getTimestamp() / 86400 + 25569 + (int) $date->format('u') / 86_400_000_000;
+    }
+
     /** 0 → A, 25 → Z, 26 → AA */
     public static function columnName(int $index): string
     {
@@ -294,6 +317,22 @@ class ExcelWriter
     }
 
     // -------------------------------------------------------------- sheet
+
+    /** @param list<int|null> $widths */
+    private function columnWidths(array $widths): string
+    {
+        $cols = '';
+
+        foreach (array_values($widths) as $i => $width) {
+            if ($width === null || $width <= 0) {
+                continue;
+            }
+
+            $cols .= '<col min="' . ($i + 1) . '" max="' . ($i + 1) . '" width="' . min(100, (int) $width) . '" customWidth="1"/>';
+        }
+
+        return $cols === '' ? '' : '<cols>' . $cols . '</cols>';
+    }
 
     private function flush(): void
     {
@@ -412,7 +451,7 @@ class ExcelWriter
             . '<cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties"'
             . ' xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/"'
             . ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">'
-            . '<dc:title>GELITA — export data penelitian</dc:title><dc:creator>GELITA</dc:creator>'
+            . '<dc:title>GELITA — data penelitian</dc:title><dc:creator>GELITA</dc:creator>'
             . '<dcterms:created xsi:type="dcterms:W3CDTF">' . $now . '</dcterms:created>'
             . '<dcterms:modified xsi:type="dcterms:W3CDTF">' . $now . '</dcterms:modified>'
             . '</cp:coreProperties>';
@@ -464,11 +503,12 @@ class ExcelWriter
             . $rels . '</Relationships>';
     }
 
-    /** Gaya 0 = biasa, 1 = header tebal berlatar abu. */
+    /** Gaya 0 = biasa, 1 = header tebal berlatar abu, 2 = tanggal dd-mm-yyyy jj:mm:dd. */
     private function styles(): string
     {
         return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' . "\n"
             . '<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">'
+            . '<numFmts count="1"><numFmt numFmtId="164" formatCode="dd-mm-yyyy hh:mm:ss"/></numFmts>'
             . '<fonts count="2"><font><sz val="11"/><name val="Calibri"/></font>'
             . '<font><b/><sz val="11"/><name val="Calibri"/></font></fonts>'
             . '<fills count="3"><fill><patternFill patternType="none"/></fill>'
@@ -476,8 +516,9 @@ class ExcelWriter
             . '<fill><patternFill patternType="solid"><fgColor rgb="FFE8E2D4"/><bgColor indexed="64"/></patternFill></fill></fills>'
             . '<borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders>'
             . '<cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs>'
-            . '<cellXfs count="2"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/>'
-            . '<xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1"/></cellXfs>'
+            . '<cellXfs count="3"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/>'
+            . '<xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1"/>'
+            . '<xf numFmtId="164" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/></cellXfs>'
             . '<cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles>'
             . '</styleSheet>';
     }

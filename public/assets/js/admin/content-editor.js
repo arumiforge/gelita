@@ -17,7 +17,7 @@
  *   verdict_card     → kunci verdict (hanya dari verdict_options node) + dua sumber opsional
  *   verdict_reason   → sama + contoh alasan ID/EN (rubrik guru)
  *   find_object      → pemilih koordinat (object-picker) + centang jebakan + umpan balik
- *   puzzle_arrange   → ukuran kisi
+ *   puzzle_arrange   → keterangan ukuran papan (ditetapkan server dari tingkat wilayah)
  *   ordering         → potongan teks ID/EN; urutan di editor = kunci jawaban
  *
  * Validasi client hanya umpan balik cepat; server selalu memeriksa ulang.
@@ -261,15 +261,19 @@ class ItemEditor {
     if (answer.target === undefined) syncFlags();
   }
 
+  /**
+   * Ukuran papan dan bentuk keping tidak diisi admin: server menetapkannya dari
+   * tingkat kesulitan wilayah saat soal dibuat (data-puzzle-grid/shape).
+   */
   puzzle(config) {
-    const grid = el('input', { type: 'number', min: '2', max: '5', value: String(config.grid || 3) });
-    const sync = () => {
-      const n = Math.min(5, Math.max(2, Number(grid.value) || 3));
-      this.write({ order: Array.from({ length: n * n }, (_, i) => i) }, { grid: n });
-    };
-    grid.addEventListener('input', sync);
-    this.host.append(field('Jumlah keping per sisi (2–5)', grid, 'Misalnya 3 berarti 3 × 3 = 9 keping. Kunci jawaban dibuat otomatis (keping tersusun berurutan dari kiri atas). Gambarnya diambil dari gambar soal, atau dari gambar adegan tantangan bila soal tidak punya gambar.'));
-    if (!Array.isArray(this.answer?.order)) sync();
+    const n = Number(this.form.dataset.puzzleGrid) || Number(config.grid) || 3;
+    const shape = this.form.dataset.puzzleShape || config.shape || 'square';
+    const label = `${n} × ${n} keping ${shape === 'jigsaw' ? 'jigsaw (bertonjolan)' : 'kotak'}`;
+    this.host.append(el('p', { class: 'field-help' }, el('b', {}, `Ukuran papan: ${label}. `),
+      'Ukuran ini mengikuti tingkat kesulitan wilayah dan dibuat otomatis bersama kunci jawabannya. Gambarnya diambil dari gambar soal, atau dari gambar adegan tantangan bila soal tidak punya gambar.'));
+    if (!Array.isArray(this.answer?.order)) {
+      this.write({ order: Array.from({ length: n * n }, (_, i) => i) }, { grid: n, shape });
+    }
   }
 
   ordering(answer, config) {
@@ -356,7 +360,9 @@ class ItemEditor {
       body.push(el('ol', { class: 'preview-pieces' }, config.pieces.map((p) => el('li', {}, p.text_id || '—'))));
       body.push(el('p', { class: 'muted' }, 'Siswa melihat kartu-kartu ini dalam urutan acak.'));
     } else if (type === 'puzzle_arrange') {
-      body.push(el('p', { class: 'muted' }, `Susun gambar ${config.grid || 3} × ${config.grid || 3} keping.`));
+      const n = Number(this.form.dataset.puzzleGrid) || Number(config.grid) || 3;
+      const jigsaw = (this.form.dataset.puzzleShape || config.shape) === 'jigsaw';
+      body.push(el('p', { class: 'muted' }, `Susun gambar ${n} × ${n} keping ${jigsaw ? 'jigsaw' : 'kotak'}, tanpa nomor. Keterangan di atas tampil setelah gambar utuh.`));
     } else if (type === 'find_object') {
       body.push(el('p', { class: 'muted' }, config.decoy ? 'Benda jebakan: tampil sama persis dengan benda lain, tanpa petunjuk.' : 'Petunjuk di atas dibacakan kepada siswa; bendanya dicari di gambar adegan.'));
     } else if (type === 'fill_blank_free') {
@@ -395,7 +401,7 @@ class ItemEditor {
         if (pieces.length < 2) errors.push('Soal urutan butuh paling sedikit dua kartu.');
         if (pieces.some((p) => !String(p.text_id || '').trim())) errors.push('Setiap kartu wajib punya teks Indonesia.');
       }
-      if (type === 'puzzle_arrange' && !(Number(config.grid) >= 2 && Number(config.grid) <= 5)) errors.push('Jumlah keping per sisi harus 2–5.');
+      if (type === 'puzzle_arrange' && !Array.isArray(answer.order)) errors.push('Kunci susun gambar belum terbentuk. Muat ulang halaman, lalu coba lagi.');
     }
 
     if (!errors.length) {

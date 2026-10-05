@@ -3,14 +3,15 @@
  * Ekspor data — `/admin/ekspor` → ExportController::index
  *
  * Filter sama dengan halaman analitik (nama field identik), tetapi dikirim
- * lewat POST. Guru: sekolah terkunci, mode anonim dipaksa server, dan sheet
- * Raw Events tidak tersedia — form hanya mencerminkan aturan itu.
+ * lewat POST. Guru: sekolah terkunci, mode anonim dipaksa server, dan lembar
+ * Catatan aktivitas tidak tersedia — form hanya mencerminkan aturan itu.
  * Baris dengan status queued/running diperbarui admin/export.js
  * lewat data-export-id; tanpa JavaScript, muat ulang halaman.
  *
- * Nama sheet (Participants, Sessions, …) dan nama kolom di berkas Excel
- * sengaja tetap berbahasa Inggris untuk program analisis data; di formulir
- * setiap sheet diberi nama Indonesia (admin_label('exportSheet')).
+ * Nilai kotak centang adalah kode lembar internal (Participants, …). Berkas
+ * Excel ditulis seluruhnya dalam bahasa Indonesia — nama lembar, judul
+ * kolom, dan isinya (App\Libraries\ExportLabels) — dengan nama lembar yang
+ * sama seperti di formulir ini (admin_label('exportSheet')).
  *
  * @var array<string, mixed>        $filters   filter dari query string (dari halaman analitik)
  * @var list<string>                $sheets
@@ -18,10 +19,10 @@
  * @var bool                        $isAdmin
  * @var list<array<string, mixed>>  $recent
  * @var int                         $retention hari
- * @var int                         $rawEventLimit ambang baris Raw Events
+ * @var int                         $rawEventLimit ambang baris Catatan aktivitas
  */
 $sheetNotes = [
-    'Participants'        => 'Kode peserta, kelas, sekolah, dan daerah',
+    'Participants'        => 'Kode siswa, kelas, sekolah, dan daerah',
     'Sessions'            => 'Satu baris untuk tiap sesi bermain',
     'Levels'              => 'Skor dan bintang di tiap wilayah',
     'Challenge Summary'   => 'Hasil tiap kali siswa mengerjakan tantangan',
@@ -62,11 +63,11 @@ $sheetNotes = [
         } ?>
         <label class="check">
           <input type="checkbox" name="sheets[]" value="<?= esc($sheet, 'attr') ?>" <?= $onlyAdmin ? '' : 'checked' ?>>
-          <span><b><?= esc(admin_label('exportSheet', $sheet)) ?></b><span class="cell-sub"><?= esc($sheetNotes[$sheet] ?? '') ?> · lembar “<?= esc($sheet) ?>”</span></span>
+          <span><b><?= esc(admin_label('exportSheet', $sheet)) ?></b><span class="cell-sub"><?= esc($sheetNotes[$sheet] ?? '') ?></span></span>
         </label>
       <?php endforeach ?>
     </div>
-    <p class="field-help">Bila tidak ada yang dicentang, semua lembar yang boleh Anda terima ikut diunduh.<?php if ($isAdmin): ?> Catatan aktivitas lengkap hanya bisa diunduh bila jumlahnya tidak lebih dari <?= esc(fmt_num($rawEventLimit)) ?> baris; bila lebih, persempit rentang tanggal.<?php endif ?></p>
+    <p class="field-help">Bila tidak ada yang dicentang, semua lembar yang boleh Anda terima ikut diunduh. Judul kolom dan isinya berbahasa Indonesia; lama mengerjakan ditulis dalam detik atau menit, dan persentase dalam angka 0–100.<?php if ($isAdmin): ?> Catatan aktivitas lengkap hanya bisa diunduh bila jumlahnya tidak lebih dari <?= esc(fmt_num($rawEventLimit, 0, 'id')) ?> baris; bila lebih, persempit rentang tanggal.<?php endif ?></p>
   </fieldset>
 
   <fieldset class="repeat-row">
@@ -74,7 +75,7 @@ $sheetNotes = [
     <?php if ($isAdmin): ?>
       <label class="check">
         <input type="checkbox" name="anonymized" value="1" checked>
-        <span><b>Sembunyikan nama siswa</b><span class="cell-sub">Nama lengkap dan nama pengguna diganti kode peserta. Hilangkan centang hanya bila penelitian benar-benar membutuhkan nama siswa.</span></span>
+        <span><b>Sembunyikan nama siswa</b><span class="cell-sub">Nama lengkap dan nama pengguna diganti kode siswa. Hilangkan centang hanya bila penelitian benar-benar membutuhkan nama siswa.</span></span>
       </label>
     <?php else: ?>
       <p class="filter-locked"><?= icon('lock') ?> Unduhan dari akun guru selalu tanpa nama siswa, dan hanya berisi siswa dari sekolah Anda.</p>
@@ -85,7 +86,7 @@ $sheetNotes = [
     <button class="btn btn-primary" type="submit" formaction="<?= base_url('admin/ekspor/xlsx') ?>"><?= icon('download') ?> Buat berkas Excel</button>
     <button class="btn btn-ghost" type="submit" formaction="<?= base_url('admin/ekspor/pdf') ?>"><?= icon('download') ?> Buat ringkasan PDF</button>
   </div>
-  <p class="field-help">Ringkasan PDF memakai pilihan data di atas dan selalu tanpa nama siswa. Laporan untuk satu siswa dibuat dari halaman profil peserta.</p>
+  <p class="field-help">Ringkasan PDF memakai pilihan data di atas dan selalu tanpa nama siswa. Laporan untuk satu siswa dibuat dari halaman profil siswa.</p>
 </form>
 
 <section class="panel">

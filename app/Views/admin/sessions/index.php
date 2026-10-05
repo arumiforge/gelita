@@ -13,7 +13,7 @@
 <?= component('partials/admin-head', [
     'title'   => 'Sesi bermain',
     'eyebrow' => 'Data siswa',
-    'lead'    => 'Satu sesi berisi permainan satu siswa pada satu fase (misalnya pretest). Buka sesi untuk melihat hasil tiap tantangan dan catatan aktivitasnya.',
+    'lead'    => 'Satu sesi berisi permainan satu siswa pada satu tahap (misalnya tes awal). Buka sesi untuk melihat hasil tiap tantangan dan catatan aktivitasnya.',
 ]) ?>
 <?= $this->include('partials/flash') ?>
 <?= component('admin-filter-bar', ['filters' => $filters, 'only' => ['study_id', 'phase_code', 'school_id', 'class_level', 'date_from', 'locale']]) ?>
@@ -26,9 +26,9 @@
         : 'Belum ada sesi bermain. Sesi dibuat otomatis saat siswa mendaftar atau masuk ke permainan.',
     'columns' => [
         'session_code'     => ['label' => 'Kode sesi', 'render' => static fn (array $r): string => '<a href="' . base_url('admin/sesi/' . $r['id']) . '"><code>' . esc(substr((string) $r['session_code'], 0, 10)) . '</code></a>'],
-        'participant_code' => ['label' => 'Kode peserta', 'format' => 'code'],
-        'study_code'       => 'Studi',
-        'phase_code'       => ['label' => 'Fase', 'format' => 'label', 'group' => 'phase'],
+        'participant_code' => ['label' => 'Kode siswa', 'format' => 'code'],
+        'study_code'       => 'Penelitian',
+        'phase_code'       => ['label' => 'Tahap', 'format' => 'label', 'group' => 'phase'],
         'locale'           => ['label' => 'Bahasa', 'format' => 'label', 'group' => 'locale'],
         'status'           => ['label' => 'Status', 'format' => 'badge'],
         'started_at'       => ['label' => 'Mulai', 'format' => 'datetime'],

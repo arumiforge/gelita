@@ -584,16 +584,39 @@ Markup arena per engine:
 **`puzzle.php`**
 
 ```html
-<div id="puzzle-wrap">
-  <div class="puzzle-board" id="puzzle-board">
-    <!-- 9 <button class="piece" data-slot="0..8"> -->
+<div id="puzzle-wrap" data-mode="arrange">
+  <div class="puzzle-board is-square|is-jigsaw" id="puzzle-board" data-grid="3|4" data-shape="square|jigsaw"
+       style="--grid: 4; --inset: 7.447%; --overhang: 35%">
+    <svg class="puzzle-defs"><!-- satu <clipPath id="pz{attempt}-{i}"> per keping --></svg>
+    <div class="puzzle-grid">
+      <!-- n × n <button class="piece" data-slot data-piece aria-label="Keping di baris r, kolom c">
+             <svg class="piece-art"><image href="gambar utuh" preserveAspectRatio="xMidYMid slice" clip-path/>
+             <path class="piece-edge"/></svg></button> — tanpa nomor -->
+    </div>
   </div>
-  <p class="hint-text">Susunan yang benar adalah 1 sampai 9 dari kiri atas ke kanan bawah.</p>
+  <p class="hint-text">Ketuk dua keping untuk menukarnya, atau seret satu keping ke keping lain. Cocokkan warna dan garis di tepi keping.</p>
+  <div class="puzzle-caption" id="puzzle-caption" hidden><!-- keterangan gambar, tampil setelah utuh --></div>
   <button class="btn btn-primary" id="btn-check">Periksa gambar</button>
 </div>
 ```
 
-Mode `ordering` (Wonosobo node 1) memakai markup berbeda di file yang sama: daftar `<li class="order-card" draggable="true">` yang dapat ditukar urutannya, bukan grid.
+Pembaruan kelas 5 SD:
+
+- **Papan mengikuti tingkat kesulitan wilayah** (`App\Libraries\DifficultyRules`):
+  - mudah: 3 × 3 kotak;
+  - sedang: 4 × 4 kotak;
+  - sulit: 4 × 4 jigsaw.
+- **Ukuran dibekukan per soal** di `config_json.grid/shape` saat soal dibuat.
+- **Satu gambar utuh dipotong di browser.** `App\Libraries\PuzzleCut` membuat path SVG per keping. Keping jigsaw melebar 35% keluar slotnya; aturan global `svg { max-width: 100% }` di base.css dikecualikan untuk `.piece-art`.
+- **Keping tidak bernomor** di semua tingkat. Label pembaca layar menyebut letak slot.
+
+Mode `ordering` memakai markup berbeda di file yang sama, yaitu daftar `<li class="order-card" draggable="true">` yang dapat ditukar urutannya, bukan grid. Mode ini dipakai oleh soal urutan lama wnb-1 yang kini diistirahatkan.
+
+**Isi Rumpang sebagai bacaan.** Bila `config_json.as_reading = true`, `rumpang.php` merender semua soal sebagai satu bacaan:
+
+- wadahnya `.rumpang-reading`, berisi paragraf dari `App\Libraries\ClozeReading::paragraphs()`;
+- setiap rumpang adalah tombol `.blank` bernomor kecil (`sup.blank-no`) di dalam kalimat;
+- bank kata berisi semua jawaban ditambah N kata pengecoh pertama, diacak sekali per percobaan.
 
 **`rumpang.php`**
 

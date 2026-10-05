@@ -20,7 +20,7 @@ class ChallengeItemModel extends Model
         'challenge_node_id', 'item_key', 'sequence', 'interaction_type',
         'prompt_id', 'prompt_en', 'source_text_id', 'source_text_en', 'passage_id',
         'answer_key_json', 'media_asset_id', 'audio_prompt_id', 'audio_prompt_en_id',
-        'indicator_id', 'config_json',
+        'indicator_id', 'bloom_level', 'config_json',
         'reference_source', 'review_status', 'review_note', 'scorable', 'is_active',
     ];
     protected $validationRules = [
@@ -28,6 +28,7 @@ class ChallengeItemModel extends Model
         'item_key'          => ['label' => 'Kode soal', 'rules' => 'required|max_length[100]'],
         'interaction_type'  => ['label' => 'Jenis soal', 'rules' => 'required|in_list[puzzle_arrange,ordering,fill_blank_bank,fill_blank_free,verdict_card,verdict_reason,single_choice,source_trust,find_object]'],
         'review_status'     => ['label' => 'Status pemeriksaan isi', 'rules' => 'permit_empty|in_list[draft,needs_verification,verified]'],
+        'bloom_level'       => ['label' => 'Tingkat berpikir (Bloom)', 'rules' => 'permit_empty|in_list[C1,C2,C3,C4,C5,C6]'],
     ];
     protected $beforeInsert      = ['encodeJson'];
     protected $beforeUpdate      = ['encodeJson'];
@@ -55,6 +56,8 @@ class ChallengeItemModel extends Model
      *
      * mode 'fixed'  → seeded_shuffle(bank, seed): butir identik pada pretest & posttest
      * mode 'random' → acak penuh
+     * mode 'all'    → seluruh bank dalam urutan bank (sequence, id), tanpa
+     *                 batas $count — dipakai bacaan rumpang
      *
      * Item decoy (engine `cari`) tidak dihitung sebagai target, tetapi selalu
      * ikut dikirim agar objek jebakan tetap tampil di layar.
@@ -77,6 +80,10 @@ class ChallengeItemModel extends Model
             } else {
                 $targets[] = $item;
             }
+        }
+
+        if ($mode === 'all') {
+            return array_merge($targets, $decoys);
         }
 
         $ordered = $mode === 'random'

@@ -21,7 +21,7 @@
 
 <?= component('admin-chart', [
     'id'       => 'chart-levels',
-    'title'    => 'Rata-rata skor & tepat sejak awal per wilayah',
+    'title'    => 'Rata-rata skor & benar sejak awal per wilayah',
     'type'     => 'bar',
     'endpoint' => 'api/admin/levels',
     'size'     => 'lg',
@@ -40,7 +40,7 @@
         'name'               => 'Wilayah',
         'completed_attempts' => ['label' => 'Tantangan diselesaikan', 'format' => 'num'],
         'avg_score'          => ['label' => 'Rata-rata skor', 'format' => 'num', 'decimals' => 1],
-        'avg_first_pass'     => ['label' => 'Tepat sejak awal', 'format' => 'pct'],
+        'avg_first_pass'     => ['label' => 'Benar sejak awal', 'format' => 'pct'],
         'avg_duration_ms'    => ['label' => 'Rata-rata lama', 'format' => 'ms'],
         'level_id'           => ['label' => '', 'render' => static fn (array $r): string => '<a class="btn btn-quiet btn-sm" href="' . base_url('admin/analitik/node?level_id=' . $r['level_id']) . '">Lihat tantangannya</a>'],
     ],
