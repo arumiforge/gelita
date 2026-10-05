@@ -1,6 +1,6 @@
 # GELITA
 
-**GELITA** (Game Edukasi Literasi dan Etnopedagogi Kedu) adalah game edukasi berbasis web untuk siswa SD/SMP sekaligus instrumen penelitian. Pemain berperan sebagai Jaka, dibimbing Mbah Kedu, menjelajahi tiga wilayah eks-Karesidenan Kedu — **Temanggung → Magelang → Wonosobo**, masing-masing lima tantangan — sambil belajar literasi membaca, budaya lokal, dan literasi keamanan digital. Setiap jawaban, perubahan jawaban, petunjuk, dan pemutaran audio dicatat sebagai data penelitian.
+**GELITA** (Game Edukasi Literasi dan Etnopedagogi Kedu) adalah game edukasi berbasis web untuk siswa **kelas 5 SD/MI** sekaligus instrumen penelitian. Pemain berperan sebagai Jaka, dibimbing Mbah Kedu, menjelajahi tiga wilayah eks-Karesidenan Kedu — **Temanggung → Magelang → Wonosobo**, masing-masing lima tantangan — sambil belajar literasi membaca, budaya lokal, dan literasi keamanan digital. Setiap jawaban, perubahan jawaban, petunjuk, dan pemutaran audio dicatat sebagai data penelitian.
 
 Aplikasi dibangun dengan **CodeIgniter 4.7** (PHP 8.2+, MySQL 8 / MariaDB 10.6+), dirender server dengan HTML5 + CSS3; JavaScript (ES modules, tanpa framework) hanya menambah perilaku. Area game dwibahasa (ID/EN), panel admin berbahasa Indonesia.
 
@@ -22,6 +22,39 @@ Aplikasi dibangun dengan **CodeIgniter 4.7** (PHP 8.2+, MySQL 8 / MariaDB 10.6+)
 Kelima arena kini dapat dimainkan penuh di browser — Periksa, petunjuk, keluar berkonfirmasi, narasi audio, dan lentera yang bertambah dari respons server — dengan seluruh event gameplay dan telemetry audio tercatat, termasuk saat koneksi sempat putus. Panel admin menggambar seluruh chart dengan ECharts dari `/api/admin/*`, dan filter mengubah isi halaman tanpa memuat ulang.
 
 Yang sudah berfungsi penuh lewat HTTP: persetujuan dan registrasi dengan kata sandi kuat (termasuk dua metrik literasi keamanan digital), masuk/keluar, ganti sandi dan reset sandi oleh guru, ganti sandi sendiri untuk staf (`/admin/akun/sandi`, wajib setelah reset atau pembuatan akun oleh admin), peta Kedu dan peta wilayah dengan kunci berurutan, Kenali wilayah, dialog pembuka wilayah, kelima arena beserta seluruh API penilaiannya, layar selesai dan riwayat hasil, adegan wilayah tuntas dan penutup, Pustaka Kedu, profil, Balai Refleksi, pergantian bahasa tanpa kehilangan progres, serta seluruh halaman panel admin (dasbor, peserta, sesi, analitik, masukan, konten, impor bank soal, media & audio, studi & rilis, tata kelola, akun staf).
+
+### Pembaruan kelas 5 SD: istilah sehari-hari, Susun Gambar 3 tingkat, Isi Rumpang bacaan & Bloom
+
+Fokus penelitian kini **siswa kelas 5 SD/MI**:
+
+- **Pendaftaran dikunci ke kelas 5.**
+  - Pilihan kelas hanya "Kelas 5 SD/MI", dan server memaksa nilai `5`.
+  - NPSN sekolah SMP/MTs ditolak dengan pesan yang jelas (`allowed_school_stage`).
+  - Data lama dari kelas lain tetap tampil dengan kelasnya (`class_label()`).
+- **Susun Gambar bertingkat, tiga gambar acak per wilayah.**
+  - Temanggung (mudah) 3 × 3 kotak, Magelang (sedang) 4 × 4 kotak, Wonosobo (sulit) 4 × 4 jigsaw berkeping acak.
+  - Admin cukup mengunggah **satu gambar utuh**. `App\Libraries\PuzzleCut` memotongnya di browser sebagai keping SVG; gambar tidak persegi dipotong tengahnya.
+  - Keping tidak bernomor di semua tingkat, dan keterangan gambar muncul setelah gambar utuh.
+  - Ukuran papan dibekukan per soal, sehingga kunci soal yang sudah dijawab tidak pernah berubah.
+  - Wonosobo tantangan 1 berganti dari Susun Urutan menjadi jigsaw.
+- **Isi Rumpang menjadi satu bacaan per wilayah.** Bank kata = semua jawaban + pengecoh:
+
+  | Wilayah | Bacaan | Rumpang | Bank kata |
+  |---|---|---|---|
+  | Temanggung | 1 paragraf | 3 | 3 kata, tanpa pengecoh |
+  | Magelang | bacaan singkat | 5 | 7 kata |
+  | Wonosobo | bacaan singkat | 7 | 9 kata |
+
+  Setiap soal memakai tingkat Bloom C1–C2 / C2–C3 / C3–C4 (kolom `challenge_items.bloom_level`, migration `004000`). Aturan per tingkat ada di satu tempat, `App\Libraries\DifficultyRules`. Isi dan tabel Bloom per rumpang ada di [`docs/bank-soal/README.md`](docs/bank-soal/README.md#pembaruan-kelas-5-sd-oktober-2026).
+- **Istilah sehari-hari.**
+  - **Berkas Excel seluruhnya berbahasa Indonesia** (`App\Libraries\ExportLabels`):
+    - nama lembar dan judul kolom bersatuan;
+    - nilai berkode menjadi kata ("Tes awal", "selesai", "Kelas 5 SD/MI");
+    - jawaban dan kunci dalam kalimat;
+    - waktu sebagai sel tanggal.
+  - Panel dan PDF memakai tes awal/tes akhir, tahap, penelitian, siswa, benar sejak awal, persentase benar, dan daya pembeda. Hasil per soal juga menampilkan tingkat Bloom.
+
+Server yang sudah berjalan: deploy biasa, impor ulang workbook bank soal, unggah 3 gambar baru Wonosobo, lalu `gelita:content:verify`. Rinciannya di [`docs/08` → *Memperbarui server yang sudah berjalan ke kelas 5 SD*](docs/08_DEPLOYMENT.md#memperbarui-server-yang-sudah-berjalan-ke-kelas-5-sd-oktober-2026).
 
 ### Perombakan alur sinematik (Tahap 1–5) — ringkasan
 
@@ -310,9 +343,9 @@ Di Windows, Laragon (PHP 8.3 + MySQL) memenuhi semua prasyarat. Pengaturan ekste
 
 ## Migration
 
-Migration dijalankan berurutan dari `000100` sampai `003900` (40 berkas) dan menghasilkan 32 tabel: 30 tabel domain, `ci_sessions`, dan `migrations`. `php spark migrate:rollback -b 0` mengembalikan database ke kosong.
+Migration dijalankan berurutan dari `000100` sampai `004000` (41 berkas) dan menghasilkan 32 tabel: 30 tabel domain, `ci_sessions`, dan `migrations`. `php spark migrate:rollback -b 0` mengembalikan database ke kosong.
 
-`003100`–`003300` adalah koreksi, `003400`, `003600`, `003700`, `003800`, dan `003900` menambah kolom baru, `003500` menambah tabel baru. Perubahan skema selalu datang sebagai migration baru; migration lama tidak diubah.
+`003100`–`003300` adalah koreksi, `003400`, `003600`, `003700`, `003800`, `003900`, dan `004000` menambah kolom baru, `003500` menambah tabel baru. Perubahan skema selalu datang sebagai migration baru; migration lama tidak diubah.
 
 | Versi | Peran |
 |---|---|
@@ -325,6 +358,7 @@ Migration dijalankan berurutan dari `000100` sampai `003900` (40 berkas) dan men
 | `003600` | menambahkan `participants.intro_seen_at`: pemain baru wajib menonton cerita pembuka; peserta yang sudah punya progres diisi saat migration (backfill) |
 | `003700` | menambahkan `dialogues.pose` dan `dialogues.effect` (pose tokoh dan efek layar dari naskah); isinya diisi `php spark gelita:story:update` |
 | `003800` | menambahkan `challenge_items.audio_prompt_id` dan `audio_prompt_en_id` (FK `audio_assets`, `SET NULL`): narasi petunjuk arena `cari`; isinya ditautkan `gelita:narration:import` dari berkas `petunjuk-{node}-NN` |
+| `004000` | menambahkan `challenge_items.bloom_level` (`VARCHAR(2)`, ber-index): tingkat berpikir Taksonomi Bloom `C1` … `C6` per soal, diisi dari kolom `bloom_level` workbook atau editor soal |
 | `003900` | menjadikan `schools` direktori sekolah resmi: `level`, `stage`, `status`, `subdistrict_name`, `village_name`, `is_verified`, `match_key`, `merged_into_id` (FK ke `schools`, `SET NULL`); `match_key` baris lama diisi saat migration. Isinya dipasang `gelita:schools:import` |
 
 `003200` memanggil `resetDataCache()` sebelum memeriksa kolom; tanpa itu seluruh pemeriksaan `fieldExists()` membaca daftar kolom versi sebelum `003100` pada proses `spark migrate` yang sama. Jangan melakukan rollback ke bawah `003100`: tahap 3 bergantung pada penamaan kolom hasil migration tersebut. Rincian lengkap di [`docs/01_DATABASE.md`](docs/01_DATABASE.md#koreksi-challenge_attempts-003100-dan-003200).
@@ -347,7 +381,7 @@ Jalankan test suite tanpa laporan coverage:
 vendor/bin/phpunit --no-coverage
 ```
 
-Suite (344 test) memakai grup database `tests` (SQLite3 in-memory) dan hanya menjalankan migration bernamespace `Tests\Support`, bukan migration aplikasi — skema aplikasi memakai fitur MySQL/MariaDB (`DATETIME(6)`, `ON UPDATE CURRENT_TIMESTAMP(6)`) yang tidak ada di SQLite. Sesi di-mock dengan `ArrayHandler` oleh `CIUnitTestCase`. Yang dikunci suite antara lain:
+Suite (384 test) memakai grup database `tests` (SQLite3 in-memory) dan hanya menjalankan migration bernamespace `Tests\Support`, bukan migration aplikasi — skema aplikasi memakai fitur MySQL/MariaDB (`DATETIME(6)`, `ON UPDATE CURRENT_TIMESTAMP(6)`) yang tidak ada di SQLite. Sesi di-mock dengan `ArrayHandler` oleh `CIUnitTestCase`. Yang dikunci suite antara lain:
 
 - `RouteWiringTest` — auto-route tetap mati, setiap handler menunjuk kelas/method yang ada, setiap view yang disebut controller punya berkasnya, dan ganti sandi staf hanya berfilter `staffAuth` (terbuka untuk guru).
 - `HeadRouteTest` — HEAD memakai rute GET beserta filternya; HEAD ke halaman staf tanpa login dialihkan ke `/admin/login`.
@@ -358,11 +392,16 @@ Suite (344 test) memakai grup database `tests` (SQLite3 in-memory) dan hanya men
 - `LibraryLockTest` — Pustaka terbuka per wilayah hanya setelah wilayahnya tuntas (juga pada unlock mode `free`), halaman terkunci dirender tanpa mencatat `library_opened`, wilayah yang belum terbuka tetap ditolak, rak `/pustaka` dan tombol bergembok di peta wilayah, serta momen "Pustaka terbuka" hanya milik attempt penuntas.
 - `VideoThumbnailTest` — alamat thumbnail per penyedia (YouTube maxres → hq, Vimeo oEmbed, Drive), respons HTML/non-gambar/SVG/terlalu besar ditolak, galat jaringan tidak melempar; memakai HTTP tiruan, tanpa jaringan.
 - `JsConfigTest` — penanda sesi antrean offline buram dan per sesi, `#app-config` tanpa identitas siswa, dan setiap `t('…')` di JavaScript punya kunci `Js.*`.
-- `ChartDataTest` — bentuk data chart admin dan kondisi kosongnya.
+- `ChartDataTest` — bentuk data chart admin dan kondisi kosongnya; label Tes awal/Tes akhir.
 - `ExcelWriterTest` — workbook terbaca ulang PhpSpreadsheet, teks berawalan `=` tidak pernah menjadi rumus, berkas sementara dibersihkan.
+- `ExportLabelsTest` — setiap kolom setiap lembar punya judul Indonesia (bukan kode), nama lembar Indonesia ≤ 31 karakter, kolom teknis tidak diunduh, kode menjadi kata, satuan detik/menit/persen, kelompok per dimensi, sel tanggal Excel tanpa geser jam.
+- `AnswerTextTest` — jawaban dan kunci dalam kalimat: keping tepat, huruf + pilihan, rumpang, alasan, kartu urutan, isi catatan aktivitas.
+- `PuzzleCutTest` — ukuran papan per tingkat (3 × 3 / 4 × 4 / jigsaw), urutan penentuan ukuran per soal, keping jigsaw bersebelahan memakai kurva yang sama, tepi papan lurus, potongan tetap per soal, dan aturan CSS keping jigsaw yang tidak dikecilkan base.css.
+- `ClozeReadingTest` — potongan bacaan menjadi paragraf dengan rumpang di dalam kalimat, aturan rumpang/pengecoh/Bloom per tingkat, semua soal bacaan dalam urutan bank, bank kata stabil per percobaan.
+- `BankReadingDataTest` — isi bank soal kelas 5 di `docs/bank-soal/data/`: tiga gambar aktif per Susun Gambar, ketiga bacaan memenuhi aturan wilayahnya tanpa peringatan, jeda paragraf sesudah rumpang, butir lama diistirahatkan bukan dihapus.
 - `BankWorkbookGuideTest` — setiap kolom yang dibaca importer punya penjelasan Indonesia di templat, header sheet data sama persis dengan importer, dan workbook produksi `docs/bank-soal/` ikut dibangun ulang bila kolom impor berubah.
 - `MediaLinkTest`, `RichTextTest` — tautan media Pustaka hanya http(s) dan YouTube lewat domain nocookie; format teks Pustaka selalu meng-escape HTML lebih dulu.
-- `ExportRulesTest` — mode anonim tanpa kolom identitas (termasuk `school_npsn`), rahasia tidak pernah diekspor, kunci jawaban hanya admin, guru tanpa Raw Events, cakupan sekolah dipaksa service, cakupan & penjaga drift penghapusan.
+- `ExportRulesTest` — mode anonim tanpa kolom identitas (termasuk `school_npsn`), rahasia tidak pernah diekspor, kunci jawaban hanya admin, guru tanpa lembar Catatan aktivitas (`Raw Events`), cakupan sekolah dipaksa service, cakupan & penjaga drift penghapusan.
 - `SchoolNameTest` — varian penulisan satu sekolah ("SD NEGERI 1 CENDONO", "sdn 01 Cendono", "S.D.N. 1 Cendono", MTs/MI/SDIT, Muhammadiyah, kecamatan di nama resmi) berkunci sama; SD 1 vs SD 2 vs SD 11 vs MI tetap berbeda.
 - `SchoolDataFileTest` — daftar sekolah resmi `docs/sekolah/`: kolom, NPSN 8 angka unik, ke-35 kab/kota Jawa Tengah ada di `wilayah-id.json`, contoh peneliti (NPSN 20318068 = SD 1 CENDONO), berkas meta sesuai isi.
 - `SchoolDirectoryTest` — impor hanya menulis yang berubah dan tidak menghapus, berkas rusak ditolak utuh, cek NPSN & aturan `known_npsn`, NPSN wajib hanya setelah daftar terpasang, pencocokan nama yang tidak menebak saat ambigu, satu entri belum terverifikasi per varian, pencarian panel, gabung (siswa + guru pindah, alias), sahkan, gabung otomatis.

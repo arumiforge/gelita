@@ -663,6 +663,48 @@ Sisanya (nama ambigu, salah ketik, sekolah di luar daftar) dirapikan di **Panel 
 
 Memperbarui daftar sekolah resmi (mis. tiap semester): `php docs/sekolah/build-sekolah-jateng.php` di mesin pengembang, commit berkas CSV yang berubah, lalu deploy — impor hanya menulis sekolah yang berubah dan tidak pernah menghapus sekolah yang sudah dipakai siswa.
 
+### Memperbarui server yang sudah berjalan ke kelas 5 SD (Oktober 2026)
+
+Pembaruan ini mengubah empat hal:
+
+1. Pendaftaran hanya untuk kelas 5 SD/MI.
+2. Susun Gambar bertingkat per wilayah: 3 × 3, 4 × 4, dan jigsaw.
+3. Isi Rumpang menjadi satu bacaan per wilayah dengan tingkat Bloom per soal.
+4. Excel, PDF, dan panel memakai istilah sehari-hari.
+
+Jalankan **sekali**, setelah kode terbaru ditarik. Deploy biasa sudah menjalankan langkah 1. Semua perintah aman diulang.
+
+```bash
+sudo -u www-data php spark migrate                                                                    # 1. challenge_items.bloom_level (004000)
+sudo -u www-data php spark gelita:bank:import docs/bank-soal/gelita-bank-soal-produksi.xlsx --dry-run  # 2a. harus "Tidak ada galat"
+sudo -u www-data php spark gelita:bank:import docs/bank-soal/gelita-bank-soal-produksi.xlsx            # 2b. bacaan & gambar baru masuk, soal lama diistirahatkan
+sudo -u www-data php spark gelita:content:verify                                                      # 4. harus 0 galat (peringatan boleh)
+```
+
+**Yang dilakukan impor:**
+- **Soal yang diganti diistirahatkan** (`is_active = 0`): 10 kalimat rumpang lama per wilayah, kartu urutan wnb-1, gambar 3 × 3 Magelang, dan gambar kebun tembakau Temanggung. Soal itu **tidak dihapus**: kunci dan jawaban siswa lama tetap tersimpan dan tetap muncul di unduhan data.
+- **Soal baru masuk:**
+  - ketiga bacaan (tmg-2-11…13, mgl-2-11…15, wnb-2-11…17) dengan tingkat Bloom;
+  - gambar mgl-1-05…07 (4 × 4, memakai berkas gambar lama, jadi tidak perlu unggah ulang);
+  - gambar wnb-1-05…07 (jigsaw).
+- **Pengaturan tantangan diperbarui:** wnb-1 kini Susun Gambar berindikator `budaya`, dan pengaturan ketiga tantangan bacaan ikut berubah.
+
+**Langkah 3 — unggah gambar baru** `challenge.item.wnb-1-05`, `-06`, dan `-07` (Telaga Warna, matahari terbit Bukit Sikunir, mi ongklok):
+- lewat **Panel → Gambar & suara**, atau periksa **Media → Kelengkapan aset**;
+- gambar utuh persegi, minimal 1200 × 1200 px;
+- kepingnya dibuat otomatis, dan gambar yang tidak persegi dipotong bagian tengahnya;
+- selama belum diunggah, puzzle memakai gambar pengganti.
+
+**Hal yang perlu diperhatikan:**
+
+- **Peringatan "Tantangan bacaan … masih punya soal aktif yang tidak ada di workbook".** Soal aktif yang dibuat lewat panel atau soal contoh `-91` ikut tersambung ke bacaan. Istirahatkan soal itu di editor soal, lalu ulangi langkah 4.
+- **Percobaan yang sedang berjalan** pada tantangan yang isinya berganti ditutup otomatis sebagai `abandoned` (alasan `content_changed`) saat siswa membuka tantangan itu lagi. Siswa langsung mendapat percobaan baru dengan isi baru.
+- **Disarankan:** catat versi permainan baru di **Pengaturan penelitian → Versi permainan**, dan mulai penelitian atau tahap baru untuk data kelas 5, karena instrumennya berubah. Perbandingan tes awal–tes akhir hanya memakai sesi dengan versi permainan yang sama.
+- **Berkas Excel kini berbahasa Indonesia.** Nama lembar, judul kolom, dan isinya berubah. Skrip pengolahan data yang membaca nama kolom Inggris lama (`phase_code`, `first_pass_accuracy`, …) perlu disesuaikan. Daftar kolomnya ada di [`docs/07` → *Isi workbook*](07_FEATURE_INTEGRATION.md#isi-workbook).
+- **Pendaftaran baru hanya menerima kelas 5**, dan NPSN sekolah SMP/MTs ditolak. Siswa yang sudah terdaftar dari kelas lain tetap tampil dengan kelasnya.
+
+Jalur W: perintah yang sama tanpa `sudo -u www-data`.
+
 ### Mode pemeliharaan
 
 CodeIgniter 4.7 tidak punya `php spark down`/`up` (keduanya "Command not found", kode keluar 1). Di Revisi 2 perintah itu menghentikan `deploy.sh` tepat setelah backup. Pengganti tahap 8 bekerja di tingkat Nginx, sama di kedua jalur, tanpa kode aplikasi:
