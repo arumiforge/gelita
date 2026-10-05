@@ -2,7 +2,7 @@
 /**
  * 2. Mulai — `/mulai` → HomeController::start
  *
- * Dua kartu: "Saya baru" → /persetujuan; "Saya sudah punya akun" → /masuk.
+ * Dua kartu: "Saya baru" → /daftar/1; "Saya sudah punya akun" → /masuk.
  */
 ?>
 <?= $this->extend('layouts/game') ?>
@@ -17,7 +17,7 @@
   </header>
 
   <div class="start-cards">
-    <a class="panel start-card card-link" href="<?= base_url('persetujuan') ?>">
+    <a class="panel start-card card-link" href="<?= base_url('daftar') ?>">
       <span class="start-icon" aria-hidden="true"><?= icon('sparkle') ?></span>
       <h2><?= esc(lang('Game.startNew')) ?></h2>
       <p><?= esc(lang('Game.startNewText')) ?></p>

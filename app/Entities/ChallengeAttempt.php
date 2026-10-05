@@ -52,6 +52,17 @@ class ChallengeAttempt extends Entity
         return in_array($itemId, $this->selectedItemIds(), true);
     }
 
+    /**
+     * Persentase soal yang Berhasil pada Percobaan Pertama — hanya untuk
+     * tampilan siswa (Balai Refleksi), bukan angka penelitian.
+     */
+    public function firstPassPercent(): float
+    {
+        $scorable = (int) $this->scorable_items;
+
+        return $scorable > 0 ? round(100 * (int) $this->first_pass_correct / $scorable, 1) : 0.0;
+    }
+
     /** Batas percobaan per soal yang berlaku saat pengerjaan dibuat. */
     public function maxTries(): int
     {

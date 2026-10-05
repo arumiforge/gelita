@@ -326,3 +326,22 @@ if (! function_exists('stars_html')) {
         return $html . '</span>';
     }
 }
+
+if (! function_exists('first_pass_text')) {
+    /**
+     * "Berhasil pada Percobaan Pertama" satu pengerjaan untuk layar siswa
+     * (Dok 1 §13.2): "2 dari 3 soal"; Susun Gambar (satu gambar): "Ya" / "Belum".
+     */
+    function first_pass_text(App\Entities\ChallengeAttempt $attempt, ?string $locale = null, ?string $engine = null): string
+    {
+        $locale ??= service('request')->getLocale();
+        $first    = (int) $attempt->first_pass_correct;
+        $total    = (int) $attempt->scorable_items;
+
+        if ($engine === 'puzzle' && $total <= 1) {
+            return lang($first >= 1 && $total >= 1 ? 'Game.yes' : 'Game.notYet', [], $locale);
+        }
+
+        return lang('Game.firstPassCount', [$first, $total], $locale);
+    }
+}

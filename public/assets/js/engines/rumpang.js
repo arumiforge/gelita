@@ -1,7 +1,7 @@
 /**
- * Engine `rumpang` — isi bagian rumpang.
+ * Engine `rumpang` — isi bagian rumpang dengan bank kata.
  *
- * Varian bank kata: ketuk kotak rumpang lalu kata di bank. Bank kata dari
+ * Ketuk kotak rumpang lalu kata di bank. Bank kata dari
  * payload.word_bank (jawaban + pengecoh, diacak server); client tidak tahu
  * kata mana milik rumpang mana. Tiap chip punya id unik, jadi dua kata yang
  * kebetulan sama tidak saling menandai "terpakai" pada chip yang keliru.
@@ -9,10 +9,10 @@
  * menjadikan kotak itu aktif. Setelah mengisi, fokus pindah ke kotak kosong
  * berikutnya.
  *
- * Varian tanpa bank: <input>; Enter memindahkan fokus ke kotak berikutnya,
- * bukan mengirim form.
+ * Setiap kata yang dipasang atau dilepas dicatat sebagai event
+ * `answer_selected` (action set / clear).
  *
- * Periksa → POST /check dengan seluruh isian sekaligus. Kotak kosong →
+ * Cek jawabanku → POST /check dengan seluruh isian sekaligus. Kotak kosong →
  * modal lokal, request TIDAK dikirim. Jawaban yang sudah benar tidak dihapus
  * dan terkunci saat pemeriksaan ulang.
  */
@@ -25,11 +25,10 @@ export function mount(ctx) {
   if (!root) return;
 
   const button = $('#btn-check', root);
-  const useBank = root.dataset.wordBank === '1';
-  const blanks = useBank ? $$('.blank', root) : $$('.blank-input', root);
+  const blanks = $$('.blank', root);
   const words = $$('.word', root);
   const placeholder = '?';
-  const filled = new Map(); // itemId → chip kata (varian bank)
+  const filled = new Map(); // itemId → chip kata
   let active = null;
 
   const idOf = (node) => Number(node.dataset.item);
@@ -47,9 +46,10 @@ export function mount(ctx) {
     }
   };
 
-  const release = (blank) => {
+  const release = (blank, record = true) => {
     const chip = filled.get(idOf(blank));
     if (!chip) return;
+    if (record) ctx.selected(idOf(blank), { action: 'clear', value: chip.textContent });
     filled.delete(idOf(blank));
     chip.classList.remove('is-used');
     chip.disabled = false;
@@ -69,8 +69,10 @@ export function mount(ctx) {
     const target = active && !locked(active) ? active : nextEmpty(blanks[blanks.length - 1]);
     if (!target) return;
 
-    release(target);
+    const previous = filled.get(idOf(target))?.textContent ?? null;
+    release(target, false);
     filled.set(idOf(target), chip);
+    ctx.selected(idOf(target), { action: 'set', value: chip.textContent, ...(previous !== null ? { from: previous } : {}) });
     chip.classList.add('is-used');
     chip.disabled = true;
     target.textContent = chip.textContent;
@@ -85,43 +87,24 @@ export function mount(ctx) {
     (next || button)?.focus();
   };
 
-  if (useBank) {
-    for (const blank of blanks) {
-      blank.dataset.label = blank.getAttribute('aria-label') || '';
-      blank.setAttribute('aria-pressed', 'false');
-      blank.addEventListener('click', () => {
-        if (locked(blank)) return;
-        if (filled.has(idOf(blank))) release(blank);
-        activate(blank);
-        (words.find((chip) => !chip.disabled) || blank).focus();
-      });
-    }
-    words.forEach((chip) => chip.addEventListener('click', () => place(chip)));
-    activate(blanks.find((blank) => !locked(blank)) ?? null);
-  } else {
-    blanks.forEach((input, index) => {
-      input.addEventListener('keydown', (event) => {
-        if (event.key !== 'Enter') return;
-        event.preventDefault();
-        const next = blanks.slice(index + 1).find((b) => !b.readOnly) || blanks.find((b) => !b.readOnly && b.value.trim() === '');
-        (next && next !== input ? next : button)?.focus();
-      });
-      input.addEventListener('input', () => input.classList.remove('is-wrong'));
+  for (const blank of blanks) {
+    blank.dataset.label = blank.getAttribute('aria-label') || '';
+    blank.setAttribute('aria-pressed', 'false');
+    blank.addEventListener('click', () => {
+      if (locked(blank)) return;
+      if (filled.has(idOf(blank))) release(blank);
+      activate(blank);
+      (words.find((chip) => !chip.disabled) || blank).focus();
     });
   }
+  words.forEach((chip) => chip.addEventListener('click', () => place(chip)));
+  activate(blanks.find((blank) => !locked(blank)) ?? null);
 
-  ctx.currentItemId = () => {
-    if (useBank) return active ? idOf(active) : null;
-    const focused = blanks.find((input) => input === document.activeElement);
-    return focused ? idOf(focused) : null;
-  };
+  ctx.currentItemId = () => (active ? idOf(active) : null);
 
   // --------------------------------------------------------------- periksa
 
-  const answerOf = (blank) => {
-    if (useBank) return filled.get(idOf(blank))?.textContent ?? '';
-    return blank.value.trim();
-  };
+  const answerOf = (blank) => filled.get(idOf(blank))?.textContent ?? '';
 
   button?.addEventListener('click', async () => {
     const empty = blanks.filter((blank) => answerOf(blank) === '');
@@ -132,7 +115,7 @@ export function mount(ctx) {
         text: ctx.t('blankEmptyText', empty.length),
       });
       scrollToCenter(empty[0]);
-      if (useBank) activate(empty[0]);
+      activate(empty[0]);
       empty[0].focus();
       return;
     }
@@ -154,12 +137,9 @@ export function mount(ctx) {
       const ok = Boolean(result.results?.[idOf(blank)]);
       blank.classList.toggle('is-correct', ok);
       blank.classList.toggle('is-wrong', !ok);
-      if (ok) {
-        if (useBank) blank.disabled = true;
-        else blank.readOnly = true;
-      }
+      if (ok) blank.disabled = true;
       const state = ok ? ctx.t('markCorrect') : ctx.t('markWrong');
-      const label = useBank ? blank.dataset.label : blank.getAttribute('aria-label');
+      const label = blank.dataset.label;
       blank.setAttribute('aria-label', `${label}: ${answerOf(blank)} — ${state}`);
     }
     ctx.tally({ correct: result.correct_count, wrong: result.total - result.correct_count });
@@ -175,7 +155,7 @@ export function mount(ctx) {
       const wrong = blanks.find((blank) => blank.classList.contains('is-wrong'));
       if (wrong) {
         scrollToCenter(wrong);
-        if (useBank) activate(wrong);
+        activate(wrong);
         wrong.focus();
       }
     }

@@ -1,15 +1,12 @@
 /**
- * Engine `boleh` — kartu pernyataan dengan verdict Benar / Salah
- * (/ Pendapat pada Magelang 3). Tombol verdict dirender server dari
- * payload.verdict_options sebagai radio bawaan; client tidak tahu kuncinya.
+ * Engine `boleh` — kartu pernyataan dengan verdict Benar / Salah. Tombol
+ * verdict dirender server sebagai radio bawaan; client tidak tahu kuncinya.
+ * Setiap pilihan dicatat sebagai event `answer_selected` (action set).
  *
- * Periksa → POST /check [{ item_id, answer: { verdict }, reason_text? }].
+ * Cek jawabanku → POST /check [{ item_id, answer: { verdict } }].
  * Kartu belum dipilih → .has-error selama 2,6 detik, digulirkan ke tengah,
  * modal "Ada N kartu yang belum kamu tentukan" — request tidak dikirim.
  * Kartu salah digulirkan ke tengah satu per satu saat diperbaiki.
- *
- * Alasan (varian beralasan) tidak memengaruhi benar/salah: UI hanya
- * menandai "alasanmu tersimpan", tidak pernah menilainya.
  *
  * Teks bacaan: pada layar sempit dilipat; judulnya menjadi tombol
  * "Baca teks" yang menempel di atas.
@@ -56,7 +53,6 @@ export function mount(ctx) {
 
   const idOf = (card) => Number(card.dataset.item);
   const verdictOf = (card) => $('input[type="radio"]:checked', card)?.value ?? null;
-  const reasonOf = (card) => $('textarea.card-reason', card)?.value.trim() ?? '';
   let lastFocused = null;
 
   const setMark = (card, ok) => {
@@ -88,6 +84,7 @@ export function mount(ctx) {
     if (!input) return;
     const card = input.closest('.verdict-card');
     card.classList.remove('has-error');
+    ctx.selected(idOf(card), { action: 'set', value: input.value });
     lastFocused = card;
     Sfx.play('click');
     if (card.classList.contains('is-wrong')) {
@@ -121,12 +118,7 @@ export function mount(ctx) {
       return;
     }
 
-    const answers = cards.map((card) => {
-      const row = { item_id: idOf(card), answer: { verdict: verdictOf(card) } };
-      const reason = reasonOf(card);
-      if (reason !== '') row.reason_text = reason;
-      return row;
-    });
+    const answers = cards.map((card) => ({ item_id: idOf(card), answer: { verdict: verdictOf(card) } }));
 
     ctx.setBusy(button, true);
     let result;
@@ -143,12 +135,6 @@ export function mount(ctx) {
       const ok = Boolean(result.results?.[idOf(card)]);
       setMark(card, ok);
       if (ok) $$('input[type="radio"]', card).forEach((input) => { input.disabled = true; });
-
-      // Alasan hanya "tersimpan" — tidak pernah dinilai benar/salah
-      const reason = $('textarea.card-reason', card);
-      if (reason && reason.value.trim() !== '' && !$('.reason-saved', card)) {
-        reason.after(el('p', { class: 'reason-saved', role: 'status' }, `✓ ${ctx.t('reasonSaved')}`));
-      }
     }
     ctx.tally({ correct: result.correct_count, wrong: result.total - result.correct_count });
 

@@ -13,6 +13,7 @@ import { initCurtains } from './core/curtain.js';
 import { initHud } from './game/hud.js';
 import { initRotateGate } from './game/rotate-gate.js';
 import { initInstall } from './game/install.js';
+import { initScreenTracking } from './core/device.js';
 
 document.documentElement.classList.add('js');
 
@@ -29,6 +30,8 @@ window.addEventListener('keydown', unlock);
 if (CONFIG.sessionTag) {
   resendQueued();
   window.addEventListener('online', () => resendQueued());
+  // Ukuran tampilan dan pindah tab/aplikasi (viewport_changed, page_hidden/visible)
+  initScreenTracking();
 }
 
 initHud();

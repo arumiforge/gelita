@@ -11,13 +11,20 @@ use App\Services\SchoolDirectory;
 use CodeIgniter\HTTP\RedirectResponse;
 
 /**
- * Persetujuan penelitian dan pendaftaran akun siswa.
+ * Pendaftaran siswa tiga langkah, seluruhnya di server (perombakan kelas 5,
+ * Dok 1 §10) — tetap berjalan tanpa JavaScript:
+ *
+ *   /daftar/1 Tentang kamu · /daftar/2 Sekolah dan daerah · /daftar/3 Akun rahasiamu
+ *
+ * Isian langkah 1–2 disimpan di session PHP `reg_wizard`; tidak ada data
+ * peserta yang ditulis ke database sebelum langkah 3 berhasil. Kata sandi
+ * tidak pernah disimpan di session, flash, `old()`, log, maupun event.
+ * Langkah 3 memvalidasi ulang isian langkah 1–2 sebelum membuat akun.
  *
  * Membuat kata sandi kuat adalah bagian materi literasi keamanan digital:
  * halaman menunjukkan syarat yang belum terpenuhi, dan dua metrik proses
- * (syarat terpenuhi pada percobaan pertama, jumlah penolakan sandi lemah)
- * ikut disimpan. Isi kata sandi sendiri tidak pernah ditulis ke flash,
- * `old()`, log, maupun event.
+ * (syarat terpenuhi pada kiriman pertama langkah 3, jumlah penolakan sandi
+ * lemah) ikut disimpan.
  *
  * Sekolah: siswa di provinsi berdirektori (Jawa Tengah) wajib mengisi NPSN
  * sehingga semua siswa satu sekolah tertaut ke satu baris `schools` resmi;
@@ -27,111 +34,123 @@ use CodeIgniter\HTTP\RedirectResponse;
  */
 class RegisterController extends BaseController
 {
-    /**
-     * Versi teks persetujuan yang sedang ditayangkan; ikut disimpan per peserta.
-     * Naikkan setiap kali isi Game.consentBody berubah. Versi 2: nama lengkap
-     * kini direkam dan teks menyebut seluruh data profil yang dicatat.
-     */
-    private const CONSENT_VERSION = '2';
+    /** Kunci session PHP isian langkah 1–2 */
+    public const WIZARD = 'reg_wizard';
 
-    public function consent(): string
+    public const STEPS = [1, 2, 3];
+
+    /** Isian yang disimpan per langkah (langkah 3 tidak pernah disimpan) */
+    private const STEP_FIELDS = [
+        1 => ['display_name', 'age', 'gender'],
+        2 => ['country_code', 'country_other', 'province_code', 'district_code', 'school_npsn', 'school_manual', 'school_name'],
+    ];
+
+    /** GET /persetujuan (halaman lama) → 301 ke langkah 1 */
+    public function consentMoved(): RedirectResponse
     {
-        $study = model(ResearchStudyModel::class)->requireActiveStudy();
-
-        return view('game/consent', [
-            'locale'         => $this->locale,
-            'study'          => $study,
-            'requireConsent' => (int) $study['require_consent'] === 1,
-            'consentVersion' => self::CONSENT_VERSION,
-            'consentText'    => $this->consentText($study),
-            'errors'         => session('errors') ?? [],
-        ]);
+        return redirect()->to(site_url('daftar/1'), 301);
     }
 
-    /**
-     * Centang persetujuan disimpan di session permainan, bukan database:
-     * baris `participant_consents` baru ditulis bersama peserta di store().
-     * (Flashdata tidak dipakai karena data ini harus bertahan dari
-     * `/persetujuan` → `GET /daftar` → `POST /daftar`.)
-     */
-    public function storeConsent(): RedirectResponse
+    /** GET /daftar → langkah pertama yang belum lengkap */
+    public function index(): RedirectResponse
     {
-        $study    = model(ResearchStudyModel::class)->requireActiveStudy();
-        $required = (int) $study['require_consent'] === 1;
+        return redirect()->to(site_url('daftar/' . $this->firstIncomplete()));
+    }
 
-        $rules = [
-            'participant_agree' => 'required',
-            'guardian_agree'    => $required ? 'required' : 'permit_empty',
-            'guardian_name'     => 'permit_empty|max_length[150]',
+    /** GET /daftar/{1|2|3} */
+    public function step(int $n): string|RedirectResponse
+    {
+        if (! in_array($n, self::STEPS, true)) {
+            return $this->index();
+        }
+
+        $first = $this->firstIncomplete();
+
+        if ($n > $first) {
+            return redirect()->to(site_url('daftar/' . $first));
+        }
+
+        $wizard = $this->wizard();
+        $saved  = $wizard[(string) $n] ?? [];
+        $data   = [
+            'locale'   => $this->locale,
+            'step'     => $n,
+            'done'     => array_map('intval', array_keys($wizard)),
+            'values'   => $saved,
+            'errors'   => session('errors') ?? [],
         ];
 
-        if (! $this->validate($rules, [
-            'participant_agree' => ['required' => lang('Game.consentNeedParticipant')],
-            'guardian_agree'    => ['required' => lang('Game.consentNeedGuardian')],
-        ])) {
-            return redirect()->to(site_url('persetujuan'))
-                ->with('errors', $this->validator->getErrors());
+        if ($n === 2) {
+            // Kembali dari galat atau dari langkah 3: kartu sekolah dari NPSN,
+            // atau centang manual bila NPSN itu tidak ada di daftar.
+            $directory = service('schoolDirectory');
+            $npsn      = trim((string) (old('school_npsn') ?? $saved['school_npsn'] ?? ''));
+            $school    = $npsn === '' ? null : $directory->findByNpsn($npsn);
+
+            $data += [
+                'provinces'       => RegionDirectory::provinces(),
+                'schoolProvinces' => $directory->directoryProvinces(),
+                'selectedSchool'  => $school === null ? null : $directory->describe($school),
+                'npsnNotFound'    => $school === null && preg_match(SchoolDirectory::NPSN_PATTERN, $npsn) === 1,
+            ];
         }
 
-        session()->set('reg_consent', [
-            'participant_consented'     => 1,
-            'parent_guardian_consented' => $this->request->getPost('guardian_agree') ? 1 : 0,
-            'guardian_name'             => trim((string) $this->request->getPost('guardian_name')),
-            'consent_version'           => self::CONSENT_VERSION,
-            'consent_text'              => $this->consentText($study),
-            'consented_at'              => date('Y-m-d H:i:s'),
-        ]);
+        if ($n === 3) {
+            $data['passwordPolicy'] = (new PasswordPolicy())->toClient();
+        }
 
-        return redirect()->to(site_url('daftar'));
+        return view('game/register/step-' . $n, $data);
     }
 
-    public function form(): string|RedirectResponse
+    /** POST /daftar/{1|2|3} */
+    public function saveStep(int $n): RedirectResponse
     {
-        $study = model(ResearchStudyModel::class)->requireActiveStudy();
-
-        if ((int) $study['require_consent'] === 1 && ! is_array(session('reg_consent'))) {
-            return redirect()->to(site_url('persetujuan'));
+        if (! in_array($n, self::STEPS, true)) {
+            return $this->index();
         }
 
-        // Kembali dari galat: kartu sekolah dari NPSN lama, atau centang manual
-        // bila NPSN itu tidak ada di daftar.
-        $directory = service('schoolDirectory');
-        $oldNpsn   = trim((string) old('school_npsn'));
-        $school    = $oldNpsn === '' ? null : $directory->findByNpsn($oldNpsn);
+        $first = $this->firstIncomplete();
 
-        return view('game/register', [
-            'locale'          => $this->locale,
-            'study'           => $study,
-            'allowPhase'      => (int) $study['allow_phase_choice'] === 1,
-            'phases'          => config('Gelita')->phases,
-            'provinces'       => RegionDirectory::provinces(),
-            'schoolProvinces' => $directory->directoryProvinces(),
-            'selectedSchool'  => $school === null ? null : $directory->describe($school),
-            'npsnNotFound'    => $school === null && preg_match(SchoolDirectory::NPSN_PATTERN, $oldNpsn) === 1,
-            'passwordPolicy'  => (new PasswordPolicy())->toClient(),
-            'errors'          => session('errors') ?? [],
-        ]);
+        if ($n > $first) {
+            return redirect()->to(site_url('daftar/' . $first));
+        }
+
+        $post  = $this->request->getPost();
+        $input = is_array($post) ? $post : [];
+
+        if ($n === 3) {
+            return $this->register($input);
+        }
+
+        $input = $this->normalize($n, $input);
+
+        if (! $this->validateData($input, $this->rulesFor($n, $input), $this->messages())) {
+            return $this->backToStep($n, $input, $this->validator->getErrors());
+        }
+
+        $wizard               = $this->wizard();
+        $wizard[(string) $n]  = array_intersect_key($input, array_flip(self::STEP_FIELDS[$n]));
+        session()->set(self::WIZARD, $wizard);
+
+        return redirect()->to(site_url('daftar/' . ($n + 1)));
     }
 
     /**
-     * Alur pendaftaran (04_CONTROLLER_ROUTE.md):
-     * metrik sandi dihitung lebih dulu, lalu validasi penuh, lalu
-     * SessionService::registerAndStart() yang membuat akun + sesi pertama.
+     * Langkah 3: metrik sandi lebih dulu, validasi ulang langkah 1–2 dari
+     * session, validasi akun, lalu SessionService::registerAndStart().
+     *
+     * @param array<string, mixed> $input
      */
-    public function store(): RedirectResponse
+    private function register(array $input): RedirectResponse
     {
-        $study    = model(ResearchStudyModel::class)->requireActiveStudy();
-        $post     = $this->request->getPost();
-        $username = model(ParticipantModel::class)->normalizeUsername((string) ($post['username'] ?? ''));
-        $password = (string) ($post['password'] ?? '');
+        model(ResearchStudyModel::class)->requireActiveStudy();
 
-        $input                = is_array($post) ? $post : [];
-        $input['username']    = $username;
-        $input['school_npsn'] = (string) preg_replace('/\s+/', '', (string) ($input['school_npsn'] ?? ''));
-        // Sasaran penelitian: kelas 5 SD/MI saja; formulir tidak menawarkan kelas lain.
-        $input['class_level'] = config('Gelita')->registrationClass;
+        $username = model(ParticipantModel::class)->normalizeUsername((string) ($input['username'] ?? ''));
+        $password = (string) ($input['password'] ?? '');
 
-        // 1–3. metrik literasi keamanan digital, dihitung sebelum validasi lain
+        $input['username'] = $username;
+
+        // Metrik literasi keamanan digital, dihitung sebelum validasi lain
         $check = (new PasswordPolicy())->check($password, $username);
 
         if (session('reg_first_criteria') === null) {
@@ -142,109 +161,133 @@ class RegisterController extends BaseController
             session()->set('reg_weak_count', (int) session('reg_weak_count') + 1);
         }
 
-        // 4. validasi penuh
-        if (! $this->validateData($input, $this->rules($input), $this->messages($check))) {
-            return $this->backToForm($input, $this->validator->getErrors());
+        // Pertahanan bila session diubah: langkah 1–2 divalidasi ulang
+        $wizard = $this->wizard();
+
+        foreach ([1, 2] as $step) {
+            $saved = $this->normalize($step, (array) ($wizard[(string) $step] ?? []));
+
+            if (! $this->validateData($saved, $this->rulesFor($step, $saved), $this->messages())) {
+                $errors = $this->validator->getErrors();
+                unset($wizard[(string) $step]);
+                session()->set(self::WIZARD, $wizard);
+
+                return $this->backToStep($step, $saved, $errors);
+            }
+
+            $wizard[(string) $step] = $saved;
         }
 
-        if ((int) $study['require_consent'] === 1 && ! is_array(session('reg_consent'))) {
-            return redirect()->to(site_url('persetujuan'));
+        if (! $this->validateData($input, $this->rulesFor(3, $input), $this->messages($check))) {
+            return $this->backToStep(3, $input, $this->validator->getErrors());
         }
 
-        // 5. buat akun + peserta + sesi pertama
-        $consent = (array) (session('reg_consent') ?? []);
-        $region  = $this->verifiedRegion($input);
-        $byNpsn  = service('schoolDirectory')->requiresNpsn($region['country_code'], $region['province_code']);
-        $manual  = $byNpsn && ! empty($input['school_manual']);
+        $about  = $wizard['1'];
+        $school = $wizard['2'];
+        $region = $this->verifiedRegion($school);
+        $byNpsn = service('schoolDirectory')->requiresNpsn($region['country_code'], (string) $region['province_code']);
+        $manual = $byNpsn && ! empty($school['school_manual']);
 
         $result = service('sessionService')->registerAndStart([
-            'username'                  => $username,
-            'password'                  => $password,
-            'display_name'              => $input['display_name'] ?? null,
-            'age'                       => $input['age'] ?? null,
-            'gender'                    => $input['gender'] ?? null,
-            'class_level'               => $input['class_level'] ?? null,
+            'username'      => $username,
+            'password'      => $password,
+            'display_name'  => $about['display_name'] ?? null,
+            'age'           => $about['age'] ?? null,
+            'gender'        => $about['gender'] ?? null,
+            // Sasaran penelitian: kelas 5 SD/MI saja; tidak ada isian kelas.
+            'class_level'   => config('Gelita')->registrationClass,
             // NPSN hanya berlaku di provinsi berdirektori; nama hanya bila bukan jalur NPSN
-            'school_npsn'               => $byNpsn ? ($input['school_npsn'] ?? null) : null,
-            'school_name'               => $byNpsn && ! $manual ? null : ($input['school_name'] ?? null),
-            'country_code'              => $region['country_code'],
-            'country_name'              => $region['country_name'],
-            'province_code'             => $region['province_code'],
-            'province_name'             => $region['province_name'],
-            'district_code'             => $region['district_code'],
-            'district_name'             => $region['district_name'],
-            'phase_code'                => $input['phase'] ?? null,
-            'locale'                    => $input['locale'] ?? $this->locale,
-            'participant_consented'     => $consent['participant_consented'] ?? 1,
-            'parent_guardian_consented' => $consent['parent_guardian_consented'] ?? 0,
-            'guardian_name'             => $consent['guardian_name'] ?? null,
-            'consent_version'           => $consent['consent_version'] ?? self::CONSENT_VERSION,
-            'consent_text'              => $consent['consent_text'] ?? $this->consentText($study),
-            'registration_metrics'      => [
+            'school_npsn'   => $byNpsn ? ($school['school_npsn'] ?? null) : null,
+            'school_name'   => $byNpsn && ! $manual ? null : ($school['school_name'] ?? null),
+            'country_code'  => $region['country_code'],
+            'country_name'  => $region['country_name'],
+            'province_code' => $region['province_code'],
+            'province_name' => $region['province_name'],
+            'district_code' => $region['district_code'],
+            'district_name' => $region['district_name'],
+            'locale'        => $input['locale'] ?? $this->locale,
+            'assent'        => ! empty($input['assent']),
+            'registration_metrics' => [
                 'first_submit_criteria' => session('reg_first_criteria'),
                 'weak_submit_count'     => (int) (session('reg_weak_count') ?? 0),
             ],
             'device' => $this->deviceInfo(),
         ]);
 
-        // 6–7. metrik pendaftaran selesai dipakai; sesi PHP sudah diperbarui service
-        session()->remove(['reg_first_criteria', 'reg_weak_count', 'reg_consent']);
+        // Data wizard & metrik selesai dipakai; sesi PHP sudah diperbarui service
+        session()->remove([self::WIZARD, 'reg_first_criteria', 'reg_weak_count']);
 
-        // 8. sambutan; nama pengguna ditampilkan, kata sandi tidak pernah.
-        // Kunci flash tersendiri: intro menampilkannya sebagai kartu sambutan,
-        // bukan toast yang memudar.
+        // Sambutan; nama pengguna ditampilkan, kata sandi tidak pernah.
         return redirect()->to(site_url('intro'))->with('welcome', lang('Game.registerWelcome', [
             $result['participant']->username,
         ]));
     }
 
     /**
+     * Aturan validasi per langkah.
+     *
      * @param array<string, mixed> $input
      *
      * @return array<string, string>
      */
-    private function rules(array $input): array
+    public function rulesFor(int $n, array $input = []): array
     {
-        $byNpsn = service('schoolDirectory')->requiresNpsn((string) ($input['country_code'] ?? ''), (string) ($input['province_code'] ?? ''))
-            && empty($input['school_manual']);
+        $config = config('Gelita');
+        [$minAge, $maxAge] = $config->registrationAge;
+
+        if ($n === 1) {
+            return [
+                'display_name' => 'required|min_length[2]|max_length[150]',
+                'age'          => 'required|integer|greater_than_equal_to[' . $minAge . ']|less_than_equal_to[' . $maxAge . ']',
+                'gender'       => 'required|in_list[' . implode(',', $config->genders) . ']',
+            ];
+        }
+
+        if ($n === 2) {
+            $byNpsn = service('schoolDirectory')->requiresNpsn((string) ($input['country_code'] ?? ''), (string) ($input['province_code'] ?? ''))
+                && empty($input['school_manual']);
+
+            return [
+                'country_code'  => 'required|max_length[5]',
+                'province_code' => 'required_without[country_other]|permit_empty|max_length[10]',
+                'district_code' => 'required_without[country_other]|permit_empty|max_length[10]',
+                'country_other' => 'permit_empty|max_length[100]',
+                'school_npsn'   => $byNpsn ? 'required|is_natural|exact_length[8]|known_npsn|allowed_school_stage' : 'permit_empty|max_length[20]',
+                'school_manual' => 'permit_empty|in_list[1]',
+                'school_name'   => $byNpsn ? 'permit_empty|max_length[200]' : 'required|min_length[3]|max_length[200]',
+            ];
+        }
 
         return [
-            'display_name'     => 'required|min_length[2]|max_length[150]',
-            'age'              => 'required|integer|greater_than[4]|less_than[81]',
-            'gender'           => 'required|in_list[laki-laki,perempuan,lainnya]',
-            'class_level'      => 'required|in_list[' . config('Gelita')->registrationClass . ']',
-            'school_npsn'      => $byNpsn ? 'required|is_natural|exact_length[8]|known_npsn|allowed_school_stage' : 'permit_empty|max_length[20]',
-            'school_manual'    => 'permit_empty|in_list[1]',
-            'school_name'      => $byNpsn ? 'permit_empty|max_length[200]' : 'required|min_length[3]|max_length[200]',
-            'country_code'     => 'required|max_length[5]',
-            'province_code'    => 'required_without[country_other]|permit_empty|max_length[10]',
-            'district_code'    => 'required_without[country_other]|permit_empty|max_length[10]',
-            'country_other'    => 'permit_empty|max_length[100]',
-            'phase'            => 'permit_empty|in_list[umum,pretest,posttest]',
-            'locale'           => 'permit_empty|valid_locale',
             'username'         => 'required|valid_username|not_reserved_username|is_unique[participants.username]',
             'password'         => 'required|strong_password[username]',
             'password_confirm' => 'required|matches[password]',
+            'assent'           => 'required|in_list[1]',
+            'locale'           => 'permit_empty|valid_locale',
         ];
     }
 
     /**
-     * @param array{contains_username: bool} $check
+     * @param array{contains_username?: bool} $check
      *
      * @return array<string, array<string, string>>
      */
-    private function messages(array $check): array
+    private function messages(array $check = []): array
     {
         return [
-            'school_npsn' => [
-                'required'     => lang('Game.schoolNpsnRequired'),
-                'is_natural'   => lang('Game.schoolNpsnFormat'),
-                'exact_length' => lang('Game.schoolNpsnFormat'),
-                'known_npsn'   => lang('Game.schoolNpsnUnknown'),
-                'allowed_school_stage' => lang('Game.schoolStageNotAllowed'),
+            'age' => [
+                'greater_than_equal_to' => lang('Game.ageRange', config('Gelita')->registrationAge),
+                'less_than_equal_to'    => lang('Game.ageRange', config('Gelita')->registrationAge),
             ],
-            'class_level' => [
-                'in_list' => lang('Game.classOnly'),
+            'gender' => [
+                'in_list' => lang('Game.genderRequired'),
+            ],
+            'school_npsn' => [
+                'required'             => lang('Game.schoolNpsnRequired'),
+                'is_natural'           => lang('Game.schoolNpsnFormat'),
+                'exact_length'         => lang('Game.schoolNpsnFormat'),
+                'known_npsn'           => lang('Game.schoolNpsnUnknown'),
+                'allowed_school_stage' => lang('Game.schoolStageNotAllowed'),
             ],
             'school_name' => [
                 'required'   => lang('Game.schoolNameRequired'),
@@ -254,28 +297,85 @@ class RegisterController extends BaseController
                 'is_unique' => lang('Game.usernameTaken'),
             ],
             'password' => [
-                'strong_password' => $check['contains_username']
+                'strong_password' => ! empty($check['contains_username'])
                     ? lang('Auth.containsUsername')
                     : lang('Auth.notStrongSubmit'),
             ],
             'password_confirm' => [
                 'matches' => lang('Auth.notMatch'),
             ],
+            'assent' => [
+                'required' => lang('Game.assentRequired'),
+                'in_list'  => lang('Game.assentRequired'),
+            ],
         ];
     }
 
     /**
-     * Kembali ke formulir dengan galat per field. Kata sandi sengaja tidak
+     * Langkah pertama yang belum lengkap (1, 2, atau 3).
+     */
+    public function firstIncomplete(): int
+    {
+        $wizard = $this->wizard();
+
+        foreach ([1, 2] as $step) {
+            if (! isset($wizard[(string) $step]) || ! is_array($wizard[(string) $step])) {
+                return $step;
+            }
+        }
+
+        return 3;
+    }
+
+    /**
+     * Isian langkah 1–2 dari session PHP.
+     *
+     * @return array<string, array<string, mixed>>
+     */
+    public function wizard(): array
+    {
+        $wizard = session(self::WIZARD);
+
+        return is_array($wizard) ? array_intersect_key($wizard, ['1' => true, '2' => true]) : [];
+    }
+
+    /**
+     * Rapikan isian satu langkah: hanya kolom milik langkah itu, teks
+     * dipangkas, NPSN tanpa spasi.
+     *
+     * @param array<string, mixed> $input
+     *
+     * @return array<string, mixed>
+     */
+    private function normalize(int $n, array $input): array
+    {
+        $out = [];
+
+        foreach (self::STEP_FIELDS[$n] ?? [] as $field) {
+            $value       = $input[$field] ?? '';
+            $out[$field] = is_scalar($value) ? trim((string) $value) : '';
+        }
+
+        if ($n === 2) {
+            $out['school_npsn']  = (string) preg_replace('/\s+/', '', $out['school_npsn']);
+            $out['country_code'] = $out['country_code'] !== '' ? $out['country_code'] : 'ID';
+        }
+
+        return $out;
+    }
+
+    /**
+     * Kembali ke langkah $n dengan galat per isian. Kata sandi sengaja tidak
      * ikut `old()`: siswa mengetik ulang, dan sandi tidak pernah masuk session.
      *
      * @param array<string, mixed>  $input
      * @param array<string, string> $errors
      */
-    private function backToForm(array $input, array $errors): RedirectResponse
+    private function backToStep(int $n, array $input, array $errors): RedirectResponse
     {
-        unset($input['password'], $input['password_confirm']);
+        unset($input['password'], $input['password_confirm'], $input['device_json']);
 
-        return redirect()->to(site_url('daftar'))
+        return redirect()->to(site_url('daftar/' . $n))
             ->with('_ci_old_input', ['get' => [], 'post' => $input])
             ->with('errors', $errors);
     }
@@ -332,11 +432,5 @@ class RegisterController extends BaseController
             'district_code' => $district === null ? null : $districtCode,
             'district_name' => $district['name'] ?? null,
         ];
-    }
-
-    /** @param array<string, mixed> $study */
-    private function consentText(array $study): string
-    {
-        return lang('Game.consentBody', [$study['name'] ?? 'GELITA']);
     }
 }

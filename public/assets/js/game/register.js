@@ -1,5 +1,11 @@
 /**
- * Form pendaftaran bertingkat.
+ * Pendaftaran tiga langkah (/daftar/1, /2, /3 — form POST biasa per
+ * langkah; server menyimpan isian langkah 1–2 dan menjaga urutannya).
+ * Perilaku dipasang menurut `data-step` formulir:
+ *
+ *   langkah 1  tandai kolom wajib kosong
+ *   langkah 2  filter wilayah + NPSN
+ *   langkah 3  cek nama pengguna, pengukur sandi, `device_json` (core/device.js)
  *
  * - Negara/provinsi/kabupaten: server sudah merender semua kabupaten sebagai
  *   <optgroup data-province> (dari wilayah-id.json yang dibaca server), jadi
@@ -18,13 +24,14 @@
  * - Kolom wajib yang kosong ditandai .has-error dan digulirkan ke tampak;
  *   validasi yang mengikat tetap di server.
  *
- * Form ini POST biasa, bukan AJAX. Tombol Daftar TIDAK dinonaktifkan walau
+ * Setiap langkah POST biasa, bukan AJAX. Tombol Daftar TIDAK dinonaktifkan walau
  * sandi belum kuat: penolakan server adalah bagian dari pembelajaran dan
  * tercatat sebagai pw_weak_submit_count.
  */
 import { $, $$, debounce, el, scrollToCenter } from '../core/dom.js';
 import { apiRequest } from '../core/api.js';
 import { initPasswordField } from './password-meter.js';
+import { attachDeviceField } from '../core/device.js';
 
 const USERNAME_PATTERN = /^[a-z0-9._]{3,30}$/;
 const NPSN_PATTERN = /^\d{8}$/;
@@ -271,22 +278,23 @@ export function preventDoubleSubmit(form) {
   });
 }
 
-function fillDevice(form) {
-  const screenInput = $('[data-device-screen]', form);
-  const touchInput = $('[data-device-touch]', form);
-  if (screenInput) screenInput.value = `${window.screen.width}x${window.screen.height}`;
-  if (touchInput) touchInput.value = window.matchMedia('(pointer: coarse)').matches || navigator.maxTouchPoints > 0 ? '1' : '0';
-}
-
 export function initRegister() {
   const form = $('form.register-form');
   if (!form) return;
 
-  initRegion(form);
-  initSchool(form);
-  initUsername(form);
-  initPasswordField($('.password-field', form));
+  const step = form.dataset.step ?? '';
+
+  if (step === '2') {
+    initRegion(form);
+    initSchool(form);
+  }
+
+  if (step === '3') {
+    initUsername(form);
+    initPasswordField($('.password-field', form));
+    attachDeviceField(form); // sebelum penjaga kirim-ganda
+  }
+
   markInvalidFields(form);
   preventDoubleSubmit(form);
-  fillDevice(form);
 }

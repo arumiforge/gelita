@@ -30,6 +30,7 @@ import { emit, flush } from '../core/events.js';
 import { Sfx } from '../core/audio.js';
 import { playCurtain } from '../core/curtain.js';
 import { initNarrator } from './narrator.js';
+import { overlayOpened } from '../core/device.js';
 
 /** Lapisan halaman yang dinonaktifkan selama overlay Kenali terbuka. */
 const PAGE_LAYERS = 'body > .skip-link, body > .hud, body > main, body > .nav-bar';
@@ -68,6 +69,7 @@ function initRegionIntros(mapStory) {
     const entry = intros.get(code);
     if (!entry) return;
     if (open) close();
+    overlayOpened('kenal', { level: code });
 
     Sfx.unlock(); // di dalam ketukan: elemen narasi bersama terbuka (Safari iPad)
     mapStory?.stop();

@@ -38,8 +38,7 @@ class ReflectionController extends BaseGameController
 
     /**
      * Ringkasan perjalanan untuk Balai Refleksi, dari attempt terbaik tiap node
-     * yang sudah dinilai ScoringService — rata-rata tampilan, bukan angka
-     * penelitian baru.
+     * — angka tampilan untuk siswa, bukan angka penelitian.
      *
      * @return array<string, mixed>
      */
@@ -52,8 +51,9 @@ class ReflectionController extends BaseGameController
         $regions = [];
         $engines = [];
         $missed  = null;
-        $sum     = 0.0;
-        $correct = 0;
+        $correct   = 0;
+        $firstPass = 0;
+        $scorable  = 0;
 
         foreach ($content->levels() as $level) {
             $values = [];
@@ -65,10 +65,11 @@ class ReflectionController extends BaseGameController
                     continue;
                 }
 
-                $accuracy  = (float) $attempt->first_pass_accuracy;
-                $values[]  = $accuracy;
-                $sum      += $accuracy;
-                $correct  += (int) $attempt->final_correct;
+                $accuracy   = $attempt->firstPassPercent();
+                $values[]   = $accuracy;
+                $correct   += (int) $attempt->final_correct;
+                $firstPass += (int) $attempt->first_pass_correct;
+                $scorable  += (int) $attempt->scorable_items;
 
                 $engines[(string) $node->engine_type][] = $accuracy;
 
@@ -93,7 +94,8 @@ class ReflectionController extends BaseGameController
         }
 
         return [
-            'first_pass'    => $best === [] ? 0.0 : round($sum / count($best), 1),
+            'first_pass'    => $firstPass,
+            'scorable'      => $scorable,
             'completed'     => count($best),
             'duration_ms'   => (int) $session->duration_ms,
             'correct_items' => $correct,

@@ -1,16 +1,15 @@
 /**
- * Engine `puzzle` — dua mode pada markup game/challenge/puzzle.php:
+ * Engine `puzzle` — Susun Gambar pada markup game/challenge/puzzle.php.
  *
- * arrange  Papan n × n keping SVG (kotak atau jigsaw). Ketuk dua keping
- *          untuk menukarnya (wajib, paling andal di tablet); seret-lepas
- *          HTML5 sebagai tambahan; panah untuk berpindah keping, Enter/Spasi
- *          untuk memilih/menukar. Slot (tombol) tetap di tempat; yang
- *          berpindah adalah gambar keping (.piece-art) beserta data-piece.
- *          Keping tidak bernomor; label pembaca layar menyebut letak slot.
- *          Client hanya menukar posisi — tidak menilai apa pun.
- * ordering Daftar kartu teks: tombol ▲▼ (wajib untuk keyboard) dan seret-lepas.
+ * Papan n × n keping SVG (kotak atau jigsaw). Ketuk dua keping untuk
+ * menukarnya (wajib, paling andal di tablet); seret-lepas HTML5 sebagai
+ * tambahan; panah untuk berpindah keping, Enter/Spasi untuk memilih/menukar.
+ * Slot (tombol) tetap di tempat; yang berpindah adalah gambar keping
+ * (.piece-art) beserta data-piece. Keping tidak bernomor; label pembaca layar
+ * menyebut letak slot. Client hanya menukar posisi — tidak menilai apa pun.
+ * Setiap tukar keping dicatat sebagai event `answer_selected` (action swap).
  *
- * "Periksa" → POST /check { answers: [{ item_id, answer: { order } }] }.
+ * "Cek jawabanku" → POST /check { answers: [{ item_id, answer: { order } }] }.
  * `detail[item].pieces_correct` (dan `misplaced` untuk gambar) dihitung
  * server. Setelah gambar utuh, keterangannya (#puzzle-caption) ditampilkan.
  */
@@ -66,6 +65,7 @@ function mountArrange(ctx, wrap) {
     pulse(b);
     Sfx.play('click');
     announce(ctx.t('piecesSwapped', a.dataset.pos ?? '', b.dataset.pos ?? ''));
+    ctx.selected(itemId, { action: 'swap', value: null, from: Number(a.dataset.slot), to: Number(b.dataset.slot) });
   };
 
   const tap = (piece) => {
@@ -176,120 +176,8 @@ function mountArrange(ctx, wrap) {
   });
 }
 
-// ----------------------------------------------------------------- ordering
-
-function mountOrdering(ctx, wrap) {
-  const list = $('#order-list', wrap);
-  const button = $('#btn-check', wrap);
-  const itemId = Number(wrap.dataset.item);
-  let solved = false;
-
-  const cards = () => $$('.order-card', list);
-
-  const renumber = () => {
-    cards().forEach((card, index) => {
-      const no = $('.order-no', card);
-      if (no) no.textContent = String(index + 1);
-      card.classList.remove('is-correct', 'is-wrong');
-    });
-  };
-
-  const move = (card, direction, focusSelector) => {
-    if (solved) return;
-    const sibling = direction === 'up' ? card.previousElementSibling : card.nextElementSibling;
-    if (!sibling) return;
-    if (direction === 'up') sibling.before(card);
-    else sibling.after(card);
-    renumber();
-    pulse(card);
-    Sfx.play('click');
-    const position = cards().indexOf(card) + 1;
-    announce(ctx.t('cardMoved', position, cards().length));
-    // Tetap fokus pada tombol yang sama; bila di ujung, pindah ke tombol arah sebaliknya
-    const same = $(focusSelector, card);
-    const edge = (direction === 'up' && position === 1) || (direction === 'down' && position === cards().length);
-    (edge ? $(`[data-move="${direction === 'up' ? 'down' : 'up'}"]`, card) : same)?.focus();
-  };
-
-  list.addEventListener('click', (event) => {
-    const control = event.target.closest('[data-move]');
-    if (!control) return;
-    move(control.closest('.order-card'), control.dataset.move, `[data-move="${control.dataset.move}"]`);
-  });
-
-  // Seret-lepas kartu
-  let dragged = null;
-  list.addEventListener('dragstart', (event) => {
-    const card = event.target.closest('.order-card');
-    if (!card || solved) return;
-    dragged = card;
-    card.classList.add('is-dragging');
-    event.dataTransfer.effectAllowed = 'move';
-    event.dataTransfer.setData('text/plain', card.dataset.piece);
-  });
-  list.addEventListener('dragover', (event) => {
-    const over = event.target.closest('.order-card');
-    if (!dragged || !over || over === dragged) return;
-    event.preventDefault();
-    const rect = over.getBoundingClientRect();
-    if (event.clientY < rect.top + rect.height / 2) over.before(dragged);
-    else over.after(dragged);
-  });
-  list.addEventListener('drop', (event) => event.preventDefault());
-  list.addEventListener('dragend', () => {
-    if (!dragged) return;
-    dragged.classList.remove('is-dragging');
-    dragged = null;
-    renumber();
-  });
-
-  ctx.currentItemId = () => itemId;
-
-  button?.addEventListener('click', async () => {
-    if (solved) return;
-    const order = cards().map((card) => card.dataset.piece);
-
-    ctx.setBusy(button, true);
-    let result;
-    try {
-      result = await ctx.check([{ item_id: itemId, answer: { order } }]);
-    } catch (error) {
-      ctx.setBusy(button, false);
-      await ctx.report(error, { onNetwork: () => ctx.networkPause(button) });
-      return;
-    }
-    ctx.setBusy(button, false);
-
-    const ok = Boolean(result.results?.[itemId]);
-    const detail = result.detail?.[itemId] ?? {};
-    ctx.tally({ correct: result.correct_count, wrong: result.total - result.correct_count });
-
-    if (ok) {
-      solved = true;
-      cards().forEach((card) => {
-        card.classList.add('is-correct');
-        card.draggable = false;
-        $$('button', card).forEach((b) => { b.disabled = true; });
-      });
-      button.disabled = true;
-    }
-
-    const outcome = await ctx.showCheckResult(result, {
-      okTitle: ctx.t('orderOkTitle'),
-      okText: ctx.t('orderOkText'),
-      partialTitle: ctx.t('orderWrongTitle'),
-      partialText: detail.pieces_correct !== undefined
-        ? ctx.t('orderWrongText', detail.pieces_correct, cards().length)
-        : ctx.t('orderWrongPlain'),
-    });
-
-    if (outcome === 'fix') $('[data-move]', list)?.focus();
-  });
-}
-
 export function mount(ctx) {
   const wrap = $('#puzzle-wrap', ctx.section);
   if (!wrap) return;
-  if (wrap.dataset.mode === 'ordering') mountOrdering(ctx, wrap);
-  else mountArrange(ctx, wrap);
+  mountArrange(ctx, wrap);
 }

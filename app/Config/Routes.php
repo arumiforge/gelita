@@ -17,23 +17,24 @@ $routes->get('/', 'Game\HomeController::index');
 $routes->group('', ['namespace' => 'App\Controllers\Game'], static function ($routes): void {
     // Tanpa login
     $routes->get('mulai', 'HomeController::start');
-    $routes->get('persetujuan', 'RegisterController::consent');
-    $routes->post('persetujuan', 'RegisterController::storeConsent');
-    $routes->get('daftar', 'RegisterController::form');
-    $routes->post('daftar', 'RegisterController::store');
+    // Pendaftaran 3 langkah (Dok 1 §10); halaman persetujuan lama dialihkan
+    $routes->get('persetujuan', 'RegisterController::consentMoved');
+    $routes->get('daftar', 'RegisterController::index');
+    $routes->get('daftar/(:num)', 'RegisterController::step/$1');
+    $routes->post('daftar/(:num)', 'RegisterController::saveStep/$1');
     $routes->get('masuk', 'LoginController::form');
     $routes->post('masuk', 'LoginController::login');
     $routes->post('bahasa', 'HomeController::setLocale');
 
     // Sudah login, belum tentu boleh bermain (mis. wajib ganti sandi)
-    $routes->group('', ['filter' => 'participantAuth'], static function ($routes): void {
+    $routes->group('', ['filter' => ['participantAuth', 'screenView']], static function ($routes): void {
         $routes->get('ganti-sandi', 'LoginController::changePasswordForm');
         $routes->post('ganti-sandi', 'LoginController::changePassword');
         $routes->get('keluar', 'LoginController::logout');
     });
 
-    // Login + sandi sudah sah + sesi permainan aktif
-    $routes->group('', ['filter' => 'gameSession'], static function ($routes): void {
+    // Login + sandi sudah sah + sesi permainan aktif; setiap layar → screen_viewed
+    $routes->group('', ['filter' => ['gameSession', 'screenView']], static function ($routes): void {
         $routes->get('gerbang', 'GateController::index');
         $routes->get('gerbang/peta', 'GateController::map');
         $routes->get('intro', 'GateController::intro');

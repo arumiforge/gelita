@@ -35,8 +35,7 @@ $totalNodes = count(service('contentRepository')->nodesForLevel($level->id));
         <?= component('star-rating', ['stars' => (int) $best->stars, 'size' => 'lg']) ?>
       </div>
       <div class="stat-grid">
-        <?= component('stat-tile', ['label' => lang('Game.score'), 'value' => fmt_num($best->score, 0, $locale), 'icon' => 'star']) ?>
-        <?= component('stat-tile', ['label' => lang('Game.accuracyFirst'), 'value' => fmt_pct($best->first_pass_accuracy, false, 0), 'icon' => 'target']) ?>
+        <?= component('stat-tile', ['label' => lang('Game.firstPass'), 'value' => first_pass_text($best, $locale, $node->engine_type), 'icon' => 'target']) ?>
         <?= component('stat-tile', ['label' => lang('Game.timeSpent'), 'value' => ms_to_human((int) $best->duration_ms), 'icon' => 'clock']) ?>
         <?= component('stat-tile', ['label' => lang('Game.checks'), 'value' => (string) (int) $best->check_count, 'icon' => 'check']) ?>
       </div>
@@ -54,9 +53,8 @@ $totalNodes = count(service('contentRepository')->nodesForLevel($level->id));
             <th scope="col"><?= esc(lang('Game.attempt')) ?></th>
             <th scope="col"><?= esc(lang('Game.startedAt')) ?></th>
             <th scope="col" class="is-num"><?= esc(lang('Game.duration')) ?></th>
-            <th scope="col" class="is-num"><?= esc(lang('Game.accuracyFirst')) ?></th>
+            <th scope="col"><?= esc(lang('Game.firstPass')) ?></th>
             <th scope="col" class="is-num"><?= esc(lang('Game.checks')) ?></th>
-            <th scope="col" class="is-num"><?= esc(lang('Game.score')) ?></th>
             <th scope="col"><?= esc(lang('Game.stars')) ?></th>
           </tr>
         </thead>
@@ -67,9 +65,8 @@ $totalNodes = count(service('contentRepository')->nodesForLevel($level->id));
               <th scope="row">#<?= esc($attempt->attempt_no) ?><?php if ($isBest): ?> <span class="badge is-completed"><?= esc(lang('Game.best')) ?></span><?php endif ?></th>
               <td><?= esc(fmt_date($attempt->started_at, false, $locale)) ?></td>
               <td class="is-num"><?= esc(ms_to_human((int) $attempt->duration_ms)) ?></td>
-              <td class="is-num"><?= esc(fmt_pct($attempt->first_pass_accuracy, false, 0)) ?></td>
+              <td><?= $attempt->isCompleted() ? esc(first_pass_text($attempt, $locale, $node->engine_type)) : '—' ?></td>
               <td class="is-num"><?= esc((int) $attempt->check_count) ?></td>
-              <td class="is-num"><?= esc(fmt_num($attempt->score, 0, $locale)) ?></td>
               <td><?= stars_html((int) $attempt->stars) ?></td>
             </tr>
           <?php endforeach ?>
