@@ -60,11 +60,31 @@ final class ExportRulesTest extends CIUnitTestCase
         $this->assertNotContains('answer_key', $this->export->columns('Item Responses', true, false));
     }
 
-    public function testGameplaySheetsCarryPhase(): void
+    public function testGameplaySheetsHaveNoPhaseAndCarryRawTryData(): void
     {
-        foreach (['Sessions', 'Levels', 'Challenge Summary', 'Item Responses', 'Raw Events', 'Audio Usage', 'Indicators', 'Feedback'] as $sheet) {
-            $this->assertContains('phase_code', $this->export->columns($sheet, true, true), "{$sheet} wajib punya kolom fase (FITUR 18)");
+        foreach (ExportService::SHEETS as $sheet) {
+            $columns = $this->export->columns($sheet, true, true);
+
+            $this->assertNotContains('phase_code', $columns, "{$sheet}: fase penelitian sudah dihapus (Dok 1 §5.1)");
+
+            foreach (['score', 'first_pass_accuracy', 'final_accuracy', 'independence', 'retry_count'] as $gone) {
+                $this->assertNotContains($gone, $columns, "{$sheet}: rasio/skor turunan tidak lagi disimpan (Dok 1 §5.2)");
+            }
         }
+
+        $summary = $this->export->columns('Challenge Summary', true, true);
+
+        foreach (['variant_group', 'completion_reason', 'max_tries', 'first_pass_correct', 'final_correct', 'scorable_items', 'stars'] as $column) {
+            $this->assertContains($column, $summary, "Challenge Summary wajib punya {$column}");
+        }
+
+        $responses = $this->export->columns('Item Responses', true, true);
+
+        foreach (['variant_group', 'try_count', 'solved_on_try'] as $column) {
+            $this->assertContains($column, $responses, "Item Responses wajib punya {$column}");
+        }
+
+        $this->assertContains('assented_at', $this->export->columns('Participants', true, true));
     }
 
     public function testTeacherNeverGetsRawEvents(): void
@@ -85,6 +105,7 @@ final class ExportRulesTest extends CIUnitTestCase
             'date_from'   => '2026-01-01',
             'date_to'     => '2026-13-01; DROP',
             'phase_code'  => ' pretest ',
+            'level_id'    => ' 3 ',
             'password'    => 'x',
             'class_level' => '',
         ], 7);
@@ -93,7 +114,8 @@ final class ExportRulesTest extends CIUnitTestCase
         $this->assertSame(1, $filters['study_id']);
         $this->assertSame('2026-01-01', $filters['date_from']);
         $this->assertArrayNotHasKey('date_to', $filters);
-        $this->assertSame('pretest', $filters['phase_code']);
+        $this->assertArrayNotHasKey('phase_code', $filters, 'filter fase sudah tidak ada');
+        $this->assertSame(3, $filters['level_id']);
         $this->assertArrayNotHasKey('password', $filters);
         $this->assertArrayNotHasKey('class_level', $filters);
 
@@ -107,8 +129,9 @@ final class ExportRulesTest extends CIUnitTestCase
         $this->assertSame(['participant_id' => 4], $retention->normalizeScope(['participant_id' => '4', 'study_id' => '1', 'phase_code' => 'pretest']));
         $this->assertSame(['session_id' => 9], $retention->normalizeScope(['session_id' => '9', 'date_to' => '2026-01-01']));
         $this->assertSame(
-            ['study_id' => 1, 'phase_code' => 'posttest', 'date_to' => '2026-06-30'],
+            ['study_id' => 1, 'date_to' => '2026-06-30'],
             $retention->normalizeScope(['study_id' => '1', 'phase_code' => 'posttest', 'date_from' => 'kemarin', 'date_to' => '2026-06-30']),
+            'fase sudah tidak ada; tanggal tidak sah dibuang',
         );
         $this->assertSame(['study_id' => 1], $retention->normalizeScope(['study_id' => '1', 'phase_code' => 'fase-lain']));
         $this->assertNull($retention->normalizeScope(['participant_id' => '0', 'session_id' => '', 'study_id' => '-3']));

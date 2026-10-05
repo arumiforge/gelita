@@ -6,7 +6,7 @@ use App\Services\RetentionService;
 use CodeIgniter\Test\CIUnitTestCase;
 
 /**
- * Tahap 7: kelima command `gelita:*` aktif (tidak lagi kerangka "belum aktif"),
+ * Tahap 7: command `gelita:*` aktif (tidak lagi kerangka "belum aktif"),
  * service baru terdaftar, dan templat PDF meng-escape setiap nilai — mPDF
  * memproses HTML, jadi keluaran mentah adalah lubang injeksi.
  *
@@ -19,7 +19,7 @@ final class Stage7WiringTest extends CIUnitTestCase
         'gelita:content:verify'  => 'App\Commands\ContentVerify',
         'gelita:media:scan'      => 'App\Commands\MediaScan',
         'gelita:retention:run'   => 'App\Commands\RetentionRun',
-        'gelita:score:recompute' => 'App\Commands\ScoreRecompute',
+        'gelita:reset'           => 'App\Commands\SystemReset',
     ];
 
     public function testGelitaCommandsAreDiscoveredAndActive(): void
@@ -39,11 +39,17 @@ final class Stage7WiringTest extends CIUnitTestCase
     public function testCommandsThatWriteTimeSyncTimezone(): void
     {
         // pre_system (tempat zona waktu DB disetel) tidak terpicu di CLI
-        foreach (['BankImport', 'MediaScan', 'RetentionRun', 'ScoreRecompute'] as $command) {
+        foreach (['BankImport', 'MediaScan', 'RetentionRun', 'SystemReset'] as $command) {
             $source = (string) file_get_contents(APPPATH . "Commands/{$command}.php");
 
             $this->assertStringContainsString('db_sync_timezone()', $source, $command);
         }
+    }
+
+    public function testScoreRecomputeIsGone(): void
+    {
+        $this->assertArrayNotHasKey('gelita:score:recompute', service('commands')->getCommands(), 'skor 0–100 sudah dihapus (Dok 1 §13.1)');
+        $this->assertFileDoesNotExist(APPPATH . 'Commands/ScoreRecompute.php');
     }
 
     public function testServicesAreRegistered(): void

@@ -1,7 +1,6 @@
 <?php
 
 use App\Entities\ChallengeItem;
-use App\Entities\ChallengeOption;
 use App\Libraries\AnswerText;
 use CodeIgniter\Test\CIUnitTestCase;
 
@@ -26,16 +25,6 @@ final class AnswerTextTest extends CIUnitTestCase
         $this->assertSame('gambar utuh (16 keping)', AnswerText::key($jigsaw));
     }
 
-    public function testChoiceAnswersShowLetterAndLabel(): void
-    {
-        $item = $this->item('single_choice', ['option_key' => 'mgl-4-01-b'], 'mgl-4-01');
-        $item->setLoadedOptions([$this->option('mgl-4-01-a', 'Bali'), $this->option('mgl-4-01-b', 'Candi Mendut', true)]);
-
-        $this->assertSame('B · Candi Mendut', AnswerText::key($item));
-        $this->assertSame('A · Bali', AnswerText::response($item, '{"option_key":"mgl-4-01-a"}'));
-        $this->assertSame('pilihan C', AnswerText::response($item, ['option_key' => 'mgl-4-01-c']), 'pilihan yang sudah dihapus tetap terbaca');
-    }
-
     public function testClozeAndVerdictAnswers(): void
     {
         $cloze = $this->item('fill_blank_bank', ['text_id' => 'sembilan', 'text_en' => 'nine']);
@@ -43,27 +32,29 @@ final class AnswerTextTest extends CIUnitTestCase
         $this->assertSame('sembilan', AnswerText::key($cloze), 'kunci rumpang bank kata dibaca dari text_id');
         $this->assertSame('enam', AnswerText::response($cloze, '{"text":"enam"}'));
 
-        $verdict = $this->item('verdict_reason', ['verdict' => 'pendapat']);
-        $this->assertSame('Pendapat', AnswerText::key($verdict));
-        $this->assertSame('Salah · alasan: candi dilarang dipanjat', AnswerText::response($verdict, ['verdict' => 'salah', 'reason_text' => 'candi dilarang dipanjat']));
-
-        $free = $this->item('fill_blank_free', ['accept_id' => ['Syailendra', 'Sailendra']]);
-        $this->assertSame('Syailendra / Sailendra', AnswerText::key($free));
+        $verdict = $this->item('verdict_card', ['verdict' => 'benar']);
+        $this->assertSame('Benar', AnswerText::key($verdict));
+        $this->assertSame('Salah', AnswerText::response($verdict, ['verdict' => 'salah']));
     }
 
-    public function testOrderingShowsCardsInPlace(): void
+    public function testFindObjectAnswers(): void
     {
-        $item = $this->item('ordering', ['order' => ['c', 'a', 'b']]);
+        $target = $this->item('find_object', ['target' => true]);
 
-        $this->assertSame('c, b, a (1 dari 3 kartu tepat)', AnswerText::response($item, ['order' => ['c', 'b', 'a']]));
-        $this->assertSame('c, a, b', AnswerText::key($item));
+        $this->assertSame('benda yang dicari', AnswerText::key($target));
+        $this->assertSame('benda yang dicari', AnswerText::response($target, ['item_id' => 7]));
+        $this->assertSame('salah pilih benda', AnswerText::response($target, ['item_id' => 9]));
     }
 
     public function testActivityDetailsBecomeSentences(): void
     {
         $this->assertSame(
-            'lewat: isi tantangan diperbarui · percobaan ke: 1',
+            'lewat: isi tantangan diperbarui · pengerjaan ke: 1',
             AnswerText::fromData('{"via":"content_changed","attempt_no":1}'),
+        );
+        $this->assertSame(
+            'cek ke: 2 · percobaan ke: 2 · benar: 3 · dari: 4 · kesempatan habis: tidak',
+            AnswerText::fromData(['check_no' => 2, 'try_no' => 2, 'correct_count' => 3, 'total' => 4, 'exhausted' => false]),
         );
         $this->assertSame('lama didengar: 1 menit 5 detik', AnswerText::fromData(['listened_ms' => 65_000]));
         $this->assertSame('ya', AnswerText::fromData(true));
@@ -84,13 +75,5 @@ final class AnswerTextTest extends CIUnitTestCase
         ]);
 
         return $item;
-    }
-
-    private function option(string $key, string $label, bool $correct = false): ChallengeOption
-    {
-        $option = new ChallengeOption();
-        $option->injectRawData(['option_key' => $key, 'label_id' => $label, 'label_en' => $label, 'is_correct' => $correct ? 1 : 0]);
-
-        return $option;
     }
 }

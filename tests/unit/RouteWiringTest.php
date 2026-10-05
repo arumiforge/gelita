@@ -14,7 +14,7 @@ final class RouteWiringTest extends CIUnitTestCase
 {
     private const CONTROLLER_COUNT = [
         'Game'  => 11,  // 10 controller + BaseGameController
-        'Admin' => 16,  // 15 controller + BaseAdminController
+        'Admin' => 15,  // 14 controller + BaseAdminController (AnalyticsController dihapus, Dok 1 §14)
         'Api'   => 10,  // 9 controller + BaseApiController
     ];
 
@@ -24,6 +24,9 @@ final class RouteWiringTest extends CIUnitTestCase
             '/'                           => 'Game\HomeController::index',
             'peta'                        => 'Game\MapController::kedu',
             'mulai'                       => 'Game\HomeController::start',
+            'persetujuan'                 => 'Game\RegisterController::consentMoved',
+            'daftar'                      => 'Game\RegisterController::index',
+            'daftar/([0-9]+)'             => 'Game\RegisterController::step/$1',
             'gerbang'                     => 'Game\GateController::index',
             'gerbang/peta'                => 'Game\GateController::map',
             'intro'                       => 'Game\GateController::intro',
@@ -46,7 +49,7 @@ final class RouteWiringTest extends CIUnitTestCase
             'admin/sekolah'               => 'Admin\SchoolController::index',
         ],
         'POST' => [
-            'daftar'                 => 'Game\RegisterController::store',
+            'daftar/([0-9]+)'        => 'Game\RegisterController::saveStep/$1',
             'masuk'                  => 'Game\LoginController::login',
             'api/events'             => 'Api\EventApiController::ingest',
             'admin/konten/verifikasi' => 'Admin\ContentController::verify',
@@ -119,16 +122,60 @@ final class RouteWiringTest extends CIUnitTestCase
         }
     }
 
-    /** Tahap 3: adegan wilayah tuntas dan penutup hanya untuk peserta dengan sesi permainan. */
+    /**
+     * Tahap 3: adegan wilayah tuntas dan penutup hanya untuk peserta dengan
+     * sesi permainan. Kelas 5 (Dok 1 §12.4): layar yang dibuka dicatat
+     * (`screen_viewed`) setelah gameSession lolos.
+     */
     public function testStoryScenesNeedAGameSession(): void
     {
         $routes = $this->routes();
         $routes->setHTTPVerb('GET');
 
         // getFiltersForRoute() menerima pola route, bukan URI
-        foreach (['tuntas/([^/]+)', 'penutup'] as $path) {
-            $this->assertSame(['gameSession'], $routes->getFiltersForRoute($path), $path);
+        foreach (['tuntas/([^/]+)', 'penutup', 'peta', 'pustaka'] as $path) {
+            $this->assertSame(['gameSession', 'screenView'], $routes->getFiltersForRoute($path), $path);
         }
+
+        $this->assertSame(['participantAuth', 'screenView'], $routes->getFiltersForRoute('ganti-sandi'));
+        $this->assertSame([], $routes->getFiltersForRoute('daftar/([0-9]+)'), 'pendaftaran belum punya sesi bermain');
+    }
+
+    /** Dok 1 §14: tidak ada lagi rute ke controller, view, atau fitur yang dihapus. */
+    public function testRemovedFeaturesHaveNoRoutes(): void
+    {
+        $routes = $this->routes();
+
+        foreach (['GET', 'POST'] as $method) {
+            foreach ($routes->getRoutes($method) as $from => $handler) {
+                $this->assertDoesNotMatchRegularExpression(
+                    '/AnalyticsController|RegisterController::(?:store|consent)\b|::(?:saveOptions|scoring)\b/',
+                    is_string($handler) ? $handler : '',
+                    "{$method} {$from}",
+                );
+                $this->assertDoesNotMatchRegularExpression(
+                    '#^(?:admin/analitik|admin/studi/skoring|admin/konten/item/.+/opsi|api/admin/(?:levels|nodes|items|indicators|prepost))#',
+                    $from,
+                    "{$method} {$from} sudah dihapus",
+                );
+            }
+        }
+
+        $this->assertFileDoesNotExist(APPPATH . 'Views/game/consent.php');
+        $this->assertFileDoesNotExist(APPPATH . 'Views/game/register.php');
+        $this->assertFileDoesNotExist(APPPATH . 'Views/game/challenge/pilihan.php');
+        $this->assertFileDoesNotExist(FCPATH . 'assets/js/engines/pilihan.js');
+        $this->assertFileDoesNotExist(FCPATH . 'assets/js/admin/charts.js');
+        $this->assertFileDoesNotExist(FCPATH . 'assets/vendor/echarts.min.js');
+    }
+
+    /** Alamat lama /persetujuan (tautan tersimpan) dialihkan permanen ke langkah 1. */
+    public function testConsentPageMovedPermanentlyToStepOne(): void
+    {
+        $response = (new App\Controllers\Game\RegisterController())->consentMoved();
+
+        $this->assertSame(301, $response->getStatusCode());
+        $this->assertStringEndsWith('/daftar/1', $response->getHeaderLine('Location'));
     }
 
     /** Ganti sandi sendiri: wajib login staf, tetapi terbuka untuk guru (bukan khusus admin). */
@@ -209,12 +256,12 @@ final class RouteWiringTest extends CIUnitTestCase
         }
     }
 
-    /** Lima view arena tantangan dipilih dari `engine_type` saat berjalan. */
+    /** Empat view arena tantangan dipilih dari `engine_type` saat berjalan. */
     public function testEveryChallengeEngineHasItsView(): void
     {
         $engines = config('Gelita')->engineTypes;
 
-        $this->assertCount(5, $engines);
+        $this->assertSame(['puzzle', 'rumpang', 'boleh', 'cari'], $engines);
 
         foreach ($engines as $engine) {
             $this->assertFileExists(APPPATH . 'Views/game/challenge/' . $engine . '.php');
