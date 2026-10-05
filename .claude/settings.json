@@ -1,0 +1,13 @@
+{
+  "env": {
+    "GIT_AUTHOR_NAME": "Arumi Studios",
+    "GIT_AUTHOR_EMAIL": "arumiforge@gmail.com",
+    "GIT_COMMITTER_NAME": "Arumi Studios",
+    "GIT_COMMITTER_EMAIL": "arumiforge@gmail.com"
+  },
+  "attribution": {
+    "commit": "",
+    "pr": "",
+    "sessionUrl": false
+  }
+}
