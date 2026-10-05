@@ -152,6 +152,19 @@ final class PuzzleCutTest extends CIUnitTestCase
         $this->assertSame(7.447, PuzzleCut::boardInset(4, 'jigsaw'));
     }
 
+    public function testJigsawArtIsNotCappedByTheGlobalSvgRule(): void
+    {
+        // base.css: svg { max-width: 100% } — tanpa pengecualian, keping jigsaw
+        // menciut menjadi 100/170 slotnya dan papan tampak berlubang.
+        $this->assertMatchesRegularExpression('/\bsvg\b[^{]*\{[^}]*max-width:\s*100%/', (string) file_get_contents(FCPATH . 'assets/css/base.css'));
+
+        preg_match('/\.piece-art\s*\{([^}]*)\}/', (string) file_get_contents(FCPATH . 'assets/css/game.css'), $rule);
+
+        $this->assertNotEmpty($rule, 'aturan .piece-art ada di game.css');
+        $this->assertMatchesRegularExpression('/max-width:\s*none/', $rule[1]);
+        $this->assertMatchesRegularExpression('/width:\s*calc\(100% \+ 2 \* var\(--overhang/', $rule[1]);
+    }
+
     /** @return list<array{float, float}> semua titik path, urut */
     private function points(string $path): array
     {

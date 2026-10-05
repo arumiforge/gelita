@@ -104,7 +104,8 @@ final class AnswerText
             'single_choice', 'source_trust'  => self::option($item, (string) ($item->correctOptionKey() ?? '')),
             'verdict_card', 'verdict_reason' => self::verdict($item->verdict()),
             'fill_blank_bank'                => trim((string) ($item->answerKey('text_id') ?? '')),
-            'fill_blank_free'                => implode(' / ', $item->acceptedAnswers('id')),
+            // ejaan asli dari kunci; acceptedAnswers() sudah dikecilkan untuk penilaian
+            'fill_blank_free'                => implode(' / ', array_map('strval', (array) ($item->answerKey('accept_id') ?: $item->acceptedAnswers('id')))),
             'find_object'                    => $item->isDecoy() ? 'benda jebakan' : 'benda yang dicari',
             'puzzle_arrange'                 => is_array($order) && $order !== []
                 ? 'gambar utuh (' . count($order) . ' keping)'
