@@ -59,6 +59,7 @@ export async function bootChallenge() {
   const attemptId = data.attempt_id;
   const nodeId = data.node?.id ?? (Number(section.dataset.node) || null);
   const levelId = data.node?.level_id ?? (Number(section.dataset.levelId) || null);
+  const levelCode = section.dataset.level || null; // payload overlay_opened `level` (kode, seperti "kenal")
   const exitUrl = section.dataset.exitUrl;
   const state = { leaving: false, completed: false, correct: 0, wrong: 0 };
 
@@ -236,7 +237,7 @@ export async function bootChallenge() {
       return;
     }
 
-    emit('overlay_opened', { ...refs, payload: { overlay: 'hint', level: levelId } });
+    emit('overlay_opened', { ...refs, payload: { overlay: 'hint', ...(levelCode ? { level: levelCode } : {}) } });
     const ok = await confirmDialog({
       title: t('hintTitle'),
       text: t('hintPenalty'),
@@ -277,7 +278,7 @@ export async function bootChallenge() {
 
   async function confirmExit() {
     if (isModalOpen()) return false;
-    emit('overlay_opened', { ...refs, payload: { overlay: 'exit', level: levelId } });
+    emit('overlay_opened', { ...refs, payload: { overlay: 'exit', ...(levelCode ? { level: levelCode } : {}) } });
     const ok = await confirmDialog({
       title: t('exitTitle'),
       text: t('exitText'),

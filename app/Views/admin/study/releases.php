@@ -3,8 +3,8 @@
  * Rilis konten — `/admin/studi/rilis` → StudyController::releases
  *
  * Satu rilis aktif pada satu waktu. Setiap sesi mencatat release_id-nya,
- * sehingga analisis pretest–posttest dapat memisahkan sesi yang dimainkan
- * dengan konten atau aturan bintang berbeda. Rilis baru selalu dibuat nonaktif.
+ * sehingga analisis dapat memisahkan sesi yang dimainkan dengan konten atau
+ * aturan bintang berbeda. Rilis baru selalu dibuat nonaktif.
  * Di layar, "rilis" disebut versi permainan.
  *
  * @var list<array<string, mixed>> $releases
@@ -23,7 +23,7 @@
 <?= component('partials/admin-head', [
     'title'   => 'Versi permainan',
     'eyebrow' => 'Pengelolaan · pengaturan penelitian',
-    'lead'    => 'Setiap sesi siswa mencatat versi permainan yang sedang aktif, supaya hasil pretest dan posttest hanya dibandingkan bila soal dan cara penilaiannya sama. Buat versi baru bila soal atau aturan penilaian berubah, dan aktifkan hanya di antara dua gelombang pengambilan data — jangan di tengahnya.',
+    'lead'    => 'Setiap sesi siswa mencatat versi permainan yang sedang aktif, supaya data sesi hanya dibandingkan bila soal dan aturan bintangnya sama. Buat versi baru bila soal atau aturan bintang berubah, dan aktifkan hanya di antara dua gelombang pengambilan data — jangan di tengahnya.',
     'actions' => $actions,
 ]) ?>
 <ul class="sub-nav">

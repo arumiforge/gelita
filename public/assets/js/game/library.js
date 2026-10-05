@@ -187,7 +187,8 @@ function initZoom(root) {
       caption.textContent = figcaption ? figcaption.textContent.replace(/\s+/g, ' ').trim() : '';
       caption.hidden = caption.textContent === '';
       dialog.showModal();
-      overlayOpened('lightbox');
+      const shelf = button.closest('[data-screen="library"]');
+      overlayOpened('lightbox', { level: shelf?.dataset.level || null, levelId: Number(shelf?.dataset.levelId) || null });
     });
   }
 }

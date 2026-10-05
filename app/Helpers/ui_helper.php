@@ -128,7 +128,7 @@ if (! function_exists('engine_label')) {
 if (! function_exists('admin_label')) {
     /**
      * Label panel admin untuk kode yang tersimpan di database — status sesi,
-     * fase, jenis soal, jenis catatan aktivitas, dan sebagainya — dari
+     * alasan selesai, jenis soal, jenis catatan aktivitas, dan sebagainya — dari
      * kelompok `$group` di Language/id/Admin.php. Panel admin selalu
      * berbahasa Indonesia, jadi locale dipatok 'id'. Kode yang belum punya
      * label tampil apa adanya; nilai kosong menjadi tanda pisah.
