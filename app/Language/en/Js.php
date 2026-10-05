@@ -53,11 +53,11 @@ return [
     'exitNo'        => 'Keep playing',
 
     // Puzzle & ordering
-    'piecesSwapped'    => 'Pieces {0} and {1} swapped.',
+    'piecesSwapped'    => 'Pieces at {0} and {1} swapped.',
     'puzzleOkTitle'    => 'The picture is complete!',
     'puzzleOkText'     => 'Every piece is in its place.',
     'puzzleWrongTitle' => 'Not complete yet',
-    'puzzleWrongText'  => 'The picture is not complete yet — {0} pieces are still in the wrong place. Pieces with a red border are misplaced.',
+    'puzzleWrongText'  => 'The picture is not complete yet — {0} pieces are still in the wrong place. Pieces marked ✗ are misplaced.',
     'puzzleWrongPlain' => 'The picture is not complete yet. Swap the pieces again.',
     'cardMoved'        => 'Card moved to position {0} of {1}.',
     'orderOkTitle'     => 'The order is right!',

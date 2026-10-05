@@ -3,6 +3,7 @@
 namespace App\Entities;
 
 use App\Entities\Traits\Bilingual;
+use App\Libraries\PuzzleCut;
 use CodeIgniter\Entity\Entity;
 
 class ChallengeItem extends Entity
@@ -10,7 +11,7 @@ class ChallengeItem extends Entity
     use Bilingual;
 
     /** Kunci config_json yang boleh dikirim ke browser */
-    private const SAFE_CONFIG_KEYS = ['x', 'y', 'w', 'grid'];
+    private const SAFE_CONFIG_KEYS = ['x', 'y', 'w', 'grid', 'shape'];
 
     protected $datamap = [];
     protected $dates   = ['created_at', 'updated_at'];
@@ -172,6 +173,20 @@ class ChallengeItem extends Entity
         return $out;
     }
 
+    /**
+     * Ukuran papan dan bentuk keping Susun Gambar (PuzzleCut::resolve):
+     * isian soal, lalu √(panjang kunci), lalu $nodeGrid (ukuran lama
+     * tantangan), lalu aturan tingkat wilayah.
+     *
+     * @return array{grid: int, shape: string}
+     */
+    public function puzzleLayout(?string $difficulty = null, mixed $nodeGrid = null): array
+    {
+        $order = $this->answerKey('order');
+
+        return PuzzleCut::resolve($this->config_json ?: [], is_array($order) ? $order : null, $nodeGrid, $difficulty);
+    }
+
     /** Umpan balik saat objek salah diklik — dikirim SETELAH klik, bukan di payload soal */
     public function wrongFeedback(string $locale): ?string
     {
@@ -259,7 +274,10 @@ class ChallengeItem extends Entity
             'options'          => $options ?: null,
             'pieces'           => $this->interaction_type === 'ordering' ? $this->shuffledPieces($locale) : null,
             'sources'          => $this->sources($locale) ?: null,
-            'config'           => $this->safeConfig(),
+            // Susun Gambar: ukuran papan & bentuk keping selalu ikut (bukan rahasia)
+            'config'           => $this->interaction_type === 'puzzle_arrange'
+                ? $this->puzzleLayout() + $this->safeConfig()
+                : $this->safeConfig(),
         ];
     }
 }

@@ -1,16 +1,18 @@
 /**
  * Engine `puzzle` — dua mode pada markup game/challenge/puzzle.php:
  *
- * arrange  Ketuk dua keping untuk menukarnya (wajib, paling andal di tablet);
- *          seret-lepas HTML5 sebagai tambahan; panah untuk berpindah keping,
- *          Enter/Spasi untuk memilih/menukar. Client hanya menukar posisi —
- *          tidak menilai apa pun.
- * ordering Daftar kartu teks (Wonosobo node 1): tombol ▲▼ (wajib untuk
- *          keyboard) dan seret-lepas.
+ * arrange  Papan n × n keping SVG (kotak atau jigsaw). Ketuk dua keping
+ *          untuk menukarnya (wajib, paling andal di tablet); seret-lepas
+ *          HTML5 sebagai tambahan; panah untuk berpindah keping, Enter/Spasi
+ *          untuk memilih/menukar. Slot (tombol) tetap di tempat; yang
+ *          berpindah adalah gambar keping (.piece-art) beserta data-piece.
+ *          Keping tidak bernomor; label pembaca layar menyebut letak slot.
+ *          Client hanya menukar posisi — tidak menilai apa pun.
+ * ordering Daftar kartu teks: tombol ▲▼ (wajib untuk keyboard) dan seret-lepas.
  *
  * "Periksa" → POST /check { answers: [{ item_id, answer: { order } }] }.
- * `detail[item].pieces_correct` (dan `misplaced` untuk gambar, yang susunan
- * benarnya memang publik 1–9) dihitung server.
+ * `detail[item].pieces_correct` (dan `misplaced` untuk gambar) dihitung
+ * server. Setelah gambar utuh, keterangannya (#puzzle-caption) ditampilkan.
  */
 import { $, $$, announce, reducedMotion } from '../core/dom.js';
 import { Sfx } from '../core/audio.js';
@@ -25,9 +27,10 @@ function pulse(node) {
 function mountArrange(ctx, wrap) {
   const board = $('#puzzle-board', wrap);
   const button = $('#btn-check', wrap);
+  const caption = $('#puzzle-caption', wrap);
   const itemId = Number(wrap.dataset.item);
   const pieces = $$('.piece', board);
-  const grid = Math.round(Math.sqrt(pieces.length)) || 3;
+  const grid = Number(board.dataset.grid) || Math.round(Math.sqrt(pieces.length)) || 3;
   let selected = null;
   let solved = false;
 
@@ -43,28 +46,26 @@ function mountArrange(ctx, wrap) {
     piece?.setAttribute('aria-pressed', 'true');
   };
 
-  /** Tukar isi dua slot (slot tetap di tempat, fokus tidak berpindah). */
+  /**
+   * Tukar isi dua slot: gambar keping dan nomor keping (data-piece) pindah,
+   * slot dan labelnya (letak baris/kolom) tetap; fokus tidak berpindah.
+   */
   const swap = (a, b) => {
     if (a === b) return;
-    for (const prop of ['--px', '--py']) {
-      const tmp = a.style.getPropertyValue(prop);
-      a.style.setProperty(prop, b.style.getPropertyValue(prop));
-      b.style.setProperty(prop, tmp);
+    const artA = $('.piece-art', a);
+    const artB = $('.piece-art', b);
+    if (artA && artB) {
+      a.append(artB);
+      b.append(artA);
     }
     [a.dataset.piece, b.dataset.piece] = [b.dataset.piece, a.dataset.piece];
-    const labelA = a.getAttribute('aria-label');
-    a.setAttribute('aria-label', b.getAttribute('aria-label'));
-    b.setAttribute('aria-label', labelA);
-    const noA = $('.piece-no', a);
-    const noB = $('.piece-no', b);
-    if (noA && noB) [noA.textContent, noB.textContent] = [noB.textContent, noA.textContent];
 
     a.classList.remove('is-misplaced');
     b.classList.remove('is-misplaced');
     pulse(a);
     pulse(b);
     Sfx.play('click');
-    announce(ctx.t('piecesSwapped', noB?.textContent ?? '', noA?.textContent ?? ''));
+    announce(ctx.t('piecesSwapped', a.dataset.pos ?? '', b.dataset.pos ?? ''));
   };
 
   const tap = (piece) => {
@@ -156,15 +157,17 @@ function mountArrange(ctx, wrap) {
         piece.disabled = true;
       });
       button.disabled = true;
+      if (caption) caption.hidden = false;
     } else {
       const misplaced = new Set((detail.misplaced ?? []).map(Number));
       slotOrder().forEach((piece, slot) => piece.classList.toggle('is-misplaced', misplaced.has(slot)));
     }
 
     const wrongCount = detail.pieces_correct !== undefined ? pieces.length - Number(detail.pieces_correct) : null;
+    const captionText = caption ? $('p', caption)?.textContent ?? '' : '';
     const outcome = await ctx.showCheckResult(result, {
       okTitle: ctx.t('puzzleOkTitle'),
-      okText: ctx.t('puzzleOkText'),
+      okText: captionText ? [ctx.t('puzzleOkText'), captionText] : ctx.t('puzzleOkText'),
       partialTitle: ctx.t('puzzleWrongTitle'),
       partialText: wrongCount !== null ? ctx.t('puzzleWrongText', wrongCount) : ctx.t('puzzleWrongPlain'),
     });

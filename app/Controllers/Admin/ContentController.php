@@ -2,7 +2,10 @@
 
 namespace App\Controllers\Admin;
 
+use App\Entities\ChallengeItem;
+use App\Entities\ChallengeNode;
 use App\Libraries\ContentVerifier;
+use App\Libraries\DifficultyRules;
 use App\Libraries\MediaLink;
 use App\Libraries\MediaStore;
 use App\Models\AuditLogModel;
@@ -276,6 +279,10 @@ class ContentController extends BaseAdminController
             return $this->back($back, 'Soal yang dinilai wajib punya kunci jawaban. Isi kunci jawabannya, atau hilangkan centang "Dinilai".');
         }
 
+        if ((string) $this->request->getPost('interaction_type') === 'puzzle_arrange') {
+            $payload = $this->applyPuzzleLayout($payload, $node, null);
+        }
+
         $items  = model(ChallengeItemModel::class);
         $itemId = $items->insert($payload + [
             'challenge_node_id' => $nodeId,
@@ -319,6 +326,10 @@ class ContentController extends BaseAdminController
 
         if ((int) $payload['scorable'] === 1 && $payload['answer_key_json'] === null) {
             return $this->back($back, 'Soal yang dinilai wajib punya kunci jawaban. Isi kunci jawabannya, atau hilangkan centang "Dinilai".');
+        }
+
+        if ((string) $this->request->getPost('interaction_type') === 'puzzle_arrange' && $node !== null) {
+            $payload = $this->applyPuzzleLayout($payload, $node, $item);
         }
 
         $saved = $items->update($itemId, $payload + [
@@ -1042,6 +1053,34 @@ class ContentController extends BaseAdminController
             'scorable'         => $this->request->getPost('scorable') ? 1 : 0,
             'is_active'        => $this->request->getPost('is_active') ? 1 : 0,
         ];
+    }
+
+    /**
+     * Ukuran papan, bentuk keping, dan kunci Susun Gambar ditetapkan server dari
+     * tingkat kesulitan wilayah (DifficultyRules), bukan dari isian form.
+     * Soal yang sudah pernah dijawab siswa tetap memakai ukuran dan kuncinya
+     * sendiri, supaya data penelitian tetap sebanding.
+     *
+     * @param array<string, mixed> $payload
+     *
+     * @return array<string, mixed>
+     */
+    private function applyPuzzleLayout(array $payload, ChallengeNode $node, ?ChallengeItem $existing): array
+    {
+        $config = (array) ($payload['config_json'] ?? []);
+
+        if ($existing !== null && model(ChallengeItemModel::class)->hasResponses($existing->id)) {
+            $layout                     = $existing->puzzleLayout();
+            $payload['answer_key_json'] = $existing->answerKey();
+        } else {
+            $level                      = model(LevelModel::class)->find($node->level_id);
+            $layout                     = DifficultyRules::puzzle($level?->difficulty);
+            $payload['answer_key_json'] = ['order' => range(0, $layout['grid'] * $layout['grid'] - 1)];
+        }
+
+        $payload['config_json'] = ['grid' => $layout['grid'], 'shape' => $layout['shape']] + $config;
+
+        return $payload;
     }
 
     /**

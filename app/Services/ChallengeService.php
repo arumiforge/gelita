@@ -46,14 +46,25 @@ class ChallengeService
 
         if ($resumed) {
             $items = $this->itemsByIds($bank, $attempt->selectedItemIds());
-        } else {
+
+            // Semua soal percobaan ini sudah diistirahatkan (isi tantangan
+            // diperbarui): tutup percobaan lama dan buka yang baru.
+            if ($items === []) {
+                $this->abandonAttempt($attempt, ['via' => 'content_changed']);
+                $attempt = null;
+                $resumed = false;
+            }
+        }
+
+        if (! $resumed) {
             $study = model(ResearchStudyModel::class)->find($session->study_id);
             $seed  = $this->seedFor($session, $nodeId);
 
+            // Bacaan rumpang memakai SEMUA soalnya berurutan, tanpa pengambilan acak.
             $items = model(ChallengeItemModel::class)->pickForAttempt(
                 $nodeId,
                 $node->itemsPerRound(),
-                (string) ($study['item_selection_mode'] ?? 'fixed'),
+                $node->isReading() ? 'all' : (string) ($study['item_selection_mode'] ?? 'fixed'),
                 $seed,
                 $bank,
             );
@@ -912,7 +923,7 @@ class ChallengeService
         }
 
         if ($node->engine_type === 'rumpang' && $node->config('use_word_bank')) {
-            $payload['word_bank'] = $this->wordBank($node, $items, $locale);
+            $payload['word_bank'] = $this->wordBank($node, $items, $locale, (int) $attempt->id);
         }
 
         if ($node->engine_type === 'boleh') {
@@ -1028,14 +1039,17 @@ class ChallengeService
     }
 
     /**
-     * Bank kata: jawaban item terpilih + pengecoh acak, seluruhnya diacak.
-     * Pemetaan kata → rumpang tidak pernah dikirim.
+     * Bank kata: jawaban item terpilih + pengecoh, seluruhnya diacak dengan
+     * benih percobaan (urutan tetap saat halaman dimuat ulang). Bacaan
+     * memakai `distractor_count` pengecoh pertama sesuai urutan isian, jadi
+     * semua siswa melihat kata yang sama; mode kalimat lepas mengambilnya
+     * acak. Pemetaan kata → rumpang tidak pernah dikirim.
      *
      * @param list<ChallengeItem> $items
      *
      * @return list<string>
      */
-    private function wordBank(ChallengeNode $node, array $items, string $locale): array
+    private function wordBank(ChallengeNode $node, array $items, string $locale, int $attemptId = 0): array
     {
         $words = [];
 
@@ -1052,14 +1066,15 @@ class ChallengeService
         }
 
         $distractors = $node->distractors($locale);
-        shuffle($distractors);
+
+        if (! $node->isReading()) {
+            $distractors = seeded_shuffle($distractors, 'bank-d|' . $attemptId);
+        }
 
         $words = array_merge($words, array_slice($distractors, 0, max(0, (int) $node->config('distractor_count'))));
         $words = array_values(array_unique($words));
 
-        shuffle($words);
-
-        return $words;
+        return seeded_shuffle($words, 'bank|' . $attemptId);
     }
 
     /**

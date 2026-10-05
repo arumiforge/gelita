@@ -56,6 +56,8 @@ class ChallengeItemModel extends Model
      *
      * mode 'fixed'  → seeded_shuffle(bank, seed): butir identik pada pretest & posttest
      * mode 'random' → acak penuh
+     * mode 'all'    → seluruh bank dalam urutan bank (sequence, id), tanpa
+     *                 batas $count — dipakai bacaan rumpang
      *
      * Item decoy (engine `cari`) tidak dihitung sebagai target, tetapi selalu
      * ikut dikirim agar objek jebakan tetap tampil di layar.
@@ -78,6 +80,10 @@ class ChallengeItemModel extends Model
             } else {
                 $targets[] = $item;
             }
+        }
+
+        if ($mode === 'all') {
+            return array_merge($targets, $decoys);
         }
 
         $ordered = $mode === 'random'

@@ -54,11 +54,11 @@ return [
     'exitNo'        => 'Lanjutkan tantangan',
 
     // Puzzle & urutan
-    'piecesSwapped'    => 'Keping {0} dan {1} ditukar.',
+    'piecesSwapped'    => 'Keping di {0} dan {1} ditukar.',
     'puzzleOkTitle'    => 'Gambarnya utuh!',
     'puzzleOkText'     => 'Semua keping sudah di tempatnya.',
     'puzzleWrongTitle' => 'Belum utuh',
-    'puzzleWrongText'  => 'Gambarnya belum utuh, masih ada {0} keping yang keliru. Keping bergaris merah belum di tempatnya.',
+    'puzzleWrongText'  => 'Gambarnya belum utuh, masih ada {0} keping yang keliru. Keping bertanda ✗ belum di tempatnya.',
     'puzzleWrongPlain' => 'Gambarnya belum utuh. Tukar lagi kepingnya, ya.',
     'cardMoved'        => 'Kartu dipindah ke urutan {0} dari {1}.',
     'orderOkTitle'     => 'Urutannya tepat!',

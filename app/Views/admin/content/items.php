@@ -30,6 +30,12 @@ $action = $isNew ? base_url('admin/konten/node/' . $node->id . '/item') : base_u
 $json   = static fn ($value): string => $value === null || $value === [] ? '' : (string) json_encode($value, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 $verdicts = implode(' / ', $node->verdictOptions());
 $bloomNow = $isNew ? '' : (string) ($item->bloom_level ?? '');
+// Ukuran papan Susun Gambar: soal lama memakai ukurannya sendiri, soal baru mengikuti wilayah
+$puzzle   = $node->engine_type === 'puzzle'
+    ? ($isNew || $item->interaction_type !== 'puzzle_arrange'
+        ? App\Libraries\DifficultyRules::puzzle($difficulty ?? null)
+        : $item->puzzleLayout($difficulty ?? null))
+    : null;
 
 $guides = [
     'single_choice source_trust' => ['Pilihan ganda', 'Pilihan jawaban A–D diisi di bagian “Pilihan jawaban” di bawah formulir ini (muncul setelah soal disimpan). Tandai tepat satu yang benar.', '{"option_key": "a"}', ''],
@@ -38,12 +44,13 @@ $guides = [
     'verdict_card'               => ['Kartu benar/salah', 'Siswa menilai sebuah pernyataan. Pilih kunci jawabannya dari tombol yang tampil di tantangan ini: ' . $verdicts . '. Boleh ditambah dua kartu sumber untuk dibandingkan.', '{"verdict": "benar"}', '{"sources": [{"label_id": "Sumber A", "label_en": "Source A", "kind": "official", "text_id": "…", "text_en": "…"}, {"label_id": "Sumber B", "label_en": "Source B", "kind": "anonymous", "text_id": "…", "text_en": "…"}]}'],
     'verdict_reason'             => ['Kartu benar/salah/pendapat + alasan', 'Seperti kartu benar/salah, tetapi siswa juga menulis alasannya. Alasan tidak dinilai otomatis; isi contoh alasan yang baik sebagai pegangan guru.', '{"verdict": "pendapat", "sample_reason_id": "…", "sample_reason_en": "…"}', ''],
     'find_object'                => ['Cari benda di gambar', 'Letakkan benda pada gambar adegan tantangan. Benda jebakan (dari daerah lain) tidak dinilai dan wajib diberi penjelasan yang muncul saat siswa salah memilihnya.', '{"target": true}', '{"x": 18, "y": 62, "w": 13, "decoy": false, "wrong_feedback_id": "…", "wrong_feedback_en": "…"}'],
-    'puzzle_arrange'             => ['Susun kepingan gambar', 'Pilih gambar soal di bawah (persegi). Gambar dipotong menjadi keping-keping sesuai pengaturan tantangan, lalu siswa menyusunnya kembali.', '{"order": [0,1,2,3,4,5,6,7,8]}', '{"grid": 3}'],
+    'puzzle_arrange'             => ['Susun kepingan gambar', 'Unggah satu gambar utuh (sebaiknya persegi). Sistem memotongnya otomatis menjadi keping sesuai tingkat kesulitan wilayah: Temanggung 3 × 3 kotak, Magelang 4 × 4 kotak, Wonosobo 4 × 4 jigsaw. Kunci jawaban dibuat otomatis. Tulis keterangan gambar di kolom pertanyaan; keterangan itu tampil setelah gambar utuh.', '{"order": [0,1,2,3,4,5,6,7,8]}', '{"grid": 3, "shape": "square"}'],
     'ordering'                   => ['Urutkan kartu', 'Tulis kartu-kartunya dalam urutan yang benar; permainan mengacak urutannya untuk siswa.', '{"order": ["c", "a", "d", "b"]}', '{"pieces": [{"key": "a", "text_id": "…", "text_en": "…"}]}'],
 ];
 ?>
 <form method="post" action="<?= esc($action, 'attr') ?>" class="form item-form" enctype="multipart/form-data"
       data-verdicts="<?= esc(json_encode($node->verdictOptions()), 'attr') ?>"
+      <?= $puzzle !== null ? 'data-puzzle-grid="' . $puzzle['grid'] . '" data-puzzle-shape="' . esc($puzzle['shape'], 'attr') . '"' : '' ?>
       <?= $node->scene_media_id && media_exists($node->scene_media_id) ? 'data-scene="' . esc(media_src($node->scene_media_id), 'attr') . '"' : '' ?>>
   <?= csrf_field() ?>
 
@@ -145,7 +152,7 @@ $guides = [
       'mediaId'    => $isNew ? null : $item->media_asset_id,
       'defaultKey' => $isNew ? 'challenge.item.{item_key}' : 'challenge.item.' . App\Libraries\MediaStore::slug((string) $item->item_key),
       'size'       => match ($node->engine_type) {
-          'puzzle' => '900 × 900 px (persegi)',
+          'puzzle' => 'persegi, minimal ' . (($puzzle['grid'] ?? 3) * 300) . ' × ' . (($puzzle['grid'] ?? 3) * 300) . ' px; bila tidak persegi, bagian tengah yang dipakai',
           'cari'   => '240 × 240 px, latar transparan (PNG/WebP)',
           default  => '960 × 640 px',
       },

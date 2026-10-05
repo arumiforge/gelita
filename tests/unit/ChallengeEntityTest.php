@@ -86,10 +86,10 @@ final class ChallengeEntityTest extends CIUnitTestCase
         $item->injectRawData([
             'id'          => 11,
             'item_key'    => 'tmg-4-91',
-            'config_json' => '{"x":30,"y":55,"w":14,"grid":3,"decoy":false,"digital_pillar":"digital_ethics"}',
+            'config_json' => '{"x":30,"y":55,"w":14,"grid":3,"shape":"square","decoy":false,"digital_pillar":"digital_ethics"}',
         ]);
 
-        $this->assertSame(['x' => 30, 'y' => 55, 'w' => 14, 'grid' => 3], $item->safeConfig());
+        $this->assertSame(['x' => 30, 'y' => 55, 'w' => 14, 'grid' => 3, 'shape' => 'square'], $item->safeConfig());
         $this->assertSame('digital_ethics', $item->digitalPillar());
     }
 
