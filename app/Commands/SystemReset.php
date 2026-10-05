@@ -47,6 +47,17 @@ class SystemReset extends BaseCommand
         $db      = db_connect();
 
         CLI::write('GELITA · Reset total untuk penelitian kelas 5', 'yellow');
+
+        // 1. Pra-pemeriksaan: koneksi database
+        try {
+            $db->initialize();
+        } catch (\Throwable $e) {
+            CLI::error('Tidak dapat tersambung ke database: ' . $e->getMessage());
+            CLI::error('Periksa isian database di .env, atau DSN akun migrasi (database_default_DSN).');
+
+            return EXIT_ERROR;
+        }
+
         CLI::write(sprintf(
             'Database: %s @ %s (%s %s) · migration terakhir %s',
             $db->getDatabase(),
@@ -57,7 +68,7 @@ class SystemReset extends BaseCommand
         ));
         CLI::newLine();
 
-        // 1. Pra-pemeriksaan
+        // 1. Pra-pemeriksaan: struktur database dan kelas aktif
         if (! $service->migrationsReady()) {
             CLI::error('Struktur database belum terbaru (perlu migration ' . SystemResetService::REQUIRED_MIGRATION . '). Jalankan `php spark migrate` dulu.');
 
