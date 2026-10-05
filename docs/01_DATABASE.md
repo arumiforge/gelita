@@ -78,7 +78,7 @@ Dokumen sumber sebelumnya mengandung beberapa konflik. Berikut keputusan final u
 ## Yang Harus Dibuat
 
 1. Database `gelita` (utf8mb4_unicode_ci, InnoDB).
-2. 29 migration pembuat tabel + migration pendukung (`002900` FK level, `003000` `ci_sessions`) + migration koreksi (`003100`–`003300`) + `003400` (wajib ganti sandi staf) + `003500` (media Pustaka `library_media`) + `003600` (`participants.intro_seen_at`) + `003700` (`dialogues.pose`/`effect`) + `003800` (`challenge_items.audio_prompt_id`/`audio_prompt_en_id`) + `003900` (direktori sekolah resmi di `schools`) — total 40 berkas.
+2. 29 migration pembuat tabel + migration pendukung (`002900` FK level, `003000` `ci_sessions`) + migration koreksi (`003100`–`003300`) + `003400` (wajib ganti sandi staf) + `003500` (media Pustaka `library_media`) + `003600` (`participants.intro_seen_at`) + `003700` (`dialogues.pose`/`effect`) + `003800` (`challenge_items.audio_prompt_id`/`audio_prompt_en_id`) + `003900` (direktori sekolah resmi di `schools`) + `004000` (`challenge_items.bloom_level`) — total 41 berkas.
 3. 9 seeder data, dijalankan berurutan oleh `DatabaseSeeder` (kelas dasar bersama: `GelitaSeeder`).
 4. File referensi statis `public/assets/data/wilayah-id.json` (tidak masuk DB).
 
@@ -491,7 +491,8 @@ Unit atomic yang dinilai. Ini adalah **bank soal**, bukan jawaban peserta.
 | audio_prompt_id | BIGINT UNSIGNED | YES | NULL | FK `audio_assets.id` SET NULL — narasi petunjuk `find_object` (locale id); `003800` |
 | audio_prompt_en_id | BIGINT UNSIGNED | YES | NULL | FK `audio_assets.id` SET NULL — narasi petunjuk (locale en); `003800` |
 | indicator_id | BIGINT UNSIGNED | YES | NULL | FK SET NULL — indikator per butir |
-| config_json | JSON | YES | NULL | koordinat objek `cari`, flag decoy, dll |
+| bloom_level | VARCHAR(2) | YES | NULL | tingkat berpikir Taksonomi Bloom revisi `C1` … `C6`; INDEX; `004000` |
+| config_json | JSON | YES | NULL | koordinat objek `cari`, flag decoy, ukuran papan Susun Gambar `{grid, shape}` (dibekukan saat soal dibuat), dll |
 | reference_source | VARCHAR(500) | YES | NULL | sumber rujukan konten (lembaga/judul + URL) |
 | review_status | VARCHAR(30) | NO | `draft` | `draft` \| `needs_verification` \| `verified`; INDEX |
 | review_note | TEXT | YES | NULL | catatan verifikasi fakta |
@@ -991,6 +992,7 @@ Nama file mengikuti konvensi CI4 `YYYY-MM-DD-HHMMSS_ClassName.php` di `app/Datab
 2026-01-01-003700_AddDialoguePoseEffect
 2026-01-01-003800_AddChallengeItemPromptAudio
 2026-01-01-003900_ExtendSchoolsDirectory
+2026-01-01-004000_AddChallengeItemBloomLevel
 ```
 
 > `002900` menambahkan FK dari `levels` ke `media_assets`. Ini dipisah karena `levels` dibuat setelah `media_assets`, tetapi beberapa FK silang (`challenge_nodes.audio_intro_id` → `audio_assets`) lebih aman dipasang belakangan agar `up()`/`down()` bersih.
@@ -1127,6 +1129,25 @@ Slot frame tokoh untuk pose baru (`char.jaka.{sad|afraid|determined}.{1-3}`, `ch
 - Admin merapikan sisanya di **Panel → Sekolah**: gabung (siswa dan akun guru pindah, `school_name_snapshot` ikut nama tujuan, asal `is_active = 0` + `merged_into_id` dan menjadi alias bagi ketikan yang sama berikutnya) atau sahkan (NPSN wajib unik). Keduanya tercatat di `audit_logs` (`school_merge`, `school_verify`).
 - `up()` memeriksa setiap kolom/index/FK lebih dulu dan mengisi `match_key` baris lama tanpa menyentuh `updated_at`; `down()` membuang FK, index, lalu kolomnya.
 
+### Kelas 5 SD: tingkat Bloom, Susun Gambar bertingkat, Isi Rumpang bacaan (`004000`)
+
+`004000` menambahkan `challenge_items.bloom_level` (`VARCHAR(2) NULL`, setelah `indicator_id`, ber-index). Kolom ini berisi tingkat berpikir Taksonomi Bloom revisi (Anderson & Krathwohl) per soal, `C1` … `C6`. Isinya datang dari kolom `bloom_level` workbook atau dari editor soal. Label tampilnya ada di `Admin.php` kelompok `bloom`, mis. "C2 · Memahami". `up()` memeriksa kolom lebih dulu.
+
+Aturan per tingkat wilayah (`levels.difficulty`) ada di satu tempat, `App\Libraries\DifficultyRules`:
+
+| Tingkat | Susun Gambar (`config_json` soal) | Isi Rumpang bacaan | Bloom |
+|---|---|---|---|
+| mudah | `{grid: 3, shape: square}` | 3 rumpang, 0 pengecoh | C1–C2 |
+| sedang | `{grid: 4, shape: square}` | 4–5 rumpang, 1–3 pengecoh | C2–C3 |
+| sulit | `{grid: 4, shape: jigsaw}` | 6–7 rumpang, 1–3 pengecoh | C3–C4 |
+
+Yang tersimpan di tabel:
+
+- **Ukuran Susun Gambar dibekukan per soal.** Saat soal `puzzle_arrange` dibuat, `config_json.grid/shape` dan kunci `answer_key_json.order` = `range(0, grid² − 1)` ditulis dari tingkat wilayahnya. Soal yang sudah ada (termasuk soal lama tanpa catatan) tetap memakai ukuran dari panjang kuncinya. Dengan begitu kunci soal yang sudah dijawab tidak pernah berubah.
+- **Penanda tantangan bacaan.** `challenge_nodes.config_json.as_reading = true` membuat tantangan Isi Rumpang tampil sebagai satu bacaan. Semua soal aktif dipakai sekaligus (`items_per_round` = jumlah rumpang), dan bank kata = semua jawaban + `distractor_count` pengecoh pertama.
+- **Soal diistirahatkan, bukan dihapus.** `challenge_items.is_active = 0` tetap menyimpan soal lama beserta jawaban siswanya.
+- **Indikator tantangan.** Sheet `nodes` workbook kini punya kolom opsional `indicator` untuk `challenge_nodes.indicator_id`; wnb-1 menjadi `budaya`.
+
 ---
 
 ## Seeder
@@ -1244,8 +1265,8 @@ Ini peta node final. `items_per_round` menentukan berapa item diambil dari bank.
 
 | seq | engine | variant_code | items_per_round | ukuran bank minimum | indikator |
 |---:|---|---|---:|---:|---|
-| 1 | `puzzle` | `puzzle_gambar` | 1 | 2 | budaya |
-| 2 | `rumpang` | `rumpang_bank_kata` | 4 | 10 | literasi |
+| 1 | `puzzle` | `puzzle_gambar` | 1 | 3 gambar (3 × 3 kotak) | budaya |
+| 2 | `rumpang` | `rumpang_bacaan` | 3 (semua rumpang) | 3 rumpang, tanpa pengecoh | literasi |
 | 3 | `boleh` | `benar_salah_teks` | 8 | 12 | literasi (campur sikap) |
 | 4 | `cari` | `cocok_gambar_nama` | 4 | 8 (termasuk 2 jebakan) | budaya |
 | 5 | `pilihan` | `informasi_tersurat` | 3 | 8 | literasi |
@@ -1254,8 +1275,8 @@ Ini peta node final. `items_per_round` menentukan berapa item diambil dari bank.
 
 | seq | engine | variant_code | items_per_round | bank minimum | indikator |
 |---:|---|---|---:|---:|---|
-| 1 | `puzzle` | `puzzle_topeng_ireng` | 1 | 2 | budaya |
-| 2 | `rumpang` | `rumpang_tanpa_bank` | 4 | 10 | literasi |
+| 1 | `puzzle` | `puzzle_gambar` | 1 | 3 gambar (4 × 4 kotak) | budaya |
+| 2 | `rumpang` | `rumpang_bacaan` | 5 (semua rumpang) | 5 rumpang + 2 pengecoh | literasi |
 | 3 | `boleh` | `benar_salah_beralasan` | 6 | 12 | sikap |
 | 4 | `pilihan` | `cocok_fungsi_asal` | 4 | 10 | budaya |
 | 5 | `pilihan` | `banding_gambar_teks` | 3 | 8 | literasi |
@@ -1264,13 +1285,13 @@ Ini peta node final. `items_per_round` menentukan berapa item diambil dari bank.
 
 | seq | engine | variant_code | items_per_round | bank minimum | indikator |
 |---:|---|---|---:|---:|---|
-| 1 | `puzzle` | `urutkan_informasi` | 1 | 3 | literasi |
-| 2 | `rumpang` | `rumpang_kesimpulan` | 4 | 8 | literasi |
+| 1 | `puzzle` | `puzzle_jigsaw` | 1 | 3 gambar (4 × 4 jigsaw) | budaya |
+| 2 | `rumpang` | `rumpang_bacaan` | 7 (semua rumpang) | 7 rumpang + 2 pengecoh | literasi |
 | 3 | `boleh` | `nilai_dua_sumber` | 6 | 10 | sikap |
 | 4 | `pilihan` | `sumber_terpercaya` | 4 | 8 | sikap |
 | 5 | `pilihan` | `tindakan_bertanggung_jawab` | 3 | 8 | sikap |
 
-> Node `urutkan_informasi` memakai `engine_type = puzzle` dengan `interaction_type = ordering` pada itemnya. Engine puzzle di frontend menangani dua mode: `arrange` (grid 3×3) dan `ordering` (urutan kartu teks). Ini menghindari penambahan engine keenam.
+> Engine puzzle di frontend menangani dua mode: `arrange` (papan n × n dari satu gambar utuh: 3 × 3 kotak, 4 × 4 kotak, atau 4 × 4 jigsaw sesuai tingkat wilayah) dan `ordering` (urutan kartu teks, `interaction_type = ordering`). Ini menghindari penambahan engine keenam. Sejak pembaruan kelas 5 SD, wnb-1 bukan lagi `urutkan_informasi`: soal urutan lamanya diistirahatkan (`is_active = 0`) dan diganti 3 gambar jigsaw.
 
 **Interaction type dan verdict per node `boleh`:**
 
@@ -1284,18 +1305,18 @@ Ini peta node final. `items_per_round` menentukan berapa item diambil dari bank.
 
 | Node | title_id | title_en | instruction_id |
 |---|---|---|---|
-| tmg-1 | Susun Gambar Budaya Temanggung | Arrange the Temanggung Culture Picture | Susun kepingan gambar (kisi 3×3) hingga utuh, lalu baca keterangannya. |
-| tmg-2 | Lengkapi Kalimat Temanggung | Complete the Temanggung Sentence | Pilih satu kata yang tepat dari bank kata untuk mengisi ___. |
+| tmg-1 | Susun Gambar Budaya Temanggung | Arrange the Temanggung Culture Picture | Tukar dua kepingan gambar (3 × 3) sampai gambarnya utuh, lalu baca keterangannya. |
+| tmg-2 | Lengkapi Bacaan: Gunung Kembar | Complete the Reading: The Twin Mountains | Baca paragrafnya. Ketuk kotak kosong, lalu pilih kata yang tepat dari bank kata. Setiap kata dipakai satu kali. |
 | tmg-3 | Benar atau Salah? | True or False? | Baca teks, lalu tentukan pernyataan BENAR atau SALAH. |
 | tmg-4 | Temukan Budaya Temanggung | Find the Temanggung Culture | Klik gambar sesuai petunjuk. Hati-hati, ada yang bukan dari Temanggung! |
 | tmg-5 | Temukan Jawabannya di Teks | Find the Answer in the Text | Baca teks, lalu pilih satu jawaban yang tepat. |
-| mgl-1 | Susun Topeng Ireng | Arrange the Topeng Ireng | Susun kepingan (3×3), lalu baca kisahnya. |
-| mgl-2 | Ketik Jawabanmu | Type Your Answer | Ketik satu kata untuk mengisi ___. |
+| mgl-1 | Susun Gambar Magelang | Arrange the Magelang Picture | Tukar dua kepingan gambar (4 × 4) sampai gambarnya utuh, lalu baca kisahnya. |
+| mgl-2 | Lengkapi Bacaan: Candi Borobudur | Complete the Reading: Borobudur Temple | Baca bacaannya sampai habis. Pilih kata yang tepat untuk setiap kotak kosong; ada dua kata yang tidak terpakai. |
 | mgl-3 | Benar, Salah, atau Pendapat? | True, False, or Opinion? | Tentukan benar, salah, atau pendapat, lalu tulis alasannya. |
 | mgl-4 | Cocokkan Fungsi & Asal | Match Function & Origin | Pilih jawaban yang tepat. |
 | mgl-5 | Bandingkan Gambar dan Teks | Compare Picture and Text | Hubungkan gambar dengan teks, lalu pilih jawaban. |
-| wnb-1 | Susun Urutan yang Benar | Put in the Right Order | Baca teks, lalu susun tahapan sesuai urutan. |
-| wnb-2 | Lengkapi Kesimpulan | Complete the Conclusion | Baca paragraf, lalu pilih kata untuk kesimpulan yang tepat. |
+| wnb-1 | Susun Gambar Wonosobo | Arrange the Wonosobo Picture | Kepingannya berbentuk puzzle (4 × 4). Tukar dua keping sampai gambarnya utuh, lalu baca keterangannya. |
+| wnb-2 | Lengkapi Bacaan: Negeri di Atas Awan | Complete the Reading: The Land Above the Clouds | Baca bacaannya sampai habis. Pilih kata yang tepat untuk setiap kotak kosong; ada dua kata yang tidak terpakai. |
 | wnb-3 | Sumber Mana yang Benar? | Which Source Is Right? | Bandingkan dua sumber, lalu nilai pernyataannya. |
 | wnb-4 | Pilih Sumber Terpercaya | Choose the Trusted Source | Pilih sumber yang paling dapat dipercaya. |
 | wnb-5 | Apa yang Sebaiknya Kamu Lakukan? | What Should You Do? | Pilih tindakan yang paling tepat dan bertanggung jawab. |

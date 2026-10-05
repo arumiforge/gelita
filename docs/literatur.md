@@ -1,6 +1,6 @@
 # BANK SOAL LENGKAP — GELITA (Game Edukasi Literasi dan Etnopedagogi Kedu)
 
-> Dokumen siap-input admin. 3 Level × 5 Node = 15 Node. Setiap butir dwibahasa (Indonesia `_id` / English `_en`), dengan kunci jawaban, opsi, petunjuk (hint), indikator (literasi/budaya/sikap), kebutuhan media, dan `reference_source`. Sasaran: siswa SD Fase C (kelas 4–6). Bahasa ramah anak. Urutan wajib: **Temanggung → Magelang → Wonosobo**.
+> Dokumen siap-input admin. 3 Level × 5 Node = 15 Node. Setiap butir dwibahasa (Indonesia `_id` / English `_en`), dengan kunci jawaban, opsi, petunjuk (hint), indikator (literasi/budaya/sikap), kebutuhan media, dan `reference_source`. Sasaran: siswa SD Fase C (kelas 4–6); sejak Oktober 2026 penelitian difokuskan pada **kelas 5 SD/MI** — isi Susun Gambar dan Isi Rumpang yang berlaku ada di [`bank-soal/README.md`](bank-soal/README.md#pembaruan-kelas-5-sd-oktober-2026). Bahasa ramah anak. Urutan wajib: **Temanggung → Magelang → Wonosobo**.
 
 ---
 
