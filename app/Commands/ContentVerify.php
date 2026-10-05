@@ -15,7 +15,7 @@ class ContentVerify extends BaseCommand
 {
     protected $group       = 'GELITA';
     protected $name        = 'gelita:content:verify';
-    protected $description = 'Memeriksa 3 level × 5 node, engine_type valid, bank item cukup, kunci lengkap, dan media.';
+    protected $description = 'Memeriksa 3 wilayah × 4 tantangan, jenis tantangan Memeriksa 3 level × 5 node, engine_type valid, bank item cukup, kunci lengkap, dan media. soal, variasi soal, kunci lengkap, dan media.';
     protected $usage       = 'gelita:content:verify [--strict]';
     protected $options     = [
         '--strict' => 'Peringatan juga dianggap gagal (kode keluar 1).',
@@ -31,7 +31,7 @@ class ContentVerify extends BaseCommand
         $warnings = count($findings) - $errors;
 
         if ($findings === []) {
-            CLI::write('Konten lengkap: 3 wilayah × 5 tantangan, tanpa temuan.', 'green');
+            CLI::write('Konten lengkap: 3 wilayah × 4 tantangan, tanpa temuan.', 'green');
 
             return EXIT_SUCCESS;
         }
