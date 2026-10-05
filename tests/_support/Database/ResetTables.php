@@ -1,0 +1,635 @@
+<?php
+
+namespace Tests\Support\Database;
+
+use CodeIgniter\Database\BaseConnection;
+use CodeIgniter\Database\RawSql;
+use Config\Database;
+
+/**
+ * Skema lengkap GELITA sesudah migration 2026-01-01-004600 untuk SQLite
+ * (grup `tests`): 30 tabel dengan kolom, nilai bawaan, kunci utama, dan kunci
+ * unik yang sama dengan MySQL/MariaDB. Indeks biasa dan FK tidak ikut.
+ * Dipakai uji reset total (SystemResetTest), pendaftaran bertahap
+ * (RegisterWizardTest), dan penulisan item_tries (ItemTryWritesTest).
+ *
+ * Bentuk kolom: `TIPE[(panjang)][?][=bawaan]` — `?` boleh NULL, `pk` =
+ * INTEGER auto increment + kunci utama. Disalin dari information_schema
+ * MariaDB 10.11 sesudah `php spark migrate`; perbarui bila migration bertambah.
+ */
+trait ResetTables
+{
+    /** @var array<string, array<string, list<list<string>>|list<string>|string>> */
+    private static array $resetSchema = [
+        'audio_assets' => [
+            'id'                => 'pk',
+            'media_asset_id'    => 'INTEGER',
+            'locale'            => 'VARCHAR(5)',
+            'character_code'    => 'VARCHAR(30)?',
+            'context_code'      => 'VARCHAR(80)',
+            'transcript'        => 'TEXT',
+            'production_method' => 'VARCHAR(20)=own_recording',
+            'voice_profile'     => 'VARCHAR(200)?',
+            'duration_ms'       => 'INTEGER?',
+            'approval_status'   => 'VARCHAR(20)=draft',
+            'approved_by'       => 'INTEGER?',
+            'approved_at'       => 'DATETIME?',
+            'version'           => 'VARCHAR(20)=1',
+            '_unique'           => [['media_asset_id']],
+        ],
+        'audio_usage_events' => [
+            'id'                   => 'pk',
+            'session_id'           => 'INTEGER',
+            'challenge_attempt_id' => 'INTEGER?',
+            'audio_asset_id'       => 'INTEGER',
+            'action'               => 'VARCHAR(20)',
+            'play_index'           => 'INTEGER=1',
+            'listened_ms'          => 'INTEGER?',
+            'completed'            => 'INTEGER=0',
+            'occurred_at'          => 'DATETIME=CURRENT_TIMESTAMP',
+            'server_received_at'   => 'DATETIME=CURRENT_TIMESTAMP',
+        ],
+        'audit_logs' => [
+            'id'            => 'pk',
+            'staff_user_id' => 'INTEGER?',
+            'action'        => 'VARCHAR(50)',
+            'target_type'   => 'VARCHAR(50)?',
+            'target_id'     => 'VARCHAR(100)?',
+            'metadata_json' => 'TEXT?',
+            'ip_hash'       => 'VARCHAR(64)?',
+            'occurred_at'   => 'DATETIME=CURRENT_TIMESTAMP',
+        ],
+        'challenge_attempts' => [
+            'id'                     => 'pk',
+            'session_id'             => 'INTEGER',
+            'challenge_node_id'      => 'INTEGER',
+            'attempt_no'             => 'INTEGER=1',
+            'variant_group'          => 'VARCHAR(10)?',
+            'status'                 => 'VARCHAR(20)=in_progress',
+            'completion_reason'      => 'VARCHAR(20)?',
+            'selected_item_ids_json' => 'TEXT',
+            'scorable_items'         => 'INTEGER=0',
+            'first_pass_correct'     => 'INTEGER=0',
+            'final_correct'          => 'INTEGER=0',
+            'check_count'            => 'INTEGER=0',
+            'max_tries'              => 'INTEGER=3',
+            'hint_count'             => 'INTEGER=0',
+            'answer_change_count'    => 'INTEGER=0',
+            'audio_use_count'        => 'INTEGER=0',
+            'stars'                  => 'INTEGER=0',
+            'started_at'             => 'DATETIME=CURRENT_TIMESTAMP',
+            'completed_at'           => 'DATETIME?',
+            'duration_ms'            => 'INTEGER?',
+            'created_at'             => 'DATETIME=CURRENT_TIMESTAMP',
+            '_unique'                => [['session_id', 'challenge_node_id', 'attempt_no']],
+        ],
+        'challenge_items' => [
+            'id'                 => 'pk',
+            'challenge_node_id'  => 'INTEGER',
+            'item_key'           => 'VARCHAR(100)',
+            'sequence'           => 'INTEGER=1',
+            'variant_group'      => 'VARCHAR(10)?',
+            'interaction_type'   => 'VARCHAR(40)',
+            'prompt_id'          => 'TEXT?',
+            'prompt_en'          => 'TEXT?',
+            'source_text_id'     => 'TEXT?',
+            'source_text_en'     => 'TEXT?',
+            'passage_id'         => 'INTEGER?',
+            'answer_key_json'    => 'TEXT?',
+            'media_asset_id'     => 'INTEGER?',
+            'audio_prompt_id'    => 'INTEGER?',
+            'audio_prompt_en_id' => 'INTEGER?',
+            'indicator_id'       => 'INTEGER?',
+            'bloom_level'        => 'VARCHAR(2)?',
+            'config_json'        => 'TEXT?',
+            'reference_source'   => 'VARCHAR(500)?',
+            'review_status'      => 'VARCHAR(30)=draft',
+            'review_note'        => 'TEXT?',
+            'scorable'           => 'INTEGER=1',
+            'is_active'          => 'INTEGER=1',
+            'created_at'         => 'DATETIME=CURRENT_TIMESTAMP',
+            'updated_at'         => 'DATETIME=CURRENT_TIMESTAMP',
+            '_unique'            => [['challenge_node_id', 'item_key']],
+        ],
+        'challenge_nodes' => [
+            'id'                  => 'pk',
+            'level_id'            => 'INTEGER',
+            'sequence'            => 'INTEGER',
+            'engine_type'         => 'VARCHAR(20)',
+            'variant_code'        => 'VARCHAR(60)?',
+            'title_id'            => 'VARCHAR(250)',
+            'title_en'            => 'VARCHAR(250)',
+            'instruction_id'      => 'TEXT?',
+            'instruction_en'      => 'TEXT?',
+            'description_id'      => 'TEXT?',
+            'description_en'      => 'TEXT?',
+            'indicator_id'        => 'INTEGER?',
+            'background_media_id' => 'INTEGER?',
+            'scene_media_id'      => 'INTEGER?',
+            'audio_intro_id'      => 'INTEGER?',
+            'audio_intro_en_id'   => 'INTEGER?',
+            'config_json'         => 'TEXT?',
+            'map_x'               => 'DECIMAL(5,2)=50.00',
+            'map_y'               => 'DECIMAL(5,2)=50.00',
+            'content_version'     => 'VARCHAR(20)=1',
+            'is_active'           => 'INTEGER=1',
+            'created_at'          => 'DATETIME=CURRENT_TIMESTAMP',
+            'updated_at'          => 'DATETIME=CURRENT_TIMESTAMP',
+            '_unique'             => [['level_id', 'sequence']],
+        ],
+        'ci_sessions' => [
+            'id'         => 'VARCHAR(128)',
+            'ip_address' => 'VARCHAR(64)',
+            'timestamp'  => 'DATETIME=CURRENT_TIMESTAMP',
+            'data'       => 'BLOB',
+            '_primary'   => ['id'],
+        ],
+        'data_deletion_requests' => [
+            'id'             => 'pk',
+            'requested_by'   => 'INTEGER',
+            'scope_json'     => 'TEXT',
+            'reason'         => 'TEXT?',
+            'mode'           => 'VARCHAR(20)=soft',
+            'status'         => 'VARCHAR(20)=preview',
+            'affected_count' => 'INTEGER?',
+            'approved_by'    => 'INTEGER?',
+            'executed_at'    => 'DATETIME?',
+            'created_at'     => 'DATETIME=CURRENT_TIMESTAMP',
+        ],
+        'data_exports' => [
+            'id'            => 'pk',
+            'requested_by'  => 'INTEGER',
+            'study_id'      => 'INTEGER?',
+            'format'        => 'VARCHAR(10)',
+            'scope_json'    => 'TEXT',
+            'anonymized'    => 'INTEGER=1',
+            'status'        => 'VARCHAR(20)=queued',
+            'row_count'     => 'INTEGER?',
+            'file_path'     => 'VARCHAR(500)?',
+            'file_sha256'   => 'VARCHAR(64)?',
+            'error_message' => 'VARCHAR(500)?',
+            'created_at'    => 'DATETIME=CURRENT_TIMESTAMP',
+            'completed_at'  => 'DATETIME?',
+            'expires_at'    => 'DATETIME?',
+        ],
+        'device_logs' => [
+            'id'                => 'pk',
+            'session_id'        => 'INTEGER',
+            'participant_id'    => 'INTEGER',
+            'via'               => 'VARCHAR(20)',
+            'user_agent'        => 'VARCHAR(512)?',
+            'device_type'       => 'VARCHAR(30)?',
+            'device_brand'      => 'VARCHAR(60)?',
+            'device_model'      => 'VARCHAR(100)?',
+            'os_name'           => 'VARCHAR(60)?',
+            'os_version'        => 'VARCHAR(40)?',
+            'os_platform'       => 'VARCHAR(20)?',
+            'browser_name'      => 'VARCHAR(60)?',
+            'browser_version'   => 'VARCHAR(40)?',
+            'browser_engine'    => 'VARCHAR(40)?',
+            'is_bot'            => 'INTEGER=0',
+            'client_hints_json' => 'TEXT?',
+            'screen_w'          => 'INTEGER?',
+            'screen_h'          => 'INTEGER?',
+            'viewport_w'        => 'INTEGER?',
+            'viewport_h'        => 'INTEGER?',
+            'pixel_ratio'       => 'DECIMAL(4,2)?',
+            'touch_points'      => 'INTEGER?',
+            'orientation'       => 'VARCHAR(20)?',
+            'is_standalone'     => 'INTEGER?',
+            'language'          => 'VARCHAR(20)?',
+            'timezone'          => 'VARCHAR(60)?',
+            'corrected'         => 'VARCHAR(40)?',
+            'detector'          => 'VARCHAR(40)?',
+            'ip_hash'           => 'VARCHAR(64)?',
+            'created_at'        => 'DATETIME=CURRENT_TIMESTAMP',
+        ],
+        'dialogues' => [
+            'id'                  => 'pk',
+            'level_id'            => 'INTEGER?',
+            'context_code'        => 'VARCHAR(50)=level_open',
+            'sequence'            => 'INTEGER=1',
+            'character_code'      => 'VARCHAR(30)',
+            'pose'                => 'VARCHAR(30)?',
+            'effect'              => 'VARCHAR(30)?',
+            'title_id'            => 'VARCHAR(200)?',
+            'title_en'            => 'VARCHAR(200)?',
+            'text_id'             => 'TEXT',
+            'text_en'             => 'TEXT',
+            'audio_id_asset_id'   => 'INTEGER?',
+            'audio_en_asset_id'   => 'INTEGER?',
+            'background_media_id' => 'INTEGER?',
+            'is_active'           => 'INTEGER=1',
+            '_unique'             => [['level_id', 'context_code', 'sequence']],
+        ],
+        'game_event_logs' => [
+            'id'                   => 'pk',
+            'event_uuid'           => 'VARCHAR(36)',
+            'client_event_id'      => 'VARCHAR(120)',
+            'session_id'           => 'INTEGER',
+            'participant_id'       => 'INTEGER',
+            'level_id'             => 'INTEGER?',
+            'challenge_node_id'    => 'INTEGER?',
+            'challenge_attempt_id' => 'INTEGER?',
+            'challenge_item_id'    => 'INTEGER?',
+            'event_type'           => 'VARCHAR(50)',
+            'sequence_no'          => 'INTEGER=0',
+            'occurred_at'          => 'DATETIME',
+            'server_received_at'   => 'DATETIME=CURRENT_TIMESTAMP',
+            'payload_json'         => 'TEXT?',
+            'deleted_at'           => 'DATETIME?',
+            'deleted_by'           => 'INTEGER?',
+            'delete_reason'        => 'VARCHAR(255)?',
+            '_unique'              => [['event_uuid'], ['session_id', 'client_event_id']],
+        ],
+        'game_releases' => [
+            'id'              => 'pk',
+            'release_code'    => 'VARCHAR(80)',
+            'app_version'     => 'VARCHAR(30)',
+            'content_version' => 'VARCHAR(30)',
+            'asset_version'   => 'VARCHAR(30)',
+            'scoring_version' => 'VARCHAR(30)',
+            'published_at'    => 'DATETIME?',
+            'notes'           => 'TEXT?',
+            'is_active'       => 'INTEGER=0',
+            '_unique'         => [['release_code']],
+        ],
+        'game_sessions' => [
+            'id'                     => 'pk',
+            'session_code'           => 'VARCHAR(64)',
+            'participant_id'         => 'INTEGER',
+            'study_id'               => 'INTEGER',
+            'release_id'             => 'INTEGER',
+            'locale'                 => 'VARCHAR(5)=id',
+            'status'                 => 'VARCHAR(20)=active',
+            'started_at'             => 'DATETIME=CURRENT_TIMESTAMP',
+            'last_active_at'         => 'DATETIME=CURRENT_TIMESTAMP',
+            'ended_at'               => 'DATETIME?',
+            'duration_ms'            => 'INTEGER=0',
+            'last_level_id'          => 'INTEGER?',
+            'last_challenge_node_id' => 'INTEGER?',
+            'device_type'            => 'VARCHAR(30)?',
+            'os_name'                => 'VARCHAR(80)?',
+            'browser_name'           => 'VARCHAR(80)?',
+            'screen_size'            => 'VARCHAR(20)?',
+            'is_touch'               => 'INTEGER?',
+            'app_client_version'     => 'VARCHAR(30)?',
+            'ip_hash'                => 'VARCHAR(64)?',
+            'created_at'             => 'DATETIME=CURRENT_TIMESTAMP',
+            '_unique'                => [['session_code']],
+        ],
+        'hints' => [
+            'id'                => 'pk',
+            'challenge_node_id' => 'INTEGER?',
+            'challenge_item_id' => 'INTEGER?',
+            'sequence'          => 'INTEGER=1',
+            'text_id'           => 'TEXT',
+            'text_en'           => 'TEXT',
+            'is_active'         => 'INTEGER=1',
+        ],
+        'item_responses' => [
+            'id'                   => 'pk',
+            'challenge_attempt_id' => 'INTEGER',
+            'challenge_item_id'    => 'INTEGER',
+            'display_order'        => 'INTEGER=1',
+            'status'               => 'VARCHAR(20)=pending',
+            'first_answer_json'    => 'TEXT?',
+            'final_answer_json'    => 'TEXT?',
+            'first_pass_correct'   => 'INTEGER?',
+            'is_correct'           => 'INTEGER?',
+            'change_count'         => 'INTEGER=0',
+            'try_count'            => 'INTEGER=0',
+            'solved_on_try'        => 'INTEGER?',
+            'hint_used'            => 'INTEGER=0',
+            'wrong_click_count'    => 'INTEGER=0',
+            'started_at'           => 'DATETIME?',
+            'answered_at'          => 'DATETIME?',
+            'duration_ms'          => 'INTEGER?',
+            'created_at'           => 'DATETIME=CURRENT_TIMESTAMP',
+            'updated_at'           => 'DATETIME=CURRENT_TIMESTAMP',
+            '_unique'              => [['challenge_attempt_id', 'challenge_item_id']],
+        ],
+        'item_tries' => [
+            'id'                   => 'pk',
+            'challenge_attempt_id' => 'INTEGER',
+            'challenge_item_id'    => 'INTEGER',
+            'try_no'               => 'INTEGER=1',
+            'check_no'             => 'INTEGER?',
+            'answer_json'          => 'TEXT',
+            'is_correct'           => 'INTEGER=0',
+            'hint_opened_before'   => 'INTEGER=0',
+            'first_input_ms'       => 'INTEGER?',
+            'last_input_ms'        => 'INTEGER?',
+            'occurred_at'          => 'DATETIME=CURRENT_TIMESTAMP',
+            '_unique'              => [['challenge_attempt_id', 'challenge_item_id', 'try_no']],
+        ],
+        'learning_indicators' => [
+            'id'             => 'pk',
+            'code'           => 'VARCHAR(50)',
+            'name_id'        => 'VARCHAR(200)',
+            'name_en'        => 'VARCHAR(200)',
+            'description_id' => 'TEXT?',
+            'description_en' => 'TEXT?',
+            'domain'         => 'VARCHAR(50)?',
+            'is_active'      => 'INTEGER=1',
+            '_unique'        => [['code']],
+        ],
+        'levels' => [
+            'id'                  => 'pk',
+            'sequence'            => 'INTEGER',
+            'code'                => 'VARCHAR(40)',
+            'name_id'             => 'VARCHAR(100)',
+            'name_en'             => 'VARCHAR(100)',
+            'difficulty'          => 'VARCHAR(20)',
+            'focus_id'            => 'TEXT',
+            'focus_en'            => 'TEXT',
+            'cp_id'               => 'TEXT?',
+            'cp_en'               => 'TEXT?',
+            'tp_id'               => 'TEXT?',
+            'tp_en'               => 'TEXT?',
+            'intro_id'            => 'TEXT?',
+            'intro_en'            => 'TEXT?',
+            'map_media_id'        => 'INTEGER?',
+            'background_media_id' => 'INTEGER?',
+            'badge_media_id'      => 'INTEGER?',
+            'map_x'               => 'DECIMAL(5,2)=50.00',
+            'map_y'               => 'DECIMAL(5,2)=50.00',
+            'is_active'           => 'INTEGER=1',
+            'created_at'          => 'DATETIME=CURRENT_TIMESTAMP',
+            'updated_at'          => 'DATETIME=CURRENT_TIMESTAMP',
+            '_unique'             => [['code'], ['sequence']],
+        ],
+        'library_media' => [
+            'id'              => 'pk',
+            'library_page_id' => 'INTEGER',
+            'sequence'        => 'INTEGER=1',
+            'media_kind'      => 'VARCHAR(10)=image',
+            'media_asset_id'  => 'INTEGER?',
+            'external_url'    => 'VARCHAR(1000)?',
+            'poster_media_id' => 'INTEGER?',
+            'caption_id'      => 'VARCHAR(500)?',
+            'caption_en'      => 'VARCHAR(500)?',
+            'credit'          => 'VARCHAR(300)?',
+            'is_active'       => 'INTEGER=1',
+            'created_at'      => 'DATETIME=CURRENT_TIMESTAMP',
+            'updated_at'      => 'DATETIME=CURRENT_TIMESTAMP',
+        ],
+        'library_pages' => [
+            'id'               => 'pk',
+            'level_id'         => 'INTEGER',
+            'sequence'         => 'INTEGER=1',
+            'title_id'         => 'VARCHAR(250)',
+            'title_en'         => 'VARCHAR(250)',
+            'body_id'          => 'TEXT',
+            'body_en'          => 'TEXT',
+            'image_a_media_id' => 'INTEGER?',
+            'image_b_media_id' => 'INTEGER?',
+            'video_media_id'   => 'INTEGER?',
+            'poster_media_id'  => 'INTEGER?',
+            'is_active'        => 'INTEGER=1',
+            'created_at'       => 'DATETIME=CURRENT_TIMESTAMP',
+            'updated_at'       => 'DATETIME=CURRENT_TIMESTAMP',
+            '_unique'          => [['level_id', 'sequence']],
+        ],
+        'media_assets' => [
+            'id'             => 'pk',
+            'asset_key'      => 'VARCHAR(160)',
+            'asset_type'     => 'VARCHAR(20)',
+            'storage_path'   => 'VARCHAR(500)',
+            'mime_type'      => 'VARCHAR(100)',
+            'file_size'      => 'INTEGER?',
+            'sha256'         => 'VARCHAR(64)?',
+            'width_px'       => 'INTEGER?',
+            'height_px'      => 'INTEGER?',
+            'locale'         => 'VARCHAR(5)?',
+            'credit'         => 'VARCHAR(500)?',
+            'label'          => 'VARCHAR(120)?',
+            'description'    => 'VARCHAR(500)?',
+            'version'        => 'VARCHAR(20)=1',
+            'is_active'      => 'INTEGER=1',
+            'is_placeholder' => 'INTEGER=0',
+            'created_at'     => 'DATETIME=CURRENT_TIMESTAMP',
+            'updated_at'     => 'DATETIME=CURRENT_TIMESTAMP',
+            '_unique'        => [['asset_key']],
+        ],
+        'migrations' => [
+            'id'        => 'pk',
+            'version'   => 'VARCHAR(255)',
+            'class'     => 'VARCHAR(255)',
+            'group'     => 'VARCHAR(255)',
+            'namespace' => 'VARCHAR(255)',
+            'time'      => 'INTEGER',
+            'batch'     => 'INTEGER',
+        ],
+        'participants' => [
+            'id'                       => 'pk',
+            'participant_code'         => 'VARCHAR(40)',
+            'username'                 => 'VARCHAR(30)',
+            'password_hash'            => 'VARCHAR(255)',
+            'must_change_password'     => 'INTEGER=0',
+            'display_name'             => 'VARCHAR(150)?',
+            'age'                      => 'INTEGER?',
+            'gender'                   => 'VARCHAR(20)?',
+            'class_level'              => 'VARCHAR(20)?',
+            'school_id'                => 'INTEGER?',
+            'school_name_snapshot'     => 'VARCHAR(200)?',
+            'country_code'             => 'VARCHAR(5)?=ID',
+            'country_name_snapshot'    => 'VARCHAR(100)?',
+            'province_code'            => 'VARCHAR(10)?',
+            'province_name_snapshot'   => 'VARCHAR(120)?',
+            'district_code'            => 'VARCHAR(10)?',
+            'district_name_snapshot'   => 'VARCHAR(120)?',
+            'pw_first_submit_criteria' => 'INTEGER?',
+            'pw_weak_submit_count'     => 'INTEGER=0',
+            'failed_login_count'       => 'INTEGER=0',
+            'locked_until'             => 'DATETIME?',
+            'last_login_at'            => 'DATETIME?',
+            'password_changed_at'      => 'DATETIME?',
+            'intro_seen_at'            => 'DATETIME?',
+            'assented_at'              => 'DATETIME?',
+            'created_at'               => 'DATETIME=CURRENT_TIMESTAMP',
+            'updated_at'               => 'DATETIME=CURRENT_TIMESTAMP',
+            'deleted_at'               => 'DATETIME?',
+            '_unique'                  => [['participant_code'], ['username']],
+        ],
+        'participant_feedback' => [
+            'id'             => 'pk',
+            'participant_id' => 'INTEGER',
+            'session_id'     => 'INTEGER?',
+            'rating'         => 'INTEGER',
+            'liked_most'     => 'TEXT?',
+            'hardest_part'   => 'TEXT?',
+            'new_learning'   => 'TEXT?',
+            'suggestion'     => 'TEXT?',
+            'submitted_at'   => 'DATETIME=CURRENT_TIMESTAMP',
+        ],
+        'reading_passages' => [
+            'id'               => 'pk',
+            'level_id'         => 'INTEGER',
+            'passage_key'      => 'VARCHAR(60)',
+            'title_id'         => 'VARCHAR(200)?',
+            'title_en'         => 'VARCHAR(200)?',
+            'body_id'          => 'TEXT',
+            'body_en'          => 'TEXT',
+            'media_asset_id'   => 'INTEGER?',
+            'reference_source' => 'VARCHAR(500)?',
+            'is_active'        => 'INTEGER=1',
+            'created_at'       => 'DATETIME=CURRENT_TIMESTAMP',
+            'updated_at'       => 'DATETIME=CURRENT_TIMESTAMP',
+            '_unique'          => [['passage_key']],
+        ],
+        'research_studies' => [
+            'id'             => 'pk',
+            'code'           => 'VARCHAR(50)',
+            'name'           => 'VARCHAR(200)',
+            'description'    => 'TEXT?',
+            'year_label'     => 'VARCHAR(20)?',
+            'status'         => 'VARCHAR(20)=draft',
+            'retention_days' => 'INTEGER=1825',
+            'default_locale' => 'VARCHAR(5)=id',
+            'unlock_mode'    => 'VARCHAR(20)=sequential',
+            'created_at'     => 'DATETIME=CURRENT_TIMESTAMP',
+            'updated_at'     => 'DATETIME=CURRENT_TIMESTAMP',
+            '_unique'        => [['code']],
+        ],
+        'schools' => [
+            'id'               => 'pk',
+            'code'             => 'VARCHAR(80)?',
+            'name'             => 'VARCHAR(200)',
+            'level'            => 'VARCHAR(20)?',
+            'stage'            => 'VARCHAR(10)?',
+            'status'           => 'VARCHAR(10)?',
+            'country_code'     => 'VARCHAR(5)?=ID',
+            'province_code'    => 'VARCHAR(10)?',
+            'district_code'    => 'VARCHAR(10)?',
+            'subdistrict_name' => 'VARCHAR(120)?',
+            'village_name'     => 'VARCHAR(120)?',
+            'is_active'        => 'INTEGER=1',
+            'is_verified'      => 'INTEGER=0',
+            'match_key'        => 'VARCHAR(200)?',
+            'merged_into_id'   => 'INTEGER?',
+            'created_at'       => 'DATETIME=CURRENT_TIMESTAMP',
+            'updated_at'       => 'DATETIME=CURRENT_TIMESTAMP',
+            '_unique'          => [['code']],
+        ],
+        'session_progress' => [
+            'session_id'              => 'INTEGER',
+            'current_level_id'        => 'INTEGER?',
+            'current_node_id'         => 'INTEGER?',
+            'unlocked_level_sequence' => 'INTEGER=1',
+            'completed_nodes'         => 'INTEGER=0',
+            'completed_levels'        => 'INTEGER=0',
+            'total_stars'             => 'INTEGER=0',
+            'updated_at'              => 'DATETIME=CURRENT_TIMESTAMP',
+            '_primary'                => ['session_id'],
+        ],
+        'staff_users' => [
+            'id'                   => 'pk',
+            'username'             => 'VARCHAR(100)',
+            'email'                => 'VARCHAR(190)?',
+            'password_hash'        => 'VARCHAR(255)',
+            'must_change_password' => 'INTEGER=0',
+            'role'                 => 'VARCHAR(20)=guru',
+            'display_name'         => 'VARCHAR(150)',
+            'school_id'            => 'INTEGER?',
+            'is_active'            => 'INTEGER=1',
+            'failed_login_count'   => 'INTEGER=0',
+            'locked_until'         => 'DATETIME?',
+            'last_login_at'        => 'DATETIME?',
+            'created_at'           => 'DATETIME=CURRENT_TIMESTAMP',
+            'updated_at'           => 'DATETIME=CURRENT_TIMESTAMP',
+            '_unique'              => [['email'], ['username']],
+        ],
+    ];
+
+    /**
+     * Membuat (ulang) tabel. Tanpa argumen: semua 30 tabel.
+     *
+     * @param list<string>|null $only
+     */
+    private function createResetTables(?array $only = null): BaseConnection
+    {
+        $forge = Database::forge('tests');
+
+        foreach (self::$resetSchema as $table => $columns) {
+            if ($only !== null && ! in_array($table, $only, true)) {
+                continue;
+            }
+
+            $forge->dropTable($table, true);
+
+            $fields  = [];
+            $primary = null;
+            $unique  = [];
+
+            foreach ($columns as $name => $spec) {
+                if ($name === '_primary') {
+                    $primary = $spec;
+
+                    continue;
+                }
+
+                if ($name === '_unique') {
+                    $unique = $spec;
+
+                    continue;
+                }
+
+                $fields[$name] = self::resetField($spec);
+
+                if ($spec === 'pk') {
+                    $primary = [$name];
+                }
+            }
+
+            $forge->addField($fields);
+
+            if ($primary !== null) {
+                $forge->addPrimaryKey($primary);
+            }
+
+            foreach ($unique as $keyColumns) {
+                $forge->addUniqueKey($keyColumns);
+            }
+
+            $forge->createTable($table);
+        }
+
+        return Database::connect('tests');
+    }
+
+    private function dropResetTables(): void
+    {
+        $forge = Database::forge('tests');
+
+        foreach (array_keys(self::$resetSchema) as $table) {
+            $forge->dropTable($table, true);
+        }
+    }
+
+    /** @return array<string, mixed> definisi kolom Forge */
+    private static function resetField(string $spec): array
+    {
+        if ($spec === 'pk') {
+            return ['type' => 'INTEGER', 'auto_increment' => true];
+        }
+
+        preg_match('/^([A-Z]+)(?:\(([\d,]+)\))?(\?)?(?:=(.*))?$/s', $spec, $m);
+
+        $field = ['type' => $m[1]];
+
+        if (($m[2] ?? '') !== '') {
+            $field['constraint'] = $m[2];
+        }
+
+        if (($m[3] ?? '') === '?') {
+            $field['null'] = true;
+        }
+
+        if (isset($m[4])) {
+            $field['default'] = $m[4] === 'CURRENT_TIMESTAMP' ? new RawSql('CURRENT_TIMESTAMP') : $m[4];
+        }
+
+        return $field;
+    }
+}

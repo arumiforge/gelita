@@ -91,21 +91,22 @@ final class ViewHelperTest extends CIUnitTestCase
         $this->assertStringNotContainsString('bocor', $html);
     }
 
-    /** Konteks filter memang dibagi: chart di halaman ber-filter ikut membawa filternya. */
+    /** Konteks filter memang dibagi: kontrol filter di halaman ber-filter ikut membawa filternya. */
     public function testComponentSharesFilterContext(): void
     {
-        service('renderer')->setData(['filters' => ['study_id' => 5, 'phase_code' => 'pretest', 'locale' => '']]);
+        service('renderer')->setData([
+            'filters'       => ['study_id' => 5, 'locale' => ''],
+            'filterOptions' => ['studies' => [
+                ['id' => 4, 'code' => 'STUDI-LAMA', 'name' => 'Studi lama', 'status' => 'closed'],
+                ['id' => 5, 'code' => 'STUDI-KEDU-KELAS5-2026', 'name' => 'Penelitian kelas 5', 'status' => 'active'],
+            ]],
+        ]);
 
-        // atribut di-escape konteks attr (`=` → &#x3D;): bandingkan setelah didekode
-        $html = html_entity_decode(component('admin-chart', [
-            'id'       => 'chart-uji',
-            'title'    => 'Uji',
-            'type'     => 'bar',
-            'endpoint' => 'api/admin/uji',
-        ]), ENT_QUOTES | ENT_HTML5);
+        $html = component('admin-filter-bar', ['only' => ['study_id']]);
 
-        $this->assertStringContainsString('study_id=5', $html);
-        $this->assertStringContainsString('phase_code=pretest', $html);
-        $this->assertStringNotContainsString('locale=', $html);
+        $this->assertMatchesRegularExpression('/<option value="5"\s+selected>/', $html, 'filter halaman dibaca komponen');
+        $this->assertDoesNotMatchRegularExpression('/<option value="4"\s+selected>/', $html);
+        $this->assertStringContainsString('Penelitian kelas 5 (sedang berjalan)', $html);
+        $this->assertStringNotContainsString('phase', $html, 'fase penelitian sudah dihapus');
     }
 }

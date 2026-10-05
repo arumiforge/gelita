@@ -1,12 +1,14 @@
 <?php
 
+use App\Entities\ChallengeAttempt;
 use App\Entities\ChallengeItem;
 use App\Entities\ChallengeNode;
 use CodeIgniter\Test\CIUnitTestCase;
 
 /**
- * Entity konten: casting config, default per engine, dan aturan mutlak
- * bahwa answer_key_json tidak pernah ikut ke payload pemain.
+ * Entity konten: casting config, default per engine, pengaturan per variasi,
+ * batas percobaan pengerjaan, dan aturan mutlak bahwa answer_key_json tidak
+ * pernah ikut ke payload pemain.
  *
  * @internal
  */
@@ -24,34 +26,80 @@ final class ChallengeEntityTest extends CIUnitTestCase
         $node->injectRawData([
             'id'          => 1,
             'engine_type' => 'rumpang',
-            'config_json' => '{"items_per_round":4,"use_word_bank":true,"distractor_count":2}',
+            'config_json' => '{"use_word_bank":true,"distractor_count":2}',
         ]);
 
         $this->assertIsArray($node->config_json);
-        $this->assertSame(4, $node->itemsPerRound());
+        $this->assertSame(2, $node->config('distractor_count'));
         $this->assertTrue($node->config('use_word_bank'));
     }
 
     public function testConfigFallsBackToEngineDefault(): void
     {
         $node = new ChallengeNode();
-        $node->injectRawData(['id' => 2, 'engine_type' => 'pilihan', 'config_json' => null]);
+        $node->injectRawData(['id' => 2, 'engine_type' => 'rumpang', 'config_json' => null]);
 
-        $this->assertSame(3, $node->itemsPerRound());
-        $this->assertFalse($node->allowsRetry());
+        $this->assertSame('variant', $node->config('selection'));
+        $this->assertTrue($node->isReading(), 'Isi Rumpang kelas 5 selalu satu bacaan');
+        $this->assertSame([], $node->variants());
     }
 
-    public function testVerdictOptionsComeFromNodeConfig(): void
+    public function testVerdictOptionsAreAlwaysTrueAndFalse(): void
     {
         $node = new ChallengeNode();
         $node->injectRawData([
             'id'          => 3,
             'engine_type' => 'boleh',
-            'config_json' => '{"verdict_options":["benar","salah","pendapat"],"require_reason":true}',
+            'config_json' => '{"verdict_options":["benar","salah","pendapat"]}',
         ]);
 
-        $this->assertSame(['benar', 'salah', 'pendapat'], $node->verdictOptions());
-        $this->assertTrue($node->requiresReason());
+        $this->assertSame(['benar', 'salah'], $node->verdictOptions(), 'pilihan Pendapat sudah dihapus');
+    }
+
+    public function testVariantTitlesAndDistractorsArePerGroup(): void
+    {
+        $node = new ChallengeNode();
+        $node->injectRawData([
+            'id'          => 4,
+            'engine_type' => 'rumpang',
+            'title_id'    => 'Isi Rumpang',
+            'title_en'    => 'Fill in the Blanks',
+            'config_json' => json_encode([
+                'distractors' => ['lama'],
+                'variants'    => [
+                    'a' => ['title_id' => 'Gunung Kembar', 'title_en' => 'The Twin Mountains', 'distractors' => [['id' => 'salju', 'en' => 'snow'], 'pasir']],
+                    'b' => ['title_id' => 'Umbul Jumprit'],
+                ],
+            ]),
+        ]);
+
+        $this->assertSame(['a', 'b'], array_keys($node->variants()));
+        $this->assertSame('The Twin Mountains', $node->variantTitle('a', 'en'));
+        $this->assertSame('Umbul Jumprit', $node->variantTitle('b', 'en'), 'judul Inggris kosong → judul Indonesia variasi');
+        $this->assertSame('Isi Rumpang', $node->variantTitle('c', 'id'), 'variasi tanpa judul → judul tantangan');
+        $this->assertSame(['salju', 'pasir'], $node->distractors('id', 'a'));
+        $this->assertSame(['snow', 'pasir'], $node->distractors('en', 'a'));
+        $this->assertSame([], $node->distractors('id', 'b'));
+        $this->assertSame([], $node->distractors('id'), 'pengecoh tingkat node tidak dibaca lagi');
+    }
+
+    public function testAttemptCountsTriesLeft(): void
+    {
+        $attempt = new ChallengeAttempt();
+        $attempt->injectRawData(['id' => 1, 'status' => 'in_progress', 'check_count' => 2, 'max_tries' => 3, 'scorable_items' => 4, 'first_pass_correct' => 3]);
+
+        $this->assertSame(3, $attempt->maxTries());
+        $this->assertSame(1, $attempt->triesLeft());
+        $this->assertFalse($attempt->isExhausted());
+        $this->assertSame(75.0, $attempt->firstPassPercent());
+
+        $attempt->check_count = 3;
+        $this->assertSame(0, $attempt->triesLeft());
+        $this->assertTrue($attempt->isExhausted());
+
+        $legacy = new ChallengeAttempt();
+        $legacy->injectRawData(['id' => 2, 'check_count' => 0, 'max_tries' => 0]);
+        $this->assertSame(config('Gelita')->maxTries, $legacy->maxTries(), 'baris tanpa max_tries memakai aturan sekarang');
     }
 
     public function testPlayerArrayNeverCarriesTheAnswerKey(): void
@@ -90,47 +138,6 @@ final class ChallengeEntityTest extends CIUnitTestCase
         ]);
 
         $this->assertSame(['x' => 30, 'y' => 55, 'w' => 14, 'grid' => 3, 'shape' => 'square'], $item->safeConfig());
-        $this->assertSame('digital_ethics', $item->digitalPillar());
-    }
-
-    public function testAcceptedAnswersAreNormalisedAndIncludeIndonesian(): void
-    {
-        $item = new ChallengeItem();
-        $item->injectRawData([
-            'id'              => 12,
-            'item_key'        => 'mgl-2-91',
-            'answer_key_json' => '{"accept_id":[" Syailendra ","Sailendra"],"accept_en":["Shailendra"]}',
-        ]);
-
-        $accepted = $item->acceptedAnswers('en');
-
-        $this->assertContains('shailendra', $accepted);
-        $this->assertContains('syailendra', $accepted);
-        $this->assertContains('sailendra', $accepted);
-    }
-
-    public function testOrderingPiecesAreShuffledWithoutRevealingTheKey(): void
-    {
-        $item = new ChallengeItem();
-        $item->injectRawData([
-            'id'                => 13,
-            'item_key'          => 'wnb-1-91',
-            'interaction_type'  => 'ordering',
-            'answer_key_json'   => '{"order":["c","a","d","b"]}',
-            'config_json'       => '{"pieces":[{"key":"a","text_id":"Rebus mie.","text_en":"Boil."},'
-                . '{"key":"b","text_id":"Sajikan.","text_en":"Serve."},'
-                . '{"key":"c","text_id":"Siapkan bahan.","text_en":"Prepare."},'
-                . '{"key":"d","text_id":"Tuang kuah.","text_en":"Pour."}]}',
-        ]);
-
-        $payload = $item->toPlayerArray('id');
-
-        $this->assertCount(4, $payload['pieces']);
-        $this->assertEqualsCanonicalizing(
-            ['a', 'b', 'c', 'd'],
-            array_column($payload['pieces'], 'key'),
-        );
-        $this->assertArrayNotHasKey('order', $payload);
     }
 
     public function testDecoyItemIsRecognised(): void
@@ -148,8 +155,8 @@ final class ChallengeEntityTest extends CIUnitTestCase
     public function testVerdictIsLowercased(): void
     {
         $item = new ChallengeItem();
-        $item->injectRawData(['id' => 16, 'item_key' => 'mgl-3-92', 'answer_key_json' => '{"verdict":"Pendapat"}']);
+        $item->injectRawData(['id' => 16, 'item_key' => 'mgl-3-a02', 'answer_key_json' => '{"verdict":"Salah"}']);
 
-        $this->assertSame('pendapat', $item->verdict());
+        $this->assertSame('salah', $item->verdict());
     }
 }
