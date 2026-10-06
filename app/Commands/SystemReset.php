@@ -2,6 +2,7 @@
 
 namespace App\Commands;
 
+use App\Commands\Concerns\CliOptions;
 use App\Services\SystemResetService;
 use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
@@ -19,6 +20,8 @@ use CodeIgniter\CLI\CLI;
  */
 class SystemReset extends BaseCommand
 {
+    use CliOptions;
+
     protected $group       = 'GELITA';
     protected $name        = 'gelita:reset';
     protected $description = 'Reset total data uji coba dan pengaturan untuk penelitian kelas 5 (Pustaka, cerita, media, sekolah resmi, staf tetap).';
@@ -40,7 +43,7 @@ class SystemReset extends BaseCommand
         // pre_system (tempat zona waktu DB disetel) tidak terpicu di CLI
         db_sync_timezone();
 
-        $flag    = static fn (string $name): bool => array_key_exists($name, $params) || CLI::getOption($name) !== null;
+        $flag    = fn (string $name): bool => $this->flag($name, $params);
         $dryRun  = $flag('dry-run');
         $yes     = $flag('ya');
         $service = new SystemResetService();
@@ -83,8 +86,18 @@ class SystemReset extends BaseCommand
             return EXIT_ERROR;
         }
 
+        $bank = $this->bankPath($params);
+
+        if ($bank !== null && ! is_file($bank)) {
+            CLI::error('Workbook --bank tidak ditemukan: ' . $bank . '. Tidak ada yang diubah.');
+
+            return EXIT_ERROR;
+        }
+
         $plan = $service->plan();
         $this->printPlan($plan);
+
+        CLI::write('Bank soal: ' . ($flag('tanpa-bank') ? 'tidak diimpor (--tanpa-bank)' : ($bank ?? ROOTPATH . SystemResetService::DEFAULT_BANK)));
 
         $cleanMedia = $flag('bersihkan-media-tantangan');
 
@@ -127,7 +140,7 @@ class SystemReset extends BaseCommand
             $result = $service->run([
                 'hapus_guru'      => $flag('hapus-guru'),
                 'tanpa_bank'      => $flag('tanpa-bank'),
-                'bank'            => $this->bankPath($params),
+                'bank'            => $bank,
                 'tanpa_mockup'    => $flag('tanpa-mockup'),
                 'bersihkan_media' => $cleanMedia,
                 // Sesudah impor: tampilkan daftar akhir, lalu minta konfirmasi kecuali --ya
@@ -262,13 +275,11 @@ class SystemReset extends BaseCommand
     /** @param array<int|string, mixed> $params */
     private function bankPath(array $params): ?string
     {
-        $value = $params['bank'] ?? CLI::getOption('bank');
+        $path = $this->option('bank', $params);
 
-        if (! is_string($value) || trim($value) === '') {
+        if ($path === null) {
             return null;
         }
-
-        $path = trim($value);
 
         return str_starts_with($path, '/') ? $path : ROOTPATH . $path;
     }

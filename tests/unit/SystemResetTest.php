@@ -73,6 +73,30 @@ final class SystemResetTest extends CIUnitTestCase
         $this->assertSame(12, $plan['nodes_after']);
     }
 
+    /** `--bank=JALUR` dan `--bank JALUR` sama-sama terbaca (parser CodeIgniter tidak memecah `=`). */
+    public function testBankOptionAcceptsBothForms(): void
+    {
+        $bank = ROOTPATH . 'docs/pustaka/gelita-pustaka.xlsx';   // berkas lain yang ada, bukan bawaan
+
+        foreach ([['bank=' . $bank => null], ['bank' => $bank]] as $params) {
+            [$code, $output] = $this->command(['dry-run' => null] + $params);
+
+            $this->assertSame(EXIT_SUCCESS, $code);
+            $this->assertStringContainsString('Bank soal: ' . $bank, $output);
+        }
+
+        $before = $this->counts();
+
+        foreach ([['bank=/tidak/ada/bank.xlsx' => null], ['bank' => '/tidak/ada/bank.xlsx']] as $params) {
+            [$code, $output] = $this->command(['ya' => null] + $params);
+
+            $this->assertSame(EXIT_ERROR, $code, json_encode($params));
+            $this->assertStringContainsString('Workbook --bank tidak ditemukan: /tidak/ada/bank.xlsx', $output);
+        }
+
+        $this->assertSame($before, $this->counts(), 'jalur salah: tidak ada yang diubah');
+    }
+
     public function testWithoutTheConfirmationWordNothingHappens(): void
     {
         $before = $this->counts();

@@ -2,6 +2,7 @@
 
 namespace App\Commands;
 
+use App\Commands\Concerns\CliOptions;
 use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
 
@@ -12,6 +13,8 @@ use CodeIgniter\CLI\CLI;
  */
 class BankImport extends BaseCommand
 {
+    use CliOptions;
+
     protected $group       = 'GELITA';
     protected $name        = 'gelita:bank:import';
     protected $description = 'Memuat workbook bank soal (XLSX) ke tabel konten dalam satu transaction.';
@@ -42,14 +45,14 @@ class BankImport extends BaseCommand
             return EXIT_ERROR;
         }
 
-        $dryRun  = array_key_exists('dry-run', $params) || CLI::getOption('dry-run') !== null;
+        $dryRun  = $this->flag('dry-run', $params);
         $service = service('contentImportService');
 
         try {
             $result = $dryRun ? $service->preview($file) : null;
 
             if (! $dryRun) {
-                $staffId = $this->staffId((string) ($params['staff'] ?? CLI::getOption('staff') ?? ''));
+                $staffId = $this->staffId((string) $this->option('staff', $params));
 
                 if ($staffId === null) {
                     CLI::error('Akun admin aktif tidak ditemukan untuk dicatat di audit log (pakai --staff <username>).');

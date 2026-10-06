@@ -2,6 +2,7 @@
 
 namespace App\Commands;
 
+use App\Commands\Concerns\CliOptions;
 use App\Libraries\NarrationImporter;
 use App\Models\AuditLogModel;
 use CodeIgniter\CLI\BaseCommand;
@@ -21,6 +22,8 @@ use CodeIgniter\CLI\CLI;
  */
 class NarrationImport extends BaseCommand
 {
+    use CliOptions;
+
     protected $group       = 'GELITA';
     protected $name        = 'gelita:narration:import';
     protected $description = 'Mengimpor rekaman narasi naskah (public/assets/audio/narasi/{id|en}/) sebagai audio draft.';
@@ -36,7 +39,7 @@ class NarrationImport extends BaseCommand
 
         $locales = config('Gelita')->locales;
         $locale  = $this->option('locale', $params);
-        $dryRun  = array_key_exists('dry-run', $params) || CLI::getOption('dry-run') !== null;
+        $dryRun  = $this->flag('dry-run', $params);
 
         if ($locale !== null && ! in_array($locale, $locales, true)) {
             CLI::error('--locale harus salah satu dari: ' . implode(', ', $locales) . '.');
@@ -81,28 +84,6 @@ class NarrationImport extends BaseCommand
         }
 
         return $failed ? EXIT_ERROR : EXIT_SUCCESS;
-    }
-
-    /**
-     * Nilai opsi dalam dua bentuk: `--locale en` dan `--locale=en`. Parser
-     * CLI CodeIgniter hanya mengenal bentuk pertama; bentuk kedua terbaca
-     * sebagai opsi bernama `locale=en` tanpa nilai.
-     */
-    private function option(string $name, array $params): ?string
-    {
-        $value = $params[$name] ?? CLI::getOption($name);
-
-        if (is_string($value) && $value !== '') {
-            return $value;
-        }
-
-        foreach (array_merge(array_keys($params), array_keys(CLI::getOptions())) as $key) {
-            if (is_string($key) && str_starts_with($key, $name . '=')) {
-                return substr($key, strlen($name) + 1);
-            }
-        }
-
-        return null;
     }
 
     /** @param array<string, mixed> $report */

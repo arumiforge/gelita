@@ -2,6 +2,7 @@
 
 namespace App\Commands;
 
+use App\Commands\Concerns\CliOptions;
 use App\Libraries\ContentVerifier;
 use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
@@ -16,6 +17,8 @@ use CodeIgniter\CLI\CLI;
  */
 class ContentVerify extends BaseCommand
 {
+    use CliOptions;
+
     protected $group       = 'GELITA';
     protected $name        = 'gelita:content:verify';
     protected $description = 'Memeriksa 3 wilayah × 4 tantangan, variasi, bank soal kelas 5 (Dok 2 §7.5), kunci, dan media.';
@@ -55,11 +58,5 @@ class ContentVerify extends BaseCommand
         $strict = $this->flag('strict', $params);
 
         return $errors > 0 || ($strict && $warnings > 0) ? EXIT_ERROR : EXIT_SUCCESS;
-    }
-
-    /** Opsi tanpa nilai: `--strict` terbaca sebagai `$params['strict'] = null`. */
-    private function flag(string $name, array $params): bool
-    {
-        return array_key_exists($name, $params) || CLI::getOption($name) !== null;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Commands;
 
+use App\Commands\Concerns\CliOptions;
 use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
 
@@ -16,6 +17,8 @@ use CodeIgniter\CLI\CLI;
  */
 class LibraryThumbnails extends BaseCommand
 {
+    use CliOptions;
+
     protected $group       = 'GELITA';
     protected $name        = 'gelita:library:thumbnails';
     protected $description = 'Mengunduh thumbnail video luar Pustaka dan memasangnya sebagai poster.';
@@ -28,7 +31,7 @@ class LibraryThumbnails extends BaseCommand
     {
         db_sync_timezone();
 
-        $force   = array_key_exists('force', $params) || CLI::getOption('force') !== null;
+        $force   = $this->flag('force', $params);
         $summary = service('videoThumbnail')->fillMissing(null, $force);
 
         CLI::write(sprintf(

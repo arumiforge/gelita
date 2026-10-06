@@ -2,6 +2,7 @@
 
 namespace App\Commands;
 
+use App\Commands\Concerns\CliOptions;
 use App\Libraries\StorySync;
 use App\Models\AuditLogModel;
 use CodeIgniter\CLI\BaseCommand;
@@ -22,6 +23,8 @@ use CodeIgniter\CLI\CLI;
  */
 class StoryUpdate extends BaseCommand
 {
+    use CliOptions;
+
     protected $group       = 'GELITA';
     protected $name        = 'gelita:story:update';
     protected $description = 'Menyinkronkan narasi dan dialog (tabel dialogues) dengan naskah cerita terbaru.';
@@ -114,11 +117,5 @@ class StoryUpdate extends BaseCommand
         }
 
         return EXIT_SUCCESS;
-    }
-
-    /** Opsi tanpa nilai: `--force` terbaca sebagai `$params['force'] = null`. */
-    private function flag(string $name, array $params): bool
-    {
-        return array_key_exists($name, $params) || CLI::getOption($name) !== null;
     }
 }
