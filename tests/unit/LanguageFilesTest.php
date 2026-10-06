@@ -78,6 +78,77 @@ final class LanguageFilesTest extends CIUnitTestCase
     }
 
     /**
+     * Dok 2 §12: kunci yang dihapus tidak tersisa di berkas bahasa mana pun
+     * dan tidak lagi dipakai kode (lang('Game.x') di PHP, t('x') di JS);
+     * kunci baru ada dengan teks persis tabel.
+     */
+    public function testDocTwoTextKeys(): void
+    {
+        $removedGame = ['score', 'totalScore', 'meanFirstPass', 'engine_pilihan', 'variant_urutkan_informasi', 'verdictPendapat',
+            'factVsOpinion', 'factWord', 'opinionWord', 'reasonLabel', 'reasonPlaceholder', 'typeAnswer', 'orderHint',
+            'moveUp', 'moveDown', 'questionOf', 'sourceText', 'sourceOfficial', 'sourceAnonymous', 'gender_lainnya'];
+        $removedJs = ['noRetry', 'finishAnyway', 'reasonSaved', 'cardMoved', 'orderOkTitle', 'orderOkText',
+            'orderWrongTitle', 'orderWrongText', 'orderWrongPlain'];
+
+        foreach (['id', 'en'] as $locale) {
+            $game = require APPPATH . "Language/{$locale}/Game.php";
+            $js   = require APPPATH . "Language/{$locale}/Js.php";
+
+            foreach ($removedGame as $key) {
+                $this->assertArrayNotHasKey($key, $game, "{$locale}/Game.{$key}");
+            }
+
+            foreach ($removedJs as $key) {
+                $this->assertArrayNotHasKey($key, $js, "{$locale}/Js.{$key}");
+            }
+        }
+
+        $php = '';
+
+        foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(APPPATH, \FilesystemIterator::SKIP_DOTS)) as $file) {
+            if ($file->getExtension() === 'php' && ! str_contains($file->getPathname(), DIRECTORY_SEPARATOR . 'Language' . DIRECTORY_SEPARATOR)) {
+                $php .= file_get_contents($file->getPathname());
+            }
+        }
+
+        $js = '';
+
+        foreach (new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(FCPATH . 'assets/js', \FilesystemIterator::SKIP_DOTS)) as $file) {
+            if ($file->getExtension() === 'js') {
+                $js .= file_get_contents($file->getPathname());
+            }
+        }
+
+        foreach ($removedGame as $key) {
+            $this->assertStringNotContainsString("'Game.{$key}'", $php, "Game.{$key} masih dipakai");
+        }
+
+        foreach ($removedJs as $key) {
+            $this->assertDoesNotMatchRegularExpression("/\\bt\\('{$key}'/", $js, "Js.{$key} masih dipakai");
+        }
+
+        $id = require APPPATH . 'Language/id/Game.php';
+        $en = require APPPATH . 'Language/en/Game.php';
+        $this->assertSame('Pernyataan {0}', $id['cardN']);
+        $this->assertSame('Statement {0}', $en['cardN']);
+        $this->assertSame('Kesempatan', $id['triesLabel']);
+        $this->assertSame('Bintang per wilayah', $id['perRegion']);
+
+        $jsId = require APPPATH . 'Language/id/Js.php';
+        $jsEn = require APPPATH . 'Language/en/Js.php';
+        $this->assertSame('Kesempatanmu tinggal {0} lagi.', $jsId['triesLeft']);
+        $this->assertSame('Tinggal satu kesempatan lagi. Baca pelan-pelan, ya!', $jsId['triesLast']);
+        $this->assertSame('Kesempatanmu sudah habis', $jsId['triesExhaustedTitle']);
+        $this->assertSame('Petunjuk ini dilewati', $jsId['clueFailedTitle']);
+        $this->assertSame('No more chances', $jsEn['triesExhaustedTitle']);
+
+        $admin = (require APPPATH . 'Language/id/Admin.php')['event'];
+        $this->assertSame('Mengecek jawaban', $admin['challenge_checked']);
+        $this->assertSame('Petunjuk dilewati', $admin['clue_failed']);
+        $this->assertSame('Ukuran layar berubah', $admin['viewport_changed']);
+    }
+
+    /**
      * Setiap label menu sidebar panel (termasuk "Rekaman narasi", tahap 5)
      * harus ada di Language/id/Admin.php; kunci yang hilang tampil mentah
      * (Admin.menuX).

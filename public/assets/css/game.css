@@ -1424,6 +1424,27 @@ html.js .book-frame img.is-loaded { opacity: 1; }
 .hunt-jump:disabled { cursor: default; }
 .hunt-target.is-found .hunt-jump::before { content: "✓ "; }
 .object:disabled { cursor: default; }
+.hunt-target.is-skipped { color: var(--ink-dim); }
+.hunt-target.is-skipped .hunt-jump::before { content: "✗ "; color: var(--bad); }
+
+/* Penanda 3 kesempatan (Dok 2 §5.3): bulatan terisi = sisa kesempatan */
+.chip-tries { gap: var(--sp-2); }
+.tries-label { font-size: var(--step--1); }
+.tries-dots { display: inline-flex; gap: 4px; }
+.tries-dot {
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--gold-300);
+  border-radius: 50%;
+  background: transparent;
+  transition: background-color .3s;
+}
+.tries-dot.is-left { background: var(--gold-300); }
+.clue-tries { display: inline-flex; align-items: center; gap: var(--sp-2); margin-top: var(--sp-1); color: var(--brown-500); font-size: var(--step--1); }
+.clue-tries .tries-dot { border-color: var(--brown-500); }
+.clue-tries .tries-dot.is-left { background: var(--brown-500); }
+.cards-heading { display: flex; align-items: center; gap: var(--sp-2); margin: 0; color: var(--gold-300); font-size: var(--step-0); }
+.rumpang-title { margin: 0; color: var(--brown-700); font-size: var(--step-1); }
 
 /* Petunjuk: jumlah yang sudah dipakai */
 .hint-count {

@@ -18,7 +18,7 @@ return [
     'markWrong'    => 'Belum tepat',
 
     // Galat & sesi
-    'errNetwork'      => 'Koneksi ke server terputus. Periksa internet sekolah, lalu coba lagi.',
+    'errNetwork'      => 'Koneksi ke server terputus. Coba cek internet sekolah, lalu ulangi.',
     'errNetworkRetry' => 'Koneksi terputus. Tunggu sebentar, lalu ketuk lagi.',
     'errUnknown'      => 'Ada yang tidak beres. Coba muat ulang halaman ini.',
     'errRateLimited'  => 'Terlalu cepat. Tunggu sebentar, lalu coba lagi.',
@@ -40,19 +40,28 @@ return [
     // Kerangka tantangan
     'itemsPending'  => 'Masih ada soal yang belum dijawab.',
     'fixAnswers'    => 'Perbaiki',
-    'finishAnyway'  => 'Selesaikan dengan jawaban ini',
     'hintTitle'     => 'Petunjuk',
-    'hintPenalty'   => 'Petunjuk tidak mengurangi bintangmu. Buka petunjuk?',
+    'hintPenalty'   => 'Petunjuk bisa membantumu. Buka petunjuk sekarang?',
     'hintOpen'      => 'Buka petunjuk',
     'hintAllOpened' => 'Semua petunjuk sudah kamu buka:',
     'hintNone'      => 'Belum ada petunjuk untuk soal ini.',
     'hintUsed'      => 'petunjuk dipakai',
     'exitTitle'     => 'Tinggalkan tantangan ini?',
-    'exitText'      => 'Jawabanmu yang sudah dicek tetap tersimpan, tetapi tantangan ini belum selesai.',
+    'exitText'      => 'Jawaban yang sudah kamu cek tetap tersimpan, tetapi tantangan ini belum selesai.',
     'exitYes'       => 'Ya, keluar',
     'exitNo'        => 'Lanjutkan tantangan',
 
-    // Puzzle & urutan
+    // Aturan 3 kesempatan (Dok 2 §5.3)
+    'triesLeft'            => 'Kesempatanmu tinggal {0} lagi.',
+    'triesLast'            => 'Tinggal satu kesempatan lagi. Baca pelan-pelan, ya!',
+    'triesExhaustedTitle'  => 'Kesempatanmu sudah habis',
+    'triesExhaustedText'   => 'Tidak apa-apa! Jawabanmu disimpan apa adanya. Ayo lanjut.',
+    'triesExhaustedPuzzle' => 'Tidak apa-apa! Ini gambar utuhnya. Jawabanmu disimpan apa adanya.',
+    'clueFailedTitle'      => 'Petunjuk ini dilewati',
+    'clueFailedText'       => 'Kesempatan untuk petunjuk ini sudah habis. Kita lanjut ke petunjuk berikutnya.',
+    'clueTriesLeft'        => 'Kesempatan untuk petunjuk ini: {0}',
+
+    // Puzzle
     'piecesSwapped'    => 'Keping di {0} dan {1} ditukar.',
     'puzzleOkTitle'    => 'Gambarnya utuh!',
     'puzzleOkText'     => 'Semua keping sudah di tempatnya.',
@@ -76,15 +85,15 @@ return [
     'cardsOkTitle'     => 'Semua kartu tepat!',
     'cardsOkText'      => 'Kamu menilai semua pernyataan dengan tepat.',
     'cardsWrongTitle'  => 'Belum semuanya tepat',
-    'cardsWrongText'   => '{0} dari {1} kartu sudah tepat. Kartu bergaris merah perlu kamu pikirkan lagi.',
+    'cardsWrongText'   => '{0} dari {1} pernyataan sudah tepat. Pikirkan lagi yang bergaris merah.',
 
     // Cari
     'clueLabel'      => 'Petunjuk {0}',
     'huntFoundMark'  => 'ditemukan',
     'huntDoneTitle'  => 'Semua objek ketemu!',
     'huntDoneText'   => 'Kamu menemukan semua warisan budaya yang dicari.',
-    'huntDecoyTitle' => 'Itu bukan dari Kedu',
-    'huntDecoyText'  => 'Benda itu memang budaya Indonesia, tetapi berasal dari daerah lain.',
+    'huntDecoyTitle' => 'Bukan yang ini',
+    'huntDecoyText'  => 'Benda itu bukan yang dimaksud petunjuk. Baca lagi petunjuknya, ya.',
     'huntOtherTitle' => 'Bukan yang ini',
     'huntOtherText'  => 'Benda itu juga warisan {0}, tetapi bukan yang dimaksud petunjuk kali ini.',
 ];

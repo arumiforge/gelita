@@ -12,9 +12,16 @@
  * "Cek jawabanku" → POST /check { answers: [{ item_id, answer: { order } }] }.
  * `detail[item].pieces_correct` (dan `misplaced` untuk gambar) dihitung
  * server. Setelah gambar utuh, keterangannya (#puzzle-caption) ditampilkan.
+ *
+ * Kesempatan ketiga habis (`completed` + `tries_exhausted`, Dok 2 §5.3):
+ * keping disusun ke posisi utuh dengan animasi 600 ms (susunan benar memang
+ * publik: keping 0..n−1 dari kiri atas), keterangan gambar tampil, baru
+ * kemudian modal "Kesempatanmu sudah habis".
  */
 import { $, $$, announce, reducedMotion } from '../core/dom.js';
 import { Sfx } from '../core/audio.js';
+
+const ASSEMBLE_MS = 600;
 
 function pulse(node) {
   if (reducedMotion() || !node.animate) return;
@@ -126,6 +133,54 @@ function mountArrange(ctx, wrap) {
     dragged = null;
   });
 
+  const lock = () => {
+    pieces.forEach((piece) => {
+      piece.classList.add('is-locked');
+      piece.classList.remove('is-misplaced', 'is-selected');
+      piece.disabled = true;
+    });
+    button.disabled = true;
+  };
+
+  /** Susun semua keping ke posisi utuh (FLIP, 600 ms), lalu tampilkan keterangan. */
+  const assemble = async () => {
+    solved = true;
+    select(null);
+    const ordered = slotOrder();
+    const arts = new Map(); // nomor keping → .piece-art
+    const before = new Map();
+    ordered.forEach((piece) => {
+      const art = $('.piece-art', piece);
+      if (!art) return;
+      arts.set(Number(piece.dataset.piece), art);
+      before.set(art, art.getBoundingClientRect());
+    });
+    ordered.forEach((piece, slot) => {
+      const art = arts.get(slot);
+      if (art) piece.append(art);
+      piece.dataset.piece = String(slot);
+    });
+    lock();
+
+    if (!reducedMotion()) {
+      const runs = [];
+      for (const [art, from] of before) {
+        const to = art.getBoundingClientRect();
+        const dx = from.left - to.left;
+        const dy = from.top - to.top;
+        if (!art.animate || (dx === 0 && dy === 0)) continue;
+        runs.push(art.animate(
+          [{ transform: `translate(${dx}px, ${dy}px)` }, { transform: 'translate(0, 0)' }],
+          { duration: ASSEMBLE_MS, easing: 'ease-in-out' },
+        ).finished.catch(() => {}));
+      }
+      await Promise.all(runs);
+    }
+
+    board.classList.add('is-solved');
+    if (caption) caption.hidden = false;
+  };
+
   ctx.currentItemId = () => itemId;
 
   button?.addEventListener('click', async () => {
@@ -151,13 +206,10 @@ function mountArrange(ctx, wrap) {
     if (ok) {
       solved = true;
       board.classList.add('is-solved');
-      pieces.forEach((piece) => {
-        piece.classList.add('is-locked');
-        piece.classList.remove('is-misplaced');
-        piece.disabled = true;
-      });
-      button.disabled = true;
+      lock();
       if (caption) caption.hidden = false;
+    } else if (result.completed) {
+      lock(); // kesempatan habis: animasi gambar utuh dijalankan sebelum modal (beforeExhausted)
     } else {
       const misplaced = new Set((detail.misplaced ?? []).map(Number));
       slotOrder().forEach((piece, slot) => piece.classList.toggle('is-misplaced', misplaced.has(slot)));
@@ -170,6 +222,8 @@ function mountArrange(ctx, wrap) {
       okText: captionText ? [ctx.t('puzzleOkText'), captionText] : ctx.t('puzzleOkText'),
       partialTitle: ctx.t('puzzleWrongTitle'),
       partialText: wrongCount !== null ? ctx.t('puzzleWrongText', wrongCount) : ctx.t('puzzleWrongPlain'),
+      exhaustedText: captionText ? [ctx.t('triesExhaustedPuzzle'), captionText] : ctx.t('triesExhaustedPuzzle'),
+      beforeExhausted: assemble,
     });
 
     if (outcome === 'fix') ($('.piece.is-misplaced', board) || pieces[0])?.focus();

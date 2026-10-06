@@ -11,7 +11,12 @@
  * Tantangan bacaan (config as_reading, kelas 5): semua soal adalah
  * potongan satu bacaan, disambung menjadi paragraf utuh dengan rumpang
  * bernomor di dalam kalimat (App\Libraries\ClozeReading). Selain itu,
- * soal tampil sebagai daftar kalimat lepas.
+ * soal tampil sebagai daftar kalimat lepas. Judul variasi (`variant.title`)
+ * tampil di atas bacaan.
+ *
+ * Muat ulang di tengah tantangan: rumpang yang sudah benar
+ * (`items[].state.locked`) dipulihkan engines/rumpang.js dengan jawaban
+ * siswa sendiri dan terkunci.
  *
  * @var App\Entities\ChallengeNode $node
  * @var App\Entities\Level         $level
@@ -22,6 +27,11 @@ $items       = $payload['items'] ?? [];
 $payload['word_bank'] ??= [];
 $media       = $payload['node']['scene'] ?? ($items[0]['media'] ?? null);
 $reading     = $node->isReading();
+// Judul variasi di atas bacaan (Dok 2 §6.2); judul node sudah tampil di kepala tantangan
+$variantTitle = trim((string) ($payload['variant']['title'] ?? ''));
+if ($variantTitle === $node->text('title', $locale)) {
+    $variantTitle = ''; // variasi tanpa judul sendiri: judul node sudah tampil di kepala
+}
 
 // Satu rumpang (tombol bank kata). Dirakit sebagai string agar tidak ada
 // spasi templat di antara rumpang dan tanda baca sesudahnya.
@@ -49,6 +59,9 @@ $blankHtml = static function (int|string $itemId, int $number): string {
   <div class="rumpang-main">
     <?php if ($reading): ?>
     <div class="rumpang-reading">
+      <?php if ($variantTitle !== ''): ?>
+        <h2 class="rumpang-title"><?= esc($variantTitle) ?></h2>
+      <?php endif ?>
       <?php foreach (App\Libraries\ClozeReading::paragraphs(array_map(static fn (array $item): array => ['id' => $item['id'], 'prompt' => (string) ($item['prompt'] ?? '')], $items)) as $paragraph): ?>
         <p><?php foreach ($paragraph as $token): ?><?= $token['type'] === 'text' ? esc($token['text']) : $blankHtml($token['id'], (int) $token['index']) ?><?php endforeach ?></p>
       <?php endforeach ?>

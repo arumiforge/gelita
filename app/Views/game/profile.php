@@ -46,7 +46,7 @@ foreach (service('contentRepository')->levels() as $entity) {
     <?= component('stat-tile', ['label' => lang('Game.classLevel'), 'value' => $classTxt]) ?>
     <?= component('stat-tile', ['label' => lang('Game.school'), 'value' => $participant['school_name'] ?? '—']) ?>
     <?= component('stat-tile', ['label' => lang('Game.shards'), 'value' => $progress['shards'] . '/' . $progress['shards_total'], 'icon' => 'lantern']) ?>
-    <?= component('stat-tile', ['label' => lang('Game.firstPass'), 'value' => lang('Game.firstPassCount', [$firstPass, $scorable]), 'icon' => 'target']) ?>
+    <?= component('stat-tile', ['label' => lang('Game.firstPass'), 'value' => lang('Game.firstTryCount', [$firstPass, $scorable]), 'icon' => 'target']) ?>
     <?= component('stat-tile', ['label' => lang('Game.totalTime'), 'value' => ms_to_human($durationMs), 'icon' => 'clock']) ?>
     <?= component('stat-tile', ['label' => lang('Game.stars'), 'value' => (string) $progress['total_stars'], 'icon' => 'star']) ?>
     <?= component('stat-tile', ['label' => lang('Game.challengesDone'), 'value' => $progress['completed_nodes'] . '/' . $progress['shards_total'], 'icon' => 'check']) ?>

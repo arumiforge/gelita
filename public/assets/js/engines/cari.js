@@ -8,11 +8,23 @@
  * jawabannya selalu `{ item_id: <petunjuk aktif>, answer: { object: <ref> } }`
  * dan server yang menerjemahkan token itu.
  *
+ * Aturan 3 kesempatan per petunjuk (Dok 2 §5): setiap ketukan benda adalah
+ * satu percobaan untuk petunjuk yang sedang aktif; #clue-tries menampilkan
+ * sisa kesempatan petunjuk itu (`tries_left` dari server).
+ *
  * Benar → objek diberi tanda temuan, dicoret dari daftar sisa, petunjuk
  * berikutnya muncul. Salah → objek bergetar 700 ms + modal penjelasan
- * (umpan balik dari server bila ada). Semua ketemu (`progress` dari server)
- * → konfeti + modal + complete(). Daftar sisa dapat dipakai untuk melompat
- * ke petunjuk tertentu. Tab berpindah antar objek, Enter memilih.
+ * (umpan balik dari server bila ada) + sisa kesempatan. Salah ke-3
+ * (`clue_closed`) → modal "Petunjuk ini dilewati", petunjuk diberi ✗ di
+ * daftar, bendanya TIDAK ditandai/diungkap, petunjuk berikutnya muncul.
+ * Semua petunjuk tertutup → server menutup pengerjaan (`completed`,
+ * `redirect`): konfeti + modal bila semua ketemu, modal "Kesempatanmu sudah
+ * habis" bila ada yang dilewati, lalu redirect. Daftar sisa dapat dipakai
+ * untuk melompat ke petunjuk yang masih terbuka (tidak menghitung
+ * percobaan). Tab berpindah antar objek, Enter memilih.
+ *
+ * Muat ulang: `clues[i].state` ({found, closed, tries}) dan `objects[].found`
+ * memulihkan temuan, petunjuk yang dilewati, dan sisa kesempatan.
  *
  * Narasi petunjuk (`clues[i].audio` / `audio_id`, hanya rekaman yang
  * disetujui): tombol ▶/⏸ dari <template id="tpl-clue-voice"> dipasang di
@@ -45,6 +57,10 @@ export function mount(ctx) {
   const listItems = $$('#hunt-list .hunt-target', ctx.section);
   const region = ctx.section.dataset.regionName || '';
   const found = new Set();
+  const skipped = new Set(); // petunjuk yang kesempatannya habis
+  const triesUsed = clues.map((clue) => Number(clue?.state?.tries) || 0);
+  const triesNode = $('#clue-tries', ctx.section);
+  const closed = (i) => found.has(i) || skipped.has(i);
   let current = 0;
   let shownAt = performance.now();
   let busy = false;
@@ -86,7 +102,7 @@ export function mount(ctx) {
     player.root.hidden = false;
     if (autoplay) {
       voiceTimer = setTimeout(() => {
-        if (current === i && !found.has(i)) player.autoplay();
+        if (current === i && !closed(i)) player.autoplay();
       }, VOICE_DELAY_MS);
     }
   };
@@ -101,12 +117,14 @@ export function mount(ctx) {
     const clue = clues[current];
     if (clueText) clueText.textContent = clue?.text || '';
     if (clueIndex) clueIndex.textContent = String(current + 1);
+    ctx.setTries(triesNode, ctx.maxTries - (triesUsed[current] ?? 0), ctx.t('clueTriesLeft', '{0}'));
     listItems.forEach((li, i) => {
-      li.classList.toggle('is-current', i === current && !found.has(i));
+      li.classList.toggle('is-current', i === current && !closed(i));
       li.classList.toggle('is-found', found.has(i));
+      li.classList.toggle('is-skipped', skipped.has(i));
       const jump = $('.hunt-jump', li);
       if (jump) {
-        jump.disabled = found.has(i);
+        jump.disabled = closed(i);
         jump.setAttribute('aria-pressed', i === current ? 'true' : 'false');
       }
     });
@@ -115,7 +133,7 @@ export function mount(ctx) {
 
   /** autoplay: hanya setelah jawaban benar, bukan saat pemain melompat. */
   const goTo = (i, { autoplay = false } = {}) => {
-    if (found.has(i)) return;
+    if (closed(i)) return;
     current = i;
     render();
     showVoice(i, { autoplay });
@@ -125,7 +143,7 @@ export function mount(ctx) {
   const nextUnfound = () => {
     for (let step = 1; step <= clues.length; step++) {
       const i = (current + step) % clues.length;
-      if (!found.has(i)) return i;
+      if (!closed(i)) return i;
     }
     return null;
   };
@@ -157,6 +175,8 @@ export function mount(ctx) {
     }
     busy = false;
 
+    if (Number.isFinite(Number(result.try_no))) triesUsed[current] = Number(result.try_no);
+
     if (result.correct) {
       found.add(current);
       object.classList.add('is-found');
@@ -164,39 +184,62 @@ export function mount(ctx) {
       object.setAttribute('aria-label', `${object.getAttribute('aria-label')} — ${ctx.t('huntFoundMark')}`);
       Sfx.play('correct');
       ctx.tally({ addCorrect: 1 });
+    } else {
+      // Klik salah: jebakan (budaya daerah lain) atau target lain (bukan petunjuk kali ini)
+      shake(object);
+      Sfx.play('wrong');
+      ctx.tally({ addWrong: 1 });
+      if (result.clue_closed) skipped.add(current);
+    }
 
-      const done = result.progress && result.progress.total > 0 && result.progress.answered >= result.progress.total;
-      if (done || found.size >= clues.length) {
-        clearTimeout(voiceTimer);
-        pauseNarration();
-        render();
-        confetti();
-        await showModal({
-          type: 'correct',
-          title: ctx.t('huntDoneTitle'),
-          text: ctx.t('huntDoneText'),
-          dismissible: false,
-          buttons: [{ label: ctx.t('next'), style: 'primary', value: 'next' }],
-        });
-        await ctx.complete();
-        return;
-      }
+    // Semua petunjuk tertutup: server sudah menutup pengerjaan
+    if (result.completed) {
+      clearTimeout(voiceTimer);
+      pauseNarration();
+      render();
+      const solved = result.completion_reason !== 'tries_exhausted';
+      if (solved) confetti();
+      await showModal({
+        type: solved ? 'correct' : 'info',
+        title: solved ? ctx.t('huntDoneTitle') : ctx.t('triesExhaustedTitle'),
+        text: solved ? ctx.t('huntDoneText') : ctx.t('triesExhaustedText'),
+        dismissible: false,
+        buttons: [{ label: ctx.t('next'), style: 'primary', value: 'next' }],
+      });
+      await ctx.finish(result);
+      return;
+    }
 
+    if (result.correct) {
       const next = nextUnfound();
       if (next !== null) goTo(next, { autoplay: true });
       return;
     }
 
-    // Klik salah: jebakan (budaya daerah lain) atau target lain (bukan petunjuk kali ini)
-    shake(object);
-    Sfx.play('wrong');
-    ctx.tally({ addWrong: 1 });
+    if (result.clue_closed) {
+      // Kesempatan petunjuk ini habis: dilewati tanpa mengungkap bendanya
+      render();
+      await showModal({
+        type: 'info',
+        title: ctx.t('clueFailedTitle'),
+        text: ctx.t('clueFailedText'),
+        dismissible: false,
+        buttons: [{ label: ctx.t('next'), style: 'primary', value: 'next' }],
+      });
+      const next = nextUnfound();
+      if (next !== null) goTo(next);
+      return;
+    }
 
+    render();
     const decoy = Boolean(result.decoy);
     await showModal({
       type: 'wrong',
       title: decoy ? ctx.t('huntDecoyTitle') : ctx.t('huntOtherTitle'),
-      text: result.feedback || (decoy ? ctx.t('huntDecoyText') : ctx.t('huntOtherText', region)),
+      text: [
+        result.feedback || (decoy ? ctx.t('huntDecoyText') : ctx.t('huntOtherText', region)),
+        ctx.triesText(result.tries_left),
+      ],
       buttons: [{ label: ctx.t('tryAgain'), style: 'primary', value: 'ok' }],
     });
     object.focus({ preventScroll: true });
@@ -211,6 +254,21 @@ export function mount(ctx) {
     const jump = event.target.closest('.hunt-jump');
     if (jump && !jump.disabled) goTo(Number(jump.dataset.clue));
   });
+
+  // Muat ulang di tengah tantangan: pulihkan temuan dan petunjuk yang dilewati
+  clues.forEach((clue, i) => {
+    if (clue?.state?.found) found.add(i);
+    else if (clue?.state?.closed) skipped.add(i);
+  });
+  const foundRefs = new Set((ctx.data.objects ?? []).filter((o) => o.found).map((o) => String(o.ref)));
+  $$('.object', scene).forEach((object) => {
+    if (!foundRefs.has(object.dataset.object)) return;
+    object.classList.add('is-found');
+    object.disabled = true;
+    object.setAttribute('aria-label', `${object.getAttribute('aria-label')} — ${ctx.t('huntFoundMark')}`);
+  });
+  if (found.size || skipped.size) ctx.tally({ correct: found.size, wrong: 0 });
+  if (closed(current)) current = nextUnfound() ?? current;
 
   render();
   showVoice(current); // petunjuk pertama: tombol ▶ saja, tanpa putar otomatis

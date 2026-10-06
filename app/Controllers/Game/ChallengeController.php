@@ -3,6 +3,7 @@
 namespace App\Controllers\Game;
 
 use App\Models\ChallengeAttemptModel;
+use App\Models\ItemResponseModel;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\HTTP\RedirectResponse;
 
@@ -139,6 +140,10 @@ class ChallengeController extends BaseGameController
             'libraryUnlocked' => $libraryUnlocked,
             'allCompleted'    => $this->allNodesCompleted($session),
             'nextRegion'      => $nextRegion,
+            // Cari Objek: jumlah ketukan salah (Dok 2 §12.1 "Ketukan salah"); engine batch memakai check_count
+            'wrongTaps'       => $node?->engine_type === 'cari'
+                ? array_sum(array_map(static fn ($r): int => (int) $r->wrong_click_count, model(ItemResponseModel::class)->forAttempt($attempt->id)))
+                : null,
         ]);
     }
 

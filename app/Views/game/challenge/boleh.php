@@ -4,7 +4,8 @@
  * teks bacaan.
  *
  * Pilihan verdict memakai radio bawaan: dapat dipilih dengan keyboard/sentuhan
- * tanpa JavaScript, dan tidak ada kunci jawaban di markup.
+ * tanpa JavaScript, dan tidak ada kunci jawaban di markup. Kartu diberi nomor
+ * "Pernyataan n" (Dok 2 §12.1).
  *
  * @var App\Entities\ChallengeNode $node
  * @var App\Entities\Level         $level
@@ -25,7 +26,7 @@ $labels   = ['benar' => 'Game.verdictBenar', 'salah' => 'Game.verdictSalah'];
 <?= $this->section('arena') ?>
 <?php foreach ($passages as $passage): ?>
   <details class="passage" data-passage="<?= esc($passage['id'], 'attr') ?>" id="passage-<?= esc($passage['id'], 'attr') ?>" open>
-    <summary class="passage-title"><?= icon('book') ?> <?= esc($passage['title'] !== '' ? $passage['title'] : lang('Game.passageLabel')) ?></summary>
+    <summary class="passage-title"><?= icon('book') ?> <?= esc($passage['title'] !== '' ? $passage['title'] : lang('Game.readingLabel')) ?></summary>
     <div class="passage-content">
       <?php if (! empty($passage['media'])): ?>
         <img class="passage-img" src="<?= esc($passage['media'], 'attr') ?>" alt="" loading="lazy">
@@ -35,6 +36,7 @@ $labels   = ['benar' => 'Game.verdictBenar', 'salah' => 'Game.verdictSalah'];
   </details>
 <?php endforeach ?>
 
+<h2 class="cards-heading"><?= icon('check') ?> <?= esc(lang('Game.statementsLabel')) ?></h2>
 <div class="card-grid<?= count($items) === 1 ? ' is-single' : '' ?>">
   <?php foreach ($items as $index => $item): ?>
     <?php $itemId = (string) $item['id']; ?>
