@@ -7,15 +7,15 @@ Keputusan dan penyimpangan dari ketiga dokumen perombakan, beserta alasannya dan
 | Dokumen | Status |
 |---|---|
 | Dok 1 | Selesai, di `main` |
-| Dok 2 | Sebagian, di `main`: §2, §3–§4, §5.2 (server), §7, §9, §10 mockup (lihat "Dok 2 — gambar mockup"), narasi petunjuk per node `cari`. §5.3 klien dan §12 teks UI di branch `dok2-klien-kesempatan` (454 uji hijau, PR ke `main`), lihat "Dok 2 — klien dan teks UI" |
+| Dok 2 | Sebagian, di `main`: §2, §3–§4, §5.2 (server), §5.3 (klien), §7, §9, §10 (mockup), §12 (teks UI), narasi petunjuk per node `cari`. §11 di branch `dok2-mockup` (PR ke `main`), lihat bagian "Dok 2 — naskah cerita dan rekaman" |
 | Dok 3 | Belum dimulai |
 
 Sisa Dok 2:
 
-1. ~~**§5.3 klien + §12 teks UI**~~ — selesai di branch `dok2-klien-kesempatan` (PR ke `main`).
-2. ~~**§10 mockup**~~ — selesai, di `main`.
-3. **§11 naskah cerita** — 11 baris masih "lima belas"; `--lepas-audio-beda` belum ada; rekaman petunjuk `mgl-4`/`wnb-4` belum ada, `petunjuk-tmg-4-05…08` belum dihapus.
-4. Bagian "Dok 2" catatan ini untuk §2–§9/§11 dan uji manual §13.2 lengkap (butir 3–4: mockup diganti gambar asli, halaman Narasi). Bagian mockup serta klien dan teks UI sudah ada di bawah.
+1. ~~**§5.3 klien + §12 teks UI**~~ — selesai, di `main` (PR #37).
+2. ~~**§10 mockup**~~ — selesai, di `main` (PR #36).
+3. ~~**§11 naskah cerita**~~ — selesai di branch `dok2-mockup` (PR ke `main`). Di server tetap perlu `gelita:story:update`, `gelita:narration:import`, lalu persetujuan narasi draft (§11.2 butir 3, Dok 3 §13).
+4. Bagian "Dok 2" catatan ini untuk §2–§9 dan uji manual §13.2 lengkap (butir 3–4: mockup diganti gambar asli, halaman Narasi). Bagian mockup, klien dan teks UI, serta naskah cerita sudah ada di bawah.
 
 ### Perawatan repo
 
@@ -287,3 +287,41 @@ Dikerjakan di branch `dok2-klien-kesempatan` (dari `main`), sesuai `02_TANTANGAN
   - **Ke-12 tantangan sampai Balai Refleksi (ID):** satu tantangan (Magelang Benar atau Salah) salah 3 kali. Hasilnya "Bintang per wilayah" 12/10/12 dari 12, dan "Paling sering terlewat … 0 dari 5 soal".
   - Setelah rebase ke `main` yang sudah berisi §10: `gelita:mockups` (45 dibuat), lalu skenario salah 3 kali dan benar pada percobaan pertama diulang dengan gambar mockup, dengan hasil sama. Gambar utuh Susun Gambar tampil di balik modal habis. Ini sekaligus menjawab "Belum dijalankan" di bagian mockup untuk alur §5.3. Butir §13.2 lain (mengganti mockup dengan gambar asli di panel, halaman Narasi) belum.
   - Tidak ada galat JavaScript atau konsol di semua skenario.
+
+---
+
+## Dok 2 — naskah cerita dan rekaman
+
+Dikerjakan di branch `dok2-mockup` (dibuat ulang dari `main` sesudah PR #36), sesuai `02_TANTANGAN_DAN_BANK_SOAL.md` §11. Suite: **457 test hijau** (2 dilewati, sama dengan `main`); 458 sesudah `main` berisi §5.3/§12 digabung ke branch.
+
+### Yang berubah
+
+- **§11.1 naskah.** Sebelas baris di `docs/naskah-cerita.md` diubah persis seperti tabel §11.1, lalu disalin ke `app/Database/Seeds/data/story.php`. *Benang merah* "15 Serpihan Cahaya" → "12 Serpihan Cahaya", dan keterangan bagian 5 "tantangan kelima" → "tantangan keempat". Baris `kenal-*` tidak disentuh.
+- **`story-legacy.php` kini berkelompok**: `seeder` (18 baris lama, tidak berubah) dan `lima_belas` (teks 11 baris sebelum perombakan). `StorySync::legacyVersions()` menggabungkan semua kelompok per posisi, sehingga satu posisi boleh punya beberapa versi lama. Alasannya, tiga dari sebelas posisi (`_|intro|4`, `temanggung|level_done|2`, `_|ending|1`) sudah punya entri seeder, padahal format lama hanya menampung satu teks per posisi.
+- **`gelita:story:update --lepas-audio-beda`** (`StorySync::releaseStaleAudio()`): sesudah sinkronisasi teks, tautan `dialogues.audio_{id,en}_asset_id` dilepas bila `audio_assets.transcript` rekamannya berbeda dari teks baris (perbedaan CRLF/spasi di ujung diabaikan). Rekaman dan baris `audio_assets` tidak dihapus. Daftar baris yang dilepas ikut dicatat di metadata audit `content_update`. Hanya berlaku untuk `dialogues`; petunjuk Cari Objek tanpa rekaman memang sudah tampil sebagai teks.
+- **§11.2 rekaman dibangkitkan di sesi ini** (model TTS bisa diunduh, sha256 cocok):
+  - `narrate.py --n 3` untuk 11 baris naskah + 12 petunjuk (`petunjuk-{tmg,mgl,wnb}-4-01…04`), ID dan EN. `tuntas-magelang-03` dan `petunjuk-tmg-4-04` EN diulang dengan 6 kandidat.
+  - `publish.py` menulis 23 MP3 per bahasa dan `produksi.json`.
+  - `petunjuk-tmg-4-05…08` (ID & EN) dihapus, beserta entrinya di `produksi.json` dan `qa-narasi.json`.
+  - Jadi **100 rekaman per bahasa**: 88 naskah + 12 petunjuk.
+- **`qa-narasi.json`** (200 baris): 46 entri baru atau diganti dari `out/narasi/*/report.json`, dengan LUFS diukur dari WAV terpilih.
+  - Angka ke-46 baris itu berasal dari kandidat terpilih sebelum MP3, bukan transkripsi ulang rekaman final seperti rekaman lainnya.
+  - Ringkasan di `docs/audio.md`: ID median CER 6,0%, 85/100 ≤ 10%; EN median 3,7%, 95/100 ≤ 10%.
+  - **`tuntas-magelang-03` EN** (CER 13%): Whisper mendengar *Eight shards* sebagai "HRs" di keenam kandidat. Bunyinya hampir sama, jadi kemungkinan besar salah dengar ASR. Baris ini dicantumkan di daftar "dengarkan lebih dulu".
+- **Hitungan rekaman di dokumentasi** (README, `docs/audio.md`, `docs/rencana-katalog-aset.md`): 96 → 100 per bahasa, 192 → 200 baris QA. Arahan suara dan prompt ilustrasi di `docs/rencana-katalog-aset.md` yang menyebut 15/5 serpihan ikut diubah. Bagian riwayat perubahan di README tidak diubah.
+- `NarrationCatalog`/`NarrationImporter`/`export_lines.php` sudah membuat kelompok petunjuk untuk setiap node `cari` sebelum sesi ini; tidak ada perubahan kode di sana.
+
+### Uji
+
+- **`NarrationKelas5Test`** (baru, di atas `GradeFiveWorld` + `StorySync`):
+  - `NarrationImporter::lines()` = 100 baris, dengan 12 kode petunjuk urut `tmg-4`, `mgl-4`, `wnb-4`;
+  - teks petunjuk = petunjuk target bank soal;
+  - berkas `public/assets/audio/narasi/{id,en}/*.mp3` dan `produksi.json` tepat 100 kode yang sama, sha256 cocok.
+- **`StoryUpdateCommandTest`**: naskah 15 serpihan → 11 diperbarui, 0 dilewati. `--lepas-audio-beda`: tanpa opsi tidak menyentuh audio; `--dry-run` hanya melaporkan; transkrip lama dilepas, beda CRLF tidak; rekaman tetap ada; tercatat di audit. Kolom audio dibedakan dari `media_asset_id` agar uji gagal bila rujukannya salah.
+- **`StoryDataTest`**: kelompok legacy, 18 + 11 entri, versi lama ≠ teks sekarang, versi `lima_belas` hanya berbeda pada kata bilangan.
+- **MariaDB lokal** (database development berisi naskah 15 serpihan):
+  - `gelita:story:update --dry-run` lalu sungguhan: 11 diperbarui, 77 sudah sesuai.
+  - `gelita:narration:import`: 100 baru per bahasa, 0 baris tanpa rekaman.
+  - Transkrip `intro-04` ID diubah ke versi lama, lalu `--lepas-audio-beda` → tepat `intro #4 (id)` dilepas.
+  - **Bug yang tertangkap di sini:** versi pertama mencari transkrip lewat `audio_assets.media_asset_id`, padahal `dialogues.audio_*_asset_id` adalah FK ke `audio_assets.id`, sehingga 118 tautan terlepas. Diperbaiki dan ditambah uji.
+- **Belum dikerjakan:** mendengarkan ke-46 rekaman baru satu per satu. Dilakukan saat persetujuan di **Konten → Narasi**.

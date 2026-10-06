@@ -1,6 +1,6 @@
 # Audio GELITA
 
-Seluruh audio bawaan permainan ikut di repositori: **3 musik gamelan**, **6 efek suara**, dan **96 rekaman narasi × 2 bahasa**. Semuanya dibangkitkan oleh [`tools/audio/`](../tools/audio/README.md).
+Seluruh audio bawaan permainan ikut di repositori: **3 musik gamelan**, **6 efek suara**, dan **100 rekaman narasi × 2 bahasa**. Semuanya dibangkitkan oleh [`tools/audio/`](../tools/audio/README.md).
 
 - Musik dan efek suara disintesis dari nol, tanpa sampel rekaman, dengan penalaan pelog–slendro. Gendingnya komposisi orisinal.
 - Narasi adalah **suara sintetis (text-to-speech)** yang diolah per tokoh. Rekaman ini tercatat sebagai TTS di basis data (`audio_assets.production_method = tts`). Kapan saja dapat diganti rekaman pengisi suara tanpa mengubah kode.
@@ -9,7 +9,7 @@ Seluruh audio bawaan permainan ikut di repositori: **3 musik gamelan**, **6 efek
 |---|---|---|---|
 | Musik | `public/assets/audio/music/` | `map`, `region`, `challenge` (MP3 stereo 128 kbps, loop) | `core/audio.js` → `Sfx.music()` |
 | Efek suara | `public/assets/audio/sfx/` | `click`, `correct`, `wrong`, `lock`, `shard`, `region-done` | `core/audio.js` → `Sfx.play()` |
-| Narasi | `public/assets/audio/narasi/{id,en}/` | 88 baris naskah + 8 petunjuk arena cari per bahasa (MP3 mono 96 kbps) | `gelita:narration:import` → `dialogues` / `challenge_items` |
+| Narasi | `public/assets/audio/narasi/{id,en}/` | 88 baris naskah + 12 petunjuk Cari Objek (tmg-4, mgl-4, wnb-4 masing-masing 4) per bahasa (MP3 mono 96 kbps) | `gelita:narration:import` → `dialogues` / `challenge_items` |
 | Manifest | `public/assets/audio/narasi/produksi.json` | sha256 + profil suara tiap rekaman sintetis | `NarrationImporter::production()` |
 
 ## Musik gamelan
@@ -102,10 +102,12 @@ Setiap baris dipilih dari beberapa kandidat sintesis: Indonesia 3–5 kandidat, 
 
 | Bahasa | Median CER | Rata-rata CER | Median CER per tokoh | Baris dengan CER ≤ 10% | Durasi total |
 |---|---|---|---|---|---|
-| Indonesia | 5,9% | 6,4% | Narator 5,9% · Jaka 5,8% · Mbah Kedu 6,0% | 81/96 | 18,4 menit |
-| Inggris | 3,8% | 4,4% | Narator 2,3% · Jaka 5,7% · Mbah Kedu 2,8% | 91/96 | 13,8 menit |
+| Indonesia | 6,0% | 6,3% | Narator 6,2% · Jaka 6,0% · Mbah Kedu 5,9% | 85/100 | 19,5 menit |
+| Inggris | 3,7% | 4,1% | Narator 2,3% · Jaka 5,7% · Mbah Kedu 2,2% | 95/100 | 14,5 menit |
 
 Hasil per baris, termasuk transkrip Whisper, ada di [`tools/audio/qa-narasi.json`](../tools/audio/qa-narasi.json).
+
+Perombakan kelas 5 (Oktober 2026) membangkitkan ulang 23 baris per bahasa: 11 baris naskah yang jumlah serpihannya berubah dan 12 petunjuk Cari Objek (`tmg-4`, `mgl-4`, `wnb-4`). Setiap baris dipilih dari 3 kandidat (6 untuk `tuntas-magelang-03` dan `petunjuk-tmg-4-04` EN). Untuk ke-23 baris itu, angka di `qa-narasi.json` berasal dari kandidat terpilih sebelum dikodekan ke MP3, bukan dari transkripsi ulang rekaman final. Rekaman lama `petunjuk-tmg-4-05…08` dihapus.
 
 **Tempo.** Narasi Indonesia sempat dipercepat 3–8% agar lebih lincah: Narator 0,96, Jaka 0,92, Mbah Kedu 0,97. Uji A/B dengan Whisper pada 96 baris yang sama, dengan pengolahan lain yang identik, menunjukkan percepatan itu menurunkan kejelasan:
 
@@ -125,7 +127,7 @@ CER di sini lebih tinggi daripada salah dengar yang sebenarnya:
 QA otomatis tidak menggantikan mendengarkan. Setujui narasi di **Konten → Narasi** setelah didengarkan. Baris dengan CER tertinggi layak didengarkan lebih dulu:
 
 - Indonesia: `dialog-wonosobo-10`, `dialog-temanggung-07`, `tuntas-magelang-02`.
-- Inggris: `dialog-wonosobo-10`, `dialog-magelang-07`, `petunjuk-tmg-4-08` (*rigen*).
+- Inggris: `dialog-wonosobo-10`, `dialog-magelang-07`, `tuntas-magelang-03` (Whisper mendengar *Eight shards* sebagai "HRs" di keenam kandidat).
 
 ### Memasang di server
 
