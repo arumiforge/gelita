@@ -27,9 +27,6 @@ use App\Models\MediaAssetModel;
  */
 class ContentVerifier
 {
-    /** Kunci config_json node yang tidak dibaca lagi sejak perombakan kelas 5. */
-    public const LEGACY_NODE_KEYS = ['items_per_round', 'allow_retry', 'require_reason', 'shuffle_options', 'show_decoys', 'distractors'];
-
     /**
      * @param bool $researchReady mode siap penelitian: gambar contoh = galat
      *
@@ -77,12 +74,6 @@ class ContentVerifier
 
                 foreach (BankRules::node($normal[$ref] ?? ['ref' => $ref, 'engine' => $node->engine_type, 'variants' => []], $state->passages()) as $problem) {
                     $findings[] = $this->finding($problem['level'], $this->scope($nodeScope, $problem), $problem['message']);
-                }
-
-                $legacy = array_values(array_intersect(self::LEGACY_NODE_KEYS, array_keys((array) ($node->config_json ?: []))));
-
-                if ($legacy !== []) {
-                    $findings[] = $this->finding('warning', $nodeScope, 'Pengaturan lama yang tidak dipakai lagi masih tersimpan: ' . implode(', ', $legacy) . '.');
                 }
 
                 if ($node->engine_type === 'puzzle') {
@@ -216,7 +207,7 @@ class ContentVerifier
                 continue;
             }
 
-            $layout = $item->puzzleLayout($difficulty, $node->config('grid'));
+            $layout = $item->puzzleLayout($difficulty);
             $order  = $item->answerKey('order');
 
             if (! is_array($order) || array_map('intval', $order) !== range(0, $layout['grid'] * $layout['grid'] - 1)) {

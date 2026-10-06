@@ -26,16 +26,13 @@ final class PuzzleCutTest extends CIUnitTestCase
 
     public function testResolvePrefersTheItemsOwnLayout(): void
     {
-        $this->assertSame(['grid' => 4, 'shape' => 'jigsaw'], PuzzleCut::resolve(['grid' => 4, 'shape' => 'jigsaw'], range(0, 15), 3, 'mudah'));
+        $this->assertSame(['grid' => 4, 'shape' => 'jigsaw'], PuzzleCut::resolve(['grid' => 4, 'shape' => 'jigsaw'], 'mudah'));
 
-        // soal lama: tanpa config, kunci 9 keping → 3 × 3 kotak, walau wilayahnya kini "sedang"
-        $this->assertSame(['grid' => 3, 'shape' => 'square'], PuzzleCut::resolve([], range(0, 8), null, 'sedang'));
+        // tanpa catatan → aturan wilayah
+        $this->assertSame(['grid' => 4, 'shape' => 'jigsaw'], PuzzleCut::resolve([], 'sulit'));
 
-        // tanpa catatan apa pun → aturan wilayah
-        $this->assertSame(['grid' => 4, 'shape' => 'jigsaw'], PuzzleCut::resolve([], null, null, 'sulit'));
-
-        // ukuran lama milik tantangan dipakai sebelum aturan wilayah
-        $this->assertSame(['grid' => 3, 'shape' => 'square'], PuzzleCut::resolve([], null, 3, 'sulit'));
+        // ukuran lain dari aturan wilayah tanpa bentuk → kotak
+        $this->assertSame(['grid' => 3, 'shape' => 'square'], PuzzleCut::resolve(['grid' => 3], 'sulit'));
     }
 
     public function testEntityExposesLayoutToThePlayerWithoutTheKey(): void
@@ -56,15 +53,10 @@ final class PuzzleCutTest extends CIUnitTestCase
         $this->assertSame('jigsaw', $payload['config']['shape']);
         $this->assertArrayNotHasKey('answer_key_json', $payload);
 
-        $legacy = new ChallengeItem();
-        $legacy->injectRawData([
-            'id'               => 22,
-            'item_key'         => 'tmg-1-01',
-            'interaction_type' => 'puzzle_arrange',
-            'answer_key_json'  => json_encode(['order' => range(0, 8)]),
-        ]);
+        $bare = new ChallengeItem();
+        $bare->injectRawData(['id' => 22, 'item_key' => 'tmg-1-a01', 'interaction_type' => 'puzzle_arrange']);
 
-        $this->assertSame(['grid' => 3, 'shape' => 'square'], $legacy->puzzleLayout('sedang'));
+        $this->assertSame(['grid' => 4, 'shape' => 'square'], $bare->puzzleLayout('sedang'), 'tanpa config → aturan wilayah');
     }
 
     public function testSquarePiecesAreCells(): void

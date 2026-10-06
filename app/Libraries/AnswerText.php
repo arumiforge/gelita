@@ -12,11 +12,11 @@ use App\Entities\ChallengeItem;
 final class AnswerText
 {
     /** Isi jawaban yang tampil tanpa nama kuncinya. */
-    private const BARE = ['text', 'verdict', 'option_key', 'order', 'answer', 'value'];
+    private const BARE = ['text', 'verdict', 'order', 'answer', 'value'];
 
     /** Nama Indonesia untuk kunci data; kunci lain tampil apa adanya. */
     private const NAMES = [
-        'reason_text' => 'alasan', 'item_id' => 'benda nomor', 'hint_id' => 'petunjuk nomor',
+        'item_id' => 'benda nomor', 'hint_id' => 'petunjuk nomor',
         'level_id' => 'wilayah nomor', 'node_id' => 'tantangan nomor', 'duration_ms' => 'lama',
         'x' => 'kiri %', 'y' => 'atas %', 'w' => 'lebar %', 'from' => 'dari', 'to' => 'ke', 'first' => 'pertama kali',
         // Isi catatan aktivitas (game_event_logs.payload_json)
@@ -52,7 +52,7 @@ final class AnswerText
 
     /**
      * Data JSON → teks biasa: {"text":"kopi"} → "kopi", {"order":["c","a"]} →
-     * "c, a", {"verdict":"salah","reason_text":"…"} → "salah · alasan: …".
+     * "c, a", {"verdict":"salah"} → "salah".
      * Isian kosong (null) dilewati; lama dalam milidetik ditulis dalam detik.
      */
     public static function fromData(mixed $data): string

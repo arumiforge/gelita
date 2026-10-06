@@ -45,12 +45,6 @@ class RegisterController extends BaseController
         2 => ['country_code', 'country_other', 'province_code', 'district_code', 'school_npsn', 'school_manual', 'school_name'],
     ];
 
-    /** GET /persetujuan (halaman lama) → 301 ke langkah 1 */
-    public function consentMoved(): RedirectResponse
-    {
-        return redirect()->to(site_url('daftar/1'), 301);
-    }
-
     /** GET /daftar → langkah pertama yang belum lengkap */
     public function index(): RedirectResponse
     {

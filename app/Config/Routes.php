@@ -17,8 +17,7 @@ $routes->get('/', 'Game\HomeController::index');
 $routes->group('', ['namespace' => 'App\Controllers\Game'], static function ($routes): void {
     // Tanpa login
     $routes->get('mulai', 'HomeController::start');
-    // Pendaftaran 3 langkah (Dok 1 §10); halaman persetujuan lama dialihkan
-    $routes->get('persetujuan', 'RegisterController::consentMoved');
+    // Pendaftaran 3 langkah (Dok 1 §10)
     $routes->get('daftar', 'RegisterController::index');
     $routes->get('daftar/(:num)', 'RegisterController::step/$1');
     $routes->post('daftar/(:num)', 'RegisterController::saveStep/$1');

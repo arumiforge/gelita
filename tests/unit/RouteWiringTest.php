@@ -24,7 +24,6 @@ final class RouteWiringTest extends CIUnitTestCase
             '/'                           => 'Game\HomeController::index',
             'peta'                        => 'Game\MapController::kedu',
             'mulai'                       => 'Game\HomeController::start',
-            'persetujuan'                 => 'Game\RegisterController::consentMoved',
             'daftar'                      => 'Game\RegisterController::index',
             'daftar/([0-9]+)'             => 'Game\RegisterController::step/$1',
             'gerbang'                     => 'Game\GateController::index',
@@ -154,7 +153,7 @@ final class RouteWiringTest extends CIUnitTestCase
                     "{$method} {$from}",
                 );
                 $this->assertDoesNotMatchRegularExpression(
-                    '#^(?:admin/analitik|admin/studi/skoring|admin/konten/item/.+/opsi|api/admin/(?:levels|nodes|items|indicators|prepost))#',
+                    '#^(?:persetujuan|admin/analitik|admin/studi/skoring|admin/konten/item/.+/opsi|api/admin/(?:levels|nodes|items|indicators|prepost))#',
                     $from,
                     "{$method} {$from} sudah dihapus",
                 );
@@ -167,15 +166,6 @@ final class RouteWiringTest extends CIUnitTestCase
         $this->assertFileDoesNotExist(FCPATH . 'assets/js/engines/pilihan.js');
         $this->assertFileDoesNotExist(FCPATH . 'assets/js/admin/charts.js');
         $this->assertFileDoesNotExist(FCPATH . 'assets/vendor/echarts.min.js');
-    }
-
-    /** Alamat lama /persetujuan (tautan tersimpan) dialihkan permanen ke langkah 1. */
-    public function testConsentPageMovedPermanentlyToStepOne(): void
-    {
-        $response = (new App\Controllers\Game\RegisterController())->consentMoved();
-
-        $this->assertSame(301, $response->getStatusCode());
-        $this->assertStringEndsWith('/daftar/1', $response->getHeaderLine('Location'));
     }
 
     /** Ganti sandi sendiri: wajib login staf, tetapi terbuka untuk guru (bukan khusus admin). */

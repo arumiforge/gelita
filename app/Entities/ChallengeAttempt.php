@@ -66,9 +66,7 @@ class ChallengeAttempt extends Entity
     /** Batas percobaan per soal yang berlaku saat pengerjaan dibuat. */
     public function maxTries(): int
     {
-        $max = (int) ($this->attributes['max_tries'] ?? 0);
-
-        return $max > 0 ? $max : config('Gelita')->maxTries;
+        return (int) ($this->attributes['max_tries'] ?? config('Gelita')->maxTries);
     }
 
     /** Sisa kesempatan pengerjaan batch (dihitung dari tekan "Cek jawabanku"). */

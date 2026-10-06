@@ -86,16 +86,13 @@ class ChallengeItem extends Entity
 
     /**
      * Ukuran papan dan bentuk keping Susun Gambar (PuzzleCut::resolve):
-     * isian soal, lalu √(panjang kunci), lalu $nodeGrid (ukuran lama
-     * tantangan), lalu aturan tingkat wilayah.
+     * isian soal, atau aturan tingkat wilayah.
      *
      * @return array{grid: int, shape: string}
      */
-    public function puzzleLayout(?string $difficulty = null, mixed $nodeGrid = null): array
+    public function puzzleLayout(?string $difficulty = null): array
     {
-        $order = $this->answerKey('order');
-
-        return PuzzleCut::resolve($this->config_json ?: [], is_array($order) ? $order : null, $nodeGrid, $difficulty);
+        return PuzzleCut::resolve($this->config_json ?: [], $difficulty);
     }
 
     /** Umpan balik saat objek salah diklik — dikirim SETELAH klik, bukan di payload soal */

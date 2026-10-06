@@ -39,40 +39,23 @@ final class PuzzleCut
 
     /**
      * Ukuran papan dan bentuk keping untuk satu soal: isian soal itu sendiri
-     * (`config_json.grid/shape`, ditetapkan saat soal dibuat), lalu √(panjang
-     * kunci), lalu ukuran lama tantangan, lalu aturan tingkat wilayah. Soal
-     * lama tanpa catatan bentuk berupa kotak.
+     * (`config_json.grid/shape`, ditetapkan saat soal dibuat), atau aturan
+     * tingkat wilayah bila belum ada. Ukuran lain dari aturan wilayah tanpa
+     * catatan bentuk berupa kotak.
      *
      * @param array<string, mixed> $itemConfig
-     * @param list<mixed>|null     $answerOrder kunci urutan (answer_key_json.order)
      *
      * @return array{grid: int, shape: string}
      */
-    public static function resolve(array $itemConfig, ?array $answerOrder, mixed $nodeGrid, ?string $difficulty): array
+    public static function resolve(array $itemConfig, ?string $difficulty): array
     {
-        $rule     = DifficultyRules::puzzle($difficulty);
-        $fromRule = false;
-        $grid     = (int) ($itemConfig['grid'] ?? 0);
-
-        if ($grid < 2 && is_array($answerOrder) && $answerOrder !== []) {
-            $root = (int) round(sqrt(count($answerOrder)));
-            $grid = $root * $root === count($answerOrder) ? $root : 0;
-        }
-
-        if ($grid < 2) {
-            $grid = (int) $nodeGrid;
-        }
-
-        if ($grid < 2) {
-            $grid     = $rule['grid'];
-            $fromRule = true;
-        }
-
+        $rule  = DifficultyRules::puzzle($difficulty);
+        $grid  = (int) ($itemConfig['grid'] ?? 0);
+        $grid  = $grid < 2 ? $rule['grid'] : $grid;
         $shape = $itemConfig['shape'] ?? null;
 
         if (! in_array($shape, DifficultyRules::SHAPES, true)) {
-            // ukuran dari soal/kunci/tantangan lama = soal lama berbentuk kotak
-            $shape = $fromRule ? $rule['shape'] : 'square';
+            $shape = $grid === $rule['grid'] ? $rule['shape'] : 'square';
         }
 
         return ['grid' => max(2, min(6, $grid)), 'shape' => $shape];

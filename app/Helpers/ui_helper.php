@@ -115,7 +115,7 @@ if (! function_exists('lang_or')) {
 if (! function_exists('engine_label')) {
     /**
      * Nama jenis tantangan untuk pemain. Varian yang punya nama sendiri
-     * (mis. `urutkan_informasi` → "Susun Urutan") didahulukan dari nama engine.
+     * (kunci `Game.variant_{kode}`) didahulukan dari nama engine.
      */
     function engine_label(string $engine, ?string $variant = null): string
     {
@@ -148,8 +148,8 @@ if (! function_exists('admin_label')) {
 if (! function_exists('class_label')) {
     /**
      * Kelas siswa (participants.class_level) → "Kelas 5 SD/MI". Pendaftaran
-     * kini hanya menerima kelas 5, tetapi data lama (kelas 1–9, `lainnya`)
-     * tetap tampil dengan namanya. Nilai kosong menjadi tanda pisah.
+     * hanya menerima kelas SD (Config\Gelita::$registrationClass). Nilai
+     * kosong menjadi tanda pisah.
      */
     function class_label(?string $code, ?string $locale = 'id'): string
     {
@@ -159,23 +159,9 @@ if (! function_exists('class_label')) {
             return '—';
         }
 
-        if ($code === 'lainnya') {
-            return lang('Game.classOther', [], $locale);
-        }
-
-        if (ctype_digit($code)) {
-            $grade = (int) $code;
-
-            if ($grade >= 1 && $grade <= 6) {
-                return lang('Game.classSd', [$grade], $locale);
-            }
-
-            if ($grade >= 7 && $grade <= 9) {
-                return lang('Game.classSmp', [$grade], $locale);
-            }
-        }
-
-        return $code;
+        return ctype_digit($code) && (int) $code >= 1 && (int) $code <= 6
+            ? lang('Game.classSd', [(int) $code], $locale)
+            : $code;
     }
 }
 

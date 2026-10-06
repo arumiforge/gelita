@@ -80,25 +80,25 @@ class BankImport extends BaseCommand
             $summary = $result['summary'];
 
             CLI::write(sprintf(
-                'Workbook: %d node, %d bacaan, %d butir, %d opsi, %d petunjuk, %d pengecoh, %d halaman pustaka, %d media pustaka.',
+                'Workbook: %d node, %d variasi, %d bacaan, %d butir, %d petunjuk, %d pengecoh, %d halaman pustaka, %d media pustaka.',
                 $summary['nodes'],
+                $summary['variants'],
                 $summary['passages'],
                 $summary['items'],
-                $summary['options'],
                 $summary['hints'],
                 $summary['distractors'],
-                $summary['library'] ?? 0,
-                $summary['library_media'] ?? 0,
+                $summary['library'],
+                $summary['library_media'],
             ));
 
             $rows = [];
 
             foreach ($summary['per_node'] as $ref => $counts) {
-                $rows[] = [(string) $ref, (string) ($counts['items'] ?? 0), (string) ($counts['options'] ?? 0), (string) ($counts['hints'] ?? 0), (string) ($counts['distractors'] ?? 0)];
+                $rows[] = [(string) $ref, (string) ($counts['variants'] ?? 0), (string) ($counts['items'] ?? 0), (string) ($counts['hints'] ?? 0), (string) ($counts['distractors'] ?? 0)];
             }
 
             if ($rows !== []) {
-                CLI::table($rows, ['Node', 'Butir', 'Opsi', 'Petunjuk', 'Pengecoh']);
+                CLI::table($rows, ['Node', 'Variasi', 'Butir', 'Petunjuk', 'Pengecoh']);
             }
         }
 
