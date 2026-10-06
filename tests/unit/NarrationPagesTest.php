@@ -83,24 +83,25 @@ final class NarrationPagesTest extends CIUnitTestCase
     {
         $nodeId = $this->seedHuntNode($this->sqlite);
         $draft  = $this->audio('audio.narasi.id.petunjuk-tmg-4-01', 'id', 'draft', 'hunt_clue');
-        $this->sqlite->table('challenge_items')->where('item_key', 'tmg-4-01')->update(['audio_prompt_id' => $draft]);
-        $itemId = (int) $this->sqlite->table('challenge_items')->where('item_key', 'tmg-4-01')->get()->getRow('id');
+        $this->sqlite->table('challenge_items')->where('item_key', 'tmg-4-a01')->update(['audio_prompt_id' => $draft]);
+        $itemId = (int) $this->sqlite->table('challenge_items')->where('item_key', 'tmg-4-a01')->get()->getRow('id');
 
         $html = html_entity_decode((string) $this->asAdmin()->call(Method::GET, 'admin/konten/narasi')->getBody(), ENT_QUOTES | ENT_HTML5);
 
-        $this->assertSame(96, substr_count($html, 'Sunting</a>'));
+        // 88 baris naskah + 4 petunjuk target tmg-4 (Dok 2 §11.2: 4 per node cari)
+        $this->assertSame(92, substr_count($html, 'Sunting</a>'));
         $this->assertStringContainsString('Petunjuk Cari Objek · Temanggung (tmg-4)', $html);
-        $this->assertStringContainsString('<code>petunjuk-tmg-4-08</code>', $html);
-        $this->assertStringNotContainsString('petunjuk-tmg-4-09', $html, 'jebakan tanpa petunjuk');
-        $this->assertStringContainsString('Temukan rigen, anyaman bambu tempat menjemur tembakau rajangan.', $html);
+        $this->assertStringContainsString('<code>petunjuk-tmg-4-04</code>', $html);
+        $this->assertStringNotContainsString('petunjuk-tmg-4-05', $html, 'pengecoh tanpa petunjuk');
+        $this->assertStringContainsString('Temukan ikan uceng, ikan sungai kecil yang menjadi makanan khas Temanggung.', $html);
         $this->assertStringContainsString('admin/konten/node/' . $nodeId . '#item-' . $itemId, $html);
         $this->assertStringContainsString('Teks petunjuk berasal dari bank soal', $html);
-        $this->assertStringContainsString('0/96 disetujui, 1 menunggu persetujuan, 95 belum ada', $html);
+        $this->assertStringContainsString('0/92 disetujui, 1 menunggu persetujuan, 91 belum ada', $html);
         $this->assertStringContainsString('Setujui semua rekaman bahasa Indonesia (1)', $html);
 
         $checklist = html_entity_decode((string) $this->asAdmin()->call(Method::GET, 'admin/media/kelengkapan')->getBody(), ENT_QUOTES | ENT_HTML5);
-        $this->assertStringContainsString('0/96 disetujui, 1 menunggu persetujuan, 95 belum ada', $checklist);
-        $this->assertStringContainsString('0/96 disetujui, 0 menunggu persetujuan, 96 belum ada', $checklist);
+        $this->assertStringContainsString('0/92 disetujui, 1 menunggu persetujuan, 91 belum ada', $checklist);
+        $this->assertStringContainsString('0/92 disetujui, 0 menunggu persetujuan, 92 belum ada', $checklist);
     }
 
     public function testTeacherCannotOpenNarrationPages(): void

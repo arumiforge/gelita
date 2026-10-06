@@ -95,57 +95,6 @@ final class ClozeReadingTest extends CIUnitTestCase
         $this->assertSame('', DifficultyRules::skillLabel(null));
     }
 
-    public function testCleanReadingHasNoProblems(): void
-    {
-        $result = ClozeReading::problems($this->blanks(3, ['C1', 'C2', 'C2']), [], 0, true, 'mudah');
-
-        $this->assertSame(['errors' => [], 'warnings' => []], $result);
-    }
-
-    public function testBrokenReadingsAreErrors(): void
-    {
-        $blanks                 = $this->blanks(3, ['C1', 'C2', 'C2']);
-        $blanks[1]['prompt_id'] = 'Tanpa tempat kosong.';
-        $blanks[2]['answer_id'] = 'kata1';   // sama dengan jawaban soal pertama
-
-        $result = ClozeReading::problems($blanks, [['id' => 'kata2', 'en' => 'x']], 2, true, 'mudah');
-
-        $this->assertCount(4, $result['errors']);
-        $this->assertStringContainsString('tepat satu ___', $result['errors'][0]);
-        $this->assertStringContainsString('ambigu', $result['errors'][1]);
-        $this->assertStringContainsString("pengecoh 'kata2'", $result['errors'][2]);
-        $this->assertStringContainsString('kurang dari', $result['errors'][3]);
-    }
-
-    public function testTheSameDuplicateInBothLanguagesIsReportedOnce(): void
-    {
-        $blanks                 = $this->blanks(3, ['C1', 'C2', 'C2']);
-        $blanks[2]['answer_id'] = 'Sumbing';
-        $blanks[2]['answer_en'] = 'Sumbing';
-        $blanks[0]['answer_id'] = 'sumbing';
-        $blanks[0]['answer_en'] = 'Sumbing';
-
-        $errors = ClozeReading::problems($blanks, [], 0, true, 'mudah')['errors'];
-
-        $this->assertCount(1, $errors, 'kata yang sama di ID dan EN cukup satu pesan');
-        $this->assertStringContainsString("'sumbing'", $errors[0]);
-    }
-
-    public function testDeviationsFromTheGradeFiveRulesAreWarnings(): void
-    {
-        $result = ClozeReading::problems($this->blanks(3, ['C1', null, 'C4']), [['id' => 'lain', 'en' => 'other']], 1, false, 'sulit');
-
-        $this->assertSame([], $result['errors']);
-        // Bloom kosong, C1 di luar C3–C4, tanpa bank kata, 3 rumpang (bukan 7), 1 pengecoh (bukan 2)
-        $this->assertCount(5, $result['warnings']);
-        $text = implode(' | ', $result['warnings']);
-        $this->assertStringContainsString('belum diisi', $text);
-        $this->assertStringContainsString('C3–C4', $text);
-        $this->assertStringContainsString('bank kata', $text);
-        $this->assertStringContainsString('adalah 7 rumpang', $text);
-        $this->assertStringContainsString('pengecoh yang tampil 1; aturan tingkat sulit adalah 2', $text);
-    }
-
     public function testReadingNodeUsesEveryActiveItemOfOneVariantInSequence(): void
     {
         $bank = [
@@ -191,25 +140,6 @@ final class ClozeReadingTest extends CIUnitTestCase
         $this->assertEqualsCanonicalizing(['sembilan', 'stupa', 'relief', 'enam', 'arca'], $bank, 'dua pengecoh pertama variasi a, bukan acak');
         $this->assertSame($bank, $this->call('wordBank', $node, $items, 'id', 901, 'a'), 'urutan tetap saat dimuat ulang');
         $this->assertEqualsCanonicalizing(['sembilan', 'stupa', 'relief', 'salju'], $this->call('wordBank', $node, $items, 'id', 901, 'b'), 'pengecoh mengikuti variasinya');
-    }
-
-    /** @return list<array<string, mixed>> */
-    private function blanks(int $count, array $blooms): array
-    {
-        $out = [];
-
-        for ($i = 1; $i <= $count; $i++) {
-            $out[] = [
-                'key'       => 'tmg-2-1' . $i,
-                'prompt_id' => "Kalimat {$i} dengan ___.",
-                'prompt_en' => "Sentence {$i} with ___.",
-                'answer_id' => 'kata' . $i,
-                'answer_en' => 'word' . $i,
-                'bloom'     => $blooms[$i - 1] ?? null,
-            ];
-        }
-
-        return $out;
     }
 
     private function item(int $id, string $key, string $answer = 'kata', string $group = 'a', int $sequence = 1): ChallengeItem

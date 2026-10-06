@@ -103,7 +103,7 @@ $issueTable = static function (array $rows, string $level): string {
   <div class="field">
     <label for="file"><?= icon('upload') ?> Berkas Excel bank soal <span class="req">*</span></label>
     <input type="file" id="file" name="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required>
-    <p class="field-help">Berkas Excel (.xlsx) yang dibuat dari templat, paling besar 20 MB. Yang dibaca hanya sheet nodes, variants, distractors, passages, items, hints, serta library dan library_media (untuk Pustaka Kedu, boleh tidak ada). Sheet PETUNJUK, KAMUS_KOLOM, dan sheet lain tidak dibaca.</p>
+    <p class="field-help">Berkas Excel (.xlsx) yang dibuat dari templat, paling besar 20 MB. Yang dibaca hanya sheet nodes, variants, distractors, passages, items, hints, serta library dan library_media (khusus berkas Pustaka Kedu; workbook bank soal kelas 5 tidak memilikinya). Sheet PETUNJUK, KAMUS_KOLOM, dan sheet lain tidak dibaca.</p>
   </div>
   <div class="form-actions">
     <button class="btn btn-primary" type="submit"><?= icon('eye') ?> Periksa berkas</button>
@@ -127,7 +127,7 @@ $issueTable = static function (array $rows, string $level): string {
     </div>
 
     <div class="summary-tiles">
-      <?php foreach (['nodes', 'passages', 'items', 'options', 'hints', 'distractors', 'library', 'library_media'] as $key): ?>
+      <?php foreach (['nodes', 'variants', 'passages', 'items', 'hints', 'distractors', 'library', 'library_media'] as $key): ?>
         <?= component('components/stat-tile', ['label' => $labels[$key], 'value' => fmt_num($summary[$key] ?? 0)]) ?>
       <?php endforeach ?>
     </div>
@@ -140,7 +140,7 @@ $issueTable = static function (array $rows, string $level): string {
             <tr>
               <th scope="col">Tantangan</th>
               <th scope="col" class="is-num">Soal</th>
-              <th scope="col" class="is-num">Pilihan jawaban</th>
+              <th scope="col" class="is-num">Variasi</th>
               <th scope="col" class="is-num">Petunjuk</th>
               <th scope="col" class="is-num">Kata pengecoh</th>
             </tr>
@@ -150,7 +150,7 @@ $issueTable = static function (array $rows, string $level): string {
               <tr>
                 <th scope="row"><?= $ref === '(item)' ? 'Petunjuk khusus soal' : '<code>' . esc($ref) . '</code>' ?></th>
                 <td class="is-num"><?= (int) ($counts['items'] ?? 0) ?></td>
-                <td class="is-num"><?= (int) ($counts['options'] ?? 0) ?></td>
+                <td class="is-num"><?= (int) ($counts['variants'] ?? 0) ?></td>
                 <td class="is-num"><?= (int) ($counts['hints'] ?? 0) ?></td>
                 <td class="is-num"><?= (int) ($counts['distractors'] ?? 0) ?></td>
               </tr>

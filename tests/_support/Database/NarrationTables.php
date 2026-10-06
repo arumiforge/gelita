@@ -141,9 +141,9 @@ trait NarrationTables
     }
 
     /**
-     * Node `cari` tmg-4 dari bank soal produksi (docs/bank-soal/data/
-     * temanggung.php): 8 target + 3 jebakan, kode butir tmg-4-01…11 seperti
-     * build-workbook.php. Mengembalikan id node.
+     * Node `cari` tmg-4 dari bank soal kelas 5 (docs/bank-soal/data/
+     * temanggung.php): variasi a, 4 benda dicari + 4 pengecoh, kode soal
+     * tmg-4-a01…a08 seperti build-workbook.php. Mengembalikan id node.
      */
     private function seedHuntNode(BaseConnection $db): int
     {
@@ -152,21 +152,24 @@ trait NarrationTables
         $levelId = (int) $db->table('levels')->where('code', 'temanggung')->get()->getRow('id');
 
         $db->table('challenge_nodes')->insert(['level_id' => $levelId, 'sequence' => 4, 'engine_type' => 'cari', 'title_id' => $node['title'][0]]);
-        $nodeId = (int) $db->insertID();
+        $nodeId   = (int) $db->insertID();
+        $sequence = 0;
 
-        foreach ($node['items'] as $i => $item) {
-            $decoy = ! empty($item['decoy']);
+        foreach ($node['variants'] as $group => $variant) {
+            foreach ($variant['items'] as $i => $item) {
+                $decoy = ! empty($item['decoy']);
 
-            $db->table('challenge_items')->insert([
-                'challenge_node_id' => $nodeId,
-                'item_key'          => sprintf('tmg-4-%02d', $i + 1),
-                'sequence'          => $i + 1,
-                'interaction_type'  => $item['type'],
-                'prompt_id'         => $item['prompt'][0],
-                'prompt_en'         => $item['prompt'][1],
-                'config_json'       => json_encode(['x' => $item['x'], 'y' => $item['y'], 'w' => $item['w'], 'decoy' => $decoy]),
-                'scorable'          => $decoy ? 0 : 1,
-            ]);
+                $db->table('challenge_items')->insert([
+                    'challenge_node_id' => $nodeId,
+                    'item_key'          => sprintf('tmg-4-%s%02d', $group, $i + 1),
+                    'sequence'          => ++$sequence,
+                    'interaction_type'  => $item['type'],
+                    'prompt_id'         => $item['prompt'][0],
+                    'prompt_en'         => $item['prompt'][1],
+                    'config_json'       => json_encode(['x' => $item['x'], 'y' => $item['y'], 'w' => $item['w'], 'decoy' => $decoy]),
+                    'scorable'          => $decoy ? 0 : 1,
+                ]);
+            }
         }
 
         return $nodeId;

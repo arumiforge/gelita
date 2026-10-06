@@ -13,9 +13,9 @@ namespace App\Libraries;
  * potongan, setelah rumpangnya).
  *
  * Aturan jumlah rumpang, kata pengecoh, dan tingkat Bloom per tingkat
- * kesulitan wilayah ada di DifficultyRules. Kelas ini murni (tanpa
- * framework) agar dipakai bersama oleh permainan, ContentVerifier, dan
- * docs/bank-soal/build-workbook.php.
+ * kesulitan wilayah ada di DifficultyRules dan diperiksa BankRules. Kelas
+ * ini murni (tanpa framework) agar dipakai bersama oleh permainan dan
+ * BankRules (skrip penyusun workbook berjalan tanpa CodeIgniter).
  */
 final class ClozeReading
 {
@@ -60,97 +60,6 @@ final class ClozeReading
     public static function blankCount(string $text): int
     {
         return (int) preg_match_all(self::BLANK, $text);
-    }
-
-    /**
-     * Pemeriksaan satu bacaan terhadap aturan tingkat kesulitan wilayahnya.
-     * Galat = bacaan tidak dapat dimainkan dengan benar; peringatan = tidak
-     * sesuai aturan kelas 5 (jumlah rumpang, pengecoh, Bloom).
-     *
-     * @param list<array{key: string, prompt_id: string, prompt_en?: string, answer_id: string, answer_en?: string, bloom?: string|null}> $blanks
-     * @param list<array{id: string, en?: string}>                                                                                          $distractors
-     *
-     * @return array{errors: list<string>, warnings: list<string>}
-     */
-    public static function problems(array $blanks, array $distractors, int $distractorCount, bool $useBank, ?string $difficulty): array
-    {
-        $errors   = [];
-        $warnings = [];
-        $rule     = DifficultyRules::reading($difficulty);
-        $level    = DifficultyRules::normalize($difficulty);
-
-        if ($blanks === []) {
-            return ['errors' => ['Bacaan belum punya soal (rumpang) yang aktif.'], 'warnings' => []];
-        }
-
-        $answers = ['id' => [], 'en' => []];
-
-        foreach ($blanks as $blank) {
-            $key = (string) $blank['key'];
-
-            if (self::blankCount((string) $blank['prompt_id']) !== 1) {
-                $errors[] = "Soal {$key}: potongan bacaan bahasa Indonesia harus punya tepat satu ___.";
-            }
-
-            if (trim((string) ($blank['prompt_en'] ?? '')) !== '' && self::blankCount((string) $blank['prompt_en']) !== 1) {
-                $errors[] = "Soal {$key}: potongan bacaan bahasa Inggris harus punya tepat satu ___.";
-            }
-
-            foreach (['id' => 'answer_id', 'en' => 'answer_en'] as $lang => $column) {
-                $word = mb_strtolower(trim((string) ($blank[$column] ?? '')));
-
-                if ($word === '') {
-                    continue;
-                }
-
-                if (isset($answers[$lang][$word])) {
-                    $errors[] = "Soal {$key}: jawaban '{$word}' sama dengan jawaban soal {$answers[$lang][$word]}, jadi bank kata menjadi ambigu.";
-                }
-
-                $answers[$lang][$word] = $key;
-            }
-
-            $bloom = strtoupper(trim((string) ($blank['bloom'] ?? '')));
-
-            if ($bloom === '') {
-                $warnings[] = "Soal {$key}: tingkat berpikir (Bloom) belum diisi.";
-            } elseif (! DifficultyRules::bloomInRange($bloom, $difficulty)) {
-                $warnings[] = "Soal {$key}: tingkat berpikir {$bloom} di luar anjuran tingkat {$level} (" . DifficultyRules::bloomRangeLabel($difficulty) . ').';
-            }
-        }
-
-        foreach ($distractors as $distractor) {
-            foreach (['id' => 'id', 'en' => 'en'] as $lang => $field) {
-                $word = mb_strtolower(trim((string) ($distractor[$field] ?? '')));
-
-                if ($word !== '' && isset($answers[$lang][$word])) {
-                    $errors[] = "Kata pengecoh '{$word}' sama dengan jawaban soal {$answers[$lang][$word]}.";
-                }
-            }
-        }
-
-        if (count($distractors) < $distractorCount) {
-            $errors[] = 'Kata pengecoh yang tersedia (' . count($distractors) . ') kurang dari jumlah yang harus tampil (' . $distractorCount . ').';
-        }
-
-        if (! $useBank) {
-            $warnings[] = 'Bacaan Isi Rumpang kelas 5 memakai bank kata: nyalakan "pilihan kata" (use_word_bank = 1).';
-        }
-
-        [$min, $max] = $rule['blanks'];
-
-        if (count($blanks) < $min || count($blanks) > $max) {
-            $warnings[] = 'Bacaan punya ' . count($blanks) . " rumpang; aturan tingkat {$level} adalah " . ($min === $max ? $min : "{$min}–{$max}") . ' rumpang.';
-        }
-
-        [$dMin, $dMax] = $rule['distractors'];
-
-        if ($distractorCount < $dMin || $distractorCount > $dMax) {
-            $warnings[] = "Jumlah kata pengecoh yang tampil {$distractorCount}; aturan tingkat {$level} adalah " . ($dMin === $dMax ? $dMin : "{$dMin}–{$dMax}") . '.';
-        }
-
-        // jawaban yang sama di bahasa Indonesia dan Inggris cukup dilaporkan sekali
-        return ['errors' => array_values(array_unique($errors)), 'warnings' => array_values(array_unique($warnings))];
     }
 
     /**

@@ -6,6 +6,10 @@ use CodeIgniter\Database\Seeder;
 
 /**
  * GELITA_ADMIN_PASSWORD='SandiKuatAnda123!' php spark db:seed DatabaseSeeder
+ *
+ * Di CI_ENVIRONMENT = development bank soal kelas 5
+ * (docs/bank-soal/gelita-bank-soal-kelas5.xlsx) ikut diimpor lewat
+ * BankKelas5Seeder; lingkungan lain memakai `php spark gelita:reset`.
  */
 class DatabaseSeeder extends Seeder
 {
@@ -21,7 +25,7 @@ class DatabaseSeeder extends Seeder
         $this->call('ContentSeeder');
 
         if (ENVIRONMENT === 'development') {
-            $this->call('SampleItemSeeder');
+            $this->call('BankKelas5Seeder');
         }
     }
 }
