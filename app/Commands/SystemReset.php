@@ -15,8 +15,8 @@ use CodeIgniter\CLI\CLI;
  * level, media, audio, direktori sekolah resmi, dan akun staf tetap.
  * Data yang dikosongkan TIDAK dapat dikembalikan — buat backup dulu.
  *
- * JANGAN dijalankan di server produksi sebelum ketiga dokumen perombakan
- * selesai; prosedur rilisnya ada di Dok 3 §13.
+ * Dipakai sekali sesudah uji coba, sebelum pengambilan data penelitian
+ * (docs/08_DEPLOYMENT.md). Jalankan dengan akun migrasi (hak TRUNCATE).
  */
 class SystemReset extends BaseCommand
 {
@@ -250,6 +250,7 @@ class SystemReset extends BaseCommand
             return null;
         }
 
-        return str_starts_with($path, '/') ? $path : ROOTPATH . $path;
+        // Jalur absolut Unix (/…) atau Windows (C:\… / C:/…) dipakai apa adanya
+        return str_starts_with($path, '/') || preg_match('#^[A-Za-z]:[\\\\/]#', $path) === 1 ? $path : ROOTPATH . $path;
     }
 }

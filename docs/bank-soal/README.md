@@ -4,7 +4,7 @@ Bank soal final penelitian kelas 5 yang disetujui peneliti (Oktober 2026): **12 
 
 | Berkas | Isi |
 |---|---|
-| [`gelita-bank-soal-kelas5.xlsx`](gelita-bank-soal-kelas5.xlsx) | workbook siap impor: sheet PETUNJUK, KAMUS_KOLOM, enam sheet data (`nodes`, `variants`, `distractors`, `passages`, `items`, `hints`), dan DAFTAR_MEDIA. Dipakai `php spark gelita:reset` dan, di mesin pengembangan, `DatabaseSeeder`. |
+| [`gelita-bank-soal-kelas5.xlsx`](gelita-bank-soal-kelas5.xlsx) | workbook siap impor: sheet PETUNJUK, KAMUS_KOLOM, enam sheet data (`nodes`, `variants`, `distractors`, `passages`, `items`, `hints`), dan DAFTAR_MEDIA. Diimpor saat instalasi oleh `DatabaseSeeder` dan lagi oleh `php spark gelita:reset`. |
 | [`data/temanggung.php`](data/temanggung.php), [`data/magelang.php`](data/magelang.php), [`data/wonosobo.php`](data/wonosobo.php) | sumber isi yang mudah ditinjau (satu wilayah per berkas, format di bawah) |
 | [`build-workbook.php`](build-workbook.php) | penyusun workbook dari berkas data, termasuk seluruh pemeriksaan aturan |
 
