@@ -2,6 +2,26 @@
 
 Keputusan dan penyimpangan dari ketiga dokumen perombakan, beserta alasannya dan hal yang perlu diketahui sesi berikutnya. Satu bagian per dokumen; bagian Dok 2 dan Dok 3 ditambahkan sesi yang mengerjakannya.
 
+## Status (6 Oktober 2026)
+
+| Dokumen | Status |
+|---|---|
+| Dok 1 | Selesai, di `main` |
+| Dok 2 | Sebagian, di `main` (445 uji hijau): §2, §3–§4, §5.2 (server), §7, §9, narasi petunjuk per node `cari` |
+| Dok 3 | Belum dimulai |
+
+Sisa Dok 2:
+
+1. **§5.3 klien + §12 teks UI** — `challenge.js` belum memakai `tries_left`/`completed`/`redirect`/`clue_closed` dari server; `FINISH_OFFER_AFTER` dan tombol "Selesaikan dengan jawaban ini" masih ada; penanda 3 bulatan, modal kesempatan, animasi gambar utuh Susun Gambar belum ada. Kunci `Js.php` baru (`triesLeft`, `triesLast`, `triesExhausted*`, `clueFailed*`, `clueTriesLeft`) belum ada; `finishAnyway`, `engine_pilihan`, dan kunci lama §12 belum dihapus; `cardN` masih "Kartu {0}"; label event `Admin.php` §12.3 belum persis.
+2. **§10 mockup** — `MockupGenerator`, `gelita:mockups`, `MockupGeneratorTest` belum ada.
+3. **§11 naskah cerita** — 11 baris masih "lima belas"; `--lepas-audio-beda` belum ada; rekaman petunjuk `mgl-4`/`wnb-4` belum ada, `petunjuk-tmg-4-05…08` belum dihapus.
+4. Bagian "Dok 2" catatan ini dan uji manual §13.2.
+
+### Perawatan repo
+
+- 6 Oktober 2026: sejarah `main` ditulis ulang (penulis dan committer semua commit = Arumi Studios, baris `Co-Authored-By`/`Claude-Session` dibuang; isi berkas dan pesan commit tidak berubah). Semua branch lain dihapus. Hash commit lama yang disebut di dokumen lain tidak berlaku lagi.
+- Branch lama `happy-gates` yang dihapus tanpa digabung berisi satu perbaikan yang **belum ada** di `main`: tombol "Kenali" di peta yang diketuk sebelum `game/map.js` siap (±0,8 detik setelah dimuat, terlihat di 844×390) hanya mengubah hash `#kenal-{code}`, sedangkan `html.js` menyembunyikan overlay `:target`, sehingga overlay tidak terbuka. Usulan perbaikannya: saat modul siap, hash `#kenal-{code}[-n]` yang sudah ada membuka overlay di slide n lalu hash dibersihkan (`history.replaceState`), tanpa memutar narasi otomatis; narasi peta tidak dimulai bila overlay Kenali terbuka. Kerjakan ulang bila masih terjadi (setelah tata letak 16:9 Dok 3).
+
 ---
 
 ## Dok 1 — Fondasi data dan reset
