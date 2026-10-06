@@ -7,7 +7,7 @@ use CodeIgniter\Database\RawSql;
 use Config\Database;
 
 /**
- * Skema lengkap GELITA sesudah migration 2026-01-01-004600 untuk SQLite
+ * Skema lengkap GELITA (app/Database/Migrations) untuk SQLite
  * (grup `tests`): 30 tabel dengan kolom, nilai bawaan, kunci utama, dan kunci
  * unik yang sama dengan MySQL/MariaDB. Indeks biasa dan FK tidak ikut.
  * Dipakai uji reset total (SystemResetTest), pendaftaran bertahap
@@ -375,21 +375,17 @@ trait ResetTables
             'updated_at'      => 'DATETIME=CURRENT_TIMESTAMP',
         ],
         'library_pages' => [
-            'id'               => 'pk',
-            'level_id'         => 'INTEGER',
-            'sequence'         => 'INTEGER=1',
-            'title_id'         => 'VARCHAR(250)',
-            'title_en'         => 'VARCHAR(250)',
-            'body_id'          => 'TEXT',
-            'body_en'          => 'TEXT',
-            'image_a_media_id' => 'INTEGER?',
-            'image_b_media_id' => 'INTEGER?',
-            'video_media_id'   => 'INTEGER?',
-            'poster_media_id'  => 'INTEGER?',
-            'is_active'        => 'INTEGER=1',
-            'created_at'       => 'DATETIME=CURRENT_TIMESTAMP',
-            'updated_at'       => 'DATETIME=CURRENT_TIMESTAMP',
-            '_unique'          => [['level_id', 'sequence']],
+            'id'         => 'pk',
+            'level_id'   => 'INTEGER',
+            'sequence'   => 'INTEGER=1',
+            'title_id'   => 'VARCHAR(250)',
+            'title_en'   => 'VARCHAR(250)',
+            'body_id'    => 'TEXT',
+            'body_en'    => 'TEXT',
+            'is_active'  => 'INTEGER=1',
+            'created_at' => 'DATETIME=CURRENT_TIMESTAMP',
+            'updated_at' => 'DATETIME=CURRENT_TIMESTAMP',
+            '_unique'    => [['level_id', 'sequence']],
         ],
         'media_assets' => [
             'id'             => 'pk',

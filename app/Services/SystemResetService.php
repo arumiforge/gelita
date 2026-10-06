@@ -30,7 +30,7 @@ use Config\Database;
 class SystemResetService
 {
     /** Migration terakhir yang wajib sudah dijalankan. */
-    public const REQUIRED_MIGRATION = '2026-01-01-004600';
+    public const REQUIRED_MIGRATION = '2026-01-01-002900';
 
     /** Kata yang wajib diketik bila tanpa --ya. */
     public const CONFIRM_WORD = 'RESET-KELAS5';

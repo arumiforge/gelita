@@ -121,7 +121,7 @@ final class SystemResetTest extends CIUnitTestCase
         $this->assertStringContainsString('--paksa', $output);
         $this->assertSame($before, $this->counts());
 
-        // Struktur database belum 004600 → berhenti
+        // Struktur database belum lengkap → berhenti
         $this->conn->table('migrations')->where('version', SystemResetService::REQUIRED_MIGRATION)->delete();
         $before = $this->counts();
 
@@ -408,7 +408,7 @@ final class SystemResetTest extends CIUnitTestCase
     {
         $db = $this->conn;
 
-        foreach (['2026-01-01-004000', SystemResetService::REQUIRED_MIGRATION] as $i => $version) {
+        foreach (['2026-01-01-002800', SystemResetService::REQUIRED_MIGRATION] as $i => $version) {
             $db->table('migrations')->insert(['version' => $version, 'class' => 'M' . $i, 'group' => 'default', 'namespace' => 'App', 'time' => 1, 'batch' => 1]);
         }
 
