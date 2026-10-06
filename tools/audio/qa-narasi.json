@@ -173,11 +173,11 @@
   "character": "mbah_kedu",
   "pose": "smile",
   "cer": 0.0224,
-  "wer": 0.0833,
-  "seconds": 9.15,
-  "lufs": -16.52,
-  "text": "Remember my advice: find the main idea, put things in order, and separate facts from opinions. Five shards of Magelang are waiting for you.",
-  "asr": "Remember my advice, find the main idea, put things in order, and separate facts from opinions. Five shards of Mog Long are waiting for you."
+  "wer": 0.0417,
+  "seconds": 9.07,
+  "lufs": -16.4,
+  "text": "Remember my advice: find the main idea, put things in order, and separate facts from opinions. Four shards of Magelang are waiting for you.",
+  "asr": "Remember my advice, find the main idea, put things in order, and separate facts from opinions. Four shards of Mogulong are waiting for you."
  },
  {
   "locale": "en",
@@ -352,12 +352,12 @@
   "code": "dialog-temanggung-14",
   "character": "mbah_kedu",
   "pose": "idle",
-  "cer": 0.0703,
+  "cer": 0.0625,
   "wer": 0.1304,
-  "seconds": 8.0,
+  "seconds": 8.05,
   "lufs": -16.5,
-  "text": "Five shards are waiting for you in Temanggung. Find the information that is clearly written, and this mist will retreat on its own.",
-  "asr": "Five shards are waiting for you into Mongom. Find the information that is clearly written, and this miss will retreat on its own."
+  "text": "Four shards are waiting for you in Temanggung. Find the information that is clearly written, and this mist will retreat on its own.",
+  "asr": "Four shards are waiting for you into Mangan. Find the information that is clearly written, and this mess will retreat on its own."
  },
  {
   "locale": "en",
@@ -546,10 +546,10 @@
   "pose": "smile",
   "cer": 0.0,
   "wer": 0.0,
-  "seconds": 6.83,
+  "seconds": 6.85,
   "lufs": -16.5,
-  "text": "Now that's a brave child. Go, my boy. The last five shards are waiting behind the mist.",
-  "asr": "Now that's a brave child. Go, my boy. The last five shards are waiting behind the mist."
+  "text": "Now that's a brave child. Go, my boy. The last four shards are waiting behind the mist.",
+  "asr": "Now that's a brave child. Go, my boy. The last four shards are waiting behind the mist."
  },
  {
   "locale": "en",
@@ -604,12 +604,12 @@
   "code": "intro-04",
   "character": "narator",
   "pose": null,
-  "cer": 0.0628,
-  "wer": 0.1579,
-  "seconds": 17.4,
-  "lufs": -16.01,
-  "text": "One night, the Mist of Forgetting coiled around the Lantern of Kedu. Its glass cracked, its flame trembled, and then its light shattered! Fifteen Shards of Light shot into the sky and fell across Temanggung, Magelang, and Wonosobo.",
-  "asr": "One night, the mist of forgetting coiled around the lantern of Kudu. Its glass cracked, its flame trembled, and then its light shattered. Fifteen shards of light shot into the sky and fell across to Maungun, Margaline, and One Ossobo."
+  "cer": 0.036,
+  "wer": 0.1316,
+  "seconds": 17.75,
+  "lufs": -16.0,
+  "text": "One night, the Mist of Forgetting coiled around the Lantern of Kedu. Its glass cracked, its flame trembled, and then its light shattered! Twelve Shards of Light shot into the sky and fell across Temanggung, Magelang, and Wonosobo.",
+  "asr": "One night, the mist of forgetting coiled around the lantern of Kudu. Its glass cracked, its flame trembled, and then its light shattered. Twelve shards of light shot into the sky and fell across to Mangong, Magolan, and Wanosobo."
  },
  {
   "locale": "en",
@@ -628,12 +628,12 @@
   "code": "intro-06",
   "character": "jaka",
   "pose": "determined",
-  "cer": 0.0286,
+  "cer": 0.0385,
   "wer": 0.0909,
-  "seconds": 8.07,
+  "seconds": 7.98,
   "lufs": -15.5,
-  "text": "Let me go, Mbah! I will find all fifteen shards, one by one, until the Lantern of Kedu shines again. I promise!",
-  "asr": "Let me go, Umbar. I will find all 15 shards, one by one, until the lantern of Kudu shines again. I promise."
+  "text": "Let me go, Mbah! I will find all twelve shards, one by one, until the Lantern of Kedu shines again. I promise!",
+  "asr": "Let me go, umber. I will find all 12 shards, one by one, until the lantern of Kudu shines again. I promise."
  },
  {
   "locale": "en",
@@ -642,10 +642,10 @@
   "pose": null,
   "cer": 0.0,
   "wer": 0.0,
-  "seconds": 14.89,
+  "seconds": 15.03,
   "lufs": -16.0,
-  "text": "Each region holds five shards, and each shard is guarded by a challenge. Complete the challenge to win its shard and stars. Watch the lantern in the top-left corner: it grows brighter every time a shard returns.",
-  "asr": "Each region holds five shards, and each shard is guarded by a challenge. Complete the challenge to win its shard and stars. Watch the lantern in the top left corner, it grows brighter every time a shard returns."
+  "text": "Each region holds four shards, and each shard is guarded by a challenge. Complete the challenge to win its shard and stars. Watch the lantern in the top-left corner: it grows brighter every time a shard returns.",
+  "asr": "Each region holds four shards, and each shard is guarded by a challenge. Complete the challenge to win its shard and stars. Watch the lantern in the top-left corner, it grows brighter every time a shard returns."
  },
  {
   "locale": "en",
@@ -820,12 +820,12 @@
   "code": "penutup-01",
   "character": "narator",
   "pose": null,
-  "cer": 0.0357,
+  "cer": 0.0432,
   "wer": 0.0769,
-  "seconds": 10.08,
-  "lufs": -16.01,
-  "text": "On top of the hill, Jaka lifted his lantern high. All fifteen shards joined together, and a golden light poured out across the whole Kedu Plain.",
-  "asr": "On top of the hill, Jocker lifted his lantern high. All fifteen shards joined together, and a golden light poured out across the whole Kudu plain."
+  "seconds": 9.51,
+  "lufs": -16.0,
+  "text": "On top of the hill, Jaka lifted his lantern high. All twelve shards joined together, and a golden light poured out across the whole Kedu Plain.",
+  "asr": "On top of the hill, Jorger lifted his lantern high. All twelve shards joined together, and a golden light poured out across the whole Kadu plain."
  },
  {
   "locale": "en",
@@ -892,12 +892,12 @@
   "code": "peta-02",
   "character": "jaka",
   "pose": "determined",
-  "cer": 0.0863,
-  "wer": 0.2083,
-  "seconds": 9.56,
+  "cer": 0.0576,
+  "wer": 0.1667,
+  "seconds": 9.51,
   "lufs": -15.5,
-  "text": "I must explore three regions to bring it back: Temanggung, then Magelang, and finally Wonosobo. In each region, five Shards of Light are waiting.",
-  "asr": "I must explore three regions to bring it back, to Mangum, then Margalan, and finally one Ossobo. In each region, five shards of light are waiting."
+  "text": "I must explore three regions to bring it back: Temanggung, then Magelang, and finally Wonosobo. In each region, four Shards of Light are waiting.",
+  "asr": "I must explore three regions to bring it back to Mangong, then Margalan and finally Wanosobo. In each region, four shards of light are waiting."
  },
  {
   "locale": "en",
@@ -913,99 +913,147 @@
  },
  {
   "locale": "en",
+  "code": "petunjuk-mgl-4-01",
+  "character": "mbah_kedu",
+  "pose": null,
+  "cer": 0.0467,
+  "wer": 0.1053,
+  "seconds": 7.2,
+  "lufs": -16.5,
+  "text": "Find the small bell-shaped structure full of holes. Borobudur has 72 of these on its round terraces.",
+  "asr": "Find the small bell shaped structure full of holes. Or Wider has 72 of these on its round terraces."
+ },
+ {
+  "locale": "en",
+  "code": "petunjuk-mgl-4-02",
+  "character": "mbah_kedu",
+  "pose": null,
+  "cer": 0.0693,
+  "wer": 0.1875,
+  "seconds": 6.49,
+  "lufs": -16.5,
+  "text": "Find the colourful feather headdress worn by dancers of the folk dance from Tuksongo Village, Magelang.",
+  "asr": "Find the colorful feather headdress worn by dancers of the folk dance from Texongo Village, Mogulong."
+ },
+ {
+  "locale": "en",
+  "code": "petunjuk-mgl-4-03",
+  "character": "mbah_kedu",
+  "pose": null,
+  "cer": 0.0179,
+  "wer": 0.0526,
+  "seconds": 7.53,
+  "lufs": -16.5,
+  "text": "Find the snack made of cassava that is steamed, pounded, and sweetened. This snack gave Magelang a special nickname.",
+  "asr": "Find the snack made of cassava that is steamed, pounded, and sweetened. This snack gave Magalani a special nickname."
+ },
+ {
+  "locale": "en",
+  "code": "petunjuk-mgl-4-04",
+  "character": "mbah_kedu",
+  "pose": null,
+  "cer": 0.0319,
+  "wer": 0.0526,
+  "seconds": 5.7,
+  "lufs": -16.5,
+  "text": "Find the object made of clay that is shaped and then fired, made by the people of Klipoh Hamlet.",
+  "asr": "Find the object made of clay that is shaped and then fired, made by the people of Klippel Hamlet."
+ },
+ {
+  "locale": "en",
   "code": "petunjuk-tmg-4-01",
   "character": "mbah_kedu",
   "pose": null,
-  "cer": 0.0625,
+  "cer": 0.0339,
   "wer": 0.0909,
-  "seconds": 4.54,
+  "seconds": 3.96,
   "lufs": -16.5,
-  "text": "Find the tobacco leaf, the main garden crop of Temanggung farmers.",
-  "asr": "Find the tobacco leaf, the main garden crop of Tamangan farmers."
+  "text": "Find the woven bamboo horse used for the kuda lumping dance.",
+  "asr": "Find the woven bamboo horse used for the cuta lumping dance."
  },
  {
   "locale": "en",
   "code": "petunjuk-tmg-4-02",
   "character": "mbah_kedu",
   "pose": null,
-  "cer": 0.0333,
-  "wer": 0.1818,
-  "seconds": 4.19,
-  "lufs": -16.53,
-  "text": "Find the coffee beans from the slopes of Sindoro and Sumbing.",
-  "asr": "Find the coffee beans from the slopes of Sondoro and Tsumbing."
+  "cer": 0.05,
+  "wer": 0.1333,
+  "seconds": 4.83,
+  "lufs": -16.5,
+  "text": "Find the coffee beans that grow on the slopes of Mount Sindoro and Mount Sumbing.",
+  "asr": "Find the coffee beans that grow on the slopes of Mount Zindoro and Mount Tsumbi."
  },
  {
   "locale": "en",
   "code": "petunjuk-tmg-4-03",
   "character": "mbah_kedu",
   "pose": null,
-  "cer": 0.0508,
-  "wer": 0.1818,
-  "seconds": 4.09,
+  "cer": 0.0286,
+  "wer": 0.1538,
+  "seconds": 4.73,
   "lufs": -16.5,
-  "text": "Find the woven bamboo horse used for the jaran kepang dance.",
-  "asr": "Find the woven bamboo horse used for the Jaron Kapong dance."
+  "text": "Find the statue of Nandi the bull, like the one inside Pringapus Temple.",
+  "asr": "Find the statue of Nani the Bull, like the one inside Pringapas Temple."
  },
  {
   "locale": "en",
   "code": "petunjuk-tmg-4-04",
   "character": "mbah_kedu",
   "pose": null,
-  "cer": 0.0808,
-  "wer": 0.1176,
-  "seconds": 6.83,
-  "lufs": -16.54,
-  "text": "Find the uceng fish, a small river fish that is one of Temanggung's geographical indication products.",
-  "asr": "Find the Uching Fish, a small river fish that is one of Tomongam's geographical indication products."
- },
- {
-  "locale": "en",
-  "code": "petunjuk-tmg-4-05",
-  "character": "mbah_kedu",
-  "pose": null,
-  "cer": 0.0781,
-  "wer": 0.2727,
-  "seconds": 4.5,
-  "lufs": -16.53,
-  "text": "Find the sharpened bamboo spear, the symbol of Parakan's struggle.",
-  "asr": "Find the Sharp and Bamboo Spear, the symbol of Paracon's struggle."
- },
- {
-  "locale": "en",
-  "code": "petunjuk-tmg-4-06",
-  "character": "mbah_kedu",
-  "pose": null,
-  "cer": 0.0282,
-  "wer": 0.1429,
-  "seconds": 4.72,
-  "lufs": -16.47,
-  "text": "Find the statue of Nandi the bull, like the one kept in Pringapus Temple.",
-  "asr": "Find the statue of Nani the Bull, like the one kept in Pringapas temple."
- },
- {
-  "locale": "en",
-  "code": "petunjuk-tmg-4-07",
-  "character": "mbah_kedu",
-  "pose": null,
-  "cer": 0.0923,
-  "wer": 0.1667,
-  "seconds": 4.85,
+  "cer": 0.08,
+  "wer": 0.1333,
+  "seconds": 5.22,
   "lufs": -16.5,
-  "text": "Find kupat tahu, a Temanggung dish with sweet soy and peanut sauce.",
-  "asr": "Fine Kupat Tahu, a tamaghan dish with sweet soy and peanut sauce."
+  "text": "Find the uceng fish, a small river fish that is a special food of Temanggung.",
+  "asr": "Find the Uching Fish, a small river fish that is a special food of Timangan."
  },
  {
   "locale": "en",
-  "code": "petunjuk-tmg-4-08",
+  "code": "petunjuk-wnb-4-01",
   "character": "mbah_kedu",
   "pose": null,
-  "cer": 0.125,
-  "wer": 0.2727,
-  "seconds": 4.32,
-  "lufs": -16.51,
-  "text": "Find the rigen, the woven bamboo tray for drying shredded tobacco.",
-  "asr": "Find the Regan, the woven demboutre for drying shredded tobacco."
+  "cer": 0.0,
+  "wer": 0.0,
+  "seconds": 10.0,
+  "lufs": -16.5,
+  "text": "Find the musical instrument shaped like a curved hood of woven bamboo. The hood once protected duck herders from the sun and rain, and then strings were added to pluck.",
+  "asr": "Find the musical instrument shaped like a curved hood of woven bamboo. The hood once protected duck herders from the sun and rain, and then strings were added to pluck."
+ },
+ {
+  "locale": "en",
+  "code": "petunjuk-wnb-4-02",
+  "character": "mbah_kedu",
+  "pose": null,
+  "cer": 0.0,
+  "wer": 0.0,
+  "seconds": 7.61,
+  "lufs": -16.5,
+  "text": "Find the mountain fruit that looks like a papaya but is small. It grows well in cool air and is often made into sweets.",
+  "asr": "Find the mountain fruit that looks like a papaya but is small. It grows well in cool air and is often made into sweets."
+ },
+ {
+  "locale": "en",
+  "code": "petunjuk-wnb-4-03",
+  "character": "mbah_kedu",
+  "pose": null,
+  "cer": 0.0382,
+  "wer": 0.125,
+  "seconds": 8.74,
+  "lufs": -16.4,
+  "text": "Find the small bamboo basket that is dipped again and again into boiling water. Its name was used to name Wonosobo's special noodles.",
+  "asr": "Find the small bamboo basket that is dipped again and again into boiling water. Its name was used to name one of Sobo's special noodles."
+ },
+ {
+  "locale": "en",
+  "code": "petunjuk-wnb-4-04",
+  "character": "mbah_kedu",
+  "pose": null,
+  "cer": 0.0136,
+  "wer": 0.037,
+  "seconds": 9.13,
+  "lufs": -16.4,
+  "text": "Find the leaves that are brewed into a warm drink. They are picked at the Tambi estate, which has existed since 1865.",
+  "asr": "Find the leaves that are brewed into a warm drink. They are picked at the Tambay estate, which has existed since 1865."
  },
  {
   "locale": "en",
@@ -1036,12 +1084,12 @@
   "code": "tuntas-magelang-03",
   "character": "mbah_kedu",
   "pose": "smile",
-  "cer": 0.0421,
-  "wer": 0.0556,
-  "seconds": 6.62,
-  "lufs": -16.51,
-  "text": "Ten shards have returned, and my strength is coming back. The Magelang Library is now open to you.",
-  "asr": "10 shards have returned and my strength is coming back. The Mogulon Library is now open to you."
+  "cer": 0.134,
+  "wer": 0.1667,
+  "seconds": 6.45,
+  "lufs": -16.4,
+  "text": "Eight shards have returned, and my strength is coming back. The Magelang Library is now open to you.",
+  "asr": "HRs have returned and my strength is coming back. The Mogulon Library is now open to you."
  },
  {
   "locale": "en",
@@ -1074,10 +1122,10 @@
   "pose": "happy",
   "cer": 0.0877,
   "wer": 0.1667,
-  "seconds": 4.3,
+  "seconds": 4.22,
   "lufs": -16.0,
-  "text": "Five shards are back in the lantern! It feels so warm, Mbah.",
-  "asr": "Five shards are back in the lantern. Feels so warm, umbar."
+  "text": "Four shards are back in the lantern! It feels so warm, Mbah.",
+  "asr": "Four shards are back in the lantern. Feels so warm, umbar."
  },
  {
   "locale": "en",
@@ -1134,10 +1182,10 @@
   "pose": "happy",
   "cer": 0.0,
   "wer": 0.0,
-  "seconds": 3.56,
+  "seconds": 3.36,
   "lufs": -16.0,
-  "text": "Fifteen shards... every single one is back!",
-  "asr": "15 Shards. Every single one is back."
+  "text": "Twelve shards... every single one is back!",
+  "asr": "12 shards. Every single one is back."
  },
  {
   "locale": "en",
@@ -1324,12 +1372,12 @@
   "code": "dialog-magelang-15",
   "character": "mbah_kedu",
   "pose": "smile",
-  "cer": 0.075,
-  "wer": 0.4118,
-  "seconds": 11.1,
+  "cer": 0.0413,
+  "wer": 0.3529,
+  "seconds": 10.95,
   "lufs": -16.5,
-  "text": "Ingat pesan Mbah: temukan ide pokoknya, susun urutannya, dan pisahkan fakta dari pendapat. Lima serpihan Magelang menunggumu.",
-  "asr": "Tingat besan embah temukan idipokoknya susun urutannya dan pisahkan fato dari pendapat, lima serpihan makhlang menunggumu."
+  "text": "Ingat pesan Mbah: temukan ide pokoknya, susun urutannya, dan pisahkan fakta dari pendapat. Empat serpihan Magelang menunggumu.",
+  "asr": "Ingat pesan embah temukan ide pokoknya susun urutannya dan pisahkan fato dari pendapat. Empat serpihan mage lang menunggu mu."
  },
  {
   "locale": "id",
@@ -1504,12 +1552,12 @@
   "code": "dialog-temanggung-14",
   "character": "mbah_kedu",
   "pose": "idle",
-  "cer": 0.0826,
-  "wer": 0.4118,
-  "seconds": 10.92,
-  "lufs": -16.52,
-  "text": "Lima serpihan menunggumu di Temanggung. Temukan informasi yang tertulis jelas, maka kabut ini akan mundur dengan sendirinya.",
-  "asr": "Limua serpihan menunggumu ditemanggungmu. Temuan informasi yang tertulis jelas o mapo kaput ini akan mundur dengan sendirinya."
+  "cer": 0.0738,
+  "wer": 0.3529,
+  "seconds": 10.87,
+  "lufs": -16.5,
+  "text": "Empat serpihan menunggumu di Temanggung. Temukan informasi yang tertulis jelas, maka kabut ini akan mundur dengan sendirinya.",
+  "asr": "4 serpihan menunggu mudi temang bunga. Temukan informasi yang tertulis jelas sama kokabut ini akan mundur dengan sendirinya."
  },
  {
   "locale": "id",
@@ -1696,12 +1744,12 @@
   "code": "dialog-wonosobo-15",
   "character": "mbah_kedu",
   "pose": "smile",
-  "cer": 0.061,
+  "cer": 0.0843,
   "wer": 0.3077,
-  "seconds": 8.75,
-  "lufs": -16.53,
-  "text": "Itu baru anak pemberani. Pergilah, Le. Lima serpihan terakhir menunggu di balik kabut.",
-  "asr": "Titu baru anak pemberani. Pergilahlah, lima serbihan terakhir menunggu di balik kabut."
+  "seconds": 8.57,
+  "lufs": -16.5,
+  "text": "Itu baru anak pemberani. Pergilah, Le. Empat serpihan terakhir menunggu di balik kabut.",
+  "asr": "Titu baru anak pemberani ya. Pergilah lah. Empat serpihan terakhir menunggu di balik kaput."
  },
  {
   "locale": "id",
@@ -1756,12 +1804,12 @@
   "code": "intro-04",
   "character": "narator",
   "pose": null,
-  "cer": 0.0628,
-  "wer": 0.4483,
-  "seconds": 19.52,
+  "cer": 0.0684,
+  "wer": 0.4828,
+  "seconds": 19.34,
   "lufs": -16.0,
-  "text": "Pada suatu malam, Kabut Lupa membelit Lentera Kedu. Kacanya retak, apinya bergetar, lalu cahayanya pecah! Lima belas Serpihan Cahaya melesat ke langit dan jatuh di Temanggung, Magelang, dan Wonosobo.",
-  "asr": "Pada suatu malam, kabut lupa membeli lentera kedup. Kacanya retako apinya bergetarelalu cahayanya pacah. Limau belas serbihan cahaya melesat ke langit dan jatuh di temang bungu Magelangu dan Wono Sobo."
+  "text": "Pada suatu malam, Kabut Lupa membelit Lentera Kedu. Kacanya retak, apinya bergetar, lalu cahayanya pecah! Dua belas Serpihan Cahaya melesat ke langit dan jatuh di Temanggung, Magelang, dan Wonosobo.",
+  "asr": "Pada suatu malam, kabut lupo membilit lenterah kedut. Kacanya retako apinya bergetarelalu cahayanya pacah. 12 serpihan cahayah, meresak ke langit dan jatuh di temanggungu Magelangu dan Wono Sobo."
  },
  {
   "locale": "id",
@@ -1780,24 +1828,24 @@
   "code": "intro-06",
   "character": "jaka",
   "pose": "determined",
-  "cer": 0.0806,
-  "wer": 0.3182,
-  "seconds": 11.19,
+  "cer": 0.0488,
+  "wer": 0.3636,
+  "seconds": 11.21,
   "lufs": -15.5,
-  "text": "Biar aku yang pergi, Mbah! Aku akan mencari kelima belas serpihan itu satu per satu, sampai Lentera Kedu menyala lagi. Aku janji!",
-  "asr": "biar aku yang pergi engmah, aku akan menkari ke 15 serpihan itu satu per satu sampai lenterah kedung menyala lagi. Kaku janji."
+  "text": "Biar aku yang pergi, Mbah! Aku akan mencari kedua belas serpihan itu satu per satu, sampai Lentera Kedu menyala lagi. Aku janji!",
+  "asr": "biar aku yang pergi embah, aku akan mencari ke 12 serbihan itu satu per satu sampai lentera ke du menyala lagi. Kaku janjir."
  },
  {
   "locale": "id",
   "code": "intro-07",
   "character": "narator",
   "pose": null,
-  "cer": 0.0298,
-  "wer": 0.1515,
-  "seconds": 21.85,
+  "cer": 0.0212,
+  "wer": 0.1212,
+  "seconds": 21.5,
   "lufs": -16.0,
-  "text": "Setiap wilayah menyimpan lima serpihan, dan setiap serpihan dijaga oleh satu tantangan. Selesaikan tantangannya untuk mendapatkan serpihan dan bintang. Lihat lentera di pojok kiri atas: lentera itu makin terang setiap kali serpihan kembali.",
-  "asr": "Setiap wilayah menyimpan lima serpihanu dan setiap serpihan dijoko oleh satu tantangan. Selesaikan tantangannya untuk mendapatkan serpihan dan bintang. Lihat lenterah di pojo kiri atas lenterah itu makin terang setiap kali serpihan kembali."
+  "text": "Setiap wilayah menyimpan empat serpihan, dan setiap serpihan dijaga oleh satu tantangan. Selesaikan tantangannya untuk mendapatkan serpihan dan bintang. Lihat lentera di pojok kiri atas: lentera itu makin terang setiap kali serpihan kembali.",
+  "asr": "Setiap wilayah menyimpan empat serpihanu dan setiap serpihan dijogo oleh satu tantangan. Selesaikan tantangannya untuk mendapatkan serpihan dan bintang. Lihat lenterah di pojok kiri atas lenterah itu makin terang setiap kali serpihan kembali."
  },
  {
   "locale": "id",
@@ -1972,12 +2020,12 @@
   "code": "penutup-01",
   "character": "narator",
   "pose": null,
-  "cer": 0.0935,
-  "wer": 0.45,
-  "seconds": 13.66,
+  "cer": 0.087,
+  "wer": 0.35,
+  "seconds": 13.54,
   "lufs": -16.0,
-  "text": "Di puncak bukit, Jaka mengangkat lenteranya tinggi-tinggi. Kelima belas serpihan menyatu, dan cahaya keemasan memancar ke seluruh Dataran Kedu.",
-  "asr": "Dipunca Bukit Tijokok mengangkat plenterannya tinggi-tinggi ke-15 serpihan menyatu dan cahayah kemasan memancar ke seluruh dataran kedua."
+  "text": "Di puncak bukit, Jaka mengangkat lenteranya tinggi-tinggi. Kedua belas serpihan menyatu, dan cahaya keemasan memancar ke seluruh Dataran Kedu.",
+  "asr": "Dipunca Bukit Tijoko mengangkat planterannya tinggi-tinggi. Kedua belas serpihan menyatu dan cahayah kemasan memancar ke seluruh dataran kedua."
  },
  {
   "locale": "id",
@@ -2044,12 +2092,12 @@
   "code": "peta-02",
   "character": "jaka",
   "pose": "determined",
-  "cer": 0.0577,
-  "wer": 0.2381,
-  "seconds": 13.25,
+  "cer": 0.0382,
+  "wer": 0.2857,
+  "seconds": 13.13,
   "lufs": -15.5,
-  "text": "Aku harus menjelajahi tiga wilayah untuk memulihkannya: Temanggung, lalu Magelang, dan terakhir Wonosobo. Di setiap wilayah, lima Serpihan Cahaya sedang menunggu.",
-  "asr": "Aku harus menjelajahi tiga wilayah untuk memulikannya teman bunga lalu, makgilang dan terakhir wanusobob. Di setiap wilayah 5 serpihan cahaya sedang menunggu."
+  "text": "Aku harus menjelajahi tiga wilayah untuk memulihkannya: Temanggung, lalu Magelang, dan terakhir Wonosobo. Di setiap wilayah, empat Serpihan Cahaya sedang menunggu.",
+  "asr": "Aku harus menjelajahi tiga wilayah untuk memulikannya temanggungu lalu Magelangu dan terakhir Wono Sobo. Di setiap wilayah empat carpihan cahaya sedang menunggu."
  },
  {
   "locale": "id",
@@ -2065,99 +2113,147 @@
  },
  {
   "locale": "id",
+  "code": "petunjuk-mgl-4-01",
+  "character": "mbah_kedu",
+  "pose": null,
+  "cer": 0.0233,
+  "wer": 0.1579,
+  "seconds": 11.65,
+  "lufs": -16.5,
+  "text": "Temukan bangunan kecil berbentuk lonceng yang berlubang-lubang. Di teras bundar Borobudur ada 72 bangunan seperti ini.",
+  "asr": "Temuan bangunan kecil berbentuk lonceng yang berlubang-lubang. Di tras Bundar Borobudur Adah 72 bangunan seperti ini."
+ },
+ {
+  "locale": "id",
+  "code": "petunjuk-mgl-4-02",
+  "character": "mbah_kedu",
+  "pose": null,
+  "cer": 0.068,
+  "wer": 0.1875,
+  "seconds": 8.89,
+  "lufs": -16.5,
+  "text": "Temukan hiasan kepala dari bulu warna-warni yang dipakai penari tari rakyat dari Desa Tuksongo, Magelang.",
+  "asr": "Temukan hiasan kepala dari bulu warna-warni yang dipakai penari tarir rakyat dari desa Tuxong Womaglang."
+ },
+ {
+  "locale": "id",
+  "code": "petunjuk-mgl-4-03",
+  "character": "mbah_kedu",
+  "pose": null,
+  "cer": 0.0508,
+  "wer": 0.2941,
+  "seconds": 11.11,
+  "lufs": -16.5,
+  "text": "Temukan jajanan dari singkong yang dikukus, ditumbuk, lalu diberi gula. Jajanan ini membuat Magelang punya julukan khusus.",
+  "asr": "Temukan jajanan dari singkong yang di kukusut ditumbuk lalu di berigula. Jajanan ini membuat magelang punya juluhan khusus."
+ },
+ {
+  "locale": "id",
+  "code": "petunjuk-mgl-4-04",
+  "character": "mbah_kedu",
+  "pose": null,
+  "cer": 0.0976,
+  "wer": 0.3077,
+  "seconds": 7.8,
+  "lufs": -16.5,
+  "text": "Temukan benda dari tanah liat yang dibentuk lalu dibakar, buatan warga Dusun Klipoh.",
+  "asr": "Temukan benda dari tanah liat yang dibentuk lalu dibakaruh buatan Wargotuson Gripoh."
+ },
+ {
+  "locale": "id",
   "code": "petunjuk-tmg-4-01",
   "character": "mbah_kedu",
   "pose": null,
-  "cer": 0.0656,
-  "wer": 0.375,
-  "seconds": 5.73,
+  "cer": 0.013,
+  "wer": 0.0833,
+  "seconds": 7.1,
   "lufs": -16.5,
-  "text": "Temukan daun tembakau, tanaman kebun andalan petani Temanggung.",
-  "asr": "Temukan daun tembak Kautanaman Kebun Andalan Petani Temangung."
+  "text": "Temukan kuda-kudaan dari anyaman bambu yang dipakai untuk menari kuda lumping.",
+  "asr": "Temukan kuda-kudaan dari anyaman bambu yang dipakai untuk menarik kuda lumping."
  },
  {
   "locale": "id",
   "code": "petunjuk-tmg-4-02",
   "character": "mbah_kedu",
   "pose": null,
-  "cer": 0.0444,
-  "wer": 0.2857,
-  "seconds": 4.38,
-  "lufs": -16.51,
-  "text": "Temukan biji kopi dari lereng Sindoro–Sumbing.",
-  "asr": "Temukan biji kopi dari Lerang Sindoro Sumbingu."
+  "cer": 0.0455,
+  "wer": 0.1818,
+  "seconds": 5.73,
+  "lufs": -16.5,
+  "text": "Temukan biji kopi yang tumbuh di lereng Gunung Sindoro dan Sumbing.",
+  "asr": "Temukan biji kopi yang tumbuh di lering gunung Sindoro dan Sumin."
  },
  {
   "locale": "id",
   "code": "petunjuk-tmg-4-03",
   "character": "mbah_kedu",
   "pose": null,
-  "cer": 0.0,
-  "wer": 0.0,
-  "seconds": 5.44,
+  "cer": 0.0606,
+  "wer": 0.2727,
+  "seconds": 6.12,
   "lufs": -16.5,
-  "text": "Temukan kuda-kudaan anyaman bambu untuk menari jaran kepang.",
-  "asr": "Temukan kuda-kudaan anyaman bambu untuk menari jaran kepang."
+  "text": "Temukan arca lembu Nandi, seperti yang ada di dalam Candi Pringapus.",
+  "asr": "Temukan arco lembunan dia seperti yang ada di dalam candi Pringapus."
  },
  {
   "locale": "id",
   "code": "petunjuk-tmg-4-04",
   "character": "mbah_kedu",
   "pose": null,
-  "cer": 0.0116,
-  "wer": 0.0833,
-  "seconds": 7.77,
+  "cer": 0.0274,
+  "wer": 0.0909,
+  "seconds": 6.32,
   "lufs": -16.5,
-  "text": "Temukan ikan uceng, ikan sungai kecil yang menjadi produk indikasi geografis Temanggung.",
-  "asr": "Temukan ikan Oceng ikan sungai kecil yang menjadi produk indikasi geografis temanggung."
+  "text": "Temukan ikan uceng, ikan sungai kecil yang menjadi makanan khas Temanggung.",
+  "asr": "Temukan ikan uceng ikan sungai kecil yang menjadi makanan khas pemanggungu."
  },
  {
   "locale": "id",
-  "code": "petunjuk-tmg-4-05",
+  "code": "petunjuk-wnb-4-01",
   "character": "mbah_kedu",
   "pose": null,
-  "cer": 0.0755,
-  "wer": 0.5714,
-  "seconds": 5.0,
+  "cer": 0.0683,
+  "wer": 0.2917,
+  "seconds": 13.91,
   "lufs": -16.5,
-  "text": "Temukan bambu runcing, lambang perjuangan kota Parakan.",
-  "asr": "Temukan Bambur Uncing lambang perjuangan kota Parah An."
+  "text": "Temukan alat musik berbentuk tudung lengkung dari anyaman bambu. Dulu tudung itu melindungi penggembala bebek dari panas dan hujan, lalu diberi senar untuk dipetik.",
+  "asr": "Temuan alat musik berbentuk tudung lengkung dari anggaman bambu. Dulu, tudung itu melindungi pengembalo bebek dari panas dan hujanel lalu diperisenar untuk dibetih."
  },
  {
   "locale": "id",
-  "code": "petunjuk-tmg-4-06",
+  "code": "petunjuk-wnb-4-02",
   "character": "mbah_kedu",
   "pose": null,
-  "cer": 0.0303,
-  "wer": 0.2,
-  "seconds": 5.68,
+  "cer": 0.0,
+  "wer": 0.0,
+  "seconds": 11.59,
   "lufs": -16.5,
-  "text": "Temukan arca lembu Nandi seperti yang tersimpan di Candi Pringapus.",
-  "asr": "Temukan Arca Lembunan di seperti yang tersimpan di Candi Pringapus."
+  "text": "Temukan buah pegunungan yang mirip pepaya, tetapi ukurannya kecil. Buah ini tumbuh baik di udara sejuk dan sering dibuat manisan.",
+  "asr": "Temukan buah pegunungan yang mirip pepaya tetapi ukurannya kecil. Buah ini tumbuh baik di udara sejuk dan sering dibuat manisan."
  },
  {
   "locale": "id",
-  "code": "petunjuk-tmg-4-07",
+  "code": "petunjuk-wnb-4-03",
   "character": "mbah_kedu",
   "pose": null,
-  "cer": 0.0323,
-  "wer": 0.2222,
-  "seconds": 5.54,
+  "cer": 0.075,
+  "wer": 0.2632,
+  "seconds": 10.91,
   "lufs": -16.5,
-  "text": "Temukan kupat tahu, kuliner Temanggung berkuah kecap dan kacang.",
-  "asr": "Temuan Kupa Tahu kuliner temanggung berkuah kecap dan kacang."
+  "text": "Temukan keranjang bambu kecil yang dicelup-celupkan ke air mendidih. Nama alat ini dipakai untuk menamai mi khas Wonosobo.",
+  "asr": "Temukan keranjang bambu kecil yang dicelok-celokkan ke air mendidih. Nama alat ini dipakai untuk menamai mihaswanosobok."
  },
  {
   "locale": "id",
-  "code": "petunjuk-tmg-4-08",
+  "code": "petunjuk-wnb-4-04",
   "character": "mbah_kedu",
   "pose": null,
-  "cer": 0.082,
-  "wer": 0.625,
-  "seconds": 5.66,
+  "cer": 0.0,
+  "wer": 0.0,
+  "seconds": 13.48,
   "lufs": -16.5,
-  "text": "Temukan rigen, anyaman bambu tempat menjemur tembakau rajangan.",
-  "asr": "Temukan Rigeno Anyaman pambu tempat menjemur tembak aura jangan."
+  "text": "Temukan daun yang diseduh menjadi minuman hangat. Daun ini dipetik di perkebunan Tambi yang sudah ada sejak tahun 1865.",
+  "asr": "Temukan daun yang diseduh menjadi minuman hangat. Daun ini dipetik di perkebunan tambi yang sudah ada sejak tahun 1865."
  },
  {
   "locale": "id",
@@ -2188,12 +2284,12 @@
   "code": "tuntas-magelang-03",
   "character": "mbah_kedu",
   "pose": "smile",
-  "cer": 0.1053,
-  "wer": 0.3571,
-  "seconds": 9.11,
+  "cer": 0.0737,
+  "wer": 0.4286,
+  "seconds": 9.06,
   "lufs": -16.5,
-  "text": "Sepuluh serpihan sudah kembali, dan tenaga Mbah ikut pulih. Pustaka Magelang kini terbuka untukmu.",
-  "asr": "Sepuluh serpihan sudah kembali dan tenaga embah ikut pulih. Busta Pama Gela Gimi terbuka untukmu."
+  "text": "Delapan serpihan sudah kembali, dan tenaga Mbah ikut pulih. Pustaka Magelang kini terbuka untukmu.",
+  "asr": "Dilapan serpahan sudah kembali dan tenaga embah ikut pulih. Pusta kaumak gelang kini terbuka untukmu."
  },
  {
   "locale": "id",
@@ -2224,12 +2320,12 @@
   "code": "tuntas-temanggung-02",
   "character": "jaka",
   "pose": "happy",
-  "cer": 0.0308,
-  "wer": 0.2,
-  "seconds": 5.93,
+  "cer": 0.0758,
+  "wer": 0.3,
+  "seconds": 5.84,
   "lufs": -16.0,
-  "text": "Lima serpihan sudah kembali ke lentera! Rasanya hangat sekali, Mbah.",
-  "asr": "Lima serpihan sudah kembali ke lantera. Rasanya hangat sekali embah."
+  "text": "Empat serpihan sudah kembali ke lentera! Rasanya hangat sekali, Mbah.",
+  "asr": "Empat serpihan sudah kembali ke lendera. Rasanya hana sekali, Enbah."
  },
  {
   "locale": "id",
@@ -2284,12 +2380,12 @@
   "code": "tuntas-wonosobo-03",
   "character": "jaka",
   "pose": "happy",
-  "cer": 0.0476,
+  "cer": 0.0976,
   "wer": 0.1667,
-  "seconds": 4.62,
+  "seconds": 4.55,
   "lufs": -16.0,
-  "text": "Lima belas serpihan... semuanya sudah kembali!",
-  "asr": "15 serbihana. Semuanya sudah kembali."
+  "text": "Dua belas serpihan... semuanya sudah kembali!",
+  "asr": "12 pihana. Semuanya sudah kembali."
  },
  {
   "locale": "id",

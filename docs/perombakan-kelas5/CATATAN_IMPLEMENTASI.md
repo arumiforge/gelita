@@ -288,3 +288,48 @@ Dikerjakan di branch `dok2-klien-kesempatan` (dari `main`), sesuai `02_TANTANGAN
   - **Ke-12 tantangan sampai Balai Refleksi (ID):** satu tantangan (Magelang Benar atau Salah) salah 3 kali. Hasilnya "Bintang per wilayah" 12/10/12 dari 12, dan "Paling sering terlewat … 0 dari 5 soal".
   - Setelah rebase ke `main` yang sudah berisi §10: `gelita:mockups` (45 dibuat), lalu skenario salah 3 kali dan benar pada percobaan pertama diulang dengan gambar mockup, dengan hasil sama. Gambar utuh Susun Gambar tampil di balik modal habis. Ini sekaligus menjawab "Belum dijalankan" di bagian mockup untuk alur §5.3. Butir §13.2 lain (mengganti mockup dengan gambar asli di panel, halaman Narasi) belum.
   - Tidak ada galat JavaScript atau konsol di semua skenario.
+
+---
+
+## Dok 2 — naskah cerita dan rekaman
+
+Dikerjakan di branch `dok2-klien-kesempatan` (dimulai ulang dari `main` setelah PR #37 digabung), sesuai `02_TANTANGAN_DAN_BANK_SOAL.md` §11. Suite: **457 test hijau** (`vendor/bin/phpunit --no-coverage`).
+
+### Yang diubah
+
+- **§11.1 naskah:**
+  - ke-11 baris tabel diubah di `docs/naskah-cerita.md` dan `app/Database/Seeds/data/story.php`, persis seperti tabel;
+  - di *Benang merah*: "15 Serpihan Cahaya" → "12 Serpihan Cahaya", "tantangan kelima sebuah wilayah" → "tantangan keempat";
+  - baris `kenal-*` tidak disentuh.
+- **Teks lama** ke-11 baris ditambahkan ke `data/story-legacy.php`, sehingga `gelita:story:update` mengenalinya sebagai teks bawaan, bukan suntingan admin.
+- **`--lepas-audio-beda`** (`StorySync::run(..., $detachStaleAudio)`):
+  - tautan `dialogues.audio_{id,en}_asset_id` dikosongkan bila `audio_assets.transcript` (setelah `trim`/CRLF dinormalkan) berbeda dengan teks baris sesudah sinkronisasi;
+  - rekaman dan berkasnya tidak dihapus;
+  - laporan "Tautan rekaman dilepas" per baris dan bahasa; ikut `--dry-run` dan dicatat di audit (`audio_detached`).
+- **§11.2 rekaman:** ke-11 baris naskah dan 12 petunjuk Cari Objek dibangkitkan ulang dalam dua bahasa (46 MP3) dengan `tools/audio`, memakai pemeran dan efek per tokoh yang sama. Lingkungan kerja ini bisa mengunduh model (±600 MB), jadi opsi cadangan tidak perlu dipakai.
+  - `petunjuk-tmg-4-01…04` ikut dibangkitkan ulang karena teksnya kini teks bank soal final §9.
+  - `petunjuk-tmg-4-05…08` dihapus dari repositori dan dari `narasi/produksi.json`.
+  - `produksi.json` dan `tools/audio/qa-narasi.json` kini berisi 100 berkas per bahasa.
+- README dan `docs/05_VIEW_UI.md` kini menyebut 100 rekaman per bahasa (88 naskah + 12 petunjuk). `NarrationCatalog`/`NarrationImporter` tidak perlu diubah karena sudah membuat kelompok petunjuk per node `cari`.
+
+### Keputusan dan penyimpangan
+
+1. **Beberapa versi lama per posisi.** `story-legacy.php` semula satu pasangan [id, en] per posisi. Tiga posisi (`_|intro|4`, `temanggung|level_done|2`, `_|ending|1`) sudah berisi teks seeder pertama. Ketiganya kini memuat daftar pasangan (seeder lama, lalu naskah kelas 4), dan `StorySync` menerima kedua bentuk. Delapan posisi lain hanya memuat naskah kelas 4, di blok akhir berkas. Jumlah posisi: 18 → 26.
+2. **QA rekaman** (Whisper small, CER terendah dari 3 kandidat):
+   - ID: CER tertinggi 0,098;
+   - EN: CER tertinggi 0,134 (`tuntas-magelang-03`); `tuntas-temanggung-02` diulang dengan 5 kandidat (0,123 → 0,088).
+
+   Kelima kandidat `tuntas-magelang-03` sama-sama 0,134 karena Whisper membaca "Eight shards" sebagai "HRs"; sisa kalimatnya tepat. Rekaman itu diterima. Semua nilai masih di bawah CER tertinggi rekaman yang sudah ada (ID 0,43, EN 0,27). Nama Jawa memang sering salah dibaca Whisper ("Mogulong", "Kudu"), seperti pada rekaman lama.
+3. **Sesudah rilis, rekaman baru berstatus draft** sampai disetujui di **Konten → Narasi**. Ini perilaku importer yang sudah ada: rekaman yang diganti kembali ke draft. Selama itu, ke-11 baris tampil sebagai teks dengan tombol Lanjut, dan petunjuk tanpa rekaman yang disetujui tampil sebagai teks saja.
+
+### Pengujian yang dijalankan
+
+- **Otomatis:** 457 test.
+  - `StoryUpdateCommandTest::testGradeFourStoryLinesAreUpdated`: 11 baris berteks kelas 4 diperbarui, 0 dilewati.
+  - `testDetachStaleAudioOnlyWithTheOption`: tanpa opsi audio tidak disentuh; `--dry-run` tidak menulis; tautan berbeda dilepas, yang cocok (beda CRLF saja) tetap, rekaman tidak dihapus.
+  - `StoryDataTest::testStoryCountsTwelveShards`: tidak ada lagi "lima belas"/"lima serpihan"/"sepuluh serpihan" (ID) atau "fifteen"/"five shards"/"ten shards" (EN); Benang merah diperbarui.
+  - `testLegacyKeysPointAtStoryPositions`: 26 posisi.
+- **MariaDB lokal, simulasi server lama** (naskah kelas 4 dan rekaman lama dari `main`, semua disetujui):
+  - `gelita:story:update --lepas-audio-beda --dry-run` → 11 diperbarui, tepat 22 tautan (11 baris × ID/EN) akan dilepas, 77 sudah sesuai.
+  - `gelita:story:update` lalu `gelita:narration:import` → per bahasa 15 diganti dan kembali draft (11 naskah + 4 petunjuk `tmg-4`), 8 baru (`mgl-4`, `wnb-4`), 77 sama, 0 baris tanpa rekaman. Kelengkapan: 100 rekaman per bahasa.
+  - Sesudah impor, `--lepas-audio-beda --dry-run` → 0 tautan, karena transkrip sudah cocok dengan teks.
