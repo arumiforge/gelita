@@ -25,17 +25,16 @@ class SystemReset extends BaseCommand
     protected $group       = 'GELITA';
     protected $name        = 'gelita:reset';
     protected $description = 'Reset total data uji coba dan pengaturan untuk penelitian kelas 5 (Pustaka, cerita, media, sekolah resmi, staf tetap).';
-    protected $usage       = 'gelita:reset [--dry-run] [--ya] [--paksa] [--pemeliharaan] [--tanpa-bank] [--bank=JALUR] [--tanpa-mockup] [--hapus-guru] [--bersihkan-media-tantangan]';
+    protected $usage       = 'gelita:reset [--dry-run] [--ya] [--paksa] [--pemeliharaan] [--tanpa-bank] [--bank=JALUR] [--tanpa-mockup] [--hapus-guru]';
     protected $options     = [
-        '--dry-run'                   => 'Hanya hitung dan tampilkan rencana; tidak menulis apa pun.',
-        '--ya'                        => 'Lewati ketik konfirmasi (untuk skrip rilis).',
-        '--paksa'                     => 'Abaikan penjaga "ada kelas aktif dalam 10 menit".',
-        '--pemeliharaan'              => 'Aktifkan mode pemeliharaan (writable/pemeliharaan.flag) selama reset.',
-        '--tanpa-bank'                => 'Jangan impor bank soal (12 tantangan kosong).',
-        '--bank'                      => 'Workbook bank soal lain (bawaan docs/bank-soal/gelita-bank-soal-kelas5.xlsx).',
-        '--tanpa-mockup'              => 'Jangan buat gambar mockup.',
-        '--hapus-guru'                => 'Hapus juga semua akun guru (akun admin selalu tetap).',
-        '--bersihkan-media-tantangan' => 'Hapus media challenge.* yang tidak dipakai soal/tantangan mana pun.',
+        '--dry-run'      => 'Hanya hitung dan tampilkan rencana; tidak menulis apa pun.',
+        '--ya'           => 'Lewati ketik konfirmasi (untuk skrip rilis).',
+        '--paksa'        => 'Abaikan penjaga "ada kelas aktif dalam 10 menit".',
+        '--pemeliharaan' => 'Aktifkan mode pemeliharaan (writable/pemeliharaan.flag) selama reset.',
+        '--tanpa-bank'   => 'Jangan impor bank soal (12 tantangan kosong).',
+        '--bank'         => 'Workbook bank soal lain (bawaan docs/bank-soal/gelita-bank-soal-kelas5.xlsx).',
+        '--tanpa-mockup' => 'Jangan buat gambar mockup.',
+        '--hapus-guru'   => 'Hapus juga semua akun guru (akun admin selalu tetap).',
     ];
 
     public function run(array $params)
@@ -99,13 +98,6 @@ class SystemReset extends BaseCommand
 
         CLI::write('Bank soal: ' . ($flag('tanpa-bank') ? 'tidak diimpor (--tanpa-bank)' : ($bank ?? ROOTPATH . SystemResetService::DEFAULT_BANK)));
 
-        $cleanMedia = $flag('bersihkan-media-tantangan');
-
-        if ($cleanMedia) {
-            // Daftar akhir baru diketahui sesudah impor bank soal; ini perkiraan dari isi sekarang
-            $this->printMedia($service->unusedChallengeMedia(), 'Media tantangan yang SAAT INI tidak terpakai (daftar akhir dihitung ulang sesudah impor bank soal)');
-        }
-
         if ($dryRun) {
             CLI::newLine();
             CLI::write('--dry-run: tidak ada yang diubah.', 'green');
@@ -142,13 +134,6 @@ class SystemReset extends BaseCommand
                 'tanpa_bank'      => $flag('tanpa-bank'),
                 'bank'            => $bank,
                 'tanpa_mockup'    => $flag('tanpa-mockup'),
-                'bersihkan_media' => $cleanMedia,
-                // Sesudah impor: tampilkan daftar akhir, lalu minta konfirmasi kecuali --ya
-                'konfirmasi_media' => function (array $media) use ($yes): bool {
-                    $this->printMedia($media, 'Media tantangan tidak terpakai yang akan DIHAPUS');
-
-                    return $yes || strtolower(trim((string) CLI::prompt('Hapus ' . count($media) . ' media ini?', ['y', 'n']))) === 'y';
-                },
             ]);
         } catch (\Throwable $e) {
             CLI::error('Reset gagal: ' . $e->getMessage());
@@ -171,17 +156,6 @@ class SystemReset extends BaseCommand
         }
 
         return EXIT_SUCCESS;
-    }
-
-    /** @param list<array{id: int, asset_key: string, storage_path: string}> $media */
-    private function printMedia(array $media, string $title): void
-    {
-        CLI::newLine();
-        CLI::write($title . ' (' . count($media) . '):', 'yellow');
-
-        foreach ($media as $row) {
-            CLI::write('  ' . $row['asset_key'] . '  (' . $row['storage_path'] . ')');
-        }
     }
 
     /** @param array<string, mixed> $plan */
@@ -230,8 +204,7 @@ class SystemReset extends BaseCommand
     {
         CLI::newLine();
         CLI::write(sprintf(
-            '✓ Dikosongkan (%s) · ✓ Pengaturan bawaan · ✓ %d tantangan · %d sekolah belum terverifikasi dihapus%s',
-            strtoupper($result['mode']),
+            '✓ Dikosongkan · ✓ Pengaturan bawaan · ✓ %d tantangan · %d sekolah belum terverifikasi dihapus%s',
             $result['nodes'],
             $result['schools_removed'],
             $result['teachers_removed'] > 0 ? ' · ' . $result['teachers_removed'] . ' akun guru dihapus' : '',
@@ -257,10 +230,6 @@ class SystemReset extends BaseCommand
                 . ($mockups['existing'] > 0 ? ', ' . $mockups['existing'] . ' sudah ada' : '')
                 . ($mockups['kept'] > 0 ? ', ' . $mockups['kept'] . ' gambar asli dipertahankan' : '')
             : $mockups['message']), $mockups['status'] === 'done' && $mockups['failed'] !== [] ? 'red' : null);
-
-        if ($result['media_removed'] !== []) {
-            CLI::write('Media tantangan dihapus: ' . count($result['media_removed']));
-        }
 
         $warnings = count($result['findings']) - $result['errors'];
         CLI::write(sprintf('Verifikasi konten: %d galat, %d peringatan', $result['errors'], $warnings), $result['errors'] > 0 ? 'red' : 'green');

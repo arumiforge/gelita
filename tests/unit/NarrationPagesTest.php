@@ -1,6 +1,6 @@
 <?php
 
-use App\Libraries\StorySync;
+use App\Database\Seeds\ContentSeeder;
 use CodeIgniter\Config\BaseService;
 use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\HTTP\Method;
@@ -40,7 +40,7 @@ final class NarrationPagesTest extends CIUnitTestCase
 
         $this->sqlite = Database::connect('tests');
         $this->createNarrationTables($this->sqlite);
-        (new StorySync($this->sqlite))->run();
+        (new ContentSeeder(config('Database'), $this->sqlite))->seedDialogues();
         $this->injectStaff('admin');
 
         // Service security menyimpan hash CSRF test sebelumnya; muat ulang dari sesi uji ini

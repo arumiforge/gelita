@@ -71,7 +71,7 @@ $audioCell   = static function (array $audio, string $code, string $locale) use 
 </section>
 
 <?php if ($groups === []): ?>
-  <div class="empty-state"><?= icon('message') ?><p>Naskah cerita belum dipasang. Minta petugas teknis memasangnya (perintah <code>php spark gelita:story:update</code> di server).</p></div>
+  <div class="empty-state"><?= icon('message') ?><p>Naskah cerita belum dipasang. Minta petugas teknis menjalankan instalasi (<code>php spark db:seed DatabaseSeeder</code>).</p></div>
 <?php endif ?>
 
 <?php foreach ($groups as $group): ?>

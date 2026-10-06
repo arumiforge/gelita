@@ -1,9 +1,9 @@
 <?php
 
+use App\Database\Seeds\ContentSeeder;
 use App\Libraries\MediaStore;
 use App\Libraries\NarrationCatalog;
 use App\Libraries\NarrationImporter;
-use App\Libraries\StorySync;
 use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\StreamFilterTrait;
@@ -15,7 +15,7 @@ use Tests\Support\Database\NarrationTables;
  * persetujuan massal (NarrationCatalog).
  *
  * Memakai grup basis data `tests` (SQLite di memori) dengan tabel versi
- * ringkas; baris `dialogues` diisi StorySync dari naskah (88 baris), dan
+ * ringkas; baris `dialogues` diisi ContentSeeder dari naskah (88 baris), dan
  * uji petunjuk arena `cari` menambah node tmg-4 dari bank soal kelas 5 (4
  * benda dicari + 4 pengecoh, seedHuntNode()). Berkas
  * folder ditulis ke folder uji di bawah public/ dan salinan unggahan ke
@@ -40,7 +40,7 @@ final class NarrationImporterTest extends CIUnitTestCase
         $this->folder = 'assets/audio/narasi-uji-' . bin2hex(random_bytes(4)) . '/';
         $this->createNarrationTables($this->sqlite);
 
-        (new StorySync($this->sqlite))->run();
+        (new ContentSeeder(config('Database'), $this->sqlite))->seedDialogues();
     }
 
     protected function tearDown(): void
@@ -84,7 +84,7 @@ final class NarrationImporterTest extends CIUnitTestCase
         }
 
         // Kode berkas setiap baris naskah = kolom `code` data cerita
-        $this->assertSame(array_column(StorySync::storyData(), 'code'), array_keys($importer->lines()));
+        $this->assertSame(array_column(require APPPATH . 'Database/Seeds/data/story.php', 'code'), array_keys($importer->lines()));
     }
 
     public function testUnknownNamesAreReportedWithASuggestion(): void

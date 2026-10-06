@@ -10,7 +10,7 @@
  * aset audio; pemain baru mendengarnya setelah audio itu disetujui di
  * halaman Audio.
  *
- * Teks bawaan berasal dari naskah lewat `php spark gelita:story:update`.
+ * Teks bawaan berasal dari naskah (data/story.php) saat instalasi.
  * Slide yang teksnya disunting di sini dilewati perintah itu (kecuali
  * `--force`), jadi suntingan admin tidak tertimpa diam-diam.
  *

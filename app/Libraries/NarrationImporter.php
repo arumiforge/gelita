@@ -223,7 +223,7 @@ final class NarrationImporter
 
             $code = self::codeFor((string) $row['context_code'], $row['level_code'] === null ? null : (string) $row['level_code'], (int) $row['sequence']);
 
-            // Nomor urut ganda pada baris global: id terkecil yang dipakai (sama dengan StorySync)
+            // Nomor urut ganda pada baris global: id terkecil yang dipakai
             if ($code !== null && ! isset($this->lines[$code])) {
                 $this->lines[$code] = $row + ['code' => $code, 'table' => 'dialogues'];
             }

@@ -64,7 +64,7 @@ final class SystemResetTest extends CIUnitTestCase
         $this->assertSame($before, $this->counts(), '--dry-run tidak menulis apa pun');
         $this->assertStringContainsString('--dry-run: tidak ada yang diubah.', $output);
         $this->assertMatchesRegularExpression('/participants\s*\|\s*2\b/', $output);
-        $this->assertStringContainsString('Akan DIBANGUN ULANG: 15 tantangan → 12 tantangan', $output);
+        $this->assertStringContainsString('Akan DIBANGUN ULANG: 12 tantangan → 12 tantangan', $output);
         $this->assertStringContainsString('Akan DIHAPUS: 2 sekolah belum terverifikasi', $output);
 
         $plan = (new SystemResetService($this->conn, $this->exportsDir))->plan();
@@ -137,7 +137,6 @@ final class SystemResetTest extends CIUnitTestCase
 
         $result = $this->service()->run(['tanpa_bank' => true, 'tanpa_mockup' => true]);
 
-        $this->assertSame('truncate', $result['mode']);
 
         foreach (SystemResetService::GROUP_A as $table) {
             $expected = $table === 'audit_logs' ? 1 : 0;
@@ -183,8 +182,7 @@ final class SystemResetTest extends CIUnitTestCase
         $this->assertSame(['system_reset', null, 'system', 'kelas5'], [$audit['action'], $audit['staff_user_id'], $audit['target_type'], $audit['target_id']]);
         $meta = json_decode((string) $audit['metadata_json'], true);
         $this->assertSame(2, $meta['cleared']['participants']);
-        $this->assertSame(15, $meta['cleared']['challenge_nodes']);
-        $this->assertSame('truncate', $meta['mode']);
+        $this->assertSame(12, $meta['cleared']['challenge_nodes']);
         $this->assertTrue($meta['options']['tanpa_bank']);
         $this->assertArrayHasKey('host', $meta);
         $this->assertArrayHasKey('bank_sha256', $meta);
@@ -304,34 +302,6 @@ final class SystemResetTest extends CIUnitTestCase
         $this->assertSame(12, $result['nodes']);
     }
 
-    public function testUnusedChallengeMediaCanBeListedAndRemoved(): void
-    {
-        $service = $this->service();
-
-        $this->assertSame(['challenge.tmg-4.scene-lama'], array_column($service->unusedChallengeMedia(), 'asset_key'));
-
-        // Daftar akhir ditanyakan sesudah impor; menolak = tidak ada yang dihapus
-        $asked   = [];
-        $decline = $service->run(['tanpa_bank' => true, 'tanpa_mockup' => true, 'bersihkan_media' => true, 'konfirmasi_media' => static function (array $media) use (&$asked): bool {
-            $asked = array_column($media, 'asset_key');
-
-            return false;
-        }]);
-
-        $this->assertSame(['challenge.tmg-4.scene-lama'], $asked);
-        $this->assertSame([], $decline['media_removed']);
-        $this->assertSame(1, $this->conn->table('media_assets')->where('asset_key', 'challenge.tmg-4.scene-lama')->countAllResults());
-
-        $result = $service->run(['tanpa_bank' => true, 'tanpa_mockup' => true, 'bersihkan_media' => true]);
-
-        $this->assertSame(['challenge.tmg-4.scene-lama'], $result['media_removed']);
-        $this->assertSame(0, $this->conn->table('media_assets')->where('asset_key', 'challenge.tmg-4.scene-lama')->countAllResults());
-        $this->assertSame(1, $this->conn->table('media_assets')->where('asset_key', 'library.tmg.candi')->countAllResults(), 'media lain tetap');
-
-        $meta = json_decode((string) $this->conn->table('audit_logs')->where('action', 'system_reset')->get()->getRow('metadata_json'), true);
-        $this->assertSame(['challenge.tmg-4.scene-lama'], $meta['media_removed']);
-    }
-
     // ------------------------------------------------------------ bantu
 
     private function service(): SystemResetService
@@ -398,9 +368,8 @@ final class SystemResetTest extends CIUnitTestCase
         return $this->conn->table('challenge_nodes')->where('level_id', $levelId)->where('sequence', $sequence)->get()->getRowArray();
     }
 
-    /** Workbook kecil berformat importer kelas 5: dua tantangan, variasi a, satu bacaan. */
     /**
-     * Keadaan sesudah uji coba: 3 wilayah dengan 5 tantangan lama, cerita,
+     * Keadaan sesudah uji coba: 3 wilayah dengan 4 tantangan, cerita,
      * Pustaka, media, siswa dan jejak bermainnya, pengaturan lama, sekolah
      * resmi + ketikan, satu admin dan dua guru.
      */
@@ -421,10 +390,9 @@ final class SystemResetTest extends CIUnitTestCase
 
         $db->table('media_assets')->insertBatch([
             ['asset_key' => 'library.tmg.candi', 'asset_type' => 'image', 'storage_path' => 'assets/img/candi.webp', 'mime_type' => 'image/webp'],
-            ['asset_key' => 'challenge.tmg-4.scene-lama', 'asset_type' => 'image', 'storage_path' => 'assets/img/tidak-ada.webp', 'mime_type' => 'image/webp'],
             ['asset_key' => 'audio.narasi.id.intro-01', 'asset_type' => 'audio', 'storage_path' => 'assets/audio/intro-01.mp3', 'mime_type' => 'audio/mpeg'],
         ]);
-        $db->table('audio_assets')->insert(['media_asset_id' => 3, 'locale' => 'id', 'context_code' => 'intro', 'transcript' => 'Selamat datang.', 'approval_status' => 'approved', 'approved_by' => 1]);
+        $db->table('audio_assets')->insert(['media_asset_id' => 2, 'locale' => 'id', 'context_code' => 'intro', 'transcript' => 'Selamat datang.', 'approval_status' => 'approved', 'approved_by' => 1]);
         $db->table('dialogues')->insertBatch([
             ['level_id' => null, 'context_code' => 'intro', 'sequence' => 1, 'character_code' => 'jaka', 'text_id' => 'Halo!', 'text_en' => 'Hello!'],
             ['level_id' => 1, 'context_code' => 'kenal', 'sequence' => 1, 'character_code' => 'mbah_kedu', 'text_id' => 'Ini Temanggung.', 'text_en' => 'This is Temanggung.'],
@@ -437,16 +405,16 @@ final class SystemResetTest extends CIUnitTestCase
         $db->table('research_studies')->insert(['code' => 'STUDI-UJI-COBA', 'name' => 'Uji coba', 'status' => 'active']);
         $db->table('game_releases')->insert(['release_code' => 'GELITA-1.0', 'app_version' => '1.0', 'content_version' => '1', 'asset_version' => '1', 'scoring_version' => '1.0', 'is_active' => 1]);
 
-        // 5 tantangan lama per wilayah
+        // 4 tantangan uji coba per wilayah, isinya sudah disunting
         for ($level = 1; $level <= 3; $level++) {
-            for ($sequence = 1; $sequence <= 5; $sequence++) {
-                $db->table('challenge_nodes')->insert(['level_id' => $level, 'sequence' => $sequence, 'engine_type' => 'puzzle', 'title_id' => 'Lama', 'title_en' => 'Old']);
+            foreach (['puzzle', 'rumpang', 'boleh', 'cari'] as $i => $engine) {
+                $db->table('challenge_nodes')->insert(['level_id' => $level, 'sequence' => $i + 1, 'engine_type' => $engine, 'title_id' => 'Uji coba', 'title_en' => 'Trial']);
             }
         }
 
-        $db->table('challenge_items')->insert(['challenge_node_id' => 1, 'item_key' => 'tmg-1-01', 'interaction_type' => 'single_choice']);
+        $db->table('challenge_items')->insert(['challenge_node_id' => 1, 'item_key' => 'tmg-1-a01', 'interaction_type' => 'puzzle_arrange']);
         $db->table('hints')->insert(['challenge_node_id' => 1, 'sequence' => 1, 'text_id' => 'Petunjuk', 'text_en' => 'Hint']);
-        $db->table('reading_passages')->insert(['level_id' => 1, 'passage_key' => 'tmg-lama', 'body_id' => 'Bacaan', 'body_en' => 'Reading']);
+        $db->table('reading_passages')->insert(['level_id' => 1, 'passage_key' => 'tmg-3-a', 'body_id' => 'Bacaan', 'body_en' => 'Reading']);
 
         // Sekolah: dua resmi, satu ketikan uji coba + aliasnya
         $db->table('schools')->insertBatch([

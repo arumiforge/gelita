@@ -3,12 +3,11 @@
 namespace App\Database\Seeds;
 
 /**
- * Struktur konten: 12 challenge_nodes (4 per wilayah, metadata saja), cerita
- * (data/story.php), dan pustaka. Judul, instruksi, deskripsi, dan isi soal
- * datang dari workbook bank soal kelas 5 (Dok 2); seeder hanya membuat
- * struktur dengan judul sementara. Baris yang sudah ada tidak ditimpa,
- * sehingga hasil impor/suntingan admin aman — kecuali reset total
- * (`gelita:reset`) yang mengosongkan tabel node lebih dulu.
+ * Struktur konten: 12 challenge_nodes (4 per wilayah, metadata saja) dan
+ * cerita (data/story.php). Judul, instruksi, deskripsi, dan isi soal datang
+ * dari workbook bank soal kelas 5 (KontenKelas5Seeder); seeder ini hanya
+ * membuat struktur dengan judul sementara. Pustaka Kedu datang dari
+ * docs/pustaka/gelita-pustaka.xlsx.
  *
  * Urutan node sama di ketiga wilayah (perombakan kelas 5, K1):
  *   1 Susun Gambar (puzzle) · 2 Isi Rumpang (rumpang) ·
@@ -52,9 +51,7 @@ class ContentSeeder extends GelitaSeeder
     {
         $this->seedNodes();
 
-        $levels = $this->levelIds();
-        $this->seedDialogues($levels);
-        $this->seedLibrary($levels);
+        $this->seedDialogues();
     }
 
     /**
@@ -129,13 +126,12 @@ class ContentSeeder extends GelitaSeeder
 
     /**
      * Seluruh narasi dan dialog dari data/story.php (salinan persis
-     * docs/naskah-cerita.md). Baris yang sudah ada tidak ditimpa: server yang
-     * sudah berjalan memperbarui ceritanya lewat `php spark gelita:story:update`.
-     *
-     * @param array<string,int> $levels
+     * docs/naskah-cerita.md). Dipakai juga uji sebagai pemuat cerita.
      */
-    private function seedDialogues(array $levels): void
+    public function seedDialogues(): void
     {
+        $levels = $this->levelIds();
+
         foreach (require __DIR__ . '/data/story.php' as $line) {
             if ($line['level'] !== null && ! isset($levels[$line['level']])) {
                 continue;
@@ -155,41 +151,6 @@ class ContentSeeder extends GelitaSeeder
                 'text_id'        => $line['text_id'],
                 'text_en'        => $line['text_en'],
                 'is_active'      => 1,
-            ]);
-        }
-    }
-
-    /** @param array<string,int> $levels */
-    private function seedLibrary(array $levels): void
-    {
-        $pages = [
-            'temanggung' => [
-                'Mengenal Temanggung', 'Getting to Know Temanggung',
-                "Temanggung berada di antara Gunung Sindoro dan Gunung Sumbing. Tanahnya subur, sehingga banyak warga bertani di lereng gunung.\n\nTemanggung dikenal dengan kebun tembakau dan kopi lereng gunung. Di wilayah ini juga terdapat candi kuno yang menjadi warisan budaya dan perlu dijaga bersama.",
-                "Temanggung lies between Mount Sindoro and Mount Sumbing. Its soil is fertile, so many people farm on the mountain slopes.\n\nTemanggung is known for its tobacco gardens and mountain-slope coffee. The region also has ancient temples, a cultural heritage that we must look after together.",
-            ],
-            'magelang' => [
-                'Mengenal Magelang', 'Getting to Know Magelang',
-                "Magelang adalah tempat berdirinya Candi Borobudur, candi Buddha yang terkenal di seluruh dunia. Dinding candinya dihiasi banyak relief yang menceritakan kisah.\n\nDi Magelang juga ada Gunung Tidar. Selain itu, Magelang memiliki kesenian Topeng Ireng yang ditarikan dengan gerak yang bersemangat.",
-                "Magelang is home to Borobudur Temple, a Buddhist temple famous throughout the world. Its walls are decorated with many reliefs that tell stories.\n\nMagelang also has Mount Tidar. In addition, Magelang has the Topeng Ireng art, performed with lively dance movements.",
-            ],
-            'wonosobo' => [
-                'Mengenal Wonosobo', 'Getting to Know Wonosobo',
-                "Wonosobo berada di daerah pegunungan dan menjadi pintu menuju Dataran Tinggi Dieng. Dieng sering disebut negeri di atas awan karena letaknya tinggi dan sering diselimuti kabut.\n\nUdaranya sejuk, bahkan dingin pada pagi hari. Sebelum berkunjung, bacalah informasi dari sumber resmi agar perjalananmu aman.",
-                "Wonosobo lies in the mountains and is the gateway to the Dieng Plateau. Dieng is often called the land above the clouds because it is high up and often covered in mist.\n\nThe air is cool, even cold in the morning. Before visiting, read information from official sources so your trip is safe.",
-            ],
-        ];
-
-        foreach ($pages as $levelCode => [$titleId, $titleEn, $bodyId, $bodyEn]) {
-            $this->insertIfMissing('library_pages', [
-                'level_id' => $levels[$levelCode],
-                'sequence' => 1,
-            ], [
-                'title_id'  => $titleId,
-                'title_en'  => $titleEn,
-                'body_id'   => $bodyId,
-                'body_en'   => $bodyEn,
-                'is_active' => 1,
             ]);
         }
     }

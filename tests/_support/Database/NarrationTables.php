@@ -10,7 +10,7 @@ use Config\Database;
  * dialogues, challenge_nodes, challenge_items, media_assets, audio_assets,
  * audit_logs, research_studies, dan game_releases (keduanya dibaca layout
  * panel). Kolom yang dibaca/ditulis kode sama dengan migration MySQL. levels
- * diisi tiga wilayah; baris dialogues diisi pemanggil (StorySync); tabel
+ * diisi tiga wilayah; baris dialogues diisi pemanggil (ContentSeeder::seedDialogues()); tabel
  * tantangan kosong kecuali pemanggil memanggil seedHuntNode().
  */
 trait NarrationTables

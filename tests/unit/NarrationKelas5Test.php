@@ -1,7 +1,7 @@
 <?php
 
+use App\Database\Seeds\ContentSeeder;
 use App\Libraries\NarrationImporter;
-use App\Libraries\StorySync;
 use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\Test\CIUnitTestCase;
 use Tests\Support\Database\GradeFiveWorld;
@@ -25,7 +25,7 @@ final class NarrationKelas5Test extends CIUnitTestCase
         parent::setUp();
 
         $this->conn = $this->createGradeFiveWorld();
-        (new StorySync($this->conn))->run();
+        (new ContentSeeder(config('Database'), $this->conn))->seedDialogues();
     }
 
     protected function tearDown(): void

@@ -5,11 +5,15 @@ namespace App\Database\Seeds;
 use CodeIgniter\Database\Seeder;
 
 /**
- * GELITA_ADMIN_PASSWORD='SandiKuatAnda123!' php spark db:seed DatabaseSeeder
+ * Instalasi baru GELITA, sesudah `php spark migrate`:
  *
- * Di CI_ENVIRONMENT = development bank soal kelas 5
- * (docs/bank-soal/gelita-bank-soal-kelas5.xlsx) ikut diimpor lewat
- * BankKelas5Seeder; lingkungan lain memakai `php spark gelita:reset`.
+ *   GELITA_ADMIN_PASSWORD='SandiKuatAnda123!' php spark db:seed DatabaseSeeder
+ *
+ * Mengisi sekolah resmi, akun admin, pengaturan bawaan (indikator, versi
+ * permainan, studi), tiga wilayah, slot media, 12 tantangan dan cerita,
+ * lalu Pustaka Kedu, bank soal kelas 5, dan gambar contoh
+ * (KontenKelas5Seeder). Sesudahnya tinggal impor narasi
+ * (`php spark gelita:narration:import`) dan persetujuannya di panel.
  */
 class DatabaseSeeder extends Seeder
 {
@@ -23,9 +27,6 @@ class DatabaseSeeder extends Seeder
         $this->call('LevelSeeder');
         $this->call('MediaAssetSeeder');
         $this->call('ContentSeeder');
-
-        if (ENVIRONMENT === 'development') {
-            $this->call('BankKelas5Seeder');
-        }
+        $this->call('KontenKelas5Seeder');
     }
 }
