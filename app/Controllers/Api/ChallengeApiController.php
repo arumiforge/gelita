@@ -2,8 +2,10 @@
 
 namespace App\Controllers\Api;
 
+use App\Exceptions\ChallengeRuleException;
 use App\Models\ChallengeAttemptModel;
 use App\Models\ItemResponseModel;
+use App\Models\SessionProgressModel;
 use CodeIgniter\HTTP\ResponseInterface;
 
 /**
@@ -16,6 +18,11 @@ use CodeIgniter\HTTP\ResponseInterface;
  * Urutan pembukaan node di dalam satu wilayah ditegakkan layar HTML
  * (ChallengeController); di API yang ditegakkan adalah kunci level, sama
  * seperti ChallengeService::openNode().
+ *
+ * Aturan 3 kesempatan (Dok 2 §5): /check dan /responses menutup pengerjaan
+ * sendiri bila semua benar atau kesempatan habis (`completed`, `redirect`).
+ * Pelanggaran aturan dibalas 409 (TRIES_EXHAUSTED, CLUE_CLOSED,
+ * TRIES_REMAINING) atau 422 (INCOMPLETE).
  */
 class ChallengeApiController extends BaseApiController
 {
@@ -80,6 +87,8 @@ class ChallengeApiController extends BaseApiController
             $result = service('challengeService')->submitAnswer($attempt, $itemId, $body['answer'], [
                 'duration_ms' => $body['duration_ms'] ?? null,
             ]);
+        } catch (ChallengeRuleException $e) {
+            return $this->ruleFailed($e);
         } catch (\InvalidArgumentException $e) {
             return $this->invalidPayload(['item_id' => $e->getMessage()], 'INVALID_RESPONSE');
         }
@@ -87,16 +96,21 @@ class ChallengeApiController extends BaseApiController
         $response = model(ItemResponseModel::class)->findOne($attempt->id, $itemId);
 
         return $this->ok([
-            'correct'            => $result['correct'],
-            'first_pass'         => $result['first_pass'],
-            'wrong_click'        => $result['wrong_click'],
-            'decoy'              => $result['decoy'],
-            'already_answered'   => $result['already_answered'],
-            'feedback'           => $result['feedback'],
-            'try_no'             => $result['try_no'],
-            'change_count'       => $response?->change_count ?? 0,
-            'wrong_click_count'  => $response?->wrong_click_count ?? 0,
-            'progress'           => $result['progress'],
+            'correct'           => $result['correct'],
+            'first_pass'        => $result['first_pass'],
+            'wrong_click'       => $result['wrong_click'],
+            'decoy'             => $result['decoy'],
+            'feedback'          => $result['feedback'],
+            'try_no'            => $result['try_no'],
+            'tries_left'        => $result['tries_left'],
+            'clue_closed'       => $result['clue_closed'],
+            'change_count'      => $response?->change_count ?? 0,
+            'wrong_click_count' => $response?->wrong_click_count ?? 0,
+            'progress'          => $result['progress'],
+            'completed'         => $result['completed'],
+            'completion_reason' => $result['completion_reason'],
+            'redirect'          => $result['redirect'],
+            'shards'            => $result['shards'],
         ]);
     }
 
@@ -106,10 +120,22 @@ class ChallengeApiController extends BaseApiController
             return $limited;
         }
 
-        $attempt = $this->attemptOrFail($attemptId);
+        $attempt = $this->attemptOrFail($attemptId, false);
 
         if ($attempt instanceof ResponseInterface) {
             return $attempt;
+        }
+
+        // Cek ke-(max_tries + 1) ditolak TRIES_EXHAUSTED, juga ketika
+        // pengerjaannya sudah ditutup otomatis pada cek ke-3 (Dok 2 §5.2).
+        if ($attempt->isExhausted()) {
+            return $this->ruleFailed(ChallengeRuleException::triesExhausted(
+                $attempt->status === 'completed' ? site_url('selesai/' . $attempt->id) : null,
+            ));
+        }
+
+        if (! $attempt->isInProgress()) {
+            return $this->fail('ATTEMPT_CLOSED', lang('Game.errAttemptClosed'), 409);
         }
 
         $body    = $this->jsonBody();
@@ -143,19 +169,29 @@ class ChallengeApiController extends BaseApiController
             ];
         }
 
-        $result = service('challengeService')->submitCheck($attempt, $map);
+        try {
+            $result = service('challengeService')->submitCheck($attempt, $map);
+        } catch (ChallengeRuleException $e) {
+            return $this->ruleFailed($e);
+        } catch (\InvalidArgumentException $e) {
+            return $this->invalidPayload(['answers' => $e->getMessage()], 'INVALID_RESPONSE');
+        }
 
         return $this->ok([
-            'results'       => $result['results'],
-            'correct_count' => $result['correct_count'],
-            'total'         => $result['total'],
-            'all_correct'   => $result['all_correct'],
-            'check_count'   => $result['check_count'],
-            'try_no'        => $result['try_no'],
-            'tries_left'    => $result['tries_left'],
-            'exhausted'     => $result['exhausted'],
-            // pieces_correct untuk Susun Gambar — dihitung server dari kunci
-            'detail'        => (object) $result['detail'],
+            'results'           => (object) $result['results'],
+            'correct_count'     => $result['correct_count'],
+            'total'             => $result['total'],
+            'all_correct'       => $result['all_correct'],
+            'check_count'       => $result['check_count'],
+            'try_no'            => $result['try_no'],
+            'tries_left'        => $result['tries_left'],
+            'exhausted'         => $result['exhausted'],
+            // pieces_correct + misplaced untuk Susun Gambar — dihitung server dari kunci
+            'detail'            => (object) $result['detail'],
+            'completed'         => $result['completed'],
+            'completion_reason' => $result['completion_reason'],
+            'redirect'          => $result['redirect'],
+            'shards'            => $result['shards'],
         ]);
     }
 
@@ -192,38 +228,58 @@ class ChallengeApiController extends BaseApiController
         return $this->ok(['text' => $result['text'], 'hint_count' => $result['hint_count']]);
     }
 
+    /**
+     * Kompatibilitas (Dok 2 §5.2): pengerjaan biasanya sudah ditutup oleh
+     * /check atau /responses. Idempoten — pengerjaan yang sudah selesai
+     * dibalas hasil dan `redirect` yang sama. Pengerjaan yang masih berjalan
+     * hanya ditutup bila semua benar atau kesempatannya memang habis.
+     */
     public function complete(int $attemptId): ResponseInterface
     {
-        $attempt = $this->attemptOrFail($attemptId);
+        $attempt = $this->attemptOrFail($attemptId, false);
 
         if ($attempt instanceof ResponseInterface) {
             return $attempt;
         }
 
-        // Objek jebakan `cari` tidak pernah dijawab, jadi tidak menahan attempt
-        $pending = service('challengeService')->pendingItemIds($attempt);
-
-        if ($pending !== []) {
-            return $this->invalidPayload([
-                'items' => lang('Game.errItemsPending', [count($pending)]),
-            ]);
+        if ($attempt->status === 'abandoned') {
+            return $this->fail('ATTEMPT_CLOSED', lang('Game.errAttemptClosed'), 409);
         }
 
-        $result = service('challengeService')->completeAttempt($attempt);
+        if ($attempt->isInProgress()) {
+            try {
+                service('challengeService')->completeAttempt($attempt);
+            } catch (ChallengeRuleException $e) {
+                return $this->ruleFailed($e);
+            }
+        }
+
         $closed = model(ChallengeAttemptModel::class)->find($attempt->id);
 
         return $this->ok([
-            'stars'               => $result['stars'],
-            'first_pass_correct'  => $result['first_pass_correct'],
-            'final_correct'       => $result['final_correct'],
-            'scorable_items'      => $result['scorable_items'],
-            'completion_reason'   => $result['completion_reason'],
-            'duration_ms'         => (int) ($closed?->duration_ms ?? 0),
-            'shards'              => $result['shards'],
-            'level_completed'     => $result['level_completed'],
-            'next_level_unlocked' => $result['next_level_unlocked'],
-            'redirect'            => site_url('selesai/' . $attempt->id),
+            'stars'              => (int) $closed->stars,
+            'first_pass_correct' => (int) $closed->first_pass_correct,
+            'final_correct'      => (int) $closed->final_correct,
+            'scorable_items'     => (int) $closed->scorable_items,
+            'completion_reason'  => $closed->completion_reason,
+            'duration_ms'        => (int) ($closed->duration_ms ?? 0),
+            'shards'             => (int) (model(SessionProgressModel::class)->ensure($attempt->session_id)['completed_nodes'] ?? 0),
+            'redirect'           => site_url('selesai/' . $attempt->id),
         ]);
+    }
+
+    /** Pelanggaran aturan permainan → respons gagal dengan kode dan status dari pengecualiannya. */
+    private function ruleFailed(ChallengeRuleException $e): ResponseInterface
+    {
+        $message = match ($e->errorCode) {
+            'INCOMPLETE'      => lang('Game.errIncomplete'),
+            'TRIES_EXHAUSTED' => lang('Game.errTriesExhausted'),
+            'CLUE_CLOSED'     => lang('Game.errClueClosed'),
+            'TRIES_REMAINING' => lang('Game.errTriesRemaining'),
+            default           => $e->getMessage(),
+        };
+
+        return $this->fail($e->errorCode, $message, $e->status, $e->extra);
     }
 
     public function abandon(int $attemptId): ResponseInterface

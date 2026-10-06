@@ -107,24 +107,27 @@ final class ItemTryWritesTest extends CIUnitTestCase
             $this->responses($attempt->id),
         );
 
-        // Percobaan 3: c tetap salah → kesempatan habis
+        // Percobaan 3: c tetap salah → kesempatan habis, pengerjaan ditutup otomatis (Dok 2 §5)
         $third = $this->service->submitCheck($this->reload($attempt), [$c => ['verdict' => 'salah']]);
 
         $this->assertSame([3, 0, true], [$third['try_no'], $third['tries_left'], $third['exhausted']]);
+        $this->assertSame([2, 3], [$third['correct_count'], $third['total']], 'soal terkunci ikut dihitung');
+        $this->assertSame([true, 'tries_exhausted', 1], [$third['completed'], $third['completion_reason'], $third['stars']]);
+        $this->assertStringEndsWith('selesai/' . $attempt->id, (string) $third['redirect']);
         $this->assertSame([$a => [1, 1, 1, 3400], $b => [2, 2, 0, 9000], $c => [3, null, 0, null]], $this->responses($attempt->id));
         $this->assertCount(6, $this->tries($attempt->id));
 
         $checked = $this->events('challenge_checked');
         $this->assertCount(3, $checked);
-        $this->assertSame(['check_no' => 3, 'try_no' => 3, 'correct_count' => 0, 'total' => 1, 'exhausted' => true], $checked[2]);
+        $this->assertSame(['check_no' => 3, 'try_no' => 3, 'correct_count' => 2, 'total' => 3, 'exhausted' => true], $checked[2]);
+        $this->assertSame([['check_count' => 3, 'correct_count' => 2, 'total' => 3]], $this->events('challenge_tries_exhausted'));
 
         // Ditutup dengan soal yang tetap salah: ★, alasan "kesempatan habis"
-        $done = $this->service->completeAttempt($this->reload($attempt));
-
-        $this->assertSame(['tries_exhausted', 1, 1, 2, 3], [$done['completion_reason'], $done['stars'], $done['first_pass_correct'], $done['final_correct'], $done['scorable_items']]);
-
         $row = $this->conn->table('challenge_attempts')->where('id', $attempt->id)->get()->getRowArray();
-        $this->assertSame(['completed', 'tries_exhausted', 3, 1], [$row['status'], $row['completion_reason'], (int) $row['check_count'], (int) $row['stars']]);
+        $this->assertSame(['completed', 'tries_exhausted', 3, 1, 1, 2, 3], [
+            $row['status'], $row['completion_reason'], (int) $row['check_count'], (int) $row['stars'],
+            (int) $row['first_pass_correct'], (int) $row['final_correct'], (int) $row['scorable_items'],
+        ]);
         $this->assertSame('tries_exhausted', $this->events('challenge_completed')[0]['completion_reason']);
     }
 
@@ -133,11 +136,11 @@ final class ItemTryWritesTest extends CIUnitTestCase
         $attempt = $this->open(1);
         [$a, $b, $c] = $attempt->selectedItemIds();
 
-        $this->service->submitCheck($attempt, [$a => ['verdict' => 'benar'], $b => ['verdict' => 'salah'], $c => ['verdict' => 'benar']]);
+        $done = $this->service->submitCheck($attempt, [$a => ['verdict' => 'benar'], $b => ['verdict' => 'salah'], $c => ['verdict' => 'benar']]);
 
-        $done = $this->service->completeAttempt($this->reload($attempt));
-
-        $this->assertSame(['solved', 3], [$done['completion_reason'], $done['stars']]);
+        // Semua benar: ditutup otomatis pada cek yang sama
+        $this->assertSame([true, 'solved', 3], [$done['completed'], $done['completion_reason'], $done['stars']]);
+        $this->assertSame('completed', $this->conn->table('challenge_attempts')->where('id', $attempt->id)->get()->getRow('status'));
         $this->assertSame([$a => [1, 1, 1, null], $b => [1, 1, 1, null], $c => [1, 1, 1, null]], $this->responses($attempt->id));
     }
 

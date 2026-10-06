@@ -12,9 +12,10 @@
  * gambar yang tidak persegi. Keping tidak bernomor; label pembaca layar
  * menyebut letak slot (baris, kolom), bukan letak benarnya.
  *
- * Urutan awal diacak deterministik per attempt agar muat ulang tidak
- * mengubah papan. Keterangan gambar (prompt soal) baru tampil setelah gambar
- * utuh.
+ * Urutan awal diacak deterministik per pengerjaan agar muat ulang tidak
+ * mengubah papan, dan tidak ada keping yang sudah di tempatnya. Keterangan
+ * gambar (prompt soal) baru tampil setelah gambar utuh atau setelah
+ * kesempatan habis.
  *
  * @var App\Entities\ChallengeNode    $node
  * @var App\Entities\Level            $level
@@ -30,10 +31,8 @@ $count    = $grid * $grid;
 $image    = $item['media'] ?? $payload['node']['scene'] ?? media_src(null);
 $caption  = trim((string) ($item['prompt'] ?? ''));
 
-$order = seeded_shuffle(range(0, $count - 1), 'puzzle|' . $attempt->id);
-if ($order === range(0, $count - 1)) {
-    $order[] = array_shift($order);   // jangan pernah mulai dari susunan benar
-}
+// Acak tetap per pengerjaan, tanpa satu keping pun di tempatnya sendiri (Dok 2 §4)
+$order = seeded_derangement($count, 'puzzle|' . $attempt->id);
 $pieces = App\Libraries\PuzzleCut::pieces($grid, $shape, (string) ($item['item_key'] ?? 'puzzle'));
 $board  = $grid * App\Libraries\PuzzleCut::CELL;
 $clip   = 'pz' . (int) $attempt->id . '-';
