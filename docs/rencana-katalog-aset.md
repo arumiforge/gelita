@@ -20,7 +20,7 @@
 | Gambar yang direncanakan `rencana-perbaikan-tampilan` (pin, lentera, latar pemuatan per kota, avatar) | 21 | sama, ditandai "menunggu fase X" |
 | Ikon vektor (`icon()`, jejak kaki, layar putar) | 50 | pratinjau SVG, makna, tempat pakai, deskripsi bentuk, spesifikasi garis |
 | Musik gamelan & efek suara | 9 | pemutar, durasi, loop, target kenyaringan, prompt musik AI, brief komposer |
-| Narasi (88 baris naskah + 8 petunjuk arena `cari`) × 2 bahasa | 192 | teks, tokoh–pose–efek, durasi acuan, arahan suara, pemutar rekaman bawaan, lafal khusus |
+| Narasi (88 baris naskah + 12 petunjuk Cari Objek) × 2 bahasa | 200 | teks, tokoh–pose–efek, durasi acuan, arahan suara, pemutar rekaman bawaan, lafal khusus |
 
 **Untuk siapa.** Ilustrator, pengisi suara, komposer, dan tim konten. Guru dan peneliti juga dapat meninjau kecocokan budaya dan fakta. Pemakainya tidak perlu akun admin, database, atau server.
 
@@ -51,7 +51,7 @@
 | Naskah 88 baris | `app/Database/Seeds/data/story.php` (= `docs/naskah-cerita.md`) | |
 | 8 petunjuk arena `cari` | `docs/bank-soal/data/temanggung.php` (aturan penomoran `tools/audio/export_lines.php`) | |
 | Media tantangan & Pustaka | `docs/bank-soal/data/{temanggung,magelang,wonosobo}.php` | 20 media tantangan, 48 media Pustaka |
-| Durasi, CER, LUFS narasi | `tools/audio/qa-narasi.json` (192 baris) | durasi acuan per baris |
+| Durasi, CER, LUFS narasi | `tools/audio/qa-narasi.json` (200 baris) | durasi acuan per baris |
 | Profil suara & sha256 TTS | `public/assets/audio/narasi/produksi.json` | |
 | Lafal nama Jawa (EN) | `tools/audio/en_lexicon.py` (`NAMES`) | dibaca dengan regex |
 | Ikon SVG | `app/Helpers/ui_helper.php:15` (48 ikon) | kini variabel `static` di dalam `icon()` → refaktor Fase A |
@@ -226,7 +226,7 @@ Kerjakan per fase, satu commit per fase. Jalankan uji setiap fase, lalu push.
    - Katalog memanggil `icon_paths()` untuk mendaftar 48 ikon, sehingga ikon baru otomatis masuk katalog.
 2. **`LevelSeeder`: jadikan data wilayah konstanta publik** `LevelSeeder::LEVELS`. `run()` membacanya; isi dan perilaku seeder sama.
 3. **`ContentSeeder::NODE_POSITIONS` dan `MediaAssetSeeder::SLOTS`** dibiarkan `private` dan dibaca dengan `ReflectionClassConstant`. Uji Fase E mengunci bahwa keduanya tetap ada.
-4. `docs/katalog-aset/lib/Sources.php` beserta uji kelengkapan sumber (lihat Fase E): 191 butir gambar, 50 ikon, 9 bunyi, 96 baris narasi. Angka ini dihitung dari data, tidak ditulis tetap.
+4. `docs/katalog-aset/lib/Sources.php` beserta uji kelengkapan sumber (lihat Fase E): 191 butir gambar, 50 ikon, 9 bunyi, 100 baris narasi. Angka ini dihitung dari data, tidak ditulis tetap.
 
 ### Fase B — Data katalog (isi Bagian II)
 
@@ -837,13 +837,13 @@ magick f16.png f32.png ../favicon.ico
 | `intro-01` · narator · *glow* | Dataran yang Bercahaya | `night panorama of the Kedu plain ringed by Mount Sindoro, Sumbing, Merapi, Merbabu and the Menoreh hills, every village glowing with a gentle golden light called the Light of Kedu, fireflies of light rising softly, wonder` |
 | `intro-02` · narator | Cahaya dari Ilmu dan Budaya | `inside a joglo pendopo at night {LENTERA} stands on a carved teak stand; ribbons of its golden light drift upward and gently form faint silhouettes of a grandmother telling tales, a Borobudur-style relief panel, farmers singing in terraced fields, and a child reading, warm and reverent` |
 | `intro-03` · narator · *fog* | Kabut Lupa | `the same glowing valley as village lights fade one by one, {KABUT} rising from the valley floor and swallowing the fields, a few loose blank pages and faded relief shapes dissolving into the mist, cold and hushed` |
-| `intro-04` · narator · *shake* | Malam Lentera Retak | `close view of {LENTERA} on its stand, one glass pane cracking with a bright fracture line, {KABUT} coiling around it, fifteen {SERPIHAN} bursting upward into the night sky towards three distant lands, dramatic but not violent` |
+| `intro-04` · narator · *shake* | Malam Lentera Retak | `close view of {LENTERA} on its stand, one glass pane cracking with a bright fracture line, {KABUT} coiling around it, twelve {SERPIHAN} bursting upward into the night sky towards three distant lands, dramatic but not violent` |
 | `intro-05` · Mbah Kedu *weak* · *dim* | Penjaga yang Menua | `dim interior of the keeper's joglo, the cracked lantern with a weak flickering flame on a low table in the right half, cool shadows, an empty calm left side where the keeper will stand, quiet and sad` |
 | `intro-06` · Jaka *determined* · *glow* | Jaka, Pembawa Lentera | `the carved doorway of the joglo opening onto a misty dawn, a stone path leading down into the valley, hopeful golden rim light streaming in, calm left side for a standing boy` |
 | `intro-07` · narator | Cara Mengumpulkan Serpihan | `bird's-eye storybook view of three lands under patches of mist: twin volcanoes with tobacco terraces, a great stepped stupa temple on a green hill, and a high cloud-covered plateau with lakes; five tiny golden sparks hidden in each land, clear and inviting` |
 | `intro-08` · Mbah Kedu *smile* | Tiga Kunci Cahaya | `warm lantern-lit porch of the joglo, three softly glowing symbols floating in the light on the right side — a wooden signpost, a stone relief panel, and a bamboo kentongan drum — calm left side for the keeper` |
 | `intro-09` · narator · *glow* | Perjalanan Dimulai | `sunrise over the Kedu plain seen from the top of a footpath, the path winding down into golden mist towards three distant regions, a small glow of lantern light leading the way, adventurous and bright` |
-| `penutup-01` · narator · *glow* | Lentera Menyala Kembali | `hilltop at night, a small boy seen from behind as a silhouette lifting {LENTERA} high, fifteen {SERPIHAN} joining into it, a wave of golden light pouring across the whole plain, triumphant` |
+| `penutup-01` · narator · *glow* | Lentera Menyala Kembali | `hilltop at night, a small boy seen from behind as a silhouette lifting {LENTERA} high, twelve {SERPIHAN} joining into it, a wave of golden light pouring across the whole plain, triumphant` |
 | `penutup-02` · narator · *fog-lift* | Kabut Tersibak | `bright morning panorama as the last mist lifts: the twin volcanoes and tobacco terraces on the left, the great stupa temple in the centre, the cloud plateau and colourful lake on the right, clear blue-gold sky, relief and joy` |
 | `penutup-03` · Mbah Kedu *smile* · *glow* | Mbah Kedu Pulih | `the keeper's porch at golden hour, the restored lantern shining brightly on its stand in the right half, flowers and green plants around, warm and healthy mood, calm left side` |
 | `penutup-04` · Jaka *bow* | Janji Jaka | `a quiet village schoolyard under a big banyan tree at golden hour, children's books neatly stacked on a bamboo bench, soft lantern light, calm and sincere, calm left side` |
@@ -1651,10 +1651,10 @@ Durasi acuan dalam detik (ID / EN) diambil dari `qa-narasi.json`. "CER tinggi" m
 | `intro-01` | Narator · — · glow | 19,2 / 14,7 | Pembuka dongeng: lambat, hangat, penuh takjub; jeda kecil setelah deretan nama gunung; "Cahaya Kedu" ditekankan lembut | Story opening: slow, warm, full of wonder; a small pause after the list of mountains; gently stress "the Light of Kedu" |
 | `intro-02` | Narator · — · — | 25,3 / 15,9 | Mengalir tenang; deret "dari dongeng…, dari relief…, dari tembang…, dari setiap tulisan…" berirama; "Lentera Kedu" ditekankan | Calm and flowing; give the list "from grandparents' tales…, from the reliefs…, from the songs…, from every piece of writing…" a steady rhythm; stress "the Lantern of Kedu" |
 | `intro-03` | Narator · — · fog | 18,6 / 14,8 | Merendah dan agak berbisik sejak "Namun perlahan"; misterius tetapi tidak menakutkan; perlambat pada "Kabut Lupa" | Lower and slightly hushed from "But slowly"; mysterious, not scary; slow down on "the Mist of Forgetting" |
-| `intro-04` | Narator · — · shake | 19,5 / 17,4 | Tegang dan membangun; percepat menuju "lalu cahayanya pecah!"; dramatis tetapi terkendali pada "Lima belas Serpihan Cahaya melesat…" | Building tension; speed up towards "and then its light shattered!"; dramatic but controlled on "Fifteen Shards of Light shot…" |
+| `intro-04` | Narator · — · shake | 19,5 / 17,4 | Tegang dan membangun; percepat menuju "lalu cahayanya pecah!"; dramatis tetapi terkendali pada "Dua belas Serpihan Cahaya melesat…" | Building tension; speed up towards "and then its light shattered!"; dramatic but controlled on "Twelve Shards of Light shot…" |
 | `intro-05` | Mbah Kedu · weak · dim | 21,5 / 16,8 | Lemah, napas pendek, bergetar; jeda sebelum "tubuhku ikut melemah"; kalimat terakhir sedikit menguat, penuh harap | Weak, short of breath, trembling; pause before "my body grows weaker too"; the last sentence a little stronger, hopeful |
 | `intro-06` | Jaka · determined · glow | 11,2 / 8,1 | Berani dan bersemangat; "Biar aku yang pergi, Mbah!" tegas; "Aku janji!" mantap sambil tersenyum | Brave and eager; "Let me go, Mbah!" firm; "I promise!" confident, with a smile |
-| `intro-07` | Narator · — · — | 21,9 / 14,9 | Menjelaskan aturan seperti guru yang ramah; runtut; tekankan "lima serpihan", "satu tantangan", "pojok kiri atas" | Explaining the rules like a friendly teacher; orderly; stress "five shards", "a challenge", "top-left corner" |
+| `intro-07` | Narator · — · — | 21,9 / 14,9 | Menjelaskan aturan seperti guru yang ramah; runtut; tekankan "empat serpihan", "satu tantangan", "pojok kiri atas" | Explaining the rules like a friendly teacher; orderly; stress "four shards", "a challenge", "top-left corner" |
 | `intro-08` | Mbah Kedu · smile · — | 18,6 / 15,0 | Hangat menasihati; tiga kunci dibaca berjeda jelas per wilayah; senyum terdengar | Warm advice; a clear pause for each region's key; an audible smile |
 | `intro-09` | Narator · — · glow | 17,1 / 13,1 | Mengajak, makin bersemangat; "Bacalah… pikirkan… putuskan…" berirama; akhiri dengan seruan hangat | Inviting and growing in energy; "Read… think… decide…" rhythmic; end with a warm call to action |
 
@@ -1700,7 +1700,7 @@ Durasi acuan dalam detik (ID / EN) diambil dari `qa-narasi.json`. "CER tinggi" m
 | `dialog-temanggung-11` | Jaka · sad · — | 6,4 / 5,0 | Lirih, menyesal, jujur | Soft, sorry, sincere |
 | `dialog-temanggung-12` | Mbah Kedu · smile · glow | 17,7 / 13,5 | Menghibur dan hangat; berubah takjub pada "serpihan cahaya pertama mulai berkilau" | Comforting and warm; turn to wonder on "the first shard of light is starting to sparkle" |
 | `dialog-temanggung-13` | Jaka · determined · — | 9,9 / 6,1 | Sadar dan tegas; "kata demi kata" pelan menegaskan | Understanding and firm; "word by word" slow and deliberate |
-| `dialog-temanggung-14` | Mbah Kedu · idle · — | 10,9 / 8,0 | Tenang memberi tugas; "Lima serpihan" jelas | Calmly giving the task; "Five shards" clear |
+| `dialog-temanggung-14` | Mbah Kedu · idle · — | 10,9 / 8,0 | Tenang memberi tugas; "Empat serpihan" jelas | Calmly giving the task; "Four shards" clear |
 | `dialog-temanggung-15` | Jaka · determined · fog-lift | 6,1 / 4,6 | Seruan penuh semangat, lantang ke kejauhan | A rousing call, projected into the distance |
 
 **Magelang: *Relief yang Teracak***

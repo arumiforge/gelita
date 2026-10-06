@@ -21,7 +21,13 @@ use CodeIgniter\Database\BaseConnection;
  *   admin → dilewati dan dilaporkan, kecuali $force.
  *
  * Bila naskah diubah lagi kelak, teks versi sebelumnya perlu ditambahkan ke
- * data/story-legacy.php; tanpa itu baris lama terbaca sebagai suntingan admin.
+ * data/story-legacy.php (satu posisi boleh punya beberapa versi lama); tanpa
+ * itu baris lama terbaca sebagai suntingan admin.
+ *
+ * releaseStaleAudio() (`--lepas-audio-beda`) melepas tautan audio baris aktif
+ * yang transkrip rekamannya tidak sama lagi dengan teks baris itu, mis.
+ * sesudah naskah diubah tetapi rekaman barunya belum diimpor. Baris itu
+ * tampil sebagai teks (tombol Lanjut manual) sampai rekaman baru dipasang.
  *
  * Kolom audio dan latar (`audio_id_asset_id`, `audio_en_asset_id`,
  * `background_media_id`) tidak pernah disentuh, begitu juga `is_active`
@@ -40,18 +46,37 @@ final class StorySync
     /** @var list<array<string, mixed>> */
     private array $story;
 
-    /** @var array<string, array{0: string, 1: string}> */
+    /** @var array<string, list<array{0: string, 1: string}>> */
     private array $legacy;
 
     /**
-     * @param list<array<string, mixed>>|null                  $story  bawaan: data/story.php
-     * @param array<string, array{0: string, 1: string}>|null  $legacy bawaan: data/story-legacy.php
+     * @param list<array<string, mixed>>|null                        $story  bawaan: data/story.php
+     * @param array<string, list<array{0: string, 1: string}>>|null $legacy bawaan: legacyVersions()
      */
     public function __construct(?BaseConnection $db = null, ?array $story = null, ?array $legacy = null)
     {
         $this->db     = $db ?? db_connect();
         $this->story  = $story ?? self::storyData();
-        $this->legacy = $legacy ?? require APPPATH . 'Database/Seeds/data/story-legacy.php';
+        $this->legacy = $legacy ?? self::legacyVersions();
+    }
+
+    /**
+     * Semua versi lama per posisi dari data/story-legacy.php (kelompok seeder,
+     * naskah 15 serpihan, …).
+     *
+     * @return array<string, list<array{0: string, 1: string}>>
+     */
+    public static function legacyVersions(): array
+    {
+        $versions = [];
+
+        foreach (require APPPATH . 'Database/Seeds/data/story-legacy.php' as $group) {
+            foreach ($group as $key => $pair) {
+                $versions[$key][] = $pair;
+            }
+        }
+
+        return $versions;
     }
 
     /** @return list<array<string, mixed>> */
@@ -132,6 +157,52 @@ final class StorySync
     }
 
     /**
+     * Lepas tautan audio (`audio_id_asset_id` / `audio_en_asset_id`) baris
+     * aktif yang transkrip rekamannya berbeda dari teks baris itu. Rekaman
+     * dan baris `audio_assets`-nya tetap ada; hanya tautannya yang dilepas.
+     *
+     * @return list<string> label baris + bahasa, mis. `intro #4 (id)`
+     */
+    public function releaseStaleAudio(bool $dryRun = false): array
+    {
+        $codes = [];
+
+        foreach ($this->db->table('levels')->select('id, code')->get()->getResultArray() as $row) {
+            $codes[(int) $row['id']] = (string) $row['code'];
+        }
+
+        $released = [];
+
+        foreach ($this->db->table('dialogues')->where('is_active', 1)->orderBy('id', 'ASC')->get()->getResultArray() as $row) {
+            $changes = [];
+
+            foreach (['id', 'en'] as $locale) {
+                $mediaId = $row['audio_' . $locale . '_asset_id'] ?? null;
+
+                if ($mediaId === null) {
+                    continue;
+                }
+
+                $transcript = $this->db->table('audio_assets')->select('transcript')
+                    ->where('media_asset_id', (int) $mediaId)->get()->getRow('transcript');
+
+                if ($transcript === null || $this->normalize((string) $transcript) === $this->normalize((string) ($row['text_' . $locale] ?? ''))) {
+                    continue;
+                }
+
+                $changes['audio_' . $locale . '_asset_id'] = null;
+                $released[] = $this->label($row['level_id'] === null ? null : ($codes[(int) $row['level_id']] ?? null), (string) $row['context_code'], (int) $row['sequence']) . " ({$locale})";
+            }
+
+            if ($changes !== [] && ! $dryRun) {
+                $this->db->table('dialogues')->where('id', (int) $row['id'])->update($changes);
+            }
+        }
+
+        return $released;
+    }
+
+    /**
      * Baris kelompok (level, konteks) per nomor urut, id terkecil dulu.
      *
      * @return array<int, list<array<string, mixed>>>
@@ -192,8 +263,11 @@ final class StorySync
 
         $current = [$this->normalize($row['text_id'] ?? ''), $this->normalize($row['text_en'] ?? '')];
         $story   = [$this->normalize($line['text_id']), $this->normalize($line['text_en'])];
-        $legacy  = $this->legacy[($line['level'] ?? '_') . '|' . $line['context'] . '|' . $line['sequence']] ?? null;
-        $isOld   = $legacy !== null && $current === [$this->normalize($legacy[0]), $this->normalize($legacy[1])];
+        $isOld   = false;
+
+        foreach ($this->legacy[($line['level'] ?? '_') . '|' . $line['context'] . '|' . $line['sequence']] ?? [] as [$oldId, $oldEn]) {
+            $isOld = $isOld || $current === [$this->normalize($oldId), $this->normalize($oldEn)];
+        }
 
         if ($current !== $story && ! $isOld && ! $force) {
             $report['skipped'][] = $label;

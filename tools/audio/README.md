@@ -42,7 +42,7 @@ python sfx.py && python master.py sfx
 python narrate.py --locale id --n 3
 python narrate.py --locale en --n 1
 # ulangi baris yang CER-nya tinggi (lihat out/narasi/{locale}/report.json) dengan lebih banyak kandidat
-python narrate.py --locale en --codes dialog-wonosobo-10,petunjuk-tmg-4-07 --n 3
+python narrate.py --locale en --codes dialog-wonosobo-10,petunjuk-wnb-4-01 --n 3
 python publish.py                                  # MP3 + produksi.json
 
 # hanya beberapa baris (mis. setelah teksnya disunting)

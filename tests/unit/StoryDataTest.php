@@ -128,13 +128,24 @@ final class StoryDataTest extends CIUnitTestCase
         $positions = [];
 
         foreach (StorySync::storyData() as $line) {
-            $positions[($line['level'] ?? '_') . '|' . $line['context'] . '|' . $line['sequence']] = true;
+            $positions[($line['level'] ?? '_') . '|' . $line['context'] . '|' . $line['sequence']] = $line;
         }
 
-        $this->assertCount(18, $legacy);
+        $this->assertSame(['seeder', 'lima_belas'], array_keys($legacy));
+        $this->assertCount(18, $legacy['seeder']);
+        $this->assertCount(11, $legacy['lima_belas'], 'Dok 2 §11.1: sebelas baris naskah berubah');
 
-        foreach (array_keys($legacy) as $key) {
-            $this->assertArrayHasKey($key, $positions, $key);
+        foreach ($legacy as $group) {
+            foreach ($group as $key => $pair) {
+                $this->assertArrayHasKey($key, $positions, $key);
+                $this->assertNotSame([$positions[$key]['text_id'], $positions[$key]['text_en']], $pair, 'versi lama bukan teks naskah sekarang: ' . $key);
+            }
+        }
+
+        // Naskah 15 serpihan hanya berbeda pada kata bilangan
+        foreach ($legacy['lima_belas'] as $key => [$oldId, $oldEn]) {
+            $this->assertMatchesRegularExpression('/[Ll]ima|[Ss]epuluh|[Kk]elima belas/u', $oldId, $key);
+            $this->assertMatchesRegularExpression('/\b([Ff]ive|[Ff]ifteen|[Tt]en)\b/u', $oldEn, $key);
         }
     }
 

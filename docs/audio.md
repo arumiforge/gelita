@@ -1,6 +1,6 @@
 # Audio GELITA
 
-Seluruh audio bawaan permainan ikut di repositori: **3 musik gamelan**, **6 efek suara**, dan **96 rekaman narasi × 2 bahasa**. Semuanya dibangkitkan oleh [`tools/audio/`](../tools/audio/README.md).
+Seluruh audio bawaan permainan ikut di repositori: **3 musik gamelan**, **6 efek suara**, dan **100 rekaman narasi × 2 bahasa**. Semuanya dibangkitkan oleh [`tools/audio/`](../tools/audio/README.md).
 
 - Musik dan efek suara disintesis dari nol, tanpa sampel rekaman, dengan penalaan pelog–slendro. Gendingnya komposisi orisinal.
 - Narasi adalah **suara sintetis (text-to-speech)** yang diolah per tokoh. Rekaman ini tercatat sebagai TTS di basis data (`audio_assets.production_method = tts`). Kapan saja dapat diganti rekaman pengisi suara tanpa mengubah kode.
@@ -9,7 +9,7 @@ Seluruh audio bawaan permainan ikut di repositori: **3 musik gamelan**, **6 efek
 |---|---|---|---|
 | Musik | `public/assets/audio/music/` | `map`, `region`, `challenge` (MP3 stereo 128 kbps, loop) | `core/audio.js` → `Sfx.music()` |
 | Efek suara | `public/assets/audio/sfx/` | `click`, `correct`, `wrong`, `lock`, `shard`, `region-done` | `core/audio.js` → `Sfx.play()` |
-| Narasi | `public/assets/audio/narasi/{id,en}/` | 88 baris naskah + 8 petunjuk arena cari per bahasa (MP3 mono 96 kbps) | `gelita:narration:import` → `dialogues` / `challenge_items` |
+| Narasi | `public/assets/audio/narasi/{id,en}/` | 88 baris naskah + 12 petunjuk Cari Objek (tmg-4, mgl-4, wnb-4 masing-masing 4) per bahasa (MP3 mono 96 kbps) | `gelita:narration:import` → `dialogues` / `challenge_items` |
 | Manifest | `public/assets/audio/narasi/produksi.json` | sha256 + profil suara tiap rekaman sintetis | `NarrationImporter::production()` |
 
 ## Musik gamelan

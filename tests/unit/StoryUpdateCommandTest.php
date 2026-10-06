@@ -31,13 +31,20 @@ final class StoryUpdateCommandTest extends CIUnitTestCase
         parent::setUp();
 
         $this->sqlite     = Database::connect('tests');
-        $this->legacy = require APPPATH . 'Database/Seeds/data/story-legacy.php';
+        $this->legacy = (require APPPATH . 'Database/Seeds/data/story-legacy.php')['seeder'];
 
         $forge = Database::forge('tests');
 
-        foreach (['dialogues', 'levels', 'audit_logs'] as $table) {
+        foreach (['dialogues', 'levels', 'audit_logs', 'audio_assets'] as $table) {
             $forge->dropTable($table, true);
         }
+
+        $forge->addField([
+            'id'             => ['type' => 'INTEGER', 'auto_increment' => true],
+            'media_asset_id' => ['type' => 'INTEGER'],
+            'locale'         => ['type' => 'VARCHAR', 'constraint' => 5],
+            'transcript'     => ['type' => 'TEXT'],
+        ])->addPrimaryKey('id')->createTable('audio_assets');
 
         $forge->addField([
             'id'   => ['type' => 'INTEGER', 'auto_increment' => true],
@@ -82,7 +89,7 @@ final class StoryUpdateCommandTest extends CIUnitTestCase
     {
         $forge = Database::forge('tests');
 
-        foreach (['dialogues', 'levels', 'audit_logs'] as $table) {
+        foreach (['dialogues', 'levels', 'audit_logs', 'audio_assets'] as $table) {
             $forge->dropTable($table, true);
         }
 
@@ -273,6 +280,68 @@ final class StoryUpdateCommandTest extends CIUnitTestCase
         $row = $this->row(null, 'intro', 3);
         $this->assertStringStartsWith('Namun perlahan', $row['text_id']);
         $this->assertSame(0, (int) $row['is_active'], 'keputusan admin menyembunyikan slide dihormati');
+    }
+
+    /**
+     * Dok 2 §11.1: server yang masih memegang naskah 15 serpihan menerima
+     * sebelas baris baru; teks lama itu bukan suntingan admin.
+     */
+    public function testFifteenShardScriptIsUpdatedToTwelve(): void
+    {
+        command('gelita:story:update');
+        $old = (require APPPATH . 'Database/Seeds/data/story-legacy.php')['lima_belas'];
+
+        foreach ($old as $key => [$textId, $textEn]) {
+            [$level, $context, $sequence] = explode('|', $key);
+            $this->sqlite->table('dialogues')
+                ->where(['level_id' => $level === '_' ? null : $this->levelId($level), 'context_code' => $context, 'sequence' => (int) $sequence])
+                ->update(['text_id' => $textId, 'text_en' => $textEn]);
+        }
+
+        $report = (new StorySync($this->sqlite))->run();
+
+        $this->assertCount(11, $report['updated']);
+        $this->assertSame([], $report['skipped']);
+        $this->assertStringContainsString('Dua belas Serpihan Cahaya', $this->row(null, 'intro', 4)['text_id']);
+        $this->assertStringContainsString('Twelve shards', $this->row($this->levelId('wonosobo'), 'level_done', 3)['text_en']);
+        $this->assertStringStartsWith('Delapan serpihan', $this->row($this->levelId('magelang'), 'level_done', 3)['text_id']);
+    }
+
+    public function testStaleAudioIsReleasedOnlyWhenAsked(): void
+    {
+        command('gelita:story:update');
+        $row = $this->row(null, 'intro', 4);
+        $old = (require APPPATH . 'Database/Seeds/data/story-legacy.php')['lima_belas']['_|intro|4'];
+
+        // Rekaman lama (transkrip 15 serpihan) untuk baris yang teksnya sudah baru; intro #5 rekamannya sesuai
+        $this->sqlite->table('audio_assets')->insertBatch([
+            ['media_asset_id' => 41, 'locale' => 'id', 'transcript' => $old[0]],
+            ['media_asset_id' => 42, 'locale' => 'en', 'transcript' => $row['text_en'] . "\r\n"],
+            ['media_asset_id' => 43, 'locale' => 'id', 'transcript' => $this->row(null, 'intro', 5)['text_id']],
+        ]);
+        $this->sqlite->table('dialogues')->where('id', $row['id'])->update(['audio_id_asset_id' => 41, 'audio_en_asset_id' => 42]);
+        $this->sqlite->table('dialogues')->where('id', $this->row(null, 'intro', 5)['id'])->update(['audio_id_asset_id' => 43]);
+        $this->resetStreamFilterBuffer();
+
+        command('gelita:story:update');
+        $this->assertSame(41, (int) $this->row(null, 'intro', 4)['audio_id_asset_id'], 'tanpa opsi audio tidak disentuh');
+
+        command('gelita:story:update --lepas-audio-beda --dry-run');
+        $this->assertSame(41, (int) $this->row(null, 'intro', 4)['audio_id_asset_id']);
+        $this->assertStringContainsString('intro #4 (id)', $this->getStreamFilterBuffer());
+        $this->resetStreamFilterBuffer();
+
+        command('gelita:story:update --lepas-audio-beda');
+
+        $intro4 = $this->row(null, 'intro', 4);
+        $this->assertNull($intro4['audio_id_asset_id'], 'transkrip 15 serpihan ≠ teks 12 serpihan');
+        $this->assertSame(42, (int) $intro4['audio_en_asset_id'], 'beda akhir baris saja bukan perubahan isi');
+        $this->assertSame(43, (int) $this->row(null, 'intro', 5)['audio_id_asset_id']);
+        $this->assertSame(3, $this->sqlite->table('audio_assets')->countAllResults(), 'rekamannya tidak dihapus');
+        $this->assertStringContainsString('Audio: 1 tautan dilepas.', $this->getStreamFilterBuffer());
+
+        $audit = $this->sqlite->table('audit_logs')->orderBy('id', 'DESC')->get(1)->getRowArray();
+        $this->assertStringContainsString('"audio_released":["intro #4 (id)"]', (string) $audit['metadata_json']);
     }
 
     // ------------------------------------------------------------ bantuan

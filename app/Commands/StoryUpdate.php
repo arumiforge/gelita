@@ -15,7 +15,9 @@ use CodeIgniter\CLI\CLI;
  * Seeder tidak pernah menimpa baris yang sudah ada, jadi server lama tetap
  * memegang teks seeder sebelumnya sampai perintah ini dijalankan. Baris yang
  * sudah disunting admin dilewati dan dilaporkan; `--force` menimpanya. Audio
- * dan latar yang sudah dipasang admin tidak pernah disentuh. Aturan lengkap:
+ * dan latar yang sudah dipasang admin tidak pernah disentuh, kecuali
+ * `--lepas-audio-beda`: tautan audio yang transkripnya tidak sama lagi dengan
+ * teks barisnya dilepas (rekamannya tetap ada). Aturan lengkap:
  * App\Libraries\StorySync.
  */
 class StoryUpdate extends BaseCommand
@@ -23,10 +25,11 @@ class StoryUpdate extends BaseCommand
     protected $group       = 'GELITA';
     protected $name        = 'gelita:story:update';
     protected $description = 'Menyinkronkan narasi dan dialog (tabel dialogues) dengan naskah cerita terbaru.';
-    protected $usage       = 'gelita:story:update [--force] [--dry-run]';
+    protected $usage       = 'gelita:story:update [--force] [--dry-run] [--lepas-audio-beda]';
     protected $options     = [
-        '--force'   => 'Timpa juga baris yang teksnya sudah disunting admin',
-        '--dry-run' => 'Tampilkan yang akan berubah tanpa menulis ke database',
+        '--force'            => 'Timpa juga baris yang teksnya sudah disunting admin',
+        '--dry-run'          => 'Tampilkan yang akan berubah tanpa menulis ke database',
+        '--lepas-audio-beda' => 'Lepas tautan audio baris yang transkrip rekamannya tidak sama lagi dengan teksnya',
     ];
 
     public function run(array $params)
@@ -35,9 +38,12 @@ class StoryUpdate extends BaseCommand
 
         $force  = $this->flag('force', $params);
         $dryRun = $this->flag('dry-run', $params);
+        $detach = $this->flag('lepas-audio-beda', $params);
 
         try {
-            $report = (new StorySync())->run($force, $dryRun);
+            $sync     = new StorySync();
+            $report   = $sync->run($force, $dryRun);
+            $released = $detach ? $sync->releaseStaleAudio($dryRun) : [];
         } catch (\Throwable $e) {
             CLI::error('Gagal memperbarui cerita, tidak ada yang diubah: ' . $e->getMessage());
 
@@ -68,6 +74,14 @@ class StoryUpdate extends BaseCommand
             }
         }
 
+        if ($released !== []) {
+            CLI::write('Tautan audio dilepas (transkrip rekaman berbeda dari teks; tampil sebagai teks sampai rekaman baru disetujui):');
+
+            foreach ($released as $label) {
+                CLI::write('  - ' . $label);
+            }
+        }
+
         CLI::write(sprintf(
             'Cerita: %d disisipkan, %d diperbarui, %d dilewati, %d dinonaktifkan, %d sudah sesuai.',
             count($report['inserted']),
@@ -77,7 +91,11 @@ class StoryUpdate extends BaseCommand
             count($report['unchanged']),
         ), 'green');
 
-        if (! $dryRun && ($report['inserted'] !== [] || $report['updated'] !== [] || $report['deactivated'] !== [])) {
+        if ($detach) {
+            CLI::write(sprintf('Audio: %d tautan dilepas.', count($released)), 'green');
+        }
+
+        if (! $dryRun && ($report['inserted'] !== [] || $report['updated'] !== [] || $report['deactivated'] !== [] || $released !== [])) {
             service('contentRepository')->flush();
 
             model(AuditLogModel::class)->record('content_update', [
@@ -91,7 +109,7 @@ class StoryUpdate extends BaseCommand
                     'updated'     => count($report['updated']),
                     'skipped'     => count($report['skipped']),
                     'deactivated' => count($report['deactivated']),
-                ],
+                ] + ($detach ? ['audio_released' => $released] : []),
             ]);
         }
 
