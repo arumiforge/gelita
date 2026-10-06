@@ -1536,7 +1536,7 @@ Sumber: `docs/naskah-cerita.md` §Konvensi dan `docs/audio.md` §Spesifikasi.
   Puncak sejati ≤ −1 dBTP.
 - **Hening 0,3 detik** di awal dan akhir. Suara saja, tanpa musik atau efek.
 - **Transkrip** = teks baris persis. Teks tampil di layar, dan layar maju otomatis 1,2 detik setelah audio selesai.
-- **Durasi acuan:** durasi rekaman bawaan dari `tools/audio/qa-narasi.json` (kolom di §14.6). Rekaman baru sebaiknya dalam ±15%. Total ±18,4 menit (ID) dan ±13,8 menit (EN).
+- **Durasi acuan:** durasi rekaman bawaan dari `tools/audio/qa-narasi.json` (kolom di §14.6). Rekaman baru sebaiknya dalam ±15%. Total ±19,5 menit (ID) dan ±14,5 menit (EN).
 
 ### 14.2 Pemeran suara (profil)
 

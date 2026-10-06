@@ -102,10 +102,12 @@ Setiap baris dipilih dari beberapa kandidat sintesis: Indonesia 3–5 kandidat, 
 
 | Bahasa | Median CER | Rata-rata CER | Median CER per tokoh | Baris dengan CER ≤ 10% | Durasi total |
 |---|---|---|---|---|---|
-| Indonesia | 5,9% | 6,4% | Narator 5,9% · Jaka 5,8% · Mbah Kedu 6,0% | 81/96 | 18,4 menit |
-| Inggris | 3,8% | 4,4% | Narator 2,3% · Jaka 5,7% · Mbah Kedu 2,8% | 91/96 | 13,8 menit |
+| Indonesia | 6,0% | 6,3% | Narator 6,2% · Jaka 6,0% · Mbah Kedu 5,9% | 85/100 | 19,5 menit |
+| Inggris | 3,7% | 4,1% | Narator 2,3% · Jaka 5,7% · Mbah Kedu 2,2% | 95/100 | 14,5 menit |
 
 Hasil per baris, termasuk transkrip Whisper, ada di [`tools/audio/qa-narasi.json`](../tools/audio/qa-narasi.json).
+
+Perombakan kelas 5 (Oktober 2026) membangkitkan ulang 23 baris per bahasa: 11 baris naskah yang jumlah serpihannya berubah dan 12 petunjuk Cari Objek (`tmg-4`, `mgl-4`, `wnb-4`). Setiap baris dipilih dari 3 kandidat (6 untuk `tuntas-magelang-03` dan `petunjuk-tmg-4-04` EN). Untuk ke-23 baris itu, angka di `qa-narasi.json` berasal dari kandidat terpilih sebelum dikodekan ke MP3, bukan dari transkripsi ulang rekaman final. Rekaman lama `petunjuk-tmg-4-05…08` dihapus.
 
 **Tempo.** Narasi Indonesia sempat dipercepat 3–8% agar lebih lincah: Narator 0,96, Jaka 0,92, Mbah Kedu 0,97. Uji A/B dengan Whisper pada 96 baris yang sama, dengan pengolahan lain yang identik, menunjukkan percepatan itu menurunkan kejelasan:
 
@@ -125,7 +127,7 @@ CER di sini lebih tinggi daripada salah dengar yang sebenarnya:
 QA otomatis tidak menggantikan mendengarkan. Setujui narasi di **Konten → Narasi** setelah didengarkan. Baris dengan CER tertinggi layak didengarkan lebih dulu:
 
 - Indonesia: `dialog-wonosobo-10`, `dialog-temanggung-07`, `tuntas-magelang-02`.
-- Inggris: `dialog-wonosobo-10`, `dialog-magelang-07`, `petunjuk-tmg-4-08` (*rigen*).
+- Inggris: `dialog-wonosobo-10`, `dialog-magelang-07`, `tuntas-magelang-03` (Whisper mendengar *Eight shards* sebagai "HRs" di keenam kandidat).
 
 ### Memasang di server
 

@@ -313,11 +313,12 @@ final class StoryUpdateCommandTest extends CIUnitTestCase
         $row = $this->row(null, 'intro', 4);
         $old = (require APPPATH . 'Database/Seeds/data/story-legacy.php')['lima_belas']['_|intro|4'];
 
-        // Rekaman lama (transkrip 15 serpihan) untuk baris yang teksnya sudah baru; intro #5 rekamannya sesuai
+        // Rekaman lama (transkrip 15 serpihan) untuk baris yang teksnya sudah baru; intro #5 rekamannya sesuai.
+        // Kolom audio dialogues merujuk audio_assets.id; media_asset_id sengaja dibuat berbeda (dan menyilang).
         $this->sqlite->table('audio_assets')->insertBatch([
-            ['media_asset_id' => 41, 'locale' => 'id', 'transcript' => $old[0]],
-            ['media_asset_id' => 42, 'locale' => 'en', 'transcript' => $row['text_en'] . "\r\n"],
-            ['media_asset_id' => 43, 'locale' => 'id', 'transcript' => $this->row(null, 'intro', 5)['text_id']],
+            ['id' => 41, 'media_asset_id' => 141, 'locale' => 'id', 'transcript' => $old[0]],
+            ['id' => 42, 'media_asset_id' => 142, 'locale' => 'en', 'transcript' => $row['text_en'] . "\r\n"],
+            ['id' => 43, 'media_asset_id' => 42, 'locale' => 'id', 'transcript' => $this->row(null, 'intro', 5)['text_id']],
         ]);
         $this->sqlite->table('dialogues')->where('id', $row['id'])->update(['audio_id_asset_id' => 41, 'audio_en_asset_id' => 42]);
         $this->sqlite->table('dialogues')->where('id', $this->row(null, 'intro', 5)['id'])->update(['audio_id_asset_id' => 43]);

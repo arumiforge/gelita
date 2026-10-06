@@ -177,14 +177,15 @@ final class StorySync
             $changes = [];
 
             foreach (['id', 'en'] as $locale) {
-                $mediaId = $row['audio_' . $locale . '_asset_id'] ?? null;
+                // FK ke audio_assets.id (bukan media_assets)
+                $audioId = $row['audio_' . $locale . '_asset_id'] ?? null;
 
-                if ($mediaId === null) {
+                if ($audioId === null) {
                     continue;
                 }
 
                 $transcript = $this->db->table('audio_assets')->select('transcript')
-                    ->where('media_asset_id', (int) $mediaId)->get()->getRow('transcript');
+                    ->where('id', (int) $audioId)->get()->getRow('transcript');
 
                 if ($transcript === null || $this->normalize((string) $transcript) === $this->normalize((string) ($row['text_' . $locale] ?? ''))) {
                     continue;
