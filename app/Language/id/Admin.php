@@ -277,6 +277,7 @@ return [
         'release_create'               => 'Membuat versi permainan',
         'release_activate'             => 'Mengaktifkan versi permainan',
         'system_reset'                 => 'Reset total (gelita:reset)',
+        'media_mockups'                => 'Membuat gambar contoh (gelita:mockups)',
         'school_merge'                 => 'Menggabungkan nama sekolah',
         'school_verify'                => 'Mengesahkan sekolah baru',
     ],

@@ -7,13 +7,13 @@ Keputusan dan penyimpangan dari ketiga dokumen perombakan, beserta alasannya dan
 | Dokumen | Status |
 |---|---|
 | Dok 1 | Selesai, di `main` |
-| Dok 2 | Sebagian, di `main` (445 uji hijau): §2, §3–§4, §5.2 (server), §7, §9, narasi petunjuk per node `cari` |
+| Dok 2 | Sebagian, di `main` (445 uji hijau): §2, §3–§4, §5.2 (server), §7, §9, narasi petunjuk per node `cari`. §10 mockup di branch `dok2-mockup` (453 uji hijau), lihat bagian "Dok 2 — gambar mockup" |
 | Dok 3 | Belum dimulai |
 
 Sisa Dok 2:
 
 1. **§5.3 klien + §12 teks UI** — `challenge.js` belum memakai `tries_left`/`completed`/`redirect`/`clue_closed` dari server; `FINISH_OFFER_AFTER` dan tombol "Selesaikan dengan jawaban ini" masih ada; penanda 3 bulatan, modal kesempatan, animasi gambar utuh Susun Gambar belum ada. Kunci `Js.php` baru (`triesLeft`, `triesLast`, `triesExhausted*`, `clueFailed*`, `clueTriesLeft`) belum ada; `finishAnyway`, `engine_pilihan`, dan kunci lama §12 belum dihapus; `cardN` masih "Kartu {0}"; label event `Admin.php` §12.3 belum persis.
-2. **§10 mockup** — `MockupGenerator`, `gelita:mockups`, `MockupGeneratorTest` belum ada.
+2. ~~**§10 mockup**~~ — selesai di branch `dok2-mockup` (PR ke `main`).
 3. **§11 naskah cerita** — 11 baris masih "lima belas"; `--lepas-audio-beda` belum ada; rekaman petunjuk `mgl-4`/`wnb-4` belum ada, `petunjuk-tmg-4-05…08` belum dihapus.
 4. Bagian "Dok 2" catatan ini dan uji manual §13.2.
 
@@ -47,7 +47,7 @@ Dikerjakan di branch `perombakan-kelas5` (dari `main`), sesuai `01_FONDASI_DATA_
 6. Tambahan di luar §7: command lebih dulu memeriksa koneksi database. Sandi atau DSN yang salah kini menghasilkan pesan yang jelas dengan kode 1, bukan galat mysqli yang membingungkan. `db_sync_timezone()` dipanggil seperti command lain yang menulis.
 7. `SystemResetService` menerima folder ekspor lewat konstruktor (bawaan `writable/exports`). Tujuannya agar uji tidak menghapus berkas ekspor sungguhan.
 8. Workbook bawaan: `docs/bank-soal/gelita-bank-soal-kelas5.xlsx` (`SystemResetService::DEFAULT_BANK`). Bila belum ada, `development` menjalankan `SampleItemSeeder`, sedangkan lingkungan lain hanya memberi peringatan dan 12 tantangan tetap kosong.
-9. Gambar mockup memakai kait `App\Libraries\MockupGenerator::generateMissing()` (Dok 2 §10). Selama kelas itu belum ada, ringkasan menulis "belum tersedia".
+9. Gambar mockup memakai kait `App\Libraries\MockupGenerator::generateMissing()` (Dok 2 §10). Selama kelas itu belum ada, ringkasan menulis "belum tersedia". *(Dok 2: kelas sudah ada, lihat bagian "Dok 2 — gambar mockup".)*
 10. `--hapus-guru`: FK `audio_assets.approved_by` adalah `SET NULL`, jadi rekaman yang pernah disetujui akun guru kehilangan nama penyetujunya. Biasanya rekaman disetujui admin, sehingga dampaknya kecil.
 
 **§8 Seeder**
@@ -154,3 +154,56 @@ Dikerjakan di branch `perombakan-kelas5` (dari `main`), sesuai `01_FONDASI_DATA_
 - `<body data-screen-code>` sudah tersedia untuk kebutuhan tampilan per layar.
 - README dan `docs/01_DATABASE.md` baru diberi catatan ringkas "Perombakan kelas 5 — Dokumen 1". Bagian lainnya masih menggambarkan keadaan lama (lima tantangan, chart, persetujuan wali) dan ditulis ulang di §11.
 - Prosedur rilis (§13): `gelita:reset` dijalankan dengan DSN akun `gelita_migrate` tanpa port. Bila kode berikutnya bukan `GLT-000001`, reset jatuh ke DELETE; ulangi dengan akun migrasi.
+
+---
+
+## Dok 2 — gambar mockup
+
+Dikerjakan di branch `dok2-mockup` (dari `main`), sesuai `02_TANTANGAN_DAN_BANK_SOAL.md` §10. Bersamaan dengan sesi §5.3/§12 di `dok2-klien-kesempatan`; `challenge.js`, `engines/*`, dan tabel teks §12 tidak disentuh. Suite: **453 test hijau** (2 dilewati, sama dengan `main`).
+
+### Komponen
+
+- `App\Libraries\MockupGenerator`:
+  - `slots(?node)`: slot gambar yang **dipakai node/soal aktif** (`challenge_nodes.scene_media_id`, `challenge_items.media_asset_id`), jenisnya dari pola kunci §10.3 (`kindFor()`), berikut wilayah, label, keterangan, judul variasi, dan posisi benda (adegan). Bank kelas 5 → tepat **45 slot**: 9 Susun Gambar, 3 pernyataan, 3 adegan, 30 benda.
+  - `run($paksa, $dryRun, $node)` dan `generateMissing()` (kait `gelita:reset`).
+  - `svg($slot)`: SVG per jenis.
+  - Satu baris audit `media_mockups` per jalankan yang menulis berkas. Label audit ditambahkan di `Language/id/Admin.php` (`audit.media_mockups`).
+- `App\Commands\Mockups`: `php spark gelita:mockups [--dry-run] [--paksa] [--node=tmg-4]`. Tabel per slot (dibuat / dibuat ulang / mockup sudah ada / gambar asli, dipertahankan / GAGAL), kode keluar 1 bila ada yang gagal atau `--node` tidak dikenal.
+- `SystemResetService::generateMockups()` kini memanggil `generateMissing()`. Ringkasan reset: "Gambar mockup: N gambar contoh dibuat, M sudah ada, K gambar asli dipertahankan". Kegagalan masuk daftar peringatan reset. Konstruktor menerima folder mockup (argumen ketiga) agar uji tidak menulis ke folder unggahan sungguhan.
+- `MediaAssetModel::placeholderCount()`: jumlah gambar contoh aktif. **Untuk Dok 3 §8** (peringatan dasbor "Masih ada N gambar contoh" dan centang konfirmasi status studi). Daftar yang masih dipakai konten tersedia di `ContentVerifier::placeholdersInUse()`.
+- Tidak ada migration baru (`is_placeholder`, `label`, `description` sudah ada sejak `004600`).
+
+### Keputusan dan penyimpangan
+
+1. **Status slot.** "Gambar asli" = baris `is_placeholder = 0` yang **berkasnya ada**, aktif atau dinonaktifkan admin. Keduanya tidak pernah ditimpa, juga dengan `--paksa`. Slot impor (berkas belum ada) dan mockup yang berkasnya hilang dianggap kosong dan dibuat. Mockup utuh hanya dibuat ulang dengan `--paksa`. Alasannya, §10.2 menulis "berkas aktif", tetapi gambar asli yang sedang dinonaktifkan admin pun tidak boleh hilang (MediaStore menghapus berkas lama berekstensi lain saat mendaftarkan berkas baru).
+2. **`MediaStore` menandai setiap simpanan sebagai gambar asli** (`is_placeholder = 0`, kredit mockup dibuang). Sebelumnya unggahan admin yang menggantikan mockup tetap tercatat `is_placeholder = 1`, sehingga `--siap-penelitian` terus gagal. `MockupGenerator` mendaftarkan berkasnya lewat `registerFile()` lalu menandai ulang baris itu (`is_placeholder = 1`, `is_active = 1`, `credit`, `width_px`/`height_px` dari ukuran slot karena `getimagesize()` tidak membaca SVG).
+3. **Keterangan gambar pernyataan tanpa catatan dalam kurung.** `media.note` `tmg-3-b03` berbunyi "arca Buddha duduk dari batu (sengaja tidak sesuai bacaan)"; bila tertulis di mockup, kunci pernyataannya bocor ke siswa. Bagian dalam kurung dibuang dari baris keterangan mockup (deskripsi di `media_assets` tetap utuh untuk admin).
+4. **Adegan:** alas digambar di bawah **setiap posisi unik** dari semua soal aktif node itu (tmg-4: 8, mgl-4: 10, wnb-4: 12). Kotak benda dihitung seperti engine: `x, y, w` % dengan tinggi `w × 16/9` % (persegi dalam piksel), jadi permukaan alas ada di `y% × 720 + w% × 1280`. Spanduk memakai judul variasi pertama yang terisi (`config_json.variants.*.title_id`).
+5. **Benda Cari Objek:** ikon dari `crc32(asset_key) % 6` (segitiga, persegi, belah ketupat, segi enam, bintang, cincin) dalam warna aksen wilayah. Target dan pengecoh memakai kerangka SVG yang sama; `MockupGeneratorTest` membandingkan kerangkanya tanpa ikon dan teks. Pita "GAMBAR CONTOH" pada benda berupa label kecil di tepi bawah ubin, bukan pita diagonal, agar latar tetap transparan dan bentuknya bulat.
+6. **Susun Gambar:** teks hanya label, pita, dan kunci aset (tidak ada angka urutan). Kunci aset di tepi bawah memang mengandung angka (`tmg-1-01`), tetapi tidak tersusun sebagai nomor keping.
+7. **`--node=tmg-4`:** parser CLI CodeIgniter tidak memecah `=`, jadi bentuk ini terbaca sebagai opsi bernama `node=tmg-4`. `Mockups::option()` menerima `--node tmg-4` maupun `--node=tmg-4`. **Masalah yang sama ada di `gelita:reset --bank=JALUR`**: `bankPath()` hanya membaca `--bank JALUR`, sehingga `--bank=JALUR` diam-diam memakai workbook bawaan. Ini belum diperbaiki karena di luar §10.
+8. `DatabaseSeeder` (development) tidak membuat mockup; pesannya sudah menyarankan `php spark gelita:mockups`. `gelita:reset` selalu membuatnya kecuali `--tanpa-mockup`.
+9. Fixture `tests/_support/Database/NarrationTables.php` tertinggal dari `004600` (tanpa `label`, `description`, `is_placeholder`). Kolom itu ditambahkan karena `MediaStore` kini selalu menulis `is_placeholder`.
+
+### Pengujian yang dijalankan
+
+- **Otomatis:** 453 test hijau.
+  - `MockupGeneratorTest` (baru, 7 test, di atas dunia kelas 5 `GradeFiveWorld`):
+    - 45 slot §10.4 per jenis, `--node`;
+    - SVG sah lewat DOMDocument, `width`/`height`/`viewBox` = ukuran wajib slot di `Config\Gelita::$assetSizes`, huruf, pita, label;
+    - baris `is_placeholder = 1`, `is_active = 1`, kredit, MIME SVG;
+    - alas adegan per posisi; tanpa angka urutan; benda transparan dan target = pengecoh; palet wilayah; keterangan tanpa catatan dalam kurung;
+    - gambar asli lewat `MediaStore::storeCopy()` → `is_placeholder = 0`, mockup lama terhapus, lalu tidak ditimpa `run()` maupun `run(paksa)`, juga saat dinonaktifkan;
+    - `--dry-run` tidak menulis; berkas mockup yang hilang dibuat ulang;
+    - `--siap-penelitian` galat (45 gambar), verifikasi biasa hanya peringatan;
+    - command (`--dry-run`, `--node tmg-4`, `--node=wnb-4`, kode tidak dikenal).
+  - `SystemResetTest::testResetFillsTheFortyFiveSlotsWithMockups` (baru): reset mengisi 45 slot. Reset kedua sesudah satu slot diganti gambar asli → 0 dibuat, 44 sudah ada, 1 dipertahankan.
+- **MariaDB 10.11.14** (lokal di container, database baru: `migrate --all`, `db:seed DatabaseSeeder` development):
+  - `gelita:mockups --dry-run` → rencana 45 dibuat, folder belum dibuat, tidak ada baris yang berubah.
+  - `gelita:mockups` → 45 berkas di `public/assets/uploads/mockup/`, 45 baris `is_placeholder = 1`, aktif, berkredit.
+  - `--paksa` → 45 dibuat ulang.
+  - `challenge.tmg-4.scene` diganti PNG 1280×720 lewat `MediaStore::storeCopy()` (jalur unggahan panel) → `is_placeholder = 0`, kredit NULL, `mockup/challenge.tmg-4.scene.svg` terhapus. `gelita:mockups --paksa` → 44 dibuat ulang, 1 gambar asli dipertahankan, sha256 berkas dan baris tidak berubah. `--node=tmg-4 --dry-run` → 8 mockup sudah ada + 1 gambar asli.
+  - `gelita:content:verify --siap-penelitian` → kode keluar 1 ("Belum siap untuk pengambilan data penelitian"); tanpa opsi → kode 0.
+  - `gelita:reset --ya` → "0 gambar contoh dibuat, 44 sudah ada, 1 gambar asli dipertahankan". Folder mockup dihapus lalu reset lagi → "44 gambar contoh dibuat, 1 gambar asli dipertahankan", baris audit `media_mockups`.
+  - Rupa SVG diperiksa dengan Chromium headless: Susun Gambar ketiga wilayah, adegan tmg-4/wnb-4, benda, dan gambar pernyataan.
+- Belum dijalankan: permainan ujung ke ujung dengan mockup (§13.2 butir 2). Ini dilakukan bersama uji manual §5.3 setelah `dok2-klien-kesempatan` digabung.
