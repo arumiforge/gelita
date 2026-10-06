@@ -3,7 +3,7 @@
 Naskah lengkap seluruh narasi dan dialog permainan, dalam bahasa Indonesia dan Inggris. Naskah ini dipakai untuk dua hal:
 
 1. **Rekaman audio.** Setiap baris punya nama berkas audio sendiri, jadi pengisi suara cukup membaca dari atas ke bawah.
-2. **Isi tabel `dialogues`.** Tahap 2 (cerita pembuka) dan Tahap 3 (peta, kenali wilayah, dialog wilayah, wilayah tuntas, penutup) memindahkan teks di sini ke seeder dan perintah `gelita:story:update`. Bila teks perlu diubah, ubah dulu di berkas ini agar rekaman dan isi permainan tetap sama.
+2. **Isi tabel `dialogues`.** Teks di sini disalin persis ke `app/Database/Seeds/data/story.php` (`StoryDataTest` mencocokkan keduanya baris demi baris) dan dipasang saat instalasi oleh `ContentSeeder`. Sesudah instalasi, teks disunting lewat panel (editor dialog). Bila teks naskah perlu diubah, ubah dulu di berkas ini lalu di `data/story.php`, agar rekaman dan isi permainan tetap sama.
 
 ## Benang merah
 
@@ -31,7 +31,7 @@ Di teks Inggris, Jaka tetap memanggil "Mbah" agar nuansa lokalnya terjaga, semen
 
 ## Konvensi berkas audio
 
-Repositori sudah membawa **rekaman sintetis (TTS) bawaan** untuk ke-96 baris di kedua bahasa, dengan suara Narator, Jaka, dan Mbah Kedu yang diolah menurut arahan di atas. Asal-usul, pengolahan, dan lisensinya ada di [`docs/audio.md`](audio.md). Rekaman pengisi suara dapat menggantikannya kapan saja dengan konvensi di bawah ini. Rekaman pengganti otomatis tercatat sebagai rekaman sendiri, bukan TTS.
+Repositori sudah membawa **rekaman sintetis (TTS) bawaan** untuk ke-100 baris di kedua bahasa, dengan suara Narator, Jaka, dan Mbah Kedu yang diolah menurut arahan di atas. Asal-usul, pengolahan, dan lisensinya ada di [`docs/audio.md`](audio.md). Rekaman pengisi suara dapat menggantikannya kapan saja dengan konvensi di bawah ini. Rekaman pengganti otomatis tercatat sebagai rekaman sendiri, bukan TTS.
 
 - Folder: `public/assets/audio/narasi/id/` untuk bahasa Indonesia dan `public/assets/audio/narasi/en/` untuk bahasa Inggris.
 - Nama berkas mengikuti kode di setiap judul baris di bawah, ditambah `.mp3`, misalnya `narasi/id/dialog-magelang-09.mp3`.
@@ -50,10 +50,10 @@ Repositori sudah membawa **rekaman sintetis (TTS) bawaan** untuk ke-96 baris di 
 | `level_done` | `tuntas-{wilayah}-NN` | 12 | Saat wilayah tuntas |
 | `ending` | `penutup-NN` | 5 | Setelah seluruh wilayah tuntas |
 | **Total naskah** | | **88** | Durasi rekaman sekitar 12–14 menit per bahasa |
-| `hunt_clue` | `petunjuk-{node}-NN` | 8 | Petunjuk Mbah Kedu di arena `cari` (`tmg-4`), di samping teks petunjuk — teks dari bank soal, bukan naskah ini |
-| **Total rekaman** | | **96** | |
+| `hunt_clue` | `petunjuk-{node}-NN` | 12 | Petunjuk Mbah Kedu di Cari Objek (`tmg-4`, `mgl-4`, `wnb-4`, masing-masing 4), di samping teks petunjuk — teks dari bank soal, bukan naskah ini |
+| **Total rekaman** | | **100** | |
 
-Baris `petunjuk-*` **tidak ada di naskah ini**: teksnya berasal dari bank soal, yaitu kolom pertanyaan (`prompt_id` / `prompt_en`) butir `find_object` target di [`docs/bank-soal/data/temanggung.php`](bank-soal/data/temanggung.php) (node `tmg-4`). Dibacakan Mbah Kedu. `{node}` = kode tantangan (`tmg-4`); NN = urutan petunjuk target menurut urutan butir, dimulai 01 — untuk bank soal produksi `petunjuk-tmg-4-01` … `-08` sama dengan butir `tmg-4-01` … `tmg-4-08`. Ketiga objek jebakan (`tmg-4-09` … `-11`) tidak punya petunjuk dan tidak direkam. Teks terkini ada di daftar rekaman XLSX (kelompok "Petunjuk arena cari"), karena admin dapat menyuntingnya di bank soal.
+Baris `petunjuk-*` **tidak ada di naskah ini**: teksnya berasal dari bank soal, yaitu kolom pertanyaan (`prompt_id` / `prompt_en`) butir `find_object` target di [`docs/bank-soal/data/`](bank-soal/data/) (node `tmg-4`, `mgl-4`, `wnb-4`). Dibacakan Mbah Kedu. `{node}` = kode tantangan; NN = urutan petunjuk target menurut urutan butir, dimulai 01, sehingga `petunjuk-tmg-4-01` … `-04` sama dengan butir `tmg-4-a01` … `tmg-4-a04`. Benda pengecoh tidak punya petunjuk dan tidak direkam. Teks terkini ada di daftar rekaman XLSX (kelompok "Petunjuk Cari Objek"), karena admin dapat menyuntingnya di bank soal.
 
 ## Mengimpor dan menyetujui audio
 

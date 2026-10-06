@@ -132,13 +132,13 @@ QA otomatis tidak menggantikan mendengarkan. Setujui narasi di **Konten → Nara
 ### Memasang di server
 
 ```bash
-php spark gelita:narration:import --dry-run   # 96 baris per bahasa dikenali
+php spark gelita:narration:import --dry-run   # 100 baris per bahasa dikenali
 php spark gelita:narration:import             # audio draft, ditautkan ke naskah & petunjuk cari
 ```
 
 Lalu buka **Konten → Narasi**, dengarkan, dan tekan **Setujui semua narasi draft ID/EN**.
 
-Narasi petunjuk arena `cari` butuh bank soal produksi sudah diimpor (lihat [`08_DEPLOYMENT.md`](08_DEPLOYMENT.md)). Nomor `petunjuk-tmg-4-NN` mengikuti urutan target aktif. Di server pengembangan, butir contoh `tmg-4-91` dari `SampleItemSeeder` berada di urutan pertama dan menggeser nomor itu (dry-run melaporkan 97 baris). Nonaktifkan butir contoh `-91`/`-92` di editor butir sebelum mengimpor, seperti di server production.
+Narasi petunjuk Cari Objek butuh bank soal kelas 5 yang sudah diimpor saat instalasi (lihat [`08_DEPLOYMENT.md`](08_DEPLOYMENT.md)). Nomor `petunjuk-{node}-NN` mengikuti urutan target aktif tiap node `cari`.
 
 Berkas yang sha256-nya tercantum di `produksi.json` tercatat `production_method = tts`, dan `voice_profile` menyebut model, penutur, dan pengolahannya. Peneliti dapat membedakan narasi sintetis dari rekaman pengisi suara di tabel `audio_assets`.
 
