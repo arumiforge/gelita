@@ -9,7 +9,11 @@
  * masih berisi teks seeder lama (aman diganti naskah baru) dari baris yang
  * sudah disunting admin (dilewati, kecuali `--force`).
  *
- * Kunci: "{level|_}|{context}|{sequence}" → [text_id, text_en].
+ * Kunci: "{level|_}|{context}|{sequence}" → [text_id, text_en], atau daftar
+ * pasangan bila satu posisi punya beberapa versi lama.
+ *
+ * Bagian akhir berisi naskah kelas 4 ("lima belas serpihan", lima tantangan
+ * per wilayah) yang diganti perombakan kelas 5 (Dok 2 §11.1).
  *
  * @return array<string, array{0: string, 1: string}>
  */
@@ -27,8 +31,15 @@ return [
         'I will find them, Mbah! I will start in Temanggung, then go to Magelang, and finally to Wonosobo.',
     ],
     '_|intro|4' => [
-        'Bawa lenteramu. Baca dengan teliti, pikirkan baik-baik, lalu putuskan dengan bijak. Ayo berangkat!',
-        'Bring your lantern. Read carefully, think it through, then decide wisely. Let us set off!',
+        [
+            'Bawa lenteramu. Baca dengan teliti, pikirkan baik-baik, lalu putuskan dengan bijak. Ayo berangkat!',
+            'Bring your lantern. Read carefully, think it through, then decide wisely. Let us set off!',
+        ],
+        // naskah kelas 4 (intro-04)
+        [
+            'Pada suatu malam, Kabut Lupa membelit Lentera Kedu. Kacanya retak, apinya bergetar, lalu cahayanya pecah! Lima belas Serpihan Cahaya melesat ke langit dan jatuh di Temanggung, Magelang, dan Wonosobo.',
+            'One night, the Mist of Forgetting coiled around the Lantern of Kedu. Its glass cracked, its flame trembled, and then its light shattered! Fifteen Shards of Light shot into the sky and fell across Temanggung, Magelang, and Wonosobo.',
+        ],
     ],
 
     'temanggung|level_open|1' => [
@@ -44,8 +55,15 @@ return [
         'Well done! The Shards of Light of Temanggung have been gathered.',
     ],
     'temanggung|level_done|2' => [
-        'Lenteraku mulai menyala. Sekarang ke Magelang!',
-        'My lantern is starting to glow. Now on to Magelang!',
+        [
+            'Lenteraku mulai menyala. Sekarang ke Magelang!',
+            'My lantern is starting to glow. Now on to Magelang!',
+        ],
+        // naskah kelas 4 (tuntas-temanggung-02)
+        [
+            'Lima serpihan sudah kembali ke lentera! Rasanya hangat sekali, Mbah.',
+            'Five shards are back in the lantern! It feels so warm, Mbah.',
+        ],
     ],
 
     'magelang|level_open|1' => [
@@ -83,11 +101,60 @@ return [
     ],
 
     '_|ending|1' => [
-        'Lentera Jaka kembali menyala terang. Cahayanya menerangi Temanggung, Magelang, dan Wonosobo.',
-        "Jaka's lantern shines brightly again. Its light reaches Temanggung, Magelang, and Wonosobo.",
+        [
+            'Lentera Jaka kembali menyala terang. Cahayanya menerangi Temanggung, Magelang, dan Wonosobo.',
+            "Jaka's lantern shines brightly again. Its light reaches Temanggung, Magelang, and Wonosobo.",
+        ],
+        // naskah kelas 4 (penutup-01)
+        [
+            'Di puncak bukit, Jaka mengangkat lenteranya tinggi-tinggi. Kelima belas serpihan menyatu, dan cahaya keemasan memancar ke seluruh Dataran Kedu.',
+            'On top of the hill, Jaka lifted his lantern high. All fifteen shards joined together, and a golden light poured out across the whole Kedu Plain.',
+        ],
     ],
     '_|ending|2' => [
         'Ingat, Le: baca dengan teliti, periksa sumbernya, dan jagalah warisan budaya Kedu.',
         'Remember, my boy: read carefully, check the source, and look after the cultural heritage of Kedu.',
+    ],
+
+    // Naskah kelas 4 yang diganti perombakan kelas 5 (Dok 2 §11.1)
+    // intro-06
+    '_|intro|6' => [
+        'Biar aku yang pergi, Mbah! Aku akan mencari kelima belas serpihan itu satu per satu, sampai Lentera Kedu menyala lagi. Aku janji!',
+        'Let me go, Mbah! I will find all fifteen shards, one by one, until the Lantern of Kedu shines again. I promise!',
+    ],
+    // intro-07
+    '_|intro|7' => [
+        'Setiap wilayah menyimpan lima serpihan, dan setiap serpihan dijaga oleh satu tantangan. Selesaikan tantangannya untuk mendapatkan serpihan dan bintang. Lihat lentera di pojok kiri atas: lentera itu makin terang setiap kali serpihan kembali.',
+        'Each region holds five shards, and each shard is guarded by a challenge. Complete the challenge to win its shard and stars. Watch the lantern in the top-left corner: it grows brighter every time a shard returns.',
+    ],
+    // peta-02
+    '_|map_intro|2' => [
+        'Aku harus menjelajahi tiga wilayah untuk memulihkannya: Temanggung, lalu Magelang, dan terakhir Wonosobo. Di setiap wilayah, lima Serpihan Cahaya sedang menunggu.',
+        'I must explore three regions to bring it back: Temanggung, then Magelang, and finally Wonosobo. In each region, five Shards of Light are waiting.',
+    ],
+    // dialog-temanggung-14
+    'temanggung|level_open|14' => [
+        'Lima serpihan menunggumu di Temanggung. Temukan informasi yang tertulis jelas, maka kabut ini akan mundur dengan sendirinya.',
+        'Five shards are waiting for you in Temanggung. Find the information that is clearly written, and this mist will retreat on its own.',
+    ],
+    // dialog-magelang-15
+    'magelang|level_open|15' => [
+        'Ingat pesan Mbah: temukan ide pokoknya, susun urutannya, dan pisahkan fakta dari pendapat. Lima serpihan Magelang menunggumu.',
+        'Remember my advice: find the main idea, put things in order, and separate facts from opinions. Five shards of Magelang are waiting for you.',
+    ],
+    // dialog-wonosobo-15
+    'wonosobo|level_open|15' => [
+        'Itu baru anak pemberani. Pergilah, Le. Lima serpihan terakhir menunggu di balik kabut.',
+        'Now that\'s a brave child. Go, my boy. The last five shards are waiting behind the mist.',
+    ],
+    // tuntas-magelang-03
+    'magelang|level_done|3' => [
+        'Sepuluh serpihan sudah kembali, dan tenaga Mbah ikut pulih. Pustaka Magelang kini terbuka untukmu.',
+        'Ten shards have returned, and my strength is coming back. The Magelang Library is now open to you.',
+    ],
+    // tuntas-wonosobo-03
+    'wonosobo|level_done|3' => [
+        'Lima belas serpihan... semuanya sudah kembali!',
+        'Fifteen shards... every single one is back!',
     ],
 ];

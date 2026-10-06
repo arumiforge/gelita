@@ -122,6 +122,27 @@ final class StoryDataTest extends CIUnitTestCase
         $this->assertSame(array_keys($config->characterAnimations), array_keys($defaults), 'cadangan seeder sama dengan Config');
     }
 
+    /** Dok 2 §11.1: 12 serpihan, 4 per wilayah — tidak ada lagi bilangan naskah kelas 4. */
+    public function testStoryCountsTwelveShards(): void
+    {
+        $byCode = [];
+
+        foreach (StorySync::storyData() as $line) {
+            $byCode[$line['code']] = $line;
+            $this->assertDoesNotMatchRegularExpression('/lima belas|lima serpihan|sepuluh serpihan/i', $line['text_id'], $line['code']);
+            $this->assertDoesNotMatchRegularExpression('/fifteen|five shards|ten shards/i', $line['text_en'], $line['code']);
+        }
+
+        $this->assertStringContainsString('Dua belas Serpihan Cahaya', $byCode['intro-04']['text_id']);
+        $this->assertStringContainsString('Twelve Shards of Light', $byCode['intro-04']['text_en']);
+        $this->assertStringStartsWith('Delapan serpihan', $byCode['tuntas-magelang-03']['text_id']);
+        $this->assertStringStartsWith('Twelve shards...', $byCode['tuntas-wonosobo-03']['text_en']);
+
+        $script = (string) file_get_contents(ROOTPATH . 'docs/naskah-cerita.md');
+        $this->assertStringContainsString('**12 Serpihan Cahaya**', $script);
+        $this->assertStringContainsString('tantangan keempat sebuah wilayah', $script);
+    }
+
     public function testLegacyKeysPointAtStoryPositions(): void
     {
         $legacy    = require APPPATH . 'Database/Seeds/data/story-legacy.php';
@@ -131,7 +152,8 @@ final class StoryDataTest extends CIUnitTestCase
             $positions[($line['level'] ?? '_') . '|' . $line['context'] . '|' . $line['sequence']] = true;
         }
 
-        $this->assertCount(18, $legacy);
+        // 18 posisi teks seeder lama + 8 posisi baru naskah kelas 4 (Dok 2 §11.1; 3 posisi bersama)
+        $this->assertCount(26, $legacy);
 
         foreach (array_keys($legacy) as $key) {
             $this->assertArrayHasKey($key, $positions, $key);

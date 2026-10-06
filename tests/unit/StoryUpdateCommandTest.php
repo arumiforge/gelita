@@ -23,7 +23,7 @@ final class StoryUpdateCommandTest extends CIUnitTestCase
 
     private BaseConnection $sqlite;
 
-    /** @var array<string, array{0: string, 1: string}> */
+    /** @var array<string, array{0: string, 1: string}|list<array{0: string, 1: string}>> */
     private array $legacy;
 
     protected function setUp(): void
@@ -35,9 +35,14 @@ final class StoryUpdateCommandTest extends CIUnitTestCase
 
         $forge = Database::forge('tests');
 
-        foreach (['dialogues', 'levels', 'audit_logs'] as $table) {
+        foreach (['dialogues', 'levels', 'audit_logs', 'audio_assets'] as $table) {
             $forge->dropTable($table, true);
         }
+
+        $forge->addField([
+            'id'         => ['type' => 'INTEGER', 'auto_increment' => true],
+            'transcript' => ['type' => 'TEXT'],
+        ])->addPrimaryKey('id')->createTable('audio_assets');
 
         $forge->addField([
             'id'   => ['type' => 'INTEGER', 'auto_increment' => true],
@@ -82,7 +87,7 @@ final class StoryUpdateCommandTest extends CIUnitTestCase
     {
         $forge = Database::forge('tests');
 
-        foreach (['dialogues', 'levels', 'audit_logs'] as $table) {
+        foreach (['dialogues', 'levels', 'audit_logs', 'audio_assets'] as $table) {
             $forge->dropTable($table, true);
         }
 
@@ -275,14 +280,117 @@ final class StoryUpdateCommandTest extends CIUnitTestCase
         $this->assertSame(0, (int) $row['is_active'], 'keputusan admin menyembunyikan slide dihormati');
     }
 
+    /**
+     * Dok 2 §11.1: baris yang masih berisi naskah kelas 4 ("lima belas
+     * serpihan") terbaca sebagai teks bawaan lama dan diperbarui, juga pada
+     * posisi yang sudah punya teks seeder lama (`_|intro|4`, `_|ending|1`).
+     */
+    public function testGradeFourStoryLinesAreUpdated(): void
+    {
+        command('gelita:story:update');
+
+        $positions = $this->gradeFourPositions();
+        $this->assertCount(11, $positions);
+
+        foreach ($positions as $key => [$textId, $textEn]) {
+            [$level, $context, $sequence] = explode('|', $key);
+            $this->sqlite->table('dialogues')
+                ->where(['level_id' => $level === '_' ? null : $this->levelId($level), 'context_code' => $context, 'sequence' => (int) $sequence])
+                ->update(['text_id' => $textId, 'text_en' => $textEn]);
+        }
+
+        $this->resetStreamFilterBuffer();
+        command('gelita:story:update');
+
+        $this->assertStringContainsString('Cerita: 0 disisipkan, 11 diperbarui, 0 dilewati', $this->getStreamFilterBuffer());
+        $this->assertStringStartsWith('Pada suatu malam', $this->row(null, 'intro', 4)['text_id']);
+        $this->assertStringContainsString('Dua belas Serpihan Cahaya', $this->row(null, 'intro', 4)['text_id']);
+        $this->assertStringContainsString('Kedua belas serpihan', $this->row(null, 'ending', 1)['text_id']);
+        $this->assertSame('Eight shards have returned, and my strength is coming back. The Magelang Library is now open to you.',
+            $this->row($this->levelId('magelang'), 'level_done', 3)['text_en']);
+    }
+
+    /**
+     * `--lepas-audio-beda` (Dok 2 §11.2): tautan rekaman yang transkripnya
+     * tidak sama dengan teks barisnya dilepas; rekaman yang cocok tetap.
+     * Tanpa opsi itu kolom audio tidak disentuh.
+     */
+    public function testDetachStaleAudioOnlyWithTheOption(): void
+    {
+        command('gelita:story:update');
+
+        $intro4 = $this->row(null, 'intro', 4);
+        $intro5 = $this->row(null, 'intro', 5);
+        [$oldId, $oldEn] = $this->gradeFourPositions()['_|intro|4'];
+
+        $this->sqlite->table('audio_assets')->insertBatch([
+            ['transcript' => $oldId],                 // 1: naskah kelas 4
+            ['transcript' => $oldEn],                 // 2
+            ['transcript' => $intro5['text_id'] . "\r\n"], // 3: cocok (beda CRLF saja)
+            ['transcript' => $intro5['text_en']],     // 4
+        ]);
+        $this->sqlite->table('dialogues')->where('id', $intro4['id'])->update(['audio_id_asset_id' => 1, 'audio_en_asset_id' => 2]);
+        $this->sqlite->table('dialogues')->where('id', $intro5['id'])->update(['audio_id_asset_id' => 3, 'audio_en_asset_id' => 4]);
+
+        command('gelita:story:update');
+        $this->assertSame(1, (int) $this->row(null, 'intro', 4)['audio_id_asset_id'], 'tanpa opsi: audio tidak disentuh');
+
+        $this->resetStreamFilterBuffer();
+        command('gelita:story:update --lepas-audio-beda --dry-run');
+        $this->assertStringContainsString('intro #4 (id)', $this->getStreamFilterBuffer());
+        $this->assertSame(1, (int) $this->row(null, 'intro', 4)['audio_id_asset_id'], '--dry-run tidak menulis');
+
+        $this->resetStreamFilterBuffer();
+        command('gelita:story:update --lepas-audio-beda');
+
+        $output = $this->getStreamFilterBuffer();
+        $this->assertStringContainsString('Tautan rekaman dilepas', $output);
+        $this->assertStringContainsString('intro #4 (id)', $output);
+        $this->assertStringContainsString('intro #4 (en)', $output);
+        $this->assertStringNotContainsString('intro #5', $output);
+
+        $this->assertNull($this->row(null, 'intro', 4)['audio_id_asset_id']);
+        $this->assertNull($this->row(null, 'intro', 4)['audio_en_asset_id']);
+        $this->assertSame(3, (int) $this->row(null, 'intro', 5)['audio_id_asset_id']);
+        $this->assertSame(4, (int) $this->row(null, 'intro', 5)['audio_en_asset_id']);
+        $this->assertSame(4, $this->sqlite->table('audio_assets')->countAllResults(), 'rekaman tidak dihapus');
+    }
+
     // ------------------------------------------------------------ bantuan
+
+    /**
+     * Naskah kelas 4 per posisi = versi terakhir di story-legacy.php untuk
+     * ke-11 baris Dok 2 §11.1.
+     *
+     * @return array<string, array{0: string, 1: string}>
+     */
+    private function gradeFourPositions(): array
+    {
+        $out = [];
+
+        foreach ($this->legacy as $key => $versions) {
+            $last = is_string($versions[0]) ? $versions : $versions[array_key_last($versions)];
+
+            if (preg_match('/lima belas|lima serpihan|sepuluh serpihan/i', $last[0])) {
+                $out[$key] = $last;
+            }
+        }
+
+        return $out;
+    }
 
     /** Isi tabel seperti ContentSeeder lama: 18 baris teks warisan. */
     private function seedLegacy(): void
     {
         $characters = ['_|intro|1' => 'narator', '_|intro|2' => 'mbah_kedu', '_|intro|3' => 'jaka', '_|intro|4' => 'mbah_kedu'];
 
-        foreach ($this->legacy as $key => [$textId, $textEn]) {
+        foreach ($this->legacy as $key => $versions) {
+            // Teks seeder lama = versi pertama; posisi naskah kelas 4 (Dok 2 §11.1) tidak ada di seeder lama
+            if (! $this->isSeederKey($key)) {
+                continue;
+            }
+
+            [$textId, $textEn] = is_string($versions[0]) ? $versions : $versions[0];
             [$level, $context, $sequence] = explode('|', $key);
 
             $this->sqlite->table('dialogues')->insert([
@@ -295,6 +403,12 @@ final class StoryUpdateCommandTest extends CIUnitTestCase
                 'is_active'      => 1,
             ]);
         }
+    }
+
+    /** 18 posisi seeder lama; posisi lain di story-legacy.php hanya berisi naskah kelas 4. */
+    private function isSeederKey(string $key): bool
+    {
+        return preg_match('/^(?:_\|intro\|[1-4]|_\|ending\|[12]|[a-z]+\|level_(?:open|done)\|[12])$/', $key) === 1;
     }
 
     private function levelId(string $code): int

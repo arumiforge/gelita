@@ -7,7 +7,7 @@ Naskah lengkap seluruh narasi dan dialog permainan, dalam bahasa Indonesia dan I
 
 ## Benang merah
 
-Dataran Kedu dahulu diterangi **Cahaya Kedu**, cahaya yang lahir dari ilmu dan budaya dan disimpan di **Lentera Kedu**. Ketika orang mulai membaca dengan terburu-buru, memercayai kabar tanpa memeriksanya, dan melupakan cerita leluhur, naiklah **Kabut Lupa**. Kabut itu meretakkan lentera, dan cahayanya pecah menjadi **15 Serpihan Cahaya** yang jatuh di tiga wilayah. **Mbah Kedu**, penjaga lentera, ikut melemah setiap kali cahayanya meredup. **Jaka** menjadi Pembawa Lentera, dan pemain (disapa "penjelajah") berjalan bersamanya.
+Dataran Kedu dahulu diterangi **Cahaya Kedu**, cahaya yang lahir dari ilmu dan budaya dan disimpan di **Lentera Kedu**. Ketika orang mulai membaca dengan terburu-buru, memercayai kabar tanpa memeriksanya, dan melupakan cerita leluhur, naiklah **Kabut Lupa**. Kabut itu meretakkan lentera, dan cahayanya pecah menjadi **12 Serpihan Cahaya** yang jatuh di tiga wilayah. **Mbah Kedu**, penjaga lentera, ikut melemah setiap kali cahayanya meredup. **Jaka** menjadi Pembawa Lentera, dan pemain (disapa "penjelajah") berjalan bersamanya.
 
 Setiap wilayah melawan satu wujud Kabut Lupa, sesuai keterampilan membaca yang dilatih di sana:
 
@@ -138,9 +138,9 @@ Wajib ditonton pada kesempatan pertama. Pemain tetap dapat menekan Lanjut di set
 #### `intro-04` · Narator · efek `shake`
 **Judul:** Malam Lentera Retak / *The Night the Lantern Cracked*
 
-**ID:** Pada suatu malam, Kabut Lupa membelit Lentera Kedu. Kacanya retak, apinya bergetar, lalu cahayanya pecah! Lima belas Serpihan Cahaya melesat ke langit dan jatuh di Temanggung, Magelang, dan Wonosobo.
+**ID:** Pada suatu malam, Kabut Lupa membelit Lentera Kedu. Kacanya retak, apinya bergetar, lalu cahayanya pecah! Dua belas Serpihan Cahaya melesat ke langit dan jatuh di Temanggung, Magelang, dan Wonosobo.
 
-**EN:** One night, the Mist of Forgetting coiled around the Lantern of Kedu. Its glass cracked, its flame trembled, and then its light shattered! Fifteen Shards of Light shot into the sky and fell across Temanggung, Magelang, and Wonosobo.
+**EN:** One night, the Mist of Forgetting coiled around the Lantern of Kedu. Its glass cracked, its flame trembled, and then its light shattered! Twelve Shards of Light shot into the sky and fell across Temanggung, Magelang, and Wonosobo.
 
 #### `intro-05` · Mbah Kedu · pose `weak` · efek `dim`
 **Judul:** Penjaga yang Menua / *The Ageing Keeper*
@@ -152,16 +152,16 @@ Wajib ditonton pada kesempatan pertama. Pemain tetap dapat menekan Lanjut di set
 #### `intro-06` · Jaka · pose `determined` · efek `glow`
 **Judul:** Jaka, Pembawa Lentera / *Jaka, the Lantern Bearer*
 
-**ID:** Biar aku yang pergi, Mbah! Aku akan mencari kelima belas serpihan itu satu per satu, sampai Lentera Kedu menyala lagi. Aku janji!
+**ID:** Biar aku yang pergi, Mbah! Aku akan mencari kedua belas serpihan itu satu per satu, sampai Lentera Kedu menyala lagi. Aku janji!
 
-**EN:** Let me go, Mbah! I will find all fifteen shards, one by one, until the Lantern of Kedu shines again. I promise!
+**EN:** Let me go, Mbah! I will find all twelve shards, one by one, until the Lantern of Kedu shines again. I promise!
 
 #### `intro-07` · Narator
 **Judul:** Cara Mengumpulkan Serpihan / *How to Gather the Shards*
 
-**ID:** Setiap wilayah menyimpan lima serpihan, dan setiap serpihan dijaga oleh satu tantangan. Selesaikan tantangannya untuk mendapatkan serpihan dan bintang. Lihat lentera di pojok kiri atas: lentera itu makin terang setiap kali serpihan kembali.
+**ID:** Setiap wilayah menyimpan empat serpihan, dan setiap serpihan dijaga oleh satu tantangan. Selesaikan tantangannya untuk mendapatkan serpihan dan bintang. Lihat lentera di pojok kiri atas: lentera itu makin terang setiap kali serpihan kembali.
 
-**EN:** Each region holds five shards, and each shard is guarded by a challenge. Complete the challenge to win its shard and stars. Watch the lantern in the top-left corner: it grows brighter every time a shard returns.
+**EN:** Each region holds four shards, and each shard is guarded by a challenge. Complete the challenge to win its shard and stars. Watch the lantern in the top-left corner: it grows brighter every time a shard returns.
 
 #### `intro-08` · Mbah Kedu · pose `smile`
 **Judul:** Tiga Kunci Cahaya / *Three Keys of Light*
@@ -193,9 +193,9 @@ Diputar otomatis setelah loading "Membuka Peta Kedu". Pada kunjungan berikutnya,
 #### `peta-02` · Jaka · pose `determined`
 **Judul:** Tiga Wilayah / *Three Regions*
 
-**ID:** Aku harus menjelajahi tiga wilayah untuk memulihkannya: Temanggung, lalu Magelang, dan terakhir Wonosobo. Di setiap wilayah, lima Serpihan Cahaya sedang menunggu.
+**ID:** Aku harus menjelajahi tiga wilayah untuk memulihkannya: Temanggung, lalu Magelang, dan terakhir Wonosobo. Di setiap wilayah, empat Serpihan Cahaya sedang menunggu.
 
-**EN:** I must explore three regions to bring it back: Temanggung, then Magelang, and finally Wonosobo. In each region, five Shards of Light are waiting.
+**EN:** I must explore three regions to bring it back: Temanggung, then Magelang, and finally Wonosobo. In each region, four Shards of Light are waiting.
 
 #### `peta-03` · Jaka · pose `happy` · efek `glow`
 **Judul:** Kenali Dulu / *Get to Know Them First*
@@ -374,9 +374,9 @@ Tampil setiap kali wilayah baru terbuka (aturan dialog gate). Jaka berdiri di ki
 **EN:** I understand now. I will read word by word, look at pictures closely, and listen carefully.
 
 #### `dialog-temanggung-14` · Mbah Kedu · pose `idle`
-**ID:** Lima serpihan menunggumu di Temanggung. Temukan informasi yang tertulis jelas, maka kabut ini akan mundur dengan sendirinya.
+**ID:** Empat serpihan menunggumu di Temanggung. Temukan informasi yang tertulis jelas, maka kabut ini akan mundur dengan sendirinya.
 
-**EN:** Five shards are waiting for you in Temanggung. Find the information that is clearly written, and this mist will retreat on its own.
+**EN:** Four shards are waiting for you in Temanggung. Find the information that is clearly written, and this mist will retreat on its own.
 
 #### `dialog-temanggung-15` · Jaka · pose `determined` · efek `fog-lift`
 **ID:** Tunggu kami, warga Temanggung! Lentera ini akan menyala untuk kalian!
@@ -456,9 +456,9 @@ Tampil setiap kali wilayah baru terbuka (aturan dialog gate). Jaka berdiri di ki
 **EN:** Because I learned from you, Mbah. Read carefully first, then act!
 
 #### `dialog-magelang-15` · Mbah Kedu · pose `smile` · efek `glow`
-**ID:** Ingat pesan Mbah: temukan ide pokoknya, susun urutannya, dan pisahkan fakta dari pendapat. Lima serpihan Magelang menunggumu.
+**ID:** Ingat pesan Mbah: temukan ide pokoknya, susun urutannya, dan pisahkan fakta dari pendapat. Empat serpihan Magelang menunggumu.
 
-**EN:** Remember my advice: find the main idea, put things in order, and separate facts from opinions. Five shards of Magelang are waiting for you.
+**EN:** Remember my advice: find the main idea, put things in order, and separate facts from opinions. Four shards of Magelang are waiting for you.
 
 #### `dialog-magelang-16` · Jaka · pose `determined` · efek `fog-lift`
 **ID:** Aku berangkat, Mbah. Sebelum senja, relief-relief itu akan bercerita dengan benar lagi!
@@ -538,9 +538,9 @@ Tampil setiap kali wilayah baru terbuka (aturan dialog gate). Jaka berdiri di ki
 **EN:** The people of Dieng don't need panic. They need the truth. And I will help them find it.
 
 #### `dialog-wonosobo-15` · Mbah Kedu · pose `smile`
-**ID:** Itu baru anak pemberani. Pergilah, Le. Lima serpihan terakhir menunggu di balik kabut.
+**ID:** Itu baru anak pemberani. Pergilah, Le. Empat serpihan terakhir menunggu di balik kabut.
 
-**EN:** Now that's a brave child. Go, my boy. The last five shards are waiting behind the mist.
+**EN:** Now that's a brave child. Go, my boy. The last four shards are waiting behind the mist.
 
 #### `dialog-wonosobo-16` · Jaka · pose `determined` · efek `fog-lift`
 **ID:** Tunggu aku di Telaga Warna, Mbah. Saat aku kembali, Lentera Kedu akan menyala paling terang!
@@ -551,7 +551,7 @@ Tampil setiap kali wilayah baru terbuka (aturan dialog gate). Jaka berdiri di ki
 
 ## 5. Wilayah tuntas (`level_done`)
 
-Tampil saat tantangan kelima sebuah wilayah selesai, bersamaan dengan momen "Pustaka {wilayah} terbuka!".
+Tampil saat tantangan keempat sebuah wilayah selesai, bersamaan dengan momen "Pustaka {wilayah} terbuka!".
 
 ### Temanggung
 
@@ -561,9 +561,9 @@ Tampil saat tantangan kelima sebuah wilayah selesai, bersamaan dengan momen "Pus
 **EN:** Look, my boy! The mist over Temanggung has parted. The signposts can be read again, and people have found their way home.
 
 #### `tuntas-temanggung-02` · Jaka · pose `happy` · efek `glow`
-**ID:** Lima serpihan sudah kembali ke lentera! Rasanya hangat sekali, Mbah.
+**ID:** Empat serpihan sudah kembali ke lentera! Rasanya hangat sekali, Mbah.
 
-**EN:** Five shards are back in the lantern! It feels so warm, Mbah.
+**EN:** Four shards are back in the lantern! It feels so warm, Mbah.
 
 #### `tuntas-temanggung-03` · Mbah Kedu · pose `smile`
 **ID:** Itu buah ketelitianmu. Pustaka Temanggung kini terbuka untukmu. Bacalah sepuasnya.
@@ -588,9 +588,9 @@ Tampil saat tantangan kelima sebuah wilayah selesai, bersamaan dengan momen "Pus
 **EN:** And Mbah... you can stand up straight again!
 
 #### `tuntas-magelang-03` · Mbah Kedu · pose `smile` · efek `glow`
-**ID:** Sepuluh serpihan sudah kembali, dan tenaga Mbah ikut pulih. Pustaka Magelang kini terbuka untukmu.
+**ID:** Delapan serpihan sudah kembali, dan tenaga Mbah ikut pulih. Pustaka Magelang kini terbuka untukmu.
 
-**EN:** Ten shards have returned, and my strength is coming back. The Magelang Library is now open to you.
+**EN:** Eight shards have returned, and my strength is coming back. The Magelang Library is now open to you.
 
 #### `tuntas-magelang-04` · Jaka · pose `determined`
 **ID:** Tinggal satu wilayah lagi. Wonosobo, kami datang!
@@ -610,9 +610,9 @@ Tampil saat tantangan kelima sebuah wilayah selesai, bersamaan dengan momen "Pus
 **EN:** I saw it from the lake shore, my boy. Every time you chose wisely, the mist on that peak grew a little thinner.
 
 #### `tuntas-wonosobo-03` · Jaka · pose `happy`
-**ID:** Lima belas serpihan... semuanya sudah kembali!
+**ID:** Dua belas serpihan... semuanya sudah kembali!
 
-**EN:** Fifteen shards... every single one is back!
+**EN:** Twelve shards... every single one is back!
 
 #### `tuntas-wonosobo-04` · Mbah Kedu · pose `smile`
 **ID:** Pustaka Wonosobo terbuka untukmu. Sekarang, mari kita pulang dan nyalakan Lentera Kedu bersama-sama.
@@ -628,9 +628,9 @@ Tampil setelah seluruh wilayah tuntas, sebelum Balai Refleksi.
 #### `penutup-01` · Narator · efek `glow`
 **Judul:** Lentera Menyala Kembali / *The Lantern Shines Again*
 
-**ID:** Di puncak bukit, Jaka mengangkat lenteranya tinggi-tinggi. Kelima belas serpihan menyatu, dan cahaya keemasan memancar ke seluruh Dataran Kedu.
+**ID:** Di puncak bukit, Jaka mengangkat lenteranya tinggi-tinggi. Kedua belas serpihan menyatu, dan cahaya keemasan memancar ke seluruh Dataran Kedu.
 
-**EN:** On top of the hill, Jaka lifted his lantern high. All fifteen shards joined together, and a golden light poured out across the whole Kedu Plain.
+**EN:** On top of the hill, Jaka lifted his lantern high. All twelve shards joined together, and a golden light poured out across the whole Kedu Plain.
 
 #### `penutup-02` · Narator · efek `fog-lift`
 **Judul:** Kabut Tersibak / *The Mist Clears*

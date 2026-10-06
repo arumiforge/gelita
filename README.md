@@ -90,7 +90,7 @@ Seluruh audio permainan kini ikut di repositori. Rinciannya ada di [`docs/audio.
 
   Semua disintesis dari nol dengan laras pelog/slendro, ombak gong, dan garap bonang–peking–kendang. Tidak ada sampel rekaman, dan kenyaringannya di bawah narasi agar narasi tetap jelas.
 - **Efek suara** bernuansa gamelan: `click` (gambang), `correct` (bonang naik), `wrong` (demung teredam), `lock` (kethuk + kecrek), dan dua efek yang dipanggil `game/finished.js` tetapi belum tercantum: `shard` (kilau peking–gender) dan `region-done` (suwuk bergong). **Media → Kelengkapan aset** kini juga memeriksa `shard` dan `region-done`.
-- **Narasi 96 baris × 2 bahasa** (88 baris naskah + 8 petunjuk arena `cari`), MP3 mono 96 kbps, sekitar −16 LUFS. Suaranya sintetis (TTS) dan diolah per tokoh:
+- **Narasi 100 baris × 2 bahasa** (88 baris naskah + 12 petunjuk Cari Objek: 4 per node `tmg-4`, `mgl-4`, `wnb-4`), MP3 mono 96 kbps, sekitar −16 LUFS. Suaranya sintetis (TTS) dan diolah per tokoh:
   - **Narator**: pendongeng perempuan yang hangat.
   - **Jaka**: anak laki-laki; nada dan formant dinaikkan, gaya bicara mengikuti pose.
   - **Mbah Kedu**: kakek yang pelan, bergetar, dan lemah pada pose `weak`.
@@ -101,7 +101,7 @@ Seluruh audio permainan kini ikut di repositori. Rinciannya ada di [`docs/audio.
 **Server yang sudah berjalan:** deploy biasa, lalu jalankan perintah di bawah. Setelah itu, di **Konten → Narasi** tekan **Setujui semua narasi draft** untuk ID dan EN. Musik dan efek suara langsung terdengar tanpa langkah tambahan.
 
 ```bash
-php spark gelita:narration:import --dry-run   # 96 rekaman per bahasa dikenali
+php spark gelita:narration:import --dry-run   # 100 rekaman per bahasa dikenali
 php spark gelita:narration:import             # audio draft, ditautkan ke naskah & petunjuk cari
 ```
 

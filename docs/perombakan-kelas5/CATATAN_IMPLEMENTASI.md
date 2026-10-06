@@ -7,19 +7,20 @@ Keputusan dan penyimpangan dari ketiga dokumen perombakan, beserta alasannya dan
 | Dokumen | Status |
 |---|---|
 | Dok 1 | Selesai, di `main` |
-| Dok 2 | Sebagian, di `main`: §2, §3–§4, §5.2 (server), §7, §9, §10 mockup (lihat "Dok 2 — gambar mockup"), narasi petunjuk per node `cari`. §5.3 klien dan §12 teks UI di branch `dok2-klien-kesempatan` (454 uji hijau, PR ke `main`), lihat "Dok 2 — klien dan teks UI" |
+| Dok 2 | Hampir selesai. Di `main`: §2–§10, §12 (lihat bagian "Dok 2 — gambar mockup" dan "Dok 2 — klien dan teks UI"). §11 naskah dan rekaman di branch `dok2-klien-kesempatan` (PR ke `main`), lihat "Dok 2 — naskah cerita dan rekaman" |
 | Dok 3 | Belum dimulai |
 
 Sisa Dok 2:
 
-1. ~~**§5.3 klien + §12 teks UI**~~ — selesai di branch `dok2-klien-kesempatan` (PR ke `main`).
-2. ~~**§10 mockup**~~ — selesai, di `main`.
-3. **§11 naskah cerita** — 11 baris masih "lima belas"; `--lepas-audio-beda` belum ada; rekaman petunjuk `mgl-4`/`wnb-4` belum ada, `petunjuk-tmg-4-05…08` belum dihapus.
-4. Bagian "Dok 2" catatan ini untuk §2–§9/§11 dan uji manual §13.2 lengkap (butir 3–4: mockup diganti gambar asli, halaman Narasi). Bagian mockup serta klien dan teks UI sudah ada di bawah.
+1. ~~**§5.3 klien + §12 teks UI**~~ — selesai, di `main` (PR #37).
+2. ~~**§10 mockup**~~ — selesai, di `main` (PR #36).
+3. ~~**§11 naskah cerita**~~ — di branch `dok2-klien-kesempatan` (PR ke `main`).
+4. Bagian "Dok 2" catatan ini untuk §2–§9 dan uji manual §13.2 butir 3 (mockup diganti gambar asli di panel Media).
 
 ### Perawatan repo
 
 - 6 Oktober 2026: sejarah `main` ditulis ulang (penulis dan committer semua commit = Arumi Studios, baris `Co-Authored-By`/`Claude-Session` dibuang; isi berkas dan pesan commit tidak berubah). Semua branch lain dihapus. Hash commit lama yang disebut di dokumen lain tidak berlaku lagi.
+- Branch `dok2-mockup` (sudah digabung, PR #36) **sengaja dibiarkan** di remote atas permintaan pemilik: dihapus nanti setelah semua tahapan perombakan selesai. Jangan dihapus lebih awal meski aturan satu branch di `CLAUDE.md`.
 - Branch lama `happy-gates` yang dihapus tanpa digabung berisi satu perbaikan yang **belum ada** di `main`: tombol "Kenali" di peta yang diketuk sebelum `game/map.js` siap (±0,8 detik setelah dimuat, terlihat di 844×390) hanya mengubah hash `#kenal-{code}`, sedangkan `html.js` menyembunyikan overlay `:target`, sehingga overlay tidak terbuka. Usulan perbaikannya: saat modul siap, hash `#kenal-{code}[-n]` yang sudah ada membuka overlay di slide n lalu hash dibersihkan (`history.replaceState`), tanpa memutar narasi otomatis; narasi peta tidak dimulai bila overlay Kenali terbuka. Kerjakan ulang bila masih terjadi (setelah tata letak 16:9 Dok 3).
 
 ---
