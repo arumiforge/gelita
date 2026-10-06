@@ -1,239 +1,191 @@
-# Bank Soal Produksi GELITA
+# Bank Soal GELITA — Kelas 5 SD/MI
 
-Isi lengkap kelima belas tantangan dan Pustaka Kedu untuk Temanggung, Magelang, dan Wonosobo, dalam bahasa Indonesia dan Inggris, siap diimpor lewat **Panel GELITA → Impor soal (Excel)** (juga dari halaman Konten permainan → *Impor soal dari Excel*).
+Bank soal final penelitian kelas 5 yang disetujui peneliti (Oktober 2026): **12 tantangan** (4 per wilayah), **126 soal** (108 dinilai + 18 benda pengecoh), **30 variasi**, 9 bacaan Benar atau Salah, 9 bacaan Isi Rumpang, 36 petunjuk, dan 12 kata pengecoh bank kata. Isinya ditetapkan di [`docs/perombakan-kelas5/02_TANTANGAN_DAN_BANK_SOAL.md`](../perombakan-kelas5/02_TANTANGAN_DAN_BANK_SOAL.md) §9; jangan diubah kecuali untuk memperbaiki salah ketik yang jelas.
 
 | Berkas | Isi |
 |---|---|
-| [`gelita-bank-soal-produksi.xlsx`](gelita-bank-soal-produksi.xlsx) | workbook siap impor: sheet PETUNJUK, KAMUS_KOLOM, sepuluh sheet data, dan DAFTAR_MEDIA |
-| [`data/temanggung.php`](data/temanggung.php), [`data/magelang.php`](data/magelang.php), [`data/wonosobo.php`](data/wonosobo.php) | sumber isi yang mudah ditinjau (satu wilayah per berkas) |
-| [`build-workbook.php`](build-workbook.php) | penyusun workbook dari berkas data, beserta pemeriksaan aturan dasar |
+| [`gelita-bank-soal-kelas5.xlsx`](gelita-bank-soal-kelas5.xlsx) | workbook siap impor: sheet PETUNJUK, KAMUS_KOLOM, enam sheet data (`nodes`, `variants`, `distractors`, `passages`, `items`, `hints`), dan DAFTAR_MEDIA. Dipakai `php spark gelita:reset` dan, di mesin pengembangan, `DatabaseSeeder`. |
+| [`data/temanggung.php`](data/temanggung.php), [`data/magelang.php`](data/magelang.php), [`data/wonosobo.php`](data/wonosobo.php) | sumber isi yang mudah ditinjau (satu wilayah per berkas, format di bawah) |
+| [`build-workbook.php`](build-workbook.php) | penyusun workbook dari berkas data, termasuk seluruh pemeriksaan aturan |
 
-Aturan penilaian (profil skoring) tidak diatur di workbook; tantangan memakai aturan bawaan penelitian.
+Workbook ini **tidak** memuat sheet `library`/`library_media`, jadi impornya (termasuk lewat `gelita:reset`) tidak pernah menyentuh Pustaka Kedu. Isi Pustaka untuk pemasangan baru ada di [`docs/pustaka/`](../pustaka/README.md).
 
-## Isi
+## Tantangan
 
-| Tantangan | Arena | Jenis butir | Aktif / semua | Per permainan |
-|---|---|---|---:|---:|
-| tmg-1 Susun Gambar Budaya Temanggung | puzzle | `puzzle_arrange`, papan 3 × 3 kotak | 3 / 4 | 1 |
-| tmg-2 Lengkapi Bacaan: Gunung Kembar | rumpang | bacaan `fill_blank_bank`: 3 rumpang, tanpa pengecoh | 3 / 13 | semua (3) |
-| tmg-3 Benar atau Salah? | boleh | `verdict_card` (benar/salah) | 16 / 16 | 8 |
-| tmg-4 Temukan Budaya Temanggung | cari | `find_object` (8 target + 3 jebakan) | 11 / 11 | 4 |
-| tmg-5 Temukan Jawabannya di Teks | pilihan | `single_choice` | 8 / 8 | 3 |
-| mgl-1 Susun Gambar Magelang | puzzle | `puzzle_arrange`, papan 4 × 4 kotak | 3 / 7 | 1 |
-| mgl-2 Lengkapi Bacaan: Candi Borobudur | rumpang | bacaan `fill_blank_bank`: 5 rumpang + 2 pengecoh | 5 / 15 | semua (5) |
-| mgl-3 Benar, Salah, atau Pendapat? | boleh | `verdict_reason` (benar/salah/pendapat + alasan) | 12 / 12 | 6 |
-| mgl-4 Cocokkan Fungsi & Asal | pilihan | `single_choice` | 8 / 8 | 4 |
-| mgl-5 Bandingkan Gambar dan Teks | pilihan | `single_choice` | 6 / 6 | 3 |
-| wnb-1 Susun Gambar Wonosobo | puzzle | `puzzle_arrange`, papan 4 × 4 jigsaw | 3 / 7 | 1 |
-| wnb-2 Lengkapi Bacaan: Negeri di Atas Awan | rumpang | bacaan `fill_blank_bank`: 7 rumpang + 2 pengecoh | 7 / 17 | semua (7) |
-| wnb-3 Sumber Mana yang Benar? | boleh | `verdict_card` dengan kartu sumber | 12 / 12 | 6 |
-| wnb-4 Pilih Sumber Terpercaya | pilihan | `source_trust` | 8 / 8 | 4 |
-| wnb-5 Apa yang Sebaiknya Kamu Lakukan? | pilihan | `single_choice` (pilar literasi digital) | 8 / 8 | 3 |
+Urutan sama di ketiga wilayah; wilayah terbuka berurutan (Temanggung → Magelang → Wonosobo), tantangan di dalam wilayah juga.
 
-Jumlahnya 152 butir (113 aktif, 39 butir lama diistirahatkan), 152 opsi (masing-masing dengan umpan balik), 20 potongan urutan (milik butir wnb-1 lama), 24 kartu sumber, 55 petunjuk, 4 kata pengecoh, dan 11 teks bacaan. Di luar Susun Gambar dan Isi Rumpang, bank soal sengaja lebih besar dari jumlah per permainan agar siswa yang mengulang mendapat butir lain.
+| seq | Tantangan | engine | Jenis soal | Temanggung (mudah) | Magelang (sedang) | Wonosobo (sulit) |
+|---:|---|---|---|---|---|---|
+| 1 | Susun Gambar | `puzzle` | `puzzle_arrange` | `tmg-1` · 3 × 3 kotak | `mgl-1` · 4 × 4 kotak | `wnb-1` · 4 × 4 jigsaw |
+| 2 | Isi Rumpang | `rumpang` | `fill_blank_bank` | `tmg-2` · 3 rumpang, 0 pengecoh | `mgl-2` · 5 rumpang, 2 pengecoh | `wnb-2` · 7 rumpang, 2 pengecoh |
+| 3 | Benar atau Salah | `boleh` | `verdict_card` | `tmg-3` · 1 paragraf, 3 pernyataan | `mgl-3` · 2 paragraf, 5 pernyataan | `wnb-3` · 3 paragraf, 6 pernyataan |
+| 4 | Cari Objek | `cari` | `find_object` | `tmg-4` · 4 dicari + 4 pengecoh | `mgl-4` · 4 dicari + 6 pengecoh | `wnb-4` · 4 dicari + 8 pengecoh |
 
-Jenjang kesulitan mengikuti urutan wilayah: Temanggung (**mudah**) melatih informasi **tersurat**, Magelang (**sedang**) **fakta vs pendapat** dan menghubungkan gambar–teks, Wonosobo (**sulit**) **menyimpulkan** dan **menilai sumber** (literasi keamanan digital).
+12 tantangan = 12 Serpihan Cahaya.
 
-## Pembaruan kelas 5 SD (Oktober 2026)
+## Aturan per tingkat
 
-Sasaran penelitian kini siswa kelas 5 SD/MI. Susun Gambar dan Isi Rumpang disusun ulang per tingkat kesulitan wilayah. Aturannya ada di satu tempat, `app/Libraries/DifficultyRules.php`:
+Satu-satunya sumber aturan: [`app/Libraries/DifficultyRules.php`](../../app/Libraries/DifficultyRules.php). Taksonomi Bloom revisi (Anderson & Krathwohl): C1 Mengingat, C2 Memahami, C3 Menerapkan, C4 Menganalisis, C5 Mengevaluasi, C6 Mencipta. Penanda Bloom wajib untuk rumpang, pernyataan Benar atau Salah, dan benda yang dicari; Susun Gambar dan benda pengecoh tanpa Bloom.
 
-| Wilayah | Tingkat | Susun Gambar | Isi Rumpang | Tingkat berpikir (Bloom) |
-|---|---|---|---|---|
-| Temanggung | mudah | 3 × 3, keping kotak | 1 paragraf pendek, 3 rumpang, 3 kata tanpa pengecoh | C1–C2 (mengingat, memahami) |
-| Magelang | sedang | 4 × 4, keping kotak | bacaan singkat, 4–5 rumpang, jawaban + 1–3 pengecoh (kini 5 + 2 = 7 kata) | C2–C3 (memahami, menerapkan) |
-| Wonosobo | sulit | 4 × 4, keping jigsaw (bertonjolan, dipotong acak) | bacaan singkat, 6–7 rumpang, jawaban + 1–3 pengecoh (kini 7 + 2 = 9 kata) | C3–C4 (menerapkan, menganalisis) |
-
-**Susun Gambar.** Setiap wilayah punya 3 gambar aktif; satu gambar diambil acak setiap kali bermain. Admin cukup mengunggah **satu gambar utuh**: permainan memotongnya sendiri menjadi keping 3 × 3, 4 × 4, atau jigsaw. Gambar yang tidak persegi dipotong bagian tengahnya. Keping tidak bernomor di semua tingkat. Keterangan gambar (kolom `prompt`) muncul setelah gambar utuh.
-
-- Ukuran papan **dibekukan per butir** saat butir dibuat (impor atau editor), dari tingkat wilayahnya. Butir yang sudah ada tidak dihitung ulang, karena kunci jawaban butir yang sudah dijawab siswa tidak boleh berubah.
-- Karena itu butir Magelang lama (3 × 3) diistirahatkan dan diganti butir baru `mgl-1-05` … `-07`. Butir baru memakai gambar yang sama (`challenge.item.mgl-1-01` … `-03`), jadi tidak perlu unggah ulang.
-- Wonosobo tantangan 1 berganti dari *Susun Urutan* menjadi Susun Gambar jigsaw dengan 3 gambar baru (`wnb-1-05` … `-07`). Indikator tantangannya kini **budaya**. Kartu urutan lama diistirahatkan dan tetap tercatat dengan indikator semula (literasi/sikap).
-- Butir tmg-1-02 (kebun tembakau) diistirahatkan karena kurang cocok untuk anak kelas 5.
-
-**Isi Rumpang sebagai bacaan** (`reading` di berkas data, kolom `as_reading = 1` di workbook):
-
-- Setiap butir `fill_blank_bank` adalah **satu potongan bacaan dengan tepat satu `___`**. Potongan-potongan disambung menurut urutannya menjadi bacaan utuh, dan **semua** butir aktif tampil sekaligus (`items_per_round` diisi sama dengan jumlah rumpang).
-- Bank kata berisi semua jawaban ditambah `distractor_count` kata pengecoh pertama. Urutan kata diacak sekali per percobaan dan tetap sama saat halaman dimuat ulang.
-- **Jeda paragraf** ditulis `\n\n` (baris kosong) **di tengah potongan, sesudah `___`**. Importer memangkas spasi dan baris kosong di tepi sel, jadi jeda di awal atau akhir potongan akan hilang.
-- Setiap butir diberi tingkat Bloom (`bloom`/kolom `bloom_level`, C1–C6). Pemeriksaan memberi peringatan bila tingkatnya di luar anjuran wilayah.
-
-**Mengistirahatkan butir, bukan menghapus.** Kode butir mengikuti urutan di berkas data, jadi butir lama tidak boleh dihapus. Beri `'active' => false`: workbook menulis `is_active = 0`, dan importer menonaktifkan butir itu tanpa mengubah kunci maupun jawaban siswa yang sudah tersimpan. Sel `is_active` yang kosong tidak mengubah status butir yang sudah ada.
-
-Draf ketiga bacaan berstatus **`needs_verification`**. Tinjau bahasa, kunci, dan tingkat Bloom-nya bersama guru, lalu ubah menjadi `verified`.
-
-### Tingkat Bloom per rumpang
-
-**tmg-2 — Gunung Kembar** (C1–C2)
-
-| No | Jawaban | Bloom | Alasan |
+| Tingkat | Isi Rumpang (Bloom) | Benar atau Salah (Bloom · keterampilan) | Cari Objek (Bloom petunjuk) |
 |---|---|---|---|
-| 1 | Sumbing | C1 Mengingat | Nama gunung sudah dikenalkan di Pustaka dan Susun Gambar tmg-1. |
-| 2 | kembar | C2 Memahami | Disimpulkan dari petunjuk "bentuknya mirip". |
-| 3 | subur | C2 Memahami | Dijelaskan oleh sebab "berasal dari abu gunung api" dan akibat "dapat menanam". |
+| mudah | C1–C2 | C1–C2 · `informasi_tersurat`, `mengenali_fakta`, `mengenali_gambar` | C1–C2 |
+| sedang | C2–C3 | C2–C4 · `gagasan_pokok`, `menghubungkan_informasi`, `mengklasifikasikan_tindakan` | C2–C3 |
+| sulit | C3–C4 | C4–C5 · `membandingkan_informasi`, `menilai_pilihan`, `menentukan_solusi` | C3–C4 |
 
-**mgl-2 — Candi Borobudur** (C2–C3; pengecoh *enam*, *arca*)
+Jumlah rumpang dan pengecoh **tepat**, bukan rentang, agar ketiga variasi satu wilayah setara.
 
-| No | Jawaban | Bloom | Alasan |
-|---|---|---|---|
-| 1 | sembilan | C3 Menerapkan | Menjumlahkan 6 + 3 dari bacaan; pengecoh *enam* menjebak pembaca yang tergesa. |
-| 2 | stupa | C3 Menerapkan | Menerapkan definisi stupa pada bangunan di puncak. |
-| 3 | relief | C2 Memahami | Istilah dimaknai dari penjelasan "pahatan gambar yang bercerita". |
-| 4 | dinding | C3 Menerapkan | Memakai informasi letak relief untuk tugas baru: di mana harus melihat. |
-| 5 | dilarang | C2 Memahami | Memahami hubungan sebab–akibat (batu rusak → dilarang). |
+## Variasi dan pengacakan
 
-**wnb-2 — Negeri di Atas Awan** (C3–C4; pengecoh *panas*, *agar*)
+- Satu **variasi** = satu kelompok soal yang dimainkan utuh dalam satu pengerjaan. Susun Gambar, Isi Rumpang, dan Benar atau Salah punya tepat 3 variasi (`a`, `b`, `c`); Cari Objek satu adegan tetap (`a`), karena posisi benda diatur sekali.
+- Variasi dipilih acak sungguhan setiap pengerjaan baru; pengerjaan ulang memilih variasi yang belum pernah didapat siswa itu (bila semua sudah, semua boleh lagi). Muat ulang halaman memakai pengerjaan yang sama.
+- Bank kata Isi Rumpang diacak dengan benih id pengerjaan (tetap saat dimuat ulang) dan selalu berbeda dari urutan rumpang; di Temanggung (3 kata tanpa pengecoh) tidak ada kata yang berada di posisi rumpangnya sendiri. Urutan petunjuk Cari Objek juga diacak per pengerjaan. Pernyataan Benar atau Salah dan posisi benda tidak diacak.
+- Setiap soal paling banyak **3 percobaan**; lewat dari itu jawaban terakhir disimpan apa adanya dan tantangan tetap selesai.
 
-| No | Jawaban | Bloom | Alasan |
-|---|---|---|---|
-| 1 | sehingga | C4 Menganalisis | Menentukan arah hubungan sebab → akibat; *karena* di sini membalik sebabnya. |
-| 2 | karena | C4 Menganalisis | Hubungan akibat ← sebab. |
-| 3 | hangat | C3 Menerapkan | Informasi suhu dipakai untuk keputusan baru (bekal pakaian). |
-| 4 | tetapi | C4 Menganalisis | Hubungan pertentangan dua keadaan. |
-| 5 | dapat | C3 Menerapkan | Menerapkan rentang 1.400–2.400 m pada ketinggian 2.300 m. |
-| 6 | sulit | C3 Menerapkan | Pantai = dataran rendah panas; aturan dipakai pada kasus baru. |
-| 7 | sejuk | C4 Menganalisis | Kesimpulan dari beberapa kalimat; pengecoh *panas* menguji ketelitian. |
+## Bentuk berkas data
 
-Setiap pengecoh sudah dicek tidak cocok untuk rumpang mana pun, dan setiap jawaban hanya cocok di satu tempat. `tests/unit/BankReadingDataTest.php` memastikan ketiga bacaan memenuhi aturan wilayahnya tanpa peringatan.
+Teks berpasangan `[Indonesia, English]`. Kode dibuat otomatis oleh `build-workbook.php` menurut urutan di berkas:
 
-Pustaka Kedu: 10 halaman per wilayah (sejarah, alam, candi, tradisi, kuliner, dan satu halaman "Tips Jaka" yang terkait keterampilan membaca wilayah itu), masing-masing dengan catatan sumber dan 1–3 gambar/video. Media Pustaka memakai tautan Wikimedia Commons (berlisensi bebas; kreditnya di kolom `credit`) dan beberapa video YouTube dari kanal resmi atau lembaga.
+- kode soal `{node}-{variasi}{nn}` (mis. `tmg-2-a01`, `wnb-4-a12`), dua digit per variasi;
+- kode bacaan Benar atau Salah `{node}-{variasi}` (mis. `mgl-3-a`);
+- `sequence` soal = urutan global di tantangan (a01…, b01…, c01…);
+- judul variasi Benar atau Salah = judul bacaannya.
 
-## Status tinjauan
-
-Semua butir diimpor berstatus **`draft`**, bukan `verified`. Fakta di setiap butir sudah dicocokkan dengan sumber di kolom `reference_source`, tetapi `verified` berarti sudah diperiksa guru atau ahli. Status ini tidak memengaruhi apakah butir dimainkan. Setelah meninjau, ubah statusnya di editor butir atau di kolom `review_status` lalu impor ulang.
-
-## Mengimpor
-
-1. Unggah gambar di Panel GELITA → **Gambar & suara** sesuai sheet **DAFTAR_MEDIA** (boleh dilakukan setelah impor; lihat bagian berikut).
-2. Panel GELITA → **Impor soal (Excel)** → pilih `gelita-bank-soal-produksi.xlsx` → **Periksa berkas**. Hasil yang diharapkan: 0 kesalahan.
-3. **Simpan soal ke permainan**. Seluruh isi masuk dalam satu transaksi: satu baris gagal, tidak ada yang berubah.
-4. **Konten permainan → Periksa kelengkapan**, lalu mainkan tiap wilayah sebagai siswa.
-
-Lewat server:
-
-```bash
-php spark gelita:bank:import docs/bank-soal/gelita-bank-soal-produksi.xlsx --dry-run
-php spark gelita:bank:import docs/bank-soal/gelita-bank-soal-produksi.xlsx
-php spark gelita:content:verify
-```
-
-Impor ulang aman: baris dicocokkan lewat kode (`node_ref`, `passage_key`, `item_key`, `option_key`, nomor halaman Pustaka) lalu diperbarui. Media Pustaka sebuah halaman diganti seluruhnya oleh baris `library_media` halaman itu. Kunci jawaban butir yang **sudah dijawab siswa** tidak dapat diubah — buat butir baru dengan kode baru, lalu istirahatkan butir lama dengan `is_active = 0`.
-
-Di server pengembangan, `SampleItemSeeder` sudah mengisi butir contoh per tantangan (kode berakhiran `-91` ke atas, mis. `tmg-2-91`). Butir contoh itu tidak dihapus oleh impor; nonaktifkan di editor butir bila tidak diinginkan. Pada bacaan Isi Rumpang, butir contoh yang masih aktif ikut tersambung ke bacaan.
-
-## Gambar yang harus diunggah
-
-Tantangan puzzle dan cari objek butuh gambar sungguhan. Impor membuat **slot kosong** untuk setiap `asset_key` (di panel disebut *kode berkas*) yang belum terdaftar, dan halaman Gambar & suara menandai slot yang masih kosong. Begitu berkas diunggah dengan kode berkas yang sama, gambar langsung tampil.
-
-Untuk Susun Gambar, unggah gambar utuh; kepingnya dibuat otomatis. Gambar persegi paling rapi. Gambar yang tidak persegi dipotong bagian tengahnya.
-
-| asset_key | Dipakai di | Ukuran |
-|---|---|---|
-| `challenge.item.tmg-1-01`, `-03`, `-04` | Susun Gambar tmg-1, 3 × 3 kotak (Sindoro–Sumbing, Candi Pringapus, kuda lumping) | persegi, minimal 900 × 900 px |
-| `challenge.item.mgl-1-01` … `-03` | Susun Gambar mgl-1, 4 × 4 kotak, dipakai butir `mgl-1-05` … `-07` (stupa Borobudur, Topeng Ireng, Candi Mendut) | persegi, minimal 1200 × 1200 px |
-| `challenge.item.wnb-1-05` … `-07` | Susun Gambar wnb-1, 4 × 4 jigsaw (Telaga Warna, matahari terbit Bukit Sikunir, mi ongklok) — **gambar baru** | persegi, minimal 1200 × 1200 px |
-| `challenge.tmg-4.scene` | adegan cari objek tmg-4 (balai desa/pasar budaya di kaki Sindoro–Sumbing) | 1280 × 720 px |
-| `challenge.item.tmg-4-01` … `-08` | 8 objek budaya Temanggung yang dicari | 240 × 240 px, latar transparan |
-| `challenge.item.tmg-4-09` … `-11` | 3 objek jebakan dari daerah lain (angklung, ondel-ondel, pinisi) | 240 × 240 px, latar transparan |
-
-Isi setiap gambar dan saran sumbernya dirinci di sheet DAFTAR_MEDIA. Selama gambar belum diunggah, puzzle menampilkan gambar pengganti dan objek cari tampil sama rupa — tantangan tetap dapat dimainkan tetapi belum layak untuk studi.
-
-mgl-5 tidak butuh berkas: setiap butir memuat deskripsi gambar dalam teks sumbernya. Gambar pendamping per butir tetap dapat ditambahkan lewat editor butir.
-
-**Sekolah tanpa internet.** Gambar Commons dan video YouTube di Pustaka dimuat dari internet oleh browser siswa. Untuk kelas luring, unduh berkasnya (patuhi lisensi di kolom `credit`), unggah di Panel GELITA → Gambar & suara, lalu di editor Pustaka ganti sumber media dari *Tautan* ke *Berkas*.
-
-## Mengubah isi
-
-Ada dua cara, dan importer menerima keduanya:
-
-- **Sunting workbook langsung di Excel.** Cocok untuk guru; panduan kolom ada di sheet PETUNJUK dan KAMUS_KOLOM.
-- **Sunting berkas data lalu bangun ulang** — cocok untuk tinjauan lewat git:
-
-  ```bash
-  php docs/bank-soal/build-workbook.php            # menimpa gelita-bank-soal-produksi.xlsx
-  php docs/bank-soal/build-workbook.php keluar.xlsx
-  ```
-
-  Bila ada aturan yang dilanggar, skrip berhenti tanpa menulis workbook dan menyebut butir yang salah.
-
-`tests/unit/BankWorkbookGuideTest.php` gagal bila kolom impor berubah tetapi workbook ini belum dibangun ulang.
-
-### Bentuk berkas data
-
-Setiap berkas `data/*.php` mengembalikan array `passages`, `nodes`, dan `library`. Teks dwibahasa ditulis berpasangan `['Indonesia', 'English']`.
+Jangan menyisipkan atau menghapus soal di tengah variasi setelah bank dipakai siswa: kode soal sesudahnya akan bergeser dan jawaban siswa yang tersimpan tidak tersambung lagi.
 
 ```php
-'difficulty' => 'sedang',                          // tingkat wilayah: mudah | sedang | sulit (sama dengan LevelSeeder)
-'nodes' => [
-    'mgl-2' => [
-        'engine'          => 'rumpang',            // puzzle | rumpang | boleh | pilihan | cari
-        'variant'         => 'rumpang_bacaan',     // kode variasi tampilan
-        'indicator'       => 'literasi',           // indikator tantangan, juga bawaan butir: literasi | budaya | sikap
-        'items_per_round' => 5,                    // bacaan: sama dengan jumlah rumpang aktif
-        'reading'         => true,                 // rumpang: semua butir tampil sebagai satu bacaan
-        'use_word_bank'   => true,                 // rumpang
-        'distractor_count'=> 2,                    // rumpang bank kata; 0 = tanpa pengecoh
-        'verdict_options' => 'benar,salah',        // boleh
-        'require_reason'  => true,                 // boleh dengan alasan
-        'scene'           => ['key' => 'challenge.tmg-4.scene', 'note' => 'isi gambar', 'source' => 'saran sumber'],  // cari
-        'title' => [...], 'instruction' => [...], 'description' => [...],
-        'hints'       => [['petunjuk', 'hint'], ...],
-        'distractors' => [['enam', 'six'], ...],
-        'note' => 'catatan tinjauan', 'ref' => 'sumber rujukan',
-        'items' => [ /* lihat di bawah */ ],
-    ],
-],
-```
+$ref = ['geo' => 'Pemkab Temanggung; BPS; PVMBG', /* … rujukan §9.4 … */];
 
-Kunci butir di dalam `items`:
-
-| Kunci | Dipakai oleh | Isi |
-|---|---|---|
-| `type` | semua | jenis interaksi, mis. `fill_blank_bank` |
-| `active` | semua | `false` = butir diistirahatkan (`is_active = 0`); kosong = aktif |
-| `bloom` | opsional, wajib untuk bacaan | tingkat Bloom `C1` … `C6` |
-| `prompt` | semua | pertanyaan/kalimat; rumpang wajib memuat `___` di kedua bahasa (bacaan: tepat satu) |
-| `answer` | rumpang, boleh | `['Sumbing', 'Sumbing']` untuk rumpang; `'benar'`/`'salah'`/`'pendapat'` untuk boleh |
-| `order` | `ordering` | urutan kode potongan, mis. `'b,a,d,c'` |
-| `source`, `passage` | opsional | teks sumber di atas soal; kode bacaan dari `passages` |
-| `options` | pilihan | `[label_id, label_en, benar?, umpan_balik_id, umpan_balik_en]` × 4, tepat satu benar |
-| `pieces` | `ordering` | `[kode, teks_id, teks_en]` |
-| `sources` | boleh/`source_trust` | `[label_id, label_en, kind, teks_id, teks_en]`, `kind` = `official` \| `anonymous` \| `chain_message` \| `blog` |
-| `reason` | `verdict_reason` | contoh alasan yang baik |
-| `x`, `y`, `w`, `decoy`, `wrong` | cari | posisi & lebar objek dalam persen adegan; jebakan wajib punya umpan balik `wrong` |
-| `media` | puzzle, cari | `['key' => asset_key, 'note' => isi gambar, 'source' => saran sumber]` → masuk DAFTAR_MEDIA (hanya butir aktif). Butir Susun Gambar tidak diberi `answer`: kuncinya dibuat importer dari ukuran papan wilayah |
-| `hints` | opsional | petunjuk khusus butir |
-| `pillar` | opsional | pilar literasi digital (`digital_skills` \| `digital_ethics` \| `digital_safety` \| `digital_culture`) |
-| `indicator`, `ref`, `note`, `status` | opsional | menimpa nilai bawaan tantangan |
-
-Kode butir (`tmg-2-01`, …) dan opsi (`…-a` … `-d`) diberikan otomatis **sesuai urutan di berkas**. Setelah bank soal dipakai siswa, jangan menyisipkan atau menghapus butir di tengah daftar — tambahkan di akhir dan istirahatkan yang lama (`'active' => false`), agar kode butir lama tidak bergeser.
-
-Halaman Pustaka:
-
-```php
-'library' => [
-    [
-        'title' => ['Judul', 'Title'],
-        'body'  => ["Paragraf …\n\n## Subjudul\n- butir\n> Tahukah kamu? …\nSumber: …", "…"],
-        'media' => [
-            ['kind' => 'image', 'url' => 'https://commons.wikimedia.org/wiki/File:….jpg',
-             'caption' => ['Keterangan', 'Caption'], 'credit' => 'Penulis, CC BY-SA 4.0 via Wikimedia Commons'],
-            ['kind' => 'video', 'url' => 'https://www.youtube.com/watch?v=…', 'caption' => [...], 'credit' => 'Kanal …'],
+return [
+    'difficulty' => 'mudah',                       // sama dengan LevelSeeder
+    'nodes' => [
+        'tmg-1' => [
+            'engine' => 'puzzle', 'variant' => 'susun_gambar', 'indicator' => 'budaya',
+            'title' => [ID, EN], 'instruction' => [ID, EN], 'description' => [ID, EN],   // description = kartu misi
+            'hints' => [[ID, EN], [ID, EN], [ID, EN]],
+            'variants' => [
+                'a' => [
+                    'title' => [ID, EN], 'ref' => $ref['geo'],
+                    'items' => [[
+                        'type' => 'puzzle_arrange', 'prompt' => [keterangan ID, caption EN],
+                        'media' => ['key' => 'challenge.item.tmg-1-01', 'label' => 'Gunung Sindoro dan Sumbing', 'note' => 'isi gambar asli', 'source' => 'saran sumber'],
+                    ]],
+                ],
+            ],
+        ],
+        'tmg-2' => [   // Isi Rumpang
+            'engine' => 'rumpang', 'variant' => 'rumpang_bacaan', 'indicator' => 'literasi', 'distractor_count' => 0,
+            'variants' => ['a' => [
+                'title' => [ID, EN], 'ref' => …, 'distractors' => [],          // [['enam', 'six'], …]
+                'items' => [['type' => 'fill_blank_bank', 'bloom' => 'C1', 'prompt' => ['… Gunung ___.', '… Mount ___.'], 'answer' => ['Sumbing', 'Sumbing'], 'bloom_reason' => '…']],
+            ]],
+        ],
+        'tmg-3' => [   // Benar atau Salah
+            'engine' => 'boleh', 'variant' => 'benar_salah_bacaan', 'indicator' => 'literasi',
+            'variants' => ['a' => [
+                'passage' => ['title' => [ID, EN], 'body' => [ID, EN], 'ref' => …],   // paragraf dipisah "\n\n"
+                'items' => [['type' => 'verdict_card', 'bloom' => 'C1', 'skill' => 'informasi_tersurat', 'answer' => 'benar', 'prompt' => [ID, EN],
+                             'media' => [/* hanya pernyataan bergambar */]]],
+            ]],
+        ],
+        'tmg-4' => [   // Cari Objek
+            'engine' => 'cari', 'variant' => 'cari_objek', 'indicator' => 'budaya',
+            'scene' => ['key' => 'challenge.tmg-4.scene', 'label' => …, 'note' => …],
+            'variants' => ['a' => [
+                'title' => [ID, EN], 'ref' => …,
+                'items' => [
+                    ['type' => 'find_object', 'bloom' => 'C1', 'x' => 84, 'y' => 6, 'w' => 12, 'prompt' => [petunjuk ID, clue EN], 'media' => […]],
+                    ['type' => 'find_object', 'decoy' => true, 'x' => 74, 'y' => 40, 'w' => 12, 'prompt' => ['Angklung (pengecoh)', 'Angklung (decoy)'], 'wrong' => [ID, EN], 'media' => […]],
+                ],
+            ]],
         ],
     ],
-],
+];
 ```
 
-Format isi Pustaka: baris kosong = paragraf baru, `## ` subjudul, `- ` daftar, `> ` kotak "Tahukah kamu?", baris berawalan `Sumber:` menjadi catatan rujukan, `**tebal**`, dan `*miring*` untuk istilah daerah/asing. HTML tidak pernah dirender.
+- Potongan Isi Rumpang ditulis persis seperti disimpan: tepat satu `___` per potongan dan **tidak** di awal potongan (spasi sebelum rumpang hilang saat disambung). Jeda paragraf ditulis `\n\n` di tengah potongan **sesudah** `___`; importer memangkas tepi sel, jadi jeda di tepi akan hilang.
+- `media.label` (nama pendek, ≤ 120 huruf) dan `media.note` (isi gambar asli) mengisi `media_assets.label`/`description` dan dipakai halaman Media serta gambar contoh. `bloom_reason` hanya catatan penyusun (tidak ikut workbook).
+- Posisi benda Cari Objek dalam persen adegan 16:9: `x`, `y` dari kiri/atas, `w` lebar; tinggi benda = `w × 16/9`.
 
-Pemeriksaan yang dijalankan `build-workbook.php` sebelum menulis (butir yang diistirahatkan hanya diperiksa kode Bloom-nya):
+## Sheet workbook
 
-- pilihan ganda: tepat 4 opsi dengan satu jawaban benar;
-- rumpang: kalimat ID dan EN memuat `___`;
-- rumpang bank kata: jawaban tidak kembar dalam satu tantangan, pengecoh tidak sama dengan jawaban mana pun, dan jumlah pengecoh ≥ `distractor_count`;
-- bacaan: tepat satu `___` per potongan, `items_per_round` sama dengan jumlah rumpang, serta jumlah rumpang, pengecoh, dan tingkat Bloom sesuai tingkat wilayah (yang terakhir ini peringatan, bukan galat);
-- Susun Gambar: `items_per_round` = 1;
-- boleh: kunci termasuk `verdict_options`;
-- `ordering`: urutan memuat setiap kode potongan tepat sekali;
-- cari: setiap jebakan punya umpan balik;
-- setiap tantangan punya butir target aktif ≥ `items_per_round`, dan `item_key` unik lintas wilayah.
+| Sheet | Kolom |
+|---|---|
+| `nodes` | `node_ref, title_id, title_en, instruction_id, instruction_en, description_id, description_en, distractor_count, scene_media_key, scene_media_label, scene_media_note, background_media_key, variant_code, indicator` |
+| `variants` | `node_ref, variant_group, title_id, title_en` |
+| `distractors` | `node_ref, variant_group, text_id, text_en` |
+| `passages` | `passage_key, level_code, title_id, title_en, body_id, body_en, media_asset_key, reference_source` |
+| `items` | `item_key, node_ref, variant_group, sequence, interaction_type, indicator, bloom_level, skill, prompt_id, prompt_en, passage_key, answer_id, answer_en, x, y, w, decoy, wrong_feedback_id, wrong_feedback_en, media_asset_key, media_label, media_note, scorable, is_active, review_status, review_note, reference_source` |
+| `hints` | `node_ref, item_key, sequence, text_id, text_en` |
+
+Arti setiap kolom ada di sheet KAMUS_KOLOM dan di catatan header workbook. Semua soal `review_status = verified`. Sheet lama `options`, `pieces`, dan `sources` sudah tidak dibaca; jenis soal selain empat di atas ditolak ("Jenis soal ini sudah tidak dipakai di GELITA kelas 5.").
+
+## Pemeriksaan
+
+Satu sumber aturan, [`app/Libraries/BankRules.php`](../../app/Libraries/BankRules.php), dipakai `build-workbook.php`, importer, `php spark gelita:content:verify`, dan uji `BankKelas5DataTest`.
+
+**Galat** (workbook tidak ditulis / impor ditolak / verifikasi gagal): tiap wilayah tepat 4 tantangan aktif berurutan; tepat 3 variasi (Cari Objek ≥ 1); Susun Gambar satu soal bergambar per variasi; Isi Rumpang jumlah rumpang sesuai tingkat, tepat satu `___` per potongan (ID dan EN), tidak diawali `___`, jawaban unik, jumlah pengecoh = `distractor_count`, pengecoh ≠ jawaban, tanpa kata dobel; Benar atau Salah satu bacaan per variasi dengan jumlah paragraf dan pernyataan sesuai tingkat, kunci `benar`/`salah`, keterampilan sah; Cari Objek 4 dicari + pengecoh sesuai tingkat, umpan balik pengecoh, semua benda bergambar, posisi di dalam 0–100 % dan tumpukan ≤ 20 %; Bloom wajib; `item_key` unik.
+
+**Peringatan**: Bloom di luar rentang tingkat; variasi tanpa pernyataan `benar` atau tanpa `salah`; gambar masih gambar contoh — menjadi galat dengan `php spark gelita:content:verify --siap-penelitian`.
+
+## Mengimpor dan mengubah isi
+
+- Server baru atau reset: `php spark gelita:reset` mengimpor workbook ini lalu memasang gambar contoh (`gelita:mockups`). Mesin pengembangan: `php spark db:seed DatabaseSeeder` (development) mengimpornya juga.
+- Impor manual: **Panel GELITA → Konten permainan → Impor soal dari Excel**, atau `php spark gelita:bank:import docs/bank-soal/gelita-bank-soal-kelas5.xlsx --dry-run` lalu tanpa `--dry-run`. Impor ulang aman: data dicocokkan lewat kodenya. Kunci jawaban soal yang sudah dijawab siswa tidak dapat diubah.
+- Mengubah isi (hanya salah ketik yang jelas): sunting berkas data, jalankan `php docs/bank-soal/build-workbook.php`, lalu commit workbook-nya. `BankWorkbookGuideTest` gagal bila workbook belum dibangun ulang.
+
+## Gambar tantangan (45 slot)
+
+Setiap slot langsung berisi **gambar contoh** (SVG bertulisan "GAMBAR CONTOH", `media_assets.is_placeholder = 1`) dari `php spark gelita:mockups`, agar sistem dapat diuji ujung ke ujung. Admin menggantinya satu per satu lewat **Gambar & suara** dengan kode berkas yang sama; gambar asli tidak pernah ditimpa gambar contoh. Karena gambar contoh menuliskan nama benda, Cari Objek dan pernyataan bergambar **belum layak untuk pengambilan data** sebelum gambar asli dipasang.
+
+Kunci lama yang dipakai ulang (gambar asli mungkin sudah diunggah di server): `tmg-1-01/03/04`, `tmg-4-02/03/04/06/09/10/11`, `tmg-4.scene`, `mgl-1-01/02/03`, `wnb-1-05/06/07`. Kunci lama lain tidak dipakai lagi; hapus lewat `gelita:reset --bersihkan-media-tantangan` bila diinginkan.
+
+| Kunci | Nama | Wilayah · tantangan | Isi gambar asli | Ukuran |
+|---|---|---|---|---|
+| `challenge.item.tmg-1-01` | Gunung Sindoro dan Sumbing | TMG Susun Gambar | lanskap Gunung Sindoro & Sumbing, langit cerah, kebun di kaki gunung | persegi ≥ 1200 px |
+| `challenge.item.tmg-1-03` | Candi Pringapus | TMG Susun Gambar | Candi Pringapus tampak depan | persegi ≥ 1200 px |
+| `challenge.item.tmg-1-04` | Kuda Lumping | TMG Susun Gambar | penari kuda lumping dengan kuda anyaman bambu berwarna | persegi ≥ 1200 px |
+| `challenge.item.tmg-3-a03` | Butir padi hangus | TMG Benar atau Salah (gambar pernyataan) | butir padi hangus kehitaman (temuan arkeologi) | 480 × 360 |
+| `challenge.item.tmg-3-b03` | Arca Buddha duduk | TMG Benar atau Salah (gambar pernyataan) | arca Buddha duduk dari batu (sengaja tidak sesuai bacaan) | 480 × 360 |
+| `challenge.item.tmg-3-c03` | Biji kopi sangrai | TMG Benar atau Salah (gambar pernyataan) | biji kopi sangrai berwarna cokelat | 480 × 360 |
+| `challenge.item.tmg-4-02` | Biji kopi | TMG Cari Objek (benda) | segenggam biji kopi | 240 × 240, latar transparan |
+| `challenge.item.tmg-4-03` | Kuda kepang bambu | TMG Cari Objek (benda) | kuda kepang anyaman bambu berwarna (tanpa penari) | 240 × 240, latar transparan |
+| `challenge.item.tmg-4-04` | Ikan uceng | TMG Cari Objek (benda) | beberapa ikan uceng kecil memanjang | 240 × 240, latar transparan |
+| `challenge.item.tmg-4-06` | Arca Nandi | TMG Cari Objek (benda) | arca lembu Nandi duduk dari batu | 240 × 240, latar transparan |
+| `challenge.item.tmg-4-09` | Angklung | TMG Cari Objek (benda) | angklung bambu | 240 × 240, latar transparan |
+| `challenge.item.tmg-4-10` | Ondel-ondel | TMG Cari Objek (benda) | ondel-ondel kecil | 240 × 240, latar transparan |
+| `challenge.item.tmg-4-11` | Perahu pinisi | TMG Cari Objek (benda) | perahu pinisi berlayar | 240 × 240, latar transparan |
+| `challenge.item.tmg-4-12` | Sasando | TMG Cari Objek (benda) | sasando | 240 × 240, latar transparan |
+| `challenge.tmg-4.scene` | Pasar Budaya Temanggung | TMG Cari Objek (adegan) | halaman balai desa/pasar budaya di kaki Sindoro–Sumbing, tiga deret rak kosong (tata letak lama) | 1280 × 720 |
+| `challenge.item.mgl-1-01` | Stupa Borobudur | MGL Susun Gambar | stupa berlubang teras atas Borobudur, stupa induk di latar | persegi ≥ 1200 px |
+| `challenge.item.mgl-1-02` | Penari Topeng Ireng | MGL Susun Gambar | penari Topeng Ireng dengan kuluk bulu warna-warni | persegi ≥ 1200 px |
+| `challenge.item.mgl-1-03` | Candi Mendut | MGL Susun Gambar | Candi Mendut tampak depan dengan tangga masuk | persegi ≥ 1200 px |
+| `challenge.item.mgl-4-a01` | Stupa berlubang | MGL Cari Objek (benda) | stupa kecil berlubang (miniatur) | 240 × 240, latar transparan |
+| `challenge.item.mgl-4-a02` | Kuluk Topeng Ireng | MGL Cari Objek (benda) | kuluk bulu warna-warni Topeng Ireng | 240 × 240, latar transparan |
+| `challenge.item.mgl-4-a03` | Getuk | MGL Cari Objek (benda) | getuk tiga warna di atas daun pisang | 240 × 240, latar transparan |
+| `challenge.item.mgl-4-a04` | Kendil gerabah | MGL Cari Objek (benda) | kendil gerabah cokelat kemerahan | 240 × 240, latar transparan |
+| `challenge.item.mgl-4-a05` | Kuda kepang bambu | MGL Cari Objek (benda) | kuda kepang anyaman bambu | 240 × 240, latar transparan |
+| `challenge.item.mgl-4-a06` | Manisan carica dalam stoples | MGL Cari Objek (benda) | stoples manisan carica | 240 × 240, latar transparan |
+| `challenge.item.mgl-4-a07` | Dadak merak Reog | MGL Cari Objek (benda) | dadak merak Reog Ponorogo | 240 × 240, latar transparan |
+| `challenge.item.mgl-4-a08` | Angklung | MGL Cari Objek (benda) | angklung bambu | 240 × 240, latar transparan |
+| `challenge.item.mgl-4-a09` | Bakpia | MGL Cari Objek (benda) | beberapa bakpia | 240 × 240, latar transparan |
+| `challenge.item.mgl-4-a10` | Panci logam | MGL Cari Objek (benda) | panci logam | 240 × 240, latar transparan |
+| `challenge.mgl-4.scene` | Galeri Budaya Magelang | MGL Cari Objek (adegan) | galeri/pendapa budaya, dua deret meja pajang kayu, stupa & Gunung Tidar di latar | 1280 × 720 |
+| `challenge.item.wnb-1-05` | Telaga Warna | WNB Susun Gambar | Telaga Warna hijau kebiruan | persegi ≥ 1200 px |
+| `challenge.item.wnb-1-06` | Matahari Terbit di Sikunir | WNB Susun Gambar | matahari terbit dari puncak Sikunir, lautan awan | persegi ≥ 1200 px |
+| `challenge.item.wnb-1-07` | Mi Ongklok | WNB Susun Gambar | semangkuk mi ongklok dengan sate sapi, tampak atas | persegi ≥ 1200 px |
+| `challenge.item.wnb-4-a01` | Bundengan | WNB Cari Objek (benda) | bundengan (tudung bambu lengkung bersenar) | 240 × 240, latar transparan |
+| `challenge.item.wnb-4-a02` | Buah carica | WNB Cari Objek (benda) | beberapa buah carica kuning kecil | 240 × 240, latar transparan |
+| `challenge.item.wnb-4-a03` | Keranjang ongklok | WNB Cari Objek (benda) | keranjang ongklok bambu kecil bergagang | 240 × 240, latar transparan |
+| `challenge.item.wnb-4-a04` | Daun teh | WNB Cari Objek (benda) | daun teh segar (pucuk) | 240 × 240, latar transparan |
+| `challenge.item.wnb-4-a05` | Pepaya biasa | WNB Cari Objek (benda) | pepaya biasa (besar) | 240 × 240, latar transparan |
+| `challenge.item.wnb-4-a06` | Rigen | WNB Cari Objek (benda) | rigen (anyaman bambu persegi panjang, kosong) | 240 × 240, latar transparan |
+| `challenge.item.wnb-4-a07` | Semangkuk mi ongklok | WNB Cari Objek (benda) | semangkuk mi ongklok | 240 × 240, latar transparan |
+| `challenge.item.wnb-4-a08` | Angklung | WNB Cari Objek (benda) | angklung bambu | 240 × 240, latar transparan |
+| `challenge.item.wnb-4-a09` | Sasando | WNB Cari Objek (benda) | sasando | 240 × 240, latar transparan |
+| `challenge.item.wnb-4-a10` | Biji kopi | WNB Cari Objek (benda) | segenggam biji kopi | 240 × 240, latar transparan |
+| `challenge.item.wnb-4-a11` | Kuluk Topeng Ireng | WNB Cari Objek (benda) | kuluk bulu Topeng Ireng | 240 × 240, latar transparan |
+| `challenge.item.wnb-4-a12` | Getuk | WNB Cari Objek (benda) | getuk | 240 × 240, latar transparan |
+| `challenge.wnb-4.scene` | Pasar Oleh-oleh Dieng | WNB Cari Objek (adegan) | pasar oleh-oleh Dieng berkabut tipis, tiga deret rak bambu/meja kayu, kebun teh & candi di latar | 1280 × 720 |
+
+Daftar yang sama ada di sheet DAFTAR_MEDIA workbook (dengan kode soal pemakainya dan saran sumber).

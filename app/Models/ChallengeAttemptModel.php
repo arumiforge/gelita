@@ -81,11 +81,11 @@ class ChallengeAttemptModel extends Model
 
     /**
      * Variasi yang sudah pernah didapat seorang siswa pada satu node, di semua
-     * sesinya (Dok 1 §9.2 langkah 2).
+     * sesinya (Dok 2 §3.2) — termasuk pengerjaan yang ditinggalkan.
      *
      * @return list<string>
      */
-    public function variantsSeen(int $participantId, int $nodeId): array
+    public function variantsServed(int $participantId, int $nodeId): array
     {
         $rows = $this->db->table('challenge_attempts ca')
             ->distinct()

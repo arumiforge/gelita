@@ -7,8 +7,10 @@ use App\Models\ChallengeItemModel;
 use App\Models\ChallengeNodeModel;
 use App\Models\HintModel;
 use App\Models\LearningIndicatorModel;
+use App\Libraries\BankRules;
+use App\Libraries\BankSource;
+use App\Libraries\BankState;
 use App\Libraries\BankWorkbookGuide;
-use App\Libraries\ClozeReading;
 use App\Libraries\DifficultyRules;
 use App\Libraries\MediaLink;
 use App\Models\LevelModel;
@@ -22,34 +24,43 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx as XlsxWriter;
 
 /**
  * Memuat workbook bank soal (XLSX) ke tabel konten dalam satu transaction.
- * Format sheet ditetapkan di 07_FEATURE_INTEGRATION.md (FITUR 12a); arti
- * tiap kolom (dipakai sheet PETUNJUK di templat) ada di BankWorkbookGuide.
+ * Format sheet bank soal kelas 5 ditetapkan Dok 2 §7.3; arti tiap kolom
+ * (dipakai sheet PETUNJUK dan KAMUS_KOLOM) ada di BankWorkbookGuide.
  *
- * Sheet `library` dan `library_media` (Pustaka Kedu) opsional: workbook
- * lama tanpa keduanya tetap terbaca seperti sebelumnya.
+ * Selain pemeriksaan per baris, keadaan SESUDAH impor setiap tantangan yang
+ * disentuh workbook (isi database ditimpa baris workbook) diperiksa dengan
+ * aturan bank soal kelas 5 (App\Libraries\BankRules, Dok 2 §7.5); galatnya
+ * menolak impor.
+ *
+ * Sheet `library` dan `library_media` (Pustaka Kedu) tetap didukung untuk
+ * docs/pustaka/gelita-pustaka.xlsx; workbook bank soal kelas 5 tidak
+ * memilikinya, sehingga impornya tidak pernah menyentuh Pustaka.
  */
 class ContentImportService
 {
-    /** Jenis soal yang diterima (perombakan kelas 5: empat jenis, satu per engine). */
-    private const INTERACTION_TYPES = ['puzzle_arrange', 'fill_blank_bank', 'verdict_card', 'find_object'];
-
     /** @var list<int> id library_media video luar tanpa poster yang ditulis impor ini */
     private array $thumbnailQueue = [];
 
     /** Header per sheet; kolom di luar daftar ini diabaikan. Sheet lain (mis. PETUNJUK) juga diabaikan. */
     public const SHEETS = [
-        'nodes'       => ['node_ref', 'title_id', 'title_en', 'instruction_id', 'instruction_en', 'description_id', 'description_en', 'use_word_bank', 'distractor_count', 'as_reading', 'scene_media_key', 'background_media_key', 'variant_code', 'indicator'],
+        'nodes'       => ['node_ref', 'title_id', 'title_en', 'instruction_id', 'instruction_en', 'description_id', 'description_en', 'distractor_count', 'scene_media_key', 'scene_media_label', 'scene_media_note', 'background_media_key', 'variant_code', 'indicator'],
         'variants'    => ['node_ref', 'variant_group', 'title_id', 'title_en'],
         'distractors' => ['node_ref', 'variant_group', 'text_id', 'text_en'],
         'passages'    => ['passage_key', 'level_code', 'title_id', 'title_en', 'body_id', 'body_en', 'media_asset_key', 'reference_source'],
-        'items'       => ['item_key', 'node_ref', 'variant_group', 'sequence', 'interaction_type', 'indicator', 'bloom_level', 'prompt_id', 'prompt_en', 'source_text_id', 'source_text_en', 'passage_key', 'answer_id', 'answer_en', 'x', 'y', 'w', 'decoy', 'wrong_feedback_id', 'wrong_feedback_en', 'media_asset_key', 'scorable', 'is_active', 'review_status', 'review_note', 'reference_source'],
+        'items'       => ['item_key', 'node_ref', 'variant_group', 'sequence', 'interaction_type', 'indicator', 'bloom_level', 'skill', 'prompt_id', 'prompt_en', 'passage_key', 'answer_id', 'answer_en', 'x', 'y', 'w', 'decoy', 'wrong_feedback_id', 'wrong_feedback_en', 'media_asset_key', 'media_label', 'media_note', 'scorable', 'is_active', 'review_status', 'review_note', 'reference_source'],
         'hints'       => ['node_ref', 'item_key', 'sequence', 'text_id', 'text_en'],
         'library'       => ['level_code', 'sequence', 'title_id', 'title_en', 'body_id', 'body_en', 'is_active'],
         'library_media' => ['level_code', 'page_sequence', 'sequence', 'media_kind', 'media_asset_key', 'external_url', 'poster_media_key', 'caption_id', 'caption_en', 'credit'],
     ];
 
-    /** Sheet yang boleh tidak ada tanpa peringatan (fitur yang ditambahkan belakangan). */
-    private const OPTIONAL_SHEETS = ['library', 'library_media', 'variants'];
+    /** Sheet Pustaka: workbook bank soal tidak memilikinya, workbook Pustaka hanya keduanya. */
+    private const LIBRARY_SHEETS = ['library', 'library_media'];
+
+    /** Sheet workbook lama yang sudah tidak dibaca (opsi, potongan urutan, kartu sumber). */
+    private const LEGACY_SHEETS = ['options', 'pieces', 'sources'];
+
+    /** Pesan untuk jenis soal di luar Config\Gelita::$interactionTypes (Dok 2 §6.5). */
+    public const RETIRED_TYPE = 'Jenis soal ini sudah tidak dipakai di GELITA kelas 5.';
 
     /**
      * Membaca workbook, memvalidasi seluruh baris, TANPA menulis database.
@@ -152,7 +163,7 @@ class ContentImportService
 
         (new BankWorkbookGuide())->write($rows, $path, [
             'title'    => 'Templat Bank Soal GELITA',
-            'subtitle' => 'Baris yang sudah terisi di setiap sheet hanyalah contoh: boleh dihapus atau ditimpa. Baca sheet PETUNJUK ini dulu sebelum mengisi.',
+            'subtitle' => 'Baris yang sudah terisi adalah contoh dari bank soal kelas 5 (Susun Gambar Temanggung, Isi Rumpang Magelang, Benar atau Salah Temanggung, Cari Objek Temanggung): boleh dihapus atau ditimpa. Sheet library dan library_media hanya untuk berkas Pustaka. Baca sheet PETUNJUK ini dulu sebelum mengisi.',
         ]);
 
         return $path;
@@ -182,21 +193,39 @@ class ContentImportService
         $errors   = [];
         $warnings = [];
 
+        // Workbook bank soal (punya sheet tantangan/soal) wajib lengkap; sheet
+        // Pustaka selalu opsional, dan workbook Pustaka tidak butuh sheet soal.
+        $isBank = array_filter(
+            array_diff(array_keys(self::SHEETS), self::LIBRARY_SHEETS),
+            static fn (string $name): bool => $book->sheetNameExists($name),
+        ) !== [];
+
         foreach (self::SHEETS as $name => $headers) {
             $sheets[$name] = $book->sheetNameExists($name)
-                ? $this->readSheet($book->getSheetByName($name)->toArray(null, true, false, false), $headers)
+                ? array_map(
+                    static fn (array $row): array => $row + ['__sheet' => $name],
+                    $this->readSheet($book->getSheetByName($name)->toArray(null, true, false, false), $headers),
+                )
                 : [];
 
-            if (! $book->sheetNameExists($name) && ! in_array($name, self::OPTIONAL_SHEETS, true)) {
+            if (! $book->sheetNameExists($name) && $isBank && ! in_array($name, self::LIBRARY_SHEETS, true)) {
                 $warnings[] = ['sheet' => $name, 'row' => 0, 'message' => 'Sheet ' . $name . ' tidak ada di berkas, jadi dilewati.'];
             }
         }
 
-        // Tingkat Bloom ditulis huruf besar (c2 → C2), variasi huruf kecil (A → a)
-        // sebelum diperiksa dan ditulis. Variasi kosong = `a`.
+        foreach (self::LEGACY_SHEETS as $name) {
+            if ($book->sheetNameExists($name)) {
+                $warnings[] = ['sheet' => $name, 'row' => 0, 'message' => 'Sheet ' . $name . ' sudah tidak dipakai di GELITA kelas 5 (pilihan jawaban, kartu urutan, dan kartu sumber dihapus), jadi isinya diabaikan.'];
+            }
+        }
+
+        // Tingkat Bloom ditulis huruf besar (c2 → C2), variasi dan keterampilan
+        // huruf kecil (A → a) sebelum diperiksa dan ditulis. Variasi kosong = `a`.
         foreach ($sheets['items'] as $index => $row) {
-            $sheets['items'][$index]['bloom_level']   = strtoupper((string) $row['bloom_level']);
-            $sheets['items'][$index]['variant_group'] = strtolower((string) $row['variant_group']) ?: 'a';
+            $sheets['items'][$index]['bloom_level']      = strtoupper((string) $row['bloom_level']);
+            $sheets['items'][$index]['variant_group']    = strtolower((string) $row['variant_group']) ?: 'a';
+            $sheets['items'][$index]['skill']            = strtolower((string) $row['skill']);
+            $sheets['items'][$index]['interaction_type'] = strtolower((string) $row['interaction_type']);
         }
 
         foreach (['variants', 'distractors'] as $name) {
@@ -245,7 +274,18 @@ class ContentImportService
                     'message' => "Soal {$row['item_key']} masih bertanda needs_verification (fakta perlu dicek). Soal tetap disimpan; ubah menjadi verified setelah faktanya dicek.",
                 ];
             }
+        }
 
+        // Aturan bank soal kelas 5 atas keadaan sesudah impor (hanya bila
+        // baris-barisnya sendiri sudah sah, agar pesan tidak bertumpuk)
+        if ($errors === []) {
+            foreach ($this->bankProblems($sheets, $context) as $problem) {
+                if ($problem['level'] === 'error') {
+                    $errors[] = $problem['finding'];
+                } else {
+                    $warnings[] = $problem['finding'];
+                }
+            }
         }
 
         $summary = $this->summarize($sheets, $warnings);
@@ -348,8 +388,12 @@ class ContentImportService
 
     private function validateNodeSettings(array $row, array $context): ?string
     {
-        if (! in_array((string) $row['as_reading'], ['', '0', '1'], true)) {
-            return 'Kolom as_reading (tampil sebagai bacaan) hanya boleh 0 atau 1, atau dikosongkan.';
+        if ($row['distractor_count'] !== '' && ! ctype_digit((string) $row['distractor_count'])) {
+            return 'Kolom distractor_count (jumlah kata pengecoh) harus angka bulat 0 ke atas, atau dikosongkan.';
+        }
+
+        if (mb_strlen((string) $row['scene_media_label']) > 120 || mb_strlen((string) $row['scene_media_note']) > 500) {
+            return 'Nama gambar adegan paling banyak 120 huruf dan isi gambar adegan paling banyak 500 huruf.';
         }
 
         if ($row['variant_code'] !== '' && preg_match('/^[a-z0-9_]{1,60}$/', (string) $row['variant_code']) !== 1) {
@@ -392,10 +436,10 @@ class ContentImportService
             return $nodeError;
         }
 
-        if (! in_array($row['interaction_type'], self::INTERACTION_TYPES, true)) {
+        if (! in_array($row['interaction_type'], config('Gelita')->interactionTypes, true)) {
             return $row['interaction_type'] === ''
                 ? self::missing('items', 'interaction_type')
-                : self::unknown('items', 'interaction_type', $row['interaction_type'], 'Pakai puzzle_arrange, fill_blank_bank, verdict_card, atau find_object (jenis lain sudah tidak dipakai).');
+                : self::RETIRED_TYPE . " Soal {$row['item_key']} berjenis '{$row['interaction_type']}'; pakai " . implode(', ', config('Gelita')->interactionTypes) . '.';
         }
 
         $variantError = $this->validateVariantGroup('items', (string) $row['variant_group']);
@@ -412,6 +456,14 @@ class ContentImportService
             return self::unknown('items', 'bloom_level', $row['bloom_level'], 'Pakai C1, C2, C3, C4, C5, atau C6, atau kosongkan.');
         }
 
+        if ($row['skill'] !== '' && ! DifficultyRules::isSkill($row['skill'])) {
+            return self::unknown('items', 'skill', $row['skill'], 'Pakai ' . implode(', ', array_keys(DifficultyRules::SKILLS)) . '.');
+        }
+
+        if (mb_strlen((string) $row['media_label']) > 120 || mb_strlen((string) $row['media_note']) > 500) {
+            return 'Nama gambar (media_label) paling banyak 120 huruf dan isi gambar (media_note) paling banyak 500 huruf.';
+        }
+
         if (! in_array((string) $row['is_active'], ['', '0', '1'], true)) {
             return 'Kolom is_active (soal dipakai?) hanya boleh 0 atau 1, atau dikosongkan.';
         }
@@ -424,22 +476,8 @@ class ContentImportService
             return "Kode bacaan (passage_key) '{$passageKey}' tidak ditemukan, baik di sheet passages maupun di bacaan yang sudah ada.";
         }
 
-        if ($row['interaction_type'] === 'verdict_card'
-            && ! in_array(mb_strtolower((string) $row['answer_id']), ['benar', 'salah'], true)) {
-            return 'Kunci jawaban (answer_id) untuk soal benar/salah harus diisi benar atau salah.';
-        }
-
-        if ($row['interaction_type'] === 'fill_blank_bank') {
-            if (trim((string) $row['answer_id']) === '') {
-                return 'Kunci jawaban (answer_id) wajib diisi untuk soal isi rumpang.';
-            }
-
-            foreach (['prompt_id' => 'bahasa Indonesia', 'prompt_en' => 'bahasa Inggris'] as $column => $language) {
-                if (($column === 'prompt_id' || $row[$column] !== '') && ClozeReading::blankCount((string) $row[$column]) !== 1) {
-                    return "Soal isi rumpang {$row['item_key']} harus punya TEPAT SATU tempat kosong ___ di teks {$language}.";
-                }
-            }
-        }
+        // Isi soal (kunci benar/salah, ___ rumpang, Bloom, posisi benda, …)
+        // diperiksa per tantangan oleh bankProblems() memakai BankRules.
 
         $layout = null;
 
@@ -751,9 +789,11 @@ class ContentImportService
     }
 
     /**
-     * config_json node: pengaturan bacaan, judul per variasi (sheet
-     * variants), dan pengecoh Isi Rumpang per variasi (sheet distractors).
-     * Kunci lama tingkat node dibuang (ContentVerifier::LEGACY_NODE_KEYS).
+     * config_json node: judul per variasi (sheet variants), pengecoh Isi
+     * Rumpang per variasi (sheet distractors), dan jumlah pengecoh yang tampil.
+     * Isi Rumpang selalu bacaan dengan bank kata (as_reading, use_word_bank),
+     * nilainya tetap dari engine. Kunci lama tingkat node dibuang
+     * (ContentVerifier::LEGACY_NODE_KEYS).
      *
      * @param list<array<string, string>> $rows
      * @param list<array<string, string>> $variantRows
@@ -780,10 +820,13 @@ class ContentImportService
 
             $config['selection'] = 'variant';
 
-            foreach (['distractor_count' => 'int', 'use_word_bank' => 'bool', 'as_reading' => 'bool'] as $key => $type) {
-                if ($row[$key] !== '') {
-                    $config[$key] = $type === 'int' ? (int) $row[$key] : (bool) (int) $row[$key];
-                }
+            if ($node->engine_type === 'rumpang') {
+                $config['as_reading']    = true;
+                $config['use_word_bank'] = true;
+            }
+
+            if ($row['distractor_count'] !== '') {
+                $config['distractor_count'] = (int) $row['distractor_count'];
             }
 
             $variants = (array) ($config['variants'] ?? []);
@@ -913,8 +956,6 @@ class ContentImportService
                 'interaction_type'  => $row['interaction_type'],
                 'prompt_id'         => $this->nullIfBlank($row['prompt_id']),
                 'prompt_en'         => $this->nullIfBlank($row['prompt_en']),
-                'source_text_id'    => $this->nullIfBlank($row['source_text_id']),
-                'source_text_en'    => $this->nullIfBlank($row['source_text_en']),
                 'passage_id'        => $passageId,
                 'answer_key_json'   => $this->answerKeyFor($row, $layout),
                 'config_json'       => $this->itemConfigFor($row, $layout),
@@ -1118,9 +1159,14 @@ class ContentImportService
 
     /**
      * Kunci media yang dirujuk workbook tetapi belum ada di media_assets
-     * dibuat sebagai slot kosong (is_active = 0, berkas belum ada). Unggahan
-     * berikutnya dengan asset_key yang sama mengisi baris ini (MediaStore),
-     * sehingga tautan konten tidak perlu dibuat ulang.
+     * dibuat sebagai slot kosong (is_active = 0, berkas belum ada) dengan
+     * nama (`label`) dan isi gambar yang diharapkan (`description`) dari
+     * kolom media workbook. Unggahan berikutnya dengan asset_key yang sama
+     * mengisi baris ini (MediaStore), sehingga tautan konten tidak perlu
+     * dibuat ulang; sebelum itu `gelita:mockups` memasang gambar contoh.
+     *
+     * Slot yang sudah ada (mis. gambar asli yang sudah diunggah dengan kunci
+     * lama) tidak diubah, selain mengisi label/description yang masih kosong.
      *
      * @param array<string, list<array<string, string>>> $sheets
      * @param array<string, int>                         $media
@@ -1130,6 +1176,7 @@ class ContentImportService
     private function createMediaSlots(array $sheets, array $media): array
     {
         $wanted = [];
+        $labels = [];
 
         foreach (['nodes' => ['scene_media_key', 'background_media_key'], 'passages' => ['media_asset_key'],
             'items' => ['media_asset_key'], 'library_media' => ['media_asset_key', 'poster_media_key']] as $sheet => $columns) {
@@ -1137,7 +1184,21 @@ class ContentImportService
                 foreach ($columns as $column) {
                     $key = trim((string) ($row[$column] ?? ''));
 
-                    if ($key !== '' && ! isset($media[$key])) {
+                    if ($key === '') {
+                        continue;
+                    }
+
+                    [$label, $note] = match (true) {
+                        $sheet === 'items' && $column === 'media_asset_key' => [$row['media_label'], $row['media_note']],
+                        $sheet === 'nodes' && $column === 'scene_media_key' => [$row['scene_media_label'], $row['scene_media_note']],
+                        default                                             => ['', ''],
+                    };
+
+                    if (trim((string) $label) !== '' || trim((string) $note) !== '') {
+                        $labels[$key] ??= ['label' => trim((string) $label), 'description' => trim((string) $note)];
+                    }
+
+                    if (! isset($media[$key])) {
                         $isVideo      = $sheet === 'library_media' && $column === 'media_asset_key' && $row['media_kind'] === 'video';
                         $wanted[$key] = $isVideo ? 'video' : 'image';
                     }
@@ -1154,13 +1215,32 @@ class ContentImportService
                 'storage_path' => 'assets/uploads/' . (preg_replace('/[^a-z0-9._-]+/i', '-', $key) ?? $key) . ($type === 'video' ? '.mp4' : '.png'),
                 'mime_type'    => $type === 'video' ? 'video/mp4' : 'image/png',
                 'is_active'    => 0,
-            ], true);
+            ] + array_filter($labels[$key] ?? [], static fn (string $value): bool => $value !== ''), true);
 
             if ($id === false) {
                 throw new \RuntimeException("Tempat berkas dengan kode '{$key}' tidak dapat disiapkan: " . implode(' ', $model->errors()));
             }
 
             $media[$key] = (int) $id;
+            unset($labels[$key]);
+        }
+
+        // Slot yang sudah ada: hanya label/description yang masih kosong
+        foreach ($labels as $key => $texts) {
+            if (! isset($media[$key])) {
+                continue;
+            }
+
+            foreach ($texts as $column => $value) {
+                if ($value === '') {
+                    continue;
+                }
+
+                db_connect()->table('media_assets')
+                    ->where('id', $media[$key])
+                    ->groupStart()->where($column, null)->orWhere($column, '')->groupEnd()
+                    ->update([$column => $value]);
+            }
         }
 
         return $media;
@@ -1238,6 +1318,11 @@ class ContentImportService
             }
         }
 
+        // Keterampilan Benar atau Salah (DifficultyRules::SKILLS)
+        if ($row['skill'] !== '') {
+            $config['skill'] = $row['skill'];
+        }
+
         return $config === [] ? null : $config;
     }
 
@@ -1293,25 +1378,11 @@ class ContentImportService
     private function summarize(array $sheets, array $warnings): array
     {
         $perNode = [];
-        $active  = [];
-        $keys    = [];
+        $groups  = [];
 
         foreach ($sheets['items'] as $row) {
             $perNode[$row['node_ref']]['items'] = ($perNode[$row['node_ref']]['items'] ?? 0) + 1;
-            $keys[$row['node_ref']][]           = trim((string) $row['item_key']);
-
-            if ($row['is_active'] !== '0') {
-                $active[$row['node_ref']] = ($active[$row['node_ref']] ?? 0) + 1;
-            }
-        }
-
-        // Tantangan bacaan memakai SEMUA soalnya sekaligus, jadi tidak butuh soal cadangan.
-        $reading = [];
-
-        foreach ($sheets['nodes'] as $row) {
-            if ($row['as_reading'] !== '') {
-                $reading[$row['node_ref']] = $row['as_reading'] === '1';
-            }
+            $groups[$row['node_ref']][$row['variant_group']] = true;
         }
 
         foreach ($sheets['hints'] as $row) {
@@ -1323,55 +1394,223 @@ class ContentImportService
             $perNode[$row['node_ref']]['distractors'] = ($perNode[$row['node_ref']]['distractors'] ?? 0) + 1;
         }
 
-        $groups = [];
-
-        foreach ($sheets['items'] as $row) {
-            $groups[$row['node_ref']][$row['variant_group']] = true;
-        }
-
         foreach ($groups as $ref => $set) {
             $perNode[$ref]['variants'] = count($set);
         }
 
-        $nodes = model(ChallengeNodeModel::class)->allActive();
-
-        foreach ($nodes as $node) {
-            $ref = $this->nodeRefFor($node->level_id, $node->sequence);
-
-            if ($reading[$ref] ?? $node->isReading()) {
-                // Semua soal aktif tantangan bacaan tersambung menjadi satu bacaan,
-                // termasuk soal yang tidak ada di workbook (mis. soal contoh -91).
-                $extra = array_values(array_diff(
-                    array_map(static fn ($item): string => (string) $item->item_key, model(ChallengeItemModel::class)->bankForNode((int) $node->id)),
-                    $keys[$ref] ?? [],
-                ));
-
-                if ($ref !== null && $extra !== []) {
-                    $warnings[] = [
-                        'sheet'   => 'items',
-                        'row'     => 0,
-                        'message' => "Tantangan bacaan {$ref} masih punya soal aktif yang tidak ada di workbook ini (" . implode(', ', $extra) . '). Soal itu ikut tersambung ke bacaan dan jawabannya masuk bank kata. Istirahatkan soal itu di editor soal (atau tulis barisnya dengan is_active = 0) bila bukan bagian bacaan.',
-                    ];
-                }
-
-                continue;
-            }
-        }
-
         return [
             'summary' => [
-                'nodes'       => count($sheets['nodes']),
-                'passages'    => count($sheets['passages']),
-                'items'       => count($sheets['items']),
-                'variants'    => count($sheets['variants']),
-                'hints'       => count($sheets['hints']),
-                'distractors' => count($sheets['distractors']),
+                'nodes'         => count($sheets['nodes']),
+                'passages'      => count($sheets['passages']),
+                'items'         => count($sheets['items']),
+                'variants'      => count($sheets['variants']),
+                'hints'         => count($sheets['hints']),
+                'distractors'   => count($sheets['distractors']),
                 'library'       => count($sheets['library']),
                 'library_media' => count($sheets['library_media']),
-                'per_node'    => $perNode,
+                'per_node'      => $perNode,
             ],
             'warnings' => $warnings,
         ];
+    }
+
+    /**
+     * Aturan bank soal kelas 5 (BankRules, Dok 2 §7.5) atas keadaan SESUDAH
+     * impor setiap tantangan yang disentuh workbook: soal aktif di database
+     * ditimpa baris workbook (kode soal sama), soal ber-is_active 0 keluar,
+     * pengecoh per variasi diganti isi sheet distractors, bacaan dari
+     * database + sheet passages. Temuan dipetakan ke baris workbook-nya.
+     *
+     * @param array<string, list<array<string, string>>> $sheets
+     * @param array<string, mixed>                       $context
+     *
+     * @return list<array{level: string, finding: array{sheet: string, row: int, message: string}}>
+     */
+    private function bankProblems(array $sheets, array $context): array
+    {
+        $touched = [];
+
+        foreach (['nodes', 'variants', 'distractors', 'items'] as $sheet) {
+            foreach ($sheets[$sheet] as $row) {
+                if (isset($context['nodes'][$row['node_ref']])) {
+                    $touched[$row['node_ref']] = true;
+                }
+            }
+        }
+
+        if ($touched === []) {
+            return [];
+        }
+
+        $state    = new BankState();
+        $passages = $state->passages();
+
+        foreach ($sheets['passages'] as $row) {
+            $passages[$row['passage_key']] = ['level' => $row['level_code'], 'body_id' => $row['body_id'], 'body_en' => $row['body_en']];
+        }
+
+        $itemRows = [];
+
+        foreach ($sheets['items'] as $row) {
+            $itemRows[$row['item_key']] ??= $row;
+        }
+
+        $out = [];
+
+        foreach (array_keys(array_count_values(array_column($sheets['items'], 'item_key'))) as $key) {
+            if (count(array_keys(array_column($sheets['items'], 'item_key'), $key, true)) > 1) {
+                $out[] = ['level' => 'error', 'finding' => ['sheet' => 'items', 'row' => (int) $itemRows[$key]['__row'], 'message' => "Kode soal (item_key) {$key} ditulis lebih dari sekali."]];
+            }
+        }
+
+        foreach (array_keys($touched) as $ref) {
+            $node = model(ChallengeNodeModel::class)->find($context['nodes'][$ref]);
+
+            if ($node === null) {
+                continue;
+            }
+
+            $normal = $state->node($node);
+
+            if ($normal === null) {
+                continue;
+            }
+
+            // Pengaturan tantangan dari sheet nodes
+            foreach ($sheets['nodes'] as $row) {
+                if ($row['node_ref'] === $ref && $row['distractor_count'] !== '') {
+                    $normal['distractor_count'] = (int) $row['distractor_count'];
+                }
+            }
+
+            // Pengecoh: variasi yang punya baris di sheet distractors diganti seluruhnya
+            $byGroup = [];
+
+            foreach ($sheets['distractors'] as $row) {
+                if ($row['node_ref'] === $ref) {
+                    $byGroup[$row['variant_group']][] = ['id' => $row['text_id'], 'en' => $row['text_en'] !== '' ? $row['text_en'] : $row['text_id']];
+                }
+            }
+
+            foreach ($byGroup as $group => $list) {
+                $normal['variants'][$group] ??= ['distractors' => [], 'items' => []];
+                $normal['variants'][$group]['distractors'] = $list;
+            }
+
+            // Soal: database ditimpa baris workbook dengan kode yang sama
+            $existing = [];
+
+            foreach (model(ChallengeItemModel::class)->where('challenge_node_id', $node->id)->findAll() as $item) {
+                $existing[(string) $item->item_key] = $item;
+            }
+
+            foreach ($normal['variants'] as $group => $variant) {
+                $normal['variants'][$group]['items'] = array_values(array_filter(
+                    $variant['items'],
+                    static fn (array $item): bool => ! isset($itemRows[$item['key']]),
+                ));
+            }
+
+            foreach ($sheets['items'] as $row) {
+                if ($row['node_ref'] !== $ref || $itemRows[$row['item_key']] !== $row) {
+                    continue;
+                }
+
+                $stored = $existing[$row['item_key']] ?? null;
+                $active = $row['is_active'] !== '' ? $row['is_active'] === '1' : ($stored === null || $stored->is_active);
+
+                if (! $active) {
+                    continue;
+                }
+
+                $group = $row['variant_group'];
+                $normal['variants'][$group] ??= ['distractors' => [], 'items' => []];
+                $normal['variants'][$group]['items'][] = $this->normalItem($row, $stored, $context['media']);
+            }
+
+            foreach ($normal['variants'] as $group => $variant) {
+                usort($normal['variants'][$group]['items'], static fn (array $a, array $b): int => [$a['sequence'] ?? 0, $a['key']] <=> [$b['sequence'] ?? 0, $b['key']]);
+            }
+
+            ksort($normal['variants'], SORT_STRING);
+
+            foreach (BankRules::node($normal, $passages) as $problem) {
+                $row   = $problem['item'] !== null ? ($itemRows[$problem['item']] ?? null) : null;
+                $sheet = 'items';
+
+                if ($row === null) {
+                    $row = $this->firstRow($sheets['items'], $ref, $problem['variant'])
+                        ?? $this->firstRow($sheets['distractors'], $ref, $problem['variant'])
+                        ?? $this->firstRow($sheets['nodes'], $ref, null);
+                    $sheet = $row === null ? '-' : ($row['__sheet'] ?? 'items');
+                }
+
+                $out[] = ['level' => $problem['level'], 'finding' => [
+                    'sheet'   => $sheet,
+                    'row'     => (int) ($row['__row'] ?? 0),
+                    'message' => 'Tantangan ' . $ref . ($problem['variant'] !== null ? ' variasi ' . $problem['variant'] : '')
+                        . ($problem['item'] !== null ? ', soal ' . $problem['item'] : '') . ': ' . $problem['message'],
+                ]];
+            }
+        }
+
+        return $out;
+    }
+
+    /**
+     * Baris workbook → bentuk BankRules. Gambar dianggap ada bila kolom
+     * kodenya terisi atau soal tersimpan sudah punya gambar.
+     *
+     * @param array<string, string> $row
+     * @param array<string, int>    $media
+     *
+     * @return array<string, mixed>
+     */
+    private function normalItem(array $row, ?\App\Entities\ChallengeItem $stored, array $media): array
+    {
+        $type  = $row['interaction_type'];
+        $decoy = $row['decoy'] !== '' ? $row['decoy'] === '1' : mb_strtolower($row['answer_id']) === 'decoy';
+
+        return [
+            'key'       => $row['item_key'],
+            'sequence'  => $row['sequence'] !== '' ? (int) $row['sequence'] : 1,
+            'type'      => $type,
+            'prompt_id' => $row['prompt_id'],
+            'prompt_en' => $row['prompt_en'],
+            'answer_id' => match ($type) {
+                'verdict_card' => mb_strtolower($row['answer_id']),
+                'find_object'  => $decoy ? 'decoy' : 'target',
+                default        => $row['answer_id'],
+            },
+            'answer_en' => $type === 'fill_blank_bank' ? ($row['answer_en'] !== '' ? $row['answer_en'] : $row['answer_id']) : '',
+            'bloom'     => $row['bloom_level'],
+            'skill'     => $row['skill'],
+            'passage'   => $row['passage_key'] !== '' ? $row['passage_key'] : null,
+            'x'         => $row['x'] !== '' ? (float) $row['x'] : null,
+            'y'         => $row['y'] !== '' ? (float) $row['y'] : null,
+            'w'         => $row['w'] !== '' ? (float) $row['w'] : null,
+            'decoy'     => $decoy,
+            'wrong_id'  => $row['wrong_feedback_id'],
+            'media'     => trim($row['media_asset_key']) !== '' || ($stored !== null && $stored->media_asset_id !== null),
+        ];
+    }
+
+    /**
+     * Baris pertama sebuah sheet untuk tantangan (dan variasi) tertentu.
+     *
+     * @param list<array<string, mixed>> $rows
+     *
+     * @return array<string, mixed>|null
+     */
+    private function firstRow(array $rows, string $ref, ?string $group): ?array
+    {
+        foreach ($rows as $row) {
+            if (($row['node_ref'] ?? null) === $ref && ($group === null || ($row['variant_group'] ?? null) === $group)) {
+                return $row;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -1482,10 +1721,12 @@ class ContentImportService
         return null;
     }
 
-    /** @return list<string> */
     /**
-     * Baris contoh templat, saling konsisten antar-sheet, sehingga templat
-     * yang diunggah apa adanya lolos pratinjau.
+     * Baris contoh templat: empat tantangan utuh dari bank soal kelas 5
+     * (docs/bank-soal/data, satu dari setiap jenis), sehingga templat yang
+     * diunggah apa adanya lolos pratinjau dan tidak mengubah apa pun pada
+     * server yang memakai bank itu. Sheet Pustaka sengaja tanpa contoh agar
+     * Pustaka tidak tertimpa tanpa sengaja.
      *
      * @param list<string> $headers
      *
@@ -1493,49 +1734,24 @@ class ContentImportService
      */
     private function exampleRows(string $sheet, array $headers): array
     {
-        $rows = match ($sheet) {
-            'nodes' => [[
-                'node_ref' => 'tmg-2', 'title_id' => 'Teka-teki Rumpang', 'title_en' => 'Fill in the Blanks',
-                'instruction_id' => 'Isi bagian rumpang.', 'instruction_en' => 'Fill in the blanks.',
-                'use_word_bank' => '1', 'distractor_count' => '2', 'as_reading' => '1',
-            ]],
-            'variants'    => [['node_ref' => 'tmg-2', 'variant_group' => 'a', 'title_id' => 'Gunung Kembar', 'title_en' => 'The Twin Mountains']],
-            'distractors' => [['node_ref' => 'tmg-2', 'variant_group' => 'a', 'text_id' => 'salju', 'text_en' => 'snow']],
-            'passages'    => [[
-                'passage_key' => 'tmg-teks-a', 'level_code' => 'temanggung', 'title_id' => 'Tanah Subur',
-                'title_en' => 'Fertile Land', 'body_id' => 'Isi teks bacaan…', 'body_en' => 'Passage text…',
-                'reference_source' => 'Dinas Pendidikan Temanggung',
-            ]],
-            'items' => [
-                [
-                    'item_key' => 'tmg-2-a01', 'node_ref' => 'tmg-2', 'variant_group' => 'a', 'sequence' => '1', 'interaction_type' => 'fill_blank_bank',
-                    'indicator' => 'literasi', 'prompt_id' => 'Gunung ___ ada di Temanggung.', 'prompt_en' => 'Mount ___ is in Temanggung.',
-                    'passage_key' => 'tmg-teks-a', 'answer_id' => 'Sumbing', 'answer_en' => 'Sumbing', 'scorable' => '1', 'review_status' => 'draft',
-                ],
-                [
-                    'item_key' => 'wnb-3-a01', 'node_ref' => 'wnb-3', 'variant_group' => 'a', 'sequence' => '1', 'interaction_type' => 'verdict_card',
-                    'indicator' => 'sikap', 'prompt_id' => 'Pengunjung boleh memanjat candi.', 'prompt_en' => 'Visitors may climb the temple.',
-                    'answer_id' => 'salah', 'scorable' => '1', 'review_status' => 'draft',
-                ],
-            ],
-            'hints' => [['node_ref' => 'tmg-2', 'sequence' => '1', 'text_id' => 'Baca kalimatnya sampai habis.', 'text_en' => 'Read the whole sentence.']],
-            'library' => [[
-                'level_code' => 'temanggung', 'sequence' => '1', 'title_id' => 'Mengenal Temanggung', 'title_en' => 'Getting to Know Temanggung',
-                'body_id'    => "Temanggung berada di antara Gunung Sindoro dan Gunung Sumbing.\n\n## Tanah yang subur\n- Kopi\n- Tembakau\n\n> Tahukah kamu? Hari jadi Temanggung diperingati tiap 10 November.\n\nSumber: Pemerintah Kabupaten Temanggung",
-                'body_en'    => "Temanggung lies between Mount Sindoro and Mount Sumbing.\n\n## Fertile land\n- Coffee\n- Tobacco\n\n> Did you know? Temanggung celebrates its anniversary every 10 November.\n\nSource: Temanggung Regency Government",
-                'is_active'  => '1',
-            ]],
-            'library_media' => [[
-                'level_code' => 'temanggung', 'page_sequence' => '1', 'sequence' => '1', 'media_kind' => 'image',
-                'external_url' => 'https://commons.wikimedia.org/wiki/File:Sindoro_sumbing.jpg',
-                'caption_id' => 'Gunung Sindoro dan Sumbing', 'caption_en' => 'Mount Sindoro and Mount Sumbing',
-                'credit' => 'Wikimedia Commons (lisensi bebas; pengarang di halaman berkas)',
-            ]],
-            default => [],
-        };
+        static $flat = null;
+
+        if (in_array($sheet, self::LIBRARY_SHEETS, true) || ! is_dir(ROOTPATH . 'docs/bank-soal/data')) {
+            return [];
+        }
+
+        $flat ??= BankSource::flatten(BankSource::load(ROOTPATH . 'docs/bank-soal/data'));
+
+        // Bacaan tidak punya node_ref: kodenya {tantangan}-{variasi} (tmg-3-a → tmg-3)
+        $refOf = static fn (array $row): string => (string) ($row['node_ref']
+            ?? implode('-', array_slice(explode('-', (string) ($row['passage_key'] ?? '')), 0, 2)));
+        $rows = array_values(array_filter(
+            $flat['sheets'][$sheet] ?? [],
+            static fn (array $row): bool => in_array($refOf($row), ['tmg-1', 'mgl-2', 'tmg-3', 'tmg-4'], true),
+        ));
 
         return array_map(
-            static fn (array $row): array => array_map(static fn (string $column): string => $row[$column] ?? '', $headers),
+            static fn (array $row): array => array_map(static fn (string $column): string => (string) ($row[$column] ?? ''), $headers),
             $rows,
         );
     }

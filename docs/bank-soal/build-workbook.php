@@ -1,331 +1,47 @@
 <?php
 
 /**
- * Penyusun workbook bank soal produksi GELITA.
+ * Penyusun workbook bank soal kelas 5 GELITA (perombakan kelas 5, Dok 2 §7).
  *
  *   php docs/bank-soal/build-workbook.php [keluaran.xlsx]
  *
- * Sumber isi ada di docs/bank-soal/data/{temanggung,magelang,wonosobo}.php
- * dalam bentuk bertingkat yang mudah dibaca dan ditinjau lewat git (opsi,
- * potongan, sumber, dan petunjuk ditulis di dalam butirnya). Skrip ini
- * meratakannya menjadi sheet impor (ContentImportService::SHEETS), memberi
- * kode butir/opsi otomatis, memeriksa aturan dasar, lalu menulis workbook
- * berpanduan lewat App\Libraries\BankWorkbookGuide (sheet PETUNJUK,
- * KAMUS_KOLOM, catatan header, daftar pilihan) plus lampiran DAFTAR_MEDIA.
+ * Sumber isi: docs/bank-soal/data/{temanggung,magelang,wonosobo}.php (format
+ * Dok 2 §7.2, isi final §9). Skrip ini meratakannya menjadi sheet impor
+ * (ContentImportService::SHEETS) lewat App\Libraries\BankSource, memberi kode
+ * soal/bacaan otomatis, memeriksa seluruh aturan §7.5 (App\Libraries\BankRules —
+ * aturan yang sama dengan importer dan gelita:content:verify), lalu menulis
+ * workbook berpanduan lewat App\Libraries\BankWorkbookGuide (sheet PETUNJUK,
+ * KAMUS_KOLOM, catatan header, daftar pilihan) plus lampiran DAFTAR_MEDIA
+ * (45 slot gambar tantangan).
  *
- * Mengubah isi: sunting berkas data lalu jalankan ulang skrip — atau sunting
- * workbook langsung di Excel; keduanya diterima importer.
+ * Galat → workbook TIDAK ditulis (kode keluar 1). Peringatan (mis. Bloom di
+ * luar rentang tingkat) dicetak, workbook tetap ditulis.
+ *
+ * Workbook kelas 5 sengaja TANPA sheet library/library_media: gelita:reset
+ * dan impor bank soal tidak pernah menyentuh Pustaka (Dok 1 §2). Isi
+ * Pustaka untuk pemasangan baru ada di docs/pustaka/.
  */
 
 declare(strict_types=1);
 
+use App\Libraries\BankRules;
+use App\Libraries\BankSource;
 use App\Libraries\BankWorkbookGuide;
-use App\Libraries\ClozeReading;
-use App\Libraries\DifficultyRules;
 
 require __DIR__ . '/../../vendor/autoload.php';
 
-$output = $argv[1] ?? __DIR__ . '/gelita-bank-soal-produksi.xlsx';
-$data   = [
-    'temanggung' => require __DIR__ . '/data/temanggung.php',
-    'magelang'   => require __DIR__ . '/data/magelang.php',
-    'wonosobo'   => require __DIR__ . '/data/wonosobo.php',
-];
+$output = $argv[1] ?? __DIR__ . '/gelita-bank-soal-kelas5.xlsx';
+$flat   = BankSource::flatten(BankSource::load(__DIR__ . '/data'));
 
-$sheets   = array_fill_keys(array_keys(BankWorkbookGuide::COLUMNS), []);
-$media    = [];   // asset_key => [prioritas, dipakai di, isi gambar, ukuran, saran sumber]
 $errors   = [];
 $warnings = [];
 
-// Tingkat kesulitan wilayah, sama dengan LevelSeeder (levels.difficulty)
-$difficulties = ['temanggung' => 'mudah', 'magelang' => 'sedang', 'wonosobo' => 'sulit'];
-
-$bi = static fn (array|string|null $pair, int $i): string => is_array($pair) ? (string) ($pair[$i] ?? '') : ($i === 0 ? (string) $pair : '');
-
-foreach ($data as $levelCode => $region) {
-    $difficulty = $region['difficulty'] ?? $difficulties[$levelCode];
-    $puzzleRule = DifficultyRules::puzzle($difficulty);
-
-    foreach ($region['passages'] as $key => $passage) {
-        $sheets['passages'][] = [
-            'passage_key'      => $key,
-            'level_code'       => $levelCode,
-            'title_id'         => $bi($passage['title'], 0),
-            'title_en'         => $bi($passage['title'], 1),
-            'body_id'          => $bi($passage['body'], 0),
-            'body_en'          => $bi($passage['body'], 1),
-            'media_asset_key'  => '',
-            'reference_source' => $passage['ref'],
-        ];
+foreach (BankSource::problems($flat) as $problem) {
+    if ($problem['level'] === 'error') {
+        $errors[] = BankRules::format($problem);
+    } else {
+        $warnings[] = BankRules::format($problem);
     }
-
-    foreach ($region['nodes'] as $ref => $node) {
-        $sheets['nodes'][] = [
-            'node_ref'             => $ref,
-            'title_id'             => $bi($node['title'], 0),
-            'title_en'             => $bi($node['title'], 1),
-            'instruction_id'       => $bi($node['instruction'], 0),
-            'instruction_en'       => $bi($node['instruction'], 1),
-            'description_id'       => $bi($node['description'], 0),
-            'description_en'       => $bi($node['description'], 1),
-            'items_per_round'      => (string) $node['items_per_round'],
-            'verdict_options'      => $node['verdict_options'] ?? '',
-            'require_reason'       => isset($node['require_reason']) ? (string) (int) $node['require_reason'] : '',
-            'use_word_bank'        => isset($node['use_word_bank']) ? (string) (int) $node['use_word_bank'] : '',
-            'distractor_count'     => isset($node['distractor_count']) ? (string) $node['distractor_count'] : '',
-            'as_reading'           => $node['engine'] === 'rumpang' ? (string) (int) ! empty($node['reading']) : '',
-            'scene_media_key'      => $node['scene']['key'] ?? '',
-            'background_media_key' => '',
-            'variant_code'         => $node['variant'] ?? '',
-            'indicator'            => $node['indicator'],
-        ];
-
-        if (isset($node['scene'])) {
-            $media[$node['scene']['key']] = ['WAJIB', "Gambar adegan tantangan {$ref}", $node['scene']['note'], '1280 × 720 px (16:9), JPG/WebP', $node['scene']['source'] ?? ''];
-        }
-
-        foreach ($node['distractors'] ?? [] as [$id, $en]) {
-            $sheets['distractors'][] = ['node_ref' => $ref, 'text_id' => $id, 'text_en' => $en];
-        }
-
-        foreach ($node['hints'] as $index => [$id, $en]) {
-            $sheets['hints'][] = ['node_ref' => $ref, 'item_key' => '', 'sequence' => (string) ($index + 1), 'text_id' => $id, 'text_en' => $en];
-        }
-
-        $answers = [];
-        $blanks  = [];   // soal rumpang aktif, untuk pemeriksaan bacaan
-
-        foreach ($node['items'] as $index => $item) {
-            $key    = sprintf('%s-%02d', $ref, $index + 1);
-            $type   = $item['type'];
-            $active = $item['active'] ?? true;
-
-            $answer = match ($type) {
-                'ordering'     => $item['order'],
-                'find_object'  => ! empty($item['decoy']) ? 'decoy' : 'target',
-                default        => $bi($item['answer'] ?? null, 0),
-            };
-
-            $sheets['items'][] = [
-                'item_key'          => $key,
-                'node_ref'          => $ref,
-                'sequence'          => (string) ($index + 1),
-                'interaction_type'  => $type,
-                'indicator'         => $item['indicator'] ?? $node['indicator'],
-                'bloom_level'       => $item['bloom'] ?? '',
-                'prompt_id'         => $bi($item['prompt'], 0),
-                'prompt_en'         => $bi($item['prompt'], 1),
-                'source_text_id'    => $bi($item['source'] ?? null, 0),
-                'source_text_en'    => $bi($item['source'] ?? null, 1),
-                'passage_key'       => $item['passage'] ?? '',
-                'answer_id'         => $answer,
-                'answer_en'         => in_array($type, ['fill_blank_bank', 'fill_blank_free'], true) ? $bi($item['answer'], 1) : '',
-                'sample_reason_id'  => $bi($item['reason'] ?? null, 0),
-                'sample_reason_en'  => $bi($item['reason'] ?? null, 1),
-                'x'                 => isset($item['x']) ? (string) $item['x'] : '',
-                'y'                 => isset($item['y']) ? (string) $item['y'] : '',
-                'w'                 => isset($item['w']) ? (string) $item['w'] : '',
-                'decoy'             => $type === 'find_object' ? (string) (int) ! empty($item['decoy']) : '',
-                'wrong_feedback_id' => $bi($item['wrong'] ?? null, 0),
-                'wrong_feedback_en' => $bi($item['wrong'] ?? null, 1),
-                'digital_pillar'    => $item['pillar'] ?? '',
-                'media_asset_key'   => isset($item['media']) ? $item['media']['key'] : '',
-                'scorable'          => $type === 'find_object' && ! empty($item['decoy']) ? '0' : '1',
-                'is_active'         => $active ? '1' : '0',
-                'review_status'     => $item['status'] ?? 'draft',   // verified hanya setelah ditinjau guru/ahli
-                'review_note'       => $item['note'] ?? $node['note'],
-                'reference_source'  => $item['ref'] ?? $node['ref'],
-            ];
-
-            // Soal yang diistirahatkan tidak perlu gambar baru
-            if (isset($item['media']) && $active) {
-                $media[$item['media']['key']] = [
-                    'WAJIB',
-                    ($type === 'find_object' ? 'Benda Cari Objek, soal ' : 'Gambar Susun Gambar ' . DifficultyRules::layoutLabel($puzzleRule['grid'], $puzzleRule['shape']) . ', soal ') . $key,
-                    $item['media']['note'],
-                    $type === 'find_object'
-                        ? '240 × 240 px, PNG/WebP latar transparan'
-                        : 'persegi, minimal ' . ($puzzleRule['grid'] * 300) . ' × ' . ($puzzleRule['grid'] * 300) . ' px, JPG/WebP (gambar tidak persegi dipotong bagian tengahnya)',
-                    $item['media']['source'] ?? '',
-                ];
-            }
-
-            foreach ($item['options'] ?? [] as $o => $option) {
-                [$labelId, $labelEn, $correct] = $option;
-                $sheets['options'][] = [
-                    'option_key'      => $key . '-' . chr(97 + $o),
-                    'item_key'        => $key,
-                    'label_id'        => $labelId,
-                    'label_en'        => $labelEn,
-                    'is_correct'      => $correct ? '1' : '0',
-                    'feedback_id'     => $option[3] ?? '',
-                    'feedback_en'     => $option[4] ?? '',
-                    'media_asset_key' => '',
-                    'display_order'   => (string) ($o + 1),
-                ];
-            }
-
-            foreach ($item['pieces'] ?? [] as [$pieceKey, $id, $en]) {
-                $sheets['pieces'][] = ['item_key' => $key, 'piece_key' => $pieceKey, 'text_id' => $id, 'text_en' => $en];
-            }
-
-            foreach ($item['sources'] ?? [] as [$labelId, $labelEn, $kind, $id, $en]) {
-                $sheets['sources'][] = ['item_key' => $key, 'label_id' => $labelId, 'label_en' => $labelEn, 'kind' => $kind, 'text_id' => $id, 'text_en' => $en];
-            }
-
-            foreach ($item['hints'] ?? [] as $h => [$id, $en]) {
-                $sheets['hints'][] = ['node_ref' => '', 'item_key' => $key, 'sequence' => (string) ($h + 1), 'text_id' => $id, 'text_en' => $en];
-            }
-
-            // ------------------------------------------------ pemeriksaan
-            $where = "{$key} ({$type})";
-
-            if (isset($item['bloom']) && ! DifficultyRules::isBloom($item['bloom'])) {
-                $errors[] = "{$where}: tingkat Bloom '{$item['bloom']}' tidak dikenal (C1–C6).";
-            }
-
-            if (! $active) {
-                continue;   // soal istirahat: hanya disimpan agar kodenya tetap; tidak ikut diperiksa
-            }
-
-            if (in_array($type, ['single_choice', 'source_trust'], true)) {
-                $correct = count(array_filter($item['options'] ?? [], static fn ($o): bool => (bool) $o[2]));
-
-                if ($correct !== 1 || count($item['options']) !== 4) {
-                    $errors[] = "{$where}: wajib 4 opsi dengan tepat 1 benar.";
-                }
-            }
-
-            if (in_array($type, ['fill_blank_bank', 'fill_blank_free'], true)
-                && (! str_contains($bi($item['prompt'], 0), '___') || ! str_contains($bi($item['prompt'], 1), '___'))) {
-                $errors[] = "{$where}: kalimat rumpang ID dan EN wajib memuat ___.";
-            }
-
-            if ($type === 'fill_blank_bank') {
-                $word = mb_strtolower($bi($item['answer'], 0));
-
-                if (isset($answers[$word])) {
-                    $errors[] = "{$where}: jawaban '{$word}' kembar dengan {$answers[$word]} — bank kata jadi ambigu.";
-                }
-
-                $answers[$word] = $key;
-            }
-
-            if (in_array($type, ['fill_blank_bank', 'fill_blank_free'], true)) {
-                $blanks[] = [
-                    'key'       => $key,
-                    'prompt_id' => $bi($item['prompt'], 0),
-                    'prompt_en' => $bi($item['prompt'], 1),
-                    'answer_id' => $bi($item['answer'], 0),
-                    'answer_en' => $bi($item['answer'], 1),
-                    'bloom'     => $item['bloom'] ?? null,
-                ];
-            }
-
-            if (in_array($type, ['verdict_card', 'verdict_reason'], true)
-                && ! in_array($answer, explode(',', (string) ($node['verdict_options'] ?? '')), true)) {
-                $errors[] = "{$where}: kunci '{$answer}' di luar verdict_options.";
-            }
-
-            if ($type === 'find_object' && ! empty($item['decoy']) && empty($item['wrong'])) {
-                $errors[] = "{$where}: objek jebakan wajib punya wrong_feedback.";
-            }
-
-            if ($type === 'ordering') {
-                $keys = array_map(static fn ($p): string => (string) $p[0], $item['pieces']);
-                $order = explode(',', $item['order']);
-                sort($keys);
-                sort($order);
-
-                if ($keys !== $order) {
-                    $errors[] = "{$where}: answer (urutan) harus memuat semua kode potongan tepat sekali.";
-                }
-            }
-        }
-
-        if ($node['engine'] === 'rumpang' && ! empty($node['use_word_bank'])) {
-            foreach ($node['distractors'] as [$id]) {
-                if (isset($answers[mb_strtolower($id)])) {
-                    $errors[] = "{$ref}: pengecoh '{$id}' sama dengan jawaban {$answers[mb_strtolower($id)]}.";
-                }
-            }
-
-            if (count($node['distractors']) < (int) $node['distractor_count']) {
-                $errors[] = "{$ref}: pengecoh kurang dari distractor_count.";
-            }
-        }
-
-        if ($node['engine'] === 'rumpang' && ! empty($node['reading'])) {
-            $problems = ClozeReading::problems(
-                $blanks,
-                array_map(static fn (array $d): array => ['id' => $d[0], 'en' => $d[1] ?? ''], $node['distractors'] ?? []),
-                (int) ($node['distractor_count'] ?? 0),
-                ! empty($node['use_word_bank']),
-                $difficulty,
-            );
-
-            foreach ($problems['errors'] as $message) {
-                $errors[] = "{$ref}: {$message}";
-            }
-
-            foreach ($problems['warnings'] as $message) {
-                $warnings[] = "{$ref}: {$message}";
-            }
-
-            if ((int) $node['items_per_round'] !== count($blanks)) {
-                $errors[] = "{$ref}: items_per_round ({$node['items_per_round']}) harus sama dengan jumlah rumpang bacaan (" . count($blanks) . ').';
-            }
-        }
-
-        if ($node['engine'] === 'puzzle' && (int) $node['items_per_round'] !== 1) {
-            $errors[] = "{$ref}: Susun Gambar hanya menampilkan satu gambar per permainan; items_per_round harus 1.";
-        }
-
-        $targets = count(array_filter($node['items'], static fn ($i): bool => empty($i['decoy']) && ($i['active'] ?? true)));
-
-        if ($targets < $node['items_per_round']) {
-            $errors[] = "{$ref}: bank {$targets} butir aktif < items_per_round {$node['items_per_round']}.";
-        }
-    }
-
-    foreach ($region['library'] as $index => $page) {
-        $sequence = $index + 1;
-        $sheets['library'][] = [
-            'level_code' => $levelCode,
-            'sequence'   => (string) $sequence,
-            'title_id'   => $bi($page['title'], 0),
-            'title_en'   => $bi($page['title'], 1),
-            'body_id'    => $bi($page['body'], 0),
-            'body_en'    => $bi($page['body'], 1),
-            'is_active'  => '1',
-        ];
-
-        foreach ($page['media'] ?? [] as $m => $item) {
-            $sheets['library_media'][] = [
-                'level_code'       => $levelCode,
-                'page_sequence'    => (string) $sequence,
-                'sequence'         => (string) ($m + 1),
-                'media_kind'       => $item['kind'] ?? 'image',
-                'media_asset_key'  => '',
-                'external_url'     => $item['url'],
-                'poster_media_key' => '',
-                'caption_id'       => $bi($item['caption'], 0),
-                'caption_en'       => $bi($item['caption'], 1),
-                'credit'           => $item['credit'],
-            ];
-        }
-    }
-}
-
-// Semua butir: kunci unik lintas wilayah
-$seen = [];
-
-foreach ($sheets['items'] as $row) {
-    if (isset($seen[$row['item_key']])) {
-        $errors[] = "item_key kembar: {$row['item_key']}";
-    }
-
-    $seen[$row['item_key']] = true;
 }
 
 if ($errors !== []) {
@@ -340,8 +56,8 @@ if ($warnings !== []) {
 // Baris asosiatif → urutan header resmi
 $rows = [];
 
-foreach ($sheets as $name => $list) {
-    $headers = BankWorkbookGuide::headers($name);
+foreach ($flat['sheets'] as $name => $list) {
+    $headers     = BankWorkbookGuide::headers($name);
     $rows[$name] = array_map(static function (array $row) use ($headers, $name): array {
         $unknown = array_diff(array_keys($row), $headers);
 
@@ -353,45 +69,41 @@ foreach ($sheets as $name => $list) {
     }, $list);
 }
 
-ksort($media);
-$mediaRows = [];
-
-foreach ($media as $key => [$priority, $usedBy, $note, $size, $source]) {
-    $mediaRows[] = [$key, $priority, $usedBy, $note, $size, $source];
-}
+$scorable = count(array_filter($flat['sheets']['items'], static fn (array $row): bool => $row['scorable'] === '1'));
 
 (new BankWorkbookGuide())->write($rows, $output, [
-    'title'    => 'Bank Soal GELITA — Produksi',
+    'title'    => 'Bank Soal GELITA — Kelas 5',
     'subtitle' => sprintf(
-        'Isi lengkap 15 tantangan (%d soal, %d pilihan jawaban, %d teks bacaan, %d petunjuk) dan Pustaka Kedu (%d halaman, %d gambar/video) untuk Temanggung, Magelang, dan Wonosobo. Aturan penilaian tidak diatur di berkas ini (memakai aturan bawaan penelitian). Unggah gambar yang tercantum di sheet DAFTAR_MEDIA agar tantangan Susun Gambar dan Cari Objek tampil utuh.',
+        'Bank soal final penelitian kelas 5 SD/MI yang disetujui peneliti (Oktober 2026): 12 tantangan (4 per wilayah), %d soal (%d dinilai + %d benda pengecoh), %d variasi, %d bacaan Benar atau Salah, %d petunjuk, dan %d kata pengecoh. Setiap pengerjaan memakai satu variasi acak. Gambar yang tercantum di sheet DAFTAR_MEDIA mula-mula tampil sebagai gambar contoh; unggah gambar asli dengan kode berkas yang sama di menu Gambar & suara.',
         count($rows['items']),
-        count($rows['options']),
+        $scorable,
+        count($rows['items']) - $scorable,
+        count($rows['variants']),
         count($rows['passages']),
         count($rows['hints']),
-        count($rows['library']),
-        count($rows['library_media']),
+        count($rows['distractors']),
     ),
+    'sheets' => array_keys($flat['sheets']),
 ], [
     'DAFTAR_MEDIA' => [
-        'note'    => 'Gambar yang perlu diunggah admin di Panel GELITA → menu Gambar & suara, dengan kode berkas persis seperti kolom pertama. Saat berkas Excel ini diimpor, tempat gambarnya sudah disiapkan; begitu gambar diunggah, gambar langsung tampil. Pakai foto sendiri atau foto berlisensi bebas, dan catat pemiliknya.',
-        'headers' => ['Kode berkas', 'Prioritas', 'Dipakai di', 'Isi gambar yang dibutuhkan', 'Ukuran & format', 'Saran sumber (lisensi bebas) / catatan'],
-        'rows'    => $mediaRows,
-        'widths'  => [30, 11, 22, 60, 26, 60],
+        'note'    => 'Gambar tantangan yang perlu disiapkan admin (Dok 2 §10.4). Saat berkas ini diimpor, slotnya dibuat dengan nama dan isi gambar yang diharapkan; php spark gelita:mockups lalu memasang gambar contoh. Unggah gambar asli di Panel GELITA → menu Gambar & suara dengan kode berkas persis seperti kolom pertama: gambar asli langsung tampil dan tidak pernah ditimpa gambar contoh. Pakai foto/ilustrasi sendiri atau berlisensi bebas, dan catat pemiliknya.',
+        'headers' => ['Kode berkas', 'Nama gambar', 'Wilayah · tantangan', 'Dipakai di', 'Isi gambar asli', 'Ukuran & format', 'Saran sumber / catatan'],
+        'rows'    => BankSource::mediaRows($flat['media']),
+        'widths'  => [30, 26, 26, 24, 50, 30, 50],
     ],
 ]);
 
 printf(
-    "Workbook ditulis: %s\n  %d node · %d bacaan · %d butir · %d opsi · %d potongan · %d sumber · %d petunjuk · %d pengecoh · %d halaman pustaka · %d media pustaka · %d slot media\n",
+    "Workbook ditulis: %s\n  %d tantangan · %d variasi · %d bacaan · %d soal (%d dinilai + %d pengecoh) · %d petunjuk · %d kata pengecoh · %d slot gambar · %d peringatan\n",
     $output,
     count($rows['nodes']),
+    count($rows['variants']),
     count($rows['passages']),
     count($rows['items']),
-    count($rows['options']),
-    count($rows['pieces']),
-    count($rows['sources']),
+    $scorable,
+    count($rows['items']) - $scorable,
     count($rows['hints']),
     count($rows['distractors']),
-    count($rows['library']),
-    count($rows['library_media']),
-    count($mediaRows),
+    count($flat['media']),
+    count($warnings),
 );

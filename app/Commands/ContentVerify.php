@@ -10,15 +10,19 @@ use CodeIgniter\CLI\CLI;
  * Pemeriksaan konten sebelum rilis — aturan yang sama dengan panel
  * `/admin/konten/verifikasi`. Kode keluar galat bila ada temuan `error`
  * (atau `warning` dengan --strict), agar dapat dipakai di skrip deploy.
+ *
+ * `--siap-penelitian`: gambar contoh (mockup) yang masih dipakai tantangan
+ * menjadi galat (Dok 2 §7.5, §10.3) — syarat sebelum pengambilan data.
  */
 class ContentVerify extends BaseCommand
 {
     protected $group       = 'GELITA';
     protected $name        = 'gelita:content:verify';
-    protected $description = 'Memeriksa 3 wilayah × 4 tantangan, jenis tantangan Memeriksa 3 level × 5 node, engine_type valid, bank item cukup, kunci lengkap, dan media. soal, variasi soal, kunci lengkap, dan media.';
-    protected $usage       = 'gelita:content:verify [--strict]';
+    protected $description = 'Memeriksa 3 wilayah × 4 tantangan, variasi, bank soal kelas 5 (Dok 2 §7.5), kunci, dan media.';
+    protected $usage       = 'gelita:content:verify [--strict] [--siap-penelitian]';
     protected $options     = [
-        '--strict' => 'Peringatan juga dianggap gagal (kode keluar 1).',
+        '--strict'          => 'Peringatan juga dianggap gagal (kode keluar 1).',
+        '--siap-penelitian' => 'Gambar contoh (mockup) yang masih dipakai tantangan dianggap galat.',
     ];
 
     public function run(array $params)
@@ -26,12 +30,13 @@ class ContentVerify extends BaseCommand
         // konten dibaca segar, bukan dari cache yang mungkin lebih tua dari database
         service('contentRepository')->flush();
 
-        $findings = (new ContentVerifier())->run();
+        $ready    = $this->flag('siap-penelitian', $params);
+        $findings = (new ContentVerifier())->run($ready);
         $errors   = ContentVerifier::errorCount($findings);
         $warnings = count($findings) - $errors;
 
         if ($findings === []) {
-            CLI::write('Konten lengkap: 3 wilayah × 4 tantangan, tanpa temuan.', 'green');
+            CLI::write('Konten lengkap: 3 wilayah × 4 tantangan, tanpa temuan' . ($ready ? '; siap untuk penelitian.' : '.'), 'green');
 
             return EXIT_SUCCESS;
         }
@@ -43,8 +48,18 @@ class ContentVerify extends BaseCommand
 
         CLI::write(sprintf('%d galat, %d peringatan.', $errors, $warnings), $errors > 0 ? 'red' : 'yellow');
 
-        $strict = array_key_exists('strict', $params) || CLI::getOption('strict') !== null;
+        if ($ready && $errors > 0) {
+            CLI::write('Belum siap untuk pengambilan data penelitian.', 'red');
+        }
+
+        $strict = $this->flag('strict', $params);
 
         return $errors > 0 || ($strict && $warnings > 0) ? EXIT_ERROR : EXIT_SUCCESS;
+    }
+
+    /** Opsi tanpa nilai: `--strict` terbaca sebagai `$params['strict'] = null`. */
+    private function flag(string $name, array $params): bool
+    {
+        return array_key_exists($name, $params) || CLI::getOption($name) !== null;
     }
 }

@@ -366,9 +366,9 @@ class SystemResetService
     }
 
     /**
-     * Impor workbook bank soal kelas 5. Bila berkas belum ada (sebelum Dok 2
-     * selesai): development memakai SampleItemSeeder, lingkungan lain dilewati
-     * dengan peringatan.
+     * Impor workbook bank soal kelas 5 (Dok 2 §7). Bila berkasnya tidak ada
+     * (mis. --bank menunjuk berkas yang salah), 12 tantangan tetap kosong dan
+     * reset memberi peringatan.
      *
      * @return array<string, mixed>
      */
@@ -377,14 +377,6 @@ class SystemResetService
         $path ??= ROOTPATH . self::DEFAULT_BANK;
 
         if (! is_file($path)) {
-            if (ENVIRONMENT === 'development') {
-                $seeder = Database::seeder();
-                $seeder->setSilent(true);
-                $seeder->call('SampleItemSeeder');
-
-                return ['status' => 'sample', 'path' => $path, 'message' => 'Workbook bank soal kelas 5 belum ada; soal contoh development (SampleItemSeeder) dipakai.'];
-            }
-
             $this->warnings[] = 'Workbook bank soal kelas 5 tidak ditemukan (' . $path . '); 12 tantangan masih kosong. Impor dengan php spark gelita:bank:import.';
 
             return ['status' => 'missing', 'path' => $path, 'message' => 'Workbook bank soal tidak ditemukan.'];
@@ -407,12 +399,21 @@ class SystemResetService
             ));
         }
 
+        $items = $this->db->table('challenge_items')->where('is_active', 1);
+
         return [
-            'status'  => $result['ok'] ? 'imported' : 'failed',
-            'path'    => $path,
-            'sha256'  => hash_file('sha256', $path) ?: null,
-            'written' => $result['written'],
-            'errors'  => count($result['errors']),
+            'status'   => $result['ok'] ? 'imported' : 'failed',
+            'path'     => $path,
+            'sha256'   => hash_file('sha256', $path) ?: null,
+            'written'  => $result['written'],
+            'errors'   => count($result['errors']),
+            'items'    => $items->countAllResults(),
+            'scorable' => $this->db->table('challenge_items')->where('is_active', 1)->where('scorable', 1)->countAllResults(),
+            'variants' => (int) array_sum(array_map(
+                static fn (array $row): int => count((array) (json_decode((string) $row['config_json'], true)['variants'] ?? [])),
+                $this->db->table('challenge_nodes')->select('config_json')->where('is_active', 1)->get()->getResultArray(),
+            )),
+            'passages' => $this->db->table('reading_passages')->where('is_active', 1)->countAllResults(),
         ];
     }
 

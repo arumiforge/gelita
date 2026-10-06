@@ -2,11 +2,14 @@
 
 use App\Entities\ChallengeAttempt;
 use App\Entities\ChallengeItem;
+use App\Models\ChallengeAttemptModel;
+use App\Models\GameSessionModel;
 use App\Services\ChallengeService;
 use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\Test\CIUnitTestCase;
 use Config\Database;
 use Config\Encryption;
+use Tests\Support\Database\GradeFiveWorld;
 use Tests\Support\Database\NarrationTables;
 
 /**
@@ -17,6 +20,7 @@ use Tests\Support\Database\NarrationTables;
  */
 final class HuntPayloadTest extends CIUnitTestCase
 {
+    use GradeFiveWorld;
     use NarrationTables;
 
     private ChallengeService $service;
@@ -47,7 +51,8 @@ final class HuntPayloadTest extends CIUnitTestCase
         $this->assertCount(3, $payload['objects']);
 
         foreach ($payload['objects'] as $object) {
-            $this->assertSame(['ref', 'x', 'y', 'w', 'media'], array_keys($object));
+            $this->assertSame(['ref', 'x', 'y', 'w', 'media', 'found'], array_keys($object));
+            $this->assertFalse($object['found']);
         }
 
         $encoded = json_encode($payload);
@@ -69,9 +74,11 @@ final class HuntPayloadTest extends CIUnitTestCase
     {
         $payload = $this->hunt($this->attempt(501), $this->items(), 'id');
 
+        $state = ['found' => false, 'closed' => false, 'tries' => 0];
+
         $this->assertEqualsCanonicalizing([
-            ['item_id' => 11, 'text' => 'Temukan tembakau.', 'audio' => null, 'audio_id' => null],
-            ['item_id' => 12, 'text' => 'Temukan candi.', 'audio' => null, 'audio_id' => null],
+            ['item_id' => 11, 'text' => 'Temukan tembakau.', 'audio' => null, 'audio_id' => null, 'state' => $state],
+            ['item_id' => 12, 'text' => 'Temukan candi.', 'audio' => null, 'audio_id' => null, 'state' => $state],
         ], $payload['clues']);
     }
 
@@ -88,6 +95,94 @@ final class HuntPayloadTest extends CIUnitTestCase
         }
 
         $this->assertCount(2, $orders, 'kedua urutan muncul di antara 40 pengerjaan');
+    }
+
+    /**
+     * Dok 2 §3.3: payload Cari Objek ketiga wilayah (bank soal kelas 5
+     * sungguhan) tidak membawa penanda pengecoh, kunci, maupun umpan balik
+     * pengecoh. Objek target dan pengecoh berbentuk identik.
+     */
+    public function testGradeFivePayloadsHideDecoysKeysAndFeedback(): void
+    {
+        $db = $this->createGradeFiveWorld();
+
+        try {
+            foreach (['tmg-4' => 4, 'mgl-4' => 6, 'wnb-4' => 8] as $ref => $decoyCount) {
+                $nodeId  = $this->nodeId($db, $ref);
+                $payload = $this->service->openNode(model(GameSessionModel::class)->find(1), $nodeId)['payload'];
+                $bank    = service('contentRepository')->itemBank($nodeId);
+                $targets = array_filter($bank, static fn (ChallengeItem $item): bool => ! $item->isDecoy());
+                $decoys  = array_filter($bank, static fn (ChallengeItem $item): bool => $item->isDecoy());
+
+                $this->assertArrayNotHasKey('items', $payload, $ref);
+                $this->assertCount($decoyCount, $decoys, $ref);
+                $this->assertCount(4 + $decoyCount, $payload['objects'], $ref);
+                $this->assertCount(4, $payload['clues'], $ref);
+
+                foreach ($payload['objects'] as $object) {
+                    $this->assertSame(['ref', 'x', 'y', 'w', 'media', 'found'], array_keys($object), $ref);
+                }
+
+                foreach ($payload['clues'] as $clue) {
+                    $this->assertSame(['item_id', 'text', 'audio', 'audio_id', 'state'], array_keys($clue), $ref);
+                }
+
+                $this->assertEqualsCanonicalizing(
+                    array_map(static fn (ChallengeItem $item): int => $item->id, array_values($targets)),
+                    array_column($payload['clues'], 'item_id'),
+                    $ref . ': petunjuk hanya untuk benda yang dicari',
+                );
+
+                $encoded = json_encode($payload, JSON_UNESCAPED_UNICODE);
+
+                foreach (['decoy', 'pengecoh', 'answer_key', 'wrong_feedback', 'scorable', 'target'] as $marker) {
+                    $this->assertStringNotContainsStringIgnoringCase($marker, $encoded, "{$ref}: {$marker}");
+                }
+
+                foreach ($bank as $item) {
+                    $this->assertStringNotContainsString($item->item_key, $encoded, "{$ref}: item_key tidak ikut dikirim");
+                }
+
+                foreach ($decoys as $decoy) {
+                    $this->assertStringNotContainsString($decoy->text('prompt', 'id'), $encoded, "{$ref}: nama pengecoh");
+                    $this->assertStringNotContainsString((string) $decoy->wrongFeedback('id'), $encoded, "{$ref}: umpan balik pengecoh");
+                    $this->assertStringNotContainsString('"item_id":' . $decoy->id . ',', $encoded, "{$ref}: id pengecoh");
+                }
+            }
+        } finally {
+            $this->dropResetTables();
+        }
+    }
+
+    /** Urutan petunjuk ketiga wilayah teracak per pengerjaan, tetap saat dimuat ulang. */
+    public function testGradeFiveClueOrderIsShuffledButStable(): void
+    {
+        $db = $this->createGradeFiveWorld();
+
+        try {
+            $session = model(GameSessionModel::class)->find(1);
+
+            foreach (['tmg-4', 'mgl-4', 'wnb-4'] as $ref) {
+                $nodeId = $this->nodeId($db, $ref);
+                $orders = [];
+
+                for ($n = 0; $n < 12; $n++) {
+                    $order  = array_column($this->service->openNode($session, $nodeId)['payload']['clues'], 'item_id');
+                    $reload = $this->service->openNode($session, $nodeId)['payload'];
+
+                    $this->assertTrue($reload['resumed'], $ref);
+                    $this->assertSame($order, array_column($reload['clues'], 'item_id'), "{$ref}: muat ulang");
+
+                    $orders[implode(',', $order)] = true;
+                    $this->service->abandonAttempt(model(ChallengeAttemptModel::class)->currentInProgress(1, $nodeId));
+                }
+
+                // 4 petunjuk = 24 urutan; 12 pengerjaan dengan urutan yang sama hampir mustahil
+                $this->assertGreaterThan(1, count($orders), "{$ref}: urutan petunjuk teracak");
+            }
+        } finally {
+            $this->dropResetTables();
+        }
     }
 
     /**
@@ -124,7 +219,7 @@ final class HuntPayloadTest extends CIUnitTestCase
             $this->assertNull($this->clue($en, 12)['audio_id'], 'tidak jatuh ke rekaman bahasa lain');
 
             foreach ($id['objects'] as $object) {
-                $this->assertSame(['ref', 'x', 'y', 'w', 'media'], array_keys($object));
+                $this->assertSame(['ref', 'x', 'y', 'w', 'media', 'found'], array_keys($object));
             }
 
             $encoded = json_encode($id);

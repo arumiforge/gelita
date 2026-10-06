@@ -183,12 +183,12 @@ final class HuntClueAudioTest extends CIUnitTestCase
         $this->seedHuntNode($this->sqlite);
         $id = $this->audio('audio.narasi.id.petunjuk-tmg-4-01', 'id', 'approved');
         $en = $this->audio('audio.narasi.en.petunjuk-tmg-4-01', 'en', 'draft');
-        $this->sqlite->table('challenge_items')->where('item_key', 'tmg-4-01')->update(['audio_prompt_id' => $id, 'audio_prompt_en_id' => $en]);
+        $this->sqlite->table('challenge_items')->where('item_key', 'tmg-4-a01')->update(['audio_prompt_id' => $id, 'audio_prompt_en_id' => $en]);
 
         $uses = (new MediaUsage())->forAudio();
 
-        $this->assertSame(['Petunjuk soal tmg-4-01 (Indonesia)'], $uses[$id]);
-        $this->assertSame(['Petunjuk soal tmg-4-01 (Inggris)'], $uses[$en]);
+        $this->assertSame(['Petunjuk soal tmg-4-a01 (Indonesia)'], $uses[$id]);
+        $this->assertSame(['Petunjuk soal tmg-4-a01 (Inggris)'], $uses[$en]);
     }
 
     // ------------------------------------------------------------- bantuan

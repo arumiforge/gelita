@@ -1,8 +1,6 @@
 <?php
 
 use App\Commands\SystemReset;
-use App\Libraries\BankWorkbookGuide;
-use App\Services\ContentImportService;
 use App\Services\SystemResetService;
 use CodeIgniter\CLI\CLI;
 use CodeIgniter\Database\BaseConnection;
@@ -26,7 +24,6 @@ final class SystemResetTest extends CIUnitTestCase
 
     private BaseConnection $conn;
     private string $exportsDir;
-    private string $workbook = '';
 
     protected function setUp(): void
     {
@@ -50,10 +47,6 @@ final class SystemResetTest extends CIUnitTestCase
         CLI::resetInputOutput();
         array_map('unlink', glob($this->exportsDir . '/*') ?: []);
         rmdir($this->exportsDir);
-
-        if ($this->workbook !== '' && is_file($this->workbook)) {
-            unlink($this->workbook);
-        }
 
         $this->dropResetTables();
         parent::tearDown();
@@ -186,29 +179,57 @@ final class SystemResetTest extends CIUnitTestCase
         $this->assertSame([['admin_uji', 'admin']], array_map('array_values', $this->conn->table('staff_users')->select('username, role')->get()->getResultArray()));
     }
 
-    public function testResetImportsASmallGradeFiveWorkbook(): void
+    /**
+     * Jalur bawaan `gelita:reset`: workbook bank soal kelas 5 di repositori
+     * (Dok 2 §7) diimpor utuh, tanpa menyentuh Pustaka.
+     */
+    public function testResetImportsTheGradeFiveWorkbook(): void
     {
-        $this->workbook = $this->smallWorkbook();
-
-        $result = $this->service()->run(['bank' => $this->workbook, 'tanpa_mockup' => true]);
+        $library = $this->keptHashes();
+        $result  = $this->service()->run(['tanpa_mockup' => true]);
+        $bank    = ROOTPATH . SystemResetService::DEFAULT_BANK;
 
         $this->assertSame('imported', $result['bank']['status'], json_encode($result['warnings']));
-        $this->assertSame(hash_file('sha256', $this->workbook), $result['bank']['sha256']);
+        $this->assertSame(hash_file('sha256', $bank), $result['bank']['sha256']);
         $this->assertSame(12, $this->conn->table('challenge_nodes')->where('is_active', 1)->countAllResults());
         $this->assertSame(1, $this->conn->table('research_studies')->where('status', 'active')->countAllResults());
         $this->assertSame(1, $this->conn->table('research_studies')->countAllResults());
 
-        $items = $this->conn->table('challenge_items')->select('item_key, variant_group, interaction_type')->orderBy('item_key')->get()->getResultArray();
-        $this->assertSame([
-            ['item_key' => 'tmg-2-a01', 'variant_group' => 'a', 'interaction_type' => 'fill_blank_bank'],
-            ['item_key' => 'wnb-3-a01', 'variant_group' => 'a', 'interaction_type' => 'verdict_card'],
-        ], $items);
-        $this->assertSame('Gunung Kembar', json_decode((string) $this->node('temanggung', 2)['config_json'], true)['variants']['a']['title_id'] ?? null);
-        $this->assertSame(0, $this->conn->table('library_pages')->where('title_id', 'Mengenal Temanggung')->countAllResults(), 'workbook uji tanpa Pustaka');
+        // Dok 2 §9: 126 soal (108 dinilai + 18 pengecoh), 9 bacaan, 36 petunjuk
+        $this->assertSame(126, $this->conn->table('challenge_items')->where('is_active', 1)->countAllResults());
+        $this->assertSame(18, $this->conn->table('challenge_items')->where('scorable', 0)->countAllResults());
+        $this->assertSame(9, $this->conn->table('reading_passages')->countAllResults());
+        $this->assertSame(36, $this->conn->table('hints')->countAllResults());
+        $this->assertSame('verified', $this->conn->table('challenge_items')->select('review_status')->distinct()->get()->getRow('review_status'));
 
+        $rumpang = json_decode((string) $this->node('temanggung', 2)['config_json'], true);
+        $this->assertSame('Gunung Kembar', $rumpang['variants']['a']['title_id'] ?? null);
+        $this->assertTrue($rumpang['as_reading'] && $rumpang['use_word_bank']);
+        $this->assertSame(['a', 'b', 'c'], array_keys($rumpang['variants']));
+        $this->assertSame('Situs Liyangan', json_decode((string) $this->node('temanggung', 3)['config_json'], true)['variants']['a']['title_id'] ?? null);
+        $this->assertSame(
+            [['text_id' => 'enam', 'text_en' => 'six'], ['text_id' => 'arca', 'text_en' => 'statues']],
+            json_decode((string) $this->node('magelang', 2)['config_json'], true)['variants']['a']['distractors'] ?? null,
+        );
+
+        $statement = $this->conn->table('challenge_items')->where('item_key', 'wnb-3-c06')->get()->getRowArray();
+        $this->assertSame(['verdict' => 'salah'], json_decode((string) $statement['answer_key_json'], true));
+        $this->assertSame('menentukan_solusi', json_decode((string) $statement['config_json'], true)['skill'] ?? null);
+        $this->assertSame('C5', $statement['bloom_level']);
+
+        // 45 slot gambar tantangan, masing-masing dengan nama dan isi gambar yang diharapkan
+        $slots = $this->conn->table('media_assets')->like('asset_key', 'challenge.', 'after')
+            ->where('label IS NOT NULL', null, false)->where('description IS NOT NULL', null, false)->countAllResults();
+        $this->assertSame(45, $slots);
+        $this->assertSame('Kuda kepang bambu', $this->conn->table('media_assets')->where('asset_key', 'challenge.item.tmg-4-03')->get()->getRow('label'));
+
+        $kept = $this->keptHashes();
+        unset($library['media_assets'], $kept['media_assets']);   // slot gambar tantangan baru dibuat impor
+        $this->assertSame($library, $kept, 'workbook kelas 5 tanpa Pustaka: Pustaka, cerita, dan level tidak tersentuh');
         $this->assertSame(1, $this->conn->table('audit_logs')->where('action', 'system_reset')->countAllResults());
         $this->assertSame(1, $this->conn->table('audit_logs')->where('action', 'content_import')->countAllResults());
         $this->assertNotSame([], $result['findings'], 'verifikasi konten dijalankan');
+        $this->assertSame(0, $result['errors'], json_encode(array_values(array_filter($result['findings'], static fn (array $f): bool => $f['level'] === 'error'))));
     }
 
     public function testMissingWorkbookOutsideDevelopmentOnlyWarns(): void
@@ -315,37 +336,6 @@ final class SystemResetTest extends CIUnitTestCase
     }
 
     /** Workbook kecil berformat importer kelas 5: dua tantangan, variasi a, satu bacaan. */
-    private function smallWorkbook(): string
-    {
-        $rows = [
-            'nodes' => [
-                ['node_ref' => 'tmg-2', 'title_id' => 'Teka-teki Rumpang', 'title_en' => 'Fill in the Blanks', 'instruction_id' => 'Isi bagian rumpang.', 'instruction_en' => 'Fill in the blanks.', 'use_word_bank' => '1', 'distractor_count' => '1', 'as_reading' => '1'],
-            ],
-            'variants'    => [['node_ref' => 'tmg-2', 'variant_group' => 'a', 'title_id' => 'Gunung Kembar', 'title_en' => 'The Twin Mountains']],
-            'distractors' => [['node_ref' => 'tmg-2', 'variant_group' => 'a', 'text_id' => 'salju', 'text_en' => 'snow']],
-            'passages'    => [['passage_key' => 'tmg-teks-a', 'level_code' => 'temanggung', 'title_id' => 'Tanah Subur', 'title_en' => 'Fertile Land', 'body_id' => 'Gunung Sumbing ada di Temanggung.', 'body_en' => 'Mount Sumbing is in Temanggung.']],
-            'items'       => [
-                ['item_key' => 'tmg-2-a01', 'node_ref' => 'tmg-2', 'variant_group' => 'a', 'sequence' => '1', 'interaction_type' => 'fill_blank_bank', 'indicator' => 'literasi', 'bloom_level' => 'C3', 'prompt_id' => 'Gunung ___ ada di Temanggung.', 'prompt_en' => 'Mount ___ is in Temanggung.', 'passage_key' => 'tmg-teks-a', 'answer_id' => 'Sumbing', 'answer_en' => 'Sumbing', 'scorable' => '1', 'review_status' => 'draft'],
-                ['item_key' => 'wnb-3-a01', 'node_ref' => 'wnb-3', 'variant_group' => 'a', 'sequence' => '1', 'interaction_type' => 'verdict_card', 'indicator' => 'sikap', 'bloom_level' => 'C4', 'prompt_id' => 'Pengunjung boleh memanjat candi.', 'prompt_en' => 'Visitors may climb the temple.', 'answer_id' => 'salah', 'scorable' => '1', 'review_status' => 'draft'],
-            ],
-            'hints' => [['node_ref' => 'tmg-2', 'sequence' => '1', 'text_id' => 'Baca kalimatnya sampai habis.', 'text_en' => 'Read the whole sentence.']],
-        ];
-
-        $ordered = [];
-
-        foreach (ContentImportService::SHEETS as $sheet => $headers) {
-            $ordered[$sheet] = array_map(
-                static fn (array $row): array => array_map(static fn (string $column): string => $row[$column] ?? '', $headers),
-                $rows[$sheet] ?? [],
-            );
-        }
-
-        $path = sys_get_temp_dir() . '/gelita-bank-kecil-' . bin2hex(random_bytes(4)) . '.xlsx';
-        (new BankWorkbookGuide())->write($ordered, $path, ['title' => 'Bank soal uji']);
-
-        return $path;
-    }
-
     /**
      * Keadaan sesudah uji coba: 3 wilayah dengan 5 tantangan lama, cerita,
      * Pustaka, media, siswa dan jejak bermainnya, pengaturan lama, sekolah

@@ -225,14 +225,22 @@ class SystemReset extends BaseCommand
         ), 'green');
 
         $bank = $result['bank'];
-        CLI::write('Bank soal: ' . match ($bank['status']) {
-            'imported' => 'diimpor dari ' . $bank['path'],
-            'sample'   => $bank['message'],
-            default    => $bank['message'] ?? $bank['status'],
+        CLI::write(match ($bank['status']) {
+            'imported' => sprintf(
+                '✓ Bank soal kelas 5: %d soal (%d dinilai + %d pengecoh), %d variasi, %d bacaan',
+                $bank['items'],
+                $bank['scorable'],
+                $bank['items'] - $bank['scorable'],
+                $bank['variants'],
+                $bank['passages'],
+            ),
+            'failed' => 'Bank soal: impor gagal dari ' . $bank['path'],
+            default  => 'Bank soal: ' . ($bank['message'] ?? $bank['status']),
         }, $bank['status'] === 'failed' ? 'red' : 'green');
 
         CLI::write('Gambar mockup: ' . ($result['mockups']['status'] === 'done'
-            ? $result['mockups']['count'] . ' gambar contoh'
+            ? $result['mockups']['count'] . ' gambar contoh dibuat'
+                . (($result['mockups']['kept'] ?? 0) > 0 ? ', ' . $result['mockups']['kept'] . ' gambar asli dipertahankan' : '')
             : $result['mockups']['message']));
 
         if ($result['media_removed'] !== []) {

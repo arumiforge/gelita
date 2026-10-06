@@ -6,9 +6,11 @@
  *   php tools/audio/export_lines.php > tools/audio/out/lines.json
  *
  * Sumbernya sama dengan permainan: naskah app/Database/Seeds/data/story.php
- * (88 baris) dan petunjuk target arena `cari` di bank soal produksi
- * (docs/bank-soal/data/*.php), dengan aturan penomoran NarrationImporter:
- * petunjuk-{node}-NN, NN = urutan butir find_object bukan jebakan, mulai 01.
+ * (88 baris) dan petunjuk benda yang dicari di Cari Objek pada bank soal
+ * kelas 5 (docs/bank-soal/data/*.php, format Dok 2 §7.2: tantangan → variasi
+ * → soal), dengan aturan penomoran NarrationImporter: petunjuk-{node}-NN,
+ * NN = urutan soal find_object bukan pengecoh, mulai 01 (12 petunjuk:
+ * tmg-4, mgl-4, wnb-4 masing-masing 4).
  */
 $root  = dirname(__DIR__, 2);
 $lines = [];
@@ -35,20 +37,22 @@ foreach (['temanggung', 'magelang', 'wonosobo'] as $region) {
 
         $number = 0;
 
-        foreach ($node['items'] as $item) {
-            if (($item['type'] ?? null) !== 'find_object' || ! empty($item['decoy'])) {
-                continue;
-            }
+        foreach ($node['variants'] as $variant) {
+            foreach ($variant['items'] as $item) {
+                if (($item['type'] ?? null) !== 'find_object' || ! empty($item['decoy'])) {
+                    continue;
+                }
 
-            $lines[] = [
-                'code'      => sprintf('petunjuk-%s-%02d', $nodeRef, ++$number),
-                'context'   => 'hunt_clue',
-                'character' => 'mbah_kedu',
-                'pose'      => null,
-                'effect'    => null,
-                'text_id'   => $item['prompt'][0],
-                'text_en'   => $item['prompt'][1],
-            ];
+                $lines[] = [
+                    'code'      => sprintf('petunjuk-%s-%02d', $nodeRef, ++$number),
+                    'context'   => 'hunt_clue',
+                    'character' => 'mbah_kedu',
+                    'pose'      => null,
+                    'effect'    => null,
+                    'text_id'   => $item['prompt'][0],
+                    'text_en'   => $item['prompt'][1],
+                ];
+            }
         }
     }
 }

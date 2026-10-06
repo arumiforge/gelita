@@ -16,8 +16,8 @@ use Tests\Support\Database\NarrationTables;
  *
  * Memakai grup basis data `tests` (SQLite di memori) dengan tabel versi
  * ringkas; baris `dialogues` diisi StorySync dari naskah (88 baris), dan
- * uji petunjuk arena `cari` menambah node tmg-4 dari bank soal (8 petunjuk
- * target + 3 jebakan, seedHuntNode()). Berkas
+ * uji petunjuk arena `cari` menambah node tmg-4 dari bank soal kelas 5 (4
+ * benda dicari + 4 pengecoh, seedHuntNode()). Berkas
  * folder ditulis ke folder uji di bawah public/ dan salinan unggahan ke
  * public/assets/uploads/, lalu dibersihkan.
  *
@@ -128,30 +128,30 @@ final class NarrationImporterTest extends CIUnitTestCase
         $importer = $this->importer();
         $lines    = $importer->lines();
 
-        // 88 baris naskah + 8 petunjuk target tmg-4; ketiga jebakan tanpa kode berkas
-        $this->assertCount(96, $lines);
+        // 88 baris naskah + 4 petunjuk target tmg-4; keempat pengecoh tanpa kode berkas
+        $this->assertCount(92, $lines);
         $clues = array_filter($lines, static fn (array $line): bool => $line['context_code'] === NarrationImporter::CLUE_CONTEXT);
-        $this->assertSame(array_map(static fn (int $n): string => sprintf('petunjuk-tmg-4-%02d', $n), range(1, 8)), array_keys($clues));
-        $this->assertSame(array_map(static fn (int $n): string => sprintf('tmg-4-%02d', $n), range(1, 8)), array_column($clues, 'item_key'));
-        $this->assertSame('petunjuk-tmg-4-08', array_key_last($lines), 'petunjuk di akhir, sesudah naskah');
+        $this->assertSame(array_map(static fn (int $n): string => sprintf('petunjuk-tmg-4-%02d', $n), range(1, 4)), array_keys($clues));
+        $this->assertSame(array_map(static fn (int $n): string => sprintf('tmg-4-a%02d', $n), range(1, 4)), array_column($clues, 'item_key'));
+        $this->assertSame('petunjuk-tmg-4-04', array_key_last($lines), 'petunjuk di akhir, sesudah naskah');
 
         $first = $lines['petunjuk-tmg-4-01'];
         $this->assertSame('challenge_items', $first['table']);
         $this->assertSame($nodeId, $first['node_id']);
         $this->assertSame('temanggung', $first['level_code']);
         $this->assertSame('mbah_kedu', $first['character_code']);
-        $this->assertSame('Temukan daun tembakau, tanaman kebun andalan petani Temanggung.', $first['text_id']);
-        $this->assertSame('Find the tobacco leaf, the main garden crop of Temanggung farmers.', $first['text_en']);
+        $this->assertSame('Temukan kuda-kudaan dari anyaman bambu yang dipakai untuk menari kuda lumping.', $first['text_id']);
+        $this->assertSame('Find the woven bamboo horse used for the kuda lumping dance.', $first['text_en']);
 
-        foreach (['petunjuk-tmg-4-01.mp3', 'PETUNJUK-TMG-4-08.MP3', 'petunjuk-tmg-4-05.ogg'] as $file) {
+        foreach (['petunjuk-tmg-4-01.mp3', 'PETUNJUK-TMG-4-04.MP3', 'petunjuk-tmg-4-03.ogg'] as $file) {
             $this->assertNull($importer->match($file)['error'], $file);
         }
 
         // NN = urutan petunjuk target, bukan kode butir: butir nonaktif menggeser nomornya
-        $this->sqlite->table('challenge_items')->where('item_key', 'tmg-4-02')->update(['is_active' => 0]);
+        $this->sqlite->table('challenge_items')->where('item_key', 'tmg-4-a02')->update(['is_active' => 0]);
         $shifted = $this->importer()->lines();
-        $this->assertSame('tmg-4-03', $shifted['petunjuk-tmg-4-02']['item_key']);
-        $this->assertArrayNotHasKey('petunjuk-tmg-4-08', $shifted);
+        $this->assertSame('tmg-4-a03', $shifted['petunjuk-tmg-4-02']['item_key']);
+        $this->assertArrayNotHasKey('petunjuk-tmg-4-04', $shifted);
     }
 
     public function testInvalidClueNamesAreReportedWithASuggestion(): void
@@ -159,9 +159,9 @@ final class NarrationImporterTest extends CIUnitTestCase
         $this->seedHuntNode($this->sqlite);
         $importer = $this->importer();
 
-        $beyond = $importer->match('petunjuk-tmg-4-09.mp3');
+        $beyond = $importer->match('petunjuk-tmg-4-05.mp3');
         $this->assertNull($beyond['code']);
-        $this->assertStringContainsString('petunjuk-tmg-4-09 tidak ada di petunjuk target', $beyond['error']);
+        $this->assertStringContainsString('petunjuk-tmg-4-05 tidak ada di petunjuk target', $beyond['error']);
 
         $node = $importer->match('petunjuk-tmg-3-01.mp3');
         $this->assertStringContainsString('tantangan "tmg-3" bukan tantangan Cari Objek', $node['error']);
@@ -184,18 +184,18 @@ final class NarrationImporterTest extends CIUnitTestCase
         $this->seedHuntNode($this->sqlite);
         $this->folderFile('id', 'petunjuk-tmg-4-01.wav', 1);
         $this->folderFile('en', 'petunjuk-tmg-4-01.wav', 2);
-        $this->folderFile('id', 'petunjuk-tmg-4-08.wav', 3);
+        $this->folderFile('id', 'petunjuk-tmg-4-04.wav', 3);
 
         $importer = $this->importer();
         $id       = $importer->importFolder('id');
         $en       = $importer->importFolder('en');
 
-        $this->assertSame(['petunjuk-tmg-4-01', 'petunjuk-tmg-4-08'], $id['created']);
+        $this->assertSame(['petunjuk-tmg-4-01', 'petunjuk-tmg-4-04'], $id['created']);
         $this->assertSame(['petunjuk-tmg-4-01'], $en['created']);
-        $this->assertCount(94, $id['missing']);
+        $this->assertCount(90, $id['missing']);
         $this->assertContains('petunjuk-tmg-4-02', $id['missing']);
 
-        $item    = $this->sqlite->table('challenge_items')->where('item_key', 'tmg-4-01')->get()->getRowArray();
+        $item    = $this->sqlite->table('challenge_items')->where('item_key', 'tmg-4-a01')->get()->getRowArray();
         $audioId = $this->audioByKey('audio.narasi.id.petunjuk-tmg-4-01');
         $audioEn = $this->audioByKey('audio.narasi.en.petunjuk-tmg-4-01');
 
@@ -214,8 +214,8 @@ final class NarrationImporterTest extends CIUnitTestCase
         // Impor ulang berkas yang sama: tetap tertaut, persetujuan tidak hilang
         (new NarrationCatalog($this->sqlite, $importer))->approveDrafts('id', 5);
         $again = $this->importer()->importFolder('id');
-        $this->assertSame(['petunjuk-tmg-4-01', 'petunjuk-tmg-4-08'], $again['unchanged']);
-        $this->assertSame('approved', $this->audioByKey('audio.narasi.id.petunjuk-tmg-4-08')['approval_status']);
+        $this->assertSame(['petunjuk-tmg-4-01', 'petunjuk-tmg-4-04'], $again['unchanged']);
+        $this->assertSame('approved', $this->audioByKey('audio.narasi.id.petunjuk-tmg-4-04')['approval_status']);
         $this->assertSame('draft', $this->audioByKey('audio.narasi.en.petunjuk-tmg-4-01')['approval_status'], 'bahasa lain tidak ikut');
     }
 
@@ -225,24 +225,24 @@ final class NarrationImporterTest extends CIUnitTestCase
 
         // Audio yang dipilih manual di form butir juga ikut persetujuan massal
         $manual = $this->audioRow('audio.petunjuk-manual.id', 'hunt_clue', 'id');
-        $this->sqlite->table('challenge_items')->where('item_key', 'tmg-4-03')->update(['audio_prompt_id' => $manual]);
+        $this->sqlite->table('challenge_items')->where('item_key', 'tmg-4-a03')->update(['audio_prompt_id' => $manual]);
 
         $catalog  = new NarrationCatalog($this->sqlite, $this->importer());
         $rows     = $catalog->rows();
         $progress = $catalog->progress($rows);
 
-        $this->assertSame(['total' => 96, 'approved' => 0, 'draft' => 1, 'none' => 95], $progress['id']);
-        $this->assertSame(['total' => 96, 'approved' => 0, 'draft' => 0, 'none' => 96], $progress['en']);
+        $this->assertSame(['total' => 92, 'approved' => 0, 'draft' => 1, 'none' => 91], $progress['id']);
+        $this->assertSame(['total' => 92, 'approved' => 0, 'draft' => 0, 'none' => 92], $progress['en']);
 
         $groups = $catalog->groups($rows);
         $this->assertCount(13, $groups);
         $this->assertSame('Petunjuk Cari Objek · Temanggung (tmg-4)', end($groups)['label']);
-        $this->assertCount(8, end($groups)['rows']);
+        $this->assertCount(4, end($groups)['rows']);
 
         $list = $catalog->recordingList();
-        $this->assertCount(96, $list['rows']);
+        $this->assertCount(92, $list['rows']);
         $this->assertSame(['petunjuk-tmg-4-03', 'hunt_clue', 'temanggung', 3, 'Mbah Kedu'], array_slice($list['rows'][90], 0, 5));
-        $this->assertSame('Temukan kuda-kudaan anyaman bambu untuk menari jaran kepang.', $list['rows'][90][9]);
+        $this->assertSame('Temukan arca lembu Nandi, seperti yang ada di dalam Candi Pringapus.', $list['rows'][90][9]);
         $this->assertSame(['menunggu persetujuan', 'belum ada'], array_slice($list['rows'][90], 11));
 
         $this->assertSame([$manual], $catalog->draftIds('id'));

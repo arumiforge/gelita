@@ -5,42 +5,40 @@ namespace App\Libraries;
 use App\Entities\ChallengeItem;
 use App\Entities\ChallengeNode;
 use App\Models\ChallengeItemModel;
+use App\Models\MediaAssetModel;
 
 /**
  * Pemeriksaan kelengkapan konten sebelum rilis (FITUR 12 langkah 8).
  *
- * Satu sumber aturan untuk panel `/admin/konten/verifikasi` dan
- * `php spark gelita:content:verify`. Temuan `error` membuat konten belum
- * layak dirilis; `warning` perlu diperiksa tetapi tidak menghalangi permainan.
+ * Satu sumber aturan untuk panel `/admin/konten/verifikasi`,
+ * `php spark gelita:content:verify`, dan langkah verifikasi `gelita:reset`.
+ * Temuan `error` membuat konten belum layak dirilis; `warning` perlu
+ * diperiksa tetapi tidak menghalangi permainan.
  *
- * Aturan kelas 5 per tingkat kesulitan wilayah (DifficultyRules) — ukuran
- * papan Susun Gambar, jumlah rumpang/pengecoh bacaan, tingkat Bloom — hanya
- * menghasilkan peringatan, karena server yang baru diperbarui belum tentu
- * sudah mengimpor workbook barunya (skrip deploy menolak membuka situs bila
- * ada galat).
+ * Aturan bank soal kelas 5 (Dok 2 §7.5) dibaca dari App\Libraries\BankRules
+ * — aturan yang sama dengan skrip penyusun workbook dan importer: 4
+ * tantangan berurutan per wilayah, 3 variasi, jumlah rumpang/pernyataan/benda
+ * per tingkat, bacaan, Bloom, keterampilan, posisi benda Cari Objek.
  *
- * Perombakan kelas 5: 4 tantangan per wilayah (puzzle, rumpang, boleh,
- * cari), soal dikelompokkan per variasi (satu variasi acak per pengerjaan).
+ * Gambar contoh (mockup, `media_assets.is_placeholder = 1`) yang masih
+ * dipakai konten tantangan: peringatan, kecuali mode siap penelitian
+ * (`--siap-penelitian`), yang menjadikannya galat karena mockup menuliskan
+ * nama benda (Dok 2 §10.3).
  */
 class ContentVerifier
 {
     /** Kunci config_json node yang tidak dibaca lagi sejak perombakan kelas 5. */
     public const LEGACY_NODE_KEYS = ['items_per_round', 'allow_retry', 'require_reason', 'shuffle_options', 'show_decoys', 'distractors'];
 
-    /** Satu jenis soal per engine. */
-    private const ENGINE_INTERACTION = [
-        'puzzle'  => 'puzzle_arrange',
-        'rumpang' => 'fill_blank_bank',
-        'boleh'   => 'verdict_card',
-        'cari'    => 'find_object',
-    ];
-
     /**
+     * @param bool $researchReady mode siap penelitian: gambar contoh = galat
+     *
      * @return list<array{level: string, scope: string, message: string}>
      */
-    public function run(): array
+    public function run(bool $researchReady = false): array
     {
         $content  = service('contentRepository');
+        $state    = new BankState();
         $levels   = $content->levels();
         $findings = [];
         $answers  = [];
@@ -49,12 +47,16 @@ class ContentVerifier
             $findings[] = $this->finding('error', 'Keseluruhan', 'Ada ' . count($levels) . ' wilayah aktif; seharusnya 3.');
         }
 
+        $normal  = $state->nodes();
+        $regions = $state->regions($normal);
+        $keys    = [];
+
         foreach ($levels as $level) {
             $nodes = $content->nodesForLevel($level->id);
             $scope = 'Wilayah ' . $level->text('name', 'id');
 
-            if (count($nodes) !== 4) {
-                $findings[] = $this->finding('error', $scope, 'Ada ' . count($nodes) . ' tantangan aktif; seharusnya 4.');
+            foreach (BankRules::region($scope, $regions[(string) $level->code] ?? []) as $problem) {
+                $findings[] = $this->finding($problem['level'], $scope, $problem['message']);
             }
 
             foreach (['map_media_id' => 'peta', 'background_media_id' => 'latar', 'badge_media_id' => 'lencana'] as $column => $label) {
@@ -70,17 +72,11 @@ class ContentVerifier
 
             foreach ($nodes as $node) {
                 $nodeScope = $scope . ' · tantangan ' . $node->sequence . ' (' . $node->text('title', 'id') . ')';
+                $ref       = node_ref((string) $level->code, (int) $node->sequence);
                 $bank      = $content->itemBank($node->id);
-                $groups    = ChallengeItemModel::groupByVariant($bank);
 
-                if (! in_array($node->engine_type, config('Gelita')->engineTypes, true)) {
-                    $findings[] = $this->finding('error', $nodeScope, "Jenis tantangan '{$node->engine_type}' tidak dikenali.");
-                }
-
-                if ($bank === []) {
-                    $findings[] = $this->finding('error', $nodeScope, 'Belum ada soal aktif.');
-                } elseif (count($groups) !== 3) {
-                    $findings[] = $this->finding('warning', $nodeScope, 'Ada ' . count($groups) . ' variasi soal (' . implode(', ', array_keys($groups)) . '); aturan kelas 5 memakai 3 variasi (a, b, c) yang tampil acak.');
+                foreach (BankRules::node($normal[$ref] ?? ['ref' => $ref, 'engine' => $node->engine_type, 'variants' => []], $state->passages()) as $problem) {
+                    $findings[] = $this->finding($problem['level'], $this->scope($nodeScope, $problem), $problem['message']);
                 }
 
                 $legacy = array_values(array_intersect(self::LEGACY_NODE_KEYS, array_keys((array) ($node->config_json ?: []))));
@@ -89,23 +85,8 @@ class ContentVerifier
                     $findings[] = $this->finding('warning', $nodeScope, 'Pengaturan lama yang tidak dipakai lagi masih tersimpan: ' . implode(', ', $legacy) . '.');
                 }
 
-                foreach ($groups as $group => $items) {
-                    $groupScope = $nodeScope . ' · variasi ' . $group;
-
-                    if ($node->engine_type === 'puzzle') {
-                        $findings = [...$findings, ...$this->puzzleFindings($node, $items, (string) $level->difficulty, $groupScope)];
-                    }
-
-                    if ($node->isReading()) {
-                        $findings = [...$findings, ...$this->readingFindings($node, $items, (string) $level->difficulty, $groupScope, $group)];
-                    }
-
-                    $distractors = count($node->distractors('id', $group));
-                    $needed      = (int) $node->config('distractor_count');
-
-                    if ($node->engine_type === 'rumpang' && $needed > 0 && $distractors < $needed) {
-                        $findings[] = $this->finding('error', $groupScope, "Baru ada {$distractors} kata pengecoh; perlu minimal {$needed}.");
-                    }
+                if ($node->engine_type === 'puzzle') {
+                    $findings = [...$findings, ...$this->puzzleFindings($node, $bank, (string) $level->difficulty, $nodeScope)];
                 }
 
                 foreach (['background_media_id' => 'latar', 'scene_media_id' => 'adegan'] as $column => $label) {
@@ -113,13 +94,8 @@ class ContentVerifier
                 }
 
                 foreach ($bank as $item) {
-                    $itemScope = $nodeScope . ' · soal ' . $item->item_key;
-
-                    if (! in_array($item->interaction_type, config('Gelita')->interactionTypes, true)) {
-                        $findings[] = $this->finding('error', $itemScope, "Jenis soal '{$item->interaction_type}' sudah tidak dipakai; ganti atau istirahatkan soal ini.");
-                    } elseif (isset(self::ENGINE_INTERACTION[$node->engine_type]) && $item->interaction_type !== self::ENGINE_INTERACTION[$node->engine_type]) {
-                        $findings[] = $this->finding('error', $itemScope, 'Jenis soal tidak cocok dengan jenis tantangannya.');
-                    }
+                    $itemScope = $nodeScope . ' · variasi ' . (trim((string) $item->variant_group) ?: 'a') . ' · soal ' . $item->item_key;
+                    $keys[]    = (string) $item->item_key;
 
                     if (trim((string) $item->variant_group) === '') {
                         $findings[] = $this->finding('warning', $itemScope, 'Soal ini belum punya variasi; dianggap variasi a.');
@@ -127,11 +103,6 @@ class ContentVerifier
 
                     if ($item->scorable && $item->answerKey() === []) {
                         $findings[] = $this->finding('error', $itemScope, 'Soal ini dinilai tetapi belum punya kunci jawaban.');
-                    }
-
-                    if ($item->interaction_type === 'verdict_card'
-                        && ! in_array((string) $item->verdict(), $node->verdictOptions(), true)) {
-                        $findings[] = $this->finding('error', $itemScope, 'Kunci jawabannya harus benar atau salah.');
                     }
 
                     if ($item->passage_id !== null && ! isset($passageIds[$item->passage_id])) {
@@ -162,12 +133,74 @@ class ContentVerifier
             }
         }
 
+        foreach (BankRules::duplicateKeys($keys) as $key) {
+            $findings[] = $this->finding('error', 'Keseluruhan', "Kode soal {$key} dipakai lebih dari satu soal aktif.");
+        }
+
+        $placeholder = $this->placeholderFinding($researchReady);
+
+        if ($placeholder !== null) {
+            $findings[] = $placeholder;
+        }
+
         return $findings;
     }
 
+    /** @param list<array{level: string}> $findings */
+    public static function errorCount(array $findings): int
+    {
+        return count(array_filter($findings, static fn (array $f): bool => $f['level'] === 'error'));
+    }
+
     /**
-     * Susun Gambar satu variasi: tepat satu gambar (tampilan hanya merender
-     * soal pertama) dan ukuran papan sesuai tingkat wilayahnya.
+     * Gambar contoh yang masih dipakai konten tantangan (adegan, latar, gambar
+     * soal, gambar bacaan).
+     *
+     * @return list<array<string, mixed>> baris media_assets, urut asset_key
+     */
+    public function placeholdersInUse(): array
+    {
+        $db   = db_connect();
+        $used = [];
+
+        foreach ([
+            'challenge_nodes'  => ['scene_media_id', 'background_media_id'],
+            'challenge_items'  => ['media_asset_id'],
+            'reading_passages' => ['media_asset_id'],
+        ] as $table => $columns) {
+            foreach ($columns as $column) {
+                foreach ($db->table($table)->select($column)->where('is_active', 1)->where($column . ' IS NOT NULL', null, false)->get()->getResultArray() as $row) {
+                    $used[(int) $row[$column]] = true;
+                }
+            }
+        }
+
+        return array_values(array_filter(
+            model(MediaAssetModel::class)->placeholders(),
+            static fn (array $row): bool => isset($used[(int) $row['id']]) && (int) $row['is_active'] === 1,
+        ));
+    }
+
+    /** @return array{level: string, scope: string, message: string}|null */
+    private function placeholderFinding(bool $researchReady): ?array
+    {
+        $rows = $this->placeholdersInUse();
+
+        if ($rows === []) {
+            return null;
+        }
+
+        $keys = array_map(static fn (array $row): string => (string) $row['asset_key'], $rows);
+        $list = implode(', ', array_slice($keys, 0, 5)) . (count($keys) > 5 ? ', …' : '');
+
+        return $researchReady
+            ? $this->finding('error', 'Gambar tantangan', count($rows) . " gambar masih gambar contoh (mockup): {$list}. Gambar contoh menuliskan nama benda, jadi belum layak untuk pengambilan data. Unggah gambar asli di menu Gambar & suara.")
+            : $this->finding('warning', 'Gambar tantangan', count($rows) . " gambar masih gambar contoh (mockup): {$list}. Ganti dengan gambar asli sebelum pengambilan data penelitian.");
+    }
+
+    /**
+     * Susun Gambar: kunci sesuai ukuran papan, dan ukuran papan sesuai tingkat
+     * wilayahnya (jumlah gambar per variasi diperiksa BankRules).
      *
      * @param list<ChallengeItem> $bank
      *
@@ -177,13 +210,12 @@ class ContentVerifier
     {
         $findings = [];
         $rule     = DifficultyRules::puzzle($difficulty);
-        $images   = array_filter($bank, static fn (ChallengeItem $item): bool => $item->interaction_type === 'puzzle_arrange');
 
-        if (count($images) > 1) {
-            $findings[] = $this->finding('error', $scope, 'Ada ' . count($images) . ' gambar dalam satu variasi; Susun Gambar hanya menampilkan satu gambar per pengerjaan.');
-        }
+        foreach ($bank as $item) {
+            if ($item->interaction_type !== 'puzzle_arrange') {
+                continue;
+            }
 
-        foreach ($images as $item) {
             $layout = $item->puzzleLayout($difficulty, $node->config('grid'));
             $order  = $item->answerKey('order');
 
@@ -205,60 +237,6 @@ class ContentVerifier
     }
 
     /**
-     * Isi Rumpang bacaan satu variasi: tepat satu ___ per potongan, jawaban unik, pengecoh
-     * tidak sama dengan jawaban (galat), serta jumlah rumpang/pengecoh dan
-     * tingkat Bloom sesuai aturan tingkat wilayah (peringatan).
-     *
-     * @param list<ChallengeItem> $bank
-     *
-     * @return list<array{level: string, scope: string, message: string}>
-     */
-    private function readingFindings(ChallengeNode $node, array $bank, string $difficulty, string $scope, string $group): array
-    {
-        $blanks = [];
-
-        foreach ($bank as $item) {
-            if ($item->interaction_type !== 'fill_blank_bank') {
-                continue;
-            }
-
-            $blanks[] = [
-                'key'       => (string) $item->item_key,
-                'prompt_id' => (string) ($item->prompt_id ?? ''),
-                'prompt_en' => (string) ($item->prompt_en ?? ''),
-                'answer_id' => (string) ($item->answerKey('text_id') ?? ''),
-                'answer_en' => (string) ($item->answerKey('text_en') ?? ''),
-                'bloom'     => $item->bloom_level,
-            ];
-        }
-
-        $distractors = array_map(
-            static fn (string $id, string $en): array => ['id' => $id, 'en' => $en],
-            $node->distractors('id', $group),
-            array_pad($node->distractors('en', $group), count($node->distractors('id', $group)), ''),
-        );
-
-        $problems = ClozeReading::problems(
-            $blanks,
-            $distractors,
-            (int) $node->config('distractor_count'),
-            (bool) $node->config('use_word_bank'),
-            $difficulty,
-        );
-
-        return [
-            ...array_map(fn (string $message): array => $this->finding('error', $scope, $message), $problems['errors']),
-            ...array_map(fn (string $message): array => $this->finding('warning', $scope, $message), $problems['warnings']),
-        ];
-    }
-
-    /** @param list<array{level: string}> $findings */
-    public static function errorCount(array $findings): int
-    {
-        return count(array_filter($findings, static fn (array $f): bool => $f['level'] === 'error'));
-    }
-
-    /**
      * Media yang dirujuk tetapi nonaktif/tidak terdaftar, atau berkasnya tidak
      * ada di disk. Peringatan, bukan galat: view punya tampilan pengganti.
      *
@@ -273,7 +251,7 @@ class ContentVerifier
         $path = service('contentRepository')->mediaMap()[$mediaId] ?? null;
 
         if ($path === null) {
-            return [$this->finding('warning', $scope, "{$label} belum diunggah; permainan memakai tampilan pengganti.")];
+            return [$this->finding('warning', $scope, "{$label} belum diunggah; permainan memakai tampilan pengganti. Jalankan php spark gelita:mockups untuk memasang gambar contoh.")];
         }
 
         if (! is_file(FCPATH . ltrim($path, '/'))) {
@@ -281,6 +259,14 @@ class ContentVerifier
         }
 
         return [];
+    }
+
+    /** "Wilayah … · tantangan 2 (…) · variasi a · soal tmg-2-a01" */
+    private function scope(string $nodeScope, array $problem): string
+    {
+        return $nodeScope
+            . (($problem['variant'] ?? null) !== null ? ' · variasi ' . $problem['variant'] : '')
+            . (($problem['item'] ?? null) !== null ? ' · soal ' . $problem['item'] : '');
     }
 
     /** @return array{level: string, scope: string, message: string} */

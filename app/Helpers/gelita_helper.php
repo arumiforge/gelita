@@ -175,6 +175,36 @@ if (! function_exists('seeded_shuffle')) {
     }
 }
 
+if (! function_exists('seeded_derangement')) {
+    /**
+     * Urutan awal keping Susun Gambar (Dok 2 §4): acakan deterministik
+     * 0..n−1 tanpa satu keping pun di tempatnya sendiri, tetap untuk satu
+     * pengerjaan. Benih pertama sama dengan seeded_shuffle($seed); bila masih
+     * ada keping di tempatnya, benih berikutnya dicoba (paling banyak 50
+     * kali), lalu jatuh ke geser satu langkah yang selalu memenuhi syarat.
+     *
+     * @return list<int>
+     */
+    function seeded_derangement(int $count, string $seed): array
+    {
+        if ($count < 2) {
+            return $count === 1 ? [0] : [];
+        }
+
+        $identity = range(0, $count - 1);
+
+        for ($k = 0; $k < 50; $k++) {
+            $order = seeded_shuffle($identity, $k === 0 ? $seed : $seed . '|' . $k);
+
+            if (array_filter($order, static fn (int $piece, int $slot): bool => $piece === $slot, ARRAY_FILTER_USE_BOTH) === []) {
+                return $order;
+            }
+        }
+
+        return array_merge(array_slice($identity, 1), [0]);
+    }
+}
+
 if (! function_exists('apply_research_filters')) {
     /**
      * Menerapkan filter penelitian baku (03_MODEL_ENTITY.md) pada builder yang sudah

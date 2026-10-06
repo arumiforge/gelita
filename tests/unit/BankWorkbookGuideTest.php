@@ -1,5 +1,6 @@
 <?php
 
+use App\Libraries\BankSource;
 use App\Libraries\BankWorkbookGuide;
 use App\Services\ContentImportService;
 use App\Services\SystemResetService;
@@ -10,7 +11,8 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
  * Workbook berpanduan harus tetap sejalan dengan importer: setiap kolom yang
  * dibaca ContentImportService punya penjelasan Indonesia, header sheet data
  * persis sama dengan yang diharapkan importer, dan workbook bank soal kelas 5
- * di docs/bank-soal ikut diperbarui bila kolom berubah.
+ * (docs/bank-soal) serta Pustaka (docs/pustaka) ikut dibangun ulang bila data
+ * atau kolomnya berubah.
  *
  * @internal
  */
@@ -96,38 +98,130 @@ final class BankWorkbookGuideTest extends CIUnitTestCase
     }
 
     /**
-     * Workbook bank soal kelas 5 (Dok 2 §7) wajib sama header-nya dengan
-     * importer. Templat unduhan importer selalu diperiksa; workbook produksi
-     * lama (15 tantangan, sheet options/pieces/sources) sudah tidak dibaca
-     * importer kelas 5 dan diganti di Dok 2.
+     * Templat unduhan importer: semua sheet dengan header importer; sheet
+     * bank soal berisi contoh dari bank kelas 5, sheet Pustaka tanpa contoh
+     * (agar Pustaka tidak tertimpa tanpa sengaja).
      */
-    public function testWorkbooksMatchImporterHeaders(): void
+    public function testTemplateMatchesImporterHeaders(): void
     {
-        $files  = ['templat' => (new ContentImportService())->template()];
-        $kelas5 = ROOTPATH . SystemResetService::DEFAULT_BANK;
+        $book = IOFactory::load((new ContentImportService())->template());
 
-        if (is_file($kelas5)) {
-            $files['kelas 5'] = $kelas5;
+        foreach (ContentImportService::SHEETS as $sheet => $headers) {
+            $data = $book->getSheetByName($sheet);
+
+            $this->assertNotNull($data, "templat: {$sheet}");
+            $this->assertSame($headers, $this->headerRow($data), "templat {$sheet}");
+
+            if (! in_array($sheet, ['library', 'library_media'], true)) {
+                $this->assertNotSame([], $this->dataRows($data), "templat: {$sheet} punya contoh");
+            }
         }
 
-        foreach ($files as $label => $file) {
-            $book = IOFactory::load($file);
+        $this->assertSame([], $this->dataRows($book->getSheetByName('library')), 'templat tanpa contoh Pustaka');
+        $book->disconnectWorksheets();
+    }
 
-            foreach (ContentImportService::SHEETS as $sheet => $headers) {
-                $data = $book->getSheetByName($sheet);
+    /**
+     * Workbook bank soal kelas 5 (Dok 2 §7.1/§7.3): header sama dengan
+     * importer, tanpa sheet Pustaka maupun sheet lama, dan isinya sama persis
+     * dengan berkas data — bila data atau kolom berubah, jalankan ulang
+     * `php docs/bank-soal/build-workbook.php` dan commit workbook-nya.
+     */
+    public function testGradeFiveWorkbookIsRebuiltFromTheDataFiles(): void
+    {
+        $file = ROOTPATH . SystemResetService::DEFAULT_BANK;
+        $this->assertFileExists($file);
 
-                $this->assertNotNull($data, "{$label}: {$sheet}");
+        $book = IOFactory::load($file);
+        $flat = BankSource::flatten(BankSource::load(ROOTPATH . 'docs/bank-soal/data'));
 
-                $row = $data->rangeToArray('A1:' . $data->getHighestColumn() . '1', null, false, false)[0];
-                $this->assertSame($headers, $row, "{$label} {$sheet}: bangun ulang workbook setelah kolom impor berubah");
-                $this->assertGreaterThan(1, $data->getHighestDataRow(), "{$label}: {$sheet} kosong");
-            }
-
-            foreach (['options', 'pieces', 'sources'] as $gone) {
-                $this->assertNull($book->getSheetByName($gone), "{$label}: sheet {$gone} sudah dihapus (Dok 1 §14)");
-            }
-
-            $book->disconnectWorksheets();
+        foreach (['options', 'pieces', 'sources', 'library', 'library_media'] as $gone) {
+            $this->assertNull($book->getSheetByName($gone), "workbook kelas 5 tanpa sheet {$gone}");
         }
+
+        foreach ($flat['sheets'] as $sheet => $rows) {
+            $data = $book->getSheetByName($sheet);
+
+            $this->assertNotNull($data, $sheet);
+            $this->assertSame(ContentImportService::SHEETS[$sheet], $this->headerRow($data), "{$sheet}: bangun ulang workbook setelah kolom impor berubah");
+            $this->assertSame($this->expected($sheet, $rows), $this->dataRows($data), "{$sheet}: bangun ulang workbook setelah data bank soal berubah");
+        }
+
+        $media = $book->getSheetByName('DAFTAR_MEDIA');
+        $this->assertNotNull($media);
+        $this->assertCount(45, $this->dataRows($media));
+
+        $book->disconnectWorksheets();
+    }
+
+    /** Workbook Pustaka (Dok 2 §7.1): hanya sheet Pustaka, isinya sama dengan docs/pustaka/data. */
+    public function testLibraryWorkbookIsRebuiltFromTheDataFiles(): void
+    {
+        $book = IOFactory::load(ROOTPATH . 'docs/pustaka/gelita-pustaka.xlsx');
+        $sheets = $book->getSheetNames();
+
+        foreach (['nodes', 'variants', 'distractors', 'passages', 'items', 'hints'] as $gone) {
+            $this->assertNotContains($gone, $sheets);
+        }
+
+        $pages = 0;
+        $media = 0;
+
+        foreach (['temanggung', 'magelang', 'wonosobo'] as $region) {
+            $library = (static fn (string $path): array => require $path)(ROOTPATH . "docs/pustaka/data/{$region}.php")['library'];
+            $pages += count($library);
+            $media += array_sum(array_map(static fn (array $page): int => count($page['media'] ?? []), $library));
+        }
+
+        $this->assertSame(ContentImportService::SHEETS['library'], $this->headerRow($book->getSheetByName('library')));
+        $this->assertCount($pages, $this->dataRows($book->getSheetByName('library')));
+        $this->assertCount($media, $this->dataRows($book->getSheetByName('library_media')));
+        $this->assertSame(30, $pages);
+
+        $book->disconnectWorksheets();
+    }
+
+    // ------------------------------------------------------------- bantu
+
+    /** @return list<string> */
+    private function headerRow(PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $sheet): array
+    {
+        return $sheet->rangeToArray('A1:' . $sheet->getHighestColumn() . '1', null, false, false)[0];
+    }
+
+    /**
+     * Baris data berisi (tanpa header), setiap sel sebagai teks.
+     *
+     * @return list<list<string>>
+     */
+    private function dataRows(PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $sheet): array
+    {
+        $rows = $sheet->toArray(null, true, false, false);
+        array_shift($rows);
+
+        $out = [];
+
+        foreach ($rows as $row) {
+            $row = array_map(static fn ($value): string => $value === null ? '' : (string) $value, $row);
+
+            if (implode('', $row) !== '') {
+                $out[] = $row;
+            }
+        }
+
+        return $out;
+    }
+
+    /**
+     * @param list<array<string, string>> $rows
+     *
+     * @return list<list<string>>
+     */
+    private function expected(string $sheet, array $rows): array
+    {
+        return array_map(
+            static fn (array $row): array => array_map(static fn (string $column): string => (string) ($row[$column] ?? ''), ContentImportService::SHEETS[$sheet]),
+            $rows,
+        );
     }
 }
