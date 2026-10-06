@@ -7,14 +7,15 @@ Keputusan dan penyimpangan dari ketiga dokumen perombakan, beserta alasannya dan
 | Dokumen | Status |
 |---|---|
 | Dok 1 | Selesai, di `main` |
-| Dok 2 | Sebagian, di `main`: §2, §3–§4, §5.2 (server), §5.3 (klien), §7, §9, §10 (mockup), §12 (teks UI), narasi petunjuk per node `cari`. §11 di branch `dok2-mockup` (PR ke `main`), lihat bagian "Dok 2 — naskah cerita dan rekaman" |
-| Dok 3 | Belum dimulai |
+| Dok 2 | Sebagian, di `main`: §2–§12 (lihat bagian-bagian "Dok 2" di bawah). Sisa: catatan §2–§9 dan uji manual §13.2 lengkap |
+| Pembersihan kompatibilitas lama | Di branch `dok2-mockup` (PR ke `main`): instalasi baru saja, migration digabung, dokumentasi ditulis ulang. Lihat bagian "Pembersihan — instalasi baru tanpa kompatibilitas lama" |
+| Dok 3 | Belum dimulai. **§13 (skrip `upgrade-kelas5`) tidak dikerjakan** dan §11 sebagian sudah selesai; lihat "Untuk sesi Dok 3" di bagian pembersihan |
 
 Sisa Dok 2:
 
 1. ~~**§5.3 klien + §12 teks UI**~~ — selesai, di `main` (PR #37).
 2. ~~**§10 mockup**~~ — selesai, di `main` (PR #36).
-3. ~~**§11 naskah cerita**~~ — selesai di branch `dok2-mockup` (PR ke `main`). Di server tetap perlu `gelita:story:update`, `gelita:narration:import`, lalu persetujuan narasi draft (§11.2 butir 3, Dok 3 §13).
+3. ~~**§11 naskah cerita**~~ — selesai, di `main` (PR #38). Sesudah instalasi tetap perlu `gelita:narration:import` lalu persetujuan narasi draft di panel.
 4. Bagian "Dok 2" catatan ini untuk §2–§9 dan uji manual §13.2 lengkap (butir 3–4: mockup diganti gambar asli, halaman Narasi). Bagian mockup, klien dan teks UI, serta naskah cerita sudah ada di bawah.
 
 ### Perawatan repo
@@ -325,3 +326,80 @@ Dikerjakan di branch `dok2-mockup` (dibuat ulang dari `main` sesudah PR #36), se
   - Transkrip `intro-04` ID diubah ke versi lama, lalu `--lepas-audio-beda` → tepat `intro #4 (id)` dilepas.
   - **Bug yang tertangkap di sini:** versi pertama mencari transkrip lewat `audio_assets.media_asset_id`, padahal `dialogues.audio_*_asset_id` adalah FK ke `audio_assets.id`, sehingga 118 tautan terlepas. Diperbaiki dan ditambah uji.
 - **Belum dikerjakan:** mendengarkan ke-46 rekaman baru satu per satu. Dilakukan saat persetujuan di **Konten → Narasi**.
+
+---
+
+## Pembersihan — instalasi baru tanpa kompatibilitas lama
+
+Dikerjakan di branch `dok2-mockup` (dari `main` sesudah PR #38), atas permintaan pemilik (6 Oktober 2026). GELITA belum pernah berjalan di server mana pun, jadi semua jalur pembaruan server lama, data lama, seeder lama, dan workbook lama dibuang. Admin hanya melakukan **instalasi baru**.
+
+### Yang berubah
+
+1. **Opsi `--nama=nilai`.** Parser CLI CodeIgniter membaca `--bank=x` sebagai opsi bernama `bank=x` tanpa nilai, sehingga `gelita:reset --bank=JALUR` diam-diam memakai workbook bawaan. Bug yang sama ada di `gelita:bank:import --staff=…`.
+   - Pembacaan opsi kini satu trait, `App\Commands\Concerns\CliOptions` (`flag()`, `option()`), dipakai semua command.
+   - `gelita:reset` menampilkan workbook yang akan diimpor, dan berhenti sebelum mengubah apa pun bila jalur `--bank` tidak ada.
+2. **Migration digabung: 46 → 29 berkas, satu tabel per berkas** (`000100_CreateSchools` … `002900_CreateCiSessions`), urut ketergantungan FK.
+   - Isinya dibangkitkan dari `SHOW CREATE TABLE` hasil rantai lama di MariaDB 10.11, lalu dibandingkan lewat `information_schema` (kolom, tipe, null, bawaan, collation, index, FK, engine). Hasilnya identik, kecuali dua hal:
+     - empat kolom slot `library_pages.image_a/image_b/video/poster_media_id` (sudah digantikan `library_media`) sengaja dibuang;
+     - nama index FK `schools.merged_into_id` kini nama bawaan Forge (`schools_merged_into_id_foreign`).
+   - Rollback penuh lalu `migrate` lagi menghasilkan skema yang sama.
+   - Helper upgrade `GelitaMigration` (`dropForeignKeyOn`, `addColumnsIfMissing`, …) dihapus. `SystemResetService::REQUIRED_MIGRATION` = `2026-01-01-002900`. `ResetTables` tanpa kolom slot Pustaka.
+   - **Akibat:** database pengembangan yang dibuat dari rantai lama harus dibuat ulang (kosongkan database, `migrate`, `db:seed`), karena isi tabel `migrations`-nya tidak cocok lagi.
+3. **Instalasi satu langkah.** `DatabaseSeeder` kini mengisi semuanya di semua lingkungan. Seeder baru `KontenKelas5Seeder` mengimpor Pustaka (`docs/pustaka/gelita-pustaka.xlsx`) dan bank soal kelas 5, lalu membuat 45 gambar contoh.
+   - `BankKelas5Seeder` (hanya development) dihapus.
+   - Tiga halaman Pustaka sementara `ContentSeeder::seedLibrary()` dihapus.
+   - `ContentSeeder::seedDialogues()` publik dan dipakai uji sebagai pemuat cerita.
+4. **Pembaruan cerita server lama dihapus:** `gelita:story:update`, `StorySync`, `data/story-legacy.php`, `--lepas-audio-beda`, `StoryUpdateCommandTest`. Cerita dipasang `ContentSeeder` saat instalasi; sesudahnya disunting di panel.
+5. **`gelita:reset`:**
+   - `--bersihkan-media-tantangan` (membuang kunci media lama) dihapus.
+   - Jatuh ke `DELETE` bila akun tidak punya hak TRUNCATE juga dihapus: akun seperti itu kini ditolak dengan pesan jelas sebelum ada tabel yang dikosongkan.
+   - Pemeriksaan `tableExists` untuk tabel yang pasti ada dihapus.
+   - Fungsi reset tetap: mengosongkan data uji coba sebelum penelitian, membangun ulang 12 tantangan, mengimpor ulang bank soal, dan membuat gambar contoh yang hilang.
+6. **Jalur kode untuk data lama:**
+   - `PuzzleCut::resolve($config, $difficulty)` hanya membaca isian soal atau aturan wilayah. Cadangan ukuran tantangan lama dan akar panjang kunci dihapus; `ChallengeItem::puzzleLayout()` tanpa `$nodeGrid`.
+   - Importer, verifier, dan editor: penanganan sheet `options`/`pieces`/`sources` dan kunci `config_json` node lama dihapus. `RETIRED_TYPE` diganti `UNKNOWN_TYPE` ("Jenis soal tidak dikenal.").
+   - `ChallengeAttempt::maxTries()` tanpa cadangan `max_tries = 0`.
+   - `AnswerText` tanpa `option_key`/`reason_text`.
+   - Rute `/persetujuan` (pengalihan halaman persetujuan lama) dihapus.
+   - `class_label()` hanya kelas SD. Kunci bahasa `classSmp`, `classOther`, `challengeLead_pilihan`, `challengeLead_urutkan_informasi` dihapus.
+   - Teks dan uji Pustaka terkunci mengikuti 4 tantangan.
+7. **Bug `gelita:bank:import --dry-run`:** ringkasan masih membaca `options` yang sudah tidak ada, sehingga perintahnya berhenti dengan `Undefined array key "options"`. Ringkasan kini memuat variasi. Uji baru `BankImportCommandTest`.
+8. **Dokumentasi:**
+   - README dan `docs/01`–`08` ditulis ulang untuk keadaan sekarang: tanpa catatan pembaruan, tanpa desain lama, dan dengan alur instalasi baru di `08_DEPLOYMENT.md`.
+   - `docs/naskah-cerita.md`, `docs/audio.md`, `docs/bank-soal/README.md`, dan `docs/pustaka/` dirapikan.
+   - Workbook Pustaka dibangun ulang karena teks subjudulnya berubah. Workbook bank soal dibangun ulang karena keterangan adegan `tmg-4` kini menyebut posisi rak, bukan "tata letak lama"; isi soal tidak berubah.
+9. **Sengaja dipertahankan** (bukan kompatibilitas lama):
+   - `deploy.sh`/`deploy.ps1`, untuk pembaruan kode berikutnya;
+   - `gelita:schools:import --link-existing` (sama dengan tombol di panel Sekolah);
+   - `GelitaSeeder::insertIfMissing()`, agar seeder aman diulang;
+   - `ChallengeApiController::complete`, cadangan klien Dok 2 §5.2;
+   - uji penjaga "fitur yang dihapus tidak kembali" di `RouteWiringTest`/`LanguageFilesTest`.
+
+### Butir catatan di atas yang tidak berlaku lagi
+
+- **Dok 1:**
+  - butir 4 (mode DELETE) dan 5 (`--bersihkan-media-tantangan`): fiturnya dihapus;
+  - butir 9 (kait mockup): sudah ada;
+  - butir 13 (dua studi aktif pada database yang tidak direset): tidak relevan untuk instalasi baru;
+  - butir 34: `ResetTables` kini sama dengan 29 migration;
+  - "Untuk sesi Dok 2/Dok 3" tentang README, docs, dan workbook lama.
+- **Dok 2 — naskah cerita:** `story-legacy.php` berkelompok dan `--lepas-audio-beda` sudah dihapus lagi; teks naskah dan rekaman tetap.
+
+### Untuk sesi Dok 3
+
+- **§13 (prosedur rilis satu kali, `deploy/linux/upgrade-kelas5.sh`, `deploy/windows/upgrade-kelas5.ps1`) tidak dikerjakan.** Rilis = instalasi baru menurut `docs/08_DEPLOYMENT.md`. Langkah panel di §13 (setujui narasi, ganti 45 gambar contoh, daftar siap penelitian, uji asap lalu `gelita:reset`) tetap berlaku sesudah instalasi.
+- **§11 (dokumentasi):** README dan `docs/01`–`08` sudah menggambarkan keadaan sekarang. Dok 3 cukup memperbarui bagian yang ia ubah:
+  - `05_VIEW_UI.md`: panggung 16:9;
+  - `06_JAVASCRIPT.md`: `core/stage.js`;
+  - `04`/`07`: menu dan halaman admin baru, lembar ekspor `item_tries`/`device_logs`;
+  - `01`: kolom baru bila ada, serta `ResetTables`.
+- Migration baru Dok 3 (bila ada) ditambahkan sebagai berkas baru sesudah `002900`, bukan dengan mengubah berkas yang ada, dan ikut dicatat di `ResetTables` serta `REQUIRED_MIGRATION`.
+
+### Pengujian yang dijalankan
+
+- **Otomatis:** `vendor/bin/phpunit` hijau sesudah setiap tahap (lihat jumlah akhir di PR).
+- **MariaDB 10.11 lokal:**
+  - skema rantai lama (`gelita_lama`) dibandingkan dengan migration baru (`gelita_baru`) lewat `information_schema`, lalu rollback penuh dan `migrate` ulang;
+  - instalasi baru dari database kosong: `migrate` (29 migration), lalu `GELITA_ADMIN_PASSWORD=… php spark db:seed DatabaseSeeder` → 12 tantangan, 126 soal, 88 baris dialog, 30 halaman Pustaka + 48 media, 45 gambar contoh; `gelita:content:verify` 0 galat;
+  - `gelita:reset --ya --bank=docs/bank-soal/gelita-bank-soal-kelas5.xlsx` → bank diimpor, 45 gambar contoh sudah ada, kode siswa berikutnya `GLT-000001`;
+  - `gelita:bank:import … --dry-run`: dengan kode lama berhenti dengan `Undefined array key "options"`, dengan kode baru menampilkan ringkasan per tantangan.

@@ -404,6 +404,8 @@ Detail siswa → **Unduh data siswa**: lembar yang sama, difilter satu peserta (
 
 ## 11. Dokumentasi yang diperbarui
 
+> **Catatan 6 Oktober 2026:** README dan `docs/01`–`08` sudah ditulis ulang untuk keadaan sesudah Dok 1–2 (tanpa riwayat pembaruan). Dok 3 cukup memperbarui bagian yang ia ubah; baris `08_DEPLOYMENT.md` di tabel ini tidak berlaku (lihat §13).
+
 | Berkas | Perubahan |
 |---|---|
 | `README.md` | ringkasan baru di atas: kelas 5, 4 tantangan, 12 serpihan, satu tahap, data mentah, panggung 16:9, admin baru, perintah `gelita:reset` dan `gelita:mockups`; bagian "Pembaruan …" lama dipindah ke "Riwayat pembaruan" di bawah; jumlah migration/tabel/uji diperbarui |
@@ -456,6 +458,8 @@ Skrip `tools/qa/stage-check.mjs` (Chromium terpasang; jalankan terhadap `php spa
 ---
 
 ## 13. Rilis ke server: prosedur satu kali
+
+> **Catatan 6 Oktober 2026: bagian ini tidak dikerjakan.** GELITA belum pernah berjalan di server, jadi pemilik memutuskan rilis = instalasi baru (`docs/08_DEPLOYMENT.md`); skrip `upgrade-kelas5` dan `gelita:story:update` tidak ada. Langkah panel di bawah (narasi, gambar asli, daftar siap penelitian, uji asap) tetap berlaku sesudah instalasi. Lihat `CATATAN_IMPLEMENTASI.md` → "Pembersihan — instalasi baru tanpa kompatibilitas lama".
 
 Dikerjakan **sekali**, setelah ketiga dokumen selesai dan digabung ke `main`. Deploy biasa (`deploy.sh`/`deploy.ps1`) tidak cocok untuk langkah ini karena `gelita:content:verify` pada isi lama akan gagal sebelum reset. Sediakan skrip ASCII-only:
 
