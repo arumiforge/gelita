@@ -12,8 +12,9 @@ use CodeIgniter\Test\CIUnitTestCase;
 /**
  * Isi Rumpang kelas 5 sebagai satu bacaan: potongan soal disambung menjadi
  * paragraf, semua soal tampil berurutan, bank kata berisi semua jawaban +
- * pengecoh yang tetap, dan aturan per tingkat (Temanggung 3 rumpang tanpa
- * pengecoh, Magelang 4–5, Wonosobo 6–7; Bloom C1–C2 / C2–C3 / C3–C4).
+ * pengecoh yang tetap, dan aturan per tingkat (Dok 2 §2: Temanggung 3 rumpang
+ * tanpa pengecoh, Magelang 5 + 2 pengecoh, Wonosobo 7 + 2 pengecoh; Bloom
+ * C1–C2 / C2–C3 / C3–C4).
  *
  * @internal
  */
@@ -52,13 +53,46 @@ final class ClozeReadingTest extends CIUnitTestCase
 
     public function testRulesFollowRegionDifficulty(): void
     {
+        // Dok 2 §2: jumlah rumpang & pengecoh tepat, bukan rentang
         $this->assertSame([3, 3], DifficultyRules::reading('mudah')['blanks']);
-        $this->assertSame([4, 5], DifficultyRules::reading('sedang')['blanks']);
-        $this->assertSame([6, 7], DifficultyRules::reading('sulit')['blanks']);
+        $this->assertSame([5, 5], DifficultyRules::reading('sedang')['blanks']);
+        $this->assertSame([7, 7], DifficultyRules::reading('sulit')['blanks']);
+        $this->assertSame([[0, 0], [2, 2], [2, 2]], array_map(static fn (string $d): array => DifficultyRules::reading($d)['distractors'], ['mudah', 'sedang', 'sulit']));
         $this->assertSame(['C1', 'C2'], DifficultyRules::bloomRange('mudah'));
         $this->assertSame(['C2', 'C3'], DifficultyRules::bloomRange('sedang'));
         $this->assertSame(['C3', 'C4'], DifficultyRules::bloomRange('sulit'));
         $this->assertSame('C2 · Memahami', DifficultyRules::bloomLabel('c2'));
+    }
+
+    /** Dok 2 §2: Benar atau Salah dan Cari Objek punya aturan dan rentang Bloom sendiri. */
+    public function testTrueFalseAndHuntRulesFollowRegionDifficulty(): void
+    {
+        $this->assertSame([1, 3], [DifficultyRules::trueFalse('mudah')['paragraphs'], DifficultyRules::trueFalse('mudah')['statements']]);
+        $this->assertSame([2, 5], [DifficultyRules::trueFalse('sedang')['paragraphs'], DifficultyRules::trueFalse('sedang')['statements']]);
+        $this->assertSame([3, 6], [DifficultyRules::trueFalse('sulit')['paragraphs'], DifficultyRules::trueFalse('sulit')['statements']]);
+
+        $this->assertSame(['C1', 'C2'], DifficultyRules::bloomRange('mudah', 'truefalse'));
+        $this->assertSame(['C2', 'C3', 'C4'], DifficultyRules::bloomRange('sedang', 'truefalse'));
+        $this->assertSame(['C4', 'C5'], DifficultyRules::bloomRange('sulit', 'truefalse'));
+        $this->assertTrue(DifficultyRules::bloomInRange('C5', 'sulit', 'truefalse'));
+        $this->assertFalse(DifficultyRules::bloomInRange('C5', 'sulit'), 'Isi Rumpang sulit tetap C3–C4');
+
+        $this->assertSame([4, 4], [DifficultyRules::hunt('mudah')['targets'], DifficultyRules::hunt('mudah')['decoys']]);
+        $this->assertSame([4, 6], [DifficultyRules::hunt('sedang')['targets'], DifficultyRules::hunt('sedang')['decoys']]);
+        $this->assertSame([4, 8], [DifficultyRules::hunt('sulit')['targets'], DifficultyRules::hunt('sulit')['decoys']]);
+        $this->assertSame(['C3', 'C4'], DifficultyRules::bloomRange('sulit', 'hunt'));
+        $this->assertSame('C2–C3 (Memahami, Menerapkan)', DifficultyRules::bloomRangeLabel('sedang', 'hunt'));
+
+        // Keterampilan Benar atau Salah: kode per tingkat, semuanya berlabel
+        foreach (['mudah', 'sedang', 'sulit'] as $difficulty) {
+            foreach (DifficultyRules::trueFalse($difficulty)['skills'] as $skill) {
+                $this->assertTrue(DifficultyRules::isSkill($skill), $skill);
+            }
+        }
+
+        $this->assertSame('Menentukan solusi berdasarkan bukti', DifficultyRules::skillLabel('menentukan_solusi'));
+        $this->assertSame('kode_lain', DifficultyRules::skillLabel('kode_lain'));
+        $this->assertSame('', DifficultyRules::skillLabel(null));
     }
 
     public function testCleanReadingHasNoProblems(): void
@@ -102,13 +136,14 @@ final class ClozeReadingTest extends CIUnitTestCase
         $result = ClozeReading::problems($this->blanks(3, ['C1', null, 'C4']), [['id' => 'lain', 'en' => 'other']], 1, false, 'sulit');
 
         $this->assertSame([], $result['errors']);
-        // Bloom kosong, C1 di luar C3–C4, tanpa bank kata, 3 rumpang; 1 pengecoh masih dalam aturan
-        $this->assertCount(4, $result['warnings']);
+        // Bloom kosong, C1 di luar C3–C4, tanpa bank kata, 3 rumpang (bukan 7), 1 pengecoh (bukan 2)
+        $this->assertCount(5, $result['warnings']);
         $text = implode(' | ', $result['warnings']);
         $this->assertStringContainsString('belum diisi', $text);
         $this->assertStringContainsString('C3–C4', $text);
         $this->assertStringContainsString('bank kata', $text);
-        $this->assertStringContainsString('6–7 rumpang', $text);
+        $this->assertStringContainsString('adalah 7 rumpang', $text);
+        $this->assertStringContainsString('pengecoh yang tampil 1; aturan tingkat sulit adalah 2', $text);
     }
 
     public function testReadingNodeUsesEveryActiveItemOfOneVariantInSequence(): void
