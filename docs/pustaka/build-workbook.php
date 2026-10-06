@@ -5,13 +5,10 @@
  *
  *   php docs/pustaka/build-workbook.php [keluaran.xlsx]
  *
- * Sumber isi: docs/pustaka/data/{temanggung,magelang,wonosobo}.php — array
- * `library` yang dipindahkan apa adanya dari berkas data bank soal lama saat
- * perombakan kelas 5 (Dok 2 §7.1). Workbook ini (sheet library dan
- * library_media saja) dipakai HANYA untuk pemasangan baru: impor lewat
- * Panel GELITA → Impor soal dari Excel atau `php spark gelita:bank:import`.
- * Server yang sudah berjalan tidak mengimpornya lagi, karena impor menimpa
- * halaman Pustaka bernomor sama (termasuk suntingan admin).
+ * Sumber isi: docs/pustaka/data/{temanggung,magelang,wonosobo}.php. Workbook
+ * ini (sheet library dan library_media saja) diimpor saat instalasi oleh
+ * DatabaseSeeder (KontenKelas5Seeder). Mengimpornya lagi menimpa halaman
+ * Pustaka bernomor sama, termasuk suntingan admin.
  */
 
 declare(strict_types=1);
@@ -72,7 +69,7 @@ foreach ($sheets as $name => $list) {
 (new BankWorkbookGuide())->write($rows, $output, [
     'title'    => 'Pustaka Kedu GELITA',
     'subtitle' => sprintf(
-        'Isi Pustaka Kedu untuk Temanggung, Magelang, dan Wonosobo (%d halaman, %d gambar/video). Hanya untuk pemasangan baru: server yang sudah berjalan tidak mengimpor berkas ini lagi, karena impor menimpa halaman Pustaka bernomor sama.',
+        'Isi Pustaka Kedu untuk Temanggung, Magelang, dan Wonosobo (%d halaman, %d gambar/video). Diimpor otomatis saat instalasi. Mengimpornya lagi menimpa halaman Pustaka bernomor sama, termasuk suntingan admin.',
         count($rows['library']),
         count($rows['library_media']),
     ),

@@ -70,8 +70,8 @@ abstract class BaseAdminController extends BaseController
     }
 
     /**
-     * Kelas yang benar-benar ada di data siswa dalam cakupan staf, selalu
-     * memuat kelas sasaran (5). Data lama dari kelas lain tetap dapat dipilih.
+     * Kelas yang ada di data siswa dalam cakupan staf, selalu memuat kelas
+     * sasaran (Config\Gelita::$registrationClass).
      *
      * @return list<string>
      */

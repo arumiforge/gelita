@@ -115,7 +115,7 @@ class Gelita extends BaseConfig
 
     /**
      * Sasaran penelitian: siswa kelas 5 SD/MI. Pendaftaran hanya menerima
-     * kelas ini; data lama dengan kelas lain tetap tersimpan dan tampil.
+     * kelas ini.
      */
     public string $registrationClass = '5';
 

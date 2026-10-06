@@ -108,7 +108,7 @@ $points = implode(' ', array_map(static fn (array $n): string => (float) $n['map
 <?php
 $nav = [['label' => lang('Game.mapKedu'), 'href' => base_url('peta'), 'style' => 'quiet', 'arrow' => 'left']];
 if ($hasLibrary) {
-    // "Pustaka {wilayah}" terkunci sampai kelima tantangan selesai: map.js
+    // "Pustaka {wilayah}" terkunci sampai keempat tantangan selesai: map.js
     // menampilkan penjelasannya di modal; tanpa JavaScript tautannya membuka
     // halaman terkunci /pustaka/{code} yang berisi penjelasan yang sama.
     $book = ['label' => lang('Game.libraryRegion', [$region]), 'href' => base_url('pustaka/' . $level->code), 'style' => 'ghost', 'icon' => 'book'];

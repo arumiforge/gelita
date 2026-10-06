@@ -118,7 +118,7 @@ return [
 | `items` | `item_key, node_ref, variant_group, sequence, interaction_type, indicator, bloom_level, skill, prompt_id, prompt_en, passage_key, answer_id, answer_en, x, y, w, decoy, wrong_feedback_id, wrong_feedback_en, media_asset_key, media_label, media_note, scorable, is_active, review_status, review_note, reference_source` |
 | `hints` | `node_ref, item_key, sequence, text_id, text_en` |
 
-Arti setiap kolom ada di sheet KAMUS_KOLOM dan di catatan header workbook. Semua soal `review_status = verified`. Sheet lama `options`, `pieces`, dan `sources` sudah tidak dibaca; jenis soal selain empat di atas ditolak ("Jenis soal ini sudah tidak dipakai di GELITA kelas 5.").
+Arti setiap kolom ada di sheet KAMUS_KOLOM dan di catatan header workbook. Semua soal `review_status = verified`. Jenis soal selain empat di atas ditolak ("Jenis soal tidak dikenal.").
 
 ## Pemeriksaan
 
@@ -130,15 +130,13 @@ Satu sumber aturan, [`app/Libraries/BankRules.php`](../../app/Libraries/BankRule
 
 ## Mengimpor dan mengubah isi
 
-- Server baru atau reset: `php spark gelita:reset` mengimpor workbook ini lalu memasang gambar contoh (`gelita:mockups`). Mesin pengembangan: `php spark db:seed DatabaseSeeder` (development) mengimpornya juga.
+- Instalasi: `php spark db:seed DatabaseSeeder` mengimpor workbook ini (lewat `KontenKelas5Seeder`) lalu memasang gambar contoh. `php spark gelita:reset` (mengosongkan data uji coba sebelum penelitian) mengimpornya lagi.
 - Impor manual: **Panel GELITA → Konten permainan → Impor soal dari Excel**, atau `php spark gelita:bank:import docs/bank-soal/gelita-bank-soal-kelas5.xlsx --dry-run` lalu tanpa `--dry-run`. Impor ulang aman: data dicocokkan lewat kodenya. Kunci jawaban soal yang sudah dijawab siswa tidak dapat diubah.
 - Mengubah isi (hanya salah ketik yang jelas): sunting berkas data, jalankan `php docs/bank-soal/build-workbook.php`, lalu commit workbook-nya. `BankWorkbookGuideTest` gagal bila workbook belum dibangun ulang.
 
 ## Gambar tantangan (45 slot)
 
 Setiap slot langsung berisi **gambar contoh** (SVG bertulisan "GAMBAR CONTOH", `media_assets.is_placeholder = 1`) dari `php spark gelita:mockups`, agar sistem dapat diuji ujung ke ujung. Admin menggantinya satu per satu lewat **Gambar & suara** dengan kode berkas yang sama; gambar asli tidak pernah ditimpa gambar contoh. Karena gambar contoh menuliskan nama benda, Cari Objek dan pernyataan bergambar **belum layak untuk pengambilan data** sebelum gambar asli dipasang.
-
-Kunci lama yang dipakai ulang (gambar asli mungkin sudah diunggah di server): `tmg-1-01/03/04`, `tmg-4-02/03/04/06/09/10/11`, `tmg-4.scene`, `mgl-1-01/02/03`, `wnb-1-05/06/07`. Kunci lama lain tidak dipakai lagi; hapus lewat `gelita:reset --bersihkan-media-tantangan` bila diinginkan.
 
 | Kunci | Nama | Wilayah · tantangan | Isi gambar asli | Ukuran |
 |---|---|---|---|---|
@@ -156,7 +154,7 @@ Kunci lama yang dipakai ulang (gambar asli mungkin sudah diunggah di server): `t
 | `challenge.item.tmg-4-10` | Ondel-ondel | TMG Cari Objek (benda) | ondel-ondel kecil | 240 × 240, latar transparan |
 | `challenge.item.tmg-4-11` | Perahu pinisi | TMG Cari Objek (benda) | perahu pinisi berlayar | 240 × 240, latar transparan |
 | `challenge.item.tmg-4-12` | Sasando | TMG Cari Objek (benda) | sasando | 240 × 240, latar transparan |
-| `challenge.tmg-4.scene` | Pasar Budaya Temanggung | TMG Cari Objek (adegan) | halaman balai desa/pasar budaya di kaki Sindoro–Sumbing, tiga deret rak kosong (tata letak lama) | 1280 × 720 |
+| `challenge.tmg-4.scene` | Pasar Budaya Temanggung | TMG Cari Objek (adegan) | halaman balai desa/pasar budaya di kaki Sindoro–Sumbing, tiga deret rak kosong (permukaan rak ± 27 %, 61 %, 93 % tinggi gambar) | 1280 × 720 |
 | `challenge.item.mgl-1-01` | Stupa Borobudur | MGL Susun Gambar | stupa berlubang teras atas Borobudur, stupa induk di latar | persegi ≥ 1200 px |
 | `challenge.item.mgl-1-02` | Penari Topeng Ireng | MGL Susun Gambar | penari Topeng Ireng dengan kuluk bulu warna-warni | persegi ≥ 1200 px |
 | `challenge.item.mgl-1-03` | Candi Mendut | MGL Susun Gambar | Candi Mendut tampak depan dengan tangga masuk | persegi ≥ 1200 px |

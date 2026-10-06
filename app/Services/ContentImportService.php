@@ -481,7 +481,7 @@ class ContentImportService
             }
         }
 
-        // Item yang sudah pernah dijawab tidak boleh berganti kunci, agar data lama tetap sebanding.
+        // Item yang sudah pernah dijawab tidak boleh berganti kunci, agar jawaban yang sudah ada tetap sebanding.
         $existing = model(ChallengeItemModel::class)->findByKey((string) $row['item_key']);
 
         if ($existing !== null && model(ChallengeItemModel::class)->hasResponses($existing->id)) {
@@ -928,8 +928,8 @@ class ContentImportService
                 $passageId = $passages->findByKey($passageKey)?->id;
             }
 
-            // Soal lama dicari lebih dulu: ukuran papan dan kunci susun gambar
-            // yang sudah ada tidak pernah dihitung ulang.
+            // Soal yang sudah ada dicari lebih dulu: ukuran papan dan kunci
+            // susun gambarnya tidak pernah dihitung ulang.
             $existing = $model->findByKey($itemKey);
             $layout   = $row['interaction_type'] === 'puzzle_arrange'
                 ? $this->puzzleLayoutFor($row, $existing, $difficulty)
@@ -954,8 +954,8 @@ class ContentImportService
                 'scorable'          => $row['scorable'] !== '' ? (int) $row['scorable'] : 1,
             ] + $this->mediaColumns($row, ['media_asset_key' => 'media_asset_id'], $media);
 
-            // is_active kosong: soal baru dipakai, soal lama tidak diubah — workbook
-            // lama tidak boleh menghidupkan lagi soal yang sudah diistirahatkan.
+            // is_active kosong: soal baru dipakai, soal yang sudah ada tidak diubah —
+            // impor ulang tidak boleh menghidupkan lagi soal yang sudah diistirahatkan.
             if ($row['is_active'] !== '') {
                 $data['is_active'] = (int) $row['is_active'];
             } elseif ($existing === null) {
@@ -1152,8 +1152,8 @@ class ContentImportService
      * mengisi baris ini (MediaStore), sehingga tautan konten tidak perlu
      * dibuat ulang; sebelum itu `gelita:mockups` memasang gambar contoh.
      *
-     * Slot yang sudah ada (mis. gambar asli yang sudah diunggah dengan kunci
-     * lama) tidak diubah, selain mengisi label/description yang masih kosong.
+     * Slot yang sudah ada (mis. gambar asli yang sudah diunggah admin) tidak
+     * diubah, selain mengisi label/description yang masih kosong.
      *
      * @param array<string, list<array<string, string>>> $sheets
      * @param array<string, int>                         $media

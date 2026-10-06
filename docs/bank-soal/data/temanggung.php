@@ -399,7 +399,7 @@ return [
                 'Di pasar budaya, benda khas Temanggung tercampur dengan benda dari daerah lain. Temukan empat benda yang dimaksud Mbah Kedu.',
                 'At the culture fair, typical Temanggung objects are mixed with objects from other regions. Find the four objects Mbah Kedu describes.',
             ],
-            'scene'       => ['key' => 'challenge.tmg-4.scene', 'label' => 'Pasar Budaya Temanggung', 'note' => 'halaman balai desa/pasar budaya di kaki Sindoro–Sumbing, tiga deret rak kosong (tata letak lama)', 'source' => 'Ilustrasi buatan tim / ilustrator (hindari foto dengan benda yang sudah ada)'],
+            'scene'       => ['key' => 'challenge.tmg-4.scene', 'label' => 'Pasar Budaya Temanggung', 'note' => 'halaman balai desa/pasar budaya di kaki Sindoro–Sumbing, tiga deret rak kosong (permukaan rak ± 27 %, 61 %, 93 % tinggi gambar)', 'source' => 'Ilustrasi buatan tim / ilustrator (hindari foto dengan benda yang sudah ada)'],
             'hints'       => [
                 [
                     'Baca petunjuknya pelan-pelan: nama, bahan, atau kegunaan benda disebut di sana.',

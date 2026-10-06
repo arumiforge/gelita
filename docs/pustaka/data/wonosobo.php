@@ -3,11 +3,8 @@
 /**
  * Isi Pustaka Kedu — WONOSOBO (wilayah 3).
  *
- * Array `library` (dan baris `$commons` yang dirujuknya) dipindahkan apa
- * adanya (byte demi byte) dari berkas data bank soal lama
- * (docs/bank-soal/data/wonosobo.php) saat perombakan kelas 5 (Dok 2 §7.1).
- * Dipakai docs/pustaka/build-workbook.php hanya untuk pemasangan baru;
- * server yang sudah berjalan tidak mengimpornya lagi. Bentuk data
+ * Disusun menjadi docs/pustaka/gelita-pustaka.xlsx oleh
+ * docs/pustaka/build-workbook.php, lalu diimpor saat instalasi. Bentuk data
  * dijelaskan di docs/pustaka/README.md.
  */
 
