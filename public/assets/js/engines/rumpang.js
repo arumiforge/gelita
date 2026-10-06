@@ -13,8 +13,14 @@
  * `answer_selected` (action set / clear).
  *
  * Cek jawabanku → POST /check dengan seluruh isian sekaligus. Kotak kosong →
- * modal lokal, request TIDAK dikirim. Jawaban yang sudah benar tidak dihapus
- * dan terkunci saat pemeriksaan ulang.
+ * modal lokal, request TIDAK dikirim (tidak dihitung percobaan). Jawaban yang
+ * sudah benar tidak dihapus dan terkunci saat pemeriksaan ulang. Setelah
+ * kesempatan ketiga habis, kotak yang salah tetap bertanda merah dan kuncinya
+ * tidak ditampilkan (Dok 2 §5.3).
+ *
+ * Muat ulang: rumpang dengan `items[].state.locked` diisi lagi dengan
+ * jawaban siswa sendiri (chip pertama yang belum terpakai dengan teks sama)
+ * dan terkunci.
  */
 import { $, $$, announce, scrollToCenter } from '../core/dom.js';
 import { showModal } from '../core/modal.js';
@@ -98,6 +104,27 @@ export function mount(ctx) {
     });
   }
   words.forEach((chip) => chip.addEventListener('click', () => place(chip)));
+
+  // Muat ulang di tengah tantangan: pulihkan rumpang yang sudah benar
+  const states = new Map(ctx.items.map((item) => [Number(item.id), item.state ?? {}]));
+  let restored = 0;
+  for (const blank of blanks) {
+    const st = states.get(idOf(blank));
+    const text = st?.locked ? String(st.answer?.text ?? '') : '';
+    if (!text) continue;
+    const chip = words.find((word) => !word.disabled && word.textContent.trim() === text)
+      ?? words.find((word) => !word.disabled && word.textContent.trim().toLowerCase() === text.toLowerCase());
+    if (!chip) continue;
+    filled.set(idOf(blank), chip);
+    chip.classList.add('is-used');
+    chip.disabled = true;
+    blank.textContent = chip.textContent;
+    blank.classList.add('is-filled', 'is-correct');
+    blank.disabled = true;
+    blank.setAttribute('aria-label', `${blank.dataset.label}: ${chip.textContent} — ${ctx.t('markCorrect')}`);
+    restored++;
+  }
+  if (restored) ctx.tally({ correct: restored, wrong: Number(ctx.data.tries_used) > 0 ? blanks.length - restored : 0 });
   activate(blanks.find((blank) => !locked(blank)) ?? null);
 
   ctx.currentItemId = () => (active ? idOf(active) : null);
@@ -143,6 +170,13 @@ export function mount(ctx) {
       blank.setAttribute('aria-label', `${label}: ${answerOf(blank)} — ${state}`);
     }
     ctx.tally({ correct: result.correct_count, wrong: result.total - result.correct_count });
+
+    if (result.completed) {
+      blanks.forEach((blank) => { blank.disabled = true; });
+      words.forEach((chip) => { chip.disabled = true; });
+      button.disabled = true;
+      activate(null);
+    }
 
     const outcome = await ctx.showCheckResult(result, {
       okTitle: ctx.t('blankOkTitle'),

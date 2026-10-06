@@ -339,9 +339,9 @@ if (! function_exists('first_pass_text')) {
         $total    = (int) $attempt->scorable_items;
 
         if ($engine === 'puzzle' && $total <= 1) {
-            return lang($first >= 1 && $total >= 1 ? 'Game.yes' : 'Game.notYet', [], $locale);
+            return lang($first >= 1 && $total >= 1 ? 'Game.firstTryYes' : 'Game.firstTryNo', [], $locale);
         }
 
-        return lang('Game.firstPassCount', [$first, $total], $locale);
+        return lang('Game.firstTryCount', [$first, $total], $locale);
     }
 }

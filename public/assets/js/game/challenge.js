@@ -18,15 +18,22 @@
  * dihitung ulang untuk percobaan berikutnya. Soal yang tidak disentuh dalam
  * satu percobaan dikirim tanpa waktu. Hanya catatan proses — urutan dan
  * waktu resmi tetap occurred_at server.
- *   complete()                     → POST /api/attempts/{id}/complete → /selesai/{id}
+ *   finish(result)                 → ikuti `completed` / `redirect` dari /check atau /responses
  *   useHint()                      → POST /api/attempts/{id}/hints
+ *
+ * Aturan 3 kesempatan (Dok 2 §5.3): server yang menghitung dan menutup
+ * pengerjaan. /check dan /responses membalas `tries_left`, `completed`,
+ * `completion_reason`, dan `redirect`; klien hanya menampilkan penanda
+ * kesempatan (●●○), modal yang sesuai, lalu pindah ke `redirect`.
+ * POST /complete hanya cadangan bila respons selesai tanpa `redirect`
+ * (endpoint itu idempoten).
  *
  * Satu-satunya jalan keluar adalah tombol Keluar yang dikonfirmasi; tombol
  * Back browser meminta konfirmasi yang sama. Menutup tab tidak memunculkan
  * dialog bawaan browser — cukup event `challenge_abandoned` lewat beacon.
  */
-import { $, readJson } from '../core/dom.js';
-import { apiRequest, handleApiError } from '../core/api.js';
+import { $, $$, readJson } from '../core/dom.js';
+import { apiRequest, handleApiError, ApiError } from '../core/api.js';
 import { emit, flush, uuid, now } from '../core/events.js';
 import { showModal, confirmDialog, isModalOpen } from '../core/modal.js';
 import { startTimer } from '../core/timer.js';
@@ -43,9 +50,6 @@ const ENGINES = {
   boleh: () => import('../engines/boleh.js'),
   cari: () => import('../engines/cari.js'),
 };
-
-/** Batas pemeriksaan sebelum tombol "Selesaikan dengan jawaban ini" ditawarkan. */
-const FINISH_OFFER_AFTER = 3;
 
 export async function bootChallenge() {
   const section = $('[data-screen="challenge"]');
@@ -85,7 +89,10 @@ export async function bootChallenge() {
 
   const post = (path, body) => apiRequest(`/attempts/${attemptId}/${path}`, { method: 'POST', body });
 
-  const report = (error, options = {}) => handleApiError(error, { mapUrl: exitUrl, ...options });
+  const report = async (error, options = {}) => {
+    if (await ruleError(error)) return error.code;
+    return handleApiError(error, { mapUrl: exitUrl, ...options });
+  };
 
   function submit(itemId, answer, extra = {}) {
     return post('responses', {
@@ -108,21 +115,54 @@ export async function bootChallenge() {
     return result;
   }
 
+  /** Pindah ke layar hasil; pengerjaan sudah ditutup server. */
+  async function leaveTo(redirect, shards = null) {
+    state.completed = true;
+    state.leaving = true;
+    timer.stop();
+    if (shards !== null && shards !== undefined) updateLantern(shards);
+    await flush();
+    window.location.href = redirect;
+  }
+
+  /** Cadangan: respons selesai tanpa `redirect` → POST /complete (idempoten). */
   async function complete() {
     if (state.completed) return;
     try {
       const result = await post('complete', { client_event_id: uuid(), occurred_at: now() });
-      state.completed = true;
-      state.leaving = true;
-      timer.stop();
-      updateLantern(result.shards);
-      await flush();
-      window.location.href = result.redirect;
+      await leaveTo(result.redirect, result.shards);
     } catch (error) {
-      // Masih ada butir yang belum dijawab: satu pesan yang dimengerti anak
-      if (error?.code === 'INVALID_PAYLOAD') toast(t('itemsPending'), 'warn');
+      if (error?.code === 'TRIES_REMAINING') toast(t('itemsPending'), 'warn');
       else await report(error);
     }
+  }
+
+  /** Ikuti penutupan dari respons /check atau /responses. */
+  async function finish(result) {
+    if (state.completed) return;
+    if (result?.redirect) await leaveTo(result.redirect, result.shards);
+    else await complete();
+  }
+
+  /**
+   * Galat aturan kesempatan dari server (mis. tab lain sudah memakai
+   * kesempatan terakhir): pengerjaan yang sudah selesai → layar hasilnya;
+   * petunjuk yang sudah tertutup → muat ulang agar tampilan ikut payload.
+   * @returns {Promise<boolean>} true bila galatnya sudah ditangani
+   */
+  async function ruleError(error) {
+    if (!(error instanceof ApiError)) return false;
+    if (error.code === 'TRIES_EXHAUSTED') {
+      if (error.payload?.redirect) await leaveTo(error.payload.redirect);
+      else window.location.reload();
+      return true;
+    }
+    if (error.code === 'CLUE_CLOSED') {
+      state.leaving = true;
+      window.location.reload();
+      return true;
+    }
+    return false;
   }
 
   // ------------------------------------------------------------ tampilan
@@ -152,12 +192,48 @@ export async function bootChallenge() {
     setTimeout(() => setBusy(button, false), 3000);
   }
 
+  // ------------------------------------------------- penanda kesempatan
+
+  const maxTries = Math.max(1, Number(data.max_tries) || 3);
+
+  /**
+   * Penanda 3 bulatan (●●○; terisi = sisa) — markup dari server
+   * (_frame.php untuk engine batch, cari.php per petunjuk). Nilainya selalu
+   * dari server: `max_tries − tries_used` saat dimuat, lalu `tries_left`.
+   */
+  function setTries(node, left, label = null) {
+    if (!node) return;
+    const remaining = Math.max(0, Math.min(maxTries, Number(left) || 0));
+    node.dataset.left = String(remaining);
+    $$('.tries-dot', node).forEach((dot, index) => dot.classList.toggle('is-left', index < remaining));
+    // data-label = "Kesempatan: {0} dari {1}" (dirender server dari Game.triesLabel + Game.triesOf)
+    const template = label ?? node.dataset.label ?? '';
+    if (template) node.setAttribute('aria-label', template.replace('{0}', String(remaining)).replace('{1}', String(maxTries)));
+  }
+
+  const triesChip = $('#tries', section);
+  if (triesChip) setTries(triesChip, maxTries - (Number(data.tries_used) || 0));
+
+  /** Kalimat sisa kesempatan untuk modal "Belum semuanya tepat". */
+  const triesText = (left) => (Number(left) === 1 ? t('triesLast') : t('triesLeft', left));
+
   /**
    * Hasil pemeriksaan batch (puzzle, rumpang, boleh).
+   *
+   * - `completed` + `solved` → konfeti + modal sukses → redirect;
+   * - `completed` + `tries_exhausted` → `beforeExhausted()` (Susun Gambar:
+   *   gambar utuh), modal "Kesempatanmu sudah habis" dengan satu tombol
+   *   Lanjut → redirect; kunci jawaban tidak ditampilkan;
+   * - selain itu → modal "Belum semuanya tepat" + sisa kesempatan + Perbaiki.
+   *
    * @returns {Promise<'complete'|'fix'>}
    */
-  async function showCheckResult(result, { okTitle, okText, partialTitle, partialText }) {
-    if (result.all_correct) {
+  async function showCheckResult(result, {
+    okTitle, okText, partialTitle, partialText, exhaustedText = t('triesExhaustedText'), beforeExhausted = null,
+  }) {
+    if (result.tries_left !== undefined) setTries(triesChip, result.tries_left);
+
+    if (result.completed && result.completion_reason !== 'tries_exhausted') {
       Sfx.play('correct');
       confetti();
       await showModal({
@@ -167,22 +243,31 @@ export async function bootChallenge() {
         dismissible: false,
         buttons: [{ label: t('next'), style: 'primary', value: 'next' }],
       });
-      await complete();
+      await finish(result);
       return 'complete';
     }
 
     Sfx.play('wrong');
 
-    const buttons = [{ label: t('fixAnswers'), style: 'primary', value: 'fix' }];
-    if ((result.check_count ?? 0) >= FINISH_OFFER_AFTER) {
-      buttons.unshift({ label: t('finishAnyway'), style: 'quiet', value: 'finish' });
-    }
-
-    const choice = await showModal({ type: 'wrong', title: partialTitle, text: partialText, buttons });
-    if (choice === 'finish') {
-      await complete();
+    if (result.completed) {
+      if (beforeExhausted) await beforeExhausted();
+      await showModal({
+        type: 'info',
+        title: t('triesExhaustedTitle'),
+        text: exhaustedText,
+        dismissible: false,
+        buttons: [{ label: t('next'), style: 'primary', value: 'next' }],
+      });
+      await finish(result);
       return 'complete';
     }
+
+    await showModal({
+      type: 'wrong',
+      title: partialTitle,
+      text: [partialText, triesText(result.tries_left)],
+      buttons: [{ label: t('fixAnswers'), style: 'primary', value: 'fix' }],
+    });
     return 'fix';
   }
 
@@ -204,8 +289,11 @@ export async function bootChallenge() {
     submit,
     check,
     selected,
-    complete,
+    finish,
     tally,
+    setTries,
+    triesText,
+    maxTries,
     setBusy,
     networkPause,
     report,

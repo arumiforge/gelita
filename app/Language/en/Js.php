@@ -39,19 +39,28 @@ return [
     // Challenge frame
     'itemsPending'  => 'Some questions are not answered yet.',
     'fixAnswers'    => 'Fix it',
-    'finishAnyway'  => 'Finish with these answers',
     'hintTitle'     => 'Hint',
-    'hintPenalty'   => 'A hint does not take away your stars. Open the hint?',
+    'hintPenalty'   => 'A hint can help you. Open a hint now?',
     'hintOpen'      => 'Open hint',
     'hintAllOpened' => 'You have opened all the hints:',
     'hintNone'      => 'There is no hint for this question yet.',
     'hintUsed'      => 'hints used',
     'exitTitle'     => 'Leave this challenge?',
-    'exitText'      => 'Answers you have checked are saved, but this challenge is not finished yet.',
+    'exitText'      => 'The answers you have checked are saved, but this challenge is not finished yet.',
     'exitYes'       => 'Yes, leave',
     'exitNo'        => 'Keep playing',
 
-    // Puzzle & ordering
+    // Three-chance rule (Dok 2 §5.3)
+    'triesLeft'            => 'You have {0} more chances.',
+    'triesLast'            => 'Just one chance left. Read slowly!',
+    'triesExhaustedTitle'  => 'No more chances',
+    'triesExhaustedText'   => "That's okay! Your answers are saved as they are. Let's keep going.",
+    'triesExhaustedPuzzle' => "That's okay! Here is the whole picture. Your answer is saved as it is.",
+    'clueFailedTitle'      => 'This clue is skipped',
+    'clueFailedText'       => "The chances for this clue are used up. Let's go to the next clue.",
+    'clueTriesLeft'        => 'Chances for this clue: {0}',
+
+    // Puzzle
     'piecesSwapped'    => 'Pieces at {0} and {1} swapped.',
     'puzzleOkTitle'    => 'The picture is complete!',
     'puzzleOkText'     => 'Every piece is in its place.',
@@ -75,15 +84,15 @@ return [
     'cardsOkTitle'     => 'Every card is right!',
     'cardsOkText'      => 'You judged every statement correctly.',
     'cardsWrongTitle'  => 'Not all right yet',
-    'cardsWrongText'   => '{0} of {1} cards are right. Think again about the cards with a red border.',
+    'cardsWrongText'   => '{0} of {1} statements are right. Think again about the ones with a red border.',
 
     // Find the object
     'clueLabel'      => 'Clue {0}',
     'huntFoundMark'  => 'found',
     'huntDoneTitle'  => 'You found them all!',
     'huntDoneText'   => 'You found every cultural heritage object.',
-    'huntDecoyTitle' => 'That is not from Kedu',
-    'huntDecoyText'  => 'That object is part of Indonesian culture, but it comes from another region.',
+    'huntDecoyTitle' => 'Not this one',
+    'huntDecoyText'  => 'That is not the object in the clue. Read the clue again.',
     'huntOtherTitle' => 'Not this one',
     'huntOtherText'  => 'That object is also part of the heritage of {0}, but it is not what this clue means.',
 ];

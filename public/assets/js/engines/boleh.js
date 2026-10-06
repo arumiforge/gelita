@@ -6,7 +6,12 @@
  * Cek jawabanku → POST /check [{ item_id, answer: { verdict } }].
  * Kartu belum dipilih → .has-error selama 2,6 detik, digulirkan ke tengah,
  * modal "Ada N kartu yang belum kamu tentukan" — request tidak dikirim.
- * Kartu salah digulirkan ke tengah satu per satu saat diperbaiki.
+ * Kartu salah digulirkan ke tengah satu per satu saat diperbaiki. Setelah
+ * kesempatan ketiga habis, kartu yang salah tetap bertanda merah dan kuncinya
+ * tidak ditampilkan (Dok 2 §5.3).
+ *
+ * Muat ulang: pernyataan dengan `items[].state.locked` dipulihkan dengan
+ * pilihan siswa sendiri, bertanda benar, dan terkunci.
  *
  * Teks bacaan: pada layar sempit dilipat; judulnya menjadi tombol
  * "Baca teks" yang menempel di atas.
@@ -94,6 +99,21 @@ export function mount(ctx) {
     }
   });
 
+  // Muat ulang di tengah tantangan: pulihkan pernyataan yang sudah benar
+  const states = new Map(ctx.items.map((item) => [Number(item.id), item.state ?? {}]));
+  let restored = 0;
+  for (const card of cards) {
+    const st = states.get(idOf(card));
+    const verdict = st?.locked ? String(st.answer?.verdict ?? '') : '';
+    const input = verdict ? $$('input[type="radio"]', card).find((radio) => radio.value === verdict) : null;
+    if (!input) continue;
+    input.checked = true;
+    setMark(card, true);
+    $$('input[type="radio"]', card).forEach((radio) => { radio.disabled = true; });
+    restored++;
+  }
+  if (restored) ctx.tally({ correct: restored, wrong: Number(ctx.data.tries_used) > 0 ? cards.length - restored : 0 });
+
   section.addEventListener('focusin', (event) => {
     const card = event.target.closest?.('.verdict-card');
     if (card) lastFocused = card;
@@ -137,6 +157,11 @@ export function mount(ctx) {
       if (ok) $$('input[type="radio"]', card).forEach((input) => { input.disabled = true; });
     }
     ctx.tally({ correct: result.correct_count, wrong: result.total - result.correct_count });
+
+    if (result.completed) {
+      $$('input[type="radio"]', section).forEach((input) => { input.disabled = true; });
+      button.disabled = true;
+    }
 
     const outcome = await ctx.showCheckResult(result, {
       okTitle: ctx.t('cardsOkTitle'),

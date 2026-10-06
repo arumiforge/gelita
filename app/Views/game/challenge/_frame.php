@@ -1,6 +1,6 @@
 <?php
 /**
- * Kerangka layar tantangan, sama untuk kelima engine. Di-include oleh
+ * Kerangka layar tantangan, sama untuk keempat engine. Di-include oleh
  * game/challenge/{engine}.php; isi arena datang dari section `arena`.
  *
  * Payload soal ditanam sebagai <script type="application/json" id="challenge-data">
@@ -24,6 +24,10 @@ $region     = $level->text('name', $locale);
 $totalNodes = count(service('contentRepository')->nodesForLevel($level->id));
 $engine     = (string) $node->engine_type;
 $hints      = (int) ($payload['hints_count'] ?? 0);
+$maxTries   = max(1, (int) ($payload['max_tries'] ?? config('Gelita')->maxTries));
+$triesLeft  = max(0, $maxTries - (int) ($payload['tries_used'] ?? 0));
+// "Kesempatan: {0} dari {1}" — challenge.js mengisi angkanya setiap respons server
+$triesAria  = lang('Game.triesLabel') . ': ' . lang('Game.triesOf', ['{0}', '{1}']);
 ?>
 <section class="challenge challenge-<?= esc($engine, 'attr') ?>"
          data-screen="challenge"
@@ -56,6 +60,15 @@ $hints      = (int) ($payload['hints_count'] ?? 0);
           <span class="tally-ok"><?= icon('check') ?><span class="visually-hidden"><?= esc(lang('Game.countCorrect')) ?></span> <b id="count-correct" class="num">0</b></span>
           <span class="tally-bad"><?= icon('cross') ?><span class="visually-hidden"><?= esc(lang('Game.countWrong')) ?></span> <b id="count-wrong" class="num">0</b></span>
         </span>
+        <?php if ($engine !== 'cari'): ?>
+          <?php // Penanda 3 kesempatan engine batch (Dok 2 §5.3): bulatan terisi = sisa ?>
+          <span class="chip chip-tries" id="tries" role="img" data-left="<?= $triesLeft ?>"
+                data-label="<?= esc($triesAria, 'attr') ?>"
+                aria-label="<?= esc(lang('Game.triesLabel') . ': ' . lang('Game.triesOf', [$triesLeft, $maxTries]), 'attr') ?>">
+            <span class="tries-label" aria-hidden="true"><?= esc(lang('Game.triesLabel')) ?></span>
+            <span class="tries-dots" aria-hidden="true"><?php for ($i = 0; $i < $maxTries; $i++): ?><i class="tries-dot<?= $i < $triesLeft ? ' is-left' : '' ?>"></i><?php endfor ?></span>
+          </span>
+        <?php endif ?>
         <button type="button" class="chip chip-btn" id="btn-hint" data-hints="<?= $hints ?>" hidden>
           <?= icon('hint') ?> <?= esc(lang('Game.hint')) ?>
         </button>
