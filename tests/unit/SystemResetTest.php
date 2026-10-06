@@ -1,6 +1,8 @@
 <?php
 
 use App\Commands\SystemReset;
+use App\Libraries\MediaStore;
+use App\Models\MediaAssetModel;
 use App\Services\SystemResetService;
 use CodeIgniter\CLI\CLI;
 use CodeIgniter\Database\BaseConnection;
@@ -230,6 +232,43 @@ final class SystemResetTest extends CIUnitTestCase
         $this->assertSame(1, $this->conn->table('audit_logs')->where('action', 'content_import')->countAllResults());
         $this->assertNotSame([], $result['findings'], 'verifikasi konten dijalankan');
         $this->assertSame(0, $result['errors'], json_encode(array_values(array_filter($result['findings'], static fn (array $f): bool => $f['level'] === 'error'))));
+    }
+
+    /**
+     * Langkah 8 (Dok 2 §10): ke-45 slot gambar tantangan langsung berisi
+     * gambar contoh; reset berikutnya tidak membuatnya ulang dan gambar asli
+     * tetap.
+     */
+    public function testResetFillsTheFortyFiveSlotsWithMockups(): void
+    {
+        $dir = MediaStore::UPLOAD_DIR . 'mockup-reset-' . bin2hex(random_bytes(4)) . '/';
+
+        try {
+            $service = new SystemResetService($this->conn, $this->exportsDir, $dir);
+            $result  = $service->run();
+
+            $this->assertSame('done', $result['mockups']['status']);
+            $this->assertSame(45, $result['mockups']['count']);
+            $this->assertSame([], $result['mockups']['failed']);
+            $this->assertSame(45, model(MediaAssetModel::class)->placeholderCount());
+            $this->assertSame(0, $result['errors'], 'mockup hanya peringatan pada verifikasi biasa');
+            $this->assertStringContainsString('45 gambar masih gambar contoh', implode(' ', array_column($result['findings'], 'message')));
+
+            // Satu slot diganti gambar asli (seperti unggahan admin)
+            $this->conn->table('media_assets')->where('asset_key', 'challenge.wnb-4.scene')->update(['is_placeholder' => 0, 'credit' => null]);
+
+            $again = $service->run();
+            $this->assertSame(0, $again['mockups']['count']);
+            $this->assertSame(44, $again['mockups']['existing']);
+            $this->assertSame(1, $again['mockups']['kept']);
+            $this->assertSame('0', (string) $this->conn->table('media_assets')->where('asset_key', 'challenge.wnb-4.scene')->get()->getRow('is_placeholder'));
+        } finally {
+            array_map('unlink', glob(FCPATH . $dir . '*') ?: []);
+
+            if (is_dir(FCPATH . $dir)) {
+                rmdir(FCPATH . $dir);
+            }
+        }
     }
 
     public function testMissingWorkbookOutsideDevelopmentOnlyWarns(): void

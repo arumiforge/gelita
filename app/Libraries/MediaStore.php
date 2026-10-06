@@ -564,16 +564,23 @@ class MediaStore
         }
 
         $payload = [
-            'asset_type'   => $type,
-            'storage_path' => $storagePath,
-            'mime_type'    => $mime,
-            'file_size'    => is_file($absolute) ? filesize($absolute) : null,
-            'sha256'       => is_file($absolute) ? hash_file('sha256', $absolute) : null,
-            'width_px'     => $size[0] ?? null,
-            'height_px'    => $size[1] ?? null,
-            'locale'       => $locale ?? self::localeFromKey($assetKey),
-            'is_active'    => 1,
+            'asset_type'     => $type,
+            'storage_path'   => $storagePath,
+            'mime_type'      => $mime,
+            'file_size'      => is_file($absolute) ? filesize($absolute) : null,
+            'sha256'         => is_file($absolute) ? hash_file('sha256', $absolute) : null,
+            'width_px'       => $size[0] ?? null,
+            'height_px'      => $size[1] ?? null,
+            'locale'         => $locale ?? self::localeFromKey($assetKey),
+            'is_active'      => 1,
+            // Berkas yang disimpan lewat MediaStore adalah gambar asli; MockupGenerator
+            // menandai ulang gambar contohnya sesudah registerFile().
+            'is_placeholder' => 0,
         ];
+
+        if ($existing !== null && (string) ($existing['credit'] ?? '') === MockupGenerator::CREDIT) {
+            $payload['credit'] = null;
+        }
 
         if ($existing === null) {
             $inserted = $media->insert($payload + ['asset_key' => $assetKey], true);

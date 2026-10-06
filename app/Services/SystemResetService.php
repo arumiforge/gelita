@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Database\Seeds\ContentSeeder;
 use App\Libraries\ContentVerifier;
+use App\Libraries\MockupGenerator;
 use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\Database\Exceptions\DatabaseException;
 use Config\Database;
@@ -70,10 +71,14 @@ class SystemResetService
     /** @var list<string> */
     private array $warnings = [];
 
-    public function __construct(?BaseConnection $db = null, ?string $exportsDir = null)
+    /** Folder gambar mockup relatif FCPATH; null = MockupGenerator::DIR */
+    private ?string $mockupDir;
+
+    public function __construct(?BaseConnection $db = null, ?string $exportsDir = null, ?string $mockupDir = null)
     {
         $this->db         = $db ?? db_connect();
         $this->exportsDir = rtrim($exportsDir ?? WRITEPATH . 'exports', '/\\') . DIRECTORY_SEPARATOR;
+        $this->mockupDir  = $mockupDir;
     }
 
     // ------------------------------------------------------------ pemeriksaan
@@ -420,15 +425,13 @@ class SystemResetService
     /** @return array<string, mixed> */
     private function generateMockups(): array
     {
-        $class = 'App\\Libraries\\MockupGenerator';
+        $result = (new MockupGenerator($this->db, $this->mockupDir))->generateMissing();
 
-        if (! class_exists($class)) {
-            return ['status' => 'unavailable', 'count' => 0, 'message' => 'Pembuat gambar mockup belum tersedia (Dok 2 §10).'];
+        if ($result['failed'] !== []) {
+            $this->warnings[] = count($result['failed']) . ' gambar contoh gagal dibuat: ' . implode('; ', array_slice($result['failed'], 0, 3));
         }
 
-        $result = (new $class())->generateMissing();
-
-        return ['status' => 'done', 'count' => (int) ($result['count'] ?? 0)] + (array) $result;
+        return ['status' => 'done'] + $result;
     }
 
     /**

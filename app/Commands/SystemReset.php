@@ -238,10 +238,12 @@ class SystemReset extends BaseCommand
             default  => 'Bank soal: ' . ($bank['message'] ?? $bank['status']),
         }, $bank['status'] === 'failed' ? 'red' : 'green');
 
-        CLI::write('Gambar mockup: ' . ($result['mockups']['status'] === 'done'
-            ? $result['mockups']['count'] . ' gambar contoh dibuat'
-                . (($result['mockups']['kept'] ?? 0) > 0 ? ', ' . $result['mockups']['kept'] . ' gambar asli dipertahankan' : '')
-            : $result['mockups']['message']));
+        $mockups = $result['mockups'];
+        CLI::write('Gambar mockup: ' . ($mockups['status'] === 'done'
+            ? $mockups['count'] . ' gambar contoh dibuat'
+                . ($mockups['existing'] > 0 ? ', ' . $mockups['existing'] . ' sudah ada' : '')
+                . ($mockups['kept'] > 0 ? ', ' . $mockups['kept'] . ' gambar asli dipertahankan' : '')
+            : $mockups['message']), $mockups['status'] === 'done' && $mockups['failed'] !== [] ? 'red' : null);
 
         if ($result['media_removed'] !== []) {
             CLI::write('Media tantangan dihapus: ' . count($result['media_removed']));

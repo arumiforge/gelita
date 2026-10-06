@@ -96,4 +96,14 @@ class MediaAssetModel extends Model
     {
         return $this->where('is_placeholder', 1)->orderBy('asset_key', 'ASC')->findAll();
     }
+
+    /**
+     * Jumlah gambar contoh aktif yang belum diganti gambar asli — untuk
+     * peringatan dasbor "Masih ada N gambar contoh" dan konfirmasi status
+     * studi (Dok 3 §8).
+     */
+    public function placeholderCount(): int
+    {
+        return $this->db->table($this->table)->where('is_placeholder', 1)->where('is_active', 1)->countAllResults();
+    }
 }
