@@ -56,9 +56,10 @@ class ReflectionController extends BaseGameController
         $scorable  = 0;
 
         foreach ($content->levels() as $level) {
-            $values = [];
+            $stars = 0;
+            $nodes = $content->nodesForLevel($level->id);
 
-            foreach ($content->nodesForLevel($level->id) as $node) {
+            foreach ($nodes as $node) {
                 $attempt = $best[$node->id] ?? null;
 
                 if ($attempt === null) {
@@ -66,7 +67,7 @@ class ReflectionController extends BaseGameController
                 }
 
                 $accuracy   = $attempt->firstPassPercent();
-                $values[]   = $accuracy;
+                $stars     += (int) $attempt->stars;
                 $correct   += (int) $attempt->final_correct;
                 $firstPass += (int) $attempt->first_pass_correct;
                 $scorable  += (int) $attempt->scorable_items;
@@ -77,13 +78,17 @@ class ReflectionController extends BaseGameController
                     $missed = [
                         'title'    => $level->text('name', $locale) . ' · ' . $node->text('title', $locale),
                         'accuracy' => $accuracy,
+                        'first'    => (int) $attempt->first_pass_correct,
+                        'scorable' => (int) $attempt->scorable_items,
                     ];
                 }
             }
 
+            // Bintang per wilayah (Dok 2 §12.1): jumlah bintang pengerjaan terbaik dari 3 × jumlah tantangan
             $regions[] = [
-                'name'     => $level->text('name', $locale),
-                'accuracy' => $values === [] ? 0.0 : round(array_sum($values) / count($values), 1),
+                'name'      => $level->text('name', $locale),
+                'stars'     => $stars,
+                'stars_max' => 3 * count($nodes),
             ];
         }
 

@@ -15,6 +15,11 @@
  * `{ item_id: <clues[i].item_id>, answer: { object: <data-object> } }`.
  * Petunjuk pertama dirender server agar terbaca tanpa JavaScript.
  *
+ * Kesempatan per petunjuk (Dok 2 §5.3): #clue-tries menampilkan 3 bulatan
+ * untuk petunjuk yang sedang dicari; engines/cari.js mengisinya dari
+ * `clues[i].state.tries` lalu `tries_left` respons server. Petunjuk yang
+ * dilewati (kesempatannya habis) diberi ✗ di daftar; bendanya tidak diungkap.
+ *
  * Narasi petunjuk: bila ada petunjuk dengan rekaman yang disetujui
  * (`clues[i].audio`), <template id="tpl-clue-voice"> berisi tombol ▶/⏸
  * yang dipasang engines/cari.js di samping teks petunjuk. Template tidak
@@ -32,6 +37,7 @@ $clues   = $payload['clues'] ?? [];
 $scene   = $payload['node']['scene'] ?? null;
 $total   = max(1, count($clues));
 $voiced  = array_filter(array_column($clues, 'audio')) !== [];
+$maxTries = max(1, (int) ($payload['max_tries'] ?? config('Gelita')->maxTries));
 ?>
 <?= $this->extend('layouts/game') ?>
 
@@ -50,6 +56,11 @@ $voiced  = array_filter(array_column($clues, 'audio')) !== [];
           esc(lang('Game.clueOf', ['{0}', '{1}'])),
       ) ?></span>
       <p class="clue-text" id="clue-text" aria-live="polite"><?= esc(($clues[0]['text'] ?? '') !== '' ? $clues[0]['text'] : lang('Game.clueWaiting')) ?></p>
+      <?php // Penanda 3 kesempatan petunjuk yang sedang dicari (Dok 2 §5.3); engines/cari.js mengisi per petunjuk ?>
+      <span class="clue-tries" id="clue-tries" role="img" aria-label="<?= esc(lang('Game.triesLabel') . ': ' . lang('Game.triesOf', [$maxTries, $maxTries]), 'attr') ?>">
+        <span aria-hidden="true"><?= esc(lang('Game.triesLabel')) ?></span>
+        <span class="tries-dots" aria-hidden="true"><?php for ($i = 0; $i < $maxTries; $i++): ?><i class="tries-dot is-left"></i><?php endfor ?></span>
+      </span>
     </div>
     <?php if ($voiced): ?>
       <template id="tpl-clue-voice">

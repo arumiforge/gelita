@@ -7,15 +7,15 @@ Keputusan dan penyimpangan dari ketiga dokumen perombakan, beserta alasannya dan
 | Dokumen | Status |
 |---|---|
 | Dok 1 | Selesai, di `main` |
-| Dok 2 | Sebagian, di `main` (445 uji hijau): §2, §3–§4, §5.2 (server), §7, §9, narasi petunjuk per node `cari`. §10 mockup di branch `dok2-mockup` (453 uji hijau), lihat bagian "Dok 2 — gambar mockup" |
+| Dok 2 | Sebagian, di `main`: §2, §3–§4, §5.2 (server), §7, §9, §10 mockup (lihat "Dok 2 — gambar mockup"), narasi petunjuk per node `cari`. §5.3 klien dan §12 teks UI di branch `dok2-klien-kesempatan` (454 uji hijau, PR ke `main`), lihat "Dok 2 — klien dan teks UI" |
 | Dok 3 | Belum dimulai |
 
 Sisa Dok 2:
 
-1. **§5.3 klien + §12 teks UI** — `challenge.js` belum memakai `tries_left`/`completed`/`redirect`/`clue_closed` dari server; `FINISH_OFFER_AFTER` dan tombol "Selesaikan dengan jawaban ini" masih ada; penanda 3 bulatan, modal kesempatan, animasi gambar utuh Susun Gambar belum ada. Kunci `Js.php` baru (`triesLeft`, `triesLast`, `triesExhausted*`, `clueFailed*`, `clueTriesLeft`) belum ada; `finishAnyway`, `engine_pilihan`, dan kunci lama §12 belum dihapus; `cardN` masih "Kartu {0}"; label event `Admin.php` §12.3 belum persis.
-2. ~~**§10 mockup**~~ — selesai di branch `dok2-mockup` (PR ke `main`).
+1. ~~**§5.3 klien + §12 teks UI**~~ — selesai di branch `dok2-klien-kesempatan` (PR ke `main`).
+2. ~~**§10 mockup**~~ — selesai, di `main`.
 3. **§11 naskah cerita** — 11 baris masih "lima belas"; `--lepas-audio-beda` belum ada; rekaman petunjuk `mgl-4`/`wnb-4` belum ada, `petunjuk-tmg-4-05…08` belum dihapus.
-4. Bagian "Dok 2" catatan ini dan uji manual §13.2.
+4. Bagian "Dok 2" catatan ini untuk §2–§9/§11 dan uji manual §13.2 lengkap (butir 3–4: mockup diganti gambar asli, halaman Narasi). Bagian mockup serta klien dan teks UI sudah ada di bawah.
 
 ### Perawatan repo
 
@@ -207,3 +207,83 @@ Dikerjakan di branch `dok2-mockup` (dari `main`), sesuai `02_TANTANGAN_DAN_BANK_
   - `gelita:reset --ya` → "0 gambar contoh dibuat, 44 sudah ada, 1 gambar asli dipertahankan". Folder mockup dihapus lalu reset lagi → "44 gambar contoh dibuat, 1 gambar asli dipertahankan", baris audit `media_mockups`.
   - Rupa SVG diperiksa dengan Chromium headless: Susun Gambar ketiga wilayah, adegan tmg-4/wnb-4, benda, dan gambar pernyataan.
 - Belum dijalankan: permainan ujung ke ujung dengan mockup (§13.2 butir 2). Ini dilakukan bersama uji manual §5.3 setelah `dok2-klien-kesempatan` digabung.
+
+---
+
+## Dok 2 — klien dan teks UI
+
+Dikerjakan di branch `dok2-klien-kesempatan` (dari `main`), sesuai `02_TANTANGAN_DAN_BANK_SOAL.md` §5.3 dan §12. Server (§5.2) sudah ada di `main` dan tidak diubah. Suite: **454 test hijau** setelah rebase ke `main` yang berisi §10 (`vendor/bin/phpunit --no-coverage`; 446 sebelum rebase).
+
+### Jawaban butir Dok 1 yang ditandai *(cek Dok 2)*
+
+- **No. 27 (soal benar terkunci):** sesuai Dok 2 §5.1–§5.2. Soal yang sudah benar tidak dinilai ulang dan tidak menulis `item_tries` baru. Klien kini juga menguncinya setelah muat ulang (`items[].state.locked`).
+- **No. 28 (batas belum ditegakkan):** selesai. Server menegakkannya (`ChallengeService::submitCheck`/`submitAnswer`, `TryLimitTest`). Klien mengikuti `completed`/`redirect` dari `/check` dan `/responses`, dan tombol "Selesaikan dengan jawaban ini" sudah dihapus.
+- **No. 29 (nilai ketiga `completion_reason`?):** tidak perlu. Tanpa tombol itu, pengerjaan hanya tertutup karena semua benar (`solved`) atau kesempatan habis (`tries_exhausted`: cek ke-3 pada engine batch, atau semua petunjuk Cari Objek tertutup dengan sedikitnya satu dilewati). `/complete` menolak pengerjaan yang belum memenuhi salah satunya (`TRIES_REMAINING`). Pengerjaan yang ditinggalkan berstatus `abandoned` tanpa `completion_reason`.
+
+### Keputusan dan penyimpangan
+
+**§5.3 Klien**
+
+1. `FINISH_OFFER_AFTER` dan tombol "Selesaikan dengan jawaban ini" dihapus. `ctx.complete()` engine diganti `ctx.finish(result)`, yang pindah ke `result.redirect` (lentera diperbarui dari `result.shards`). `POST /complete` hanya dipanggil sebagai cadangan bila respons `completed` datang tanpa `redirect`.
+2. **Penanda kesempatan** dirender server lalu diperbarui `challenge.js` (`ctx.setTries`):
+   - engine batch: chip `#tries` di kepala tantangan ("Kesempatan ●●○");
+   - Cari Objek: `#clue-tries` di bilah petunjuk, per petunjuk.
+
+   Nilainya selalu dari server: saat dimuat `max_tries − tries_used` (`clues[i].state.tries` untuk Cari Objek), lalu `tries_left` (Cari Objek: `try_no` dari respons). `aria-label` berbunyi "Kesempatan: 2 dari 3" / "Kesempatan untuk petunjuk ini: 2".
+3. **Modal percobaan salah:** judul per engine tetap ("Belum utuh" untuk Susun Gambar, "Belum semuanya tepat" untuk Isi Rumpang dan Benar atau Salah). Paragraf kedua berisi `triesLeft`/`triesLast`, dengan satu tombol **Perbaiki**. Cari Objek memakai kalimat yang sama untuk sisa kesempatan petunjuk itu, di bawah umpan balik pengecoh.
+4. **Kesempatan habis** (`completed` + `tries_exhausted`): satu modal "Kesempatanmu sudah habis", tanpa tombol tutup, dengan satu tombol **Lanjut** ke `redirect`.
+   - Isi Rumpang dan Benar atau Salah: semua isian dikunci, tanda merah tetap tampil, kunci tidak ditampilkan.
+   - Susun Gambar: keping disusun ke posisi utuh dengan FLIP 600 ms (`reduced-motion`: tanpa animasi). Sesudah itu papan diberi `is-solved`, keterangan gambar tampil, lalu modal berisi `triesExhaustedPuzzle` + teks keterangan.
+5. **Cari Objek:**
+   - `clue_closed` → modal "Petunjuk ini dilewati" (tombol Lanjut) → petunjuk terbuka berikutnya. Petunjuk itu diberi ✗ di daftar dan tidak bisa dilompati lagi; bendanya tidak ditandai.
+   - Bila ketukan itu sekaligus menutup pengerjaan, **hanya** modal "Kesempatanmu sudah habis" yang tampil, tidak dua modal berturut-turut.
+   - Pengerjaan yang tertutup `tries_exhausted` setelah petunjuk terakhir justru *ditemukan* (ada petunjuk lain yang dilewati) juga memakai modal "Kesempatanmu sudah habis", tanpa konfeti. Konfeti dan "Semua objek ketemu!" hanya untuk `solved`.
+6. **Galat aturan dari server** (mis. tab lain sudah memakai kesempatan terakhir):
+   - `TRIES_EXHAUSTED` → pindah ke `redirect` di payload galat (atau muat ulang);
+   - `CLUE_CLOSED` → muat ulang, sehingga tampilan mengikuti payload.
+7. **Muat ulang di tengah tantangan:**
+   - Isi Rumpang: rumpang `state.locked` diisi lagi dengan jawaban siswa sendiri, memakai chip pertama yang belum terpakai dengan teks sama.
+   - Benar atau Salah: pernyataan `state.locked` dipulihkan dengan pilihan siswa sendiri. Keduanya bertanda benar dan terkunci.
+   - Cari Objek: memulihkan `found`/`closed` per petunjuk dan `objects[].found`, lalu mulai dari petunjuk terbuka pertama.
+
+   Jawaban salah memang tidak dikembalikan server (§3.3), jadi kotak yang salah kembali kosong. Angka ✓ di bar dimulai dari jumlah soal terkunci. ✗ diperkirakan dari sisanya bila `tries_used > 0`; untuk Cari Objek ✗ dimulai dari 0.
+8. Judul variasi (`variant.title`) tampil sebagai `h2.rumpang-title` di atas bacaan Isi Rumpang. Judul itu disembunyikan bila sama dengan judul node, yaitu variasi tanpa judul sendiri (`variantTitle()` jatuh ke judul node).
+
+**§12 Teks UI**
+
+9. `accuracyFirst` tidak ada lagi di `main`: Dok 1 sudah menggantinya menjadi `firstPass` dengan teks "Berhasil pada Percobaan Pertama" / "Success on First Try". Nama `firstPass` dipertahankan.
+10. Kunci baru §12.1 dipakai sebagai berikut:
+    - `firstPassCount` diganti nama menjadi `firstTryCount` ("{0} dari {1} soal" / "{0} of {1} questions").
+    - `yes`/`notYet` (hanya dipakai `first_pass_text()`) diganti `firstTryYes`/`firstTryNo` lalu dihapus.
+    - `triesLabel` + `triesOf` dipakai untuk penanda kesempatan.
+    - `triesUsed` / `wrongTaps` jadi petak statistik keempat di layar Selesai. Engine batch menampilkan "{check_count} dari {max_tries}"; Cari Objek menampilkan jumlah `wrong_click_count`.
+    - `completionSolved` / `completionExhausted` jadi lencana alasan selesai di layar Selesai.
+    - `readingLabel` menjadi judul cadangan bacaan Benar atau Salah.
+    - `statementsLabel` menjadi judul di atas daftar pernyataan.
+11. Dari daftar "dihapus" §12.1, yang masih tersisa dan kini dihapus adalah `engine_pilihan`, `variant_urutkan_informasi`, dan `questionOf`. Kunci lain sudah dihapus Dok 1. Dari §12.2, yang masih ada hanya `finishAnyway`.
+12. **Balai Refleksi:**
+    - `perRegion` "Bintang per wilayah" kini benar-benar menampilkan bintang. Isinya jumlah bintang pengerjaan terbaik per tantangan, dari 3 × jumlah tantangan wilayah (mis. "10 dari 12"); sebelumnya persentase.
+    - `mostMissedText` memakai hitungan "{1} dari {2} soal", bukan persen.
+    - `perEngine` tetap persentase.
+13. Selain teks tabel §12.2, judul blok komentar "Puzzle & urutan" diganti "Puzzle". `cardsEmpty*`/`cardsOk*` masih menyebut "kartu" karena tidak ada di tabel. `huntDecoyTitle` kini sama dengan `huntOtherTitle` ("Bukan yang ini"), sesuai tabel.
+14. **§12.3 `Admin.php`:** label event diubah persis tabel. `screen_viewed`, `overlay_opened`, dan `challenge_tries_exhausted` sudah ada dengan teks yang sama. Judul kolom "Menekan Cek jawabanku" di `admin/sessions/show.php` dan `ExportLabels` bukan label event, jadi dibiarkan (rancangan ulang panel di Dok 3). Panel admin hanya berbahasa Indonesia, jadi tidak ada `en/Admin.php`.
+15. `LanguageFilesTest::testDocTwoTextKeys` (baru) memastikan:
+    - kunci yang dihapus §12.1/§12.2 tidak ada di `id`/`en`;
+    - kunci itu tidak dipakai kode (`'Game.x'` di `app/`, `t('x')` di `public/assets/js`);
+    - teks kunci utama sama persis dengan tabel.
+16. `docs/06_JAVASCRIPT.md` bagian "Keputusan perilaku" diperbarui seperlunya: aturan 3 kesempatan menggantikan "Selesaikan dengan jawaban ini", dan butir engine Pilihan dihapus. Penulisan ulang menyeluruh tetap di Dok 3 §11.
+
+### Pengujian yang dijalankan
+
+- **Otomatis:** `composer install`, lalu `vendor/bin/phpunit --no-coverage` → 454 test hijau (446 sebelum rebase). `node --check` untuk `challenge.js` dan keempat engine.
+- **Peramban** (`php spark serve` + Chromium Playwright 1280 × 800). Database MariaDB 10.11 lokal di container: `migrate --all`, lalu `db:seed DatabaseSeeder`, yang mengimpor workbook kelas 5. Gambar mockup belum ada (§10), jadi gambar tampil sebagai "Gambar belum tersedia". Kunci jawaban dan token objek Cari Objek dibaca skrip uji dari database. Skrip uji tidak di-commit.
+  - **Salah 3 kali (ID), Temanggung:**
+    - Susun Gambar: 3 × cek tanpa menukar → penanda 3→2→1→0, modal "tinggal 2 lagi" / "Tinggal satu kesempatan lagi", keping tersusun 0..8, keterangan tampil, modal habis, lalu `/selesai`.
+    - Isi Rumpang: 1 benar 2 salah → muat ulang (rumpang benar terkunci, penanda 2) → 2 × cek salah → modal habis, 2 kotak merah.
+    - Benar atau Salah: semua kebalikan kunci × 3.
+    - Cari Objek: petunjuk 1 salah 3× → "Petunjuk ini dilewati" + ✗ di daftar; petunjuk 2 salah 1× → muat ulang (petunjuk 2 aktif, penanda 2, petunjuk 1 tetap ✗) → sisanya benar → modal habis.
+    - Database: keempat pengerjaan `completed`/`tries_exhausted`/★. Ada 3 event `challenge_tries_exhausted` dan 1 `clue_failed`. Tidak ada request ke `/complete`.
+  - **Benar pada percobaan pertama (EN):** keempat tantangan Temanggung → konfeti dan modal sukses EN ("Chances: 3 of 3", "Check my picture", "Statement 1"), lalu `/selesai` dengan ★★★, `solved`, "All correct", "Wrong taps 0". Membuka ulang tantangan yang sudah selesai memulai pengerjaan baru dengan 3 kesempatan.
+  - **Ke-12 tantangan sampai Balai Refleksi (ID):** satu tantangan (Magelang Benar atau Salah) salah 3 kali. Hasilnya "Bintang per wilayah" 12/10/12 dari 12, dan "Paling sering terlewat … 0 dari 5 soal".
+  - Setelah rebase ke `main` yang sudah berisi §10: `gelita:mockups` (45 dibuat), lalu skenario salah 3 kali dan benar pada percobaan pertama diulang dengan gambar mockup, dengan hasil sama. Gambar utuh Susun Gambar tampil di balik modal habis. Ini sekaligus menjawab "Belum dijalankan" di bagian mockup untuk alur §5.3. Butir §13.2 lain (mengganti mockup dengan gambar asli di panel, halaman Narasi) belum.
+  - Tidak ada galat JavaScript atau konsol di semua skenario.

@@ -2,8 +2,9 @@
 /**
  * 12. Selesai — `/selesai/{attemptId}` → ChallengeController::finished
  *
- * Orb cahaya, bintang 0–3, tiga statistik (Waktu, Berhasil pada Percobaan
- * Pertama, Benar di akhir).
+ * Orb cahaya, bintang 0–3, empat statistik (Waktu, Berhasil pada Percobaan
+ * Pertama, Benar di akhir, Percobaan dipakai — atau Ketukan salah untuk Cari
+ * Objek) dan alasan selesai (Semua benar / Disimpan apa adanya).
  * Bila wilayah tuntas: panel Mbah Kedu bangga. Bila attempt ini yang
  * menuntaskan wilayah: tombol utama "Lanjut" ke adegan /tuntas/{code}
  * ("Serpihan {wilayah} kembali!", Tahap 3), dan bila wilayahnya punya
@@ -22,6 +23,7 @@
  * @var bool                             $allCompleted
  * @var array<string, mixed>             $progress
  * @var array<string, mixed>|null        $nextRegion baris levelOverview wilayah sesudahnya (+ `curtain`)
+ * @var int|null                         $wrongTaps  Cari Objek: jumlah ketukan salah
  * @var string                           $locale
  */
 $region = $level?->text('name', $locale) ?? '';
@@ -75,8 +77,19 @@ $toNext = ! $closesRegion && ! $allCompleted && $next === null && $levelComplete
       <div class="stat-grid finished-stats">
         <?= component('stat-tile', ['label' => lang('Game.timeSpent'), 'value' => ms_to_human((int) $attempt->duration_ms), 'icon' => 'clock']) ?>
         <?= component('stat-tile', ['label' => lang('Game.firstPass'), 'value' => first_pass_text($attempt, $locale, $node?->engine_type), 'icon' => 'target']) ?>
-        <?= component('stat-tile', ['label' => lang('Game.finalCorrect'), 'value' => lang('Game.firstPassCount', [(int) $attempt->final_correct, (int) $attempt->scorable_items]), 'icon' => 'check']) ?>
+        <?= component('stat-tile', ['label' => lang('Game.finalCorrect'), 'value' => lang('Game.firstTryCount', [(int) $attempt->final_correct, (int) $attempt->scorable_items]), 'icon' => 'check']) ?>
+        <?php if (($wrongTaps ?? null) !== null): ?>
+          <?= component('stat-tile', ['label' => lang('Game.wrongTaps'), 'value' => (string) $wrongTaps, 'icon' => 'cross']) ?>
+        <?php else: ?>
+          <?= component('stat-tile', ['label' => lang('Game.triesUsed'), 'value' => lang('Game.triesOf', [$checks, (int) ($attempt->max_tries ?? config('Gelita')->maxTries)]), 'icon' => 'replay']) ?>
+        <?php endif ?>
       </div>
+
+      <?php if ($attempt->completion_reason !== null): ?>
+        <p class="finished-reason badge <?= $attempt->completion_reason === 'solved' ? 'is-completed' : 'is-open' ?>">
+          <?= esc(lang($attempt->completion_reason === 'solved' ? 'Game.completionSolved' : 'Game.completionExhausted')) ?>
+        </p>
+      <?php endif ?>
 
       <?php if ($checks > 1): ?>
         <p class="finished-note"><?= icon('info') ?> <?= esc(lang('Game.multiCheckNote', [$checks])) ?></p>

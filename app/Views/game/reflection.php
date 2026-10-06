@@ -32,7 +32,7 @@ $rating    = (int) old('rating');
   </header>
 
   <div class="stat-grid">
-    <?= component('stat-tile', ['label' => lang('Game.firstPass'), 'value' => lang('Game.firstPassCount', [$journey['first_pass'], $journey['scorable']]), 'icon' => 'target']) ?>
+    <?= component('stat-tile', ['label' => lang('Game.firstPass'), 'value' => lang('Game.firstTryCount', [$journey['first_pass'], $journey['scorable']]), 'icon' => 'target']) ?>
     <?= component('stat-tile', ['label' => lang('Game.challengesDone'), 'value' => (string) $journey['completed'], 'icon' => 'check']) ?>
     <?= component('stat-tile', ['label' => lang('Game.totalTime'), 'value' => ms_to_human($journey['duration_ms']), 'icon' => 'clock']) ?>
     <?= component('stat-tile', ['label' => lang('Game.correctItems'), 'value' => (string) $journey['correct_items'], 'icon' => 'star']) ?>
@@ -45,8 +45,8 @@ $rating    = (int) old('rating');
         <?php foreach ($journey['regions'] as $row): ?>
           <li class="bar-row">
             <span><?= esc($row['name']) ?></span>
-            <span class="progress" aria-hidden="true"><i style="width: <?= (float) $row['accuracy'] ?>%"></i></span>
-            <span class="bar-value"><?= esc(fmt_pct($row['accuracy'], false, 0)) ?></span>
+            <span class="progress" aria-hidden="true"><i style="width: <?= $row['stars_max'] > 0 ? round(100 * $row['stars'] / $row['stars_max'], 1) : 0 ?>%"></i></span>
+            <span class="bar-value"><?= icon('star') ?> <?= esc(lang('Game.triesOf', [$row['stars'], $row['stars_max']])) ?></span>
           </li>
         <?php endforeach ?>
       </ul>
@@ -69,7 +69,7 @@ $rating    = (int) old('rating');
     <div class="alert alert-info">
       <?= icon('hint') ?>
       <p><b><?= esc(lang('Game.mostMissed')) ?>:</b>
-        <?= esc(lang('Game.mostMissedText', [$journey['most_missed']['title'], fmt_num($journey['most_missed']['accuracy'], 0, $locale)])) ?></p>
+        <?= esc(lang('Game.mostMissedText', [$journey['most_missed']['title'], $journey['most_missed']['first'], $journey['most_missed']['scorable']])) ?></p>
     </div>
   <?php endif ?>
 
