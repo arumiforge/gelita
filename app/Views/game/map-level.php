@@ -27,17 +27,9 @@ $points = implode(' ', array_map(static fn (array $n): string => (float) $n['map
 <?= $this->section('background') ?><?= $bg ?><?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<section class="screen map-screen map-level" data-screen="map-level"
+<section class="map-screen map-level" data-screen="map-level"
          data-level="<?= esc($level->code, 'attr') ?>" data-level-id="<?= esc($level->id, 'attr') ?>">
-  <header class="map-head">
-    <span class="eyebrow"><?= esc(lang('Game.levelOrder', [$level->sequence])) ?> · <?= esc(lang_or('Game.difficulty_' . $level->difficulty, (string) $level->difficulty)) ?></span>
-    <h1><?= esc($region) ?></h1>
-    <?php if ($level->text('focus', $locale) !== ''): ?>
-      <p><?= esc($level->text('focus', $locale)) ?></p>
-    <?php endif ?>
-  </header>
-
-  <div class="map-frame">
+  <div class="map-frame stage-box">
     <div class="map-canvas<?= $mapSrc === null ? ' is-drawn' : '' ?>" style="--map-ratio: 1400 / 900">
       <?php if ($mapSrc !== null): ?>
         <img class="map-img" src="<?= esc($mapSrc, 'attr') ?>" alt="<?= esc(lang('Game.mapImageAlt', [$region]), 'attr') ?>">
@@ -73,34 +65,44 @@ $points = implode(' ', array_map(static fn (array $n): string => (float) $n['map
     </div>
   </div>
 
-  <div class="map-progress">
-    <div class="progress" aria-hidden="true"><i style="width: <?= $total > 0 ? (int) round($done / $total * 100) : 0 ?>%"></i></div>
-    <p><?= esc(lang('Game.nodesDoneOf', [$done, $total])) ?></p>
-  </div>
+  <aside class="map-side stage-box stage-scroll" aria-label="<?= esc($region, 'attr') ?>">
+    <header class="map-head">
+      <span class="eyebrow"><?= esc(lang('Game.levelOrder', [$level->sequence])) ?> · <?= esc(lang_or('Game.difficulty_' . $level->difficulty, (string) $level->difficulty)) ?></span>
+      <h1><?= esc($region) ?></h1>
+      <?php if ($level->text('focus', $locale) !== ''): ?>
+        <p><?= esc($level->text('focus', $locale)) ?></p>
+      <?php endif ?>
+    </header>
 
-  <ol class="node-list">
-    <?php foreach ($nodes as $node): ?>
-      <li class="node-card panel is-<?= esc($node['status'], 'attr') ?>">
-        <span class="node-no num" aria-hidden="true">
-          <?= $node['status'] === 'completed' ? icon('check') : ($node['status'] === 'locked' ? icon('lock') : esc($node['sequence'])) ?>
-        </span>
-        <div class="node-card-body">
-          <span class="eyebrow"><?= esc(lang('Game.challengeOf', [$node['sequence'], $total])) ?> · <?= esc(engine_label($node['engine_type'], $node['variant'])) ?></span>
-          <h2><?= esc($node['title']) ?></h2>
+    <div class="map-progress">
+      <div class="progress" aria-hidden="true"><i style="width: <?= $total > 0 ? (int) round($done / $total * 100) : 0 ?>%"></i></div>
+      <p><?= esc(lang('Game.nodesDoneOf', [$done, $total])) ?></p>
+    </div>
+
+    <ol class="node-list">
+      <?php foreach ($nodes as $node): ?>
+        <li class="node-card panel is-<?= esc($node['status'], 'attr') ?>">
+          <span class="node-no num" aria-hidden="true">
+            <?= $node['status'] === 'completed' ? icon('check') : ($node['status'] === 'locked' ? icon('lock') : esc($node['sequence'])) ?>
+          </span>
+          <div class="node-card-body">
+            <span class="eyebrow"><?= esc(lang('Game.challengeOf', [$node['sequence'], $total])) ?> · <?= esc(engine_label($node['engine_type'], $node['variant'])) ?></span>
+            <h2><?= esc($node['title']) ?></h2>
+            <?php if ($node['status'] === 'completed'): ?>
+              <?= stars_html((int) $node['stars']) ?>
+            <?php endif ?>
+          </div>
           <?php if ($node['status'] === 'completed'): ?>
-            <?= stars_html((int) $node['stars']) ?>
+            <a class="btn btn-ghost btn-sm" href="<?= esc($href($node), 'attr') ?>"><?= esc(lang('Game.viewResult')) ?></a>
+          <?php elseif ($node['status'] === 'open'): ?>
+            <a class="btn btn-primary" href="<?= esc($href($node), 'attr') ?>"><?= esc(lang('Game.start')) ?> <?= icon('right') ?></a>
+          <?php else: ?>
+            <span class="badge is-locked"><?= icon('lock') ?> <?= esc(lang('Game.shardLocked')) ?></span>
           <?php endif ?>
-        </div>
-        <?php if ($node['status'] === 'completed'): ?>
-          <a class="btn btn-ghost btn-sm" href="<?= esc($href($node), 'attr') ?>"><?= esc(lang('Game.viewResult')) ?></a>
-        <?php elseif ($node['status'] === 'open'): ?>
-          <a class="btn btn-primary" href="<?= esc($href($node), 'attr') ?>"><?= esc(lang('Game.start')) ?> <?= icon('right') ?></a>
-        <?php else: ?>
-          <span class="badge is-locked"><?= icon('lock') ?> <?= esc(lang('Game.shardLocked')) ?></span>
-        <?php endif ?>
-      </li>
-    <?php endforeach ?>
-  </ol>
+        </li>
+      <?php endforeach ?>
+    </ol>
+  </aside>
 </section>
 <?= $this->endSection() ?>
 

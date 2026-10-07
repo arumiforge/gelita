@@ -54,8 +54,13 @@ body.game {
     var(--navy-900);
 }
 
-/* Kotak berkoordinat dp: left/top/width/height dari --x/--y/--w/--h */
-.stage-box {
+/* Kotak berkoordinat dp: left/top/width/height dari --x/--y/--w/--h.
+   Elemen bagian (partial) yang dipakai ulang mendapat aturan yang sama lewat
+   daftar selektor ini, bukan kelas tambahan di markup. Awalan .stage menang
+   atas position: relative milik komponen (.panel-parchment, .panel). */
+.stage .stage-box,
+.stage .cine-stage, .stage .cine-caption,
+.stage .dialogue-stage > .character, .stage .dialogue-box {
   position: absolute;
   left: calc(var(--x, 0) * var(--dp));
   top: calc(var(--y, 0) * var(--dp));
@@ -293,6 +298,22 @@ body.game {
 
 /* ---------- Daftar `/daftar/1…3`: kepala 0–64, isian gulir 64–496, bilah tombol 496–576 ---------- */
 .register-panel { --x: 200; --y: 72; --w: 880; --h: 576; }
+
+/* ---------- Sinematik: cerita pembuka `/intro`, penutup `/penutup` ---------- */
+.cine-stage   { --x: 64;  --y: 136; --w: 300; --h: 520; }
+.cine-caption { --x: 160; --y: 520; --w: 960; --h: 168; }
+
+/* ---------- Dialog wilayah `/dialog/{code}`, wilayah tuntas `/tuntas/{code}` ----------
+   Kotak teks naik ke y 472 (bukan 520): layar ini punya nav bar 656–720. */
+.dialogue-head                 { --x: 0;   --y: 64;  --w: 1280; --h: 64; }
+.dialogue-stage > .stage-left  { --x: 64;  --y: 136; --w: 300; --h: 520; }
+.dialogue-stage > .stage-right { --x: 916; --y: 136; --w: 300; --h: 520; }
+.dialogue-box                  { --x: 160; --y: 472; --w: 960; --h: 168; }
+
+/* ---------- Peta Kedu `/peta`, peta wilayah `/wilayah/{code}` ---------- */
+.map-frame   { --x: 32;  --y: 72;  --w: 880; --h: 566; }
+.map-side    { --x: 936; --y: 72;  --w: 312; --h: 576; }
+.map-balloon { --x: 48;  --y: 560; --w: 600; --h: 96; }
 
 /* KOORDINAT */
 

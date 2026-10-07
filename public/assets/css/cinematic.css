@@ -355,26 +355,17 @@
 }
 
 /* =================== CERITA PEMBUKA SINEMATIK =================== */
-body.is-cinematic .app { padding: 0; }
+/* Koordinat (stage.css §Sinematik): latar slide 1280 × 720, tokoh kiri 64, 136,
+   300 × 520 (kanan 916, 136), kotak teks 160, 520, 960 × 168 (gulir),
+   kontrol di kanan atas, kartu "Ketuk untuk mulai" di tengah. */
 body.is-cinematic .scene-img.is-visible { animation: kenburns 40s ease-in-out infinite alternate; }
 
-.cine { position: relative; max-width: none; min-height: calc(100vh - var(--hud-h)); min-height: calc(100dvh - var(--hud-h)); }
-.cine > .welcome-card { position: relative; z-index: 2; max-width: 47.5rem; margin: var(--gap-5) auto 0; }
-.cine > .story-empty { max-width: 40rem; margin: var(--gap-7) auto; }
+.story { position: absolute; inset: 0; }
+.cine > .welcome-card { position: absolute; top: calc(72 * var(--dp)); left: calc(260 * var(--dp)); z-index: 2; width: calc(760 * var(--dp)); margin: 0; }
+.story > .story-empty { position: absolute; top: calc(200 * var(--dp)); left: calc(320 * var(--dp)); width: calc(640 * var(--dp)); }
 
-.cine-slide {
-  position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 2.6fr);
-  grid-template-areas: "stage caption";
-  align-items: end;
-  gap: var(--gap-5);
-  min-height: calc(100vh - var(--hud-h));
-  min-height: calc(100dvh - var(--hud-h));
-  padding: calc(var(--gap-7) + var(--gap-4)) max(var(--gap-6), env(safe-area-inset-right)) var(--gap-6) max(var(--gap-6), env(safe-area-inset-left));
-  animation: cine-in .8s ease both;
-}
-.cine-slide.is-narrator { grid-template-columns: minmax(0, 1fr); grid-template-areas: "caption"; }
+.cine-slides { position: absolute; inset: 0; }
+.cine-slide { position: absolute; inset: 0; animation: cine-in .8s ease both; }
 
 /* Latar milik slide (dialogues.background_media_id), di atas latar layout */
 .cine-bg {
@@ -408,30 +399,38 @@ body.is-cinematic .scene-img.is-visible { animation: kenburns 40s ease-in-out in
   to { opacity: 1; transform: none; }
 }
 
-.cine-stage { grid-area: stage; display: grid; justify-items: center; align-self: end; }
+/* Tokoh: kotak tetap, gambar (700 × 900) menempel di dasar kotak */
+.cine-stage { display: grid; justify-items: center; align-items: end; }
+.cine-stage .character, .dialogue-stage .character { align-self: end; }
+/* Tokoh 700 × 900 tampil 300 × 386 dp (Dok 3 §6); monogram cadangan di tengah kotak */
+.cine-stage > .character:has(.character-fallback),
+.dialogue-stage > .character:has(.character-fallback) { align-self: center; align-content: center; }
 .cine-stage .character-img {
-  width: auto;
-  max-height: min(64vh, 35rem);
+  width: calc(300 * var(--dp));
+  max-height: none;
   filter: drop-shadow(0 1rem 1.5rem rgba(0, 0, 0, .55));
   animation: cine-rise .7s ease both;
 }
 .cine-stage .character-fallback { width: 7.5rem; font-size: var(--fs-h1); }
 
-/* Kotak teks bergaya subtitle */
+/* Kotak teks bergaya subtitle: kepala + navigasi sebaris, isi bergulir */
+.cine-caption, .dialogue-box {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: auto minmax(0, 1fr);
+  column-gap: var(--gap-4);
+  row-gap: var(--gap-2);
+  padding: var(--gap-3) var(--gap-5);
+}
 .cine-caption {
-  grid-area: caption;
-  justify-self: center;
-  width: 100%;
-  max-width: 61.25rem;
-  padding: var(--gap-4) var(--gap-5) var(--gap-3);
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
-  background: linear-gradient(to bottom, rgba(11, 19, 32, .78), rgba(11, 19, 32, .9));
+  background: linear-gradient(to bottom, rgba(11, 19, 32, .82), rgba(11, 19, 32, .92));
   box-shadow: var(--shadow-2);
-  backdrop-filter: blur(.25rem);
 }
-.cine-caption-head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--gap-2) var(--gap-3); margin-bottom: var(--gap-1); }
+.cine-caption-head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--gap-2) var(--gap-3); min-width: 0; }
 .cine-caption-head .eyebrow { margin: 0; color: var(--ink-dim); }
+.cine-caption-body, .dialogue-body { grid-column: 1 / -1; padding-right: var(--gap-2); }
 .cine-speaker {
   padding: 1px var(--gap-3);
   border-radius: var(--radius-pill);
@@ -442,60 +441,68 @@ body.is-cinematic .scene-img.is-visible { animation: kenburns 40s ease-in-out in
   font-weight: 700;
 }
 .cine-title {
-  margin: 0 0 var(--gap-2);
+  margin: 0 0 var(--gap-1);
   color: var(--gold-300);
   font-family: var(--font-display);
-  font-size: var(--fs-h2);
+  font-size: var(--fs-h3);
   letter-spacing: .02em;
 }
-.cine .slide-text { color: var(--ink); font-size: var(--fs-h3); line-height: 1.6; text-wrap: pretty; }
-.cine .slide-nav { margin-top: var(--gap-3); }
+.cine .slide-text { color: var(--ink); font-size: var(--fs-reading); line-height: 1.5; text-wrap: pretty; }
 .cine .slide-nav .btn-quiet { background: rgba(255, 255, 255, .08); color: var(--gold-300); }
 .cine .slide-nav .btn-quiet:hover { background: rgba(255, 255, 255, .14); }
 .cine .slide-dot { border-color: var(--gold-600); }
 .cine .slide-dot.is-current { background: var(--gold-500); border-color: var(--gold-500); }
-/* ◀ ada di kontrol narasi; tombol Kembali cukup ruangnya saja */
-.cine.is-live .slide-nav > .btn-quiet { visibility: hidden; }
+/* ◀ ada di kontrol narasi: tombol Kembali tidak memakan tempat */
+.cine.is-live .slide-nav > .btn-quiet, .cine.is-live .slide-nav-spacer { display: none; }
 
-.cine .narrator-controls {
-  position: fixed;
-  top: calc(var(--hud-h) + var(--gap-3));
-  left: max(var(--gap-4), env(safe-area-inset-left));
+.cine-caption .slide-nav, .dialogue-box .slide-nav {
+  grid-column: 2;
+  grid-row: 1;
+  flex-wrap: nowrap;
+  gap: var(--gap-2);
+  margin: 0;
+}
+.cine-caption .slide-nav .btn, .dialogue-box .slide-nav .btn { min-height: 2.5rem; padding: var(--gap-1) var(--gap-4); font-size: var(--fs-caption); white-space: nowrap; }
+.cine-caption .slide-dots, .dialogue-box .slide-dots { gap: var(--gap-1); }
+.cine-caption .slide-dot, .dialogue-box .slide-dot { width: .625rem; height: .625rem; }
+
+/* Kontrol narasi + "Lewati" di kanan atas, di bawah HUD (y 72) */
+.cine .narrator-controls, .dialogue .narrator-controls {
+  position: absolute;
+  top: calc(72 * var(--dp));
+  right: calc(160 * var(--dp));
   z-index: 5;
   padding: var(--gap-1);
   border: 1px solid var(--line);
   border-radius: var(--radius-pill);
   background: rgba(11, 19, 32, .66);
-  backdrop-filter: blur(.25rem);
 }
-
-/* "Lewati" di pojok kanan atas, seperti tombol lewati pada video */
 body.is-cinematic .nav-bar {
-  top: calc(var(--hud-h) + var(--gap-3));
+  top: calc(72 * var(--dp));
+  right: var(--gutter);
   bottom: auto;
   left: auto;
-  min-height: 0;
-  padding: 0 max(var(--gap-4), env(safe-area-inset-right)) 0 0;
+  width: auto;
+  height: var(--tap);
+  padding: 0;
   background: none;
 }
 
 /* ======================= NARASI PETA ======================= */
-.map-story { position: relative; align-content: start; }
-.map-story .slides { width: 100%; }
-.map-story-slide { display: grid; justify-items: center; gap: var(--gap-3); }
-/* Pemutar audio (tanpa JS) & navigasi selebar slide, bukan di kolom tokoh */
-.map-story-slide > :is(.audio-player, .map-story-nav) { grid-column: 1 / -1; justify-self: stretch; }
-.map-story-slide > .map-story-nav { justify-self: center; }
-.map-story .narration { width: 100%; font-size: var(--fs-body); }
-.map-story .narration cite { display: flex; flex-wrap: wrap; gap: 0 var(--gap-1); }
+/* Balon 48, 560, 600 × 96 (stage.css): satu baris slide + kontrol di kanan */
+.map-story .slides { min-width: 0; height: 100%; margin: 0; }
+.map-story-slide { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: minmax(0, 1fr); align-items: stretch; gap: var(--gap-2); height: 100%; }
+.map-story-slide > .character { display: none; }
+.map-story-slide > .audio-player { display: none; }
+.map-story .narration cite { display: flex; flex-wrap: wrap; gap: 0 var(--gap-1); margin: 0; }
 .map-story-title { color: var(--brown-700); font-weight: 400; }
 .map-story .slide-text { margin: 0; font-size: inherit; line-height: inherit; }
-
-.map-story .narration { max-width: none; }
-.map-story-nav { display: flex; align-items: center; justify-content: center; gap: var(--gap-2); color: var(--ink-dim); font-size: var(--fs-caption); }
+.map-story-nav { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--gap-1); color: var(--ink-dim); font-size: var(--fs-caption); }
 .map-story-nav .icon-btn { width: 2.25rem; height: 2.25rem; }
 .map-story.is-live .map-story-nav .icon-btn { display: none; }
-.map-story .narrator-controls { justify-content: center; margin-top: calc(-1 * var(--gap-2)); }
+.map-story .narrator-controls { flex-direction: column; flex-wrap: nowrap; justify-content: center; gap: 0; }
+.map-story .narrator-controls .icon-btn { width: 2.25rem; height: 2.25rem; }
+.map-story .narrator-controls .narrator-auto { display: none; }
 
 /* =================== TAHAP 3 · SLIDE TANPA HASH =================== */
 /* slides.js `hash: false` (overlay Kenali): .is-current menentukan slide,
@@ -633,7 +640,7 @@ body.has-kenal { overflow: hidden; }
 }
 .kenal-slide.is-narrator { grid-template-columns: minmax(0, 1fr); grid-template-areas: "caption"; }
 .kenal-stage { grid-area: stage; display: grid; justify-items: center; align-self: end; }
-.kenal-stage .character-img { width: auto; max-height: min(58vh, 32.5rem); filter: drop-shadow(0 1rem 1.5rem rgba(0, 0, 0, .55)); animation: cine-rise .6s ease both; }
+.kenal-stage .character-img { width: auto; max-height: calc(440 * var(--dp)); filter: drop-shadow(0 1rem 1.5rem rgba(0, 0, 0, .55)); animation: cine-rise .6s ease both; }
 .kenal-stage .character-fallback { width: 7.5rem; font-size: var(--fs-h1); }
 .kenal-caption {
   grid-area: caption;
@@ -829,18 +836,6 @@ body.has-kenal { overflow: hidden; }
 .tap-trail { width: 32.5rem; height: 3.5rem; }
 .narrator-tap.is-done .narrator-tap-glow { background: radial-gradient(circle, #FFF6DD 0%, var(--gold-500) 40%, rgba(143, 209, 79, .3) 64%, transparent 74%); }
 
-/* Panggung dialog bernarasi: kontrol melayang di kiri atas seperti layar sinematik */
-.dialogue .narrator-controls {
-  position: fixed;
-  top: calc(var(--hud-h) + var(--gap-3));
-  left: max(var(--gap-4), env(safe-area-inset-left));
-  z-index: 5;
-  padding: var(--gap-1);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-pill);
-  background: rgba(11, 19, 32, .66);
-  backdrop-filter: blur(.25rem);
-}
 /* ◀ ada di kontrol narasi: tombol Kembali dan pengganjalnya tidak memakan tempat */
 .dialogue.is-live .slide-nav > .btn-quiet, .dialogue.is-live .slide-nav-spacer { display: none; }
 .dialogue .dialogue-box { cursor: default; }

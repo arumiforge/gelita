@@ -4,7 +4,8 @@
  *
  * Kiri  : lentera serpihan (tetap di kiri atas; dirujuk naskah `intro-07`),
  *         atau merek sebelum login.
- * Tengah: nama wilayah bila halaman milik satu wilayah (`$level`).
+ * Tengah: section `hudTitle` (mis. Peta Kedu), atau nama wilayah bila halaman
+ *         milik satu wilayah (`$level`).
  * Kanan : bahasa, suara, layar penuh (core/stage.js; tersembunyi bila tidak
  *         didukung), beranda (peta Kedu), chip peserta, keluar.
  *
@@ -19,9 +20,10 @@
  * @var \App\Entities\Level|null   $level
  */
 $inGame    = isset($participant, $progress) && is_array($participant) && is_array($progress);
-$hudRegion = isset($level) && $level instanceof \App\Entities\Level
+$hudTitle  = trim($this->renderSection('hudTitle'));
+$hudRegion = $hudTitle !== '' ? $hudTitle : (isset($level) && $level instanceof \App\Entities\Level
     ? $level->text('name', service('request')->getLocale())
-    : null;
+    : null);
 ?>
 <header class="hud">
   <div class="hud-left">

@@ -235,14 +235,15 @@ body.is-challenge .hud-leave { display: none; }
   padding: 0;
 }
 .register-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--gap-4);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-content: center;
+  column-gap: var(--gap-4);
   padding: 0 var(--gap-6);
   border-bottom: 1px solid rgba(138, 106, 50, .35);
 }
-.register-head .eyebrow { font-size: .75rem; }
+.register-head .eyebrow { grid-column: 1; font-size: .75rem; line-height: 1.3; }
+.register-head .reg-stepper { grid-column: 2; grid-row: 1 / span 2; align-self: center; }
 .register-head h1 { margin: 0; font-size: var(--fs-h3); line-height: 1.15; }
 .register-form { display: grid; grid-template-rows: minmax(0, 1fr) 5rem; gap: 0; min-height: 0; }
 .register-fields { display: grid; align-content: start; gap: var(--gap-4); padding: var(--gap-4) var(--gap-6); }
@@ -284,6 +285,7 @@ body.is-challenge .hud-leave { display: none; }
   background: #FFFBF1;
 }
 .choice-pill:has(input:checked) { border-color: var(--brown-700); background: var(--parchment-dark); }
+.choice-pill { align-items: center; }
 .choice-pill input { margin-top: 0; }
 
 .region-other { display: none; }
@@ -398,17 +400,14 @@ body.is-challenge .hud-leave { display: none; }
 .story-empty { display: grid; justify-items: center; gap: var(--gap-4); text-align: center; }
 
 /* Dialog: dua tokoh berhadapan */
-.dialogue-stage {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: var(--gap-5);
-  min-height: 12.5rem;
-  margin-bottom: calc(-1 * var(--gap-4));
-  padding: 0 var(--gap-5);
-}
+.dialogue-head { display: grid; align-content: center; margin: 0; }
+.dialogue-head h1 { margin: 0; font-size: var(--fs-h2); }
+.dialogue-lines { position: absolute; inset: 0; margin: 0; }
+.dialogue-line { position: absolute; inset: 0; pointer-events: none; }
+.dialogue-line > * { pointer-events: auto; }
+.dialogue-stage > .character { align-content: end; transform-origin: 50% 100%; }
 .dialogue-stage .character { transition: transform .3s ease, opacity .3s ease, filter .3s ease; transform: scale(.88); opacity: .55; filter: saturate(.6); }
-.dialogue-stage .character-img { max-height: 18.75rem; }
+.dialogue-stage .character-img { width: calc(300 * var(--dp)); max-height: none; }
 .dialogue-stage .stage-right .character-img { transform: scaleX(-1); }
 
 .dialogue[data-first="jaka"]:not(:has(.slide:target)) .character-jaka,
@@ -417,7 +416,8 @@ body.is-challenge .hud-leave { display: none; }
 .dialogue:has(.slide[data-character="mbah_kedu"]:target) .character-mbah_kedu,
 .dialogue-stage .character.is-speaking { transform: scale(1.04); opacity: 1; filter: none; }
 
-.dialogue-box { position: relative; z-index: 1; display: grid; gap: var(--gap-3); }
+.dialogue-box { z-index: 1; }
+.dialogue-text { font-size: var(--fs-reading); line-height: 1.5; }
 .dialogue-speaker {
   justify-self: start;
   padding: .125rem var(--gap-4);
@@ -430,25 +430,28 @@ body.is-challenge .hud-leave { display: none; }
 }
 
 /* =========================== PETA =========================== */
-.map-head { margin-bottom: var(--gap-4); text-align: center; }
-.map-head h1 { margin-bottom: var(--gap-1); }
-.map-head p { max-width: 60ch; margin: 0 auto; color: var(--ink-dim); }
+/* Koordinat: stage.css §Peta. Peta 880 × 566 (rasio 1400:900), panel kanan
+   bergulir, narasi Jaka sebagai balon di kiri bawah peta. */
+.map-screen { position: absolute; inset: 0; }
+.map-layout { display: contents; }
 
-.map-layout { display: grid; grid-template-columns: minmax(11.25rem, 15rem) 1fr; align-items: center; gap: var(--gap-5); }
-.map-guide { display: grid; justify-items: center; gap: var(--gap-3); }
-.map-guide .character-img { max-height: 16.25rem; }
+/* Balon narasi: tokoh besar tidak tampil di atas peta, cukup nama di balon */
+.map-balloon { z-index: 3; display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: minmax(0, 1fr); align-items: stretch; gap: var(--gap-2); }
+.map-balloon > .character { display: none; }
+.map-balloon .narration { display: grid; align-content: start; width: 100%; max-width: none; height: 100%; overflow-y: auto; padding: var(--gap-2) var(--gap-4); font-size: 1.125rem; line-height: 1.4; }
+.map-balloon .narration::before { display: none; }
 
 .map-frame {
-  padding: var(--gap-2);
+  padding: 0;
   border: .125rem solid var(--gold-600);
   border-radius: var(--radius-lg);
   background: var(--navy-800);
   box-shadow: inset 0 0 0 .25rem var(--navy-900), var(--shadow-2);
 }
-.map-level .map-frame { max-width: 56.25rem; margin: 0 auto; }
 .map-canvas {
   position: relative;
-  aspect-ratio: var(--map-ratio, 14 / 9);
+  width: 100%;
+  height: 100%;
   overflow: hidden;
   border-radius: var(--radius);
   background: var(--navy-700);
@@ -516,25 +519,32 @@ body.is-challenge .hud-leave { display: none; }
 
 .region-list, .node-list {
   display: grid;
-  gap: var(--gap-4);
-  margin: var(--gap-5) 0 0;
-  padding: 0;
+  align-content: start;
+  gap: var(--gap-3);
+  margin: 0;
+  padding: 0 var(--gap-1) 0 0;
   list-style: none;
 }
-.region-list { grid-template-columns: repeat(auto-fit, minmax(16.25rem, 1fr)); }
-.region-card { display: grid; align-content: start; gap: var(--gap-3); }
-.region-card-head { display: grid; grid-template-columns: auto 1fr auto; align-items: start; gap: var(--gap-3); }
+.region-card { display: grid; align-content: start; gap: var(--gap-2); padding: var(--gap-3) var(--gap-4); }
+.region-card-head { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: start; gap: var(--gap-1) var(--gap-3); }
+.region-card-head > .badge { grid-column: 1 / -1; justify-self: start; }
+.map-side .btn { min-height: 2.5rem; padding: var(--gap-1) var(--gap-4); font-size: var(--fs-caption); }
 .region-card-head h2 { margin: 0; font-size: var(--fs-h3); }
-.region-card-progress { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: var(--gap-3); font-size: var(--fs-caption); }
+.region-card-progress { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: var(--gap-1) var(--gap-3); font-size: var(--fs-caption); }
+.region-card-progress > .stars { grid-column: 1 / -1; }
 .region-card.is-locked { opacity: .7; }
 .region-locked { display: flex; align-items: center; gap: var(--gap-2); margin: 0; }
 
-.map-progress { display: grid; gap: var(--gap-2); max-width: 32.5rem; margin: var(--gap-4) auto 0; text-align: center; }
+.map-side { display: grid; align-content: start; gap: var(--gap-3); }
+.map-side .map-head { margin: 0; }
+.map-side .map-head h1 { margin: 0; font-size: var(--fs-h2); }
+.map-side .map-head p { margin: var(--gap-1) 0 0; color: var(--ink-dim); font-size: var(--fs-caption); }
+.map-progress { display: grid; gap: var(--gap-2); margin: 0; }
 .map-progress p { margin: 0; font-weight: 700; }
 
-.node-list { grid-template-columns: repeat(auto-fit, minmax(21.25rem, 1fr)); }
-.node-card { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: var(--gap-3); padding: var(--gap-4); }
-.node-card h2 { margin: 0; font-size: var(--fs-body); font-family: var(--font-body); color: var(--ink); }
+.node-card { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: var(--gap-2) var(--gap-3); padding: var(--gap-3); }
+.node-card > .btn, .node-card > .badge { grid-column: 1 / -1; justify-self: end; }
+.node-card h2 { margin: 0; font-size: var(--fs-caption); font-family: var(--font-body); color: var(--ink); }
 .node-no {
   display: grid;
   place-items: center;
