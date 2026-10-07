@@ -7,7 +7,7 @@ Keputusan dan penyimpangan dari ketiga dokumen perombakan, beserta alasannya dan
 | Dokumen | Status |
 |---|---|
 | Dok 1 | Selesai, di `main` |
-| Dok 2 | Sebagian, di `main`: §2, §3–§4, §5.2 (server), §5.3 (klien), §7, §9, §10 (mockup), §12 (teks UI), narasi petunjuk per node `cari`. §11 di branch `dok2-mockup` (PR ke `main`), lihat bagian "Dok 2 — naskah cerita dan rekaman" |
+| Dok 2 | Selesai, di `main` (§2–§12). Uji manual §13.2 dan ringkasan §2–§9 di bagian "Dok 2 — server, bank soal, dan uji manual §13" |
 | Dok 3 | Belum dimulai |
 
 Sisa Dok 2:
@@ -15,11 +15,12 @@ Sisa Dok 2:
 1. ~~**§5.3 klien + §12 teks UI**~~ — selesai, di `main` (PR #37).
 2. ~~**§10 mockup**~~ — selesai, di `main` (PR #36).
 3. ~~**§11 naskah cerita**~~ — selesai di branch `dok2-mockup` (PR ke `main`). Di server tetap perlu `gelita:story:update`, `gelita:narration:import`, lalu persetujuan narasi draft (§11.2 butir 3, Dok 3 §13).
-4. Bagian "Dok 2" catatan ini untuk §2–§9 dan uji manual §13.2 lengkap (butir 3–4: mockup diganti gambar asli, halaman Narasi). Bagian mockup, klien dan teks UI, serta naskah cerita sudah ada di bawah.
+4. ~~Bagian "Dok 2" untuk §2–§9 dan uji manual §13.2~~ — lihat "Dok 2 — server, bank soal, dan uji manual §13". Temuan yang masih terbuka ada di bagian itu.
 
 ### Perawatan repo
 
 - 6 Oktober 2026: sejarah `main` ditulis ulang (penulis dan committer semua commit = Arumi Studios, baris `Co-Authored-By`/`Claude-Session` dibuang; isi berkas dan pesan commit tidak berubah). Semua branch lain dihapus. Hash commit lama yang disebut di dokumen lain tidak berlaku lagi.
+- Branch `dok2-mockup` (sudah digabung lewat PR #36 dan #38) **sengaja dibiarkan** di remote atas permintaan pemilik: dihapus setelah semua tahapan perombakan selesai, meski aturan satu branch di `CLAUDE.md`.
 - Branch lama `happy-gates` yang dihapus tanpa digabung berisi satu perbaikan yang **belum ada** di `main`: tombol "Kenali" di peta yang diketuk sebelum `game/map.js` siap (±0,8 detik setelah dimuat, terlihat di 844×390) hanya mengubah hash `#kenal-{code}`, sedangkan `html.js` menyembunyikan overlay `:target`, sehingga overlay tidak terbuka. Usulan perbaikannya: saat modul siap, hash `#kenal-{code}[-n]` yang sudah ada membuka overlay di slide n lalu hash dibersihkan (`history.replaceState`), tanpa memutar narasi otomatis; narasi peta tidak dimulai bila overlay Kenali terbuka. Kerjakan ulang bila masih terjadi (setelah tata letak 16:9 Dok 3).
 
 ---
@@ -325,3 +326,65 @@ Dikerjakan di branch `dok2-mockup` (dibuat ulang dari `main` sesudah PR #36), se
   - Transkrip `intro-04` ID diubah ke versi lama, lalu `--lepas-audio-beda` → tepat `intro #4 (id)` dilepas.
   - **Bug yang tertangkap di sini:** versi pertama mencari transkrip lewat `audio_assets.media_asset_id`, padahal `dialogues.audio_*_asset_id` adalah FK ke `audio_assets.id`, sehingga 118 tautan terlepas. Diperbaiki dan ditambah uji.
 - **Belum dikerjakan:** mendengarkan ke-46 rekaman baru satu per satu. Dilakukan saat persetujuan di **Konten → Narasi**.
+
+---
+
+## Dok 2 — server, bank soal, dan uji manual §13
+
+Bagian ini melengkapi catatan Dok 2. Pekerjaan §2–§9 dikerjakan di branch `perombakan-kelas5` (commit `853fd43`, `6e6be14`, `671f12e`; digabung lewat `8d13723`) tanpa bagian catatan sendiri. Ringkasan di bawah disusun dari commit dan kodenya. Uji manual §13.2 dijalankan pada `main` `7bd3df4`, sebelum perombakan "instalasi baru satu langkah" di branch `dok2-mockup`.
+
+### Ringkasan §2–§9
+
+- **§2 `DifficultyRules`:** jumlah rumpang dan pengecoh Isi Rumpang tepat (3/5/7 dan 0/2/2). Aturan Benar atau Salah (paragraf, pernyataan, Bloom, keterampilan) dan Cari Objek (4 dicari + 4/6/8 pengecoh, Bloom petunjuk) ditambahkan, bersama `trueFalse()`, `hunt()`, `skillLabel()`, dan `bloomRange()` per jenis soal.
+- **§3–§4 variasi dan pengacakan** (`ChallengeService::openNode`):
+  - satu variasi acak per pengerjaan; variasi yang sudah pernah didapat siswa di semua sesinya dihindari (`variantsServed`); setelah semuanya pernah keluar, pilihan kembali dari semua variasi;
+  - resume tidak mengganti variasi;
+  - bank kata diacak dengan benih `bank|pengerjaan|k` sampai lolos aturan §4 (Temanggung: derangement);
+  - urutan petunjuk Cari Objek diacak per pengerjaan; keping Susun Gambar memakai `seeded_derangement()`.
+- **§5.2 server:** `submitCheck` dan `submitAnswer` menegakkan 3 kesempatan dan menutup pengerjaan dalam transaction yang sama (detail di bagian "klien dan teks UI", butir Dok 1 no. 27–29).
+- **§7 format dan pemeriksaan:**
+  - `BankRules` menjadi satu sumber pemeriksaan §7.5 untuk `build-workbook.php`, importer, `ContentVerifier`, dan uji;
+  - `BankSource` meratakan berkas data, `BankState` membaca bank tersimpan dalam bentuk yang sama;
+  - importer menolak jenis soal lama;
+  - `gelita:content:verify --siap-penelitian` menjadikan gambar contoh sebagai galat.
+- **§8–§9 bank soal final:**
+  - `docs/bank-soal/data/*.php` berisi 12 tantangan, 126 soal (108 dinilai + 18 pengecoh), 30 variasi, 9 bacaan, 36 petunjuk, 12 kata pengecoh, dan 45 slot gambar;
+  - `gelita-bank-soal-kelas5.xlsx` di-commit dan workbook produksi lama dihapus;
+  - Pustaka dipindah byte demi byte ke `docs/pustaka/`;
+  - `SampleItemSeeder` dihapus, dan `DatabaseSeeder` (development) mengimpor workbook kelas 5 lewat `BankKelas5Seeder`.
+
+### Uji manual §13.2
+
+Lingkungan: MariaDB 10.11 lokal di container, `php spark serve`, dan Chromium Playwright. Tidak ada yang dijalankan ke server produksi.
+
+1. **`php docs/bank-soal/build-workbook.php`** (keluaran ke folder sementara) → 0 galat, 0 peringatan Bloom; 12 tantangan, 30 variasi, 9 bacaan, 126 soal, 36 petunjuk, 12 kata pengecoh, 45 slot. Isi workbook hasilnya identik dengan `gelita-bank-soal-kelas5.xlsx` yang di-commit (beda hanya di `docProps`).
+2. **Reset sampai Balai Refleksi:**
+   - `gelita:reset --ya --paksa` (lokal) → TRUNCATE, 126 soal, 45 mockup, kode siswa berikutnya `GLT-000001`.
+   - Siswa baru memainkan ke-12 tantangan sampai Balai Refleksi tanpa galat JavaScript ("Bintang per wilayah" 12/12/12).
+   - Mengulang tantangan memberi variasi yang belum pernah didapat, sampai ketiganya keluar: `tmg-1` c → a → b, `tmg-2` c → b → a, `tmg-3` b → a → c. Sesudah itu pilihan bebas dari ketiganya. `tmg-4` selalu `a`.
+   - Skenario salah 3 kali, muat ulang di tengah, dan bahasa EN dijalankan sebelumnya pada kode tantangan yang sama (lihat bagian "klien dan teks UI"). Kode tantangan tidak berubah sejak itu.
+3. **Mockup diganti gambar asli lewat panel Media:**
+   - Admin mengunggah PNG 1200 × 1200 ke slot `challenge.item.tmg-1-04` di `/admin/media` → "Berkas … sudah tersimpan". Barisnya menjadi PNG, `is_placeholder = 0`, kredit mockup dikosongkan.
+   - Susun Gambar siswa yang sedang memakai slot itu menampilkan PNG setelah dimuat ulang.
+   - `gelita:mockups --paksa` → 44 dibuat ulang, "1 gambar asli dipertahankan"; sha256 berkas dan baris database tidak berubah.
+4. **Narasi:**
+   - Halaman **Konten → Narasi** menampilkan 100 baris per bahasa (88 naskah + 12 petunjuk).
+   - Rekaman pengganti `intro-05` yang diunggah lewat **Unggah narasi** masuk sebagai draft `own_recording`.
+   - **Setujui semua narasi draft** ID dan EN → 100 rekaman disetujui per bahasa, dan layar intro memakai rekaman baru itu.
+
+### Temuan
+
+- **Tautan audio petunjuk Cari Objek hilang setelah `gelita:reset`.** Reset membangun ulang soal dari workbook, jadi `challenge_items.audio_prompt_id`/`audio_prompt_en_id` ke-12 petunjuk kosong (0/12). Akibatnya halaman Narasi menunjukkan "88/100 disetujui, 12 belum ada" meski rekamannya ada dan disetujui, dan tombol ▶ petunjuk tidak tampil. `gelita:narration:import` sesudah reset memasang lagi ke-12 tautan, termasuk saat semua berkas "sama", dan statusnya tetap disetujui. **Setiap `gelita:reset` (juga di development) harus diikuti `gelita:narration:import`**; prosedur rilis Dok 3 §13 sudah memuat urutan ini.
+- **Saran `ContentVerifier` keliru untuk gambar wilayah.** Peringatan "Gambar peta/latar/lencana wilayah belum diunggah … Jalankan php spark gelita:mockups untuk memasang gambar contoh" (`ContentVerifier::mediaFindings()`) tetap muncul sesudah `gelita:mockups`, karena generator hanya membuat 45 slot gambar tantangan (§10.4). Kalimat sarannya perlu dibedakan untuk media non-tantangan, mis. "Unggah di menu Gambar & suara". Belum diubah karena `ContentVerifier` sedang dirombak di branch `dok2-mockup`.
+
+### Kriteria selesai §13.3
+
+| Kriteria | Keadaan |
+|---|---|
+| 12 node, 126 soal, 30 variasi, isi §9 (ID & EN) | ✓ `BankKelas5DataTest`, workbook dibangun ulang identik |
+| Variasi acak dan pengacakan bank kata §3–§4 | ✓ `VariantSelectionTest`, `WordBankShuffleTest`, uji manual butir 2 |
+| Aturan 3 kesempatan di keempat tantangan; `item_tries` lengkap | ✓ `TryLimitTest`, uji peramban |
+| Engine dan jenis soal lama terhapus | ✓ hanya 4 view dan 4 engine JS; sisa rujukan lama sedang dibersihkan di branch `dok2-mockup` |
+| 45 mockup; penjaga "siap penelitian" | ✓ bagian "gambar mockup", uji manual butir 3 |
+| 11 baris naskah dan rekaman diperbarui | ✓ bagian "naskah cerita dan rekaman" |
+| README bank soal, workbook kelas 5, workbook lama dihapus, Pustaka di `docs/pustaka/` | ✓ commit `671f12e` |
