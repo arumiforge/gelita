@@ -188,8 +188,8 @@ class Gelita extends BaseConfig
     public int $sessionAbandonDays  = 30;   // sesi 'paused' tak tersentuh → 'abandoned'
 
     /**
-     * Ambang estimasi baris sheet Raw Events. Di atas ini export ditolak dan
-     * pemohon diminta mempersempit rentang tanggal.
+     * Batas baris lembar Event Mentah, Navigasi, dan Penyelesaian (Dok 3 §9.2).
+     * Di atas ini ekspor ditolak dan pemohon diminta mempersempit rentang tanggal.
      */
     public int $exportMaxRawEvents = 200000;
 

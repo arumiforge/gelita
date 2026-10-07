@@ -846,7 +846,7 @@ Permintaan dan berkas ekspor. Berkas disimpan di `writable/exports/`.
 | id | BIGINT UNSIGNED | tidak | AUTO | PK |
 | requested_by | BIGINT UNSIGNED | tidak | — | FK `staff_users.id` RESTRICT. INDEX |
 | study_id | BIGINT UNSIGNED | ya | NULL | FK `research_studies.id` SET NULL. INDEX |
-| format | VARCHAR(10) | tidak | — | `xlsx` (workbook data mentah) \| `pdf` (laporan satu siswa) |
+| format | VARCHAR(10) | tidak | — | `xlsx` (workbook data mentah) \| `csv` (CSV-ZIP data mentah, berkas `.zip`) \| `pdf` (laporan satu siswa) |
 | scope_json | JSON | tidak | — | Filter dan sheet yang diminta; lihat [Bentuk JSON](#kolom-json-lainnya) |
 | anonymized | TINYINT(1) | tidak | 1 | 1 = tanpa kolom identitas. Pemohon `guru` selalu anonim |
 | status | VARCHAR(20) | tidak | `queued` | `queued` \| `running` \| `done` \| `failed`. INDEX |
@@ -858,7 +858,7 @@ Permintaan dan berkas ekspor. Berkas disimpan di `writable/exports/`.
 | completed_at | DATETIME(6) | ya | NULL | |
 | expires_at | DATETIME(6) | ya | NULL | Diisi saat `done`: waktu selesai + `Config\Gelita::$exportRetentionDays` (7 hari). INDEX |
 
-`App\Services\ExportService` membaca ulang hak pemohon dari `staff_users`: pemohon non-admin selalu dibatasi sekolahnya, selalu anonim, tanpa sheet `Raw Events` dan tanpa kolom kunci jawaban. `password_hash`, `failed_login_count`, dan `locked_until` tidak pernah dibaca ekspor.
+`App\Services\ExportService` membaca ulang hak pemohon dari `staff_users`: pemohon non-admin selalu dibatasi sekolahnya, selalu anonim, tanpa lembar Event Mentah (`event`) dan tanpa kolom kunci jawaban. `password_hash`, `failed_login_count`, dan `locked_until` tidak pernah dibaca ekspor.
 
 #### `data_deletion_requests`
 
@@ -990,7 +990,7 @@ Waktu masukan klien (`first_input_ms`, `last_input_ms`) disimpan di kolom sendir
 | `game_event_logs.payload_json` | Objek bebas per `event_type`, mis. `{"via": "login"}`, `{"check_no": 2, "try_no": 2, "correct_count": 4, "total": 5, "exhausted": false}` |
 | `device_logs.client_hints_json` | `{"headers": {"Sec-CH-UA-Model": …}, "ua_data": {…}}` |
 | `audit_logs.metadata_json` | Objek bebas per `action`, mis. `{"file_sha256": "…", "written": {"items": 126}}` |
-| `data_exports.scope_json` | `{"filters": {"study_id": 1, "school_id": 3, "date_from": "2026-10-01", …}, "sheets": ["Participants", …]}`; laporan PDF menambah `"template": "participant", "participant_id": 42`. Kunci filter: `ExportService::FILTER_KEYS` |
+| `data_exports.scope_json` | `{"filters": {"study_id": 1, "school_id": 3, "date_from": "2026-10-01", …}, "sheets": ["kamus", "peserta", …], "labels": "label"}`; `labels` = `label` \| `code`; ekspor per siswa menambah `"participant_id": 42`, laporan PDF juga `"template": "participant"`. Kunci filter: `ExportService::FILTER_KEYS` |
 | `data_deletion_requests.scope_json` | `{"scope": {"participant_id": 42}, "counts": {"game_event_logs": 310, …}}`; cakupan studi boleh menambah `date_from`/`date_to`; pratinjau buatan retensi menambah `"origin": "retention"` |
 
 ## Aturan integritas

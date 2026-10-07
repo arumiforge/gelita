@@ -177,14 +177,13 @@ controller pendaftaran; Model hanya menjaga bentuk data.
 | `registerFailedLogin($id)` | menambah `failed_login_count`; mencapai `loginThrottle['participant']['max_fail']` (8) → `locked_until` = sekarang + `lock_minutes` (5) dan pencacah kembali 0 |
 | `clearFailedLogin($id)` | pencacah 0, `locked_until` NULL, `last_login_at` sekarang |
 | `scopedForStaff(?$schoolId)` | query builder; NULL (admin) tanpa filter, terisi (guru) hanya sekolah itu |
-| `cohortSummary($filters)` | `total`, `by_gender`, `by_class_level`, `by_province` |
-| `ageDistribution($filters)` | umur → jumlah peserta |
-| `digitalSecurityStats($filters)` | sebaran `pw_first_submit_criteria` (0–5), `strong_first_try`, rata-rata dan sebaran `pw_weak_submit_count`; tidak pernah membaca `password_hash` |
+| `cohortSummary($filters)` | `total`, `by_gender`, `by_class_level`, `by_province` (dasbor lama; tampilan dasbor Dok 3 tidak memakainya) |
 
-Tiga method statistik selalu membuang peserta yang dihapus lunak dan menerima `school_id`,
-`class_level`, `province_code`, `date_from`, `date_to` (`ageDistribution()` tanpa filter tanggal). Di sini
-filter tanggal berlaku pada `participants.created_at`, berbeda dengan
-[filter penelitian baku](#filter-penelitian-baku).
+`cohortSummary()` membuang peserta yang dihapus lunak dan menerima `school_id`, `class_level`,
+`province_code`, `date_from`, `date_to`; filter tanggal berlaku pada `participants.created_at`, berbeda
+dengan [filter penelitian baku](#filter-penelitian-baku). Sebaran umur dan metrik sandi
+(`ageDistribution()`, `digitalSecurityStats()`) dihapus pada Dok 3: nilainya ada mentah di lembar
+Peserta (`age`, `pw_first_submit_criteria`, `pw_weak_submit_count`).
 
 Entity `Participant`:
 
@@ -774,8 +773,8 @@ klien (paling banyak `Config\Gelita::$maxEventsPerBatch`; tipe harus terdaftar d
   `audio_asset_id` wajib, `action` `in_list[play,autoplay,pause,replay,complete]`.
 - `nextPlayIndex($sessionId, $audioAssetId, $action)` — nomor pemutaran ke-n aset itu dalam sesi,
   dihitung server (`play`, `autoplay`, `replay` membuka pemutaran baru).
-- `usageForSession($sessionId)`; `usageStats($filters)` — `sessions_with_audio`, `total_plays` (hanya
-  `play`), `total_autoplays`, `total_replays`, `completion_rate`, `mean_listened_ms`.
+- `usageForSession($sessionId)`. Statistik olahan (`usageStats()`: rasio selesai, rata-rata lama
+  didengar) dihapus pada Dok 3; baris mentahnya ada di lembar Bantuan.
 - Setiap event audio yang terkait pengerjaan menambah `challenge_attempts.audio_use_count`.
 
 ### `ParticipantFeedbackModel`
@@ -785,8 +784,51 @@ klien (paling banyak `Config\Gelita::$maxEventsPerBatch`; tipe harus terdaftar d
 - `forStudy($studyId)` (dengan `participant_code`), `ratingDistribution($filters)` —
   `{count, mean, distribution}`.
 
-Ringkasan untuk panel dibaca `App\Services\AnalyticsService` (hanya hitungan data mentah, terikat
-cakupan sekolah pemanggil); berkas ekspor dibangun `App\Services\ExportService`.
+Data mentah kelompok ini dibaca lewat [`RawDataService`](#data-mentah-rawdataservice-dan-ekspor),
+satu tempat query untuk tabel panel dan ekspor. `AnalyticsService` tinggal KPI hitungan, profil satu
+siswa, dan linimasa event.
+
+### Data mentah: `RawDataService` dan ekspor
+
+`App\Services\RawDataService` (Dok 3 §8.4) memegang query setiap dimensi = kode lembar ekspor:
+
+| Dimensi | Satu baris | Sumber |
+|---|---|---|
+| `peserta` | siswa | `participants` (+ `schools.code` hanya beridentitas) |
+| `sesi` | sesi bermain | `game_sessions` + studi + rilis |
+| `perangkat` | catatan perangkat | `device_logs` |
+| `progres` | keadaan terbaru sesi | `session_progress` |
+| `pengerjaan` | pengerjaan tantangan | `challenge_attempts` |
+| `jawaban` | keadaan akhir soal | `item_responses` + `challenge_items` |
+| `percobaan` | satu percobaan | `item_tries` |
+| `navigasi` | event navigasi | `game_event_logs` (`NAVIGATION_EVENTS`) |
+| `bantuan` | petunjuk dibuka / aksi suara | UNION `game_event_logs` `hint_opened` + `audio_usage_events` |
+| `selesai` | event penyelesaian | `game_event_logs` (`COMPLETION_EVENTS`) |
+| `event` | semua event (admin saja) | `game_event_logs` tanpa baris bertanda hapus |
+| `masukan` | kritik & saran | `participant_feedback` |
+| `butir` | soal bank | `challenge_items` |
+
+- `query($dimension, $filters, StaffScope $scope)` — builder terfilter berisi `_key` (kunci unik) dan
+  kolom mentah; `shape($dimension, $row, $scope, $labeled)` mengubahnya ke kolom §9.2.
+- `page($dimension, $filters, $page, $perPage, $sort)` — `{rows, total, page, per_page, sort,
+  columns: [{key, label, type}]}` untuk tabel admin; `streamCsv($dimension, $filters, $handle)` — CSV
+  (BOM, koma, judul = kode kolom) dengan baris yang sama. Keduanya memakai cakupan yang diikat
+  `withScope()` / `service('rawDataService', $scope)`.
+- `rows($dimension, $filters, $scope, $labeled)` — generator keyset per 2.000 baris untuk ekspor.
+- Nilai berkode: waktu ISO 8601 WIB dengan milidetik, durasi milidetik, boolean 1/0, JSON sebagai
+  teks. Berlabel: kode → label (`ExportLabels::label()`), wilayah → nama, jawaban/kunci → kalimat
+  (`AnswerText`).
+- Filter `RawDataService::FILTER_KEYS`; rentang tanggal memakai waktu baris itu sendiri.
+
+`App\Services\StaffScope` adalah objek nilai hak baca (`admin($anonymous)`, `teacher($schoolId)`,
+`fromStaff($row)`): guru → sekolahnya, anonim, tanpa dimensi `event` dan kolom `answer_key`. Kolom
+identitas (`display_name`, `username`, `school_name`, `school_npsn`) pada mode anonim tidak pernah
+dibaca dari database.
+
+`App\Libraries\ExportLabels` menyimpan judul (Indonesia, bersatuan), jenis, arti, dan daftar nilai
+setiap kolom; dari sana dibangun Kamus Data. `App\Services\ExportService` menulis berkas XLSX atau
+CSV-ZIP dari `RawDataService::rows()` dan meneruskan laporan PDF satu siswa ke `ReportService`; lihat
+[07_FEATURE_INTEGRATION.md](07_FEATURE_INTEGRATION.md).
 
 ## Kelompok 5 — Admin dan tata kelola
 
@@ -859,8 +901,8 @@ Entity `StaffUser`: casts `id` int, `school_id` ?int, `is_active`, `must_change_
 - allowedFields: `requested_by`, `study_id`, `format`, `scope_json`, `anonymized`, `status`,
   `row_count`, `file_path`, `file_sha256`, `error_message`, `completed_at`, `expires_at`.
 - Validasi: `requested_by` wajib, `format` `in_list[xlsx,csv,pdf]`, `status`
-  `in_list[queued,running,done,failed]`. `ExportService` membangun `xlsx` (data mentah) dan `pdf`
-  (laporan satu siswa lewat `ReportService`).
+  `in_list[queued,running,done,failed]`. `ExportService` membangun `xlsx` (workbook data mentah),
+  `csv` (CSV-ZIP, berkas `.zip`), dan `pdf` (laporan satu siswa lewat `ReportService`).
 - `markDone($id, $path, $sha, $rows)` — status `done`, `expires_at` = sekarang +
   `Config\Gelita::$exportRetentionDays` hari; `markFailed($id, $message)`; `expired()` — berkas `done`
   yang sudah lewat masa simpan (dihapus `ExportService::purgeExpired()`).
@@ -895,10 +937,13 @@ Query statistik dan ekspor menerima array `$filters` yang sama. Helper
 | `date_from` / `date_to` | `game_sessions.started_at` (awal/akhir hari, format `Y-m-d`) |
 
 Nilai kosong atau NULL diabaikan. Peserta yang dihapus lunak selalu dibuang oleh query pemanggil
-(`participants.deleted_at IS NULL`). Ekspor hanya menerima kunci `ExportService::FILTER_KEYS`.
+(`participants.deleted_at IS NULL`). Helper ini dipakai `AnalyticsService` dan halaman panel lama;
+`RawDataService` menerapkan filternya sendiri per dimensi (`FILTER_KEYS`), dan formulir ekspor hanya
+menerima `ExportService::FILTER_KEYS`.
 
-Cakupan sekolah ditegakkan di service, bukan hanya di filter route: `AnalyticsService` dan
-`ExportService` menambahkan `school_id` guru ke setiap query, berapa pun nilai yang dikirim formulir.
+Cakupan sekolah ditegakkan di service, bukan hanya di filter route: `AnalyticsService`,
+`RawDataService`, dan `ExportService` menambahkan `school_id` guru ke setiap query, berapa pun nilai
+yang dikirim formulir.
 
 ## Aturan keamanan data
 
