@@ -23,7 +23,7 @@ $warnings    = array_values(array_filter($findings, static fn (array $row): bool
 <?php $actions = ob_get_clean() ?>
 <?= component('partials/admin-head', [
     'title'   => 'Periksa kelengkapan konten',
-    'eyebrow' => 'Pengelolaan · konten · diperiksa ' . fmt_date(date('Y-m-d H:i:s'), true),
+    'eyebrow' => 'Diperiksa ' . fmt_date(date('Y-m-d H:i:s'), true, 'id'),
     'lead'    => '“Harus diperbaiki” berarti ada bagian permainan yang tidak dapat dimainkan dengan benar — perbaiki sebelum dipakai siswa. “Perlu dicek” boleh dibiarkan bila memang disengaja.',
     'actions' => $actions,
 ]) ?>

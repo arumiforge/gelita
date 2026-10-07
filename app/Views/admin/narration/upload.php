@@ -32,7 +32,6 @@ $codeList = static fn (array $codes): string => implode(', ', array_map(static f
 <?php $actions = ob_get_clean() ?>
 <?= component('partials/admin-head', [
     'title'   => 'Unggah rekaman narasi',
-    'eyebrow' => 'Konten · suara cerita',
     'lead'    => 'Pilih banyak rekaman sekaligus. Nama setiap berkas harus sama dengan nama rekamannya di daftar rekaman, misalnya intro-01.mp3, dialog-magelang-09.mp3, atau petunjuk-tmg-4-01.mp3 (petunjuk Cari Objek). Rekaman yang diunggah menunggu persetujuan dulu sebelum terdengar oleh siswa.',
     'actions' => $actions,
 ]) ?>

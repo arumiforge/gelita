@@ -39,7 +39,6 @@ $sheetNotes = [
 <?= $this->section('content') ?>
 <?= component('partials/admin-head', [
     'title'   => 'Unduh data',
-    'eyebrow' => 'Laporan',
     'lead'    => 'Unduh data mentah hasil permainan sebagai berkas Excel untuk diolah. Setiap unduhan tercatat di riwayat aktivitas.',
 ]) ?>
 <?= $this->include('partials/flash') ?>

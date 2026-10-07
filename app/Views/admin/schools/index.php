@@ -26,7 +26,6 @@ $dataDate  = isset($dataMeta['upstream_updated']) ? substr((string) $dataMeta['u
 <?= $this->section('content') ?>
 <?= component('partials/admin-head', [
     'title'   => 'Sekolah',
-    'eyebrow' => 'Pengelolaan · direktori sekolah',
     'lead'    => 'Siswa di Jawa Tengah mendaftar dengan NPSN, jadi satu sekolah selalu tercatat dengan satu nama yang sama di laporan. Di halaman ini Anda mencari NPSN untuk sesi kelas dan merapikan nama sekolah yang diketik sendiri oleh siswa.',
 ]) ?>
 <?= $this->include('partials/flash') ?>

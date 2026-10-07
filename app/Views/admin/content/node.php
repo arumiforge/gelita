@@ -44,18 +44,29 @@ $itemFormData = [
 
 <?= $this->section('content') ?>
 <?= component('partials/admin-head', [
-    'title'   => $node->text('title', 'id'),
-    'eyebrow' => ($level?->text('name', 'id') ?? '') . ' · tantangan ke-' . $node->sequence . ' · kode ' . $ref . ' · ' . engine_label($engine),
+    'title' => $node->text('title', 'id'),
+    'lead'  => ($level?->text('name', 'id') ?? '') . ' · tantangan ke-' . $node->sequence . ' · kode ' . $ref . ' · ' . engine_label($engine),
 ]) ?>
 <?php if ($level !== null): ?>
   <?= component('partials/content-nav', ['level' => $level, 'active' => 'level']) ?>
 <?php endif ?>
 <?= $this->include('partials/flash') ?>
 
+<nav aria-label="Bagian editor tantangan">
+  <ul class="tabs" data-tabs>
+    <li><a href="#tab-info">Info</a></li>
+    <li><a href="#tab-variasi">Variasi <span class="count"><?= count($groups) ?></span></a></li>
+    <?php if ($engine === 'cari'): ?>
+      <li><a href="#tab-posisi">Posisi benda <span class="count"><?= count($items) ?></span></a></li>
+    <?php endif ?>
+  </ul>
+</nav>
+
 <?= component('components/media-datalist', ['types' => ['image']]) ?>
 <form method="post" action="<?= base_url('admin/konten/node/' . $node->id) ?>" class="form-section" enctype="multipart/form-data">
   <?= csrf_field() ?>
-  <h2>Tantangan</h2>
+  <div class="stack" id="tab-info" data-tab-panel="info">
+  <h2>Info tantangan</h2>
 
   <?php foreach ($texts as $field => [$label, $rows, $required]): ?>
     <div class="bilingual">
@@ -108,8 +119,11 @@ $itemFormData = [
     </div>
   </div>
 
+  </div>
+
+  <div class="stack" id="tab-variasi" data-tab-panel="variasi">
   <fieldset class="form-section">
-    <legend class="panel-subtitle">Pengaturan tantangan</legend>
+    <legend class="panel-subtitle">Variasi a/b/c</legend>
     <div class="form-grid">
       <p class="field-help span-all">Setiap kali bermain, siswa mendapat SATU variasi (a, b, atau c) yang dipilih acak — variasi yang sudah pernah didapat siswa itu dihindari selama masih ada yang lain. Semua soal aktif variasi itu dipakai, urut nomor urutnya. Siswa boleh mencoba sampai <?= (int) config('Gelita')->maxTries ?> kali per soal.</p>
       <?php if ($engine === 'puzzle'): ?>
@@ -166,7 +180,9 @@ $itemFormData = [
     </details>
   </fieldset>
 
-  <fieldset class="form-section">
+  </div>
+
+  <fieldset class="form-section" data-tab-panel="info">
     <legend class="panel-subtitle">Gambar & suara tantangan</legend>
     <div class="media-grid">
       <?= component('components/media-field', [
@@ -192,15 +208,50 @@ $itemFormData = [
     </div>
   </fieldset>
 
-  <label class="check"><input type="checkbox" name="is_active" value="1" <?= $node->is_active ? 'checked' : '' ?>> Tantangan aktif (tampil di permainan)</label>
+  <label class="check" data-tab-panel="info"><input type="checkbox" name="is_active" value="1" <?= $node->is_active ? 'checked' : '' ?>> Tantangan aktif (tampil di permainan)</label>
 
-  <div class="form-actions">
+  <div class="form-actions" data-tab-panel="info variasi">
     <button class="btn btn-primary" type="submit"><?= icon('check') ?> Simpan tantangan</button>
   </div>
 </form>
 
-<section class="stack">
-  <h2 class="panel-title"><?= icon('list') ?> Kumpulan soal <span class="chip num"><?= count($items) ?> soal · satu variasi tiap bermain</span></h2>
+<div data-tab-panel="variasi">
+<?= component('data-table', [
+    'table' => [
+        'rows' => array_map(static fn ($item): array => [
+            'id' => $item->id, 'item_key' => $item->item_key, 'variant_group' => strtoupper((string) $item->variant_group),
+            'sequence' => $item->sequence, 'interaction' => admin_label('interaction', (string) $item->interaction_type),
+            'bloom_level' => $item->bloom_level, 'skill' => (string) $item->conf('skill', ''),
+            'key' => App\Libraries\AnswerText::key($item), 'review' => (string) $item->review_status,
+            'scorable' => (bool) $item->scorable, 'active' => (bool) $item->is_active,
+        ], $items),
+        'total' => count($items), 'page' => 1, 'per_page' => max(1, count($items)), 'sort' => null,
+        'columns' => array_map(static fn (array $c): array => $c + ['sortable' => false], [
+            ['key' => 'item_key', 'label' => 'Kode soal', 'type' => 'code'],
+            ['key' => 'variant_group', 'label' => 'Variasi', 'type' => 'code'],
+            ['key' => 'sequence', 'label' => 'Urutan', 'type' => 'int'],
+            ['key' => 'interaction', 'label' => 'Jenis soal', 'type' => 'text'],
+            ['key' => 'bloom_level', 'label' => 'Bloom', 'type' => 'code'],
+            ['key' => 'skill', 'label' => 'Keterampilan', 'type' => 'code'],
+            ['key' => 'key', 'label' => 'Kunci jawaban', 'type' => 'clip'],
+            ['key' => 'review', 'label' => 'Tinjauan', 'type' => 'label:review'],
+            ['key' => 'scorable', 'label' => 'Dinilai', 'type' => 'bool'],
+            ['key' => 'active', 'label' => 'Aktif', 'type' => 'bool'],
+        ]),
+    ],
+    'id'           => 'soal-variasi',
+    'title'        => 'Soal per variasi',
+    'csv'          => false,
+    'paginate'     => false,
+    'emptyMessage' => 'Belum ada soal.',
+    'render'       => [
+        'item_key' => static fn (array $r): string => '<a href="#item-' . (int) $r['id'] . '" data-open-item>' . esc($r['item_key']) . '</a>',
+    ],
+]) ?>
+</div>
+
+<section class="stack" id="tab-soal" data-tab-panel="<?= $engine === 'cari' ? 'posisi' : 'variasi' ?>">
+  <h2 class="panel-title"><?= icon('list') ?> <?= $engine === 'cari' ? 'Benda dan posisinya' : 'Sunting soal' ?> <span class="chip num"><?= count($items) ?> soal · satu variasi tiap bermain</span></h2>
 
   <?php if ($items === []): ?>
     <div class="empty-state"><?= icon('info') ?><p>Belum ada soal. Tambahkan soal di bawah, atau impor soal dari Excel.</p></div>

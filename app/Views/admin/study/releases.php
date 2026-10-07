@@ -17,23 +17,18 @@
 <?php ob_start() ?>
 <form method="post" action="<?= base_url('admin/konten/verifikasi') ?>" class="inline-form">
   <?= csrf_field() ?>
-  <button class="btn btn-ghost btn-sm" type="submit"><?= icon('check') ?> Periksa kelengkapan konten dulu</button>
+  <button class="btn" type="submit"><?= icon('check') ?> Periksa kelengkapan konten dulu</button>
 </form>
 <?php $actions = ob_get_clean() ?>
 <?= component('partials/admin-head', [
-    'title'   => 'Versi permainan',
-    'eyebrow' => 'Pengelolaan · pengaturan penelitian',
+    'title'   => 'Rilis',
     'lead'    => 'Setiap sesi siswa mencatat versi permainan yang sedang aktif, supaya data sesi hanya dibandingkan bila soal dan aturan bintangnya sama. Buat versi baru bila soal atau aturan bintang berubah, dan aktifkan hanya di antara dua gelombang pengambilan data — jangan di tengahnya.',
     'actions' => $actions,
 ]) ?>
-<ul class="sub-nav">
-  <li><a href="<?= base_url('admin/studi') ?>"><?= icon('flask') ?> Penelitian</a></li>
-  <li><a href="<?= base_url('admin/studi/rilis') ?>" aria-current="page"><?= icon('list') ?> Versi permainan</a></li>
-</ul>
 <?= $this->include('partials/flash') ?>
 
 <?php if ($active === null): ?>
-  <p class="alert alert-error" role="alert"><?= icon('warn') ?> Belum ada versi permainan yang aktif. Buat dan aktifkan satu versi agar sesi bermain baru tercatat dengan jelas.</p>
+  <div class="alert alert-error" role="alert"><?= icon('warn') ?><p>Belum ada versi permainan yang aktif. Buat dan aktifkan satu versi agar sesi bermain baru tercatat dengan jelas.</p></div>
 <?php else: ?>
   <div class="kpi-grid">
     <?= component('components/stat-tile', ['label' => 'Versi aktif', 'value' => $active['release_code'], 'icon' => 'play', 'hint' => $active['published_at'] ? 'sejak ' . fmt_date($active['published_at'], false, 'id') : null]) ?>
@@ -62,13 +57,10 @@
                   return '<span class="badge is-active">' . icon('check') . ' aktif</span>';
               }
 
-              return '<details class="confirm confirm-inline">'
-                  . '<summary class="btn btn-ghost btn-sm">Aktifkan</summary>'
-                  . '<div class="confirm-box"><p>Versi yang aktif sekarang akan dinonaktifkan, dan sesi bermain baru memakai <code>' . esc($row['release_code']) . '</code>.</p>'
-                  . '<form method="post" action="' . esc(base_url('admin/studi/rilis/' . $row['id'] . '/aktifkan'), 'attr') . '" class="inline-form">'
+              return '<form method="post" action="' . esc(base_url('admin/studi/rilis/' . $row['id'] . '/aktifkan'), 'attr') . '" class="inline-form"'
+                  . ' data-confirm="Aktifkan versi ' . esc($row['release_code'], 'attr') . '?" data-confirm-text="Versi yang aktif sekarang dinonaktifkan; sesi bermain baru memakai versi ini." data-confirm-ok="Aktifkan">'
                   . csrf_field()
-                  . '<button class="btn btn-primary btn-sm" type="submit">' . icon('check') . ' Ya, aktifkan</button></form></div>'
-                  . '</details>';
+                  . '<button class="btn btn-sm" type="submit">' . icon('check') . ' Aktifkan</button></form>';
           }],
       ],
   ]) ?>
@@ -101,7 +93,7 @@
       <div class="field">
         <label for="scoring_version">Versi aturan bintang <span class="req">*</span></label>
         <input type="text" id="scoring_version" name="scoring_version" required maxlength="20" value="<?= esc($active['scoring_version'] ?? '', 'attr') ?>">
-        <p class="field-help">Samakan dengan versi aturan penilaian yang aktif (lihat menu Aturan penilaian).</p>
+        <p class="field-help">Naikkan bila aturan bintang berubah.</p>
       </div>
       <div class="field span-all">
         <label for="notes">Apa yang berubah?</label>

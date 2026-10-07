@@ -132,7 +132,7 @@ return [
 
     'studyStatus' => [
         'draft'  => 'Draf (belum dipakai)',
-        'active' => 'Aktif',
+        'active' => 'Berjalan',
         'closed' => 'Ditutup',
     ],
 

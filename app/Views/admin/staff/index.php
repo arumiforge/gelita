@@ -71,8 +71,7 @@ $fields = static function (?array $staff, string $p) use ($schools, $roleNames, 
 
 <?= $this->section('content') ?>
 <?= component('partials/admin-head', [
-    'title'   => 'Akun guru & admin',
-    'eyebrow' => 'Pengelolaan · akses panel',
+    'title'   => 'Staf',
     'lead'    => 'Admin dapat membuka seluruh panel. Guru hanya melihat data siswa dari sekolahnya sendiri, dan data yang diunduh guru selalu tanpa nama siswa.',
 ]) ?>
 <?= $this->include('partials/flash') ?>

@@ -21,7 +21,6 @@ $statusIcon = ['missing' => 'cross', 'wrong' => 'warn', 'ok' => 'check'];
 <?php $actions = ob_get_clean() ?>
 <?= component('partials/admin-head', [
     'title'   => 'Kelengkapan gambar & suara',
-    'eyebrow' => 'Pengelolaan · sebelum sesi kelas',
     'lead'    => 'Daftar gambar dan suara yang masih kurang. Permainan tetap bisa dimainkan tanpanya (memakai tampilan pengganti), tetapi belum tampil utuh. Setiap baris menyebut ukuran yang dibutuhkan dan tombol ke tempat mengunggahnya.',
     'actions' => $actions,
 ]) ?>

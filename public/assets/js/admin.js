@@ -11,6 +11,7 @@ import { toast } from './core/toast.js';
 import { showModal } from './core/modal.js';
 import { initTables } from './admin/tables.js';
 import { initFilters } from './admin/filters.js';
+import { initTabs } from './admin/tabs.js';
 
 document.documentElement.classList.add('js');
 
@@ -72,6 +73,7 @@ function initPage(root) {
   initTables(root);
   initCopy(root);
   initConfirm(root);
+  initTabs(root);
 }
 
 initPage(document);

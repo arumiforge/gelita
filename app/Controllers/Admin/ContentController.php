@@ -49,26 +49,46 @@ class ContentController extends BaseAdminController
 
     public function index(): string
     {
-        $content = service('contentRepository');
-        $levels  = [];
+        $content  = service('contentRepository');
+        $findings = (new \App\Libraries\ContentVerifier())->run(true);
+        $db       = db_connect();
+        $rows     = [];
+        $levels   = [];
 
         foreach ($content->levels() as $level) {
-            $nodes = $content->nodesForLevel($level->id);
-            $bank     = [];
-            $variants = [];
+            $levels[] = $level;
+            $region   = 'Wilayah ' . $level->text('name', 'id');
 
-            foreach ($nodes as $node) {
-                $items              = $content->itemBank($node->id);
-                $bank[$node->id]     = count($items);
-                $variants[$node->id] = count(ChallengeItemModel::groupByVariant($items));
+            foreach ($content->nodesForLevel($level->id) as $node) {
+                $ref    = node_ref((string) $level->code, (int) $node->sequence);
+                $items  = $content->itemBank($node->id);
+                $groups = ChallengeItemModel::groupByVariant($items);
+                $scope  = $region . ' · tantangan ' . $node->sequence . ' (';
+                $found  = array_filter($findings, static fn (array $f): bool => str_starts_with($f['scope'], $scope));
+                $errors = count(array_filter($found, static fn (array $f): bool => $f['level'] === 'error'));
+
+                $rows[] = [
+                    'id'       => $node->id,
+                    'ref'      => $ref,
+                    'level'    => $level->text('name', 'id'),
+                    'sequence' => (int) $node->sequence,
+                    'engine'   => engine_label((string) $node->engine_type, $node->variant_code),
+                    'title'    => $node->text('title', 'id'),
+                    'variants' => count($groups) . '/3',
+                    'items'    => count($items),
+                    'mockups'  => $db->table('media_assets')->where('is_placeholder', 1)->where('is_active', 1)
+                        ->like('asset_key', 'challenge.' . $ref . '.', 'after')->countAllResults(),
+                    'verify'   => $errors > 0 ? 'error' : ($found === [] ? 'ok' : 'warning'),
+                    'verify_text' => $errors > 0 ? $errors . ' galat' : ($found === [] ? 'lolos' : count($found) . ' peringatan'),
+                ];
             }
-
-            $levels[] = ['level' => $level, 'nodes' => $nodes, 'bank' => $bank, 'variants' => $variants];
         }
 
-        return $this->panel('admin/content/index', 'Konten permainan', [
-            'levels'  => $levels,
-            'version' => $content->version(),
+        return $this->panel('admin/content/index', lang('Admin.menuContent'), [
+            'rows'     => $rows,
+            'levels'   => $levels,
+            'version'  => $content->version(),
+            'findings' => $findings,
         ]);
     }
 
