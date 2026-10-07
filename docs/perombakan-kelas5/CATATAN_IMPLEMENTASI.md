@@ -368,7 +368,11 @@ Dikerjakan di branch `dok2-mockup` (dari `main` sesudah PR #38), atas permintaan
    - README dan `docs/01`–`08` ditulis ulang untuk keadaan sekarang: tanpa catatan pembaruan, tanpa desain lama, dan dengan alur instalasi baru di `08_DEPLOYMENT.md`.
    - `docs/naskah-cerita.md`, `docs/audio.md`, `docs/bank-soal/README.md`, dan `docs/pustaka/` dirapikan.
    - Workbook Pustaka dibangun ulang karena teks subjudulnya berubah. Workbook bank soal dibangun ulang karena keterangan adegan `tmg-4` kini menyebut posisi rak, bukan "tata letak lama"; isi soal tidak berubah.
-9. **Sengaja dipertahankan** (bukan kompatibilitas lama):
+9. **Berkas lama lain yang dihapus:**
+   - folder `system/` di root: salinan CodeIgniter 4.7.4 yang identik dengan `vendor/codeigniter4/framework/system` dan tidak pernah dipakai (`Config\Paths::$systemDirectory` menunjuk ke vendor);
+   - `docs/literatur.md`: bank soal lama 15 node (pilihan ganda, urutkan, sumber, rumpang ketik), sudah digantikan `docs/bank-soal/` dan tidak dirujuk;
+   - `core/storage.js` tidak lagi membuang kunci antrean lama `gelita.eventQueue`.
+10. **Sengaja dipertahankan** (bukan kompatibilitas lama):
    - `deploy.sh`/`deploy.ps1`, untuk pembaruan kode berikutnya;
    - `gelita:schools:import --link-existing` (sama dengan tombol di panel Sekolah);
    - `GelitaSeeder::insertIfMissing()`, agar seeder aman diulang;
@@ -397,7 +401,8 @@ Dikerjakan di branch `dok2-mockup` (dari `main` sesudah PR #38), atas permintaan
 
 ### Pengujian yang dijalankan
 
-- **Otomatis:** `vendor/bin/phpunit` hijau sesudah setiap tahap (lihat jumlah akhir di PR).
+- **Otomatis:** `vendor/bin/phpunit --no-coverage` hijau sesudah setiap tahap; akhir: **442 test** (2 dilewati). Tanpa `--no-coverage`, di mesin tanpa Xdebug/PCOV PHPUnit keluar dengan kode 1 karena peringatan "No code coverage driver available" (`phpunit.dist.xml` meminta laporan coverage dengan `failOnWarning`); ini bawaan appstarter, belum diubah.
+- **Peramban** (Chromium + Playwright, `php spark serve`, instalasi baru `gelita_uji`): daftar siswa 3 langkah → intro → peta → kartu misi → Susun Gambar Temanggung tampil 3 × 3 dengan gambar contoh, penanda kesempatan, tanpa galat JavaScript.
 - **MariaDB 10.11 lokal:**
   - skema rantai lama (`gelita_lama`) dibandingkan dengan migration baru (`gelita_baru`) lewat `information_schema`, lalu rollback penuh dan `migrate` ulang;
   - instalasi baru dari database kosong: `migrate` (29 migration), lalu `GELITA_ADMIN_PASSWORD=… php spark db:seed DatabaseSeeder` → 12 tantangan, 126 soal, 88 baris dialog, 30 halaman Pustaka + 48 media, 45 gambar contoh; `gelita:content:verify` 0 galat;
