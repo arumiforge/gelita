@@ -110,7 +110,7 @@ class ExportController extends BaseAdminController
         $back       = 'admin/ekspor';
 
         if ($format === 'pdf') {
-            // Hanya laporan satu siswa; ringkasan PDF penelitian dihapus (Dok 1 §14)
+            // PDF hanya untuk laporan satu siswa
             $participantId = (int) ($this->request->getPost('participant_id') ?? 0);
 
             if ($participantId <= 0) {

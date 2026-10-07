@@ -1,346 +1,94 @@
 # GELITA
 
-**GELITA** (Game Edukasi Literasi dan Etnopedagogi Kedu) adalah game edukasi berbasis web untuk siswa **kelas 5 SD/MI** sekaligus instrumen penelitian. Pemain berperan sebagai Jaka, dibimbing Mbah Kedu, menjelajahi tiga wilayah eks-Karesidenan Kedu — **Temanggung → Magelang → Wonosobo**, masing-masing lima tantangan — sambil belajar literasi membaca, budaya lokal, dan literasi keamanan digital. Setiap jawaban, perubahan jawaban, petunjuk, dan pemutaran audio dicatat sebagai data penelitian.
+**GELITA** (Game Edukasi Literasi dan Etnopedagogi Kedu) adalah game literasi membaca berbasis budaya Kedu untuk siswa **kelas 5 SD/MI**, sekaligus instrumen penelitian. Pemain berperan sebagai Jaka, dibimbing Mbah Kedu, memulihkan **12 Serpihan Cahaya** di tiga wilayah eks-Karesidenan Kedu. Setiap jawaban, percobaan, petunjuk, pemutaran audio, dan perpindahan layar dicatat sebagai data mentah penelitian.
 
-Aplikasi dibangun dengan **CodeIgniter 4.7** (PHP 8.2+, MySQL 8 / MariaDB 10.6+), dirender server dengan HTML5 + CSS3; JavaScript (ES modules, tanpa framework) hanya menambah perilaku. Area game dwibahasa (ID/EN), panel admin berbahasa Indonesia.
+Aplikasi dibangun dengan **CodeIgniter 4.7** (PHP 8.2+, MariaDB 10.6+ / MySQL 8), dirender server dengan HTML5 + CSS3; JavaScript (ES modules tanpa bundler dan tanpa framework) hanya menambah perilaku. Area game dwibahasa (Indonesia/Inggris), panel admin berbahasa Indonesia.
 
-## Status pengembangan
+## Fitur utama
 
-**Kedelapan tahap selesai.** Aplikasi siap dipasang di server production mengikuti [`docs/08_DEPLOYMENT.md`](docs/08_DEPLOYMENT.md).
+**Permainan**
 
-| Tahap | Isi | Status |
-|---:|---|---|
-| 1 | Database: 30 tabel domain + `ci_sessions`, 36 migration, 9 seeder | selesai |
-| 2 | Fondasi: konfigurasi, filter, helper, berkas bahasa, `PasswordPolicy`, kerangka command | selesai |
-| 3 | Model (30), Entity (12), Service (8) — skor, sesi, tantangan, event, analitik, impor bank soal | selesai |
-| 4 | Route, controller, autentikasi siswa & staf, otorisasi berlapis tiga, API JSON seragam | selesai |
-| 5 | View, UI, CSS: 3 layout, 20 komponen, 17 halaman game + 5 arena, 34 view admin, 6 berkas CSS | selesai |
-| 6 | Perilaku JavaScript: lima mesin arena, antrean event offline, narasi + telemetry audio, chart ECharts, editor konten terpandu | selesai |
-| 7 | Integrasi fitur: `ExportService` (XLSX streaming), `ReportService` (PDF), `RetentionService`, lima command `gelita:*` | selesai |
-| 8 | Deployment & operasional: skrip deploy/backup/retensi untuk Linux (Bash) dan Windows + Laragon (PowerShell), konfigurasi Nginx, mode pemeliharaan | selesai |
+- Tiga wilayah yang terbuka berurutan: **Temanggung** (mudah) → **Magelang** (sedang) → **Wonosobo** (sulit). Tiap wilayah punya 4 tantangan berurutan:
 
-### Perombakan kelas 5 — Dokumen 1 (branch `perombakan-kelas5`, sedang berjalan)
+  | Urutan | Tantangan | Engine | Temanggung | Magelang | Wonosobo |
+  |---:|---|---|---|---|---|
+  | 1 | Susun Gambar | `puzzle` | 3 × 3 kotak | 4 × 4 kotak | 4 × 4 jigsaw |
+  | 2 | Isi Rumpang | `rumpang` | 3 rumpang | 5 rumpang + 2 pengecoh | 7 rumpang + 2 pengecoh |
+  | 3 | Benar atau Salah | `boleh` | 3 pernyataan | 5 pernyataan | 6 pernyataan |
+  | 4 | Cari Objek | `cari` | 4 dicari + 4 pengecoh | 4 dicari + 6 pengecoh | 4 dicari + 8 pengecoh |
 
-Fondasi data untuk penelitian kelas 5 ([`docs/perombakan-kelas5/01_FONDASI_DATA_DAN_RESET.md`](docs/perombakan-kelas5/01_FONDASI_DATA_DAN_RESET.md); catatan pelaksanaan di [`CATATAN_IMPLEMENTASI.md`](docs/perombakan-kelas5/CATATAN_IMPLEMENTASI.md)). Bagian lain README ini masih menggambarkan keadaan sebelum perombakan (lima tantangan per wilayah, chart, persetujuan wali) dan ditulis ulang di Dok 3 §11.
+- Bank soal final kelas 5: **126 soal** (108 dinilai + 18 benda pengecoh), 30 variasi, 9 bacaan Benar atau Salah, 9 bacaan Isi Rumpang, 36 petunjuk, 12 kata pengecoh, dan 45 slot gambar tantangan. Satu variasi (`a`/`b`/`c`) dipilih acak setiap pengerjaan. Rinciannya di [`docs/bank-soal/README.md`](docs/bank-soal/README.md).
+- Setiap soal paling banyak **3 percobaan** (`Config\Gelita::$maxTries`). Setiap percobaan tercatat satu baris di `item_tries`; pengerjaan ditutup sebagai `solved` atau `tries_exhausted`, lalu diberi bintang.
+- Alur bercerita dari awal sampai akhir: halaman awal → `/mulai` → pendaftaran → cerita pembuka → Peta Kedu → Kenali wilayah → dialog pembuka wilayah → tantangan → wilayah tuntas → Pustaka → … → penutup → Balai Refleksi. Naskahnya 88 baris dwibahasa ([`docs/naskah-cerita.md`](docs/naskah-cerita.md)).
+- **Pustaka Kedu**: 30 halaman bacaan dwibahasa dengan 48 gambar/video, terbuka per wilayah setelah wilayahnya tuntas ([`docs/pustaka/README.md`](docs/pustaka/README.md)).
+- Pendaftaran tiga langkah (`/daftar/1`–`3`) dengan centang persetujuan siswa dan kata sandi kuat (bagian dari literasi keamanan digital). Siswa dari Jawa Tengah memilih sekolah lewat **NPSN** dari daftar sekolah resmi ([`docs/sekolah/README.md`](docs/sekolah/README.md)).
+- Game hanya dimainkan mendatar; ponsel/tablet yang dipegang tegak melihat layar "Putar perangkatmu". Dapat dipasang di layar utama (manifest + service worker yang hanya menampilkan halaman offline).
+- Audio bawaan lengkap: musik gamelan, efek suara, dan narasi ID/EN (lihat [Audio bawaan](#audio-bawaan)).
 
-- **Migration baru `004100`–`004600`.** Dihapus: tabel `research_phases`, `participant_consents`, `scoring_profiles`, `challenge_options` beserta kolom fase, consent, dan skor 0–100. Baru: tabel `item_tries` (setiap percobaan soal) dan `device_logs` (perangkat siswa), kolom `variant_group`, `completion_reason`, `max_tries`, `try_count`, `solved_on_try`, `assented_at`, `media_assets.is_placeholder`.
-- **Command baru `php spark gelita:reset`** — reset total data uji coba dan pengaturan; Pustaka, cerita, level, media, audio, sekolah resmi, dan akun staf tetap. Selalu `--dry-run` dulu dan buat backup. `gelita:score:recompute` dihapus.
-- **Permainan:** 4 tantangan per wilayah (12), satu variasi soal acak per pengerjaan, satu tahap bermain (tanpa pretest/posttest), bintang `bintang-1` ("Berhasil pada Percobaan Pertama"), pendaftaran tiga langkah `/daftar/1–3` yang tetap jalan tanpa JavaScript.
-- **Data mentah penelitian:** setiap percobaan (`item_tries`), perangkat (`matomo/device-detector` + Client Hints, koreksi iPad), dan event baru `screen_viewed`, `answer_selected`, `overlay_opened`, `reading_progress`, `page_hidden`/`page_visible`, `viewport_changed`. Analitik olahan, chart, dan ECharts dihapus dari panel.
+**Data penelitian**
 
-Kelima arena kini dapat dimainkan penuh di browser — Periksa, petunjuk, keluar berkonfirmasi, narasi audio, dan lentera yang bertambah dari respons server — dengan seluruh event gameplay dan telemetry audio tercatat, termasuk saat koneksi sempat putus. Panel admin menggambar seluruh chart dengan ECharts dari `/api/admin/*`, dan filter mengubah isi halaman tanpa memuat ulang.
+- Server adalah sumber kebenaran: benar/salah, bintang, serpihan, dan status buka/kunci dihitung server; kunci jawaban tidak pernah dikirim ke browser.
+- Data mentah: percobaan per soal (`item_tries`), jawaban, petunjuk, event permainan (`game_event_logs`, mis. `screen_viewed`, `answer_selected`, `viewport_changed`), pemakaian audio (`audio_usage_events`), dan perangkat siswa (`device_logs`, dari User-Agent + Client Hints). Event yang gagal terkirim disimpan sementara di browser dan dikirim ulang ke sesi yang sama.
+- Tidak ada skor olahan atau chart di panel; pengolahan dilakukan peneliti dari ekspor.
 
-Yang sudah berfungsi penuh lewat HTTP: persetujuan dan registrasi dengan kata sandi kuat (termasuk dua metrik literasi keamanan digital), masuk/keluar, ganti sandi dan reset sandi oleh guru, ganti sandi sendiri untuk staf (`/admin/akun/sandi`, wajib setelah reset atau pembuatan akun oleh admin), peta Kedu dan peta wilayah dengan kunci berurutan, Kenali wilayah, dialog pembuka wilayah, kelima arena beserta seluruh API penilaiannya, layar selesai dan riwayat hasil, adegan wilayah tuntas dan penutup, Pustaka Kedu, profil, Balai Refleksi, pergantian bahasa tanpa kehilangan progres, serta seluruh halaman panel admin (dasbor, peserta, sesi, analitik, masukan, konten, impor bank soal, media & audio, studi & rilis, tata kelola, akun staf).
+**Panel admin** (`/admin`)
 
-### Pembaruan kelas 5 SD: istilah sehari-hari, Susun Gambar 3 tingkat, Isi Rumpang bacaan & Bloom
+- Dasbor berisi hitungan mentah, daftar peserta, sesi beserta linimasa event, dan masukan siswa.
+- Ekspor XLSX data mentah (guru: selalu anonim dan hanya sekolahnya) dan PDF data satu peserta.
+- Khusus admin: editor konten (wilayah, tantangan, soal, bacaan, dialog, Pustaka, narasi), impor bank soal dari Excel, Media dan **Kelengkapan aset**, studi & rilis, tata kelola data (penghapusan berpratinjau, audit, retensi), direktori sekolah, dan akun staf.
+- Otorisasi berlapis tiga (route → controller → service); halaman khusus admin membalas `404` untuk guru.
 
-Fokus penelitian kini **siswa kelas 5 SD/MI**:
+## Kebutuhan sistem
 
-- **Pendaftaran dikunci ke kelas 5.**
-  - Pilihan kelas hanya "Kelas 5 SD/MI", dan server memaksa nilai `5`.
-  - NPSN sekolah SMP/MTs ditolak dengan pesan yang jelas (`allowed_school_stage`).
-  - Data lama dari kelas lain tetap tampil dengan kelasnya (`class_label()`).
-- **Susun Gambar bertingkat, tiga gambar acak per wilayah.**
-  - Temanggung (mudah) 3 × 3 kotak, Magelang (sedang) 4 × 4 kotak, Wonosobo (sulit) 4 × 4 jigsaw berkeping acak.
-  - Admin cukup mengunggah **satu gambar utuh**. `App\Libraries\PuzzleCut` memotongnya di browser sebagai keping SVG; gambar tidak persegi dipotong tengahnya.
-  - Keping tidak bernomor di semua tingkat, dan keterangan gambar muncul setelah gambar utuh.
-  - Ukuran papan dibekukan per soal, sehingga kunci soal yang sudah dijawab tidak pernah berubah.
-  - Wonosobo tantangan 1 berganti dari Susun Urutan menjadi jigsaw.
-- **Isi Rumpang menjadi satu bacaan per wilayah.** Bank kata = semua jawaban + pengecoh:
-
-  | Wilayah | Bacaan | Rumpang | Bank kata |
-  |---|---|---|---|
-  | Temanggung | 1 paragraf | 3 | 3 kata, tanpa pengecoh |
-  | Magelang | bacaan singkat | 5 | 7 kata |
-  | Wonosobo | bacaan singkat | 7 | 9 kata |
-
-  Setiap soal memakai tingkat Bloom C1–C2 / C2–C3 / C3–C4 (kolom `challenge_items.bloom_level`, migration `004000`). Aturan per tingkat ada di satu tempat, `App\Libraries\DifficultyRules`. Isi dan tabel Bloom per rumpang ada di [`docs/bank-soal/README.md`](docs/bank-soal/README.md#pembaruan-kelas-5-sd-oktober-2026).
-- **Istilah sehari-hari.**
-  - **Berkas Excel seluruhnya berbahasa Indonesia** (`App\Libraries\ExportLabels`):
-    - nama lembar dan judul kolom bersatuan;
-    - nilai berkode menjadi kata ("Tes awal", "selesai", "Kelas 5 SD/MI");
-    - jawaban dan kunci dalam kalimat;
-    - waktu sebagai sel tanggal.
-  - Panel dan PDF memakai tes awal/tes akhir, tahap, penelitian, siswa, benar sejak awal, persentase benar, dan daya pembeda. Hasil per soal juga menampilkan tingkat Bloom.
-
-Server yang sudah berjalan: deploy biasa, impor ulang workbook bank soal, unggah 3 gambar baru Wonosobo, lalu `gelita:content:verify`. Rinciannya di [`docs/08` → *Memperbarui server yang sudah berjalan ke kelas 5 SD*](docs/08_DEPLOYMENT.md#memperbarui-server-yang-sudah-berjalan-ke-kelas-5-sd-oktober-2026).
-
-### Perombakan alur sinematik (Tahap 1–5) — ringkasan
-
-Alur permainan kini bercerita dari awal sampai akhir, dengan satu naskah dwibahasa ([`docs/naskah-cerita.md`](docs/naskah-cerita.md), 88 baris) sebagai sumber teks, pose, efek, dan nama berkas rekaman:
-
-| Tahap | Isi |
-|---:|---|
-| 1 | Halaman awal satu tombol **Mulai** → `/mulai` → daftar/masuk; cerita pembuka **wajib** bagi pemain baru (`intro_seen_at`); pemain lama memilih di `/gerbang` |
-| 2 | Cerita pembuka sinematik dengan kartu "Ketuk untuk mulai", audio `autoplay`, tirai "Membuka Peta Kedu", narasi Jaka di peta; naskah di basis data (`gelita:story:update`) |
-| 3 | **Kenali wilayah**, tirai wilayah dan tantangan, dialog wilayah dramatis, `/tuntas/{code}`, `/penutup` |
-| 4 | Pustaka per wilayah (terbuka setelah wilayah tuntas), thumbnail video dari server |
-| 5 | Impor rekaman narasi otomatis, persetujuan massal, halaman **Narasi**, **Kelengkapan aset**, dan audit alur ujung ke ujung |
-
-Alurnya: halaman awal → `/mulai` → daftar → cerita pembuka → peta (tirai + narasi Jaka) → Kenali wilayah → tirai wilayah → dialog pembuka → peta wilayah → kartu misi (tirai tantangan) → tantangan → selesai → wilayah tuntas → Pustaka → wilayah berikutnya → … → penutup → Balai Refleksi.
-
-### Pembaruan audio: musik gamelan, efek suara, dan narasi ID/EN
-
-Seluruh audio permainan kini ikut di repositori. Rinciannya ada di [`docs/audio.md`](docs/audio.md), dan generatornya di [`tools/audio/`](tools/audio/README.md).
-
-- **Musik gamelan**, tiga gending orisinal yang berulang tanpa jeda:
-  - `map`: ladrang slendro manyura, megah, untuk Peta Kedu.
-  - `region`: ketawang pelog nem dengan gender, gambang, siter, dan suling, untuk peta wilayah.
-  - `challenge`: ketawang slendro sanga yang hening, untuk tantangan.
-
-  Semua disintesis dari nol dengan laras pelog/slendro, ombak gong, dan garap bonang–peking–kendang. Tidak ada sampel rekaman, dan kenyaringannya di bawah narasi agar narasi tetap jelas.
-- **Efek suara** bernuansa gamelan: `click` (gambang), `correct` (bonang naik), `wrong` (demung teredam), `lock` (kethuk + kecrek), dan dua efek yang dipanggil `game/finished.js` tetapi belum tercantum: `shard` (kilau peking–gender) dan `region-done` (suwuk bergong). **Media → Kelengkapan aset** kini juga memeriksa `shard` dan `region-done`.
-- **Narasi 100 baris × 2 bahasa** (88 baris naskah + 12 petunjuk Cari Objek: `tmg-4`, `mgl-4`, `wnb-4` masing-masing 4), MP3 mono 96 kbps, sekitar −16 LUFS. Suaranya sintetis (TTS) dan diolah per tokoh:
-  - **Narator**: pendongeng perempuan yang hangat.
-  - **Jaka**: anak laki-laki; nada dan formant dinaikkan, gaya bicara mengikuti pose.
-  - **Mbah Kedu**: kakek yang pelan, bergetar, dan lemah pada pose `weak`.
-
-  Narasi Indonesia memakai model suara bahasa Jawa, sehingga berlogat Jawa sesuai latar Kedu. Nama Jawa di narasi Inggris dilafalkan dengan IPA. Setiap baris dipilih dari beberapa kandidat lewat pemeriksaan Whisper.
-- **Tercatat sebagai TTS.** Manifest `public/assets/audio/narasi/produksi.json` memuat sha256 dan profil suara setiap rekaman. `NarrationImporter` mencatat berkas yang cocok sebagai `production_method = tts` beserta `voice_profile`. Rekaman pengisi suara yang menggantikannya otomatis tercatat sebagai rekaman sendiri.
-
-**Server yang sudah berjalan:** deploy biasa, lalu jalankan perintah di bawah. Setelah itu, di **Konten → Narasi** tekan **Setujui semua narasi draft** untuk ID dan EN. Musik dan efek suara langsung terdengar tanpa langkah tambahan.
-
-```bash
-php spark gelita:narration:import --dry-run   # 100 rekaman per bahasa dikenali
-php spark gelita:narration:import             # audio draft, ditautkan ke naskah & petunjuk cari
-```
-
-### Pembaruan pendaftaran: sekolah lewat NPSN (Jawa Tengah)
-
-Nama sekolah teks bebas membuat satu sekolah tercatat berkali-kali — "SD 1 CENDONO", "SD NEGERI 1 CENDONO", "sd 1 cendono" — sehingga laporan per sekolah terpecah dan guru tidak melihat sebagian siswanya. Sekarang:
-
-- **Daftar sekolah resmi Jawa Tengah** (28.487 sekolah SD, MI, SMP, MTs, SLB; NPSN, kecamatan, desa) ikut di repositori: [`docs/sekolah/`](docs/sekolah/README.md), dari Data Induk Pendidikan lewat cermin `bahrye/api-sekolah` (MIT). Dipasang `php spark gelita:schools:import` — juga oleh `db:seed` dan skrip deploy; hanya menulis yang berubah, tidak pernah menghapus.
-- **Siswa yang memilih Jawa Tengah wajib mengisi NPSN.** Setelah 8 angka, nama resmi muncul di kartu "Benar ini sekolahmu?" (`GET /api/schools/lookup`), dengan peringatan bila kab/kota atau jenjangnya tidak cocok — tanda salah ketik. NPSN yang tidak ada di daftar membuka centang **"Sekolahku tidak ada di daftar"** untuk menulis nama. Provinsi lain tetap menulis nama sekolah. Berjalan juga tanpa JavaScript.
-- **Nama ketikan tetap dirapikan.** `SchoolDirectory` menautkan nama ketikan ke sekolah resmi hanya bila kandidatnya tunggal (1.174 sekolah resmi Jateng bernama sama dengan sekolah lain di kab/kota yang sama, jadi nama saja memang tidak cukup); sisanya menjadi entri "belum terverifikasi", satu per varian. Admin merapikannya di **Panel → Sekolah** (cari NPSN untuk sesi kelas, gabung, sahkan); entri yang digabung menjadi alias sehingga ketikan yang sama berikutnya langsung tertaut.
-- Akun guru dipilih lewat **NPSN**, filter/ekspor hanya memuat sekolah yang dipakai, dan ekspor beridentitas memuat kolom `school_npsn`.
-
-Server yang sudah berjalan: deploy biasa, lalu `php spark gelita:schools:import --link-existing` untuk menautkan nama sekolah lama yang cocok jelas ([`docs/08` → *Memperbarui server yang sudah berjalan ke pendaftaran NPSN*](docs/08_DEPLOYMENT.md#memperbarui-server-yang-sudah-berjalan-ke-pendaftaran-npsn)).
-
-### Pembaruan narasi petunjuk arena `cari`
-
-- **Petunjuk Mbah Kedu kini bersuara.** Setiap petunjuk target arena `cari` (`tmg-4`: 8 petunjuk; ketiga objek jebakan tidak punya petunjuk) dapat diberi rekaman ID dan EN di kolom baru `challenge_items.audio_prompt_id` / `audio_prompt_en_id` (migration `003800`). Payload `clues` membawa `audio` (URL, hanya rekaman **disetujui** dengan media aktif) dan `audio_id` sesuai bahasa; tanpa rekaman keduanya `null`. Kunci jawaban dan pembeda jebakan tetap tidak dikirim.
-- **Di arena:** tombol ▶/⏸ di samping teks petunjuk. Petunjuk pertama diputar lewat tombol (`play`), karena browser — terutama Safari iPad — menolak audio bersuara sebelum halaman disentuh. Setelah jawaban benar, petunjuk berikutnya diputar sendiri (`autoplay`) bila suara aktif. Berganti atau melompat petunjuk menghentikan narasi sebelumnya; melompat tidak memutar otomatis. Tanpa rekaman yang disetujui atau tanpa JavaScript, tampilan sama seperti sebelumnya.
-- **Rekaman diimpor seperti narasi naskah.** Nama berkas `petunjuk-{node}-NN.mp3` (mis. `petunjuk-tmg-4-01.mp3`), NN = urutan petunjuk target menurut urutan butir; transkrip = teks pertanyaan butir, tokoh Mbah Kedu, `context_code` `hunt_clue`. Lewat folder (`gelita:narration:import`) atau **Konten → Narasi → Unggah narasi**; kelompok baru **Petunjuk arena cari · Temanggung (tmg-4)** ikut kemajuan, daftar rekaman XLSX, persetujuan massal, dan **Kelengkapan aset** (96 baris per bahasa, dihitung dari data). Form butir `find_object` juga punya dua pemilih audio (ID/EN).
-- **Catatan peneliti:** pemutaran narasi petunjuk tercatat di `audio_usage_events` dengan `challenge_attempt_id`, dan — seperti audio lain di layar tantangan — **setiap** event audionya (`play`, `autoplay`, `pause`, `replay`, `complete`) menambah `challenge_attempts.audio_use_count`. Butirnya diturunkan dari `audio_asset_id` ([`docs/07` → FITUR 13a § *Narasi petunjuk arena `cari`*](docs/07_FEATURE_INTEGRATION.md#narasi-petunjuk-arena-cari)).
-- **Nomor NN mengikuti urutan target aktif.** Menonaktifkan, menyisipkan, atau mengubah urutan butir target menggeser nomor berikutnya; periksa ulang rekaman di halaman Narasi setelah perubahan seperti itu.
-
-**Server yang sudah berjalan:**
-
-```bash
-php spark migrate                          # 003800: kolom audio petunjuk di challenge_items
-php spark gelita:narration:import          # rekaman petunjuk-*.mp3 di public/assets/audio/narasi/{id,en}/ → audio draft
-```
-
-Atau unggah berkas `petunjuk-*` di **Konten → Narasi → Unggah narasi**. Lalu dengarkan dan setujui di **Konten → Narasi**; petunjuk baru bersuara setelah rekamannya disetujui.
-
-### Pembaruan narasi & kelengkapan aset (Tahap 5)
-
-- **Rekaman narasi dipasang otomatis.** Nama berkas = kode baris naskah (`intro-01.mp3`, `kenal-magelang-03.mp3`, `dialog-wonosobo-16.mp3`, …). `App\Libraries\NarrationImporter` mencocokkannya ke baris `dialogues` (kode wilayah dari tabel `levels`), membuat aset `audio.narasi.{id|en}.{kode}` dan `audio_assets` berstatus **draft** dengan transkrip = teks baris itu, lalu menautkannya. Dua sumber: folder `public/assets/audio/narasi/{id|en}/` (`php spark gelita:narration:import [--locale=id|en] [--dry-run]`) atau unggahan banyak berkas di panel. Rekaman yang berubah kembali ke draft; berkas yang sama persis dilewati sehingga persetujuan tidak hilang. Laporannya memuat nama tidak dikenal beserta saran nama terdekat dan baris yang belum punya rekaman.
-- **Panel admin baru** (khusus admin): **Konten → Narasi** (`/admin/konten/narasi`: 88 baris per konteks dan wilayah, status audio ID/EN dengan pemutar kecil, tautan Sunting, kemajuan per bahasa, **Unduh daftar rekaman** XLSX untuk pengisi suara), **Unggah narasi** (batas unggahan PHP dijelaskan), tombol **Setujui semua narasi draft** per bahasa (hanya narasi naskah; audit `audio_approve_bulk`), dan **Media → Kelengkapan aset** (`/admin/media/kelengkapan`).
-- **Audit alur Tahap 1–4** di MariaDB + Chromium: satu cacat diperbaiki (pemain baru dapat melewati cerita pembuka wajib lewat URL `/dialog/{code}` atau `/wilayah/{code}`); telemetry `dialogue_advanced` per konteks, `autoplay`, `started_at` setelah tirai tantangan, dan `library_opened` sudah benar ([`docs/07` → *Catatan Implementasi Tahap 5*](docs/07_FEATURE_INTEGRATION.md#catatan-implementasi-tahap-5-narasi--audit-alur)).
-- `MediaStore` kini membaca durasi MP3 dan mengenali audio dari isi berkas. Tidak ada migration baru.
-
-**Urutan pemasangan di server yang sudah berjalan** (sekali, setelah menarik kode terbaru; semua aman diulang):
-
-```bash
-php spark migrate                          # 003600 intro_seen_at, 003700 pose & efek dialog
-php spark gelita:story:update              # naskah 88 baris ke tabel dialogues (--dry-run untuk melihat dulu)
-php spark gelita:library:thumbnails        # poster video Pustaka (butuh HTTPS keluar)
-php spark gelita:narration:import          # rekaman di public/assets/audio/narasi/{id,en}/ → audio draft
-```
-
-Lalu buka **Konten → Narasi**, dengarkan, dan setujui per bahasa. Rincian di [`docs/08` → *Memperbarui server yang sudah berjalan*](docs/08_DEPLOYMENT.md#memperbarui-server-yang-sudah-berjalan-ke-alur-sinematik-tahap-15). Tambahkan `max_file_uploads = 100` di `php.ini` agar satu unggahan narasi dapat memuat lebih dari 20 berkas.
-
-**Aset yang masih perlu disiapkan** (permainan berjalan tanpanya dengan pengganti; daftar hidupnya ada di **Media → Kelengkapan aset**). Musik, efek suara, dan rekaman narasi kedua bahasa sudah tersedia (lihat *Pembaruan audio* di atas); rekaman narasi masih perlu diimpor dan disetujui di server.
-
-| Aset | Slot / lokasi | Ukuran |
-|---|---|---|
-| Logo landscape halaman awal | `ui.logo-hero` | 1600 × 600 px |
-| Tombol Mulai bergambar ID & EN | `ui.btn-start`, `ui.btn-start.en` | 720 × 240 px |
-| Logo panel & halaman masuk | `ui.logo` | bebas |
-| Peta Karesidenan Kedu | `map.kedu` | bebas (mendatar) |
-| Latar layar umum | `bg.loading`, `bg.welcome`, `bg.auth`, `bg.intro`, `bg.map`, `bg.reflection` | 1920 × 1080 px |
-| Frame pose tokoh (3 frame per pose, PNG transparan) | Jaka: `idle`, `happy`, `bow`, `sad`, `afraid`, `determined`; Mbah Kedu: `idle`, `smile`, `worried`, `weak` → `char.jaka.{pose}.{1–3}`, `char.kedu.{pose}.{1–3}` | 700 × 900 px |
-| Latar, peta, dan lencana tiap wilayah | `bg.{wilayah}.region`, `map.region.{wilayah}`, `reward.badge.{wilayah}` | 1920 × 1080, 1400 × 900, 320 × 320 px |
-| Poster video Pustaka yang kosong | editor Pustaka, atau `gelita:library:thumbnails` untuk video tautan | 960 × 640 px |
-| Gambar bank soal & Pustaka | [`docs/bank-soal/README.md`](docs/bank-soal/README.md) | per slot |
-
-### Pembaruan cerita wilayah: Kenali wilayah, tirai, dialog dramatis, tuntas, penutup (Tahap 3)
-
-- **Kenali wilayah.** Setiap pin dan kartu wilayah di Peta Kedu punya tombol lentera "Kenali {wilayah}" (juga untuk wilayah terkunci) yang membuka overlay layar penuh "Mengenal {wilayah}": 4 slide narasi Mbah Kedu dengan pose, efek, dan audio, langsung diputar karena ketukan tombol itu interaksinya. Slide akhir: "Masuk ke {wilayah}" bila terbuka, selain itu "Tutup". Lencana **"Belum didengar"** berdenyut sampai narasinya pernah didengar sampai slide terakhir; statusnya dihitung server dari event `dialogue_advanced` per peserta. Tanpa JavaScript overlay adalah target `#kenal-{code}`.
-- **Tirai wilayah** "Menuju {wilayah}…" (±1,8 detik): jejak kaki kiri–kanan melintasi layar, tagline wilayah ("Di Antara Dua Gunung", "Tanah Candi Agung", "Negeri di Atas Awan"), chip tingkat kesulitan, dan pramuat aset halaman tujuan. Dipasang di pin, kartu wilayah, overlay Kenali, dan setiap tombol "Lanjut ke {wilayah berikutnya}".
-- **Dialog wilayah dramatis.** Kartu bab "Bab {n} · {wilayah}" dengan tagline dan jejak kaki lanjutan, lalu 15–16 baris dengan audio otomatis, mesin ketik, efek, dan gambar tokoh yang berganti sesuai pose baris (cadangan pose `idle`, lalu monogram). Nav "Lewati" dan gerbang dialog tidak berubah.
-- **Wilayah tuntas** — `/tuntas/{code}` ("Serpihan {wilayah} kembali!"): tantangan yang menuntaskan wilayah kini berlanjut ke adegan ini; slide akhirnya "Baca Pustaka {wilayah}" dan "Lanjut ke {wilayah berikutnya}", atau "Lanjut" ke **penutup** `/penutup` di wilayah terakhir. Penutup sinematik (5 slide) berakhir di Balai Refleksi dan dapat ditonton ulang lewat "Tonton penutup" di peta.
-- **Tirai tantangan** (≤1,5 detik, ketukan melewatinya) diputar di kartu misi **sebelum** pindah ke `/tantangan`, dengan visual per jenis tantangan. Attempt baru dibuka saat halaman tantangan dirender, jadi tirai tidak menambah waktu attempt penelitian.
-- **Pengiriman event lebih andal** saat berpindah halaman (`core/events.js`): batch yang sedang dikirim tidak lagi hilang bila halaman keburu berpindah.
-- **Catatan peneliti:** `dialogue_advanced` dialog pembuka wilayah kini ber-`context` `level_open` (sebelumnya `region`); konteks baru `region_intro`, `level_done`, `ending` ([`docs/07` → *Catatan Implementasi Tahap 3*](docs/07_FEATURE_INTEGRATION.md#catatan-implementasi-tahap-3-alur-cerita)).
-- Tidak ada migration baru. Rincian di [`docs/05_VIEW_UI.md`](docs/05_VIEW_UI.md) (*§Peta Kedu*, *§Dialog*, *§Wilayah tuntas*, *§Penutup*, *§Tirai*) dan [`docs/06_JAVASCRIPT.md`](docs/06_JAVASCRIPT.md).
-
-### Pembaruan Pustaka per wilayah (Tahap 4)
-
-- **Pustaka terkunci per wilayah.** Pustaka sebuah wilayah baru terbuka setelah kelima tantangannya selesai pada sesi pemain, apa pun unlock mode studinya. Sebelum itu `/pustaka/{code}` menampilkan halaman terkunci berisi progres x/5 dan tombol "Lanjutkan tantangan" (tetap terbaca tanpa JavaScript), dan `/api/library/{levelId}` membalas `LIBRARY_LOCKED`. **Catatan peneliti:** event `library_opened` kini hanya muncul setelah wilayahnya tuntas ([`docs/07` → FITUR 8](docs/07_FEATURE_INTEGRATION.md#fitur-8-pustaka-kedu)).
-- **Nama sesuai tempat.** Di peta, tombol **Pustaka Kedu** membuka rak `/pustaka`: satu kartu per wilayah (terbuka → Baca, terkunci → progres + penjelasan, belum terbuka → keterangan). Di dalam wilayah namanya **Pustaka {wilayah}**, dan selama masih terkunci, tombolnya membuka modal penjelasan.
-- **Momen "Pustaka {wilayah} terbuka!"** di layar selesai, hanya pada tantangan yang menuntaskan wilayah.
-- **Buku yang lebih rapi.** Kredit pindah ke ikon ⓘ di pojok gambar (`<details>`, berjalan tanpa JS). Gambar dimuat dengan skeleton perkamen lalu memudar masuk, halaman berikutnya dipramuat, dan lightbox menampilkan pemutar tunggu. Video YouTube/Vimeo/Drive tampil sebagai facade berposter dengan tombol Putar besar.
-- **Thumbnail video diunduh server** (`App\Libraries\VideoThumbnail`) saat Pustaka disimpan atau diimpor, lalu dipakai sebagai poster. Perangkat siswa tidak menghubungi domain luar sebelum Putar ditekan. Server butuh HTTPS keluar ke `i.ytimg.com`, `vimeo.com`, `i.vimeocdn.com`, dan `drive.google.com` ([`docs/08` → *Akses keluar server*](docs/08_DEPLOYMENT.md#akses-keluar-server-thumbnail-video-pustaka)). Untuk baris yang sudah ada: `php spark gelita:library:thumbnails [--force]`.
-
-### Pembaruan cerita: naskah lengkap, cerita pembuka sinematik, tirai peta
-
-- **Naskah lengkap di permainan.** Seluruh 88 baris [`docs/naskah-cerita.md`](docs/naskah-cerita.md) (cerita pembuka, narasi peta, kenali wilayah, dialog masuk wilayah, wilayah tuntas, penutup) kini satu sumber data: `app/Database/Seeds/data/story.php`, lengkap dengan tokoh, pose, efek, dan judul. Migration `003700` menambah `dialogues.pose` dan `dialogues.effect`.
-- **Cerita pembuka sinematik.** Layar penuh dengan latar per slide (Ken Burns pelan), tokoh sesuai pose, kotak teks bergaya subtitle, dan efek layar. Kartu **"Ketuk untuk mulai"** membuka kunci audio (Safari iPad memblokir suara sampai halaman itu diketuk), lalu narasi diputar otomatis dengan efek mesin ketik dan maju sendiri setelah audio selesai (sakelar Otomatis). Tanpa audio yang disetujui, teks tetap tampil dan slide dilanjutkan manual.
-- **Tirai "Membuka Peta Kedu".** Dari gerbang atau akhir cerita pembuka, peta dibuka dengan tirai yang memuat aset peta dengan progres nyata (2,5–8 detik); ketukannya memulai musik peta dan narasi Jaka di panduan peta. Kunjungan lain menampilkan narasi sebagai teks dengan tombol ▶. Tanpa JavaScript tirai tidak pernah menutupi halaman.
-- **Telemetry:** putar otomatis dicatat sebagai `autoplay`, terpisah dari `play` (pemain menekan putar), dan ditampilkan terpisah di dasbor, profil peserta, dan laporan PDF.
-- **Admin** menyunting keenam konteks naskah di `/admin/konten/dialog/{level}?konteks=…`, termasuk pose dan efek.
-- Rincian di [`docs/05_VIEW_UI.md`](docs/05_VIEW_UI.md) (*§Tirai*, *§Pola ketuk-untuk-mulai*) dan [`docs/06_JAVASCRIPT.md`](docs/06_JAVASCRIPT.md) (`core/curtain.js`, `game/narrator.js`).
-
-**Server yang sudah berjalan** perlu memindahkan naskah baru ke basis datanya, karena seeder tidak pernah menimpa baris yang sudah ada:
-
-```bash
-php spark migrate                       # 003700: kolom pose & efek
-php spark gelita:story:update --dry-run # lihat dulu yang akan berubah
-php spark gelita:story:update           # sisipkan baris baru, perbarui teks bawaan lama
-```
-
-Urutannya wajib `migrate` lalu `gelita:story:update` (perintah itu menulis kolom `pose`/`effect`). Baris yang teksnya masih teks seeder lama diperbarui; baris yang sudah disunting admin — teks, tokoh, pose, efek, atau judul — dilewati dan dilaporkan (tambahkan `--force` untuk menimpanya); baris di luar jumlah naskah dinonaktifkan, tidak dihapus. Audio dan latar yang sudah dipasang admin tidak pernah disentuh. Perintah ini aman dijalankan berulang.
-
-### Pembaruan alur masuk: satu tombol Mulai, cerita pembuka wajib
-
-- **Halaman awal hanya logo dan tombol Mulai.** Logo landscape dari slot `ui.logo-hero` (cadangan `ui.logo`, lalu judul teks), tombol dari gambar `ui.btn-start` beserta varian bahasa `ui.btn-start.en` (cadangan tombol CSS emas). Merek di HUD tidak diulang di halaman ini. Tautan panel guru dihapus: staf masuk lewat `/admin/login`.
-- **`/mulai` memilah.** Belum login → "Saya baru" / "Sudah punya akun". Sudah login → `/gerbang`. Login dan ganti sandi kini berakhir di `/mulai` (tujuan tersimpan sebelum login tetap dihormati).
-- **Cerita pembuka wajib bagi pemain baru.** Selama `participants.intro_seen_at` kosong (migration `003600`), `/gerbang` dan `/peta` mengarah ke `/intro`, dan tombol "Lewati" tidak ada. Slide terakhir menuju `/intro/selesai`, yang mengisi kolom itu dan mencatat event `intro_completed`. Peserta yang sudah punya progres saat migration dianggap sudah menonton.
-- **Pemain lama memilih** di `/gerbang`: lihat cerita pembuka (dengan "Lewati") atau langsung ke peta. Jalan ke peta membawa flash `curtain=map` untuk tirai "Membuka Peta Kedu".
-- Rincian di [`docs/05_VIEW_UI.md` → *Halaman Game*](docs/05_VIEW_UI.md#halaman-game) dan [`docs/04_CONTROLLER_ROUTE.md`](docs/04_CONTROLLER_ROUTE.md).
-
-### Pembaruan orientasi layar: game hanya dimainkan mendatar
-
-- **Aset cukup satu versi mendatar.** Peta, adegan cari, dan latar tidak perlu varian potret: kanvas mengunci rasio gambar, lalu pin dan objek diletakkan dalam persen.
-- **Layar putar.** Ponsel dan tablet yang dipegang tegak melihat layar "Putar perangkatmu" di semua halaman game (`components/rotate-gate.php`), tanpa tombol lewati. Desktop/laptop dengan jendela sempit dan panel admin tidak terpengaruh. Rotasi tidak dapat dikunci dari web (iOS tidak mendukung, Android hanya dalam layar penuh), jadi layar ini juga menjelaskan cara menyalakan *Putar otomatis*.
-- **Tata letak ponsel mendatar.** Tinggi ponsel mendatar hanya ±280–430px. HUD diringkas, navigasi bawah tidak lagi menutupi isi, kepala tantangan dan instruksi pindah ke kolom kiri, dan peta, adegan cari, serta papan puzzle diukur dari tinggi layar. Tampilan desktop, papan tulis, dan tablet mendatar tidak berubah.
-- **Dapat dipasang di layar utama.** Manifest (`public/manifest.json`) mengunci posisi mendatar dan layar penuh untuk aplikasi terpasang di Android, sehingga ponsel mendapat tinggi penuh tanpa bilah alamat. Halaman awal menawarkan tombol **Pasang GELITA** (Android) atau petunjuk *Tambah ke Layar Utama* (iPhone/iPad). Service worker hanya menampilkan halaman offline, dan data penelitian tidak pernah di-cache. Ikon lentera di `public/assets/app/` masih sementara dan bisa ditimpa dengan ukuran yang sama.
-- Aturan dan panduan asetnya ada di [`docs/05_VIEW_UI.md` → *Orientasi layar*](docs/05_VIEW_UI.md#orientasi-layar); langkah memasang di perangkat kelas ada di [`docs/08_DEPLOYMENT.md` → *Sebelum sesi kelas*](docs/08_DEPLOYMENT.md#sebelum-sesi-kelas).
-
-### Pembaruan media, Pustaka Kedu, dan bank soal produksi
-
-- **Unggah media langsung dari editor konten.** Gambar adegan & latar tantangan, gambar butir (keping puzzle, objek cari), gambar opsi, gambar bacaan, peta & latar & lencana wilayah, serta audio dialog dan narasi pembuka tantangan dipilih atau diunggah di formulir masing-masing (`App\Libraries\MediaStore`, komponen `media-field` / `audio-select`). Halaman Media menampilkan di mana setiap aset dipakai dan slot mana yang masih kosong (`App\Libraries\MediaUsage`).
-- **Pustaka Kedu multi-media.** Setiap halaman boleh memuat banyak gambar/video (tabel `library_media`, migration `003500`): berkas unggahan atau tautan YouTube, Google Drive, Vimeo, Wikimedia Commons, dan berkas gambar/video langsung (`App\Libraries\MediaLink`). Isi halaman mendukung subjudul, daftar, kotak fakta, catatan sumber, tebal, dan miring (`rich_text()`).
-- **Bank soal produksi siap impor**: [`docs/bank-soal/gelita-bank-soal-produksi.xlsx`](docs/bank-soal/gelita-bank-soal-produksi.xlsx) — 15 tantangan, 131 butir, 11 bacaan, 30 halaman Pustaka dwibahasa beserta 48 media dan rujukannya. Workbook dibangun dari data PHP yang dapat ditinjau; cara membangun ulang dan daftar gambar yang masih perlu diunggah ada di [`docs/bank-soal/README.md`](docs/bank-soal/README.md).
-- **Templat impor berpanduan.** Workbook templat dan workbook produksi memuat sheet PETUNJUK dan KAMUS_KOLOM (arti setiap kolom dalam bahasa Indonesia), header berwarna menurut status wajib/bersyarat/opsional dengan catatan per kolom, serta dropdown untuk kolom berkode (`App\Libraries\BankWorkbookGuide`). asset_key media yang belum terdaftar dibuatkan slot kosong saat impor.
-- Isi panel admin kini selebar layar.
-
-### Tahap 8 — Deployment & operasional
-
-Berkas operasional ada di [`deploy/`](deploy/); kode aplikasi tidak berubah. Langkah pemasangan, alasan tiap aturan, dan hasil uji ada di [`docs/08_DEPLOYMENT.md`](docs/08_DEPLOYMENT.md), terutama [*Catatan Implementasi Tahap 8*](docs/08_DEPLOYMENT.md#catatan-implementasi-tahap-8). Yang perlu diketahui:
-
-- **Dua jalur setara.** Jalur L memakai `deploy/linux/` (Bash, Nginx + PHP-FPM, cron). Jalur W memakai `deploy/windows/` (PowerShell, Nginx Laragon + php-cgi, Task Scheduler).
-- **Deploy satu perintah** (`deploy.sh` / `deploy.ps1`). Urutannya:
-  1. menolak berjalan bila ada sesi kelas aktif dalam 10 menit terakhir;
-  2. membuat backup;
-  3. menyalakan mode pemeliharaan (Nginx menjawab 503 selama `writable/pemeliharaan.flag` ada);
-  4. menarik kode dan dependency;
-  5. menjalankan migration dengan akun `gelita_migrate` lewat `database_default_DSN`;
-  6. menaikkan `gelita.assetVersion`;
-  7. membuka situs kembali hanya bila `gelita:content:verify` lolos.
-- **Backup** (`backup.sh` / `backup.ps1`) memuat database tanpa isi `ci_sessions`, aset unggahan, dan `.env`. Backup disimpan 30 hari lalu disalin ke lokasi kedua. Kegagalan salinan kedua terlihat lewat kode keluar 2.
-- **Rollback: migration dulu, kode kemudian.** Setelah `git reset`, berkas migration rilis baru hilang, dan `migrate:rollback` gagal diam-diam dengan kode keluar 0.
-- **Skrip `.ps1` hanya ASCII.** Windows PowerShell 5.1 membaca skrip tanpa BOM sebagai cp1252, sehingga tanda pisah `—` memutus string.
-
-Semua skrip dijalankan di server uji (Ubuntu 24.04, MariaDB 10.11, Nginx 1.24, PHP-FPM 8.3, PowerShell 7.4) lewat jalur sukses, jalur gagal, dan penolakan saat ada kelas aktif. Yang masih butuh mesin Windows atau domain sungguhan tercatat di [*Masih belum teruji*](docs/08_DEPLOYMENT.md#masih-belum-teruji).
-
-### Tahap 7 — Integrasi fitur
-
-Ekspor, laporan, retensi, dan command kini berfungsi penuh. Rincian dan keputusannya ada di [`docs/07_FEATURE_INTEGRATION.md` → *Catatan Implementasi Tahap 7*](docs/07_FEATURE_INTEGRATION.md#catatan-implementasi-tahap-7). Yang perlu diketahui:
-
-- **Ekspor XLSX** (`/admin/ekspor`): sepuluh sheet, ditulis bertahap oleh `App\Libraries\ExcelWriter` (XML SpreadsheetML + ZipArchive) sehingga 150.000 baris Raw Events hanya memakai ±18 MB memori. Berkas di `writable/exports/`, ber-SHA-256, kedaluwarsa setelah `gelita.exportRetentionDays`. Raw Events di atas `gelita.exportMaxRawEvents` (200.000) ditolak dengan permintaan mempersempit rentang.
-- **Hak dibaca ulang di service.** `ExportService` mengambil role dan sekolah pemohon dari `staff_users`: guru selalu anonim, hanya sekolahnya, tanpa Raw Events dan tanpa kunci jawaban — apa pun isi formulirnya. Mode anonim tidak membuat kolom nama/nama pengguna/nama sekolah sama sekali; `school_ref` (`SCH-000012`) tetap ada untuk analisis per sekolah.
-- **Laporan PDF** (mPDF): ringkasan studi dari halaman ekspor, dan laporan satu peserta dari `/admin/peserta/{id}`.
-- **Penghapusan** (`/admin/tata-kelola`) dipindah ke `RetentionService`: cakupan peserta, sesi, atau studi (dipersempit fase & rentang tanggal); eksekusi dibatalkan bila jumlah baris berubah jauh sejak pratinjau.
-- **Retensi** (`php spark gelita:retention:run`, cron harian): sesi menganggur → `paused`, attempt menggantung > 24 jam → `abandoned`, sesi `paused` > 30 hari → `abandoned`, berkas ekspor kedaluwarsa dibuang, dan data yang melewati `retention_days` **hanya** dibuatkan pratinjau penghapusan + peringatan di dasbor admin.
-- **Command**: `gelita:content:verify`, `gelita:media:scan`, `gelita:score:recompute`, `gelita:bank:import`, `gelita:retention:run`, `gelita:staff:password`, `gelita:story:update`, `gelita:library:thumbnails`, `gelita:narration:import` — semuanya mengembalikan kode keluar 1 saat gagal sehingga dapat dipakai di skrip deploy.
-
-### Tahap 6 — JavaScript
-
-ES modules tanpa bundler di [`public/assets/js/`](public/assets/js/): lapisan inti (`core/`), perilaku halaman game (`game/`), lima mesin (`engines/`), dan panel admin (`admin/`). Rincian dan keputusannya ada di [`docs/06_JAVASCRIPT.md` → *Catatan Implementasi Tahap 6*](docs/06_JAVASCRIPT.md#catatan-implementasi-tahap-6). Yang perlu diketahui:
-
-- **Client tidak pernah menilai.** Benar/salah, skor, bintang, serpihan, dan jumlah keping yang keliru datang dari respons server.
-- **Antrean offline per sesi.** Event yang gagal terkirim disimpan di `localStorage` dengan penanda sesi buram (`sessionTag`, HMAC `game_session_id`) dan hanya dikirim ulang ke sesi yang sama — komputer kelas dipakai bergantian.
-- **Kontrak server yang ditambahkan:** `elapsed_ms` di payload tantangan, `detail.pieces_correct` di respons `/check`, kode `CSRF_EXPIRED` / `INVALID_SESSION` saat token CSRF ditolak di API, kunci `chart` di API admin (`App\Libraries\ChartData`), dan `play_index` audio kini berarti "pemutaran ke-n".
-- Teks yang ditulis JavaScript game ada di `app/Language/{id,en}/Js.php`.
-
-### Audit pra-tahap 6
-
-Sebelum tahap 6 dimulai, seluruh tahap 1–5 diaudit terhadap dokumen `docs/01`–`08`, dan alurnya ditelusuri ujung ke ujung di atas MariaDB 10.11 (registrasi → 15 node lintas lima engine → refleksi → reset sandi guru → seluruh halaman admin, 199 pemeriksaan). Cacat yang ditemukan dan diperbaiki:
-
-- **Attempt `cari` tidak pernah dapat ditutup** — objek jebakan dihitung sebagai soal belum dijawab, sehingga node 4 Temanggung dan seluruh wilayah sesudahnya terkunci. Kini satu aturan (`ChallengeService::expectsAnswer()`) dipakai petunjuk, progres, dan syarat `/complete`.
-- **Penilaian first-pass** — klik salah pertama di arena `cari` kini menutup first-pass petunjuk itu sebagai salah; `allow_retry = false` (arena `pilihan`) kini ditegakkan server sehingga jawaban kedua tidak menimpa yang pertama.
-- **Kontrak data untuk tahap 6** — payload attempt memuat id petunjuk (`hints`); `/api/events` menerima `node_id`/`attempt_id`/`item_id`; `/api/audio-events` idempotent per `client_event_id`; waktu event klien tidak lagi kehilangan milidetik; linimasa diurutkan `occurred_at` lalu `sequence_no` dengan index `(session_id, occurred_at)` dari migration baru `003300`.
-- **Keamanan** — Debug Toolbar di environment development menyimpan kata sandi mentah ke `writable/debugbar/`; `App\Filters\DebugToolbar` kini menyamarkan field kata sandi.
-- Event `password_changed` tidak lagi hilang setelah reset guru; templat workbook bank soal lolos pratinjaunya sendiri; dokumentasi diselaraskan (mis. `unlock_mode = sequential | free`).
-
-Rincian keputusan ada di dokumen tahap masing-masing; ringkasan UI di [`docs/05_VIEW_UI.md` → *Catatan Implementasi Tahap 5*](docs/05_VIEW_UI.md#catatan-implementasi-tahap-5).
-
-### Keputusan penting
-
-- **Server adalah sumber kebenaran.** Skor, bintang, status buka/kunci, dan serpihan dihitung server; kunci jawaban tidak pernah dikirim ke browser. Payload soal ditanam sebagai `<script type="application/json" id="challenge-data">`. Arena `cari` hanya mengirim token objek per attempt (HMAC dari `encryption.key`), sehingga objek jebakan tidak dapat dibedakan dari sumber halaman.
-- **Wilayah yang baru terbuka selalu dibuka lewat dialog pembukanya**, juga bila URL di dalamnya diketik langsung; tanda "dialog sudah tampil" disimpan per sesi login.
-- **Tanpa JavaScript tetap terbaca**: slide memakai `:target`, konfirmasi memakai `<details>`, setiap chart admin punya visual cadangan dari server.
-- **Aset di-host sendiri**: ECharts 6.1.0, Howler.js 2.2.4, dan font Cinzel/Plus Jakarta Sans/IBM Plex Mono ada di repositori; tidak ada permintaan ke domain pihak ketiga. Selama gambar belum diunggah, view memakai pengganti (gradien, monogram). Satu-satunya pengecualian adalah media **tautan** di Pustaka Kedu: gambar Commons/Drive dimuat dari domain asalnya tanpa referrer, sedangkan pemutar YouTube/Vimeo/Drive baru dimuat setelah siswa menekan Putar. Media yang diunggah ke server tetap lokal.
-- **Otorisasi berlapis tiga** (route → controller → service): guru hanya melihat sekolahnya, ekspor guru selalu anonim, dan halaman khusus admin membalas `404` untuk guru.
-- **HEAD dilayani rute GET** dengan handler dan filter yang sama (`App\Libraries\HeadAsGetRouteCollection`), sehingga `curl -I` dan pemantau uptime tidak lagi mendapat 404, dan HEAD tidak pernah melewati filter login.
-
-### Batas ruang lingkup saat ini
-
-- **Ekspor dibangun sinkron** di request yang sama (batas 300 detik). Tahap 8 memutuskan tetap sinkron; ambang `gelita.exportMaxRawEvents` menjaga ukurannya. Alasannya ada di [`docs/08_DEPLOYMENT.md` → *Keputusan yang tercatat*](docs/08_DEPLOYMENT.md#keputusan-yang-tercatat).
-- **Tugas terjadwal dipasang per server.** Baris cron (Linux) dan perintah pendaftaran Task Scheduler (Windows) untuk backup dan `gelita:retention:run` ada di [`docs/08_DEPLOYMENT.md` → *Tugas Terjadwal*](docs/08_DEPLOYMENT.md#tugas-terjadwal). Di mesin pengembangan, retensi dijalankan dari tombol di `/admin/tata-kelola`.
-- `App\Libraries\HashedIpSessionHandler` **belum dipasang**; alasannya di bagian *Sesi dan CSRF* di bawah.
-
-## Prasyarat lokal
-
-- PHP 8.2 atau lebih baru (PHP 8.3 disarankan)
+- PHP 8.2 atau lebih baru (PHP 8.3 disarankan) dengan ekstensi `intl`, `mbstring`, `json`, `mysqli`/`mysqlnd`, `curl`, `gd`, `zip`, `fileinfo`, `openssl`, `iconv`, `dom`, `xml`, `xmlwriter`, dan `simplexml`
 - Composer 2.6 atau lebih baru
-- MySQL 8.0+ atau MariaDB 10.6+
-- Web server lokal, atau server bawaan CodeIgniter untuk pengembangan
-- Ekstensi PHP: `intl`, `mbstring`, `json`, `mysqli`/`mysqlnd`, `curl`, `gd`, `zip`, `fileinfo`, `openssl`, `iconv`, `dom`, `xml`, `xmlwriter`, dan `simplexml`
+- MariaDB 10.6+ atau MySQL 8.0+
+- Web server (Nginx + PHP-FPM di server; `php spark serve` untuk pengembangan)
 
-Di Windows, Laragon (PHP 8.3 + MySQL) memenuhi semua prasyarat. Pengaturan ekstensinya ada di [`docs/08_DEPLOYMENT.md` → Jalur W](docs/08_DEPLOYMENT.md#ekstensi-php-wajib). Perintah di bawah ditulis untuk Bash; padanan PowerShell diberikan bila sintaksnya berbeda.
+Di Windows, Laragon (PHP 8.3 + MySQL) memenuhi semua kebutuhan ini. Library frontend (Howler.js) dan font di-host sendiri di `public/assets/`, tanpa CDN. Pengecualiannya hanya media **tautan** Pustaka (YouTube, Vimeo, Google Drive, Wikimedia Commons), yang dimuat dari domain asalnya.
 
-## Menjalankan secara lokal
+## Mulai cepat (pengembangan)
 
-1. Pasang dependensi dari lockfile proyek:
+1. Pasang dependensi:
 
    ```bash
    composer install
    ```
 
-2. Salin templat environment, lalu sesuaikan isinya:
+2. Salin templat environment, lalu isi:
 
    ```bash
    cp env .env                 # PowerShell: Copy-Item env .env
+   php spark key:generate      # mengisi encryption.key
    ```
-
-   Berkas `env` adalah templat yang dilacak Git; `.env` hasil salinannya **tidak pernah** di-commit. Yang wajib diisi sebelum aplikasi dijalankan:
 
    | Kunci | Keterangan |
    |---|---|
-   | `app.baseURL` | URL aplikasi lokal Anda |
-   | `database.default.*` | kredensial database |
-   | `encryption.key` | bangkitkan dengan `php spark key:generate`; wajib — token objek arena `cari` diturunkan darinya |
-   | `gelita.ipSalt` | string acak panjang; garam ini yang membuat hash IP tidak dapat dibalik. Jangan dibiarkan kosong |
+   | `app.baseURL` | URL aplikasi lokal, mis. `http://localhost:8080/` |
+   | `database.default.*` | kredensial MariaDB/MySQL |
+   | `encryption.key` | wajib; token objek Cari Objek diturunkan darinya |
+   | `gelita.ipSalt` | string acak panjang; garam hash IP. Jangan dibiarkan bawaan |
 
-3. Buat database bila belum ada, jalankan migration, lalu isi data awal:
+   `env` adalah templat yang dilacak Git; `.env` tidak pernah di-commit.
+
+3. Buat database, jalankan migration, lalu isi data awal:
 
    ```bash
    mysql -u root -p -e "CREATE DATABASE gelita CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
    php spark migrate
    GELITA_ADMIN_PASSWORD='SandiKuatAnda123!' php spark db:seed DatabaseSeeder
+   php spark gelita:narration:import
    ```
 
-   Di PowerShell, sintaks `VAR='…' perintah` tidak ada:
+   Di PowerShell:
 
    ```powershell
    $env:GELITA_ADMIN_PASSWORD = 'SandiKuatAnda123!'; php spark db:seed DatabaseSeeder; Remove-Item Env:\GELITA_ADMIN_PASSWORD
    ```
 
-   Tabel sesi `ci_sessions` sudah termasuk migration proyek — jangan menjalankan `php spark session:migration`. Pada `CI_ENVIRONMENT = development`, `DatabaseSeeder` juga menjalankan `SampleItemSeeder` (2 butir contoh per node) agar kelima belas tantangan dapat dimainkan sebelum bank soal diimpor.
+   - `migrate` menjalankan 29 migration (satu tabel per berkas, termasuk `ci_sessions`); jangan menjalankan `php spark session:migration`.
+   - `DatabaseSeeder` mengisi daftar sekolah resmi, akun `admin`, pengaturan bawaan (indikator, rilis, studi), tiga wilayah, slot media, 12 tantangan dan 88 baris cerita, lalu `KontenKelas5Seeder` mengimpor Pustaka Kedu, bank soal kelas 5, dan 45 gambar contoh.
+   - `gelita:narration:import` memasang 100 rekaman narasi per bahasa sebagai audio **draft**. Setujui di panel: **Konten → Narasi → Setujui semua narasi draft** (ID dan EN).
 
 4. Jalankan server pengembangan:
 
@@ -348,124 +96,132 @@ Di Windows, Laragon (PHP 8.3 + MySQL) memenuhi semua prasyarat. Pengaturan ekste
    php spark serve
    ```
 
-   Akun staf awal: `admin` dengan sandi dari `GELITA_ADMIN_PASSWORD`, di `/admin/login`. Siswa mendaftar sendiri lewat `/mulai`.
+   Staf masuk di `/admin/login` (akun `admin`, sandi dari `GELITA_ADMIN_PASSWORD`). Siswa mendaftar sendiri lewat `/mulai`.
 
-## Migration
+Periksa isinya dengan `php spark gelita:content:verify`. Konten dialog dan soal di-cache; setelah mengubah data langsung di database, jalankan `php spark cache:clear`.
 
-Migration dijalankan berurutan dari `000100` sampai `004600` (47 berkas) dan menghasilkan 30 tabel: 28 tabel domain, `ci_sessions`, dan `migrations` (perombakan kelas 5 menghapus 4 tabel dan menambah 2, lihat baris `004100`–`004600`). `php spark migrate:rollback -b 0` mengembalikan database ke kosong.
+## Instalasi di server
 
-`003100`–`003300` adalah koreksi, `003400`, `003600`, `003700`, `003800`, `003900`, dan `004000` menambah kolom baru, `003500` menambah tabel baru. Perubahan skema selalu datang sebagai migration baru; migration lama tidak diubah.
+Langkah lengkap untuk kedua jalur (Linux: Nginx + PHP-FPM + cron; Windows: Laragon + Task Scheduler) ada di [`docs/08_DEPLOYMENT.md`](docs/08_DEPLOYMENT.md), dengan skrip di [`deploy/`](deploy/). Ringkasnya:
 
-| Versi | Peran |
+1. `composer install --no-dev --optimize-autoloader`, salin `env` → `.env` dengan `CI_ENVIRONMENT = production`, isi database, `encryption.key`, `gelita.ipSalt`, dan `app.baseURL`. Web server mengarah ke folder `public/`.
+2. `php spark migrate` dengan akun migrasi `gelita_migrate` lewat `database_default_DSN` (DSN ditulis tanpa port); aplikasi sendiri memakai akun berhak DML saja.
+3. `GELITA_ADMIN_PASSWORD='…' php spark db:seed DatabaseSeeder`, dijalankan sebagai pengguna web server (mis. `www-data`) agar `public/assets/uploads/` dapat ditulis.
+4. `php spark gelita:narration:import`, lalu setujui narasi draft di **Konten → Narasi**.
+5. `php spark gelita:content:verify`.
+6. Ganti gambar contoh dengan gambar asli di panel (**Media**). `php spark gelita:content:verify --siap-penelitian` harus lolos sebelum pengambilan data.
+7. Sesudah uji coba dan sebelum pengambilan data penelitian: buat backup, lalu `php spark gelita:reset` dengan akun migrasi.
+
+Pembaruan kode berikutnya memakai `deploy/linux/deploy.sh` atau `deploy/windows/deploy.ps1` (menolak berjalan bila ada kelas aktif, backup, mode pemeliharaan, pull, composer, migrate, impor sekolah, bersihkan cache, naikkan versi aset, lalu membuka situs hanya bila `gelita:content:verify` lolos). Backup dan `gelita:retention:run` dijadwalkan harian.
+
+## Command `gelita:*`
+
+Semua command mengembalikan kode keluar 1 saat gagal, sehingga dapat dipakai di skrip. Opsi bernilai menerima `--opsi nilai` maupun `--opsi=nilai`. Bantuan per command: `php spark help gelita:reset`.
+
+| Command | Fungsi |
 |---|---|
-| `002100` | membuat tabel `challenge_attempts` dengan nama kolom awal `first_pass_rate` / `final_rate` |
-| `003100` | koreksi kanonik: mengganti nama kedua kolom itu menjadi `first_pass_accuracy` / `final_accuracy` dan menambahkan `check_count`, `answer_change_count`, `audio_use_count` |
-| `003200` | menegakkan `NOT NULL` + default pada kelima kolom di atas (Forge membuatnya nullable saat `ALTER`), termasuk mengisi baris lama yang masih `NULL` |
-| `003300` | menambahkan index wajib `game_event_logs (session_id, occurred_at)` yang tidak dibuat `002400` |
-| `003400` | menambahkan `staff_users.must_change_password`: sandi sementara dari admin (reset / akun baru) wajib diganti sebelum panel terbuka |
-| `003500` | membuat `library_media` (banyak gambar/video per halaman Pustaka Kedu, dari unggahan atau tautan YouTube/Drive/Vimeo/Commons) dan menyalin isi kolom lama `image_a`/`image_b`/`video` ke sana |
-| `003600` | menambahkan `participants.intro_seen_at`: pemain baru wajib menonton cerita pembuka; peserta yang sudah punya progres diisi saat migration (backfill) |
-| `003700` | menambahkan `dialogues.pose` dan `dialogues.effect` (pose tokoh dan efek layar dari naskah); isinya diisi `php spark gelita:story:update` |
-| `003800` | menambahkan `challenge_items.audio_prompt_id` dan `audio_prompt_en_id` (FK `audio_assets`, `SET NULL`): narasi petunjuk arena `cari`; isinya ditautkan `gelita:narration:import` dari berkas `petunjuk-{node}-NN` |
-| `004000` | menambahkan `challenge_items.bloom_level` (`VARCHAR(2)`, ber-index): tingkat berpikir Taksonomi Bloom `C1` … `C6` per soal, diisi dari kolom `bloom_level` workbook atau editor soal |
-| `003900` | menjadikan `schools` direktori sekolah resmi: `level`, `stage`, `status`, `subdistrict_name`, `village_name`, `is_verified`, `match_key`, `merged_into_id` (FK ke `schools`, `SET NULL`); `match_key` baris lama diisi saat migration. Isinya dipasang `gelita:schools:import` |
-| `004100` | perombakan kelas 5 (Dok 1 §5.2): hapus `research_phases`, `participant_consents`, `game_sessions.phase_id`, dan kolom fase/consent di `research_studies`; tambah `participants.assented_at` |
-| `004200` | Dok 1 §5.3: hapus `scoring_profiles` dan kolom skor 0–100; tambah `challenge_attempts.variant_group`, `completion_reason`, `max_tries`, `item_responses.try_count`, `solved_on_try` |
-| `004300` | Dok 1 §5.4: tabel `item_tries` (satu baris per percobaan soal) |
-| `004400` | Dok 1 §5.5: `challenge_items.variant_group`; hapus `challenge_options` |
-| `004500` | Dok 1 §5.6: tabel `device_logs` (perangkat siswa saat daftar/masuk/lanjut sesi) |
-| `004600` | Dok 1 §5.7: `media_assets.is_placeholder`, `label`, `description` (gambar mockup, Dok 2) |
+| `gelita:bank:import <file> [--dry-run] [--staff <username>]` | Mengimpor workbook XLSX (bank soal atau Pustaka) dalam satu transaction; `--dry-run` hanya memvalidasi. Sama dengan **Konten → Impor soal dari Excel**. |
+| `gelita:content:verify [--strict] [--siap-penelitian]` | Memeriksa 3 wilayah × 4 tantangan, variasi, aturan bank soal, kunci, dan media. `--strict`: peringatan juga gagal; `--siap-penelitian`: gambar contoh yang masih dipakai menjadi galat. |
+| `gelita:library:thumbnails [--force]` | Mengunduh thumbnail video luar Pustaka (YouTube, Vimeo, Google Drive) dan memasangnya sebagai poster; butuh HTTPS keluar. |
+| `gelita:media:scan [--check-only]` | Menyinkronkan `public/assets` dengan tabel `media_assets` dan melaporkan berkas yang hilang atau berubah. |
+| `gelita:mockups [--dry-run] [--paksa] [--node=tmg-4]` | Membuat gambar contoh untuk slot gambar tantangan yang belum berisi gambar asli; gambar asli tidak pernah ditimpa. |
+| `gelita:narration:import [--locale=id\|en] [--dry-run]` | Mengimpor rekaman di `public/assets/audio/narasi/{id,en}/` sebagai audio draft; berkas yang tidak berubah dilewati. |
+| `gelita:reset [--dry-run] [--ya] [--paksa] [--pemeliharaan] [--tanpa-bank] [--bank=JALUR] [--tanpa-mockup] [--hapus-guru]` | Mengosongkan data uji coba dan pengaturan, membangun ulang 12 tantangan, dan mengimpor ulang bank soal; Pustaka, cerita, media, audio, sekolah resmi, dan akun staf tetap. Butuh akun berhak TRUNCATE. Data tidak dapat dikembalikan: selalu `--dry-run` dan backup dulu. |
+| `gelita:retention:run` | Retensi harian: sesi menganggur → `paused`, pengerjaan menggantung → `abandoned`, berkas ekspor kedaluwarsa dibuang, data yang melewati masa simpan hanya dibuatkan pratinjau penghapusan. |
+| `gelita:schools:import [--file=PATH] [--dry-run] [--link-existing]` | Memasang daftar sekolah resmi (NPSN) dari `app/Database/Seeds/data/sekolah-jateng.csv`; hanya menulis yang berubah, tidak pernah menghapus. |
+| `gelita:staff:password <username>` | Mengatur ulang sandi staf ke sandi sementara yang wajib diganti saat masuk. |
 
-`003200` memanggil `resetDataCache()` sebelum memeriksa kolom; tanpa itu seluruh pemeriksaan `fieldExists()` membaca daftar kolom versi sebelum `003100` pada proses `spark migrate` yang sama. Jangan melakukan rollback ke bawah `003100`: tahap 3 bergantung pada penamaan kolom hasil migration tersebut. Rincian lengkap di [`docs/01_DATABASE.md`](docs/01_DATABASE.md#koreksi-challenge_attempts-003100-dan-003200).
+Jangan menjalankan `gelita:reset` di server tanpa backup dan tanpa keputusan peneliti.
 
-## Aset vendor
-
-Library frontend di-host sendiri di [`public/assets/vendor/`](public/assets/vendor/); tidak ada CDN. Isinya `echarts.min.js` (ECharts 6.1.0) dan `howler.min.js` (Howler.js 2.2.4) dari paket rilis resmi, beserta lisensinya; versi, checksum, dan cara memperbaruinya ada di [`public/assets/vendor/README.md`](public/assets/vendor/README.md). Font lokal ada di `public/assets/fonts/`. Pola `.gitignore` sengaja `/vendor/` (khusus folder Composer di root) agar folder ini tetap dilacak Git.
-
-## Sesi dan CSRF
-
-- Sesi memakai `DatabaseHandler` dengan tabel `ci_sessions` (migration `003000`), cookie `gelita_session`, masa berlaku 4 jam, `regenerateDestroy` aktif, dan `matchIP` nonaktif.
-- CSRF memakai mode `session` dengan token acak per-request (`tokenRandomize`) tetapi **tanpa** regenerasi per-submit (`regenerate = false`). Game mengirim banyak request AJAX beruntun; token yang berubah setiap request membuat request paralel gagal. JavaScript mengirim token lewat header `X-CSRF-TOKEN`.
-- `App\Libraries\HashedIpSessionHandler` (penyimpan hash IP, bukan IP mentah) **belum dipasang**. Kelas itu mewarisi `MySQLiHandler` yang mengunci sesi dengan `GET_LOCK`, dan `Services::session()` hanya memetakan handler per-platform ketika driver persis `DatabaseHandler::class` — sehingga driver kustom melewati pemilihan platform dan gagal pada database uji SQLite. Perubahan yang diperlukan beserta buktinya dicatat di [`docs/02_PROJECT_FOUNDATION.md` § 3b](docs/02_PROJECT_FOUNDATION.md#3b-library-hashedipsessionhandler--belum-dipasang).
-
-## Pengujian
-
-Jalankan test suite tanpa laporan coverage:
+## Uji
 
 ```bash
 vendor/bin/phpunit --no-coverage
 ```
 
-Suite (419 test) memakai grup database `tests` (SQLite3 in-memory) dan hanya menjalankan migration bernamespace `Tests\Support`, bukan migration aplikasi — skema aplikasi memakai fitur MySQL/MariaDB (`DATETIME(6)`, `ON UPDATE CURRENT_TIMESTAMP(6)`) yang tidak ada di SQLite. Sesi di-mock dengan `ArrayHandler` oleh `CIUnitTestCase`. Yang dikunci suite antara lain:
+`phpunit.dist.xml` meminta laporan coverage; tanpa Xdebug/PCOV, PHPUnit memberi peringatan "No code coverage driver available" yang membuat kode keluar 1. Pakai `--no-coverage` bila driver coverage tidak terpasang.
 
-- `RouteWiringTest` — auto-route tetap mati, setiap handler menunjuk kelas/method yang ada, setiap view yang disebut controller punya berkasnya, dan ganti sandi staf hanya berfilter `staffAuth` (terbuka untuk guru).
-- `HeadRouteTest` — HEAD memakai rute GET beserta filternya; HEAD ke halaman staf tanpa login dialihkan ke `/admin/login`.
-- `StaffPasswordGateTest` — staf bersandi sementara hanya dapat membuka Ubah sandi: halaman lain dialihkan, API membalas 403 `PASSWORD_CHANGE_REQUIRED`.
-- `HuntPayloadTest` — payload arena `cari` tidak membedakan jebakan, jawaban hanya lewat token objek, dan objek jebakan tidak pernah diminta dijawab.
-- `RegionEntryTest`, `DialogueGateTest` — wilayah baru selalu lewat dialog pembukanya.
-- `RegionStoryTest` (Tahap 3) — `/tuntas/{code}` hanya untuk wilayah tuntas dan berakhir di Pustaka + wilayah berikutnya (atau penutup), `/penutup` hanya setelah semua node tuntas, overlay Kenali untuk setiap wilayah dengan lencana dari event server, tirai wilayah di pin/kartu, layar selesai penuntas menuju `/tuntas/{code}`, dialog bernarasi dengan kartu bab dan frame pose per baris, serta tirai tantangan yang pendek, dapat dilewati, dan diputar sebelum attempt dibuka.
-- `LibraryLockTest` — Pustaka terbuka per wilayah hanya setelah wilayahnya tuntas (juga pada unlock mode `free`), halaman terkunci dirender tanpa mencatat `library_opened`, wilayah yang belum terbuka tetap ditolak, rak `/pustaka` dan tombol bergembok di peta wilayah, serta momen "Pustaka terbuka" hanya milik attempt penuntas.
-- `VideoThumbnailTest` — alamat thumbnail per penyedia (YouTube maxres → hq, Vimeo oEmbed, Drive), respons HTML/non-gambar/SVG/terlalu besar ditolak, galat jaringan tidak melempar; memakai HTTP tiruan, tanpa jaringan.
-- `JsConfigTest` — penanda sesi antrean offline buram dan per sesi, `#app-config` tanpa identitas siswa, dan setiap `t('…')` di JavaScript punya kunci `Js.*`.
-- `SystemResetTest` (perombakan kelas 5) — `gelita:reset` di atas skema lengkap SQLite (`tests/_support/Database/ResetTables.php`, salinan skema `004600`): `--dry-run` tidak menulis apa pun, tanpa kata konfirmasi berhenti dengan kode 1, data uji coba kosong, isi Pustaka/cerita/level/media sama persis, sekolah belum terverifikasi dan `--hapus-guru`, 12 tantangan, satu studi aktif, audit `system_reset`, impor workbook uji kecil.
-- `RegisterWizardTest` — pendaftaran `/daftar/1–3` lewat router: urutan dan penjaga langkah, umur 8–15, gender dua pilihan, NPSN dan jenjang, kembali ke langkah sebelumnya, metrik sandi, kata sandi tidak pernah masuk session, validasi ulang langkah 1–2.
-- `DeviceProfileTest`, `ScreenViewFilterTest` — perangkat dari User-Agent nyata + Client Hints (koreksi iPad, bot, `device_json` rusak/terlalu besar, pemangkasan kolom); kode layar `screen_viewed`.
-- `ItemTryWritesTest`, `StarsTest` — satu baris `item_tries` per percobaan, `try_count`/`solved_on_try`, soal terkunci, kesempatan habis; aturan bintang `bintang-1`.
-- `ExcelWriterTest` — workbook terbaca ulang PhpSpreadsheet, teks berawalan `=` tidak pernah menjadi rumus, berkas sementara dibersihkan.
-- `ExportLabelsTest` — setiap kolom setiap lembar punya judul Indonesia (bukan kode), nama lembar Indonesia ≤ 31 karakter, kolom teknis tidak diunduh, kode menjadi kata, satuan detik/menit, kelompok per dimensi, sel tanggal Excel tanpa geser jam.
-- `AnswerTextTest` — jawaban dan kunci dalam kalimat: keping tepat, rumpang, kartu benar/salah, benda yang dicari, isi catatan aktivitas.
-- `PuzzleCutTest` — ukuran papan per tingkat (3 × 3 / 4 × 4 / jigsaw), urutan penentuan ukuran per soal, keping jigsaw bersebelahan memakai kurva yang sama, tepi papan lurus, potongan tetap per soal, dan aturan CSS keping jigsaw yang tidak dikecilkan base.css.
-- `ClozeReadingTest` — potongan bacaan menjadi paragraf dengan rumpang di dalam kalimat, aturan rumpang/pengecoh/Bloom per tingkat, semua soal bacaan dalam urutan bank, bank kata stabil per percobaan.
-- `BankReadingDataTest` — isi bank soal kelas 5 di `docs/bank-soal/data/`: tiga gambar aktif per Susun Gambar, ketiga bacaan memenuhi aturan wilayahnya tanpa peringatan, jeda paragraf sesudah rumpang, butir lama diistirahatkan bukan dihapus.
-- `BankWorkbookGuideTest` — setiap kolom yang dibaca importer punya penjelasan Indonesia di templat, header sheet data sama persis dengan importer, baik di templat unduhan maupun di workbook kelas 5 (`docs/bank-soal/gelita-bank-soal-kelas5.xlsx`, Dok 2) bila sudah ada.
-- `MediaLinkTest`, `RichTextTest` — tautan media Pustaka hanya http(s) dan YouTube lewat domain nocookie; format teks Pustaka selalu meng-escape HTML lebih dulu.
-- `ExportRulesTest` — mode anonim tanpa kolom identitas (termasuk `school_npsn`), rahasia tidak pernah diekspor, kunci jawaban hanya admin, guru tanpa lembar Catatan aktivitas (`Raw Events`), cakupan sekolah dipaksa service, cakupan & penjaga drift penghapusan.
-- `SchoolNameTest` — varian penulisan satu sekolah ("SD NEGERI 1 CENDONO", "sdn 01 Cendono", "S.D.N. 1 Cendono", MTs/MI/SDIT, Muhammadiyah, kecamatan di nama resmi) berkunci sama; SD 1 vs SD 2 vs SD 11 vs MI tetap berbeda.
-- `SchoolDataFileTest` — daftar sekolah resmi `docs/sekolah/`: kolom, NPSN 8 angka unik, ke-35 kab/kota Jawa Tengah ada di `wilayah-id.json`, contoh peneliti (NPSN 20318068 = SD 1 CENDONO), berkas meta sesuai isi.
-- `SchoolDirectoryTest` — impor hanya menulis yang berubah dan tidak menghapus, berkas rusak ditolak utuh, cek NPSN & aturan `known_npsn`, NPSN wajib hanya setelah daftar terpasang, pencocokan nama yang tidak menebak saat ambigu, satu entri belum terverifikasi per varian, pencarian panel, gabung (siswa + guru pindah, alias), sahkan, gabung otomatis.
-- `Stage7WiringTest` — command `gelita:*` aktif (termasuk `gelita:reset`; `gelita:score:recompute` sudah dihapus), service baru terdaftar, dan setiap keluaran templat PDF lewat `esc()`.
-- `StaffPasswordCommandTest` — `gelita:staff:password` terdaftar, menolak tanpa nama pengguna, dan memakai jalur reset yang sama dengan `/admin/staf`; sandi sementaranya lolos `PasswordPolicy`.
-- `DeployFilesTest` — skrip Windows hanya ASCII, skrip Bash ber-LF dengan `set -E`, konfigurasi Nginx Linux dan Windows hanya berbeda di baris platform, tidak ada perintah yang merusak production, salinan `.env` di backup Windows tidak langsung terhapus retensi.
-- `PasswordPolicyTest`, `ChallengeEntityTest`, `ViewHelperTest`, `LanguageFilesTest`, `EventTimeTest`, `DebugToolbarRedactionTest`.
+Suite memakai SQLite in-memory (grup database `tests`) dengan skema tiruan di `tests/_support/`, bukan migration aplikasi, karena skema memakai fitur MariaDB/MySQL (`DATETIME(6)`). Alur HTTP ujung ke ujung diuji di atas MariaDB/MySQL sungguhan dengan database terpisah; kredensial CLI dapat dioper lewat `database_default_DSN='MySQLi://user:sandi@localhost/gelita_uji' php spark migrate`.
 
-Karena tabel aplikasi tidak dibuat di suite ini, **alur HTTP ujung ke ujung diverifikasi di atas MySQL/MariaDB sungguhan**. Gunakan database scratch terpisah. Kredensial untuk perintah CLI dioper lewat `database_default_DSN`, satu-satunya cara yang dapat menimpa `.env`:
+## Struktur repositori
 
-```bash
-database_default_DSN='MySQLi://user:sandi-url-encoded@localhost/gelita_scratch' php spark migrate
-```
+| Folder | Isi |
+|---|---|
+| `app/Commands/` | command `gelita:*` |
+| `app/Config/` | konfigurasi; konstanta domain di `Gelita.php`, route di `Routes.php` |
+| `app/Controllers/` | `Game/`, `Admin/`, `Api/` |
+| `app/Database/` | 29 migration, seeder, data naskah (`Seeds/data/story.php`) dan sekolah |
+| `app/Libraries/`, `app/Services/` | aturan bank soal (`BankRules`, `DifficultyRules`), impor, penilaian, ekspor, reset |
+| `app/Models/`, `app/Entities/` | model per tabel |
+| `app/Views/`, `app/Language/{id,en}/` | tampilan dan teks dwibahasa |
+| `public/assets/` | CSS, JavaScript (`core/`, `game/`, `engines/`, `admin/`), audio, font, vendor; unggahan admin di `uploads/` (tidak dilacak Git) |
+| `deploy/` | skrip deploy, backup, retensi, dan konfigurasi Nginx untuk Linux dan Windows |
+| `docs/` | dokumentasi, sumber bank soal, Pustaka, dan daftar sekolah |
+| `tests/` | suite PHPUnit |
+| `tools/audio/` | generator musik, efek suara, dan narasi |
 
-`env "database.default.database=…"` atau `database_default_username=…` **tidak** berlaku bila kunci itu sudah ada di `.env`, karena nilai `.env` dibaca lebih dulu. DSN ditulis tanpa port: CodeIgniter 4.7.4 meneruskan port dari DSN sebagai string, dan `mysqli` menolaknya. Rinciannya di [`docs/08_DEPLOYMENT.md` → *Kredensial migration lewat DSN*](docs/08_DEPLOYMENT.md#kredensial-migration-lewat-dsn).
-
-lalu seed, jalankan `php spark serve`, dan telusuri alur siswa (registrasi → tantangan → refleksi) serta halaman admin. `php spark serve` membaca `.env`, jadi untuk penelusuran HTTP isi `.env` lokal dengan database scratch tersebut.
-
-Perilaku JavaScript tahap 6 diverifikasi dengan cara yang sama di browser sungguhan (Playwright + Chromium): alur siswa 15 node beserta jalur galatnya, antrean offline, telemetry audio, dan seluruh halaman admin ber-chart. Konten dialog dan butir di-cache `ContentRepository`; setelah mengubah data langsung di database, jalankan `php spark cache:clear`.
+Daftar route lengkap: `php spark routes`.
 
 ## Dokumentasi
 
-Dokumen spesifikasi per tahap ada di folder [`docs`](docs/) dan mencerminkan implementasi terkini:
+| Dokumen | Isi |
+|---|---|
+| [`docs/01_DATABASE.md`](docs/01_DATABASE.md) | skema database |
+| [`docs/02_PROJECT_FOUNDATION.md`](docs/02_PROJECT_FOUNDATION.md) | fondasi proyek, konfigurasi, `.env` |
+| [`docs/03_MODEL_ENTITY.md`](docs/03_MODEL_ENTITY.md) | model, entity, service |
+| [`docs/04_CONTROLLER_ROUTE.md`](docs/04_CONTROLLER_ROUTE.md) | route, controller, autentikasi, otorisasi |
+| [`docs/05_VIEW_UI.md`](docs/05_VIEW_UI.md) | view, UI, CSS |
+| [`docs/06_JAVASCRIPT.md`](docs/06_JAVASCRIPT.md) | JavaScript |
+| [`docs/07_FEATURE_INTEGRATION.md`](docs/07_FEATURE_INTEGRATION.md) | integrasi fitur |
+| [`docs/08_DEPLOYMENT.md`](docs/08_DEPLOYMENT.md) | instalasi server dan operasional |
+| [`docs/audio.md`](docs/audio.md) | musik, efek suara, narasi TTS |
+| [`docs/naskah-cerita.md`](docs/naskah-cerita.md) | naskah cerita dwibahasa dan konvensi rekaman |
+| [`docs/bank-soal/README.md`](docs/bank-soal/README.md) | bank soal kelas 5, aturan, 45 slot gambar tantangan |
+| [`docs/pustaka/README.md`](docs/pustaka/README.md) | isi Pustaka Kedu |
+| [`docs/sekolah/README.md`](docs/sekolah/README.md) | daftar sekolah resmi Jawa Tengah |
+| [`docs/perombakan-kelas5/`](docs/perombakan-kelas5/) | rencana perombakan kelas 5 (Dok 1–3) dan [catatan implementasinya](docs/perombakan-kelas5/CATATAN_IMPLEMENTASI.md); tata letak 16:9 dan dasbor admin baru direncanakan di Dok 3 |
 
-1. [Database](docs/01_DATABASE.md)
-2. [Fondasi proyek](docs/02_PROJECT_FOUNDATION.md)
-3. [Model, entity, dan service](docs/03_MODEL_ENTITY.md)
-4. [Route, controller, autentikasi, otorisasi](docs/04_CONTROLLER_ROUTE.md)
-5. [View, UI, dan CSS](docs/05_VIEW_UI.md)
-6. [JavaScript](docs/06_JAVASCRIPT.md)
-7. [Integrasi fitur](docs/07_FEATURE_INTEGRATION.md)
-8. [Deployment dan operasional](docs/08_DEPLOYMENT.md) — Linux dan Windows + Laragon (Nginx); skripnya di [`deploy/`](deploy/)
+## Ukuran aset wajib
 
-Audio permainan (musik gamelan, efek suara, narasi TTS ID/EN) dijelaskan di [`docs/audio.md`](docs/audio.md); generatornya di [`tools/audio/`](tools/audio/README.md).
+Ukuran gambar per slot ditetapkan di `Config\Gelita::$assetSizes`. Slot bertanda "ya" ditolak saat diunggah bila ukurannya tidak **tepat** sama; slot lain hanya ditandai "ukuran lain" di **Media → Kelengkapan aset** (`/admin/media/kelengkapan`), yang juga mendaftar slot yang masih kosong. Permainan tetap berjalan tanpa gambar-gambar ini (gradien, monogram, gambar contoh).
 
-Daftar route lengkap dapat dilihat kapan saja tanpa membaca kode:
+| Slot | Ukuran (px) | Ditolak bila lain |
+|---|---|---|
+| Latar layar `bg.*` (`bg.loading`, `bg.welcome`, `bg.auth`, `bg.intro`, `bg.map`, `bg.reflection`, `bg.{wilayah}.region`) | 1920 × 1080 | ya |
+| Frame pose tokoh `char.jaka.{pose}.{1–3}`, `char.kedu.{pose}.{1–3}` (PNG transparan) | 700 × 900 | ya |
+| Logo halaman awal `ui.logo-hero` | 1600 × 600 | ya |
+| Tombol Mulai `ui.btn-start`, `ui.btn-start.en` | 720 × 240 | ya |
+| Adegan Cari Objek `challenge.{tmg,mgl,wnb}-4.scene` | 1280 × 720 | ya |
+| Gambar Susun Gambar `challenge.item.{tmg,mgl,wnb}-1-…` | 1200 × 1200 | ya |
+| Gambar pernyataan Benar atau Salah `challenge.item.{tmg,mgl,wnb}-3-…` | 480 × 360 | ya |
+| Benda Cari Objek `challenge.item.{tmg,mgl,wnb}-4-…` (latar transparan) | 240 × 240 | ya |
+| Peta wilayah `map.region.{wilayah}` | 1400 × 900 | tidak |
+| Lencana wilayah `reward.badge.{wilayah}` | 320 × 320 | tidak |
+| Gambar sampul video Pustaka | 960 × 640 (anjuran) | tidak |
 
-```bash
-php spark routes
-```
+`ui.logo` dan `map.kedu` berukuran bebas. Daftar 45 gambar tantangan beserta isinya ada di [`docs/bank-soal/README.md`](docs/bank-soal/README.md#gambar-tantangan-45-slot).
+
+## Audio bawaan
+
+Seluruh audio ikut di repositori dan dibangkitkan oleh [`tools/audio/`](tools/audio/README.md):
+
+- **Musik gamelan** (`public/assets/audio/music/`): `map`, `region`, `challenge`, komposisi dan sintesis orisinal.
+- **Efek suara** (`public/assets/audio/sfx/`): `click`, `correct`, `wrong`, `lock`, `shard`, `region-done`.
+- **Narasi** (`public/assets/audio/narasi/{id,en}/`): 100 rekaman per bahasa (88 baris naskah + 12 petunjuk Cari Objek), suara sintetis (TTS) yang tercatat sebagai `production_method = tts`. Dipasang dengan `php spark gelita:narration:import` dan disetujui di **Konten → Narasi**; rekaman pengisi suara dapat menggantikannya dengan nama berkas yang sama.
+
+Rincian, spesifikasi berkas, dan lisensi model suara ada di [`docs/audio.md`](docs/audio.md).
 
 ## Catatan keamanan
 
-- Jangan pernah commit atau membagikan `.env`; berkas ini memuat kredensial dan material rahasia aplikasi. Yang dilacak Git hanyalah templat `env` tanpa nilai rahasia.
-- `gelita.ipSalt` wajib diisi string acak panjang per pemasangan. Salt kosong membuat hash IP berupa SHA-256 tanpa garam yang dapat dibalik dengan pencarian menyeluruh ruang IPv4.
-- Server sekolah wajib memakai `CI_ENVIRONMENT = production` (templat `env` berisi `development` untuk kerja lokal). Di development, Debug Toolbar menulis potret setiap request ke `writable/debugbar/`; field kata sandi disamarkan `App\Filters\DebugToolbar`, tetapi data lain tetap tersimpan.
-- Gunakan akun database dengan hak akses seperlunya, terutama di production.
-- Konfigurasi web server harus selalu mengarah ke folder [`public`](public/), bukan root proyek.
-- Untuk deployment, gunakan dependensi yang terkunci melalui `composer install --no-dev --optimize-autoloader`.
+- Jangan pernah commit atau membagikan `.env`; berkas ini memuat kredensial dan `encryption.key`.
+- `gelita.ipSalt` wajib diisi string acak panjang per pemasangan; IP mentah tidak disimpan di data penelitian.
+- Server sekolah wajib memakai `CI_ENVIRONMENT = production`. Di `development`, Debug Toolbar menyimpan potret setiap request ke `writable/debugbar/` (field kata sandi disamarkan `App\Filters\DebugToolbar`).
+- Web server harus mengarah ke folder `public/`, bukan root proyek.
+- Sesi memakai `DatabaseHandler` (tabel `ci_sessions`). `App\Libraries\HashedIpSessionHandler` (penyimpan hash IP) **belum dipasang**: kelas itu mewarisi `MySQLiHandler`, sedangkan `Services::session()` hanya memilih handler per platform bila driver persis `DatabaseHandler`, sehingga driver kustom gagal di database uji SQLite. Karena itu `ci_sessions.ip_address` masih berisi IP mentah; isi tabel ini tidak ikut backup.
+
+## Lisensi dan kredit
+
+- Daftar sekolah resmi berasal dari Data Induk Pendidikan lewat cermin [`bahrye/api-sekolah`](https://github.com/bahrye/api-sekolah) (MIT); lihat [`docs/sekolah/README.md`](docs/sekolah/README.md).
+- Howler.js 2.2.4 (MIT) dan font Cinzel, Plus Jakarta Sans, IBM Plex Mono (SIL OFL 1.1) di-host sendiri; versi dan lisensinya di [`public/assets/vendor/README.md`](public/assets/vendor/README.md).
+- Model suara narasi (Mimic 3 `jv_ID`, CC BY-SA 4.0; suara Piper) beserta syarat atribusinya tercantum di [`docs/audio.md`](docs/audio.md#lisensi-dan-kredit).
+- Kredit gambar dan video Pustaka Kedu tercantum per media di [`docs/pustaka/data/`](docs/pustaka/data/).

@@ -84,7 +84,7 @@ class GameEventLogModel extends Model
      * Linimasa satu sesi, diurutkan `occurred_at` lalu `sequence_no`
      * (01_DATABASE.md, aturan 8). `sequence_no` klien dimulai ulang pada
      * setiap halaman yang dimuat, jadi tidak dapat menjadi kunci urutan utama.
-     * Didukung index (session_id, occurred_at) dari migration 003300.
+     * Didukung index (session_id, occurred_at) tabel game_event_logs.
      *
      * @return list<array<string, mixed>>
      */

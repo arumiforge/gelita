@@ -8,8 +8,8 @@ use App\Models\ResearchStudyModel;
 use CodeIgniter\HTTP\RedirectResponse;
 
 /**
- * Studi penelitian dan rilis konten. Satu tahap bermain (tanpa fase, tanpa
- * pengaturan persetujuan atau mode pemilihan soal — perombakan kelas 5).
+ * Studi penelitian dan rilis konten. Satu tahap bermain; studi mengatur
+ * periode dan mode buka wilayah.
  *
  * Mengaktifkan rilis mengubah konten yang dipakai sesi berikutnya, jadi
  * setiap perubahan dicatat di `audit_logs`.

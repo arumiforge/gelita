@@ -20,7 +20,7 @@ class Session extends BaseConfig
      * - `CodeIgniter\Session\Handlers\MemcachedHandler`
      * - `CodeIgniter\Session\Handlers\RedisHandler`
      *
-     * GELITA memakai DatabaseHandler (tabel `ci_sessions`, migration 003000)
+     * GELITA memakai DatabaseHandler (tabel `ci_sessions`, migration 002900)
      * agar sesi tahan restart dan dapat dipakai lintas worker. Services::session()
      * memetakan DatabaseHandler ke MySQLiHandler sesuai platform koneksi.
      *

@@ -1,933 +1,884 @@
 # 06_JAVASCRIPT.md — Perilaku Frontend
 
-> **Revisi 2 (21 September 2026).** Ditambahkan: `game/password-meter.js` (meter kekuatan + daftar syarat + keterangan bila sandi belum kuat), cek ketersediaan nama pengguna, `game/login.js`; engine `boleh` memakai verdict Benar/Salah/Pendapat dengan panel teks bacaan dan dua sumber; engine `rumpang` memakai bank kata dari server (jawaban + pengecoh); editor konten mendukung `verdict_*`, `ordering`, teks bacaan, dan pengecoh; `admin/bank-import.js`. `SESSION_CODE` di client dihapus karena identitas siswa kini dipegang session server.
->
-> **Revisi 3 (23 September 2026) — tahap 6 selesai.** Seluruh berkas di bawah sudah diimplementasi dan diuji ujung ke ujung di MariaDB (lihat [*Catatan Implementasi Tahap 6*](#catatan-implementasi-tahap-6)). Perubahan kontrak: antrean offline bertanda sesi (`sessionTag`), kanal audio terpisah, `elapsed_ms` pada payload tantangan, `detail` pada respons `/check`, kode galat `CSRF_EXPIRED`, dan kunci `chart` pada API admin.
-
----
-
 ## Tujuan
 
-Membuat seluruh JavaScript GELITA: lapisan inti (API, event queue, audio, modal, toast), lima mesin tantangan, perilaku halaman permainan, dan perilaku panel admin termasuk chart.
+Menjelaskan seluruh JavaScript GELITA di `public/assets/js/`: lapisan inti (API, antrean event, audio, modal, tirai), perilaku tiap layar permainan, kerangka tantangan beserta keempat engine (`puzzle`, `rumpang`, `boleh`, `cari`), dan perilaku panel admin. Isi dokumen ini mengikuti kode; bila berbeda, kode yang benar dan dokumen ini yang diperbaiki.
 
 ---
 
-## Konteks
+## Prinsip
 
-JavaScript ditulis sebagai **ES modules** modern, tanpa bundler dan tanpa build step. Berkas dimuat langsung dengan `<script type="module">`; browser menangani `import`. Target dukungan: Chrome/Edge/Firefox/Safari versi 2 tahun terakhir.
+**ES module tanpa build.** Semua berkas ditulis sebagai ES module modern, tanpa bundler, transpiler, atau build step. Layout memuat satu titik masuk dengan `<script type="module">` (`js/game.js` di `layouts/game.php`, `js/admin.js` di `layouts/admin.php`), lewat `asset_url_versioned()` sehingga `?v=` ikut berganti saat `gelita.assetVersion` dinaikkan. Modul khusus halaman dimuat dengan `import()` dinamis, jadi tiap halaman hanya memuat yang dipakainya. Tidak ada Vue, React, Alpine, htmx, atau SPA framework. Target: Chrome/Edge/Firefox/Safari dua tahun terakhir, termasuk Safari iPad.
 
-Tidak ada Vue, React, Vite, Angular, atau SPA framework. Halaman tetap dirender server; JavaScript hanya menambah perilaku pada markup yang sudah ada.
+**Progressive enhancement.** Halaman dirender server dan tetap dapat dibaca serta dipakai tanpa JavaScript: slide berpindah lewat jangkar `#prefix-n` + CSS `:target`, lentera dan konfirmasi Keluar memakai `<details>`, formulir dikirim sebagai POST biasa, pilihan Benar/Salah memakai radio bawaan. Begitu `game.js`/`admin.js` jalan, `<html>` diberi kelas `js`; aturan CSS yang bergantung pada JavaScript (mis. gambar Pustaka yang memudar masuk) hanya berlaku di bawah `html.js`. Pengecualian yang disengaja: arena tantangan butuh JavaScript, dan `_frame.php` menampilkan pesan `Game.needsJs` di `<noscript>`.
 
-Aturan dasar yang berlaku di seluruh berkas:
+**Server sumber kebenaran.** Klien tidak pernah menghitung benar/salah, bintang, sisa kesempatan, status buka-kunci, atau jumlah serpihan. Payload soal tidak memuat kunci jawaban; tampilan hasil selalu dari respons server.
 
-1. **Server adalah sumber kebenaran.** Client tidak pernah menghitung benar/salah, skor, bintang, atau status unlock. Ia hanya menampilkan apa yang dikembalikan server.
-2. **Tidak ada kunci jawaban di client.** Payload soal dari `/api/nodes/{id}/attempts` tidak memuat `answer_key_json`.
-3. **Semua event penting dikirim ke server**, dengan `client_event_id` agar pengiriman ulang tidak menggandakan data.
-4. **UI hanya diperbarui setelah server menjawab** untuk hal-hal yang authoritative. Umpan balik yang tidak authoritative (animasi klik, sorot kotak aktif) boleh langsung.
+**Aksesibilitas.**
+
+- Seluruh interaksi tantangan dapat diselesaikan dengan keyboard (panah pada papan Susun Gambar, Tab/Enter pada benda Cari Objek, radio pada Benar atau Salah).
+- Modal memindahkan fokus ke tombol pertama, memerangkap fokus selama terbuka, dan mengembalikannya ke pemicu.
+- Lapisan yang menutupi halaman (tirai, overlay Kenali, layar putar) membuat sisa halaman `inert`.
+- Pengumuman singkat lewat `announce()` (wilayah `aria-live` bersama `#sr-announcer`); hasil tanda ✓/✗ ikut masuk `aria-label`.
+- Teks yang diketik mesin ketik narasi tetap utuh untuk pembaca layar (`visually-hidden`).
+
+**Gerak dikurangi.** `prefers-reduced-motion: reduce` dihormati di semua modul: konfeti tidak digambar, mesin ketik dan efek layar narasi mati, animasi tukar dan penyusunan keping Susun Gambar dilewati, `scrollToCenter()` menggulir tanpa animasi, tirai menutup tanpa memudar.
 
 ---
 
-## Struktur File
+## Struktur Berkas
 
 ```text
-public/assets/js/
-├── game.js                  titik masuk halaman permainan
-├── admin.js                 titik masuk panel admin
-├── core/
-│   ├── config.js            membaca #app-config
-│   ├── api.js               fetch + CSRF + penanganan error seragam
-│   ├── events.js            antrean event + pengiriman batch
-│   ├── storage.js           antrean offline di localStorage
-│   ├── modal.js             dialog tengah layar
-│   ├── toast.js             notifikasi sementara
-│   ├── audio.js             pemutar narasi + efek suara (Howler); autoplay & elemen narasi bersama
-│   ├── curtain.js           tirai pemuatan layar penuh: playCurtain() + tautan a[data-curtain] (map, region, challenge)
-│   ├── timer.js             jam tantangan
-│   ├── confetti.js          efek konfeti ringan (canvas)
-│   └── dom.js               pembantu kecil: $, $$, on, el, esc, readJson, announce
-├── game/
-│   ├── hud.js               lentera, tombol suara, konfirmasi keluar
-│   ├── register.js          form pendaftaran bertingkat + cek nama pengguna
-│   ├── password-meter.js    meter kekuatan & daftar syarat sandi (registrasi + ganti sandi)
-│   ├── login.js             form masuk: lihat sandi, Caps Lock, cegah kirim ganda
-│   ├── slides.js            slide bersama intro/dialog/pustaka (hash + keyboard; `hash: false` untuk overlay)
-│   ├── narrator.js          pemutar narasi sinematik: ketuk-untuk-mulai, mesin ketik, maju otomatis, efek
-│   ├── intro.js             cerita pembuka & penutup (narrator mode tap)
-│   ├── dialogue.js          dialog wilayah & wilayah tuntas (narrator + pose tokoh)
-│   ├── map.js               peta Kedu (narasi peta, overlay Kenali wilayah) & peta wilayah
-│   ├── library.js           Pustaka Kedu
-│   ├── reflection.js        formulir kritik & saran
-│   ├── finished.js          layar selesai (bunyi serpihan)
-│   └── challenge.js         pemilih mesin + kerangka bersama
-├── engines/
-│   ├── puzzle.js
-│   ├── rumpang.js
-│   ├── boleh.js
-│   ├── pilihan.js
-│   └── cari.js
-└── admin/
-    ├── filters.js           filter bar + sinkron URL
-    ├── charts.js            adapter ECharts
-    ├── tables.js            pengurutan, pencarian, pagination client
-    ├── content-editor.js    form item dinamis per interaction_type
-    ├── bank-import.js       unggah workbook bank soal + pratinjau
-    ├── object-picker.js     penempatan koordinat objek `cari`
-    ├── media-upload.js      unggah + pemeriksaan ukuran
-    └── export.js            polling status export
+public/
+├── sw.js                    service worker: offline.html untuk navigasi saat jaringan putus
+└── assets/js/
+    ├── game.js              titik masuk halaman permainan
+    ├── admin.js             titik masuk panel admin
+    ├── core/
+    │   ├── config.js        membaca #app-config: CONFIG, LOCALE, url(), t()
+    │   ├── api.js           apiRequest(), ApiError, handleApiError()
+    │   ├── events.js        antrean event + pengiriman batch: emit(), emitAudio(), flush(), resendQueued()
+    │   ├── storage.js       antrean offline & preferensi di localStorage
+    │   ├── audio.js         Sfx (Howler) + pemutar narasi (NarrationPlayer)
+    │   ├── curtain.js       tirai pemuatan layar penuh: playCurtain(), initCurtains()
+    │   ├── device.js        sinyal perangkat, viewport_changed, page_hidden/visible, reading_progress
+    │   ├── modal.js         showModal(), confirmDialog(), closeModal(), isModalOpen()
+    │   ├── toast.js         toast()
+    │   ├── timer.js         jam tantangan: startTimer(), formatClock()
+    │   ├── confetti.js      konfeti canvas
+    │   └── dom.js           $, $$, on, el, esc, readJson, announce, scrollToCenter, debounce, …
+    ├── game/
+    │   ├── hud.js           tombol suara, lentera, heartbeat sesi
+    │   ├── rotate-gate.js   aksesibilitas layar putar (potret)
+    │   ├── install.js       service worker + tawaran pasang aplikasi
+    │   ├── register.js      pendaftaran tiga langkah
+    │   ├── password-meter.js meter & syarat kata sandi
+    │   ├── login.js         formulir masuk
+    │   ├── slides.js        slide bersama (cerita, dialog, Pustaka)
+    │   ├── narrator.js      pemutar narasi sinematik
+    │   ├── intro.js         cerita pembuka & penutup
+    │   ├── dialogue.js      dialog wilayah & wilayah tuntas
+    │   ├── map.js           peta Kedu (narasi peta, overlay Kenali) & peta wilayah
+    │   ├── library.js       buku Pustaka & rak Pustaka Kedu
+    │   ├── reflection.js    Balai Refleksi
+    │   ├── finished.js      layar selesai tantangan
+    │   └── challenge.js     kerangka tantangan + pemilih engine
+    ├── engines/
+    │   ├── puzzle.js        Susun Gambar
+    │   ├── rumpang.js       Isi Rumpang
+    │   ├── boleh.js         Benar atau Salah
+    │   └── cari.js          Cari Objek
+    └── admin/
+        ├── filters.js       filter bar tanpa muat ulang
+        ├── tables.js        urut & saring tabel
+        ├── content-editor.js editor soal terpandu + pengecoh rumpang
+        ├── object-picker.js penempatan benda Cari Objek
+        ├── bank-import.js   impor workbook bank soal
+        ├── media-upload.js  unggah media + cek ukuran
+        ├── narration-upload.js unggah banyak berkas narasi
+        └── export.js        pantau status ekspor
 ```
+
+Library pihak ketiga hanya `public/assets/vendor/howler.min.js` (lihat [Library JavaScript](#library-javascript)).
 
 ---
 
-## Implementasi — Lapisan Inti
+## Konfigurasi dan Teks dari Server
 
-### `core/config.js`
+Data untuk JavaScript selalu dikirim sebagai `<script type="application/json">` yang di-encode `json_encode()` dengan flag `JSON_HEX_*`, tidak pernah diinterpolasi ke string JavaScript.
+
+| Elemen | Dirender oleh | Isi | Dibaca |
+|---|---|---|---|
+| `#app-config` | `layouts/game.php` (`js_config($locale)`) dan `layouts/admin.php` (`js_config('id')`) | `locale`, `csrfName`, `csrfHash`, `apiBase`, `baseUrl`, `sessionTag`, `maxTries`, `stage`, `text` | `core/config.js` |
+| `#challenge-data` | `game/challenge/_frame.php` (`ChallengeService::buildPayload()`) | payload pengerjaan tanpa kunci jawaban | `game/challenge.js` |
+| `#password-policy` | `components/password-field.php` (`PasswordPolicy::toClient()`) | aturan sandi dari `Config\Gelita::$passwordPolicy` | `game/password-meter.js` |
+| `#asset-sizes` | halaman Media admin | ukuran wajib per pola `asset_key` (`Config\Gelita::$assetSizes`) | `admin/media-upload.js` |
+
+`js_config()` (`app/Helpers/gelita_helper.php`) tidak memuat identitas siswa. Identitas dipegang session server (cookie HttpOnly CodeIgniter). `sessionTag` = `session_tag(game_session_id)`: HMAC 16 karakter atas id sesi permainan, buram tetapi stabil selama sesi itu, dan `null` sebelum siswa masuk. Penanda ini hanya dipakai antrean event offline (lihat [Penyimpanan Lokal](#penyimpanan-lokal)).
+
+`core/config.js` membekukan `CONFIG` dengan kunci `locale`, `csrfName`, `csrfHash`, `apiBase`, `baseUrl`, `sessionTag`, dan `text`; bila `#app-config` tidak ada, nilainya diambil dari `<meta name="csrf-token">`/`csrf-name` dan `body[data-locale]`/`data-base`. Fungsi yang diekspor:
 
 ```js
-// #app-config dirender js_config() (gelita_helper): locale, csrfName, csrfHash,
-// apiBase, baseUrl, sessionTag, text (lang('Js.*') dalam bahasa aktif)
-export const CONFIG = Object.freeze({ … });
-export const LOCALE = CONFIG.locale;
-export function url(path) { … }          // url('masuk') → https://…/masuk
-export function t(key, ...args) { … }    // t('blankEmptyText', 3) → "Ada 3 kotak …"
-// Tidak ada SESSION_CODE di client: identitas siswa dipegang session server (cookie HttpOnly CI4).
+CONFIG          // objek beku di atas
+LOCALE          // = CONFIG.locale
+url('masuk')    // → {baseUrl}masuk
+t('blankEmptyText', 3)  // teks Js.* dengan {0}, {1}, … diganti; kunci tak dikenal dikembalikan apa adanya
 ```
 
-Seluruh teks yang ditulis JavaScript area game ada di `app/Language/{id,en}/Js.php`; `tests/unit/JsConfigTest.php` memastikan setiap `t('…')` di berkas JS punya kuncinya. Panel admin satu bahasa, jadi teksnya ditulis langsung.
+**Teks antarmuka.** Semua teks yang ditulis JavaScript area game ada di `app/Language/id/Js.php` dan `app/Language/en/Js.php`. `js_config()` mengirim setiap kunci `Js.*` dalam bahasa aktif sebagai `CONFIG.text`, jadi tidak ada kamus kedua di JavaScript. Teks yang sudah dirender server ke atribut `data-*` (label tingkat sandi dari `Auth.*`, label kesempatan dari `Game.triesLabel` + `Game.triesOf`, pesan kunci peta dan Pustaka dari `Game.*`) dibaca langsung dari atributnya. Panel admin hanya berbahasa Indonesia, sehingga teks di `admin/*.js` ditulis langsung.
+
+**`maxTries` dan `stage`** ikut dikirim `js_config()` tetapi tidak dibaca `core/config.js`; jumlah kesempatan yang dipakai layar tantangan diambil dari `#challenge-data` (`max_tries`).
+
+---
+
+## Lapisan Inti (`core/`)
 
 ### `core/api.js`
 
-Satu pintu untuk seluruh permintaan ke server.
+Satu pintu untuk semua permintaan JSON ke server. Bentuk respons server: `{ success, data }` atau `{ success: false, code, message, request_id }`.
 
 ```js
-export async function apiRequest(path, { method = 'GET', body = null } = {}) {
-  const headers = { 'Accept': 'application/json' };
-  if (body) headers['Content-Type'] = 'application/json';
-  if (method !== 'GET') headers['X-CSRF-TOKEN'] = CONFIG.csrfHash;
-
-  const res = await fetch(`${CONFIG.apiBase}${path}`, {
-    method,
-    headers,
-    credentials: 'same-origin',
-    body: body ? JSON.stringify(body) : null,
-  });
-
-  let json = null;
-  try { json = await res.json(); } catch { /* biarkan null */ }
-
-  if (!res.ok || !json || json.success === false) {
-    throw new ApiError(json?.code || 'NETWORK', json?.message || 'Gagal menghubungi server.', res.status, json);
-  }
-  return json.data;
-}
-
-export class ApiError extends Error {
-  constructor(code, message, status, payload) { … }
-}
+apiRequest(path, { method = 'GET', body = null, keepalive = false, retry = true })  // → json.data
+class ApiError { code, message, status, payload, requestId, isNetwork }
+handleApiError(error, { mapUrl, onNetwork, quiet })  // → Promise<kode galat yang ditangani>
 ```
 
-Penanganan galat terpusat:
+- `path` relatif terhadap `CONFIG.apiBase` (`/events` → `{baseUrl}api/events`) atau URL lengkap.
+- Header: `Accept: application/json`, `X-Requested-With: XMLHttpRequest`; selain GET juga `X-CSRF-TOKEN: CONFIG.csrfHash`. Cookie ikut (`credentials: 'same-origin'`).
+- HTTP 429 dicoba ulang otomatis dengan jeda 2, 4, lalu 8 detik (kecuali `retry: false`).
+- `fetch` gagal, status 5xx, atau respons bukan JSON → `ApiError('NETWORK')` dengan teks `errNetwork`. Galat lain tanpa kode → `INVALID_RESPONSE`.
 
-| `code` | Yang dilakukan UI |
+Tindakan seragam `handleApiError()`:
+
+| `code` | Tindakan UI |
 |---|---|
-| `INVALID_SESSION` | modal "Sesimu sudah berakhir. Silakan masuk lagi." + tombol ke `/masuk` |
-| `CSRF_EXPIRED` | modal "Halaman ini sudah terlalu lama terbuka" + tombol Muat ulang (masih login, token halaman kedaluwarsa) |
+| `INVALID_SESSION` | modal `sessionTitle`/`sessionExpired` tanpa tombol tutup → ke `/masuk` |
+| `CSRF_EXPIRED` | modal `pageExpiredTitle` (masih login, token halaman kedaluwarsa) → muat ulang |
 | `PASSWORD_CHANGE_REQUIRED` | langsung ke `/ganti-sandi` |
-| `LEVEL_LOCKED` | toast + kembali ke peta |
-| `ATTEMPT_CLOSED` | reload halaman tantangan |
-| `RATE_LIMITED` | tunda dan coba lagi otomatis (backoff 2s, 4s, 8s) |
-| `NETWORK` | event: masuk antrean offline (lihat `storage.js`) + toast "tersimpan sementara"; tombol Periksa: istirahat 3 detik + toast "Coba ketuk lagi" |
-| lainnya | toast dengan `message` dari server + `request_id` kecil di pojok |
+| `LEVEL_LOCKED` | toast, lalu ke `mapUrl` setelah 1,2 detik |
+| `ATTEMPT_CLOSED` | muat ulang halaman |
+| `RATE_LIMITED` | toast `errRateLimited` (setelah percobaan ulang otomatis habis) |
+| `NETWORK` | `onNetwork()` bila diberikan, selain itu toast `errNetwork` |
+| lainnya | toast berisi `message` server + `request_id` kecil |
+| bukan `ApiError` | toast `errUnknown`; detailnya hanya ke konsol pengembang |
 
-**Tidak pernah** menampilkan stack trace atau isi respons mentah kepada anak.
+Modal sesi hanya muncul sekali walau beberapa permintaan gagal bersamaan. Anak tidak pernah melihat stack trace atau isi respons mentah.
 
 ### `core/events.js`
 
-Antrean event dengan pengiriman batch dan idempotency.
+Antrean event dengan pengiriman batch dan idempotensi. Dua kanal dengan amplop yang sama `{ events: [...] }`:
 
 ```js
-let queue = [];
-let sequence = 0;
-let flushTimer = null;
-
-export function emit(type, { levelId, nodeId, attemptId, itemId, payload } = {}) {
-  queue.push({
-    client_event_id: crypto.randomUUID(),
-    event_type: type,
-    occurred_at: new Date().toISOString(),
-    sequence_no: ++sequence,
-    level_id: levelId ?? null,
-    node_id: nodeId ?? null,
-    attempt_id: attemptId ?? null,
-    item_id: itemId ?? null,
-    payload: payload ?? null,
-  });
-  scheduleFlush();
-}
-
-export async function flush(force = false) {
-  if (!queue.length) return;
-  const batch = queue.splice(0, 50);          // maksimum sesuai Config\Gelita
-  try {
-    await apiRequest('/events', { method: 'POST', body: { events: batch } });
-  } catch (e) {
-    Storage.queueEvents(batch);               // simpan, kirim ulang nanti
-  }
-}
+emit(type, { levelId, nodeId, attemptId, itemId, payload })  // → POST /api/events (game_event_logs)
+emitAudio({ audio_asset_id, action, play_index, listened_ms, completed, attempt_id })
+                                                             // → POST /api/audio-events (audio_usage_events)
+flush(force = false)   // kirim sekarang; tanpa force mengembalikan Promise pengiriman yang sedang berjalan
+resendQueued()         // kirim ulang antrean offline milik sesi ini
+uuid(), now()          // client_event_id (crypto.randomUUID atau cadangan getRandomValues) & waktu ISO
 ```
 
-* Dua kanal dengan amplop yang sama: `emit()` → `/api/events`, `emitAudio()` → `/api/audio-events`.
-* Event hanya diantre bila ada `sessionTag` (siswa login); layar sebelum login tidak mengirim event.
-* Hanya galat yang bisa pulih (jaringan, 5xx, `RATE_LIMITED`) yang disimpan untuk dikirim ulang; `401/403/422` dibuang karena tidak akan pernah diterima.
-* `scheduleFlush()` mengirim setiap **3 detik** atau saat antrean mencapai 20 event, mana yang lebih dulu.
-* `flush(true)` dipanggil pada `visibilitychange` (tab disembunyikan) dan `pagehide`.
-* Untuk pengiriman saat tab ditutup, pakai `navigator.sendBeacon()` dengan `Blob` bertipe `application/json`; bila tidak tersedia, `fetch(..., { keepalive: true })`. Beacon tidak dapat memasang header, jadi token CSRF ikut di badan JSON (`{ events, gelita_csrf }`) — CodeIgniter membacanya dari sana.
-
-`client_event_id` memakai `crypto.randomUUID()`. Karena id ini dibuat sekali dan ikut disimpan saat masuk antrean offline, pengiriman ulang setelah koneksi pulih tidak akan menggandakan event.
+- Event hanya diantre bila `CONFIG.sessionTag` ada; layar sebelum masuk tidak mengirim event.
+- Antrean dikirim 3 detik setelah event pertama, atau segera saat mencapai 20 event; satu request paling banyak 50 event (= `Config\Gelita::$maxEventsPerBatch`).
+- Batch yang sedang dikirim diingat (`inflight`) sampai server menjawab. Saat tab disembunyikan (`visibilitychange`) atau ditutup (`pagehide`), `flush(true)` mengirim `inflight` + antrean lewat `navigator.sendBeacon()` (Blob `application/json`), dengan cadangan `fetch(…, { keepalive: true })`. Beacon tidak dapat memasang header, jadi token CSRF ikut di badan JSON (`{ events, [csrfName]: csrfHash }`).
+- Gagal kirim karena jaringan, 5xx, atau `RATE_LIMITED` → batch disimpan ke antrean offline (`Storage.queueEvents`) dan toast `savedOffline` muncul sekali per halaman. Penolakan lain (401, 403, 422) dibuang karena tidak akan pernah diterima.
+- `client_event_id` dibuat sekali saat event lahir dan ikut tersimpan di antrean offline; kiriman ulang dibalas `duplicate` oleh server.
+- `sequence_no` adalah penghitung per halaman (mulai dari 1 setiap halaman dimuat). Urutan linimasa di server memakai `occurred_at`, lalu `sequence_no`.
 
 ### `core/storage.js`
 
-Antrean offline. Memakai `localStorage`, dibatasi agar tidak menggelembung.
-
-```js
-const QUEUE_PREFIX = 'gelita.queue.';   // + 'events' | 'audio'
-const MAX = 500;
-
-export const Storage = {
-  queueEvents(batch, tag, channel) { /* { tag, event } — potong ke MAX terbaru */ },
-  takeAll(tag, channel) { /* ambil milik sesi ini saja; milik sesi lain tetap tersimpan */ },
-  size(tag, channel) { … },
-  getPref(name, fallback), setPref(name, value),   // suara, volume
-};
-```
-
-Setiap event yang disimpan ditandai `sessionTag` — HMAC `game_session_id` dari server (`session_tag()`), buram dan stabil per sesi. Komputer kelas dipakai bergantian: tanpa tanda ini, event siswa A yang tertunda akan terkirim ke sesi siswa B yang masuk sesudahnya. Saat halaman dimuat dan saat `online` menyala kembali, `game.js` memanggil `resendQueued()`, yang hanya mengambil event bertanda sesi berjalan. Server membalas `duplicate` untuk yang sudah masuk, jadi aman.
-
-`localStorage` **hanya** untuk antrean sementara dan preferensi tampilan (suara nyala/mati, volume). Ia bukan tempat menyimpan catatan penelitian. Semua yang bernilai sudah ada di server.
-
-### `core/modal.js`
-
-```js
-export function showModal({ type, icon, character, title, text, buttons }) { … }
-export function closeModal() { … }
-export function confirmDialog({ title, text, confirmLabel, cancelLabel }) { /* Promise<boolean> */ }
-```
-
-* Fokus dipindahkan ke tombol pertama saat modal terbuka, dan dikembalikan ke pemicu saat ditutup.
-* `Escape` menutup modal yang dapat dibatalkan; modal hasil pemeriksaan tetap menyediakan tombol eksplisit.
-* Fokus terperangkap di dalam modal selama terbuka.
+Lihat [Penyimpanan Lokal](#penyimpanan-lokal).
 
 ### `core/audio.js`
 
 Dua peran terpisah.
 
-**Efek & musik (Howler):**
+**`Sfx` — efek suara dan musik latar (Howler):**
 
 ```js
-export const Sfx = {
-  unlock(),            // dipanggil pada interaksi pengguna; juga membuka elemen narasi bersama
-  isUnlocked(),
-  play(name),          // correct, wrong, click, shard, region-done, page, lock
-  music(name),         // map, region, challenge, library
-  stopMusic(),
-  setVolume(v),
-  setEnabled(on),      // tersimpan di localStorage
-};
+Sfx.unlock()       // dipanggil pada interaksi pengguna; juga membuka elemen narasi bersama
+Sfx.isUnlocked()
+Sfx.play(name)     // sfx/{name}.mp3: correct, wrong, click, shard, region-done, lock
+Sfx.music(name)    // music/{name}.mp3, berulang: map, region, challenge
+Sfx.stopMusic()
+Sfx.setVolume(v)   // 0–1, preferensi `volume`
+Sfx.setEnabled(on) // preferensi `sound`; mematikan juga menghentikan musik dan narasi
+Sfx.isEnabled()
 ```
 
-Berkas suara opsional: bila gagal dimuat, aplikasi tetap berjalan tanpa bunyi. Tidak ada nada sintetis pengganti — lebih baik diam daripada berbunyi aneh.
+Berkas di `public/assets/audio/sfx/` dan `public/assets/audio/music/`. Tidak ada yang berbunyi sebelum `unlock()`. Bila Howler atau berkasnya tidak ada, aplikasi tetap berjalan tanpa bunyi; tidak ada nada sintetis pengganti. `game.js` memanggil `Sfx.unlock()` pada `pointerdown`/`keydown` pertama.
 
-**Narasi (elemen `<audio>` + telemetry):**
+**Narasi — elemen `<audio>` per `.audio-player[data-src]` + telemetry:**
 
 ```js
-export function initAudioPlayers(root = document) {
-  // untuk tiap .audio-player:
-  //  - play / pause / replay / transcript
-  //  - lacak playIndex, listenedMs, completed
-  //  - emit ke /api/audio-events pada play, pause, replay, complete
-}
+initAudioPlayers(root, { attemptId, attention })  // pasang semua pemutar di root
+narrationPlayer(node, { attemptId, shared, autoplay, onEnded, onError, onState })  // → NarrationPlayer | null
+pauseNarration()                                  // hentikan narasi yang sedang berbunyi
 ```
 
-Telemetry audio yang dikirim:
+`NarrationPlayer` membaca `data-src` dan `data-audio-id`, menangani tombol `[data-action="play"|"pause"|"replay"]` dan bilah `.audio-bar i`, dan mengirim telemetry lewat `emitAudio()`:
 
-```json
-{ "audio_asset_id": 42, "action": "complete", "play_index": 2,
-  "listened_ms": 11840, "completed": true,
-  "occurred_at": "2026-09-21T09:14:22.481Z",
-  "client_event_id": "…", "attempt_id": 118 }
-```
+| Action | Kapan |
+|---|---|
+| `play` | pemain menekan putar (pemutaran baru) |
+| `autoplay` | layar bernarasi memutar sendiri (`NarrationPlayer#autoplay()`) |
+| `pause` | dijeda |
+| `replay` | diputar ulang dari awal |
+| `complete` | audio selesai sampai akhir (`onEnded` dipanggil sesudahnya) |
 
-Dikirim sebagai amplop batch `POST /api/audio-events { events: [ … ] }`. Server idempotent terhadap `client_event_id` (kiriman ulang dibalas `duplicate`) dan menolak `attempt_id` milik sesi lain.
+- Melanjutkan dari jeda tidak dikirim sebagai `play` baru; waktu dengarnya terbawa ke `pause`/`complete` berikutnya.
+- `listened_ms` = akumulasi waktu benar-benar berbunyi (bukan `duration`). Server tetap memakai `duration_ms` aset sebagai pembagi.
+- `play_index` yang disimpan dihitung server (`AudioUsageEventModel::nextPlayIndex()`); hitungan klien dimulai ulang setiap halaman.
+- `attempt_id` ikut bila pemutar berada di layar tantangan; server menambah `challenge_attempts.audio_use_count` dan menolak attempt milik sesi lain.
+- `autoplay()` mengembalikan `Promise<boolean>` dan menolak berbunyi sebelum `Sfx.unlock()`, saat suara dimatikan, tanpa berkas, atau setelah berkas gagal.
+- Suara dimatikan → menekan putar membuka transkrip (`details.audio-transcript`). Berkas gagal dimuat → tombol disembunyikan, transkrip dibuka, pesan `audioNoSound` tampil.
+- `attention: true` (layar `dialogue`, `region-done`, `intro`, `ending`, `mission-brief`) memberi `.is-attention` agar tombol putar terlihat.
 
-`play_index` yang disimpan dihitung **server** (`AudioUsageEventModel::nextPlayIndex()`): `play`/`replay` membuka pemutaran baru, `pause`/`complete` termasuk pemutaran berjalan — hitungan klien dimulai ulang setiap halaman. Melanjutkan dari jeda tidak dikirim sebagai `play` baru (masih pemutaran yang sama; waktu dengarnya terbawa ke `pause`/`complete` berikutnya), sehingga `total_plays` di analitik tidak membengkak oleh jeda.
-
-**Autoplay (Tahap 2).** `NarrationPlayer` menerima opsi `{ autoplay, shared, onEnded, onError, onState }`; `narrationPlayer(node, opsi)` mengembalikan pemutar milik satu `.audio-player` (membuatnya bila belum ada) dan memasang opsi itu. `player.autoplay()` memutar dari awal tanpa tombol dan mengirim action **`autoplay`** — bukan `play` — lewat jalur telemetry yang sama (`/api/audio-events`); server menghitungnya terpisah (`total_autoplays`), dan `play` tetap berarti pemain menekan putar. `autoplay()` mengembalikan `Promise<boolean>` dan menolak berbunyi sebelum `Sfx.unlock()`, saat suara dimatikan, tanpa berkas, atau setelah berkas gagal: kebijakan "tidak ada yang berbunyi sebelum interaksi" tetap berlaku. `onEnded` dipanggil sesudah telemetry `complete`.
-
-**Elemen narasi bersama.** Safari iOS/iPadOS hanya mengizinkan `play()` tanpa ketukan pada elemen yang pernah diputar di dalam ketukan; elemen `<audio>` baru per slide akan ditolak. Pemutar ber-`shared: true` memakai satu elemen bersama: pemutar yang mengambilnya menjeda pemilik sebelumnya lebih dulu (telemetry `pause` pemilik lama tetap terkirim), dan event elemen hanya diproses pemiliknya. `Sfx.unlock()` membuka elemen itu dengan memutar WAV hening 10 ms, jadi harus dipanggil **di dalam** handler ketukan (kartu ketuk, tirai) — pointerdown saja tidak cukup di iOS.
-
-`listened_ms` dihitung dari akumulasi waktu putar sungguhan, bukan dari `duration`. Server tetap memperlakukan angka ini sebagai data client: perbandingan final memakai `duration_ms` aset dari database sebagai pembagi, bukan angka dari browser.
-
-**Kebijakan autoplay:** audio tidak pernah diputar otomatis sebelum ada interaksi pengguna. Pada layar dialog, tombol putar tampil besar dan berkedip halus sekali agar terlihat.
+**Elemen narasi bersama (`shared: true`).** Safari iOS/iPadOS hanya mengizinkan `play()` tanpa ketukan pada elemen yang pernah diputar di dalam ketukan. Layar bernarasi dan narasi petunjuk Cari Objek memakai satu elemen `<audio>` bersama: pemutar yang mengambilnya menjeda pemilik sebelumnya (telemetry `pause`-nya tetap terkirim), dan event elemen hanya diproses pemiliknya. `Sfx.unlock()` membuka elemen itu dengan memutar WAV hening 10 ms, jadi harus dipanggil di dalam handler ketukan (kartu ketuk, tirai, tombol Kenali).
 
 ### `core/curtain.js`
 
+Tirai pemuatan layar penuh (`components/curtain.php`).
+
 ```js
-playCurtain(kind, { urls?, minMs = 2500, maxMs = 8000, tap = true, skip?, keep = false, text?, onProgress? })
+playCurtain(kind, { urls, minMs, maxMs, tap, skip, keep, text, onProgress })
   // → Promise<{ loaded, failed, timedOut, skipped, cut }>
-  // minMs/maxMs/skip bawaan dari lapisan: data-min-ms, data-max-ms, data-skip
-initCurtains()   // game.js: pembersihan bfcache + delegasi a[data-curtain]
+initCurtains()  // dipanggil game.js: pembersihan bfcache + delegasi a[data-curtain]
 ```
 
-* Memakai `[data-curtain-layer="{kind}"]` di halaman (tampil sejak paint pertama) atau `<template id="tpl-curtain-{kind}">`; tanpa keduanya langsung `{ skipped: true }`.
-* Menambah `.is-live` untuk membatalkan animasi pengaman CSS; bila pengaman sudah memudarkan tirai (JS datang terlambat), tirai dibuang dan hasilnya `skipped`.
-* Progres **nyata**: tiap URL dimuat (`Image()` untuk gambar, `fetch` selain itu); `--p` dan `aria-valuenow` = selesai / total, termasuk yang gagal. Selesai setelah semua termuat **dan** `minMs`, atau paling lambat `maxMs` (dihitung sejak halaman dibuka untuk tirai bawaan halaman) walau ada aset yang gagal.
-* Baris status bergilir tiap 1,8 detik dari `data-statuses`.
-* `tap`: menampilkan tombol ketuk; ketukan di mana pun pada tirai memanggil `Sfx.unlock()` lalu tirai memudar. HUD, `<main>`, dan nav bar `inert` selama tirai tampil.
-* `keep`: tirai dibiarkan menutupi (sebelum berpindah halaman); `pageshow` dari bfcache membersihkannya.
-* Tautan `a[data-curtain="{kind}"]` (klik kiri tanpa pengubah) memutar tirai jenis itu tanpa ketukan lalu berpindah halaman. `data-curtain-text` (JSON slot → teks) mengisi `[data-curtain-text="slot"]` di tirai lewat `textContent` (slot kosong disembunyikan); `data-curtain-preload` mengganti daftar aset. Klik/Enter kedua selama tirai berjalan diabaikan.
-* **Tahap 3.** `region`: ±1,8 detik (1,8–2,4), tanpa ketukan, satu template untuk semua wilayah. `challenge`: 1,2–1,5 detik; `skip` — ketukan di mana pun atau Enter/Spasi/Esc mengakhirinya lebih awal (`cut: true`).
-* Sebelum berpindah, tirai tautan memanggil `flush()` (`core/events.js`) dan menunggunya paling lama 1,5 detik setelah tirai selesai, agar event terakhir (mis. slide terakhir Kenali) terkirim dengan fetch biasa, bukan bergantung pada beacon saat `pagehide`.
+- Memakai `[data-curtain-layer="{kind}"]` yang sudah ada di halaman (tampil sejak paint pertama) atau `<template id="tpl-curtain-{kind}">`; tanpa keduanya langsung `{ skipped: true }`.
+- `.is-live` membatalkan animasi pengaman CSS (tirai memudar sendiri bila modul gagal dimuat); bila pengaman sudah memudarkannya, hasilnya `skipped`.
+- Progres nyata: tiap URL (`opts.urls`, bawaannya `data-preload`) dimuat lewat `Image()` untuk gambar atau `fetch` untuk selain gambar; `--p` dan `aria-valuenow` = selesai ÷ total, termasuk yang gagal.
+- Selesai setelah semua aset termuat dan `minMs` lewat (bawaan 2,5 detik), atau paling lambat `maxMs` (bawaan 8 detik). Untuk tirai bawaan halaman waktunya dihitung sejak halaman dibuka. `data-min-ms`, `data-max-ms`, `data-tap`, `data-skip` pada lapisan menimpa nilai bawaan.
+- Baris status bergilir tiap 1,8 detik dari `data-statuses`.
+- `tap`: tombol `[data-curtain-tap]` tampil; ketukan di mana pun memanggil `Sfx.unlock()` lalu tirai memudar. `skip`: ketukan atau Enter/Spasi/Esc mengakhirinya lebih awal (`cut: true`). `keep`: tirai dibiarkan menutupi sebelum pindah halaman.
+- Selama tirai tampil, `body > .hud`, `body > main`, dan `body > .nav-bar` diberi `inert`.
+- Tautan `a[data-curtain="{kind}"]` (klik kiri tanpa tombol pengubah) memutar tirai jenis itu tanpa ketukan, lalu berpindah halaman. `data-curtain-text` (JSON slot → teks) mengisi `[data-curtain-text="slot"]` lewat `textContent` (slot kosong disembunyikan), `data-curtain-preload` mengganti daftar aset. Klik kedua selama tirai berjalan diabaikan. Sebelum pindah, antrean event di-`flush()` dan ditunggu paling lama 1,5 detik.
+- `pageshow` dari bfcache membersihkan tirai yang masih aktif.
 
-### `core/timer.js`, `core/toast.js`, `core/confetti.js`, `core/dom.js`
+Jenis yang dipakai: `map` (tirai peta, dengan ketukan), `region` ("Menuju {wilayah}…", tanpa ketukan), `challenge` (sebelum layar tantangan, dapat dilewati).
 
-* `timer.js` — `startTimer(el, elapsedMs)` menampilkan `m:ss`, mulai dari `elapsed_ms` payload (dihitung server, jadi benar setelah muat ulang dan kebal jam komputer yang salah); tidak berdetak selama halaman tersembunyi, lalu menyusul waktu sebenarnya.
-* `toast.js` — `toast(message, type)`; menumpuk maksimum 3, hilang setelah 4 detik.
-* `confetti.js` — canvas ringan, maksimum 60 partikel, langsung berhenti bila `prefers-reduced-motion`.
-* `dom.js` — `$`, `$$`, `on(el, evt, sel, fn)` untuk delegasi, `esc(str)`.
+### `core/device.js`
 
----
-
-## Implementasi — Mesin Tantangan
-
-Semua mesin mengikuti kontrak yang sama, didefinisikan di `game/challenge.js`:
+Sinyal perangkat dan tampilan layar untuk data penelitian. Tidak ada sidik jari peramban (canvas, font, audio).
 
 ```js
-export function bootChallenge() {
-  const data = JSON.parse(document.getElementById('challenge-data').textContent);
-  const engine = ENGINES[data.engine_type];
-  const ctx = {
-    attemptId: data.attempt_id,
-    nodeId: data.node_id,
-    levelId: data.level_id,
-    config: data.config,
-    items: data.items,
-    submit,      // untuk engine per-item
-    check,       // untuk engine batch
-    complete,
-    useHint,
-  };
-  engine.mount(ctx);
-  emit('challenge_opened', { nodeId: data.node_id, attemptId: data.attempt_id });
-}
+deviceSignals()          // → { screen_w, screen_h, viewport_w, viewport_h, pixel_ratio, touch_points,
+                         //     orientation, is_standalone, language, timezone, ua_data }
+attachDeviceField(form)  // isi input[name="device_json"] sesaat sebelum formulir terkirim
+initScreenTracking()     // viewport_changed + page_hidden / page_visible
+trackReading(section, refs)  // reading_progress 25/50/75/100 %
+overlayOpened(overlay, { level, levelId })  // overlay_opened
 ```
 
-Fungsi bersama:
+- `attachDeviceField()` dipakai formulir masuk dan langkah 3 pendaftaran. Kiriman pertama ditahan paling lama 800 ms menunggu `navigator.userAgentData.getHighEntropyValues()`, lalu dikirim ulang lewat `requestSubmit()`. JSON lebih dari 4.000 karakter dikirim tanpa `ua_data`; bila gagal, formulir tetap terkirim tanpa sinyal (server memakai User-Agent saja). Harus dipasang sebelum penjaga kirim-ganda.
+- `initScreenTracking()` (dari `game.js`, hanya bila ada `sessionTag`): `viewport_changed` `{ w, h, orientation, rotate_gate }` saat halaman dibuka dan setiap ukuran/orientasi berubah (debounce 1 detik, paling sering satu per 5 detik, tanpa kiriman bila nilainya sama). `page_hidden`/`page_visible` `{ screen }`, dengan kode layar dari `body[data-screen-code]` (resolver yang sama dengan `screen_viewed` di server; Pustaka terkunci → `library_locked`).
+- `trackReading()` memantau `.rumpang-reading`, `details.passage .passage-content`, dan `.passage-body` di layar tantangan; tiap batas dikirim sekali per pengerjaan, dengan `passage_id` bila ada. Panel yang tidak dapat digulir dinilai dari bagian yang tampak di layar.
+
+### `core/modal.js`
 
 ```js
-async function submit(itemId, answer, extra = {}) {
-  return apiRequest(`/attempts/${attemptId}/responses`, {
-    method: 'POST',
-    body: { item_id: itemId, answer, client_event_id: crypto.randomUUID(),
-            occurred_at: new Date().toISOString(), ...extra },
-  });
-}
-
-async function check(answers) {
-  return apiRequest(`/attempts/${attemptId}/check`, {
-    method: 'POST',
-    body: { answers, client_event_id: crypto.randomUUID(),
-            occurred_at: new Date().toISOString() },
-  });
-}
-
-async function complete() {
-  const r = await apiRequest(`/attempts/${attemptId}/complete`, { method: 'POST', body: {…} });
-  await flush(true);
-  window.location.href = r.redirect;      // ke /selesai/{attemptId}
-}
+showModal({ type, icon, character, title, text, buttons, dismissible })  // → Promise<value tombol | null>
+confirmDialog({ title, text, confirmLabel, cancelLabel, danger })          // → Promise<boolean>
+closeModal(value), isModalOpen()
 ```
+
+- Satu markup dari `<template id="tpl-modal">` (`components/modal.php`) di `#modal-layer`; cadangan dibuat dengan `el()` bila template tidak ada.
+- `type`: `correct`, `wrong`, `hint`, `confirm`, `info`. `icon` memilih `template[data-modal-icon]`. `text` boleh berupa larik: tiap unsur menjadi paragraf. Tombol dengan `href` dirender sebagai tautan.
+- Fokus pindah ke tombol pertama, terperangkap di dalam modal (Tab/Shift+Tab), dan kembali ke pemicu saat ditutup. `Escape` dan klik latar hanya menutup modal `dismissible`; modal hasil pemeriksaan dibuat `dismissible: false` dengan tombol eksplisit.
+- `body.has-modal` selama terbuka (pintasan keyboard slide berhenti). Semua teks lewat `textContent`.
+
+### `core/toast.js`, `core/timer.js`, `core/confetti.js`, `core/dom.js`
+
+- `toast(message, type, requestId)` — `type`: `info`, `ok`, `bad`, `warn`. Paling banyak 3 bertumpuk (toast flash server tidak dihitung), hilang setelah 4 detik; `request_id` tampil kecil bila ada.
+- `startTimer(el, elapsedMs)` → `{ stop(), elapsed() }`. Menampilkan `m:ss` (atau `h:mm:ss`) mulai dari `elapsed_ms` payload, yang dihitung server, sehingga benar setelah muat ulang dan kebal jam komputer yang salah. Tidak berdetak selama halaman tersembunyi, lalu menyusul waktu sebenarnya.
+- `confetti(count)` — canvas, paling banyak 60 partikel, ±2,6 detik, warna dari token CSS; tidak digambar sama sekali bila `prefers-reduced-motion`.
+- `dom.js` — `$`, `$$`, `on(target, type, selector?, handler)` (delegasi, mengembalikan pelepas), `el(tag, attrs, ...children)` (anak string lewat `textContent`), `esc()`, `readJson(id)`, `reducedMotion()`, `sleep()`, `scrollToCenter()`, `icon(name)` (salinan `template[data-icon]`), `announce(message)`, `debounce()`.
 
 ---
 
-### Fitur: Puzzle Gambar
+## Perilaku Halaman Game (`game/`)
 
-```text
-Feature   Puzzle gambar (engine puzzle, mode arrange)
-Trigger   Peserta mengetuk dua keping lalu menekan "Periksa gambar"
-Input     urutan 9 keping saat ini (array indeks)
-Process   client hanya menukar posisi; tidak menilai apa pun
-Request   POST /api/attempts/{id}/check
-          { answers: [{ item_id, answer: { order: [3,1,0,…] } }] }
-Response  { results: { "88": false }, correct_count: 0, total: 1,
-            all_correct: false, check_count: 1,
-            detail: { "88": { pieces_correct: 6, misplaced: [0, 4, 7] } } }
-UI Update benar  → keping terkunci, gambar utuh ditampilkan, tombol Lanjut
-          salah  → keping yang salah posisi diberi kelas .is-misplaced,
-                   modal "Gambarnya belum utuh, masih ada N keping yang keliru"
-Error     INVALID_SESSION → modal sesi berakhir
-          jaringan mati   → tombol Periksa dinonaktifkan sementara + toast
-```
+### `game.js` — titik masuk
 
-Detail interaksi:
+Selalu aktif di setiap halaman layout game:
 
-* Ketuk keping pertama → `.is-selected`; ketuk keping kedua → tukar, keduanya beranimasi singkat.
-* Dukungan drag-and-drop HTML5 sebagai tambahan, bukan pengganti. Ketuk-untuk-tukar wajib ada karena lebih andal di tablet.
-* Keyboard: panah untuk berpindah keping, `Enter` untuk memilih/menukar.
-* Mode `ordering` (Wonosobo node 1) memakai daftar kartu teks yang dapat digeser naik-turun; tombol ▲▼ wajib tersedia untuk pengguna keyboard.
+1. `<html>` diberi kelas `js`; `Sfx.unlock()` dipasang pada `pointerdown`/`keydown` pertama.
+2. Bila ada `sessionTag`: `resendQueued()` saat dimuat dan saat event `online`, lalu `initScreenTracking()`.
+3. `initHud()`, `initRotateGate()`, `initInstall()`, `initCurtains()`.
+4. `initAudioPlayers(document, { attemptId, attention })`.
+5. Modul halaman dipilih dari `[data-screen]`:
 
-`pieces_correct` dikirim server di `detail` agar pesan "masih ada N keping" akurat tanpa client mengetahui susunan benarnya. Untuk puzzle gambar, slot yang keliru ikut dikirim (`misplaced`) karena susunan benarnya memang publik (keping 1–9 dari kiri atas); untuk `ordering` hanya jumlahnya ("N dari M kartu sudah di tempat yang benar"), posisi mana yang benar tidak dibocorkan.
+| `data-screen` | Modul |
+|---|---|
+| `intro`, `ending` | `game/intro.js` → `initStory('intro' \| 'ending')` |
+| `dialogue`, `region-done` | `game/dialogue.js` → `initDialogue()` |
+| `map-kedu`, `map-level` | `game/map.js` → `initMap()` |
+| `library` | `game/library.js` → `initLibrary()` |
+| `library-index` | `game/library.js` → `initLibraryIndex()` |
+| `reflection` | `game/reflection.js` → `initReflection()` |
+| `challenge` | `game/challenge.js` → `bootChallenge()` |
+| `finished` | `game/finished.js` → `initFinished()` |
 
----
-
-### Fitur: Isi Rumpang
-
-```text
-Feature   Isi rumpang (engine rumpang)
-Trigger   Peserta mengetuk kotak rumpang lalu memilih kata dari bank,
-          atau mengetik langsung bila varian tanpa bank kata
-Input     pasangan { item_id, answer: { text: "Magelang" } }
-Process   client mengelola kotak aktif, menandai kata terpakai
-Request   POST /api/attempts/{id}/check  dengan seluruh isian sekaligus
-Response  { results: { "12": true, "13": false, … }, correct_count: 3,
-            total: 4, all_correct: false, check_count: 2 }
-UI Update kotak benar → .is-correct (hijau + ✓); salah → .is-wrong (merah + ✗)
-          semua benar → konfeti + modal "Semua kalimat benar!" + tombol Lanjut
-          sebagian    → modal "Belum semuanya tepat, N dari M sudah benar.
-                        Ketuk kotak merah untuk menggantinya."
-Error     kotak belum terisi → modal lokal, request TIDAK dikirim
-```
-
-Detail:
-
-* Isi bank kata diambil dari `payload.word_bank` (jawaban item terpilih + pengecoh, sudah diacak server). Client tidak tahu kata mana milik rumpang mana.
-* Kata di bank diberi id unik, sehingga dua jawaban yang kebetulan sama tidak saling menandai "terpakai" pada chip yang keliru.
-* Mengetuk kotak yang sudah terisi mengembalikan katanya ke bank dan menjadikan kotak itu aktif.
-* Setelah mengisi satu kotak, fokus pindah otomatis ke kotak kosong berikutnya.
-* Varian tanpa bank kata memakai `<input>`; `Enter` memindahkan fokus ke kotak berikutnya, bukan mengirim form.
-* Jawaban yang sudah benar **tidak** dihapus saat pemeriksaan ulang.
-
----
-
-### Fitur: Nilai Pernyataan (Benar / Salah / Pendapat)
-
-```text
-Feature   Kartu penilaian pernyataan (engine boleh)
-Trigger   Peserta memilih salah satu tombol verdict pada tiap kartu,
-          lalu menekan Periksa jawaban
-Input     [{ item_id, answer: { verdict: "benar"|"salah"|"pendapat" }, reason_text?: "…" }]
-Process   tombol dirender dari payload.verdict_options (["benar","salah"] atau
-          ["benar","salah","pendapat"]); client tidak tahu kuncinya
-Request   POST /api/attempts/{id}/check
-Response  { results: {...}, correct_count, total, all_correct, check_count }
-UI Update kartu benar → border hijau + ✓; salah → border merah + ✗
-          kartu salah digulirkan ke tengah layar satu per satu saat diperbaiki
-Error     ada kartu belum dipilih → kartu itu diberi .has-error selama 2.6 detik,
-          digulirkan ke tengah, modal "Ada N kartu yang belum kamu tentukan"
-```
-
-Teks bacaan (Temanggung node 3) dirender sekali di atas kartu dari `payload.passages`; setiap kartu yang merujuk passage itu diberi label kecil "Berdasarkan Teks A". Pada layar sempit, teks bacaan dilipat dengan tombol **Baca teks** yang tetap menempel di atas. Dua sumber (Wonosobo node 3) ditampilkan berdampingan di dalam kartu, bertumpuk pada layar sempit.
-
-Varian beralasan (Magelang node 3): textarea alasan ikut dikirim sebagai `reason_text`. Alasan **tidak memengaruhi benar/salah** — server menyimpannya untuk review guru. UI tidak boleh menampilkan alasan sebagai "benar" atau "salah"; cukup tanda "alasanmu tersimpan".
-
----
-
-### Fitur: Kuis Pilihan
-
-```text
-Feature   Kuis pilihan bergambar (engine pilihan)
-Trigger   Peserta mengetuk satu opsi
-Input     { item_id, answer: { option_key: "tmg3c" } }
-Process   seluruh opsi langsung dinonaktifkan agar tidak ada klik ganda
-Request   POST /api/attempts/{id}/responses
-Response  { correct: false, first_pass: true, already_answered: false,
-            correct_option_key: "tmg3a", feedback: "…",
-            progress: { answered: 2, total: 3 } }
-          kiriman ulang untuk butir yang sama → hasil tersimpan,
-            already_answered: true (server tidak menilai ulang)
-UI Update opsi yang dipilih diberi hijau/merah; bila salah, opsi kunci
-          ikut ditandai hijau setelah 400 ms; feedback ditampilkan bila ada
-          setelah 1.1 detik → soal berikutnya, indikator langkah maju
-          soal terakhir → complete()
-Error     jaringan gagal → opsi diaktifkan kembali, toast "Coba ketuk lagi"
-```
-
-Penting: `allow_retry = false` pada engine ini, jadi jawaban pertama sekaligus jawaban final. `correct_option_key` dikirim server **setelah** jawaban masuk, bukan sebelumnya.
-
-Soal yang punya `source_text` menampilkan teks sumber di atas pertanyaan, dengan tombol "Baca teks" pada layar sempit.
-
----
-
-### Fitur: Cari Objek Budaya
-
-```text
-Feature   Cari objek budaya (engine cari)
-Trigger   Peserta mengetuk objek di dalam adegan
-Input     { item_id: <clues[i].item_id petunjuk aktif>, answer: { object: <objects[j].ref objek yang diketuk> } }
-Request   POST /api/attempts/{id}/responses
-Response  benar  → { correct: true, wrong_click: false, progress: { answered, total }, … }
-                   (petunjuk berikutnya diambil klien dari payload.clues)
-          salah  → { correct: false, wrong_click: true, decoy: true|false,
-                     feedback: "…"|null, wrong_click_count: 1, first_pass: true|false }
-                   first_pass true = klik salah ini menutup first-pass petunjuk aktif
-UI Update benar  → objek diberi tanda temuan, dicoret dari daftar sisa,
-                   petunjuk berikutnya muncul + dibacakan
-          salah  → objek bergetar 700 ms, modal penjelasan:
-                   jebakan → "Itu bukan dari Kedu. <Nama> memang budaya Indonesia,
-                              tetapi berasal dari daerah lain."
-                   bukan jebakan → "<Nama> juga warisan <wilayah>, tetapi bukan
-                                    yang dimaksud petunjuk kali ini."
-          semua ketemu → konfeti + modal + complete()
-Error     sama seperti engine lain
-```
-
-Detail:
-
-* Objek diposisikan dengan persen (`left`, `top`, `width`) supaya adegan tetap benar pada semua ukuran layar.
-* Objek jebakan dirender identik dengan objek asli. Tidak ada kelas CSS, atribut, atau urutan DOM yang membocorkan status jebakan — status itu hanya ada di server.
-* Payload `challenge-data` engine ini tidak memakai `items`. Isinya `objects` (semua objek, target maupun jebakan, berbentuk identik `{ ref, x, y, w, media }` dan diurutkan menurut posisi di layar) dan `clues` (`{ item_id, text, audio, audio_id }`, hanya untuk target yang dinilai). `ref` adalah token HMAC per attempt yang diturunkan dari `encryption.key`, jadi id butir petunjuk tidak dapat dicocokkan dengan objek mana pun di sisi klien.
-* Server hanya menerima `answer.object`. `answer.item_id` mentah diabaikan — klien mengetahui id butir target dari `clues`, sehingga menerimanya sama dengan membocorkan kunci jawaban. Token yang tidak dikenal ditolak `422 INVALID_RESPONSE`. Bila butir `find_object` dikirim lewat `/check`, jawabannya juga hanya dibaca dari token; token yang tidak dikenal dinilai salah.
-* `progress.total` pada respons tidak menghitung objek jebakan.
-* **Narasi petunjuk.** `clues[i].audio` = URL rekaman Mbah Kedu pada bahasa aktif (hanya `approved` dengan media aktif), `audio_id` = id `audio_assets`-nya; keduanya `null` tanpa rekaman. Tombol ▶/⏸ dari `<template id="tpl-clue-voice">` dipasang di samping teks, satu `NarrationPlayer` per petunjuk (`narrationPlayer(node, { attemptId, shared: true })` — elemen `<audio>` bersama yang sudah dibuka ketukan pertama, agar Safari iPad mengizinkan putar otomatis sesudah respons server).
-  * Petunjuk pertama hanya diputar lewat tombol (action `play`): sebelum halaman disentuh, audio bersuara diblokir browser.
-  * Setelah jawaban benar, petunjuk berikutnya diputar sendiri 600 ms kemudian (action `autoplay`, sesudah bunyi "benar"), hanya bila `Sfx.isEnabled()` dan audio sudah dibuka interaksi (`NarrationPlayer#autoplay()`).
-  * Berganti petunjuk (maju atau lompat dari daftar sisa) memanggil `pauseNarration()` (telemetry `pause` terkirim); lompat tidak memutar otomatis. Semua ketemu → narasi dihentikan sebelum modal selesai.
-  * Petunjuk tanpa rekaman: tanpa tombol, perilaku sama seperti sebelumnya. Tidak ada animasi tambahan, jadi `prefers-reduced-motion` tidak mengubah apa pun.
-* Keyboard: `Tab` berpindah antar objek, `Enter` memilih. Daftar sisa juga dapat dipakai untuk melompat ke petunjuk tertentu.
-
----
-
-### Fitur: Petunjuk (Hint)
-
-```text
-Feature   Petunjuk
-Trigger   Peserta menekan tombol 💡 pada bar tantangan
-Request   POST /api/attempts/{id}/hints  { hint_id, item_id? }
-Response  { text: "…", hint_count: 1 }
-UI Update modal berisi teks petunjuk; penghitung petunjuk pada bar bertambah
-Catatan   Penalti petunjuk diatur scoring_profile di server, bukan JavaScript.
-          UI hanya menampilkan pesan netral: "Memakai petunjuk akan sedikit
-          menurunkan nilai kemandirianmu." Tanpa angka, karena angkanya
-          dapat diubah admin.
-```
-
-Tombol petunjuk hanya tampil bila `hints_count > 0` pada payload attempt. `hint_id` diambil dari `payload.hints` (`[{ id, item_id, sequence }]`, tanpa teks); petunjuk butir mengirim `item_id`-nya.
-
----
-
-### Fitur: Keluar dari Tantangan
-
-```text
-Feature   Konfirmasi keluar
-Trigger   Peserta menekan tombol keluar, atau menekan tombol Back browser
-Process   confirmDialog("Tinggalkan tantangan ini? Jawabanmu yang sudah
-          diperiksa tetap tersimpan, tetapi tantangan ini belum selesai.")
-Request   bila ya → POST /api/attempts/{id}/abandon { reason: "user_exit" }
-UI Update navigasi ke /wilayah/{code}
-```
-
-Selain itu, saat halaman ditinggalkan tanpa Keluar/Selesai (tutup tab, muat ulang), `pagehide` mengirim event `challenge_abandoned` { via: 'pagehide', attempt_open: true } lalu `flush(true)` lewat `sendBeacon`; attempt tetap `in_progress`. `pagehide` dipakai karena lebih andal daripada `beforeunload` di tablet dan ponsel. Tidak ada `event.preventDefault()` pada `beforeunload` — memaksa dialog bawaan browser pada anak SD hanya membingungkan.
-
----
-
-## Implementasi — Perilaku Halaman Game
+Tanpa `data-screen` yang cocok: `form.register-form` → `register.js`, `[data-login-form]` → `login.js`, `.password-field` (ganti sandi) → `password-meter.js`. Layar lain (`mission-brief`, `result`, `profile`, `library-locked`, halaman awal) cukup memakai lapisan inti. Setelah modul halaman terpasang, `body[data-page-ready="1"]` dipasang sebagai penanda untuk uji ujung ke ujung.
 
 ### `game/hud.js`
 
-* Tombol suara → `Sfx.setEnabled()`, status tersimpan di `localStorage`.
-* Lentera dapat dibuka untuk melihat 15 titik serpihan per wilayah.
-* Jumlah serpihan diperbarui dari respons `complete()`, bukan dihitung sendiri.
-* Heartbeat: `POST /api/session/heartbeat` tiap 60 detik selama tab terlihat.
+- Tombol suara `#btn-sound` → `Sfx.setEnabled()`; `aria-pressed` dan judul `soundOn`/`soundOff` ikut berubah.
+- Lentera (`details.lantern`) tetap dapat dibuka tanpa JavaScript; di sini ditambah tutup dengan Esc dan klik di luar. `updateLantern(shards)` memperbarui angka dan bilah serpihan dari angka server (dipanggil `challenge.js` sebelum pindah ke layar selesai), tidak pernah dari hitungan sendiri.
+- Heartbeat `POST /api/session/heartbeat` tiap 60 detik selama tab terlihat, hanya di dalam permainan (ada lentera dan `sessionTag`), tanpa percobaan ulang.
 
-### `game/register.js`
+### `game/rotate-gate.js` dan `game/install.js`
 
-```text
-Feature   Form pendaftaran bertingkat
-Trigger   Perubahan pada select Negara dan Provinsi
-Process   kabupaten sudah dirender server sebagai <optgroup data-province> dari
-          wilayah-id.json (form tetap lengkap tanpa JS); JS menyaring dengan
-          melepas/memasang optgroup — tanpa fetch kedua
-          Negara = Indonesia  → tampilkan provinsi & kabupaten
-          Negara = lainnya    → sembunyikan, tampilkan input nama negara
-          Provinsi dipilih    → isi ulang select kabupaten
-Validasi  client memberi tanda merah pada kolom kosong sebelum submit,
-          tetapi validasi yang mengikat tetap di server
-UI Update kolom bermasalah diberi .has-error dan digulirkan ke tampak
-```
+- `initRotateGate()`: penghalang potret `.rotate-gate` tampil/hilang sepenuhnya lewat CSS dengan media query `(orientation: portrait) and (pointer: coarse)`. Modul ini membuat sisa isi `<body>` `inert` dan memindah fokus ke penghalang selama tampil, lalu mengembalikan fokus saat perangkat diputar mendatar.
+- `initInstall()`: mendaftarkan `sw.js` di base URL (gagal didaftarkan tidak masalah). Di halaman awal (`[data-install]`), hanya pada perangkat sentuh yang belum menjalankan GELITA sebagai aplikasi terpasang: Chrome/Android menahan `beforeinstallprompt` dan menampilkan tombol `[data-install-button]`; Safari iOS/iPadOS menampilkan petunjuk `[data-install-ios]` (Bagikan → Tambah ke Layar Utama).
+- `public/sw.js` hanya menangani navigasi GET: bila jaringan putus, `offline.html` dari cache `gelita-offline-v1` ditampilkan. API, event, POST formulir, dan aset tidak pernah disentuh, jadi tidak ada data penelitian di cache.
 
-```text
-Feature   Cek nama pengguna
-Trigger   Mengetik di kolom username (debounce 500 ms, minimal 3 karakter)
-Process   ubah ke huruf kecil & buang spasi saat mengetik;
-          periksa pola ^[a-z0-9._]{3,30}$ di client dulu
-Request   GET /api/auth/username-available?u=jaka.kedu
-Response  { available: true } | { available: false, reason: "taken"|"reserved"|"format" }
-UI Update ✓ "Nama pengguna bisa dipakai" / ✗ "Sudah dipakai, coba tambahkan angka"
-Error     429 atau jaringan gagal → diam saja; server tetap memeriksa saat Daftar
-```
+### `game/register.js` — pendaftaran tiga langkah
 
-Form ini POST biasa, bukan AJAX — lebih tahan terhadap koneksi sekolah yang putus-putus. Tombol **Daftar** tidak dinonaktifkan walau sandi belum kuat: penolakan dari server adalah bagian dari pembelajaran dan tercatat sebagai metrik.
+Setiap langkah (`/daftar/1`, `/2`, `/3`) adalah formulir POST biasa; server menyimpan isian langkah 1–2 dan menjaga urutannya. Perilaku dipilih dari `form.register-form[data-step]`:
+
+| Langkah | Perilaku |
+|---|---|
+| semua | `markInvalidFields()`: kolom wajib kosong diberi `.has-error` dan digulirkan ke tengah; `preventDoubleSubmit()`: tombol kirim dinonaktifkan setelah terkirim, aktif lagi saat kembali lewat bfcache |
+| `2` | wilayah: kabupaten sudah dirender server sebagai `<optgroup data-province>`; JavaScript menyaring dengan melepas/memasang optgroup menurut provinsi (tanpa fetch). Negara selain Indonesia melepas `required` provinsi/kabupaten |
+| `2` | sekolah: di provinsi berdirektori (`option[data-directory]`, Jawa Tengah) siswa mengetik NPSN; 8 angka → `GET /api/schools/lookup?npsn=…` (debounce 300 ms) → kartu `[data-school-card]` berisi nama resmi, dengan peringatan bila kabupaten/kota tidak cocok atau sekolah bukan SD/MI (`allowed: false`). NPSN tak dikenal → centang `school_manual` "Sekolahku tidak ada di daftar" muncul. Blok NPSN/nama ditukar CSS `:has()`; JavaScript hanya menyelaraskan `required` |
+| `3` | nama pengguna: huruf kecil dan tanpa spasi saat mengetik, pola `^[a-z0-9._]{3,30}$` dicek di klien, lalu `GET /api/auth/username-available?u=…` (debounce 500 ms) → `{ available, reason }`, pesan dari `data-available`/`data-unavailable`/`data-format` |
+| `3` | `initPasswordField()` dan `attachDeviceField()` |
+
+Galat jaringan atau 429 pada pengecekan nama pengguna/NPSN → diam; server tetap memeriksa saat formulir dikirim. Tombol Daftar tidak dinonaktifkan walau sandi belum kuat: penolakan server adalah bagian dari pembelajaran dan tercatat sebagai `pw_weak_submit_count`.
 
 ### `game/password-meter.js`
 
-Dipakai `register.js` dan halaman ganti sandi. Aturan dibaca dari `<script type="application/json" id="password-policy">` yang dikirim server — **angka dan syarat tidak ditulis ulang di JavaScript**.
+Dipakai langkah 3 pendaftaran dan halaman ganti sandi; `bindToggle()` dan `bindCapsLock()` juga dipakai `login.js`.
 
-```text
-Feature   Meter kekuatan & daftar syarat kata sandi
-Trigger   input pada #password dan #password_confirm; keyup untuk Caps Lock
-Input     isi kolom sandi, isi kolom username (untuk syarat tambahan)
-Process   criteria = {
-            length: 8 ≤ panjang ≤ 64,
-            upper : /[A-Z]/, lower: /[a-z]/, digit: /[0-9]/, symbol: /[^A-Za-z0-9]/
-          }
-          met   = jumlah true (0–5)
-          level = met ≤ 2 ? weak : met ≤ 4 ? medium : strong
-          containsUsername = username ≠ '' && sandi (huruf kecil) memuat username
-Request   tidak ada — seluruhnya lokal, isi sandi tidak pernah dikirim selain saat submit form
-UI Update tiap <li data-rule> diberi .is-met bila terpenuhi (ikon ✗ → ✓)
-          meter: data-level = weak | medium | strong
-          #pw-level (aria-live): Auth.levelWeak / levelMedium / levelStrong
-          containsUsername → tampilkan Auth.containsUsername walau 5 syarat terpenuhi
-          #password_confirm tidak sama → .pw-match berisi Auth.notMatch; sama → ✓
-          Caps Lock menyala (event.getModifierState('CapsLock')) → tampilkan .pw-caps
-          tombol 👁 → ganti type password/text, aria-pressed & aria-label ikut berubah
-Error     tidak ada kondisi galat; bila JSON kebijakan tidak ada, komponen diam
-          dan daftar syarat tetap tampil statis
+```js
+evaluate(password, username, policy)  // → { criteria, met, level, containsUsername }
+initPasswordField(root)               // root = .password-field
+bindToggle(button, input, { show, hide })
+bindCapsLock(inputs, notice)
 ```
 
-Teks untuk setiap tingkat dibaca dari atribut `data-*` yang dirender server dari `lang('Auth.*')`, sehingga ikut bahasa ID/EN.
-
-Yang **tidak** dilakukan skrip ini: menyimpan sandi ke `localStorage`, mengirimnya lewat AJAX, menuliskannya ke `console`, atau memasukkannya ke antrean event.
+- Aturan dibaca dari `#password-policy` (`min_length`, `max_length`, `max_bytes`, `require_*`, `forbid_username`, `levels`); angka dan syarat tidak ditulis ulang di JavaScript. `evaluate()` meniru `PasswordPolicy::check()` hanya untuk tampilan.
+- Tiap `.pw-rules [data-rule]` diberi `.is-met`; `.pw-meter i[data-level]` = `weak`/`medium`/`strong`; `.pw-level` berisi label dari `data-level-*`, atau `data-contains-username` bila sandi memuat nama pengguna (walau semua syarat terpenuhi). `.pw-match` membandingkan `#password_confirm`.
+- Caps Lock (`getModifierState('CapsLock')`) menampilkan `.pw-caps`; tombol `.pw-toggle` mengganti `type` beserta `aria-pressed` dan `aria-label`.
+- Tanpa `#password-policy` komponen diam dan daftar syarat tetap tampil statis.
+- Isi sandi tidak pernah dikirim lewat AJAX, disimpan di browser storage, ditulis ke `console`, atau masuk antrean event.
 
 ### `game/login.js`
 
-* Tombol lihat/sembunyikan sandi dan peringatan Caps Lock (fungsi dari `password-meter.js`, tanpa meter).
-* Tombol **Masuk** dinonaktifkan setelah diklik agar tidak terkirim dua kali.
-* Form POST biasa; seluruh keputusan (gagal, terkunci, wajib ganti sandi) datang dari server.
+Lihat/sembunyikan sandi, peringatan Caps Lock, `attachDeviceField()`, dan `preventDoubleSubmit()` pada `[data-login-form]`. Formulir POST biasa; semua keputusan (gagal, terkunci, wajib ganti sandi) datang dari server.
+
+### `game/slides.js`
+
+```js
+initSlides({ list, prefix, keyboard = true, hash = true, onChange })
+  // → { show(n, { notify, focus }), current, total } | null
+```
+
+- Tanpa JavaScript slide berpindah lewat jangkar `#{prefix}{n}` + CSS `:target`. Dengan JavaScript hash yang sama diganti lewat `location.replace('#…')`: `:target` ikut berubah, tetapi riwayat browser tidak bertambah per slide.
+- `.is-current` dipasang pada slide aktif; `list[data-managed]` = `1` (hash) atau `class`.
+- Spasi, panah kanan, PageDown = lanjut; panah kiri, PageUp = kembali; di slide terakhir lanjut mengklik tautan akhir `.slide-nav a.btn-primary`. Pintasan diabaikan di dalam kontrol, saat modal terbuka, atau bila `keyboard: false`.
+- `hash: false` untuk beberapa daftar slide dalam satu halaman (overlay Kenali): URL tidak disentuh.
+- Berganti slide menghentikan narasi (`pauseNarration()`) dan memindah fokus ke judul/teks slide; `show(n, { focus: false })` dipakai perpindahan otomatis agar fokus pengguna tidak direbut.
 
 ### `game/narrator.js` — pemutar narasi sinematik
 
-Dipakai cerita pembuka dan narasi peta; Tahap 3 memakainya ulang untuk layar bernarasi lain.
+Dipakai cerita pembuka dan penutup, narasi peta (`map_intro`), overlay Kenali wilayah (`region_intro`), dialog wilayah (`level_open`), dan wilayah tuntas (`level_done`).
 
 ```js
-initNarrator(root, { onFinish?, onSlide? })
-  // root = [data-narrator][data-context][data-prefix][data-mode][data-keyboard?][data-hash?][data-level-id?]
-  // → { start({ userInitiated }), stop(), show(n, { notify, focus }), next(), prev(), advance(),
-  //     current, total, started } | null
+initNarrator(root, { onFinish, onSlide })
+  // root = [data-narrator][data-context][data-prefix][data-mode][data-level-id?][data-keyboard="0"?][data-hash="0"?]
+  // → { start({ userInitiated }), stop(), show(n, opts), next(), prev(), advance(), current, total, started } | null
 ```
 
 | Mode (`data-mode`) | Mulai | Action audio pertama |
 |---|---|---|
-| `tap` | kartu "Ketuk untuk mulai" (`[data-narrator-tap]`); ketukannya memanggil `Sfx.unlock()` | `autoplay` |
-| `external` | pemanggil memanggil `start()` (map.js, setelah tirai) | `autoplay` |
-| `manual` | tombol ▶ pada kontrol | `play` |
+| `tap` | kartu "Ketuk untuk mulai" `[data-narrator-tap]`; ketukannya memanggil `Sfx.unlock()` | `autoplay` |
+| `external` | pemanggil memanggil `start()` (peta setelah tirai, overlay Kenali) | `autoplay`, atau `play` dengan `userInitiated` |
+| `manual` | tombol ⏸/▶ pada kontrol | `play` |
 
-* **Mesin ketik** pada `.slide-text` (±35 karakter/detik): teks utuh tetap untuk pembaca layar (`visually-hidden`), sisa teks memakan tempat agar kotak tidak melompat. Ketukan pertama pada `[data-narrator-advance]` menampilkan teks penuh, ketukan kedua lanjut; Spasi/→/Enter saat mengetik juga menuntaskan teks lebih dulu.
-* **Maju otomatis** 1,2 detik setelah audio selesai bila sakelar Otomatis menyala (`Storage` pref `narrationAuto`, bawaan `true`). Slide terakhir tidak berpindah halaman sendiri; root diberi `.is-finished` dan tombol akhirnya berdenyut.
-* **Kontrol** `[data-narrator-controls]`: ◀ (`prev`), ⏸/▶ (`toggle`), ↻ (`replay`, action `replay`), ▶ (`next`), Otomatis (`auto`). ⏸/▶ dan ↻ disembunyikan pada slide tanpa audio; sakelar Otomatis disembunyikan bila tak satu slide pun beraudio.
-* **Efek layar** dari `data-effect` slide → kelas `fx-{effect}` pada `[data-narrator-fx]` (diputar ulang tiap slide).
-* **Event** `dialogue_advanced` { index, total, context, character } (+ `levelId` dari `data-level-id`) tiap perpindahan.
-* Memakai ulang `initSlides()` dan pola `:target`, sehingga tanpa JavaScript slide tetap berjalan; kartu ketuk dan kontrol tersembunyi lewat atribut `hidden`. Audio setiap slide lewat `narrationPlayer(..., { shared: true })`.
-* **Tahap 3.** `onSlide(index, slide, total)` dipanggil setelah event terkirim (dialog menukar pose di sini, Kenali menghapus lencana), sehingga modul halaman tidak pernah mengirim `dialogue_advanced` sendiri. `data-hash="0"` → `initSlides({ hash: false })` untuk beberapa pemutar dalam satu halaman. `stop()` mengembalikan pemutar ke keadaan belum mulai, jadi `start()` berikutnya memutar ulang (overlay dibuka lagi). `advance()` = ketukan kotak teks: tuntaskan ketikan dulu, baru lanjut. Mencapai slide terakhir memanggil `flush()` agar tanda "didengar sampai habis" segera sampai di server.
-* `prefers-reduced-motion`: tanpa mesin ketik dan tanpa efek (Ken Burns dimatikan CSS).
+- **Mesin ketik** pada `.slide-text` (±35 karakter/detik). Teks utuh tetap ada untuk pembaca layar; sisa teks memakan tempat agar kotak tidak melompat. Ketukan pertama pada `[data-narrator-advance]` (atau Spasi/→/Enter) menuntaskan teks, ketukan berikutnya lanjut (`advance()`).
+- **Maju otomatis** 1,2 detik setelah audio selesai bila sakelar Otomatis menyala (preferensi `narrationAuto`, bawaan aktif). Slide terakhir tidak berpindah halaman sendiri; root diberi `.is-finished`.
+- **Kontrol** `[data-narrator-controls]`: `[data-narrator="prev"|"toggle"|"replay"|"next"|"auto"]`. ⏸/▶ dan ↻ disembunyikan pada slide tanpa audio yang dapat diputar; sakelar Otomatis disembunyikan bila tak satu slide pun beraudio. Slide tanpa audio tampil sebagai teks (`.is-text-only`) dan dilanjutkan manual.
+- **Efek layar** dari `slide[data-effect]` (`fog`, `fog-lift`, `glow`, `flash`, `shake`, `dim`) → kelas `fx-{effect}` pada `[data-narrator-fx]`.
+- **Event** `dialogue_advanced` `{ index, total, context, character }` (+ `levelId` dari `data-level-id`) setiap perpindahan slide; hanya narrator yang mengirimnya. Mencapai slide terakhir memanggil `flush()`.
+- `onSlide(index, slide, total)` dipanggil sesudah event; `onFinish()` dipanggil saat pemain meminta lanjut di slide terakhir (tanpa `onFinish`, tautan akhir slide diklik).
+- `stop()` mengembalikan pemutar ke keadaan belum mulai, jadi `start()` berikutnya memutar ulang.
+- Audio setiap slide lewat `narrationPlayer(…, { shared: true })`; latar slide berikutnya (`img.cine-bg`) dipramuat.
+- `prefers-reduced-motion`: tanpa mesin ketik dan tanpa efek (Ken Burns dimatikan CSS).
 
 ### `game/intro.js` dan `game/dialogue.js`
 
-* `intro.js` — `initStory(screenName)` memanggil `initNarrator()` pada `[data-screen="intro"]` atau (Tahap 3) `[data-screen="ending"]` (mode `tap`); event `dialogue_advanced` dengan `context: 'intro'`/`'ending'`.
-* `dialogue.js` (Tahap 3) — `initDialogue()` pada `[data-screen="dialogue"]` dan `[data-screen="region-done"]`: `initNarrator(screen, { onSlide })` mode `tap` (kartu bab / kartu "Serpihan … kembali!"). `onSlide` memberi `.is-speaking`/`.is-listening` dan menukar gambar tokoh yang berbicara ke `data-pose-src` baris itu (monogram diganti `<img>` begitu ada frame; baris tanpa frame membiarkan tokoh apa adanya); frame pose dipramuat saat idle. Event `dialogue_advanced` hanya dari narrator (`context: 'level_open'`/`'level_done'`; sebelum Tahap 3 `dialogue.js` mengirim `context: 'region'`).
-* Maju/mundur slide tanpa memuat ulang halaman (`game/slides.js`, dipakai juga Pustaka). Hash `#slide-n` diganti lewat `location.replace('#…')`: seperti `history.replaceState`, riwayat browser tidak bertambah per slide, tetapi `:target` ikut berubah sehingga aturan CSS tanpa-JavaScript tetap satu-satunya penentu slide yang tampil.
-* `emit('dialogue_advanced', { payload: { index, total, context, character } })` tiap perpindahan, hanya dari `narrator.js`.
-* Karakter yang berbicara diberi kelas `.is-speaking`, yang mendengar `.is-listening`.
-* `Space` dan panah kanan = lanjut; ini cara tercepat di papan tulis interaktif. `initSlides({ keyboard: false })` mematikannya untuk slide yang hanya sebagian layar (narasi peta), dan `show(n, { focus: false })` dipakai perpindahan otomatis agar fokus pengguna tidak direbut.
+- `initStory('intro' | 'ending')` memasang narrator mode `tap` pada `[data-screen="intro"][data-narrator]` (`/intro`) atau `[data-screen="ending"][data-narrator]` (`/penutup`).
+- `initDialogue()` memasang narrator pada `[data-screen="dialogue"]` (`/dialog/{code}`, context `level_open`) atau `[data-screen="region-done"]` (`/tuntas/{code}`, context `level_done`), markup `partials/dialogue-scene`. `onSlide` memberi tokoh yang berbicara `.is-speaking` dan yang mendengar `.is-listening`, lalu menukar gambarnya ke frame pose baris itu (`data-pose`, `data-pose-src`; monogram diganti `<img class="character-img">` begitu ada frame, baris tanpa frame membiarkan tokoh apa adanya). Frame pose dipramuat saat idle.
 
 ### `game/map.js`
 
-* Titik terkunci → toast, bukan navigasi.
-* Pra-muat gambar latar wilayah yang terbuka (`[data-preload]`, dari `levelOverview()['background']`) saat peta dibuka, agar perpindahan mulus.
-* `emit('level_opened', { levelId })` saat peta wilayah dibuka.
-* **Peta Kedu (Tahap 2):** narasi Jaka `map_intro` lewat `initNarrator()` pada panduan peta. Bila halaman membawa tirai peta (`[data-curtain-layer="map"]`, dari flash `curtain=map`): `playCurtain('map')` → setelah ketukan, `Sfx.music('map')` lalu `story.start()` (autoplay). Tanpa tirai: musik diminta seperti biasa (baru berbunyi setelah interaksi) dan narasi menunggu ▶.
-* Tombol "Pustaka {wilayah}" yang masih terkunci (`a[data-library-locked]`, di nav-bar — di luar `<section>` layar) → `showModal()` dari `core/modal.js` dengan ikon gembok: judul, penjelasan, dan progres dari atribut `data-locked-*`, tombol **Mengerti** dan tautan **Pustaka Kedu**. Tanpa JavaScript tautannya membuka halaman terkunci `/pustaka/{code}`.
-* **Kenali wilayah (Tahap 3).** Setiap `[data-kenal]` (overlay di luar `<main>`) diberi `initNarrator()` mode `external`, `data-hash="0"`, `data-keyboard="0"`. Klik `[data-kenal-open]` (pin & kartu): `Sfx.unlock()` di dalam ketukan, narasi peta dihentikan, overlay `.is-open`, HUD/`<main>`/nav/skip-link `inert`, kembali ke slide 1 tanpa event, lalu `start({ userInitiated: true })`; fokus ke tombol ✕. Selama terbuka: Esc menutup, →/Spasi `advance()`, ← `prev()`. Tutup (`[data-kenal-close]`, ✕, Esc) → `stop()`, `flush()`, fokus kembali ke tombol pembuka. `onSlide` di slide terakhir menghapus `[data-kenal-badge]` wilayah itu; `onFinish` (▶ di slide terakhir) mengklik tombol akhirnya — "Masuk ke {wilayah}" memutar tirai wilayah lewat `initCurtains()`. Kembali lewat bfcache menutup overlay.
-* Pin & kartu wilayah membawa `data-curtain="region"`; tirainya dari `<template id="tpl-curtain-region">`.
+- Titik terkunci (`a[aria-disabled="true"]`) → bunyi `lock` + toast dari `data-locked-message`, bukan navigasi (server tetap menolak bila tautan dibuka langsung).
+- Tombol Pustaka wilayah yang masih terkunci (`a[data-library-locked]` di nav-bar) → `showModal()` berikon gembok dari `data-locked-title`, `data-locked-message`, `data-locked-progress`, tombol `data-locked-ok`, dan tautan ke rak (`data-index-label`, `data-index-href`). Tanpa JavaScript tautannya membuka halaman Pustaka terkunci.
+- Gambar `[data-preload]` dipramuat saat idle.
+- **Peta wilayah** (`map-level`): `level_opened` `{ code }` + `levelId`, musik `region`.
+- **Peta Kedu** (`map-kedu`): narasi `map_intro` lewat `initNarrator()` pada panduan peta. Bila halaman membawa tirai peta (`[data-curtain-layer="map"]`), `playCurtain('map')` → setelah ketukan, musik `map` lalu `start()`. Tanpa tirai, musik diminta biasa dan narasi menunggu ▶.
+- **Kenali wilayah.** Setiap overlay `[data-kenal]` diberi narrator mode `external` (`data-hash="0"`, `data-keyboard="0"`). Klik `[data-kenal-open]` (pin dan kartu): `overlay_opened` `{ overlay: 'kenal', level }`, `Sfx.unlock()` di dalam ketukan, narasi peta dihentikan, overlay `.is-open`, `body.has-kenal`, skip-link/HUD/`<main>`/nav `inert`, kembali ke slide 1 tanpa event, `start({ userInitiated: true })`, fokus ke `.kenal-close`. Selama terbuka: Esc menutup, → atau Spasi `advance()`, ← `prev()`. Tutup (`[data-kenal-close]`, Esc, atau bfcache) → `stop()`, `flush()`, fokus kembali ke pembuka. Slide terakhir menghapus lencana `[data-kenal-badge]`; server menghitung status "sudah didengar" dari `dialogue_advanced` context `region_intro`. `onFinish` mengklik tombol akhir `[data-slide-final]` ("Masuk ke {wilayah}" memutar tirai `region`). Tanpa JavaScript overlay adalah target `:target`.
 
 ### `game/library.js`
 
-Dua titik masuk: `initLibrary()` untuk buku (`data-screen="library"`) dan `initLibraryIndex()` untuk rak Pustaka Kedu (`data-screen="library-index"`). Halaman terkunci (`library-locked`) tidak punya modul halaman; isinya sepenuhnya dari server.
+`initLibrary()` untuk buku `/pustaka/{code}` (`data-screen="library"`), `initLibraryIndex()` untuk rak `/pustaka`. Halaman terkunci tidak punya modul.
 
-* Navigasi halaman, video dimuat `preload="none"`.
-* Gambar/video yang gagal dimuat disembunyikan beserta bingkainya.
-* **Pudar masuk**: `img` di `.book-frame` diberi `.is-loaded` saat `load` (gambar yang sudah `complete` langsung), bingkainya ikut `.is-loaded` sehingga skeleton berhenti. CSS menyembunyikan gambar (`opacity: 0`) hanya di bawah `html.js`, jadi tanpa modul ini gambar tetap tampil.
-* **Pramuat**: setiap pindah halaman (dan saat buku dibuka), gambar `loading="lazy"` di halaman sesudahnya diubah menjadi `eager`.
-* **Kredit**: `details.media-credit` — mengetuk ⓘ yang akan membuka langsung menutup panel lain (event `toggle` datang asinkron, jadi ditangani juga di `click`); ketuk di luar panel atau Esc menutup semuanya; pindah halaman menutup panel. Kredit bukan anak `.book-zoom`, jadi tidak memicu perbesar.
-* **Lightbox**: `<dialog class="lightbox is-loading">` dengan pemutar tunggu (`role="status"`, label `Game.libraryLoading`) sampai gambar besar `load`/`error`.
-* **Facade video**: iframe dibuat hanya setelah `.embed-play` ditekan; saat halaman berganti facade (poster + tombol Putar) dikembalikan.
-* `emit('library_page_viewed', { levelId, payload: { page, total, page_id } })`.
-* Rak: sampul yang gagal dimuat disembunyikan sehingga gradien kartu tampil.
+- Navigasi halaman lewat `initSlides({ prefix: 'page-' })`; setiap halaman yang dibuka (termasuk halaman pertama) mengirim `library_page_viewed` `{ page, total, page_id }` + `levelId`. `library_opened` dicatat server.
+- Gambar/video yang gagal dimuat disembunyikan beserta `.book-figure`; halaman yang kehilangan semua medianya menjadi teks saja.
+- Gambar di `.book-frame` memudar masuk (`.is-loaded`) dari skeleton; gambar `loading="lazy"` di halaman sesudahnya diubah `eager` saat berpindah.
+- Panel kredit `details.media-credit`: membuka satu menutup yang lain; klik di luar, Esc, atau pindah halaman menutup semuanya.
+- Perbesar gambar: `.book-zoom[data-zoom]` membuka `<dialog class="lightbox">` dengan pemutar tunggu (`data-label-loading`) sampai gambar besar termuat; mengirim `overlay_opened` `{ overlay: 'lightbox', level }`.
+- Video tertanam: facade `.book-embed[data-embed]` (poster + `.embed-play`) diganti iframe hanya setelah ditekan; pindah halaman mengembalikan facade dan menjeda `<video>`.
+- Rak: sampul yang gagal dimuat disembunyikan sehingga gradien kartu tampil.
 
-### `game/reflection.js`
+### `game/reflection.js` dan `game/finished.js`
 
-* Bintang 1–5 dapat diklik dan dinavigasi keyboard.
-* Client memeriksa minimal dua textarea terisi sebelum submit, server memeriksa ulang.
+- Balai Refleksi: bintang 1–5 memakai radio bawaan. Sebelum kirim, klien memeriksa jumlah textarea terisi minimal `data-min-answers` (bawaan 2); kurang → pesan `needTwo`, kolom kosong ditandai dan difokus. Server memeriksa ulang. `preventDoubleSubmit()` dipasang sesudahnya.
+- Layar selesai (`/selesai/{attemptId}`): bunyi `region-done` bila wilayah tuntas (`.finished-kedu`), selain itu `shard`; konfeti canvas bila halaman tidak membawa konfeti CSS. Bintang dan angka sudah dirender server.
 
 ---
 
-## Implementasi — Panel Admin
+## Kerangka Tantangan dan Kontrak Engine
 
-### `admin/charts.js` — adapter ECharts
+### Payload `#challenge-data`
 
-Seluruh chart dibuat lewat satu adapter, sehingga query analitik tidak pernah terikat pada library chart.
+Dibangun `ChallengeService::buildPayload()` dan ditanam `game/challenge/_frame.php`. Tidak memuat kunci jawaban, penanda pengecoh, atau pemetaan kata → rumpang.
 
-```js
-export function renderChart(el, type, data, options = {}) { … }
+| Kunci | Isi |
+|---|---|
+| `attempt_id`, `attempt_no` | pengerjaan yang sedang berjalan |
+| `variant_group`, `variant` | variasi a/b/c yang terpilih acak; `variant.title` judul variasinya |
+| `max_tries`, `tries_used` (= `check_count`) | batas kesempatan (salinan `challenge_attempts.max_tries`) dan cek yang sudah dipakai |
+| `resumed` | `true` bila pengerjaan `in_progress` dilanjutkan |
+| `elapsed_ms` | waktu sejak pengerjaan dibuka, dihitung server |
+| `node` | `id`, `level_id`, `sequence`, `engine_type`, `variant_code`, `title`, `instruction`, `description`, `background`, `scene` |
+| `items[]` | `toPlayerArray()` + `state`: `{ locked: true, answer, tries }` untuk soal yang sudah benar, selain itu `{ tries }` (jawaban salah tidak pernah dikembalikan) |
+| `hints[]`, `hints_count` | `{ id, item_id, sequence }` tanpa teks |
+| `word_bank` | `rumpang`: jawaban + pengecoh variasi itu, diacak server |
+| `passages` | bacaan yang dirujuk soal (`boleh`) |
+| `verdict_options` | `boleh`: `['benar', 'salah']` (tombolnya dirender server) |
+| `objects[]`, `clues[]` | `cari`, menggantikan `items` (lihat [Cari Objek](#fitur-cari-objek-budaya-cari)) |
+
+### `game/challenge.js`
+
+`bootChallenge()` membaca `[data-screen="challenge"]` dan `#challenge-data`, memilih engine dari `node.engine_type` (`ENGINES`: `puzzle`, `rumpang`, `boleh`, `cari`, dimuat dinamis), lalu:
+
+- memulai jam (`startTimer($('#timer'), elapsed_ms)`) dan musik `challenge`;
+- mengisi penanda kesempatan `#tries` dari `max_tries − tries_used`;
+- menampilkan tombol petunjuk `#btn-hint` bila `hints` tidak kosong;
+- memasang konfirmasi Keluar, penjaga tombol Back, dan event `pagehide`;
+- mengirim `challenge_opened` `{ resumed: true, attempt_no }` hanya bila `resumed` (pembukaan pertama dicatat server);
+- memasang `trackReading()` untuk panel bacaan;
+- memanggil `engine.mount(ctx)`.
+
+### Kontrak engine (`ctx`)
+
+Setiap engine mengekspor `mount(ctx)`. `ctx` berisi:
+
+| Anggota | Kegunaan |
+|---|---|
+| `data`, `section`, `items` | payload, `<section>` tantangan, `data.items` (larik kosong untuk `cari`) |
+| `attemptId`, `nodeId`, `levelId`, `refs` | rujukan; `refs = { levelId, nodeId, attemptId }` untuk `emit()` |
+| `submit(itemId, answer, extra)` | `POST /api/attempts/{id}/responses` dengan `client_event_id` dan `occurred_at` (dipakai `cari`) |
+| `check(answers)` | `POST /api/attempts/{id}/check` untuk semua isian sekaligus; menambahkan `first_input_ms`/`last_input_ms` per soal (dipakai `puzzle`, `rumpang`, `boleh`) |
+| `selected(itemId, change)` | event `answer_selected` `{ …change, t_ms }` + mencatat waktu isian soal itu |
+| `finish(result)` | ikuti penutupan dari server: pindah ke `result.redirect` (lentera diperbarui dari `result.shards`); tanpa `redirect` → cadangan `POST /complete` |
+| `showCheckResult(result, opts)` | modal hasil cek engine batch (lihat di bawah) → `'complete'` atau `'fix'` |
+| `setTries(node, left, label)` | perbarui penanda bulatan kesempatan (`.tries-dot.is-left`, `data-left`, `aria-label`) |
+| `triesText(left)` | `triesLast` bila sisa 1, selain itu `triesLeft` |
+| `maxTries` | dari `data.max_tries` |
+| `tally({ correct, wrong, addCorrect, addWrong })` | angka ✓/✗ di bar (`#count-correct`, `#count-wrong`), selalu dari respons server |
+| `setBusy(button, busy)` | nonaktifkan tombol selama request (`aria-busy`) |
+| `networkPause(button)` | galat jaringan: toast `errNetworkRetry`, tombol istirahat 3 detik |
+| `report(error, options)` | galat aturan (`TRIES_EXHAUSTED`, `CLUE_CLOSED`) lalu `handleApiError()` dengan `mapUrl` = peta wilayah |
+| `currentItemId()` | ditimpa engine: soal yang sedang dikerjakan (untuk petunjuk soal) |
+| `t` | `t()` dari `core/config.js` |
+
+**Waktu isian per soal.** `selected()` mencatat milidetik sejak tantangan dibuka (`performance.now()`) saat siswa pertama kali dan terakhir kali mengisi/mengubah soal dalam satu percobaan. `check()` mengirimnya sebagai `first_input_ms`/`last_input_ms`, lalu mengosongkannya untuk percobaan berikutnya. Soal yang tidak disentuh dalam satu percobaan dikirim tanpa waktu. Ini hanya catatan proses; urutan dan waktu resmi tetap `occurred_at` server.
+
+**Respons `/check`** (engine batch):
+
+```json
+{ "results": { "88": false }, "correct_count": 0, "total": 1, "all_correct": false,
+  "check_count": 1, "try_no": 1, "tries_left": 2, "exhausted": false,
+  "detail": { "88": { "pieces_correct": 6, "misplaced": [0, 4, 7] } },
+  "completed": false, "completion_reason": null, "redirect": null, "shards": null }
 ```
 
-`type` yang didukung dan penggunaannya:
+**Respons `/responses`** (Cari Objek, satu ketukan):
 
-| type | Dipakai di | Bentuk data |
-|---|---|---|
-| `line` | perubahan pretest → posttest | `{ labels: [], series: [{ name, values: [] }] }` |
-| `bar` | skor per wilayah, sebaran umur | idem |
-| `stacked-bar` | pemeriksaan & petunjuk per node | `{ labels, series: [{name, values}] }` |
-| `heatmap` | kesulitan 15 node (3 baris × 5 kolom) | `{ x: [], y: [], values: [[x,y,v]] }` |
-| `scatter` | durasi vs ketepatan per peserta | `{ points: [{x,y,label}] }` |
-| `matrix` | penguasaan indikator × wilayah | seperti heatmap dengan label teks |
-| `gauge` | tingkat penyelesaian | `{ value }` |
-
-Adapter menetapkan tema GELITA sekali (warna dari token CSS dibaca lewat `getComputedStyle`), sehingga setiap chart konsisten tanpa mengulang konfigurasi.
-
-Bentuk data dibuat server di satu tempat, `App\Libraries\ChartData`, dan dikembalikan API admin sebagai kunci `chart` di samping baris mentahnya. Data diambil dari `/api/admin/*`, bukan ditanam di HTML, agar filter dapat diubah tanpa memuat ulang halaman; chart yang memang tidak punya filter (profil peserta, drilldown node) membawa datanya lewat parameter `data` komponen `admin-chart` (`<script type="application/json" class="chart-data">`):
-
-```js
-const data = await apiRequest(canvas.dataset.endpoint);   // /api/admin/nodes?…filter
-renderChart(canvas, 'heatmap', data.chart);
+```json
+{ "correct": false, "first_pass": true, "wrong_click": true, "decoy": true, "feedback": "…",
+  "try_no": 1, "tries_left": 2, "clue_closed": false, "change_count": 0, "wrong_click_count": 1,
+  "progress": { "answered": 0, "total": 4 },
+  "completed": false, "completion_reason": null, "redirect": null, "shards": null }
 ```
 
-Chart wajib punya:
+Bila pengerjaan tertutup di respons itu: `completed: true`, `completion_reason` = `solved` | `tries_exhausted`, `redirect` = `/selesai/{attemptId}`, `shards` = jumlah serpihan sesi.
 
-* kondisi kosong ("Belum ada data untuk filter ini"), bukan kanvas kosong;
-* `aria-label` dan tabel data alternatif yang tersembunyi secara visual tetapi terbaca pembaca layar;
-* `resize` handler yang memanggil `chart.resize()`.
+**`showCheckResult(result, { okTitle, okText, partialTitle, partialText, exhaustedText, beforeExhausted })`:**
+
+1. `tries_left` → `setTries(#tries)`.
+2. `completed` + `solved` → bunyi `correct`, konfeti, modal sukses (tombol Lanjut, tidak dapat ditutup) → `finish()`.
+3. `completed` + `tries_exhausted` → bunyi `wrong`, `beforeExhausted()` bila ada, modal `triesExhaustedTitle` + `exhaustedText` dengan satu tombol Lanjut → `finish()`. Kunci jawaban tidak ditampilkan.
+4. Selain itu → modal "belum tepat" berisi `partialText` + `triesText(tries_left)` dengan tombol `fixAnswers` (Perbaiki) → `'fix'`.
+
+**Galat aturan dari server** (mis. tab lain sudah memakai kesempatan terakhir): `TRIES_EXHAUSTED` (409) → pindah ke `redirect` di payload galat, atau muat ulang; `CLUE_CLOSED` (409) → muat ulang agar tampilan mengikuti payload. `INCOMPLETE` (422) tidak terjadi dalam pemakaian biasa karena engine menolak kotak/kartu kosong sebelum mengirim.
+
+**`POST /complete` hanya cadangan.** Dipanggil `finish()` bila respons `completed` datang tanpa `redirect`. Endpoint ini idempoten (pengerjaan selesai dibalas hasil dan `redirect` yang sama) dan menolak pengerjaan yang masih punya kesempatan dengan `TRIES_REMAINING` (klien menampilkan toast `itemsPending`).
+
+### Petunjuk
+
+```text
+Trigger   tombol #btn-hint pada bar tantangan (hanya tampil bila payload punya hints)
+Pilihan   petunjuk soal yang sedang dikerjakan (ctx.currentItemId()) yang belum dibuka,
+          lalu petunjuk node; masing-masing urut `sequence`
+Process   overlay_opened { overlay: 'hint', level } → confirmDialog(hintTitle, hintPenalty)
+Request   POST /api/attempts/{id}/hints { hint_id, item_id?, client_event_id }
+Response  { text, hint_count }
+UI        modal berisi teks; penghitung di tombol = hint_count dari server
+          semua petunjuk sudah dibuka → modal hintAllOpened + teks yang sudah dibuka (tanpa request)
+          tidak ada petunjuk lagi → modal hintNone
+```
+
+Teks yang sudah dibuka disimpan di halaman dan tidak diminta ulang, karena setiap permintaan dihitung server (`hint_count`, `item_responses.hint_used`, event `hint_opened`). Kalimat konfirmasinya netral, tanpa angka; petunjuk tidak mengurangi bintang.
+
+### Keluar dari tantangan
+
+```text
+Trigger   summary Keluar (details.challenge-exit), tombol [data-exit-confirm], atau tombol Back browser
+Process   overlay_opened { overlay: 'exit', level } → confirmDialog(exitTitle, exitText, danger)
+Request   bila ya → POST /api/attempts/{id}/abandon { reason: 'user_exit' }  (gagal pun tetap keluar)
+UI        flush(), lalu ke data-exit-url (/wilayah/{code})
+```
+
+- Tombol Back: satu entri penjaga di riwayat (`history.pushState`); `popstate` meminta konfirmasi yang sama dan memasang penjaga lagi bila dibatalkan.
+- Halaman ditinggalkan tanpa Keluar/selesai (tutup tab, muat ulang) → `pagehide` mengirim `challenge_abandoned` `{ via: 'pagehide', attempt_open: true }` lalu `flush(true)` lewat beacon; pengerjaan tetap `in_progress` dan dapat dilanjutkan. Tidak ada `preventDefault()` pada `beforeunload`.
+- Submit `form.lang-switch` (ganti bahasa) tidak dihitung meninggalkan.
+
+---
+
+## Engine Tantangan
+
+Urutan tantangan di setiap wilayah: 1 Susun Gambar (`puzzle`), 2 Isi Rumpang (`rumpang`), 3 Benar atau Salah (`boleh`), 4 Cari Objek (`cari`). Ketiga engine pertama adalah engine **batch**: satu tombol "Cek jawabanku" (`#btn-check`) memeriksa semua isian sekaligus, dan setiap cek memakai satu dari 3 kesempatan. Cari Objek menilai per ketukan, dengan 3 kesempatan per petunjuk.
+
+### Fitur: Susun Gambar (`puzzle`)
+
+```text
+Markup    game/challenge/puzzle.php: #puzzle-wrap[data-item] > #puzzle-board[data-grid][data-shape]
+          > .piece[data-slot][data-piece][data-pos] berisi svg.piece-art; #puzzle-caption (hidden)
+Trigger   ketuk dua keping untuk menukar, lalu Cek jawabanku
+Input     answer: { order: [nomor keping per slot, urut slot] }
+Process   klien hanya menukar posisi; tiap tukar → answer_selected { action: 'swap', from, to }
+Request   POST /api/attempts/{id}/check { answers: [{ item_id, answer: { order } }] }
+Response  detail[item] = { pieces_correct, misplaced }
+UI        benar       → keping terkunci, papan .is-solved, keterangan gambar tampil, modal sukses
+          salah       → slot di `misplaced` diberi .is-misplaced; modal puzzleWrongText
+                        ("masih ada N keping yang keliru") + sisa kesempatan; fokus ke keping keliru
+          habis       → keping disusun ke posisi utuh (FLIP 600 ms), keterangan tampil,
+                        lalu modal triesExhaustedPuzzle + teks keterangan
+```
+
+- Papan n × n keping SVG; ukuran dan bentuk mengikuti tingkat wilayah (`App\Libraries\DifficultyRules`): Temanggung 3 × 3 kotak, Magelang 4 × 4 kotak, Wonosobo 4 × 4 jigsaw. Urutan awal diacak server tanpa satu keping pun di tempatnya.
+- Slot (tombol) tetap di tempat; yang berpindah adalah `.piece-art` beserta `data-piece`. Keping tidak bernomor; label pembaca layar menyebut letak slot, dan setiap tukar diumumkan (`piecesSwapped`).
+- Ketuk-untuk-tukar wajib (paling andal di tablet); seret-lepas HTML5 hanya tambahan. Keyboard: panah berpindah antar keping (roving focus), Enter/Spasi memilih atau menukar, Esc membatalkan pilihan.
+- Susunan benarnya memang publik (keping 0…n²−1 dari kiri atas), jadi server boleh mengirim slot yang keliru (`misplaced`) dan klien boleh menyusun gambar utuh setelah kesempatan habis.
+
+### Fitur: Isi Rumpang (`rumpang`)
+
+```text
+Markup    game/challenge/rumpang.php: .rumpang > .blank[data-item] (tombol), #word-bank > .word
+Trigger   ketuk kotak rumpang, lalu kata di bank; kemudian Cek jawabanku
+Input     answers: [{ item_id, answer: { text } }] untuk semua rumpang
+Process   klien mengelola kotak aktif dan kata terpakai;
+          pasang kata → answer_selected { action: 'set', value, from? }, lepas → { action: 'clear', value }
+Request   POST /api/attempts/{id}/check
+UI        benar → .is-correct, kotak terkunci; salah → .is-wrong (label ikut "Belum tepat")
+          semua benar → modal blankOkTitle; sebagian → blankWrongText "{0} dari {1}" + sisa kesempatan,
+          fokus ke kotak merah pertama
+          habis → semua kotak dan kata dikunci, tanda merah tetap, kunci tidak ditampilkan
+Error     ada kotak kosong → modal blankEmptyText, request TIDAK dikirim (tidak memakai kesempatan)
+```
+
+- Bank kata dari `payload.word_bank` (jawaban variasi itu + pengecoh, diacak server); klien tidak tahu kata mana milik rumpang mana. Tiap chip punya id sendiri (`data-word-id`), sehingga dua kata yang sama tidak saling menandai "terpakai".
+- Mengetuk kotak yang sudah terisi mengembalikan katanya ke bank dan menjadikan kotak itu aktif. Setelah mengisi, fokus pindah ke kotak kosong berikutnya.
+- Tantangan bacaan (`as_reading`): semua soal disambung menjadi satu bacaan dengan rumpang bernomor (`App\Libraries\ClozeReading`), diberi judul variasi (`h2.rumpang-title`) bila berbeda dari judul node; panel `.rumpang-reading` dipantau `trackReading()`.
+- Jawaban yang sudah benar tidak dihapus dan terkunci pada cek berikutnya. Muat ulang: rumpang dengan `items[].state.locked` diisi lagi dengan jawaban siswa sendiri (chip pertama yang belum terpakai dengan teks sama) dan terkunci.
+
+### Fitur: Benar atau Salah (`boleh`)
+
+```text
+Markup    game/challenge/boleh.php: details.passage (bacaan), .verdict-card[data-item]
+          dengan radio bawaan bernilai benar / salah
+Trigger   pilih Benar atau Salah pada tiap pernyataan, lalu Cek jawabanku
+Input     answers: [{ item_id, answer: { verdict: 'benar' | 'salah' } }]
+Process   tiap pilihan → answer_selected { action: 'set', value }
+Request   POST /api/attempts/{id}/check
+UI        benar → .is-correct + tanda "✓ Benar", radio dikunci; salah → .is-wrong + "✗ Belum tepat"
+          memilih ulang pada kartu salah melepas tandanya dan menggulir kartu salah berikutnya ke tengah
+          sebagian → cardsWrongText + sisa kesempatan; habis → semua radio dikunci, tanda merah tetap
+Error     ada kartu belum dipilih → .has-error 2,6 detik, digulirkan ke tengah,
+          modal cardsEmptyText, request TIDAK dikirim
+```
+
+- Tombol verdict adalah radio yang dirender server, jadi dapat dipilih dengan keyboard atau sentuhan tanpa JavaScript; markup tidak memuat kunci.
+- Bacaan dirender sekali di atas kartu (`details.passage`). Pada layar ≤ 640 px bacaan dilipat dan judulnya diberi label `readText` ("Baca teks"). Tautan "Berdasarkan …" (`a.card-passage`) membuka dan menggulir ke bacaannya.
+- Petunjuk soal memakai kartu yang terakhir difokus. Muat ulang: pernyataan dengan `state.locked` dipulihkan dengan pilihan siswa sendiri, bertanda benar, dan terkunci.
+
+### Fitur: Cari Objek Budaya (`cari`)
+
+```text
+Markup    game/challenge/cari.php: #hunt-scene > .object[data-object=ref] (posisi %),
+          #clue-text, #clue-index, #clue-tries, #hunt-list .hunt-target, <template id="tpl-clue-voice">
+Trigger   ketuk benda di adegan
+Input     { item_id: <clues[aktif].item_id>, answer: { object: <ref benda yang diketuk> } }
+Request   POST /api/attempts/{id}/responses (+ duration_ms sejak petunjuk tampil)
+UI        benar    → benda .is-found dan dinonaktifkan, petunjuk dicoret dari daftar,
+                     petunjuk terbuka berikutnya tampil dan dibacakan otomatis
+          salah    → benda bergetar 700 ms, modal huntDecoyTitle/huntOtherTitle berisi `feedback`
+                     server (atau teks bawaan) + sisa kesempatan petunjuk itu
+          clue_closed → modal clueFailedTitle "Petunjuk ini dilewati"; petunjuk diberi ✗
+                     (.is-skipped), bendanya TIDAK ditandai, lanjut ke petunjuk terbuka berikutnya
+          completed → narasi dihentikan; solved: konfeti + huntDoneTitle,
+                     tries_exhausted: triesExhaustedTitle (tanpa konfeti); lalu finish()
+```
+
+- **Payload tanpa pembeda jebakan.** `objects[]` memuat semua benda, target maupun jebakan, berbentuk identik `{ ref, x, y, w, media, found }` dan diurutkan menurut posisi di layar. `clues[]` hanya untuk target yang dinilai: `{ item_id, text, audio, audio_id, state: { found, closed, tries } }`, urutannya diacak dengan benih id pengerjaan (tetap saat dimuat ulang). `ref` adalah token HMAC per pengerjaan dari `encryption.key`, sehingga id petunjuk tidak dapat dicocokkan dengan benda mana pun di klien.
+- Server hanya membaca `answer.object` dan menerjemahkannya sendiri; `item_id` mentah dari klien tidak pernah dipakai sebagai jawaban, dan token yang tidak dikenal ditolak `422 INVALID_RESPONSE`. Benda jebakan dirender sama persis dengan benda asli (tanpa kelas, atribut, atau urutan DOM pembeda); label tombolnya netral ("Objek 3"). `progress.total` tidak menghitung jebakan.
+- **Kesempatan per petunjuk.** Setiap ketukan adalah satu percobaan untuk petunjuk yang sedang aktif. `#clue-tries` menampilkan sisa kesempatan petunjuk itu: saat dimuat dari `clues[i].state.tries`, lalu dari `try_no` respons. Ketukan salah ke-3 menutup petunjuk (`clue_closed`). Pengerjaan ditutup server begitu semua petunjuk tertutup; bila ketukan itu sekaligus menutup pengerjaan, hanya modal penutupan yang tampil.
+- Daftar sisa (`#hunt-list`) berisi tombol `.hunt-jump` untuk melompat ke petunjuk yang masih terbuka; melompat tidak menghitung percobaan dan tidak memutar narasi. Keyboard: Tab berpindah antar benda, Enter memilih.
+- **Narasi petunjuk.** `clues[i].audio` = URL rekaman petunjuk pada bahasa aktif (hanya `approved` dengan media aktif), `audio_id` = id `audio_assets`-nya; keduanya `null` tanpa rekaman. Tombol ▶/⏸ dari `#tpl-clue-voice` dipasang di samping teks, satu `NarrationPlayer` per petunjuk dengan `shared: true` dan `attemptId`. Petunjuk pertama hanya diputar lewat tombol (action `play`). Setelah jawaban benar, petunjuk berikutnya diputar sendiri 600 ms kemudian (action `autoplay`) bila suara aktif. Berganti petunjuk menghentikan narasi sebelumnya. Petunjuk tanpa rekaman tampil tanpa tombol.
+- **Muat ulang**: `clues[i].state` dan `objects[].found` memulihkan temuan, petunjuk yang dilewati, dan sisa kesempatan; permainan dilanjutkan dari petunjuk terbuka pertama. Angka ✓ dimulai dari jumlah temuan, ✗ dari 0.
+
+---
+
+## Panel Admin (`admin/`)
+
+Panel admin satu bahasa (Indonesia) dan semua halamannya tetap berfungsi tanpa JavaScript. Panel hanya menampilkan tabel dan hitungan mentah; tidak ada chart.
+
+### `admin.js` — titik masuk
+
+- Perilaku umum dipasang pada `document` dan dipasang ulang setiap kali `filters.js` mengganti isi halaman: `initTables()` dan tombol salin `[data-copy="#selector"]` (mis. sandi sementara; tanpa izin papan klip, teksnya dipilih dan toast meminta Ctrl+C).
+- Modul khusus halaman dimuat hanya bila markup-nya ada:
+
+| Penanda markup | Modul |
+|---|---|
+| `form.item-form`, `[name="engine_type"]` | `admin/content-editor.js` → `initContentEditor()` |
+| `form[action$="impor-bank/pratinjau"]` | `admin/bank-import.js` → `initBankImport()` |
+| `form.upload-box[action$="media/unggah"]` | `admin/media-upload.js` → `initMediaUpload()` |
+| `form[data-narration-upload]` | `admin/narration-upload.js` → `initNarrationUpload()` |
+| `[data-export-id]` | `admin/export.js` → `initExport()` |
 
 ### `admin/filters.js`
 
-* Perubahan filter memperbarui `URLSearchParams` lalu mengambil HTML halaman untuk filter baru di latar dan mengganti isi `#admin-main` di sekitar form filter (form-nya tetap, jadi fokus keyboard tidak hilang): KPI dan tabel dirender ulang server, chart mengambil ulang datanya dari `/api/admin/*` dengan filter yang sama. Tanpa ini hanya chart yang berubah sementara angka lain di halaman masih mengikuti filter lama.
-* Kolom teks (pencarian) diterapkan setelah jeda 450 ms; pilihan dan tanggal langsung.
-* `history.replaceState` menjaga URL tetap dapat dibagikan.
-* Tombol "Atur ulang" mengembalikan ke filter bawaan.
+- Berlaku untuk `form.filter-bar` (GET) yang menjadi anak langsung `#admin-main`. Perubahan filter memperbarui URL lewat `history.replaceState` (tetap dapat dibagikan), mengambil HTML halaman untuk filter baru, lalu mengganti semua saudara form filter di `#admin-main`; form-nya sendiri tetap sehingga fokus keyboard tidak hilang. Tombol "Atur ulang" ikut versi server.
+- Kolom teks/pencarian diterapkan setelah jeda 450 ms; pilihan dan tanggal langsung. Permintaan sebelumnya dibatalkan (`AbortController`).
+- Gagal memuat → toast, lalu navigasi biasa ke URL filter. Tanpa JavaScript tombol Terapkan mengirim form seperti biasa.
 
 ### `admin/tables.js`
 
-* Pengurutan kolom di sisi client untuk tabel ≤ 500 baris (`data-sortable="client"`), dengan `aria-sort`; angka dibaca dalam format Indonesia (`1.234,5`, `85,0%`, `2:05`, `23 Sep 2026 10:14`) dan sel kosong "—" selalu di akhir. Tabel yang lebih besar selalu dipaginasi server, jadi urutannya mengikuti server.
-* Kotak "Saring baris" menyaring baris yang tampak (tabel ≥ 10 baris).
-* Kolom `p` dan `D` pada tabel butir soal sudah diberi kelas warna + teks tafsir oleh server (`partials/item-analysis-table`).
+- `table.data-table[data-sortable="client"]` (≤ 500 baris; tabel lebih besar dipaginasi server): judul kolom menjadi tombol urut dengan `aria-sort`. Nilai dibaca dalam format Indonesia (`1.234,5`, `85,0%`, `2:05`, `23 Sep 2026 10:14`, satuan seperti "tahun", "kali", "siswa"); `data-sort` pada sel menimpa teksnya; sel kosong "—" selalu di akhir; baris setara mempertahankan urutan server.
+- Tabel ≥ 10 baris mendapat kotak "Saring baris di tabel ini…" yang menyembunyikan baris yang tidak cocok dan menampilkan "N dari M baris".
 
-### `admin/content-editor.js`
+### `admin/content-editor.js` dan `admin/object-picker.js`
 
 ```text
-Feature   Form item yang menyesuaikan interaction_type
-Trigger   Admin memilih interaction_type pada form item
-Process   menampilkan blok field yang sesuai dan menyembunyikan sisanya:
-            single_choice    → editor 4 opsi + radio kunci + unggah gambar opsi
-            fill_blank_bank  → kalimat dengan penanda ___ + jawaban ID/EN
-            fill_blank_free  → kalimat + daftar jawaban yang diterima (satu per baris)
-            verdict_card     → pernyataan + pilihan kunci (hanya opsi dari verdict_options node)
-                               + gambar + pemilih teks bacaan + editor dua sumber (opsional)
-            verdict_reason   → sama + kolom contoh alasan ID/EN (rubrik guru)
-            find_object      → pemilih koordinat (object-picker.js) + centang jebakan
-            puzzle_arrange   → pilih gambar + ukuran grid
-            ordering         → daftar potongan teks ID/EN; urutan di editor = kunci jawaban
-                               (server mengacak ulang saat dikirim ke siswa)
-            semua jenis      → review_status, review_note, reference_source
-Validasi  client memeriksa: kalimat rumpang harus memuat ___,
-          single_choice harus punya tepat satu kunci,
-          kunci verdict harus termasuk verdict_options node,
-          find_object harus punya koordinat, objek jebakan wajib punya wrong_feedback
-UI Update pratinjau tampilan item seperti yang akan dilihat anak
+Feature   Form soal yang menyesuaikan interaction_type
+Trigger   form.item-form; ganti interaction_type, atau edit kotak format teknis
+Process   blok terpandu per jenis soal:
+            fill_blank_bank → jawaban Indonesia/Inggris (text_id, text_en)
+            verdict_card    → kunci Benar / Salah (verdict)
+            find_object     → pemilih posisi (object-picker.js), centang benda jebakan
+                              (decoy, target), penjelasan saat diklik ID/EN (wrong_feedback_id/en)
+            puzzle_arrange  → keterangan ukuran papan dari data-puzzle-grid / data-puzzle-shape
+                              (ditetapkan server dari tingkat wilayah); kunci `order` 0…n²−1 dibuat otomatis
+Validasi  kalimat rumpang memuat ___ (Inggris boleh kosong), jawaban Indonesia wajib,
+          kunci verdict terisi, benda punya posisi, benda jebakan punya penjelasan Indonesia,
+          kunci susun gambar ada; format teknis yang tidak terbaca ditolak
+UI        pratinjau "Pratinjau untuk siswa"; galat dikumpulkan di atas form, submit ditahan
 ```
 
-Editor terpandu hanya antarmuka: yang dikirim tetap `answer_key_json` dan `config_json` yang sama, jadi server memvalidasi persis seperti tanpa JavaScript. Kunci JSON yang tidak dikelola editor dipertahankan; JSON mentah tetap dapat dibuka lewat tombol "JSON mentah". Contoh alasan `verdict_reason` memakai kunci kanonik `sample_reason_id` / `sample_reason_en` (sama dengan impor bank soal dan seeder).
-
-Setiap kolom teks punya sepasang kotak berdampingan: Indonesia di kiri, English di kanan. Kotak English yang dikosongkan akan memakai teks Indonesianya saat permainan, jadi aman ditinggal kosong.
-
-Form node menyediakan editor daftar pengecoh rumpang (pasangan ID/EN, tambah/hapus baris) dan kotak centang `verdict_options` untuk node `boleh`.
+- Editor terpandu hanya antarmuka: yang dikirim tetap `answer_key_json` dan `config_json`, jadi server memvalidasi persis seperti tanpa JavaScript. Kunci JSON yang tidak dikelola editor dipertahankan; format teknis dapat dibuka lewat tombol "Lihat format teknis". JSON yang tidak terbaca membuka kotak format teknis dan menyembunyikan editor terpandu sampai diperbaiki.
+- Teks untuk guru memakai bahasa sehari-hari: "soal", "benda", "format teknis".
+- Form tantangan (`[name="engine_type"]`): setiap `fieldset.variant-row` Isi Rumpang mendapat tombol "+ Tambah kata pengecoh" dan ✕ per baris (pasangan ID/EN `…[distractors][n][id|en]`; dua baris terakhir hanya dikosongkan).
+- `createObjectPicker({ scene, value, onChange })` menampilkan gambar adegan (`form[data-scene]`, atau bidang kosong 16:9 bila belum ada). Ketuk menaruh benda berpusat di titik ketuk; penanda dapat digeser (pointer) atau dipindah dengan panah (0,5 %, Shift 2 %); lebar diatur penggeser 3–40 %. Koordinat disimpan dalam persen (`x`, `y` sudut kiri atas, `w` lebar; benda persegi), jadi tetap benar bila gambar adegan diganti dengan resolusi lain.
 
 ### `admin/bank-import.js`
 
 ```text
 Feature   Impor workbook bank soal
-Trigger   Admin memilih berkas .xlsx lalu menekan Pratinjau
-Process   periksa ekstensi .xlsx dan ukuran ≤ 20 MB di client (umpan balik cepat saja)
-Request   POST /admin/konten/impor-bank/pratinjau (form multipart biasa)
-Response  halaman dirender ulang oleh server dengan ringkasan, galat, peringatan
-UI Update tabel galat dapat difilter per sheet; klik baris galat → sorot nomor baris;
-          tombol Impor aktif hanya bila jumlah galat = 0;
-          klik Impor → konfirmasi "Impor 119 butir ke 15 node?" → POST jalankan
-Error     berkas ditolak server → pesan di atas form
+Trigger   pilih berkas lalu Pratinjau (form POST multipart biasa ke /admin/konten/impor-bank/pratinjau)
+Process   cek di klien: ekstensi .xlsx dan ukuran ≤ 20 MB (umpan balik cepat saja)
+Response  halaman dirender ulang server dengan ringkasan, galat, dan peringatan per baris
+UI        tabel galat/peringatan dapat disaring per sheet; klik baris menyorotnya
+          tombol "Simpan soal ke permainan" (form[data-import-run], hanya dirender bila tanpa galat)
+          → confirmDialog berisi data-items soal untuk data-nodes tantangan → kirim
 ```
-
-### `admin/object-picker.js`
-
-```text
-Feature   Penempatan objek pada adegan `cari`
-Trigger   Admin membuka form item find_object
-Process   menampilkan gambar adegan; admin mengetuk posisi → penanda muncul
-          penanda dapat digeser; lebar objek diatur slider (persen)
-          koordinat disimpan sebagai persen, bukan piksel
-Output    config_json { x: 18, y: 62, w: 13, decoy: false }
-```
-
-Menyimpan dalam persen membuat posisi tetap benar meski gambar adegan diganti dengan resolusi berbeda.
 
 ### `admin/media-upload.js`
 
 ```text
 Feature   Unggah media
-Trigger   Admin menyeret berkas ke kotak, atau menekan tombol Unggah pada baris aset
-Process   1. baca dimensi dengan createImageBitmap() sebelum mengunggah
-          2. bandingkan dengan "Ukuran wajib" pada baris itu
-          3. bila tidak cocok dan mode ketat menyala → tolak di client
-             dengan pesan yang menyebut ukuran yang diminta dan yang diberikan
-          4. bila lolos → form POST biasa (multipart) ke /admin/media/unggah
-Request   multipart/form-data { asset_key, file }
-Response  redirect kembali ke /admin/media + pesan hasil (server selalu mode ketat)
-UI Update tabel dirender ulang server; tombol Unggah per baris mengisi asset_key,
-          kotak unggah menerima berkas yang diseret
-Error     ukuran salah, MIME salah, berkas terlalu besar → pesan spesifik
+Trigger   seret berkas ke kotak unggah, atau tombol Unggah per baris aset ([data-upload-key])
+Process   1. ukuran berkas ≤ 64 MB
+          2. dimensi gambar dibaca createImageBitmap() sebelum mengunggah
+          3. dibandingkan dengan ukuran wajib slot dari #asset-sizes (pola asset_key, '*' = sembarang)
+          4. tidak cocok → ditolak di klien dengan pesan ukuran yang diminta dan yang diberikan
+          5. lolos → form POST multipart biasa ke /admin/media/unggah { asset_key, file }
+UI        kotak info menyebut ukuran wajib kode berkas yang diketik; tombol Unggah per baris
+          mengisi asset_key lalu membuka pemilih berkas
 ```
 
-Pemeriksaan di client hanya untuk memberi umpan balik cepat. Server **selalu** memeriksa ulang; unggahan tidak pernah dipercaya karena lolos pemeriksaan client.
+Pemeriksaan di klien hanya umpan balik cepat. Server selalu memeriksa ulang (`getimagesize()`), dan nama berkas asli diabaikan: berkas disimpan dengan nama resmi dari `asset_key`.
 
-Nama berkas asli diabaikan. Berkas disimpan dengan nama resmi dari `asset_key`, sehingga `WhatsApp Image 2026.jpg` tetap menjadi `assets/uploads/library.temanggung.3a.jpg`.
+### `admin/narration-upload.js`
+
+Formulir unggah banyak rekaman narasi (`form[data-narration-upload]`). Batas PHP dibaca dari `data-max-files`, `data-max-file-bytes`, dan `data-max-post-bytes`; pilihan yang pasti gagal (terlalu banyak berkas, total melebihi `post_max_size`, berkas melebihi batas per berkas) ditahan sebelum dikirim, karena PHP membuang kelebihan berkas diam-diam atau kehilangan seluruh kiriman. Pencocokan nama berkas tetap dilakukan server (`NarrationImporter`).
 
 ### `admin/export.js`
 
 ```text
-Feature   Status export
-Trigger   Admin menekan "Buat XLSX" / "Buat PDF"
-Request   POST /admin/ekspor/xlsx (form biasa) → mengembalikan export_id
-Process   polling GET /api/admin/exports/{id}/status tiap 2 detik,
-          maksimum 5 menit, dengan backoff bila gagal
-Response  { status: "running"|"done"|"failed", row_count, file_sha256 }
-UI Update label status diperbarui → saat "done"/"failed", tabel ekspor dimuat
-          ulang dari server (tanpa memuat ulang halaman): tombol Unduh dan
+Feature   Status ekspor
+Trigger   lencana [data-export-id][data-status] berstatus queued/running
+Request   GET /api/admin/exports/{id}/status tiap 2 detik, paling lama 5 menit;
+          jeda berlipat (sampai 30 detik) bila permintaan gagal
+Response  { status: queued | running | done | failed, error? }
+UI        label status diperbarui; saat done/failed → toast, lalu panel tabel ekspor dimuat ulang
+          dari server (tanpa memuat ulang halaman), sehingga tombol Unduh, jumlah baris, dan
           SHA-256 tampil persis seperti yang dirender server
-Error     "failed" → pesan galat dari server + tombol coba lagi
 ```
+
+---
+
+## Pencatatan Event
+
+### Amplop
+
+```json
+POST /api/events
+{ "events": [ {
+    "client_event_id": "6f0c…", "event_type": "answer_selected",
+    "occurred_at": "2026-10-06T02:14:22.481Z", "sequence_no": 7,
+    "level_id": 1, "node_id": 2, "attempt_id": 118, "item_id": 452,
+    "payload": { "action": "set", "value": "Kedu", "t_ms": 18342 } } ] }
+→ { "accepted": 1, "duplicate": 0, "rejected": [], "server_time": "…" }
+```
+
+`EventService::ingest()` menerima `event_type` yang ada di `Config\Gelita::$eventTypes`, menolak `client_event_id` kosong atau ganda dalam satu batch, dan membalas `duplicate` untuk id yang sudah tersimpan. Waktu klien yang tidak dapat diurai diganti waktu server.
+
+### Event yang dikirim klien
+
+| Event | Pengirim | Payload utama |
+|---|---|---|
+| `viewport_changed` | `core/device.js` | `w`, `h`, `orientation`, `rotate_gate` |
+| `page_hidden`, `page_visible` | `core/device.js` | `screen` (kode layar) |
+| `reading_progress` | `core/device.js` (layar tantangan) | `percent` (25/50/75/100), `passage_id?` |
+| `overlay_opened` | `challenge.js`, `map.js`, `library.js` | `overlay` (`hint`, `exit`, `kenal`, `lightbox`), `level` (kode wilayah) |
+| `dialogue_advanced` | `game/narrator.js` | `index`, `total`, `context` (`intro`, `map_intro`, `region_intro`, `level_open`, `level_done`, `ending`), `character` |
+| `level_opened` | `game/map.js` (peta wilayah) | `code` |
+| `library_page_viewed` | `game/library.js` | `page`, `total`, `page_id` |
+| `challenge_opened` | `game/challenge.js` (hanya melanjutkan) | `resumed: true`, `attempt_no` |
+| `answer_selected` | engine batch lewat `ctx.selected()` | `action` (`swap` \| `set` \| `clear`), `value`, `from?`, `to?`, `t_ms` |
+| `challenge_abandoned` | `game/challenge.js` (`pagehide`) | `via: 'pagehide'`, `attempt_open: true` |
+
+Kolom rujukan (`level_id`, `node_id`, `attempt_id`, `item_id`) diisi bila relevan; server menyimpannya ke `challenge_node_id`, `challenge_attempt_id`, `challenge_item_id`.
+
+### Event yang ditulis server
+
+Hasil tantangan dicatat server di dalam transaksi yang sama dengan datanya, bukan oleh klien: `challenge_opened` (pembukaan pertama), `challenge_checked`, `challenge_completed`, `challenge_abandoned` (tombol Keluar, `via: 'user_exit'`, `attempt_no`), `answer_submitted`/`answer_changed` dan `wrong_target_clicked` (Cari Objek), `hint_opened`, `level_completed`, serta event sesi dan navigasi lainnya. Tiga event **hanya boleh ditulis server** (`EventService::SERVER_ONLY`) dan ditolak bila dikirim klien (`event_type_server_only`): `screen_viewed`, `challenge_tries_exhausted`, `clue_failed`.
+
+### Telemetry audio
+
+```json
+POST /api/audio-events
+{ "events": [ { "client_event_id": "…", "occurred_at": "2026-10-06T02:14:22.481Z",
+    "audio_asset_id": 42, "action": "complete", "play_index": 2,
+    "listened_ms": 11840, "completed": true, "attempt_id": 118 } ] }
+```
+
+`EventService::recordAudio()` menulis satu baris `audio_usage_events` beserta raw event pendampingnya (`audio_play`, `audio_autoplay`, `audio_pause`, `audio_replay`, `audio_completed`) dalam satu transaksi, idempoten terhadap `client_event_id`. `attempt_id` milik sesi lain ditolak (`attempt_not_in_session`).
+
+---
+
+## Penyimpanan Lokal
+
+`localStorage` hanya dipakai untuk antrean event sementara dan preferensi tampilan. Ia bukan tempat catatan penelitian: semua yang bernilai sudah ada di server. Akses yang gagal (penyimpanan penuh atau diblokir) diabaikan dan aplikasi tetap berjalan.
+
+| Kunci | Isi | Pemakai |
+|---|---|---|
+| `gelita.queue.events` | event `/api/events` yang gagal terkirim, `{ tag, event }` | `core/events.js` |
+| `gelita.queue.audio` | event `/api/audio-events` yang gagal terkirim, `{ tag, event }` | `core/events.js` |
+| `gelita.prefs` | `sound` (bawaan `true`), `volume` (bawaan 0,8), `narrationAuto` (bawaan `true`) | `core/audio.js`, `game/narrator.js` |
+
+```js
+Storage.queueEvents(batch, tag, channel)  // simpan bertanda sesi; dipotong ke 500 entri terbaru
+Storage.takeAll(tag, channel)             // ambil milik sesi ini saja; milik sesi lain tetap tersimpan
+Storage.size(tag, channel)
+Storage.getPref(name, fallback), Storage.setPref(name, value)
+```
+
+Setiap event yang disimpan ditandai `sessionTag`. Komputer kelas dipakai bergantian: tanpa tanda ini, event siswa A yang tertunda akan terkirim ke sesi siswa B yang masuk sesudahnya. `resendQueued()` (saat halaman dimuat dan saat `online`) hanya mengambil event bertanda sesi yang sedang berjalan; server membalas `duplicate` untuk yang ternyata sudah masuk.
+
+Isi kata sandi tidak pernah disimpan di browser storage. Service worker tidak menyimpan data penelitian; cache-nya hanya berisi `offline.html`.
+
+---
+
+## Keputusan Perilaku
+
+- **`challenge_opened`**: pembukaan pertama dicatat server saat pengerjaan dibuat; klien hanya mencatat pembukaan ulang (`payload.resumed = true`), agar satu pembukaan tidak terhitung dua kali.
+- **`challenge_abandoned` dari klien** hanya saat halaman ditinggalkan tanpa Keluar/selesai (tutup tab, muat ulang), dengan payload `{ via: 'pagehide', attempt_open: true }`; pengerjaan tetap `in_progress` dan dapat dilanjutkan. Keluar lewat tombol memanggil `/abandon`, sehingga server mencatat event dengan `attempt_no`. Ganti bahasa tidak dihitung meninggalkan.
+- **Aturan 3 kesempatan**: server menghitung dan menutup pengerjaan sendiri. `/check` dan `/responses` membalas `tries_left`, `completed`, `completion_reason`, dan `redirect`; `challenge.js` menampilkan penanda 3 bulatan (engine batch di kepala tantangan, Cari Objek per petunjuk), modal "Kesempatanmu tinggal {n} lagi" / "Tinggal satu kesempatan lagi", modal "Kesempatanmu sudah habis" (Susun Gambar: keping disusun utuh dulu, 600 ms) atau "Petunjuk ini dilewati", lalu pindah ke `redirect`. Tidak ada tombol untuk menyelesaikan sebelum semua benar atau kesempatan habis. `/complete` hanya cadangan.
+- **Cek dengan isian kosong** ditolak di klien sebelum request dikirim, jadi tidak memakai kesempatan. Soal yang sudah benar terkunci dan tidak dinilai ulang.
+- **Kunci jawaban tidak pernah ditampilkan**, juga setelah kesempatan habis: kotak dan kartu yang salah tetap merah, benda Cari Objek yang dilewati tidak diungkap. Satu-satunya pengecualian adalah gambar utuh Susun Gambar, karena susunan benarnya memang publik.
+- **Muat ulang** memulihkan soal yang sudah benar dari `items[].state` / `clues[].state` dan sisa kesempatan dari `tries_used`. Jawaban salah tidak dikembalikan server, jadi isiannya kembali kosong.
+- **Angka ✓/✗ di bar** menghitung hasil dari respons server pada tampilan halaman ini; setelah muat ulang ✓ dimulai dari soal yang sudah benar dan ✗ diperkirakan dari sisanya bila sudah ada cek (Cari Objek: ✗ mulai dari 0). Catatan per soal tetap utuh di server.
+- **Petunjuk**: setiap petunjuk baru didahului konfirmasi bernada netral; teks yang sudah dibuka disimpan di halaman dan tidak diminta ulang (setiap permintaan dihitung server). Urutan: petunjuk soal yang sedang dikerjakan, lalu petunjuk tantangan.
+- **Cari Objek**: teks petunjuk aktif tampil dan diumumkan ke pembaca layar; bila petunjuknya punya rekaman yang disetujui, tombol ▶ membacakannya dan petunjuk berikutnya diputar otomatis setelah jawaban benar.
+- **Konfirmasi keluar** dan tombol Back memakai `confirmDialog`; `<details>` tanpa JavaScript tetap ada di markup.
+- **Tidak ada yang berbunyi sebelum interaksi pengguna.** Layar bernarasi memakai kartu "Ketuk untuk mulai" atau ketukan tirai, yang sekaligus membuka elemen narasi bersama untuk Safari iPad.
+- **Event penting tidak menunggu antrean.** Slide terakhir narasi, penutupan overlay Kenali, dan tirai sebelum pindah halaman memanggil `flush()`, agar tanda "sudah didengar" sampai di server lewat fetch biasa, bukan bergantung pada beacon saat `pagehide`.
 
 ---
 
 ## Library JavaScript
 
-| Nama | Tujuan | Versi / strategi | Sumber aset | Lokasi | Halaman |
-|---|---|---|---|---|---|
-| **Apache ECharts** | seluruh chart panel admin: garis, batang, stacked bar, heatmap, scatter, matrix, gauge | 6.x, versi dikunci di repo, diperbarui manual | unduhan rilis resmi | `public/assets/vendor/echarts.min.js` | `/admin/dashboard`, `/admin/analitik/*`, `/admin/peserta/{id}` |
-| **Howler.js** | efek suara dan musik latar; menangani kebijakan autoplay dan pemutaran tumpang tindih secara konsisten lintas browser | 2.2.x, dikunci di repo | unduhan rilis resmi | `public/assets/vendor/howler.min.js` | seluruh halaman game |
+| Nama | Tujuan | Versi | Lokasi | Dimuat |
+|---|---|---|---|---|
+| **Howler.js** | efek suara dan musik latar; kebijakan autoplay dan pemutaran tumpang tindih yang konsisten lintas browser | 2.2.4 (dikunci pada 2.2.x) | `public/assets/vendor/howler.min.js` (+ `LICENSE-howler.md`) | `layouts/game.php`, `<script defer>` sebelum `game.js` |
 
-Itu saja. Alasan library lain **tidak** dipakai:
+Itu satu-satunya library. Tidak ada CDN: berkas vendor ada di repositori dan dimuat dari domain sendiri; versi dan checksum dicatat di `public/assets/vendor/README.md`. Narasi memakai elemen `<audio>` bawaan, bukan Howler, karena telemetry dengarnya perlu dihitung sendiri.
 
-* **Chart.js** — ECharts sudah mencakup semua jenis chart yang dibutuhkan termasuk heatmap dan matrix. Dua library chart berarti dua tema dan dua API untuk pekerjaan yang sama.
-* **SheetJS/XLSX** — seluruh export dibuat server dengan PhpSpreadsheet. Membangun workbook di browser membatasi ukuran data dan melewati pemeriksaan otorisasi.
-* **localForage** — antrean offline hanya menyimpan event sementara, bukan basis data. `localStorage` dengan batas 500 entri sudah cukup dan tidak menambah 30 KB.
-* **Panzoom** — zoom peta dapat dilakukan dengan `transform` CSS dan dua event pointer.
-* **anime.js** — animasi yang dibutuhkan (crossfade latar, getar objek, keping bertukar, karakter berbicara) semuanya dapat ditulis dengan CSS transition dan Web Animations API.
-* **Alpine/htmx** — halaman sudah dirender server; interaksi yang tersisa spesifik dan lebih jelas ditulis langsung.
+Alasan library lain tidak dipakai:
 
-Tidak ada CDN. Kedua berkas vendor ada di repositori dan dimuat dari domain sendiri.
-
-> **Status:** kedua berkas sudah ada di `public/assets/vendor/` sejak tahap 5 — ECharts 6.1.0 dan Howler.js 2.2.4 beserta lisensinya; `layouts/game.php` sudah memuat Howler dan `layouts/admin.php` memuat ECharts bila halaman mengisi section `charts`. Lihat [02_PROJECT_FOUNDATION.md → *Status `public/assets/vendor/`*](02_PROJECT_FOUNDATION.md).
+- **Library chart** — panel admin hanya menampilkan tabel dan hitungan mentah.
+- **SheetJS/XLSX** — ekspor dan impor workbook dikerjakan server dengan PhpSpreadsheet; membangun workbook di browser membatasi ukuran data dan melewati pemeriksaan otorisasi.
+- **localForage** — antrean offline hanya menyimpan event sementara; `localStorage` dengan batas 500 entri sudah cukup.
+- **anime.js** — animasi yang dibutuhkan (keping bertukar dan tersusun, benda bergetar, efek narasi, tokoh berbicara) cukup dengan CSS transition dan Web Animations API.
+- **Alpine/htmx** — halaman sudah dirender server; interaksi yang tersisa spesifik dan lebih jelas ditulis langsung.
 
 ---
 
 ## Aturan Sistem
 
-1. Client tidak pernah menentukan benar/salah, skor, bintang, unlock, atau jumlah serpihan. Semuanya datang dari respons server.
-2. Payload soal tidak memuat kunci jawaban. Bila suatu tampilan butuh kunci (misalnya menyorot opsi benar setelah dijawab), kunci itu dikirim server **sesudah** jawaban diterima.
+1. Klien tidak pernah menentukan benar/salah, bintang, sisa kesempatan, buka-kunci, atau jumlah serpihan. Semuanya datang dari respons server.
+2. Payload soal tidak memuat kunci jawaban atau penanda pengecoh, dan kunci tidak dikirim sesudah dijawab.
 3. Setiap request yang menulis membawa `client_event_id` unik, sehingga pengiriman ulang tidak menggandakan data.
-4. Event dikirim berkelompok maksimum 50 per request, otomatis tiap 3 detik, dan dipaksa saat tab disembunyikan atau ditutup.
-5. `localStorage` hanya untuk antrean event sementara dan preferensi tampilan. Tidak ada catatan penelitian yang bergantung padanya.
-6. Semua penulisan ke DOM dari data server memakai `textContent` atau pembuatan elemen, bukan `innerHTML` dengan string gabungan. Bila `innerHTML` tidak terhindarkan untuk markup statis, nilai dinamis tetap di-escape lebih dulu.
-7. Tombol yang mengirim request dinonaktifkan selama request berjalan, agar tidak ada klik ganda.
-8. Galat jaringan tidak pernah menampilkan pesan teknis kepada anak. Pesan yang muncul berupa kalimat biasa dan langkah berikutnya.
-9. `prefers-reduced-motion` dihormati: konfeti, getar, dan crossfade dimatikan.
+4. Event dikirim berkelompok paling banyak 50 per request, otomatis tiap 3 detik atau setiap 20 event, dan dipaksa saat tab disembunyikan atau ditutup.
+5. `localStorage` hanya untuk antrean event sementara dan preferensi tampilan.
+6. Penulisan ke DOM dari data server memakai `textContent` atau `el()`, bukan `innerHTML` dengan string gabungan. Bila `innerHTML` tidak terhindarkan untuk markup statis, nilai dinamis di-escape lebih dulu (`esc()`).
+7. Tombol yang mengirim request dinonaktifkan selama request berjalan.
+8. Galat tidak pernah ditampilkan kepada anak sebagai pesan teknis; yang muncul berupa kalimat biasa dan langkah berikutnya.
+9. `prefers-reduced-motion` dihormati: konfeti, mesin ketik, efek layar, animasi keping, dan gulir halus dimatikan.
 10. Seluruh interaksi tantangan dapat diselesaikan dengan keyboard.
-11. Tidak ada permintaan ke domain pihak ketiga dari halaman permainan.
-12. Isi kata sandi tidak pernah dikirim lewat AJAX, disimpan di browser storage, ditulis ke `console`, atau masuk antrean event. Satu-satunya jalur keluarnya adalah submit form ke server.
-13. Aturan kekuatan sandi dibaca dari JSON kebijakan yang dikirim server; JavaScript tidak memuat angka atau syarat versinya sendiri.
+11. Tidak ada permintaan ke domain pihak ketiga dari halaman permainan, kecuali iframe video Pustaka yang baru dibuat setelah tombol Putar ditekan.
+12. Isi kata sandi tidak pernah dikirim lewat AJAX, disimpan di browser storage, ditulis ke `console`, atau masuk antrean event. Satu-satunya jalur keluarnya adalah submit form.
+13. Aturan kekuatan sandi dibaca dari `#password-policy`; JavaScript tidak memuat angka atau syarat versinya sendiri.
+14. Teks game yang ditulis JavaScript selalu lewat `t()` dengan kunci `Js.*`, sehingga ikut bahasa ID/EN.
 
 ---
 
-## Catatan Implementasi Tahap 6
+## Pengujian
 
-Keputusan dan temuan selama tahap ini. Semua perilaku di atas diuji di browser (Playwright, Chromium) terhadap server CodeIgniter dan MariaDB 10.11 sungguhan: registrasi → 15 node lintas lima engine → Balai Refleksi, ditambah jalur galat dan seluruh halaman admin ber-chart.
+Tidak ada test runner JavaScript; kontrak JavaScript dijaga dari sisi PHP (`vendor/bin/phpunit`) dan diperiksa di peramban.
 
-### Kontrak server yang ditambahkan
-
-| Perubahan | Alasan |
+| Uji | Yang dijaga |
 |---|---|
-| `#app-config` dibangun `js_config()`: `sessionTag` + `text` (lang `Js.*`) | antrean offline per sesi; teks JS ikut bahasa ID/EN |
-| Payload tantangan: `elapsed_ms` | jam tantangan dari waktu server, benar setelah muat ulang |
-| `/check`: `detail[item] = { pieces_correct, misplaced? }` untuk `puzzle_arrange`/`ordering` | pesan "masih ada N keping" tanpa client menilai |
-| `GelitaExceptionHandler`: CSRF ditolak di `/api/*` → `401 INVALID_SESSION` (tanpa login) atau `403 CSRF_EXPIRED` (masih login) | token CSRF tersimpan di session: saat sesi habis, filter CSRF menolak lebih dulu dan anak sebelumnya melihat "tidak boleh membuka bagian ini" |
-| API admin: kunci `chart` (`App\Libraries\ChartData`); `participants` menambah `ages`; `indicators` menambah `per_level` | satu bentuk data untuk API dan view; matriks indikator × wilayah lewat API |
-| `admin-chart` menerima `data` | chart tanpa filter (profil peserta, drilldown node) |
-| `AudioUsageEventModel::nextPlayIndex($session, $asset, $action)` | sebelumnya setiap baris menaikkan `play_index` (play=1, complete=2); kini sesuai definisi 01_DATABASE "pemutaran ke-n" |
-| `PasswordPolicy::toClient()` menambah `max_bytes` (72, batas bcrypt) | syarat panjang di meter sama persis dengan `check()` tanpa angka di JS |
-| `levelOverview()` menambah `background`; `_frame.php` menambah `data-region-name`; form butir menambah `data-verdicts` + `data-scene`; halaman media menambah `#asset-sizes` dan tombol Unggah per baris; form impor menambah `data-items`/`data-nodes` | data yang dibutuhkan perilaku, tanpa mengubah markup dasar |
-| Panduan `verdict_reason` di form butir: `sample_reason_*` (sebelumnya tertulis `reason_example_*`) | kunci kanonik database, impor, dan seeder |
+| `tests/unit/JsConfigTest.php` | `sessionTag` buram, stabil, dan berbeda per sesi; `js_config()` tanpa identitas; setiap `t('…')` di berkas JS punya kunci `Js.*` |
+| `tests/unit/LanguageFilesTest.php` | kunci `id`/`en` sejajar; kunci yang sudah dihapus tidak dipakai lagi oleh `t('…')` |
+| `tests/unit/HuntPayloadTest.php` | payload Cari Objek tanpa pembeda jebakan, token `ref` per pengerjaan, `item_id` mentah tidak dipercaya, audio petunjuk hanya rekaman yang disetujui |
+| `tests/unit/TryLimitTest.php` | aturan 3 kesempatan di `/check` dan `/responses`, soal benar terkunci, cek tidak lengkap tidak memakai kesempatan, `/complete` ditolak selama kesempatan masih ada |
 
-### Keputusan perilaku
-
-* **`challenge_opened`**: pembukaan pertama dicatat server saat attempt dibuat; client hanya mencatat pembukaan ulang (`payload.resumed = true`), agar satu pembukaan tidak terhitung dua kali.
-* **`challenge_abandoned` dari client** hanya saat halaman ditinggalkan tanpa Keluar/Selesai (tutup tab, muat ulang), dengan payload `{ via: 'pagehide', attempt_open: true }`; attempt tetap `in_progress` dan dapat dilanjutkan. Keluar lewat tombol memanggil `/abandon` sehingga server mencatat event dengan `attempt_no`. Ganti bahasa tidak dihitung meninggalkan.
-* **Aturan 3 kesempatan** (perombakan kelas 5, Dok 2 §5.3; menggantikan tombol lama "Selesaikan dengan jawaban ini"): server menghitung dan menutup pengerjaan sendiri. `/check` dan `/responses` membalas `tries_left`, `completed`, `completion_reason`, dan `redirect`; `challenge.js` menampilkan penanda 3 bulatan (engine batch di kepala tantangan, Cari Objek per petunjuk), modal "Kesempatanmu tinggal {n} lagi" / "Tinggal satu kesempatan lagi", modal "Kesempatanmu sudah habis" (Susun Gambar: keping disusun utuh dulu, 600 ms), atau "Petunjuk ini dilewati", lalu pindah ke `redirect`. `/complete` hanya cadangan. Muat ulang memulihkan soal yang sudah benar dari `items[].state` / `clues[].state`.
-* **Petunjuk**: setiap petunjuk baru didahului konfirmasi penalti netral; teks yang sudah dibuka disimpan di halaman dan tidak diminta ulang (setiap permintaan dihitung server). Urutan: petunjuk butir yang sedang dikerjakan, lalu petunjuk node.
-* **Angka ✓/✗ di bar** menghitung hasil dari respons server pada tampilan halaman ini; setelah muat ulang ✓ dimulai dari soal yang sudah benar (`state.locked`) dan ✗ diperkirakan dari sisanya (catatan per butir tetap utuh di server).
-* **Cari objek**: teks petunjuk aktif tampil dan diumumkan ke pembaca layar; bila petunjuknya punya rekaman yang disetujui, tombol ▶ membacakannya dan petunjuk berikutnya diputar otomatis setelah jawaban benar (lihat *Fitur: Cari Objek Budaya*; ditambahkan setelah Tahap 5).
-* **Konfirmasi keluar** dan tombol Back memakai `confirmDialog`; `<details>` tanpa-JavaScript tetap ada di markup.
-
-### Pengujian
-
-* PHPUnit (106 test): ditambah `ChartDataTest` (bentuk data chart, kondisi kosong, sel per wilayah) dan `JsConfigTest` (`sessionTag` buram & per sesi, `js_config()` tanpa identitas, setiap `t('…')` punya kunci `Js.*`).
-* Browser (Playwright, skrip di luar repo): alur siswa penuh 15 node termasuk sandi lemah ditolak, meter sandi, cek nama pengguna, slide keyboard, titik peta terkunci, antrean offline → kirim ulang → `duplicate`, petunjuk, puzzle salah → benar, rumpang kosong/sebagian/perbaiki, kartu kosong/salah, jebakan `cari`, pilihan salah → kunci ditandai, keluar berkonfirmasi, tombol Back, lanjut attempt setelah muat ulang, refleksi minimal dua jawaban, dan sesi berakhir di tengah tantangan; panel admin (chart ECharts + tabel aksesibel, filter tanpa muat ulang, urut/saring tabel, salin sandi sementara, editor terpandu, penolakan ukuran gambar & berkas non-.xlsx di client); pemutar narasi dengan aset sementara (play/complete/replay/pause, `listened_ms`, `play_index`, berkas hilang → transkrip). Tidak ada galat JavaScript di konsol.
+Sintaks modul dapat diperiksa cepat dengan `node --check public/assets/js/<berkas>.js`. Pemeriksaan di peramban mencakup alur siswa penuh (pendaftaran, cerita, peta, keempat engine benar dan salah sampai kesempatan habis, muat ulang di tengah tantangan, Pustaka, Balai Refleksi), JavaScript mati, `prefers-reduced-motion`, dan konsol tanpa galat.
 
 ---
-
-## Catatan Implementasi Tahap 2 (alur cerita)
-
-* **Modul baru:** `core/curtain.js`, `game/narrator.js`; `core/audio.js` mendapat `autoplay()`, `narrationPlayer()`, dan elemen narasi bersama; `game/slides.js` mendapat opsi `keyboard` dan `focus`; `game/intro.js` dan `game/map.js` memakai keduanya. Gaya di `css/cinematic.css`.
-* **Telemetry:** action audio `autoplay` (lihat `core/audio.js`) diterima `AudioApiController` lewat `EventService::recordAudio()`; raw event pendampingnya `audio_autoplay`.
-* **Pengujian browser** (Playwright + Chromium, MariaDB 10.11, aset gambar & audio sementara di luar repo) pada 844×390 dan 1440×900: pemain baru → kartu ketuk (tanpa "Lewati", kartu sambutan di dalamnya) → narasi slide 1 berbunyi dan maju otomatis ke slide 2 → `/intro/selesai` → tirai peta dengan jaringan diperlambat (progres berhenti di aset yang belum termuat, lalu lanjut di batas 8 detik) → ketukan → narasi peta berbunyi dan maju → kunjungan ulang tanpa tirai dengan tombol ▶. Juga `prefers-reduced-motion` (tanpa mesin ketik/efek) dan JavaScript mati (tirai tidak menutupi, slide `:target` berjalan). `audio_usage_events` mencatat `autoplay`/`complete`/`pause` dan `game_event_logs` mencatat `dialogue_advanced` dengan `context`.
-
----
-
-## Catatan Implementasi Tahap 3 (alur cerita)
-
-* **Modul yang berubah:** `game/slides.js` (opsi `hash`), `game/narrator.js` (`onSlide`, `next`/`prev`/`advance`, `stop()` dapat dimulai ulang, `data-hash`, `flush()` di slide terakhir), `core/curtain.js` (jenis `region`/`challenge`, slot teks, durasi & lewati per lapisan, `flush()` sebelum berpindah), `game/map.js` (overlay Kenali), `game/dialogue.js` (ditulis ulang di atas narrator), `game/intro.js` (`initStory('ending')`), `game.js` (layar `ending`, `region-done`). Gaya di `css/cinematic.css`.
-* **`core/events.js` — batch di jalan.** `flush()` kini mengembalikan Promise pengiriman yang sedang berjalan (pemanggil dapat menunggunya), dan batch yang sedang dikirim diingat (`inflight`) sampai server menjawab; `flush(true)` saat `pagehide`/tab tersembunyi mengirim `inflight` + antrean lewat beacon. Sebelumnya batch itu hilang bila halaman berpindah di tengah fetch (`ERR_ABORTED`) — makin sering sejak tirai menunda perpindahan. Kiriman ganda dibalas `duplicate` oleh server.
-* **Pengujian browser** (Playwright + Chromium, MariaDB 10.11, tanpa aset gambar/audio kecuali uji pose dengan frame sementara) pada 844×390 dan 1440×900: overlay Kenali (fokus, `inert`, Esc, lencana hilang di slide terakhir lalu tetap hilang setelah muat ulang karena dihitung server), tirai wilayah dari slide akhir Kenali/pin/kartu/"Lanjut ke" (±2 detik termasuk pemuatan halaman), kartu bab dan dialog 15 baris (pembicara & pose berganti per baris, frame pose sementara benar-benar ditukar), layar selesai penuntas → `/tuntas/{code}` → Lanjut ke wilayah berikutnya, Wonosobo → `/penutup` → Balai Refleksi, tirai tantangan kelima engine (±1,25 detik; ketukan melewatinya dalam ±0,25 detik; tidak ada attempt baru selama tirai), `prefers-reduced-motion` (tanpa mesin ketik/efek, visual diam), dan JavaScript mati (overlay `:target`, slide, tautan akhir dan Tutup). Tidak ada galat JavaScript di konsol.
 
 ## Dependency
 
-Dari **04_CONTROLLER_ROUTE.md**: seluruh endpoint API, bentuk request dan response, daftar kode galat.
+- [04_CONTROLLER_ROUTE.md](04_CONTROLLER_ROUTE.md): endpoint API, bentuk request dan response, kode galat.
+- [05_VIEW_UI.md](05_VIEW_UI.md): markup, id, dan kelas yang dipakai JavaScript (`#app-config`, `#challenge-data`, `#password-policy`, `#puzzle-board`, `.blank`, `.verdict-card`, `#hunt-scene`, `.audio-player`, tirai, narrator), token CSS.
+- [02_PROJECT_FOUNDATION.md](02_PROJECT_FOUNDATION.md): `Config\Gelita` (`$maxTries`, `$eventTypes`, `$maxEventsPerBatch`, `$passwordPolicy`, `$assetSizes`) dan berkas bahasa.
+- [01_DATABASE.md](01_DATABASE.md): `game_event_logs`, `audio_usage_events`, `item_tries`, dan `interaction_type`.
 
-Dari **05_VIEW_UI.md**: id dan kelas elemen (`#challenge-data`, `#app-config`, `#password-policy`, `.password-field`, `.pw-rules`, `#puzzle-board`, `#option-grid`, `#hunt-scene`, `.blank`, `.verdict-card`, `.passage`, `.sources`, `.audio-player`, wadah chart admin), token CSS untuk tema chart.
-
-Dari **02_PROJECT_FOUNDATION.md**: `Config\Gelita::$passwordPolicy` (disalin ke `#password-policy`) dan kunci bahasa `Auth.*`.
-
-Dari **01_DATABASE.md**: daftar `event_type` yang valid dan bentuk `interaction_type`.
-
----
-
-## Hasil Akhir
-
-Setelah tahap ini selesai:
-
-* Kelima mesin tantangan berfungsi penuh: puzzle, rumpang, boleh, pilihan, dan cari, termasuk varian ordering dan varian beralasan.
-* Menyelesaikan satu node menghasilkan skor dan bintang dari server, lentera bertambah, dan peserta diarahkan ke layar selesai.
-* Menyelesaikan 5 node membuka wilayah berikutnya; menyelesaikan 15 node membuka Balai Refleksi.
-* Seluruh event gameplay tercatat di `game_event_logs`, termasuk saat koneksi sempat putus di tengah sesi.
-* Telemetry audio tercatat di `audio_usage_events`.
-* Panel admin menampilkan seluruh chart dengan data sungguhan, dan filter mengubahnya tanpa memuat ulang halaman.
-* Halaman registrasi menandai syarat sandi satu per satu saat anak mengetik, menampilkan tingkat lemah/sedang/kuat, memberi keterangan bila sandi belum kuat atau memuat nama pengguna, dan memeriksa ketersediaan nama pengguna.
-* Engine `boleh` menampilkan Benar/Salah (atau Benar/Salah/Pendapat pada Magelang 3), teks bacaan bersama, dan dua sumber.
-* Editor konten dapat membuat item untuk kesembilan `interaction_type`, termasuk penempatan koordinat objek `cari`, urutan potongan `ordering`, dan kunci verdict.
-* Admin dapat mengunggah workbook bank soal, melihat pratinjau galat per baris, lalu mengimpornya.
-* Export dapat dibuat dan statusnya terpantau sampai berkasnya siap diunduh.
+Tata letak panggung 16:9 untuk layar game direncanakan di `docs/perombakan-kelas5/03_TAMPILAN_16x9_DAN_ADMIN.md` (Dok 3) dan belum ada di kode.

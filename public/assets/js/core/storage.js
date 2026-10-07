@@ -71,10 +71,3 @@ export const Storage = {
     write(PREF_KEY, prefs);
   },
 };
-
-// Antrean format tahap 2 (tanpa penanda sesi) tidak dapat dipastikan pemiliknya: buang.
-try {
-  localStorage.removeItem('gelita.eventQueue');
-} catch {
-  /* abaikan */
-}

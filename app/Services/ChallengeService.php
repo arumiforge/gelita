@@ -513,7 +513,7 @@ class ChallengeService
 
     /**
      * Menutup pengerjaan yang masih berjalan, untuk jalur `/complete`
-     * (kompatibilitas): `solved` bila semua soal benar; `tries_exhausted` bila
+     * (cadangan klien): `solved` bila semua soal benar; `tries_exhausted` bila
      * kesempatannya memang sudah habis (batch: `check_count >= max_tries`;
      * Cari Objek: semua petunjuk tertutup). Selain itu ditolak — tidak ada
      * lagi "Selesaikan dengan jawaban ini" (Dok 2 §5.1).

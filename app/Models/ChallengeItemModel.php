@@ -53,8 +53,8 @@ class ChallengeItemModel extends Model
     }
 
     /**
-     * Soal aktif dikelompokkan per variasi. Soal tanpa variant_group masuk
-     * kelompok `a` (bank lama satu variasi).
+     * Soal aktif dikelompokkan per variasi. Soal tanpa variant_group (soal
+     * yang ditambah lewat editor tanpa variasi) masuk kelompok `a`.
      *
      * @param list<ChallengeItem> $bank
      *

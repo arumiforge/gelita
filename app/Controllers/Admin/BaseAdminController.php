@@ -91,7 +91,7 @@ abstract class BaseAdminController extends BaseController
             array_map('strval', array_column($rows, 'class_level')),
         )));
 
-        // 1, 2, …, 9 lalu "lainnya" di akhir
+        // angka kelas berurutan, nilai lain di akhir
         usort($classes, static fn (string $a, string $b): int => [! ctype_digit($a), (int) $a, $a] <=> [! ctype_digit($b), (int) $b, $b]);
 
         return $classes;

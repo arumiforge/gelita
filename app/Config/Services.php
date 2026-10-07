@@ -182,7 +182,7 @@ class Services extends BaseService
         return new ExportService();
     }
 
-    /** Laporan PDF (mPDF) untuk studi dan satu peserta. */
+    /** Laporan PDF (mPDF) data mentah satu peserta. */
     public static function reportService(bool $getShared = true): ReportService
     {
         if ($getShared) {

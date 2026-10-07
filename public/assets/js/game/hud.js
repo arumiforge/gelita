@@ -5,7 +5,8 @@
  *   (preferensi tampilan, bukan data penelitian).
  * - Lentera (<details>) dapat dibuka tanpa JavaScript; di sini ditambah
  *   penutupan dengan Escape / klik di luar, dan updateLantern() untuk angka
- *   baru dari respons complete() — bukan dihitung sendiri.
+ *   baru dari respons server (`shards` di /check, /responses, /complete) —
+ *   bukan dihitung sendiri.
  * - Heartbeat POST /api/session/heartbeat tiap 60 detik selama tab terlihat.
  */
 import { $ } from '../core/dom.js';
@@ -49,7 +50,7 @@ function initLantern() {
   });
 }
 
-/** Angka serpihan baru dari server (respons complete()). */
+/** Angka serpihan baru dari server (`shards` di respons tantangan). */
 export function updateLantern(shards, total = null) {
   const lantern = $('.lantern');
   if (!lantern || shards === null || shards === undefined) return;

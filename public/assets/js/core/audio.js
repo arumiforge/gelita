@@ -103,13 +103,13 @@ export const Sfx = {
     return unlocked;
   },
 
-  /** correct, wrong, click, shard, region-done, page, lock */
+  /** correct, wrong, click, shard, region-done, lock */
   play(name) {
     if (!unlocked || !enabled) return;
     load(name)?.play();
   },
 
-  /** map, region, challenge, library */
+  /** map, region, challenge */
   music(name) {
     if (!unlocked || !enabled) return;
     const next = load(name, { loop: true, folder: 'music' });
