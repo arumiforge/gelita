@@ -2,7 +2,7 @@
 /**
  * 5a. Ganti Sandi — `/ganti-sandi` → LoginController::changePasswordForm
  *
- * Setelah berhasil server mengarahkan ke /peta dengan toast
+ * Setelah berhasil server mengarahkan ke /mulai dengan toast
  * "Kata sandi baru tersimpan".
  *
  * @var bool                  $mustChange  datang dari reset guru

@@ -2,7 +2,7 @@
 /**
  * Ekspor data — `/admin/ekspor` → ExportController::index
  *
- * Filter sama dengan halaman analitik (nama field identik), tetapi dikirim
+ * Filter sama dengan filter bar panel (nama field identik), tetapi dikirim
  * lewat POST. Guru: sekolah terkunci, mode anonim dipaksa server, dan lembar
  * Catatan aktivitas tidak tersedia — form hanya mencerminkan aturan itu.
  * Baris dengan status queued/running diperbarui admin/export.js
@@ -13,7 +13,7 @@
  * kolom, dan isinya (App\Libraries\ExportLabels) — dengan nama lembar yang
  * sama seperti di formulir ini (admin_label('exportSheet')).
  *
- * @var array<string, mixed>        $filters   filter dari query string (dari halaman analitik)
+ * @var array<string, mixed>        $filters   filter dari query string (dari filter bar panel)
  * @var list<string>                $sheets
  * @var list<string>                $adminOnly
  * @var bool                        $isAdmin

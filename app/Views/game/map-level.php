@@ -2,7 +2,7 @@
 /**
  * 9. Peta Wilayah — `/wilayah/{code}` → MapController::level
  *
- * Lima pos pada `challenge_nodes.map_x` / `map_y`. Pos selesai → hasil,
+ * Empat pos pada `challenge_nodes.map_x` / `map_y`. Pos selesai → hasil,
  * pos terbuka → kartu misi, pos terkunci → server menolak dengan toast.
  *
  * @var App\Entities\Level         $level

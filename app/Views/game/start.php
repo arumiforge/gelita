@@ -2,7 +2,7 @@
 /**
  * 2. Mulai — `/mulai` → HomeController::start
  *
- * Dua kartu: "Saya baru" → /daftar/1; "Saya sudah punya akun" → /masuk.
+ * Dua kartu: "Saya baru" → /daftar; "Saya sudah punya akun" → /masuk.
  */
 ?>
 <?= $this->extend('layouts/game') ?>
