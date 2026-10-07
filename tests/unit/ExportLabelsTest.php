@@ -1,161 +1,118 @@
 <?php
 
-use App\Libraries\ExcelWriter;
 use App\Libraries\ExportLabels;
 use App\Services\ExportService;
 use CodeIgniter\Test\CIUnitTestCase;
-use PhpOffice\PhpSpreadsheet\IOFactory;
-use PhpOffice\PhpSpreadsheet\Shared\Date as ExcelDate;
 
 /**
- * Berkas Excel unduhan data seluruhnya berbahasa Indonesia sehari-hari:
- * nama lembar, judul kolom, dan nilai berkode. Kode internal (nama lembar
- * Inggris, nama kolom snake_case, kode status/tahap) tidak boleh muncul di
- * berkas.
+ * Keterangan kolom data mentah (Dok 3 §9.2): setiap kolom setiap lembar
+ * punya judul Indonesia bersatuan, jenis, dan arti untuk Kamus Data; nilai
+ * berlabel hanya mengganti kode, tidak mengolah angka.
  *
  * @internal
  */
 final class ExportLabelsTest extends CIUnitTestCase
 {
-    public function testEveryColumnOfEverySheetHasAnIndonesianTitle(): void
+    private const TYPES = ['code', 'text', 'int', 'ms', 'datetime', 'bool', 'enum', 'json'];
+
+    public function testEveryColumnOfEverySheetHasATitleTypeAndMeaning(): void
     {
         $export = new ExportService();
 
         foreach (ExportService::SHEETS as $sheet) {
             $columns = $export->columns($sheet, false, true);   // mode terlengkap
-            $headers = ExportLabels::headers($sheet, $columns);
+            $headers = ExportLabels::headers($sheet, $columns, true);
 
             $this->assertSame(count($columns), count(array_unique($headers)), "{$sheet}: judul kolom tidak boleh kembar");
+            $this->assertSame($columns, ExportLabels::headers($sheet, $columns, false), "{$sheet}: judul berkode = kode kolom");
 
             foreach ($columns as $i => $column) {
-                $this->assertTrue(ExportLabels::has($sheet, $column), "{$sheet}.{$column} belum punya judul");
+                $spec = ExportLabels::column($sheet, $column);
+
+                $this->assertTrue(ExportLabels::has($sheet, $column), "{$sheet}.{$column} belum punya keterangan");
                 $this->assertNotSame($column, $headers[$i], "{$sheet}.{$column}");
                 $this->assertDoesNotMatchRegularExpression('/_|\b(?:code|ms|id)\b/', $headers[$i], "{$sheet}.{$column}: judul masih berbentuk kode");
+                $this->assertContains($spec['type'], self::TYPES, "{$sheet}.{$column}");
+                $this->assertNotSame('', $spec['meaning'], "{$sheet}.{$column}: arti kosong");
+
+                if ($spec['type'] === 'ms') {
+                    $this->assertStringContainsString('(mdtk)', $headers[$i], "{$sheet}.{$column}: satuan di judul");
+                }
+
+                if ($spec['type'] === 'enum') {
+                    $this->assertNotSame([], ExportLabels::values($spec['group']), "{$sheet}.{$column}: daftar nilai kosong");
+                }
             }
         }
     }
 
-    public function testSheetTitlesAreIndonesianAndFitExcel(): void
+    public function testSheetTitlesFollowTheDocumentAndFitExcel(): void
     {
         $titles = array_map(ExportLabels::sheetTitle(...), ExportService::SHEETS);
 
-        $this->assertSame(['Data siswa', 'Sesi bermain', 'Hasil per wilayah', 'Hasil per tantangan', 'Jawaban per soal',
-            'Catatan aktivitas', 'Pemakaian suara', 'Capaian indikator', 'Ringkasan kelompok', 'Kritik dan saran'], $titles);
+        $this->assertSame(['Kamus Data', 'Peserta', 'Sesi', 'Perangkat', 'Progres', 'Pengerjaan Tantangan', 'Jawaban Soal',
+            'Riwayat Percobaan', 'Navigasi', 'Bantuan', 'Penyelesaian', 'Event Mentah', 'Kritik & Saran', 'Bank Soal'], $titles);
 
         foreach ($titles as $title) {
             $this->assertLessThanOrEqual(31, mb_strlen($title));
             $this->assertDoesNotMatchRegularExpression('/[\[\]:*?\/\\\\]/', $title);
         }
 
-        $this->assertSame(count($titles), count(array_unique(array_map('mb_strtolower', $titles))));
+        $this->assertSame(ExportService::SHEETS, ExportLabels::sheets());
     }
 
-    public function testTechnicalColumnsAreGone(): void
+    public function testLabelsReplaceCodesOnly(): void
     {
-        $export = new ExportService();
-        $all    = [];
+        $this->assertSame('Kesempatan habis', ExportLabels::label('pengerjaan', 'completion_reason', 'tries_exhausted'));
+        $this->assertSame('Laki-laki', ExportLabels::label('peserta', 'gender', 'laki-laki'));
+        $this->assertSame('Kelas 5 SD/MI', ExportLabels::label('peserta', 'class_level', '5'));
+        $this->assertSame('ditinggalkan', ExportLabels::label('pengerjaan', 'status', 'abandoned'));
+        $this->assertSame('Benar atau Salah', ExportLabels::label('pengerjaan', 'engine_type', 'boleh'));
+        $this->assertSame('Menemukan informasi tersurat', ExportLabels::label('jawaban', 'skill', 'informasi_tersurat'));
+        $this->assertSame('Petunjuk dibuka', ExportLabels::label('bantuan', 'jenis', 'petunjuk'));
+        $this->assertSame('Cerita pembuka', ExportLabels::label('bantuan', 'audio_context', 'intro'));
+        $this->assertSame(['ya', 'tidak'], [ExportLabels::label('jawaban', 'is_correct', 1), ExportLabels::label('jawaban', 'is_correct', 0)]);
+        $this->assertSame('kode-baru', ExportLabels::label('pengerjaan', 'status', 'kode-baru'), 'kode tak dikenal apa adanya');
+
+        // Angka, durasi, dan waktu tidak diolah
+        $this->assertSame(120500, ExportLabels::label('pengerjaan', 'duration_ms', 120500));
+        $this->assertSame('2026-10-01T08:12:00.000+07:00', ExportLabels::label('jawaban', 'answered_at', '2026-10-01T08:12:00.000+07:00'));
+        $this->assertNull(ExportLabels::label('pengerjaan', 'completion_reason', null));
+    }
+
+    public function testDictionaryCoversEveryColumnWithBothCodesAndLabels(): void
+    {
+        $export  = new ExportService();
+        $columns = [];
 
         foreach (ExportService::SHEETS as $sheet) {
-            $all = [...$all, ...$export->columns($sheet, false, true)];
+            $columns[$sheet] = $export->columns($sheet, false, true);
         }
 
-        foreach (['response_id', 'event_uuid', 'client_event_id', 'audio_asset_id', 'indicator_code', 'variant_code',
-            'content_version', 'scoring_version', 'level_code', 'study_code', 'phase_code'] as $technical) {
-            $this->assertNotContains($technical, $all, "kolom teknis {$technical} tidak lagi diunduh");
+        $rows = ExportLabels::dictionary($columns);
+
+        foreach ($columns as $sheet => $list) {
+            $listed = array_column(array_filter($rows, static fn (array $r): bool => $r['lembar'] === $sheet && $r['kolom'] !== ''), 'kolom');
+            $this->assertSame($list, $listed, "{$sheet}: kamus memuat semua kolom, urut sama");
         }
 
-        foreach (['node_title', 'prompt', 'bloom_level', 'item_types', 'level'] as $readable) {
-            $this->assertContains($readable, $all, "kolom {$readable} membantu membaca berkas tanpa kamus kode");
-        }
+        $reason = array_values(array_filter($rows, static fn (array $r): bool => $r['lembar'] === 'pengerjaan' && $r['kolom'] === 'completion_reason'))[0];
+        $this->assertStringContainsString('tries_exhausted = Kesempatan habis', $reason['nilai']);
+        $this->assertStringContainsString('solved = Semua soal benar', $reason['nilai']);
+
+        $duration = array_values(array_filter($rows, static fn (array $r): bool => $r['lembar'] === 'jawaban' && $r['kolom'] === 'duration_ms'))[0];
+        $this->assertSame('mdtk', $duration['satuan']);
+
+        $flag = array_values(array_filter($rows, static fn (array $r): bool => $r['lembar'] === 'jawaban' && $r['kolom'] === 'is_correct'))[0];
+        $this->assertSame('1 = ya; 0 = tidak', $flag['nilai']);
     }
 
-    public function testCodedValuesBecomeWords(): void
+    public function testWidthsLeaveRoomForTimestampsAndText(): void
     {
-        $this->assertSame('selesai', ExportLabels::value('Sessions', 'status', 'completed'));
-        $this->assertSame('ponsel', ExportLabels::value('Sessions', 'device_type', 'mobile'));
-        $this->assertSame('Indonesia', ExportLabels::value('Sessions', 'locale', 'id'));
-        $this->assertSame('Perempuan', ExportLabels::value('Participants', 'gender', 'perempuan'));
-        $this->assertSame('Kelas 5 SD/MI', ExportLabels::value('Participants', 'class_level', '5'));
-        $this->assertSame('Isi rumpang (pilih kata)', ExportLabels::value('Item Responses', 'interaction_type', 'fill_blank_bank'));
-        $this->assertSame('C3 · Menerapkan', ExportLabels::value('Item Responses', 'bloom_level', 'C3'));
-        $this->assertSame('Susun Gambar', ExportLabels::value('Challenge Summary', 'engine_type', 'puzzle'));
-        $this->assertSame('Kartu benar/salah', ExportLabels::value('Challenge Summary', 'item_types', ['verdict_card', 'verdict_card']));
-        $this->assertSame('Kesempatan habis', ExportLabels::value('Challenge Summary', 'completion_reason', 'tries_exhausted'));
-        $this->assertSame('Semua soal benar', ExportLabels::value('Challenge Summary', 'completion_reason', 'solved'));
-        $this->assertSame('Membuka petunjuk', ExportLabels::value('Raw Events', 'event_type', 'hint_opened'));
-        $this->assertSame('diputar ulang', ExportLabels::value('Audio Usage', 'action', 'replay'));
-        $this->assertSame('Mbah Kedu', ExportLabels::value('Audio Usage', 'character_code', 'mbah_kedu'));
-        $this->assertSame('Cerita pembuka', ExportLabels::value('Audio Usage', 'context_code', 'intro'));
-        $this->assertSame('Jenis kelamin', ExportLabels::value('Demographic Summary', 'dimension', 'gender'));
-    }
+        $widths = ExportLabels::widths('jawaban', ['answered_at', 'prompt', 'try_count'], true);
 
-    public function testFlagsAndUnits(): void
-    {
-        $this->assertSame('ya', ExportLabels::value('Item Responses', 'is_correct', 1));
-        $this->assertSame('tidak', ExportLabels::value('Item Responses', 'first_pass_correct', '0'));
-        $this->assertSame('tidak', ExportLabels::value('Sessions', 'is_touch', 0));
-        $this->assertNull(ExportLabels::value('Item Responses', 'is_correct', null), 'belum dinilai = sel kosong');
-
-        $this->assertSame(12.5, ExportLabels::value('Item Responses', 'duration_ms', 12_480), 'detik, 1 desimal');
-        $this->assertSame(2.5, ExportLabels::value('Sessions', 'duration_ms', 150_000), 'lama sesi dalam menit');
-        $this->assertSame(7, ExportLabels::value('Challenge Summary', 'hint_count', '7'));
-        $this->assertSame(2, ExportLabels::value('Item Responses', 'solved_on_try', '2'));
-        $this->assertSame(3, ExportLabels::value('Item Responses', 'try_count', 3));
-        $this->assertNull(ExportLabels::value('Item Responses', 'solved_on_try', null), 'belum pernah benar = sel kosong');
-    }
-
-    public function testDemographicGroupsFollowTheirDimension(): void
-    {
-        $this->assertSame('Laki-laki', ExportLabels::value('Demographic Summary', 'group', 'laki-laki', ['dimension' => 'gender']));
-        $this->assertSame('Kelas 5 SD/MI', ExportLabels::value('Demographic Summary', 'group', '5', ['dimension' => 'class_level']));
-        $this->assertSame('Jawa Tengah', ExportLabels::value('Demographic Summary', 'group', 'Jawa Tengah', ['dimension' => 'province']));
-        $this->assertSame('(tidak diisi)', ExportLabels::value('Demographic Summary', 'group', '(kosong)', ['dimension' => 'gender']));
-    }
-
-    public function testActivityDetailsAndDatesAreReadable(): void
-    {
-        $details = ExportLabels::value('Raw Events', 'payload', '{"attempt_no":2,"via":"content_changed","duration_ms":4200}');
-
-        $this->assertSame('pengerjaan ke: 2 · lewat: isi tantangan diperbarui · lama: 4,2 detik', $details);
-
-        $date = ExportLabels::value('Sessions', 'started_at', '2026-10-05 08:30:15');
-
-        $this->assertInstanceOf(DateTimeInterface::class, $date);
-        $this->assertSame('2026-10-05 08:30:15', $date->format('Y-m-d H:i:s'));
-    }
-
-    public function testWidthsLeaveRoomForDatesAndLongText(): void
-    {
-        $columns = ['answered_at', 'prompt', 'status'];
-        $widths  = array_combine($columns, ExportLabels::widths('Item Responses', $columns));
-
-        $this->assertGreaterThanOrEqual(20, $widths['answered_at'], 'tanggal tidak menjadi ####');
-        $this->assertSame(50, $widths['prompt']);
-        $this->assertGreaterThanOrEqual(10, $widths['status']);
-    }
-
-    public function testDatesAreRealExcelDatesInLocalTime(): void
-    {
-        $dir  = sys_get_temp_dir() . '/gelita-labels-' . bin2hex(random_bytes(4));
-        $path = $dir . '/tanggal.xlsx';
-        mkdir($dir);
-
-        try {
-            $writer = new ExcelWriter($path);
-            $writer->startSheet('Sesi bermain', ['Kode sesi', 'Mulai'], [12, 20]);
-            $writer->row(['S-1', new DateTimeImmutable('2026-10-05 08:30:15', new DateTimeZone('Asia/Jakarta'))]);
-            $writer->finish();
-
-            $sheet = IOFactory::load($path)->getSheetByName('Sesi bermain');
-            $cell  = $sheet->getCell('B2');
-
-            $this->assertTrue(ExcelDate::isDateTime($cell), 'sel tanggal, bukan teks');
-            $this->assertSame('dd-mm-yyyy hh:mm:ss', $cell->getStyle()->getNumberFormat()->getFormatCode());
-            $this->assertSame('2026-10-05 08:30:15', ExcelDate::excelToDateTimeObject($cell->getValue())->format('Y-m-d H:i:s'), 'jam setempat tidak bergeser');
-            $this->assertSame(20.0, (float) $sheet->getColumnDimension('B')->getWidth());
-        } finally {
-            array_map('unlink', glob($dir . '/*') ?: []);
-            rmdir($dir);
-        }
+        $this->assertGreaterThanOrEqual(29, $widths[0], 'ISO 8601 dengan milidetik dan zona');
+        $this->assertGreaterThanOrEqual(16, $widths[1]);
+        $this->assertGreaterThanOrEqual(10, $widths[2]);
     }
 }

@@ -14,14 +14,12 @@ class DashboardController extends BaseAdminController
 {
     public function index(): string
     {
-        $filters   = $this->scopedFilters();
-        $analytics = $this->analytics();
+        $filters = $this->scopedFilters();
 
         return $this->panel('admin/dashboard', 'Beranda', [
             'filters'         => $filters,
-            'summary'         => $analytics->summary($filters),
+            'summary'         => $this->analytics()->summary($filters),
             'cohort'          => model(ParticipantModel::class)->cohortSummary($filters),
-            'digitalSecurity' => $analytics->digitalSecurityLiteracy($filters),
             'recentSessions'  => $this->recentSessions($filters),
             'study'           => model(ResearchStudyModel::class)->activeStudy(),
             'isAdmin'         => $this->isAdmin(),

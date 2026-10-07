@@ -10,7 +10,7 @@ Keputusan dan penyimpangan dari ketiga dokumen perombakan, beserta alasannya dan
 | Dok 2 | Selesai, di `main` (§2–§12). Uji manual §13.2 dan ringkasan §2–§9 di bagian "Dok 2 — server, bank soal, dan uji manual §13" |
 | Pembersihan kompatibilitas lama | Selesai, di `main` (PR #41): instalasi baru saja, migration digabung, dokumentasi ditulis ulang. Lihat bagian "Pembersihan — instalasi baru tanpa kompatibilitas lama" |
 | Perbaikan sebelum Dok 3 | Temuan tinjauan Dok 2 (balapan permintaan, Cari Objek, bintang): branch sementara, PR ke `main`. Lihat bagian "Perbaikan sebelum Dok 3 — temuan tinjauan Dok 2" |
-| Dok 3 | Belum dimulai. **§13 (skrip `upgrade-kelas5`) tidak dikerjakan** dan §11 sebagian sudah selesai; lihat "Untuk sesi Dok 3" di bagian pembersihan |
+| Dok 3 | Sedang dikerjakan paralel. Data mentah, ekspor, dan PDF (§8.4, §9, §10): branch `dok3-data-mentah`, lihat bagian "Dok 3 — data mentah dan ekspor". **§13 (skrip `upgrade-kelas5`) tidak dikerjakan** dan §11 sebagian sudah selesai; lihat "Untuk sesi Dok 3" di bagian pembersihan |
 
 Sisa Dok 2:
 
@@ -539,4 +539,40 @@ Dikerjakan di branch sementara dari `main` (7 Oktober 2026), menanggapi tinjauan
   Ketujuhnya gagal pada kode sebelum perbaikan.
 - `vendor/bin/phpunit --no-coverage`: **451 test hijau** (444 + 7 baru).
 - Klien JS diperiksa dengan `node --check`. Belum diuji di peramban.
+
+---
+
+## Dok 3 — data mentah dan ekspor
+
+Dikerjakan di branch `dok3-data-mentah` (dari `main` sesudah PR #42), paralel dengan sesi tampilan admin dan sesi panggung game. Cakupan: §8.4 (`RawDataService`), §9 (ekspor), §10 (PDF), uji §12.1 bagian layanan.
+
+### Kontrak untuk sesi admin
+
+`App\Services\RawDataService` — satu tempat query setiap dimensi. Dimensi = kode lembar §9.2: `peserta`, `sesi`, `perangkat`, `progres`, `pengerjaan`, `jawaban`, `percobaan`, `navigasi`, `bantuan`, `selesai`, `event` (admin saja), `masukan`, `butir`. Tab `/admin/data/{dimensi}` §8.3 memakai delapan di antaranya.
+
+```php
+query(string $dimension, array $filters, StaffScope $scope): BaseBuilder   // baris mentah + `_key`; ubah dengan shape()
+page(string $dimension, array $filters, int $page, int $perPage, ?string $sort): array
+streamCsv(string $dimension, array $filters, $handle): int                 // jumlah baris data
+```
+
+Bentuk hasil `page()` (dipertahankan):
+
+```php
+[
+  'rows'     => list<array<string, int|string|null>>, // kunci = columns[*].key; nilai berkode, sama dengan CSV
+  'total'    => int,        // jumlah baris semua halaman
+  'page'     => int,        // 1-based, dijepit ke 1..halaman terakhir
+  'per_page' => int,        // 25 | 50 | 100 (lainnya → 25)
+  'sort'     => ?string,    // yang dipakai: "kolom" naik, "-kolom" turun (tak sah → urutan bawaan)
+  'columns'  => list<array{key: string, label: string, type: string}>,
+]
+```
+
+- `type` ∈ `code|text|int|ms|datetime|bool|enum|json`. Waktu = ISO 8601 WIB dengan milidetik (`2026-10-07T08:30:15.123+07:00`), durasi = milidetik (int), boolean 1/0, JSON sebagai teks. Tampilan `m:ss` dan lencana dibuat tabel; label nilai lewat `ExportLabels::label($dimension, $key, $value)`.
+- Kolom yang dapat diurutkan: `sortable($dimension)`. Kolom yang dihitung di PHP (judul variasi, jawaban, payload) tidak bisa diurutkan.
+- Filter (`RawDataService::FILTER_KEYS`): `study_id`, `participant_id`, `participant_code`, `school_id`, `class_level`, `province_code`, `locale`, `level_id`, `node_id`, `variant_group`, `date_from`, `date_to` (Y-m-d). Kunci lain dan nilai rusak diabaikan. Rentang tanggal memakai waktu baris itu sendiri (mulai pengerjaan, waktu percobaan, waktu event, tanggal daftar untuk Peserta).
+- Cakupan diikat ke objek: di controller pakai `$this->rawData()` (trait `StaffScope`, berisi `App\Services\StaffScope` dari `$this->dataScope()`), atau `service('rawDataService', $scope)`. Tanpa cakupan `page()`/`streamCsv()` melempar `LogicException`; dimensi yang tidak boleh (`event` untuk guru) → `DomainException` (petakan ke 404); dimensi tak dikenal → `InvalidArgumentException`.
+- CSV per tabel: `BaseAdminController::rawCsvDownload($dimension, $filters)` → unduhan CSV (BOM, koma, judul = kode kolom), tercatat `export_csv` di audit. Rute `/admin/data/{dimensi}` dan `?format=csv` dibuat sesi admin.
+- `readFilters()` kini juga menerima `participant_code` dan `variant_group`.
 

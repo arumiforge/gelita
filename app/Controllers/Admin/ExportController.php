@@ -2,6 +2,7 @@
 
 namespace App\Controllers\Admin;
 
+use App\Libraries\ExportLabels;
 use App\Models\AuditLogModel;
 use App\Models\DataExportModel;
 use App\Models\ResearchStudyModel;
@@ -11,19 +12,23 @@ use CodeIgniter\HTTP\DownloadResponse;
 use CodeIgniter\HTTP\RedirectResponse;
 
 /**
- * Permintaan ekspor XLSX/PDF beserta unduhannya.
+ * Permintaan ekspor data mentah (XLSX / CSV-ZIP, Dok 3 §9), laporan PDF
+ * satu siswa (§10), beserta unduhannya.
  *
  * Controller ini mencatat permintaan, menegakkan aturan anonimitas (lapis
  * kedua), dan mengaudit setiap unduhan. Berkasnya dibangun
  * `App\Services\ExportService`, yang membaca ulang hak pemohon dari
  * `staff_users` sebagai lapis ketiga.
+ *
+ * Isian formulir (POST `admin/ekspor/{xlsx|csv|pdf}`):
+ * - filter `ExportService::FILTER_KEYS`;
+ * - `sheets[]` kode lembar §9.2 (kosong = semua yang boleh; Kamus Data selalu ikut);
+ * - `labels` = `label` (nilai berlabel) | `code` (berkode); bawaan XLSX berlabel, CSV berkode;
+ * - `anonymized` = 1 (admin dapat mengosongkannya; guru selalu anonim);
+ * - `participant_id` = ekspor per siswa §9.3 (wajib untuk PDF).
  */
 class ExportController extends BaseAdminController
 {
-    private const SHEETS = ExportService::SHEETS;
-
-    private const ADMIN_ONLY_SHEETS = ExportService::ADMIN_ONLY_SHEETS;
-
     public function index(): string
     {
         $exports = model(DataExportModel::class);
@@ -32,10 +37,13 @@ class ExportController extends BaseAdminController
             $exports->where('requested_by', $this->staffId());
         }
 
+        $sheets = service('exportService')->allowedSheets([], $this->isAdmin());
+
         return $this->panel('admin/export/index', 'Unduh data', [
             'filters'       => $this->readFilters(),
-            'sheets'        => self::SHEETS,
-            'adminOnly'     => self::ADMIN_ONLY_SHEETS,
+            'sheets'        => $sheets,
+            'sheetTitles'   => array_combine($sheets, array_map(ExportLabels::sheetTitle(...), $sheets)),
+            'sheetNotes'    => array_combine($sheets, array_map(ExportLabels::sheetMeaning(...), $sheets)),
             'isAdmin'       => $this->isAdmin(),
             'studies'       => model(ResearchStudyModel::class)->findAll(),
             'schools'       => model(SchoolModel::class)->inUseList(),
@@ -48,6 +56,12 @@ class ExportController extends BaseAdminController
     public function xlsx(): RedirectResponse
     {
         return $this->queue('xlsx');
+    }
+
+    /** CSV-ZIP: satu CSV per lembar. */
+    public function csv(): RedirectResponse
+    {
+        return $this->queue('csv');
     }
 
     public function pdf(): RedirectResponse
@@ -85,40 +99,39 @@ class ExportController extends BaseAdminController
             'metadata'      => ['format' => $export['format'], 'anonymized' => (int) $export['anonymized']],
         ]);
 
-        $mime = $export['format'] === 'pdf'
-            ? 'application/pdf'
-            : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-
-        return $this->response->download($path, null)->setFileName(basename($path))->setContentType($mime);
+        return $this->response->download($path, null)
+            ->setFileName(basename($path))
+            ->setContentType(ExportService::mimeType((string) $export['format']));
     }
 
     /**
      * Mencatat permintaan ekspor lalu membangunnya lewat ExportService.
-     * Guru selalu dipaksa mode anonim dan tidak pernah mendapat sheet
-     * `Raw Events`, berapa pun isi formulir yang dikirim.
-     *
-     * PDF hanya templat `participant` dengan `participant_id` — laporan
-     * individual dari halaman detail peserta.
+     * Guru selalu dipaksa mode anonim dan tidak pernah mendapat lembar
+     * `event`, berapa pun isi formulir yang dikirim.
      */
     private function queue(string $format): RedirectResponse
     {
-        $isAdmin    = $this->isAdmin();
-        $anonymized = $isAdmin ? ($this->request->getPost('anonymized') ? 1 : 0) : 1;
-        $sheets     = $format === 'xlsx' ? $this->requestedSheets($isAdmin) : [];
-        $filters    = $this->scopedFilters($this->postFilters());
-        $scope      = ['filters' => $filters, 'sheets' => $sheets];
-        $back       = 'admin/ekspor';
+        $isAdmin       = $this->isAdmin();
+        $anonymized    = $isAdmin ? ($this->request->getPost('anonymized') ? 1 : 0) : 1;
+        $participantId = (int) ($this->request->getPost('participant_id') ?? 0);
+        $filters       = $this->scopedFilters($this->postFilters());
+        $back          = $participantId > 0 ? 'admin/peserta/' . $participantId : 'admin/ekspor';
+        $scope         = ['filters' => $filters];
+
+        if ($participantId > 0) {
+            $scope['participant_id'] = $participantId;
+        }
 
         if ($format === 'pdf') {
-            // PDF hanya untuk laporan satu siswa
-            $participantId = (int) ($this->request->getPost('participant_id') ?? 0);
-
             if ($participantId <= 0) {
-                return redirect()->to(site_url($back))->with('error', 'Ringkasan PDF penelitian sudah tidak tersedia. Unduh data mentah sebagai Excel, atau buat laporan satu siswa dari halaman profil siswa.');
+                return redirect()->to(site_url($back))->with('error', 'Laporan PDF hanya untuk satu siswa. Buat laporan dari halaman profil siswa, atau unduh data mentah sebagai Excel/CSV.');
             }
 
-            $scope['template']       = 'participant';
-            $scope['participant_id'] = $participantId;
+            $scope['template'] = 'participant';
+        } else {
+            $labels           = (string) $this->request->getPost('labels');
+            $scope['sheets']  = $this->requestedSheets($isAdmin);
+            $scope['labels']  = in_array($labels, ['label', 'code'], true) ? $labels : ($format === 'xlsx' ? 'label' : 'code');
         }
 
         $exports  = model(DataExportModel::class);
@@ -146,13 +159,15 @@ class ExportController extends BaseAdminController
             'target_type'   => 'data_export',
             'target_id'     => (string) $exportId,
             'metadata'      => [
-                'format'      => $format,
-                'anonymized'  => (int) $export['anonymized'],
-                'sheets'      => $sheets,
-                'template'    => $scope['template'] ?? null,
-                'status'      => $export['status'],
-                'row_count'   => $export['row_count'] === null ? null : (int) $export['row_count'],
-                'file_sha256' => $export['file_sha256'],
+                'format'         => $format,
+                'anonymized'     => (int) $export['anonymized'],
+                'sheets'         => $scope['sheets'] ?? [],
+                'labels'         => $scope['labels'] ?? null,
+                'participant_id' => $participantId > 0 ? $participantId : null,
+                'template'       => $scope['template'] ?? null,
+                'status'         => $export['status'],
+                'row_count'      => $export['row_count'] === null ? null : (int) $export['row_count'],
+                'file_sha256'    => $export['file_sha256'],
             ],
         ]);
 
@@ -160,22 +175,23 @@ class ExportController extends BaseAdminController
             return $this->back($back, 'Unduhan #' . $exportId . ' gagal dibuat: ' . $export['error_message']);
         }
 
-        $label = ($scope['template'] ?? null) === 'participant' ? 'Laporan siswa' : 'Berkas';
+        $label = match (true) {
+            $format === 'pdf'  => 'Laporan siswa',
+            $participantId > 0 => 'Data siswa',
+            default            => 'Berkas',
+        };
 
-        return $this->done($back, $label . ' #' . $exportId . ' siap diunduh.');
+        return $this->done($back, $label . ' #' . $exportId . ' siap diunduh di menu Unduh data.');
     }
 
     /**
-     * Sheet yang diminta, disaring terhadap daftar resmi dan hak pemanggil.
+     * Lembar yang diminta, disaring terhadap daftar resmi dan hak pemanggil.
      *
      * @return list<string>
      */
     private function requestedSheets(bool $isAdmin): array
     {
-        return service('exportService')->allowedSheets(
-            (array) ($this->request->getPost('sheets') ?? self::SHEETS),
-            $isAdmin,
-        );
+        return service('exportService')->allowedSheets((array) ($this->request->getPost('sheets') ?? []), $isAdmin);
     }
 
     /**
@@ -185,14 +201,9 @@ class ExportController extends BaseAdminController
      */
     private function postFilters(): array
     {
-        $allowed = [
-            'study_id', 'level_id', 'school_id',
-            'class_level', 'province_code', 'locale', 'date_from', 'date_to',
-        ];
-
         $filters = [];
 
-        foreach ($allowed as $key) {
+        foreach (ExportService::FILTER_KEYS as $key) {
             $value = $this->request->getPost($key);
 
             if (is_string($value) && trim($value) !== '') {

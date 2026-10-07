@@ -93,8 +93,10 @@ return [
 
     /** Jenis perangkat sesi bermain (game_sessions.device_type). */
     'device' => [
-        'desktop' => 'komputer',
-        'mobile'  => 'ponsel',
+        'desktop'    => 'komputer',
+        'mobile'     => 'ponsel',
+        'smartphone' => 'ponsel',
+        'phablet'    => 'ponsel besar',
         'tablet'  => 'tablet',
     ],
 
@@ -156,20 +158,6 @@ return [
         'participants'         => 'Data siswa',
     ],
 
-    /** Lembar pada berkas Excel hasil unduhan data. */
-    'exportSheet' => [
-        'Participants'        => 'Data siswa',
-        'Sessions'            => 'Sesi bermain',
-        'Levels'              => 'Hasil per wilayah',
-        'Challenge Summary'   => 'Hasil per tantangan',
-        'Item Responses'      => 'Jawaban per soal',
-        'Raw Events'          => 'Catatan aktivitas',
-        'Audio Usage'         => 'Pemakaian suara',
-        'Indicators'          => 'Capaian indikator',
-        'Demographic Summary' => 'Ringkasan kelompok',
-        'Feedback'            => 'Kritik dan saran',
-    ],
-
     /** Tingkat berpikir Taksonomi Bloom revisi per soal (challenge_items.bloom_level). */
     'bloom' => [
         'C1' => 'C1 · Mengingat',
@@ -193,14 +181,6 @@ return [
         'pause'    => 'dijeda',
         'replay'   => 'diputar ulang',
         'complete' => 'didengar sampai habis',
-    ],
-
-    /** Pengelompokan pada lembar Ringkasan kelompok. */
-    'exportDimension' => [
-        'gender'      => 'Jenis kelamin',
-        'class_level' => 'Kelas',
-        'school'      => 'Sekolah',
-        'province'    => 'Provinsi',
     ],
 
     /** Jenis catatan aktivitas di linimasa sesi (game_event_logs). */
@@ -260,6 +240,7 @@ return [
         'narration_list_download'      => 'Mengunduh daftar rekaman',
         'export'                       => 'Membuat unduhan data',
         'export_download'              => 'Mengunduh data',
+        'export_csv'                   => 'Mengunduh CSV tabel data mentah',
         'export_purge'                 => 'Membuang unduhan lama',
         'delete_preview'               => 'Menghitung data yang akan dihapus',
         'delete_execute'               => 'Menghapus data',

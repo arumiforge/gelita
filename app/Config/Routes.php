@@ -114,6 +114,7 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
         // Export — guru & admin, tetapi mode non-anonim hanya admin
         $routes->get('ekspor', 'ExportController::index');
         $routes->post('ekspor/xlsx', 'ExportController::xlsx');
+        $routes->post('ekspor/csv', 'ExportController::csv');
         $routes->post('ekspor/pdf', 'ExportController::pdf');
         $routes->get('ekspor/unduh/(:num)', 'ExportController::download/$1');
 
@@ -188,7 +189,6 @@ $routes->group('api/admin', [
     'filter'    => ['jsonResponse', 'staffAuth'],
 ], static function ($routes): void {
     $routes->get('summary', 'AdminApiController::summary');
-    $routes->get('participants', 'AdminApiController::participants');
     $routes->get('sessions/(:num)/timeline', 'AdminApiController::timeline/$1');
     $routes->get('exports/(:num)/status', 'AdminApiController::exportStatus/$1');
 });
