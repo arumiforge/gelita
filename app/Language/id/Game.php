@@ -301,6 +301,7 @@ return [
     'errTriesExhausted' => 'Kesempatan untuk tantangan ini sudah habis.',
     'errClueClosed'     => 'Petunjuk ini sudah selesai. Lanjut ke petunjuk berikutnya, ya.',
     'errTriesRemaining' => 'Tantangan ini belum selesai. Kamu masih punya kesempatan untuk memperbaiki jawaban.',
+    'errAttemptChanged' => 'Tantangan ini baru saja diperbarui dari tab lain. Halaman dimuat ulang, ya.',
     'errServer'         => 'Terjadi kesalahan pada server.',
     'errNotFound'       => 'Data yang dicari tidak ditemukan.',
     'errForbidden'      => 'Kamu tidak boleh membuka bagian ini.',

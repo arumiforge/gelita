@@ -15,6 +15,7 @@ use App\Models\ItemResponseModel;
 use App\Models\ItemTryModel;
 use App\Models\ResearchStudyModel;
 use App\Models\SessionProgressModel;
+use CodeIgniter\Model;
 
 /**
  * Inti permainan: membuka node, menerima jawaban, menutup pengerjaan.
@@ -45,9 +46,11 @@ class ChallengeService
 
     /**
      * Membuka node: membuat attempt, memilih item, menyiapkan payload pemain.
-     * Attempt `in_progress` yang sudah ada dipakai ulang (resume).
+     * Attempt `in_progress` yang sudah ada dipakai ulang (resume). Attempt
+     * yang ternyata sudah tuntas ditutup di sini: `payload` null dan
+     * `redirect` menunjuk layar hasilnya.
      *
-     * @return array{attempt: ChallengeAttempt, payload: array<string, mixed>}
+     * @return array{attempt: ChallengeAttempt, payload: ?array<string, mixed>, redirect?: string}
      */
     public function openNode(GameSession $session, int $nodeId): array
     {
@@ -68,9 +71,24 @@ class ChallengeService
             $items = $this->itemsByIds($bank, $attempt->selectedItemIds());
 
             // Semua soal percobaan ini sudah diistirahatkan (isi tantangan
-            // diperbarui): tutup percobaan lama dan buka yang baru.
-            if ($items === []) {
+            // diperbarui): tutup percobaan lama dan buka yang baru. Benda
+            // jebakan saja tidak cukup untuk dikerjakan.
+            if (array_filter($items, $this->expectsAnswer(...)) === []) {
                 $this->abandonAttempt($attempt, ['via' => 'content_changed']);
+                $attempt = null;
+                $resumed = false;
+            } elseif (($reason = $this->closingReason($attempt, $node)) !== null) {
+                // Sudah tuntas tetapi belum ditutup, mis. soal/petunjuk terakhir
+                // yang belum dijawab dinonaktifkan admin: ditutup sekarang, dan
+                // pemain diarahkan ke layar hasil, bukan ke tantangan tanpa
+                // soal terbuka (Cari Objek akan menolak setiap ketukan).
+                $closed = $this->finishOpen($attempt, $reason, $session, $node);
+
+                if ($closed->isCompleted()) {
+                    return ['attempt' => $closed, 'payload' => null, 'redirect' => site_url('selesai/' . $closed->id)];
+                }
+
+                // Baru saja ditinggalkan dari tab lain: buka pengerjaan baru
                 $attempt = null;
                 $resumed = false;
             }
@@ -241,9 +259,7 @@ class ChallengeService
 
             $db->transCommit();
         } catch (\Throwable $e) {
-            $db->transRollback();
-
-            throw $e;
+            throw $this->rollback($e, $attempt->id, $itemId);
         }
 
         if ($completion !== null) {
@@ -319,13 +335,16 @@ class ChallengeService
         }
 
         $completion = null;
+        $checkCount = $attempt->check_count + 1;
         $db         = db_connect();
         $db->transBegin();
 
         try {
-            $checkCount = $attempt->check_count + 1;
-
-            $attempts->update($attempt->id, ['check_count' => $checkCount]);
+            // Cek ini hanya berlaku bila check_count belum diubah permintaan
+            // lain (tab kedua, atau kiriman ulang saat jaringan lambat). Yang
+            // kalah tidak menulis apa pun: tanpa try_no ke-4, tanpa penutupan
+            // dan event ganda.
+            $this->updateOrStale($attempts, $attempt->id, ['check_count' => $attempt->check_count, 'status' => 'in_progress'], ['check_count' => $checkCount]);
 
             $attempt = $attempts->find($attempt->id);
             $results = [];
@@ -392,9 +411,7 @@ class ChallengeService
 
             $db->transCommit();
         } catch (\Throwable $e) {
-            $db->transRollback();
-
-            throw $e;
+            throw $this->rollback($e, $attempt->id);
         }
 
         if ($completion !== null) {
@@ -543,14 +560,41 @@ class ChallengeService
 
             $db->transCommit();
         } catch (\Throwable $e) {
-            $db->transRollback();
-
-            throw $e;
+            throw $this->rollback($e, $attempt->id);
         }
 
         service('sessionService')->completeIfFinished($session->id);
 
         return $result;
+    }
+
+    /**
+     * Menutup pengerjaan yang sudah tuntas saat dibuka lagi (openNode()).
+     * Bila permintaan lain lebih dulu menutupnya, hasilnya dipakai apa adanya.
+     */
+    private function finishOpen(ChallengeAttempt $attempt, string $reason, GameSession $session, ChallengeNode $node): ChallengeAttempt
+    {
+        $db = db_connect();
+        $db->transBegin();
+
+        try {
+            $this->closeAttempt($attempt, $reason, $session, $node);
+
+            $db->transCommit();
+            service('sessionService')->completeIfFinished($session->id);
+        } catch (ChallengeRuleException $e) {
+            $db->transRollback();
+
+            if ($e->errorCode !== 'ATTEMPT_CHANGED') {
+                throw $e;
+            }
+        } catch (\Throwable $e) {
+            $db->transRollback();
+
+            throw $e;
+        }
+
+        return model(ChallengeAttemptModel::class)->find($attempt->id);
     }
 
     /**
@@ -586,7 +630,9 @@ class ChallengeService
         $attempts  = model(ChallengeAttemptModel::class);
         $startedAt = strtotime((string) $attempt->started_at) ?: time();
 
-        $attempts->update($attempt->id, [
+        // Hanya sekali: penutupan kedua (permintaan yang balapan) tidak
+        // menghitung ulang bintang dan tidak mencatat event ganda.
+        $this->updateOrStale($attempts, $attempt->id, ['status' => 'in_progress'], [
             'status'            => 'completed',
             'completion_reason' => $reason,
             'completed_at'      => date('Y-m-d H:i:s'),
@@ -663,11 +709,14 @@ class ChallengeService
         $session = $this->sessionOf($attempt);
         $node    = $this->nodeOf($attempt);
 
-        model(ChallengeAttemptModel::class)->update($attempt->id, [
+        // Pengerjaan yang baru saja ditutup permintaan lain tidak diubah menjadi ditinggalkan
+        if (! $this->updateIf(model(ChallengeAttemptModel::class), $attempt->id, ['status' => 'in_progress'], [
             'status'       => 'abandoned',
             'stars'        => 0,
             'completed_at' => date('Y-m-d H:i:s'),
-        ]);
+        ])) {
+            return;
+        }
 
         service('eventService')->record($session, 'challenge_abandoned', $payload + [
             'via'        => 'user_exit',
@@ -803,8 +852,6 @@ class ChallengeService
             $update['solved_on_try'] = min(255, $tryNo);
         }
 
-        $this->recordTry($attempt, $item->id, $tryNo, $answer, $correct, $meta);
-
         $changeCount = $response->change_count;
 
         if ($changed) {
@@ -812,7 +859,9 @@ class ChallengeService
             $update['change_count'] = $changeCount;
         }
 
-        $responses->update($response->id, $update);
+        // try_count sebagai versi baris: dua ketukan bersamaan tidak sama-sama menulis try_no yang sama
+        $this->updateOrStale($responses, $response->id, ['try_count' => $response->try_count], $update);
+        $this->recordTry($attempt, $item->id, $tryNo, $answer, $correct, $meta);
 
         if ($changed) {
             db_connect()->table('challenge_attempts')
@@ -921,7 +970,7 @@ class ChallengeService
                 ] + ($lastInput !== null ? ['duration_ms' => $lastInput] : []);
             }
 
-            $responses->update($response->id, $update);
+            $this->updateOrStale($responses, $response->id, ['try_count' => $response->try_count], $update);
 
             $this->recordTry($attempt, $target->id, $tryNo, $answer, false, [
                 'last_input_ms' => $meta['duration_ms'] ?? null,
@@ -1368,6 +1417,68 @@ class ChallengeService
     }
 
     // --------------------------------------------------------------- bantu
+
+    /**
+     * UPDATE bersyarat (penguncian optimistis): baris $id hanya diubah bila
+     * kolom $expected masih bernilai sama. false = permintaan lain lebih dulu
+     * mengubahnya. Di MySQL UPDATE menunggu kunci baris transaction lain lalu
+     * membaca nilai terbarunya; di SQLite (uji) penulis memang berurutan.
+     * $data selalu mengubah salah satu kolom $expected, jadi baris yang cocok
+     * selalu terhitung berubah.
+     *
+     * @param array<string, mixed> $expected
+     * @param array<string, mixed> $data
+     */
+    private function updateIf(Model $model, int $id, array $expected, array $data): bool
+    {
+        $model->where($expected)->update($id, $data);
+
+        return db_connect()->affectedRows() === 1;
+    }
+
+    /**
+     * updateIf() di dalam transaction: kalah balapan → ATTEMPT_CHANGED, yang
+     * oleh rollback() diganti galat sesuai keadaan terbaru.
+     *
+     * @param array<string, mixed> $expected
+     * @param array<string, mixed> $data
+     */
+    private function updateOrStale(Model $model, int $id, array $expected, array $data): void
+    {
+        if (! $this->updateIf($model, $id, $expected, $data)) {
+            throw ChallengeRuleException::attemptChanged();
+        }
+    }
+
+    /**
+     * Membatalkan transaction yang gagal. Permintaan yang kalah balapan
+     * dijawab menurut keadaan sesudah rollback (dibaca di luar transaction
+     * agar tidak memakai snapshot lama): pengerjaan sudah ditutup → menuju
+     * layar hasil; petunjuk Cari Objek sudah tertutup → CLUE_CLOSED;
+     * kesempatan batch habis → TRIES_EXHAUSTED; selain itu ATTEMPT_CHANGED
+     * (klien memuat ulang).
+     */
+    private function rollback(\Throwable $e, int $attemptId, ?int $itemId = null): \Throwable
+    {
+        db_connect()->transRollback();
+
+        if (! $e instanceof ChallengeRuleException || $e->errorCode !== 'ATTEMPT_CHANGED') {
+            return $e;
+        }
+
+        $fresh    = model(ChallengeAttemptModel::class)->find($attemptId);
+        $redirect = $fresh?->isCompleted() ? site_url('selesai/' . $attemptId) : null;
+
+        if ($redirect === null && $itemId !== null && model(ItemResponseModel::class)->findOne($attemptId, $itemId)?->isAnswered()) {
+            return ChallengeRuleException::clueClosed();
+        }
+
+        if ($fresh !== null && $fresh->isExhausted()) {
+            return ChallengeRuleException::triesExhausted($redirect);
+        }
+
+        return ChallengeRuleException::attemptChanged($redirect);
+    }
 
     private function assertInProgress(ChallengeAttempt $attempt): void
     {

@@ -796,6 +796,7 @@ Semua respons `/api` dan `/api/admin` berbentuk seragam dan membawa header `X-Re
 | `TRIES_EXHAUSTED` | 409 | `/check` setelah ketiga kesempatan terpakai; `redirect` ke `/selesai/{id}` bila pengerjaannya sudah ditutup |
 | `CLUE_CLOSED` | 409 | `/responses`: petunjuk Cari Objek itu sudah ditemukan atau dilewati — klien memuat ulang |
 | `TRIES_REMAINING` | 409 | `/complete` pada pengerjaan yang belum semua benar dan masih punya kesempatan |
+| `ATTEMPT_CHANGED` | 409 | `/check`, `/responses`, `/complete`: permintaan lain (tab kedua, kiriman ulang) lebih dulu mengubah pengerjaan ini, jadi permintaan ini tidak diterapkan; `redirect` ke `/selesai/{id}` bila pengerjaannya sudah ditutup, selain itu klien memuat ulang |
 | `LEVEL_LOCKED` | 409 | Wilayah belum terbuka |
 | `LIBRARY_LOCKED` | 409 | `/api/library/{levelId}`: wilayah terbuka tetapi tantangannya belum semua selesai |
 | `CONFLICT` | 409 | Exception 409 lain yang tidak ditangani controller |
@@ -815,7 +816,7 @@ Nomor aturan dirujuk dari kode (mis. `BaseApiController` → aturan 2, `safe_int
 2. Setiap endpoint memvalidasi: sesi valid → attempt/node milik sesi itu → item milik attempt itu. Ketiganya, bukan salah satu.
 3. `attempt_id` dari URL selalu dicocokkan dengan sesi berjalan sebelum dipakai.
 4. Mengganti bahasa tidak membuat sesi baru dan tidak mereset progres, jawaban, bintang, atau status penyelesaian.
-5. Aturan 3 kesempatan ditegakkan server: pengerjaan hanya tertutup karena semua benar (`solved`) atau kesempatan habis (`tries_exhausted`); permintaan yang melanggarnya dibalas `TRIES_EXHAUSTED`, `CLUE_CLOSED`, `TRIES_REMAINING`, atau `INCOMPLETE`.
+5. Aturan 3 kesempatan ditegakkan server: pengerjaan hanya tertutup karena semua benar (`solved`) atau kesempatan habis (`tries_exhausted`); permintaan yang melanggarnya dibalas `TRIES_EXHAUSTED`, `CLUE_CLOSED`, `TRIES_REMAINING`, atau `INCOMPLETE`. Permintaan bersamaan diserialkan dengan UPDATE bersyarat (`check_count`, `try_count`, `status` harus masih bernilai lama); yang kalah dibatalkan seluruhnya dan dibalas `ATTEMPT_CHANGED` (atau `CLUE_CLOSED`/`TRIES_EXHAUSTED` bila itu keadaan terbarunya).
 6. Guru tidak dapat mengekspor data beridentitas dan tidak dapat melihat siswa dari sekolah lain.
 7. Setiap ekspor, unduhan ekspor, dan penghapusan menghasilkan baris `audit_logs`.
 8. Penghapusan data selalu dua langkah: pratinjau jumlah terdampak, lalu eksekusi dengan konfirmasi teks `HAPUS`.

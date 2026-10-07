@@ -2,13 +2,14 @@
 
 Keputusan dan penyimpangan dari ketiga dokumen perombakan, beserta alasannya dan hal yang perlu diketahui sesi berikutnya. Satu bagian per dokumen; bagian Dok 2 dan Dok 3 ditambahkan sesi yang mengerjakannya.
 
-## Status (6 Oktober 2026)
+## Status (7 Oktober 2026)
 
 | Dokumen | Status |
 |---|---|
 | Dok 1 | Selesai, di `main` |
 | Dok 2 | Selesai, di `main` (§2–§12). Uji manual §13.2 dan ringkasan §2–§9 di bagian "Dok 2 — server, bank soal, dan uji manual §13" |
-| Pembersihan kompatibilitas lama | Di branch `dok2-mockup` (PR ke `main`): instalasi baru saja, migration digabung, dokumentasi ditulis ulang. Lihat bagian "Pembersihan — instalasi baru tanpa kompatibilitas lama" |
+| Pembersihan kompatibilitas lama | Selesai, di `main` (PR #41): instalasi baru saja, migration digabung, dokumentasi ditulis ulang. Lihat bagian "Pembersihan — instalasi baru tanpa kompatibilitas lama" |
+| Perbaikan sebelum Dok 3 | Temuan tinjauan Dok 2 (balapan permintaan, Cari Objek, bintang): branch sementara, PR ke `main`. Lihat bagian "Perbaikan sebelum Dok 3 — temuan tinjauan Dok 2" |
 | Dok 3 | Belum dimulai. **§13 (skrip `upgrade-kelas5`) tidak dikerjakan** dan §11 sebagian sudah selesai; lihat "Untuk sesi Dok 3" di bagian pembersihan |
 
 Sisa Dok 2:
@@ -21,7 +22,7 @@ Sisa Dok 2:
 ### Perawatan repo
 
 - 6 Oktober 2026: sejarah `main` ditulis ulang (penulis dan committer semua commit = Arumi Studios, baris `Co-Authored-By`/`Claude-Session` dibuang; isi berkas dan pesan commit tidak berubah). Semua branch lain dihapus. Hash commit lama yang disebut di dokumen lain tidak berlaku lagi.
-- Branch `dok2-mockup` (sudah digabung lewat PR #36 dan #38) **sengaja dibiarkan** di remote atas permintaan pemilik: dihapus setelah semua tahapan perombakan selesai, meski aturan satu branch di `CLAUDE.md`.
+- ~~Branch `dok2-mockup` sengaja dibiarkan di remote~~ — tidak berlaku lagi: branch itu digabung lewat PR #41 dan sudah tidak ada di remote (7 Oktober 2026).
 - Branch lama `happy-gates` yang dihapus tanpa digabung berisi satu perbaikan yang **belum ada** di `main`: tombol "Kenali" di peta yang diketuk sebelum `game/map.js` siap (±0,8 detik setelah dimuat, terlihat di 844×390) hanya mengubah hash `#kenal-{code}`, sedangkan `html.js` menyembunyikan overlay `:target`, sehingga overlay tidak terbuka. Usulan perbaikannya: saat modul siap, hash `#kenal-{code}[-n]` yang sudah ada membuka overlay di slide n lalu hash dibersihkan (`history.replaceState`), tanpa memutar narasi otomatis; narasi peta tidak dimulai bila overlay Kenali terbuka. Kerjakan ulang bila masih terjadi (setelah tata letak 16:9 Dok 3).
 
 ---
@@ -394,7 +395,7 @@ Lingkungan: MariaDB 10.11 lokal di container, `php spark serve`, dan Chromium Pl
 
 ## Pembersihan — instalasi baru tanpa kompatibilitas lama
 
-Dikerjakan di branch `dok2-mockup` (dari `main` sesudah PR #38), atas permintaan pemilik (6 Oktober 2026). GELITA belum pernah berjalan di server mana pun, jadi semua jalur pembaruan server lama, data lama, seeder lama, dan workbook lama dibuang. Admin hanya melakukan **instalasi baru**.
+Dikerjakan di branch `dok2-mockup` (dari `main` sesudah PR #38), atas permintaan pemilik (6 Oktober 2026); digabung lewat PR #41. GELITA belum pernah berjalan di server mana pun, jadi semua jalur pembaruan server lama, data lama, seeder lama, dan workbook lama dibuang. Admin hanya melakukan **instalasi baru**.
 
 ### Yang berubah
 
@@ -473,3 +474,69 @@ Dikerjakan di branch `dok2-mockup` (dari `main` sesudah PR #38), atas permintaan
   - instalasi baru dari database kosong: `migrate` (29 migration), lalu `GELITA_ADMIN_PASSWORD=… php spark db:seed DatabaseSeeder` → 12 tantangan, 126 soal, 88 baris dialog, 30 halaman Pustaka + 48 media, 45 gambar contoh; `gelita:content:verify` 0 galat;
   - `gelita:reset --ya --bank=docs/bank-soal/gelita-bank-soal-kelas5.xlsx` → bank diimpor, 45 gambar contoh sudah ada, kode siswa berikutnya `GLT-000001`;
   - `gelita:bank:import … --dry-run`: dengan kode lama berhenti dengan `Undefined array key "options"`, dengan kode baru menampilkan ringkasan per tantangan.
+
+---
+
+## Perbaikan sebelum Dok 3 — temuan tinjauan Dok 2
+
+Dikerjakan di branch sementara dari `main` (7 Oktober 2026), menanggapi tinjauan sesudah Dok 2. Tinjauan itu tidak menggagalkan kriteria selesai Dok 2 §13.3. Semua temuan di bawah diperiksa ulang di kode sebelum diperbaiki, dan uji barunya gagal pada kode lama.
+
+### Yang diperbaiki
+
+1. **Batas 3 kesempatan bisa terlewati oleh dua permintaan bersamaan** (dua tab, atau kiriman ulang saat Wi-Fi lambat). `submitCheck()` membaca pengerjaan tanpa kunci lalu menulis `check_count = lama + 1`.
+   - Akibatnya, di MySQL permintaan kedua menunggu kunci baris yang pertama lalu tetap jalan. Hasilnya `item_tries.try_no = 4`, dan pada cek ke-3 pengerjaan ditutup dua kali (`challenge_checked`/`challenge_completed` ganda).
+   - **Perbaikan:** penguncian optimistis dengan UPDATE bersyarat (`ChallengeService::updateIf()`), sehingga tanpa `SELECT … FOR UPDATE` dan sama di MySQL maupun SQLite:
+     - `check_count` hanya naik bila masih bernilai lama dan status masih `in_progress`;
+     - `closeAttempt()` hanya mengubah `in_progress → completed`;
+     - `abandonAttempt()` hanya mengubah `in_progress → abandoned`, jadi tombol Keluar di tab lama tidak menimpa pengerjaan yang sudah selesai.
+   - **Cari Objek** punya celah yang sama: pemeriksaan `CLUE_CLOSED` berada di luar transaction, sehingga ketukan kedua dulu bisa berakhir di galat kunci unik `item_tries` (500). Kini baris `item_responses` hanya diubah bila `try_count` masih sama (dipakai `registerWrongClick()` dan `applyAnswer()`). `applyAnswer()` menulis baris jawaban **sebelum** `item_tries`, agar yang kalah gagal di UPDATE bersyarat, bukan di kunci unik.
+   - **Permintaan yang kalah dibatalkan seluruhnya.** Jawabannya dibaca sesudah rollback, di luar transaction, agar tidak memakai snapshot lama:
+     - pengerjaan sudah ditutup → `redirect` ke layar hasil;
+     - petunjuk sudah tertutup → `CLUE_CLOSED`;
+     - kesempatan batch habis → `TRIES_EXHAUSTED`;
+     - selain itu kode baru **`ATTEMPT_CHANGED`** (409, `Game.errAttemptChanged`).
+   - **Menyimpang dari usulan tinjauan.** Tinjauan mengusulkan `TRIES_EXHAUSTED` untuk semua kasus kalah. Kode itu tidak dipakai bila kesempatan sebenarnya masih ada, misalnya dua cek ke-1 bersamaan, karena maknanya keliru untuk data dan log. Bagi klien perilakunya sama: ke `redirect` bila ada, selain itu muat ulang.
+   - **Di luar cakupan:** kiriman ulang *berurutan* (respons pertama hilang, siswa menekan lagi) tetap dihitung sebagai cek baru. Itu memang dua tekan tombol, jadi data tidak rusak, hanya penanda kesempatan di layar yang sempat tertinggal. Bila perlu, klien bisa mengirim nomor cek yang diharapkan dan server menolak yang tidak cocok.
+2. **Cari Objek salah menandai petunjuk.** Bila siswa melompat lewat daftar sisa saat ketukan masih menunggu server, hasilnya dicatat ke petunjuk yang baru dipilih. Kini `pick()` memegang indeks petunjuk saat diketuk, dan tombol lompat diabaikan selama `busy` (`engines/cari.js`).
+3. **Jawaban berubah selama "Cek jawabanku" diproses.** Selama `/check` berjalan isian dibekukan:
+   - Susun Gambar: tukar keping, seret, dan lepas diabaikan;
+   - Isi Rumpang: ketuk kotak dan chip kata diabaikan;
+   - Benar atau Salah: radio yang aktif dinonaktifkan sementara, karena tombol panah juga mengubah radio.
+
+   Waktu isian (`first_input_ms`/`last_input_ms`) kini diambil dari peta sebelum request. Bila request gagal, waktunya dikembalikan (`first` lama, `last` terbaru), sehingga isian selama request tidak hilang (`challenge.js` `check()`).
+4. **Bintang salah bila soal dinonaktifkan di tengah pengerjaan.** `ItemResponseModel::countCorrect()` kini menyaring `ci.is_active = 1`, sama dengan penilaian (`expectedItems()`). Pengerjaan `solved` tidak lagi bernilai ★, dan `scorable_items` hanya menghitung soal yang masih dinilai.
+   - **Pengerjaan tuntas yang belum ditutup.** Contohnya petunjuk Cari Objek terakhir yang belum ditemukan lalu dinonaktifkan: dulu setiap ketukan dijawab `CLUE_CLOSED` dan halaman dimuat ulang terus. Kini `openNode()` menutup pengerjaan seperti itu (`closingReason()`). Hasilnya `payload = null` + `redirect`: `ChallengeController::play()` mengalihkan ke layar hasil, dan `POST /api/nodes/{id}/attempts` membalas `{completed, attempt_id, redirect}`.
+   - **Hanya benda jebakan tersisa.** Pengerjaan yang tinggal berisi benda jebakan (semua petunjuk dinonaktifkan) diperlakukan seperti isi tantangan berubah: ditinggalkan `content_changed`, lalu pengerjaan baru dibuka. Ia tidak ditutup dengan 0 soal dinilai, karena itu akan bernilai ★★★.
+5. **Event `challenge_abandoned` palsu.** `ruleError()` kini menyetel `state.leaving` sebelum setiap muat ulang. Ini mencakup `TRIES_EXHAUSTED` tanpa `redirect`, `ATTEMPT_CHANGED`, `CLUE_CLOSED`, dan `ATTEMPT_CLOSED`, yang dulu jatuh ke `handleApiError()` lalu memuat ulang tanpa penanda.
+6. **Teks:** EN `perEngine` = "Success on First Try by challenge type" (sesuai tabel §12.1).
+
+### Keputusan
+
+- **Tombol modal ketukan salah Cari Objek tetap "Coba lagi"** (*Try again*), bukan **Perbaiki**. §5.3 meminta Perbaiki untuk modal "Belum semuanya tepat" engine batch, dan di sana memang ada jawaban yang diperbaiki. Pada Cari Objek siswa mengetuk benda lain, jadi "Coba lagi" lebih tepat. Modal batch tetap memakai Perbaiki (`fixAnswers`).
+- **Uji `TryLimitTest::testCorrectItemsAreLocked`** dulu memulihkan pengerjaan `solved` ke `in_progress` untuk memeriksa payload muat ulang. Kini pengerjaan seperti itu langsung ditutup saat dibuka (butir 4), jadi pemeriksaan payload dipindah ke sesudah cek ke-1, saat pengerjaan memang masih berjalan.
+
+### Untuk sesi Dok 3 (temuan tinjauan yang sudah diperiksa, belum diubah)
+
+- **Gambar pernyataan Benar atau Salah** tidak bisa diperbesar dan terpotong `object-fit: cover; max-height: 160px` (`boleh.php` `.card-image`, `game.css`). §6.3 Dok 2 memintanya, dan Dok 3 §5 merincinya (kartu 192 × 144, lightbox 640 × 480).
+- **Aksesibilitas:**
+  - modal `aria-describedby="modal-text"` hanya menunjuk paragraf pertama, sehingga "Kesempatanmu tinggal n lagi" tidak terbaca pembaca layar;
+  - keping puzzle yang salah (`.is-misplaced`) hanya ditandai visual, tanpa perubahan `aria-label`.
+- **Tampilan:**
+  - hitungan ✓/✗ Susun Gambar tidak dipulihkan saat dimuat ulang (rumpang dan boleh memulihkannya dari `state.locked`);
+  - bentuk jamak EN "1 blanks" / "1 cards" (`Js.blankEmptyText`, `Js.cardsEmptyText`; juga `puzzleWrongText` "1 pieces").
+
+### Pengujian
+
+- Uji baru di `TryLimitTest`:
+  - cek ganda ditolak tanpa tulisan;
+  - cek ke-3 ganda menutup sekali tanpa `try_no` 4;
+  - cek ganda sesudah `solved` menunjuk layar hasil;
+  - ketukan Cari Objek bersamaan → `ATTEMPT_CHANGED`/`CLUE_CLOSED`;
+  - soal nonaktif tidak ikut bintang;
+  - petunjuk terakhir nonaktif ditutup saat dibuka;
+  - Keluar tidak menimpa pengerjaan selesai.
+
+  Ketujuhnya gagal pada kode sebelum perbaikan.
+- `vendor/bin/phpunit --no-coverage`: **451 test hijau** (444 + 7 baru).
+- Klien JS diperiksa dengan `node --check`. Belum diuji di peramban.
+

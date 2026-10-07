@@ -472,7 +472,7 @@ Setiap engine mengekspor `mount(ctx)`. `ctx` berisi:
 | `tally({ correct, wrong, addCorrect, addWrong })` | angka ✓/✗ di bar (`#count-correct`, `#count-wrong`), selalu dari respons server |
 | `setBusy(button, busy)` | nonaktifkan tombol selama request (`aria-busy`) |
 | `networkPause(button)` | galat jaringan: toast `errNetworkRetry`, tombol istirahat 3 detik |
-| `report(error, options)` | galat aturan (`TRIES_EXHAUSTED`, `CLUE_CLOSED`) lalu `handleApiError()` dengan `mapUrl` = peta wilayah |
+| `report(error, options)` | galat aturan (`TRIES_EXHAUSTED`, `ATTEMPT_CHANGED`, `CLUE_CLOSED`, `ATTEMPT_CLOSED`) lalu `handleApiError()` dengan `mapUrl` = peta wilayah |
 | `currentItemId()` | ditimpa engine: soal yang sedang dikerjakan (untuk petunjuk soal) |
 | `t` | `t()` dari `core/config.js` |
 
@@ -505,7 +505,7 @@ Bila pengerjaan tertutup di respons itu: `completed: true`, `completion_reason` 
 3. `completed` + `tries_exhausted` → bunyi `wrong`, `beforeExhausted()` bila ada, modal `triesExhaustedTitle` + `exhaustedText` dengan satu tombol Lanjut → `finish()`. Kunci jawaban tidak ditampilkan.
 4. Selain itu → modal "belum tepat" berisi `partialText` + `triesText(tries_left)` dengan tombol `fixAnswers` (Perbaiki) → `'fix'`.
 
-**Galat aturan dari server** (mis. tab lain sudah memakai kesempatan terakhir): `TRIES_EXHAUSTED` (409) → pindah ke `redirect` di payload galat, atau muat ulang; `CLUE_CLOSED` (409) → muat ulang agar tampilan mengikuti payload. `INCOMPLETE` (422) tidak terjadi dalam pemakaian biasa karena engine menolak kotak/kartu kosong sebelum mengirim.
+**Galat aturan dari server** (mis. tab lain sudah memakai kesempatan terakhir): `TRIES_EXHAUSTED` dan `ATTEMPT_CHANGED` (409, tab lain atau kiriman ulang lebih dulu mengubah pengerjaan) → pindah ke `redirect` di payload galat, atau muat ulang; `CLUE_CLOSED` dan `ATTEMPT_CLOSED` (409) → muat ulang agar tampilan mengikuti payload. Muat ulang ini menyetel `state.leaving`, jadi tidak mengirim `challenge_abandoned`. Selama `/check` berjalan, isian engine batch dibekukan, dan di Cari Objek tombol lompat petunjuk diabaikan selama ketukan menunggu server. `INCOMPLETE` (422) tidak terjadi dalam pemakaian biasa karena engine menolak kotak/kartu kosong sebelum mengirim.
 
 **`POST /complete` hanya cadangan.** Dipanggil `finish()` bila respons `completed` datang tanpa `redirect`. Endpoint ini idempoten (pengerjaan selesai dibalas hasil dan `redirect` yang sama) dan menolak pengerjaan yang masih punya kesempatan dengan `TRIES_REMAINING` (klien menampilkan toast `itemsPending`).
 

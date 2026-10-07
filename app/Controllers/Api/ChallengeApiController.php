@@ -47,6 +47,11 @@ class ChallengeApiController extends BaseApiController
 
         $opened = service('challengeService')->openNode($session, $nodeId);
 
+        // Pengerjaan lama ternyata sudah tuntas dan baru saja ditutup
+        if (isset($opened['redirect'])) {
+            return $this->ok(['completed' => true, 'attempt_id' => $opened['attempt']->id, 'redirect' => $opened['redirect']]);
+        }
+
         return $this->ok($opened['payload']);
     }
 
@@ -276,6 +281,7 @@ class ChallengeApiController extends BaseApiController
             'TRIES_EXHAUSTED' => lang('Game.errTriesExhausted'),
             'CLUE_CLOSED'     => lang('Game.errClueClosed'),
             'TRIES_REMAINING' => lang('Game.errTriesRemaining'),
+            'ATTEMPT_CHANGED' => lang('Game.errAttemptChanged'),
             default           => $e->getMessage(),
         };
 

@@ -3,10 +3,13 @@
 use App\Entities\ChallengeAttempt;
 use App\Entities\ChallengeItem;
 use App\Entities\GameSession;
+use App\Entities\ItemResponse;
 use App\Exceptions\ChallengeRuleException;
 use App\Models\ChallengeAttemptModel;
 use App\Models\GameSessionModel;
+use App\Models\ItemResponseModel;
 use App\Services\ChallengeService;
+use CodeIgniter\Config\Factories;
 use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\HTTP\Method;
 use CodeIgniter\Test\CIUnitTestCase;
@@ -197,6 +200,13 @@ final class TryLimitTest extends CIUnitTestCase
         $first = $this->service->submitCheck($attempt, array_replace($wrong, array_intersect_key($right, array_flip(array_slice($ids, 0, 2)))));
         $this->assertSame(2, $first['correct_count']);
 
+        // Muat ulang: soal benar membawa jawabannya sendiri, soal lain hanya jumlah percobaan
+        $payload = $this->service->openNode($this->session(), $this->nodeId($this->conn, 'mgl-3'))['payload'];
+        $states  = array_column(array_map(static fn (array $i): array => ['id' => $i['id'], 'state' => $i['state']], $payload['items']), 'state', 'id');
+
+        $this->assertSame(['locked' => true, 'answer' => $right[$ids[0]], 'tries' => 1], $states[$ids[0]]);
+        $this->assertSame(['tries' => 1], $states[$ids[4]]);
+
         // Cek 2: soal terkunci tidak dikirim (tidak INCOMPLETE), satu dikirim salah tetap diabaikan
         $answers          = array_diff_key($right, array_flip(array_slice($ids, 0, 2)));
         $answers[$ids[0]] = $wrong[$ids[0]];
@@ -210,14 +220,6 @@ final class TryLimitTest extends CIUnitTestCase
         $this->assertSame($right[$ids[0]], json_decode((string) $responses[$ids[0]]['final_answer_json'], true), 'jawaban benar tidak tertimpa');
         $this->assertSame([2, 2, 0], [(int) $responses[$ids[4]]['try_count'], (int) $responses[$ids[4]]['solved_on_try'], (int) $responses[$ids[4]]['first_pass_correct']]);
         $this->assertCount(5 + 3, $this->tries($attempt->id), 'soal terkunci tidak menulis percobaan');
-
-        // Muat ulang: soal benar membawa jawabannya sendiri, soal lain hanya jumlah percobaan
-        $this->conn->table('challenge_attempts')->where('id', $attempt->id)->update(['status' => 'in_progress', 'completion_reason' => null]);
-        $payload = $this->service->openNode($this->session(), $this->nodeId($this->conn, 'mgl-3'))['payload'];
-        $states  = array_column(array_map(static fn (array $i): array => ['id' => $i['id'], 'state' => $i['state']], $payload['items']), 'state', 'id');
-
-        $this->assertSame(['locked' => true, 'answer' => $right[$ids[0]], 'tries' => 1], $states[$ids[0]]);
-        $this->assertSame(['locked' => true, 'answer' => $right[$ids[4]], 'tries' => 2], $states[$ids[4]]);
     }
 
     /** Soal yang belum benar wajib diisi: cek ditolak INCOMPLETE tanpa memakai kesempatan. */
@@ -363,7 +365,222 @@ final class TryLimitTest extends CIUnitTestCase
         $this->assertSame([true, 'tries_exhausted', site_url('selesai/' . $attempt->id)], [$data['completed'], $data['completion_reason'], $data['redirect']]);
     }
 
+    /**
+     * Dua cek bersamaan (tab kedua, atau kiriman ulang saat Wi-Fi lambat)
+     * membawa check_count yang sama: hanya yang pertama berlaku, yang kedua
+     * ditolak tanpa menulis apa pun.
+     */
+    public function testDuplicateCheckIsRejectedWithoutWrites(): void
+    {
+        $attempt = $this->open('tmg-2');
+        $items   = $this->expected($attempt);
+        $stale   = $this->reload($attempt);
+
+        $this->service->submitCheck($stale, $this->wrongAnswers($items));
+        $before = [$this->tries($attempt->id), $this->responses($attempt->id), $this->conn->table('game_event_logs')->countAllResults()];
+
+        try {
+            $this->service->submitCheck($stale, $this->wrongAnswers($items));
+            $this->fail('Cek ganda seharusnya ditolak.');
+        } catch (ChallengeRuleException $e) {
+            $this->assertSame(['ATTEMPT_CHANGED', 409, []], [$e->errorCode, $e->status, $e->extra], 'masih berjalan: klien memuat ulang');
+        }
+
+        $this->assertSame($before, [$this->tries($attempt->id), $this->responses($attempt->id), $this->conn->table('game_event_logs')->countAllResults()]);
+        $this->assertSame(1, (int) $this->reload($attempt)->check_count);
+    }
+
+    /** Cek ke-3 ganda: tanpa try_no 4, pengerjaan ditutup dan dicatat sekali. */
+    public function testDuplicateThirdCheckClosesOnce(): void
+    {
+        $attempt = $this->open('wnb-1');
+        $items   = $this->expected($attempt);
+
+        foreach ([1, 2] as $check) {
+            $this->service->submitCheck($this->reload($attempt), $this->wrongAnswers($items));
+        }
+
+        $stale = $this->reload($attempt);
+        $this->assertTrue($this->service->submitCheck($stale, $this->wrongAnswers($items))['completed']);
+
+        try {
+            $this->service->submitCheck($stale, $this->rightAnswers($items));
+            $this->fail('Cek ke-3 ganda seharusnya ditolak.');
+        } catch (ChallengeRuleException $e) {
+            $this->assertSame(['TRIES_EXHAUSTED', site_url('selesai/' . $attempt->id)], [$e->errorCode, $e->extra['redirect'] ?? null]);
+        }
+
+        $this->assertSame(3, max(array_map('intval', array_column($this->tries($attempt->id), 'try_no'))));
+        $this->assertCount(3, $this->events('challenge_checked'));
+        $this->assertCount(1, $this->events('challenge_tries_exhausted'));
+        $this->assertCount(1, $this->events('challenge_completed'));
+        $this->assertSame([3, 1], [(int) $this->reload($attempt)->check_count, (int) $this->reload($attempt)->stars]);
+    }
+
+    /** Cek ganda sesudah pengerjaan selesai benar: diarahkan ke layar hasil, bukan memuat ulang tantangan. */
+    public function testDuplicateSolvingCheckPointsToTheResult(): void
+    {
+        $attempt = $this->open('mgl-1');
+        $items   = $this->expected($attempt);
+        $stale   = $this->reload($attempt);
+
+        $this->assertSame('solved', $this->service->submitCheck($stale, $this->rightAnswers($items))['completion_reason']);
+
+        try {
+            $this->service->submitCheck($stale, $this->rightAnswers($items));
+            $this->fail('Cek ganda seharusnya ditolak.');
+        } catch (ChallengeRuleException $e) {
+            $this->assertSame(['ATTEMPT_CHANGED', site_url('selesai/' . $attempt->id)], [$e->errorCode, $e->extra['redirect'] ?? null]);
+        }
+
+        $this->assertCount(1, $this->events('challenge_completed'));
+        $this->assertSame([1, 3], [(int) $this->reload($attempt)->check_count, (int) $this->reload($attempt)->stars]);
+    }
+
+    /**
+     * Dua ketukan Cari Objek bersamaan: yang kedua membaca baris jawaban
+     * sebelum yang pertama tersimpan. Ditolak 409, bukan galat kunci unik
+     * item_tries (500), dan tidak menulis percobaan ganda.
+     */
+    public function testConcurrentHuntTapIsRejected(): void
+    {
+        $attempt = $this->open('tmg-4');
+        [$t1, $t2] = array_keys($this->expected($attempt));
+        $decoy     = $this->decoys($attempt)[0];
+
+        // Ketukan salah yang belum menutup petunjuk → ATTEMPT_CHANGED
+        $stale = $this->staleResponses($attempt->id, $t1);
+        $this->tap($attempt, $t1, $decoy);
+        Factories::injectMock('models', ItemResponseModel::class, $stale);
+
+        try {
+            $this->tap($attempt, $t1, $t1);
+            $this->fail('Ketukan bersamaan seharusnya ditolak.');
+        } catch (ChallengeRuleException $e) {
+            $this->assertSame(['ATTEMPT_CHANGED', 409], [$e->errorCode, $e->status]);
+        }
+
+        Factories::reset('models');
+        $this->assertSame([1], array_map('intval', array_column($this->tries($attempt->id), 'try_no')));
+
+        // Ketukan yang sudah menutup petunjuk → CLUE_CLOSED
+        $stale = $this->staleResponses($attempt->id, $t2);
+        $this->assertTrue($this->tap($attempt, $t2, $t2)['correct']);
+        Factories::injectMock('models', ItemResponseModel::class, $stale);
+
+        try {
+            $this->tap($attempt, $t2, $decoy);
+            $this->fail('Ketukan pada petunjuk yang baru tertutup seharusnya ditolak.');
+        } catch (ChallengeRuleException $e) {
+            $this->assertSame('CLUE_CLOSED', $e->errorCode);
+        }
+
+        Factories::reset('models');
+        $this->assertSame(['answered', 1, 1], [$this->responses($attempt->id)[$t2]['status'], (int) $this->responses($attempt->id)[$t2]['is_correct'], (int) $this->responses($attempt->id)[$t2]['try_count']]);
+        $this->assertCount(2, $this->tries($attempt->id));
+    }
+
+    /**
+     * Soal yang belum benar dinonaktifkan admin di tengah pengerjaan: sisa
+     * soalnya sudah benar semua, jadi pengerjaan ditutup saat dibuka lagi,
+     * dan bintangnya hanya menghitung soal yang masih dinilai.
+     */
+    public function testDeactivatedItemIsLeftOutOfStars(): void
+    {
+        $attempt = $this->open('mgl-3');
+        $items   = $this->expected($attempt);
+        $ids     = array_keys($items);
+
+        $this->service->submitCheck($attempt, array_replace($this->rightAnswers($items), [$ids[4] => $this->wrongAnswers($items)[$ids[4]]]));
+        $this->deactivate($ids[4]);
+
+        $opened = $this->service->openNode($this->session(), $this->nodeId($this->conn, 'mgl-3'));
+
+        $this->assertSame([null, site_url('selesai/' . $attempt->id)], [$opened['payload'], $opened['redirect'] ?? null]);
+        $row = $this->reload($attempt);
+        $this->assertSame(['completed', 'solved', 3, 4, 4, 4], [
+            $row->status, $row->completion_reason, (int) $row->stars, (int) $row->first_pass_correct, (int) $row->final_correct, (int) $row->scorable_items,
+        ]);
+        $this->assertCount(1, $this->events('challenge_completed'));
+    }
+
+    /**
+     * Cari Objek: petunjuk terakhir yang belum ditemukan dinonaktifkan. Dulu
+     * setiap ketukan dijawab CLUE_CLOSED dan halaman dimuat ulang terus;
+     * kini pengerjaan ditutup saat dibuka dan pemain menuju layar hasil.
+     */
+    public function testHuntWithDeactivatedLastClueIsClosedOnOpen(): void
+    {
+        $attempt = $this->open('wnb-4');
+        $targets = array_keys($this->expected($attempt));
+
+        foreach (array_slice($targets, 0, 3) as $target) {
+            $this->assertFalse($this->tap($attempt, $target, $target)['completed']);
+        }
+
+        $this->deactivate($targets[3]);
+
+        $opened = $this->service->openNode($this->session(), $this->nodeId($this->conn, 'wnb-4'));
+
+        $this->assertSame(site_url('selesai/' . $attempt->id), $opened['redirect'] ?? null);
+        $this->assertSame(['completed', 'solved', 3], [$this->reload($attempt)->status, $this->reload($attempt)->completion_reason, (int) $this->reload($attempt)->stars]);
+
+        // Dibuka lagi sesudahnya: pengerjaan baru, bukan pengalihan berulang
+        $again = $this->service->openNode($this->session(), $this->nodeId($this->conn, 'wnb-4'));
+        $this->assertArrayNotHasKey('redirect', $again);
+        $this->assertNotSame($attempt->id, $again['attempt']->id);
+    }
+
+    /** Keluar dari tab lama sesudah pengerjaan ditutup tab lain: tetap `completed`, tanpa event ditinggalkan. */
+    public function testAbandonDoesNotOverrideACompletedAttempt(): void
+    {
+        $attempt = $this->open('wnb-2');
+        $stale   = $this->reload($attempt);
+
+        $this->service->submitCheck($this->reload($attempt), $this->rightAnswers($this->expected($attempt)));
+        $this->service->abandonAttempt($stale);
+
+        $this->assertSame('completed', $this->reload($attempt)->status);
+        $this->assertSame([], $this->events('challenge_abandoned'));
+    }
+
     // ------------------------------------------------------------ bantu
+
+    /**
+     * ItemResponseModel yang dua kali pertama mengembalikan baris jawaban
+     * $itemId seperti saat ini (sebelum ketukan berikutnya tersimpan):
+     * pembacaan di submitAnswer() dan di registerWrongClick()/applyAnswer().
+     */
+    private function staleResponses(int $attemptId, int $itemId): ItemResponseModel
+    {
+        $model = new class () extends ItemResponseModel {
+            public ?ItemResponse $stale = null;
+            public int $reads           = 2;
+
+            public function findOne(int $attemptId, int $itemId): ?ItemResponse
+            {
+                if ($this->stale !== null && $this->reads > 0 && $this->stale->challenge_item_id === $itemId) {
+                    $this->reads--;
+
+                    return clone $this->stale;
+                }
+
+                return parent::findOne($attemptId, $itemId);
+            }
+        };
+        $model->stale = $model->findOne($attemptId, $itemId);
+
+        return $model;
+    }
+
+    private function deactivate(int $itemId): void
+    {
+        $this->conn->table('challenge_items')->where('id', $itemId)->update(['is_active' => 0]);
+        // MockCache menyimpan kunci tanpa prefix, jadi flush() cukup dibantu clean()
+        service('contentRepository')->flush();
+        service('cache')->clean();
+    }
+
 
     private function session(): GameSession
     {
