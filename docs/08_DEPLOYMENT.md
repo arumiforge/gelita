@@ -781,8 +781,9 @@ Yang dilakukan `gelita:reset`:
 - `--pemeliharaan` memasang `writable/pemeliharaan.flag` selama reset (situs 503) dan melepasnya lagi.
 - Reset menolak berjalan bila ada sesi bermain aktif dalam 10 menit terakhir (`--paksa` untuk mengabaikannya), bila migration belum lengkap, atau bila akun database tidak punya hak `TRUNCATE` ("Jalankan reset dengan akun migrasi"). Penolakan terjadi sebelum ada tabel yang dikosongkan.
 - Gambar contoh yang hilang dibuat ulang (kecuali `--tanpa-mockup`); gambar asli dipertahankan.
+- Rekaman petunjuk Cari Objek yang sudah terdaftar ditautkan lagi ke butir soal yang baru diimpor, dengan status persetujuan tetap. `gelita:narration:import` tidak perlu diulang sesudah reset.
 - Opsi lain: `--tanpa-bank` (12 tantangan tanpa soal), `--bank=JALUR` (workbook lain), `--hapus-guru` (hapus semua akun guru; akun admin selalu tetap).
-- Ringkasan akhir harus berbunyi "Bank soal kelas 5: 126 soal (108 dinilai + 18 pengecoh), 30 variasi, …", "Verifikasi konten: 0 galat", dan "Kode siswa berikutnya: GLT-000001".
+- Ringkasan akhir harus berbunyi "Bank soal kelas 5: 126 soal (108 dinilai + 18 pengecoh), 30 variasi, 9 bacaan, 24 tautan rekaman petunjuk" (0 tautan bila narasi belum diimpor), "Verifikasi konten: 0 galat", dan "Kode siswa berikutnya: GLT-000001".
 
 `gelita:content:verify --siap-penelitian` harus berakhir "Konten lengkap: 3 wilayah × 4 tantangan, tanpa temuan; siap untuk penelitian." Selama masih ada gambar contoh yang dipakai tantangan, perintah ini keluar dengan kode 1 dan "Belum siap untuk pengambilan data penelitian." Reset aman diulang, tetapi setiap kali diulang data siswa ikut hilang: jalankan hanya sebelum pengambilan data dimulai.
 

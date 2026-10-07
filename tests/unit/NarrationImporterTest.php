@@ -219,6 +219,35 @@ final class NarrationImporterTest extends CIUnitTestCase
         $this->assertSame('draft', $this->audioByKey('audio.narasi.en.petunjuk-tmg-4-01')['approval_status'], 'bahasa lain tidak ikut');
     }
 
+    public function testRelinkCluesRestoresLinksAfterItemsAreRebuilt(): void
+    {
+        $this->seedHuntNode($this->sqlite);
+        $this->folderFile('id', 'petunjuk-tmg-4-01.wav', 1);
+        $this->folderFile('en', 'petunjuk-tmg-4-01.wav', 2);
+        $this->folderFile('id', 'petunjuk-tmg-4-02.wav', 3);
+
+        $importer = $this->importer();
+        $importer->importFolder('id');
+        $importer->importFolder('en');
+        (new NarrationCatalog($this->sqlite, $importer))->approveDrafts('id', 5);
+
+        // gelita:reset membangun ulang butir dari workbook: kolom audio kosong
+        $this->sqlite->table('challenge_items')->update(['audio_prompt_id' => null, 'audio_prompt_en_id' => null]);
+
+        $this->assertSame(3, $this->importer()->relinkClues());
+        $this->assertSame(0, $this->importer()->relinkClues(), 'sudah tertaut');
+
+        $first  = $this->sqlite->table('challenge_items')->where('item_key', 'tmg-4-a01')->get()->getRowArray();
+        $second = $this->sqlite->table('challenge_items')->where('item_key', 'tmg-4-a02')->get()->getRowArray();
+
+        $this->assertSame((int) $this->audioByKey('audio.narasi.id.petunjuk-tmg-4-01')['id'], (int) $first['audio_prompt_id']);
+        $this->assertSame((int) $this->audioByKey('audio.narasi.en.petunjuk-tmg-4-01')['id'], (int) $first['audio_prompt_en_id']);
+        $this->assertSame((int) $this->audioByKey('audio.narasi.id.petunjuk-tmg-4-02')['id'], (int) $second['audio_prompt_id']);
+        $this->assertNull($second['audio_prompt_en_id'], 'tanpa rekaman tetap kosong');
+        $this->assertSame('approved', $this->audioByKey('audio.narasi.id.petunjuk-tmg-4-01')['approval_status']);
+        $this->assertSame(0, $this->sqlite->table('dialogues')->where('audio_id_asset_id IS NOT NULL')->countAllResults(), 'baris naskah tidak tersentuh');
+    }
+
     public function testCatalogListsCluesAsTheirOwnGroup(): void
     {
         $this->seedHuntNode($this->sqlite);

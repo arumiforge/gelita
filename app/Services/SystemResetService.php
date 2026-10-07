@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Database\Seeds\ContentSeeder;
 use App\Libraries\ContentVerifier;
 use App\Libraries\MockupGenerator;
+use App\Libraries\NarrationImporter;
 use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\Database\Exceptions\DatabaseException;
 use Config\Database;
@@ -356,21 +357,23 @@ class SystemResetService
             ));
         }
 
-        $items = $this->db->table('challenge_items')->where('is_active', 1);
+        // Butir soal dibangun ulang: tautan rekaman petunjuk Cari Objek yang sudah terdaftar dipasang lagi
+        $clueAudio = $result['ok'] ? (new NarrationImporter($this->db))->relinkClues() : 0;
 
         return [
-            'status'   => $result['ok'] ? 'imported' : 'failed',
-            'path'     => $path,
-            'sha256'   => hash_file('sha256', $path) ?: null,
-            'written'  => $result['written'],
-            'errors'   => count($result['errors']),
-            'items'    => $items->countAllResults(),
-            'scorable' => $this->db->table('challenge_items')->where('is_active', 1)->where('scorable', 1)->countAllResults(),
-            'variants' => (int) array_sum(array_map(
+            'status'     => $result['ok'] ? 'imported' : 'failed',
+            'path'       => $path,
+            'sha256'     => hash_file('sha256', $path) ?: null,
+            'written'    => $result['written'],
+            'errors'     => count($result['errors']),
+            'items'      => $this->db->table('challenge_items')->where('is_active', 1)->countAllResults(),
+            'scorable'   => $this->db->table('challenge_items')->where('is_active', 1)->where('scorable', 1)->countAllResults(),
+            'variants'   => (int) array_sum(array_map(
                 static fn (array $row): int => count((array) (json_decode((string) $row['config_json'], true)['variants'] ?? [])),
                 $this->db->table('challenge_nodes')->select('config_json')->where('is_active', 1)->get()->getResultArray(),
             )),
-            'passages' => $this->db->table('reading_passages')->where('is_active', 1)->countAllResults(),
+            'passages'   => $this->db->table('reading_passages')->where('is_active', 1)->countAllResults(),
+            'clue_audio' => $clueAudio,
         ];
     }
 

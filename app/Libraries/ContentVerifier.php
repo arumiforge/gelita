@@ -81,7 +81,7 @@ class ContentVerifier
                 }
 
                 foreach (['background_media_id' => 'latar', 'scene_media_id' => 'adegan'] as $column => $label) {
-                    $findings = [...$findings, ...$this->mediaFindings($node->{$column}, $nodeScope, "Gambar {$label} tantangan")];
+                    $findings = [...$findings, ...$this->mediaFindings($node->{$column}, $nodeScope, "Gambar {$label} tantangan", $column === 'scene_media_id')];
                 }
 
                 foreach ($bank as $item) {
@@ -104,7 +104,7 @@ class ContentVerifier
                         $findings[] = $this->finding('warning', $itemScope, 'Fakta di soal ini masih ditandai "perlu dicek".');
                     }
 
-                    $findings = [...$findings, ...$this->mediaFindings($item->media_asset_id, $itemScope, 'Gambar soal')];
+                    $findings = [...$findings, ...$this->mediaFindings($item->media_asset_id, $itemScope, 'Gambar soal', true)];
 
                     // Kunci susun gambar dan benar/salah memang sama di banyak soal
                     $signature = $item->interaction_type === 'fill_blank_bank' ? $this->answerSignature($item) : null;
@@ -230,10 +230,12 @@ class ContentVerifier
     /**
      * Media yang dirujuk tetapi nonaktif/tidak terdaftar, atau berkasnya tidak
      * ada di disk. Peringatan, bukan galat: view punya tampilan pengganti.
+     * `$mockupSlot` = slot yang diisi `gelita:mockups` (adegan dan gambar
+     * soal, MockupGenerator); slot lain hanya dapat diunggah di panel.
      *
      * @return list<array{level: string, scope: string, message: string}>
      */
-    private function mediaFindings(?int $mediaId, string $scope, string $label): array
+    private function mediaFindings(?int $mediaId, string $scope, string $label, bool $mockupSlot = false): array
     {
         if ($mediaId === null || $mediaId <= 0) {
             return [];
@@ -242,7 +244,9 @@ class ContentVerifier
         $path = service('contentRepository')->mediaMap()[$mediaId] ?? null;
 
         if ($path === null) {
-            return [$this->finding('warning', $scope, "{$label} belum diunggah; permainan memakai tampilan pengganti. Jalankan php spark gelita:mockups untuk memasang gambar contoh.")];
+            return [$this->finding('warning', $scope, "{$label} belum diunggah; permainan memakai tampilan pengganti. " . ($mockupSlot
+                ? 'Jalankan php spark gelita:mockups untuk memasang gambar contoh, atau unggah di menu Gambar & suara.'
+                : 'Unggah di menu Gambar & suara.'))];
         }
 
         if (! is_file(FCPATH . ltrim($path, '/'))) {

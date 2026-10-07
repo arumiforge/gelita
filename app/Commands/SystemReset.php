@@ -213,12 +213,13 @@ class SystemReset extends BaseCommand
         $bank = $result['bank'];
         CLI::write(match ($bank['status']) {
             'imported' => sprintf(
-                '✓ Bank soal kelas 5: %d soal (%d dinilai + %d pengecoh), %d variasi, %d bacaan',
+                '✓ Bank soal kelas 5: %d soal (%d dinilai + %d pengecoh), %d variasi, %d bacaan, %d tautan rekaman petunjuk',
                 $bank['items'],
                 $bank['scorable'],
                 $bank['items'] - $bank['scorable'],
                 $bank['variants'],
                 $bank['passages'],
+                $bank['clue_audio'],
             ),
             'failed' => 'Bank soal: impor gagal dari ' . $bank['path'],
             default  => 'Bank soal: ' . ($bank['message'] ?? $bank['status']),
