@@ -1,10 +1,10 @@
 <?php
 /**
- * Kepala panel pendaftaran: judul, stepper, ringkasan galat.
+ * Kepala panel pendaftaran (0–64 dp di dalam panel, Dok 3 §4): judul dan
+ * stepper. Ringkasan galat ada di awal isian bergulir (step-*.php).
  *
  * @var int                   $step
  * @var list<int>             $done
- * @var array<string, string> $errors
  */
 ?>
 <header class="register-head">
@@ -12,4 +12,3 @@
   <h1><?= esc(lang('Game.regStep' . $step)) ?></h1>
   <?= view('game/register/_stepper', ['step' => $step, 'done' => $done]) ?>
 </header>
-<?= view('partials/form-errors', ['errors' => $errors]) ?>

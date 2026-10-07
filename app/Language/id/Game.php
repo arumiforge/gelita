@@ -12,6 +12,7 @@ return [
     'previous'        => 'Sebelumnya',
     'home'            => 'Beranda',
     'sound'           => 'Suara',
+    'fullscreen'      => 'Layar penuh',
     'language'        => 'Bahasa',
     'logout'          => 'Keluar',
     'profile'         => 'Profil',

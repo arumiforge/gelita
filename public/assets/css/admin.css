@@ -5,6 +5,276 @@
    studi, ekspor, tata kelola, staf.
    ========================================================================== */
 
+/* =================== DARI tokens.css & layout.css (Dok 3 §2.4) ===================
+   Dok 3 memecah layout.css: kerangka game pindah ke stage.css, bagian admin dan
+   halaman masuk staf (layouts/auth.php) pindah ke sini APA ADANYA, tanpa desain
+   ulang (perombakan admin = Dok 3 §8). Token ukuran lama juga di sini, karena
+   tokens.css kini memakai ukuran panggung game (rem, Dok 3 §2.3). */
+:root {
+  --step--1: clamp(.82rem, .78rem + .2vw, .92rem);
+  --step-0: clamp(.95rem, .9rem + .25vw, 1.05rem);
+  --step-1: clamp(1.15rem, 1.05rem + .5vw, 1.4rem);
+  --step-2: clamp(1.5rem, 1.3rem + 1vw, 2.1rem);
+  --step-3: clamp(2rem, 1.6rem + 2vw, 3rem);
+  --step-4: clamp(2.8rem, 2rem + 5vw, 5.5rem);
+
+  --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
+  --sp-5: 24px; --sp-6: 32px; --sp-7: 48px;
+
+  --tap: 44px;
+  --hud-h: 72px; --nav-h: 76px; --sidebar-w: 248px;
+  --content-max: 1180px;
+
+  /* components.css/base.css (bersama game) memakai nama token game */
+  --fs-caption: var(--step--1); --fs-body: var(--step-0); --fs-reading: var(--step-0);
+  --fs-h3: var(--step-1); --fs-h2: var(--step-2); --fs-h1: var(--step-3); --fs-display: var(--step-4);
+}
+
+body.admin, body.auth { min-height: 100vh; min-height: 100dvh; }
+
+
+/* =========================== ADMIN =========================== */
+body.admin {
+  background: var(--navy-900);
+  font-size: var(--step-0);
+}
+
+.admin-head {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: grid;
+  grid-template-columns: var(--sidebar-w) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--sp-4);
+  min-height: 60px;
+  padding: 0 var(--sp-5) 0 0;
+  background: var(--navy-800);
+  border-bottom: 1px solid var(--line);
+}
+
+.admin-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  height: 100%;
+  padding: 0 var(--sp-5);
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  font-weight: 700;
+  letter-spacing: .1em;
+  color: var(--gold-500);
+  text-decoration: none;
+}
+.admin-logo { max-height: 36px; width: auto; }
+
+.admin-sub {
+  overflow: hidden;
+  color: var(--ink-dim);
+  font-size: var(--step--1);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.admin-sub b { color: var(--ink); }
+
+.admin-user { display: flex; align-items: center; gap: var(--sp-3); }
+.admin-user-name { display: grid; line-height: 1.2; text-align: right; }
+.admin-user-name small { color: var(--ink-dim); text-transform: capitalize; }
+
+.menu-toggle { display: none; }
+
+.admin-body {
+  display: grid;
+  grid-template-columns: var(--sidebar-w) minmax(0, 1fr);
+  min-height: calc(100vh - 60px);
+}
+
+/* ---------- Sidebar ---------- */
+.admin-sidebar {
+  position: sticky;
+  top: 60px;
+  align-self: start;
+  max-height: calc(100vh - 60px);
+  overflow-y: auto;
+  padding: var(--sp-4) 0 var(--sp-6);
+  background: var(--navy-800);
+  border-right: 1px solid var(--line-ink);
+}
+
+.admin-sidebar ul { margin: 0; padding: 0; list-style: none; }
+
+.menu-group {
+  margin: var(--sp-4) var(--sp-5) var(--sp-1);
+  color: var(--ink-dim);
+  font-size: var(--step--1);
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.menu-link {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  min-height: var(--tap);
+  padding: var(--sp-2) var(--sp-5);
+  border-left: 3px solid transparent;
+  color: var(--ink);
+  font-size: var(--step--1);
+  text-decoration: none;
+}
+.menu-link:hover { background: rgba(255, 255, 255, .05); color: var(--gold-300); }
+.menu-link.is-active {
+  border-left-color: var(--gold-500);
+  background: rgba(223, 192, 135, .1);
+  color: var(--gold-300);
+  font-weight: 700;
+}
+.menu-link .icon { flex: none; width: 20px; height: 20px; color: var(--gold-600); }
+.menu-sub .menu-link { padding-left: calc(var(--sp-5) + var(--sp-4)); }
+
+.menu-close { display: none; }
+
+/* ---------- Konten admin ----------
+   Lebar penuh kolom di samping sidebar: tabel dan form dwibahasa
+   memakai seluruh layar lebar. Paragraf panjang tetap dibatasi lebar
+   bacanya sendiri (.page-lead 70ch, .empty-state p 52ch). */
+.admin-main {
+  width: 100%;
+  min-width: 0;
+  padding: var(--sp-5) var(--sp-6) var(--sp-7);
+}
+
+/* =========================== AUTH =========================== */
+body.auth {
+  background:
+    radial-gradient(ellipse at 50% 10%, var(--navy-600), transparent 60%),
+    var(--navy-900);
+}
+
+.auth-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: .35;
+}
+
+.auth-shell {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: var(--sp-4);
+}
+
+.auth-panel { width: min(440px, 100%); }
+
+.auth-brand {
+  display: grid;
+  justify-items: center;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-5);
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-align: center;
+  color: var(--gold-500);
+}
+.auth-brand small {
+  font-family: var(--font-body);
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: .04em;
+  color: var(--ink-dim);
+}
+
+.auth-foot { margin-top: var(--sp-5); color: var(--ink-dim); font-size: var(--step--1); text-align: center; }
+
+/* ---------- Lapisan dialog & notifikasi (admin) ---------- */
+.modal-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: var(--sp-4);
+  background: var(--veil-strong);
+}
+
+.toast-layer {
+  position: fixed;
+  right: var(--sp-4);
+  bottom: var(--sp-4);
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  width: min(420px, calc(100vw - 2 * var(--sp-4)));
+  pointer-events: none;
+}
+.toast-layer > * { pointer-events: auto; }
+.confirm-box { width: min(340px, calc(100vw - 2 * var(--sp-4))); }
+
+/* Tablet & papan tulis: sidebar admin menyempit menjadi ikon */
+@media (max-width: 1024px) {
+  :root { --sidebar-w: 72px; }
+
+  .admin-brand { justify-content: center; padding: 0; }
+  .admin-brand-text { display: none; }
+
+  .menu-group { height: 1px; margin: var(--sp-3) var(--sp-3); overflow: hidden; background: var(--line-ink); color: transparent; }
+  .menu-link { justify-content: center; padding: var(--sp-2); }
+  .menu-sub .menu-link { padding-left: var(--sp-2); }
+  .menu-label {
+    position: absolute;
+    width: 1px; height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .admin-main { padding: var(--sp-5) var(--sp-5) var(--sp-7); }
+}
+
+/* Ponsel: sidebar admin menjadi drawer (:target, tanpa JS) */
+@media (max-width: 640px) {
+  .admin-head { grid-template-columns: auto minmax(0, 1fr) auto; gap: var(--sp-2); padding: var(--sp-2) var(--sp-3); }
+  .admin-brand { padding: 0 var(--sp-2); }
+  .admin-brand-text { display: inline; }
+  .admin-sub { display: none; }
+  .admin-user-name { display: none; }
+  .menu-toggle { display: inline-flex; }
+
+  .admin-body { grid-template-columns: minmax(0, 1fr); }
+
+  .admin-sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 40;
+    display: none;
+    width: min(300px, 85vw);
+    max-height: none;
+    box-shadow: var(--shadow-2);
+  }
+  .admin-sidebar:target { display: block; }
+
+  .menu-close { display: flex; justify-content: flex-end; padding: 0 var(--sp-4) var(--sp-3); }
+  .menu-group { height: auto; margin: var(--sp-4) var(--sp-5) var(--sp-1); background: none; color: var(--ink-dim); }
+  .menu-link { justify-content: flex-start; padding: var(--sp-2) var(--sp-5); }
+  .menu-sub .menu-link { padding-left: calc(var(--sp-5) + var(--sp-4)); }
+  .menu-label { position: static; width: auto; height: auto; overflow: visible; clip: auto; }
+
+  .admin-main { padding: var(--sp-4) var(--sp-4) var(--sp-7); }
+}
+
+/* =================== AKHIR BAGIAN PINDAHAN =================== */
+
 .admin-user .menu-toggle { display: none; }
 
 .admin-main > * + *,

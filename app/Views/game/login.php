@@ -19,8 +19,8 @@
 <?= $this->section('background') ?><?= media_key_src('bg.welcome') ?? '' ?><?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<section class="screen screen-narrow login">
-  <div class="panel-parchment">
+<section class="login">
+  <div class="panel-parchment login-panel stage-box stage-scroll">
     <header class="login-head">
       <?= component('character', ['character' => 'jaka', 'pose' => 'bow', 'class' => 'login-jaka']) ?>
       <div>

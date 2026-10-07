@@ -12,6 +12,7 @@ return [
     'previous'        => 'Previous',
     'home'            => 'Home',
     'sound'           => 'Sound',
+    'fullscreen'      => 'Full screen',
     'language'        => 'Language',
     'logout'          => 'Log out',
     'profile'         => 'Profile',

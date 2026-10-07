@@ -5,7 +5,7 @@ use CodeIgniter\Test\CIUnitTestCase;
 /**
  * Layar putar: perangkat sentuh yang dipegang tegak tidak dilayani.
  *
- * Penghalang ditampilkan CSS (layout.css) dan aksesibilitasnya dijaga
+ * Penghalang ditampilkan CSS (stage.css) dan aksesibilitasnya dijaga
  * JavaScript (game/rotate-gate.js) dengan media query yang ditulis dua kali;
  * bila keduanya berbeda, isi di belakang penghalang dapat terkunci `inert`
  * tanpa penghalang terlihat, atau sebaliknya.
@@ -18,7 +18,7 @@ final class RotateGateTest extends CIUnitTestCase
 
     public function testCssAndJavascriptUseTheSameMediaQuery(): void
     {
-        $css = (string) file_get_contents(FCPATH . 'assets/css/layout.css');
+        $css = (string) file_get_contents(FCPATH . 'assets/css/stage.css');
         $js  = (string) file_get_contents(FCPATH . 'assets/js/game/rotate-gate.js');
 
         $this->assertStringContainsString('@media ' . self::QUERY . ' {', $css);

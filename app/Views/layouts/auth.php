@@ -18,8 +18,8 @@ $logo       = media_key_src('ui.logo');
   <link rel="icon" href="<?= base_url('favicon.ico') ?>">
   <link rel="stylesheet" href="<?= asset_url_versioned('css/tokens.css') ?>">
   <link rel="stylesheet" href="<?= asset_url_versioned('css/base.css') ?>">
-  <link rel="stylesheet" href="<?= asset_url_versioned('css/layout.css') ?>">
   <link rel="stylesheet" href="<?= asset_url_versioned('css/components.css') ?>">
+  <link rel="stylesheet" href="<?= asset_url_versioned('css/admin.css') ?>">
 </head>
 <body class="auth">
   <?php if ($background !== null): ?>
