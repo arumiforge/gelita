@@ -417,7 +417,7 @@ class ChallengeService
     /**
      * Rincian cek Susun Gambar, dihitung dari kunci di server:
      * `pieces_correct` = jumlah posisi yang sudah tepat (untuk pesan "masih
-     * ada N keping yang keliru"). Susunan benarnya memang publik (keping 1–9
+     * ada N keping yang keliru"). Susunan benarnya memang publik (keping 1–N
      * dari kiri atas), jadi slot yang keliru ikut dikirim (`misplaced`) agar
      * kepingnya dapat ditandai.
      *

@@ -1052,7 +1052,7 @@ Impor bank soal membuat slot kosong untuk setiap `asset_key` di bank. Begitu ber
 - **Tampil di** papan maks. 480 px:
   - Temanggung 3 × 3 kotak;
   - Magelang 4 × 4 kotak;
-  - Wonosobo 4 × 4 jigsaw, dengan 3 gambar baru `wnb-1-05…07` (lihat [`bank-soal/README.md`](bank-soal/README.md#pembaruan-kelas-5-sd-oktober-2026)).
+  - Wonosobo 4 × 4 jigsaw, dengan 3 gambar baru `wnb-1-05…07` (lihat [`bank-soal/README.md`](bank-soal/README.md)).
 - **Keterangan gambar.** Setiap butir membawa teks keterangan (`prompt`) berisi fakta tentang gambarnya, jadi gambar harus sesuai fakta itu. Keterangan tampil setelah gambar utuh.
 - **Setiap keping harus punya ciri pembeda.** Hindari sepertiga atas yang seluruhnya langit polos; makin kecil kepingnya (4 × 4), makin penting.
 - **Keping tidak bernomor**, jadi tidak ada pojok yang tertutup.

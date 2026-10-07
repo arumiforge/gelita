@@ -116,7 +116,7 @@ class ExportService
         return $exports->find($exportId);
     }
 
-    /** Nama lama di dokumen tahap 7; sama dengan build() untuk baris berformat xlsx. */
+    /** Sama dengan build() untuk baris berformat xlsx. */
     public function buildXlsx(int $exportId): array
     {
         return $this->build($exportId);
