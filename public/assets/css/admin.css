@@ -190,7 +190,8 @@ dl, dd { margin: 0; }
 .topbar-menu { display: none; color: var(--text-2); }
 .breadcrumb { flex: 1 1 auto; min-width: 0; }
 .breadcrumb ol { display: flex; align-items: center; gap: 6px; margin: 0; padding: 0; list-style: none; white-space: nowrap; overflow: hidden; }
-.breadcrumb li { display: flex; align-items: center; gap: 6px; min-width: 0; color: var(--text-dim); font-size: 13px; }
+.breadcrumb li { display: flex; flex: none; align-items: center; gap: 6px; color: var(--text-dim); font-size: 13px; }
+.breadcrumb li:last-child { flex: 0 1 auto; min-width: 0; }
 .breadcrumb li + li::before { content: "/"; color: var(--line-strong); }
 .breadcrumb a { color: var(--text-dim); }
 .breadcrumb a:hover { color: var(--text); }
@@ -248,7 +249,10 @@ dl, dd { margin: 0; }
 .page-title { margin: 0; font-size: 24px; line-height: 32px; font-weight: 600; }
 .page-lead { margin: 4px 0 0; color: var(--text-dim); font-size: 14px; }
 .page-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
-.page-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.page-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 8px; }
+.page-actions .inline-form { flex-wrap: nowrap; gap: 0; }
+.page-actions .inline-form select { width: auto; border-top-right-radius: 0; border-bottom-right-radius: 0; }
+.page-actions .inline-form select + .btn { margin-left: -1px; border-top-left-radius: 0; border-bottom-left-radius: 0; }
 
 /* ---------- Tab (garis bawah) ----------
    .tabs adalah nama baru; .sub-nav (daftar tautan lama) bergaya sama. */

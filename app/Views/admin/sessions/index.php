@@ -1,43 +1,28 @@
 <?php
 /**
- * Daftar sesi — `/admin/sesi` → SessionController::index
+ * Sesi bermain — `/admin/sesi` → SessionController::index (Dok 3 §8.3)
  *
- * @var list<array<string, mixed>>   $rows
- * @var CodeIgniter\Pager\Pager|null  $pager
- * @var array<string, mixed>          $filters
+ * @var array<string, mixed> $table   AdminTable::page()
+ * @var array<string, mixed> $filters
  */
 ?>
 <?= $this->extend('layouts/admin') ?>
 
 <?= $this->section('content') ?>
 <?= component('partials/admin-head', [
-    'title'   => 'Sesi bermain',
-    'eyebrow' => 'Data siswa',
-    'lead'    => 'Satu sesi berisi permainan satu siswa pada penelitian yang berjalan. Buka sesi untuk melihat hasil tiap tantangan dan catatan aktivitasnya.',
+    'title' => 'Sesi bermain',
+    'lead'  => 'Satu sesi = satu kali siswa bermain dari masuk sampai keluar. Buka sesi untuk melihat linimasa event lengkap.',
 ]) ?>
 <?= $this->include('partials/flash') ?>
-<?= component('admin-filter-bar', ['filters' => $filters, 'only' => ['study_id', 'school_id', 'class_level', 'date_from', 'locale']]) ?>
+<?= component('admin-filter-bar', ['filters' => $filters, 'only' => ['participant_code', 'school_id', 'study_id', 'locale', 'date_from']]) ?>
 
-<?= component('admin-table', [
-    'rows'         => $rows,
-    'caption'      => 'Daftar sesi bermain',
-    'emptyMessage' => $filters !== []
-        ? 'Tidak ada sesi untuk pilihan filter ini. Coba perlebar rentang tanggal atau tekan Atur ulang.'
-        : 'Belum ada sesi bermain. Sesi dibuat otomatis saat siswa mendaftar atau masuk ke permainan.',
-    'columns' => [
-        'session_code'     => ['label' => 'Kode sesi', 'render' => static fn (array $r): string => '<a href="' . base_url('admin/sesi/' . $r['id']) . '"><code>' . esc(substr((string) $r['session_code'], 0, 10)) . '</code></a>'],
-        'participant_code' => ['label' => 'Kode siswa', 'format' => 'code'],
-        'study_code'       => 'Penelitian',
-        'locale'           => ['label' => 'Bahasa', 'format' => 'label', 'group' => 'locale'],
-        'status'           => ['label' => 'Status', 'format' => 'badge'],
-        'started_at'       => ['label' => 'Mulai', 'format' => 'datetime'],
-        'duration_ms'      => ['label' => 'Lama bermain', 'format' => 'ms'],
-        'completed_nodes'  => ['label' => 'Tantangan selesai', 'format' => 'num'],
-        'total_stars'      => ['label' => 'Bintang', 'format' => 'num'],
-        'device_type'      => ['label' => 'Perangkat', 'render' => static fn (array $r): string => esc(trim((($r['device_type'] ?? '') === '' ? '' : admin_label('device', (string) $r['device_type'])) . ' ' . ($r['browser_name'] ?? '')) ?: '—')],
-        'id'               => ['label' => '', 'render' => static fn (array $r): string => '<a class="btn btn-quiet btn-sm" href="' . base_url('admin/sesi/' . $r['id']) . '">Lihat</a>'],
+<?= component('data-table', [
+    'table'        => $table,
+    'id'           => 'sesi',
+    'emptyMessage' => $filters !== [] ? 'Tidak ada sesi yang cocok dengan filter ini.' : 'Belum ada sesi bermain.',
+    'render'       => [
+        'session_code'     => static fn (array $r): string => '<a href="' . base_url('admin/sesi/' . $r['id']) . '">' . esc($r['session_code']) . '</a>',
+        'participant_code' => static fn (array $r): string => '<a href="' . base_url('admin/peserta/' . $r['participant_id']) . '">' . esc($r['participant_code']) . '</a>',
     ],
 ]) ?>
-
-<?= component('admin-pagination', ['pager' => $pager]) ?>
 <?= $this->endSection() ?>

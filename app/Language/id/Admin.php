@@ -57,6 +57,7 @@ return [
         'pending'     => 'belum dijawab',
         'answered'    => 'dijawab',
         'skipped'     => 'dilewati',
+        'locked'      => 'belum dikerjakan',
     ],
 
     /** Alasan pengerjaan selesai (challenge_attempts.completion_reason). */

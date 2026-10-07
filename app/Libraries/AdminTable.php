@@ -24,7 +24,8 @@ use CodeIgniter\HTTP\IncomingRequest;
  *      'identity' => true]                          // hanya untuk admin (nama, nama pengguna)
  *
  * Jenis kolom: text · int · num · ms · datetime · date · code · status · bool
- * · json · stars · label:{grup admin_label}. Lihat components/data-table.php.
+ * · json · stars · clip (teks panjang dipotong, klik untuk lengkap)
+ * · label:{grup admin_label}. Lihat components/data-table.php.
  */
 final class AdminTable
 {
@@ -221,6 +222,15 @@ final class AdminTable
 
             case 'stars':
                 return stars_html((int) $value, 5);
+
+            case 'clip':
+                $text = (string) $value;
+
+                if (mb_strlen($text) <= 32) {
+                    return esc($text);
+                }
+
+                return '<details class="cell-more"><summary title="Klik untuk teks lengkap">' . esc(mb_substr($text, 0, 32)) . '…</summary><p>' . esc($text) . '</p></details>';
 
             case 'json':
                 $raw = is_string($value) ? $value : (string) json_encode($value, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);

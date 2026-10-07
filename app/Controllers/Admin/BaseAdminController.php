@@ -157,6 +157,24 @@ abstract class BaseAdminController extends BaseController
         return $refs;
     }
 
+    /**
+     * RawDataService (sesi data mentah, Dok 3 §8.4) untuk pemanggil ini, atau
+     * null bila layanan belum tersedia. Satu-satunya titik sambung ke layanan
+     * itu: halaman Data mentah, tab detail siswa, dan CSV per tabel memanggil
+     * `page()` / `streamCsv()` lewat sini dengan filter yang sudah dipaksa ke
+     * cakupan sekolah (StaffScope::scopedFilters()).
+     */
+    protected function rawData(bool $anonymous = false): ?object
+    {
+        $service = service('rawDataService', $this->schoolScope(), $anonymous || ! $this->isAdmin());
+
+        if ($service === null && \Config\Services::has('rawdataservice')) {
+            $service = \Config\Services::get('rawdataservice');
+        }
+
+        return $service;
+    }
+
     /** `?format=csv`: halaman tabel meminta CSV mentah dengan filter yang sama. */
     protected function wantsCsv(): bool
     {
