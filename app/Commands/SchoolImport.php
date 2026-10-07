@@ -2,6 +2,7 @@
 
 namespace App\Commands;
 
+use App\Commands\Concerns\CliOptions;
 use App\Libraries\SchoolImporter;
 use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
@@ -17,6 +18,8 @@ use CodeIgniter\CLI\CLI;
  */
 class SchoolImport extends BaseCommand
 {
+    use CliOptions;
+
     protected $group       = 'GELITA';
     protected $name        = 'gelita:schools:import';
     protected $description = 'Memasang daftar sekolah resmi (NPSN) dari app/Database/Seeds/data/sekolah-jateng.csv.';
@@ -83,31 +86,5 @@ class SchoolImport extends BaseCommand
         }
 
         return EXIT_SUCCESS;
-    }
-
-    private function flag(string $name, array $params): bool
-    {
-        return array_key_exists($name, $params) || CLI::getOption($name) !== null;
-    }
-
-    /**
-     * Nilai opsi dalam dua bentuk: `--file x` dan `--file=x` (bentuk kedua
-     * terbaca parser CodeIgniter sebagai opsi bernama `file=x`).
-     */
-    private function option(string $name, array $params): ?string
-    {
-        $value = $params[$name] ?? CLI::getOption($name);
-
-        if (is_string($value) && $value !== '') {
-            return $value;
-        }
-
-        foreach (array_merge(array_keys($params), array_keys(CLI::getOptions())) as $key) {
-            if (is_string($key) && str_starts_with($key, $name . '=')) {
-                return substr($key, strlen($name) + 1);
-            }
-        }
-
-        return null;
     }
 }

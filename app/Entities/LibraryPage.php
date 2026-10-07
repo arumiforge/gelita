@@ -12,14 +12,10 @@ class LibraryPage extends Entity
     protected $datamap = [];
     protected $dates   = ['created_at', 'updated_at'];
     protected $casts   = [
-        'id'               => 'int',
-        'level_id'         => 'int',
-        'sequence'         => 'int',
-        'image_a_media_id' => '?int',
-        'image_b_media_id' => '?int',
-        'video_media_id'   => '?int',
-        'poster_media_id'  => '?int',
-        'is_active'        => 'boolean',
+        'id'        => 'int',
+        'level_id'  => 'int',
+        'sequence'  => 'int',
+        'is_active' => 'boolean',
     ];
 
     /** @var list<LibraryMedia> dimuat ContentRepository::libraryPages() */

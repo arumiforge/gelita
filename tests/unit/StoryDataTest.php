@@ -1,7 +1,6 @@
 <?php
 
 use App\Libraries\NarrationImporter;
-use App\Libraries\StorySync;
 use CodeIgniter\Test\CIUnitTestCase;
 
 /**
@@ -33,7 +32,7 @@ final class StoryDataTest extends CIUnitTestCase
 
     public function testCountsPerContextMatchTheScript(): void
     {
-        $story  = StorySync::storyData();
+        $story  = (require APPPATH . 'Database/Seeds/data/story.php');
         $counts = array_count_values(array_column($story, 'context'));
 
         $this->assertCount(88, $story);
@@ -45,7 +44,7 @@ final class StoryDataTest extends CIUnitTestCase
     {
         $counts = [];
 
-        foreach (StorySync::storyData() as $line) {
+        foreach ((require APPPATH . 'Database/Seeds/data/story.php') as $line) {
             if ($line['level'] !== null) {
                 $counts[$line['level']][$line['context']] = ($counts[$line['level']][$line['context']] ?? 0) + 1;
             }
@@ -57,7 +56,7 @@ final class StoryDataTest extends CIUnitTestCase
     public function testEveryLineMatchesTheScriptExactly(): void
     {
         $script = $this->parseScript();
-        $story  = StorySync::storyData();
+        $story  = (require APPPATH . 'Database/Seeds/data/story.php');
 
         $this->assertCount(count($script), $story);
 
@@ -70,7 +69,7 @@ final class StoryDataTest extends CIUnitTestCase
     {
         $groups = [];
 
-        foreach (StorySync::storyData() as $line) {
+        foreach ((require APPPATH . 'Database/Seeds/data/story.php') as $line) {
             $groups[($line['level'] ?? '_') . '|' . $line['context']][] = $line['sequence'];
         }
 
@@ -83,7 +82,7 @@ final class StoryDataTest extends CIUnitTestCase
     {
         $contexts = config('Gelita')->dialogueContexts;
 
-        foreach (StorySync::storyData() as $line) {
+        foreach ((require APPPATH . 'Database/Seeds/data/story.php') as $line) {
             $scope = $line['level'] === null ? 'global' : 'level';
             $this->assertContains($line['context'], $contexts[$scope], $line['code']);
         }
@@ -93,7 +92,7 @@ final class StoryDataTest extends CIUnitTestCase
     {
         $config = config('Gelita');
 
-        foreach (StorySync::storyData() as $line) {
+        foreach ((require APPPATH . 'Database/Seeds/data/story.php') as $line) {
             if ($line['character'] === 'narator') {
                 $this->assertNull($line['pose'], $line['code'] . ': narator tanpa gambar');
             } else {
@@ -122,39 +121,11 @@ final class StoryDataTest extends CIUnitTestCase
         $this->assertSame(array_keys($config->characterAnimations), array_keys($defaults), 'cadangan seeder sama dengan Config');
     }
 
-    public function testLegacyKeysPointAtStoryPositions(): void
-    {
-        $legacy    = require APPPATH . 'Database/Seeds/data/story-legacy.php';
-        $positions = [];
-
-        foreach (StorySync::storyData() as $line) {
-            $positions[($line['level'] ?? '_') . '|' . $line['context'] . '|' . $line['sequence']] = $line;
-        }
-
-        $this->assertSame(['seeder', 'lima_belas'], array_keys($legacy));
-        $this->assertCount(18, $legacy['seeder']);
-        $this->assertCount(11, $legacy['lima_belas'], 'Dok 2 §11.1: sebelas baris naskah berubah');
-
-        foreach ($legacy as $group) {
-            foreach ($group as $key => $pair) {
-                $this->assertArrayHasKey($key, $positions, $key);
-                $this->assertNotSame([$positions[$key]['text_id'], $positions[$key]['text_en']], $pair, 'versi lama bukan teks naskah sekarang: ' . $key);
-            }
-        }
-
-        // Naskah 15 serpihan hanya berbeda pada kata bilangan
-        foreach ($legacy['lima_belas'] as $key => [$oldId, $oldEn]) {
-            $this->assertMatchesRegularExpression('/[Ll]ima|[Ss]epuluh|[Kk]elima belas/u', $oldId, $key);
-            $this->assertMatchesRegularExpression('/\b([Ff]ive|[Ff]ifteen|[Tt]en)\b/u', $oldEn, $key);
-        }
-    }
-
     public function testSeederReadsTheStoryFile(): void
     {
         $seeder = (string) file_get_contents(APPPATH . 'Database/Seeds/ContentSeeder.php');
 
         $this->assertStringContainsString("data/story.php", $seeder);
-        $this->assertStringNotContainsString('Lentera yang Padam', $seeder, 'teks seeder lama hanya di story-legacy.php');
     }
 
     // ------------------------------------------------------------ bantuan

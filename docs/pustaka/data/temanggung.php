@@ -3,11 +3,9 @@
 /**
  * Isi Pustaka Kedu — TEMANGGUNG (wilayah 1).
  *
- * Array `library` dipindahkan apa adanya (byte demi byte) dari berkas data
- * bank soal lama (docs/bank-soal/data/temanggung.php) saat perombakan kelas 5
- * (Dok 2 §7.1). Dipakai docs/pustaka/build-workbook.php hanya untuk
- * pemasangan baru; server yang sudah berjalan tidak mengimpornya lagi.
- * Bentuk data dijelaskan di docs/pustaka/README.md.
+ * Disusun menjadi docs/pustaka/gelita-pustaka.xlsx oleh
+ * docs/pustaka/build-workbook.php, lalu diimpor saat instalasi. Bentuk data
+ * dijelaskan di docs/pustaka/README.md.
  */
 
 return [

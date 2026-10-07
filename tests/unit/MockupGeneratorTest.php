@@ -245,6 +245,26 @@ final class MockupGeneratorTest extends CIUnitTestCase
         $this->assertSame(0, ContentVerifier::errorCount($normal), 'tanpa --siap-penelitian mockup hanya peringatan');
     }
 
+    public function testVerifierSuggestsMockupsOnlyForMockupSlots(): void
+    {
+        $this->conn->table('media_assets')->insert([
+            'asset_key' => 'map.region.uji', 'asset_type' => 'image', 'storage_path' => 'assets/uploads/peta-uji.png',
+            'mime_type' => 'image/png', 'is_active' => 0,
+        ]);
+        $missing = (int) $this->conn->insertID();
+        service('contentRepository')->flush();
+
+        $findings = new ReflectionMethod(ContentVerifier::class, 'mediaFindings');
+        $verifier = new ContentVerifier();
+        $region   = $findings->invoke($verifier, $missing, 'Wilayah Temanggung', 'Gambar peta wilayah')[0]['message'];
+        $item     = $findings->invoke($verifier, $missing, 'tmg-1', 'Gambar soal', true)[0]['message'];
+
+        // Peta, latar, lencana, dan gambar bacaan bukan slot gelita:mockups (Dok 2 §10.4)
+        $this->assertStringEndsWith('belum diunggah; permainan memakai tampilan pengganti. Unggah di menu Gambar & suara.', $region);
+        $this->assertStringNotContainsString('gelita:mockups', $region);
+        $this->assertStringContainsString('Jalankan php spark gelita:mockups', $item);
+    }
+
     public function testCommandReportsThePlan(): void
     {
         $io = new MockInputOutput();

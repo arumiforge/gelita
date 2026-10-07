@@ -3,8 +3,7 @@
  *
  * Perubahan filter memperbarui URL lewat history.replaceState (tetap dapat
  * dibagikan/di-bookmark) lalu memuat isi halaman untuk filter baru di latar,
- * tanpa memuat ulang halaman: KPI dan tabel dirender ulang server, chart
- * mengambil ulang datanya dari /api/admin/* dengan filter yang sama. Form
+ * tanpa memuat ulang halaman: KPI dan tabel dirender ulang server. Form
  * filter sendiri tidak diganti, jadi fokus keyboard tidak hilang.
  *
  * "Atur ulang" mengembalikan ke filter bawaan. Tanpa JavaScript tombol

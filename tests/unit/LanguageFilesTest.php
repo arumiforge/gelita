@@ -183,8 +183,8 @@ final class LanguageFilesTest extends CIUnitTestCase
             $this->assertSame('Pustaka Kedu', lang('Game.library'));
             $this->assertSame('Pustaka Magelang', lang('Game.libraryRegion', ['Magelang']));
             $this->assertSame(
-                'Selesaikan kelima tantangan di Magelang untuk membuka Pustaka Magelang. Isinya bacaan, gambar, dan video tentang Magelang.',
-                lang('Game.libraryLockedText', ['Magelang', 5]),
+                'Selesaikan keempat tantangan di Magelang untuk membuka Pustaka Magelang. Isinya bacaan, gambar, dan video tentang Magelang.',
+                lang('Game.libraryLockedText', ['Magelang', 4]),
             );
             $this->assertStringStartsWith('Selesaikan semua tantangan di', lang('Game.libraryLockedText', ['Magelang', 7]));
             $this->assertSame('Pustaka Magelang terbuka!', lang('Game.libraryUnlockedTitle', ['Magelang']));
@@ -192,7 +192,7 @@ final class LanguageFilesTest extends CIUnitTestCase
             $language->setLocale('en');
             $this->assertSame('Kedu Library', lang('Game.library'));
             $this->assertSame('Magelang Library', lang('Game.libraryRegion', ['Magelang']));
-            $this->assertStringStartsWith('Finish all 5 challenges in Magelang', lang('Game.libraryLockedText', ['Magelang', 5]));
+            $this->assertStringStartsWith('Finish all 4 challenges in Magelang', lang('Game.libraryLockedText', ['Magelang', 4]));
             $this->assertSame('1 page', lang('Game.libraryPageCount', [1]));
             $this->assertSame('6 pages', lang('Game.libraryPageCount', [6]));
         } finally {

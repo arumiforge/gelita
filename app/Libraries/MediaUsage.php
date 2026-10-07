@@ -79,25 +79,15 @@ class MediaUsage
             $add($this->int($row['background_media_id']), 'Latar ' . self::slideLabel($row['context_code'], $row['level_id'] === null ? null : ($levels[(int) $row['level_id']] ?? '?'), (int) $row['sequence']));
         }
 
-        foreach ($db->table('library_pages')->select('level_id, sequence, image_a_media_id, image_b_media_id, video_media_id, poster_media_id')->get()->getResultArray() as $row) {
+        $rows = $db->table('library_media lm')
+            ->select('lm.media_asset_id, lm.poster_media_id, lp.level_id, lp.sequence')
+            ->join('library_pages lp', 'lp.id = lm.library_page_id')
+            ->get()->getResultArray();
+
+        foreach ($rows as $row) {
             $label = 'Pustaka ' . ($levels[(int) $row['level_id']] ?? '?') . ' halaman ' . $row['sequence'];
-
-            foreach (['image_a_media_id', 'image_b_media_id', 'video_media_id', 'poster_media_id'] as $column) {
-                $add($this->int($row[$column]), $label);
-            }
-        }
-
-        if ($db->tableExists('library_media')) {
-            $rows = $db->table('library_media lm')
-                ->select('lm.media_asset_id, lm.poster_media_id, lp.level_id, lp.sequence')
-                ->join('library_pages lp', 'lp.id = lm.library_page_id')
-                ->get()->getResultArray();
-
-            foreach ($rows as $row) {
-                $label = 'Pustaka ' . ($levels[(int) $row['level_id']] ?? '?') . ' halaman ' . $row['sequence'];
-                $add($this->int($row['media_asset_id']), $label);
-                $add($this->int($row['poster_media_id']), $label . ' (gambar sampul)');
-            }
+            $add($this->int($row['media_asset_id']), $label);
+            $add($this->int($row['poster_media_id']), $label . ' (gambar sampul)');
         }
 
         return array_map(static fn (array $labels): array => array_values(array_unique($labels)), $uses);

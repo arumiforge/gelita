@@ -60,12 +60,10 @@ final class ViewHelperTest extends CIUnitTestCase
     public function testClassLabelNamesGradeAndSchoolLevel(): void
     {
         $this->assertSame('Kelas 5 SD/MI', class_label('5'));
-        $this->assertSame('Kelas 8 SMP/MTs', class_label('8'));
-        $this->assertSame('Lainnya', class_label('lainnya'));
         $this->assertSame('Grade 5 (primary)', class_label('5', 'en'));
         $this->assertSame('—', class_label(null));
         $this->assertSame('—', class_label(''));
-        $this->assertSame('B', class_label('B'), 'nilai lama yang tidak dikenal tampil apa adanya');
+        $this->assertSame('B', class_label('B'), 'nilai yang tidak dikenal tampil apa adanya');
     }
 
     public function testComponentRendersPassedData(): void

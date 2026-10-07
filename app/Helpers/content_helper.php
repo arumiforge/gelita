@@ -280,7 +280,7 @@ if (! function_exists('audio_src')) {
     /**
      * URL audio; NULL bila approval_status != 'approved' atau media nonaktif.
      *
-     * `audio_assets` tidak punya kolom `is_active` (lihat migration 001100);
+     * `audio_assets` tidak punya kolom `is_active` (lihat migration CreateAudioAssets);
      * status tayang aset audio ditentukan `approval_status` miliknya sendiri
      * dan `is_active` pada `media_assets` induknya.
      */

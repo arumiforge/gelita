@@ -1,7 +1,7 @@
 <?php
 /**
  * Penjelasan Pustaka yang masih terkunci: progres tantangan wilayah (bar +
- * teks x/5) dan kalimat "Selesaikan kelima tantangan di {wilayah}…".
+ * teks x/4) dan kalimat "Selesaikan keempat tantangan di {wilayah}…".
  * Dipakai kartu rak `/pustaka` dan halaman terkunci `/pustaka/{code}`,
  * sehingga keduanya selalu berkata sama. Modal peta wilayah (map.js)
  * membaca kalimat yang sama dari atribut data tombol Pustaka.

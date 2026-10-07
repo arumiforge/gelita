@@ -114,8 +114,7 @@ class ChallengeNode extends Entity
 
     /**
      * Pengecoh bank kata Isi Rumpang satu variasi, dari
-     * config_json['variants'][$group]['distractors']. Kunci lama tingkat node
-     * (`distractors`) tidak dibaca lagi.
+     * config_json['variants'][$group]['distractors'].
      *
      * @return list<string> teks pengecoh pada locale yang diminta
      */

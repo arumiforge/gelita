@@ -6,7 +6,7 @@ use App\Models\GameEventLogModel;
 use CodeIgniter\HTTP\RedirectResponse;
 
 /**
- * Peta Kedu (tiga wilayah) dan peta wilayah (lima pos tantangan).
+ * Peta Kedu (tiga wilayah) dan peta wilayah (empat pos tantangan).
  * Status buka/kunci disusun GameProgress dari `session_progress`.
  * Peta Kedu baru terbuka setelah cerita pembuka ditonton (introGate()).
  * Tahap 3: overlay "Kenali wilayah" (region_intro) dan tirai wilayah.

@@ -32,7 +32,7 @@ class Gelita extends BaseConfig
     ];
 
     /**
-     * Awalan node_ref / item_key per wilayah (tmg-1 … wnb-5). Satu-satunya
+     * Awalan node_ref / item_key per wilayah (tmg-1 … wnb-4). Satu-satunya
      * peta kode: dipakai impor workbook, editor konten, dan kunci aset.
      */
     public array $levelPrefixes = ['tmg' => 'temanggung', 'mgl' => 'magelang', 'wnb' => 'wonosobo'];
@@ -115,7 +115,7 @@ class Gelita extends BaseConfig
 
     /**
      * Sasaran penelitian: siswa kelas 5 SD/MI. Pendaftaran hanya menerima
-     * kelas ini; data lama dengan kelas lain tetap tersimpan dan tampil.
+     * kelas ini.
      */
     public string $registrationClass = '5';
 

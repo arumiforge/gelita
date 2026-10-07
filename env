@@ -7,7 +7,7 @@
 #
 # `.env` TIDAK PERNAH di-commit (lihat .gitignore); berkas ini adalah
 # templat yang dilacak Git. Acuan: docs/02_PROJECT_FOUNDATION.md →
-# Configuration.
+# 5. Konfigurasi.
 #--------------------------------------------------------------------
 
 #--------------------------------------------------------------------
@@ -53,7 +53,7 @@ encryption.key =
 # Tidak ada cookie "ingat saya" — komputer kelas dipakai bergantian.
 #
 # Handler penyimpan hash IP (App\Libraries\HashedIpSessionHandler) BELUM
-# dipasang; lihat catatan kompatibilitas di README.md sebelum menggantinya.
+# dipasang; lihat docs/02_PROJECT_FOUNDATION.md §7.3 sebelum menggantinya.
 #--------------------------------------------------------------------
 session.driver = 'CodeIgniter\Session\Handlers\DatabaseHandler'
 session.savePath = 'ci_sessions'

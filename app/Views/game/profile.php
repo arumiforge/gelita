@@ -11,7 +11,8 @@
  * @var list<App\Entities\ChallengeAttempt>  $attempts
  * @var array<int, string>                   $nodes
  * @var int                                  $durationMs
- * @var float                                $meanFirstPass
+ * @var int                                  $firstPass  soal benar pada percobaan pertama
+ * @var int                                  $scorable   soal dinilai
  * @var bool                                 $canReflect
  * @var string                               $locale
  */

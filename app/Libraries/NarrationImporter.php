@@ -223,7 +223,7 @@ final class NarrationImporter
 
             $code = self::codeFor((string) $row['context_code'], $row['level_code'] === null ? null : (string) $row['level_code'], (int) $row['sequence']);
 
-            // Nomor urut ganda pada baris global: id terkecil yang dipakai (sama dengan StorySync)
+            // Nomor urut ganda pada baris global: id terkecil yang dipakai
             if ($code !== null && ! isset($this->lines[$code])) {
                 $this->lines[$code] = $row + ['code' => $code, 'table' => 'dialogues'];
             }
@@ -533,6 +533,45 @@ final class NarrationImporter
         $report['written'] = true;
         $this->link($line, $locale, (int) $audioId, false, $report);
         $report[$category][] = $code;
+    }
+
+    /**
+     * Pasang lagi tautan audio petunjuk arena `cari` dari rekaman yang sudah
+     * terdaftar (`audio.narasi.{locale}.petunjuk-…`). `gelita:reset`
+     * membangun ulang butir soal dari workbook sehingga kolom CLUE_COLUMNS
+     * kosong, sedangkan rekaman dan status persetujuannya tetap ada.
+     *
+     * @return int jumlah tautan yang dipasang
+     */
+    public function relinkClues(): int
+    {
+        $linked = 0;
+        $report = ['linked' => [], 'written' => false];
+
+        foreach ($this->lines() as $line) {
+            if ($line['table'] !== 'challenge_items') {
+                continue;
+            }
+
+            foreach (array_keys(self::CLUE_COLUMNS) as $locale) {
+                $audioId = $this->db->table('audio_assets a')
+                    ->select('a.id')
+                    ->join('media_assets m', 'm.id = a.media_asset_id')
+                    ->where('m.asset_key', self::assetKey($locale, (string) $line['code']))
+                    ->where('m.is_active', 1)
+                    ->get()
+                    ->getRow('id');
+
+                if ($audioId === null || (int) ($line['audio_' . $locale . '_asset_id'] ?? 0) === (int) $audioId) {
+                    continue;
+                }
+
+                $this->link($line, $locale, (int) $audioId, false, $report);
+                $linked++;
+            }
+        }
+
+        return $linked;
     }
 
     /**

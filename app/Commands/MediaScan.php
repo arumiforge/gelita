@@ -2,6 +2,7 @@
 
 namespace App\Commands;
 
+use App\Commands\Concerns\CliOptions;
 use App\Libraries\MediaIntegrity;
 use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
@@ -16,6 +17,8 @@ use CodeIgniter\CLI\CLI;
  */
 class MediaScan extends BaseCommand
 {
+    use CliOptions;
+
     protected $group       = 'GELITA';
     protected $name        = 'gelita:media:scan';
     protected $description = 'Menyinkronkan folder public/assets dengan tabel media_assets.';
@@ -28,7 +31,7 @@ class MediaScan extends BaseCommand
     {
         db_sync_timezone();
 
-        $checkOnly = array_key_exists('check-only', $params) || CLI::getOption('check-only') !== null;
+        $checkOnly = $this->flag('check-only', $params);
 
         if (! $checkOnly) {
             \Config\Database::seeder()->call('App\Database\Seeds\MediaAssetSeeder');

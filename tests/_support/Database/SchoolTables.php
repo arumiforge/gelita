@@ -8,7 +8,7 @@ use Config\Database;
 /**
  * Tabel ringkas (SQLite, grup `tests`) untuk uji direktori sekolah: schools,
  * participants, staff_users, dan audit_logs. Kolom yang dibaca/ditulis kode
- * sama dengan migration MySQL (CreateSchools + ExtendSchoolsDirectory).
+ * sama dengan migration MySQL (CreateSchools).
  */
 trait SchoolTables
 {

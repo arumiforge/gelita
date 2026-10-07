@@ -1039,10 +1039,6 @@ class ContentController extends BaseAdminController
             }
         }
 
-        // Kunci lama yang tidak dibaca lagi sejak perombakan kelas 5
-        unset($config['items_per_round'], $config['allow_retry'], $config['require_reason'],
-            $config['shuffle_options'], $config['show_decoys'], $config['distractors']);
-
         $config['selection'] = 'variant';
 
         if (isset($guided['variants']) && is_array($guided['variants'])) {

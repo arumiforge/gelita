@@ -245,10 +245,6 @@ final class AssetChecklist
     /** @return array<string, mixed>|null */
     private function posterGroup(): ?array
     {
-        if (! $this->db->tableExists('library_media')) {
-            return null;
-        }
-
         $rows = $this->db->table('library_media lm')
             ->select('lm.id, lm.sequence, lm.external_url, lm.poster_media_id, lp.sequence AS page, lp.level_id, l.name_id')
             ->join('library_pages lp', 'lp.id = lm.library_page_id')

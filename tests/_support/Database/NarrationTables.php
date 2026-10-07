@@ -10,13 +10,13 @@ use Config\Database;
  * dialogues, challenge_nodes, challenge_items, media_assets, audio_assets,
  * audit_logs, research_studies, dan game_releases (keduanya dibaca layout
  * panel). Kolom yang dibaca/ditulis kode sama dengan migration MySQL. levels
- * diisi tiga wilayah; baris dialogues diisi pemanggil (StorySync); tabel
+ * diisi tiga wilayah; baris dialogues diisi pemanggil (ContentSeeder::seedDialogues()); tabel
  * tantangan kosong kecuali pemanggil memanggil seedHuntNode().
  */
 trait NarrationTables
 {
     /** @var list<string> */
-    private array $narrationTables = ['dialogues', 'challenge_items', 'challenge_nodes', 'levels', 'media_assets', 'audio_assets', 'audit_logs', 'research_studies', 'game_releases'];
+    private array $narrationTables = ['dialogues', 'challenge_items', 'challenge_nodes', 'levels', 'media_assets', 'audio_assets', 'audit_logs', 'research_studies', 'game_releases', 'library_pages', 'library_media'];
 
     private function createNarrationTables(BaseConnection $db): void
     {
@@ -126,6 +126,24 @@ trait NarrationTables
             'ip_hash'       => ['type' => 'VARCHAR', 'constraint' => 64, 'null' => true],
             'occurred_at'   => ['type' => 'DATETIME', 'null' => true],
         ])->addPrimaryKey('id')->createTable('audit_logs');
+
+        // Pustaka kosong: dibaca daftar kelengkapan aset (gambar sampul video)
+        $forge->addField([
+            'id'       => ['type' => 'INTEGER', 'auto_increment' => true],
+            'level_id' => ['type' => 'INTEGER'],
+            'sequence' => ['type' => 'INTEGER'],
+        ])->addPrimaryKey('id')->createTable('library_pages');
+
+        $forge->addField([
+            'id'              => ['type' => 'INTEGER', 'auto_increment' => true],
+            'library_page_id' => ['type' => 'INTEGER'],
+            'sequence'        => ['type' => 'INTEGER', 'default' => 1],
+            'media_kind'      => ['type' => 'VARCHAR', 'constraint' => 10, 'default' => 'image'],
+            'media_asset_id'  => ['type' => 'INTEGER', 'null' => true],
+            'external_url'    => ['type' => 'VARCHAR', 'constraint' => 1000, 'null' => true],
+            'poster_media_id' => ['type' => 'INTEGER', 'null' => true],
+            'is_active'       => ['type' => 'INTEGER', 'default' => 1],
+        ])->addPrimaryKey('id')->createTable('library_media');
 
         foreach (['temanggung' => 'Temanggung', 'magelang' => 'Magelang', 'wonosobo' => 'Wonosobo'] as $code => $name) {
             $db->table('levels')->insert(['sequence' => $db->table('levels')->countAllResults() + 1, 'code' => $code, 'name_id' => $name]);

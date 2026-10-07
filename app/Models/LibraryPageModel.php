@@ -13,8 +13,7 @@ class LibraryPageModel extends Model
     protected $useTimestamps = true;
     protected $dateFormat    = 'datetime';
     protected $allowedFields = [
-        'level_id', 'sequence', 'title_id', 'title_en', 'body_id', 'body_en',
-        'image_a_media_id', 'image_b_media_id', 'video_media_id', 'poster_media_id', 'is_active',
+        'level_id', 'sequence', 'title_id', 'title_en', 'body_id', 'body_en', 'is_active',
     ];
     protected $validationRules = [
         'level_id' => 'required|is_natural_no_zero',

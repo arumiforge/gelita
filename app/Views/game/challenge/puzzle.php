@@ -24,7 +24,7 @@
  * @var string                        $locale
  */
 $item     = $payload['items'][0] ?? [];
-$layout   = App\Libraries\PuzzleCut::resolve((array) ($item['config'] ?? []), null, $node->config('grid'), (string) $level->difficulty);
+$layout   = App\Libraries\PuzzleCut::resolve((array) ($item['config'] ?? []), (string) $level->difficulty);
 $grid     = $layout['grid'];
 $shape    = $layout['shape'];
 $count    = $grid * $grid;

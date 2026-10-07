@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Database\Seeds\ContentSeeder;
 use App\Libraries\ContentVerifier;
 use App\Libraries\MockupGenerator;
+use App\Libraries\NarrationImporter;
 use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\Database\Exceptions\DatabaseException;
 use Config\Database;
@@ -30,7 +31,7 @@ use Config\Database;
 class SystemResetService
 {
     /** Migration terakhir yang wajib sudah dijalankan. */
-    public const REQUIRED_MIGRATION = '2026-01-01-004600';
+    public const REQUIRED_MIGRATION = '2026-01-01-002900';
 
     /** Kata yang wajib diketik bila tanpa --ya. */
     public const CONFIRM_WORD = 'RESET-KELAS5';
@@ -127,7 +128,7 @@ class SystemResetService
      */
     public function plan(): array
     {
-        $count = fn (string $table): int => $this->db->tableExists($table) ? $this->db->table($table)->countAllResults() : 0;
+        $count = fn (string $table): int => $this->db->table($table)->countAllResults();
 
         $clear = [];
 
@@ -153,21 +154,17 @@ class SystemResetService
             $kept[$table] = $count($table);
         }
 
-        $staff = ['admin' => 0, 'guru' => 0];
+        $staff = [];
 
-        if ($this->db->tableExists('staff_users')) {
-            foreach (['admin', 'guru'] as $role) {
-                $staff[$role] = $this->db->table('staff_users')->where('role', $role)->countAllResults();
-            }
+        foreach (['admin', 'guru'] as $role) {
+            $staff[$role] = $this->db->table('staff_users')->where('role', $role)->countAllResults();
         }
 
         return [
             'clear'              => $clear,
             'rebuild'            => $rebuild,
             'settings'           => $settings,
-            'unverified_schools' => $this->db->tableExists('schools')
-                ? $this->db->table('schools')->where('is_verified', 0)->countAllResults()
-                : 0,
+            'unverified_schools' => $this->db->table('schools')->where('is_verified', 0)->countAllResults(),
             'staff'              => $staff,
             'kept'               => $kept,
             'nodes_after'        => 3 * count(ContentSeeder::NODES),
@@ -180,15 +177,10 @@ class SystemResetService
      * Menjalankan reset (langkah 4–11 Dok 1 §7.3). Pemeriksaan awal dan
      * konfirmasi menjadi tanggung jawab pemanggil (command).
      *
-     * @param array{hapus_guru?: bool, tanpa_bank?: bool, bank?: ?string, tanpa_mockup?: bool,
-     *              bersihkan_media?: bool, konfirmasi_media?: callable(list<array{id: int, asset_key: string, storage_path: string}>): bool} $options
+     * @param array{hapus_guru?: bool, tanpa_bank?: bool, bank?: ?string, tanpa_mockup?: bool} $options
      *
-     * `konfirmasi_media`: dipanggil dengan daftar media tantangan yang tidak
-     * terpakai SESUDAH impor bank soal (daftar akhirnya baru diketahui saat
-     * itu); false = tidak ada yang dihapus. Tanpa callback: langsung dihapus.
-     *
-     * @return array{mode: string, cleared: array<string, int>, schools_removed: int, teachers_removed: int,
-     *               bank: array<string, mixed>, mockups: array<string, mixed>, media_removed: list<string>,
+     * @return array{cleared: array<string, int>, schools_removed: int, teachers_removed: int,
+     *               bank: array<string, mixed>, mockups: array<string, mixed>,
      *               findings: list<array{level: string, scope: string, message: string}>, errors: int,
      *               nodes: int, next_code: string, warnings: list<string>, seconds: float}
      */
@@ -200,7 +192,7 @@ class SystemResetService
         $counts         = $plan['clear'] + $plan['rebuild'] + $plan['settings'];
 
         // 4. Kosongkan kelompok A–C
-        $mode = $this->clearTables();
+        $this->clearTables();
 
         // 5. Bersihkan sebagian kelompok D
         $schools  = $this->removeUnverifiedSchools();
@@ -219,17 +211,6 @@ class SystemResetService
             ? ['status' => 'skipped', 'count' => 0, 'message' => 'Gambar mockup tidak dibuat (--tanpa-mockup).']
             : $this->generateMockups();
 
-        $mediaRemoved = [];
-
-        if (! empty($options['bersihkan_media'])) {
-            $unused  = $this->unusedChallengeMedia();
-            $confirm = $options['konfirmasi_media'] ?? null;
-
-            if ($unused !== [] && ($confirm === null || $confirm($unused) === true)) {
-                $mediaRemoved = $this->removeUnusedChallengeMedia($unused);
-            }
-        }
-
         // 9. Bersihkan cache
         $this->flushCaches();
 
@@ -238,16 +219,14 @@ class SystemResetService
         $errors   = ContentVerifier::errorCount($findings);
 
         // 11. Audit
-        $this->audit($counts, $options, $mode, $bank, $mediaRemoved);
+        $this->audit($counts, $options, $bank);
 
         return [
-            'mode'             => $mode,
             'cleared'          => $counts,
             'schools_removed'  => $schools,
             'teachers_removed' => $teachers,
             'bank'             => $bank,
             'mockups'          => $mockups,
-            'media_removed'    => $mediaRemoved,
             'findings'         => $findings,
             'errors'           => $errors,
             'nodes'            => $this->db->table('challenge_nodes')->where('is_active', 1)->countAllResults(),
@@ -259,63 +238,43 @@ class SystemResetService
 
     /**
      * Mengosongkan kelompok A–C. MySQL/MariaDB: TRUNCATE dengan
-     * FOREIGN_KEY_CHECKS = 0 agar AUTO_INCREMENT kembali ke 1; bila akun
-     * database tidak punya hak DROP (akun aplikasi hanya DML), jatuh ke DELETE
-     * dengan urutan FK. SQLite (uji): builder truncate().
-     *
-     * @return string `truncate` | `delete`
+     * FOREIGN_KEY_CHECKS = 0 agar AUTO_INCREMENT kembali ke 1, sehingga kode
+     * siswa pertama sesudah reset GLT-000001. TRUNCATE butuh hak DROP: akun
+     * aplikasi yang hanya punya hak DML ditolak sebelum ada tabel yang
+     * dikosongkan. SQLite (uji): builder truncate().
      */
-    public function clearTables(): string
+    public function clearTables(): void
     {
-        $tables = array_values(array_filter(self::CLEAR_ORDER, fn (string $t): bool => $this->db->tableExists($t)));
-
         if ($this->db->DBDriver === 'SQLite3') {
             $this->db->query('PRAGMA foreign_keys = OFF');
 
-            foreach ($tables as $table) {
+            foreach (self::CLEAR_ORDER as $table) {
                 $this->db->table($table)->truncate();
             }
 
             $this->db->query('PRAGMA foreign_keys = ON');
 
-            return 'truncate';
+            return;
         }
+
+        $this->db->query('SET FOREIGN_KEY_CHECKS = 0');
 
         try {
-            $this->db->query('SET FOREIGN_KEY_CHECKS = 0');
-
-            foreach ($tables as $table) {
+            foreach (self::CLEAR_ORDER as $table) {
                 $this->db->query('TRUNCATE TABLE ' . $this->db->escapeIdentifiers($this->db->prefixTable($table)));
             }
-
-            $this->db->query('SET FOREIGN_KEY_CHECKS = 1');
-
-            return 'truncate';
         } catch (DatabaseException|\mysqli_sql_exception $e) {
+            throw $this->isPrivilegeError($e)
+                ? new \RuntimeException('Akun database tidak punya hak TRUNCATE (DROP). Jalankan reset dengan akun migrasi (database_default_DSN akun gelita_migrate).', 0, $e)
+                : $e;
+        } finally {
             $this->db->query('SET FOREIGN_KEY_CHECKS = 1');
-
-            if (! $this->isPrivilegeError($e)) {
-                throw $e;
-            }
         }
-
-        // Akun DML: DELETE berurutan (anak dulu); FK tetap aktif
-        foreach ($tables as $table) {
-            $this->db->table($table)->where('1 = 1', null, false)->delete();
-        }
-
-        $this->warnings[] = 'Akun database tidak punya hak TRUNCATE (DROP), jadi data dihapus dengan DELETE: nomor id melanjutkan nomor lama, sehingga kode siswa tidak lagi berurutan rapi (siswa pertama GLT-000001, berikutnya melompat ke nomor id lama). Jalankan ulang dengan akun gelita_migrate agar semuanya mulai lagi dari 1.';
-
-        return 'delete';
     }
 
     /** Sekolah ketikan uji coba (is_verified = 0) dibuang; FK staf ke sana di-NULL-kan dulu. */
     private function removeUnverifiedSchools(): int
     {
-        if (! $this->db->tableExists('schools')) {
-            return 0;
-        }
-
         $ids = array_map('intval', array_column(
             $this->db->table('schools')->select('id')->where('is_verified', 0)->get()->getResultArray(),
             'id',
@@ -325,9 +284,7 @@ class SystemResetService
             return 0;
         }
 
-        if ($this->db->tableExists('staff_users')) {
-            $this->db->table('staff_users')->whereIn('school_id', $ids)->update(['school_id' => null]);
-        }
+        $this->db->table('staff_users')->whereIn('school_id', $ids)->update(['school_id' => null]);
 
         $this->db->table('schools')->whereIn('merged_into_id', $ids)->update(['merged_into_id' => null]);
         $this->db->table('schools')->whereIn('id', $ids)->delete();
@@ -338,10 +295,6 @@ class SystemResetService
     /** Akun staf tetap (kunci login dibuka); --hapus-guru menghapus semua akun guru. */
     private function resetStaff(bool $removeTeachers): int
     {
-        if (! $this->db->tableExists('staff_users')) {
-            return 0;
-        }
-
         $this->db->table('staff_users')->where('1 = 1', null, false)->update([
             'failed_login_count' => 0,
             'locked_until'       => null,
@@ -404,21 +357,23 @@ class SystemResetService
             ));
         }
 
-        $items = $this->db->table('challenge_items')->where('is_active', 1);
+        // Butir soal dibangun ulang: tautan rekaman petunjuk Cari Objek yang sudah terdaftar dipasang lagi
+        $clueAudio = $result['ok'] ? (new NarrationImporter($this->db))->relinkClues() : 0;
 
         return [
-            'status'   => $result['ok'] ? 'imported' : 'failed',
-            'path'     => $path,
-            'sha256'   => hash_file('sha256', $path) ?: null,
-            'written'  => $result['written'],
-            'errors'   => count($result['errors']),
-            'items'    => $items->countAllResults(),
-            'scorable' => $this->db->table('challenge_items')->where('is_active', 1)->where('scorable', 1)->countAllResults(),
-            'variants' => (int) array_sum(array_map(
+            'status'     => $result['ok'] ? 'imported' : 'failed',
+            'path'       => $path,
+            'sha256'     => hash_file('sha256', $path) ?: null,
+            'written'    => $result['written'],
+            'errors'     => count($result['errors']),
+            'items'      => $this->db->table('challenge_items')->where('is_active', 1)->countAllResults(),
+            'scorable'   => $this->db->table('challenge_items')->where('is_active', 1)->where('scorable', 1)->countAllResults(),
+            'variants'   => (int) array_sum(array_map(
                 static fn (array $row): int => count((array) (json_decode((string) $row['config_json'], true)['variants'] ?? [])),
                 $this->db->table('challenge_nodes')->select('config_json')->where('is_active', 1)->get()->getResultArray(),
             )),
-            'passages' => $this->db->table('reading_passages')->where('is_active', 1)->countAllResults(),
+            'passages'   => $this->db->table('reading_passages')->where('is_active', 1)->countAllResults(),
+            'clue_audio' => $clueAudio,
         ];
     }
 
@@ -432,70 +387,6 @@ class SystemResetService
         }
 
         return ['status' => 'done'] + $result;
-    }
-
-    /**
-     * Media tantangan (`challenge.*`) yang tidak dipakai node/soal/bacaan mana
-     * pun — hanya dihitung, tanpa menghapus.
-     *
-     * @return list<array{id: int, asset_key: string, storage_path: string}>
-     */
-    public function unusedChallengeMedia(): array
-    {
-        if (! $this->db->tableExists('media_assets')) {
-            return [];
-        }
-
-        $used = [];
-
-        foreach ([
-            'challenge_nodes'  => ['scene_media_id', 'background_media_id'],
-            'challenge_items'  => ['media_asset_id'],
-            'reading_passages' => ['media_asset_id'],
-        ] as $table => $columns) {
-            if (! $this->db->tableExists($table)) {
-                continue;
-            }
-
-            foreach ($columns as $column) {
-                foreach ($this->db->table($table)->select($column)->where($column . ' IS NOT NULL', null, false)->get()->getResultArray() as $row) {
-                    $used[(int) $row[$column]] = true;
-                }
-            }
-        }
-
-        $out = [];
-
-        foreach ($this->db->table('media_assets')->select('id, asset_key, storage_path')->like('asset_key', 'challenge.', 'after')->get()->getResultArray() as $row) {
-            if (! isset($used[(int) $row['id']])) {
-                $out[] = ['id' => (int) $row['id'], 'asset_key' => (string) $row['asset_key'], 'storage_path' => (string) $row['storage_path']];
-            }
-        }
-
-        return $out;
-    }
-
-    /**
-     * @param list<array{id: int, asset_key: string, storage_path: string}> $rows hasil unusedChallengeMedia()
-     *
-     * @return list<string> asset_key yang dihapus
-     */
-    private function removeUnusedChallengeMedia(array $rows): array
-    {
-        $removed = [];
-
-        foreach ($rows as $row) {
-            $file = FCPATH . ltrim($row['storage_path'], '/');
-
-            if (str_starts_with($row['storage_path'], 'assets/uploads/') && is_file($file)) {
-                @unlink($file);
-            }
-
-            $this->db->table('media_assets')->where('id', $row['id'])->delete();
-            $removed[] = $row['asset_key'];
-        }
-
-        return $removed;
     }
 
     private function flushCaches(): void
@@ -519,9 +410,8 @@ class SystemResetService
      * @param array<string, int>   $counts
      * @param array<string, mixed> $options
      * @param array<string, mixed> $bank
-     * @param list<string>         $mediaRemoved asset_key media tantangan yang dihapus
      */
-    private function audit(array $counts, array $options, string $mode, array $bank, array $mediaRemoved): void
+    private function audit(array $counts, array $options, array $bank): void
     {
         $this->db->table('audit_logs')->insert([
             'staff_user_id' => null,
@@ -530,12 +420,10 @@ class SystemResetService
             'target_id'     => 'kelas5',
             'metadata_json' => json_encode([
                 'cleared'     => $counts,
-                'mode'        => $mode,
                 'options'     => array_filter($options, static fn ($value): bool => $value !== null && $value !== false && ! $value instanceof \Closure),
                 'host'        => gethostname() ?: null,
                 'bank_sha256' => $bank['sha256'] ?? null,
                 'bank_status' => $bank['status'] ?? null,
-                'media_removed' => $mediaRemoved,
             ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
             'occurred_at' => date('Y-m-d H:i:s'),
         ]);

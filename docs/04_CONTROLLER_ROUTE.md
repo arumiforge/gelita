@@ -1,956 +1,842 @@
-# 04_CONTROLLER_ROUTE.md — Route, Controller, Authentication, Authorization
+# 04_CONTROLLER_ROUTE.md — Route, Controller, Autentikasi, Otorisasi
 
-> **Revisi 2 (21 September 2026).** Siswa kini **registrasi dan login dengan nama pengguna + kata sandi kuat** (literasi keamanan digital). Route `/lanjutkan` dan cookie `gelita_session` 30 hari dihapus; diganti `/masuk`, `/ganti-sandi`, dan session CI4. Ditambahkan: cek ketersediaan nama pengguna, reset sandi siswa oleh guru, impor workbook bank soal, editor teks bacaan bersama. Impor per-node dihapus karena sudah tercakup impor bank soal.
-
----
-
-## Tujuan
-
-Membuat seluruh route, controller, filter autentikasi, dan aturan otorisasi GELITA. Setelah tahap ini selesai, seluruh URL aplikasi dapat diakses dan mengembalikan respons yang benar (view kosong/placeholder masih boleh, karena view dikerjakan tahap 5).
+Dokumen ini menggambarkan seluruh route GELITA, filter yang menjaganya, tanggung jawab tiap controller, dan kontrak JSON area `/api`. Sumber kebenarannya `app/Config/Routes.php`, `app/Config/Filters.php`, `app/Filters/`, dan `app/Controllers/`. Daftar lengkap yang terpasang dapat dilihat dengan `php spark routes`.
 
 ---
 
-## Konteks
+## Prinsip
 
 Tiga area dengan karakter berbeda:
 
 | Area | Prefix | Identitas | Respons |
 |---|---|---|---|
-| Game | `/` | `session('participant_id')` + `session('game_session_id')` setelah login siswa | HTML (server-rendered) |
-| Admin | `/admin` | `session('staff_id')` setelah login staf | HTML |
-| API | `/api` | session siswa (game) atau session staf (admin) | JSON |
+| Permainan | `/` | `session('participant_id')` + `session('game_session_id')` setelah siswa masuk | HTML (server-rendered) |
+| Panel admin | `/admin` | `session('staff_id')` setelah staf masuk | HTML |
+| API | `/api`, `/api/admin` | sesi siswa (permainan) atau sesi staf (panel) | JSON |
 
-**Siswa wajib registrasi dengan nama pengguna dan kata sandi kuat.** Membuat kata sandi kuat adalah bagian dari materi literasi keamanan digital: halaman registrasi menunjukkan syarat yang belum terpenuhi dan menolak sandi yang belum kuat. `participant_code` (mis. `GLT-000123`) tetap dibuat server sebagai kode pseudonim penelitian, tetapi tidak dipakai untuk login.
+* **Routing otomatis mati** (`$routes->setAutoRoute(false)` di `Routes.php` dan `Config\Routing::$autoRoute = false`). Hanya URL yang ditulis di `Routes.php` yang ada.
+* **Grup route.** Area permainan memakai namespace `App\Controllers\Game`, panel `App\Controllers\Admin`, API `App\Controllers\Api`. Hak akses dipasang sebagai filter grup (`participantAuth`, `gameSession`, `apiSession`, `staffAuth`, `staffRole:admin`), bukan per method.
+* **Siswa** mendaftar sendiri dengan nama pengguna dan kata sandi kuat (bagian dari materi literasi keamanan digital), lalu masuk di `/masuk`. `participant_code` (mis. `GLT-000123`) dibuat server sebagai kode pseudonim penelitian dan tidak dipakai untuk masuk. Sasaran pendaftaran: siswa kelas 5 SD/MI.
+* **Staf** punya dua peran: `admin` dan `guru`. Akun staf (`staff_users`) dan akun siswa (`participants`) terpisah, begitu juga form masuknya (`/admin/login` dan `/masuk`).
+* **CSRF** aktif untuk setiap POST/PUT/PATCH/DELETE, termasuk `/api` (`Config\Filters::$methods`). Token disimpan di session (`Config\Security`: `csrfProtection = 'session'`, nama field `gelita_csrf`, header `X-CSRF-TOKEN`, tanpa regenerasi per request).
+* **Rate limit** memakai throttler CodeIgniter (cache): 120 request/menit per sesi permainan untuk endpoint tantangan dan event, 20 request/menit per hash IP untuk cek nama pengguna, 60 request/menit per hash IP untuk cek NPSN. Lihat [Respons API dan kode galat](#respons-api-dan-kode-galat).
+* **HEAD** dilayani route GET dengan handler dan filter yang sama (`App\Libraries\HeadAsGetRouteCollection`, didaftarkan di `Config\Services::routes()`).
 
-**Staf punya kata sandi** dengan dua role: `admin` dan `guru`. Akun staf (`staff_users`) dan akun siswa (`participants`) terpisah; form login keduanya juga terpisah (`/admin/login` dan `/masuk`).
-
-Prinsip pembagian kode:
+Pembagian kode:
 
 ```
-Controller  = validasi input → panggil Service → bentuk response
-Service     = business rule (sudah dibuat tahap 3)
+Filter      = siapa boleh masuk (login, sandi sah, sesi aktif, peran)
+Controller  = validasi input → panggil Service/Model → bentuk response (view, redirect, JSON)
+Service     = aturan permainan dan data (ChallengeService, ScoringService, SessionService, …)
 ```
 
-Tidak ada rumus skor, tidak ada query analitik, dan tidak ada perhitungan benar/salah di dalam controller.
+Tidak ada penilaian benar/salah, perhitungan bintang, atau query analitik di dalam controller. Status buka/kunci wilayah dan tantangan disusun trait `App\Controllers\Concerns\GameProgress` dari data yang sudah ditulis service (`session_progress`, `challenge_attempts`).
 
----
-
-## Yang Harus Dibuat
-
-| Kategori | Jumlah | Folder |
-|---|---:|---|
-| Controller Game | 10 | `app/Controllers/Game/` |
-| Controller Admin | 15 | `app/Controllers/Admin/` (+ `BaseAdminController`) |
-| Controller API | 9 | `app/Controllers/Api/` (+ `BaseApiController`) |
-| Filter | 7 | `app/Filters/` (kerangka sudah ada dari tahap 2) |
-| File route | 1 | `app/Config/Routes.php` |
-
----
-
-## Struktur File
+### Berkas controller
 
 ```text
 app/Controllers/
-├── BaseController.php                (sudah ada) ok()/fail()/jsonBody()/deviceInfo()
+├── BaseController.php                ok() / fail() / jsonBody() / deviceInfo()
 ├── Concerns/
-│   ├── GameProgress.php              status buka/kunci level & node, lentera, `entry` wilayah
-│   └── StaffScope.php                schoolScope(), readFilters(), analytics() — dipakai admin & API admin
+│   ├── GameProgress.php              status wilayah & tantangan, lentera HUD, Pustaka, tirai wilayah
+│   └── StaffScope.php                schoolScope(), readFilters(), scopedFilters(), analytics()
 ├── Game/
-│   ├── BaseGameController.php        sesi/peserta request, data HUD, dialogueGate(), introGate(), toMap()
-│   ├── HomeController.php            welcome, pilihan akun (/mulai), bahasa
-│   ├── GateController.php            gerbang pemain lama, cerita pembuka wajib, jalan ke peta
-│   ├── RegisterController.php        persetujuan + pendaftaran akun siswa
+│   ├── BaseGameController.php        session(), participant(), hudData(), introGate(), dialogueGate(), toMap()
+│   ├── HomeController.php            halaman awal, /mulai, ganti bahasa
+│   ├── RegisterController.php        pendaftaran 3 langkah
 │   ├── LoginController.php           masuk, keluar, ganti kata sandi siswa
+│   ├── GateController.php            gerbang pemain lama, cerita pembuka
 │   ├── MapController.php             peta Kedu & peta wilayah
-│   ├── DialogueController.php        dialog Jaka & Mbah Kedu
-│   ├── ChallengeController.php       kartu misi, layar tantangan, hasil
-│   ├── LibraryController.php         Pustaka Kedu (rak) & Pustaka {wilayah} (buku, terkunci per wilayah)
-│   ├── ProfileController.php         profil peserta
-│   └── ReflectionController.php      Balai Refleksi + kritik & saran
+│   ├── DialogueController.php        dialog pembuka wilayah, wilayah tuntas, penutup
+│   ├── ChallengeController.php       kartu misi, layar tantangan, riwayat hasil, layar selesai
+│   ├── LibraryController.php         rak Pustaka Kedu & Pustaka {wilayah}
+│   ├── ProfileController.php         profil siswa
+│   └── ReflectionController.php      Balai Refleksi (kritik & saran)
 ├── Admin/
-│   ├── BaseAdminController.php       panel(): judul, filter, activeStudy, filterOptions
-│   ├── AuthController.php            login/logout staff
-│   ├── AccountController.php         ganti sandi sendiri (guru & admin)
-│   ├── DashboardController.php       ringkasan
-│   ├── ParticipantController.php     daftar & profil peserta
-│   ├── SessionController.php         daftar sesi + drilldown event
-│   ├── AnalyticsController.php       level, node, item, indikator
+│   ├── BaseAdminController.php       panel(), filterOptions(), back(), done(), modelErrors()
+│   ├── AuthController.php            masuk/keluar staf
+│   ├── AccountController.php         ganti sandi sendiri
+│   ├── DashboardController.php       beranda panel
+│   ├── ParticipantController.php     daftar & profil siswa, reset sandi siswa
+│   ├── SessionController.php         daftar sesi, detail, catatan aktivitas
 │   ├── FeedbackController.php        kritik & saran
-│   ├── ContentController.php         level, node, item, option, hint
-│   ├── MediaController.php           media & audio (upload, approve), kelengkapan aset
-│   ├── NarrationController.php       narasi naskah: status, unggah banyak, setujui massal (Tahap 5)
-│   ├── StudyController.php           study, phase, release, scoring profile
-│   ├── ExportController.php          XLSX & PDF
-│   ├── GovernanceController.php      deletion request, retention, audit log
-│   ├── SchoolController.php          direktori sekolah: cari NPSN, gabung, sahkan
-│   └── StaffController.php           akun guru/admin
+│   ├── ExportController.php          unduh data XLSX & laporan PDF satu siswa
+│   ├── ContentController.php         wilayah, tantangan, soal, impor bank soal, bacaan, Pustaka, dialog, verifikasi
+│   ├── NarrationController.php       rekaman narasi naskah
+│   ├── MediaController.php           gambar/video, audio, kelengkapan aset
+│   ├── StudyController.php           penelitian & versi permainan
+│   ├── GovernanceController.php      penghapusan data, retensi, audit log
+│   ├── SchoolController.php          direktori sekolah
+│   └── StaffController.php           akun guru & admin
 └── Api/
-    ├── BaseApiController.php         gameSession(), attemptOrFail(), rateLimited()
-    ├── SessionApiController.php
-    ├── ContentApiController.php
-    ├── ChallengeApiController.php
-    ├── EventApiController.php
-    ├── AudioApiController.php
-    ├── ProgressApiController.php
+    ├── BaseApiController.php         gameSession(), attemptOrFail(), invalidPayload(), rateLimited(), serverTime()
     ├── AuthApiController.php         cek ketersediaan nama pengguna
-    ├── SchoolApiController.php       cek NPSN saat daftar (nama resmi sekolah)
-    └── AdminApiController.php        data untuk chart dashboard
+    ├── SchoolApiController.php       cek NPSN
+    ├── SessionApiController.php      bootstrap & siklus sesi
+    ├── ContentApiController.php      wilayah, tantangan, Pustaka
+    ├── ChallengeApiController.php    buka, jawab, cek, petunjuk, tutup, tinggalkan
+    ├── EventApiController.php        batch raw event
+    ├── AudioApiController.php        telemetri audio
+    ├── ProgressApiController.php     progres authoritative
+    └── AdminApiController.php        dataset JSON panel
 ```
 
 ---
 
-## Route
+## Filter
 
-`app/Config/Routes.php`:
+Alias di `Config\Filters::$aliases`; kelas aplikasi ada di `app/Filters/`.
 
-```php
-<?php
-use CodeIgniter\Router\RouteCollection;
+| Alias | Kelas | Dipasang | Fungsi |
+|---|---|---|---|
+| `locale` | `LocaleFilter` | global, before | Menentukan bahasa: `?lang=id\|en` (GET non-API; disimpan ke session lalu redirect tanpa query) → `session('locale')` → `game_sessions.locale` sesi aktif → bawaan `id`. Panel (`/admin`, `/api/admin`) selalu `id`. |
+| `secureheaders` | `CodeIgniter\Filters\SecureHeaders` | global, after | Header keamanan bawaan. |
+| `csrf` | `CodeIgniter\Filters\CSRF` | semua POST/PUT/PATCH/DELETE | Token dari field `gelita_csrf` atau header `X-CSRF-TOKEN`. |
+| `clientHints` | `ClientHintsFilter` | after, path `/`, `mulai`, `masuk`, `daftar`, `daftar/*` | Mengirim `Accept-CH` (`Config\Gelita::$clientHints`) agar peramban Chromium mengirim Client Hints entropi tinggi pada POST `/masuk` dan `/daftar/3` (`App\Libraries\DeviceProfile`, `device_logs`). |
+| `participantAuth` | `ParticipantAuthFilter` | grup `/ganti-sandi`, `/keluar` | Siswa sudah masuk dan pesertanya masih ada (belum dihapus). Gagal → redirect `/masuk`. |
+| `gameSession` | `GameSessionFilter` | grup layar permainan | `participantAuth` + `must_change_password = 0` + sesi permainan milik peserta dan berstatus selain `abandoned`; memuat `service('gameContext')`. Gagal: belum masuk → `/masuk` (GET menyimpan tujuan di flash `redirect_after_login`); wajib ganti sandi → `/ganti-sandi`; tanpa sesi → `/masuk`. |
+| `apiSession` | `ApiSessionFilter` | grup API permainan | Aturan yang sama dengan `gameSession`, membalas JSON `401 INVALID_SESSION` atau `403 PASSWORD_CHANGE_REQUIRED`. |
+| `screenView` | `ScreenViewFilter` | after, grup `participantAuth` dan `gameSession` | Mencatat event `screen_viewed` untuk setiap GET berstatus 200 `text/html` (kode layar, `path`, `from` = layar sebelumnya, parameter route). Redirect tidak dicatat; kegagalan pencatatan tidak menggagalkan halaman. |
+| `jsonResponse` | `JsonResponseFilter` | after, grup `/api` dan `/api/admin` | `Content-Type: application/json` + header `X-Request-Id`. |
+| `staffAuth` | `StaffAuthFilter` | grup panel dan `/api/admin` | Staf masuk dan akunnya aktif; peran, sekolah, dan nama di session disinkronkan dari `staff_users` setiap request. `must_change_password = 1` → hanya `/admin/akun/sandi` yang terbuka (halaman lain dialihkan ke sana, API `403 PASSWORD_CHANGE_REQUIRED`). Gagal masuk → `/admin/login` atau `401 INVALID_SESSION`. |
+| `staffRole` | `StaffRoleFilter` | grup khusus admin (`staffRole:admin`) | Peran tidak cocok → HTML `404` (struktur panel tidak terpetakan), API `403 FORBIDDEN`. |
+| `toolbar` | `App\Filters\DebugToolbar` | wajib (hanya aktif di development) | Debug Toolbar bawaan yang menyamarkan field kredensial (`pass`, `sandi`, `secret`, `token`) sebelum isi POST disimpan ke `writable/debugbar/`. |
 
-/** @var RouteCollection $routes */
-
-$routes->get('/', 'Game\HomeController::index');
-
-// ---------------------------------------------------------------- GAME
-$routes->group('', ['namespace' => 'App\Controllers\Game'], static function ($routes) {
-
-    // Tanpa login
-    $routes->get('mulai',        'HomeController::start');
-    $routes->get('persetujuan',  'RegisterController::consent');
-    $routes->post('persetujuan', 'RegisterController::storeConsent');
-    $routes->get('daftar',       'RegisterController::form');
-    $routes->post('daftar',      'RegisterController::store');
-    $routes->get('masuk',        'LoginController::form');
-    $routes->post('masuk',       'LoginController::login');
-    $routes->post('bahasa',      'HomeController::setLocale');
-
-    // Sudah login, belum tentu boleh bermain (mis. wajib ganti sandi)
-    $routes->group('', ['filter' => 'participantAuth'], static function ($routes) {
-        $routes->get('ganti-sandi',  'LoginController::changePasswordForm');
-        $routes->post('ganti-sandi', 'LoginController::changePassword');
-        $routes->get('keluar',       'LoginController::logout');
-    });
-
-    // Login + sandi sudah sah + sesi permainan aktif
-    $routes->group('', ['filter' => 'gameSession'], static function ($routes) {
-        $routes->get('gerbang',                  'GateController::index');
-        $routes->get('gerbang/peta',             'GateController::map');
-        $routes->get('intro',                    'GateController::intro');
-        $routes->get('intro/selesai',            'GateController::finishIntro');
-        $routes->get('peta',                     'MapController::kedu');
-        $routes->get('wilayah/(:segment)',        'MapController::level/$1');
-        $routes->get('dialog/(:segment)',         'DialogueController::show/$1');
-        $routes->get('tuntas/(:segment)',         'DialogueController::done/$1');     // Tahap 3
-        $routes->get('penutup',                   'DialogueController::ending');      // Tahap 3
-        $routes->get('misi/(:segment)/(:num)',    'ChallengeController::brief/$1/$2');
-        $routes->get('tantangan/(:segment)/(:num)','ChallengeController::play/$1/$2');
-        $routes->get('hasil/(:segment)/(:num)',   'ChallengeController::result/$1/$2');
-        $routes->get('selesai/(:num)',            'ChallengeController::finished/$1');
-        $routes->get('pustaka',                   'LibraryController::index');
-        $routes->get('pustaka/(:segment)',        'LibraryController::show/$1');
-        $routes->get('profil',                    'ProfileController::index');
-        $routes->get('refleksi',                  'ReflectionController::index');
-        $routes->post('refleksi',                 'ReflectionController::store');
-    });
-});
-
-// ---------------------------------------------------------------- API GAME
-$routes->group('api', [
-    'namespace' => 'App\Controllers\Api',
-    'filter'    => 'jsonResponse',
-], static function ($routes) {
-
-    // Tanpa login — dibatasi per IP (20 dan 60 request/menit)
-    $routes->get('auth/username-available', 'AuthApiController::usernameAvailable');
-    $routes->get('schools/lookup',          'SchoolApiController::lookup');
-
-    $routes->group('', ['filter' => 'apiSession'], static function ($routes) {
-        $routes->get('session',               'SessionApiController::show');
-        $routes->post('session/locale',       'SessionApiController::setLocale');
-        $routes->post('session/heartbeat',    'SessionApiController::heartbeat');
-        $routes->post('session/complete',     'SessionApiController::complete');
-
-        $routes->get('levels',                'ContentApiController::levels');
-        $routes->get('levels/(:num)/nodes',   'ContentApiController::nodes/$1');
-        $routes->get('nodes/(:num)',          'ContentApiController::node/$1');
-        $routes->get('library/(:num)',        'ContentApiController::library/$1');
-
-        $routes->post('nodes/(:num)/attempts',         'ChallengeApiController::open/$1');
-        $routes->post('attempts/(:num)/responses',     'ChallengeApiController::respond/$1');
-        $routes->post('attempts/(:num)/check',         'ChallengeApiController::check/$1');
-        $routes->post('attempts/(:num)/hints',         'ChallengeApiController::hint/$1');
-        $routes->post('attempts/(:num)/complete',      'ChallengeApiController::complete/$1');
-        $routes->post('attempts/(:num)/abandon',       'ChallengeApiController::abandon/$1');
-
-        $routes->post('events',            'EventApiController::ingest');
-        $routes->post('audio-events',      'AudioApiController::ingest');
-        $routes->get('progress',           'ProgressApiController::show');
-    });
-});
-
-// ---------------------------------------------------------------- ADMIN
-$routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static function ($routes) {
-
-    $routes->get('login',   'AuthController::loginForm');
-    $routes->post('login',  'AuthController::login');
-    $routes->get('logout',  'AuthController::logout');
-
-    $routes->group('', ['filter' => 'staffAuth'], static function ($routes) {
-
-        $routes->get('/',            'DashboardController::index');
-        $routes->get('dashboard',    'DashboardController::index');
-
-        // Akun sendiri — guru & admin
-        $routes->get('akun/sandi',   'AccountController::passwordForm');
-        $routes->post('akun/sandi',  'AccountController::changePassword');
-
-        // Data penelitian — guru & admin (scope guru dibatasi sekolahnya)
-        $routes->get('peserta',                  'ParticipantController::index');
-        $routes->get('peserta/(:num)',           'ParticipantController::show/$1');
-        $routes->post('peserta/(:num)/reset-sandi', 'ParticipantController::resetPassword/$1');
-        $routes->get('sesi',                     'SessionController::index');
-        $routes->get('sesi/(:num)',              'SessionController::show/$1');
-        $routes->get('sesi/(:num)/event',        'SessionController::timeline/$1');
-        $routes->get('analitik/level',           'AnalyticsController::levels');
-        $routes->get('analitik/node',            'AnalyticsController::nodes');
-        $routes->get('analitik/node/(:num)',     'AnalyticsController::node/$1');
-        $routes->get('analitik/butir',           'AnalyticsController::items');
-        $routes->get('analitik/indikator',       'AnalyticsController::indicators');
-        $routes->get('analitik/prepost',         'AnalyticsController::prePost');
-        $routes->get('masukan',                  'FeedbackController::index');
-
-        // Export — guru & admin, tetapi mode non-anonim hanya admin
-        $routes->get('ekspor',                   'ExportController::index');
-        $routes->post('ekspor/xlsx',             'ExportController::xlsx');
-        $routes->post('ekspor/pdf',              'ExportController::pdf');
-        $routes->get('ekspor/unduh/(:num)',      'ExportController::download/$1');
-
-        // Konten — admin saja
-        $routes->group('', ['filter' => 'staffRole:admin'], static function ($routes) {
-
-            $routes->get('konten',                       'ContentController::index');
-            $routes->get('konten/level/(:num)',          'ContentController::level/$1');
-            $routes->post('konten/level/(:num)',         'ContentController::updateLevel/$1');
-            $routes->get('konten/node/(:num)',           'ContentController::node/$1');
-            $routes->post('konten/node/(:num)',          'ContentController::updateNode/$1');
-            $routes->post('konten/node/(:num)/item',     'ContentController::createItem/$1');
-            $routes->post('konten/item/(:num)',          'ContentController::updateItem/$1');
-            $routes->post('konten/item/(:num)/hapus',    'ContentController::deleteItem/$1');
-            $routes->post('konten/item/(:num)/opsi',     'ContentController::saveOptions/$1');
-            $routes->get('konten/impor-bank',            'ContentController::importForm');
-            $routes->post('konten/impor-bank/pratinjau', 'ContentController::importPreview');
-            $routes->post('konten/impor-bank/jalankan',  'ContentController::importRun');
-            $routes->get('konten/impor-bank/templat',    'ContentController::importTemplate');
-            $routes->get('konten/bacaan/(:num)',         'ContentController::passages/$1');
-            $routes->post('konten/bacaan/(:num)',        'ContentController::savePassages/$1');
-            $routes->get('konten/pustaka/(:num)',        'ContentController::library/$1');
-            $routes->post('konten/pustaka/(:num)',       'ContentController::saveLibrary/$1');
-            $routes->get('konten/dialog/(:num)',         'ContentController::dialogues/$1');
-            $routes->post('konten/dialog/(:num)',        'ContentController::saveDialogues/$1');
-            $routes->get('konten/narasi',                'NarrationController::index');
-            $routes->get('konten/narasi/unggah',         'NarrationController::uploadForm');
-            $routes->post('konten/narasi/unggah',        'NarrationController::upload');
-            $routes->post('konten/narasi/impor-folder',  'NarrationController::importFolder');
-            $routes->post('konten/narasi/setujui',       'NarrationController::approveAll');
-            $routes->get('konten/narasi/daftar-rekaman', 'NarrationController::recordingList');
-            $routes->post('konten/verifikasi',           'ContentController::verify');
-
-            $routes->get('media',                        'MediaController::index');
-            $routes->get('media/kelengkapan',            'MediaController::checklist');
-            $routes->post('media/unggah',                'MediaController::upload');
-            $routes->post('media/(:num)/nonaktif',       'MediaController::deactivate/$1');
-            $routes->get('media/audio',                  'MediaController::audioIndex');
-            $routes->post('media/audio/unggah',          'MediaController::uploadAudio');
-            $routes->post('media/audio/(:num)/setujui',  'MediaController::approveAudio/$1');
-            $routes->post('media/pindai',                'MediaController::scan');
-
-            $routes->get('studi',                        'StudyController::index');
-            $routes->post('studi',                       'StudyController::store');
-            $routes->post('studi/(:num)',                'StudyController::update/$1');
-            $routes->get('studi/rilis',                  'StudyController::releases');
-            $routes->post('studi/rilis',                 'StudyController::storeRelease');
-            $routes->post('studi/rilis/(:num)/aktifkan', 'StudyController::activateRelease/$1');
-            $routes->get('studi/skoring',                'StudyController::scoringProfiles');
-            $routes->post('studi/skoring',               'StudyController::storeScoringProfile');
-
-            $routes->get('tata-kelola',                      'GovernanceController::index');
-            $routes->post('tata-kelola/hapus/pratinjau',     'GovernanceController::deletePreview');
-            $routes->post('tata-kelola/hapus/(:num)/jalankan','GovernanceController::deleteExecute/$1');
-            $routes->post('tata-kelola/hapus/(:num)/batal',  'GovernanceController::deleteCancel/$1');
-            $routes->get('tata-kelola/audit',                'GovernanceController::audit');
-            $routes->post('tata-kelola/retensi',             'GovernanceController::runRetention');
-
-            $routes->get('sekolah',                  'SchoolController::index');
-            $routes->post('sekolah/gabung-otomatis', 'SchoolController::autoMerge');
-            $routes->post('sekolah/(:num)/gabung',   'SchoolController::merge/$1');
-            $routes->post('sekolah/(:num)/sahkan',   'SchoolController::verify/$1');
-
-            $routes->get('staf',                  'StaffController::index');
-            $routes->post('staf',                 'StaffController::store');
-            $routes->post('staf/(:num)',          'StaffController::update/$1');
-            $routes->post('staf/(:num)/sandi',    'StaffController::resetPassword/$1');
-            $routes->post('staf/(:num)/nonaktif', 'StaffController::deactivate/$1');
-        });
-    });
-});
-
-// ---------------------------------------------------------------- API ADMIN
-$routes->group('api/admin', [
-    'namespace' => 'App\Controllers\Api',
-    'filter'    => ['jsonResponse', 'staffAuth'],   // header JSON + X-Request-Id juga untuk API admin
-], static function ($routes) {
-    $routes->get('summary',          'AdminApiController::summary');
-    $routes->get('levels',           'AdminApiController::levels');
-    $routes->get('nodes',            'AdminApiController::nodes');
-    $routes->get('items',            'AdminApiController::items');
-    $routes->get('indicators',       'AdminApiController::indicators');
-    $routes->get('prepost',          'AdminApiController::prePost');
-    $routes->get('participants',     'AdminApiController::participants');
-    $routes->get('sessions/(:num)/timeline', 'AdminApiController::timeline/$1');
-    $routes->get('exports/(:num)/status',    'AdminApiController::exportStatus/$1');
-});
-```
-
-`$routes->setAutoRoute(false);` — routing otomatis dimatikan.
+Pemeriksaan siswa ditulis sekali di trait `App\Filters\ParticipantCheck` (status `OK` / `NO_LOGIN` / `MUST_CHANGE` / `NO_SESSION`) dan dipakai ketiga filter siswa. Kode layar `screen_viewed`: `gate`, `intro`, `map`, `region`, `dialogue`, `brief`, `challenge`, `finished`, `result`, `region_done`, `ending`, `library_index`, `library` / `library_locked`, `profile`, `reflection`, `change_password`.
 
 ---
 
-## Route Reference
+## Route — permainan (HTML)
 
-### Game (HTML)
+Namespace `App\Controllers\Game`. Filter global `locale` dan `secureheaders` berlaku di semua baris dan tidak diulang di kolom Filter. Semua POST juga melewati `csrf`.
 
-| Method | URI | Controller::method | Param | Auth | Role | Tujuan | Response |
-|---|---|---|---|---|---|---|---|
-| GET | `/` | HomeController::index | — | tidak | — | logo + satu tombol Mulai | HTML |
-| GET | `/mulai` | HomeController::start | — | tidak | — | belum login: pilih "Saya baru" / "Saya sudah punya akun"; sudah login: redirect `/gerbang` | HTML / redirect |
-| GET | `/persetujuan` | RegisterController::consent | — | tidak | — | layar persetujuan penelitian | HTML |
-| POST | `/persetujuan` | RegisterController::storeConsent | — | tidak | — | simpan centang consent ke session | redirect `/daftar` |
-| GET | `/daftar` | RegisterController::form | — | tidak | — | formulir demographic | HTML |
-| POST | `/daftar` | RegisterController::store | — | tidak | — | buat akun siswa + participant + sesi | redirect `/intro` |
-| GET | `/masuk` | LoginController::form | — | tidak | — | form login siswa | HTML |
-| POST | `/masuk` | LoginController::login | — | tidak | — | login + lanjutkan/buat sesi | redirect tujuan tersimpan atau `/mulai`, atau `/ganti-sandi` |
-| GET | `/ganti-sandi` | LoginController::changePasswordForm | — | login | — | form ganti sandi | HTML |
-| POST | `/ganti-sandi` | LoginController::changePassword | — | login | — | simpan sandi baru | redirect `/mulai` |
-| GET | `/keluar` | LoginController::logout | — | login | — | keluar akun | redirect `/` |
-| POST | `/bahasa` | HomeController::setLocale | — | opsional | — | ganti bahasa | redirect balik |
-| GET | `/gerbang` | GateController::index | — | ya | — | belum menonton cerita pembuka → `/intro`; selain itu pilihan pemain lama | HTML / redirect |
-| GET | `/gerbang/peta` | GateController::map | — | ya | — | flash `curtain=map` | redirect `/peta` |
-| GET | `/intro` | GateController::intro | — | ya | — | cerita pembuka; "Lewati" hanya bila sudah pernah menonton | HTML |
-| GET | `/intro/selesai` | GateController::finishIntro | — | ya | — | isi `intro_seen_at` (idempoten), event `intro_completed`, flash `curtain=map` | redirect `/peta` |
-| GET | `/peta` | MapController::kedu | — | ya | — | peta 3 wilayah + narasi `map_intro`; flash `curtain=map` → tirai "Membuka Peta Kedu"; overlay "Kenali {wilayah}" (`region_intro`) per wilayah + lencana "Belum didengar"; tirai wilayah pada pin/kartu; belum menonton cerita pembuka → `/intro` | HTML / redirect |
-| GET | `/wilayah/{code}` | MapController::level | level code | ya | — | peta 5 pos | HTML; wilayah baru terbuka yang dialognya belum tampil → redirect `/dialog/{code}` |
-| GET | `/dialog/{code}` | DialogueController::show | level code | ya | — | dialog pembuka wilayah bernarasi (kartu bab, pose, efek, audio); menandai dialog sudah tampil di sesi login | HTML |
-| GET | `/tuntas/{code}` | DialogueController::done | level code | ya | — | adegan wilayah tuntas (`level_done`, Tahap 3); boleh ditonton ulang | HTML; wilayah belum tuntas → redirect `/wilayah/{code}` |
-| GET | `/misi/{code}/{seq}` | ChallengeController::brief | code, 1..5 | ya | — | kartu misi | HTML; gerbang dialog sama dengan `/wilayah` |
-| GET | `/tantangan/{code}/{seq}` | ChallengeController::play | code, 1..5 | ya | — | layar tantangan | HTML; gerbang dialog sama dengan `/wilayah`, diperiksa sebelum attempt dibuka |
-| GET | `/hasil/{code}/{seq}` | ChallengeController::result | code, 1..5 | ya | — | riwayat hasil node | HTML |
-| GET | `/selesai/{attemptId}` | ChallengeController::finished | attempt id | ya | — | layar bintang & skor | HTML |
-| GET | `/pustaka` | LibraryController::index | — | ya | — | rak Pustaka Kedu: satu kartu per wilayah beserta status Pustakanya | HTML |
-| GET | `/pustaka/{code}` | LibraryController::show | level code | ya | — | buku Pustaka {wilayah}; wilayah belum tuntas → halaman terkunci (tanpa `library_opened`) | HTML; wilayah belum terbuka → redirect `/peta` |
-| GET | `/profil` | ProfileController::index | — | ya | — | profil peserta | HTML |
-| GET | `/penutup` | DialogueController::ending | — | ya | — | penutup cerita sinematik (`ending`, Tahap 3); slide akhir ke `/refleksi`; boleh ditonton ulang | HTML; belum semua node tuntas → redirect `/peta` |
-| GET | `/refleksi` | ReflectionController::index | — | ya | — | Balai Refleksi | HTML |
-| POST | `/refleksi` | ReflectionController::store | — | ya | — | simpan kritik & saran | redirect |
+### Tanpa login (termasuk pendaftaran)
 
-### API Game (JSON)
-
-| Method | URI | Controller::method | Auth | Tujuan |
+| Method | Path | Handler | Filter | Keterangan |
 |---|---|---|---|---|
-| GET | `/api/auth/username-available?u=` | AuthApiController::usernameAvailable | tidak (rate-limited) | `{available: bool}` untuk umpan balik saat mengetik |
-| GET | `/api/schools/lookup?npsn=` | SchoolApiController::lookup | tidak (rate-limited) | `{found, school: {npsn, name, level, stage, status, subdistrict, village, district_code, district_name, meta}}` — kartu "Benar ini sekolahmu?" |
-| GET | `/api/session` | SessionApiController::show | sesi | bootstrap payload |
-| POST | `/api/session/locale` | SessionApiController::setLocale | sesi | ganti bahasa |
-| POST | `/api/session/heartbeat` | SessionApiController::heartbeat | sesi | update aktivitas |
-| POST | `/api/session/complete` | SessionApiController::complete | sesi | tandai sesi selesai |
-| GET | `/api/levels` | ContentApiController::levels | sesi | 3 level + status unlock |
-| GET | `/api/levels/{id}/nodes` | ContentApiController::nodes | sesi | 5 node + status |
-| GET | `/api/nodes/{id}` | ContentApiController::node | sesi | metadata node (tanpa item) |
-| GET | `/api/library/{levelId}` | ContentApiController::library | sesi | halaman pustaka; kunci sama dengan `/pustaka/{code}` → `LIBRARY_LOCKED` sebelum wilayah tuntas |
-| POST | `/api/nodes/{id}/attempts` | ChallengeApiController::open | sesi | buka node → attempt + payload soal |
-| POST | `/api/attempts/{id}/responses` | ChallengeApiController::respond | sesi | satu jawaban item |
-| POST | `/api/attempts/{id}/check` | ChallengeApiController::check | sesi | periksa batch jawaban |
-| POST | `/api/attempts/{id}/hints` | ChallengeApiController::hint | sesi | buka petunjuk |
-| POST | `/api/attempts/{id}/complete` | ChallengeApiController::complete | sesi | tutup attempt + skor |
-| POST | `/api/attempts/{id}/abandon` | ChallengeApiController::abandon | sesi | tinggalkan attempt |
-| POST | `/api/events` | EventApiController::ingest | sesi | batch raw event |
-| POST | `/api/audio-events` | AudioApiController::ingest | sesi | telemetry audio |
-| GET | `/api/progress` | ProgressApiController::show | sesi | progres authoritative |
+| GET | `/` | `HomeController::index` | `clientHints` | Logo dan satu tombol Mulai → `/mulai` |
+| GET | `/mulai` | `HomeController::start` | `clientHints` | Sudah masuk → redirect `/gerbang`; belum → pilihan "Saya baru" / "Sudah punya akun" |
+| GET | `/daftar` | `RegisterController::index` | `clientHints` | Redirect ke langkah pertama yang belum lengkap |
+| GET | `/daftar/{n}` | `RegisterController::step/$1` | `clientHints` | Langkah 1 Tentang kamu · 2 Sekolah dan daerah · 3 Akun rahasiamu |
+| POST | `/daftar/{n}` | `RegisterController::saveStep/$1` | `clientHints` | Simpan langkah 1–2 ke session; langkah 3 membuat akun → redirect `/intro` |
+| GET | `/masuk` | `LoginController::form` | `clientHints` | Form masuk siswa; sudah masuk → `/mulai` |
+| POST | `/masuk` | `LoginController::login` | `clientHints` | Masuk + lanjutkan/buat sesi → tujuan tersimpan atau `/mulai`; wajib ganti sandi → `/ganti-sandi` |
+| POST | `/bahasa` | `HomeController::setLocale` | — | Ganti bahasa → redirect ke `redirect_to` (path internal) |
 
-### Admin (HTML) — ringkas
+### Sudah masuk, sandi belum tentu sah (`participantAuth`, `screenView`)
 
-| Method | URI | Controller::method | Role | Tujuan |
-|---|---|---|---|---|
-| GET | `/admin/login` | AuthController::loginForm | — | form login |
-| POST | `/admin/login` | AuthController::login | — | proses login |
-| GET | `/admin/logout` | AuthController::logout | staff | keluar |
-| GET | `/admin/akun/sandi` | AccountController::passwordForm | guru, admin | form ganti sandi sendiri |
-| POST | `/admin/akun/sandi` | AccountController::changePassword | guru, admin | ganti sandi sendiri |
-| GET | `/admin/dashboard` | DashboardController::index | guru, admin | KPI + chart |
-| GET | `/admin/peserta` | ParticipantController::index | guru, admin | daftar peserta (scoped) |
-| GET | `/admin/peserta/{id}` | ParticipantController::show | guru, admin | profil & capaian |
-| POST | `/admin/peserta/{id}/reset-sandi` | ParticipantController::resetPassword | guru (sekolahnya), admin | reset sandi siswa, tampilkan sandi sementara sekali |
-| GET | `/admin/sesi` | SessionController::index | guru, admin | daftar sesi |
-| GET | `/admin/sesi/{id}` | SessionController::show | guru, admin | detail sesi + attempt |
-| GET | `/admin/sesi/{id}/event` | SessionController::timeline | guru, admin | linimasa event |
-| GET | `/admin/analitik/level` | AnalyticsController::levels | guru, admin | skor per level |
-| GET | `/admin/analitik/node` | AnalyticsController::nodes | guru, admin | heatmap kesulitan |
-| GET | `/admin/analitik/node/{id}` | AnalyticsController::node | guru, admin | drilldown node |
-| GET | `/admin/analitik/butir` | AnalyticsController::items | guru, admin | analisis butir p & D |
-| GET | `/admin/analitik/indikator` | AnalyticsController::indicators | guru, admin | penguasaan indikator |
-| GET | `/admin/analitik/prepost` | AnalyticsController::prePost | guru, admin | perbandingan fase |
-| GET | `/admin/masukan` | FeedbackController::index | guru, admin | kritik & saran |
-| GET/POST | `/admin/ekspor*` | ExportController | guru, admin | export XLSX/PDF |
-| GET/POST | `/admin/konten*` | ContentController | **admin** | kelola konten, teks bacaan, impor workbook bank soal |
-| GET | `/admin/konten/narasi` | NarrationController::index | **admin** | status rekaman per bahasa: 88 baris naskah + petunjuk arena `cari` (96 baris dengan bank soal produksi) |
-| GET/POST | `/admin/konten/narasi/unggah` | NarrationController::uploadForm / upload | **admin** | unggah banyak rekaman sekaligus + laporan hasil |
-| POST | `/admin/konten/narasi/impor-folder` | NarrationController::importFolder | **admin** | impor dari `public/assets/audio/narasi/{id\|en}/` |
-| POST | `/admin/konten/narasi/setujui` | NarrationController::approveAll | **admin** | setujui semua narasi draft satu bahasa |
-| GET | `/admin/konten/narasi/daftar-rekaman` | NarrationController::recordingList | **admin** | unduh daftar rekaman (XLSX) untuk pengisi suara |
-| GET | `/admin/media/kelengkapan` | MediaController::checklist | **admin** | daftar aset yang belum diunggah |
-| GET/POST | `/admin/media*` | MediaController | **admin** | kelola media & audio |
-| GET/POST | `/admin/studi*` | StudyController | **admin** | studi, fase, rilis, skoring |
-| GET/POST | `/admin/tata-kelola*` | GovernanceController | **admin** | hapus data, retensi, audit |
-| GET/POST | `/admin/sekolah*` | SchoolController | **admin** | cari NPSN, gabung/sahkan nama sekolah ketikan siswa |
-| GET/POST | `/admin/staf*` | StaffController | **admin** | akun guru/admin; sekolah guru lewat NPSN atau daftar sekolah yang dipakai |
+| Method | Path | Handler | Keterangan |
+|---|---|---|---|
+| GET | `/ganti-sandi` | `LoginController::changePasswordForm` | Form ganti sandi (wajib setelah reset oleh guru) |
+| POST | `/ganti-sandi` | `LoginController::changePassword` | Simpan sandi baru, masuk otomatis → `/mulai` |
+| GET | `/keluar` | `LoginController::logout` | Keluar → `/` |
+
+### Bermain (`gameSession`, `screenView`)
+
+`{code}` = kode wilayah (`temanggung`, `magelang`, `wonosobo`); `{seq}` = urutan tantangan 1–4 di wilayah itu.
+
+| Method | Path | Handler | Keterangan |
+|---|---|---|---|
+| GET | `/gerbang` | `GateController::index` | Belum menonton cerita pembuka → `/intro`; selain itu pilihan pemain lama |
+| GET | `/gerbang/peta` | `GateController::map` | Redirect `/peta` dengan flash `curtain=map` |
+| GET | `/intro` | `GateController::intro` | Cerita pembuka; "Lewati" hanya bila sudah pernah menonton sampai selesai |
+| GET | `/intro/selesai` | `GateController::finishIntro` | Isi `intro_seen_at` (sekali), event `intro_completed` → `/peta` |
+| GET | `/peta` | `MapController::kedu` | Peta Kedu: tiga wilayah |
+| GET | `/wilayah/{code}` | `MapController::level/$1` | Peta wilayah: empat tantangan |
+| GET | `/dialog/{code}` | `DialogueController::show/$1` | Dialog pembuka wilayah (`level_open`) |
+| GET | `/tuntas/{code}` | `DialogueController::done/$1` | Adegan wilayah tuntas (`level_done`) |
+| GET | `/penutup` | `DialogueController::ending` | Penutup cerita (`ending`) setelah 12 tantangan tuntas |
+| GET | `/misi/{code}/{seq}` | `ChallengeController::brief/$1/$2` | Kartu misi |
+| GET | `/tantangan/{code}/{seq}` | `ChallengeController::play/$1/$2` | Layar tantangan (membuka atau melanjutkan attempt) |
+| GET | `/hasil/{code}/{seq}` | `ChallengeController::result/$1/$2` | Riwayat pengerjaan selesai satu tantangan |
+| GET | `/selesai/{attemptId}` | `ChallengeController::finished/$1` | Layar bintang satu pengerjaan |
+| GET | `/pustaka` | `LibraryController::index` | Rak Pustaka Kedu |
+| GET | `/pustaka/{code}` | `LibraryController::show/$1` | Buku Pustaka {wilayah} atau halaman terkunci |
+| GET | `/profil` | `ProfileController::index` | Profil dan capaian sesi berjalan |
+| GET | `/refleksi` | `ReflectionController::index` | Balai Refleksi |
+| POST | `/refleksi` | `ReflectionController::store` | Simpan kritik & saran → `/refleksi` |
+
+Alur siswa baru: `/` → `/mulai` → `/daftar/1` → `/daftar/2` → `/daftar/3` → `/intro` → `/intro/selesai` → `/peta` → `/dialog/temanggung` → `/wilayah/temanggung` → `/misi/temanggung/1` → `/tantangan/temanggung/1` → API → `/selesai/{id}`. Attempt yang menuntaskan wilayah → `/tuntas/{code}` → wilayah berikutnya, atau di wilayah terakhir `/penutup` → `/refleksi`.
 
 ---
 
-## Controller — Spesifikasi
+## Route — API permainan (JSON)
 
-### `Game\HomeController`
+Namespace `App\Controllers\Api`, grup `api` dengan filter `jsonResponse`. POST melewati `csrf`.
 
-| Method | Request | Validasi | Service/Model | Business rule | Response |
+| Method | Path | Handler | Filter | Batas | Tujuan |
 |---|---|---|---|---|---|
-| `index()` | GET | — | — | satu tombol Mulai → `/mulai`, sama untuk siswa yang sudah maupun belum login; kirim `hideBrand => true` agar HUD tidak mengulang merek | view `game/welcome` |
-| `start()` | GET | — | — | `participant_id` dan `game_session_id` ada di sesi → redirect `/gerbang`; selain itu pilihan akun | view `game/start` atau redirect |
-| `setLocale()` | POST `locale`, `redirect_to` | `locale: required|valid_locale` | `SessionService::setLocale()` | bila ada sesi → simpan ke `game_sessions.locale` + event `locale_changed`. **Tidak** membuat sesi baru, tidak mereset progres. Selalu simpan juga ke `session('locale')` | redirect ke `redirect_to` yang sudah divalidasi berada di domain sendiri |
+| GET | `/api/auth/username-available?u=` | `AuthApiController::usernameAvailable` | `jsonResponse` | 20/menit per hash IP | Umpan balik nama pengguna saat mengetik di `/daftar/3` |
+| GET | `/api/schools/lookup?npsn=` | `SchoolApiController::lookup` | `jsonResponse` | 60/menit per hash IP | Kartu "Benar ini sekolahmu?" di `/daftar/2` |
+| GET | `/api/session` | `SessionApiController::show` | `jsonResponse`, `apiSession` | — | Bootstrap payload |
+| POST | `/api/session/locale` | `SessionApiController::setLocale` | `jsonResponse`, `apiSession` | — | Ganti bahasa sesi |
+| POST | `/api/session/heartbeat` | `SessionApiController::heartbeat` | `jsonResponse`, `apiSession` | — | Perbarui aktivitas |
+| POST | `/api/session/complete` | `SessionApiController::complete` | `jsonResponse`, `apiSession` | — | Tandai sesi selesai bila semua tantangan tuntas |
+| GET | `/api/levels` | `ContentApiController::levels` | `jsonResponse`, `apiSession` | — | Tiga wilayah + status |
+| GET | `/api/levels/{id}/nodes` | `ContentApiController::nodes/$1` | `jsonResponse`, `apiSession` | — | Empat tantangan satu wilayah + status |
+| GET | `/api/nodes/{id}` | `ContentApiController::node/$1` | `jsonResponse`, `apiSession` | — | Metadata tantangan (tanpa soal) + pengerjaan terbaik |
+| GET | `/api/library/{levelId}` | `ContentApiController::library/$1` | `jsonResponse`, `apiSession` | — | Halaman Pustaka satu wilayah |
+| POST | `/api/nodes/{id}/attempts` | `ChallengeApiController::open/$1` | `jsonResponse`, `apiSession` | 120/menit per sesi (`attempts`) | Buka/lanjutkan attempt + payload soal |
+| POST | `/api/attempts/{id}/responses` | `ChallengeApiController::respond/$1` | `jsonResponse`, `apiSession` | 120/menit per sesi (`attempts`) | Satu ketukan benda Cari Objek |
+| POST | `/api/attempts/{id}/check` | `ChallengeApiController::check/$1` | `jsonResponse`, `apiSession` | 120/menit per sesi (`attempts`) | "Cek jawabanku" Susun Gambar, Isi Rumpang, Benar atau Salah |
+| POST | `/api/attempts/{id}/hints` | `ChallengeApiController::hint/$1` | `jsonResponse`, `apiSession` | 120/menit per sesi (`attempts`) | Buka teks petunjuk |
+| POST | `/api/attempts/{id}/complete` | `ChallengeApiController::complete/$1` | `jsonResponse`, `apiSession` | — | Cadangan klien: tutup/ambil hasil pengerjaan |
+| POST | `/api/attempts/{id}/abandon` | `ChallengeApiController::abandon/$1` | `jsonResponse`, `apiSession` | — | Tinggalkan attempt |
+| POST | `/api/events` | `EventApiController::ingest` | `jsonResponse`, `apiSession` | 120/menit per sesi (`events`) | Batch raw event |
+| POST | `/api/audio-events` | `AudioApiController::ingest` | `jsonResponse`, `apiSession` | 120/menit per sesi (`events`) | Telemetri audio |
+| GET | `/api/progress` | `ProgressApiController::show` | `jsonResponse`, `apiSession` | — | Progres authoritative |
 
+Batas per sesi dihitung per *bucket*: keempat endpoint `attempts` berbagi satu jatah, `/api/events` dan `/api/audio-events` berbagi jatah `events`.
 
-### `Game\GateController`
+---
 
-Turunan `BaseGameController`; seluruh route-nya di grup `gameSession`, jadi kepemilikan sesi dan data HUD terjamin.
+## Route — panel admin (HTML)
 
-| Method | Service/Model | Business rule | Response |
+Namespace `App\Controllers\Admin`, grup `admin`. Panel hanya berbahasa Indonesia. POST melewati `csrf`.
+
+### Tanpa login
+
+| Method | Path | Handler | Filter | Keterangan |
+|---|---|---|---|---|
+| GET | `/admin/login` | `AuthController::loginForm` | — | Form masuk staf; sudah masuk → `/admin/dashboard` |
+| POST | `/admin/login` | `AuthController::login` | — | Proses masuk |
+| GET | `/admin/logout` | `AuthController::logout` | — | Keluar → `/admin/login` (di luar `staffAuth`, jadi tetap terbuka saat sandi wajib diganti) |
+
+### Guru dan admin (`staffAuth`)
+
+Data siswa untuk guru selalu dibatasi sekolahnya (lihat [Otorisasi](#otorisasi)).
+
+| Method | Path | Handler | Keterangan |
 |---|---|---|---|
-| `index()` | — | `introGate()`: `participants.intro_seen_at` kosong → redirect `/intro`; selain itu sapaan "Selamat datang kembali, {display_name ?: username}!" + kartu "Lihat cerita pembuka" (`/intro`) dan "Langsung ke peta" (`/gerbang/peta`) | view `game/start-choice` + `hudData()` |
-| `map()` | — | `toMap()`: flash `curtain=map` untuk layar tirai "Membuka Peta Kedu" | redirect `/peta` |
-| `intro()` | `ContentRepository::dialogues(null, 'intro')` → `DialogueModel::global('intro')` | slide dari `dialogues` context `intro` (tokoh, pose, efek, judul, latar, audio disetujui); `canSkip` = `intro_seen_at` terisi — bila `false` nav "Lewati" tidak dirender. "Lewati" menuju `/gerbang/peta` agar tirai peta ikut tampil | view `game/intro` |
-| `finishIntro()` | `ParticipantModel::markIntroSeen()`, `EventService` | isi `intro_seen_at` hanya bila masih kosong; event `intro_completed` { first: bool } setiap kali | `toMap()` → redirect `/peta` + flash `curtain=map` |
+| GET | `/admin` | `DashboardController::index` | Beranda |
+| GET | `/admin/dashboard` | `DashboardController::index` | Beranda |
+| GET | `/admin/akun/sandi` | `AccountController::passwordForm` | Ganti sandi sendiri |
+| POST | `/admin/akun/sandi` | `AccountController::changePassword` | Simpan sandi baru |
+| GET | `/admin/peserta` | `ParticipantController::index` | Daftar siswa |
+| GET | `/admin/peserta/{id}` | `ParticipantController::show/$1` | Profil siswa |
+| POST | `/admin/peserta/{id}/reset-sandi` | `ParticipantController::resetPassword/$1` | Sandi sementara siswa |
+| GET | `/admin/sesi` | `SessionController::index` | Daftar sesi bermain |
+| GET | `/admin/sesi/{id}` | `SessionController::show/$1` | Detail sesi: attempt, jawaban, `item_tries`, `device_logs` |
+| GET | `/admin/sesi/{id}/event` | `SessionController::timeline/$1` | Catatan aktivitas (raw event) |
+| GET | `/admin/masukan` | `FeedbackController::index` | Kritik & saran |
+| GET | `/admin/ekspor` | `ExportController::index` | Form unduh data + riwayat |
+| POST | `/admin/ekspor/xlsx` | `ExportController::xlsx` | Bangun berkas XLSX |
+| POST | `/admin/ekspor/pdf` | `ExportController::pdf` | Laporan PDF satu siswa |
+| GET | `/admin/ekspor/unduh/{id}` | `ExportController::download/$1` | Unduh berkas |
 
-### `Game\RegisterController`
+### Admin saja (`staffAuth`, `staffRole:admin`)
 
-| Method | Request | Validasi | Business rule |
+| Method | Path | Handler | Keterangan |
 |---|---|---|---|
-| `consent()` | GET | — | tampilkan teks persetujuan versi aktif |
-| `storeConsent()` | POST `participant_agree`, `guardian_agree`, `guardian_name` | `participant_agree: required`, `guardian_agree: required` bila `study.require_consent = 1` | simpan ke flash session + stempel waktu; **tidak** menulis DB sebelum peserta terbentuk |
-| `form()` | GET | — | bila belum consent dan study mewajibkan → redirect `/persetujuan` |
-| `store()` | POST (lihat di bawah) | lihat di bawah | lihat alur di bawah; redirect `/intro` |
+| GET | `/admin/konten` | `ContentController::index` | Ringkasan wilayah, tantangan, jumlah soal & variasi |
+| GET | `/admin/konten/level/{id}` | `ContentController::level/$1` | Form wilayah |
+| POST | `/admin/konten/level/{id}` | `ContentController::updateLevel/$1` | Simpan wilayah |
+| GET | `/admin/konten/node/{id}` | `ContentController::node/$1` | Form tantangan + daftar soal per variasi |
+| POST | `/admin/konten/node/{id}` | `ContentController::updateNode/$1` | Simpan tantangan |
+| POST | `/admin/konten/node/{id}/item` | `ContentController::createItem/$1` | Tambah soal |
+| POST | `/admin/konten/item/{id}` | `ContentController::updateItem/$1` | Simpan soal |
+| POST | `/admin/konten/item/{id}/hapus` | `ContentController::deleteItem/$1` | Hapus soal (atau nonaktifkan bila sudah dijawab) |
+| GET | `/admin/konten/impor-bank` | `ContentController::importForm` | Unggah workbook bank soal + riwayat impor |
+| POST | `/admin/konten/impor-bank/pratinjau` | `ContentController::importPreview` | Periksa workbook tanpa menulis |
+| POST | `/admin/konten/impor-bank/jalankan` | `ContentController::importRun` | Impor hasil pratinjau yang lolos |
+| GET | `/admin/konten/impor-bank/templat` | `ContentController::importTemplate` | Unduh templat workbook |
+| GET | `/admin/konten/bacaan/{levelId}` | `ContentController::passages/$1` | Teks bacaan satu wilayah |
+| POST | `/admin/konten/bacaan/{levelId}` | `ContentController::savePassages/$1` | Simpan teks bacaan |
+| GET | `/admin/konten/pustaka/{levelId}` | `ContentController::library/$1` | Halaman Pustaka satu wilayah |
+| POST | `/admin/konten/pustaka/{levelId}` | `ContentController::saveLibrary/$1` | Simpan halaman & media Pustaka |
+| GET | `/admin/konten/dialog/{levelId}` | `ContentController::dialogues/$1` | Cerita & dialog satu konteks (`?konteks=`; `levelId = 0` untuk konteks global) |
+| POST | `/admin/konten/dialog/{levelId}` | `ContentController::saveDialogues/$1` | Simpan slide |
+| POST | `/admin/konten/verifikasi` | `ContentController::verify` | Jalankan pemeriksaan konten, tampilkan temuan |
+| GET | `/admin/konten/narasi` | `NarrationController::index` | Status rekaman narasi per bahasa |
+| GET | `/admin/konten/narasi/unggah` | `NarrationController::uploadForm` | Form unggah banyak + laporan |
+| POST | `/admin/konten/narasi/unggah` | `NarrationController::upload` | Unggah banyak rekaman |
+| POST | `/admin/konten/narasi/impor-folder` | `NarrationController::importFolder` | Impor dari `public/assets/audio/narasi/{id\|en}/` |
+| POST | `/admin/konten/narasi/setujui` | `NarrationController::approveAll` | Setujui semua rekaman narasi draft satu bahasa |
+| GET | `/admin/konten/narasi/daftar-rekaman` | `NarrationController::recordingList` | Unduh daftar rekaman (XLSX) |
+| GET | `/admin/media` | `MediaController::index` | Gambar & video |
+| GET | `/admin/media/kelengkapan` | `MediaController::checklist` | Kelengkapan gambar & suara |
+| POST | `/admin/media/unggah` | `MediaController::upload` | Unggah gambar/video ke `asset_key` |
+| POST | `/admin/media/{id}/nonaktif` | `MediaController::deactivate/$1` | Nonaktifkan berkas |
+| GET | `/admin/media/audio` | `MediaController::audioIndex` | Rekaman suara |
+| POST | `/admin/media/audio/unggah` | `MediaController::uploadAudio` | Unggah rekaman (status `draft`) |
+| POST | `/admin/media/audio/{id}/setujui` | `MediaController::approveAudio/$1` | Setujui satu rekaman |
+| POST | `/admin/media/pindai` | `MediaController::scan` | Pindai keselarasan `media_assets` dengan berkas di disk |
+| GET | `/admin/studi` | `StudyController::index` | Daftar penelitian |
+| POST | `/admin/studi` | `StudyController::store` | Buat penelitian |
+| POST | `/admin/studi/{id}` | `StudyController::update/$1` | Ubah penelitian |
+| GET | `/admin/studi/rilis` | `StudyController::releases` | Versi permainan |
+| POST | `/admin/studi/rilis` | `StudyController::storeRelease` | Buat versi |
+| POST | `/admin/studi/rilis/{id}/aktifkan` | `StudyController::activateRelease/$1` | Aktifkan versi |
+| GET | `/admin/tata-kelola` | `GovernanceController::index` | Hapus data & perawatan |
+| POST | `/admin/tata-kelola/hapus/pratinjau` | `GovernanceController::deletePreview` | Langkah 1: hitung baris terdampak |
+| POST | `/admin/tata-kelola/hapus/{id}/jalankan` | `GovernanceController::deleteExecute/$1` | Langkah 2: hapus dengan konfirmasi `HAPUS` |
+| POST | `/admin/tata-kelola/hapus/{id}/batal` | `GovernanceController::deleteCancel/$1` | Batalkan pratinjau |
+| GET | `/admin/tata-kelola/audit` | `GovernanceController::audit` | Riwayat aktivitas (`audit_logs`) |
+| POST | `/admin/tata-kelola/retensi` | `GovernanceController::runRetention` | Jalankan retensi sekarang |
+| GET | `/admin/sekolah` | `SchoolController::index` | Direktori sekolah |
+| POST | `/admin/sekolah/gabung-otomatis` | `SchoolController::autoMerge` | Gabungkan semua nama yang cocok jelas |
+| POST | `/admin/sekolah/{id}/gabung` | `SchoolController::merge/$1` | Gabungkan satu entri belum terverifikasi |
+| POST | `/admin/sekolah/{id}/sahkan` | `SchoolController::verify/$1` | Sahkan entri sebagai sekolah ber-NPSN |
+| GET | `/admin/staf` | `StaffController::index` | Akun guru & admin |
+| POST | `/admin/staf` | `StaffController::store` | Buat akun |
+| POST | `/admin/staf/{id}` | `StaffController::update/$1` | Ubah akun |
+| POST | `/admin/staf/{id}/sandi` | `StaffController::resetPassword/$1` | Sandi sementara staf |
+| POST | `/admin/staf/{id}/nonaktif` | `StaffController::deactivate/$1` | Nonaktifkan akun |
 
-**Aturan validasi `store()`:**
+---
 
-```php
-[
-  'display_name'   => 'required|min_length[2]|max_length[150]',
-  'age'            => 'required|integer|greater_than[4]|less_than[81]',
-  'gender'         => 'required|in_list[laki-laki,perempuan,lainnya]',
-  'class_level'    => 'required|max_length[20]',
-  // Jalur NPSN = provinsi berdirektori (SchoolDirectory::requiresNpsn) dan tidak mencentang school_manual
-  'school_npsn'    => $byNpsn ? 'required|is_natural|exact_length[8]|known_npsn' : 'permit_empty|max_length[20]',
-  'school_manual'  => 'permit_empty|in_list[1]',
-  'school_name'    => $byNpsn ? 'permit_empty|max_length[200]' : 'required|min_length[3]|max_length[200]',
-  'country_code'   => 'required|max_length[5]',
-  'province_code'  => 'required_without[country_other]|permit_empty|max_length[10]',
-  'district_code'  => 'required_without[country_other]|permit_empty|max_length[10]',
-  'country_other'  => 'permit_empty|max_length[100]',
-  'phase'          => 'permit_empty|in_list[umum,pretest,posttest]',  // dipakai hanya bila study.allow_phase_choice = 1
-  'locale'         => 'permit_empty|valid_locale',
-  'username'       => 'required|valid_username|not_reserved_username|is_unique[participants.username]',
-  'password'       => 'required|strong_password[username]',
-  'password_confirm' => 'required|matches[password]',
-]
-```
+## Route — API panel admin (JSON)
 
-Bila `allow_phase_choice = 0`, fase selalu `research_studies.active_phase_code` dan field `phase` dari request diabaikan.
+Namespace `App\Controllers\Api`, grup `api/admin` dengan filter `jsonResponse` + `staffAuth`. Terbuka untuk guru dan admin; cakupan sekolah diterapkan di controller dan service.
 
-**Alur `store()` — termasuk metrik literasi keamanan digital:**
+| Method | Path | Handler | Tujuan |
+|---|---|---|---|
+| GET | `/api/admin/summary` | `AdminApiController::summary` | Hitungan data mentah (`AnalyticsService::summary()`) |
+| GET | `/api/admin/participants` | `AdminApiController::participants` | `{cohort, digital_security, ages}` |
+| GET | `/api/admin/sessions/{id}/timeline` | `AdminApiController::timeline/$1` | `{rows}` linimasa event satu sesi; sesi di luar sekolah guru → `403 FORBIDDEN` |
+| GET | `/api/admin/exports/{id}/status` | `AdminApiController::exportStatus/$1` | Status pembangunan berkas (dipanggil berkala `admin/export.js`) |
+
+Semua menerima filter query string yang sama dengan panel (`StaffScope::readFilters()`: `study_id`, `participant_id`, `level_id`, `node_id`, `school_id`, `class_level`, `province_code`, `locale`, `date_from`, `date_to`); `school_id` dipaksa ke sekolah guru.
+
+---
+
+## Controller permainan
+
+### `Game\BaseGameController`
+
+Dasar controller yang route-nya ada di grup `gameSession` (filter sudah memuat `GameContext`, jadi kepemilikan sesi tidak diperiksa ulang).
+
+| Method | Fungsi |
+|---|---|
+| `session()` / `participant()` | Sesi permainan dan peserta request ini |
+| `hudData()` | Data HUD setiap layar: `locale`, `participant` (`toSafeArray()`, tanpa `password_hash`), `progress` (`progressSummary()`), `lantern` (`lanternMap()`) |
+| `requireLevel($code)` / `requireNode($levelId, $seq)` | Wilayah/tantangan aktif, atau 404 |
+| `introGate()` | `participants.intro_seen_at` kosong → redirect `/intro` |
+| `dialogueGate($session, $level)` | Wilayah baru terbuka (status `open`) yang dialog pembukanya belum tampil pada sesi login ini → redirect `/dialog/{code}`. Tanda "sudah tampil" disimpan di session PHP `dialogues_shown`, bukan di database |
+| `toMap()` | Redirect `/peta` dengan flash `curtain=map` (tirai "Membuka Peta Kedu") |
+
+Status yang dipakai layar dan API berasal dari trait `GameProgress`:
+
+* **Wilayah:** `locked` (belum terbuka) / `open` (terbuka, belum ada tantangan selesai) / `in_progress` / `completed`. Wilayah terbuka bila `unlock_mode = free` atau `sequence <= session_progress.unlocked_level_sequence`. `entry` = `dialog/{code}` untuk wilayah `open`, selain itu `wilayah/{code}`.
+* **Tantangan:** tantangan ke-n terbuka bila n = 1 atau tantangan ke-(n−1) sudah `completed`; `unlock_mode = free` membuka semuanya.
+* **Pustaka:** `open` hanya bila wilayahnya `completed` (apa pun `unlock_mode`), `locked` bila wilayah terbuka tetapi belum tuntas, `unavailable` bila wilayah terkunci.
+
+### `Game\HomeController` (tanpa login)
+
+| Method | Aturan | Respons |
+|---|---|---|
+| `index()` | Satu tombol Mulai; `hideBrand = true` | view `game/welcome` |
+| `start()` | `participant_id` dan `game_session_id` ada → redirect `/gerbang`; selain itu pilihan akun | view `game/start` / redirect |
+| `setLocale()` | `locale: required\|valid_locale`; disimpan ke `session('locale')`; bila ada sesi permainan milik peserta → `SessionService::setLocale()` (event `locale_changed`). Tidak membuat sesi baru dan tidak menyentuh progres | redirect ke `safe_internal_url(redirect_to)` |
+
+### `Game\RegisterController` (pendaftaran 3 langkah)
+
+Seluruh langkah berjalan di server dan tetap bekerja tanpa JavaScript. Isian langkah 1–2 disimpan di session PHP `reg_wizard`; tidak ada data peserta yang ditulis sebelum langkah 3 berhasil. Membuka langkah yang lebih jauh dari langkah pertama yang belum lengkap dialihkan ke langkah itu.
+
+| Langkah | View | Aturan validasi (`rulesFor()`) |
+|---|---|---|
+| 1 Tentang kamu | `game/register/step-1` | `display_name: required\|min_length[2]\|max_length[150]`; `age: required\|integer` dalam `Config\Gelita::$registrationAge` (8–15); `gender: required\|in_list[laki-laki,perempuan]` |
+| 2 Sekolah dan daerah | `game/register/step-2` | `country_code`, `province_code`/`district_code` (`required_without[country_other]`), `country_other`; jalur NPSN (provinsi di `Config\Gelita::$schoolDirectoryProvinces`, yaitu 33, dan `school_manual` tidak dicentang): `school_npsn: required\|is_natural\|exact_length[8]\|known_npsn\|allowed_school_stage`; selain itu `school_name: required\|min_length[3]\|max_length[200]` |
+| 3 Akun rahasiamu | `game/register/step-3` | `username: required\|valid_username\|not_reserved_username\|is_unique[participants.username]`; `password: required\|strong_password[username]`; `password_confirm: required\|matches[password]`; `assent: required\|in_list[1]`; `locale: permit_empty\|valid_locale` |
+
+Langkah 2 menampilkan kartu sekolah dari NPSN (`SchoolDirectory::describe()`), atau centang "Sekolahku tidak ada di daftar" bila NPSN tidak dikenal. Langkah 3 menerima kebijakan sandi dalam bentuk klien (`PasswordPolicy::toClient()`).
+
+**Alur POST `/daftar/3`** (termasuk metrik literasi keamanan digital):
 
 ```text
-1. Hitung PasswordPolicy::check(password, username) SEBELUM validasi lain.
-2. Bila ini percobaan kirim pertama pada sesi pendaftaran ini
-   (session('reg_first_criteria') masih kosong)
-     → session('reg_first_criteria', met)          // 0..5, bukan isi sandi
-3. Bila sandi belum 'acceptable'
-     → session('reg_weak_count', +1)
-4. Jalankan seluruh validasi. Gagal → kembali ke form dengan:
-     - error per field (pesan sandi: lang('Auth.notStrongSubmit') / 'containsUsername' / 'notMatch')
-     - old() untuk semua field KECUALI password dan password_confirm (tidak pernah diisi ulang)
-5. Lolos → SessionService::registerAndStart($input + [
-     'first_submit_criteria' => session('reg_first_criteria'),
-     'weak_submit_count'     => session('reg_weak_count') ?? 0 ])
-6. Hapus reg_first_criteria & reg_weak_count dari session
-7. session()->regenerate(true); set participant_id, game_session_id
-8. Redirect /intro dengan flash sambutan: "Ingat nama pengguna dan kata sandimu, ya."
+1. ResearchStudyModel::requireActiveStudy(); nama pengguna dinormalisasi.
+2. PasswordPolicy::check(password, username) SEBELUM validasi lain:
+     kiriman pertama pada sesi pendaftaran ini → session('reg_first_criteria', met)   // 0..5, bukan isi sandi
+     sandi belum 'acceptable'               → session('reg_weak_count', +1)
+3. Isian langkah 1–2 dari session divalidasi ulang; gagal → kembali ke langkah itu.
+4. Validasi langkah 3; gagal → kembali ke /daftar/3 dengan galat per isian
+   (pesan sandi: Auth.notStrongSubmit / Auth.containsUsername / Auth.notMatch).
+   old() tidak pernah memuat password dan password_confirm.
+5. Nama provinsi/kabupaten diverifikasi server terhadap RegionDirectory; kode tak dikenal → nama snapshot kosong.
+6. SessionService::registerAndStart([... 'class_level' => Config\Gelita::$registrationClass ('5'),
+     'assent' => true, 'registration_metrics' => [first_submit_criteria, weak_submit_count],
+     'device' => deviceInfo()])
+     → participants (assented_at, pw_first_submit_criteria, pw_weak_submit_count),
+       game_sessions, device_logs (via 'register'), session()->regenerate(true).
+7. Hapus reg_wizard, reg_first_criteria, reg_weak_count dari session.
+8. Redirect /intro dengan flash 'welcome' (lang Game.registerWelcome, nama pengguna saja).
 ```
 
-Kata sandi tidak pernah ditulis ke flash, `old()`, log, atau event.
+Sekolah: NPSN hanya dipakai di provinsi berdirektori; nama sekolah dipakai bila bukan jalur NPSN atau `school_manual` dicentang. `SchoolDirectory::resolve()` (di dalam `registerAndStart()`) menautkan NPSN ke sekolah resmi; nama → alias hasil penggabungan admin, sekolah resmi yang cocok tunggal, atau entri belum terverifikasi.
 
 ### `Game\LoginController`
 
-| Method | Request | Validasi | Business rule | Response |
-|---|---|---|---|---|
-| `form()` | GET | — | bila sudah login → redirect `/mulai`; pilihan fase hanya tampil bila `allow_phase_choice = 1` | view `game/login` |
-| `login()` | POST `username`, `password`, `phase?` | `username: required`, `password: required` | `SessionService::login()`. `invalid` → pesan identik `lang('Auth.loginFailed')` tanpa membedakan nama salah/sandi salah; `locked` → `lang('Auth.locked', [menit])`; `must_change` → redirect `/ganti-sandi`; `ok` → redirect ke URL tujuan tersimpan (`redirect_after_login`) atau `/mulai` | redirect |
-| `changePasswordForm()` | GET | — | tampilkan pesan `Auth.mustChange` bila datang dari reset guru; checklist syarat sama dengan registrasi | view `game/change-password` |
-| `changePassword()` | POST `current_password`, `password`, `password_confirm` | `current_password: required`, `password: required|strong_password[username]` (username diambil dari akun), `password_confirm: required|matches[password]`; sandi baru ≠ sandi lama | `SessionService::changePassword()`; `must_change_password = 0`; lalu login otomatis untuk melanjutkan/membuat sesi; event `password_changed` (setelah reset guru, sesi baru ada sesudah login, jadi event dicatat pada sesi itu dengan `via: reset`) | redirect `/mulai` + toast |
-| `logout()` | GET | — | `SessionService::logout()`: event `session_paused`, attempt `in_progress` **tidak** ditutup agar dapat dilanjutkan; `session()->destroy()` | redirect `/` |
+| Method | Aturan | Respons |
+|---|---|---|
+| `form()` | Sudah masuk → redirect `/mulai`; flash `redirect_after_login` dipertahankan sampai POST | view `game/login` |
+| `login()` | `username`, `password` wajib. `SessionService::login()`: `invalid` → `Auth.loginFailed` (identik untuk akun tak ada dan sandi salah); `locked` → `Auth.locked` dengan sisa menit; `must_change` → `/ganti-sandi` + `Auth.mustChange`; `ok` → `redirect_after_login` (path internal) atau `/mulai` | redirect |
+| `changePasswordForm()` | `mustChange`, `username` (untuk syarat "tidak memuat nama pengguna"), `passwordPolicy` | view `game/change-password` |
+| `changePassword()` | `current_password: required`; `password: required\|strong_password[username]\|differs[current_password]`; `password_confirm: required\|matches[password]`; `SessionService::changePassword()` (`invalid_current` → `Auth.wrongCurrent`). Lalu masuk otomatis untuk melanjutkan/membuat sesi; setelah reset guru event `password_changed` dicatat pada sesi baru dengan `via: reset` (ganti biasa: `via: self`) | redirect `/mulai` + `Auth.passwordChanged` |
+| `logout()` | `SessionService::logout()`: sesi `active` → `paused` + event `session_paused`; attempt `in_progress` tidak ditutup agar dapat dilanjutkan; `session()->destroy()` | redirect `/` |
 
-### `Api\AuthApiController`
+### `Game\GateController`
 
-```php
-usernameAvailable()   // GET ?u=nama
-                      // validasi valid_username; bila tidak valid → {available:false, reason:'format'}
-                      // reserved → {available:false, reason:'reserved'}
-                      // dipakai → {available:false, reason:'taken'}
-                      // rate limit 20/menit per ip_hash (cache CI4) → 429 RATE_LIMITED
-```
-
-### `Api\SchoolApiController`
-
-```php
-lookup()   // GET ?npsn=20318068
-           // bukan 8 angka → {found:false, reason:'format'}
-           // tidak ada / belum terverifikasi / nonaktif → {found:false, reason:'unknown'}
-           // ada → {found:true, school: SchoolDirectory::describe()} — hanya data direktori publik
-           // rate limit 60/menit per ip_hash: satu lab sekolah biasanya satu IP publik
-```
-
-**Sekolah saat daftar.** Siswa di provinsi berdirektori (`Config\Gelita::$schoolDirectoryProvinces` yang daftar resminya sudah terpasang) wajib mengisi NPSN; NPSN divalidasi `known_npsn`. Bila NPSN-nya tidak ada di daftar, formulir menampilkan centang `school_manual` dan siswa menulis `school_name`. Provinsi lain selalu menulis `school_name`. `SessionService::registerAndStart()` menyerahkan keduanya ke `SchoolDirectory::resolve()`: NPSN → sekolah resmi; nama → alias hasil gabung admin, lalu sekolah resmi yang cocok tunggal, selain itu entri belum terverifikasi. `school_name_snapshot` = nama resmi bila tertaut.
-
-Nama provinsi/kabupaten dikirim bersama kodenya dan disimpan sebagai snapshot. Server **tidak** mempercayai nama dari client begitu saja: nama diverifikasi terhadap `public/assets/data/wilayah-id.json` yang dimuat server-side; bila kode tidak dikenal, nama snapshot dikosongkan.
+| Method | Aturan | Respons |
+|---|---|---|
+| `index()` | `introGate()`; sapaan dengan `display_name` atau `username`; kartu "Lihat cerita pembuka" dan "Langsung ke peta" | view `game/start-choice` |
+| `map()` | `toMap()` | redirect `/peta` |
+| `intro()` | Slide `dialogues` konteks `intro`; `canSkip` = sudah pernah menonton | view `game/intro` |
+| `finishIntro()` | `ParticipantModel::markIntroSeen()` (idempoten); event `intro_completed` `{first}` setiap kali | `toMap()` |
 
 ### `Game\MapController`
 
-| Method | Business rule | Response |
+| Method | Aturan | Respons |
 |---|---|---|
-| `kedu()` | `introGate()` lebih dulu: peserta yang belum menonton cerita pembuka dialihkan ke `/intro`, juga lewat URL yang diketik atau redirect setelah login. Lalu ambil 3 level + status dari `session_progress`. Level terkunci bila `unlock_mode = sequential` dan `sequence > unlocked_level_sequence`. Narasi Jaka dari `ContentRepository::dialogues(null, 'map_intro')`. Flash `curtain` = `map` (dari `toMap()`) → `curtain = true` dan `curtainAssets`: URL `map.kedu`, `bg.map`, frame tokoh sesuai pose narasi (cadangan idle), latar wilayah, dan audio narasi peta bahasa aktif yang disetujui — dimuat tirai dengan progres nyata. **Tahap 3:** `regionIntros` (kode → `dialogues($levelId, 'region_intro')`, termasuk wilayah terkunci), `heard` (`GameEventLogModel::heardRegionIntros()`: level_id yang narasi Kenali-nya pernah mencapai slide terakhir oleh peserta ini, di sesi mana pun), dan `curtain` per baris level (`GameProgress::regionCurtain()`: "Menuju {wilayah}…", tagline = judul slide pertama `region_intro`, chip tingkat kesulitan, aset halaman `entry`) | view `game/map-kedu` |
-| `level($code)` | `introGate()` lebih dulu (Tahap 5: juga di `DialogueController::show()`, sehingga pemain baru tidak dapat melewati cerita pembuka lewat URL wilayah); validasi level ada & terbuka; bila terkunci → redirect `/peta` + toast; ambil 5 node + status (selesai / terbuka / terkunci) dari `challenge_attempts` | view `game/map-level` |
+| `kedu()` | `introGate()`; `levelOverview()` + tirai per wilayah (`regionCurtain()`); narasi `map_intro`; flash `curtain=map` → `curtain = true` dan `curtainAssets` (peta, latar, frame tokoh, latar wilayah, audio narasi peta yang disetujui); `regionIntros` (narasi "Kenali wilayah" `region_intro` per wilayah, termasuk yang terkunci); `heard` (`GameEventLogModel::heardRegionIntros()`) | view `game/map-kedu` |
+| `level($code)` | `introGate()`; wilayah terkunci → `/peta` + `Game.levelLocked`; `dialogueGate()`; `nodeOverview()`, `levelSummary`, `hasLibrary`, `library` (`libraryAccess()`) | view `game/map-level` |
 
-Status node: node ke-`n` terbuka bila `n = 1` atau node ke-`n-1` sudah `completed`. Bila `unlock_mode = free`, semua terbuka (lihat D13 di 01_DATABASE.md; nilai `free` sengaja berbeda dari status wilayah `open`).
+### `Game\DialogueController`
 
-### `Game\DialogueController` (Tahap 3)
+Adegan bernarasi dari tabel `dialogues`, diputar `game/narrator.js`. Perpindahan slide dicatat klien lewat `/api/events` (`dialogue_advanced`).
 
-Adegan cerita bernarasi dari tabel `dialogues`, diputar `game/narrator.js` (kartu ketuk, pose, efek, audio, maju otomatis).
-
-| Method | Business rule | Response |
+| Method | Aturan | Respons |
 |---|---|---|
-| `show($code)` | wilayah belum terbuka → redirect `/peta` + toast; `markDialogueShown()` (gerbang dialog tidak berubah); baris `level_open` + `tagline` (judul slide pertama `region_intro`, untuk kartu bab) | view `game/dialogue` |
-| `done($code)` | `GameProgress::regionStatus()` ≠ `completed` → redirect `/wilayah/{code}` (yang menolak wilayah terkunci dan menjaga dialog pembuka); selain itu baris `level_done`, `hasLibrary`, `nextRegion` (`GameProgress::nextRegion()`), `allCompleted`. Tidak mencatat event server; boleh dibuka berulang | view `game/region-done` |
-| `ending()` | `allNodesCompleted()` salah → redirect `/peta`; selain itu slide `ending` + `hudData()` | view `game/ending` |
-
-Tanda "sudah didengar" dan "sudah ditonton" tidak disimpan di tabel mana pun: dibaca dari `dialogue_advanced` yang dikirim klien (lihat 07 §Catatan analitik Tahap 3).
+| `show($code)` | `introGate()`; wilayah terkunci → `/peta`; `markDialogueShown()`; slide `level_open`; `tagline` = judul slide pertama `region_intro` | view `game/dialogue` |
+| `done($code)` | Status wilayah ≠ `completed` → redirect `/wilayah/{code}`; slide `level_done`, `hasLibrary`, `nextRegion`, `allCompleted`; boleh ditonton ulang | view `game/region-done` |
+| `ending()` | Belum semua tantangan tuntas → `/peta`; slide `ending` | view `game/ending` |
 
 ### `Game\ChallengeController`
 
-| Method | Business rule | Response |
+| Method | Aturan | Respons |
 |---|---|---|
-| `brief($code, $seq)` | tampilkan judul + deskripsi node, tombol Mulai | view `game/mission-brief` |
-| `play($code, $seq)` | panggil `ChallengeService::openNode()`; render layar sesuai `engine_type`; payload soal ditanam sebagai `<script type="application/json" id="challenge-data">` | view `game/challenge/{engine}` |
-| `result($code, $seq)` | daftar attempt `completed` untuk node itu pada sesi ini + terbaik | view `game/challenge-result` |
-| `finished($attemptId)` | validasi attempt milik sesi ini & `completed`; tampilkan bintang, skor, ketepatan awal, durasi; bila level tuntas tampilkan pesan Mbah Kedu; bila attempt ini yang menuntaskan wilayah (`GameProgress::closingAttemptId()`: penyelesaian pertama terakhir di antara node wilayah) → `closesRegion` (tombol utama "Lanjut" ke `/tuntas/{code}`, Tahap 3) dan, bila wilayah punya halaman Pustaka, `libraryUnlocked` (sorotan "Pustaka {wilayah} terbuka!"); mengulang tantangan setelah 15 node tuntas → tombol Balai Refleksi; `nextRegion` dari `GameProgress::nextRegion()` (baris `levelOverview()` + `curtain`) | view `game/challenge-finished` |
+| `brief($code, $seq)` | Wilayah atau tantangan terkunci → `/wilayah/{code}` + `Game.nodeLocked`; `dialogueGate()`; pengerjaan terbaik | view `game/mission-brief` |
+| `play($code, $seq)` | Pemeriksaan yang sama; `engine_type` harus ada di `Config\Gelita::$engineTypes` **sebelum** attempt dibuka; `ChallengeService::openNode()` (gagal → `/wilayah/{code}` + `Game.challengeUnavailable`); payload soal ditanam di view | view `game/challenge/{puzzle\|rumpang\|boleh\|cari}` |
+| `result($code, $seq)` | Attempt `completed` tantangan itu pada sesi ini + terbaik | view `game/challenge-result` |
+| `finished($attemptId)` | Attempt harus milik sesi ini dan `completed`, selain itu 404. `levelSummary`, `levelCompleted`, `closesRegion` (attempt ini yang menuntaskan wilayah: penyelesaian pertama terakhir di antara tantangan wilayah, `GameProgress::closingAttemptId()`), `libraryUnlocked`, `allCompleted`, `nextRegion`, `wrongTaps` (Cari Objek: jumlah `wrong_click_count`) | view `game/challenge-finished` |
 
-Perhatian: `play()` **tidak** melakukan penilaian apa pun. Ia hanya membuka attempt dan menyiapkan payload. Seluruh interaksi jawaban lewat API.
+`play()` tidak menilai apa pun. Ia hanya membuka (atau melanjutkan) attempt dan menyiapkan payload; seluruh jawaban lewat API.
 
 ### `Game\LibraryController`, `ProfileController`, `ReflectionController`
 
-| Controller::method | Business rule |
+| Method | Aturan | Respons |
+|---|---|---|
+| `LibraryController::index()` | Baris `levelOverview()` + status Pustaka, jumlah halaman, sampul (gambar pertama galeri halaman pertama → latar wilayah → gradien). Tidak mencatat event | view `game/library-index` |
+| `LibraryController::show($code)` | Wilayah terkunci → `/peta`. Wilayah terbuka tetapi belum tuntas → halaman terkunci berisi progres dan tombol ke `entry` wilayah (bukan redirect; `library_opened` tidak dicatat). Wilayah tuntas → event `library_opened` | view `game/library` / `game/library-locked` |
+| `ProfileController::index()` | Capaian sesi berjalan: attempt, durasi, jumlah benar pada percobaan pertama dari soal dinilai, `canReflect` | view `game/profile` |
+| `ReflectionController::index()` | Hanya bila semua tantangan tuntas, selain itu `/peta` + `Game.reflectionLocked`; ringkasan perjalanan (bintang per wilayah dari 3 × jumlah tantangan, ketepatan per engine, tantangan paling sering terlewat) | view `game/reflection` |
+| `ReflectionController::store()` | `rating: required\|integer\|greater_than[0]\|less_than[6]`; empat isian terbuka (`liked_most`, `hardest_part`, `new_learning`, `suggestion`, maks. 2000) dan minimal dua terisi; simpan `participant_feedback` + event `feedback_submitted` | redirect `/refleksi` |
+
+---
+
+## Controller API
+
+### `Api\BaseApiController`
+
+Dasar semua endpoint JSON permainan (memakai `GameProgress`).
+
+| Method | Fungsi |
 |---|---|
-| `LibraryController::index()` | rak Pustaka Kedu: baris `levelOverview()` + `library` (`GameProgress::libraryStatus()`), jumlah halaman, sampul (gambar pertama galeri halaman pertama → latar wilayah → gradien). Tidak mencatat event |
-| `LibraryController::show($code)` | wilayah belum terbuka → redirect `/peta` (tetap seperti sebelumnya). Wilayah terbuka tetapi belum tuntas (`GameProgress::libraryAccess()` ≠ `open`) → view `game/library-locked` berisi progres dan tombol "Lanjutkan tantangan" ke `entry` wilayah; **bukan redirect**, dan `library_opened` tidak dicatat. Wilayah tuntas → catat `library_opened`, view `game/library`. Aturan kunci berlaku juga pada `unlock_mode = free`. Tidak memengaruhi skor sama sekali |
-| `ProfileController::index()` | ringkasan capaian peserta pada sesi berjalan: serpihan, ketepatan rata-rata, total waktu, daftar attempt |
-| `ReflectionController::index()` | hanya dapat diakses bila `session_progress.completed_nodes` = jumlah node aktif; bila belum → redirect `/peta` |
-| `ReflectionController::store()` | validasi `rating: required|integer|greater_than[0]|less_than[6]`; minimal 2 dari 4 textarea terisi; simpan `participant_feedback` + event `feedback_submitted` |
+| `gameSession()` | Sesi permainan yang dimuat filter `apiSession` |
+| `attemptOrFail($id, $requireOpen = true)` | Attempt tidak ada → `404 NOT_FOUND`; bukan milik sesi berjalan → `403 FORBIDDEN`; `$requireOpen` dan tidak `in_progress` → `409 ATTEMPT_CLOSED` |
+| `invalidPayload($errors, $code = 'INVALID_PAYLOAD')` | `422` dengan `errors` per isian |
+| `rateLimited($bucket, $capacity = 120)` | Throttler per bucket per sesi; habis → `429 RATE_LIMITED` + `retry_after` |
+| `serverTime()` | Waktu server dengan mikrodetik dan offset, mis. `2026-09-21T09:14:22.481000+07:00` |
+
+`AuthApiController`, `SchoolApiController`, dan `AdminApiController` langsung turunan `BaseController` (tanpa sesi permainan).
+
+### `Api\AuthApiController` dan `Api\SchoolApiController`
+
+```text
+usernameAvailable()   GET ?u=nama        rate limit 20/menit per hash_ip()
+  nama dinormalisasi (ParticipantModel::normalizeUsername())
+  format tidak sah   → {available:false, reason:'format'}
+  dicadangkan        → {available:false, reason:'reserved'}   (Config\Gelita::$reservedUsernames)
+  sudah dipakai      → {available:false, reason:'taken'}
+  tersedia           → {available:true}
+
+lookup()              GET ?npsn=20318068 rate limit 60/menit per hash_ip()
+  bukan 8 angka                              → {found:false, reason:'format'}
+  tidak ada / belum terverifikasi / nonaktif → {found:false, reason:'unknown'}
+  ada → {found:true, school: SchoolDirectory::describe()}   hanya data direktori publik
+```
 
 ### `Api\SessionApiController`
 
-```php
-show()       // GET  → bootstrap payload lengkap
-setLocale()  // POST {locale}
-heartbeat()  // POST {} → SessionService::heartbeat(); respons {server_time}
-complete()   // POST {} → SessionService::completeIfFinished()
-```
+| Method | Body | Respons `data` |
+|---|---|---|
+| `show()` | — | Bootstrap payload (di bawah) |
+| `setLocale()` | `{locale}` (JSON atau form) | `{locale, server_time}`; locale tak dikenal → `422 INVALID_PAYLOAD`. Tidak membuat sesi baru dan tidak mereset progres |
+| `heartbeat()` | `{}` | `{server_time}` (`SessionService::heartbeat()`) |
+| `complete()` | `{}` | `{completed, status, progress}` (`SessionService::completeIfFinished()`) |
 
-Bentuk **bootstrap payload** (dipakai `show()`):
+Bootstrap payload:
 
 ```json
 {
   "success": true,
   "data": {
-    "session": { "code":"...", "locale":"id", "status":"active",
-                 "phase":"pretest", "study":"STUDI-KEDU-2026" },
-    "participant": { "code":"GLT-000123", "username":"jaka.kedu", "display_name":"..." },
-    "progress": { "completed_nodes":7, "completed_levels":1,
-                  "unlocked_level_sequence":2, "total_score":78.4,
-                  "total_stars":15, "shards":7, "shards_total":15,
-                  "current_level_id":2, "current_node_id":9 },
-    "levels": [ { "id":1,"code":"temanggung","sequence":1,"name":"Temanggung",
-                  "difficulty":"mudah","status":"completed","score":82.1,"stars":12 } ],
+    "session": { "code": "...", "locale": "id", "status": "active", "study": "..." },
+    "participant": { "code": "GLT-000123", "username": "jaka.kedu", "display_name": "..." },
+    "progress": { "completed_nodes": 7, "completed_levels": 1, "unlocked_level_sequence": 2,
+                  "total_stars": 18, "shards": 7, "shards_total": 12,
+                  "current_level_id": 2, "current_node_id": 6 },
+    "levels": [ { "id": 1, "code": "temanggung", "sequence": 1, "name": "Temanggung",
+                  "difficulty": "mudah", "status": "completed", "entry": "wilayah/temanggung",
+                  "stars": 10, "completed_nodes": 4, "total_nodes": 4,
+                  "map_x": 0, "map_y": 0, "map_media": "...", "background": "..." } ],
     "server_time": "2026-09-21T09:14:22.481000+07:00"
   },
   "request_id": "..."
 }
 ```
 
+`shards` (Serpihan Cahaya) = jumlah tantangan tuntas; `shards_total` = jumlah tantangan aktif (12).
+
+### `Api\ContentApiController` dan `Api\ProgressApiController`
+
+Tidak pernah mengirim kunci jawaban; soal hanya keluar lewat `ChallengeApiController::open()`.
+
+| Method | Aturan | Respons `data` |
+|---|---|---|
+| `levels()` | — | `{levels}` (`levelOverview()`) |
+| `nodes($levelId)` | wilayah tidak ada → `404` | `{level:{id, code, sequence}, locked, nodes}` (`nodeOverview()`: `id, sequence, engine_type, variant, title, description, status, stars, map_x, map_y`) |
+| `node($nodeId)` | tidak ada → `404`; wilayah terkunci → `409 LEVEL_LOCKED` | `{node:{id, level_id, sequence, engine_type, variant_code, title, instruction, description, max_tries, background, scene, hints_count}, best}` |
+| `library($levelId)` | tidak ada → `404`; wilayah terkunci → `409 LEVEL_LOCKED`; wilayah belum tuntas → `409 LIBRARY_LOCKED` (kunci yang sama dengan `/pustaka/{code}`) | `{level:{id, code, name}, pages:[{id, sequence, title, body, media}]}` |
+| `ProgressApiController::show()` | — | `{progress, levels, nodes:{levelId: [...]}, unlock_mode, server_time}` |
+
 ### `Api\ChallengeApiController`
 
-| Method | Request body | Validasi | Service | Response |
+Tidak ada penilaian di controller: benar/salah, bintang, dan penutupan ditentukan `ChallengeService` dari kunci di database; field `correct` kiriman browser tidak pernah dipakai. **Aturan 3 kesempatan** (`Config\Gelita::$maxTries`, disalin ke `challenge_attempts.max_tries`) ditegakkan server, dan `/check` serta `/responses` menutup pengerjaan sendiri bila semua benar (`completion_reason = solved`) atau kesempatan habis (`tries_exhausted`).
+
+| Method | Request body | Pemeriksaan | Service | Respons `data` |
 |---|---|---|---|---|
-| `open($nodeId)` | `{}` | node ada, aktif, level unlock | `ChallengeService::openNode()` | payload yang sama dengan `#challenge-data`: `{attempt_id, attempt_no, resumed, elapsed_ms, node:{…, engine_type, allow_retry}, items:[…], hints:[{id, item_id, sequence}], hints_count}` + `word_bank` (rumpang ber-bank), `verdict_options`/`require_reason` (boleh), `passages`; engine `cari` memakai `objects` + `clues` alih-alih `items` |
-| `respond($attemptId)` | `{item_id, answer:{...}, client_event_id, occurred_at, sequence_no, reason_text?}` | `item_id: required|item_in_attempt`, `client_event_id: required|max_length[120]` | `ChallengeService::submitAnswer()` | `{correct, first_pass, wrong_click, decoy, already_answered, feedback, correct_option_key, change_count, wrong_click_count, progress:{answered,total}}` — `correct_option_key` hanya terisi sesudah dijawab pada node `allow_retry = false`; `cari` menjawab dengan `answer:{object:<ref>}` |
-| `check($attemptId)` | `{answers:[{item_id, answer, reason_text?}], client_event_id, occurred_at}` | tiap `item_id` harus ada di attempt | `ChallengeService::submitCheck()` | `{results:{itemId:bool}, correct_count, total, all_correct, check_count, retry_count, detail:{itemId:{pieces_correct, misplaced?}}}` — `detail` hanya untuk `puzzle_arrange`/`ordering`; `misplaced` (slot keliru) hanya untuk puzzle gambar yang susunan benarnya publik |
-| `hint($attemptId)` | `{hint_id, item_id?, client_event_id}` | hint milik node/item attempt | `ChallengeService::useHint()` | `{text, hint_count}` |
-| `complete($attemptId)` | `{client_event_id, occurred_at}` | attempt `in_progress`, semua item yang diminta dijawab sudah `answered` atau `skipped` (`ChallengeService::pendingItemIds()`; objek jebakan `cari` tidak dihitung) | `ChallengeService::completeAttempt()` | `{score, stars, first_pass_accuracy, final_accuracy, duration_ms, shards, level_completed, next_level_unlocked, redirect}` |
-| `abandon($attemptId)` | `{reason}` | — | `ChallengeService::abandonAttempt()` | `{status:"abandoned"}` |
+| `open($nodeId)` | `{}` | node ada; wilayah terbuka (`409 LEVEL_LOCKED`) | `openNode()` — attempt `in_progress` yang ada dilanjutkan; attempt baru memakai satu variasi acak | payload pemain (di bawah) |
+| `respond($attemptId)` | `{item_id, answer:{object:<ref>}, client_event_id, duration_ms?}` | attempt terbuka; `item_id: required\|is_natural_no_zero\|item_in_attempt[attempt_id]`; `client_event_id: required\|max_length[120]`; `answer` objek; hanya petunjuk Cari Objek (`find_object`) | `submitAnswer()` | `{correct, first_pass, wrong_click, decoy, feedback, try_no, tries_left, clue_closed, change_count, wrong_click_count, progress:{answered, total}, completed, completion_reason, redirect, shards}` |
+| `check($attemptId)` | `{answers:[{item_id, answer, first_input_ms?, last_input_ms?}]}` | `check_count >= max_tries` → `409 TRIES_EXHAUSTED` (dengan `redirect` bila sudah ditutup); attempt tidak `in_progress` → `409 ATTEMPT_CLOSED`; setiap `item_id` milik attempt; soal belum benar yang kosong → `422 INCOMPLETE` + `items` | `submitCheck()` | `{results:{itemId: bool}, correct_count, total, all_correct, check_count, try_no, tries_left, exhausted, detail:{itemId:{pieces_correct, misplaced}}, completed, completion_reason, redirect, shards}` — `detail` hanya untuk Susun Gambar |
+| `hint($attemptId)` | `{hint_id, item_id?}` | attempt terbuka; `hint_id` > 0; `item_id` milik attempt; petunjuk bukan milik tantangan → `404` | `useHint()` | `{text, hint_count}` |
+| `complete($attemptId)` | `{}` | attempt milik sesi; `abandoned` → `409 ATTEMPT_CLOSED`; masih berjalan tetapi belum semua benar dan kesempatan belum habis → `409 TRIES_REMAINING` | `completeAttempt()` bila masih `in_progress` | `{stars, first_pass_correct, final_correct, scorable_items, completion_reason, duration_ms, shards, redirect}` |
+| `abandon($attemptId)` | `{}` | attempt milik sesi | `abandonAttempt()` (bintang 0, event `challenge_abandoned` `via: user_exit`; attempt yang sudah selesai tidak diubah) | `{status}` — status sebenarnya |
 
-`respond()` dipakai engine `pilihan` dan `cari` (jawab per item). `check()` dipakai engine `puzzle`, `rumpang`, `boleh` (periksa sekaligus).
+Pembagian engine: `respond()` untuk Cari Objek (`cari`, satu ketukan benda = satu percobaan untuk petunjuk aktif); `check()` untuk Susun Gambar (`puzzle`), Isi Rumpang (`rumpang`), dan Benar atau Salah (`boleh`) — satu "Cek jawabanku" = satu percobaan untuk semua soal yang belum benar, soal yang sudah benar terkunci. Engine yang salah jalur dibalas `422 INVALID_RESPONSE`.
 
-### `Api\EventApiController` & `AudioApiController`
+* Cari Objek: ketukan pada petunjuk yang sudah ditemukan atau dilewati → `409 CLUE_CLOSED`. Ketukan salah ke-`max_tries` menutup petunjuk itu (`clue_closed = true`, event server `clue_failed`); semua petunjuk tertutup → pengerjaan ditutup.
+* Engine batch: cek ke-`max_tries` yang masih ada salahnya → event `challenge_tries_exhausted`, pengerjaan ditutup `tries_exhausted`.
+* Saat pengerjaan ditutup, respons berisi `completed: true`, `completion_reason`, `redirect` (`/selesai/{attemptId}`), dan `shards`. Klien pindah ke `redirect`; `/complete` hanya cadangan bila `completed` datang tanpa `redirect`, dan bersifat idempoten (pengerjaan yang sudah selesai dibalas hasil yang sama).
 
-```php
-ingest()  // POST {events:[{client_event_id, event_type, occurred_at, sequence_no,
-          //                level_id?, node_id?, attempt_id?, item_id?, payload?}]}
-          // maksimum 50 event per request
-          // → {accepted, duplicate, rejected:[{index, reason}]}
+**Payload pemain** (`open()` dan `#challenge-data` di `/tantangan/{code}/{seq}`):
+
+```text
+{attempt_id, attempt_no, variant_group, variant:{group, title}, max_tries, tries_used, check_count,
+ resumed, elapsed_ms,
+ node:{id, level_id, sequence, engine_type, variant_code, title, instruction, description, background, scene},
+ items:[ …toPlayerArray(), state:{tries} | {locked:true, answer, tries} ],
+ hints:[ {id, item_id, sequence} ],  hints_count,
+ word_bank   (Isi Rumpang ber-bank kata),
+ verdict_options (Benar atau Salah),
+ passages    (bila soal merujuk teks bacaan)}
+Cari Objek: tanpa `items`, diganti `objects` (semua benda, token `ref` per attempt, posisi, gambar, `found`)
+            dan `clues` (petunjuk dinilai, diacak dengan benih id attempt; `audio`, `state:{found, closed, tries}`).
 ```
 
-Rujukan per event memakai `level_id`, `node_id`, `attempt_id`, `item_id` (nama kolom lengkap `challenge_*_id` juga diterima).
+Teks petunjuk tidak ada di payload; baru dikirim `POST /hints`, yang sekaligus mencatat pemakaiannya. `answer_key_json` tidak pernah ikut.
 
-API admin (`/api/admin/*`) yang datanya digambar chart menyertakan kunci `chart` — bentuk netral dari `App\Libraries\ChartData` untuk `admin/charts.js` — di samping baris mentahnya: `levels` (batang), `nodes` (heatmap), `indicators` (matriks, plus `per_level`), `prepost` (garis), `participants` (sebaran umur, plus `ages`).
+### `Api\EventApiController` dan `Api\AudioApiController`
 
-`AudioApiController::ingest()` memakai amplop yang sama, dengan isi per event `{audio_asset_id, action: play|autoplay|pause|replay|complete, listened_ms, completed, occurred_at, client_event_id, attempt_id?}`. `attempt_id` hanya diterima bila attempt itu milik sesi berjalan; kiriman ulang dengan `client_event_id` yang sama dihitung `duplicate` tanpa menulis baris. `play_index` dihitung server: `play`/`autoplay`/`replay` membuka pemutaran baru, `pause`/`complete` termasuk pemutaran berjalan. Aksi lain ditolak per event (`audio_event_invalid`). Balasan: `{accepted, duplicate, rejected:[{index, reason}]}`.
+```text
+POST /api/events
+  {events:[{client_event_id, event_type, occurred_at, sequence_no?,
+            level_id?, node_id?, attempt_id?, item_id?, payload?}]}
+  → {accepted, duplicate, rejected:[{index, reason}], server_time}
+```
 
-`play` berarti pemain menekan tombol putar; `autoplay` berarti layar bernarasi (cerita pembuka, narasi peta) memutar slide sendiri setelah ketukan "Ketuk untuk mulai" atau saat maju otomatis. Raw event pendampingnya `audio_play` dan `audio_autoplay`. Analitik (`AudioUsageEventModel::usageStats()`) menghitung `total_plays` hanya dari `play` dan menaruh putar otomatis di `total_autoplays`, sehingga dasbor, profil peserta, dan laporan PDF menampilkan keduanya terpisah; sheet ekspor Audio Usage membawa kolom `action` apa adanya.
+* Maksimum `Config\Gelita::$maxEventsPerBatch` (50) event per request; lebih → `413 TOO_MANY_EVENTS`. `events` bukan array → `422 INVALID_PAYLOAD`.
+* `event_type` harus ada di `Config\Gelita::$eventTypes`. Tipe khusus server (`screen_viewed`, `challenge_tries_exhausted`, `clue_failed`) ditolak dari klien.
+* Alasan penolakan per event: `format_invalid`, `event_type_unknown`, `event_type_server_only`, `client_event_id_invalid` (kosong / > 120 karakter), `duplicate_in_batch`.
+* Idempoten terhadap `client_event_id` per sesi: kiriman ulang dihitung `duplicate` tanpa menambah baris.
+* Rujukan memakai `level_id`, `node_id`, `attempt_id`, `item_id`; nama kolom lengkap `challenge_*_id` juga diterima.
 
-Status per event yang mungkin dikembalikan: `accepted`, `duplicate`, `rejected`.
-Status level request: `200` (ada yang diterima), `401 INVALID_SESSION`, `422 INVALID_PAYLOAD`, `413` bila melebihi batas.
+`POST /api/audio-events` memakai amplop dan batas yang sama. Isi per event: `{audio_asset_id, action, listened_ms, completed, occurred_at, client_event_id, attempt_id?}`. `action` ∈ `play` (pemain menekan putar), `autoplay` (layar bernarasi memutar sendiri), `pause`, `replay`, `complete`; aksi lain → `audio_event_invalid`. `attempt_id` milik sesi lain → `attempt_not_in_session`. Hasilnya baris `audio_usage_events` beserta raw event pendampingnya (`audio_play`, `audio_autoplay`, …).
+
+### `Api\AdminApiController`
+
+Memakai trait `StaffScope`; lihat tabel [Route — API panel admin](#route--api-panel-admin-json). `exportStatus()` hanya untuk pemohon ekspor atau admin (`403 FORBIDDEN`), dan membalas `{id, status, format, anonymized, row_count, file_sha256, expires_at, error}`.
+
+---
+
+## Controller panel admin
+
+### `Admin\BaseAdminController` dan trait `StaffScope`
+
+* `panel($view, $title, $data)` merender halaman panel dengan data bersama: `pageTitle`, `filters`, `errors`, `activeStudy`, dan `filterOptions` (penelitian, wilayah, sekolah, provinsi dan kelas yang ada dalam cakupan pemanggil; dievaluasi hanya oleh halaman yang memakai bilah filter).
+* `back($path, $pesan)` / `done($path, $pesan)` kembali dengan flash `error` / `message`; `modelErrors()` meneruskan penolakan validasi Model agar penyimpanan yang gagal tidak dilaporkan "tersimpan".
+* `StaffScope` (dipakai juga `Api\AdminApiController`): `schoolScope()` (`null` untuk admin, `school_id` untuk guru; guru tanpa sekolah → 0, tidak cocok dengan sekolah mana pun), `isAdmin()`, `staffId()`, `readFilters()`, `scopedFilters()` (memaksa `school_id` guru), `analytics()` (`AnalyticsService` terikat cakupan pemanggil).
 
 ### `Admin\AuthController`
 
-```php
-loginForm()   // GET, bila sudah login → redirect dashboard
-login()       // POST {username, password}
-logout()      // GET
-```
+`loginForm()` (sudah masuk → `/admin/dashboard`; view `admin/login`), `login()`, `logout()`.
 
 Aturan `login()`:
 
-1. Validasi `username: required`, `password: required`.
-2. `StaffUserModel::findByUsername()`.
-3. Bila user tidak ada **atau** password salah → pesan identik: "Nama pengguna atau kata sandi salah." Jangan bedakan keduanya.
-4. Bila `isLocked()` → "Akun terkunci sementara. Coba lagi dalam beberapa menit."
-5. Bila `is_active = 0` → tolak dengan pesan yang sama seperti nomor 3.
-6. Gagal → `registerFailedLogin()`, audit `login_failed`.
-7. Berhasil → `session()->regenerate(true)`, set `staff_id`, `staff_role`, `staff_school_id`, `staff_name`; `clearFailedLogin()`; audit `login`.
-8. Redirect ke `redirect_to` bila ada dan internal, selain itu `/admin/dashboard`.
+1. `username` dan `password` wajib.
+2. `StaffUserModel::findByUsername()`. Akun terkunci → pesan penguncian, audit `login_failed` (`reason: locked`).
+3. Akun tidak ada, sandi salah, atau akun nonaktif → pesan identik "Nama pengguna atau kata sandi salah."; akun aktif yang salah sandi menjalankan `registerFailedLogin()` (5 kali → terkunci 15 menit); audit `login_failed` (`reason: invalid`).
+4. Berhasil → `clearFailedLogin()`, `session()->regenerate(true)`, set `staff_id`, `staff_role`, `staff_school_id`, `staff_name`; audit `login`.
+5. `must_change_password = 1` → `/admin/akun/sandi`; selain itu `redirect_to` (path internal) atau `/admin/dashboard`.
 
 `logout()`: audit `logout`, `session()->destroy()`, redirect `/admin/login`.
 
-### `Admin\AccountController`
+### `Admin\AccountController` (guru & admin)
 
-```php
-passwordForm()     // GET  /admin/akun/sandi — guru & admin (filter staffAuth saja)
-changePassword()   // POST {current_password, password, password_confirm}
-```
+`passwordForm()` → view `admin/account/password` (`mustChange` menampilkan pemberitahuan sandi sementara). Aturan `changePassword()`:
 
-Aturan `changePassword()`:
+1. `current_password: required`; `password: required|min_length[12]|max_length[72]|differs[current_password]` (sama dengan pembuatan akun; 72 = batas bcrypt); `password_confirm: required|matches[password]`.
+2. Sandi saat ini salah → `registerFailedLogin()`, audit `staff_password_change_failed`. Bila itu mengunci akun, kunci sesi staf dihapus dan sesi di-`regenerate(true)`, lalu redirect `/admin/login` dengan pesan penguncian — sesi yang dibajak tidak dapat dipakai menebak sandi.
+3. Berhasil → `setPassword()` (sekaligus `must_change_password = 0`), `failed_login_count = 0`, `regenerate(true)`, audit `staff_password_change` dengan `after_reset`. Sandi sementara → redirect `/admin/dashboard`; selain itu kembali ke form dengan pesan berhasil.
 
-1. Validasi `current_password: required`; `password: required|min_length[12]|max_length[72]|differs[current_password]` (sama dengan pembuatan akun di `StaffController::store()`; 72 = batas bcrypt); `password_confirm: matches[password]`.
-2. Sandi saat ini salah → `registerFailedLogin()`, audit `staff_password_change_failed`, kembali dengan "Kata sandi saat ini salah.".
-3. Bila salah tebak itu mengunci akun (throttle staf: 5 kali → 15 menit), kunci sesi staf dihapus dan sesi di-`regenerate(true)`, lalu redirect ke `/admin/login` dengan pesan penguncian. Sesi yang dibajak tidak dapat dipakai menebak sandi.
-4. Berhasil → `setPassword()` (sekaligus `must_change_password = 0`), `failed_login_count = 0`, `session()->regenerate(true)`, audit `staff_password_change` dengan metadata `after_reset`. Bila sebelumnya wajib ganti, redirect ke `/admin/dashboard`; selain itu kembali ke form dengan pesan berhasil.
-5. Kata sandi tidak pernah masuk flash, `old()`, maupun `audit_logs`.
+### Data penelitian (guru & admin)
 
-Tautan **Ubah sandi** ada di kepala setiap halaman panel.
+| Controller::method | Aturan | View |
+|---|---|---|
+| `DashboardController::index()` | `AnalyticsService::summary()` (hitungan data mentah), `ParticipantModel::cohortSummary()`, `digitalSecurityLiteracy()`, sepuluh sesi terakhir; admin juga melihat pratinjau penghapusan buatan retensi | `admin/dashboard` |
+| `ParticipantController::index()` | Daftar siswa dalam cakupan, filter kelas/provinsi/sekolah, cari `?q=` (kode, nama pengguna, nama), 25 per halaman, ringkasan sesi & serpihan | `admin/participants/index` |
+| `ParticipantController::show($id)` | Siswa di luar cakupan → 404. `participantProfile()`, `device_logs`, sesi | `admin/participants/show` |
+| `ParticipantController::resetPassword($id)` | Lihat di bawah | `admin/participants/reset-result` |
+| `SessionController::index()` | Sesi dalam cakupan, filter penelitian/bahasa/kelas/tanggal, 25 per halaman | `admin/sessions/index` |
+| `SessionController::show($id)` | Sesi di luar cakupan → 404. Progres, attempt, jawaban per soal (`item_responses`), percobaan per soal (`item_tries`), `device_logs` | `admin/sessions/show` |
+| `SessionController::timeline($id)` | `eventTimeline()` + saring `?type=` | `admin/sessions/timeline` |
+| `FeedbackController::index()` | Kritik & saran dalam cakupan + sebaran rating | `admin/feedback/index` |
 
-**Wajib ganti sandi.** Sandi yang diketahui admin menyalakan `staff_users.must_change_password` (migration `003400`): `StaffController::resetPassword()` memanggil `setPassword($id, $temporary, true)`, dan `StaffController::store()` menyimpan akun baru dengan nilai 1. Selama bernilai 1:
+Peserta selalu dikirim ke view sebagai array aman (`Participant::toSafeArray()` + kolom tampilan), tidak pernah sebagai entity yang membawa `password_hash`.
 
-* `AuthController::login()` mengarahkan ke `/admin/akun/sandi` (bukan `redirect_to`).
-* `StaffAuthFilter` hanya membuka `/admin/akun/sandi`. Halaman lain dialihkan ke sana, `/api/admin/*` membalas `403 PASSWORD_CHANGE_REQUIRED`. Nilai dibaca dari database setiap request, sehingga reset saat staf sedang login langsung berlaku.
-* Form menampilkan pemberitahuan sandi sementara. `/admin/logout` tetap terbuka (di luar grup `staffAuth`).
-
-Akun `admin` hasil seeder tidak wajib ganti: sandinya dipilih operator lewat `GELITA_ADMIN_PASSWORD`.
-
-### `Admin\DashboardController` & `AnalyticsController`
-
-Semua method mengikuti pola yang sama:
-
-```php
-public function levels()
-{
-    $filters = $this->readFilters();            // dari query string
-    $scope   = $this->schoolScope();            // NULL untuk admin, school_id untuk guru
-    $data    = service('analyticsService')->levelBreakdown($filters + ['school_id' => $scope]);
-    return view('admin/analytics/levels', ['rows' => $data, 'filters' => $filters]);
-}
-```
-
-`readFilters()` dan `schoolScope()` ditaruh di `Admin\BaseAdminController` yang meng-extend `BaseController`:
-
-```php
-protected function schoolScope(): ?int
-{
-    return session('staff_role') === 'admin' ? null : (int) session('staff_school_id');
-}
-```
-
-**Penting:** `schoolScope()` dipanggil di setiap method yang membaca data peserta. Jangan mengandalkan filter route saja.
-
-### `Admin\ParticipantController::resetPassword($id)`
+**`ParticipantController::resetPassword($id)`:**
 
 ```text
-1. Peserta harus berada dalam schoolScope() pemanggil (guru: sekolahnya saja) → selain itu 404
-2. Konfirmasi: form POST dengan field confirm = "RESET"
-3. SessionService::resetPasswordByStaff($id, staffId)
-     sandi sementara acak yang memenuhi kebijakan (mis. "Kedu-7342-Lentera")
-     must_change_password = 1, failed_login_count = 0, locked_until = NULL
-     audit participant_password_reset (TANPA sandi sementara di metadata)
-4. Tampilkan sandi sementara SEKALI di halaman hasil, dengan pesan:
-   "Berikan kepada siswa. Siswa wajib membuat sandi baru saat masuk."
-   Sandi sementara tidak disimpan, tidak dikirim lewat flash, tidak masuk log.
+1. Siswa harus dalam schoolScope() pemanggil (guru: sekolahnya saja) → selain itu 404.
+2. Field confirm harus berisi "RESET".
+3. SessionService::resetPasswordByStaff($id, staffId):
+     sandi sementara acak yang memenuhi kebijakan, must_change_password = 1,
+     audit participant_password_reset (tanpa sandi sementara di metadata).
+4. Sandi sementara ditampilkan SEKALI di respons ini (Cache-Control: no-store);
+   tidak disimpan, tidak lewat flash, tidak masuk log.
+   Pada masuk berikutnya siswa diarahkan ke /ganti-sandi.
 ```
 
-### `Admin\ContentController`
+### `Admin\ExportController` (guru & admin)
 
-| Method | Business rule |
+| Method | Aturan |
 |---|---|
-| `updateNode($id)` | validasi `engine_type` tidak boleh diubah bila node sudah punya attempt; ubah judul/instruksi/config; `ContentRepository::flush()`; audit `content_update` |
-| `createItem($nodeId)` | validasi `interaction_type` cocok dengan `engine_type` node; `answer_key_json` wajib bila `scorable = 1` |
-| `importForm()` | halaman unggah workbook bank soal + riwayat impor |
-| `importPreview()` | validasi `file: uploaded|ext_in[xlsx]|max_size[20480]`; simpan sementara di `writable/uploads/`; `ContentImportService::preview()`; tampilkan ringkasan per node, galat per baris (sheet + nomor baris), dan peringatan (`needs_verification`, bank kurang dari minimum) |
-| `importRun()` | hanya bila pratinjau terakhir tanpa galat; `ContentImportService::import()` dalam satu transaction; audit `content_import`; hapus berkas sementara |
-| `importTemplate()` | unduh templat workbook kosong (`ContentImportService::template()`) |
-| `passages($levelId)` / `savePassages($levelId)` | kelola `reading_passages` satu level; passage yang masih dirujuk item tidak boleh dihapus |
-| `verify()` | jalankan pemeriksaan: 3 level, 5 node per level, engine valid, bank item ≥ `items_per_round`, tiap item scorable punya `answer_key_json`, tiap `single_choice`/`source_trust` punya tepat 1 opsi benar, `verdict` kunci termasuk `verdict_options` node, `passage_id` satu level dengan node, jumlah pengecoh rumpang ≥ `distractor_count`, dan daftar item `needs_verification`; tampilkan daftar temuan |
+| `index()` | Form filter (penelitian, wilayah, sekolah, kelas, provinsi, bahasa, rentang tanggal), pilihan sheet, riwayat 20 ekspor (guru: miliknya saja); view `admin/export/index` |
+| `xlsx()` | Baris `data_exports` status `running` → `ExportService::build()` → audit `export`. Sheet: `ExportService::SHEETS`; **guru dipaksa `anonymized = 1`** dan tidak pernah mendapat sheet `Raw Events` (`ADMIN_ONLY_SHEETS`). Filter datang lewat POST dan dipaksa ke cakupan sekolah |
+| `pdf()` | Hanya laporan satu siswa (`participant_id` wajib, templat `participant`); tanpa `participant_id` ditolak dengan pesan |
+| `download($id)` | Hanya pemohon atau admin; berkas belum kedaluwarsa (`expires_at`, `Config\Gelita::$exportRetentionDays`) dan berada di direktori ekspor; audit `export_download` |
 
-Pemeriksaan konten kembar (jawaban yang sama muncul di dua node) ikut dilaporkan `verify()` — ini menjaga analisis butir tidak menghitung konsep ganda.
+`ExportService` membaca ulang hak pemohon dari `staff_users` sebagai lapis ketiga.
 
-`dialogues($levelId)` / `saveDialogues($levelId)` mengelola satu konteks naskah per halaman, dipilih lewat `?konteks=` (POST: field `context`). `levelId = 0`: konteks global `intro` (bawaan), `map_intro`, `ending`; selain itu konteks wilayah `region_intro`, `level_open` (bawaan), `level_done`. Konteks di luar daftar `Config\Gelita::$dialogueContexts` jatuh ke bawaannya. Selain teks, judul, tokoh, dan audio, admin menyunting pose dan efek; `DialogueModel` menolak pose yang bukan milik tokohnya. Suntingan di sini dilindungi dari `gelita:story:update` (dilewati kecuali `--force`).
+### `Admin\ContentController` (admin)
 
-### `Admin\MediaController`
+Setiap perubahan memanggil `ContentRepository::flush()` dan menulis audit `content_update`.
 
-`upload()`:
-
-1. Validasi `file: uploaded[file]|max_size[file,65536]|is_image[file]` (atau `mime_in` untuk audio/video).
-2. Cocokkan `asset_key` tujuan; ambil ukuran wajib dari `Config\Gelita::$assetSizes`.
-3. `getimagesize()` → tolak bila tidak cocok dan `strict = true`.
-4. Simpan ke `public/assets/uploads/{asset_key}.{ext}` dengan nama resmi, bukan nama asli.
-5. Hitung `sha256`, `file_size`, dimensi → simpan/`update` `media_assets`.
-6. Audit `media_upload`.
-
-`uploadAudio()`: tambah field `locale`, `character_code`, `context_code`, `transcript` (wajib), `production_method`. Status awal `draft`. Durasi dibaca server-side; bila gagal dibaca, dibiarkan NULL.
-
-`approveAudio($id)`: set `approval_status = 'approved'`, `approved_by`, `approved_at`. Audit `audio_approve`. **Hanya audio approved yang dikirim ke pemain.**
-
-`checklist()` (Tahap 5): `App\Libraries\AssetChecklist::groups()` — slot UI & latar (`ui.logo-hero`, `ui.btn-start` + `.en`, `ui.logo`, `map.kedu`, `bg.loading`, `bg.*`), frame pose tokoh (`Config\Gelita::$characterAnimations`), latar/peta/lencana wilayah (kolom `levels`), musik & efek suara (`public/assets/audio/{music,sfx}/`), poster video Pustaka yang kosong, dan kemajuan narasi per bahasa. Setiap butir: status `missing` / `wrong` (ukuran salah, narasi masih draft) / `ok`, ukuran wajib, dan tautan ke tempat mengunggahnya (`/admin/media?asset_key=…` mengisi kotak asset_key, editor wilayah, editor Pustaka, halaman Narasi).
-
-`audioIndex()` kini juga mengirim `drafts` (jumlah narasi naskah draft per bahasa) untuk tombol persetujuan massal.
-
-### `Admin\NarrationController` (Tahap 5)
-
-Aturan impor di `App\Libraries\NarrationImporter` (dipakai juga `gelita:narration:import`), status dan persetujuan massal di `App\Libraries\NarrationCatalog`.
-
-| Method | Business rule |
+| Method | Aturan |
 |---|---|
-| `index()` | baris `dialogues` aktif keenam konteks naskah, urut naskah, dikelompokkan per konteks dan wilayah; status audio ID/EN (`none` / `draft` / `review` / `rejected` / `inactive` / `approved`); kemajuan per bahasa; jumlah draft per bahasa |
-| `uploadForm()` | batas unggahan (`uploadLimits()`: terkecil dari `Config\Gelita::$maxUploadBytes` dan `upload_max_filesize`, `post_max_size`, `max_file_uploads`) + laporan hasil dari flash `narration_report` |
-| `upload()` | `locale` wajib id/en; `getFileMultiple('files')`; hanya berkas `isValid()` (is_uploaded_file) yang diteruskan, sisanya dilaporkan gagal dengan pesan galat PHP; `dry_run` = cocokkan nama saja; jumlah berkas ≥ `max_file_uploads` → peringatan "berkas di atas batas tidak terkirim"; audit `narration_import` (bila ada yang baru/diganti) |
-| `importFolder()` | sama, sumber `public/assets/audio/narasi/{locale}/` |
-| `approveAll()` | `NarrationCatalog::approveDrafts($locale)`: hanya audio draft yang ditautkan ke baris naskah atau ber-asset_key `audio.narasi.{locale}.*`; isi `approved_by`/`approved_at`; `flush()`; audit `audio_approve_bulk` + `count`. `back=audio` kembali ke halaman Audio |
-| `recordingList()` | XLSX (`ExcelWriter`): kode berkas, konteks, wilayah, urutan, tokoh, pose, efek, judul ID/EN, teks ID/EN, status audio ID/EN; dikirim dari memori, berkas sementara dihapus; audit `narration_list_download` |
+| `index()` | Wilayah, tantangan, jumlah soal dan variasi per tantangan; view `admin/content/index` |
+| `level()` / `updateLevel()` | `name_id`, `name_en` wajib; `difficulty` ∈ `mudah,sedang,sulit`; teks dwibahasa (`name`, `focus`, `cp`, `tp`, `intro`); gambar peta/latar/lencana; view `admin/content/level` |
+| `node()` / `updateNode()` | `title_id`, `title_en` wajib; `engine_type` valid dan **tidak dapat diubah** bila tantangan sudah punya attempt; isian terpandu `cfg[...]` (`distractor_count`, `use_word_bank`, `as_reading`, judul & pengecoh per variasi) digabung ke `config_json`; gambar adegan/latar; audio pengantar; view `admin/content/node` |
+| `createItem()` / `updateItem()` | `interaction_type` harus pasangan engine (`puzzle` → `puzzle_arrange`, `rumpang` → `fill_blank_bank`, `boleh` → `verdict_card`, `cari` → `find_object`); soal dinilai wajib punya `answer_key_json`; `variant_group` a–z/0–9; ukuran papan dan kunci Susun Gambar ditetapkan server dari tingkat kesulitan wilayah (`DifficultyRules`), dan soal yang sudah dijawab mempertahankan ukuran serta kuncinya; audio petunjuk hanya untuk `find_object` |
+| `deleteItem()` | Soal yang sudah pernah dijawab hanya dinonaktifkan (data penelitian), selain itu dihapus |
+| `importForm()` | Unggah workbook + 10 riwayat `content_import`; view `admin/content/import` |
+| `importPreview()` | `file: uploaded\|ext_in[file,xlsx]\|max_size[file,20480]`; berkas disimpan sementara di `writable/uploads/`; `ContentImportService::preview()` disimpan di session `import_preview` |
+| `importRun()` | Hanya bila pratinjau terakhir lolos; `ContentImportService::import()` (audit `content_import` di service); berkas sementara dihapus |
+| `importTemplate()` | Unduh `gelita-bank-soal.xlsx` (`ContentImportService::template()`) |
+| `passages()` / `savePassages()` | Teks bacaan satu wilayah; bacaan yang masih dirujuk soal tidak boleh dihapus; view `admin/content/passages` |
+| `library()` / `saveLibrary()` | Halaman Pustaka dan galeri medianya (`library_media`: berkas atau tautan video luar + poster) dalam satu transaction; urutan halaman boleh ditukar; poster video luar yang kosong diambil otomatis sesudah commit (`VideoThumbnail`); view `admin/content/library` |
+| `dialogues()` / `saveDialogues()` | Satu konteks per halaman (`?konteks=`, POST `context`). `levelId = 0`: konteks global `intro` (bawaan), `map_intro`, `ending`; selain itu `region_intro`, `level_open` (bawaan), `level_done` (`Config\Gelita::$dialogueContexts`). Teks, judul, tokoh, pose, efek, audio ID/EN; view `admin/content/dialogues` |
+| `verify()` | `App\Libraries\ContentVerifier::run()` (pemeriksaan yang sama dengan `php spark gelita:content:verify`); view `admin/content/verify` |
 
-### `Admin\ExportController`
+### `Admin\NarrationController` (admin)
 
-| Method | Business rule |
+Aturan impor di `App\Libraries\NarrationImporter` (dipakai juga `gelita:narration:import`); status dan persetujuan massal di `App\Libraries\NarrationCatalog`. Cakupannya baris naskah `dialogues` dan narasi petunjuk Cari Objek (`petunjuk-{node}-NN`).
+
+| Method | Aturan |
 |---|---|
-| `index()` | form filter: study, phase, level, sekolah, kelas, rentang tanggal, sheet yang disertakan, mode anonim |
-| `xlsx()` | buat baris `data_exports` status `running`; panggil `ExportService`; pada sukses `markDone()` + audit `export`; **guru dipaksa `anonymized = 1`**; sheet `Raw Events` hanya untuk admin |
-| `pdf()` | sama, template laporan; raw event tidak masuk PDF |
-| `download($id)` | validasi export milik pemohon atau pemohon adalah admin; validasi `expires_at` belum lewat; kirim file dari `writable/exports/` lewat `$this->response->download()`; audit |
+| `index()` | Baris narasi per konteks/wilayah dengan status audio ID/EN, kemajuan dan jumlah draft per bahasa; view `admin/narration/index` |
+| `uploadForm()` | Batas unggahan efektif (`uploadLimits()`: terkecil dari `Config\Gelita::$maxUploadBytes` dan `upload_max_filesize`; `post_max_size`; `max_file_uploads`) + laporan dari flash `narration_report`; view `admin/narration/upload` |
+| `upload()` | `locale` id/en; `getFileMultiple('files')`; hanya berkas unggahan sah yang diteruskan, sisanya dilaporkan gagal; `dry_run` = cocokkan nama saja; jumlah berkas ≥ `max_file_uploads` → peringatan; audit `narration_import` bila ada rekaman baru/diganti |
+| `importFolder()` | Sama, sumber `public/assets/audio/narasi/{locale}/` |
+| `approveAll()` | `NarrationCatalog::approveDrafts($locale)` (audit `audio_approve_bulk`); `back=audio` kembali ke halaman Rekaman suara |
+| `recordingList()` | XLSX daftar rekaman untuk pengisi suara, dikirim dari memori; audit `narration_list_download` |
 
-### `Admin\SchoolController` (admin saja)
+### `Admin\MediaController` (admin)
 
-| Method | Business rule | Response |
-|---|---|---|
-| `index()` | ringkasan (sekolah resmi, sekolah dengan siswa, belum terverifikasi) + sumber data dari `sekolah-jateng.meta.json`; cari `?q=` (NPSN / kata nama, kecamatan, desa) dan `?kab=` → maks. 50 baris + jumlah siswa; daftar entri belum terverifikasi + 3 saran per entri; jumlah yang cocok jelas (`autoMerge(true)`) | view `admin/schools/index` |
-| `merge($id)` | POST `target_id` (saran) atau `target_npsn`; asal harus belum terverifikasi; siswa + akun guru pindah; audit `school_merge` | redirect + toast |
-| `autoMerge()` | gabung semua entri yang cocok jelas (`SchoolDirectory::matchByName`) | redirect + toast |
-| `verify($id)` | POST `npsn` (8 angka, belum dipakai) + `name`; audit `school_verify` | redirect + toast |
-
-### `Admin\GovernanceController`
-
-| Method | Business rule |
+| Method | Aturan |
 |---|---|
-| `deletePreview()` | hitung jumlah baris terdampak per tabel tanpa menghapus apa pun; simpan `data_deletion_requests` status `preview` + `affected_count`; audit `delete_preview` |
-| `deleteExecute($id)` | wajib request berstatus `preview`; wajib field `confirm` berisi teks persis `HAPUS`; jalankan dalam transaction; `mode = soft` → isi `deleted_at`/`deleted_by`/`delete_reason`; `mode = hard` → hapus baris; audit `delete_execute` dengan `affected_count` final |
-| `runRetention()` | jalankan sekarang apa yang biasanya dijalankan cron |
-| `audit()` | daftar `audit_logs` dengan filter aksi dan rentang tanggal |
+| `index()` | Semua `media_assets`, ukuran wajib per slot (`Config\Gelita::$assetSizes`), pemakaian, hasil pindai; view `admin/media/index` |
+| `checklist()` | `App\Libraries\AssetChecklist::groups()` + ringkasan: slot yang belum berberkas, frame pose tokoh, latar/peta/lencana wilayah, poster video Pustaka, rekaman narasi; view `admin/media/checklist` |
+| `upload()` | `asset_key` wajib; `file: uploaded[file]\|max_size[file,65536]`; `App\Libraries\MediaStore::store()` (nama resmi dari `asset_key`, dimensi dibaca server, ukuran wajib per slot, `is_placeholder = 0`, audit `media_upload`) |
+| `deactivate($id)` | `is_active = 0`, audit `media_deactivate` |
+| `audioIndex()` | Semua `audio_assets` + jumlah narasi draft per bahasa; view `admin/media/audio` |
+| `uploadAudio()` | `asset_key`, `locale`, `context_code`, `transcript` wajib; durasi dibaca server; status selalu `draft` (unggah ulang `asset_key` yang sama mengembalikannya ke draft); audit `audio_upload` |
+| `approveAudio($id)` | `approval_status = approved`, `approved_by`, `approved_at`; audit `audio_approve`. Hanya audio yang disetujui yang diputar untuk siswa |
+| `scan()` | `App\Libraries\MediaIntegrity::check()` (berkas hilang, ukuran berubah, sha256 tidak cocok); audit `media_scan` |
 
-Penghapusan tidak pernah senyap. Tidak ada endpoint yang menghapus data penelitian di luar alur ini.
+### `Admin\StudyController` (admin)
+
+| Method | Aturan |
+|---|---|
+| `index()` / `store()` / `update($id)` | Penelitian: `code` (unik, tidak diubah saat update), `name`, `status` ∈ `draft,active,closed`, `default_locale`, `unlock_mode` ∈ `sequential,free`, `retention_days`; audit `study_create` / `study_update`; view `admin/study/index` |
+| `releases()` / `storeRelease()` | Versi permainan (`release_code` unik, `app_version`, `content_version`, `asset_version`, `scoring_version`, `notes`), dibuat nonaktif; audit `release_create`; view `admin/study/releases` |
+| `activateRelease($id)` | `GameReleaseModel::activate()`, flush cache konten; audit `release_activate`. Sesi baru memakai versi ini |
+
+### `Admin\GovernanceController` (admin)
+
+Logikanya di `App\Services\RetentionService`.
+
+| Method | Aturan |
+|---|---|
+| `index()` | 30 permintaan penghapusan terakhir, batas retensi (`sessionIdleMinutes`, `attemptAbandonHours`, `sessionAbandonDays`, `exportRetentionDays`); view `admin/governance/index` |
+| `deletePreview()` | Cakupan: nomor siswa, sesi, atau penelitian; `mode` `soft`/`hard`; hitung baris terdampak tanpa menghapus, simpan `data_deletion_requests` status `preview`; audit `delete_preview` |
+| `deleteExecute($id)` | Field `confirm` harus persis `HAPUS`; permintaan harus berstatus `preview`; dijalankan dalam transaction; audit `delete_execute` |
+| `deleteCancel($id)` | Hanya permintaan `preview`; audit `delete_cancel` |
+| `audit()` | `audit_logs` dengan filter `action` dan rentang tanggal, 50 per halaman; view `admin/governance/audit` |
+| `runRetention()` | Menjalankan sekarang pekerjaan cron `gelita:retention:run`; audit `retention_run` |
+
+Penghapusan tidak pernah senyap. Tidak ada endpoint lain yang menghapus data penelitian.
+
+### `Admin\SchoolController` (admin)
+
+| Method | Aturan |
+|---|---|
+| `index()` | Statistik (sekolah resmi, belum terverifikasi, dipakai siswa), sumber data `sekolah-jateng.meta.json`; cari `?q=` (NPSN, nama, kecamatan, desa) dan `?kab=` → maks. 50 baris; entri belum terverifikasi beserta saran; jumlah yang cocok jelas; view `admin/schools/index` |
+| `merge($id)` | POST `target_id` (saran) atau `target_npsn`; siswa dan akun guru pindah ke sekolah tujuan; audit `school_merge` |
+| `autoMerge()` | Gabungkan semua entri yang cocok jelas (`SchoolDirectory::autoMerge()`) |
+| `verify($id)` | POST `npsn` (8 angka, belum dipakai) + `name`; audit `school_verify` |
+
+### `Admin\StaffController` (admin)
+
+| Method | Aturan |
+|---|---|
+| `index()` | Akun tanpa `password_hash`, status terkunci dan wajib-ganti; view `admin/staff/index` |
+| `store()` | `username: required\|alpha_dash\|min_length[3]\|max_length[100]\|is_unique`; `role` ∈ `admin,guru`; `password` 12–72; guru wajib punya sekolah (NPSN didahulukan, selain itu pilihan daftar sekolah yang dipakai); `must_change_password = 1`; audit `staff_create` |
+| `update($id)` | Nama, email, peran, sekolah, aktif; admin tidak dapat menurunkan peran atau menonaktifkan akunnya sendiri; audit `staff_update` |
+| `resetPassword($id)` | Konfirmasi `RESET`; `StaffUserModel::resetToTemporary()` (wajib ganti); sandi sementara ditampilkan sekali dengan `Cache-Control: no-store`; audit `staff_password_reset` |
+| `deactivate($id)` | Bukan akun sendiri; `is_active = 0`; audit `staff_deactivate` |
 
 ---
 
-## Authentication
+## Autentikasi
 
-### Siswa (game)
+Session CodeIgniter memakai `DatabaseHandler` (tabel `ci_sessions`, cookie `gelita_session`, kedaluwarsa 4 jam). Tidak ada cookie khusus berumur panjang dan tidak ada "ingat saya" — komputer sekolah dipakai bergantian.
 
-* Registrasi di `/daftar`: nama pengguna + kata sandi kuat + ulangi sandi, bersama data demografis dan persetujuan.
-* Kebijakan sandi: minimal 8 karakter, huruf besar, huruf kecil, angka, simbol; tidak memuat nama pengguna. Aturan dari `Config\Gelita::$passwordPolicy`, diputuskan `PasswordPolicy` di server.
+### Siswa
+
+* Pendaftaran di `/daftar/1..3`: nama pengguna, kata sandi kuat, ulangi sandi, dan centang persetujuan siswa (`participants.assented_at`), bersama data diri dan sekolah.
+* Kebijakan sandi `Config\Gelita::$passwordPolicy`: 8–64 karakter, huruf besar, huruf kecil, angka, simbol, tidak memuat nama pengguna; pendaftaran hanya menerima tingkat `strong`. Diputuskan `App\Libraries\PasswordPolicy` di server (aturan validasi `strong_password`); JavaScript hanya menampilkan syarat yang dikirim server.
 * `password_hash()` / `password_verify()` dengan `PASSWORD_DEFAULT`.
-* Login di `/masuk`. Throttle: 8 kegagalan → `locked_until = NOW + 5 menit` (lebih longgar dari staf karena anak sering salah ketik, tetap cukup untuk menghentikan tebak-tebakan).
-* Setelah login: `session()->regenerate(true)`, lalu `session('participant_id')` dan `session('game_session_id')`. Tidak ada cookie khusus berumur panjang dan tidak ada "ingat saya" — komputer kelas dipakai bergantian.
-* Tiga filter:
+* Masuk di `/masuk`. Throttle `Config\Gelita::$loginThrottle['participant']`: 8 kegagalan → terkunci 5 menit.
+* Setelah masuk: `session()->regenerate(true)`, lalu `participant_id` dan `game_session_id`. Login melanjutkan sesi studi aktif yang dapat dilanjutkan (event `session_resumed`, `device_logs` via `resume`) atau membuat sesi baru (`session_started`, `device_logs` via `login`).
+* Sesi berstatus `completed` tetap dapat dibuka (peta, hasil, profil, refleksi, mengulang tantangan); pengerjaan ulang tetap tercatat.
+* Sesi `active` yang tidak aktif melebihi `Config\Gelita::$sessionIdleMinutes` (45) ditandai `paused` oleh retensi; masuk berikutnya melanjutkannya.
+* Siswa lupa sandi → guru mereset dari `/admin/peserta/{id}`; siswa wajib membuat sandi baru di `/ganti-sandi`. Tidak ada reset lewat email.
 
-| Filter | Syarat lolos | Bila gagal |
+| Filter | Lolos bila | Gagal |
 |---|---|---|
-| `participantAuth` | `participant_id` ada dan peserta aktif | redirect `/masuk` |
-| `gameSession` | lolos `participantAuth` + `must_change_password = 0` + `game_session_id` ada dan status ≠ `abandoned` | `/masuk` atau `/ganti-sandi` |
-| `apiSession` | sama seperti `gameSession` | JSON `401 INVALID_SESSION` / `403 PASSWORD_CHANGE_REQUIRED` |
-
-* Sesi berstatus `completed` tetap dapat dibuka (peta, hasil, profil, refleksi, dan mengulang tantangan); attempt ulang tetap tercatat sebagai data.
-* Sesi `active` yang tidak aktif melebihi `Config\Gelita::$sessionIdleMinutes` ditandai `paused` oleh command retention; login berikutnya melanjutkannya.
-* Siswa lupa sandi → guru mereset dari `/admin/peserta/{id}` (lihat `ParticipantController::resetPassword`). Tidak ada reset lewat email, karena siswa SD umumnya tidak punya email sendiri.
+| `participantAuth` | `participant_id` ada dan pesertanya belum dihapus | redirect `/masuk` |
+| `gameSession` | `participantAuth` + `must_change_password = 0` + `game_session_id` milik peserta, status ≠ `abandoned` | `/masuk` (GET menyimpan tujuan) atau `/ganti-sandi` |
+| `apiSession` | sama dengan `gameSession` | `401 INVALID_SESSION` / `403 PASSWORD_CHANGE_REQUIRED` |
 
 ### Staf (admin & guru)
 
-* `password_hash()` / `password_verify()` dengan `PASSWORD_DEFAULT`.
-* Session CI4 dengan DatabaseHandler; `regenerate(true)` setelah login berhasil.
-* Throttle: 5 kegagalan → `locked_until = NOW + 15 menit`.
-* Semua percobaan login (berhasil dan gagal) masuk `audit_logs` dengan `ip_hash`, bukan IP mentah.
-* Staf mengganti sandinya sendiri di `/admin/akun/sandi` (lihat `AccountController`). Salah tebak sandi saat ini ikut throttle yang sama.
-* Sandi sementara dari admin (reset atau akun baru) wajib diganti sebelum panel terbuka — padanan `/ganti-sandi` siswa.
-* Tidak ada "remember me" — data penelitian tidak layak dibiarkan terbuka di komputer bersama sekolah.
+* `password_hash()` / `password_verify()` dengan `PASSWORD_DEFAULT`; sandi 12–72 karakter.
+* Throttle `Config\Gelita::$loginThrottle['staff']`: 5 kegagalan → terkunci 15 menit. Salah tebak sandi saat ini di `/admin/akun/sandi` ikut throttle yang sama.
+* Semua percobaan masuk (berhasil dan gagal) masuk `audit_logs` dengan hash IP, bukan IP mentah.
+* Sandi yang diketahui admin (akun baru, reset) menyalakan `staff_users.must_change_password`. Selama bernilai 1, `StaffAuthFilter` hanya membuka `/admin/akun/sandi` (dibaca dari database setiap request, jadi reset saat staf sedang masuk langsung berlaku). Akun `admin` dari seeder tidak wajib ganti karena sandinya dipilih operator lewat `GELITA_ADMIN_PASSWORD`.
+* Tidak ada "ingat saya".
 
 ---
 
-## Authorization
+## Otorisasi
 
-### Role
+### Peran
 
-| Role | Boleh |
+| Peran | Boleh |
 |---|---|
-| `admin` | semua data semua sekolah; konten; media; studi & rilis; export anonim dan non-anonim; deletion; retensi; akun staff; audit log |
-| `guru` | dashboard dan data peserta **sekolahnya saja**; export **anonim saja**; tidak dapat mengubah konten, menghapus data, atau mengelola akun |
+| `admin` | Semua data semua sekolah; konten, narasi, media; penelitian & versi permainan; ekspor beridentitas dan anonim termasuk `Raw Events`; penghapusan data dan retensi; direktori sekolah; akun staf; audit log |
+| `guru` | Beranda, siswa, sesi, kritik & saran, dan dataset `/api/admin/*` **sekolahnya saja**; reset sandi siswa sekolahnya; ekspor **anonim saja** tanpa `Raw Events`; ganti sandi sendiri. Tidak dapat mengubah konten, menghapus data, atau mengelola akun |
 
-Peserta tidak punya akses apa pun ke panel.
+Siswa tidak punya akses apa pun ke panel.
 
 ### Penegakan berlapis
 
-1. **Route** — `['filter' => 'staffAuth']` lalu `['filter' => 'staffRole:admin']` untuk grup yang khusus admin.
-2. **Controller** — `schoolScope()` menghasilkan `school_id` untuk guru dan `null` untuk admin.
-3. **Service** — `AnalyticsService` dan `ExportService` menerima `school_id` dan menerapkannya di setiap query. Bila pemanggil lupa mengirim, Service melempar exception, bukan mengembalikan semua data.
+1. **Route** — grup `staffAuth`, lalu `staffRole:admin` untuk bagian khusus admin.
+2. **Controller** — `schoolScope()` / `scopedFilters()` dipanggil di setiap method yang membaca data siswa; siswa/sesi di luar cakupan dibalas 404 (HTML) atau `403 FORBIDDEN` (API). Jangan mengandalkan filter route saja.
+3. **Service** — `AnalyticsService` diikat ke cakupan sekolah saat dibuat dan menambahkan `participants.school_id` di setiap query; `ExportService` membaca ulang hak pemohon dari `staff_users`.
 
-Tiga lapis ini disengaja: kesalahan di satu lapis tidak langsung membocorkan data peserta.
-
-### `StaffRoleFilter`
-
-```php
-public function before(RequestInterface $request, $arguments = null)
-{
-    $role = session('staff_role');
-    if ($role === null) {
-        return redirect()->to('/admin/login');
-    }
-    if ($arguments && ! in_array($role, $arguments, true)) {
-        if (str_starts_with($request->getUri()->getPath(), 'api/')) {
-            return service('response')->setStatusCode(403)->setJSON([
-                'success' => false, 'code' => 'FORBIDDEN',
-                'message' => 'Anda tidak memiliki akses ke bagian ini.',
-            ]);
-        }
-        throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
-    }
-}
-```
-
-Untuk halaman HTML, akses tanpa hak dibalas `404`, bukan `403`, agar struktur panel tidak terpetakan oleh pengguna yang tidak berhak.
+Tiga lapis ini disengaja: kesalahan di satu lapis tidak langsung membocorkan data siswa. Untuk halaman HTML, akses tanpa hak dibalas `404`, bukan `403`, agar struktur panel tidak terpetakan.
 
 ---
 
-## Error Handling
+## Respons API dan kode galat
 
-Bentuk respons gagal API seragam:
+Semua respons `/api` dan `/api/admin` berbentuk seragam dan membawa header `X-Request-Id`.
 
 ```json
-{ "success": false, "code": "INVALID_RESPONSE",
-  "message": "Data jawaban tidak valid.", "request_id": "a1b2c3d4" }
+{ "success": true,  "data": { … }, "request_id": "a1b2c3d4" }
+{ "success": false, "code": "INVALID_RESPONSE", "message": "…", "request_id": "a1b2c3d4" }
 ```
+
+* Sukses dibentuk `BaseController::ok()`; gagal oleh `BaseController::fail()` (controller) atau helper `api_error()` (filter). Respons gagal boleh membawa kunci tambahan: `errors` (per isian), `items` (`INCOMPLETE`), `redirect` (`TRIES_EXHAUSTED` pada pengerjaan yang sudah ditutup), `retry_after` (`RATE_LIMITED`).
+* Body JSON dibaca `BaseController::jsonBody()`; JSON rusak menjadi array kosong lalu ditolak validasi.
+* Exception tak tertangani di `/api` diubah menjadi JSON oleh `App\Libraries\GelitaExceptionHandler` (filter after tidak berjalan saat exception): status 5xx → `SERVER_ERROR`; 400/422 → `INVALID_PAYLOAD`; 401 → `INVALID_SESSION`; 403 → `FORBIDDEN`; 404/405 → `NOT_FOUND`; 409 → `CONFLICT`; 413 → `TOO_MANY_EVENTS`; 429 → `RATE_LIMITED`. Di production pesan, kelas, dan stack trace exception tidak pernah dikirim; semuanya hanya masuk `writable/logs/` dengan `request_id` yang sama, sehingga guru cukup menyebut `request_id` saat melapor.
 
 | code | HTTP | Kapan |
 |---|---:|---|
-| `INVALID_SESSION` | 401 | siswa belum login, session kedaluwarsa, atau sesi permainan ditinggalkan; juga token CSRF ditolak di `/api/*` tanpa login (session sudah habis) |
-| `CSRF_EXPIRED` | 403 | token CSRF ditolak di `/api/*` padahal masih login (halaman terlalu lama terbuka / masuk ulang di tab lain) — JavaScript menawarkan muat ulang |
-| `PASSWORD_CHANGE_REQUIRED` | 403 | sandi siswa baru direset guru dan belum diganti |
-| `INVALID_CREDENTIALS` | 401 | login gagal (pesan identik untuk nama/sandi salah) |
-| `ACCOUNT_LOCKED` | 423 | terlalu banyak percobaan login gagal |
-| `WEAK_PASSWORD` | 422 | sandi tidak memenuhi kebijakan |
-| `USERNAME_TAKEN` | 422 | nama pengguna sudah dipakai |
-| `FORBIDDEN` | 403 | role tidak mencukupi, atau attempt/sesi bukan milik pemanggil |
-| `NOT_FOUND` | 404 | node/item/attempt tidak ada |
-| `INVALID_PAYLOAD` | 422 | validasi gagal; sertakan `errors` per field |
-| `INVALID_RESPONSE` | 422 | item tidak termasuk attempt, atau bentuk `answer` tidak sesuai `interaction_type` |
-| `ATTEMPT_CLOSED` | 409 | attempt sudah `completed`/`abandoned` |
-| `LEVEL_LOCKED` | 409 | level belum terbuka |
-| `LIBRARY_LOCKED` | 409 | `/api/library/{levelId}`: wilayah terbuka tetapi tantangannya belum semua selesai (kunci Pustaka per wilayah) |
-| `TOO_MANY_EVENTS` | 413 | melebihi `maxEventsPerBatch` |
-| `RATE_LIMITED` | 429 | terlalu banyak request dari satu sesi |
-| `SERVER_ERROR` | 500 | exception tak tertangani |
+| `INVALID_SESSION` | 401 | Siswa/staf belum masuk, session kedaluwarsa, sesi permainan ditinggalkan; juga token CSRF ditolak tanpa login |
+| `CSRF_EXPIRED` | 403 | Token CSRF ditolak padahal masih masuk (halaman terlalu lama terbuka, masuk ulang di tab lain) — klien menawarkan muat ulang |
+| `PASSWORD_CHANGE_REQUIRED` | 403 | Sandi siswa direset guru, atau sandi sementara staf, belum diganti |
+| `FORBIDDEN` | 403 | Peran tidak mencukupi, attempt/sesi/ekspor bukan milik pemanggil |
+| `NOT_FOUND` | 404 | Wilayah, tantangan, attempt, petunjuk, atau ekspor tidak ada |
+| `INVALID_PAYLOAD` | 422 | Validasi gagal; disertai `errors` |
+| `INVALID_RESPONSE` | 422 | `item_id` bukan milik attempt, bentuk `answer` tidak sesuai, atau engine salah jalur (`/responses` vs `/check`) |
+| `INCOMPLETE` | 422 | `/check`: masih ada soal belum benar yang tidak diisi; disertai `items` |
+| `ATTEMPT_CLOSED` | 409 | Attempt sudah `completed`/`abandoned` |
+| `TRIES_EXHAUSTED` | 409 | `/check` setelah ketiga kesempatan terpakai; `redirect` ke `/selesai/{id}` bila pengerjaannya sudah ditutup |
+| `CLUE_CLOSED` | 409 | `/responses`: petunjuk Cari Objek itu sudah ditemukan atau dilewati — klien memuat ulang |
+| `TRIES_REMAINING` | 409 | `/complete` pada pengerjaan yang belum semua benar dan masih punya kesempatan |
+| `LEVEL_LOCKED` | 409 | Wilayah belum terbuka |
+| `LIBRARY_LOCKED` | 409 | `/api/library/{levelId}`: wilayah terbuka tetapi tantangannya belum semua selesai |
+| `CONFLICT` | 409 | Exception 409 lain yang tidak ditangani controller |
+| `TOO_MANY_EVENTS` | 413 | Batch melebihi `maxEventsPerBatch` |
+| `RATE_LIMITED` | 429 | Jatah per sesi atau per hash IP habis; disertai `retry_after` |
+| `SERVER_ERROR` | 500 | Exception tak tertangani |
 
-Di production, `SERVER_ERROR` tidak pernah menyertakan pesan exception, kelas, atau stack trace. Semuanya hanya masuk `writable/logs/` beserta `request_id` yang sama, sehingga guru cukup menyebut `request_id` saat melapor.
+Pesan untuk siswa diambil dari `app/Language/{id,en}/Game.php` (mis. `Game.errTriesExhausted`, `Game.errClueClosed`, `Game.errTriesRemaining`, `Game.errIncomplete`, `Game.errPageExpired`); pesan `/api/admin` berbahasa Indonesia.
 
 ---
 
 ## Aturan Sistem
 
-1. Semua penilaian, skor, dan status level ditentukan server. Client tidak pernah menjadi sumber kebenaran.
+Nomor aturan dirujuk dari kode (mis. `BaseApiController` → aturan 2, `safe_internal_url()` → aturan 11); jangan mengubah urutannya.
+
+1. Semua penilaian, bintang, serpihan, dan status wilayah/tantangan ditentukan server. Klien tidak pernah menjadi sumber kebenaran.
 2. Setiap endpoint memvalidasi: sesi valid → attempt/node milik sesi itu → item milik attempt itu. Ketiganya, bukan salah satu.
-3. `attempt_id` dari URL selalu dicocokkan dengan `session_id` sesi berjalan sebelum dipakai.
-4. Mengganti bahasa tidak membuat sesi baru, tidak mereset progres, jawaban, skor, atau status penyelesaian.
-5. Fase penelitian (`umum`/`pretest`/`posttest`) ditetapkan saat sesi dibuat dan tidak dapat diubah setelah ada event gameplay.
-6. Guru tidak dapat mengekspor data non-anonim, dan tidak dapat melihat peserta dari sekolah lain.
-7. Setiap export dan setiap penghapusan menghasilkan baris `audit_logs`.
-8. Penghapusan data selalu dua langkah: pratinjau jumlah terdampak, lalu eksekusi dengan konfirmasi teks.
-9. CSRF aktif untuk semua POST. JavaScript mengirim token lewat header `X-CSRF-TOKEN`.
-10. Rate limit sederhana per sesi untuk `/api/events` dan `/api/attempts/*` (mis. 120 request/menit) memakai cache CI4, agar satu tab bermasalah tidak membanjiri database event.
-11. Redirect yang berasal dari input pengguna (`redirect_to`) wajib divalidasi sebagai path internal.
-12. Kata sandi (siswa maupun staf, termasuk sandi sementara hasil reset) tidak pernah ditulis ke flash data, `old()`, log, `game_event_logs`, maupun `audit_logs`.
-13. Form login siswa dan staf selalu memberi pesan identik untuk nama pengguna tidak ada dan sandi salah.
+3. `attempt_id` dari URL selalu dicocokkan dengan sesi berjalan sebelum dipakai.
+4. Mengganti bahasa tidak membuat sesi baru dan tidak mereset progres, jawaban, bintang, atau status penyelesaian.
+5. Aturan 3 kesempatan ditegakkan server: pengerjaan hanya tertutup karena semua benar (`solved`) atau kesempatan habis (`tries_exhausted`); permintaan yang melanggarnya dibalas `TRIES_EXHAUSTED`, `CLUE_CLOSED`, `TRIES_REMAINING`, atau `INCOMPLETE`.
+6. Guru tidak dapat mengekspor data beridentitas dan tidak dapat melihat siswa dari sekolah lain.
+7. Setiap ekspor, unduhan ekspor, dan penghapusan menghasilkan baris `audit_logs`.
+8. Penghapusan data selalu dua langkah: pratinjau jumlah terdampak, lalu eksekusi dengan konfirmasi teks `HAPUS`.
+9. CSRF aktif untuk semua POST, termasuk `/api`. JavaScript mengirim token lewat header `X-CSRF-TOKEN`.
+10. Rate limit per sesi untuk endpoint tantangan (`attempts`) dan event (`events`): 120 request/menit memakai cache CodeIgniter, agar satu tab bermasalah tidak membanjiri database. Endpoint tanpa login dibatasi per hash IP.
+11. Redirect yang berasal dari input pengguna (`redirect_to`, `redirect_after_login`) wajib divalidasi sebagai path internal (`safe_internal_url()`).
+12. Kata sandi (siswa maupun staf, termasuk sandi sementara hasil reset) tidak pernah ditulis ke flash data, `old()`, session, log, `game_event_logs`, maupun `audit_logs`.
+13. Form masuk siswa dan staf selalu memberi pesan identik untuk nama pengguna tidak ada dan sandi salah.
 14. Guru hanya dapat mereset sandi siswa di sekolahnya; setiap reset tercatat di `audit_logs`.
-15. Request HEAD dilayani rute GET dengan handler **dan** filter yang sama (`App\Libraries\HeadAsGetRouteCollection`, didaftarkan di `Config\Services::routes()`). Tanpa itu CodeIgniter menjawab HEAD dengan 404; memetakan handler tanpa filter akan membuka halaman staf tanpa login. Filter yang punya efek samping khusus GET (simpan tujuan login, `?lang=`) memeriksa `getMethod() === 'GET'`, sehingga tidak berjalan untuk HEAD.
-16. Sandi staf yang diketahui admin (sandi sementara hasil reset, sandi awal akun baru) wajib diganti pemiliknya sebelum halaman panel lain dan `/api/admin/*` dapat dipakai (`staff_users.must_change_password`, ditegakkan `StaffAuthFilter`).
+15. Request HEAD dilayani route GET dengan handler **dan** filter yang sama (`HeadAsGetRouteCollection`). Memetakan handler tanpa filter akan membuka halaman staf tanpa login. Filter yang punya efek samping khusus GET (menyimpan tujuan login, `?lang=`, `screen_viewed`) memeriksa `getMethod() === 'GET'`, sehingga tidak berjalan untuk HEAD.
+16. Sandi staf yang diketahui admin (sandi awal akun baru, sandi sementara hasil reset) wajib diganti pemiliknya sebelum halaman panel lain dan `/api/admin/*` dapat dipakai (`staff_users.must_change_password`, ditegakkan `StaffAuthFilter`).
 
 ---
 
-## Dependency
+## Keterkaitan dokumen
 
-Dari **01_DATABASE.md**: struktur tabel, aturan uniqueness, daftar `event_type` dan `interaction_type`.
+* [01_DATABASE.md](01_DATABASE.md): struktur tabel, daftar `event_type` dan `interaction_type`.
+* [02_PROJECT_FOUNDATION.md](02_PROJECT_FOUNDATION.md): `BaseController`, alias filter, `Config\Gelita`, helper.
+* [03_MODEL_ENTITY.md](03_MODEL_ENTITY.md): Model, Entity, dan Service yang dipanggil controller — `SessionService`, `ChallengeService`, `ScoringService`, `EventService`, `AnalyticsService`, `ExportService`, `ContentImportService`, `ContentRepository`, `RetentionService`, `SchoolDirectory`.
+* [05_VIEW_UI.md](05_VIEW_UI.md): isi view yang dipanggil controller di atas.
+* [06_JAVASCRIPT.md](06_JAVASCRIPT.md): klien yang memakai endpoint `/api` dan kode galatnya.
+* [07_FEATURE_INTEGRATION.md](07_FEATURE_INTEGRATION.md): alur fitur dari ujung ke ujung.
 
-Dari **02_PROJECT_FOUNDATION.md**: `BaseController` dengan `ok()`/`fail()`/`jsonBody()`, alias filter di `Config\Filters`, `Config\Gelita`, helper.
-
-Dari **03_MODEL_ENTITY.md**: seluruh Model, Entity, dan delapan Service — khususnya `SessionService` (registrasi, login, ganti & reset sandi), `ChallengeService`, `ScoringService`, `EventService`, `AnalyticsService`, `ContentImportService`, `ContentRepository`; library `PasswordPolicy` dan rule `strong_password`.
-
----
-
-## Hasil Akhir
-
-Setelah tahap ini selesai:
-
-* `php spark routes` menampilkan seluruh route di atas tanpa konflik, dengan auto-route mati.
-* Alur siswa berjalan penuh lewat HTTP: `/` → `/persetujuan` → `/daftar` (nama pengguna + sandi kuat) → `/intro` → `/intro/selesai` → `/peta` → `/wilayah/temanggung` → `/misi/temanggung/1` → `/tantangan/temanggung/1` → API jawab → `/selesai/{id}` → `/keluar` → `/masuk` → kembali ke progres terakhir.
-* Tahap 3: attempt penuntas wilayah → `/selesai/{id}` → "Lanjut" → `/tuntas/{code}` → "Lanjut ke {wilayah berikutnya}" (dialog pembukanya) atau, di wilayah terakhir, `/penutup` → `/refleksi`.
-* Registrasi dengan sandi `kedu2026` ditolak dengan pesan syarat yang belum terpenuhi; `pw_weak_submit_count` bertambah; registrasi berikutnya dengan `Kedu#2026` diterima.
-* Reset sandi oleh guru memaksa siswa ke `/ganti-sandi` pada login berikutnya.
-* Impor workbook bank soal menampilkan pratinjau per node sebelum menulis database.
-* Login admin bekerja, termasuk throttle dan audit; guru yang mencoba `/admin/konten` mendapat 404.
-* Seluruh endpoint API mengembalikan bentuk JSON seragam, termasuk saat gagal.
-* Percobaan mengirim `item_id` yang bukan milik attempt ditolak `422 INVALID_RESPONSE`.
-* Mengirim ulang `client_event_id` yang sama membalas `duplicate` tanpa menambah baris.
-* View masih boleh berupa placeholder — tampilannya dikerjakan tahap 5.
+Pemeriksaan otomatis: `tests/` memuat uji route (mis. `RouteWiringTest`) dan uji aturan 3 kesempatan (`TryLimitTest`); jalankan `vendor/bin/phpunit`.

@@ -1,1465 +1,1113 @@
-# 01_DATABASE.md — Database & Struktur Data
+# 01_DATABASE.md — Skema Database GELITA
 
 Proyek: **GELITA** (Game Edukasi Literasi dan Etnopedagogi Kedu)
-Stack: CodeIgniter 4.7.x · PHP 8.2+ · MySQL 8.0 / MariaDB 10.6+ · InnoDB · utf8mb4
+Stack: CodeIgniter 4.7 · PHP 8.2+ · MariaDB 10.11 / MySQL 8 · InnoDB · utf8mb4
 
-> **Revisi 2 (21 September 2026).** Perubahan terhadap versi pertama: (1) siswa **wajib registrasi dengan nama pengguna dan kata sandi kuat** sebagai bagian literasi keamanan digital — kolom akun ditambahkan ke `participants`; (2) tabel baru `reading_passages` untuk teks bacaan yang dipakai beberapa soal; (3) interaksi `boolean_*` diganti `verdict_*` yang mendukung pilihan **Benar / Salah / Pendapat**; (4) kata pengecoh rumpang pindah ke `challenge_nodes.config_json`; (5) kolom `review_status` pada `challenge_items`; (6) metadata 15 node dan isi soal diambil dari **Dokumen Bank Soal GELITA** dan dimuat lewat impor XLSX. Total tabel menjadi **29**.
-
-> **Perombakan kelas 5 — Dokumen 1 (Oktober 2026, branch `perombakan-kelas5`).** Migration `004100`–`004600` mengubah skema di bawah ini; rinciannya ada di [`perombakan-kelas5/01_FONDASI_DATA_DAN_RESET.md`](perombakan-kelas5/01_FONDASI_DATA_DAN_RESET.md) §5, dan penulisan ulang dokumen ini menyusul di Dok 3 §11. Ringkasnya:
->
-> - **Tabel dihapus:** `research_phases`, `participant_consents`, `scoring_profiles`, `challenge_options` (sisa 28 tabel domain + `ci_sessions` + `migrations`).
-> - **Tabel baru:** `item_tries` (satu baris per percobaan soal: jawaban, benar/salah, nomor percobaan dan cek, waktu isian) dan `device_logs` (perangkat siswa setiap daftar/masuk/lanjut sesi, diurai `matomo/device-detector`).
-> - **Kolom dihapus:** `game_sessions.phase_id`; `research_studies.active_phase_code`, `allow_phase_choice`, `item_selection_mode`, `require_consent`; `challenge_attempts.scoring_profile_id`, `first_pass_accuracy`, `final_accuracy`, `retry_count`, `independence`, `score`, `scoring_version`; `challenge_nodes.scoring_profile_id`; `session_progress.total_score`; `item_responses.reason_*`.
-> - **Kolom baru:** `participants.assented_at`; `challenge_attempts.variant_group`, `completion_reason`, `max_tries`; `item_responses.try_count`, `solved_on_try`; `challenge_items.variant_group`; `media_assets.is_placeholder`, `label`, `description`.
-> - Skor 0–100 diganti aturan bintang `bintang-1` (`ScoringService`); fase pretest/posttest dan persetujuan wali dihapus; tiap wilayah kini 4 tantangan.
-> - Reset total data uji coba: `php spark gelita:reset` (Dok 1 §7).
+Dokumen ini menggambarkan skema database GELITA seperti yang dibuat oleh migration di repo: setiap tabel, kolom, kunci, foreign key, bentuk kolom JSON, aturan yang dijaga aplikasi, dan retensi data. Cara memasang server ada di [08_DEPLOYMENT.md](08_DEPLOYMENT.md); Model dan Entity di [03_MODEL_ENTITY.md](03_MODEL_ENTITY.md).
 
 ---
 
-## Tujuan
+## Ringkasan
 
-Membuat seluruh skema database GELITA production dari nol: 30 tabel domain (ditambah tabel sesi CI4 `ci_sessions`), relasi, index, migration, dan seeder. Setelah tahap ini selesai, database siap menerima data konten dan data penelitian tanpa perlu melihat sistem mana pun sebelumnya.
+GELITA adalah game edukasi sekaligus instrumen penelitian untuk siswa **kelas 5 SD/MI**. Pemain (Jaka, dibimbing Mbah Kedu) menjelajahi tiga wilayah berurutan untuk mengumpulkan **12 Serpihan Cahaya**:
 
----
-
-## Konteks
-
-GELITA adalah game edukasi berbasis penelitian untuk siswa SD/SMP. Pemain berperan sebagai **Jaka**, anak pembawa lentera, dibimbing **Mbah Kedu**, menjelajahi tiga wilayah eks-Karesidenan Kedu untuk mengumpulkan "Serpihan Cahaya".
-
-Struktur permainan:
+| `levels.sequence` | `levels.code` | Tingkat (`difficulty`) | Tantangan (`challenge_nodes.sequence` → `engine_type`) |
+|---:|---|---|---|
+| 1 | `temanggung` | `mudah` | 1 `puzzle` · 2 `rumpang` · 3 `boleh` · 4 `cari` |
+| 2 | `magelang` | `sedang` | 1 `puzzle` · 2 `rumpang` · 3 `boleh` · 4 `cari` |
+| 3 | `wonosobo` | `sulit` | 1 `puzzle` · 2 `rumpang` · 3 `boleh` · 4 `cari` |
 
 ```
-3 Level (wilayah)  ×  5 Challenge Node per level  =  15 node
-1 Challenge Node   →  1..n Challenge Item (unit atomic yang dinilai)
+3 wilayah (levels) × 4 tantangan (challenge_nodes) = 12 tantangan = 12 serpihan
+1 tantangan → beberapa variasi (variant_group a/b/c) → soal (challenge_items)
+1 pengerjaan (challenge_attempts) = satu variasi yang dipilih acak
+1 soal dalam satu pengerjaan → 1 baris item_responses (keadaan akhir)
+                             → 1..n baris item_tries (setiap percobaan)
 ```
 
-Urutan level production (**wajib**, tidak boleh diubah):
+Nama tampilan keempat jenis tantangan: Susun Gambar (`puzzle`), Isi Rumpang (`rumpang`), Benar atau Salah (`boleh`), Cari Objek (`cari`).
 
-| Sequence | Code | Nama | Difficulty | Fokus belajar |
-|---:|---|---|---|---|
-| 1 | `temanggung` | Temanggung | mudah | Menemukan informasi tersurat |
-| 2 | `magelang` | Magelang | sedang | Menghubungkan & membandingkan informasi |
-| 3 | `wonosobo` | Wonosobo | sulit | Menilai informasi & mengambil keputusan |
+Skema dibuat oleh **29 migration** di `app/Database/Migrations/`, satu tabel per berkas, dari `2026-01-01-000100_CreateSchools.php` sampai `2026-01-01-002900_CreateCiSessions.php`. Hasilnya 28 tabel domain + `ci_sessions`, ditambah tabel `migrations` milik CodeIgniter (30 tabel). Urutan berkas mengikuti ketergantungan foreign key, sehingga `php spark migrate` berjalan bersih dari database kosong dan `php spark migrate:rollback` membuang tabel dalam urutan terbalik.
 
-Lima engine type baseline: `puzzle`, `rumpang`, `boleh`, `pilihan`, `cari`.
+Database menyimpan lima kelompok data:
 
-Aplikasi ini sekaligus instrumen penelitian, jadi database menyimpan empat kelompok data:
+1. **Peserta dan sesi**: sekolah, siswa, studi, versi permainan, sesi bermain, kemajuan.
+2. **Konten**: wilayah, tantangan, soal, bacaan, petunjuk, cerita, Pustaka Kedu.
+3. **Media dan audio**: berkas gambar/video/suara dan rekaman bertranskrip.
+4. **Data penelitian mentah**: pengerjaan, jawaban, percobaan, pemakaian audio, event, perangkat.
+5. **Tata kelola**: akun staf, audit, ekspor, permintaan penghapusan data.
 
-1. **Research & participant** — studi, fase (umum/pretest/posttest), demographic, consent.
-2. **Content** — level, node, item, option, hint, media, audio, dialog, pustaka.
-3. **Gameplay** — session, progress, attempt, response, audio usage, raw event.
-4. **Governance** — audit log, export, deletion request.
+Database tidak menyimpan skor, indeks, atau agregat penelitian. Yang dihitung server hanya hitungan per pengerjaan (benar pada percobaan pertama, benar di akhir) dan bintang sebagai hadiah di layar siswa; peneliti mengolah data mentah dari ekspor Excel.
 
 ---
 
-## Keputusan yang Sudah Diambil (jangan ditanyakan ulang)
+## Konvensi umum
 
-Dokumen sumber sebelumnya mengandung beberapa konflik. Berikut keputusan final untuk proyek baru:
+Pola bersama semua migration ada di `App\Database\GelitaMigration` (di luar folder `Migrations` agar tidak dibaca MigrationRunner). Setiap migration tabel domain memperluas kelas ini.
 
-| # | Konflik | Keputusan |
-|---|---|---|
-| D1 | Urutan wilayah (ada versi Magelang dulu) | **Temanggung → Magelang → Wonosobo**, disimpan di `levels.sequence` |
-| D2 | Jumlah serpihan (ada angka 12 dan 15) | **15**, dihitung dari `COUNT(challenge_nodes aktif)`, bukan konstanta |
-| D3 | Konsep "babak"/`jumlah` per pos | **Dihapus.** Satu node = satu attempt. Banyaknya soal diatur `items_per_round` di `challenge_nodes.config_json` |
-| D4 | Bank soal vs soal yang tampil | Node menyimpan **bank item**; server memilih subset saat attempt dibuat dan menuliskannya sebagai baris `item_responses` berstatus `pending` |
-| D5 | Formula skor lama (`benarAwal*10 + bonus`) | **Diganti** formula v2 tersimpan di `scoring_profiles` (kode `GELITA_V2`) |
-| D6 | Akun pemain berkata sandi | **Siswa wajib registrasi** dengan `username` + kata sandi kuat (minimal 8 karakter, huruf besar, huruf kecil, angka, simbol). Ini materi literasi keamanan digital, bukan sekadar mekanisme login. `participant_code` tetap ada sebagai kode pseudonim penelitian; `session_code` hanya pengenal internal sesi, bukan token login |
-| D7 | Tabel sprite sheet/animation | **Tidak dibuat.** Animasi karakter memakai CSS + frame di `media_assets`, dikonfigurasi di file PHP config |
-| D8 | Pustaka Kedu tidak ada di rancangan tabel | **Ditambahkan** tabel `library_pages` |
-| D9 | Kritik & saran (Balai Refleksi) tidak ada di rancangan tabel | **Ditambahkan** tabel `participant_feedback` |
-| D10 | Analitik kunjungan sebagai tabel terpisah | **Digabung** ke `game_sessions` (device/os/browser) + `game_event_logs` |
-| D11 | Scope guru | `staff_users.school_id` nullable. `admin` = semua data, `guru` = hanya peserta pada sekolah yang sama |
-| D12 | Boleh ada >1 sesi pada fase yang sama | **Boleh.** Analitik memakai sesi `completed` terakhir per (participant, study, phase) sebagai default |
-| D13 | Unlock level | **Sequential** secara default; `research_studies.unlock_mode` = `sequential` \| `free`. Nilai `free` (bukan `open`) dipakai agar tidak tertukar dengan status wilayah/node `open` di layar peta |
-| D14 | Retention period | Default **1825 hari (5 tahun)** di `research_studies.retention_days`, dapat diubah admin |
-| D15 | `district` = kabupaten saja atau termasuk kota | **Kabupaten dan kota**, satu kolom `district_*` |
-| D16 | Master wilayah Indonesia sebagai tabel DB | **Tidak.** Dipakai file statis `public/assets/data/wilayah-id.json`; yang disimpan di DB hanya kode + snapshot nama |
-| D17 | Jawaban alasan (reasoning) Wonosobo | Kolom `item_responses.reason_text`; **tidak di-auto-score**, ditandai untuk review manual |
-| D18 | Soal fakta vs pendapat (CP Magelang) tidak muat di model benar/salah | Interaksi `verdict_card` / `verdict_reason` dengan `answer_key_json.verdict` = `benar` \| `salah` \| `pendapat`. Pilihan yang tampil diatur `config_json.verdict_options` per node |
-| D19 | Satu teks bacaan dipakai beberapa soal (mis. Teks A dipakai node 3 dan 5 Temanggung) | Tabel `reading_passages` per level; item merujuk lewat `passage_id` |
-| D20 | Pengecoh rumpang disimpan sebagai opsi palsu pada item pertama | Pindah ke `challenge_nodes.config_json.distractors` |
-| D21 | Sebagian fakta konten masih bertanda [PERLU VERIFIKASI] | Kolom `challenge_items.review_status` (`draft` \| `needs_verification` \| `verified`) + `review_note`. Item `needs_verification` tetap boleh aktif tetapi dilaporkan `gelita:content:verify` |
-| D22 | Cara memasukkan 119 butir soal | Workbook XLSX bank soal (templat di 07) diimpor lewat panel admin atau `php spark gelita:bank:import` dalam satu transaction |
-| D23 | Metrik literasi keamanan digital saat registrasi | Disimpan sebagai angka di `participants` (`pw_first_submit_criteria`, `pw_weak_submit_count`). Kata sandi dan petunjuknya **tidak pernah** dicatat dalam bentuk apa pun |
+| Hal | Aturan |
+|---|---|
+| Engine, charset | `InnoDB`, `utf8mb4`, collation `utf8mb4_unicode_ci` (`createGelitaTable()`) |
+| Primary key | `id BIGINT UNSIGNED AUTO_INCREMENT` (`id()`). Pengecualian: `session_progress` (PK = `session_id`) dan `ci_sessions` (PK `VARCHAR(128)`) |
+| Kolom referensi | `BIGINT UNSIGNED`, `NULL` bila opsional (`ref()`) |
+| Flag 0/1 | `TINYINT(1) NOT NULL` dengan default (`flag()`); benar/salah yang belum diketahui `TINYINT(1) NULL` (`nullableFlag()`) |
+| Waktu | `DATETIME(6)` (presisi mikrodetik untuk urutan event penelitian). `created_at` = `DEFAULT CURRENT_TIMESTAMP(6)`; `updated_at` = `DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)` (`timestamps()`) |
+| JSON | Tipe `JSON`. Di MariaDB menjadi `LONGTEXT` ber-collation `utf8mb4_bin` dengan `CHECK (json_valid(...))`. Model meng-encode array lewat trait `App\Models\Traits\EncodesJson`; Entity membaca dengan cast `json-array` |
+| Dwibahasa | Pasangan kolom `*_id` (Indonesia) dan `*_en` (Inggris). Bila `*_en` kosong, aplikasi menampilkan `*_id` |
+| Nilai berkode | `VARCHAR`, bukan `ENUM`. Daftar nilai sah dijaga aturan validasi Model atau `Config\Gelita`, sehingga nilai baru tidak memerlukan migration |
+| Foreign key | `ON DELETE RESTRICT` (bawaan, tertulis tanpa klausa) untuk induk konten dan induk sesi; `CASCADE` untuk data turunan; `SET NULL` untuk referensi opsional. Tidak ada `ON UPDATE` khusus |
+| Nama index | Nama kolom (mis. `session_id_occurred_at`); index untuk FK yang dibuat otomatis bernama `{tabel}_{kolom}_foreign` |
+| CHECK constraint | Tidak dipakai selain `json_valid` bawaan MariaDB. Aturan antarkolom dijaga aplikasi (lihat [Aturan integritas](#aturan-integritas)) |
+| Soft delete | Hanya `participants.deleted_at` (lewat Model) dan `game_event_logs.deleted_at/deleted_by/delete_reason` (lewat layanan penghapusan data) |
+| IP | IP mentah tidak disimpan di tabel domain; yang disimpan `ip_hash` = SHA-256 IP + garam `gelita.ipSalt` (`hash_ip()`) |
+| Waktu klien | `occurred_at` event dan audio dikirim klien (ISO 8601), dikonversi ke zona aplikasi dengan pecahan detik; yang tidak dapat diurai diganti waktu server |
+
+Master wilayah administratif Indonesia tidak disimpan di database. Daftarnya berkas statis `public/assets/data/wilayah-id.json`; tabel hanya menyimpan kode dan salinan nama (`*_name_snapshot`).
 
 ---
 
-## Yang Harus Dibuat
+## Daftar tabel
 
-1. Database `gelita` (utf8mb4_unicode_ci, InnoDB).
-2. 29 migration pembuat tabel + migration pendukung (`002900` FK level, `003000` `ci_sessions`) + migration koreksi (`003100`–`003300`) + `003400` (wajib ganti sandi staf) + `003500` (media Pustaka `library_media`) + `003600` (`participants.intro_seen_at`) + `003700` (`dialogues.pose`/`effect`) + `003800` (`challenge_items.audio_prompt_id`/`audio_prompt_en_id`) + `003900` (direktori sekolah resmi di `schools`) + `004000` (`challenge_items.bloom_level`) — total 41 berkas.
-3. 9 seeder data, dijalankan berurutan oleh `DatabaseSeeder` (kelas dasar bersama: `GelitaSeeder`).
-4. File referensi statis `public/assets/data/wilayah-id.json` (tidak masuk DB).
+| Kelompok | Tabel | Migration | Fungsi singkat |
+|---|---|---|---|
+| A. Peserta dan sesi | [`schools`](#schools) | `000100` | Direktori sekolah resmi (NPSN) dan nama sekolah ketikan siswa |
+| | [`participants`](#participants) | `000400` | Akun dan profil siswa |
+| | [`research_studies`](#research_studies) | `000300` | Studi penelitian, mode buka wilayah, masa simpan data |
+| | [`game_releases`](#game_releases) | `000500` | Versi permainan/konten/aturan bintang yang dipakai sesi |
+| | [`game_sessions`](#game_sessions) | `001700` | Sesi bermain siswa |
+| | [`session_progress`](#session_progress) | `001800` | Keadaan terbaru satu sesi (wilayah terbuka, serpihan, bintang) |
+| | [`participant_feedback`](#participant_feedback) | `002400` | Kritik dan saran siswa (Balai Refleksi) |
+| B. Konten | [`levels`](#levels) | `000900` | Tiga wilayah |
+| | [`learning_indicators`](#learning_indicators) | `000600` | Indikator pembelajaran (`literasi`, `budaya`, `sikap`) |
+| | [`challenge_nodes`](#challenge_nodes) | `001100` | Empat tantangan per wilayah |
+| | [`challenge_items`](#challenge_items) | `001200` | Bank soal per variasi |
+| | [`reading_passages`](#reading_passages) | `001000` | Bacaan Benar atau Salah, satu per variasi |
+| | [`hints`](#hints) | `001300` | Petunjuk tantangan atau soal |
+| | [`dialogues`](#dialogues) | `001400` | Narasi dan dialog cerita |
+| | [`library_pages`](#library_pages) | `001500` | Halaman Pustaka Kedu |
+| | [`library_media`](#library_media) | `001600` | Gambar/video halaman Pustaka |
+| C. Media dan audio | [`media_assets`](#media_assets) | `000700` | Semua berkas gambar, video, suara, frame tokoh |
+| | [`audio_assets`](#audio_assets) | `000800` | Rekaman suara bertranskrip dan berstatus persetujuan |
+| D. Data penelitian mentah | [`challenge_attempts`](#challenge_attempts) | `001900` | Satu pengerjaan tantangan |
+| | [`item_responses`](#item_responses) | `002000` | Keadaan akhir satu soal dalam satu pengerjaan |
+| | [`item_tries`](#item_tries) | `002100` | Satu percobaan satu soal (insert-only) |
+| | [`audio_usage_events`](#audio_usage_events) | `002200` | Pemakaian audio |
+| | [`game_event_logs`](#game_event_logs) | `002300` | Event mentah permainan |
+| | [`device_logs`](#device_logs) | `002800` | Perangkat siswa setiap daftar/masuk/lanjut sesi |
+| E. Tata kelola dan admin | [`staff_users`](#staff_users) | `000200` | Akun admin dan guru |
+| | [`audit_logs`](#audit_logs) | `002500` | Jejak tindakan staf dan command |
+| | [`data_exports`](#data_exports) | `002600` | Permintaan dan berkas ekspor |
+| | [`data_deletion_requests`](#data_deletion_requests) | `002700` | Permintaan penghapusan data (pratinjau → eksekusi) |
+| F. Sistem | [`ci_sessions`](#ci_sessions) | `002900` | Sesi HTTP CodeIgniter |
+
+Awalan migration ditulis singkat: `000100` = `2026-01-01-000100_Create…`. Tabel `migrations` dibuat CodeIgniter sendiri dan tidak didokumentasikan di sini.
 
 ---
 
-## Konvensi Umum
-
-* Semua PK: `id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY`.
-* Timestamp: `DATETIME(6)` (presisi mikrodetik diperlukan untuk urutan event penelitian).
-* `created_at` default `CURRENT_TIMESTAMP(6)`, `updated_at` default `CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)`.
-* Soft delete hanya pada tabel yang butuh jejak penghapusan: `participants`, `game_event_logs`.
-* Kolom teks dwibahasa memakai pasangan `*_id` (Indonesia) dan `*_en` (English). Bila `*_en` kosong, aplikasi menampilkan `*_id`.
-* Engine: InnoDB. Charset: `utf8mb4`, collation `utf8mb4_unicode_ci`.
-* FK `ON DELETE RESTRICT` untuk konten, `ON DELETE CASCADE` untuk data turunan gameplay, `ON DELETE SET NULL` untuk referensi opsional.
-
----
-
-## Database Architecture
+## Relasi
 
 ```mermaid
 erDiagram
-    STAFF_USERS ||--o{ AUDIT_LOGS : creates
-    STAFF_USERS ||--o{ DATA_EXPORTS : requests
-    STAFF_USERS ||--o{ DATA_DELETION_REQUESTS : requests
-    SCHOOLS ||--o{ STAFF_USERS : scopes
-
-    RESEARCH_STUDIES ||--o{ RESEARCH_PHASES : contains
-    RESEARCH_STUDIES ||--o{ GAME_SESSIONS : scopes
-    SCHOOLS ||--o{ PARTICIPANTS : identifies
-    PARTICIPANTS ||--o{ PARTICIPANT_CONSENTS : has
+    SCHOOLS ||--o{ PARTICIPANTS : "school_id"
+    SCHOOLS ||--o{ STAFF_USERS : "school_id"
+    SCHOOLS ||--o{ SCHOOLS : "merged_into_id"
     PARTICIPANTS ||--o{ GAME_SESSIONS : plays
     PARTICIPANTS ||--o{ PARTICIPANT_FEEDBACK : submits
-    RESEARCH_PHASES ||--o{ GAME_SESSIONS : classifies
+    RESEARCH_STUDIES ||--o{ GAME_SESSIONS : scopes
+    RESEARCH_STUDIES ||--o{ DATA_EXPORTS : "study_id"
     GAME_RELEASES ||--o{ GAME_SESSIONS : versions
 
     LEVELS ||--o{ CHALLENGE_NODES : contains
+    LEVELS ||--o{ READING_PASSAGES : contains
     LEVELS ||--o{ DIALOGUES : contains
     LEVELS ||--o{ LIBRARY_PAGES : contains
-    LEVELS ||--o{ READING_PASSAGES : contains
-    READING_PASSAGES ||--o{ CHALLENGE_ITEMS : read_by
+    LIBRARY_PAGES ||--o{ LIBRARY_MEDIA : shows
     LEARNING_INDICATORS ||--o{ CHALLENGE_NODES : maps
     LEARNING_INDICATORS ||--o{ CHALLENGE_ITEMS : maps
-    SCORING_PROFILES ||--o{ CHALLENGE_NODES : defaults
     CHALLENGE_NODES ||--o{ CHALLENGE_ITEMS : contains
-    CHALLENGE_ITEMS ||--o{ CHALLENGE_OPTIONS : has
+    READING_PASSAGES ||--o{ CHALLENGE_ITEMS : "passage_id"
     CHALLENGE_NODES ||--o{ HINTS : provides
     CHALLENGE_ITEMS ||--o{ HINTS : provides
 
     MEDIA_ASSETS ||--o| AUDIO_ASSETS : specializes
     AUDIO_ASSETS ||--o{ DIALOGUES : voices
+    AUDIO_ASSETS ||--o{ CHALLENGE_NODES : "audio_intro_*"
+    AUDIO_ASSETS ||--o{ CHALLENGE_ITEMS : "audio_prompt_*"
 
-    GAME_SESSIONS ||--|| SESSION_PROGRESS : current_state
+    GAME_SESSIONS ||--|| SESSION_PROGRESS : state
     GAME_SESSIONS ||--o{ CHALLENGE_ATTEMPTS : makes
-    CHALLENGE_NODES ||--o{ CHALLENGE_ATTEMPTS : attempted
-    SCORING_PROFILES ||--o{ CHALLENGE_ATTEMPTS : used_by
-    CHALLENGE_ATTEMPTS ||--o{ ITEM_RESPONSES : contains
-    CHALLENGE_ITEMS ||--o{ ITEM_RESPONSES : answered
     GAME_SESSIONS ||--o{ AUDIO_USAGE_EVENTS : produces
-    AUDIO_ASSETS ||--o{ AUDIO_USAGE_EVENTS : used
     GAME_SESSIONS ||--o{ GAME_EVENT_LOGS : emits
+    GAME_SESSIONS ||--o{ DEVICE_LOGS : records
+    CHALLENGE_NODES ||--o{ CHALLENGE_ATTEMPTS : attempted
+    CHALLENGE_ATTEMPTS ||--o{ ITEM_RESPONSES : contains
+    CHALLENGE_ATTEMPTS ||--o{ ITEM_TRIES : contains
+    CHALLENGE_ITEMS ||--o{ ITEM_RESPONSES : answered
+    CHALLENGE_ITEMS ||--o{ ITEM_TRIES : tried
+    AUDIO_ASSETS ||--o{ AUDIO_USAGE_EVENTS : used
+
+    STAFF_USERS ||--o{ AUDIT_LOGS : creates
+    STAFF_USERS ||--o{ DATA_EXPORTS : requests
+    STAFF_USERS ||--o{ DATA_DELETION_REQUESTS : "requested_by / approved_by"
 ```
 
----
+Referensi media (`*_media_id`, `media_asset_id`, `poster_media_id`) dari `levels`, `challenge_nodes`, `challenge_items`, `reading_passages`, `dialogues`, dan `library_media` ke `media_assets` tidak digambar agar diagram terbaca; semuanya `ON DELETE SET NULL`.
 
-## Table Specification
+Ringkasan aturan `ON DELETE`:
 
-### 1. `staff_users`
+| Anak → induk | Aturan | Akibat |
+|---|---|---|
+| `challenge_nodes.level_id` → `levels` | RESTRICT | Wilayah yang punya tantangan tidak dapat dihapus |
+| `challenge_items.challenge_node_id` → `challenge_nodes` | CASCADE | Menghapus tantangan menghapus soalnya (bila belum pernah dijawab) |
+| `item_responses` / `item_tries` `.challenge_item_id` → `challenge_items` | RESTRICT | Soal yang sudah dijawab tidak dapat dihapus; soal diistirahatkan dengan `is_active = 0` |
+| `challenge_attempts.challenge_node_id` → `challenge_nodes` | RESTRICT | Tantangan yang sudah dikerjakan tidak dapat dihapus |
+| `game_sessions.participant_id` / `study_id` / `release_id` | RESTRICT | Siswa, studi, dan rilis yang punya sesi tidak dapat dihapus langsung; penghapusan siswa lewat `RetentionService` (anak dulu) |
+| Turunan sesi (`session_progress`, `challenge_attempts`, `audio_usage_events`, `game_event_logs`, `device_logs`) → `game_sessions` | CASCADE | Menghapus sesi menghapus seluruh data turunannya |
+| `item_responses`, `item_tries`, `audio_usage_events.challenge_attempt_id` → `challenge_attempts` | CASCADE | |
+| `audio_usage_events.audio_asset_id` → `audio_assets` | RESTRICT | Rekaman yang pernah diputar tidak dapat dihapus |
+| `audio_assets.media_asset_id` → `media_assets` | CASCADE | Menghapus berkas menghapus catatan rekamannya |
+| `reading_passages`, `dialogues`, `library_pages` `.level_id` → `levels` | CASCADE | |
+| `library_media.library_page_id` → `library_pages` | CASCADE | |
+| `hints` → `challenge_nodes` / `challenge_items` | CASCADE | |
+| `participant_feedback.participant_id` → `participants` | CASCADE | |
+| `data_exports.requested_by`, `data_deletion_requests.requested_by` → `staff_users` | RESTRICT | Akun staf yang pernah meminta ekspor/penghapusan dinonaktifkan, bukan dihapus |
+| Referensi opsional lainnya | SET NULL | |
 
-Akun guru/admin. Akun siswa disimpan terpisah di `participants` (bagian 5) — dua jenis akun ini tidak pernah digabung.
+`game_event_logs.participant_id`, `level_id`, `challenge_node_id`, `challenge_attempt_id`, `challenge_item_id` dan `device_logs.participant_id` sengaja **tanpa FK**: log harus tetap utuh untuk audit walaupun konten berubah.
 
-| Kolom | Tipe | Null | Default | Keterangan |
+## Spesifikasi tabel
+
+Kolom tabel ditulis dengan tipe MariaDB. "Null" = boleh NULL; "Bawaan" = nilai `DEFAULT`; tanda — berarti tanpa bawaan (wajib diisi). `NOW` = `CURRENT_TIMESTAMP(6)`, `NOW↻` = `CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)`.
+
+### A. Peserta dan sesi
+
+#### `schools`
+
+Direktori sekolah. Baris resmi (`is_verified = 1`, NPSN di `code`) dipasang `SchoolSeeder` / `php spark gelita:schools:import` dari `app/Database/Seeds/data/sekolah-jateng.csv` (sekolah Jawa Tengah, lihat [`docs/sekolah/`](sekolah/README.md)); impor hanya menulis yang berubah dan tidak pernah menghapus. Baris `is_verified = 0` adalah nama sekolah yang diketik siswa dan tidak cocok dengan sekolah resmi.
+
+| Kolom | Tipe | Null | Bawaan | Arti |
 |---|---|---|---|---|
-| id | BIGINT UNSIGNED | NO | AUTO | PK |
-| username | VARCHAR(100) | NO | — | UNIQUE |
-| email | VARCHAR(190) | YES | NULL | UNIQUE |
-| password_hash | VARCHAR(255) | NO | — | `password_hash()` PASSWORD_DEFAULT |
-| must_change_password | TINYINT(1) | NO | 0 | 1 = sandi sementara dari admin (reset / akun baru); panel terkunci ke Ubah sandi sampai diganti. Ditambahkan `003400` |
-| role | VARCHAR(20) | NO | `guru` | `admin` \| `guru`; INDEX |
-| display_name | VARCHAR(150) | NO | — | |
-| school_id | BIGINT UNSIGNED | YES | NULL | FK `schools.id` ON DELETE SET NULL; NULL = semua sekolah |
-| is_active | TINYINT(1) | NO | 1 | INDEX |
-| failed_login_count | SMALLINT UNSIGNED | NO | 0 | untuk throttling |
-| locked_until | DATETIME(6) | YES | NULL | |
-| last_login_at | DATETIME(6) | YES | NULL | |
-| created_at | DATETIME(6) | NO | CURRENT | |
-| updated_at | DATETIME(6) | NO | CURRENT | |
+| id | BIGINT UNSIGNED | tidak | AUTO | PK |
+| code | VARCHAR(80) | ya | NULL | UNIQUE. NPSN 8 angka sekolah resmi; NULL untuk nama ketikan |
+| name | VARCHAR(200) | tidak | — | Nama resmi, atau nama yang diketik siswa. INDEX |
+| level | VARCHAR(20) | ya | NULL | Bentuk pendidikan dari data induk: `SD`, `MI`, `SMP`, `MTS`, `SLB`, `SPK SD`, … |
+| stage | VARCHAR(10) | ya | NULL | Jenjang `sd` \| `smp` \| `slb`. Pendaftaran lewat NPSN hanya menerima `Config\Gelita::$registrationSchoolStages` (`sd`, `slb`) |
+| status | VARCHAR(10) | ya | NULL | `NEGERI` \| `SWASTA` |
+| country_code | VARCHAR(5) | ya | `ID` | INDEX |
+| province_code | VARCHAR(10) | ya | NULL | Kode Kemendagri, mis. `33`. INDEX |
+| district_code | VARCHAR(10) | ya | NULL | Kode kabupaten/kota, mis. `33.23`. INDEX |
+| subdistrict_name | VARCHAR(120) | ya | NULL | Kecamatan, tanpa awalan "KEC." |
+| village_name | VARCHAR(120) | ya | NULL | Desa/kelurahan |
+| is_active | TINYINT(1) | tidak | 1 | 0 = sudah digabung ke sekolah lain |
+| is_verified | TINYINT(1) | tidak | 0 | 1 = sekolah resmi atau disahkan admin |
+| match_key | VARCHAR(200) | ya | NULL | Nama ternormalisasi (`App\Libraries\SchoolName::key()`) untuk pencocokan |
+| merged_into_id | BIGINT UNSIGNED | ya | NULL | FK `schools.id` SET NULL. Tujuan penggabungan |
+| created_at, updated_at | DATETIME(6) | tidak | NOW, NOW↻ | |
 
-### 2. `research_studies`
+Index: `schools_district_match_key (district_code, match_key)`, `schools_match_key (match_key)`, `schools_verified_active (is_verified, is_active)`.
 
-| Kolom | Tipe | Null | Default | Keterangan |
+Siswa yang memilih provinsi berdirektori (`Config\Gelita::$schoolDirectoryProvinces` = `['33']`) wajib mengisi NPSN. Nama ketikan dicocokkan lewat `match_key` oleh `App\Services\SchoolDirectory::resolve()` dan hanya ditautkan ke sekolah resmi bila kandidatnya tunggal; selain itu disimpan sebagai `is_verified = 0`, satu baris per (wilayah, `match_key`). Admin merapikan sisanya di panel Sekolah: **gabung** (siswa dan akun guru pindah, `school_name_snapshot` ikut nama tujuan, asal menjadi `is_active = 0` + `merged_into_id` dan menjadi alias bagi ketikan yang sama berikutnya) atau **sahkan** (NPSN wajib unik). Keduanya tercatat di `audit_logs` (`school_merge`, `school_verify`).
+
+#### `participants`
+
+Akun dan profil siswa. Akun siswa terpisah dari akun staf (`staff_users`) dan tidak pernah digabung. Pendaftaran tiga langkah (`/daftar/1..3`); langkah 3 memuat centang persetujuan siswa (`assented_at`).
+
+| Kolom | Tipe | Null | Bawaan | Arti |
 |---|---|---|---|---|
-| id | BIGINT UNSIGNED | NO | AUTO | PK |
-| code | VARCHAR(50) | NO | — | UNIQUE |
-| name | VARCHAR(200) | NO | — | |
-| description | TEXT | YES | NULL | |
-| year_label | VARCHAR(20) | YES | NULL | INDEX, mis. `2026/2027` |
-| status | VARCHAR(20) | NO | `draft` | `draft` \| `active` \| `closed`; INDEX |
-| retention_days | INT UNSIGNED | NO | 1825 | D14 |
-| default_locale | VARCHAR(5) | NO | `id` | `id` \| `en` |
-| unlock_mode | VARCHAR(20) | NO | `sequential` | `sequential` \| `free` (D13) |
-| item_selection_mode | VARCHAR(20) | NO | `fixed` | `fixed` (seeded per participant) \| `random` |
-| require_consent | TINYINT(1) | NO | 1 | |
-| active_phase_code | VARCHAR(20) | NO | `umum` | fase yang sedang berjalan: `umum` \| `pretest` \| `posttest`; dipakai saat siswa registrasi/login |
-| allow_phase_choice | TINYINT(1) | NO | 0 | 1 = siswa memilih fase sendiri di form registrasi/login; 0 = selalu `active_phase_code` |
-| created_at | DATETIME(6) | NO | CURRENT | |
-| updated_at | DATETIME(6) | NO | CURRENT | |
+| id | BIGINT UNSIGNED | tidak | AUTO | PK |
+| participant_code | VARCHAR(40) | tidak | — | UNIQUE. Kode pseudonim penelitian `GLT-000001`, dibuat server (`ParticipantModel::generateCode()`) |
+| username | VARCHAR(30) | tidak | — | UNIQUE. Huruf kecil, angka, titik, garis bawah, 3–30 karakter (`valid_username`); disimpan huruf kecil; nama cadangan `Config\Gelita::$reservedUsernames` ditolak |
+| password_hash | VARCHAR(255) | tidak | — | `password_hash()` PASSWORD_DEFAULT. Satu-satunya jalur tulis: `ParticipantModel::setPassword()` |
+| must_change_password | TINYINT(1) | tidak | 0 | 1 setelah guru mereset sandi |
+| display_name | VARCHAR(150) | ya | NULL | Nama asli; tidak ikut ekspor anonim |
+| age | TINYINT UNSIGNED | ya | NULL | Umur. Pendaftaran menerima `Config\Gelita::$registrationAge` (8–15); Model menerima 5–80. INDEX |
+| gender | VARCHAR(20) | ya | NULL | `laki-laki` \| `perempuan` (`Config\Gelita::$genders`). INDEX |
+| class_level | VARCHAR(20) | ya | NULL | Selalu `5` dari pendaftaran (`Config\Gelita::$registrationClass`). INDEX |
+| school_id | BIGINT UNSIGNED | ya | NULL | FK `schools.id` SET NULL. INDEX |
+| school_name_snapshot | VARCHAR(200) | ya | NULL | Salinan nama sekolah saat daftar. INDEX |
+| country_code | VARCHAR(5) | ya | `ID` | INDEX |
+| country_name_snapshot | VARCHAR(100) | ya | NULL | |
+| province_code | VARCHAR(10) | ya | NULL | INDEX |
+| province_name_snapshot | VARCHAR(120) | ya | NULL | |
+| district_code | VARCHAR(10) | ya | NULL | INDEX |
+| district_name_snapshot | VARCHAR(120) | ya | NULL | |
+| pw_first_submit_criteria | TINYINT UNSIGNED | ya | NULL | 0–5: jumlah syarat sandi yang terpenuhi pada kiriman pertama formulir pendaftaran |
+| pw_weak_submit_count | SMALLINT UNSIGNED | tidak | 0 | Berapa kali formulir ditolak karena sandi belum kuat |
+| failed_login_count | SMALLINT UNSIGNED | tidak | 0 | Pencacah gagal masuk (`Config\Gelita::$loginThrottle['participant']`: 8 kali → kunci 5 menit) |
+| locked_until | DATETIME(6) | ya | NULL | Akhir penguncian sementara |
+| last_login_at | DATETIME(6) | ya | NULL | |
+| password_changed_at | DATETIME(6) | ya | NULL | |
+| intro_seen_at | DATETIME(6) | ya | NULL | Pertama kali menyelesaikan cerita pembuka (`/intro/selesai`). NULL = wajib menonton sebelum peta terbuka. Diisi sekali, tidak pernah ditimpa (`markIntroSeen()`) |
+| assented_at | DATETIME(6) | ya | NULL | Waktu siswa mencentang persetujuan di langkah 3 pendaftaran |
+| created_at, updated_at | DATETIME(6) | tidak | NOW, NOW↻ | |
+| deleted_at | DATETIME(6) | ya | NULL | Soft delete (`ParticipantModel` `useSoftDeletes`). INDEX |
 
-> `item_selection_mode = fixed` memakai benih `participant_code + '|' + node_id`, sehingga peserta yang sama mengerjakan butir identik pada pretest dan posttest. Ini syarat mutlak desain pretest–posttest.
+Salinan nama (`*_snapshot`) disimpan agar catatan penelitian tetap terbaca walaupun data sekolah atau wilayah berubah.
 
-### 3. `research_phases`
-
-Tepat 3 baris per study.
-
-| Kolom | Tipe | Null | Default | Keterangan |
-|---|---|---|---|---|
-| id | BIGINT UNSIGNED | NO | AUTO | PK |
-| study_id | BIGINT UNSIGNED | NO | — | FK `research_studies.id` CASCADE; INDEX |
-| code | VARCHAR(20) | NO | — | `umum` \| `pretest` \| `posttest` |
-| sequence | TINYINT UNSIGNED | NO | 1 | |
-| label_id | VARCHAR(150) | NO | — | |
-| label_en | VARCHAR(150) | NO | — | |
-| is_active | TINYINT(1) | NO | 1 | |
-
-UNIQUE: `(study_id, code)`.
-
-### 4. `schools`
-
-| Kolom | Tipe | Null | Default | Keterangan |
-|---|---|---|---|---|
-| id | BIGINT UNSIGNED | NO | AUTO | PK |
-| code | VARCHAR(80) | YES | NULL | UNIQUE — NPSN (8 angka) sekolah resmi; NULL untuk nama ketikan siswa |
-| name | VARCHAR(200) | NO | — | INDEX; nama resmi dari data induk, atau nama yang diketik siswa |
-| level | VARCHAR(20) | YES | NULL | bentuk pendidikan: `SD`, `MI`, `SMP`, `MTS`, `SLB`, `SPK SD`, …; `003900` |
-| stage | VARCHAR(10) | YES | NULL | jenjang `sd` \| `smp` \| `slb` — untuk peringatan "kelas tidak cocok"; `003900` |
-| status | VARCHAR(10) | YES | NULL | `NEGERI` \| `SWASTA`; `003900` |
-| country_code | VARCHAR(5) | YES | `ID` | INDEX |
-| province_code | VARCHAR(10) | YES | NULL | INDEX |
-| district_code | VARCHAR(10) | YES | NULL | INDEX; kode Kemendagri (`33.19`) |
-| subdistrict_name | VARCHAR(120) | YES | NULL | kecamatan, tanpa awalan "KEC."; `003900` |
-| village_name | VARCHAR(120) | YES | NULL | desa/kelurahan; `003900` |
-| is_active | TINYINT(1) | NO | 1 | 0 = sudah digabung ke sekolah lain |
-| is_verified | TINYINT(1) | NO | 0 | 1 = sekolah resmi (`gelita:schools:import`) atau disahkan admin; `003900` |
-| match_key | VARCHAR(200) | YES | NULL | kunci nama ternormalisasi (`App\Libraries\SchoolName::key()`); `003900` |
-| merged_into_id | BIGINT UNSIGNED | YES | NULL | FK `schools.id` SET NULL — tujuan penggabungan; `003900` |
-| created_at | DATETIME(6) | NO | CURRENT | |
-| updated_at | DATETIME(6) | NO | CURRENT | |
-
-Index tambahan `003900`: `(district_code, match_key)`, `(match_key)`, `(is_verified, is_active)`. Isi resminya berasal dari [`docs/sekolah/`](sekolah/README.md): 28.487 sekolah SD/MI/SMP/MTs/SLB Jawa Tengah.
-
-### 5. `participants`
-
-| Kolom | Tipe | Null | Default | Keterangan |
-|---|---|---|---|---|
-| id | BIGINT UNSIGNED | NO | AUTO | PK |
-| participant_code | VARCHAR(40) | NO | — | UNIQUE, format `GLT-000001`; kode pseudonim penelitian |
-| username | VARCHAR(30) | NO | — | UNIQUE; huruf kecil, angka, titik, garis bawah; 3–30 karakter |
-| password_hash | VARCHAR(255) | NO | — | `password_hash()` PASSWORD_DEFAULT |
-| must_change_password | TINYINT(1) | NO | 0 | 1 setelah guru mereset sandi |
-| display_name | VARCHAR(150) | YES | NULL | nama asli; dapat disembunyikan saat export |
-| age | TINYINT UNSIGNED | YES | NULL | INDEX; 5–80 |
-| gender | VARCHAR(20) | YES | NULL | `laki-laki` \| `perempuan` \| `lainnya`; INDEX |
-| class_level | VARCHAR(20) | YES | NULL | `1`..`9` \| `lain`; INDEX |
-| school_id | BIGINT UNSIGNED | YES | NULL | FK `schools.id` SET NULL; INDEX |
-| school_name_snapshot | VARCHAR(200) | YES | NULL | INDEX |
-| country_code | VARCHAR(5) | YES | `ID` | INDEX |
-| country_name_snapshot | VARCHAR(100) | YES | NULL | |
-| province_code | VARCHAR(10) | YES | NULL | INDEX |
-| province_name_snapshot | VARCHAR(120) | YES | NULL | |
-| district_code | VARCHAR(10) | YES | NULL | INDEX |
-| district_name_snapshot | VARCHAR(120) | YES | NULL | |
-| pw_first_submit_criteria | TINYINT UNSIGNED | YES | NULL | 0–5: jumlah syarat sandi yang terpenuhi pada **percobaan kirim pertama** formulir registrasi |
-| pw_weak_submit_count | SMALLINT UNSIGNED | NO | 0 | berapa kali formulir ditolak karena sandi belum kuat |
-| failed_login_count | SMALLINT UNSIGNED | NO | 0 | |
-| locked_until | DATETIME(6) | YES | NULL | |
-| last_login_at | DATETIME(6) | YES | NULL | |
-| password_changed_at | DATETIME(6) | YES | NULL | |
-| intro_seen_at | DATETIME(6) | YES | NULL | pertama kali menyelesaikan cerita pembuka (`/intro/selesai`); NULL = pemain baru, wajib menonton sebelum peta terbuka. Diisi sekali, tidak pernah ditimpa |
-| created_at | DATETIME(6) | NO | CURRENT | |
-| updated_at | DATETIME(6) | NO | CURRENT | |
-| deleted_at | DATETIME(6) | YES | NULL | INDEX (soft delete) |
-
-> Snapshot nama disimpan agar catatan penelitian lama tetap terbaca meski master sekolah/wilayah berubah.
-
-**Kebijakan kata sandi siswa** (sama persis di server dan di JavaScript; sumbernya satu, yaitu `Config\Gelita::$passwordPolicy`):
+**Kebijakan kata sandi siswa** (materi literasi keamanan digital). Sumbernya satu, `Config\Gelita::$passwordPolicy`, dipakai `App\Libraries\PasswordPolicy`, aturan validasi `strong_password`, dan JavaScript:
 
 | # | Syarat | Aturan |
 |---:|---|---|
-| 1 | Panjang | minimal 8 karakter, maksimal 64 karakter (dan ≤ 72 byte, batas bcrypt) |
+| 1 | Panjang | 8–64 karakter (dan ≤ 72 byte, batas bcrypt) |
 | 2 | Huruf besar | minimal satu `A–Z` |
 | 3 | Huruf kecil | minimal satu `a–z` |
 | 4 | Angka | minimal satu `0–9` |
-| 5 | Simbol | minimal satu karakter bukan huruf/angka, mis. `! @ # $ % ^ & * ? _ -` |
-| — | Tambahan server | tidak boleh memuat `username`; ulangan sandi harus sama persis |
+| 5 | Simbol | minimal satu karakter bukan huruf/angka |
+| — | Tambahan | tidak boleh memuat `username`; ulangan sandi harus sama |
 
-Tingkat kekuatan untuk tampilan: **lemah** = 0–2 syarat, **sedang** = 3–4 syarat, **kuat** = 5 syarat. Registrasi hanya diterima bila **kuat**.
+Tingkat tampilan: lemah 0–2 syarat, sedang 3–4, kuat 5. Pendaftaran hanya diterima bila kuat. `pw_first_submit_criteria` dan `pw_weak_submit_count` dihitung server dari kiriman formulir, disimpan saat akun dibuat, dan tidak memuat informasi apa pun tentang isi kata sandi.
 
-`pw_first_submit_criteria` dan `pw_weak_submit_count` adalah data proses literasi keamanan digital: keduanya dihitung server dari percobaan kirim formulir, disimpan saat akun berhasil dibuat, dan tidak memuat informasi apa pun tentang isi kata sandi.
+#### `research_studies`
 
-### 6. `participant_consents`
+Studi penelitian. Sesi baru selalu masuk studi berstatus `active` terbaru (`ResearchStudyModel::activeStudy()`); tanpa studi aktif sesi tidak dapat dibuat.
 
-| Kolom | Tipe | Null | Default | Keterangan |
+| Kolom | Tipe | Null | Bawaan | Arti |
 |---|---|---|---|---|
-| id | BIGINT UNSIGNED | NO | AUTO | PK |
-| participant_id | BIGINT UNSIGNED | NO | — | FK CASCADE; INDEX |
-| study_id | BIGINT UNSIGNED | YES | NULL | FK SET NULL |
-| consent_version | VARCHAR(50) | NO | — | INDEX |
-| participant_consented | TINYINT(1) | NO | 0 | |
-| parent_guardian_consented | TINYINT(1) | NO | 0 | |
-| guardian_name | VARCHAR(150) | YES | NULL | |
-| consent_text_snapshot | TEXT | NO | — | teks persetujuan saat itu |
-| consented_at | DATETIME(6) | YES | NULL | |
-| withdrawn_at | DATETIME(6) | YES | NULL | |
-| metadata_json | JSON | YES | NULL | |
-| created_at | DATETIME(6) | NO | CURRENT | |
+| id | BIGINT UNSIGNED | tidak | AUTO | PK |
+| code | VARCHAR(50) | tidak | — | UNIQUE, mis. `STUDI-KEDU-KELAS5-2026` |
+| name | VARCHAR(200) | tidak | — | |
+| description | TEXT | ya | NULL | |
+| year_label | VARCHAR(20) | ya | NULL | Mis. `2026`. INDEX |
+| status | VARCHAR(20) | tidak | `draft` | `draft` \| `active` \| `closed`. INDEX |
+| retention_days | INT UNSIGNED | tidak | 1825 | Masa simpan data sesi studi ini (5 tahun); lihat [Retensi](#retensi-dan-penghapusan-data) |
+| default_locale | VARCHAR(5) | tidak | `id` | `id` \| `en` |
+| unlock_mode | VARCHAR(20) | tidak | `sequential` | `sequential` (wilayah terbuka berurutan) \| `free` (semua wilayah terbuka). Nilai `free`, bukan `open`, agar tidak tertukar dengan status wilayah/tantangan `open` di layar peta |
+| created_at, updated_at | DATETIME(6) | tidak | NOW, NOW↻ | |
 
-### 7. `game_releases`
+#### `game_releases`
 
-| Kolom | Tipe | Null | Default | Keterangan |
+Versi permainan, konten, aset, dan aturan bintang. Setiap sesi mencatat rilis aktif saat dibuat, sehingga data dapat dikelompokkan per versi.
+
+| Kolom | Tipe | Null | Bawaan | Arti |
 |---|---|---|---|---|
-| id | BIGINT UNSIGNED | NO | AUTO | PK |
-| release_code | VARCHAR(80) | NO | — | UNIQUE |
-| app_version | VARCHAR(30) | NO | — | |
-| content_version | VARCHAR(30) | NO | — | |
-| asset_version | VARCHAR(30) | NO | — | |
-| scoring_version | VARCHAR(30) | NO | — | |
-| published_at | DATETIME(6) | YES | NULL | INDEX |
-| notes | TEXT | YES | NULL | |
-| is_active | TINYINT(1) | NO | 0 | hanya satu boleh aktif |
+| id | BIGINT UNSIGNED | tidak | AUTO | PK |
+| release_code | VARCHAR(80) | tidak | — | UNIQUE, mis. `GELITA-KELAS5-2026` |
+| app_version | VARCHAR(30) | tidak | — | Mis. `2.0.0` |
+| content_version | VARCHAR(30) | tidak | — | Mis. `kelas5-1` |
+| asset_version | VARCHAR(30) | tidak | — | |
+| scoring_version | VARCHAR(30) | tidak | — | Kode aturan bintang, `bintang-1` (`App\Services\ScoringService::VERSION`) |
+| published_at | DATETIME(6) | ya | NULL | INDEX |
+| notes | TEXT | ya | NULL | |
+| is_active | TINYINT(1) | tidak | 0 | Hanya satu baris boleh 1; `GameReleaseModel::activate()` menegakkannya dalam satu transaction |
 
-### 8. `levels`
+Tabel ini tanpa `created_at`/`updated_at`.
 
-Tepat 3 baris.
+#### `game_sessions`
 
-| Kolom | Tipe | Null | Default | Keterangan |
+Sesi bermain: dari daftar/masuk sampai selesai atau ditinggalkan. Satu siswa boleh punya beberapa sesi dalam satu studi; yang dilanjutkan adalah sesi `active`/`paused` terbaru (`GameSessionModel::resumable()`).
+
+| Kolom | Tipe | Null | Bawaan | Arti |
 |---|---|---|---|---|
-| id | BIGINT UNSIGNED | NO | AUTO | PK |
-| sequence | TINYINT UNSIGNED | NO | — | UNIQUE; 1..3 |
-| code | VARCHAR(40) | NO | — | UNIQUE; `temanggung`/`magelang`/`wonosobo` |
-| name_id | VARCHAR(100) | NO | — | |
-| name_en | VARCHAR(100) | NO | — | |
-| difficulty | VARCHAR(20) | NO | — | `mudah`/`sedang`/`sulit`; INDEX |
-| focus_id | TEXT | NO | — | |
-| focus_en | TEXT | NO | — | |
-| cp_id | TEXT | YES | NULL | capaian pembelajaran |
-| cp_en | TEXT | YES | NULL | |
-| tp_id | TEXT | YES | NULL | tujuan pembelajaran |
-| tp_en | TEXT | YES | NULL | |
-| intro_id | TEXT | YES | NULL | keterangan wilayah (popup info) |
-| intro_en | TEXT | YES | NULL | |
-| map_media_id | BIGINT UNSIGNED | YES | NULL | FK `media_assets.id` SET NULL — peta pos |
-| background_media_id | BIGINT UNSIGNED | YES | NULL | FK SET NULL — latar wilayah |
-| badge_media_id | BIGINT UNSIGNED | YES | NULL | FK SET NULL — lencana |
-| map_x | DECIMAL(5,2) | NO | 50.00 | posisi titik di peta Kedu, % lebar |
-| map_y | DECIMAL(5,2) | NO | 50.00 | % tinggi |
-| is_active | TINYINT(1) | NO | 1 | INDEX |
-| created_at | DATETIME(6) | NO | CURRENT | |
-| updated_at | DATETIME(6) | NO | CURRENT | |
+| id | BIGINT UNSIGNED | tidak | AUTO | PK |
+| session_code | VARCHAR(64) | tidak | — | UNIQUE. 32 karakter hex acak (`random_code(16)`); pengenal internal untuk ekspor dan log, **bukan** token login |
+| participant_id | BIGINT UNSIGNED | tidak | — | FK `participants.id` RESTRICT |
+| study_id | BIGINT UNSIGNED | tidak | — | FK `research_studies.id` RESTRICT. INDEX |
+| release_id | BIGINT UNSIGNED | tidak | — | FK `game_releases.id` RESTRICT |
+| locale | VARCHAR(5) | tidak | `id` | Bahasa sesi (`valid_locale`) |
+| status | VARCHAR(20) | tidak | `active` | `active` \| `paused` \| `completed` \| `abandoned`. INDEX |
+| started_at | DATETIME(6) | tidak | NOW | INDEX |
+| last_active_at | DATETIME(6) | tidak | NOW | Denyut terakhir. INDEX |
+| ended_at | DATETIME(6) | ya | NULL | Diisi saat sesi `completed` atau ditinggalkan lewat `SessionService::abandon()`; penandaan `abandoned` oleh retensi terjadwal tidak mengisinya |
+| duration_ms | BIGINT UNSIGNED | tidak | 0 | Akumulasi waktu aktif antar-denyut; jeda lebih lama dari batas diam tidak dihitung |
+| last_level_id | BIGINT UNSIGNED | ya | NULL | FK `levels.id` SET NULL |
+| last_challenge_node_id | BIGINT UNSIGNED | ya | NULL | FK `challenge_nodes.id` SET NULL |
+| device_type | VARCHAR(30) | ya | NULL | Ringkasan perangkat saat sesi dibuat (`DeviceProfile::sessionSummary()`); rincian lengkap di `device_logs` |
+| os_name | VARCHAR(80) | ya | NULL | |
+| browser_name | VARCHAR(80) | ya | NULL | |
+| screen_size | VARCHAR(20) | ya | NULL | Mis. `1366x768` |
+| is_touch | TINYINT(1) | ya | NULL | |
+| app_client_version | VARCHAR(30) | ya | NULL | |
+| ip_hash | CHAR(64) | ya | NULL | SHA-256 IP + garam |
+| created_at | DATETIME(6) | tidak | NOW | |
 
-### 9. `learning_indicators`
+Index gabungan: `participant_id_study_id_status (participant_id, study_id, status)`.
 
-| Kolom | Tipe | Null | Default | Keterangan |
+Perubahan status: `active` → `paused` bila diam lebih dari `Config\Gelita::$sessionIdleMinutes` (45 menit, `GameSessionModel::markStale()`) atau siswa keluar; `paused` → `active` saat masuk lagi; → `completed` saat semua wilayah aktif tuntas (`SessionService::completeIfFinished()`, event `session_completed`); `paused` yang diam lebih dari `$sessionAbandonDays` (30 hari) → `abandoned` oleh `gelita:retention:run`.
+
+#### `session_progress`
+
+Keadaan terbaru satu sesi, satu baris per sesi (`SessionProgressModel::ensure()`). Semua angka dapat dihitung ulang dari `challenge_attempts`; tabel ini hanya mempercepat peta dan HUD.
+
+| Kolom | Tipe | Null | Bawaan | Arti |
 |---|---|---|---|---|
-| id | BIGINT UNSIGNED | NO | AUTO | PK |
-| code | VARCHAR(50) | NO | — | UNIQUE; `literasi`/`budaya`/`sikap` |
-| name_id | VARCHAR(200) | NO | — | |
-| name_en | VARCHAR(200) | NO | — | |
-| description_id | TEXT | YES | NULL | |
-| description_en | TEXT | YES | NULL | |
-| domain | VARCHAR(50) | YES | NULL | INDEX |
-| is_active | TINYINT(1) | NO | 1 | |
+| session_id | BIGINT UNSIGNED | tidak | — | PK + FK `game_sessions.id` CASCADE |
+| current_level_id | BIGINT UNSIGNED | ya | NULL | FK `levels.id` SET NULL |
+| current_node_id | BIGINT UNSIGNED | ya | NULL | FK `challenge_nodes.id` SET NULL |
+| unlocked_level_sequence | TINYINT UNSIGNED | tidak | 1 | `levels.sequence` tertinggi yang terbuka; pada `unlock_mode = free` = jumlah wilayah |
+| completed_nodes | SMALLINT UNSIGNED | tidak | 0 | Jumlah tantangan tuntas = jumlah Serpihan Cahaya (0–12) |
+| completed_levels | TINYINT UNSIGNED | tidak | 0 | Wilayah yang keempat tantangannya tuntas |
+| total_stars | SMALLINT UNSIGNED | tidak | 0 | Jumlah bintang terbaik per tantangan (`ScoringService::totalStars()`), paling banyak 36 |
+| updated_at | DATETIME(6) | tidak | NOW↻ | INDEX |
 
-### 10. `scoring_profiles`
+"Tuntas" = punya pengerjaan `completed` (apa pun `completion_reason`-nya). Pengerjaan terbaik per tantangan = bintang terbanyak, lalu yang paling awal (`ChallengeAttemptModel::completedForSession()`).
 
-| Kolom | Tipe | Null | Default |
-|---|---|---|---|
-| id | BIGINT UNSIGNED | NO | AUTO |
-| code | VARCHAR(50) | NO | — |
-| version | VARCHAR(20) | NO | — |
-| first_pass_weight | DECIMAL(6,4) | NO | 0.7000 |
-| final_weight | DECIMAL(6,4) | NO | 0.2000 |
-| independence_weight | DECIMAL(6,4) | NO | 0.1000 |
-| hint_penalty_per_use | DECIMAL(8,4) | NO | 10.0000 |
-| retry_penalty_per_extra_attempt | DECIMAL(8,4) | NO | 5.0000 |
-| three_star_min_score | DECIMAL(5,2) | NO | 85.00 |
-| three_star_min_first_pass | DECIMAL(5,2) | NO | 80.00 |
-| two_star_min_score | DECIMAL(5,2) | NO | 65.00 |
-| is_active | TINYINT(1) | NO | 1 |
-| created_at | DATETIME(6) | NO | CURRENT |
+#### `participant_feedback`
 
-UNIQUE: `(code, version)`.
+Kritik dan saran di Balai Refleksi, yang terbuka setelah semua tantangan tuntas. Tidak memengaruhi bintang.
 
-### 11. `media_assets`
-
-| Kolom | Tipe | Null | Default | Keterangan |
+| Kolom | Tipe | Null | Bawaan | Arti |
 |---|---|---|---|---|
-| id | BIGINT UNSIGNED | NO | AUTO | PK |
-| asset_key | VARCHAR(160) | NO | — | UNIQUE; mis. `bg.temanggung.region` |
-| asset_type | VARCHAR(20) | NO | — | `image`\|`audio`\|`video`\|`sprite_frame`; INDEX |
-| storage_path | VARCHAR(500) | NO | — | relatif terhadap `public/`, mis. `assets/bg/bg-temanggung.jpg` |
-| mime_type | VARCHAR(100) | NO | — | |
-| file_size | BIGINT UNSIGNED | YES | NULL | |
-| sha256 | CHAR(64) | YES | NULL | INDEX |
-| width_px | INT UNSIGNED | YES | NULL | |
-| height_px | INT UNSIGNED | YES | NULL | |
-| locale | VARCHAR(5) | YES | NULL | diisi bila gambar memuat tulisan (`id`/`en`) |
-| credit | VARCHAR(500) | YES | NULL | |
-| version | VARCHAR(20) | NO | `1` | |
-| is_active | TINYINT(1) | NO | 1 | |
-| created_at | DATETIME(6) | NO | CURRENT | |
-| updated_at | DATETIME(6) | NO | CURRENT | |
+| id | BIGINT UNSIGNED | tidak | AUTO | PK |
+| participant_id | BIGINT UNSIGNED | tidak | — | FK `participants.id` CASCADE. INDEX |
+| session_id | BIGINT UNSIGNED | ya | NULL | FK `game_sessions.id` SET NULL. INDEX |
+| rating | TINYINT UNSIGNED | tidak | — | 1–5 |
+| liked_most | TEXT | ya | NULL | Paling disukai |
+| hardest_part | TEXT | ya | NULL | Paling sulit |
+| new_learning | TEXT | ya | NULL | Hal baru yang dipelajari |
+| suggestion | TEXT | ya | NULL | Saran |
+| submitted_at | DATETIME(6) | tidak | NOW | INDEX |
 
-### 12. `audio_assets`
+Aturan (`Game\ReflectionController`): `rating` wajib; minimal 2 dari 4 kolom teks terisi; setiap teks paling banyak 2.000 karakter.
 
-| Kolom | Tipe | Null | Default | Keterangan |
+### B. Konten
+
+Konten kelas 5 berasal dari dua workbook yang diimpor `App\Services\ContentImportService` dalam satu transaction (panel admin atau `php spark gelita:bank:import`): bank soal `docs/bank-soal/gelita-bank-soal-kelas5.xlsx` (dibangun dari `docs/bank-soal/data/*.php` oleh `docs/bank-soal/build-workbook.php`) dan Pustaka `docs/pustaka/gelita-pustaka.xlsx`. Struktur 12 tantangan dan cerita diisi `ContentSeeder`. Aturan bank soal per tingkat ada di `App\Libraries\BankRules` dan `App\Libraries\DifficultyRules`.
+
+#### `levels`
+
+Tiga wilayah, tepat tiga baris aktif dengan `sequence` 1–3.
+
+| Kolom | Tipe | Null | Bawaan | Arti |
 |---|---|---|---|---|
-| id | BIGINT UNSIGNED | NO | AUTO | PK |
-| media_asset_id | BIGINT UNSIGNED | NO | — | UNIQUE, FK CASCADE |
-| locale | VARCHAR(5) | NO | — | `id`\|`en`; INDEX |
-| character_code | VARCHAR(30) | YES | NULL | `jaka`\|`mbah_kedu`; INDEX |
-| context_code | VARCHAR(80) | NO | — | mis. `dialogue.temanggung.1`, `sfx.correct`; INDEX |
-| transcript | LONGTEXT | NO | — | wajib, dipakai tombol transcript |
-| production_method | VARCHAR(20) | NO | `own_recording` | `own_recording`\|`ai_generated` |
-| voice_profile | VARCHAR(200) | YES | NULL | |
-| duration_ms | INT UNSIGNED | YES | NULL | diukur server-side saat upload |
-| approval_status | VARCHAR(20) | NO | `draft` | `draft`\|`review`\|`approved`\|`rejected`; INDEX |
-| approved_by | BIGINT UNSIGNED | YES | NULL | FK `staff_users.id` SET NULL |
-| approved_at | DATETIME(6) | YES | NULL | |
-| version | VARCHAR(20) | NO | `1` | |
+| id | BIGINT UNSIGNED | tidak | AUTO | PK |
+| sequence | TINYINT UNSIGNED | tidak | — | UNIQUE. Urutan wilayah: 1 Temanggung, 2 Magelang, 3 Wonosobo (wajib) |
+| code | VARCHAR(40) | tidak | — | UNIQUE. `temanggung` \| `magelang` \| `wonosobo`; awalan kode tantangan `tmg`/`mgl`/`wnb` dipetakan di `Config\Gelita::$levelPrefixes` |
+| name_id, name_en | VARCHAR(100) | tidak | — | Nama wilayah |
+| difficulty | VARCHAR(20) | tidak | — | `mudah` \| `sedang` \| `sulit`. Menentukan aturan `DifficultyRules` (ukuran papan, jumlah rumpang, rentang Bloom). INDEX |
+| focus_id, focus_en | TEXT | tidak | — | Fokus belajar wilayah |
+| cp_id, cp_en | TEXT | ya | NULL | Capaian pembelajaran |
+| tp_id, tp_en | TEXT | ya | NULL | Tujuan pembelajaran (diisi admin) |
+| intro_id, intro_en | TEXT | ya | NULL | Keterangan wilayah (popup info) |
+| map_media_id | BIGINT UNSIGNED | ya | NULL | FK `media_assets.id` SET NULL. Peta tantangan wilayah |
+| background_media_id | BIGINT UNSIGNED | ya | NULL | FK `media_assets.id` SET NULL. Latar wilayah |
+| badge_media_id | BIGINT UNSIGNED | ya | NULL | FK `media_assets.id` SET NULL. Lencana |
+| map_x, map_y | DECIMAL(5,2) | tidak | 50.00 | Posisi titik wilayah di peta Kedu, persen lebar/tinggi |
+| is_active | TINYINT(1) | tidak | 1 | INDEX |
+| created_at, updated_at | DATETIME(6) | tidak | NOW, NOW↻ | |
 
-> Hanya audio berstatus `approved` yang dikirim ke pemain.
+Fokus per tingkat: **mudah** menemukan informasi tersurat; **sedang** menghubungkan dua atau lebih informasi; **sulit** menilai informasi dan mengambil keputusan secara bertanggung jawab.
 
-### 13. `challenge_nodes`
+#### `learning_indicators`
 
-5 baris per level, total 15.
+Indikator pembelajaran yang dipetakan ke tantangan dan soal.
 
-| Kolom | Tipe | Null | Default | Keterangan |
+| Kolom | Tipe | Null | Bawaan | Arti |
 |---|---|---|---|---|
-| id | BIGINT UNSIGNED | NO | AUTO | PK |
-| level_id | BIGINT UNSIGNED | NO | — | FK `levels.id` RESTRICT; INDEX |
-| sequence | TINYINT UNSIGNED | NO | — | 1..5 |
-| engine_type | VARCHAR(20) | NO | — | `puzzle`\|`rumpang`\|`boleh`\|`pilihan`\|`cari`; INDEX |
-| variant_code | VARCHAR(60) | YES | NULL | mis. `rumpang_tanpa_bank`; INDEX |
-| title_id | VARCHAR(250) | NO | — | |
-| title_en | VARCHAR(250) | NO | — | |
-| instruction_id | TEXT | YES | NULL | |
-| instruction_en | TEXT | YES | NULL | |
-| description_id | TEXT | YES | NULL | teks kartu misi |
-| description_en | TEXT | YES | NULL | |
-| indicator_id | BIGINT UNSIGNED | YES | NULL | FK `learning_indicators.id` SET NULL |
-| scoring_profile_id | BIGINT UNSIGNED | YES | NULL | FK SET NULL; NULL = profil aktif default |
-| background_media_id | BIGINT UNSIGNED | YES | NULL | FK SET NULL |
-| scene_media_id | BIGINT UNSIGNED | YES | NULL | FK SET NULL — adegan `cari`, gambar `puzzle` |
-| audio_intro_id | BIGINT UNSIGNED | YES | NULL | FK `audio_assets.id` SET NULL (locale id) |
-| audio_intro_en_id | BIGINT UNSIGNED | YES | NULL | FK `audio_assets.id` SET NULL |
-| config_json | JSON | YES | NULL | lihat skema di bawah |
-| map_x | DECIMAL(5,2) | NO | 50.00 | posisi pos di peta level |
-| map_y | DECIMAL(5,2) | NO | 50.00 | |
-| content_version | VARCHAR(20) | NO | `1` | INDEX |
-| is_active | TINYINT(1) | NO | 1 | INDEX |
-| created_at | DATETIME(6) | NO | CURRENT | |
-| updated_at | DATETIME(6) | NO | CURRENT | |
+| id | BIGINT UNSIGNED | tidak | AUTO | PK |
+| code | VARCHAR(50) | tidak | — | UNIQUE |
+| name_id, name_en | VARCHAR(200) | tidak | — | |
+| description_id, description_en | TEXT | ya | NULL | |
+| domain | VARCHAR(50) | ya | NULL | `kognitif` \| `afektif`. INDEX |
+| is_active | TINYINT(1) | tidak | 1 | |
 
-UNIQUE: `(level_id, sequence)`.
+Isi bawaan (`LearningIndicatorSeeder`): `literasi` (Literasi membaca, kognitif), `budaya` (Pengetahuan budaya, kognitif), `sikap` (Sikap menjaga warisan, afektif).
 
-**Skema `config_json` per engine_type** (semua kunci opsional, pakai default bila tidak ada):
+#### `challenge_nodes`
+
+Tantangan: empat per wilayah, urutan `engine_type` sama di ketiga wilayah (`Config\Gelita::$engineTypes`, `BankRules::ENGINES`). Kode tantangan (`node_ref`) = awalan wilayah + urutan, mis. `tmg-1` … `wnb-4`.
+
+| Kolom | Tipe | Null | Bawaan | Arti |
+|---|---|---|---|---|
+| id | BIGINT UNSIGNED | tidak | AUTO | PK |
+| level_id | BIGINT UNSIGNED | tidak | — | FK `levels.id` RESTRICT |
+| sequence | TINYINT UNSIGNED | tidak | — | 1–4 (Model: `greater_than[0]\|less_than[5]`) |
+| engine_type | VARCHAR(20) | tidak | — | 1 `puzzle` · 2 `rumpang` · 3 `boleh` · 4 `cari` (`valid_engine_type`). INDEX |
+| variant_code | VARCHAR(60) | ya | NULL | Kode jenis tampilan: `susun_gambar`, `rumpang_bacaan`, `benar_salah_bacaan`, `cari_objek`. INDEX |
+| title_id, title_en | VARCHAR(250) | tidak | — | Judul tantangan (dari sheet `nodes` workbook). Judul per variasi ada di `config_json.variants` |
+| instruction_id, instruction_en | TEXT | ya | NULL | Petunjuk cara bermain |
+| description_id, description_en | TEXT | ya | NULL | Teks kartu misi; boleh kosong |
+| indicator_id | BIGINT UNSIGNED | ya | NULL | FK `learning_indicators.id` SET NULL. Bawaan: `budaya` untuk `puzzle`/`cari`, `literasi` untuk `rumpang`/`boleh` |
+| background_media_id | BIGINT UNSIGNED | ya | NULL | FK `media_assets.id` SET NULL. Latar layar tantangan |
+| scene_media_id | BIGINT UNSIGNED | ya | NULL | FK `media_assets.id` SET NULL. Gambar adegan Cari Objek (slot `challenge.{node}.scene`, 1280 × 720) |
+| audio_intro_id | BIGINT UNSIGNED | ya | NULL | FK `audio_assets.id` SET NULL. Narasi kartu misi, bahasa Indonesia |
+| audio_intro_en_id | BIGINT UNSIGNED | ya | NULL | FK `audio_assets.id` SET NULL. Narasi kartu misi, bahasa Inggris |
+| config_json | JSON | ya | NULL | Variasi, pengecoh, dan pengaturan engine; lihat [Bentuk JSON](#challenge_nodesconfig_json) |
+| map_x, map_y | DECIMAL(5,2) | tidak | 50.00 | Posisi titik tantangan di peta wilayah, persen |
+| content_version | VARCHAR(20) | tidak | `1` | INDEX |
+| is_active | TINYINT(1) | tidak | 1 | INDEX |
+| created_at, updated_at | DATETIME(6) | tidak | NOW, NOW↻ | |
+
+UNIQUE: `level_id_sequence (level_id, sequence)`.
+
+#### `challenge_items`
+
+Bank soal. Setiap soal milik satu variasi (`variant_group`) satu tantangan; satu pengerjaan memakai semua soal aktif dari satu variasi. Ini bank soal, bukan jawaban siswa.
+
+| Kolom | Tipe | Null | Bawaan | Arti |
+|---|---|---|---|---|
+| id | BIGINT UNSIGNED | tidak | AUTO | PK |
+| challenge_node_id | BIGINT UNSIGNED | tidak | — | FK `challenge_nodes.id` CASCADE |
+| item_key | VARCHAR(100) | tidak | — | Kode soal `{node}-{variasi}{NN}`, mis. `tmg-2-a01`, `wnb-4-a12` |
+| sequence | SMALLINT UNSIGNED | tidak | 1 | Urutan dalam tantangan. INDEX |
+| variant_group | VARCHAR(10) | ya | NULL | Variasi `a` \| `b` \| `c` (huruf/angka, ≤ 10). Kosong dianggap `a` (`ChallengeItemModel::groupByVariant()`) |
+| interaction_type | VARCHAR(40) | tidak | — | `puzzle_arrange` \| `fill_blank_bank` \| `verdict_card` \| `find_object` (`Config\Gelita::$interactionTypes`). INDEX |
+| prompt_id, prompt_en | TEXT | ya | NULL | Isi soal; artinya per jenis soal, lihat tabel di bawah |
+| source_text_id, source_text_en | LONGTEXT | ya | NULL | Teks sumber khusus satu soal (tidak dipakai bank kelas 5) |
+| passage_id | BIGINT UNSIGNED | ya | NULL | FK `reading_passages.id` SET NULL. Bacaan Benar atau Salah |
+| answer_key_json | JSON | ya | NULL | Kunci jawaban; [bentuk per jenis soal](#challenge_itemsanswer_key_json). Tidak pernah dikirim ke browser |
+| media_asset_id | BIGINT UNSIGNED | ya | NULL | FK `media_assets.id` SET NULL. Gambar Susun Gambar, gambar pernyataan, atau gambar benda Cari Objek |
+| audio_prompt_id | BIGINT UNSIGNED | ya | NULL | FK `audio_assets.id` SET NULL. Rekaman petunjuk Cari Objek, bahasa Indonesia |
+| audio_prompt_en_id | BIGINT UNSIGNED | ya | NULL | FK `audio_assets.id` SET NULL. Rekaman petunjuk Cari Objek, bahasa Inggris |
+| indicator_id | BIGINT UNSIGNED | ya | NULL | FK `learning_indicators.id` SET NULL |
+| bloom_level | VARCHAR(2) | ya | NULL | Taksonomi Bloom revisi `C1` … `C6`. Kosong untuk Susun Gambar dan benda pengecoh. INDEX `challenge_items_bloom_level` |
+| config_json | JSON | ya | NULL | Ukuran papan, posisi benda, keterampilan, umpan balik pengecoh; [bentuk](#challenge_itemsconfig_json) |
+| reference_source | VARCHAR(500) | ya | NULL | Sumber rujukan konten |
+| review_status | VARCHAR(30) | tidak | `draft` | `draft` \| `needs_verification` \| `verified`. INDEX |
+| review_note | TEXT | ya | NULL | Catatan pemeriksaan fakta |
+| scorable | TINYINT(1) | tidak | 1 | 0 = tidak dinilai (benda pengecoh Cari Objek) |
+| is_active | TINYINT(1) | tidak | 1 | 0 = soal diistirahatkan, tidak dipilih lagi. INDEX |
+| created_at, updated_at | DATETIME(6) | tidak | NOW, NOW↻ | |
+
+UNIQUE: `challenge_node_id_item_key (challenge_node_id, item_key)`. Index pemilihan variasi: `challenge_items_node_variant_active (challenge_node_id, variant_group, is_active)`.
+
+Isi soal per jenis tantangan:
+
+| Tantangan | `interaction_type` | Soal per variasi (mudah / sedang / sulit) | `prompt_*` | Lainnya |
+|---|---|---|---|---|
+| Susun Gambar | `puzzle_arrange` | 1 / 1 / 1 | Keterangan yang tampil setelah gambar utuh | `media_asset_id` = gambar utuh; papan 3 × 3 kotak / 4 × 4 kotak / 4 × 4 jigsaw |
+| Isi Rumpang | `fill_blank_bank` | 3 / 5 / 7 | Satu potongan bacaan dengan satu rumpang `___` | Bacaan = semua soal variasi berurutan; bank kata = semua jawaban + pengecoh variasi |
+| Benar atau Salah | `verdict_card` | 3 / 5 / 6 | Pernyataan | `passage_id` = bacaan variasi; `media_asset_id` = gambar pernyataan (opsional) |
+| Cari Objek | `find_object` | 4 target + 4 / 6 / 8 pengecoh | Target: kalimat petunjuk; pengecoh: nama benda | Satu variasi `a`; `media_asset_id` = gambar benda; adegan di `challenge_nodes.scene_media_id` |
+
+Susun Gambar, Isi Rumpang, dan Benar atau Salah punya tiga variasi (a/b/c), Cari Objek satu (`BankRules::VARIANTS`). Bank final kelas 5: 126 soal (108 dinilai + 18 pengecoh), 30 variasi.
+
+#### `reading_passages`
+
+Bacaan tantangan Benar atau Salah, satu per variasi. Kode `{node}-{variasi}`, mis. `tmg-3-a`; jumlah paragraf mengikuti tingkat wilayah (1 / 2 / 3). Isi Rumpang tidak memakai tabel ini: bacaannya tersusun dari `prompt_*` soal-soalnya.
+
+| Kolom | Tipe | Null | Bawaan | Arti |
+|---|---|---|---|---|
+| id | BIGINT UNSIGNED | tidak | AUTO | PK |
+| level_id | BIGINT UNSIGNED | tidak | — | FK `levels.id` CASCADE. INDEX |
+| passage_key | VARCHAR(60) | tidak | — | UNIQUE |
+| title_id, title_en | VARCHAR(200) | ya | NULL | Judul bacaan |
+| body_id, body_en | LONGTEXT | tidak | — | Isi bacaan; paragraf dipisah baris kosong |
+| media_asset_id | BIGINT UNSIGNED | ya | NULL | FK `media_assets.id` SET NULL. Gambar pendamping |
+| reference_source | VARCHAR(500) | ya | NULL | Sumber rujukan |
+| is_active | TINYINT(1) | tidak | 1 | |
+| created_at, updated_at | DATETIME(6) | tidak | NOW, NOW↻ | |
+
+Soal hanya boleh merujuk bacaan dari wilayah yang sama dengan tantangannya (dilaporkan galat oleh `gelita:content:verify`).
+
+#### `hints`
+
+Petunjuk yang dapat dibuka siswa. Petunjuk **tantangan** (`challenge_item_id` NULL) berlaku untuk seluruh pengerjaan; petunjuk **soal** (`challenge_item_id` terisi) untuk satu soal. Bank kelas 5 memakai 3 petunjuk tantangan per tantangan (36 baris).
+
+| Kolom | Tipe | Null | Bawaan | Arti |
+|---|---|---|---|---|
+| id | BIGINT UNSIGNED | tidak | AUTO | PK |
+| challenge_node_id | BIGINT UNSIGNED | ya | NULL | FK `challenge_nodes.id` CASCADE. INDEX |
+| challenge_item_id | BIGINT UNSIGNED | ya | NULL | FK `challenge_items.id` CASCADE. INDEX |
+| sequence | SMALLINT UNSIGNED | tidak | 1 | Urutan tampil |
+| text_id, text_en | TEXT | tidak | — | Isi petunjuk |
+| is_active | TINYINT(1) | tidak | 1 | INDEX |
+
+Minimal salah satu dari `challenge_node_id` / `challenge_item_id` wajib terisi; tidak ada CHECK constraint. `HintModel::forNode()` hanya membaca baris dengan `challenge_item_id` NULL; `forItem()` membaca berdasarkan `challenge_item_id`. Membuka petunjuk menambah `challenge_attempts.hint_count`, mengisi `item_responses.hint_used` bila untuk satu soal, dan mencatat event `hint_opened`. Petunjuk tidak mengurangi bintang.
+
+#### `dialogues`
+
+Narasi dan dialog cerita: 88 baris dari `app/Database/Seeds/data/story.php` (salinan persis `docs/naskah-cerita.md`), disisipkan `ContentSeeder::seedDialogues()`.
+
+| Kolom | Tipe | Null | Bawaan | Arti |
+|---|---|---|---|---|
+| id | BIGINT UNSIGNED | tidak | AUTO | PK |
+| level_id | BIGINT UNSIGNED | ya | NULL | FK `levels.id` CASCADE. NULL = konteks global |
+| context_code | VARCHAR(50) | tidak | `level_open` | Global: `intro` \| `map_intro` \| `ending`; per wilayah: `region_intro` \| `level_open` \| `level_done` (`Config\Gelita::$dialogueContexts`). INDEX |
+| sequence | INT UNSIGNED | tidak | 1 | Urutan slide dalam konteks. INDEX |
+| character_code | VARCHAR(30) | tidak | — | `jaka` \| `mbah_kedu` \| `narator` |
+| pose | VARCHAR(30) | ya | NULL | Pose tokoh (`Config\Gelita::$characterPoses`): Jaka `idle`, `happy`, `bow`, `sad`, `afraid`, `determined`; Mbah Kedu `idle`, `smile`, `worried`, `weak`. NULL = `idle`; narator selalu NULL |
+| effect | VARCHAR(30) | ya | NULL | Efek layar (`Config\Gelita::$dialogueEffects`): `fog`, `fog-lift`, `glow`, `flash`, `shake`, `dim`. NULL = tanpa efek |
+| title_id, title_en | VARCHAR(200) | ya | NULL | Judul slide (pembuka, peta, Kenali wilayah, penutup) |
+| text_id, text_en | LONGTEXT | tidak | — | Ucapan |
+| audio_id_asset_id | BIGINT UNSIGNED | ya | NULL | FK `audio_assets.id` SET NULL. Rekaman bahasa Indonesia |
+| audio_en_asset_id | BIGINT UNSIGNED | ya | NULL | FK `audio_assets.id` SET NULL. Rekaman bahasa Inggris |
+| background_media_id | BIGINT UNSIGNED | ya | NULL | FK `media_assets.id` SET NULL |
+| is_active | TINYINT(1) | tidak | 1 | |
+
+UNIQUE: `level_id_context_code_sequence (level_id, context_code, sequence)`. Karena MySQL/MariaDB mengizinkan NULL berulang pada UNIQUE, keunikan baris global dijaga seeder (`insertIfMissing`), dan `DialogueModel::global()` mengurutkan `sequence` lalu `id` agar hasilnya tetap stabil. Nilai `pose` dan `effect` dijaga aturan `valid_dialogue_pose[character_code]` dan `valid_dialogue_effect` di `DialogueModel`, bukan ENUM.
+
+Isi bawaan: `intro` 9, `map_intro` 3, `ending` 5 (global), serta per wilayah `region_intro` 4, `level_open` 15–16, `level_done` 4. Rekaman narasi ditautkan `php spark gelita:narration:import` (nama berkas `intro-NN`, `peta-NN`, `kenal-{wilayah}-NN`, `dialog-{wilayah}-NN`, `tuntas-{wilayah}-NN`, `penutup-NN`).
+
+#### `library_pages`
+
+Halaman Pustaka Kedu: bacaan mendalam per wilayah (30 halaman, 10 per wilayah). Tidak memengaruhi bintang.
+
+| Kolom | Tipe | Null | Bawaan | Arti |
+|---|---|---|---|---|
+| id | BIGINT UNSIGNED | tidak | AUTO | PK |
+| level_id | BIGINT UNSIGNED | tidak | — | FK `levels.id` CASCADE |
+| sequence | SMALLINT UNSIGNED | tidak | 1 | Nomor halaman |
+| title_id, title_en | VARCHAR(250) | tidak | — | |
+| body_id, body_en | LONGTEXT | tidak | — | Isi halaman, format ringan tanpa HTML |
+| is_active | TINYINT(1) | tidak | 1 | INDEX |
+| created_at, updated_at | DATETIME(6) | tidak | NOW, NOW↻ | |
+
+UNIQUE: `level_id_sequence (level_id, sequence)`.
+
+`body_*` dirender `rich_text()`: baris kosong = paragraf, `## ` subjudul, `- ` daftar, `> ` kotak fakta, baris `Sumber:` catatan rujukan, `**tebal**`, `*miring*`. Seluruh teks di-escape lebih dulu. Gambar dan video halaman ada di `library_media`.
+
+#### `library_media`
+
+Gambar/video halaman Pustaka, tanpa batas jumlah per halaman (48 baris bawaan). Setiap baris berasal dari berkas unggahan **atau** tautan luar.
+
+| Kolom | Tipe | Null | Bawaan | Arti |
+|---|---|---|---|---|
+| id | BIGINT UNSIGNED | tidak | AUTO | PK |
+| library_page_id | BIGINT UNSIGNED | tidak | — | FK `library_pages.id` CASCADE |
+| sequence | SMALLINT UNSIGNED | tidak | 1 | Urutan dalam galeri halaman |
+| media_kind | VARCHAR(10) | tidak | `image` | `image` \| `video` |
+| media_asset_id | BIGINT UNSIGNED | ya | NULL | FK `media_assets.id` SET NULL. Berkas unggahan |
+| external_url | VARCHAR(1000) | ya | NULL | Tautan YouTube, Google Drive, Vimeo, Wikimedia Commons, atau berkas `https` langsung; dibaca `App\Libraries\MediaLink` |
+| poster_media_id | BIGINT UNSIGNED | ya | NULL | FK `media_assets.id` SET NULL. Sampul video (diisi otomatis `gelita:library:thumbnails` bila dapat) |
+| caption_id, caption_en | VARCHAR(500) | ya | NULL | Keterangan dan teks alternatif |
+| credit | VARCHAR(300) | ya | NULL | Pemilik dan lisensi media pihak lain |
+| is_active | TINYINT(1) | tidak | 1 | |
+| created_at, updated_at | DATETIME(6) | tidak | NOW, NOW↻ | |
+
+INDEX `library_page_id_sequence (library_page_id, sequence)`, tidak UNIQUE: editor admin menyimpan ulang seluruh media satu halaman sekaligus. Baris tanpa berkas aktif dan tanpa tautan yang dikenali `MediaLink` tidak dirender; hanya tautan `http(s)` yang diterima.
+
+### C. Media dan audio
+
+#### `media_assets`
+
+Semua berkas yang dipakai permainan: gambar, video, suara, dan frame tokoh. Aset tetap (latar, tokoh, peta, logo) dirujuk lewat `asset_key`; konten dirujuk lewat `id` (kolom `*_media_id`). `MediaAssetSeeder` mendaftarkan slot bawaan dari `public/assets/`; slot yang berkasnya belum ada tersimpan `is_active = 0` dan tampil sebagai placeholder.
+
+| Kolom | Tipe | Null | Bawaan | Arti |
+|---|---|---|---|---|
+| id | BIGINT UNSIGNED | tidak | AUTO | PK |
+| asset_key | VARCHAR(160) | tidak | — | UNIQUE. Kunci slot, mis. `bg.temanggung`, `char.jaka.idle.1`, `map.region.magelang`, `challenge.tmg-4.scene`, `challenge.item.wnb-4-a01`, `audio.narasi.id.intro-01`, `library.thumb.youtube.…` |
+| asset_type | VARCHAR(20) | tidak | — | `image` \| `audio` \| `video` \| `sprite_frame` (frame animasi tokoh). INDEX |
+| storage_path | VARCHAR(500) | tidak | — | Relatif terhadap `public/`, mis. `assets/audio/narasi/en/dialog-magelang-01.mp3`; unggahan di `assets/uploads/`, gambar contoh di `assets/uploads/mockup/` |
+| mime_type | VARCHAR(100) | tidak | — | |
+| file_size | BIGINT UNSIGNED | ya | NULL | Byte |
+| sha256 | CHAR(64) | ya | NULL | Sidik berkas. INDEX |
+| width_px, height_px | INT UNSIGNED | ya | NULL | Ukuran gambar; ukuran wajib per slot di `Config\Gelita::$assetSizes` |
+| locale | VARCHAR(5) | ya | NULL | `id` \| `en` bila berkas memuat tulisan atau suara satu bahasa |
+| credit | VARCHAR(500) | ya | NULL | Pemilik/lisensi |
+| label | VARCHAR(120) | ya | NULL | Nama gambar yang diharapkan (dari workbook bank soal), mis. "Bundengan" |
+| description | VARCHAR(500) | ya | NULL | Isi gambar yang diharapkan, panduan bagi pembuat gambar |
+| version | VARCHAR(20) | tidak | `1` | |
+| is_active | TINYINT(1) | tidak | 1 | 0 = berkas belum ada atau dinonaktifkan |
+| is_placeholder | TINYINT(1) | tidak | 0 | 1 = gambar contoh (mockup) buatan `App\Libraries\MockupGenerator` / `php spark gelita:mockups`. INDEX `media_assets_is_placeholder` |
+| created_at, updated_at | DATETIME(6) | tidak | NOW, NOW↻ | |
+
+Gambar tantangan punya **45 slot**: 42 `challenge.item.*` (gambar Susun Gambar, gambar pernyataan, benda Cari Objek) dan 3 `challenge.{node}.scene` (adegan Cari Objek). Instalasi baru mengisinya dengan gambar contoh (`is_placeholder = 1`). Mengunggah berkas lewat panel (`App\Libraries\MediaStore`) selalu menulis `is_placeholder = 0`, dan `MockupGenerator` tidak pernah menimpa gambar asli. Selama masih ada gambar contoh aktif, `php spark gelita:content:verify --siap-penelitian` gagal.
+
+#### `audio_assets`
+
+Rekaman suara bertranskrip: narasi cerita, petunjuk Cari Objek, dan rekaman unggahan admin. Satu baris melengkapi satu baris `media_assets` (berkasnya).
+
+| Kolom | Tipe | Null | Bawaan | Arti |
+|---|---|---|---|---|
+| id | BIGINT UNSIGNED | tidak | AUTO | PK |
+| media_asset_id | BIGINT UNSIGNED | tidak | — | UNIQUE + FK `media_assets.id` CASCADE |
+| locale | VARCHAR(5) | tidak | — | `id` \| `en`. INDEX |
+| character_code | VARCHAR(30) | ya | NULL | `jaka` \| `mbah_kedu` (`Config\Gelita::$characters`); NULL untuk narator dan efek suara. INDEX |
+| context_code | VARCHAR(80) | tidak | — | Tempat diputar: konteks dialog (`intro`, `map_intro`, `region_intro`, `level_open`, `level_done`, `ending`) atau `hunt_clue` (petunjuk Cari Objek). INDEX |
+| transcript | LONGTEXT | tidak | — | Wajib; dipakai tombol transkrip |
+| production_method | VARCHAR(20) | tidak | `own_recording` | `own_recording` (direkam) \| `tts` (suara buatan komputer) |
+| voice_profile | VARCHAR(200) | ya | NULL | Nama pengisi suara atau nama suara TTS |
+| duration_ms | INT UNSIGNED | ya | NULL | Diukur server |
+| approval_status | VARCHAR(20) | tidak | `draft` | `draft` \| `review` \| `approved` \| `rejected`. INDEX |
+| approved_by | BIGINT UNSIGNED | ya | NULL | FK `staff_users.id` SET NULL |
+| approved_at | DATETIME(6) | ya | NULL | |
+| version | VARCHAR(20) | tidak | `1` | |
+
+Tabel ini tanpa `created_at`/`updated_at`. Hanya rekaman `approved` dengan berkas aktif yang dikirim ke pemain (`audio_src()`). Rekaman narasi bawaan (TTS di `public/assets/audio/narasi/{id,en}/`, 100 per bahasa: 88 baris cerita + 12 petunjuk Cari Objek) didaftarkan `php spark gelita:narration:import` sebagai `draft`, lalu disetujui admin di panel **Rekaman narasi**. Importer menautkan rekaman ke `dialogues.audio_id_asset_id` / `audio_en_asset_id` dan, untuk petunjuk `petunjuk-{node}-NN`, ke `challenge_items.audio_prompt_id` / `audio_prompt_en_id`.
+
+### D. Data penelitian mentah
+
+Tabel ini diisi server selama permainan (`App\Services\ChallengeService`, `EventService`, `SessionService`). Penilaian benar/salah hanya dilakukan server memakai kunci di database; nilai `correct` yang dikirim browser diabaikan.
+
+**Aturan 3 kesempatan** (`Config\Gelita::$maxTries` = 3, disalin ke `challenge_attempts.max_tries` saat pengerjaan dibuat):
+
+- Susun Gambar, Isi Rumpang, Benar atau Salah: satu tekan "Cek jawabanku" = satu percobaan (`check_count + 1`) untuk semua soal yang belum benar; soal yang sudah benar terkunci dan tidak dinilai ulang. Semua benar → ditutup `solved`. Cek ke-`max_tries` masih ada yang salah → event `challenge_tries_exhausted`, ditutup `tries_exhausted`, jawaban terakhir disimpan apa adanya.
+- Cari Objek: satu ketukan benda = satu percobaan untuk petunjuk yang sedang dicari. Ketukan salah ke-`max_tries` menutup petunjuk itu sebagai salah (event `clue_failed`). Semua petunjuk tertutup → ditutup `solved` bila semuanya ditemukan, selain itu `tries_exhausted`.
+
+Penutupan berjalan dalam transaction yang sama dengan percobaan terakhirnya.
+
+#### `challenge_attempts`
+
+Satu pengerjaan satu tantangan dalam satu sesi. Pengerjaan `in_progress` yang sudah ada dilanjutkan saat tantangan dibuka lagi; pengerjaan baru memilih **satu variasi acak** (`random_int`), dengan menghindari variasi yang sudah pernah didapat siswa itu di sesi mana pun selama masih ada yang lain (`ChallengeItemModel::pickVariant()`, `ChallengeAttemptModel::variantsServed()`).
+
+| Kolom | Tipe | Null | Bawaan | Arti |
+|---|---|---|---|---|
+| id | BIGINT UNSIGNED | tidak | AUTO | PK |
+| session_id | BIGINT UNSIGNED | tidak | — | FK `game_sessions.id` CASCADE |
+| challenge_node_id | BIGINT UNSIGNED | tidak | — | FK `challenge_nodes.id` RESTRICT |
+| attempt_no | SMALLINT UNSIGNED | tidak | 1 | Pengerjaan ke-n tantangan ini dalam sesi |
+| variant_group | VARCHAR(10) | ya | NULL | Variasi yang dipakai (`a` \| `b` \| `c`) |
+| status | VARCHAR(20) | tidak | `in_progress` | `in_progress` \| `completed` \| `abandoned`. INDEX |
+| completion_reason | VARCHAR(20) | ya | NULL | `solved` \| `tries_exhausted`; diisi saat `completed` |
+| selected_item_ids_json | JSON | tidak | — | Id soal variasi ini, urut tampil; benda pengecoh Cari Objek di akhir |
+| scorable_items | SMALLINT UNSIGNED | tidak | 0 | Jumlah soal dinilai (`scorable = 1`) |
+| first_pass_correct | SMALLINT UNSIGNED | tidak | 0 | Soal dinilai yang benar pada percobaan pertama; ditulis saat ditutup |
+| final_correct | SMALLINT UNSIGNED | tidak | 0 | Soal dinilai yang benar di akhir; ditulis saat ditutup |
+| check_count | SMALLINT UNSIGNED | tidak | 0 | Berapa kali "Cek jawabanku" ditekan (Cari Objek tetap 0) |
+| max_tries | TINYINT UNSIGNED | tidak | 3 | Batas percobaan yang berlaku untuk pengerjaan ini |
+| hint_count | SMALLINT UNSIGNED | tidak | 0 | Petunjuk yang dibuka |
+| answer_change_count | SMALLINT UNSIGNED | tidak | 0 | Jumlah perubahan jawaban antarpercobaan, semua soal |
+| audio_use_count | SMALLINT UNSIGNED | tidak | 0 | Jumlah event audio (aksi apa pun) yang terkait pengerjaan ini |
+| stars | TINYINT UNSIGNED | tidak | 0 | 0–3, aturan `bintang-1` |
+| started_at | DATETIME(6) | tidak | NOW | |
+| completed_at | DATETIME(6) | ya | NULL | Waktu ditutup (`completed` atau `abandoned`) |
+| duration_ms | BIGINT UNSIGNED | ya | NULL | `completed_at − started_at` saat ditutup `completed` |
+| created_at | DATETIME(6) | tidak | NOW | |
+
+UNIQUE: `session_id_challenge_node_id_attempt_no (session_id, challenge_node_id, attempt_no)`. Index: `challenge_node_id_status (challenge_node_id, status)`, `status`.
+
+**Bintang** (`App\Services\ScoringService`, aturan `bintang-1`), dari soal yang dinilai saja: ★★★ semua benar pada percobaan pertama; ★★ semua benar di akhir; ★ selesai tetapi ada yang tetap salah; 0 belum selesai atau `abandoned`. Petunjuk, audio, dan waktu tidak mengurangi bintang. Pengerjaan `abandoned` (tombol Keluar, atau `gelita:retention:run` setelah `Config\Gelita::$attemptAbandonHours` = 24 jam tanpa sentuhan) mendapat `stars = 0`; jawaban dan percobaannya tetap tersimpan.
+
+#### `item_responses`
+
+Keadaan akhir satu soal dalam satu pengerjaan. Saat pengerjaan dibuat, setiap soal terpilih mendapat satu baris `pending` (`ItemResponseModel::createPlaceholders()`), termasuk benda pengecoh Cari Objek yang tidak pernah dijawab. Riwayat setiap percobaan ada di `item_tries`.
+
+| Kolom | Tipe | Null | Bawaan | Arti |
+|---|---|---|---|---|
+| id | BIGINT UNSIGNED | tidak | AUTO | PK |
+| challenge_attempt_id | BIGINT UNSIGNED | tidak | — | FK `challenge_attempts.id` CASCADE |
+| challenge_item_id | BIGINT UNSIGNED | tidak | — | FK `challenge_items.id` RESTRICT. INDEX |
+| display_order | SMALLINT UNSIGNED | tidak | 1 | Urutan tampil |
+| status | VARCHAR(20) | tidak | `pending` | `pending` \| `answered` \| `skipped`. INDEX |
+| first_answer_json | JSON | ya | NULL | Jawaban percobaan pertama; diisi sekali |
+| final_answer_json | JSON | ya | NULL | Jawaban terakhir yang dinilai |
+| first_pass_correct | TINYINT(1) | ya | NULL | Benar pada percobaan pertama |
+| is_correct | TINYINT(1) | ya | NULL | Benar pada keadaan akhir |
+| change_count | SMALLINT UNSIGNED | tidak | 0 | Berapa kali jawaban berubah antarpercobaan |
+| try_count | SMALLINT UNSIGNED | tidak | 0 | Jumlah percobaan soal ini (= jumlah baris `item_tries`) |
+| solved_on_try | TINYINT UNSIGNED | ya | NULL | Percobaan ke berapa soal ini benar; NULL = tidak pernah benar |
+| hint_used | TINYINT(1) | tidak | 0 | Petunjuk soal ini dibuka |
+| wrong_click_count | SMALLINT UNSIGNED | tidak | 0 | Cari Objek: ketukan salah selama petunjuk ini dicari |
+| started_at | DATETIME(6) | ya | NULL | Saat baris dibuat |
+| answered_at | DATETIME(6) | ya | NULL | Percobaan terakhir |
+| duration_ms | BIGINT UNSIGNED | ya | NULL | Milidetik sampai masukan terakhir, dari klien (`last_input_ms`) |
+| created_at, updated_at | DATETIME(6) | tidak | NOW, NOW↻ | |
+
+UNIQUE: `challenge_attempt_id_challenge_item_id (challenge_attempt_id, challenge_item_id)`.
+
+Pada Cari Objek, ketukan salah pertama menutup first-pass petunjuk itu sebagai salah (`first_pass_correct = 0`), dan ketukan benar sesudahnya tidak mengubahnya lagi. Petunjuk yang kesempatannya habis ditutup `status = answered`, `is_correct = 0`, `final_answer_json` = ketukan terakhir.
+
+#### `item_tries`
+
+Satu baris = satu percobaan satu soal: satu tekan "Cek jawabanku" untuk soal yang belum benar, atau satu ketukan benda pada Cari Objek. Ini data mentah utama untuk dimensi ketepatan, percobaan, dan waktu. **Insert-only**: baris tidak pernah diubah (`ItemTryModel` hanya punya callback `beforeInsert`).
+
+| Kolom | Tipe | Null | Bawaan | Arti |
+|---|---|---|---|---|
+| id | BIGINT UNSIGNED | tidak | AUTO | PK |
+| challenge_attempt_id | BIGINT UNSIGNED | tidak | — | FK `challenge_attempts.id` CASCADE |
+| challenge_item_id | BIGINT UNSIGNED | tidak | — | FK `challenge_items.id` RESTRICT |
+| try_no | TINYINT UNSIGNED | tidak | 1 | Percobaan ke-n soal ini (1–`max_tries`) |
+| check_no | SMALLINT UNSIGNED | ya | NULL | Nomor "Cek jawabanku" (`check_count`) yang menghasilkan percobaan ini; NULL untuk Cari Objek |
+| answer_json | JSON | tidak | — | Jawaban percobaan ini apa adanya |
+| is_correct | TINYINT(1) | tidak | 0 | |
+| hint_opened_before | TINYINT(1) | tidak | 0 | 1 bila sudah ada petunjuk yang dibuka di pengerjaan ini sebelum percobaan |
+| first_input_ms | INT UNSIGNED | ya | NULL | Milidetik sejak tantangan dibuka sampai masukan pertama soal ini (klien) |
+| last_input_ms | INT UNSIGNED | ya | NULL | Milidetik sampai masukan terakhir sebelum percobaan (klien); Cari Objek: sejak petunjuk tampil |
+| occurred_at | DATETIME(6) | tidak | NOW | Waktu server |
+
+UNIQUE: `challenge_attempt_id_challenge_item_id_try_no (challenge_attempt_id, challenge_item_id, try_no)`. Index analisis butir: `challenge_item_id_is_correct (challenge_item_id, is_correct)`. Angka milidetik klien yang negatif, bukan angka, atau melampaui INT UNSIGNED disimpan NULL.
+
+#### `audio_usage_events`
+
+Pemakaian audio, satu baris per aksi pemutar. Setiap baris disertai event `audio_*` di `game_event_logs` dalam transaction yang sama (`EventService::recordAudio()`), idempoten terhadap `client_event_id`.
+
+| Kolom | Tipe | Null | Bawaan | Arti |
+|---|---|---|---|---|
+| id | BIGINT UNSIGNED | tidak | AUTO | PK |
+| session_id | BIGINT UNSIGNED | tidak | — | FK `game_sessions.id` CASCADE |
+| challenge_attempt_id | BIGINT UNSIGNED | ya | NULL | FK `challenge_attempts.id` CASCADE. INDEX |
+| audio_asset_id | BIGINT UNSIGNED | tidak | — | FK `audio_assets.id` RESTRICT. INDEX |
+| action | VARCHAR(20) | tidak | — | `play` (siswa menekan putar) \| `autoplay` (layar bernarasi memutar sendiri) \| `pause` \| `replay` \| `complete` (`AudioUsageEventModel::ACTIONS`) |
+| play_index | INT UNSIGNED | tidak | 1 | Pemutaran ke-n aset itu dalam sesi, dihitung server: `play`/`autoplay`/`replay` membuka pemutaran baru, `pause`/`complete` milik pemutaran yang sedang berjalan |
+| listened_ms | BIGINT UNSIGNED | ya | NULL | |
+| completed | TINYINT(1) | tidak | 0 | |
+| occurred_at | DATETIME(6) | tidak | NOW | Waktu klien. INDEX |
+| server_received_at | DATETIME(6) | tidak | NOW | |
+
+Index: `session_id_occurred_at (session_id, occurred_at)`.
+
+#### `game_event_logs`
+
+Event mentah permainan, sumber kebenaran penelitian. Tidak pernah diganti agregat dan tidak pernah dihapus diam-diam. Tabel tulis-berat: index tunggal yang sudah tercakup awalan index gabungan sengaja tidak dibuat.
+
+| Kolom | Tipe | Null | Bawaan | Arti |
+|---|---|---|---|---|
+| id | BIGINT UNSIGNED | tidak | AUTO | PK |
+| event_uuid | CHAR(36) | tidak | — | UNIQUE, dibuat server |
+| client_event_id | VARCHAR(120) | tidak | — | Kunci idempotensi dari klien; event server memakai `srv-{uuid}` |
+| session_id | BIGINT UNSIGNED | tidak | — | FK `game_sessions.id` CASCADE |
+| participant_id | BIGINT UNSIGNED | tidak | — | Tanpa FK (log tetap utuh untuk audit) |
+| level_id | BIGINT UNSIGNED | ya | NULL | Tanpa FK. INDEX |
+| challenge_node_id | BIGINT UNSIGNED | ya | NULL | Tanpa FK |
+| challenge_attempt_id | BIGINT UNSIGNED | ya | NULL | Tanpa FK. INDEX |
+| challenge_item_id | BIGINT UNSIGNED | ya | NULL | Tanpa FK. INDEX |
+| event_type | VARCHAR(50) | tidak | — | Salah satu `Config\Gelita::$eventTypes` (`valid_event_type`) |
+| sequence_no | BIGINT UNSIGNED | tidak | 0 | Nomor urut kiriman klien, atau nomor berikutnya dari server |
+| occurred_at | DATETIME(6) | tidak | — | Waktu kejadian (klien) |
+| server_received_at | DATETIME(6) | tidak | NOW | |
+| payload_json | JSON | ya | NULL | Data tambahan per event |
+| deleted_at | DATETIME(6) | ya | NULL | Ditandai hapus oleh permintaan penghapusan data. INDEX |
+| deleted_by | BIGINT UNSIGNED | ya | NULL | FK `staff_users.id` SET NULL |
+| delete_reason | VARCHAR(255) | ya | NULL | |
+
+UNIQUE: `event_uuid`; `session_id_client_event_id (session_id, client_event_id)`. Index gabungan: `(session_id, sequence_no)`, `(session_id, occurred_at)`, `(participant_id, event_type, occurred_at)`, `(challenge_node_id, event_type, occurred_at)`, `(event_type, occurred_at)`.
+
+**`event_type` yang sah** (`Config\Gelita::$eventTypes`):
+
+| Kelompok | Event |
+|---|---|
+| Sesi dan navigasi | `session_started`, `session_resumed`, `session_paused`, `session_abandoned`, `session_completed`, `locale_changed`, `level_opened`, `level_completed`, `library_opened`, `library_page_viewed`, `dialogue_advanced`, `intro_completed`, `screen_viewed`, `overlay_opened`, `page_hidden`, `page_visible`, `viewport_changed` |
+| Tantangan | `challenge_opened`, `challenge_checked`, `challenge_completed`, `challenge_abandoned`, `challenge_tries_exhausted`, `answer_submitted`, `answer_changed`, `answer_selected`, `wrong_target_clicked`, `clue_failed`, `reading_progress`, `hint_opened` |
+| Audio | `audio_play`, `audio_autoplay`, `audio_pause`, `audio_replay`, `audio_completed` |
+| Lain-lain | `feedback_submitted`, `password_changed` |
+
+Event `screen_viewed`, `challenge_tries_exhausted`, dan `clue_failed` hanya boleh ditulis server; kiriman klien dengan jenis itu ditolak (`EventService::SERVER_ONLY`). Batch klien paling banyak `Config\Gelita::$maxEventsPerBatch` (50) event; duplikat `(session_id, client_event_id)` diabaikan tanpa menulis baris baru. Contoh payload: `session_started`/`session_resumed` membawa `via` = `register` \| `login`; `intro_completed` membawa `first` (`true` saat `participants.intro_seen_at` baru diisi); `challenge_completed` membawa `stars`, `first_pass_correct`, `final_correct`, `scorable_items`, `completion_reason`, `attempt_no`. Kegagalan masuk tidak ditulis ke tabel ini (belum ada sesi); jejaknya di `participants.failed_login_count`.
+
+#### `device_logs`
+
+Perangkat siswa, satu baris setiap siswa mendaftar, masuk, atau melanjutkan sesi. Diisi `App\Libraries\DeviceProfile::capture()`: User-Agent + Client Hints (`Sec-CH-UA-*`, diminta `App\Filters\ClientHintsFilter`) diurai `matomo/device-detector`, dilengkapi sinyal browser dari formulir. Hanya ditambah, tidak pernah diubah.
+
+| Kolom | Tipe | Null | Bawaan | Arti |
+|---|---|---|---|---|
+| id | BIGINT UNSIGNED | tidak | AUTO | PK |
+| session_id | BIGINT UNSIGNED | tidak | — | FK `game_sessions.id` CASCADE. INDEX |
+| participant_id | BIGINT UNSIGNED | tidak | — | Tanpa FK |
+| via | VARCHAR(20) | tidak | — | `register` \| `login` \| `resume` (`DeviceLogModel::VIA`) |
+| user_agent | VARCHAR(512) | ya | NULL | |
+| device_type | VARCHAR(30) | ya | NULL | Mis. `smartphone`, `tablet`, `desktop` |
+| device_brand | VARCHAR(60) | ya | NULL | |
+| device_model | VARCHAR(100) | ya | NULL | |
+| os_name, os_version, os_platform | VARCHAR(60/40/20) | ya | NULL | |
+| browser_name, browser_version, browser_engine | VARCHAR(60/40/40) | ya | NULL | |
+| is_bot | TINYINT(1) | tidak | 0 | |
+| client_hints_json | JSON | ya | NULL | `{headers: {...}, ua_data: {...}}` Client Hints mentah |
+| screen_w, screen_h | SMALLINT UNSIGNED | ya | NULL | Ukuran layar (px CSS) |
+| viewport_w, viewport_h | SMALLINT UNSIGNED | ya | NULL | Ukuran jendela |
+| pixel_ratio | DECIMAL(4,2) | ya | NULL | |
+| touch_points | TINYINT UNSIGNED | ya | NULL | |
+| orientation | VARCHAR(20) | ya | NULL | |
+| is_standalone | TINYINT(1) | ya | NULL | Dibuka sebagai aplikasi terpasang |
+| language | VARCHAR(20) | ya | NULL | Bahasa browser |
+| timezone | VARCHAR(60) | ya | NULL | |
+| corrected | VARCHAR(40) | ya | NULL | Koreksi yang diterapkan, mis. `ipad_desktop_ua` (iPadOS yang mengaku Macintosh dicatat tablet) |
+| detector | VARCHAR(40) | ya | NULL | Nama dan versi pengurai |
+| ip_hash | CHAR(64) | ya | NULL | SHA-256 IP + garam |
+| created_at | DATETIME(6) | tidak | NOW | |
+
+Index: `participant_id_created_at (participant_id, created_at)`.
+
+### E. Tata kelola dan admin
+
+#### `staff_users`
+
+Akun panel admin dan guru. `admin` melihat dan mengelola semua data; `guru` hanya melihat siswa sekolahnya sendiri (`school_id`).
+
+| Kolom | Tipe | Null | Bawaan | Arti |
+|---|---|---|---|---|
+| id | BIGINT UNSIGNED | tidak | AUTO | PK |
+| username | VARCHAR(100) | tidak | — | UNIQUE (`alpha_dash`, 3–100 karakter) |
+| email | VARCHAR(190) | ya | NULL | UNIQUE |
+| password_hash | VARCHAR(255) | tidak | — | `password_hash()` PASSWORD_DEFAULT; ditulis lewat `StaffUserModel::setPassword()` |
+| must_change_password | TINYINT(1) | tidak | 0 | 1 = sandi diketahui admin (akun baru, atau sandi sementara dari reset di `/admin/staf` / `php spark gelita:staff:password`); panel terkunci ke Ubah sandi sampai diganti pemiliknya |
+| role | VARCHAR(20) | tidak | `guru` | `admin` \| `guru`. INDEX |
+| display_name | VARCHAR(150) | tidak | — | |
+| school_id | BIGINT UNSIGNED | ya | NULL | FK `schools.id` SET NULL. Cakupan guru; NULL untuk admin |
+| is_active | TINYINT(1) | tidak | 1 | Akun dinonaktifkan, bukan dihapus. INDEX |
+| failed_login_count | SMALLINT UNSIGNED | tidak | 0 | `Config\Gelita::$loginThrottle['staff']`: 5 kali → kunci 15 menit |
+| locked_until | DATETIME(6) | ya | NULL | |
+| last_login_at | DATETIME(6) | ya | NULL | |
+| created_at, updated_at | DATETIME(6) | tidak | NOW, NOW↻ | |
+
+Akun pertama, `admin`, dibuat `StaffUserSeeder` dengan sandi dari variabel lingkungan `GELITA_ADMIN_PASSWORD`; seeder gagal bila variabel itu kosong. Sandi tidak pernah ditanam di kode.
+
+#### `audit_logs`
+
+Jejak tindakan staf dan command. Kata sandi mentah tidak pernah masuk `metadata_json`.
+
+| Kolom | Tipe | Null | Bawaan | Arti |
+|---|---|---|---|---|
+| id | BIGINT UNSIGNED | tidak | AUTO | PK |
+| staff_user_id | BIGINT UNSIGNED | ya | NULL | FK `staff_users.id` SET NULL. NULL untuk command tanpa akun. INDEX |
+| action | VARCHAR(50) | tidak | — | Kode tindakan. INDEX |
+| target_type | VARCHAR(50) | ya | NULL | Mis. `workbook`, `data_deletion_request` |
+| target_id | VARCHAR(100) | ya | NULL | |
+| metadata_json | JSON | ya | NULL | Rincian tindakan |
+| ip_hash | CHAR(64) | ya | NULL | SHA-256 IP + garam; NULL untuk command CLI |
+| occurred_at | DATETIME(6) | tidak | NOW | INDEX |
+
+Kode `action` yang ditulis aplikasi antara lain: `login`, `login_failed`, `logout`, `participant_password_reset`, `staff_create`, `staff_update`, `staff_deactivate`, `staff_password_reset`, `staff_password_change`, `study_create`, `study_update`, `release_create`, `release_activate`, `content_import`, `content_update`, `media_upload`, `media_deactivate`, `media_scan`, `media_mockups`, `audio_upload`, `audio_approve`, `audio_approve_bulk`, `narration_import`, `school_merge`, `school_verify`, `export`, `export_download`, `export_purge`, `delete_preview`, `delete_execute`, `delete_cancel`, `retention_run`, `system_reset`.
+
+#### `data_exports`
+
+Permintaan dan berkas ekspor. Berkas disimpan di `writable/exports/`.
+
+| Kolom | Tipe | Null | Bawaan | Arti |
+|---|---|---|---|---|
+| id | BIGINT UNSIGNED | tidak | AUTO | PK |
+| requested_by | BIGINT UNSIGNED | tidak | — | FK `staff_users.id` RESTRICT. INDEX |
+| study_id | BIGINT UNSIGNED | ya | NULL | FK `research_studies.id` SET NULL. INDEX |
+| format | VARCHAR(10) | tidak | — | `xlsx` (workbook data mentah) \| `pdf` (laporan satu siswa) |
+| scope_json | JSON | tidak | — | Filter dan sheet yang diminta; lihat [Bentuk JSON](#kolom-json-lainnya) |
+| anonymized | TINYINT(1) | tidak | 1 | 1 = tanpa kolom identitas. Pemohon `guru` selalu anonim |
+| status | VARCHAR(20) | tidak | `queued` | `queued` \| `running` \| `done` \| `failed`. INDEX |
+| row_count | BIGINT UNSIGNED | ya | NULL | Jumlah baris (PDF: jumlah siswa) |
+| file_path | VARCHAR(500) | ya | NULL | NULL setelah berkas dihapus retensi |
+| file_sha256 | CHAR(64) | ya | NULL | |
+| error_message | VARCHAR(500) | ya | NULL | Pesan gagal, atau keterangan berkas sudah dihapus |
+| created_at | DATETIME(6) | tidak | NOW | |
+| completed_at | DATETIME(6) | ya | NULL | |
+| expires_at | DATETIME(6) | ya | NULL | Diisi saat `done`: waktu selesai + `Config\Gelita::$exportRetentionDays` (7 hari). INDEX |
+
+`App\Services\ExportService` membaca ulang hak pemohon dari `staff_users`: pemohon non-admin selalu dibatasi sekolahnya, selalu anonim, tanpa sheet `Raw Events` dan tanpa kolom kunci jawaban. `password_hash`, `failed_login_count`, dan `locked_until` tidak pernah dibaca ekspor.
+
+#### `data_deletion_requests`
+
+Permintaan penghapusan data penelitian, dua langkah: pratinjau jumlah baris per tabel (`preview`), lalu eksekusi yang dikonfirmasi admin. Lihat [Retensi dan penghapusan data](#retensi-dan-penghapusan-data).
+
+| Kolom | Tipe | Null | Bawaan | Arti |
+|---|---|---|---|---|
+| id | BIGINT UNSIGNED | tidak | AUTO | PK |
+| requested_by | BIGINT UNSIGNED | tidak | — | FK `staff_users.id` RESTRICT. INDEX |
+| scope_json | JSON | tidak | — | Cakupan, hitungan pratinjau, dan asal permintaan |
+| reason | TEXT | ya | NULL | Alasan |
+| mode | VARCHAR(20) | tidak | `soft` | `soft` (tandai) \| `hard` (hapus baris) |
+| status | VARCHAR(20) | tidak | `preview` | `preview` \| `approved` \| `executed` \| `cancelled`. INDEX |
+| affected_count | BIGINT UNSIGNED | ya | NULL | Total baris pratinjau, lalu total baris yang benar-benar terdampak |
+| approved_by | BIGINT UNSIGNED | ya | NULL | FK `staff_users.id` SET NULL. Admin yang mengeksekusi. INDEX |
+| executed_at | DATETIME(6) | ya | NULL | |
+| created_at | DATETIME(6) | tidak | NOW | |
+
+### F. Sistem
+
+#### `ci_sessions`
+
+Sesi HTTP CodeIgniter (`Config\Session::$driver` = `DatabaseHandler`, `savePath` = `ci_sessions`). Migration `002900` memakai kelas `Migration` bawaan, bukan `GelitaMigration`.
+
+| Kolom | Tipe | Null | Bawaan | Arti |
+|---|---|---|---|---|
+| id | VARCHAR(128) | tidak | — | PK, id sesi |
+| ip_address | VARCHAR(64) | tidak | — | Alamat IP klien yang ditulis handler sesi |
+| timestamp | TIMESTAMP | tidak | `current_timestamp()` | Aktivitas terakhir. INDEX |
+| data | BLOB | tidak | — | Isi sesi |
+
+Kolom `ip_address` cukup lebar untuk hash SHA-256 dari `App\Libraries\HashedIpSessionHandler`, tetapi handler itu belum dipasang di `Config\Session`; selama itu `DatabaseHandler` bawaan menyimpan IP apa adanya sampai sesi kedaluwarsa dibersihkan. Tabel ini dikosongkan `gelita:reset` dan tidak diperlukan dalam cadangan.
+
+## Bentuk JSON
+
+Semua kunci di bawah ditulis importer workbook (`ContentImportService`), editor konten panel, atau `ChallengeService`. Kunci yang tidak dikenal diabaikan.
+
+### `challenge_nodes.config_json`
 
 ```jsonc
-// puzzle
-{ "items_per_round": 1, "grid": 3, "allow_retry": true }
-
-// rumpang
-{ "items_per_round": 4, "use_word_bank": true, "distractor_count": 2, "allow_retry": true,
-  "distractors": [ {"id":"salju","en":"snow"}, {"id":"laut","en":"sea"} ] }
-
-// boleh  (engine penilaian pernyataan)
-{ "items_per_round": 8, "allow_retry": true,
-  "verdict_options": ["benar","salah"],        // Magelang node 3: ["benar","salah","pendapat"]
-  "require_reason": false }
-
-// pilihan
-{ "items_per_round": 3, "allow_retry": false, "shuffle_options": true }
-
-// cari
-{ "items_per_round": 4, "allow_retry": true, "show_decoys": true }
-```
-
-* `items_per_round` — banyaknya item yang dipilih dari bank untuk satu attempt.
-* `allow_retry` — `false` berarti jawaban pertama = jawaban final (dipakai `pilihan`).
-* `distractors` — kata pengecoh bank kata rumpang. Server mengambil `distractor_count` pengecoh secara acak per attempt, lalu mencampurnya dengan jawaban item yang terpilih.
-* `verdict_options` — tombol yang tampil pada kartu engine `boleh`. Label diambil dari file bahasa: Benar/True, Salah/False, Pendapat/Opinion.
-
-### 14. `challenge_items`
-
-Unit atomic yang dinilai. Ini adalah **bank soal**, bukan jawaban peserta.
-
-| Kolom | Tipe | Null | Default | Keterangan |
-|---|---|---|---|---|
-| id | BIGINT UNSIGNED | NO | AUTO | PK |
-| challenge_node_id | BIGINT UNSIGNED | NO | — | FK CASCADE; INDEX |
-| item_key | VARCHAR(100) | NO | — | mis. `tmg-2-01` |
-| sequence | SMALLINT UNSIGNED | NO | 1 | INDEX |
-| interaction_type | VARCHAR(40) | NO | — | lihat daftar di bawah; INDEX |
-| prompt_id | TEXT | YES | NULL | kalimat rumpang / pertanyaan / petunjuk / teks kartu |
-| prompt_en | TEXT | YES | NULL | |
-| source_text_id | LONGTEXT | YES | NULL | teks sumber khusus item ini |
-| source_text_en | LONGTEXT | YES | NULL | |
-| passage_id | BIGINT UNSIGNED | YES | NULL | FK `reading_passages.id` SET NULL — teks bacaan bersama |
-| answer_key_json | JSON | YES | NULL | bentuk berbeda per interaction_type |
-| media_asset_id | BIGINT UNSIGNED | YES | NULL | FK SET NULL — gambar puzzle/kartu/objek |
-| audio_prompt_id | BIGINT UNSIGNED | YES | NULL | FK `audio_assets.id` SET NULL — narasi petunjuk `find_object` (locale id); `003800` |
-| audio_prompt_en_id | BIGINT UNSIGNED | YES | NULL | FK `audio_assets.id` SET NULL — narasi petunjuk (locale en); `003800` |
-| indicator_id | BIGINT UNSIGNED | YES | NULL | FK SET NULL — indikator per butir |
-| bloom_level | VARCHAR(2) | YES | NULL | tingkat berpikir Taksonomi Bloom revisi `C1` … `C6`; INDEX; `004000` |
-| config_json | JSON | YES | NULL | koordinat objek `cari`, flag decoy, ukuran papan Susun Gambar `{grid, shape}` (dibekukan saat soal dibuat), dll |
-| reference_source | VARCHAR(500) | YES | NULL | sumber rujukan konten (lembaga/judul + URL) |
-| review_status | VARCHAR(30) | NO | `draft` | `draft` \| `needs_verification` \| `verified`; INDEX |
-| review_note | TEXT | YES | NULL | catatan verifikasi fakta |
-| scorable | TINYINT(1) | NO | 1 | 0 = tidak ikut dihitung |
-| is_active | TINYINT(1) | NO | 1 | INDEX |
-| created_at | DATETIME(6) | NO | CURRENT | |
-| updated_at | DATETIME(6) | NO | CURRENT | |
-
-UNIQUE: `(challenge_node_id, item_key)`.
-
-**Nilai `interaction_type` yang didukung:**
-
-| interaction_type | Dipakai engine | Bentuk `answer_key_json` |
-|---|---|---|
-| `puzzle_arrange` | puzzle | `{"order":[0,1,2,3,4,5,6,7,8]}` |
-| `fill_blank_bank` | rumpang | `{"text_id":"Magelang","text_en":"Magelang"}` |
-| `fill_blank_free` | rumpang | `{"accept_id":["stupa"],"accept_en":["stupa"],"case_sensitive":false}` |
-| `verdict_card` | boleh | `{"verdict":"benar"}` — nilai `benar` \| `salah` \| `pendapat` |
-| `verdict_reason` | boleh | `{"verdict":"pendapat","sample_reason_id":"…","sample_reason_en":"…"}` — contoh alasan untuk rubrik guru |
-| `single_choice` | pilihan | `{"option_key":"tmg1a"}` |
-| `ordering` | puzzle (L3) | `{"order":["a","c","b","d"]}` |
-| `find_object` | cari | `{"target":true}` (objek jebakan: `{"target":false}`) |
-| `source_trust` | pilihan (L3) | `{"option_key":"wnb-4-01-a"}` |
-
-Konvensi kunci: `item_key` = `{tmg|mgl|wnb}-{node}-{nomor 2 digit}`, mis. `mgl-4-03`. `option_key` = `item_key` + `-a`..`-d`, mis. `mgl-4-03-b`.
-
-**`config_json` item per interaction_type** (kunci opsional kecuali ditandai wajib):
-
-```jsonc
-// find_object
-{ "x": 18, "y": 62, "w": 13, "decoy": false,
-  "wrong_feedback_id": "Angklung berasal dari Jawa Barat, bukan Temanggung.",
-  "wrong_feedback_en": "Angklung is from West Java, not Temanggung." }
-
-// ordering  (pieces wajib; key acak huruf, urutan benar ada di answer_key_json.order)
-{ "pieces": [ {"key":"a","text_id":"Rebus mie…","text_en":"Boil the noodles…"}, … ] }
-
-// verdict_card / verdict_reason  (Wonosobo node 3: dua sumber)
-{ "sources": [
-    {"label_id":"Sumber A","label_en":"Source A","kind":"official","text_id":"…","text_en":"…"},
-    {"label_id":"Sumber B","label_en":"Source B","kind":"anonymous","text_id":"…","text_en":"…"} ] }
-
-// single_choice (Wonosobo node 5) — label analisis literasi digital
-{ "digital_pillar": "digital_skills" }   // digital_skills | digital_ethics | digital_safety | digital_culture
-
-// puzzle_arrange — prompt_id/en dipakai sebagai deskripsi yang tampil setelah gambar utuh
-{ "grid": 3 }
-```
-
-> `decoy: true` = objek jebakan dari daerah lain. Objek jebakan wajib `scorable: 0` dan tidak pernah menjadi target, tidak punya petunjuk, dan tidak pernah menahan attempt tetap terbuka. Klik pada objek yang salah (jebakan atau target lain) dicatat sebagai `wrong_target_clicked` dan `wrong_click_count`; bila itu klik pertama untuk petunjuk yang sedang dicari, first-pass petunjuk itu tertutup sebagai salah, lalu klik benar sesudahnya dihitung sebagai perubahan jawaban. Penjelasan (`wrong_feedback_*`) dikirim sesudah klik.
-
-### 15. `challenge_options`
-
-| Kolom | Tipe | Null | Default | Keterangan |
-|---|---|---|---|---|
-| id | BIGINT UNSIGNED | NO | AUTO | PK |
-| challenge_item_id | BIGINT UNSIGNED | NO | — | FK CASCADE; INDEX |
-| option_key | VARCHAR(60) | NO | — | |
-| label_id | TEXT | NO | — | |
-| label_en | TEXT | NO | — | |
-| media_asset_id | BIGINT UNSIGNED | YES | NULL | FK SET NULL — gambar opsi |
-| is_correct | TINYINT(1) | NO | 0 | |
-| feedback_id | TEXT | YES | NULL | penjelasan saat opsi dipilih |
-| feedback_en | TEXT | YES | NULL | |
-| display_order | SMALLINT UNSIGNED | NO | 1 | INDEX |
-
-UNIQUE: `(challenge_item_id, option_key)`.
-
-> `challenge_options` hanya dipakai `single_choice` dan `source_trust`. Pengecoh rumpang **tidak** disimpan di sini, melainkan di `challenge_nodes.config_json.distractors`.
-
-### 16. `hints`
-
-| Kolom | Tipe | Null | Default | Keterangan |
-|---|---|---|---|---|
-| id | BIGINT UNSIGNED | NO | AUTO | PK |
-| challenge_node_id | BIGINT UNSIGNED | YES | NULL | FK CASCADE |
-| challenge_item_id | BIGINT UNSIGNED | YES | NULL | FK CASCADE |
-| sequence | SMALLINT UNSIGNED | NO | 1 | |
-| text_id | TEXT | NO | — | |
-| text_en | TEXT | NO | — | |
-| is_active | TINYINT(1) | NO | 1 | INDEX |
-
-Aturan: minimal salah satu dari `challenge_node_id` / `challenge_item_id` harus terisi. Divalidasi di Model (MySQL CHECK tidak dipakai agar kompatibel MariaDB lama).
-
-### 17. `dialogues`
-
-Narasi dan dialog Jaka, Mbah Kedu, dan narator: seluruh isi `docs/naskah-cerita.md` (88 baris, 6 konteks). Sumber datanya satu: `app/Database/Seeds/data/story.php` (lihat §8 dan `gelita:story:update`).
-
-| Kolom | Tipe | Null | Default | Keterangan |
-|---|---|---|---|---|
-| id | BIGINT UNSIGNED | NO | AUTO | PK |
-| level_id | BIGINT UNSIGNED | YES | NULL | FK CASCADE; NULL = konteks global |
-| context_code | VARCHAR(50) | NO | `level_open` | global (level_id NULL): `intro`\|`map_intro`\|`ending`; per wilayah: `region_intro`\|`level_open`\|`level_done` (`Config\Gelita::$dialogueContexts`); INDEX |
-| sequence | INT UNSIGNED | NO | 1 | INDEX |
-| character_code | VARCHAR(30) | NO | — | `jaka`\|`mbah_kedu`\|`narator` |
-| pose | VARCHAR(30) | YES | NULL | pose tokoh (`Config\Gelita::$characterPoses`): Jaka `idle`\|`happy`\|`bow`\|`sad`\|`afraid`\|`determined`, Mbah Kedu `idle`\|`smile`\|`worried`\|`weak`; NULL = `idle`, narator selalu NULL. Gambar pose yang belum diunggah memakai `idle` |
-| effect | VARCHAR(30) | YES | NULL | efek layar saat baris muncul (`Config\Gelita::$dialogueEffects`): `fog`\|`fog-lift`\|`glow`\|`flash`\|`shake`\|`dim`; NULL = tanpa efek |
-| title_id | VARCHAR(200) | YES | NULL | judul slide (intro, peta, kenali wilayah, penutup); baris dialog wilayah tidak berjudul |
-| title_en | VARCHAR(200) | YES | NULL | |
-| text_id | LONGTEXT | NO | — | |
-| text_en | LONGTEXT | NO | — | |
-| audio_id_asset_id | BIGINT UNSIGNED | YES | NULL | FK `audio_assets.id` SET NULL |
-| audio_en_asset_id | BIGINT UNSIGNED | YES | NULL | FK `audio_assets.id` SET NULL |
-| background_media_id | BIGINT UNSIGNED | YES | NULL | FK SET NULL |
-| is_active | TINYINT(1) | NO | 1 | |
-
-UNIQUE: `(level_id, context_code, sequence)` — gunakan `level_id = 0` sentinel tidak diperlukan karena MySQL mengizinkan NULL berulang pada UNIQUE; tambahkan index biasa saja bila level_id NULL banyak.
-
-Karena NULL berulang lolos UNIQUE, baris global bernomor urut ganda mungkin ada. `DialogueModel::global($context)` mengurutkan `sequence` lalu `id`; `gelita:story:update` memakai id terkecil dan menonaktifkan sisanya. Nilai `pose` dan `effect` dijaga `DialogueModel` (aturan `valid_dialogue_pose[character_code]` dan `valid_dialogue_effect`), bukan ENUM, agar kamus pose dapat bertambah tanpa migration.
-
-### 18. `library_pages` (Pustaka Kedu)
-
-Bacaan mendalam per wilayah. Tidak memengaruhi skor.
-
-| Kolom | Tipe | Null | Default | Keterangan |
-|---|---|---|---|---|
-| id | BIGINT UNSIGNED | NO | AUTO | PK |
-| level_id | BIGINT UNSIGNED | NO | — | FK CASCADE; INDEX |
-| sequence | SMALLINT UNSIGNED | NO | 1 | halaman 1..n |
-| title_id | VARCHAR(250) | NO | — | |
-| title_en | VARCHAR(250) | NO | — | |
-| body_id | LONGTEXT | NO | — | |
-| body_en | LONGTEXT | NO | — | |
-| image_a_media_id | BIGINT UNSIGNED | YES | NULL | FK SET NULL — slot lama, lihat `library_media` |
-| image_b_media_id | BIGINT UNSIGNED | YES | NULL | FK SET NULL — slot lama |
-| video_media_id | BIGINT UNSIGNED | YES | NULL | FK SET NULL — slot lama |
-| poster_media_id | BIGINT UNSIGNED | YES | NULL | FK SET NULL — slot lama |
-| is_active | TINYINT(1) | NO | 1 | INDEX |
-| created_at | DATETIME(6) | NO | CURRENT | |
-| updated_at | DATETIME(6) | NO | CURRENT | |
-
-UNIQUE: `(level_id, sequence)`.
-
-Isi `body_*` memakai format ringan tanpa HTML yang dirender `rich_text()`: baris kosong = paragraf, `## ` subjudul, `- ` daftar, `> ` kotak fakta, baris `Sumber:` catatan rujukan, `**tebal**`, `*miring*`. Seluruh teks di-escape lebih dulu.
-
-Sejak `003500`, gambar dan video halaman disimpan di `library_media`. Empat kolom slot lama tidak dihapus (rollback tidak kehilangan data) dan tidak lagi dibaca game; isinya disalin sekali ke `library_media` oleh migration itu.
-
-### 18a. `reading_passages` (Teks Bacaan Bersama)
-
-Teks bacaan yang dirujuk beberapa item, bahkan lintas node dalam satu level (mis. Teks A Temanggung dipakai node 3 dan node 5).
-
-| Kolom | Tipe | Null | Default | Keterangan |
-|---|---|---|---|---|
-| id | BIGINT UNSIGNED | NO | AUTO | PK |
-| level_id | BIGINT UNSIGNED | NO | — | FK `levels.id` CASCADE; INDEX |
-| passage_key | VARCHAR(60) | NO | — | UNIQUE; mis. `tmg-teks-a` |
-| title_id | VARCHAR(200) | YES | NULL | mis. "Teks A" |
-| title_en | VARCHAR(200) | YES | NULL | |
-| body_id | LONGTEXT | NO | — | |
-| body_en | LONGTEXT | NO | — | |
-| media_asset_id | BIGINT UNSIGNED | YES | NULL | FK SET NULL — gambar pendamping |
-| reference_source | VARCHAR(500) | YES | NULL | |
-| is_active | TINYINT(1) | NO | 1 | |
-| created_at | DATETIME(6) | NO | CURRENT | |
-| updated_at | DATETIME(6) | NO | CURRENT | |
-
-Aturan: item hanya boleh merujuk passage dari level yang sama dengan node-nya.
-
-### 18b. `library_media` (Media Pustaka Kedu)
-
-Gambar/video per halaman Pustaka, tanpa batas jumlah. Setiap baris berasal dari berkas unggahan **atau** tautan luar.
-
-| Kolom | Tipe | Null | Default | Keterangan |
-|---|---|---|---|---|
-| id | BIGINT UNSIGNED | NO | AUTO | PK |
-| library_page_id | BIGINT UNSIGNED | NO | — | FK `library_pages.id` CASCADE |
-| sequence | SMALLINT UNSIGNED | NO | 1 | urutan tampil dalam galeri halaman |
-| media_kind | VARCHAR(10) | NO | image | `image` \| `video` |
-| media_asset_id | BIGINT UNSIGNED | YES | NULL | FK `media_assets.id` SET NULL — berkas unggahan |
-| external_url | VARCHAR(1000) | YES | NULL | tautan YouTube, Google Drive, Vimeo, Wikimedia Commons, atau berkas `https` langsung; diterjemahkan server lewat `App\Libraries\MediaLink` |
-| poster_media_id | BIGINT UNSIGNED | YES | NULL | FK `media_assets.id` SET NULL — sampul video unggahan |
-| caption_id | VARCHAR(500) | YES | NULL | keterangan & teks alternatif |
-| caption_en | VARCHAR(500) | YES | NULL | |
-| credit | VARCHAR(300) | YES | NULL | pemilik & lisensi media pihak lain |
-| is_active | TINYINT(1) | NO | 1 | |
-| created_at | DATETIME(6) | NO | CURRENT | |
-| updated_at | DATETIME(6) | NO | CURRENT | |
-
-INDEX: `(library_page_id, sequence)`. Tidak UNIQUE: editor admin menyimpan ulang seluruh media satu halaman sekaligus.
-
-Aturan: baris tanpa berkas aktif dan tanpa tautan yang dikenali `MediaLink` tidak dirender. Hanya tautan `http(s)` yang diterima. Pemutar YouTube/Vimeo/Drive baru dimuat setelah siswa menekan Putar.
-
-### 19. `game_sessions`
-
-| Kolom | Tipe | Null | Default | Keterangan |
-|---|---|---|---|---|
-| id | BIGINT UNSIGNED | NO | AUTO | PK |
-| session_code | VARCHAR(64) | NO | — | UNIQUE; 32 hex acak. Pengenal internal sesi untuk export & log — **bukan** token login |
-| participant_id | BIGINT UNSIGNED | NO | — | FK RESTRICT; INDEX |
-| study_id | BIGINT UNSIGNED | NO | — | FK RESTRICT; INDEX |
-| phase_id | BIGINT UNSIGNED | NO | — | FK RESTRICT; INDEX |
-| release_id | BIGINT UNSIGNED | NO | — | FK RESTRICT |
-| locale | VARCHAR(5) | NO | `id` | |
-| status | VARCHAR(20) | NO | `active` | `active`\|`paused`\|`completed`\|`abandoned`; INDEX |
-| started_at | DATETIME(6) | NO | CURRENT | INDEX |
-| last_active_at | DATETIME(6) | NO | CURRENT | INDEX |
-| ended_at | DATETIME(6) | YES | NULL | |
-| duration_ms | BIGINT UNSIGNED | NO | 0 | akumulasi waktu aktif |
-| last_level_id | BIGINT UNSIGNED | YES | NULL | FK SET NULL |
-| last_challenge_node_id | BIGINT UNSIGNED | YES | NULL | FK SET NULL |
-| device_type | VARCHAR(30) | YES | NULL | `desktop`\|`tablet`\|`mobile` |
-| os_name | VARCHAR(80) | YES | NULL | |
-| browser_name | VARCHAR(80) | YES | NULL | |
-| screen_size | VARCHAR(20) | YES | NULL | mis. `1366x768` |
-| is_touch | TINYINT(1) | YES | NULL | |
-| app_client_version | VARCHAR(30) | YES | NULL | |
-| ip_hash | CHAR(64) | YES | NULL | SHA-256 IP + app salt, bukan IP mentah |
-| created_at | DATETIME(6) | NO | CURRENT | |
-
-INDEX gabungan: `(participant_id, study_id, phase_id, status)`.
-
-### 20. `session_progress`
-
-Satu baris per session — state terbaru.
-
-| Kolom | Tipe | Null | Default | Keterangan |
-|---|---|---|---|---|
-| session_id | BIGINT UNSIGNED | NO | — | PK + FK CASCADE |
-| current_level_id | BIGINT UNSIGNED | YES | NULL | FK SET NULL |
-| current_node_id | BIGINT UNSIGNED | YES | NULL | FK SET NULL |
-| unlocked_level_sequence | TINYINT UNSIGNED | NO | 1 | level tertinggi yang boleh dibuka |
-| completed_nodes | SMALLINT UNSIGNED | NO | 0 | = jumlah serpihan |
-| completed_levels | TINYINT UNSIGNED | NO | 0 | |
-| total_score | DECIMAL(8,2) | NO | 0.00 | mean 3 level |
-| total_stars | SMALLINT UNSIGNED | NO | 0 | |
-| updated_at | DATETIME(6) | NO | CURRENT | INDEX |
-
-### 21. `challenge_attempts`
-
-| Kolom | Tipe | Null | Default | Keterangan |
-|---|---|---|---|---|
-| id | BIGINT UNSIGNED | NO | AUTO | PK |
-| session_id | BIGINT UNSIGNED | NO | — | FK CASCADE; INDEX |
-| challenge_node_id | BIGINT UNSIGNED | NO | — | FK RESTRICT; INDEX |
-| attempt_no | SMALLINT UNSIGNED | NO | 1 | |
-| status | VARCHAR(20) | NO | `in_progress` | `in_progress`\|`completed`\|`abandoned`; INDEX |
-| selected_item_ids_json | JSON | NO | — | urutan item yang dipilih server (D4) |
-| scorable_items | SMALLINT UNSIGNED | NO | 0 | |
-| first_pass_correct | SMALLINT UNSIGNED | NO | 0 | |
-| final_correct | SMALLINT UNSIGNED | NO | 0 | |
-| first_pass_accuracy | DECIMAL(6,2) | NO | 0.00 | |
-| final_accuracy | DECIMAL(6,2) | NO | 0.00 | |
-| check_count | SMALLINT UNSIGNED | NO | 0 | berapa kali tombol Periksa ditekan |
-| hint_count | SMALLINT UNSIGNED | NO | 0 | |
-| retry_count | SMALLINT UNSIGNED | NO | 0 | `max(0, check_count - 1)` |
-| answer_change_count | SMALLINT UNSIGNED | NO | 0 | |
-| audio_use_count | SMALLINT UNSIGNED | NO | 0 | |
-| independence | DECIMAL(6,2) | NO | 100.00 | |
-| score | DECIMAL(8,2) | NO | 0.00 | |
-| stars | TINYINT UNSIGNED | NO | 0 | |
-| scoring_profile_id | BIGINT UNSIGNED | YES | NULL | FK SET NULL |
-| scoring_version | VARCHAR(20) | YES | NULL | disalin saat scoring |
-| started_at | DATETIME(6) | NO | CURRENT | |
-| completed_at | DATETIME(6) | YES | NULL | |
-| duration_ms | BIGINT UNSIGNED | YES | NULL | |
-| created_at | DATETIME(6) | NO | CURRENT | |
-
-UNIQUE: `(session_id, challenge_node_id, attempt_no)`.
-INDEX gabungan: `(challenge_node_id, status)`.
-
-### 22. `item_responses`
-
-State terkini satu item dalam satu attempt. Riwayat perubahan ada di `game_event_logs`.
-
-| Kolom | Tipe | Null | Default | Keterangan |
-|---|---|---|---|---|
-| id | BIGINT UNSIGNED | NO | AUTO | PK |
-| challenge_attempt_id | BIGINT UNSIGNED | NO | — | FK CASCADE; INDEX |
-| challenge_item_id | BIGINT UNSIGNED | NO | — | FK RESTRICT; INDEX |
-| display_order | SMALLINT UNSIGNED | NO | 1 | urutan tampil ke peserta |
-| status | VARCHAR(20) | NO | `pending` | `pending`\|`answered`\|`skipped`; INDEX |
-| first_answer_json | JSON | YES | NULL | jawaban pada pemeriksaan pertama |
-| final_answer_json | JSON | YES | NULL | jawaban terakhir yang divalidasi |
-| reason_text | TEXT | YES | NULL | alasan bebas (D17) |
-| reason_review_status | VARCHAR(20) | YES | NULL | `pending`\|`accepted`\|`rejected` |
-| first_pass_correct | TINYINT(1) | YES | NULL | |
-| is_correct | TINYINT(1) | YES | NULL | benar pada keadaan final |
-| change_count | SMALLINT UNSIGNED | NO | 0 | |
-| hint_used | TINYINT(1) | NO | 0 | |
-| wrong_click_count | SMALLINT UNSIGNED | NO | 0 | khusus `cari` |
-| started_at | DATETIME(6) | YES | NULL | |
-| answered_at | DATETIME(6) | YES | NULL | |
-| duration_ms | BIGINT UNSIGNED | YES | NULL | |
-| created_at | DATETIME(6) | NO | CURRENT | |
-| updated_at | DATETIME(6) | NO | CURRENT | |
-
-UNIQUE: `(challenge_attempt_id, challenge_item_id)`.
-
-### 23. `audio_usage_events`
-
-| Kolom | Tipe | Null | Default | Keterangan |
-|---|---|---|---|---|
-| id | BIGINT UNSIGNED | NO | AUTO | PK |
-| session_id | BIGINT UNSIGNED | NO | — | FK CASCADE; INDEX |
-| challenge_attempt_id | BIGINT UNSIGNED | YES | NULL | FK CASCADE |
-| audio_asset_id | BIGINT UNSIGNED | NO | — | FK RESTRICT; INDEX |
-| action | VARCHAR(20) | NO | — | `play`\|`autoplay`\|`pause`\|`replay`\|`complete` — `play` = pemain menekan putar; `autoplay` = layar bernarasi memutar sendiri (setelah "Ketuk untuk mulai" atau maju otomatis) |
-| play_index | INT UNSIGNED | NO | 1 | pemutaran ke-n untuk aset itu |
-| listened_ms | BIGINT UNSIGNED | YES | NULL | |
-| completed | TINYINT(1) | NO | 0 | |
-| occurred_at | DATETIME(6) | NO | CURRENT | INDEX |
-| server_received_at | DATETIME(6) | NO | CURRENT | |
-
-INDEX gabungan: `(session_id, occurred_at)`.
-
-### 24. `game_event_logs`
-
-Raw event, source of truth penelitian. **Tidak boleh diganti oleh agregat.**
-
-| Kolom | Tipe | Null | Default | Keterangan |
-|---|---|---|---|---|
-| id | BIGINT UNSIGNED | NO | AUTO | PK |
-| event_uuid | CHAR(36) | NO | — | UNIQUE, dibuat server |
-| client_event_id | VARCHAR(120) | NO | — | idempotency key dari client |
-| session_id | BIGINT UNSIGNED | NO | — | FK CASCADE; INDEX |
-| participant_id | BIGINT UNSIGNED | NO | — | INDEX (tanpa FK, agar delete peserta tidak memutus audit) |
-| level_id | BIGINT UNSIGNED | YES | NULL | INDEX |
-| challenge_node_id | BIGINT UNSIGNED | YES | NULL | INDEX |
-| challenge_attempt_id | BIGINT UNSIGNED | YES | NULL | INDEX |
-| challenge_item_id | BIGINT UNSIGNED | YES | NULL | INDEX |
-| event_type | VARCHAR(50) | NO | — | INDEX |
-| sequence_no | BIGINT UNSIGNED | NO | 0 | urut per session |
-| occurred_at | DATETIME(6) | NO | — | waktu client |
-| server_received_at | DATETIME(6) | NO | CURRENT | |
-| payload_json | JSON | YES | NULL | |
-| deleted_at | DATETIME(6) | YES | NULL | INDEX |
-| deleted_by | BIGINT UNSIGNED | YES | NULL | FK `staff_users.id` SET NULL |
-| delete_reason | VARCHAR(255) | YES | NULL | |
-
-UNIQUE: `(session_id, client_event_id)`.
-INDEX gabungan wajib (`(session_id, occurred_at)` ditambahkan migration koreksi `003300`, karena `002400` tidak membuatnya):
-
-* `(session_id, sequence_no)`
-* `(session_id, occurred_at)`
-* `(participant_id, event_type, occurred_at)`
-* `(challenge_node_id, event_type, occurred_at)`
-* `(event_type, occurred_at)`
-
-**Daftar `event_type` yang valid:**
-
-```
-session_started      session_resumed     session_paused
-session_abandoned    session_completed   locale_changed
-level_opened         level_completed     library_opened
-library_page_viewed  dialogue_advanced
-challenge_opened     challenge_checked   challenge_completed
-challenge_skipped    challenge_abandoned
-answer_submitted     answer_changed      wrong_target_clicked
-hint_opened          audio_play          audio_pause
-audio_replay         audio_completed     feedback_submitted
-password_changed     intro_completed
-```
-
-`intro_completed` dicatat server setiap kali cerita pembuka selesai (`/intro/selesai`), dengan `payload_json.first` = `true` pada tontonan pertama (saat `participants.intro_seen_at` diisi) dan `false` pada tontonan ulang.
-
-`session_started` dan `session_resumed` menyertakan `payload_json.via` = `register` \| `login`. Kegagalan login tidak ditulis ke tabel ini (belum ada sesi); jejaknya ada di `participants.failed_login_count`.
-
-### 25. `participant_feedback` (Balai Refleksi)
-
-| Kolom | Tipe | Null | Default | Keterangan |
-|---|---|---|---|---|
-| id | BIGINT UNSIGNED | NO | AUTO | PK |
-| participant_id | BIGINT UNSIGNED | NO | — | FK CASCADE; INDEX |
-| session_id | BIGINT UNSIGNED | YES | NULL | FK SET NULL |
-| rating | TINYINT UNSIGNED | NO | — | 1..5 |
-| liked_most | TEXT | YES | NULL | |
-| hardest_part | TEXT | YES | NULL | |
-| new_learning | TEXT | YES | NULL | |
-| suggestion | TEXT | YES | NULL | |
-| submitted_at | DATETIME(6) | NO | CURRENT | INDEX |
-
-Aturan: minimal 2 dari 4 kolom teks terisi, dan `rating` wajib.
-
-### 26. `audit_logs`
-
-| Kolom | Tipe | Null | Default | Keterangan |
-|---|---|---|---|---|
-| id | BIGINT UNSIGNED | NO | AUTO | PK |
-| staff_user_id | BIGINT UNSIGNED | YES | NULL | FK SET NULL; INDEX |
-| action | VARCHAR(50) | NO | — | INDEX |
-| target_type | VARCHAR(50) | YES | NULL | |
-| target_id | VARCHAR(100) | YES | NULL | |
-| metadata_json | JSON | YES | NULL | |
-| ip_hash | CHAR(64) | YES | NULL | |
-| occurred_at | DATETIME(6) | NO | CURRENT | INDEX |
-
-Action minimum: `login`, `login_failed`, `logout`, `participant_password_reset`, `content_import`, `export`, `delete_preview`, `delete_execute`, `content_create`, `content_update`, `content_delete`, `media_upload`, `audio_approve`, `score_recompute`, `staff_create`, `staff_update`, `permission_change`, `settings_update`.
-
-### 27. `data_exports`
-
-| Kolom | Tipe | Null | Default | Keterangan |
-|---|---|---|---|---|
-| id | BIGINT UNSIGNED | NO | AUTO | PK |
-| requested_by | BIGINT UNSIGNED | NO | — | FK `staff_users.id` RESTRICT |
-| study_id | BIGINT UNSIGNED | YES | NULL | FK SET NULL |
-| format | VARCHAR(10) | NO | — | `xlsx`\|`pdf` |
-| scope_json | JSON | NO | — | filter yang dipakai |
-| anonymized | TINYINT(1) | NO | 1 | |
-| status | VARCHAR(20) | NO | `queued` | `queued`\|`running`\|`done`\|`failed`; INDEX |
-| row_count | BIGINT UNSIGNED | YES | NULL | |
-| file_path | VARCHAR(500) | YES | NULL | di `writable/exports/` |
-| file_sha256 | CHAR(64) | YES | NULL | |
-| error_message | VARCHAR(500) | YES | NULL | |
-| created_at | DATETIME(6) | NO | CURRENT | |
-| completed_at | DATETIME(6) | YES | NULL | |
-| expires_at | DATETIME(6) | YES | NULL | INDEX |
-
-### 28. `data_deletion_requests`
-
-| Kolom | Tipe | Null | Default | Keterangan |
-|---|---|---|---|---|
-| id | BIGINT UNSIGNED | NO | AUTO | PK |
-| requested_by | BIGINT UNSIGNED | NO | — | FK RESTRICT |
-| scope_json | JSON | NO | — | |
-| reason | TEXT | YES | NULL | |
-| mode | VARCHAR(20) | NO | `soft` | `soft`\|`hard` |
-| status | VARCHAR(20) | NO | `preview` | `preview`\|`approved`\|`executed`\|`cancelled`; INDEX |
-| affected_count | BIGINT UNSIGNED | YES | NULL | |
-| approved_by | BIGINT UNSIGNED | YES | NULL | FK SET NULL |
-| executed_at | DATETIME(6) | YES | NULL | |
-| created_at | DATETIME(6) | NO | CURRENT | |
-
----
-
-## Relationships
-
-```
-research_studies 1—n research_phases
-research_studies 1—n game_sessions
-schools          1—n participants,  1—n staff_users
-participants     1—n participant_consents, 1—n game_sessions, 1—n participant_feedback
-game_releases    1—n game_sessions
-
-levels               1—n challenge_nodes  (tepat 5 aktif)
-levels               1—n dialogues, 1—n library_pages, 1—n reading_passages
-library_pages        1—n library_media
-reading_passages     1—n challenge_items (opsional, lewat passage_id)
-challenge_nodes      1—n challenge_items
-challenge_items      1—n challenge_options
-challenge_nodes      1—n hints;  challenge_items 1—n hints
-learning_indicators  1—n challenge_nodes, 1—n challenge_items
-scoring_profiles     1—n challenge_nodes, 1—n challenge_attempts
-media_assets         1—1 audio_assets (opsional)
-media_assets         1—n library_media (berkas dan poster, opsional)
-
-game_sessions   1—1 session_progress
-game_sessions   1—n challenge_attempts, 1—n audio_usage_events, 1—n game_event_logs
-challenge_attempts 1—n item_responses
-challenge_items    1—n item_responses
-audio_assets       1—n audio_usage_events
-```
-
----
-
-## Migration
-
-Nama file mengikuti konvensi CI4 `YYYY-MM-DD-HHMMSS_ClassName.php` di `app/Database/Migrations/`. Urutan wajib (dependency FK):
-
-```text
-2026-01-01-000100_CreateSchools
-2026-01-01-000200_CreateStaffUsers
-2026-01-01-000300_CreateResearchStudies
-2026-01-01-000400_CreateResearchPhases
-2026-01-01-000500_CreateParticipants
-2026-01-01-000600_CreateParticipantConsents
-2026-01-01-000700_CreateGameReleases
-2026-01-01-000800_CreateLearningIndicators
-2026-01-01-000900_CreateScoringProfiles
-2026-01-01-001000_CreateMediaAssets
-2026-01-01-001100_CreateAudioAssets
-2026-01-01-001200_CreateLevels
-2026-01-01-001250_CreateReadingPassages
-2026-01-01-001300_CreateChallengeNodes
-2026-01-01-001400_CreateChallengeItems
-2026-01-01-001500_CreateChallengeOptions
-2026-01-01-001600_CreateHints
-2026-01-01-001700_CreateDialogues
-2026-01-01-001800_CreateLibraryPages
-2026-01-01-001900_CreateGameSessions
-2026-01-01-002000_CreateSessionProgress
-2026-01-01-002100_CreateChallengeAttempts
-2026-01-01-002200_CreateItemResponses
-2026-01-01-002300_CreateAudioUsageEvents
-2026-01-01-002400_CreateGameEventLogs
-2026-01-01-002500_CreateParticipantFeedback
-2026-01-01-002600_CreateAuditLogs
-2026-01-01-002700_CreateDataExports
-2026-01-01-002800_CreateDataDeletionRequests
-2026-01-01-002900_AddLevelMediaForeignKeys
-2026-01-01-003000_CreateCiSessions
-2026-01-01-003100_AlignChallengeAttemptMetrics
-2026-01-01-003200_EnforceChallengeAttemptMetricDefaults
-2026-01-01-003300_AddEventLogSessionTimeIndex
-2026-01-01-003400_AddStaffMustChangePassword
-2026-01-01-003500_CreateLibraryMedia
-2026-01-01-003600_AddParticipantIntroSeen
-2026-01-01-003700_AddDialoguePoseEffect
-2026-01-01-003800_AddChallengeItemPromptAudio
-2026-01-01-003900_ExtendSchoolsDirectory
-2026-01-01-004000_AddChallengeItemBloomLevel
-2026-01-01-004100_RemovePhasesAndConsent        # perombakan kelas 5, Dok 1 §5
-2026-01-01-004200_SimplifyAttemptScoring
-2026-01-01-004300_CreateItemTries
-2026-01-01-004400_AddVariantGroupsDropOptions
-2026-01-01-004500_CreateDeviceLogs
-2026-01-01-004600_AddMediaPlaceholderFlag
-```
-
-> `002900` menambahkan FK dari `levels` ke `media_assets`. Ini dipisah karena `levels` dibuat setelah `media_assets`, tetapi beberapa FK silang (`challenge_nodes.audio_intro_id` → `audio_assets`) lebih aman dipasang belakangan agar `up()`/`down()` bersih.
-
-> `003000` membuat tabel sesi CI4 `ci_sessions`. Kolom `ip_address` (`VARCHAR(64)`) dirancang untuk hash SHA-256 ber-garam, tetapi selama `HashedIpSessionHandler` belum dipasang (02 § 3b) handler bawaan menyimpan IP **mentah** di sini sampai sesi dibersihkan. Backup tahap 8 tidak membawa isi tabel ini.
-
-Contoh satu migration lengkap (dipakai sebagai pola untuk semua tabel lain):
-
-```php
-<?php
-namespace App\Database\Migrations;
-
-use CodeIgniter\Database\Migration;
-
-class CreateLevels extends Migration
+// semua engine
 {
-    public function up(): void
-    {
-        $this->forge->addField([
-            'id'          => ['type' => 'BIGINT', 'unsigned' => true, 'auto_increment' => true],
-            'sequence'    => ['type' => 'TINYINT', 'unsigned' => true],
-            'code'        => ['type' => 'VARCHAR', 'constraint' => 40],
-            'name_id'     => ['type' => 'VARCHAR', 'constraint' => 100],
-            'name_en'     => ['type' => 'VARCHAR', 'constraint' => 100],
-            'difficulty'  => ['type' => 'VARCHAR', 'constraint' => 20],
-            'focus_id'    => ['type' => 'TEXT'],
-            'focus_en'    => ['type' => 'TEXT'],
-            'cp_id'       => ['type' => 'TEXT', 'null' => true],
-            'cp_en'       => ['type' => 'TEXT', 'null' => true],
-            'tp_id'       => ['type' => 'TEXT', 'null' => true],
-            'tp_en'       => ['type' => 'TEXT', 'null' => true],
-            'intro_id'    => ['type' => 'TEXT', 'null' => true],
-            'intro_en'    => ['type' => 'TEXT', 'null' => true],
-            'map_media_id'        => ['type' => 'BIGINT', 'unsigned' => true, 'null' => true],
-            'background_media_id' => ['type' => 'BIGINT', 'unsigned' => true, 'null' => true],
-            'badge_media_id'      => ['type' => 'BIGINT', 'unsigned' => true, 'null' => true],
-            'map_x'      => ['type' => 'DECIMAL', 'constraint' => '5,2', 'default' => 50.00],
-            'map_y'      => ['type' => 'DECIMAL', 'constraint' => '5,2', 'default' => 50.00],
-            'is_active'  => ['type' => 'TINYINT', 'constraint' => 1, 'default' => 1],
-            'created_at' => ['type' => 'DATETIME', 'constraint' => 6, 'null' => false],
-            'updated_at' => ['type' => 'DATETIME', 'constraint' => 6, 'null' => false],
-        ]);
-        $this->forge->addPrimaryKey('id');
-        $this->forge->addUniqueKey('sequence');
-        $this->forge->addUniqueKey('code');
-        $this->forge->addKey('difficulty');
-        $this->forge->addKey('is_active');
-        $this->forge->createTable('levels', true, [
-            'ENGINE'    => 'InnoDB',
-            'CHARSET'   => 'utf8mb4',
-            'COLLATE'   => 'utf8mb4_unicode_ci',
-        ]);
-    }
-
-    public function down(): void
-    {
-        $this->forge->dropTable('levels', true);
-    }
+  "selection": "variant",                 // selalu: satu variasi acak per pengerjaan
+  "variants": {                           // per variant_group; dari sheet variants dan distractors
+    "a": { "title_id": "Candi Borobudur", "title_en": "Borobudur Temple",
+           "distractors": [ {"text_id": "enam", "text_en": "six"}, {"text_id": "arca", "text_en": "statues"} ] },
+    "b": { "title_id": "Tari Topeng Ireng", "title_en": "The Topeng Ireng Dance", "distractors": [ … ] },
+    "c": { … }
+  }
 }
+
+// rumpang: tambahan
+{ "as_reading": true, "use_word_bank": true, "distractor_count": 2 }
+
+// boleh: tambahan
+{ "verdict_options": ["benar", "salah"] }
 ```
 
-Untuk kolom `DATETIME(6)` dengan default `CURRENT_TIMESTAMP(6)`, tambahkan setelah `createTable`:
-
-```php
-$this->db->query(
-    'ALTER TABLE `levels`
-     MODIFY `created_at` DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-     MODIFY `updated_at` DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6)
-        ON UPDATE CURRENT_TIMESTAMP(6)'
-);
-```
-
-Kolom `JSON` ditulis `['type' => 'JSON', 'null' => true]`. Pada MariaDB, `JSON` otomatis menjadi `LONGTEXT` dengan CHECK `json_valid` — ini tidak masalah, Model tetap melakukan `json_encode`/`json_decode` sendiri.
-
-Foreign key:
-
-```php
-$this->forge->addForeignKey('level_id', 'levels', 'id', '', 'CASCADE');
-```
-
-### Koreksi `challenge_attempts` (`003100` dan `003200`)
-
-`002100` dibuat dengan nama kolom awal `first_pass_rate`/`final_rate` dan belum memuat tiga kolom metrik proses. Dua migration berikut yang menyelaraskannya dengan §21 di atas, dan **keduanya kanonik** — `002100` tidak diubah:
-
-| Versi | Peran |
+| Kunci | Arti |
 |---|---|
-| `003100` | mengganti nama `first_pass_rate` → `first_pass_accuracy` dan `final_rate` → `final_accuracy`, lalu menambahkan `check_count`, `answer_change_count`, `audio_use_count` |
-| `003200` | menegakkan `NOT NULL` + default pada kelima kolom tersebut, termasuk mengisi baris lama yang masih `NULL` |
+| `selection` | Selalu `variant` |
+| `variants.{grup}.title_id/title_en` | Judul tampil variasi; bila kosong dipakai `challenge_nodes.title_*` (`ChallengeNode::variantTitle()`) |
+| `variants.{grup}.distractors` | Kata pengecoh bank kata Isi Rumpang variasi itu. Bentuk yang dibaca `ChallengeNode::distractors()`: `{"text_id","text_en"}` (ditulis importer), `{"id","en"}` (ditulis editor panel), atau string |
+| `as_reading` | Isi Rumpang tampil sebagai satu bacaan: semua soal variasi berurutan, satu rumpang per soal |
+| `use_word_bank` | Isi Rumpang memakai bank kata |
+| `distractor_count` | Banyaknya pengecoh (dari awal daftar variasi) yang masuk bank kata: 0 untuk `mudah`, 2 untuk `sedang`/`sulit` (`DifficultyRules::reading()`) |
+| `verdict_options` | Disimpan seeder; tombol Benar atau Salah selalu `benar`/`salah` (`ChallengeNode::verdictOptions()`) |
 
-`003200` diperlukan karena `Forge` CodeIgniter hanya memaksakan `NOT NULL` saat `CREATE TABLE`; pada `ALTER` (`addColumn`/`modifyColumn`) atribut `null` yang tidak disebutkan membuat kolom menjadi nullable. Tanpa `003200`, kelima kolom hasil `003100` menyimpang dari tabel §21 yang menetapkannya `NO`.
+Bank kata = semua jawaban soal variasi + `distractor_count` pengecoh, diacak dengan benih per pengerjaan; pemetaan kata → rumpang tidak pernah dikirim ke browser. Ukuran papan Susun Gambar tidak disimpan di tantangan, melainkan per soal.
 
-`003200` juga memanggil `resetDataCache()` sebelum memeriksa kolom: `BaseConnection` meng-cache daftar kolom per tabel dan `Forge` tidak pernah membersihkannya sesudah `ALTER`, sehingga pada satu proses `spark migrate` yang sama seluruh pemeriksaan `fieldExists()` masih membaca nama kolom versi sebelum `003100`.
+### `challenge_items.config_json`
 
-> **Jangan melakukan rollback ke bawah `003100`.** Model, Entity, dan Service tahap 3 memakai nama kolom hasil migration tersebut. `down()` milik `003200` sengaja hanya mengembalikan kelima kolom ke keadaan nullable yang ditinggalkan `003100`, agar rollback berantai tetap bersih.
+```jsonc
+// puzzle_arrange — ukuran papan dan bentuk keping, dibekukan saat soal dibuat
+{ "grid": 3, "shape": "square" }          // sedang: {grid 4, square}; sulit: {grid 4, jigsaw}
 
-### Index linimasa event (`003300`)
+// verdict_card — keterampilan membaca yang diukur pernyataan
+{ "skill": "informasi_tersurat" }
 
-`002400` tidak membuat index gabungan `game_event_logs (session_id, occurred_at)` yang diwajibkan §24 dan prioritas 2 *Index Strategy*. `003300` menambahkannya tanpa mengubah `002400`, dengan pola yang sama seperti `003100`/`003200`. Index ini melayani linimasa sesi, yang diurutkan `occurred_at` lalu `sequence_no` (aturan 8) — `sequence_no` kiriman klien dimulai ulang setiap halaman dimuat, jadi tidak dapat menjadi kunci urutan utama. `up()`/`down()` memeriksa keberadaan index lebih dulu sehingga aman dijalankan ulang.
+// find_object — benda target
+{ "x": 84, "y": 6, "w": 12, "decoy": false }
 
-### Wajib ganti sandi staf (`003400`)
+// find_object — benda pengecoh
+{ "x": 74, "y": 40, "w": 12, "decoy": true,
+  "wrong_feedback_id": "Ini angklung, alat musik bambu dari Jawa Barat …",
+  "wrong_feedback_en": "This is an angklung, a bamboo instrument from West Java …" }
 
-`003400` menambahkan `staff_users.must_change_password`, padanan `participants.must_change_password`. Nilainya 1 untuk sandi yang diketahui admin: sandi sementara hasil reset di `/admin/staf` dan sandi awal akun baru. Ganti sandi oleh pemiliknya sendiri mengembalikannya ke 0. Akun yang sudah ada saat migration berjalan mendapat 0.
-
-Kolom ditulis dengan `'null' => false` eksplisit karena alasan yang sama dengan `003200`: pada `ALTER`, Forge membuat kolom nullable bila atribut itu tidak disebutkan. `up()`/`down()` memeriksa keberadaan kolom lebih dulu (setelah `resetDataCache()`) sehingga aman dijalankan ulang.
-
-### Media Pustaka Kedu (`003500`)
-
-`library_pages` hanya punya empat slot media tetap (dua gambar, satu video, satu poster) dan tidak dapat memuat tautan YouTube/Drive. `003500` membuat `library_media` (§18b) lalu menyalin slot yang terisi ke sana, berurutan `image_a` → `image_b` → `video` (poster ikut baris video). Kolom lama dibiarkan; `down()` hanya membuang `library_media`, jadi rollback kembali ke keadaan sebelumnya tanpa kehilangan data.
-
-### Cerita pembuka sudah ditonton (`003600`)
-
-`003600` menambahkan `participants.intro_seen_at` (`DATETIME(6) NULL`, setelah `password_changed_at`). Kolom ini memisahkan pemain baru — wajib menonton cerita pembuka sampai selesai, tanpa tombol "Lewati", dan `/peta` menolak mereka — dari pemain lama yang boleh memilih di `/gerbang`.
-
-Backfill: peserta yang punya progres (`session_progress.completed_nodes > 0` pada sesi mana pun miliknya) diisi `intro_seen_at = created_at`, agar tidak dipaksa menonton ulang. Waktu menonton yang sebenarnya tidak tercatat sebelum migration ini. `updated_at` ditulis ulang dengan nilainya sendiri supaya `ON UPDATE CURRENT_TIMESTAMP` tidak menandai semua peserta lama "baru diubah". `down()` membuang kolom; `up()` memeriksa keberadaannya lebih dulu sehingga aman dijalankan ulang.
-
-Kolom ini tidak ikut ekspor (sheet Participants memilih kolomnya satu per satu) dan tidak memengaruhi penghapusan data: soft delete hanya mengisi `deleted_at`, hard delete menghapus barisnya utuh.
-
-### Pose dan efek dialog (`003700`)
-
-`003700` menambahkan `dialogues.pose` dan `dialogues.effect` (`VARCHAR(30) NULL`, setelah `character_code`). Isinya dari "Kamus pose dan efek" di `docs/naskah-cerita.md`. Baris yang sudah ada dibiarkan NULL oleh migration; server yang sudah berjalan mengisinya dengan `php spark gelita:story:update` setelah `php spark migrate`. `up()` memeriksa keberadaan kolom lebih dulu; `down()` membuang keduanya.
-
-Slot frame tokoh untuk pose baru (`char.jaka.{sad|afraid|determined}.{1-3}`, `char.kedu.{smile|worried|weak}.{1-3}`) didaftarkan `MediaAssetSeeder` dari `Config\Gelita::$characterAnimations`.
-
-### Narasi petunjuk arena `cari` (`003800`)
-
-`003800` menambahkan `challenge_items.audio_prompt_id` dan `audio_prompt_en_id` (`BIGINT UNSIGNED NULL`, setelah `media_asset_id`), masing-masing FK ke `audio_assets.id` dengan `ON DELETE SET NULL`, meniru `challenge_nodes.audio_intro_id` / `audio_intro_en_id`. Hanya dipakai butir `find_object` target (bukan jebakan): rekaman Mbah Kedu yang membacakan `prompt_id` / `prompt_en`. Baris lama dibiarkan NULL; `NarrationImporter` menautkan rekaman `petunjuk-{node}-NN` ke kolom ini (audio `context_code` = `hunt_clue`), atau admin memilihnya di form butir. Pemain hanya menerima rekaman `approved` dengan media aktif (`audio_src()`). `up()` memeriksa keberadaan kolom lebih dulu; `down()` membuang FK, index implisitnya, dan kolomnya. `audio_usage_events` tidak berubah: butirnya diturunkan dari `audio_asset_id`.
-
-### Direktori sekolah resmi (`003900`)
-
-`003900` menjadikan `schools` direktori sekolah untuk pendaftaran. Masalah yang diselesaikan: nama sekolah teks bebas membuat satu sekolah tercatat berkali-kali ("SD 1 CENDONO", "SD NEGERI 1 CENDONO", "sd 1 cendono"), sehingga laporan per `participants.school_id` terpecah dan guru tidak melihat sebagian siswanya.
-
-- Baris resmi (`is_verified = 1`, NPSN di `code`) dipasang `php spark gelita:schools:import` dari `app/Database/Seeds/data/sekolah-jateng.csv`; impor hanya menulis yang berubah dan tidak pernah menghapus.
-- Siswa yang memilih provinsi berdirektori (`Config\Gelita::$schoolDirectoryProvinces`, Jawa Tengah) wajib mengisi NPSN; nama ketikan (NPSN tidak ada di daftar, atau provinsi lain) dicocokkan lewat `match_key` oleh `App\Services\SchoolDirectory::resolve()` dan hanya ditautkan ke sekolah resmi bila kandidatnya tunggal. Selain itu tersimpan sebagai `is_verified = 0`, satu baris per (wilayah, `match_key`).
-- Admin merapikan sisanya di **Panel → Sekolah**: gabung (siswa dan akun guru pindah, `school_name_snapshot` ikut nama tujuan, asal `is_active = 0` + `merged_into_id` dan menjadi alias bagi ketikan yang sama berikutnya) atau sahkan (NPSN wajib unik). Keduanya tercatat di `audit_logs` (`school_merge`, `school_verify`).
-- `up()` memeriksa setiap kolom/index/FK lebih dulu dan mengisi `match_key` baris lama tanpa menyentuh `updated_at`; `down()` membuang FK, index, lalu kolomnya.
-
-### Kelas 5 SD: tingkat Bloom, Susun Gambar bertingkat, Isi Rumpang bacaan (`004000`)
-
-`004000` menambahkan `challenge_items.bloom_level` (`VARCHAR(2) NULL`, setelah `indicator_id`, ber-index). Kolom ini berisi tingkat berpikir Taksonomi Bloom revisi (Anderson & Krathwohl) per soal, `C1` … `C6`. Isinya datang dari kolom `bloom_level` workbook atau dari editor soal. Label tampilnya ada di `Admin.php` kelompok `bloom`, mis. "C2 · Memahami". `up()` memeriksa kolom lebih dulu.
-
-Aturan per tingkat wilayah (`levels.difficulty`) ada di satu tempat, `App\Libraries\DifficultyRules`:
-
-| Tingkat | Susun Gambar (`config_json` soal) | Isi Rumpang bacaan | Bloom |
-|---|---|---|---|
-| mudah | `{grid: 3, shape: square}` | 3 rumpang, 0 pengecoh | C1–C2 |
-| sedang | `{grid: 4, shape: square}` | 4–5 rumpang, 1–3 pengecoh | C2–C3 |
-| sulit | `{grid: 4, shape: jigsaw}` | 6–7 rumpang, 1–3 pengecoh | C3–C4 |
-
-Yang tersimpan di tabel:
-
-- **Ukuran Susun Gambar dibekukan per soal.** Saat soal `puzzle_arrange` dibuat, `config_json.grid/shape` dan kunci `answer_key_json.order` = `range(0, grid² − 1)` ditulis dari tingkat wilayahnya. Soal yang sudah ada (termasuk soal lama tanpa catatan) tetap memakai ukuran dari panjang kuncinya. Dengan begitu kunci soal yang sudah dijawab tidak pernah berubah.
-- **Penanda tantangan bacaan.** `challenge_nodes.config_json.as_reading = true` membuat tantangan Isi Rumpang tampil sebagai satu bacaan. Semua soal aktif dipakai sekaligus (`items_per_round` = jumlah rumpang), dan bank kata = semua jawaban + `distractor_count` pengecoh pertama.
-- **Soal diistirahatkan, bukan dihapus.** `challenge_items.is_active = 0` tetap menyimpan soal lama beserta jawaban siswanya.
-- **Indikator tantangan.** Sheet `nodes` workbook kini punya kolom opsional `indicator` untuk `challenge_nodes.indicator_id`; wnb-1 menjadi `budaya`.
-
----
-
-## Seeder
-
-Letak: `app/Database/Seeds/`. Dijalankan berurutan lewat `DatabaseSeeder`.
-
-```text
-1. StaffUserSeeder
-2. LearningIndicatorSeeder
-3. ScoringProfileSeeder
-4. GameReleaseSeeder
-5. ResearchStudySeeder      (termasuk research_phases)
-6. LevelSeeder
-7. MediaAssetSeeder
-8. ContentSeeder            (15 challenge_nodes + dialogues dari data/story.php + library_pages)
-9. SampleItemSeeder         (HANYA development: 2 item contoh per node)
+// fill_blank_bank — tidak memakai config_json (NULL)
 ```
 
-Isi bank soal production (119 butir, passages, opsi, petunjuk) **tidak** di-seed. Admin memuatnya dari workbook bank soal lewat `/admin/konten/impor-bank` atau `php spark gelita:bank:import` (lihat 07_FEATURE_INTEGRATION.md).
-
-### 1. StaffUserSeeder
-
-```text
-username: admin
-password: diambil dari getenv('GELITA_ADMIN_PASSWORD'); bila kosong, seeder GAGAL dan mencetak pesan.
-role: admin
-display_name: Administrator
-school_id: NULL
-is_active: 1
-```
-
-> Jangan pernah menanam password literal di source. Ini menggantikan akun bawaan `admin / Admin#2026` gaya lama.
-
-### 2. LearningIndicatorSeeder
-
-| code | name_id | name_en | domain |
-|---|---|---|---|
-| `literasi` | Literasi membaca | Reading literacy | kognitif |
-| `budaya` | Pengetahuan budaya | Cultural knowledge | kognitif |
-| `sikap` | Sikap menjaga warisan | Heritage stewardship | afektif |
-
-### 3. ScoringProfileSeeder
-
-Satu baris:
-
-```text
-code: GELITA_V2   version: 2.0   is_active: 1
-first_pass_weight 0.70 · final_weight 0.20 · independence_weight 0.10
-hint_penalty_per_use 10 · retry_penalty_per_extra_attempt 5
-three_star_min_score 85 · three_star_min_first_pass 80 · two_star_min_score 65
-```
-
-### 4. GameReleaseSeeder
-
-```text
-release_code: GELITA-2026-01
-app_version: 1.0.0 · content_version: 1 · asset_version: 1 · scoring_version: 2.0
-is_active: 1 · published_at: NOW()
-```
-
-### 5. ResearchStudySeeder
-
-```text
-code: STUDI-KEDU-2026 · name: Penelitian GELITA Kedu 2026 · status: active
-retention_days: 1825 · default_locale: id · unlock_mode: sequential
-item_selection_mode: fixed · require_consent: 1
-active_phase_code: umum · allow_phase_choice: 0
-```
-
-Lalu 3 `research_phases`:
-
-| sequence | code | label_id | label_en |
-|---:|---|---|---|
-| 1 | `umum` | Umum | General |
-| 2 | `pretest` | Pretest | Pretest |
-| 3 | `posttest` | Posttest | Posttest |
-
-### 6. LevelSeeder
-
-| sequence | code | name_id/en | difficulty | map_x | map_y |
-|---:|---|---|---|---:|---:|
-| 1 | temanggung | Temanggung | mudah | 65.00 | 41.00 |
-| 2 | magelang | Magelang | sedang | 56.00 | 71.00 |
-| 3 | wonosobo | Wonosobo | sulit | 28.00 | 55.00 |
-
-`focus_id` / `cp_id` / `tp_id`:
-
-* **Temanggung** — fokus: mengenali dan menemukan informasi langsung dari gambar, teks pendek, atau audio. CP: peserta didik mampu memahami informasi sederhana dari teks, gambar, dan audio.
-* **Magelang** — fokus: menghubungkan dua atau lebih informasi. CP: peserta didik mampu menemukan ide pokok, menghubungkan informasi, serta membedakan fakta dan pendapat.
-* **Wonosobo** — fokus: menilai informasi dan mengambil keputusan secara bertanggung jawab. CP: peserta didik mampu menilai informasi, menyampaikan alasan, dan menggunakan informasi digital secara bertanggung jawab.
-
-`intro_id` / `intro_en` (popup keterangan wilayah):
-
-| code | intro_id | intro_en |
+| Kunci | Jenis soal | Arti |
 |---|---|---|
-| temanggung | Jaka tiba di Temanggung, tanah subur di antara Gunung Sindoro dan Sumbing. Di sini ada kebun tembakau, kopi lereng gunung, dan candi kuno. | Jaka arrives in Temanggung, fertile land between Mount Sindoro and Sumbing. Here are tobacco gardens, mountain-slope coffee, and ancient temples. |
-| magelang | Jaka melangkah ke Magelang, tanah Candi Borobudur dan Gunung Tidar. | Jaka steps into Magelang, home of Borobudur Temple and Mount Tidar. |
-| wonosobo | Serpihan cahaya terakhir ada di Wonosobo, negeri di atas awan Dataran Tinggi Dieng. Di sini Jaka belajar memilih informasi yang benar dan bersikap bijak di dunia digital. | The last Shards of Light are in Wonosobo, the cloud-topped Dieng Plateau. Here Jaka learns to choose true information and act wisely online. |
+| `grid` | `puzzle_arrange` | Papan `grid × grid` keping (dibatasi 2–6 saat dibaca, `PuzzleCut::resolve()`) |
+| `shape` | `puzzle_arrange` | `square` \| `jigsaw` (`DifficultyRules::SHAPES`). Bila kosong: aturan tingkat wilayah bila ukurannya sama, selain itu `square` |
+| `skill` | `verdict_card` | Salah satu `DifficultyRules::SKILLS`. Mudah: `informasi_tersurat`, `mengenali_fakta`, `mengenali_gambar`; sedang: `gagasan_pokok`, `menghubungkan_informasi`, `mengklasifikasikan_tindakan`; sulit: `membandingkan_informasi`, `menilai_pilihan`, `menentukan_solusi` |
+| `x`, `y`, `w` | `find_object` | Posisi dan lebar benda di adegan, dalam persen (bawaan 50, 50, 12) |
+| `decoy` | `find_object` | `true` = benda pengecoh dari daerah lain |
+| `wrong_feedback_id/en` | `find_object` | Penjelasan saat benda pengecoh/salah diketuk; dikirim **sesudah** ketukan |
 
-Cerita pembuka (`dialogues` context `intro`) wajib menyebut urutan **Temanggung, Magelang, Wonosobo**. Teks lama yang menyebut Magelang lebih dulu tidak dipakai.
+Hanya `x`, `y`, `w`, `grid`, `shape` yang ikut payload pemain (`ChallengeItem::safeConfig()`); `decoy`, `skill`, dan `wrong_feedback_*` tetap di server.
 
-### 7. MediaAssetSeeder
+### `challenge_items.answer_key_json`
 
-Mendaftarkan berkas yang sudah ada di `public/assets/`. Seeder memindai folder dan membuat baris `media_assets` dengan `asset_key` dari path. Berkas yang belum ada tetap didaftarkan dengan `is_active = 0` sehingga view tahu harus memakai placeholder.
-
-Folder yang dipindai: `assets/ui`, `assets/char`, `assets/bg`, `assets/map`, `assets/challenge`, `assets/library`, `assets/reward`, `assets/audio`.
-
-Slot `bg.loading` (`assets/bg/bg-loading`, 1920×1080) adalah latar tirai pemuatan layar penuh (05_VIEW_UI.md §Tirai); tanpa berkas, tirai memakai gradien cahaya CSS.
-
-### 8. ContentSeeder — 15 Challenge Node
-
-Ini peta node final. `items_per_round` menentukan berapa item diambil dari bank.
-
-**Level 1 — Temanggung (mudah)**
-
-| seq | engine | variant_code | items_per_round | ukuran bank minimum | indikator |
-|---:|---|---|---:|---:|---|
-| 1 | `puzzle` | `puzzle_gambar` | 1 | 3 gambar (3 × 3 kotak) | budaya |
-| 2 | `rumpang` | `rumpang_bacaan` | 3 (semua rumpang) | 3 rumpang, tanpa pengecoh | literasi |
-| 3 | `boleh` | `benar_salah_teks` | 8 | 12 | literasi (campur sikap) |
-| 4 | `cari` | `cocok_gambar_nama` | 4 | 8 (termasuk 2 jebakan) | budaya |
-| 5 | `pilihan` | `informasi_tersurat` | 3 | 8 | literasi |
-
-**Level 2 — Magelang (sedang)**
-
-| seq | engine | variant_code | items_per_round | bank minimum | indikator |
-|---:|---|---|---:|---:|---|
-| 1 | `puzzle` | `puzzle_gambar` | 1 | 3 gambar (4 × 4 kotak) | budaya |
-| 2 | `rumpang` | `rumpang_bacaan` | 5 (semua rumpang) | 5 rumpang + 2 pengecoh | literasi |
-| 3 | `boleh` | `benar_salah_beralasan` | 6 | 12 | sikap |
-| 4 | `pilihan` | `cocok_fungsi_asal` | 4 | 10 | budaya |
-| 5 | `pilihan` | `banding_gambar_teks` | 3 | 8 | literasi |
-
-**Level 3 — Wonosobo (sulit)**
-
-| seq | engine | variant_code | items_per_round | bank minimum | indikator |
-|---:|---|---|---:|---:|---|
-| 1 | `puzzle` | `puzzle_jigsaw` | 1 | 3 gambar (4 × 4 jigsaw) | budaya |
-| 2 | `rumpang` | `rumpang_bacaan` | 7 (semua rumpang) | 7 rumpang + 2 pengecoh | literasi |
-| 3 | `boleh` | `nilai_dua_sumber` | 6 | 10 | sikap |
-| 4 | `pilihan` | `sumber_terpercaya` | 4 | 8 | sikap |
-| 5 | `pilihan` | `tindakan_bertanggung_jawab` | 3 | 8 | sikap |
-
-> Engine puzzle di frontend menangani dua mode: `arrange` (papan n × n dari satu gambar utuh: 3 × 3 kotak, 4 × 4 kotak, atau 4 × 4 jigsaw sesuai tingkat wilayah) dan `ordering` (urutan kartu teks, `interaction_type = ordering`). Ini menghindari penambahan engine keenam. Sejak pembaruan kelas 5 SD, wnb-1 bukan lagi `urutkan_informasi`: soal urutan lamanya diistirahatkan (`is_active = 0`) dan diganti 3 gambar jigsaw.
-
-**Interaction type dan verdict per node `boleh`:**
-
-| Node | interaction_type item | `verdict_options` |
+| `interaction_type` | Bentuk | Cara menilai |
 |---|---|---|
-| Temanggung 3 `benar_salah_teks` | `verdict_card` (+ `passage_id`) | `["benar","salah"]` |
-| Magelang 3 `benar_salah_beralasan` | `verdict_reason` | `["benar","salah","pendapat"]`, `require_reason: true` |
-| Wonosobo 3 `nilai_dua_sumber` | `verdict_card` (+ `config_json.sources`) | `["benar","salah"]` |
+| `puzzle_arrange` | `{"order": [0, 1, 2, …, n²−1]}` | Urutan keping per posisi harus sama persis; panjang kunci = `grid²` |
+| `fill_blank_bank` | `{"text_id": "Sumbing", "text_en": "Sumbing"}` | Kata yang dipilih dibandingkan dengan `text_{locale}` (jatuh ke `text_id`), huruf kecil dan dipangkas |
+| `verdict_card` | `{"verdict": "benar"}` | `benar` \| `salah` |
+| `find_object` | `{"target": true}` (pengecoh: `{"target": false}`) | Benar bila benda yang diketuk adalah soal target itu sendiri; benda `decoy` tidak pernah benar |
 
-**Judul, instruksi, dan deskripsi node** (di-seed `ContentSeeder`; teks `_en` lengkap ada di Dokumen Bank Soal GELITA):
+Kunci tidak pernah dikirim ke browser. Kunci Susun Gambar dibuat otomatis `range(0, grid² − 1)` dari tingkat wilayah saat soal pertama kali dibuat dan tidak dihitung ulang pada impor berikutnya.
 
-| Node | title_id | title_en | instruction_id |
-|---|---|---|---|
-| tmg-1 | Susun Gambar Budaya Temanggung | Arrange the Temanggung Culture Picture | Tukar dua kepingan gambar (3 × 3) sampai gambarnya utuh, lalu baca keterangannya. |
-| tmg-2 | Lengkapi Bacaan: Gunung Kembar | Complete the Reading: The Twin Mountains | Baca paragrafnya. Ketuk kotak kosong, lalu pilih kata yang tepat dari bank kata. Setiap kata dipakai satu kali. |
-| tmg-3 | Benar atau Salah? | True or False? | Baca teks, lalu tentukan pernyataan BENAR atau SALAH. |
-| tmg-4 | Temukan Budaya Temanggung | Find the Temanggung Culture | Klik gambar sesuai petunjuk. Hati-hati, ada yang bukan dari Temanggung! |
-| tmg-5 | Temukan Jawabannya di Teks | Find the Answer in the Text | Baca teks, lalu pilih satu jawaban yang tepat. |
-| mgl-1 | Susun Gambar Magelang | Arrange the Magelang Picture | Tukar dua kepingan gambar (4 × 4) sampai gambarnya utuh, lalu baca kisahnya. |
-| mgl-2 | Lengkapi Bacaan: Candi Borobudur | Complete the Reading: Borobudur Temple | Baca bacaannya sampai habis. Pilih kata yang tepat untuk setiap kotak kosong; ada dua kata yang tidak terpakai. |
-| mgl-3 | Benar, Salah, atau Pendapat? | True, False, or Opinion? | Tentukan benar, salah, atau pendapat, lalu tulis alasannya. |
-| mgl-4 | Cocokkan Fungsi & Asal | Match Function & Origin | Pilih jawaban yang tepat. |
-| mgl-5 | Bandingkan Gambar dan Teks | Compare Picture and Text | Hubungkan gambar dengan teks, lalu pilih jawaban. |
-| wnb-1 | Susun Gambar Wonosobo | Arrange the Wonosobo Picture | Kepingannya berbentuk puzzle (4 × 4). Tukar dua keping sampai gambarnya utuh, lalu baca keterangannya. |
-| wnb-2 | Lengkapi Bacaan: Negeri di Atas Awan | Complete the Reading: The Land Above the Clouds | Baca bacaannya sampai habis. Pilih kata yang tepat untuk setiap kotak kosong; ada dua kata yang tidak terpakai. |
-| wnb-3 | Sumber Mana yang Benar? | Which Source Is Right? | Bandingkan dua sumber, lalu nilai pernyataannya. |
-| wnb-4 | Pilih Sumber Terpercaya | Choose the Trusted Source | Pilih sumber yang paling dapat dipercaya. |
-| wnb-5 | Apa yang Sebaiknya Kamu Lakukan? | What Should You Do? | Pilih tindakan yang paling tepat dan bertanggung jawab. |
+### Jawaban siswa (`item_tries.answer_json`, `item_responses.first_answer_json` / `final_answer_json`)
 
-**Cerita.** `ContentSeeder::seedDialogues()` menyisipkan 88 baris `app/Database/Seeds/data/story.php` — salinan persis `docs/naskah-cerita.md` (`StoryDataTest` mencocokkannya baris demi baris) — lengkap dengan tokoh, pose, efek, dan judul. Seperti seeder lain, baris yang sudah ada tidak ditimpa. Server yang sudah berjalan memperbarui ceritanya dengan `php spark gelita:story:update` (`App\Libraries\StorySync`):
-
-| Keadaan baris (dicocokkan per level, konteks, urutan) | Tindakan |
+| `interaction_type` | Bentuk |
 |---|---|
-| belum ada | disisipkan, aktif |
-| teksnya masih teks seeder lama (`data/story-legacy.php`) | diperbarui seluruhnya |
-| teksnya sudah sama dengan naskah | tokoh/pose/efek/judul yang masih kosong diisi; nilai berbeda yang sudah terisi = suntingan admin |
-| disunting admin (teks, atau tokoh/pose/efek/judul) | dilewati dan dilaporkan; `--force` menimpanya |
-| urutan melebihi jumlah baris naskah | `is_active = 0` (tidak dihapus) |
+| `puzzle_arrange` | `{"order": [3, 0, 1, …]}` — keping di setiap posisi papan |
+| `fill_blank_bank` | `{"text": "subur"}` |
+| `verdict_card` | `{"verdict": "salah"}` |
+| `find_object` | `{"item_id": 27}` — id soal (benda) yang diketuk. Klien mengirim token objek HMAC per pengerjaan, yang diterjemahkan server; id kiriman klien diabaikan |
 
-Kolom `audio_id_asset_id`, `audio_en_asset_id`, `background_media_id`, dan `is_active` baris yang diperbarui tidak pernah disentuh. Semua perubahan satu transaction; `--dry-run` hanya melaporkan. Bila naskah diubah lagi kelak, teks versi sebelumnya ditambahkan ke `story-legacy.php` agar baris lama dikenali sebagai teks bawaan, bukan suntingan admin.
+Waktu masukan klien (`first_input_ms`, `last_input_ms`) disimpan di kolom sendiri, tidak di dalam jawaban.
 
-`ContentSeeder` hanya membuat struktur dan metadata node (judul, instruksi, config, posisi); `description_*` (teks kartu misi) diisi dari sheet `nodes` workbook bank soal atau editor konten, dan kartu misi tetap tampil tanpa deskripsi. `SampleItemSeeder` (development saja) menambah 2 item contoh per node agar alur dapat diuji. Isi bank soal production dimuat lewat impor workbook.
+### Kolom JSON lainnya
 
----
+| Kolom | Bentuk |
+|---|---|
+| `challenge_attempts.selected_item_ids_json` | `[22, 23, 24, 25, 26, …]` — id soal urut tampil |
+| `game_event_logs.payload_json` | Objek bebas per `event_type`, mis. `{"via": "login"}`, `{"check_no": 2, "try_no": 2, "correct_count": 4, "total": 5, "exhausted": false}` |
+| `device_logs.client_hints_json` | `{"headers": {"Sec-CH-UA-Model": …}, "ua_data": {…}}` |
+| `audit_logs.metadata_json` | Objek bebas per `action`, mis. `{"file_sha256": "…", "written": {"items": 126}}` |
+| `data_exports.scope_json` | `{"filters": {"study_id": 1, "school_id": 3, "date_from": "2026-10-01", …}, "sheets": ["Participants", …]}`; laporan PDF menambah `"template": "participant", "participant_id": 42`. Kunci filter: `ExportService::FILTER_KEYS` |
+| `data_deletion_requests.scope_json` | `{"scope": {"participant_id": 42}, "counts": {"game_event_logs": 310, …}}`; cakupan studi boleh menambah `date_from`/`date_to`; pratinjau buatan retensi menambah `"origin": "retention"` |
 
-## Database Rules
+## Aturan integritas
 
-1. `levels.sequence` hanya bernilai 1, 2, 3. `levels.code` tepat `temanggung`, `magelang`, `wonosobo`.
-2. Setiap level wajib punya tepat **5** `challenge_nodes` dengan `is_active = 1` untuk release production. Divalidasi lewat `php spark gelita:content:verify`.
-3. `challenge_nodes.engine_type` hanya boleh salah satu dari 5 nilai baseline.
-4. `challenge_items` hanya boleh milik node aktif. `challenge_options` hanya boleh milik item aktif.
-5. `item_responses` hanya boleh menunjuk item yang ada di `challenge_attempts.selected_item_ids_json` pada attempt tersebut. Ditolak `422 INVALID_RESPONSE` bila tidak (lihat 04_CONTROLLER_ROUTE.md).
-6. Skor akhir **hanya** dihitung server. Nilai `correct` yang dikirim browser diabaikan sepenuhnya.
-7. `client_event_id` bersifat idempotent: duplikat dibalas `200 {status:"duplicate"}` tanpa menulis baris baru.
-8. `sequence_no` per session harus monoton naik. Event yang datang out-of-order tetap disimpan apa adanya; urutan analitik memakai `occurred_at` lalu `sequence_no`.
-9. `participants.deleted_at` terisi = peserta tidak muncul di dashboard default, tetapi `game_event_logs` miliknya tetap ada sampai deletion request dieksekusi.
-10. `game_event_logs` tidak pernah dihapus diam-diam. Penghapusan wajib melalui `data_deletion_requests` dan mengisi `deleted_at`, `deleted_by`, `delete_reason`.
-11. `data_exports.expires_at` default `created_at + 7 hari`. Berkas yang lewat masa berlaku dihapus oleh command retention.
-12. Satu peserta boleh punya lebih dari satu sesi pada fase yang sama. Analitik default memakai sesi `completed` **terakhir** per `(participant_id, study_id, phase_id)`.
-13. Hanya satu `game_releases.is_active = 1` dan satu `scoring_profiles.is_active = 1` pada satu waktu. Model menegakkan ini dalam transaction.
-14. `audio_assets` dengan `approval_status != 'approved'` tidak pernah dikirim ke pemain.
-15. Uniqueness yang wajib: `staff_users.username`, `participants.username`, `participants.participant_code`, `reading_passages.passage_key`, `game_sessions.session_code`, `media_assets.asset_key`, `(level_id, sequence)` pada nodes, `(challenge_node_id, item_key)` pada items, `(session_id, client_event_id)` pada event.
-16. Nilai default penting: `game_sessions.locale = 'id'`, `game_sessions.status = 'active'`, `data_exports.anonymized = 1`, `research_studies.retention_days = 1825`, `challenge_items.review_status = 'draft'`.
-17. `participants.password_hash` tidak pernah dikirim ke view, API, log, maupun export. Kata sandi mentah tidak pernah disimpan atau dicatat di mana pun, termasuk di `game_event_logs.payload_json` dan `audit_logs.metadata_json`.
-18. `participants.username` disimpan huruf kecil. Nama cadangan ditolak: `admin`, `guru`, `gelita`, `root`, `system`, `test`.
-19. `participants.username` diperlakukan sebagai data identitas: tidak ikut dalam export anonim.
-20. `challenge_items.passage_id` hanya boleh menunjuk `reading_passages` pada level yang sama dengan node item itu.
+Aturan yang tidak dapat (atau sengaja tidak) dinyatakan sebagai constraint database, dan tempat aplikasi menjaganya. `php spark gelita:content:verify` (`App\Libraries\ContentVerifier`, `BankRules`) memeriksa aturan konten setelah perubahan.
 
----
+1. **Wilayah.** Tepat 3 `levels` aktif dengan `sequence` 1, 2, 3 dan `code` `temanggung`, `magelang`, `wonosobo` (UNIQUE di database; jumlah diperiksa `gelita:content:verify`).
+2. **Tantangan.** Setiap wilayah punya 4 `challenge_nodes` aktif berurutan `puzzle`, `rumpang`, `boleh`, `cari` (`BankRules::region()`); `sequence` 1–4 (validasi `ChallengeNodeModel`); UNIQUE `(level_id, sequence)`.
+3. **Nilai berkode.** `engine_type`, `interaction_type`, `bloom_level`, `review_status`, `skill`, `pose`, `effect`, `event_type`, dan status lain hanya boleh nilai yang tercantum di dokumen ini; dijaga aturan validasi Model dan pemeriksaan importer, bukan ENUM.
+4. **Kunci soal yang sudah dijawab tidak boleh berubah.** Bila sebuah soal sudah punya baris `item_responses` (`ChallengeItemModel::hasResponses()`), impor yang mengubah `answer_key_json`-nya ditolak seluruhnya. Kunci baru = soal baru dengan `item_key` baru; soal lama diistirahatkan (`is_active = 0`), tidak dihapus (FK RESTRICT dari `item_responses`/`item_tries` juga mencegah penghapusan). Ukuran papan dan kunci Susun Gambar dibekukan saat soal dibuat, sehingga perubahan aturan tingkat tidak mengubah soal lama. Impor ulang dengan `is_active` kosong tidak menghidupkan lagi soal yang sudah diistirahatkan.
+5. **Kode soal.** UNIQUE `(challenge_node_id, item_key)` di database; di antara soal aktif `item_key` wajib unik secara global (galat `gelita:content:verify`), karena importer dan editor mencari soal berdasarkan `item_key` saja.
+6. **Bacaan satu wilayah.** `challenge_items.passage_id` hanya boleh menunjuk `reading_passages` dengan `level_id` yang sama dengan tantangan soal itu (galat `gelita:content:verify`).
+7. **Jawaban hanya untuk soal pengerjaan itu.** Server hanya menilai soal yang ada di `challenge_attempts.selected_item_ids_json` (jawaban Cari Objek untuk soal lain ditolak, jawaban lain di "Cek jawabanku" diabaikan); soal yang diistirahatkan di tengah pengerjaan membuat pengerjaan itu ditinggalkan (`via: content_changed`) dan diganti yang baru saat tantangan dibuka lagi.
+8. **Urutan event.** Linimasa diurutkan `occurred_at`, lalu `sequence_no`, lalu `id` (`GameEventLogModel::timeline()`). `sequence_no` kiriman klien dimulai ulang setiap halaman dimuat, jadi bukan kunci urutan utama; event yang datang tidak berurutan tetap disimpan apa adanya.
+9. **Idempotensi.** `(session_id, client_event_id)` UNIQUE; kiriman ulang diabaikan (`INSERT IGNORE`) dan dihitung sebagai duplikat, tanpa baris baru. Telemetri audio memeriksa `client_event_id` yang sama sebelum menulis `audio_usage_events`.
+10. **`item_tries` insert-only.** Setiap percobaan menulis tepat satu baris dan tidak pernah diubah atau dihapus selain lewat penghapusan data. Pada saat yang sama `item_responses.try_count` naik satu, `first_answer_json`/`first_pass_correct` diisi hanya pada percobaan pertama, dan `solved_on_try` diisi sekali saat pertama kali benar. Soal yang sudah benar terkunci.
+11. **Penilaian hanya di server.** Nilai `correct` dari browser diabaikan; `answer_key_json`, penanda `decoy`, pemetaan bank kata, dan id benda Cari Objek tidak pernah ada di payload pemain.
+12. **Kesempatan.** Cek ke-(`max_tries` + 1) ditolak `TRIES_EXHAUSTED` tanpa perubahan data; pengerjaan hanya dapat ditutup `solved` atau `tries_exhausted`, tidak ada "selesaikan dengan jawaban ini".
+13. **Petunjuk tantangan atau soal.** Minimal salah satu dari `hints.challenge_node_id` / `challenge_item_id` terisi; tanpa CHECK constraint, dijaga importer (`ContentImportService::validateHint()`).
+14. **Satu rilis aktif.** Hanya satu `game_releases.is_active = 1` (`GameReleaseModel::activate()` dalam satu transaction). Tanpa rilis aktif dan studi aktif sesi tidak dapat dibuat.
+15. **Audio.** `audio_assets` dengan `approval_status` selain `approved`, atau berkasnya tidak aktif, tidak pernah dikirim ke pemain.
+16. **Siswa terhapus.** `participants.deleted_at` terisi = tidak tampil di dasbor, filter, dan ekspor (kueri memakai `deleted_at IS NULL`); nama penggunanya tetap terpakai (`usernameAvailable()` ikut membaca baris terhapus). `game_event_logs` hanya dihapus/ditandai lewat `data_deletion_requests`.
+17. **Kata sandi.** `participants.password_hash` dan `staff_users.password_hash` tidak pernah dikirim ke view, API, log, maupun ekspor. Kata sandi mentah tidak pernah disimpan atau dicatat di mana pun, termasuk `game_event_logs.payload_json` dan `audit_logs.metadata_json`.
+18. **Nama pengguna siswa** disimpan huruf kecil; nama cadangan (`admin`, `guru`, `gelita`, `root`, `system`, `test`) ditolak.
+19. **Data identitas** (`display_name`, `username`, nama sekolah, NPSN) tidak ikut ekspor anonim.
+20. **Sekali isi.** `participants.intro_seen_at` dan `item_responses.first_answer_json` tidak pernah ditimpa setelah terisi.
+21. **Dialog global.** Keunikan `(context_code, sequence)` baris global (`level_id` NULL) dijaga seeder, karena UNIQUE database tidak berlaku untuk NULL.
+22. **Gambar contoh.** Data penelitian baru boleh diambil setelah `gelita:content:verify --siap-penelitian` lolos, yaitu tidak ada lagi `media_assets.is_placeholder = 1` yang aktif.
 
-## Derived Metrics (dihitung dari tabel, tanpa tabel `analytics`)
+Nilai bawaan penting: `game_sessions.locale = 'id'`, `game_sessions.status = 'active'`, `challenge_attempts.max_tries = 3`, `data_exports.anonymized = 1`, `research_studies.retention_days = 1825`, `challenge_items.review_status = 'draft'`.
 
-Jangan membuat tabel `analytics` besar. Semua metrik dihitung dari tabel yang sudah ada:
+## Retensi dan penghapusan data
 
-```text
-first_pass_accuracy = first_pass_correct / scorable_items * 100
-final_accuracy      = final_correct / scorable_items * 100
-independence        = clamp(100 - (hint_count * hint_penalty_per_use)
-                                - (retry_count * retry_penalty_per_extra_attempt), 0, 100)
-challenge_score     = clamp(0.70*first_pass_accuracy + 0.20*final_accuracy + 0.10*independence, 0, 100)
+`App\Services\RetentionService` adalah satu-satunya jalur yang menghapus data penelitian. Penghapusan selalu dua langkah, dan retensi terjadwal tidak pernah menghapus data penelitian sendiri.
 
-stars = 3 jika score >= 85 DAN first_pass_accuracy >= 80
-        2 jika score >= 65
-        1 jika status = completed tetapi score < 65
-        0 jika belum selesai / ditinggalkan
+### Retensi terjadwal
 
-level_score = SUM(score_i * scorable_items_i) / SUM(scorable_items_i)   untuk 5 node
-total_score = AVG(level_score) untuk 3 level
-```
+`php spark gelita:retention:run` (cron harian, atau tombol di panel) menjalankan, lalu mencatat ringkasan ke `audit_logs` (`retention_run`):
 
-Analisis butir (dipakai tab Butir Soal):
+| Langkah | Batas (`Config\Gelita`) | Akibat |
+|---|---|---|
+| Sesi diam | `$sessionIdleMinutes` = 45 menit | `game_sessions` `active` → `paused` |
+| Pengerjaan diam | `$attemptAbandonHours` = 24 jam sejak sentuhan terakhir (mulai, jawaban, atau event pengerjaan) | `challenge_attempts` → `abandoned`, `stars = 0`, event `challenge_abandoned {via: retention}` |
+| Sesi lama | `$sessionAbandonDays` = 30 hari | `game_sessions` `paused` → `abandoned`, event `session_abandoned {via: retention}` |
+| Berkas ekspor | `$exportRetentionDays` = 7 hari (`data_exports.expires_at`) | Berkas di `writable/exports/` dihapus, `file_path = NULL`, `status` tetap `done`; audit `export_purge` |
+| Masa simpan studi | `research_studies.retention_days` (bawaan 1825 hari) | Tidak menghapus: membuat atau memperbarui **satu pratinjau `hard` per studi** (`scope_json.origin = "retention"`) untuk sesi yang dimulai sebelum batas, yang tampil sebagai peringatan di dasbor admin. Pemohonnya admin yang menjalankan, atau admin aktif pertama |
 
-```text
-p (kesukaran)  = benar / muncul        → <0.30 sukar, 0.30–0.70 sedang, >0.70 mudah
-D (daya beda)  = (benar_kelompok_atas / n_atas) - (benar_kelompok_bawah / n_bawah)
-                 kelompok atas/bawah = 27% teratas dan 27% terbawah berdasarkan
-                 total ketepatan peserta pada study+phase yang sama
-                 → <0.20 lemah, 0.20–0.40 cukup, >0.40 baik, negatif = kunci bermasalah
-```
+### Penghapusan data penelitian
 
-Difficulty index node (jangan hanya dari skor):
+1. **Pratinjau** (`RetentionService::preview()`): tepat satu cakupan, `participant_id`, `session_id`, atau `study_id` (cakupan studi boleh dipersempit `date_from`/`date_to` atas `game_sessions.started_at`). Jumlah baris per tabel dihitung tanpa mengubah apa pun dan disimpan sebagai `data_deletion_requests` berstatus `preview`; audit `delete_preview`.
+2. **Eksekusi** (`execute()`), dalam satu transaction: jumlah dihitung ulang, dan eksekusi dibatalkan bila menyimpang dari pratinjau lebih dari `max($deletionDriftMinRows, $deletionDriftFraction × pratinjau)` = max(10 baris, 10 %). Status menjadi `executed`, `approved_by` = admin pelaksana; audit `delete_execute`. Pratinjau dapat dibatalkan (`cancelled`, audit `delete_cancel`). Status `approved` tersedia di skema tetapi tidak dipakai alur ini.
 
-```text
-difficulty_index = 0.40*(100 - mean_first_pass_accuracy)
-                 + 0.20*normalized(mean_retry_count)
-                 + 0.20*normalized(mean_hint_count)
-                 + 0.10*normalized(median_duration_ms)
-                 + 0.10*(skip_rate * 100)
-```
+| Mode | Yang berubah |
+|---|---|
+| `soft` | `game_event_logs` sesi dalam cakupan ditandai `deleted_at`, `deleted_by`, `delete_reason`; untuk cakupan siswa, `participants.deleted_at` diisi. Baris lain tetap ada agar dapat diaudit |
+| `hard` | Baris dihapus dari anak ke induk agar FK RESTRICT tidak menggagalkan transaction: `game_event_logs`, `audio_usage_events`, `item_tries`, `item_responses`, `challenge_attempts`, `device_logs`, `session_progress`, `participant_feedback`, `game_sessions`, lalu `participants` (hanya untuk cakupan satu siswa) |
 
-Tambahkan SQL View atau query di Service; cache hanya bila volume production memaksa.
+### Reset data uji coba
 
----
+`php spark gelita:reset` (`App\Services\SystemResetService`) dijalankan sekali sebelum pengambilan data penelitian, dengan akun database yang punya hak `TRUNCATE` (akun migrasi); akun tanpa hak itu ditolak sebelum ada tabel yang dikosongkan.
 
-## Index Strategy
+| Kelompok | Tabel | Perlakuan |
+|---|---|---|
+| A. Data penelitian dan uji coba | `participants`, `game_sessions`, `session_progress`, `challenge_attempts`, `item_responses`, `item_tries`, `audio_usage_events`, `game_event_logs`, `device_logs`, `participant_feedback`, `data_exports`, `data_deletion_requests`, `audit_logs`, `ci_sessions` | `TRUNCATE` (AUTO_INCREMENT kembali ke 1, siswa pertama `GLT-000001`); folder `writable/exports/` dikosongkan |
+| B. Konten tantangan | `hints`, `challenge_items`, `reading_passages`, `challenge_nodes` | Dikosongkan, lalu 12 tantangan dibangun ulang dan bank soal kelas 5 diimpor ulang (kecuali `--tanpa-bank`) |
+| C. Pengaturan | `research_studies`, `game_releases`, `learning_indicators` | Dikosongkan, lalu diisi nilai bawaan |
+| D. Sebagian | `schools`, `staff_users` | Sekolah `is_verified = 0` dibuang; akun staf tetap (kunci login dibuka), kecuali akun guru dengan `--hapus-guru` |
+| E. Tidak disentuh | `levels`, `dialogues`, `library_pages`, `library_media`, `media_assets`, `audio_assets` | Pustaka, cerita, media, dan audio tetap |
 
-Prioritas, jangan lebih:
+Jangan menjalankan reset terhadap server yang sedang mengambil data penelitian.
 
-1. Semua FK yang sering di-join.
-2. `game_event_logs (session_id, sequence_no)` dan `(session_id, occurred_at)`.
-3. `game_event_logs (participant_id, event_type, occurred_at)`.
-4. `challenge_attempts (session_id, challenge_node_id, attempt_no)` UNIQUE.
-5. `game_sessions (participant_id, study_id, phase_id, status)`.
-6. `levels (sequence)`, `challenge_nodes (level_id, sequence)`.
-7. `data_exports (expires_at)`.
+## Isi database setelah instalasi baru
 
-Jangan memberi index pada semua kolom — `game_event_logs` adalah tabel write-heavy.
+Instalasi baru: `php spark migrate`, lalu `GELITA_ADMIN_PASSWORD='…' php spark db:seed DatabaseSeeder` (langkah lengkap di [08_DEPLOYMENT.md](08_DEPLOYMENT.md)). `DatabaseSeeder` menjalankan seeder di `app/Database/Seeds/` berurutan; setiap seeder hanya menyisipkan baris yang belum ada (`GelitaSeeder::insertIfMissing()`), jadi aman dijalankan ulang.
 
----
+| Seeder | Mengisi |
+|---|---|
+| `SchoolSeeder` | `schools`: sekolah resmi Jawa Tengah dari `app/Database/Seeds/data/sekolah-jateng.csv` |
+| `StaffUserSeeder` | `staff_users`: akun `admin` (sandi dari `GELITA_ADMIN_PASSWORD`) |
+| `LearningIndicatorSeeder` | `learning_indicators`: `literasi`, `budaya`, `sikap` |
+| `GameReleaseSeeder` | `game_releases`: `GELITA-KELAS5-2026`, `scoring_version = bintang-1`, aktif bila belum ada rilis aktif |
+| `ResearchStudySeeder` | `research_studies`: `STUDI-KEDU-KELAS5-2026`, `active`, `retention_days = 1825`, `unlock_mode = sequential` |
+| `LevelSeeder` | `levels`: tiga wilayah |
+| `MediaAssetSeeder` | `media_assets`: slot aset tetap (latar, tokoh, peta, lencana, UI, musik, efek suara, berkas narasi); slot tanpa berkas `is_active = 0` |
+| `ContentSeeder` | `challenge_nodes`: 12 tantangan dengan judul sementara dan `config_json` bawaan; `dialogues`: 88 baris cerita |
+| `KontenKelas5Seeder` | Impor `docs/pustaka/gelita-pustaka.xlsx` (Pustaka) dan `docs/bank-soal/gelita-bank-soal-kelas5.xlsx` (judul tantangan, variasi, bacaan, soal, petunjuk, slot gambar), lalu 45 gambar contoh |
 
-## Dependency
+Jumlah baris yang diharapkan sesudahnya:
 
-Tidak ada. Ini tahap pertama.
+| Tabel | Baris |
+|---|---:|
+| `levels` | 3 |
+| `challenge_nodes` | 12 |
+| `challenge_items` | 126 (108 `scorable = 1`, 18 benda pengecoh) |
+| `reading_passages` | 9 |
+| `hints` | 36 |
+| `dialogues` | 88 |
+| `library_pages` / `library_media` | 30 / 48 |
+| `media_assets` dengan `is_placeholder = 1` | 45 |
+| `learning_indicators` / `research_studies` / `game_releases` / `staff_users` | 3 / 1 / 1 / 1 |
+| `audio_assets` | 0; 200 (100 per bahasa) setelah `php spark gelita:narration:import` |
+| Data penelitian (kelompok D) | 0 |
 
----
-
-## Hasil Akhir
-
-Setelah tahap ini selesai:
-
-* Database `gelita` berisi 30 tabel domain + `ci_sessions` (ditambah tabel `migrations` milik CodeIgniter: 32 tabel), dengan FK dan index lengkap.
-* `php spark migrate` berjalan bersih dari nol dan `php spark migrate:rollback -b 0` mengembalikan ke kosong (hanya tabel `migrations` yang tersisa). Diverifikasi terhadap MariaDB 10.11.
-* `php spark db:seed DatabaseSeeder` menghasilkan: 1 akun admin, 3 indikator, 1 scoring profile, 1 release, 1 study + 3 phase, 3 level, 15 challenge node lengkap dengan judul/instruksi dwibahasa, dan media assets terdaftar. Di development, `SampleItemSeeder` menambah 2 item contoh per node.
-* Tabel `participants` sudah memiliki kolom akun siswa (`username`, `password_hash`, kolom throttle, dan dua kolom metrik literasi keamanan digital).
-* Query verifikasi ini mengembalikan tepat `3` dan `15`:
+Kueri pemeriksaan:
 
 ```sql
-SELECT COUNT(*) FROM levels WHERE is_active = 1;
-SELECT COUNT(*) FROM challenge_nodes WHERE is_active = 1;
-SELECT l.sequence, l.code, COUNT(n.id) AS node_count
-FROM levels l LEFT JOIN challenge_nodes n
-  ON n.level_id = l.id AND n.is_active = 1
-GROUP BY l.id ORDER BY l.sequence;   -- harus 1 temanggung 5, 2 magelang 5, 3 wonosobo 5
+SELECT l.sequence, l.code, COUNT(n.id) AS tantangan
+FROM levels l
+LEFT JOIN challenge_nodes n ON n.level_id = l.id AND n.is_active = 1
+WHERE l.is_active = 1
+GROUP BY l.id ORDER BY l.sequence;          -- 1 temanggung 4 · 2 magelang 4 · 3 wonosobo 4
+
+SELECT n.engine_type, COUNT(DISTINCT i.variant_group) AS variasi,
+       COUNT(*) AS soal, SUM(i.scorable) AS dinilai
+FROM challenge_items i JOIN challenge_nodes n ON n.id = i.challenge_node_id
+WHERE i.is_active = 1
+GROUP BY n.engine_type;                     -- variasi per tantangan: puzzle/rumpang/boleh 3, cari 1
 ```
 
-Database siap dipakai tahap berikutnya.
+Sesudah itu: impor dan setujui narasi, jalankan `php spark gelita:content:verify`, ganti gambar contoh dengan gambar asli sampai `gelita:content:verify --siap-penelitian` lolos, dan sebelum pengambilan data penelitian jalankan `php spark gelita:reset`.

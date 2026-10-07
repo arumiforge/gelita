@@ -8,18 +8,13 @@ Isi Pustaka Kedu (buku bacaan setiap wilayah di menu Pustaka) untuk Temanggung, 
 | [`data/temanggung.php`](data/temanggung.php), [`data/magelang.php`](data/magelang.php), [`data/wonosobo.php`](data/wonosobo.php) | sumber isi (satu wilayah per berkas) |
 | [`build-workbook.php`](build-workbook.php) | penyusun workbook dari berkas data |
 
-Pada perombakan kelas 5 (Dok 2 §7.1), array `library` dipindahkan **byte demi byte** dari berkas data bank soal lama (`docs/bank-soal/data/*.php`) ke sini, beserta baris `$commons` yang dirujuknya, tanpa perubahan isi. Workbook bank soal kelas 5 tidak lagi memuat Pustaka, sehingga `php spark gelita:reset` dan impor bank soal tidak pernah menyentuhnya.
+Workbook bank soal kelas 5 tidak memuat Pustaka, sehingga impor bank soal dan `php spark gelita:reset` tidak menyentuhnya.
 
 ## Kapan dipakai
 
-**Hanya untuk pemasangan baru** (database yang Pustakanya masih kosong):
+Workbook ini diimpor otomatis saat instalasi (`php spark db:seed DatabaseSeeder`, lewat `KontenKelas5Seeder`). Sesudah itu isi Pustaka disunting lewat **Konten permainan → editor wilayah**.
 
-```bash
-php spark gelita:bank:import docs/pustaka/gelita-pustaka.xlsx --dry-run
-php spark gelita:bank:import docs/pustaka/gelita-pustaka.xlsx
-```
-
-Server yang sudah berjalan **tidak** mengimpornya lagi: impor menimpa halaman bernomor sama dan mengganti seluruh galeri halaman yang punya baris di `library_media`, termasuk suntingan admin. Isi Pustaka di server yang sudah berjalan disunting lewat **Konten permainan → editor wilayah**.
+Mengimpornya lagi (`php spark gelita:bank:import docs/pustaka/gelita-pustaka.xlsx`, atau **Impor soal dari Excel** di panel) menimpa halaman bernomor sama dan mengganti seluruh galeri halaman yang punya baris di `library_media`, termasuk suntingan admin. Jadi impor ulang hanya untuk mengembalikan isi bawaan.
 
 ## Bentuk berkas data
 

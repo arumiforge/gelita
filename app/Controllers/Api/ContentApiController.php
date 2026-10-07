@@ -107,8 +107,7 @@ class ContentApiController extends BaseApiController
             'title'    => $page->text('title', $locale),
             'body'     => $page->text('body', $locale),
             // Galeri tanpa batas jumlah (library_media); `embed` hanya dimuat
-            // setelah pemain menekan Putar. Empat slot lama sudah disalin ke
-            // galeri oleh migration 003500.
+            // setelah pemain menekan Putar.
             'media'    => $page->gallery($locale),
         ], service('contentRepository')->libraryPages($levelId));
 

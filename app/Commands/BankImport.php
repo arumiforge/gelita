@@ -2,6 +2,7 @@
 
 namespace App\Commands;
 
+use App\Commands\Concerns\CliOptions;
 use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
 
@@ -12,6 +13,8 @@ use CodeIgniter\CLI\CLI;
  */
 class BankImport extends BaseCommand
 {
+    use CliOptions;
+
     protected $group       = 'GELITA';
     protected $name        = 'gelita:bank:import';
     protected $description = 'Memuat workbook bank soal (XLSX) ke tabel konten dalam satu transaction.';
@@ -42,14 +45,14 @@ class BankImport extends BaseCommand
             return EXIT_ERROR;
         }
 
-        $dryRun  = array_key_exists('dry-run', $params) || CLI::getOption('dry-run') !== null;
+        $dryRun  = $this->flag('dry-run', $params);
         $service = service('contentImportService');
 
         try {
             $result = $dryRun ? $service->preview($file) : null;
 
             if (! $dryRun) {
-                $staffId = $this->staffId((string) ($params['staff'] ?? CLI::getOption('staff') ?? ''));
+                $staffId = $this->staffId((string) $this->option('staff', $params));
 
                 if ($staffId === null) {
                     CLI::error('Akun admin aktif tidak ditemukan untuk dicatat di audit log (pakai --staff <username>).');
@@ -77,25 +80,25 @@ class BankImport extends BaseCommand
             $summary = $result['summary'];
 
             CLI::write(sprintf(
-                'Workbook: %d node, %d bacaan, %d butir, %d opsi, %d petunjuk, %d pengecoh, %d halaman pustaka, %d media pustaka.',
+                'Workbook: %d node, %d variasi, %d bacaan, %d butir, %d petunjuk, %d pengecoh, %d halaman pustaka, %d media pustaka.',
                 $summary['nodes'],
+                $summary['variants'],
                 $summary['passages'],
                 $summary['items'],
-                $summary['options'],
                 $summary['hints'],
                 $summary['distractors'],
-                $summary['library'] ?? 0,
-                $summary['library_media'] ?? 0,
+                $summary['library'],
+                $summary['library_media'],
             ));
 
             $rows = [];
 
             foreach ($summary['per_node'] as $ref => $counts) {
-                $rows[] = [(string) $ref, (string) ($counts['items'] ?? 0), (string) ($counts['options'] ?? 0), (string) ($counts['hints'] ?? 0), (string) ($counts['distractors'] ?? 0)];
+                $rows[] = [(string) $ref, (string) ($counts['variants'] ?? 0), (string) ($counts['items'] ?? 0), (string) ($counts['hints'] ?? 0), (string) ($counts['distractors'] ?? 0)];
             }
 
             if ($rows !== []) {
-                CLI::table($rows, ['Node', 'Butir', 'Opsi', 'Petunjuk', 'Pengecoh']);
+                CLI::table($rows, ['Node', 'Variasi', 'Butir', 'Petunjuk', 'Pengecoh']);
             }
         }
 

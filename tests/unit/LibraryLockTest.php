@@ -169,15 +169,15 @@ final class LibraryLockTest extends CIUnitTestCase
 
     public function testLockedLibraryRendersExplanationWithoutRecordingAnEvent(): void
     {
-        $this->scores = [2 => [3, 5]];
+        $this->scores = [2 => [3, 4]];
 
         $page = $this->probe('free')->show('magelang');
 
         $this->assertIsString($page, 'halaman terkunci dirender, bukan redirect');
         $this->assertStringContainsString('data-screen="library-locked"', $page);
         $this->assertStringContainsString(esc(lang('Game.libraryLockedTitle', ['Magelang'])), $page);
-        $this->assertStringContainsString('Selesaikan kelima tantangan di Magelang untuk membuka Pustaka Magelang.', $page);
-        $this->assertStringContainsString('3/5', $page);
+        $this->assertStringContainsString('Selesaikan keempat tantangan di Magelang untuk membuka Pustaka Magelang.', $page);
+        $this->assertStringContainsString('3/4', $page);
         $this->assertStringContainsString('href="' . esc(base_url('wilayah/magelang'), 'attr') . '"', $page, 'Lanjutkan tantangan');
         $this->assertStringNotContainsString('Isi halaman pustaka.', $page, 'isi buku tidak ikut dikirim');
         $this->assertSame([], $this->events, 'library_opened tidak dicatat');
@@ -185,7 +185,7 @@ final class LibraryLockTest extends CIUnitTestCase
 
     public function testCompletedRegionShowsTheBookAndRecordsLibraryOpened(): void
     {
-        $this->scores = [2 => [5, 5]];
+        $this->scores = [2 => [4, 4]];
 
         $page = $this->probe('free')->show('magelang');
 
@@ -199,7 +199,7 @@ final class LibraryLockTest extends CIUnitTestCase
 
     public function testRegionThatIsNotOpenYetIsStillRejected(): void
     {
-        $this->scores = [3 => [0, 5]];
+        $this->scores = [3 => [0, 4]];
 
         $page = $this->probe('sequential', 2)->show('wonosobo');
 
@@ -212,7 +212,7 @@ final class LibraryLockTest extends CIUnitTestCase
 
     public function testShelfShowsOneCardPerRegionWithItsStatus(): void
     {
-        $this->scores = [1 => [5, 5], 2 => [2, 5], 3 => [0, 5]];
+        $this->scores = [1 => [4, 4], 2 => [2, 4], 3 => [0, 4]];
 
         $page = $this->probe('sequential', 2)->index();
 
@@ -225,8 +225,8 @@ final class LibraryLockTest extends CIUnitTestCase
 
         // Magelang terbuka, belum tuntas → progres, penjelasan, lanjut ke entry wilayah
         $this->assertStringContainsString('shelf-card is-locked', $page);
-        $this->assertStringContainsString('2/5', $page);
-        $this->assertStringContainsString('Selesaikan kelima tantangan di Magelang untuk membuka Pustaka Magelang.', $page);
+        $this->assertStringContainsString('2/4', $page);
+        $this->assertStringContainsString('Selesaikan keempat tantangan di Magelang untuk membuka Pustaka Magelang.', $page);
         $this->assertStringContainsString('href="' . esc(base_url('wilayah/magelang'), 'attr') . '"', $page);
         $this->assertStringNotContainsString('href="' . base_url('pustaka/magelang') . '"', $page);
 

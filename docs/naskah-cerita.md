@@ -3,7 +3,7 @@
 Naskah lengkap seluruh narasi dan dialog permainan, dalam bahasa Indonesia dan Inggris. Naskah ini dipakai untuk dua hal:
 
 1. **Rekaman audio.** Setiap baris punya nama berkas audio sendiri, jadi pengisi suara cukup membaca dari atas ke bawah.
-2. **Isi tabel `dialogues`.** Tahap 2 (cerita pembuka) dan Tahap 3 (peta, kenali wilayah, dialog wilayah, wilayah tuntas, penutup) memindahkan teks di sini ke seeder dan perintah `gelita:story:update`. Bila teks perlu diubah, ubah dulu di berkas ini agar rekaman dan isi permainan tetap sama.
+2. **Isi tabel `dialogues`.** Teks di sini disalin persis ke `app/Database/Seeds/data/story.php` (`StoryDataTest` mencocokkan keduanya baris demi baris) dan dipasang saat instalasi oleh `ContentSeeder`. Sesudah instalasi, teks disunting lewat panel (editor dialog). Bila teks naskah perlu diubah, ubah dulu di berkas ini lalu di `data/story.php`, agar rekaman dan isi permainan tetap sama.
 
 ## Benang merah
 
@@ -31,7 +31,7 @@ Di teks Inggris, Jaka tetap memanggil "Mbah" agar nuansa lokalnya terjaga, semen
 
 ## Konvensi berkas audio
 
-Repositori sudah membawa **rekaman sintetis (TTS) bawaan** untuk ke-96 baris di kedua bahasa, dengan suara Narator, Jaka, dan Mbah Kedu yang diolah menurut arahan di atas. Asal-usul, pengolahan, dan lisensinya ada di [`docs/audio.md`](audio.md). Rekaman pengisi suara dapat menggantikannya kapan saja dengan konvensi di bawah ini. Rekaman pengganti otomatis tercatat sebagai rekaman sendiri, bukan TTS.
+Repositori sudah membawa **rekaman sintetis (TTS) bawaan** untuk ke-100 baris di kedua bahasa, dengan suara Narator, Jaka, dan Mbah Kedu yang diolah menurut arahan di atas. Asal-usul, pengolahan, dan lisensinya ada di [`docs/audio.md`](audio.md). Rekaman pengisi suara dapat menggantikannya kapan saja dengan konvensi di bawah ini. Rekaman pengganti otomatis tercatat sebagai rekaman sendiri, bukan TTS.
 
 - Folder: `public/assets/audio/narasi/id/` untuk bahasa Indonesia dan `public/assets/audio/narasi/en/` untuk bahasa Inggris.
 - Nama berkas mengikuti kode di setiap judul baris di bawah, ditambah `.mp3`, misalnya `narasi/id/dialog-magelang-09.mp3`.
@@ -50,20 +50,20 @@ Repositori sudah membawa **rekaman sintetis (TTS) bawaan** untuk ke-96 baris di 
 | `level_done` | `tuntas-{wilayah}-NN` | 12 | Saat wilayah tuntas |
 | `ending` | `penutup-NN` | 5 | Setelah seluruh wilayah tuntas |
 | **Total naskah** | | **88** | Durasi rekaman sekitar 12–14 menit per bahasa |
-| `hunt_clue` | `petunjuk-{node}-NN` | 8 | Petunjuk Mbah Kedu di arena `cari` (`tmg-4`), di samping teks petunjuk — teks dari bank soal, bukan naskah ini |
-| **Total rekaman** | | **96** | |
+| `hunt_clue` | `petunjuk-{node}-NN` | 12 | Petunjuk Mbah Kedu di Cari Objek (`tmg-4`, `mgl-4`, `wnb-4`, masing-masing 4), di samping teks petunjuk — teks dari bank soal, bukan naskah ini |
+| **Total rekaman** | | **100** | |
 
-Baris `petunjuk-*` **tidak ada di naskah ini**: teksnya berasal dari bank soal, yaitu kolom pertanyaan (`prompt_id` / `prompt_en`) butir `find_object` target di [`docs/bank-soal/data/temanggung.php`](bank-soal/data/temanggung.php) (node `tmg-4`). Dibacakan Mbah Kedu. `{node}` = kode tantangan (`tmg-4`); NN = urutan petunjuk target menurut urutan butir, dimulai 01 — untuk bank soal produksi `petunjuk-tmg-4-01` … `-08` sama dengan butir `tmg-4-01` … `tmg-4-08`. Ketiga objek jebakan (`tmg-4-09` … `-11`) tidak punya petunjuk dan tidak direkam. Teks terkini ada di daftar rekaman XLSX (kelompok "Petunjuk arena cari"), karena admin dapat menyuntingnya di bank soal.
+Baris `petunjuk-*` **tidak ada di naskah ini**: teksnya berasal dari bank soal, yaitu kolom pertanyaan (`prompt_id` / `prompt_en`) butir `find_object` target di [`docs/bank-soal/data/`](bank-soal/data/) (node `tmg-4`, `mgl-4`, `wnb-4`). Dibacakan Mbah Kedu. `{node}` = kode tantangan; NN = urutan petunjuk target menurut urutan butir, dimulai 01, sehingga `petunjuk-tmg-4-01` … `-04` sama dengan butir `tmg-4-a01` … `tmg-4-a04`. Benda pengecoh tidak punya petunjuk dan tidak direkam. Teks terkini ada di daftar rekaman XLSX (kelompok "Petunjuk Cari Objek"), karena admin dapat menyuntingnya di bank soal.
 
 ## Mengimpor dan menyetujui audio
 
 Rekaman tidak perlu dipasang satu per satu. Selama nama berkasnya sama dengan kode baris (huruf besar/kecil tidak berpengaruh), GELITA menemukan barisnya sendiri. Kode wilayah dibaca dari tabel `levels`.
 
-**Daftar kerja pengisi suara.** Panel admin → **Konten → Narasi → Unduh daftar rekaman** menghasilkan XLSX berisi kode berkas, konteks, wilayah, tokoh, pose, efek, judul, teks ID, teks EN, dan status audio ID/EN setiap baris. Teksnya diambil dari basis data, jadi suntingan admin ikut terbawa.
+**Daftar kerja pengisi suara.** Panel admin → **Rekaman narasi → Unduh daftar rekaman (Excel)** menghasilkan XLSX berisi kode berkas, konteks, wilayah, tokoh, pose, efek, judul, teks ID, teks EN, dan status audio ID/EN setiap baris. Teksnya diambil dari basis data, jadi suntingan admin ikut terbawa.
 
 **Cara memasang rekaman** (pilih salah satu; keduanya memakai `App\Libraries\NarrationImporter`):
 
-1. **Unggah lewat panel.** Konten → Narasi → **Unggah narasi**: pilih bahasa, pilih banyak berkas sekaligus, lalu **Unggah sebagai draft**. Centang *Periksa nama saja* untuk mencocokkan nama tanpa menyimpan. Berkas disalin ke `public/assets/uploads/` dan ikut backup. Batas per unggahan mengikuti `upload_max_filesize`, `post_max_size`, dan `max_file_uploads` PHP (bawaan PHP 20 berkas); halaman itu menampilkan batas server yang berlaku.
+1. **Unggah lewat panel.** **Rekaman narasi → Unggah rekaman**: pilih bahasa, pilih banyak berkas sekaligus, lalu **Unggah sebagai draft**. Centang *Periksa nama saja* untuk mencocokkan nama tanpa menyimpan. Berkas disalin ke `public/assets/uploads/` dan ikut backup. Batas per unggahan mengikuti `upload_max_filesize`, `post_max_size`, dan `max_file_uploads` PHP (bawaan PHP 20 berkas); halaman itu menampilkan batas server yang berlaku.
 2. **Lewat folder.** Taruh berkas di `public/assets/audio/narasi/{id|en}/` (commit ke repositori, lalu deploy), kemudian jalankan:
 
    ```bash
@@ -85,7 +85,7 @@ Rekaman tidak perlu dipasang satu per satu. Selama nama berkasnya sama dengan ko
 - Dari folder, rekaman yang diunggah lewat panel dan lebih baru dari berkas folder tidak ditimpa.
 - Satu kode dengan beberapa berkas (mis. `.mp3` dan `.wav`) memakai satu berkas menurut urutan mp3, m4a, ogg, wav; sisanya dilaporkan ganda.
 
-**Menyetujui.** Rekaman draft belum terdengar pemain. Di halaman **Narasi** setiap baris punya pemutar kecil untuk ID dan EN beserta statusnya (belum ada / draft / disetujui), dan tautan **Sunting** ke baris itu di editor dialog. Setelah didengarkan, tombol **Setujui semua narasi draft ID/EN** menyetujui seluruh narasi draft satu bahasa sekaligus (dengan konfirmasi). Yang ikut hanya audio narasi naskah; audio lain seperti narasi kartu misi tetap disetujui satu per satu di halaman Audio. Persetujuan massal tercatat di audit log sebagai `audio_approve_bulk` beserta jumlahnya.
+**Menyetujui.** Rekaman draft belum terdengar pemain. Di halaman **Narasi** setiap baris punya pemutar kecil untuk ID dan EN beserta statusnya (belum ada / draft / disetujui), dan tautan **Sunting** ke baris itu di editor dialog. Setelah didengarkan, tombol **Setujui semua rekaman Indonesia / Inggris** menyetujui seluruh narasi draft satu bahasa sekaligus (dengan konfirmasi). Yang ikut hanya audio narasi naskah; audio lain seperti narasi kartu misi tetap disetujui satu per satu di halaman Audio. Persetujuan massal tercatat di audit log sebagai `audio_approve_bulk` beserta jumlahnya.
 
 ## Kamus pose dan efek
 

@@ -2,6 +2,7 @@
 
 namespace App\Commands;
 
+use App\Commands\Concerns\CliOptions;
 use App\Libraries\MockupGenerator;
 use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
@@ -16,6 +17,8 @@ use CodeIgniter\CLI\CLI;
  */
 class Mockups extends BaseCommand
 {
+    use CliOptions;
+
     protected $group       = 'GELITA';
     protected $name        = 'gelita:mockups';
     protected $description = 'Membuat gambar contoh (mockup) untuk slot gambar tantangan yang belum berisi gambar asli.';
@@ -41,6 +44,7 @@ class Mockups extends BaseCommand
         $dryRun = $this->flag('dry-run', $params);
         $force  = $this->flag('paksa', $params);
         $node   = $this->option('node', $params);
+        $node   = $node === null ? null : strtolower($node);
 
         if ($node !== null && preg_match('/^(tmg|mgl|wnb)-[1-4]$/', $node) !== 1) {
             CLI::error('Kode tantangan --node tidak dikenal: ' . $node . ' (contoh: tmg-4).');
@@ -76,33 +80,5 @@ class Mockups extends BaseCommand
         ), $result['failed'] !== [] ? 'red' : 'green');
 
         return $result['failed'] === [] ? EXIT_SUCCESS : EXIT_ERROR;
-    }
-
-    /**
-     * Nilai opsi, baik `--node tmg-4` maupun `--node=tmg-4`. Parser CLI
-     * CodeIgniter tidak memecah tanda `=`: bentuk kedua terbaca sebagai opsi
-     * bernama `node=tmg-4` tanpa nilai.
-     */
-    private function option(string $name, array $params): ?string
-    {
-        $value = $params[$name] ?? CLI::getOption($name);
-
-        if (! is_string($value) || trim($value) === '') {
-            $value = null;
-
-            foreach (array_keys($params + CLI::getOptions()) as $key) {
-                if (is_string($key) && str_starts_with($key, $name . '=')) {
-                    $value = substr($key, strlen($name) + 1);
-                }
-            }
-        }
-
-        return $value !== null && trim($value) !== '' ? strtolower(trim($value)) : null;
-    }
-
-    /** Opsi tanpa nilai: `--paksa` terbaca sebagai `$params['paksa'] = null`. */
-    private function flag(string $name, array $params): bool
-    {
-        return array_key_exists($name, $params) || CLI::getOption($name) !== null;
     }
 }

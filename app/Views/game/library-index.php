@@ -7,7 +7,7 @@
  * status Pustaka (GameProgress::libraryStatus()):
  *
  * - `open`        wilayah tuntas → tombol Baca;
- * - `locked`      wilayah terbuka, belum tuntas → gembok, progres x/5,
+ * - `locked`      wilayah terbuka, belum tuntas → gembok, progres x/4,
  *                 penjelasan, dan "Lanjutkan tantangan" ke `entry` wilayah
  *                 (aturan dialog pembuka tetap berlaku);
  * - `unavailable` wilayah belum terbuka → keterangan saja.

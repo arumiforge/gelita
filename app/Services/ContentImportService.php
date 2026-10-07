@@ -56,11 +56,9 @@ class ContentImportService
     /** Sheet Pustaka: workbook bank soal tidak memilikinya, workbook Pustaka hanya keduanya. */
     private const LIBRARY_SHEETS = ['library', 'library_media'];
 
-    /** Sheet workbook lama yang sudah tidak dibaca (opsi, potongan urutan, kartu sumber). */
-    private const LEGACY_SHEETS = ['options', 'pieces', 'sources'];
 
     /** Pesan untuk jenis soal di luar Config\Gelita::$interactionTypes (Dok 2 §6.5). */
-    public const RETIRED_TYPE = 'Jenis soal ini sudah tidak dipakai di GELITA kelas 5.';
+    public const UNKNOWN_TYPE = 'Jenis soal tidak dikenal.';
 
     /**
      * Membaca workbook, memvalidasi seluruh baris, TANPA menulis database.
@@ -210,12 +208,6 @@ class ContentImportService
 
             if (! $book->sheetNameExists($name) && $isBank && ! in_array($name, self::LIBRARY_SHEETS, true)) {
                 $warnings[] = ['sheet' => $name, 'row' => 0, 'message' => 'Sheet ' . $name . ' tidak ada di berkas, jadi dilewati.'];
-            }
-        }
-
-        foreach (self::LEGACY_SHEETS as $name) {
-            if ($book->sheetNameExists($name)) {
-                $warnings[] = ['sheet' => $name, 'row' => 0, 'message' => 'Sheet ' . $name . ' sudah tidak dipakai di GELITA kelas 5 (pilihan jawaban, kartu urutan, dan kartu sumber dihapus), jadi isinya diabaikan.'];
             }
         }
 
@@ -439,7 +431,7 @@ class ContentImportService
         if (! in_array($row['interaction_type'], config('Gelita')->interactionTypes, true)) {
             return $row['interaction_type'] === ''
                 ? self::missing('items', 'interaction_type')
-                : self::RETIRED_TYPE . " Soal {$row['item_key']} berjenis '{$row['interaction_type']}'; pakai " . implode(', ', config('Gelita')->interactionTypes) . '.';
+                : self::UNKNOWN_TYPE . " Soal {$row['item_key']} berjenis '{$row['interaction_type']}'; pakai " . implode(', ', config('Gelita')->interactionTypes) . '.';
         }
 
         $variantError = $this->validateVariantGroup('items', (string) $row['variant_group']);
@@ -489,7 +481,7 @@ class ContentImportService
             }
         }
 
-        // Item yang sudah pernah dijawab tidak boleh berganti kunci, agar data lama tetap sebanding.
+        // Item yang sudah pernah dijawab tidak boleh berganti kunci, agar jawaban yang sudah ada tetap sebanding.
         $existing = model(ChallengeItemModel::class)->findByKey((string) $row['item_key']);
 
         if ($existing !== null && model(ChallengeItemModel::class)->hasResponses($existing->id)) {
@@ -792,8 +784,7 @@ class ContentImportService
      * config_json node: judul per variasi (sheet variants), pengecoh Isi
      * Rumpang per variasi (sheet distractors), dan jumlah pengecoh yang tampil.
      * Isi Rumpang selalu bacaan dengan bank kata (as_reading, use_word_bank),
-     * nilainya tetap dari engine. Kunci lama tingkat node dibuang
-     * (ContentVerifier::LEGACY_NODE_KEYS).
+     * nilainya tetap dari engine.
      *
      * @param list<array<string, string>> $rows
      * @param list<array<string, string>> $variantRows
@@ -813,10 +804,6 @@ class ContentImportService
             $nodeId = $nodes[$row['node_ref']];
             $node   = $model->find($nodeId);
             $config = $node->config_json ?: [];
-
-            foreach (\App\Libraries\ContentVerifier::LEGACY_NODE_KEYS as $legacy) {
-                unset($config[$legacy]);
-            }
 
             $config['selection'] = 'variant';
 
@@ -941,8 +928,8 @@ class ContentImportService
                 $passageId = $passages->findByKey($passageKey)?->id;
             }
 
-            // Soal lama dicari lebih dulu: ukuran papan dan kunci susun gambar
-            // yang sudah ada tidak pernah dihitung ulang.
+            // Soal yang sudah ada dicari lebih dulu: ukuran papan dan kunci
+            // susun gambarnya tidak pernah dihitung ulang.
             $existing = $model->findByKey($itemKey);
             $layout   = $row['interaction_type'] === 'puzzle_arrange'
                 ? $this->puzzleLayoutFor($row, $existing, $difficulty)
@@ -967,8 +954,8 @@ class ContentImportService
                 'scorable'          => $row['scorable'] !== '' ? (int) $row['scorable'] : 1,
             ] + $this->mediaColumns($row, ['media_asset_key' => 'media_asset_id'], $media);
 
-            // is_active kosong: soal baru dipakai, soal lama tidak diubah — workbook
-            // lama tidak boleh menghidupkan lagi soal yang sudah diistirahatkan.
+            // is_active kosong: soal baru dipakai, soal yang sudah ada tidak diubah —
+            // impor ulang tidak boleh menghidupkan lagi soal yang sudah diistirahatkan.
             if ($row['is_active'] !== '') {
                 $data['is_active'] = (int) $row['is_active'];
             } elseif ($existing === null) {
@@ -1165,8 +1152,8 @@ class ContentImportService
      * mengisi baris ini (MediaStore), sehingga tautan konten tidak perlu
      * dibuat ulang; sebelum itu `gelita:mockups` memasang gambar contoh.
      *
-     * Slot yang sudah ada (mis. gambar asli yang sudah diunggah dengan kunci
-     * lama) tidak diubah, selain mengisi label/description yang masih kosong.
+     * Slot yang sudah ada (mis. gambar asli yang sudah diunggah admin) tidak
+     * diubah, selain mengisi label/description yang masih kosong.
      *
      * @param array<string, list<array<string, string>>> $sheets
      * @param array<string, int>                         $media
@@ -1618,8 +1605,8 @@ class ContentImportService
      * sekali saat soal dibuat, mengikuti tingkat kesulitan wilayahnya
      * (DifficultyRules: mudah 3 × 3 kotak, sedang 4 × 4 kotak, sulit 4 × 4
      * jigsaw). Soal yang sudah ada tetap memakai ukuran dan kuncinya sendiri,
-     * sehingga jawaban siswa lama tetap sebanding. Kunci yang ditulis di
-     * answer_id (cara lama) dihormati; ukurannya = akar jumlah keping.
+     * sehingga jawaban siswa sebelumnya tetap sebanding. Kunci di answer_id
+     * dihormati; ukurannya = akar jumlah keping.
      *
      * @param array<string, string> $difficulty awalan kode tantangan → tingkat
      *
@@ -1649,10 +1636,8 @@ class ContentImportService
             $grid = 0;   // bukan n × n keping: ditolak validateItem
         }
 
-        if ($shape === null) {
-            // soal lama tanpa catatan bentuk = kotak; soal baru mengikuti wilayahnya
-            $shape = $existing !== null || $grid !== $rule['grid'] ? 'square' : $rule['shape'];
-        }
+        // ukuran lain dari aturan wilayah = kotak
+        $shape ??= $grid === $rule['grid'] ? $rule['shape'] : 'square';
 
         return ['grid' => $grid, 'shape' => $shape, 'key' => $key];
     }

@@ -97,9 +97,8 @@ final class ChallengeEntityTest extends CIUnitTestCase
         $this->assertSame(0, $attempt->triesLeft());
         $this->assertTrue($attempt->isExhausted());
 
-        $legacy = new ChallengeAttempt();
-        $legacy->injectRawData(['id' => 2, 'check_count' => 0, 'max_tries' => 0]);
-        $this->assertSame(config('Gelita')->maxTries, $legacy->maxTries(), 'baris tanpa max_tries memakai aturan sekarang');
+        $fresh = new ChallengeAttempt();
+        $this->assertSame(config('Gelita')->maxTries, $fresh->maxTries(), 'entitas baru memakai aturan sekarang');
     }
 
     public function testPlayerArrayNeverCarriesTheAnswerKey(): void

@@ -29,7 +29,7 @@ $prefix = $isNew ? 'new' : 'it' . $item->id;
 $action = $isNew ? base_url('admin/konten/node/' . $node->id . '/item') : base_url('admin/konten/item/' . $item->id);
 $json   = static fn ($value): string => $value === null || $value === [] ? '' : (string) json_encode($value, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 $bloomNow = $isNew ? '' : (string) ($item->bloom_level ?? '');
-// Ukuran papan Susun Gambar: soal lama memakai ukurannya sendiri, soal baru mengikuti wilayah
+// Ukuran papan Susun Gambar: soal yang sudah ada memakai ukurannya sendiri, soal baru mengikuti wilayah
 $puzzle   = $node->engine_type === 'puzzle'
     ? ($isNew || $item->interaction_type !== 'puzzle_arrange'
         ? App\Libraries\DifficultyRules::puzzle($difficulty ?? null)

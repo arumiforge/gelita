@@ -10,9 +10,8 @@
  * aset audio; pemain baru mendengarnya setelah audio itu disetujui di
  * halaman Audio.
  *
- * Teks bawaan berasal dari naskah lewat `php spark gelita:story:update`.
- * Slide yang teksnya disunting di sini dilewati perintah itu (kecuali
- * `--force`), jadi suntingan admin tidak tertimpa diam-diam.
+ * Teks bawaan berasal dari naskah (data/story.php) saat instalasi;
+ * sesudahnya teks disunting di sini.
  *
  * @var App\Entities\Level|null      $level     null = konteks global
  * @var string                       $context

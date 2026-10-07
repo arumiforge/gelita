@@ -73,14 +73,12 @@ final class HuntClueAudioTest extends CIUnitTestCase
 
     public function testMigrationAddsNullableAudioColumnsWithSetNullForeignKeys(): void
     {
-        $migration = APPPATH . 'Database/Migrations/2026-01-01-003800_AddChallengeItemPromptAudio.php';
+        $source = (string) file_get_contents(APPPATH . 'Database/Migrations/2026-01-01-001200_CreateChallengeItems.php');
 
-        $this->assertFileExists($migration);
-
-        $source = (string) file_get_contents($migration);
-        $this->assertStringContainsString("['audio_prompt_id', 'audio_prompt_en_id']", $source);
-        $this->assertStringContainsString("\$this->ref(true) + ['after' => \$after]", $source, 'nullable, di samping media_asset_id');
-        $this->assertStringContainsString("addForeignKey(\$column, 'audio_assets', 'id', '', 'SET NULL')", $source);
+        foreach (['audio_prompt_id', 'audio_prompt_en_id'] as $column) {
+            $this->assertMatchesRegularExpression("/'{$column}'\\s+=> \\\$this->ref\\(true\\)/", $source, 'nullable');
+            $this->assertStringContainsString("addForeignKey('{$column}', 'audio_assets', 'id', '', 'SET NULL')", $source);
+        }
     }
 
     public function testModelAndEntityCarryThePromptAudio(): void
