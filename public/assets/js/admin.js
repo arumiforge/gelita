@@ -8,6 +8,7 @@
  */
 import { $$ } from './core/dom.js';
 import { toast } from './core/toast.js';
+import { showModal } from './core/modal.js';
 import { initTables } from './admin/tables.js';
 import { initFilters } from './admin/filters.js';
 
@@ -38,9 +39,39 @@ function initCopy(root) {
   }
 }
 
+/**
+ * Modal konfirmasi (§8.2) untuk form[data-confirm]: judul dari
+ * data-confirm, teks dari data-confirm-text, tombol dari data-confirm-ok.
+ * Tanpa JavaScript form langsung terkirim (server tetap memvalidasi).
+ */
+function initConfirm(root) {
+  for (const form of $$('form[data-confirm]', root)) {
+    if (form.dataset.confirmReady) continue;
+    form.dataset.confirmReady = '1';
+    form.addEventListener('submit', async (event) => {
+      if (form.dataset.confirmed === '1') return;
+      event.preventDefault();
+      const submitter = event.submitter;
+      const answer = await showModal({
+        type: 'confirm',
+        title: form.dataset.confirm,
+        text: form.dataset.confirmText || '',
+        buttons: [
+          { label: 'Batal', style: 'quiet', value: 'cancel' },
+          { label: form.dataset.confirmOk || 'Lanjutkan', style: form.dataset.confirmStyle || 'primary', value: 'ok' },
+        ],
+      });
+      if (answer !== 'ok') return;
+      form.dataset.confirmed = '1';
+      form.requestSubmit(submitter && submitter.form === form ? submitter : undefined);
+    });
+  }
+}
+
 function initPage(root) {
   initTables(root);
   initCopy(root);
+  initConfirm(root);
 }
 
 initPage(document);
