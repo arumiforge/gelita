@@ -32,8 +32,7 @@ dimuat `base.css` lewat `@font-face` tanpa Google Fonts.
 Howler dikunci pada 2.2.x: naik versi mayor adalah keputusan tersendiri,
 bukan pembaruan rutin.
 
-ECharts (dulu dipakai halaman analitik olahan admin) dihapus pada perombakan
-kelas 5 (Dok 1 §14): admin kini hanya menampilkan tabel data mentah.
+Panel admin hanya menampilkan tabel data mentah, jadi tidak ada pustaka chart.
 
 ## Catatan `.gitignore`
 

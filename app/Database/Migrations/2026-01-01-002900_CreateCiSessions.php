@@ -6,7 +6,8 @@ use CodeIgniter\Database\Migration;
 
 /**
  * Tabel session CI4 (DatabaseHandler).
- * ip_address berisi SHA-256 (64 hex) dari HashedIpSessionHandler, bukan IP mentah.
+ * ip_address 64 karakter: cukup untuk IP mentah (DatabaseHandler bawaan) maupun
+ * SHA-256 dari App\Libraries\HashedIpSessionHandler bila handler itu dipasang.
  */
 class CreateCiSessions extends Migration
 {
