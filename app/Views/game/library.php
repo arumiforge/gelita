@@ -41,12 +41,13 @@ $total  = count($pages);
 <?= $this->extend('layouts/game') ?>
 
 <?= $this->section('title') ?><?= esc($title) ?><?= $this->endSection() ?>
+<?= $this->section('hudTitle') ?><?= esc($title) ?><?= $this->endSection() ?>
 <?= $this->section('background') ?><?= media_first($level->background_media_id) ?><?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<section class="screen library" data-screen="library" data-level="<?= esc($level->code, 'attr') ?>" data-level-id="<?= esc($level->id, 'attr') ?>"
+<section class="library" data-screen="library" data-level="<?= esc($level->code, 'attr') ?>" data-level-id="<?= esc($level->id, 'attr') ?>"
          data-label-close="<?= esc(lang('Game.close'), 'attr') ?>" data-label-loading="<?= esc(lang('Game.libraryLoading'), 'attr') ?>">
-  <header class="library-head">
+  <header class="library-head visually-hidden">
     <div>
       <span class="eyebrow"><?= icon('book') ?> <?= esc($title) ?></span>
       <h1><?= esc($region) ?></h1>
@@ -56,9 +57,9 @@ $total  = count($pages);
   </header>
 
   <?php if ($pages === []): ?>
-    <div class="empty-state"><?= icon('book') ?><p><?= esc(lang('Game.libraryEmpty')) ?></p></div>
+    <div class="empty-state library-empty stage-box"><?= icon('book') ?><p><?= esc(lang('Game.libraryEmpty')) ?></p></div>
   <?php else: ?>
-    <ol class="slides book">
+    <ol class="slides book stage-box">
       <?php foreach ($pages as $index => $page): ?>
         <?php
         $n       = $index + 1;
@@ -66,7 +67,7 @@ $total  = count($pages);
         ?>
         <li class="slide book-spread<?= $gallery === [] ? ' is-text-only' : '' ?>" id="page-<?= $n ?>" data-page="<?= esc($page->id, 'attr') ?>">
           <?php if ($gallery !== []): ?>
-            <div class="book-page book-media">
+            <div class="book-page book-media stage-scroll">
               <div class="book-gallery<?= count($gallery) === 1 ? ' is-single' : '' ?>" role="group" aria-label="<?= esc(lang('Game.libraryGallery'), 'attr') ?>">
                 <?php foreach ($gallery as $media): ?>
                   <?php
@@ -128,7 +129,7 @@ $total  = count($pages);
           <div class="book-page book-text">
             <span class="eyebrow"><?= esc(lang('Game.pageOf', [$n, $total])) ?></span>
             <h2><?= esc($page->text('title', $locale)) ?></h2>
-            <div class="book-body"><?= rich_text($page->text('body', $locale)) ?></div>
+            <div class="book-body stage-scroll"><?= rich_text($page->text('body', $locale)) ?></div>
             <?= component('partials/slide-nav', [
                 'n'        => $n,
                 'total'    => $total,

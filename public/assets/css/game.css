@@ -561,8 +561,16 @@ body.is-challenge .hud-leave { display: none; }
 .node-card-body { display: grid; gap: .125rem; min-width: 0; }
 
 /* =========================== KARTU MISI =========================== */
-.mission-card { display: grid; justify-items: center; gap: var(--gap-3); padding-top: var(--gap-7); text-align: center; }
-.mission-card h1 { margin: 0; }
+/* Kartu 280, 96, 720 × 528 (stage.css); deskripsi bergulir, tombol di bawah */
+.mission-card {
+  display: grid;
+  grid-template-rows: auto auto auto minmax(0, 1fr) auto auto;
+  justify-items: center;
+  gap: var(--gap-2);
+  padding: var(--gap-7) var(--gap-6) var(--gap-5);
+  text-align: center;
+}
+.mission-card h1 { margin: 0; font-size: var(--fs-h2); }
 .mission-seal {
   position: absolute;
   top: calc(-1 * var(--gap-6));
@@ -582,51 +590,59 @@ body.is-challenge .hud-leave { display: none; }
 }
 .mission-engine { margin: 0; }
 .mission-card .chip { background: rgba(74, 50, 24, .12); color: var(--brown-700); }
-.mission-description { max-width: 52ch; margin: 0; font-size: var(--fs-h3); }
+.mission-body { display: grid; align-content: start; justify-items: center; gap: var(--gap-3); width: 100%; padding: 0 var(--gap-2); }
+.mission-description { max-width: 52ch; margin: 0; font-size: var(--fs-reading); line-height: 1.5; }
 .mission-instruction { display: flex; gap: var(--gap-2); max-width: 52ch; margin: 0; text-align: left; }
 .mission-card .audio-player { width: 100%; }
-.mission-best { display: flex; align-items: center; gap: var(--gap-3); padding: var(--gap-2) var(--gap-4); border-radius: var(--radius-pill); background: rgba(74, 50, 24, .1); }
-.mission-actions { margin-top: var(--gap-2); }
+.mission-best { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--gap-1) var(--gap-3); padding: var(--gap-2) var(--gap-4); border-radius: var(--radius-pill); background: rgba(74, 50, 24, .1); font-size: var(--fs-caption); }
+.mission-actions { margin: 0; }
 
 /* =========================== LAYAR TANTANGAN =========================== */
-body.is-challenge .app { padding-bottom: var(--gap-4); }
-
-.challenge {
-  display: grid;
-  grid-template-columns: minmax(8.75rem, 12.5rem) minmax(0, var(--arena-max));
-  justify-content: center;
-  align-items: end;
-  gap: var(--gap-4);
+/* Dok 3 §5: lebar penuh tanpa Jaka. Koordinat semua panel di stage.css
+   §Tantangan; di sini hanya rupa. .arena-panel/.arena/.arena-body hanyalah
+   pembungkus (display: contents) agar panel engine memakai koordinat panggung. */
+.challenge { position: absolute; inset: 0; }
+/* Bingkai ukiran di belakang kepala + arena: 16, 56, 1248 × 656 */
+.challenge::before {
+  content: "";
+  position: absolute;
+  left: calc(16 * var(--dp));
+  top: calc(60 * var(--dp));
+  width: calc(1248 * var(--dp));
+  height: calc(652 * var(--dp));
+  border: .125rem solid var(--gold-600);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(to bottom, rgba(38, 53, 90, .94), rgba(18, 28, 46, .96));
+  box-shadow: inset 0 0 0 .25rem var(--navy-800), inset 0 0 0 .3125rem var(--line-strong), var(--shadow-2);
 }
-.challenge-character { align-self: end; }
-.challenge-character .character-img { max-height: 26.25rem; }
-
-.arena-panel { display: flex; flex-direction: column; min-height: 0; padding: var(--gap-4) var(--gap-5); }
+.arena-panel, .arena, .arena-body { display: contents; }
 
 .challenge-head {
+  z-index: 5;
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
   gap: var(--gap-3);
-  padding-bottom: var(--gap-3);
   border-bottom: 1px solid var(--line);
 }
 .badge-pos {
   display: grid;
   place-items: center;
-  width: 3rem;
-  height: 3rem;
+  width: 2.5rem;
+  height: 2.5rem;
   border: .125rem solid var(--gold-300);
   border-radius: 50%;
   background: radial-gradient(circle at 35% 30%, var(--gold-300), var(--gold-600));
   color: var(--navy-900);
-  font-size: var(--fs-h3);
+  font-size: var(--fs-body);
   font-weight: 600;
 }
-.challenge-info { min-width: 0; }
-.challenge-info .title { margin: 0; font-size: var(--fs-h3); }
-.challenge-chips { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: var(--gap-2); }
-.challenge-chips .chip { min-height: 2.25rem; }
+.challenge-info { display: grid; min-width: 0; line-height: 1.2; }
+.challenge-info .eyebrow { overflow: hidden; font-size: .8125rem; text-overflow: ellipsis; white-space: nowrap; }
+.challenge-info .title { margin: 0; overflow: hidden; font-size: var(--fs-body); text-overflow: ellipsis; white-space: nowrap; }
+.challenge-chips { display: flex; flex-wrap: nowrap; align-items: center; justify-content: flex-end; gap: var(--gap-2); }
+.challenge-chips .chip { min-height: 2.5rem; font-size: var(--fs-caption); }
+.challenge-chips .btn-sm { min-height: 2.5rem; }
 .chip-tally { gap: var(--gap-3); }
 .tally-ok, .tally-bad { display: inline-flex; align-items: center; gap: .125rem; }
 .tally-ok .icon { color: var(--ok); }
@@ -637,30 +653,30 @@ body.is-challenge .app { padding-bottom: var(--gap-4); }
 .confirm-down .confirm-box { top: calc(100% + var(--gap-2)); bottom: auto; }
 .challenge-exit > summary { cursor: pointer; }
 
-.arena { display: grid; align-content: start; gap: var(--gap-4); min-height: 0; padding-top: var(--gap-4); }
-/* Pembungkus isi engine: tak terlihat di sini, menjadi kolom bergulir di ponsel mendatar */
-.arena-body { display: contents; }
+/* Panel instruksi (tempatnya per engine, stage.css) */
+.challenge-aside { display: grid; align-content: start; gap: var(--gap-3); }
+.challenge-aside:empty { display: none; }
 .instruction {
   display: flex;
   align-items: flex-start;
   gap: var(--gap-2);
   margin: 0;
-  padding: var(--gap-3) var(--gap-4);
+  padding: var(--gap-2) var(--gap-4);
   border-radius: var(--radius);
   background: rgba(223, 192, 135, .1);
   color: var(--gold-300);
-  font-size: var(--fs-body);
+  font-size: var(--fs-caption);
   font-weight: 600;
+  line-height: 1.45;
 }
+.instruction .icon { margin-top: .125rem; }
+.challenge-tips { display: grid; gap: var(--gap-3); margin: 0; padding: 0 var(--gap-2) 0 var(--gap-6); color: var(--ink); font-size: var(--fs-caption); line-height: 1.5; }
+.challenge-tips li::marker { color: var(--gold-500); }
 .hint-text { margin: 0; color: var(--ink-dim); font-size: var(--fs-caption); text-align: center; }
-.arena-actions {
-  position: sticky;
-  bottom: 0;
-  display: flex;
-  justify-content: center;
-  padding: var(--gap-3) 0 var(--gap-1);
-  background: linear-gradient(to top, rgba(18, 28, 46, .98) 60%, transparent);
-}
+.arena-actions { display: flex; align-items: center; justify-content: flex-end; gap: var(--gap-3); }
+.arena-actions .btn-lg { min-height: var(--tap); padding: var(--gap-2) var(--gap-6); font-size: var(--fs-body); }
+.challenge-puzzle .arena-actions { justify-content: center; }
+.arena-alert, .arena-empty { margin: 0; }
 
 /* ---------- Puzzle ----------
  * Papan n × n keping SVG (App\Libraries\PuzzleCut). Slot = tombol di kisi;
@@ -669,11 +685,8 @@ body.is-challenge .app { padding-bottom: var(--gap-4); }
  * slotnya. Latar tombol transparan: tonjolan keping sebelah tidak tertutup.
  * --inset menyisakan ruang di tepi papan untuk tonjolan keping yang belum
  * di tempatnya. */
-.puzzle-wrap { display: grid; justify-items: center; gap: var(--gap-3); }
+.puzzle-wrap { display: contents; }
 .puzzle-board {
-  position: relative;
-  width: min(100%, 30rem, calc(100vh - var(--hud-h) - 20.625rem));
-  min-width: 15rem;
   aspect-ratio: 1;
   border: .125rem solid var(--gold-600);
   border-radius: var(--radius);
@@ -730,7 +743,7 @@ body.is-challenge .app { padding-bottom: var(--gap-4); }
 .piece.is-misplaced .piece-edge { stroke: var(--bad); stroke-width: 3; }
 .piece.is-locked { cursor: default; }
 .puzzle-caption {
-  max-width: 60ch;
+  align-self: start;
   margin: 0;
   padding: var(--gap-2) var(--gap-3);
   border-left: .1875rem solid var(--gold-500);
@@ -741,12 +754,10 @@ body.is-challenge .app { padding-bottom: var(--gap-4); }
 .puzzle-caption p { margin: var(--gap-1) 0 0; }
 
 /* ---------- Rumpang ---------- */
-.rumpang { display: grid; gap: var(--gap-4); }
-.rumpang.has-media { grid-template-columns: minmax(11.25rem, 34%) 1fr; align-items: start; }
+.rumpang, .rumpang-main { display: contents; }
 .rumpang-media { margin: 0; overflow: hidden; border: .125rem solid var(--gold-600); border-radius: var(--radius); }
-.rumpang-media img { width: 100%; }
-.rumpang-main { display: grid; gap: var(--gap-4); }
-.sentences { display: grid; gap: var(--gap-3); margin: 0; padding-left: var(--gap-6); }
+.rumpang-media img { width: 100%; height: 100%; object-fit: contain; }
+.sentences { display: grid; align-content: start; gap: var(--gap-3); margin: 0; padding: var(--gap-3) var(--gap-4) var(--gap-3) var(--gap-7); border: 1px solid var(--line); border-radius: var(--radius); background: rgba(11, 19, 32, .4); }
 .sentence { font-size: var(--fs-h3); line-height: 2.1; }
 .sentence::marker { color: var(--gold-500); font-family: var(--font-mono); font-size: var(--fs-body); }
 .sentence-source { display: block; color: var(--ink-dim); font-size: var(--fs-caption); line-height: 1.4; }
@@ -775,33 +786,36 @@ body.is-challenge .app { padding-bottom: var(--gap-4); }
 /* Bacaan rumpang (kelas 5): paragraf utuh, rumpang bernomor di dalam kalimat */
 .rumpang-reading {
   display: grid;
+  align-content: start;
   gap: var(--gap-3);
-  max-width: 72ch;
-  padding: var(--gap-3) var(--gap-4);
+  padding: var(--gap-3) var(--gap-6);
   border: 1px solid var(--brown-500);
   border-radius: var(--radius);
   background: var(--parchment);
   color: var(--brown-700);
 }
-.rumpang-reading p { margin: 0; font-size: var(--fs-h3); line-height: 2.3; }
+.rumpang-reading p { margin: 0; font-size: var(--fs-reading); line-height: 2.2; }
 .blank-wrap { white-space: nowrap; }
 .blank-no { margin-left: var(--gap-1); color: var(--gold-600); font-size: .7em; font-weight: 700; vertical-align: super; }
-.rumpang-reading .blank { min-width: 6.5em; margin: 0 .125rem; border-color: var(--brown-500); background: rgba(255, 255, 255, .55); color: var(--brown-700); }
+.rumpang-reading .blank { min-width: 7.5rem; min-height: 2.75rem; margin: 0 .125rem; border-color: var(--brown-500); background: rgba(255, 255, 255, .55); color: var(--brown-700); }
 .rumpang-reading .blank.is-active { border-color: var(--gold-600); box-shadow: 0 0 0 .1875rem rgba(178, 130, 52, .35); }
 .rumpang-reading .blank.is-filled { background: #FFF6DF; color: var(--brown-700); }
 
 .word-bank {
   display: flex;
   flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
   gap: var(--gap-2);
-  padding: var(--gap-3);
+  overflow-y: auto;
+  padding: var(--gap-2) var(--gap-3);
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: rgba(11, 19, 32, .4);
 }
-.word-bank-title { flex-basis: 100%; color: var(--ink-dim); font-size: var(--fs-caption); font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+.word-bank-title { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; flex-basis: 100%; color: var(--ink-dim); font-size: var(--fs-caption); font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
 .word {
-  min-height: var(--tap);
+  min-height: 2.75rem;
   padding: var(--gap-1) var(--gap-4);
   border: 1px solid var(--gold-600);
   border-radius: var(--radius-pill);
@@ -831,11 +845,12 @@ body.is-challenge .app { padding-bottom: var(--gap-4); }
   cursor: pointer;
 }
 .passage-content { display: grid; gap: var(--gap-3); padding: 0 var(--gap-4) var(--gap-4); }
+.boleh-passages { display: grid; align-content: start; gap: var(--gap-3); }
+.boleh-cards { display: grid; align-content: start; gap: var(--gap-3); padding-right: var(--gap-1); }
 .passage-img { max-height: 11.25rem; width: auto; border-radius: var(--radius); }
 .passage-body { font-size: var(--fs-reading); line-height: 1.6; }
 
-.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(15.625rem, 1fr)); gap: var(--gap-3); }
-.card-grid.is-single { grid-template-columns: minmax(0, 35rem); justify-content: center; }
+.card-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--gap-3); }
 .verdict-card {
   display: grid;
   align-content: start;
@@ -853,8 +868,21 @@ body.is-challenge .app { padding-bottom: var(--gap-4); }
 .card-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--gap-2); }
 .card-no { color: var(--gold-500); font-size: var(--fs-caption); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
 .card-passage { color: var(--gold-300); text-decoration: none; white-space: normal; }
-.card-image img { width: 100%; max-height: 10rem; object-fit: cover; border-radius: var(--radius); }
-.card-text { margin: 0; font-size: var(--fs-h3); font-weight: 600; line-height: 1.45; }
+/* Gambar pernyataan 480 × 360 → 192 × 144 dp utuh (tidak terpotong); ketuk = lightbox 640 × 480 */
+.card-image {
+  justify-self: start;
+  width: 12rem;
+  height: 9rem;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--navy-900);
+  cursor: zoom-in;
+}
+.card-image img { width: 100%; height: 100%; object-fit: contain; }
+.card-image:hover { border-color: var(--gold-300); }
+.card-text { margin: 0; font-size: var(--fs-body); font-weight: 600; line-height: 1.45; }
 
 .card-choices { display: flex; flex-wrap: wrap; gap: var(--gap-2); }
 .choice {
@@ -879,23 +907,39 @@ body.is-challenge .app { padding-bottom: var(--gap-4); }
 .choice:has(input:focus-visible) { outline: .1875rem solid var(--gold-500); outline-offset: .125rem; }
 
 /* ---------- Cari ---------- */
-.hunt { display: grid; grid-template-columns: minmax(0, 1fr) minmax(10rem, 13.75rem); gap: var(--gap-3); }
+.hunt { display: contents; }
+/* Bilah petunjuk 1216 × 56: avatar Mbah Kedu 48 | "Petunjuk n dari 4" + ●●○ | teks | ▶ */
 .hunt-clue {
   display: grid;
-  grid-column: 1 / -1;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
   gap: var(--gap-3);
-  padding: var(--gap-3) var(--gap-4);
+  padding: 0 var(--gap-4) 0 var(--gap-1);
   border: 1px solid var(--brown-500);
   border-radius: var(--radius-lg);
   background: var(--parchment);
   color: var(--brown-700);
 }
 .hunt-clue .eyebrow { color: var(--brown-500); }
-.hunt-guide .character-img { max-height: 5.625rem; }
-.hunt-guide .character-fallback { width: 4rem; font-size: var(--fs-h3); }
-.clue-text { margin: 0; font-size: var(--fs-h3); font-weight: 700; }
+.hunt-guide { width: 3rem; height: 3rem; overflow: hidden; border-radius: 50%; }
+.hunt-guide .character-img { width: 100%; height: 100%; max-height: none; object-fit: cover; object-position: 50% 15%; }
+.hunt-guide .character-fallback { width: 3rem; border-width: .125rem; font-size: var(--fs-body); }
+.hunt-guide .character-name { display: none; }
+.hunt-clue-body,
+.hunt-clue-body.has-voice {
+  display: grid;
+  grid-template-columns: 11rem auto minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  align-items: center;
+  column-gap: var(--gap-3);
+}
+.hunt-clue-body > .eyebrow,
+.hunt-clue-body.has-voice > .eyebrow { grid-column: 1; grid-row: 1; align-self: end; font-size: .8125rem; white-space: nowrap; }
+.hunt-clue-body > .clue-tries { grid-column: 1; grid-row: 2; align-self: start; margin: 0; font-size: .8125rem; white-space: nowrap; }
+.hunt-clue-body > .clue-voice { grid-column: 2; grid-row: 1 / span 2; }
+.hunt-clue-body > .clue-text,
+.hunt-clue-body.has-voice > .clue-text { grid-column: 3; grid-row: 1 / span 2; }
+.clue-text { display: -webkit-box; margin: 0; overflow: hidden; font-size: 1.125rem; font-weight: 700; line-height: 1.25; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
 /* Narasi petunjuk (engines/cari.js): tombol ▶/⏸ di samping teks, hanya bila ada rekaman yang disetujui */
 .hunt-clue-body.has-voice { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; column-gap: var(--gap-2); }
 .hunt-clue-body.has-voice > .eyebrow { grid-column: 1 / -1; }
@@ -908,7 +952,6 @@ body.is-challenge .app { padding-bottom: var(--gap-4); }
 .clue-voice .audio-error { font-size: var(--fs-caption); }
 
 .hunt-scene {
-  position: relative;
   aspect-ratio: 16 / 9;
   overflow: hidden;
   border: .125rem solid var(--gold-600);
@@ -941,7 +984,8 @@ body.is-challenge .app { padding-bottom: var(--gap-4); }
   40%, 80% { transform: translateX(.375rem); }
 }
 
-.hunt-side { display: grid; align-content: start; gap: var(--gap-2); }
+.hunt-side { display: grid; align-content: start; gap: var(--gap-2); padding: var(--gap-3) var(--gap-2); border: 1px solid var(--line); border-radius: var(--radius); background: rgba(11, 19, 32, .4); }
+.hunt-side .hunt-list-title { font-size: var(--fs-caption); }
 .hunt-list-title { margin: 0; color: var(--gold-300); font-weight: 700; }
 .hunt-list { display: grid; gap: var(--gap-2); margin: 0; padding: 0; list-style: none; }
 .hunt-target { padding: var(--gap-2) var(--gap-3); border: 1px solid var(--line-ink); border-radius: var(--radius); font-size: var(--fs-caption); }
@@ -949,11 +993,18 @@ body.is-challenge .app { padding-bottom: var(--gap-4); }
 .hunt-target.is-found { color: var(--ok); text-decoration: line-through; }
 
 /* =========================== SELESAI =========================== */
-.finished-layout { display: grid; grid-template-columns: minmax(8.75rem, 13.75rem) 1fr; align-items: end; gap: var(--gap-4); }
-.finished-jaka .character-img { max-height: 23.75rem; }
-.finished-card { display: grid; justify-items: center; gap: var(--gap-3); padding-top: var(--gap-7); text-align: center; }
-.finished-card h1 { margin: 0; font-size: var(--fs-h1); }
-.finished-stats { width: 100%; }
+.finished-card {
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  justify-items: center;
+  gap: var(--gap-2);
+  padding: var(--gap-7) var(--gap-6) var(--gap-4);
+  text-align: center;
+}
+.finished-card h1 { margin: 0; font-size: var(--fs-h2); }
+.finished-body { display: grid; align-content: start; justify-items: center; gap: var(--gap-3); width: 100%; padding: 0 var(--gap-2); }
+.finished-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.finished-stats { width: 100%; text-align: left; }
 .finished-note, .finished-shards { display: flex; align-items: center; gap: var(--gap-2); margin: 0; color: var(--ink-dim); }
 .finished-shards { color: var(--gold-300); font-weight: 700; }
 .finished-kedu {
@@ -970,7 +1021,8 @@ body.is-challenge .app { padding-bottom: var(--gap-4); }
 }
 .finished-kedu .character-img { max-height: 8.75rem; }
 .finished-kedu .character-fallback { width: 5rem; font-size: var(--fs-h2); }
-.finished-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--gap-3); }
+.finished-actions { display: flex; justify-content: center; gap: var(--gap-3); padding-top: var(--gap-3); border-top: 1px solid var(--line); width: 100%; }
+.finished-actions:empty { display: none; }
 
 .orb {
   position: absolute;
@@ -1012,9 +1064,16 @@ body.is-challenge .app { padding-bottom: var(--gap-4); }
 }
 
 /* =========================== HASIL =========================== */
-.result-best { display: grid; gap: var(--gap-4); margin-bottom: var(--gap-5); }
+/* Panel 160, 72, 960 × 576: ringkasan terbaik, tabel bergulir, tombol Main lagi */
+.result-panel { display: grid; grid-template-rows: auto auto minmax(0, 1fr) auto auto; gap: var(--gap-3); padding: var(--gap-4) var(--gap-5); }
+.result-head { margin: 0; }
+.result-head h1 { margin: 0; font-size: var(--fs-h2); }
+.result-panel > .empty-state { align-self: start; }
+.result-best { display: grid; gap: var(--gap-3); margin: 0; padding: var(--gap-3) var(--gap-4); }
+.result-best .stat-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.result-actions { justify-content: center; }
 .result-best-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--gap-3); }
-.result-note { display: flex; align-items: flex-start; gap: var(--gap-2); margin: var(--gap-4) 0; }
+.result-note { display: flex; align-items: flex-start; gap: var(--gap-2); margin: 0; font-size: var(--fs-caption); }
 
 /* =========================== PUSTAKA =========================== */
 .library-head { display: flex; align-items: center; justify-content: space-between; gap: var(--gap-4); margin-bottom: var(--gap-4); }
@@ -1031,8 +1090,16 @@ body.is-challenge .app { padding-bottom: var(--gap-4); }
   background: var(--parchment);
   box-shadow: var(--shadow-2);
   color: var(--brown-700);
-  scroll-margin-top: calc(var(--hud-h) + var(--gap-5));
 }
+/* Buku 64, 80, 1152 × 568 (stage.css): galeri kiri 576, teks kanan 576 bergulir.
+   Isi, gambar, teks, dan video tidak berubah; hanya bingkainya yang tetap. */
+.book { margin: 0; padding: 0; list-style: none; }
+.book > .book-spread { height: 100%; grid-template-rows: minmax(0, 1fr); }
+.book-text { grid-template-rows: auto auto minmax(0, 1fr) auto; height: 100%; min-height: 0; }
+.book-text h2 { margin: 0; }
+.book-text .book-body { padding-right: var(--gap-2); }
+.book-text .slide-nav { margin: 0; }
+.book-media { height: 100%; min-height: 0; }
 .book-spread::after {
   content: "";
   position: absolute;
@@ -1049,7 +1116,6 @@ body.is-challenge .app { padding-bottom: var(--gap-4); }
 .book-page { display: grid; align-content: start; gap: var(--gap-3); padding: var(--gap-6); }
 .book-media { gap: var(--gap-3); }
 /* Galeri tetap terlihat saat teks panjang digulir */
-.book-media > .book-gallery { position: sticky; top: calc(var(--hud-h) + var(--gap-4)); }
 .book-figure { position: relative; margin: 0; overflow: hidden; border: 1px solid rgba(74, 50, 24, .35); border-radius: var(--radius); background: rgba(74, 50, 24, .08); }
 .book-figure img, .book-figure video { width: 100%; }
 
@@ -1215,11 +1281,13 @@ html.js .book-frame img.is-loaded { opacity: 1; }
 .lightbox-close { float: right; margin: 0 0 var(--gap-2) var(--gap-2); font-size: 1.6rem; line-height: 1; }
 
 /* ---------- Rak Pustaka Kedu (/pustaka) ---------- */
-.library-lead { max-width: 60ch; margin: var(--gap-2) 0 0; color: var(--ink-dim); }
-.library-shelf { display: grid; grid-template-columns: repeat(auto-fit, minmax(16.25rem, 1fr)); gap: var(--gap-4); margin: 0; padding: 0; list-style: none; }
+.library-lead { max-width: 60ch; margin: 0; color: var(--ink-dim); font-size: var(--fs-caption); line-height: 1.4; }
+.shelf-body .library-lock p, .shelf-note { font-size: var(--fs-caption); }
+.shelf-head { margin: 0; }
+.library-shelf { margin: 0; padding: 0; list-style: none; }
 .shelf-card {
   display: grid;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: auto minmax(0, 1fr);
   overflow: hidden;
   border: .125rem solid var(--brown-500);
   border-radius: var(--radius-lg);
@@ -1265,7 +1333,7 @@ html.js .book-frame img.is-loaded { opacity: 1; }
 .shelf-card .progress, .library-locked-card .progress { background: rgba(74, 50, 24, .15); }
 
 /* ---------- Halaman terkunci (/pustaka/{code}) ---------- */
-.library-locked-card { display: grid; justify-items: center; gap: var(--gap-3); max-width: 35rem; margin: var(--gap-5) auto 0; text-align: center; }
+.library-locked-card { display: grid; align-content: center; justify-items: center; gap: var(--gap-3); text-align: center; }
 .library-locked-card h1 { margin: 0; color: var(--brown-700); font-size: var(--fs-h2); }
 .library-locked-card .eyebrow { display: inline-flex; align-items: center; gap: var(--gap-2); color: var(--brown-500); }
 .library-locked-card .library-lock { width: 100%; text-align: left; }
@@ -1300,12 +1368,20 @@ html.js .book-frame img.is-loaded { opacity: 1; }
 }
 
 /* =========================== PROFIL =========================== */
-.profile-card { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: var(--gap-4); margin-bottom: var(--gap-4); }
+.profile-side { display: grid; align-content: start; gap: var(--gap-4); padding: var(--gap-4); }
+.profile-card { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: var(--gap-3); }
+.profile-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap-2) var(--gap-3); font-size: var(--fs-caption); }
+.profile-facts dt { color: var(--ink-dim); font-size: .8125rem; }
+.profile-facts dd { font-weight: 700; overflow-wrap: anywhere; }
+.profile-password { justify-self: start; }
+.profile-main { display: grid; grid-template-rows: auto auto auto minmax(0, 1fr); gap: var(--gap-3); padding: var(--gap-4) var(--gap-5); }
+.profile-main h2 { margin: 0; font-size: var(--fs-h3); }
+.profile-main .data-table thead th { white-space: normal; }
 .profile-avatar {
   display: grid;
   place-items: center;
-  width: 5.25rem;
-  height: 5.25rem;
+  width: 4.5rem;
+  height: 4.5rem;
   border: .1875rem solid var(--gold-300);
   border-radius: 50%;
   background: radial-gradient(circle at 35% 30%, var(--gold-300), var(--gold-600));
@@ -1317,10 +1393,9 @@ html.js .book-frame img.is-loaded { opacity: 1; }
 .profile-id h1 { margin: 0; font-size: var(--fs-h2); }
 .profile-username { margin: 0; font-weight: 700; }
 .profile-code { margin: 0; color: var(--ink-dim); }
-.profile-stats { margin-bottom: var(--gap-5); }
-.profile h2 { margin-top: var(--gap-5); font-size: var(--fs-h3); }
+.profile-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
-.badge-shelf { display: grid; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); gap: var(--gap-3); margin: 0; padding: 0; list-style: none; }
+.badge-shelf { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap-3); margin: 0; padding: 0; list-style: none; }
 .region-badge {
   display: grid;
   justify-items: center;
@@ -1340,13 +1415,22 @@ html.js .book-frame img.is-loaded { opacity: 1; }
 .region-badge-name { font-weight: 700; }
 
 /* =========================== BALAI REFLEKSI =========================== */
-.reflection { display: grid; gap: var(--gap-5); }
-.reflection-hero { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: var(--gap-5); }
+.reflection-side { display: grid; align-content: start; gap: var(--gap-4); padding: var(--gap-4); }
+.reflection-side .stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.reflection-hero { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: var(--gap-4); }
 .reflection-hero h1 { margin: 0 0 var(--gap-3); }
-.reflection-hero .character-img { max-height: 17.5rem; }
-.reflection-bars { display: grid; grid-template-columns: repeat(auto-fit, minmax(17.5rem, 1fr)); gap: var(--gap-4); }
+.reflection-hero .character-img { max-height: 10rem; }
+.reflection-hero h1 { font-size: var(--fs-h2); }
+.reflection-hero .narration { font-size: var(--fs-caption); }
+.reflection-bars { display: grid; gap: var(--gap-3); }
+.reflection-side .alert { margin: 0; }
 .reflection-bars h2 { font-size: var(--fs-h3); }
-.reflection-form h2 { display: flex; align-items: center; gap: var(--gap-2); }
+.reflection-form { display: grid; grid-template-rows: auto auto auto minmax(0, 1fr); gap: var(--gap-3); padding: var(--gap-4) var(--gap-5); }
+.reflection-form > .alert { margin: 0; }
+.reflection-form h2 { display: flex; align-items: center; gap: var(--gap-2); margin: 0; font-size: var(--fs-h3); }
+.reflection-fields-form { display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: var(--gap-3); min-height: 0; }
+.reflection-fields { display: grid; align-content: start; gap: var(--gap-4); padding-right: var(--gap-2); }
+.reflection-fields-form .form-actions { justify-content: flex-end; margin: 0; }
 
 .rating-stars { display: flex; gap: var(--gap-1); margin-top: var(--gap-2); }
 .rating-star {

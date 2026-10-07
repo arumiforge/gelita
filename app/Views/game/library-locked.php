@@ -22,8 +22,8 @@ $title  = lang('Game.libraryRegion', [$region]);
 <?= $this->section('background') ?><?= media_first($level->background_media_id) ?><?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<section class="screen screen-medium library library-locked" data-screen="library-locked" data-level="<?= esc($level->code, 'attr') ?>">
-  <article class="panel-parchment library-locked-card">
+<section class="library library-locked" data-screen="library-locked" data-level="<?= esc($level->code, 'attr') ?>">
+  <article class="panel-parchment library-locked-card stage-box stage-scroll">
     <span class="library-locked-icon" aria-hidden="true"><?= icon('lock') ?></span>
     <span class="eyebrow"><?= icon('book') ?> <?= esc($title) ?></span>
     <h1><?= esc(lang('Game.libraryLockedTitle', [$region])) ?></h1>

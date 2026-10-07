@@ -23,14 +23,14 @@ $badges = ['open' => 'book', 'locked' => 'lock', 'unavailable' => 'lock'];
 <?= $this->extend('layouts/game') ?>
 
 <?= $this->section('title') ?><?= esc(lang('Game.library')) ?><?= $this->endSection() ?>
+<?= $this->section('hudTitle') ?><?= esc(lang('Game.library')) ?><?= $this->endSection() ?>
 <?= $this->section('background') ?><?= media_key_src('bg.map') ?? '' ?><?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<section class="screen library library-index" data-screen="library-index">
-  <header class="library-head">
+<section class="library library-index" data-screen="library-index">
+  <header class="library-head shelf-head stage-box">
     <div>
-      <span class="eyebrow"><?= icon('book') ?> <?= esc(lang('Game.library')) ?></span>
-      <h1><?= esc(lang('Game.library')) ?></h1>
+      <h1 class="visually-hidden"><?= esc(lang('Game.library')) ?></h1>
       <p class="library-lead"><?= esc(lang('Game.libraryIndexLead')) ?></p>
     </div>
     <a class="icon-btn library-close" href="<?= base_url('peta') ?>"
@@ -43,7 +43,7 @@ $badges = ['open' => 'book', 'locked' => 'lock', 'unavailable' => 'lock'];
       $state = (string) $region['library'];
       $title = lang('Game.libraryRegion', [$region['name']]);
       ?>
-      <li class="shelf-card is-<?= esc($state, 'attr') ?>">
+      <li class="shelf-card stage-box is-<?= esc($state, 'attr') ?>">
         <div class="shelf-cover" aria-hidden="true">
           <?php if (! empty($region['cover'])): ?>
             <img src="<?= esc($region['cover'], 'attr') ?>" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer">
@@ -51,7 +51,7 @@ $badges = ['open' => 'book', 'locked' => 'lock', 'unavailable' => 'lock'];
           <span class="shelf-badge is-<?= esc($state, 'attr') ?>"><?= icon($badges[$state] ?? 'lock') ?> <?= esc(lang('Game.libraryStatus_' . $state)) ?></span>
         </div>
 
-        <div class="shelf-body">
+        <div class="shelf-body stage-scroll">
           <span class="eyebrow"><?= esc(lang('Game.levelOrder', [$region['sequence']])) ?><?php if ($region['pages'] > 0): ?> · <?= esc(lang('Game.libraryPageCount', [$region['pages']])) ?><?php endif ?></span>
           <h2><?= esc($title) ?></h2>
 
