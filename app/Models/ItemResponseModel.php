@@ -80,7 +80,7 @@ class ItemResponseModel extends Model
     }
 
     /**
-     * Jumlah benar, dihitung hanya dari item yang scorable.
+     * Jumlah benar, dihitung hanya dari item yang scorable dan masih aktif.
      *
      * @return array{first_pass: int, final: int, scorable: int}
      */
@@ -93,6 +93,9 @@ class ItemResponseModel extends Model
             ->join('challenge_items ci', 'ci.id = ir.challenge_item_id')
             ->where('ir.challenge_attempt_id', $attemptId)
             ->where('ci.scorable', 1)
+            // Soal yang dinonaktifkan admin di tengah pengerjaan tidak dinilai lagi
+            // (ChallengeService::expectedItems()), jadi tidak ikut dihitung bintang
+            ->where('ci.is_active', 1)
             ->get()
             ->getRowArray();
 

@@ -140,15 +140,22 @@ export function mount(ctx) {
 
     const answers = cards.map((card) => ({ item_id: idOf(card), answer: { verdict: verdictOf(card) } }));
 
+    // Pilihan dibekukan selama /check berjalan (radio juga berubah lewat tombol panah)
+    const frozen = $$('input[type="radio"]:not(:disabled)', section);
+    const unfreeze = () => frozen.forEach((input) => { input.disabled = false; });
+    frozen.forEach((input) => { input.disabled = true; });
+
     ctx.setBusy(button, true);
     let result;
     try {
       result = await ctx.check(answers);
     } catch (error) {
+      unfreeze();
       ctx.setBusy(button, false);
       await ctx.report(error, { onNetwork: () => ctx.networkPause(button) });
       return;
     }
+    unfreeze();
     ctx.setBusy(button, false);
 
     for (const card of cards) {

@@ -26,7 +26,8 @@
  * `completion_reason`, dan `redirect`; klien hanya menampilkan penanda
  * kesempatan (●●○), modal yang sesuai, lalu pindah ke `redirect`.
  * POST /complete hanya cadangan bila respons selesai tanpa `redirect`
- * (endpoint itu idempoten).
+ * (endpoint itu idempoten). Pengerjaan sudah diubah tab lain atau request
+ * ganda (409 ATTEMPT_CHANGED) → ke `redirect` bila ada, selain itu muat ulang.
  *
  * Satu-satunya jalan keluar adalah tombol Keluar yang dikonfirmasi; tombol
  * Back browser meminta konfirmasi yang sama. Menutup tab tidak memunculkan
@@ -105,14 +106,26 @@ export async function bootChallenge() {
   }
 
   async function check(answers) {
+    // Waktu isian per percobaan: diambil sebelum request, jadi isian selama
+    // request berjalan sudah masuk hitungan percobaan berikutnya
+    const sent = new Map();
     const rows = answers.map((row) => {
       const times = inputTimes.get(row.item_id);
-      return times ? { ...row, first_input_ms: times.first, last_input_ms: times.last } : row;
+      if (!times) return row;
+      sent.set(row.item_id, times);
+      inputTimes.delete(row.item_id);
+      return { ...row, first_input_ms: times.first, last_input_ms: times.last };
     });
-    const result = await post('check', { answers: rows, client_event_id: uuid(), occurred_at: now() });
-    // Waktu isian per percobaan: percobaan berikutnya dihitung dari isian berikutnya
-    for (const row of answers) inputTimes.delete(row.item_id);
-    return result;
+    try {
+      return await post('check', { answers: rows, client_event_id: uuid(), occurred_at: now() });
+    } catch (error) {
+      // Gagal: waktunya dikembalikan untuk pengiriman berikutnya (first lama, last terbaru)
+      for (const [itemId, times] of sent) {
+        const newer = inputTimes.get(itemId);
+        inputTimes.set(itemId, { first: times.first, last: newer ? newer.last : times.last });
+      }
+      throw error;
+    }
   }
 
   /** Pindah ke layar hasil; pengerjaan sudah ditutup server. */
@@ -146,18 +159,26 @@ export async function bootChallenge() {
 
   /**
    * Galat aturan kesempatan dari server (mis. tab lain sudah memakai
-   * kesempatan terakhir): pengerjaan yang sudah selesai → layar hasilnya;
-   * petunjuk yang sudah tertutup → muat ulang agar tampilan ikut payload.
+   * kesempatan terakhir — TRIES_EXHAUSTED — atau sudah mengubah pengerjaan
+   * ini lebih dulu, termasuk request ganda/ulang — ATTEMPT_CHANGED):
+   * pengerjaan yang sudah selesai (`redirect`) → layar hasilnya; selain itu,
+   * juga ATTEMPT_CLOSED dan petunjuk yang sudah tertutup (CLUE_CLOSED) →
+   * muat ulang agar tampilan ikut payload. Muat ulang ini bukan meninggalkan
+   * tantangan: tanpa event `challenge_abandoned`.
    * @returns {Promise<boolean>} true bila galatnya sudah ditangani
    */
   async function ruleError(error) {
     if (!(error instanceof ApiError)) return false;
-    if (error.code === 'TRIES_EXHAUSTED') {
-      if (error.payload?.redirect) await leaveTo(error.payload.redirect);
-      else window.location.reload();
+    if (error.code === 'TRIES_EXHAUSTED' || error.code === 'ATTEMPT_CHANGED') {
+      if (error.payload?.redirect) {
+        await leaveTo(error.payload.redirect);
+      } else {
+        state.leaving = true;
+        window.location.reload();
+      }
       return true;
     }
-    if (error.code === 'CLUE_CLOSED') {
+    if (error.code === 'CLUE_CLOSED' || error.code === 'ATTEMPT_CLOSED') {
       state.leaving = true;
       window.location.reload();
       return true;

@@ -36,6 +36,7 @@ export function mount(ctx) {
   const placeholder = '?';
   const filled = new Map(); // itemId → chip kata
   let active = null;
+  let checking = false; // isian dibekukan selama /check berjalan
 
   const idOf = (node) => Number(node.dataset.item);
   const locked = (blank) => blank.classList.contains('is-correct');
@@ -72,6 +73,7 @@ export function mount(ctx) {
   };
 
   const place = (chip) => {
+    if (checking) return;
     const target = active && !locked(active) ? active : nextEmpty(blanks[blanks.length - 1]);
     if (!target) return;
 
@@ -97,7 +99,7 @@ export function mount(ctx) {
     blank.dataset.label = blank.getAttribute('aria-label') || '';
     blank.setAttribute('aria-pressed', 'false');
     blank.addEventListener('click', () => {
-      if (locked(blank)) return;
+      if (locked(blank) || checking) return;
       if (filled.has(idOf(blank))) release(blank);
       activate(blank);
       (words.find((chip) => !chip.disabled) || blank).focus();
@@ -150,14 +152,17 @@ export function mount(ctx) {
     const answers = blanks.map((blank) => ({ item_id: idOf(blank), answer: { text: answerOf(blank) } }));
 
     ctx.setBusy(button, true);
+    checking = true;
     let result;
     try {
       result = await ctx.check(answers);
     } catch (error) {
+      checking = false;
       ctx.setBusy(button, false);
       await ctx.report(error, { onNetwork: () => ctx.networkPause(button) });
       return;
     }
+    checking = false;
     ctx.setBusy(button, false);
 
     for (const blank of blanks) {

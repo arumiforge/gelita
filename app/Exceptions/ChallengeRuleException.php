@@ -51,6 +51,22 @@ final class ChallengeRuleException extends \RuntimeException
         return new self('CLUE_CLOSED', 409, 'Petunjuk ini sudah selesai.');
     }
 
+    /**
+     * Permintaan kalah balapan (409): tab lain atau permintaan yang dikirim
+     * ulang lebih dulu mengubah pengerjaan ini, jadi permintaan ini tidak
+     * diterapkan. Bila pengerjaannya sudah ditutup, `redirect` menunjuk
+     * layar hasilnya; selain itu klien memuat ulang.
+     */
+    public static function attemptChanged(?string $redirect = null): self
+    {
+        return new self(
+            'ATTEMPT_CHANGED',
+            409,
+            'Tantangan ini baru saja diperbarui dari tab atau permintaan lain.',
+            $redirect === null ? [] : ['redirect' => $redirect],
+        );
+    }
+
     /** Pengerjaan belum boleh ditutup: masih ada kesempatan dan belum semua benar (409). */
     public static function triesRemaining(): self
     {

@@ -448,6 +448,8 @@ Payload membawa `state` per soal: soal yang sudah benar → `{locked: true, answ
      (duration_ms = ms sejak petunjuk itu tampil)
 3. ChallengeService::submitAnswer() — SATU TRANSACTION:
      petunjuk sudah ditemukan/dilewati → 409 CLUE_CLOSED
+     baris jawaban diubah hanya bila try_count masih sama; ketukan bersamaan
+     yang kalah dibatalkan → 409 CLUE_CLOSED / ATTEMPT_CHANGED
      ref diterjemahkan server ke id soal (resolveObjectAnswer); item_id mentah
      dari klien tidak pernah dipakai sebagai jawaban
      benar → applyAnswer(): answered, is_correct = 1, solved_on_try, item_tries;

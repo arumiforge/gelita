@@ -159,7 +159,8 @@ export function mount(ctx) {
 
   const pick = async (object) => {
     if (busy || object.disabled) return;
-    const clue = clues[current];
+    const index = current; // hasil request selalu milik petunjuk yang aktif saat diketuk
+    const clue = clues[index];
     if (!clue) return;
 
     busy = true;
@@ -175,10 +176,10 @@ export function mount(ctx) {
     }
     busy = false;
 
-    if (Number.isFinite(Number(result.try_no))) triesUsed[current] = Number(result.try_no);
+    if (Number.isFinite(Number(result.try_no))) triesUsed[index] = Number(result.try_no);
 
     if (result.correct) {
-      found.add(current);
+      found.add(index);
       object.classList.add('is-found');
       object.disabled = true;
       object.setAttribute('aria-label', `${object.getAttribute('aria-label')} — ${ctx.t('huntFoundMark')}`);
@@ -189,7 +190,7 @@ export function mount(ctx) {
       shake(object);
       Sfx.play('wrong');
       ctx.tally({ addWrong: 1 });
-      if (result.clue_closed) skipped.add(current);
+      if (result.clue_closed) skipped.add(index);
     }
 
     // Semua petunjuk tertutup: server sudah menutup pengerjaan
@@ -250,9 +251,10 @@ export function mount(ctx) {
     if (object) pick(object);
   });
 
+  // Lompat diabaikan selama ketukan masih menunggu server
   ctx.section.addEventListener('click', (event) => {
     const jump = event.target.closest('.hunt-jump');
-    if (jump && !jump.disabled) goTo(Number(jump.dataset.clue));
+    if (jump && !jump.disabled && !busy) goTo(Number(jump.dataset.clue));
   });
 
   // Muat ulang di tengah tantangan: pulihkan temuan dan petunjuk yang dilewati

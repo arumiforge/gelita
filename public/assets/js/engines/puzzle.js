@@ -39,6 +39,7 @@ function mountArrange(ctx, wrap) {
   const grid = Number(board.dataset.grid) || Math.round(Math.sqrt(pieces.length)) || 3;
   let selected = null;
   let solved = false;
+  let checking = false; // susunan dibekukan selama /check berjalan
 
   const slotOrder = () => pieces
     .slice()
@@ -76,7 +77,7 @@ function mountArrange(ctx, wrap) {
   };
 
   const tap = (piece) => {
-    if (solved) return;
+    if (solved || checking) return;
     if (!selected) select(piece);
     else if (selected === piece) select(null);
     else {
@@ -112,7 +113,7 @@ function mountArrange(ctx, wrap) {
   pieces.forEach((piece) => { piece.draggable = true; });
   board.addEventListener('dragstart', (event) => {
     const piece = event.target.closest('.piece');
-    if (!piece || solved) return;
+    if (!piece || solved || checking) return;
     dragged = piece;
     piece.classList.add('is-dragging');
     event.dataTransfer.effectAllowed = 'move';
@@ -123,7 +124,7 @@ function mountArrange(ctx, wrap) {
   });
   board.addEventListener('drop', (event) => {
     const target = event.target.closest('.piece');
-    if (!dragged || !target) return;
+    if (!dragged || !target || checking) return;
     event.preventDefault();
     swap(dragged, target);
     select(null);
@@ -189,14 +190,17 @@ function mountArrange(ctx, wrap) {
     const order = slotOrder().map((piece) => Number(piece.dataset.piece));
 
     ctx.setBusy(button, true);
+    checking = true;
     let result;
     try {
       result = await ctx.check([{ item_id: itemId, answer: { order } }]);
     } catch (error) {
+      checking = false;
       ctx.setBusy(button, false);
       await ctx.report(error, { onNetwork: () => ctx.networkPause(button) });
       return;
     }
+    checking = false;
     ctx.setBusy(button, false);
 
     const detail = result.detail?.[itemId] ?? {};

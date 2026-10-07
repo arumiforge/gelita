@@ -69,6 +69,11 @@ class ChallengeController extends BaseGameController
             return redirect()->to(site_url('wilayah/' . $level->code))->with('error', lang('Game.challengeUnavailable'));
         }
 
+        // Pengerjaan lama ternyata sudah tuntas dan baru saja ditutup
+        if (isset($opened['redirect'])) {
+            return redirect()->to($opened['redirect']);
+        }
+
         return view('game/challenge/' . $engine, $this->hudData() + [
             'level'    => $level,
             'node'     => $node,
