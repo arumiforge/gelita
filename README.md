@@ -88,7 +88,7 @@ Di Windows, Laragon (PHP 8.3 + MySQL) memenuhi semua kebutuhan ini. Library fron
 
    - `migrate` menjalankan 29 migration (satu tabel per berkas, termasuk `ci_sessions`); jangan menjalankan `php spark session:migration`.
    - `DatabaseSeeder` mengisi daftar sekolah resmi, akun `admin`, pengaturan bawaan (indikator, rilis, studi), tiga wilayah, slot media, 12 tantangan dan 88 baris cerita, lalu `KontenKelas5Seeder` mengimpor Pustaka Kedu, bank soal kelas 5, dan 45 gambar contoh.
-   - `gelita:narration:import` memasang 100 rekaman narasi per bahasa sebagai audio **draft**. Setujui di panel: **Konten → Narasi → Setujui semua narasi draft** (ID dan EN).
+   - `gelita:narration:import` memasang 100 rekaman narasi per bahasa sebagai audio **draft**. Setujui di panel: **Rekaman narasi → Setujui semua rekaman Indonesia / Inggris**.
 
 4. Jalankan server pengembangan:
 
@@ -107,9 +107,9 @@ Langkah lengkap untuk kedua jalur (Linux: Nginx + PHP-FPM + cron; Windows: Larag
 1. `composer install --no-dev --optimize-autoloader`, salin `env` → `.env` dengan `CI_ENVIRONMENT = production`, isi database, `encryption.key`, `gelita.ipSalt`, dan `app.baseURL`. Web server mengarah ke folder `public/`.
 2. `php spark migrate` dengan akun migrasi `gelita_migrate` lewat `database_default_DSN` (DSN ditulis tanpa port); aplikasi sendiri memakai akun berhak DML saja.
 3. `GELITA_ADMIN_PASSWORD='…' php spark db:seed DatabaseSeeder`, dijalankan sebagai pengguna web server (mis. `www-data`) agar `public/assets/uploads/` dapat ditulis.
-4. `php spark gelita:narration:import`, lalu setujui narasi draft di **Konten → Narasi**.
+4. `php spark gelita:narration:import`, lalu setujui narasi draft di **Rekaman narasi**.
 5. `php spark gelita:content:verify`.
-6. Ganti gambar contoh dengan gambar asli di panel (**Media**). `php spark gelita:content:verify --siap-penelitian` harus lolos sebelum pengambilan data.
+6. Ganti gambar contoh dengan gambar asli di panel (**Gambar & suara**). `php spark gelita:content:verify --siap-penelitian` harus lolos sebelum pengambilan data.
 7. Sesudah uji coba dan sebelum pengambilan data penelitian: buat backup, lalu `php spark gelita:reset` dengan akun migrasi.
 
 Pembaruan kode berikutnya memakai `deploy/linux/deploy.sh` atau `deploy/windows/deploy.ps1` (menolak berjalan bila ada kelas aktif, backup, mode pemeliharaan, pull, composer, migrate, impor sekolah, bersihkan cache, naikkan versi aset, lalu membuka situs hanya bila `gelita:content:verify` lolos). Backup dan `gelita:retention:run` dijadwalkan harian.
@@ -207,7 +207,7 @@ Seluruh audio ikut di repositori dan dibangkitkan oleh [`tools/audio/`](tools/au
 
 - **Musik gamelan** (`public/assets/audio/music/`): `map`, `region`, `challenge`, komposisi dan sintesis orisinal.
 - **Efek suara** (`public/assets/audio/sfx/`): `click`, `correct`, `wrong`, `lock`, `shard`, `region-done`.
-- **Narasi** (`public/assets/audio/narasi/{id,en}/`): 100 rekaman per bahasa (88 baris naskah + 12 petunjuk Cari Objek), suara sintetis (TTS) yang tercatat sebagai `production_method = tts`. Dipasang dengan `php spark gelita:narration:import` dan disetujui di **Konten → Narasi**; rekaman pengisi suara dapat menggantikannya dengan nama berkas yang sama.
+- **Narasi** (`public/assets/audio/narasi/{id,en}/`): 100 rekaman per bahasa (88 baris naskah + 12 petunjuk Cari Objek), suara sintetis (TTS) yang tercatat sebagai `production_method = tts`. Dipasang dengan `php spark gelita:narration:import` dan disetujui di **Rekaman narasi**; rekaman pengisi suara dapat menggantikannya dengan nama berkas yang sama.
 
 Rincian, spesifikasi berkas, dan lisensi model suara ada di [`docs/audio.md`](docs/audio.md).
 

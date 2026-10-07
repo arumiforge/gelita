@@ -59,11 +59,11 @@ Baris `petunjuk-*` **tidak ada di naskah ini**: teksnya berasal dari bank soal, 
 
 Rekaman tidak perlu dipasang satu per satu. Selama nama berkasnya sama dengan kode baris (huruf besar/kecil tidak berpengaruh), GELITA menemukan barisnya sendiri. Kode wilayah dibaca dari tabel `levels`.
 
-**Daftar kerja pengisi suara.** Panel admin → **Konten → Narasi → Unduh daftar rekaman** menghasilkan XLSX berisi kode berkas, konteks, wilayah, tokoh, pose, efek, judul, teks ID, teks EN, dan status audio ID/EN setiap baris. Teksnya diambil dari basis data, jadi suntingan admin ikut terbawa.
+**Daftar kerja pengisi suara.** Panel admin → **Rekaman narasi → Unduh daftar rekaman (Excel)** menghasilkan XLSX berisi kode berkas, konteks, wilayah, tokoh, pose, efek, judul, teks ID, teks EN, dan status audio ID/EN setiap baris. Teksnya diambil dari basis data, jadi suntingan admin ikut terbawa.
 
 **Cara memasang rekaman** (pilih salah satu; keduanya memakai `App\Libraries\NarrationImporter`):
 
-1. **Unggah lewat panel.** Konten → Narasi → **Unggah narasi**: pilih bahasa, pilih banyak berkas sekaligus, lalu **Unggah sebagai draft**. Centang *Periksa nama saja* untuk mencocokkan nama tanpa menyimpan. Berkas disalin ke `public/assets/uploads/` dan ikut backup. Batas per unggahan mengikuti `upload_max_filesize`, `post_max_size`, dan `max_file_uploads` PHP (bawaan PHP 20 berkas); halaman itu menampilkan batas server yang berlaku.
+1. **Unggah lewat panel.** **Rekaman narasi → Unggah rekaman**: pilih bahasa, pilih banyak berkas sekaligus, lalu **Unggah sebagai draft**. Centang *Periksa nama saja* untuk mencocokkan nama tanpa menyimpan. Berkas disalin ke `public/assets/uploads/` dan ikut backup. Batas per unggahan mengikuti `upload_max_filesize`, `post_max_size`, dan `max_file_uploads` PHP (bawaan PHP 20 berkas); halaman itu menampilkan batas server yang berlaku.
 2. **Lewat folder.** Taruh berkas di `public/assets/audio/narasi/{id|en}/` (commit ke repositori, lalu deploy), kemudian jalankan:
 
    ```bash
@@ -85,7 +85,7 @@ Rekaman tidak perlu dipasang satu per satu. Selama nama berkasnya sama dengan ko
 - Dari folder, rekaman yang diunggah lewat panel dan lebih baru dari berkas folder tidak ditimpa.
 - Satu kode dengan beberapa berkas (mis. `.mp3` dan `.wav`) memakai satu berkas menurut urutan mp3, m4a, ogg, wav; sisanya dilaporkan ganda.
 
-**Menyetujui.** Rekaman draft belum terdengar pemain. Di halaman **Narasi** setiap baris punya pemutar kecil untuk ID dan EN beserta statusnya (belum ada / draft / disetujui), dan tautan **Sunting** ke baris itu di editor dialog. Setelah didengarkan, tombol **Setujui semua narasi draft ID/EN** menyetujui seluruh narasi draft satu bahasa sekaligus (dengan konfirmasi). Yang ikut hanya audio narasi naskah; audio lain seperti narasi kartu misi tetap disetujui satu per satu di halaman Audio. Persetujuan massal tercatat di audit log sebagai `audio_approve_bulk` beserta jumlahnya.
+**Menyetujui.** Rekaman draft belum terdengar pemain. Di halaman **Narasi** setiap baris punya pemutar kecil untuk ID dan EN beserta statusnya (belum ada / draft / disetujui), dan tautan **Sunting** ke baris itu di editor dialog. Setelah didengarkan, tombol **Setujui semua rekaman Indonesia / Inggris** menyetujui seluruh narasi draft satu bahasa sekaligus (dengan konfirmasi). Yang ikut hanya audio narasi naskah; audio lain seperti narasi kartu misi tetap disetujui satu per satu di halaman Audio. Persetujuan massal tercatat di audit log sebagai `audio_approve_bulk` beserta jumlahnya.
 
 ## Kamus pose dan efek
 

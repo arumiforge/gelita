@@ -1153,7 +1153,7 @@ Seluruh layar cerita bernarasi memakai **100 rekaman per bahasa**: 88 baris nask
  5. Laporan: baru, diganti, sama, dilewati, nama tidak dikenal (+ saran nama
     terdekat), gagal, baris naskah yang belum punya rekaman
  6. /admin/konten/narasi (NarrationController::index, NarrationCatalog): baris per
-    kelompok, kemajuan, dengarkan draft → "Setujui semua narasi draft" ID|EN
+    kelompok, kemajuan, dengarkan draft → "Setujui semua rekaman" ID|EN
     (POST /admin/konten/narasi/setujui) → NarrationCatalog::approveDrafts():
     hanya audio narasi berstatus draft pada bahasa itu (tertaut ke dialogues
     konteks naskah, berkunci audio.narasi.{locale}.*, atau dipilih sebagai
@@ -1162,7 +1162,7 @@ Seluruh layar cerita bernarasi memakai **100 rekaman per bahasa**: 88 baris nask
     maju sendiri setelah audio selesai
 ```
 
-Instalasi baru: `php spark gelita:narration:import`, lalu **Setujui semua narasi draft** untuk ID dan EN. Rekaman yang berubah kembali ke draft dan wajib didengar ulang sebelum tayang. Jenis berkas dibaca dari isinya: berkas yang bukan audio ditolak walau namanya `.mp3`. Narasi kartu misi dan audio lain tetap disetujui satu per satu di halaman Audio (FITUR 13).
+Instalasi baru: `php spark gelita:narration:import`, lalu **Setujui semua rekaman** untuk bahasa Indonesia dan Inggris. Rekaman yang berubah kembali ke draft dan wajib didengar ulang sebelum tayang. Jenis berkas dibaca dari isinya: berkas yang bukan audio ditolak walau namanya `.mp3`. Narasi kartu misi dan audio lain tetap disetujui satu per satu di halaman Audio (FITUR 13).
 
 ### Narasi petunjuk arena `cari`
 

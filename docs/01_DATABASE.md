@@ -613,7 +613,7 @@ Rekaman suara bertranskrip: narasi cerita, petunjuk Cari Objek, dan rekaman ungg
 | approved_at | DATETIME(6) | ya | NULL | |
 | version | VARCHAR(20) | tidak | `1` | |
 
-Tabel ini tanpa `created_at`/`updated_at`. Hanya rekaman `approved` dengan berkas aktif yang dikirim ke pemain (`audio_src()`). Rekaman narasi bawaan (TTS di `public/assets/audio/narasi/{id,en}/`, 100 per bahasa: 88 baris cerita + 12 petunjuk Cari Objek) didaftarkan `php spark gelita:narration:import` sebagai `draft`, lalu disetujui admin di panel **Konten → Narasi**. Importer menautkan rekaman ke `dialogues.audio_id_asset_id` / `audio_en_asset_id` dan, untuk petunjuk `petunjuk-{node}-NN`, ke `challenge_items.audio_prompt_id` / `audio_prompt_en_id`.
+Tabel ini tanpa `created_at`/`updated_at`. Hanya rekaman `approved` dengan berkas aktif yang dikirim ke pemain (`audio_src()`). Rekaman narasi bawaan (TTS di `public/assets/audio/narasi/{id,en}/`, 100 per bahasa: 88 baris cerita + 12 petunjuk Cari Objek) didaftarkan `php spark gelita:narration:import` sebagai `draft`, lalu disetujui admin di panel **Rekaman narasi**. Importer menautkan rekaman ke `dialogues.audio_id_asset_id` / `audio_en_asset_id` dan, untuk petunjuk `petunjuk-{node}-NN`, ke `challenge_items.audio_prompt_id` / `audio_prompt_en_id`.
 
 ### D. Data penelitian mentah
 

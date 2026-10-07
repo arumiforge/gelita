@@ -1776,7 +1776,7 @@ Durasi acuan dalam detik (ID / EN) diambil dari `qa-narasi.json`. "CER tinggi" m
 
 - Semua dibacakan Mbah Kedu, tanpa pose.
 - Arahan umum: jelas, ramah, sedikit lebih lambat; tekankan nama benda yang dicari; nada menantang yang menyenangkan. EN: *clear, friendly, slightly slower; stress the object's name; a playful, inviting challenge.*
-- Teksnya berasal dari bank soal (`prompt` butir `find_object` target). Teks terkini ada di daftar rekaman XLSX **Konten → Narasi**, karena admin dapat menyuntingnya.
+- Teksnya berasal dari bank soal (`prompt` butir `find_object` target). Teks terkini ada di daftar rekaman XLSX **Rekaman narasi**, karena admin dapat menyuntingnya.
 
 | Kode | Durasi | Kata yang ditekankan (ID / EN) |
 |---|---|---|
@@ -1796,8 +1796,8 @@ Nomor `NN` mengikuti urutan butir target aktif (`NarrationImporter`). Menonaktif
 1. Rekaman baru memakai nama berkas yang sama.
 2. Pasang dengan salah satu cara:
    - timpa berkas di `narasi/{id|en}/`, commit, deploy, lalu `php spark gelita:narration:import`;
-   - unggah di **Konten → Narasi → Unggah narasi**.
-3. Rekaman yang isinya berubah kembali ke **draft**. Dengarkan, lalu **Setujui semua narasi draft**.
+   - unggah di **Rekaman narasi → Unggah rekaman**.
+3. Rekaman yang isinya berubah kembali ke **draft**. Dengarkan, lalu **Setujui semua rekaman**.
 4. Pencatatan TTS:
    - **Suara manusia** otomatis tercatat sebagai rekaman sendiri, karena sha256-nya tidak ada di `produksi.json`.
    - **TTS dari mesin lain**: tambahkan `sha256` dan `voice_profile` (mesin, suara, pengolahan) ke `public/assets/audio/narasi/produksi.json` sebelum impor, agar tercatat `production_method = tts`. Data penelitian membedakan keduanya.
@@ -1833,7 +1833,7 @@ Nomor `NN` mengikuti urutan butir target aktif (`NarrationImporter`). Menonaktif
 
 ### 15.3 Narasi
 
-1. Unduh **daftar rekaman XLSX** dari **Konten → Narasi**: teks terkini dari database, termasuk suntingan admin. Atau pakai kartu narasi di katalog (teks repositori).
+1. Unduh **daftar rekaman XLSX** dari **Rekaman narasi**: teks terkini dari database, termasuk suntingan admin. Atau pakai kartu narasi di katalog (teks repositori).
 2. Rekam atau bangkitkan per baris dengan prompt §14.4. Satu berkas satu baris.
 3. Olah sesuai §14.1: potong, hening 0,3 detik, kenyaringan, MP3 mono 96 kbps dengan Xing.
 4. Beri nama `{kode}.mp3`, lalu pasang dan setujui (§14.7).

@@ -251,7 +251,7 @@ Data siswa untuk guru selalu dibatasi sekolahnya (lihat [Otorisasi](#otorisasi))
 | GET | `/admin/konten/narasi/unggah` | `NarrationController::uploadForm` | Form unggah banyak + laporan |
 | POST | `/admin/konten/narasi/unggah` | `NarrationController::upload` | Unggah banyak rekaman |
 | POST | `/admin/konten/narasi/impor-folder` | `NarrationController::importFolder` | Impor dari `public/assets/audio/narasi/{id\|en}/` |
-| POST | `/admin/konten/narasi/setujui` | `NarrationController::approveAll` | Setujui semua narasi draft satu bahasa |
+| POST | `/admin/konten/narasi/setujui` | `NarrationController::approveAll` | Setujui semua rekaman narasi draft satu bahasa |
 | GET | `/admin/konten/narasi/daftar-rekaman` | `NarrationController::recordingList` | Unduh daftar rekaman (XLSX) |
 | GET | `/admin/media` | `MediaController::index` | Gambar & video |
 | GET | `/admin/media/kelengkapan` | `MediaController::checklist` | Kelengkapan gambar & suara |

@@ -560,7 +560,7 @@ per bahasa: 88 baris cerita + 12 petunjuk Cari Objek).
 - Tabel ini tidak punya `is_active`. Audio hanya diputar bila `approval_status = approved` **dan**
   media induknya aktif; aturan itu ditegakkan helper `audio_src()`, yang mengembalikan NULL untuk
   rekaman lain. Rekaman hasil `gelita:narration:import` masuk sebagai draft dan disetujui di panel
-  (Konten → Narasi).
+  (menu Rekaman narasi).
 - `approvedFor($context, $locale)` — rekaman disetujui terbaru untuk satu konteks;
   `approvedForCharacter($characterCode, $locale)` — semua rekaman disetujui milik satu tokoh.
 - Rujukan ke rekaman: `dialogues.audio_id_asset_id` / `audio_en_asset_id`, `challenge_nodes.audio_intro_id` /

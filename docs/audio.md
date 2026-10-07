@@ -124,7 +124,7 @@ CER di sini lebih tinggi daripada salah dengar yang sebenarnya:
 - **Nama Jawa di narasi Inggris** ditulis Whisper dengan ejaan Inggris, misalnya *Kedu* → "Kudu".
 - **Baris pendek.** Satu kata yang meleset pada baris seperti *"Aku takut, Mbah…"* langsung membuat CER-nya puluhan persen.
 
-QA otomatis tidak menggantikan mendengarkan. Setujui narasi di **Konten → Narasi** setelah didengarkan. Baris dengan CER tertinggi layak didengarkan lebih dulu:
+QA otomatis tidak menggantikan mendengarkan. Setujui narasi di **Rekaman narasi** setelah didengarkan. Baris dengan CER tertinggi layak didengarkan lebih dulu:
 
 - Indonesia: `dialog-wonosobo-10`, `dialog-temanggung-07`, `tuntas-magelang-02`.
 - Inggris: `dialog-wonosobo-10`, `dialog-magelang-07`, `tuntas-magelang-03` (Whisper mendengar *Eight shards* sebagai "HRs" di keenam kandidat).
@@ -136,7 +136,7 @@ php spark gelita:narration:import --dry-run   # 100 baris per bahasa dikenali
 php spark gelita:narration:import             # audio draft, ditautkan ke naskah & petunjuk cari
 ```
 
-Lalu buka **Konten → Narasi**, dengarkan, dan tekan **Setujui semua narasi draft ID/EN**.
+Lalu buka **Rekaman narasi**, dengarkan, dan tekan **Setujui semua rekaman Indonesia / Inggris**.
 
 Narasi petunjuk Cari Objek butuh bank soal kelas 5 yang sudah diimpor saat instalasi (lihat [`08_DEPLOYMENT.md`](08_DEPLOYMENT.md)). Nomor `petunjuk-{node}-NN` mengikuti urutan target aktif tiap node `cari`.
 
@@ -144,7 +144,7 @@ Berkas yang sha256-nya tercantum di `produksi.json` tercatat `production_method 
 
 ### Mengganti dengan rekaman pengisi suara
 
-Rekaman baru cukup memakai nama berkas yang sama, lalu dipasang seperti biasa: timpa berkas di folder narasi lalu `gelita:narration:import`, atau unggah lewat **Konten → Narasi → Unggah narasi**. Karena isinya berbeda dari manifest, rekaman itu otomatis tercatat sebagai rekaman sendiri dan kembali berstatus draft. Arahan suara tiap tokoh ada di [`naskah-cerita.md`](naskah-cerita.md).
+Rekaman baru cukup memakai nama berkas yang sama, lalu dipasang seperti biasa: timpa berkas di folder narasi lalu `gelita:narration:import`, atau unggah lewat **Rekaman narasi → Unggah rekaman**. Karena isinya berbeda dari manifest, rekaman itu otomatis tercatat sebagai rekaman sendiri dan kembali berstatus draft. Arahan suara tiap tokoh ada di [`naskah-cerita.md`](naskah-cerita.md).
 
 ## Lisensi dan kredit
 
