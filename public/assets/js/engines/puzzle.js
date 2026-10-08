@@ -225,7 +225,7 @@ function mountArrange(ctx, wrap) {
       okTitle: ctx.t('puzzleOkTitle'),
       okText: captionText ? [ctx.t('puzzleOkText'), captionText] : ctx.t('puzzleOkText'),
       partialTitle: ctx.t('puzzleWrongTitle'),
-      partialText: wrongCount !== null ? ctx.t('puzzleWrongText', wrongCount) : ctx.t('puzzleWrongPlain'),
+      partialText: wrongCount !== null ? ctx.t(wrongCount === 1 ? 'puzzleWrongTextOne' : 'puzzleWrongText', wrongCount) : ctx.t('puzzleWrongPlain'),
       exhaustedText: captionText ? [ctx.t('triesExhaustedPuzzle'), captionText] : ctx.t('triesExhaustedPuzzle'),
       beforeExhausted: assemble,
     });

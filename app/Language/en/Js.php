@@ -66,12 +66,14 @@ return [
     'puzzleOkText'     => 'Every piece is in its place.',
     'puzzleWrongTitle' => 'Not complete yet',
     'puzzleWrongText'  => 'The picture is not complete yet — {0} pieces are still in the wrong place. Pieces marked ✗ are misplaced.',
+    'puzzleWrongTextOne' => 'The picture is not complete yet — 1 piece is still in the wrong place. Pieces marked ✗ are misplaced.',
     'puzzleWrongPlain' => 'The picture is not complete yet. Swap the pieces again.',
 
     // Fill in the blanks
     'blankFilled'     => '{0} filled: {1}',
     'blankEmptyTitle' => 'Some blanks are empty',
     'blankEmptyText'  => '{0} blanks are still empty. Fill every blank first.',
+    'blankEmptyTextOne' => '1 blank is still empty. Fill every blank first.',
     'blankOkTitle'    => 'Every sentence is correct!',
     'blankOkText'     => 'You filled in every blank correctly.',
     'blankWrongTitle' => 'Not all correct yet',
@@ -79,8 +81,10 @@ return [
 
     // True / false
     'readText'         => 'Read the text',
+    'close'            => 'Close',
     'cardsEmptyTitle'  => 'Some cards are empty',
     'cardsEmptyText'   => 'You have not decided on {0} cards yet.',
+    'cardsEmptyTextOne' => 'You have not decided on 1 card yet.',
     'cardsOkTitle'     => 'Every card is right!',
     'cardsOkText'      => 'You judged every statement correctly.',
     'cardsWrongTitle'  => 'Not all right yet',

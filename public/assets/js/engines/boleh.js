@@ -13,27 +13,22 @@
  * Muat ulang: pernyataan dengan `items[].state.locked` dipulihkan dengan
  * pilihan siswa sendiri, bertanda benar, dan terkunci.
  *
- * Teks bacaan: pada layar sempit dilipat; judulnya menjadi tombol
- * "Baca teks" yang menempel di atas.
+ * Panggung 16:9 (Dok 3 §5.2): bacaan di kolom kiri yang bergulir sendiri,
+ * pernyataan di kolom kanan; tidak ada lagi cabang layar sempit. Gambar
+ * pernyataan (192 × 144 dp) dapat diketuk untuk diperbesar 640 × 480 dp
+ * (core/lightbox.js, event `overlay_opened` = `statement_image`).
  */
 import { $, $$, el, scrollToCenter } from '../core/dom.js';
+import { createLightbox } from '../core/lightbox.js';
+import { overlayOpened } from '../core/device.js';
 import { showModal } from '../core/modal.js';
 import { Sfx } from '../core/audio.js';
 
 const ERROR_MS = 2600;
 
-function initPassages(section, t) {
+function initPassages(section) {
   const passages = $$('details.passage', section);
   if (!passages.length) return;
-
-  if (window.matchMedia('(max-width: 640px)').matches) {
-    passages.forEach((passage) => {
-      passage.open = false;
-      passage.classList.add('is-folded');
-      const title = $('.passage-title', passage);
-      if (title && !$('.passage-read', title)) title.append(el('span', { class: 'passage-read' }, t('readText')));
-    });
-  }
 
   // Label "Berdasarkan Teks A" membuka dan menggulir ke teks bacaannya
   section.addEventListener('click', (event) => {
@@ -48,13 +43,30 @@ function initPassages(section, t) {
   });
 }
 
+/** Gambar pernyataan: ketuk untuk perbesar 640 × 480 dp di dalam panggung. */
+function initImageZoom(section, ctx) {
+  const buttons = $$('.card-image[data-zoom]', section);
+  if (!buttons.length) return;
+  const open = createLightbox({ closeLabel: ctx.t('close'), variant: 'card' });
+  if (!open) return;
+
+  for (const button of buttons) {
+    button.addEventListener('click', () => {
+      const card = button.closest('.verdict-card');
+      open(button.dataset.zoom, $('.card-text', card)?.textContent.trim() || '', $('.card-text', card)?.textContent.trim() || '');
+      overlayOpened('statement_image', { levelId: ctx.levelId ?? null });
+    });
+  }
+}
+
 export function mount(ctx) {
   const section = ctx.section;
   const cards = $$('.verdict-card', section);
   const button = $('#btn-check', section);
   if (!cards.length || !button) return;
 
-  initPassages(section, ctx.t);
+  initPassages(section);
+  initImageZoom(section, ctx);
 
   const idOf = (card) => Number(card.dataset.item);
   const verdictOf = (card) => $('input[type="radio"]:checked', card)?.value ?? null;
@@ -132,7 +144,7 @@ export function mount(ctx) {
       await showModal({
         type: 'info',
         title: ctx.t('cardsEmptyTitle'),
-        text: ctx.t('cardsEmptyText', missing.length),
+        text: ctx.t(missing.length === 1 ? 'cardsEmptyTextOne' : 'cardsEmptyText', missing.length),
       });
       $('input[type="radio"]', missing[0])?.focus();
       return;

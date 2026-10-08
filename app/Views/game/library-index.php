@@ -43,7 +43,7 @@ $badges = ['open' => 'book', 'locked' => 'lock', 'unavailable' => 'lock'];
       $state = (string) $region['library'];
       $title = lang('Game.libraryRegion', [$region['name']]);
       ?>
-      <li class="shelf-card stage-box is-<?= esc($state, 'attr') ?>">
+      <li class="shelf-card is-<?= esc($state, 'attr') ?> stage-box">
         <div class="shelf-cover" aria-hidden="true">
           <?php if (! empty($region['cover'])): ?>
             <img src="<?= esc($region['cover'], 'attr') ?>" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer">

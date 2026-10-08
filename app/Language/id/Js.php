@@ -67,12 +67,14 @@ return [
     'puzzleOkText'     => 'Semua keping sudah di tempatnya.',
     'puzzleWrongTitle' => 'Belum utuh',
     'puzzleWrongText'  => 'Gambarnya belum utuh, masih ada {0} keping yang keliru. Keping bertanda ✗ belum di tempatnya.',
+    'puzzleWrongTextOne' => 'Gambarnya belum utuh, masih ada 1 keping yang keliru. Keping bertanda ✗ belum di tempatnya.',
     'puzzleWrongPlain' => 'Gambarnya belum utuh. Tukar lagi kepingnya, ya.',
 
     // Rumpang
     'blankFilled'     => '{0} diisi: {1}',
     'blankEmptyTitle' => 'Masih ada yang kosong',
     'blankEmptyText'  => 'Ada {0} kotak yang belum diisi. Isi semua kotak dulu, ya.',
+    'blankEmptyTextOne' => 'Ada 1 kotak yang belum diisi. Isi semua kotak dulu, ya.',
     'blankOkTitle'    => 'Semua kalimat benar!',
     'blankOkText'     => 'Kamu mengisi semua bagian rumpang dengan tepat.',
     'blankWrongTitle' => 'Belum semuanya tepat',
@@ -80,8 +82,10 @@ return [
 
     // Boleh
     'readText'         => 'Baca teks',
+    'close'            => 'Tutup',
     'cardsEmptyTitle'  => 'Masih ada kartu kosong',
     'cardsEmptyText'   => 'Ada {0} kartu yang belum kamu tentukan.',
+    'cardsEmptyTextOne' => 'Ada 1 kartu yang belum kamu tentukan.',
     'cardsOkTitle'     => 'Semua kartu tepat!',
     'cardsOkText'      => 'Kamu menilai semua pernyataan dengan tepat.',
     'cardsWrongTitle'  => 'Belum semuanya tepat',

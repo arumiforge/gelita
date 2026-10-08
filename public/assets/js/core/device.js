@@ -5,10 +5,9 @@
  *                          langkah 3 pendaftaran (ukuran layar, sentuh,
  *                          Client Hints navigator.userAgentData, …). Server
  *                          mengurainya bersama User-Agent (DeviceProfile).
- *   initScreenTracking() → event `viewport_changed` (saat halaman dibuka dan
- *                          setiap ukuran/orientasi berubah; debounce 1 detik,
- *                          paling sering satu event per 5 detik) dan
- *                          `page_hidden` / `page_visible`.
+
+ *   (`viewport_changed` pindah ke core/stage.js dan `page_hidden`/`page_visible`
+ *   ke core/events.js, Dok 3 §7.)
  *   trackReading()       → event `reading_progress` saat panel bacaan
  *                          digulir melewati 25/50/75/100 %.
  *   overlayOpened()      → event `overlay_opened`.
@@ -18,7 +17,6 @@
 import { $$ } from './dom.js';
 import { emit } from './events.js';
 
-const ROTATE_QUERY = '(orientation: portrait) and (pointer: coarse)';
 const DEVICE_JSON_MAX = 4000;
 
 export async function deviceSignals() {
@@ -79,70 +77,21 @@ export function overlayOpened(overlay, extra = {}) {
 }
 
 /**
- * Kode layar Dok 1 §12.4 dari <body data-screen-code> (dirender layout dengan
- * resolver yang sama dengan screen_viewed di server). Pustaka terkunci
- * dikenali dari halamannya, seperti di ScreenViewFilter.
- */
-const screenName = () => {
-  const code = document.body?.dataset.screenCode || null;
-  return code === 'library' && document.querySelector('[data-screen="library-locked"]') ? 'library_locked' : code;
-};
-
-export function initScreenTracking() {
-  const rotate = window.matchMedia ? window.matchMedia(ROTATE_QUERY) : null;
-  let timer = null;
-  let lastSent = 0;
-  let lastKey = '';
-
-  const send = () => {
-    timer = null;
-    const payload = {
-      w: innerWidth,
-      h: innerHeight,
-      orientation: screen.orientation?.type || (innerWidth >= innerHeight ? 'landscape' : 'portrait'),
-      rotate_gate: Boolean(rotate?.matches),
-    };
-    const key = JSON.stringify(payload);
-    if (key === lastKey) return;
-    const wait = 5000 - (Date.now() - lastSent);
-    if (lastSent && wait > 0) {
-      timer = setTimeout(send, wait);
-      return;
-    }
-    lastKey = key;
-    lastSent = Date.now();
-    emit('viewport_changed', { payload });
-  };
-
-  const schedule = () => {
-    if (timer) clearTimeout(timer);
-    timer = setTimeout(send, 1000);
-  };
-
-  send();
-  window.addEventListener('resize', schedule);
-  screen.orientation?.addEventListener?.('change', schedule);
-  rotate?.addEventListener?.('change', schedule);
-
-  document.addEventListener('visibilitychange', () => {
-    emit(document.visibilityState === 'hidden' ? 'page_hidden' : 'page_visible', { payload: { screen: screenName() } });
-  });
-}
-
-/**
  * Batas gulir panel bacaan (rumpang / benar–salah), masing-masing sekali per
  * pengerjaan. Panel yang tidak dapat digulir dianggap terbaca 100 % saat
  * tampil di layar.
  */
 export function trackReading(section, refs = {}) {
-  const panels = $$('.rumpang-reading, details.passage .passage-content, .passage-body', section)
-    .filter((node, index, list) => !list.some((other) => other !== node && other.contains(node)));
+  // Panel bacaan bergulir di panggung 16:9: bacaan rumpang, daftar kalimat,
+  // dan kolom bacaan Benar atau Salah (#reading-panel, .stage-scroll)
+  const panels = $$('.rumpang-reading, .challenge-rumpang .sentences, .boleh-passages', section);
   if (!panels.length) return;
 
   const marks = [25, 50, 75, 100];
 
   panels.forEach((panel) => {
-    const passageId = Number(panel.closest('[data-passage]')?.dataset.passage) || null;
+    const single = $$('[data-passage]', panel);
+    const passageId = Number((single.length === 1 ? single[0] : panel.closest('[data-passage]'))?.dataset.passage) || null;
     const reached = new Set();
 
     const check = () => {
@@ -151,9 +100,7 @@ export function trackReading(section, refs = {}) {
       if (scrollable) {
         percent = ((panel.scrollTop + panel.clientHeight) / panel.scrollHeight) * 100;
       } else {
-        const rect = panel.getBoundingClientRect();
-        const visible = Math.min(rect.bottom, innerHeight) - Math.max(rect.top, 0);
-        percent = rect.height > 0 ? ((Math.max(0, rect.top < 0 ? -rect.top : 0) + Math.max(0, visible)) / rect.height) * 100 : 0;
+        percent = 100;
       }
       for (const mark of marks) {
         if (percent + 0.5 >= mark && !reached.has(mark)) {
@@ -164,7 +111,6 @@ export function trackReading(section, refs = {}) {
     };
 
     panel.addEventListener('scroll', check, { passive: true });
-    window.addEventListener('scroll', check, { passive: true });
     setTimeout(check, 500);
   });
 }
