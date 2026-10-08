@@ -309,8 +309,9 @@ for (const size of SIZES) {
       if (name === 'tuntas' || name === 'penutup') { await page.click('.narrator-tap-btn').catch(() => {}); await page.waitForTimeout(1200); }
       console.log(`- ${name} (${page.url().replace(BASE, '/')})`);
       await check(page, name, size);
-      if (name === 'pustaka' && await page.$('.book-zoom')) {
-        await page.click('.book-zoom');
+      const zoom = name === 'pustaka' ? page.locator('.slide:not([hidden]) .book-zoom:visible').first() : null;
+      if (zoom && await zoom.count()) {
+        await zoom.click().catch(() => {});
         await page.waitForTimeout(1000);
         await check(page, 'pustaka-lightbox', size);
         await page.keyboard.press('Escape');
