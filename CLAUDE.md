@@ -53,7 +53,7 @@ Gambaran umum ada di `README.md`, rincian di `docs/01`–`08`. Ringkasan berikut
   `ContentRepository` meng-cache isi; panggil `flush()` sesudah mengubah isi.
 - **Klien tantangan.** `game/challenge.js` adalah kerangka bersama: `check`/`submit`, `ruleError`, penanda kesempatan, waktu isian, dan `state.leaving` agar tidak ada `challenge_abandoned` palsu. Engine ada di `engines/{puzzle,rumpang,boleh,cari}.js`.
 - **Event penelitian.** `EventService` dan tabel `game_event_logs`. Event `screen_viewed`, `challenge_tries_exhausted`, dan `clue_failed` hanya boleh ditulis server.
-- **Perintah spark** (`app/Commands`): `gelita:reset`, `gelita:bank:import`, `gelita:content:verify`, `gelita:mockups`, `gelita:narration:import`, `gelita:media:scan`, `gelita:retention:run`, `gelita:schools:import`, `gelita:staff:password`, `gelita:library:thumbnails`.
+- **Perintah spark** (`app/Commands`): `gelita:reset`, `gelita:bank:import`, `gelita:content:verify`, `gelita:mockups`, `gelita:narration:import`, `gelita:media:scan`, `gelita:retention:run`, `gelita:schools:import`, `gelita:staff:password`, `gelita:library:thumbnails`, `gelita:simulasi` (siswa simulasi `sim_*` untuk pengembangan, FITUR 19 di `docs/07`).
 
 ### Uji dan jebakan yang sudah diketahui
 

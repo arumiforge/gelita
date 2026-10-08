@@ -10,6 +10,7 @@ Keputusan dan penyimpangan dari ketiga dokumen perombakan, beserta alasannya dan
 | Dok 2 | Selesai, di `main` (§2–§12). Uji manual §13.2 dan ringkasan §2–§9 di bagian "Dok 2 — server, bank soal, dan uji manual §13" |
 | Pembersihan kompatibilitas lama | Selesai, di `main` (PR #41): instalasi baru saja, migration digabung, dokumentasi ditulis ulang. Lihat bagian "Pembersihan — instalasi baru tanpa kompatibilitas lama" |
 | Perbaikan sebelum Dok 3 | Temuan tinjauan Dok 2 (balapan permintaan, Cari Objek, bintang): branch sementara, PR ke `main`. Lihat bagian "Perbaikan sebelum Dok 3 — temuan tinjauan Dok 2" |
+| QA PR #42 dan data simulasi | `gelita:simulasi` di `main` (PR #46). Uji peramban PR #42 dan perbaikan `check_no`/`state.leaving`: branch `qa-simulasi`. Lihat bagian "QA PR #42 dan data simulasi" |
 | Dok 3 | Sedang dikerjakan paralel. Data mentah, ekspor, dan PDF (§8.4, §9, §10): branch `dok3-data-mentah`, PR #45, lihat bagian "Dok 3 — data mentah dan ekspor". **§13 (skrip `upgrade-kelas5`) tidak dikerjakan** dan §11 sebagian sudah selesai; lihat "Untuk sesi Dok 3" di bagian pembersihan |
 
 Sisa Dok 2:
@@ -618,3 +619,98 @@ Bentuk hasil `page()` (dipertahankan):
 - `vendor/bin/phpunit --no-coverage`: **463 test hijau**. Sebelumnya 451. Ada 16 uji baru (9 `AdminTableTest`, 7 `RawExportTest`), sementara `ExportLabelsTest`/`ExportRulesTest` ditulis ulang.
 - Pembuatan PDF lewat mPDF diuji ujung ke ujung di `RawExportTest`.
 - Belum diuji terhadap MariaDB atau di peramban. Query `UNION` lembar Bantuan dan pengurutan memakai Query Builder (identifier diberi prefix dan quote), tetapi baru dijalankan di SQLite.
+
+---
+
+## QA PR #42 dan data simulasi
+
+Branch `qa-simulasi`, dikerjakan 7–8 Oktober 2026. `gelita:simulasi` dan `SimulationTest` sudah masuk `main` lewat PR #46. Uji peramban, perbaikan `check_no`, dan dokumentasi menyusul di PR berikutnya dari branch yang sama, yang dibuat ulang dari `main`.
+
+### Lingkungan uji
+
+- MariaDB 10.11 lokal dengan instalasi baru menurut `docs/08_DEPLOYMENT.md`: akun `gelita_app`/`gelita_migrate`, `migrate`, `db:seed DatabaseSeeder`, lalu `gelita:narration:import`.
+- Aplikasi dijalankan dengan `PHP_CLI_SERVER_WORKERS=4 php spark serve`. Tanpa variabel itu server pengembangan PHP hanya satu proses, sehingga request tidak pernah bersamaan.
+- Peramban: Chromium dari `/opt/pw-browsers` lewat Playwright 1.56.
+
+### Uji peramban PR #42 (`tools/qa/challenge-races.mjs`)
+
+```bash
+PHP_CLI_SERVER_WORKERS=4 php spark serve
+PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers node tools/qa/challenge-races.mjs            # semua
+PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers node tools/qa/challenge-races.mjs --only=race # freeze, timing, cari, reload, race
+```
+
+Skrip mendaftarkan siswa baru lewat formulir 3 langkah untuk setiap kelompok uji. Ia membaca `item_tries` dan `game_event_logs` lewat `QA_MYSQL` (bawaan `mysql -uroot gelita`). Selama uji, `unlock_mode` studi aktif disetel `free` agar tantangan mana pun bisa dibuka; nilainya dipulihkan di akhir. Respons diperlambat dengan menahan request di `page.route` sampai pemeriksaan selesai. Hasil terakhir: **54/54 pemeriksaan lolos** di MariaDB, sesudah kedua perbaikan di bawah.
+
+1. **Isian beku selama "Cek jawabanku"** — lolos.
+   - Susun Gambar: ketuk dua keping dan seret keping selama `/check` tidak mengubah urutan.
+   - Isi Rumpang: ketuk kotak terisi dan chip kata tidak mengubah isian.
+   - Benar atau Salah: semua radio nonaktif, dan klik serta tombol panah diabaikan.
+   - Di ketiganya, jawaban di layar sesudah hasil sama dengan `item_tries.answer_json` yang dinilai server, dan jawaban terkirim sama dengan layar sebelum cek.
+2. **Waktu isian** — lolos. `first_input_ms`/`last_input_ms` terkirim untuk setiap soal yang disentuh, dan tersimpan di `item_tries` persis sama, dengan `first ≤ last`.
+3. **Cari Objek** — lolos.
+   - Tombol lompat petunjuk yang diketuk selama ketukan menunggu server diabaikan; teks petunjuk tetap.
+   - Request membawa `item_id` petunjuk yang aktif saat diketuk, dan `item_tries` mencatatnya ke petunjuk itu.
+   - Sesudah respons, lompat berfungsi lagi.
+4. **Muat ulang tanpa `challenge_abandoned` palsu** — lolos.
+   - Respons tiruan `TRIES_EXHAUSTED`, `ATTEMPT_CHANGED`, dan `ATTEMPT_CLOSED` pada `/check`, serta `CLUE_CLOSED` dan `ATTEMPT_CHANGED` pada `/responses`: halaman dimuat ulang tanpa event.
+   - Dua tab sungguhan: tab B menghabiskan kesempatan, lalu cek tab A dijawab `TRIES_EXHAUSTED` + `redirect`. Tab A pindah ke layar hasil tanpa event.
+   - Kontrol: menutup tab di tengah tantangan tetap mencatat `challenge_abandoned` (`pagehide`).
+5. **Dua tab atau perangkat mengirim cek bersamaan** — lolos, 5 putaran.
+   - Dua perangkat (dua konteks peramban, dua session PHP, siswa yang sama): request ditahan lalu dilepas serentak. Pada cek ke-1, satu berlaku dan yang lain `ATTEMPT_CHANGED`. Pada cek ke-3, satu menutup dan yang lain `TRIES_EXHAUSTED`.
+   - Database: `MAX(try_no) = 3`, satu `challenge_checked` per `check_no`, dan satu `challenge_completed`.
+
+### Temuan dan perbaikan
+
+Sesi panggung (PR #48) sudah digabung sebelum perbaikan ini, jadi `challenge.js` boleh diubah di sini.
+
+1. **Cek dari tab lama dihitung sebagai cek baru.**
+   - Penyebab: dua tab di peramban yang sama memakai satu session PHP. Handler session MySQLi mengunci session (`GET_LOCK`), jadi request kedua tidak pernah bersamaan dengan yang pertama. Ia tiba sesudah cek tab lain di-commit, dan UPDATE bersyarat PR #42 menerimanya sebagai cek berikutnya dengan jawaban dari tampilan usang.
+   - Data tidak rusak (tidak ada `try_no` 4 maupun penutupan ganda), tetapi siswa kehilangan satu kesempatan tanpa melihat hasil cek sebelumnya. Kasus kiriman ulang berurutan di butir 1 "Perbaikan sebelum Dok 3" sama.
+   - Perbaikan server: `/check` menerima `check_no` opsional, yaitu nomor cek menurut layar klien. Bila tidak sama dengan `check_count + 1`, request dibalas `409 ATTEMPT_CHANGED` tanpa tulisan apa pun (`ChallengeService::submitCheck()`, uji `TryLimitTest::testStaleCheckNumberIsRejected`). Tanpa `check_no`, perilakunya sama seperti sebelumnya.
+   - Perbaikan klien: `challenge.js` mengirim `check_no = checksUsed + 1`. `checksUsed` diambil dari `tries_used`, lalu dari `check_count` respons terakhir.
+   - Hasil uji peramban: dua tab → tab lama `ATTEMPT_CHANGED` lalu memuat ulang.
+2. **Menutup tab saat modal hasil akhir masih tampil menulis `challenge_abandoned`.**
+   - Modal "Kesempatanmu sudah habis" atau "Hebat!" tampil sebelum `finish()` menyetel `state.completed`. Menutup tab pada saat itu mengirim `challenge_abandoned {via: pagehide, attempt_open: true}` untuk pengerjaan yang sudah `completed`.
+   - Perbaikan: `check()` dan `submit()` menyetel `state.leaving` begitu respons membawa `completed`.
+   - Hasil uji peramban: 0 event.
+
+### Data simulasi (`gelita:simulasi`)
+
+Rincian pemakaian ada di FITUR 19 `docs/07_FEATURE_INTEGRATION.md`. Keputusan:
+
+- **Perintah spark, bukan seeder.**
+  - Opsinya (`--siswa`, `--seed`, `--mulai`) dan penolakannya cocok dengan pola perintah GELITA lain (`CliOptions`, `db_sync_timezone()`).
+  - Seeder `DatabaseSeeder` dipakai untuk instalasi baru, padahal simulasi tidak boleh ikut ke sana.
+- **Layanan, bukan controller.**
+  - Simulasi memanggil layanan yang dipanggil controller, dengan input yang disusun seperti controller.
+  - Event yang ditulis controller atau filter (`screen_viewed`, `intro_completed`, `library_opened`, `feedback_submitted`) dan baris `participant_feedback` ditulis dengan urutan panggilan yang sama, karena tidak ada layanannya.
+  - `SessionService` membutuhkan session PHP. Di CLI dipakai session PHP bawaan tanpa cookie di folder sementara, dimulai lagi sesudah `logout()`.
+- **Jam simulasi (`SimClock`).**
+  - Setiap langkah dijalankan pada jam saat ini. Sesudahnya, kolom waktu baris milik siswa itu yang nilainya ≥ penanda awal langkah digeser ke jam simulasi. Baris langkah sebelumnya sudah berada di masa lalu, jadi tidak tersentuh.
+  - Penanda diambil dari waktu lokal maupun UTC (CURRENT_TIMESTAMP SQLite berzona UTC).
+  - Event server dalam satu langkah diberi jarak 20 ms agar urutan `occurred_at` sama dengan urutan tulis.
+  - Hanya `duration_ms` pengerjaan dan sesi yang dihitung ulang dari jam simulasi. Ini satu-satunya UPDATE di luar layanan, dan dicatat di FITUR 19.
+- **Variasi soal berbenih.**
+  - `ChallengeItemModel::pickVariant()` kini memanggil `randomIndex()` (bawaan `random_int`, perilaku produksi tidak berubah).
+  - `SeededItemModel` menimpanya, disuntikkan lewat `Factories::injectMock`, lalu `Factories::reset('models')` di akhir.
+  - Uji `testSameSeedGivesSameData` membandingkan sidik isi dua kali jalan, dan dicek juga di MariaDB.
+- **"Studi aktif berstatus berjalan" ditafsirkan sebagai studi aktif yang sudah berisi sesi milik siswa selain `sim_*`.**
+  - Status studi hanya `draft`/`active`/`closed`, dan pendaftaran membutuhkan studi `active`. Kalau perintah menolak setiap studi `active`, ia tidak bisa berjalan sama sekali.
+  - Yang dijaga adalah data simulasi tidak bercampur dengan data penelitian.
+  - **Perlu konfirmasi pemilik** bila yang dimaksud penanda lain.
+- **Nama pengguna `sim_NNN`, bukan `sim-NNN`.** Aturan `valid_username` hanya menerima `[a-z0-9._]`.
+- **Sekolah lewat nama ketikan.**
+  - Siswa Jawa Tengah mencentang "Sekolahku tidak ada di daftar". Hasilnya entri sekolah "belum terverifikasi" bernama "Sekolah Simulasi …" sehingga mudah dikenali; siswa simulasi tidak menempel ke sekolah resmi (NPSN).
+  - Satu sekolah DIY menguji jalur provinsi tanpa direktori.
+- **Data yang tidak terisi di dunia uji SQLite.** `GradeFiveWorld` tidak berisi dialog dan Pustaka, jadi `dialogue_advanced`/`library_page_viewed` hanya diperiksa di MariaDB.
+- **Kinerja.** 40 siswa di MariaDB lokal ±1 menit (±390 pengerjaan, ±10.000 event).
+
+### Pengujian
+
+- `vendor/bin/phpunit --no-coverage`: **482 test hijau**, termasuk 6 `SimulationTest` dan 1 baru di `TryLimitTest`.
+- `tools/qa/challenge-races.mjs` di MariaDB 10.11: 54/54.
+- `gelita:simulasi --siswa=40` di MariaDB:
+  - tidak ada kolom waktu siswa simulasi yang tersisa di jam dinding;
+  - `answer_selected` jatuh di antara pembukaan dan cek;
+  - dua kali jalan dengan `--seed=7` menghasilkan sidik isi yang sama.

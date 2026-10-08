@@ -1439,6 +1439,54 @@ Sesudah reset, ganti gambar contoh dengan gambar asli (FITUR 12b) dan pastikan `
 
 ---
 
+## FITUR 19: Data Simulasi Siswa (`gelita:simulasi`)
+
+Hanya untuk pengembangan dan uji, misalnya menguji tabel panel, data mentah, dan ekspor dengan isi yang realistis. Perintah ini membuat siswa simulasi dengan riwayat bermain lengkap. Semua baris ditulis lewat jalur kode sungguhan, tanpa INSERT langsung, jadi bentuknya persis seperti data siswa asli. Logika ada di `App\Libraries\Simulation\Simulator`, command-nya `App\Commands\Simulation`.
+
+```bash
+php spark gelita:simulasi                          # 12 siswa, seed 2026
+php spark gelita:simulasi --siswa=40 --seed=7      # 40 siswa baru, nomor melanjutkan yang sudah ada
+php spark gelita:simulasi --mulai=2026-09-07       # hari sekolah pertama (paling lambat 14 hari lalu)
+```
+
+**Jalur yang dipakai:**
+- Pendaftaran 3 langkah: isian dan metrik sandi disusun seperti `RegisterController`, lalu dikirim ke `SessionService::registerAndStart()`.
+- Masuk, keluar, sesi baru, reset sandi oleh guru, dan ganti sandi: `SessionService`.
+- Tantangan: `ChallengeService` (`openNode`, `submitCheck`, `submitAnswer`, `useHint`, `abandonAttempt`), dengan bentuk jawaban yang sama seperti `ChallengeApiController`.
+- Event klien: `EventService::ingest()` dengan amplop `core/events.js`. Audio: `EventService::recordAudio()`.
+- Event yang ditulis controller atau filter (`screen_viewed`, `intro_completed`, `library_opened`, `feedback_submitted` + `participant_feedback`) memakai urutan panggilan yang sama dengan `ScreenViewFilter`, `GateController`, `LibraryController`, dan `ReflectionController`.
+
+**Isi:**
+- Nama pengguna `sim_001`, `sim_002`, …; nama tampilan "… Simulasi NNN".
+- Empat sekolah "Sekolah Simulasi Temanggung/Magelang/Wonosobo" (Jawa Tengah, lewat "Sekolahku tidak ada di daftar") dan "Sekolah Simulasi Yogyakarta" (DIY).
+- Semua siswa simulasi memakai sandi `Gelita#Sim2026`, jadi sesi lain bisa masuk sebagai mereka.
+- Siswa pertama selalu tuntas dan mendapat setiap jenis hasil di keempat jenis tantangan: benar sejak cek pertama, salah lalu benar, dan kesempatan habis.
+- Siswa ke-2 berhenti di tengah. Pengerjaan terakhirnya dibiarkan terbuka dan tab ditutup (`challenge_abandoned` lewat `pagehide`).
+- Siswa ke-3 baru mendaftar, paling banyak membuka satu tantangan, lalu menekan Keluar.
+- Siswa berikutnya acak menurut profil: ±60 % tuntas, ±28 % berhenti, ±12 % baru.
+- Peristiwa yang ikut tercatat:
+  - petunjuk dibuka (kadang batal di dialog);
+  - ketukan Cari Objek salah (jebakan atau benda lain) dan petunjuk dilewati;
+  - Keluar di tengah lalu dibuka lagi;
+  - pertemuan kelas di beberapa hari (keluar dan masuk lagi);
+  - satu siswa lupa sandi (guru mereset, siswa mengganti sandi);
+  - siswa yang kembali sepekan kemudian setelah sesi lamanya ditinggalkan (sesi baru);
+  - ganti bahasa, Pustaka wilayah yang tuntas, dialog dan narasi beserta event audio;
+  - `reading_progress`, `page_hidden`/`page_visible`, serta kritik & saran.
+
+**Waktu.** Layanan selalu menulis jam saat ini. `SimClock` menjalankan setiap langkah siswa lalu menggeser kolom waktu baris milik siswa itu yang baru ditulis pada langkah tersebut ke jam simulasi. Jam simulasi berjalan di hari sekolah (Senin–Sabtu, pagi sesuai jadwal sekolah) mulai `--mulai`, dengan jeda wajar antarlangkah. Isi baris tidak diubah. Yang dihitung ulang hanya `challenge_attempts.duration_ms` (selesai − mulai) dan `game_sessions.duration_ms` (jumlah jeda yang tidak melewati batas menganggur, seperti `heartbeat()`).
+
+**Deterministik.** Semua keputusan simulasi memakai satu pengacak berbenih. Pemilihan variasi soal memakai `SeededItemModel`, yang menimpa `ChallengeItemModel::randomIndex()` lewat `Factories::injectMock`. Dengan `--seed` dan `--mulai` yang sama pada database awal yang sama, hasilnya sama: siswa, jawaban, hasil, waktu, dan payload event. Yang berbeda hanya uuid, kode sesi, dan token CSRF.
+
+**Penolakan** (kode keluar 1):
+- `CI_ENVIRONMENT = production`;
+- tidak ada studi aktif;
+- studi aktif sudah berisi sesi milik siswa yang bukan `sim_*`, artinya pengambilan data sedang berjalan.
+
+Jalankan di database pengembangan, misalnya sesudah `gelita:reset`. Untuk membuang data simulasi, jalankan ulang `gelita:reset` di database pengembangan.
+
+---
+
 ## Ringkasan Transaction Boundary
 
 | Operasi | Yang dibungkus satu transaction |
@@ -1496,6 +1544,7 @@ Semua opsi bernilai menerima `--opsi nilai` maupun `--opsi=nilai` (trait `App\Co
 | `gelita:staff:password USERNAME` | sandi sementara staf (FITUR 10a) | nama pengguna kosong/tidak ditemukan |
 | `gelita:retention:run` | `RetentionService::run()` (FITUR 17) | retensi melempar galat |
 | `gelita:reset […]` | reset sebelum penelitian (FITUR 18) | pra-pemeriksaan/konfirmasi gagal atau verifikasi menemukan galat |
+| `gelita:simulasi [--siswa=N] [--seed=N] [--mulai=YYYY-MM-DD]` | siswa simulasi lewat layanan sungguhan (FITUR 19) | production, tanpa studi aktif, studi sudah berisi siswa sungguhan, opsi tidak sah, atau simulasi gagal |
 
 Command yang menulis waktu memanggil `db_sync_timezone()` sendiri, karena event `pre_system` hanya terpicu pada request web.
 
