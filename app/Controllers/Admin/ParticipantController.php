@@ -231,7 +231,7 @@ class ParticipantController extends BaseAdminController
      */
     private function participantRaw(int $participantId, string $tab): array|ResponseInterface
     {
-        $raw = $this->rawData();
+        $raw = $this->rawService();
 
         if ($raw === null) {
             return ['table' => null];
@@ -241,12 +241,10 @@ class ParticipantController extends BaseAdminController
         $filters   = $this->scopedFilters(['participant_id' => $participantId]);
 
         if ($this->wantsCsv()) {
-            return $this->csvResponse($dimension . '-' . $participantId, static fn ($handle) => $raw->streamCsv($dimension, $filters, $handle));
+            return $this->rawCsv($dimension, $filters);
         }
 
-        $params = AdminTable::params($this->request, [], null);
-        $sort   = trim((string) ($this->request->getGet('sort') ?? '')) ?: null;
-        $table  = $raw->page($dimension, $filters, $params['page'], $params['per_page'], $sort);
+        $table  = $this->rawPage($raw, $dimension, $filters);
         $tries  = [];
 
         if ($tab === 'jawaban') {

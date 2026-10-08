@@ -4,6 +4,7 @@ namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
 use App\Controllers\Concerns\StaffScope;
+use App\Libraries\AdminTable;
 use App\Models\ParticipantModel;
 use App\Models\ResearchStudyModel;
 use App\Models\SchoolModel;
@@ -159,20 +160,64 @@ abstract class BaseAdminController extends BaseController
 
     /**
      * RawDataService (sesi data mentah, Dok 3 §8.4) untuk pemanggil ini, atau
-     * null bila layanan belum tersedia. Satu-satunya titik sambung ke layanan
-     * itu: halaman Data mentah, tab detail siswa, dan CSV per tabel memanggil
-     * `page()` / `streamCsv()` lewat sini dengan filter yang sudah dipaksa ke
-     * cakupan sekolah (StaffScope::scopedFilters()).
+     * null selama layanan itu belum ada di branch ini. Layanan sungguhan
+     * diambil lewat StaffScope::rawData() (cakupan sekolah & anonim diikat
+     * di sana); uji dapat menyuntikkan tiruan lewat
+     * `Services::injectMock('rawDataService', …)`.
      */
-    protected function rawData(bool $anonymous = false): ?object
+    protected function rawService(): ?object
     {
-        $service = service('rawDataService', $this->schoolScope(), $anonymous || ! $this->isAdmin());
-
-        if ($service === null && \Config\Services::has('rawdataservice')) {
-            $service = \Config\Services::get('rawdataservice');
+        if (\Config\Services::has('rawdataservice')) {
+            return \Config\Services::get('rawdataservice');
         }
 
-        return $service;
+        if (! class_exists(\App\Services\RawDataService::class) || ! method_exists($this, 'rawData')) {
+            return null;
+        }
+
+        return $this->rawData();
+    }
+
+    /**
+     * CSV mentah satu dimensi dengan filter yang sama dengan tabelnya:
+     * `rawCsvDownload()` milik sesi data mentah bila sudah ada (mencatat
+     * audit), selain itu RawDataService::streamCsv() lewat csvResponse().
+     *
+     * @param array<string, mixed> $filters sudah dipaksa ke cakupan sekolah
+     */
+    protected function rawCsv(string $dimension, array $filters): ResponseInterface
+    {
+        if (method_exists($this, 'rawCsvDownload') && ! \Config\Services::has('rawdataservice')) {
+            return $this->rawCsvDownload($dimension, $filters);
+        }
+
+        $service = $this->rawService();
+
+        return $this->csvResponse('gelita-' . $dimension, static fn ($handle) => $service->streamCsv($dimension, $filters, $handle));
+    }
+
+    /**
+     * Satu halaman RawDataService::page() untuk components/data-table:
+     * urutan dari query string (`kolom` / `-kolom`), pagination 25/50/100,
+     * dan penanda kolom yang dapat diurutkan (`sortable($dimension)`).
+     *
+     * @param array<string, mixed> $filters sudah dipaksa ke cakupan sekolah
+     *
+     * @return array<string, mixed>
+     */
+    protected function rawPage(object $service, string $dimension, array $filters): array
+    {
+        $sortable = method_exists($service, 'sortable') ? (array) $service->sortable($dimension) : null;
+        $params   = AdminTable::params($this->request, $sortable ?? [], null);
+        $sort     = trim((string) ($this->request->getGet('sort') ?? ''));
+        $sort     = $sortable === null ? ($sort === '' ? null : $sort) : AdminTable::validSort($sort, $sortable);
+        $table    = $service->page($dimension, $filters, $params['page'], $params['per_page'], $sort);
+
+        $table['columns'] = array_map(static fn (array $column): array => $column + [
+            'sortable' => $sortable === null || in_array($column['key'], $sortable, true),
+        ], $table['columns']);
+
+        return $table;
     }
 
     /** `?format=csv`: halaman tabel meminta CSV mentah dengan filter yang sama. */
