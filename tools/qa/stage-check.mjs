@@ -356,6 +356,9 @@ console.log('\nSemua pemeriksaan lolos.');
 
 // ------------------------------------------------------------------ pembantu
 async function check(page, name, size) {
+  // Penunjuk mouse yang tertinggal di atas benda memicu :hover (scale 1.05) dan menggeser kotaknya
+  await page.mouse.move(0, 0);
+  await page.waitForTimeout(250);
   await page.screenshot({ path: path.join(OUT, `${name}-${size.name}.png`) });
   const result = await page.evaluate(inspect).catch((e) => ({ errors: [`evaluate: ${e.message}`], marks: {} }));
   result.errors.forEach((e) => fail(name, size.name, e));
