@@ -16,20 +16,20 @@
 <?= $this->section('background') ?><?= media_key_src('bg.welcome') ?? '' ?><?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<section class="screen screen-medium start start-choice">
-  <header class="screen-head">
+<section class="start start-choice">
+  <header class="screen-head start-head stage-box">
     <h1><?= esc(lang('Game.welcomeBack', [$name])) ?></h1>
     <p><?= esc(lang('Game.startChoiceLead')) ?></p>
   </header>
 
   <div class="start-cards">
-    <a class="panel start-card card-link" href="<?= base_url('intro') ?>">
+    <a class="panel start-card card-link stage-box" href="<?= base_url('intro') ?>">
       <span class="start-icon" aria-hidden="true"><?= icon('book') ?></span>
       <h2><?= esc(lang('Game.watchIntro')) ?></h2>
       <p><?= esc(lang('Game.watchIntroText')) ?></p>
       <span class="start-go" aria-hidden="true"><?= icon('right') ?></span>
     </a>
-    <a class="panel start-card card-link" href="<?= base_url('gerbang/peta') ?>">
+    <a class="panel start-card card-link stage-box" href="<?= base_url('gerbang/peta') ?>">
       <span class="start-icon" aria-hidden="true"><?= icon('map') ?></span>
       <h2><?= esc(lang('Game.goToMap')) ?></h2>
       <p><?= esc(lang('Game.goToMapText')) ?></p>

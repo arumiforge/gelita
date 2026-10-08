@@ -2,6 +2,7 @@
  * Konfeti ringan di atas <canvas>: maksimum 60 partikel, ±2,5 detik.
  * `prefers-reduced-motion` → tidak digambar sama sekali (aturan 9).
  */
+import { stageRect } from './stage.js';
 import { reducedMotion } from './dom.js';
 
 const MAX = 60;
@@ -20,7 +21,8 @@ export function confetti(count = MAX) {
   const canvas = document.createElement('canvas');
   canvas.className = 'confetti-canvas';
   canvas.setAttribute('aria-hidden', 'true');
-  document.body.append(canvas);
+  // Di dalam panggung (fixed = selebar #stage karena contain: layout, stage.css)
+  (document.getElementById('stage') || document.body).append(canvas);
 
   const ctx = canvas.getContext('2d');
   if (!ctx) {
@@ -29,8 +31,9 @@ export function confetti(count = MAX) {
   }
 
   const ratio = window.devicePixelRatio || 1;
-  const width = window.innerWidth;
-  const height = window.innerHeight;
+  const box = stageRect();
+  const width = box.width;
+  const height = box.height;
   canvas.width = width * ratio;
   canvas.height = height * ratio;
   ctx.scale(ratio, ratio);

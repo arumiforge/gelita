@@ -21,7 +21,9 @@ $rating    = (int) old('rating');
 <?= $this->section('background') ?><?= media_key_src('bg.reflection') ?? media_key_src('bg.map') ?? '' ?><?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<section class="screen screen-medium reflection" data-screen="reflection">
+<section class="reflection" data-screen="reflection">
+  <?php // Kiri 32, 72, 520 × 576: ringkasan + Mbah Kedu; kanan 576, 72, 672 × 576: formulir, Kirim tetap di bawah (Dok 3 §4) ?>
+  <aside class="panel reflection-side stage-box stage-scroll">
   <header class="reflection-hero">
     <?= component('character', ['character' => 'mbah_kedu', 'pose' => 'happy', 'showName' => true]) ?>
     <div>
@@ -73,7 +75,9 @@ $rating    = (int) old('rating');
     </div>
   <?php endif ?>
 
-  <div class="panel-parchment reflection-form">
+  </aside>
+
+  <div class="panel-parchment reflection-form stage-box">
     <h2><?= icon('message') ?> <?= esc(lang('Game.feedbackTitle')) ?></h2>
 
     <?php if ($existing !== null): ?>
@@ -82,8 +86,9 @@ $rating    = (int) old('rating');
 
     <?= $this->include('partials/form-errors') ?>
 
-    <form method="post" action="<?= base_url('refleksi') ?>" class="form" data-min-answers="2">
+    <form method="post" action="<?= base_url('refleksi') ?>" class="form reflection-fields-form" data-min-answers="2">
       <?= csrf_field() ?>
+      <div class="reflection-fields stage-scroll">
 
       <fieldset class="rating<?= isset($errors['rating']) ? ' has-error' : '' ?>">
         <legend class="label"><?= esc(lang('Game.ratingLegend')) ?> <span class="req" aria-hidden="true">*</span></legend>
@@ -106,6 +111,7 @@ $rating    = (int) old('rating');
       <?php endforeach ?>
 
       <p class="field-help"><?= icon('info') ?> <?= esc(lang('Game.needTwoHint')) ?></p>
+      </div>
 
       <div class="form-actions">
         <button class="btn btn-primary btn-lg" type="submit"><?= icon('message') ?> <?= esc(lang('Game.sendFeedback')) ?></button>

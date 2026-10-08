@@ -11,8 +11,6 @@
  * @var list<App\Entities\ChallengeAttempt>  $attempts
  * @var array<int, string>                   $nodes
  * @var int                                  $durationMs
- * @var int                                  $firstPass  soal benar pada percobaan pertama
- * @var int                                  $scorable   soal dinilai
  * @var bool                                 $canReflect
  * @var string                               $locale
  */
@@ -30,29 +28,36 @@ foreach (service('contentRepository')->levels() as $entity) {
 <?= $this->section('background') ?><?= media_key_src('bg.map') ?? '' ?><?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<section class="screen screen-medium profile" data-screen="profile">
-  <div class="panel profile-card">
+<section class="profile" data-screen="profile">
+  <?php // Kiri 32, 72, 400 × 576: identitas + empat ubin; kanan 456, 72, 792 × 576: lencana + riwayat (Dok 3 §4) ?>
+  <aside class="panel profile-side stage-box stage-scroll">
+  <div class="profile-card">
     <span class="profile-avatar" aria-hidden="true"><?= esc(mb_strtoupper(mb_substr($name, 0, 1))) ?></span>
     <div class="profile-id">
       <h1><?= esc($name) ?></h1>
       <p class="profile-username">@<?= esc($participant['username']) ?></p>
       <p class="profile-code"><small><span class="num"><?= esc($participant['participant_code']) ?></span> · <?= esc(lang('Game.researchCode')) ?></small></p>
     </div>
-    <a class="btn btn-ghost" href="<?= base_url('ganti-sandi') ?>"><?= icon('key') ?> <?= esc(lang('Game.changePassword')) ?></a>
   </div>
+
+  <dl class="profile-facts">
+    <div><dt><?= esc(lang('Game.age')) ?></dt><dd><?= esc($participant['age'] === null ? '—' : $participant['age'] . ' ' . lang('Game.ageUnit')) ?></dd></div>
+    <div><dt><?= esc(lang('Game.gender')) ?></dt><dd><?= esc($gender === '' ? '—' : lang_or('Game.gender_' . $gender, $gender)) ?></dd></div>
+    <div><dt><?= esc(lang('Game.classLevel')) ?></dt><dd><?= esc($classTxt) ?></dd></div>
+    <div><dt><?= esc(lang('Game.school')) ?></dt><dd><?= esc($participant['school_name'] ?? '—') ?></dd></div>
+  </dl>
 
   <div class="stat-grid profile-stats">
-    <?= component('stat-tile', ['label' => lang('Game.age'), 'value' => $participant['age'] === null ? '—' : $participant['age'] . ' ' . lang('Game.ageUnit')]) ?>
-    <?= component('stat-tile', ['label' => lang('Game.gender'), 'value' => $gender === '' ? '—' : lang_or('Game.gender_' . $gender, $gender)]) ?>
-    <?= component('stat-tile', ['label' => lang('Game.classLevel'), 'value' => $classTxt]) ?>
-    <?= component('stat-tile', ['label' => lang('Game.school'), 'value' => $participant['school_name'] ?? '—']) ?>
     <?= component('stat-tile', ['label' => lang('Game.shards'), 'value' => $progress['shards'] . '/' . $progress['shards_total'], 'icon' => 'lantern']) ?>
-    <?= component('stat-tile', ['label' => lang('Game.firstPass'), 'value' => lang('Game.firstTryCount', [$firstPass, $scorable]), 'icon' => 'target']) ?>
-    <?= component('stat-tile', ['label' => lang('Game.totalTime'), 'value' => ms_to_human($durationMs), 'icon' => 'clock']) ?>
-    <?= component('stat-tile', ['label' => lang('Game.stars'), 'value' => (string) $progress['total_stars'], 'icon' => 'star']) ?>
     <?= component('stat-tile', ['label' => lang('Game.challengesDone'), 'value' => $progress['completed_nodes'] . '/' . $progress['shards_total'], 'icon' => 'check']) ?>
+    <?= component('stat-tile', ['label' => lang('Game.stars'), 'value' => (string) $progress['total_stars'], 'icon' => 'star']) ?>
+    <?= component('stat-tile', ['label' => lang('Game.totalTime'), 'value' => ms_to_human($durationMs), 'icon' => 'clock']) ?>
   </div>
 
+  <a class="btn btn-ghost btn-sm profile-password" href="<?= base_url('ganti-sandi') ?>"><?= icon('key') ?> <?= esc(lang('Game.changePassword')) ?></a>
+  </aside>
+
+  <div class="panel profile-main stage-box">
   <h2><?= esc(lang('Game.badges')) ?></h2>
   <ul class="badge-shelf">
     <?php foreach ($levels as $level): ?>
@@ -79,7 +84,7 @@ foreach (service('contentRepository')->levels() as $entity) {
   <?php if ($attempts === []): ?>
     <div class="empty-state"><?= icon('info') ?><p><?= esc(lang('Game.noHistory')) ?></p></div>
   <?php else: ?>
-    <div class="table-wrap">
+    <div class="table-wrap stage-scroll">
       <table class="data-table">
         <caption class="visually-hidden"><?= esc(lang('Game.history')) ?></caption>
         <thead>
@@ -107,6 +112,7 @@ foreach (service('contentRepository')->levels() as $entity) {
       </table>
     </div>
   <?php endif ?>
+  </div>
 </section>
 <?= $this->endSection() ?>
 

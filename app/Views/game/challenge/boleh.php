@@ -24,6 +24,7 @@ $labels   = ['benar' => 'Game.verdictBenar', 'salah' => 'Game.verdictSalah'];
 <?= $this->section('bodyClass') ?>is-challenge<?= $this->endSection() ?>
 
 <?= $this->section('arena') ?>
+<div class="boleh-passages stage-box stage-scroll" id="reading-panel">
 <?php foreach ($passages as $passage): ?>
   <details class="passage" data-passage="<?= esc($passage['id'], 'attr') ?>" id="passage-<?= esc($passage['id'], 'attr') ?>" open>
     <summary class="passage-title"><?= icon('book') ?> <?= esc($passage['title'] !== '' ? $passage['title'] : lang('Game.readingLabel')) ?></summary>
@@ -35,7 +36,9 @@ $labels   = ['benar' => 'Game.verdictBenar', 'salah' => 'Game.verdictSalah'];
     </div>
   </details>
 <?php endforeach ?>
+</div>
 
+<div class="boleh-cards stage-box stage-scroll">
 <h2 class="cards-heading"><?= icon('check') ?> <?= esc(lang('Game.statementsLabel')) ?></h2>
 <div class="card-grid<?= count($items) === 1 ? ' is-single' : '' ?>">
   <?php foreach ($items as $index => $item): ?>
@@ -51,7 +54,11 @@ $labels   = ['benar' => 'Game.verdictBenar', 'salah' => 'Game.verdictSalah'];
       </header>
 
       <?php if (! empty($item['media'])): ?>
-        <div class="card-image"><img src="<?= esc($item['media'], 'attr') ?>" alt="" loading="lazy"></div>
+        <?php // 192 × 144 dp di kartu; ketuk untuk perbesar 640 × 480 dp (Dok 3 §5.2, §6) ?>
+        <button type="button" class="card-image" data-zoom="<?= esc($item['media'], 'attr') ?>"
+                aria-label="<?= esc(lang('Game.libraryZoom') . ': ' . lang('Game.cardN', [$index + 1]), 'attr') ?>">
+          <img src="<?= esc($item['media'], 'attr') ?>" alt="" loading="lazy" width="480" height="360">
+        </button>
       <?php endif ?>
 
       <p class="card-text" id="card-<?= esc($itemId, 'attr') ?>-text"><?= esc($item['prompt']) ?></p>
@@ -68,6 +75,7 @@ $labels   = ['benar' => 'Game.verdictBenar', 'salah' => 'Game.verdictSalah'];
 
     </article>
   <?php endforeach ?>
+</div>
 </div>
 
 <div class="arena-actions">

@@ -32,13 +32,13 @@ final class ExportRulesTest extends CIUnitTestCase
             }
         }
 
-        $named = $this->export->columns('Participants', false, true);
+        $named = $this->export->columns('peserta', false, true);
 
         $this->assertContains('display_name', $named);
         $this->assertContains('username', $named);
         $this->assertContains('school_name', $named);
         $this->assertContains('school_npsn', $named, 'NPSN sekolah hanya pada export beridentitas');
-        $this->assertContains('school_ref', $this->export->columns('Participants', true, false), 'kode samaran sekolah tetap ada untuk analisis');
+        $this->assertContains('school_ref', $this->export->columns('peserta', true, false), 'kode samaran sekolah tetap ada untuk analisis');
     }
 
     public function testSecretsNeverExported(): void
@@ -56,8 +56,10 @@ final class ExportRulesTest extends CIUnitTestCase
 
     public function testAnswerKeyOnlyForAdmin(): void
     {
-        $this->assertContains('answer_key', $this->export->columns('Item Responses', true, true));
-        $this->assertNotContains('answer_key', $this->export->columns('Item Responses', true, false));
+        foreach (['jawaban', 'butir'] as $sheet) {
+            $this->assertContains('answer_key', $this->export->columns($sheet, true, true), $sheet);
+            $this->assertNotContains('answer_key', $this->export->columns($sheet, true, false), $sheet);
+        }
     }
 
     public function testGameplaySheetsHaveNoPhaseAndCarryRawTryData(): void
@@ -67,34 +69,39 @@ final class ExportRulesTest extends CIUnitTestCase
 
             $this->assertNotContains('phase_code', $columns, "{$sheet}: fase penelitian sudah dihapus (Dok 1 §5.1)");
 
-            foreach (['score', 'first_pass_accuracy', 'final_accuracy', 'independence', 'retry_count'] as $gone) {
+            foreach (['score', 'first_pass_accuracy', 'final_accuracy', 'independence', 'retry_count', 'reason_text', 'mastery_ratio', 'consent_given', 'guardian_name'] as $gone) {
                 $this->assertNotContains($gone, $columns, "{$sheet}: rasio/skor turunan tidak lagi disimpan (Dok 1 §5.2)");
             }
         }
 
-        $summary = $this->export->columns('Challenge Summary', true, true);
+        $summary = $this->export->columns('pengerjaan', true, true);
 
         foreach (['variant_group', 'completion_reason', 'max_tries', 'first_pass_correct', 'final_correct', 'scorable_items', 'stars'] as $column) {
-            $this->assertContains($column, $summary, "Challenge Summary wajib punya {$column}");
+            $this->assertContains($column, $summary, "pengerjaan wajib punya {$column}");
         }
 
-        $responses = $this->export->columns('Item Responses', true, true);
+        $responses = $this->export->columns('jawaban', true, true);
 
         foreach (['variant_group', 'try_count', 'solved_on_try'] as $column) {
-            $this->assertContains($column, $responses, "Item Responses wajib punya {$column}");
+            $this->assertContains($column, $responses, "jawaban wajib punya {$column}");
         }
 
-        $this->assertContains('assented_at', $this->export->columns('Participants', true, true));
+        $this->assertContains('assented_at', $this->export->columns('peserta', true, true));
+
+        foreach (['first_input_ms', 'last_input_ms', 'try_no', 'check_no', 'hint_opened_before'] as $column) {
+            $this->assertContains($column, $this->export->columns('percobaan', true, true), "percobaan wajib punya {$column}");
+        }
+
+        $this->assertSame(['Levels', 'Indicators', 'Demographic Summary', 'Audio Usage'], array_values(array_diff(['Levels', 'Indicators', 'Demographic Summary', 'Audio Usage'], ExportService::SHEETS)), 'lembar olahan lama dihapus (§9.2)');
     }
 
     public function testTeacherNeverGetsRawEvents(): void
     {
-        $this->assertNotContains('Raw Events', $this->export->allowedSheets(['Raw Events', 'Participants'], false));
-        $this->assertSame(['Participants'], $this->export->allowedSheets(['Raw Events', 'Participants'], false));
-        $this->assertNotContains('Raw Events', $this->export->allowedSheets(['Raw Events'], false), 'pilihan terlarang saja → semua sheet yang boleh, tanpa Raw Events');
-        $this->assertContains('Raw Events', $this->export->allowedSheets(['Raw Events'], true));
+        $this->assertSame(['kamus', 'peserta'], $this->export->allowedSheets(['event', 'peserta'], false), 'Kamus Data selalu ikut');
+        $this->assertNotContains('event', $this->export->allowedSheets(['event'], false), 'pilihan terlarang saja → semua lembar yang boleh, tanpa event');
+        $this->assertContains('event', $this->export->allowedSheets(['event'], true));
         $this->assertSame(ExportService::SHEETS, $this->export->allowedSheets([], true));
-        $this->assertSame(['Participants', 'Feedback'], $this->export->allowedSheets(['Feedback', 'Participants', 'Bogus'], true), 'urutan resmi, nama asing dibuang');
+        $this->assertSame(['kamus', 'peserta', 'masukan'], $this->export->allowedSheets(['masukan', 'peserta', 'Bogus'], true), 'urutan resmi, nama asing dibuang');
     }
 
     public function testSchoolScopeIsForcedAndFiltersSanitized(): void
@@ -106,6 +113,7 @@ final class ExportRulesTest extends CIUnitTestCase
             'date_to'     => '2026-13-01; DROP',
             'phase_code'  => ' pretest ',
             'level_id'    => ' 3 ',
+            'node_id'     => '5',
             'password'    => 'x',
             'class_level' => '',
         ], 7);
@@ -116,6 +124,7 @@ final class ExportRulesTest extends CIUnitTestCase
         $this->assertArrayNotHasKey('date_to', $filters);
         $this->assertArrayNotHasKey('phase_code', $filters, 'filter fase sudah tidak ada');
         $this->assertSame(3, $filters['level_id']);
+        $this->assertSame(5, $filters['node_id']);
         $this->assertArrayNotHasKey('password', $filters);
         $this->assertArrayNotHasKey('class_level', $filters);
 

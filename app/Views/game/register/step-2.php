@@ -29,12 +29,14 @@ $country = $val('country_code') ?: 'ID';
 <?= $this->section('background') ?><?= media_key_src('bg.welcome') ?? '' ?><?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<section class="screen screen-medium register" data-step="2">
-  <div class="panel-parchment">
+<section class="register" data-step="2">
+  <div class="panel-parchment register-panel stage-box">
     <?= $this->include('game/register/_head') ?>
 
     <form method="post" action="<?= base_url('daftar/2') ?>" class="form register-form" data-step="2" autocomplete="off">
       <?= csrf_field() ?>
+      <div class="register-fields stage-scroll">
+      <?= view('partials/form-errors', ['errors' => $errors]) ?>
 
       <div class="field<?= $invalid('country_code') ?>">
         <label for="country_code"><?= esc(lang('Game.country')) ?> <span class="req" aria-hidden="true">*</span></label>
@@ -121,6 +123,8 @@ $country = $val('country_code') ?: 'ID';
                value="<?= esc($val('school_name'), 'attr') ?>">
         <p class="field-help" id="school-help"><?= esc(lang('Game.schoolHelp')) ?></p>
         <?php if ($err('school_name')): ?><p class="field-error"><?= esc($err('school_name')) ?></p><?php endif ?>
+      </div>
+
       </div>
 
       <div class="form-actions register-actions">

@@ -52,6 +52,7 @@ $curtainOf = static fn (array $l): string => $l['status'] !== 'locked' && isset(
 <?= $this->extend('layouts/game') ?>
 
 <?= $this->section('title') ?><?= esc(lang('Game.mapKedu')) ?><?= $this->endSection() ?>
+<?= $this->section('hudTitle') ?><?= esc(lang('Game.mapKedu')) ?><?= $this->endSection() ?>
 <?= $this->section('background') ?><?= media_key_src('bg.map') ?? '' ?><?= $this->endSection() ?>
 
 <?= $this->section('overlay') ?>
@@ -67,20 +68,18 @@ $curtainOf = static fn (array $l): string => $l['status'] !== 'locked' && isset(
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<section class="screen map-screen map-kedu" data-screen="map-kedu" data-unlock-mode="<?= esc($unlockMode, 'attr') ?>">
-  <header class="map-head">
-    <h1><?= esc(lang('Game.mapKedu')) ?></h1>
-  </header>
+<section class="map-screen map-kedu" data-screen="map-kedu" data-unlock-mode="<?= esc($unlockMode, 'attr') ?>">
+  <h1 class="visually-hidden"><?= esc(lang('Game.mapKedu')) ?></h1>
 
   <div class="map-layout">
     <?php if (($story ?? []) === []): ?>
-      <aside class="map-guide">
+      <aside class="map-guide map-balloon stage-box">
         <?= component('character', ['character' => 'jaka', 'pose' => 'idle']) ?>
         <?= component('narration', ['text' => lang('Game.mapLead'), 'speaker' => 'jaka', 'tail' => 'down']) ?>
       </aside>
     <?php else: ?>
       <?php $storyTotal = count($story); ?>
-      <aside class="map-guide map-story narrator" aria-labelledby="map-story-title"
+      <aside class="map-guide map-balloon map-story narrator stage-box" aria-labelledby="map-story-title"
              data-narrator data-context="map_intro" data-prefix="peta-" data-keyboard="0"
              data-mode="<?= ! empty($curtain) ? 'external' : 'manual' ?>">
         <h2 class="visually-hidden" id="map-story-title"><?= esc(lang('Game.mapStoryTitle')) ?></h2>
@@ -126,7 +125,7 @@ $curtainOf = static fn (array $l): string => $l['status'] !== 'locked' && isset(
       </aside>
     <?php endif ?>
 
-    <div class="map-frame">
+    <div class="map-frame stage-box">
       <div class="map-canvas<?= $mapSrc === null ? ' is-drawn' : '' ?>" style="--map-ratio: 1400 / 900">
         <?php if ($mapSrc !== null): ?>
           <img class="map-img" src="<?= esc($mapSrc, 'attr') ?>" alt="<?= esc(lang('Game.mapImageAlt', [lang('Game.mapKedu')]), 'attr') ?>">
@@ -165,7 +164,7 @@ $curtainOf = static fn (array $l): string => $l['status'] !== 'locked' && isset(
     </div>
   </div>
 
-  <ol class="region-list">
+  <ol class="region-list map-side stage-box stage-scroll">
     <?php foreach ($levels as $level): ?>
       <li class="region-card panel is-<?= esc($level['status'], 'attr') ?>" id="region-<?= esc($level['code'], 'attr') ?>">
         <div class="region-card-head">

@@ -45,13 +45,15 @@ $total = count($slides);
             <span class="cine-speaker"><?= esc(lang_or('Game.char_' . $character, $character)) ?></span>
           <?php endif ?>
         </div>
-        <?php if ($title !== ''): ?>
-          <h2 class="cine-title"><?= esc($title) ?></h2>
-        <?php endif ?>
-        <p class="slide-text"><?= esc($text) ?></p>
-        <?php if (($audioSrc = audio_src($audioId ?: null)) !== null): ?>
-          <?= component('audio-player', ['audioId' => $audioId, 'audioSrc' => $audioSrc, 'transcript' => $text]) ?>
-        <?php endif ?>
+        <div class="cine-caption-body stage-scroll">
+          <?php if ($title !== ''): ?>
+            <h2 class="cine-title"><?= esc($title) ?></h2>
+          <?php endif ?>
+          <p class="slide-text"><?= esc($text) ?></p>
+          <?php if (($audioSrc = audio_src($audioId ?: null)) !== null): ?>
+            <?= component('audio-player', ['audioId' => $audioId, 'audioSrc' => $audioSrc, 'transcript' => $text]) ?>
+          <?php endif ?>
+        </div>
         <?= component('partials/slide-nav', [
             'n'        => $n,
             'total'    => $total,

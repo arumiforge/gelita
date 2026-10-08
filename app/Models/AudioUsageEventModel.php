@@ -59,46 +59,4 @@ class AudioUsageEventModel extends Model
 
         return in_array($action, ['play', 'autoplay', 'replay'], true) ? $current + 1 : max(1, $current);
     }
-
-    /**
-     * `total_plays` hanya menghitung putar manual (`play`); putar otomatis
-     * layar bernarasi ada di `total_autoplays`.
-     *
-     * @return array{sessions_with_audio: int, total_plays: int, total_autoplays: int,
-     *               total_replays: int, completion_rate: float, mean_listened_ms: int}
-     */
-    public function usageStats(array $filters = []): array
-    {
-        $row = $this->statsBuilder($filters)
-            ->select('COUNT(DISTINCT aue.session_id) AS sessions_with_audio', false)
-            ->select("SUM(CASE WHEN aue.action = 'play' THEN 1 ELSE 0 END) AS total_plays", false)
-            ->select("SUM(CASE WHEN aue.action = 'autoplay' THEN 1 ELSE 0 END) AS total_autoplays", false)
-            ->select("SUM(CASE WHEN aue.action = 'replay' THEN 1 ELSE 0 END) AS total_replays", false)
-            ->select('SUM(aue.completed) AS completed', false)
-            ->select('COUNT(*) AS total_events', false)
-            ->select('AVG(aue.listened_ms) AS mean_listened_ms', false)
-            ->get()
-            ->getRowArray();
-
-        $totalEvents = (int) ($row['total_events'] ?? 0);
-
-        return [
-            'sessions_with_audio' => (int) ($row['sessions_with_audio'] ?? 0),
-            'total_plays'         => (int) ($row['total_plays'] ?? 0),
-            'total_autoplays'     => (int) ($row['total_autoplays'] ?? 0),
-            'total_replays'       => (int) ($row['total_replays'] ?? 0),
-            'completion_rate'     => $totalEvents > 0 ? round((int) ($row['completed'] ?? 0) / $totalEvents, 4) : 0.0,
-            'mean_listened_ms'    => (int) round((float) ($row['mean_listened_ms'] ?? 0)),
-        ];
-    }
-
-    private function statsBuilder(array $filters): \CodeIgniter\Database\BaseBuilder
-    {
-        $builder = $this->db->table('audio_usage_events aue')
-            ->join('game_sessions', 'game_sessions.id = aue.session_id')
-            ->join('participants', 'participants.id = game_sessions.participant_id')
-            ->where('participants.deleted_at', null);
-
-        return apply_research_filters($builder, $filters, ['level_id', 'node_id']);
-    }
 }

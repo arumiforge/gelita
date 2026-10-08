@@ -137,53 +137,6 @@ class ParticipantModel extends Model
     }
 
     /**
-     * Metrik literasi keamanan digital dari proses pembuatan sandi.
-     * Tidak pernah menyentuh password_hash.
-     *
-     * @return array{criteria_distribution: array<int, int>, strong_first_try: int,
-     *               participants: int, avg_weak_submit: float, weak_submit_distribution: array<int, int>}
-     */
-    public function digitalSecurityStats(array $filters = []): array
-    {
-        $builder = $this->scopedForStaff($filters['school_id'] ?? null);
-        $this->applyCohortFilters($builder, $filters);
-
-        $rows = $builder
-            ->select('pw_first_submit_criteria, pw_weak_submit_count')
-            ->where('participants.deleted_at', null)
-            ->get()
-            ->getResultArray();
-
-        $criteria = array_fill(0, 6, 0);
-        $weak     = [];
-        $total    = 0;
-        $weakSum  = 0;
-
-        foreach ($rows as $row) {
-            $total++;
-
-            if ($row['pw_first_submit_criteria'] !== null) {
-                $met = max(0, min(5, (int) $row['pw_first_submit_criteria']));
-                $criteria[$met]++;
-            }
-
-            $count        = (int) $row['pw_weak_submit_count'];
-            $weak[$count] = ($weak[$count] ?? 0) + 1;
-            $weakSum += $count;
-        }
-
-        ksort($weak);
-
-        return [
-            'participants'             => $total,
-            'criteria_distribution'    => $criteria,
-            'strong_first_try'         => $criteria[5],
-            'avg_weak_submit'          => $total > 0 ? round($weakSum / $total, 2) : 0.0,
-            'weak_submit_distribution' => $weak,
-        ];
-    }
-
-    /**
      * Builder dengan batas akses: admin ($schoolId NULL) melihat semua,
      * guru hanya sekolahnya.
      */
@@ -212,31 +165,6 @@ class ParticipantModel extends Model
             'by_class_level' => $this->groupCount('class_level', $filters),
             'by_province'    => $this->groupCount('province_name_snapshot', $filters),
         ];
-    }
-
-    /**
-     * Sebaran umur peserta dalam cakupan pemanggil (dasbor & chart umur).
-     *
-     * @param array<string, mixed> $filters school_id WAJIB diisi untuk guru (StaffScope)
-     *
-     * @return array<int, int> umur → jumlah peserta
-     */
-    public function ageDistribution(array $filters = []): array
-    {
-        $builder = $this->scopedForStaff($filters['school_id'] ?? null)
-            ->select('age, COUNT(*) AS total', false)
-            ->where('participants.deleted_at', null)
-            ->where('age IS NOT NULL');
-
-        foreach (['class_level', 'province_code'] as $key) {
-            if (isset($filters[$key])) {
-                $builder->where('participants.' . $key, $filters[$key]);
-            }
-        }
-
-        $rows = $builder->groupBy('age')->orderBy('age', 'ASC')->get()->getResultArray();
-
-        return array_map('intval', array_column($rows, 'total', 'age'));
     }
 
     private function countCohort(array $filters): int

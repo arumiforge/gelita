@@ -10,7 +10,7 @@ Keputusan dan penyimpangan dari ketiga dokumen perombakan, beserta alasannya dan
 | Dok 2 | Selesai, di `main` (§2–§12). Uji manual §13.2 dan ringkasan §2–§9 di bagian "Dok 2 — server, bank soal, dan uji manual §13" |
 | Pembersihan kompatibilitas lama | Selesai, di `main` (PR #41): instalasi baru saja, migration digabung, dokumentasi ditulis ulang. Lihat bagian "Pembersihan — instalasi baru tanpa kompatibilitas lama" |
 | Perbaikan sebelum Dok 3 | Temuan tinjauan Dok 2 (balapan permintaan, Cari Objek, bintang): branch sementara, PR ke `main`. Lihat bagian "Perbaikan sebelum Dok 3 — temuan tinjauan Dok 2" |
-| Dok 3 | Belum dimulai. **§13 (skrip `upgrade-kelas5`) tidak dikerjakan** dan §11 sebagian sudah selesai; lihat "Untuk sesi Dok 3" di bagian pembersihan |
+| Dok 3 | Sedang dikerjakan paralel. Data mentah, ekspor, dan PDF (§8.4, §9, §10): branch `dok3-data-mentah`, PR #45, lihat bagian "Dok 3 — data mentah dan ekspor". **§13 (skrip `upgrade-kelas5`) tidak dikerjakan** dan §11 sebagian sudah selesai; lihat "Untuk sesi Dok 3" di bagian pembersihan |
 
 Sisa Dok 2:
 
@@ -24,6 +24,7 @@ Sisa Dok 2:
 - 6 Oktober 2026: sejarah `main` ditulis ulang (penulis dan committer semua commit = Arumi Studios, baris `Co-Authored-By`/`Claude-Session` dibuang; isi berkas dan pesan commit tidak berubah). Semua branch lain dihapus. Hash commit lama yang disebut di dokumen lain tidak berlaku lagi.
 - ~~Branch `dok2-mockup` sengaja dibiarkan di remote~~ — tidak berlaku lagi: branch itu digabung lewat PR #41 dan sudah tidak ada di remote (7 Oktober 2026).
 - Branch lama `happy-gates` yang dihapus tanpa digabung berisi satu perbaikan yang **belum ada** di `main`: tombol "Kenali" di peta yang diketuk sebelum `game/map.js` siap (±0,8 detik setelah dimuat, terlihat di 844×390) hanya mengubah hash `#kenal-{code}`, sedangkan `html.js` menyembunyikan overlay `:target`, sehingga overlay tidak terbuka. Usulan perbaikannya: saat modul siap, hash `#kenal-{code}[-n]` yang sudah ada membuka overlay di slide n lalu hash dibersihkan (`history.replaceState`), tanpa memutar narasi otomatis; narasi peta tidak dimulai bila overlay Kenali terbuka. Kerjakan ulang bila masih terjadi (setelah tata letak 16:9 Dok 3).
+- 7 Oktober 2026: proposal paket aset (unduh sekali, pindah layar dan ganti bahasa seketika) ditulis di [`docs/rencana-paket-aset.md`](../rencana-paket-aset.md). Belum dikerjakan; tahapan yang bergantung pada Dok 3 ada di §10, keputusan pemilik di §12.
 
 ---
 
@@ -540,3 +541,80 @@ Dikerjakan di branch sementara dari `main` (7 Oktober 2026), menanggapi tinjauan
 - `vendor/bin/phpunit --no-coverage`: **451 test hijau** (444 + 7 baru).
 - Klien JS diperiksa dengan `node --check`. Belum diuji di peramban.
 
+---
+
+## Dok 3 — data mentah dan ekspor
+
+Dikerjakan di branch `dok3-data-mentah` (dari `main` sesudah PR #42), paralel dengan sesi tampilan admin dan sesi panggung game. Cakupan: §8.4 (`RawDataService`), §9 (ekspor), §10 (PDF), uji §12.1 bagian layanan.
+
+### Kontrak untuk sesi admin
+
+`App\Services\RawDataService` — satu tempat query setiap dimensi. Dimensi = kode lembar §9.2: `peserta`, `sesi`, `perangkat`, `progres`, `pengerjaan`, `jawaban`, `percobaan`, `navigasi`, `bantuan`, `selesai`, `event` (admin saja), `masukan`, `butir`. Tab `/admin/data/{dimensi}` §8.3 memakai delapan di antaranya.
+
+```php
+query(string $dimension, array $filters, StaffScope $scope): BaseBuilder   // baris mentah + `_key`; ubah dengan shape()
+page(string $dimension, array $filters, int $page, int $perPage, ?string $sort): array
+streamCsv(string $dimension, array $filters, $handle): int                 // jumlah baris data
+```
+
+Bentuk hasil `page()` (dipertahankan):
+
+```php
+[
+  'rows'     => list<array<string, int|string|null>>, // kunci = columns[*].key; nilai berkode, sama dengan CSV
+  'total'    => int,        // jumlah baris semua halaman
+  'page'     => int,        // 1-based, dijepit ke 1..halaman terakhir
+  'per_page' => int,        // 25 | 50 | 100 (lainnya → 25)
+  'sort'     => ?string,    // yang dipakai: "kolom" naik, "-kolom" turun (tak sah → urutan bawaan)
+  'columns'  => list<array{key: string, label: string, type: string}>,
+]
+```
+
+- `type` ∈ `code|text|int|ms|datetime|bool|enum|json`. Waktu = ISO 8601 WIB dengan milidetik (`2026-10-07T08:30:15.123+07:00`), durasi = milidetik (int), boolean 1/0, JSON sebagai teks. Tampilan `m:ss` dan lencana dibuat tabel; label nilai lewat `ExportLabels::label($dimension, $key, $value)`.
+- Kolom yang dapat diurutkan: `sortable($dimension)`. Kolom yang dihitung di PHP (judul variasi, jawaban, payload) tidak bisa diurutkan.
+- Filter (`RawDataService::FILTER_KEYS`): `study_id`, `participant_id`, `participant_code`, `school_id`, `class_level`, `province_code`, `locale`, `level_id`, `node_id`, `variant_group`, `date_from`, `date_to` (Y-m-d). Kunci lain dan nilai rusak diabaikan. Rentang tanggal memakai waktu baris itu sendiri (mulai pengerjaan, waktu percobaan, waktu event, tanggal daftar untuk Peserta).
+- Cakupan diikat ke objek: di controller pakai `$this->rawData()` (trait `StaffScope`, berisi `App\Services\StaffScope` dari `$this->dataScope()`), atau `service('rawDataService', $scope)`. Tanpa cakupan `page()`/`streamCsv()` melempar `LogicException`; dimensi yang tidak boleh (`event` untuk guru) → `DomainException` (petakan ke 404); dimensi tak dikenal → `InvalidArgumentException`.
+- CSV per tabel: `BaseAdminController::rawCsvDownload($dimension, $filters)` → unduhan CSV (BOM, koma, judul = kode kolom), tercatat `export_csv` di audit. Rute `/admin/data/{dimensi}` dan `?format=csv` dibuat sesi admin.
+- `readFilters()` kini juga menerima `participant_code` dan `variant_group`.
+
+
+### Keputusan dan penyimpangan
+
+1. **`StaffScope` sebagai objek nilai.** Kontrak §8.4 memakai `StaffScope $scope`, sedangkan `StaffScope` yang ada adalah trait controller dan tidak bisa menjadi tipe parameter. Karena itu dibuat `App\Services\StaffScope`, objek nilai hak baca (`admin($anonymous)`, `teacher($schoolId)`, `fromStaff($row)`).
+   - Trait controller tetap ada, dan kini membuat objek itu lewat `dataScope()`.
+   - `page()` dan `streamCsv()` tidak menerima cakupan sebagai parameter (sesuai kontrak dokumen). Cakupannya diikat ke objek lewat `withScope()` atau `service('rawDataService', $scope)`. Tanpa cakupan, keduanya menolak (gagal tertutup).
+2. **Kode lembar §9.2 dipakai sebagai kode internal** di mana-mana: URL tabel, `scope_json.sheets`, nama berkas CSV, dan uji. Kode lama berbahasa Inggris (`Participants`, `Raw Events`, …) serta kunci bahasa `Admin.exportSheet`/`exportDimension` dihapus.
+3. **Kolom yang ditambahkan atau ditafsirkan:**
+   - Kamus Data mendapat kolom `judul`, agar kode kolom dan judul berlabel sama-sama tercatat.
+   - Lembar Bantuan mendapat `item_key` dan `hint_id`. Nilainya diambil dari event `hint_opened` (`payload.hint_id`).
+   - `butir.decoy` = `config_json.decoy`, hanya untuk Cari Objek; untuk jenis soal lain kosong.
+   - `indicator` = kode indikator soal, atau indikator tantangannya bila soal tidak punya.
+   - `event` memuat `session_code` dan `participant_code` di samping semua kolom `game_event_logs`. Tanpa keduanya, lembar itu tidak bisa digabung dengan lembar lain. Kolom `deleted_*` tidak ikut, karena baris yang ditandai hapus memang tidak diekspor.
+4. **Nilai tanpa olahan:**
+   - Waktu ditulis sebagai teks ISO 8601 (WIB, dengan milidetik) di XLSX maupun CSV, tidak sebagai sel tanggal Excel. Alasannya: milidetik tetap utuh dan isi XLSX sama dengan CSV.
+   - Durasi selalu dalam milidetik. Konversi lama ke detik atau menit dihapus.
+   - Mode berlabel hanya mengganti kode dengan label, ditambah kalimat jawaban dan nama wilayah.
+5. **Judul kolom CSV dan XLSX berkode = kode kolom.** Pada mode berlabel, judulnya berbahasa Indonesia. CSV-ZIP memakai format `data_exports.format = 'csv'` (sudah ada di `in_list`) dengan berkas `.zip`, sehingga tanpa perubahan skema.
+6. **Filter tanggal memakai waktu baris itu sendiri.** Contohnya waktu percobaan pada Riwayat Percobaan dan waktu event pada Navigasi; dulu semuanya memakai `game_sessions.started_at`. Rinciannya ada di 07 FITUR 14.
+   - Filter `class_level` tidak ada di `ExportService::FILTER_KEYS` (§9.2), tetapi tetap diterima `RawDataService` untuk tabel admin.
+   - Peserta difilter studi/bahasa lewat sesinya. Peserta tanpa sesi tetap muncul bila filter itu tidak dipakai.
+7. **Kamus Data selalu ikut.** Permintaan yang hanya berisi lembar terlarang (misalnya guru meminta `event`) menghasilkan semua lembar yang boleh, sama seperti perilaku lama.
+8. **`AnalyticsService` dipangkas:**
+   - `summary()` kini memuat KPI §8.3 (`participant_count` = siswa terdaftar, `active_sessions` ≤ 10 menit, `completed_attempts_today`, `feedback_count`) beserta hitungan lama. `audio_usage` diganti `audio_plays`/`audio_autoplays`.
+   - `participantProfile()` menambahkan tabel mentah `sessions`, `devices`, `progress` (per tantangan aktif) dan `feedback`.
+   - `digitalSecurityLiteracy()`, `ParticipantModel::ageDistribution()`/`digitalSecurityStats()`, `AudioUsageEventModel::usageStats()` (rasio, rata-rata), dan endpoint `GET /api/admin/participants` dihapus.
+   - Dasbor hanya diubah seperlunya: ubin "Sandi kuat" dibuang dan kunci audio disesuaikan. Tampilan barunya dikerjakan sesi admin.
+9. **View yang disentuh karena backend berubah:**
+   - `admin/export/index`: formulir lembar §9.2, berlabel/berkode, tombol CSV-ZIP;
+   - `admin/participants/show`: unduh data siswa XLSX/CSV dan PDF;
+   - `pdf/*`.
+
+   Tata letaknya tetap memakai komponen lama; gaya baru menjadi bagian sesi admin.
+10. **Laporan PDF satu siswa** memakai baris pengerjaan selesai berbintang terbanyak per tantangan (yang paling awal bila sama). Bila belum ada yang selesai, dipakai pengerjaan terakhir. Warnanya mengikuti token admin §8.1 (netral).
+11. **Uji §12.1 di tingkat layanan:** `AdminTableTest` (kontrak `page()`, urutan, halaman, CSV = tabel, cakupan guru) dan `RawExportTest` (XLSX dibaca PhpSpreadsheet, CSV-ZIP dibaca `ZipArchive` + `fgetcsv`). Keduanya memakai fixture SQLite kecil `Tests\Support\Database\RawDataWorld`, bukan generator simulasi. Uji tampilan tabel (komponen dan rute `admin/data/*`) menjadi bagian sesi admin.
+
+### Pengujian yang dijalankan
+
+- `vendor/bin/phpunit --no-coverage`: **463 test hijau**. Sebelumnya 451. Ada 16 uji baru (9 `AdminTableTest`, 7 `RawExportTest`), sementara `ExportLabelsTest`/`ExportRulesTest` ditulis ulang.
+- Pembuatan PDF lewat mPDF diuji ujung ke ujung di `RawExportTest`.
+- Belum diuji terhadap MariaDB atau di peramban. Query `UNION` lembar Bantuan dan pengurutan memakai Query Builder (identifier diberi prefix dan quote), tetapi baru dijalankan di SQLite.

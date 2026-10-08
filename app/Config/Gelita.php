@@ -178,6 +178,28 @@ class Gelita extends BaseConfig
         'bg.loading'       => [1920, 1080], // tirai layar penuh (components/curtain.php)
     ];
 
+    /**
+     * Ukuran TAMPIL slot di panggung 16:9, dalam dp pada kanvas 1280 × 720
+     * (Dok 3 §6), dengan pola kunci yang sama dengan $assetSizes. Hanya
+     * keterangan untuk ilustrator dan halaman Media; validasi unggahan tetap
+     * memakai $assetSizes (ukuran berkas).
+     *
+     * @var array<string, array{0: int, 1: int}>
+     */
+    public array $assetDisplaySizes = [
+        'bg.*'                  => [1280, 720],  // latar penuh panggung, rasio sama
+        'char.*'                => [300, 386],   // cerita & dialog; 220 × 283 di pendaftaran langkah 3
+        'map.region'            => [880, 566],   // pin wilayah/node dalam persen
+        'challenge.*.scene'     => [864, 486],   // benda Cari Objek dalam persen
+        'challenge.item.*-1-*'  => [504, 504],   // papan Susun Gambar
+        'challenge.item.*-4-*'  => [0, 0],       // lebar = w% adegan (persegi)
+        'challenge.item.*-3-*'  => [192, 144],   // kartu pernyataan; lightbox 640 × 480
+        'ui.logo-hero'          => [800, 300],
+        'ui.btn-start'          => [360, 120],
+        'ui.btn-start.*'        => [360, 120],
+        'bg.loading'            => [1280, 720],
+    ];
+
     public int $maxUploadBytes      = 64 * 1024 * 1024;
     public int $maxEventsPerBatch   = 50;
     public int $exportRetentionDays = 7;
@@ -188,8 +210,8 @@ class Gelita extends BaseConfig
     public int $sessionAbandonDays  = 30;   // sesi 'paused' tak tersentuh → 'abandoned'
 
     /**
-     * Ambang estimasi baris sheet Raw Events. Di atas ini export ditolak dan
-     * pemohon diminta mempersempit rentang tanggal.
+     * Batas baris lembar Event Mentah, Navigasi, dan Penyelesaian (Dok 3 §9.2).
+     * Di atas ini ekspor ditolak dan pemohon diminta mempersempit rentang tanggal.
      */
     public int $exportMaxRawEvents = 200000;
 

@@ -23,12 +23,14 @@ $focus   = static fn (string $f): string => $first === $f ? ' autofocus' : '';
 <?= $this->section('background') ?><?= media_key_src('bg.welcome') ?? '' ?><?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<section class="screen screen-medium register" data-step="1">
-  <div class="panel-parchment">
+<section class="register" data-step="1">
+  <div class="panel-parchment register-panel stage-box">
     <?= $this->include('game/register/_head') ?>
 
     <form method="post" action="<?= base_url('daftar/1') ?>" class="form register-form" data-step="1" autocomplete="off">
       <?= csrf_field() ?>
+      <div class="register-fields stage-scroll">
+      <?= view('partials/form-errors', ['errors' => $errors]) ?>
 
       <div class="field<?= $invalid('display_name') ?>">
         <label for="display_name"><?= esc(lang('Game.displayName')) ?> <span class="req" aria-hidden="true">*</span></label>
@@ -67,6 +69,8 @@ $focus   = static fn (string $f): string => $first === $f ? ' autofocus' : '';
         </div>
         <?php if ($err('gender')): ?><p class="field-error"><?= esc($err('gender')) ?></p><?php endif ?>
       </fieldset>
+
+      </div>
 
       <div class="form-actions register-actions">
         <a class="btn btn-quiet" href="<?= base_url('mulai') ?>"><?= icon('left') ?> <?= esc(lang('Game.back')) ?></a>

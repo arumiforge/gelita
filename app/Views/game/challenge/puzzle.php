@@ -43,6 +43,14 @@ $clip   = 'pz' . (int) $attempt->id . '-';
 <?= $this->section('background') ?><?= media_first($node->background_media_id, $level->background_media_id) ?><?= $this->endSection() ?>
 <?= $this->section('bodyClass') ?>is-challenge<?= $this->endSection() ?>
 
+<?= $this->section('aside') ?>
+  <ul class="challenge-tips">
+    <li><?= esc(lang($shape === 'jigsaw' ? 'Game.puzzleHintJigsaw' : 'Game.puzzleHint')) ?></li>
+    <li><?= esc(lang('Game.puzzleTipMark')) ?></li>
+    <li><?= esc(lang('Game.puzzleTipHint')) ?></li>
+  </ul>
+<?= $this->endSection() ?>
+
 <?= $this->section('arena') ?>
   <div class="puzzle-wrap" id="puzzle-wrap" data-mode="arrange" data-item="<?= esc($item['id'] ?? '', 'attr') ?>">
     <div class="puzzle-board is-<?= esc($shape, 'attr') ?>" id="puzzle-board" role="group" aria-label="<?= esc(lang('Game.puzzleImageAlt'), 'attr') ?>"
@@ -72,9 +80,8 @@ $clip   = 'pz' . (int) $attempt->id . '-';
         <?php endforeach ?>
       </div>
     </div>
-    <p class="hint-text"><?= esc(lang($shape === 'jigsaw' ? 'Game.puzzleHintJigsaw' : 'Game.puzzleHint')) ?></p>
     <?php if ($caption !== ''): ?>
-      <div class="puzzle-caption" id="puzzle-caption" role="note" hidden>
+      <div class="puzzle-caption stage-scroll" id="puzzle-caption" role="note" hidden>
         <b><?= esc(lang('Game.puzzleCaption')) ?></b>
         <p><?= esc($caption) ?></p>
       </div>

@@ -17,6 +17,7 @@ import { $, $$, el } from '../core/dom.js';
 import { emit } from '../core/events.js';
 import { initSlides } from './slides.js';
 import { overlayOpened } from '../core/device.js';
+import { createLightbox } from '../core/lightbox.js';
 
 function hideBrokenMedia(root) {
   const hide = (node) => {
@@ -154,39 +155,19 @@ function initEmbeds(root) {
   }
 }
 
-/** Perbesar gambar dalam <dialog> bawaan browser (Esc menutup). */
+/** Perbesar gambar (core/lightbox.js); lightbox selebar panggung. */
 function initZoom(root) {
   const buttons = $$('.book-zoom[data-zoom]', root);
-  if (!buttons.length || typeof HTMLDialogElement === 'undefined') return;
+  if (!buttons.length) return;
 
-  const closeLabel = root.dataset.labelClose || 'Tutup';
-  const image = el('img', { alt: '' });
-  const spinner = el('span', { class: 'lightbox-spinner', role: 'status', 'aria-label': root.dataset.labelLoading || '' });
-  const stage = el('div', { class: 'lightbox-stage' }, image, spinner);
-  const caption = el('p', { class: 'lightbox-caption' });
-  const close = el('button', { type: 'button', class: 'icon-btn lightbox-close', 'aria-label': closeLabel, title: closeLabel }, '×');
-  const dialog = el('dialog', { class: 'lightbox' }, close, stage, caption);
-  document.body.append(dialog);
-
-  const ready = () => dialog.classList.remove('is-loading');
-  image.addEventListener('load', ready);
-  image.addEventListener('error', ready);
-
-  close.addEventListener('click', () => dialog.close());
-  dialog.addEventListener('click', (event) => { if (event.target === dialog) dialog.close(); });
+  const open = createLightbox({ closeLabel: root.dataset.labelClose || 'Tutup', loadingLabel: root.dataset.labelLoading || '' });
+  if (!open) return;
 
   for (const button of buttons) {
     button.addEventListener('click', () => {
       const img = $('img', button);
-      dialog.classList.add('is-loading');
-      image.src = button.dataset.zoom;
-      image.alt = img?.alt || '';
-      // Gambar yang sama dengan sebelumnya tidak memicu `load` lagi
-      if (image.complete && image.naturalWidth > 0) ready();
       const figcaption = button.closest('figure')?.querySelector('figcaption');
-      caption.textContent = figcaption ? figcaption.textContent.replace(/\s+/g, ' ').trim() : '';
-      caption.hidden = caption.textContent === '';
-      dialog.showModal();
+      open(button.dataset.zoom, img?.alt || '', figcaption ? figcaption.textContent.replace(/\s+/g, ' ').trim() : '');
       const shelf = button.closest('[data-screen="library"]');
       overlayOpened('lightbox', { level: shelf?.dataset.level || null, levelId: Number(shelf?.dataset.levelId) || null });
     });

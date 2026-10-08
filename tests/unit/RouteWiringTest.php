@@ -61,6 +61,9 @@ final class RouteWiringTest extends CIUnitTestCase
             'admin/sekolah/gabung-otomatis'   => 'Admin\SchoolController::autoMerge',
             'admin/sekolah/([0-9]+)/gabung'   => 'Admin\SchoolController::merge',
             'admin/sekolah/([0-9]+)/sahkan'   => 'Admin\SchoolController::verify',
+            'admin/ekspor/xlsx'               => 'Admin\ExportController::xlsx',
+            'admin/ekspor/csv'                => 'Admin\ExportController::csv',
+            'admin/ekspor/pdf'                => 'Admin\ExportController::pdf',
         ],
     ];
 
@@ -150,12 +153,12 @@ final class RouteWiringTest extends CIUnitTestCase
         foreach (['GET', 'POST'] as $method) {
             foreach ($routes->getRoutes($method) as $from => $handler) {
                 $this->assertDoesNotMatchRegularExpression(
-                    '/AnalyticsController|RegisterController::(?:store|consent)\b|::(?:saveOptions|scoring)\b/',
+                    '/AnalyticsController|ScoringController|RegisterController::(?:store|consent)\b|AdminApiController::participants\b|::(?:saveOptions|scoring)\b/',
                     is_string($handler) ? $handler : '',
                     "{$method} {$from}",
                 );
                 $this->assertDoesNotMatchRegularExpression(
-                    '#^(?:persetujuan|admin/analitik|admin/studi/skoring|admin/konten/item/.+/opsi|api/admin/(?:levels|nodes|items|indicators|prepost))#',
+                    '#^(?:persetujuan|admin/analitik|admin/studi/skoring|admin/konten/item/.+/opsi|api/admin/(?:levels|nodes|items|indicators|prepost|participants|scoring))#',
                     $from,
                     "{$method} {$from} sudah dihapus",
                 );
@@ -168,6 +171,12 @@ final class RouteWiringTest extends CIUnitTestCase
         $this->assertFileDoesNotExist(FCPATH . 'assets/js/engines/pilihan.js');
         $this->assertFileDoesNotExist(FCPATH . 'assets/js/admin/charts.js');
         $this->assertFileDoesNotExist(FCPATH . 'assets/vendor/echarts.min.js');
+
+        // Dok 3 §9–§10: tanpa laporan studi PDF, lembar olahan, dan metrik olahan
+        $this->assertEqualsCanonicalizing(['report-participant.php', '_style.php'], array_map('basename', glob(APPPATH . 'Views/pdf/*.php')));
+        $this->assertFalse(method_exists(App\Services\AnalyticsService::class, 'digitalSecurityLiteracy'));
+        $this->assertFalse(method_exists(App\Models\AudioUsageEventModel::class, 'usageStats'));
+        $this->assertFalse(method_exists(App\Models\ParticipantModel::class, 'digitalSecurityStats'));
     }
 
     /** Ganti sandi sendiri: wajib login staf, tetapi terbuka untuk guru (bukan khusus admin). */

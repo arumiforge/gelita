@@ -60,7 +60,7 @@ app/Controllers/
 │   ├── ParticipantController.php     daftar & profil siswa, reset sandi siswa
 │   ├── SessionController.php         daftar sesi, detail, catatan aktivitas
 │   ├── FeedbackController.php        kritik & saran
-│   ├── ExportController.php          unduh data XLSX & laporan PDF satu siswa
+│   ├── ExportController.php          unduh data mentah XLSX/CSV-ZIP & laporan PDF satu siswa
 │   ├── ContentController.php         wilayah, tantangan, soal, impor bank soal, bacaan, Pustaka, dialog, verifikasi
 │   ├── NarrationController.php       rekaman narasi naskah
 │   ├── MediaController.php           gambar/video, audio, kelengkapan aset
@@ -220,7 +220,8 @@ Data siswa untuk guru selalu dibatasi sekolahnya (lihat [Otorisasi](#otorisasi))
 | GET | `/admin/sesi/{id}/event` | `SessionController::timeline/$1` | Catatan aktivitas (raw event) |
 | GET | `/admin/masukan` | `FeedbackController::index` | Kritik & saran |
 | GET | `/admin/ekspor` | `ExportController::index` | Form unduh data + riwayat |
-| POST | `/admin/ekspor/xlsx` | `ExportController::xlsx` | Bangun berkas XLSX |
+| POST | `/admin/ekspor/xlsx` | `ExportController::xlsx` | Bangun workbook XLSX data mentah |
+| POST | `/admin/ekspor/csv` | `ExportController::csv` | Bangun CSV-ZIP (satu CSV per lembar) |
 | POST | `/admin/ekspor/pdf` | `ExportController::pdf` | Laporan PDF satu siswa |
 | GET | `/admin/ekspor/unduh/{id}` | `ExportController::download/$1` | Unduh berkas |
 
@@ -291,8 +292,7 @@ Namespace `App\Controllers\Api`, grup `api/admin` dengan filter `jsonResponse` +
 
 | Method | Path | Handler | Tujuan |
 |---|---|---|---|
-| GET | `/api/admin/summary` | `AdminApiController::summary` | Hitungan data mentah (`AnalyticsService::summary()`) |
-| GET | `/api/admin/participants` | `AdminApiController::participants` | `{cohort, digital_security, ages}` |
+| GET | `/api/admin/summary` | `AdminApiController::summary` | KPI hitungan (`AnalyticsService::summary()`) |
 | GET | `/api/admin/sessions/{id}/timeline` | `AdminApiController::timeline/$1` | `{rows}` linimasa event satu sesi; sesi di luar sekolah guru → `403 FORBIDDEN` |
 | GET | `/api/admin/exports/{id}/status` | `AdminApiController::exportStatus/$1` | Status pembangunan berkas (dipanggil berkala `admin/export.js`) |
 
@@ -564,7 +564,8 @@ Memakai trait `StaffScope`; lihat tabel [Route — API panel admin](#route--api-
 
 * `panel($view, $title, $data)` merender halaman panel dengan data bersama: `pageTitle`, `filters`, `errors`, `activeStudy`, dan `filterOptions` (penelitian, wilayah, sekolah, provinsi dan kelas yang ada dalam cakupan pemanggil; dievaluasi hanya oleh halaman yang memakai bilah filter).
 * `back($path, $pesan)` / `done($path, $pesan)` kembali dengan flash `error` / `message`; `modelErrors()` meneruskan penolakan validasi Model agar penyimpanan yang gagal tidak dilaporkan "tersimpan".
-* `StaffScope` (dipakai juga `Api\AdminApiController`): `schoolScope()` (`null` untuk admin, `school_id` untuk guru; guru tanpa sekolah → 0, tidak cocok dengan sekolah mana pun), `isAdmin()`, `staffId()`, `readFilters()`, `scopedFilters()` (memaksa `school_id` guru), `analytics()` (`AnalyticsService` terikat cakupan pemanggil).
+* `StaffScope` (dipakai juga `Api\AdminApiController`): `schoolScope()` (`null` untuk admin, `school_id` untuk guru; guru tanpa sekolah → 0, tidak cocok dengan sekolah mana pun), `isAdmin()`, `staffId()`, `readFilters()`, `scopedFilters()` (memaksa `school_id` guru), `analytics()` (`AnalyticsService` terikat cakupan pemanggil), `dataScope($anonymous)` (`App\Services\StaffScope`: admin beridentitas kecuali diminta anonim, guru selalu anonim + sekolahnya) dan `rawData()` (`RawDataService` terikat cakupan itu; `page()`, `streamCsv()`). `readFilters()` menerima juga `participant_code` dan `variant_group`.
+* `rawCsvDownload($dimension, $filters)`: CSV satu tabel data mentah (nilai berkode, judul = kode kolom, UTF-8 + BOM) dalam cakupan pemanggil, audit `export_csv`; dipakai `?format=csv` tabel `/admin/data/{dimensi}`.
 
 ### `Admin\AuthController`
 
@@ -592,9 +593,9 @@ Aturan `login()`:
 
 | Controller::method | Aturan | View |
 |---|---|---|
-| `DashboardController::index()` | `AnalyticsService::summary()` (hitungan data mentah), `ParticipantModel::cohortSummary()`, `digitalSecurityLiteracy()`, sepuluh sesi terakhir; admin juga melihat pratinjau penghapusan buatan retensi | `admin/dashboard` |
+| `DashboardController::index()` | `AnalyticsService::summary()` (KPI hitungan: siswa terdaftar, sesi aktif ≤ 10 menit, pengerjaan selesai hari ini, kritik & saran, dan hitungan lain), `ParticipantModel::cohortSummary()`, sepuluh sesi terakhir; admin juga melihat pratinjau penghapusan buatan retensi | `admin/dashboard` |
 | `ParticipantController::index()` | Daftar siswa dalam cakupan, filter kelas/provinsi/sekolah, cari `?q=` (kode, nama pengguna, nama), 25 per halaman, ringkasan sesi & serpihan | `admin/participants/index` |
-| `ParticipantController::show($id)` | Siswa di luar cakupan → 404. `participantProfile()`, `device_logs`, sesi | `admin/participants/show` |
+| `ParticipantController::show($id)` | Siswa di luar cakupan → 404. `participantProfile()` (tabel mentah sesi, perangkat, progres per tantangan, kritik & saran + hitungan), `device_logs`, sesi; formulir unduh data siswa (XLSX/CSV-ZIP) dan laporan PDF | `admin/participants/show` |
 | `ParticipantController::resetPassword($id)` | Lihat di bawah | `admin/participants/reset-result` |
 | `SessionController::index()` | Sesi dalam cakupan, filter penelitian/bahasa/kelas/tanggal, 25 per halaman | `admin/sessions/index` |
 | `SessionController::show($id)` | Sesi di luar cakupan → 404. Progres, attempt, jawaban per soal (`item_responses`), percobaan per soal (`item_tries`), `device_logs` | `admin/sessions/show` |
@@ -620,12 +621,12 @@ Peserta selalu dikirim ke view sebagai array aman (`Participant::toSafeArray()` 
 
 | Method | Aturan |
 |---|---|
-| `index()` | Form filter (penelitian, wilayah, sekolah, kelas, provinsi, bahasa, rentang tanggal), pilihan sheet, riwayat 20 ekspor (guru: miliknya saja); view `admin/export/index` |
-| `xlsx()` | Baris `data_exports` status `running` → `ExportService::build()` → audit `export`. Sheet: `ExportService::SHEETS`; **guru dipaksa `anonymized = 1`** dan tidak pernah mendapat sheet `Raw Events` (`ADMIN_ONLY_SHEETS`). Filter datang lewat POST dan dipaksa ke cakupan sekolah |
-| `pdf()` | Hanya laporan satu siswa (`participant_id` wajib, templat `participant`); tanpa `participant_id` ditolak dengan pesan |
+| `index()` | Form filter (`ExportService::FILTER_KEYS`), pilihan lembar §9.2 (`allowedSheets()`), nilai berlabel/berkode, anonim (admin), riwayat 20 ekspor (guru: miliknya saja); view `admin/export/index` |
+| `xlsx()` / `csv()` | Baris `data_exports` (`format` `xlsx` / `csv`) status `running` → `ExportService::build()` → audit `export`. POST: filter, `sheets[]` (kosong = semua yang boleh; Kamus Data selalu ikut), `labels` (`label` \| `code`; bawaan XLSX berlabel, CSV berkode), `anonymized`, `participant_id` (ekspor per siswa, kembali ke profil siswa). **Guru dipaksa `anonymized = 1`**, tanpa lembar `event` dan kolom `answer_key`; filter dipaksa ke cakupan sekolah |
+| `pdf()` | Hanya laporan satu siswa (`participant_id` wajib, templat `participant`); tanpa `participant_id` ditolak dengan pesan. Laporan studi PDF tidak ada |
 | `download($id)` | Hanya pemohon atau admin; berkas belum kedaluwarsa (`expires_at`, `Config\Gelita::$exportRetentionDays`) dan berada di direktori ekspor; audit `export_download` |
 
-`ExportService` membaca ulang hak pemohon dari `staff_users` sebagai lapis ketiga.
+`ExportService` membaca ulang hak pemohon dari `staff_users` sebagai lapis ketiga (`StaffScope::fromStaff()`). Isi lembar berasal dari `RawDataService`.
 
 ### `Admin\ContentController` (admin)
 
@@ -754,8 +755,8 @@ Session CodeIgniter memakai `DatabaseHandler` (tabel `ci_sessions`, cookie `geli
 
 | Peran | Boleh |
 |---|---|
-| `admin` | Semua data semua sekolah; konten, narasi, media; penelitian & versi permainan; ekspor beridentitas dan anonim termasuk `Raw Events`; penghapusan data dan retensi; direktori sekolah; akun staf; audit log |
-| `guru` | Beranda, siswa, sesi, kritik & saran, dan dataset `/api/admin/*` **sekolahnya saja**; reset sandi siswa sekolahnya; ekspor **anonim saja** tanpa `Raw Events`; ganti sandi sendiri. Tidak dapat mengubah konten, menghapus data, atau mengelola akun |
+| `admin` | Semua data semua sekolah; konten, narasi, media; penelitian & versi permainan; ekspor beridentitas dan anonim termasuk lembar Event Mentah dan kunci jawaban; penghapusan data dan retensi; direktori sekolah; akun staf; audit log |
+| `guru` | Beranda, siswa, sesi, kritik & saran, dan dataset `/api/admin/*` **sekolahnya saja**; reset sandi siswa sekolahnya; ekspor dan CSV tabel **anonim saja** tanpa Event Mentah dan kunci jawaban; ganti sandi sendiri. Tidak dapat mengubah konten, menghapus data, atau mengelola akun |
 
 Siswa tidak punya akses apa pun ke panel.
 
@@ -763,7 +764,7 @@ Siswa tidak punya akses apa pun ke panel.
 
 1. **Route** — grup `staffAuth`, lalu `staffRole:admin` untuk bagian khusus admin.
 2. **Controller** — `schoolScope()` / `scopedFilters()` dipanggil di setiap method yang membaca data siswa; siswa/sesi di luar cakupan dibalas 404 (HTML) atau `403 FORBIDDEN` (API). Jangan mengandalkan filter route saja.
-3. **Service** — `AnalyticsService` diikat ke cakupan sekolah saat dibuat dan menambahkan `participants.school_id` di setiap query; `ExportService` membaca ulang hak pemohon dari `staff_users`.
+3. **Service** — `AnalyticsService` dan `RawDataService` diikat ke cakupan sekolah (`StaffScope`) dan menambahkan `participants.school_id` di setiap query; `ExportService` membaca ulang hak pemohon dari `staff_users`.
 
 Tiga lapis ini disengaja: kesalahan di satu lapis tidak langsung membocorkan data siswa. Untuk halaman HTML, akses tanpa hak dibalas `404`, bukan `403`, agar struktur panel tidak terpetakan.
 
@@ -835,7 +836,7 @@ Nomor aturan dirujuk dari kode (mis. `BaseApiController` → aturan 2, `safe_int
 
 * [01_DATABASE.md](01_DATABASE.md): struktur tabel, daftar `event_type` dan `interaction_type`.
 * [02_PROJECT_FOUNDATION.md](02_PROJECT_FOUNDATION.md): `BaseController`, alias filter, `Config\Gelita`, helper.
-* [03_MODEL_ENTITY.md](03_MODEL_ENTITY.md): Model, Entity, dan Service yang dipanggil controller — `SessionService`, `ChallengeService`, `ScoringService`, `EventService`, `AnalyticsService`, `ExportService`, `ContentImportService`, `ContentRepository`, `RetentionService`, `SchoolDirectory`.
+* [03_MODEL_ENTITY.md](03_MODEL_ENTITY.md): Model, Entity, dan Service yang dipanggil controller — `SessionService`, `ChallengeService`, `ScoringService`, `EventService`, `AnalyticsService`, `RawDataService`, `ExportService`, `ContentImportService`, `ContentRepository`, `RetentionService`, `SchoolDirectory`.
 * [05_VIEW_UI.md](05_VIEW_UI.md): isi view yang dipanggil controller di atas.
 * [06_JAVASCRIPT.md](06_JAVASCRIPT.md): klien yang memakai endpoint `/api` dan kode galatnya.
 * [07_FEATURE_INTEGRATION.md](07_FEATURE_INTEGRATION.md): alur fitur dari ujung ke ujung.

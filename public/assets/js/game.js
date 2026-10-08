@@ -7,15 +7,18 @@
  * terbaca dan dapat dipakai bila modul ini gagal dimuat (aturan 9 docs/05).
  */
 import { CONFIG } from './core/config.js';
-import { resendQueued } from './core/events.js';
+import { resendQueued, initVisibilityTracking } from './core/events.js';
 import { Sfx, initAudioPlayers } from './core/audio.js';
 import { initCurtains } from './core/curtain.js';
 import { initHud } from './game/hud.js';
 import { initRotateGate } from './game/rotate-gate.js';
 import { initInstall } from './game/install.js';
-import { initScreenTracking } from './core/device.js';
+import { initStage } from './core/stage.js';
 
 document.documentElement.classList.add('js');
+
+// Panggung 16:9: ukuran layar, tombol layar penuh, viewport_changed (Dok 3 §7)
+initStage({ track: Boolean(CONFIG.sessionTag) });
 
 // Audio baru boleh berbunyi setelah interaksi pertama
 const unlock = () => {
@@ -30,8 +33,8 @@ window.addEventListener('keydown', unlock);
 if (CONFIG.sessionTag) {
   resendQueued();
   window.addEventListener('online', () => resendQueued());
-  // Ukuran tampilan dan pindah tab/aplikasi (viewport_changed, page_hidden/visible)
-  initScreenTracking();
+  // Pindah tab/aplikasi (page_hidden/visible)
+  initVisibilityTracking();
 }
 
 initHud();

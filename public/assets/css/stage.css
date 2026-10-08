@@ -1,0 +1,381 @@
+/* ==========================================================================
+   GELITA — stage.css (Dok 3 §1–§4)
+   Panggung 16:9 tetap: bingkai (letterbox), panggung 1280 × 720 dp, pita
+   HUD / area isi / nav bar, lapisan modal & toast, layar putar, panel gulir,
+   dan SEMUA koordinat tata letak layar game.
+
+   Satuan: 1rem = 16 dp (tokens.css). Koordinat ditulis dalam dp tanpa satuan
+   (--x, --y, --w, --h) lalu dikali --dp oleh kelas .stage-box, sehingga
+   angka di sini sama dengan tabel Dok 3 §4. Mengubah tata letak satu layar =
+   mengubah angka di satu tempat.
+   ========================================================================== */
+
+/* =========================== BINGKAI & PANGGUNG =========================== */
+html.game-stage,
+html.game-stage body {
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+html.game-stage { scroll-padding-top: 0; }
+
+body.game {
+  min-height: 0;
+  background: var(--letterbox);
+}
+
+/* Mengisi layar; panggung di tengah, sisanya bingkai gelap */
+.stage-frame {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: grid;
+  place-items: center;
+  width: var(--app-w);
+  height: var(--app-h);
+  overflow: hidden;
+  background: var(--letterbox);
+}
+
+/* 80rem × 45rem = 1280 × 720 dp = --stage-w × --stage-h.
+   contain: layout paint menjadikan panggung blok penampung untuk
+   position: fixed di dalamnya (tirai, overlay Kenali, konfeti), dan
+   memotong apa pun yang keluar dari panggung. */
+.stage {
+  --dp: .0625rem;
+  position: relative;
+  width: 80rem;
+  height: 45rem;
+  overflow: hidden;
+  contain: layout paint;
+  background:
+    radial-gradient(ellipse at 50% 0%, var(--navy-600), transparent 60%),
+    radial-gradient(ellipse at 85% 100%, rgba(199, 162, 101, .12), transparent 55%),
+    var(--navy-900);
+}
+
+/* Kotak berkoordinat dp: left/top/width/height dari --x/--y/--w/--h.
+   Elemen bagian (partial) yang dipakai ulang mendapat aturan yang sama lewat
+   daftar selektor ini, bukan kelas tambahan di markup. Awalan .stage menang
+   atas position: relative milik komponen (.panel-parchment, .panel). */
+.stage .stage-box,
+.stage .cine-stage, .stage .cine-caption,
+.stage .dialogue-stage > .character, .stage .dialogue-box,
+.stage .challenge-puzzle .puzzle-board, .stage .challenge-puzzle .arena-actions, .stage .challenge-puzzle .puzzle-caption,
+.stage .challenge-rumpang .rumpang-reading, .stage .challenge-rumpang .sentences, .stage .challenge-rumpang .rumpang-media,
+.stage .challenge-rumpang .word-bank, .stage .challenge-rumpang .arena-actions,
+.stage .challenge-boleh .arena-actions,
+.stage .challenge-cari .hunt-clue, .stage .challenge-cari .hunt-side, .stage .challenge-cari .hunt-scene {
+  position: absolute;
+  left: calc(var(--x, 0) * var(--dp));
+  top: calc(var(--y, 0) * var(--dp));
+  width: calc(var(--w, 1280) * var(--dp));
+  height: calc(var(--h, 720) * var(--dp));
+}
+
+/* Panel yang isinya bisa panjang: tinggi tetap, isi bergulir di dalamnya */
+.stage-scroll {
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold-600) transparent;
+}
+.panel-parchment .stage-scroll,
+.stage-scroll.is-parchment { scrollbar-color: var(--brown-500) transparent; }
+
+.skip-link { z-index: 100; }
+
+/* ---------- Latar bergambar: 1280 × 720 dp penuh, dua <img> untuk crossfade ---------- */
+.scene {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.scene-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity .6s ease;
+}
+.scene-img.is-visible { opacity: 1; }
+/* Lapisan gelap agar teks di atas gambar tetap kontras ≥ 4.5:1 */
+.scene::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(11, 19, 32, .35), var(--veil) 40%, rgba(11, 19, 32, .75));
+}
+
+/* ---------- HUD: 0, 0, 1280 × 56 ---------- */
+.hud {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 20;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--gap-4);
+  width: 100%;
+  height: var(--hud-h);
+  padding: 0 var(--gap-4);
+  background: linear-gradient(to bottom, rgba(11, 19, 32, .95), rgba(11, 19, 32, .78));
+  border-bottom: 1px solid var(--line);
+}
+.hud-left, .hud-right { display: flex; align-items: center; gap: var(--gap-3); min-width: 0; }
+.hud-right { justify-content: flex-end; }
+.hud-center {
+  overflow: hidden;
+  color: var(--gold-300);
+  font-family: var(--font-display);
+  font-size: var(--fs-body);
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.hud-icons { display: flex; gap: var(--gap-2); }
+.hud .icon-btn { width: 2.5rem; height: 2.5rem; }
+.hud-brand {
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  font-weight: 700;
+  letter-spacing: .12em;
+  color: var(--gold-500);
+  text-decoration: none;
+}
+.hud-brand:hover { color: var(--gold-300); }
+.hud-fullscreen .icon-exit { display: none; }
+.hud-fullscreen[aria-pressed="true"] .icon-enter { display: none; }
+.hud-fullscreen[aria-pressed="true"] .icon-exit { display: block; }
+
+/* ---------- Area isi: 0, 56, 1280 × 600 (tanpa nav bar 1280 × 664) ----------
+   <main> selebar panggung tanpa stacking context, jadi koordinat isi = koordinat
+   panggung (tabel §4) dan overlay di dalamnya (Kenali) dapat menutupi HUD. */
+.stage-main {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.stage-main:focus { outline: none; }
+
+.screen-head { margin-bottom: var(--gap-4); text-align: center; }
+.screen-head h1 { margin: 0; font-size: var(--fs-h2); }
+.screen-head p { color: var(--ink-dim); }
+
+/* ---------- Nav bar: 0, 656, 1280 × 64 ---------- */
+.nav-bar {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-3);
+  width: 100%;
+  height: var(--nav-h);
+  padding: 0 var(--gutter);
+  background: linear-gradient(to top, rgba(11, 19, 32, .9), rgba(11, 19, 32, .55) 70%, transparent);
+  pointer-events: none;
+}
+.nav-bar > * { pointer-events: auto; }
+.nav-bar-start, .nav-bar-end { display: flex; gap: var(--gap-3); }
+.nav-bar-end { margin-left: auto; }
+.nav-bar .btn { min-height: var(--tap); }
+.nav-bar .btn-lg { min-height: var(--tap); padding: var(--gap-2) var(--gap-6); font-size: var(--fs-body); }
+
+/* ---------- Modal: 0, 0, 1280 × 720; kotak maks 720 × 560 di tengah ---------- */
+.modal-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: var(--gap-6);
+  background: var(--veil-strong);
+}
+.modal-layer > .modal { width: 30rem; max-width: 45rem; }
+.modal-layer > .modal.is-wide { width: 45rem; }
+.modal-layer .modal-card { max-height: 35rem; overflow-y: auto; overscroll-behavior: contain; }
+
+/* ---------- Toast: x 856, y 72, w 400 ---------- */
+.toast-layer {
+  position: absolute;
+  top: 4.5rem;
+  left: 53.5rem;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-2);
+  width: 25rem;
+  pointer-events: none;
+}
+.toast-layer > * { pointer-events: auto; }
+
+/* =========================== LAYAR PUTAR ===========================
+   GELITA hanya dilayani mendatar: perangkat sentuh yang dipegang tegak
+   ditutup penghalang ini, di luar panggung. `pointer: coarse` menjaga
+   desktop/laptop dengan jendela sempit tetap dapat dipakai. Tanpa JavaScript
+   pun penghalang muncul dan hilang sendiri saat perangkat diputar. Selama
+   tampil, 1rem diukur dari lebar layar (tokens.css). */
+.rotate-gate { display: none; }
+
+@media (orientation: portrait) and (pointer: coarse) {
+  .rotate-gate {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: grid;
+    place-items: center;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: max(var(--gap-5), env(safe-area-inset-top)) var(--gap-5) max(var(--gap-5), env(safe-area-inset-bottom));
+    background:
+      radial-gradient(circle at 50% 35%, rgba(223, 192, 135, .16), transparent 55%),
+      var(--navy-900);
+    color: var(--ink);
+    text-align: center;
+  }
+  .stage-frame { visibility: hidden; }
+}
+.rotate-gate:focus { outline: none; }
+.rotate-gate-card { display: grid; justify-items: center; gap: var(--gap-3); max-width: 26.25rem; }
+.rotate-gate-art { width: 7.5rem; height: 7.5rem; color: var(--gold-500); }
+.rotate-gate-arrow { color: var(--gold-300); }
+.rotate-gate-phone {
+  transform-box: view-box;
+  transform-origin: 50% 56.667%;
+  animation: rotate-hint 3s ease-in-out infinite;
+}
+@keyframes rotate-hint {
+  0%, 20% { transform: rotate(0); }
+  50%, 80% { transform: rotate(90deg); }
+  100% { transform: rotate(0); }
+}
+.rotate-gate-title { margin: 0; color: var(--gold-300); font-size: var(--fs-h2); }
+.rotate-gate-text { margin: 0; font-size: var(--fs-h3); line-height: 1.5; }
+.rotate-gate-stuck {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gap-2);
+  margin: var(--gap-3) 0 0;
+  padding: var(--gap-3) var(--gap-4);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, .05);
+  color: var(--ink-dim);
+  font-size: var(--fs-caption);
+  text-align: left;
+}
+.rotate-gate-stuck .icon { margin-top: .125rem; color: var(--gold-500); }
+
+/* =========================== KOORDINAT LAYAR (§4) =========================== */
+/* ---------- Halaman awal `/` ---------- */
+.welcome-hero    { --x: 240; --y: 120; --w: 800; --h: 300; }
+.welcome-actions { --x: 460; --y: 456; --w: 360; --h: 120; }
+.welcome-install { --x: 896; --y: 600; --w: 352; --h: 40; }
+
+/* ---------- Mulai `/mulai`, Gerbang `/gerbang` ---------- */
+.start-head { --x: 0; --y: 88; --w: 1280; --h: 96; }
+.start-card { --y: 200; --w: 400; --h: 300; }
+.start-card:nth-child(1) { --x: 212; }
+.start-card:nth-child(2) { --x: 668; }
+
+/* ---------- Masuk `/masuk`, Ganti sandi `/ganti-sandi` ---------- */
+.login-panel    { --x: 360; --y: 88; --w: 560; --h: 544; }
+.password-panel { --x: 360; --y: 72; --w: 560; --h: 576; }
+
+/* ---------- Daftar `/daftar/1…3`: kepala 0–64, isian gulir 64–496, bilah tombol 496–576 ---------- */
+.register-panel { --x: 200; --y: 72; --w: 880; --h: 576; }
+
+/* ---------- Sinematik: cerita pembuka `/intro`, penutup `/penutup` ---------- */
+.cine-stage   { --x: 64;  --y: 136; --w: 300; --h: 520; }
+.cine-caption { --x: 160; --y: 520; --w: 960; --h: 168; }
+
+/* ---------- Dialog wilayah `/dialog/{code}`, wilayah tuntas `/tuntas/{code}` ----------
+   Kotak teks naik ke y 472 (bukan 520): layar ini punya nav bar 656–720. */
+.dialogue-head                 { --x: 0;   --y: 64;  --w: 1280; --h: 64; }
+.dialogue-stage > .stage-left  { --x: 64;  --y: 136; --w: 300; --h: 520; }
+.dialogue-stage > .stage-right { --x: 916; --y: 136; --w: 300; --h: 520; }
+.dialogue-box                  { --x: 160; --y: 472; --w: 960; --h: 168; }
+
+/* ---------- Peta Kedu `/peta`, peta wilayah `/wilayah/{code}` ---------- */
+.map-frame   { --x: 32;  --y: 72;  --w: 880; --h: 566; }
+.map-side    { --x: 936; --y: 72;  --w: 312; --h: 576; }
+.map-balloon { --x: 48;  --y: 560; --w: 600; --h: 96; }
+
+/* ---------- Kartu misi `/misi/{code}/{n}` ---------- */
+.mission-card { --x: 280; --y: 96; --w: 720; --h: 528; }
+
+/* ---------- Tantangan `/tantangan/{code}/{n}` (Dok 3 §5) ----------
+   Kepala 32, 64, 1216 × 56; arena 32, 128, 1216 × 576 (sampai y 704). */
+.challenge-head  { --x: 32; --y: 64;  --w: 1216; --h: 56; }
+.arena-alert,
+.arena-empty     { --x: 32; --y: 128; --w: 1216; --h: 120; }
+
+/* Susun Gambar: panel kiri (instruksi + tips), papan 504², bilah aksi, keterangan kanan */
+.challenge-puzzle .challenge-aside  { --x: 32;  --y: 128; --w: 332; --h: 512; }
+.challenge-puzzle .puzzle-board     { --x: 388; --y: 136; --w: 504; --h: 504; }
+.challenge-puzzle .arena-actions    { --x: 388; --y: 648; --w: 504; --h: 48; }
+.challenge-puzzle .puzzle-caption   { --x: 916; --y: 128; --w: 332; --h: 512; }
+
+/* Isi Rumpang: instruksi (baris pertama arena), bacaan gulir, bank kata, bilah aksi */
+.challenge-rumpang .challenge-aside { --x: 96;  --y: 128; --w: 1088; --h: 40; }
+.challenge-rumpang .rumpang-reading,
+.challenge-rumpang .sentences       { --x: 96;  --y: 176; --w: 1088; --h: 384; }
+.challenge-rumpang .rumpang.has-media .rumpang-reading,
+.challenge-rumpang .rumpang.has-media .sentences { --x: 416; --w: 768; }
+.challenge-rumpang .rumpang-media   { --x: 96;  --y: 176; --w: 304; --h: 384; }
+.challenge-rumpang .word-bank       { --x: 96;  --y: 568; --w: 1088; --h: 72; }
+.challenge-rumpang .arena-actions   { --x: 96;  --y: 648; --w: 1088; --h: 56; }
+
+/* Benar atau Salah: bacaan kiri, instruksi + pernyataan kanan, bilah aksi */
+.challenge-boleh .boleh-passages    { --x: 32;  --y: 128; --w: 596; --h: 576; }
+.challenge-boleh .challenge-aside   { --x: 652; --y: 128; --w: 596; --h: 64; }
+.challenge-boleh .boleh-cards       { --x: 652; --y: 200; --w: 596; --h: 440; }
+.challenge-boleh .arena-actions     { --x: 652; --y: 648; --w: 596; --h: 56; }
+
+/* Cari Objek: bilah petunjuk, daftar benda, adegan 16:9, panel kanan (instruksi) */
+.challenge-cari .hunt-clue          { --x: 32;   --y: 128; --w: 1216; --h: 56; }
+.challenge-cari .hunt-side          { --x: 32;   --y: 192; --w: 164;  --h: 486; }
+.challenge-cari .hunt-scene         { --x: 208;  --y: 192; --w: 864;  --h: 486; }
+.challenge-cari .challenge-aside    { --x: 1084; --y: 192; --w: 164;  --h: 486; }
+
+/* ---------- Selesai `/selesai/{id}` (tanpa Jaka, Dok 3 §5.3) ---------- */
+.finished-card { --x: 280; --y: 72; --w: 720; --h: 576; }
+
+/* ---------- Hasil `/hasil/{code}/{n}` ---------- */
+.result-panel { --x: 160; --y: 72; --w: 960; --h: 576; }
+
+/* ---------- Rak Pustaka `/pustaka` ---------- */
+.shelf-head { --x: 88; --y: 64; --w: 1104; --h: 48; }
+.shelf-card { --y: 120; --w: 352; --h: 440; }
+.shelf-card:nth-child(1) { --x: 88; }
+.shelf-card:nth-child(2) { --x: 464; }
+.shelf-card:nth-child(3) { --x: 840; }
+
+/* ---------- Pustaka `/pustaka/{code}` ---------- */
+.book          { --x: 64;  --y: 80;  --w: 1152; --h: 568; }
+.library-empty { --x: 320; --y: 200; --w: 640;  --h: 200; }
+
+/* ---------- Pustaka terkunci, Profil, Balai Refleksi ---------- */
+.library-locked-card { --x: 320; --y: 140; --w: 640; --h: 420; }
+.profile-side        { --x: 32;  --y: 72;  --w: 400; --h: 576; }
+.profile-main        { --x: 456; --y: 72;  --w: 792; --h: 576; }
+.reflection-side     { --x: 32;  --y: 72;  --w: 520; --h: 576; }
+.reflection-form     { --x: 576; --y: 72;  --w: 672; --h: 576; }
+
+/* KOORDINAT */
+
+@media (prefers-reduced-motion: reduce) {
+  .scene-img { transition: none; }
+  .rotate-gate-phone { animation: none; transform: rotate(90deg); }
+}

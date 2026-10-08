@@ -34,7 +34,7 @@ Aplikasi dibangun dengan **CodeIgniter 4.7** (PHP 8.2+, MariaDB 10.6+ / MySQL 8)
 **Panel admin** (`/admin`)
 
 - Dasbor berisi hitungan mentah, daftar peserta, sesi beserta linimasa event, dan masukan siswa.
-- Ekspor XLSX data mentah (guru: selalu anonim dan hanya sekolahnya) dan PDF data satu peserta.
+- Ekspor data mentah XLSX atau CSV-ZIP dengan Kamus Data, berlabel atau berkode (guru: selalu anonim, hanya sekolahnya, tanpa Event Mentah dan kunci jawaban), ekspor per siswa, dan laporan PDF satu siswa.
 - Khusus admin: editor konten (wilayah, tantangan, soal, bacaan, dialog, Pustaka, narasi), impor bank soal dari Excel, Media dan **Kelengkapan aset**, studi & rilis, tata kelola data (penghapusan berpratinjau, audit, retensi), direktori sekolah, dan akun staf.
 - Otorisasi berlapis tiga (route → controller → service); halaman khusus admin membalas `404` untuk guru.
 

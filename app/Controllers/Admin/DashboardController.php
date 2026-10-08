@@ -11,15 +11,12 @@ use App\Libraries\ResearchReadiness;
  */
 class DashboardController extends BaseAdminController
 {
-    /** Sesi dianggap aktif sekarang bila ada aktivitas dalam rentang ini. */
-    private const ACTIVE_WINDOW = 600;
-
     public function index(): string
     {
         $scope = $this->schoolScope();
 
         return $this->panel('admin/dashboard', lang('Admin.menuDashboard'), [
-            'kpi'             => $this->kpi($scope),
+            'kpi'             => $this->kpi(),
             'events'          => $this->recentEvents($scope),
             'progress'        => $this->recentProgress($scope),
             'readiness'       => $this->isAdmin() ? (new ResearchReadiness())->check() : null,
@@ -31,35 +28,20 @@ class DashboardController extends BaseAdminController
 
     /**
      * Hitungan: siswa terdaftar · sesi aktif sekarang (≤ 10 menit) ·
-     * pengerjaan selesai hari ini · kritik & saran.
+     * pengerjaan selesai hari ini · kritik & saran — dari
+     * AnalyticsService::summary() (cakupan sekolah pemanggil).
      *
      * @return array{participants: int, active_sessions: int, completed_today: int, feedback: int}
      */
-    private function kpi(?int $scope): array
+    private function kpi(): array
     {
-        $db     = db_connect();
-        $scoped = static function ($builder) use ($scope) {
-            $builder->where('participants.deleted_at', null);
-
-            return $scope === null ? $builder : $builder->where('participants.school_id', $scope);
-        };
+        $summary = $this->analytics()->summary($this->scopedFilters([]));
 
         return [
-            'participants' => $scoped($db->table('participants'))->countAllResults(),
-            'active_sessions' => $scoped($db->table('game_sessions')
-                ->join('participants', 'participants.id = game_sessions.participant_id')
-                ->where('game_sessions.ended_at', null)
-                ->where('game_sessions.last_active_at >=', date('Y-m-d H:i:s', time() - self::ACTIVE_WINDOW)))
-                ->countAllResults(),
-            'completed_today' => $scoped($db->table('challenge_attempts')
-                ->join('game_sessions', 'game_sessions.id = challenge_attempts.session_id')
-                ->join('participants', 'participants.id = game_sessions.participant_id')
-                ->where('challenge_attempts.status', 'completed')
-                ->where('challenge_attempts.completed_at >=', date('Y-m-d 00:00:00')))
-                ->countAllResults(),
-            'feedback' => $scoped($db->table('participant_feedback')
-                ->join('participants', 'participants.id = participant_feedback.participant_id'))
-                ->countAllResults(),
+            'participants'    => (int) $summary['participant_count'],
+            'active_sessions' => (int) $summary['active_sessions'],
+            'completed_today' => (int) $summary['completed_attempts_today'],
+            'feedback'        => (int) $summary['feedback_count'],
         ];
     }
 

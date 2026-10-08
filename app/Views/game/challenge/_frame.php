@@ -1,7 +1,16 @@
 <?php
 /**
  * Kerangka layar tantangan, sama untuk keempat engine. Di-include oleh
- * game/challenge/{engine}.php; isi arena datang dari section `arena`.
+ * game/challenge/{engine}.php; isi arena datang dari section `arena`, isi
+ * tambahan panel instruksi dari section `aside` (opsional).
+ *
+ * Panggung 16:9 (Dok 3 §5): tanpa tokoh Jaka, isi selebar panggung. Kepala
+ * 32, 64, 1216 × 56; arena 32, 128, 1216 × 576; tanpa nav bar. Bingkai ukiran
+ * digambar .challenge::before. .arena-panel dan .arena hanya pembungkus
+ * (display: contents), jadi panel engine memakai koordinat panggung langsung
+ * (stage.css §Tantangan). Panel instruksi (.challenge-aside) diletakkan per
+ * engine: panel kiri Susun Gambar, baris pertama arena Isi Rumpang dan Benar
+ * atau Salah, panel kanan Cari Objek.
  *
  * Payload soal ditanam sebagai <script type="application/json" id="challenge-data">
  * dan sudah disaring ChallengeService: tanpa kunci jawaban, tanpa penanda
@@ -41,12 +50,8 @@ $triesAria  = lang('Game.triesLabel') . ': ' . lang('Game.triesOf', ['{0}', '{1}
          data-sequence="<?= esc($sequence, 'attr') ?>"
          data-exit-url="<?= esc(base_url('wilayah/' . $level->code), 'attr') ?>">
 
-  <div class="challenge-character" aria-hidden="true">
-    <?= component('character', ['character' => 'jaka']) ?>
-  </div>
-
-  <div class="panel-carved arena-panel">
-    <header class="challenge-head">
+  <div class="arena-panel">
+    <header class="challenge-head stage-box">
       <div class="badge-pos num" aria-hidden="true"><?= esc($sequence) ?></div>
       <div class="challenge-info">
         <span class="eyebrow"><?= esc($region) ?> · <?= esc(lang('Game.challengeOf', [$sequence, $totalNodes])) ?> · <?= esc(engine_label($engine, $node->variant_code)) ?></span>
@@ -84,13 +89,16 @@ $triesAria  = lang('Game.triesLabel') . ': ' . lang('Game.triesOf', ['{0}', '{1}
     </header>
 
     <div class="arena">
-      <?php if ($node->text('instruction', $locale) !== ''): ?>
-        <p class="instruction"><?= icon('info') ?> <span><?= esc($node->text('instruction', $locale)) ?></span></p>
-      <?php endif ?>
-      <noscript><div class="alert alert-warn"><?= icon('warn') ?><p><?= esc(lang('Game.needsJs')) ?></p></div></noscript>
+      <aside class="challenge-aside stage-box stage-scroll">
+        <?php if ($node->text('instruction', $locale) !== ''): ?>
+          <p class="instruction"><?= icon('info') ?> <span><?= esc($node->text('instruction', $locale)) ?></span></p>
+        <?php endif ?>
+        <?= $this->renderSection('aside') ?>
+      </aside>
+      <noscript><div class="alert alert-warn arena-alert stage-box"><?= icon('warn') ?><p><?= esc(lang('Game.needsJs')) ?></p></div></noscript>
 
       <?php if (($payload['items'] ?? $payload['objects'] ?? []) === []): ?>
-        <div class="empty-state"><?= icon('info') ?><p><?= esc(lang('Game.noItems')) ?></p></div>
+        <div class="empty-state arena-empty stage-box"><?= icon('info') ?><p><?= esc(lang('Game.noItems')) ?></p></div>
       <?php else: ?>
         <div class="arena-body"><?= $this->renderSection('arena') ?></div>
       <?php endif ?>

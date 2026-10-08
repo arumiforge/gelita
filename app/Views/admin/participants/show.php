@@ -3,7 +3,7 @@
  * Detail siswa — `/admin/peserta/{id}?tab=…` → ParticipantController::show
  * (Dok 3 §8.3)
  *
- * Aksi: reset sandi, unduh data siswa (XLSX/CSV), cetak PDF. Tab: Profil ·
+ * Aksi: reset sandi, unduh data siswa (XLSX/CSV-ZIP, ExportController), cetak PDF. Tab: Profil ·
  * Sesi & perangkat · Progres (12 baris) · Pengerjaan · Jawaban (baris dapat
  * dibuka untuk riwayat percobaan) · Navigasi · Bantuan · Kritik & saran.
  * Tab dirender server satu per satu (`?tab=`), tanpa JavaScript.
@@ -25,22 +25,20 @@ $criteria = $participant['pw_first_submit_criteria'];
 $region   = implode(', ', array_filter([$participant['district_name'], $participant['province_name'], $participant['country_name']]));
 $title    = $isAdmin && ! empty($participant['display_name']) ? $participant['display_name'] : $participant['participant_code'];
 
-$actions = '<form method="post" action="' . base_url('admin/ekspor/xlsx') . '" class="inline-form">'
+// Unduh data siswa (lembar §9.2 difilter satu siswa) dan laporan PDF: satu
+// form, tujuan dipilih tombolnya. Guru selalu anonim (dipaksa server).
+$actions = '<form method="post" action="' . base_url('admin/ekspor/pdf') . '" class="btn-row">'
     . csrf_field()
     . '<input type="hidden" name="participant_id" value="' . $id . '">'
-    . '<label class="visually-hidden" for="unduh-format">Format</label>'
-    . '<select id="unduh-format" name="format"><option value="xlsx">XLSX</option><option value="csv">CSV (ZIP)</option></select>'
-    . '<button class="btn" type="submit">' . icon('download') . ' Unduh data siswa</button></form>'
-    . '<form method="post" action="' . base_url('admin/ekspor/pdf') . '" class="inline-form">'
-    . csrf_field()
-    . '<input type="hidden" name="participant_id" value="' . $id . '">'
-    . ($isAdmin ? '<input type="hidden" name="anonymized" value="1">' : '')
+    . ($isAdmin ? '<label class="check"><input type="checkbox" name="anonymized" value="1" checked> <span>Anonim</span></label>' : '')
+    . '<button class="btn" type="submit" formaction="' . base_url('admin/ekspor/xlsx') . '">' . icon('download') . ' Unduh XLSX</button>'
+    . '<button class="btn" type="submit" formaction="' . base_url('admin/ekspor/csv') . '">' . icon('download') . ' Unduh CSV-ZIP</button>'
     . '<button class="btn" type="submit">' . icon('text') . ' Cetak PDF</button></form>'
     . '<a class="btn btn-danger-soft" href="' . base_url($base . '#reset-sandi') . '">' . icon('key') . ' Reset sandi</a>';
 
 $rawTable = static function (?array $table, string $empty, array $extra = []) {
     return $table === null
-        ? '<div class="empty-state">' . icon('database') . '<p>Data mentah untuk tab ini disediakan layanan data mentah (RawDataService), yang belum terpasang.</p></div>'
+        ? '<div class="empty-state">' . icon('database') . '<p>Data mentah tidak tersedia.</p></div>'
         : component('data-table', $extra + ['table' => $table, 'id' => 'tab-data', 'emptyMessage' => $empty]);
 };
 ?>
