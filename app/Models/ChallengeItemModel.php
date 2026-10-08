@@ -105,7 +105,7 @@ class ChallengeItemModel extends Model
             $candidates = array_keys($groups);
         }
 
-        $group = (string) $candidates[random_int(0, count($candidates) - 1)];
+        $group = (string) $candidates[$this->randomIndex(count($candidates))];
 
         $targets = [];
         $decoys  = [];
@@ -119,6 +119,15 @@ class ChallengeItemModel extends Model
         }
 
         return ['group' => $group, 'items' => array_merge($targets, $decoys)];
+    }
+
+    /**
+     * Indeks acak 0..$count−1 untuk pickVariant(). Dipisah agar data simulasi
+     * (`gelita:simulasi --seed`) dapat memakai pengacak berbenih.
+     */
+    protected function randomIndex(int $count): int
+    {
+        return random_int(0, $count - 1);
     }
 
     /** Item yang sudah pernah dijawab tidak boleh diganti kunci jawabannya. */
