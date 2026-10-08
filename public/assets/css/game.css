@@ -813,7 +813,7 @@ body.is-challenge .hud-leave { display: none; }
   border-radius: var(--radius);
   background: rgba(11, 19, 32, .4);
 }
-.word-bank-title { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; flex-basis: 100%; color: var(--ink-dim); font-size: var(--fs-caption); font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+.word-bank-title { flex-basis: 100%; color: var(--ink-dim); font-size: var(--fs-caption); font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
 .word {
   min-height: 2.75rem;
   padding: var(--gap-1) var(--gap-4);
