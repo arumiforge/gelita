@@ -14,7 +14,7 @@ final class RouteWiringTest extends CIUnitTestCase
 {
     private const CONTROLLER_COUNT = [
         'Game'  => 11,  // 10 controller + BaseGameController
-        'Admin' => 15,  // 14 controller + BaseAdminController (AnalyticsController dihapus, Dok 1 §14)
+        'Admin' => 16,  // 15 controller + BaseAdminController (RawDataController baru, Dok 3 §8.3)
         'Api'   => 10,  // 9 controller + BaseApiController
     ];
 
@@ -46,6 +46,8 @@ final class RouteWiringTest extends CIUnitTestCase
             'admin/konten/narasi/daftar-rekaman' => 'Admin\NarrationController::recordingList',
             'admin/media/kelengkapan'     => 'Admin\MediaController::checklist',
             'admin/sekolah'               => 'Admin\SchoolController::index',
+            'admin/data'                  => 'Admin\RawDataController::index',
+            'admin/data/([^/]+)'          => 'Admin\RawDataController::show',
         ],
         'POST' => [
             'daftar/([0-9]+)'        => 'Game\RegisterController::saveStep/$1',

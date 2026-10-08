@@ -24,7 +24,6 @@ $pending        = count(array_filter($rows, static fn (array $row): bool => $row
 <?php $actions = ob_get_clean() ?>
 <?= component('partials/admin-head', [
     'title'   => 'Rekaman suara',
-    'eyebrow' => 'Pengelolaan · suara tokoh & narasi',
     'lead'    => 'Siswa hanya mendengar rekaman yang sudah disetujui. Dengarkan dulu setiap rekaman dan cocokkan dengan teksnya, baru tekan Setujui.',
     'actions' => $actions,
 ]) ?>

@@ -10,7 +10,7 @@ Keputusan dan penyimpangan dari ketiga dokumen perombakan, beserta alasannya dan
 | Dok 2 | Selesai, di `main` (§2–§12). Uji manual §13.2 dan ringkasan §2–§9 di bagian "Dok 2 — server, bank soal, dan uji manual §13" |
 | Pembersihan kompatibilitas lama | Selesai, di `main` (PR #41): instalasi baru saja, migration digabung, dokumentasi ditulis ulang. Lihat bagian "Pembersihan — instalasi baru tanpa kompatibilitas lama" |
 | Perbaikan sebelum Dok 3 | Temuan tinjauan Dok 2 (balapan permintaan, Cari Objek, bintang): branch sementara, PR ke `main`. Lihat bagian "Perbaikan sebelum Dok 3 — temuan tinjauan Dok 2" |
-| Dok 3 | Sedang dikerjakan paralel. Data mentah, ekspor, dan PDF (§8.4, §9, §10): branch `dok3-data-mentah`, PR #45, lihat bagian "Dok 3 — data mentah dan ekspor". Panggung 16:9 (§1–§7, §12.1–§12.2, dokumentasi 05/06): branch `dok3-panggung`, PR #48 (sebagian) dan PR lanjutannya, lihat bagian "Dok 3 — panggung 16:9". **§13 (skrip `upgrade-kelas5`) tidak dikerjakan** dan §11 sebagian sudah selesai; lihat "Untuk sesi Dok 3" di bagian pembersihan |
+| Dok 3 | Sedang dikerjakan paralel. Data mentah, ekspor, dan PDF (§8.4, §9, §10): branch `dok3-data-mentah`, PR #45, lihat bagian "Dok 3 — data mentah dan ekspor". Panel admin SaaS (§8.1–§8.3, §12.1 `AdminTableViewTest`): branch `dok3-admin`, PR #47, lihat bagian "Dok 3 — panel admin". Panggung 16:9 (§1–§7, §12.1–§12.2, dokumentasi 05/06): branch `dok3-panggung`, PR #48 (sebagian) dan PR #49, lihat bagian "Dok 3 — panggung 16:9". **§13 (skrip `upgrade-kelas5`) tidak dikerjakan** dan §11 sebagian sudah selesai; lihat "Untuk sesi Dok 3" di bagian pembersihan |
 
 Sisa Dok 2:
 
@@ -621,6 +621,75 @@ Bentuk hasil `page()` (dipertahankan):
 
 ---
 
+## Dok 3 — panel admin
+
+Dikerjakan di branch `dok3-admin` (dari `main`), sesuai `03_TAMPILAN_16x9_DAN_ADMIN.md` §1.6, §8.1–§8.3, dan §12.1. `main` digabung sesudah PR #44, #45, #46, dan #48. Suite: **486 test hijau** (`vendor/bin/phpunit --no-coverage`).
+
+### Keputusan dan penyimpangan
+
+**§8.1 Arah desain dan kerangka**
+
+1. **`admin.css` berdiri sendiri.** `layouts/admin.php` dan `layouts/auth.php` hanya memuat `admin.css`: font, token §8.1, reset, dan semua komponen yang dipakai view admin (tombol, formulir, lencana, modal, toast, kolom sandi, dan sebagainya). CSS permainan (`tokens`/`base`/`layout`/`components.css`) tidak ikut, sehingga perubahan panggung 16:9 tidak memengaruhi admin dan sebaliknya. Saat `main` (PR #48) digabung, aturan admin yang dipindah sesi panggung ke `admin.css` tidak dipakai; versi branch ini yang dipertahankan.
+2. **Breadcrumb ada di topbar, bukan di kepala halaman.** §8.2 menaruh breadcrumb di kepala halaman, sedangkan §8.1 menaruhnya di topbar. Agar tidak tampil dua kali, breadcrumb hanya ada di topbar (`AdminMenu::crumbs()`, ditambah `$breadcrumb` halaman detail). Kepala halaman (`partials/admin-head`) berisi judul 24 px, deskripsi 14 px, dan aksi di kanan; `eyebrow` lama yang hanya mengulang nama grup dibuang.
+3. **Satu sumber menu: `App\Libraries\AdminMenu`.** Sidebar dan breadcrumb membaca daftar yang sama. Grupnya Data penelitian, Konten, dan Pengaturan. Menu guru hanya Ringkasan, Siswa, Sesi bermain, Data mentah, Kritik & saran, dan Unduh data. Label menu di `Language/id/Admin.php` berganti mengikuti §8.3. `LanguageFilesTest` kini memeriksa `AdminMenu.php`.
+4. **Responsif:** sidebar 248 px, kolom ikon 72 px di bawah 1280 px, laci `:target` di bawah 768 px. Topbar 56 px lengket. Ganti sandi dan Keluar dipindah ke menu akun topbar (`<details>`, tanpa JavaScript).
+
+**§8.2 Komponen**
+
+5. **`App\Libraries\AdminTable` + `components/data-table.php`.** `AdminTable::page()` menghasilkan bentuk yang sama dengan `RawDataService::page()`, yaitu `{rows, total, page, per_page, sort, columns}`. Karena itu satu komponen merender halaman daftar (Siswa, Sesi, Kritik & saran) maupun Data mentah.
+   - Urutan `kolom`/`-kolom` hanya diterima untuk kolom yang punya ekspresi `sort`. Urutan lain diganti bawaan, dan pengurut stabil (`id DESC`) selalu ditambahkan.
+   - `per_page` di luar 25/50/100 menjadi 25, dan halaman dijepit ke halaman terakhir.
+   - CSV: UTF-8 dengan BOM, judul = kunci kolom, nilai mentah (kode, milidetik).
+   - Tabel kecil tanpa pagination (ukuran wajib, temuan pindai, riwayat aktivitas) tetap memakai `components/admin-table` dengan urut di client.
+6. **Sel:** `AdminTable::cell()` memformat sel menurut jenis kolom: `int`, `num`, `ms` (`m:ss` dengan `title` milidetik), `datetime` (`title` = nilai mentah), `code`, `status` (lencana), `bool`, `json`, `stars`, `clip` (teks dipotong yang dapat dibuka), dan `label:{grup}`. Jenis `enum` dari RawDataService ditampilkan berlabel lewat `ExportLabels::label()`, dengan kode aslinya di `title` (halaman Data mentah).
+7. **Bilah filter** mendapat chip filter aktif. Setiap chip adalah tautan yang melepas satu filter. Kontrol baru: kode siswa, tantangan, variasi, kab/kota, jenis kelamin, umur, dan status progres. `StaffScope::readFilters()` menerima `q`, `district_code`, `gender`, `age`, `progress`, `variant_group`, dan `participant_code`; `apply_research_filters()` mengabaikan kunci yang tidak dikenalnya.
+8. **Modal konfirmasi:** `form[data-confirm]` memakai `core/modal.js` yang sudah ada. Konfirmasi lama `<details class="confirm">` dipertahankan di halaman yang memakainya. Rilis, nonaktifkan media, dan reset sandi siswa memakai modal.
+9. **Tab:** antarhalaman memakai `.tabs` dan tautan biasa (detail siswa `?tab=`, Data mentah, Tata kelola). Di dalam satu halaman (editor tantangan) dipakai `admin/tabs.js` dengan `data-tab-panel`, karena satu form node terbagi ke tab Info dan Variasi.
+
+**§8.3 Halaman**
+
+10. **Ringkasan tanpa bilah filter.** §8.3 tidak menyebut filter untuk Ringkasan. KPI memakai `AnalyticsService::summary()` dari PR #45 (`participant_count`, `active_sessions`, `completed_attempts_today`, `feedback_count`). Peringatan admin (gambar contoh, narasi, verifikasi konten) berasal dari `App\Libraries\ResearchReadiness`. Halaman Penelitian memakai sumber yang sama untuk **daftar siap penelitian**.
+11. **ResearchReadiness:**
+    - gambar contoh = `media_assets.is_placeholder = 1` yang aktif;
+    - narasi = `NarrationCatalog::progress()`, semua bahasa disetujui;
+    - verifikasi = `ContentVerifier::run(true)` tanpa galat.
+
+    `StudyController` menolak perubahan status ke `active` (Berjalan) saat daftar belum hijau, kecuali form mengirim `confirm_not_ready = 1`. Label status `active` di panel menjadi "Berjalan".
+12. **Detail siswa:**
+    - Tab Pengerjaan, Jawaban, Navigasi, dan Bantuan memakai `RawDataService::page()` dengan filter `participant_id`. Riwayat percobaan per baris Jawaban berasal dari dimensi `percobaan` siswa yang sama, dikelompokkan menurut `attempt_id|item_key`.
+    - Tab Profil, Sesi & perangkat, Progres (12 baris node, pengerjaan terakhir per node), dan Kritik & saran memakai query lokal kecil.
+    - Unduh XLSX/CSV-ZIP dan Cetak PDF memakai rute `ExportController` dari PR #45.
+13. **Sesi bermain:** linimasa kini bagian dari detail sesi (§8.3 hanya menyebut `/admin/sesi/{id}`). Rute lama `/admin/sesi/{id}/event` dialihkan ke `#linimasa`, dan `admin/sessions/timeline.php` dihapus.
+14. **Data mentah** (`RawDataController`): delapan tab §8.3. Filter dipaksa ke cakupan sekolah, dan `DomainException` (guru meminta dimensi khusus admin) menjadi 404. Titik sambung ke layanan ada di `BaseAdminController::rawService()`/`rawPage()`/`rawCsv()`:
+    - `rawService()` memakai `StaffScope::rawData()`, atau tiruan `Services::injectMock('rawDataService', …)` di uji;
+    - `rawCsv()` memakai `rawCsvDownload()` dari PR #45, yang juga mencatat audit `export_csv`.
+15. **Tantangan:**
+    - Status verifikasi per tantangan diambil dari temuan `ContentVerifier::run(true)` yang lingkupnya diawali `Wilayah {nama} · tantangan {n} (`.
+    - Gambar contoh tersisa = slot `challenge.{ref}.*` yang masih mockup aktif.
+    - "Variasi aktif" menghitung variasi yang punya soal aktif. Cari Objek kelas 5 memang punya satu variasi adegan, jadi tampil 1/3. Hanya 0/x yang ditandai merah.
+16. **Gambar & mockup:** status slot Asli / Gambar contoh / Kosong dihitung dari `is_active` dan `is_placeholder`. Tombol **Unggah gambar asli** per slot memakai `admin/media-upload.js` yang sudah ada; tanpa JavaScript, tautan `?asset_key=…#unggah` mengisi kotak unggah. Kolom ukuran menampilkan ukuran berkas (sebenarnya dan wajib, `$assetSizes`) dan ukuran tampil di panggung dalam dp (`Config\Gelita::$assetDisplaySizes` dari PR #48, Dok 3 §6; benda Cari Objek: "selebar w% adegan"). Butir ini diserahkan sesi panggung.
+17. **Analitik, Aturan skor, dan ECharts** sudah dihapus sejak Dok 1 §14. Tidak ada rute atau aset yang tersisa (`RouteWiringTest`).
+
+**§12.1 Uji**
+
+18. **`AdminTableViewTest`, bukan `AdminTableTest`.** Sesi data mentah sudah memakai nama `AdminTableTest` untuk kontrak `RawDataService::page()` di tingkat layanan. Uji tampilan di branch ini mencakup:
+    - render kolom, tautan urut dan `aria-sort`, pagination, pilihan 25/50/100, dan tombol CSV;
+    - urut dan pagination `AdminTable` di SQLite;
+    - CSV sama dengan isi tabel;
+    - daftar Siswa admin dengan identitas;
+    - guru: hanya sekolahnya, tanpa kolom identitas, juga di CSV, dan tanpa menu Konten.
+19. **Dua perbaikan yang ditemukan uji ini:**
+    - CSV `AdminTable` berputar tanpa henti di SQLite, karena `getUnbufferedRow()` mengembalikan `false`, bukan `null`, di akhir hasil;
+    - join subquery "sesi terakhir" memakai `prefixTable()`, karena `join(…, escape: false)` tidak menambah prefix tabel.
+
+### Pengujian yang dijalankan
+
+- **Otomatis:** `vendor/bin/phpunit --no-coverage` → 486 test hijau.
+- **Peramban (Chromium + Playwright, MariaDB lokal):** `migrate --all`, `db:seed`, `gelita:reset`, lalu `gelita:simulasi --siswa=30`. Semua halaman §8.3 dibuka di 1280, 1440, dan 1920 px: Ringkasan, Siswa, detail siswa (Profil, Jawaban, Pengerjaan), Sesi + detail, delapan tab Data mentah, Kritik & saran, Unduh data, Tantangan, editor tantangan, Gambar & mockup, Kelengkapan aset, Penelitian, Rilis, Sekolah, Staf, Tata kelola, dan Ubah sandi. Semuanya status 200, tanpa galat konsol, dan tanpa gulir horizontal halaman (tabel lebar menggulir di dalam `.table-wrap`). Unduh CSV Siswa diperiksa sebagai unduhan berkas.
+- **Belum dilakukan:** uji keyboard dan pembaca layar menyeluruh, serta membuka CSV/XLSX di LibreOffice atau R (§12.3, bagian unduhan diuji sesi data mentah).
+
+---
+
 ## Dok 3 — panggung 16:9
 
 Dikerjakan di branch `dok3-panggung` dari `main` (7–8 Oktober 2026), sebagai salah satu dari tiga sesi paralel Dok 3. Cakupan: §1–§7 (panggung, token rem, `stage.css`, kerangka, tata letak setiap layar, tantangan lebar penuh tanpa Jaka, ukuran aset, JavaScript panggung), butir carry-over tinjauan Dok 2, perbaikan tombol "Kenali", uji §12.1 (`StageCssTest`, `ChallengeFrameTest`), skrip §12.2 `tools/qa/stage-check.mjs`, dan `docs/05`/`docs/06`. Panel admin (§8) dan ekspor (§9–§10) dikerjakan sesi lain. Versi awal branch ini (sampai `StageCssTest`) sudah digabung pemilik lewat PR #48; skrip QA, dokumentasi, dan catatan ini menyusul di PR berikutnya dari branch yang dimulai ulang dari `main`.
@@ -629,7 +698,7 @@ Dikerjakan di branch `dok3-panggung` dari `main` (7–8 Oktober 2026), sebagai s
 
 1. **Panggung.** `layouts/game.php` = `<html class="game-stage">` › `.stage-frame` › `#stage` (80 × 45 rem). Layar putar satu-satunya elemen di luar panggung. Skrip sebaris kecil di `<head>` mengisi `--app-w`/`--app-h` sebelum CSS dimuat; `core/stage.js` melanjutkannya.
 2. **Satuan.** Semua CSS game (`tokens`, `base`, `stage`, `components`, `game`, `cinematic`) dikonversi ke rem (px ÷ 16, kecuali garis 1px). Token `--step-*`/`--sp-*` di CSS game diganti `--fs-*`/`--gap-*` (§2.3; `--sp-7` 48 dp menjadi `--gap-7`). Semua media query lebar/tinggi dan semua `vw`/`vh` dihapus. `StageCssTest` menjaganya.
-3. **`layout.css` dihapus (§2.4).** Bagian game pindah ke `stage.css`. Bagian admin dan halaman masuk staf (`body.admin`, `.admin-*`, `.menu-*`, `.auth-*`, media query admin, lapisan modal/toast `position: fixed`) dipindah **apa adanya** ke awal `admin.css`, dalam blok bertanda "DARI tokens.css & layout.css". Blok itu juga memuat token ukuran lama (`--step-*`, `--sp-*`, `--tap` 44px, `--sidebar-w`, `--content-max`) dan memetakan `--fs-*` ke `--step-*`, sehingga `components.css` (dipakai bersama) tampil seperti sebelumnya di admin. Untuk itu `layouts/admin.php` hanya kehilangan tautan `layout.css`, dan `layouts/auth.php` menukar `layout.css` dengan `admin.css`. **Untuk sesi admin (§8):** blok ini boleh dibuang seluruhnya saat admin tidak lagi memakai `tokens.css`/`base.css`/`components.css`.
+3. **`layout.css` dihapus (§2.4).** Bagian game pindah ke `stage.css`. Bagian admin dan halaman masuk staf (`body.admin`, `.admin-*`, `.menu-*`, `.auth-*`, media query admin, lapisan modal/toast `position: fixed`) dipindah **apa adanya** ke awal `admin.css`, dalam blok bertanda "DARI tokens.css & layout.css". Blok itu juga memuat token ukuran lama (`--step-*`, `--sp-*`, `--tap` 44px, `--sidebar-w`, `--content-max`) dan memetakan `--fs-*` ke `--step-*`, sehingga `components.css` (dipakai bersama) tampil seperti sebelumnya di admin. Untuk itu `layouts/admin.php` hanya kehilangan tautan `layout.css`, dan `layouts/auth.php` menukar `layout.css` dengan `admin.css`. **Untuk sesi admin (§8):** blok ini boleh dibuang seluruhnya saat admin tidak lagi memakai `tokens.css`/`base.css`/`components.css`. *(Sesudah PR #47 `admin.css` berdiri sendiri dan layout admin tidak lagi memuat CSS game; blok pindahan ini sudah tidak ada.)*
 4. **Kerangka (§3).** `#stage` memakai `contain: layout paint`. Akibatnya `position: fixed` di dalam panggung (tirai, overlay Kenali, latar slide, konfeti) berlabuh ke panggung tanpa harus diubah satu per satu, dan apa pun yang keluar terpotong. `main#app.stage-main` selebar panggung tanpa stacking context, jadi koordinat isi = koordinat panggung (tabel §4), dan overlay Kenali tetap dapat menutupi HUD.
 5. **Koordinat (§3.3, §4–§5).** Semua angka ada di `stage.css` §Koordinat sebagai dp tanpa satuan (`--x --y --w --h`), diterapkan kelas `.stage-box`. Elemen dari partial bersama (kotak cerita, panel engine) mendapat aturan yang sama lewat daftar selektor berawalan `.stage`, agar menang atas `position: relative` milik `.panel-parchment`.
 6. **HUD (§3.2).** Kiri: lentera + merek. Tengah: section baru `hudTitle` atau nama wilayah dari `$level`. Kanan: bahasa, suara, **layar penuh** (`#btn-fullscreen`, ikon baru `fullscreen`/`fullscreen-exit`, `Game.fullscreen`), beranda, profil, keluar.

@@ -675,14 +675,19 @@ Panel admin satu bahasa (Indonesia) dan semua halamannya tetap berfungsi tanpa J
 
 ### `admin/filters.js`
 
-- Berlaku untuk `form.filter-bar` (GET) yang menjadi anak langsung `#admin-main`. Perubahan filter memperbarui URL lewat `history.replaceState` (tetap dapat dibagikan), mengambil HTML halaman untuk filter baru, lalu mengganti semua saudara form filter di `#admin-main`; form-nya sendiri tetap sehingga fokus keyboard tidak hilang. Tombol "Atur ulang" ikut versi server.
+- Berlaku untuk `form.filter-bar` (GET) yang menjadi anak langsung `#admin-main`. Perubahan filter memperbarui URL lewat `history.replaceState` (tetap dapat dibagikan), mengambil HTML halaman untuk filter baru, lalu mengganti semua saudara form filter di `#admin-main`; form-nya sendiri tetap sehingga fokus keyboard tidak hilang. Tombol "Atur ulang" dan chip filter aktif (`.filter-chips`) ikut versi server; chip adalah tautan biasa yang melepas satu filter.
 - Kolom teks/pencarian diterapkan setelah jeda 450 ms; pilihan dan tanggal langsung. Permintaan sebelumnya dibatalkan (`AbortController`).
 - Gagal memuat → toast, lalu navigasi biasa ke URL filter. Tanpa JavaScript tombol Terapkan mengirim form seperti biasa.
 
 ### `admin/tables.js`
 
-- `table.data-table[data-sortable="client"]` (≤ 500 baris; tabel lebih besar dipaginasi server): judul kolom menjadi tombol urut dengan `aria-sort`. Nilai dibaca dalam format Indonesia (`1.234,5`, `85,0%`, `2:05`, `23 Sep 2026 10:14`, satuan seperti "tahun", "kali", "siswa"); `data-sort` pada sel menimpa teksnya; sel kosong "—" selalu di akhir; baris setara mempertahankan urutan server.
-- Tabel ≥ 10 baris mendapat kotak "Saring baris di tabel ini…" yang menyembunyikan baris yang tidak cocok dan menampilkan "N dari M baris".
+- Tabel server (`components/data-table`, `data-sortable="server"`): urut, halaman, dan CSV sudah berupa tautan biasa. Modul ini hanya menerapkan pilihan "Baris per halaman" langsung (`select[data-auto-submit]`), menambah bayangan kolom pertama lengket saat tabel digulir ke samping (`.table-wrap.is-scrolled`), dan menyembunyikan baris rincian `tr.row-expand` (mis. riwayat percobaan) di balik tombol `.expand-toggle` (`aria-expanded`, `aria-controls`).
+- Tabel kecil (`components/admin-table`, `data-sortable="client"`, ≤ 500 baris): judul kolom menjadi tombol urut dengan `aria-sort`. Nilai dibaca dalam format Indonesia (`1.234,5`, `85,0%`, `2:05`, `23 Sep 2026 10:14`, satuan seperti "tahun", "kali", "siswa"); `data-sort` pada sel menimpa teksnya; sel kosong "—" selalu di akhir. Tabel ≥ 10 baris mendapat kotak "Saring baris di tabel ini…".
+
+### `admin/tabs.js` dan modal konfirmasi
+
+- `[data-tabs]` berisi tautan `#tab-{kunci}`; isinya elemen `[data-tab-panel~="{kunci}"]` di mana pun di halaman, sehingga satu form boleh terbagi ke beberapa tab (field tersembunyi tetap terkirim). Tab dipilih tersimpan di hash; hash `#item-…` (kembali sesudah menyimpan soal) membuka tab pemuatnya. Tautan `a[data-open-item]` membuka tab dan kartu soalnya. Tanpa JavaScript semua bagian tampil berurutan.
+- `admin.js` → `initConfirm()`: `form[data-confirm]` menahan submit lalu membuka `core/modal.js` (judul `data-confirm`, teks `data-confirm-text`, tombol `data-confirm-ok`, gaya `data-confirm-style`); "Batal" tidak mengirim apa pun. Tanpa JavaScript form langsung terkirim dan server tetap memvalidasi.
 
 ### `admin/content-editor.js` dan `admin/object-picker.js`
 

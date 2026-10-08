@@ -208,17 +208,19 @@ Data siswa untuk guru selalu dibatasi sekolahnya (lihat [Otorisasi](#otorisasi))
 
 | Method | Path | Handler | Keterangan |
 |---|---|---|---|
-| GET | `/admin` | `DashboardController::index` | Beranda |
-| GET | `/admin/dashboard` | `DashboardController::index` | Beranda |
+| GET | `/admin` | `DashboardController::index` | Ringkasan |
+| GET | `/admin/dashboard` | `DashboardController::index` | Ringkasan (alias) |
 | GET | `/admin/akun/sandi` | `AccountController::passwordForm` | Ganti sandi sendiri |
 | POST | `/admin/akun/sandi` | `AccountController::changePassword` | Simpan sandi baru |
-| GET | `/admin/peserta` | `ParticipantController::index` | Daftar siswa |
-| GET | `/admin/peserta/{id}` | `ParticipantController::show/$1` | Profil siswa |
+| GET | `/admin/peserta` | `ParticipantController::index` | Daftar siswa; `?format=csv` = CSV mentah dengan filter yang sama |
+| GET | `/admin/peserta/{id}` | `ParticipantController::show/$1` | Detail siswa bertab (`?tab=profil\|sesi\|progres\|pengerjaan\|jawaban\|navigasi\|bantuan\|masukan`) |
 | POST | `/admin/peserta/{id}/reset-sandi` | `ParticipantController::resetPassword/$1` | Sandi sementara siswa |
-| GET | `/admin/sesi` | `SessionController::index` | Daftar sesi bermain |
-| GET | `/admin/sesi/{id}` | `SessionController::show/$1` | Detail sesi: attempt, jawaban, `item_tries`, `device_logs` |
-| GET | `/admin/sesi/{id}/event` | `SessionController::timeline/$1` | Catatan aktivitas (raw event) |
-| GET | `/admin/masukan` | `FeedbackController::index` | Kritik & saran |
+| GET | `/admin/sesi` | `SessionController::index` | Daftar sesi bermain; `?format=csv` |
+| GET | `/admin/sesi/{id}` | `SessionController::show/$1` | Detail sesi: ringkasan, pengerjaan, linimasa event lengkap (`?type=`, urut, halaman, `?format=csv`) |
+| GET | `/admin/sesi/{id}/event` | `SessionController::timeline/$1` | Alamat lama; dialihkan ke `/admin/sesi/{id}#linimasa` |
+| GET | `/admin/data` | `RawDataController::index` | Dialihkan ke `/admin/data/jawaban` |
+| GET | `/admin/data/{dimensi}` | `RawDataController::show/$1` | Data mentah per lembar §9.2 (tab `jawaban`, `percobaan`, `pengerjaan`, `progres`, `selesai`, `navigasi`, `bantuan`, `perangkat`); dimensi lain → 404; `?format=csv` |
+| GET | `/admin/masukan` | `FeedbackController::index` | Kritik & saran; `?format=csv` |
 | GET | `/admin/ekspor` | `ExportController::index` | Form unduh data + riwayat |
 | POST | `/admin/ekspor/xlsx` | `ExportController::xlsx` | Bangun workbook XLSX data mentah |
 | POST | `/admin/ekspor/csv` | `ExportController::csv` | Bangun CSV-ZIP (satu CSV per lembar) |
@@ -593,14 +595,17 @@ Aturan `login()`:
 
 | Controller::method | Aturan | View |
 |---|---|---|
-| `DashboardController::index()` | `AnalyticsService::summary()` (KPI hitungan: siswa terdaftar, sesi aktif ≤ 10 menit, pengerjaan selesai hari ini, kritik & saran, dan hitungan lain), `ParticipantModel::cohortSummary()`, sepuluh sesi terakhir; admin juga melihat pratinjau penghapusan buatan retensi | `admin/dashboard` |
-| `ParticipantController::index()` | Daftar siswa dalam cakupan, filter kelas/provinsi/sekolah, cari `?q=` (kode, nama pengguna, nama), 25 per halaman, ringkasan sesi & serpihan | `admin/participants/index` |
-| `ParticipantController::show($id)` | Siswa di luar cakupan → 404. `participantProfile()` (tabel mentah sesi, perangkat, progres per tantangan, kritik & saran + hitungan), `device_logs`, sesi; formulir unduh data siswa (XLSX/CSV-ZIP) dan laporan PDF | `admin/participants/show` |
+| `DashboardController::index()` | KPI hitungan dari `AnalyticsService::summary()` (siswa terdaftar, sesi aktif ≤ 10 menit, pengerjaan selesai hari ini, kritik & saran); admin: peringatan `ResearchReadiness` (gambar contoh, narasi belum disetujui, verifikasi konten) dan pratinjau penghapusan buatan retensi; tabel 20 event terakhir dan progres 10 siswa terbaru | `admin/dashboard` |
+| `ParticipantController::index()` | `AdminTable` di atas query siswa dalam cakupan (progres dari sesi terakhir). Filter `q` (kode, nama pengguna; nama untuk admin), `school_id`, `district_code`, `gender`, `age`, `progress` (`belum\|berjalan\|selesai`), `date_from`/`date_to` (tanggal daftar). Kolom Nama dan Nama pengguna (`identity`) tidak diambil untuk guru. `?format=csv` | `admin/participants/index` |
+| `ParticipantController::show($id)` | Siswa di luar cakupan → 404. Tab Profil, Sesi & perangkat, Progres (12 baris node), Kritik & saran dari query lokal; tab Pengerjaan, Jawaban (+ riwayat `percobaan` per baris), Navigasi, Bantuan dari `RawDataService::page()` dengan `participant_id`; `?format=csv` pada tab data mentah. Aksi: unduh XLSX/CSV-ZIP dan cetak PDF (`ExportController`), reset sandi | `admin/participants/show` |
 | `ParticipantController::resetPassword($id)` | Lihat di bawah | `admin/participants/reset-result` |
-| `SessionController::index()` | Sesi dalam cakupan, filter penelitian/bahasa/kelas/tanggal, 25 per halaman | `admin/sessions/index` |
-| `SessionController::show($id)` | Sesi di luar cakupan → 404. Progres, attempt, jawaban per soal (`item_responses`), percobaan per soal (`item_tries`), `device_logs` | `admin/sessions/show` |
-| `SessionController::timeline($id)` | `eventTimeline()` + saring `?type=` | `admin/sessions/timeline` |
-| `FeedbackController::index()` | Kritik & saran dalam cakupan + sebaran rating | `admin/feedback/index` |
+| `SessionController::index()` | `AdminTable`; filter kode siswa, sekolah, penelitian, bahasa, tanggal; `?format=csv` | `admin/sessions/index` |
+| `SessionController::show($id)` | Sesi di luar cakupan → 404. Ringkasan, pengerjaan di sesi itu, linimasa `game_event_logs` (urutan, waktu klien, waktu server, event, layar/tantangan/soal, payload JSON) dengan filter `?type=` | `admin/sessions/show` |
+| `SessionController::timeline($id)` | Redirect ke detail sesi | — |
+| `RawDataController::show($dimensi)` | `RawDataService::page()` lewat `rawService()`/`rawPage()`; filter kode siswa, sekolah, wilayah, tantangan, variasi, tanggal (dipaksa ke cakupan sekolah); `DomainException` (guru meminta dimensi admin) → 404; `?format=csv` → `rawCsv()` (`rawCsvDownload()`) | `admin/data/index` |
+| `FeedbackController::index()` | `AdminTable`: kode, sekolah, bintang, empat jawaban, waktu; filter sekolah dan tanggal; `?format=csv` | `admin/feedback/index` |
+
+**Tabel server-side (`App\Libraries\AdminTable`).** `params()` membaca `page`, `per_page` (25/50/100, selain itu 25) dan `sort` (`kolom` naik, `-kolom` turun; kolom tak dikenal → urutan bawaan). `page()` menghitung total, menjepit halaman, menambah ORDER BY dari definisi kolom (`sort` = ekspresi SQL) plus pengurut stabil, dan mengembalikan bentuk yang sama dengan `RawDataService::page()`. `streamCsv()` menulis semua baris (UTF-8 + BOM, judul = kunci kolom, nilai mentah). `visibleColumns()` membuang kolom `identity` untuk guru. `BaseAdminController::csvResponse()` membungkus penulis CSV menjadi respons unduhan; `wantsCsv()` memeriksa `?format=csv`.
 
 Peserta selalu dikirim ke view sebagai array aman (`Participant::toSafeArray()` + kolom tampilan), tidak pernah sebagai entity yang membawa `password_hash`.
 
@@ -634,9 +639,9 @@ Setiap perubahan memanggil `ContentRepository::flush()` dan menulis audit `conte
 
 | Method | Aturan |
 |---|---|
-| `index()` | Wilayah, tantangan, jumlah soal dan variasi per tantangan; view `admin/content/index` |
+| `index()` | Tabel 12 tantangan: wilayah, urutan, jenis, judul, variasi aktif (x/3), jumlah soal, gambar contoh tersisa (`media_assets.is_placeholder = 1` aktif dengan awalan `challenge.{ref}.`), status verifikasi dari `ContentVerifier::run(true)` (temuan dengan lingkup tantangan itu); tabel wilayah dengan tautan editor; view `admin/content/index` |
 | `level()` / `updateLevel()` | `name_id`, `name_en` wajib; `difficulty` ∈ `mudah,sedang,sulit`; teks dwibahasa (`name`, `focus`, `cp`, `tp`, `intro`); gambar peta/latar/lencana; view `admin/content/level` |
-| `node()` / `updateNode()` | `title_id`, `title_en` wajib; `engine_type` valid dan **tidak dapat diubah** bila tantangan sudah punya attempt; isian terpandu `cfg[...]` (`distractor_count`, `use_word_bank`, `as_reading`, judul & pengecoh per variasi) digabung ke `config_json`; gambar adegan/latar; audio pengantar; view `admin/content/node` |
+| `node()` / `updateNode()` | `title_id`, `title_en` wajib; `engine_type` valid dan **tidak dapat diubah** bila tantangan sudah punya attempt; isian terpandu `cfg[...]` (`distractor_count`, `use_word_bank`, `as_reading`, judul & pengecoh per variasi) digabung ke `config_json`; gambar adegan/latar; audio pengantar; view `admin/content/node` bertab Info / Variasi (judul & pengecoh per variasi + tabel soal dengan Bloom, keterampilan, kunci) / Posisi benda (Cari Objek) |
 | `createItem()` / `updateItem()` | `interaction_type` harus pasangan engine (`puzzle` → `puzzle_arrange`, `rumpang` → `fill_blank_bank`, `boleh` → `verdict_card`, `cari` → `find_object`); soal dinilai wajib punya `answer_key_json`; `variant_group` a–z/0–9; ukuran papan dan kunci Susun Gambar ditetapkan server dari tingkat kesulitan wilayah (`DifficultyRules`), dan soal yang sudah dijawab mempertahankan ukuran serta kuncinya; audio petunjuk hanya untuk `find_object` |
 | `deleteItem()` | Soal yang sudah pernah dijawab hanya dinonaktifkan (data penelitian), selain itu dihapus |
 | `importForm()` | Unggah workbook + 10 riwayat `content_import`; view `admin/content/import` |
@@ -665,7 +670,7 @@ Aturan impor di `App\Libraries\NarrationImporter` (dipakai juga `gelita:narratio
 
 | Method | Aturan |
 |---|---|
-| `index()` | Semua `media_assets`, ukuran wajib per slot (`Config\Gelita::$assetSizes`), pemakaian, hasil pindai; view `admin/media/index` |
+| `index()` | Tabel slot gambar & video: pratinjau, kode, label, isi yang diharapkan (`description`), ukuran tampil & berkas, status Asli / Gambar contoh / Kosong, pemakaian; filter `?status=asli\|mockup\|kosong` dan `?jenis=image\|video`; unggah per slot; hasil pindai; view `admin/media/index` |
 | `checklist()` | `App\Libraries\AssetChecklist::groups()` + ringkasan: slot yang belum berberkas, frame pose tokoh, latar/peta/lencana wilayah, poster video Pustaka, rekaman narasi; view `admin/media/checklist` |
 | `upload()` | `asset_key` wajib; `file: uploaded[file]\|max_size[file,65536]`; `App\Libraries\MediaStore::store()` (nama resmi dari `asset_key`, dimensi dibaca server, ukuran wajib per slot, `is_placeholder = 0`, audit `media_upload`) |
 | `deactivate($id)` | `is_active = 0`, audit `media_deactivate` |
@@ -678,7 +683,7 @@ Aturan impor di `App\Libraries\NarrationImporter` (dipakai juga `gelita:narratio
 
 | Method | Aturan |
 |---|---|
-| `index()` / `store()` / `update($id)` | Penelitian: `code` (unik, tidak diubah saat update), `name`, `status` ∈ `draft,active,closed`, `default_locale`, `unlock_mode` ∈ `sequential,free`, `retention_days`; audit `study_create` / `study_update`; view `admin/study/index` |
+| `index()` / `store()` / `update($id)` | Penelitian: `code` (unik, tidak diubah saat update), `name`, `status` ∈ `draft,active,closed` (*active* = Berjalan), `default_locale`, `unlock_mode` ∈ `sequential,free`, `retention_days`; audit `study_create` / `study_update`. Halaman menampilkan **daftar siap penelitian** (`App\Libraries\ResearchReadiness`: 0 gambar contoh aktif, semua narasi disetujui, `ContentVerifier::run(true)` tanpa galat). Mengubah status menjadi `active` saat daftar belum hijau ditolak kecuali POST `confirm_not_ready = 1`; view `admin/study/index` |
 | `releases()` / `storeRelease()` | Versi permainan (`release_code` unik, `app_version`, `content_version`, `asset_version`, `scoring_version`, `notes`), dibuat nonaktif; audit `release_create`; view `admin/study/releases` |
 | `activateRelease($id)` | `GameReleaseModel::activate()`, flush cache konten; audit `release_activate`. Sesi baru memakai versi ini |
 

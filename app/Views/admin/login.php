@@ -13,6 +13,7 @@
 <?php // Judul tab memakai bawaan layouts/auth (Admin.loginTitle), yang sudah di-esc() di sana ?>
 <?= $this->section('content') ?>
 <h1 class="auth-title"><?= esc(lang('Admin.loginTitle')) ?></h1>
+<p class="auth-lead">Masuk dengan akun guru atau admin penelitian.</p>
 <?= $this->include('partials/flash') ?>
 
 <form method="post" action="<?= base_url('admin/login') ?>" class="form">
@@ -30,7 +31,7 @@
     <input type="password" id="password" name="password" required autocomplete="current-password">
   </div>
 
-  <button class="btn btn-primary btn-lg btn-block" type="submit"><?= icon('key') ?> Masuk</button>
+  <button class="btn btn-primary btn-block" type="submit"><?= icon('key') ?> Masuk</button>
 </form>
 
 <p class="auth-foot">Panel ini khusus guru dan admin penelitian.<br>

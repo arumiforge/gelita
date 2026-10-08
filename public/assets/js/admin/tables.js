@@ -1,15 +1,17 @@
 /**
- * Tabel data panel.
+ * Tabel data panel (Dok 3 §8.2).
  *
- * - Pengurutan kolom di client untuk tabel ≤ 500 baris
- *   (admin-table menandai data-sortable="client"); tabel lebih besar selalu
- *   dipaginasi server, jadi urutannya mengikuti server.
- * - Kotak "Saring baris" menyaring baris yang tampak (≥ 10 baris).
- * - Angka dibaca dalam format Indonesia (1.234,5 · 85,0% · 2:05 ·
- *   23 Sep 2026 10:14); sel kosong "—" selalu di akhir.
+ * Tabel server (components/data-table.php, data-sortable="server"): urut,
+ * halaman, dan CSV sudah berupa tautan biasa. Di sini hanya kenyamanan:
+ * - pilihan "Baris per halaman" langsung diterapkan;
+ * - bayangan kolom pertama lengket saat tabel digulir ke samping;
+ * - baris rincian (riwayat percobaan) disembunyikan dan dibuka tombol.
  *
- * Kolom p dan D pada tabel butir sudah diberi kelas warna + teks tafsir oleh
- * server (partials/item-analysis-table), tidak dihitung ulang di sini.
+ * Tabel kecil tanpa pagination (components/admin-table.php,
+ * data-sortable="client", ≤ 500 baris): urut kolom di client dan kotak
+ * "Saring baris" (≥ 10 baris). Angka dibaca dalam format Indonesia
+ * (1.234,5 · 85,0% · 2:05 · 23 Sep 2026 10:14); sel kosong "—" selalu di
+ * akhir.
  */
 import { $$, el } from '../core/dom.js';
 
@@ -109,11 +111,48 @@ function enhanceFilter(table) {
   });
 }
 
+function enhanceServer(table) {
+  const wrap = table.closest('.table-wrap');
+  if (wrap) {
+    const update = () => wrap.classList.toggle('is-scrolled', wrap.scrollLeft > 0);
+    wrap.addEventListener('scroll', update, { passive: true });
+    update();
+  }
+
+  for (const row of table.querySelectorAll('tr.row-expand')) {
+    const owner = row.previousElementSibling;
+    const cell = owner?.cells[0];
+    if (!cell) continue;
+    row.hidden = true;
+    const button = el('button', { type: 'button', class: 'expand-toggle', 'aria-expanded': 'false', 'aria-controls': row.id });
+    button.append(el('span', {}, row.dataset.label || 'Rincian'), el('span', { class: 'expand-caret', 'aria-hidden': 'true' }));
+    cell.append(' ', button);
+    button.addEventListener('click', () => {
+      const open = row.hidden;
+      row.hidden = !open;
+      button.setAttribute('aria-expanded', String(open));
+    });
+  }
+}
+
+function enhancePageSize(root) {
+  for (const select of root.querySelectorAll('select[data-auto-submit]')) {
+    if (select.dataset.ready) continue;
+    select.dataset.ready = '1';
+    select.addEventListener('change', () => select.form?.requestSubmit());
+  }
+}
+
 export function initTables(root = document) {
   for (const table of root.querySelectorAll('table.data-table')) {
     if (table.dataset.enhanced) continue;
     table.dataset.enhanced = '1';
+    if (table.dataset.sortable === 'server') {
+      enhanceServer(table);
+      continue;
+    }
     if (table.dataset.sortable === 'client') enhanceSort(table);
     enhanceFilter(table);
   }
+  enhancePageSize(root);
 }

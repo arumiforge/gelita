@@ -10,6 +10,11 @@
  *
  * @var list<array<string, mixed>>               $studies
  * @var list<string>                             $locales
+ * @var array<string, mixed>                     $readiness ResearchReadiness::check()
+ *
+ * Daftar siap penelitian (Dok 3 §8.3): 0 gambar contoh, narasi disetujui,
+ * verifikasi siap penelitian lolos. Mengubah status ke *berjalan* saat daftar
+ * belum hijau meminta centang konfirmasi (diperiksa ulang server).
  */
 $used = null;
 
@@ -20,12 +25,12 @@ foreach ($studies as $study) {
 }
 
 $choices = [
-    'status'              => ['draft' => 'Draf (belum dipakai)', 'active' => 'Aktif (dipakai permainan)', 'closed' => 'Ditutup (selesai)'],
+    'status'              => ['draft' => 'Draf (belum dipakai)', 'active' => 'Berjalan (dipakai permainan)', 'closed' => 'Ditutup (selesai)'],
     'unlock_mode'         => ['sequential' => 'Berurutan — wilayah & tantangan terbuka satu per satu', 'free' => 'Bebas — semua langsung terbuka (untuk uji coba)'],
 ];
 
 /** Kolom studi, dipakai form sunting dan form studi baru. */
-$fields = static function (?array $study, string $p) use ($choices, $locales): string {
+$fields = static function (?array $study, string $p) use ($choices, $locales, $readiness): string {
     $value = static fn (string $key, $default = '') => $study[$key] ?? $default;
     ob_start(); ?>
     <div class="form-grid">
@@ -79,6 +84,13 @@ $fields = static function (?array $study, string $p) use ($choices, $locales): s
         <label for="<?= $p ?>-desc">Keterangan</label>
         <textarea id="<?= $p ?>-desc" name="description" rows="2"><?= esc($value('description')) ?></textarea>
       </div>
+      <?php if (! $readiness['ready'] && $value('status') !== 'active'): ?>
+        <div class="alert alert-warn span-all confirm-not-ready">
+          <?= icon('warn') ?>
+          <label class="check"><input type="checkbox" name="confirm_not_ready" value="1">
+            <span>Daftar siap penelitian belum hijau. <b>Tetap jalankan</b> penelitian ini sekarang.</span></label>
+        </div>
+      <?php endif ?>
     </div>
     <?php return (string) ob_get_clean();
 };
@@ -87,19 +99,30 @@ $fields = static function (?array $study, string $p) use ($choices, $locales): s
 
 <?= $this->section('content') ?>
 <?= component('partials/admin-head', [
-    'title'   => 'Penelitian',
-    'eyebrow' => 'Pengelolaan · pengaturan penelitian',
-    'lead'    => 'Permainan memakai penelitian berstatus Aktif yang paling baru dibuat. Perubahan di sini berlaku untuk sesi bermain berikutnya; sesi yang sedang berjalan tidak berubah.',
+    'title' => 'Penelitian',
+    'lead'  => 'Permainan memakai penelitian berstatus Berjalan yang paling baru dibuat. Perubahan berlaku untuk sesi bermain berikutnya; sesi yang sedang berjalan tidak berubah.',
 ]) ?>
-<ul class="sub-nav">
-  <li><a href="<?= base_url('admin/studi') ?>" aria-current="page"><?= icon('flask') ?> Penelitian</a></li>
-  <li><a href="<?= base_url('admin/studi/rilis') ?>"><?= icon('list') ?> Versi permainan</a></li>
-</ul>
 <?= $this->include('partials/flash') ?>
 
 <?php if ($used === null): ?>
-  <p class="alert alert-error" role="alert"><?= icon('warn') ?> Belum ada penelitian berstatus Aktif. Siswa belum dapat mulai bermain sampai satu penelitian diaktifkan.</p>
+  <div class="alert alert-error" role="alert"><?= icon('warn') ?><p>Belum ada penelitian berstatus Berjalan. Siswa belum dapat mulai bermain sampai satu penelitian dijalankan.</p></div>
 <?php endif ?>
+
+<section class="panel">
+  <div class="panel-head">
+    <h2 class="panel-title"><?= icon('clipboard') ?> Daftar siap penelitian</h2>
+    <span class="badge <?= $readiness['ready'] ? 'is-ok' : 'is-warn' ?>"><?= $readiness['ready'] ? 'siap' : 'belum siap' ?></span>
+  </div>
+  <ul class="ready-list">
+    <?php foreach ($readiness['items'] as $item): ?>
+      <li class="ready-item <?= $item['ok'] ? 'is-ok' : 'is-bad' ?>">
+        <span class="ready-mark"><?= icon($item['ok'] ? 'check' : 'cross') ?></span>
+        <div><b><?= esc($item['label']) ?></b><p class="muted"><?= esc($item['detail']) ?></p></div>
+        <a class="btn btn-sm" href="<?= base_url($item['link']) ?>">Buka</a>
+      </li>
+    <?php endforeach ?>
+  </ul>
+</section>
 
 <?php foreach ($studies as $study): ?>
   <?php $sid = (int) $study['id']; ?>
@@ -107,7 +130,7 @@ $fields = static function (?array $study, string $p) use ($choices, $locales): s
     <?= csrf_field() ?>
     <header class="level-card-head">
       <div>
-        <span class="eyebrow"><code><?= esc($study['code']) ?></code><?= $study['year_label'] ? ' · ' . esc($study['year_label']) : '' ?></span>
+        <span class="eyebrow"><?= esc($study['code']) ?><?= $study['year_label'] ? ' · ' . esc($study['year_label']) : '' ?></span>
         <h2><?= esc($study['name']) ?></h2>
       </div>
       <?php if ($sid === $used): ?>

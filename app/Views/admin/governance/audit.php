@@ -30,12 +30,11 @@ $targets  = [
 <?= $this->section('content') ?>
 <?= component('partials/admin-head', [
     'title'   => 'Riwayat aktivitas',
-    'eyebrow' => 'Pengelolaan · data penelitian',
     'lead'    => 'Catatan siapa melakukan apa di panel: masuk, mengubah konten, mengunduh data, membuat sandi sementara, dan menghapus data. Alamat internet pengguna disimpan dalam bentuk tersamar.',
 ]) ?>
-<ul class="sub-nav">
-  <li><a href="<?= base_url('admin/tata-kelola') ?>"><?= icon('shield') ?> Hapus data</a></li>
-  <li><a href="<?= base_url('admin/tata-kelola/audit') ?>" aria-current="page"><?= icon('list') ?> Riwayat aktivitas</a></li>
+<ul class="tabs">
+  <li><a href="<?= base_url('admin/tata-kelola') ?>">Penghapusan data &amp; retensi</a></li>
+  <li><a href="<?= base_url('admin/tata-kelola/audit') ?>" aria-current="page">Riwayat aktivitas (audit)</a></li>
 </ul>
 <?= $this->include('partials/flash') ?>
 

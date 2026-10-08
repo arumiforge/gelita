@@ -17,23 +17,29 @@ return [
     'loginTitle'     => 'Masuk Panel Guru & Admin',
 
     'closeMenu'        => 'Tutup menu',
-    'groupData'        => 'Data siswa',
-    'groupReport'      => 'Laporan',
-    'groupManage'      => 'Pengelolaan',
+    'openMenu'         => 'Buka menu',
+    'groupData'        => 'Data penelitian',
+    'groupContent'     => 'Konten',
+    'groupSettings'    => 'Pengaturan',
 
-    'menuDashboard'    => 'Beranda',
+    'menuDashboard'    => 'Ringkasan',
     'menuParticipants' => 'Siswa',
     'menuSessions'     => 'Sesi bermain',
+    'menuRawData'      => 'Data mentah',
     'menuFeedback'     => 'Kritik & saran',
     'menuExport'       => 'Unduh data',
-    'menuContent'      => 'Konten permainan',
-    'menuBankImport'   => 'Impor soal (Excel)',
+    'menuContent'      => 'Tantangan',
+    'menuBankImport'   => 'Impor bank soal',
     'menuNarration'    => 'Rekaman narasi',
-    'menuMedia'        => 'Gambar & suara',
-    'menuStudy'        => 'Pengaturan penelitian',
-    'menuGovernance'   => 'Hapus data & riwayat',
+    'menuMedia'        => 'Gambar & mockup',
+    'menuChecklist'    => 'Kelengkapan aset',
+    'menuStudy'        => 'Penelitian',
+    'menuReleases'     => 'Rilis',
     'menuSchools'      => 'Sekolah',
-    'menuStaff'        => 'Akun guru & admin',
+    'menuStaff'        => 'Staf',
+    'menuGovernance'   => 'Tata kelola',
+    'quickSearch'      => 'Cari kode atau nama pengguna siswa',
+    'accountMenu'      => 'Menu akun',
 
     'roleAdmin'    => 'Admin',
     'roleGuru'     => 'Guru',
@@ -51,6 +57,7 @@ return [
         'pending'     => 'belum dijawab',
         'answered'    => 'dijawab',
         'skipped'     => 'dilewati',
+        'locked'      => 'belum dikerjakan',
     ],
 
     /** Alasan pengerjaan selesai (challenge_attempts.completion_reason). */
@@ -127,7 +134,7 @@ return [
 
     'studyStatus' => [
         'draft'  => 'Draf (belum dipakai)',
-        'active' => 'Aktif',
+        'active' => 'Berjalan',
         'closed' => 'Ditutup',
     ],
 

@@ -1,12 +1,11 @@
 <?php
 /**
- * Layout login staf — satu panel di tengah layar, latar `bg-auth`, tanpa sidebar.
+ * Layout masuk staf — satu kartu di tengah layar bergaya panel admin
+ * (Dok 3 §1.6, §8.1): latar netral, tanpa gambar tema permainan.
  *
  * @var CodeIgniter\View\View $this
  */
-$title      = trim($this->renderSection('title'));
-$background = media_key_src('bg.auth');
-$logo       = media_key_src('ui.logo');
+$title = trim($this->renderSection('title'));
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -16,23 +15,14 @@ $logo       = media_key_src('ui.logo');
   <meta name="robots" content="noindex">
   <title><?= esc($title !== '' ? $title : lang('Admin.loginTitle')) ?> · GELITA</title>
   <link rel="icon" href="<?= base_url('favicon.ico') ?>">
-  <link rel="stylesheet" href="<?= asset_url_versioned('css/tokens.css') ?>">
-  <link rel="stylesheet" href="<?= asset_url_versioned('css/base.css') ?>">
-  <link rel="stylesheet" href="<?= asset_url_versioned('css/components.css') ?>">
   <link rel="stylesheet" href="<?= asset_url_versioned('css/admin.css') ?>">
 </head>
 <body class="auth">
-  <?php if ($background !== null): ?>
-    <img class="auth-bg" src="<?= esc($background, 'attr') ?>" alt="">
-  <?php endif ?>
   <main class="auth-shell">
-    <section class="auth-panel panel">
+    <section class="auth-card">
       <div class="auth-brand">
-        <?php if ($logo !== null): ?>
-          <img src="<?= esc($logo, 'attr') ?>" alt="" width="120">
-        <?php endif ?>
-        <span>GELITA</span>
-        <small><?= esc(lang('Admin.panelTitle')) ?></small>
+        <span class="sidebar-mark" aria-hidden="true">G</span>
+        <span>GELITA <small><?= esc(lang('Admin.panelTitle')) ?></small></span>
       </div>
       <?= $this->renderSection('content') ?>
     </section>

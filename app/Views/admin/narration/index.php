@@ -43,7 +43,6 @@ $audioCell   = static function (array $audio, string $code, string $locale) use 
 <?php $actions = ob_get_clean() ?>
 <?= component('partials/admin-head', [
     'title'   => 'Rekaman narasi',
-    'eyebrow' => 'Konten · suara cerita',
     'lead'    => 'Setiap baris cerita dan setiap petunjuk tantangan Cari Objek punya satu rekaman untuk tiap bahasa. Nama berkas rekaman harus sama dengan kodenya (mis. intro-01.mp3, petunjuk-tmg-4-01.mp3). Rekaman yang baru diunggah menunggu persetujuan, dan baru terdengar oleh siswa setelah disetujui.',
     'actions' => $actions,
 ]) ?>

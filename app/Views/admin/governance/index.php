@@ -56,13 +56,12 @@ $history = array_values(array_filter($requests, static fn (array $row): bool => 
 
 <?= $this->section('content') ?>
 <?= component('partials/admin-head', [
-    'title'   => 'Hapus data',
-    'eyebrow' => 'Pengelolaan · data penelitian',
+    'title'   => 'Tata kelola',
     'lead'    => 'Satu-satunya tempat untuk menghapus data siswa. Penghapusan selalu dua langkah — hitung dulu, baru hapus — dan setiap langkahnya tercatat di riwayat aktivitas.',
 ]) ?>
-<ul class="sub-nav">
-  <li><a href="<?= base_url('admin/tata-kelola') ?>" aria-current="page"><?= icon('shield') ?> Hapus data</a></li>
-  <li><a href="<?= base_url('admin/tata-kelola/audit') ?>"><?= icon('list') ?> Riwayat aktivitas</a></li>
+<ul class="tabs">
+  <li><a href="<?= base_url('admin/tata-kelola') ?>" aria-current="page">Penghapusan data &amp; retensi</a></li>
+  <li><a href="<?= base_url('admin/tata-kelola/audit') ?>">Riwayat aktivitas (audit)</a></li>
 </ul>
 <?= $this->include('partials/flash') ?>
 

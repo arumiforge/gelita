@@ -6,8 +6,9 @@
  * tanpa memuat ulang halaman: KPI dan tabel dirender ulang server. Form
  * filter sendiri tidak diganti, jadi fokus keyboard tidak hilang.
  *
- * "Atur ulang" mengembalikan ke filter bawaan. Tanpa JavaScript tombol
- * Terapkan tetap mengirim form seperti biasa.
+ * "Atur ulang" mengembalikan ke filter bawaan; chip filter aktif adalah
+ * tautan biasa yang melepas satu filter. Tanpa JavaScript tombol Terapkan
+ * tetap mengirim form seperti biasa.
  */
 import { $, $$, debounce } from '../core/dom.js';
 import { toast } from '../core/toast.js';
@@ -71,10 +72,14 @@ async function apply(form, onSwap, query = queryOf(form)) {
     form.before(...before.map((n) => document.importNode(n, true)));
     form.after(...after.map((n) => document.importNode(n, true)));
 
-    // Tombol "Atur ulang" hanya ada bila filter aktif: ikuti versi server
-    const actions = $('.filter-actions', form);
-    const freshActions = $('.filter-actions', freshForm);
-    if (actions && freshActions) actions.replaceWith(document.importNode(freshActions, true));
+    // Tombol "Atur ulang" dan chip filter aktif mengikuti versi server
+    for (const selector of ['.filter-actions', '.filter-chips']) {
+      const current = $(selector, form);
+      const fresh = $(selector, freshForm);
+      if (current && fresh) current.replaceWith(document.importNode(fresh, true));
+      else if (current) current.remove();
+      else if (fresh) form.append(document.importNode(fresh, true));
+    }
 
     document.title = doc.title || document.title;
     onSwap?.('init', main);
