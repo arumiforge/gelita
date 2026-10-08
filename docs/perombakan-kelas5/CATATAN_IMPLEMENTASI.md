@@ -667,7 +667,7 @@ Dikerjakan di branch `dok3-admin` (dari `main`), sesuai `03_TAMPILAN_16x9_DAN_AD
     - Status verifikasi per tantangan diambil dari temuan `ContentVerifier::run(true)` yang lingkupnya diawali `Wilayah {nama} · tantangan {n} (`.
     - Gambar contoh tersisa = slot `challenge.{ref}.*` yang masih mockup aktif.
     - "Variasi aktif" menghitung variasi yang punya soal aktif. Cari Objek kelas 5 memang punya satu variasi adegan, jadi tampil 1/3. Hanya 0/x yang ditandai merah.
-16. **Gambar & mockup:** status slot Asli / Gambar contoh / Kosong dihitung dari `is_active` dan `is_placeholder`. Tombol **Unggah gambar asli** per slot memakai `admin/media-upload.js` yang sudah ada; tanpa JavaScript, tautan `?asset_key=…#unggah` mengisi kotak unggah.
+16. **Gambar & mockup:** status slot Asli / Gambar contoh / Kosong dihitung dari `is_active` dan `is_placeholder`. Tombol **Unggah gambar asli** per slot memakai `admin/media-upload.js` yang sudah ada; tanpa JavaScript, tautan `?asset_key=…#unggah` mengisi kotak unggah. Kolom ukuran menampilkan ukuran berkas (sebenarnya dan wajib, `$assetSizes`) dan ukuran tampil di panggung dalam dp (`Config\Gelita::$assetDisplaySizes` dari PR #48, Dok 3 §6; benda Cari Objek: "selebar w% adegan"). Butir ini diserahkan sesi panggung.
 17. **Analitik, Aturan skor, dan ECharts** sudah dihapus sejak Dok 1 §14. Tidak ada rute atau aset yang tersisa (`RouteWiringTest`).
 
 **§12.1 Uji**

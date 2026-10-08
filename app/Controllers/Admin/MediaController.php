@@ -38,6 +38,7 @@ class MediaController extends BaseAdminController
         return $this->panel('admin/media/index', lang('Admin.menuMedia'), [
             'assets'     => $assets,
             'assetSizes' => config('Gelita')->assetSizes,
+            'displaySizes' => config('Gelita')->assetDisplaySizes,
             'usage'      => (new MediaUsage())->forMedia(),
             'scan'       => session('media_scan'),
             'status'     => $status,

@@ -10,14 +10,15 @@
  * diperiksa client lalu dibaca ulang server dengan getimagesize().
  *
  * @var list<array<string, mixed>>        $assets
- * @var array<string, array{0: int, 1: int}> $assetSizes pola asset_key → [lebar, tinggi]
+ * @var array<string, array{0: int, 1: int}> $assetSizes pola asset_key → [lebar, tinggi] berkas (px)
+ * @var array<string, array{0: int, 1: int}> $displaySizes pola asset_key → ukuran tampil di panggung 1280 × 720 (dp, Dok 3 §6)
  * @var array<int, list<string>>              $usage      media_asset_id → tempat pemakaian (MediaUsage)
  * @var array{at: string, findings: list<array{asset_key: string, issue: string}>}|null $scan
  * @var string                                $status     '' | asli | mockup | kosong
  * @var string                                $type       '' | image | video
  */
-$requiredFor = static function (string $key) use ($assetSizes): ?array {
-    foreach ($assetSizes as $pattern => $size) {
+$sizeFrom = static function (array $sizes, string $key): ?array {
+    foreach ($sizes as $pattern => $size) {
         if ($pattern === $key || fnmatch($pattern, $key)) {
             return $size;
         }
@@ -25,6 +26,8 @@ $requiredFor = static function (string $key) use ($assetSizes): ?array {
 
     return null;
 };
+$requiredFor = static fn (string $key): ?array => $sizeFrom($assetSizes, $key);
+$displayFor  = static fn (string $key): ?array => $sizeFrom($displaySizes ?? [], $key);
 $slotStatus = static fn (array $row): string => ! $row['is_active'] ? 'kosong' : ((int) ($row['is_placeholder'] ?? 0) === 1 ? 'mockup' : 'asli');
 $visual     = array_values(array_filter($assets, static fn (array $row): bool => $row['asset_type'] !== 'audio'));
 $counts     = ['asli' => 0, 'mockup' => 0, 'kosong' => 0];
@@ -151,19 +154,21 @@ $labels = ['asli' => 'Asli', 'mockup' => 'Gambar contoh', 'kosong' => 'Kosong'];
 
             return '<span class="media-thumb"><img src="' . esc(base_url($row['storage_path']), 'attr') . '" alt="" loading="lazy" decoding="async"></span>';
         },
-        'size' => static function (array $row) use ($requiredFor): string {
+        'size' => static function (array $row) use ($requiredFor, $displayFor): string {
             $need = $requiredFor((string) $row['asset_key']);
+            $show = $displayFor((string) $row['asset_key']);
+            $dp   = $show === null ? '' : '<span class="cell-sub">tampil ' . ($show[0] === 0 ? 'selebar w% adegan' : $show[0] . ' × ' . $show[1] . ' dp') . '</span>';
             $has  = $row['width_px'] === null ? null : [(int) $row['width_px'], (int) $row['height_px']];
             $kb   = $row['file_size'] === null ? '' : ' · ' . fmt_num(((int) $row['file_size']) / 1024, 0, 'id') . ' KB';
             $html = $need === null ? '<span class="cell-sub">ukuran bebas</span>' : '<span class="cell-sub">wajib ' . $need[0] . ' × ' . $need[1] . '</span>';
 
             if ($has === null) {
-                return '<span class="is-empty">—</span>' . $html;
+                return '<span class="is-empty">—</span>' . $html . $dp;
             }
 
             $ok = $need === null || $has === $need;
 
-            return '<span class="num ' . ($ok ? '' : 'size-bad') . '">' . esc($has[0] . ' × ' . $has[1] . $kb) . '</span>' . $html;
+            return '<span class="num ' . ($ok ? '' : 'size-bad') . '">' . esc($has[0] . ' × ' . $has[1] . $kb) . '</span>' . $html . $dp;
         },
         'slot_status' => static fn (array $row): string => '<span class="badge is-' . $row['slot_status'] . '">' . esc($labels[$row['slot_status']]) . '</span>',
         'usage' => static function (array $row) use ($usage): string {
@@ -226,11 +231,16 @@ $labels = ['asli' => 'Asli', 'mockup' => 'Gambar contoh', 'kosong' => 'Kosong'];
 
   <section class="panel">
     <h2 class="panel-title"><?= icon('grid') ?> Ukuran gambar yang wajib</h2>
-    <p class="muted">Gambar dengan ukuran lain ditolak saat diunggah. Tanda * berarti semua kode yang diawali tulisan itu.</p>
+    <p class="muted">Ukuran berkas wajib (gambar dengan ukuran lain ditolak saat diunggah) dan ukuran tampilnya di panggung 1280 × 720 dp. Tanda * berarti semua kode yang diawali tulisan itu.</p>
     <?= component('components/admin-table', [
         'caption' => 'Ukuran wajib gambar',
-        'columns' => ['pattern' => ['label' => 'Kode berkas', 'format' => 'code'], 'size' => 'Lebar × tinggi (px)'],
-        'rows'    => array_map(static fn (string $pattern, array $size): array => ['pattern' => $pattern, 'size' => $size[0] . ' × ' . $size[1]], array_keys($assetSizes), $assetSizes),
+        'columns' => ['pattern' => ['label' => 'Kode berkas', 'format' => 'code'], 'size' => 'Berkas (px)', 'display' => 'Tampil di panggung (dp)'],
+        'rows'    => array_map(static function (string $pattern, array $size) use ($displayFor): array {
+            $show = $displayFor($pattern);
+
+            return ['pattern' => $pattern, 'size' => $size[0] . ' × ' . $size[1],
+                'display' => $show === null ? null : ($show[0] === 0 ? 'selebar w% adegan' : $show[0] . ' × ' . $show[1])];
+        }, array_keys($assetSizes), $assetSizes),
     ]) ?>
   </section>
 </div>
