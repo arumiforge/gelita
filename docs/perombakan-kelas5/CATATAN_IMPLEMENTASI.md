@@ -24,6 +24,7 @@ Sisa Dok 2:
 - 6 Oktober 2026: sejarah `main` ditulis ulang (penulis dan committer semua commit = Arumi Studios, baris `Co-Authored-By`/`Claude-Session` dibuang; isi berkas dan pesan commit tidak berubah). Semua branch lain dihapus. Hash commit lama yang disebut di dokumen lain tidak berlaku lagi.
 - ~~Branch `dok2-mockup` sengaja dibiarkan di remote~~ — tidak berlaku lagi: branch itu digabung lewat PR #41 dan sudah tidak ada di remote (7 Oktober 2026).
 - Branch lama `happy-gates` yang dihapus tanpa digabung berisi satu perbaikan yang **belum ada** di `main`: tombol "Kenali" di peta yang diketuk sebelum `game/map.js` siap (±0,8 detik setelah dimuat, terlihat di 844×390) hanya mengubah hash `#kenal-{code}`, sedangkan `html.js` menyembunyikan overlay `:target`, sehingga overlay tidak terbuka. Usulan perbaikannya: saat modul siap, hash `#kenal-{code}[-n]` yang sudah ada membuka overlay di slide n lalu hash dibersihkan (`history.replaceState`), tanpa memutar narasi otomatis; narasi peta tidak dimulai bila overlay Kenali terbuka. Kerjakan ulang bila masih terjadi (setelah tata letak 16:9 Dok 3).
+- 7 Oktober 2026: proposal paket aset (unduh sekali, pindah layar dan ganti bahasa seketika) ditulis di [`docs/rencana-paket-aset.md`](../rencana-paket-aset.md). Belum dikerjakan; tahapan yang bergantung pada Dok 3 ada di §10, keputusan pemilik di §12.
 
 ---
 
