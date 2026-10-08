@@ -127,7 +127,8 @@ final class AdminTable
         $count = 0;
         $query = $builder->get();
 
-        while (($row = $query->getUnbufferedRow('array')) !== null) {
+        // Akhir hasil: MySQLi memberi null, SQLite3 memberi false
+        while (is_array($row = $query->getUnbufferedRow('array'))) {
             fputcsv($handle, array_map(static fn (string $key) => self::csvValue($row[$key] ?? null), $keys), ',', '"', '');
             $count++;
         }

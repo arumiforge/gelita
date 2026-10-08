@@ -164,7 +164,7 @@ class ParticipantController extends BaseAdminController
             ->select('COALESCE(s.name, p.school_name_snapshot) AS school_name, p.district_name_snapshot AS district_name', false)
             ->select('COALESCE(sp.completed_nodes, 0) AS completed_nodes, sp.total_stars, l.name_id AS last_level, gs.last_active_at', false)
             ->join('schools s', 's.id = p.school_id', 'left')
-            ->join('game_sessions gs', "gs.id = ({$latest})", 'left', false)
+            ->join($db->prefixTable('game_sessions') . ' gs', "gs.id = ({$latest})", 'left', false)
             ->join('session_progress sp', 'sp.session_id = gs.id', 'left')
             ->join('levels l', 'l.id = sp.current_level_id', 'left')
             ->where('p.deleted_at', null);
