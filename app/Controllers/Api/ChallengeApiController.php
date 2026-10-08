@@ -174,8 +174,11 @@ class ChallengeApiController extends BaseApiController
             ];
         }
 
+        // Nomor cek menurut layar klien (opsional): cek dari tampilan usang ditolak ATTEMPT_CHANGED
+        $checkNo = isset($body['check_no']) && is_numeric($body['check_no']) ? (int) $body['check_no'] : null;
+
         try {
-            $result = service('challengeService')->submitCheck($attempt, $map);
+            $result = service('challengeService')->submitCheck($attempt, $map, $checkNo);
         } catch (ChallengeRuleException $e) {
             return $this->ruleFailed($e);
         } catch (\InvalidArgumentException $e) {

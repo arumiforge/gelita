@@ -283,6 +283,13 @@ class ChallengeService
      * $answers[itemId] boleh memuat `first_input_ms` / `last_input_ms` (ms
      * sejak tantangan dibuka, dari klien); keduanya tidak ikut answer_json.
      *
+     * $checkNo (opsional) = nomor cek yang dimaksud klien (`tries_used + 1`
+     * di layarnya). Bila tidak sama dengan cek berikutnya di server, cek ini
+     * berasal dari tampilan usang (tab lain, atau kiriman ulang sesudah
+     * respons pertama hilang) → ATTEMPT_CHANGED tanpa perubahan. Dua tab di
+     * peramban yang sama tidak pernah benar-benar bersamaan (kunci session
+     * PHP), jadi tanpa nomor ini cek dari tab lama dihitung sebagai cek baru.
+     *
      * @param array<int, array<string, mixed>> $answers keyed by challenge_item_id
      *
      * @return array{results: array<int, bool>, correct_count: int, total: int, all_correct: bool,
@@ -290,9 +297,9 @@ class ChallengeService
      *               detail: array<int, array<string, mixed>>, completed: bool, completion_reason: ?string,
      *               redirect: ?string, stars: ?int, shards: ?int}
      *
-     * @throws ChallengeRuleException TRIES_EXHAUSTED (409) atau INCOMPLETE (422)
+     * @throws ChallengeRuleException TRIES_EXHAUSTED (409), ATTEMPT_CHANGED (409) atau INCOMPLETE (422)
      */
-    public function submitCheck(ChallengeAttempt $attempt, array $answers): array
+    public function submitCheck(ChallengeAttempt $attempt, array $answers, ?int $checkNo = null): array
     {
         $max = $attempt->maxTries();
 
@@ -305,6 +312,10 @@ class ChallengeService
         }
 
         $this->assertInProgress($attempt);
+
+        if ($checkNo !== null && $checkNo !== $attempt->check_count + 1) {
+            throw ChallengeRuleException::attemptChanged();
+        }
 
         $session  = $this->sessionOf($attempt);
         $node     = $this->nodeOf($attempt);
