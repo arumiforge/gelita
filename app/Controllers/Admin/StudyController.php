@@ -2,6 +2,7 @@
 
 namespace App\Controllers\Admin;
 
+use App\Libraries\ResearchReadiness;
 use App\Models\AuditLogModel;
 use App\Models\GameReleaseModel;
 use App\Models\ResearchStudyModel;
@@ -18,9 +19,10 @@ class StudyController extends BaseAdminController
 {
     public function index(): string
     {
-        return $this->panel('admin/study/index', 'Penelitian', [
-            'studies' => model(ResearchStudyModel::class)->orderBy('created_at', 'DESC')->findAll(),
-            'locales' => config('Gelita')->locales,
+        return $this->panel('admin/study/index', lang('Admin.menuStudy'), [
+            'studies'   => model(ResearchStudyModel::class)->orderBy('created_at', 'DESC')->findAll(),
+            'locales'   => config('Gelita')->locales,
+            'readiness' => (new ResearchReadiness())->check(),
         ]);
     }
 
@@ -30,6 +32,10 @@ class StudyController extends BaseAdminController
 
         if (! $this->validate($this->studyRules())) {
             return redirect()->to(site_url('admin/studi'))->with('errors', $this->validator->getErrors());
+        }
+
+        if (($blocked = $this->readinessGuard(null)) !== null) {
+            return $blocked;
         }
 
         $studyId = $studies->insert($this->studyPayload(), true);
@@ -55,6 +61,10 @@ class StudyController extends BaseAdminController
             return redirect()->to(site_url('admin/studi'))->with('errors', $this->validator->getErrors());
         }
 
+        if (($blocked = $this->readinessGuard($studies->find($studyId)['status'] ?? null)) !== null) {
+            return $blocked;
+        }
+
         if (! $studies->update($studyId, $this->studyPayload(true))) {
             return $this->back('admin/studi', 'Penelitian belum dapat disimpan: ' . $this->modelErrors($studies));
         }
@@ -68,7 +78,7 @@ class StudyController extends BaseAdminController
 
     public function releases(): string
     {
-        return $this->panel('admin/study/releases', 'Versi permainan', [
+        return $this->panel('admin/study/releases', lang('Admin.menuReleases'), [
             'releases' => model(GameReleaseModel::class)->orderBy('id', 'DESC')->findAll(),
             'active'   => model(GameReleaseModel::class)->activeOrNull(),
         ]);
@@ -127,6 +137,23 @@ class StudyController extends BaseAdminController
     }
 
     // -------------------------------------------------------------- bantuan
+
+    /**
+     * Mengubah status ke *berjalan* saat daftar siap penelitian belum hijau
+     * wajib disertai centang konfirmasi (Dok 3 §8.3).
+     */
+    private function readinessGuard(?string $currentStatus): ?RedirectResponse
+    {
+        if ($this->request->getPost('status') !== 'active' || $currentStatus === 'active') {
+            return null;
+        }
+
+        if ((string) $this->request->getPost('confirm_not_ready') === '1' || (new ResearchReadiness())->check()['ready']) {
+            return null;
+        }
+
+        return $this->back('admin/studi', 'Daftar siap penelitian belum terpenuhi. Centang "Tetap jalankan" bila penelitian memang harus dimulai sekarang.');
+    }
 
     /** @return array<string, array{label: string, rules: string}> */
     private function studyRules(?int $studyId = null): array

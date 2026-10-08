@@ -57,7 +57,7 @@ app/Views/
 │   ├── character.php · narration.php · audio-player.php
 │   ├── narrator-controls.php · narrator-tap.php · curtain.php
 │   ├── star-rating.php · stat-tile.php · password-field.php
-│   ├── admin-sidebar.php · admin-filter-bar.php · admin-table.php · admin-pagination.php
+│   ├── admin-sidebar.php · admin-filter-bar.php · data-table.php · admin-table.php · admin-pagination.php
 │   └── media-field.php · media-datalist.php · audio-select.php
 ├── partials/
 │   ├── cine-slides.php          slide sinematik layar penuh (intro, penutup)
@@ -123,11 +123,11 @@ Urutan `<body class="game …" data-locale data-base data-screen-code>`: `compon
 
 ### `layouts/admin.php`
 
-`<body class="admin" data-locale="id">`: `.skip-link` ke `#admin-main`, `header.admin-head` (merek `.admin-brand` dengan logo `ui.logo` bila ada, judul halaman `$pageTitle` + "penelitian berjalan: {studi}" dari `$activeStudy`, lalu `.admin-user`: tombol **Menu** `.menu-toggle` → `#admin-menu`, nama + peran staf, **Ganti kata sandi**, **Keluar**; teks tombol `.btn-text` disembunyikan di layar sempit), lalu `.admin-body` berisi `components/admin-sidebar` dan `<main class="admin-main" id="admin-main">`. Di bawahnya `#modal-layer`, `tpl-modal`, `components/toast` (tanpa flash `error`; galat panel dirender tetap oleh `partials/flash`), `app-config` dengan `js_config('id')`, dan modul `js/admin.js`. CSS: `tokens`, `base`, `layout`, `components`, `admin`. Section: `title`, `head`, `content`, `scripts`.
+Dasbor SaaS netral (Dok 3 §8.1), hanya memuat `admin.css` (CSS permainan tidak ikut). `<body class="admin">`: `.skip-link`, lalu `.admin-shell` = `components/admin-sidebar` + `.admin-column` berisi topbar `header.admin-topbar` (56 px, lengket): tombol laci `.topbar-menu` (layar < 768 px), breadcrumb `nav.breadcrumb` dari `AdminMenu::crumbs()` (+ `$breadcrumb` halaman: `[label => href|null]`), pencarian cepat siswa `form.topbar-search` (GET `/admin/peserta?q=`), chip penelitian berjalan `.topbar-study`, dan menu akun `<details class="account-menu">` (nama, peran, **Ganti kata sandi**, **Keluar**); lalu `<main class="admin-main" id="admin-main">` selebar layar dengan padding 24 px. Di bawahnya `#modal-layer`, `tpl-modal`, `components/toast` (kanan atas; tanpa flash `error`, galat dirender tetap oleh `partials/flash`), `app-config`, dan modul `js/admin.js`. Section: `title`, `head`, `content`, `scripts`.
 
 ### `layouts/auth.php`
 
-Satu panel di tengah layar (`.auth-shell` › `.auth-panel.panel`), latar `bg.auth` bila ada, merek `.auth-brand` (logo `ui.logo` + "GELITA" + `Admin.panelTitle`). Hanya dipakai `admin/login.php`. CSS tanpa `admin.css`.
+Halaman masuk staf bergaya admin (§1.6): satu kartu `.auth-card` di tengah latar netral, merek `.auth-brand` (tanda "G" + "GELITA" + `Admin.panelTitle`), hanya `admin.css`. Dipakai `admin/login.php`.
 
 ---
 
@@ -162,13 +162,17 @@ Satu panel di tengah layar (`.auth-shell` › `.auth-panel.panel`), latar `bg.au
 
 | Komponen | Isi dan aturan |
 |---|---|
-| `admin-sidebar` | Menu panel (lihat *Panel admin*). Menu khusus admin tidak dirender untuk guru. Menu aktif = awalan path terpanjang. ≤ 1024 px menyempit menjadi ikon; ≤ 640 px menjadi drawer yang dibuka tautan `#admin-menu` (CSS `:target`). |
-| `admin-filter-bar` | Form `method="get"` `.filter-bar`: pencarian `q` (bila `extra['q']`), Penelitian `study_id`, Wilayah `level_id`, Sekolah `school_id` (hanya admin; guru melihat `.filter-locked` sekolahnya), Kelas `class_level`, Provinsi `province_code`, rentang tanggal `date_from`/`date_to`, Bahasa `locale`. `only` membatasi kontrol, `bare` merender kontrol tanpa `<form>` (dipakai form POST ekspor). Tombol Terapkan dan Atur ulang. |
-| `admin-table` | `columns` (kunci → label, atau definisi dengan `format`: `text`, `num`, `pct`, `ratio`, `date`, `datetime`, `ms`, `bool`, `badge`, `label` + `group`, `code`, `json`; atau `render` closure yang mengembalikan HTML ter-escape), `rows`, `emptyMessage`, `caption`, `rowClass`. Tabel kosong selalu menjadi `.empty-state` yang menjelaskan. Isi dibungkus `.table-wrap` › `table.data-table`. |
-| `admin-pagination` | Navigasi `paginate()` dengan jendela dua halaman dan informasi "x–y dari n baris"; filter query string ikut terbawa. |
+| `admin-sidebar` | Menu dari `App\Libraries\AdminMenu` (lihat *Panel admin*). Menu khusus admin tidak dirender untuk guru. Menu aktif = awalan path terpanjang. 248 px; di bawah 1280 px kolom ikon 72 px (label tetap terbaca pembaca layar, juga sebagai `title`); di bawah 768 px laci yang dibuka tautan `#admin-menu` (CSS `:target`). |
+| `data-table` | **Tabel data server-side (§8.2).** `table` berbentuk `AdminTable::page()` / `RawDataService::page()` (`rows`, `total`, `page`, `per_page`, `sort`, `columns: {key, label, type, sortable?}`). Bilah alat (judul, jumlah baris, `tools`, **Unduh CSV** = URL yang sama + `format=csv`); `.table-wrap` gulir dua arah dengan header lengket; kolom pertama lengket (`stickyFirst`, bawaan ya); judul kolom = tautan urut (`sort=key` / `-key`, `aria-sort`); sel lewat `AdminTable::cell()` (angka rata kanan tabular, kode mono, status = lencana, durasi `m:ss` dengan milidetik di `title`, kosong "—", `clip` = teks dipotong yang dapat dibuka); pagination "x–y dari n baris", pilihan 25/50/100, nomor halaman. Opsi: `render` (closure per kolom), `expand` + `expandLabel` (baris rincian yang dibuka tombol, mis. riwayat percobaan), `paginate` (false = daftar pendek), `csv`, `anchor`, `emptyMessage`. Semua tautan biasa: berfungsi tanpa JavaScript. |
+| `admin-filter-bar` | Form `method="get"` `.filter-bar`: kontrol 40 px menurut `only` (urutan render): `q`, `participant_code`, `study_id`, `level_id`, `node_id`, `variant_group`, `school_id` (guru: `.filter-locked`), `district_code`, `province_code`, `class_level`, `gender`, `age`, `progress`, `locale`, `date_from`+`date_to`. `labels` mengganti label, `choices` menambah pilihan, `bare` = hanya kontrol (form POST ekspor). Tombol **Terapkan** dan **Atur ulang**, lalu baris **chip filter aktif** (`.filter-chip`, tiap chip tautan yang melepas satu filter; guru melihat chip sekolah terkunci). `sort` dan `per_page` dibawa sebagai field tersembunyi. |
+| `stat-tile` | Kartu KPI: label 13 px, angka 28 px tabular, keterangan; panel hanya memuat hitungan. |
+| `admin-table` | Tabel kecil tanpa pagination (ukuran wajib, temuan pindai, riwayat audit lama): `columns` + `rows` dengan `format`/`render`; `admin/tables.js` menambah urut di client (≤ 500 baris) dan kotak saring (≥ 10 baris). |
+| `admin-pagination` | Navigasi `paginate()` CodeIgniter (halaman yang belum memakai `data-table`, mis. riwayat aktivitas). |
 | `media-field` | Pemilih media editor konten: pratinjau, kotak "kode berkas" (`asset_key`, dengan `media-datalist`), input berkas baru, saran ukuran. Server membacanya lewat `MediaStore::resolveField()`; form induk wajib `multipart/form-data`. |
 | `media-datalist` | `<datalist id="media-keys-{jenis}">` berisi seluruh `asset_key` (slot yang belum berberkas bertanda). |
 | `audio-select` | Pemilih rekaman `audio_assets` dengan bahasa dan status persetujuan; rekaman bahasa yang diminta didahulukan. |
+
+Gaya seragam lain (§8.2) ada di `admin.css`: kepala halaman (`partials/admin-head`: judul 24 px, deskripsi 14 px, aksi di kanan), tab garis bawah `.tabs` (antarhalaman, atau di satu halaman lewat `data-tabs` + `data-tab-panel`, `admin/tabs.js`), navigasi bagian `.sub-nav` (segmen), lencana `.badge.is-{status}`, tombol `.btn` (utama `.btn-primary`, sekunder bawaan, hantu `.btn-quiet`, bahaya `.btn-danger`/`.btn-danger-soft`), formulir, modal konfirmasi (`form[data-confirm]`, `data-confirm-text`, `data-confirm-ok`, `data-confirm-style` → `core/modal.js`), toast kanan atas, dan keadaan kosong `.empty-state`.
 
 ### Partial
 
@@ -458,45 +462,48 @@ Aplikasi tetap utuh selama gambar belum diunggah:
 
 ## Panel admin
 
-Pembaca panel adalah guru dan admin sekolah, jadi label dan teks panel memakai bahasa sehari-hari. Setiap halaman dibuka `partials/admin-head` (eyebrow, judul, penjelasan singkat, tombol aksi) lalu `partials/flash`. Tabel memakai `components/admin-table` dengan kondisi kosong yang menjelaskan apa yang harus dilakukan; filter memakai `components/admin-filter-bar` (`method="get"`, tersimpan di URL). Guru selalu terkunci pada sekolahnya: kontrol sekolah tidak dirender dan server memaksa cakupan (`StaffScope::scopedFilters()`). Panel tidak memuat chart; dasbor hanya berisi hitungan mentah (rancangan ulang dasbor direncanakan di [Dok 3](perombakan-kelas5/03_TAMPILAN_16x9_DAN_ADMIN.md)).
+Dasbor SaaS tenang dan formal (Dok 3 §8), **tidak bertema GELITA**: token di `admin.css` (latar `#F5F6F8`, permukaan putih, garis `#E4E7EC`, teks `#101828`, aksen indigo `#4338CA`, sidebar `#0F172A`, Plus Jakarta Sans 14/20, kode IBM Plex Mono 13 px, radius 8/12 px). Panel mengikuti lebar layar (bukan panggung 16:9) dan tidak memuat chart. Setiap halaman dibuka `partials/admin-head` lalu `partials/flash`. Tabel data memakai `components/data-table` (urut, halaman, dan CSV di server); filter memakai `components/admin-filter-bar` (GET, tersimpan di URL, chip filter aktif). Guru selalu terkunci pada sekolahnya: kontrol sekolah tidak dirender, kolom identitas tidak diambil, dan server memaksa cakupan (`StaffScope::scopedFilters()`, `RawDataService`).
 
-### Menu (`components/admin-sidebar`)
+### Menu (`App\Libraries\AdminMenu`)
 
 | Grup | Menu (`Admin.menu*`) | URL | Ikon | Peran |
 |---|---|---|---|---|
-| — | Beranda | `/admin/dashboard` | `grid` | guru, admin |
-| Data siswa | Siswa | `/admin/peserta` | `users` | guru, admin |
-| Data siswa | Sesi bermain | `/admin/sesi` | `clock` | guru, admin |
-| Laporan | Kritik & saran | `/admin/masukan` | `message` | guru, admin |
-| Laporan | Unduh data | `/admin/ekspor` | `download` | guru, admin |
-| Pengelolaan | Konten permainan | `/admin/konten` | `book` | admin |
-| Pengelolaan | ↳ Impor soal (Excel) | `/admin/konten/impor-bank` | `upload` | admin |
-| Pengelolaan | ↳ Rekaman narasi | `/admin/konten/narasi` | `sound` | admin |
-| Pengelolaan | Gambar & suara | `/admin/media` | `image` | admin |
-| Pengelolaan | Pengaturan penelitian | `/admin/studi` | `flask` | admin |
-| Pengelolaan | Hapus data & riwayat | `/admin/tata-kelola` | `shield` | admin |
-| Pengelolaan | Sekolah | `/admin/sekolah` | `building` | admin |
-| Pengelolaan | Akun guru & admin | `/admin/staf` | `key` | admin |
+| — | Ringkasan | `/admin` | `grid` | guru, admin |
+| Data penelitian | Siswa | `/admin/peserta` | `users` | guru, admin |
+| Data penelitian | Sesi bermain | `/admin/sesi` | `clock` | guru, admin |
+| Data penelitian | Data mentah | `/admin/data` | `database` | guru, admin |
+| Data penelitian | Kritik & saran | `/admin/masukan` | `message` | guru, admin |
+| Data penelitian | Unduh data | `/admin/ekspor` | `download` | guru, admin |
+| Konten | Tantangan | `/admin/konten` | `puzzle` | admin |
+| Konten | Impor bank soal | `/admin/konten/impor-bank` | `upload` | admin |
+| Konten | Rekaman narasi | `/admin/konten/narasi` | `sound` | admin |
+| Konten | Gambar & mockup | `/admin/media` | `image` | admin |
+| Konten | Kelengkapan aset | `/admin/media/kelengkapan` | `clipboard` | admin |
+| Pengaturan | Penelitian | `/admin/studi` | `flask` | admin |
+| Pengaturan | Rilis | `/admin/studi/rilis` | `tag` | admin |
+| Pengaturan | Sekolah | `/admin/sekolah` | `building` | admin |
+| Pengaturan | Staf | `/admin/staf` | `key` | admin |
+| Pengaturan | Tata kelola | `/admin/tata-kelola` | `shield` | admin |
 
-Impor soal dan Rekaman narasi tampil menjorok (`.menu-sub`). **Ganti kata sandi** (`/admin/akun/sandi`) tidak ada di sidebar; tautannya ada di kepala panel, di samping Keluar.
+**Ganti kata sandi** dan **Keluar** ada di menu akun topbar. Rute yang tidak berhak tetap dibalas 404 untuk guru.
 
 ### Halaman
 
 | View | URL | Isi |
 |---|---|---|
-| `admin/login` (layout `auth`) | `/admin/login` | Nama pengguna, kata sandi, `redirect_to` tersembunyi. Akun tidak ada, sandi salah, dan akun nonaktif dibalas pesan yang sama. |
-| `admin/dashboard` | `/admin/dashboard` | Peringatan retensi (data yang melewati batas simpan, belum dihapus, tautan ke Hapus data). Filter penelitian/sekolah/kelas/provinsi/tanggal/bahasa. Petak `.kpi-grid`: Siswa, Sesi bermain (+ sesi tuntas), Pengerjaan selesai (+ ditinggalkan), Percobaan soal (baris `item_tries`), Petunjuk dibuka, Suara diputar (+ otomatis), Sandi kuat sejak kiriman pertama. Sebaran siswa per jenis kelamin, kelas, provinsi (`.cohort-grid`). Tabel 10 sesi terakhir. |
-| `admin/participants/index` | `/admin/peserta` | Pencarian (kode siswa, nama pengguna, nama) + filter sekolah/kelas/provinsi; tabel kode siswa, nama pengguna, nama lengkap, umur, L/P, kelas, sekolah, provinsi, sesi, tantangan selesai, terakhir aktif; pagination. |
-| `admin/participants/show` | `/admin/peserta/{id}` | Panel Data diri; Persetujuan ikut bermain (`assented_at`); Literasi keamanan digital (syarat sandi yang langsung dipenuhi x dari 5, jumlah kiriman sandi lemah, terakhir ganti sandi, wajib ganti sandi); Ringkasan data mentah (pengerjaan selesai, Berhasil pada Percobaan Pertama, benar di akhir, bintang, lama bermain, ubah jawaban, petunjuk, suara). Tabel perangkat (`device_logs`), tabel sesi (Lihat, Catatan aktivitas), form laporan PDF siswa (admin dapat memilih tanpa/dengan nama; guru selalu tanpa nama), dan `.danger-zone` reset sandi dengan kotak konfirmasi ketik `RESET`. Admin mendapat tautan "Hapus data siswa ini" ke tata kelola. |
+| `admin/login` (layout `auth`) | `/admin/login` | Kartu masuk bergaya admin: nama pengguna, kata sandi, `redirect_to` tersembunyi. Akun tidak ada, sandi salah, dan akun nonaktif dibalas pesan yang sama. |
+| `admin/dashboard` | `/admin` | **Ringkasan:** empat KPI hitungan (siswa terdaftar, sesi aktif sekarang ≤ 10 menit, pengerjaan selesai hari ini, kritik & saran); admin: peringatan retensi, gambar contoh tersisa, narasi belum disetujui, verifikasi konten (`ResearchReadiness`); tabel **Aktivitas terbaru** (20 event: waktu, kode siswa, kejadian, layar/tantangan) dan **Progres siswa** (10 terbaru: kode, sekolah, wilayah saat ini, tantangan selesai x/12, bintang, aktif terakhir). |
+| `admin/participants/index` | `/admin/peserta` | Filter cari, sekolah, kab/kota, jenis kelamin, umur, status progres, tanggal daftar; tabel Kode, Nama*, Nama pengguna*, Sekolah, Kab/Kota, JK, Umur, Terdaftar, Setuju ikut, Tantangan selesai, Wilayah terakhir, Bintang, Aktif terakhir (*admin saja); CSV. |
+| `admin/participants/show` | `/admin/peserta/{id}` | Aksi: Unduh XLSX / CSV-ZIP dan Cetak PDF (admin: centang Anonim), Reset sandi. Tab: **Profil** (data diri, pendaftaran & akun, literasi keamanan digital, `.danger-zone` reset sandi ketik `RESET` + modal konfirmasi), **Sesi & perangkat**, **Progres** (12 tantangan: status, variasi, pengerjaan, Berhasil pada Percobaan Pertama x dari y, bintang, durasi), **Pengerjaan**, **Jawaban** (tombol **Riwayat** membuka percobaan per soal), **Navigasi**, **Bantuan** (data mentah satu siswa), **Kritik & saran**. Guru tidak melihat nama dan nama pengguna. |
 | `admin/participants/reset-result` | respons POST `/admin/peserta/{id}/reset-sandi` | Sandi sementara **satu kali** (`.temp-password`, mono besar, `user-select: all`), tombol Salin (`data-copy`), peringatan bahwa siswa wajib membuat sandi baru. Dikirim dengan `Cache-Control: no-store`; tidak lewat flash atau log. |
-| `admin/sessions/index` | `/admin/sesi` | Filter; tabel kode sesi, kode siswa, penelitian, bahasa, status, mulai, lama bermain, tantangan selesai, bintang, perangkat; pagination. |
-| `admin/sessions/show` | `/admin/sesi/{id}` | Ringkasan sesi (`.detail-grid`), tabel perangkat dari `device_logs`, lalu tabel pengerjaan per tantangan: jenis, pengerjaan ke-, variasi, status, alasan selesai (`admin_label('completion')`), soal dinilai, Berhasil pada Percobaan Pertama, benar di akhir, jumlah cek, petunjuk, ubah jawaban, lama, bintang. Setiap baris punya `<details class="row-details">` **Jawaban tiap soal** (`item_responses`: jumlah percobaan, benar pada percobaan ke-, salah pilih, jawaban terakhir) dan **Setiap percobaan** (`item_tries`: percobaan ke-, cek ke-, jawaban, benar, petunjuk sudah dibuka, waktu isian). |
-| `admin/sessions/timeline` | `/admin/sesi/{id}/event` | Catatan aktivitas: filter jenis (GET), tabel nomor, waktu di perangkat dan waktu diterima sistem (hingga milidetik), jenis aktivitas (`admin_label('event')` + kode kecil), tantangan/soal, keterangan payload sebagai teks. |
-| `admin/feedback/index` | `/admin/masukan` | Filter sekolah/kelas, sebaran bintang, jumlah dan rata-rata, kartu `.feedback-card` (bintang, kode siswa, tanggal, keempat jawaban yang terisi); nama pengguna tidak ditampilkan. |
-| `admin/export/index` | `/admin/ekspor` | Form POST `/admin/ekspor/xlsx` dengan `admin-filter-bar` `bare`, centang lembar (`sheets[]`, label `admin_label('exportSheet')`: Data siswa, Sesi bermain, Hasil per wilayah, Hasil per tantangan, Jawaban per soal, Catatan aktivitas — khusus admin, Pemakaian suara, Capaian indikator, Ringkasan kelompok, Kritik dan saran), dan pilihan nama siswa (admin: centang "Sembunyikan nama siswa"; guru: selalu tanpa nama). Tabel unduhan terakhir: status (`data-export-id`, diperbarui `admin/export.js`), jumlah baris, kode cek SHA-256, tanggal hapus, tombol Unduh. |
-| `admin/content/index` | `/admin/konten` | Aksi: Periksa kelengkapan (POST `/admin/konten/verifikasi`), Impor soal dari Excel, Cerita pembuka & penutup, Rekaman narasi, Gambar & video. Satu `.level-card` per wilayah: empat tantangan (`.node-row`: jenis, jumlah soal dan variasi, atau "belum ada soal ✗") dan sub-navigasi Wilayah · Bacaan · Pustaka · Cerita & dialog. |
+| `admin/sessions/index` | `/admin/sesi` | Filter kode siswa, sekolah, penelitian, bahasa, tanggal; tabel kode sesi, kode siswa, sekolah, penelitian, bahasa, status, mulai, aktif terakhir, durasi, perangkat, tantangan selesai, bintang; CSV. |
+| `admin/sessions/show` | `/admin/sesi/{id}` | Ringkasan (`.detail-grid`), tabel pengerjaan di sesi ini, lalu **Linimasa event** `#linimasa`: filter jenis event, tabel urutan, waktu klien, waktu server, event (kode, label di `title`), layar/tantangan/soal, payload JSON; urut, halaman, CSV. |
+| `admin/data/index` | `/admin/data/{dimensi}` | **Data mentah:** tab Jawaban & ketepatan · Riwayat percobaan · Pengerjaan · Progres · Penyelesaian · Navigasi · Bantuan · Perangkat; filter kode siswa, sekolah, wilayah, tantangan, variasi, tanggal; tabel `RawDataService::page()` (nilai `enum` berlabel `ExportLabels::label()`, kode di `title`); CSV per tabel. |
+| `admin/feedback/index` | `/admin/masukan` | Filter sekolah dan tanggal; tabel kode siswa, sekolah, bintang (1–5), empat jawaban (dipotong, klik untuk lengkap), waktu; CSV. |
+| `admin/export/index` | `/admin/ekspor` | Formulir: filter sekolah/wilayah/tanggal (`bare`), isi nilai (bawaan/berlabel/berkode), anonim (guru: selalu), pilihan lembar di `<details>`; tombol **Buat XLSX** dan **Buat CSV-ZIP**. Tabel **Riwayat unduhan**: format, status (`data-export-id`, diperbarui `admin/export.js`), baris, ukuran, SHA-256, kedaluwarsa, Unduh. |
+| `admin/content/index` | `/admin/konten` | **Tantangan:** aksi Rincian verifikasi, Cerita pembuka & penutup, Impor bank soal; tabel 12 tantangan (kode, wilayah, urutan, jenis, judul, variasi aktif x/3, soal, gambar contoh tersisa, status verifikasi) dan tabel wilayah dengan tautan Wilayah · Bacaan · Pustaka & Kenali · Cerita & dialog. |
 | `admin/content/level` | `/admin/konten/level/{id}` | `partials/content-nav`; teks wilayah berpasangan ID/EN (`.bilingual`: nama, fokus literasi, capaian pembelajaran, tujuan pembelajaran, pengantar), tingkat kesulitan, aktif, gambar wilayah lewat `media-field` (peta `map.region.{code}` 1400 × 900, latar `bg.{code}.region` 1920 × 1080, lencana `reward.badge.{code}` 320 × 320); daftar tantangan. |
-| `admin/content/node` | `/admin/konten/node/{id}` | Judul, perintah, cerita kartu misi (ID/EN); jenis tantangan (terkunci bila sudah pernah dimainkan), kode variasi tampilan, indikator; pengaturan per engine (Susun Gambar: ukuran papan dari `DifficultyRules`; Isi Rumpang: `cfg[as_reading]`, `cfg[distractor_count]`; Benar atau Salah: keterangan tombol Benar/Salah); daftar variasi `.variant-row` a/b/c dengan judul ID/EN dan, untuk Isi Rumpang, kata pengecoh per variasi; `config_json` di `<details class="disclosure">`; gambar adegan dan latar (`media-field`), narasi kartu misi ID/EN (`audio-select`); lalu bank soal `.item-list` › `<details class="item-card" id="item-{id}">` per soal (variasi, jenis, status tinjauan berwarna `.is-draft`/`.is-needs_verification`/`.is-verified`, tidak dinilai, nonaktif) berisi form `admin/content/items` dan hapus berkonfirmasi, serta kartu **Tambah soal**. |
+| `admin/content/node` | `/admin/konten/node/{id}` | Editor bertab (`data-tabs`): **Info** (judul, perintah, cerita kartu misi ID/EN, jenis — terkunci bila sudah dimainkan, kode variasi tampilan, indikator, gambar adegan/latar, narasi kartu misi, aktif); **Variasi** (judul ID/EN dan pengecoh rumpang per variasi a/b/c, `config_json` di `<details>`, tabel **Soal per variasi**: kode, variasi, urutan, jenis, Bloom, keterampilan, kunci, tinjauan, dinilai, aktif; lalu kartu sunting soal `.item-card` dan **Tambah soal**); **Posisi benda** (Cari Objek: kartu benda dengan pemilih koordinat). Satu form node terbagi ke dua tab; tanpa JavaScript semua bagian tampil berurutan. |
 | `admin/content/items` | (di dalam node) | Form satu soal: kode (baru), jenis (`puzzle_arrange`, `fill_blank_bank`, `verdict_card`, `find_object`), variasi, urutan, status pemeriksaan, bacaan, indikator, tingkat Bloom (`DifficultyRules::BLOOM`), pertanyaan ID/EN, rekaman petunjuk ID/EN (hanya tantangan `cari`), gambar soal (`media-field`), teks sumber, panduan per jenis `.type-guide[data-for]` (ditampilkan lewat `:has()`), kunci jawaban dan pengaturan soal JSON, sumber rujukan, catatan pemeriksaan, Dinilai, Aktif. `admin/content-editor.js` menambah editor terpandu (kalimat `___`, Benar/Salah, pemilih koordinat benda di atas `data-scene`) yang menulis ke kolom JSON yang sama. |
 | `admin/content/passages` | `/admin/konten/bacaan/{levelId}` | Satu `fieldset.repeat-row` per bacaan (kode, judul dan isi ID/EN, gambar, sumber rujukan, aktif, hapus — dinonaktifkan bila masih dipakai soal) + baris bacaan baru. |
 | `admin/content/library` | `/admin/konten/pustaka/{levelId}` | Semua halaman Pustaka wilayah dalam satu form; tiap halaman punya media sebanyak apa pun (berkas terdaftar/unggahan, atau tautan YouTube, Google Drive, Vimeo, Wikimedia Commons, atau berkas https langsung). Halaman dan media nonaktif tetap tampil bertanda. |
@@ -506,12 +513,12 @@ Impor soal dan Rekaman narasi tampil menjorok (`.menu-sub`). **Ganti kata sandi*
 | `admin/narration/index` | `/admin/konten/narasi` | Aksi: Unggah rekaman, Unduh daftar rekaman (Excel), Kelengkapan gambar & suara. Panel kemajuan per bahasa (disetujui / menunggu persetujuan / belum ada, batang `.progress-stack` ber-`role="img"`) dengan `admin/narration/approve-all`. Lalu satu tabel per konteks dan wilayah (urut naskah): kode berkas, tokoh + pose + efek, cuplikan teks, status rekaman ID dan EN (lencana + pemutar kecil `.audio-preview-sm`), dan **Sunting** ke editor dialog (`#slide-{n}`) atau, untuk petunjuk Cari Objek `petunjuk-{node}-NN`, ke soalnya (`#item-{id}`). Total 100 rekaman per bahasa (88 baris naskah + 12 petunjuk). |
 | `admin/narration/upload` | `/admin/konten/narasi/unggah` | `files[]` (banyak berkas audio) + bahasa + "periksa nama saja"; panel batas sekali unggah (per berkas, jumlah berkas, total) yang juga diperiksa `admin/narration-upload.js` sebelum dikirim; laporan hasil (baru, diganti, sama, nama tidak dikenal dengan saran, gagal, baris yang belum punya rekaman); impor dari folder server `public/assets/audio/narasi/{id,en}/`. |
 | `admin/narration/approve-all` | (komponen) | Tombol "Setujui semua rekaman {bahasa} (n)" dengan `<details class="confirm">`; hanya narasi naskah dan petunjuk. Dipakai halaman Narasi dan Audio. |
-| `admin/media/index` | `/admin/media` | Hasil Pindai berkas (POST `/admin/media/pindai`), form unggah per `asset_key` (`?asset_key=` mengisi kotaknya), tabel ukuran wajib, tabel semua gambar & video (ukuran wajib vs sebenarnya — tidak sesuai ditandai teks + warna, status berkas, pemakaian, pratinjau, nonaktifkan). |
+| `admin/media/index` | `/admin/media` | **Gambar & mockup:** KPI slot, asli, gambar contoh, kosong, ukuran tidak sesuai; filter status (Asli / Gambar contoh / Kosong) dan jenis dengan chip; tabel slot (pratinjau, kode, label, isi yang diharapkan, ukuran berkas (wajib dan sebenarnya) & ukuran tampil dp (`$assetDisplaySizes`), status, dipakai di, **Unggah gambar asli**, Nonaktifkan berkonfirmasi); form unggah `#unggah` dan tabel ukuran wajib; hasil Pindai berkas. |
 | `admin/media/audio` | `/admin/media/audio` | Panel narasi cerita (tautan ke Narasi, tombol setujui semua per bahasa), form unggah audio, tabel rekaman (konteks, tokoh, bahasa, transkrip, status persetujuan, pemakaian, pemutar, tombol Setujui). |
 | `admin/media/checklist` | `/admin/media/kelengkapan` | Kelengkapan aset (`App\Libraries\AssetChecklist`): jumlah belum ada / perlu diperiksa / lengkap, lalu tabel per kelompok dengan status ikon + teks, ukuran wajib, dan tautan ke tempat mengunggahnya. |
-| `admin/study/index` | `/admin/studi` | Satu kartu per penelitian + form baru: kode, nama, deskripsi, tahun ajaran, status, lama simpan data (`retention_days`), bahasa bawaan, mode buka wilayah (`sequential` / `free`). Permainan memakai penelitian berstatus aktif dengan id terbesar. |
-| `admin/study/releases` | `/admin/studi/rilis` | Versi permainan (`game_releases`): versi aktif, form versi baru (selalu nonaktif), daftar dengan tombol Aktifkan berkonfirmasi. |
-| `admin/governance/index` | `/admin/tata-kelola` | Hapus data dua langkah: **Langkah 1** hitung data terdampak per jenis data (`admin_label('dataTable')`), tanpa menghapus; lalu kartu pratinjau yang menunggu, dijalankan hanya setelah mengetik `HAPUS`, atau dibatalkan. `?participant_id=` mengisi cakupan dari profil siswa. Riwayat permintaan dan panel **Perawatan data otomatis** (retensi). |
+| `admin/study/index` | `/admin/studi` | **Daftar siap penelitian** (0 gambar contoh, narasi disetujui, verifikasi siap penelitian lolos; tiap butir bertautan), lalu satu kartu per penelitian + form baru (kode, nama, deskripsi, tahun ajaran, status draf/berjalan/ditutup, retensi, bahasa bawaan, mode buka wilayah). Memilih status Berjalan saat daftar belum hijau memunculkan centang **Tetap jalankan** (`confirm_not_ready`, diperiksa server). |
+| `admin/study/releases` | `/admin/studi/rilis` | **Rilis** (`game_releases`): versi aktif, daftar dengan Aktifkan (modal konfirmasi), form versi baru (selalu nonaktif). |
+| `admin/governance/index` | `/admin/tata-kelola` | **Tata kelola**, tab Penghapusan data & retensi · Riwayat aktivitas. Hapus data dua langkah: hitung data terdampak tanpa menghapus, lalu jalankan setelah mengetik `HAPUS` atau batalkan. `?participant_id=` mengisi cakupan dari detail siswa. Riwayat permintaan dan panel retensi. |
 | `admin/governance/audit` | `/admin/tata-kelola/audit` | Riwayat aktivitas staf (`audit_logs`), filter aksi dan tanggal (GET), metadata per baris di `<details>`, 50 baris per halaman. |
 | `admin/schools/index` | `/admin/sekolah` | **Cari sekolah** (NPSN/nama, per kab/kota berdirektori) dan **Rapikan nama sekolah**: nama ketikan siswa digabung ke sekolah lain (menjadi alias) atau disahkan sebagai sekolah ber-NPSN; gabung otomatis untuk kecocokan yang jelas. |
 | `admin/staff/index` | `/admin/staf` | Satu `<details>` per akun (nama, peran, sekolah, wajib ganti sandi, terkunci, terakhir masuk) berisi form sunting, reset sandi (ketik `RESET`), nonaktifkan berkonfirmasi; form akun baru. Kolom sekolah disembunyikan CSS `:has()` saat peran Admin dipilih. Sandi sementara hasil reset hanya tampil di respons itu (`Cache-Control: no-store`). |
@@ -538,7 +545,7 @@ Delapan berkas di `public/assets/css/`, dimuat berurutan lewat `asset_url_versio
 | `game.css` | layar permainan: lentera & chip peserta, halaman awal, akun & pendaftaran, cerita & dialog, peta, kartu misi, empat arena, selesai & hasil, Pustaka, profil, Balai Refleksi | game |
 | `cinematic.css` | tirai, pemutar narasi (kartu ketuk, kontrol, mesin ketik, efek `.fx-*`), cerita pembuka/penutup, narasi peta, overlay Kenali, tirai wilayah & tantangan (`.cc-*`), kartu bab, panggung dialog, wilayah tuntas | game (sesudah `game.css`) |
 | `noscript.css` | `.curtain { display: none !important; }` | game, hanya di dalam `<noscript>` |
-| `admin.css` | kepala halaman, filter bar, KPI, tabel data, form konten dwibahasa, editor soal, impor, verifikasi, media, narasi, studi, ekspor, tata kelola, staf | admin |
+| `admin.css` | **berkas mandiri panel admin dan halaman masuk staf** (Dok 3 §8): font, token §8.1, dasar, sidebar/topbar, kepala halaman, tab, tombol, formulir, lencana, peringatan, bilah filter + chip, KPI, tabel data, pagination, modal, toast, halaman khusus (konten, media, studi, …), responsif (ikon < 1280 px, laci < 768 px) | admin, auth |
 
 ### Token (`tokens.css`)
 

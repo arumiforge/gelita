@@ -1,88 +1,90 @@
 <?php
 /**
- * Beranda panel — `/admin/dashboard` → DashboardController::index
+ * Ringkasan — `/admin` → DashboardController::index (Dok 3 §8.3)
  *
- * Hitungan data mentah (perombakan kelas 5, Dok 1 §12 / K7): jumlah siswa,
- * sesi, pengerjaan, percobaan, petunjuk, dan suara; sebaran siswa; 10 sesi
- * terakhir. Tanpa skor, persentase, indeks, atau chart — pengolahan dilakukan
- * peneliti dari ekspor. Tampilan dasbor baru menyusul di Dok 3.
+ * KPI hitungan saja (siswa terdaftar · sesi aktif sekarang · pengerjaan
+ * selesai hari ini · kritik & saran), peringatan kesiapan konten untuk admin
+ * (gambar contoh, narasi draft, verifikasi konten), tabel "Aktivitas
+ * terbaru" (20 event) dan "Progres siswa" (10 terbaru). Tanpa skor dan chart.
  *
- * @var array<string, mixed>              $filters
- * @var array<string, mixed>              $summary
- * @var array<string, mixed>              $cohort
- * @var list<array<string, mixed>>        $recentSessions
- * @var list<array<string, mixed>>        $retentionAlerts pratinjau penghapusan dari retensi (admin)
+ * @var array{participants: int, active_sessions: int, completed_today: int, feedback: int} $kpi
+ * @var array<string, mixed>       $events      bentuk tabel data-table
+ * @var array<string, mixed>       $progress    bentuk tabel data-table
+ * @var array<string, mixed>|null  $readiness   ResearchReadiness::check() (admin)
+ * @var list<array<string, mixed>> $retentionAlerts
+ * @var bool                       $isAdmin
  */
-$bucket = [
-    'by_gender'      => static fn (string $value): string => admin_label('gender', $value),
-    'by_class_level' => static fn (string $value): string => class_label($value),
-    'by_province'    => static fn (string $value): string => $value,
-];
 ?>
 <?= $this->extend('layouts/admin') ?>
 
 <?= $this->section('content') ?>
 <?= component('partials/admin-head', [
-    'title'   => 'Beranda',
-    'eyebrow' => 'Ringkasan',
-    'lead'    => 'Jumlah data mentah yang sudah tercatat. Angka di halaman ini mengikuti pilihan filter di bawah. Akun guru hanya melihat siswa dari sekolahnya sendiri.',
+    'title' => 'Ringkasan',
+    'lead'  => $isAdmin
+        ? 'Hitungan data mentah yang sudah tercatat di semua sekolah.'
+        : 'Hitungan data mentah siswa dari sekolah Anda.',
 ]) ?>
 <?= $this->include('partials/flash') ?>
-<?php if ($retentionAlerts !== []): ?>
-  <div class="alert alert-warn" role="status">
-    <?= icon('warn') ?>
-    <p>
-      Ada data dari <?= count($retentionAlerts) ?> penelitian yang sudah melewati batas lama penyimpanan (<?= esc(fmt_num(array_sum(array_map(static fn (array $r): int => (int) $r['affected_count'], $retentionAlerts)))) ?> catatan).
-      Data ini <b>belum</b> dihapus — <a href="<?= base_url('admin/tata-kelola') ?>">buka menu Hapus data &amp; riwayat</a> untuk memeriksa lalu memutuskannya.
-    </p>
-  </div>
-<?php endif ?>
-<?= component('admin-filter-bar', ['filters' => $filters, 'only' => ['study_id', 'school_id', 'class_level', 'province_code', 'date_from', 'locale']]) ?>
 
 <section class="kpi-grid" aria-label="Angka utama">
-  <?= component('stat-tile', ['label' => 'Siswa', 'value' => fmt_num($summary['participant_count'], 0, 'id'), 'icon' => 'users', 'hint' => 'siswa terdaftar']) ?>
-  <?= component('stat-tile', ['label' => 'Sesi bermain', 'value' => fmt_num($summary['session_count'], 0, 'id'), 'icon' => 'clock', 'hint' => fmt_num($summary['completed_sessions'], 0, 'id') . ' sesi tuntas']) ?>
-  <?= component('stat-tile', ['label' => 'Pengerjaan selesai', 'value' => fmt_num($summary['completed_attempts'], 0, 'id'), 'icon' => 'check', 'hint' => fmt_num($summary['abandoned_attempts'], 0, 'id') . ' ditinggalkan']) ?>
-  <?= component('stat-tile', ['label' => 'Percobaan soal', 'value' => fmt_num($summary['item_tries'], 0, 'id'), 'icon' => 'target', 'hint' => 'baris item_tries']) ?>
-  <?= component('stat-tile', ['label' => 'Petunjuk dibuka', 'value' => fmt_num($summary['hint_count'], 0, 'id'), 'icon' => 'info']) ?>
-  <?= component('stat-tile', ['label' => 'Suara diputar', 'value' => fmt_num($summary['audio_plays'], 0, 'id'), 'icon' => 'sound', 'hint' => fmt_num($summary['audio_autoplays'], 0, 'id') . ' kali otomatis']) ?>
+  <?= component('stat-tile', ['label' => 'Siswa terdaftar', 'value' => fmt_num($kpi['participants'], 0, 'id'), 'icon' => 'users']) ?>
+  <?= component('stat-tile', ['label' => 'Sesi aktif sekarang', 'value' => fmt_num($kpi['active_sessions'], 0, 'id'), 'icon' => 'clock', 'hint' => 'ada aktivitas ≤ 10 menit terakhir']) ?>
+  <?= component('stat-tile', ['label' => 'Pengerjaan selesai hari ini', 'value' => fmt_num($kpi['completed_today'], 0, 'id'), 'icon' => 'check', 'hint' => 'sejak pukul 00.00']) ?>
+  <?= component('stat-tile', ['label' => 'Kritik & saran', 'value' => fmt_num($kpi['feedback'], 0, 'id'), 'icon' => 'message']) ?>
 </section>
 
-<section class="panel">
-  <h2 class="panel-title"><?= icon('users') ?> Sebaran siswa <span class="chip num"><?= esc(fmt_num($cohort['total'], 0, 'id')) ?></span></h2>
-  <div class="cohort-grid">
-    <?php foreach (['by_gender' => 'Jenis kelamin', 'by_class_level' => 'Kelas', 'by_province' => 'Provinsi'] as $key => $label): ?>
-      <div>
-        <h3 class="panel-subtitle"><?= esc($label) ?></h3>
-        <?php if ($cohort[$key] === []): ?>
-          <p class="muted">—</p>
-        <?php else: ?>
-          <ul class="chip-list">
-            <?php foreach ($cohort[$key] as $group => $total): ?>
-              <li class="chip"><?= esc((string) $group === '' ? 'tidak diisi' : $bucket[$key]((string) $group)) ?> <b class="num"><?= esc($total) ?></b></li>
-            <?php endforeach ?>
-          </ul>
-        <?php endif ?>
+<?php if ($retentionAlerts !== [] || ($readiness !== null && ! $readiness['ready'])): ?>
+  <section class="stack" aria-label="Peringatan">
+    <?php if ($retentionAlerts !== []): ?>
+      <div class="alert alert-warn" role="status">
+        <?= icon('warn') ?>
+        <div class="alert-body">
+          <b>Data melewati batas lama penyimpanan</b>
+          <p>Data dari <?= count($retentionAlerts) ?> penelitian (<?= esc(fmt_num(array_sum(array_map(static fn (array $r): int => (int) $r['affected_count'], $retentionAlerts)), 0, 'id')) ?> catatan) menunggu keputusan. Data ini <b>belum</b> dihapus.</p>
+        </div>
+        <a class="btn btn-sm" href="<?= base_url('admin/tata-kelola') ?>">Buka Tata kelola</a>
       </div>
-    <?php endforeach ?>
-  </div>
-</section>
+    <?php endif ?>
+    <?php if ($readiness !== null): ?>
+      <?php foreach ($readiness['items'] as $item): ?>
+        <?php if ($item['ok']) continue; ?>
+        <div class="alert alert-warn" role="status">
+          <?= icon('warn') ?>
+          <div class="alert-body">
+            <b><?= esc(['mockup' => 'Gambar contoh tersisa', 'narration' => 'Narasi belum disetujui', 'verify' => 'Verifikasi konten belum lolos'][$item['key']] ?? $item['label']) ?></b>
+            <p><?= esc($item['detail']) ?></p>
+          </div>
+          <a class="btn btn-sm" href="<?= base_url($item['link']) ?>">Periksa</a>
+        </div>
+      <?php endforeach ?>
+    <?php endif ?>
+  </section>
+<?php endif ?>
 
-<section class="panel">
-  <h2 class="panel-title"><?= icon('clock') ?> 10 sesi bermain terakhir</h2>
-  <?= component('admin-table', [
-      'rows'         => $recentSessions,
-      'emptyMessage' => 'Belum ada sesi bermain. Sesi muncul setelah siswa mendaftar dan mulai bermain.',
-      'columns'      => [
-          'participant_code' => ['label' => 'Kode siswa', 'format' => 'code'],
-          'status'           => ['label' => 'Status', 'format' => 'badge'],
-          'locale'           => ['label' => 'Bahasa', 'format' => 'label', 'group' => 'locale'],
-          'started_at'       => ['label' => 'Mulai', 'format' => 'datetime'],
-          'duration_ms'      => ['label' => 'Lama bermain', 'format' => 'ms'],
-          'completed_nodes'  => ['label' => 'Tantangan selesai', 'format' => 'num'],
-          'total_stars'      => ['label' => 'Bintang', 'format' => 'num'],
-          'id'               => ['label' => '', 'render' => static fn (array $r): string => '<a class="btn btn-quiet btn-sm" href="' . base_url('admin/sesi/' . $r['id']) . '">Lihat</a>'],
+<div class="stack">
+  <?= component('data-table', [
+      'table'        => $events,
+      'id'           => 'aktivitas',
+      'title'        => 'Aktivitas terbaru',
+      'csv'          => false,
+      'paginate'     => false,
+      'stickyFirst'  => false,
+      'emptyMessage' => 'Belum ada aktivitas. Aktivitas muncul setelah siswa mulai bermain.',
+      'tools'        => '<a class="btn btn-sm btn-quiet" href="' . base_url('admin/sesi') . '">Semua sesi</a>',
+  ]) ?>
+  <?= component('data-table', [
+      'table'        => $progress,
+      'id'           => 'progres',
+      'title'        => 'Progres siswa',
+      'csv'          => false,
+      'paginate'     => false,
+      'stickyFirst'  => false,
+      'emptyMessage' => 'Belum ada siswa terdaftar.',
+      'tools'        => '<a class="btn btn-sm btn-quiet" href="' . base_url('admin/peserta') . '">Semua siswa</a>',
+      'render'       => [
+          'participant_code' => static fn (array $r): string => '<a href="' . base_url('admin/peserta/' . $r['id']) . '">' . esc($r['participant_code']) . '</a>',
+          'done'             => static fn (array $r): string => '<span class="num">' . esc($r['done']) . '</span>',
       ],
   ]) ?>
-</section>
+</div>
 <?= $this->endSection() ?>

@@ -9,7 +9,9 @@
  * lewat data-export-id; tanpa JavaScript, muat ulang halaman.
  *
  * Nilai kotak centang adalah kode lembar §9.2 (`peserta`, …). Kamus Data
- * selalu ikut. Tampilan halaman ini ditata ulang sesi admin (§8.3).
+ * selalu ikut. Tata letak §8.3: formulir (format, isi nilai, anonim, filter sekolah,
+ * wilayah, rentang tanggal, lembar) + tabel riwayat unduhan (status, baris,
+ * ukuran, sha256, kedaluwarsa, Unduh).
  *
  * @var array<string, mixed>        $filters   filter dari query string (dari filter bar panel)
  * @var list<string>                $sheets    lembar yang boleh diterima pemanggil
@@ -25,24 +27,44 @@
 
 <?= $this->section('content') ?>
 <?= component('partials/admin-head', [
-    'title'   => 'Unduh data',
-    'eyebrow' => 'Laporan',
-    'lead'    => 'Unduh data mentah hasil permainan sebagai berkas Excel untuk diolah. Setiap unduhan tercatat di riwayat aktivitas.',
+    'title' => 'Unduh data',
+    'lead'  => 'Data mentah sebagai satu workbook Excel atau CSV-ZIP (satu CSV per lembar, siap SPSS/R/Python), selalu dengan Kamus Data. Setiap unduhan tercatat di riwayat aktivitas.',
 ]) ?>
 <?= $this->include('partials/flash') ?>
 
 <form method="post" action="<?= base_url('admin/ekspor/xlsx') ?>" class="form-section">
   <?= csrf_field() ?>
-  <h2><?= icon('search') ?> Data mana yang diunduh?</h2>
+  <h2><?= icon('filter') ?> Data mana yang diunduh?</h2>
   <?= component('components/admin-filter-bar', [
       'filters'       => $filters,
       'filterOptions' => $filterOptions,
+      'only'          => ['school_id', 'level_id', 'date_from'],
       'bare'          => true,
   ]) ?>
 
-  <fieldset class="repeat-row">
-    <legend><?= icon('list') ?> Lembar (satu lembar atau satu berkas CSV untuk tiap pilihan)</legend>
-    <div class="check-grid">
+  <div class="form-grid">
+    <fieldset class="field">
+      <legend class="label">Isi nilai</legend>
+      <label class="check"><input type="radio" name="labels" value="" checked> <span><b>Bawaan</b><span class="cell-sub">Excel berlabel, CSV berkode</span></span></label>
+      <label class="check"><input type="radio" name="labels" value="label"> <span><b>Berlabel</b><span class="cell-sub">mis. "Kesempatan habis", "Laki-laki"</span></span></label>
+      <label class="check"><input type="radio" name="labels" value="code"> <span><b>Berkode</b><span class="cell-sub">mis. tries_exhausted, laki-laki</span></span></label>
+    </fieldset>
+    <fieldset class="field">
+      <legend class="label">Identitas siswa</legend>
+      <?php if ($isAdmin): ?>
+        <label class="check">
+          <input type="checkbox" name="anonymized" value="1" checked>
+          <span><b>Anonim</b><span class="cell-sub">Nama, nama pengguna, nama sekolah, dan NPSN tidak ikut; kode siswa dan kode sekolah samaran tetap ada.</span></span>
+        </label>
+      <?php else: ?>
+        <p class="filter-locked"><?= icon('lock') ?> Selalu anonim, tanpa Event Mentah dan kunci jawaban, hanya siswa sekolah Anda.</p>
+      <?php endif ?>
+    </fieldset>
+  </div>
+
+  <details class="disclosure">
+    <summary>Pilih lembar (bawaan: semua lembar yang boleh Anda terima)</summary>
+    <div class="check-grid" style="margin-top: 12px">
       <?php foreach ($sheets as $sheet): ?>
         <?php if ($sheet === 'kamus') {
             continue;
@@ -53,65 +75,64 @@
         </label>
       <?php endforeach ?>
     </div>
-    <p class="field-help">Lembar Kamus Data (arti, satuan, dan daftar nilai setiap kolom) selalu ikut. Bila tidak ada yang dicentang, semua lembar yang boleh Anda terima ikut diunduh. Waktu ditulis ISO 8601 (WIB, dengan milidetik), lama dalam milidetik. Lembar Navigasi, Penyelesaian, dan Event Mentah hanya bisa diunduh bila jumlahnya tidak lebih dari <?= esc(fmt_num($rawEventLimit, 0, 'id')) ?> baris; bila lebih, persempit rentang tanggal.</p>
-  </fieldset>
-
-  <fieldset class="repeat-row">
-    <legend><?= icon('list') ?> Isi nilai</legend>
-    <label class="check"><input type="radio" name="labels" value="" checked> <span><b>Bawaan</b><span class="cell-sub">Excel berlabel, CSV berkode</span></span></label>
-    <label class="check"><input type="radio" name="labels" value="label"> <span><b>Berlabel</b><span class="cell-sub">mis. "Kesempatan habis", "Laki-laki", jawaban dalam kalimat</span></span></label>
-    <label class="check"><input type="radio" name="labels" value="code"> <span><b>Berkode</b><span class="cell-sub">mis. tries_exhausted, laki-laki, jawaban JSON — siap SPSS/R/Python</span></span></label>
-  </fieldset>
-
-  <fieldset class="repeat-row">
-    <legend><?= icon('shield') ?> Nama siswa</legend>
-    <?php if ($isAdmin): ?>
-      <label class="check">
-        <input type="checkbox" name="anonymized" value="1" checked>
-        <span><b>Anonim</b><span class="cell-sub">Nama, nama pengguna, nama sekolah, dan NPSN tidak ikut; kode siswa dan kode sekolah samaran tetap ada. Hilangkan centang hanya bila penelitian benar-benar membutuhkan identitas.</span></span>
-      </label>
-    <?php else: ?>
-      <p class="filter-locked"><?= icon('lock') ?> Unduhan dari akun guru selalu anonim, tanpa Event Mentah dan kunci jawaban, dan hanya berisi siswa dari sekolah Anda.</p>
-    <?php endif ?>
-  </fieldset>
+    <p class="field-help">Kamus Data selalu ikut. Waktu ISO 8601 (WIB, dengan milidetik), lama dalam milidetik. Lembar Navigasi, Penyelesaian, dan Event Mentah dibatasi <?= esc(fmt_num($rawEventLimit, 0, 'id')) ?> baris; bila lebih, persempit rentang tanggal.</p>
+  </details>
 
   <div class="form-actions">
-    <button class="btn btn-primary" type="submit" formaction="<?= base_url('admin/ekspor/xlsx') ?>"><?= icon('download') ?> Buat berkas Excel (XLSX)</button>
-    <button class="btn btn-ghost" type="submit" formaction="<?= base_url('admin/ekspor/csv') ?>"><?= icon('download') ?> Buat CSV-ZIP</button>
+    <button class="btn btn-primary" type="submit" formaction="<?= base_url('admin/ekspor/xlsx') ?>"><?= icon('download') ?> Buat XLSX</button>
+    <button class="btn" type="submit" formaction="<?= base_url('admin/ekspor/csv') ?>"><?= icon('download') ?> Buat CSV-ZIP</button>
+    <span class="field-help">Data dan laporan PDF satu siswa dibuat dari halaman detail siswa.</span>
   </div>
-  <p class="field-help">Data dan laporan PDF untuk satu siswa dibuat dari halaman profil siswa.</p>
 </form>
 
-<section class="panel">
-  <h2 class="panel-title"><?= icon('clock') ?> Unduhan terakhir</h2>
-  <p class="muted">Berkas dihapus otomatis <?= esc($retention) ?> hari setelah dibuat; buat ulang bila masih diperlukan.<?= $isAdmin ? '' : ' Hanya unduhan milik Anda yang tampil.' ?></p>
-  <?= component('components/admin-table', [
-      'caption'      => 'Daftar unduhan terakhir',
-      'emptyMessage' => 'Belum ada data yang diunduh.',
-      'rows'         => $recent,
-      'rowClass'     => static fn (array $row): string => $row['status'] === 'failed' ? 'is-bad' : '',
-      'columns'      => [
-          'id'         => ['label' => 'No.', 'format' => 'num'],
-          'created_at' => ['label' => 'Dibuat', 'format' => 'datetime'],
-          'format'     => ['label' => 'Jenis', 'render' => static fn (array $row): string => '<span class="badge">' . esc(match ((string) $row['format']) { 'xlsx' => 'Excel', 'csv' => 'CSV-ZIP', default => strtoupper((string) $row['format']) }) . '</span>' . ($row['anonymized'] ? '<span class="cell-sub">tanpa nama</span>' : '<span class="cell-sub">dengan nama siswa</span>')],
-          'status'     => ['label' => 'Status', 'render' => static fn (array $row): string => '<span class="badge is-' . esc($row['status'], 'attr') . '" data-export-id="' . (int) $row['id'] . '" data-status="' . esc($row['status'], 'attr') . '">' . esc(admin_label('exportStatus', (string) $row['status'])) . '</span>' . ($row['error_message'] ? '<span class="cell-sub">' . esc($row['error_message']) . '</span>' : '')],
-          'row_count'  => ['label' => 'Jumlah baris', 'format' => 'num'],
-          'file_sha256' => ['label' => 'Kode cek berkas', 'render' => static fn (array $row): string => $row['file_sha256'] ? '<code title="' . esc('Kode unik isi berkas (SHA-256), untuk memastikan berkas tidak berubah: ' . $row['file_sha256'], 'attr') . '">' . esc(substr((string) $row['file_sha256'], 0, 12)) . '…</code>' : '—'],
-          'expires_at' => ['label' => 'Dihapus pada', 'format' => 'date'],
-          'actions'    => ['label' => '', 'render' => static function (array $row): string {
-              $expired = $row['expires_at'] !== null && strtotime((string) $row['expires_at']) < time();
+<?php
+$rows = array_map(static function (array $row): array {
+    $path        = (string) ($row['file_path'] ?? '');
+    $row['size'] = $path !== '' && is_file($path) ? (int) filesize($path) : null;
 
-              if ($row['status'] !== 'done') {
-                  return '';
-              }
+    return $row;
+}, $recent);
+?>
+<?= component('data-table', [
+    'table' => [
+        'rows' => $rows, 'total' => count($rows), 'page' => 1, 'per_page' => max(1, count($rows)), 'sort' => null,
+        'columns' => array_map(static fn (array $c): array => $c + ['sortable' => false], [
+            ['key' => 'id', 'label' => 'No.', 'type' => 'int'],
+            ['key' => 'created_at', 'label' => 'Dibuat', 'type' => 'datetime'],
+            ['key' => 'format', 'label' => 'Format', 'type' => 'text'],
+            ['key' => 'status', 'label' => 'Status', 'type' => 'text'],
+            ['key' => 'row_count', 'label' => 'Baris', 'type' => 'int'],
+            ['key' => 'size', 'label' => 'Ukuran (KB)', 'type' => 'int'],
+            ['key' => 'file_sha256', 'label' => 'SHA-256', 'type' => 'code'],
+            ['key' => 'expires_at', 'label' => 'Kedaluwarsa', 'type' => 'datetime'],
+            ['key' => 'actions', 'label' => '', 'type' => 'text'],
+        ]),
+    ],
+    'id'           => 'riwayat-unduhan',
+    'title'        => 'Riwayat unduhan',
+    'csv'          => false,
+    'paginate'     => false,
+    'stickyFirst'  => false,
+    'emptyMessage' => 'Belum ada data yang diunduh.',
+    'tools'        => '<span class="table-count">Berkas dihapus otomatis ' . (int) $retention . ' hari setelah dibuat' . ($isAdmin ? '' : '; hanya unduhan milik Anda') . '.</span>',
+    'render'       => [
+        'format' => static fn (array $row): string => '<span class="badge no-dot">' . esc(match ((string) $row['format']) { 'xlsx' => 'XLSX', 'csv' => 'CSV-ZIP', default => strtoupper((string) $row['format']) }) . '</span>'
+            . '<span class="cell-sub">' . ($row['anonymized'] ? 'anonim' : 'beridentitas') . '</span>',
+        'status' => static fn (array $row): string => '<span class="badge is-' . esc($row['status'], 'attr') . '" data-export-id="' . (int) $row['id'] . '" data-status="' . esc($row['status'], 'attr') . '">' . esc(admin_label('exportStatus', (string) $row['status'])) . '</span>'
+            . ($row['error_message'] ? '<span class="cell-sub">' . esc($row['error_message']) . '</span>' : ''),
+        'size' => static fn (array $row): string => $row['size'] === null ? '<span class="is-empty">—</span>' : esc(fmt_num($row['size'] / 1024, 0, 'id')),
+        'file_sha256' => static fn (array $row): string => $row['file_sha256'] ? '<span title="' . esc($row['file_sha256'], 'attr') . '">' . esc(substr((string) $row['file_sha256'], 0, 12)) . '…</span>' : '<span class="is-empty">—</span>',
+        'actions' => static function (array $row): string {
+            if ($row['status'] !== 'done') {
+                return '';
+            }
 
-              if ($expired) {
-                  return '<span class="cell-sub">sudah dihapus</span>';
-              }
+            if ($row['expires_at'] !== null && strtotime((string) $row['expires_at']) < time()) {
+                return '<span class="cell-sub">sudah dihapus</span>';
+            }
 
-              return '<a class="btn btn-quiet btn-sm" href="' . esc(base_url('admin/ekspor/unduh/' . $row['id']), 'attr') . '">' . icon('download') . ' Unduh</a>';
-          }],
-      ],
-  ]) ?>
-</section>
+            return '<a class="btn btn-sm" href="' . esc(base_url('admin/ekspor/unduh/' . $row['id']), 'attr') . '">' . icon('download') . ' Unduh</a>';
+        },
+    ],
+]) ?>
 <?= $this->endSection() ?>

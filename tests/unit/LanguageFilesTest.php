@@ -149,14 +149,14 @@ final class LanguageFilesTest extends CIUnitTestCase
     }
 
     /**
-     * Setiap label menu sidebar panel (termasuk "Rekaman narasi", tahap 5)
-     * harus ada di Language/id/Admin.php; kunci yang hilang tampil mentah
-     * (Admin.menuX).
+     * Setiap label menu sidebar panel (App\Libraries\AdminMenu, termasuk
+     * "Rekaman narasi") harus ada di Language/id/Admin.php; kunci yang
+     * hilang tampil mentah (Admin.menuX).
      */
     public function testEveryAdminSidebarLabelExists(): void
     {
         $admin  = require APPPATH . 'Language/id/Admin.php';
-        $source = (string) file_get_contents(APPPATH . 'Views/components/admin-sidebar.php');
+        $source = (string) file_get_contents(APPPATH . 'Libraries/AdminMenu.php');
 
         preg_match_all("/'Admin\\.([A-Za-z]+)'/", $source, $matches);
 

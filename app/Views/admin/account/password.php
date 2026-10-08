@@ -19,7 +19,6 @@
 <?= $this->section('content') ?>
 <?= component('partials/admin-head', [
     'title'   => 'Ganti kata sandi',
-    'eyebrow' => 'Akun Anda',
     'lead'    => 'Ganti kata sandi Anda kapan saja di sini. Bila Anda baru menerima sandi sementara dari admin, sandi itu wajib diganti dulu.',
 ]) ?>
 <?php if ($mustChange): ?>

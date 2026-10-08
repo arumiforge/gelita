@@ -23,7 +23,7 @@ class GovernanceController extends BaseAdminController
     {
         $config = config('Gelita');
 
-        return $this->panel('admin/governance/index', 'Hapus data', [
+        return $this->panel('admin/governance/index', lang('Admin.menuGovernance'), [
             'requests'        => model(DataDeletionRequestModel::class)->orderBy('created_at', 'DESC')->findAll(30),
             'confirmWord'     => self::CONFIRM_WORD,
             'idleMinutes'     => $config->sessionIdleMinutes,
@@ -108,6 +108,7 @@ class GovernanceController extends BaseAdminController
         $rows = $logs->orderBy('occurred_at', 'DESC')->paginate(50);
 
         return $this->panel('admin/governance/audit', 'Riwayat aktivitas', [
+            'breadcrumb' => ['Riwayat aktivitas' => null],
             'rows'    => $rows,
             'pager'   => $logs->pager,
             'action'  => $action,
