@@ -151,7 +151,19 @@ async function settle(page, ms = 900) {
   await page.waitForTimeout(ms);
 }
 
-/** Masuk atau daftarkan siswa uji; mengembalikan storageState. */
+/** Masuk dengan siswa uji di konteks ini (sesi diregenerasi server, jadi tiap ukuran masuk sendiri). */
+async function logIn(ctx, user) {
+  const page = await ctx.newPage();
+  await page.goto(`${BASE}masuk`);
+  await page.fill('#username', user);
+  await page.fill('#password', PASS);
+  await page.click('main form button[type=submit]');
+  await page.waitForLoadState('domcontentloaded');
+  await page.waitForTimeout(500);
+  await page.close();
+}
+
+/** Daftarkan siswa uji (kecuali --user); mengembalikan nama penggunanya. */
 async function signIn() {
   const ctx = await browser.newContext({ viewport: { width: 1280, height: 720 } });
   const page = await ctx.newPage();
@@ -180,16 +192,12 @@ async function signIn() {
     await page.waitForURL(/intro|gerbang|peta/, { waitUntil: 'domcontentloaded' });
     console.log(`Siswa uji baru: ${user}`);
   } else {
-    await page.goto(`${BASE}masuk`);
-    await page.fill('#username', user);
-    await page.fill('#password', PASS);
-    await page.click('main form button[type=submit]');
-    await page.waitForLoadState('domcontentloaded');
+    await ctx.close();
+    return user;
   }
   await page.goto(`${BASE}intro/selesai`).catch(() => {});
-  const state = await ctx.storageState();
   await ctx.close();
-  return state;
+  return user;
 }
 
 /** Habiskan kesempatan tantangan yang sedang terbuka (jawaban asal) sampai layar selesai. */
@@ -229,7 +237,7 @@ async function exhaust(page) {
   return /\/selesai\//.test(page.url());
 }
 
-const state = await signIn();
+const user = await signIn();
 
 /**
  * Daftar layar: [nama, jalur | fungsi(page)]. Fungsi menyiapkan keadaan
@@ -264,7 +272,8 @@ const baseline = new Map(); // layar → marks pada ukuran pertama
 
 for (const size of SIZES) {
   console.log(`\n== ${size.name}`);
-  const ctx = await browser.newContext({ viewport: { width: size.w, height: size.h }, storageState: state });
+  const ctx = await browser.newContext({ viewport: { width: size.w, height: size.h } });
+  await logIn(ctx, user);
   const guest = await browser.newContext({ viewport: { width: size.w, height: size.h } });
   const page = await ctx.newPage();
   const guestPage = await guest.newPage();
@@ -315,7 +324,8 @@ for (const size of SIZES) {
 // Layar putar: 390 × 844, sentuh
 {
   console.log('\n== 390x844 (sentuh, tegak)');
-  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true, storageState: state });
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
+  await logIn(ctx, user);
   const page = await ctx.newPage();
   await page.goto(`${BASE}peta`);
   await settle(page);
