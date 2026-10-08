@@ -68,6 +68,7 @@ return [
     'puzzleWrongText'  => 'The picture is not complete yet — {0} pieces are still in the wrong place. Pieces marked ✗ are misplaced.',
     'puzzleWrongTextOne' => 'The picture is not complete yet — 1 piece is still in the wrong place. Pieces marked ✗ are misplaced.',
     'puzzleWrongPlain' => 'The picture is not complete yet. Swap the pieces again.',
+    'pieceMisplaced'   => 'not in place yet',
 
     // Fill in the blanks
     'blankFilled'     => '{0} filled: {1}',

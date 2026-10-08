@@ -203,7 +203,7 @@ return [
     'noItems'           => 'The questions for this challenge are not ready yet.',
     'puzzleHint'        => 'Tap two pieces to swap them, or drag one piece onto another. Match the colours and lines that continue.',
     'puzzleHintJigsaw'  => 'Tap two pieces to swap them. Pieces with a straight side belong on the edge, and each tab must fit the gap in the piece next to it.',
-    'puzzleTipMark'     => 'After checking, pieces marked ✗ are not in place yet. Pieces already in place are locked.',
+    'puzzleTipMark'     => 'After checking, pieces marked ✗ are not in place yet. Swap those pieces first.',
     'puzzleTipHint'     => 'Stuck? Tap 💡 Hint at the top.',
     'puzzleCheck'       => 'Check my picture',
     'piece'             => 'Piece in row {0}, column {1}',

@@ -127,7 +127,7 @@ function alreadyFaded(layer) {
 }
 
 function setInert(on) {
-  for (const node of $$('body > .hud, body > main, body > .nav-bar')) {
+  for (const node of $$('#stage > .hud, #stage > main, #stage > .nav-bar')) {
     if (on) node.setAttribute('inert', '');
     else node.removeAttribute('inert');
   }

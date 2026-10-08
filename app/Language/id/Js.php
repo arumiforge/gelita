@@ -69,6 +69,7 @@ return [
     'puzzleWrongText'  => 'Gambarnya belum utuh, masih ada {0} keping yang keliru. Keping bertanda ✗ belum di tempatnya.',
     'puzzleWrongTextOne' => 'Gambarnya belum utuh, masih ada 1 keping yang keliru. Keping bertanda ✗ belum di tempatnya.',
     'puzzleWrongPlain' => 'Gambarnya belum utuh. Tukar lagi kepingnya, ya.',
+    'pieceMisplaced'   => 'belum di tempatnya',
 
     // Rumpang
     'blankFilled'     => '{0} diisi: {1}',
