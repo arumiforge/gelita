@@ -181,3 +181,20 @@ document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'hidden') flush(true);
 });
 window.addEventListener('pagehide', () => flush(true));
+
+/**
+ * Kode layar Dok 1 §12.4 dari <body data-screen-code> (dirender layout dengan
+ * resolver yang sama dengan screen_viewed di server). Pustaka terkunci
+ * dikenali dari halamannya, seperti di ScreenViewFilter.
+ */
+const screenName = () => {
+  const code = document.body?.dataset.screenCode || null;
+  return code === 'library' && document.querySelector('[data-screen="library-locked"]') ? 'library_locked' : code;
+};
+
+/** `page_hidden` / `page_visible` dari visibilitychange (Dok 3 §7). */
+export function initVisibilityTracking() {
+  document.addEventListener('visibilitychange', () => {
+    emit(document.visibilityState === 'hidden' ? 'page_hidden' : 'page_visible', { payload: { screen: screenName() } });
+  });
+}

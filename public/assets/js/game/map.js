@@ -21,6 +21,11 @@
  *   didengar" wilayah itu; server menghitung ulang dari event
  *   `dialogue_advanced` (context `region_intro`) pada kunjungan berikutnya.
  *   Tanpa JavaScript overlay adalah target :target #kenal-{code}.
+ *   Tombol yang diketuk sebelum modul ini siap hanya sempat mengubah hash
+ *   (#kenal-{code} atau #kenal-{code}-{n}); saat siap, hash itu membuka
+ *   overlay di slide n tanpa memutar narasi otomatis (belum ada ketukan untuk
+ *   membuka kunci audio), lalu hash dibersihkan. Narasi peta tidak dimulai
+ *   selama overlay Kenali terbuka.
  * - Tautan pin/kartu wilayah memutar tirai wilayah (core/curtain.js).
  */
 import { $, $$, on } from '../core/dom.js';
@@ -33,7 +38,7 @@ import { initNarrator } from './narrator.js';
 import { overlayOpened } from '../core/device.js';
 
 /** Lapisan halaman yang dinonaktifkan selama overlay Kenali terbuka. */
-const PAGE_LAYERS = 'body > .skip-link, body > .hud, body > main, body > .nav-bar';
+const PAGE_LAYERS = '#stage > .skip-link, #stage > .hud, #stage > main, #stage > .nav-bar';
 
 /**
  * Overlay "Kenali wilayah". Semua pemutar berbagi halaman peta, jadi slide
@@ -41,6 +46,7 @@ const PAGE_LAYERS = 'body > .skip-link, body > .hud, body > main, body > .nav-ba
  * tombol panah/Spasi/Esc ditangani di sini hanya selama overlay terbuka.
  *
  * @param {{ stop: () => void } | null} mapStory narasi peta, dihentikan saat overlay dibuka
+ * @returns {() => boolean} apakah overlay Kenali sedang terbuka
  */
 function initRegionIntros(mapStory) {
   const intros = new Map();
@@ -65,21 +71,21 @@ function initRegionIntros(mapStory) {
     trigger?.focus({ preventScroll: true });
   };
 
-  const show = (code, trigger) => {
+  const show = (code, trigger, { slide = 1, autoplay = true } = {}) => {
     const entry = intros.get(code);
     if (!entry) return;
     if (open) close();
     overlayOpened('kenal', { level: code, levelId: Number(entry.root.dataset.levelId) || null });
 
-    Sfx.unlock(); // di dalam ketukan: elemen narasi bersama terbuka (Safari iPad)
+    if (autoplay) Sfx.unlock(); // di dalam ketukan: elemen narasi bersama terbuka (Safari iPad)
     mapStory?.stop();
     open = { ...entry, trigger };
     entry.root.classList.add('is-open');
     document.body.classList.add('has-kenal');
     for (const node of $$(PAGE_LAYERS)) node.setAttribute('inert', '');
 
-    entry.story.show(1, { notify: false, focus: false });
-    entry.story.start({ userInitiated: true });
+    entry.story.show(slide, { notify: false, focus: false });
+    if (autoplay) entry.story.start({ userInitiated: true });
     $('.kenal-close', entry.root)?.focus({ preventScroll: true });
   };
 
@@ -92,7 +98,7 @@ function initRegionIntros(mapStory) {
     });
     if (story) intros.set(code, { root, story });
   }
-  if (!intros.size) return;
+  if (!intros.size) return () => false;
 
   document.addEventListener('click', (event) => {
     const target = event.target instanceof Element ? event.target : null;
@@ -111,6 +117,19 @@ function initRegionIntros(mapStory) {
   // Kembali ke peta lewat tombol Back (bfcache): overlay tidak dibiarkan terbuka
   window.addEventListener('pageshow', (event) => { if (event.persisted) close(); });
 
+  // Ketukan "Kenali" sebelum modul siap: buka dari hash, lalu bersihkan hash
+  const early = /^#kenal-(.+?)(?:-(\d+))?$/.exec(decodeURIComponent(location.hash || ''));
+  if (early) {
+    let code = early[1];
+    let slide = Number(early[2]) || 1;
+    if (!intros.has(code) && intros.has(`${code}-${early[2]}`)) { code = `${code}-${early[2]}`; slide = 1; }
+    if (intros.has(code)) {
+      const trigger = $(`[data-kenal-open="${CSS.escape(code)}"]`);
+      show(code, trigger, { slide, autoplay: false });
+      history.replaceState(null, '', location.pathname + location.search);
+    }
+  }
+
   document.addEventListener('keydown', (event) => {
     if (!open || event.altKey || event.ctrlKey || event.metaKey) return;
     const inControl = event.target instanceof Element && event.target.closest('a, button, input, select, textarea, summary');
@@ -126,6 +145,8 @@ function initRegionIntros(mapStory) {
       open.story.prev();
     }
   });
+
+  return () => open !== null;
 }
 
 function preload(root) {
@@ -166,12 +187,12 @@ export function initMap() {
   const guide = $('[data-narrator]', screen);
   const story = guide ? initNarrator(guide) : null;
 
-  initRegionIntros(story);
+  const kenalOpen = initRegionIntros(story);
 
   if ($('[data-curtain-layer="map"]')) {
     playCurtain('map').then(() => {
       Sfx.music('map');
-      story?.start();
+      if (!kenalOpen()) story?.start();
     });
   } else {
     Sfx.music('map');

@@ -6,7 +6,10 @@
  * - Fokus terperangkap di dalam modal selama terbuka.
  * - Escape menutup modal yang dapat dibatalkan (`dismissible`); modal hasil
  *   pemeriksaan tetap menyediakan tombol eksplisit.
- * - Seluruh teks ditulis dengan textContent.
+ * - Seluruh teks ditulis dengan textContent; aria-describedby menunjuk semua
+ *   paragraf teks.
+ * - Wadahnya #modal-layer di dalam #stage (layouts/game.php), jadi modal ikut
+ *   skala panggung 16:9 dan tidak keluar dari panggung.
  */
 import { el } from './dom.js';
 import { t } from './config.js';
@@ -74,13 +77,19 @@ export function showModal({ type = 'info', icon = null, character = null, title 
   const textHost = modal.querySelector('.modal-text');
   const paragraphs = Array.isArray(text) ? text.filter(Boolean) : [text].filter(Boolean);
   textHost.textContent = paragraphs.shift() || '';
+  const described = textHost.textContent ? [textHost.id || 'modal-text'] : [];
   let anchor = textHost;
-  for (const extra of paragraphs) {
-    const p = el('p', { class: 'modal-text modal-extra' }, extra);
+  paragraphs.forEach((extra, index) => {
+    const id = `modal-text-${index + 2}`;
+    const p = el('p', { class: 'modal-text modal-extra', id }, extra);
     anchor.after(p);
     anchor = p;
-  }
+    described.push(id);
+  });
   if (!textHost.textContent) textHost.hidden = true;
+  // Pembaca layar membacakan SEMUA paragraf (mis. "Kesempatanmu tinggal n lagi"), bukan hanya yang pertama
+  if (described.length) modal.setAttribute('aria-describedby', described.join(' '));
+  else modal.removeAttribute('aria-describedby');
 
   const actions = modal.querySelector('.modal-actions');
   const list = buttons && buttons.length ? buttons : [{ label: t('ok'), style: 'primary', value: 'ok' }];

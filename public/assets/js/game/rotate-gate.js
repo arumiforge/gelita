@@ -1,7 +1,7 @@
 /**
  * Layar putar: aksesibilitas penghalang potret.
  *
- * Tampil/hilangnya penghalang sepenuhnya diatur CSS (layout.css) dengan
+ * Tampil/hilangnya penghalang sepenuhnya diatur CSS (stage.css) dengan
  * media query yang sama seperti di bawah. Modul ini hanya memastikan
  * fokus keyboard dan pembaca layar tidak tertinggal di belakangnya:
  * selama penghalang tampil, seluruh isi <body> lainnya `inert` dan fokus

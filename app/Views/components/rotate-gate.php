@@ -5,7 +5,7 @@
  * 1400×900, adegan 16:9, latar 1920×1080), jadi permainan hanya dilayani
  * dalam posisi mendatar.
  *
- * Tampil/hilangnya murni CSS (layout.css, media query
+ * Tampil/hilangnya murni CSS (stage.css, media query
  * `(orientation: portrait) and (pointer: coarse)`), sehingga berfungsi
  * tanpa JavaScript dan langsung hilang saat perangkat diputar. Web tidak
  * dapat mengunci rotasi dengan andal: screen.orientation.lock() hanya

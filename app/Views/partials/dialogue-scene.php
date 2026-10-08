@@ -29,11 +29,11 @@ $total  = count($slides);
 $first  = (string) ($slides[0]['character_code'] ?? 'jaka');
 $region = $level->text('name', $locale);
 ?>
-<section class="screen screen-medium story dialogue narrator" data-screen="<?= esc($screen, 'attr') ?>"
+<section class="story dialogue narrator" data-screen="<?= esc($screen, 'attr') ?>"
          data-narrator data-context="<?= esc($context, 'attr') ?>" data-prefix="line-" data-mode="tap"
          data-level="<?= esc($level->code, 'attr') ?>" data-level-id="<?= esc($level->id, 'attr') ?>"
          data-first="<?= esc($first, 'attr') ?>" data-index="1">
-  <header class="screen-head">
+  <header class="screen-head dialogue-head stage-box">
     <span class="eyebrow"><?= esc($eyebrow) ?></span>
     <h1><?= esc($region) ?></h1>
   </header>
@@ -76,10 +76,12 @@ $region = $level->text('name', $locale);
             aria-label="<?= esc(lang('Game.slideOf', [$n, $total]), 'attr') ?>">
           <div class="dialogue-box panel-parchment" data-narrator-advance>
             <cite class="dialogue-speaker"><?= esc(lang_or('Game.char_' . $character, $character)) ?></cite>
-            <p class="dialogue-text slide-text"><?= esc($text) ?></p>
-            <?php if (($audioSrc = audio_src($audioId ?: null)) !== null): ?>
-              <?= component('audio-player', ['audioId' => $audioId, 'audioSrc' => $audioSrc, 'transcript' => $text]) ?>
-            <?php endif ?>
+            <div class="dialogue-body stage-scroll">
+              <p class="dialogue-text slide-text"><?= esc($text) ?></p>
+              <?php if (($audioSrc = audio_src($audioId ?: null)) !== null): ?>
+                <?= component('audio-player', ['audioId' => $audioId, 'audioSrc' => $audioSrc, 'transcript' => $text]) ?>
+              <?php endif ?>
+            </div>
             <?= component('partials/slide-nav', [
                 'n'          => $n,
                 'total'      => $total,

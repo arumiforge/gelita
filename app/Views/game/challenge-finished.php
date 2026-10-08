@@ -2,9 +2,11 @@
 /**
  * 12. Selesai — `/selesai/{attemptId}` → ChallengeController::finished
  *
- * Orb cahaya, bintang 0–3, empat statistik (Waktu, Berhasil pada Percobaan
- * Pertama, Benar di akhir, Percobaan dipakai — atau Ketukan salah untuk Cari
- * Objek) dan alasan selesai (Semua benar / Disimpan apa adanya).
+ * Kartu tunggal di tengah panggung, tanpa Jaka (Dok 3 §5.3). Orb cahaya,
+ * bintang 0–3, tiga statistik (Waktu, Berhasil pada Percobaan Pertama,
+ * Percobaan dipakai — atau Ketukan salah untuk Cari Objek) dan alasan selesai
+ * (Semua benar / Disimpan apa adanya; bila kesempatan habis ditambah baris
+ * lembut Game.exhaustedNote).
  * Bila wilayah tuntas: panel Mbah Kedu bangga. Bila attempt ini yang
  * menuntaskan wilayah: tombol utama "Lanjut" ke adegan /tuntas/{code}
  * ("Serpihan {wilayah} kembali!", Tahap 3), dan bila wilayahnya punya
@@ -61,23 +63,21 @@ $toNext = ! $closesRegion && ! $allCompleted && $next === null && $levelComplete
   <?php for ($i = 0; $i < 24; $i++): ?><i style="--i: <?= $i ?>"></i><?php endfor ?>
 </div>
 
-<section class="screen screen-medium finished" data-screen="finished" data-attempt="<?= esc($attempt->id, 'attr') ?>">
-  <div class="finished-layout">
-    <?= component('character', ['character' => 'jaka', 'pose' => 'happy', 'class' => 'finished-jaka']) ?>
-
-    <article class="panel-carved finished-card">
+<section class="finished" data-screen="finished" data-attempt="<?= esc($attempt->id, 'attr') ?>">
+    <?php // Kartu tunggal 280, 72, 720 × 576 tanpa Jaka (Dok 3 §5.3); bagian tengah bergulir, tombol di bilah bawah kartu ?>
+    <article class="panel-carved finished-card stage-box">
       <div class="orb" aria-hidden="true"><span class="orb-core"><?= icon('lantern') ?></span></div>
       <?php if ($node !== null): ?>
         <span class="eyebrow"><?= esc($region) ?> · <?= esc($node->text('title', $locale)) ?></span>
       <?php endif ?>
       <h1><?= esc(lang('Game.finishedTitle')) ?></h1>
 
+      <div class="finished-body stage-scroll">
       <?= component('star-rating', ['stars' => (int) $attempt->stars, 'size' => 'lg']) ?>
 
       <div class="stat-grid finished-stats">
         <?= component('stat-tile', ['label' => lang('Game.timeSpent'), 'value' => ms_to_human((int) $attempt->duration_ms), 'icon' => 'clock']) ?>
         <?= component('stat-tile', ['label' => lang('Game.firstPass'), 'value' => first_pass_text($attempt, $locale, $node?->engine_type), 'icon' => 'target']) ?>
-        <?= component('stat-tile', ['label' => lang('Game.finalCorrect'), 'value' => lang('Game.firstTryCount', [(int) $attempt->final_correct, (int) $attempt->scorable_items]), 'icon' => 'check']) ?>
         <?php if (($wrongTaps ?? null) !== null): ?>
           <?= component('stat-tile', ['label' => lang('Game.wrongTaps'), 'value' => (string) $wrongTaps, 'icon' => 'cross']) ?>
         <?php else: ?>
@@ -89,6 +89,10 @@ $toNext = ! $closesRegion && ! $allCompleted && $next === null && $levelComplete
         <p class="finished-reason badge <?= $attempt->completion_reason === 'solved' ? 'is-completed' : 'is-open' ?>">
           <?= esc(lang($attempt->completion_reason === 'solved' ? 'Game.completionSolved' : 'Game.completionExhausted')) ?>
         </p>
+      <?php endif ?>
+
+      <?php if ($attempt->completion_reason === 'tries_exhausted'): ?>
+        <p class="finished-note"><?= icon('lantern') ?> <?= esc(lang('Game.exhaustedNote')) ?></p>
       <?php endif ?>
 
       <?php if ($checks > 1): ?>
@@ -121,6 +125,8 @@ $toNext = ! $closesRegion && ! $allCompleted && $next === null && $levelComplete
         </aside>
       <?php endif ?>
 
+      </div>
+
       <div class="finished-actions">
         <?php if ($closesRegion && $level !== null): ?>
           <?php // Wilayah baru saja tuntas: adegan "Serpihan {wilayah} kembali!" lebih dulu ?>
@@ -137,7 +143,6 @@ $toNext = ! $closesRegion && ! $allCompleted && $next === null && $levelComplete
         <?php endif ?>
       </div>
     </article>
-  </div>
 </section>
 <?= $this->endSection() ?>
 

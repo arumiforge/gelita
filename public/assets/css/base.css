@@ -75,45 +75,42 @@
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
-  scroll-padding-top: calc(var(--hud-h) + var(--sp-4));
 }
 
 body {
   margin: 0;
-  min-height: 100vh;
-  min-height: 100dvh;
   background: var(--navy-900);
   color: var(--ink);
   font-family: var(--font-body);
-  font-size: var(--step-0);
+  font-size: var(--fs-body);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
 
 /* ---------- Tipografi ---------- */
 h1, h2, h3, h4 {
-  margin: 0 0 var(--sp-3);
+  margin: 0 0 var(--gap-3);
   font-family: var(--font-display);
   font-weight: 700;
   line-height: 1.25;
   color: var(--gold-300);
   text-wrap: balance;
 }
-h1 { font-size: var(--step-3); }
-h2 { font-size: var(--step-2); }
-h3 { font-size: var(--step-1); }
-h4 { font-size: var(--step-0); letter-spacing: .02em; }
+h1 { font-size: var(--fs-h1); }
+h2 { font-size: var(--fs-h2); }
+h3 { font-size: var(--fs-h3); }
+h4 { font-size: var(--fs-body); letter-spacing: .02em; }
 
-p { margin: 0 0 var(--sp-4); }
+p { margin: 0 0 var(--gap-4); }
 p:last-child { margin-bottom: 0; }
 
-ul, ol { margin: 0 0 var(--sp-4); padding-left: var(--sp-5); }
+ul, ol { margin: 0 0 var(--gap-4); padding-left: var(--gap-5); }
 
-a { color: var(--gold-500); text-underline-offset: 3px; }
+a { color: var(--gold-500); text-underline-offset: .1875rem; }
 a:hover { color: var(--gold-300); }
 
 strong, b { font-weight: 700; }
-small { font-size: var(--step--1); }
+small { font-size: var(--fs-caption); }
 
 img, svg, video, canvas { display: block; max-width: 100%; height: auto; }
 
@@ -127,15 +124,15 @@ table { border-collapse: collapse; width: 100%; }
 fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
 legend { padding: 0; }
 
-hr { border: 0; border-top: 1px solid var(--line); margin: var(--sp-5) 0; }
+hr { border: 0; border-top: 1px solid var(--line); margin: var(--gap-5) 0; }
 
 dl { margin: 0; }
 dd { margin: 0; }
 
 /* ---------- Fokus keyboard selalu terlihat ---------- */
 :focus-visible {
-  outline: 3px solid var(--gold-500);
-  outline-offset: 2px;
+  outline: .1875rem solid var(--gold-500);
+  outline-offset: .125rem;
 }
 
 /* ---------- Utilitas ---------- */
@@ -153,10 +150,10 @@ dd { margin: 0; }
 
 .skip-link {
   position: absolute;
-  top: var(--sp-2);
-  left: var(--sp-2);
+  top: var(--gap-2);
+  left: var(--gap-2);
   z-index: 100;
-  padding: var(--sp-2) var(--sp-4);
+  padding: var(--gap-2) var(--gap-4);
   border-radius: var(--radius);
   background: var(--gold-500);
   color: var(--navy-900);
@@ -169,7 +166,7 @@ dd { margin: 0; }
 .muted { color: var(--ink-dim); }
 .eyebrow {
   display: block;
-  font-size: var(--step--1);
+  font-size: var(--fs-caption);
   font-weight: 700;
   letter-spacing: .08em;
   text-transform: uppercase;

@@ -38,7 +38,7 @@ $welcome = session('welcome');
 <?= $this->section('bodyClass') ?>is-cinematic<?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<section class="screen story intro cine narrator" data-screen="intro"
+<section class="story intro cine narrator" data-screen="intro"
          data-narrator data-context="intro" data-prefix="slide-" data-mode="tap">
   <?php if (is_string($welcome) && $welcome !== ''): ?>
     <div class="welcome-card" role="status">

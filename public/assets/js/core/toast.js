@@ -1,5 +1,6 @@
 /**
  * Notifikasi sementara: maksimum 3 bertumpuk, hilang setelah 4 detik.
+ * Di game wadahnya #toast-layer di dalam #stage (x 856, y 72, w 400 dp).
  * type: info | ok | bad | warn
  *
  * `requestId` ditampilkan kecil agar guru dapat menyebutnya saat melapor;

@@ -40,32 +40,37 @@ $engineName  = engine_label($engine, $node->variant_code);
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<section class="screen screen-narrow mission" data-screen="mission-brief">
-  <article class="panel-parchment mission-card">
+<section class="mission" data-screen="mission-brief">
+  <article class="panel-parchment mission-card stage-box">
     <span class="mission-seal num" aria-hidden="true"><?= esc($sequence) ?></span>
     <span class="eyebrow"><?= esc(lang('Game.challengeOf', [$sequence, $totalNodes])) ?> · <?= esc($region) ?></span>
     <h1><?= esc($node->text('title', $locale)) ?></h1>
     <p class="mission-engine"><span class="chip"><?= icon('puzzle') ?> <?= esc($engineName) ?></span></p>
 
-    <?php if ($description !== ''): ?>
-      <p class="mission-description"><?= esc($description) ?></p>
-    <?php endif ?>
-    <?php if ($instruction !== ''): ?>
-      <p class="mission-instruction"><?= icon('info') ?> <span><?= esc($instruction) ?></span></p>
-    <?php endif ?>
+    <div class="mission-body stage-scroll">
+      <?php if ($description !== ''): ?>
+        <p class="mission-description"><?= esc($description) ?></p>
+      <?php endif ?>
+      <?php if ($instruction !== ''): ?>
+        <p class="mission-instruction"><?= icon('info') ?> <span><?= esc($instruction) ?></span></p>
+      <?php endif ?>
 
-    <?php if (($audioSrc = audio_src($audioId ?: null)) !== null): ?>
-      <?= component('audio-player', [
-          'audioId'    => $audioId,
-          'audioSrc'   => $audioSrc,
-          'transcript' => $description !== '' ? $description : $instruction,
-      ]) ?>
-    <?php endif ?>
+      <?php if (($audioSrc = audio_src($audioId ?: null)) !== null): ?>
+        <?= component('audio-player', [
+            'audioId'    => $audioId,
+            'audioSrc'   => $audioSrc,
+            'transcript' => $description !== '' ? $description : $instruction,
+        ]) ?>
+      <?php endif ?>
+    </div>
 
     <?php if ($best !== null): ?>
       <div class="mission-best">
         <span><?= esc(lang('Game.bestResult')) ?></span>
         <?= stars_html((int) $best->stars) ?>
+        <?php if ((int) $best->scorable_items > 0): ?>
+          <span class="mission-best-pass"><?= esc(lang('Game.firstPass')) ?>: <span class="num"><?= esc(lang('Game.firstTryCount', [(int) $best->first_pass_correct, (int) $best->scorable_items])) ?></span></span>
+        <?php endif ?>
       </div>
     <?php endif ?>
 

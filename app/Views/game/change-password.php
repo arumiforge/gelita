@@ -17,8 +17,8 @@
 <?= $this->section('background') ?><?= media_key_src('bg.welcome') ?? '' ?><?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<section class="screen screen-narrow change-password">
-  <div class="panel-parchment">
+<section class="change-password">
+  <div class="panel-parchment password-panel stage-box stage-scroll">
     <span class="eyebrow"><?= esc(lang('Game.appName')) ?></span>
     <h1><?= esc(lang('Auth.changeTitle')) ?></h1>
 

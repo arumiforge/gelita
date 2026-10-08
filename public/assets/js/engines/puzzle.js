@@ -17,6 +17,11 @@
  * keping disusun ke posisi utuh dengan animasi 600 ms (susunan benar memang
  * publik: keping 0..n−1 dari kiri atas), keterangan gambar tampil, baru
  * kemudian modal "Kesempatanmu sudah habis".
+ *
+ * Keping bertanda ✗ (`.is-misplaced`) juga diumumkan ke pembaca layar: label
+ * slotnya ditambah "belum di tempatnya" sampai keping itu ditukar. Muat ulang
+ * sesudah cek yang belum utuh memulihkan hitungan ✓/✗ (0 / 1) dari
+ * `tries_used`, seperti engine lain memulihkannya dari `state`.
  */
 import { $, $$, announce, reducedMotion } from '../core/dom.js';
 import { Sfx } from '../core/audio.js';
@@ -45,6 +50,13 @@ function mountArrange(ctx, wrap) {
     .slice()
     .sort((a, b) => Number(a.dataset.slot) - Number(b.dataset.slot));
 
+  // Label asli tiap slot ("Keping baris 1, kolom 2"); tanda ✗ menambah keterangannya
+  pieces.forEach((piece) => { piece.dataset.label = piece.getAttribute('aria-label') || ''; });
+  const markMisplaced = (piece, on) => {
+    piece.classList.toggle('is-misplaced', on);
+    piece.setAttribute('aria-label', on ? `${piece.dataset.label} — ${ctx.t('pieceMisplaced')}` : piece.dataset.label);
+  };
+
   const select = (piece) => {
     selected?.classList.remove('is-selected');
     selected?.setAttribute('aria-pressed', 'false');
@@ -67,8 +79,8 @@ function mountArrange(ctx, wrap) {
     }
     [a.dataset.piece, b.dataset.piece] = [b.dataset.piece, a.dataset.piece];
 
-    a.classList.remove('is-misplaced');
-    b.classList.remove('is-misplaced');
+    markMisplaced(a, false);
+    markMisplaced(b, false);
     pulse(a);
     pulse(b);
     Sfx.play('click');
@@ -137,7 +149,8 @@ function mountArrange(ctx, wrap) {
   const lock = () => {
     pieces.forEach((piece) => {
       piece.classList.add('is-locked');
-      piece.classList.remove('is-misplaced', 'is-selected');
+      markMisplaced(piece, false);
+      piece.classList.remove('is-selected');
       piece.disabled = true;
     });
     button.disabled = true;
@@ -184,6 +197,9 @@ function mountArrange(ctx, wrap) {
 
   ctx.currentItemId = () => itemId;
 
+  // Muat ulang sesudah cek yang belum utuh: satu gambar, jadi ✓ 0 / ✗ 1
+  if (Number(ctx.data.tries_used) > 0) ctx.tally({ correct: 0, wrong: 1 });
+
   button?.addEventListener('click', async () => {
     if (solved) return;
     select(null);
@@ -216,7 +232,7 @@ function mountArrange(ctx, wrap) {
       lock(); // kesempatan habis: animasi gambar utuh dijalankan sebelum modal (beforeExhausted)
     } else {
       const misplaced = new Set((detail.misplaced ?? []).map(Number));
-      slotOrder().forEach((piece, slot) => piece.classList.toggle('is-misplaced', misplaced.has(slot)));
+      slotOrder().forEach((piece, slot) => markMisplaced(piece, misplaced.has(slot)));
     }
 
     const wrongCount = detail.pieces_correct !== undefined ? pieces.length - Number(detail.pieces_correct) : null;
@@ -225,7 +241,7 @@ function mountArrange(ctx, wrap) {
       okTitle: ctx.t('puzzleOkTitle'),
       okText: captionText ? [ctx.t('puzzleOkText'), captionText] : ctx.t('puzzleOkText'),
       partialTitle: ctx.t('puzzleWrongTitle'),
-      partialText: wrongCount !== null ? ctx.t('puzzleWrongText', wrongCount) : ctx.t('puzzleWrongPlain'),
+      partialText: wrongCount !== null ? ctx.t(wrongCount === 1 ? 'puzzleWrongTextOne' : 'puzzleWrongText', wrongCount) : ctx.t('puzzleWrongPlain'),
       exhaustedText: captionText ? [ctx.t('triesExhaustedPuzzle'), captionText] : ctx.t('triesExhaustedPuzzle'),
       beforeExhausted: assemble,
     });

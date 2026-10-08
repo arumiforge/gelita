@@ -1,7 +1,9 @@
 /* ==========================================================================
    GELITA — tokens.css
-   Custom property: warna, tipografi, spasi, radius, bayangan, ukuran layout.
-   Dimuat pertama oleh ketiga layout; berkas lain hanya memakai token ini.
+   Custom property: warna, tipografi, bayangan (bersama game & admin) dan
+   ukuran panggung 16:9 (hanya game, :root.game-stage).
+   Ukuran admin (--step-*, --sp-*, --sidebar-w) ada di admin.css.
+   Dok 3 §2: 1rem = 16 dp pada kanvas 1280 × 720 dp.
    ========================================================================== */
 
 :root {
@@ -30,28 +32,47 @@
   --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Consolas, monospace;
 
-  --step--1: clamp(.82rem, .78rem + .2vw, .92rem);
-  --step-0: clamp(.95rem, .9rem + .25vw, 1.05rem);
-  --step-1: clamp(1.15rem, 1.05rem + .5vw, 1.4rem);
-  --step-2: clamp(1.5rem, 1.3rem + 1vw, 2.1rem);
-  --step-3: clamp(2rem, 1.6rem + 2vw, 3rem);
-  --step-4: clamp(2.8rem, 2rem + 5vw, 5.5rem);
+  /* Ukuran (dp ÷ 16). Di admin 1rem = 16 px; admin.css menimpa ukuran huruf. */
+  --fs-caption: 1rem;      /* 16 dp label kecil, keterangan */
+  --fs-body: 1.25rem;      /* 20 dp teks umum, tombol */
+  --fs-reading: 1.375rem;  /* 22 dp bacaan (line-height 1.6) */
+  --fs-h3: 1.5rem;         /* 24 dp judul panel */
+  --fs-h2: 2rem;           /* 32 dp judul layar */
+  --fs-h1: 2.5rem;         /* 40 dp judul besar */
+  --fs-display: 3.5rem;    /* 56 dp judul sinematik */
+  --tap: 3rem;             /* 48 dp sasaran sentuh minimum */
+  --gutter: 2rem;          /* 32 dp tepi kiri-kanan isi */
+  --gap-1: .25rem; --gap-2: .5rem; --gap-3: .75rem;
+  --gap-4: 1rem; --gap-5: 1.5rem; --gap-6: 2rem; --gap-7: 3rem;
+  --radius: .75rem; --radius-lg: 1.25rem; --radius-pill: 999rem;
+  --hud-h: 3.5rem;         /* 56 dp */
+  --nav-h: 4rem;           /* 64 dp */
+  --line-w: max(1px, .0625rem);
 
-  /* Ruang & bentuk */
-  --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
-  --sp-5: 24px; --sp-6: 32px; --sp-7: 48px;
-  --radius: 12px; --radius-lg: 20px; --radius-pill: 999px;
-  --shadow-1: 0 2px 8px rgba(0, 0, 0, .25);
-  --shadow-2: 0 12px 32px rgba(0, 0, 0, .4);
-  --shadow-glow: 0 0 0 1px var(--line-strong), 0 0 24px var(--glow);
-
-  /* Target sentuh minimum */
-  --tap: 44px;
-
-  /* Layout */
-  --hud-h: 72px; --nav-h: 76px; --sidebar-w: 248px;
-  --content-max: 1180px;
-  --arena-max: 900px;
+  --shadow-1: 0 .125rem .5rem rgba(0, 0, 0, .25);
+  --shadow-2: 0 .75rem 2rem rgba(0, 0, 0, .4);
+  --shadow-glow: 0 0 0 1px var(--line-strong), 0 0 1.5rem var(--glow);
 
   color-scheme: dark;
+}
+
+/* ---------- Panggung 16:9 (Dok 3 §2.1) ----------
+   --app-w/--app-h diisi skrip sebaris layouts/game.php dan core/stage.js dari
+   visualViewport; vw/dvh di bawah hanya cadangan tanpa JavaScript, dan
+   satu-satunya tempat satuan viewport di CSS game. */
+:root.game-stage {
+  --app-w: 100vw;
+  --app-h: 100vh;
+  --stage-w: min(var(--app-w), calc(var(--app-h) * 16 / 9));
+  --stage-h: min(var(--app-h), calc(var(--app-w) * 9 / 16));
+  --letterbox: #05080F;
+  font-size: calc(var(--stage-w) / 80);   /* 1rem = 16 dp */
+}
+@supports (height: 100dvh) {
+  :root.game-stage { --app-h: 100dvh; }
+}
+/* Layar putar (perangkat sentuh tegak): panggung tertutup, jadi rem diukur
+   dari lebar layar agar teks layar putar tetap terbaca (± 16 px di 390 px). */
+@media (orientation: portrait) and (pointer: coarse) {
+  :root.game-stage { font-size: calc(var(--app-w) / 24); }
 }

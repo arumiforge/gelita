@@ -28,12 +28,14 @@ $focus   = static fn (string $f): string => $first === $f ? ' autofocus' : '';
 <?= $this->section('background') ?><?= media_key_src('bg.welcome') ?? '' ?><?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<section class="screen screen-medium register" data-step="3">
-  <div class="panel-parchment">
+<section class="register" data-step="3">
+  <div class="panel-parchment register-panel stage-box">
     <?= $this->include('game/register/_head') ?>
 
     <form method="post" action="<?= base_url('daftar/3') ?>" class="form register-form" data-step="3" autocomplete="off">
       <?= csrf_field() ?>
+      <div class="register-fields stage-scroll">
+      <?= view('partials/form-errors', ['errors' => $errors]) ?>
 
       <aside class="why-strong" aria-labelledby="why-strong-title">
         <?= component('character', ['character' => 'jaka', 'pose' => 'bow', 'class' => 'why-strong-jaka']) ?>
@@ -79,6 +81,8 @@ $focus   = static fn (string $f): string => $first === $f ? ' autofocus' : '';
 
       <input type="hidden" name="locale" value="<?= esc($locale, 'attr') ?>">
       <input type="hidden" name="device_json" value="">
+
+      </div>
 
       <div class="form-actions register-actions">
         <a class="btn btn-quiet" href="<?= base_url('daftar/2') ?>"><?= icon('left') ?> <?= esc(lang('Game.back')) ?></a>

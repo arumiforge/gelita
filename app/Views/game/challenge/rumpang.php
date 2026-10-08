@@ -58,7 +58,7 @@ $blankHtml = static function (int|string $itemId, int $number): string {
 
   <div class="rumpang-main">
     <?php if ($reading): ?>
-    <div class="rumpang-reading">
+    <div class="rumpang-reading stage-scroll" id="reading-panel">
       <?php if ($variantTitle !== ''): ?>
         <h2 class="rumpang-title"><?= esc($variantTitle) ?></h2>
       <?php endif ?>
@@ -67,7 +67,7 @@ $blankHtml = static function (int|string $itemId, int $number): string {
       <?php endforeach ?>
     </div>
     <?php else: ?>
-    <ol class="sentences">
+    <ol class="sentences stage-scroll" id="reading-panel">
       <?php foreach ($items as $index => $item): ?>
         <?php
         $prompt = (string) ($item['prompt'] ?? '');

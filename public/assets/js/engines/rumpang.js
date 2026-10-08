@@ -141,7 +141,7 @@ export function mount(ctx) {
       await showModal({
         type: 'info',
         title: ctx.t('blankEmptyTitle'),
-        text: ctx.t('blankEmptyText', empty.length),
+        text: ctx.t(empty.length === 1 ? 'blankEmptyTextOne' : 'blankEmptyText', empty.length),
       });
       scrollToCenter(empty[0]);
       activate(empty[0]);

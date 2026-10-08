@@ -71,9 +71,19 @@ export const reducedMotion = () => window.matchMedia?.('(prefers-reduced-motion:
 
 export const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-/** Gulir elemen ke tengah layar; langsung (tanpa animasi) bila reduced motion. */
+/**
+ * Gulir panel `.stage-scroll` terdekat sehingga elemen berada di tengahnya;
+ * langsung (tanpa animasi) bila reduced motion. Panggung 16:9 tidak pernah
+ * bergulir (Dok 3 §1), jadi window tidak ikut digulir.
+ */
 export function scrollToCenter(node) {
-  node?.scrollIntoView({ block: 'center', behavior: reducedMotion() ? 'auto' : 'smooth' });
+  if (!node) return;
+  const panel = node.closest('.stage-scroll');
+  if (!panel) return;
+  const box = panel.getBoundingClientRect();
+  const rect = node.getBoundingClientRect();
+  const top = panel.scrollTop + (rect.top - box.top) - (panel.clientHeight - rect.height) / 2;
+  panel.scrollTo({ top: Math.max(0, top), behavior: reducedMotion() ? 'auto' : 'smooth' });
 }
 
 /** Menyalin ikon SVG dari <template data-icon="…"> yang dirender server. */
@@ -87,7 +97,7 @@ export function announce(message) {
   let region = document.getElementById('sr-announcer');
   if (!region) {
     region = el('p', { id: 'sr-announcer', class: 'visually-hidden', 'aria-live': 'polite' });
-    document.body.append(region);
+    (document.getElementById('stage') || document.body).append(region);
   }
   region.textContent = '';
   // jeda kecil agar pembaca layar mengumumkan teks yang sama dua kali berturut-turut
