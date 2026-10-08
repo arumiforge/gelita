@@ -325,9 +325,11 @@ for (const size of SIZES) {
 // Layar putar: 390 × 844, sentuh
 {
   console.log('\n== 390x844 (sentuh, tegak)');
-  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
+  // Masuk saat mendatar (formulir tertutup layar putar ketika tegak), lalu putar ke tegak
+  const ctx = await browser.newContext({ viewport: { width: 844, height: 390 }, hasTouch: true, isMobile: true });
   await logIn(ctx, user);
   const page = await ctx.newPage();
+  await page.setViewportSize({ width: 390, height: 844 });
   await page.goto(`${BASE}peta`);
   await settle(page);
   const gate = await page.evaluate(() => {
@@ -358,7 +360,9 @@ async function check(page, name, size) {
   const result = await page.evaluate(inspect).catch((e) => ({ errors: [`evaluate: ${e.message}`], marks: {} }));
   result.errors.forEach((e) => fail(name, size.name, e));
 
-  const key = `${name}|${page.url().replace(/#.*$/, '')}`;
+  // Pengerjaan baru (variasi acak lain) punya posisi benda lain: bandingkan per pengerjaan
+  const attempt = await page.getAttribute('[data-screen="challenge"]', 'data-attempt').catch(() => null);
+  const key = `${name}|${page.url().replace(/#.*$/, '')}|${attempt ?? ''}`;
   if (!baseline.has(key)) {
     baseline.set(key, result.marks);
     return;
