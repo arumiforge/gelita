@@ -3,6 +3,8 @@
 namespace App\Controllers\Concerns;
 
 use App\Services\AnalyticsService;
+use App\Services\RawDataService;
+use App\Services\StaffScope as DataScope;
 
 /**
  * Batas akses staf, lapis kedua dari tiga (route → controller → service).
@@ -39,7 +41,7 @@ trait StaffScope
     protected function readFilters(): array
     {
         $allowed = [
-            'study_id', 'participant_id', 'level_id', 'node_id',
+            'study_id', 'participant_id', 'participant_code', 'level_id', 'node_id', 'variant_group',
             'school_id', 'class_level', 'province_code', 'locale', 'date_from', 'date_to',
         ];
 
@@ -81,5 +83,22 @@ trait StaffScope
     protected function analytics(bool $anonymous = false): AnalyticsService
     {
         return service('analyticsService', $this->schoolScope(), $anonymous);
+    }
+
+    /**
+     * Cakupan data mentah pemanggil (lapis ketiga, App\Services\StaffScope):
+     * admin beridentitas kecuali $anonymous; guru selalu anonim dan sekolahnya.
+     */
+    protected function dataScope(bool $anonymous = false): DataScope
+    {
+        return $this->isAdmin()
+            ? DataScope::admin($anonymous)
+            : DataScope::teacher((int) session('staff_school_id'));
+    }
+
+    /** RawDataService yang sudah terikat cakupan pemanggil (page(), streamCsv()). */
+    protected function rawData(bool $anonymous = false): RawDataService
+    {
+        return service('rawDataService', $this->dataScope($anonymous));
     }
 }

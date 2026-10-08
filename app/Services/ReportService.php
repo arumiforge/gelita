@@ -7,7 +7,7 @@ use Mpdf\Mpdf;
 use Mpdf\Output\Destination;
 
 /**
- * Laporan PDF satu siswa (hitungan data mentah). Laporan penelitian olahan
+ * Laporan PDF satu siswa: tabel formal data mentah (Dok 3 §10). Laporan olahan
  * (skor per wilayah, indikator, pretest–posttest) dihapus pada perombakan
  * kelas 5 (Dok 1 §14); peneliti mengolah data dari ekspor Excel.
  *

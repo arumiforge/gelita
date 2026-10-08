@@ -10,13 +10,10 @@
  * @var array<string, mixed>              $filters
  * @var array<string, mixed>              $summary
  * @var array<string, mixed>              $cohort
- * @var array<string, mixed>              $digitalSecurity
  * @var list<array<string, mixed>>        $recentSessions
  * @var list<array<string, mixed>>        $retentionAlerts pratinjau penghapusan dari retensi (admin)
  */
-$password = $digitalSecurity['password'];
-$audio    = $summary['audio_usage'];
-$bucket   = [
+$bucket = [
     'by_gender'      => static fn (string $value): string => admin_label('gender', $value),
     'by_class_level' => static fn (string $value): string => class_label($value),
     'by_province'    => static fn (string $value): string => $value,
@@ -43,13 +40,12 @@ $bucket   = [
 <?= component('admin-filter-bar', ['filters' => $filters, 'only' => ['study_id', 'school_id', 'class_level', 'province_code', 'date_from', 'locale']]) ?>
 
 <section class="kpi-grid" aria-label="Angka utama">
-  <?= component('stat-tile', ['label' => 'Siswa', 'value' => fmt_num($summary['participant_count'], 0, 'id'), 'icon' => 'users', 'hint' => 'siswa yang sudah bermain']) ?>
+  <?= component('stat-tile', ['label' => 'Siswa', 'value' => fmt_num($summary['participant_count'], 0, 'id'), 'icon' => 'users', 'hint' => 'siswa terdaftar']) ?>
   <?= component('stat-tile', ['label' => 'Sesi bermain', 'value' => fmt_num($summary['session_count'], 0, 'id'), 'icon' => 'clock', 'hint' => fmt_num($summary['completed_sessions'], 0, 'id') . ' sesi tuntas']) ?>
   <?= component('stat-tile', ['label' => 'Pengerjaan selesai', 'value' => fmt_num($summary['completed_attempts'], 0, 'id'), 'icon' => 'check', 'hint' => fmt_num($summary['abandoned_attempts'], 0, 'id') . ' ditinggalkan']) ?>
   <?= component('stat-tile', ['label' => 'Percobaan soal', 'value' => fmt_num($summary['item_tries'], 0, 'id'), 'icon' => 'target', 'hint' => 'baris item_tries']) ?>
   <?= component('stat-tile', ['label' => 'Petunjuk dibuka', 'value' => fmt_num($summary['hint_count'], 0, 'id'), 'icon' => 'info']) ?>
-  <?= component('stat-tile', ['label' => 'Suara diputar', 'value' => fmt_num($audio['total_plays'], 0, 'id'), 'icon' => 'sound', 'hint' => fmt_num($audio['total_autoplays'], 0, 'id') . ' kali otomatis']) ?>
-  <?= component('stat-tile', ['label' => 'Sandi kuat sejak kiriman pertama', 'value' => fmt_num($password['strong_first_try'] ?? 0, 0, 'id'), 'icon' => 'key', 'hint' => 'dari ' . fmt_num($password['participants'] ?? 0, 0, 'id') . ' siswa']) ?>
+  <?= component('stat-tile', ['label' => 'Suara diputar', 'value' => fmt_num($summary['audio_plays'], 0, 'id'), 'icon' => 'sound', 'hint' => fmt_num($summary['audio_autoplays'], 0, 'id') . ' kali otomatis']) ?>
 </section>
 
 <section class="panel">

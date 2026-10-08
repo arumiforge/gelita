@@ -64,7 +64,8 @@ final class Stage7WiringTest extends CIUnitTestCase
         $source = (string) file_get_contents(APPPATH . 'Controllers/Admin/ExportController.php');
 
         $this->assertStringNotContainsString("class_exists('App\\Services\\ExportService')", $source, 'jalur "mesin belum aktif" sudah dicabut');
-        $this->assertStringContainsString('ExportService::SHEETS', $source);
+        $this->assertStringContainsString('ExportService::FILTER_KEYS', $source);
+        $this->assertStringContainsString("service('exportService')->allowedSheets(", $source);
     }
 
     public function testPdfTemplatesEscapeEveryEcho(): void

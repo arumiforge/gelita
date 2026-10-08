@@ -4,9 +4,11 @@ namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
 use App\Controllers\Concerns\StaffScope;
+use App\Models\AuditLogModel;
 use App\Models\ParticipantModel;
 use App\Models\ResearchStudyModel;
 use App\Models\SchoolModel;
+use CodeIgniter\HTTP\DownloadResponse;
 use CodeIgniter\HTTP\RedirectResponse;
 
 /**
@@ -122,5 +124,46 @@ abstract class BaseAdminController extends BaseController
         $errors = $model->errors();
 
         return $errors === [] ? null : implode(' ', $errors);
+    }
+
+    /**
+     * CSV satu tabel data mentah (`?format=csv` di `/admin/data/{dimensi}`,
+     * Dok 3 §8.2): baris dan kolom sama dengan tabelnya, nilai berkode,
+     * dalam cakupan pemanggil. Berkas sementara di writable/cache dihapus
+     * sesudah dikirim. Dimensi yang tidak boleh dibaca → DomainException.
+     *
+     * @param array<string, mixed> $filters
+     */
+    protected function rawCsvDownload(string $dimension, array $filters): DownloadResponse
+    {
+        $path   = WRITEPATH . 'cache' . DIRECTORY_SEPARATOR . 'csv-' . bin2hex(random_bytes(8)) . '.csv';
+        $handle = fopen($path, 'w+b');
+
+        if ($handle === false) {
+            throw new \RuntimeException('Berkas sementara CSV tidak dapat dibuat.');
+        }
+
+        try {
+            $rows = $this->rawData()->streamCsv($dimension, $filters, $handle);
+        } finally {
+            fclose($handle);
+        }
+
+        register_shutdown_function(static function () use ($path): void {
+            if (is_file($path)) {
+                unlink($path);
+            }
+        });
+
+        model(AuditLogModel::class)->record('export_csv', [
+            'staff_user_id' => $this->staffId(),
+            'target_type'   => 'raw_data',
+            'target_id'     => $dimension,
+            'metadata'      => ['filters' => $filters, 'row_count' => $rows],
+        ]);
+
+        return $this->response->download($path, null)
+            ->setFileName('gelita-' . $dimension . '-' . date('Ymd-His') . '.csv')
+            ->setContentType('text/csv; charset=UTF-8');
     }
 }

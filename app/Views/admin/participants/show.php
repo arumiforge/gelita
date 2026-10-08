@@ -116,15 +116,17 @@ $region   = implode(', ', array_filter([$participant['district_name'], $particip
 </section>
 
 <section class="panel">
-  <h2 class="panel-title"><?= icon('download') ?> Laporan siswa (PDF)</h2>
-  <p class="muted">Ringkasan satu halaman untuk siswa ini: data mentah pengerjaan per tantangan. Laporan yang dibuat dari akun guru selalu tanpa nama (hanya kode siswa).</p>
+  <h2 class="panel-title"><?= icon('download') ?> Data dan laporan siswa</h2>
+  <p class="muted">Unduh data mentah siswa ini (lembar yang sama dengan menu Unduh data, difilter satu siswa) atau laporan PDF berisi tabel sesi, perangkat, progres 12 tantangan, serta kritik &amp; saran. Unduhan dari akun guru selalu anonim (hanya kode siswa).</p>
   <form method="post" action="<?= base_url('admin/ekspor/pdf') ?>" class="inline-form">
     <?= csrf_field() ?>
     <input type="hidden" name="participant_id" value="<?= (int) $participant['id'] ?>">
     <?php if (session('staff_role') === 'admin'): ?>
-      <label class="check"><input type="checkbox" name="anonymized" value="1" checked> <span>Sembunyikan nama siswa</span></label>
+      <label class="check"><input type="checkbox" name="anonymized" value="1" checked> <span>Anonim</span></label>
     <?php endif ?>
-    <button class="btn btn-ghost btn-sm" type="submit"><?= icon('download') ?> Buat laporan PDF</button>
+    <button class="btn btn-ghost btn-sm" type="submit" formaction="<?= base_url('admin/ekspor/xlsx') ?>"><?= icon('download') ?> Unduh data siswa (XLSX)</button>
+    <button class="btn btn-ghost btn-sm" type="submit" formaction="<?= base_url('admin/ekspor/csv') ?>"><?= icon('download') ?> Unduh data siswa (CSV-ZIP)</button>
+    <button class="btn btn-ghost btn-sm" type="submit"><?= icon('download') ?> Cetak laporan PDF</button>
   </form>
 </section>
 

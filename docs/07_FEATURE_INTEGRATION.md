@@ -53,7 +53,8 @@ Istilah yang dipakai di seluruh dokumen:
 | `EventService` | `app/Services/EventService.php` | raw event server/klien dan telemetry audio |
 | `ContentRepository` | `app/Services/ContentRepository.php` | konten aktif bercache (level, node, bank soal, bacaan, cerita, Pustaka) |
 | `ContentImportService` | `app/Services/ContentImportService.php` | pratinjau & impor workbook bank soal dan Pustaka |
-| `ExportService`, `ReportService` | `app/Services/` | ekspor XLSX dan laporan PDF satu siswa |
+| `RawDataService`, `StaffScope` | `app/Services/` | query data mentah per dimensi untuk tabel panel, CSV, dan ekspor; hak baca staf |
+| `ExportService`, `ReportService` | `app/Services/` | ekspor XLSX/CSV-ZIP dan laporan PDF satu siswa |
 | `AnalyticsService` | `app/Services/AnalyticsService.php` | hitungan data mentah panel, profil siswa, linimasa event |
 | `RetentionService` | `app/Services/RetentionService.php` | penghapusan data dua langkah dan retensi terjadwal |
 | `SystemResetService` | `app/Services/SystemResetService.php` | reset sebelum penelitian |
@@ -64,7 +65,7 @@ Istilah yang dipakai di seluruh dokumen:
 | `MediaStore`, `MediaIntegrity`, `MediaUsage`, `AssetChecklist`, `VideoThumbnail` | `app/Libraries/` | simpan berkas media, pindai, "Dipakai di", kelengkapan aset, poster video |
 | `NarrationImporter`, `NarrationCatalog` | `app/Libraries/` | impor dan persetujuan narasi |
 | `SchoolImporter` | `app/Libraries/SchoolImporter.php` | daftar sekolah resmi dari CSV |
-| `ExcelWriter`, `ExportLabels`, `AnswerText` | `app/Libraries/` | penulis XLSX bertahap, label Indonesia, jawaban dalam kalimat |
+| `ExcelWriter`, `ExportLabels`, `AnswerText` | `app/Libraries/` | penulis XLSX bertahap, judul/arti/nilai kolom dan Kamus Data, jawaban dalam kalimat |
 | `ScreenViewFilter`, `ClientHintsFilter` | `app/Filters/` | event `screen_viewed`, header `Accept-CH` |
 | Command `gelita:*` | `app/Commands/` | lihat [Command GELITA](#command-gelita) |
 
@@ -812,7 +813,6 @@ Panel admin selalu berbahasa Indonesia (`LocaleFilter`). Dua peran: `admin` (sem
        siswa, sesi, sesi selesai, pengerjaan selesai/ditinggalkan, jumlah
        item_tries, petunjuk dibuka, pemakaian suara
      ParticipantModel::cohortSummary(): sebaran siswa
-     digitalSecurityLiteracy(): sebaran metrik sandi saat pendaftaran
      10 sesi bermain terakhir
      admin: peringatan pratinjau penghapusan buatan retensi (FITUR 17)
 4. GET /admin/logout → audit 'logout', session()->destroy()
@@ -822,11 +822,11 @@ Panel admin selalu berbahasa Indonesia (`LocaleFilter`). Dua peran: `admin` (sem
 
 1. Route: `staffAuth` untuk seluruh `/admin` dan `/api/admin`; `staffRole:admin` untuk konten, media, studi, tata kelola, sekolah, dan staf. Halaman tanpa hak dibalas 404 (struktur panel tidak terpetakan), API 403 `FORBIDDEN`.
 2. Controller: `StaffScope::schoolScope()` (NULL untuk admin, `school_id` untuk guru; guru tanpa sekolah → 0, tidak cocok dengan apa pun) dan `scopedFilters()`. Siswa atau sesi di luar cakupan dibalas 404, bukan 403.
-3. Service: `AnalyticsService` dan `ExportService` menambahkan `participants.school_id` pada setiap query, dan `ExportService` membaca ulang hak pemohon dari `staff_users`.
+3. Service: `AnalyticsService`, `RawDataService`, dan `ExportService` menambahkan `participants.school_id` pada setiap query (`App\Services\StaffScope`), dan `ExportService` membaca ulang hak pemohon dari `staff_users`.
 
 `StaffAuthFilter` menyinkronkan peran, sekolah, dan status aktif dari database pada setiap request, sehingga perubahan oleh admin (termasuk menonaktifkan akun atau reset sandi) langsung berlaku. Dasbor admin yang lebih lengkap (peringatan gambar contoh, tabel formal) direncanakan di Dok 3 perombakan kelas 5.
 
-API panel (`/api/admin/*`, `AdminApiController`): `summary` (hitungan yang sama dengan beranda), `participants` (sebaran siswa, metrik sandi, sebaran umur), `sessions/{id}/timeline` (linimasa event), `exports/{id}/status`.
+API panel (`/api/admin/*`, `AdminApiController`): `summary` (KPI hitungan yang sama dengan beranda), `sessions/{id}/timeline` (linimasa event), `exports/{id}/status`.
 
 ---
 
@@ -1194,70 +1194,87 @@ Form soal Cari Objek juga dapat memilih audio petunjuk secara manual (ID/EN). No
 
 **Catatan peneliti (telemetry).** Pemutaran narasi petunjuk dicatat di `audio_usage_events` dengan `challenge_attempt_id` pengerjaan Cari Objek yang sedang berjalan. Tabel itu tidak punya kolom soal: soalnya diturunkan dari `audio_asset_id` → `challenge_items.audio_prompt_id` / `audio_prompt_en_id` (atau dari asset_key `audio.narasi.{locale}.petunjuk-{node}-NN`), dengan `audio_assets.context_code = 'hunt_clue'`. Karena `challenge_attempts.audio_use_count` bertambah untuk **setiap** event audio (`play`, `autoplay`, `pause`, `replay`, `complete`), bandingkan pemakaian suara dari `audio_usage_events` (mis. hanya `action IN ('play','autoplay','replay')`), bukan dari angka mentah itu.
 
-## FITUR 14: Ekspor XLSX
+## FITUR 14: Ekspor Data Mentah (XLSX dan CSV-ZIP)
+
+Isi ekspor adalah **data mentah** tujuh dimensi (ketepatan, percobaan, waktu, pengerjaan, progres, navigasi, bantuan) ditambah perangkat: satu baris = satu rekaman apa adanya, tanpa skor, persentase, indeks, peringkat, atau ringkasan demografi (Dok 3 §9). Query setiap lembar ada di `App\Services\RawDataService`, yang juga dipakai tabel panel `/admin/data/{dimensi}` dan CSV per tabel, sehingga isi tabel, CSV, dan ekspor selalu sama.
 
 ### Alur
 
 ```text
 1. Guru/admin membuka /admin/ekspor (ExportController::index): formulir + 20
    permintaan terakhir (guru hanya miliknya sendiri)
-2. Memilih filter (studi, wilayah, sekolah, kelas, provinsi, bahasa, rentang
-   tanggal), lembar yang disertakan, dan mode anonim
-     guru → anonim selalu menyala; lembar Catatan aktivitas (Raw Events) tidak tersedia
-3. POST /admin/ekspor/xlsx → ExportController::queue('xlsx')
+2. Memilih filter (ExportService::FILTER_KEYS: studi, wilayah, tantangan,
+   sekolah, provinsi, bahasa, rentang tanggal), lembar, nilai berlabel atau
+   berkode, dan mode anonim
+     guru → anonim selalu menyala; lembar Event Mentah tidak tersedia
+   Dari /admin/peserta/{id}: participant_id → ekspor per siswa (§9.3)
+3. POST /admin/ekspor/xlsx | /admin/ekspor/csv → ExportController::queue()
      filter dari POST dipaksa ke sekolah guru (scopedFilters, lapis kedua)
-     insert data_exports (status 'running', scope_json {filters, sheets}, anonymized)
+     insert data_exports (format xlsx|csv, status 'running',
+       scope_json {filters, sheets, labels, participant_id?}, anonymized)
 4. ExportService::build($exportId) — sinkron di request yang sama (batas 300 detik)
-     context(): hak pemohon DIBACA ULANG dari staff_users (lapis ketiga):
-       akun nonaktif → gagal; guru → school_id sekolahnya, anonim, tanpa
-       Raw Events, tanpa kolom kunci jawaban
-     Raw Events diminta → COUNT(*) dulu; > Config\Gelita::$exportMaxRawEvents
-       (200.000) → gagal dengan pesan "persempit rentang"
-     writeXlsx(): App\Libraries\ExcelWriter menulis per lembar ke
-       writable/exports/{id}-{Ymd-His}.xlsx
-5. Selesai: data_exports.file_sha256, row_count, status 'done',
-   expires_at = sekarang + Config\Gelita::$exportRetentionDays (7 hari)
+     context(): hak pemohon DIBACA ULANG dari staff_users (lapis ketiga) →
+       StaffScope: akun nonaktif → gagal; guru → school_id sekolahnya,
+       anonim, tanpa lembar event, tanpa kolom answer_key
+     lembar event/navigasi/selesai diminta → hitung dulu; > Config\Gelita::
+       $exportMaxRawEvents (200.000) → gagal dengan pesan "persempit rentang"
+     setiap lembar: RawDataService::rows() (keyset per 2.000 baris)
+     xlsx: ExcelWriter → writable/exports/{id}-{Ymd-His}.xlsx
+     csv:  satu {lembar}.csv per lembar → ZipArchive → {id}-{Ymd-His}.zip
+5. Selesai: data_exports.file_sha256, row_count (baris data tanpa Kamus),
+   status 'done', expires_at = sekarang + exportRetentionDays (7 hari)
    Gagal: status 'failed' + error_message; berkas setengah jadi dihapus
-6. Audit 'export' {format, anonymized, sheets, status, row_count, file_sha256}
-   — satu baris per permintaan, termasuk yang gagal
-7. Kembali ke /admin/ekspor: "Berkas #n siap diunduh" atau alasan gagal;
-   export.js mem-polling GET /api/admin/exports/{id}/status untuk baris yang
-   belum selesai
+6. Audit 'export' {format, anonymized, sheets, labels, participant_id,
+   status, row_count, file_sha256} — satu baris per permintaan
+7. Kembali ke /admin/ekspor (atau profil siswa): "Berkas #n siap diunduh"
+   atau alasan gagal; export.js mem-polling /api/admin/exports/{id}/status
 8. GET /admin/ekspor/unduh/{id}
      hanya pemilik atau admin; belum kedaluwarsa; berkas harus berada di dalam
      writable/exports/ (realpath); audit 'export_download'
 ```
 
-### Isi workbook
+### Format dan nilai
 
-Berkas ditulis seluruhnya dalam bahasa Indonesia: nama lembar, judul kolom, dan isi berkode (`App\Libraries\ExportLabels`). Kode lembar (`Participants`, …) dan kode kolom tetap kode internal untuk formulir, `scope_json`, dan uji. Satuan ditulis di judul kolom (detik/menit, ya/tidak); waktu ditulis sebagai sel tanggal Excel `dd-mm-yyyy jj:mm:dd` waktu setempat. Kode tampil dengan namanya (status, jenis tantangan, jenis soal, aktivitas, tingkat Bloom, kelas "Kelas 5 SD/MI", nama wilayah, judul tantangan, teks soal), dan jawaban serta kunci ditulis dalam kalimat (`App\Libraries\AnswerText`).
+- **XLSX**: satu workbook, satu lembar per pilihan, `ExcelWriter` bertahap. Bawaan **berlabel**.
+- **CSV-ZIP**: satu CSV per lembar (`peserta.csv`, …), UTF-8 dengan BOM, pemisah koma, siap SPSS/R/Python. Bawaan **berkode**.
+- **Berkode**: judul kolom = kode kolom; nilai = kode tersimpan (`tries_exhausted`, `laki-laki`), boolean 1/0, jawaban dan kunci sebagai JSON tersimpan, payload JSON apa adanya.
+- **Berlabel**: judul kolom Indonesia bersatuan ("Durasi (mdtk)"); kode → label ("Kesempatan habis", "Laki-laki", "ya"/"tidak"), wilayah → nama, jawaban dan kunci → kalimat (`AnswerText`).
+- Di kedua mode: waktu = ISO 8601 zona Asia/Jakarta dengan milidetik (`2026-10-07T08:30:15.123+07:00`), durasi dalam milidetik. Tidak ada konversi ke detik/menit.
+- **Kamus Data** (lembar `kamus`) selalu ikut: satu baris per lembar dan per kolom (lembar, kolom, judul, arti, satuan, nilai berkode `kode = label`). Sumbernya `App\Libraries\ExportLabels`.
+- **Anonim** (selalu untuk guru): `display_name`, `username`, `school_name`, `school_npsn` tidak dibuat (dan tidak dibaca dari database); `school_ref` (`SCH-000012`) tetap.
 
-| # | Lembar (kode internal) | Kolom utama |
-|---:|---|---|
-| 1 | Data siswa (`Participants`) | Kode siswa, [Nama siswa, Nama pengguna, Nama sekolah, NPSN sekolah]\*, Kode sekolah (samaran), Umur, Kelas, Jenis kelamin, Negara, Provinsi, Kabupaten/kota, Tanggal daftar, Setuju ikut bermain, Syarat sandi yang langsung dipenuhi (dari 5), Mencoba sandi terlalu lemah (kali) |
-| 2 | Sesi bermain (`Sessions`) | Kode sesi, Kode siswa, Penelitian, Versi permainan, Bahasa, Status sesi, Mulai/Terakhir aktif/Selesai, Lama bermain (menit), Perangkat, Sistem perangkat, Peramban, Ukuran layar, Layar sentuh, Serpihan cahaya, Wilayah tuntas, Jumlah bintang |
-| 3 | Hasil per wilayah (`Levels`) | Kode sesi, Kode siswa, Wilayah, Wilayah ke-, Tantangan selesai, Jumlah tantangan, Bintang, Lama mengerjakan (menit) — dari pengerjaan selesai terbaik per tantangan |
-| 4 | Hasil per tantangan (`Challenge Summary`) | No. pengerjaan, Kode sesi, Kode siswa, Wilayah, Tantangan ke-, Nama tantangan, Jenis tantangan, Jenis soal, Pengerjaan ke-, Variasi, Status, Alasan selesai, Jumlah soal dinilai, Soal Berhasil pada Percobaan Pertama, Soal benar di akhir, Menekan Cek jawabanku (kali), Batas percobaan per soal, Membuka petunjuk, Mengubah jawaban, Memutar suara, Bintang, Mulai/Selesai, Lama mengerjakan (detik) |
-| 5 | Jawaban per soal (`Item Responses`) | No. pengerjaan, Kode sesi, Kode siswa, Wilayah, Tantangan, Kode soal, Variasi, Soal, Jenis soal, Indikator, Tingkat berpikir (Bloom), Urutan tampil, Status jawaban, Jawaban pertama, Jawaban akhir, Kunci jawaban\*\*, Berhasil pada Percobaan Pertama, Benar di akhir, Jumlah percobaan, Benar pada percobaan ke-, Mengubah jawaban, Memakai petunjuk, Salah pilih benda, Waktu menjawab, Lama menjawab (detik) |
-| 6 | Catatan aktivitas (`Raw Events`, admin saja) | Kode sesi, Kode siswa, Wilayah, Tantangan ke-, No. pengerjaan, Kode soal, Aktivitas, Urutan dalam sesi, Waktu kejadian, Waktu diterima server, Rincian (isi payload dalam kalimat) |
-| 7 | Pemakaian suara (`Audio Usage`) | Kode sesi, Kode siswa, Kode rekaman, Bagian permainan, Tokoh, Bahasa rekaman, Panjang rekaman (detik), No. pengerjaan, Tindakan, Pemutaran ke-, Lama didengar (detik), Didengar sampai habis, Waktu |
-| 8 | Capaian indikator (`Indicators`) | Kode siswa, Indikator, Jumlah jawaban, Berhasil pada Percobaan Pertama (hitungan) |
-| 9 | Ringkasan kelompok (`Demographic Summary`) | Dikelompokkan menurut (jenis kelamin, kelas, sekolah, provinsi), Kelompok, Jumlah siswa, Jumlah sesi, Sesi selesai |
-| 10 | Kritik dan saran (`Feedback`) | Kode siswa, Kode sesi, Bintang (1–5), empat jawaban terbuka, Waktu dikirim |
+### Lembar
 
-\* Kolom identitas **dihilangkan sepenuhnya** bila `anonymized = 1` — kolomnya tidak dibuat, bukan dikosongkan. Kode sekolah (samaran) (`SCH-000012`, dari `school_id`) tetap ada agar analisis per sekolah mungkin; pada lembar Ringkasan kelompok, nama sekolah juga diganti kode itu.
+| Kode | Nama lembar | Kolom |
+|---|---|---|
+| `kamus` | Kamus Data | lembar, kolom, judul, arti, satuan, nilai |
+| `peserta` | Peserta | participant_code, display_name\*, username\*, school_name\*, school_npsn\*, school_ref, age, gender, class_level, country, province, district, registered_at, assented_at, intro_seen_at, pw_first_submit_criteria, pw_weak_submit_count |
+| `sesi` | Sesi | session_code, participant_code, study_code, release_code, locale, status, started_at, last_active_at, ended_at, duration_ms, device_type, os_name, browser_name, screen_size, is_touch |
+| `perangkat` | Perangkat | session_code, participant_code, via, created_at, device_type, device_brand, device_model, os_name, os_version, os_platform, browser_name, browser_version, browser_engine, is_bot, screen_w, screen_h, viewport_w, viewport_h, pixel_ratio, touch_points, orientation, is_standalone, language, timezone, corrected, detector, user_agent, client_hints |
+| `progres` | Progres | session_code, participant_code, current_level, current_node_ref, unlocked_level_sequence, completed_nodes, total_nodes, completed_levels, total_stars, updated_at |
+| `pengerjaan` | Pengerjaan Tantangan | attempt_id, session_code, participant_code, level, node_ref, node_sequence, engine_type, variant_group, variant_title, attempt_no, status, completion_reason, scorable_items, first_pass_correct, final_correct, check_count, max_tries, hint_count, answer_change_count, audio_use_count, stars, started_at, completed_at, duration_ms |
+| `jawaban` | Jawaban Soal | attempt_id, session_code, participant_code, level, node_ref, variant_group, item_key, interaction_type, bloom_level, skill, indicator, prompt, display_order, status, try_count, first_answer, final_answer, answer_key\*\*, first_pass_correct, is_correct, solved_on_try, change_count, hint_used, wrong_click_count, started_at, answered_at, duration_ms |
+| `percobaan` | Riwayat Percobaan | attempt_id, session_code, participant_code, node_ref, variant_group, item_key, try_no, check_no, answer, is_correct, hint_opened_before, first_input_ms, last_input_ms, occurred_at |
+| `navigasi` | Navigasi | session_code, participant_code, sequence_no, occurred_at, server_received_at, event_type, screen, from_screen, level, node_ref, attempt_id, payload |
+| `bantuan` | Bantuan | session_code, participant_code, occurred_at, jenis (`petunjuk` \| `audio`), level, node_ref, attempt_id, item_key, hint_id, asset_key, audio_context, audio_locale, action, play_index, listened_ms, completed |
+| `selesai` | Penyelesaian | session_code, participant_code, occurred_at, event_type, level, node_ref, attempt_id, payload |
+| `event` | Event Mentah (admin) | id, event_uuid, client_event_id, session_id, session_code, participant_id, participant_code, level_id, challenge_node_id, challenge_attempt_id, challenge_item_id, event_type, sequence_no, occurred_at, server_received_at, payload_json |
+| `masukan` | Kritik & Saran | participant_code, session_code, rating, liked_most, hardest_part, new_learning, suggestion, submitted_at |
+| `butir` | Bank Soal | item_key, level, node_ref, variant_group, variant_title, sequence, interaction_type, bloom_level, skill, indicator, prompt, passage_key, answer_key\*\*, decoy, scorable, is_active, media_asset_key |
 
-\** Kolom kunci jawaban hanya untuk admin.
+\* hanya ekspor beridentitas (admin, anonim dimatikan). \*\* hanya admin.
 
-`password_hash`, `failed_login_count`, dan `locked_until` tidak pernah dibaca ekspor. Data perangkat bukan identitas, jadi tetap ada di ekspor anonim.
+Navigasi = event `screen_viewed`, `overlay_opened`, `dialogue_advanced`, `library_opened`, `library_page_viewed`, `locale_changed`, `page_hidden`, `page_visible`, `viewport_changed`, `reading_progress`. Penyelesaian = `challenge_completed`, `challenge_abandoned`, `challenge_tries_exhausted`, `clue_failed`, `level_completed`, `session_completed`, `intro_completed`, `feedback_submitted`. Bantuan menggabungkan event `hint_opened` dan setiap baris `audio_usage_events`. Event yang di-soft-delete (FITUR 16) tidak diekspor.
 
-Filter wilayah berlaku pada lembar berbasis tantangan (Hasil per wilayah, Hasil per tantangan, Jawaban per soal, Capaian indikator) dan Catatan aktivitas (`game_event_logs.level_id`); tidak pada lembar lain. Kritik dan saran ikut bila terikat sesi dalam cakupan. Event yang sudah di-soft-delete (FITUR 16) tidak diekspor.
+**Filter.** Rentang tanggal memakai waktu baris itu sendiri: tanggal daftar (Peserta), mulai sesi (Sesi, Progres), waktu catatan (Perangkat), mulai pengerjaan (Pengerjaan, Jawaban), waktu percobaan, waktu event, waktu kirim (Kritik & Saran). Wilayah dan tantangan berlaku pada lembar berbasis tantangan dan event; Peserta, Sesi, Perangkat, Progres, dan Kritik & Saran tidak terpengaruh. Bank Soal tidak bergantung siswa dan tidak dibatasi sekolah.
 
-Baris `item_tries` (setiap percobaan) dan `device_logs` (setiap daftar/masuk) dapat dilihat per sesi di panel (FITUR 11); lembar ekspor untuk keduanya direncanakan di Dok 3 perombakan kelas 5.
+**CSV per tabel.** Setiap tabel `/admin/data/{dimensi}` punya tombol Unduh CSV (`?format=csv`, `BaseAdminController::rawCsvDownload()` → `RawDataService::streamCsv()`): baris dan filter sama dengan tabel, nilai berkode, audit `export_csv`.
+
+`password_hash`, `failed_login_count`, `locked_until`, dan `ip_hash` tidak pernah dibaca ekspor. Data perangkat bukan identitas, jadi tetap ada di ekspor anonim.
 
 ### `ExcelWriter` — menulis bertahap
 
-Lembar Catatan aktivitas bisa ratusan ribu baris, jadi workbook tidak pernah dibangun di memori. `App\Libraries\ExcelWriter` menulis setiap lembar langsung sebagai XML SpreadsheetML ke berkas sementara (buffer di-flush berkala), lalu merangkainya menjadi paket XLSX dengan `ZipArchive`. Teks ditulis sebagai inline string, sehingga nilai berawalan `=`/`+`/`-`/`@` tidak pernah menjadi rumus.
+Lembar Event Mentah bisa ratusan ribu baris, jadi workbook tidak pernah dibangun di memori. `App\Libraries\ExcelWriter` menulis setiap lembar langsung sebagai XML SpreadsheetML ke berkas sementara (buffer di-flush berkala), lalu merangkainya menjadi paket XLSX dengan `ZipArchive`. Teks ditulis sebagai inline string, sehingga nilai berawalan `=`/`+`/`-`/`@` tidak pernah menjadi rumus.
 
 ```php
 class ExcelWriter
@@ -1279,22 +1296,19 @@ Query dibaca per potongan 2.000 baris dengan keyset (`WHERE id > :terakhir ORDER
 ## FITUR 15: Laporan PDF Satu Siswa
 
 ```text
-1. Di /admin/peserta/{id}, tombol "Laporan PDF" → POST /admin/ekspor/pdf
+1. Di /admin/peserta/{id}, tombol "Cetak laporan PDF" → POST /admin/ekspor/pdf
    {participant_id}
-2. ExportController::queue('pdf'): tanpa participant_id → ditolak ("ringkasan
-   PDF penelitian sudah tidak tersedia; unduh data mentah sebagai Excel")
-   scope_json {filters, sheets: [], template: 'participant', participant_id}
+2. ExportController::queue('pdf'): tanpa participant_id → ditolak
+   scope_json {filters, template: 'participant', participant_id}
 3. ExportService::build() → ReportService::render():
      AnalyticsService::participantProfile() (terikat cakupan sekolah dan mode
-     anonim pemohon; guru → 404 untuk siswa sekolah lain): pengerjaan selesai,
-     Berhasil pada Percobaan Pertama, benar di akhir, soal dinilai, bintang,
-     perubahan jawaban, petunjuk, lama, pemakaian suara
+     anonim pemohon; guru → gagal untuk siswa sekolah lain)
      view pdf/report-participant (setiap nilai lewat esc()) → mPDF (A4)
      → writable/exports/{id}-{Ymd-His}.pdf
 4. Status, SHA-256, masa berlaku, audit, dan unduhan sama dengan FITUR 14
 ```
 
-Isi laporan hanya hitungan data mentah satu siswa, tanpa skor atau grafik. Semua teks dari input pengguna di-escape sebelum masuk mPDF, karena mPDF memproses HTML.
+Isi laporan (Dok 3 §10) berupa tabel formal data mentah dengan gaya panel netral: identitas sesuai hak (anonim: kode siswa dan kode sekolah samaran), sesi bermain, perangkat, progres per tantangan aktif (status, variasi, jumlah pengerjaan, cek jawaban, Berhasil pada Percobaan Pertama *x* dari *y*, bintang, durasi dalam milidetik), serta kritik & saran. Tanpa skor, indikator, grafik, kalimat penilaian, atau bagian persetujuan. Laporan studi PDF tidak ada. Semua teks dari input pengguna di-escape sebelum masuk mPDF, karena mPDF memproses HTML.
 
 ---
 

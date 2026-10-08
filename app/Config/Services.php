@@ -12,11 +12,13 @@ use App\Services\ContentRepository;
 use App\Services\EventService;
 use App\Services\ExportService;
 use App\Services\GameContext;
+use App\Services\RawDataService;
 use App\Services\ReportService;
 use App\Services\RetentionService;
 use App\Services\ScoringService;
 use App\Services\SchoolDirectory;
 use App\Services\SessionService;
+use App\Services\StaffScope;
 use CodeIgniter\Config\BaseService;
 
 class Services extends BaseService
@@ -160,6 +162,17 @@ class Services extends BaseService
         }
 
         return new AnalyticsService($schoolScope, $anonymous);
+    }
+
+    /**
+     * Data mentah per dimensi (Dok 3 §8.4). Dengan $scope → salinan yang
+     * terikat cakupan staf itu (dipakai page() dan streamCsv()).
+     */
+    public static function rawDataService(?StaffScope $scope = null, bool $getShared = true): RawDataService
+    {
+        $service = $getShared ? static::getSharedInstance('rawDataService', null) : new RawDataService();
+
+        return $scope === null ? $service : $service->withScope($scope);
     }
 
     /** Pemuat workbook bank soal. */

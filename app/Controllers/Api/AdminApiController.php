@@ -5,12 +5,11 @@ namespace App\Controllers\Api;
 use App\Controllers\BaseController;
 use App\Controllers\Concerns\StaffScope;
 use App\Models\DataExportModel;
-use App\Models\ParticipantModel;
 use CodeIgniter\HTTP\ResponseInterface;
 
 /**
- * Dataset JSON panel admin: hitungan data mentah, linimasa event, dan status
- * ekspor. Chart dan analitik olahan dihapus (perombakan kelas 5, Dok 1 §14).
+ * Dataset JSON panel admin: KPI hitungan, linimasa event, dan status ekspor.
+ * Chart, sebaran siswa, dan analitik olahan dihapus (Dok 1 §14, Dok 3 §8.3).
  *
  * Cakupan sekolah diterapkan di sini (lapis controller) dan sekali lagi di
  * AnalyticsService (lapis service); guru tidak pernah menerima baris dari
@@ -23,18 +22,6 @@ class AdminApiController extends BaseController
     public function summary(): ResponseInterface
     {
         return $this->ok($this->analytics()->summary($this->scopedFilters()));
-    }
-
-    public function participants(): ResponseInterface
-    {
-        $filters = $this->scopedFilters();
-        $ages    = model(ParticipantModel::class)->ageDistribution($filters);
-
-        return $this->ok([
-            'cohort'           => model(ParticipantModel::class)->cohortSummary($filters),
-            'digital_security' => $this->analytics()->digitalSecurityLiteracy($filters),
-            'ages'             => (object) $ages,
-        ]);
     }
 
     public function timeline(int $sessionId): ResponseInterface
