@@ -10,7 +10,7 @@ Keputusan dan penyimpangan dari ketiga dokumen perombakan, beserta alasannya dan
 | Dok 2 | Selesai, di `main` (§2–§12). Uji manual §13.2 dan ringkasan §2–§9 di bagian "Dok 2 — server, bank soal, dan uji manual §13" |
 | Pembersihan kompatibilitas lama | Selesai, di `main` (PR #41): instalasi baru saja, migration digabung, dokumentasi ditulis ulang. Lihat bagian "Pembersihan — instalasi baru tanpa kompatibilitas lama" |
 | Perbaikan sebelum Dok 3 | Temuan tinjauan Dok 2 (balapan permintaan, Cari Objek, bintang): branch sementara, PR ke `main`. Lihat bagian "Perbaikan sebelum Dok 3 — temuan tinjauan Dok 2" |
-| Dok 3 | Sedang dikerjakan paralel. Data mentah, ekspor, dan PDF (§8.4, §9, §10): branch `dok3-data-mentah`, lihat bagian "Dok 3 — data mentah dan ekspor". **§13 (skrip `upgrade-kelas5`) tidak dikerjakan** dan §11 sebagian sudah selesai; lihat "Untuk sesi Dok 3" di bagian pembersihan |
+| Dok 3 | Sedang dikerjakan paralel. Data mentah, ekspor, dan PDF (§8.4, §9, §10): branch `dok3-data-mentah`, PR #45, lihat bagian "Dok 3 — data mentah dan ekspor". **§13 (skrip `upgrade-kelas5`) tidak dikerjakan** dan §11 sebagian sudah selesai; lihat "Untuk sesi Dok 3" di bagian pembersihan |
 
 Sisa Dok 2:
 
