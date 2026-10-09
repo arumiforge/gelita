@@ -890,10 +890,4 @@ Found during the audit and fixed in separate branches (see `docs/PROGRESS.md`):
 8. `engines/boleh.js` sends `overlay_opened` (`statement_image`) without the region `level` code.
 9. A `stage.css` comment gives the content area as "0, 56, 1280 × 600" while `.stage-main` is `inset: 0`.
 
-### Follow-up: items 7–9 (branch `fix-game-details`)
-
-- **Item 7.** `reflection.php` and `challenge-finished.php` request Mbah Kedu pose `smile` (`Config\Gelita::$characterPoses`), so the uploaded smile frame shows instead of the `idle` fallback. The `components/character` docblock now points to that list.
-- **Item 8.** The challenge context exposes `ctx.levelCode` (from `data-level`, already used for the `hint`/`exit` overlays); `engines/boleh.js` sends it as `level` with `statement_image`, like every other `overlay_opened`.
-- **Item 9.** The `stage.css` comment (now in English) says `<main>` covers the whole stage; the 0, 56, 1280 × 600 content box is kept by each screen's own coordinates. Comment only, no rule changed.
-
 **Open, needs an owner decision:** the default study is seeded (and re-seeded by `gelita:reset`) as `active`, so the `ResearchReadiness` gate in `StudyController` never blocks data collection on a standard install; it only blocks switching a study to active. `docs/08` tells the admin to check the list by hand for now.
