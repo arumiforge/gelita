@@ -9,7 +9,7 @@ Seluruh audio bawaan permainan ikut di repositori: **3 musik gamelan**, **6 efek
 |---|---|---|---|
 | Musik | `public/assets/audio/music/` | `map`, `region`, `challenge` (MP3 stereo 128 kbps, loop) | `core/audio.js` → `Sfx.music()` |
 | Efek suara | `public/assets/audio/sfx/` | `click`, `correct`, `wrong`, `lock`, `shard`, `region-done` | `core/audio.js` → `Sfx.play()` |
-| Narasi | `public/assets/audio/narasi/{id,en}/` | 88 baris naskah + 12 petunjuk Cari Objek (tmg-4, mgl-4, wnb-4 masing-masing 4) per bahasa (MP3 mono 96 kbps) | `gelita:narration:import` → `dialogues` / `challenge_items` |
+| Narasi | `public/assets/audio/narasi/{id,en}/` | 88 baris naskah + 12 petunjuk Cari Objek (tmg-4, mgl-4, wnb-4 masing-masing 4) per bahasa (MP3 mono 48 kbps) | `gelita:narration:import` → `dialogues` / `challenge_items` |
 | Manifest | `public/assets/audio/narasi/produksi.json` | sha256 + profil suara tiap rekaman sintetis | `NarrationImporter::production()` |
 
 ## Musik gamelan
@@ -85,11 +85,11 @@ Kalimat tanya berbahasa Indonesia diberi intonasi naik, dan kalimat seru rentang
 
 ### Spesifikasi berkas
 
-- MP3 mono 44,1 kHz, 96 kbps CBR dengan header Xing, sehingga `MediaStore` membaca durasinya. Nilai ini memenuhi anjuran [`naskah-cerita.md`](naskah-cerita.md) (64–96 kbps) dan [`08_DEPLOYMENT.md`](08_DEPLOYMENT.md) (96–128 kbps).
+- MP3 mono 44,1 kHz, 48 kbps CBR dengan header Xing, sehingga `MediaStore` membaca durasinya. Sampai Oktober 2026 narasi dikodekan 96 kbps (anjuran [`naskah-cerita.md`](naskah-cerita.md) 64–96 kbps dan [`08_DEPLOYMENT.md`](08_DEPLOYMENT.md) 96–128 kbps); paket aset Tahap 1b menurunkannya ke 48 kbps (keputusan P2 di [`rencana-paket-aset.md`](rencana-paket-aset.md)), lihat bagian *Narration at 48 kbps* di bawah.
 - Kenyaringan −16 LUFS per berkas, diukur bersama heningnya.
   - Mbah Kedu −16,5 LUFS. Puncak glotal suara beratnya tinggi, jadi −16 hanya tercapai dengan limiter yang terdengar menekan.
   - Pose yang digeser: Jaka `determined` −15,5, `afraid` −16,5, dan `sad` −17; Mbah Kedu `weak` −18, supaya terdengar lirih.
-- Puncak sejati (*true peak*) ≤ −1 dBTP pada master WAV lewat limiter look-ahead 2 ms yang pulih dalam ±20 ms. Setelah dikode ke MP3, puncak sejati paling tinggi −0,5 dBTP.
+- Puncak sejati (*true peak*) ≤ −1 dBTP pada master WAV lewat limiter look-ahead 2 ms yang pulih dalam ±20 ms. Setelah dikode ke MP3, puncak sejati paling tinggi −0,5 dBTP (dijaga `publish.py`, `TRUE_PEAK_CEILING`).
   - Pada Narator dan Jaka, limiter hanya menyentuh puncak tunggal (≤ 0,1% durasi, paling banyak 1,3 dB).
   - Pada Mbah Kedu, limiter menekan lebih dari 1 dB di ±5% durasi (paling banyak ±23%). Penekanan terdalam per baris bermedian 1,3 dB, paling banyak 3,5 dB.
 - LAME pada mode CBR mengalikan sinyal 0,95× (−0,45 dB). `publish.py` mengompensasinya, sehingga kenyaringan MP3 sama dengan master WAV-nya.
@@ -145,6 +145,43 @@ Berkas yang sha256-nya tercantum di `produksi.json` tercatat `production_method 
 ### Mengganti dengan rekaman pengisi suara
 
 Rekaman baru cukup memakai nama berkas yang sama, lalu dipasang seperti biasa: timpa berkas di folder narasi lalu `gelita:narration:import`, atau unggah lewat **Rekaman narasi → Unggah rekaman**. Karena isinya berbeda dari manifest, rekaman itu otomatis tercatat sebagai rekaman sendiri dan kembali berstatus draft. Arahan suara tiap tokoh ada di [`naskah-cerita.md`](naskah-cerita.md).
+
+## Narration at 48 kbps (asset package Stage 1b, October 2026)
+
+All 200 narration files (100 per language) were re-encoded from 96 kbps to 48 kbps to shrink the offline asset package (owner decision P2 in [`rencana-paket-aset.md`](rencana-paket-aset.md) §12; Stage 1b in §10). Paths and file names did not change.
+
+**How.** The WAV masters (`tools/audio/out/`) are not in the repository, so the 96 kbps MP3s were transcoded in place:
+
+```bash
+cd tools/audio && python3 reencode.py      # needs only ffmpeg/ffprobe; no TTS venv
+```
+
+`reencode.py` decodes each MP3, encodes it with the same `encode()` as `publish.py`, and rewrites `produksi.json` (`sha256`, `bytes`, `bitrate_kbps`; `voice_profile` unchanged). Files already at 48 kbps are skipped, so a second run is a no-op instead of a second lossy generation. When narration is regenerated from WAV, `publish.py` now produces 48 kbps directly. The output is byte-identical between runs with the same ffmpeg/LAME build (checked with ffmpeg 6.1.1).
+
+**Encoder settings.** Same codec and container as before: MPEG-1 Layer III, mono, 44.1 kHz, CBR, Xing header, no ID3 tag, `volume=1/0.95` to compensate LAME's CBR scale. Two additions:
+
+- LAME quality `-q 2` (`-compression_level 2`, LAME's "-h") instead of the ffmpeg default.
+- A true-peak guard (`TRUE_PEAK_CEILING = -0.5` dBTP, the highest peak of the 96 kbps files). At 48 kbps, coding noise on strong 8–11 kHz sibilants overshoots the source peak: with ffmpeg defaults `en/intro-04` reached +3.3 dBTP (inter-sample values above full scale). The overshoot moves erratically with tiny gain changes, so `encode()` walks the gain down in 0.1 dB steps and tries `-q 2`, then `-q 0`, at each step; the first encode under the ceiling wins. 172 of 200 files pass at once with `-q 2`, 17 pass with `-q 0` at unchanged gain, 10 need a trim of 0.1–0.5 dB, and `en/intro-04` (Narrator, among the strongest sibilance in the set) needs −1.3 dB.
+
+The sample rate stayed at 44.1 kHz. 22.05 or 24 kHz (MPEG-2) would have lowered the overshoot somewhat but changes the stream format the browsers, `MediaStore`, and the asset checklist were tested with; the speech band (< 11 kHz) is kept either way.
+
+**Result** (`du -sb`):
+
+| | 96 kbps | 48 kbps |
+|---|---|---|
+| `narasi/id` | 14,153,097 B (14.15 MB) | 7,079,075 B (7.08 MB) |
+| `narasi/en` | 10,498,049 B (10.50 MB) | 5,251,547 B (5.25 MB) |
+| narration total | 24,651,146 B (24.65 MB) | 12,330,622 B (12.33 MB) |
+| `public/assets/audio` (with music, sound effects, manifest) | 28,086,394 B (28.09 MB) | 15,774,689 B (15.77 MB) |
+
+**Checks on every file** (decoded with ffmpeg, compared with the 96 kbps file):
+
+- Decoded length is sample-exact (the Xing/LAME header carries the encoder delay), so durations stored by `MediaStore` do not change.
+- Integrated loudness within ±0.1 LU of the 96 kbps file, except the trimmed `en/intro-02` (−0.5 LU) and `en/intro-04` (−1.4 LU, −17.4 LUFS).
+- True peak ≤ −0.5 dBTP.
+- Spectrum: LAME's lowpass at 48 kbps removes content above ±11.5 kHz. In the 96 kbps files that band held at most −34 dB of a file's energy (`en/dialog-temanggung-02`); the speech band below it is kept.
+
+The Whisper CER figures above were measured on the 96 kbps (or WAV) files and were not re-run at 48 kbps; the ASR models are not available in this environment.
 
 ## Lisensi dan kredit
 
