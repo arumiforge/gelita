@@ -21,6 +21,7 @@ $focus   = static fn (string $f): string => $first === $f ? ' autofocus' : '';
 
 <?= $this->section('title') ?><?= esc(lang('Game.registerTitle')) ?><?= $this->endSection() ?>
 <?= $this->section('background') ?><?= media_key_src('bg.welcome') ?? '' ?><?= $this->endSection() ?>
+<?= $this->section('hudBack') ?><?= base_url('mulai') ?><?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
 <section class="register" data-step="1">
@@ -73,7 +74,6 @@ $focus   = static fn (string $f): string => $first === $f ? ' autofocus' : '';
       </div>
 
       <div class="form-actions register-actions">
-        <a class="btn btn-quiet" href="<?= base_url('mulai') ?>"><?= icon('left') ?> <?= esc(lang('Game.back')) ?></a>
         <button class="btn btn-primary btn-lg" type="submit"><?= esc(lang('Game.next')) ?> <?= icon('right') ?></button>
       </div>
     </form>

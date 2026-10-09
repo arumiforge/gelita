@@ -91,6 +91,23 @@ final class RegisterWizardTest extends CIUnitTestCase
         $this->send(Method::GET, 'daftar/1')->assertOK();   // kembali ke langkah selesai tetap boleh
     }
 
+    public function testBackSitsInTheHudWithTheLogoCentred(): void
+    {
+        $back = ['1' => 'mulai', '2' => 'daftar/1', '3' => 'daftar/2'];
+        $_SESSION[RegisterController::WIZARD] = ['1' => self::ABOUT, '2' => self::SCHOOL];
+
+        foreach ($back as $step => $target) {
+            $html = (string) $this->send(Method::GET, 'daftar/' . $step)->getBody();
+            $hud  = substr($html, (int) strpos($html, '<header class="hud">'), (int) strpos($html, '</header>') - (int) strpos($html, '<header class="hud">'));
+
+            $this->assertStringContainsString('class="btn btn-quiet hud-back" href="' . base_url($target) . '"', html_entity_decode($hud), "step {$step}");
+            $this->assertStringContainsString('hud-logo', $hud, "step {$step}");
+
+            $actions = substr($html, (int) strpos($html, 'register-actions'));
+            $this->assertStringNotContainsString('btn-quiet', substr($actions, 0, (int) strpos($actions, '</div>')), "step {$step}: no Back in the panel");
+        }
+    }
+
     public function testStepOneRules(): void
     {
         $invalid = [

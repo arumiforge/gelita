@@ -17,24 +17,34 @@
 
 <?= $this->section('content') ?>
 <section class="start start-choice">
-  <header class="screen-head start-head stage-box">
-    <h1><?= esc(lang('Game.welcomeBack', [$name])) ?></h1>
-    <p><?= esc(lang('Game.startChoiceLead')) ?></p>
-  </header>
+  <?= component('character', ['character' => 'jaka', 'pose' => 'happy', 'class' => 'start-jaka stage-box']) ?>
 
-  <div class="start-cards">
-    <a class="panel start-card card-link stage-box" href="<?= base_url('intro') ?>">
-      <span class="start-icon" aria-hidden="true"><?= icon('book') ?></span>
-      <h2><?= esc(lang('Game.watchIntro')) ?></h2>
-      <p><?= esc(lang('Game.watchIntroText')) ?></p>
-      <span class="start-go" aria-hidden="true"><?= icon('right') ?></span>
-    </a>
-    <a class="panel start-card card-link stage-box" href="<?= base_url('gerbang/peta') ?>">
-      <span class="start-icon" aria-hidden="true"><?= icon('map') ?></span>
-      <h2><?= esc(lang('Game.goToMap')) ?></h2>
-      <p><?= esc(lang('Game.goToMapText')) ?></p>
-      <span class="start-go" aria-hidden="true"><?= icon('right') ?></span>
-    </a>
+  <div class="start-panel ornate-panel stage-box">
+    <?= $this->include('partials/ornate-frame') ?>
+    <header class="start-head">
+      <h1><?= esc(lang('Game.welcomeBack', [$name])) ?></h1>
+      <p><?= esc(lang('Game.startChoiceLead')) ?></p>
+    </header>
+    <span class="ornate-divider" aria-hidden="true"></span>
+
+    <div class="start-cards">
+      <a class="start-card card-link" href="<?= base_url('intro') ?>">
+        <span class="start-icon" aria-hidden="true"><?= icon('book') ?></span>
+        <div class="start-text">
+          <h2><?= esc(lang('Game.watchIntro')) ?></h2>
+          <p><?= esc(lang('Game.watchIntroText')) ?></p>
+        </div>
+        <span class="start-go" aria-hidden="true"><?= icon('right') ?></span>
+      </a>
+      <a class="start-card is-primary card-link" href="<?= base_url('gerbang/peta') ?>">
+        <span class="start-icon" aria-hidden="true"><?= icon('map') ?></span>
+        <div class="start-text">
+          <h2><?= esc(lang('Game.goToMap')) ?></h2>
+          <p><?= esc(lang('Game.goToMapText')) ?></p>
+        </div>
+        <span class="start-go" aria-hidden="true"><?= icon('right') ?></span>
+      </a>
+    </div>
   </div>
 </section>
 <?= $this->endSection() ?>

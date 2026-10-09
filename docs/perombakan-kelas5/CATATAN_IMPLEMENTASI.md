@@ -965,3 +965,14 @@ One finding, documented rather than changed: in a non-UTF-8 locale (`C`/`POSIX`,
 | Neutral SaaS admin, formal tables, no charts; Data mentah 7 dimensions + Perangkat; CSV per table | PR #47 browser pass at 1280/1440/1920; re-run with `admin-check.mjs` after the admin audit fixes, 1004 checks pass (above) | done |
 | XLSX/CSV-ZIP per §9 with Kamus Data | `RawExportTest`; this pass (LibreOffice, pandas, R) | done |
 | §11 docs updated; all tests green | PR #52–#54; `vendor/bin/phpunit --no-coverage` 493 tests green after PR #63 | done |
+
+## Account screens redesign (owner mockup, 9 October 2026)
+
+Branch `sky/cool-pascal-2bsc2w`. The owner sent a mockup of `/mulai` and asked for three changes on top of it.
+
+- **`/mulai` layout.** Jaka stands on the left as his own image (`component('character')`, pose `happy`; the owner chose a separate image over Jaka painted into the background), next to one dark panel with gold ornaments (`.ornate-panel`, `partials/ornate-frame.php`: corners, compass crest, divider). The two choices are row cards (icon, title and text, chevron); "Saya baru" is the primary card. The ornaments are inline SVG and CSS, so no new media slot is needed. The background stays `bg.welcome` (its media label already covers "sambutan / mulai"); the mockup art goes into that slot without Jaka and without UI.
+- **`/gerbang`** shares the `.start-*` classes, so it takes the same layout (my call for one consistent look; the owner did not ask otherwise). "Langsung ke peta" is its primary card. It keeps its nav bar and the logged-in HUD.
+- **HUD has no band.** The background gradient and bottom border of `.hud` are gone everywhere (owner request: "hilangkan semua background dan border bottom di hud"). A text shadow keeps HUD text readable over bright art.
+- **Back in the top-left, logo centred** on the registration pages. A new HUD section `hudBack` (URL) replaces the left side with a Back button and puts `ui.logo` (falling back to the text brand) in the centre. Used by `/daftar/1…3` (Back → `/mulai`, `/daftar/1`, `/daftar/2`) and by `/mulai` (Back → `/`, which also drops its nav bar, matching the mockup). The Back links inside the registration panels are removed; the panel's button bar holds only Lanjut/Daftar on the right.
+- New icons `user-plus` and `login` in `icon()`. No language keys change; the mockup uses the existing copy.
+- Not changed: `/masuk` keeps its parchment panel and nav bar. Open question for the owner whether it should get the same ornate panel and HUD Back.

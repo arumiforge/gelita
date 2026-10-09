@@ -85,6 +85,17 @@ final class StartGateTest extends CIUnitTestCase
         $this->assertStringContainsString(base_url('masuk'), $page);
     }
 
+    public function testStartPutsBackInTheHudAndHasNoNavBar(): void
+    {
+        $page = (new HomeController())->start();
+
+        $this->assertStringContainsString('class="btn btn-quiet hud-back" href="' . base_url() . '"', html_entity_decode($page));
+        $this->assertStringContainsString('hud-logo', $page);
+        $this->assertStringNotContainsString('class="nav-bar"', $page);
+        $this->assertStringContainsString('start-jaka', $page, 'Jaka is his own image, not part of the background');
+        $this->assertSame(1, substr_count($page, 'start-card is-primary'));
+    }
+
     public function testStartSendsLoggedInPlayerToTheGate(): void
     {
         session()->set(['participant_id' => 5, 'game_session_id' => 9]);

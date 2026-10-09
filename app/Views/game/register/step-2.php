@@ -27,6 +27,7 @@ $country = $val('country_code') ?: 'ID';
 
 <?= $this->section('title') ?><?= esc(lang('Game.registerTitle')) ?><?= $this->endSection() ?>
 <?= $this->section('background') ?><?= media_key_src('bg.welcome') ?? '' ?><?= $this->endSection() ?>
+<?= $this->section('hudBack') ?><?= base_url('daftar/1') ?><?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
 <section class="register" data-step="2">
@@ -128,7 +129,6 @@ $country = $val('country_code') ?: 'ID';
       </div>
 
       <div class="form-actions register-actions">
-        <a class="btn btn-quiet" href="<?= base_url('daftar/1') ?>"><?= icon('left') ?> <?= esc(lang('Game.back')) ?></a>
         <button class="btn btn-primary btn-lg" type="submit"><?= esc(lang('Game.next')) ?> <?= icon('right') ?></button>
       </div>
     </form>

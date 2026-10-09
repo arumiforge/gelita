@@ -126,8 +126,9 @@ body.game {
   width: 100%;
   height: var(--hud-h);
   padding: 0 var(--gap-4);
-  background: linear-gradient(to bottom, rgba(11, 19, 32, .95), rgba(11, 19, 32, .78));
-  border-bottom: 1px solid var(--line);
+  /* No band of its own: the HUD floats on the scene (owner request, 9 Oct
+     2026); a text shadow keeps the title readable on a bright background. */
+  text-shadow: 0 1px .25rem rgba(11, 19, 32, .8);
 }
 .hud-left, .hud-right { display: flex; align-items: center; gap: var(--gap-3); min-width: 0; }
 .hud-right { justify-content: flex-end; }
@@ -152,6 +153,11 @@ body.game {
   text-decoration: none;
 }
 .hud-brand:hover { color: var(--gold-300); }
+/* Account screens before login: Back top-left, logo centred (section hudBack) */
+.hud .hud-back { min-height: var(--tap); padding: var(--gap-1) var(--gap-3); }
+.hud-logo { display: flex; justify-content: center; }
+.hud-logo img { display: block; width: auto; height: 2.5rem; }
+.hud-logo .hud-brand { font-size: var(--fs-h3); }
 .hud-fullscreen .icon-exit { display: none; }
 .hud-fullscreen[aria-pressed="true"] .icon-enter { display: none; }
 .hud-fullscreen[aria-pressed="true"] .icon-exit { display: block; }
@@ -287,10 +293,9 @@ body.game {
 .welcome-install { --x: 896; --y: 600; --w: 352; --h: 40; }
 
 /* ---------- Mulai `/mulai`, Gerbang `/gerbang` ---------- */
-.start-head { --x: 0; --y: 88; --w: 1280; --h: 96; }
-.start-card { --y: 200; --w: 400; --h: 300; }
-.start-card:nth-child(1) { --x: 212; }
-.start-card:nth-child(2) { --x: 668; }
+.start-jaka  { --x: 140; --y: 196; --w: 280; --h: 460; }
+.start-panel { --x: 432; --y: 176; --w: 560; --h: 400; }
+.start-choice .start-panel { --y: 160; --h: 432; }
 
 /* ---------- Masuk `/masuk`, Ganti sandi `/ganti-sandi` ---------- */
 .login-panel    { --x: 360; --y: 88; --w: 560; --h: 544; }
