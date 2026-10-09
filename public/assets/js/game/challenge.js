@@ -8,7 +8,8 @@
  * datang dari respons server (aturan 1).
  *
  *   submit(itemId, answer, extra)  → POST /api/attempts/{id}/responses  (cari)
- *   check(answers)                 → POST /api/attempts/{id}/check      (puzzle, rumpang, boleh)
+ *   check(answers)                 → POST /api/attempts/{id}/check      (puzzle, rumpang, boleh),
+ *                                    dengan `check_no` = cek ke-berapa menurut layar ini
  *   selected(itemId, change)       → event `answer_selected` + waktu isian per soal
  *
  * Waktu isian per soal (Dok 1 §12.5): ms sejak tantangan dibuka
@@ -95,15 +96,28 @@ export async function bootChallenge() {
     return handleApiError(error, { mapUrl: exitUrl, ...options });
   };
 
-  function submit(itemId, answer, extra = {}) {
-    return post('responses', {
+  /**
+   * Server sudah menutup pengerjaan: menutup tab saat modal hasil akhir masih
+   * tampil bukan meninggalkan tantangan (tanpa `challenge_abandoned`).
+   */
+  const closed = (result) => {
+    if (result?.completed) state.leaving = true;
+    return result;
+  };
+
+  async function submit(itemId, answer, extra = {}) {
+    return closed(await post('responses', {
       item_id: itemId,
       answer,
       client_event_id: uuid(),
       occurred_at: now(),
       ...extra,
-    });
+    }));
   }
+
+  // Cek yang sudah dipakai menurut layar ini; dikirim sebagai `check_no` agar
+  // cek dari tab lama (tampilan usang) ditolak ATTEMPT_CHANGED, bukan dihitung cek baru
+  let checksUsed = Number(data.tries_used) || 0;
 
   async function check(answers) {
     // Waktu isian per percobaan: diambil sebelum request, jadi isian selama
@@ -117,7 +131,9 @@ export async function bootChallenge() {
       return { ...row, first_input_ms: times.first, last_input_ms: times.last };
     });
     try {
-      return await post('check', { answers: rows, client_event_id: uuid(), occurred_at: now() });
+      const result = await post('check', { answers: rows, check_no: checksUsed + 1, client_event_id: uuid(), occurred_at: now() });
+      checksUsed = Number(result.check_count) || checksUsed + 1;
+      return closed(result);
     } catch (error) {
       // Gagal: waktunya dikembalikan untuk pengiriman berikutnya (first lama, last terbaru)
       for (const [itemId, times] of sent) {

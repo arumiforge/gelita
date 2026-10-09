@@ -174,6 +174,40 @@ final class TryLimitTest extends CIUnitTestCase
         $this->assertCount(1, $this->events('challenge_completed'), 'tidak ditutup dua kali');
     }
 
+    /**
+     * Tab lama di peramban yang sama: kunci session PHP membuat cek-nya tiba
+     * SESUDAH cek tab lain, jadi tanpa `check_no` ia dihitung sebagai cek
+     * baru. Dengan `check_no` (nomor cek menurut layar klien) cek dari
+     * tampilan usang ditolak ATTEMPT_CHANGED tanpa tulisan apa pun.
+     */
+    public function testStaleCheckNumberIsRejected(): void
+    {
+        $attempt = $this->open('mgl-2');
+        $items   = $this->expected($attempt);
+        $rows    = static fn (array $answers): array => array_map(
+            static fn (int $id, array $answer): array => ['item_id' => $id, 'answer' => $answer],
+            array_keys($answers),
+            $answers,
+        );
+
+        $first = $this->post('api/attempts/' . $attempt->id . '/check', ['answers' => $rows($this->wrongAnswers($items)), 'check_no' => 1]);
+        $first->assertStatus(200);
+        $this->assertSame(1, $this->json($first)['data']['check_count']);
+
+        // Tab kedua masih menampilkan keadaan sebelum cek ke-1
+        $before = [$this->tries($attempt->id), $this->responses($attempt->id), $this->conn->table('game_event_logs')->countAllResults()];
+        $stale  = $this->post('api/attempts/' . $attempt->id . '/check', ['answers' => $rows($this->rightAnswers($items)), 'check_no' => 1]);
+        $stale->assertStatus(409);
+        $this->assertSame('ATTEMPT_CHANGED', $this->json($stale)['code']);
+        $this->assertSame($before, [$this->tries($attempt->id), $this->responses($attempt->id), $this->conn->table('game_event_logs')->countAllResults()]);
+        $this->assertSame(1, (int) $this->reload($attempt)->check_count);
+
+        // Nomor yang benar diterima; tanpa nomor tetap seperti sebelumnya
+        $this->post('api/attempts/' . $attempt->id . '/check', ['answers' => $rows($this->wrongAnswers($items)), 'check_no' => 2])->assertStatus(200);
+        $this->post('api/attempts/' . $attempt->id . '/check', ['answers' => $rows($this->rightAnswers($items))])->assertStatus(200);
+        $this->assertSame(['completed', 3], [$this->reload($attempt)->status, (int) $this->reload($attempt)->check_count]);
+    }
+
     /** Selama masih ada kesempatan, /complete tidak dapat menutup pengerjaan. */
     public function testCompleteIsRefusedWhileTriesRemain(): void
     {

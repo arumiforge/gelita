@@ -48,7 +48,7 @@ Overview in `README.md`, details in `docs/01`–`08`.
   `ContentRepository` caches content; call `flush()` after changing it.
 - **Challenge client.** `game/challenge.js` is the shared frame: `check`/`submit`, `ruleError`, tries indicator, fill time, and `state.leaving` so no false `challenge_abandoned` is sent. Engines live in `engines/{puzzle,rumpang,boleh,cari}.js`.
 - **Research events.** `EventService` and the `game_event_logs` table. `screen_viewed`, `challenge_tries_exhausted`, and `clue_failed` may only be written by the server.
-- **Spark commands** (`app/Commands`): `gelita:reset`, `gelita:bank:import`, `gelita:content:verify`, `gelita:mockups`, `gelita:narration:import`, `gelita:media:scan`, `gelita:retention:run`, `gelita:schools:import`, `gelita:staff:password`, `gelita:library:thumbnails`, `gelita:simulasi`.
+- **Spark commands** (`app/Commands`): `gelita:reset`, `gelita:bank:import`, `gelita:content:verify`, `gelita:mockups`, `gelita:narration:import`, `gelita:media:scan`, `gelita:retention:run`, `gelita:schools:import`, `gelita:staff:password`, `gelita:library:thumbnails`, `gelita:simulasi` (simulated `sim_*` students for development; FEATURE 19 in `docs/07`).
 
 ### Testing and known pitfalls
 
