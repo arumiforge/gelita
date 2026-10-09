@@ -46,8 +46,8 @@
     <fieldset class="field">
       <legend class="label">Isi nilai</legend>
       <label class="check"><input type="radio" name="labels" value="" checked> <span><b>Bawaan</b><span class="cell-sub">Excel berlabel, CSV berkode</span></span></label>
-      <label class="check"><input type="radio" name="labels" value="label"> <span><b>Berlabel</b><span class="cell-sub">mis. "Kesempatan habis", "Laki-laki"</span></span></label>
-      <label class="check"><input type="radio" name="labels" value="code"> <span><b>Berkode</b><span class="cell-sub">mis. tries_exhausted, laki-laki</span></span></label>
+      <label class="check"><input type="radio" name="labels" value="label"> <span><b>Berlabel</b><span class="cell-sub">mis. "Kesempatan habis", "Laki-laki"; jawaban sebagai kalimat</span></span></label>
+      <label class="check"><input type="radio" name="labels" value="code"> <span><b>Berkode</b><span class="cell-sub">mis. tries_exhausted, laki-laki; jawaban sebagai JSON</span></span></label>
     </fieldset>
     <fieldset class="field">
       <legend class="label">Identitas siswa</legend>

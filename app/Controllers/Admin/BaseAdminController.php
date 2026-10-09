@@ -196,7 +196,9 @@ abstract class BaseAdminController extends BaseController
 
         $service = $this->rawService();
 
-        return $this->csvResponse('gelita-' . $dimension, static fn ($handle) => $service->streamCsv($dimension, $filters, $handle));
+        $readable = $this->readableAnswers();
+
+        return $this->csvResponse('gelita-' . $dimension, static fn ($handle) => $service->streamCsv($dimension, $filters, $handle, $readable));
     }
 
     /**
@@ -214,13 +216,23 @@ abstract class BaseAdminController extends BaseController
         $params   = AdminTable::params($this->request, $sortable ?? [], null);
         $sort     = trim((string) ($this->request->getGet('sort') ?? ''));
         $sort     = $sortable === null ? ($sort === '' ? null : $sort) : AdminTable::validSort($sort, $sortable);
-        $table    = $service->page($dimension, $filters, $params['page'], $params['per_page'], $sort);
+        $table    = $service->page($dimension, $filters, $params['page'], $params['per_page'], $sort, $this->readableAnswers());
 
         $table['columns'] = array_map(static fn (array $column): array => $column + [
             'sortable' => $sortable === null || in_array($column['key'], $sortable, true),
         ], $table['columns']);
 
         return $table;
+    }
+
+    /**
+     * Answer columns of the raw data tables (answers, try history, answer
+     * key) show as sentences unless the page asks for the stored JSON with
+     * `?raw=1`. The table CSV follows the same choice.
+     */
+    protected function readableAnswers(): bool
+    {
+        return $this->request->getGet('raw') !== '1';
     }
 
     /** `?format=csv`: halaman tabel meminta CSV mentah dengan filter yang sama. */
@@ -311,8 +323,9 @@ abstract class BaseAdminController extends BaseController
 
     /**
      * CSV satu tabel data mentah (`?format=csv` di `/admin/data/{dimensi}`,
-     * Dok 3 §8.2): baris dan kolom sama dengan tabelnya, nilai berkode,
-     * dalam cakupan pemanggil. Berkas sementara di writable/cache dihapus
+     * Dok 3 §8.2): baris dan kolom sama dengan tabelnya, nilai berkode
+     * (answer columns as on screen, see readableAnswers()), dalam cakupan
+     * pemanggil. Berkas sementara di writable/cache dihapus
      * sesudah dikirim. Dimensi yang tidak boleh dibaca → DomainException.
      *
      * @param array<string, mixed> $filters
@@ -327,7 +340,7 @@ abstract class BaseAdminController extends BaseController
         }
 
         try {
-            $rows = $this->rawData()->streamCsv($dimension, $filters, $handle);
+            $rows = $this->rawData()->streamCsv($dimension, $filters, $handle, $this->readableAnswers());
         } finally {
             fclose($handle);
         }
@@ -342,7 +355,7 @@ abstract class BaseAdminController extends BaseController
             'staff_user_id' => $this->staffId(),
             'target_type'   => 'raw_data',
             'target_id'     => $dimension,
-            'metadata'      => ['filters' => $filters, 'row_count' => $rows],
+            'metadata'      => ['filters' => $filters, 'row_count' => $rows, 'answers' => $this->readableAnswers() ? 'text' : 'json'],
         ]);
 
         return $this->response->download($path, null)

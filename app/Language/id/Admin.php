@@ -49,6 +49,12 @@ return [
     'roleGuru'     => 'Guru',
     'emptyDefault' => 'Belum ada data untuk ditampilkan.',
 
+    // Answer view switch on the raw data tables
+    'answerView'         => 'Tampilan jawaban',
+    'answerViewReadable' => 'Mudah dibaca',
+    'answerViewRaw'      => 'Asli (JSON)',
+    'answerViewHint'     => 'Jawaban siswa dan kunci jawaban ditulis sebagai kalimat. Pilih Asli (JSON) untuk melihat data persis seperti tersimpan. Tombol Unduh CSV mengikuti pilihan ini.',
+
     // ------------------------------------------------ label kode (admin_label)
 
     /** Status sesi bermain, percobaan tantangan, dan jawaban per soal. */

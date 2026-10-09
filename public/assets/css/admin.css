@@ -292,7 +292,7 @@ dl, dd { margin: 0; }
 }
 .sub-nav a .icon { width: 16px; height: 16px; }
 .sub-nav a:hover { color: var(--text); text-decoration: none; }
-.sub-nav a[aria-current="page"] { background: var(--surface); box-shadow: var(--shadow), 0 0 0 1px var(--line); color: var(--text); }
+.sub-nav a[aria-current="page"], .sub-nav a[aria-current="true"] { background: var(--surface); box-shadow: var(--shadow), 0 0 0 1px var(--line); color: var(--text); }
 
 /* ---------- Kartu / panel ---------- */
 .panel, .card, .form-section {

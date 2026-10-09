@@ -42,4 +42,5 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 | Branch | Owner / scope | Status |
 |---|---|---|
 | `sky/bold-archimedes-6tjayk` | Replacing a real image on `/admin/media` showed no change: media URLs get a `?v=` content version | PR open |
+| `sky/amazing-mendel-wuy2p7` | Raw data tables show answers as sentences by default, with a switch to the stored JSON | PR open |
 | `sky/cool-pascal-2bsc2w` | Account screens follow-up: `/masuk` in the ornate panel design, ornate panel body scrolls inside the fixed frame (16:9 rules) | PR open |

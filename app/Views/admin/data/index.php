@@ -4,7 +4,9 @@
  *
  * Tab = lembar ekspor §9.2; kolom = kolom lembar itu, nilai mentah berkode
  * (sama dengan CSV). Nilai `enum` tampil berlabel (ExportLabels::label())
- * dengan kode aslinya di `title`. Filter: kode siswa, sekolah, wilayah,
+ * dengan kode aslinya di `title`. Answer columns (Jawaban, Riwayat
+ * percobaan) are sentences by default; components/answer-view-switch
+ * shows the stored JSON instead (`?raw=1`), and the table CSV follows it. Filter: kode siswa, sekolah, wilayah,
  * tantangan, variasi, rentang tanggal.
  *
  * @var string                    $dimension
@@ -12,6 +14,7 @@
  * @var array<string, mixed>|null $table   RawDataService::page(); null = layanan belum terpasang
  * @var array<string, mixed>      $filters
  * @var bool                      $isAdmin
+ * @var bool                      $readable  answer columns as sentences
  */
 $labeler = class_exists(App\Libraries\ExportLabels::class) && method_exists(App\Libraries\ExportLabels::class, 'label')
     ? static fn (string $key, $value): string => (string) App\Libraries\ExportLabels::label($dimension, $key, $value)
@@ -62,6 +65,7 @@ foreach ($table['columns'] ?? [] as $column) {
       'id'           => 'data-' . $dimension,
       'title'        => $tabs[$dimension],
       'render'       => $render,
+      'tools'        => in_array($dimension, ['jawaban', 'percobaan'], true) ? component('answer-view-switch', ['readable' => $readable]) : null,
       'emptyMessage' => $filters !== [] ? 'Tidak ada baris yang cocok dengan filter ini.' : 'Belum ada data untuk lembar ini.',
   ]) ?>
 <?php endif ?>
