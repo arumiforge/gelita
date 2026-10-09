@@ -2,15 +2,9 @@
 
 Keputusan dan penyimpangan dari ketiga dokumen perombakan, beserta alasannya dan hal yang perlu diketahui sesi berikutnya. Satu bagian per dokumen; bagian Dok 2 dan Dok 3 ditambahkan sesi yang mengerjakannya.
 
-## Status (7 Oktober 2026)
+## Status
 
-| Dokumen | Status |
-|---|---|
-| Dok 1 | Selesai, di `main` |
-| Dok 2 | Selesai, di `main` (§2–§12). Uji manual §13.2 dan ringkasan §2–§9 di bagian "Dok 2 — server, bank soal, dan uji manual §13" |
-| Pembersihan kompatibilitas lama | Selesai, di `main` (PR #41): instalasi baru saja, migration digabung, dokumentasi ditulis ulang. Lihat bagian "Pembersihan — instalasi baru tanpa kompatibilitas lama" |
-| Perbaikan sebelum Dok 3 | Temuan tinjauan Dok 2 (balapan permintaan, Cari Objek, bintang): branch sementara, PR ke `main`. Lihat bagian "Perbaikan sebelum Dok 3 — temuan tinjauan Dok 2" |
-| Dok 3 | Sedang dikerjakan paralel. Data mentah, ekspor, dan PDF (§8.4, §9, §10): branch `dok3-data-mentah`, PR #45, lihat bagian "Dok 3 — data mentah dan ekspor". Panel admin SaaS (§8.1–§8.3, §12.1 `AdminTableViewTest`): branch `dok3-admin`, PR #47, lihat bagian "Dok 3 — panel admin". Panggung 16:9 (§1–§7, §12.1–§12.2, dokumentasi 05/06): branch `dok3-panggung`, PR #48 (sebagian) dan PR #49, lihat bagian "Dok 3 — panggung 16:9". **§13 (skrip `upgrade-kelas5`) tidak dikerjakan** dan §11 sebagian sudah selesai; lihat "Untuk sesi Dok 3" di bagian pembersihan |
+Status terkini dan sisa pekerjaan dipindah ke [`docs/PROGRESS.md`](../PROGRESS.md) (9 Oktober 2026). Berkas ini tetap menjadi log keputusan; mulai 9 Oktober 2026 bagian baru ditulis dalam bahasa Inggris.
 
 Sisa Dok 2:
 
