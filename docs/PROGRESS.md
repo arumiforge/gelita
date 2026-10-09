@@ -41,3 +41,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `sky/beautiful-ritchie-rd2s1t` | HUD controls without background or border; dark backing behind HUD text | PR open |

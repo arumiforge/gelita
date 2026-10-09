@@ -22,11 +22,13 @@ $status = ['completed' => 'Game.shardDone', 'open' => 'Game.shardOpen', 'locked'
   <summary class="lantern-toggle" aria-controls="lantern-detail"
            title="<?= esc(lang('Game.lanternToggle'), 'attr') ?>">
     <span class="flame flame-<?= $stage ?>" aria-hidden="true"><?= icon('lantern') ?></span>
-    <span class="lantern-text">
-      <span class="eyebrow"><?= esc(lang('Game.shards')) ?></span>
-      <span class="lantern-count num"><b><?= $shards ?></b>/<?= $total ?></span>
+    <span class="lantern-meter">
+      <span class="lantern-text">
+        <span class="eyebrow"><?= esc(lang('Game.shards')) ?></span>
+        <span class="lantern-count num"><b><?= $shards ?></b>/<?= $total ?></span>
+      </span>
+      <span class="lantern-bar" aria-hidden="true"><i style="width: <?= $fill ?>%"></i></span>
     </span>
-    <span class="lantern-bar" aria-hidden="true"><i style="width: <?= $fill ?>%"></i></span>
   </summary>
 
   <div class="lantern-detail" id="lantern-detail">
