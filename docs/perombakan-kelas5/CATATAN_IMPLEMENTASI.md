@@ -854,3 +854,40 @@ Rincian pemakaian ada di FITUR 19 `docs/07_FEATURE_INTEGRATION.md`. Keputusan:
   - tidak ada kolom waktu siswa simulasi yang tersisa di jam dinding;
   - `answer_selected` jatuh di antara pembukaan dan cek;
   - dua kali jalan dengan `--seed=7` menghasilkan sidik isi yang sama.
+
+---
+
+## Dok 3 — documentation (§11)
+
+Done on 9 October 2026 by three parallel sessions, one per file group, each auditing the docs against the code on `main` (code is the source of truth, not the plan document): PR #54 (`README.md`, `docs/01`, `02`, `08`, status notes in `rencana-perbaikan-tampilan.md` and `rencana-katalog-aset.md`), PR #53 (`docs/03`, `04`, `07`), PR #52 (`docs/05`, `06`, `bank-soal/README.md`, `naskah-cerita.md`, `audio.md`). Docs only; no code changed. Suite: **487 tests green** on the three branches merged together.
+
+### How it was checked
+
+- Routes in `docs/04` compared by script with `app/Config/Routes.php` (126 routes, matches `php spark routes`).
+- Column lists of all 13 export sheets in `docs/07` compared with `RawDataService::COLUMNS`.
+- Columns in `docs/01` compared with all 29 migrations and `ResetTables`.
+- Every backticked class, method, path, lang key, CSS class, and `data-*` attribute in `docs/03`–`06` resolves to existing code.
+- Counts (tests, tables, migrations, bank items, recordings) measured, not copied.
+
+### Deviations from the §11 table
+
+1. **`docs/08_DEPLOYMENT.md`:** the §13 upgrade procedure does not apply (release = fresh install). Only the post-install panel steps were completed: approve narration → replace 45 images → research-ready checklist → smoke test → `gelita:reset`.
+2. **`docs/01_DATABASE.md`:** the row names migrations `004100`–`004600`, which no longer exist (the chain was consolidated to `000100`–`002900` in the cleanup). Dok 3 added no migrations. The derived-metrics section was already gone; a "Data mentah" subsection maps each `RawDataService` dimension to its source table and admin tab.
+3. **`README.md`:** no "Pembaruan …" history block was left, so no "Riwayat pembaruan" section was added.
+4. **Language:** edits inside the existing Indonesian docs are in Indonesian to keep each document consistent; one wholly new section ("Services and libraries index" in `docs/03`) is in English. `docs/02` §8 "Bahasa" now follows `.claude/rules/language.md`.
+
+### Code issues found (follow-up)
+
+Found during the audit and fixed in separate branches (see `docs/PROGRESS.md`):
+
+1. The student detail Jawaban tab shows only the first 25 attempt rows: `ParticipantController::participantRaw()` asks `RawDataService::page()` for 10 000 rows, which only accepts 25/50/100. Exports are not affected.
+2. Teachers can confirm a hidden username through the student-list search (`q` matches `p.username`).
+3. List-table CSV downloads (Siswa, Sesi, linimasa, Kritik & saran) write no audit row, unlike the Data mentah CSV (`export_csv`).
+4. Dead code: `ParticipantModel::cohortSummary()`, `ParticipantFeedbackModel::forStudy()`, `ratingDistribution()`.
+5. Admin messages still name the old menu "Gambar & suara" (`ContentVerifier`, `ContentImportService`, `BankWorkbookGuide`, `admin/content/import.php`); the menu is "Gambar & mockup".
+6. `layouts/admin.php` hardcodes Indonesian text instead of `lang('Admin.*')`; `layouts/auth.php` has no skip link.
+7. `reflection.php` and `challenge-finished.php` request Mbah Kedu pose `happy`; the pose is `smile`.
+8. `engines/boleh.js` sends `overlay_opened` (`statement_image`) without the region `level` code.
+9. A `stage.css` comment gives the content area as "0, 56, 1280 × 600" while `.stage-main` is `inset: 0`.
+
+**Open, needs an owner decision:** the default study is seeded (and re-seeded by `gelita:reset`) as `active`, so the `ResearchReadiness` gate in `StudyController` never blocks data collection on a standard install; it only blocks switching a study to active. `docs/08` tells the admin to check the list by hand for now.
