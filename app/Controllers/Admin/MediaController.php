@@ -30,11 +30,19 @@ class MediaController extends BaseAdminController
 
     public function index(): string
     {
-        return $this->panel('admin/media/index', 'Gambar & video', [
-            'assets'     => model(MediaAssetModel::class)->orderBy('asset_key', 'ASC')->findAll(),
+        $status = (string) ($this->request->getGet('status') ?? '');
+        $status = in_array($status, ['asli', 'mockup', 'kosong'], true) ? $status : '';
+        $type   = (string) ($this->request->getGet('jenis') ?? '');
+        $assets = model(MediaAssetModel::class)->orderBy('asset_key', 'ASC')->findAll();
+
+        return $this->panel('admin/media/index', lang('Admin.menuMedia'), [
+            'assets'     => $assets,
             'assetSizes' => config('Gelita')->assetSizes,
+            'displaySizes' => config('Gelita')->assetDisplaySizes,
             'usage'      => (new MediaUsage())->forMedia(),
             'scan'       => session('media_scan'),
+            'status'     => $status,
+            'type'       => in_array($type, ['image', 'video'], true) ? $type : '',
         ]);
     }
 
@@ -47,7 +55,7 @@ class MediaController extends BaseAdminController
         $checklist = new AssetChecklist();
         $groups    = $checklist->groups();
 
-        return $this->panel('admin/media/checklist', 'Kelengkapan gambar & suara', [
+        return $this->panel('admin/media/checklist', lang('Admin.menuChecklist'), [
             'groups'  => $groups,
             'summary' => $checklist->summary($groups),
         ]);

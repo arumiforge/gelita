@@ -57,7 +57,7 @@ app/Views/
 │   ├── character.php · narration.php · audio-player.php
 │   ├── narrator-controls.php · narrator-tap.php · curtain.php
 │   ├── star-rating.php · stat-tile.php · password-field.php
-│   ├── admin-sidebar.php · admin-filter-bar.php · admin-table.php · admin-pagination.php
+│   ├── admin-sidebar.php · admin-filter-bar.php · data-table.php · admin-table.php · admin-pagination.php
 │   └── media-field.php · media-datalist.php · audio-select.php
 ├── partials/
 │   ├── cine-slides.php          slide sinematik layar penuh (intro, penutup)
@@ -110,24 +110,27 @@ Section yang diisi halaman:
 | `title` | judul tab (ditambah " · GELITA") |
 | `background` | URL latar; kosong → gradien CSS |
 | `bodyClass` | kelas tambahan `<body>`: `is-welcome`, `is-cinematic` (intro, penutup), `is-challenge` (arena), `is-celebrate` (layar selesai) |
-| `overlay` | lapisan layar penuh di luar `<main>` (tirai, `<template id="tpl-curtain-…">`, overlay Kenali wilayah); dirender paling awal agar tampil sejak paint pertama |
-| `content` | isi halaman di `<main id="app" class="app">` |
+| `overlay` | lapisan selebar panggung di luar `<main>` (tirai, `<template id="tpl-curtain-…">`, overlay Kenali wilayah) |
+| `content` | isi halaman di `<main id="app" class="stage-main">` |
+| `hudTitle` | teks tengah HUD (mis. Peta Kedu, Pustaka); tanpa ini HUD menampilkan nama wilayah dari `$level` |
 | `nav` | `components/nav-bar` (opsional) |
 | `head`, `scripts` | tambahan khusus halaman |
 
-Urutan `<body class="game …" data-locale data-base data-screen-code>`: `components/rotate-gate`, section `overlay`, `.skip-link`, `components/hud`, dua `<img class="scene-img">` latar (`#scene-a`, `#scene-b`, untuk crossfade antarhalaman), `<main id="app">`, section `nav`, `#modal-layer` + `<template id="tpl-modal">` (isi `components/modal`), `components/toast` (dengan flash `error`), lalu `<script type="application/json" id="app-config">` berisi `js_config($locale)`, `vendor/howler.min.js`, dan modul `js/game.js`.
+`<html class="game-stage">`; di `<head>`, sebelum CSS, satu skrip sebaris kecil mengisi `--app-w`/`--app-h` dari ukuran jendela (Dok 3 §2.1; satu-satunya skrip sebaris di view).
 
-* `<head>` memuat `tokens.css`, `base.css`, `layout.css`, `components.css`, `game.css`, `cinematic.css`, dan `<noscript><link … noscript.css></noscript>`; font Plus Jakarta Sans 400 dan Cinzel 700 di-preload. Layout ini juga menautkan `manifest.json` dan ikon aplikasi terpasang (lihat *Orientasi layar*).
+Urutan `<body class="game …" data-locale data-base data-screen-code>`: `components/rotate-gate` (di **luar** panggung), lalu `.stage-frame` › `#stage.stage` yang berisi `.skip-link`, latar `.scene` (dua `<img class="scene-img">` `#scene-a`/`#scene-b` untuk crossfade), section `overlay`, `components/hud`, `<main id="app" class="stage-main">`, section `nav`, `#modal-layer`, dan `components/toast` (dengan flash `error`). Sesudah panggung: `<template id="tpl-modal">` (isi `components/modal`), `<script type="application/json" id="app-config">` berisi `js_config($locale)`, `vendor/howler.min.js`, dan modul `js/game.js`. Lihat *Panggung 16:9*.
+
+* `<head>` memuat `tokens.css`, `base.css`, `stage.css`, `components.css`, `game.css`, `cinematic.css`, dan `<noscript><link … noscript.css></noscript>`; font Plus Jakarta Sans 400 dan Cinzel 700 di-preload. Layout ini juga menautkan `manifest.json` dan ikon aplikasi terpasang (lihat *Layar putar dan aplikasi terpasang*).
 * `data-screen-code` adalah kode layar dari `App\Filters\ScreenViewFilter::resolve()` untuk path saat ini — sama dengan `screen` pada event `screen_viewed` — dan dipakai JavaScript untuk `page_hidden`/`page_visible`. Atribut ini hanya ada pada path yang dikenal filter (lihat tabel di *Layar permainan*).
-* Data untuk JavaScript selalu lewat `<script type="application/json">` (`app-config`, `challenge-data`, `password-policy`), tidak pernah disisipkan ke string JavaScript. View tidak memuat skrip inline atau atribut `on…`.
+* Data untuk JavaScript selalu lewat `<script type="application/json">` (`app-config`, `challenge-data`, `password-policy`), tidak pernah disisipkan ke string JavaScript. Selain skrip ukuran panggung di `<head>` (tanpa data), view tidak memuat skrip inline atau atribut `on…`.
 
 ### `layouts/admin.php`
 
-`<body class="admin" data-locale="id">`: `.skip-link` ke `#admin-main`, `header.admin-head` (merek `.admin-brand` dengan logo `ui.logo` bila ada, judul halaman `$pageTitle` + "penelitian berjalan: {studi}" dari `$activeStudy`, lalu `.admin-user`: tombol **Menu** `.menu-toggle` → `#admin-menu`, nama + peran staf, **Ganti kata sandi**, **Keluar**; teks tombol `.btn-text` disembunyikan di layar sempit), lalu `.admin-body` berisi `components/admin-sidebar` dan `<main class="admin-main" id="admin-main">`. Di bawahnya `#modal-layer`, `tpl-modal`, `components/toast` (tanpa flash `error`; galat panel dirender tetap oleh `partials/flash`), `app-config` dengan `js_config('id')`, dan modul `js/admin.js`. CSS: `tokens`, `base`, `layout`, `components`, `admin`. Section: `title`, `head`, `content`, `scripts`.
+Dasbor SaaS netral (Dok 3 §8.1), hanya memuat `admin.css` (CSS permainan tidak ikut). `<body class="admin">`: `.skip-link`, lalu `.admin-shell` = `components/admin-sidebar` + `.admin-column` berisi topbar `header.admin-topbar` (56 px, lengket): tombol laci `.topbar-menu` (layar < 768 px), breadcrumb `nav.breadcrumb` dari `AdminMenu::crumbs()` (+ `$breadcrumb` halaman: `[label => href|null]`), pencarian cepat siswa `form.topbar-search` (GET `/admin/peserta?q=`), chip penelitian berjalan `.topbar-study`, dan menu akun `<details class="account-menu">` (nama, peran, **Ganti kata sandi**, **Keluar**); lalu `<main class="admin-main" id="admin-main">` selebar layar dengan padding 24 px. Di bawahnya `#modal-layer`, `tpl-modal`, `components/toast` (kanan atas; tanpa flash `error`, galat dirender tetap oleh `partials/flash`), `app-config`, dan modul `js/admin.js`. Section: `title`, `head`, `content`, `scripts`.
 
 ### `layouts/auth.php`
 
-Satu panel di tengah layar (`.auth-shell` › `.auth-panel.panel`), latar `bg.auth` bila ada, merek `.auth-brand` (logo `ui.logo` + "GELITA" + `Admin.panelTitle`). Hanya dipakai `admin/login.php`. CSS tanpa `admin.css`.
+Halaman masuk staf bergaya admin (§1.6): satu kartu `.auth-card` di tengah latar netral, merek `.auth-brand` (tanda "G" + "GELITA" + `Admin.panelTitle`), hanya `admin.css`. Dipakai `admin/login.php`.
 
 ---
 
@@ -144,7 +147,7 @@ Satu panel di tengah layar (`.auth-shell` › `.auth-panel.panel`), latar `bg.au
 | `hud` | Bar atas. Kiri: tombol suara `#btn-sound` (`aria-pressed`), tombol beranda ke `/peta`, lalu `lantern`. Kanan: chip peserta `.user-chip` (avatar huruf awal, nama, `@username`) ke `/profil`, tombol keluar `/keluar`, `lang-switch`. Bagian peserta hanya dirender bila controller mengirim data HUD (`BaseGameController::hudData()`: `participant` dari `toSafeArray()`, `progress`, `lantern`); sebelum itu posisi lentera diisi merek teks `.hud-brand`, kecuali halaman awal yang mengirim `hideBrand`. Tautan yang meninggalkan layar diberi kelas `hud-leave` dan disembunyikan selama tantangan (`body.is-challenge`). |
 | `lantern` | `<details class="lantern">` berisi nyala `.flame-{0..3}` (jumlah wilayah tuntas), "Serpihan Cahaya" `{shards}/{shards_total}`, bar isi, dan rincian `.lantern-detail`: titik `.shard.is-completed/is-open/is-locked` per tantangan, dikelompokkan per wilayah, dengan legenda. `shards_total` selalu dari jumlah tantangan aktif (`GameProgress::progressSummary()`), tidak pernah angka tetap. |
 | `lang-switch` | Form POST `/bahasa` dengan `redirect_to` = path saat ini (divalidasi `safe_internal_url()`); satu tombol per `Config\Gelita::$locales`, `aria-pressed` pada bahasa aktif. |
-| `rotate-gate` | Penghalang "putar perangkat" (`role="alertdialog"`). Tampil murni lewat CSS (lihat *Orientasi layar*). |
+| `rotate-gate` | Penghalang "putar perangkat" (`role="alertdialog"`). Tampil murni lewat CSS (lihat *Layar putar dan aplikasi terpasang*). |
 | `nav-bar` | Navigasi bawah dari array `$nav` (`label`, `href`, `style` = `primary`/`ghost`/`quiet`, `arrow`, `icon`, `attrs` untuk `aria-*`/`data-*`). Tombol berpanah kiri di `.nav-bar-start`, sisanya di `.nav-bar-end`. Layar tantangan tidak memakai nav-bar. |
 | `modal` | Kerangka dialog (`.modal-card.modal-{type}`, `.modal-title`, `.modal-text`, `.modal-actions`) di dalam `<template id="tpl-modal">`; ikon per jenis (`correct`, `wrong`, `hint`, `confirm`, `info`, `lock`) disediakan sebagai `<template data-modal-icon>` agar JavaScript tidak merakit SVG dari string. `core/modal.js` yang membukanya. |
 | `toast` | `#toast-layer` (`role="status"`). Flash `message` tampil sebagai `.toast.is-ok.is-flash`, flash `error` (hanya area permainan) sebagai `.toast.is-bad.is-flash`; keduanya memudar lewat CSS. |
@@ -162,20 +165,24 @@ Satu panel di tengah layar (`.auth-shell` › `.auth-panel.panel`), latar `bg.au
 
 | Komponen | Isi dan aturan |
 |---|---|
-| `admin-sidebar` | Menu panel (lihat *Panel admin*). Menu khusus admin tidak dirender untuk guru. Menu aktif = awalan path terpanjang. ≤ 1024 px menyempit menjadi ikon; ≤ 640 px menjadi drawer yang dibuka tautan `#admin-menu` (CSS `:target`). |
-| `admin-filter-bar` | Form `method="get"` `.filter-bar`: pencarian `q` (bila `extra['q']`), Penelitian `study_id`, Wilayah `level_id`, Sekolah `school_id` (hanya admin; guru melihat `.filter-locked` sekolahnya), Kelas `class_level`, Provinsi `province_code`, rentang tanggal `date_from`/`date_to`, Bahasa `locale`. `only` membatasi kontrol, `bare` merender kontrol tanpa `<form>` (dipakai form POST ekspor). Tombol Terapkan dan Atur ulang. |
-| `admin-table` | `columns` (kunci → label, atau definisi dengan `format`: `text`, `num`, `pct`, `ratio`, `date`, `datetime`, `ms`, `bool`, `badge`, `label` + `group`, `code`, `json`; atau `render` closure yang mengembalikan HTML ter-escape), `rows`, `emptyMessage`, `caption`, `rowClass`. Tabel kosong selalu menjadi `.empty-state` yang menjelaskan. Isi dibungkus `.table-wrap` › `table.data-table`. |
-| `admin-pagination` | Navigasi `paginate()` dengan jendela dua halaman dan informasi "x–y dari n baris"; filter query string ikut terbawa. |
+| `admin-sidebar` | Menu dari `App\Libraries\AdminMenu` (lihat *Panel admin*). Menu khusus admin tidak dirender untuk guru. Menu aktif = awalan path terpanjang. 248 px; di bawah 1280 px kolom ikon 72 px (label tetap terbaca pembaca layar, juga sebagai `title`); di bawah 768 px laci yang dibuka tautan `#admin-menu` (CSS `:target`). |
+| `data-table` | **Tabel data server-side (§8.2).** `table` berbentuk `AdminTable::page()` / `RawDataService::page()` (`rows`, `total`, `page`, `per_page`, `sort`, `columns: {key, label, type, sortable?}`). Bilah alat (judul, jumlah baris, `tools`, **Unduh CSV** = URL yang sama + `format=csv`); `.table-wrap` gulir dua arah dengan header lengket; kolom pertama lengket (`stickyFirst`, bawaan ya); judul kolom = tautan urut (`sort=key` / `-key`, `aria-sort`); sel lewat `AdminTable::cell()` (angka rata kanan tabular, kode mono, status = lencana, durasi `m:ss` dengan milidetik di `title`, kosong "—", `clip` = teks dipotong yang dapat dibuka); pagination "x–y dari n baris", pilihan 25/50/100, nomor halaman. Opsi: `render` (closure per kolom), `expand` + `expandLabel` (baris rincian yang dibuka tombol, mis. riwayat percobaan), `paginate` (false = daftar pendek), `csv`, `anchor`, `emptyMessage`. Semua tautan biasa: berfungsi tanpa JavaScript. |
+| `admin-filter-bar` | Form `method="get"` `.filter-bar`: kontrol 40 px menurut `only` (urutan render): `q`, `participant_code`, `study_id`, `level_id`, `node_id`, `variant_group`, `school_id` (guru: `.filter-locked`), `district_code`, `province_code`, `class_level`, `gender`, `age`, `progress`, `locale`, `date_from`+`date_to`. `labels` mengganti label, `choices` menambah pilihan, `bare` = hanya kontrol (form POST ekspor). Tombol **Terapkan** dan **Atur ulang**, lalu baris **chip filter aktif** (`.filter-chip`, tiap chip tautan yang melepas satu filter; guru melihat chip sekolah terkunci). `sort` dan `per_page` dibawa sebagai field tersembunyi. |
+| `stat-tile` | Kartu KPI: label 13 px, angka 28 px tabular, keterangan; panel hanya memuat hitungan. |
+| `admin-table` | Tabel kecil tanpa pagination (ukuran wajib, temuan pindai, riwayat audit lama): `columns` + `rows` dengan `format`/`render`; `admin/tables.js` menambah urut di client (≤ 500 baris) dan kotak saring (≥ 10 baris). |
+| `admin-pagination` | Navigasi `paginate()` CodeIgniter (halaman yang belum memakai `data-table`, mis. riwayat aktivitas). |
 | `media-field` | Pemilih media editor konten: pratinjau, kotak "kode berkas" (`asset_key`, dengan `media-datalist`), input berkas baru, saran ukuran. Server membacanya lewat `MediaStore::resolveField()`; form induk wajib `multipart/form-data`. |
 | `media-datalist` | `<datalist id="media-keys-{jenis}">` berisi seluruh `asset_key` (slot yang belum berberkas bertanda). |
 | `audio-select` | Pemilih rekaman `audio_assets` dengan bahasa dan status persetujuan; rekaman bahasa yang diminta didahulukan. |
+
+Gaya seragam lain (§8.2) ada di `admin.css`: kepala halaman (`partials/admin-head`: judul 24 px, deskripsi 14 px, aksi di kanan), tab garis bawah `.tabs` (antarhalaman, atau di satu halaman lewat `data-tabs` + `data-tab-panel`, `admin/tabs.js`), navigasi bagian `.sub-nav` (segmen), lencana `.badge.is-{status}`, tombol `.btn` (utama `.btn-primary`, sekunder bawaan, hantu `.btn-quiet`, bahaya `.btn-danger`/`.btn-danger-soft`), formulir, modal konfirmasi (`form[data-confirm]`, `data-confirm-text`, `data-confirm-ok`, `data-confirm-style` → `core/modal.js`), toast kanan atas, dan keadaan kosong `.empty-state`.
 
 ### Partial
 
 | Partial | Dipakai di | Isi |
 |---|---|---|
 | `cine-slides` | intro, penutup | `ol.slides.cine-slides`; tiap `li.slide.cine-slide` (`id = {prefix}{n}`, `data-character`, `data-pose`, `data-effect`) berisi latar `.cine-bg` (`dialogues.background_media_id`), tokoh di `.cine-stage` (narator tanpa gambar, `.is-narrator`), kotak `.cine-caption` (`data-narrator-advance`: "Bagian n dari N", `.cine-speaker`, `.cine-title`, `.slide-text`, `audio-player`, `slide-nav`). |
-| `dialogue-scene` | dialog wilayah, wilayah tuntas | `section.screen.story.dialogue.narrator` (`data-screen`, `data-context`, `data-prefix="line-"`, `data-mode="tap"`), `.dialogue-stage` dengan Jaka (`.stage-left`) dan Mbah Kedu (`.stage-right`), baris `li.dialogue-line` (`data-pose-src` dari `character_frame_src()`), kotak `.dialogue-box.panel-parchment`, `narrator-controls`, `narrator-tap`. Tanpa baris dialog: `Game.dialogueEmpty` dan tombol lanjut. |
+| `dialogue-scene` | dialog wilayah, wilayah tuntas | `section.story.dialogue.narrator` (`data-screen`, `data-context`, `data-prefix="line-"`, `data-mode="tap"`), `.dialogue-stage` dengan Jaka (`.stage-left`) dan Mbah Kedu (`.stage-right`), baris `li.dialogue-line` (`data-pose-src` dari `character_frame_src()`), kotak `.dialogue-box.panel-parchment`, `narrator-controls`, `narrator-tap`. Tanpa baris dialog: `Game.dialogueEmpty` dan tombol lanjut. |
 | `region-intro` | Peta Kedu | Overlay `section.kenal` (`role="dialog"`, `id="kenal-{code}"`, `data-mode="external"`, `data-keyboard="0"`, `data-hash="0"`): latar wilayah, judul `Game.kenalTitle`, tombol tutup `.kenal-close`, slide `kenal-{code}-{n}`. Slide akhir: **Masuk ke {wilayah}** (tirai wilayah) bila wilayah terbuka, selain itu **Tutup** ke `#region-{code}`. |
 | `slide-nav` | semua slide | Kembali · titik `.slide-dot` · Lanjut; slide terakhir menjadi tombol akhir `data-slide-final` (opsional `finalAttrs`, `finalIcon`, tombol sekunder `extra`). |
 | `footsteps` | tirai wilayah, kartu bab | Jejak `svg.footstep.is-left/is-right` dengan `--i`; dekoratif. |
@@ -297,9 +304,9 @@ Layar sinematik (`body.is-cinematic`, `section.intro.cine.narrator`, `data-conte
 
 `section.map-screen.map-kedu` (`data-unlock-mode`). Peserta yang belum menonton cerita pembuka dialihkan ke `/intro`.
 
-* **Panduan peta** `.map-guide.map-story.narrator`: tiga slide `map_intro` (Jaka) dengan tokoh sesuai pose, balon `.map-story-line`, audio, navigasi kecil `.map-story-nav`, efek layar, dan `narrator-controls` (`data-keyboard="0"` agar Spasi tetap menggulir). Datang dengan flash `curtain=map` → tirai "Membuka Peta Kedu" lalu narasi diputar setelah ketukannya (`data-mode="external"`); kunjungan lain → teks utuh dengan tombol ▶ (`data-mode="manual"`). Tanpa slide: Jaka + balon `Game.mapLead`.
+* **Panduan peta** `.map-guide.map-story.narrator`: tiga slide `map_intro` (Jaka) dengan tokoh sesuai pose, balon `.map-story-line`, audio, navigasi kecil `.map-story-nav`, efek layar, dan `narrator-controls` (`data-keyboard="0"`), tampil sebagai balon `.map-balloon` di kiri bawah peta (tokoh besar tidak tampil di atas peta). Datang dengan flash `curtain=map` → tirai "Membuka Peta Kedu" lalu narasi diputar setelah ketukannya (`data-mode="external"`); kunjungan lain → teks utuh dengan tombol ▶ (`data-mode="manual"`). Tanpa slide: balon `Game.mapLead`.
 * **Kanvas peta** `.map-canvas` (`--map-ratio: 1400 / 900`, gambar `map.kedu`; tanpa gambar `.is-drawn`), garis rute `svg.map-route`, dan pin `li.map-point.is-{status}` pada `levels.map_x`/`map_y` (persen). Ikon pin: lentera (terbuka/sedang dijelajahi), bintang (tuntas), gembok (terkunci); label berisi nama, `Game.levelStatus_{status}`, dan `{selesai}/{total}`. Tautan pin menuju `entry` dari `GameProgress::regionEntryPath()`: wilayah yang baru terbuka → `/dialog/{code}`, selain itu → `/wilayah/{code}`. Pin terkunci tetap tautan ber-`aria-disabled="true"` + `data-locked-message` (`Game.levelLocked`); server menolaknya dengan toast yang sama.
-* **Kartu wilayah** `ol.region-list` › `li.region-card#region-{code}` di bawah peta (terbaca di ponsel, pembaca layar, dan saat gambar peta belum ada): urutan + tingkat kesulitan, lencana status, progres + bintang, tombol Mulai/Lanjut, atau keterangan terkunci.
+* **Kartu wilayah** `ol.region-list.map-side.stage-scroll` › `li.region-card#region-{code}` di panel kanan peta (terbaca pembaca layar dan saat gambar peta belum ada): urutan + tingkat kesulitan, lencana status, progres + bintang, tombol Mulai/Lanjut, atau keterangan terkunci.
 * **Kenali wilayah**: tombol lentera `.kenal-btn` pada pin dan `.kenal-card-btn` pada kartu (juga untuk wilayah terkunci) membuka overlay `partials/region-intro` (4 slide `region_intro` Mbah Kedu). Lencana **Belum didengar** (`.kenal-dot` di pin, `.kenal-badge` di kartu, `data-kenal-badge`) tampil sampai narasi wilayah itu pernah didengar sampai slide terakhir oleh peserta ini (dihitung server dari `dialogue_advanced`, `GameEventLogModel::heardRegionIntros()`).
 * **Tirai wilayah**: tautan ke wilayah yang terbuka membawa `curtain_attrs('region', …)`; template `<template id="tpl-curtain-region">` ada di section `overlay`.
 * Nav: **Pustaka Kedu** → `/pustaka` (kiri). Bila semua tantangan tuntas: **Tonton penutup** → `/penutup` dan **Balai Refleksi** → `/refleksi`; selain itu **Profil**.
@@ -322,12 +329,12 @@ Panel perkamen `.mission-card`: segel nomor, eyebrow `Game.challengeOf` + wilaya
 
 ### Layar tantangan — `game/challenge/{engine}` + `_frame`
 
-Keempat engine merender section `arena` lalu meng-include `game/challenge/_frame` (`body.is-challenge`). Kerangka:
+Keempat engine merender section `arena` (dan opsional `aside`) lalu meng-include `game/challenge/_frame` (`body.is-challenge`). Tata letak lebar penuh **tanpa Jaka** (Dok 3 §5); koordinat di *Panggung 16:9*. Kerangka:
 
 * `section.challenge.challenge-{engine}` dengan `data-screen="challenge"`, `data-engine`, `data-variant`, `data-attempt`, `data-node`, `data-level`, `data-level-id`, `data-region-name`, `data-sequence`, `data-exit-url`.
-* Jaka di `.challenge-character`; panel `.panel-carved.arena-panel`.
-* Kepala `.challenge-head`: nomor `.badge-pos`, eyebrow wilayah · `Game.challengeOf` · jenis, judul `h1`, chip `.challenge-chips`: waktu `#timer`, hitungan ✓ `#count-correct` / ✗ `#count-wrong`, penanda kesempatan `#tries.chip-tries` (engine selain `cari`; bulatan `.tries-dot.is-left` = sisa, `aria-label` "Kesempatan: x dari 3"), tombol petunjuk `#btn-hint` (tersembunyi, `data-hints`), dan **Keluar** berkonfirmasi `<details class="confirm confirm-down challenge-exit">` (`Game.exitConfirmTitle`, `Game.exitConfirmText`, tombol `data-exit-confirm` ke peta wilayah). Tautan HUD yang meninggalkan layar disembunyikan dan nav-bar tidak ada.
-* `.arena`: instruksi, `<noscript>` `Game.needsJs`, lalu `.arena-body` berisi section `arena`; tanpa soal `Game.noItems`.
+* Bingkai ukiran digambar `.challenge::before` (16, 60, 1248 × 652 dp). `.arena-panel`, `.arena`, dan `.arena-body` hanya pembungkus (`display: contents`), sehingga panel engine memakai koordinat panggung langsung.
+* Kepala `.challenge-head.stage-box` (32, 64, 1216 × 56): nomor `.badge-pos`, eyebrow wilayah · `Game.challengeOf` · jenis, judul `h1`, chip `.challenge-chips`: waktu `#timer`, hitungan ✓ `#count-correct` / ✗ `#count-wrong`, penanda kesempatan `#tries.chip-tries` (engine selain `cari`; bulatan `.tries-dot.is-left` = sisa, `aria-label` "Kesempatan: x dari 3"), tombol petunjuk `#btn-hint` (tersembunyi, `data-hints`), dan **Keluar** berkonfirmasi `<details class="confirm confirm-down challenge-exit">` (`Game.exitConfirmTitle`, `Game.exitConfirmText`, tombol `data-exit-confirm` ke peta wilayah). Tautan HUD yang meninggalkan layar disembunyikan dan nav-bar tidak ada.
+* `.arena`: panel instruksi `aside.challenge-aside.stage-scroll` (instruksi + section `aside`; tempatnya per engine: panel kiri Susun Gambar, baris pertama arena Isi Rumpang dan Benar atau Salah, panel kanan Cari Objek), `<noscript>` `Game.needsJs`, lalu `.arena-body` berisi section `arena`; tanpa soal `Game.noItems`.
 * Payload `ChallengeService::openNode()` ditanam sebagai `<script type="application/json" id="challenge-data">` — **tanpa kunci jawaban** dan tanpa penanda pengecoh. `game/challenge.js` dan `engines/*.js` memasang perilaku (lihat [06_JAVASCRIPT.md](06_JAVASCRIPT.md)).
 
 Tiap wilayah berisi empat tantangan berurutan: 1 Susun Gambar (`puzzle`), 2 Isi Rumpang (`rumpang`), 3 Benar atau Salah (`boleh`), 4 Cari Objek (`cari`). Setiap pengerjaan memakai satu variasi (a/b/c) yang dipilih acak.
@@ -336,24 +343,24 @@ Tiap wilayah berisi empat tantangan berurutan: 1 Susun Gambar (`puzzle`), 2 Isi 
 
 * `.puzzle-wrap#puzzle-wrap` (`data-mode="arrange"`, `data-item`) › `.puzzle-board.is-{square|jigsaw}#puzzle-board` (`role="group"`, `data-grid`, `data-shape`, variabel `--grid`, `--inset`, `--overhang`) › `svg.puzzle-defs` (satu `<clipPath>` per keping) + `.puzzle-grid` berisi `button.piece` (`data-slot`, `data-piece`, `data-pos`, `aria-label` `Game.piece` = letak slot) dengan `svg.piece-art` yang memotong **satu gambar utuh** (`preserveAspectRatio="xMidYMid slice"`) dan garis tepi `.piece-edge`.
 * Papan mengikuti soal (`App\Libraries\PuzzleCut::resolve()`), yang ditetapkan dari tingkat kesulitan wilayah: Temanggung 3 × 3 kotak, Magelang 4 × 4 kotak, Wonosobo 4 × 4 jigsaw. Keping tidak bernomor. Urutan awal diacak tetap per pengerjaan tanpa satu keping pun di tempatnya (`seeded_derangement()`).
-* `.hint-text` (`Game.puzzleHint` / `Game.puzzleHintJigsaw`), keterangan gambar `.puzzle-caption` (tersembunyi sampai gambar utuh atau kesempatan habis), tombol `#btn-check` **Cek gambarku** (`Game.puzzleCheck`).
+* Section `aside`: tiga tips `ul.challenge-tips` (`Game.puzzleHint`/`Game.puzzleHintJigsaw`, `Game.puzzleTipMark`, `Game.puzzleTipHint`) di panel kiri. Keterangan gambar `.puzzle-caption.stage-scroll` di panel kanan (tersembunyi sampai gambar utuh atau kesempatan habis), tombol `#btn-check` **Cek gambarku** (`Game.puzzleCheck`).
 
 **Isi Rumpang — `rumpang.php`**
 
-* `.rumpang` (`data-word-bank="1"`, `.has-media` bila ada gambar `.rumpang-media`) › `.rumpang-main`.
-* Tantangan bacaan (`config_json.as_reading`, `ChallengeNode::isReading()`): `.rumpang-reading` berisi judul variasi `h2.rumpang-title` (disembunyikan bila sama dengan judul tantangan) dan paragraf dari `App\Libraries\ClozeReading::paragraphs()`; setiap rumpang adalah `.blank-wrap` › `sup.blank-no` + `button.blank` (`data-item`, `aria-label` `Game.blank`). Selain itu soal tampil sebagai `ol.sentences` › `li.sentence` (teks sumber `.sentence-source` opsional).
+* `.rumpang` (`data-word-bank="1"`, `.has-media` bila ada gambar `.rumpang-media`, di kiri bacaan) › `.rumpang-main`; keduanya pembungkus `display: contents`.
+* Tantangan bacaan (`config_json.as_reading`, `ChallengeNode::isReading()`): `.rumpang-reading.stage-scroll#reading-panel` (huruf `--fs-reading`) berisi judul variasi `h2.rumpang-title` (disembunyikan bila sama dengan judul tantangan) dan paragraf dari `App\Libraries\ClozeReading::paragraphs()`; setiap rumpang adalah `.blank-wrap` › `sup.blank-no` + `button.blank` (`data-item`, `aria-label` `Game.blank`). Selain itu soal tampil sebagai `ol.sentences` › `li.sentence` (teks sumber `.sentence-source` opsional).
 * Bank kata `#word-bank.word-bank` (`role="group"`) berisi `button.word` (`data-word-id`) dari `payload.word_bank`: jawaban + pengecoh variasi, diacak server. Tidak ada isian ketik.
 * Tombol `#btn-check` **Cek jawabanku** (`Game.check`).
 
 **Benar atau Salah — `boleh.php`**
 
-* Bacaan variasi sebagai `<details class="passage" open>` (`#passage-{id}`): judul (cadangan `Game.readingLabel`), gambar `.passage-img`, `.passage-body`.
-* Judul `Game.statementsLabel`, lalu `.card-grid` (`.is-single` bila satu) berisi `article.verdict-card` (`data-item`): `.card-no` "Pernyataan n" (`Game.cardN`), chip `.card-passage` ke bacaannya, gambar `.card-image`, `.card-text`, dan `fieldset.card-choices` dengan dua radio bawaan `label.choice.choice-benar` / `.choice-salah` (`Game.verdictBenar` / `Game.verdictSalah`).
+* Kolom kiri `.boleh-passages.stage-scroll#reading-panel` berisi bacaan variasi sebagai `<details class="passage" open>` (`#passage-{id}`): judul (cadangan `Game.readingLabel`), gambar `.passage-img`, `.passage-body`. Tidak ada lagi pelipatan bacaan di layar sempit.
+* Kolom kanan `.boleh-cards.stage-scroll`: judul `Game.statementsLabel`, lalu `.card-grid` satu kolom berisi `article.verdict-card` (`data-item`): `.card-no` "Pernyataan n" (`Game.cardN`), chip `.card-passage` ke bacaannya, gambar `button.card-image[data-zoom]` 192 × 144 dp (utuh, `object-fit: contain`; ketuk = lightbox 640 × 480 dp), `.card-text`, dan `fieldset.card-choices` dengan dua radio bawaan `label.choice.choice-benar` / `.choice-salah` (`Game.verdictBenar` / `Game.verdictSalah`).
 * Tombol `#btn-check` **Cek jawabanku**.
 
 **Cari Objek — `cari.php`**
 
-* `.hunt` › `.hunt-clue`: Mbah Kedu (`.hunt-guide`), `.hunt-clue-body` dengan "Petunjuk x dari y" (`Game.clueOf`, `#clue-index`, `#clue-total`), teks petunjuk `#clue-text` (`aria-live`, petunjuk pertama dirender server) dan penanda kesempatan per petunjuk `#clue-tries`.
+* `.hunt` (pembungkus) › bilah petunjuk `.hunt-clue` 1216 × 56: avatar bulat Mbah Kedu 48 dp (`.hunt-guide`, tetap ada), `.hunt-clue-body` dengan "Petunjuk x dari y" (`Game.clueOf`, `#clue-index`, `#clue-total`), teks petunjuk `#clue-text` (`aria-live`, petunjuk pertama dirender server) dan penanda kesempatan per petunjuk `#clue-tries`.
 * `#hunt-scene.hunt-scene` (16:9; tanpa gambar `.is-drawn`) berisi gambar adegan `img.scene-bg` dan `button.object` (`data-object` = token buram per pengerjaan, posisi `left`/`top`/`width` dalam persen, `aria-label` netral "Objek n"). **Benda pengecoh dirender sama persis dengan benda target**, tanpa kelas, atribut, label, atau urutan DOM yang membedakan.
 * `.hunt-side`: `Game.huntList` + `ol#hunt-list` › `li.hunt-target` (`.is-current` untuk petunjuk aktif).
 * Narasi petunjuk: bila ada petunjuk dengan rekaman yang disetujui (`clues[i].audio`), `<template id="tpl-clue-voice">` berisi tombol ▶/⏸ (`Game.clueListen`, `Game.audioPause`) yang dipasang `engines/cari.js` di samping teks petunjuk. Template inert: tanpa JavaScript atau tanpa rekaman, tampilannya sama dengan petunjuk teks saja.
@@ -362,11 +369,11 @@ Tiap wilayah berisi empat tantangan berurutan: 1 Susun Gambar (`puzzle`), 2 Isi 
 
 ### Selesai — `game/challenge-finished`
 
-`body.is-celebrate`, konfeti `.confetti` (24 keping, mati pada gerak dikurangi), Jaka pose `happy`, kartu `.panel-carved.finished-card`:
+`body.is-celebrate`, konfeti `.confetti` (24 keping, mati pada gerak dikurangi). Kartu tunggal `.panel-carved.finished-card` 280, 72, 720 × 576 di tengah panggung, **tanpa Jaka** (Dok 3 §5.3); bagian tengahnya `.finished-body.stage-scroll`, tombol di bilah bawah kartu:
 
 * orb cahaya, eyebrow wilayah · judul, `Game.finishedTitle`, bintang besar (`star-rating` `lg`);
-* empat `stat-tile`: Waktu (`Game.timeSpent`), Berhasil pada Percobaan Pertama (`first_pass_text()`), Benar di akhir (`Game.finalCorrect`, `Game.firstTryCount`), dan Percobaan dipakai (`Game.triesUsed`, "{cek} dari {max_tries}") — untuk Cari Objek diganti Ketukan salah (`Game.wrongTaps`, jumlah `wrong_click_count`);
-* lencana alasan selesai `.finished-reason`: `Game.completionSolved` / `Game.completionExhausted`;
+* tiga `stat-tile`: Waktu (`Game.timeSpent`), Berhasil pada Percobaan Pertama (`first_pass_text()`), dan Percobaan dipakai (`Game.triesUsed`, "{cek} dari {max_tries}") — untuk Cari Objek diganti Ketukan salah (`Game.wrongTaps`, jumlah `wrong_click_count`);
+* lencana alasan selesai `.finished-reason`: `Game.completionSolved` / `Game.completionExhausted`; bila kesempatan habis ditambah baris lembut `Game.exhaustedNote`;
 * catatan `Game.multiCheckNote` bila lebih dari satu cek, dan `Game.shardEarned`;
 * bila wilayah tuntas: panel Mbah Kedu `.finished-kedu` (`Game.regionDone` + `Game.nextRegionOpen` atau `Game.allShardsDone`);
 * bila pengerjaan ini yang menuntaskan wilayah dan wilayahnya punya Pustaka: sorotan `aside.library-unlocked` (`Game.libraryUnlockedTitle`, tombol `Game.libraryReadNow`).
@@ -375,7 +382,7 @@ Tombol utama `.finished-actions`, berurutan menurut kondisi: pengerjaan ini menu
 
 ### Hasil tantangan — `game/challenge-result`
 
-Panel pengerjaan terbaik `.result-best` (bintang, Berhasil pada Percobaan Pertama, waktu, jumlah cek), tabel semua pengerjaan selesai `.result-table` (nomor, tanggal, lama, Berhasil pada Percobaan Pertama, cek, bintang; baris terbaik `.is-best`), catatan `Game.retryNote` (mengulang tidak menghapus catatan lama), dan tombol **Ulangi** (`Game.retry`) ke kartu misi — sehingga tirai tantangan ikut tampil.
+Panel `.result-panel` 160, 72, 960 × 576: pengerjaan terbaik `.result-best` (bintang, Berhasil pada Percobaan Pertama, waktu, jumlah cek), tabel semua pengerjaan selesai `.result-table` di `.table-wrap.stage-scroll` (Pengerjaan, Mulai, Durasi, Percobaan, Berhasil pada Percobaan Pertama, Bintang; baris terbaik `.is-best`), catatan `Game.retryNote` (mengulang tidak menghapus catatan lama), dan tombol **Ulangi** (`Game.retry`) ke kartu misi — sehingga tirai tantangan ikut tampil.
 
 ### Wilayah tuntas — `game/region-done`
 
@@ -458,45 +465,48 @@ Aplikasi tetap utuh selama gambar belum diunggah:
 
 ## Panel admin
 
-Pembaca panel adalah guru dan admin sekolah, jadi label dan teks panel memakai bahasa sehari-hari. Setiap halaman dibuka `partials/admin-head` (eyebrow, judul, penjelasan singkat, tombol aksi) lalu `partials/flash`. Tabel memakai `components/admin-table` dengan kondisi kosong yang menjelaskan apa yang harus dilakukan; filter memakai `components/admin-filter-bar` (`method="get"`, tersimpan di URL). Guru selalu terkunci pada sekolahnya: kontrol sekolah tidak dirender dan server memaksa cakupan (`StaffScope::scopedFilters()`). Panel tidak memuat chart; dasbor hanya berisi hitungan mentah (rancangan ulang dasbor direncanakan di [Dok 3](perombakan-kelas5/03_TAMPILAN_16x9_DAN_ADMIN.md)).
+Dasbor SaaS tenang dan formal (Dok 3 §8), **tidak bertema GELITA**: token di `admin.css` (latar `#F5F6F8`, permukaan putih, garis `#E4E7EC`, teks `#101828`, aksen indigo `#4338CA`, sidebar `#0F172A`, Plus Jakarta Sans 14/20, kode IBM Plex Mono 13 px, radius 8/12 px). Panel mengikuti lebar layar (bukan panggung 16:9) dan tidak memuat chart. Setiap halaman dibuka `partials/admin-head` lalu `partials/flash`. Tabel data memakai `components/data-table` (urut, halaman, dan CSV di server); filter memakai `components/admin-filter-bar` (GET, tersimpan di URL, chip filter aktif). Guru selalu terkunci pada sekolahnya: kontrol sekolah tidak dirender, kolom identitas tidak diambil, dan server memaksa cakupan (`StaffScope::scopedFilters()`, `RawDataService`).
 
-### Menu (`components/admin-sidebar`)
+### Menu (`App\Libraries\AdminMenu`)
 
 | Grup | Menu (`Admin.menu*`) | URL | Ikon | Peran |
 |---|---|---|---|---|
-| — | Beranda | `/admin/dashboard` | `grid` | guru, admin |
-| Data siswa | Siswa | `/admin/peserta` | `users` | guru, admin |
-| Data siswa | Sesi bermain | `/admin/sesi` | `clock` | guru, admin |
-| Laporan | Kritik & saran | `/admin/masukan` | `message` | guru, admin |
-| Laporan | Unduh data | `/admin/ekspor` | `download` | guru, admin |
-| Pengelolaan | Konten permainan | `/admin/konten` | `book` | admin |
-| Pengelolaan | ↳ Impor soal (Excel) | `/admin/konten/impor-bank` | `upload` | admin |
-| Pengelolaan | ↳ Rekaman narasi | `/admin/konten/narasi` | `sound` | admin |
-| Pengelolaan | Gambar & suara | `/admin/media` | `image` | admin |
-| Pengelolaan | Pengaturan penelitian | `/admin/studi` | `flask` | admin |
-| Pengelolaan | Hapus data & riwayat | `/admin/tata-kelola` | `shield` | admin |
-| Pengelolaan | Sekolah | `/admin/sekolah` | `building` | admin |
-| Pengelolaan | Akun guru & admin | `/admin/staf` | `key` | admin |
+| — | Ringkasan | `/admin` | `grid` | guru, admin |
+| Data penelitian | Siswa | `/admin/peserta` | `users` | guru, admin |
+| Data penelitian | Sesi bermain | `/admin/sesi` | `clock` | guru, admin |
+| Data penelitian | Data mentah | `/admin/data` | `database` | guru, admin |
+| Data penelitian | Kritik & saran | `/admin/masukan` | `message` | guru, admin |
+| Data penelitian | Unduh data | `/admin/ekspor` | `download` | guru, admin |
+| Konten | Tantangan | `/admin/konten` | `puzzle` | admin |
+| Konten | Impor bank soal | `/admin/konten/impor-bank` | `upload` | admin |
+| Konten | Rekaman narasi | `/admin/konten/narasi` | `sound` | admin |
+| Konten | Gambar & mockup | `/admin/media` | `image` | admin |
+| Konten | Kelengkapan aset | `/admin/media/kelengkapan` | `clipboard` | admin |
+| Pengaturan | Penelitian | `/admin/studi` | `flask` | admin |
+| Pengaturan | Rilis | `/admin/studi/rilis` | `tag` | admin |
+| Pengaturan | Sekolah | `/admin/sekolah` | `building` | admin |
+| Pengaturan | Staf | `/admin/staf` | `key` | admin |
+| Pengaturan | Tata kelola | `/admin/tata-kelola` | `shield` | admin |
 
-Impor soal dan Rekaman narasi tampil menjorok (`.menu-sub`). **Ganti kata sandi** (`/admin/akun/sandi`) tidak ada di sidebar; tautannya ada di kepala panel, di samping Keluar.
+**Ganti kata sandi** dan **Keluar** ada di menu akun topbar. Rute yang tidak berhak tetap dibalas 404 untuk guru.
 
 ### Halaman
 
 | View | URL | Isi |
 |---|---|---|
-| `admin/login` (layout `auth`) | `/admin/login` | Nama pengguna, kata sandi, `redirect_to` tersembunyi. Akun tidak ada, sandi salah, dan akun nonaktif dibalas pesan yang sama. |
-| `admin/dashboard` | `/admin/dashboard` | Peringatan retensi (data yang melewati batas simpan, belum dihapus, tautan ke Hapus data). Filter penelitian/sekolah/kelas/provinsi/tanggal/bahasa. Petak `.kpi-grid`: Siswa, Sesi bermain (+ sesi tuntas), Pengerjaan selesai (+ ditinggalkan), Percobaan soal (baris `item_tries`), Petunjuk dibuka, Suara diputar (+ otomatis), Sandi kuat sejak kiriman pertama. Sebaran siswa per jenis kelamin, kelas, provinsi (`.cohort-grid`). Tabel 10 sesi terakhir. |
-| `admin/participants/index` | `/admin/peserta` | Pencarian (kode siswa, nama pengguna, nama) + filter sekolah/kelas/provinsi; tabel kode siswa, nama pengguna, nama lengkap, umur, L/P, kelas, sekolah, provinsi, sesi, tantangan selesai, terakhir aktif; pagination. |
-| `admin/participants/show` | `/admin/peserta/{id}` | Panel Data diri; Persetujuan ikut bermain (`assented_at`); Literasi keamanan digital (syarat sandi yang langsung dipenuhi x dari 5, jumlah kiriman sandi lemah, terakhir ganti sandi, wajib ganti sandi); Ringkasan data mentah (pengerjaan selesai, Berhasil pada Percobaan Pertama, benar di akhir, bintang, lama bermain, ubah jawaban, petunjuk, suara). Tabel perangkat (`device_logs`), tabel sesi (Lihat, Catatan aktivitas), form laporan PDF siswa (admin dapat memilih tanpa/dengan nama; guru selalu tanpa nama), dan `.danger-zone` reset sandi dengan kotak konfirmasi ketik `RESET`. Admin mendapat tautan "Hapus data siswa ini" ke tata kelola. |
+| `admin/login` (layout `auth`) | `/admin/login` | Kartu masuk bergaya admin: nama pengguna, kata sandi, `redirect_to` tersembunyi. Akun tidak ada, sandi salah, dan akun nonaktif dibalas pesan yang sama. |
+| `admin/dashboard` | `/admin` | **Ringkasan:** empat KPI hitungan (siswa terdaftar, sesi aktif sekarang ≤ 10 menit, pengerjaan selesai hari ini, kritik & saran); admin: peringatan retensi, gambar contoh tersisa, narasi belum disetujui, verifikasi konten (`ResearchReadiness`); tabel **Aktivitas terbaru** (20 event: waktu, kode siswa, kejadian, layar/tantangan) dan **Progres siswa** (10 terbaru: kode, sekolah, wilayah saat ini, tantangan selesai x/12, bintang, aktif terakhir). |
+| `admin/participants/index` | `/admin/peserta` | Filter cari, sekolah, kab/kota, jenis kelamin, umur, status progres, tanggal daftar; tabel Kode, Nama*, Nama pengguna*, Sekolah, Kab/Kota, JK, Umur, Terdaftar, Setuju ikut, Tantangan selesai, Wilayah terakhir, Bintang, Aktif terakhir (*admin saja); CSV. |
+| `admin/participants/show` | `/admin/peserta/{id}` | Aksi: Unduh XLSX / CSV-ZIP dan Cetak PDF (admin: centang Anonim), Reset sandi. Tab: **Profil** (data diri, pendaftaran & akun, literasi keamanan digital, `.danger-zone` reset sandi ketik `RESET` + modal konfirmasi), **Sesi & perangkat**, **Progres** (12 tantangan: status, variasi, pengerjaan, Berhasil pada Percobaan Pertama x dari y, bintang, durasi), **Pengerjaan**, **Jawaban** (tombol **Riwayat** membuka percobaan per soal), **Navigasi**, **Bantuan** (data mentah satu siswa), **Kritik & saran**. Guru tidak melihat nama dan nama pengguna. |
 | `admin/participants/reset-result` | respons POST `/admin/peserta/{id}/reset-sandi` | Sandi sementara **satu kali** (`.temp-password`, mono besar, `user-select: all`), tombol Salin (`data-copy`), peringatan bahwa siswa wajib membuat sandi baru. Dikirim dengan `Cache-Control: no-store`; tidak lewat flash atau log. |
-| `admin/sessions/index` | `/admin/sesi` | Filter; tabel kode sesi, kode siswa, penelitian, bahasa, status, mulai, lama bermain, tantangan selesai, bintang, perangkat; pagination. |
-| `admin/sessions/show` | `/admin/sesi/{id}` | Ringkasan sesi (`.detail-grid`), tabel perangkat dari `device_logs`, lalu tabel pengerjaan per tantangan: jenis, pengerjaan ke-, variasi, status, alasan selesai (`admin_label('completion')`), soal dinilai, Berhasil pada Percobaan Pertama, benar di akhir, jumlah cek, petunjuk, ubah jawaban, lama, bintang. Setiap baris punya `<details class="row-details">` **Jawaban tiap soal** (`item_responses`: jumlah percobaan, benar pada percobaan ke-, salah pilih, jawaban terakhir) dan **Setiap percobaan** (`item_tries`: percobaan ke-, cek ke-, jawaban, benar, petunjuk sudah dibuka, waktu isian). |
-| `admin/sessions/timeline` | `/admin/sesi/{id}/event` | Catatan aktivitas: filter jenis (GET), tabel nomor, waktu di perangkat dan waktu diterima sistem (hingga milidetik), jenis aktivitas (`admin_label('event')` + kode kecil), tantangan/soal, keterangan payload sebagai teks. |
-| `admin/feedback/index` | `/admin/masukan` | Filter sekolah/kelas, sebaran bintang, jumlah dan rata-rata, kartu `.feedback-card` (bintang, kode siswa, tanggal, keempat jawaban yang terisi); nama pengguna tidak ditampilkan. |
-| `admin/export/index` | `/admin/ekspor` | Form POST `/admin/ekspor/xlsx` dengan `admin-filter-bar` `bare`, centang lembar (`sheets[]`, label `admin_label('exportSheet')`: Data siswa, Sesi bermain, Hasil per wilayah, Hasil per tantangan, Jawaban per soal, Catatan aktivitas — khusus admin, Pemakaian suara, Capaian indikator, Ringkasan kelompok, Kritik dan saran), dan pilihan nama siswa (admin: centang "Sembunyikan nama siswa"; guru: selalu tanpa nama). Tabel unduhan terakhir: status (`data-export-id`, diperbarui `admin/export.js`), jumlah baris, kode cek SHA-256, tanggal hapus, tombol Unduh. |
-| `admin/content/index` | `/admin/konten` | Aksi: Periksa kelengkapan (POST `/admin/konten/verifikasi`), Impor soal dari Excel, Cerita pembuka & penutup, Rekaman narasi, Gambar & video. Satu `.level-card` per wilayah: empat tantangan (`.node-row`: jenis, jumlah soal dan variasi, atau "belum ada soal ✗") dan sub-navigasi Wilayah · Bacaan · Pustaka · Cerita & dialog. |
+| `admin/sessions/index` | `/admin/sesi` | Filter kode siswa, sekolah, penelitian, bahasa, tanggal; tabel kode sesi, kode siswa, sekolah, penelitian, bahasa, status, mulai, aktif terakhir, durasi, perangkat, tantangan selesai, bintang; CSV. |
+| `admin/sessions/show` | `/admin/sesi/{id}` | Ringkasan (`.detail-grid`), tabel pengerjaan di sesi ini, lalu **Linimasa event** `#linimasa`: filter jenis event, tabel urutan, waktu klien, waktu server, event (kode, label di `title`), layar/tantangan/soal, payload JSON; urut, halaman, CSV. |
+| `admin/data/index` | `/admin/data/{dimensi}` | **Data mentah:** tab Jawaban & ketepatan · Riwayat percobaan · Pengerjaan · Progres · Penyelesaian · Navigasi · Bantuan · Perangkat; filter kode siswa, sekolah, wilayah, tantangan, variasi, tanggal; tabel `RawDataService::page()` (nilai `enum` berlabel `ExportLabels::label()`, kode di `title`); CSV per tabel. |
+| `admin/feedback/index` | `/admin/masukan` | Filter sekolah dan tanggal; tabel kode siswa, sekolah, bintang (1–5), empat jawaban (dipotong, klik untuk lengkap), waktu; CSV. |
+| `admin/export/index` | `/admin/ekspor` | Formulir: filter sekolah/wilayah/tanggal (`bare`), isi nilai (bawaan/berlabel/berkode), anonim (guru: selalu), pilihan lembar di `<details>`; tombol **Buat XLSX** dan **Buat CSV-ZIP**. Tabel **Riwayat unduhan**: format, status (`data-export-id`, diperbarui `admin/export.js`), baris, ukuran, SHA-256, kedaluwarsa, Unduh. |
+| `admin/content/index` | `/admin/konten` | **Tantangan:** aksi Rincian verifikasi, Cerita pembuka & penutup, Impor bank soal; tabel 12 tantangan (kode, wilayah, urutan, jenis, judul, variasi aktif x/3, soal, gambar contoh tersisa, status verifikasi) dan tabel wilayah dengan tautan Wilayah · Bacaan · Pustaka & Kenali · Cerita & dialog. |
 | `admin/content/level` | `/admin/konten/level/{id}` | `partials/content-nav`; teks wilayah berpasangan ID/EN (`.bilingual`: nama, fokus literasi, capaian pembelajaran, tujuan pembelajaran, pengantar), tingkat kesulitan, aktif, gambar wilayah lewat `media-field` (peta `map.region.{code}` 1400 × 900, latar `bg.{code}.region` 1920 × 1080, lencana `reward.badge.{code}` 320 × 320); daftar tantangan. |
-| `admin/content/node` | `/admin/konten/node/{id}` | Judul, perintah, cerita kartu misi (ID/EN); jenis tantangan (terkunci bila sudah pernah dimainkan), kode variasi tampilan, indikator; pengaturan per engine (Susun Gambar: ukuran papan dari `DifficultyRules`; Isi Rumpang: `cfg[as_reading]`, `cfg[distractor_count]`; Benar atau Salah: keterangan tombol Benar/Salah); daftar variasi `.variant-row` a/b/c dengan judul ID/EN dan, untuk Isi Rumpang, kata pengecoh per variasi; `config_json` di `<details class="disclosure">`; gambar adegan dan latar (`media-field`), narasi kartu misi ID/EN (`audio-select`); lalu bank soal `.item-list` › `<details class="item-card" id="item-{id}">` per soal (variasi, jenis, status tinjauan berwarna `.is-draft`/`.is-needs_verification`/`.is-verified`, tidak dinilai, nonaktif) berisi form `admin/content/items` dan hapus berkonfirmasi, serta kartu **Tambah soal**. |
+| `admin/content/node` | `/admin/konten/node/{id}` | Editor bertab (`data-tabs`): **Info** (judul, perintah, cerita kartu misi ID/EN, jenis — terkunci bila sudah dimainkan, kode variasi tampilan, indikator, gambar adegan/latar, narasi kartu misi, aktif); **Variasi** (judul ID/EN dan pengecoh rumpang per variasi a/b/c, `config_json` di `<details>`, tabel **Soal per variasi**: kode, variasi, urutan, jenis, Bloom, keterampilan, kunci, tinjauan, dinilai, aktif; lalu kartu sunting soal `.item-card` dan **Tambah soal**); **Posisi benda** (Cari Objek: kartu benda dengan pemilih koordinat). Satu form node terbagi ke dua tab; tanpa JavaScript semua bagian tampil berurutan. |
 | `admin/content/items` | (di dalam node) | Form satu soal: kode (baru), jenis (`puzzle_arrange`, `fill_blank_bank`, `verdict_card`, `find_object`), variasi, urutan, status pemeriksaan, bacaan, indikator, tingkat Bloom (`DifficultyRules::BLOOM`), pertanyaan ID/EN, rekaman petunjuk ID/EN (hanya tantangan `cari`), gambar soal (`media-field`), teks sumber, panduan per jenis `.type-guide[data-for]` (ditampilkan lewat `:has()`), kunci jawaban dan pengaturan soal JSON, sumber rujukan, catatan pemeriksaan, Dinilai, Aktif. `admin/content-editor.js` menambah editor terpandu (kalimat `___`, Benar/Salah, pemilih koordinat benda di atas `data-scene`) yang menulis ke kolom JSON yang sama. |
 | `admin/content/passages` | `/admin/konten/bacaan/{levelId}` | Satu `fieldset.repeat-row` per bacaan (kode, judul dan isi ID/EN, gambar, sumber rujukan, aktif, hapus — dinonaktifkan bila masih dipakai soal) + baris bacaan baru. |
 | `admin/content/library` | `/admin/konten/pustaka/{levelId}` | Semua halaman Pustaka wilayah dalam satu form; tiap halaman punya media sebanyak apa pun (berkas terdaftar/unggahan, atau tautan YouTube, Google Drive, Vimeo, Wikimedia Commons, atau berkas https langsung). Halaman dan media nonaktif tetap tampil bertanda. |
@@ -506,12 +516,12 @@ Impor soal dan Rekaman narasi tampil menjorok (`.menu-sub`). **Ganti kata sandi*
 | `admin/narration/index` | `/admin/konten/narasi` | Aksi: Unggah rekaman, Unduh daftar rekaman (Excel), Kelengkapan gambar & suara. Panel kemajuan per bahasa (disetujui / menunggu persetujuan / belum ada, batang `.progress-stack` ber-`role="img"`) dengan `admin/narration/approve-all`. Lalu satu tabel per konteks dan wilayah (urut naskah): kode berkas, tokoh + pose + efek, cuplikan teks, status rekaman ID dan EN (lencana + pemutar kecil `.audio-preview-sm`), dan **Sunting** ke editor dialog (`#slide-{n}`) atau, untuk petunjuk Cari Objek `petunjuk-{node}-NN`, ke soalnya (`#item-{id}`). Total 100 rekaman per bahasa (88 baris naskah + 12 petunjuk). |
 | `admin/narration/upload` | `/admin/konten/narasi/unggah` | `files[]` (banyak berkas audio) + bahasa + "periksa nama saja"; panel batas sekali unggah (per berkas, jumlah berkas, total) yang juga diperiksa `admin/narration-upload.js` sebelum dikirim; laporan hasil (baru, diganti, sama, nama tidak dikenal dengan saran, gagal, baris yang belum punya rekaman); impor dari folder server `public/assets/audio/narasi/{id,en}/`. |
 | `admin/narration/approve-all` | (komponen) | Tombol "Setujui semua rekaman {bahasa} (n)" dengan `<details class="confirm">`; hanya narasi naskah dan petunjuk. Dipakai halaman Narasi dan Audio. |
-| `admin/media/index` | `/admin/media` | Hasil Pindai berkas (POST `/admin/media/pindai`), form unggah per `asset_key` (`?asset_key=` mengisi kotaknya), tabel ukuran wajib, tabel semua gambar & video (ukuran wajib vs sebenarnya — tidak sesuai ditandai teks + warna, status berkas, pemakaian, pratinjau, nonaktifkan). |
+| `admin/media/index` | `/admin/media` | **Gambar & mockup:** KPI slot, asli, gambar contoh, kosong, ukuran tidak sesuai; filter status (Asli / Gambar contoh / Kosong) dan jenis dengan chip; tabel slot (pratinjau, kode, label, isi yang diharapkan, ukuran berkas (wajib dan sebenarnya) & ukuran tampil dp (`$assetDisplaySizes`), status, dipakai di, **Unggah gambar asli**, Nonaktifkan berkonfirmasi); form unggah `#unggah` dan tabel ukuran wajib; hasil Pindai berkas. |
 | `admin/media/audio` | `/admin/media/audio` | Panel narasi cerita (tautan ke Narasi, tombol setujui semua per bahasa), form unggah audio, tabel rekaman (konteks, tokoh, bahasa, transkrip, status persetujuan, pemakaian, pemutar, tombol Setujui). |
 | `admin/media/checklist` | `/admin/media/kelengkapan` | Kelengkapan aset (`App\Libraries\AssetChecklist`): jumlah belum ada / perlu diperiksa / lengkap, lalu tabel per kelompok dengan status ikon + teks, ukuran wajib, dan tautan ke tempat mengunggahnya. |
-| `admin/study/index` | `/admin/studi` | Satu kartu per penelitian + form baru: kode, nama, deskripsi, tahun ajaran, status, lama simpan data (`retention_days`), bahasa bawaan, mode buka wilayah (`sequential` / `free`). Permainan memakai penelitian berstatus aktif dengan id terbesar. |
-| `admin/study/releases` | `/admin/studi/rilis` | Versi permainan (`game_releases`): versi aktif, form versi baru (selalu nonaktif), daftar dengan tombol Aktifkan berkonfirmasi. |
-| `admin/governance/index` | `/admin/tata-kelola` | Hapus data dua langkah: **Langkah 1** hitung data terdampak per jenis data (`admin_label('dataTable')`), tanpa menghapus; lalu kartu pratinjau yang menunggu, dijalankan hanya setelah mengetik `HAPUS`, atau dibatalkan. `?participant_id=` mengisi cakupan dari profil siswa. Riwayat permintaan dan panel **Perawatan data otomatis** (retensi). |
+| `admin/study/index` | `/admin/studi` | **Daftar siap penelitian** (0 gambar contoh, narasi disetujui, verifikasi siap penelitian lolos; tiap butir bertautan), lalu satu kartu per penelitian + form baru (kode, nama, deskripsi, tahun ajaran, status draf/berjalan/ditutup, retensi, bahasa bawaan, mode buka wilayah). Memilih status Berjalan saat daftar belum hijau memunculkan centang **Tetap jalankan** (`confirm_not_ready`, diperiksa server). |
+| `admin/study/releases` | `/admin/studi/rilis` | **Rilis** (`game_releases`): versi aktif, daftar dengan Aktifkan (modal konfirmasi), form versi baru (selalu nonaktif). |
+| `admin/governance/index` | `/admin/tata-kelola` | **Tata kelola**, tab Penghapusan data & retensi · Riwayat aktivitas. Hapus data dua langkah: hitung data terdampak tanpa menghapus, lalu jalankan setelah mengetik `HAPUS` atau batalkan. `?participant_id=` mengisi cakupan dari detail siswa. Riwayat permintaan dan panel retensi. |
 | `admin/governance/audit` | `/admin/tata-kelola/audit` | Riwayat aktivitas staf (`audit_logs`), filter aksi dan tanggal (GET), metadata per baris di `<details>`, 50 baris per halaman. |
 | `admin/schools/index` | `/admin/sekolah` | **Cari sekolah** (NPSN/nama, per kab/kota berdirektori) dan **Rapikan nama sekolah**: nama ketikan siswa digabung ke sekolah lain (menjadi alias) atau disahkan sebagai sekolah ber-NPSN; gabung otomatis untuk kecocokan yang jelas. |
 | `admin/staff/index` | `/admin/staf` | Satu `<details>` per akun (nama, peran, sekolah, wajib ganti sandi, terkunci, terakhir masuk) berisi form sunting, reset sandi (ketik `RESET`), nonaktifkan berkonfirmasi; form akun baru. Kolom sekolah disembunyikan CSS `:has()` saat peran Admin dipilih. Sandi sementara hasil reset hanya tampil di respons itu (`Cache-Control: no-store`). |
@@ -527,18 +537,20 @@ Impor soal dan Rekaman narasi tampil menjorok (`.menu-sub`). **Ganti kata sandi*
 
 ### Berkas
 
-Delapan berkas di `public/assets/css/`, dimuat berurutan lewat `asset_url_versioned()`. Tidak ada framework CSS atau build step.
+Delapan berkas di `public/assets/css/`, dimuat berurutan lewat `asset_url_versioned()`. Tidak ada framework CSS atau build step. CSS game (`tokens`, `base`, `stage`, `components`, `game`, `cinematic`) ditulis dalam `rem` panggung (lihat *Panggung 16:9*).
 
 | Berkas | Isi | Dimuat oleh |
 |---|---|---|
-| `tokens.css` | custom property: warna, lapisan, tipografi, spasi, radius, bayangan, ukuran layout | game, admin, auth |
-| `base.css` | `@font-face` lokal, reset, elemen dasar, tipografi, `:focus-visible`, `.skip-link`, `.visually-hidden`, `[hidden]`, aturan gerak dikurangi global | game, admin, auth |
-| `layout.css` | HUD, latar `.scene`, `.app`, `.nav-bar`; kepala, sidebar, main panel; panel tengah auth; lapisan modal & toast; layar putar; breakpoint utama | game, admin, auth |
-| `components.css` | tombol (`.btn`, `.btn-primary`, `.btn-ghost`, `.btn-quiet`, `.btn-danger`, `.btn-sm`/`.btn-lg`/`.btn-xl`, `.btn-block`), panel (`.panel`, `.panel-parchment`, `.panel-carved`), form, `.alert-*`, `.chip`, `.badge`, `.confirm`/`.confirm-box`, toast, modal, tabel, `.empty-state`, bintang, `stat-tile`, komponen kata sandi, pemutar audio, karakter, balon narasi, paginasi | game, admin, auth |
-| `game.css` | layar permainan: lentera & chip peserta, halaman awal, akun & pendaftaran, cerita & dialog, peta, kartu misi, empat arena, selesai & hasil, Pustaka, profil, Balai Refleksi | game |
+| `tokens.css` | warna, lapisan, tipografi, bayangan (bersama); ukuran game dalam rem (`--fs-*`, `--gap-*`, `--tap`, `--hud-h`, `--nav-h`, `--gutter`); ukuran panggung `:root.game-stage` | game |
+| `base.css` | `@font-face` lokal, reset, elemen dasar, tipografi, `:focus-visible`, `.skip-link`, `.visually-hidden`, `[hidden]`, aturan gerak dikurangi global | game |
+| `stage.css` | bingkai `.stage-frame`, panggung `#stage`, `.stage-box`, `.stage-scroll`, latar `.scene`, HUD, `.stage-main`, nav bar, lapisan modal & toast, layar putar, dan **semua koordinat tata letak layar** | game |
+| `components.css` | tombol (`.btn`, `.btn-primary`, `.btn-ghost`, `.btn-quiet`, `.btn-danger`, `.btn-sm`/`.btn-lg`/`.btn-xl`, `.btn-block`), panel (`.panel`, `.panel-parchment`, `.panel-carved`), form, `.alert-*`, `.chip`, `.badge`, `.confirm`/`.confirm-box`, toast, modal, tabel, `.empty-state`, bintang, `stat-tile`, komponen kata sandi, pemutar audio, karakter, balon narasi, paginasi | game |
+| `game.css` | rupa layar permainan: lentera & chip peserta, halaman awal, akun & pendaftaran, cerita & dialog, peta, kartu misi, empat arena, selesai & hasil, Pustaka, profil, Balai Refleksi | game |
 | `cinematic.css` | tirai, pemutar narasi (kartu ketuk, kontrol, mesin ketik, efek `.fx-*`), cerita pembuka/penutup, narasi peta, overlay Kenali, tirai wilayah & tantangan (`.cc-*`), kartu bab, panggung dialog, wilayah tuntas | game (sesudah `game.css`) |
 | `noscript.css` | `.curtain { display: none !important; }` | game, hanya di dalam `<noscript>` |
-| `admin.css` | kepala halaman, filter bar, KPI, tabel data, form konten dwibahasa, editor soal, impor, verifikasi, media, narasi, studi, ekspor, tata kelola, staf | admin |
+| `admin.css` | **berkas mandiri panel admin dan halaman masuk staf** (Dok 3 §8): font, token §8.1, dasar, sidebar/topbar, kepala halaman, tab, tombol, formulir, lencana, peringatan, bilah filter + chip, KPI, tabel data, pagination, modal, toast, halaman khusus (konten, media, studi, …), responsif (ikon < 1280 px, laci < 768 px) | admin, auth |
+
+`layout.css` sudah tidak ada: bagian game pindah ke `stage.css`, bagian admin ke `admin.css`.
 
 ### Token (`tokens.css`)
 
@@ -546,9 +558,11 @@ Delapan berkas di `public/assets/css/`, dimuat berurutan lewat `asset_url_versio
 |---|---|
 | Warna | `--navy-900` `#0B1320`, `--navy-800`, `--navy-700`, `--navy-600`; `--gold-500` `#DFC087`, `--gold-600`, `--gold-300`; `--parchment`, `--parchment-dark`; `--brown-700`, `--brown-500`; `--ok`, `--bad`, `--warn` dan versi teksnya `--ok-ink`, `--bad-ink`, `--warn-ink`; `--ink`, `--ink-dim` |
 | Lapisan & garis | `--veil` (lapisan gelap di belakang teks di atas gambar), `--veil-strong`, `--line`, `--line-strong`, `--line-ink`, `--surface`, `--surface-2`, `--glow` |
-| Tipografi | `--font-display` (Cinzel), `--font-body` (Plus Jakarta Sans), `--font-mono` (IBM Plex Mono); skala fluida `--step--1` … `--step-4` |
-| Ruang & bentuk | `--sp-1` (4px) … `--sp-7` (48px), `--radius`, `--radius-lg`, `--radius-pill`, `--shadow-1`, `--shadow-2`, `--shadow-glow` |
-| Sentuh & layout | `--tap` (44px), `--hud-h`, `--nav-h`, `--sidebar-w`, `--content-max` (1180px), `--arena-max` (900px) |
+| Tipografi | `--font-display` (Cinzel), `--font-body` (Plus Jakarta Sans), `--font-mono` (IBM Plex Mono); ukuran `--fs-caption` 16, `--fs-body` 20, `--fs-reading` 22 (bacaan), `--fs-h3` 24, `--fs-h2` 32, `--fs-h1` 40, `--fs-display` 56 dp |
+| Ruang & bentuk | `--gap-1` … `--gap-7` (4, 8, 12, 16, 24, 32, 48 dp), `--gutter` 32 dp, `--radius` 12, `--radius-lg` 20, `--radius-pill`, `--shadow-1`, `--shadow-2`, `--shadow-glow`, `--line-w` |
+| Sentuh & layout | `--tap` 48 dp, `--hud-h` 56 dp, `--nav-h` 64 dp; panggung `--app-w`/`--app-h`, `--stage-w`/`--stage-h`, `--letterbox` (`:root.game-stage`) |
+
+Token lama `--step-*`, `--sp-*`, `--content-max`, dan `--arena-max` tidak dipakai CSS game lagi. Panel admin memakai token sendiri di `admin.css` (§8.1) dan tidak memuat `tokens.css`, `base.css`, atau `components.css`.
 
 Font dimuat lokal dari `public/assets/fonts/` (berkas `.woff2` + lisensi OFL) dengan `font-display: swap`, bukan dari CDN: koneksi sekolah tidak dapat diandalkan, dan font pihak ketiga mengirim alamat IP anak ke luar.
 
@@ -557,27 +571,72 @@ Font dimuat lokal dari `public/assets/fonts/` (berkas `.woff2` + lisensi OFL) de
 * Kelas berbahasa Inggris, dipisah tanda hubung (`.challenge-head`, `.word-bank`); state memakai awalan `is-`/`has-` (`.is-active`, `.is-locked`, `.is-current`, `.has-error`).
 * Warna, ukuran teks, dan jarak lewat token; berkas lain tidak menulis nilai warna identitas baru.
 * `!important` hanya pada utilitas `[hidden]` dan `noscript.css`.
-* Tata letak dengan Grid dan Flexbox. Posisi pin peta dan benda Cari Objek ditulis inline dalam persen; variabel per elemen (`--grid`, `--i`, `--map-ratio`, `--steps`) juga lewat atribut `style`.
+* Tata letak di dalam panel dengan Grid dan Flexbox; letak panel di panggung hanya lewat `stage.css`. Posisi pin peta dan benda Cari Objek ditulis inline dalam persen; variabel per elemen (`--grid`, `--i`, `--map-ratio`, `--steps`) juga lewat atribut `style`.
+* CSS game: satuan `rem` (1rem = 16 dp); `px` hanya untuk garis 1px; tanpa `vw`/`vh` dan tanpa `@media` lebar/tinggi (`tests/unit/StageCssTest.php`).
 
-### Responsif
+### Panggung 16:9
 
-| Kondisi | Perilaku |
+Semua layar game digambar di **satu panggung tetap 1280 × 720 dp** (dp = *design pixel*), yang diperbesar/diperkecil seragam agar pas di layar lalu diletakkan di tengah; sisa layar menjadi bingkai gelap (`--letterbox`). Tidak ada tata letak responsif: tampilan di laptop, proyektor, tablet, dan ponsel mendatar sama, hanya skalanya yang berbeda (Dok 3 §1–§6).
+
+**Satuan.** `:root.game-stage { font-size: calc(var(--stage-w) / 80) }`, jadi `1rem = 16 dp` dan `#stage` berukuran `80rem × 45rem`. `--stage-w = min(--app-w, --app-h × 16/9)`; `--app-w`/`--app-h` diisi skrip sebaris `<head>` lalu `core/stage.js` dari `innerWidth`/`innerHeight` (cadangan tanpa JavaScript: `100vw`/`100dvh`). Contoh: 1280 × 800 → panggung 1280 × 720, 1 rem = 16 px; 1024 × 768 → 1024 × 576, 12,8 px; 1920 × 1080 → 24 px; ponsel 844 × 390 → 693 × 390, ± 8,7 px.
+
+**Kerangka dan pita tetap.**
+
+| Pita | dp (x, y, w, h) | Isi |
+|---|---|---|
+| HUD `.hud` | 0, 0, 1280, 56 | kiri: lentera serpihan + merek (lentera tetap kiri atas); tengah: section `hudTitle` atau nama wilayah; kanan: bahasa, suara, layar penuh (`#btn-fullscreen`, tersembunyi bila Fullscreen API tidak ada), beranda, profil, keluar. Saat tantangan tautan yang meninggalkan layar disembunyikan |
+| Area isi `main#app.stage-main` | 0, 0, 1280, 720 | `<main>` selebar panggung tanpa stacking context, jadi koordinat isi = koordinat panggung; isi tidak diletakkan di bawah HUD (y < 56) |
+| Nav bar `.nav-bar` | 0, 656, 1280, 64 | kembali di kiri, tombol utama di kanan. Layar sinematik: "Lewati" di kanan atas (y 72). Layar tantangan tanpa nav bar |
+| Modal `#modal-layer` | 0, 0, 1280, 720 | kotak 480–720 × maks 560 dp di tengah, isi bergulir bila panjang |
+| Toast `#toast-layer` | 856, 72, 400 | kanan atas di bawah HUD |
+
+`#stage` memakai `contain: layout paint`, sehingga `position: fixed` di dalamnya (tirai, overlay Kenali, konfeti) berlabuh ke panggung, dan apa pun yang keluar dari panggung terpotong. Lightbox `<dialog>` dirender peramban di top layer, tetapi ukurannya dalam rem sehingga tetap di dalam panggung.
+
+**Koordinat.** Kelas `.stage-box` meletakkan elemen dari variabel dp tanpa satuan `--x --y --w --h`; elemen bagian (partial) yang dipakai ulang mendapat aturan yang sama lewat daftar selektor di `stage.css`. Semua angka ada di `stage.css` §Koordinat:
+
+| Layar | Elemen (x, y, w, h dp) |
 |---|---|
-| `(orientation: portrait) and (pointer: coarse)` | area permainan ditutup layar putar (lihat *Orientasi layar*); panel admin tidak terpengaruh |
-| `(orientation: landscape) and (max-height: 500px)` | ponsel mendatar: HUD satu baris 52px, kepala tantangan + instruksi di kolom kiri, arena di kolom kanan; adegan Cari Objek, papan Susun Gambar, dan peta diukur dari tinggi layar (`--stage-h`) |
-| `max-width: 1024px` | tantangan satu kolom tanpa Jaka, papan puzzle maksimum 420px, peta dan panduannya bertumpuk, layar selesai satu kolom; sidebar admin menyempit menjadi ikon (`--sidebar-w: 72px`) |
-| `max-width: 640px` | HUD dua baris (`--hud-h: 112px`), panel lebih rapat, slide cerita satu kolom; sidebar admin menjadi drawer (`#admin-menu:target`), tabel menggulir di dalam `.table-wrap` |
-| lebih lebar | arena maksimum `--arena-max`, isi panel maksimum `--content-max` |
+| Halaman awal | logo 240, 120, 800 × 300; Mulai 460, 456, 360 × 120; tawaran pasang 896, 600, 352 × 40 |
+| Mulai, Gerbang | judul 0, 88, 1280 × 96; kartu 212, 200, 400 × 300 dan 668, 200 |
+| Masuk / Ganti sandi | panel 360, 88, 560 × 544 / 360, 72, 560 × 576 (gulir) |
+| Daftar 1–3 | panel 200, 72, 880 × 576: kepala + stepper 0–64, isian gulir, bilah tombol 80 dp di bawah; langkah 3 kotak "Mengapa sandi harus kuat?" dengan Jaka 220 dp |
+| Cerita pembuka, penutup | tokoh 64, 136, 300 × 520 (gambar 300 × 386); kotak teks 160, 520, 960 × 168 (judul + teks bergulir, navigasi slide di baris kepala); kontrol narasi + Lewati di kanan atas y 72 |
+| Dialog wilayah, wilayah tuntas | judul 0, 64, 1280 × 64; Jaka 64, 136 dan Mbah Kedu 916, 136 (300 × 520); kotak teks 160, 472, 960 × 168 (naik dari 520 karena ada nav bar) |
+| Peta Kedu | peta 32, 72, 880 × 566; panel wilayah kanan 936, 72, 312 × 576 (gulir); balon narasi Jaka 48, 560, 600 × 96 |
+| Kenali wilayah | overlay penuh 0, 0, 1280 × 720, isi dan komposisi slide sama |
+| Peta wilayah | peta 32, 72, 880 × 566; panel kanan 936, 72, 312 × 576: judul, fokus, progres, daftar tantangan (gulir) |
+| Kartu misi | 280, 96, 720 × 528; deskripsi bergulir; hasil terbaik: bintang + "Berhasil pada Percobaan Pertama x dari y" |
+| Tantangan | kepala 32, 64, 1216 × 56; arena 32, 128, 1216 × 576 — per engine lihat tabel berikut |
+| Selesai | kartu 280, 72, 720 × 576, tanpa Jaka |
+| Hasil | panel 160, 72, 960 × 576, tabel bergulir |
+| Rak Pustaka | keterangan 88, 64, 1104 × 48; kartu 88/464/840, 120, 352 × 440 |
+| Pustaka {wilayah} | buku 64, 80, 1152 × 568: galeri kiri 576 (gulir), teks kanan 576 (isi bergulir, navigasi halaman di bawah); lightbox selebar panggung |
+| Pustaka terkunci | kartu 320, 140, 640 × 420 |
+| Profil | kiri 32, 72, 400 × 576 (identitas, empat ubin); kanan 456, 72, 792 × 576 (lencana + riwayat bergulir) |
+| Balai Refleksi | kiri 32, 72, 520 × 576 (ringkasan, gulir); kanan 576, 72, 672 × 576 (formulir bergulir, Kirim tetap di bawah) |
 
-Papan tulis interaktif dan proyektor kelas sering berjalan pada 1366 × 768; layar tantangan dirancang muat pada tinggi itu. Tata letak panggung 16:9 belum diterapkan (direncanakan di Dok 3); `js_config()` sudah mengirim ukuran panggung acuan 1280 × 720.
+| Engine | Panel (x, y, w, h dp) |
+|---|---|
+| Susun Gambar | instruksi + 3 tips 32, 128, 332 × 512; papan 388, 136, 504 × 504; bilah aksi 388, 648, 504 × 48; keterangan gambar 916, 128, 332 × 512 |
+| Isi Rumpang | instruksi 96, 128, 1088 × 40; bacaan 96, 176, 1088 × 384 (gulir, `--fs-reading`); bank kata 96, 568, 1088 × 72; bilah aksi 96, 648, 1088 × 56 |
+| Benar atau Salah | bacaan 32, 128, 596 × 576 (gulir); instruksi 652, 128, 596 × 64; pernyataan 652, 200, 596 × 440 (gulir; gambar 192 × 144); bilah aksi 652, 648, 596 × 56 |
+| Cari Objek | bilah petunjuk 32, 128, 1216 × 56 (avatar Mbah Kedu 48); daftar benda 32, 192, 164 × 486; adegan 208, 192, 864 × 486; instruksi 1084, 192, 164 × 486 |
 
-### Orientasi layar
+**Gulir.** Panggung dan halaman tidak pernah bergulir. Panel yang isinya bisa panjang memakai `.stage-scroll` (tinggi tetap, `overflow-y: auto`); huruf tidak pernah dikecilkan untuk memuatkan teks. `core/dom.js` `scrollToCenter()` menggulir panel `.stage-scroll` terdekat.
 
-Area permainan hanya dilayani **mendatar** di perangkat sentuh, karena semua aset dibuat satu versi mendatar (peta 1400 × 900, adegan 16:9, latar 1920 × 1080).
+**Aset** (Dok 3 §6, `Config\Gelita::$assetDisplaySizes` di samping `$assetSizes`): latar 1920 × 1080 → 1280 × 720 dp; peta 1400 × 900 → 880 × 566; adegan Cari Objek 1280 × 720 → 864 × 486; gambar Susun Gambar ≥ 1200² → 504 × 504; gambar pernyataan 480 × 360 → 192 × 144 (lightbox 640 × 480); tokoh 700 × 900 → 300 × 386 (cerita), 220 × 283 (pendaftaran); logo hero 1600 × 600 → 800 × 300; tombol Mulai 720 × 240 → 360 × 120. Pin peta dan benda Cari Objek dalam persen gambar, jadi posisinya sama di semua ukuran.
 
-* `components/rotate-gate` ada di setiap halaman `layouts/game.php`. Tampil dan hilangnya murni CSS (`layout.css`, media query `(orientation: portrait) and (pointer: coarse)`), jadi bekerja tanpa JavaScript; `pointer: coarse` membuat laptop berjendela sempit tidak ikut dihalangi. Tidak ada tombol lewati; `Game.rotateStuck` menjelaskan cara menyalakan putar otomatis.
+**Media query yang boleh** di CSS game: `(orientation: portrait) and (pointer: coarse)` (layar putar), `prefers-reduced-motion`, `hover: hover`. `tests/unit/StageCssTest.php` menjaga aturan satuan dan media query; `tools/qa/stage-check.mjs` memeriksa hasil tampilannya di peramban.
+
+**Uji tampilan otomatis (`tools/qa/stage-check.mjs`).** Playwright + Chromium (sudah terpasang; jangan `playwright install`) terhadap `php spark serve` dengan database uji hasil instalasi baru atau `gelita:reset`, studi berjalan dengan *Cara wilayah terbuka* = bebas. `node tools/qa/stage-check.mjs [--base=…] [--user=… --pass=…] [--sizes=1280x720,…] [--only=peta,…]`: mendaftarkan siswa uji (tanpa `--user`), mengunjungi semua layar dan keempat tantangan di ketiga wilayah pada 1280 × 720, 1920 × 1080, 1366 × 657, 1024 × 768, 2560 × 1080, dan 844 × 390, membuka modal hasil, Kenali, dan lightbox Pustaka, lalu menghabiskan kesempatan setiap tantangan (jawaban asal) untuk layar selesai, hasil, wilayah tuntas, Pustaka, penutup, dan refleksi; terakhir 390 × 844 sentuh harus menampilkan layar putar. Yang diperiksa: rasio `#stage` 16:9 (±1 px) dan di tengah, halaman tidak bergulir, tidak ada elemen keluar dari panggung, isi yang melebihi wadahnya hanya di `.stage-scroll`, dan posisi relatif penanda (pin, benda, panel) sama di semua ukuran (selisih < 0,5 %). Tangkapan layar di `writable/qa/stage/` (diabaikan git). Kode keluar 1 bila ada yang gagal.
+
+### Layar putar dan aplikasi terpasang
+
+Area permainan hanya dilayani **mendatar** di perangkat sentuh, karena semua aset dibuat satu versi mendatar.
+
+* `components/rotate-gate` ada di setiap halaman `layouts/game.php`, **di luar** panggung (`position: fixed`, seluruh layar). Tampil dan hilangnya murni CSS (`stage.css`, media query `(orientation: portrait) and (pointer: coarse)`), jadi bekerja tanpa JavaScript; `pointer: coarse` membuat laptop berjendela sempit tidak ikut dihalangi. Selama tampil, panggung disembunyikan dan 1 rem diukur dari lebar layar (`calc(var(--app-w) / 24)`) agar teksnya terbaca. Tidak ada tombol lewati; `Game.rotateStuck` menjelaskan cara menyalakan putar otomatis.
 * `game/rotate-gate.js` hanya menjaga aksesibilitas: selama penghalang tampil, sisa `<body>` dibuat `inert` dan fokus dipindah ke penghalang. Media query di CSS dan JavaScript wajib sama (`tests/unit/RotateGateTest.php`).
-* Koordinat pin (`map_x`/`map_y`) dan benda Cari Objek (`x`/`y`/`w`) disimpan dalam persen terhadap gambar; kanvas mengunci rasio (`--map-ratio`, adegan 16:9). Latar `bg.*` digambar `object-fit: cover`, jadi bagian penting diletakkan di tengah.
+* Tombol **Layar penuh** di HUD (Fullscreen API) disembunyikan bila tidak didukung (mis. Safari iPhone). Layar penuh lepas setiap kali halaman berganti; karena itu memasang GELITA sebagai aplikasi tetap dianjurkan.
 
 **Aplikasi terpasang.** Hanya `layouts/game.php` yang menautkan `public/manifest.json` (`display: fullscreen`, `orientation: landscape`, URL relatif). Ikon ada di `public/assets/app/` (`icon.svg`, `icon-192.png`, `icon-512.png`, `icon-maskable-512.png`, `apple-touch-icon.png`). `public/sw.js` adalah service worker minimal yang hanya menangani navigasi `GET` (jaringan dulu, `public/offline.html` bila putus); API, event permainan, formulir, dan aset tidak pernah melewatinya, sehingga tidak ada data anak yang tersimpan di cache perangkat kelas (`tests/unit/InstallableAppTest.php`). `game/install.js` mendaftarkan service worker dan menampilkan tawaran pasang di halaman awal. Di Android aplikasi terpasang terkunci mendatar dan layar penuh; iPhone/iPad mengabaikan `orientation`, jadi layar putar tetap berlaku di sana.
 
@@ -589,7 +648,7 @@ Satu-satunya pustaka frontend adalah **Howler.js** (`public/assets/vendor/howler
 
 ## Aturan sistem
 
-1. Semua output dinamis melewati `esc()`. Data untuk JavaScript dikirim lewat `<script type="application/json">`, tidak pernah diinterpolasi ke string JavaScript; view tidak memuat skrip inline.
+1. Semua output dinamis melewati `esc()`. Data untuk JavaScript dikirim lewat `<script type="application/json">`, tidak pernah diinterpolasi ke string JavaScript; view tidak memuat skrip inline selain skrip ukuran panggung di `layouts/game.php` (tanpa data).
 2. Kunci jawaban dan penanda pengecoh tidak pernah muncul di HTML, atribut data, maupun payload halaman.
 3. Teks antarmuka memakai `lang()`; teks konten memakai `text()`/`tr()` yang jatuh ke bahasa Indonesia bila versi Inggris kosong. Area permainan dwibahasa; panel admin hanya Indonesia.
 4. Jumlah Serpihan Cahaya dan jumlah tantangan selalu dihitung dari database, tidak ditulis sebagai angka tetap di view.
@@ -600,3 +659,4 @@ Satu-satunya pustaka frontend adalah **Howler.js** (`public/assets/vendor/howler
 9. Nama pengguna siswa hanya terlihat oleh siswa itu sendiri di area permainan; ekspor dan laporan dari akun guru selalu tanpa nama.
 10. Tidak ada permintaan ke domain pihak ketiga dari halaman yang dibuka anak sebelum anak sendiri menekan Putar pada video Pustaka; font, ikon, dan pustaka di-host sendiri.
 11. Perangkat sentuh hanya dilayani mendatar; aset cukup satu versi mendatar.
+12. Semua layar game digambar di panggung 16:9 1280 × 720 dp yang diskalakan seragam; halaman tidak pernah bergulir, hanya panel `.stage-scroll`.

@@ -17,12 +17,12 @@ const MAX_MS = 5 * 60 * 1000;
 const LABELS = { queued: 'menunggu', running: 'sedang dibuat', done: 'siap diunduh', failed: 'gagal' };
 
 async function refreshTable(badge) {
-  const panel = badge.closest('section.panel');
+  // Tabel riwayat unduhan (components/data-table) ditukar dengan versi server terbaru
+  const panel = badge.closest('[data-table-card]');
   try {
     const res = await fetch(window.location.href, { credentials: 'same-origin', headers: { Accept: 'text/html' } });
     const doc = new DOMParser().parseFromString(await res.text(), 'text/html');
-    const index = $$('section.panel', document).indexOf(panel);
-    const fresh = $$('section.panel', doc)[index];
+    const fresh = panel?.id ? doc.getElementById(panel.id) : null;
     if (panel && fresh) panel.replaceWith(document.importNode(fresh, true));
     else window.location.reload();
   } catch {

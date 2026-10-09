@@ -59,7 +59,6 @@ $issueTable = static function (array $rows, string $level): string {
 <?php $actions = ob_get_clean() ?>
 <?= component('partials/admin-head', [
     'title'   => 'Impor soal dari Excel',
-    'eyebrow' => 'Pengelolaan · konten permainan',
     'lead'    => 'Tambah atau ubah banyak soal sekaligus lewat Excel: unduh templat, isi sesuai petunjuk di dalamnya, lalu unggah di sini. Berkas diperiksa dulu tanpa mengubah apa pun. Bila ada satu baris yang gagal, tidak ada yang disimpan sama sekali. Kunci jawaban soal yang sudah pernah dijawab siswa tidak dapat diubah lewat impor.',
     'actions' => $actions,
 ]) ?>

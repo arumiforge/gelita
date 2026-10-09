@@ -1,153 +1,209 @@
 <?php
 /**
- * Profil peserta — `/admin/peserta/{id}` → ParticipantController::show
+ * Detail siswa — `/admin/peserta/{id}?tab=…` → ParticipantController::show
+ * (Dok 3 §8.3)
  *
- * Demografi, nama pengguna, persetujuan siswa (assented_at), literasi
- * keamanan digital, ringkasan data mentah pengerjaan, perangkat, sesi, dan
- * tautan ke linimasa event tiap sesi. Tanpa skor dan chart (perombakan
- * kelas 5). Reset sandi wajib diketik `RESET`.
+ * Aksi: reset sandi, unduh data siswa (XLSX/CSV-ZIP, ExportController), cetak PDF. Tab: Profil ·
+ * Sesi & perangkat · Progres (12 baris) · Pengerjaan · Jawaban (baris dapat
+ * dibuka untuk riwayat percobaan) · Navigasi · Bantuan · Kritik & saran.
+ * Tab dirender server satu per satu (`?tab=`), tanpa JavaScript.
  *
- * @var array<string, mixed>              $participant bentuk aman, tanpa password_hash
- * @var array<string, mixed>              $profile     AnalyticsService::participantProfile()
- * @var list<array<string, mixed>>        $devices     device_logs siswa ini
- * @var list<array<string, mixed>>        $sessions
- * @var list<App\Entities\Level>          $levels
- * @var array<int, string>                $nodeTitles
+ * @var array<string, mixed>            $participant bentuk aman; tanpa nama untuk guru
+ * @var string                          $tab
+ * @var array<string, string>           $tabs
+ * @var bool                            $isAdmin
+ * @var array<string, mixed>|null       $table      tab data mentah (null = layanan belum tersedia)
+ * @var array<string, list<array>>|null $tries      riwayat percobaan per "attempt_id|item_key"
+ * @var array<string, mixed>|null       $sessions
+ * @var list<array<string, mixed>>|null $devices
+ * @var array<string, mixed>|null       $progress
+ * @var array<string, mixed>|null       $feedback
  */
+$id       = (int) $participant['id'];
+$base     = 'admin/peserta/' . $id;
 $criteria = $participant['pw_first_submit_criteria'];
 $region   = implode(', ', array_filter([$participant['district_name'], $participant['province_name'], $participant['country_name']]));
+$title    = $isAdmin && ! empty($participant['display_name']) ? $participant['display_name'] : $participant['participant_code'];
+
+// Unduh data siswa (lembar §9.2 difilter satu siswa) dan laporan PDF: satu
+// form, tujuan dipilih tombolnya. Guru selalu anonim (dipaksa server).
+$actions = '<form method="post" action="' . base_url('admin/ekspor/pdf') . '" class="btn-row">'
+    . csrf_field()
+    . '<input type="hidden" name="participant_id" value="' . $id . '">'
+    . ($isAdmin ? '<label class="check"><input type="checkbox" name="anonymized" value="1" checked> <span>Anonim</span></label>' : '')
+    . '<button class="btn" type="submit" formaction="' . base_url('admin/ekspor/xlsx') . '">' . icon('download') . ' Unduh XLSX</button>'
+    . '<button class="btn" type="submit" formaction="' . base_url('admin/ekspor/csv') . '">' . icon('download') . ' Unduh CSV-ZIP</button>'
+    . '<button class="btn" type="submit">' . icon('text') . ' Cetak PDF</button></form>'
+    . '<a class="btn btn-danger-soft" href="' . base_url($base . '#reset-sandi') . '">' . icon('key') . ' Reset sandi</a>';
+
+$rawTable = static function (?array $table, string $empty, array $extra = []) {
+    return $table === null
+        ? '<div class="empty-state">' . icon('database') . '<p>Data mentah tidak tersedia.</p></div>'
+        : component('data-table', $extra + ['table' => $table, 'id' => 'tab-data', 'emptyMessage' => $empty]);
+};
 ?>
 <?= $this->extend('layouts/admin') ?>
 
 <?= $this->section('content') ?>
 <?= component('partials/admin-head', [
-    'title'   => $participant['display_name'] ?: $participant['username'],
-    'eyebrow' => 'Profil siswa · ' . $participant['participant_code'],
-    'lead'    => 'Nama pengguna: ' . $participant['username'] . ' · mendaftar ' . fmt_date($participant['created_at'], false, 'id'),
-    'actions' => '<a class="btn btn-quiet btn-sm" href="' . base_url('admin/peserta') . '">' . icon('left') . ' Daftar siswa</a>',
+    'title'   => $title,
+    'lead'    => ($isAdmin ? 'Kode ' . $participant['participant_code'] . ' · nama pengguna ' . $participant['username'] . ' · ' : '')
+        . 'terdaftar ' . fmt_date($participant['created_at'], false, 'id')
+        . ' · ' . ($participant['school_name'] ?? 'sekolah tidak tercatat'),
+    'actions' => $actions,
 ]) ?>
 <?= $this->include('partials/flash') ?>
 
-<div class="split-grid">
-  <section class="panel">
-    <h2 class="panel-title"><?= icon('user') ?> Data diri</h2>
-    <dl class="detail-grid">
-      <div><dt>Kode siswa</dt><dd><code><?= esc($participant['participant_code']) ?></code></dd></div>
-      <div><dt>Nama pengguna</dt><dd><?= esc($participant['username']) ?></dd></div>
-      <div><dt>Nama</dt><dd><?= esc($participant['display_name'] ?? '—') ?></dd></div>
-      <div><dt>Umur</dt><dd><?= esc($participant['age'] ?? '—') ?></dd></div>
-      <div><dt>Jenis kelamin</dt><dd><?= esc(admin_label('gender', $participant['gender'] ?? null)) ?></dd></div>
-      <div><dt>Kelas</dt><dd><?= esc(class_label($participant['class_level'] ?? null)) ?></dd></div>
-      <div><dt>Sekolah</dt><dd><?= esc($participant['school_name'] ?? '—') ?></dd></div>
-      <div><dt>Daerah</dt><dd><?= esc($region !== '' ? $region : '—') ?></dd></div>
-    </dl>
-  </section>
+<nav aria-label="Bagian data siswa">
+  <ul class="tabs">
+    <?php foreach ($tabs as $key => $label): ?>
+      <li><a href="<?= base_url($base . ($key === 'profil' ? '' : '?tab=' . $key)) ?>"<?= $key === $tab ? ' aria-current="page"' : '' ?>><?= esc($label) ?></a></li>
+    <?php endforeach ?>
+  </ul>
+</nav>
 
-  <section class="panel">
-    <h2 class="panel-title"><?= icon('shield') ?> Persetujuan ikut bermain</h2>
-    <dl class="detail-grid">
-      <div><dt>Setuju ikut bermain</dt><dd><?= empty($participant['assented_at']) ? 'tidak tercatat' : 'ya · ' . esc(fmt_date($participant['assented_at'], true, 'id')) ?></dd></div>
-    </dl>
-  </section>
+<?php if ($tab === 'profil'): ?>
+  <div class="split-grid">
+    <section class="panel">
+      <h2 class="panel-title">Data diri</h2>
+      <dl class="detail-grid">
+        <div><dt>Kode siswa</dt><dd class="mono"><?= esc($participant['participant_code']) ?></dd></div>
+        <?php if ($isAdmin): ?>
+          <div><dt>Nama pengguna</dt><dd class="mono"><?= esc($participant['username']) ?></dd></div>
+          <div><dt>Nama</dt><dd><?= esc($participant['display_name'] ?? '—') ?></dd></div>
+        <?php endif ?>
+        <div><dt>Umur</dt><dd class="num"><?= esc($participant['age'] ?? '—') ?><?= $participant['age'] !== null ? ' tahun' : '' ?></dd></div>
+        <div><dt>Jenis kelamin</dt><dd><?= esc(admin_label('gender', $participant['gender'] ?? null)) ?></dd></div>
+        <div><dt>Kelas</dt><dd><?= esc(class_label($participant['class_level'] ?? null)) ?></dd></div>
+        <div><dt>Sekolah</dt><dd><?= esc($participant['school_name'] ?? '—') ?></dd></div>
+        <div><dt>Daerah</dt><dd><?= esc($region !== '' ? $region : '—') ?></dd></div>
+      </dl>
+    </section>
 
-  <section class="panel">
-    <h2 class="panel-title"><?= icon('key') ?> Literasi keamanan digital</h2>
-    <dl class="detail-grid">
-      <div><dt>Syarat sandi yang langsung dipenuhi</dt><dd class="num"><?= $criteria === null ? '—' : esc($criteria) . ' dari 5' ?></dd></div>
-      <div><dt>Mencoba sandi yang terlalu lemah</dt><dd class="num"><?= esc($participant['pw_weak_submit_count']) ?> kali</dd></div>
-      <div><dt>Terakhir ganti sandi</dt><dd><?= esc(fmt_date($participant['password_changed_at'], false, 'id')) ?></dd></div>
-      <div><dt>Harus membuat sandi baru</dt><dd><?= $participant['must_change_password'] ? 'ya (setelah guru membuat sandi sementara)' : 'tidak' ?></dd></div>
-    </dl>
-  </section>
+    <section class="panel">
+      <h2 class="panel-title">Pendaftaran & akun</h2>
+      <dl class="detail-grid">
+        <div><dt>Terdaftar</dt><dd><?= esc(fmt_date($participant['created_at'], true, 'id')) ?></dd></div>
+        <div><dt>Setuju ikut bermain</dt><dd><?= empty($participant['assented_at']) ? 'tidak tercatat' : esc(fmt_date($participant['assented_at'], true, 'id')) ?></dd></div>
+        <div><dt>Pengantar dilihat</dt><dd><?= esc(fmt_date($participant['intro_seen_at'], true, 'id')) ?></dd></div>
+        <div><dt>Masuk terakhir</dt><dd><?= esc(fmt_date($participant['last_login_at'], true, 'id')) ?></dd></div>
+        <div><dt>Syarat sandi dipenuhi pada kiriman pertama</dt><dd class="num"><?= $criteria === null ? '—' : esc($criteria) . ' dari 5' ?></dd></div>
+        <div><dt>Mencoba sandi terlalu lemah</dt><dd class="num"><?= esc($participant['pw_weak_submit_count']) ?> kali</dd></div>
+        <div><dt>Terakhir ganti sandi</dt><dd><?= esc(fmt_date($participant['password_changed_at'], false, 'id')) ?></dd></div>
+        <div><dt>Harus membuat sandi baru</dt><dd><?= $participant['must_change_password'] ? 'ya' : 'tidak' ?></dd></div>
+      </dl>
+    </section>
+  </div>
 
-  <section class="panel">
-    <h2 class="panel-title"><?= icon('chart') ?> Ringkasan data mentah</h2>
-    <dl class="detail-grid">
-      <div><dt>Pengerjaan selesai</dt><dd class="num"><?= esc($profile['completed_attempts']) ?></dd></div>
-      <div><dt>Berhasil pada Percobaan Pertama</dt><dd class="num"><?= esc($profile['first_pass_correct']) ?> dari <?= esc($profile['scorable_items']) ?> soal</dd></div>
-      <div><dt>Benar di akhir</dt><dd class="num"><?= esc($profile['final_correct']) ?> dari <?= esc($profile['scorable_items']) ?> soal</dd></div>
-      <div><dt>Bintang</dt><dd class="num"><?= esc($profile['stars']) ?></dd></div>
-      <div><dt>Total lama bermain</dt><dd class="num"><?= esc(ms_to_human($profile['total_duration_ms'])) ?></dd></div>
-      <div><dt>Mengubah jawaban</dt><dd class="num"><?= esc($profile['answer_changes']) ?> kali</dd></div>
-      <div><dt>Petunjuk dibuka</dt><dd class="num"><?= esc($profile['hint_uses']) ?></dd></div>
-      <div><dt>Suara diputar</dt><dd class="num"><?= esc($profile['audio']['total_plays']) ?> kali<?php if (! empty($profile['audio']['total_autoplays'])): ?> <small class="muted">+ <?= esc($profile['audio']['total_autoplays']) ?> kali otomatis</small><?php endif ?></dd></div>
-    </dl>
-  </section>
-</div>
-
-<?php if ($devices !== []): ?>
-<section class="panel">
-  <h2 class="panel-title"><?= icon('grid') ?> Perangkat</h2>
-  <?= component('admin-table', [
-      'rows'    => $devices,
-      'columns' => [
-          'created_at'      => ['label' => 'Waktu', 'format' => 'datetime'],
-          'via'             => 'Lewat',
-          'device_type'     => 'Jenis',
-          'device_brand'    => 'Merek',
-          'device_model'    => 'Model',
-          'os_name'         => 'Sistem operasi',
-          'browser_name'    => 'Peramban',
-          'screen_w'        => ['label' => 'Layar', 'render' => static fn (array $r): string => $r['screen_w'] === null ? '—' : $r['screen_w'] . ' × ' . $r['screen_h']],
-          'corrected'       => 'Koreksi',
-      ],
-  ]) ?>
-</section>
-<?php endif ?>
-
-<section class="panel">
-  <h2 class="panel-title"><?= icon('clock') ?> Sesi bermain</h2>
-  <?= component('admin-table', [
-      'rows'         => $sessions,
-      'emptyMessage' => 'Siswa ini belum pernah bermain.',
-      'columns'      => [
-          'status'          => ['label' => 'Status', 'format' => 'badge'],
-          'locale'          => ['label' => 'Bahasa', 'format' => 'label', 'group' => 'locale'],
-          'started_at'      => ['label' => 'Mulai', 'format' => 'datetime'],
-          'last_active_at'  => ['label' => 'Terakhir aktif', 'format' => 'datetime'],
-          'duration_ms'     => ['label' => 'Lama bermain', 'format' => 'ms'],
-          'completed_nodes' => ['label' => 'Tantangan selesai', 'format' => 'num'],
-          'total_stars'     => ['label' => 'Bintang', 'format' => 'num'],
-          'id'              => ['label' => '', 'render' => static fn (array $r): string => '<span class="actions-cell">'
-              . '<a class="btn btn-quiet btn-sm" href="' . base_url('admin/sesi/' . $r['id']) . '">Lihat</a>'
-              . '<a class="btn btn-quiet btn-sm" href="' . base_url('admin/sesi/' . $r['id'] . '/event') . '">Catatan aktivitas</a></span>'],
-      ],
-  ]) ?>
-</section>
-
-<section class="panel">
-  <h2 class="panel-title"><?= icon('download') ?> Data dan laporan siswa</h2>
-  <p class="muted">Unduh data mentah siswa ini (lembar yang sama dengan menu Unduh data, difilter satu siswa) atau laporan PDF berisi tabel sesi, perangkat, progres 12 tantangan, serta kritik &amp; saran. Unduhan dari akun guru selalu anonim (hanya kode siswa).</p>
-  <form method="post" action="<?= base_url('admin/ekspor/pdf') ?>" class="inline-form">
-    <?= csrf_field() ?>
-    <input type="hidden" name="participant_id" value="<?= (int) $participant['id'] ?>">
-    <?php if (session('staff_role') === 'admin'): ?>
-      <label class="check"><input type="checkbox" name="anonymized" value="1" checked> <span>Anonim</span></label>
+  <section class="form-section danger-zone" id="reset-sandi">
+    <h2><?= icon('key') ?> Siswa lupa kata sandi?</h2>
+    <p class="muted">Buat sandi sementara untuk siswa ini. Sandi hanya ditampilkan sekali, dan siswa harus membuat sandi baru saat masuk berikutnya.</p>
+    <form method="post" action="<?= base_url($base . '/reset-sandi') ?>" class="form"
+          data-confirm="Buat sandi sementara?" data-confirm-text="Sandi lama siswa <?= esc($participant['participant_code'], 'attr') ?> langsung tidak berlaku." data-confirm-ok="Buat sandi" data-confirm-style="danger">
+      <?= csrf_field() ?>
+      <div class="field">
+        <label for="confirm">Ketik <code>RESET</code> (huruf besar) untuk memastikan</label>
+        <input type="text" id="confirm" name="confirm" class="confirm-input" required pattern="RESET" autocomplete="off" spellcheck="false">
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-danger" type="submit"><?= icon('key') ?> Buat sandi sementara</button>
+      </div>
+    </form>
+    <?php if ($isAdmin): ?>
+      <p class="muted">
+        Siswa atau orang tua/wali meminta datanya dihapus?
+        <a href="<?= base_url('admin/tata-kelola?participant_id=' . $id) ?>#hapus">Hapus data siswa ini di Tata kelola</a>
+      </p>
     <?php endif ?>
-    <button class="btn btn-ghost btn-sm" type="submit" formaction="<?= base_url('admin/ekspor/xlsx') ?>"><?= icon('download') ?> Unduh data siswa (XLSX)</button>
-    <button class="btn btn-ghost btn-sm" type="submit" formaction="<?= base_url('admin/ekspor/csv') ?>"><?= icon('download') ?> Unduh data siswa (CSV-ZIP)</button>
-    <button class="btn btn-ghost btn-sm" type="submit"><?= icon('download') ?> Cetak laporan PDF</button>
-  </form>
-</section>
+  </section>
 
-<section class="form-section danger-zone">
-  <h2><?= icon('key') ?> Siswa lupa kata sandi?</h2>
-  <p class="muted">Buat sandi sementara untuk siswa ini. Sandi hanya ditampilkan sekali, dan siswa harus membuat sandi baru saat masuk berikutnya.</p>
-  <form method="post" action="<?= base_url('admin/peserta/' . $participant['id'] . '/reset-sandi') ?>" class="form">
-    <?= csrf_field() ?>
-    <div class="field">
-      <label for="confirm">Ketik <code>RESET</code> (huruf besar) untuk memastikan</label>
-      <input type="text" id="confirm" name="confirm" class="confirm-input" required pattern="RESET" autocomplete="off" spellcheck="false">
-    </div>
-    <div class="form-actions">
-      <button class="btn btn-danger" type="submit"><?= icon('key') ?> Buat sandi sementara</button>
-    </div>
-  </form>
-  <?php if (session('staff_role') === 'admin'): ?>
-    <p class="muted">
-      Siswa atau orang tua/wali meminta datanya dihapus?
-      <a href="<?= base_url('admin/tata-kelola?participant_id=' . $participant['id']) ?>#hapus"><?= icon('trash') ?> Hapus data siswa ini</a>
-    </p>
-  <?php endif ?>
-</section>
+<?php elseif ($tab === 'sesi'): ?>
+  <?= component('data-table', [
+      'table'        => $sessions,
+      'id'           => 'sesi-siswa',
+      'title'        => 'Sesi bermain',
+      'csv'          => false,
+      'paginate'     => false,
+      'emptyMessage' => 'Siswa ini belum pernah bermain.',
+      'render'       => [
+          'session_code' => static fn (array $r): string => '<a href="' . base_url('admin/sesi/' . $r['id']) . '">' . esc($r['session_code']) . '</a>',
+      ],
+  ]) ?>
+  <?= component('data-table', [
+      'table' => [
+          'rows' => $devices, 'total' => count($devices), 'page' => 1, 'per_page' => max(1, count($devices)), 'sort' => null,
+          'columns' => array_map(static fn (array $c): array => $c + ['sortable' => false], [
+              ['key' => 'created_at', 'label' => 'Waktu', 'type' => 'datetime'],
+              ['key' => 'via', 'label' => 'Tercatat lewat', 'type' => 'text'],
+              ['key' => 'device_type', 'label' => 'Jenis', 'type' => 'label:device'],
+              ['key' => 'device_brand', 'label' => 'Merek', 'type' => 'text'],
+              ['key' => 'device_model', 'label' => 'Model', 'type' => 'text'],
+              ['key' => 'os_name', 'label' => 'Sistem operasi', 'type' => 'text'],
+              ['key' => 'os_version', 'label' => 'Versi SO', 'type' => 'code'],
+              ['key' => 'browser_name', 'label' => 'Peramban', 'type' => 'text'],
+              ['key' => 'browser_version', 'label' => 'Versi peramban', 'type' => 'code'],
+              ['key' => 'screen', 'label' => 'Layar (px)', 'type' => 'code'],
+              ['key' => 'viewport', 'label' => 'Jendela (px)', 'type' => 'code'],
+              ['key' => 'corrected', 'label' => 'Dikoreksi', 'type' => 'bool'],
+          ]),
+      ],
+      'id'           => 'perangkat-siswa',
+      'title'        => 'Perangkat',
+      'csv'          => false,
+      'paginate'     => false,
+      'emptyMessage' => 'Belum ada catatan perangkat.',
+      'render'       => [
+          'screen'   => static fn (array $r): string => ($r['screen_w'] ?? null) === null ? '<span class="is-empty">—</span>' : esc($r['screen_w'] . ' × ' . $r['screen_h']),
+          'viewport' => static fn (array $r): string => ($r['viewport_w'] ?? null) === null ? '<span class="is-empty">—</span>' : esc($r['viewport_w'] . ' × ' . $r['viewport_h']),
+      ],
+  ]) ?>
+
+<?php elseif ($tab === 'progres'): ?>
+  <?= component('data-table', [
+      'table'    => $progress,
+      'id'       => 'progres-siswa',
+      'title'    => 'Progres 12 tantangan',
+      'csv'      => false,
+      'paginate' => false,
+  ]) ?>
+
+<?php elseif ($tab === 'jawaban'): ?>
+  <?php
+    $tries      = $tries ?? [];
+    $tryColumns = $tries['_columns'] ?? [];
+    $expand     = static function (array $row) use ($tries, $tryColumns): ?string {
+        $history = $tries[($row['attempt_id'] ?? '') . '|' . ($row['item_key'] ?? '')] ?? [];
+
+        if ($history === []) {
+            return null;
+        }
+
+        return component('data-table', [
+            'table'       => ['rows' => $history, 'total' => count($history), 'page' => 1, 'per_page' => count($history), 'sort' => null,
+                'columns' => array_map(static fn (array $c): array => $c + ['sortable' => false], $tryColumns)],
+            'title'       => 'Riwayat percobaan · ' . ($row['item_key'] ?? ''),
+            'csv'         => false,
+            'paginate'    => false,
+            'stickyFirst' => false,
+        ]);
+    };
+  ?>
+  <?= $rawTable($table ?? null, 'Siswa ini belum menjawab soal.', ['expand' => $expand, 'expandLabel' => 'Riwayat']) ?>
+
+<?php elseif ($tab === 'masukan'): ?>
+  <?= component('data-table', [
+      'table'        => $feedback,
+      'id'           => 'masukan-siswa',
+      'csv'          => false,
+      'paginate'     => false,
+      'emptyMessage' => 'Siswa ini belum mengirim kritik & saran.',
+  ]) ?>
+
+<?php else: ?>
+  <?= $rawTable($table ?? null, [
+      'pengerjaan' => 'Siswa ini belum mengerjakan tantangan.',
+      'navigasi'   => 'Belum ada catatan navigasi.',
+      'bantuan'    => 'Siswa ini belum membuka petunjuk atau memutar suara.',
+  ][$tab] ?? 'Belum ada data.') ?>
+<?php endif ?>
 <?= $this->endSection() ?>

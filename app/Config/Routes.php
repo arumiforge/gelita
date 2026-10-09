@@ -110,6 +110,8 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
         $routes->get('sesi/(:num)', 'SessionController::show/$1');
         $routes->get('sesi/(:num)/event', 'SessionController::timeline/$1');
         $routes->get('masukan', 'FeedbackController::index');
+        $routes->get('data', 'RawDataController::index');
+        $routes->get('data/(:segment)', 'RawDataController::show/$1');
 
         // Export — guru & admin, tetapi mode non-anonim hanya admin
         $routes->get('ekspor', 'ExportController::index');

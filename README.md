@@ -33,9 +33,12 @@ Aplikasi dibangun dengan **CodeIgniter 4.7** (PHP 8.2+, MariaDB 10.6+ / MySQL 8)
 
 **Panel admin** (`/admin`)
 
-- Dasbor berisi hitungan mentah, daftar peserta, sesi beserta linimasa event, dan masukan siswa.
+- Dasbor SaaS netral (tidak bertema permainan, tanpa chart): sidebar 248 px yang menyempit jadi ikon di bawah 1280 px, topbar dengan breadcrumb, cari siswa, dan menu akun.
+- Tabel formal server-side: header dan kolom pertama lengket, urut per kolom, 25/50/100 baris + total, filter dengan chip, dan **Unduh CSV** per tabel (nilai mentah, filter yang sama).
+- Ringkasan (KPI hitungan + aktivitas dan progres terbaru), Siswa + detail bertab (profil, sesi & perangkat, progres 12 tantangan, pengerjaan, jawaban dengan riwayat percobaan, navigasi, bantuan, kritik & saran), Sesi bermain + linimasa event, **Data mentah** `/admin/data/{dimensi}`, dan Kritik & saran.
 - Ekspor data mentah XLSX atau CSV-ZIP dengan Kamus Data, berlabel atau berkode (guru: selalu anonim, hanya sekolahnya, tanpa Event Mentah dan kunci jawaban), ekspor per siswa, dan laporan PDF satu siswa.
-- Khusus admin: editor konten (wilayah, tantangan, soal, bacaan, dialog, Pustaka, narasi), impor bank soal dari Excel, Media dan **Kelengkapan aset**, studi & rilis, tata kelola data (penghapusan berpratinjau, audit, retensi), direktori sekolah, dan akun staf.
+- Khusus admin: Tantangan (tabel 12 tantangan + editor bertab Info/Variasi/Posisi benda), impor bank soal, narasi, **Gambar & mockup** (status Asli/Gambar contoh/Kosong, unggah per slot), Kelengkapan aset, Penelitian dengan **daftar siap penelitian**, Rilis, Sekolah, Staf, dan Tata kelola (penghapusan berpratinjau, audit, retensi).
+- Guru hanya melihat menu dan data sekolahnya, tanpa kolom identitas siswa.
 - Otorisasi berlapis tiga (route → controller → service); halaman khusus admin membalas `404` untuk guru.
 
 ## Kebutuhan sistem

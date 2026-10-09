@@ -37,11 +37,13 @@ public/
     ├── core/
     │   ├── config.js        membaca #app-config: CONFIG, LOCALE, url(), t()
     │   ├── api.js           apiRequest(), ApiError, handleApiError()
-    │   ├── events.js        antrean event + pengiriman batch: emit(), emitAudio(), flush(), resendQueued()
+    │   ├── stage.js         panggung 16:9: initStage(), stageRect(), stageScale(), viewport_changed, layar penuh
+    │   ├── events.js        antrean event + pengiriman batch: emit(), emitAudio(), flush(), resendQueued(), page_hidden/visible
     │   ├── storage.js       antrean offline & preferensi di localStorage
     │   ├── audio.js         Sfx (Howler) + pemutar narasi (NarrationPlayer)
     │   ├── curtain.js       tirai pemuatan layar penuh: playCurtain(), initCurtains()
-    │   ├── device.js        sinyal perangkat, viewport_changed, page_hidden/visible, reading_progress
+    │   ├── device.js        sinyal perangkat, overlay_opened, reading_progress
+    │   ├── lightbox.js      perbesar gambar dalam <dialog>: createLightbox()
     │   ├── modal.js         showModal(), confirmDialog(), closeModal(), isModalOpen()
     │   ├── toast.js         toast()
     │   ├── timer.js         jam tantangan: startTimer(), formatClock()
@@ -103,6 +105,7 @@ CONFIG          // objek beku di atas
 LOCALE          // = CONFIG.locale
 url('masuk')    // → {baseUrl}masuk
 t('blankEmptyText', 3)  // teks Js.* dengan {0}, {1}, … diganti; kunci tak dikenal dikembalikan apa adanya
+                       // bentuk tunggal EN memakai kunci …One (blankEmptyTextOne, cardsEmptyTextOne, puzzleWrongTextOne)
 ```
 
 **Teks antarmuka.** Semua teks yang ditulis JavaScript area game ada di `app/Language/id/Js.php` dan `app/Language/en/Js.php`. `js_config()` mengirim setiap kunci `Js.*` dalam bahasa aktif sebagai `CONFIG.text`, jadi tidak ada kamus kedua di JavaScript. Teks yang sudah dirender server ke atribut `data-*` (label tingkat sandi dari `Auth.*`, label kesempatan dari `Game.triesLabel` + `Game.triesOf`, pesan kunci peta dan Pustaka dari `Game.*`) dibaca langsung dari atributnya. Panel admin hanya berbahasa Indonesia, sehingga teks di `admin/*.js` ditulis langsung.
@@ -237,6 +240,19 @@ initCurtains()  // dipanggil game.js: pembersihan bfcache + delegasi a[data-curt
 
 Jenis yang dipakai: `map` (tirai peta, dengan ketukan), `region` ("Menuju {wilayah}…", tanpa ketukan), `challenge` (sebelum layar tantangan, dapat dilewati).
 
+### `core/stage.js` — panggung 16:9
+
+```js
+initStage({ track })   // --app-w/--app-h, tombol layar penuh, viewport_changed (track = ada sessionTag)
+stageRect()            // kotak #stage di layar (CSS px)
+stageScale()           // lebar panggung ÷ 1280
+```
+
+- Skrip sebaris di `<head>` `layouts/game.php` mengisi `--app-w`/`--app-h` dari `innerWidth`/`innerHeight` sebelum CSS dimuat (`load`, `resize`, `orientationchange`); `initStage()` melanjutkannya. CSS menghitung sisanya (`--stage-w`, `font-size` akar = lebar panggung ÷ 80), jadi JavaScript tidak pernah menghitung tata letak. `visualViewport` sengaja tidak dipakai: papan ketik layar dan cubit-zoom tidak boleh mengecilkan panggung.
+- `viewport_changed` `{ w, h, orientation, rotate_gate, stage_w, stage_h, scale }` saat halaman dibuka dan setiap ukuran/orientasi berubah, termasuk saat layar putar tampil/hilang (debounce 1 detik, paling sering satu per 5 detik, tanpa kiriman bila nilainya sama). `stage_w`/`stage_h` dalam CSS px, `scale` = `stage_w / 1280` (3 desimal). Dulu bagian `core/device.js` (`initScreenTracking`).
+- Tombol **Layar penuh** `#btn-fullscreen` di HUD (Fullscreen API, dengan awalan `webkit`); tersembunyi bila tidak didukung, `aria-pressed` mengikuti `fullscreenchange`. Layar penuh lepas setiap kali halaman berganti (perilaku peramban).
+- Posisi pointer (seret keping, ketuk benda) memakai `getBoundingClientRect()`, yang sudah menyertakan skala; tidak ada pembagian dengan skala secara manual.
+
 ### `core/device.js`
 
 Sinyal perangkat dan tampilan layar untuk data penelitian. Tidak ada sidik jari peramban (canvas, font, audio).
@@ -245,14 +261,17 @@ Sinyal perangkat dan tampilan layar untuk data penelitian. Tidak ada sidik jari 
 deviceSignals()          // → { screen_w, screen_h, viewport_w, viewport_h, pixel_ratio, touch_points,
                          //     orientation, is_standalone, language, timezone, ua_data }
 attachDeviceField(form)  // isi input[name="device_json"] sesaat sebelum formulir terkirim
-initScreenTracking()     // viewport_changed + page_hidden / page_visible
 trackReading(section, refs)  // reading_progress 25/50/75/100 %
 overlayOpened(overlay, { level, levelId })  // overlay_opened
 ```
 
 - `attachDeviceField()` dipakai formulir masuk dan langkah 3 pendaftaran. Kiriman pertama ditahan paling lama 800 ms menunggu `navigator.userAgentData.getHighEntropyValues()`, lalu dikirim ulang lewat `requestSubmit()`. JSON lebih dari 4.000 karakter dikirim tanpa `ua_data`; bila gagal, formulir tetap terkirim tanpa sinyal (server memakai User-Agent saja). Harus dipasang sebelum penjaga kirim-ganda.
-- `initScreenTracking()` (dari `game.js`, hanya bila ada `sessionTag`): `viewport_changed` `{ w, h, orientation, rotate_gate }` saat halaman dibuka dan setiap ukuran/orientasi berubah (debounce 1 detik, paling sering satu per 5 detik, tanpa kiriman bila nilainya sama). `page_hidden`/`page_visible` `{ screen }`, dengan kode layar dari `body[data-screen-code]` (resolver yang sama dengan `screen_viewed` di server; Pustaka terkunci → `library_locked`).
-- `trackReading()` memantau `.rumpang-reading`, `details.passage .passage-content`, dan `.passage-body` di layar tantangan; tiap batas dikirim sekali per pengerjaan, dengan `passage_id` bila ada. Panel yang tidak dapat digulir dinilai dari bagian yang tampak di layar.
+- `viewport_changed` kini di `core/stage.js`; `page_hidden`/`page_visible` `{ screen }` di `core/events.js` `initVisibilityTracking()`, dengan kode layar dari `body[data-screen-code]` (resolver yang sama dengan `screen_viewed` di server; Pustaka terkunci → `library_locked`).
+- `trackReading()` memantau panel bacaan bergulir di panggung: `.rumpang-reading`, daftar kalimat rumpang, dan kolom bacaan Benar atau Salah `.boleh-passages`; posisi gulir panel itulah yang dihitung (panggung tidak pernah bergulir). Tiap batas dikirim sekali per pengerjaan, dengan `passage_id` bila panel berisi satu bacaan. Panel yang tidak perlu digulir langsung bernilai 100 %.
+
+### `core/lightbox.js`
+
+`createLightbox({ closeLabel, loadingLabel, variant })` → `open(src, alt, caption)`. `<dialog>` bawaan (`showModal()`: Esc menutup, fokus terkunci) ditambahkan ke `#stage`; karena dialog modal berada di top layer, ukurannya ditulis dalam rem agar tetap di dalam panggung. Dipakai `game/library.js` (selebar panggung) dan `engines/boleh.js` (`variant: 'card'`, gambar pernyataan 640 × 480 dp).
 
 ### `core/modal.js`
 
@@ -262,17 +281,17 @@ confirmDialog({ title, text, confirmLabel, cancelLabel, danger })          // �
 closeModal(value), isModalOpen()
 ```
 
-- Satu markup dari `<template id="tpl-modal">` (`components/modal.php`) di `#modal-layer`; cadangan dibuat dengan `el()` bila template tidak ada.
-- `type`: `correct`, `wrong`, `hint`, `confirm`, `info`. `icon` memilih `template[data-modal-icon]`. `text` boleh berupa larik: tiap unsur menjadi paragraf. Tombol dengan `href` dirender sebagai tautan.
+- Satu markup dari `<template id="tpl-modal">` (`components/modal.php`) di `#modal-layer`, yang berada di dalam `#stage` (modal ikut skala panggung); cadangan dibuat dengan `el()` bila template tidak ada.
+- `type`: `correct`, `wrong`, `hint`, `confirm`, `info`. `icon` memilih `template[data-modal-icon]`. `text` boleh berupa larik: tiap unsur menjadi paragraf (`#modal-text`, `#modal-text-2`, …), dan `aria-describedby` modal menunjuk **semua** paragraf itu, sehingga pembaca layar juga membacakan "Kesempatanmu tinggal n lagi". Tombol dengan `href` dirender sebagai tautan.
 - Fokus pindah ke tombol pertama, terperangkap di dalam modal (Tab/Shift+Tab), dan kembali ke pemicu saat ditutup. `Escape` dan klik latar hanya menutup modal `dismissible`; modal hasil pemeriksaan dibuat `dismissible: false` dengan tombol eksplisit.
 - `body.has-modal` selama terbuka (pintasan keyboard slide berhenti). Semua teks lewat `textContent`.
 
 ### `core/toast.js`, `core/timer.js`, `core/confetti.js`, `core/dom.js`
 
-- `toast(message, type, requestId)` — `type`: `info`, `ok`, `bad`, `warn`. Paling banyak 3 bertumpuk (toast flash server tidak dihitung), hilang setelah 4 detik; `request_id` tampil kecil bila ada.
+- `toast(message, type, requestId)` — wadah `#toast-layer` di dalam `#stage` (856, 72, 400 dp). `type`: `info`, `ok`, `bad`, `warn`. Paling banyak 3 bertumpuk (toast flash server tidak dihitung), hilang setelah 4 detik; `request_id` tampil kecil bila ada.
 - `startTimer(el, elapsedMs)` → `{ stop(), elapsed() }`. Menampilkan `m:ss` (atau `h:mm:ss`) mulai dari `elapsed_ms` payload, yang dihitung server, sehingga benar setelah muat ulang dan kebal jam komputer yang salah. Tidak berdetak selama halaman tersembunyi, lalu menyusul waktu sebenarnya.
-- `confetti(count)` — canvas, paling banyak 60 partikel, ±2,6 detik, warna dari token CSS; tidak digambar sama sekali bila `prefers-reduced-motion`.
-- `dom.js` — `$`, `$$`, `on(target, type, selector?, handler)` (delegasi, mengembalikan pelepas), `el(tag, attrs, ...children)` (anak string lewat `textContent`), `esc()`, `readJson(id)`, `reducedMotion()`, `sleep()`, `scrollToCenter()`, `icon(name)` (salinan `template[data-icon]`), `announce(message)`, `debounce()`.
+- `confetti(count)` — canvas selebar panggung (ditambahkan ke `#stage`, ukuran dari `stageRect()`), paling banyak 60 partikel, ±2,6 detik, warna dari token CSS; tidak digambar sama sekali bila `prefers-reduced-motion`.
+- `dom.js` — `$`, `$$`, `on(target, type, selector?, handler)` (delegasi, mengembalikan pelepas), `el(tag, attrs, ...children)` (anak string lewat `textContent`), `esc()`, `readJson(id)`, `reducedMotion()`, `sleep()`, `scrollToCenter()` (menggulir panel `.stage-scroll` terdekat ke tengah, bukan `window`), `icon(name)` (salinan `template[data-icon]`), `announce(message)`, `debounce()`.
 
 ---
 
@@ -283,7 +302,7 @@ closeModal(value), isModalOpen()
 Selalu aktif di setiap halaman layout game:
 
 1. `<html>` diberi kelas `js`; `Sfx.unlock()` dipasang pada `pointerdown`/`keydown` pertama.
-2. Bila ada `sessionTag`: `resendQueued()` saat dimuat dan saat event `online`, lalu `initScreenTracking()`.
+2. `initStage({ track: Boolean(sessionTag) })` (`core/stage.js`). Bila ada `sessionTag`: `resendQueued()` saat dimuat dan saat event `online`, lalu `initVisibilityTracking()`.
 3. `initHud()`, `initRotateGate()`, `initInstall()`, `initCurtains()`.
 4. `initAudioPlayers(document, { attemptId, attention })`.
 5. Modul halaman dipilih dari `[data-screen]`:
@@ -399,7 +418,7 @@ initNarrator(root, { onFinish, onSlide })
 - Gambar `[data-preload]` dipramuat saat idle.
 - **Peta wilayah** (`map-level`): `level_opened` `{ code }` + `levelId`, musik `region`.
 - **Peta Kedu** (`map-kedu`): narasi `map_intro` lewat `initNarrator()` pada panduan peta. Bila halaman membawa tirai peta (`[data-curtain-layer="map"]`), `playCurtain('map')` → setelah ketukan, musik `map` lalu `start()`. Tanpa tirai, musik diminta biasa dan narasi menunggu ▶.
-- **Kenali wilayah.** Setiap overlay `[data-kenal]` diberi narrator mode `external` (`data-hash="0"`, `data-keyboard="0"`). Klik `[data-kenal-open]` (pin dan kartu): `overlay_opened` `{ overlay: 'kenal', level }`, `Sfx.unlock()` di dalam ketukan, narasi peta dihentikan, overlay `.is-open`, `body.has-kenal`, skip-link/HUD/`<main>`/nav `inert`, kembali ke slide 1 tanpa event, `start({ userInitiated: true })`, fokus ke `.kenal-close`. Selama terbuka: Esc menutup, → atau Spasi `advance()`, ← `prev()`. Tutup (`[data-kenal-close]`, Esc, atau bfcache) → `stop()`, `flush()`, fokus kembali ke pembuka. Slide terakhir menghapus lencana `[data-kenal-badge]`; server menghitung status "sudah didengar" dari `dialogue_advanced` context `region_intro`. `onFinish` mengklik tombol akhir `[data-slide-final]` ("Masuk ke {wilayah}" memutar tirai `region`). Tanpa JavaScript overlay adalah target `:target`.
+- **Kenali wilayah.** Setiap overlay `[data-kenal]` diberi narrator mode `external` (`data-hash="0"`, `data-keyboard="0"`). Klik `[data-kenal-open]` (pin dan kartu): `overlay_opened` `{ overlay: 'kenal', level }`, `Sfx.unlock()` di dalam ketukan, narasi peta dihentikan, overlay `.is-open`, `body.has-kenal`, skip-link/HUD/`<main>`/nav `inert`, kembali ke slide 1 tanpa event, `start({ userInitiated: true })`, fokus ke `.kenal-close`. Selama terbuka: Esc menutup, → atau Spasi `advance()`, ← `prev()`. Tutup (`[data-kenal-close]`, Esc, atau bfcache) → `stop()`, `flush()`, fokus kembali ke pembuka. Slide terakhir menghapus lencana `[data-kenal-badge]`; server menghitung status "sudah didengar" dari `dialogue_advanced` context `region_intro`. `onFinish` mengklik tombol akhir `[data-slide-final]` ("Masuk ke {wilayah}" memutar tirai `region`). Tanpa JavaScript overlay adalah target `:target`. Ketukan sebelum modul siap hanya sempat mengubah hash (`#kenal-{code}` atau `#kenal-{code}-{n}`); saat siap, hash itu membuka overlay di slide n **tanpa** memutar narasi (belum ada ketukan untuk membuka kunci audio), lalu hash dibersihkan lewat `history.replaceState`. Narasi peta tidak dimulai selama overlay Kenali terbuka. Lapisan yang dibuat `inert` dicari di `#stage` (`#stage > .hud`, `main`, `.nav-bar`, `.skip-link`).
 
 ### `game/library.js`
 
@@ -409,7 +428,7 @@ initNarrator(root, { onFinish, onSlide })
 - Gambar/video yang gagal dimuat disembunyikan beserta `.book-figure`; halaman yang kehilangan semua medianya menjadi teks saja.
 - Gambar di `.book-frame` memudar masuk (`.is-loaded`) dari skeleton; gambar `loading="lazy"` di halaman sesudahnya diubah `eager` saat berpindah.
 - Panel kredit `details.media-credit`: membuka satu menutup yang lain; klik di luar, Esc, atau pindah halaman menutup semuanya.
-- Perbesar gambar: `.book-zoom[data-zoom]` membuka `<dialog class="lightbox">` dengan pemutar tunggu (`data-label-loading`) sampai gambar besar termuat; mengirim `overlay_opened` `{ overlay: 'lightbox', level }`.
+- Perbesar gambar: `.book-zoom[data-zoom]` membuka lightbox `core/lightbox.js` (selebar panggung) dengan pemutar tunggu (`data-label-loading`) sampai gambar besar termuat; mengirim `overlay_opened` `{ overlay: 'lightbox', level }`.
 - Video tertanam: facade `.book-embed[data-embed]` (poster + `.embed-play`) diganti iframe hanya setelah ditekan; pindah halaman mengembalikan facade dan menjeda `<video>`.
 - Rak: sampul yang gagal dimuat disembunyikan sehingga gradien kartu tampil.
 
@@ -555,7 +574,8 @@ Process   klien hanya menukar posisi; tiap tukar → answer_selected { action: '
 Request   POST /api/attempts/{id}/check { answers: [{ item_id, answer: { order } }] }
 Response  detail[item] = { pieces_correct, misplaced }
 UI        benar       → keping terkunci, papan .is-solved, keterangan gambar tampil, modal sukses
-          salah       → slot di `misplaced` diberi .is-misplaced; modal puzzleWrongText
+          salah       → slot di `misplaced` diberi .is-misplaced dan label "… — belum di tempatnya"
+                        (pieceMisplaced) untuk pembaca layar; modal puzzleWrongText / puzzleWrongTextOne
                         ("masih ada N keping yang keliru") + sisa kesempatan; fokus ke keping keliru
           habis       → keping disusun ke posisi utuh (FLIP 600 ms), keterangan tampil,
                         lalu modal triesExhaustedPuzzle + teks keterangan
@@ -564,6 +584,7 @@ UI        benar       → keping terkunci, papan .is-solved, keterangan gambar t
 - Papan n × n keping SVG; ukuran dan bentuk mengikuti tingkat wilayah (`App\Libraries\DifficultyRules`): Temanggung 3 × 3 kotak, Magelang 4 × 4 kotak, Wonosobo 4 × 4 jigsaw. Urutan awal diacak server tanpa satu keping pun di tempatnya.
 - Slot (tombol) tetap di tempat; yang berpindah adalah `.piece-art` beserta `data-piece`. Keping tidak bernomor; label pembaca layar menyebut letak slot, dan setiap tukar diumumkan (`piecesSwapped`).
 - Ketuk-untuk-tukar wajib (paling andal di tablet); seret-lepas HTML5 hanya tambahan. Keyboard: panah berpindah antar keping (roving focus), Enter/Spasi memilih atau menukar, Esc membatalkan pilihan.
+- Muat ulang sesudah cek yang belum utuh (`tries_used > 0`): hitungan ✓/✗ di kepala dipulihkan ✓ 0 / ✗ 1 (satu gambar), seperti engine lain memulihkannya dari `state`.
 - Susunan benarnya memang publik (keping 0…n²−1 dari kiri atas), jadi server boleh mengirim slot yang keliru (`misplaced`) dan klien boleh menyusun gambar utuh setelah kesempatan habis.
 
 ### Fitur: Isi Rumpang (`rumpang`)
@@ -604,7 +625,8 @@ Error     ada kartu belum dipilih → .has-error 2,6 detik, digulirkan ke tengah
 ```
 
 - Tombol verdict adalah radio yang dirender server, jadi dapat dipilih dengan keyboard atau sentuhan tanpa JavaScript; markup tidak memuat kunci.
-- Bacaan dirender sekali di atas kartu (`details.passage`). Pada layar ≤ 640 px bacaan dilipat dan judulnya diberi label `readText` ("Baca teks"). Tautan "Berdasarkan …" (`a.card-passage`) membuka dan menggulir ke bacaannya.
+- Bacaan dirender sekali di kolom kiri yang bergulir sendiri (`.boleh-passages`); cabang lipat-bacaan layar sempit (`matchMedia('(max-width: 640px)')`) dihapus karena panggung tidak responsif. Tautan "Berdasarkan …" (`a.card-passage`) membuka dan menggulir ke bacaannya di panelnya.
+- Gambar pernyataan `button.card-image[data-zoom]` (192 × 144 dp) membuka lightbox 640 × 480 dp (`createLightbox({ variant: 'card' })`) dan mengirim `overlay_opened` `{ overlay: 'statement_image' }`.
 - Petunjuk soal memakai kartu yang terakhir difokus. Muat ulang: pernyataan dengan `state.locked` dipulihkan dengan pilihan siswa sendiri, bertanda benar, dan terkunci.
 
 ### Fitur: Cari Objek Budaya (`cari`)
@@ -653,14 +675,19 @@ Panel admin satu bahasa (Indonesia) dan semua halamannya tetap berfungsi tanpa J
 
 ### `admin/filters.js`
 
-- Berlaku untuk `form.filter-bar` (GET) yang menjadi anak langsung `#admin-main`. Perubahan filter memperbarui URL lewat `history.replaceState` (tetap dapat dibagikan), mengambil HTML halaman untuk filter baru, lalu mengganti semua saudara form filter di `#admin-main`; form-nya sendiri tetap sehingga fokus keyboard tidak hilang. Tombol "Atur ulang" ikut versi server.
+- Berlaku untuk `form.filter-bar` (GET) yang menjadi anak langsung `#admin-main`. Perubahan filter memperbarui URL lewat `history.replaceState` (tetap dapat dibagikan), mengambil HTML halaman untuk filter baru, lalu mengganti semua saudara form filter di `#admin-main`; form-nya sendiri tetap sehingga fokus keyboard tidak hilang. Tombol "Atur ulang" dan chip filter aktif (`.filter-chips`) ikut versi server; chip adalah tautan biasa yang melepas satu filter.
 - Kolom teks/pencarian diterapkan setelah jeda 450 ms; pilihan dan tanggal langsung. Permintaan sebelumnya dibatalkan (`AbortController`).
 - Gagal memuat → toast, lalu navigasi biasa ke URL filter. Tanpa JavaScript tombol Terapkan mengirim form seperti biasa.
 
 ### `admin/tables.js`
 
-- `table.data-table[data-sortable="client"]` (≤ 500 baris; tabel lebih besar dipaginasi server): judul kolom menjadi tombol urut dengan `aria-sort`. Nilai dibaca dalam format Indonesia (`1.234,5`, `85,0%`, `2:05`, `23 Sep 2026 10:14`, satuan seperti "tahun", "kali", "siswa"); `data-sort` pada sel menimpa teksnya; sel kosong "—" selalu di akhir; baris setara mempertahankan urutan server.
-- Tabel ≥ 10 baris mendapat kotak "Saring baris di tabel ini…" yang menyembunyikan baris yang tidak cocok dan menampilkan "N dari M baris".
+- Tabel server (`components/data-table`, `data-sortable="server"`): urut, halaman, dan CSV sudah berupa tautan biasa. Modul ini hanya menerapkan pilihan "Baris per halaman" langsung (`select[data-auto-submit]`), menambah bayangan kolom pertama lengket saat tabel digulir ke samping (`.table-wrap.is-scrolled`), dan menyembunyikan baris rincian `tr.row-expand` (mis. riwayat percobaan) di balik tombol `.expand-toggle` (`aria-expanded`, `aria-controls`).
+- Tabel kecil (`components/admin-table`, `data-sortable="client"`, ≤ 500 baris): judul kolom menjadi tombol urut dengan `aria-sort`. Nilai dibaca dalam format Indonesia (`1.234,5`, `85,0%`, `2:05`, `23 Sep 2026 10:14`, satuan seperti "tahun", "kali", "siswa"); `data-sort` pada sel menimpa teksnya; sel kosong "—" selalu di akhir. Tabel ≥ 10 baris mendapat kotak "Saring baris di tabel ini…".
+
+### `admin/tabs.js` dan modal konfirmasi
+
+- `[data-tabs]` berisi tautan `#tab-{kunci}`; isinya elemen `[data-tab-panel~="{kunci}"]` di mana pun di halaman, sehingga satu form boleh terbagi ke beberapa tab (field tersembunyi tetap terkirim). Tab dipilih tersimpan di hash; hash `#item-…` (kembali sesudah menyimpan soal) membuka tab pemuatnya. Tautan `a[data-open-item]` membuka tab dan kartu soalnya. Tanpa JavaScript semua bagian tampil berurutan.
+- `admin.js` → `initConfirm()`: `form[data-confirm]` menahan submit lalu membuka `core/modal.js` (judul `data-confirm`, teks `data-confirm-text`, tombol `data-confirm-ok`, gaya `data-confirm-style`); "Batal" tidak mengirim apa pun. Tanpa JavaScript form langsung terkirim dan server tetap memvalidasi.
 
 ### `admin/content-editor.js` dan `admin/object-picker.js`
 
@@ -752,10 +779,10 @@ POST /api/events
 
 | Event | Pengirim | Payload utama |
 |---|---|---|
-| `viewport_changed` | `core/device.js` | `w`, `h`, `orientation`, `rotate_gate` |
-| `page_hidden`, `page_visible` | `core/device.js` | `screen` (kode layar) |
+| `viewport_changed` | `core/stage.js` | `w`, `h`, `orientation`, `rotate_gate`, `stage_w`, `stage_h`, `scale` |
+| `page_hidden`, `page_visible` | `core/events.js` | `screen` (kode layar) |
 | `reading_progress` | `core/device.js` (layar tantangan) | `percent` (25/50/75/100), `passage_id?` |
-| `overlay_opened` | `challenge.js`, `map.js`, `library.js` | `overlay` (`hint`, `exit`, `kenal`, `lightbox`), `level` (kode wilayah) |
+| `overlay_opened` | `challenge.js`, `map.js`, `library.js`, `engines/boleh.js` | `overlay` (`hint`, `exit`, `kenal`, `lightbox`, `statement_image`), `level` (kode wilayah) |
 | `dialogue_advanced` | `game/narrator.js` | `index`, `total`, `context` (`intro`, `map_intro`, `region_intro`, `level_open`, `level_done`, `ending`), `character` |
 | `level_opened` | `game/map.js` (peta wilayah) | `code` |
 | `library_page_viewed` | `game/library.js` | `page`, `total`, `page_id` |

@@ -15,14 +15,18 @@
 
 <?= $this->section('content') ?>
 <?= component('partials/admin-head', [
-    'title'   => 'Kata sandi sementara',
-    'eyebrow' => 'Sandi sementara · ' . $participant['participant_code'],
+    'title' => 'Kata sandi sementara',
+    'lead'  => 'Siswa ' . $participant['participant_code'],
 ]) ?>
 
 <section class="panel temp-password-card">
-  <p>Kata sandi untuk nama pengguna <b><?= esc($participant['username']) ?></b> sudah diganti dengan sandi sementara berikut:</p>
+  <?php if (isset($participant['username'])): ?>
+    <p>Kata sandi untuk nama pengguna <b><?= esc($participant['username']) ?></b> sudah diganti dengan sandi sementara berikut:</p>
+  <?php else: ?>
+    <p>Kata sandi siswa <b class="mono"><?= esc($participant['participant_code']) ?></b> sudah diganti dengan sandi sementara berikut:</p>
+  <?php endif ?>
   <p class="temp-password" id="temp-password"><?= esc($temporaryPassword) ?></p>
-  <button type="button" class="btn btn-ghost" data-copy="#temp-password"><?= icon('text') ?> Salin</button>
+  <button type="button" class="btn" data-copy="#temp-password"><?= icon('text') ?> Salin</button>
   <div class="alert alert-warn"><?= icon('warn') ?>
     <p><b>Berikan sandi ini kepada siswa. Saat masuk, siswa akan diminta membuat sandi baru.</b><br>
       Sandi ini hanya muncul sekali dan tidak disimpan di mana pun — catat sekarang, dan jangan memuat ulang halaman ini.</p>

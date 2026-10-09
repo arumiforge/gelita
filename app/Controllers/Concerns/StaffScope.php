@@ -34,7 +34,8 @@ trait StaffScope
 
     /**
      * Filter penelitian dari query string. Nilai kosong dibuang agar
-     * apply_research_filters() tidak menambahkan WHERE yang tidak perlu.
+     * apply_research_filters() tidak menambahkan WHERE yang tidak perlu;
+     * kunci di luar peta filter baku diabaikan helper itu.
      *
      * @return array<string, mixed>
      */
@@ -43,6 +44,8 @@ trait StaffScope
         $allowed = [
             'study_id', 'participant_id', 'participant_code', 'level_id', 'node_id', 'variant_group',
             'school_id', 'class_level', 'province_code', 'locale', 'date_from', 'date_to',
+            // Panel admin Dok 3 §8.3: daftar siswa dan data mentah
+            'q', 'district_code', 'gender', 'age', 'progress', 'variant_group', 'participant_code',
         ];
 
         $filters = [];

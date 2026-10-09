@@ -17,7 +17,7 @@ class StaffController extends BaseAdminController
 {
     public function index(): string
     {
-        return $this->panel('admin/staff/index', 'Akun guru & admin', [
+        return $this->panel('admin/staff/index', lang('Admin.menuStaff'), [
             'rows'      => $this->viewRows(),
             'schools'   => model(SchoolModel::class)->inUseList(),
             'temporary' => null,
@@ -148,7 +148,7 @@ class StaffController extends BaseAdminController
         $this->response->setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
         $this->response->setHeader('Pragma', 'no-cache');
 
-        return $this->panel('admin/staff/index', 'Akun guru & admin', [
+        return $this->panel('admin/staff/index', lang('Admin.menuStaff'), [
             'rows'      => $this->viewRows(),
             'schools'   => model(SchoolModel::class)->inUseList(),
             'temporary' => ['staff' => $target->toSafeArray(), 'password' => $temporary],

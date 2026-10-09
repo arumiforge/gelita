@@ -75,7 +75,7 @@ $curtainOf = static fn (array $l): string => $l['status'] !== 'locked' && isset(
     <?php if (($story ?? []) === []): ?>
       <aside class="map-guide map-balloon stage-box">
         <?= component('character', ['character' => 'jaka', 'pose' => 'idle']) ?>
-        <?= component('narration', ['text' => lang('Game.mapLead'), 'speaker' => 'jaka', 'tail' => 'down']) ?>
+        <?= component('narration', ['text' => lang('Game.mapLead'), 'speaker' => 'jaka', 'tail' => 'down', 'class' => 'stage-scroll']) ?>
       </aside>
     <?php else: ?>
       <?php $storyTotal = count($story); ?>
@@ -102,7 +102,7 @@ $curtainOf = static fn (array $l): string => $l['status'] !== 'locked' && isset(
               <?php if ($character !== 'narator'): ?>
                 <?= component('character', ['character' => $character, 'pose' => $pose, 'class' => 'pose-' . $pose]) ?>
               <?php endif ?>
-              <blockquote class="narration narration-down map-story-line" data-narrator-advance>
+              <blockquote class="narration narration-down map-story-line stage-scroll" data-narrator-advance>
                 <cite><?= esc(lang_or('Game.char_' . $character, $character)) ?><?php if ($title !== ''): ?><span class="map-story-title">· <?= esc($title) ?></span><?php endif ?></cite>
                 <p class="slide-text"><?= esc($text) ?></p>
               </blockquote>

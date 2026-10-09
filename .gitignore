@@ -63,6 +63,9 @@ Vagrantfile
 /writable/debugbar/*
 !/writable/debugbar/index.html
 
+# Tangkapan layar tools/qa/stage-check.mjs (Dok 3 §12.2)
+/writable/qa/
+
 /writable/exports/*
 !/writable/exports/index.html
 
