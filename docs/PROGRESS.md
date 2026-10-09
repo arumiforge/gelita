@@ -16,7 +16,9 @@ Last updated: 9 October 2026.
   - [x] §8.4, §9, §10 raw data, export, PDF (PR #45)
   - [x] `gelita:simulasi` and browser tests for PR #42 (PR #46)
   - [x] Browser tests for PR #42, `check_no` fix for checks from a stale tab, `gelita:simulasi` docs (PR #50)
-  - [ ] §11 documentation: only the sections Dok 3 changed are updated
+  - [x] §11 documentation, audited against the code (PR #52, PR #53, PR #54)
+  - [ ] Code issues found in the §11 audit (decision log, "Dok 3 — documentation (§11)" items 1–9): branches below
+  - [ ] Owner decision: should the research-ready gate also apply to the study that `gelita:reset` seeds as active?
   - [ ] §12.3 manual tests on a real laptop, tablet, and phone; keyboard and screen reader pass; open CSV/XLSX in LibreOffice or R
   - [~] §13 one-off upgrade script: **dropped**. A release is a fresh install per `docs/08_DEPLOYMENT.md`
 
@@ -33,4 +35,8 @@ Last updated: 9 October 2026.
 
 ## Active branches
 
-None. Add a row (branch, owner / scope, status) when a session starts a branch; remove it when its PR is merged.
+| Branch | Owner / scope | Status |
+|---|---|---|
+| `fix-admin-data` | §11 audit items 1–4: Jawaban tab history, username search, CSV audit, dead model methods | in progress |
+| `fix-admin-copy` | §11 audit items 5–6: "Gambar & mockup" in messages, admin layout lang keys, auth skip link | in progress |
+| `fix-game-details` | §11 audit items 7–9: Mbah Kedu pose, `statement_image` level code, `stage.css` comment | in progress |
