@@ -347,6 +347,27 @@ class RawDataService
     }
 
     /**
+     * Every row of one dimension in the bound scope, in key order, with the
+     * same coded values and columns as `page()`, but without paging. Meant
+     * for short per-participant lists such as the attempt history on the
+     * student Jawaban tab; exports stream through `rows()` instead.
+     *
+     * @param array<string, mixed> $filters
+     *
+     * @return array{rows: list<array<string, int|string|null>>,
+     *               columns: list<array{key: string, label: string, type: string}>}
+     */
+    public function all(string $dimension, array $filters): array
+    {
+        $scope = $this->boundScope();
+
+        return [
+            'rows'    => iterator_to_array($this->rows($dimension, $filters, $scope), false),
+            'columns' => $this->columnSpecs($dimension, $scope),
+        ];
+    }
+
+    /**
      * Menulis seluruh baris satu dimensi (cakupan terikat) sebagai CSV ke
      * $handle: UTF-8 dengan BOM, pemisah koma, baris judul = kode kolom,
      * nilai berkode (sama dengan `page()['rows']`).

@@ -203,12 +203,11 @@ class ParticipantController extends BaseAdminController
         $search = trim((string) ($filters['q'] ?? ''));
 
         if ($search !== '') {
-            $builder->groupStart()
-                ->like('p.participant_code', $search)
-                ->orLike('p.username', $search);
+            $builder->groupStart()->like('p.participant_code', $search);
 
+            // Identity columns are hidden from teachers, so they are not searchable either
             if ($this->isAdmin()) {
-                $builder->orLike('p.display_name', $search);
+                $builder->orLike('p.username', $search)->orLike('p.display_name', $search);
             }
 
             $builder->groupEnd();
@@ -248,7 +247,8 @@ class ParticipantController extends BaseAdminController
         $tries  = [];
 
         if ($tab === 'jawaban') {
-            $history = $raw->page('percobaan', $filters, 1, 10000, null);
+            // All tries of this participant: page() caps rows at 100 per page
+            $history = $raw->all('percobaan', $filters);
 
             foreach ($history['rows'] as $row) {
                 $tries[($row['attempt_id'] ?? '') . '|' . ($row['item_key'] ?? '')][] = $row;

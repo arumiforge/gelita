@@ -233,15 +233,29 @@ abstract class BaseAdminController extends BaseController
      * RawDataService::streamCsv()). Berkas ditulis ke php://temp lebih dulu
      * (meluap ke disk di atas 2 MB), lalu dikirim sekali.
      *
-     * @param callable(resource): mixed $write
+     * Every download writes one `export_csv` audit row, like the Data
+     * mentah CSV in rawCsvDownload(): target = table name, metadata = the
+     * query string filters and the row count.
+     *
+     * @param callable(resource): mixed $write returns the row count when known
      */
     protected function csvResponse(string $name, callable $write): ResponseInterface
     {
         $handle = fopen('php://temp/maxmemory:2097152', 'w+b');
-        $write($handle);
+        $rows   = $write($handle);
         rewind($handle);
         $body = (string) stream_get_contents($handle);
         fclose($handle);
+
+        $query = $this->request->getGet();
+        unset($query['format']);
+
+        model(AuditLogModel::class)->record('export_csv', [
+            'staff_user_id' => $this->staffId(),
+            'target_type'   => 'admin_table',
+            'target_id'     => $name,
+            'metadata'      => ['filters' => is_array($query) ? $query : [], 'row_count' => is_int($rows) ? $rows : null],
+        ]);
 
         $file = $name . '-' . date('Ymd-His') . '.csv';
 

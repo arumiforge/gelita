@@ -933,21 +933,21 @@ Halaman `/admin/sekolah` (admin, `SchoolController`, aturan di `App\Services\Sch
 
 ## FITUR 11: Siswa, Sesi, Data Mentah, dan Linimasa Event di Panel
 
-Guru dan admin; guru hanya untuk siswa sekolahnya dan selalu tanpa kolom identitas. Tabel daftar memakai `App\Libraries\AdminTable` (urut, halaman 25/50/100, dan **Unduh CSV** `?format=csv` dengan filter yang sama, semuanya di server); tabel data mentah memakai `RawDataService::page()` dengan bentuk hasil yang sama. Keduanya dirender `components/data-table`.
+Guru dan admin; guru hanya untuk siswa sekolahnya dan selalu tanpa kolom identitas. Tabel daftar memakai `App\Libraries\AdminTable` (urut, halaman 25/50/100, dan **Unduh CSV** `?format=csv` dengan filter yang sama, semuanya di server; setiap unduhan CSV menulis audit `export_csv`); tabel data mentah memakai `RawDataService::page()` dengan bentuk hasil yang sama. Keduanya dirender `components/data-table`.
 
 ```text
 1. /admin/peserta (ParticipantController::index): satu baris per siswa dari sesi
    terakhirnya: kode, nama dan nama pengguna (admin saja), sekolah, kab/kota,
    JK, umur, terdaftar, setuju ikut, tantangan selesai, wilayah terakhir,
    bintang, aktif terakhir
-     filter: cari (kode, nama pengguna; nama untuk admin), sekolah (admin),
+     filter: cari (kode; nama pengguna dan nama hanya admin), sekolah (admin),
      kab/kota, JK, umur, progres (belum | berjalan | selesai), tanggal daftar
 2. /admin/peserta/{id} (show; di luar cakupan → 404), tab ?tab=:
      profil      identitas aman (tanpa password_hash dan kolom throttle),
                  wilayah, metrik sandi, waktu setuju ikut bermain
      sesi        sesi bermain + catatan perangkat (device_logs) per daftar/masuk
      progres     12 baris tantangan dari sesi siswa
-     pengerjaan, jawaban (+ riwayat percobaan per baris), navigasi, bantuan
+     pengerjaan, jawaban (+ seluruh riwayat percobaan per baris), navigasi, bantuan
                  lembar data mentah satu siswa (RawDataService::page() dengan
                  participant_id); ?format=csv mengunduh tab itu
      masukan     kritik & saran siswa
@@ -1331,7 +1331,7 @@ Navigasi = event `screen_viewed`, `overlay_opened`, `dialogue_advanced`, `librar
 
 **Ekspor per siswa (§9.3).** Tombol unduh di `/admin/peserta/{id}` mengirim `participant_id` bersama formulir yang sama. `ExportService::context()` menambahkannya ke filter (`participant_id` ada di `RawDataService::FILTER_KEYS`, bukan di `ExportService::FILTER_KEYS`), sehingga setiap lembar yang bergantung siswa hanya memuat siswa itu; Bank Soal tidak bergantung siswa. Lembar, mode anonim, cakupan sekolah, audit, dan unduhan sama dengan ekspor biasa, dan respons kembali ke profil siswa.
 
-**CSV per tabel.** Setiap tabel `/admin/data/{dimensi}` punya tombol Unduh CSV (`?format=csv`, `BaseAdminController::rawCsvDownload()` → `RawDataService::streamCsv()`): baris dan filter sama dengan tabel, nilai berkode, audit `export_csv`.
+**CSV per tabel.** Setiap tabel `/admin/data/{dimensi}` punya tombol Unduh CSV (`?format=csv`, `BaseAdminController::rawCsvDownload()` → `RawDataService::streamCsv()`): baris dan filter sama dengan tabel, nilai berkode, audit `export_csv`. Unduh CSV tabel daftar (Siswa, Sesi, linimasa sesi, Kritik & saran) lewat `BaseAdminController::csvResponse()` juga menulis `export_csv` (`target_type = admin_table`).
 
 `password_hash`, `failed_login_count`, `locked_until`, dan `ip_hash` tidak pernah dibaca ekspor. Data perangkat bukan identitas, jadi tetap ada di ekspor anonim.
 

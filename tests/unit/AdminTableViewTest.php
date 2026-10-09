@@ -190,6 +190,32 @@ final class AdminTableViewTest extends CIUnitTestCase
         $this->assertStringContainsString('admin/data', $html);
     }
 
+    public function testTeacherSearchDoesNotMatchHiddenUsernames(): void
+    {
+        $html = fn (string $role, ?int $school, string $q): string => html_entity_decode(
+            (string) $this->asStaff($role, $school)->call(Method::GET, 'admin/peserta', ['q' => $q])->getBody(),
+            ENT_QUOTES | ENT_HTML5,
+        );
+
+        // siswa45 = GLT-000045, school 2
+        $this->assertStringContainsString('GLT-000045', $html('admin', null, 'siswa45'), 'admin searches usernames');
+        $this->assertStringNotContainsString('GLT-000045', $html('guru', 2, 'siswa45'), 'a teacher cannot confirm a hidden username');
+        $this->assertStringContainsString('GLT-000045', $html('guru', 2, 'GLT-000045'), 'a teacher still searches by code');
+    }
+
+    public function testListCsvDownloadWritesAnAuditRow(): void
+    {
+        $this->asStaff('guru', 2)->call(Method::GET, 'admin/peserta', ['format' => 'csv', 'gender' => 'perempuan'])->assertOK();
+
+        $audit = $this->sqlite->table('audit_logs')->where('action', 'export_csv')->get()->getResultArray();
+        $this->assertCount(1, $audit);
+        $this->assertSame(['7', 'admin_table', 'siswa'], [(string) $audit[0]['staff_user_id'], $audit[0]['target_type'], $audit[0]['target_id']]);
+
+        $metadata = json_decode((string) $audit[0]['metadata_json'], true);
+        $this->assertSame(['gender' => 'perempuan'], $metadata['filters'], 'filters without format');
+        $this->assertSame(10, $metadata['row_count'], 'school 2 has 10 girls (ids 42–60, even)');
+    }
+
     private function asStaff(string $role, ?int $school = null): self
     {
         $this->injectStaff($role, $school);

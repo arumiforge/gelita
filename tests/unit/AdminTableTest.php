@@ -103,6 +103,13 @@ final class AdminTableTest extends CIUnitTestCase
         $this->assertSame([32, 25, 7], [$first['total'], count($first['rows']), count($second['rows'])]);
         $this->assertSame([1, 2, 3, 4], array_slice(array_column($first['rows'], 'try_no'), 0, 4));
         $this->assertSame(32, end($second['rows'])['try_no']);
+
+        // all(): every row without the 25/50/100 page cap (student Jawaban tab history)
+        $all = $this->admin->all('percobaan', ['participant_code' => 'GLT-000002']);
+        $this->assertCount(30, $all['rows'], 'not cut at 25 rows');
+        $this->assertSame($first['columns'], $all['columns']);
+        $this->assertSame(array_column($first['columns'], 'key'), array_keys($all['rows'][0]));
+        $this->assertSame(range(3, 32), array_column($all['rows'], 'try_no'), 'in key (chronological) order');
     }
 
     public function testFiltersNarrowRows(): void

@@ -857,7 +857,7 @@ Jejak tindakan staf dan command. Kata sandi mentah tidak pernah masuk `metadata_
 | ip_hash | CHAR(64) | ya | NULL | SHA-256 IP + garam; NULL untuk command CLI |
 | occurred_at | DATETIME(6) | tidak | NOW | INDEX |
 
-Kode `action` yang ditulis aplikasi antara lain: `login`, `login_failed`, `logout`, `participant_password_reset`, `staff_create`, `staff_update`, `staff_deactivate`, `staff_password_reset`, `staff_password_change`, `staff_password_change_failed`, `study_create`, `study_update`, `release_create`, `release_activate`, `content_import`, `content_update`, `media_upload`, `media_deactivate`, `media_scan`, `media_mockups`, `audio_upload`, `audio_approve`, `audio_approve_bulk`, `narration_import`, `narration_list_download`, `school_merge`, `school_verify`, `export`, `export_download`, `export_csv` (Unduh CSV satu tab Data mentah), `export_purge`, `delete_preview`, `delete_execute`, `delete_cancel`, `retention_run`, `system_reset`.
+Kode `action` yang ditulis aplikasi antara lain: `login`, `login_failed`, `logout`, `participant_password_reset`, `staff_create`, `staff_update`, `staff_deactivate`, `staff_password_reset`, `staff_password_change`, `staff_password_change_failed`, `study_create`, `study_update`, `release_create`, `release_activate`, `content_import`, `content_update`, `media_upload`, `media_deactivate`, `media_scan`, `media_mockups`, `audio_upload`, `audio_approve`, `audio_approve_bulk`, `narration_import`, `narration_list_download`, `school_merge`, `school_verify`, `export`, `export_download`, `export_csv` (Unduh CSV satu tabel panel: Data mentah, Siswa, Sesi, linimasa sesi, Kritik & saran), `export_purge`, `delete_preview`, `delete_execute`, `delete_cancel`, `retention_run`, `system_reset`.
 
 #### `data_exports`
 
