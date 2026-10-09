@@ -6,6 +6,7 @@
    ========================================================================== */
 
 /* =========================== HUD =========================== */
+/* No frame around HUD controls; only their text sits on --hud-backing */
 .user-chip {
   display: flex;
   align-items: center;
@@ -13,14 +14,12 @@
   min-width: 0;
   max-width: 15rem;
   min-height: var(--tap);
-  padding: .1875rem var(--gap-3) .1875rem .1875rem;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-pill);
-  background: rgba(255, 255, 255, .05);
   color: var(--ink);
   text-decoration: none;
 }
-.user-chip:hover { border-color: var(--line-strong); color: var(--ink); }
+.user-chip:hover { color: var(--ink); }
+.user-chip:hover .user-text { background: var(--hud-backing-hover); }
+.user-chip:hover .user-name { color: var(--gold-300); }
 .user-avatar {
   display: grid;
   flex: none;
@@ -30,10 +29,18 @@
   border-radius: 50%;
   background: var(--gold-500);
   color: var(--navy-900);
+  box-shadow: 0 1px .25rem rgba(11, 19, 32, .6);
   font-family: var(--font-display);
   font-weight: 700;
 }
-.user-text { display: grid; min-width: 0; line-height: 1.2; }
+.user-text {
+  display: grid;
+  min-width: 0;
+  padding: var(--gap-1) var(--gap-4);
+  border-radius: var(--radius-pill);
+  background: var(--hud-backing);
+  line-height: 1.2;
+}
 .user-name { overflow: hidden; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
 .user-code { overflow: hidden; color: var(--ink-dim); text-overflow: ellipsis; white-space: nowrap; }
 
@@ -45,17 +52,23 @@ body.is-challenge .hud-leave { display: none; }
 .lantern-toggle {
   display: flex;
   align-items: center;
-  gap: var(--gap-3);
+  gap: var(--gap-2);
   min-height: var(--tap);
-  padding: var(--gap-1) var(--gap-3) var(--gap-1) var(--gap-1);
-  border: 1px solid var(--line);
   border-radius: var(--radius-pill);
-  background: rgba(255, 255, 255, .05);
   cursor: pointer;
   list-style: none;
 }
 .lantern-toggle::-webkit-details-marker { display: none; }
-.lantern-toggle:hover, .lantern[open] .lantern-toggle { border-color: var(--line-strong); }
+/* The count and its bar share one backing; the flame floats on the scene */
+.lantern-meter {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-3);
+  padding: var(--gap-1) var(--gap-4);
+  border-radius: var(--radius-pill);
+  background: var(--hud-backing);
+}
+.lantern-toggle:hover .lantern-meter, .lantern[open] .lantern-meter { background: var(--hud-backing-hover); }
 
 .flame {
   display: grid;
@@ -66,7 +79,7 @@ body.is-challenge .hud-leave { display: none; }
   background: radial-gradient(circle, rgba(223, 192, 135, .25), transparent 70%);
   color: var(--ink-dim);
 }
-.flame .icon { width: 1.5rem; height: 1.5rem; }
+.flame .icon { width: 1.5rem; height: 1.5rem; filter: drop-shadow(0 1px .1875rem rgba(11, 19, 32, .9)); }
 .flame-1 { color: var(--gold-600); box-shadow: 0 0 .625rem rgba(223, 192, 135, .25); }
 .flame-2 { color: var(--gold-500); box-shadow: 0 0 1rem rgba(223, 192, 135, .45); }
 .flame-3 { color: var(--gold-300); box-shadow: 0 0 1.5rem rgba(240, 223, 184, .7); animation: flame-glow 2.4s ease-in-out infinite; }

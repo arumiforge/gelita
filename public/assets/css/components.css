@@ -239,12 +239,12 @@ input[type="checkbox"], input[type="radio"] { width: 1.375rem; height: 1.375rem;
 .badge.is-open, .badge.is-in_progress { color: var(--gold-500); }
 
 /* ---------- Pemilih bahasa ---------- */
+/* HUD only: no border; the dark backing keeps ID / EN readable on bright art */
 .lang-switch {
   display: inline-flex;
   flex: none;
   padding: .1875rem;
-  background: rgba(255, 255, 255, .06);
-  border: 1px solid var(--line-strong);
+  background: var(--hud-backing);
   border-radius: var(--radius-pill);
 }
 

@@ -33,7 +33,7 @@ Last updated: 9 October 2026.
 
 ## Planned, not started
 
-- [ ] Asset package (download once, instant screen and language switch): `docs/rencana-paket-aset.md`. Waiting on the owner decisions in its §12.
+- [ ] Asset package (download once, instant screen and language switch): `docs/rencana-paket-aset.md`. Owner decisions recorded in its §12 (9 October 2026): full download before Mulai, admin on/off switch. Ready to start with Stage 0.
 
 ## Active branches
 

@@ -127,13 +127,16 @@ body.game {
   height: var(--hud-h);
   padding: 0 var(--gap-4);
   /* No band of its own: the HUD floats on the scene (owner request, 9 Oct
-     2026); a text shadow keeps the title readable on a bright background. */
+     2026). Its controls have no frame either: icons carry a drop shadow, and
+     only text sits on a dark backing (--hud-backing) so it stays readable on
+     bright art. */
   text-shadow: 0 1px .25rem rgba(11, 19, 32, .8);
 }
 .hud-left, .hud-right { display: flex; align-items: center; gap: var(--gap-3); min-width: 0; }
 .hud-right { justify-content: flex-end; }
 .hud-center {
   overflow: hidden;
+  border-radius: var(--radius-pill);
   color: var(--gold-300);
   font-family: var(--font-display);
   font-size: var(--fs-body);
@@ -142,9 +145,16 @@ body.game {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.hud-center:not(:empty) { padding: var(--gap-1) var(--gap-4); background: var(--hud-backing); }
 .hud-icons { display: flex; gap: var(--gap-2); }
-.hud .icon-btn { width: 2.5rem; height: 2.5rem; }
+.hud .icon-btn { width: 2.5rem; height: 2.5rem; border: 0; background: none; }
+.hud .icon-btn:hover { background: none; color: var(--gold-300); }
+.hud .icon-btn .icon { filter: drop-shadow(0 1px .1875rem rgba(11, 19, 32, .9)); transition: transform .15s; }
+.hud .icon-btn:hover .icon { transform: scale(1.12); filter: drop-shadow(0 0 .375rem var(--glow)) drop-shadow(0 1px .1875rem rgba(11, 19, 32, .9)); }
 .hud-brand {
+  padding: 0 var(--gap-3);
+  border-radius: var(--radius-pill);
+  background: var(--hud-backing);
   font-family: var(--font-display);
   font-size: var(--fs-h3);
   font-weight: 700;
@@ -154,7 +164,8 @@ body.game {
 }
 .hud-brand:hover { color: var(--gold-300); }
 /* Account screens before login: Back top-left, logo centred (section hudBack) */
-.hud .hud-back { min-height: var(--tap); padding: var(--gap-1) var(--gap-3); }
+.hud .hud-back { min-height: var(--tap); padding: var(--gap-1) var(--gap-4) var(--gap-1) var(--gap-3); background: var(--hud-backing); }
+.hud .hud-back:hover { background: var(--hud-backing-hover); }
 .hud-logo { display: flex; justify-content: center; }
 .hud-logo img { display: block; width: auto; height: 2.5rem; }
 .hud-logo .hud-brand { font-size: var(--fs-h3); }
