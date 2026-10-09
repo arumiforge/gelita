@@ -6,6 +6,15 @@
 > - **Bagian II** (§9–§15) adalah isi katalog: panduan gaya, ukuran dan rasio, serta prompt setiap aset. Isi ini menjadi berkas data pada Fase B.
 >
 > Rencana ini bersinggungan dengan [`rencana-perbaikan-tampilan.md`](rencana-perbaikan-tampilan.md) (katalog slot `ImageSlots`, pemutar frame tokoh, pin per kota, avatar). Titik temunya dijelaskan di §5 Fase F.
+>
+> **Catatan status (9 Oktober 2026, sesudah perombakan kelas 5).** Masih belum dikerjakan (belum ada halaman katalog statis maupun `ImageSlots`). Sebagian isinya digantikan `docs/perombakan-kelas5/` (Dok 1–3):
+>
+> - **Digantikan:**
+>   - ukuran tampil dalam px/`vw` dan rujukan ke `layout.css` (§2.2, §9.1, §10.1, §11): layar game kini panggung tetap 1280 × 720 dp, dan ukuran tampil per slot ada di `Config\Gelita::$assetDisplaySizes`, di samping ukuran berkas di `$assetSizes`.
+>   - gambar tantangan di §10.1 dan §11.8 (`challenge.option.*`, "gambar soal pilihan", `mgl-5`, papan puzzle "maks. 480 px"): bank kelas 5 punya 45 slot gambar tantangan yang didaftar di [`bank-soal/README.md`](bank-soal/README.md#gambar-tantangan-45-slot), dan `php spark gelita:mockups` membuat gambar contohnya.
+>   - makna ikon `trend` "pretest–posttest" (§12.2): perombakan memakai satu tahap bermain.
+> - **Masih berlaku sebagai acuan:** panduan gaya, lembar tokoh, dan aturan budaya (§9), langkah pasca-produksi (§10.3–§10.6), serta spesifikasi musik, efek suara, dan narasi (§13–§14; rekaman narasi kini 100 per bahasa, lihat [`audio.md`](audio.md)).
+> - **Tetap ditunda:** seluruh pembangunan Bagian I (§1–§8).
 
 # Bagian I — Rencana pengembangan
 

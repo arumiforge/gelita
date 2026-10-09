@@ -1,6 +1,17 @@
 # Rencana: pembaruan tampilan GELITA — avatar, profil lebar, katalog gambar, animasi frame, pin/lentera kota, latar loading kota, toast gaya game, ramah sentuh
 
 > Status: **rencana, belum dikerjakan** (disusun 29 September 2026). Jalankan per fase; keputusan pengguna sudah tercantum di bagian Konteks.
+>
+> **Catatan status (9 Oktober 2026, sesudah perombakan kelas 5).** Sebagian rencana ini digantikan `docs/perombakan-kelas5/` (Dok 1–3); sisanya tetap ditunda dan harus direncanakan ulang terhadap panggung 16:9 sebelum dikerjakan.
+>
+> - **Digantikan:**
+>   - semua rujukan ke `layout.css`, `.screen-medium`/`.screen-full`, breakpoint piksel, `vw`/`vh`, dan tata letak ponsel mendatar. `layout.css` sudah dihapus; tata letak game ada di `stage.css` sebagai satu panggung tetap 1280 × 720 dp tanpa media query lebar/tinggi (`StageCssTest`), dan panel memakai `admin.css` sendiri. Nomor baris di tabel Konteks tidak cocok lagi.
+>   - Fase B butir 4 (profil lebar penuh): profil kini tata letak panggung dengan empat ubin (Dok 3 §4).
+>   - Tata letak Fase E (toast di tengah, `min(560px, 90vw)`): toast berada di dalam `#stage` pada x 856, y 72, lebar 400 (`stage.css`).
+>   - Tabel target sentuh, ukuran teks, dan safe-area Fase F1 yang ditulis untuk breakpoint ponsel: ukuran kini dalam dp panggung dan ikut terskala bersama panggung.
+>   - Fase F2 butir 5 ("Selesaikan dengan jawaban ini") dan catatan `pilihan`: digantikan aturan 3 kesempatan dan empat engine kelas 5 (Dok 2).
+>   - Ukuran tampil slot di panel (Fase A): kini `Config\Gelita::$assetDisplaySizes`, ditampilkan di **Gambar & mockup** (`/admin/media`).
+> - **Tetap ditunda (belum dibuat):** avatar (Fase B butir 1–3), pin/lentera dan latar loading per kota (Fase C), animasi frame tokoh (Fase D; `core/sprite.js` belum ada, dan pose `happy` masih diminta di `reflection.php` dan `challenge-finished.php`), antrean dan tutup toast (Fase E butir 2–4), seret/usap dan "Perbesar adegan" (Fase F2 butir 1–4 dan 6), serta katalog slot tunggal `ImageSlots` (Fase A).
 
 ## Konteks
 
