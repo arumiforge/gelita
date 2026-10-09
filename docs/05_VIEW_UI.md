@@ -110,16 +110,19 @@ Section yang diisi halaman:
 | `title` | judul tab (ditambah " · GELITA") |
 | `background` | URL latar; kosong → gradien CSS |
 | `bodyClass` | kelas tambahan `<body>`: `is-welcome`, `is-cinematic` (intro, penutup), `is-challenge` (arena), `is-celebrate` (layar selesai) |
-| `overlay` | lapisan layar penuh di luar `<main>` (tirai, `<template id="tpl-curtain-…">`, overlay Kenali wilayah); dirender paling awal agar tampil sejak paint pertama |
-| `content` | isi halaman di `<main id="app" class="app">` |
+| `overlay` | lapisan selebar panggung di luar `<main>` (tirai, `<template id="tpl-curtain-…">`, overlay Kenali wilayah) |
+| `content` | isi halaman di `<main id="app" class="stage-main">` |
+| `hudTitle` | teks tengah HUD (mis. Peta Kedu, Pustaka); tanpa ini HUD menampilkan nama wilayah dari `$level` |
 | `nav` | `components/nav-bar` (opsional) |
 | `head`, `scripts` | tambahan khusus halaman |
 
-Urutan `<body class="game …" data-locale data-base data-screen-code>`: `components/rotate-gate`, section `overlay`, `.skip-link`, `components/hud`, dua `<img class="scene-img">` latar (`#scene-a`, `#scene-b`, untuk crossfade antarhalaman), `<main id="app">`, section `nav`, `#modal-layer` + `<template id="tpl-modal">` (isi `components/modal`), `components/toast` (dengan flash `error`), lalu `<script type="application/json" id="app-config">` berisi `js_config($locale)`, `vendor/howler.min.js`, dan modul `js/game.js`.
+`<html class="game-stage">`; di `<head>`, sebelum CSS, satu skrip sebaris kecil mengisi `--app-w`/`--app-h` dari ukuran jendela (Dok 3 §2.1; satu-satunya skrip sebaris di view).
 
-* `<head>` memuat `tokens.css`, `base.css`, `layout.css`, `components.css`, `game.css`, `cinematic.css`, dan `<noscript><link … noscript.css></noscript>`; font Plus Jakarta Sans 400 dan Cinzel 700 di-preload. Layout ini juga menautkan `manifest.json` dan ikon aplikasi terpasang (lihat *Orientasi layar*).
+Urutan `<body class="game …" data-locale data-base data-screen-code>`: `components/rotate-gate` (di **luar** panggung), lalu `.stage-frame` › `#stage.stage` yang berisi `.skip-link`, latar `.scene` (dua `<img class="scene-img">` `#scene-a`/`#scene-b` untuk crossfade), section `overlay`, `components/hud`, `<main id="app" class="stage-main">`, section `nav`, `#modal-layer`, dan `components/toast` (dengan flash `error`). Sesudah panggung: `<template id="tpl-modal">` (isi `components/modal`), `<script type="application/json" id="app-config">` berisi `js_config($locale)`, `vendor/howler.min.js`, dan modul `js/game.js`. Lihat *Panggung 16:9*.
+
+* `<head>` memuat `tokens.css`, `base.css`, `stage.css`, `components.css`, `game.css`, `cinematic.css`, dan `<noscript><link … noscript.css></noscript>`; font Plus Jakarta Sans 400 dan Cinzel 700 di-preload. Layout ini juga menautkan `manifest.json` dan ikon aplikasi terpasang (lihat *Layar putar dan aplikasi terpasang*).
 * `data-screen-code` adalah kode layar dari `App\Filters\ScreenViewFilter::resolve()` untuk path saat ini — sama dengan `screen` pada event `screen_viewed` — dan dipakai JavaScript untuk `page_hidden`/`page_visible`. Atribut ini hanya ada pada path yang dikenal filter (lihat tabel di *Layar permainan*).
-* Data untuk JavaScript selalu lewat `<script type="application/json">` (`app-config`, `challenge-data`, `password-policy`), tidak pernah disisipkan ke string JavaScript. View tidak memuat skrip inline atau atribut `on…`.
+* Data untuk JavaScript selalu lewat `<script type="application/json">` (`app-config`, `challenge-data`, `password-policy`), tidak pernah disisipkan ke string JavaScript. Selain skrip ukuran panggung di `<head>` (tanpa data), view tidak memuat skrip inline atau atribut `on…`.
 
 ### `layouts/admin.php`
 
@@ -144,7 +147,7 @@ Halaman masuk staf bergaya admin (§1.6): satu kartu `.auth-card` di tengah lata
 | `hud` | Bar atas. Kiri: tombol suara `#btn-sound` (`aria-pressed`), tombol beranda ke `/peta`, lalu `lantern`. Kanan: chip peserta `.user-chip` (avatar huruf awal, nama, `@username`) ke `/profil`, tombol keluar `/keluar`, `lang-switch`. Bagian peserta hanya dirender bila controller mengirim data HUD (`BaseGameController::hudData()`: `participant` dari `toSafeArray()`, `progress`, `lantern`); sebelum itu posisi lentera diisi merek teks `.hud-brand`, kecuali halaman awal yang mengirim `hideBrand`. Tautan yang meninggalkan layar diberi kelas `hud-leave` dan disembunyikan selama tantangan (`body.is-challenge`). |
 | `lantern` | `<details class="lantern">` berisi nyala `.flame-{0..3}` (jumlah wilayah tuntas), "Serpihan Cahaya" `{shards}/{shards_total}`, bar isi, dan rincian `.lantern-detail`: titik `.shard.is-completed/is-open/is-locked` per tantangan, dikelompokkan per wilayah, dengan legenda. `shards_total` selalu dari jumlah tantangan aktif (`GameProgress::progressSummary()`), tidak pernah angka tetap. |
 | `lang-switch` | Form POST `/bahasa` dengan `redirect_to` = path saat ini (divalidasi `safe_internal_url()`); satu tombol per `Config\Gelita::$locales`, `aria-pressed` pada bahasa aktif. |
-| `rotate-gate` | Penghalang "putar perangkat" (`role="alertdialog"`). Tampil murni lewat CSS (lihat *Orientasi layar*). |
+| `rotate-gate` | Penghalang "putar perangkat" (`role="alertdialog"`). Tampil murni lewat CSS (lihat *Layar putar dan aplikasi terpasang*). |
 | `nav-bar` | Navigasi bawah dari array `$nav` (`label`, `href`, `style` = `primary`/`ghost`/`quiet`, `arrow`, `icon`, `attrs` untuk `aria-*`/`data-*`). Tombol berpanah kiri di `.nav-bar-start`, sisanya di `.nav-bar-end`. Layar tantangan tidak memakai nav-bar. |
 | `modal` | Kerangka dialog (`.modal-card.modal-{type}`, `.modal-title`, `.modal-text`, `.modal-actions`) di dalam `<template id="tpl-modal">`; ikon per jenis (`correct`, `wrong`, `hint`, `confirm`, `info`, `lock`) disediakan sebagai `<template data-modal-icon>` agar JavaScript tidak merakit SVG dari string. `core/modal.js` yang membukanya. |
 | `toast` | `#toast-layer` (`role="status"`). Flash `message` tampil sebagai `.toast.is-ok.is-flash`, flash `error` (hanya area permainan) sebagai `.toast.is-bad.is-flash`; keduanya memudar lewat CSS. |
@@ -179,7 +182,7 @@ Gaya seragam lain (§8.2) ada di `admin.css`: kepala halaman (`partials/admin-he
 | Partial | Dipakai di | Isi |
 |---|---|---|
 | `cine-slides` | intro, penutup | `ol.slides.cine-slides`; tiap `li.slide.cine-slide` (`id = {prefix}{n}`, `data-character`, `data-pose`, `data-effect`) berisi latar `.cine-bg` (`dialogues.background_media_id`), tokoh di `.cine-stage` (narator tanpa gambar, `.is-narrator`), kotak `.cine-caption` (`data-narrator-advance`: "Bagian n dari N", `.cine-speaker`, `.cine-title`, `.slide-text`, `audio-player`, `slide-nav`). |
-| `dialogue-scene` | dialog wilayah, wilayah tuntas | `section.screen.story.dialogue.narrator` (`data-screen`, `data-context`, `data-prefix="line-"`, `data-mode="tap"`), `.dialogue-stage` dengan Jaka (`.stage-left`) dan Mbah Kedu (`.stage-right`), baris `li.dialogue-line` (`data-pose-src` dari `character_frame_src()`), kotak `.dialogue-box.panel-parchment`, `narrator-controls`, `narrator-tap`. Tanpa baris dialog: `Game.dialogueEmpty` dan tombol lanjut. |
+| `dialogue-scene` | dialog wilayah, wilayah tuntas | `section.story.dialogue.narrator` (`data-screen`, `data-context`, `data-prefix="line-"`, `data-mode="tap"`), `.dialogue-stage` dengan Jaka (`.stage-left`) dan Mbah Kedu (`.stage-right`), baris `li.dialogue-line` (`data-pose-src` dari `character_frame_src()`), kotak `.dialogue-box.panel-parchment`, `narrator-controls`, `narrator-tap`. Tanpa baris dialog: `Game.dialogueEmpty` dan tombol lanjut. |
 | `region-intro` | Peta Kedu | Overlay `section.kenal` (`role="dialog"`, `id="kenal-{code}"`, `data-mode="external"`, `data-keyboard="0"`, `data-hash="0"`): latar wilayah, judul `Game.kenalTitle`, tombol tutup `.kenal-close`, slide `kenal-{code}-{n}`. Slide akhir: **Masuk ke {wilayah}** (tirai wilayah) bila wilayah terbuka, selain itu **Tutup** ke `#region-{code}`. |
 | `slide-nav` | semua slide | Kembali · titik `.slide-dot` · Lanjut; slide terakhir menjadi tombol akhir `data-slide-final` (opsional `finalAttrs`, `finalIcon`, tombol sekunder `extra`). |
 | `footsteps` | tirai wilayah, kartu bab | Jejak `svg.footstep.is-left/is-right` dengan `--i`; dekoratif. |
@@ -301,9 +304,9 @@ Layar sinematik (`body.is-cinematic`, `section.intro.cine.narrator`, `data-conte
 
 `section.map-screen.map-kedu` (`data-unlock-mode`). Peserta yang belum menonton cerita pembuka dialihkan ke `/intro`.
 
-* **Panduan peta** `.map-guide.map-story.narrator`: tiga slide `map_intro` (Jaka) dengan tokoh sesuai pose, balon `.map-story-line`, audio, navigasi kecil `.map-story-nav`, efek layar, dan `narrator-controls` (`data-keyboard="0"` agar Spasi tetap menggulir). Datang dengan flash `curtain=map` → tirai "Membuka Peta Kedu" lalu narasi diputar setelah ketukannya (`data-mode="external"`); kunjungan lain → teks utuh dengan tombol ▶ (`data-mode="manual"`). Tanpa slide: Jaka + balon `Game.mapLead`.
+* **Panduan peta** `.map-guide.map-story.narrator`: tiga slide `map_intro` (Jaka) dengan tokoh sesuai pose, balon `.map-story-line`, audio, navigasi kecil `.map-story-nav`, efek layar, dan `narrator-controls` (`data-keyboard="0"`), tampil sebagai balon `.map-balloon` di kiri bawah peta (tokoh besar tidak tampil di atas peta). Datang dengan flash `curtain=map` → tirai "Membuka Peta Kedu" lalu narasi diputar setelah ketukannya (`data-mode="external"`); kunjungan lain → teks utuh dengan tombol ▶ (`data-mode="manual"`). Tanpa slide: balon `Game.mapLead`.
 * **Kanvas peta** `.map-canvas` (`--map-ratio: 1400 / 900`, gambar `map.kedu`; tanpa gambar `.is-drawn`), garis rute `svg.map-route`, dan pin `li.map-point.is-{status}` pada `levels.map_x`/`map_y` (persen). Ikon pin: lentera (terbuka/sedang dijelajahi), bintang (tuntas), gembok (terkunci); label berisi nama, `Game.levelStatus_{status}`, dan `{selesai}/{total}`. Tautan pin menuju `entry` dari `GameProgress::regionEntryPath()`: wilayah yang baru terbuka → `/dialog/{code}`, selain itu → `/wilayah/{code}`. Pin terkunci tetap tautan ber-`aria-disabled="true"` + `data-locked-message` (`Game.levelLocked`); server menolaknya dengan toast yang sama.
-* **Kartu wilayah** `ol.region-list` › `li.region-card#region-{code}` di bawah peta (terbaca di ponsel, pembaca layar, dan saat gambar peta belum ada): urutan + tingkat kesulitan, lencana status, progres + bintang, tombol Mulai/Lanjut, atau keterangan terkunci.
+* **Kartu wilayah** `ol.region-list.map-side.stage-scroll` › `li.region-card#region-{code}` di panel kanan peta (terbaca pembaca layar dan saat gambar peta belum ada): urutan + tingkat kesulitan, lencana status, progres + bintang, tombol Mulai/Lanjut, atau keterangan terkunci.
 * **Kenali wilayah**: tombol lentera `.kenal-btn` pada pin dan `.kenal-card-btn` pada kartu (juga untuk wilayah terkunci) membuka overlay `partials/region-intro` (4 slide `region_intro` Mbah Kedu). Lencana **Belum didengar** (`.kenal-dot` di pin, `.kenal-badge` di kartu, `data-kenal-badge`) tampil sampai narasi wilayah itu pernah didengar sampai slide terakhir oleh peserta ini (dihitung server dari `dialogue_advanced`, `GameEventLogModel::heardRegionIntros()`).
 * **Tirai wilayah**: tautan ke wilayah yang terbuka membawa `curtain_attrs('region', …)`; template `<template id="tpl-curtain-region">` ada di section `overlay`.
 * Nav: **Pustaka Kedu** → `/pustaka` (kiri). Bila semua tantangan tuntas: **Tonton penutup** → `/penutup` dan **Balai Refleksi** → `/refleksi`; selain itu **Profil**.
@@ -326,12 +329,12 @@ Panel perkamen `.mission-card`: segel nomor, eyebrow `Game.challengeOf` + wilaya
 
 ### Layar tantangan — `game/challenge/{engine}` + `_frame`
 
-Keempat engine merender section `arena` lalu meng-include `game/challenge/_frame` (`body.is-challenge`). Kerangka:
+Keempat engine merender section `arena` (dan opsional `aside`) lalu meng-include `game/challenge/_frame` (`body.is-challenge`). Tata letak lebar penuh **tanpa Jaka** (Dok 3 §5); koordinat di *Panggung 16:9*. Kerangka:
 
 * `section.challenge.challenge-{engine}` dengan `data-screen="challenge"`, `data-engine`, `data-variant`, `data-attempt`, `data-node`, `data-level`, `data-level-id`, `data-region-name`, `data-sequence`, `data-exit-url`.
-* Jaka di `.challenge-character`; panel `.panel-carved.arena-panel`.
-* Kepala `.challenge-head`: nomor `.badge-pos`, eyebrow wilayah · `Game.challengeOf` · jenis, judul `h1`, chip `.challenge-chips`: waktu `#timer`, hitungan ✓ `#count-correct` / ✗ `#count-wrong`, penanda kesempatan `#tries.chip-tries` (engine selain `cari`; bulatan `.tries-dot.is-left` = sisa, `aria-label` "Kesempatan: x dari 3"), tombol petunjuk `#btn-hint` (tersembunyi, `data-hints`), dan **Keluar** berkonfirmasi `<details class="confirm confirm-down challenge-exit">` (`Game.exitConfirmTitle`, `Game.exitConfirmText`, tombol `data-exit-confirm` ke peta wilayah). Tautan HUD yang meninggalkan layar disembunyikan dan nav-bar tidak ada.
-* `.arena`: instruksi, `<noscript>` `Game.needsJs`, lalu `.arena-body` berisi section `arena`; tanpa soal `Game.noItems`.
+* Bingkai ukiran digambar `.challenge::before` (16, 60, 1248 × 652 dp). `.arena-panel`, `.arena`, dan `.arena-body` hanya pembungkus (`display: contents`), sehingga panel engine memakai koordinat panggung langsung.
+* Kepala `.challenge-head.stage-box` (32, 64, 1216 × 56): nomor `.badge-pos`, eyebrow wilayah · `Game.challengeOf` · jenis, judul `h1`, chip `.challenge-chips`: waktu `#timer`, hitungan ✓ `#count-correct` / ✗ `#count-wrong`, penanda kesempatan `#tries.chip-tries` (engine selain `cari`; bulatan `.tries-dot.is-left` = sisa, `aria-label` "Kesempatan: x dari 3"), tombol petunjuk `#btn-hint` (tersembunyi, `data-hints`), dan **Keluar** berkonfirmasi `<details class="confirm confirm-down challenge-exit">` (`Game.exitConfirmTitle`, `Game.exitConfirmText`, tombol `data-exit-confirm` ke peta wilayah). Tautan HUD yang meninggalkan layar disembunyikan dan nav-bar tidak ada.
+* `.arena`: panel instruksi `aside.challenge-aside.stage-scroll` (instruksi + section `aside`; tempatnya per engine: panel kiri Susun Gambar, baris pertama arena Isi Rumpang dan Benar atau Salah, panel kanan Cari Objek), `<noscript>` `Game.needsJs`, lalu `.arena-body` berisi section `arena`; tanpa soal `Game.noItems`.
 * Payload `ChallengeService::openNode()` ditanam sebagai `<script type="application/json" id="challenge-data">` — **tanpa kunci jawaban** dan tanpa penanda pengecoh. `game/challenge.js` dan `engines/*.js` memasang perilaku (lihat [06_JAVASCRIPT.md](06_JAVASCRIPT.md)).
 
 Tiap wilayah berisi empat tantangan berurutan: 1 Susun Gambar (`puzzle`), 2 Isi Rumpang (`rumpang`), 3 Benar atau Salah (`boleh`), 4 Cari Objek (`cari`). Setiap pengerjaan memakai satu variasi (a/b/c) yang dipilih acak.
@@ -340,24 +343,24 @@ Tiap wilayah berisi empat tantangan berurutan: 1 Susun Gambar (`puzzle`), 2 Isi 
 
 * `.puzzle-wrap#puzzle-wrap` (`data-mode="arrange"`, `data-item`) › `.puzzle-board.is-{square|jigsaw}#puzzle-board` (`role="group"`, `data-grid`, `data-shape`, variabel `--grid`, `--inset`, `--overhang`) › `svg.puzzle-defs` (satu `<clipPath>` per keping) + `.puzzle-grid` berisi `button.piece` (`data-slot`, `data-piece`, `data-pos`, `aria-label` `Game.piece` = letak slot) dengan `svg.piece-art` yang memotong **satu gambar utuh** (`preserveAspectRatio="xMidYMid slice"`) dan garis tepi `.piece-edge`.
 * Papan mengikuti soal (`App\Libraries\PuzzleCut::resolve()`), yang ditetapkan dari tingkat kesulitan wilayah: Temanggung 3 × 3 kotak, Magelang 4 × 4 kotak, Wonosobo 4 × 4 jigsaw. Keping tidak bernomor. Urutan awal diacak tetap per pengerjaan tanpa satu keping pun di tempatnya (`seeded_derangement()`).
-* `.hint-text` (`Game.puzzleHint` / `Game.puzzleHintJigsaw`), keterangan gambar `.puzzle-caption` (tersembunyi sampai gambar utuh atau kesempatan habis), tombol `#btn-check` **Cek gambarku** (`Game.puzzleCheck`).
+* Section `aside`: tiga tips `ul.challenge-tips` (`Game.puzzleHint`/`Game.puzzleHintJigsaw`, `Game.puzzleTipMark`, `Game.puzzleTipHint`) di panel kiri. Keterangan gambar `.puzzle-caption.stage-scroll` di panel kanan (tersembunyi sampai gambar utuh atau kesempatan habis), tombol `#btn-check` **Cek gambarku** (`Game.puzzleCheck`).
 
 **Isi Rumpang — `rumpang.php`**
 
-* `.rumpang` (`data-word-bank="1"`, `.has-media` bila ada gambar `.rumpang-media`) › `.rumpang-main`.
-* Tantangan bacaan (`config_json.as_reading`, `ChallengeNode::isReading()`): `.rumpang-reading` berisi judul variasi `h2.rumpang-title` (disembunyikan bila sama dengan judul tantangan) dan paragraf dari `App\Libraries\ClozeReading::paragraphs()`; setiap rumpang adalah `.blank-wrap` › `sup.blank-no` + `button.blank` (`data-item`, `aria-label` `Game.blank`). Selain itu soal tampil sebagai `ol.sentences` › `li.sentence` (teks sumber `.sentence-source` opsional).
+* `.rumpang` (`data-word-bank="1"`, `.has-media` bila ada gambar `.rumpang-media`, di kiri bacaan) › `.rumpang-main`; keduanya pembungkus `display: contents`.
+* Tantangan bacaan (`config_json.as_reading`, `ChallengeNode::isReading()`): `.rumpang-reading.stage-scroll#reading-panel` (huruf `--fs-reading`) berisi judul variasi `h2.rumpang-title` (disembunyikan bila sama dengan judul tantangan) dan paragraf dari `App\Libraries\ClozeReading::paragraphs()`; setiap rumpang adalah `.blank-wrap` › `sup.blank-no` + `button.blank` (`data-item`, `aria-label` `Game.blank`). Selain itu soal tampil sebagai `ol.sentences` › `li.sentence` (teks sumber `.sentence-source` opsional).
 * Bank kata `#word-bank.word-bank` (`role="group"`) berisi `button.word` (`data-word-id`) dari `payload.word_bank`: jawaban + pengecoh variasi, diacak server. Tidak ada isian ketik.
 * Tombol `#btn-check` **Cek jawabanku** (`Game.check`).
 
 **Benar atau Salah — `boleh.php`**
 
-* Bacaan variasi sebagai `<details class="passage" open>` (`#passage-{id}`): judul (cadangan `Game.readingLabel`), gambar `.passage-img`, `.passage-body`.
-* Judul `Game.statementsLabel`, lalu `.card-grid` (`.is-single` bila satu) berisi `article.verdict-card` (`data-item`): `.card-no` "Pernyataan n" (`Game.cardN`), chip `.card-passage` ke bacaannya, gambar `.card-image`, `.card-text`, dan `fieldset.card-choices` dengan dua radio bawaan `label.choice.choice-benar` / `.choice-salah` (`Game.verdictBenar` / `Game.verdictSalah`).
+* Kolom kiri `.boleh-passages.stage-scroll#reading-panel` berisi bacaan variasi sebagai `<details class="passage" open>` (`#passage-{id}`): judul (cadangan `Game.readingLabel`), gambar `.passage-img`, `.passage-body`. Tidak ada lagi pelipatan bacaan di layar sempit.
+* Kolom kanan `.boleh-cards.stage-scroll`: judul `Game.statementsLabel`, lalu `.card-grid` satu kolom berisi `article.verdict-card` (`data-item`): `.card-no` "Pernyataan n" (`Game.cardN`), chip `.card-passage` ke bacaannya, gambar `button.card-image[data-zoom]` 192 × 144 dp (utuh, `object-fit: contain`; ketuk = lightbox 640 × 480 dp), `.card-text`, dan `fieldset.card-choices` dengan dua radio bawaan `label.choice.choice-benar` / `.choice-salah` (`Game.verdictBenar` / `Game.verdictSalah`).
 * Tombol `#btn-check` **Cek jawabanku**.
 
 **Cari Objek — `cari.php`**
 
-* `.hunt` › `.hunt-clue`: Mbah Kedu (`.hunt-guide`), `.hunt-clue-body` dengan "Petunjuk x dari y" (`Game.clueOf`, `#clue-index`, `#clue-total`), teks petunjuk `#clue-text` (`aria-live`, petunjuk pertama dirender server) dan penanda kesempatan per petunjuk `#clue-tries`.
+* `.hunt` (pembungkus) › bilah petunjuk `.hunt-clue` 1216 × 56: avatar bulat Mbah Kedu 48 dp (`.hunt-guide`, tetap ada), `.hunt-clue-body` dengan "Petunjuk x dari y" (`Game.clueOf`, `#clue-index`, `#clue-total`), teks petunjuk `#clue-text` (`aria-live`, petunjuk pertama dirender server) dan penanda kesempatan per petunjuk `#clue-tries`.
 * `#hunt-scene.hunt-scene` (16:9; tanpa gambar `.is-drawn`) berisi gambar adegan `img.scene-bg` dan `button.object` (`data-object` = token buram per pengerjaan, posisi `left`/`top`/`width` dalam persen, `aria-label` netral "Objek n"). **Benda pengecoh dirender sama persis dengan benda target**, tanpa kelas, atribut, label, atau urutan DOM yang membedakan.
 * `.hunt-side`: `Game.huntList` + `ol#hunt-list` › `li.hunt-target` (`.is-current` untuk petunjuk aktif).
 * Narasi petunjuk: bila ada petunjuk dengan rekaman yang disetujui (`clues[i].audio`), `<template id="tpl-clue-voice">` berisi tombol ▶/⏸ (`Game.clueListen`, `Game.audioPause`) yang dipasang `engines/cari.js` di samping teks petunjuk. Template inert: tanpa JavaScript atau tanpa rekaman, tampilannya sama dengan petunjuk teks saja.
@@ -366,11 +369,11 @@ Tiap wilayah berisi empat tantangan berurutan: 1 Susun Gambar (`puzzle`), 2 Isi 
 
 ### Selesai — `game/challenge-finished`
 
-`body.is-celebrate`, konfeti `.confetti` (24 keping, mati pada gerak dikurangi), Jaka pose `happy`, kartu `.panel-carved.finished-card`:
+`body.is-celebrate`, konfeti `.confetti` (24 keping, mati pada gerak dikurangi). Kartu tunggal `.panel-carved.finished-card` 280, 72, 720 × 576 di tengah panggung, **tanpa Jaka** (Dok 3 §5.3); bagian tengahnya `.finished-body.stage-scroll`, tombol di bilah bawah kartu:
 
 * orb cahaya, eyebrow wilayah · judul, `Game.finishedTitle`, bintang besar (`star-rating` `lg`);
-* empat `stat-tile`: Waktu (`Game.timeSpent`), Berhasil pada Percobaan Pertama (`first_pass_text()`), Benar di akhir (`Game.finalCorrect`, `Game.firstTryCount`), dan Percobaan dipakai (`Game.triesUsed`, "{cek} dari {max_tries}") — untuk Cari Objek diganti Ketukan salah (`Game.wrongTaps`, jumlah `wrong_click_count`);
-* lencana alasan selesai `.finished-reason`: `Game.completionSolved` / `Game.completionExhausted`;
+* tiga `stat-tile`: Waktu (`Game.timeSpent`), Berhasil pada Percobaan Pertama (`first_pass_text()`), dan Percobaan dipakai (`Game.triesUsed`, "{cek} dari {max_tries}") — untuk Cari Objek diganti Ketukan salah (`Game.wrongTaps`, jumlah `wrong_click_count`);
+* lencana alasan selesai `.finished-reason`: `Game.completionSolved` / `Game.completionExhausted`; bila kesempatan habis ditambah baris lembut `Game.exhaustedNote`;
 * catatan `Game.multiCheckNote` bila lebih dari satu cek, dan `Game.shardEarned`;
 * bila wilayah tuntas: panel Mbah Kedu `.finished-kedu` (`Game.regionDone` + `Game.nextRegionOpen` atau `Game.allShardsDone`);
 * bila pengerjaan ini yang menuntaskan wilayah dan wilayahnya punya Pustaka: sorotan `aside.library-unlocked` (`Game.libraryUnlockedTitle`, tombol `Game.libraryReadNow`).
@@ -379,7 +382,7 @@ Tombol utama `.finished-actions`, berurutan menurut kondisi: pengerjaan ini menu
 
 ### Hasil tantangan — `game/challenge-result`
 
-Panel pengerjaan terbaik `.result-best` (bintang, Berhasil pada Percobaan Pertama, waktu, jumlah cek), tabel semua pengerjaan selesai `.result-table` (nomor, tanggal, lama, Berhasil pada Percobaan Pertama, cek, bintang; baris terbaik `.is-best`), catatan `Game.retryNote` (mengulang tidak menghapus catatan lama), dan tombol **Ulangi** (`Game.retry`) ke kartu misi — sehingga tirai tantangan ikut tampil.
+Panel `.result-panel` 160, 72, 960 × 576: pengerjaan terbaik `.result-best` (bintang, Berhasil pada Percobaan Pertama, waktu, jumlah cek), tabel semua pengerjaan selesai `.result-table` di `.table-wrap.stage-scroll` (Pengerjaan, Mulai, Durasi, Percobaan, Berhasil pada Percobaan Pertama, Bintang; baris terbaik `.is-best`), catatan `Game.retryNote` (mengulang tidak menghapus catatan lama), dan tombol **Ulangi** (`Game.retry`) ke kartu misi — sehingga tirai tantangan ikut tampil.
 
 ### Wilayah tuntas — `game/region-done`
 
@@ -534,18 +537,20 @@ Dasbor SaaS tenang dan formal (Dok 3 §8), **tidak bertema GELITA**: token di `a
 
 ### Berkas
 
-Delapan berkas di `public/assets/css/`, dimuat berurutan lewat `asset_url_versioned()`. Tidak ada framework CSS atau build step.
+Delapan berkas di `public/assets/css/`, dimuat berurutan lewat `asset_url_versioned()`. Tidak ada framework CSS atau build step. CSS game (`tokens`, `base`, `stage`, `components`, `game`, `cinematic`) ditulis dalam `rem` panggung (lihat *Panggung 16:9*).
 
 | Berkas | Isi | Dimuat oleh |
 |---|---|---|
-| `tokens.css` | custom property: warna, lapisan, tipografi, spasi, radius, bayangan, ukuran layout | game, admin, auth |
-| `base.css` | `@font-face` lokal, reset, elemen dasar, tipografi, `:focus-visible`, `.skip-link`, `.visually-hidden`, `[hidden]`, aturan gerak dikurangi global | game, admin, auth |
-| `layout.css` | HUD, latar `.scene`, `.app`, `.nav-bar`; kepala, sidebar, main panel; panel tengah auth; lapisan modal & toast; layar putar; breakpoint utama | game, admin, auth |
-| `components.css` | tombol (`.btn`, `.btn-primary`, `.btn-ghost`, `.btn-quiet`, `.btn-danger`, `.btn-sm`/`.btn-lg`/`.btn-xl`, `.btn-block`), panel (`.panel`, `.panel-parchment`, `.panel-carved`), form, `.alert-*`, `.chip`, `.badge`, `.confirm`/`.confirm-box`, toast, modal, tabel, `.empty-state`, bintang, `stat-tile`, komponen kata sandi, pemutar audio, karakter, balon narasi, paginasi | game, admin, auth |
-| `game.css` | layar permainan: lentera & chip peserta, halaman awal, akun & pendaftaran, cerita & dialog, peta, kartu misi, empat arena, selesai & hasil, Pustaka, profil, Balai Refleksi | game |
+| `tokens.css` | warna, lapisan, tipografi, bayangan (bersama); ukuran game dalam rem (`--fs-*`, `--gap-*`, `--tap`, `--hud-h`, `--nav-h`, `--gutter`); ukuran panggung `:root.game-stage` | game |
+| `base.css` | `@font-face` lokal, reset, elemen dasar, tipografi, `:focus-visible`, `.skip-link`, `.visually-hidden`, `[hidden]`, aturan gerak dikurangi global | game |
+| `stage.css` | bingkai `.stage-frame`, panggung `#stage`, `.stage-box`, `.stage-scroll`, latar `.scene`, HUD, `.stage-main`, nav bar, lapisan modal & toast, layar putar, dan **semua koordinat tata letak layar** | game |
+| `components.css` | tombol (`.btn`, `.btn-primary`, `.btn-ghost`, `.btn-quiet`, `.btn-danger`, `.btn-sm`/`.btn-lg`/`.btn-xl`, `.btn-block`), panel (`.panel`, `.panel-parchment`, `.panel-carved`), form, `.alert-*`, `.chip`, `.badge`, `.confirm`/`.confirm-box`, toast, modal, tabel, `.empty-state`, bintang, `stat-tile`, komponen kata sandi, pemutar audio, karakter, balon narasi, paginasi | game |
+| `game.css` | rupa layar permainan: lentera & chip peserta, halaman awal, akun & pendaftaran, cerita & dialog, peta, kartu misi, empat arena, selesai & hasil, Pustaka, profil, Balai Refleksi | game |
 | `cinematic.css` | tirai, pemutar narasi (kartu ketuk, kontrol, mesin ketik, efek `.fx-*`), cerita pembuka/penutup, narasi peta, overlay Kenali, tirai wilayah & tantangan (`.cc-*`), kartu bab, panggung dialog, wilayah tuntas | game (sesudah `game.css`) |
 | `noscript.css` | `.curtain { display: none !important; }` | game, hanya di dalam `<noscript>` |
 | `admin.css` | **berkas mandiri panel admin dan halaman masuk staf** (Dok 3 §8): font, token §8.1, dasar, sidebar/topbar, kepala halaman, tab, tombol, formulir, lencana, peringatan, bilah filter + chip, KPI, tabel data, pagination, modal, toast, halaman khusus (konten, media, studi, …), responsif (ikon < 1280 px, laci < 768 px) | admin, auth |
+
+`layout.css` sudah tidak ada: bagian game pindah ke `stage.css`, bagian admin ke `admin.css`.
 
 ### Token (`tokens.css`)
 
@@ -553,9 +558,11 @@ Delapan berkas di `public/assets/css/`, dimuat berurutan lewat `asset_url_versio
 |---|---|
 | Warna | `--navy-900` `#0B1320`, `--navy-800`, `--navy-700`, `--navy-600`; `--gold-500` `#DFC087`, `--gold-600`, `--gold-300`; `--parchment`, `--parchment-dark`; `--brown-700`, `--brown-500`; `--ok`, `--bad`, `--warn` dan versi teksnya `--ok-ink`, `--bad-ink`, `--warn-ink`; `--ink`, `--ink-dim` |
 | Lapisan & garis | `--veil` (lapisan gelap di belakang teks di atas gambar), `--veil-strong`, `--line`, `--line-strong`, `--line-ink`, `--surface`, `--surface-2`, `--glow` |
-| Tipografi | `--font-display` (Cinzel), `--font-body` (Plus Jakarta Sans), `--font-mono` (IBM Plex Mono); skala fluida `--step--1` … `--step-4` |
-| Ruang & bentuk | `--sp-1` (4px) … `--sp-7` (48px), `--radius`, `--radius-lg`, `--radius-pill`, `--shadow-1`, `--shadow-2`, `--shadow-glow` |
-| Sentuh & layout | `--tap` (44px), `--hud-h`, `--nav-h`, `--sidebar-w`, `--content-max` (1180px), `--arena-max` (900px) |
+| Tipografi | `--font-display` (Cinzel), `--font-body` (Plus Jakarta Sans), `--font-mono` (IBM Plex Mono); ukuran `--fs-caption` 16, `--fs-body` 20, `--fs-reading` 22 (bacaan), `--fs-h3` 24, `--fs-h2` 32, `--fs-h1` 40, `--fs-display` 56 dp |
+| Ruang & bentuk | `--gap-1` … `--gap-7` (4, 8, 12, 16, 24, 32, 48 dp), `--gutter` 32 dp, `--radius` 12, `--radius-lg` 20, `--radius-pill`, `--shadow-1`, `--shadow-2`, `--shadow-glow`, `--line-w` |
+| Sentuh & layout | `--tap` 48 dp, `--hud-h` 56 dp, `--nav-h` 64 dp; panggung `--app-w`/`--app-h`, `--stage-w`/`--stage-h`, `--letterbox` (`:root.game-stage`) |
+
+Token lama `--step-*`, `--sp-*`, `--content-max`, dan `--arena-max` tidak dipakai CSS game lagi. Panel admin memakai token sendiri di `admin.css` (§8.1) dan tidak memuat `tokens.css`, `base.css`, atau `components.css`.
 
 Font dimuat lokal dari `public/assets/fonts/` (berkas `.woff2` + lisensi OFL) dengan `font-display: swap`, bukan dari CDN: koneksi sekolah tidak dapat diandalkan, dan font pihak ketiga mengirim alamat IP anak ke luar.
 
@@ -564,27 +571,72 @@ Font dimuat lokal dari `public/assets/fonts/` (berkas `.woff2` + lisensi OFL) de
 * Kelas berbahasa Inggris, dipisah tanda hubung (`.challenge-head`, `.word-bank`); state memakai awalan `is-`/`has-` (`.is-active`, `.is-locked`, `.is-current`, `.has-error`).
 * Warna, ukuran teks, dan jarak lewat token; berkas lain tidak menulis nilai warna identitas baru.
 * `!important` hanya pada utilitas `[hidden]` dan `noscript.css`.
-* Tata letak dengan Grid dan Flexbox. Posisi pin peta dan benda Cari Objek ditulis inline dalam persen; variabel per elemen (`--grid`, `--i`, `--map-ratio`, `--steps`) juga lewat atribut `style`.
+* Tata letak di dalam panel dengan Grid dan Flexbox; letak panel di panggung hanya lewat `stage.css`. Posisi pin peta dan benda Cari Objek ditulis inline dalam persen; variabel per elemen (`--grid`, `--i`, `--map-ratio`, `--steps`) juga lewat atribut `style`.
+* CSS game: satuan `rem` (1rem = 16 dp); `px` hanya untuk garis 1px; tanpa `vw`/`vh` dan tanpa `@media` lebar/tinggi (`tests/unit/StageCssTest.php`).
 
-### Responsif
+### Panggung 16:9
 
-| Kondisi | Perilaku |
+Semua layar game digambar di **satu panggung tetap 1280 × 720 dp** (dp = *design pixel*), yang diperbesar/diperkecil seragam agar pas di layar lalu diletakkan di tengah; sisa layar menjadi bingkai gelap (`--letterbox`). Tidak ada tata letak responsif: tampilan di laptop, proyektor, tablet, dan ponsel mendatar sama, hanya skalanya yang berbeda (Dok 3 §1–§6).
+
+**Satuan.** `:root.game-stage { font-size: calc(var(--stage-w) / 80) }`, jadi `1rem = 16 dp` dan `#stage` berukuran `80rem × 45rem`. `--stage-w = min(--app-w, --app-h × 16/9)`; `--app-w`/`--app-h` diisi skrip sebaris `<head>` lalu `core/stage.js` dari `innerWidth`/`innerHeight` (cadangan tanpa JavaScript: `100vw`/`100dvh`). Contoh: 1280 × 800 → panggung 1280 × 720, 1 rem = 16 px; 1024 × 768 → 1024 × 576, 12,8 px; 1920 × 1080 → 24 px; ponsel 844 × 390 → 693 × 390, ± 8,7 px.
+
+**Kerangka dan pita tetap.**
+
+| Pita | dp (x, y, w, h) | Isi |
+|---|---|---|
+| HUD `.hud` | 0, 0, 1280, 56 | kiri: lentera serpihan + merek (lentera tetap kiri atas); tengah: section `hudTitle` atau nama wilayah; kanan: bahasa, suara, layar penuh (`#btn-fullscreen`, tersembunyi bila Fullscreen API tidak ada), beranda, profil, keluar. Saat tantangan tautan yang meninggalkan layar disembunyikan |
+| Area isi `main#app.stage-main` | 0, 0, 1280, 720 | `<main>` selebar panggung tanpa stacking context, jadi koordinat isi = koordinat panggung; isi tidak diletakkan di bawah HUD (y < 56) |
+| Nav bar `.nav-bar` | 0, 656, 1280, 64 | kembali di kiri, tombol utama di kanan. Layar sinematik: "Lewati" di kanan atas (y 72). Layar tantangan tanpa nav bar |
+| Modal `#modal-layer` | 0, 0, 1280, 720 | kotak 480–720 × maks 560 dp di tengah, isi bergulir bila panjang |
+| Toast `#toast-layer` | 856, 72, 400 | kanan atas di bawah HUD |
+
+`#stage` memakai `contain: layout paint`, sehingga `position: fixed` di dalamnya (tirai, overlay Kenali, konfeti) berlabuh ke panggung, dan apa pun yang keluar dari panggung terpotong. Lightbox `<dialog>` dirender peramban di top layer, tetapi ukurannya dalam rem sehingga tetap di dalam panggung.
+
+**Koordinat.** Kelas `.stage-box` meletakkan elemen dari variabel dp tanpa satuan `--x --y --w --h`; elemen bagian (partial) yang dipakai ulang mendapat aturan yang sama lewat daftar selektor di `stage.css`. Semua angka ada di `stage.css` §Koordinat:
+
+| Layar | Elemen (x, y, w, h dp) |
 |---|---|
-| `(orientation: portrait) and (pointer: coarse)` | area permainan ditutup layar putar (lihat *Orientasi layar*); panel admin tidak terpengaruh |
-| `(orientation: landscape) and (max-height: 500px)` | ponsel mendatar: HUD satu baris 52px, kepala tantangan + instruksi di kolom kiri, arena di kolom kanan; adegan Cari Objek, papan Susun Gambar, dan peta diukur dari tinggi layar (`--stage-h`) |
-| `max-width: 1024px` | tantangan satu kolom tanpa Jaka, papan puzzle maksimum 420px, peta dan panduannya bertumpuk, layar selesai satu kolom; sidebar admin menyempit menjadi ikon (`--sidebar-w: 72px`) |
-| `max-width: 640px` | HUD dua baris (`--hud-h: 112px`), panel lebih rapat, slide cerita satu kolom; sidebar admin menjadi drawer (`#admin-menu:target`), tabel menggulir di dalam `.table-wrap` |
-| lebih lebar | arena maksimum `--arena-max`, isi panel maksimum `--content-max` |
+| Halaman awal | logo 240, 120, 800 × 300; Mulai 460, 456, 360 × 120; tawaran pasang 896, 600, 352 × 40 |
+| Mulai, Gerbang | judul 0, 88, 1280 × 96; kartu 212, 200, 400 × 300 dan 668, 200 |
+| Masuk / Ganti sandi | panel 360, 88, 560 × 544 / 360, 72, 560 × 576 (gulir) |
+| Daftar 1–3 | panel 200, 72, 880 × 576: kepala + stepper 0–64, isian gulir, bilah tombol 80 dp di bawah; langkah 3 kotak "Mengapa sandi harus kuat?" dengan Jaka 220 dp |
+| Cerita pembuka, penutup | tokoh 64, 136, 300 × 520 (gambar 300 × 386); kotak teks 160, 520, 960 × 168 (judul + teks bergulir, navigasi slide di baris kepala); kontrol narasi + Lewati di kanan atas y 72 |
+| Dialog wilayah, wilayah tuntas | judul 0, 64, 1280 × 64; Jaka 64, 136 dan Mbah Kedu 916, 136 (300 × 520); kotak teks 160, 472, 960 × 168 (naik dari 520 karena ada nav bar) |
+| Peta Kedu | peta 32, 72, 880 × 566; panel wilayah kanan 936, 72, 312 × 576 (gulir); balon narasi Jaka 48, 560, 600 × 96 |
+| Kenali wilayah | overlay penuh 0, 0, 1280 × 720, isi dan komposisi slide sama |
+| Peta wilayah | peta 32, 72, 880 × 566; panel kanan 936, 72, 312 × 576: judul, fokus, progres, daftar tantangan (gulir) |
+| Kartu misi | 280, 96, 720 × 528; deskripsi bergulir; hasil terbaik: bintang + "Berhasil pada Percobaan Pertama x dari y" |
+| Tantangan | kepala 32, 64, 1216 × 56; arena 32, 128, 1216 × 576 — per engine lihat tabel berikut |
+| Selesai | kartu 280, 72, 720 × 576, tanpa Jaka |
+| Hasil | panel 160, 72, 960 × 576, tabel bergulir |
+| Rak Pustaka | keterangan 88, 64, 1104 × 48; kartu 88/464/840, 120, 352 × 440 |
+| Pustaka {wilayah} | buku 64, 80, 1152 × 568: galeri kiri 576 (gulir), teks kanan 576 (isi bergulir, navigasi halaman di bawah); lightbox selebar panggung |
+| Pustaka terkunci | kartu 320, 140, 640 × 420 |
+| Profil | kiri 32, 72, 400 × 576 (identitas, empat ubin); kanan 456, 72, 792 × 576 (lencana + riwayat bergulir) |
+| Balai Refleksi | kiri 32, 72, 520 × 576 (ringkasan, gulir); kanan 576, 72, 672 × 576 (formulir bergulir, Kirim tetap di bawah) |
 
-Papan tulis interaktif dan proyektor kelas sering berjalan pada 1366 × 768; layar tantangan dirancang muat pada tinggi itu. Tata letak panggung 16:9 belum diterapkan (direncanakan di Dok 3); `js_config()` sudah mengirim ukuran panggung acuan 1280 × 720.
+| Engine | Panel (x, y, w, h dp) |
+|---|---|
+| Susun Gambar | instruksi + 3 tips 32, 128, 332 × 512; papan 388, 136, 504 × 504; bilah aksi 388, 648, 504 × 48; keterangan gambar 916, 128, 332 × 512 |
+| Isi Rumpang | instruksi 96, 128, 1088 × 40; bacaan 96, 176, 1088 × 384 (gulir, `--fs-reading`); bank kata 96, 568, 1088 × 72; bilah aksi 96, 648, 1088 × 56 |
+| Benar atau Salah | bacaan 32, 128, 596 × 576 (gulir); instruksi 652, 128, 596 × 64; pernyataan 652, 200, 596 × 440 (gulir; gambar 192 × 144); bilah aksi 652, 648, 596 × 56 |
+| Cari Objek | bilah petunjuk 32, 128, 1216 × 56 (avatar Mbah Kedu 48); daftar benda 32, 192, 164 × 486; adegan 208, 192, 864 × 486; instruksi 1084, 192, 164 × 486 |
 
-### Orientasi layar
+**Gulir.** Panggung dan halaman tidak pernah bergulir. Panel yang isinya bisa panjang memakai `.stage-scroll` (tinggi tetap, `overflow-y: auto`); huruf tidak pernah dikecilkan untuk memuatkan teks. `core/dom.js` `scrollToCenter()` menggulir panel `.stage-scroll` terdekat.
 
-Area permainan hanya dilayani **mendatar** di perangkat sentuh, karena semua aset dibuat satu versi mendatar (peta 1400 × 900, adegan 16:9, latar 1920 × 1080).
+**Aset** (Dok 3 §6, `Config\Gelita::$assetDisplaySizes` di samping `$assetSizes`): latar 1920 × 1080 → 1280 × 720 dp; peta 1400 × 900 → 880 × 566; adegan Cari Objek 1280 × 720 → 864 × 486; gambar Susun Gambar ≥ 1200² → 504 × 504; gambar pernyataan 480 × 360 → 192 × 144 (lightbox 640 × 480); tokoh 700 × 900 → 300 × 386 (cerita), 220 × 283 (pendaftaran); logo hero 1600 × 600 → 800 × 300; tombol Mulai 720 × 240 → 360 × 120. Pin peta dan benda Cari Objek dalam persen gambar, jadi posisinya sama di semua ukuran.
 
-* `components/rotate-gate` ada di setiap halaman `layouts/game.php`. Tampil dan hilangnya murni CSS (`layout.css`, media query `(orientation: portrait) and (pointer: coarse)`), jadi bekerja tanpa JavaScript; `pointer: coarse` membuat laptop berjendela sempit tidak ikut dihalangi. Tidak ada tombol lewati; `Game.rotateStuck` menjelaskan cara menyalakan putar otomatis.
+**Media query yang boleh** di CSS game: `(orientation: portrait) and (pointer: coarse)` (layar putar), `prefers-reduced-motion`, `hover: hover`. `tests/unit/StageCssTest.php` menjaga aturan satuan dan media query; `tools/qa/stage-check.mjs` memeriksa hasil tampilannya di peramban.
+
+**Uji tampilan otomatis (`tools/qa/stage-check.mjs`).** Playwright + Chromium (sudah terpasang; jangan `playwright install`) terhadap `php spark serve` dengan database uji hasil instalasi baru atau `gelita:reset`, studi berjalan dengan *Cara wilayah terbuka* = bebas. `node tools/qa/stage-check.mjs [--base=…] [--user=… --pass=…] [--sizes=1280x720,…] [--only=peta,…]`: mendaftarkan siswa uji (tanpa `--user`), mengunjungi semua layar dan keempat tantangan di ketiga wilayah pada 1280 × 720, 1920 × 1080, 1366 × 657, 1024 × 768, 2560 × 1080, dan 844 × 390, membuka modal hasil, Kenali, dan lightbox Pustaka, lalu menghabiskan kesempatan setiap tantangan (jawaban asal) untuk layar selesai, hasil, wilayah tuntas, Pustaka, penutup, dan refleksi; terakhir 390 × 844 sentuh harus menampilkan layar putar. Yang diperiksa: rasio `#stage` 16:9 (±1 px) dan di tengah, halaman tidak bergulir, tidak ada elemen keluar dari panggung, isi yang melebihi wadahnya hanya di `.stage-scroll`, dan posisi relatif penanda (pin, benda, panel) sama di semua ukuran (selisih < 0,5 %). Tangkapan layar di `writable/qa/stage/` (diabaikan git). Kode keluar 1 bila ada yang gagal.
+
+### Layar putar dan aplikasi terpasang
+
+Area permainan hanya dilayani **mendatar** di perangkat sentuh, karena semua aset dibuat satu versi mendatar.
+
+* `components/rotate-gate` ada di setiap halaman `layouts/game.php`, **di luar** panggung (`position: fixed`, seluruh layar). Tampil dan hilangnya murni CSS (`stage.css`, media query `(orientation: portrait) and (pointer: coarse)`), jadi bekerja tanpa JavaScript; `pointer: coarse` membuat laptop berjendela sempit tidak ikut dihalangi. Selama tampil, panggung disembunyikan dan 1 rem diukur dari lebar layar (`calc(var(--app-w) / 24)`) agar teksnya terbaca. Tidak ada tombol lewati; `Game.rotateStuck` menjelaskan cara menyalakan putar otomatis.
 * `game/rotate-gate.js` hanya menjaga aksesibilitas: selama penghalang tampil, sisa `<body>` dibuat `inert` dan fokus dipindah ke penghalang. Media query di CSS dan JavaScript wajib sama (`tests/unit/RotateGateTest.php`).
-* Koordinat pin (`map_x`/`map_y`) dan benda Cari Objek (`x`/`y`/`w`) disimpan dalam persen terhadap gambar; kanvas mengunci rasio (`--map-ratio`, adegan 16:9). Latar `bg.*` digambar `object-fit: cover`, jadi bagian penting diletakkan di tengah.
+* Tombol **Layar penuh** di HUD (Fullscreen API) disembunyikan bila tidak didukung (mis. Safari iPhone). Layar penuh lepas setiap kali halaman berganti; karena itu memasang GELITA sebagai aplikasi tetap dianjurkan.
 
 **Aplikasi terpasang.** Hanya `layouts/game.php` yang menautkan `public/manifest.json` (`display: fullscreen`, `orientation: landscape`, URL relatif). Ikon ada di `public/assets/app/` (`icon.svg`, `icon-192.png`, `icon-512.png`, `icon-maskable-512.png`, `apple-touch-icon.png`). `public/sw.js` adalah service worker minimal yang hanya menangani navigasi `GET` (jaringan dulu, `public/offline.html` bila putus); API, event permainan, formulir, dan aset tidak pernah melewatinya, sehingga tidak ada data anak yang tersimpan di cache perangkat kelas (`tests/unit/InstallableAppTest.php`). `game/install.js` mendaftarkan service worker dan menampilkan tawaran pasang di halaman awal. Di Android aplikasi terpasang terkunci mendatar dan layar penuh; iPhone/iPad mengabaikan `orientation`, jadi layar putar tetap berlaku di sana.
 
@@ -596,7 +648,7 @@ Satu-satunya pustaka frontend adalah **Howler.js** (`public/assets/vendor/howler
 
 ## Aturan sistem
 
-1. Semua output dinamis melewati `esc()`. Data untuk JavaScript dikirim lewat `<script type="application/json">`, tidak pernah diinterpolasi ke string JavaScript; view tidak memuat skrip inline.
+1. Semua output dinamis melewati `esc()`. Data untuk JavaScript dikirim lewat `<script type="application/json">`, tidak pernah diinterpolasi ke string JavaScript; view tidak memuat skrip inline selain skrip ukuran panggung di `layouts/game.php` (tanpa data).
 2. Kunci jawaban dan penanda pengecoh tidak pernah muncul di HTML, atribut data, maupun payload halaman.
 3. Teks antarmuka memakai `lang()`; teks konten memakai `text()`/`tr()` yang jatuh ke bahasa Indonesia bila versi Inggris kosong. Area permainan dwibahasa; panel admin hanya Indonesia.
 4. Jumlah Serpihan Cahaya dan jumlah tantangan selalu dihitung dari database, tidak ditulis sebagai angka tetap di view.
@@ -607,3 +659,4 @@ Satu-satunya pustaka frontend adalah **Howler.js** (`public/assets/vendor/howler
 9. Nama pengguna siswa hanya terlihat oleh siswa itu sendiri di area permainan; ekspor dan laporan dari akun guru selalu tanpa nama.
 10. Tidak ada permintaan ke domain pihak ketiga dari halaman yang dibuka anak sebelum anak sendiri menekan Putar pada video Pustaka; font, ikon, dan pustaka di-host sendiri.
 11. Perangkat sentuh hanya dilayani mendatar; aset cukup satu versi mendatar.
+12. Semua layar game digambar di panggung 16:9 1280 × 720 dp yang diskalakan seragam; halaman tidak pernah bergulir, hanya panel `.stage-scroll`.

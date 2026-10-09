@@ -6,10 +6,11 @@
  * @var string|null $speaker    `jaka` | `mbah_kedu` — nama tokoh di atas teks
  * @var string|null $tail       `left` (bawaan) | `down`
  * @var string|null $id
+ * @var string|null $class      kelas tambahan, mis. `stage-scroll` (balon bergulir)
  */
 $speakerName = isset($speaker) && $speaker !== '' ? lang_or('Game.char_' . $speaker, $speaker) : null;
 ?>
-<blockquote class="narration<?= ($tail ?? 'left') === 'down' ? ' narration-down' : '' ?>"
+<blockquote class="narration<?= ($tail ?? 'left') === 'down' ? ' narration-down' : '' ?><?= ! empty($class) ? ' ' . esc($class, 'attr') : '' ?>"
             <?= isset($id) ? 'id="' . esc($id, 'attr') . '"' : '' ?>>
   <?php if ($speakerName !== null): ?>
     <cite><?= esc($speakerName) ?></cite>

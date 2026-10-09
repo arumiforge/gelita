@@ -10,7 +10,7 @@ Keputusan dan penyimpangan dari ketiga dokumen perombakan, beserta alasannya dan
 | Dok 2 | Selesai, di `main` (§2–§12). Uji manual §13.2 dan ringkasan §2–§9 di bagian "Dok 2 — server, bank soal, dan uji manual §13" |
 | Pembersihan kompatibilitas lama | Selesai, di `main` (PR #41): instalasi baru saja, migration digabung, dokumentasi ditulis ulang. Lihat bagian "Pembersihan — instalasi baru tanpa kompatibilitas lama" |
 | Perbaikan sebelum Dok 3 | Temuan tinjauan Dok 2 (balapan permintaan, Cari Objek, bintang): branch sementara, PR ke `main`. Lihat bagian "Perbaikan sebelum Dok 3 — temuan tinjauan Dok 2" |
-| Dok 3 | Sedang dikerjakan paralel. Data mentah, ekspor, dan PDF (§8.4, §9, §10): branch `dok3-data-mentah`, PR #45, lihat bagian "Dok 3 — data mentah dan ekspor". Panel admin SaaS (§8.1–§8.3, §12.1 `AdminTableViewTest`): branch `dok3-admin`, PR #47, lihat bagian "Dok 3 — panel admin". **§13 (skrip `upgrade-kelas5`) tidak dikerjakan** dan §11 sebagian sudah selesai; lihat "Untuk sesi Dok 3" di bagian pembersihan |
+| Dok 3 | Sedang dikerjakan paralel. Data mentah, ekspor, dan PDF (§8.4, §9, §10): branch `dok3-data-mentah`, PR #45, lihat bagian "Dok 3 — data mentah dan ekspor". Panel admin SaaS (§8.1–§8.3, §12.1 `AdminTableViewTest`): branch `dok3-admin`, PR #47, lihat bagian "Dok 3 — panel admin". Panggung 16:9 (§1–§7, §12.1–§12.2, dokumentasi 05/06): branch `dok3-panggung`, PR #48 (sebagian) dan PR #49, lihat bagian "Dok 3 — panggung 16:9". **§13 (skrip `upgrade-kelas5`) tidak dikerjakan** dan §11 sebagian sudah selesai; lihat "Untuk sesi Dok 3" di bagian pembersihan |
 
 Sisa Dok 2:
 
@@ -23,7 +23,7 @@ Sisa Dok 2:
 
 - 6 Oktober 2026: sejarah `main` ditulis ulang (penulis dan committer semua commit = Arumi Studios, baris `Co-Authored-By`/`Claude-Session` dibuang; isi berkas dan pesan commit tidak berubah). Semua branch lain dihapus. Hash commit lama yang disebut di dokumen lain tidak berlaku lagi.
 - ~~Branch `dok2-mockup` sengaja dibiarkan di remote~~ — tidak berlaku lagi: branch itu digabung lewat PR #41 dan sudah tidak ada di remote (7 Oktober 2026).
-- Branch lama `happy-gates` yang dihapus tanpa digabung berisi satu perbaikan yang **belum ada** di `main`: tombol "Kenali" di peta yang diketuk sebelum `game/map.js` siap (±0,8 detik setelah dimuat, terlihat di 844×390) hanya mengubah hash `#kenal-{code}`, sedangkan `html.js` menyembunyikan overlay `:target`, sehingga overlay tidak terbuka. Usulan perbaikannya: saat modul siap, hash `#kenal-{code}[-n]` yang sudah ada membuka overlay di slide n lalu hash dibersihkan (`history.replaceState`), tanpa memutar narasi otomatis; narasi peta tidak dimulai bila overlay Kenali terbuka. Kerjakan ulang bila masih terjadi (setelah tata letak 16:9 Dok 3).
+- ~~Branch lama `happy-gates` yang dihapus tanpa digabung berisi satu perbaikan yang **belum ada** di `main`: tombol "Kenali" di peta yang diketuk sebelum `game/map.js` siap (±0,8 detik setelah dimuat, terlihat di 844×390) hanya mengubah hash `#kenal-{code}`, sedangkan `html.js` menyembunyikan overlay `:target`, sehingga overlay tidak terbuka. Usulan perbaikannya: saat modul siap, hash `#kenal-{code}[-n]` yang sudah ada membuka overlay di slide n lalu hash dibersihkan (`history.replaceState`), tanpa memutar narasi otomatis; narasi peta tidak dimulai bila overlay Kenali terbuka. Kerjakan ulang bila masih terjadi (setelah tata letak 16:9 Dok 3).~~ — diperbaiki di "Dok 3 — panggung 16:9" (8 Oktober 2026).
 - 7 Oktober 2026: proposal paket aset (unduh sekali, pindah layar dan ganti bahasa seketika) ditulis di [`docs/rencana-paket-aset.md`](../rencana-paket-aset.md). Belum dikerjakan; tahapan yang bergantung pada Dok 3 ada di §10, keputusan pemilik di §12.
 
 ---
@@ -688,3 +688,80 @@ Dikerjakan di branch `dok3-admin` (dari `main`), sesuai `03_TAMPILAN_16x9_DAN_AD
 - **Peramban (Chromium + Playwright, MariaDB lokal):** `migrate --all`, `db:seed`, `gelita:reset`, lalu `gelita:simulasi --siswa=30`. Semua halaman §8.3 dibuka di 1280, 1440, dan 1920 px: Ringkasan, Siswa, detail siswa (Profil, Jawaban, Pengerjaan), Sesi + detail, delapan tab Data mentah, Kritik & saran, Unduh data, Tantangan, editor tantangan, Gambar & mockup, Kelengkapan aset, Penelitian, Rilis, Sekolah, Staf, Tata kelola, dan Ubah sandi. Semuanya status 200, tanpa galat konsol, dan tanpa gulir horizontal halaman (tabel lebar menggulir di dalam `.table-wrap`). Unduh CSV Siswa diperiksa sebagai unduhan berkas.
 - **Belum dilakukan:** uji keyboard dan pembaca layar menyeluruh, serta membuka CSV/XLSX di LibreOffice atau R (§12.3, bagian unduhan diuji sesi data mentah).
 
+---
+
+## Dok 3 — panggung 16:9
+
+Dikerjakan di branch `dok3-panggung` dari `main` (7–8 Oktober 2026), sebagai salah satu dari tiga sesi paralel Dok 3. Cakupan: §1–§7 (panggung, token rem, `stage.css`, kerangka, tata letak setiap layar, tantangan lebar penuh tanpa Jaka, ukuran aset, JavaScript panggung), butir carry-over tinjauan Dok 2, perbaikan tombol "Kenali", uji §12.1 (`StageCssTest`, `ChallengeFrameTest`), skrip §12.2 `tools/qa/stage-check.mjs`, dan `docs/05`/`docs/06`. Panel admin (§8) dan ekspor (§9–§10) dikerjakan sesi lain. Versi awal branch ini (sampai `StageCssTest`) sudah digabung pemilik lewat PR #48; skrip QA, dokumentasi, dan catatan ini menyusul di PR berikutnya dari branch yang dimulai ulang dari `main`.
+
+### Yang berubah
+
+1. **Panggung.** `layouts/game.php` = `<html class="game-stage">` › `.stage-frame` › `#stage` (80 × 45 rem). Layar putar satu-satunya elemen di luar panggung. Skrip sebaris kecil di `<head>` mengisi `--app-w`/`--app-h` sebelum CSS dimuat; `core/stage.js` melanjutkannya.
+2. **Satuan.** Semua CSS game (`tokens`, `base`, `stage`, `components`, `game`, `cinematic`) dikonversi ke rem (px ÷ 16, kecuali garis 1px). Token `--step-*`/`--sp-*` di CSS game diganti `--fs-*`/`--gap-*` (§2.3; `--sp-7` 48 dp menjadi `--gap-7`). Semua media query lebar/tinggi dan semua `vw`/`vh` dihapus. `StageCssTest` menjaganya.
+3. **`layout.css` dihapus (§2.4).** Bagian game pindah ke `stage.css`. Bagian admin dan halaman masuk staf (`body.admin`, `.admin-*`, `.menu-*`, `.auth-*`, media query admin, lapisan modal/toast `position: fixed`) dipindah **apa adanya** ke awal `admin.css`, dalam blok bertanda "DARI tokens.css & layout.css". Blok itu juga memuat token ukuran lama (`--step-*`, `--sp-*`, `--tap` 44px, `--sidebar-w`, `--content-max`) dan memetakan `--fs-*` ke `--step-*`, sehingga `components.css` (dipakai bersama) tampil seperti sebelumnya di admin. Untuk itu `layouts/admin.php` hanya kehilangan tautan `layout.css`, dan `layouts/auth.php` menukar `layout.css` dengan `admin.css`. **Untuk sesi admin (§8):** blok ini boleh dibuang seluruhnya saat admin tidak lagi memakai `tokens.css`/`base.css`/`components.css`. *(Sesudah PR #47 `admin.css` berdiri sendiri dan layout admin tidak lagi memuat CSS game; blok pindahan ini sudah tidak ada.)*
+4. **Kerangka (§3).** `#stage` memakai `contain: layout paint`. Akibatnya `position: fixed` di dalam panggung (tirai, overlay Kenali, latar slide, konfeti) berlabuh ke panggung tanpa harus diubah satu per satu, dan apa pun yang keluar terpotong. `main#app.stage-main` selebar panggung tanpa stacking context, jadi koordinat isi = koordinat panggung (tabel §4), dan overlay Kenali tetap dapat menutupi HUD.
+5. **Koordinat (§3.3, §4–§5).** Semua angka ada di `stage.css` §Koordinat sebagai dp tanpa satuan (`--x --y --w --h`), diterapkan kelas `.stage-box`. Elemen dari partial bersama (kotak cerita, panel engine) mendapat aturan yang sama lewat daftar selektor berawalan `.stage`, agar menang atas `position: relative` milik `.panel-parchment`.
+6. **HUD (§3.2).** Kiri: lentera + merek. Tengah: section baru `hudTitle` atau nama wilayah dari `$level`. Kanan: bahasa, suara, **layar penuh** (`#btn-fullscreen`, ikon baru `fullscreen`/`fullscreen-exit`, `Game.fullscreen`), beranda, profil, keluar.
+7. **Tantangan (§5).** Jaka dihapus dari `_frame.php` (`.challenge-character`) dan layar selesai (`finished-jaka`, `.finished-layout`). Bingkai ukiran digambar `.challenge::before`. `.arena-panel`/`.arena`/`.arena-body` menjadi `display: contents`. Instruksi dipindah ke panel `aside.challenge-aside` (+ section `aside` opsional per engine).
+8. **Layar selesai (§5.3).** Kartu tunggal, tiga statistik (ubin "Benar di akhir" dihapus), dan baris lembut `Game.exhaustedNote` bila kesempatan habis.
+9. **JavaScript (§7):**
+   - `core/stage.js` baru: `initStage`, `stageRect`, `stageScale`, layar penuh, dan `viewport_changed` (dipindah dari `core/device.js`) dengan `stage_w`, `stage_h`, `scale`;
+   - `page_hidden`/`page_visible` pindah ke `core/events.js` (`initVisibilityTracking`);
+   - `scrollToCenter()` menggulir panel `.stage-scroll` terdekat;
+   - modal, toast, `#sr-announcer`, konfeti, dan lightbox berada di/berukuran `#stage`;
+   - `core/lightbox.js` baru, dipakai Pustaka dan Benar atau Salah;
+   - `boleh.js` tanpa cabang `matchMedia('(max-width: 640px)')`;
+   - `trackReading()` membaca posisi gulir panel bacaan;
+   - lapisan yang dibuat `inert` oleh tirai dan Kenali kini dicari di `#stage`.
+10. **Ukuran aset (§6).** `Config\Gelita::$assetDisplaySizes` baru: ukuran tampil dp per pola slot, di samping `$assetSizes` (ukuran berkas, tetap dipakai validasi). Menampilkannya di halaman **Media** termasuk perombakan admin §8 dan ditinggalkan untuk sesi admin.
+
+### Butir carry-over tinjauan Dok 2
+
+- **Gambar pernyataan Benar atau Salah:** `button.card-image[data-zoom]` 192 × 144 dp dengan gambar utuh (`object-fit: contain`, tidak lagi `cover` + 160px); ketuk membuka lightbox 640 × 480 dp. Event `overlay_opened` `{ overlay: 'statement_image' }`.
+- **`aria-describedby` modal** menunjuk semua paragraf (`#modal-text`, `#modal-text-2`, …).
+- **Keping puzzle salah** diumumkan ke pembaca layar: `aria-label` slot ditambah "— belum di tempatnya" (`Js.pieceMisplaced`), dan dikembalikan saat keping ditukar.
+- **Hitungan ✓/✗ Susun Gambar** dipulihkan saat dimuat ulang (✓ 0 / ✗ 1 bila `tries_used > 0`; satu gambar per pengerjaan).
+- **Bentuk jamak EN:** kunci tunggal `blankEmptyTextOne`, `cardsEmptyTextOne`, `puzzleWrongTextOne` (ID dan EN); engine memilihnya saat n = 1.
+
+### Tombol "Kenali" (Perawatan repo)
+
+Masalahnya masih terjadi sesudah tata letak 16:9 dan kini diperbaiki sesuai usulan. Saat `game/map.js` siap, hash `#kenal-{code}` atau `#kenal-{code}-{n}` membuka overlay di slide n tanpa memutar narasi otomatis, lalu hash dibersihkan dengan `history.replaceState`. Narasi peta tidak dimulai selama overlay Kenali terbuka.
+
+### Keputusan dan penyimpangan dari dokumen
+
+- **Kotak teks dialog wilayah dan wilayah tuntas di y 472, bukan 520.** Kedua layar ini punya nav bar (656–720), yang akan menutupi kotak di 520–688. Cerita pembuka dan penutup tetap 520 karena "Lewati" ada di kanan atas.
+- **Instruksi tantangan.** §5 tidak memberi tempat instruksi untuk Isi Rumpang, Benar atau Salah, dan Cari Objek. Karena itu:
+  - Rumpang: instruksi 96, 128, 1088 × 40, bacaan 96, 176, 1088 × 384 (bukan 128 × 432);
+  - Benar atau Salah: instruksi 652, 128, 596 × 64, pernyataan 652, 200, 596 × 440 (bukan 128 × 512);
+  - Cari Objek: instruksi di panel kanan 1084, 192, 164 × 486. Ketukan salah dan waktu sudah tampil di kepala, jadi panel itu tidak mengulangnya.
+- **Penanda kesempatan ●●○ hanya di kepala tantangan**, tidak diulang di bilah aksi (§5.1 dan §5.2 menyebut keduanya). Bilah aksi berisi tombol Cek saja.
+- **Tiga tips Susun Gambar:** `Game.puzzleHint`/`puzzleHintJigsaw` yang ada, ditambah `Game.puzzleTipMark` dan `Game.puzzleTipHint` (baru, ID/EN). Keping yang benar tidak dikunci di engine ini, jadi tips tidak menjanjikannya.
+- **Kontrol narasi sinematik** (◀ ⏸ ↻ ▶ + Otomatis) lebih lebar dari 240 dp. Kontrol diletakkan di kanan atas y 72, di samping "Lewati" (nav bar), tidak dalam satu kotak 1008, 72, 240 × 48.
+- **Peta Kedu:**
+  - "Pustaka Kedu", "Tonton penutup", dan "Balai Refleksi" tetap di nav bar, tidak dipindah ke panel kanan; panel kanan berisi kartu wilayah;
+  - balon narasi Jaka 48, 560, 600 × 96 tanpa gambar tokoh besar di atas peta, cukup nama di balon;
+  - judul "Peta Kedu" tampil di tengah HUD (`hudTitle`) dan sebagai `h1` tersembunyi.
+- **Peta wilayah tanpa tombol Kenali.** Overlay Kenali hanya dirender di Peta Kedu (`$regionIntros` dari controller); menambahkannya ke peta wilayah butuh perubahan controller dan tidak dikerjakan. Panel kanan berisi judul, fokus, progres, dan daftar empat tantangan (tetap berguna untuk pembaca layar).
+- **Beranda di HUD** dipertahankan di kanan (§3.2 tidak menyebutnya).
+- **Profil:** empat ubin §4 (serpihan, tantangan selesai, bintang, waktu). Umur, jenis kelamin, kelas, dan sekolah tetap tampil sebagai daftar kecil di bawah nama. Ubin "Berhasil pada Percobaan Pertama" dihapus dari profil.
+- **Hasil:** urutan kolom mengikuti §4 (Percobaan sebelum Berhasil pada Percobaan Pertama).
+- **Kartu misi:** hasil terbaik kini memuat "Berhasil pada Percobaan Pertama x dari y" (§4).
+- **Ukuran huruf lebih besar dari sebelumnya.** `--fs-body` 20 dp ≈ 20 px pada 1280 × 720, sedangkan `--step-0` lama ± 16 px. Panel dibuat bergulir di tempat yang perlu, sesuai §5.2 ("teks bacaan panjang tidak pernah mengecilkan huruf").
+- **`visualViewport` tidak dipakai** untuk `--app-*`, meski disebut di §2.1. Papan ketik layar dan cubit-zoom akan mengecilkan panggung saat siswa mengetik di formulir. Yang dipakai `innerWidth`/`innerHeight`.
+- **Layar putar** memakai rem dari lebar layar (`calc(var(--app-w) / 24)`) selama tampil. Panggung disembunyikan di belakangnya. Tanpa ini, rem ikut lebar panggung potret (± 4,9 px) dan teksnya tidak terbaca.
+- **Lightbox** tetap `<dialog>` + `showModal()` (fokus terkunci, Esc). Dialog modal ada di top layer, di luar `#stage`, jadi ukurannya ditulis dalam rem agar tetap di dalam panggung; latar `::backdrop` menutupi bingkai juga.
+- **Layar penuh lepas setiap pindah halaman** (perilaku peramban untuk navigasi dokumen). Memasang aplikasi tetap cara utama.
+- `map.kedu` tidak ditambahkan ke `$assetSizes`, karena menambah validasi unggahan untuk slot yang mungkin sudah diunggah. `$assetDisplaySizes` hanya keterangan.
+
+### Pengujian yang dijalankan
+
+- `vendor/bin/phpunit --no-coverage`: hijau sesudah setiap tahap. Akhir sesudah `main` terbaru (data mentah, simulasi, paket aset) digabung: **481 test**.
+- Uji baru:
+  - `StageCssTest` (7): satuan viewport, media query lebar/tinggi, px selain 1px, panggung 80 × 45 rem, isi layout di dalam `#stage`, layout admin tanpa `layout.css`;
+  - `ChallengeFrameTest` (5): tanpa Jaka di kerangka, engine, dan layar selesai; avatar Mbah Kedu tetap di Cari Objek; koordinat kerangka; gambar pernyataan dapat diperbesar.
+- `RotateGateTest` kini membaca `stage.css`.
+- **Peramban** (`tools/qa/stage-check.mjs`, Chromium, `php spark serve`, MariaDB lokal hasil `migrate` + `db:seed`, studi `unlock_mode = free`). Pemeriksaannya mencakup ±50 layar per ukuran: semua layar §4, keempat tantangan di ketiga wilayah, modal hasil, dan Kenali, pada 1280 × 720, 1920 × 1080, 1366 × 657, 1024 × 768, 2560 × 1080, dan 844 × 390. Pada 1280 × 720 juga dijalankan 12 layar selesai (kesempatan dihabiskan), hasil, wilayah tuntas, Pustaka + lightbox, penutup, dan refleksi; 390 × 844 sentuh memeriksa layar putar. Hasilnya (8 Oktober 2026, dijalankan dalam beberapa putaran karena satu putaran penuh lebih dari 30 menit):
+  - **1280 × 720, 1920 × 1080, 1366 × 657:** 150 layar, tanpa temuan.
+  - **1024 × 768, 2560 × 1080, 844 × 390 + layar putar 390 × 844:** satu temuan, posisi `button.object` Cari Objek Magelang bergeser 0,72 % di 844 × 390. Penyebabnya penunjuk mouse yang tertinggal di atas benda sesudah klik sebelumnya, sehingga `:hover` (`scale(1.05)`) menggeser kotaknya, bukan tata letak. Skrip kini memindahkan mouse ke pojok sebelum mengukur; putaran 1280 × 720 + 844 × 390 sesudahnya lolos (106 layar, termasuk layar putar).
+  - Temuan lain sepanjang pengerjaan yang sudah diperbaiki: balon narasi Peta Kedu terpotong (kini `.stage-scroll`), judul bank kata terhitung meluap (kini `.visually-hidden`), pembanding posisi tidak membedakan pengerjaan dengan variasi acak berbeda.
+- **Belum dijalankan:** uji manual §12.3 di laptop, tablet, dan ponsel sungguhan, serta uji pembaca layar.

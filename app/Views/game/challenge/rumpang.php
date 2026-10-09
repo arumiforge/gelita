@@ -89,7 +89,7 @@ $blankHtml = static function (int|string $itemId, int $number): string {
     <?php endif ?>
 
     <div class="word-bank" id="word-bank" role="group" aria-label="<?= esc(lang('Game.wordBank'), 'attr') ?>">
-      <span class="word-bank-title"><?= esc(lang('Game.wordBank')) ?></span>
+      <span class="word-bank-title visually-hidden"><?= esc(lang('Game.wordBank')) ?></span>
       <?php foreach ($payload['word_bank'] as $index => $word): ?>
         <button type="button" class="word" data-word-id="k<?= $index ?>"><?= esc($word) ?></button>
       <?php endforeach ?>

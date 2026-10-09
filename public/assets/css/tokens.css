@@ -1,8 +1,8 @@
 /* ==========================================================================
    GELITA — tokens.css
-   Custom property: warna, tipografi, bayangan (bersama game & admin) dan
-   ukuran panggung 16:9 (hanya game, :root.game-stage).
-   Ukuran admin (--step-*, --sp-*, --sidebar-w) ada di admin.css.
+   Custom property game: warna, tipografi, bayangan, ukuran (rem) dan ukuran
+   panggung 16:9 (:root.game-stage). Panel admin memakai token sendiri di
+   admin.css dan tidak memuat berkas ini.
    Dok 3 §2: 1rem = 16 dp pada kanvas 1280 × 720 dp.
    ========================================================================== */
 
@@ -32,7 +32,7 @@
   --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Consolas, monospace;
 
-  /* Ukuran (dp ÷ 16). Di admin 1rem = 16 px; admin.css menimpa ukuran huruf. */
+  /* Ukuran (dp ÷ 16) */
   --fs-caption: 1rem;      /* 16 dp label kecil, keterangan */
   --fs-body: 1.25rem;      /* 20 dp teks umum, tombol */
   --fs-reading: 1.375rem;  /* 22 dp bacaan (line-height 1.6) */
