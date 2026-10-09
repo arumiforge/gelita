@@ -890,4 +890,11 @@ Found during the audit and fixed in separate branches (see `docs/PROGRESS.md`):
 8. `engines/boleh.js` sends `overlay_opened` (`statement_image`) without the region `level` code.
 9. A `stage.css` comment gives the content area as "0, 56, 1280 × 600" while `.stage-main` is `inset: 0`.
 
+### Follow-up: items 1–4 (branch `fix-admin-data`)
+
+- **Item 1.** New `RawDataService::all($dimension, $filters)` returns every row in the bound scope (`{rows, columns}`, keyset iteration via `rows()`); the Jawaban tab uses it for the `percobaan` history instead of `page(…, 10000)`. The history is now ordered by try id (oldest first), which reads as a sequence; before it was newest first.
+- **Item 2.** The student-list search `q` matches `participant_code` for everyone and `username`/`display_name` for admins only; the teacher placeholder is now "kode siswa". `docs/08` troubleshooting: a forgotten username is looked up by an admin, since teachers see neither name nor username.
+- **Item 3.** List-table CSVs go through `BaseAdminController::tableCsv()`, which writes audit action `list_csv` (`target_type` `admin_table`, `target_id` = file name such as `siswa` or `linimasa-12`, metadata = scoped filters, sort, row count). A new code rather than reusing `export_csv`, so existing audit rows keep their meaning. The search text is logged only as `search: true/false`, because it may hold a student's name.
+- **Item 4.** `ParticipantModel::cohortSummary()` and `ParticipantFeedbackModel::forStudy()` / `ratingDistribution()` removed with their private helpers; `docs/03` updated.
+
 **Open, needs an owner decision:** the default study is seeded (and re-seeded by `gelita:reset`) as `active`, so the `ResearchReadiness` gate in `StudyController` never blocks data collection on a standard install; it only blocks switching a study to active. `docs/08` tells the admin to check the list by hand for now.
