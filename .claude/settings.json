@@ -9,5 +9,17 @@
     "commit": "",
     "pr": "",
     "sessionUrl": false
+  },
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo 'Reminder (.claude/rules/language.md): reply to the owner in English even if they wrote in Indonesian. Code, comments, commits, and agent prompts in English; user-facing UI text in friendly Indonesian.'"
+          }
+        ]
+      }
+    ]
   }
 }
