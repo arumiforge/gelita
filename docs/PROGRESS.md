@@ -41,4 +41,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `sky/cool-pascal-2bsc2w` | Account screens follow-up: `/masuk` in the ornate panel design, ornate panel body scrolls inside the fixed frame (16:9 rules) | PR open |
