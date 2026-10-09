@@ -1004,6 +1004,17 @@ Branch `sky/amazing-mendel-wuy2p7`. Owner request: on Data mentah, the columns J
 - **Code.** `RawDataService::page()`, `streamCsv()`, `all()`, `rows()`, and `shape()` take `$readableAnswers`; it reuses the answer branch of the labelled mode without labelling anything else. In that mode the answer columns are typed `text`, not `json`, so they render as normal text instead of the monospace JSON cell. `BaseAdminController::readableAnswers()` reads the query. The export page's Berlabel/Berkode hints now say how answers are written.
 - Tests: `AdminTableTest::testReadableAnswersChangeOnlyTheAnswerColumns`, `ParticipantPanelTest::testRawDataTablesShowReadableAnswersWithASwitchToJson`.
 
+## Asset package: owner decisions (9 October 2026)
+
+Branch `sky/optimistic-hopper-eqqcbm`. The owner answered the open questions of `docs/rencana-paket-aset.md` §12. The plan is updated; no code changes yet.
+
+- **All recommendations P1–P10 accepted** as written in the plan. P1 (whether Stage 7 is needed) is still decided after the Stage 0 and Stage 4 measurements.
+- **P11 changed: full download is mandatory before Mulai.** This is a fixed owner decision. There is no "core first, rest in the background" path and no partial package: `package_mode = sebagian` is gone, the per-region download curtain is gone, and the targets S6–S8 are redefined (full package ≤ 7 min for ≤ 40 MB on the reference network, so the image size budget becomes a requirement).
+- **P12 new: admin switch for package mode** (plan §6.3). The admin can turn package mode on and off from Rilis → Paket aset, so the feature can ship while images and audio still change. On = build a package from every active asset and activate a release with it; Off = activate a release without a package, and the game loads assets from the network as today. Stored as the active release's `asset_version` (no new settings table), so the existing audit log and running-study lock apply. Text and questions are never packaged, so they update immediately either way; image and audio changes need **Bangun ulang paket**, prompted by a "changed assets" notice. Sessions record `package_mode = nonaktif` while the switch is off. The `.env` flag stays as an emergency kill switch.
+- **My interpretation of P7 + P11** (plan §8.7): online mode is automatic only where the device cannot store the package (no service worker, private mode, not enough storage). Lab profiles that are wiped on logout must download like any device, unless the admin turns on "Izinkan mode daring untuk perangkat lab". The owner can tighten or loosen this.
+- Fixed while editing: the plan mixed "Stage 5" and "Stage 7" for in-stage navigation; it is Stage 7 throughout. §2.7 now notes that media URLs carry `?v=` from the content hash since the media fix of the same day.
+- Effort estimate for Stages 0–6 goes from 18–27 to 20–30 person-days.
+
 ## HUD controls without a frame (9 October 2026)
 
 Branch `sky/beautiful-ritchie-rd2s1t`. Owner request: "hapus background dan border hud di semua halaman game, teks yang ada di hud jika keterbacaan kurang, tambahkan background".
