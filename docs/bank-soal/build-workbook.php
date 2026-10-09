@@ -74,7 +74,7 @@ $scorable = count(array_filter($flat['sheets']['items'], static fn (array $row):
 (new BankWorkbookGuide())->write($rows, $output, [
     'title'    => 'Bank Soal GELITA — Kelas 5',
     'subtitle' => sprintf(
-        'Bank soal final penelitian kelas 5 SD/MI yang disetujui peneliti (Oktober 2026): 12 tantangan (4 per wilayah), %d soal (%d dinilai + %d benda pengecoh), %d variasi, %d bacaan Benar atau Salah, %d petunjuk, dan %d kata pengecoh. Setiap pengerjaan memakai satu variasi acak. Gambar yang tercantum di sheet DAFTAR_MEDIA mula-mula tampil sebagai gambar contoh; unggah gambar asli dengan kode berkas yang sama di menu Gambar & suara.',
+        'Bank soal final penelitian kelas 5 SD/MI yang disetujui peneliti (Oktober 2026): 12 tantangan (4 per wilayah), %d soal (%d dinilai + %d benda pengecoh), %d variasi, %d bacaan Benar atau Salah, %d petunjuk, dan %d kata pengecoh. Setiap pengerjaan memakai satu variasi acak. Gambar yang tercantum di sheet DAFTAR_MEDIA mula-mula tampil sebagai gambar contoh; unggah gambar asli dengan kode berkas yang sama di menu Gambar & mockup.',
         count($rows['items']),
         $scorable,
         count($rows['items']) - $scorable,
@@ -86,7 +86,7 @@ $scorable = count(array_filter($flat['sheets']['items'], static fn (array $row):
     'sheets' => array_keys($flat['sheets']),
 ], [
     'DAFTAR_MEDIA' => [
-        'note'    => 'Gambar tantangan yang perlu disiapkan admin (Dok 2 §10.4). Saat berkas ini diimpor, slotnya dibuat dengan nama dan isi gambar yang diharapkan; php spark gelita:mockups lalu memasang gambar contoh. Unggah gambar asli di Panel GELITA → menu Gambar & suara dengan kode berkas persis seperti kolom pertama: gambar asli langsung tampil dan tidak pernah ditimpa gambar contoh. Pakai foto/ilustrasi sendiri atau berlisensi bebas, dan catat pemiliknya.',
+        'note'    => 'Gambar tantangan yang perlu disiapkan admin (Dok 2 §10.4). Saat berkas ini diimpor, slotnya dibuat dengan nama dan isi gambar yang diharapkan; php spark gelita:mockups lalu memasang gambar contoh. Unggah gambar asli di Panel GELITA → menu Gambar & mockup dengan kode berkas persis seperti kolom pertama: gambar asli langsung tampil dan tidak pernah ditimpa gambar contoh. Pakai foto/ilustrasi sendiri atau berlisensi bebas, dan catat pemiliknya.',
         'headers' => ['Kode berkas', 'Nama gambar', 'Wilayah · tantangan', 'Dipakai di', 'Isi gambar asli', 'Ukuran & format', 'Saran sumber / catatan'],
         'rows'    => BankSource::mediaRows($flat['media']),
         'widths'  => [30, 26, 26, 24, 50, 30, 50],

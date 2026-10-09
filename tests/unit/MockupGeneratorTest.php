@@ -260,7 +260,7 @@ final class MockupGeneratorTest extends CIUnitTestCase
         $item     = $findings->invoke($verifier, $missing, 'tmg-1', 'Gambar soal', true)[0]['message'];
 
         // Peta, latar, lencana, dan gambar bacaan bukan slot gelita:mockups (Dok 2 §10.4)
-        $this->assertStringEndsWith('belum diunggah; permainan memakai tampilan pengganti. Unggah di menu Gambar & suara.', $region);
+        $this->assertStringEndsWith('belum diunggah; permainan memakai tampilan pengganti. Unggah di menu Gambar & mockup.', $region);
         $this->assertStringNotContainsString('gelita:mockups', $region);
         $this->assertStringContainsString('Jalankan php spark gelita:mockups', $item);
     }
