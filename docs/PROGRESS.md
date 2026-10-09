@@ -19,7 +19,8 @@ Last updated: 9 October 2026.
   - [x] §11 documentation, audited against the code (PR #52, PR #53, PR #54)
   - [x] Code issues found in the §11 audit, items 1–9 (PR #56, PR #57, PR #58; item 5 through PR #60)
   - [x] Owner decision on the research-ready gate: keep as is, check the list by hand per `docs/08` (option a, 9 October 2026)
-  - [ ] §12.3/§12.4 tests and done criteria: keyboard pass (`tools/qa/a11y-check.mjs`) and exports in LibreOffice, pandas, and R done (PR #59); next is the `stage-check.mjs` and admin-page re-run at 1280, 1440, and 1920 px, now that all audit fixes are merged
+  - [x] §12.3/§12.4 tests and done criteria: keyboard pass (`tools/qa/a11y-check.mjs`) and exports in LibreOffice, pandas, and R (PR #59); stage re-run at all six sizes and admin re-run at 1280, 1440, and 1920 px (`tools/qa/admin-check.mjs`) after the audit fixes, all pass
+  - [x] Duplicate student codes when two students finish sign-up at the same moment, found in the re-run (PR #63)
   - [ ] §12.3 owner pass on real devices and a screen reader: `docs/perombakan-kelas5/device-test-checklist.md`
   - [~] §13 one-off upgrade script: **dropped**. A release is a fresh install per `docs/08_DEPLOYMENT.md`
 

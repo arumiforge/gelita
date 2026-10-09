@@ -947,13 +947,21 @@ One finding, documented rather than changed: in a non-UTF-8 locale (`C`/`POSIX`,
 
 `docs/perombakan-kelas5/device-test-checklist.md` lists what only the owner can do: one full region on a laptop, tablet, and landscape phone; one NVDA/VoiceOver pass; opening an export in their own Excel/LibreOffice and R.
 
+### Re-run after the §11 audit fixes
+
+`main` after PR #63, 9 October 2026, same environment as above (fresh `gelita_uji`, `gelita:reset --ya`, `gelita:simulasi --siswa=30`, unlock mode `free`), `PHP_CLI_SERVER_WORKERS=8 php spark serve`, Chromium via Playwright 1.56.
+
+- **Stage (`tools/qa/stage-check.mjs`):** all six sizes, every check passes. 44 screens per size (all §4 screens, the four challenges in the three regions, result modal, Kenali); on the first size of each run also the 12 finished screens with tries used up, results, region complete, Pustaka + lightbox, closing, and reflection (61 screens). 390 × 844 touch shows the rotate screen. The sizes ran in parallel runs: 1280 × 720 and 1366 × 657; 1024 × 768 and 844 × 390; 1920 × 1080 and 2560 × 1080 each in a fresh run of its own (the first pass at those two sizes overlapped seven seconds in which the working tree briefly held an old checkout, so it is not counted).
+- **Admin (`tools/qa/admin-check.mjs`, new):** 1004 checks pass, 0 fail. 48 admin pages as admin and 26 data pages as a teacher, at 1280, 1440, and 1920 px: HTTP 200, no console errors or failed requests, no horizontal page scroll, skip link present. Audit items: the Jawaban tab lists all 89 of 89 tries of the student with the most tries (item 1); a teacher's name search finds nothing and a code search finds the student (item 2); each list CSV (Siswa, Sesi, timeline on the session page, Kritik & saran) writes one `list_csv` row (item 3); the quick search text matches the role (item 6). Content pages stay admin only.
+- **Finding, fixed in PR #63:** the first attempt to run two stage runs at once failed at registration step 3. Two students who finished sign-up at the same moment got the same `participant_code`, because `ParticipantModel::generateCode()` read `MAX(id) + 1` before the INSERT; the second sign-up hit the unique key and saw HTTP 500 (5 of 10 parallel sign-ups on MariaDB). The row is now inserted with a placeholder and gets `GLT-%06d` from its own AUTO_INCREMENT id in the same transaction (`placeholderCode()`, `assignCode()`); 20 of 20 parallel sign-ups pass. Test: `RegisterWizardTest::testRegistrationCommittedAlongsideGetsItsOwnCode`.
+
 ### §12.4 done criteria
 
 | Criterion | Evidence | State |
 |---|---|---|
-| 16:9 with frame at every test size, no page scroll, scroll only in panels | `stage-check.mjs` 8 October (decision log, Dok 3 stage session); re-run after the §11 audit fixes (`stage.css` changes) | re-run pending |
+| 16:9 with frame at every test size, no page scroll, scroll only in panels | `stage-check.mjs` 8 October (decision log, Dok 3 stage session); re-run after the §11 audit fixes, all six sizes pass (above) | done |
 | No Jaka on challenge and finished screens; content full width and centred | `ChallengeFrameTest`; `stage-check.mjs` | done |
 | Pustaka and Kenali show the same content as before | content comes from the same database tables, unchanged by Dok 3; screens visited by `stage-check.mjs` | owner device pass |
-| Neutral SaaS admin, formal tables, no charts; Data mentah 7 dimensions + Perangkat; CSV per table | PR #47 browser pass at 1280/1440/1920; re-run after the admin audit fixes | re-run pending |
+| Neutral SaaS admin, formal tables, no charts; Data mentah 7 dimensions + Perangkat; CSV per table | PR #47 browser pass at 1280/1440/1920; re-run with `admin-check.mjs` after the admin audit fixes, 1004 checks pass (above) | done |
 | XLSX/CSV-ZIP per §9 with Kamus Data | `RawExportTest`; this pass (LibreOffice, pandas, R) | done |
-| §11 docs updated; all tests green | PR #52–#54; `vendor/bin/phpunit --no-coverage` 487 tests green | done |
+| §11 docs updated; all tests green | PR #52–#54; `vendor/bin/phpunit --no-coverage` 493 tests green after PR #63 | done |
