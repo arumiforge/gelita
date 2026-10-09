@@ -22,28 +22,30 @@
 
   <div class="start-panel ornate-panel stage-box">
     <?= $this->include('partials/ornate-frame') ?>
-    <header class="start-head">
-      <h1><?= esc(lang('Game.startTitle')) ?></h1>
-    </header>
-    <span class="ornate-divider" aria-hidden="true"></span>
+    <div class="ornate-body stage-scroll">
+      <header class="start-head">
+        <h1><?= esc(lang('Game.startTitle')) ?></h1>
+      </header>
+      <span class="ornate-divider" aria-hidden="true"></span>
 
-    <div class="start-cards">
-      <a class="start-card is-primary card-link" href="<?= base_url('daftar') ?>">
-        <span class="start-icon" aria-hidden="true"><?= icon('user-plus') ?></span>
-        <div class="start-text">
-          <h2><?= esc(lang('Game.startNew')) ?></h2>
-          <p><?= esc(lang('Game.startNewText')) ?></p>
-        </div>
-        <span class="start-go" aria-hidden="true"><?= icon('right') ?></span>
-      </a>
-      <a class="start-card card-link" href="<?= base_url('masuk') ?>">
-        <span class="start-icon" aria-hidden="true"><?= icon('login') ?></span>
-        <div class="start-text">
-          <h2><?= esc(lang('Game.startReturning')) ?></h2>
-          <p><?= esc(lang('Game.startReturningText')) ?></p>
-        </div>
-        <span class="start-go" aria-hidden="true"><?= icon('right') ?></span>
-      </a>
+      <div class="start-cards">
+        <a class="start-card is-primary card-link" href="<?= base_url('daftar') ?>">
+          <span class="start-icon" aria-hidden="true"><?= icon('user-plus') ?></span>
+          <div class="start-text">
+            <h2><?= esc(lang('Game.startNew')) ?></h2>
+            <p><?= esc(lang('Game.startNewText')) ?></p>
+          </div>
+          <span class="start-go" aria-hidden="true"><?= icon('right') ?></span>
+        </a>
+        <a class="start-card card-link" href="<?= base_url('masuk') ?>">
+          <span class="start-icon" aria-hidden="true"><?= icon('login') ?></span>
+          <div class="start-text">
+            <h2><?= esc(lang('Game.startReturning')) ?></h2>
+            <p><?= esc(lang('Game.startReturningText')) ?></p>
+          </div>
+          <span class="start-go" aria-hidden="true"><?= icon('right') ?></span>
+        </a>
+      </div>
     </div>
   </div>
 </section>

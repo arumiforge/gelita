@@ -173,7 +173,7 @@ Koordinat dp pada kanvas 1280 × 720 (x, y, lebar, tinggi). "Gulir" = panel `.st
 |---|---|
 | Halaman awal `/` (`game/welcome`) | latar `bg.welcome`; logo `ui.logo-hero` 240, 120, 800 × 300; tombol Mulai `ui.btn-start` 460, 456, 360 × 120; petunjuk pasang aplikasi 896, 600, 352 × 40; HUD hanya bahasa & suara |
 | Mulai `/mulai` (`game/start`) | Jaka 140, 196, 280 × 460; panel berornamen 432, 176, 560 × 400 berisi judul dan dua kartu baris ("Saya baru" utama, "Sudah punya akun"); HUD: Kembali kiri atas, logo tengah; tanpa nav bar (diubah 9 Okt 2026) |
-| Masuk `/masuk` (`game/login`) | panel 360, 88, 560 × 544: nama pengguna, sandi, tombol Masuk; galat di atas isian |
+| Masuk `/masuk` (`game/login`) | Jaka 140, 196, 280 × 460; panel berornamen 432, 80, 560 × 576, isi **gulir** di dalam bingkai: judul, nama pengguna, sandi, tombol Masuk; galat di atas isian; HUD: Kembali kiri atas, logo tengah; tanpa nav bar (diubah 9 Okt 2026) |
 | Daftar `/daftar/1…3` (`game/register/step-*`) | panel 200, 72, 880 × 576: stepper 0–64 di dalam panel; isi formulir **gulir** 64–496; bilah tombol 496–576 (Lanjut/Daftar kanan; Kembali pindah ke HUD kiri atas dengan logo di tengah HUD, 9 Okt 2026). Langkah 3: kotak "Mengapa sandi harus kuat?" dengan Jaka di kiri isi panel (220 × 300) |
 | Ganti sandi `/ganti-sandi` | panel 360, 72, 560 × 576 (gulir) |
 | Gerbang `/gerbang` (`game/start-choice`) | Jaka 140, 196, 280 × 460; panel berornamen 432, 160, 560 × 432 (sapaan, ajakan, dua kartu baris) |
