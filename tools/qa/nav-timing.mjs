@@ -490,6 +490,14 @@ async function register(client, label) {
   await page.check('input[name=assent]');
   await page.click('main form button[type=submit]');
   await page.waitForURL(/intro|gerbang|peta/, { waitUntil: 'domcontentloaded' });
+  // The new PHP session is occasionally lost right after registration (seen once:
+  // a CSRF rejection of /api/events in the same second); log in again if so
+  await page.goto(`${BASE}intro/selesai`).catch(() => {});
+  if (/\/masuk/.test(page.url())) {
+    console.log(`  ${user}: logged out after registration, logging in again`);
+    await logIn(client, user);
+    await page.goto(`${BASE}intro/selesai`).catch(() => {});
+  }
   return user;
 }
 
@@ -542,7 +550,6 @@ async function prepare(client) {
   const user = await register(client, 'Siswa QA Waktu');
   console.log(`Test student: ${user}`);
   const { page } = client;
-  await page.goto(`${BASE}intro/selesai`).catch(() => {});
   let finished = null;
   for (const region of REGIONS) {
     // The region dialogue is shown once per PHP session before its first challenge
@@ -553,6 +560,7 @@ async function prepare(client) {
       await openGate(page);
       const ok = await exhaust(page);
       console.log(`  ${region} ${n}: ${ok ? 'done' : `not finished (${page.url().replace(BASE, '/')})`}`);
+      if (/\/masuk/.test(page.url())) throw new Error('the test student was logged out during preparation');
       if (ok && region === REGION && n === 1) finished = new URL(page.url()).pathname.replace(new URL(BASE).pathname, '');
     }
     await page.goto(`${BASE}tuntas/${region}`);
@@ -616,7 +624,6 @@ try {
   if (user) await logIn(student, user);
   else ({ user, finished } = await prepare(student));
   await register(fresh, 'Siswa QA Baru');
-  await fresh.page.goto(`${BASE}intro/selesai`).catch(() => {});
 
   const clients = { student, guest, fresh };
   for (const c of Object.values(clients)) await c.net.throttle(true);
