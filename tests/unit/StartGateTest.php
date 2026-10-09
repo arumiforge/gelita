@@ -2,6 +2,7 @@
 
 use App\Controllers\Game\GateController;
 use App\Controllers\Game\HomeController;
+use App\Controllers\Game\LoginController;
 use App\Controllers\Game\MapController;
 use App\Database\Seeds\MediaAssetSeeder;
 use App\Entities\GameSession;
@@ -94,6 +95,18 @@ final class StartGateTest extends CIUnitTestCase
         $this->assertStringNotContainsString('class="nav-bar"', $page);
         $this->assertStringContainsString('start-jaka', $page, 'Jaka is his own image, not part of the background');
         $this->assertSame(1, substr_count($page, 'start-card is-primary'));
+    }
+
+    public function testLoginMatchesTheStartScreen(): void
+    {
+        $page = (new LoginController())->form();
+
+        $this->assertIsString($page);
+        $this->assertStringContainsString('class="btn btn-quiet hud-back" href="' . base_url('mulai') . '"', html_entity_decode($page));
+        $this->assertStringNotContainsString('class="nav-bar"', $page);
+        $this->assertStringContainsString('start-jaka', $page);
+        $this->assertStringContainsString('login-panel ornate-panel stage-box', $page);
+        $this->assertStringContainsString('ornate-body stage-scroll', $page, 'the form scrolls inside the fixed panel');
     }
 
     public function testStartSendsLoggedInPlayerToTheGate(): void

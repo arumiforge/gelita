@@ -975,4 +975,13 @@ Branch `sky/cool-pascal-2bsc2w`. The owner sent a mockup of `/mulai` and asked f
 - **HUD has no band.** The background gradient and bottom border of `.hud` are gone everywhere (owner request: "hilangkan semua background dan border bottom di hud"). A text shadow keeps HUD text readable over bright art.
 - **Back in the top-left, logo centred** on the registration pages. A new HUD section `hudBack` (URL) replaces the left side with a Back button and puts `ui.logo` (falling back to the text brand) in the centre. Used by `/daftar/1…3` (Back → `/mulai`, `/daftar/1`, `/daftar/2`) and by `/mulai` (Back → `/`, which also drops its nav bar, matching the mockup). The Back links inside the registration panels are removed; the panel's button bar holds only Lanjut/Daftar on the right.
 - New icons `user-plus` and `login` in `icon()`. No language keys change; the mockup uses the existing copy.
-- Not changed: `/masuk` keeps its parchment panel and nav bar. Open question for the owner whether it should get the same ornate panel and HUD Back.
+- Not changed in PR #65: `/masuk` kept its parchment panel and nav bar (done in the follow-up below).
+
+### Follow-up: `/masuk` and the 16:9 rules (PR after #65)
+
+Owner request: give `/masuk` the same design and make sure the new design follows the fixed 16:9 stage rules (Dok 3 §1–§4).
+
+- `/masuk` now matches `/mulai`: Jaka (pose `bow`) at 140, 196, 280 × 460, the ornate panel at 432, 80, 560 × 576, Back to `/mulai` in the HUD with the logo centred, no nav bar. The parchment look is gone from this screen; inputs use the dark default style, and the show-password button and Caps Lock warning get dark-panel colours.
+- The ornate panel is now a fixed frame with a scrolling body (`.ornate-body.stage-scroll`) on all three screens. Before, a long name on `/gerbang` (up to 150 characters) or a longer English text could push content out of the panel, which the stage rules forbid; now it scrolls inside the frame. Content is centred while it fits and starts at the top when it overflows (`margin: auto` on the first and last child, `flex-shrink: 0` on every item).
+- The login panel is 16 dp taller than the `/mulai` panel and its rows sit 8 dp apart so the form with a one-line error still fits without scrolling; a two-line error (`Auth.locked`) scrolls.
+- Checked with the `inspect()` of `tools/qa/stage-check.mjs` on rendered pages (no database server here): `/mulai` (id, en), `/daftar/1`–`3`, `/masuk` (empty, with error, en), and `/gerbang` with a 62-character name, at all six sizes. Every check passes: 16:9 and centred, no page scroll, nothing outside the stage, overflow only in `.stage-scroll`, the same relative positions at every size, and 48 dp tap targets for the new HUD Back and panel controls. The existing 40 dp HUD icon buttons are unchanged.
