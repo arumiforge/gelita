@@ -113,7 +113,9 @@ php spark gelita:content:verify
 php spark serve
 ```
 
-`DatabaseSeeder` memasang sekolah resmi, akun `admin`, pengaturan studi dan rilis, tiga wilayah, slot media, 12 tantangan dengan naskah cerita, Pustaka Kedu, bank soal kelas 5, dan gambar contoh (mockup) untuk 45 slot gambar tantangan. Sesudah impor narasi, setujui rekaman di panel **Rekaman narasi** (`/admin/konten/narasi`) untuk kedua bahasa. Gambar contoh harus diganti gambar asli di panel **Gambar & suara** sebelum pengambilan data; `php spark gelita:content:verify --siap-penelitian` gagal selama masih ada mockup.
+`DatabaseSeeder` memasang sekolah resmi, akun `admin`, pengaturan studi dan rilis, tiga wilayah, slot media, 12 tantangan dengan naskah cerita, Pustaka Kedu, bank soal kelas 5, dan gambar contoh (mockup) untuk 45 slot gambar tantangan. Sesudah impor narasi, setujui rekaman di panel **Rekaman narasi** (`/admin/konten/narasi`) untuk kedua bahasa. Gambar contoh harus diganti gambar asli di panel **Gambar & mockup** (`/admin/media`) sebelum pengambilan data; `php spark gelita:content:verify --siap-penelitian` gagal selama masih ada mockup, dan **daftar siap penelitian** di halaman **Penelitian** (`/admin/studi`) baru hijau sesudah gambar, narasi, dan verifikasi beres.
+
+Untuk mengisi panel dengan data yang realistis di mesin pengembangan: `php spark gelita:simulasi --siswa=30` (§ 9).
 
 ---
 
@@ -127,7 +129,7 @@ gelita/
 │   ├── Controllers/
 │   │   ├── BaseController.php
 │   │   ├── Game/            area siswa (BaseGameController + 10 controller)
-│   │   ├── Admin/           panel staf (BaseAdminController + 14 controller)
+│   │   ├── Admin/           panel staf (BaseAdminController + 15 controller)
 │   │   ├── Api/             endpoint JSON (BaseApiController + 9 controller)
 │   │   └── Concerns/        trait GameProgress, StaffScope
 │   ├── Database/
@@ -141,7 +143,7 @@ gelita/
 │   ├── Language/
 │   │   ├── id/              Admin.php, Auth.php, Game.php, Js.php, Validation.php
 │   │   └── en/              Auth.php, Game.php, Js.php, Validation.php
-│   ├── Libraries/           kelas pendukung (lihat § 6.5)
+│   ├── Libraries/           kelas pendukung (lihat § 6.5); Simulation/ untuk gelita:simulasi
 │   ├── Models/              model + Traits/EncodesJson.php
 │   ├── Services/            logika bisnis (lihat § 6.3)
 │   ├── Validation/          GelitaRules.php
@@ -158,6 +160,7 @@ gelita/
 ├── writable/                cache/, logs/, session/, uploads/, debugbar/, exports/
 ├── tests/                   unit/, database/, session/, _support/
 ├── tools/audio/             generator audio bawaan (tidak dipakai server)
+├── tools/qa/                skrip uji peramban Playwright (tidak dipakai server)
 ├── deploy/                  skrip dan konfigurasi Nginx untuk Linux dan Windows
 ├── docs/                    dokumentasi, bank-soal/, pustaka/, sekolah/, perombakan-kelas5/
 ├── env                      templat konfigurasi, dilacak Git
@@ -171,7 +174,7 @@ gelita/
 
 | Folder | Isi |
 |---|---|
-| `css/` | `tokens.css`, `base.css`, `layout.css`, `components.css`, `game.css`, `cinematic.css`, `noscript.css`, `admin.css` |
+| `css/` | game: `tokens.css`, `base.css`, `stage.css` (panggung 16:9: bingkai, pita HUD/isi/nav bar, layar putar, dan semua koordinat layar), `components.css`, `game.css`, `cinematic.css`, `noscript.css`; panel: `admin.css` (berdiri sendiri: font, token, reset, dan semua komponen panel, tanpa CSS game) |
 | `js/` | entri `game.js` dan `admin.js`; modul `core/`, `game/`, `engines/` (`puzzle.js`, `rumpang.js`, `boleh.js`, `cari.js`), `admin/` |
 | `vendor/` | library frontend yang di-host sendiri (lihat di bawah) |
 | `fonts/` | font lokal dan lisensinya |
@@ -201,7 +204,7 @@ Berisi `howler.min.js` (Howler.js 2.2.4), lisensinya `LICENSE-howler.md`, dan [`
 | `cache/` | cache berkas CodeIgniter (`Config\Cache`, handler `file`) dan folder sementara mPDF (`cache/mpdf`) |
 | `logs/` | log aplikasi |
 | `uploads/` | workbook yang diunggah untuk impor bank soal dan templat impor sementara |
-| `exports/` | berkas ekspor XLSX/PDF dan daftar rekaman narasi; dihapus `gelita:retention:run` setelah `Config\Gelita::$exportRetentionDays` |
+| `exports/` | berkas ekspor XLSX, CSV-ZIP (`.zip`), dan PDF serta daftar rekaman narasi; dihapus `gelita:retention:run` setelah `Config\Gelita::$exportRetentionDays` |
 | `debugbar/` | riwayat Debug Toolbar (hanya development) |
 | `session/` | tidak dipakai; sesi disimpan di tabel `ci_sessions` |
 
@@ -273,6 +276,7 @@ Satu-satunya tempat konstanta domain yang tidak perlu masuk database.
 | `$dialogueContexts` | `global`: `intro`, `map_intro`, `ending`; `level`: `region_intro`, `level_open`, `level_done` | nilai sah `dialogues.context_code` |
 | `$characterAnimations` | `jaka.*` dan `kedu.*`, masing-masing 3 frame | animasi tokoh dari frame `char.{jaka\|kedu}.{pose}.{n}` di `media_assets` |
 | `$assetSizes` | ukuran piksel wajib per pola `asset_key` | validasi unggahan (`MediaStore`), daftar kelengkapan aset, dan ukuran gambar contoh |
+| `$assetDisplaySizes` | ukuran tampil per pola `asset_key`, dalam dp pada panggung 1280 × 720 (benda Cari Objek `[0, 0]`: lebarnya persen adegan) | keterangan di halaman **Gambar & mockup**; tidak dipakai validasi |
 | `$maxUploadBytes` | 64 MB | batas unggahan media |
 
 Aturan per tingkat kesulitan (ukuran papan Susun Gambar, jumlah rumpang dan pengecoh, rentang Bloom) tidak ada di sini, tetapi di `App\Libraries\DifficultyRules`, karena dibaca juga oleh `docs/bank-soal/build-workbook.php` yang berjalan tanpa framework.
@@ -332,7 +336,7 @@ Agar `DEFAULT CURRENT_TIMESTAMP(6)` di database sezona dengan waktu yang ditulis
 |---|---|
 | `App\Controllers\BaseController` | helper `url`, `form`, `text`, `gelita`, `content`, `ui`; `$this->locale` dari request; `ok()` dan `fail()` untuk respons JSON seragam; `jsonBody()` (JSON rusak → array kosong); `deviceInfo()` untuk profil perangkat (`DeviceProfile`) |
 | `Game\BaseGameController` | akses sesi dan peserta request ini serta data HUD; route grup `gameSession` dijamin sudah memuat `GameContext` |
-| `Admin\BaseAdminController` | dasar controller panel; `schoolScope()` dan `readFilters()` dari trait `StaffScope` |
+| `Admin\BaseAdminController` | dasar controller panel: `panel()` merender halaman dengan menu `AdminMenu` dan breadcrumb; `schoolScope()`, `readFilters()`, dan `dataScope()` dari trait `StaffScope`; `rawService()`, `rawPage()`, `rawCsv()` untuk tabel Data mentah; `csvResponse()` untuk Unduh CSV per tabel |
 | `Api\BaseApiController` | dasar endpoint JSON permainan: sesi sah → pengerjaan/tantangan milik sesi itu → soal milik pengerjaan itu |
 
 Bentuk respons JSON selalu sama:
@@ -390,14 +394,15 @@ Service didaftarkan di `app/Config/Services.php`, sehingga controller cukup mema
 | `challengeService` | `App\Services\ChallengeService` | membuka tantangan, memilih variasi acak, menerima jawaban, menegakkan aturan 3 kesempatan, menulis `item_tries`, menutup pengerjaan (`solved` / `tries_exhausted`) |
 | `scoringService` | `App\Services\ScoringService` | satu-satunya tempat aturan bintang (`bintang-1`) |
 | `eventService` | `App\Services\EventService` | penulis event mentah, idempoten terhadap `client_event_id` |
-| `analyticsService` | `App\Services\AnalyticsService` | hitungan data mentah untuk panel; menerima cakupan sekolah pemanggil dan mode anonim |
+| `analyticsService` | `App\Services\AnalyticsService` | hitungan untuk Ringkasan dan profil siswa (`summary()`, `participantProfile()`); menerima cakupan sekolah pemanggil dan mode anonim |
+| `rawDataService` | `App\Services\RawDataService` | satu query per dimensi data mentah (`peserta`, `sesi`, `perangkat`, … `butir`) untuk tabel `/admin/data/*`, tab detail siswa, dan ekspor; `service('rawDataService', $scope)` mengikat cakupan `App\Services\StaffScope`, tanpa cakupan menolak |
 | `contentImportService` | `App\Services\ContentImportService` | memuat workbook bank soal dan Pustaka dalam satu transaction |
-| `exportService` | `App\Services\ExportService` | berkas ekspor XLSX/PDF; hak pemohon dibaca ulang dari `staff_users` |
+| `exportService` | `App\Services\ExportService` | berkas ekspor XLSX, CSV-ZIP, dan PDF dari `RawDataService` dengan Kamus Data, berlabel atau berkode; hak pemohon dibaca ulang dari `staff_users` |
 | `reportService` | `App\Services\ReportService` | laporan PDF satu siswa (mPDF) |
 | `retentionService` | `App\Services\RetentionService` | penghapusan data dua langkah dan retensi terjadwal |
 | `videoThumbnail` | `App\Libraries\VideoThumbnail` | mengunduh thumbnail video Pustaka di sisi server |
 
-`App\Services\SystemResetService` (dipakai `gelita:reset`) dibuat langsung oleh command-nya, tidak lewat container.
+`App\Services\SystemResetService` (dipakai `gelita:reset`) dibuat langsung oleh command-nya, tidak lewat container. `App\Services\StaffScope` adalah objek nilai hak baca (`admin()`, `teacher()`, `fromStaff()`), bukan service.
 
 ### 6.4 Helper
 
@@ -470,6 +475,10 @@ Helper `gelita`, `content`, dan `ui` dimuat global lewat `Config\Autoload::$help
 | `NarrationCatalog`, `NarrationImporter` | status rekaman narasi dan impor rekaman dari `public/assets/audio/narasi/{id,en}/` |
 | `ExcelWriter`, `ExportLabels`, `AnswerText` | penulis XLSX bertahap, label berbahasa Indonesia untuk berkas ekspor, dan jawaban dalam kalimat biasa untuk guru |
 | `RegionDirectory`, `SchoolImporter`, `SchoolName` | daftar wilayah Kemendagri, impor sekolah resmi, dan kunci pencocokan nama sekolah |
+| `AdminMenu` | satu sumber menu panel untuk sidebar dan breadcrumb topbar; menu khusus admin tidak dirender untuk guru |
+| `AdminTable` | tabel panel server-side: urut per kolom, 25/50/100 baris, total, CSV mentah; bentuk hasil sama dengan `RawDataService::page()` (dirender `components/data-table`) |
+| `ResearchReadiness` | daftar siap penelitian (0 gambar contoh aktif, narasi disetujui, verifikasi `--siap-penelitian` tanpa galat) untuk Ringkasan dan Penelitian |
+| `Simulation\Simulator`, `SimClock`, `SeededItemModel` | siswa simulasi `gelita:simulasi`: memanggil layanan permainan sungguhan, menggeser waktu ke jam simulasi, dan memilih variasi berbenih |
 
 `DifficultyRules`, `BankRules`, `BankSource`, dan `ClozeReading` murni (tanpa framework) agar dapat dipakai skrip `docs/bank-soal/build-workbook.php`.
 
@@ -479,9 +488,9 @@ Kelas pendukung lain: `App\Database\GelitaMigration` (pola bersama migration: In
 
 | Layout | Dipakai | Isi |
 |---|---|---|
-| `layouts/game.php` | seluruh halaman siswa | CSS `tokens`, `base`, `layout`, `components`, `game`, `cinematic` (+ `noscript.css` dalam `<noscript>`); manifest PWA; `#app-config`; `vendor/howler.min.js`; modul `js/game.js` |
-| `layouts/admin.php` | halaman panel | sidebar, CSS `admin.css`, `#app-config`, modul `js/admin.js` |
-| `layouts/auth.php` | halaman masuk staf | kerangka minimal |
+| `layouts/game.php` | seluruh halaman siswa | `<html class="game-stage">` › `.stage-frame` › `#stage` (panggung 16:9; modal dan toast di dalamnya, hanya layar putar di luar); skrip kecil di `<head>` mengisi `--app-w`/`--app-h` sebelum CSS; CSS `tokens`, `base`, `stage`, `components`, `game`, `cinematic` (+ `noscript.css` dalam `<noscript>`); manifest PWA; `#app-config`; `vendor/howler.min.js`; modul `js/game.js` |
+| `layouts/admin.php` | halaman panel | sidebar dari `AdminMenu`, topbar (breadcrumb, cari siswa, menu akun), hanya CSS `admin.css`, `#app-config`, modul `js/admin.js` |
+| `layouts/auth.php` | halaman masuk staf | kerangka minimal, CSS `admin.css` |
 
 Halaman memakai View Layouts CodeIgniter (`$this->extend()`, `$this->section()`). Komponen di `Views/components/` dirender lewat `component()`. Data untuk JavaScript dikirim lewat `<script type="application/json">` (`#app-config`, `#password-policy`, `#challenge-data`, `#asset-sizes`), bukan interpolasi string ke kode. Rincian view ada di [05_VIEW_UI.md](05_VIEW_UI.md).
 
@@ -574,7 +583,7 @@ Butir 1–3 menghalangi pemasangan, butir 5 prasyarat keamanan, butir 4 dan 6 ke
 | SQL | Query Builder / prepared statement; tidak ada SQL yang dirangkai dari input |
 | XSS | `esc()` pada semua output; `rich_text()` meng-escape seluruh teks sebelum menyusun tag; tautan media luar diterjemahkan server (`MediaLink`) sehingga `javascript:`/`data:` tidak pernah lolos |
 | Redirect | tujuan dari input pengguna lewat `safe_internal_url()` |
-| Otorisasi | tiga lapis: filter route (`staffAuth`, `staffRole`) → controller (`StaffScope::schoolScope()`) → service (`AnalyticsService`, `ExportService`, `ReportService` membatasi `participants.school_id`). Guru tanpa sekolah mendapat cakupan 0, yaitu tidak melihat apa pun |
+| Otorisasi | tiga lapis: filter route (`staffAuth`, `staffRole`) → controller (`StaffScope::schoolScope()`/`dataScope()`) → service (`AnalyticsService`, `RawDataService`, `ExportService`, `ReportService` membatasi `participants.school_id`). Guru tanpa sekolah mendapat cakupan 0, yaitu tidak melihat apa pun |
 | Permainan | jawaban diperiksa dan pengerjaan ditutup di server (`ChallengeService`); setiap endpoint memeriksa sesi → pengerjaan → soal milik pengerjaan itu |
 
 ---
@@ -583,9 +592,13 @@ Butir 1–3 menghalangi pemasangan, butir 5 prasyarat keamanan, butir 4 dan 6 ke
 
 ### Bahasa
 
-* Dokumentasi, pesan commit, komentar kode, teks antarmuka, nama route (`/daftar`, `/masuk`, `/admin/peserta`), dan opsi command (`--paksa`, `--tanpa-bank`) berbahasa Indonesia.
+Aturan lengkapnya ada di `.claude/rules/language.md` (berlaku sejak 9 Oktober 2026) dan padanan istilah di `.claude/rules/glossary.md`.
+
+* **Bahasa Inggris** untuk identifier baru (kelas, method, variabel, tabel, kolom), komentar kode, pesan commit, judul dan isi PR, log, pesan galat untuk pengembang, dokumen teknis baru, dan entri baru di catatan implementasi.
+* **Bahasa Indonesia yang ramah** untuk teks yang dibaca siswa, guru, dan admin (lewat berkas bahasa, lihat `.claude/rules/ui-copy.md`), dan untuk path URL publik berupa slug pendek (`/daftar`, `/masuk`, `/admin/peserta`, `/admin/data`). Controller dan method di balik route tetap berbahasa Inggris. Path JSON di bawah `/api` berbahasa Inggris.
+* **Nama Indonesia yang sudah ada tetap**: identifier, kode tersimpan (`rumpang`, `boleh`, `cari`, `bintang-1`, kode dimensi `peserta`, `sesi`, …), slug route, nama event, nama command (`gelita:simulasi`), opsi command (`--paksa`, `--tanpa-bank`), dan kolom workbook tidak diganti hanya untuk diterjemahkan.
+* Dokumen yang sudah berbahasa Indonesia (`docs/01`–`08`, `docs/perombakan-kelas5/*`) tetap berbahasa Indonesia; bagian baru di dalamnya ditulis dalam bahasa Inggris.
 * Padanan Inggris teks pemain ada di `app/Language/en/`. Panel admin hanya berbahasa Indonesia, jadi tidak ada `en/Admin.php`.
-* Nama kelas, method, tabel, kolom, dan kode internal (jenis event, status, kode lembar ekspor) berbahasa Inggris mengikuti CodeIgniter, kecuali istilah domain yang tidak punya padanan tepat (`rumpang`, `boleh`, `cari`, `KontenKelas5Seeder`).
 * Konten permainan dwibahasa disimpan berpasangan `*_id` / `*_en`.
 
 ### Kode
@@ -625,6 +638,7 @@ Command GELITA ada di `app/Commands/`. Daftar lengkap: `php spark list`. Perilak
 | `gelita:reset [--dry-run] [--ya] [--paksa] [--pemeliharaan] [--tanpa-bank] [--bank=JALUR] [--tanpa-mockup] [--hapus-guru]` | mengosongkan data uji coba sebelum pengambilan data penelitian, membangun ulang 12 tantangan dan bank soal; Pustaka, cerita, media, audio, sekolah resmi, dan staf tetap |
 | `gelita:retention:run` | retensi harian (cron): sesi dan pengerjaan menganggur, berkas ekspor kedaluwarsa, pratinjau penghapusan data yang melewati masa simpan |
 | `gelita:schools:import [--file=PATH] [--dry-run] [--link-existing]` | memasang daftar sekolah resmi dari `app/Database/Seeds/data/sekolah-jateng.csv` |
+| `gelita:simulasi [--siswa=N] [--seed=N] [--mulai=YYYY-MM-DD]` | siswa simulasi `sim_NNN` untuk pengembangan (bawaan 12, paling banyak 500): mendaftar, bermain, dan mengisi kritik & saran lewat layanan yang sama dengan controller, pada jam simulasi hari sekolah. Ditolak di production, tanpa studi aktif, atau bila studi aktif sudah berisi sesi siswa selain `sim_*`. Rincian di FITUR 19 [07_FEATURE_INTEGRATION.md](07_FEATURE_INTEGRATION.md) |
 | `gelita:staff:password <username>` | sandi sementara untuk staf; wajib diganti saat masuk |
 
 Semua opsi bernilai menerima `--opsi nilai` maupun `--opsi=nilai`. `spark` berpindah ke folder `public/` sebelum command berjalan; jalur berkas relatif pada `gelita:bank:import` dicari dari direktori kerja shell lalu dari root proyek.
@@ -634,19 +648,21 @@ Semua opsi bernilai menerima `--opsi nilai` maupun `--opsi=nilai`. `spark` berpi
 ## 10. Pengujian
 
 ```bash
-composer install          # termasuk paket pengembangan (PHPUnit)
-vendor/bin/phpunit        # atau: composer test
+composer install                   # termasuk paket pengembangan (PHPUnit)
+vendor/bin/phpunit --no-coverage   # 487 uji
 ```
 
 Semua uji harus hijau sebelum push. Uji tidak membutuhkan MySQL/MariaDB: grup database `tests` memakai SQLite3 `:memory:` (`Config\Database::$tests`), sehingga mesin pengembangan butuh ekstensi PHP `sqlite3`. Server produksi yang dipasang dengan `composer install --no-dev` tidak membawa PHPUnit.
 
 | Folder | Isi |
 |---|---|
-| `tests/unit/` | seluruh uji GELITA: aturan bank soal (`BankKelas5DataTest`), aturan 3 kesempatan (`TryLimitTest`), bintang (`StarsTest`), pemilihan variasi (`VariantSelectionTest`), reset (`SystemResetTest`), pendaftaran (`RegisterWizardTest`), narasi, sekolah, media, ekspor, helper, berkas bahasa, route, dan berkas deploy |
-| `tests/_support/Database/` | skema SQLite bersama: `ResetTables` (skema lengkap yang sama dengan migration), `GradeFiveWorld` (dunia kelas 5 siap bermain, termasuk `gelita:reset` sungguhan yang mengimpor workbook bank soal), `NarrationTables`, `SchoolTables` |
+| `tests/unit/` | seluruh uji GELITA: aturan bank soal (`BankKelas5DataTest`), aturan 3 kesempatan dan cek bersamaan (`TryLimitTest`), bintang (`StarsTest`), pemilihan variasi (`VariantSelectionTest`), reset (`SystemResetTest`), pendaftaran (`RegisterWizardTest`), panggung 16:9 (`StageCssTest`, `ChallengeFrameTest`, `RotateGateTest`), tabel panel dan Data mentah (`AdminTableTest`, `AdminTableViewTest`), ekspor (`RawExportTest`), simulasi (`SimulationTest`), narasi, sekolah, media, helper, berkas bahasa, route, dan berkas deploy |
+| `tests/_support/Database/` | skema SQLite bersama: `ResetTables` (skema lengkap yang sama dengan 29 migration), `GradeFiveWorld` (dunia kelas 5 siap bermain, termasuk `gelita:reset` sungguhan yang mengimpor workbook bank soal), `RawDataWorld` (fixture kecil untuk Data mentah dan ekspor), `NarrationTables`, `SchoolTables` |
 | `tests/database/`, `tests/session/` | contoh bawaan kerangka CodeIgniter |
 
-`phpunit.dist.xml` memakai bootstrap `vendor/codeigniter4/framework/system/Test/bootstrap.php`, menganggap peringatan dan uji berisiko sebagai gagal, dan menulis cache serta laporan ke `build/` (diabaikan Git). Laporan cakupan butuh Xdebug atau PCOV; tanpa itu jalankan `vendor/bin/phpunit --no-coverage`.
+`phpunit.dist.xml` memakai bootstrap `vendor/codeigniter4/framework/system/Test/bootstrap.php`, menganggap peringatan dan uji berisiko sebagai gagal, dan menulis cache serta laporan ke `build/` (diabaikan Git). Laporan cakupan butuh Xdebug atau PCOV; tanpa `--no-coverage`, mesin tanpa keduanya mendapat peringatan "No code coverage driver available" yang membuat suite keluar dengan kode 1.
+
+SQLite tidak meniru kunci baris MySQL: uji balapan mensimulasikan data usang (entity lama, atau model tiruan lewat `Factories::injectMock`). Perilaku bersamaan sungguhan diuji di MariaDB/MySQL dengan `tools/qa/challenge-races.mjs` (§ 11).
 
 Uji tertentu mengunci keputusan desain agar tidak hilang diam-diam, misalnya `DebugToolbarRedactionTest` (penyamaran sandi), `HeadRouteTest` (rute HEAD), `JsConfigTest` (isi `#app-config`), `LanguageFilesTest` (kunci ID = EN), `InstallableAppTest` (PWA), dan `DeployFilesTest` (skrip `deploy/`).
 
@@ -663,6 +679,7 @@ Bahan berikut ada di repositori tetapi tidak dijalankan server saat permainan be
 | [`docs/sekolah/`](sekolah/README.md) | penyusun daftar sekolah resmi Jawa Tengah (`build-sekolah-jateng.php`) → `app/Database/Seeds/data/sekolah-jateng.csv` + `sekolah-jateng.meta.json` | `php docs/sekolah/build-sekolah-jateng.php [--source=…] [--out=…]`, lalu `php spark gelita:schools:import` |
 | [`docs/naskah-cerita.md`](naskah-cerita.md) | naskah cerita; salinan datanya `app/Database/Seeds/data/story.php` (88 baris `dialogues`) | disemai `ContentSeeder` |
 | [`tools/audio/`](../tools/audio/README.md) | generator musik gamelan, efek suara, dan narasi TTS Indonesia–Inggris (Python 3.11+, Node 20+, ffmpeg; model diunduh `setup-models.sh`, tidak di-commit) | menghasilkan `public/assets/audio/music/`, `sfx/`, dan `narasi/{id,en}/` (100 rekaman per bahasa: 88 baris cerita + 12 petunjuk Cari Objek) beserta `narasi/produksi.json`; lalu `gelita:narration:import`. Penjelasan desain di [audio.md](audio.md) |
+| `tools/qa/` | uji peramban Playwright (Chromium terpasang di `/opt/pw-browsers`): `stage-check.mjs` memeriksa panggung 16:9 di beberapa ukuran jendela dan menyimpan tangkapan layar ke `writable/qa/stage/`; `challenge-races.mjs` memeriksa isian beku selama cek, waktu isian, Cari Objek, muat ulang tanpa `challenge_abandoned` palsu, dan cek bersamaan dari dua tab/perangkat | terhadap `php spark serve` (untuk balapan: `PHP_CLI_SERVER_WORKERS=4`) dengan database MariaDB/MySQL; pemakaian di kepala tiap skrip |
 | `deploy/linux/`, `deploy/windows/` | `deploy.sh` / `deploy.ps1`, `backup.sh` / `backup.ps1`, `retensi.ps1`, contoh konfigurasi Nginx HTTP/HTTPS | lihat [08_DEPLOYMENT.md](08_DEPLOYMENT.md) |
 
 Ketiga skrip penyusun berjalan tanpa framework CodeIgniter. Kedua `build-workbook.php` memakai autoload Composer (PhpSpreadsheet) dan kelas murni di `app/Libraries/`; `build-sekolah-jateng.php` berdiri sendiri. Skrip bank soal memeriksa seluruh aturan `BankRules` dan tidak menulis workbook bila ada galat.
@@ -683,3 +700,5 @@ Ketiga skrip penyusun berjalan tanpa framework CodeIgniter. Kedua `build-workboo
 10. Kata sandi siswa maupun staf tidak pernah muncul di log, event, riwayat aktivitas, atau `writable/debugbar`. `log_message()` tidak pernah dipanggil dengan data formulir masuk/daftar, dan `App\Filters\DebugToolbar` menyamarkan field kredensial.
 11. Sistem hanya mencatat data mentah. Tidak ada skor, indeks kesulitan, atau capaian yang dihitung sistem; bintang hanya hadiah di layar siswa (`ScoringService`).
 12. Pemeriksaan jawaban, aturan 3 kesempatan, dan penutupan pengerjaan berlangsung di server (`ChallengeService`); nilai dari browser tidak dipercaya.
+13. Layar game hanya ditata di dalam panggung 16:9 (`#stage`). CSS game memakai rem (1 rem = 16 dp) tanpa `vw`/`vh` (kecuali cadangan `--app-*` di `tokens.css`), tanpa media query lebar/tinggi, dan tanpa ukuran `px` selain garis 1px; dikunci `tests/unit/StageCssTest.php`.
+14. CSS panel (`admin.css`) dan CSS game tidak saling memuat: perubahan panggung tidak memengaruhi panel, dan sebaliknya.
