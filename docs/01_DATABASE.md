@@ -215,7 +215,7 @@ Akun dan profil siswa. Akun siswa terpisah dari akun staf (`staff_users`) dan ti
 | Kolom | Tipe | Null | Bawaan | Arti |
 |---|---|---|---|---|
 | id | BIGINT UNSIGNED | tidak | AUTO | PK |
-| participant_code | VARCHAR(40) | tidak | — | UNIQUE. Kode pseudonim penelitian `GLT-000001`, dibuat server (`ParticipantModel::generateCode()`) |
+| participant_code | VARCHAR(40) | tidak | — | UNIQUE. Kode pseudonim penelitian `GLT-000001`, dibuat server dari id baris (`ParticipantModel::assignCode()`) |
 | username | VARCHAR(30) | tidak | — | UNIQUE. Huruf kecil, angka, titik, garis bawah, 3–30 karakter (`valid_username`); disimpan huruf kecil; nama cadangan `Config\Gelita::$reservedUsernames` ditolak |
 | password_hash | VARCHAR(255) | tidak | — | `password_hash()` PASSWORD_DEFAULT. Satu-satunya jalur tulis: `ParticipantModel::setPassword()` |
 | must_change_password | TINYINT(1) | tidak | 0 | 1 setelah guru mereset sandi |
