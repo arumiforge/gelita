@@ -106,6 +106,14 @@ final class AssetTransitionTest extends CIUnitTestCase
         $this->assertStringContainsString('export function setLocale(code)', (string) file_get_contents(FCPATH . 'assets/js/core/config.js'));
     }
 
+    public function testUsernameCheckStandsDownOnceTheFormIsSubmitting(): void
+    {
+        // A late check carries the pre-registration session cookie and would log the new student out
+        $register = (string) file_get_contents(FCPATH . 'assets/js/game/register.js');
+
+        $this->assertMatchesRegularExpression('/const check = debounce\(async \(\) => \{.*?if \(form\.dataset\.submitting\) return;\s*const value = input\.value;/s', $register);
+    }
+
     /** @return array<string, array{string}> */
     public static function screensWithNextAssets(): array
     {
