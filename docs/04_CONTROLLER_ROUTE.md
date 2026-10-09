@@ -53,7 +53,7 @@ app/Controllers/
 │   ├── ProfileController.php         profil siswa
 │   └── ReflectionController.php      Balai Refleksi (kritik & saran)
 ├── Admin/
-│   ├── BaseAdminController.php       panel(), filterOptions(), back(), done(), modelErrors()
+│   ├── BaseAdminController.php       panel(), filterOptions(), rawPage(), csvResponse(), back(), done(), modelErrors()
 │   ├── AuthController.php            masuk/keluar staf
 │   ├── AccountController.php         ganti sandi sendiri
 │   ├── DashboardController.php       beranda panel
@@ -229,6 +229,8 @@ Data siswa untuk guru selalu dibatasi sekolahnya (lihat [Otorisasi](#otorisasi))
 
 ### Admin saja (`staffAuth`, `staffRole:admin`)
 
+Menu kelompok Konten dan Pengaturan tidak dirender untuk guru (`App\Libraries\AdminMenu`); route-nya tetap dijaga `staffRole:admin`.
+
 | Method | Path | Handler | Keterangan |
 |---|---|---|---|
 | GET | `/admin/konten` | `ContentController::index` | Ringkasan wilayah, tantangan, jumlah soal & variasi |
@@ -298,7 +300,7 @@ Namespace `App\Controllers\Api`, grup `api/admin` dengan filter `jsonResponse` +
 | GET | `/api/admin/sessions/{id}/timeline` | `AdminApiController::timeline/$1` | `{rows}` linimasa event satu sesi; sesi di luar sekolah guru → `403 FORBIDDEN` |
 | GET | `/api/admin/exports/{id}/status` | `AdminApiController::exportStatus/$1` | Status pembangunan berkas (dipanggil berkala `admin/export.js`) |
 
-Semua menerima filter query string yang sama dengan panel (`StaffScope::readFilters()`: `study_id`, `participant_id`, `level_id`, `node_id`, `school_id`, `class_level`, `province_code`, `locale`, `date_from`, `date_to`); `school_id` dipaksa ke sekolah guru.
+`summary` menerima filter query string panel (`StaffScope::readFilters()` → `scopedFilters()`; yang dipakai `AnalyticsService` adalah filter penelitian baku `study_id`, `participant_id`, `level_id`, `node_id`, `school_id`, `class_level`, `province_code`, `locale`, `date_from`, `date_to`) dan membalas `participant_count`, `active_sessions` (aktif ≤ 10 menit), `completed_attempts_today`, `feedback_count`, `session_count`, `completed_sessions`, `completed_attempts`, `abandoned_attempts`, `item_tries`, `hint_count`, `audio_plays`, `audio_autoplays`; `school_id` dipaksa ke sekolah guru. `timeline` dan `exportStatus` tidak membaca filter.
 
 ---
 
@@ -565,8 +567,9 @@ Memakai trait `StaffScope`; lihat tabel [Route — API panel admin](#route--api-
 ### `Admin\BaseAdminController` dan trait `StaffScope`
 
 * `panel($view, $title, $data)` merender halaman panel dengan data bersama: `pageTitle`, `filters`, `errors`, `activeStudy`, dan `filterOptions` (penelitian, wilayah, sekolah, provinsi dan kelas yang ada dalam cakupan pemanggil; dievaluasi hanya oleh halaman yang memakai bilah filter).
+* Sidebar dan breadcrumb panel dibangun layout `layouts/admin` dan `components/admin-sidebar` dari `App\Libraries\AdminMenu` (`items()`, `crumbs()`); controller dapat menambah langkah breadcrumb lewat data `breadcrumb` (`[label => href|null]`).
 * `back($path, $pesan)` / `done($path, $pesan)` kembali dengan flash `error` / `message`; `modelErrors()` meneruskan penolakan validasi Model agar penyimpanan yang gagal tidak dilaporkan "tersimpan".
-* `StaffScope` (dipakai juga `Api\AdminApiController`): `schoolScope()` (`null` untuk admin, `school_id` untuk guru; guru tanpa sekolah → 0, tidak cocok dengan sekolah mana pun), `isAdmin()`, `staffId()`, `readFilters()`, `scopedFilters()` (memaksa `school_id` guru), `analytics()` (`AnalyticsService` terikat cakupan pemanggil), `dataScope($anonymous)` (`App\Services\StaffScope`: admin beridentitas kecuali diminta anonim, guru selalu anonim + sekolahnya) dan `rawData()` (`RawDataService` terikat cakupan itu; `page()`, `streamCsv()`). `readFilters()` menerima juga `participant_code` dan `variant_group`.
+* `StaffScope` (dipakai juga `Api\AdminApiController`): `schoolScope()` (`null` untuk admin, `school_id` untuk guru; guru tanpa sekolah → 0, tidak cocok dengan sekolah mana pun), `isAdmin()`, `staffId()`, `readFilters()`, `scopedFilters()` (memaksa `school_id` guru), `analytics()` (`AnalyticsService` terikat cakupan pemanggil), `dataScope($anonymous)` (`App\Services\StaffScope`: admin beridentitas kecuali diminta anonim, guru selalu anonim + sekolahnya) dan `rawData()` (`RawDataService` terikat cakupan itu; `page()`, `streamCsv()`). `readFilters()` menerima juga `participant_code`, `variant_group`, dan filter daftar siswa (`q`, `district_code`, `gender`, `age`, `progress`).
 * `rawCsvDownload($dimension, $filters)`: CSV satu tabel data mentah (nilai berkode, judul = kode kolom, UTF-8 + BOM) dalam cakupan pemanggil, audit `export_csv`; dipakai `?format=csv` tabel `/admin/data/{dimensi}`.
 
 ### `Admin\AuthController`
@@ -810,7 +813,7 @@ Semua respons `/api` dan `/api/admin` berbentuk seragam dan membawa header `X-Re
 | `RATE_LIMITED` | 429 | Jatah per sesi atau per hash IP habis; disertai `retry_after` |
 | `SERVER_ERROR` | 500 | Exception tak tertangani |
 
-Pesan untuk siswa diambil dari `app/Language/{id,en}/Game.php` (mis. `Game.errTriesExhausted`, `Game.errClueClosed`, `Game.errTriesRemaining`, `Game.errIncomplete`, `Game.errPageExpired`); pesan `/api/admin` berbahasa Indonesia.
+Pesan untuk siswa diambil dari `app/Language/{id,en}/Game.php` (mis. `Game.errTriesExhausted`, `Game.errClueClosed`, `Game.errTriesRemaining`, `Game.errIncomplete`, `Game.errAttemptChanged`, `Game.errPageExpired`); pesan `/api/admin` berbahasa Indonesia.
 
 ---
 
