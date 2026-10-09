@@ -46,6 +46,9 @@
 
 /* Selama tantangan hanya ada satu jalan keluar yang dikonfirmasi */
 body.is-challenge .hud-leave { display: none; }
+/* Language button hidden too (owner decision P5): switching reloads the page
+   and would drop unchecked answers, until Stage 7 keeps the engine state */
+body.is-challenge .lang-switch { display: none; }
 
 /* ---------- Lentera ---------- */
 .lantern { position: relative; }

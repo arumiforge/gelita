@@ -40,7 +40,8 @@ $engineName  = engine_label($engine, $node->variant_code);
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<section class="mission" data-screen="mission-brief">
+<?php /* Next screen: the challenge (its scene image, when the node has one) */ ?>
+<section class="mission" data-screen="mission-brief"<?= next_assets_attr([media_exists($node->scene_media_id) ? media_src($node->scene_media_id) : null]) ?>>
   <article class="panel-parchment mission-card stage-box">
     <span class="mission-seal num" aria-hidden="true"><?= esc($sequence) ?></span>
     <span class="eyebrow"><?= esc(lang('Game.challengeOf', [$sequence, $totalNodes])) ?> · <?= esc($region) ?></span>

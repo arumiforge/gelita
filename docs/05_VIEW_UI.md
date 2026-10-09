@@ -442,6 +442,14 @@ Layar pemuatan layar penuh `.curtain.curtain-{kind}` (`data-curtain-layer`, `dat
 * Tautan `a[data-curtain="{kind}"]` memutar tirai dari `<template id="tpl-curtain-{kind}">` sebelum pindah halaman; tanpa template atau tanpa JavaScript tautan berjalan biasa. Satu template `region` melayani semua wilayah; teks dan aset pramuatnya dari atribut tautan.
 * Tanpa JavaScript tirai tidak pernah menutupi halaman (`noscript.css`). Bila modul JavaScript gagal dimuat, animasi pengaman `curtain-failsafe` memudarkan tirai sendiri; `curtain.js` membatalkannya dengan kelas `is-live`.
 
+**Short curtain when assets are local (asset package Stage 4, P8).** `region` and `challenge` carry `data-local-min-ms="600"`; when `assetsLocal()` is on (Stage 2), they last at least 600 ms instead of 1.8 s / 1.2 s. The `map` curtain that opens the game keeps 2.5 s. See `docs/06_JAVASCRIPT.md` §`core/curtain.js`.
+
+### Screen transitions and next-screen images (asset package Stage 4)
+
+* **Cross-document View Transitions** (`stage.css`): `@view-transition { navigation: auto; }` plus `view-transition-name` on `#stage` (`gelita-stage`), the background `#stage > .scene` (`gelita-scene`), and the HUD `#stage > .hud` (`gelita-hud`). Every game screen is still a new document; the browser keeps the old screen up until the new one renders, then cross-fades in 260 ms, with the HUD staying in place. Chrome ≥ 126 and Safari ≥ 18.2 animate; other browsers ignore the at-rule and navigate as before. `prefers-reduced-motion: reduce` sets `navigation: none`. Only `layouts/game.php` loads `stage.css`, so the panel is unchanged. Reloads (F5) never animate (browser rule).
+* **`data-next-assets`** on the screen element names the next screen's images: `next_assets_attr(list $urls, int $limit = 6)` (`gelita_helper.php`) drops empty values and duplicates, keeps at most 6, and returns ` data-next-assets="[…]"` or an empty string. `game/next-assets.js` decodes them while idle (table in `docs/06_JAVASCRIPT.md`). `partials/dialogue-scene` takes `nextAssets`.
+* **Language button during a challenge** is hidden like the HUD leave links (`body.is-challenge .lang-switch { display: none; }`, owner decision P5), because the reload would drop unchecked answers.
+
 ### Pola ketuk-untuk-mulai
 
 Browser (terutama Safari iPad) memblokir audio bersuara sampai pengguna mengetuk halaman itu sendiri, dan GELITA adalah aplikasi multi-halaman. Karena itu setiap layar bernarasi (cerita pembuka, dialog wilayah, wilayah tuntas, penutup) dibuka kartu `components/narrator-tap`; di Peta Kedu perannya diambil ketukan penutup tirai, dan overlay Kenali dimulai oleh ketukan tombolnya sendiri.

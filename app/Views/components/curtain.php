@@ -21,6 +21,10 @@
  *               ajakan singkat, dan visual per engine (`data-engine`);
  *               ≤1,5 detik, ketukan melewatinya.
  *
+ * Between-screen curtains (`region`, `challenge`) carry `data-local-min-ms`
+ * (600 ms): core/curtain.js uses it when assets are local (asset package
+ * Stage 4, P8). The `map` curtain that opens the game keeps 2.5 s.
+ *
  * @var string              $kind      `map` | `region` | `challenge`
  * @var list<string>        $preload   URL aset yang dipramuat (progres nyata)
  * @var bool|null           $tap       ketukan penutup (bawaan menurut jenis)
@@ -47,14 +51,14 @@ $defaults = [
         'statuses' => [],
         'tapLabel' => '',
         'tap'      => false,
-        'timing'   => ['min' => 1800, 'max' => 2400, 'skip' => false],
+        'timing'   => ['min' => 1800, 'max' => 2400, 'skip' => false, 'localMin' => 600],
     ],
     'challenge' => [
         'title'    => '',
         'statuses' => [],
         'tapLabel' => '',
         'tap'      => false,
-        'timing'   => ['min' => 1200, 'max' => 1500, 'skip' => true],
+        'timing'   => ['min' => 1200, 'max' => 1500, 'skip' => true, 'localMin' => 600],
     ],
 ];
 $preset   = $defaults[$kind];
@@ -71,6 +75,7 @@ $engine   = in_array($engine ?? '', config('Gelita')->engineTypes, true) ? $engi
      data-tap="<?= $tap ? '1' : '0' ?>"
      <?php if ($timing !== []): ?>data-min-ms="<?= (int) $timing['min'] ?>" data-max-ms="<?= (int) $timing['max'] ?>" data-skip="<?= $timing['skip'] ? '1' : '0' ?>"<?php endif ?>
      <?php if ($kind === 'challenge'): ?>data-engine="<?= esc($engine, 'attr') ?>"<?php endif ?>
+     <?php if (isset($timing['localMin'])): ?>data-local-min-ms="<?= (int) $timing['localMin'] ?>"<?php endif ?>
      data-preload="<?= esc(json_encode($preload, JSON_UNESCAPED_SLASHES), 'attr') ?>"
      data-statuses="<?= esc(json_encode($statuses, JSON_UNESCAPED_UNICODE), 'attr') ?>"
      aria-busy="true">

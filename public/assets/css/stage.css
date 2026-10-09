@@ -398,3 +398,41 @@ body.game {
   .scene-img { transition: none; }
   .rotate-gate-phone { animation: none; transform: rotate(90deg); }
 }
+
+/* ======================= TRANSISI ANTARLAYAR (Tahap 4) =====================
+   Asset package Stage 4 (docs/rencana-paket-aset.md §4.2, M1): cross-document
+   View Transitions. Every game screen is a new document; the browser keeps
+   the old screen on display until the new one renders, then cross-fades.
+   Named parts transition on their own: the stage (content), the background
+   scene, and the HUD (identical on most screens, so it stays put).
+
+   Chrome ≥ 126 and Safari ≥ 18.2 animate; other browsers ignore the at-rule
+   and navigate as before. Only game pages load stage.css, so the panel is
+   untouched. Reduced motion: no transition at all.
+   ========================================================================== */
+@view-transition { navigation: auto; }
+
+#stage { view-transition-name: gelita-stage; }
+#stage > .scene { view-transition-name: gelita-scene; }
+#stage > .hud { view-transition-name: gelita-hud; }
+
+::view-transition-group(*) {
+  animation-duration: 260ms;
+  animation-timing-function: ease;
+}
+/* Stage and scene cross-fade in place (no size morph between screens) */
+::view-transition-old(gelita-stage),
+::view-transition-new(gelita-stage),
+::view-transition-old(gelita-scene),
+::view-transition-new(gelita-scene) {
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @view-transition { navigation: none; }
+
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) { animation: none !important; }
+}

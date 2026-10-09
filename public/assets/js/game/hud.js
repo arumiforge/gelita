@@ -8,11 +8,16 @@
  *   baru dari respons server (`shards` di /check, /responses, /complete) —
  *   bukan dihitung sendiri.
  * - Heartbeat POST /api/session/heartbeat tiap 60 detik selama tab terlihat.
+ * - Language switch (asset package Stage 4, §4.4 L1): the form still posts
+ *   to /bahasa and the page reloads under a view transition, but JS texts
+ *   switch at once from the two-language config (setLocale()), so a toast or
+ *   modal built during the reload is already in the new language. Tapping the
+ *   active language does nothing (no request).
  */
 import { $ } from '../core/dom.js';
 import { Sfx } from '../core/audio.js';
 import { apiRequest } from '../core/api.js';
-import { CONFIG, t } from '../core/config.js';
+import { CONFIG, t, currentLocale, setLocale } from '../core/config.js';
 
 const HEARTBEAT_MS = 60_000;
 
@@ -32,6 +37,7 @@ function initSound() {
     render();
     if (Sfx.isEnabled()) Sfx.play('click');
   });
+  document.addEventListener('gelita:locale', render);
   render();
 }
 
@@ -81,7 +87,28 @@ function initHeartbeat() {
   schedule();
 }
 
+function initLanguageSwitch() {
+  const form = $('form.lang-switch');
+  if (!form) return;
+
+  form.addEventListener('submit', (event) => {
+    const code = event.submitter?.value;
+    if (!code) return;
+    if (code === currentLocale()) {
+      event.preventDefault();
+      return;
+    }
+    setLocale(code);
+    for (const button of form.querySelectorAll('button[name="locale"]')) {
+      const active = button.value === code;
+      button.classList.toggle('is-active', active);
+      button.setAttribute('aria-pressed', active ? 'true' : 'false');
+    }
+  });
+}
+
 export function initHud() {
+  initLanguageSwitch();
   initSound();
   initLantern();
   initHeartbeat();

@@ -38,7 +38,8 @@ $welcome = session('welcome');
 <?= $this->section('bodyClass') ?>is-cinematic<?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<section class="story intro cine narrator" data-screen="intro"
+<?php /* Next screen: Peta Kedu behind the opening map curtain */ ?>
+<section class="story intro cine narrator" data-screen="intro"<?= next_assets_attr([media_key_src('bg.loading'), media_key_src('map.kedu'), media_key_src('bg.map')]) ?>
          data-narrator data-context="intro" data-prefix="slide-" data-mode="tap">
   <?php if (is_string($welcome) && $welcome !== ''): ?>
     <div class="welcome-card" role="status">

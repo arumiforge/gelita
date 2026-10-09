@@ -68,7 +68,17 @@ $curtainOf = static fn (array $l): string => $l['status'] !== 'locked' && isset(
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<section class="map-screen map-kedu" data-screen="map-kedu" data-unlock-mode="<?= esc($unlockMode, 'attr') ?>">
+<?php
+// Next screen: entry of the first region still to finish (same assets as its curtain)
+$nextLevel = null;
+foreach ($levels as $candidate) {
+    if (in_array($candidate['status'], ['open', 'in_progress'], true)) {
+        $nextLevel = $candidate;
+        break;
+    }
+}
+?>
+<section class="map-screen map-kedu" data-screen="map-kedu" data-unlock-mode="<?= esc($unlockMode, 'attr') ?>"<?= next_assets_attr($nextLevel['curtain']['preload'] ?? []) ?>>
   <h1 class="visually-hidden"><?= esc(lang('Game.mapKedu')) ?></h1>
 
   <div class="map-layout">

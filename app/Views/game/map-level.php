@@ -19,6 +19,23 @@ $icons  = ['completed' => 'check', 'open' => 'right', 'locked' => 'lock'];
 $href   = static fn (array $n): string => base_url(($n['status'] === 'completed' ? 'hasil/' : 'misi/') . $level->code . '/' . $n['sequence']);
 $done   = (int) $levelSummary['completed_nodes'];
 $total  = (int) $levelSummary['total_nodes'];
+// Next screen: mission brief of the first open node (its background, Jaka)
+$nextNode = null;
+foreach ($nodes as $row) {
+    if ($row['status'] === 'open') {
+        foreach (service('contentRepository')->nodesForLevel($level->id) as $entity) {
+            if ((int) $entity->id === (int) $row['id']) {
+                $nextNode = $entity;
+                break;
+            }
+        }
+        break;
+    }
+}
+$nextAssets = $nextNode === null ? [] : [
+    media_exists($nextNode->background_media_id) ? media_src($nextNode->background_media_id) : null,
+    character_frame_src('jaka'),
+];
 $points = implode(' ', array_map(static fn (array $n): string => (float) $n['map_x'] . ',' . (float) $n['map_y'], $nodes));
 ?>
 <?= $this->extend('layouts/game') ?>
@@ -27,7 +44,7 @@ $points = implode(' ', array_map(static fn (array $n): string => (float) $n['map
 <?= $this->section('background') ?><?= $bg ?><?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<section class="map-screen map-level" data-screen="map-level"
+<section class="map-screen map-level" data-screen="map-level"<?= next_assets_attr($nextAssets) ?>
          data-level="<?= esc($level->code, 'attr') ?>" data-level-id="<?= esc($level->id, 'attr') ?>">
   <div class="map-frame stage-box">
     <div class="map-canvas<?= $mapSrc === null ? ' is-drawn' : '' ?>" style="--map-ratio: 1400 / 900">
