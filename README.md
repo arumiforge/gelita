@@ -4,6 +4,18 @@
 
 Aplikasi dibangun dengan **CodeIgniter 4.7** (PHP 8.2+, MariaDB 10.6+ / MySQL 8), dirender server dengan HTML5 + CSS3; JavaScript (ES modules tanpa bundler dan tanpa framework) hanya menambah perilaku. Area game dwibahasa (Indonesia/Inggris), panel admin berbahasa Indonesia.
 
+Sekilas (keadaan sesudah perombakan kelas 5, Dok 1–3):
+
+| | |
+|---|---|
+| Pemain | siswa kelas 5 SD/MI, satu tahap bermain (tanpa fase *pretest/posttest*) |
+| Permainan | 3 wilayah × 4 tantangan (Susun Gambar, Isi Rumpang, Benar atau Salah, Cari Objek) = 12 tantangan = 12 Serpihan Cahaya; satu variasi soal acak per pengerjaan; paling banyak 3 kesempatan per soal |
+| Tampilan game | panggung 16:9 tetap (1280 × 720 dp) yang diskalakan utuh ke layar, tanpa gulir halaman; tombol layar penuh di HUD |
+| Data | hanya data mentah (percobaan, jawaban, event, perangkat), tanpa skor olahan; dibaca di **Data mentah** atau diunduh XLSX/CSV-ZIP, plus laporan PDF per siswa |
+| Panel admin | dasbor netral bersidebar dengan tabel server-side, filter, dan Unduh CSV per tabel |
+| Command utama | `gelita:reset` (kosongkan data uji coba), `gelita:mockups` (gambar contoh), `gelita:simulasi` (siswa simulasi untuk pengembangan) |
+| Ukuran | 29 migration → 29 tabel + `migrations`; 487 uji PHPUnit |
+
 ## Fitur utama
 
 **Permainan**
@@ -18,10 +30,11 @@ Aplikasi dibangun dengan **CodeIgniter 4.7** (PHP 8.2+, MariaDB 10.6+ / MySQL 8)
   | 4 | Cari Objek | `cari` | 4 dicari + 4 pengecoh | 4 dicari + 6 pengecoh | 4 dicari + 8 pengecoh |
 
 - Bank soal final kelas 5: **126 soal** (108 dinilai + 18 benda pengecoh), 30 variasi, 9 bacaan Benar atau Salah, 9 bacaan Isi Rumpang, 36 petunjuk, 12 kata pengecoh, dan 45 slot gambar tantangan. Satu variasi (`a`/`b`/`c`) dipilih acak setiap pengerjaan. Rinciannya di [`docs/bank-soal/README.md`](docs/bank-soal/README.md).
-- Setiap soal paling banyak **3 percobaan** (`Config\Gelita::$maxTries`). Setiap percobaan tercatat satu baris di `item_tries`; pengerjaan ditutup sebagai `solved` atau `tries_exhausted`, lalu diberi bintang.
+- Setiap soal paling banyak **3 percobaan** (`Config\Gelita::$maxTries`). Setiap percobaan tercatat satu baris di `item_tries`; pengerjaan ditutup sebagai `solved` atau `tries_exhausted`, lalu diberi bintang. Klien mengirim nomor cek (`check_no`), sehingga cek dari tab lama atau kiriman ulang ditolak `ATTEMPT_CHANGED` tanpa memakan kesempatan.
 - Alur bercerita dari awal sampai akhir: halaman awal → `/mulai` → pendaftaran → cerita pembuka → Peta Kedu → Kenali wilayah → dialog pembuka wilayah → tantangan → wilayah tuntas → Pustaka → … → penutup → Balai Refleksi. Naskahnya 88 baris dwibahasa ([`docs/naskah-cerita.md`](docs/naskah-cerita.md)).
 - **Pustaka Kedu**: 30 halaman bacaan dwibahasa dengan 48 gambar/video, terbuka per wilayah setelah wilayahnya tuntas ([`docs/pustaka/README.md`](docs/pustaka/README.md)).
 - Pendaftaran tiga langkah (`/daftar/1`–`3`) dengan centang persetujuan siswa dan kata sandi kuat (bagian dari literasi keamanan digital). Siswa dari Jawa Tengah memilih sekolah lewat **NPSN** dari daftar sekolah resmi ([`docs/sekolah/README.md`](docs/sekolah/README.md)).
+- Semua layar game berada di **panggung 16:9** (`#stage`, 80 × 45 rem = 1280 × 720 dp) yang diperbesar atau diperkecil utuh mengikuti layar, dengan bingkai gelap di sisa layar; teks panjang bergulir di dalam panelnya, halaman tidak pernah bergulir. HUD punya tombol layar penuh. Tata letaknya di [`docs/05_VIEW_UI.md`](docs/05_VIEW_UI.md).
 - Game hanya dimainkan mendatar; ponsel/tablet yang dipegang tegak melihat layar "Putar perangkatmu". Dapat dipasang di layar utama (manifest + service worker yang hanya menampilkan halaman offline).
 - Audio bawaan lengkap: musik gamelan, efek suara, dan narasi ID/EN (lihat [Audio bawaan](#audio-bawaan)).
 
@@ -112,10 +125,10 @@ Langkah lengkap untuk kedua jalur (Linux: Nginx + PHP-FPM + cron; Windows: Larag
 3. `GELITA_ADMIN_PASSWORD='…' php spark db:seed DatabaseSeeder`, dijalankan sebagai pengguna web server (mis. `www-data`) agar `public/assets/uploads/` dapat ditulis.
 4. `php spark gelita:narration:import`, lalu setujui narasi draft di **Rekaman narasi**.
 5. `php spark gelita:content:verify`.
-6. Ganti gambar contoh dengan gambar asli di panel (**Gambar & suara**). `php spark gelita:content:verify --siap-penelitian` harus lolos sebelum pengambilan data.
-7. Sesudah uji coba dan sebelum pengambilan data penelitian: buat backup, lalu `php spark gelita:reset` dengan akun migrasi.
+6. Ganti 45 gambar contoh dengan gambar asli di panel (**Gambar & mockup**), sampai **daftar siap penelitian** di **Penelitian** (`/admin/studi`) hijau: tanpa gambar contoh, narasi disetujui, dan `gelita:content:verify --siap-penelitian` lolos.
+7. Uji asap (daftar "Uji manual" di `08_DEPLOYMENT.md`), lalu sebelum pengambilan data penelitian: buat backup, lalu `php spark gelita:reset` dengan akun migrasi.
 
-Pembaruan kode berikutnya memakai `deploy/linux/deploy.sh` atau `deploy/windows/deploy.ps1` (menolak berjalan bila ada kelas aktif, backup, mode pemeliharaan, pull, composer, migrate, impor sekolah, bersihkan cache, naikkan versi aset, lalu membuka situs hanya bila `gelita:content:verify` lolos). Backup dan `gelita:retention:run` dijadwalkan harian.
+Tidak ada prosedur pembaruan dari instalasi lama: setiap rilis dipasang sebagai instalasi baru. Pembaruan kode berikutnya pada server yang sudah terpasang memakai `deploy/linux/deploy.sh` atau `deploy/windows/deploy.ps1` (menolak berjalan bila ada kelas aktif, backup, mode pemeliharaan, pull, composer, migrate, impor sekolah, bersihkan cache, naikkan versi aset, lalu membuka situs hanya bila `gelita:content:verify` lolos). Backup dan `gelita:retention:run` dijadwalkan harian.
 
 ## Command `gelita:*`
 
@@ -131,6 +144,7 @@ Semua command mengembalikan kode keluar 1 saat gagal, sehingga dapat dipakai di 
 | `gelita:narration:import [--locale=id\|en] [--dry-run]` | Mengimpor rekaman di `public/assets/audio/narasi/{id,en}/` sebagai audio draft; berkas yang tidak berubah dilewati. |
 | `gelita:reset [--dry-run] [--ya] [--paksa] [--pemeliharaan] [--tanpa-bank] [--bank=JALUR] [--tanpa-mockup] [--hapus-guru]` | Mengosongkan data uji coba dan pengaturan, membangun ulang 12 tantangan, dan mengimpor ulang bank soal; Pustaka, cerita, media, audio, sekolah resmi, dan akun staf tetap. Butuh akun berhak TRUNCATE. Data tidak dapat dikembalikan: selalu `--dry-run` dan backup dulu. |
 | `gelita:retention:run` | Retensi harian: sesi menganggur → `paused`, pengerjaan menggantung → `abandoned`, berkas ekspor kedaluwarsa dibuang, data yang melewati masa simpan hanya dibuatkan pratinjau penghapusan. |
+| `gelita:simulasi [--siswa=N] [--seed=N] [--mulai=YYYY-MM-DD]` | Membuat siswa simulasi `sim_NNN` (bawaan 12, paling banyak 500) yang bermain lewat layanan permainan sungguhan, untuk mengembangkan dan menguji panel, Data mentah, dan ekspor. Ditolak di production, tanpa studi aktif, atau bila studi aktif sudah berisi siswa sungguhan. Benih (`--seed`) yang sama pada database awal yang sama memberi isi yang sama. |
 | `gelita:schools:import [--file=PATH] [--dry-run] [--link-existing]` | Memasang daftar sekolah resmi (NPSN) dari `app/Database/Seeds/data/sekolah-jateng.csv`; hanya menulis yang berubah, tidak pernah menghapus. |
 | `gelita:staff:password <username>` | Mengatur ulang sandi staf ke sandi sementara yang wajib diganti saat masuk. |
 
@@ -162,6 +176,7 @@ Suite memakai SQLite in-memory (grup database `tests`) dengan skema tiruan di `t
 | `docs/` | dokumentasi, sumber bank soal, Pustaka, dan daftar sekolah |
 | `tests/` | suite PHPUnit |
 | `tools/audio/` | generator musik, efek suara, dan narasi |
+| `tools/qa/` | skrip uji peramban Playwright: `stage-check.mjs` (panggung 16:9) dan `challenge-races.mjs` (aturan kesempatan dan cek bersamaan) |
 
 Daftar route lengkap: `php spark routes`.
 
@@ -182,11 +197,12 @@ Daftar route lengkap: `php spark routes`.
 | [`docs/bank-soal/README.md`](docs/bank-soal/README.md) | bank soal kelas 5, aturan, 45 slot gambar tantangan |
 | [`docs/pustaka/README.md`](docs/pustaka/README.md) | isi Pustaka Kedu |
 | [`docs/sekolah/README.md`](docs/sekolah/README.md) | daftar sekolah resmi Jawa Tengah |
-| [`docs/perombakan-kelas5/`](docs/perombakan-kelas5/) | rencana perombakan kelas 5 (Dok 1–3) dan [catatan implementasinya](docs/perombakan-kelas5/CATATAN_IMPLEMENTASI.md); tata letak 16:9 dan dasbor admin baru direncanakan di Dok 3 |
+| [`docs/perombakan-kelas5/`](docs/perombakan-kelas5/) | rencana perombakan kelas 5 (Dok 1–3: fondasi data, tantangan dan bank soal, panggung 16:9 dan panel admin) dan [catatan implementasinya](docs/perombakan-kelas5/CATATAN_IMPLEMENTASI.md) |
+| [`docs/PROGRESS.md`](docs/PROGRESS.md) | daftar pekerjaan selesai dan terbuka, serta branch yang sedang berjalan |
 
 ## Ukuran aset wajib
 
-Ukuran gambar per slot ditetapkan di `Config\Gelita::$assetSizes`. Slot bertanda "ya" ditolak saat diunggah bila ukurannya tidak **tepat** sama; slot lain hanya ditandai "ukuran lain" di **Media → Kelengkapan aset** (`/admin/media/kelengkapan`), yang juga mendaftar slot yang masih kosong. Permainan tetap berjalan tanpa gambar-gambar ini (gradien, monogram, gambar contoh).
+Ukuran gambar per slot ditetapkan di `Config\Gelita::$assetSizes`. Slot bertanda "ya" ditolak saat diunggah bila ukurannya tidak **tepat** sama; slot lain hanya ditandai "ukuran lain" di **Konten → Kelengkapan aset** (`/admin/media/kelengkapan`), yang juga mendaftar slot yang masih kosong. Permainan tetap berjalan tanpa gambar-gambar ini (gradien, monogram, gambar contoh).
 
 | Slot | Ukuran (px) | Ditolak bila lain |
 |---|---|---|
@@ -202,7 +218,7 @@ Ukuran gambar per slot ditetapkan di `Config\Gelita::$assetSizes`. Slot bertanda
 | Lencana wilayah `reward.badge.{wilayah}` | 320 × 320 | tidak |
 | Gambar sampul video Pustaka | 960 × 640 (anjuran) | tidak |
 
-`ui.logo` dan `map.kedu` berukuran bebas. Daftar 45 gambar tantangan beserta isinya ada di [`docs/bank-soal/README.md`](docs/bank-soal/README.md#gambar-tantangan-45-slot).
+`ui.logo` dan `map.kedu` berukuran bebas. Ukuran **tampil** tiap slot di panggung 16:9 (dalam dp pada kanvas 1280 × 720) ada di `Config\Gelita::$assetDisplaySizes` dan ikut ditampilkan di **Gambar & mockup** (`/admin/media`); angka itu keterangan untuk ilustrator, bukan aturan unggah. Daftar 45 gambar tantangan beserta isinya ada di [`docs/bank-soal/README.md`](docs/bank-soal/README.md#gambar-tantangan-45-slot).
 
 ## Audio bawaan
 

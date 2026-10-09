@@ -37,7 +37,7 @@ Database menyimpan lima kelompok data:
 4. **Data penelitian mentah**: pengerjaan, jawaban, percobaan, pemakaian audio, event, perangkat.
 5. **Tata kelola**: akun staf, audit, ekspor, permintaan penghapusan data.
 
-Database tidak menyimpan skor, indeks, atau agregat penelitian. Yang dihitung server hanya hitungan per pengerjaan (benar pada percobaan pertama, benar di akhir) dan bintang sebagai hadiah di layar siswa; peneliti mengolah data mentah dari ekspor Excel.
+Database tidak menyimpan skor, indeks, atau agregat penelitian. Yang dihitung server hanya hitungan per pengerjaan (benar pada percobaan pertama, benar di akhir) dan bintang sebagai hadiah di layar siswa; peneliti mengolah data mentah dari halaman **Data mentah** di panel atau dari unduhan XLSX/CSV-ZIP (lihat [Data mentah](#data-mentah)).
 
 ---
 
@@ -626,6 +626,28 @@ Tabel ini diisi server selama permainan (`App\Services\ChallengeService`, `Event
 
 Penutupan berjalan dalam transaction yang sama dengan percobaan terakhirnya.
 
+#### Data mentah
+
+Panel dan ekspor tidak punya tabel sendiri: setiap dimensi `App\Services\RawDataService::DIMENSIONS` adalah satu query baca atas tabel kelompok D (ditambah kode sesi, siswa, wilayah, dan tantangan), dengan nilai apa adanya. Kode dimensi sama dengan kode lembar ekspor (`data_exports.scope_json.sheets`), nama berkas CSV, dan URL tab `/admin/data/{dimensi}`.
+
+| Dimensi | Sumber utama | Tab `/admin/data` |
+|---|---|---|
+| `peserta` | `participants` | — (halaman Siswa) |
+| `sesi` | `game_sessions` | — (halaman Sesi bermain) |
+| `perangkat` | `device_logs` | Perangkat |
+| `progres` | `session_progress` | Progres |
+| `pengerjaan` | `challenge_attempts` | Pengerjaan |
+| `jawaban` | `item_responses` | Jawaban & ketepatan |
+| `percobaan` | `item_tries` | Riwayat percobaan |
+| `navigasi` | `game_event_logs`, event `RawDataService::NAVIGATION_EVENTS` | Navigasi |
+| `bantuan` | event `hint_opened` ∪ `audio_usage_events` | Bantuan |
+| `selesai` | `game_event_logs`, event `RawDataService::COMPLETION_EVENTS` | Penyelesaian |
+| `event` | `game_event_logs` semua jenis (khusus admin) | — |
+| `masukan` | `participant_feedback` | — (halaman Kritik & saran) |
+| `butir` | `challenge_items` (kunci jawaban khusus admin) | — |
+
+Waktu ditulis ISO 8601 WIB dengan milidetik dan durasi dalam milidetik. Baris `game_event_logs` bertanda `deleted_at` dan siswa `participants.deleted_at` tidak ikut. Guru hanya membaca sekolahnya, tanpa kolom identitas (`RawDataService::IDENTITY_COLUMNS`), tanpa `event`, dan tanpa kunci jawaban.
+
 #### `challenge_attempts`
 
 Satu pengerjaan satu tantangan dalam satu sesi. Pengerjaan `in_progress` yang sudah ada dilanjutkan saat tantangan dibuka lagi; pengerjaan baru memilih **satu variasi acak** (`random_int`), dengan menghindari variasi yang sudah pernah didapat siswa itu di sesi mana pun selama masih ada yang lain (`ChallengeItemModel::pickVariant()`, `ChallengeAttemptModel::variantsServed()`).
@@ -808,7 +830,7 @@ Akun panel admin dan guru. `admin` melihat dan mengelola semua data; `guru` hany
 | username | VARCHAR(100) | tidak | — | UNIQUE (`alpha_dash`, 3–100 karakter) |
 | email | VARCHAR(190) | ya | NULL | UNIQUE |
 | password_hash | VARCHAR(255) | tidak | — | `password_hash()` PASSWORD_DEFAULT; ditulis lewat `StaffUserModel::setPassword()` |
-| must_change_password | TINYINT(1) | tidak | 0 | 1 = sandi diketahui admin (akun baru, atau sandi sementara dari reset di `/admin/staf` / `php spark gelita:staff:password`); panel terkunci ke Ubah sandi sampai diganti pemiliknya |
+| must_change_password | TINYINT(1) | tidak | 0 | 1 = sandi diketahui admin (akun baru, atau sandi sementara dari reset di `/admin/staf` / `php spark gelita:staff:password`); panel terkunci ke Ganti kata sandi (`/admin/akun/sandi`) sampai diganti pemiliknya |
 | role | VARCHAR(20) | tidak | `guru` | `admin` \| `guru`. INDEX |
 | display_name | VARCHAR(150) | tidak | — | |
 | school_id | BIGINT UNSIGNED | ya | NULL | FK `schools.id` SET NULL. Cakupan guru; NULL untuk admin |
@@ -835,7 +857,7 @@ Jejak tindakan staf dan command. Kata sandi mentah tidak pernah masuk `metadata_
 | ip_hash | CHAR(64) | ya | NULL | SHA-256 IP + garam; NULL untuk command CLI |
 | occurred_at | DATETIME(6) | tidak | NOW | INDEX |
 
-Kode `action` yang ditulis aplikasi antara lain: `login`, `login_failed`, `logout`, `participant_password_reset`, `staff_create`, `staff_update`, `staff_deactivate`, `staff_password_reset`, `staff_password_change`, `study_create`, `study_update`, `release_create`, `release_activate`, `content_import`, `content_update`, `media_upload`, `media_deactivate`, `media_scan`, `media_mockups`, `audio_upload`, `audio_approve`, `audio_approve_bulk`, `narration_import`, `school_merge`, `school_verify`, `export`, `export_download`, `export_purge`, `delete_preview`, `delete_execute`, `delete_cancel`, `retention_run`, `system_reset`.
+Kode `action` yang ditulis aplikasi antara lain: `login`, `login_failed`, `logout`, `participant_password_reset`, `staff_create`, `staff_update`, `staff_deactivate`, `staff_password_reset`, `staff_password_change`, `staff_password_change_failed`, `study_create`, `study_update`, `release_create`, `release_activate`, `content_import`, `content_update`, `media_upload`, `media_deactivate`, `media_scan`, `media_mockups`, `audio_upload`, `audio_approve`, `audio_approve_bulk`, `narration_import`, `narration_list_download`, `school_merge`, `school_verify`, `export`, `export_download`, `export_csv` (Unduh CSV satu tab Data mentah), `export_purge`, `delete_preview`, `delete_execute`, `delete_cancel`, `retention_run`, `system_reset`.
 
 #### `data_exports`
 
@@ -1008,11 +1030,11 @@ Aturan yang tidak dapat (atau sengaja tidak) dinyatakan sebagai constraint datab
 9. **Idempotensi.** `(session_id, client_event_id)` UNIQUE; kiriman ulang diabaikan (`INSERT IGNORE`) dan dihitung sebagai duplikat, tanpa baris baru. Telemetri audio memeriksa `client_event_id` yang sama sebelum menulis `audio_usage_events`.
 10. **`item_tries` insert-only.** Setiap percobaan menulis tepat satu baris dan tidak pernah diubah atau dihapus selain lewat penghapusan data. Pada saat yang sama `item_responses.try_count` naik satu, `first_answer_json`/`first_pass_correct` diisi hanya pada percobaan pertama, dan `solved_on_try` diisi sekali saat pertama kali benar. Soal yang sudah benar terkunci.
 11. **Penilaian hanya di server.** Nilai `correct` dari browser diabaikan; `answer_key_json`, penanda `decoy`, pemetaan bank kata, dan id benda Cari Objek tidak pernah ada di payload pemain.
-12. **Kesempatan.** Cek ke-(`max_tries` + 1) ditolak `TRIES_EXHAUSTED` tanpa perubahan data; pengerjaan hanya dapat ditutup `solved` atau `tries_exhausted`, tidak ada "selesaikan dengan jawaban ini".
+12. **Kesempatan.** Cek ke-(`max_tries` + 1) ditolak `TRIES_EXHAUSTED` tanpa perubahan data; pengerjaan hanya dapat ditutup `solved` atau `tries_exhausted`, tidak ada "selesaikan dengan jawaban ini". Klien mengirim `check_no` (nomor cek menurut layarnya); bila tidak sama dengan `check_count + 1` (tab lama, kiriman ulang), cek ditolak `ATTEMPT_CHANGED` tanpa tulisan. Dua tulisan bersamaan ke `challenge_attempts`/`item_responses` memakai UPDATE bersyarat (`ChallengeService::updateIf()`), bukan kunci baris: yang kalah dibatalkan dan dijawab dari keadaan terbaru, sehingga `item_tries.try_no` tidak pernah melebihi `max_tries` dan pengerjaan tidak ditutup dua kali.
 13. **Petunjuk tantangan atau soal.** Minimal salah satu dari `hints.challenge_node_id` / `challenge_item_id` terisi; tanpa CHECK constraint, dijaga importer (`ContentImportService::validateHint()`).
 14. **Satu rilis aktif.** Hanya satu `game_releases.is_active = 1` (`GameReleaseModel::activate()` dalam satu transaction). Tanpa rilis aktif dan studi aktif sesi tidak dapat dibuat.
 15. **Audio.** `audio_assets` dengan `approval_status` selain `approved`, atau berkasnya tidak aktif, tidak pernah dikirim ke pemain.
-16. **Siswa terhapus.** `participants.deleted_at` terisi = tidak tampil di dasbor, filter, dan ekspor (kueri memakai `deleted_at IS NULL`); nama penggunanya tetap terpakai (`usernameAvailable()` ikut membaca baris terhapus). `game_event_logs` hanya dihapus/ditandai lewat `data_deletion_requests`.
+16. **Siswa terhapus.** `participants.deleted_at` terisi = tidak tampil di panel, Data mentah, dan ekspor (kueri memakai `deleted_at IS NULL`); nama penggunanya tetap terpakai (`usernameAvailable()` ikut membaca baris terhapus). `game_event_logs` hanya dihapus/ditandai lewat `data_deletion_requests`.
 17. **Kata sandi.** `participants.password_hash` dan `staff_users.password_hash` tidak pernah dikirim ke view, API, log, maupun ekspor. Kata sandi mentah tidak pernah disimpan atau dicatat di mana pun, termasuk `game_event_logs.payload_json` dan `audit_logs.metadata_json`.
 18. **Nama pengguna siswa** disimpan huruf kecil; nama cadangan (`admin`, `guru`, `gelita`, `root`, `system`, `test`) ditolak.
 19. **Data identitas** (`display_name`, `username`, nama sekolah, NPSN) tidak ikut ekspor anonim.
@@ -1036,7 +1058,7 @@ Nilai bawaan penting: `game_sessions.locale = 'id'`, `game_sessions.status = 'ac
 | Pengerjaan diam | `$attemptAbandonHours` = 24 jam sejak sentuhan terakhir (mulai, jawaban, atau event pengerjaan) | `challenge_attempts` → `abandoned`, `stars = 0`, event `challenge_abandoned {via: retention}` |
 | Sesi lama | `$sessionAbandonDays` = 30 hari | `game_sessions` `paused` → `abandoned`, event `session_abandoned {via: retention}` |
 | Berkas ekspor | `$exportRetentionDays` = 7 hari (`data_exports.expires_at`) | Berkas di `writable/exports/` dihapus, `file_path = NULL`, `status` tetap `done`; audit `export_purge` |
-| Masa simpan studi | `research_studies.retention_days` (bawaan 1825 hari) | Tidak menghapus: membuat atau memperbarui **satu pratinjau `hard` per studi** (`scope_json.origin = "retention"`) untuk sesi yang dimulai sebelum batas, yang tampil sebagai peringatan di dasbor admin. Pemohonnya admin yang menjalankan, atau admin aktif pertama |
+| Masa simpan studi | `research_studies.retention_days` (bawaan 1825 hari) | Tidak menghapus: membuat atau memperbarui **satu pratinjau `hard` per studi** (`scope_json.origin = "retention"`) untuk sesi yang dimulai sebelum batas, yang tampil sebagai peringatan di **Ringkasan** panel (hanya untuk admin). Pemohonnya admin yang menjalankan, atau admin aktif pertama |
 
 ### Penghapusan data penelitian
 
@@ -1059,6 +1081,8 @@ Nilai bawaan penting: `game_sessions.locale = 'id'`, `game_sessions.status = 'ac
 | C. Pengaturan | `research_studies`, `game_releases`, `learning_indicators` | Dikosongkan, lalu diisi nilai bawaan |
 | D. Sebagian | `schools`, `staff_users` | Sekolah `is_verified = 0` dibuang; akun staf tetap (kunci login dibuka), kecuali akun guru dengan `--hapus-guru` |
 | E. Tidak disentuh | `levels`, `dialogues`, `library_pages`, `library_media`, `media_assets`, `audio_assets` | Pustaka, cerita, media, dan audio tetap |
+
+Siswa simulasi dari `php spark gelita:simulasi` (nama pengguna `sim_NNN`, sekolah ketikan "Sekolah Simulasi …" yang `is_verified = 0`) adalah baris biasa di tabel kelompok A dan D, jadi ikut terhapus reset.
 
 Jangan menjalankan reset terhadap server yang sedang mengambil data penelitian.
 
@@ -1110,4 +1134,4 @@ WHERE i.is_active = 1
 GROUP BY n.engine_type;                     -- variasi per tantangan: puzzle/rumpang/boleh 3, cari 1
 ```
 
-Sesudah itu: impor dan setujui narasi, jalankan `php spark gelita:content:verify`, ganti gambar contoh dengan gambar asli sampai `gelita:content:verify --siap-penelitian` lolos, dan sebelum pengambilan data penelitian jalankan `php spark gelita:reset`.
+Sesudah itu: impor dan setujui narasi, jalankan `php spark gelita:content:verify`, ganti gambar contoh dengan gambar asli sampai **daftar siap penelitian** (`App\Libraries\ResearchReadiness`: 0 `media_assets.is_placeholder = 1` aktif, semua rekaman narasi `approved` menurut `NarrationCatalog`, verifikasi `--siap-penelitian` tanpa galat) hijau, lalu sebelum pengambilan data penelitian jalankan `php spark gelita:reset`.

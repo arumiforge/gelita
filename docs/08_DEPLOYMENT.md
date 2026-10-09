@@ -582,8 +582,9 @@ Instalasi baru adalah satu-satunya cara memasang GELITA. Urutannya sama di kedua
 | 3 | Isi awal | `GELITA_ADMIN_PASSWORD='…' php spark db:seed DatabaseSeeder` | `gelita_app` | `www-data` |
 | 4 | Narasi | `php spark gelita:narration:import`, lalu setujui di panel | `gelita_app` | `www-data` |
 | 5 | Verifikasi konten | `php spark gelita:content:verify` | `gelita_app` | `www-data` |
-| 6 | Gambar asli | ganti 45 gambar contoh lewat panel | — | — |
-| 7 | Sebelum pengambilan data | `php spark gelita:reset`, lalu `php spark gelita:content:verify --siap-penelitian` | `gelita_migrate` (DSN) | `www-data` |
+| 6 | Gambar asli | ganti 45 gambar contoh lewat panel, sampai daftar siap penelitian hijau | — | — |
+| 7 | Uji asap | [Verifikasi Setelah Deploy](#verifikasi-setelah-deploy) | — | — |
+| 8 | Sebelum pengambilan data | `php spark gelita:reset`, lalu `php spark gelita:content:verify --siap-penelitian` | `gelita_migrate` (DSN) | `www-data` |
 
 `php spark migrate` membuat **29 tabel** dari 29 migration (`app/Database/Migrations/2026-01-01-000100_CreateSchools.php` … `2026-01-01-002900_CreateCiSessions.php`, satu tabel per berkas), ditambah tabel `migrations` milik CodeIgniter: 30 tabel. Tabel sesi `ci_sessions` termasuk di dalamnya; **jangan** menjalankan `php spark session:migration` (tidak ada di CodeIgniter 4.7.4).
 
@@ -725,25 +726,29 @@ Sintaks `GELITA_ADMIN_PASSWORD='…' php spark …` adalah sintaks Bash; di Powe
 
 Setelah situs terbuka lewat HTTPS:
 
-1. **Ganti sandi admin.** Sandi awal pernah diketik di terminal. Masuk di `/admin/login` sebagai `admin`, buka **Ubah sandi** di kepala panel (`/admin/akun/sandi`), dan ganti dengan sandi baru minimal 12 karakter yang disimpan di pengelola sandi.
-2. **Setujui narasi.** Buka **Rekaman narasi** (`/admin/konten/narasi`), dengarkan contoh rekaman, lalu tekan **Setujui semua rekaman …** untuk bahasa Indonesia dan Inggris. Rekaman draft tidak pernah terdengar pemain. Tombol yang sama ada di **Gambar & suara → Rekaman suara** (`/admin/media/audio`).
-3. **Buat akun guru.** Satu akun `guru` per guru di **Akun guru & admin** (`/admin/staf`), dengan **NPSN sekolahnya** (cari di **Sekolah**, `/admin/sekolah`). Guru dan siswanya lalu menunjuk baris sekolah resmi yang sama, sehingga cakupan data guru pasti lengkap. Sandi awal yang Anda pilih wajib diganti guru saat pertama masuk.
+1. **Ganti sandi admin.** Sandi awal pernah diketik di terminal. Masuk di `/admin/login` sebagai `admin`, buka **Ganti kata sandi** di menu akun kanan atas (`/admin/akun/sandi`), dan ganti dengan sandi baru minimal 12 karakter yang disimpan di pengelola sandi.
+2. **Setujui narasi.** Buka **Rekaman narasi** (`/admin/konten/narasi`), dengarkan contoh rekaman, lalu tekan **Setujui semua rekaman …** untuk bahasa Indonesia dan Inggris. Rekaman draft tidak pernah terdengar pemain. Rekaman satu per satu juga dapat disetujui di **Gambar & mockup → Rekaman suara** (`/admin/media/audio`).
+3. **Buat akun guru.** Satu akun `guru` per guru di **Staf** (`/admin/staf`), dengan **NPSN sekolahnya** (cari di **Sekolah**, `/admin/sekolah`). Guru dan siswanya lalu menunjuk baris sekolah resmi yang sama, sehingga cakupan data guru pasti lengkap. Sandi awal yang Anda pilih wajib diganti guru saat pertama masuk.
 4. Jalankan [Verifikasi Setelah Deploy](#verifikasi-setelah-deploy).
 
 Sesudah itu aplikasi siap untuk **uji coba**. Ke-45 gambar tantangan masih gambar contoh bertanda "GAMBAR CONTOH"; permainan tetap berjalan dengan gambar itu.
 
 ### Sebelum pengambilan data penelitian
 
-Dua hal wajib selesai sebelum siswa penelitian pertama mendaftar:
+Urutan wajib sebelum siswa penelitian pertama mendaftar: narasi disetujui ([Langkah terakhir](#langkah-terakhir-kedua-jalur) butir 2) → gambar asli → daftar siap penelitian hijau → uji asap → `gelita:reset`.
 
-**1. Ganti gambar contoh dengan gambar asli.** Ada 45 slot gambar tantangan: 9 gambar Susun Gambar, 3 gambar pernyataan Benar atau Salah, 3 adegan Cari Objek, dan 30 benda Cari Objek. Unggah gambar asli lewat **Gambar & suara** (`/admin/media`) atau editor tantangan (`/admin/konten/node/{id}`, bagian "Gambar & suara tantangan"); daftar yang belum beres ada di **Kelengkapan gambar & suara** (`/admin/media/kelengkapan`). Ukuran wajib tiap slot ada di `Config\Gelita::$assetSizes` dan ditegakkan saat unggah. Gambar yang diunggah otomatis tercatat sebagai gambar asli (`media_assets.is_placeholder = 0`) dan tidak pernah ditimpa `gelita:mockups` maupun `gelita:reset`. Status per slot:
+**1. Ganti gambar contoh dengan gambar asli.** Ada 45 slot gambar tantangan: 9 gambar Susun Gambar, 3 gambar pernyataan Benar atau Salah, 3 adegan Cari Objek, dan 30 benda Cari Objek. Unggah gambar asli lewat **Gambar & mockup** (`/admin/media`; saring status "Gambar contoh", lalu **Unggah gambar asli** per slot) atau editor tantangan (`/admin/konten/node/{id}`, bagian "Gambar & suara tantangan"); daftar yang belum beres ada di **Kelengkapan aset** (`/admin/media/kelengkapan`). Ukuran wajib tiap slot ada di `Config\Gelita::$assetSizes` dan ditegakkan saat unggah. Gambar yang diunggah otomatis tercatat sebagai gambar asli (`media_assets.is_placeholder = 0`) dan tidak pernah ditimpa `gelita:mockups` maupun `gelita:reset`. Status per slot:
 
 ```bash
 sudo -u www-data php spark gelita:mockups --dry-run            # Jalur L (Jalur W: tanpa sudo -u www-data)
 sudo -u www-data php spark gelita:mockups --dry-run --node=tmg-4
 ```
 
-**2. Reset data uji coba.** Setelah uji coba selesai, kosongkan semua data uji coba dengan `gelita:reset`, yang dijalankan dengan akun migrasi:
+**2. Daftar siap penelitian hijau.** Buka **Penelitian** (`/admin/studi`). Kotak **Daftar siap penelitian** (`App\Libraries\ResearchReadiness`) harus berlabel "siap": tidak ada gambar contoh aktif, semua rekaman narasi disetujui, dan verifikasi konten siap penelitian tanpa galat. Selama belum hijau, **Ringkasan** (`/admin`) menampilkan peringatan yang sama. Studi bawaan `STUDI-KEDU-KELAS5-2026` sudah berstatus Berjalan sejak instalasi (dan sesudah `gelita:reset`), jadi daftar ini **tidak** memblokir pendaftaran siswa; panel hanya menolak *mengubah* status studi menjadi Berjalan selama daftar belum hijau, kecuali "Tetap jalankan" dicentang. Periksa daftarnya sendiri.
+
+**3. Uji asap.** Jalankan seluruh [Verifikasi Setelah Deploy](#verifikasi-setelah-deploy) (pemeriksaan otomatis dan uji manual) pada konten akhir: gambar asli, narasi disetujui. Siswa dan data uji yang dibuat di sini dikosongkan pada langkah berikutnya.
+
+**4. Reset data uji coba.** Setelah uji coba dan uji asap selesai, kosongkan semua data uji coba dengan `gelita:reset`, yang dijalankan dengan akun migrasi:
 
 ```bash
 # Jalur L — sebagai deploy
@@ -939,7 +944,7 @@ Jam sistem wajib WIB (langkah 0 kedua jalur). Di VPS berzona UTC, jadwal "02.00"
 
 Backup lebih sering pada jam sekolah disengaja: sesi kelas berlangsung pada jam itu, dan kehilangan satu sesi berarti mengulang satu kelas. Banyak SD masuk hari Sabtu. Bila demikian, ganti `1-5` menjadi `1-6` dan tambahkan `Saturday`.
 
-`gelita:retention:run` menandai sesi dan pengerjaan yang menganggur (`paused`/`abandoned`), menghapus berkas unduhan data yang kedaluwarsa (`gelita.exportRetentionDays`, bawaan 7 hari), dan membuat **pratinjau** penghapusan untuk data yang melewati `research_studies.retention_days`. Data penelitian tidak pernah dihapus tanpa persetujuan manusia di **Hapus data & riwayat** (`/admin/tata-kelola`).
+`gelita:retention:run` menandai sesi dan pengerjaan yang menganggur (`paused`/`abandoned`), menghapus berkas unduhan data yang kedaluwarsa (`gelita.exportRetentionDays`, bawaan 7 hari), dan membuat **pratinjau** penghapusan untuk data yang melewati `research_studies.retention_days`. Data penelitian tidak pernah dihapus tanpa persetujuan manusia di **Tata kelola** (`/admin/tata-kelola`); pratinjau yang menunggu tampil sebagai peringatan di **Ringkasan**.
 
 **Jalur L** — `crontab -e` sebagai `deploy`:
 
@@ -1106,11 +1111,11 @@ Uji manual:
 3. Reset sandi siswa uji dari `/admin/peserta/{id}` — login dengan sandi sementara langsung diarahkan ke `/ganti-sandi`.
 4. Kerjakan satu tantangan sampai selesai — penanda kesempatan berkurang saat jawaban salah, layar selesai menampilkan bintang.
 5. Ganti bahasa ke EN di tengah permainan — progres tetap, teks dan narasi berganti.
-6. Masuk `/admin/login` — Beranda panel tampil.
+6. Masuk `/admin/login` — **Ringkasan** panel tampil.
 7. Buat unduhan data XLSX kecil (**Unduh data**) — berkas terunduh dan terbuka di Excel.
-8. Buka `/admin/sesi/{id}/event` — linimasa event sesi uji terlihat.
-9. Hapus peserta uji lewat **Hapus data & riwayat** (`/admin/tata-kelola`) dengan pratinjau dan konfirmasi.
-10. Buka **Konten permainan** (`/admin/konten`) — 12 tantangan, 4 per wilayah; **Rekaman narasi** (`/admin/konten/narasi`) — tidak ada rekaman yang belum disetujui.
+8. Buka sesi uji di **Sesi bermain** (`/admin/sesi/{id}`) — linimasa event sesi itu terlihat di bagian bawah (`#linimasa`); **Data mentah** (`/admin/data`) menampilkan percobaan siswa uji di tab Riwayat percobaan.
+9. Hapus peserta uji lewat **Tata kelola** (`/admin/tata-kelola`) dengan pratinjau dan konfirmasi.
+10. Buka **Tantangan** (`/admin/konten`) — 12 tantangan, 4 per wilayah; **Rekaman narasi** (`/admin/konten/narasi`) — tidak ada rekaman yang belum disetujui.
 
 Baru setelah **delapan pemeriksaan otomatis dan sepuluh uji manual** ini lolos, aplikasi dinyatakan siap dipakai kelas. Data siswa uji yang tersisa ikut dikosongkan `gelita:reset` sebelum pengambilan data penelitian.
 
@@ -1120,8 +1125,8 @@ Baru setelah **delapan pemeriksaan otomatis dan sepuluh uji manual** ini lolos, 
 
 ### Sebelum sesi kelas
 
-1. **Sebelum pengambilan data pertama:** gambar contoh sudah diganti dan `gelita:reset` sudah dijalankan (lihat [Sebelum pengambilan data penelitian](#sebelum-pengambilan-data-penelitian)); `gelita:content:verify --siap-penelitian` lolos.
-2. Buka **Kelengkapan gambar & suara** (`/admin/media/kelengkapan`): aset yang belum ada tidak menghentikan permainan (dipakai pengganti), tetapi rekaman narasi yang masih draft tidak terdengar siswa.
+1. **Sebelum pengambilan data pertama:** gambar contoh sudah diganti, daftar siap penelitian di **Penelitian** (`/admin/studi`) hijau, dan `gelita:reset` sudah dijalankan (lihat [Sebelum pengambilan data penelitian](#sebelum-pengambilan-data-penelitian)); `gelita:content:verify --siap-penelitian` lolos.
+2. Buka **Kelengkapan aset** (`/admin/media/kelengkapan`): aset yang belum ada tidak menghentikan permainan (dipakai pengganti), tetapi rekaman narasi yang masih draft tidak terdengar siswa.
 3. Pastikan ruang disk cukup: `df -h` (L) / `Get-PSDrive C, D` (W).
 4. **Siapkan NPSN sekolah.** Siswa Jawa Tengah wajib mengisi NPSN saat mendaftar, dan pendaftaran hanya menerima kelas 5 SD/MI. Siswa SD jarang hafal NPSN: cari di **Sekolah** (`/admin/sekolah`, ketik nama atau desa), lalu tuliskan di papan bersama nama sekolahnya. Saat 8 angka diketik, nama resmi sekolah muncul untuk dicocokkan anak.
 5. Jalankan backup manual: `bash /var/www/gelita/deploy/linux/backup.sh` (L) / `Start-ScheduledTask -TaskPath '\GELITA\' -TaskName 'Backup'` (W).
@@ -1185,11 +1190,11 @@ Bulanan: periksa tanggal kedaluwarsa sertifikat (pemeriksaan 8) dan jalankan sat
 | W: Nginx tidak mau start | port 80/443 dipakai Apache Laragon, IIS, atau aplikasi lain | matikan Apache di Laragon; `Get-NetTCPConnection -LocalPort 80` untuk mencari pemakainya |
 | W: sertifikat kedaluwarsa padahal sudah diperpanjang | Nginx belum di-reload | jalankan `reload-nginx.cmd`; periksa langkah instalasi simple-acme |
 | Tugas terjadwal W `0x1` | Laragon/MySQL mati saat tugas berjalan, atau path PHP berubah setelah ganti versi | nyalakan Laragon; perbarui `Php`/`MySql` di `config.psd1` |
-| Gambar tidak muncul | aset belum diunggah atau `is_active = 0` | **Gambar & suara** (`/admin/media`); `gelita:media:scan` |
+| Gambar tidak muncul | aset belum diunggah atau `is_active = 0` | **Gambar & mockup** (`/admin/media`); `gelita:media:scan` |
 | Audio tidak berbunyi | rekaman masih `draft` | **Rekaman narasi** → setujui |
 | CSRF "action not allowed" | tab dibiarkan terbuka semalam | muat ulang halaman; `security.expires` 2 jam |
 | Anak keluar / pindah komputer | sesi berakhir, tab tertutup | masuk lagi di `/masuk`; progres tetap |
-| Staf selalu dikembalikan ke Ubah sandi | sandi sementara dari admin (reset / akun baru) belum diganti | ganti sandi di halaman itu; kewajiban hilang otomatis |
+| Staf selalu dikembalikan ke Ganti kata sandi | sandi sementara dari admin (reset / akun baru) belum diganti | ganti sandi di halaman itu; kewajiban hilang otomatis |
 | Admin lupa kata sandi | tidak ada admin lain yang dapat mereset di `/admin/staf` | L: `sudo -u www-data php spark gelita:staff:password admin`; W: `php spark gelita:staff:password admin` di PowerShell. Masuk dengan sandi sementara yang dicetak, lalu buat sandi baru (reset juga membuka kunci) |
 | Anak lupa kata sandi | — | guru mereset di `/admin/peserta/{id}`; anak membuat sandi baru saat masuk |
 | Anak lupa nama pengguna | — | guru mencarinya di `/admin/peserta` berdasarkan nama & sekolah |
@@ -1201,7 +1206,7 @@ Bulanan: periksa tanggal kedaluwarsa sertifikat (pemeriksaan 8) dan jalankan sat
 
 ### Keamanan operasional
 
-1. Ganti sandi admin awal **sebelum** aplikasi dipakai di sekolah (lihat [Langkah terakhir](#langkah-terakhir-kedua-jalur)). Staf yang menerima sandi sementara (reset atau akun baru) dipaksa menggantinya lewat **Ubah sandi** saat masuk (`staff_users.must_change_password`).
+1. Ganti sandi admin awal **sebelum** aplikasi dipakai di sekolah (lihat [Langkah terakhir](#langkah-terakhir-kedua-jalur)). Staf yang menerima sandi sementara (reset atau akun baru) dipaksa menggantinya lewat **Ganti kata sandi** saat masuk (`staff_users.must_change_password`).
 2. Buat akun `guru` terpisah untuk tiap guru, dengan sekolah terisi. Jangan membagikan akun admin.
 3. Nonaktifkan akun guru yang tidak lagi terlibat lewat `/admin/staf` (tombol *Nonaktifkan*, `is_active = 0`); jangan hapus — audit log-nya masih diperlukan.
 4. Tinjau riwayat di `/admin/tata-kelola/audit` secara berkala, terutama aksi `export` dan `delete_execute`.
@@ -1220,7 +1225,7 @@ Dataset ini memuat data pribadi anak. Yang harus disiapkan bersama institusi seb
 2. **Retensi.** Tetapkan masa simpan studi (`research_studies.retention_days`) sesuai kesepakatan dengan sekolah dan institusi. Nilai bawaan 1825 hari adalah titik awal, bukan keputusan.
 3. **Akses terbatas.** Guru hanya melihat sekolahnya, unduhan guru selalu anonim, akun admin sesedikit mungkin.
 4. **Unduhan pseudonim sebagai bawaan.** Analisis dilakukan dengan kode peserta; nama hanya dibuka bila memang diperlukan dan tercatat di audit log.
-5. **Penghapusan yang dapat ditelusuri.** Selalu lewat pratinjau, konfirmasi, dan audit di **Hapus data & riwayat**. Bila orang tua menarik persetujuan, buat permintaan penghapusan untuk peserta itu.
+5. **Penghapusan yang dapat ditelusuri.** Selalu lewat pratinjau, konfirmasi, dan audit di **Tata kelola**. Bila orang tua menarik persetujuan, buat permintaan penghapusan untuk peserta itu.
 6. **Kata sandi anak** disimpan hanya sebagai hash; guru dan admin tidak dapat melihatnya. Sandi sementara hasil reset hanya tampil sekali. Nama pengguna diperlakukan sebagai data identitas dan tidak ikut unduhan anonim.
 7. **IP mentah di `ci_sessions`.** Sesi memakai `DatabaseHandler` bawaan CodeIgniter; `App\Libraries\HashedIpSessionHandler` belum dipasang (lihat [02_PROJECT_FOUNDATION.md](02_PROJECT_FOUNDATION.md)). Karena itu kolom `ci_sessions.ip_address` menyimpan IP **mentah** selama sesi hidup, sampai dibersihkan garbage collector sesi. Tabel lain hanya menyimpan `ip_hash`, dan backup tidak membawa isi `ci_sessions`. Nyatakan hal ini dalam dokumen perlindungan data sampai handler hash dipasang.
 8. **Backup** memuat data pribadi anak: batasi aksesnya dan enkripsi media salinan kedua.
@@ -1243,7 +1248,7 @@ Persetujuan etik dan penafsiran hukumnya tetap urusan institusi. Aplikasi menyed
 10. Setiap pembaruan menaikkan `gelita.assetVersion`. Jalur L juga me-reload PHP-FPM; Jalur W mengandalkan `opcache.validate_timestamps = 1`.
 11. Hanya URL ber-`?v=` yang boleh di-cache `immutable`; aset lain wajib revalidasi.
 12. Aset masuk server hanya lewat git (folder aset resmi) atau panel (`uploads/`). Tidak ada salinan manual ke folder aset.
-13. Pengambilan data penelitian baru dimulai setelah gambar contoh diganti, `gelita:reset` dijalankan, dan `gelita:content:verify --siap-penelitian` lolos. `gelita:reset` tidak dijalankan lagi setelah pengambilan data dimulai.
+13. Pengambilan data penelitian baru dimulai setelah narasi disetujui, gambar contoh diganti, daftar siap penelitian di **Penelitian** hijau, uji asap lolos, `gelita:reset` dijalankan, dan `gelita:content:verify --siap-penelitian` lolos. `gelita:reset` tidak dijalankan lagi setelah pengambilan data dimulai.
 14. Backup disalin ke lokasi kedua dan hanya menambah berkas; kegagalan salinan kedua terlihat (kode 2). Backup yang belum pernah diuji pulih dianggap belum ada.
 15. Jam sistem server WIB. Jadwal backup dan retensi mengikuti jam itu.
 16. Retensi tidak menghapus data penelitian secara otomatis — ia hanya membuat permintaan berstatus pratinjau untuk disetujui manusia.
@@ -1254,6 +1259,7 @@ Persetujuan etik dan penafsiran hukumnya tetap urusan institusi. Aplikasi menyed
 21. Skrip di `deploy/` tidak diedit di server; nilai khusus server ditulis di `ops.conf` / `config.psd1`. `composer update` dan `php spark optimize` tidak dijalankan di server.
 22. Rollback selalu dimulai dari migration (selagi kode rilis baru terpasang), baru kemudian kode.
 23. Skrip `.ps1` dan `.psd1` hanya berisi ASCII, agar Windows PowerShell 5.1 membacanya sama dengan PowerShell 7.
+24. `gelita:simulasi` (siswa simulasi) hanya untuk mesin pengembangan dan tidak dijalankan di server; command itu menolak berjalan bila `CI_ENVIRONMENT = production`.
 
 ---
 
@@ -1353,7 +1359,7 @@ Setelah panduan ini dijalankan:
 
 * GELITA berjalan sebagai satu instansi server lewat HTTPS, di Linux (Nginx + PHP-FPM) atau Windows + Laragon (Nginx + php-cgi), dengan header keamanan di setiap respons dan berkas sensitif tidak terlayani.
 * Instalasi baru mengisi 28.487 sekolah resmi, akun admin, tiga wilayah dengan 12 tantangan, 126 soal kelas 5, 88 baris cerita, 30 halaman Pustaka, 45 gambar contoh, dan 100 rekaman narasi per bahasa yang disetujui, lalu lolos verifikasi konten.
-* Sebelum pengambilan data, gambar contoh diganti gambar asli, data uji coba dikosongkan dengan `gelita:reset`, dan `gelita:content:verify --siap-penelitian` lolos.
+* Sebelum pengambilan data, gambar contoh diganti gambar asli, daftar siap penelitian hijau, uji asap lolos, data uji coba dikosongkan dengan `gelita:reset`, dan `gelita:content:verify --siap-penelitian` lolos.
 * Pembaruan kode berjalan dengan satu skrip (`deploy.sh` / `deploy.ps1`) yang menolak berjalan saat kelas aktif, membuat backup, memakai mode pemeliharaan, dan hanya membuka situs bila konten lolos verifikasi. Rollback terdokumentasi untuk kedua jalur.
 * Migration dan reset memakai akun DDL terpisah lewat DSN; aplikasi dan backup memakai akun tanpa hak DDL.
 * Browser selalu mendapat aset terbaru setelah pembaruan, sementara aset ber-versi tetap di-cache lama.
