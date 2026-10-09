@@ -185,7 +185,7 @@ class ContentVerifier
         $list = implode(', ', array_slice($keys, 0, 5)) . (count($keys) > 5 ? ', …' : '');
 
         return $researchReady
-            ? $this->finding('error', 'Gambar tantangan', count($rows) . " gambar masih gambar contoh (mockup): {$list}. Gambar contoh menuliskan nama benda, jadi belum layak untuk pengambilan data. Unggah gambar asli di menu Gambar & suara.")
+            ? $this->finding('error', 'Gambar tantangan', count($rows) . " gambar masih gambar contoh (mockup): {$list}. Gambar contoh menuliskan nama benda, jadi belum layak untuk pengambilan data. Unggah gambar asli di menu Gambar & mockup.")
             : $this->finding('warning', 'Gambar tantangan', count($rows) . " gambar masih gambar contoh (mockup): {$list}. Ganti dengan gambar asli sebelum pengambilan data penelitian.");
     }
 
@@ -245,12 +245,12 @@ class ContentVerifier
 
         if ($path === null) {
             return [$this->finding('warning', $scope, "{$label} belum diunggah; permainan memakai tampilan pengganti. " . ($mockupSlot
-                ? 'Jalankan php spark gelita:mockups untuk memasang gambar contoh, atau unggah di menu Gambar & suara.'
-                : 'Unggah di menu Gambar & suara.'))];
+                ? 'Jalankan php spark gelita:mockups untuk memasang gambar contoh, atau unggah di menu Gambar & mockup.'
+                : 'Unggah di menu Gambar & mockup.'))];
         }
 
         if (! is_file(FCPATH . ltrim($path, '/'))) {
-            return [$this->finding('warning', $scope, "{$label}: berkasnya hilang dari server ({$path}). Unggah ulang di menu Gambar & suara.")];
+            return [$this->finding('warning', $scope, "{$label}: berkasnya hilang dari server ({$path}). Unggah ulang di menu Gambar & mockup.")];
         }
 
         return [];
