@@ -465,6 +465,21 @@ class MediaStore
         return null;
     }
 
+    /**
+     * storage_path plus `?v=` taken from the file's sha256, for building URLs.
+     *
+     * Replacing a file with one of the same extension keeps the same
+     * storage_path (`assets/uploads/{asset_key}.png`), so without a version
+     * browsers keep showing the cached old image. The hash changes with the
+     * content, which also lets nginx serve `?v=` URLs as immutable.
+     */
+    public static function versionedPath(string $storagePath, ?string $sha256): string
+    {
+        $sha256 = trim((string) $sha256);
+
+        return $sha256 === '' ? $storagePath : $storagePath . '?v=' . substr($sha256, 0, 12);
+    }
+
     /** Potongan aman untuk asset_key: huruf kecil, angka, titik, minus. */
     public static function slug(string $value): string
     {

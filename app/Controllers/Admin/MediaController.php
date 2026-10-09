@@ -111,7 +111,7 @@ class MediaController extends BaseAdminController
     public function audioIndex(): string
     {
         $rows = db_connect()->table('audio_assets aa')
-            ->select('aa.*, ma.asset_key, ma.storage_path, ma.is_active AS media_active')
+            ->select('aa.*, ma.asset_key, ma.storage_path, ma.sha256, ma.is_active AS media_active')
             ->join('media_assets ma', 'ma.id = aa.media_asset_id')
             ->orderBy('aa.context_code', 'ASC')
             ->orderBy('aa.locale', 'ASC')

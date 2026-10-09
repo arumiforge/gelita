@@ -74,7 +74,7 @@ final class NarrationCatalog
 
         if ($audioIds !== []) {
             $found = $this->db->table('audio_assets aa')
-                ->select('aa.id, aa.approval_status, aa.locale, aa.duration_ms, ma.asset_key, ma.storage_path, ma.is_active')
+                ->select('aa.id, aa.approval_status, aa.locale, aa.duration_ms, ma.asset_key, ma.storage_path, ma.sha256, ma.is_active')
                 ->join('media_assets ma', 'ma.id = aa.media_asset_id')
                 ->whereIn('aa.id', array_values(array_unique($audioIds)))
                 ->get()
@@ -98,7 +98,7 @@ final class NarrationCatalog
                     ? ['status' => 'none', 'src' => null, 'asset_key' => null, 'audio_id' => null, 'duration_ms' => null]
                     : [
                         'status'      => (int) $row['is_active'] === 1 ? (string) $row['approval_status'] : 'inactive',
-                        'src'         => (string) $row['storage_path'],
+                        'src'         => MediaStore::versionedPath((string) $row['storage_path'], $row['sha256']),
                         'asset_key'   => (string) $row['asset_key'],
                         'audio_id'    => $id,
                         'duration_ms' => $row['duration_ms'] === null ? null : (int) $row['duration_ms'],

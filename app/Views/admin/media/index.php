@@ -152,7 +152,7 @@ $labels = ['asli' => 'Asli', 'mockup' => 'Gambar contoh', 'kosong' => 'Kosong'];
                 return '<span class="media-thumb is-empty">' . icon($row['asset_type'] === 'video' ? 'video' : 'image') . '</span>';
             }
 
-            return '<span class="media-thumb"><img src="' . esc(base_url($row['storage_path']), 'attr') . '" alt="" loading="lazy" decoding="async"></span>';
+            return '<span class="media-thumb"><img src="' . esc(base_url(App\Libraries\MediaStore::versionedPath((string) $row['storage_path'], $row['sha256'] ?? null)), 'attr') . '" alt="" loading="lazy" decoding="async"></span>';
         },
         'size' => static function (array $row) use ($requiredFor, $displayFor): string {
             $need = $requiredFor((string) $row['asset_key']);

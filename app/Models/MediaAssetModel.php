@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Libraries\MediaStore;
 use CodeIgniter\Model;
 
 class MediaAssetModel extends Model
@@ -26,13 +27,15 @@ class MediaAssetModel extends Model
 
     /**
      * Peta id => storage_path seluruh media aktif. Satu query, di-cache ContentRepository.
+     * The path carries `?v=` from sha256 (MediaStore::versionedPath()) so a
+     * replaced file gets a new URL; strip it before touching the disk.
      *
      * @return array<int, string>
      */
     public function map(): array
     {
         $rows = $this->db->table($this->table)
-            ->select('id, storage_path')
+            ->select('id, storage_path, sha256')
             ->where('is_active', 1)
             ->get()
             ->getResultArray();
@@ -40,7 +43,7 @@ class MediaAssetModel extends Model
         $out = [];
 
         foreach ($rows as $row) {
-            $out[(int) $row['id']] = (string) $row['storage_path'];
+            $out[(int) $row['id']] = MediaStore::versionedPath((string) $row['storage_path'], $row['sha256']);
         }
 
         return $out;
@@ -49,13 +52,14 @@ class MediaAssetModel extends Model
     /**
      * Peta asset_key => storage_path seluruh media aktif, untuk aset yang
      * dirujuk lewat kunci resmi (latar, karakter, peta Kedu, logo) alih-alih FK.
+     * Paths carry `?v=` like map().
      *
      * @return array<string, string>
      */
     public function activeKeyMap(): array
     {
         $rows = $this->db->table($this->table)
-            ->select('asset_key, storage_path')
+            ->select('asset_key, storage_path, sha256')
             ->where('is_active', 1)
             ->get()
             ->getResultArray();
@@ -63,7 +67,7 @@ class MediaAssetModel extends Model
         $out = [];
 
         foreach ($rows as $row) {
-            $out[(string) $row['asset_key']] = (string) $row['storage_path'];
+            $out[(string) $row['asset_key']] = MediaStore::versionedPath((string) $row['storage_path'], $row['sha256']);
         }
 
         return $out;

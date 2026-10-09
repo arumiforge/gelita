@@ -112,7 +112,7 @@ $pending        = count(array_filter($rows, static fn (array $row): bool => $row
       'rows'         => $rows,
       'rowClass'     => static fn (array $row): string => $row['approval_status'] === 'approved' ? '' : 'is-warn',
       'columns'      => [
-          'preview' => ['label' => 'Dengar', 'render' => static fn (array $row): string => '<audio class="audio-preview" controls preload="none" src="' . esc(base_url($row['storage_path']), 'attr') . '" aria-label="Dengar ' . esc($row['asset_key'], 'attr') . '"></audio>'],
+          'preview' => ['label' => 'Dengar', 'render' => static fn (array $row): string => '<audio class="audio-preview" controls preload="none" src="' . esc(base_url(App\Libraries\MediaStore::versionedPath((string) $row['storage_path'], $row['sha256'] ?? null)), 'attr') . '" aria-label="Dengar ' . esc($row['asset_key'], 'attr') . '"></audio>'],
           'asset_key' => ['label' => 'Rekaman', 'render' => static function (array $row) use ($characterNames): string {
               $who = $row['character_code'] === null ? 'narator' : ($characterNames[$row['character_code']] ?? $row['character_code']);
 

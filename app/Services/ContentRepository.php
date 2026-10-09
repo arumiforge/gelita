@@ -161,7 +161,8 @@ class ContentRepository
     }
 
     /**
-     * Peta id => storage_path seluruh media aktif.
+     * Peta id => storage_path seluruh media aktif, with `?v=` (see
+     * MediaAssetModel::map()).
      *
      * @return array<int, string>
      */
@@ -172,13 +173,13 @@ class ContentRepository
         }
 
         return $this->local['media'] = $this->remember(
-            'media',
+            'media_urls',
             static fn (): array => model(MediaAssetModel::class)->map(),
         );
     }
 
     /**
-     * Peta asset_key => storage_path seluruh media aktif.
+     * Peta asset_key => storage_path seluruh media aktif, with `?v=`.
      *
      * @return array<string, string>
      */
@@ -189,7 +190,7 @@ class ContentRepository
         }
 
         return $this->local['media_keys'] = $this->remember(
-            'media_keys',
+            'media_key_urls',
             static fn (): array => model(MediaAssetModel::class)->activeKeyMap(),
         );
     }
