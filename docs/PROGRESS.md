@@ -15,7 +15,7 @@ Last updated: 9 October 2026.
   - [x] §8.1–§8.3 admin panel (PR #47)
   - [x] §8.4, §9, §10 raw data, export, PDF (PR #45)
   - [x] `gelita:simulasi` and browser tests for PR #42 (PR #46)
-  - [ ] Browser tests for PR #42, `check_no` fix for checks from a stale tab, `gelita:simulasi` docs (PR #50, branch `qa-simulasi`)
+  - [x] Browser tests for PR #42, `check_no` fix for checks from a stale tab, `gelita:simulasi` docs (PR #50)
   - [ ] §11 documentation: only the sections Dok 3 changed are updated
   - [ ] §12.3 manual tests on a real laptop, tablet, and phone; keyboard and screen reader pass; open CSV/XLSX in LibreOffice or R
   - [~] §13 one-off upgrade script: **dropped**. A release is a fresh install per `docs/08_DEPLOYMENT.md`
@@ -33,6 +33,4 @@ Last updated: 9 October 2026.
 
 ## Active branches
 
-| Branch | Owner / scope | Status |
-|---|---|---|
-| `qa-simulasi` | browser tests for PR #42, `check_no`, `gelita:simulasi` docs | PR #50 open |
+None. Add a row (branch, owner / scope, status) when a session starts a branch; remove it when its PR is merged.

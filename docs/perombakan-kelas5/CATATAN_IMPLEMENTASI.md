@@ -838,7 +838,7 @@ Rincian pemakaian ada di FITUR 19 `docs/07_FEATURE_INTEGRATION.md`. Keputusan:
 - **"Studi aktif berstatus berjalan" ditafsirkan sebagai studi aktif yang sudah berisi sesi milik siswa selain `sim_*`.**
   - Status studi hanya `draft`/`active`/`closed`, dan pendaftaran membutuhkan studi `active`. Kalau perintah menolak setiap studi `active`, ia tidak bisa berjalan sama sekali.
   - Yang dijaga adalah data simulasi tidak bercampur dengan data penelitian.
-  - **Perlu konfirmasi pemilik** bila yang dimaksud penanda lain.
+  - Confirmed by the owner on 9 October 2026.
 - **Nama pengguna `sim_NNN`, bukan `sim-NNN`.** Aturan `valid_username` hanya menerima `[a-z0-9._]`.
 - **Sekolah lewat nama ketikan.**
   - Siswa Jawa Tengah mencentang "Sekolahku tidak ada di daftar". Hasilnya entri sekolah "belum terverifikasi" bernama "Sekolah Simulasi …" sehingga mudah dikenali; siswa simulasi tidak menempel ke sekolah resmi (NPSN).
