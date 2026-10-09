@@ -9,6 +9,10 @@
  * Kanan : bahasa, suara, layar penuh (core/stage.js; tersembunyi bila tidak
  *         didukung), beranda (peta Kedu), chip peserta, keluar.
  *
+ * Section `hudBack` (a URL) puts a Back button in the top-left corner and the
+ * GELITA logo (`ui.logo`, or the text brand) in the centre instead; used by the
+ * account screens before login (`/mulai`, `/daftar/1…3`).
+ *
  * Bagian peserta hanya dirender bila controller mengirim data HUD
  * (BaseGameController::hudData()); layar sebelum login cukup merek + bahasa.
  * Halaman awal mengirim `hideBrand`: logonya sudah besar, merek tidak diulang.
@@ -24,10 +28,14 @@ $hudTitle  = trim($this->renderSection('hudTitle'));
 $hudRegion = $hudTitle !== '' ? $hudTitle : (isset($level) && $level instanceof \App\Entities\Level
     ? $level->text('name', service('request')->getLocale())
     : null);
+$hudBack = trim($this->renderSection('hudBack'));
+$hudLogo = $hudBack !== '' ? media_key_src('ui.logo') : null;
 ?>
 <header class="hud">
   <div class="hud-left">
-    <?php if ($inGame): ?>
+    <?php if ($hudBack !== ''): ?>
+      <a class="btn btn-quiet hud-back" href="<?= esc($hudBack, 'attr') ?>"><?= icon('left') ?> <span><?= esc(lang('Game.back')) ?></span></a>
+    <?php elseif ($inGame): ?>
       <?= $this->include('components/lantern') ?>
       <span class="hud-brand is-small" aria-hidden="true"><?= esc(lang('Game.appName')) ?></span>
     <?php elseif (empty($hideBrand)): ?>
@@ -35,7 +43,17 @@ $hudRegion = $hudTitle !== '' ? $hudTitle : (isset($level) && $level instanceof 
     <?php endif ?>
   </div>
 
-  <div class="hud-center"><?= $hudRegion !== null ? esc($hudRegion) : '' ?></div>
+  <?php if ($hudBack !== '' && $hudRegion === null): ?>
+    <div class="hud-center hud-logo">
+      <?php if ($hudLogo !== null): ?>
+        <img src="<?= esc($hudLogo, 'attr') ?>" alt="<?= esc(lang('Game.appName'), 'attr') ?>" height="40">
+      <?php else: ?>
+        <span class="hud-brand"><?= esc(lang('Game.appName')) ?></span>
+      <?php endif ?>
+    </div>
+  <?php else: ?>
+    <div class="hud-center"><?= $hudRegion !== null ? esc($hudRegion) : '' ?></div>
+  <?php endif ?>
 
   <div class="hud-right">
     <?= $this->include('components/lang-switch') ?>

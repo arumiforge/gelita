@@ -190,31 +190,97 @@ body.is-challenge .hud-leave { display: none; }
 .welcome-install-hint .icon { margin-top: .125rem; color: var(--gold-500); }
 
 /* =========================== MULAI & GERBANG =========================== */
-.start-head { display: grid; align-content: center; margin: 0; }
-.start-head h1 { margin: 0; }
-.start-head p { margin: var(--gap-1) 0 0; }
-.start-card {
-  display: grid;
-  align-content: center;
-  justify-items: center;
+/* Owner mockup (9 Oct 2026): Jaka on the left, one ornate dark panel with the
+   title and two row cards. Coordinates live in stage.css. */
+.start-jaka { align-items: end; }
+.start-jaka .character-img { height: 100%; max-height: none; object-fit: contain; object-position: bottom; }
+.start-jaka .character-fallback { align-self: center; }
+
+/* Dark panel with gold ornaments (partials/ornate-frame.php) */
+.ornate-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   gap: var(--gap-3);
-  padding: var(--gap-6) var(--gap-5);
-  text-align: center;
+  padding: var(--gap-7) var(--gap-6) var(--gap-6);
+  border: .125rem solid var(--gold-600);
+  border-radius: var(--radius);
+  background: linear-gradient(to bottom, rgba(11, 19, 32, .9), rgba(6, 10, 18, .94));
+  box-shadow: inset 0 0 0 .3125rem rgba(6, 10, 18, .9), inset 0 0 0 .375rem var(--line-strong), var(--shadow-2);
 }
-.start-card h2 { margin: 0; font-size: var(--fs-h3); }
-.start-card p { margin: 0; color: var(--ink-dim); }
-.start-icon {
-  display: grid;
-  place-items: center;
+.ornate { position: absolute; inset: 0; pointer-events: none; }
+.ornate svg { position: absolute; fill: none; stroke: var(--gold-500); stroke-width: 1.5; stroke-linecap: round; }
+.ornate .is-fill, .ornate circle[r="1.6"] { fill: var(--gold-500); }
+.ornate-corner { width: 3rem; height: 3rem; }
+.ornate-corner.is-tl { top: .25rem; left: .25rem; }
+.ornate-corner.is-tr { top: .25rem; right: .25rem; transform: scaleX(-1); }
+.ornate-corner.is-bl { bottom: .25rem; left: .25rem; transform: scaleY(-1); }
+.ornate-corner.is-br { right: .25rem; bottom: .25rem; transform: scale(-1); }
+.ornate-crest {
+  top: 0;
+  left: 50%;
   width: 4.5rem;
   height: 4.5rem;
   border-radius: 50%;
-  background: radial-gradient(circle, var(--gold-300), var(--gold-600));
-  color: var(--navy-900);
-  box-shadow: 0 0 1.5rem var(--glow);
+  background: radial-gradient(circle, rgba(11, 19, 32, .98) 60%, transparent 72%);
+  filter: drop-shadow(0 0 .5rem var(--glow));
+  transform: translate(-50%, -50%);
 }
-.start-icon .icon { width: 2.25rem; height: 2.25rem; }
+.ornate-divider {
+  position: relative;
+  display: block;
+  width: 70%;
+  height: .75rem;
+  margin: 0 auto;
+  background: linear-gradient(to right, transparent, var(--gold-600) 20%, var(--gold-600) 80%, transparent) center / 100% 1px no-repeat;
+}
+.ornate-divider::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: .5rem;
+  height: .5rem;
+  border: 1px solid var(--gold-500);
+  background: var(--navy-900);
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.start-head { margin: 0; text-align: center; }
+.start-head h1 { margin: 0; color: var(--gold-300); font-size: var(--fs-h2); }
+.start-head p { margin: var(--gap-1) 0 0; color: var(--ink-dim); }
+.start-cards { display: grid; gap: var(--gap-3); }
+.start-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--gap-4);
+  padding: var(--gap-3) var(--gap-4);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: rgba(11, 19, 32, .6);
+  text-align: left;
+}
+.start-card.is-primary {
+  border: .125rem solid var(--gold-500);
+  background: linear-gradient(to right, rgba(199, 162, 101, .14), rgba(11, 19, 32, .6) 60%);
+  box-shadow: 0 0 1.25rem var(--glow), inset 0 0 .75rem rgba(223, 192, 135, .12);
+}
+.start-card h2 { margin: 0; color: var(--gold-300); font-size: var(--fs-h3); }
+.start-card p { margin: var(--gap-1) 0 0; color: var(--ink-dim); font-size: var(--fs-caption); line-height: 1.35; }
+.start-icon {
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border: 1px solid var(--gold-500);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 .1875rem rgba(11, 19, 32, .9), inset 0 0 0 .25rem var(--line-strong);
+  color: var(--gold-300);
+}
+.start-icon .icon { width: 1.75rem; height: 1.75rem; }
 .start-go { color: var(--gold-500); }
+.start-go .icon { width: 1.75rem; height: 1.75rem; }
 
 /* =========================== AKUN (perkamen) =========================== */
 .login-panel, .password-panel { padding: var(--gap-5) var(--gap-6); }
@@ -272,7 +338,7 @@ body.is-challenge .hud-leave { display: none; }
 }
 .reg-stepper-item.is-active .reg-stepper-no,
 .reg-stepper-item.is-done .reg-stepper-no { background: var(--brown-700); color: var(--parchment); }
-.register-actions { display: flex; justify-content: space-between; align-items: center; gap: var(--gap-3); margin: 0; padding: 0 var(--gap-6); border-top: 1px solid rgba(138, 106, 50, .35); }
+.register-actions { display: flex; justify-content: flex-end; align-items: center; gap: var(--gap-3); margin: 0; padding: 0 var(--gap-6); border-top: 1px solid rgba(138, 106, 50, .35); }
 .class-fixed { display: flex; align-items: center; gap: var(--gap-2); margin: 0; font-weight: 700; }
 .input-affix-lg input { font-size: var(--fs-h3); max-width: 8ch; }
 .choice-pill-lg { padding: var(--gap-3) var(--gap-5); font-size: var(--fs-h3); }

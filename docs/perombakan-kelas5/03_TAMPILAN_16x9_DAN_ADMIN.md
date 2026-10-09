@@ -172,11 +172,11 @@ Koordinat dp pada kanvas 1280 × 720 (x, y, lebar, tinggi). "Gulir" = panel `.st
 | Layar (view) | Elemen dan koordinat |
 |---|---|
 | Halaman awal `/` (`game/welcome`) | latar `bg.welcome`; logo `ui.logo-hero` 240, 120, 800 × 300; tombol Mulai `ui.btn-start` 460, 456, 360 × 120; petunjuk pasang aplikasi 896, 600, 352 × 40; HUD hanya bahasa & suara |
-| Mulai `/mulai` (`game/start`) | dua kartu pilihan 212, 200, 400 × 300 dan 668, 200, 400 × 300 ("Saya baru", "Sudah punya akun"); judul 0, 96, 1280 × 64 tengah |
+| Mulai `/mulai` (`game/start`) | Jaka 140, 196, 280 × 460; panel berornamen 432, 176, 560 × 400 berisi judul dan dua kartu baris ("Saya baru" utama, "Sudah punya akun"); HUD: Kembali kiri atas, logo tengah; tanpa nav bar (diubah 9 Okt 2026) |
 | Masuk `/masuk` (`game/login`) | panel 360, 88, 560 × 544: nama pengguna, sandi, tombol Masuk; galat di atas isian |
-| Daftar `/daftar/1…3` (`game/register/step-*`) | panel 200, 72, 880 × 576: stepper 0–64 di dalam panel; isi formulir **gulir** 64–496; bilah tombol 496–576 (Kembali kiri, Lanjut/Daftar kanan). Langkah 3: kotak "Mengapa sandi harus kuat?" dengan Jaka di kiri isi panel (220 × 300) |
+| Daftar `/daftar/1…3` (`game/register/step-*`) | panel 200, 72, 880 × 576: stepper 0–64 di dalam panel; isi formulir **gulir** 64–496; bilah tombol 496–576 (Lanjut/Daftar kanan; Kembali pindah ke HUD kiri atas dengan logo di tengah HUD, 9 Okt 2026). Langkah 3: kotak "Mengapa sandi harus kuat?" dengan Jaka di kiri isi panel (220 × 300) |
 | Ganti sandi `/ganti-sandi` | panel 360, 72, 560 × 576 (gulir) |
-| Gerbang `/gerbang` (`game/start-choice`) | dua kartu 212, 200, 400 × 300 dan 668, 200, 400 × 300 |
+| Gerbang `/gerbang` (`game/start-choice`) | Jaka 140, 196, 280 × 460; panel berornamen 432, 160, 560 × 432 (sapaan, ajakan, dua kartu baris) |
 | Cerita pembuka `/intro`, wilayah tuntas `/tuntas/{code}`, penutup `/penutup` (`cinematic.css`) | latar per slide 1280 × 720; tokoh kiri 64, 136, 300 × 520 / kanan 916, 136, 300 × 520; kotak teks 160, 520, 960 × 168 (**gulir** bila panjang); kontrol (otomatis/lewati) 1008, 72, 240 × 48; kartu "Ketuk untuk mulai" di tengah |
 | Peta Kedu `/peta` (`game/map-kedu`) | peta `map.kedu` 32, 72, 880 × 566 (rasio 1400:900); pin wilayah & ikon lentera **persen** di peta; panel kanan 936, 72, 312 × 576 (**gulir**): kartu wilayah, Pustaka Kedu, Tonton penutup; narasi Jaka sebagai balon 48, 560, 600 × 96 |
 | Kenali wilayah (overlay di `/peta`) | **isi tidak berubah**; overlay penuh 0, 0, 1280 × 720 dengan komposisi slide yang sama (tokoh kiri, teks kanan/bawah) dalam rem |

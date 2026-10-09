@@ -37,4 +37,8 @@ Last updated: 9 October 2026.
 
 ## Active branches
 
-None. Add a row (branch, owner / scope, status) when a session starts a branch; remove it when its PR is merged.
+Add a row (branch, owner / scope, status) when a session starts a branch; remove it when its PR is merged.
+
+| Branch | Owner / scope | Status |
+|---|---|---|
+| `sky/cool-pascal-2bsc2w` | Account screens redesign: `/mulai` and `/gerbang` ornate panel with Jaka, HUD without band, Back in the HUD on `/mulai` and `/daftar` | PR open |
