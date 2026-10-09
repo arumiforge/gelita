@@ -68,6 +68,7 @@ class RawDataController extends BaseAdminController
             'table'      => $table,
             'filters'    => $filters,
             'isAdmin'    => $this->isAdmin(),
+            'readable'   => $this->readableAnswers(),
             'breadcrumb' => [self::TABS[$dimension] => null],
         ]);
     }

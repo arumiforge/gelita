@@ -41,3 +41,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `sky/amazing-mendel-wuy2p7` | Raw data tables show answers as sentences by default, with a switch to the stored JSON | PR open |

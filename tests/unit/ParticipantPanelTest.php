@@ -53,6 +53,27 @@ final class ParticipantPanelTest extends CIUnitTestCase
         $this->assertMatchesRegularExpression('/tanda-3(?!\d)/', $html, 'oldest added try, which page() used to cut off');
     }
 
+    public function testRawDataTablesShowReadableAnswersWithASwitchToJson(): void
+    {
+        $readable = $this->adminPage('admin/data/jawaban');
+        $this->assertMatchesRegularExpression('/aria-current="true">Mudah dibaca</', $readable);
+        $this->assertStringContainsString('raw=1', $readable, 'link to the JSON view');
+        $this->assertStringNotContainsString('{"verdict', $readable);
+        $this->assertMatchesRegularExpression('/<td class="">\s*Salah\s*<\/td>/', $readable);
+
+        $raw = $this->adminPage('admin/data/jawaban', ['raw' => '1']);
+        $this->assertMatchesRegularExpression('/aria-current="true">Asli \(JSON\)</', $raw);
+        $this->assertStringContainsString('>{"verdict":"salah"}<', $raw);
+
+        // Tabs without answer columns have no switch
+        $this->assertStringNotContainsString('Mudah dibaca', $this->adminPage('admin/data/pengerjaan'));
+
+        // The student page's Jawaban tab, try history included
+        $student = $this->adminPage('admin/peserta/1', ['tab' => 'jawaban']);
+        $this->assertStringContainsString('Mudah dibaca', $student);
+        $this->assertStringNotContainsString('{"verdict', $student);
+    }
+
     public function testTeacherSearchDoesNotMatchUsername(): void
     {
         $this->assertSame(0, $this->listTotal('guru', 1, 'ani.5'), 'a hidden username must not find the student');
@@ -76,6 +97,17 @@ final class ParticipantPanelTest extends CIUnitTestCase
         $this->assertTrue($meta['search']);
         $this->assertArrayNotHasKey('q', $meta['filters'], 'the search text may hold a name');
         $this->assertSame(0, $meta['row_count']);
+    }
+
+    /**
+     * One admin page. The shared RawDataService left by an earlier request in
+     * the same process has no staff scope, so it is reset first.
+     */
+    private function adminPage(string $path, array $query = []): string
+    {
+        Services::resetSingle('rawDataService');
+
+        return (string) $this->asStaff('admin')->call(Method::GET, $path, $query)->getBody();
     }
 
     /** Row total the student list reports for search $q. */

@@ -153,6 +153,38 @@ final class AdminTableTest extends CIUnitTestCase
         }
     }
 
+    public function testReadableAnswersChangeOnlyTheAnswerColumns(): void
+    {
+        $coded    = $this->admin->page('jawaban', [], 1, 25, null);
+        $readable = $this->admin->page('jawaban', [], 1, 25, null, true);
+        $ani      = $readable['rows'][1];
+
+        $this->assertSame(array_column($coded['columns'], 'key'), array_column($readable['columns'], 'key'));
+        $this->assertSame(
+            ['first_answer' => 'text', 'final_answer' => 'text', 'answer_key' => 'text'],
+            array_intersect_key(array_column($readable['columns'], 'type', 'key'), array_flip(RawDataService::ANSWER_COLUMNS)),
+            'sentences render as plain text, not as JSON',
+        );
+        $this->assertSame(['Salah', 'Benar', 'Benar'], [$ani['first_answer'], $ani['final_answer'], $ani['answer_key']]);
+        $this->assertSame(
+            array_diff_key($coded['rows'][1], array_flip(['first_answer', 'final_answer', 'answer_key'])),
+            array_diff_key($ani, array_flip(['first_answer', 'final_answer', 'answer_key'])),
+            'codes, times, and 1/0 stay as stored',
+        );
+
+        $tries = $this->admin->page('percobaan', ['participant_code' => 'GLT-000001'], 1, 25, 'try_no', true);
+        $this->assertSame(['Salah', 'Benar'], array_column($tries['rows'], 'answer'));
+
+        $handle = fopen('php://temp', 'w+b');
+        $this->admin->streamCsv('jawaban', [], $handle, true);
+        rewind($handle);
+        $csv = (string) stream_get_contents($handle);
+        fclose($handle);
+
+        $this->assertStringContainsString(',Salah,Benar,', $csv, 'the table CSV follows the same choice');
+        $this->assertStringNotContainsString('{', $csv, 'no JSON left');
+    }
+
     public function testTeacherSeesOnlyOwnSchoolAnonymouslyWithoutKeysOrRawEvents(): void
     {
         $sessions = $this->teacher->page('sesi', [], 1, 25, null);
