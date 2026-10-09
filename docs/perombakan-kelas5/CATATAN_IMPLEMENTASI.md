@@ -891,3 +891,47 @@ Found during the audit and fixed in separate branches (see `docs/PROGRESS.md`):
 9. A `stage.css` comment gives the content area as "0, 56, 1280 × 600" while `.stage-main` is `inset: 0`.
 
 **Open, needs an owner decision:** the default study is seeded (and re-seeded by `gelita:reset`) as `active`, so the `ResearchReadiness` gate in `StudyController` never blocks data collection on a standard install; it only blocks switching a study to active. `docs/08` tells the admin to check the list by hand for now.
+
+---
+
+## Dok 3 — tests and done criteria (§12)
+
+Branch `dok3-s12-uji-manual` (from `main` after PR #55), 9 October 2026. Scope: the parts of §12.3 that can run in a container, and the §12.4 evidence. §12.1 (unit tests) and §12.2 (`tools/qa/stage-check.mjs`) were already done by the stage, admin, and raw-data sessions.
+
+### Environment
+
+MariaDB 10.11 in the container, test database `gelita_uji`: `migrate --all`, `db:seed DatabaseSeeder`, `gelita:reset --ya`, `gelita:simulasi --siswa=30` (4 simulated schools), study unlock mode `free`. `php spark serve`, Chromium via Playwright 1.56. Nothing ran against production.
+
+### Keyboard and screen reader (`tools/qa/a11y-check.mjs`, new)
+
+A new Playwright script opens all 12 challenges (4 engines × 3 regions) with a fresh student and checks, with the keyboard only: Tab reaches every blank and word, verdict group, puzzle piece, hunt object, "Cek jawabanku", and the hint button; every stop has an accessible name and a visible focus ring; Enter/Space/arrows operate each engine; the hint and result dialogs take focus and are labelled; Escape closes the hint dialog and returns focus to its button; the Cari Objek clue is `aria-live`. With `--axe=…/axe.min.js` it also runs axe-core 4.10.2 (WCAG 2.1 A/AA) on `#stage`.
+
+Result: **87 checks pass, 0 failures**, and axe reports no violations of any impact on the 12 screens. Two script details: puzzle pieces show focus as a gold edge and a `drop-shadow` on the artwork (`game.css`, `.piece:focus-visible`) rather than an outline, so the script accepts that glow as a focus ring; and each focus stop is tracked by element, because repeated controls (one passage chip per card) look alike.
+
+The hints of Isi Rumpang and Benar atau Salah open in a dialog that takes focus, so they need no `aria-live` region; the plan's question about it is settled. A real screen-reader pass (NVDA/VoiceOver) remains for the owner.
+
+### Exports opened in other software
+
+Six exports were made through the panel: admin (identity on) XLSX berlabel and berkode, CSV-ZIP berkode and berlabel; guru (Temanggung school, anonymous by force) XLSX and CSV-ZIP. Each was opened as follows:
+
+- **LibreOffice 24.2** (headless, every sheet to CSV) and **pandas** `read_excel`: the same 14 sheets (admin) / 13 sheets (guru, no Event Mentah) with identical shapes in both.
+- **pandas** `read_csv` and **R 4.3** `read.csv` on every CSV: same row and column counts as the XLSX; coded and labelled CSV have equal shapes; every column of every sheet has its Kamus Data row (by code, or by title in the labelled export).
+- **Guru:** no `event` sheet, no `display_name`/`username`/`school_name`/`school_npsn`, and no `answer_key` (Bank Soal has 16 columns instead of 17). **Admin with "Anonim" unticked:** identity columns present.
+- Timestamps parse as `Asia/Jakarta` in R.
+
+One finding, documented rather than changed: in a non-UTF-8 locale (`C`/`POSIX`, as on a bare Linux server) base R's `read.csv()` without `fileEncoding` stops at the first non-ASCII character and silently returns fewer rows (e.g. 24 of 232 Kamus rows). In a UTF-8 locale (Windows R 4.2+, macOS, Linux desktops) it reads everything and strips the BOM. `docs/07` now gives `read.csv(…, fileEncoding = "UTF-8-BOM")` or `readr::read_csv()`.
+
+### Real devices
+
+`docs/perombakan-kelas5/device-test-checklist.md` lists what only the owner can do: one full region on a laptop, tablet, and landscape phone; one NVDA/VoiceOver pass; opening an export in their own Excel/LibreOffice and R.
+
+### §12.4 done criteria
+
+| Criterion | Evidence | State |
+|---|---|---|
+| 16:9 with frame at every test size, no page scroll, scroll only in panels | `stage-check.mjs` 8 October (decision log, Dok 3 stage session); re-run after the §11 audit fixes (`stage.css` changes) | re-run pending |
+| No Jaka on challenge and finished screens; content full width and centred | `ChallengeFrameTest`; `stage-check.mjs` | done |
+| Pustaka and Kenali show the same content as before | content comes from the same database tables, unchanged by Dok 3; screens visited by `stage-check.mjs` | owner device pass |
+| Neutral SaaS admin, formal tables, no charts; Data mentah 7 dimensions + Perangkat; CSV per table | PR #47 browser pass at 1280/1440/1920; re-run after the admin audit fixes | re-run pending |
+| XLSX/CSV-ZIP per §9 with Kamus Data | `RawExportTest`; this pass (LibreOffice, pandas, R) | done |
+| §11 docs updated; all tests green | PR #52–#54; `vendor/bin/phpunit --no-coverage` 487 tests green | done |

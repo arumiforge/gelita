@@ -1297,7 +1297,7 @@ Isi ekspor adalah **data mentah** tujuh dimensi (ketepatan, percobaan, waktu, pe
 ### Format dan nilai
 
 - **XLSX**: satu workbook, satu lembar per pilihan, `ExcelWriter` bertahap. Bawaan **berlabel**.
-- **CSV-ZIP**: satu CSV per lembar (`peserta.csv`, …), UTF-8 dengan BOM, pemisah koma, siap SPSS/R/Python. Bawaan **berkode**.
+- **CSV-ZIP**: satu CSV per lembar (`peserta.csv`, …), UTF-8 dengan BOM, pemisah koma, siap SPSS/R/Python. Bawaan **berkode**. Di R: `read.csv(berkas, fileEncoding = "UTF-8-BOM")` atau `readr::read_csv()`; `read.csv()` polos hanya benar bila R berjalan dengan locale UTF-8.
 - **Berkode**: judul kolom = kode kolom; nilai = kode tersimpan (`tries_exhausted`, `laki-laki`), boolean 1/0, jawaban dan kunci sebagai JSON tersimpan, payload JSON apa adanya.
 - **Berlabel**: judul kolom Indonesia bersatuan ("Durasi (mdtk)"); kode → label ("Kesempatan habis", "Laki-laki", "ya"/"tidak"), wilayah → nama, jawaban dan kunci → kalimat (`AnswerText`).
 - Di kedua mode: waktu = ISO 8601 zona Asia/Jakarta dengan milidetik (`2026-10-07T08:30:15.123+07:00`), durasi dalam milidetik. Tidak ada konversi ke detik/menit.
