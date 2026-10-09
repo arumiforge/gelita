@@ -24,7 +24,7 @@
 <?= component('admin-filter-bar', [
     'filters' => $filters,
     'only'    => ['q', 'school_id', 'district_code', 'gender', 'age', 'progress', 'date_from'],
-    'extra'   => ['q_placeholder' => $isAdmin ? 'kode, nama pengguna, atau nama' : 'kode atau nama pengguna'],
+    'extra'   => ['q_placeholder' => $isAdmin ? 'kode, nama pengguna, atau nama' : 'kode siswa'],
     'labels'  => ['date_from' => 'Terdaftar dari', 'date_to' => 'Terdaftar sampai'],
 ]) ?>
 

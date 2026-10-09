@@ -374,6 +374,26 @@ class RawDataService
         return $count;
     }
 
+    /**
+     * Every row of one dimension in the bound scope, shaped like
+     * `page()['rows']`, ordered by the unique key (keyset iteration). For
+     * small sets that must not be cut at a page size, e.g. one student's
+     * try history on the Jawaban tab.
+     *
+     * @param array<string, mixed> $filters
+     *
+     * @return array{rows: list<array<string, int|string|null>>, columns: list<array{key: string, label: string, type: string}>}
+     */
+    public function all(string $dimension, array $filters): array
+    {
+        $scope = $this->boundScope();
+
+        return [
+            'rows'    => iterator_to_array($this->rows($dimension, $filters, $scope), false),
+            'columns' => $this->columnSpecs($dimension, $scope),
+        ];
+    }
+
     // --------------------------------------------------------- pelengkap
 
     /**

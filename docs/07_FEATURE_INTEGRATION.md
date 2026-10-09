@@ -940,7 +940,7 @@ Guru dan admin; guru hanya untuk siswa sekolahnya dan selalu tanpa kolom identit
    terakhirnya: kode, nama dan nama pengguna (admin saja), sekolah, kab/kota,
    JK, umur, terdaftar, setuju ikut, tantangan selesai, wilayah terakhir,
    bintang, aktif terakhir
-     filter: cari (kode, nama pengguna; nama untuk admin), sekolah (admin),
+     filter: cari (kode; nama pengguna & nama untuk admin), sekolah (admin),
      kab/kota, JK, umur, progres (belum | berjalan | selesai), tanggal daftar
 2. /admin/peserta/{id} (show; di luar cakupan → 404), tab ?tab=:
      profil      identitas aman (tanpa password_hash dan kolom throttle),
@@ -1416,7 +1416,7 @@ Siswa yang di-soft-delete tidak dapat bermain lagi (filter area game menolak `pa
 | Siswa & sekolah | `participant_password_reset`, `school_merge`, `school_verify` |
 | Konten & media | `content_update`, `content_import`, `media_upload`, `media_deactivate`, `media_scan`, `media_mockups`, `audio_upload`, `audio_approve`, `audio_approve_bulk`, `narration_import`, `narration_list_download` |
 | Studi | `study_create`, `study_update`, `release_create`, `release_activate` |
-| Data | `export`, `export_csv`, `export_download`, `export_purge`, `delete_preview`, `delete_execute`, `delete_cancel`, `retention_run`, `system_reset` |
+| Data | `export`, `export_csv`, `list_csv`, `export_download`, `export_purge`, `delete_preview`, `delete_execute`, `delete_cancel`, `retention_run`, `system_reset` |
 
 ---
 

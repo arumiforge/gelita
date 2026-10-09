@@ -179,11 +179,8 @@ controller pendaftaran; Model hanya menjaga bentuk data.
 | `registerFailedLogin($id)` | menambah `failed_login_count`; mencapai `loginThrottle['participant']['max_fail']` (8) → `locked_until` = sekarang + `lock_minutes` (5) dan pencacah kembali 0 |
 | `clearFailedLogin($id)` | pencacah 0, `locked_until` NULL, `last_login_at` sekarang |
 | `scopedForStaff(?$schoolId)` | query builder; NULL (admin) tanpa filter, terisi (guru) hanya sekolah itu |
-| `cohortSummary($filters)` | `total`, `by_gender`, `by_class_level`, `by_province` (dasbor lama; tampilan dasbor Dok 3 tidak memakainya) |
 
-`cohortSummary()` membuang peserta yang dihapus lunak dan menerima `school_id`, `class_level`,
-`province_code`, `date_from`, `date_to`; filter tanggal berlaku pada `participants.created_at`, berbeda
-dengan [filter penelitian baku](#filter-penelitian-baku). Sebaran umur dan metrik sandi
+Sebaran peserta (`cohortSummary()`), sebaran umur dan metrik sandi
 (`ageDistribution()`, `digitalSecurityStats()`) dihapus pada Dok 3: nilainya ada mentah di lembar
 Peserta (`age`, `pw_first_submit_criteria`, `pw_weak_submit_count`).
 
@@ -800,9 +797,9 @@ klien (paling banyak `Config\Gelita::$maxEventsPerBatch`; tipe harus terdaftar d
 
 - allowedFields `participant_id`, `session_id`, `rating`, `liked_most`, `hardest_part`,
   `new_learning`, `suggestion`, `submitted_at`; validasi `participant_id` wajib, `rating` 1–5.
-- `forStudy($studyId)` (dengan `participant_code`), `ratingDistribution($filters)` —
-  `{count, mean, distribution}`. Keduanya tidak dipanggil kode mana pun; panel dan ekspor
-  membaca tabel ini lewat `FeedbackController` dan dimensi `masukan` `RawDataService`.
+- Tanpa metode baca sendiri (`forStudy()` dan `ratingDistribution()` dihapus karena tidak
+  dipanggil); panel dan ekspor membaca tabel ini lewat `FeedbackController` dan dimensi `masukan`
+  `RawDataService`.
 
 Data mentah kelompok ini dibaca lewat [`RawDataService`](#data-mentah-rawdataservice-dan-ekspor),
 satu tempat query untuk tabel panel dan ekspor. `AnalyticsService` tinggal KPI hitungan, profil satu
@@ -837,7 +834,8 @@ siswa, dan linimasa event.
   dijepit ke halaman terakhir, `sort` `kolom` / `-kolom` dari `sortable($dimension)` (lainnya urutan
   bawaan), `type` ∈ `code|text|int|ms|datetime|bool|enum|json`. `streamCsv($dimension, $filters,
   $handle)` — CSV (BOM, koma, judul = kode kolom) dengan baris yang sama; mengembalikan jumlah baris.
-  Keduanya memakai cakupan yang diikat `withScope()` / `service('rawDataService', $scope)`; tanpa
+  `all($dimension, $filters)` — `{rows, columns}` tanpa batas halaman, urut kunci unik (riwayat
+  `percobaan` satu siswa di tab Jawaban). Ketiganya memakai cakupan yang diikat `withScope()` / `service('rawDataService', $scope)`; tanpa
   cakupan → `LogicException`.
 - `rows($dimension, $filters, $scope, $labeled)` — generator keyset per `CHUNK` (2.000) baris untuk
   ekspor; `count()` jumlah barisnya.

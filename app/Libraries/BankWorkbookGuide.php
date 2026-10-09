@@ -16,7 +16,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx as XlsxWriter;
  *
  * Pembacanya guru dan admin sekolah, bukan orang teknis: tulis semua
  * penjelasan dalam bahasa sehari-hari dan sebut menu panel dengan nama yang
- * tampil di layar (mis. "Gambar & mockup", "Impor soal (Excel)").
+ * tampil di layar (mis. "Gambar & mockup", "Impor bank soal").
  *
  * Header sheet sengaja berbahasa Inggris (kode kolom yang dibaca importer),
  * jadi setiap workbook yang dibuat lewat kelas ini membawa penjelasannya

@@ -252,6 +252,7 @@ return [
         'export'                       => 'Membuat unduhan data',
         'export_download'              => 'Mengunduh data',
         'export_csv'                   => 'Mengunduh CSV tabel data mentah',
+        'list_csv'                     => 'Mengunduh CSV tabel daftar (siswa, sesi, linimasa, kritik & saran)',
         'export_purge'                 => 'Membuang unduhan lama',
         'delete_preview'               => 'Menghitung data yang akan dihapus',
         'delete_execute'               => 'Menghapus data',
