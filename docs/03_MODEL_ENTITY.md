@@ -5,7 +5,9 @@
 Dokumen ini menjelaskan lapisan data GELITA seperti yang ada di kode: 28 Model CodeIgniter di
 `app/Models/` (satu per tabel; tabel `ci_sessions` dipakai session handler, tanpa Model), 11 Entity di
 `app/Entities/`, dua trait bersama, dan library/service yang paling erat dengan keduanya
-(`ContentRepository`, `ChallengeService`, `ScoringService`, `PuzzleCut`, `DifficultyRules`, `BankRules`).
+(`ContentRepository`, `ChallengeService`, `ScoringService`, `PuzzleCut`, `DifficultyRules`, `BankRules`,
+`RawDataService`, `ExportService`). Daftar lengkap 15 service di `app/Services/` dan 35 library di
+`app/Libraries/` (32 kelas langsung + 3 di `Simulation/`) ada di [Services and libraries index](#services-and-libraries-index).
 Nama tabel, tipe kolom, dan relasi ada di [01_DATABASE.md](01_DATABASE.md); alur fitur yang memakai
 lapisan ini ada di [07_FEATURE_INTEGRATION.md](07_FEATURE_INTEGRATION.md).
 
@@ -357,7 +359,7 @@ tidak pernah ditanyakan.
 |---|---|
 | `bankForNode($nodeId)` | soal aktif satu tantangan, urut `variant_group`, `sequence`, `id` |
 | `groupByVariant($bank)` (static) | kelompokkan per variasi (kosong → `a`), urut nama variasi lalu `sequence` |
-| `pickVariant($nodeId, $excludeGroups, ?$bank)` | satu variasi untuk pengerjaan baru: variasi yang sudah pernah didapat siswa dibuang selama masih ada yang lain, lalu dipilih acak (`random_int()`, tanpa benih). Mengembalikan `{group, items}`; objek pengecoh `cari` diletakkan di akhir |
+| `pickVariant($nodeId, $excludeGroups, ?$bank)` | satu variasi untuk pengerjaan baru: variasi yang sudah pernah didapat siswa dibuang selama masih ada yang lain, lalu dipilih acak lewat `randomIndex()` (`random_int()`, tanpa benih; `gelita:simulasi` menimpanya dengan `App\Libraries\Simulation\SeededItemModel`). Mengembalikan `{group, items}`; objek pengecoh `cari` diletakkan di akhir |
 | `hasResponses($itemId)` | soal sudah pernah dijawab; panel dan impor menolak mengubah kunci jawabannya |
 | `findByKey($itemKey)` | cari menurut `item_key` |
 
@@ -522,7 +524,7 @@ Dengan aturan ini bank soal final berisi 126 soal (108 dinilai + 18 pengecoh) da
 ### `MediaAssetModel`
 
 Satu baris = satu slot berkas (gambar, audio, video, frame karakter). Slot dibuat `MediaAssetSeeder`
-dan impor; berkasnya diunggah lewat panel (Media / Gambar & suara) atau dipasang command.
+dan impor; berkasnya diunggah lewat panel (menu Gambar & mockup, `/admin/media`) atau dipasang command.
 
 - allowedFields: `asset_key`, `asset_type`, `storage_path`, `mime_type`, `file_size`, `sha256`,
   `width_px`, `height_px`, `locale`, `credit`, `label`, `description`, `version`, `is_active`,
@@ -659,9 +661,11 @@ jawaban, dan percobaan. Setiap langkah berjalan dalam satu transaction bersama e
    `sequential`, kecuali `free`), melanjutkan pengerjaan `in_progress` bila ada, atau memilih variasi
    lewat `variantsServed()` + `pickVariant()`, membuat baris `challenge_attempts`, placeholder
    `item_responses`, dan event `challenge_opened`. Mengembalikan `{attempt, payload}`.
-2. **`submitCheck($attempt, $answers)`** — Susun Gambar, Isi Rumpang, Benar atau Salah. Satu tekan
+2. **`submitCheck($attempt, $answers, ?$checkNo)`** — Susun Gambar, Isi Rumpang, Benar atau Salah. Satu tekan
    "Cek jawabanku" = satu percobaan untuk semua soal yang belum benar: ditolak `TRIES_EXHAUSTED` bila
-   `check_count >= max_tries`, `INCOMPLETE` bila ada soal belum diisi; lalu `check_count++`, setiap soal
+   `check_count >= max_tries`, `ATTEMPT_CHANGED` bila `$checkNo` (nomor cek menurut layar klien,
+   `check_no`) terisi dan ≠ `check_count + 1` (cek dari tab lain atau kiriman ulang), `INCOMPLETE`
+   bila ada soal belum diisi; lalu `check_count++`, setiap soal
    yang belum benar dinilai dan menulis satu `item_tries`, soal yang sudah benar terkunci. Semua benar →
    ditutup `solved`; percobaan terakhir masih ada yang salah → event `challenge_tries_exhausted` dan
    ditutup `tries_exhausted`. Respons Susun Gambar memuat `pieces_correct` dan `misplaced`.
@@ -676,6 +680,20 @@ jawaban, dan percobaan. Setiap langkah berjalan dalam satu transaction bersama e
    `closingReason()` mengizinkan (semua benar, atau kesempatan habis); selain itu `TRIES_REMAINING`.
 6. **`abandonAttempt($attempt, $payload)`** — status `abandoned`, bintang 0, event
    `challenge_abandoned` (`via`: `user_exit`, `retention`, atau `content_changed`).
+
+Galat aturan dilempar sebagai `App\Exceptions\ChallengeRuleException` (`TRIES_EXHAUSTED`, `INCOMPLETE`,
+`CLUE_CLOSED`, `TRIES_REMAINING`, `ATTEMPT_CHANGED`), yang membawa kode API, status HTTP, dan tambahan
+respons (`items`, `redirect`).
+
+**Permintaan bersamaan.** Penulisan yang dapat berbalapan memakai UPDATE bersyarat, bukan
+`SELECT … FOR UPDATE`: `updateIf($model, $id, $expected, $data)` hanya mengubah baris yang kolom
+`$expected`-nya masih bernilai lama (`challenge_attempts.check_count` + `status`,
+`item_responses.try_count`) dan mengembalikan `false` bila tidak ada baris yang berubah;
+`updateOrStale()` mengubah kegagalan itu menjadi `ATTEMPT_CHANGED`. `rollback()` membatalkan
+transaction lalu menjawab menurut keadaan terbaru: pengerjaan sudah ditutup → `redirect` ke
+`/selesai/{id}`; petunjuk Cari Objek sudah tertutup → `CLUE_CLOSED`; kesempatan habis →
+`TRIES_EXHAUSTED`; selain itu `ATTEMPT_CHANGED`. Penulisan baru ke `challenge_attempts` /
+`item_responses` mengikuti pola yang sama.
 
 Aturan penulisan satu percobaan (`applyAnswer()`): `first_answer_json` dan `first_pass_correct` diisi
 sekali pada percobaan pertama; `final_answer_json`, `is_correct`, `try_count`, `status = answered`
@@ -722,11 +740,12 @@ Petunjuk, suara, dan waktu tidak mengurangi bintang.
 Payload `openNode()` dibentuk dari `ChallengeItem::toPlayerArray()` dan
 `ReadingPassage::toPlayerArray()`, ditambah:
 
-- `attempt_id`, `attempt_no`, `variant` (`group`, `title`), `max_tries`, `tries_used`, `resumed`,
-  `elapsed_ms` (dari `started_at` server), `node` (judul, instruksi, latar).
+- `attempt_id`, `attempt_no`, `variant_group`, `variant` (`group`, `title`), `max_tries`, `tries_used`
+  dan `check_count` (keduanya `check_count` pengerjaan; klien mengirim `tries_used + 1` sebagai
+  `check_no`), `resumed`, `elapsed_ms` (dari `started_at` server), `node` (judul, instruksi, latar).
 - `items[].state` untuk memulihkan tampilan: soal yang sudah benar membawa `locked` dan jawaban siswa
   sendiri; soal lain hanya jumlah percobaannya. Jawaban salah tidak pernah dikembalikan.
-- `hints` — hanya `{id, item_id, sequence}`; teks dikirim `useHint()`.
+- `hints` — hanya `{id, item_id, sequence}`, ditambah `hints_count`; teks dikirim `useHint()`.
 - `rumpang`: `word_bank` — jawaban variasi + `distractor_count` pengecoh pertama dari
   `ChallengeNode::distractors()`, diacak dengan benih id pengerjaan sampai urutannya tidak sama dengan
   urutan rumpang (tanpa pengecoh: tidak ada kata di posisinya sendiri). Pemetaan kata → rumpang tidak dikirim.
@@ -782,7 +801,8 @@ klien (paling banyak `Config\Gelita::$maxEventsPerBatch`; tipe harus terdaftar d
 - allowedFields `participant_id`, `session_id`, `rating`, `liked_most`, `hardest_part`,
   `new_learning`, `suggestion`, `submitted_at`; validasi `participant_id` wajib, `rating` 1–5.
 - `forStudy($studyId)` (dengan `participant_code`), `ratingDistribution($filters)` —
-  `{count, mean, distribution}`.
+  `{count, mean, distribution}`. Keduanya tidak dipanggil kode mana pun; panel dan ekspor
+  membaca tabel ini lewat `FeedbackController` dan dimensi `masukan` `RawDataService`.
 
 Data mentah kelompok ini dibaca lewat [`RawDataService`](#data-mentah-rawdataservice-dan-ekspor),
 satu tempat query untuk tabel panel dan ekspor. `AnalyticsService` tinggal KPI hitungan, profil satu
@@ -809,12 +829,21 @@ siswa, dan linimasa event.
 | `butir` | soal bank | `challenge_items` |
 
 - `query($dimension, $filters, StaffScope $scope)` — builder terfilter berisi `_key` (kunci unik) dan
-  kolom mentah; `shape($dimension, $row, $scope, $labeled)` mengubahnya ke kolom §9.2.
+  kolom mentah, tanpa urutan dan batas; dimensi tak dikenal → `InvalidArgumentException`, dimensi yang
+  tidak boleh dibaca cakupan itu (guru meminta `event`) → `DomainException`.
+  `shape($dimension, $row, $scope, $labeled)` mengubah baris ke kolom §9.2 yang boleh dilihat.
 - `page($dimension, $filters, $page, $perPage, $sort)` — `{rows, total, page, per_page, sort,
-  columns: [{key, label, type}]}` untuk tabel admin; `streamCsv($dimension, $filters, $handle)` — CSV
-  (BOM, koma, judul = kode kolom) dengan baris yang sama. Keduanya memakai cakupan yang diikat
-  `withScope()` / `service('rawDataService', $scope)`.
-- `rows($dimension, $filters, $scope, $labeled)` — generator keyset per 2.000 baris untuk ekspor.
+  columns: [{key, label, type}]}` untuk tabel admin: `per_page` 25/50/100 (lainnya 25), `page`
+  dijepit ke halaman terakhir, `sort` `kolom` / `-kolom` dari `sortable($dimension)` (lainnya urutan
+  bawaan), `type` ∈ `code|text|int|ms|datetime|bool|enum|json`. `streamCsv($dimension, $filters,
+  $handle)` — CSV (BOM, koma, judul = kode kolom) dengan baris yang sama; mengembalikan jumlah baris.
+  Keduanya memakai cakupan yang diikat `withScope()` / `service('rawDataService', $scope)`; tanpa
+  cakupan → `LogicException`.
+- `rows($dimension, $filters, $scope, $labeled)` — generator keyset per `CHUNK` (2.000) baris untuk
+  ekspor; `count()` jumlah barisnya.
+- Bantu: `columns()` / `columnSpecs()` (kolom yang boleh dilihat cakupan, urutan §9.2),
+  `dimensions($scope)` / `allows()`, `sanitizeFilters()` (hanya `FILTER_KEYS`, tanggal `Y-m-d`, id
+  bilangan bulat), `isoTime()`, `schoolRef()` (`SCH-000012`).
 - Nilai berkode: waktu ISO 8601 WIB dengan milidetik, durasi milidetik, boolean 1/0, JSON sebagai
   teks. Berlabel: kode → label (`ExportLabels::label()`), wilayah → nama, jawaban/kunci → kalimat
   (`AnswerText`).
@@ -944,6 +973,123 @@ menerima `ExportService::FILTER_KEYS`.
 Cakupan sekolah ditegakkan di service, bukan hanya di filter route: `AnalyticsService`,
 `RawDataService`, dan `ExportService` menambahkan `school_id` guru ke setiap query, berapa pun nilai
 yang dikirim formulir.
+
+## Services and libraries index
+
+Every class in `app/Services/` and `app/Libraries/`, with the section that describes it. Shared
+services are registered in `app/Config/Services.php` (see
+[02_PROJECT_FOUNDATION.md §6.3](02_PROJECT_FOUNDATION.md#63-service)); helpers and configuration are
+in the same document.
+
+### Services (`app/Services/`)
+
+| Class | `service()` name | Role | Described in |
+|---|---|---|---|
+| `AnalyticsService` | `analyticsService` | Count KPIs for the dashboard and `/api/admin/summary` (`summary()`), one participant's raw profile for the PDF report (`participantProfile()`), session event timeline (`eventTimeline()`); bound to the caller's school scope and anonymous mode | 04, 07 FITUR 10 and 15 |
+| `ChallengeService` | `challengeService` | Opens attempts, grades, enforces the 3-tries rule, writes `item_tries`, closes attempts | [Kelompok 4](#cara-challengeservice-menulis-kelompok-ini) |
+| `ContentImportService` | `contentImportService` | Question bank and library workbook: `preview()`, `import()`, `template()` | 07 FITUR 12a |
+| `ContentRepository` | `contentRepository` | Cached read path for game content | [Cache konten](#cache-konten-contentrepository) |
+| `EventService` | `eventService` | `ingest()` (client batches), `record()` (server events), `recordAudio()` | [`GameEventLogModel`](#gameeventlogmodel) |
+| `ExportService` | `exportService` | Builds `data_exports` files: XLSX, CSV-ZIP, PDF (via `ReportService`) | [Export contract](#export-contract-exportservice-and-reportservice) |
+| `GameContext` | `gameContext` | Session, progress, and participant of the current request, loaded by the `gameSession` / `apiSession` filters (`load()`, `refreshProgress()`, `refreshSession()`, `reset()`); no business rules | 02 §6.3 |
+| `RawDataService` | `rawDataService` | One query per raw-data dimension for admin tables, per-table CSV, and exports | [Data mentah](#data-mentah-rawdataservice-dan-ekspor) |
+| `ReportService` | `reportService` | One participant's PDF report (mPDF) | [Export contract](#export-contract-exportservice-and-reportservice) |
+| `RetentionService` | `retentionService` | Two-step deletion (`preview()`, `execute()`, `cancel()`) and scheduled retention (`run()`) | 07 FITUR 16 and 17 |
+| `SchoolDirectory` | `schoolDirectory` | NPSN lookup, school-name matching, merge, verify, auto-merge | 07 FITUR 1 and 10c |
+| `ScoringService` | `scoringService` | Star rule `bintang-1` | [Bintang](#bintang-scoringservice) |
+| `SessionService` | `sessionService` | Registration, login, password change and staff reset, logout, locale, heartbeat, session completion | 04, 07 FITUR 1–3 |
+| `StaffScope` | — (value object) | Read rights of one staff member: `admin($anonymous)`, `teacher($schoolId)`, `fromStaff($row, $anonymous)`, `withAnonymous()` | [Data mentah](#data-mentah-rawdataservice-dan-ekspor) |
+| `SystemResetService` | — (built by `gelita:reset`) | Pre-study reset: `plan()`, `run()`, table groups A–E | 07 FITUR 18 |
+
+### Libraries (`app/Libraries/`)
+
+| Class | Role | Described in |
+|---|---|---|
+| `AdminMenu` | Admin sidebar and topbar breadcrumb from one menu list | [Admin panel libraries](#admin-panel-libraries-admintable-and-adminmenu) |
+| `AdminTable` | Server-side sorted and paginated admin tables, CSV streaming, cell rendering | [Admin panel libraries](#admin-panel-libraries-admintable-and-adminmenu) |
+| `AnswerText` | Stored answers and keys as plain sentences for labelled exports | 07 FITUR 14 |
+| `AssetChecklist` | Asset checklist groups for `/admin/media/kelengkapan` | 04, 07 FITUR 13 |
+| `BankRules` | Grade-5 question bank checks | [Pemeriksaan bank soal](#pemeriksaan-bank-soal-bankrules) |
+| `BankSource`, `BankState` | Question bank from the source data files; bank as stored in the database | 02 §6.5 |
+| `BankWorkbookGuide` | Guided workbook sheets (`PETUNJUK`, `KAMUS_KOLOM`), header notes, pick lists | 02 §6.5, 07 FITUR 12a |
+| `ClozeReading` | Isi Rumpang as one continuous passage | 02 §6.5 |
+| `ContentVerifier` | Content checks for the panel, `gelita:content:verify`, and `gelita:reset` | 07 FITUR 12a |
+| `DeviceProfile` | Device profile for `device_logs` | [`DeviceLogModel`](#devicelogmodel), 07 FITUR 2 |
+| `DifficultyRules` | Rules per `levels.difficulty` | [Aturan tingkat kesulitan](#aturan-tingkat-kesulitan-difficultyrules) |
+| `ExcelWriter` | Streaming XLSX writer | 07 FITUR 14 |
+| `ExportLabels` | Sheet titles, column titles, units, meanings, and value labels; builds the Kamus Data sheet | [Data mentah](#data-mentah-rawdataservice-dan-ekspor) |
+| `GelitaExceptionHandler` | JSON errors for `/api`, hidden details in production | 02 §6.8, 04 |
+| `HashedIpSessionHandler` | Session handler storing a hashed IP; not installed | 02 §7.3 |
+| `HeadAsGetRouteCollection` | HEAD requests served by GET routes with the same filters | 02 §7.6, 04 |
+| `MediaIntegrity` | `media_assets` ↔ file checks (missing, size, SHA-256) | 07 FITUR 13 |
+| `MediaLink` | External library media links (YouTube, Drive, Vimeo, Wikimedia Commons, direct files) | [`LibraryMedia`](#librarypagemodel--librarymediamodel-dan-entity-nya) |
+| `MediaStore` | Stores uploads under the official name and checks pixel sizes | [`MediaAssetModel`](#mediaassetmodel), 07 FITUR 13 |
+| `MediaUsage` | "Dipakai di" for each media slot | 07 FITUR 13 |
+| `MockupGenerator` | SVG sample images for challenge image slots (`is_placeholder = 1`) | 07 FITUR 12b |
+| `NarrationCatalog`, `NarrationImporter` | Narration status, bulk approval, and import | 04, 07 FITUR 13a |
+| `PasswordPolicy` | Student password strength (server-side) | 02 §7.4, 04 |
+| `PuzzleCut` | Susun Gambar piece paths | [Potongan Susun Gambar](#potongan-susun-gambar-puzzlecut) |
+| `RegionDirectory` | Province and district list (Kemendagri codes) | 02 §6.5, 04 |
+| `RequestId` | Random id per request, in every JSON response and log line | 02 §6.3 |
+| `ResearchReadiness` | Research readiness checklist: no sample images in use, all narration approved, content verified | 04 (`StudyController`, `DashboardController`) |
+| `SchoolImporter`, `SchoolName` | Official school list import; school-name match key | 07 FITUR 10c, 02 §6.5 |
+| `VideoThumbnail` | Server-side poster download for external library videos | 07 FITUR 8 |
+| `Simulation\Simulator` | Builds simulated `sim_*` students through the real services | 07 FITUR 19 |
+| `Simulation\SimClock` | Simulated school-day clock; shifts the time columns of rows written by each step | 07 FITUR 19 |
+| `Simulation\SeededItemModel` | `ChallengeItemModel` with a seeded `randomIndex()` for deterministic variant picks | 07 FITUR 19 |
+
+### Admin panel libraries: `AdminTable` and `AdminMenu`
+
+`App\Libraries\AdminTable` (static) serves the list pages that do not read `RawDataService`
+(Siswa, Sesi, Kritik & saran, the session timeline). A column is
+`{key, label, type, sort, identity?}`: `sort` is the ORDER BY expression (`null` = not sortable) and
+`identity = true` marks admin-only columns (name, username).
+
+| Method | Behaviour |
+|---|---|
+| `visibleColumns($columns, $isAdmin)` | drops `identity` columns for teachers |
+| `params($request, $sortable, $defaultSort)` | reads `page`, `per_page` (`PER_PAGE` 25/50/100, otherwise 25), `sort` (`key` ascending, `-key` descending; unknown → `$defaultSort`) |
+| `validSort($sort, $sortable)` | the same check for `?format=csv` |
+| `page($builder, $columns, $page, $perPage, $sort, $tieBreaker)` | counts, clamps the page, orders by the column expression plus a stable tie-breaker; returns the same shape as `RawDataService::page()` |
+| `streamCsv($builder, $columns, $handle, $sort, $tieBreaker)` | writes every row (UTF-8 BOM, header = column keys, raw values via `csvValue()`); returns the row count |
+| `url($path, $query, $change)` | query string for sort, page, and filter links; a change without `page` resets to page 1 |
+| `cell($value, $type)`, `cellClass($type)` | cell HTML and CSS class per column type (`text`, `int`, `num`, `ms`, `datetime`, `date`, `code`, `status`, `bool`, `json`, `stars`, `clip`, `label:{group}`); empty cells show "—" |
+
+`components/data-table.php` renders both `AdminTable::page()` and `RawDataService::page()` results.
+
+`App\Libraries\AdminMenu` holds the admin menu (Dok 3 §8.3) as one list of
+`[href, Admin.* label key, icon, admin-only, group]`. `items($isAdmin, $path)` returns the entries the
+caller may see, with their group and the active flag; teachers never receive admin-only entries
+(their routes stay behind `staffRole:admin`, which answers 404). `activeHref($path)` picks the longest
+matching prefix (`admin/dashboard` counts as `admin`). `crumbs($path, $pageTitle, $extra)` builds the
+topbar breadcrumb: Panel › group › menu › page. Used by `components/admin-sidebar.php` and
+`layouts/admin.php`; the menu itself is listed in
+[07_FEATURE_INTEGRATION.md FITUR 10](07_FEATURE_INTEGRATION.md#fitur-10-panel-staf--masuk-cakupan-sekolah-dan-beranda).
+
+### Export contract: `ExportService` and `ReportService`
+
+`App\Services\ExportService` builds one `data_exports` row synchronously.
+
+- Constants: `SHEETS` (official order, `kamus` first), `ADMIN_ONLY_SHEETS` (`event`),
+  `IDENTITY_COLUMNS`, `ADMIN_ONLY_COLUMNS` (`answer_key`), `FILTER_KEYS` (`study_id`, `level_id`,
+  `node_id`, `school_id`, `province_code`, `locale`, `date_from`, `date_to`), `FORMATS`
+  (`xlsx`, `csv`, `pdf`), `EVENT_SHEETS` (`event`, `navigasi`, `selesai`; capped by
+  `Config\Gelita::$exportMaxRawEvents`).
+- `build($exportId)` never throws: it reads `context()`, writes the file (`writeXlsx()`,
+  `writeCsvZip()`, or `ReportService::render()` for `pdf`), and marks the row `done` or `failed`.
+- `context($export)` re-reads the requester from `staff_users` (third authorization layer) and returns
+  `{filters, sheets, anonymized, labeled, is_admin, school_scope, scope: StaffScope, template,
+  participant_id, …}`; inactive staff fail, teachers are forced to their school and anonymous mode.
+- `allowedSheets($requested, $isAdmin)` (empty request = every allowed sheet, `kamus` always included),
+  `columns($sheet, $anonymized, $isAdmin)`, `sanitizeFilters($filters, $schoolScope)`,
+  `sheetRows()`, `assertEventVolume()`, `purgeExpired()` (retention), `isInsideExportDir()`,
+  `mimeType($format)`.
+
+`App\Services\ReportService` renders one participant report: `render($path, $context)` accepts only
+`template = participant` (anything else throws `DomainException`, since the study-wide PDF summary no
+longer exists), reads `participantData()` through an `AnalyticsService` bound to the requester's
+school scope and anonymous mode, renders `app/Views/pdf/report-participant.php`, and prints A4 with
+mPDF. It returns `{sha, rows}`.
 
 ## Aturan keamanan data
 

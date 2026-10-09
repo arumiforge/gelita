@@ -66,6 +66,9 @@ Istilah yang dipakai di seluruh dokumen:
 | `NarrationImporter`, `NarrationCatalog` | `app/Libraries/` | impor dan persetujuan narasi |
 | `SchoolImporter` | `app/Libraries/SchoolImporter.php` | daftar sekolah resmi dari CSV |
 | `ExcelWriter`, `ExportLabels`, `AnswerText` | `app/Libraries/` | penulis XLSX bertahap, judul/arti/nilai kolom dan Kamus Data, jawaban dalam kalimat |
+| `AdminTable`, `AdminMenu` | `app/Libraries/` | tabel panel yang diurutkan, dipaginasi, dan diunduh CSV di server; menu dan breadcrumb panel |
+| `ResearchReadiness` | `app/Libraries/ResearchReadiness.php` | daftar siap penelitian (gambar contoh, narasi, verifikasi konten) |
+| `Simulator`, `SimClock`, `SeededItemModel` | `app/Libraries/Simulation/` | siswa simulasi `sim_*` (FITUR 19) |
 | `ScreenViewFilter`, `ClientHintsFilter` | `app/Filters/` | event `screen_viewed`, header `Accept-CH` |
 | Command `gelita:*` | `app/Commands/` | lihat [Command GELITA](#command-gelita) |
 
@@ -378,13 +381,20 @@ Ini fitur inti. Setiap wilayah punya 4 tantangan dengan urutan sama; tingkatnya 
     tidak dihitung percobaan
  7. "Cek jawabanku" ("Cek gambarku" pada Susun Gambar)
     → POST /api/attempts/{id}/check
-      {answers: [{item_id, answer, first_input_ms, last_input_ms}], client_event_id, occurred_at}
+      {answers: [{item_id, answer, first_input_ms, last_input_ms}], check_no,
+       client_event_id, occurred_at}
+      check_no = cek ke-berapa menurut layar ini (tries_used + 1)
  8. ChallengeApiController::check: pengerjaan milik sesi berjalan; check_count
     sudah = max_tries → 409 TRIES_EXHAUSTED; pengerjaan tertutup → 409
     ATTEMPT_CLOSED; setiap item_id wajib milik pengerjaan ini
  9. ChallengeService::submitCheck() — SATU TRANSACTION:
+      check_no ≠ check_count + 1 (cek dari tab lain atau kiriman ulang sesudah
+      respons pertama hilang) → 409 ATTEMPT_CHANGED tanpa perubahan
       soal yang belum benar wajib terisi, selain itu 422 INCOMPLETE
-      check_count++
+      check_count++ hanya bila check_count dan status masih bernilai lama
+      (UPDATE bersyarat); permintaan bersamaan yang kalah dibatalkan seluruhnya
+      → 409 ATTEMPT_CHANGED, atau TRIES_EXHAUSTED / redirect bila itu keadaan
+      terbarunya
       untuk setiap soal yang BELUM benar (soal yang sudah benar terkunci:
       tidak dinilai ulang, tanpa percobaan baru):
         nilai dengan kunci DARI DATABASE (grade per interaction_type)
@@ -406,6 +416,8 @@ Ini fitur inti. Setiap wilayah punya 4 tantangan dengan urutan sama; tingkatnya 
       detail (Susun Gambar) = {pieces_correct, misplaced}: keping yang keliru
       ditandai ✗
 11. challenge.js:
+      ATTEMPT_CHANGED → ke redirect bila pengerjaan sudah ditutup, selain itu
+                        halaman dimuat ulang (bukan meninggalkan tantangan)
       belum selesai   → modal "Belum semuanya tepat" + "Kesempatanmu tinggal
                         {n} lagi" / "Tinggal satu kesempatan lagi…" + Perbaiki;
                         penanda kesempatan ●●○ diperbarui dari tries_left
@@ -662,14 +674,14 @@ Parameter `level` (dan `seq`) diterjemahkan ke kolom `level_id` (dan `challenge_
 |---|---|---|---|
 | `level_opened` | `game/map.js` | peta wilayah dibuka | `code` |
 | `dialogue_advanced` | `game/narrator.js` | slide cerita berpindah | `index`, `total`, `context`, `character` |
-| `overlay_opened` | `core/device.js`, `game/challenge.js` | overlay Kenali, modal petunjuk, modal keluar, lightbox Pustaka | `overlay` (`kenal`, `hint`, `exit`, `lightbox`), `level` (kode wilayah) |
+| `overlay_opened` | `core/device.js` (`overlayOpened()` dari `game/map.js`, `game/library.js`, `engines/boleh.js`), `game/challenge.js` | overlay Kenali, modal petunjuk, modal keluar, lightbox Pustaka, gambar pernyataan Benar atau Salah | `overlay` (`kenal`, `hint`, `exit`, `lightbox`, `statement_image`), `level` (kode wilayah) |
 | `answer_selected` | `game/challenge.js` | mengisi/mengubah soal sebelum cek | `action` (`set`, `clear`, `swap`), `value`, `from`, `to`, `t_ms` |
 | `reading_progress` | `core/device.js` | panel bacaan digulir melewati 25/50/75/100 % (sekali per pengerjaan) | `passage_id`, `percent` |
 | `challenge_opened` | `game/challenge.js` | pengerjaan dilanjutkan (resume) | `resumed: true`, `attempt_no` |
 | `challenge_abandoned` | `game/challenge.js` | halaman tantangan ditutup (`pagehide`) | `via: 'pagehide'`, `attempt_open: true` |
 | `library_page_viewed` | `game/library.js` | ganti halaman buku Pustaka | `page`, `total`, `page_id` |
-| `page_hidden` / `page_visible` | `core/device.js` | `visibilitychange` | `screen` |
-| `viewport_changed` | `core/device.js` | halaman dibuka dan setiap ukuran/orientasi berubah (debounce 1 detik, paling sering satu event per 5 detik) | `w`, `h`, `orientation`, `rotate_gate` |
+| `page_hidden` / `page_visible` | `core/events.js` | `visibilitychange` | `screen` |
+| `viewport_changed` | `core/stage.js` | halaman dibuka dan setiap ukuran/orientasi berubah, termasuk saat layar putar tampil/hilang (debounce 1 detik, paling sering satu event per 5 detik) | `w`, `h`, `orientation`, `rotate_gate`, `stage_w`, `stage_h`, `scale` (ukuran panggung 16:9) |
 
 ```text
 1. emit() → antrean core/events.js (client_event_id dibuat saat event lahir)
@@ -807,16 +819,42 @@ Panel admin selalu berbahasa Indonesia (`LocaleFilter`). Dua peran: `admin` (sem
      berhasil: session()->regenerate(true); staff_id, staff_role,
                staff_school_id, staff_name; clearFailedLogin; audit 'login'
      must_change_password = 1 → /admin/akun/sandi (FITUR 10a)
-3. Redirect /admin/dashboard → DashboardController::index
-     filter dari query string (readFilters) dipaksa ke cakupan sekolah
-     AnalyticsService::summary(): HANYA hitungan data mentah —
-       siswa, sesi, sesi selesai, pengerjaan selesai/ditinggalkan, jumlah
-       item_tries, petunjuk dibuka, pemakaian suara
-     ParticipantModel::cohortSummary(): sebaran siswa
-     10 sesi bermain terakhir
-     admin: peringatan pratinjau penghapusan buatan retensi (FITUR 17)
+3. Redirect /admin/dashboard → DashboardController::index (Ringkasan); semua
+   query dibatasi cakupan sekolah pemanggil
+     empat KPI dari AnalyticsService::summary() — HANYA hitungan:
+       siswa terdaftar, sesi aktif sekarang (≤ 10 menit), pengerjaan selesai
+       hari ini, kritik & saran
+     admin: daftar siap penelitian (App\Libraries\ResearchReadiness: gambar
+       contoh, narasi belum disetujui, verifikasi konten) dan peringatan
+       pratinjau penghapusan buatan retensi (FITUR 17)
+     20 event terakhir: waktu, kode siswa, kejadian, layar/tantangan
+     progres 10 siswa terbaru (sesi terakhir masing-masing): sekolah, wilayah
+       saat ini, tantangan selesai x/12, bintang, aktif terakhir
 4. GET /admin/logout → audit 'logout', session()->destroy()
 ```
+
+**Menu panel (Dok 3 §8.3).** Sidebar dan breadcrumb dibangun dari satu daftar di `App\Libraries\AdminMenu`. Menu khusus admin tidak dirender untuk guru; route-nya tetap dijaga `staffRole:admin`.
+
+| Kelompok | Menu | Path | Peran |
+|---|---|---|---|
+| — | Ringkasan | `/admin` (alias `/admin/dashboard`) | guru, admin |
+| Data penelitian | Siswa | `/admin/peserta` | guru, admin |
+| Data penelitian | Sesi bermain | `/admin/sesi` | guru, admin |
+| Data penelitian | Data mentah | `/admin/data` | guru, admin |
+| Data penelitian | Kritik & saran | `/admin/masukan` | guru, admin |
+| Data penelitian | Unduh data | `/admin/ekspor` | guru, admin |
+| Konten | Tantangan | `/admin/konten` | admin |
+| Konten | Impor bank soal | `/admin/konten/impor-bank` | admin |
+| Konten | Rekaman narasi | `/admin/konten/narasi` | admin |
+| Konten | Gambar & mockup | `/admin/media` | admin |
+| Konten | Kelengkapan aset | `/admin/media/kelengkapan` | admin |
+| Pengaturan | Penelitian | `/admin/studi` | admin |
+| Pengaturan | Rilis | `/admin/studi/rilis` | admin |
+| Pengaturan | Sekolah | `/admin/sekolah` | admin |
+| Pengaturan | Staf | `/admin/staf` | admin |
+| Pengaturan | Tata kelola | `/admin/tata-kelola` | admin |
+
+Menu aktif = awalan path terpanjang (`/admin/konten/impor-bank` menyalakan Impor bank soal, bukan Tantangan). Halaman tanpa menu sendiri (rekaman suara `/admin/media/audio`, riwayat aktivitas `/admin/tata-kelola/audit`, ganti sandi `/admin/akun/sandi`, editor wilayah/tantangan/bacaan/Pustaka/dialog) dibuka dari halaman induknya.
 
 **Cakupan sekolah — tiga lapis.**
 
@@ -824,7 +862,7 @@ Panel admin selalu berbahasa Indonesia (`LocaleFilter`). Dua peran: `admin` (sem
 2. Controller: `StaffScope::schoolScope()` (NULL untuk admin, `school_id` untuk guru; guru tanpa sekolah → 0, tidak cocok dengan apa pun) dan `scopedFilters()`. Siswa atau sesi di luar cakupan dibalas 404, bukan 403.
 3. Service: `AnalyticsService`, `RawDataService`, dan `ExportService` menambahkan `participants.school_id` pada setiap query (`App\Services\StaffScope`), dan `ExportService` membaca ulang hak pemohon dari `staff_users`.
 
-`StaffAuthFilter` menyinkronkan peran, sekolah, dan status aktif dari database pada setiap request, sehingga perubahan oleh admin (termasuk menonaktifkan akun atau reset sandi) langsung berlaku. Dasbor admin yang lebih lengkap (peringatan gambar contoh, tabel formal) direncanakan di Dok 3 perombakan kelas 5.
+`StaffAuthFilter` menyinkronkan peran, sekolah, dan status aktif dari database pada setiap request, sehingga perubahan oleh admin (termasuk menonaktifkan akun atau reset sandi) langsung berlaku.
 
 API panel (`/api/admin/*`, `AdminApiController`): `summary` (KPI hitungan yang sama dengan beranda), `sessions/{id}/timeline` (linimasa event), `exports/{id}/status`.
 
@@ -893,33 +931,56 @@ Halaman `/admin/sekolah` (admin, `SchoolController`, aturan di `App\Services\Sch
 
 ---
 
-## FITUR 11: Siswa, Sesi, dan Linimasa Event di Panel
+## FITUR 11: Siswa, Sesi, Data Mentah, dan Linimasa Event di Panel
 
-Guru dan admin; guru hanya untuk siswa sekolahnya.
+Guru dan admin; guru hanya untuk siswa sekolahnya dan selalu tanpa kolom identitas. Tabel daftar memakai `App\Libraries\AdminTable` (urut, halaman 25/50/100, dan **Unduh CSV** `?format=csv` dengan filter yang sama, semuanya di server); tabel data mentah memakai `RawDataService::page()` dengan bentuk hasil yang sama. Keduanya dirender `components/data-table`.
 
 ```text
-1. /admin/peserta (ParticipantController::index): 25 per halaman, cari kode/nama
-   pengguna/nama, filter sekolah (admin), kelas, provinsi; per baris jumlah sesi,
-   serpihan terbanyak dalam satu sesi, aktivitas terakhir
-2. /admin/peserta/{id} (show):
-     identitas aman (tanpa password_hash dan kolom throttle), wilayah, metrik
-     sandi, "Setuju ikut bermain: ya · {assented_at}"
-     AnalyticsService::participantProfile(): hitungan data mentah pengerjaan selesai
-     catatan perangkat (device_logs) per daftar/masuk
-     daftar sesi + progres; tombol Reset kata sandi (FITUR 2a) dan Laporan PDF (FITUR 15)
-3. /admin/sesi (SessionController::index): filter studi, sekolah, kelas, bahasa,
-   rentang tanggal
-4. /admin/sesi/{id} (show): sesi, progres, device_logs sesi itu, setiap pengerjaan
-   (variasi, alasan selesai, check_count/max_tries, bintang) dengan rincian
-   per soal (item_responses: percobaan, benar pada percobaan ke-, petunjuk,
-   salah pilih benda, jawaban akhir) dan setiap percobaan (item_tries)
-5. /admin/sesi/{id}/event (timeline): linimasa game_event_logs (presisi
-   milidetik), filter per jenis aktivitas; label aktivitas dari Language/id/Admin.php
-6. /admin/masukan (FeedbackController::index): kritik & saran Balai Refleksi,
-   sebaran bintang 1–5, filter sekolah dan kelas
+1. /admin/peserta (ParticipantController::index): satu baris per siswa dari sesi
+   terakhirnya: kode, nama dan nama pengguna (admin saja), sekolah, kab/kota,
+   JK, umur, terdaftar, setuju ikut, tantangan selesai, wilayah terakhir,
+   bintang, aktif terakhir
+     filter: cari (kode, nama pengguna; nama untuk admin), sekolah (admin),
+     kab/kota, JK, umur, progres (belum | berjalan | selesai), tanggal daftar
+2. /admin/peserta/{id} (show; di luar cakupan → 404), tab ?tab=:
+     profil      identitas aman (tanpa password_hash dan kolom throttle),
+                 wilayah, metrik sandi, waktu setuju ikut bermain
+     sesi        sesi bermain + catatan perangkat (device_logs) per daftar/masuk
+     progres     12 baris tantangan dari sesi siswa
+     pengerjaan, jawaban (+ riwayat percobaan per baris), navigasi, bantuan
+                 lembar data mentah satu siswa (RawDataService::page() dengan
+                 participant_id); ?format=csv mengunduh tab itu
+     masukan     kritik & saran siswa
+   aksi: Reset kata sandi (FITUR 2a), unduh XLSX/CSV-ZIP satu siswa (FITUR 14,
+   §9.3), Cetak laporan PDF (FITUR 15)
+3. /admin/sesi (SessionController::index): kode sesi, kode siswa, sekolah,
+   penelitian, bahasa, status, mulai, aktif terakhir, durasi, perangkat,
+   tantangan selesai, bintang; filter kode siswa, sekolah, penelitian, bahasa,
+   rentang tanggal mulai
+4. /admin/sesi/{id} (show; di luar cakupan → 404):
+     ringkasan sesi dan progres
+     pengerjaan di sesi itu: tantangan, variasi, ke-, status, alasan selesai,
+       Berhasil pada Percobaan Pertama, benar akhir, soal dinilai, cek,
+       petunjuk, bintang, mulai, selesai, durasi
+     linimasa game_event_logs (#linimasa): urutan, waktu klien, waktu server
+       (presisi milidetik), event, layar/tantangan/soal, payload JSON; filter
+       ?type= per jenis event, urut, halaman, ?format=csv
+   /admin/sesi/{id}/event (alamat lama) → dialihkan ke /admin/sesi/{id}#linimasa
+5. /admin/data/{dimensi} (RawDataController::show; /admin/data → jawaban): satu
+   tab per lembar ekspor §9.2:
+     jawaban (Jawaban & ketepatan), percobaan (Riwayat percobaan), pengerjaan,
+     progres, selesai (Penyelesaian), navigasi, bantuan, perangkat
+   Waktu tidak punya tab sendiri: kolomnya ada di Pengerjaan, Jawaban, dan
+   Riwayat percobaan. Dimensi lain → 404.
+     filter: kode siswa, sekolah, wilayah, tantangan, variasi, rentang tanggal
+     (dipaksa ke sekolah guru); nilai mentah seperti CSV, kolom `enum` tampil
+     berlabel (ExportLabels::label())
+     ?format=csv → rawCsvDownload() → RawDataService::streamCsv(), audit 'export_csv'
+6. /admin/masukan (FeedbackController::index): kode siswa, sekolah, bintang,
+   empat jawaban terbuka, waktu kirim; filter sekolah dan rentang tanggal kirim
 ```
 
-Panel hanya menampilkan data mentah: tidak ada indeks kesulitan, daya pembeda, capaian indikator, perbandingan tes, atau chart. Pengolahan dilakukan peneliti dari ekspor (FITUR 14).
+Panel hanya menampilkan data mentah: tidak ada indeks kesulitan, daya pembeda, capaian indikator, perbandingan tes, sebaran siswa, atau chart. Pengolahan dilakukan peneliti dari ekspor (FITUR 14). API panel `GET /api/admin/sessions/{id}/timeline` memberi linimasa yang sama dalam JSON (`AnalyticsService::eventTimeline()`).
 
 ## FITUR 12: Kelola Konten
 
@@ -1071,7 +1132,7 @@ MEMBUAT
    dipertahankan / GAGAL), kode keluar 1 bila ada yang gagal atau --node tidak dikenal
 
 MENGGANTI DENGAN GAMBAR ASLI
-6. Admin membuka Gambar & suara (/admin/media) atau form soal/tantangan
+6. Admin membuka Gambar & mockup (/admin/media) atau form soal/tantangan
    (FITUR 12) dan mengunggah berkas dengan kode yang sama (mis.
    challenge.item.tmg-4-03); ukuran harus sesuai slot
 7. MediaStore menyimpan berkas dengan nama resmi, menandai baris
@@ -1268,6 +1329,8 @@ Navigasi = event `screen_viewed`, `overlay_opened`, `dialogue_advanced`, `librar
 
 **Filter.** Rentang tanggal memakai waktu baris itu sendiri: tanggal daftar (Peserta), mulai sesi (Sesi, Progres), waktu catatan (Perangkat), mulai pengerjaan (Pengerjaan, Jawaban), waktu percobaan, waktu event, waktu kirim (Kritik & Saran). Wilayah dan tantangan berlaku pada lembar berbasis tantangan dan event; Peserta, Sesi, Perangkat, Progres, dan Kritik & Saran tidak terpengaruh. Bank Soal tidak bergantung siswa dan tidak dibatasi sekolah.
 
+**Ekspor per siswa (§9.3).** Tombol unduh di `/admin/peserta/{id}` mengirim `participant_id` bersama formulir yang sama. `ExportService::context()` menambahkannya ke filter (`participant_id` ada di `RawDataService::FILTER_KEYS`, bukan di `ExportService::FILTER_KEYS`), sehingga setiap lembar yang bergantung siswa hanya memuat siswa itu; Bank Soal tidak bergantung siswa. Lembar, mode anonim, cakupan sekolah, audit, dan unduhan sama dengan ekspor biasa, dan respons kembali ke profil siswa.
+
 **CSV per tabel.** Setiap tabel `/admin/data/{dimensi}` punya tombol Unduh CSV (`?format=csv`, `BaseAdminController::rawCsvDownload()` → `RawDataService::streamCsv()`): baris dan filter sama dengan tabel, nilai berkode, audit `export_csv`.
 
 `password_hash`, `failed_login_count`, `locked_until`, dan `ip_hash` tidak pernah dibaca ekspor. Data perangkat bukan identitas, jadi tetap ada di ekspor anonim.
@@ -1353,7 +1416,7 @@ Siswa yang di-soft-delete tidak dapat bermain lagi (filter area game menolak `pa
 | Siswa & sekolah | `participant_password_reset`, `school_merge`, `school_verify` |
 | Konten & media | `content_update`, `content_import`, `media_upload`, `media_deactivate`, `media_scan`, `media_mockups`, `audio_upload`, `audio_approve`, `audio_approve_bulk`, `narration_import`, `narration_list_download` |
 | Studi | `study_create`, `study_update`, `release_create`, `release_activate` |
-| Data | `export`, `export_download`, `export_purge`, `delete_preview`, `delete_execute`, `delete_cancel`, `retention_run`, `system_reset` |
+| Data | `export`, `export_csv`, `export_download`, `export_purge`, `delete_preview`, `delete_execute`, `delete_cancel`, `retention_run`, `system_reset` |
 
 ---
 
@@ -1516,7 +1579,7 @@ Service memakai `transBegin()`/`transCommit()`/`transRollback()`; `EventService:
 3. Setiap soal paling banyak 3 percobaan (`Config\Gelita::$maxTries`, disalin ke `challenge_attempts.max_tries`); setiap percobaan menulis satu baris `item_tries`.
 4. Setiap operasi lintas tabel dibungkus satu transaction.
 5. Setiap tindakan siswa yang bermakna menulis `game_event_logs`; setiap tindakan staf yang bermakna menulis `audit_logs`. `screen_viewed`, `challenge_tries_exhausted`, dan `clue_failed` hanya ditulis server.
-6. Guru hanya melihat dan mengekspor data sekolahnya, selalu anonim, tanpa Catatan aktivitas dan kunci jawaban.
+6. Guru hanya melihat dan mengekspor data sekolahnya, selalu anonim, tanpa lembar Event Mentah dan kunci jawaban.
 7. Raw event tidak dihapus karena agregatnya sudah dibuat; penghapusan data selalu dua langkah dengan konfirmasi teks dan tercatat.
 8. Berkas ekspor berada di luar `public/`, punya SHA-256 dan masa berlaku.
 9. Mengulang tantangan tidak menghapus catatan lama — setiap pengerjaan tersimpan sebagai data penelitian tersendiri.
@@ -1574,7 +1637,7 @@ Untuk **[08_DEPLOYMENT.md](08_DEPLOYMENT.md)**: instalasi baru (migrate, `Databa
 
 * Seorang siswa kelas 5 dapat mendaftar dalam tiga langkah dengan kata sandi kuat dan NPSN sekolahnya, masuk kembali dari komputer mana pun, menonton cerita pembuka, memainkan 12 tantangan di tiga wilayah berurutan dengan variasi acak dan 3 kesempatan per soal, mengumpulkan 12 Serpihan Cahaya, membaca Pustaka setiap wilayah yang tuntas, dan mengirim kritik & saran di Balai Refleksi.
 * Setiap percobaan, perubahan jawaban, petunjuk, pemutaran suara, perpindahan layar, dan perangkat tercatat sebagai data mentah dengan stempel waktu presisi milidetik.
-* Guru dapat mereset sandi siswa di sekolahnya, menelusuri sesi sampai setiap percobaan dan event, dan mengunduh XLSX anonim.
+* Guru dapat mereset sandi siswa di sekolahnya, menelusuri sesi sampai setiap percobaan dan event, serta mengunduh data mentah anonim (XLSX, CSV-ZIP, CSV per tabel) dan laporan PDF satu siswa.
 * Admin dapat memuat bank soal dari satu workbook dengan pratinjau galat per baris, mengganti gambar contoh dengan gambar asli, menyetujui narasi, mengelola studi, rilis, sekolah, dan akun staf, mengekspor data lengkap, serta menghapus data dengan pratinjau, konfirmasi, dan jejak audit.
 * Satu perintah `gelita:reset` menyiapkan sistem bersih untuk pengambilan data penelitian; retensi terjadwal hanya mengingatkan, tidak pernah menghapus data penelitian sendiri.
 * Koneksi yang sempat putus tidak menghilangkan event dan tidak menggandakan data.
