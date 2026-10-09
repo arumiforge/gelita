@@ -33,7 +33,7 @@ Last updated: 9 October 2026.
 
 ## Planned, not started
 
-- [ ] Asset package (download once, instant screen and language switch): `docs/rencana-paket-aset.md`. Waiting on the owner decisions in its §12.
+- [ ] Asset package (download once, instant screen and language switch): `docs/rencana-paket-aset.md`. Owner decisions recorded in its §12 (9 October 2026): full download before Mulai, admin on/off switch. Ready to start with Stage 0.
 
 ## Active branches
 
@@ -42,3 +42,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 | Branch | Owner / scope | Status |
 |---|---|---|
 | `sky/amazing-mendel-wuy2p7` | Raw data tables show answers as sentences by default, with a switch to the stored JSON | PR open |
+| `sky/optimistic-hopper-eqqcbm` | Asset package plan: owner decisions, admin switch (docs only) | PR open |
