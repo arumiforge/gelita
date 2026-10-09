@@ -18,7 +18,7 @@ Identitas visual: **navy gelap + emas**, judul dengan serif klasik (Cinzel), isi
 **Aksesibilitas.**
 
 * Kontras teks cukup terhadap latar; latar bergambar selalu diberi lapisan gelap di belakang teks.
-* Fokus keyboard selalu terlihat (cincin emas); setiap layout punya tautan lompat `.skip-link` ke isi.
+* Fokus keyboard selalu terlihat (cincin emas di permainan, cincin indigo di panel); layout `game` dan `admin` punya tautan lompat `.skip-link` ke isi (`layouts/auth` hanya berisi satu formulir, tanpa tautan lompat).
 * Target sentuh minimal 44 × 44 px.
 * Warna tidak pernah menjadi satu-satunya penanda: benar/salah memakai ikon ✓/✗ dan teks, bintang memakai `stars_html()` dengan teks alternatif "2 / 3", status kelengkapan aset memakai ikon + teks.
 * Gambar informatif ber-`alt` bermakna; gambar dekoratif `alt=""` atau `aria-hidden`. Ikon SVG dari `icon()` selalu `aria-hidden`; maknanya ada di teks atau `aria-label` induknya.
@@ -84,7 +84,8 @@ app/Views/
 ├── admin/
 │   ├── login.php · dashboard.php
 │   ├── participants/index.php · show.php · reset-result.php
-│   ├── sessions/index.php · show.php · timeline.php
+│   ├── sessions/index.php · show.php
+│   ├── data/index.php
 │   ├── feedback/index.php · export/index.php
 │   ├── content/index.php · level.php · node.php · items.php · passages.php · library.php · dialogues.php · verify.php · import.php
 │   ├── narration/index.php · upload.php · approve-all.php
@@ -144,7 +145,7 @@ Halaman masuk staf bergaya admin (§1.6): satu kartu `.auth-card` di tengah lata
 
 | Komponen | Isi dan aturan |
 |---|---|
-| `hud` | Bar atas. Kiri: tombol suara `#btn-sound` (`aria-pressed`), tombol beranda ke `/peta`, lalu `lantern`. Kanan: chip peserta `.user-chip` (avatar huruf awal, nama, `@username`) ke `/profil`, tombol keluar `/keluar`, `lang-switch`. Bagian peserta hanya dirender bila controller mengirim data HUD (`BaseGameController::hudData()`: `participant` dari `toSafeArray()`, `progress`, `lantern`); sebelum itu posisi lentera diisi merek teks `.hud-brand`, kecuali halaman awal yang mengirim `hideBrand`. Tautan yang meninggalkan layar diberi kelas `hud-leave` dan disembunyikan selama tantangan (`body.is-challenge`). |
+| `hud` | Pita atas panggung (0, 0, 1280 × 56 dp), tiga kolom. Kiri `.hud-left`: `lantern` + merek kecil `.hud-brand.is-small`. Tengah `.hud-center`: section `hudTitle`, atau nama wilayah dari `$level`. Kanan `.hud-right`: `lang-switch`, tombol suara `#btn-sound` (`aria-pressed`), tombol layar penuh `#btn-fullscreen` (`hidden` sampai `core/stage.js` memastikan Fullscreen API ada), tombol beranda ke `/peta`, chip peserta `.user-chip` (avatar huruf awal, nama, `@username`) ke `/profil`, dan tombol keluar `/keluar`. Lentera, beranda, chip, dan keluar hanya dirender bila controller mengirim data HUD (`BaseGameController::hudData()`: `participant` dari `toSafeArray()`, `progress`, `lantern`); sebelum itu kiri berisi merek teks `.hud-brand` ke `/`, kecuali halaman awal yang mengirim `hideBrand`. Tautan yang meninggalkan layar diberi kelas `hud-leave` dan disembunyikan selama tantangan (`body.is-challenge`). |
 | `lantern` | `<details class="lantern">` berisi nyala `.flame-{0..3}` (jumlah wilayah tuntas), "Serpihan Cahaya" `{shards}/{shards_total}`, bar isi, dan rincian `.lantern-detail`: titik `.shard.is-completed/is-open/is-locked` per tantangan, dikelompokkan per wilayah, dengan legenda. `shards_total` selalu dari jumlah tantangan aktif (`GameProgress::progressSummary()`), tidak pernah angka tetap. |
 | `lang-switch` | Form POST `/bahasa` dengan `redirect_to` = path saat ini (divalidasi `safe_internal_url()`); satu tombol per `Config\Gelita::$locales`, `aria-pressed` pada bahasa aktif. |
 | `rotate-gate` | Penghalang "putar perangkat" (`role="alertdialog"`). Tampil murni lewat CSS (lihat *Layar putar dan aplikasi terpasang*). |
@@ -362,7 +363,7 @@ Tiap wilayah berisi empat tantangan berurutan: 1 Susun Gambar (`puzzle`), 2 Isi 
 
 * `.hunt` (pembungkus) › bilah petunjuk `.hunt-clue` 1216 × 56: avatar bulat Mbah Kedu 48 dp (`.hunt-guide`, tetap ada), `.hunt-clue-body` dengan "Petunjuk x dari y" (`Game.clueOf`, `#clue-index`, `#clue-total`), teks petunjuk `#clue-text` (`aria-live`, petunjuk pertama dirender server) dan penanda kesempatan per petunjuk `#clue-tries`.
 * `#hunt-scene.hunt-scene` (16:9; tanpa gambar `.is-drawn`) berisi gambar adegan `img.scene-bg` dan `button.object` (`data-object` = token buram per pengerjaan, posisi `left`/`top`/`width` dalam persen, `aria-label` netral "Objek n"). **Benda pengecoh dirender sama persis dengan benda target**, tanpa kelas, atribut, label, atau urutan DOM yang membedakan.
-* `.hunt-side`: `Game.huntList` + `ol#hunt-list` › `li.hunt-target` (`.is-current` untuk petunjuk aktif).
+* `.hunt-side`: `Game.huntList` + `ol#hunt-list` › `li.hunt-target` (`.is-current` untuk petunjuk aktif); `engines/cari.js` mengganti isinya dengan tombol lompat `.hunt-jump` dan menandai petunjuk yang dilewati `.is-skipped` (✗).
 * Narasi petunjuk: bila ada petunjuk dengan rekaman yang disetujui (`clues[i].audio`), `<template id="tpl-clue-voice">` berisi tombol ▶/⏸ (`Game.clueListen`, `Game.audioPause`) yang dipasang `engines/cari.js` di samping teks petunjuk. Template inert: tanpa JavaScript atau tanpa rekaman, tampilannya sama dengan petunjuk teks saja.
 
 **Aturan tiga kesempatan di layar.** Nilai penanda selalu dari server (`max_tries` − `tries_used`, lalu `tries_left` tiap respons). Percobaan salah membuka modal per engine dengan sisa kesempatan; kesempatan habis membuka satu modal "Kesempatanmu sudah habis" dengan tombol Lanjut ke layar Selesai. Rinciannya di [06_JAVASCRIPT.md](06_JAVASCRIPT.md).
@@ -500,7 +501,7 @@ Dasbor SaaS tenang dan formal (Dok 3 §8), **tidak bertema GELITA**: token di `a
 | `admin/participants/show` | `/admin/peserta/{id}` | Aksi: Unduh XLSX / CSV-ZIP dan Cetak PDF (admin: centang Anonim), Reset sandi. Tab: **Profil** (data diri, pendaftaran & akun, literasi keamanan digital, `.danger-zone` reset sandi ketik `RESET` + modal konfirmasi), **Sesi & perangkat**, **Progres** (12 tantangan: status, variasi, pengerjaan, Berhasil pada Percobaan Pertama x dari y, bintang, durasi), **Pengerjaan**, **Jawaban** (tombol **Riwayat** membuka percobaan per soal), **Navigasi**, **Bantuan** (data mentah satu siswa), **Kritik & saran**. Guru tidak melihat nama dan nama pengguna. |
 | `admin/participants/reset-result` | respons POST `/admin/peserta/{id}/reset-sandi` | Sandi sementara **satu kali** (`.temp-password`, mono besar, `user-select: all`), tombol Salin (`data-copy`), peringatan bahwa siswa wajib membuat sandi baru. Dikirim dengan `Cache-Control: no-store`; tidak lewat flash atau log. |
 | `admin/sessions/index` | `/admin/sesi` | Filter kode siswa, sekolah, penelitian, bahasa, tanggal; tabel kode sesi, kode siswa, sekolah, penelitian, bahasa, status, mulai, aktif terakhir, durasi, perangkat, tantangan selesai, bintang; CSV. |
-| `admin/sessions/show` | `/admin/sesi/{id}` | Ringkasan (`.detail-grid`), tabel pengerjaan di sesi ini, lalu **Linimasa event** `#linimasa`: filter jenis event, tabel urutan, waktu klien, waktu server, event (kode, label di `title`), layar/tantangan/soal, payload JSON; urut, halaman, CSV. |
+| `admin/sessions/show` | `/admin/sesi/{id}` (`/admin/sesi/{id}/event` dialihkan ke `#linimasa` halaman ini) | Ringkasan (`.detail-grid`), tabel pengerjaan di sesi ini, lalu **Linimasa event** `#linimasa`: filter jenis event, tabel urutan, waktu klien, waktu server, event (kode, label di `title`), layar/tantangan/soal, payload JSON; urut, halaman, CSV. |
 | `admin/data/index` | `/admin/data/{dimensi}` | **Data mentah:** tab Jawaban & ketepatan · Riwayat percobaan · Pengerjaan · Progres · Penyelesaian · Navigasi · Bantuan · Perangkat; filter kode siswa, sekolah, wilayah, tantangan, variasi, tanggal; tabel `RawDataService::page()` (nilai `enum` berlabel `ExportLabels::label()`, kode di `title`); CSV per tabel. |
 | `admin/feedback/index` | `/admin/masukan` | Filter sekolah dan tanggal; tabel kode siswa, sekolah, bintang (1–5), empat jawaban (dipotong, klik untuk lengkap), waktu; CSV. |
 | `admin/export/index` | `/admin/ekspor` | Formulir: filter sekolah/wilayah/tanggal (`bare`), isi nilai (bawaan/berlabel/berkode), anonim (guru: selalu), pilihan lembar di `<details>`; tombol **Buat XLSX** dan **Buat CSV-ZIP**. Tabel **Riwayat unduhan**: format, status (`data-export-id`, diperbarui `admin/export.js`), baris, ukuran, SHA-256, kedaluwarsa, Unduh. |
@@ -550,7 +551,6 @@ Delapan berkas di `public/assets/css/`, dimuat berurutan lewat `asset_url_versio
 | `noscript.css` | `.curtain { display: none !important; }` | game, hanya di dalam `<noscript>` |
 | `admin.css` | **berkas mandiri panel admin dan halaman masuk staf** (Dok 3 §8): font, token §8.1, dasar, sidebar/topbar, kepala halaman, tab, tombol, formulir, lencana, peringatan, bilah filter + chip, KPI, tabel data, pagination, modal, toast, halaman khusus (konten, media, studi, …), responsif (ikon < 1280 px, laci < 768 px) | admin, auth |
 
-`layout.css` sudah tidak ada: bagian game pindah ke `stage.css`, bagian admin ke `admin.css`.
 
 ### Token (`tokens.css`)
 
@@ -562,7 +562,7 @@ Delapan berkas di `public/assets/css/`, dimuat berurutan lewat `asset_url_versio
 | Ruang & bentuk | `--gap-1` … `--gap-7` (4, 8, 12, 16, 24, 32, 48 dp), `--gutter` 32 dp, `--radius` 12, `--radius-lg` 20, `--radius-pill`, `--shadow-1`, `--shadow-2`, `--shadow-glow`, `--line-w` |
 | Sentuh & layout | `--tap` 48 dp, `--hud-h` 56 dp, `--nav-h` 64 dp; panggung `--app-w`/`--app-h`, `--stage-w`/`--stage-h`, `--letterbox` (`:root.game-stage`) |
 
-Token lama `--step-*`, `--sp-*`, `--content-max`, dan `--arena-max` tidak dipakai CSS game lagi. Panel admin memakai token sendiri di `admin.css` (§8.1) dan tidak memuat `tokens.css`, `base.css`, atau `components.css`.
+Panel admin memakai token sendiri di `admin.css` (§8.1: `--bg`, `--surface`, `--line`, `--text`, `--accent`, `--side-*`, `--radius` 8 px, `--control-h` 40 px, `--row-h` 44 px, jarak `--sp-1` … `--sp-7` dalam px) dan tidak memuat `tokens.css`, `base.css`, atau `components.css`.
 
 Font dimuat lokal dari `public/assets/fonts/` (berkas `.woff2` + lisensi OFL) dengan `font-display: swap`, bukan dari CDN: koneksi sekolah tidak dapat diandalkan, dan font pihak ketiga mengirim alamat IP anak ke luar.
 
@@ -570,7 +570,7 @@ Font dimuat lokal dari `public/assets/fonts/` (berkas `.woff2` + lisensi OFL) de
 
 * Kelas berbahasa Inggris, dipisah tanda hubung (`.challenge-head`, `.word-bank`); state memakai awalan `is-`/`has-` (`.is-active`, `.is-locked`, `.is-current`, `.has-error`).
 * Warna, ukuran teks, dan jarak lewat token; berkas lain tidak menulis nilai warna identitas baru.
-* `!important` hanya pada utilitas `[hidden]` dan `noscript.css`.
+* `!important` hanya pada utilitas `[hidden]` (`base.css`, `admin.css`), `noscript.css`, dan aturan gerak dikurangi global `admin.css`.
 * Tata letak di dalam panel dengan Grid dan Flexbox; letak panel di panggung hanya lewat `stage.css`. Posisi pin peta dan benda Cari Objek ditulis inline dalam persen; variabel per elemen (`--grid`, `--i`, `--map-ratio`, `--steps`) juga lewat atribut `style`.
 * CSS game: satuan `rem` (1rem = 16 dp); `px` hanya untuk garis 1px; tanpa `vw`/`vh` dan tanpa `@media` lebar/tinggi (`tests/unit/StageCssTest.php`).
 
@@ -618,7 +618,7 @@ Semua layar game digambar di **satu panggung tetap 1280 × 720 dp** (dp = *desig
 | Engine | Panel (x, y, w, h dp) |
 |---|---|
 | Susun Gambar | instruksi + 3 tips 32, 128, 332 × 512; papan 388, 136, 504 × 504; bilah aksi 388, 648, 504 × 48; keterangan gambar 916, 128, 332 × 512 |
-| Isi Rumpang | instruksi 96, 128, 1088 × 40; bacaan 96, 176, 1088 × 384 (gulir, `--fs-reading`); bank kata 96, 568, 1088 × 72; bilah aksi 96, 648, 1088 × 56 |
+| Isi Rumpang | instruksi 96, 128, 1088 × 40; bacaan 96, 176, 1088 × 384 (gulir, `--fs-reading`; dengan gambar `.has-media`: gambar 96, 176, 304 × 384 dan bacaan 416, 176, 768 × 384); bank kata 96, 568, 1088 × 72; bilah aksi 96, 648, 1088 × 56 |
 | Benar atau Salah | bacaan 32, 128, 596 × 576 (gulir); instruksi 652, 128, 596 × 64; pernyataan 652, 200, 596 × 440 (gulir; gambar 192 × 144); bilah aksi 652, 648, 596 × 56 |
 | Cari Objek | bilah petunjuk 32, 128, 1216 × 56 (avatar Mbah Kedu 48); daftar benda 32, 192, 164 × 486; adegan 208, 192, 864 × 486; instruksi 1084, 192, 164 × 486 |
 
