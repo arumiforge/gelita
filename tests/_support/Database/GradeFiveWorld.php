@@ -66,7 +66,7 @@ trait GradeFiveWorld
         // Ketiga wilayah terbuka (unlock_mode free), agar setiap tantangan dapat langsung dibuka
         $db->table('research_studies')->update(['unlock_mode' => 'free']);
 
-        foreach (['contentRepository', 'gameContext', 'challengeService', 'eventService', 'scoringService', 'sessionService'] as $name) {
+        foreach (['contentRepository', 'gameContext', 'challengeService', 'eventService', 'scoringService', 'sessionService', 'assetPackages'] as $name) {
             Services::resetSingle($name);
         }
 

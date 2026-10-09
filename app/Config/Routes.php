@@ -63,6 +63,8 @@ $routes->group('api', [
     // Tanpa login — dibatasi per IP di controller (20 dan 60 request/menit)
     $routes->get('auth/username-available', 'AuthApiController::usernameAvailable');
     $routes->get('schools/lookup', 'SchoolApiController::lookup');
+    // Active asset package (docs/rencana-paket-aset.md §5.3); checked before Mulai, so no login
+    $routes->get('paket/aktif', 'PackageApiController::active');
 
     $routes->group('', ['filter' => 'apiSession'], static function ($routes): void {
         $routes->get('session', 'SessionApiController::show');

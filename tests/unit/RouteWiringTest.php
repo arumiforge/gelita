@@ -15,7 +15,7 @@ final class RouteWiringTest extends CIUnitTestCase
     private const CONTROLLER_COUNT = [
         'Game'  => 11,  // 10 controller + BaseGameController
         'Admin' => 16,  // 15 controller + BaseAdminController (RawDataController baru, Dok 3 §8.3)
-        'Api'   => 10,  // 9 controller + BaseApiController
+        'Api'   => 11,  // 10 controller + BaseApiController (PackageApiController: asset package Stage 1)
     ];
 
     /** Route yang wajib ada beserta handlernya. */
@@ -38,6 +38,7 @@ final class RouteWiringTest extends CIUnitTestCase
             'api/session'                 => 'Api\SessionApiController::show',
             'api/auth/username-available' => 'Api\AuthApiController::usernameAvailable',
             'api/schools/lookup'          => 'Api\SchoolApiController::lookup',
+            'api/paket/aktif'             => 'Api\PackageApiController::active',
             'admin/login'                 => 'Admin\AuthController::loginForm',
             'admin/dashboard'             => 'Admin\DashboardController::index',
             'admin/akun/sandi'            => 'Admin\AccountController::passwordForm',

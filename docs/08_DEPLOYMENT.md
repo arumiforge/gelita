@@ -427,7 +427,7 @@ Aturan di `gelita-https.conf`:
 | TLS | `listen 443 ssl http2`, `ssl_protocols TLSv1.2 TLSv1.3`, sertifikat dari `/etc/letsencrypt/live/{domain}/` | Nginx ≥ 1.25.1: tulis `listen 443 ssl;` + `http2 on;` |
 | Header keamanan | `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Strict-Transport-Security`, semuanya `always`, **hanya** di blok `server` | `add_header` di dalam `location` menghapus semua header warisan `server` |
 | Header ganda | `fastcgi_hide_header` untuk `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy` | filter `secureheaders` CodeIgniter mengirim header yang sama; setiap header muncul tepat sekali |
-| Cache aset | `map` `$gelita_is_asset` + `$arg_v` → `$gelita_cache`: URL aset ber-`?v=` mendapat `public, max-age=31536000, immutable`, aset lain `no-cache` | lihat [Cache-busting](#cache-busting) |
+| Cache aset | `map` `$gelita_is_asset` + `$arg_v` → `$gelita_cache`: URL aset ber-`?v=` mendapat `public, max-age=31536000, immutable`, aset lain `no-cache`; asset package URLs (`/assets/p/`, `/assets/k/`, `/paket/pkt-*.json`) are immutable without `?v=` | lihat [Cache-busting](#cache-busting) dan [Asset package](#asset-package-download-once-mode) |
 | PHP | hanya `location = /index.php` yang diteruskan ke `unix:/run/php/php8.3-fpm.sock` (`fastcgi_read_timeout 300`); `.php` lain → 404 | tidak ada skrip lain yang dapat dieksekusi |
 | Berkas tersembunyi | `location ~ /\.` → 404, juga di dalam `/assets/` | `.env`, `.git`, `.htaccess`, `.gitkeep` tidak pernah dilayani |
 | Mode pemeliharaan | `if (-f /var/www/gelita/writable/pemeliharaan.flag) { return 503; }` + halaman 503 dwibahasa | lihat [Mode pemeliharaan](#mode-pemeliharaan) |
@@ -903,6 +903,9 @@ Bila kode sudah terlanjur di-reset, pasang lagi commit rilis yang gagal (`git re
 | Rekaman narasi (folder) | `public/assets/audio/narasi/{id,en}/{kode}.mp3` | git, lalu `gelita:narration:import` | revalidasi |
 | Musik & efek suara | `public/assets/audio/{music,sfx}/{nama}.mp3` | git (dibaca langsung `core/audio.js`, bukan `media_assets`) | revalidasi |
 | Unggahan dan berkas bangkitan | `public/assets/uploads/` (`{asset_key}.{ext}`, `mockup/`, `library.thumb.*`) | panel `/admin/media`, editor konten, unggah narasi, gambar contoh, poster video — **hanya di server** | revalidasi |
+| Asset package: media | `public/assets/p/{sha256[0:16]}.{ext}` | `gelita:paket:bangun` — **only on the server**, back it up with `uploads/` | immutable without `?v=` |
+| Asset package: code | `public/assets/k/{code_version}/{css,js,vendor,fonts}/…`, `offline.html` | `gelita:paket:bangun` — only on the server | immutable without `?v=` |
+| Asset package: manifests | `public/paket/pkt-*.json`; URL maps and build state in `writable/paket/` | `gelita:paket:bangun` — only on the server | manifest immutable; `writable/` not public |
 | Berkas unduhan data | `writable/exports/` | aplikasi | tidak publik; dilayani controller berotorisasi |
 | Log / cache | `writable/logs/`, `writable/cache/` | aplikasi | tidak publik |
 
@@ -918,6 +921,44 @@ Tidak semua URL ber-`?v=`:
 - **Gambar dan audio** dari `media_assets` dirender `base_url($path)` tanpa `?v`. Nama berkas unggahan tetap `{asset_key}.{ext}` walau isinya diganti.
 
 Karena itu Nginx memberi `immutable` **hanya** pada URL ber-`?v=`, dan `no-cache` (revalidasi dengan `Last-Modified`/`ETag`, dijawab 304 bila tidak berubah) pada aset lain. Modul lama dan gambar lama tidak pernah tertinggal di browser setelah pembaruan.
+
+### Asset package (download-once mode)
+
+*(New section, English; plan: `docs/rencana-paket-aset.md`.)* Package mode is off until a release names a package. Stage 1 adds the server side:
+
+```bash
+php spark gelita:paket:bangun                  # build pkt-YYYY-MM-DD-NN from all active media, approved narration, and game code
+php spark gelita:paket:bangun --tanpa-pustaka  # same, without copying the library's Wikimedia Commons images
+php spark gelita:paket:periksa [kode]          # re-hash every package file against its manifest (exit 1 on any problem)
+php spark gelita:paket:bersihkan [--coba]      # delete package files no package refers to; --hapus kode removes a package not used by any release
+```
+
+- Building changes nothing for students. Package mode switches on when the active release's **Versi gambar & suara** (`game_releases.asset_version`) is the package code (until the admin switch of Stage 6 exists: create a release with that value and activate it). Any other value, such as the default `1`, means package mode is off.
+- Emergency kill switch: `gelita.paket.aktif = false` in `.env` forces normal URLs on every device, whatever the release says. `GET /api/paket/aktif` then answers `package_code: null` with `disabled_by_server: true`.
+- The build copies the library's Commons images to `public/assets/uploads/library.commons.*` (owner decision P4a). The server needs outbound HTTPS to `commons.wikimedia.org` and `upload.wikimedia.org`; without it the build only warns and those images stay external links.
+- `public/assets/p/`, `public/assets/k/`, `public/paket/`, and `writable/paket/` belong in the backup next to `public/assets/uploads/`. `backup.sh`/`backup.ps1` do not archive them yet (open follow-up); until then, after restoring a server run `php spark gelita:paket:bangun` again and point the release to the new code. A package referenced by a release must stay on the server even after newer packages exist (devices may still request its files).
+- Nginx: the `$gelita_is_asset` map gives `/assets/p/`, `/assets/k/`, and `/paket/pkt-*.json` the value `2`, which `$gelita_cache` turns into `public, max-age=31536000, immutable` without `?v=`. These URLs never change content: media are named by their sha256, code lives in a per-version folder (`{app_version}-{hash of the code files}`), and a package code is never reused (deleted codes leave a marker in `writable/paket/`).
+
+```nginx
+map $uri $gelita_is_asset {
+    default 0;
+    ~^/(?:assets/[pk]/|paket/pkt-[^/]+\.json$) 2;
+    ~*\.(?:css|js|json|jpe?g|png|gif|webp|svg|ico|woff2?|ttf|mp3|ogg|wav|m4a|mp4|webm)$ 1;
+}
+map "$gelita_is_asset:$arg_v" $gelita_cache {
+    default "";
+    "1:"    "no-cache";
+    ~^1:.   "public, max-age=31536000, immutable";
+    ~^2:    "public, max-age=31536000, immutable";
+}
+```
+
+Check after deploying (with a built package):
+
+```bash
+curl -sI "$U/assets/p/$(ls /var/www/gelita/public/assets/p | head -1)" | grep -i cache-control   # public, max-age=31536000, immutable
+curl -s "$U/api/paket/aktif"                                                                     # {"success":true,"data":{"package_code":…}}
+```
 
 ### Ukuran aset
 

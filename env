@@ -108,3 +108,12 @@ gelita.ipSalt = 'ganti-dengan-string-acak-panjang'
 gelita.exportRetentionDays = 7
 gelita.maxEventsPerBatch = 50
 gelita.assetVersion = '1'
+
+#--------------------------------------------------------------------
+# ASSET PACKAGE (docs/rencana-paket-aset.md §6.3)
+# Server-level kill switch for package mode. Normally package mode follows
+# the active release (its "Versi gambar & suara" names a package built with
+# `php spark gelita:paket:bangun`). Set to false to force normal asset URLs
+# on every device, e.g. while a service worker problem is being fixed.
+#--------------------------------------------------------------------
+# gelita.paket.aktif = false
