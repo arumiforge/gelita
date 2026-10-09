@@ -429,7 +429,7 @@ class SystemResetService
         ]);
     }
 
-    /** Kode siswa berikutnya, sama dengan ParticipantModel::generateCode(). */
+    /** Next student code; right after the TRUNCATE it matches ParticipantModel::assignCode() for the next id. */
     public function nextParticipantCode(): string
     {
         $max = $this->db->table('participants')->selectMax('id', 'max_id')->get()->getRowArray();

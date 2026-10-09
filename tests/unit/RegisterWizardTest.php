@@ -1,6 +1,8 @@
 <?php
 
 use App\Controllers\Game\RegisterController;
+use App\Models\ParticipantModel;
+use CodeIgniter\Config\Factories;
 use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\HTTP\Method;
 use CodeIgniter\Test\CIUnitTestCase;
@@ -60,6 +62,7 @@ final class RegisterWizardTest extends CIUnitTestCase
     protected function tearDown(): void
     {
         $_SESSION = [];
+        Factories::reset('models');
         $this->dropResetTables();
         parent::tearDown();
     }
@@ -180,6 +183,37 @@ final class RegisterWizardTest extends CIUnitTestCase
         $events = array_column($this->conn->table('game_event_logs')->select('event_type, payload_json')->get()->getResultArray(), 'payload_json', 'event_type');
         $this->assertArrayHasKey('session_started', $events);
         $this->assertStringNotContainsString(self::STRONG, implode(' ', $events));
+    }
+
+    /**
+     * Two students finishing step 3 together: the other registration commits
+     * between this one's start and its INSERT. Under the old MAX(id) + 1 code
+     * both picked the same code and this sign-up failed with HTTP 500.
+     */
+    public function testRegistrationCommittedAlongsideGetsItsOwnCode(): void
+    {
+        Factories::injectMock('models', ParticipantModel::class, new class () extends ParticipantModel {
+            public function insert($row = null, bool $returnID = true)
+            {
+                $rival = (int) $this->db->table('participants')->selectMax('id', 'max_id')->get()->getRow('max_id') + 1;
+                $this->db->table('participants')->insert([
+                    'participant_code' => participant_code($rival),
+                    'username'         => 'siswa_lain',
+                    'password_hash'    => 'x',
+                ]);
+
+                return parent::insert($row, $returnID);
+            }
+        });
+
+        $result = service('sessionService')->registerAndStart([
+            'username' => 'sekar_ayu', 'password' => self::STRONG, 'assent' => true, 'school_npsn' => '20307000',
+            'country_code' => 'ID', 'province_code' => '33', 'district_code' => '33.08',
+        ]);
+
+        $codes = array_column($this->conn->table('participants')->orderBy('id')->get()->getResultArray(), 'participant_code', 'username');
+        $this->assertSame(['siswa_lain' => 'GLT-000001', 'sekar_ayu' => 'GLT-000002'], $codes);
+        $this->assertSame('GLT-000002', $result['participant']->participant_code);
     }
 
     public function testStepThreeRevalidatesTheSavedSteps(): void

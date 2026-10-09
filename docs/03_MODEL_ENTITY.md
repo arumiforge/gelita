@@ -169,7 +169,8 @@ controller pendaftaran; Model hanya menjaga bentuk data.
 
 | Method | Perilaku |
 |---|---|
-| `generateCode()` | kode berurutan `GLT-000001` (helper `participant_code()`), dari `MAX(id)` + 1; bila sudah terpakai dicoba sampai 5 kali, lalu exception. Kode selalu dibuat server |
+| `placeholderCode()` | kode sementara acak (`TMP-…`) untuk baris baru; diganti `assignCode()` dalam transaksi yang sama |
+| `assignCode($id)` | menyetel kode `GLT-000001` (helper `participant_code()`) dari id baris itu sendiri. Karena id AUTO_INCREMENT tidak pernah dibagi dua, dua pendaftaran yang selesai bersamaan tidak mendapat kode yang sama. Kode selalu dibuat server |
 | `findByCode($code)` | cari menurut `participant_code` |
 | `findByUsername($username)` | cari menurut nama pengguna yang dinormalkan |
 | `normalizeUsername($username)` | `mb_strtolower(trim())` |

@@ -71,7 +71,7 @@ class SessionService
             $metrics = (array) ($input['registration_metrics'] ?? []);
 
             $participantId = $participants->insert([
-                'participant_code'         => $participants->generateCode(),
+                'participant_code'         => $participants->placeholderCode(),
                 'username'                 => $username,
                 'password_hash'            => password_hash($password, PASSWORD_DEFAULT),
                 'must_change_password'     => 0,
@@ -100,6 +100,7 @@ class SessionService
             }
 
             $participantId = (int) $participantId;
+            $participants->assignCode($participantId);
 
             $device  = (array) ($input['device'] ?? []);
             $session = $this->insertSession(

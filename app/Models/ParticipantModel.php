@@ -36,25 +36,29 @@ class ParticipantModel extends Model
     ];
 
     /**
-     * Kode peserta berurutan `GLT-000001`. Dibuat server, tidak pernah dari input.
-     * Bentrok balapan → ulangi hingga 5 kali.
+     * Unique stand-in for `participant_code` on a new row, replaced by
+     * assignCode() in the same transaction. Never shown to anyone.
      */
-    public function generateCode(): string
+    public function placeholderCode(): string
     {
-        for ($attempt = 1; $attempt <= 5; $attempt++) {
-            $max = $this->db->table($this->table)->selectMax('id', 'max_id')->get()->getRowArray();
-            $code = participant_code(((int) ($max['max_id'] ?? 0)) + $attempt);
+        return 'TMP-' . bin2hex(random_bytes(16));
+    }
 
-            $taken = $this->db->table($this->table)
-                ->where('participant_code', $code)
-                ->countAllResults();
+    /**
+     * Sets the research code `GLT-000001` from the row's own id and returns it.
+     * The code is always made by the server, never taken from input.
+     *
+     * Deriving it from the AUTO_INCREMENT id (instead of MAX(id) + 1 read
+     * before the insert) keeps two registrations that commit at the same
+     * moment from picking the same code.
+     */
+    public function assignCode(int $participantId): string
+    {
+        $code = participant_code($participantId);
 
-            if ($taken === 0) {
-                return $code;
-            }
-        }
+        $this->builder()->where('id', $participantId)->update(['participant_code' => $code]);
 
-        throw new \RuntimeException('Gagal membuat participant_code yang unik.');
+        return $code;
     }
 
     public function findByCode(string $code): ?Participant
