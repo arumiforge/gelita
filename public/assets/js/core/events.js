@@ -18,6 +18,17 @@
  * perpindahan ±1,8 detik. Karena itu batch itu diingat sampai server
  * menjawab, dan ikut dikirim lewat sendBeacon saat halaman ditutup;
  * bila ternyata sudah sampai, server membalasnya `duplicate`.
+ *
+ * Research data integrity (rencana-paket-aset §7.3):
+ *  - `sequence_no` continues across pages of one session (Storage.nextSequence,
+ *    never below CONFIG.sequenceFloor);
+ *  - every request carries `client_sent_at`, from which the server stores
+ *    `clock_offset_ms` per event;
+ *  - a forced flush (tab hidden or closed) beacons the events AND keeps a copy
+ *    in the offline queue, because a beacon can be aborted or lost silently;
+ *  - events the offline queue cannot keep are counted, a warning toast shows,
+ *    and the count goes to the server as `dropped` + `dropped_id` with the
+ *    next fetch batch (never with a beacon, which gets no answer).
  */
 import { CONFIG, t } from './config.js';
 import { apiRequest, ApiError } from './api.js';
@@ -28,8 +39,8 @@ const FLUSH_MS = 3000;
 const FLUSH_AT = 20;
 const BATCH_MAX = 50;
 
-let sequence = 0;
 let offlineNoticeShown = false;
+let queueFullNoticeShown = false;
 
 /** UUID v4; crypto.randomUUID hanya ada di konteks aman (HTTPS/localhost). */
 export function uuid() {
@@ -70,7 +81,14 @@ class EventQueue {
       // Batch yang masih di jalan ikut dikirim: fetch-nya batal bila halaman ditutup
       const pending = this.inflight.concat(this.queue);
       this.queue = [];
-      while (pending.length) this.beacon(pending.splice(0, BATCH_MAX));
+      if (!pending.length) return;
+      // A beacon can be aborted by the navigation or lost offline without any
+      // error, so a copy also waits in the offline queue; the next page
+      // re-sends it and the server answers `duplicate` for what arrived (§7.3).
+      // Offline no beacon is tried at all.
+      const online = navigator.onLine !== false;
+      this.store(pending, online);
+      if (online) while (pending.length) this.beacon(pending.splice(0, BATCH_MAX));
       return;
     }
 
@@ -83,9 +101,13 @@ class EventQueue {
   async drain() {
     while (this.queue.length) {
       const batch = this.queue.splice(0, BATCH_MAX);
+      const dropped = Storage.droppedReport(CONFIG.sessionTag, this.channel);
+      const body = { events: batch, client_sent_at: now() };
+      if (dropped) Object.assign(body, { dropped: dropped.count, dropped_id: dropped.id });
       this.inflight = batch;
       try {
-        await apiRequest(this.path, { method: 'POST', body: { events: batch } });
+        await apiRequest(this.path, { method: 'POST', body });
+        if (dropped) Storage.clearDropped(CONFIG.sessionTag, this.channel, dropped);
       } catch (error) {
         this.keepForLater(batch, error);
         return;
@@ -100,15 +122,24 @@ class EventQueue {
     const recoverable = !(error instanceof ApiError) || error.isNetwork || error.code === 'RATE_LIMITED';
     if (!recoverable) return;
 
-    Storage.queueEvents(batch, CONFIG.sessionTag, this.channel);
+    this.store(batch);
     if (!offlineNoticeShown) {
       offlineNoticeShown = true;
       toast(t('savedOffline'), 'warn');
     }
   }
 
+  /** Offline queue; a loss is never silent (counted by Storage, toast here). */
+  store(batch, beaconed = false) {
+    const lost = Storage.queueEvents(batch, CONFIG.sessionTag, this.channel, beaconed);
+    if (lost > 0 && !queueFullNoticeShown) {
+      queueFullNoticeShown = true;
+      toast(t('eventQueueFull'), 'warn');
+    }
+  }
+
   beacon(batch) {
-    const body = JSON.stringify({ events: batch, [CONFIG.csrfName]: CONFIG.csrfHash });
+    const body = JSON.stringify({ events: batch, client_sent_at: now(), [CONFIG.csrfName]: CONFIG.csrfHash });
     const target = `${CONFIG.apiBase}${this.path}`;
 
     try {
@@ -123,7 +154,7 @@ class EventQueue {
       credentials: 'same-origin',
       body,
       keepalive: true,
-    }).catch(() => Storage.queueEvents(batch, CONFIG.sessionTag, this.channel));
+    }).catch(() => {});   // the copy already waits in the offline queue
   }
 
   /** Kirim ulang antrean offline milik sesi ini. */
@@ -146,7 +177,7 @@ export function emit(type, { levelId, nodeId, attemptId, itemId, payload } = {})
     client_event_id: uuid(),
     event_type: type,
     occurred_at: now(),
-    sequence_no: ++sequence,
+    sequence_no: Storage.nextSequence(CONFIG.sessionTag, CONFIG.sequenceFloor),
     level_id: levelId ?? null,
     node_id: nodeId ?? null,
     attempt_id: attemptId ?? null,

@@ -28,6 +28,7 @@ return [
     'reloadPage'      => 'Muat ulang',
     'loginAgain'      => 'Masuk lagi',
     'savedOffline'    => 'Koneksi terputus — langkahmu tersimpan sementara dan dikirim saat koneksi kembali.',
+    'eventQueueFull'  => 'Memori catatan di perangkat ini penuh, jadi sebagian catatan permainan tidak tersimpan. Sambungkan ke internet, ya, lalu beri tahu gurumu.',
 
     // HUD & audio
     'soundOn'      => 'Suara menyala',

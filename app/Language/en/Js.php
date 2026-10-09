@@ -27,6 +27,7 @@ return [
     'reloadPage'      => 'Reload',
     'loginAgain'      => 'Log in again',
     'savedOffline'    => 'Connection lost — your steps are saved for now and will be sent when the connection is back.',
+    'eventQueueFull'  => 'This device has no room left for game records, so some were not saved. Please connect to the internet and tell your teacher.',
 
     // HUD & audio
     'soundOn'      => 'Sound on',

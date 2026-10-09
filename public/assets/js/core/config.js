@@ -27,6 +27,8 @@ export const CONFIG = Object.freeze({
   apiBase: (parsed.apiBase || `${base}api`).replace(/\/+$/, ''),
   baseUrl: base,
   sessionTag: parsed.sessionTag || null,
+  // lowest sequence_no for this page's client events (core/events.js)
+  sequenceFloor: Number(parsed.sequenceFloor) || 0,
   text: parsed.text && typeof parsed.text === 'object' ? parsed.text : {},
 });
 

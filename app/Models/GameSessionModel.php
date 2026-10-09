@@ -16,7 +16,7 @@ class GameSessionModel extends Model
         'locale', 'status', 'started_at', 'last_active_at', 'ended_at', 'duration_ms',
         'last_level_id', 'last_challenge_node_id',
         'device_type', 'os_name', 'browser_name', 'screen_size', 'is_touch',
-        'app_client_version', 'ip_hash',
+        'app_client_version', 'package_code', 'package_mode', 'ip_hash',
     ];
     protected $validationRules = [
         'session_code'   => 'required|max_length[64]|is_unique[game_sessions.session_code,id,{id}]',
@@ -25,6 +25,7 @@ class GameSessionModel extends Model
         'release_id'     => 'required|is_natural_no_zero',
         'locale'         => 'required|valid_locale',
         'status'         => 'permit_empty|in_list[active,paused,completed,abandoned]',
+        'package_mode'   => 'permit_empty|in_list[lengkap,daring,nonaktif]',
     ];
 
     public function findByCode(string $sessionCode): ?GameSession

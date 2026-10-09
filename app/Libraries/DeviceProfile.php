@@ -28,6 +28,9 @@ final class DeviceProfile
     /** Batas ukuran `device_json` dari formulir */
     public const CLIENT_JSON_MAX = 4096;
 
+    /** Stored `game_sessions.package_mode` values (rencana-paket-aset §8.7). */
+    public const PACKAGE_MODES = ['lengkap', 'daring', 'nonaktif'];
+
     /** Panjang maksimum kolom teks device_logs */
     private const LENGTHS = [
         'user_agent'      => 512,
@@ -128,6 +131,7 @@ final class DeviceProfile
         ];
 
         $row += self::clientSignals($client);
+        $row += self::packageSignals($client);
 
         // Koreksi iPad (iPadOS 13+ Safari ber-UA Macintosh)
         $row['corrected'] = null;
@@ -192,6 +196,28 @@ final class DeviceProfile
             'browser_name' => $profile['browser_name'] ?? null,
             'screen_size'  => $w !== null && $h !== null ? $w . 'x' . $h : null,
             'is_touch'     => isset($profile['touch_points']) ? ((int) $profile['touch_points'] > 0 ? 1 : 0) : null,
+        ];
+    }
+
+    /**
+     * Asset package the device runs (rencana-paket-aset §7.1, §8.7):
+     * `package_code` (null when the device has no package) and
+     * `package_mode` (`lengkap` | `daring` | `nonaktif`). Missing or invalid
+     * values give `package_code = null` and `package_mode = null`;
+     * SessionService then falls back to its default mode. These keys are not
+     * device_logs columns, so DeviceLogModel::record() drops them.
+     *
+     * @param array<string, mixed> $client
+     *
+     * @return array{package_code: ?string, package_mode: ?string}
+     */
+    public static function packageSignals(array $client): array
+    {
+        $mode = $client['package_mode'] ?? null;
+
+        return [
+            'package_code' => self::word($client['package_code'] ?? null, '/^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$/'),
+            'package_mode' => is_string($mode) && in_array($mode, self::PACKAGE_MODES, true) ? $mode : null,
         ];
     }
 

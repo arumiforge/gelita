@@ -37,9 +37,13 @@ class AudioApiController extends BaseApiController
 
         $session   = $this->gameSession();
         $service   = service('eventService');
+        $sentAt    = is_string($body['client_sent_at'] ?? null) ? $body['client_sent_at'] : null;
         $accepted  = 0;
         $duplicate = 0;
         $rejected  = [];
+
+        // Events the client audio queue had to discard (rencana-paket-aset §7.3)
+        $service->recordDropped($session, $body, 'audio');
 
         foreach (array_values($events) as $index => $event) {
             if (! is_array($event)) {
@@ -58,7 +62,7 @@ class AudioApiController extends BaseApiController
             }
 
             try {
-                if ($service->recordAudio($session, $event)) {
+                if ($service->recordAudio($session, $event, $sentAt)) {
                     $accepted++;
                 } else {
                     $duplicate++;

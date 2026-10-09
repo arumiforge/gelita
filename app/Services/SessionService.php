@@ -23,6 +23,14 @@ use App\Models\SessionProgressModel;
 class SessionService
 {
     /**
+     * `package_mode` when the client did not report one (no JavaScript, or a
+     * form without `device_json`). Until the package service worker
+     * (asset package Stage 2) exists no device holds a package, so `nonaktif`
+     * is true; Stage 2/6 should revisit this once package mode can be on.
+     */
+    public const DEFAULT_PACKAGE_MODE = 'nonaktif';
+
+    /**
      * Mendaftarkan siswa + akun (langkah 3 pendaftaran), mencatat persetujuan
      * siswa di `participants.assented_at`, lalu membuat sesi pertama dan baris
      * `device_logs` (`via = register`).
@@ -106,7 +114,7 @@ class SessionService
             $session = $this->insertSession(
                 $participantId,
                 (int) $study['id'],
-                (int) $release['id'],
+                $release,
                 $locale,
                 $device,
             );
@@ -202,6 +210,7 @@ class SessionService
             $session = $sessions->find($existing->id);
             service('eventService')->record($session, 'session_resumed', ['via' => 'login']);
             model(DeviceLogModel::class)->record($session->id, $participant->id, 'resume', $device);
+            $session = $this->trackPackageOnResume($session, $device);
         } else {
             $session = $this->startNewSession($participant->id, $locale, $device, 'login');
             model(DeviceLogModel::class)->record($session->id, $participant->id, 'login', $device);
@@ -317,7 +326,7 @@ class SessionService
             $session = $this->insertSession(
                 $participantId,
                 (int) $study['id'],
-                (int) $release['id'],
+                $release,
                 $locale,
                 $device,
             );
@@ -462,25 +471,89 @@ class SessionService
     }
 
     /**
-     * @param array<string, mixed> $device hasil DeviceProfile::capture(); kolom ringkas
-     *                                     game_sessions diisi dari sini
+     * Package columns of a new session (rencana-paket-aset §7.1):
+     * `app_client_version` = `{app_version}+{package_code}` (just
+     * `{app_version}` when the device has no package), `package_code`, and
+     * `package_mode` (DEFAULT_PACKAGE_MODE when the client did not say).
+     *
+     * @param array<string, mixed> $release game_releases row
+     * @param array<string, mixed> $device  DeviceProfile::capture()
+     *
+     * @return array{app_client_version: ?string, package_code: ?string, package_mode: string}
+     */
+    public static function packageColumns(array $release, array $device): array
+    {
+        $signals    = DeviceProfile::packageSignals($device);
+        $appVersion = trim((string) ($release['app_version'] ?? ''));
+        $code       = $signals['package_code'];
+        $version    = $appVersion === '' ? $code : ($code === null ? $appVersion : $appVersion . '+' . $code);
+
+        return [
+            'app_client_version' => $version === null ? null : mb_substr($version, 0, 100),
+            'package_code'       => $code,
+            'package_mode'       => $signals['package_mode'] ?? self::DEFAULT_PACKAGE_MODE,
+        ];
+    }
+
+    /**
+     * A resumed session keeps the package it started with (S8). Sessions from
+     * before Stage 5 get their columns filled; a device that reports another
+     * package or mode is logged as `package_changed` (reason `resume`).
+     *
+     * @param array<string, mixed> $device DeviceProfile::capture()
+     */
+    private function trackPackageOnResume(GameSession $session, array $device): GameSession
+    {
+        $signals = DeviceProfile::packageSignals($device);
+
+        if ($signals['package_mode'] === null) {
+            return $session;   // the client said nothing (no JavaScript, no device_json)
+        }
+
+        $sessions = model(GameSessionModel::class);
+
+        if ($session->package_mode === null) {
+            $release = model(GameReleaseModel::class)->find($session->release_id);
+            $sessions->update($session->id, self::packageColumns(is_array($release) ? $release : [], $device));
+
+            return $sessions->find($session->id);
+        }
+
+        if ($signals['package_code'] !== $session->package_code || $signals['package_mode'] !== $session->package_mode) {
+            service('eventService')->record($session, 'package_changed', [
+                'from'      => $session->package_code,
+                'to'        => $signals['package_code'],
+                'reason'    => 'resume',
+                'from_mode' => $session->package_mode,
+                'to_mode'   => $signals['package_mode'],
+            ]);
+        }
+
+        return $session;
+    }
+
+    /**
+     * @param array<string, mixed> $release game_releases row (active release)
+     * @param array<string, mixed> $device  hasil DeviceProfile::capture(); kolom ringkas
+     *                                      game_sessions diisi dari sini
      */
     private function insertSession(
         int $participantId,
         int $studyId,
-        int $releaseId,
+        array $release,
         string $locale,
         array $device,
     ): GameSession {
         $sessions = model(GameSessionModel::class);
         $now      = date('Y-m-d H:i:s');
         $summary  = DeviceProfile::sessionSummary($device);
+        $package  = self::packageColumns($release, $device);
 
         $sessionId = $sessions->insert([
             'session_code'       => random_code(16),
             'participant_id'     => $participantId,
             'study_id'           => $studyId,
-            'release_id'         => $releaseId,
+            'release_id'         => (int) $release['id'],
             'locale'             => $locale,
             'status'             => 'active',
             'started_at'         => $now,
@@ -491,7 +564,9 @@ class SessionService
             'browser_name'       => $this->nullIfBlank($summary['browser_name']),
             'screen_size'        => $this->nullIfBlank($summary['screen_size']),
             'is_touch'           => $summary['is_touch'],
-            'app_client_version' => $this->nullIfBlank($device['app_client_version'] ?? null),
+            'app_client_version' => $package['app_client_version'],
+            'package_code'       => $package['package_code'],
+            'package_mode'       => $package['package_mode'],
             'ip_hash'            => hash_ip(service('request')->getIPAddress()),
         ], true);
 
