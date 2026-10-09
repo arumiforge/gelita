@@ -25,7 +25,7 @@ $rating    = (int) old('rating');
   <?php // Kiri 32, 72, 520 × 576: ringkasan + Mbah Kedu; kanan 576, 72, 672 × 576: formulir, Kirim tetap di bawah (Dok 3 §4) ?>
   <aside class="panel reflection-side stage-box stage-scroll">
   <header class="reflection-hero">
-    <?= component('character', ['character' => 'mbah_kedu', 'pose' => 'happy', 'showName' => true]) ?>
+    <?= component('character', ['character' => 'mbah_kedu', 'pose' => 'smile', 'showName' => true]) ?>
     <div>
       <span class="eyebrow"><?= esc(lang('Game.reflection')) ?></span>
       <h1><?= esc(lang('Game.reflectionTitle')) ?></h1>

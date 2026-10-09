@@ -321,6 +321,7 @@ export async function bootChallenge() {
     attemptId,
     nodeId,
     levelId,
+    levelCode,
     items: Array.isArray(data.items) ? data.items : [],
     refs,
     submit,

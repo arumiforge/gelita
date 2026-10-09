@@ -61,5 +61,27 @@ final class ChallengeFrameTest extends CIUnitTestCase
         $js = (string) file_get_contents(FCPATH . 'assets/js/engines/boleh.js');
         $this->assertStringContainsString('createLightbox', $js);
         $this->assertStringNotContainsString('max-width', $js, 'tanpa cabang matchMedia lebar layar');
+
+        // Dok 3 §11 audit, item 8: the event carries the region code like every other overlay_opened
+        $this->assertStringContainsString("overlayOpened('statement_image', { levelId: ctx.levelId ?? null, level: ctx.levelCode ?? null })", $js);
+        $this->assertMatchesRegularExpression('~const ctx = \{[^}]*\blevelCode,~', (string) file_get_contents(FCPATH . 'assets/js/game/challenge.js'));
+    }
+
+    /** Dok 3 §11 audit, item 7: every literal pose in a view exists for that character. */
+    public function testViewsRequestOnlyKnownPoses(): void
+    {
+        $poses = config('Gelita')->characterPoses;
+        $found = 0;
+
+        foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator(APPPATH . 'Views', FilesystemIterator::SKIP_DOTS)) as $file) {
+            preg_match_all("~'character'\\s*=>\\s*'(\\w+)',\\s*'pose'\\s*=>\\s*'(\\w+)'~", (string) file_get_contents($file->getPathname()), $matches, PREG_SET_ORDER);
+
+            foreach ($matches as [, $character, $pose]) {
+                $found++;
+                $this->assertContains($pose, $poses[$character] ?? [], "{$file->getFilename()}: {$character} has no pose {$pose}");
+            }
+        }
+
+        $this->assertGreaterThan(3, $found);
     }
 }

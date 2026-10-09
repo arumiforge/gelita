@@ -7,7 +7,7 @@
  * tampil sebagai monogram bundar — halaman tetap utuh tanpa kotak rusak.
  *
  * @var string      $character  `jaka` | `mbah_kedu`
- * @var string|null $pose       `idle` (bawaan), `happy`, `bow`
+ * @var string|null $pose       `idle` (default) or a pose from Config\Gelita::$characterPoses (Jaka `happy`, `bow`, …; Mbah Kedu `smile`, …)
  * @var bool|null   $showName   tampilkan papan nama
  * @var string|null $class      kelas tambahan
  */

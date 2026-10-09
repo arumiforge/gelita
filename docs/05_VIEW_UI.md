@@ -423,7 +423,7 @@ Kartu `.profile-card`: avatar huruf awal, nama, `@username`, kode peserta kecil 
 
 Hanya terbuka setelah semua tantangan tuntas (selain itu ke `/peta` dengan `Game.reflectionLocked`). Latar `bg.reflection`, cadangan `bg.map`.
 
-* Kepala: Mbah Kedu pose `happy`, `Game.reflectionTitle`, balon `Game.reflectionLead`.
+* Kepala: Mbah Kedu pose `smile`, `Game.reflectionTitle`, balon `Game.reflectionLead`.
 * Empat `stat-tile` dari ringkasan perjalanan (`journey`, pengerjaan terbaik tiap tantangan): Berhasil pada Percobaan Pertama, tantangan selesai, total waktu, soal benar.
 * `.reflection-bars`: **Bintang per wilayah** (`Game.perRegion`, "x dari 12" untuk empat tantangan) dan ketepatan per jenis tantangan (`Game.perEngine`, persen).
 * Catatan "paling sering terlewat" (`Game.mostMissed`, `Game.mostMissedText`: "{1} dari {2} soal").
