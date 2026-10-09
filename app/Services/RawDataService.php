@@ -31,6 +31,9 @@ use CodeIgniter\Database\BaseConnection;
  * Asia/Jakarta dengan milidetik, durasi milidetik (int), boolean 1/0, JSON
  * sebagai teks. Mode berlabel (`$labeled`) mengganti kode dengan label
  * (ExportLabels::label(), nama wilayah, jawaban dalam kalimat).
+ * `$readableAnswers` writes only the answer columns (first/final answer,
+ * try answer, answer key) as sentences and leaves every other value coded;
+ * the raw data screen uses it by default (AnswerText).
  *
  * `page()` dan `streamCsv()` memakai cakupan yang diikat lewat konstruktor
  * atau `withScope()`; tanpa cakupan keduanya menolak (LogicException).
@@ -62,6 +65,9 @@ class RawDataService
 
     /** Dimensi yang hanya untuk admin. */
     public const ADMIN_ONLY_DIMENSIONS = ['event'];
+
+    /** Answer columns that `$readableAnswers` writes as sentences (AnswerText). */
+    public const ANSWER_COLUMNS = ['first_answer', 'final_answer', 'answer', 'answer_key'];
 
     /** Kolom yang hanya ada pada data beridentitas (admin, tidak anonim). */
     public const IDENTITY_COLUMNS = ['display_name', 'username', 'school_name', 'school_npsn'];
@@ -322,7 +328,7 @@ class RawDataService
      * @return array{rows: list<array<string, int|string|null>>, total: int, page: int, per_page: int,
      *               sort: ?string, columns: list<array{key: string, label: string, type: string}>}
      */
-    public function page(string $dimension, array $filters, int $page, int $perPage, ?string $sort): array
+    public function page(string $dimension, array $filters, int $page, int $perPage, ?string $sort, bool $readableAnswers = false): array
     {
         $scope   = $this->boundScope();
         $perPage = in_array($perPage, self::PER_PAGE, true) ? $perPage : self::PER_PAGE[0];
@@ -337,26 +343,27 @@ class RawDataService
         $rows = $builder->limit($perPage, ($page - 1) * $perPage)->get()->getResultArray();
 
         return [
-            'rows'     => array_map(fn (array $row): array => $this->shape($dimension, $row, $scope), $rows),
+            'rows'     => array_map(fn (array $row): array => $this->shape($dimension, $row, $scope, false, $readableAnswers), $rows),
             'total'    => $total,
             'page'     => $page,
             'per_page' => $perPage,
             'sort'     => $sort,
-            'columns'  => $this->columnSpecs($dimension, $scope),
+            'columns'  => $this->columnSpecs($dimension, $scope, $readableAnswers),
         ];
     }
 
     /**
      * Menulis seluruh baris satu dimensi (cakupan terikat) sebagai CSV ke
      * $handle: UTF-8 dengan BOM, pemisah koma, baris judul = kode kolom,
-     * nilai berkode (sama dengan `page()['rows']`).
+     * nilai berkode (sama dengan `page()['rows']`). `$readableAnswers`
+     * matches the same flag of `page()`, so the CSV equals the table on screen.
      *
      * @param array<string, mixed> $filters
      * @param resource             $handle
      *
      * @return int jumlah baris data (tanpa judul)
      */
-    public function streamCsv(string $dimension, array $filters, $handle): int
+    public function streamCsv(string $dimension, array $filters, $handle, bool $readableAnswers = false): int
     {
         $scope   = $this->boundScope();
         $columns = $this->columns($dimension, $scope);
@@ -366,7 +373,7 @@ class RawDataService
 
         $count = 0;
 
-        foreach ($this->rows($dimension, $filters, $scope) as $row) {
+        foreach ($this->rows($dimension, $filters, $scope, false, $readableAnswers) as $row) {
             self::writeCsvLine($handle, array_map(static fn (string $c): mixed => $row[$c] ?? null, $columns));
             $count++;
         }
@@ -384,13 +391,13 @@ class RawDataService
      *
      * @return array{rows: list<array<string, int|string|null>>, columns: list<array{key: string, label: string, type: string}>}
      */
-    public function all(string $dimension, array $filters): array
+    public function all(string $dimension, array $filters, bool $readableAnswers = false): array
     {
         $scope = $this->boundScope();
 
         return [
-            'rows'    => iterator_to_array($this->rows($dimension, $filters, $scope), false),
-            'columns' => $this->columnSpecs($dimension, $scope),
+            'rows'    => iterator_to_array($this->rows($dimension, $filters, $scope, false, $readableAnswers), false),
+            'columns' => $this->columnSpecs($dimension, $scope, $readableAnswers),
         ];
     }
 
@@ -404,7 +411,7 @@ class RawDataService
      *
      * @return \Generator<array<string, int|string|null>>
      */
-    public function rows(string $dimension, array $filters, StaffScope $scope, bool $labeled = false): \Generator
+    public function rows(string $dimension, array $filters, StaffScope $scope, bool $labeled = false, bool $readableAnswers = false): \Generator
     {
         $key  = self::KEYS[$dimension] ?? throw new \InvalidArgumentException("Dimensi '{$dimension}' tidak dikenal.");
         $last = null;
@@ -419,7 +426,7 @@ class RawDataService
             $batch = $builder->orderBy($key, 'ASC')->limit(self::CHUNK)->get()->getResultArray();
 
             foreach ($batch as $row) {
-                yield $this->shape($dimension, $row, $scope, $labeled);
+                yield $this->shape($dimension, $row, $scope, $labeled, $readableAnswers);
             }
 
             if ($batch !== []) {
@@ -455,12 +462,13 @@ class RawDataService
     }
 
     /** @return list<array{key: string, label: string, type: string}> */
-    public function columnSpecs(string $dimension, StaffScope $scope): array
+    public function columnSpecs(string $dimension, StaffScope $scope, bool $readableAnswers = false): array
     {
-        return array_map(static function (string $column) use ($dimension): array {
+        return array_map(static function (string $column) use ($dimension, $readableAnswers): array {
             $spec = ExportLabels::column($dimension, $column);
+            $type = $readableAnswers && in_array($column, self::ANSWER_COLUMNS, true) ? 'text' : $spec['type'];
 
-            return ['key' => $column, 'label' => $spec['label'], 'type' => $spec['type']];
+            return ['key' => $column, 'label' => $spec['label'], 'type' => $type];
         }, $this->columns($dimension, $scope));
     }
 
@@ -525,28 +533,30 @@ class RawDataService
 
     /**
      * Baris query → kolom §9.2 dalam cakupan $scope (kolom yang tidak boleh
-     * dilihat tidak ikut).
+     * dilihat tidak ikut). Answer columns are sentences when $labeled or
+     * $readableAnswers is set; other values are labelled only when $labeled.
      *
      * @param array<string, mixed> $row
      *
      * @return array<string, int|string|null>
      */
-    public function shape(string $dimension, array $row, StaffScope $scope, bool $labeled = false): array
+    public function shape(string $dimension, array $row, StaffScope $scope, bool $labeled = false, bool $readableAnswers = false): array
     {
-        $values = match ($dimension) {
+        $answers = $labeled || $readableAnswers;
+        $values  = match ($dimension) {
             'peserta'    => $this->participantValues($row),
             'sesi'       => $row,
             'perangkat'  => ['client_hints' => $row['client_hints_json'] ?? null] + $row,
             'progres'    => $this->progressValues($row),
             'pengerjaan' => $this->attemptValues($row),
-            'jawaban'    => $this->responseValues($row, $labeled),
-            'percobaan'  => $this->tryValues($row, $labeled),
+            'jawaban'    => $this->responseValues($row, $answers),
+            'percobaan'  => $this->tryValues($row, $answers),
             'navigasi'   => $this->navigationValues($row),
             'bantuan'    => $this->helpValues($row),
             'selesai'    => $this->eventValues($row),
             'event'      => $row,
             'masukan'    => $row,
-            'butir'      => $this->itemValues($row, $labeled),
+            'butir'      => $this->itemValues($row, $answers),
             default      => throw new \InvalidArgumentException("Dimensi '{$dimension}' tidak dikenal."),
         };
 

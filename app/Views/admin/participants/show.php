@@ -14,6 +14,7 @@
  * @var bool                            $isAdmin
  * @var array<string, mixed>|null       $table      tab data mentah (null = layanan belum tersedia)
  * @var array<string, list<array>>|null $tries      riwayat percobaan per "attempt_id|item_key"
+ * @var bool|null                       $readableAnswers jawaban as sentences (false = stored JSON, `?raw=1`)
  * @var array<string, mixed>|null       $sessions
  * @var list<array<string, mixed>>|null $devices
  * @var array<string, mixed>|null       $progress
@@ -188,7 +189,11 @@ $rawTable = static function (?array $table, string $empty, array $extra = []) {
         ]);
     };
   ?>
-  <?= $rawTable($table ?? null, 'Siswa ini belum menjawab soal.', ['expand' => $expand, 'expandLabel' => 'Riwayat']) ?>
+  <?= $rawTable($table ?? null, 'Siswa ini belum menjawab soal.', [
+      'expand'      => $expand,
+      'expandLabel' => 'Riwayat',
+      'tools'       => component('answer-view-switch', ['readable' => $readableAnswers ?? true]),
+  ]) ?>
 
 <?php elseif ($tab === 'masukan'): ?>
   <?= component('data-table', [

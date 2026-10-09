@@ -250,7 +250,7 @@ class ParticipantController extends BaseAdminController
         if ($tab === 'jawaban') {
             // The whole history, not one page: page() caps at PER_PAGE, which
             // left answers past the first 25 tries without their history.
-            $history = $raw->all('percobaan', $filters);
+            $history = $raw->all('percobaan', $filters, $this->readableAnswers());
 
             foreach ($history['rows'] as $row) {
                 $tries[($row['attempt_id'] ?? '') . '|' . ($row['item_key'] ?? '')][] = $row;
@@ -259,7 +259,7 @@ class ParticipantController extends BaseAdminController
             $tries['_columns'] = $history['columns'];
         }
 
-        return ['table' => $table, 'tries' => $tries];
+        return ['table' => $table, 'tries' => $tries, 'readableAnswers' => $this->readableAnswers()];
     }
 
     /** Siswa dalam cakupan pemanggil, atau 404. */
