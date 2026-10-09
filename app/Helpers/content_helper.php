@@ -291,7 +291,7 @@ if (! function_exists('audio_src')) {
         }
 
         $row = db_connect()->table('audio_assets aa')
-            ->select('ma.storage_path')
+            ->select('ma.storage_path, ma.sha256')
             ->join('media_assets ma', 'ma.id = aa.media_asset_id')
             ->where('aa.id', $audioAssetId)
             ->where('aa.approval_status', 'approved')
@@ -299,7 +299,7 @@ if (! function_exists('audio_src')) {
             ->get()
             ->getRow();
 
-        return $row ? base_url($row->storage_path) : null;
+        return $row ? base_url(\App\Libraries\MediaStore::versionedPath((string) $row->storage_path, $row->sha256)) : null;
     }
 }
 

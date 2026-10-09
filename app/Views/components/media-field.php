@@ -35,7 +35,7 @@ $isVideo  = $row !== null && $row['asset_type'] === 'video';
   <div class="media-field-body">
     <span class="media-thumb<?= $hasFile && ! $isVideo ? '' : ' is-empty' ?>" data-media-preview>
       <?php if ($hasFile && ! $isVideo): ?>
-        <img src="<?= esc(base_url($row['storage_path']), 'attr') ?>" alt="" loading="lazy" decoding="async">
+        <img src="<?= esc(base_url(App\Libraries\MediaStore::versionedPath((string) $row['storage_path'], $row['sha256'] ?? null)), 'attr') ?>" alt="" loading="lazy" decoding="async">
       <?php else: ?>
         <?= icon($isVideo ? 'video' : 'image') ?>
       <?php endif ?>

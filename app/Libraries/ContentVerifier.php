@@ -249,6 +249,8 @@ class ContentVerifier
                 : 'Unggah di menu Gambar & mockup.'))];
         }
 
+        $path = strtok($path, '?');
+
         if (! is_file(FCPATH . ltrim($path, '/'))) {
             return [$this->finding('warning', $scope, "{$label}: berkasnya hilang dari server ({$path}). Unggah ulang di menu Gambar & mockup.")];
         }
