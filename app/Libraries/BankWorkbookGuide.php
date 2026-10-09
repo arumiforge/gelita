@@ -16,7 +16,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx as XlsxWriter;
  *
  * Pembacanya guru dan admin sekolah, bukan orang teknis: tulis semua
  * penjelasan dalam bahasa sehari-hari dan sebut menu panel dengan nama yang
- * tampil di layar (mis. "Gambar & suara", "Impor soal (Excel)").
+ * tampil di layar (mis. "Gambar & mockup", "Impor soal (Excel)").
  *
  * Header sheet sengaja berbahasa Inggris (kode kolom yang dibaca importer),
  * jadi setiap workbook yang dibuat lewat kelas ini membawa penjelasannya
@@ -77,7 +77,7 @@ class BankWorkbookGuide
             'description_id'       => ['Kartu misi (Indonesia)', 'Opsional', 'Cerita atau tujuan singkat di kartu misi sebelum tantangan dimulai.', 'teks, 1–3 kalimat', 'Mbah Kedu meminta Jaka melengkapi catatan perjalanan.'],
             'description_en'       => ['Kartu misi (Inggris)', 'Opsional', 'Terjemahan kartu misi.', 'teks', 'Mbah Kedu asks Jaka to complete the travel notes.'],
             'distractor_count'     => ['Jumlah kata pengecoh', 'Bersyarat', 'Khusus Isi Rumpang: berapa kata pengecoh (dari sheet distractors) yang ikut tampil di bank kata. Aturan kelas 5: Temanggung 0, Magelang 2, Wonosobo 2; setiap variasi wajib punya kata pengecoh sebanyak angka ini.', 'angka bulat 0 ke atas', '2'],
-            'scene_media_key'      => ['Gambar adegan', 'Bersyarat', 'Khusus Cari Objek (tantangan 4): kode berkas gambar adegan 16:9 (1280 × 720 px) tempat benda-benda diletakkan. Unggah gambarnya di menu Gambar & suara; sebelum itu sistem memasang gambar contoh.', 'kode berkas gambar', 'challenge.tmg-4.scene'],
+            'scene_media_key'      => ['Gambar adegan', 'Bersyarat', 'Khusus Cari Objek (tantangan 4): kode berkas gambar adegan 16:9 (1280 × 720 px) tempat benda-benda diletakkan. Unggah gambarnya di menu Gambar & mockup; sebelum itu sistem memasang gambar contoh.', 'kode berkas gambar', 'challenge.tmg-4.scene'],
             'scene_media_label'    => ['Nama gambar adegan', 'Opsional', 'Nama pendek gambar adegan (paling banyak 120 huruf), tampil di halaman Media dan di gambar contoh. Hanya mengisi slot yang namanya masih kosong.', 'teks pendek', 'Pasar Budaya Temanggung'],
             'scene_media_note'     => ['Isi gambar adegan', 'Opsional', 'Isi gambar adegan yang diharapkan (paling banyak 500 huruf), tampil di halaman Media agar admin tahu gambar apa yang harus diunggah.', 'teks', 'halaman pasar budaya, tiga deret rak kosong'],
             'background_media_key' => ['Gambar latar tantangan', 'Opsional', 'Kode berkas gambar latar layar tantangan. Kosong = memakai latar wilayah.', 'kode berkas gambar', 'challenge.tmg-4.bg'],
@@ -103,7 +103,7 @@ class BankWorkbookGuide
             'title_en'         => ['Judul bacaan (Inggris)', 'Opsional', 'Terjemahan judul.', 'teks', 'The Liyangan Site'],
             'body_id'          => ['Isi bacaan (Indonesia)', 'Wajib', 'Teks yang dibaca siswa kelas 5 SD/MI: kalimat pendek dan jelas. Baris kosong memisahkan paragraf (Benar atau Salah: Temanggung 1, Magelang 2, Wonosobo 3 paragraf).', 'teks panjang; baris kosong = paragraf baru', 'Situs Liyangan berada di …'],
             'body_en'          => ['Isi bacaan (Inggris)', 'Wajib', 'Terjemahan isi bacaan (jumlah paragrafnya sama).', 'teks panjang', 'The Liyangan Site is in …'],
-            'media_asset_key'  => ['Gambar bacaan', 'Opsional', 'Kode berkas gambar pendamping bacaan (unggah di menu Gambar & suara).', 'kode berkas gambar', 'passage.tmg-3-a'],
+            'media_asset_key'  => ['Gambar bacaan', 'Opsional', 'Kode berkas gambar pendamping bacaan (unggah di menu Gambar & mockup).', 'kode berkas gambar', 'passage.tmg-3-a'],
             'reference_source' => ['Sumber rujukan', 'Opsional', 'Asal fakta dalam bacaan (buku, situs resmi, jurnal).', 'teks', 'Pemkab Temanggung; BPS Temanggung 2024'],
         ],
         'items' => [
@@ -126,7 +126,7 @@ class BankWorkbookGuide
             'decoy'             => ['Benda jebakan', 'Bersyarat', 'Khusus find_object: 1 = benda jebakan (bukan dari wilayah ini). Jebakan selalu tampil, tidak dinilai (scorable = 0), dan wajib punya penjelasan jebakan (wrong_feedback_id).', '0 atau 1', '0'],
             'wrong_feedback_id' => ['Penjelasan jebakan (Indonesia)', 'Bersyarat', 'Khusus benda jebakan: penjelasan yang tampil saat siswa mengklik jebakan.', 'teks', 'Angklung berasal dari Jawa Barat, bukan Temanggung.'],
             'wrong_feedback_en' => ['Penjelasan jebakan (Inggris)', 'Bersyarat', 'Terjemahan penjelasan jebakan.', 'teks', 'Angklung comes from West Java, not Temanggung.'],
-            'media_asset_key'   => ['Gambar soal', 'Bersyarat', 'WAJIB untuk puzzle_arrange (satu gambar utuh persegi ≥ 1200 px; sistem memotongnya otomatis sesuai tingkat wilayah: Temanggung 3 × 3 kotak, Magelang 4 × 4 kotak, Wonosobo 4 × 4 jigsaw) dan find_object (gambar benda 240 × 240 px, PNG berlatar transparan). Pernyataan bergambar Benar atau Salah: 480 × 360 px. Sebelum gambar asli diunggah di menu Gambar & suara, sistem memasang gambar contoh.', 'kode berkas gambar', 'challenge.item.tmg-1-01'],
+            'media_asset_key'   => ['Gambar soal', 'Bersyarat', 'WAJIB untuk puzzle_arrange (satu gambar utuh persegi ≥ 1200 px; sistem memotongnya otomatis sesuai tingkat wilayah: Temanggung 3 × 3 kotak, Magelang 4 × 4 kotak, Wonosobo 4 × 4 jigsaw) dan find_object (gambar benda 240 × 240 px, PNG berlatar transparan). Pernyataan bergambar Benar atau Salah: 480 × 360 px. Sebelum gambar asli diunggah di menu Gambar & mockup, sistem memasang gambar contoh.', 'kode berkas gambar', 'challenge.item.tmg-1-01'],
             'media_label'       => ['Nama gambar', 'Opsional', 'Nama pendek gambar/benda (paling banyak 120 huruf), mis. "Kuda kepang bambu". Tampil di halaman Media dan ditulis di gambar contoh. Hanya mengisi slot yang namanya masih kosong.', 'teks pendek', 'Kuda kepang bambu'],
             'media_note'        => ['Isi gambar yang diharapkan', 'Opsional', 'Isi gambar asli yang harus disiapkan admin (paling banyak 500 huruf). Tampil di halaman Media. Hanya mengisi slot yang keterangannya masih kosong.', 'teks', 'kuda kepang anyaman bambu berwarna (tanpa penari)'],
             'scorable'          => ['Dinilai?', 'Opsional', '1 = soal dinilai (bawaan). 0 = tidak dinilai (wajib untuk benda jebakan).', '0 atau 1', '1'],
@@ -156,7 +156,7 @@ class BankWorkbookGuide
             'page_sequence'    => ['Nomor halaman', 'Wajib', 'Nomor halaman Pustaka tempat gambar/video ini tampil (dari sheet library atau halaman yang sudah ada).', 'angka 1 ke atas', '1'],
             'sequence'         => ['Urutan gambar/video', 'Opsional', 'Urutan di galeri. Yang pertama tampil paling besar.', 'angka 1 ke atas', '1'],
             'media_kind'       => ['Jenis media', 'Opsional', 'image = gambar; video = video. Tautan YouTube/Vimeo otomatis dianggap video.', 'image | video', 'image'],
-            'media_asset_key'  => ['Berkas yang sudah diunggah', 'Bersyarat', 'Kode berkas gambar/video yang sudah diunggah di menu Gambar & suara. Isi SALAH SATU saja: kolom ini atau external_url.', 'kode berkas', 'library.temanggung.p1.1'],
+            'media_asset_key'  => ['Berkas yang sudah diunggah', 'Bersyarat', 'Kode berkas gambar/video yang sudah diunggah di menu Gambar & mockup. Isi SALAH SATU saja: kolom ini atau external_url.', 'kode berkas', 'library.temanggung.p1.1'],
             'external_url'     => ['Tautan', 'Bersyarat', 'Tautan YouTube, Google Drive (dibagikan ke "siapa saja yang memiliki link"), Vimeo, halaman berkas Wikimedia Commons, atau alamat langsung berkas .jpg/.png/.mp4. Video baru dimuat saat siswa menekan Putar.', 'https://…', 'https://youtu.be/xxxxxxxxxxx'],
             'poster_media_key' => ['Gambar sampul video', 'Opsional', 'Kode berkas gambar sampul untuk video yang diunggah sendiri (bukan tautan).', 'kode berkas gambar', 'library.temanggung.p1.2.poster'],
             'caption_id'       => ['Keterangan (Indonesia)', 'Opsional', 'Keterangan singkat di bawah gambar/video; juga dibacakan untuk siswa yang memakai pembaca layar.', 'teks, paling banyak 500 huruf', 'Gunung Sindoro dilihat dari Kledung'],
@@ -310,7 +310,7 @@ class BankWorkbookGuide
         $r++;
         $r = $this->heading($sheet, $r, 'Langkah mengisi dan mengimpor');
         $steps = [
-            'Gambar boleh diunggah sebelum atau sesudah impor. Kode berkas gambar (mis. challenge.tmg-4.scene) ditulis di kolom gambar (kolom yang namanya memuat kata media, mis. media_asset_key atau scene_media_key); daftar gambar yang dibutuhkan ada di sheet DAFTAR_MEDIA (bila ada). Selama gambar asli belum diunggah, sistem memasang gambar contoh bertulisan "GAMBAR CONTOH"; unggah gambar asli di Panel GELITA → menu Gambar & suara dengan kode berkas yang sama, maka gambar asli langsung tampil.',
+            'Gambar boleh diunggah sebelum atau sesudah impor. Kode berkas gambar (mis. challenge.tmg-4.scene) ditulis di kolom gambar (kolom yang namanya memuat kata media, mis. media_asset_key atau scene_media_key); daftar gambar yang dibutuhkan ada di sheet DAFTAR_MEDIA (bila ada). Selama gambar asli belum diunggah, sistem memasang gambar contoh bertulisan "GAMBAR CONTOH"; unggah gambar asli di Panel GELITA → menu Gambar & mockup dengan kode berkas yang sama, maka gambar asli langsung tampil.',
             'Isi sheet dari kiri ke kanan: ' . implode(' → ', $sheets) . '. Sheet yang tidak diperlukan boleh dibiarkan kosong. Satu baris = satu data. Jangan menggabungkan sel (merge) dan jangan memakai rumus.',
             'Untuk kolom berkode (jenis soal, wilayah, keterampilan, 0/1, dan sebagainya), klik selnya lalu pilih dari daftar pilihan yang muncul, supaya tidak salah ketik.',
             'Simpan sebagai berkas Excel (.xlsx atau "Excel Workbook"), paling besar 20 MB.',

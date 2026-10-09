@@ -18,7 +18,7 @@ Identitas visual: **navy gelap + emas**, judul dengan serif klasik (Cinzel), isi
 **Aksesibilitas.**
 
 * Kontras teks cukup terhadap latar; latar bergambar selalu diberi lapisan gelap di belakang teks.
-* Fokus keyboard selalu terlihat (cincin emas di permainan, cincin indigo di panel); layout `game` dan `admin` punya tautan lompat `.skip-link` ke isi (`layouts/auth` hanya berisi satu formulir, tanpa tautan lompat).
+* Fokus keyboard selalu terlihat (cincin emas di permainan, cincin indigo di panel); layout `game`, `admin`, dan `auth` punya tautan lompat `.skip-link` ke isi (`#app`, `#admin-main`, `#auth-main`).
 * Target sentuh minimal 44 × 44 px.
 * Warna tidak pernah menjadi satu-satunya penanda: benar/salah memakai ikon ✓/✗ dan teks, bintang memakai `stars_html()` dengan teks alternatif "2 / 3", status kelengkapan aset memakai ikon + teks.
 * Gambar informatif ber-`alt` bermakna; gambar dekoratif `alt=""` atau `aria-hidden`. Ikon SVG dari `icon()` selalu `aria-hidden`; maknanya ada di teks atau `aria-label` induknya.
@@ -127,11 +127,11 @@ Urutan `<body class="game …" data-locale data-base data-screen-code>`: `compon
 
 ### `layouts/admin.php`
 
-Dasbor SaaS netral (Dok 3 §8.1), hanya memuat `admin.css` (CSS permainan tidak ikut). `<body class="admin">`: `.skip-link`, lalu `.admin-shell` = `components/admin-sidebar` + `.admin-column` berisi topbar `header.admin-topbar` (56 px, lengket): tombol laci `.topbar-menu` (layar < 768 px), breadcrumb `nav.breadcrumb` dari `AdminMenu::crumbs()` (+ `$breadcrumb` halaman: `[label => href|null]`), pencarian cepat siswa `form.topbar-search` (GET `/admin/peserta?q=`), chip penelitian berjalan `.topbar-study`, dan menu akun `<details class="account-menu">` (nama, peran, **Ganti kata sandi**, **Keluar**); lalu `<main class="admin-main" id="admin-main">` selebar layar dengan padding 24 px. Di bawahnya `#modal-layer`, `tpl-modal`, `components/toast` (kanan atas; tanpa flash `error`, galat dirender tetap oleh `partials/flash`), `app-config`, dan modul `js/admin.js`. Section: `title`, `head`, `content`, `scripts`.
+Dasbor SaaS netral (Dok 3 §8.1), hanya memuat `admin.css` (CSS permainan tidak ikut). `<body class="admin">`: `.skip-link`, lalu `.admin-shell` = `components/admin-sidebar` + `.admin-column` berisi topbar `header.admin-topbar` (56 px, lengket): tombol laci `.topbar-menu` (layar < 768 px), breadcrumb `nav.breadcrumb` dari `AdminMenu::crumbs()` (+ `$breadcrumb` halaman: `[label => href|null]`), pencarian cepat siswa `form.topbar-search` (GET `/admin/peserta?q=`; teks `Admin.quickSearch` untuk admin, `Admin.quickSearchTeacher` untuk guru), chip penelitian berjalan `.topbar-study`, dan menu akun `<details class="account-menu">` (nama, peran, **Ganti kata sandi**, **Keluar**); lalu `<main class="admin-main" id="admin-main">` selebar layar dengan padding 24 px. Di bawahnya `#modal-layer`, `tpl-modal`, `components/toast` (kanan atas; tanpa flash `error`, galat dirender tetap oleh `partials/flash`), `app-config`, dan modul `js/admin.js`. Section: `title`, `head`, `content`, `scripts`.
 
 ### `layouts/auth.php`
 
-Halaman masuk staf bergaya admin (§1.6): satu kartu `.auth-card` di tengah latar netral, merek `.auth-brand` (tanda "G" + "GELITA" + `Admin.panelTitle`), hanya `admin.css`. Dipakai `admin/login.php`.
+Halaman masuk staf bergaya admin (§1.6): `.skip-link` ke `<main id="auth-main">`, satu kartu `.auth-card` di tengah latar netral, merek `.auth-brand` (tanda "G" + "GELITA" + `Admin.panelTitle`), hanya `admin.css`. Dipakai `admin/login.php`.
 
 ---
 

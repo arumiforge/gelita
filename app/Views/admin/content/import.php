@@ -83,7 +83,7 @@ $issueTable = static function (array $rows, string $level): string {
           <?= component('components/stat-tile', ['label' => $labels[$key] ?? $key, 'value' => fmt_num($count)]) ?>
         <?php endforeach ?>
       </div>
-      <p class="muted">Angka di atas adalah jumlah baris yang disimpan (baru atau diperbarui).<?php if (($result['written']['media_slots'] ?? 0) > 0): ?> “Tempat gambar baru” adalah gambar yang disebut di Excel tetapi belum diunggah; unggah gambarnya di menu <a href="<?= base_url('admin/media/kelengkapan') ?>">Gambar &amp; suara</a> dengan kode berkas yang sama.<?php endif ?></p>
+      <p class="muted">Angka di atas adalah jumlah baris yang disimpan (baru atau diperbarui).<?php if (($result['written']['media_slots'] ?? 0) > 0): ?> “Tempat gambar baru” adalah gambar yang disebut di Excel tetapi belum diunggah; unggah gambarnya di menu <a href="<?= base_url('admin/media/kelengkapan') ?>">Gambar &amp; mockup</a> dengan kode berkas yang sama.<?php endif ?></p>
     <?php else: ?>
       <p class="alert alert-error" role="alert">Tidak ada yang disimpan. Perbaiki kesalahan berikut di Excel, lalu unggah ulang.</p>
       <?= $issueTable($result['errors'] ?? [], 'error') ?>

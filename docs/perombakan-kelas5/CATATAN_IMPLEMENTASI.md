@@ -890,4 +890,9 @@ Found during the audit and fixed in separate branches (see `docs/PROGRESS.md`):
 8. `engines/boleh.js` sends `overlay_opened` (`statement_image`) without the region `level` code.
 9. A `stage.css` comment gives the content area as "0, 56, 1280 × 600" while `.stage-main` is `inset: 0`.
 
+### Follow-up: items 5–6 (branch `fix-admin-copy`)
+
+- **Item 5.** Messages that point to the image menu now say "menu Gambar & mockup" (`ContentVerifier`, `ContentImportService`, `BankWorkbookGuide`, `admin/content/import.php`, `build-workbook.php`, `rencana-katalog-aset.md`). Both workbooks were rebuilt so their PETUNJUK text matches. Kept on purpose: the "Gambar & suara tantangan" section in the challenge editor and the "Gambar & suara" asset-version label in Rilis, which describe content, not the menu.
+- **Item 6.** `layouts/admin.php` reads its text from `Admin.*` (`skipToContent`, `breadcrumbLabel`, `activeStudyTitle`, `panelTitle`). The quick search is role-aware: admins get `quickSearch` ("Cari kode, nama pengguna, atau nama siswa"), teachers `quickSearchTeacher` ("Cari kode siswa"), matching what each role can search (item 2). `layouts/auth.php` has a skip link to `#auth-main`.
+
 **Open, needs an owner decision:** the default study is seeded (and re-seeded by `gelita:reset`) as `active`, so the `ResearchReadiness` gate in `StudyController` never blocks data collection on a standard install; it only blocks switching a study to active. `docs/08` tells the admin to check the list by hand for now.

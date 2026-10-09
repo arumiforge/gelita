@@ -631,7 +631,7 @@ class ContentImportService
                         $warnings[] = [
                             'sheet'   => $sheet,
                             'row'     => $row['__row'],
-                            'message' => "Berkas dengan kode '{$key}' di " . self::column($sheet, $column) . ' belum diunggah. Tempatnya tetap disiapkan saat impor; unggah berkasnya di menu Gambar & suara dengan kode berkas yang sama, maka langsung tampil tanpa impor ulang.',
+                            'message' => "Berkas dengan kode '{$key}' di " . self::column($sheet, $column) . ' belum diunggah. Tempatnya tetap disiapkan saat impor; unggah berkasnya di menu Gambar & mockup dengan kode berkas yang sama, maka langsung tampil tanpa impor ulang.',
                         ];
                     }
                 }

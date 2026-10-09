@@ -18,7 +18,9 @@ $title = trim($this->renderSection('title'));
   <link rel="stylesheet" href="<?= asset_url_versioned('css/admin.css') ?>">
 </head>
 <body class="auth">
-  <main class="auth-shell">
+  <a class="skip-link" href="#auth-main"><?= esc(lang('Admin.skipToContent')) ?></a>
+
+  <main class="auth-shell" id="auth-main" tabindex="-1">
     <section class="auth-card">
       <div class="auth-brand">
         <span class="sidebar-mark" aria-hidden="true">G</span>
