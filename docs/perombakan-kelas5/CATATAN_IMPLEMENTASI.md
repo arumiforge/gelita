@@ -902,7 +902,17 @@ Found during the audit and fixed in separate branches (see `docs/PROGRESS.md`):
 - **Item 5.** Fixed in PR #60 (`fix-menu-gambar-mockup`), which also rebuilt both workbooks; this branch took that version and only adds the same rename in `rencana-katalog-aset.md`.
 - **Item 6.** `layouts/admin.php` reads its text from `Admin.*` (`skipToContent`, `breadcrumbLabel`, `activeStudyTitle`, `panelTitle`). The quick search is role-aware: admins get `quickSearch` ("Cari kode, nama pengguna, atau nama siswa"), teachers `quickSearchTeacher` ("Cari kode siswa"), matching what each role can search (item 2). `layouts/auth.php` has a skip link to `#auth-main`.
 
-**Open, needs an owner decision:** the default study is seeded (and re-seeded by `gelita:reset`) as `active`, so the `ResearchReadiness` gate in `StudyController` never blocks data collection on a standard install; it only blocks switching a study to active. `docs/08` tells the admin to check the list by hand for now.
+### Follow-up: items 7–9 (PR #58)
+
+- **Item 7.** `reflection.php` and `challenge-finished.php` request Mbah Kedu pose `smile` (`Config\Gelita::$characterPoses`); the `components/character` docblock points to that list. `ChallengeFrameTest::testViewsRequestOnlyKnownPoses` checks every literal pose in `app/Views`.
+- **Item 8.** The challenge context exposes `ctx.levelCode` (from `data-level`); `engines/boleh.js` sends it as `level` with `statement_image`, like every other `overlay_opened`. `docs/07` needed no change: its `overlay_opened` row already lists `level` for every overlay.
+- **Item 9.** The `stage.css` comment says `<main>` covers the whole stage. Comment only, no rule changed.
+
+### Duplicates closed
+
+Two documentation sessions kept running after their PRs merged and reopened audit items on their own: PR #60 (item 5, same change as #57; merged first, so #57 kept #60's version) and PR #61 (items 1–4, duplicate of #56; closed). Both sessions were archived, as were the three fix sessions once their PRs merged.
+
+**Owner decision (9 October 2026): option (a).** The default study stays seeded (and re-seeded by `gelita:reset`) as `active`, so the `ResearchReadiness` gate in `StudyController` only blocks switching a study to active, not data collection on a standard install. The admin checks the research-ready list by hand before data collection, as `docs/08` describes.
 
 ---
 

@@ -17,9 +17,9 @@ Last updated: 9 October 2026.
   - [x] `gelita:simulasi` and browser tests for PR #42 (PR #46)
   - [x] Browser tests for PR #42, `check_no` fix for checks from a stale tab, `gelita:simulasi` docs (PR #50)
   - [x] §11 documentation, audited against the code (PR #52, PR #53, PR #54)
-  - [ ] Code issues found in the §11 audit (decision log, "Dok 3 — documentation (§11)" items 1–9): branches below
-  - [ ] Owner decision: should the research-ready gate also apply to the study that `gelita:reset` seeds as active?
-  - [ ] §12.3/§12.4 tests and done criteria: keyboard pass (`tools/qa/a11y-check.mjs`) and exports in LibreOffice, pandas, and R done on `dok3-s12-uji-manual`; stage and admin re-run waits for the audit-fix branches
+  - [x] Code issues found in the §11 audit, items 1–9 (PR #56, PR #57, PR #58; item 5 through PR #60)
+  - [x] Owner decision on the research-ready gate: keep as is, check the list by hand per `docs/08` (option a, 9 October 2026)
+  - [ ] §12.3/§12.4 tests and done criteria: keyboard pass (`tools/qa/a11y-check.mjs`) and exports in LibreOffice, pandas, and R done (PR #59); next is the `stage-check.mjs` and admin-page re-run at 1280, 1440, and 1920 px, now that all audit fixes are merged
   - [ ] §12.3 owner pass on real devices and a screen reader: `docs/perombakan-kelas5/device-test-checklist.md`
   - [~] §13 one-off upgrade script: **dropped**. A release is a fresh install per `docs/08_DEPLOYMENT.md`
 
@@ -36,8 +36,4 @@ Last updated: 9 October 2026.
 
 ## Active branches
 
-| Branch | Owner / scope | Status |
-|---|---|---|
-| `fix-admin-copy` | §11 audit items 5–6: "Gambar & mockup" in messages, admin layout lang keys, auth skip link | in progress |
-| `fix-game-details` | §11 audit items 7–9: Mbah Kedu pose, `statement_image` level code, `stage.css` comment | in progress |
-| `dok3-s12-uji-manual` | Dok 3 §12.3 container tests, §12.4 evidence, device checklist | in progress |
+None. Add a row (branch, owner / scope, status) when a session starts a branch; remove it when its PR is merged.
