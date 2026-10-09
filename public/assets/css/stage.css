@@ -156,9 +156,12 @@ body.game {
 .hud-fullscreen[aria-pressed="true"] .icon-enter { display: none; }
 .hud-fullscreen[aria-pressed="true"] .icon-exit { display: block; }
 
-/* ---------- Area isi: 0, 56, 1280 × 600 (tanpa nav bar 1280 × 664) ----------
-   <main> selebar panggung tanpa stacking context, jadi koordinat isi = koordinat
-   panggung (tabel §4) dan overlay di dalamnya (Kenali) dapat menutupi HUD. */
+/* ---------- Content area: the whole stage, 0, 0, 1280 × 720 ----------
+   <main> covers the stage (inset: 0) with no stacking context, so content
+   coordinates are stage coordinates (table §4) and overlays inside it (Kenali)
+   can cover the HUD. Screens keep their content inside 0, 56, 1280 × 600
+   (1280 × 664 without the nav bar) by their own coordinates; <main> itself
+   does not inset for the HUD or the nav bar. */
 .stage-main {
   position: absolute;
   inset: 0;

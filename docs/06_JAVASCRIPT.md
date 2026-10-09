@@ -480,7 +480,7 @@ Setiap engine mengekspor `mount(ctx)`. `ctx` berisi:
 | Anggota | Kegunaan |
 |---|---|
 | `data`, `section`, `items` | payload, `<section>` tantangan, `data.items` (larik kosong untuk `cari`) |
-| `attemptId`, `nodeId`, `levelId`, `refs` | rujukan; `refs = { levelId, nodeId, attemptId }` untuk `emit()` |
+| `attemptId`, `nodeId`, `levelId`, `levelCode`, `refs` | rujukan; `refs = { levelId, nodeId, attemptId }` untuk `emit()`; `levelCode` = kode wilayah (`data-level`) untuk payload `level` |
 | `submit(itemId, answer, extra)` | `POST /api/attempts/{id}/responses` dengan `client_event_id` dan `occurred_at` (dipakai `cari`) |
 | `check(answers)` | `POST /api/attempts/{id}/check` untuk semua isian sekaligus; menambahkan `first_input_ms`/`last_input_ms` per soal (dipakai `puzzle`, `rumpang`, `boleh`) |
 | `selected(itemId, change)` | event `answer_selected` `{ …change, t_ms }` + mencatat waktu isian soal itu |
@@ -627,7 +627,7 @@ Error     ada kartu belum dipilih → .has-error 2,6 detik, digulirkan ke tengah
 
 - Tombol verdict adalah radio yang dirender server, jadi dapat dipilih dengan keyboard atau sentuhan tanpa JavaScript; markup tidak memuat kunci.
 - Bacaan dirender sekali di kolom kiri yang bergulir sendiri (`.boleh-passages`); tidak ada pelipatan bacaan, karena panggung berukuran tetap. Tautan "Berdasarkan …" (`a.card-passage`) membuka dan menggulir ke bacaannya di panelnya.
-- Gambar pernyataan `button.card-image[data-zoom]` (192 × 144 dp) membuka lightbox 640 × 480 dp (`createLightbox({ variant: 'card' })`) dan mengirim `overlay_opened` `{ overlay: 'statement_image' }`.
+- Gambar pernyataan `button.card-image[data-zoom]` (192 × 144 dp) membuka lightbox 640 × 480 dp (`createLightbox({ variant: 'card' })`) dan mengirim `overlay_opened` `{ overlay: 'statement_image', level }` (kode wilayah dari `ctx.levelCode`).
 - Petunjuk soal memakai kartu yang terakhir difokus. Muat ulang: pernyataan dengan `state.locked` dipulihkan dengan pilihan siswa sendiri, bertanda benar, dan terkunci.
 
 ### Fitur: Cari Objek Budaya (`cari`)
@@ -783,7 +783,7 @@ POST /api/events
 | `viewport_changed` | `core/stage.js` | `w`, `h`, `orientation`, `rotate_gate`, `stage_w`, `stage_h`, `scale` |
 | `page_hidden`, `page_visible` | `core/events.js` | `screen` (kode layar) |
 | `reading_progress` | `core/device.js` (layar tantangan) | `percent` (25/50/75/100), `passage_id?` |
-| `overlay_opened` | `challenge.js`, `map.js`, `library.js`, `engines/boleh.js` | `overlay` (`hint`, `exit`, `kenal`, `lightbox`, `statement_image`), `level` (kode wilayah; `statement_image` hanya membawa `level_id`) |
+| `overlay_opened` | `challenge.js`, `map.js`, `library.js`, `engines/boleh.js` | `overlay` (`hint`, `exit`, `kenal`, `lightbox`, `statement_image`), `level` (kode wilayah) |
 | `dialogue_advanced` | `game/narrator.js` | `index`, `total`, `context` (`intro`, `map_intro`, `region_intro`, `level_open`, `level_done`, `ending`), `character` |
 | `level_opened` | `game/map.js` (peta wilayah) | `code` |
 | `library_page_viewed` | `game/library.js` | `page`, `total`, `page_id` |

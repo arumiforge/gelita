@@ -105,7 +105,7 @@ $toNext = ! $closesRegion && ! $allCompleted && $next === null && $levelComplete
 
       <?php if ($levelCompleted && $level !== null): ?>
         <div class="finished-kedu">
-          <?= component('character', ['character' => 'mbah_kedu', 'pose' => 'happy']) ?>
+          <?= component('character', ['character' => 'mbah_kedu', 'pose' => 'smile']) ?>
           <?= component('narration', [
               'speaker' => 'mbah_kedu',
               'text'    => lang('Game.regionDone', [$region]) . ' '

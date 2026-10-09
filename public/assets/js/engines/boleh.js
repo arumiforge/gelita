@@ -54,7 +54,7 @@ function initImageZoom(section, ctx) {
     button.addEventListener('click', () => {
       const card = button.closest('.verdict-card');
       open(button.dataset.zoom, $('.card-text', card)?.textContent.trim() || '', $('.card-text', card)?.textContent.trim() || '');
-      overlayOpened('statement_image', { levelId: ctx.levelId ?? null });
+      overlayOpened('statement_image', { levelId: ctx.levelId ?? null, level: ctx.levelCode ?? null });
     });
   }
 }
