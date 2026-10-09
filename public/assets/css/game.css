@@ -404,21 +404,23 @@ body.is-challenge .hud-leave { display: none; }
 
 .why-strong {
   display: grid;
-  grid-template-columns: 13.75rem 1fr;
-  align-items: start;
+  grid-template-columns: 7rem 1fr;
+  align-items: center;
   gap: var(--gap-4);
-  padding: var(--gap-5);
+  padding: var(--gap-3) var(--gap-4);
   border: .125rem solid var(--brown-500);
   border-radius: var(--radius-lg);
   background:
     radial-gradient(ellipse at 100% 0%, rgba(255, 255, 255, .6), transparent 60%),
     var(--parchment-dark);
 }
-.why-strong-title { display: flex; align-items: center; gap: var(--gap-2); margin: 0 0 var(--gap-2); font-size: var(--fs-h3); }
-.why-strong-body p { margin-bottom: var(--gap-3); }
-.why-strong-tips { display: grid; gap: var(--gap-1); margin: 0; padding-left: var(--gap-5); }
+/* Compact so the username field shows without scrolling (fields start below the box) */
+.why-strong-title { display: flex; align-items: center; gap: var(--gap-2); margin: 0 0 var(--gap-1); font-size: var(--fs-body); }
+.why-strong-body { font-size: var(--fs-caption); line-height: 1.35; }
+.why-strong-body p { margin: 0 0 var(--gap-2); }
+.why-strong-tips { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap-1) var(--gap-5); margin: 0; padding-left: var(--gap-4); }
 .why-strong-tips li::marker { color: var(--brown-500); }
-.why-strong-jaka .character-img { max-height: 18.75rem; }
+.why-strong-jaka .character-img { max-height: 10rem; }
 .why-strong-jaka .character-fallback { width: 5.5rem; font-size: var(--fs-h2); }
 
 .username-status { min-height: 1.4em; margin: 0; font-weight: 700; }

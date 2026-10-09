@@ -986,6 +986,15 @@ Owner request: give `/masuk` the same design and make sure the new design follow
 - The login panel is 16 dp taller than the `/mulai` panel and its rows sit 8 dp apart so the form with a one-line error still fits without scrolling; a two-line error (`Auth.locked`) scrolls.
 - Checked with the `inspect()` of `tools/qa/stage-check.mjs` on rendered pages (no database server here): `/mulai` (id, en), `/daftar/1`–`3`, `/masuk` (empty, with error, en), and `/gerbang` with a 62-character name, at all six sizes. Every check passes: 16:9 and centred, no page scroll, nothing outside the stage, overflow only in `.stage-scroll`, the same relative positions at every size, and 48 dp tap targets for the new HUD Back and panel controls. The existing 40 dp HUD icon buttons are unchanged.
 
+## Display fixes on /mulai, /masuk, /daftar (9 October 2026)
+
+Branch `sky/confident-noether-id40gg`. Owner report: there are still display bugs on the login, sign-up, and start pages. Checked in Chromium on a local MariaDB install (`/mulai`, `/masuk` empty and with an error, `/daftar/1`–`3` empty and with errors, id and en, with stand-in art for Jaka, the background, and the logo) at all six stage sizes; the stage rules (`inspect()` of `tools/qa/stage-check.mjs`) pass everywhere, so the bugs were visual:
+
+- **`/masuk`: the compass crest touched the HUD logo.** The crest sits half above the panel top (36 dp), so with the panel at y 80 it reached y 44, inside the 56 dp HUD, right under the centred logo. The panel moves to y 96 (same 560 × 576, bottom at 672).
+- **`/daftar/3`: the form started below the visible area.** The "Mengapa kata sandi harus kuat?" box (Jaka 300 dp tall, tips in one column) filled the whole scrolling area, so the student saw no field and had to guess to scroll. The box is now compact (Jaka column 112 dp, caption-size text, tips in two columns); Nama pengguna and its input show without scrolling. Jaka stays in the box (Dok 1 allows it).
+- **Error messages named the raw field.** Server rules had no labels, so any message without its own text read "display_name wajib diisi." (a name of only spaces passes the browser's `required` and is empty after trimming) or "Provinsi wajib diisi bila country_other tidak ada.". `RegisterController::rulesFor()` now gives every field its on-screen label, and province/district get the plain "{field} wajib diisi.". Test: `RegisterWizardTest::testErrorsNameTheFieldAsShownOnScreen`.
+- Not changed: `/daftar` keeps the parchment panel while `/mulai` and `/masuk` use the dark ornate panel. Moving it to the dark design is an owner call (asked in the PR).
+
 ## Replacing a real image showed no change (9 October 2026)
 
 Branch `sky/bold-archimedes-6tjayk`. Owner report: on `/admin/media`, a slot that already has a real image does not change when another image is uploaded.

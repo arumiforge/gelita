@@ -137,6 +137,21 @@ final class RegisterWizardTest extends CIUnitTestCase
         $this->assertSame([], array_diff_key($_SESSION[RegisterController::WIZARD]['1'], array_flip(['display_name', 'age', 'gender'])), 'hanya isian langkah 1');
     }
 
+    public function testErrorsNameTheFieldAsShownOnScreen(): void
+    {
+        // A name of only spaces passes the browser's `required` but is empty after trimming
+        $this->send(Method::POST, 'daftar/1', ['display_name' => '   '] + self::ABOUT);
+        $this->assertSame('Nama lengkap wajib diisi.', $_SESSION['errors']['display_name'] ?? null);
+
+        $_SESSION = [];
+        $this->send(Method::POST, 'daftar/1', self::ABOUT);
+        $this->send(Method::POST, 'daftar/2', ['country_code' => 'ID', 'school_name' => 'SD Uji']);
+
+        foreach (['province_code' => 'Provinsi', 'district_code' => 'Kabupaten / kota'] as $field => $label) {
+            $this->assertSame($label . ' wajib diisi.', $_SESSION['errors'][$field] ?? null, $field);
+        }
+    }
+
     public function testFullRegistrationWithNpsnNeverKeepsThePassword(): void
     {
         $this->send(Method::POST, 'daftar/1', self::ABOUT + ['class_level' => '6']);
