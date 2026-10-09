@@ -19,7 +19,8 @@ Last updated: 9 October 2026.
   - [x] §11 documentation, audited against the code (PR #52, PR #53, PR #54)
   - [ ] Code issues found in the §11 audit (decision log, "Dok 3 — documentation (§11)" items 1–9): branches below
   - [ ] Owner decision: should the research-ready gate also apply to the study that `gelita:reset` seeds as active?
-  - [ ] §12.3 manual tests on a real laptop, tablet, and phone; keyboard and screen reader pass; open CSV/XLSX in LibreOffice or R
+  - [ ] §12.3/§12.4 tests and done criteria: keyboard pass (`tools/qa/a11y-check.mjs`) and exports in LibreOffice, pandas, and R done on `dok3-s12-uji-manual`; stage and admin re-run waits for the audit-fix branches
+  - [ ] §12.3 owner pass on real devices and a screen reader: `docs/perombakan-kelas5/device-test-checklist.md`
   - [~] §13 one-off upgrade script: **dropped**. A release is a fresh install per `docs/08_DEPLOYMENT.md`
 
 ## Before the research starts (after install, done in the panel)
@@ -40,3 +41,4 @@ Last updated: 9 October 2026.
 | `fix-admin-data` | §11 audit items 1–4: Jawaban tab history, username search, CSV audit, dead model methods | in progress |
 | `fix-admin-copy` | §11 audit items 5–6: "Gambar & mockup" in messages, admin layout lang keys, auth skip link | in progress |
 | `fix-game-details` | §11 audit items 7–9: Mbah Kedu pose, `statement_image` level code, `stage.css` comment | in progress |
+| `dok3-s12-uji-manual` | Dok 3 §12.3 container tests, §12.4 evidence, device checklist | in progress |
