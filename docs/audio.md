@@ -45,14 +45,14 @@ Catatan teknis:
 
 | Berkas | Bunyi | Durasi | Diputar saat |
 |---|---|---|---|
-| `click.mp3` | ketukan kayu gambang, pendek dan lembut | 0,13 s | tombol HUD, keping puzzle, kata rumpang, kartu boleh |
+| `click.mp3` | ketukan kayu gambang, pendek dan lembut | 0,13 s | tombol suara HUD (saat dinyalakan), keping puzzle, kata rumpang, kartu boleh |
 | `correct.mp3` | tiga nada bonang naik (pelog 5–6–1́) + dentang peking | 0,9 s | jawaban benar (semua arena) |
 | `wrong.mp3` | dua nada demung turun yang diredam, dengung kempul tipis; tidak menghukum | 0,9 s | jawaban salah |
 | `lock.mp3` | "tuk-tuk" kethuk + gemerincing kecrek yang diredam | 0,5 s | wilayah, tantangan, atau Pustaka yang masih terkunci |
 | `shard.mp3` | arpeggio peking & gender naik, kilau dentingan, kenong | 3,2 s | layar selesai: serpihan kembali |
 | `region-done.mp3` | frasa suwuk bonang–saron ditutup gong ageng, kenong, dan kempul | 5,1 s | layar selesai tantangan penuntas wilayah |
 
-`shard` dan `region-done` dipanggil `game/finished.js`. Keduanya kini juga tercantum di **Media → Kelengkapan aset**.
+`shard` dan `region-done` dipanggil `game/finished.js`. Ketiga musik dan keenam efek suara tercantum di **Kelengkapan aset** (`/admin/media/kelengkapan`, `App\Libraries\AssetChecklist::SOUNDS`).
 
 ## Narasi
 

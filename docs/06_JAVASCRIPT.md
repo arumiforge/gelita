@@ -73,6 +73,7 @@ public/
     └── admin/
         ├── filters.js       filter bar tanpa muat ulang
         ├── tables.js        urut & saring tabel
+        ├── tabs.js          tab di dalam satu halaman (editor tantangan)
         ├── content-editor.js editor soal terpandu + pengecoh rumpang
         ├── object-picker.js penempatan benda Cari Objek
         ├── bank-import.js   impor workbook bank soal
@@ -249,7 +250,7 @@ stageScale()           // lebar panggung ÷ 1280
 ```
 
 - Skrip sebaris di `<head>` `layouts/game.php` mengisi `--app-w`/`--app-h` dari `innerWidth`/`innerHeight` sebelum CSS dimuat (`load`, `resize`, `orientationchange`); `initStage()` melanjutkannya. CSS menghitung sisanya (`--stage-w`, `font-size` akar = lebar panggung ÷ 80), jadi JavaScript tidak pernah menghitung tata letak. `visualViewport` sengaja tidak dipakai: papan ketik layar dan cubit-zoom tidak boleh mengecilkan panggung.
-- `viewport_changed` `{ w, h, orientation, rotate_gate, stage_w, stage_h, scale }` saat halaman dibuka dan setiap ukuran/orientasi berubah, termasuk saat layar putar tampil/hilang (debounce 1 detik, paling sering satu per 5 detik, tanpa kiriman bila nilainya sama). `stage_w`/`stage_h` dalam CSS px, `scale` = `stage_w / 1280` (3 desimal). Dulu bagian `core/device.js` (`initScreenTracking`).
+- `viewport_changed` `{ w, h, orientation, rotate_gate, stage_w, stage_h, scale }` saat halaman dibuka dan setiap ukuran/orientasi berubah, termasuk saat layar putar tampil/hilang (debounce 1 detik, paling sering satu per 5 detik, tanpa kiriman bila nilainya sama). `stage_w`/`stage_h` dalam CSS px, `scale` = `stage_w / 1280` (3 desimal).
 - Tombol **Layar penuh** `#btn-fullscreen` di HUD (Fullscreen API, dengan awalan `webkit`); tersembunyi bila tidak didukung, `aria-pressed` mengikuti `fullscreenchange`. Layar penuh lepas setiap kali halaman berganti (perilaku peramban).
 - Posisi pointer (seret keping, ketuk benda) memakai `getBoundingClientRect()`, yang sudah menyertakan skala; tidak ada pembagian dengan skala secara manual.
 
@@ -266,7 +267,7 @@ overlayOpened(overlay, { level, levelId })  // overlay_opened
 ```
 
 - `attachDeviceField()` dipakai formulir masuk dan langkah 3 pendaftaran. Kiriman pertama ditahan paling lama 800 ms menunggu `navigator.userAgentData.getHighEntropyValues()`, lalu dikirim ulang lewat `requestSubmit()`. JSON lebih dari 4.000 karakter dikirim tanpa `ua_data`; bila gagal, formulir tetap terkirim tanpa sinyal (server memakai User-Agent saja). Harus dipasang sebelum penjaga kirim-ganda.
-- `viewport_changed` kini di `core/stage.js`; `page_hidden`/`page_visible` `{ screen }` di `core/events.js` `initVisibilityTracking()`, dengan kode layar dari `body[data-screen-code]` (resolver yang sama dengan `screen_viewed` di server; Pustaka terkunci → `library_locked`).
+- `viewport_changed` dikirim `core/stage.js`; `page_hidden`/`page_visible` `{ screen }` di `core/events.js` `initVisibilityTracking()`, dengan kode layar dari `body[data-screen-code]` (resolver yang sama dengan `screen_viewed` di server; Pustaka terkunci → `library_locked`).
 - `trackReading()` memantau panel bacaan bergulir di panggung: `.rumpang-reading`, daftar kalimat rumpang, dan kolom bacaan Benar atau Salah `.boleh-passages`; posisi gulir panel itulah yang dihitung (panggung tidak pernah bergulir). Tiap batas dikirim sekali per pengerjaan, dengan `passage_id` bila panel berisi satu bacaan. Panel yang tidak perlu digulir langsung bernilai 100 %.
 
 ### `core/lightbox.js`
@@ -524,7 +525,7 @@ Bila pengerjaan tertutup di respons itu: `completed: true`, `completion_reason` 
 3. `completed` + `tries_exhausted` → bunyi `wrong`, `beforeExhausted()` bila ada, modal `triesExhaustedTitle` + `exhaustedText` dengan satu tombol Lanjut → `finish()`. Kunci jawaban tidak ditampilkan.
 4. Selain itu → modal "belum tepat" berisi `partialText` + `triesText(tries_left)` dengan tombol `fixAnswers` (Perbaiki) → `'fix'`.
 
-**Galat aturan dari server** (mis. tab lain sudah memakai kesempatan terakhir): `TRIES_EXHAUSTED` dan `ATTEMPT_CHANGED` (409, tab lain atau kiriman ulang lebih dulu mengubah pengerjaan) → pindah ke `redirect` di payload galat, atau muat ulang; `CLUE_CLOSED` dan `ATTEMPT_CLOSED` (409) → muat ulang agar tampilan mengikuti payload. Muat ulang ini menyetel `state.leaving`, jadi tidak mengirim `challenge_abandoned`; begitu pula respons `/check` atau `/responses` yang menutup pengerjaan (`completed`), sehingga menutup tab saat modal hasil akhir masih tampil tidak tercatat sebagai meninggalkan tantangan. `/check` mengirim `check_no` (cek ke-berapa menurut layar ini, dari `tries_used` lalu `check_count` respons terakhir): cek dari tab lama yang tiba sesudah cek tab lain dibalas `ATTEMPT_CHANGED`, bukan dihitung sebagai cek baru. Selama `/check` berjalan, isian engine batch dibekukan, dan di Cari Objek tombol lompat petunjuk diabaikan selama ketukan menunggu server. `INCOMPLETE` (422) tidak terjadi dalam pemakaian biasa karena engine menolak kotak/kartu kosong sebelum mengirim.
+**Galat aturan dari server** (mis. tab lain sudah memakai kesempatan terakhir) ditangani `ruleError()` di dalam `report()`: `TRIES_EXHAUSTED` dan `ATTEMPT_CHANGED` (409, tab lain atau kiriman ulang lebih dulu mengubah pengerjaan) → pindah ke `redirect` di payload galat, atau muat ulang; `CLUE_CLOSED` dan `ATTEMPT_CLOSED` (409) → muat ulang agar tampilan mengikuti payload. Muat ulang ini menyetel `state.leaving`, jadi tidak mengirim `challenge_abandoned`; begitu pula respons `/check` atau `/responses` yang menutup pengerjaan (`completed`), sehingga menutup tab saat modal hasil akhir masih tampil tidak tercatat sebagai meninggalkan tantangan. `/check` mengirim `check_no` (cek ke-berapa menurut layar ini, dari `tries_used` lalu `check_count` respons terakhir): cek dari tab lama yang tiba sesudah cek tab lain dibalas `ATTEMPT_CHANGED`, bukan dihitung sebagai cek baru. Selama `/check` berjalan, isian engine batch dibekukan, dan di Cari Objek tombol lompat petunjuk diabaikan selama ketukan menunggu server. `INCOMPLETE` (422) tidak terjadi dalam pemakaian biasa karena engine menolak kotak/kartu kosong sebelum mengirim.
 
 **`POST /complete` hanya cadangan.** Dipanggil `finish()` bila respons `completed` datang tanpa `redirect`. Endpoint ini idempoten (pengerjaan selesai dibalas hasil dan `redirect` yang sama) dan menolak pengerjaan yang masih punya kesempatan dengan `TRIES_REMAINING` (klien menampilkan toast `itemsPending`).
 
@@ -625,7 +626,7 @@ Error     ada kartu belum dipilih → .has-error 2,6 detik, digulirkan ke tengah
 ```
 
 - Tombol verdict adalah radio yang dirender server, jadi dapat dipilih dengan keyboard atau sentuhan tanpa JavaScript; markup tidak memuat kunci.
-- Bacaan dirender sekali di kolom kiri yang bergulir sendiri (`.boleh-passages`); cabang lipat-bacaan layar sempit (`matchMedia('(max-width: 640px)')`) dihapus karena panggung tidak responsif. Tautan "Berdasarkan …" (`a.card-passage`) membuka dan menggulir ke bacaannya di panelnya.
+- Bacaan dirender sekali di kolom kiri yang bergulir sendiri (`.boleh-passages`); tidak ada pelipatan bacaan, karena panggung berukuran tetap. Tautan "Berdasarkan …" (`a.card-passage`) membuka dan menggulir ke bacaannya di panelnya.
 - Gambar pernyataan `button.card-image[data-zoom]` (192 × 144 dp) membuka lightbox 640 × 480 dp (`createLightbox({ variant: 'card' })`) dan mengirim `overlay_opened` `{ overlay: 'statement_image' }`.
 - Petunjuk soal memakai kartu yang terakhir difokus. Muat ulang: pernyataan dengan `state.locked` dipulihkan dengan pilihan siswa sendiri, bertanda benar, dan terkunci.
 
@@ -662,7 +663,7 @@ Panel admin satu bahasa (Indonesia) dan semua halamannya tetap berfungsi tanpa J
 
 ### `admin.js` — titik masuk
 
-- Perilaku umum dipasang pada `document` dan dipasang ulang setiap kali `filters.js` mengganti isi halaman: `initTables()` dan tombol salin `[data-copy="#selector"]` (mis. sandi sementara; tanpa izin papan klip, teksnya dipilih dan toast meminta Ctrl+C).
+- Perilaku umum dipasang pada `document` dan dipasang ulang setiap kali `filters.js` mengganti isi halaman: `initTables()`, tombol salin `[data-copy="#selector"]` (mis. sandi sementara; tanpa izin papan klip, teksnya dipilih dan toast meminta Ctrl+C), `initConfirm()` (modal konfirmasi), dan `initTabs()` (`admin/tabs.js`).
 - Modul khusus halaman dimuat hanya bila markup-nya ada:
 
 | Penanda markup | Modul |
@@ -782,7 +783,7 @@ POST /api/events
 | `viewport_changed` | `core/stage.js` | `w`, `h`, `orientation`, `rotate_gate`, `stage_w`, `stage_h`, `scale` |
 | `page_hidden`, `page_visible` | `core/events.js` | `screen` (kode layar) |
 | `reading_progress` | `core/device.js` (layar tantangan) | `percent` (25/50/75/100), `passage_id?` |
-| `overlay_opened` | `challenge.js`, `map.js`, `library.js`, `engines/boleh.js` | `overlay` (`hint`, `exit`, `kenal`, `lightbox`, `statement_image`), `level` (kode wilayah) |
+| `overlay_opened` | `challenge.js`, `map.js`, `library.js`, `engines/boleh.js` | `overlay` (`hint`, `exit`, `kenal`, `lightbox`, `statement_image`), `level` (kode wilayah; `statement_image` hanya membawa `level_id`) |
 | `dialogue_advanced` | `game/narrator.js` | `index`, `total`, `context` (`intro`, `map_intro`, `region_intro`, `level_open`, `level_done`, `ending`), `character` |
 | `level_opened` | `game/map.js` (peta wilayah) | `code` |
 | `library_page_viewed` | `game/library.js` | `page`, `total`, `page_id` |
@@ -896,8 +897,12 @@ Tidak ada test runner JavaScript; kontrak JavaScript dijaga dari sisi PHP (`vend
 | `tests/unit/LanguageFilesTest.php` | kunci `id`/`en` sejajar; kunci yang sudah dihapus tidak dipakai lagi oleh `t('…')` |
 | `tests/unit/HuntPayloadTest.php` | payload Cari Objek tanpa pembeda jebakan, token `ref` per pengerjaan, `item_id` mentah tidak dipercaya, audio petunjuk hanya rekaman yang disetujui |
 | `tests/unit/TryLimitTest.php` | aturan 3 kesempatan di `/check` dan `/responses`, soal benar terkunci, cek tidak lengkap tidak memakai kesempatan, `/complete` ditolak selama kesempatan masih ada |
+| `tests/unit/HuntClueAudioTest.php` | tombol ▶ narasi petunjuk di view `cari` dan pemilih rekamannya di panel |
+| `tests/unit/StageCssTest.php` | CSS game dalam rem tanpa satuan viewport, media query lebar/tinggi, atau `layout.css` |
+| `tests/unit/RotateGateTest.php` | media query layar putar sama di `stage.css` dan `game/rotate-gate.js` |
+| `tests/unit/InstallableAppTest.php` | manifest, ikon, dan `sw.js` yang hanya menangani navigasi GET |
 
-Sintaks modul dapat diperiksa cepat dengan `node --check public/assets/js/<berkas>.js`. Pemeriksaan di peramban mencakup alur siswa penuh (pendaftaran, cerita, peta, keempat engine benar dan salah sampai kesempatan habis, muat ulang di tengah tantangan, Pustaka, Balai Refleksi), JavaScript mati, `prefers-reduced-motion`, dan konsol tanpa galat.
+Sintaks modul dapat diperiksa cepat dengan `node --check public/assets/js/<berkas>.js`. Dua skrip Playwright + Chromium di `tools/qa/` menguji JavaScript di peramban sungguhan terhadap `php spark serve`: `stage-check.mjs` (panggung 16:9 di berbagai ukuran layar, lihat [05_VIEW_UI.md](05_VIEW_UI.md)) dan `challenge-races.mjs` (MariaDB/MySQL; `--only=freeze|timing|cari|reload|race`: isian dibekukan selama `/check`, `first_input_ms`/`last_input_ms` tersimpan, lompat petunjuk diabaikan selama ketukan menunggu, muat ulang karena galat aturan tidak menulis `challenge_abandoned`, dan dua tab yang mengecek bersamaan). Keduanya keluar dengan kode 1 bila ada yang gagal. Pemeriksaan di peramban mencakup alur siswa penuh (pendaftaran, cerita, peta, keempat engine benar dan salah sampai kesempatan habis, muat ulang di tengah tantangan, Pustaka, Balai Refleksi), JavaScript mati, `prefers-reduced-motion`, dan konsol tanpa galat.
 
 ---
 
@@ -907,5 +912,4 @@ Sintaks modul dapat diperiksa cepat dengan `node --check public/assets/js/<berka
 - [05_VIEW_UI.md](05_VIEW_UI.md): markup, id, dan kelas yang dipakai JavaScript (`#app-config`, `#challenge-data`, `#password-policy`, `#puzzle-board`, `.blank`, `.verdict-card`, `#hunt-scene`, `.audio-player`, tirai, narrator), token CSS.
 - [02_PROJECT_FOUNDATION.md](02_PROJECT_FOUNDATION.md): `Config\Gelita` (`$maxTries`, `$eventTypes`, `$maxEventsPerBatch`, `$passwordPolicy`, `$assetSizes`) dan berkas bahasa.
 - [01_DATABASE.md](01_DATABASE.md): `game_event_logs`, `audio_usage_events`, `item_tries`, dan `interaction_type`.
-
-Tata letak panggung 16:9 untuk layar game direncanakan di `docs/perombakan-kelas5/03_TAMPILAN_16x9_DAN_ADMIN.md` (Dok 3) dan belum ada di kode.
+- [docs/perombakan-kelas5/03_TAMPILAN_16x9_DAN_ADMIN.md](perombakan-kelas5/03_TAMPILAN_16x9_DAN_ADMIN.md) (Dok 3): rencana panggung 16:9 (`core/stage.js`) dan panel admin; penyimpangannya dicatat di `CATATAN_IMPLEMENTASI.md`.

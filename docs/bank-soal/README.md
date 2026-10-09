@@ -40,7 +40,7 @@ Jumlah rumpang dan pengecoh **tepat**, bukan rentang, agar ketiga variasi satu w
 - Satu **variasi** = satu kelompok soal yang dimainkan utuh dalam satu pengerjaan. Susun Gambar, Isi Rumpang, dan Benar atau Salah punya tepat 3 variasi (`a`, `b`, `c`); Cari Objek satu adegan tetap (`a`), karena posisi benda diatur sekali.
 - Variasi dipilih acak sungguhan setiap pengerjaan baru; pengerjaan ulang memilih variasi yang belum pernah didapat siswa itu (bila semua sudah, semua boleh lagi). Muat ulang halaman memakai pengerjaan yang sama.
 - Bank kata Isi Rumpang diacak dengan benih id pengerjaan (tetap saat dimuat ulang) dan selalu berbeda dari urutan rumpang; di Temanggung (3 kata tanpa pengecoh) tidak ada kata yang berada di posisi rumpangnya sendiri. Urutan petunjuk Cari Objek juga diacak per pengerjaan. Pernyataan Benar atau Salah dan posisi benda tidak diacak.
-- Setiap soal paling banyak **3 percobaan**; lewat dari itu jawaban terakhir disimpan apa adanya dan tantangan tetap selesai.
+- Setiap pengerjaan punya **3 kesempatan** (`Config\Gelita::$maxTries`): di Susun Gambar, Isi Rumpang, dan Benar atau Salah setiap **Cek jawabanku** memakai satu kesempatan untuk semua soal sekaligus (soal yang sudah benar terkunci); di Cari Objek setiap petunjuk punya 3 kesempatan sendiri. Bila kesempatan habis, jawaban terakhir disimpan apa adanya, kunci jawaban tidak ditampilkan, dan tantangan tetap selesai dengan serpihannya.
 
 ## Bentuk berkas data
 
@@ -131,12 +131,12 @@ Satu sumber aturan, [`app/Libraries/BankRules.php`](../../app/Libraries/BankRule
 ## Mengimpor dan mengubah isi
 
 - Instalasi: `php spark db:seed DatabaseSeeder` mengimpor workbook ini (lewat `KontenKelas5Seeder`) lalu memasang gambar contoh. `php spark gelita:reset` (mengosongkan data uji coba sebelum penelitian) mengimpornya lagi.
-- Impor manual: **Panel GELITA → Konten permainan → Impor soal dari Excel**, atau `php spark gelita:bank:import docs/bank-soal/gelita-bank-soal-kelas5.xlsx --dry-run` lalu tanpa `--dry-run`. Impor ulang aman: data dicocokkan lewat kodenya. Kunci jawaban soal yang sudah dijawab siswa tidak dapat diubah.
+- Impor manual: menu panel **Konten → Impor bank soal** (`/admin/konten/impor-bank`: unggah, pemeriksaan tanpa menulis, lalu **Simpan soal ke permainan**), atau `php spark gelita:bank:import docs/bank-soal/gelita-bank-soal-kelas5.xlsx --dry-run` lalu tanpa `--dry-run`. Impor ulang aman: data dicocokkan lewat kodenya. Kunci jawaban soal yang sudah dijawab siswa tidak dapat diubah.
 - Mengubah isi (hanya salah ketik yang jelas): sunting berkas data, jalankan `php docs/bank-soal/build-workbook.php`, lalu commit workbook-nya. `BankWorkbookGuideTest` gagal bila workbook belum dibangun ulang.
 
 ## Gambar tantangan (45 slot)
 
-Setiap slot langsung berisi **gambar contoh** (SVG bertulisan "GAMBAR CONTOH", `media_assets.is_placeholder = 1`) dari `php spark gelita:mockups`, agar sistem dapat diuji ujung ke ujung. Admin menggantinya satu per satu lewat **Gambar & suara** dengan kode berkas yang sama; gambar asli tidak pernah ditimpa gambar contoh. Karena gambar contoh menuliskan nama benda, Cari Objek dan pernyataan bergambar **belum layak untuk pengambilan data** sebelum gambar asli dipasang.
+Setiap slot langsung berisi **gambar contoh** (SVG bertulisan "GAMBAR CONTOH", `media_assets.is_placeholder = 1`) dari `php spark gelita:mockups`, agar sistem dapat diuji ujung ke ujung. Admin menggantinya satu per satu lewat **Konten → Gambar & mockup** (`/admin/media`) dengan kode berkas yang sama; gambar asli tidak pernah ditimpa gambar contoh. Karena gambar contoh menuliskan nama benda, Cari Objek dan pernyataan bergambar **belum layak untuk pengambilan data** sebelum gambar asli dipasang.
 
 | Kunci | Nama | Wilayah · tantangan | Isi gambar asli | Ukuran |
 |---|---|---|---|---|

@@ -63,7 +63,7 @@ Rekaman tidak perlu dipasang satu per satu. Selama nama berkasnya sama dengan ko
 
 **Cara memasang rekaman** (pilih salah satu; keduanya memakai `App\Libraries\NarrationImporter`):
 
-1. **Unggah lewat panel.** **Rekaman narasi → Unggah rekaman**: pilih bahasa, pilih banyak berkas sekaligus, lalu **Unggah sebagai draft**. Centang *Periksa nama saja* untuk mencocokkan nama tanpa menyimpan. Berkas disalin ke `public/assets/uploads/` dan ikut backup. Batas per unggahan mengikuti `upload_max_filesize`, `post_max_size`, dan `max_file_uploads` PHP (bawaan PHP 20 berkas); halaman itu menampilkan batas server yang berlaku.
+1. **Unggah lewat panel.** **Rekaman narasi → Unggah rekaman** (`/admin/konten/narasi/unggah`): pilih bahasa, pilih banyak berkas sekaligus, lalu **Unggah rekaman**; hasilnya berstatus draft. Centang *Periksa nama berkas saja, jangan simpan dulu* untuk mencocokkan nama tanpa menyimpan. Berkas disalin ke `public/assets/uploads/` dan ikut backup. Batas per berkas adalah yang terkecil dari `Config\Gelita::$maxUploadBytes` dan `upload_max_filesize` PHP; jumlah dan ukuran total per unggahan mengikuti `max_file_uploads` (bawaan PHP 20 berkas) dan `post_max_size`. Halaman itu menampilkan batas server yang berlaku, dan `admin/narration-upload.js` menahan pilihan yang pasti melebihinya.
 2. **Lewat folder.** Taruh berkas di `public/assets/audio/narasi/{id|en}/` (commit ke repositori, lalu deploy), kemudian jalankan:
 
    ```bash
@@ -72,7 +72,7 @@ Rekaman tidak perlu dipasang satu per satu. Selama nama berkasnya sama dengan ko
    php spark gelita:narration:import --locale=en      # satu bahasa
    ```
 
-   Tombol **Impor folder ID/EN** di halaman Unggah narasi melakukan hal yang sama. Berkas didaftarkan di tempatnya, tidak disalin.
+   Tombol **Ambil rekaman Indonesia / Inggris** (dan **Periksa dulu**) di halaman Unggah rekaman melakukan hal yang sama. Berkas didaftarkan di tempatnya, tidak disalin.
 
 **Yang terjadi pada setiap berkas yang cocok:** aset `audio.narasi.{locale}.{kode}` dibuat atau diganti; baris `audio_assets` berisi bahasa, tokoh baris itu (narator = kosong), konteks, transkrip = teks baris pada bahasa itu, durasi (MP3 dan WAV terbaca otomatis), cara produksi *rekaman sendiri*, dan status **draft**; lalu rekaman ditautkan ke baris naskahnya.
 
@@ -85,7 +85,7 @@ Rekaman tidak perlu dipasang satu per satu. Selama nama berkasnya sama dengan ko
 - Dari folder, rekaman yang diunggah lewat panel dan lebih baru dari berkas folder tidak ditimpa.
 - Satu kode dengan beberapa berkas (mis. `.mp3` dan `.wav`) memakai satu berkas menurut urutan mp3, m4a, ogg, wav; sisanya dilaporkan ganda.
 
-**Menyetujui.** Rekaman draft belum terdengar pemain. Di halaman **Narasi** setiap baris punya pemutar kecil untuk ID dan EN beserta statusnya (belum ada / draft / disetujui), dan tautan **Sunting** ke baris itu di editor dialog. Setelah didengarkan, tombol **Setujui semua rekaman Indonesia / Inggris** menyetujui seluruh narasi draft satu bahasa sekaligus (dengan konfirmasi). Yang ikut hanya audio narasi naskah; audio lain seperti narasi kartu misi tetap disetujui satu per satu di halaman Audio. Persetujuan massal tercatat di audit log sebagai `audio_approve_bulk` beserta jumlahnya.
+**Menyetujui.** Rekaman draft belum terdengar pemain. Di halaman **Rekaman narasi** (`/admin/konten/narasi`) setiap baris punya pemutar kecil untuk ID dan EN beserta statusnya (belum ada / menunggu persetujuan / disetujui), dan tautan **Sunting** ke baris itu di editor dialog (petunjuk Cari Objek: ke soalnya). Setelah didengarkan, tombol **Setujui semua rekaman Indonesia / Inggris** menyetujui seluruh narasi draft satu bahasa sekaligus (dengan konfirmasi). Yang ikut hanya audio narasi naskah dan petunjuk Cari Objek; audio lain seperti narasi kartu misi tetap disetujui satu per satu di halaman **Rekaman suara** (`/admin/media/audio`, dibuka dari **Gambar & mockup**). Persetujuan massal tercatat di audit log sebagai `audio_approve_bulk` beserta jumlahnya.
 
 ## Kamus pose dan efek
 
