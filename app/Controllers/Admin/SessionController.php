@@ -27,7 +27,7 @@ class SessionController extends BaseAdminController
         if ($this->wantsCsv()) {
             $sort = AdminTable::validSort((string) $this->request->getGet('sort'), $sorts) ?? '-started_at';
 
-            return $this->csvResponse('sesi', static fn ($handle) => AdminTable::streamCsv($builder, $columns, $handle, $sort, 'gs.id'));
+            return $this->tableCsv('sesi', $builder, $columns, $sort, 'gs.id', $filters);
         }
 
         $params = AdminTable::params($this->request, $sorts, '-started_at');
@@ -42,13 +42,14 @@ class SessionController extends BaseAdminController
     {
         $session = $this->requireInScope($sessionId);
         $columns = self::timelineColumns();
-        $builder = $this->timelineBuilder($sessionId, trim((string) ($this->request->getGet('type') ?? '')));
+        $type    = trim((string) ($this->request->getGet('type') ?? ''));
+        $builder = $this->timelineBuilder($sessionId, $type);
         $sorts   = self::sortable($columns);
 
         if ($this->wantsCsv()) {
             $sort = AdminTable::validSort((string) $this->request->getGet('sort'), $sorts) ?? 'sequence_no';
 
-            return $this->csvResponse('linimasa-' . $sessionId, static fn ($handle) => AdminTable::streamCsv($builder, $columns, $handle, $sort, 'e.id'));
+            return $this->tableCsv('linimasa-' . $sessionId, $builder, $columns, $sort, 'e.id', ['session_id' => $sessionId, 'type' => $type]);
         }
 
         $params   = AdminTable::params($this->request, $sorts, 'sequence_no');

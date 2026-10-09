@@ -53,7 +53,7 @@ app/Controllers/
 │   ├── ProfileController.php         profil siswa
 │   └── ReflectionController.php      Balai Refleksi (kritik & saran)
 ├── Admin/
-│   ├── BaseAdminController.php       panel(), filterOptions(), rawPage(), csvResponse(), back(), done(), modelErrors()
+│   ├── BaseAdminController.php       panel(), filterOptions(), rawPage(), csvResponse(), tableCsv(), back(), done(), modelErrors()
 │   ├── AuthController.php            masuk/keluar staf
 │   ├── AccountController.php         ganti sandi sendiri
 │   ├── DashboardController.php       beranda panel
@@ -571,6 +571,7 @@ Memakai trait `StaffScope`; lihat tabel [Route — API panel admin](#route--api-
 * `back($path, $pesan)` / `done($path, $pesan)` kembali dengan flash `error` / `message`; `modelErrors()` meneruskan penolakan validasi Model agar penyimpanan yang gagal tidak dilaporkan "tersimpan".
 * `StaffScope` (dipakai juga `Api\AdminApiController`): `schoolScope()` (`null` untuk admin, `school_id` untuk guru; guru tanpa sekolah → 0, tidak cocok dengan sekolah mana pun), `isAdmin()`, `staffId()`, `readFilters()`, `scopedFilters()` (memaksa `school_id` guru), `analytics()` (`AnalyticsService` terikat cakupan pemanggil), `dataScope($anonymous)` (`App\Services\StaffScope`: admin beridentitas kecuali diminta anonim, guru selalu anonim + sekolahnya) dan `rawData()` (`RawDataService` terikat cakupan itu; `page()`, `streamCsv()`). `readFilters()` menerima juga `participant_code`, `variant_group`, dan filter daftar siswa (`q`, `district_code`, `gender`, `age`, `progress`).
 * `rawCsvDownload($dimension, $filters)`: CSV satu tabel data mentah (nilai berkode, judul = kode kolom, UTF-8 + BOM) dalam cakupan pemanggil, audit `export_csv`; dipakai `?format=csv` tabel `/admin/data/{dimensi}`.
+* `tableCsv($name, $builder, $columns, $sort, $tieBreaker, $filters)`: CSV tabel daftar (`AdminTable::streamCsv()` lewat `csvResponse()`), audit `list_csv`; dipakai `?format=csv` Siswa, Sesi, linimasa sesi, dan Kritik & saran.
 
 ### `Admin\AuthController`
 
@@ -599,8 +600,8 @@ Aturan `login()`:
 | Controller::method | Aturan | View |
 |---|---|---|
 | `DashboardController::index()` | KPI hitungan dari `AnalyticsService::summary()` (siswa terdaftar, sesi aktif ≤ 10 menit, pengerjaan selesai hari ini, kritik & saran); admin: peringatan `ResearchReadiness` (gambar contoh, narasi belum disetujui, verifikasi konten) dan pratinjau penghapusan buatan retensi; tabel 20 event terakhir dan progres 10 siswa terbaru | `admin/dashboard` |
-| `ParticipantController::index()` | `AdminTable` di atas query siswa dalam cakupan (progres dari sesi terakhir). Filter `q` (kode, nama pengguna; nama untuk admin), `school_id`, `district_code`, `gender`, `age`, `progress` (`belum\|berjalan\|selesai`), `date_from`/`date_to` (tanggal daftar). Kolom Nama dan Nama pengguna (`identity`) tidak diambil untuk guru. `?format=csv` | `admin/participants/index` |
-| `ParticipantController::show($id)` | Siswa di luar cakupan → 404. Tab Profil, Sesi & perangkat, Progres (12 baris node), Kritik & saran dari query lokal; tab Pengerjaan, Jawaban (+ riwayat `percobaan` per baris), Navigasi, Bantuan dari `RawDataService::page()` dengan `participant_id`; `?format=csv` pada tab data mentah. Aksi: unduh XLSX/CSV-ZIP dan cetak PDF (`ExportController`), reset sandi | `admin/participants/show` |
+| `ParticipantController::index()` | `AdminTable` di atas query siswa dalam cakupan (progres dari sesi terakhir). Filter `q` (kode; nama pengguna dan nama hanya untuk admin), `school_id`, `district_code`, `gender`, `age`, `progress` (`belum\|berjalan\|selesai`), `date_from`/`date_to` (tanggal daftar). Kolom Nama dan Nama pengguna (`identity`) tidak diambil untuk guru. `?format=csv` | `admin/participants/index` |
+| `ParticipantController::show($id)` | Siswa di luar cakupan → 404. Tab Profil, Sesi & perangkat, Progres (12 baris node), Kritik & saran dari query lokal; tab Pengerjaan, Jawaban (+ riwayat `percobaan` per baris, seluruhnya lewat `RawDataService::all()`), Navigasi, Bantuan dari `RawDataService::page()` dengan `participant_id`; `?format=csv` pada tab data mentah. Aksi: unduh XLSX/CSV-ZIP dan cetak PDF (`ExportController`), reset sandi | `admin/participants/show` |
 | `ParticipantController::resetPassword($id)` | Lihat di bawah | `admin/participants/reset-result` |
 | `SessionController::index()` | `AdminTable`; filter kode siswa, sekolah, penelitian, bahasa, tanggal; `?format=csv` | `admin/sessions/index` |
 | `SessionController::show($id)` | Sesi di luar cakupan → 404. Ringkasan, pengerjaan di sesi itu, linimasa `game_event_logs` (urutan, waktu klien, waktu server, event, layar/tantangan/soal, payload JSON) dengan filter `?type=` | `admin/sessions/show` |

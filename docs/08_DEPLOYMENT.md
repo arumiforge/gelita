@@ -1197,7 +1197,7 @@ Bulanan: periksa tanggal kedaluwarsa sertifikat (pemeriksaan 8) dan jalankan sat
 | Staf selalu dikembalikan ke Ganti kata sandi | sandi sementara dari admin (reset / akun baru) belum diganti | ganti sandi di halaman itu; kewajiban hilang otomatis |
 | Admin lupa kata sandi | tidak ada admin lain yang dapat mereset di `/admin/staf` | L: `sudo -u www-data php spark gelita:staff:password admin`; W: `php spark gelita:staff:password admin` di PowerShell. Masuk dengan sandi sementara yang dicetak, lalu buat sandi baru (reset juga membuka kunci) |
 | Anak lupa kata sandi | — | guru mereset di `/admin/peserta/{id}`; anak membuat sandi baru saat masuk |
-| Anak lupa nama pengguna | — | guru mencarinya di `/admin/peserta` berdasarkan nama & sekolah |
+| Anak lupa nama pengguna | — | admin mencarinya di `/admin/peserta` berdasarkan nama & sekolah (guru tidak melihat nama maupun nama pengguna) |
 | "Terlalu banyak percobaan" | siswa 8 kali salah sandi (staf 5 kali) | tunggu 5 menit (staf 15 menit), atau reset sandi (reset juga membuka kunci) |
 | Pendaftaran terus ditolak | sandi belum memenuhi 5 syarat atau memuat nama pengguna | baca daftar syarat yang masih bertanda ✗ bersama anak |
 | Impor workbook di panel gagal | galat baris di workbook | buka pratinjau, perbaiki sheet & baris yang disebut, unggah ulang |

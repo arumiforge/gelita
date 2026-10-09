@@ -9,6 +9,7 @@ use App\Models\AuditLogModel;
 use App\Models\ParticipantModel;
 use App\Models\ResearchStudyModel;
 use App\Models\SchoolModel;
+use CodeIgniter\Database\BaseBuilder;
 use CodeIgniter\HTTP\DownloadResponse;
 use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -250,6 +251,35 @@ abstract class BaseAdminController extends BaseController
             ->setHeader('Content-Disposition', 'attachment; filename="' . $file . '"')
             ->setHeader('Cache-Control', 'no-store')
             ->setBody($body);
+    }
+
+    /**
+     * CSV of one list table (Siswa, Sesi, linimasa, Kritik & saran) via
+     * AdminTable::streamCsv(), recorded in the audit log as `list_csv` like
+     * the Data mentah CSV (`export_csv`). The free-text search `q` is logged
+     * only as present/absent, since it may hold a student's name.
+     *
+     * @param list<array<string, mixed>> $columns
+     * @param array<string, mixed>       $filters already forced to the caller's school scope
+     */
+    protected function tableCsv(string $name, BaseBuilder $builder, array $columns, ?string $sort, string $tieBreaker, array $filters): ResponseInterface
+    {
+        $rows     = 0;
+        $response = $this->csvResponse($name, static function ($handle) use ($builder, $columns, $sort, $tieBreaker, &$rows): void {
+            $rows = AdminTable::streamCsv($builder, $columns, $handle, $sort, $tieBreaker);
+        });
+
+        $search = trim((string) ($filters['q'] ?? '')) !== '';
+        unset($filters['q']);
+
+        model(AuditLogModel::class)->record('list_csv', [
+            'staff_user_id' => $this->staffId(),
+            'target_type'   => 'admin_table',
+            'target_id'     => $name,
+            'metadata'      => ['filters' => $filters, 'search' => $search, 'sort' => $sort, 'row_count' => $rows],
+        ]);
+
+        return $response;
     }
 
     /** Kembali ke halaman panel dengan pesan galat. */

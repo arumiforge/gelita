@@ -48,7 +48,7 @@ class ParticipantController extends BaseAdminController
         if ($this->wantsCsv()) {
             $sort = AdminTable::validSort((string) $this->request->getGet('sort'), $this->sortable($columns)) ?? '-created_at';
 
-            return $this->csvResponse('siswa', static fn ($handle) => AdminTable::streamCsv($builder, $columns, $handle, $sort, 'p.id'));
+            return $this->tableCsv('siswa', $builder, $columns, $sort, 'p.id', $this->scopedFilters($filters));
         }
 
         $params = AdminTable::params($this->request, $this->sortable($columns), '-created_at');
@@ -203,12 +203,12 @@ class ParticipantController extends BaseAdminController
         $search = trim((string) ($filters['q'] ?? ''));
 
         if ($search !== '') {
-            $builder->groupStart()
-                ->like('p.participant_code', $search)
-                ->orLike('p.username', $search);
+            $builder->groupStart()->like('p.participant_code', $search);
 
+            // Identity columns are admin-only; matching them for a teacher
+            // would confirm a username the teacher is not allowed to see.
             if ($this->isAdmin()) {
-                $builder->orLike('p.display_name', $search);
+                $builder->orLike('p.username', $search)->orLike('p.display_name', $search);
             }
 
             $builder->groupEnd();
@@ -248,7 +248,9 @@ class ParticipantController extends BaseAdminController
         $tries  = [];
 
         if ($tab === 'jawaban') {
-            $history = $raw->page('percobaan', $filters, 1, 10000, null);
+            // The whole history, not one page: page() caps at PER_PAGE, which
+            // left answers past the first 25 tries without their history.
+            $history = $raw->all('percobaan', $filters);
 
             foreach ($history['rows'] as $row) {
                 $tries[($row['attempt_id'] ?? '') . '|' . ($row['item_key'] ?? '')][] = $row;

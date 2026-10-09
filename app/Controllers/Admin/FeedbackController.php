@@ -23,7 +23,7 @@ class FeedbackController extends BaseAdminController
         if ($this->wantsCsv()) {
             $sort = AdminTable::validSort((string) $this->request->getGet('sort'), $sorts) ?? '-submitted_at';
 
-            return $this->csvResponse('kritik-saran', static fn ($handle) => AdminTable::streamCsv($builder, $columns, $handle, $sort, 'f.id'));
+            return $this->tableCsv('kritik-saran', $builder, $columns, $sort, 'f.id', $filters);
         }
 
         $params = AdminTable::params($this->request, $sorts, '-submitted_at');
