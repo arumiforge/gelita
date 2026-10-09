@@ -185,9 +185,20 @@ final class AdminTableViewTest extends CIUnitTestCase
         $this->assertStringNotContainsString('GLT-000001', $csv, 'CSV guru juga dibatasi sekolahnya');
         $this->assertSame(21, substr_count(trim($csv), "\n") + 1, 'judul + 20 baris');
 
+        // Quick search names only what a teacher can search (Dok 3 §11 audit, item 6)
+        $this->assertStringContainsString('placeholder="Cari kode siswa"', $html);
+
         // Menu admin tidak dirender; rutenya 404 bagi guru
         $this->assertStringNotContainsString('admin/konten', $html);
         $this->assertStringContainsString('admin/data', $html);
+    }
+
+    public function testLoginLayoutHasASkipLink(): void
+    {
+        $html = (string) $this->call(Method::GET, 'admin/login')->getBody();
+
+        $this->assertStringContainsString('<a class="skip-link" href="#auth-main">Langsung ke isi halaman</a>', $html);
+        $this->assertStringContainsString('id="auth-main"', $html);
     }
 
     private function asStaff(string $role, ?int $school = null): self

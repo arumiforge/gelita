@@ -660,7 +660,7 @@ magick identify -format "%f  %wx%h  %[colorspace]  %[channels]  %b\n" out/*
 
 Setiap butir di bawah menjadi satu kartu di halaman. Bentuknya:
 
-- **Kode berkas.** Untuk slot resmi, `asset_key` sekaligus nama berkas bawaan bila di-commit ke repositori (`MediaAssetSeeder` mencocokkan path tanpa ekstensi). Untuk konten, kode berkas diunggah lewat editor atau **Gambar & suara**.
+- **Kode berkas.** Untuk slot resmi, `asset_key` sekaligus nama berkas bawaan bila di-commit ke repositori (`MediaAssetSeeder` mencocokkan path tanpa ekstensi). Untuk konten, kode berkas diunggah lewat editor atau **Gambar & mockup**.
 - **Spesifikasi.** Ukuran, rasio, format, dan penegakan mengikuti §10.1. Butir hanya menyebut hal yang berbeda atau khusus.
 - **Prompt.** Bahasa Inggris dengan penanda blok §9.2. **Negatif** selalu `{NEGATIF}` ditambah frasa khusus butir.
 - **Cek.** Pemeriksaan khusus butir, di luar daftar umum §10.6.
@@ -1826,7 +1826,7 @@ Nomor `NN` mengikuti urutan butir target aktif (`NarrationImporter`). Menonaktif
 4. Olah ke ukuran tepat (§10.5). Tumpangkan templat §4.5.
 5. Jalankan daftar periksa §10.6. Guru atau budayawan memeriksa isi budaya dan fakta.
 6. Pasang:
-   - **Slot resmi** (`ui.*`, `bg.*`, `char.*`, `map.*`, `reward.*`): commit ke path bawaan di `public/assets/…`, deploy, lalu `php spark gelita:media:scan`. Atau unggah di **Gambar & suara** (`/admin/media`) dengan kode berkas yang sama.
+   - **Slot resmi** (`ui.*`, `bg.*`, `char.*`, `map.*`, `reward.*`): commit ke path bawaan di `public/assets/…`, deploy, lalu `php spark gelita:media:scan`. Atau unggah di **Gambar & mockup** (`/admin/media`) dengan kode berkas yang sama.
    - **Konten** (`challenge.*`, `library.*`, `passage.*`): unggah lewat editor node, butir, atau Pustaka, atau halaman Media dengan kode berkas persis.
    - **Ikon aplikasi:** timpa berkas di `public/assets/app/` dan `public/favicon.ico`, commit, deploy.
 7. Periksa **Media → Kelengkapan aset**. Mainkan layarnya di 1366 × 768, 1024 × 768, dan 844 × 390.

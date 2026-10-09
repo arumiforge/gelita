@@ -38,7 +38,6 @@ Last updated: 9 October 2026.
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `fix-admin-data` | §11 audit items 1–4: Jawaban tab history, username search, CSV audit, dead model methods | in progress |
 | `fix-admin-copy` | §11 audit items 5–6: "Gambar & mockup" in messages, admin layout lang keys, auth skip link | in progress |
 | `fix-game-details` | §11 audit items 7–9: Mbah Kedu pose, `statement_image` level code, `stage.css` comment | in progress |
 | `dok3-s12-uji-manual` | Dok 3 §12.3 container tests, §12.4 evidence, device checklist | in progress |

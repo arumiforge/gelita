@@ -21,6 +21,7 @@ $isStaff = (bool) session('staff_id');
 $role    = session('staff_role') === 'admin' ? lang('Admin.roleAdmin') : lang('Admin.roleGuru');
 $name    = (string) (session('staff_name') ?? '');
 $initial = mb_strtoupper(mb_substr($name !== '' ? $name : 'A', 0, 1));
+$search  = lang(session('staff_role') === 'admin' ? 'Admin.quickSearch' : 'Admin.quickSearchTeacher');
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -28,7 +29,7 @@ $initial = mb_strtoupper(mb_substr($name !== '' ? $name : 'A', 0, 1));
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex">
-  <title><?= esc($title !== '' ? $title : ($pageTitle ?? lang('Admin.panelTitle'))) ?> · Panel GELITA</title>
+  <title><?= esc($title !== '' ? $title : ($pageTitle ?? lang('Admin.panelTitle'))) ?> · <?= esc(lang('Admin.panelTitle')) ?></title>
   <meta name="csrf-token" content="<?= csrf_hash() ?>">
   <meta name="csrf-name" content="<?= csrf_token() ?>">
   <link rel="icon" href="<?= base_url('favicon.ico') ?>">
@@ -36,7 +37,7 @@ $initial = mb_strtoupper(mb_substr($name !== '' ? $name : 'A', 0, 1));
   <?= $this->renderSection('head') ?>
 </head>
 <body class="admin" data-locale="id" data-base="<?= esc(base_url()) ?>">
-  <a class="skip-link" href="#admin-main">Langsung ke isi halaman</a>
+  <a class="skip-link" href="#admin-main"><?= esc(lang('Admin.skipToContent')) ?></a>
 
   <div class="admin-shell">
     <?= $this->include('components/admin-sidebar') ?>
@@ -44,7 +45,7 @@ $initial = mb_strtoupper(mb_substr($name !== '' ? $name : 'A', 0, 1));
     <div class="admin-column">
       <header class="admin-topbar">
         <a class="topbar-menu" href="#admin-menu" aria-label="<?= esc(lang('Admin.openMenu'), 'attr') ?>"><?= icon('menu') ?></a>
-        <nav class="breadcrumb" aria-label="Breadcrumb">
+        <nav class="breadcrumb" aria-label="<?= esc(lang('Admin.breadcrumbLabel'), 'attr') ?>">
           <ol>
             <?php foreach ($crumbs as $crumb): ?>
               <li>
@@ -61,13 +62,13 @@ $initial = mb_strtoupper(mb_substr($name !== '' ? $name : 'A', 0, 1));
         <?php if ($isStaff): ?>
           <form class="topbar-search" method="get" action="<?= base_url('admin/peserta') ?>" role="search">
             <?= icon('search') ?>
-            <label class="visually-hidden" for="topbar-q"><?= esc(lang('Admin.quickSearch')) ?></label>
-            <input type="search" id="topbar-q" name="q" placeholder="Cari kode / nama pengguna siswa"
+            <label class="visually-hidden" for="topbar-q"><?= esc($search) ?></label>
+            <input type="search" id="topbar-q" name="q" placeholder="<?= esc($search, 'attr') ?>"
                    autocomplete="off" spellcheck="false" value="<?= esc(str_starts_with($path, 'admin/peserta') ? (string) (service('request')->getGet('q') ?? '') : '', 'attr') ?>">
           </form>
 
           <?php if (! empty($activeStudy)): ?>
-            <span class="topbar-study" title="Penelitian yang sedang berjalan">
+            <span class="topbar-study" title="<?= esc(lang('Admin.activeStudyTitle'), 'attr') ?>">
               <i class="dot is-ok" aria-hidden="true"></i><?= esc($activeStudy['code']) ?>
             </span>
           <?php endif ?>

@@ -897,6 +897,11 @@ Found during the audit and fixed in separate branches (see `docs/PROGRESS.md`):
 - **Item 3.** List-table CSVs go through `BaseAdminController::tableCsv()`, which writes audit action `list_csv` (`target_type` `admin_table`, `target_id` = file name such as `siswa` or `linimasa-12`, metadata = scoped filters, sort, row count). A new code rather than reusing `export_csv`, so existing audit rows keep their meaning. The search text is logged only as `search: true/false`, because it may hold a student's name.
 - **Item 4.** `ParticipantModel::cohortSummary()` and `ParticipantFeedbackModel::forStudy()` / `ratingDistribution()` removed with their private helpers; `docs/03` updated.
 
+### Follow-up: items 5–6 (branch `fix-admin-copy`)
+
+- **Item 5.** Fixed in PR #60 (`fix-menu-gambar-mockup`), which also rebuilt both workbooks; this branch took that version and only adds the same rename in `rencana-katalog-aset.md`.
+- **Item 6.** `layouts/admin.php` reads its text from `Admin.*` (`skipToContent`, `breadcrumbLabel`, `activeStudyTitle`, `panelTitle`). The quick search is role-aware: admins get `quickSearch` ("Cari kode, nama pengguna, atau nama siswa"), teachers `quickSearchTeacher` ("Cari kode siswa"), matching what each role can search (item 2). `layouts/auth.php` has a skip link to `#auth-main`.
+
 **Open, needs an owner decision:** the default study is seeded (and re-seeded by `gelita:reset`) as `active`, so the `ResearchReadiness` gate in `StudyController` never blocks data collection on a standard install; it only blocks switching a study to active. `docs/08` tells the admin to check the list by hand for now.
 
 ---
