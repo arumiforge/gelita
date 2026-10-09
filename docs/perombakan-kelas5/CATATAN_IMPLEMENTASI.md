@@ -1014,3 +1014,12 @@ Branch `sky/optimistic-hopper-eqqcbm`. The owner answered the open questions of 
 - **My interpretation of P7 + P11** (plan §8.7): online mode is automatic only where the device cannot store the package (no service worker, private mode, not enough storage). Lab profiles that are wiped on logout must download like any device, unless the admin turns on "Izinkan mode daring untuk perangkat lab". The owner can tighten or loosen this.
 - Fixed while editing: the plan mixed "Stage 5" and "Stage 7" for in-stage navigation; it is Stage 7 throughout. §2.7 now notes that media URLs carry `?v=` from the content hash since the media fix of the same day.
 - Effort estimate for Stages 0–6 goes from 18–27 to 20–30 person-days.
+
+## HUD controls without a frame (9 October 2026)
+
+Branch `sky/beautiful-ritchie-rd2s1t`. Owner request: "hapus background dan border hud di semua halaman game, teks yang ada di hud jika keterbacaan kurang, tambahkan background".
+
+- **No frame.** The HUD band was already gone; now its controls lose their pill background and border too: the sound, fullscreen, home, and logout buttons (`.hud .icon-btn`), the lantern toggle, the student chip, and the language switch. Icons and the lantern flame carry a drop shadow instead; hover enlarges the icon with a gold glow. The flame keeps its glow halo and the avatar keeps its gold disc: they are the lantern's light and the student's initial, not frames. The GELITA logo image on the account screens is unchanged.
+- **Backing behind text only.** Text cannot be guaranteed readable over owner-replaceable art, so every HUD text gets one dark, borderless backing, `--hud-backing` (`rgba(11, 19, 32, .75)`): the centre title (only when it has text), the brand, the language switch, the Back button, the name and `@username` (`.user-text`), and the shard count with its bar. The opacity is chosen so `--ink-dim` on the backing over pure white art is still ≥ 4.5:1 (about 4.8:1); hover uses `--hud-backing-hover`.
+- **Markup.** `components/lantern.php` wraps the count and the bar in `.lantern-meter` so they share one backing while the flame floats free. `hud.js` selectors (`.lantern-count b`, `.lantern-bar i`) are unchanged.
+- Checked by rendering the real `components/hud` (logged in, and with `hudBack`) over white, sky, gold, and dark art in Chromium. Tap targets are unchanged (40 dp icon buttons, 48 dp chip, lantern, and Back).

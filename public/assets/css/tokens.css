@@ -20,6 +20,9 @@
   /* Lapisan & garis */
   --veil: rgba(11, 19, 32, .55);
   --veil-strong: rgba(11, 19, 32, .82);
+  /* Backing behind HUD text: ink-dim on it stays ≥ 4.5:1 even over white art */
+  --hud-backing: rgba(11, 19, 32, .75);
+  --hud-backing-hover: rgba(27, 39, 64, .9);
   --line: rgba(223, 192, 135, .22);
   --line-strong: rgba(223, 192, 135, .45);
   --line-ink: rgba(234, 240, 250, .12);
