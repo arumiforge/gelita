@@ -2,7 +2,7 @@
 
 The single checklist of what is done and what is open. Decisions and their reasons go in `docs/perombakan-kelas5/CATATAN_IMPLEMENTASI.md`; this file only tracks state. Each session updates only its own rows, and ticks an item only once its PR is merged into `main`.
 
-Last updated: 9 October 2026.
+Last updated: 10 October 2026.
 
 ## Kelas 5 overhaul
 
@@ -38,11 +38,11 @@ Last updated: 9 October 2026.
 Owner decisions in its §12 (9 October 2026): full download before Mulai, admin on/off switch. Dok 3 is merged, so the plan's "before/after Dok 3" limits no longer apply; only the stage dependencies below do. Each stage is one parallel session and one PR into `main`. This file is kept by the coordinating session; stage sessions do not edit it.
 
 - **Wave 1** (started 9 October 2026, run in parallel)
-  - [ ] Stage 0 — baseline timing, `tools/qa/nav-timing.mjs` (`paket-0-ukur-dasar`)
-  - [ ] Stage 1 — package builder on the server, `gelita:paket:*`, `/api/paket/aktif` (`paket-1-pembangun`)
-  - [ ] Stage 1b — narration re-encoded at 48 kbps mono; merge only after the owner's listening test (`paket-1b-narasi`)
-  - [ ] Stage 4 — view transitions, image decode, short curtain (`paket-4-transisi`)
-  - [ ] Stage 5 — research data integrity §7.1 and §7.3 (`paket-5-integritas`)
+  - [ ] Stage 0 — baseline timing, `tools/qa/nav-timing.mjs` (`paket-0-ukur-dasar`, PR #78)
+  - [ ] Stage 1 — package builder on the server, `gelita:paket:*`, `/api/paket/aktif` (`paket-1-pembangun`, PR #75)
+  - [ ] Stage 1b — narration re-encoded at 48 kbps mono; merge only after the owner's listening test (`paket-1b-narasi`, PR #74)
+  - [ ] Stage 4 — view transitions, image decode, short curtain (`paket-4-transisi`, PR #77)
+  - [ ] Stage 5 — research data integrity §7.1 and §7.3 (`paket-5-integritas`, PR #76)
 - **Wave 2** (after Stage 1 is merged)
   - [ ] Stage 2 — package service worker and downloader
   - [ ] Stage 6 — Rilis → Paket aset panel with the on/off switch, study package lock (§7.2)
@@ -56,10 +56,9 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `sky/amazing-mendel-wuy2p7` | Raw data tables show answers as sentences by default, with a switch to the stored JSON | PR open |
 | `sky/zealous-ritchie-653apc` | Asset package: wave plan and coordination (this file) | PR open |
-| `paket-0-ukur-dasar` | Asset package Stage 0: baseline timing | in progress |
-| `paket-1-pembangun` | Asset package Stage 1: package builder | in progress |
-| `paket-1b-narasi` | Asset package Stage 1b: narration 48 kbps | in progress |
-| `paket-4-transisi` | Asset package Stage 4: transitions, decode, curtain | in progress |
-| `paket-5-integritas` | Asset package Stage 5: research data integrity | in progress |
+| `paket-0-ukur-dasar` | Asset package Stage 0: baseline timing | PR open |
+| `paket-1-pembangun` | Asset package Stage 1: package builder | PR open |
+| `paket-1b-narasi` | Asset package Stage 1b: narration 48 kbps | PR open |
+| `paket-4-transisi` | Asset package Stage 4: transitions, decode, curtain | PR open |
+| `paket-5-integritas` | Asset package Stage 5: research data integrity | PR open |
