@@ -2,7 +2,7 @@
 /**
  * Gambar & mockup — `/admin/media` → MediaController::index (Dok 3 §8.3)
  *
- * Tabel slot: pratinjau, kode, label, isi yang diharapkan (`description`),
+ * Tabel slot: pratinjau, kode, label (link to the slot detail page), isi yang diharapkan (`description`),
  * ukuran tampil & berkas, status (Asli / Gambar contoh / Kosong), dipakai
  * di; filter status dan jenis; tombol **Unggah gambar asli** per slot
  * (admin/media-upload.js mengisi kotak unggah; tanpa JavaScript, tautan
@@ -12,11 +12,21 @@
  * @var list<array<string, mixed>>        $assets
  * @var array<string, array{0: int, 1: int}> $assetSizes pola asset_key → [lebar, tinggi] berkas (px)
  * @var array<string, array{0: int, 1: int}> $displaySizes pola asset_key → ukuran tampil di panggung 1280 × 720 (dp, Dok 3 §6)
- * @var array<int, list<string>>              $usage      media_asset_id → tempat pemakaian (MediaUsage)
+ * @var array<int, list<array{label: string, path: string|null, edit: string|null}>> $usage media_asset_id → uses (MediaUsage)
  * @var array{at: string, findings: list<array{asset_key: string, issue: string}>}|null $scan
  * @var string                                $status     '' | asli | mockup | kosong
  * @var string                                $type       '' | image | video
+ * @var string                                $group      '' | ImageSlots::GROUPS code
+ * @var string                                $region     '' | region code
+ * @var string                                $node       '' | challenge ref (tmg-1), set by the checklist link
+ * @var string                                $query      free text on key, label, description
+ *
+ * Label and "Isi yang diharapkan" fall back to App\Libraries\ImageSlots for
+ * official slots (logo, backgrounds, maps, characters) whose rows carry no
+ * label; challenge images keep the text from the question bank.
  */
+use App\Libraries\ImageSlots;
+
 $sizeFrom = static function (array $sizes, string $key): ?array {
     foreach ($sizes as $pattern => $size) {
         if ($pattern === $key || fnmatch($pattern, $key)) {
@@ -42,8 +52,32 @@ foreach ($visual as $row) {
     }
 }
 
-$shown = array_values(array_filter($visual, static fn (array $row): bool => ($status === '' || $slotStatus($row) === $status)
-    && ($type === '' || $row['asset_type'] === $type)));
+// Official slot text where the row has none
+$visual = array_map(static function (array $row): array {
+    $slot               = ImageSlots::describe((string) $row['asset_key']);
+    $row['slot_group']  = ImageSlots::groupOf((string) $row['asset_key']);
+    $row['slot_region'] = ImageSlots::regionOf((string) $row['asset_key']);
+    $row['label']       = trim((string) ($row['label'] ?? '')) !== '' ? $row['label'] : ($slot['label'] ?? null);
+    $row['description'] = trim((string) ($row['description'] ?? '')) !== '' ? $row['description'] : ($slot['content'] ?? null);
+    $row['priority']    = $slot['priority'] ?? null;
+
+    return $row;
+}, $visual);
+$needle = mb_strtolower($query ?? '');
+$shown  = array_values(array_filter($visual, static fn (array $row): bool => ($status === '' || $slotStatus($row) === $status)
+    && ($type === '' || $row['asset_type'] === $type)
+    && (($group ?? '') === '' || $row['slot_group'] === $group)
+    && (($region ?? '') === '' || $row['slot_region'] === $region)
+    && (($node ?? '') === '' || preg_match('/^challenge\.(?:item\.)?' . preg_quote($node, '/') . '(?:-|\.)/', (string) $row['asset_key']) === 1)
+    && ($needle === '' || str_contains(mb_strtolower($row['asset_key'] . ' ' . $row['label'] . ' ' . $row['description']), $needle))));
+$groupCounts = array_count_values(array_column($visual, 'slot_group'));
+$filtered    = $status !== '' || $type !== '' || ($group ?? '') !== '' || ($region ?? '') !== '' || ($node ?? '') !== '' || $needle !== '';
+$withoutFilter = static function (string $name) use ($status, $type, $group, $region, $node, $query): string {
+    $params = array_filter(['status' => $status, 'jenis' => $type, 'kelompok' => $group, 'wilayah' => $region, 'tantangan' => $node, 'cari' => $query], static fn ($v): bool => $v !== '' && $v !== null);
+    unset($params[$name]);
+
+    return base_url('admin/media') . ($params === [] ? '' : '?' . http_build_query($params));
+};
 $labels = ['asli' => 'Asli', 'mockup' => 'Gambar contoh', 'kosong' => 'Kosong'];
 ?>
 <?= $this->extend('layouts/admin') ?>
@@ -59,7 +93,7 @@ $labels = ['asli' => 'Asli', 'mockup' => 'Gambar contoh', 'kosong' => 'Kosong'];
 <?php $actions = ob_get_clean() ?>
 <?= component('partials/admin-head', [
     'title'   => 'Gambar & mockup',
-    'lead'    => 'Setiap slot punya kode berkas (mis. challenge.tmg-4.scene) yang menentukan tempat gambar tampil. Gambar contoh (mockup) menuliskan isi yang diharapkan; ganti dengan gambar asli sebelum pengambilan data.',
+    'lead'    => 'Setiap slot punya kode berkas (mis. challenge.tmg-4.scene) yang menentukan tempat gambar tampil. Buka Detail untuk melihat isi gambar yang diharapkan, ukuran, dan halaman permainan tempat gambar itu tampil, lalu unggah dari sana. Prompt pembuatan gambar ada di Katalog Aset tim (cari dengan kode berkasnya). Gambar contoh (mockup) harus diganti gambar asli sebelum pengambilan data.',
     'actions' => $actions,
 ]) ?>
 <?= $this->include('partials/flash') ?>
@@ -90,6 +124,31 @@ $labels = ['asli' => 'Asli', 'mockup' => 'Gambar contoh', 'kosong' => 'Kosong'];
 
 <form method="get" class="filter-bar" aria-label="Filter slot">
   <div class="field">
+    <label for="f-cari">Cari</label>
+    <input type="search" id="f-cari" name="cari" value="<?= esc($query ?? '', 'attr') ?>" maxlength="80" placeholder="kode, nama, atau isi gambar">
+  </div>
+  <div class="field">
+    <label for="f-kelompok">Kelompok</label>
+    <select id="f-kelompok" name="kelompok">
+      <option value="">Semua kelompok</option>
+      <?php foreach (ImageSlots::GROUPS as $code => $label): ?>
+        <?php if (isset($groupCounts[$code])): ?>
+          <option value="<?= $code ?>"<?= ($group ?? '') === $code ? ' selected' : '' ?>><?= esc($label) ?> (<?= $groupCounts[$code] ?>)</option>
+        <?php endif ?>
+      <?php endforeach ?>
+    </select>
+  </div>
+  <div class="field">
+    <label for="f-wilayah">Wilayah</label>
+    <select id="f-wilayah" name="wilayah">
+      <option value="">Semua wilayah</option>
+      <?php foreach (config('Gelita')->levelPrefixes as $code): ?>
+        <option value="<?= $code ?>"<?= ($region ?? '') === $code ? ' selected' : '' ?>><?= esc(ucfirst($code)) ?></option>
+      <?php endforeach ?>
+    </select>
+  </div>
+  <?php if (($node ?? '') !== ''): ?><input type="hidden" name="tantangan" value="<?= esc($node, 'attr') ?>"><?php endif ?>
+  <div class="field">
     <label for="f-status">Status</label>
     <select id="f-status" name="status">
       <option value="">Semua status</option>
@@ -107,20 +166,26 @@ $labels = ['asli' => 'Asli', 'mockup' => 'Gambar contoh', 'kosong' => 'Kosong'];
     </select>
   </div>
   <div class="filter-actions">
-    <?php if ($status !== '' || $type !== ''): ?>
+    <?php if ($filtered): ?>
       <a class="btn btn-quiet" href="<?= base_url('admin/media') ?>">Atur ulang</a>
     <?php endif ?>
     <button class="btn btn-primary" type="submit"><?= icon('filter') ?> Terapkan</button>
   </div>
-  <?php if ($status !== '' || $type !== ''): ?>
+  <?php if ($filtered): ?>
     <div class="filter-chips" aria-label="Filter aktif">
       <span class="filter-chips-label">Filter aktif:</span>
-      <?php if ($status !== ''): ?>
-        <span class="chip filter-chip">Status: <b><?= esc($labels[$status]) ?></b> <a href="<?= base_url('admin/media' . ($type !== '' ? '?jenis=' . $type : '')) ?>" aria-label="Lepas filter Status"><?= icon('cross') ?></a></span>
-      <?php endif ?>
-      <?php if ($type !== ''): ?>
-        <span class="chip filter-chip">Jenis: <b><?= $type === 'image' ? 'Gambar' : 'Video' ?></b> <a href="<?= base_url('admin/media' . ($status !== '' ? '?status=' . $status : '')) ?>" aria-label="Lepas filter Jenis"><?= icon('cross') ?></a></span>
-      <?php endif ?>
+      <?php foreach ([
+          'cari'      => ['Cari', $query ?? ''],
+          'kelompok'  => ['Kelompok', ImageSlots::GROUPS[$group ?? ''] ?? ''],
+          'wilayah'   => ['Wilayah', ucfirst($region ?? '')],
+          'tantangan' => ['Tantangan', $node ?? ''],
+          'status'    => ['Status', $labels[$status] ?? ''],
+          'jenis'     => ['Jenis', $type === 'image' ? 'Gambar' : ($type === 'video' ? 'Video' : '')],
+      ] as $name => [$title, $value]): ?>
+        <?php if ($value !== ''): ?>
+          <span class="chip filter-chip"><?= esc($title) ?>: <b><?= esc($value) ?></b> <a href="<?= esc($withoutFilter($name), 'attr') ?>" aria-label="Lepas filter <?= esc($title, 'attr') ?>"><?= icon('cross') ?></a></span>
+        <?php endif ?>
+      <?php endforeach ?>
     </div>
   <?php endif ?>
 </form>
@@ -146,6 +211,8 @@ $labels = ['asli' => 'Asli', 'mockup' => 'Gambar contoh', 'kosong' => 'Kosong'];
     'paginate'     => false,
     'emptyMessage' => 'Tidak ada slot dengan status ini.',
     'render'       => [
+        // The label opens the slot detail page (the action column can sit off-screen in the wide table)
+        'label'     => static fn (array $row): string => '<a href="' . esc(base_url('admin/media/' . (int) $row['id']), 'attr') . '">' . esc((string) ($row['label'] ?? '')) . '</a>',
         'thumb' => static function (array $row): string {
             // Slot kosong: jangan minta berkas ke server
             if ($row['asset_type'] !== 'image' || ! $row['is_active']) {
@@ -172,24 +239,32 @@ $labels = ['asli' => 'Asli', 'mockup' => 'Gambar contoh', 'kosong' => 'Kosong'];
         },
         'slot_status' => static fn (array $row): string => '<span class="badge is-' . $row['slot_status'] . '">' . esc($labels[$row['slot_status']]) . '</span>',
         'usage' => static function (array $row) use ($usage): string {
-            $slot  = App\Libraries\MediaUsage::slotLabel((string) $row['asset_key']);
+            $slot  = ImageSlots::describe((string) $row['asset_key']);
             $where = $usage[(int) $row['id']] ?? [];
 
-            if ($slot === null && $where === []) {
+            if ($slot !== null && $slot['priority'] === 'unused') {
+                return '<span class="is-empty">belum dipakai permainan</span>';
+            }
+
+            // Official slots list their screens; content rows list their uses
+            $lines = $where !== [] ? array_map(static fn (array $u): array => [$u['label'], $u['path']], $where) : ($slot['screens'] ?? []);
+
+            if ($lines === []) {
                 return '<span class="is-empty">belum dipakai</span>';
             }
 
-            $html = $slot === null ? '' : '<span class="cell-sub">' . esc($slot) . '</span>';
+            $html = '';
 
-            foreach (array_slice($where, 0, 3) as $label) {
-                $html .= '<span class="cell-sub">' . esc($label) . '</span>';
+            foreach (array_slice($lines, 0, 3) as [$label, $path]) {
+                $html .= '<span class="cell-sub">' . esc($label) . ($path === null ? '' : ' <code>' . esc($path) . '</code>') . '</span>';
             }
 
-            return $html . (count($where) > 3 ? '<span class="cell-sub">dan ' . (count($where) - 3) . ' tempat lain</span>' : '');
+            return $html . (count($lines) > 3 ? '<span class="cell-sub">dan ' . (count($lines) - 3) . ' tempat lain (lihat Detail)</span>' : '');
         },
         'actions' => static function (array $row): string {
             $key    = (string) $row['asset_key'];
-            $upload = '<button type="button" class="btn btn-sm' . ($row['is_active'] && (int) ($row['is_placeholder'] ?? 0) === 0 ? '' : ' btn-primary') . '" data-upload-key="' . esc($key, 'attr') . '" hidden>'
+            $detail = '<a class="btn btn-sm" href="' . esc(base_url('admin/media/' . (int) $row['id']), 'attr') . '">' . icon('info') . ' Detail</a>';
+            $upload = $detail . '<button type="button" class="btn btn-sm' . ($row['is_active'] && (int) ($row['is_placeholder'] ?? 0) === 0 ? '' : ' btn-primary') . '" data-upload-key="' . esc($key, 'attr') . '" hidden>'
                 . icon('upload') . ' Unggah gambar asli</button>'
                 . '<a class="btn btn-sm no-js-only" href="' . esc(base_url('admin/media?asset_key=' . rawurlencode($key)) . '#unggah', 'attr') . '">' . icon('upload') . ' Unggah</a>';
 
