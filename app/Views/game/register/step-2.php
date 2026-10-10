@@ -31,7 +31,10 @@ $country = $val('country_code') ?: 'ID';
 
 <?= $this->section('content') ?>
 <section class="register" data-step="2">
-  <div class="panel-parchment register-panel stage-box">
+  <?= component('character', ['character' => 'jaka', 'pose' => 'happy', 'class' => 'start-jaka stage-box']) ?>
+
+  <div class="register-panel ornate-panel stage-box">
+    <?= $this->include('partials/ornate-frame') ?>
     <?= $this->include('game/register/_head') ?>
 
     <form method="post" action="<?= base_url('daftar/2') ?>" class="form register-form" data-step="2" autocomplete="off">

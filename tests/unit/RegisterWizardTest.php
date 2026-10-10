@@ -91,6 +91,22 @@ final class RegisterWizardTest extends CIUnitTestCase
         $this->send(Method::GET, 'daftar/1')->assertOK();   // kembali ke langkah selesai tetap boleh
     }
 
+    public function testStepsMatchTheStartScreen(): void
+    {
+        $poses = ['1' => 'happy', '2' => 'happy', '3' => 'bow'];
+        $_SESSION[RegisterController::WIZARD] = ['1' => self::ABOUT, '2' => self::SCHOOL];
+
+        foreach ($poses as $step => $pose) {
+            $html = (string) $this->send(Method::GET, 'daftar/' . $step)->getBody();
+
+            $this->assertStringContainsString('register-panel ornate-panel stage-box', $html, "step {$step}");
+            $this->assertStringContainsString('class="ornate"', $html, "step {$step}: gold frame");
+            $this->assertStringNotContainsString('panel-parchment', $html, "step {$step}");
+            $this->assertMatchesRegularExpression('/class="character character-jaka start-jaka stage-box"\s+data-character="jaka" data-pose="' . $pose . '"/', $html, "step {$step}");
+            $this->assertSame(1, substr_count($html, 'data-character="jaka"'), "step {$step}: Jaka only once");
+        }
+    }
+
     public function testBackSitsInTheHudWithTheLogoCentred(): void
     {
         $back = ['1' => 'mulai', '2' => 'daftar/1', '3' => 'daftar/2'];

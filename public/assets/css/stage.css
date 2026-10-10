@@ -312,8 +312,9 @@ body.game {
 .login-panel    { --x: 432; --y: 96; --w: 560; --h: 576; }
 .password-panel { --x: 360; --y: 72; --w: 560; --h: 576; }
 
-/* ---------- Daftar `/daftar/1…3`: kepala 0–64, isian gulir 64–496, bilah tombol 496–576 ---------- */
-.register-panel { --x: 200; --y: 72; --w: 880; --h: 576; }
+/* ---------- Daftar `/daftar/1…3`: Jaka like /mulai (.start-jaka); inside the panel the
+   head is 32–96 (below the crest), the fields scroll, the button bar is the last 80 ---------- */
+.register-panel { --x: 432; --y: 96; --w: 784; --h: 576; }
 
 /* ---------- Sinematik: cerita pembuka `/intro`, penutup `/penutup` ---------- */
 .cine-stage   { --x: 64;  --y: 136; --w: 300; --h: 520; }
