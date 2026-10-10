@@ -56,6 +56,7 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `sky/confident-noether-id40gg` | Display fixes on `/masuk` (crest under the HUD logo), `/daftar/3` (fields hidden below the tips box), registration error labels, and `/daftar` in the dark ornate design | PR open |
 | `sky/zealous-ritchie-653apc` | Asset package: wave plan and coordination (this file) | PR open |
 | `paket-0-ukur-dasar` | Asset package Stage 0: baseline timing | PR open |
 | `paket-1-pembangun` | Asset package Stage 1: package builder | PR open |
