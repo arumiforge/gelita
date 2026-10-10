@@ -168,6 +168,7 @@ Namespace `App\Controllers\Api`, grup `api` dengan filter `jsonResponse`. POST m
 |---|---|---|---|---|---|
 | GET | `/api/auth/username-available?u=` | `AuthApiController::usernameAvailable` | `jsonResponse` | 20/menit per hash IP | Umpan balik nama pengguna saat mengetik di `/daftar/3` |
 | GET | `/api/schools/lookup?npsn=` | `SchoolApiController::lookup` | `jsonResponse` | 60/menit per hash IP | Kartu "Benar ini sekolahmu?" di `/daftar/2` |
+| GET | `/api/paket/aktif` | `PackageApiController::active` | `jsonResponse` | — | Active asset package (`package_code`, `manifest_url`, `manifest_sha256`; `package_code: null` when package mode is off). `Cache-Control: no-store`, no login. See `docs/rencana-paket-aset.md` §5.3 |
 | GET | `/api/session` | `SessionApiController::show` | `jsonResponse`, `apiSession` | — | Bootstrap payload |
 | POST | `/api/session/locale` | `SessionApiController::setLocale` | `jsonResponse`, `apiSession` | — | Ganti bahasa sesi |
 | POST | `/api/session/heartbeat` | `SessionApiController::heartbeat` | `jsonResponse`, `apiSession` | — | Perbarui aktivitas |

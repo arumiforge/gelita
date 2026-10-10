@@ -1603,6 +1603,9 @@ Semua opsi bernilai menerima `--opsi nilai` maupun `--opsi=nilai` (trait `App\Co
 | `gelita:media:scan [--check-only]` | `MediaAssetSeeder` lalu `MediaIntegrity`; audit `media_scan` (FITUR 13) | ada temuan |
 | `gelita:library:thumbnails [--force]` | poster video Pustaka (FITUR 8) | ada yang gagal |
 | `gelita:narration:import [--locale=id\|en] [--dry-run]` | impor narasi dari folder (FITUR 13a); audit `narration_import` | ada berkas gagal atau `--locale` tidak dikenal |
+| `gelita:paket:bangun […]` | `AssetPackageBuilder::build()`; audit `package_build` (asset package Stage 1) | build fails (file cannot be copied, code changed during the build) |
+| `gelita:paket:periksa [kode]` | `AssetPackageMaintenance::verify()` | no package, or any file/manifest mismatch |
+| `gelita:paket:bersihkan [--hapus …] [--coba]` | `AssetPackageMaintenance::prune()`; audit `package_prune` | a package to delete is unknown or still named by a release |
 | `gelita:schools:import [--file=…] [--dry-run] [--link-existing]` | daftar sekolah resmi (FITUR 10c) | impor gagal |
 | `gelita:staff:password USERNAME` | sandi sementara staf (FITUR 10a) | nama pengguna kosong/tidak ditemukan |
 | `gelita:retention:run` | `RetentionService::run()` (FITUR 17) | retensi melempar galat |

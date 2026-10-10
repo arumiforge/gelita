@@ -130,6 +130,10 @@ if (! function_exists('media_src')) {
     /**
      * URL media aktif dari peta media ber-cache (ContentRepository::mediaMap()).
      * Bila tidak ada / nonaktif → $fallback, atau assets/ui/placeholder.svg.
+     *
+     * While an asset package is active (AssetPackageService), an asset that is
+     * in the package gets its content-addressed package URL (assets/p/…);
+     * assets added after the build keep their normal URL.
      */
     function media_src(?int $mediaAssetId, ?string $fallback = null): string
     {
@@ -141,7 +145,7 @@ if (! function_exists('media_src')) {
 
         $path = service('contentRepository')->mediaMap()[$mediaAssetId] ?? null;
 
-        return $path ? base_url($path) : $placeholder;
+        return $path ? base_url(service('assetPackages')->urlForId($mediaAssetId) ?? $path) : $placeholder;
     }
 }
 
@@ -182,7 +186,8 @@ if (! function_exists('media_key_src')) {
     {
         $path = service('contentRepository')->mediaKeyMap()[$assetKey] ?? null;
 
-        return $path ? base_url($path) : null;
+        // Package URL while an asset package is active (see media_src())
+        return $path ? base_url(service('assetPackages')->urlForKey($assetKey) ?? $path) : null;
     }
 }
 
@@ -291,7 +296,7 @@ if (! function_exists('audio_src')) {
         }
 
         $row = db_connect()->table('audio_assets aa')
-            ->select('ma.storage_path, ma.sha256')
+            ->select('ma.id, ma.storage_path, ma.sha256')
             ->join('media_assets ma', 'ma.id = aa.media_asset_id')
             ->where('aa.id', $audioAssetId)
             ->where('aa.approval_status', 'approved')
@@ -299,7 +304,13 @@ if (! function_exists('audio_src')) {
             ->get()
             ->getRow();
 
-        return $row ? base_url(\App\Libraries\MediaStore::versionedPath((string) $row->storage_path, $row->sha256)) : null;
+        if (! $row) {
+            return null;
+        }
+
+        // Narration is packaged too (see media_src())
+        return base_url(service('assetPackages')->urlForId((int) $row->id)
+            ?? \App\Libraries\MediaStore::versionedPath((string) $row->storage_path, $row->sha256));
     }
 }
 

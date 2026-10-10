@@ -88,6 +88,7 @@ Master wilayah administratif Indonesia tidak disimpan di database. Daftarnya ber
 | | [`library_media`](#library_media) | `001600` | Gambar/video halaman Pustaka |
 | C. Media dan audio | [`media_assets`](#media_assets) | `000700` | Semua berkas gambar, video, suara, frame tokoh |
 | | [`audio_assets`](#audio_assets) | `000800` | Rekaman suara bertranskrip dan berstatus persetujuan |
+| | [`asset_packages`](#asset_packages) | `003000` | Asset packages built from active media and code (download-once package, `docs/rencana-paket-aset.md`) |
 | D. Data penelitian mentah | [`challenge_attempts`](#challenge_attempts) | `001900` | Satu pengerjaan tantangan |
 | | [`item_responses`](#item_responses) | `002000` | Keadaan akhir satu soal dalam satu pengerjaan |
 | | [`item_tries`](#item_tries) | `002100` | Satu percobaan satu soal (insert-only) |
@@ -615,6 +616,31 @@ Rekaman suara bertranskrip: narasi cerita, petunjuk Cari Objek, dan rekaman ungg
 
 Tabel ini tanpa `created_at`/`updated_at`. Hanya rekaman `approved` dengan berkas aktif yang dikirim ke pemain (`audio_src()`). Rekaman narasi bawaan (TTS di `public/assets/audio/narasi/{id,en}/`, 100 per bahasa: 88 baris cerita + 12 petunjuk Cari Objek) didaftarkan `php spark gelita:narration:import` sebagai `draft`, lalu disetujui admin di panel **Rekaman narasi**. Importer menautkan rekaman ke `dialogues.audio_id_asset_id` / `audio_en_asset_id` dan, untuk petunjuk `petunjuk-{node}-NN`, ke `challenge_items.audio_prompt_id` / `audio_prompt_en_id`.
 
+#### `asset_packages`
+
+*(New section, English.)* One row per asset package (`docs/rencana-paket-aset.md` §5.4), written by `App\Services\AssetPackageBuilder` (`php spark gelita:paket:bangun`, later the admin panel). The files are not in the database: media are copied content-addressed to `public/assets/p/{sha256[0:16]}.{ext}`, game code to `public/assets/k/{code_version}/`, the manifest to `public/paket/{package_code}.json`, and the URL map used by the media helpers to `writable/paket/{package_code}.php`. A release uses a package when `game_releases.asset_version` equals its `package_code`; any other value (the old default `1`) means package mode is off.
+
+| Kolom | Tipe | Null | Bawaan | Arti |
+|---|---|---|---|---|
+| id | BIGINT UNSIGNED | tidak | AUTO | PK |
+| package_code | VARCHAR(30) | tidak | — | UNIQUE. `pkt-YYYY-MM-DD-NN`; also the release's `asset_version` |
+| app_version | VARCHAR(30) | tidak | — | Code version at build time (active release's `app_version`, or `--versi-aplikasi`) |
+| code_version | VARCHAR(60) | ya | NULL | Code folder name `{app_version}-{hash of the code files[0:8]}` under `assets/k/` |
+| content_version | VARCHAR(30) | ya | NULL | Active release's `content_version` at build time |
+| manifest_sha256 | CHAR(64) | ya | NULL | sha256 of the manifest file; sent by `GET /api/paket/aktif` |
+| total_bytes | BIGINT UNSIGNED | tidak | 0 | Sum of the file sizes in the manifest |
+| file_count | INT UNSIGNED | tidak | 0 | Files in the manifest |
+| groups_json | JSON | ya | NULL | Bytes per group (`kode`, `inti`, `wilayah-*`, `penutup`) |
+| warnings_json | JSON | ya | NULL | Build warnings `[{code, key, detail}]`: `placeholder`, `narration_not_approved`, `over_budget`, `file_missing`, `hash_mismatch`, `library_copy_failed` |
+| status | VARCHAR(20) | tidak | `membangun` | Stored codes: `membangun` (batch build running) \| `dibangun` (built) \| `terbit` (published) \| `ditarik` (withdrawn). INDEX |
+| built_by | BIGINT UNSIGNED | ya | NULL | FK `staff_users.id` SET NULL; NULL for the CLI |
+| built_at | DATETIME(6) | ya | NULL | Build finished |
+| published_at | DATETIME(6) | ya | NULL | Set by the admin panel (Stage 6) |
+| notes | TEXT | ya | NULL | |
+| created_at, updated_at | DATETIME(6) | tidak | NOW, NOW↻ | |
+
+`gelita:reset` does not touch this table (group E). `gelita:paket:bersihkan` deletes package files no row refers to, and builds left in `membangun` for more than 24 hours.
+
 ### D. Data penelitian mentah
 
 Tabel ini diisi server selama permainan (`App\Services\ChallengeService`, `EventService`, `SessionService`). Penilaian benar/salah hanya dilakukan server memakai kunci di database; nilai `correct` yang dikirim browser diabaikan.
@@ -1080,7 +1106,7 @@ Nilai bawaan penting: `game_sessions.locale = 'id'`, `game_sessions.status = 'ac
 | B. Konten tantangan | `hints`, `challenge_items`, `reading_passages`, `challenge_nodes` | Dikosongkan, lalu 12 tantangan dibangun ulang dan bank soal kelas 5 diimpor ulang (kecuali `--tanpa-bank`) |
 | C. Pengaturan | `research_studies`, `game_releases`, `learning_indicators` | Dikosongkan, lalu diisi nilai bawaan |
 | D. Sebagian | `schools`, `staff_users` | Sekolah `is_verified = 0` dibuang; akun staf tetap (kunci login dibuka), kecuali akun guru dengan `--hapus-guru` |
-| E. Tidak disentuh | `levels`, `dialogues`, `library_pages`, `library_media`, `media_assets`, `audio_assets` | Pustaka, cerita, media, dan audio tetap |
+| E. Tidak disentuh | `levels`, `dialogues`, `library_pages`, `library_media`, `media_assets`, `audio_assets`, `asset_packages` | Pustaka, cerita, media, audio, dan paket aset tetap (rilis bawaan sesudah reset tidak memakai paket) |
 
 Siswa simulasi dari `php spark gelita:simulasi` (nama pengguna `sim_NNN`, sekolah ketikan "Sekolah Simulasi …" yang `is_verified = 0`) adalah baris biasa di tabel kelompok A dan D, jadi ikut terhapus reset.
 
