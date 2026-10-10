@@ -1023,3 +1023,95 @@ Branch `sky/beautiful-ritchie-rd2s1t`. Owner request: "hapus background dan bord
 - **Backing behind text only.** Text cannot be guaranteed readable over owner-replaceable art, so every HUD text gets one dark, borderless backing, `--hud-backing` (`rgba(11, 19, 32, .75)`): the centre title (only when it has text), the brand, the language switch, the Back button, the name and `@username` (`.user-text`), and the shard count with its bar. The opacity is chosen so `--ink-dim` on the backing over pure white art is still ≥ 4.5:1 (about 4.8:1); hover uses `--hud-backing-hover`.
 - **Markup.** `components/lantern.php` wraps the count and the bar in `.lantern-meter` so they share one backing while the flame floats free. `hud.js` selectors (`.lantern-count b`, `.lantern-bar i`) are unchanged.
 - Checked by rendering the real `components/hud` (logged in, and with `hudBack`) over white, sky, gold, and dark art in Chromium. Tap targets are unchanged (40 dp icon buttons, 48 dp chip, lantern, and Back).
+
+## Asset package — Stage 0: baseline timing (October 2026)
+
+Branch `paket-0-ukur-dasar` (from `main` after PR #71), 9 October 2026. Scope: `docs/rencana-paket-aset.md` §10 row "0. Ukur dasar" and §11.3. The script `tools/qa/nav-timing.mjs` measures screen switches and language switches on the reference network. The numbers below are the baseline that Stages 1, 1b, 4, and 5 are compared against. No app code changed.
+
+**How to run.** From a fresh development setup (README §Instalasi: `composer install`, `.env`, `migrate`, `db:seed DatabaseSeeder`, `gelita:narration:import` with the narration approved) plus `apt install nginx php8.3-fpm`:
+
+```bash
+node tools/qa/nav-timing.mjs --serve --runs=20
+```
+
+- `--serve` starts a private nginx + php-fpm built at run time from `deploy/linux/nginx/gelita-https.conf` on `https://localhost:8443/`: HTTPS + HTTP/2, the production cache headers (`?v=` → immutable, everything else `no-cache` → 304), gzip, and `CI_ENVIRONMENT=production` (no debug toolbar). A generated `auto_prepend_file` sets the base URL and environment before `.env` loads, so `.env` is not touched. Everything lives in `writable/qa/nav/server/` and stops with the script. `php spark serve` is not comparable: single process, HTTP/1.1, no ETag/Last-Modified, so a warm visit downloads everything again.
+- Chromium (Playwright), viewport 1280 × 720, throttled through CDP `Network.emulateNetworkConditions` to 1 Mbps down, 1 Mbps up, 150 ms latency. Service workers are blocked: `sw.js` only handles navigations as a pass-through, and requests it makes would escape the throttling.
+- The script registers a test student, plays every challenge with throwaway answers until the tries run out (as `stage-check.mjs`), and registers a second student for the locked library. Development database only.
+- Output: `writable/qa/nav/nav-{time}.json` (every sample with its request list) and `nav-{time}-summary.json` (p50/p95), plus a table on stdout. Ignored by git (`/writable/qa/`).
+
+**What is measured.** Per screen of Dok 3 §4 (region Temanggung for per-region screens), 20 runs each:
+
+- *cold*: HTTP cache cleared just before the navigation (`Network.clearBrowserCache`), i.e. the first screen on a fresh device; *warm*: the same screen again right after, every asset in the HTTP cache.
+- *ready*: navigation start → the page module is initialised (`body[data-page-ready]`) and no curtain covers the stage, or the stage waits for a "tap to start" card (`gate` column). This is the "first meaningful paint of the stage".
+- *decoded*: navigation start → every picture on the stage loaded and decoded (`<img>`, SVG `<image>` puzzle pieces, CSS background images; `img.decode()`). This is S2 without the tap. S3 is the number of those pictures still loading at *ready*.
+- *Lang switch*: tap ID/EN → the reloaded screen ready with its pictures decoded (S4). Both directions, warm cache.
+- *Tap path*: real clicks peta → wilayah → misi → tantangan (warm). S1 is tap → first visual change: a curtain played by the link on the old page, otherwise the new page's first paint.
+- Requests and bytes per navigation (CDP), split HTML / API / same-origin assets / external, with the count of 304 revalidations. Bytes are transferred bytes (compressed, with headers); cache hits count 0.
+
+**Baseline** (9 October 2026, `main` at PR #71, 20 runs, p50 / p95 in ms; Chromium 141 in a cloud container; no errors):
+
+| Screen | Cold: ready | Cold: decoded | Warm: FCP | Warm: ready | Warm: decoded | Lang switch: decoded | Cold requests (HTML/API/assets/ext) · KB | Warm requests (304) · KB |
+|---|--:|--:|--:|--:|--:|--:|--:|--:|
+| awal | 1467 / 1485 | 1467 / 1486 | 352 / 436 | 594 / 607 | 595 / 608 | 800 / 822 | 1/0/23/0 · 133 | 24 (14) · 8 |
+| mulai | 1467 / 1596 | 1468 / 1597 | 360 / 388 | 599 / 647 | 600 / 648 | 802 / 821 | 1/0/23/0 · 134 | 24 (14) · 8 |
+| masuk | 1890 / 1961 | 1891 / 1962 | 364 / 412 | 936 / 1132 | 937 / 1133 | 1148 / 1324 | 1/0/27/0 · 145 | 28 (18) · 9 |
+| daftar-1 | 2081 / 2324 | 2082 / 2325 | 352 / 384 | 928 / 1062 | 929 / 1064 | 1133 / 1165 | 1/0/29/0 · 185 | 30 (17) · 9 |
+| gerbang | 1473 / 1579 | 1476 / 1581 | 304 / 316 | 594 / 728 | 596 / 730 | 805 / 845 | 1/1/26/0 · 135 | 28 (14) · 9 |
+| ganti-sandi | 1657 / 1793 | 1658 / 1794 | 300 / 308 | 758 / 929 | 759 / 931 | 973 / 1006 | 1/1/24/0 · 137 | 26 (15) · 9 |
+| intro (narrator-tap) | 2006 / 2257 | 2013 / 2263 | 372 / 400 | 1106 / 1144 | 1113 / 1149 | 1344 / 1614 | 1/1/26/0 · 147 | 28 (17) · 13 |
+| peta | 2302 / 2435 | 2314 / 2446 | 316 / 324 | 1169 / 1302 | 1180 / 1311 | 1375 / 1535 | 1/1/32/0 · 217 | 34 (19) · 19 |
+| dialog-temanggung (narrator-tap) | 2137 / 2267 | 2148 / 2280 | 360 / 388 | 1130 / 1251 | 1142 / 1263 | 1358 / 1380 | 1/1/29/0 · 192 | 31 (17) · 15 |
+| wilayah-temanggung | 2177 / 2258 | 2179 / 2262 | 304 / 320 | 1093 / 1211 | 1095 / 1214 | 1306 / 1589 | 1/1/31/0 · 195 | 33 (19) · 11 |
+| misi-temanggung-1 | 1475 / 1737 | 1477 / 1738 | 300 / 304 | 592 / 610 | 594 / 611 | 806 / 826 | 1/1/26/0 · 123 | 28 (14) · 9 |
+| tantangan-temanggung-1 | 2359 / 2473 | 2364 / 2477 | 300 / 304 | 1126 / 1257 | 1130 / 1260 | 1331 / 1494 | 1/2/33/0 · 199 | 36 (20) · 13 |
+| misi-temanggung-2 | 1464 / 1477 | 1466 / 1479 | 300 / 312 | 591 / 611 | 593 / 613 | 806 / 986 | 1/1/26/0 · 123 | 28 (14) · 9 |
+| tantangan-temanggung-2 | 2342 / 2472 | 2344 / 2474 | 300 / 312 | 1127 / 1291 | 1129 / 1293 | — | 1/2/32/0 · 196 | 35 (20) · 12 |
+| misi-temanggung-3 | 1475 / 1576 | 1476 / 1578 | 304 / 316 | 594 / 613 | 595 / 614 | 806 / 869 | 1/1/26/0 · 123 | 28 (14) · 9 |
+| tantangan-temanggung-3 | 2495 / 2675 | 2499 / 2680 | 300 / 316 | 1289 / 1556 | 1292 / 1559 | — | 1/2/34/0 · 199 | 37 (21) · 12 |
+| misi-temanggung-4 | 1470 / 1478 | 1472 / 1480 | 300 / 304 | 594 / 731 | 596 / 732 | 805 / 822 | 1/1/26/0 · 123 | 28 (14) · 9 |
+| tantangan-temanggung-4 | 2421 / 2590 | 2426 / 2594 | 304 / 316 | 1128 / 1281 | 1132 / 1285 | — | 1/2/41/0 · 208 | 44 (20) · 12 |
+| selesai-temanggung-1 | 1935 / 2739 | 1937 / 2742 | 316 / 336 | 913 / 1061 | 915 / 1063 | 1137 / 1157 | 1/1/28/0 · 180 | 30 (16) · 10 |
+| hasil-temanggung-1 | 1461 / 1723 | 1463 / 1725 | 300 / 304 | 593 / 729 | 595 / 731 | 805 / 819 | 1/1/26/0 · 123 | 28 (14) · 9 |
+| tuntas-temanggung (narrator-tap) | 2128 / 2288 | 2132 / 2292 | 364 / 384 | 1108 / 1258 | 1111 / 1262 | 1313 / 1336 | 1/1/29/0 · 189 | 31 (17) · 12 |
+| pustaka-rak | 2039 / 2159 | 5747 / 6004 | 308 / 316 | 957 / 1178 | 1046 / 1182 | 1240 / 1310 | 1/2/30/9 · 618 | 40 (18) · 20 |
+| pustaka-temanggung | 2075 / 2423 | 4467 / 5216 | 332 / 344 | 1246 / 1345 | 1260 / 1354 | 1322 / 1425 | 1/2/30/15 · 330 | 43 (2) · 63 |
+| pustaka-terkunci-temanggung | 1460 / 1477 | 1462 / 1479 | 300 / 304 | 594 / 612 | 596 / 613 | 806 / 958 | 1/1/26/0 · 135 | 28 (14) · 9 |
+| profil | 1473 / 1476 | 1476 / 1479 | 304 / 316 | 607 / 626 | 610 / 629 | 819 / 835 | 1/1/26/0 · 124 | 28 (14) · 10 |
+| refleksi | 2192 / 2442 | 2194 / 2445 | 304 / 316 | 1093 / 1276 | 1095 / 1279 | 1306 / 1491 | 1/1/30/0 · 188 | 32 (18) · 11 |
+| penutup (narrator-tap) | 2124 / 2423 | 2128 / 2428 | 364 / 380 | 1091 / 1241 | 1096 / 1246 | 1307 / 1332 | 1/1/29/0 · 188 | 31 (17) · 12 |
+
+| Tap path (warm) | S1 response | FCP | ready | decoded | requests (304) · KB |
+|---|--:|--:|--:|--:|--:|
+| peta→wilayah | 7 / 16 | 2122 / 2134 | 2943 / 3218 | 2946 / 3220 | 35 (17) · 38 |
+| wilayah→misi | 297 / 305 | 297 / 305 | 643 / 812 | 645 / 814 | 30 (12) · 36 |
+| misi→tantangan | 13 / 15 | 1529 / 1534 | 2396 / 2694 | 2400 / 2698 | 37 (17) · 40 |
+
+Language switch on a challenge screen (Susun Gambar, Temanggung 1): 1331 / 1494 ms.
+
+**Compared with the targets (§1.2, Stage 4 values):**
+
+| Target | Baseline (p95) | Gap |
+|---|---|---|
+| S1 tap → visual response ≤ 100 ms | 15–16 ms when the link plays a curtain (peta → wilayah, misi → tantangan); 305 ms on links without one (wilayah → misi: the old page stays until the new one paints) | met only on curtain links |
+| S2 tap → new screen with all pictures decoded ≤ 400 ms | warm navigation 608–1559 ms (most screens 1.1–1.3 s); tap path 814–3220 ms; cold 1.5–6.0 s | 2–8 × over |
+| S3 no picture appears late | 0 late on every screen except Pustaka (1–3 Wikimedia pictures arrive after the stage, cold and warm) | met except Pustaka |
+| S4 language switch ≤ 400 ms | 822–1614 ms | 2–4 × over |
+
+**Why the slow screens are slow:**
+
+1. **JavaScript start, not bytes, dominates warm screens.** Warm: first paint ≈ 300 ms (HTML 4–15 KB, one RTT plus PHP), but the page module is ready only at 600 ms (simple screens) to 1.1–1.3 s (peta, wilayah, tantangan, narrated screens). Warm screens move only 8–20 KB, yet 14–21 of their 24–44 requests are 304 revalidations: the 14–20 JS modules without `?v=` and the fonts. The module imports run in tiers (`game.js` → `core/*` → page module → `engines/*`), and each tier waits one RTT for its 304s. Screens with a page module and engine (peta, tantangan, Pustaka, dialogue) pay two to three extra tiers. This is §3 item 2.
+2. **Cold screens carry the shared bundle.** 120–220 KB per cold screen: CSS 49 KB (6 files), JS 41–60 KB (14–20 files), fonts 27–95 KB (3–7 files). At 1 Mbps that is 1.0–1.8 s before any picture.
+3. **Pustaka loads its pictures from Wikimedia Commons.** The shelf pulls 9 external pictures (431 KB cold, decoded at 5.7–6.0 s); a region book 15 external requests (133 KB). Even warm, 9–13 external requests go out and 1–3 pictures still arrive after the stage. The asset package removes this only if the library pictures are copied locally (§2.2, P4a).
+4. **Curtains add fixed time on the tap path.** peta → wilayah plays the "Menuju {wilayah}" curtain (1.8–2.4 s) before navigating: tap → ready 2.9–3.2 s. misi → tantangan plays the challenge curtain (1.2–1.5 s): 2.4–2.7 s. They answer S1 instantly but hide items 1–2.
+5. **The language switch is a full reload plus a POST and redirect.** Two HTML round trips, then the same 304 tiers as a warm screen: ≈ 200 ms over the warm screen time.
+
+**Limits of the measurement.**
+
+- **Few pictures in the dev database.** Only the 45 challenge mockups (small SVG) and the library links exist. Backgrounds, maps, character frames, and the logo are uploaded by the admin on the server (§2.2), so most screens show 2 empty picture slots and 0 pictures. Picture bytes and decode times here are a lower bound: on the server each screen adds a 1920 × 1080 background (≤ 450 KB), and maps (≤ 600 KB) and character frames (≤ 250 KB each). At 1 Mbps, one 450 KB background adds about 3.6 s cold. Re-run against a copy of the server's `public/assets/uploads/` (or on the server with a test study) before the Stage 4 comparison.
+- **Narration audio is outside the window.** Audio starts after the "tap to start" card or later, so it is not in the per-screen bytes.
+- No CPU throttling, and Chromium on a container CPU rather than a Chromebook or iPad. Script parse and image decode will be slower on the reference devices. Manual runs on real devices stay in §11.3.
+- CDP throttling adds the latency per request, not per packet, and uses one connection pool for the page. TLS and HTTP/2 come from the real nginx.
+- Warm here means "just visited", with the HTTP cache full. A real first visit to a screen mid-game (shared CSS/JS/fonts cached, screen pictures not) sits between cold and warm.
+- Runs from one container on 9 October; p95 over 20 runs. The spread between runs is small (p95 within 10–25 % of p50 except Pustaka and a few cold outliers).
+
+**Observed while measuring (not fixed, app code is out of scope).** Once in about a dozen registrations the new student's PHP session was gone on the next request: the student landed on `/masuk`, and the server log shows a CSRF rejection of `POST /api/events` in the same second. It looks like a race between the session regeneration at registration (`session.regenerateDestroy = true`) and the page's event beacon. The script now logs in again when this happens. Worth a look; a real student would be asked to log in right after registering.
