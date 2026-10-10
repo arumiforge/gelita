@@ -154,6 +154,8 @@ Daftar sekolah resmi dipasang `SchoolSeeder` saat instalasi dan `php spark gelit
 
 Kedua endpoint tanpa login dibatasi per hash IP: `/api/auth/username-available` 20 request/menit, `/api/schools/lookup` 60 request/menit.
 
+Neither endpoint opens the session (`LocaleFilter::STATELESS_PATHS`), so their responses carry no `Set-Cookie`. A username check that answers after the step 3 submit therefore cannot put the pre-registration session cookie back and log the new student out.
+
 ---
 
 ## FITUR 2: Masuk, Melanjutkan Sesi, dan Catatan Perangkat

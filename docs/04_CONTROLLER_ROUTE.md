@@ -89,7 +89,7 @@ Alias di `Config\Filters::$aliases`; kelas aplikasi ada di `app/Filters/`.
 
 | Alias | Kelas | Dipasang | Fungsi |
 |---|---|---|---|
-| `locale` | `LocaleFilter` | global, before | Menentukan bahasa: `?lang=id\|en` (GET non-API; disimpan ke session lalu redirect tanpa query) → `session('locale')` → `game_sessions.locale` sesi aktif → bawaan `id`. Panel (`/admin`, `/api/admin`) selalu `id`. |
+| `locale` | `LocaleFilter` | global, before | Menentukan bahasa: `?lang=id\|en` (GET non-API; disimpan ke session lalu redirect tanpa query) → `session('locale')` → `game_sessions.locale` sesi aktif → bawaan `id`. Panel (`/admin`, `/api/admin`) selalu `id`. The no-login API paths in `LocaleFilter::STATELESS_PATHS` (`/api/auth/username-available`, `/api/schools/lookup`, `/api/paket/aktif`) use the default `id` and never open the session, so their responses carry no `Set-Cookie`. |
 | `secureheaders` | `CodeIgniter\Filters\SecureHeaders` | global, after | Header keamanan bawaan. |
 | `csrf` | `CodeIgniter\Filters\CSRF` | semua POST/PUT/PATCH/DELETE | Token dari field `gelita_csrf` atau header `X-CSRF-TOKEN`. |
 | `clientHints` | `ClientHintsFilter` | after, path `/`, `mulai`, `masuk`, `daftar`, `daftar/*` | Mengirim `Accept-CH` (`Config\Gelita::$clientHints`) agar peramban Chromium mengirim Client Hints entropi tinggi pada POST `/masuk` dan `/daftar/3` (`App\Libraries\DeviceProfile`, `device_logs`). |
