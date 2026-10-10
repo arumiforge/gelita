@@ -38,6 +38,21 @@ try {
 Compress-Archive -Path ([IO.Path]::Combine($c.App, 'public', 'assets', 'uploads')) `
     -DestinationPath (Join-Path $c.Dir "gelita-uploads-$stamp.zip") -Force
 
+# 2b. Asset packages from gelita:paket:bangun (docs/rencana-paket-aset.md 5.2),
+#     only on the server. Two archives, because public\paket and writable\paket
+#     would both end up as 'paket' at the root of one zip. Folders that do not
+#     exist yet (no package built) are skipped.
+$paketPublik = @('p', 'k') | ForEach-Object { [IO.Path]::Combine($c.App, 'public', 'assets', $_) }
+$paketPublik += [IO.Path]::Combine($c.App, 'public', 'paket')
+$paketPublik = @($paketPublik | Where-Object { Test-Path $_ })
+if ($paketPublik.Count -gt 0) {
+    Compress-Archive -Path $paketPublik -DestinationPath (Join-Path $c.Dir "gelita-paket-$stamp.zip") -Force
+}
+$paketPeta = [IO.Path]::Combine($c.App, 'writable', 'paket')
+if (Test-Path $paketPeta) {
+    Compress-Archive -Path $paketPeta -DestinationPath (Join-Path $c.Dir "gelita-paket-peta-$stamp.zip") -Force
+}
+
 # 3. Konfigurasi - memuat encryption.key dan kredensial. Copy-Item mewarisi
 #    stempel waktu .env; tanpa baris kedua, salinan dari .env yang tidak berubah
 #    lebih dari 30 hari langsung terhapus langkah 4 dan tidak pernah disalin.

@@ -936,7 +936,7 @@ php spark gelita:paket:bersihkan [--coba]      # delete package files no package
 - Building changes nothing for students. Package mode switches on when the active release's **Versi gambar & suara** (`game_releases.asset_version`) is the package code (until the admin switch of Stage 6 exists: create a release with that value and activate it). Any other value, such as the default `1`, means package mode is off.
 - Emergency kill switch: `gelita.paket.aktif = false` in `.env` forces normal URLs on every device, whatever the release says. `GET /api/paket/aktif` then answers `package_code: null` with `disabled_by_server: true`.
 - The build copies the library's Commons images to `public/assets/uploads/library.commons.*` (owner decision P4a). The server needs outbound HTTPS to `commons.wikimedia.org` and `upload.wikimedia.org`; without it the build only warns and those images stay external links.
-- `public/assets/p/`, `public/assets/k/`, `public/paket/`, and `writable/paket/` belong in the backup next to `public/assets/uploads/`. `backup.sh`/`backup.ps1` do not archive them yet (open follow-up); until then, after restoring a server run `php spark gelita:paket:bangun` again and point the release to the new code. A package referenced by a release must stay on the server even after newer packages exist (devices may still request its files).
+- `backup.sh`/`backup.ps1` archive `public/assets/p/`, `public/assets/k/`, `public/paket/`, and `writable/paket/` next to the uploads (see [Backup](#backup)). A package referenced by a release must stay on the server even after newer packages exist (devices may still request its files).
 - Nginx: the `$gelita_is_asset` map gives `/assets/p/`, `/assets/k/`, and `/paket/pkt-*.json` the value `2`, which `$gelita_cache` turns into `public, max-age=31536000, immutable` without `?v=`. These URLs never change content: media are named by their sha256, code lives in a per-version folder (`{app_version}-{hash of the code files}`), and a package code is never reused (deleted codes leave a marker in `writable/paket/`).
 
 ```nginx
@@ -1042,9 +1042,10 @@ Hasil setiap tugas terlihat di Task Scheduler (*Last Run Result*: `0x0` berhasil
 
 Isi setiap backup:
 
-1. **Database, tanpa isi `ci_sessions`.** Tabel sesi memuat IP mentah dan data sesi siswa (lihat [Tata kelola data anak](#tata-kelola-data-anak)) dan tidak berguna setelah dipulihkan. Strukturnya tetap ikut, sehingga hasil pulih berisi 30 tabel.
+1. **Database, tanpa isi `ci_sessions`.** Tabel sesi memuat IP mentah dan data sesi siswa (lihat [Tata kelola data anak](#tata-kelola-data-anak)) dan tidak berguna setelah dipulihkan. Strukturnya tetap ikut, sehingga hasil pulih berisi 31 tabel.
 2. **`public/assets/uploads/`**: gambar dan rekaman yang diunggah lewat panel, gambar contoh, dan poster video Pustaka; satu-satunya aset yang tidak ada di git.
-3. **Salinan `.env`**, yang memuat `encryption.key`.
+3. **Asset packages** (`public/assets/p/`, `public/assets/k/`, `public/paket/`, `writable/paket/`), built on the server by `gelita:paket:bangun`; skipped while no package has been built.
+4. **Salinan `.env`**, yang memuat `encryption.key`.
 
 Backup disimpan 30 hari di lokasi pertama lalu disalin ke lokasi kedua. **Backup yang hanya ada di mesin yang sama dengan datanya bukan backup.** Bila salinan kedua gagal, skrip keluar dengan kode **2** dan mencetak peringatan, sehingga kegagalan terlihat oleh cron dan Task Scheduler.
 
@@ -1054,6 +1055,7 @@ Backup memuat data pribadi anak dan kredensial. Folder backup hanya dapat dibaca
 |---|---|---|
 | Database | `mysqldump --defaults-extra-file=backup.cnf --single-transaction --quick --no-tablespaces --default-character-set=utf8mb4 --ignore-table=gelita.ci_sessions`, ditambah struktur `ci_sessions` (`--no-data`), di-gzip ke `gelita-db-{stamp}.sql.gz.part`, diuji `gzip -t`, baru diganti nama | dua `mysqldump` dengan `--result-file` (pengalihan `>` di PowerShell 5.1 menulis UTF-16), dikemas ke `gelita-db-{stamp}.zip`; berkas `.sql` sementara selalu dihapus |
 | Unggahan | `tar czf gelita-uploads-{stamp}.tar.gz` | `Compress-Archive` → `gelita-uploads-{stamp}.zip` |
+| Asset packages | `tar czf gelita-paket-{stamp}.tar.gz -C $APP` with the four folders as relative paths (missing ones skipped) | `gelita-paket-{stamp}.zip` (`p`, `k`, `paket` from `public/`) and `gelita-paket-peta-{stamp}.zip` (`writable/paket`); two archives because both `paket` folders would collide in one zip |
 | `.env` | `cp` → `gelita-env-{stamp}` | `Copy-Item` → `gelita-env-{stamp}.txt`, lalu `LastWriteTime` disetel ke waktu backup |
 | Simpan 30 hari | `find … -mtime +30 -delete` | `Get-ChildItem` + `Remove-Item` |
 | Salinan kedua | `rsync -a "$DIR/" "$KEDUA/"`; gagal → kode 2 | salin berkas yang belum ada ke `Kedua`; gagal → kode 2 |
@@ -1090,7 +1092,7 @@ mysql -u root -p -e "DROP DATABASE gelita_uji;"
 Remove-Item $d -Recurse
 ```
 
-Di PowerShell, operator `<` tidak ada, jadi pemulihan memakai `source`. Kedua berkas `.sql` tidak saling bergantung, jadi urutannya bebas. Pemulihan ke database production (`gelita`) mengikuti langkah yang sama dengan mode pemeliharaan aktif; pulihkan juga `public/assets/uploads/` dari arsip unggahan dengan stempel waktu yang sama. Setelah itu, semua pengguna perlu login ulang karena `ci_sessions` kosong.
+Di PowerShell, operator `<` tidak ada, jadi pemulihan memakai `source`. Kedua berkas `.sql` tidak saling bergantung, jadi urutannya bebas. Pemulihan ke database production (`gelita`) mengikuti langkah yang sama dengan mode pemeliharaan aktif; pulihkan juga `public/assets/uploads/` dari arsip unggahan dengan stempel waktu yang sama. Restore the asset packages from the package archive of the same stamp as well: Jalur L `tar xzf gelita-paket-{stamp}.tar.gz -C /var/www/gelita`; Jalur W unpack `gelita-paket-{stamp}.zip` into `public\assets\` (`p`, `k`) and `public\` (`paket`), and `gelita-paket-peta-{stamp}.zip` into `writable\`. Then run `php spark gelita:paket:periksa`. Without them the game falls back to normal asset URLs on its own (the release's package has no URL map). Setelah itu, semua pengguna perlu login ulang karena `ci_sessions` kosong.
 
 ---
 
