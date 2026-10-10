@@ -315,76 +315,85 @@ body.is-challenge .lang-switch { display: none; }
 .password-panel .form { gap: var(--gap-3); }
 .password-panel h1 { margin: 0 0 var(--gap-3); font-size: var(--fs-h2); }
 
+/* Form controls on the ornate dark panel (/masuk, /daftar/1–3). The password
+   field is shared with the parchment /ganti-sandi, so its dark colours are
+   scoped here; status texts use the bright colours, not the parchment inks. */
+.ornate-panel .field > label, .ornate-panel .field > .label { color: var(--gold-300); }
+.ornate-panel .pw-toggle { border-color: var(--line-strong); background: rgba(255, 255, 255, .06); color: var(--gold-300); }
+.ornate-panel .pw-caps { color: var(--warn); }
+.ornate-panel .pw-rules li.is-met, .ornate-panel .pw-rules li.is-met::before { color: var(--ok); }
+.ornate-panel .pw-level.is-weak, .ornate-panel .pw-match.is-bad, .ornate-panel .username-status.is-bad { color: var(--bad); }
+.ornate-panel .pw-level.is-medium { color: var(--warn); }
+.ornate-panel .pw-level.is-strong, .ornate-panel .pw-match.is-ok, .ornate-panel .username-status.is-ok { color: var(--ok); }
+
 /* Masuk: ornate dark panel like /mulai */
 .login-panel .ornate-body { gap: var(--gap-2); }
 .login-panel .alert { margin: 0; }
 .login-panel .form { gap: var(--gap-3); }
-.login-panel label { color: var(--gold-300); }
-.login-panel .pw-toggle { border-color: var(--line-strong); background: rgba(255, 255, 255, .06); color: var(--gold-300); }
-.login-panel .pw-caps { color: var(--warn); }
 .login-foot { display: grid; gap: var(--gap-1); font-size: var(--fs-caption); text-align: center; }
 .login-foot p { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--gap-2); margin: 0; }
 .login-foot a { color: var(--gold-300); font-weight: 700; }
 .login-foot .muted { color: var(--ink-dim); }
 
-/* ---------- Pendaftaran ---------- */
-.register-panel {
-  display: grid;
-  grid-template-rows: 4rem minmax(0, 1fr);
-  padding: 0;
-}
+/* ---------- Pendaftaran ----------
+   Same look as /mulai and /masuk (10 Oct 2026): Jaka on the left, the ornate
+   dark panel with the head (title + stepper), scrolling fields, and the
+   button bar. */
+.register-panel { grid-template-rows: 4rem minmax(0, 1fr); }
 .register-head {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-content: center;
   column-gap: var(--gap-4);
-  padding: 0 var(--gap-6);
-  border-bottom: 1px solid rgba(138, 106, 50, .35);
+  padding: 0 var(--gap-6); /* clear of the corner ornaments */
+  border-bottom: 1px solid var(--line);
 }
-.register-head .eyebrow { grid-column: 1; font-size: .75rem; line-height: 1.3; }
+.register-head .eyebrow { grid-column: 1; margin: 0; color: var(--gold-500); font-size: .75rem; line-height: 1.3; }
 .register-head .reg-stepper { grid-column: 2; grid-row: 1 / span 2; align-self: center; }
-.register-head h1 { margin: 0; font-size: var(--fs-h3); line-height: 1.15; }
+.register-head h1 { margin: 0; color: var(--gold-300); font-size: var(--fs-h3); line-height: 1.15; }
 .register-form { display: grid; grid-template-rows: minmax(0, 1fr) 5rem; gap: 0; min-height: 0; }
-.register-fields { display: grid; align-content: start; gap: var(--gap-4); padding: var(--gap-4) var(--gap-6); }
+.register-fields { display: grid; align-content: start; gap: var(--gap-4); padding: var(--gap-4); }
 .register-fields > .alert { margin: 0; }
 
 /* Stepper 3 langkah (Dok 1 §10.3; tata letak 16:9 di Dok 3 §4) */
 .reg-stepper ol {
   display: flex;
-  gap: var(--gap-4);
+  gap: var(--gap-3);
   margin: 0;
   padding: 0;
   list-style: none;
 }
-.reg-stepper-item { display: flex; align-items: center; gap: var(--gap-2); color: var(--brown-700); opacity: .65; }
+.reg-stepper-item { display: flex; align-items: center; gap: var(--gap-2); color: var(--ink-dim); font-size: var(--fs-caption); }
 .reg-stepper-item a { display: inline-flex; align-items: center; gap: var(--gap-2); color: inherit; }
-.reg-stepper-item.is-active, .reg-stepper-item.is-done { opacity: 1; }
+.reg-stepper-item.is-active, .reg-stepper-item.is-done { color: var(--gold-300); }
 .reg-stepper-item.is-active { font-weight: 700; }
 .reg-stepper-no {
   display: grid;
   place-items: center;
   width: 2rem;
   height: 2rem;
-  border: .125rem solid var(--brown-700);
+  border: .125rem solid var(--line-strong);
   border-radius: 50%;
   font-family: var(--font-mono);
 }
 .reg-stepper-item.is-active .reg-stepper-no,
-.reg-stepper-item.is-done .reg-stepper-no { background: var(--brown-700); color: var(--parchment); }
-.register-actions { display: flex; justify-content: flex-end; align-items: center; gap: var(--gap-3); margin: 0; padding: 0 var(--gap-6); border-top: 1px solid rgba(138, 106, 50, .35); }
-.class-fixed { display: flex; align-items: center; gap: var(--gap-2); margin: 0; font-weight: 700; }
+.reg-stepper-item.is-done .reg-stepper-no { border-color: var(--gold-500); background: var(--gold-500); color: var(--navy-900); }
+.register-actions { display: flex; justify-content: flex-end; align-items: center; gap: var(--gap-3); margin: 0; padding: 0 var(--gap-7); border-top: 1px solid var(--line); }
+.class-fixed { display: flex; align-items: center; gap: var(--gap-2); min-height: var(--tap); margin: 0; font-weight: 700; }
+.class-fixed .icon { color: var(--gold-500); }
 .input-affix-lg input { font-size: var(--fs-h3); max-width: 8ch; }
 .choice-pill-lg { padding: var(--gap-3) var(--gap-5); font-size: var(--fs-h3); }
 .assent-check { align-items: flex-start; font-weight: 600; }
 
 .choice-pill {
+  align-items: center;
   padding: var(--gap-2) var(--gap-4);
-  border: 1px solid rgba(74, 50, 24, .4);
+  border: 1px solid var(--line-strong);
   border-radius: var(--radius-pill);
-  background: #FFFBF1;
+  background: rgba(11, 19, 32, .6);
 }
-.choice-pill:has(input:checked) { border-color: var(--brown-700); background: var(--parchment-dark); }
-.choice-pill { align-items: center; }
+.choice-pill:hover { border-color: var(--gold-500); }
+.choice-pill:has(input:checked) { border-color: var(--gold-500); background: rgba(199, 162, 101, .18); color: var(--gold-300); }
 .choice-pill input { margin-top: 0; }
 
 .region-other { display: none; }
@@ -405,37 +414,32 @@ body.is-challenge .lang-switch { display: none; }
 .school-card { display: grid; gap: var(--gap-1); }
 .school-card:has(p) {
   padding: var(--gap-3) var(--gap-4);
-  border: .125rem solid var(--brown-500);
+  border: .125rem solid var(--gold-600);
   border-radius: var(--radius-lg);
-  background: var(--parchment-dark);
+  background: linear-gradient(to right, rgba(199, 162, 101, .14), rgba(11, 19, 32, .6) 70%);
 }
 .school-card p { margin: 0; }
-.school-card-title { color: rgba(74, 50, 24, .78); font-size: var(--fs-caption); font-weight: 700; }
-.school-card-name { font-family: var(--font-display); font-size: var(--fs-h3); font-weight: 700; overflow-wrap: anywhere; }
+.school-card-title { color: var(--ink-dim); font-size: var(--fs-caption); font-weight: 700; }
+.school-card-name { color: var(--gold-300); font-family: var(--font-display); font-size: var(--fs-h3); font-weight: 700; overflow-wrap: anywhere; }
 .school-card-meta { font-size: var(--fs-caption); }
-.school-card-warn { color: var(--bad-ink, var(--bad)); font-weight: 700; }
+.school-card-warn { color: var(--bad); font-weight: 700; }
 .school-card.is-checking:has(p) { border-style: dashed; }
 .school-card.is-missing:has(p) { border-color: var(--bad); }
 .school-manual { display: grid; gap: var(--gap-1); }
 
+/* Compact so the username field shows without scrolling (fields start below the box) */
 .why-strong {
-  display: grid;
-  grid-template-columns: 13.75rem 1fr;
-  align-items: start;
-  gap: var(--gap-4);
-  padding: var(--gap-5);
-  border: .125rem solid var(--brown-500);
+  padding: var(--gap-3) var(--gap-4);
+  border: 1px solid var(--line-strong);
   border-radius: var(--radius-lg);
-  background:
-    radial-gradient(ellipse at 100% 0%, rgba(255, 255, 255, .6), transparent 60%),
-    var(--parchment-dark);
+  background: linear-gradient(to right, rgba(199, 162, 101, .12), rgba(11, 19, 32, .6) 60%);
 }
-.why-strong-title { display: flex; align-items: center; gap: var(--gap-2); margin: 0 0 var(--gap-2); font-size: var(--fs-h3); }
-.why-strong-body p { margin-bottom: var(--gap-3); }
-.why-strong-tips { display: grid; gap: var(--gap-1); margin: 0; padding-left: var(--gap-5); }
-.why-strong-tips li::marker { color: var(--brown-500); }
-.why-strong-jaka .character-img { max-height: 18.75rem; }
-.why-strong-jaka .character-fallback { width: 5.5rem; font-size: var(--fs-h2); }
+.why-strong-title { display: flex; align-items: center; gap: var(--gap-2); margin: 0 0 var(--gap-1); color: var(--gold-300); font-size: var(--fs-body); }
+.why-strong-title .icon { color: var(--gold-500); }
+.why-strong-body { font-size: var(--fs-caption); line-height: 1.35; }
+.why-strong-body p { margin: 0 0 var(--gap-2); color: var(--ink-dim); }
+.why-strong-tips { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap-1) var(--gap-5); margin: 0; padding-left: var(--gap-4); }
+.why-strong-tips li::marker { color: var(--gold-500); }
 
 .username-status { min-height: 1.4em; margin: 0; font-weight: 700; }
 

@@ -13,7 +13,8 @@ use CodeIgniter\Test\CIUnitTestCase;
 final class DataLayerWiringTest extends CIUnitTestCase
 {
     // kelas 5 (Dok 1): − ResearchPhase, ParticipantConsent, ScoringProfile, ChallengeOption; + ItemTry, DeviceLog
-    private const MODEL_COUNT = 28;
+    // + AssetPackage (asset package Stage 1)
+    private const MODEL_COUNT = 29;
 
     private const ENTITY_COUNT = 11;  // − ChallengeOption
 
@@ -27,6 +28,7 @@ final class DataLayerWiringTest extends CIUnitTestCase
         'eventService'         => App\Services\EventService::class,
         'analyticsService'     => App\Services\AnalyticsService::class,
         'contentImportService' => App\Services\ContentImportService::class,
+        'assetPackages'        => App\Services\AssetPackageService::class,
     ];
 
     public function testEveryModelLoadsAndDeclaresItsTable(): void

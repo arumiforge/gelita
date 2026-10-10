@@ -50,6 +50,7 @@ One concept, one word, in every layer. "UI (id)" is what users read; "Code (en)"
 | Tata kelola | `governance` | |
 | Kelengkapan aset | `asset checklist` | `AssetChecklist` |
 | bank soal | `question bank` | workbook `gelita-bank-soal-kelas5.xlsx` |
+| paket aset, mode paket | `asset package`, `package mode` | table `asset_packages`; codes `pkt-YYYY-MM-DD-NN`; `game_releases.asset_version`; commands `gelita:paket:*`; route `/api/paket/aktif` |
 | kelas 5 | `grade 5` | doc and branch names keep "kelas5" |
 
 Add a row whenever a new concept appears. If a term here conflicts with existing code, the existing stored value wins and the table gets corrected.

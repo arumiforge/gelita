@@ -42,6 +42,14 @@ class LibraryMedia extends Entity
 
             $src = media_src($this->media_asset_id);
 
+            // Local copy of a Commons image (CommonsImage, P4a): the file is
+            // served by GELITA, but the credit keeps linking to its source page.
+            $source = trim((string) $this->external_url) === '' ? null : MediaLink::parse((string) $this->external_url, (string) $this->media_kind);
+
+            if ($source !== null && $source['provider'] === 'commons' && $source['kind'] === 'image') {
+                return ['src' => $src, 'embed' => null, 'poster' => $poster] + $source;
+            }
+
             return [
                 'kind'     => $this->media_kind === 'video' ? 'video' : 'image',
                 'provider' => 'upload',

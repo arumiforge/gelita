@@ -176,7 +176,7 @@ Suite memakai SQLite in-memory (grup database `tests`) dengan skema tiruan di `t
 | `docs/` | dokumentasi, sumber bank soal, Pustaka, dan daftar sekolah |
 | `tests/` | suite PHPUnit |
 | `tools/audio/` | generator musik, efek suara, dan narasi |
-| `tools/qa/` | skrip uji peramban Playwright: `stage-check.mjs` (panggung 16:9), `challenge-races.mjs` (aturan kesempatan dan cek bersamaan), dan `a11y-check.mjs` (keyboard dan pembaca layar di layar tantangan) |
+| `tools/qa/` | skrip uji peramban Playwright: `stage-check.mjs` (panggung 16:9), `challenge-races.mjs` (aturan kesempatan dan cek bersamaan), `a11y-check.mjs` (keyboard dan pembaca layar di layar tantangan), dan `nav-timing.mjs` (waktu pindah layar dan ganti bahasa di jaringan acuan; `node tools/qa/nav-timing.mjs --serve`, rencana paket aset Tahap 0) |
 
 Daftar route lengkap: `php spark routes`.
 
