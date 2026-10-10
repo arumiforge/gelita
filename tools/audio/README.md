@@ -7,6 +7,7 @@ Skrip yang membangkitkan seluruh audio bawaan permainan: musik gamelan, efek sua
 | `music.py` → `master.py music` | `public/assets/audio/music/{map,region,challenge}.mp3` |
 | `sfx.py` → `master.py sfx` | `public/assets/audio/sfx/{click,correct,wrong,lock,shard,region-done}.mp3` |
 | `narrate.py` → `publish.py` | `public/assets/audio/narasi/{id,en}/{kode}.mp3` + `narasi/produksi.json` |
+| `reencode.py` | re-encodes the committed narration MP3s in place to `publish.py`'s bitrate (48 kbps) and updates `produksi.json`; only ffmpeg needed |
 
 Musik dan efek suara disintesis dari nol (tanpa sampel rekaman) oleh `gamelan.py` dan `compose.py`, jadi tidak butuh model apa pun. Narasi memakai model TTS yang diunduh `setup-models.sh`.
 
@@ -43,7 +44,7 @@ python narrate.py --locale id --n 3
 python narrate.py --locale en --n 1
 # ulangi baris yang CER-nya tinggi (lihat out/narasi/{locale}/report.json) dengan lebih banyak kandidat
 python narrate.py --locale en --codes dialog-wonosobo-10,petunjuk-wnb-4-01 --n 3
-python publish.py                                  # MP3 + produksi.json
+python publish.py                                  # MP3 48 kbps + produksi.json
 
 # hanya beberapa baris (mis. setelah teksnya disunting)
 python narrate.py --locale id --codes dialog-magelang-09,peta-02 --n 3
@@ -51,6 +52,13 @@ python publish.py --locale id
 ```
 
 Baris naskah dibaca langsung dari `app/Database/Seeds/data/story.php` dan petunjuk arena `cari` dari `docs/bank-soal/data/*.php` lewat `export_lines.php`, dengan aturan penomoran yang sama dengan `NarrationImporter`. Bila teks disunting lewat panel admin, ubah dulu naskahnya di repositori (lihat `docs/naskah-cerita.md`), baru bangkitkan ulang.
+
+Narration bitrate change without the WAV masters (asset package Stage 1b, see `docs/audio.md`):
+
+```bash
+python3 reencode.py --dry-run    # list files not yet at BITRATE_KBPS
+python3 reencode.py              # transcode in place, rewrite sha256/bytes/bitrate in produksi.json
+```
 
 Setelah `publish.py`, pasang rekamannya di server seperti biasa: `php spark gelita:narration:import`, lalu setujui di **Konten → Narasi**.
 
