@@ -17,9 +17,21 @@ use CodeIgniter\HTTP\ResponseInterface;
  * 4. 'id'
  *
  * Panel admin (/admin, /api/admin) selalu 'id' — hanya area game yang dwibahasa.
+ *
+ * Stateless API paths (no login) never touch the session: opening it sends a
+ * Set-Cookie, and a late response to such a request (e.g. the username check
+ * while /daftar submits) would overwrite the new session cookie and log the
+ * student out. They use the default locale.
  */
 class LocaleFilter implements FilterInterface
 {
+    /** Paths answered without a session; keep in sync with the no-login block of the /api group in Routes.php. */
+    public const STATELESS_PATHS = [
+        'api/auth/username-available',
+        'api/schools/lookup',
+        'api/paket/aktif',
+    ];
+
     public function before(RequestInterface $request, $arguments = null)
     {
         if (! $request instanceof IncomingRequest) {
@@ -27,6 +39,12 @@ class LocaleFilter implements FilterInterface
         }
 
         $path = $request->getPath();
+
+        if (in_array(trim($path, '/'), self::STATELESS_PATHS, true)) {
+            $this->apply($request, config('App')->defaultLocale);
+
+            return null;
+        }
 
         if ($this->isAdminPath($path)) {
             $this->apply($request, 'id');
