@@ -635,6 +635,9 @@ Command GELITA ada di `app/Commands/`. Daftar lengkap: `php spark list`. Perilak
 | `gelita:media:scan [--check-only]` | menyinkronkan folder `public/assets` dengan `media_assets` dan melaporkan integritas |
 | `gelita:mockups [--dry-run] [--paksa] [--node=tmg-4]` | membuat gambar contoh untuk slot gambar tantangan yang belum berisi gambar asli |
 | `gelita:narration:import [--locale=id\|en] [--dry-run]` | mengimpor rekaman `public/assets/audio/narasi/{id,en}/` sebagai audio draft |
+| `gelita:paket:bangun [--catatan teks] [--versi-aplikasi v] [--tanpa-pustaka]` | builds an asset package from all active media, approved narration, and game code (`docs/rencana-paket-aset.md`); changes nothing for students until a release names the package |
+| `gelita:paket:periksa [kode]` | re-hashes every file of a package against its manifest |
+| `gelita:paket:bersihkan [--hapus kode] [--coba]` | deletes package files no package refers to |
 | `gelita:reset [--dry-run] [--ya] [--paksa] [--pemeliharaan] [--tanpa-bank] [--bank=JALUR] [--tanpa-mockup] [--hapus-guru]` | mengosongkan data uji coba sebelum pengambilan data penelitian, membangun ulang 12 tantangan dan bank soal; Pustaka, cerita, media, audio, sekolah resmi, dan staf tetap |
 | `gelita:retention:run` | retensi harian (cron): sesi dan pengerjaan menganggur, berkas ekspor kedaluwarsa, pratinjau penghapusan data yang melewati masa simpan |
 | `gelita:schools:import [--file=PATH] [--dry-run] [--link-existing]` | memasang daftar sekolah resmi dari `app/Database/Seeds/data/sekolah-jateng.csv` |

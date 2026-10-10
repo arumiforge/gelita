@@ -30,6 +30,17 @@ mv "$DB.part" "$DB"
 # 2. Aset yang diunggah admin (tidak ada di git)
 tar czf "$DIR/gelita-uploads-$STAMP.tar.gz" -C "$APP/public/assets" uploads
 
+# 2b. Asset packages from gelita:paket:bangun (docs/rencana-paket-aset.md §5.2),
+#     only on the server: content-addressed media, per-version code, manifests,
+#     URL maps. Folders that do not exist yet (no package built) are skipped.
+PAKET=()
+for p in public/assets/p public/assets/k public/paket writable/paket; do
+  [ -d "$APP/$p" ] && PAKET+=("$p")
+done
+if [ ${#PAKET[@]} -gt 0 ]; then
+  tar czf "$DIR/gelita-paket-$STAMP.tar.gz" -C "$APP" "${PAKET[@]}"
+fi
+
 # 3. Konfigurasi — memuat encryption.key dan kredensial; ikut dilindungi umask 077
 cp "$APP/.env" "$DIR/gelita-env-$STAMP"
 

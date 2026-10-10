@@ -8,7 +8,7 @@ use Config\Database;
 
 /**
  * Skema lengkap GELITA (app/Database/Migrations) untuk SQLite
- * (grup `tests`): 30 tabel dengan kolom, nilai bawaan, kunci utama, dan kunci
+ * (grup `tests`): 31 tabel dengan kolom, nilai bawaan, kunci utama, dan kunci
  * unik yang sama dengan MySQL/MariaDB. Indeks biasa dan FK tidak ikut.
  * Dipakai uji reset total (SystemResetTest), pendaftaran bertahap
  * (RegisterWizardTest), dan penulisan item_tries (ItemTryWritesTest).
@@ -21,6 +21,26 @@ trait ResetTables
 {
     /** @var array<string, array<string, list<list<string>>|list<string>|string>> */
     private static array $resetSchema = [
+        'asset_packages' => [
+            'id'              => 'pk',
+            'package_code'    => 'VARCHAR(30)',
+            'app_version'     => 'VARCHAR(30)',
+            'code_version'    => 'VARCHAR(60)?',
+            'content_version' => 'VARCHAR(30)?',
+            'manifest_sha256' => 'VARCHAR(64)?',
+            'total_bytes'     => 'INTEGER=0',
+            'file_count'      => 'INTEGER=0',
+            'groups_json'     => 'TEXT?',
+            'warnings_json'   => 'TEXT?',
+            'status'          => 'VARCHAR(20)=membangun',
+            'built_by'        => 'INTEGER?',
+            'built_at'        => 'DATETIME?',
+            'published_at'    => 'DATETIME?',
+            'notes'           => 'TEXT?',
+            'created_at'      => 'DATETIME=CURRENT_TIMESTAMP',
+            'updated_at'      => 'DATETIME=CURRENT_TIMESTAMP',
+            '_unique'         => [['package_code']],
+        ],
         'audio_assets' => [
             'id'                => 'pk',
             'media_asset_id'    => 'INTEGER',
@@ -539,7 +559,7 @@ trait ResetTables
     ];
 
     /**
-     * Membuat (ulang) tabel. Tanpa argumen: semua 30 tabel.
+     * Membuat (ulang) tabel. Tanpa argumen: semua 31 tabel.
      *
      * @param list<string>|null $only
      */

@@ -427,7 +427,7 @@ Aturan di `gelita-https.conf`:
 | TLS | `listen 443 ssl http2`, `ssl_protocols TLSv1.2 TLSv1.3`, sertifikat dari `/etc/letsencrypt/live/{domain}/` | Nginx ≥ 1.25.1: tulis `listen 443 ssl;` + `http2 on;` |
 | Header keamanan | `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Strict-Transport-Security`, semuanya `always`, **hanya** di blok `server` | `add_header` di dalam `location` menghapus semua header warisan `server` |
 | Header ganda | `fastcgi_hide_header` untuk `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy` | filter `secureheaders` CodeIgniter mengirim header yang sama; setiap header muncul tepat sekali |
-| Cache aset | `map` `$gelita_is_asset` + `$arg_v` → `$gelita_cache`: URL aset ber-`?v=` mendapat `public, max-age=31536000, immutable`, aset lain `no-cache` | lihat [Cache-busting](#cache-busting) |
+| Cache aset | `map` `$gelita_is_asset` + `$arg_v` → `$gelita_cache`: URL aset ber-`?v=` mendapat `public, max-age=31536000, immutable`, aset lain `no-cache`; asset package URLs (`/assets/p/`, `/assets/k/`, `/paket/pkt-*.json`) are immutable without `?v=` | lihat [Cache-busting](#cache-busting) dan [Asset package](#asset-package-download-once-mode) |
 | PHP | hanya `location = /index.php` yang diteruskan ke `unix:/run/php/php8.3-fpm.sock` (`fastcgi_read_timeout 300`); `.php` lain → 404 | tidak ada skrip lain yang dapat dieksekusi |
 | Berkas tersembunyi | `location ~ /\.` → 404, juga di dalam `/assets/` | `.env`, `.git`, `.htaccess`, `.gitkeep` tidak pernah dilayani |
 | Mode pemeliharaan | `if (-f /var/www/gelita/writable/pemeliharaan.flag) { return 503; }` + halaman 503 dwibahasa | lihat [Mode pemeliharaan](#mode-pemeliharaan) |
@@ -903,6 +903,9 @@ Bila kode sudah terlanjur di-reset, pasang lagi commit rilis yang gagal (`git re
 | Rekaman narasi (folder) | `public/assets/audio/narasi/{id,en}/{kode}.mp3` | git, lalu `gelita:narration:import` | revalidasi |
 | Musik & efek suara | `public/assets/audio/{music,sfx}/{nama}.mp3` | git (dibaca langsung `core/audio.js`, bukan `media_assets`) | revalidasi |
 | Unggahan dan berkas bangkitan | `public/assets/uploads/` (`{asset_key}.{ext}`, `mockup/`, `library.thumb.*`) | panel `/admin/media`, editor konten, unggah narasi, gambar contoh, poster video — **hanya di server** | revalidasi |
+| Asset package: media | `public/assets/p/{sha256[0:16]}.{ext}` | `gelita:paket:bangun` — **only on the server**, back it up with `uploads/` | immutable without `?v=` |
+| Asset package: code | `public/assets/k/{code_version}/{css,js,vendor,fonts}/…`, `offline.html` | `gelita:paket:bangun` — only on the server | immutable without `?v=` |
+| Asset package: manifests | `public/paket/pkt-*.json`; URL maps and build state in `writable/paket/` | `gelita:paket:bangun` — only on the server | manifest immutable; `writable/` not public |
 | Berkas unduhan data | `writable/exports/` | aplikasi | tidak publik; dilayani controller berotorisasi |
 | Log / cache | `writable/logs/`, `writable/cache/` | aplikasi | tidak publik |
 
@@ -918,6 +921,44 @@ Tidak semua URL ber-`?v=`:
 - **Gambar dan audio** dari `media_assets` dirender `base_url($path)` tanpa `?v`. Nama berkas unggahan tetap `{asset_key}.{ext}` walau isinya diganti.
 
 Karena itu Nginx memberi `immutable` **hanya** pada URL ber-`?v=`, dan `no-cache` (revalidasi dengan `Last-Modified`/`ETag`, dijawab 304 bila tidak berubah) pada aset lain. Modul lama dan gambar lama tidak pernah tertinggal di browser setelah pembaruan.
+
+### Asset package (download-once mode)
+
+*(New section, English; plan: `docs/rencana-paket-aset.md`.)* Package mode is off until a release names a package. Stage 1 adds the server side:
+
+```bash
+php spark gelita:paket:bangun                  # build pkt-YYYY-MM-DD-NN from all active media, approved narration, and game code
+php spark gelita:paket:bangun --tanpa-pustaka  # same, without copying the library's Wikimedia Commons images
+php spark gelita:paket:periksa [kode]          # re-hash every package file against its manifest (exit 1 on any problem)
+php spark gelita:paket:bersihkan [--coba]      # delete package files no package refers to; --hapus kode removes a package not used by any release
+```
+
+- Building changes nothing for students. Package mode switches on when the active release's **Versi gambar & suara** (`game_releases.asset_version`) is the package code (until the admin switch of Stage 6 exists: create a release with that value and activate it). Any other value, such as the default `1`, means package mode is off.
+- Emergency kill switch: `gelita.paket.aktif = false` in `.env` forces normal URLs on every device, whatever the release says. `GET /api/paket/aktif` then answers `package_code: null` with `disabled_by_server: true`.
+- The build copies the library's Commons images to `public/assets/uploads/library.commons.*` (owner decision P4a). The server needs outbound HTTPS to `commons.wikimedia.org` and `upload.wikimedia.org`; without it the build only warns and those images stay external links.
+- `backup.sh`/`backup.ps1` archive `public/assets/p/`, `public/assets/k/`, `public/paket/`, and `writable/paket/` next to the uploads (see [Backup](#backup)). A package referenced by a release must stay on the server even after newer packages exist (devices may still request its files).
+- Nginx: the `$gelita_is_asset` map gives `/assets/p/`, `/assets/k/`, and `/paket/pkt-*.json` the value `2`, which `$gelita_cache` turns into `public, max-age=31536000, immutable` without `?v=`. These URLs never change content: media are named by their sha256, code lives in a per-version folder (`{app_version}-{hash of the code files}`), and a package code is never reused (deleted codes leave a marker in `writable/paket/`).
+
+```nginx
+map $uri $gelita_is_asset {
+    default 0;
+    ~^/(?:assets/[pk]/|paket/pkt-[^/]+\.json$) 2;
+    ~*\.(?:css|js|json|jpe?g|png|gif|webp|svg|ico|woff2?|ttf|mp3|ogg|wav|m4a|mp4|webm)$ 1;
+}
+map "$gelita_is_asset:$arg_v" $gelita_cache {
+    default "";
+    "1:"    "no-cache";
+    ~^1:.   "public, max-age=31536000, immutable";
+    ~^2:    "public, max-age=31536000, immutable";
+}
+```
+
+Check after deploying (with a built package):
+
+```bash
+curl -sI "$U/assets/p/$(ls /var/www/gelita/public/assets/p | head -1)" | grep -i cache-control   # public, max-age=31536000, immutable
+curl -s "$U/api/paket/aktif"                                                                     # {"success":true,"data":{"package_code":…}}
+```
 
 ### Ukuran aset
 
@@ -1001,9 +1042,10 @@ Hasil setiap tugas terlihat di Task Scheduler (*Last Run Result*: `0x0` berhasil
 
 Isi setiap backup:
 
-1. **Database, tanpa isi `ci_sessions`.** Tabel sesi memuat IP mentah dan data sesi siswa (lihat [Tata kelola data anak](#tata-kelola-data-anak)) dan tidak berguna setelah dipulihkan. Strukturnya tetap ikut, sehingga hasil pulih berisi 30 tabel.
+1. **Database, tanpa isi `ci_sessions`.** Tabel sesi memuat IP mentah dan data sesi siswa (lihat [Tata kelola data anak](#tata-kelola-data-anak)) dan tidak berguna setelah dipulihkan. Strukturnya tetap ikut, sehingga hasil pulih berisi 31 tabel.
 2. **`public/assets/uploads/`**: gambar dan rekaman yang diunggah lewat panel, gambar contoh, dan poster video Pustaka; satu-satunya aset yang tidak ada di git.
-3. **Salinan `.env`**, yang memuat `encryption.key`.
+3. **Asset packages** (`public/assets/p/`, `public/assets/k/`, `public/paket/`, `writable/paket/`), built on the server by `gelita:paket:bangun`; skipped while no package has been built.
+4. **Salinan `.env`**, yang memuat `encryption.key`.
 
 Backup disimpan 30 hari di lokasi pertama lalu disalin ke lokasi kedua. **Backup yang hanya ada di mesin yang sama dengan datanya bukan backup.** Bila salinan kedua gagal, skrip keluar dengan kode **2** dan mencetak peringatan, sehingga kegagalan terlihat oleh cron dan Task Scheduler.
 
@@ -1013,6 +1055,7 @@ Backup memuat data pribadi anak dan kredensial. Folder backup hanya dapat dibaca
 |---|---|---|
 | Database | `mysqldump --defaults-extra-file=backup.cnf --single-transaction --quick --no-tablespaces --default-character-set=utf8mb4 --ignore-table=gelita.ci_sessions`, ditambah struktur `ci_sessions` (`--no-data`), di-gzip ke `gelita-db-{stamp}.sql.gz.part`, diuji `gzip -t`, baru diganti nama | dua `mysqldump` dengan `--result-file` (pengalihan `>` di PowerShell 5.1 menulis UTF-16), dikemas ke `gelita-db-{stamp}.zip`; berkas `.sql` sementara selalu dihapus |
 | Unggahan | `tar czf gelita-uploads-{stamp}.tar.gz` | `Compress-Archive` → `gelita-uploads-{stamp}.zip` |
+| Asset packages | `tar czf gelita-paket-{stamp}.tar.gz -C $APP` with the four folders as relative paths (missing ones skipped) | `gelita-paket-{stamp}.zip` (`p`, `k`, `paket` from `public/`) and `gelita-paket-peta-{stamp}.zip` (`writable/paket`); two archives because both `paket` folders would collide in one zip |
 | `.env` | `cp` → `gelita-env-{stamp}` | `Copy-Item` → `gelita-env-{stamp}.txt`, lalu `LastWriteTime` disetel ke waktu backup |
 | Simpan 30 hari | `find … -mtime +30 -delete` | `Get-ChildItem` + `Remove-Item` |
 | Salinan kedua | `rsync -a "$DIR/" "$KEDUA/"`; gagal → kode 2 | salin berkas yang belum ada ke `Kedua`; gagal → kode 2 |
@@ -1049,7 +1092,7 @@ mysql -u root -p -e "DROP DATABASE gelita_uji;"
 Remove-Item $d -Recurse
 ```
 
-Di PowerShell, operator `<` tidak ada, jadi pemulihan memakai `source`. Kedua berkas `.sql` tidak saling bergantung, jadi urutannya bebas. Pemulihan ke database production (`gelita`) mengikuti langkah yang sama dengan mode pemeliharaan aktif; pulihkan juga `public/assets/uploads/` dari arsip unggahan dengan stempel waktu yang sama. Setelah itu, semua pengguna perlu login ulang karena `ci_sessions` kosong.
+Di PowerShell, operator `<` tidak ada, jadi pemulihan memakai `source`. Kedua berkas `.sql` tidak saling bergantung, jadi urutannya bebas. Pemulihan ke database production (`gelita`) mengikuti langkah yang sama dengan mode pemeliharaan aktif; pulihkan juga `public/assets/uploads/` dari arsip unggahan dengan stempel waktu yang sama. Restore the asset packages from the package archive of the same stamp as well: Jalur L `tar xzf gelita-paket-{stamp}.tar.gz -C /var/www/gelita`; Jalur W unpack `gelita-paket-{stamp}.zip` into `public\assets\` (`p`, `k`) and `public\` (`paket`), and `gelita-paket-peta-{stamp}.zip` into `writable\`. Then run `php spark gelita:paket:periksa`. Without them the game falls back to normal asset URLs on its own (the release's package has no URL map). Setelah itu, semua pengguna perlu login ulang karena `ci_sessions` kosong.
 
 ---
 

@@ -23,7 +23,8 @@ use Config\Database;
  *   B. konten tantangan            → dikosongkan lalu dibangun ulang
  *   C. pengaturan                  → dikosongkan lalu diisi nilai bawaan
  *   D. dibersihkan sebagian        → sekolah belum terverifikasi; akun staf
- *   E. tidak disentuh              → levels, dialogues, library_*, media, audio
+ *   E. tidak disentuh              → levels, dialogues, library_*, media, audio,
+ *                                    asset packages
  *
  * Logika ini dipakai command `php spark gelita:reset` (App\Commands\SystemReset)
  * dan diuji lewat tests/unit/SystemResetTest.php (SQLite).
@@ -31,7 +32,7 @@ use Config\Database;
 class SystemResetService
 {
     /** Migration terakhir yang wajib sudah dijalankan. */
-    public const REQUIRED_MIGRATION = '2026-01-01-002900';
+    public const REQUIRED_MIGRATION = '2026-01-01-003000';
 
     /** Kata yang wajib diketik bila tanpa --ya. */
     public const CONFIRM_WORD = 'RESET-KELAS5';
@@ -50,7 +51,7 @@ class SystemResetService
     public const GROUP_C = ['research_studies', 'game_releases', 'learning_indicators'];
 
     /** Tabel kelompok E (tidak disentuh); dihitung untuk ringkasan. */
-    public const KEPT = ['levels', 'dialogues', 'library_pages', 'library_media', 'media_assets', 'audio_assets'];
+    public const KEPT = ['levels', 'dialogues', 'library_pages', 'library_media', 'media_assets', 'audio_assets', 'asset_packages'];
 
     /** Urutan pengosongan mengikuti FK: anak dulu. */
     public const CLEAR_ORDER = [
