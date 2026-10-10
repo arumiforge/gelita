@@ -319,6 +319,28 @@ final class RegionStoryTest extends CIUnitTestCase
         $this->assertStringContainsString(esc(json_encode([base_url('assets/char/jaka-idle-1.png')], JSON_UNESCAPED_SLASHES), 'attr'), $page);
     }
 
+    public function testMapDecodesTheCurrentRegionAheadOfTime(): void
+    {
+        $this->media = ['char.jaka.idle.1' => 'assets/char/jaka-idle-1.png'];
+
+        // Asset package Stage 4 (§4.5): the first unfinished region's entry assets, one screen ahead
+        $page = $this->map(['temanggung' => 'completed', 'magelang' => 'open', 'wonosobo' => 'locked'], heard: []);
+        $this->assertMatchesRegularExpression('/data-screen="map-kedu"[^>]*data-next-assets="' . preg_quote(esc(json_encode([base_url('assets/char/jaka-idle-1.png')], JSON_UNESCAPED_SLASHES), 'attr'), '/') . '"/', $page);
+
+        // Nothing left to open: no next assets
+        Services::resetSingle('renderer');
+        $done = $this->map(['temanggung' => 'completed', 'magelang' => 'completed', 'wonosobo' => 'completed'], heard: [1, 2, 3], allDone: true);
+        $this->assertStringNotContainsString('data-next-assets', $done);
+    }
+
+    public function testDoneSceneDecodesTheNextRegionAheadOfTime(): void
+    {
+        $this->media = ['char.jaka.idle.1' => 'assets/char/jaka-idle-1.png'];
+
+        $page = $this->dialogue(['temanggung' => 'completed', 'magelang' => 'open', 'wonosobo' => 'locked'])->done('temanggung');
+        $this->assertMatchesRegularExpression('/data-screen="region-done"[^>]*data-next-assets="[^"]*jaka-idle-1\.png/', $page);
+    }
+
     public function testMapNavOffersTheEndingOnceEverythingIsDone(): void
     {
         $page = $this->map(['temanggung' => 'completed', 'magelang' => 'completed', 'wonosobo' => 'completed'], heard: [1, 2, 3], allDone: true);

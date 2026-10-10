@@ -14,6 +14,7 @@ import { initHud } from './game/hud.js';
 import { initRotateGate } from './game/rotate-gate.js';
 import { initInstall } from './game/install.js';
 import { initStage } from './core/stage.js';
+import { initNextAssets } from './game/next-assets.js';
 
 document.documentElement.classList.add('js');
 
@@ -78,3 +79,6 @@ if (pages[screen]) {
 document.body.dataset.ready = CONFIG.locale;
 // Penanda perilaku halaman sudah terpasang (dipakai uji ujung ke ujung)
 page.then(() => { document.body.dataset.pageReady = '1'; });
+
+// Decode the next screen's images while idle ([data-next-assets], §4.5)
+initNextAssets({ ready: page });

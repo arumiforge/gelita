@@ -22,7 +22,8 @@ $totalNodes = count(service('contentRepository')->nodesForLevel($level->id));
 <?= $this->section('background') ?><?= media_first($node->background_media_id, $level->background_media_id) ?><?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<section class="result" data-screen="result">
+<?php /* Next screen: the region map */ ?>
+<section class="result" data-screen="result"<?= next_assets_attr([media_exists($level->map_media_id) ? media_src($level->map_media_id) : null]) ?>>
   <div class="panel result-panel stage-box">
   <header class="screen-head result-head">
     <span class="eyebrow"><?= esc($region) ?> · <?= esc(lang('Game.challengeOf', [$sequence, $totalNodes])) ?></span>

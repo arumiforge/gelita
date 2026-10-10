@@ -14,7 +14,8 @@
  *   menyembunyikan <option> tidak berlaku di semua browser.
  * - Cek nama pengguna: huruf kecil & tanpa spasi saat mengetik, pola dicek
  *   di client dulu, lalu GET /api/auth/username-available (debounce 500 ms).
- *   429/jaringan gagal → diam; server tetap memeriksa saat Daftar.
+ *   429/jaringan gagal → diam; server tetap memeriksa saat Daftar. No check
+ *   is sent once the form is submitting (see check()).
  * - Sekolah: di provinsi berdirektori (option[data-directory], Jawa Tengah)
  *   siswa mengetik NPSN; 8 angka → GET /api/schools/lookup → nama resmi tampil
  *   di kartu, dengan peringatan bila kab/kota atau jenjangnya tidak cocok
@@ -94,6 +95,12 @@ function initUsername(form) {
   let lastChecked = '';
 
   const check = debounce(async () => {
+    // Once the form is on its way (preventDoubleSubmit), never ask again: the
+    // server regenerates the session when the account is created, and a late
+    // check carrying the old session cookie would answer with that cookie and
+    // log the new student out. View transitions keep this page alive a little
+    // longer during the submit, which made the race easy to hit.
+    if (form.dataset.submitting) return;
     const value = input.value;
     if (value.length < 3) {
       show('', null);

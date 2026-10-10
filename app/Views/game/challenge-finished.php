@@ -63,7 +63,13 @@ $toNext = ! $closesRegion && ! $allCompleted && $next === null && $levelComplete
   <?php for ($i = 0; $i < 24; $i++): ?><i style="--i: <?= $i ?>"></i><?php endfor ?>
 </div>
 
-<section class="finished" data-screen="finished" data-attempt="<?= esc($attempt->id, 'attr') ?>">
+<?php
+// Next screen: the next region when this attempt completed the region, else the region map
+$nextAssets = ! empty($levelCompleted) && isset($nextRegion['curtain'])
+    ? $nextRegion['curtain']['preload']
+    : [$level !== null && media_exists($level->map_media_id) ? media_src($level->map_media_id) : null];
+?>
+<section class="finished" data-screen="finished" data-attempt="<?= esc($attempt->id, 'attr') ?>"<?= next_assets_attr($nextAssets) ?>>
     <?php // Kartu tunggal 280, 72, 720 × 576 tanpa Jaka (Dok 3 §5.3); bagian tengah bergulir, tombol di bilah bawah kartu ?>
     <article class="panel-carved finished-card stage-box">
       <div class="orb" aria-hidden="true"><span class="orb-core"><?= icon('lantern') ?></span></div>

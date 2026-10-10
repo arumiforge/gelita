@@ -60,6 +60,8 @@ if ($hasLibrary) {
     'locale'  => $locale,
     'context' => 'level_done',
     'screen'  => 'region-done',
+    // Next screen: the next region's entry (same assets as its curtain), or the Kedu map
+    'nextAssets' => isset($nextRegion['curtain']) ? $nextRegion['curtain']['preload'] : [media_key_src('map.kedu'), media_key_src('bg.map')],
     'eyebrow' => lang('Game.levelOrder', [$level->sequence]) . ' · ' . lang('Game.levelStatus_completed'),
     'tap'     => [
         'variant' => 'done',
