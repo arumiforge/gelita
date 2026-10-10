@@ -86,6 +86,7 @@ class RawDataService
     public const NAVIGATION_EVENTS = [
         'screen_viewed', 'overlay_opened', 'dialogue_advanced', 'library_opened', 'library_page_viewed',
         'locale_changed', 'page_hidden', 'page_visible', 'viewport_changed', 'reading_progress',
+        'package_changed', 'events_dropped',
     ];
 
     public const COMPLETION_EVENTS = [
@@ -118,6 +119,8 @@ class RawDataService
         'sesi' => [
             'session_code' => 'game_sessions.session_code', 'participant_code' => 'participants.participant_code',
             'study_code' => 'research_studies.code', 'release_code' => 'game_releases.release_code',
+            'app_client_version' => 'game_sessions.app_client_version', 'package_code' => 'game_sessions.package_code',
+            'package_mode' => 'game_sessions.package_mode',
             'locale' => 'game_sessions.locale', 'status' => 'game_sessions.status',
             'started_at' => 'game_sessions.started_at', 'last_active_at' => 'game_sessions.last_active_at',
             'ended_at' => 'game_sessions.ended_at', 'duration_ms' => 'game_sessions.duration_ms',
@@ -188,7 +191,8 @@ class RawDataService
         'navigasi' => [
             'session_code' => 'game_sessions.session_code', 'participant_code' => 'participants.participant_code',
             'sequence_no' => 'game_event_logs.sequence_no', 'occurred_at' => 'game_event_logs.occurred_at',
-            'server_received_at' => 'game_event_logs.server_received_at', 'event_type' => 'game_event_logs.event_type',
+            'server_received_at' => 'game_event_logs.server_received_at',
+            'clock_offset_ms' => 'game_event_logs.clock_offset_ms', 'event_type' => 'game_event_logs.event_type',
             'screen' => null, 'from_screen' => null, 'level' => 'game_event_logs.level_id',
             'node_ref' => 'game_event_logs.challenge_node_id', 'attempt_id' => 'game_event_logs.challenge_attempt_id',
             'payload' => null,
@@ -216,7 +220,8 @@ class RawDataService
             'challenge_attempt_id' => 'game_event_logs.challenge_attempt_id',
             'challenge_item_id' => 'game_event_logs.challenge_item_id', 'event_type' => 'game_event_logs.event_type',
             'sequence_no' => 'game_event_logs.sequence_no', 'occurred_at' => 'game_event_logs.occurred_at',
-            'server_received_at' => 'game_event_logs.server_received_at', 'payload_json' => null,
+            'server_received_at' => 'game_event_logs.server_received_at',
+            'clock_offset_ms' => 'game_event_logs.clock_offset_ms', 'payload_json' => null,
         ],
         'masukan' => [
             'participant_code' => 'participants.participant_code', 'session_code' => 'game_sessions.session_code',
@@ -626,6 +631,7 @@ class RawDataService
         $builder = $this->sessionBase('game_sessions')
             ->select('game_sessions.id AS _key, game_sessions.session_code, participants.participant_code')
             ->select('research_studies.code AS study_code, game_releases.release_code')
+            ->select('game_sessions.app_client_version, game_sessions.package_code, game_sessions.package_mode')
             ->select('game_sessions.locale, game_sessions.status, game_sessions.started_at, game_sessions.last_active_at')
             ->select('game_sessions.ended_at, game_sessions.duration_ms, game_sessions.device_type')
             ->select('game_sessions.os_name, game_sessions.browser_name, game_sessions.screen_size, game_sessions.is_touch')
@@ -732,7 +738,8 @@ class RawDataService
             ->select('game_event_logs.participant_id, participants.participant_code, game_event_logs.level_id')
             ->select('game_event_logs.challenge_node_id, game_event_logs.challenge_attempt_id')
             ->select('game_event_logs.challenge_item_id, game_event_logs.event_type, game_event_logs.sequence_no')
-            ->select('game_event_logs.occurred_at, game_event_logs.server_received_at, game_event_logs.payload_json')
+            ->select('game_event_logs.occurred_at, game_event_logs.server_received_at, game_event_logs.clock_offset_ms')
+            ->select('game_event_logs.payload_json')
             ->where('game_event_logs.deleted_at', null);
 
         if ($types !== null) {

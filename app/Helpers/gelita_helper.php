@@ -131,11 +131,34 @@ if (! function_exists('js_config')) {
             'apiBase'    => base_url('api'),
             'baseUrl'    => base_url(),
             'sessionTag' => session_tag($gameSessionId),
+            'sequenceFloor' => event_sequence_floor($gameSessionId),
             'maxTries'   => config('Gelita')->maxTries,
             // panggung game 16:9 (dp); dipakai Dok 3 dan event viewport_changed
             'stage'      => ['w' => 1280, 'h' => 720],
             'text'       => $text,
         ];
+    }
+}
+
+if (! function_exists('event_sequence_floor')) {
+    /**
+     * Lowest client `sequence_no` for the page being rendered (core/events.js,
+     * rencana-paket-aset §7.3): EventService::nextServerSequence(), which
+     * ScreenViewFilter also takes for this page's `screen_viewed` after
+     * rendering, so client events continue above it. Without a database it is
+     * 0 and the client counter in sessionStorage still continues.
+     */
+    function event_sequence_floor(?int $gameSessionId): int
+    {
+        if (! $gameSessionId) {
+            return 0;
+        }
+
+        try {
+            return service('eventService')->nextServerSequence($gameSessionId);
+        } catch (\CodeIgniter\Database\Exceptions\DatabaseException) {
+            return 0;
+        }
     }
 }
 

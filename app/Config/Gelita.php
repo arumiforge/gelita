@@ -85,6 +85,8 @@ class Gelita extends BaseConfig
         'audio_play', 'audio_autoplay', 'audio_pause', 'audio_replay', 'audio_completed',
         // lain-lain
         'feedback_submitted', 'password_changed',
+        // asset package and event queue integrity (rencana-paket-aset §7.1, §7.3)
+        'package_changed', 'events_dropped',
     ];
 
     /**

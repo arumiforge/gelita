@@ -238,6 +238,8 @@ return [
         'feedback_submitted'   => 'Mengirim kritik & saran',
         'password_changed'     => 'Mengganti kata sandi',
         'intro_completed'      => 'Selesai menonton cerita pembuka',
+        'package_changed'      => 'Paket aset berganti',
+        'events_dropped'       => 'Catatan tidak tersimpan (memori perangkat penuh)',
     ],
 
     /** Jenis tindakan di riwayat aktivitas (audit_logs). */

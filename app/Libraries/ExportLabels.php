@@ -64,7 +64,8 @@ final class ExportLabels
         'server_received_at' => ['Diterima server', 'datetime', 'Waktu event diterima server.'],
         'duration_ms'        => ['Durasi (mdtk)', 'ms', 'Lama, dalam milidetik.'],
         'event_type'         => ['Jenis event', 'enum', 'Jenis kejadian (game_event_logs.event_type).', 'event'],
-        'sequence_no'        => ['Urutan event', 'int', 'Nomor urut event dalam sesi.'],
+        'sequence_no'        => ['Urutan event', 'int', 'Nomor urut event dalam sesi. Sejak Oktober 2026 nomor dari perangkat berlanjut antarhalaman satu tab; sebelumnya mulai dari 1 di setiap halaman.'],
+        'clock_offset_ms'    => ['Selisih jam (mdtk)', 'ms', 'Waktu server menerima kiriman dikurangi jam perangkat saat mengirim. Waktu terkoreksi = Waktu kejadian + selisih ini. 0 untuk event yang dicatat server; kosong bila perangkat tidak mengirim jamnya.'],
         'payload'            => ['Rincian (JSON)', 'json', 'Data tambahan event apa adanya.'],
         'locale'             => ['Bahasa', 'enum', 'Bahasa permainan.', 'locale'],
         'device_type'        => ['Jenis perangkat', 'enum', 'Jenis perangkat menurut pengurai User-Agent.', 'device'],
@@ -108,6 +109,9 @@ final class ExportLabels
         'sesi' => [
             'study_code'     => ['Kode penelitian', 'code', 'Kode penelitian (research_studies.code).'],
             'release_code'   => ['Versi permainan', 'code', 'Kode rilis permainan yang aktif saat sesi dibuat.'],
+            'app_client_version' => ['Versi aplikasi & paket', 'code', 'Versi aplikasi + kode paket aset yang dipakai perangkat saat sesi dibuat, mis. 2.0.0+pkt-2026-10-20-01; tanpa "+…" bila perangkat tidak memakai paket.'],
+            'package_code'   => ['Kode paket aset', 'code', 'Paket aset (gambar dan suara) di perangkat saat sesi dibuat; kosong bila tanpa paket.'],
+            'package_mode'   => ['Mode paket', 'enum', 'Cara perangkat memuat gambar dan suara selama sesi.', 'packageMode'],
             'status'         => ['Status sesi', 'enum', 'Status sesi bermain.', 'sessionStatus'],
             'started_at'     => ['Mulai', 'datetime', 'Waktu sesi dibuat.'],
             'last_active_at' => ['Terakhir aktif', 'datetime', 'Denyut terakhir dari permainan.'],
@@ -193,7 +197,7 @@ final class ExportLabels
         'navigasi' => [
             'screen'      => ['Layar', 'code', 'Kode layar (payload.screen).'],
             'from_screen' => ['Dari layar', 'code', 'Kode layar sebelumnya (payload.from) untuk screen_viewed.'],
-            'event_type'  => ['Jenis event', 'enum', 'Event navigasi: screen_viewed, overlay_opened, dialogue_advanced, library_opened, library_page_viewed, locale_changed, page_hidden, page_visible, viewport_changed, reading_progress.', 'event'],
+            'event_type'  => ['Jenis event', 'enum', 'Event navigasi: screen_viewed, overlay_opened, dialogue_advanced, library_opened, library_page_viewed, locale_changed, page_hidden, page_visible, viewport_changed, reading_progress, package_changed (paket aset berganti; payload from, to, reason), events_dropped (catatan yang tidak muat di memori perangkat; payload dropped, channel).', 'event'],
         ],
         'bantuan' => [
             'jenis'         => ['Jenis bantuan', 'enum', 'petunjuk = petunjuk dibuka (event hint_opened); audio = satu aksi pemutar suara.', 'helpKind'],
@@ -265,6 +269,11 @@ final class ExportLabels
         'helpKind'       => ['petunjuk' => 'Petunjuk dibuka', 'audio' => 'Pemutaran suara'],
         'deviceVia'      => ['register' => 'Mendaftar', 'login' => 'Masuk', 'resume' => 'Melanjutkan sesi'],
         'level'          => ['temanggung' => 'Temanggung', 'magelang' => 'Magelang', 'wonosobo' => 'Wonosobo'],
+        'packageMode'    => [
+            'lengkap'  => 'Paket lengkap di perangkat',
+            'daring'   => 'Daring (perangkat tanpa paket)',
+            'nonaktif' => 'Mode paket mati',
+        ],
     ];
 
     /** @return list<string> */

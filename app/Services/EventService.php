@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Entities\GameSession;
 use App\Models\AudioUsageEventModel;
 use App\Models\GameEventLogModel;
+use CodeIgniter\HTTP\IncomingRequest;
 
 /**
  * Penulis raw event penelitian. Idempotent terhadap `client_event_id` per sesi.
@@ -18,16 +19,35 @@ class EventService
      * dengan tipe ini ditolak agar data mentah navigasi dan batas percobaan
      * tidak dapat dipalsukan.
      */
-    public const SERVER_ONLY = ['screen_viewed', 'challenge_tries_exhausted', 'clue_failed'];
+    public const SERVER_ONLY = ['screen_viewed', 'challenge_tries_exhausted', 'clue_failed', 'events_dropped'];
+
+    /**
+     * Cookie `{sessionTag}.{n}`: the last client `sequence_no` of this browser
+     * (core/storage.js). Read as a floor for server-written events, so the
+     * next page's `screen_viewed` follows events still on their way in a beacon.
+     */
+    public const SEQUENCE_COOKIE = 'gelita_seq';
+
+    /** Largest `dropped` count accepted from one batch envelope. */
+    public const MAX_DROPPED_REPORT = 1_000_000;
 
     /**
      * Menerima batch event dari klien.
      *
+     * `$envelope` holds the batch fields next to `events` (core/events.js,
+     * rencana-paket-aset §7.3):
+     *  - `client_sent_at`: client clock when the batch was sent; every row
+     *    gets `clock_offset_ms = server_received_at − client_sent_at`;
+     *  - `dropped` + `dropped_id`: events the client queue had to discard,
+     *    written once as a server-side `events_dropped` event (idempotent per
+     *    `dropped_id`).
+     *
      * @param list<array<string, mixed>> $events
+     * @param array<string, mixed>       $envelope
      *
      * @return array{accepted: int, duplicate: int, rejected: list<array{index: int, reason: string}>}
      */
-    public function ingest(GameSession $session, array $events): array
+    public function ingest(GameSession $session, array $events, array $envelope = []): array
     {
         $config = config('Gelita');
         $model  = model(GameEventLogModel::class);
@@ -42,6 +62,9 @@ class EventService
         $seen     = [];
         $sequence = $model->nextSequenceNo($session->id);
         $now      = $this->now();
+        $offset   = $this->clockOffsetMs($envelope['client_sent_at'] ?? null, $now);
+
+        $this->recordDropped($session, $envelope, 'events');
 
         foreach (array_values($events) as $index => $event) {
             if (! is_array($event)) {
@@ -96,6 +119,7 @@ class EventService
                 isset($event['sequence_no']) ? (int) $event['sequence_no'] : $sequence++,
                 $this->clientTime($event['occurred_at'] ?? null),
                 $now,
+                $offset,
             );
         }
 
@@ -130,11 +154,77 @@ class EventService
                 $payload,
                 $refs,
                 'srv-' . uuid4(),
-                $model->nextSequenceNo($session->id),
+                $this->nextServerSequence($session->id),
                 $now,
                 $now,
+                0,
             ),
         ]);
+    }
+
+    /**
+     * `sequence_no` for a server-written event, and the lowest number the
+     * client may use on a page being rendered (`js_config()` `sequenceFloor`):
+     * the session's next number, but never at or below the last client
+     * number this browser reported in the SEQUENCE_COOKIE.
+     */
+    public function nextServerSequence(int $sessionId): int
+    {
+        return max(model(GameEventLogModel::class)->nextSequenceNo($sessionId), $this->clientSequenceHint($sessionId) + 1);
+    }
+
+    /** Last client `sequence_no` from the SEQUENCE_COOKIE, when it belongs to this session. */
+    private function clientSequenceHint(int $sessionId): int
+    {
+        $request = service('request');
+
+        if (! $request instanceof IncomingRequest) {
+            return 0;
+        }
+
+        $raw = $request->getCookie(self::SEQUENCE_COOKIE);
+
+        if (! is_string($raw) || preg_match('/^([0-9a-f]{16})\.(\d{1,9})$/', $raw, $match) !== 1) {
+            return 0;
+        }
+
+        return hash_equals((string) session_tag($sessionId), $match[1]) ? (int) $match[2] : 0;
+    }
+
+    /**
+     * Writes the client's `dropped` report (events its offline queue could
+     * not keep) as one server-side `events_dropped` event. `dropped_id` makes
+     * a re-sent report a duplicate instead of a second count.
+     *
+     * @param array<string, mixed> $envelope batch fields: dropped, dropped_id
+     */
+    public function recordDropped(GameSession $session, array $envelope, string $channel): bool
+    {
+        $dropped  = filter_var($envelope['dropped'] ?? 0, FILTER_VALIDATE_INT);
+        $reportId = is_scalar($envelope['dropped_id'] ?? null) ? trim((string) $envelope['dropped_id']) : '';
+
+        if ($dropped === false || $dropped <= 0 || $reportId === '' || mb_strlen($reportId) > 100) {
+            return false;
+        }
+
+        $model = model(GameEventLogModel::class);
+        $now   = $this->now();
+
+        $result = $model->appendBatch([
+            $this->buildRow(
+                $session,
+                'events_dropped',
+                ['dropped' => min($dropped, self::MAX_DROPPED_REPORT), 'channel' => $channel],
+                [],
+                'drop-' . $reportId,
+                $this->nextServerSequence($session->id),
+                $now,
+                $now,
+                0,
+            ),
+        ]);
+
+        return $result['accepted'] > 0;
     }
 
     /**
@@ -148,9 +238,11 @@ class EventService
      *              attempt_id?: ?int, challenge_attempt_id?: ?int, occurred_at?: ?string,
      *              client_event_id?: ?string} $audioEvent
      *
+     * @param ?string $clientSentAt `client_sent_at` of the batch (clock offset, §7.3)
+     *
      * @return bool true bila ditulis, false bila duplikat
      */
-    public function recordAudio(GameSession $session, array $audioEvent): bool
+    public function recordAudio(GameSession $session, array $audioEvent, ?string $clientSentAt = null): bool
     {
         $assetId = (int) ($audioEvent['audio_asset_id'] ?? 0);
         $action  = (string) ($audioEvent['action'] ?? '');
@@ -175,6 +267,7 @@ class EventService
         $attemptRef = $audioEvent['challenge_attempt_id'] ?? $audioEvent['attempt_id'] ?? null;
         $attemptId  = $attemptRef === null ? null : ((int) $attemptRef ?: null);
         $occurredAt = $this->clientTime($audioEvent['occurred_at'] ?? null);
+        $receivedAt = $this->now();
 
         $eventType = match ($action) {
             'play'     => 'audio_play',
@@ -197,7 +290,7 @@ class EventService
                 'listened_ms'          => isset($audioEvent['listened_ms']) ? (int) $audioEvent['listened_ms'] : null,
                 'completed'            => ! empty($audioEvent['completed']) ? 1 : 0,
                 'occurred_at'          => $occurredAt,
-                'server_received_at'   => $this->now(),
+                'server_received_at'   => $receivedAt,
             ], false);
 
             $events->appendBatch([
@@ -211,9 +304,10 @@ class EventService
                     ],
                     ['challenge_attempt_id' => $attemptId],
                     $clientEventId !== '' ? $clientEventId : 'srv-' . uuid4(),
-                    $events->nextSequenceNo($session->id),
+                    $this->nextServerSequence($session->id),
                     $occurredAt,
-                    $this->now(),
+                    $receivedAt,
+                    $this->clockOffsetMs($clientSentAt, $receivedAt),
                 ),
             ]);
 
@@ -249,6 +343,7 @@ class EventService
         int $sequenceNo,
         string $occurredAt,
         string $receivedAt,
+        ?int $clockOffsetMs = null,
     ): array {
         return [
             'event_uuid'           => uuid4(),
@@ -263,6 +358,7 @@ class EventService
             'sequence_no'          => $sequenceNo,
             'occurred_at'          => $occurredAt,
             'server_received_at'   => $receivedAt,
+            'clock_offset_ms'      => $clockOffsetMs,
             'payload_json'         => $payload === [] ? null : json_encode($payload, JSON_UNESCAPED_UNICODE),
         ];
     }
@@ -295,6 +391,32 @@ class EventService
         }
 
         return $this->now();
+    }
+
+    /**
+     * `server_received_at − client_sent_at` in milliseconds (rencana-paket-aset
+     * §7.3). Computed when the batch arrives, so events that waited long in
+     * the offline queue still get the offset of the clock that stamped them.
+     * Null when the client sent no parseable time.
+     */
+    private function clockOffsetMs(mixed $clientSentAt, string $receivedAt): ?int
+    {
+        // ISO 8601 only: relative words such as "tomorrow" would parse too
+        if (! is_string($clientSentAt) || preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/', trim($clientSentAt)) !== 1) {
+            return null;
+        }
+
+        try {
+            $sent     = new \DateTimeImmutable(trim($clientSentAt));
+            $received = new \DateTimeImmutable($receivedAt);
+        } catch (\Exception) {
+            return null;
+        }
+
+        $ms = ((float) $received->format('U.u') - (float) $sent->format('U.u')) * 1000;
+
+        // BIGINT holds any real clock error; refuse nonsense (± ~3 centuries)
+        return abs($ms) < 1e13 ? (int) round($ms) : null;
     }
 
     private function now(): string

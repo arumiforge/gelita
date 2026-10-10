@@ -29,6 +29,8 @@ Nama tampilan keempat jenis tantangan: Susun Gambar (`puzzle`), Isi Rumpang (`ru
 
 Skema dibuat oleh **29 migration** di `app/Database/Migrations/`, satu tabel per berkas, dari `2026-01-01-000100_CreateSchools.php` sampai `2026-01-01-002900_CreateCiSessions.php`. Hasilnya 28 tabel domain + `ci_sessions`, ditambah tabel `migrations` milik CodeIgniter (30 tabel). Urutan berkas mengikuti ketergantungan foreign key, sehingga `php spark migrate` berjalan bersih dari database kosong dan `php spark migrate:rollback` membuang tabel dalam urutan terbalik.
 
+Migration `2026-01-01-003100_AddPackageTrackingToSessionsAndEvents.php` (asset package Stage 5) adds columns to existing tables: `game_sessions.package_code`, `game_sessions.package_mode`, a wider `game_sessions.app_client_version`, and `game_event_logs.clock_offset_ms`. `SystemResetService::REQUIRED_MIGRATION` points at it.
+
 Database menyimpan lima kelompok data:
 
 1. **Peserta dan sesi**: sekolah, siswa, studi, versi permainan, sesi bermain, kemajuan.
@@ -317,11 +319,15 @@ Sesi bermain: dari daftar/masuk sampai selesai atau ditinggalkan. Satu siswa bol
 | browser_name | VARCHAR(80) | ya | NULL | |
 | screen_size | VARCHAR(20) | ya | NULL | Mis. `1366x768` |
 | is_touch | TINYINT(1) | ya | NULL | |
-| app_client_version | VARCHAR(30) | ya | NULL | |
+| app_client_version | VARCHAR(100) | ya | NULL | `{app_version}+{package_code}` when the session starts (`SessionService::packageColumns()`), just `{app_version}` without a package; widened by migration `003100` |
+| package_code | VARCHAR(64) | ya | NULL | Asset package on the device when the session started; NULL without a package (`003100`) |
+| package_mode | VARCHAR(10) | ya | NULL | `lengkap` \| `daring` \| `nonaktif` (rencana-paket-aset §8.7); `nonaktif` when the client reports nothing (`003100`) |
 | ip_hash | CHAR(64) | ya | NULL | SHA-256 IP + garam |
 | created_at | DATETIME(6) | tidak | NOW | |
 
 Index gabungan: `participant_id_study_id_status (participant_id, study_id, status)`.
+
+**Asset package tracking (migration `003100`, rencana-paket-aset §7.1).** Login and sign-up send `package_code` and `package_mode` inside `device_json` (`core/device.js`, hook `window.GELITA_PACKAGE`). The three package columns are written when the session is created and never change afterwards (S8): a resumed session whose device reports another package or mode keeps its columns and gets a `package_changed` event (`reason = resume`). Sessions from before `003100` are backfilled with `package_mode = nonaktif` and the `app_version` of their release; one that is resumed with a client report gets its columns filled from that report.
 
 Perubahan status: `active` → `paused` bila diam lebih dari `Config\Gelita::$sessionIdleMinutes` (45 menit, `GameSessionModel::markStale()`) atau siswa keluar; `paused` → `active` saat masuk lagi; → `completed` saat semua wilayah aktif tuntas (`SessionService::completeIfFinished()`, event `session_completed`); `paused` yang diam lebih dari `$sessionAbandonDays` (30 hari) → `abandoned` oleh `gelita:retention:run`.
 
@@ -790,9 +796,10 @@ Event mentah permainan, sumber kebenaran penelitian. Tidak pernah diganti agrega
 | challenge_attempt_id | BIGINT UNSIGNED | ya | NULL | Tanpa FK. INDEX |
 | challenge_item_id | BIGINT UNSIGNED | ya | NULL | Tanpa FK. INDEX |
 | event_type | VARCHAR(50) | tidak | — | Salah satu `Config\Gelita::$eventTypes` (`valid_event_type`) |
-| sequence_no | BIGINT UNSIGNED | tidak | 0 | Nomor urut kiriman klien, atau nomor berikutnya dari server |
+| sequence_no | BIGINT UNSIGNED | tidak | 0 | Nomor urut kiriman klien, atau nomor berikutnya dari server. Since Stage 5 the client number continues across pages of one tab (see below) |
 | occurred_at | DATETIME(6) | tidak | — | Waktu kejadian (klien) |
 | server_received_at | DATETIME(6) | tidak | NOW | |
+| clock_offset_ms | BIGINT | ya | NULL | `server_received_at − client_sent_at` of the batch that carried the event; corrected time = `occurred_at + clock_offset_ms`. 0 for server-written events, NULL when the client sent no `client_sent_at` (`003100`) |
 | payload_json | JSON | ya | NULL | Data tambahan per event |
 | deleted_at | DATETIME(6) | ya | NULL | Ditandai hapus oleh permintaan penghapusan data. INDEX |
 | deleted_by | BIGINT UNSIGNED | ya | NULL | FK `staff_users.id` SET NULL |
@@ -808,8 +815,16 @@ UNIQUE: `event_uuid`; `session_id_client_event_id (session_id, client_event_id)`
 | Tantangan | `challenge_opened`, `challenge_checked`, `challenge_completed`, `challenge_abandoned`, `challenge_tries_exhausted`, `answer_submitted`, `answer_changed`, `answer_selected`, `wrong_target_clicked`, `clue_failed`, `reading_progress`, `hint_opened` |
 | Audio | `audio_play`, `audio_autoplay`, `audio_pause`, `audio_replay`, `audio_completed` |
 | Lain-lain | `feedback_submitted`, `password_changed` |
+| Asset package and queue integrity | `package_changed`, `events_dropped` |
 
-Event `screen_viewed`, `challenge_tries_exhausted`, dan `clue_failed` hanya boleh ditulis server; kiriman klien dengan jenis itu ditolak (`EventService::SERVER_ONLY`). Batch klien paling banyak `Config\Gelita::$maxEventsPerBatch` (50) event; duplikat `(session_id, client_event_id)` diabaikan tanpa menulis baris baru. Contoh payload: `session_started`/`session_resumed` membawa `via` = `register` \| `login`; `intro_completed` membawa `first` (`true` saat `participants.intro_seen_at` baru diisi); `challenge_completed` membawa `stars`, `first_pass_correct`, `final_correct`, `scorable_items`, `completion_reason`, `attempt_no`. Kegagalan masuk tidak ditulis ke tabel ini (belum ada sesi); jejaknya di `participants.failed_login_count`.
+Event `screen_viewed`, `challenge_tries_exhausted`, `clue_failed`, dan `events_dropped` hanya boleh ditulis server; kiriman klien dengan jenis itu ditolak (`EventService::SERVER_ONLY`). Batch klien paling banyak `Config\Gelita::$maxEventsPerBatch` (50) event; duplikat `(session_id, client_event_id)` diabaikan tanpa menulis baris baru. Contoh payload: `session_started`/`session_resumed` membawa `via` = `register` \| `login`; `intro_completed` membawa `first` (`true` saat `participants.intro_seen_at` baru diisi); `challenge_completed` membawa `stars`, `first_pass_correct`, `final_correct`, `scorable_items`, `completion_reason`, `attempt_no`. Kegagalan masuk tidak ditulis ke tabel ini (belum ada sesi); jejaknya di `participants.failed_login_count`.
+
+**Event order and clock (rencana-paket-aset §7.3, migration `003100`).**
+
+- Every batch to `/api/events` and `/api/audio-events` carries `client_sent_at`; `EventService` stores `clock_offset_ms` per row. The offset is computed when the batch arrives, so events that waited in the offline queue get the error of the clock that stamped them. Raw `occurred_at` is never changed.
+- The client `sequence_no` continues across page loads per session in `sessionStorage` (`gelita.seq.{sessionTag}`) and never goes below `sequenceFloor` from `js_config()`. The client mirrors its last number in the cookie `gelita_seq={sessionTag}.{n}`; server-written events take `EventService::nextServerSequence()` = max(next number in the table, cookie + 1), so the next page's `screen_viewed` follows the previous page's events even while those are still in a beacon. Two tabs of one session can still produce equal numbers; ties are broken by `occurred_at`.
+- `package_changed` (client or server; payload `from`, `to`, `reason`) records a device that had to switch asset package mid-session.
+- `events_dropped` (server only; payload `dropped`, `channel`) records events the client's offline queue could not keep (queue full at 5,000 entries or storage refused). The client sends the count as `dropped` + `dropped_id` with its next batch; `client_event_id = drop-{dropped_id}` makes a re-sent report a duplicate.
 
 #### `device_logs`
 
@@ -1052,7 +1067,7 @@ Aturan yang tidak dapat (atau sengaja tidak) dinyatakan sebagai constraint datab
 5. **Kode soal.** UNIQUE `(challenge_node_id, item_key)` di database; di antara soal aktif `item_key` wajib unik secara global (galat `gelita:content:verify`), karena importer dan editor mencari soal berdasarkan `item_key` saja.
 6. **Bacaan satu wilayah.** `challenge_items.passage_id` hanya boleh menunjuk `reading_passages` dengan `level_id` yang sama dengan tantangan soal itu (galat `gelita:content:verify`).
 7. **Jawaban hanya untuk soal pengerjaan itu.** Server hanya menilai soal yang ada di `challenge_attempts.selected_item_ids_json` (jawaban Cari Objek untuk soal lain ditolak, jawaban lain di "Cek jawabanku" diabaikan); soal yang diistirahatkan di tengah pengerjaan membuat pengerjaan itu ditinggalkan (`via: content_changed`) dan diganti yang baru saat tantangan dibuka lagi.
-8. **Urutan event.** Linimasa diurutkan `occurred_at`, lalu `sequence_no`, lalu `id` (`GameEventLogModel::timeline()`). `sequence_no` kiriman klien dimulai ulang setiap halaman dimuat, jadi bukan kunci urutan utama; event yang datang tidak berurutan tetap disimpan apa adanya.
+8. **Urutan event.** Linimasa diurutkan `occurred_at`, lalu `sequence_no`, lalu `id` (`GameEventLogModel::timeline()`). `sequence_no` kiriman klien dimulai ulang setiap halaman dimuat, jadi bukan kunci urutan utama; event yang datang tidak berurutan tetap disimpan apa adanya. Since asset package Stage 5 (October 2026) the client number continues across pages of one tab, so within such sessions `(session_id, sequence_no)` also orders events without relying on the device clock.
 9. **Idempotensi.** `(session_id, client_event_id)` UNIQUE; kiriman ulang diabaikan (`INSERT IGNORE`) dan dihitung sebagai duplikat, tanpa baris baru. Telemetri audio memeriksa `client_event_id` yang sama sebelum menulis `audio_usage_events`.
 10. **`item_tries` insert-only.** Setiap percobaan menulis tepat satu baris dan tidak pernah diubah atau dihapus selain lewat penghapusan data. Pada saat yang sama `item_responses.try_count` naik satu, `first_answer_json`/`first_pass_correct` diisi hanya pada percobaan pertama, dan `solved_on_try` diisi sekali saat pertama kali benar. Soal yang sudah benar terkunci.
 11. **Penilaian hanya di server.** Nilai `correct` dari browser diabaikan; `answer_key_json`, penanda `decoy`, pemetaan bank kata, dan id benda Cari Objek tidak pernah ada di payload pemain.

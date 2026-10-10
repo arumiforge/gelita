@@ -24,7 +24,7 @@ class GameEventLogModel extends Model
     protected $allowedFields = [
         'event_uuid', 'client_event_id', 'session_id', 'participant_id',
         'level_id', 'challenge_node_id', 'challenge_attempt_id', 'challenge_item_id',
-        'event_type', 'sequence_no', 'occurred_at', 'server_received_at', 'payload_json',
+        'event_type', 'sequence_no', 'occurred_at', 'server_received_at', 'clock_offset_ms', 'payload_json',
         'deleted_at', 'deleted_by', 'delete_reason',
     ];
     protected $validationRules = [
@@ -82,8 +82,9 @@ class GameEventLogModel extends Model
 
     /**
      * Linimasa satu sesi, diurutkan `occurred_at` lalu `sequence_no`
-     * (01_DATABASE.md, aturan 8). `sequence_no` klien dimulai ulang pada
-     * setiap halaman yang dimuat, jadi tidak dapat menjadi kunci urutan utama.
+     * (01_DATABASE.md, aturan 8). Before asset package Stage 5 the client
+     * `sequence_no` restarted on every page load, so it cannot be the primary
+     * sort key for older sessions.
      * Didukung index (session_id, occurred_at) tabel game_event_logs.
      *
      * @return list<array<string, mixed>>

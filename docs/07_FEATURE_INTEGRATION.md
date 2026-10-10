@@ -192,6 +192,8 @@ Satu studi berarti satu tahap bermain: siswa selalu melanjutkan sesi `active`/`p
 
 Kolom ringkas `game_sessions` (`device_type`, `os_name`, `browser_name`, `screen_size`, `is_touch`) diisi dari profil yang sama saat sesi dibuat (`DeviceProfile::sessionSummary()`).
 
+**Asset package of the session (rencana-paket-aset §7.1).** `device_json` also carries `package_code` and `package_mode` (`lengkap` | `daring` | `nonaktif`), read by `core/device.js` from the hook `window.GELITA_PACKAGE`: an object `{ package_code, package_mode }` or a (sync or async) function returning one, set by the package service worker/downloader (Stage 2). Without the hook the client sends `{ package_code: null, package_mode: 'nonaktif' }`; with no `device_json` at all the server uses `SessionService::DEFAULT_PACKAGE_MODE` (`nonaktif`). `DeviceProfile::packageSignals()` validates both values. A new session gets `app_client_version = {app_version}+{package_code}` (`app_version` of the active release; no `+…` without a package), `package_code`, and `package_mode`. A resumed session keeps its values (S8); when the device reports another package or mode, the server writes `package_changed` {from, to, reason: 'resume', from_mode, to_mode}.
+
 **Keluar** (`/keluar`, `LoginController::logout`): sesi `active` menjadi `paused` + event `session_paused` {via: 'logout'}; pengerjaan `in_progress` sengaja tidak ditutup agar dapat dilanjutkan; `session()->destroy()`; kembali ke `/`. Komputer kelas yang ditinggal tanpa keluar tetap aman karena session PHP berakhir sendiri.
 
 **Filter area game** (`App\Filters\ParticipantCheck`, dipakai tiga filter):
@@ -681,12 +683,14 @@ Parameter `level` (dan `seq`) diterjemahkan ke kolom `level_id` (dan `challenge_
 | `challenge_abandoned` | `game/challenge.js` | halaman tantangan ditutup (`pagehide`) | `via: 'pagehide'`, `attempt_open: true` |
 | `library_page_viewed` | `game/library.js` | ganti halaman buku Pustaka | `page`, `total`, `page_id` |
 | `page_hidden` / `page_visible` | `core/events.js` | `visibilitychange` | `screen` |
+| `package_changed` | package code (Stage 2) | the device had to switch asset package mid-session (old package evicted) | `from`, `to`, `reason` |
 | `viewport_changed` | `core/stage.js` | halaman dibuka dan setiap ukuran/orientasi berubah, termasuk saat layar putar tampil/hilang (debounce 1 detik, paling sering satu event per 5 detik) | `w`, `h`, `orientation`, `rotate_gate`, `stage_w`, `stage_h`, `scale` (ukuran panggung 16:9) |
 
 ```text
-1. emit() → antrean core/events.js (client_event_id dibuat saat event lahir)
+1. emit() → antrean core/events.js (client_event_id dibuat saat event lahir;
+   sequence_no from Storage.nextSequence(): continues across pages per session)
 2. Dikirim tiap 3 detik atau saat antrean mencapai 20 event, maks. 50 per request
-   → POST /api/events {events: [...]}
+   → POST /api/events {events: [...], client_sent_at, dropped?, dropped_id?}
 3. EventApiController::ingest (rate limit 120/menit per sesi; > 50 event → 413)
    → EventService::ingest():
      tipe tidak dikenal → ditolak per event (event_type_unknown)
@@ -694,10 +698,21 @@ Parameter `level` (dan `seq`) diterjemahkan ke kolom `level_id` (dan `challenge_
      client_event_id kosong/kembar dalam batch → ditolak per event
      occurred_at klien dipakai bila dapat diurai (dikonversi ke zona aplikasi,
      presisi mikrodetik), selain itu waktu server; server_received_at = waktu server
+     clock_offset_ms = server_received_at − client_sent_at (per batch)
+     dropped > 0 → one server event events_dropped {dropped, channel}
+       (client_event_id drop-{dropped_id}: a re-sent report is a duplicate)
      GameEventLogModel::appendBatch(): idempoten terhadap (sesi, client_event_id)
 4. Respons {accepted, duplicate, rejected[], server_time}
 5. Tab disembunyikan/ditutup → antrean dan batch yang sedang dikirim ikut dikirim
    lewat sendBeacon; bila ternyata sudah sampai, server membalas duplicate.
+   A beacon can be aborted by the navigation or lost offline without an error, so
+   the same events also wait in the offline queue (marked as beaconed) and the next
+   page re-sends them; the server answers duplicate for what arrived. While
+   navigator.onLine is false no beacon is tried.
+   sequence_no: sessionStorage counter per session, never below js_config()
+   sequenceFloor; the last number goes to the cookie gelita_seq={tag}.{n}, which
+   EventService::nextServerSequence() uses so server events (screen_viewed of the
+   next page) are numbered after the client events that happened before them.
    Tirai menunggu flush() selesai (paling lama 1,5 detik) sebelum berpindah, dan
    narrator langsung mengirim antrean saat slide terakhir tercapai.
 ```
@@ -712,7 +727,8 @@ Parameter `level` (dan `seq`) diterjemahkan ke kolom `level_id` (dan `challenge_
      pause, replay, complete
    Melanjutkan dari jeda tidak dikirim sebagai play baru.
 3. emitAudio() → POST /api/audio-events {events: [{audio_asset_id, action,
-   listened_ms, completed, occurred_at, client_event_id, attempt_id?}]}
+   listened_ms, completed, occurred_at, client_event_id, attempt_id?}],
+   client_sent_at, dropped?, dropped_id?}  (clock offset and dropped report as above)
 4. AudioApiController::ingest: attempt_id hanya diterima bila milik sesi berjalan
    (selain itu attempt_not_in_session); EventService::recordAudio() — transaction:
      insert audio_usage_events (play_index dihitung server: nextPlayIndex)
@@ -730,8 +746,12 @@ Durasi pembanding diambil dari `audio_assets.duration_ms` (data server), bukan d
 ```text
 1. api.js gagal → ApiError 'NETWORK'
 2. Event: antrean disimpan di localStorage (core/storage.js, per kanal dan per
-   sesi permainan, maks. 500 entri terbaru) dan dikirim ulang saat koneksi pulih;
-   server membalas duplicate untuk yang sudah masuk → tidak ada data ganda
+   sesi permainan, maks. 5.000 entri) dan dikirim ulang saat koneksi pulih;
+   server membalas duplicate untuk yang sudah masuk → tidak ada data ganda.
+   No silent loss: when the queue is full the oldest entries make room and are
+   counted per session (gelita.dropped.{channel}); when localStorage refuses the
+   write the whole batch is counted. A warning toast (Js.eventQueueFull) shows
+   once per page and the count goes with the next batch (events_dropped).
 3. Jawaban (/check, /responses): TIDAK diantrekan. Siswa melihat pesan
    "sambungan terputus", lalu menekan Cek lagi. Jawaban harus dinilai server;
    menyimpannya diam-diam di klien akan menampilkan hasil yang belum diterima.
@@ -1310,16 +1330,16 @@ Isi ekspor adalah **data mentah** tujuh dimensi (ketepatan, percobaan, waktu, pe
 |---|---|---|
 | `kamus` | Kamus Data | lembar, kolom, judul, arti, satuan, nilai |
 | `peserta` | Peserta | participant_code, display_name\*, username\*, school_name\*, school_npsn\*, school_ref, age, gender, class_level, country, province, district, registered_at, assented_at, intro_seen_at, pw_first_submit_criteria, pw_weak_submit_count |
-| `sesi` | Sesi | session_code, participant_code, study_code, release_code, locale, status, started_at, last_active_at, ended_at, duration_ms, device_type, os_name, browser_name, screen_size, is_touch |
+| `sesi` | Sesi | session_code, participant_code, study_code, release_code, app_client_version, package_code, package_mode, locale, status, started_at, last_active_at, ended_at, duration_ms, device_type, os_name, browser_name, screen_size, is_touch |
 | `perangkat` | Perangkat | session_code, participant_code, via, created_at, device_type, device_brand, device_model, os_name, os_version, os_platform, browser_name, browser_version, browser_engine, is_bot, screen_w, screen_h, viewport_w, viewport_h, pixel_ratio, touch_points, orientation, is_standalone, language, timezone, corrected, detector, user_agent, client_hints |
 | `progres` | Progres | session_code, participant_code, current_level, current_node_ref, unlocked_level_sequence, completed_nodes, total_nodes, completed_levels, total_stars, updated_at |
 | `pengerjaan` | Pengerjaan Tantangan | attempt_id, session_code, participant_code, level, node_ref, node_sequence, engine_type, variant_group, variant_title, attempt_no, status, completion_reason, scorable_items, first_pass_correct, final_correct, check_count, max_tries, hint_count, answer_change_count, audio_use_count, stars, started_at, completed_at, duration_ms |
 | `jawaban` | Jawaban Soal | attempt_id, session_code, participant_code, level, node_ref, variant_group, item_key, interaction_type, bloom_level, skill, indicator, prompt, display_order, status, try_count, first_answer, final_answer, answer_key\*\*, first_pass_correct, is_correct, solved_on_try, change_count, hint_used, wrong_click_count, started_at, answered_at, duration_ms |
 | `percobaan` | Riwayat Percobaan | attempt_id, session_code, participant_code, node_ref, variant_group, item_key, try_no, check_no, answer, is_correct, hint_opened_before, first_input_ms, last_input_ms, occurred_at |
-| `navigasi` | Navigasi | session_code, participant_code, sequence_no, occurred_at, server_received_at, event_type, screen, from_screen, level, node_ref, attempt_id, payload |
+| `navigasi` | Navigasi | session_code, participant_code, sequence_no, occurred_at, server_received_at, clock_offset_ms, event_type, screen, from_screen, level, node_ref, attempt_id, payload |
 | `bantuan` | Bantuan | session_code, participant_code, occurred_at, jenis (`petunjuk` \| `audio`), level, node_ref, attempt_id, item_key, hint_id, asset_key, audio_context, audio_locale, action, play_index, listened_ms, completed |
 | `selesai` | Penyelesaian | session_code, participant_code, occurred_at, event_type, level, node_ref, attempt_id, payload |
-| `event` | Event Mentah (admin) | id, event_uuid, client_event_id, session_id, session_code, participant_id, participant_code, level_id, challenge_node_id, challenge_attempt_id, challenge_item_id, event_type, sequence_no, occurred_at, server_received_at, payload_json |
+| `event` | Event Mentah (admin) | id, event_uuid, client_event_id, session_id, session_code, participant_id, participant_code, level_id, challenge_node_id, challenge_attempt_id, challenge_item_id, event_type, sequence_no, occurred_at, server_received_at, clock_offset_ms, payload_json |
 | `masukan` | Kritik & Saran | participant_code, session_code, rating, liked_most, hardest_part, new_learning, suggestion, submitted_at |
 | `butir` | Bank Soal | item_key, level, node_ref, variant_group, variant_title, sequence, interaction_type, bloom_level, skill, indicator, prompt, passage_key, answer_key\*\*, decoy, scorable, is_active, media_asset_key |
 
