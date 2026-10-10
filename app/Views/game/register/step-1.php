@@ -25,7 +25,10 @@ $focus   = static fn (string $f): string => $first === $f ? ' autofocus' : '';
 
 <?= $this->section('content') ?>
 <section class="register" data-step="1">
-  <div class="panel-parchment register-panel stage-box">
+  <?= component('character', ['character' => 'jaka', 'pose' => 'happy', 'class' => 'start-jaka stage-box']) ?>
+
+  <div class="register-panel ornate-panel stage-box">
+    <?= $this->include('partials/ornate-frame') ?>
     <?= $this->include('game/register/_head') ?>
 
     <form method="post" action="<?= base_url('daftar/1') ?>" class="form register-form" data-step="1" autocomplete="off">
