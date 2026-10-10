@@ -1,808 +1,1208 @@
 {
  "keterangan": "Rekaman narasi bawaan GELITA: suara sintetis (text-to-speech), dibangkitkan tools/audio. Berkas yang isinya sama dengan sha256 di sini diimpor gelita:narration:import sebagai production_method = tts; rekaman pengganti (isi berbeda) tercatat sebagai rekaman sendiri.",
- "dibuat": "2026-10-06",
+ "dibuat": "2026-10-09",
  "files": {
   "en": {
    "dialog-magelang-01": {
-    "sha256": "7cc795b568301e2bf6b9b96068f641e3ab54d1de6b2e7c28850e4fea1542b162",
+    "sha256": "9356b8e3a65f6aab5caf9dceb92123d99e81fa3de41c791fe597a8fbaefd3efd",
+    "bytes": 41716,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_GB-jenny_dioco-medium (Jenny, Dioco), pitch & formant anak · Jaka"
    },
    "dialog-magelang-02": {
-    "sha256": "260f523c9ba89f2eaef5f2e3c3b9f62bf380df2ded5415a42a98c335b1a8a4ab",
+    "sha256": "9136791dcd43329b6c9216e494d5cd1bdca13678ef9b563b2021b7658d94845e",
+    "bytes": 36231,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-magelang-03": {
-    "sha256": "d2a0b5a16e52d2ca3f990f51972d8ab01c37840a3e1670f3224a4f0ad45585a7",
+    "sha256": "5f8c7e16f5566c0109ac0001567fe75791beaf9315c6d9e9ce7d156a1570b5be",
+    "bytes": 49240,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_GB-jenny_dioco-medium (Jenny, Dioco), pitch & formant anak · Jaka"
    },
    "dialog-magelang-04": {
-    "sha256": "8499e7eb497bf9af6af3c649f4e7935a3228ce8ac14be87f860a8614250f36aa",
+    "sha256": "385fa38c9ff446cd82a912ff9640f40c8633028b68fd042a2fbe99c22c47ffca",
+    "bytes": 70869,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-magelang-05": {
-    "sha256": "06cd1181ba2eacbf3ca8fbd39fa80ddd1b8d7aba90d0cce8efa41b8351aaf679",
+    "sha256": "5064b8c8f537c2bee377f8263231ba2d377e74c586b5548f71b858409927e198",
+    "bytes": 25573,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_GB-jenny_dioco-medium (Jenny, Dioco), pitch & formant anak · Jaka"
    },
    "dialog-magelang-06": {
-    "sha256": "0a1f29125183ed3920445e4eaaf66a6abd2d6d6e61facc4ea57099eb066da6eb",
+    "sha256": "087c1d2bd23dc685dcfe3931246ccfe741fe175fd0faed60c2bfc930fb344657",
+    "bytes": 65227,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-magelang-07": {
-    "sha256": "6b631543a3962d00de62ff5d0ffc8ea0554e92bd616d7fc09558d093fd51845b",
+    "sha256": "4e59176a7a26e84c9b0cc5aca0208422fc264b7edff1b54bc87dae63a6912693",
+    "bytes": 15072,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_GB-jenny_dioco-medium (Jenny, Dioco), pitch & formant anak · Jaka"
    },
    "dialog-magelang-08": {
-    "sha256": "75ee5c8a9b330a5012e00ac4d2b14e9cc51dd9ab012014c4c6f886d9896f1925",
+    "sha256": "9ca6f8c449cb7118022285048536d44d9d10192ff15cc13e0410ba0deb67250c",
+    "bytes": 61622,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-magelang-09": {
-    "sha256": "b7923b97c5cbbf91e7a030aa7c31f30c4237e87a30f6c45a0a298037fce0bbda",
+    "sha256": "ce241d6f01dd7ee55f27fbd618e0209781c7a91a1232778363fbc873abfe5d45",
+    "bytes": 66481,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-magelang-10": {
-    "sha256": "bfefc4f0068739d7938e91a7f22abbad9eeef3fcf29335ec8bca9fba4aa56dd0",
+    "sha256": "c16fc627a268b33e6f0128d4efb035ccca2cbd02c9d69f3222f0a55dbddbb7e1",
+    "bytes": 24632,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_GB-jenny_dioco-medium (Jenny, Dioco), pitch & formant anak · Jaka"
    },
    "dialog-magelang-11": {
-    "sha256": "1896771374b1777f2da0a465129b73b4b151bf9c50e94abe5437df1602ce3375",
+    "sha256": "4de081150990a93fa81ce3207015778e76bc3c3538631c46167dc8dc633fc65d",
+    "bytes": 73690,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-magelang-12": {
-    "sha256": "6bb256ef4c3a0d01f195151986007fcf09670aa8484d44b1a4061232eebfc7c2",
+    "sha256": "517467f370e4014e8c6a9f15795f380ee7e9f4f32b2b144b14c0ca23406b141f",
+    "bytes": 25730,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_GB-jenny_dioco-medium (Jenny, Dioco), pitch & formant anak · Jaka"
    },
    "dialog-magelang-13": {
-    "sha256": "b1f53878eebf419189eb5fd7855316a4b2979604e3d7c0ce4131e62d039528c6",
+    "sha256": "e73d96a78d2da546a5a578af4c05c2a9ec0460a0ee07710ea25ba08e13702b3f",
+    "bytes": 25416,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-magelang-14": {
-    "sha256": "477859ad034f071e11bed0129761bcc3bafed0415754dfe8de55fd837b7edb4d",
+    "sha256": "2378e554a4b34e768a32c1140d10ce1b83f0047ee6736d71ab40d8898fe3462a",
+    "bytes": 28394,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_GB-jenny_dioco-medium (Jenny, Dioco), pitch & formant anak · Jaka"
    },
    "dialog-magelang-15": {
-    "sha256": "39ce51a20fb0b2ec99b31d41f2892551da7e94f85a4415f59588296ad1b7d32a",
+    "sha256": "cf19bf0b217a88f935710b7b400f5420c6d4884f4cc5488d4d95bb42a00dd012",
+    "bytes": 54882,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-magelang-16": {
-    "sha256": "efacfdd9e181f313fc5a3b3d127c237faaa5e8987436485e66d7c3b9db3d1486",
+    "sha256": "a5a87979490e856293d58de764f949435bec17d9202f0bf55c346d41cf9793c9",
+    "bytes": 35134,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_GB-jenny_dioco-medium (Jenny, Dioco), pitch & formant anak · Jaka"
    },
    "dialog-temanggung-01": {
-    "sha256": "1350ef89d138edb6824ac87e72f63328740cb310c3e52445edd0e528cb6c763a",
+    "sha256": "b69cb0c0783b8afcac8359b2fd03ed6d686c8d2976612397aab62c1796edbddd",
+    "bytes": 68518,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-temanggung-02": {
-    "sha256": "e894142221e26da5b66a71867a60dab3b86d4901d6a79d70493b5ef40e200212",
+    "sha256": "ef6d2f5ddcdb559b9978d2ff022065038ee37baee73800ca8ce1e99c6b101b96",
+    "bytes": 29334,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_GB-jenny_dioco-medium (Jenny, Dioco), pitch & formant anak · Jaka"
    },
    "dialog-temanggung-03": {
-    "sha256": "e24be5327589a6a18c7c4accb8ac691afd2e8ec9635f70adb1d3be2cd92244df",
+    "sha256": "453e608b2d8425fa5d6fc780d73f88f3676754cb640035cd198289c3417c1cfd",
+    "bytes": 57076,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-temanggung-04": {
-    "sha256": "1100c1db9cf50c88b814a183959590b29a2820e29a1d7c771c77ef9a0d2fed65",
+    "sha256": "82890394f0a5c6523c58b443f7a7412826a0e1f84a715fe92a06320bba28d737",
+    "bytes": 29961,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_GB-jenny_dioco-medium (Jenny, Dioco), pitch & formant anak · Jaka"
    },
    "dialog-temanggung-05": {
-    "sha256": "c7ab33facb0aa1885de4234c4c749cce911b877b2edccf1e97dd6c908aeb5fa2",
+    "sha256": "2ad38a26db8af04f6f6290f107b1d346e692609beb3c33fcb04c997d233709a9",
+    "bytes": 66324,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-temanggung-06": {
-    "sha256": "3767072f707fbc883b08b85645dc3cb53d4e390c5fe98673f4e7f3b10b27cc6b",
+    "sha256": "000daa6a555751e41062c5771089e22e44bc82b885050366fdc3c6ba32d80d6f",
+    "bytes": 41560,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_GB-jenny_dioco-medium (Jenny, Dioco), pitch & formant anak · Jaka"
    },
    "dialog-temanggung-07": {
-    "sha256": "3fe698b2ecb4e4c9cf5c3f75de2bc7479a5e0e865c7d780489ca3bfd91482673",
+    "sha256": "d3c896335096cae56fc10d518f04eaa4fccfaf64c54ca63bdd7eefd64a7b4ad5",
+    "bytes": 34663,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_GB-jenny_dioco-medium (Jenny, Dioco), pitch & formant anak · Jaka"
    },
    "dialog-temanggung-08": {
-    "sha256": "a333bb9219864e7f3014dfae3d03fb8d36db02995923fd8a19f398ea1857a2be",
+    "sha256": "01f9ff8cb7d49cf25242a6a115d69e8657d47ae740d8721bf77aaa9cefd07263",
+    "bytes": 40463,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-temanggung-09": {
-    "sha256": "d984f8293badb4faabf6d8985dfa5e0f50ad53bbdad3e298857069c4808dbb87",
+    "sha256": "6938fdb9732cbb2922c1e4ac3427afa332b7296ff16070a5f6ad33bf87f3e5b2",
+    "bytes": 45792,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_GB-jenny_dioco-medium (Jenny, Dioco), pitch & formant anak · Jaka"
    },
    "dialog-temanggung-10": {
-    "sha256": "e1889266114a53cf7df964e18abbbf48b9ebbf1af0d5d0ae5323d0a0e36d8bc3",
+    "sha256": "93201909bd0c79ec98af3d541d06bee478f9714214e8b33983a64cb5848bf499",
+    "bytes": 51434,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-temanggung-11": {
-    "sha256": "09c514a2cabeecef792cd32b2deab7d4115ef6dde61b2a0f87c88e51bdd79f85",
+    "sha256": "8b77d08646e8ff8f59614854af26d0d19c8d957d3e5feca2b419a919655fe013",
+    "bytes": 30588,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_GB-jenny_dioco-medium (Jenny, Dioco), pitch & formant anak · Jaka"
    },
    "dialog-temanggung-12": {
-    "sha256": "ca564e52828635060dcc1543ef63956a615909640d012a39b3e01ff0e7cff768",
+    "sha256": "ca4e54470398f8dfe5a148c11839974b69cd78e58573cba87462e25623e01c89",
+    "bytes": 81214,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-temanggung-13": {
-    "sha256": "6a52e45508110b8eabffdbfe38bd10c55aa5a59423046fd6f8f39f55064594f8",
+    "sha256": "a8a45017ba083660f4e8695c6504c65921cda0b324636502c4353e80a0dc1be9",
+    "bytes": 36701,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_GB-jenny_dioco-medium (Jenny, Dioco), pitch & formant anak · Jaka"
    },
    "dialog-temanggung-14": {
-    "sha256": "e4911b08d4b781ccdc76e6d58af891ae9377be4e546e1ef22a20300db3f99e89",
+    "sha256": "71bce63c88f830112f1c962f7c35ecd5b6092b67e9a855e9463ea47545e429b7",
+    "bytes": 47829,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-temanggung-15": {
-    "sha256": "5ddf41c16da08e371b203dbf07c2c4ea26e7a56eee1af8de125a8e2ce867ec41",
+    "sha256": "f248340ff13c5bb38d23ef14342efbe424837005276477cc9a9a0260bcf993b5",
+    "bytes": 27767,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_GB-jenny_dioco-medium (Jenny, Dioco), pitch & formant anak · Jaka"
    },
    "dialog-wonosobo-01": {
-    "sha256": "030c0f60d7e690fd01ea49afe86d642aed8cf09bf9c3cd6993ed5389592ae5e1",
+    "sha256": "4dc6b94f266541aafc0db4c25dad7f0b3378ad1785ca056df01fff21d326f091",
+    "bytes": 32626,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_GB-jenny_dioco-medium (Jenny, Dioco), pitch & formant anak · Jaka"
    },
    "dialog-wonosobo-02": {
-    "sha256": "6a8f61d41d216b6e56940b0a88092a4f2101a95dcf2f6b8527245d37e73234cf",
+    "sha256": "7f372c4cf1600ac55899c9b0cef7b1e932a95dce5463ddbb469918be189546ce",
+    "bytes": 53628,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-wonosobo-03": {
-    "sha256": "f3b6b61b9cbfb46bb94ec2251582587abaf09c2860b4e26b04b278c2745f7c1d",
+    "sha256": "ef7d83a0f03e2a841378681622a5f94d2d8ea534b107963ef171134d0147fc15",
+    "bytes": 37798,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_GB-jenny_dioco-medium (Jenny, Dioco), pitch & formant anak · Jaka"
    },
    "dialog-wonosobo-04": {
-    "sha256": "0bf41ac7d268e68b83766a8cc5a8e0aa0132f14390f229a39cc32969a5bd133c",
+    "sha256": "f6ff23c18a3044160b25240255fc5679ef9258d61a3ff65d598a937504c5dbb2",
+    "bytes": 63816,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-wonosobo-05": {
-    "sha256": "fe93f03416ffe5b3607b952079be7aa6978baf5c5dc0ca84e5272bb530b75526",
+    "sha256": "1c942f1fa495e80411d0d94be17526622ad0ddef4ea88eaf924c84afb8a8f96c",
+    "bytes": 32312,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_GB-jenny_dioco-medium (Jenny, Dioco), pitch & formant anak · Jaka"
    },
    "dialog-wonosobo-06": {
-    "sha256": "77fd2cba1764cf615281efa199774e8417677afa2f7aeab92680ee62c1f965c1",
+    "sha256": "4b63d5ba998f2b58b6a1ada76635aef49722b6776f6fe3d23f7bdc50e817ec4d",
+    "bytes": 60681,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-wonosobo-07": {
-    "sha256": "874220098d75151303ae922eecbe6a8f35df814825078536cd0bce4b574f662e",
+    "sha256": "dd2e0e5c40c184b4da0336c2e965674a894ec06423db1cd69aae4839d64578a6",
+    "bytes": 49396,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-wonosobo-08": {
-    "sha256": "dd2c35f242393635513f77d12c15307a930e48bb613452474920e388a01f7c90",
+    "sha256": "0a9a7c8165c67efc6487016f6bc510e71b8d6e32d3f6a4b9879b9ec70ca61dfa",
+    "bytes": 31685,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_GB-jenny_dioco-medium (Jenny, Dioco), pitch & formant anak · Jaka"
    },
    "dialog-wonosobo-09": {
-    "sha256": "393fd825f31a08d05082d109c21f7cb2362e8b0889c66790c69d6e38f4a033a7",
+    "sha256": "0913d637626f96952d5e23135f554a25b0a692bd4750252a37cf6f2472a53450",
+    "bytes": 40149,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-wonosobo-10": {
-    "sha256": "bd1d2c794ccc039202ead0cbdfcadfdde9785a0154ad86c9c6ead15527bfface",
+    "sha256": "ec4fc74d1aa07f124df4cb87652076c077c4a0af43a93332b317a99981d68099",
+    "bytes": 11937,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_GB-jenny_dioco-medium (Jenny, Dioco), pitch & formant anak · Jaka"
    },
    "dialog-wonosobo-11": {
-    "sha256": "e50d19a6f8079315d908c7b197cc6dd65ca766a2c9dca92d91ad28e27df9f525",
+    "sha256": "0a3d5e3cc1600ba3557f79681d1eae22b2c6a01d45c2b10290954c1fd8537997",
+    "bytes": 43127,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-wonosobo-12": {
-    "sha256": "cd9855a06acbbe5907cb4311c5f616d9c90eb2664cf7e3a90aa1d143f1b234c9",
+    "sha256": "3b6bf2f0e274f0d60f3abb42b900f2d61ed0143e121a37ab29f531d75b7d4117",
+    "bytes": 62092,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-wonosobo-13": {
-    "sha256": "8134328d008baa10ee6465488e640987087ea58c4212264ef89bc2372998e4df",
+    "sha256": "08337fc499de5a5393db4c5a40839b27f7cc0e14af1804db2fd207a19e18dbb2",
+    "bytes": 43754,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_GB-jenny_dioco-medium (Jenny, Dioco), pitch & formant anak · Jaka"
    },
    "dialog-wonosobo-14": {
-    "sha256": "b70e302c1d3f533e5db0c758c18149f2d80dea6b857930793eb8c18f2c3e1d35",
+    "sha256": "f4f34b53e5eee7e8de592443d36c187f4312535e83cd8ce87ed15217b682e887",
+    "bytes": 32783,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_GB-jenny_dioco-medium (Jenny, Dioco), pitch & formant anak · Jaka"
    },
    "dialog-wonosobo-15": {
-    "sha256": "2781d7915dc753dd885e273630d341df4839626ee5088c6df34b03f19e807c33",
+    "sha256": "462adf8f5835dfe5f6e31619ab577970ba4f2671a6246b9b57e6dbae74139d88",
+    "bytes": 41403,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-wonosobo-16": {
-    "sha256": "4a2ead93f367f79423b18d3b66bc7d3b5526ba5e1a151fa4e023bea736c58356",
+    "sha256": "e7d45268d4cbd82e0f4749406c2a9e387c41b03221fb60e0530f56525e7aacad",
+    "bytes": 40776,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_GB-jenny_dioco-medium (Jenny, Dioco), pitch & formant anak · Jaka"
    },
    "intro-01": {
-    "sha256": "9a6aa9d9bd62104a71b27f659803a4aeabf622999802ad8fcce8523849d4fd53",
+    "sha256": "6eed653d1f4ca86a6bb35eba490fe4798aa85c5c46e5180554a7bce272d43198",
+    "bytes": 88737,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-kristin-medium (domain publik) · Narator"
    },
    "intro-02": {
-    "sha256": "8c24af72e29728957eea341542c75370c985d08d0f106152fc4215230bc85618",
+    "sha256": "2a1b48376d6b3df9e2e0b21d8d00c9147b1bb00f022db6c691fb2ac59184ca53",
+    "bytes": 96103,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-kristin-medium (domain publik) · Narator"
    },
    "intro-03": {
-    "sha256": "523b086c52554897cd6193fb876d55ba2a94a49d4779449b0d09cfcdcae7730c",
+    "sha256": "fedef6e5acb0c72802f75fa7d19dd4c41bdd9d9a138137cd127d90ef5b0fc033",
+    "bytes": 88894,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-kristin-medium (domain publik) · Narator"
    },
    "intro-04": {
-    "sha256": "6a8825aa65a5c59145e8b3b90e20ba77b761a3efc1b0f22b5bf24fcbb08e8759",
+    "sha256": "48ba48b6795b6ddb7db62f537ba5f1fcfef4aaf878ca3f87eb49bc7ef4910081",
+    "bytes": 106134,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-kristin-medium (domain publik) · Narator"
    },
    "intro-05": {
-    "sha256": "f6a5b1b31f2d6c3e04f2c70f2448edf5802f93ac673ac7a1ff0f87e2a66102ab",
+    "sha256": "2450dc71611a91c0671ef4d6bfd5403704b6b5edd700491c288ed027b88b6445",
+    "bytes": 101119,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "intro-06": {
-    "sha256": "5f2d3f6dc0fbbbc67392a321ad024f5425320560cea926ca52b6305f611c9fb4",
+    "sha256": "305b5a8c697bcd2c439596b2eafc46924b847539accb6492ef5b5363d40aed1d",
+    "bytes": 47359,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_GB-jenny_dioco-medium (Jenny, Dioco), pitch & formant anak · Jaka"
    },
    "intro-07": {
-    "sha256": "9ca35f82bf3ca302204bcf5416b3c20bd2a438e5b25e5a5b9aff9fdd5c4f38ac",
+    "sha256": "9ce5562150603d571993afc8e5a73b6e923862607d6a68737082f992d189151f",
+    "bytes": 89991,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-kristin-medium (domain publik) · Narator"
    },
    "intro-08": {
-    "sha256": "33d3d4d7ca635f9bc15be808ba5dfd262afb0a07c9d25c00483c97145250e3c6",
+    "sha256": "b34fad54202416cfdbf4ef444f3fa6cefebf09ac6819eb2f0550174e0b41a3fd",
+    "bytes": 90304,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "intro-09": {
-    "sha256": "952703202235108480d17fbf00dd5cfe61a9df880353bcc5efcb24ccacdeff91",
+    "sha256": "45293c04109034b296ef5ecf4c38918e9b270a833b940bc108d4693d510dbaed",
+    "bytes": 78706,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-kristin-medium (domain publik) · Narator"
    },
    "kenal-magelang-01": {
-    "sha256": "72b2f9f574393bcc2cd3548694e3fa4c2d7b7eff0e9a52a8f77db488d5f042af",
+    "sha256": "d67231974f3d21c2adf9391606f374d3569f68bc66bdfaabfa593c518a431661",
+    "bytes": 69302,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "kenal-magelang-02": {
-    "sha256": "4821fc7cf3346e06e4350d7781762f090e5487f58c61a6bb9ea159a066933fcc",
+    "sha256": "569c8d5b1b06caa808768d8d5f69aa713a21e6d8657f596a6c084cbe77630917",
+    "bytes": 86229,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "kenal-magelang-03": {
-    "sha256": "32678ec0bce247f34b33275650cad0f73c2835a1b3fd798c161b16cb8765ef30",
+    "sha256": "7f8b8ac8a7b8cd89df302e442749d45199629ab40c27c0547ba41548ec948b7c",
+    "bytes": 76512,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "kenal-magelang-04": {
-    "sha256": "1108e915995f1f2cc5515d2be1cd7cdc8711665e9c1888659411b0cd8a226407",
+    "sha256": "d436c7e526f99e11a13ecf4ebb850e1497adc14da67f345da18f19a4127f1740",
+    "bytes": 86856,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "kenal-temanggung-01": {
-    "sha256": "b4391102b8f7ec5a95571bfa32cc001bbad5ee0737be1c4af8f54e60aa33cf96",
+    "sha256": "42d3aab8e18417383827844de293614a92c84158fec750436cd6c9625a1da466",
+    "bytes": 78079,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "kenal-temanggung-02": {
-    "sha256": "c0f78bbbeb4ed953d16760ea1f0425c2c0585cab4aac0475dc3397983f88e545",
+    "sha256": "5fcbe1687c41891b8812f8a6b23cf6162ed0f1947babaa805dd7c650e9cfc38f",
+    "bytes": 80900,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "kenal-temanggung-03": {
-    "sha256": "375d9645383072dc6dcf978dbc468ae893f386a8ba6c6533cf30b2f4d088ddb3",
+    "sha256": "6eaab2919f14cad1fafad29a750dc9b4e6e7aa75af580ca30407412035589d57",
+    "bytes": 97827,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "kenal-temanggung-04": {
-    "sha256": "06f41d3d8bdf6c33f1d2395526b6558ab1c5a68788e7b9559f923249faa8012e",
+    "sha256": "b1cd49b2c15fb4f43770d18d7943ec75c8fca5b7e051c6b6495e524abebd80db",
+    "bytes": 105194,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "kenal-wonosobo-01": {
-    "sha256": "e042c15a3106ac71bb150193adc551e67121237131495493fabf5b1ef23b99da",
+    "sha256": "b6708fa0a31924a7a559ec349854cad1e47d6e45f8c5b125c3dc149a049bc9f4",
+    "bytes": 58801,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "kenal-wonosobo-02": {
-    "sha256": "fee4150dec289f1850f770faf1c4a0685c64b6f6883d0c4117704863bda290c2",
+    "sha256": "ac3225c4bfab3038b50ec5dfb94ae8e42b334d993d9fb1550ec5040b60b8139f",
+    "bytes": 86386,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "kenal-wonosobo-03": {
-    "sha256": "7347e7a5a00d873d005bb91edc4628517ef759828a4790c3999fb9fcac36747f",
+    "sha256": "18750a2eb86f1cfff41d645263fb44baa5823aa1a1c92fb101b0ce412b0d956c",
+    "bytes": 93909,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "kenal-wonosobo-04": {
-    "sha256": "a98568ff78444f626126343c9d3ea1991e70bdbe2aff7781e9bfa1d8ef44f88c",
+    "sha256": "11eaeda92c5b03e6b9a80cfe803d8d77ef9d262ebc393f7fb7957c662a7cad77",
+    "bytes": 71339,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "penutup-01": {
-    "sha256": "a851fc5e0298d5c966084a906f3cf5fdc2011f5cf8933adab0b97c7d9f5e13b2",
+    "sha256": "2366bee8ce87ecb9f18cfbdf0b1b1ef70d64da5772de5615ce7bcd02e098ac54",
+    "bytes": 58801,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-kristin-medium (domain publik) · Narator"
    },
    "penutup-02": {
-    "sha256": "c0a698f2da2449da57d4d23170ef255fc70cede7a073793f88b4134fe040f200",
+    "sha256": "d2482d22308d97213488cc9fe57bfc0f36e37995c73c8e9ef0c5cc294db8b5da",
+    "bytes": 84035,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-kristin-medium (domain publik) · Narator"
    },
    "penutup-03": {
-    "sha256": "8ce0ddb0a5d960542a76d8f2e9788dcdfb6d7e28470bc69c09d913b1b497f152",
+    "sha256": "1443215528ee3d351eba1e325e2582a055c182f7240a6d4afbc2ea357b9931eb",
+    "bytes": 57390,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "penutup-04": {
-    "sha256": "6bfc3e7542a2f1c24f8e473b8d047f174cac7993bc42506a07d8af9085a1b326",
+    "sha256": "b960d36f51a01ef495df849a9a4456b3605c4af28ba113964f14148ce1ae1ac2",
+    "bytes": 50180,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_GB-jenny_dioco-medium (Jenny, Dioco), pitch & formant anak · Jaka"
    },
    "penutup-05": {
-    "sha256": "bb020b37425992b7be8fc81d486412fd8982c98f3c9cb30a8873e0588711895c",
+    "sha256": "544db7ad6fb0e6113fd86a6b24b1fd82845d16a90bd2b20bde1ce6d99b2fdabb",
+    "bytes": 59898,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "peta-01": {
-    "sha256": "dca5438bc1c45bed3b365d15a74002812b695dd3f4fd4fbeb8d4cc601d8d1aa1",
+    "sha256": "d10f48d71ca7eee7720a28fd5fac8f639ad9c8afd9f0874de41e443654be591b",
+    "bytes": 55509,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_GB-jenny_dioco-medium (Jenny, Dioco), pitch & formant anak · Jaka"
    },
    "peta-02": {
-    "sha256": "ba5590b733fc923a78e50b81d2bd942edd52577465caa935eaea778fc139a76e",
+    "sha256": "a3c749b0de4137c190ad18c9f858a1b4c2bfe4a6dd36dff7004346b1a09c7b89",
+    "bytes": 59898,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_GB-jenny_dioco-medium (Jenny, Dioco), pitch & formant anak · Jaka"
    },
    "peta-03": {
-    "sha256": "80ffa8ed76f62424a3a988a038cc0171de1fce5d828532ff5873abf4e24ee5d0",
+    "sha256": "8db7e896acfee10faa057b2d407b8f0c3adf1170973c7fa4ea9a23e22d8281ca",
+    "bytes": 62092,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_GB-jenny_dioco-medium (Jenny, Dioco), pitch & formant anak · Jaka"
    },
    "petunjuk-mgl-4-01": {
-    "sha256": "89e638439c9149182f285cff6d53329b66f87ad589d797837adf7a69094c5816",
+    "sha256": "3e4bf1a3ea12a31464c6e032792d48af177b051c71a328f9e4ba5109efaeb06b",
+    "bytes": 44224,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "petunjuk-mgl-4-02": {
-    "sha256": "61e89436e7e0000e4c5d1be075b5386eec9b03c82f664cd017604d42a080e10b",
+    "sha256": "2c1a49c5bff801085011bea80aa4fee859b3d2b68d60241fbbe7ba3d63a1999c",
+    "bytes": 39209,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "petunjuk-mgl-4-03": {
-    "sha256": "885ebb551c0242b5c4f4c96be359fecf07fc3860483afdaea5d27c16fa9bee83",
+    "sha256": "6fc7a53f54a91f99e497b2d5335615bec2152a4445e6a520b13ed23b8103e699",
+    "bytes": 45635,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "petunjuk-mgl-4-04": {
-    "sha256": "dfedf4a3271f142ee28ccc4339fba3c18deaef7edaa9f4d0b29883c7e5dd2daf",
+    "sha256": "74bd85e737592a1b9f0dac715badfa79404a8f8b77d2a66a814f0aa452324ec3",
+    "bytes": 33566,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "petunjuk-tmg-4-01": {
-    "sha256": "8e292602a0f09a93aeb4abc998b4ea9df89e0d52f4914d9e6be82a5c6ccf1e90",
+    "sha256": "27d30ec2eb2fdcd0c241591511e2fa860817cbc4de5a47f167149a8945539a3d",
+    "bytes": 23692,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "petunjuk-tmg-4-02": {
-    "sha256": "6bcd495af10c6e065b41b8b5f75e5c738ffc79006df9f0298f98435f3720ffa7",
+    "sha256": "9b15c66a7c97a2b9bebe86a21d2e83c3d4144f0eacbe7010b8216b588fb690cf",
+    "bytes": 30118,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "petunjuk-tmg-4-03": {
-    "sha256": "ddf625189f15993ab946504239a825470eb711510f15c1d1d174a5d5d2ee54c5",
+    "sha256": "f5d0137b60844515f10d8e99af60b0d0c200877e1b0d0e6e7f17e6da1dc7c9d6",
+    "bytes": 28394,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "petunjuk-tmg-4-04": {
-    "sha256": "3317a30bacd6a9589b0263c30ae2a8635ff73cb9845a534b90a61f88e30e0e74",
+    "sha256": "3e33aae4136a7cabbb14a57f7f22d89588c9496d7df494ca9f24a65cef528200",
+    "bytes": 31215,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "petunjuk-wnb-4-01": {
-    "sha256": "f35c948c26c5c437431cb48a3013ef6a9cb337d44557f46514146109edc257b8",
+    "sha256": "38f82412fd262e753deb77c70bb0ccd9c0e3d3a499b76954a9c1bee16dbc0ca0",
+    "bytes": 60681,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "petunjuk-wnb-4-02": {
-    "sha256": "2bdf0d70c896e9d735690b06736f89db1852f325a613587ac51a12a24d3e4096",
+    "sha256": "da0787d6846efb5c20f41d5e65c3da6dc8d0da3b2b4fdf527eb319bf277021c0",
+    "bytes": 47202,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "petunjuk-wnb-4-03": {
-    "sha256": "76f37098c50acbd2a6031d92c7b9860cc62a9a6c45e1fab9440f3ea6144eac91",
+    "sha256": "b310e069ad60d199e25f5dcf5b5a0095cc495c333c93292135b8f07006166a75",
+    "bytes": 53158,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "petunjuk-wnb-4-04": {
-    "sha256": "a99a548e93ccd320bd781b883ead7f58053978f8e9a77ada1ce30b3a7fb21666",
+    "sha256": "0e0207086c2186123d0890261c9ca83ad614a1e79506a057e5cb40b85eba3db6",
+    "bytes": 54569,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "tuntas-magelang-01": {
-    "sha256": "e843bbe8896ed652e334f18ab09bd693842b95923a0c2ee3fd7abd9690a4a143",
+    "sha256": "f42b1ab3694cbd7da3e7975a640b707011b6057d39df1eca2e2c00d4c9b595cb",
+    "bytes": 50650,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "tuntas-magelang-02": {
-    "sha256": "b7ecdee0a01d0b81f1bc57badeb91781ec7c288aa62facb3975df3fcef761881",
+    "sha256": "0ea07182ee9b93fc240b9fdc1cd34348a34e39352f26e9b3a35a0e37b904d6b9",
+    "bytes": 19774,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_GB-jenny_dioco-medium (Jenny, Dioco), pitch & formant anak · Jaka"
    },
    "tuntas-magelang-03": {
-    "sha256": "4b4fdb5ba5de589ef83bcc446a0cc510482c705f74eecab4d6932e5fe2cf7ec4",
+    "sha256": "0330632828c0dfa8f10f2ffe2555e062e8779de9a36db7189371371a61286ebf",
+    "bytes": 39522,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "tuntas-magelang-04": {
-    "sha256": "10bda41bda1a1f4332044684d9ea7ae225f33c2d990fdbd5e5bcbb9607ffd956",
+    "sha256": "e0b63cf5ee451205547579ef426127b5b55898702345a10bd7923dbedcec0d85",
+    "bytes": 24005,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_GB-jenny_dioco-medium (Jenny, Dioco), pitch & formant anak · Jaka"
    },
    "tuntas-temanggung-01": {
-    "sha256": "899a6910097c218e682b923de842994354b579936738f7912abf1900f6b523c8",
+    "sha256": "37842a72982ba70a1ee128b17d8a799703043a9947153f105aff4a28707a2de8",
+    "bytes": 50023,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "tuntas-temanggung-02": {
-    "sha256": "25325e08d9bb6ac6c6b6d058a068f210f681bdb17892d3a650827dfe4613b3d1",
+    "sha256": "a4b8b468710e2972e18353125eca043915531105440927e1b618a8ba1c870c93",
+    "bytes": 24946,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_GB-jenny_dioco-medium (Jenny, Dioco), pitch & formant anak · Jaka"
    },
    "tuntas-temanggung-03": {
-    "sha256": "e42f2158ecbefd791e26f25de0c35ffe1ebbb16e91052d25581a143269ba846a",
+    "sha256": "c83a3c2b4a6a0679362889fcdd302115fb3fc93f4819a832cad3476b66e57504",
+    "bytes": 41873,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "tuntas-temanggung-04": {
-    "sha256": "1a97f08ae21de6d01a8926f94271659148c8986b1af4e371c457f44dacada00a",
+    "sha256": "63ce54e405314366125098d4aee92c7b94240614a785e83d600ce160ffa98731",
+    "bytes": 22281,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_GB-jenny_dioco-medium (Jenny, Dioco), pitch & formant anak · Jaka"
    },
    "tuntas-wonosobo-01": {
-    "sha256": "be66bf3a90ec4bdf621950a206aa2877f043c9eb521a0f6e6b178523588d74f4",
+    "sha256": "3e3a583af271fec8800b6a803fb2e76ada3518933e9d271848e68ae034ea4020",
+    "bytes": 48613,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_GB-jenny_dioco-medium (Jenny, Dioco), pitch & formant anak · Jaka"
    },
    "tuntas-wonosobo-02": {
-    "sha256": "c81eb7abc9b6b4ba6635f68146c398b5718ef6f3ab4a088c4f8aeea423ff9ce2",
+    "sha256": "ac1f0457972757021fb52762f37827866c74301543466365ffe30b65f6ee0a95",
+    "bytes": 44067,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    },
    "tuntas-wonosobo-03": {
-    "sha256": "114a4f7fe73058aef6f628a462a120bd05ca244bb1b144aa5d917d8c6c1291cd",
+    "sha256": "b177861ea1a433bdae719c7d953994818292600551fcc674b32fcf30a9b83bb2",
+    "bytes": 20714,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_GB-jenny_dioco-medium (Jenny, Dioco), pitch & formant anak · Jaka"
    },
    "tuntas-wonosobo-04": {
-    "sha256": "d671c9dfac99c6cee8a438c9e0f839173dcb119d33af8c972a4bec60f73b37d0",
+    "sha256": "0ac56bc549388541bcc3483ef2aba228fb6cd177d6998147c0bc3ac13c987c9e",
+    "bytes": 39836,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Piper en_US-joe-medium (CC0), pitch/formant/getar lansia · Mbah Kedu"
    }
   },
   "id": {
    "dialog-magelang-01": {
-    "sha256": "9a1a9f627866d58377094860fd3d8be0eed3cddc6453719beaad3653f65a80ad",
+    "sha256": "f8db4d96880205fe3b678aac501b045eafc9f2f99e14378b746231dabf5f3090",
+    "bytes": 54412,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-magelang-02": {
-    "sha256": "ea2fcdf96247662f56614b2f6ba969976575ec2204898d0d30516aa54c925a4b",
+    "sha256": "07f1312cf16e015cf70b2b5e14a1f391c1af1abd627ba344d72f12f91ee12e3d",
+    "bytes": 45478,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-magelang-03": {
-    "sha256": "e6e3331d8e41ec189924f42f67619c693b4c9bbb39cd7258e84da891ec168505",
+    "sha256": "bada46b90d2b0f553508bb77703c6f3c068c5970bb80bd6fec93a0512a4b5048",
+    "bytes": 61935,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-magelang-04": {
-    "sha256": "fc592689b47778503e0679877a11b815bd78367082a404927e17fba5eddd9bea",
+    "sha256": "564f06ae3e4d6b4c5e5b776d597eda477e6f9857cd9b8f79d0ec4166ca64d99f",
+    "bytes": 94223,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-magelang-05": {
-    "sha256": "cf5e64b957478068d547d0ca9fc091abad697a1b0e4bb6e6e458ff3650e103ce",
+    "sha256": "3352026b39ebb288bf213896f39a4dec62740738dd80f031c7ed320cedc1424b",
+    "bytes": 38738,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-magelang-06": {
-    "sha256": "91fab8cfec44461b11cf7e3ccfdb89721983bb33ec5f4126208b904bdd07171f",
+    "sha256": "d023038f6063e99563cbe0ad1fb9b954fc82dc35b24f62284094118c430ff7a6",
+    "bytes": 103627,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-magelang-07": {
-    "sha256": "ea2cf0b89c8179929a1cb04c9396e459cbe37e0e161186b1d5725f673ff3779a",
+    "sha256": "2923a179264bdda6bbd43e9783c964e9c47c26f1850ba64cf5ad414aa70fcbc4",
+    "bytes": 17579,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-magelang-08": {
-    "sha256": "fb95a1c06e6ea9797de4fa694b629fa2b1d287c4b04312d021de65e00db8e9c8",
+    "sha256": "8c0f30b96014d67805b4195efda12e508edd7a3d879f9ea62a859f25ab85f2d8",
+    "bytes": 83094,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-magelang-09": {
-    "sha256": "78d494512e4307b0df618683b9e035010fb70fa1a9e32de1a01474eae11527e6",
+    "sha256": "0035aed81d54271d58d20399040beb8e0331f0a80cf9e0979732c5ca0026828a",
+    "bytes": 72436,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-magelang-10": {
-    "sha256": "8dd0e7028f7913ceae2b58ac83126f067195d619cb90d77f6107ac22ac14ca30",
+    "sha256": "e182c74ecd0f289adc90773227f147d124bcceed7acc196aafccb95ad5ee9984",
+    "bytes": 31842,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-magelang-11": {
-    "sha256": "93eeae665de6c774689e592b77e1f4d033a975c488680ab84f02b98e53c7beaf",
+    "sha256": "9e875f7ee978c2eb400ca83c249e40bf9abb6f4b4f43407568327ddb653d68f7",
+    "bytes": 95947,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-magelang-12": {
-    "sha256": "73d23baf0eec6a7b11e2ff7f553dacc2dd39a47dfb1a1d21c298f346ede2275a",
+    "sha256": "18c910a0a9191680bd630352c1ec2bfb4747ac4f0af99690054c493e7088ea2b",
+    "bytes": 46732,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-magelang-13": {
-    "sha256": "41079f5072669824f6aaab8c289179f867e1f9c41b30eabb30e6cc897e7b0cf8",
+    "sha256": "60075430c93b538c76626265447aaf8b53403a94e071ea7f386396025ca05c9a",
+    "bytes": 44224,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-magelang-14": {
-    "sha256": "75aa6fd76e3ed8f4642ed939b29af8cfae416af1213ada713827af6b4915a630",
+    "sha256": "24d31182a2daf91c95d203549d510d995a95f6cdbba1bee81e7e81d901ccce56",
+    "bytes": 39052,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-magelang-15": {
-    "sha256": "9d6cda914a8e9d09eabd8c70a57573e00b289341d6ce7ceb0c7a46ab5d6bedb9",
+    "sha256": "5b46b3f00a5a511a07812bc488b9eea00f382132b7188a76efe28e9caace1b3f",
+    "bytes": 66324,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-magelang-16": {
-    "sha256": "374a8224273d78910776f789b825701619a2f16ca026d118d55c622338d5e972",
+    "sha256": "6f44996f384ae9ae1e565116882b6c3b99d1afa966a57cf00c3b9e1baaf8ae7d",
+    "bytes": 46889,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-temanggung-01": {
-    "sha256": "3f4bee922b2fa617995c38e5cb6a9e97baf9de7b313538c75b3dcd33e16ac2d4",
+    "sha256": "2bb5563cffcc3b5c0d28c48cca9dd5dac87282d6f029450d2874a8ea87a5650d",
+    "bytes": 97984,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-temanggung-02": {
-    "sha256": "e3a260fd3f08f1503ff0261c43578153c1f42d001e0fc5021bb947e5122e3805",
+    "sha256": "22cc171eb74e1b12d673cae7d702f8638a2d9891925221b551656005a5aaa551",
+    "bytes": 43127,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-temanggung-03": {
-    "sha256": "3923b8a996a9e77a23ffa8b82a6341458a278724d36524730b53c63e30e7b4c0",
+    "sha256": "66fcd9732d698931ec29be94a5a055033d240401bfa1fce22c79a8b9d0b4252c",
+    "bytes": 77609,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-temanggung-04": {
-    "sha256": "f5cf5351ecdfe02e37712c5dd477c46834c65d91b23d893931fc97712d6b53d2",
+    "sha256": "f4e2f12f4cb903d1cccacc3e1c27b237bc53c06b93deb25afd903c17c822267d",
+    "bytes": 51434,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-temanggung-05": {
-    "sha256": "c039557952a5f623e89e4a76316c9dd484163f2ad84e211871c5d19c0c0cb17f",
+    "sha256": "b23898519d31bec353ce448cd14dd4e7a9f05426fbcfa3657d226d82d8e53b55",
+    "bytes": 95163,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-temanggung-06": {
-    "sha256": "8a084c9d9daffa865b1faffd281ac572b2ac7d78913d962ed47ddf0e069291b9",
+    "sha256": "bd2e32e57fc96070d2eda080ebe6f9640688f4f70332d6950784535dd15ccbde",
+    "bytes": 59898,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-temanggung-07": {
-    "sha256": "abd2c205074a7181a789fca06da40ce69cc7d4dc3d5a86d84450e04b1c36419e",
+    "sha256": "7e289275fb26ac7ba677fbd6ebae9393e4fcd397bf6494e13c46dcd4c42ad536",
+    "bytes": 45321,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-temanggung-08": {
-    "sha256": "dcb4b977253498d8bbcbfb508de45215062d44e37e6f1205e11db83d0011c241",
+    "sha256": "8e602adafea509b826657d734c6bda50c94109c46a72a90c8398dc3cdca59c98",
+    "bytes": 54098,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-temanggung-09": {
-    "sha256": "aa17e8985a809c0acb54fd849f4b709caf4fa39c3fa094b72e1287af8349abbb",
+    "sha256": "8137b8c07dcee8fbed3384ebf05c04e65b91183a93ade3cc45e5bd4dcb1fe22b",
+    "bytes": 67734,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-temanggung-10": {
-    "sha256": "f7fcd52472ae0c54a532690bc69fa6c7463055f1c3ca4f7e4d78503691907c15",
+    "sha256": "528d50e602da6c4db5da8cad65688ded09a84b5c68ac15273e9257686758514d",
+    "bytes": 66794,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-temanggung-11": {
-    "sha256": "524a6d563b0dff7533bd6031f425e96cf95a9ff3f0de677ebe82d699d321af34",
+    "sha256": "b4fc3e7c16696e659f70de37063815028f0b97ade88e34580740f7133c20036d",
+    "bytes": 38582,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-temanggung-12": {
-    "sha256": "9fc89af54a068deff5b98256348516ff97c5e84d5945daeb960d7b58d3e562bc",
+    "sha256": "cee8fde2645a3adb35e8a478bf3c2b7b8afa0a8a9176b5215b92620c191680d6",
+    "bytes": 106448,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-temanggung-13": {
-    "sha256": "8722f12384eccdbe1df85ff465b0019da7a16cc81a32206b9696ced3c0e5a912",
+    "sha256": "a8f8c521e651e61fcf2513d59744337266e97ae7ad45d3113af4251933cb29f3",
+    "bytes": 59741,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-temanggung-14": {
-    "sha256": "c8338a7c2b94e91402d334a2335fda796e08b060ac22464eee9f56bafa846d5d",
+    "sha256": "52e8a4916472b78eef0b4fdb03c7bafc04f4de826c1de18f96e12c25879744f3",
+    "bytes": 66167,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-temanggung-15": {
-    "sha256": "e48ace3534d075ebf0f91ee8d3c74e60f3028a45f891df70dbdf1e722d7a4253",
+    "sha256": "c60bd71866fb6445f7c6d7938d0084221ad35b1feca337153ba41ab9bf98e6ac",
+    "bytes": 37171,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-wonosobo-01": {
-    "sha256": "b0765b688a7cc513d4fd506e754ee98ae7e5b91ac60c196aa3aa8880aea4aa16",
+    "sha256": "d67d7ff0e494c340563bc926363f744895997c0b993676c490babbf74df71968",
+    "bytes": 39836,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-wonosobo-02": {
-    "sha256": "7c97e1a25f3370cdc3516308083eb7e296ee65c6101c7aa52d4b7d3016715417",
+    "sha256": "73c30bf685470a42257561c573210b6fb1bec64ba03e094a1e6d242dc88b7087",
+    "bytes": 66951,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-wonosobo-03": {
-    "sha256": "3c7d69bbbe43cd812b559ccf979fef022cf6fd851d5dde7ab8875d02da3eb85b",
+    "sha256": "84acdcf92fc359efad9bb04ebe69e45fedb7939d5fa63b04a63e366cbd15b832",
+    "bytes": 47516,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-wonosobo-04": {
-    "sha256": "f46bb6cfd96574c22d18a98c7938f773e800a62878e6376c26054ab295bb1864",
+    "sha256": "09a2240382887cf0235db9bd9fd8020bf295f9e8cdee283bda6794c301e42476",
+    "bytes": 90461,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-wonosobo-05": {
-    "sha256": "289ecbfa8cae3cc5ebf4dc60390eac6bc231e9e6d3d44ba2aedb2b7e5d3f7261",
+    "sha256": "0c9d82bb18e9fee2f3a60e450f69c9ecd9c82edb2c701df70ea0bb2e0b672ff9",
+    "bytes": 47516,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-wonosobo-06": {
-    "sha256": "6980d9bf9cf93ca798a9fe858990e96f1bf2beeecb39db5744eb575db1336963",
+    "sha256": "71cd7e810abba4caa5829ec277031e1aab8b7c42b4133af55267904790356442",
+    "bytes": 76512,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-wonosobo-07": {
-    "sha256": "f54e4a1070fd4d1e3674b4b3d01337ce0565f8a10adccd6cab111f00865f92f7",
+    "sha256": "60b21a7f4ddb04f7d088c4ec693299f8ab3d7b13df89141902cf1a253f4c2590",
+    "bytes": 71810,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-wonosobo-08": {
-    "sha256": "47461c13e939e75369d3fc4d83ffb2ecd1becd85376ac70df72406d4284ebffa",
+    "sha256": "6ae087ca842dc735438d43baf71dfa78565f297763d22ac6c34ac8501932079c",
+    "bytes": 52218,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-wonosobo-09": {
-    "sha256": "1bfcfecfef7ad4ef4057068ee7659a50e97daa3da325133c47ecdfcaf69ec1cf",
+    "sha256": "d15eea669333a1c25ed47751420284b1fc0a4324f27cb8356a200faafedfa2ef",
+    "bytes": 63346,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-wonosobo-10": {
-    "sha256": "4efc145942342ea7cce7aba2f1fe1397a0caef6a47cee1a7ce9bcfbcb88ae665",
+    "sha256": "a1fe6b681be865f7003fc22dd20391e9182ec7dbc917a1ec5549cbeed588e7d6",
+    "bytes": 12877,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-wonosobo-11": {
-    "sha256": "f751be63369269e3f88150b38c51a934c7de2f159a3e62517530503e323fdea8",
+    "sha256": "89b2b5e2ba5770982d066b434f977e49540ee355bdf5b2d95601ecc74f7e0107",
+    "bytes": 56136,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-wonosobo-12": {
-    "sha256": "9b0dea8824a1a166861883a7ce55b37a4b4c776e2b9253aa5af3bb718f44d05c",
+    "sha256": "715254e0f4fe0dfc4c2049037e51f87b7c283c4a239c98455959f3c8bfa30d37",
+    "bytes": 85132,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-wonosobo-13": {
-    "sha256": "dea996b91966a6f48b772f2539f168e3145521541438a2adae9486979b9d3fb6",
+    "sha256": "c4b7920b0d07b85d94c4b6275d908c2f4d3521f7b3d139d1b71bf8cade51a7ee",
+    "bytes": 58017,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-wonosobo-14": {
-    "sha256": "54adb76f3ccddf21bdf34410ddb34ca9ae715f4b9663fd942fb317d8950bc7a2",
+    "sha256": "378af5dd45f3ad7e4ef180fef9566144f4322b841059e3a77f26333802206706",
+    "bytes": 61465,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "dialog-wonosobo-15": {
-    "sha256": "8abd995e94fcf90c400a73e517098c5dfc07f7f4a1123b77071c07beb5036ae3",
+    "sha256": "68024f3e6cd7fefb94a765a2bda62c2a818c9b4fe5e98633684dc1d9c25edf74",
+    "bytes": 52218,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "dialog-wonosobo-16": {
-    "sha256": "f4e7a27a0f9202965ad0d7a4f6a147262c0827580b2f7e2a6fc4adafa7b77501",
+    "sha256": "76a0d36675021e6fb7adf546f2675d26726f1527dcd03680bb8f2313c2efc2ce",
+    "bytes": 47986,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "intro-01": {
-    "sha256": "2cdd0cb6ff6a94ec4fc1c7e771d6aa03df077f0d9c21f5aaa9a2bf1351b13006",
+    "sha256": "04c597fa7005b2bb212c3c6fa661d0bb3c179ad5ce92f0a008e859b07164d9cd",
+    "bytes": 115382,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #36 · Narator"
    },
    "intro-02": {
-    "sha256": "ff0331dea9426e4c9bd69795b68a85bcca991966209cffa8c1102ee26b0a1ebc",
+    "sha256": "5d16dc1e49a1bc4b2842ff5a8fa6bdb5485d7888f663ec1f2ade5efb6844edc3",
+    "bytes": 151901,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #36 · Narator"
    },
    "intro-03": {
-    "sha256": "e9b1ce0f2a4c50f5934489aa8b9b214acdfaa18c26da1448520adec3a0b46ab9",
+    "sha256": "ded05c449f2b9c22de710f58fdc5889997ab8b2a5a6827184b3964fa5ca677bd",
+    "bytes": 111777,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #36 · Narator"
    },
    "intro-04": {
-    "sha256": "9802b7d66065695c36799db482f1b312190cc20bdd1f7645fb655d0f29f01e9f",
+    "sha256": "15868c3af99307e2eddbfa85468575e4dceba022360344a7a26f8b92be067dfb",
+    "bytes": 116322,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #36 · Narator"
    },
    "intro-05": {
-    "sha256": "05cd480d0cecde1e7ea31f38d5ada4597d3f595ce18062548ea65e6c393ff522",
+    "sha256": "957805e56e0737bc5437dc4bbed6fc56dc26c666d5f4ec73db12936b94306cf4",
+    "bytes": 129488,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "intro-06": {
-    "sha256": "bdd0e98fd874633a92c2acb8136e1aa7c40411a037933f0ec1b77de362c2974f",
+    "sha256": "de2afadda70a539b93366a7450a734ed9f0c6b7e8a3e296ffdc88245d7035527",
+    "bytes": 66794,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "intro-07": {
-    "sha256": "b248cc61deb5a9757dccdb8419067d85b60e88b276f803d0bf095f7072da8e75",
+    "sha256": "a679a657952f41d80d6bd5fa1c557550a973bddc45538c9aef714b1712828b8f",
+    "bytes": 130115,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #36 · Narator"
    },
    "intro-08": {
-    "sha256": "e29f9b8c37258bfc48faebdd694b8de00637a527b4e17559edf4b6b70f83a396",
+    "sha256": "5e2ad19653288cf0f2283e33d9ed35d2ae5adc5ae53565168e13aa31d9e0f948",
+    "bytes": 112247,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "intro-09": {
-    "sha256": "3ef16b705f79479ee114e05a9150ac5f25b8a818fe03032fb549ca885d711e45",
+    "sha256": "445448cc42f4b6c1126b239bbb32f073995ccfae601bad469e8812c28725a845",
+    "bytes": 103313,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #36 · Narator"
    },
    "kenal-magelang-01": {
-    "sha256": "a5ec9105f602c677f12a9d962c7da2f0bef0d8807d7baf774d1e4137221deef6",
+    "sha256": "2eeb8e9d3e97b9794713cae56e5b01b597a68fb1a15dbe2d3ef20337b6948343",
+    "bytes": 85445,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "kenal-magelang-02": {
-    "sha256": "624501de334aecc69c9822bd10af7d95722dfd5e216210f3741d3dcc7bb9cd64",
+    "sha256": "3056f9d993ec9e8ec5630b8bcf47d30767e846ec2ff38ba6243bde2aafdb7370",
+    "bytes": 122748,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "kenal-magelang-03": {
-    "sha256": "84ccabfe21f7f99e4bd50eb618719feae0dfc1312223ea6c58d3eaad294a8b0c",
+    "sha256": "a93c308a65b4f215b3615f66dedbbc570d5de67acab98baa83dbbfae2ea98a46",
+    "bytes": 99708,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "kenal-magelang-04": {
-    "sha256": "38af6fd7370f885bd94af1022d9a77dbc1f172d93ba910629bb3e72c8ac4fbf4",
+    "sha256": "6f0db9d6d5a96d00182538cb502bfeff09bd038756996f8894747df0844d85ed",
+    "bytes": 116949,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "kenal-temanggung-01": {
-    "sha256": "a244217a3ad6286c62dbe8a272100fd1b0bb866ae5240642a5fb414399c30996",
+    "sha256": "4c2f88640b653a13e6e0d7f26765491d5a275531261b666f7c14afcedb46d80c",
+    "bytes": 95633,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "kenal-temanggung-02": {
-    "sha256": "124295856ed0398ee41521410bdbade5d4cc5a50cd6a96893a1e2b15074b03bf",
+    "sha256": "f9c8bc5b60874ce298e5f20ca2042eacfd11be193dde18422425b6621bd35006",
+    "bytes": 87483,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "kenal-temanggung-03": {
-    "sha256": "e48ea64c673d299d6548088009d31c1a2f56b66fa87d87fffb724254588e7627",
+    "sha256": "0025c80295ba9ee454a17bf933d8f9542e774985b18ef7c0b957c7fac2242814",
+    "bytes": 126353,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "kenal-temanggung-04": {
-    "sha256": "c5293f2d102673a07cd6ac2e47ec0d03cccde4ad71964ce30f9e9880ebca9b42",
+    "sha256": "50e7a188042afab9282e052a0786be1d4c13830397fe48ef94162e35a4983f57",
+    "bytes": 131212,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "kenal-wonosobo-01": {
-    "sha256": "c6c3ce52a0038b6ed969b6d95cc737922685c23e3e21e0e793927c806568bb5f",
+    "sha256": "d32cbd3854df5b6b322db9f1f086da396b67c67110ee1475dab87e953c179ec2",
+    "bytes": 92498,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "kenal-wonosobo-02": {
-    "sha256": "27cf037cf4b5e1240fcd8f6abe55754298d5fd2bcd55dac6af904011767c5ad8",
+    "sha256": "46d0c6e280fd9669f50fcc55fcdec6c12fe0ef692099d1c118f2b29cad24a931",
+    "bytes": 106448,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "kenal-wonosobo-03": {
-    "sha256": "9d4aced6fa0afb359133468c968ca042966dcb529bbff59d3dedd1370bde1eaa",
+    "sha256": "5ab4eb49ee97ef9d119be17e3cd96780cf3480bb03f7920655fddc1790a39e93",
+    "bytes": 115695,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "kenal-wonosobo-04": {
-    "sha256": "c6c89d5d2c743ecc3ca8aa4e31886fd7019cbd250b19b48f990c4623355199cb",
+    "sha256": "e2eb2797a3c2c0aebcaba306b05506f587a8f786dae17b63944681454344b831",
+    "bytes": 91401,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "penutup-01": {
-    "sha256": "db04c3cde713c26e041bf87f2705cb25f578e7ae9b51eb78c2a5af50c03011ec",
+    "sha256": "960701d8d9d591ea6c44efc4d5d2e4be2c3f8abfd6de24282aee25a863461461",
+    "bytes": 83408,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #36 · Narator"
    },
    "penutup-02": {
-    "sha256": "f3fcfab037451f8b7ed922faa1edd73409823acfaad8e585cff2e5e38a3785ac",
+    "sha256": "4408eb1d383dbe13bb3915b41fda875f3d62e42ca66c6b066ffe46d13822c437",
+    "bytes": 94850,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #36 · Narator"
    },
    "penutup-03": {
-    "sha256": "4d20675d5add420a9d47a58bfd470b3afa5b91e31221856aa54bb282506e75f6",
+    "sha256": "24ebe74ea5942b7e842fbd4973312b4ae53a4fe47e4a445584c33a421c1a2630",
+    "bytes": 83094,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "penutup-04": {
-    "sha256": "9563a2808a66542ca24870894d00bc3ce2aa3a0b9d42ed2eb9fbd0632edd1986",
+    "sha256": "f4cb1a3ff76720f9a46be01cb8d1768b4073b95b62c83dde3f623609a472c981",
+    "bytes": 73377,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "penutup-05": {
-    "sha256": "918c62b477501c8351cc50daee898e2a882e261506a848303d56fc6a61422b56",
+    "sha256": "1c0bc0714ddd7fe5829815000f93802e35c6fb4e0df51fbb614ca4fe11baa36f",
+    "bytes": 79333,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "peta-01": {
-    "sha256": "5a4381035874a71b2761e4f208f9a31c8b2e81929ca3d0276e775764e271b7cd",
+    "sha256": "ee1b19c25d6e5ace0fc107d5ff8a8d36964ca9f8cf01aef788669a7061d23b82",
+    "bytes": 73377,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "peta-02": {
-    "sha256": "0b4a6795d38ccbcdd5d865388f887c587b840191e3aa134e3cb057ecaf5a184c",
+    "sha256": "41c0c516e7fb7ff33bbcc8be2e2f4657ea142a54358f8e2714158b937df434f9",
+    "bytes": 77922,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "peta-03": {
-    "sha256": "f9ef409e998c7bfc242d4e435c40a47d54a8489b3d6d186f05642a71b6bc7b8f",
+    "sha256": "20399b7ee0dbddff1995f2de4cb2d4aa2aeb28d92e3a4a98890b4b0b94807000",
+    "bytes": 81527,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "petunjuk-mgl-4-01": {
-    "sha256": "5cd282068f6dee5694b88429a37a6bb14fb28b055bc67d1f0141ddb136031dcc",
+    "sha256": "0ea2e9ce7c71241c9a6c5904ab40069dae534b3e9757662d94c08f8c518b70dc",
+    "bytes": 70869,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "petunjuk-mgl-4-02": {
-    "sha256": "f2771e1147efa57c0851b18fb7681bd3ca4e5c6f1325d5461470db70489d2e4a",
+    "sha256": "3d6221a68389aa9eaaa65bee7832df7236e3b44a72d3a2637e43c6c051421295",
+    "bytes": 54882,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "petunjuk-mgl-4-03": {
-    "sha256": "c6aa26fa977533b1abe05ecf3b8a98953aed4956287b8034314d090d5f67e6ab",
+    "sha256": "cadc4179011dcb8839affee3f8fdf653bb5a7d1df1d0c227f4294b8fde0718d7",
+    "bytes": 67578,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "petunjuk-mgl-4-04": {
-    "sha256": "0930eb0c6a86720b57a9d64dbd6e471e838105609f9ae6a0147933bf24a07a0c",
+    "sha256": "bcd7676a661ddce0631379a8b25aaf4e0e8e7877df1ffa8d8563124755f0b37b",
+    "bytes": 47045,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "petunjuk-tmg-4-01": {
-    "sha256": "e072a6d7fd8833e5172985f2c9d6bea1f709b858f72b74c62558cabd1ac47659",
+    "sha256": "0a05baa9b891b0f24658ba41453c039f62de64a389311c360b4a94db8245b5a6",
+    "bytes": 42814,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "petunjuk-tmg-4-02": {
-    "sha256": "22cdacc42cf3d93d9cff91b41f7256d70d6dc8ecbfe59cf05534061622ddef19",
+    "sha256": "b62baf76191ac90b31c2926bcaedfa4115df3ac814f3a65a210bd1d5c17f0784",
+    "bytes": 34193,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "petunjuk-tmg-4-03": {
-    "sha256": "22cdb090c6e67e719b5fc67fb2825772123453e092d09455d996cfa6709ae388",
+    "sha256": "044e3989267f6580d7d266f56c54f722c45a4467b2fa2d6ad9d48725c14308f4",
+    "bytes": 37171,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "petunjuk-tmg-4-04": {
-    "sha256": "bb9733c29a4f5c1acc4f3af104894fb03c60e4ebb0c8d8ebe48fd8bf302b7a53",
+    "sha256": "cf549224c78a97be7371a983dd32b4ea54f8f6a25ca3a79d4b0616bef427405d",
+    "bytes": 38425,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "petunjuk-wnb-4-01": {
-    "sha256": "11ab91427dc2b9b4906a15f2b1e7cc2f2a71e700fb2694e10093d4175a8b50d2",
+    "sha256": "36f6ec7f11dd2d9b1a192d86318b2fb757366417818fa2898d53351d80e815fd",
+    "bytes": 84505,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "petunjuk-wnb-4-02": {
-    "sha256": "72e143562cf76f49de1d7b4aa3ce34c6cea93d90db75dddf0999970ce4f66240",
+    "sha256": "70123af011d0747bf6ede4edce7d806ca05bc2db0a83430fa2cdb2beb61571f4",
+    "bytes": 71026,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "petunjuk-wnb-4-03": {
-    "sha256": "6ea17802224ca88fa6ff5a463760fbe0f19048a0a8983e627d63e5c63bb59e1e",
+    "sha256": "f8ab91840f6caaed0a729800135c32ae6df7ebdcae37cea93b89e30ea64997e4",
+    "bytes": 65697,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "petunjuk-wnb-4-04": {
-    "sha256": "b46b4b25b44ff70b28ee15a7dff420704cb4ee32394fdce781cf54c8ee8e053d",
+    "sha256": "f0c22c8c886a429d6d4be475d9123c4552f2d9befe3458adefa8d69c388758ab",
+    "bytes": 82311,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "tuntas-magelang-01": {
-    "sha256": "469f21ce5ba5ef25fc2ba6ffd0e176066ea1bd7b272e793efcc4f9419199319a",
+    "sha256": "7de28c295b5f345f2bdc4d2469328af976d678c9fc8fd2ce81eae12e30ed2de7",
+    "bytes": 69929,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "tuntas-magelang-02": {
-    "sha256": "2058f6c812fea8b79dbf4e434ff82ca8735a987e44fc83a0d27d7f9b4e65511e",
+    "sha256": "7a873558df39798c760cc76b5abfabaf681115b0968c2840f6d7b71c0c7034bb",
+    "bytes": 29805,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "tuntas-magelang-03": {
-    "sha256": "0f7a39f2b3cf80510af2e721bf3668e0176552a0a8536751cba7b9503fcbf350",
+    "sha256": "1f9aea226236d6dc83687e7515993e6f8d4b8516e139af3e354c1c5631e8c118",
+    "bytes": 55352,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "tuntas-magelang-04": {
-    "sha256": "626e25aa8897530a17695fd99e5784b0a93a410f3e404d919953f6f4d222a050",
+    "sha256": "77c407c9da7a59a3b901db0f842ec200e650bdf235c9ddaa7323146c37bd8007",
+    "bytes": 30745,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "tuntas-temanggung-01": {
-    "sha256": "f104199131b9590e40beea253b16007bf6e2085ebf58b70805282bf028b35895",
+    "sha256": "6ea984515dcf1b479997e9a88132f567c5e0452e5504e47ec9e92dee2a950929",
+    "bytes": 65227,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "tuntas-temanggung-02": {
-    "sha256": "aaaa448dd84a7e688cc83e2e9ab7c8a065c15801d368c0dec40cb535a6f41d99",
+    "sha256": "3456b91422f0e40febe91db761719ccb246d4c2a937467e2b9e1941bede345c9",
+    "bytes": 36231,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "tuntas-temanggung-03": {
-    "sha256": "74f30003c6c733914ae30eb7621483848802c94b328164010b312a2b10f07785",
+    "sha256": "3acdaf99f491d226d771fd20ad4bcb8a13ce66592b03cf01ded722b7104a4b64",
+    "bytes": 52688,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "tuntas-temanggung-04": {
-    "sha256": "5bb52842165c9bfd03efbf990067ef69d00c2ce41afcb20fbca172df10d6f4e1",
+    "sha256": "026e35b0d749e53d6383600d391e48dc1fd8417cafefdb1130dce476c2cb7ded",
+    "bytes": 24632,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "tuntas-wonosobo-01": {
-    "sha256": "2ca41f8474ece4f8eebe567ad60f1ed966b5c2cecdaed4a4225faf0a84eba377",
+    "sha256": "53898202fb24d915082106fbb38c5aa402b0aca7614d6c836257826c395775d7",
+    "bytes": 67421,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "tuntas-wonosobo-02": {
-    "sha256": "867490452a57f58866dcf3279c237a0e499f30ccb9d12a43355405028bb0b193",
+    "sha256": "ee2d9c4dbe709ced0d5fe6a8e343d1bb411dbec6b11b6a304db4e66e3c60f410",
+    "bytes": 69458,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    },
    "tuntas-wonosobo-03": {
-    "sha256": "53307d5e9b18f5630d5a9780e8d1c494ba219417621b4e73552ed405f124129e",
+    "sha256": "4efa87813db5485fac26b4752e96cd0e00804c86c0a41e81464376a83c68ab62",
+    "bytes": 27924,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #6, pitch & formant anak · Jaka"
    },
    "tuntas-wonosobo-04": {
-    "sha256": "5736b0cc5144d6db5d96eb5603e99b8d81b328dd7776809f13d01696d8b1f577",
+    "sha256": "51e337de5771bd496b8d610f3fe840a709dced8a64e21751971795abadf0b966",
+    "bytes": 57547,
+    "bitrate_kbps": 48,
     "voice_profile": "TTS · Mimic 3 jv_ID/google-gmu_low (CC BY-SA 4.0) penutur #38, pitch/formant/getar lansia · Mbah Kedu"
    }
   }

@@ -294,7 +294,7 @@ final class AssetChecklist
             $items[] = [
                 'label'      => 'Rekaman narasi ' . strtoupper($locale) . ' (bahasa ' . admin_label('locale', $locale) . ')',
                 'key'        => 'audio.narasi.' . $locale . '.*',
-                'size'       => 'MP3 mono 64–96 kbps',
+                'size'       => 'MP3 mono 48 kbps',
                 'status'     => $p['none'] > 0 ? 'missing' : ($p['draft'] > 0 ? 'wrong' : 'ok'),
                 'note'       => sprintf('%d/%d disetujui, %d menunggu persetujuan, %d belum ada', $p['approved'], $p['total'], $p['draft'], $p['none']),
                 'link'       => site_url('admin/konten/narasi'),

@@ -35,10 +35,17 @@
  *   tantangan dirender, jadi tirai ini tidak menambah waktu attempt.
  *
  * Durasi per jenis dibaca dari lapisan: `data-min-ms`, `data-max-ms`.
+ *
+ * Short curtain (asset package Stage 4, owner decision P8): when assets are
+ * local (config.js assetsLocal(), switched on by Stage 2), a layer with
+ * `data-local-min-ms` uses that minimum instead (600 ms for `region` and
+ * `challenge`). The `map` curtain that opens the game after the story has no
+ * such attribute and keeps its 2.5 s pause.
  */
 import { $, $$ } from './dom.js';
 import { Sfx } from './audio.js';
 import { flush } from './events.js';
+import { assetsLocal } from './config.js';
 
 const MIN_MS = 2500;
 const MAX_MS = 8000;
@@ -120,6 +127,16 @@ function preload(urls, onStep) {
   }))).then(() => ({ loaded: done - failed, failed }));
 }
 
+/**
+ * Minimum time of a curtain layer: `data-local-min-ms` when assets are local,
+ * otherwise `data-min-ms` (default 2.5 s).
+ */
+export function curtainMinMs(layer, local = assetsLocal()) {
+  const short = Number(layer?.dataset.localMinMs);
+  if (local && short > 0) return short;
+  return Number(layer?.dataset.minMs) || MIN_MS;
+}
+
 /** Lapisan sudah pudar oleh animasi pengaman CSS (JavaScript datang terlambat)? */
 function alreadyFaded(layer) {
   const style = window.getComputedStyle(layer);
@@ -168,7 +185,7 @@ export async function playCurtain(kind, opts = {}) {
   if (opts.text) fillText(layer, opts.text);
 
   const urls = [...new Set(opts.urls ?? parseList(layer.dataset.preload))];
-  const minMs = opts.minMs ?? (Number(layer.dataset.minMs) || MIN_MS);
+  const minMs = opts.minMs ?? curtainMinMs(layer);
   const maxMs = Math.max(minMs, opts.maxMs ?? (Number(layer.dataset.maxMs) || MAX_MS));
   const tap = opts.tap ?? layer.dataset.tap !== '0';
   const skip = opts.skip ?? layer.dataset.skip === '1';

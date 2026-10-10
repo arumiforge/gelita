@@ -14,7 +14,8 @@
  *   menyembunyikan <option> tidak berlaku di semua browser.
  * - Cek nama pengguna: huruf kecil & tanpa spasi saat mengetik, pola dicek
  *   di client dulu, lalu GET /api/auth/username-available (debounce 500 ms).
- *   429/jaringan gagal → diam; server tetap memeriksa saat Daftar.
+ *   429/jaringan gagal → diam; server tetap memeriksa saat Daftar. No check
+ *   is sent once the form is submitting (see check()).
  * - Sekolah: di provinsi berdirektori (option[data-directory], Jawa Tengah)
  *   siswa mengetik NPSN; 8 angka → GET /api/schools/lookup → nama resmi tampil
  *   di kartu, dengan peringatan bila kab/kota atau jenjangnya tidak cocok
@@ -28,7 +29,7 @@
  * sandi belum kuat: penolakan server adalah bagian dari pembelajaran dan
  * tercatat sebagai pw_weak_submit_count.
  */
-import { $, $$, debounce, el, scrollToCenter } from '../core/dom.js';
+import { $, $$, debounce, el, reducedMotion, scrollToCenter } from '../core/dom.js';
 import { apiRequest } from '../core/api.js';
 import { initPasswordField } from './password-meter.js';
 import { attachDeviceField } from '../core/device.js';
@@ -94,6 +95,12 @@ function initUsername(form) {
   let lastChecked = '';
 
   const check = debounce(async () => {
+    // Once the form is on its way (preventDoubleSubmit), never ask again: the
+    // server regenerates the session when the account is created, and a late
+    // check carrying the old session cookie would answer with that cookie and
+    // log the new student out. View transitions keep this page alive a little
+    // longer during the submit, which made the race easy to hit.
+    if (form.dataset.submitting) return;
     const value = input.value;
     if (value.length < 3) {
       show('', null);
@@ -167,6 +174,15 @@ function initSchool(form) {
     card.replaceChildren(...lines.map(([cls, value]) => el('p', { class: cls, text: value })));
   };
 
+  // The card and the "not on the list" box appear below the NPSN input, often
+  // under the panel's visible area: scroll down just enough to show them.
+  const reveal = (node) => {
+    const panel = node?.closest('.stage-scroll');
+    if (!panel || node.hidden) return;
+    const below = node.getBoundingClientRect().bottom - panel.getBoundingClientRect().bottom;
+    if (below > 0) panel.scrollBy({ top: below + 8, behavior: reducedMotion() ? 'auto' : 'smooth' });
+  };
+
   const warnings = () => {
     const out = [];
     if (district?.value && school.district_code && district.value !== school.district_code) {
@@ -200,10 +216,12 @@ function initSchool(form) {
         school = data.school;
         showSchool();
         showManual(false);
+        reveal(card);
       } else {
         school = null;
         render('missing', [['school-card-warn', text.unknown.replace('{value}', value)]]);
         showManual(true);
+        reveal(manualBox);
       }
     } catch {
       lastQuery = '';

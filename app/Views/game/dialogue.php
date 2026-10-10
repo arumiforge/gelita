@@ -30,6 +30,8 @@ $region = $level->text('name', $locale);
     'locale'  => $locale,
     'context' => 'level_open',
     'screen'  => 'dialogue',
+    // Next screen: the region map (/wilayah/{code})
+    'nextAssets' => [media_exists($level->map_media_id) ? media_src($level->map_media_id) : null],
     'eyebrow' => lang('Game.levelOrder', [$level->sequence]),
     'tap'     => [
         'variant' => 'chapter',

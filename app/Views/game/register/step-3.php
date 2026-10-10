@@ -30,7 +30,10 @@ $focus   = static fn (string $f): string => $first === $f ? ' autofocus' : '';
 
 <?= $this->section('content') ?>
 <section class="register" data-step="3">
-  <div class="panel-parchment register-panel stage-box">
+  <?= component('character', ['character' => 'jaka', 'pose' => 'bow', 'class' => 'start-jaka stage-box']) ?>
+
+  <div class="register-panel ornate-panel stage-box">
+    <?= $this->include('partials/ornate-frame') ?>
     <?= $this->include('game/register/_head') ?>
 
     <form method="post" action="<?= base_url('daftar/3') ?>" class="form register-form" data-step="3" autocomplete="off">
@@ -39,7 +42,6 @@ $focus   = static fn (string $f): string => $first === $f ? ' autofocus' : '';
       <?= view('partials/form-errors', ['errors' => $errors]) ?>
 
       <aside class="why-strong" aria-labelledby="why-strong-title">
-        <?= component('character', ['character' => 'jaka', 'pose' => 'bow', 'class' => 'why-strong-jaka']) ?>
         <div class="why-strong-body">
           <h2 class="why-strong-title" id="why-strong-title"><?= icon('key') ?> <?= esc(lang('Game.whyStrongTitle')) ?></h2>
           <p><?= esc(lang('Auth.whyStrong')) ?></p>

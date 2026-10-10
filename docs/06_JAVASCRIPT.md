@@ -113,6 +113,45 @@ t('blankEmptyText', 3)  // teks Js.* dengan {0}, {1}, … diganti; kunci tak dik
 
 **`maxTries` dan `stage`** ikut dikirim `js_config()` tetapi tidak dibaca `core/config.js`; jumlah kesempatan yang dipakai layar tantangan diambil dari `#challenge-data` (`max_tries`).
 
+### Two-language texts and asset package hooks (asset package Stage 4)
+
+Since Stage 4 (`docs/rencana-paket-aset.md` §4.4), `js_config()` sends `text` for **every** game locale: `text.id` and `text.en`, each with every `Js.*` key (about 10 KB instead of 5 KB). `locale` is still the active language. `core/config.js` also accepts the old flat `text` map (one language) and treats it as the active locale.
+
+```js
+t('cancel')          // text of the active locale (see setLocale)
+currentLocale()      // locale t() uses now; starts at CONFIG.locale
+textLocales()        // ['id', 'en']
+setLocale('en')      // switch t() with no request; sets <html lang>, fires
+                     // `gelita:locale` { detail: { from, to } } on document;
+                     // false when the page has no texts for that locale
+assetsLocal()        // "assets are local" hook, false by default (below)
+setAssetsLocal(true) // switch the hook on (Stage 2)
+```
+
+The language button (`components/lang-switch`, `game/hud.js`) still posts to `/bahasa` and the page reloads (plan option L1), now under a view transition. On submit, `hud.js` calls `setLocale()` first, so any toast or modal built during the reload is already in the new language, and the sound button title follows (`gelita:locale`). Tapping the active language sends nothing. During a challenge the button is hidden (`body.is-challenge .lang-switch`, owner decision P5) until Stage 7 can keep the engine state.
+
+**"Assets are local" hook — contract for Stage 2.** `assetsLocal()` returns true when the page's images, audio, and modules come from the on-device asset package. Stage 4 never switches it on. Stage 2 (service worker package) switches it on in one of two ways:
+
+1. `<html data-assets-local="1">` set **before** `game.js` runs (an inline script in `layouts/game.php`, e.g. from a value the service worker or the download page left in `sessionStorage`), or
+2. `setAssetsLocal(true)` from a module once the service worker confirms the active package is complete. `setAssetsLocal(false)` switches it off again and wins over the attribute.
+
+Readers call `assetsLocal()` at the moment they decide, so a curtain that already started keeps its minimum. Today the only reader is `core/curtain.js` (`curtainMinMs()`). Option 1 is preferred because the page's own curtain starts as soon as `game.js` loads.
+
+### Next-screen decode (`game/next-assets.js`, asset package Stage 4)
+
+Screens that know where the student most likely goes next carry `data-next-assets` (JSON list of image URLs, from the PHP helper `next_assets_attr()`). `game.js` calls `initNextAssets({ ready: page })`: after the page module is ready and the browser is idle (`requestIdleCallback`, at most 2 s), each image is loaded with `new Image()` and `img.decode()` and held until `pagehide`, then released; a page restored from the bfcache decodes again. Limits (plan §4.5, iPad memory): one screen ahead only, at most 6 images, images only, nothing with Save-Data. A missing image is skipped quietly. `<html data-next-decoded="n">` records how many were decoded (for QA). `game/map.js` keeps its own `[data-preload]` warm-up of region backgrounds (no decode).
+
+| Screen | `data-next-assets` |
+|---|---|
+| `intro` | `bg.loading`, `map.kedu`, `bg.map` (Peta Kedu behind the opening curtain) |
+| `map-kedu` | entry assets of the first region still open or in progress (its region curtain preload) |
+| `dialogue` | region map image |
+| `map-level` | mission brief of the first open node: node background, Jaka |
+| `mission-brief` | the node's scene image (Cari Objek, Susun Gambar), when there is one |
+| `result` | region map image |
+| `finished` | next region's entry assets when this attempt completed the region, else the region map |
+| `region-done` | next region's entry assets, else `map.kedu` and `bg.map` |
+
 ---
 
 ## Lapisan Inti (`core/`)
@@ -241,6 +280,8 @@ initCurtains()  // dipanggil game.js: pembersihan bfcache + delegasi a[data-curt
 
 Jenis yang dipakai: `map` (tirai peta, dengan ketukan), `region` ("Menuju {wilayah}…", tanpa ketukan), `challenge` (sebelum layar tantangan, dapat dilewati).
 
+**Short curtain (asset package Stage 4, owner decision P8).** `curtainMinMs(layer, local = assetsLocal())` picks the minimum: `data-local-min-ms` when assets are local, otherwise `data-min-ms` (default 2.5 s). `components/curtain` puts `data-local-min-ms="600"` on the between-screen curtains `region` and `challenge`. The `map` curtain that opens the game after the story has none and keeps 2.5 s. `opts.minMs` still wins over both.
+
 ### `core/stage.js` — panggung 16:9
 
 ```js
@@ -306,7 +347,7 @@ Selalu aktif di setiap halaman layout game:
 2. `initStage({ track: Boolean(sessionTag) })` (`core/stage.js`). Bila ada `sessionTag`: `resendQueued()` saat dimuat dan saat event `online`, lalu `initVisibilityTracking()`.
 3. `initHud()`, `initRotateGate()`, `initInstall()`, `initCurtains()`.
 4. `initAudioPlayers(document, { attemptId, attention })`.
-5. Modul halaman dipilih dari `[data-screen]`:
+5. Modul halaman dipilih dari `[data-screen]` (lalu `initNextAssets({ ready })`, see "Next-screen decode"):
 
 | `data-screen` | Modul |
 |---|---|
@@ -326,6 +367,7 @@ Tanpa `data-screen` yang cocok: `form.register-form` → `register.js`, `[data-l
 - Tombol suara `#btn-sound` → `Sfx.setEnabled()`; `aria-pressed` dan judul `soundOn`/`soundOff` ikut berubah.
 - Lentera (`details.lantern`) tetap dapat dibuka tanpa JavaScript; di sini ditambah tutup dengan Esc dan klik di luar. `updateLantern(shards)` memperbarui angka dan bilah serpihan dari angka server (dipanggil `challenge.js` sebelum pindah ke layar selesai), tidak pernah dari hitungan sendiri.
 - Heartbeat `POST /api/session/heartbeat` tiap 60 detik selama tab terlihat, hanya di dalam permainan (ada lentera dan `sessionTag`), tanpa percobaan ulang.
+- Language switch: on submit of `form.lang-switch`, `setLocale(code)` switches JS texts at once and marks the pressed button; the form then posts as before. The active language is a no-op (see "Two-language texts").
 
 ### `game/rotate-gate.js` dan `game/install.js`
 

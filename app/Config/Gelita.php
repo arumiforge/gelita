@@ -229,4 +229,35 @@ class Gelita extends BaseConfig
 
     /** Versi aset untuk cache-busting (gelita.assetVersion di .env) */
     public string $assetVersion = '1';
+
+    /**
+     * Asset package settings (docs/rencana-paket-aset.md §5, §6.3).
+     *
+     * - `aktif`: server-level kill switch. `gelita.paket.aktif = false` in
+     *   .env turns package mode off even when the active release names a
+     *   package; helpers then return normal URLs and /api/paket/aktif answers
+     *   `package_code: null`.
+     * - `batchSize`: files per build batch (admin panel: one request per batch).
+     * - `copyLibraryImages`: copy Wikimedia Commons images of the library to
+     *   the server while building (owner decision P4a).
+     * - `budgets`: size budget per asset_key pattern in bytes (§2.2); larger
+     *   files only produce a build warning. First matching pattern wins.
+     *
+     * @var array{aktif: bool, batchSize: int, copyLibraryImages: bool, budgets: array<string, int>}
+     */
+    public array $paket = [
+        'aktif'             => true,
+        'batchSize'         => 25,
+        'copyLibraryImages' => true,
+        'budgets'           => [
+            'bg.*'                 => 450 * 1024,
+            'map.*'                => 600 * 1024,
+            'char.*'               => 250 * 1024,
+            'ui.*'                 => 250 * 1024,
+            'reward.*'             => 60 * 1024,
+            'challenge.*.scene'    => 350 * 1024,
+            'challenge.*'          => 250 * 1024,
+            'library.*'            => 250 * 1024,
+        ],
+    ];
 }

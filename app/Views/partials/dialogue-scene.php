@@ -24,6 +24,7 @@
  * @var array<string, mixed>       $tap      eyebrow, title, label, variant, trail
  * @var array<string, mixed>       $final    url, label, attrs?, icon?, extra?
  * @var string                     $eyebrow  eyebrow kepala layar
+ * @var list<string|null>|null     $nextAssets images of the next screen (next_assets_attr())
  */
 $total  = count($slides);
 $first  = (string) ($slides[0]['character_code'] ?? 'jaka');
@@ -32,7 +33,7 @@ $region = $level->text('name', $locale);
 <section class="story dialogue narrator" data-screen="<?= esc($screen, 'attr') ?>"
          data-narrator data-context="<?= esc($context, 'attr') ?>" data-prefix="line-" data-mode="tap"
          data-level="<?= esc($level->code, 'attr') ?>" data-level-id="<?= esc($level->id, 'attr') ?>"
-         data-first="<?= esc($first, 'attr') ?>" data-index="1">
+         data-first="<?= esc($first, 'attr') ?>" data-index="1"<?= next_assets_attr($nextAssets ?? []) ?>>
   <header class="screen-head dialogue-head stage-box">
     <span class="eyebrow"><?= esc($eyebrow) ?></span>
     <h1><?= esc($region) ?></h1>

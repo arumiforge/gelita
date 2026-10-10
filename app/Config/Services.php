@@ -6,6 +6,7 @@ use App\Libraries\HeadAsGetRouteCollection;
 use App\Libraries\RequestId;
 use App\Libraries\VideoThumbnail;
 use App\Services\AnalyticsService;
+use App\Services\AssetPackageService;
 use App\Services\ChallengeService;
 use App\Services\ContentImportService;
 use App\Services\ContentRepository;
@@ -85,6 +86,16 @@ class Services extends BaseService
         }
 
         return $staff;
+    }
+
+    /** Active asset package and its URL map (docs/rencana-paket-aset.md §5.2). */
+    public static function assetPackages(bool $getShared = true): AssetPackageService
+    {
+        if ($getShared) {
+            return static::getSharedInstance('assetPackages');
+        }
+
+        return new AssetPackageService();
     }
 
     /** Pembaca konten ber-cache: level, node, item, media. */

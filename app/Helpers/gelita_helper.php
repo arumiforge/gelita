@@ -102,7 +102,12 @@ if (! function_exists('js_config')) {
     /**
      * Isi <script type="application/json" id="app-config"> untuk JavaScript:
      * locale, token CSRF, alamat API, penanda sesi, dan teks UI dari
-     * lang('Js.*') dalam bahasa aktif. Tidak ada identitas siswa di sini.
+     * lang('Js.*'). Tidak ada identitas siswa di sini.
+     *
+     * Asset package Stage 4 (docs/rencana-paket-aset.md §4.4): `text` holds the
+     * texts of every game locale (`text.id`, `text.en`), so a language switch
+     * changes JS-built toasts and modals without another request
+     * (core/config.js setLocale()). `locale` is still the active one.
      *
      * @return array<string, mixed>
      */
@@ -111,8 +116,10 @@ if (! function_exists('js_config')) {
         $keys = array_keys(require APPPATH . 'Language/id/Js.php');
         $text = [];
 
-        foreach ($keys as $key) {
-            $text[$key] = lang('Js.' . $key, [], $locale);
+        foreach (config('Gelita')->locales as $code) {
+            foreach ($keys as $key) {
+                $text[$code][$key] = lang('Js.' . $key, [], $code);
+            }
         }
 
         $gameSessionId = session('participant_id') ? (int) session('game_session_id') : null;
@@ -152,6 +159,32 @@ if (! function_exists('event_sequence_floor')) {
         } catch (\CodeIgniter\Database\Exceptions\DatabaseException) {
             return 0;
         }
+    }
+}
+
+if (! function_exists('next_assets_attr')) {
+    /**
+     * ` data-next-assets="[…]"` for a screen element: images of the screen the
+     * student most likely opens next (asset package Stage 4, §4.5). The game
+     * client (game/next-assets.js) loads and decodes them while the browser is
+     * idle, so the next screen paints without a decode flash. One screen
+     * ahead only, at most $limit images (iPad memory); empty when none.
+     *
+     * @param list<string|null> $urls
+     */
+    function next_assets_attr(array $urls, int $limit = 6): string
+    {
+        $urls = array_values(array_unique(array_filter(
+            $urls,
+            static fn ($url): bool => is_string($url) && $url !== '',
+        )));
+        $urls = array_slice($urls, 0, max(0, $limit));
+
+        if ($urls === []) {
+            return '';
+        }
+
+        return ' data-next-assets="' . esc(json_encode($urls, JSON_UNESCAPED_SLASHES), 'attr') . '"';
     }
 }
 

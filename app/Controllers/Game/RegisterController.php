@@ -220,9 +220,12 @@ class RegisterController extends BaseController
     /**
      * Aturan validasi per langkah.
      *
+     * Each field carries its on-screen label, so a generic message reads
+     * "Nama lengkap wajib diisi." instead of "display_name wajib diisi.".
+     *
      * @param array<string, mixed> $input
      *
-     * @return array<string, string>
+     * @return array<string, array{label: string, rules: string}>
      */
     public function rulesFor(int $n, array $input = []): array
     {
@@ -230,18 +233,18 @@ class RegisterController extends BaseController
         [$minAge, $maxAge] = $config->registrationAge;
 
         if ($n === 1) {
-            return [
+            return $this->withLabels([
                 'display_name' => 'required|min_length[2]|max_length[150]',
                 'age'          => 'required|integer|greater_than_equal_to[' . $minAge . ']|less_than_equal_to[' . $maxAge . ']',
                 'gender'       => 'required|in_list[' . implode(',', $config->genders) . ']',
-            ];
+            ]);
         }
 
         if ($n === 2) {
             $byNpsn = service('schoolDirectory')->requiresNpsn((string) ($input['country_code'] ?? ''), (string) ($input['province_code'] ?? ''))
                 && empty($input['school_manual']);
 
-            return [
+            return $this->withLabels([
                 'country_code'  => 'required|max_length[5]',
                 'province_code' => 'required_without[country_other]|permit_empty|max_length[10]',
                 'district_code' => 'required_without[country_other]|permit_empty|max_length[10]',
@@ -249,16 +252,52 @@ class RegisterController extends BaseController
                 'school_npsn'   => $byNpsn ? 'required|is_natural|exact_length[8]|known_npsn|allowed_school_stage' : 'permit_empty|max_length[20]',
                 'school_manual' => 'permit_empty|in_list[1]',
                 'school_name'   => $byNpsn ? 'permit_empty|max_length[200]' : 'required|min_length[3]|max_length[200]',
-            ];
+            ]);
         }
 
-        return [
+        return $this->withLabels([
             'username'         => 'required|valid_username|not_reserved_username|is_unique[participants.username]',
             'password'         => 'required|strong_password[username]',
             'password_confirm' => 'required|matches[password]',
             'assent'           => 'required|in_list[1]',
             'locale'           => 'permit_empty|valid_locale',
+        ]);
+    }
+
+    /**
+     * Attach the on-screen label to every rule string.
+     *
+     * @param array<string, string> $rules
+     *
+     * @return array<string, array{label: string, rules: string}>
+     */
+    private function withLabels(array $rules): array
+    {
+        $labels = [
+            'display_name'     => 'Game.displayName',
+            'age'              => 'Game.age',
+            'gender'           => 'Game.gender',
+            'country_code'     => 'Game.country',
+            'province_code'    => 'Game.province',
+            'district_code'    => 'Game.district',
+            'country_other'    => 'Game.countryOtherName',
+            'school_npsn'      => 'Game.schoolNpsn',
+            'school_manual'    => 'Game.schoolManual',
+            'school_name'      => 'Game.school',
+            'username'         => 'Auth.username',
+            'password'         => 'Auth.password',
+            'password_confirm' => 'Auth.passwordRepeat',
+            'assent'           => 'Game.assentLabel',
+            'locale'           => 'Game.language',
         ];
+
+        $out = [];
+
+        foreach ($rules as $field => $rule) {
+            $out[$field] = ['label' => lang($labels[$field] ?? $field), 'rules' => $rule];
+        }
+
+        return $out;
     }
 
     /**
@@ -275,6 +314,12 @@ class RegisterController extends BaseController
             ],
             'gender' => [
                 'in_list' => lang('Game.genderRequired'),
+            ],
+            'province_code' => [
+                'required_without' => lang('Validation.required'),
+            ],
+            'district_code' => [
+                'required_without' => lang('Validation.required'),
             ],
             'school_npsn' => [
                 'required'             => lang('Game.schoolNpsnRequired'),
