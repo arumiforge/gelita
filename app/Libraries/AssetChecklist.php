@@ -19,8 +19,9 @@ final class AssetChecklist
 {
     /**
      * Logo, button, background, and map slots the game reads by key, in
-     * checklist order. Labels and descriptions come from ImageSlots; `bg.auth`
-     * and `ui.placeholder` are left out because no screen reads them.
+     * checklist order. Labels and descriptions come from ImageSlots. The
+     * optional `bg.auth` and `ui.placeholder` are left out: each has a
+     * fallback the research can run with, so they never count as missing.
      */
     public const UI_SLOTS = [
         'ui.logo-hero', 'ui.btn-start', 'ui.btn-start.en', 'ui.logo', 'map.kedu',

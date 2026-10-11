@@ -32,7 +32,7 @@ $search  = lang(session('staff_role') === 'admin' ? 'Admin.quickSearch' : 'Admin
   <title><?= esc($title !== '' ? $title : ($pageTitle ?? lang('Admin.panelTitle'))) ?> · <?= esc(lang('Admin.panelTitle')) ?></title>
   <meta name="csrf-token" content="<?= csrf_hash() ?>">
   <meta name="csrf-name" content="<?= csrf_token() ?>">
-  <link rel="icon" href="<?= base_url('favicon.ico') ?>">
+  <link rel="icon" href="<?= esc(app_icon_src('app.favicon', 'favicon.ico'), 'attr') ?>">
   <link rel="stylesheet" href="<?= asset_url_versioned('css/admin.css') ?>">
   <?= $this->renderSection('head') ?>
 </head>

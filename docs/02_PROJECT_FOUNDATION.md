@@ -91,7 +91,7 @@ Area game dapat dipasang di layar utama perangkat:
 
 | Berkas | Fungsi |
 |---|---|
-| `public/manifest.json` | nama, ikon (`public/assets/app/`), tampilan `fullscreen`, orientasi `landscape`; ditautkan `layouts/game.php` |
+| `GET /manifest.json` | dibuat `Game\AppController::manifest()`: nama, ikon (slot `app.*` atau berkas bawaan `public/assets/app/`), tampilan `fullscreen`, orientasi `landscape`; ditautkan `layouts/game.php` |
 | `public/sw.js` | service worker yang hanya menangani navigasi GET: bila jaringan putus, `offline.html` ditampilkan. API, event, POST formulir, dan aset tidak disentuh, sehingga tidak ada data penelitian di cache |
 | `public/offline.html` | halaman mandiri dwibahasa tanpa CSS/JS luar |
 | `public/assets/js/game/install.js` | mendaftarkan service worker |
@@ -155,7 +155,7 @@ gelita/
 │       ├── admin/           halaman panel per menu
 │       ├── pdf/             laporan PDF satu siswa (report-participant.php, _style.php)
 │       └── errors/          halaman galat bergaya GELITA
-├── public/                  web root (index.php, .htaccess, manifest.json, sw.js, offline.html)
+├── public/                  web root (index.php, .htaccess, sw.js, offline.html)
 │   └── assets/              css/, js/, vendor/, fonts/, data/, audio/, app/, ui/, uploads/, …
 ├── writable/                cache/, logs/, session/, uploads/, debugbar/, exports/
 ├── tests/                   unit/, database/, session/, _support/

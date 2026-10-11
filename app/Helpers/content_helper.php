@@ -129,7 +129,7 @@ if (! function_exists('rich_text')) {
 if (! function_exists('media_src')) {
     /**
      * URL media aktif dari peta media ber-cache (ContentRepository::mediaMap()).
-     * Bila tidak ada / nonaktif → $fallback, atau assets/ui/placeholder.svg.
+     * Bila tidak ada / nonaktif → $fallback, atau media_placeholder_src().
      *
      * While an asset package is active (AssetPackageService), an asset that is
      * in the package gets its content-addressed package URL (assets/p/…);
@@ -137,7 +137,7 @@ if (! function_exists('media_src')) {
      */
     function media_src(?int $mediaAssetId, ?string $fallback = null): string
     {
-        $placeholder = base_url($fallback ?? 'assets/ui/placeholder.svg');
+        $placeholder = $fallback === null ? media_placeholder_src() : base_url($fallback);
 
         if ($mediaAssetId === null || $mediaAssetId <= 0) {
             return $placeholder;
@@ -146,6 +146,26 @@ if (! function_exists('media_src')) {
         $path = service('contentRepository')->mediaMap()[$mediaAssetId] ?? null;
 
         return $path ? base_url(service('assetPackages')->urlForId($mediaAssetId) ?? $path) : $placeholder;
+    }
+}
+
+if (! function_exists('media_placeholder_src')) {
+    /**
+     * Stand-in picture for missing media: the `ui.placeholder` slot when
+     * uploaded, else the static assets/ui/placeholder.svg.
+     */
+    function media_placeholder_src(): string
+    {
+        return media_key_src('ui.placeholder') ?? base_url('assets/ui/placeholder.svg');
+    }
+}
+
+if (! function_exists('media_is_placeholder')) {
+    /** Is this URL the stand-in picture (slot or static file), not real media? */
+    function media_is_placeholder(?string $url): bool
+    {
+        return $url !== null && $url !== ''
+            && ($url === media_placeholder_src() || str_ends_with(strtok($url, '?'), 'assets/ui/placeholder.svg'));
     }
 }
 

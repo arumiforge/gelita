@@ -96,6 +96,25 @@ final class ImageSlotsTest extends CIUnitTestCase
         $this->assertNull((new App\Libraries\MediaStore())->requiredSize('library.tmg-p1-1'), 'library sizes are only recommended');
     }
 
+    public function testEverySlotHasKnownFileTypes(): void
+    {
+        foreach (ImageSlots::typeRules() as $pattern => $types) {
+            $this->assertNotEmpty($types, $pattern);
+            $this->assertSame([], array_diff($types, array_keys(ImageSlots::TYPE_MIMES)), $pattern);
+
+            if (ImageSlots::describe(str_replace('*', 'x', $pattern))['transparent'] ?? false) {
+                $this->assertNotContains('jpg', $types, $pattern . ' needs transparency');
+            }
+        }
+
+        $this->assertSame(['png', 'webp'], ImageSlots::types('char.jaka.idle.1'));
+        $this->assertSame(['jpg', 'png', 'webp'], ImageSlots::types('bg.welcome'));
+        $this->assertNull(ImageSlots::types('zz.bebas'));
+        $this->assertSame('PNG atau WebP', ImageSlots::typesText(['png', 'webp']));
+        $this->assertSame('JPG, PNG, atau WebP', ImageSlots::typesText(['jpg', 'png', 'webp']));
+        $this->assertSame(array_key_first(ImageSlots::typeRules()), 'ui.logo-hero', 'exact keys come first');
+    }
+
     public function testRegionAndChallengeKeysFillTheirPlaceholders(): void
     {
         $map = ImageSlots::describe('map.region.magelang', ['level_id' => 2]);

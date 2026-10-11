@@ -12,6 +12,8 @@ use CodeIgniter\Router\RouteCollection;
 $routes->setAutoRoute(false);
 
 $routes->get('/', 'Game\HomeController::index');
+// Installable app manifest; icons come from the panel slots (no login, no session)
+$routes->get('manifest.json', 'Game\AppController::manifest');
 
 // ---------------------------------------------------------------- GAME
 $routes->group('', ['namespace' => 'App\Controllers\Game'], static function ($routes): void {

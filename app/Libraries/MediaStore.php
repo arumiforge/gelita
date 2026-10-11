@@ -29,6 +29,8 @@ class MediaStore
 
     private const UNREADABLE_IMAGE = 'Berkas ini bukan gambar yang dapat dibuka. Simpan ulang sebagai PNG atau JPG, lalu unggah lagi.';
 
+    private const WRONG_TYPE = 'Gambar untuk %s harus berformat %s. Simpan ulang gambarnya dengan format itu, lalu unggah lagi.';
+
     private const SVG_NOT_SIZED = 'Gambar untuk %s harus PNG, JPG, atau WebP berukuran %d × %d piksel. Berkas SVG tidak bisa dipakai di sini.';
 
     private const NOT_SAVED = 'Berkas gagal disimpan di server. Coba lagi; bila tetap gagal, hubungi petugas teknis.';
@@ -79,6 +81,12 @@ class MediaStore
 
         if ($type === 'image' && $size === false && $mime !== 'image/svg+xml') {
             return $this->fail(self::UNREADABLE_IMAGE);
+        }
+
+        $types = $type === 'image' ? ImageSlots::types($assetKey) : null;
+
+        if ($types !== null && ! in_array($mime, array_map(static fn (string $t): string => ImageSlots::TYPE_MIMES[$t], $types), true)) {
+            return $this->fail(sprintf(self::WRONG_TYPE, $assetKey, ImageSlots::typesText($types)));
         }
 
         $size     = is_array($size) ? [(int) $size[0], (int) $size[1]] : null;

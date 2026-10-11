@@ -897,7 +897,7 @@ Bila kode sudah terlanjur di-reset, pasang lagi commit rilis yang gagal (`git re
 | Modul JavaScript | `public/assets/js/{core,game,engines,admin}/` | git | tanpa `?v` → revalidasi |
 | Vendor JS | `public/assets/vendor/` (Howler.js) | git | `?v=` → immutable |
 | Font | `public/assets/fonts/` (Cinzel, Plus Jakarta Sans, IBM Plex Mono) | git | revalidasi |
-| Ikon aplikasi | `public/assets/app/`, `public/manifest.json`, `public/sw.js` | git | revalidasi |
+| Ikon aplikasi | bawaan `public/assets/app/`, `public/favicon.ico`, `public/sw.js` (git); ikon pengganti dari panel (slot `app.*`) di `public/assets/uploads/` | git / panel | revalidasi; `/manifest.json` dibuat PHP (`AppController`), `no-cache` |
 | Data referensi | `public/assets/data/wilayah-id.json` | git | revalidasi |
 | Aset resmi | `public/assets/{ui,char,bg,map,challenge,library,reward,audio}/` | **git**; gambar: baru `ui/placeholder.svg` (view memakai pengganti); audio: musik, efek suara, dan narasi bawaan ([`docs/audio.md`](audio.md)) | revalidasi |
 | Rekaman narasi (folder) | `public/assets/audio/narasi/{id,en}/{kode}.mp3` | git, lalu `gelita:narration:import` | revalidasi |

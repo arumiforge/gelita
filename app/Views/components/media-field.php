@@ -33,13 +33,15 @@ $isVideo  = $row !== null && $row['asset_type'] === 'video';
 <div class="field media-field" data-media-field>
   <span class="label" id="<?= esc($id, 'attr') ?>-label"><?= esc($label) ?></span>
   <div class="media-field-body">
-    <span class="media-thumb<?= $hasFile && ! $isVideo ? '' : ' is-empty' ?>" data-media-preview>
-      <?php if ($hasFile && ! $isVideo): ?>
-        <img src="<?= esc(base_url(App\Libraries\MediaStore::versionedPath((string) $row['storage_path'], $row['sha256'] ?? null)), 'attr') ?>" alt="" loading="lazy" decoding="async">
-      <?php else: ?>
-        <?= icon($isVideo ? 'video' : 'image') ?>
-      <?php endif ?>
-    </span>
+    <?php if ($hasFile && ! $isVideo): ?>
+      <?php $thumb = base_url(App\Libraries\MediaStore::versionedPath((string) $row['storage_path'], $row['sha256'] ?? null)); ?>
+      <a class="media-thumb" href="<?= esc($thumb, 'attr') ?>" target="_blank" rel="noopener" data-media-preview
+         data-zoom="<?= esc($thumb, 'attr') ?>" data-zoom-caption="<?= esc($row['asset_key'], 'attr') ?>" aria-label="<?= esc('Perbesar ' . $label, 'attr') ?>">
+        <img src="<?= esc($thumb, 'attr') ?>" alt="" loading="lazy" decoding="async">
+      </a>
+    <?php else: ?>
+      <span class="media-thumb is-empty" data-media-preview><?= icon($isVideo ? 'video' : 'image') ?></span>
+    <?php endif ?>
     <div class="media-field-inputs">
       <input type="text" id="<?= esc($id, 'attr') ?>-key" name="<?= esc($keyName, 'attr') ?>"
              value="<?= esc($row['asset_key'] ?? '', 'attr') ?>" list="<?= esc($listId, 'attr') ?>"
