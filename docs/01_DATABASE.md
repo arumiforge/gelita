@@ -29,7 +29,7 @@ Nama tampilan keempat jenis tantangan: Susun Gambar (`puzzle`), Isi Rumpang (`ru
 
 Skema dibuat oleh **29 migration** di `app/Database/Migrations/`, satu tabel per berkas, dari `2026-01-01-000100_CreateSchools.php` sampai `2026-01-01-002900_CreateCiSessions.php`. Hasilnya 28 tabel domain + `ci_sessions`, ditambah tabel `migrations` milik CodeIgniter (30 tabel). Urutan berkas mengikuti ketergantungan foreign key, sehingga `php spark migrate` berjalan bersih dari database kosong dan `php spark migrate:rollback` membuang tabel dalam urutan terbalik.
 
-Migration `2026-01-01-003100_AddPackageTrackingToSessionsAndEvents.php` (asset package Stage 5) adds columns to existing tables: `game_sessions.package_code`, `game_sessions.package_mode`, a wider `game_sessions.app_client_version`, and `game_event_logs.clock_offset_ms`. `SystemResetService::REQUIRED_MIGRATION` points at it.
+Migration `2026-01-01-003100_AddPackageTrackingToSessionsAndEvents.php` (asset package Stage 5) adds columns to existing tables: `game_sessions.package_code`, `game_sessions.package_mode`, a wider `game_sessions.app_client_version`, and `game_event_logs.clock_offset_ms`. Migration `2026-01-01-003200_AddParticipantAvatar.php` (display plan Phase B) adds `participants.avatar_no`; `SystemResetService::REQUIRED_MIGRATION` now points at it.
 
 Database menyimpan lima kelompok data:
 
@@ -226,6 +226,7 @@ Akun dan profil siswa. Akun siswa terpisah dari akun staf (`staff_users`) dan ti
 | age | TINYINT UNSIGNED | ya | NULL | Umur. Pendaftaran menerima `Config\Gelita::$registrationAge` (8–15); Model menerima 5–80. INDEX |
 | gender | VARCHAR(20) | ya | NULL | `laki-laki` \| `perempuan` (`Config\Gelita::$genders`). INDEX |
 | class_level | VARCHAR(20) | ya | NULL | Selalu `5` dari pendaftaran (`Config\Gelita::$registrationClass`). INDEX |
+| avatar_no | TINYINT UNSIGNED | ya | NULL | Avatar chosen at sign-up or in the profile: N of slot `avatar.N`; NULL = initial of the name. Not research data: not exported, no event (migration `003200`) |
 | school_id | BIGINT UNSIGNED | ya | NULL | FK `schools.id` SET NULL. INDEX |
 | school_name_snapshot | VARCHAR(200) | ya | NULL | Salinan nama sekolah saat daftar. INDEX |
 | country_code | VARCHAR(5) | ya | `ID` | INDEX |

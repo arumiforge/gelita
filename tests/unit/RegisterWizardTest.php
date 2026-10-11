@@ -150,7 +150,7 @@ final class RegisterWizardTest extends CIUnitTestCase
             $this->assertSame($age, $_SESSION[RegisterController::WIZARD]['1']['age']);
         }
 
-        $this->assertSame([], array_diff_key($_SESSION[RegisterController::WIZARD]['1'], array_flip(['display_name', 'age', 'gender'])), 'hanya isian langkah 1');
+        $this->assertSame([], array_diff_key($_SESSION[RegisterController::WIZARD]['1'], array_flip(['display_name', 'age', 'gender', 'avatar_no'])), 'hanya isian langkah 1');
     }
 
     public function testErrorsNameTheFieldAsShownOnScreen(): void

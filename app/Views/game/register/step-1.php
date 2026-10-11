@@ -3,7 +3,8 @@
  * Pendaftaran langkah 1 — Tentang kamu (`/daftar/1`).
  *
  * Nama lengkap, umur (Config\Gelita::$registrationAge), dan jenis kelamin
- * (dua pilihan). Kelas tidak diisi: server memaksa kelas 5.
+ * (dua pilihan). Kelas tidak diisi: server memaksa kelas 5. An optional
+ * avatar picker follows once avatars are uploaded (display plan Phase B).
  *
  * @var int                   $step
  * @var list<int>             $done
@@ -73,6 +74,15 @@ $focus   = static fn (string $f): string => $first === $f ? ' autofocus' : '';
         </div>
         <?php if ($err('gender')): ?><p class="field-error"><?= esc($err('gender')) ?></p><?php endif ?>
       </fieldset>
+
+      <?= component('components/avatar-picker', [
+          'mode'    => 'radio',
+          'current' => $val('avatar_no') === '' ? null : (int) $val('avatar_no'),
+          'initial' => mb_strtoupper(mb_substr(trim($val('display_name')), 0, 1)),
+          'legend'  => lang('Game.avatarOptional'),
+          'help'    => lang('Game.avatarHelp'),
+          'error'   => $err('avatar_no'),
+      ]) ?>
 
       </div>
 

@@ -450,6 +450,7 @@ trait ResetTables
             'age'                      => 'INTEGER?',
             'gender'                   => 'VARCHAR(20)?',
             'class_level'              => 'VARCHAR(20)?',
+            'avatar_no'                => 'INTEGER?',
             'school_id'                => 'INTEGER?',
             'school_name_snapshot'     => 'VARCHAR(200)?',
             'country_code'             => 'VARCHAR(5)?=ID',

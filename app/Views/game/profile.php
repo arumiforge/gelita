@@ -32,13 +32,29 @@ foreach (service('contentRepository')->levels() as $entity) {
   <?php // Kiri 32, 72, 400 × 576: identitas + empat ubin; kanan 456, 72, 792 × 576: lencana + riwayat (Dok 3 §4) ?>
   <aside class="panel profile-side stage-box stage-scroll">
   <div class="profile-card">
-    <span class="profile-avatar" aria-hidden="true"><?= esc(mb_strtoupper(mb_substr($name, 0, 1))) ?></span>
+    <?= component('components/avatar', ['participant' => $participant, 'class' => 'profile-avatar']) ?>
     <div class="profile-id">
       <h1><?= esc($name) ?></h1>
       <p class="profile-username">@<?= esc($participant['username']) ?></p>
       <p class="profile-code"><small><span class="num"><?= esc($participant['participant_code']) ?></span> · <?= esc(lang('Game.researchCode')) ?></small></p>
     </div>
   </div>
+
+  <?php if (avatar_choices() !== []): ?>
+    <details class="profile-avatar-change"<?= session('message') === lang('Game.avatarSaved') ? ' open' : '' ?>>
+      <summary><?= icon('user') ?> <?= esc(lang('Game.avatarChange')) ?></summary>
+      <form method="post" action="<?= base_url('profil/avatar') ?>">
+        <?= csrf_field() ?>
+        <?= component('components/avatar-picker', [
+            'mode'    => 'submit',
+            'current' => $participant['avatar_no'] ?? null,
+            'initial' => mb_strtoupper(mb_substr($name, 0, 1)),
+            'legend'  => lang('Game.avatarChange'),
+            'legendHidden' => true,
+        ]) ?>
+      </form>
+    </details>
+  <?php endif ?>
 
   <dl class="profile-facts">
     <div><dt><?= esc(lang('Game.age')) ?></dt><dd><?= esc($participant['age'] === null ? '—' : $participant['age'] . ' ' . lang('Game.ageUnit')) ?></dd></div>
