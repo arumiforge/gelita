@@ -1,6 +1,8 @@
 <?php
 
+use App\Libraries\PasswordPolicy;
 use CodeIgniter\Test\CIUnitTestCase;
+use Tests\Support\Database\ResetTables;
 
 /**
  * Touch-friendly play (display plan Phase F).
@@ -17,6 +19,8 @@ use CodeIgniter\Test\CIUnitTestCase;
  */
 final class TouchPlayTest extends CIUnitTestCase
 {
+    use ResetTables;
+
     private const GAME_CSS = ['base', 'stage', 'components', 'game', 'cinematic'];
 
     private function css(string $name): string
@@ -151,5 +155,37 @@ final class TouchPlayTest extends CIUnitTestCase
         $this->assertMatchesRegularExpression('~id="school_npsn"[^>]*autocorrect="off"~s', $step2);
         $this->assertMatchesRegularExpression('~id="school_name"[^>]*autocorrect="off"~s', $step2);
         $this->assertMatchesRegularExpression('~id="username"[^>]*autocorrect="off"~s', $step3);
+    }
+
+    /**
+     * The new-password component (components/password-field.php) on both of
+     * its pages: the password field moves on to the confirm field, and the
+     * confirm field is the last text field of the form.
+     */
+    public function testPasswordFieldsCarryKeyboardHints(): void
+    {
+        // The game layout reads media keys, so the pages need the schema.
+        $this->createResetTables();
+        service('contentRepository')->flush();
+
+        $policy = (new PasswordPolicy())->toClient();
+
+        try {
+            $pages = [
+                '/daftar/3' => view('game/register/step-3', [
+                    'locale' => 'id', 'step' => 3, 'done' => [1, 2], 'values' => [], 'errors' => [], 'passwordPolicy' => $policy,
+                ]),
+                '/ganti-sandi' => view('game/change-password', [
+                    'locale' => 'id', 'mustChange' => false, 'username' => 'sekar_ayu', 'errors' => [], 'passwordPolicy' => $policy,
+                ]),
+            ];
+        } finally {
+            $this->dropResetTables();
+        }
+
+        foreach ($pages as $page => $html) {
+            $this->assertMatchesRegularExpression('~<input id="password" [^>]*enterkeyhint="next"~s', $html, $page);
+            $this->assertMatchesRegularExpression('~<input id="password_confirm" [^>]*enterkeyhint="done"~s', $html, $page);
+        }
     }
 }

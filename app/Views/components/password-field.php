@@ -17,6 +17,10 @@
  * ditolak dengan keterangan syarat dan tercatat sebagai `pw_weak_submit_count`,
  * bukan dihentikan diam-diam oleh validasi browser.
  *
+ * Keyboard hints (display plan F3.4): the password field says "next" because
+ * the confirm field always follows it; the confirm field says "done" because
+ * it is the last text field on both callers (/daftar/3 and /ganti-sandi).
+ *
  * @var array<string, mixed>       $policy        PasswordPolicy::toClient()
  * @var array<string, string>|null $errors
  * @var string|null                $label         label kolom sandi
@@ -43,7 +47,7 @@ $max    = (int) ($policy['max_length'] ?? 64);
     <label for="password"><?= esc($label) ?> <span class="req" aria-hidden="true">*</span></label>
     <div class="password-input">
       <input id="password" name="password" type="password"
-             autocomplete="new-password" maxlength="<?= $max ?>" required
+             autocomplete="new-password" maxlength="<?= $max ?>" required enterkeyhint="next"
              aria-describedby="pw-rules pw-level<?= isset($errors['password']) ? ' pw-error' : '' ?>"
              <?= isset($errors['password']) ? 'aria-invalid="true"' : '' ?>>
       <button type="button" class="pw-toggle" aria-pressed="false" aria-controls="password"
@@ -70,7 +74,7 @@ $max    = (int) ($policy['max_length'] ?? 64);
   <div class="field<?= isset($errors['password_confirm']) ? ' has-error' : '' ?>">
     <label for="password_confirm"><?= esc(lang('Auth.passwordRepeat')) ?> <span class="req" aria-hidden="true">*</span></label>
     <input id="password_confirm" name="password_confirm" type="password"
-           autocomplete="new-password" maxlength="<?= $max ?>" required
+           autocomplete="new-password" maxlength="<?= $max ?>" required enterkeyhint="done"
            <?= isset($errors['password_confirm']) ? 'aria-invalid="true" aria-describedby="pw-confirm-error"' : '' ?>>
     <p class="pw-match" aria-live="polite"></p>
     <?php if (isset($errors['password_confirm'])): ?>
