@@ -29,9 +29,8 @@ Last updated: 11 October 2026.
 - [ ] Approve draft narration
 - [ ] Upload all required images in the panel (**Gambar & mockup** → Detail per slot; Kelengkapan lists what is missing), including the 45 sample (mockup) challenge images. Prompts and style: the team's Katalog Aset ZIP (Edisi 03)
 - [ ] Research-ready checklist green, study status set to "Berjalan"
+- [ ] Listening test of the 48 kbps narration, 5 files per language (plan P2). Stage 1b (PR #74) was merged before this gate was recorded as done; the 96 kbps takes are in git history before PR #74 (details in `docs/audio.md` → *Narration at 48 kbps*)
 - [ ] Smoke test, then `gelita:reset` (by the owner, never by Claude on production)
-
-## Planned, not started
 
 ## Display update (`docs/rencana-perbaikan-tampilan.md`, revised 11 October 2026)
 
@@ -55,13 +54,13 @@ Owner decisions: phases in order 0 → A → B → C → E → F, one branch and
 
 Owner decisions in its §12 (9 October 2026): full download before Mulai, admin on/off switch. Dok 3 is merged, so the plan's "before/after Dok 3" limits no longer apply; only the stage dependencies below do. Each stage is one parallel session and one PR into `main`. This file is kept by the coordinating session; stage sessions do not edit it.
 
-- **Wave 1** (started 9 October 2026, run in parallel)
-  - [ ] Stage 0 — baseline timing, `tools/qa/nav-timing.mjs` (`paket-0-ukur-dasar`, PR #78)
-  - [ ] Stage 1 — package builder on the server, `gelita:paket:*`, `/api/paket/aktif` (`paket-1-pembangun`, PR #75)
-  - [ ] Stage 1b — narration re-encoded at 48 kbps mono; merge only after the owner's listening test (`paket-1b-narasi`, PR #74)
-  - [ ] Stage 4 — view transitions, image decode, short curtain (`paket-4-transisi`, PR #77)
-  - [ ] Stage 5 — research data integrity §7.1 and §7.3 (`paket-5-integritas`, PR #76)
-- **Wave 2** (after Stage 1 is merged)
+- **Wave 1** (started 9 October 2026, run in parallel; all merged 10 October 2026)
+  - [x] Stage 0 — baseline timing, `tools/qa/nav-timing.mjs` (`paket-0-ukur-dasar`, PR #78)
+  - [x] Stage 1 — package builder on the server, `gelita:paket:*`, `/api/paket/aktif` (`paket-1-pembangun`, PR #75)
+  - [x] Stage 1b — narration re-encoded at 48 kbps mono; the owner's listening test is still open (see *Before the research starts*) (`paket-1b-narasi`, PR #74)
+  - [x] Stage 4 — view transitions, image decode, short curtain (`paket-4-transisi`, PR #77)
+  - [x] Stage 5 — research data integrity §7.1 and §7.3 (`paket-5-integritas`, PR #76)
+- **Wave 2** (Stage 1 is merged, so this can start; not started yet)
   - [ ] Stage 2 — package service worker and downloader
   - [ ] Stage 6 — Rilis → Paket aset panel with the on/off switch, study package lock (§7.2)
 - **Wave 3** (after Stage 2 is merged)
@@ -74,12 +73,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `sky/youthful-turing-l3pvlp` | Asset catalogue decision (team ZIP), `ImageSlots`, slot detail page `/admin/media/{id}`, challenge images in Kelengkapan | PR open |
-| `sky/confident-noether-id40gg` | Display fixes on `/masuk` (crest under the HUD logo), `/daftar/3` (fields hidden below the tips box), registration error labels, and `/daftar` in the dark ornate design | PR open |
-| `sky/gracious-archimedes-injcc3` | No session cookie on the no-login API endpoints (`LocaleFilter`) | PR open |
-| `sky/zealous-ritchie-653apc` | Asset package: wave plan and coordination (this file) | PR open |
-| `paket-0-ukur-dasar` | Asset package Stage 0: baseline timing | PR open |
-| `paket-1-pembangun` | Asset package Stage 1: package builder | PR open |
-| `paket-1b-narasi` | Asset package Stage 1b: narration 48 kbps | PR open |
-| `paket-4-transisi` | Asset package Stage 4: transitions, decode, curtain | PR open |
-| `paket-5-integritas` | Asset package Stage 5: research data integrity | PR open |
