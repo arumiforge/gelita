@@ -429,6 +429,7 @@ Aturan di `gelita-https.conf`:
 | Header ganda | `fastcgi_hide_header` untuk `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy` | filter `secureheaders` CodeIgniter mengirim header yang sama; setiap header muncul tepat sekali |
 | Cache aset | `map` `$gelita_is_asset` + `$arg_v` → `$gelita_cache`: URL aset ber-`?v=` mendapat `public, max-age=31536000, immutable`, aset lain `no-cache`; asset package URLs (`/assets/p/`, `/assets/k/`, `/paket/pkt-*.json`) are immutable without `?v=` | lihat [Cache-busting](#cache-busting) dan [Asset package](#asset-package-download-once-mode) |
 | PHP | hanya `location = /index.php` yang diteruskan ke `unix:/run/php/php8.3-fpm.sock` (`fastcgi_read_timeout 300`); `.php` lain → 404 | tidak ada skrip lain yang dapat dieksekusi |
+| Routes without a file | `location /` uses `try_files $uri $uri/ /index.php$is_args$args`; only `/assets/` answers 404 for a missing file | `/manifest.json` has no file in `public/` (it is made by `AppController`), so it reaches `index.php`. Never put a static `public/manifest.json` back: it would shadow the route. Apache does the same through `public/.htaccess` (`!-f`, `!-d` → `index.php`) |
 | Berkas tersembunyi | `location ~ /\.` → 404, juga di dalam `/assets/` | `.env`, `.git`, `.htaccess`, `.gitkeep` tidak pernah dilayani |
 | Mode pemeliharaan | `if (-f /var/www/gelita/writable/pemeliharaan.flag) { return 503; }` + halaman 503 dwibahasa | lihat [Mode pemeliharaan](#mode-pemeliharaan) |
 | Unggahan | `client_max_body_size 72M` | sejalan dengan `post_max_size` |
