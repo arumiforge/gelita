@@ -39,7 +39,7 @@ Owner decisions: phases in order 0 → A → B → C → E → F, one branch and
 
 - [x] Plan revised against the current code (PR #84)
 - [x] Phase 0 — bug fixes: music on challenge/region screens, lost and doubled password flash, dead size rules (PR #85)
-- [ ] Phase A — app icons, zoom and animation preview, placeholder, story slide backgrounds, `bg.auth` (`tampilan-a-gambar-admin`)
+- [x] Phase A — app icons, zoom and animation preview, placeholder, story slide backgrounds, `bg.auth` (PR #87)
 - [ ] Phase B — avatars (`tampilan-b-avatar`)
 - [ ] Phase C — city pins, Kenali lanterns, city loading backgrounds (`tampilan-c-kota`)
 - [x] Phase E — game-style toasts (`tampilan-e-toast`)
@@ -77,5 +77,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 | `paket-1b-narasi` | Asset package Stage 1b: narration 48 kbps | PR open |
 | `paket-4-transisi` | Asset package Stage 4: transitions, decode, curtain | PR open |
 | `paket-5-integritas` | Asset package Stage 5: research data integrity | PR open |
-| `tampilan-a-gambar-admin` | Display update Phase A: admin images (this session continues with B, C) | PR open |
-| `tampilan-e-toast` | Display update Phase E: game-style toasts | PR open |
+| `tampilan-b-avatar` | Display update Phase B: avatars (this session continues with C) | PR open |

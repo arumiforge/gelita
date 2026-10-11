@@ -17,7 +17,7 @@ class ParticipantModel extends Model
     protected $dateFormat     = 'datetime';
     protected $allowedFields  = [
         'participant_code', 'username', 'password_hash', 'must_change_password',
-        'display_name', 'age', 'gender', 'class_level',
+        'display_name', 'age', 'gender', 'class_level', 'avatar_no',
         'school_id', 'school_name_snapshot',
         'country_code', 'country_name_snapshot',
         'province_code', 'province_name_snapshot',
@@ -33,6 +33,7 @@ class ParticipantModel extends Model
         'gender'           => 'permit_empty|in_list[laki-laki,perempuan]',
         'class_level'      => 'permit_empty|max_length[20]',
         'display_name'     => 'permit_empty|max_length[150]',
+        'avatar_no'        => 'permit_empty|is_natural_no_zero|less_than[256]',
     ];
 
     /**

@@ -77,6 +77,7 @@ class Participant extends Entity
             'age'              => $this->age,
             'gender'           => $this->gender,
             'class_level'      => $this->class_level,
+            'avatar_no'        => $this->avatar_no === null ? null : (int) $this->avatar_no,
             'school_name'      => $this->school_name_snapshot,
         ];
     }

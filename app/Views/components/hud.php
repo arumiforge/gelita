@@ -74,7 +74,7 @@ $hudLogo = $hudBack !== '' ? media_key_src('ui.logo') : null;
     <?php if ($inGame): ?>
       <a class="user-chip hud-leave" href="<?= base_url('profil') ?>"
          aria-label="<?= esc(lang('Game.profile') . ': ' . ($participant['display_name'] ?: $participant['username']), 'attr') ?>">
-        <span class="user-avatar" aria-hidden="true"><?= esc(mb_strtoupper(mb_substr((string) ($participant['display_name'] ?: $participant['username']), 0, 1))) ?></span>
+        <?= component('components/avatar', ['participant' => $participant, 'class' => 'user-avatar']) ?>
         <span class="user-text">
           <span class="user-name"><?= esc($participant['display_name'] ?: $participant['username']) ?></span>
           <small class="user-code">@<?= esc($participant['username']) ?></small>

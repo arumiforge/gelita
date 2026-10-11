@@ -88,6 +88,7 @@ class SessionService
                 'age'                      => isset($input['age']) && $input['age'] !== '' ? (int) $input['age'] : null,
                 'gender'                   => $this->nullIfBlank($input['gender'] ?? null),
                 'class_level'              => $this->nullIfBlank($input['class_level'] ?? null),
+                'avatar_no'                => isset($input['avatar_no']) && $input['avatar_no'] !== '' ? (int) $input['avatar_no'] : null,
                 'school_id'                => $school['id'],
                 'school_name_snapshot'     => $school['name'],
                 'country_code'             => $input['country_code'] ?? 'ID',

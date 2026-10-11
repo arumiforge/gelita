@@ -33,6 +33,8 @@
   font-family: var(--font-display);
   font-weight: 700;
 }
+.user-avatar.has-art, .profile-avatar.has-art { overflow: hidden; padding: 0; background: var(--navy-700); }
+.user-avatar.has-art img, .profile-avatar.has-art img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .user-text {
   display: grid;
   min-width: 0;
@@ -395,6 +397,39 @@ body.is-challenge .lang-switch { display: none; }
 .choice-pill:hover { border-color: var(--gold-500); }
 .choice-pill:has(input:checked) { border-color: var(--gold-500); background: rgba(199, 162, 101, .18); color: var(--gold-300); }
 .choice-pill input { margin-top: 0; }
+
+/* Avatar picker (components/avatar-picker): round tiles of 64 dp, chosen = gold ring + ✓ */
+.avatar-grid { display: flex; flex-wrap: wrap; gap: var(--gap-3); }
+.avatar-tile { position: relative; display: grid; place-items: center; width: 4rem; height: 4rem; padding: 0; border: 0; border-radius: 50%; background: none; color: inherit; cursor: pointer; }
+.avatar-tile input { position: absolute; opacity: 0; pointer-events: none; }
+.avatar-face { display: grid; place-items: center; width: 100%; height: 100%; overflow: hidden; border: .1875rem solid var(--line-strong); border-radius: 50%; background: var(--navy-700); }
+.avatar-face img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.avatar-face.is-initial { background: var(--gold-500); color: var(--navy-900); font-family: var(--font-display); font-size: var(--fs-h3); font-weight: 700; }
+.avatar-tile:has(input:checked) .avatar-face, .avatar-tile[aria-pressed="true"] .avatar-face { border-color: var(--gold-300); box-shadow: 0 0 0 .1875rem rgba(223, 192, 135, .35); }
+.avatar-tile:has(input:checked)::after, .avatar-tile[aria-pressed="true"]::after {
+  content: "✓";
+  position: absolute;
+  right: -.125rem;
+  bottom: -.125rem;
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: .125rem solid var(--navy-900);
+  border-radius: 50%;
+  background: var(--gold-300);
+  color: var(--navy-900);
+  font-size: .875rem;
+  font-weight: 700;
+}
+.avatar-tile:has(input:focus-visible) .avatar-face, .avatar-tile:focus-visible .avatar-face { outline: .1875rem solid var(--gold-300); outline-offset: .125rem; }
+.avatar-tile:focus-visible { outline: none; }
+@media (hover: hover) {
+  .avatar-tile:hover .avatar-face { border-color: var(--gold-500); }
+}
+.profile-avatar-change { margin: 0; }
+.profile-avatar-change > summary { display: inline-flex; align-items: center; gap: var(--gap-2); min-height: var(--tap); color: var(--gold-300); font-weight: 700; cursor: pointer; }
+.profile-avatar-change form { margin-top: var(--gap-2); }
 
 .region-other { display: none; }
 .register-form:has(#country_code option[value="XX"]:checked) .region-other { display: grid; }

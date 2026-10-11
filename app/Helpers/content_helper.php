@@ -169,6 +169,35 @@ if (! function_exists('media_is_placeholder')) {
     }
 }
 
+if (! function_exists('avatar_choices')) {
+    /**
+     * Avatars a student can pick: number → image URL, only uploaded
+     * `avatar.N` slots (1 … Config\Gelita::$avatarSlots), in order.
+     *
+     * @return array<int, string>
+     */
+    function avatar_choices(): array
+    {
+        $choices = [];
+
+        for ($n = 1; $n <= config('Gelita')->avatarSlots; $n++) {
+            if (($src = media_key_src("avatar.{$n}")) !== null) {
+                $choices[$n] = $src;
+            }
+        }
+
+        return $choices;
+    }
+}
+
+if (! function_exists('avatar_src')) {
+    /** Image of a chosen avatar, or null (none chosen, or the slot was emptied): show the initial. */
+    function avatar_src(?int $avatarNo): ?string
+    {
+        return $avatarNo === null || $avatarNo < 1 ? null : media_key_src("avatar.{$avatarNo}");
+    }
+}
+
 if (! function_exists('media_exists')) {
     /** Media aktif dengan id ini ada? Dipakai view yang punya tampilan pengganti sendiri. */
     function media_exists(?int $mediaAssetId): bool

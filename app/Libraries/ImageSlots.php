@@ -31,6 +31,7 @@ final class ImageSlots
         'map'        => 'Peta',
         'region'     => 'Wilayah: latar, peta, lencana',
         'character'  => 'Tokoh',
+        'avatar'     => 'Avatar',
         'challenge'  => 'Gambar tantangan',
         'library'    => 'Pustaka',
         'other'      => 'Lainnya',
@@ -366,6 +367,19 @@ final class ImageSlots
         ],
 
         // -------------------------------------------------------- challenge
+        // ------------------------------------------------------------ avatar
+        'avatar.*' => [
+            'group'       => 'avatar',
+            'label'       => 'Avatar {n}',
+            'content'     => 'Potret kepala dan bahu seorang anak atau tokoh ramah (mis. petani kopi, penari, pemanah) dalam gaya ilustrasi GELITA, menghadap depan, di dalam lingkaran. Berlatar transparan, tanpa tulisan. Kesepuluh avatar satu keluarga: garis, warna, dan pencahayaan sama.',
+            'screens'     => [['Pilihan avatar di pendaftaran', '/daftar/1'], ['Profil (Ganti avatar)', '/profil'], ['Kartu nama di HUD', '/peta']],
+            'format'      => 'PNG atau WebP berlatar transparan, paling besar ± 120 KB',
+            'transparent' => true,
+            'fallback'    => 'Huruf pertama nama siswa; avatar yang kosong tidak ditawarkan',
+            'priority'    => 'opsional',
+            'tips'        => 'Tampil kecil di HUD (36 dp) dan di profil (72 dp): wajah harus jelas, isi kanvas sampai tepi lingkaran.',
+        ],
+
         'challenge.*.scene' => [
             'group'       => 'challenge',
             'label'       => 'Adegan Cari Objek {Wilayah}',
@@ -591,6 +605,10 @@ final class ImageSlots
         ];
 
         if (preg_match('/^challenge\.(?:item\.)?[a-z]+-(\d+)/', $assetKey, $m)) {
+            $vars['{n}'] = $m[1];
+        }
+
+        if (preg_match('/^avatar\.(\d+)$/', $assetKey, $m)) {
             $vars['{n}'] = $m[1];
         }
 

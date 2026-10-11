@@ -129,6 +129,13 @@ class MediaAssetSeeder extends GelitaSeeder
             $slots[] = ["reward.badge.{$code}", "assets/reward/badge-{$code}", 'png'];
         }
 
+        // Avatars (display plan Phase B): empty until uploaded, never offered while empty
+        $avatars = class_exists(\Config\Gelita::class) ? (int) config('Gelita')->avatarSlots : 10;
+
+        for ($i = 1; $i <= $avatars; $i++) {
+            $slots[] = ["avatar.{$i}", "assets/ui/avatar-{$i}", 'png'];
+        }
+
         $animations = self::DEFAULT_ANIMATIONS;
         if (class_exists(\Config\Gelita::class)) {
             $animations = config('Gelita')->characterAnimations ?? $animations;
