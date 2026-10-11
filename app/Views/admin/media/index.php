@@ -305,10 +305,10 @@ $labels = ['asli' => 'Asli', 'mockup' => 'Gambar contoh', 'kosong' => 'Kosong'];
   </form>
 
   <section class="panel">
-    <h2 class="panel-title"><?= icon('grid') ?> Ukuran gambar yang wajib</h2>
-    <p class="muted">Ukuran berkas wajib (gambar dengan ukuran lain ditolak saat diunggah) dan ukuran tampilnya di panggung 1280 × 720 dp. Tanda * berarti semua kode yang diawali tulisan itu.</p>
+    <h2 class="panel-title"><?= icon('grid') ?> Ukuran gambar per slot</h2>
+    <p class="muted">Ukuran berkas tiap slot dan ukuran tampilnya di panggung 1280 × 720 dp. Gambar yang lebih kecil, atau yang bentuknya (perbandingan lebar dan tinggi) berbeda, ditolak saat diunggah. Gambar yang lebih besar dengan bentuk sama diperkecil otomatis ke ukuran slot. Tanda * berarti semua kode yang diawali tulisan itu.</p>
     <?= component('components/admin-table', [
-        'caption' => 'Ukuran wajib gambar',
+        'caption' => 'Ukuran gambar per slot',
         'columns' => ['pattern' => ['label' => 'Kode berkas', 'format' => 'code'], 'size' => 'Berkas (px)', 'display' => 'Tampil di panggung (dp)'],
         'rows'    => array_map(static function (string $pattern, array $size) use ($displayFor): array {
             $show = $displayFor($pattern);

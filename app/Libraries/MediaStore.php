@@ -13,9 +13,9 @@ use CodeIgniter\HTTP\IncomingRequest;
  *
  * Aturannya satu: berkas disimpan dengan nama resmi turunan `asset_key` di
  * public/assets/uploads/, dimensi gambar dibaca ulang server dengan
- * getimagesize() (angka dari browser tidak dipercaya), slot berukuran wajib
- * (Config\Gelita::$assetSizes) ditolak bila ukurannya lain, lalu baris
- * `media_assets` dibuat atau diperbarui.
+ * getimagesize() (angka dari browser tidak dipercaya), gambar untuk slot
+ * berukuran tetap (Config\Gelita::$assetSizes) diperiksa dan diperkecil oleh
+ * ImageFitter, lalu baris `media_assets` dibuat atau diperbarui.
  */
 class MediaStore
 {
@@ -79,11 +79,18 @@ class MediaStore
             return $this->fail(self::UNREADABLE_IMAGE);
         }
 
+        $size     = is_array($size) ? [(int) $size[0], (int) $size[1]] : null;
         $required = $this->requiredSize($assetKey);
 
-        if ($required !== null && is_array($size)
-            && ((int) $size[0] !== $required[0] || (int) $size[1] !== $required[1])) {
-            return $this->fail(self::sizeMismatch([(int) $size[0], (int) $size[1]], $required, $assetKey));
+        if ($required !== null && $size !== null) {
+            $error = ImageFitter::problem($size, $required, $assetKey)
+                ?? (new ImageFitter())->fit($file->getTempName(), $mime, $required);
+
+            if ($error !== null) {
+                return $this->fail($error);
+            }
+
+            $size = $required;
         }
 
         $existing = model(MediaAssetModel::class)->findByKey($assetKey);
@@ -93,7 +100,7 @@ class MediaStore
             return $this->fail(self::NOT_SAVED);
         }
 
-        return $this->commit($existing, $assetKey, $type, $stored, $mime, is_array($size) ? $size : null, $staffId, 'upload', $quiet);
+        return $this->commit($existing, $assetKey, $type, $stored, $mime, $size, $staffId, 'upload', $quiet);
     }
 
     /**
@@ -148,8 +155,9 @@ class MediaStore
      * Daftarkan berkas yang sudah ada di bawah public/ apa adanya, tanpa
      * dipindah, mis. rekaman narasi yang disalin operator ke
      * public/assets/audio/narasi/{id|en}/ (NarrationImporter). storage_path
-     * menjadi $relativePath; aturan jenis, batas ukuran, dan ukuran wajib
-     * gambar sama dengan store().
+     * menjadi $relativePath; aturan jenis, batas ukuran, dan ukuran slot
+     * gambar sama dengan store(). A larger image for a fixed-size slot is
+     * shrunk in place (ImageFitter), so the served file is the slot size.
      *
      * $quiet = true: cache konten tidak di-flush dan tidak ada jejak audit per
      * berkas; pemanggil yang memproses banyak berkas melakukannya sekali.
@@ -165,6 +173,12 @@ class MediaStore
 
         if (is_string($inspected)) {
             return $this->fail($inspected);
+        }
+
+        $error = $this->fitInspected(FCPATH . $relativePath, $inspected);
+
+        if ($error !== null) {
+            return $this->fail($error);
         }
 
         $existing = model(MediaAssetModel::class)->findByKey(trim($assetKey));
@@ -203,6 +217,14 @@ class MediaStore
 
         if (! @copy($sourcePath, $dir . $name)) {
             return $this->fail(self::NOT_SAVED);
+        }
+
+        $error = $this->fitInspected($dir . $name, $inspected);
+
+        if ($error !== null) {
+            @unlink($dir . $name);
+
+            return $this->fail($error);
         }
 
         $existing = model(MediaAssetModel::class)->findByKey($assetKey);
@@ -622,7 +644,7 @@ class MediaStore
      *
      * @param list<string> $allowedTypes
      *
-     * @return array{mime: string, type: string, size: array{0: int, 1: int}|null}|string pesan galat
+     * @return array{mime: string, type: string, size: array{0: int, 1: int}|null, fit: array{0: int, 1: int}|null}|string pesan galat
      */
     private function inspect(string $path, string $assetKey, array $allowedTypes): array|string
     {
@@ -661,12 +683,38 @@ class MediaStore
             $size     = is_array($read) ? [(int) $read[0], (int) $read[1]] : null;
             $required = $this->requiredSize($assetKey);
 
-            if ($required !== null && $size !== null && $size !== $required) {
-                return self::sizeMismatch($size, $required, $assetKey);
+            if ($required !== null && $size !== null) {
+                $problem = ImageFitter::problem($size, $required, $assetKey);
+
+                if ($problem !== null) {
+                    return $problem;
+                }
+
+                return ['mime' => $mime, 'type' => $type, 'size' => $size, 'fit' => $required];
             }
         }
 
-        return ['mime' => $mime, 'type' => $type, 'size' => $size];
+        return ['mime' => $mime, 'type' => $type, 'size' => $size, 'fit' => null];
+    }
+
+    /**
+     * Shrink a file accepted by inspect() to its slot size and record that size.
+     *
+     * @param array{mime: string, type: string, size: array{0: int, 1: int}|null, fit: array{0: int, 1: int}|null} $inspected
+     */
+    private function fitInspected(string $path, array &$inspected): ?string
+    {
+        if ($inspected['fit'] === null || $inspected['size'] === $inspected['fit']) {
+            return null;
+        }
+
+        $error = (new ImageFitter())->fit($path, $inspected['mime'], $inspected['fit']);
+
+        if ($error === null) {
+            $inspected['size'] = $inspected['fit'];
+        }
+
+        return $error;
     }
 
     /** Tanda tangan awal berkas audio → MIME, atau null bila bukan audio yang dikenal. */
@@ -722,21 +770,6 @@ class MediaStore
         return $names === [] ? (string) $last : implode(', ', $names) . ' atau ' . $last;
     }
 
-    /**
-     * @param array{0: int, 1: int} $has
-     * @param array{0: int, 1: int} $need
-     */
-    private static function sizeMismatch(array $has, array $need, string $assetKey): string
-    {
-        return sprintf(
-            'Ukuran gambar %d × %d piksel, padahal untuk %s harus tepat %d × %d piksel. Ubah dulu ukuran gambarnya, lalu unggah lagi.',
-            $has[0],
-            $has[1],
-            $assetKey,
-            $need[0],
-            $need[1],
-        );
-    }
 
     /** @return array{id: null, type: null, error: string} */
     private function fail(string $message): array

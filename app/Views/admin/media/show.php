@@ -117,7 +117,7 @@ $src         = $isActive && $row['asset_type'] !== 'video'
 
     <dl class="detail-grid">
       <div><dt>Kode berkas</dt><dd><code><?= esc($key) ?></code></dd></div>
-      <div><dt>Ukuran berkas</dt><dd><?= $required !== null ? 'wajib ' . $required[0] . ' × ' . $required[1] . ' px' : ($target !== null ? 'disarankan ' . $target[0] . ' × ' . $target[1] . ' px' : 'bebas') ?></dd></div>
+      <div><dt>Ukuran berkas</dt><dd><?= $required !== null ? $required[0] . ' × ' . $required[1] . ' px (gambar lebih besar dengan bentuk sama diperkecil otomatis)' : ($target !== null ? 'disarankan ' . $target[0] . ' × ' . $target[1] . ' px' : 'bebas') ?></dd></div>
       <div><dt>Ukuran tampil di layar</dt><dd><?= $display === null ? '—' : ($display[0] === 0 ? 'selebar posisi benda di adegan' : $display[0] . ' × ' . $display[1] . ' dp (layar 1280 × 720)') ?></dd></div>
       <div><dt>Format</dt><dd><?= esc($slot['format'] ?? 'PNG, JPG, WebP, atau SVG') ?></dd></div>
       <div><dt>Latar transparan</dt><dd><?= ($slot['transparent'] ?? false) ? 'Ya, wajib transparan' : 'Tidak perlu' ?></dd></div>

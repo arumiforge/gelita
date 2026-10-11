@@ -275,7 +275,7 @@ Satu-satunya tempat konstanta domain yang tidak perlu masuk database.
 | `$dialogueEffects` | `['fog', 'fog-lift', 'glow', 'flash', 'shake', 'dim']` | nilai sah `dialogues.effect` |
 | `$dialogueContexts` | `global`: `intro`, `map_intro`, `ending`; `level`: `region_intro`, `level_open`, `level_done` | nilai sah `dialogues.context_code` |
 | `$characterAnimations` | `jaka.*` dan `kedu.*`, masing-masing 3 frame | animasi tokoh dari frame `char.{jaka\|kedu}.{pose}.{n}` di `media_assets` |
-| `$assetSizes` | ukuran piksel wajib per pola `asset_key` | validasi unggahan (`MediaStore`), daftar kelengkapan aset, dan ukuran gambar contoh |
+| `$assetSizes` | ukuran piksel berkas per pola `asset_key` (gambar lebih besar dengan bentuk sama diperkecil ke ukuran ini, lihat `ImageFitter`) | validasi unggahan (`MediaStore`), daftar kelengkapan aset, dan ukuran gambar contoh |
 | `$assetDisplaySizes` | ukuran tampil per pola `asset_key`, dalam dp pada panggung 1280 × 720 (benda Cari Objek `[0, 0]`: lebarnya persen adegan) | keterangan di halaman **Gambar & mockup**; tidak dipakai validasi |
 | `$maxUploadBytes` | 64 MB | batas unggahan media |
 
@@ -468,7 +468,7 @@ Helper `gelita`, `content`, dan `ui` dimuat global lewat `Config\Autoload::$help
 | `ClozeReading` | Isi Rumpang sebagai satu bacaan utuh |
 | `PuzzleCut` | potongan keping Susun Gambar (kotak atau jigsaw) sebagai path SVG, tanpa membuat berkas baru |
 | `ContentVerifier` | pemeriksaan kelengkapan konten untuk panel, `gelita:content:verify`, dan `gelita:reset` |
-| `MediaStore` | penyimpanan berkas unggahan dengan nama resmi, pemeriksaan dimensi `getimagesize()` terhadap `$assetSizes` |
+| `MediaStore` | penyimpanan berkas unggahan dengan nama resmi, pemeriksaan dimensi `getimagesize()` terhadap `$assetSizes` lewat `ImageFitter` (lebih kecil atau bentuk lain ditolak, lebih besar diperkecil dengan GD) |
 | `MediaIntegrity`, `MediaUsage`, `AssetChecklist` | integritas `media_assets` ↔ berkas, tempat setiap aset dipakai, dan daftar kelengkapan aset |
 | `MediaLink`, `VideoThumbnail` | tautan media luar Pustaka (YouTube, Drive, Vimeo, Wikimedia Commons, berkas langsung) dan poster videonya |
 | `MockupGenerator` | gambar contoh SVG untuk slot gambar tantangan (`media_assets.is_placeholder = 1`); gambar asli tidak pernah ditimpa |
@@ -579,7 +579,7 @@ Butir 1–3 menghalangi pemasangan, butir 5 prasyarat keamanan, butir 4 dan 6 ke
 
 | Kontrol | Implementasi |
 |---|---|
-| Unggahan | `MediaStore`: daftar MIME yang diizinkan (gambar PNG/JPEG/WebP/GIF/SVG, audio, video), dimensi dibaca ulang server dengan `getimagesize()` dan dicocokkan dengan `$assetSizes`, nama berkas resmi dari `asset_key`, SHA-256 dicatat |
+| Unggahan | `MediaStore`: daftar MIME yang diizinkan (gambar PNG/JPEG/WebP/GIF/SVG, audio, video), dimensi dibaca ulang server dengan `getimagesize()` dan diperiksa terhadap `$assetSizes` (`ImageFitter`: tidak boleh lebih kecil, perbandingan lebar-tinggi ±1%, lebih besar diperkecil), nama berkas resmi dari `asset_key`, SHA-256 dicatat |
 | SQL | Query Builder / prepared statement; tidak ada SQL yang dirangkai dari input |
 | XSS | `esc()` pada semua output; `rich_text()` meng-escape seluruh teks sebelum menyusun tag; tautan media luar diterjemahkan server (`MediaLink`) sehingga `javascript:`/`data:` tidak pernah lolos |
 | Redirect | tujuan dari input pengguna lewat `safe_internal_url()` |

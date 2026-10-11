@@ -77,7 +77,7 @@ $fields = [
       ]) ?>
       <?= component('components/media-field', [
           'id' => 'lvl-bg', 'label' => 'Latar wilayah', 'keyName' => 'media_bg_key', 'fileName' => 'media_bg_file',
-          'mediaId' => $level->background_media_id, 'defaultKey' => 'bg.' . $level->code . '.region', 'size' => 'wajib 1920 × 1080 px',
+          'mediaId' => $level->background_media_id, 'defaultKey' => 'bg.' . $level->code . '.region', 'size' => '1920 × 1080 px',
       ]) ?>
       <?= component('components/media-field', [
           'id' => 'lvl-badge', 'label' => 'Lencana wilayah', 'keyName' => 'media_badge_key', 'fileName' => 'media_badge_file',
