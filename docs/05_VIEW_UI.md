@@ -117,7 +117,7 @@ Section yang diisi halaman:
 | `nav` | `components/nav-bar` (opsional) |
 | `head`, `scripts` | tambahan khusus halaman |
 
-`<html class="game-stage">`; di `<head>`, sebelum CSS, satu skrip sebaris kecil mengisi `--app-w`/`--app-h` dari ukuran jendela (Dok 3 §2.1; satu-satunya skrip sebaris di view).
+`<html class="game-stage">`; di `<head>`, sebelum CSS, skrip kecil `core/viewport.js` (skrip biasa, bukan modul) mengisi `--app-w`/`--app-h` dari ukuran jendela (Dok 3 §2.1). Dulu skrip sebaris; dipindah ke berkas agar lolos CSP produksi.
 
 Urutan `<body class="game …" data-locale data-base data-screen-code>`: `components/rotate-gate` (di **luar** panggung), lalu `.stage-frame` › `#stage.stage` yang berisi `.skip-link`, latar `.scene` (dua `<img class="scene-img">` `#scene-a`/`#scene-b` untuk crossfade), section `overlay`, `components/hud`, `<main id="app" class="stage-main">`, section `nav`, `#modal-layer`, dan `components/toast` (dengan flash `error`). Sesudah panggung: `<template id="tpl-modal">` (isi `components/modal`), `<script type="application/json" id="app-config">` berisi `js_config($locale)`, `vendor/howler.min.js`, dan modul `js/game.js`. Lihat *Panggung 16:9*.
 
@@ -600,7 +600,7 @@ Font dimuat lokal dari `public/assets/fonts/` (berkas `.woff2` + lisensi OFL) de
 
 Semua layar game digambar di **satu panggung tetap 1280 × 720 dp** (dp = *design pixel*), yang diperbesar/diperkecil seragam agar pas di layar lalu diletakkan di tengah; sisa layar menjadi bingkai gelap (`--letterbox`). Tidak ada tata letak responsif: tampilan di laptop, proyektor, tablet, dan ponsel mendatar sama, hanya skalanya yang berbeda (Dok 3 §1–§6).
 
-**Satuan.** `:root.game-stage { font-size: calc(var(--stage-w) / 80) }`, jadi `1rem = 16 dp` dan `#stage` berukuran `80rem × 45rem`. `--stage-w = min(--app-w, --app-h × 16/9)`; `--app-w`/`--app-h` diisi skrip sebaris `<head>` lalu `core/stage.js` dari `innerWidth`/`innerHeight` (cadangan tanpa JavaScript: `100vw`/`100dvh`). Contoh: 1280 × 800 → panggung 1280 × 720, 1 rem = 16 px; 1024 × 768 → 1024 × 576, 12,8 px; 1920 × 1080 → 24 px; ponsel 844 × 390 → 693 × 390, ± 8,7 px.
+**Satuan.** `:root.game-stage { font-size: calc(var(--stage-w) / 80) }`, jadi `1rem = 16 dp` dan `#stage` berukuran `80rem × 45rem`. `--stage-w = min(--app-w, --app-h × 16/9)`; `--app-w`/`--app-h` diisi `core/viewport.js` di `<head>` lalu `core/stage.js` dari `innerWidth`/`innerHeight` (cadangan tanpa JavaScript: `100vw`/`100dvh`). Contoh: 1280 × 800 → panggung 1280 × 720, 1 rem = 16 px; 1024 × 768 → 1024 × 576, 12,8 px; 1920 × 1080 → 24 px; ponsel 844 × 390 → 693 × 390, ± 8,7 px.
 
 **Kerangka dan pita tetap.**
 
