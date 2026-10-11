@@ -356,6 +356,16 @@ closeModal(value), isModalOpen()
 
 ## Perilaku Halaman Game (`game/`)
 
+### Touch (display plan Phase F)
+
+- **`core/drag.js`.**
+  - `initDrag(container, { selector, threshold = 8, canStart, onStart, onMove, onDrop, onCancel })`: pointer-event drag with `setPointerCapture`, primary pointer only, an 8 px threshold. A press below the threshold stays a tap (its click fires); the click after a real drag is swallowed. `onMove` gets `{ dx, dy, event, target }`, where `target` is the `selector` element under the pointer. Cancelled on a second finger, `pointercancel`, or `lostpointercapture`. Used by `engines/puzzle.js`: `.is-dragging` on the piece, `.piece-art` follows with an inline translate, `.is-drop-target` on the piece under the finger.
+  - `onSwipe(element, { left, right, threshold = 50, ignore })`: touch/pen only. Ignored when the horizontal move is under 50 px or not larger than the vertical one, when a modal is open, or when the touch starts on a control, inside `ignore`, or inside an element that actually scrolls. `game/slides.js` (`swipe` option, on by default) turns a swipe into a click on the current slide's own Lanjut/Kembali link, so events (`dialogue_advanced`, `library_page_viewed`) and narration follow the buttons' path; it never follows the final link that leaves the screen. Story, dialogue, region-done, Kenali, and the map story go through `game/narrator.js`; Pustaka through `game/library.js`.
+- **Cari Objek zoom** (`engines/cari.js`). The ⤢ button `#hunt-zoom` (48 dp, `Game.huntZoom` / `Game.huntZoomClose`) toggles `.hunt.is-zoomed`: the scene fills the stage (z 40, below modals and toasts), the clue becomes a ribbon on top. Opening sends `overlay_opened` `{ overlay: 'hunt_zoom', level }`. Esc closes it unless a modal, dialog, or lantern is open; it also closes itself when the attempt completes.
+- **On-screen keyboard** (`core/keyboard.js`, loaded by `game.js` when `#stage` has a form field). While a text field has focus and `visualViewport` shows the keyboard covering it, `.stage-frame` gets `translateY(-n px)`, just enough to show the field with a 12 px margin and never pushing its top out of view; it goes back on blur, when the keyboard closes, and on `pageshow`.
+- **`game.js`.** A passive `touchstart` listener so iOS applies `:active`; scene, map, and character images get `draggable=false` (plus a `dragstart` guard for images swapped in later); on iOS only, `maximum-scale=1` is added to the viewport meta so focusing a field does not zoom the page (pinch zoom stays on iOS; Android would lose it, so it does not get the flag).
+- **Form fields.** `autocorrect="off"` on usernames and school fields, `enterkeyhint="next"`/`"done"` on login, sign-up, and change-password fields.
+
 ### `game.js` — titik masuk
 
 Selalu aktif di setiap halaman layout game:
@@ -645,7 +655,7 @@ UI        benar       → keping terkunci, papan .is-solved, keterangan gambar t
 
 - Papan n × n keping SVG; ukuran dan bentuk mengikuti tingkat wilayah (`App\Libraries\DifficultyRules`): Temanggung 3 × 3 kotak, Magelang 4 × 4 kotak, Wonosobo 4 × 4 jigsaw. Urutan awal diacak server tanpa satu keping pun di tempatnya.
 - Slot (tombol) tetap di tempat; yang berpindah adalah `.piece-art` beserta `data-piece`. Keping tidak bernomor; label pembaca layar menyebut letak slot, dan setiap tukar diumumkan (`piecesSwapped`).
-- Ketuk-untuk-tukar wajib (paling andal di tablet); seret-lepas HTML5 hanya tambahan. Keyboard: panah berpindah antar keping (roving focus), Enter/Spasi memilih atau menukar, Esc membatalkan pilihan.
+- Ketuk-untuk-tukar wajib (paling andal di tablet). Dragging uses `core/drag.js` (pointer events, mouse and finger alike, display plan Phase F3.1) instead of HTML5 drag-and-drop: drag a piece onto another to swap them, through the same `swap()` and `answer_selected` event as tap-swap. Keyboard: panah berpindah antar keping (roving focus), Enter/Spasi memilih atau menukar, Esc membatalkan pilihan.
 - Muat ulang sesudah cek yang belum utuh (`tries_used > 0`): hitungan ✓/✗ di kepala dipulihkan ✓ 0 / ✗ 1 (satu gambar), seperti engine lain memulihkannya dari `state`.
 - Susunan benarnya memang publik (keping 0…n²−1 dari kiri atas), jadi server boleh mengirim slot yang keliru (`misplaced`) dan klien boleh menyusun gambar utuh setelah kesempatan habis.
 
@@ -848,7 +858,7 @@ POST /api/events
 | `viewport_changed` | `core/stage.js` | `w`, `h`, `orientation`, `rotate_gate`, `stage_w`, `stage_h`, `scale` |
 | `page_hidden`, `page_visible` | `core/events.js` | `screen` (kode layar) |
 | `reading_progress` | `core/device.js` (layar tantangan) | `percent` (25/50/75/100), `passage_id?` |
-| `overlay_opened` | `challenge.js`, `map.js`, `library.js`, `engines/boleh.js` | `overlay` (`hint`, `exit`, `kenal`, `lightbox`, `statement_image`), `level` (kode wilayah) |
+| `overlay_opened` | `challenge.js`, `map.js`, `library.js`, `engines/boleh.js`, `engines/cari.js` | `overlay` (`hint`, `exit`, `kenal`, `lightbox`, `statement_image`, `hunt_zoom`), `level` (kode wilayah) |
 | `dialogue_advanced` | `game/narrator.js` | `index`, `total`, `context` (`intro`, `map_intro`, `region_intro`, `level_open`, `level_done`, `ending`), `character` |
 | `level_opened` | `game/map.js` (peta wilayah) | `code` |
 | `library_page_viewed` | `game/library.js` | `page`, `total`, `page_id` |

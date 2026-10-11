@@ -42,8 +42,8 @@ Owner decisions: phases in order 0 → A → B → C → E → F, one branch and
 - [ ] Phase A — app icons, zoom and animation preview, placeholder, story slide backgrounds, `bg.auth` (`tampilan-a-gambar-admin`)
 - [ ] Phase B — avatars (`tampilan-b-avatar`)
 - [ ] Phase C — city pins, Kenali lanterns, city loading backgrounds (`tampilan-c-kota`)
-- [x] Phase E — game-style toasts (`tampilan-e-toast`)
-- [ ] Phase F — touch-friendly play (`tampilan-f-sentuh`)
+- [x] Phase E — game-style toasts (PR #86)
+- [x] Phase F — touch-friendly play (`tampilan-f-sentuh`); real-device items in `docs/perombakan-kelas5/device-test-checklist.md` §4 are for the owner
 
 ## Asset package (`docs/rencana-paket-aset.md`, stages in §10)
 
@@ -78,4 +78,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 | `paket-4-transisi` | Asset package Stage 4: transitions, decode, curtain | PR open |
 | `paket-5-integritas` | Asset package Stage 5: research data integrity | PR open |
 | `tampilan-a-gambar-admin` | Display update Phase A: admin images (this session continues with B, C) | PR open |
-| `tampilan-e-toast` | Display update Phase E: game-style toasts | PR open |
+| `tampilan-f-sentuh` | Display update Phase F: touch-friendly play | PR open |

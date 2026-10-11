@@ -202,7 +202,7 @@ return [
     'needsJs'           => 'Tantangan ini membutuhkan JavaScript aktif. Minta bantuan gurumu, ya.',
     'noItems'           => 'Soal untuk tantangan ini belum tersedia.',
     'puzzleHint'        => 'Ketuk dua keping untuk menukarnya, atau seret satu keping ke keping lain. Cocokkan warna dan garis yang bersambung.',
-    'puzzleHintJigsaw'  => 'Ketuk dua keping untuk menukarnya. Keping bersisi lurus ada di tepi gambar, dan tonjolan keping harus pas dengan lekukan keping di sebelahnya.',
+    'puzzleHintJigsaw'  => 'Ketuk dua keping untuk menukarnya, atau seret satu keping ke keping lain. Keping bersisi lurus ada di tepi gambar, dan tonjolan keping harus pas dengan lekukan keping di sebelahnya.',
     'puzzleTipMark'     => 'Sesudah dicek, keping bertanda ✗ belum di tempatnya. Tukar keping itu dulu.',
     'puzzleTipHint'     => 'Bingung? Ketuk 💡 Petunjuk di bagian atas.',
     'puzzleCheck'       => 'Cek gambarku',
@@ -225,6 +225,8 @@ return [
     'objectN'           => 'Objek {0}',
     'huntList'          => 'Yang harus ditemukan',
     'huntPending'       => 'Petunjuk {0}',
+    'huntZoom'          => 'Perbesar adegan',
+    'huntZoomClose'     => 'Kecilkan adegan',
 
     // Selesai & hasil
     'finishedTitle'    => 'Tantangan Selesai!',

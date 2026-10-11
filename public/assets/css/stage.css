@@ -65,7 +65,8 @@ body.game {
 .stage .challenge-rumpang .rumpang-reading, .stage .challenge-rumpang .sentences, .stage .challenge-rumpang .rumpang-media,
 .stage .challenge-rumpang .word-bank, .stage .challenge-rumpang .arena-actions,
 .stage .challenge-boleh .arena-actions,
-.stage .challenge-cari .hunt-clue, .stage .challenge-cari .hunt-side, .stage .challenge-cari .hunt-scene {
+.stage .challenge-cari .hunt-clue, .stage .challenge-cari .hunt-side, .stage .challenge-cari .hunt-scene,
+.stage .challenge-cari .hunt-zoom {
   position: absolute;
   left: calc(var(--x, 0) * var(--dp));
   top: calc(var(--y, 0) * var(--dp));
@@ -85,6 +86,10 @@ body.game {
 .panel-parchment .stage-scroll,
 .stage-scroll.is-parchment { scrollbar-color: var(--brown-500) transparent; }
 
+/* Touch (Phase F1): no double-tap zoom on the stage. Scroll panels repeat it
+   because touch-action does not carry across a scroll container. */
+.stage, .stage-scroll { touch-action: manipulation; }
+
 .skip-link { z-index: 100; }
 
 /* ---------- Latar bergambar: 1280 × 720 dp penuh, dua <img> untuk crossfade ---------- */
@@ -103,6 +108,8 @@ body.game {
   object-fit: cover;
   opacity: 0;
   transition: opacity .6s ease;
+  -webkit-user-drag: none;
+  user-select: none;
 }
 .scene-img.is-visible { opacity: 1; }
 /* Lapisan gelap agar teks di atas gambar tetap kontras ≥ 4.5:1 */
@@ -148,9 +155,15 @@ body.game {
 .hud-center:not(:empty) { padding: var(--gap-1) var(--gap-4); background: var(--hud-backing); }
 .hud-icons { display: flex; gap: var(--gap-2); }
 .hud .icon-btn { width: 2.5rem; height: 2.5rem; border: 0; background: none; }
-.hud .icon-btn:hover { background: none; color: var(--gold-300); }
 .hud .icon-btn .icon { filter: drop-shadow(0 1px .1875rem rgba(11, 19, 32, .9)); transition: transform .15s; }
-.hud .icon-btn:hover .icon { transform: scale(1.12); filter: drop-shadow(0 0 .375rem var(--glow)) drop-shadow(0 1px .1875rem rgba(11, 19, 32, .9)); }
+/* Hover only where a real pointer hovers, so it does not stick after a tap.
+   The 40 dp button gets a 48 dp hit area from .icon-btn::before (components.css). */
+@media (hover: hover) {
+  .hud .icon-btn:hover { background: none; color: var(--gold-300); }
+  .hud .icon-btn:hover .icon { transform: scale(1.12); filter: drop-shadow(0 0 .375rem var(--glow)) drop-shadow(0 1px .1875rem rgba(11, 19, 32, .9)); }
+}
+.hud .icon-btn:active { transform: none; }
+.hud .icon-btn:active .icon { transform: scale(.9); filter: drop-shadow(0 0 .375rem var(--glow)) drop-shadow(0 1px .1875rem rgba(11, 19, 32, .9)); }
 .hud-brand {
   padding: 0 var(--gap-3);
   border-radius: var(--radius-pill);
@@ -163,6 +176,17 @@ body.game {
   text-decoration: none;
 }
 .hud-brand:hover { color: var(--gold-300); }
+/* Phase F2: the brand link is 38 dp tall; its hit area grows to --tap */
+.hud-brand { position: relative; }
+.hud-brand::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: max(100%, var(--tap));
+  transform: translateY(-50%);
+}
 /* Account screens before login: Back top-left, logo centred (section hudBack) */
 .hud .hud-back { min-height: var(--tap); padding: var(--gap-1) var(--gap-4) var(--gap-1) var(--gap-3); background: var(--hud-backing); }
 .hud .hud-back:hover { background: var(--hud-backing-hover); }
@@ -370,6 +394,18 @@ body.game {
 .challenge-cari .hunt-side          { --x: 32;   --y: 192; --w: 164;  --h: 486; }
 .challenge-cari .hunt-scene         { --x: 208;  --y: 192; --w: 864;  --h: 486; }
 .challenge-cari .challenge-aside    { --x: 1084; --y: 192; --w: 164;  --h: 486; }
+/* "Perbesar adegan" button (Phase F3.2): 48 dp, 8 dp inside the scene's top-right corner */
+.challenge-cari .hunt-zoom          { --x: 1016; --y: 200; --w: 48;   --h: 48; }
+
+/* Zoomed scene: the whole stage, above the HUD (z 20) and the challenge
+   chrome, below the modal (z 50) and toast (z 60) layers. The scene's
+   containing block is .challenge (inset 0 of the stage, no transform or
+   stacking context in between), so stage coordinates apply as they are.
+   The scene is 16:9 like the stage, so objects (placed in %) keep their
+   spots. The clue becomes a ribbon at the top; the button sits top right. */
+.challenge-cari .hunt.is-zoomed .hunt-scene { --x: 0;    --y: 0;  --w: 1280; --h: 720; z-index: 40; }
+.challenge-cari .hunt.is-zoomed .hunt-clue  { --x: 16;   --y: 16; --w: 1184; --h: 56;  z-index: 41; }
+.challenge-cari .hunt.is-zoomed .hunt-zoom  { --x: 1216; --y: 20; z-index: 42; }
 
 /* ---------- Selesai `/selesai/{id}` (tanpa Jaka, Dok 3 §5.3) ---------- */
 .finished-card { --x: 280; --y: 72; --w: 720; --h: 576; }

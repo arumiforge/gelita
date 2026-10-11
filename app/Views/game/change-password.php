@@ -35,7 +35,7 @@
       <div class="field<?= isset($errors['current_password']) ? ' has-error' : '' ?>">
         <label for="current_password"><?= esc(lang('Auth.currentPassword')) ?> <span class="req" aria-hidden="true">*</span></label>
         <input type="password" id="current_password" name="current_password" required
-               autocomplete="current-password" aria-describedby="current-help">
+               autocomplete="current-password" enterkeyhint="next" aria-describedby="current-help">
         <p class="field-help" id="current-help"><?= esc(lang('Auth.currentHelp')) ?></p>
         <?php if (isset($errors['current_password'])): ?>
           <p class="field-error"><?= esc($errors['current_password']) ?></p>

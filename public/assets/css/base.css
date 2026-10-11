@@ -173,6 +173,13 @@ dd { margin: 0; }
   color: var(--gold-500);
 }
 
+/* ---------- Touch (display plan Phase F1) ----------
+   No grey tap flash anywhere in the game; controls get press feedback from
+   their own :active rules instead. `manipulation` stops the double-tap zoom
+   on fast taps while pan and pinch zoom keep working. */
+body.game { -webkit-tap-highlight-color: transparent; }
+a, button, summary, label, select, input, textarea, [role="button"] { touch-action: manipulation; }
+
 /* ---------- Gerak yang dikurangi ---------- */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

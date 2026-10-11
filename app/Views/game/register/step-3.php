@@ -57,7 +57,7 @@ $focus   = static fn (string $f): string => $first === $f ? ' autofocus' : '';
       <div class="field<?= $invalid('username') ?>">
         <label for="username"><?= esc(lang('Auth.username')) ?> <span class="req" aria-hidden="true">*</span></label>
         <input type="text" id="username" name="username" required maxlength="30"
-               autocomplete="username" autocapitalize="none" spellcheck="false"
+               autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="next"
                aria-describedby="username-help username-status" data-username-check
                data-available="<?= esc(lang('Auth.usernameAvailable'), 'attr') ?>"
                data-unavailable="<?= esc(lang('Auth.usernameUnavailable'), 'attr') ?>"

@@ -1,30 +1,40 @@
 /**
- * Engine `puzzle` — Susun Gambar pada markup game/challenge/puzzle.php.
+ * Engine `puzzle` (Susun Gambar) on the markup of game/challenge/puzzle.php.
  *
- * Papan n × n keping SVG (kotak atau jigsaw). Ketuk dua keping untuk
- * menukarnya (wajib, paling andal di tablet); seret-lepas HTML5 sebagai
- * tambahan; panah untuk berpindah keping, Enter/Spasi untuk memilih/menukar.
- * Slot (tombol) tetap di tempat; yang berpindah adalah gambar keping
- * (.piece-art) beserta data-piece. Keping tidak bernomor; label pembaca layar
- * menyebut letak slot. Client hanya menukar posisi — tidak menilai apa pun.
- * Setiap tukar keping dicatat sebagai event `answer_selected` (action swap).
+ * An n × n board of SVG pieces (square or jigsaw). Three ways to swap two
+ * pieces, all through the same swap():
+ * - tap two pieces (the main path, the most reliable one on tablets);
+ * - drag a piece onto another (core/drag.js, pointer events for mouse, touch,
+ *   and pen alike; display plan Phase F3.1). The drag starts after 8 px, the
+ *   piece gets `.is-dragging` and its `.piece-art` follows the pointer with an
+ *   inline transform, the piece under the pointer gets `.is-drop-target`.
+ *   Dropping on the same piece or outside the board cancels; a press that
+ *   never moves 8 px stays a tap;
+ * - keyboard: arrows move between pieces, Enter/Space select and swap.
+ * Nothing moves while a check is running or after the picture is solved.
+ * Slots (buttons) stay in place; the piece art (.piece-art) and data-piece
+ * move. Pieces carry no numbers; the screen reader label names the slot
+ * position. The client only swaps positions and judges nothing. Every swap
+ * is logged as an `answer_selected` event (action swap), whichever way it
+ * was made.
  *
  * "Cek jawabanku" → POST /check { answers: [{ item_id, answer: { order } }] }.
- * `detail[item].pieces_correct` (dan `misplaced` untuk gambar) dihitung
- * server. Setelah gambar utuh, keterangannya (#puzzle-caption) ditampilkan.
+ * `detail[item].pieces_correct` (and `misplaced` for the picture) come from
+ * the server. Once the picture is whole, its caption (#puzzle-caption) shows.
  *
- * Kesempatan ketiga habis (`completed` + `tries_exhausted`, Dok 2 §5.3):
- * keping disusun ke posisi utuh dengan animasi 600 ms (susunan benar memang
- * publik: keping 0..n−1 dari kiri atas), keterangan gambar tampil, baru
- * kemudian modal "Kesempatanmu sudah habis".
+ * Third try used up (`completed` + `tries_exhausted`, Dok 2 §5.3): the pieces
+ * move to the solved layout in a 600 ms animation (the solved order is
+ * public anyway: pieces 0..n−1 from the top left), the caption shows, and
+ * only then the "Kesempatanmu sudah habis" modal.
  *
- * Keping bertanda ✗ (`.is-misplaced`) juga diumumkan ke pembaca layar: label
- * slotnya ditambah "belum di tempatnya" sampai keping itu ditukar. Muat ulang
- * sesudah cek yang belum utuh memulihkan hitungan ✓/✗ (0 / 1) dari
- * `tries_used`, seperti engine lain memulihkannya dari `state`.
+ * Pieces marked ✗ (`.is-misplaced`) are announced to screen readers too: the
+ * slot label gains "belum di tempatnya" until the piece is swapped. A reload
+ * after a check that was not whole restores the ✓/✗ tally (0 / 1) from
+ * `tries_used`, the way the other engines restore it from `state`.
  */
 import { $, $$, announce, reducedMotion } from '../core/dom.js';
 import { Sfx } from '../core/audio.js';
+import { initDrag, dragLocalScale } from '../core/drag.js';
 
 const ASSEMBLE_MS = 600;
 
@@ -120,30 +130,42 @@ function mountArrange(ctx, wrap) {
     next?.focus();
   });
 
-  // Seret-lepas sebagai tambahan
-  let dragged = null;
-  pieces.forEach((piece) => { piece.draggable = true; });
-  board.addEventListener('dragstart', (event) => {
-    const piece = event.target.closest('.piece');
-    if (!piece || solved || checking) return;
-    dragged = piece;
-    piece.classList.add('is-dragging');
-    event.dataTransfer.effectAllowed = 'move';
-    event.dataTransfer.setData('text/plain', piece.dataset.slot);
-  });
-  board.addEventListener('dragover', (event) => {
-    if (dragged && event.target.closest('.piece')) event.preventDefault();
-  });
-  board.addEventListener('drop', (event) => {
-    const target = event.target.closest('.piece');
-    if (!dragged || !target || checking) return;
-    event.preventDefault();
-    swap(dragged, target);
-    select(null);
-  });
-  board.addEventListener('dragend', () => {
-    dragged?.classList.remove('is-dragging');
-    dragged = null;
+  // Drag a piece onto another to swap them (core/drag.js: mouse, touch, and
+  // pen alike). The piece's art follows the pointer; the piece under it is
+  // highlighted. Dropping on the same piece or outside the board cancels.
+  let dropTarget = null;
+  const setDropTarget = (piece) => {
+    if (piece === dropTarget) return;
+    dropTarget?.classList.remove('is-drop-target');
+    dropTarget = piece;
+    dropTarget?.classList.add('is-drop-target');
+  };
+  const endDrag = (piece) => {
+    piece.classList.remove('is-dragging');
+    const art = $('.piece-art', piece);
+    if (art) art.style.transform = '';
+    setDropTarget(null);
+  };
+  let artScale = 1;
+  initDrag(board, {
+    selector: '.piece',
+    canStart: (piece) => !solved && !checking && !piece.disabled,
+    onStart: (piece) => {
+      select(null);
+      artScale = dragLocalScale(piece);
+      piece.classList.add('is-dragging');
+    },
+    onMove: (piece, { dx, dy, target }) => {
+      const art = $('.piece-art', piece);
+      if (art) art.style.transform = `translate(${dx / artScale}px, ${dy / artScale}px)`;
+      setDropTarget(target);
+    },
+    onDrop: (piece, target) => {
+      endDrag(piece);
+      if (!target || target === piece || solved || checking) return;
+      swap(piece, target);
+    },
+    onCancel: endDrag,
   });
 
   const lock = () => {

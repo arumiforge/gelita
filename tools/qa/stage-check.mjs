@@ -12,7 +12,8 @@
  *   - isi yang melebihi wadahnya hanya ada di panel .stage-scroll;
  *   - posisi relatif pin peta, benda Cari Objek, dan panel berkoordinat
  *     (persen terhadap panggung) sama di semua ukuran (selisih < 0,5 %);
- *   - 390 × 844 dengan sentuh menampilkan layar putar.
+ *   - 390 × 844 dengan sentuh menampilkan layar putar;
+ *   - every interactive element in #stage has a 48 dp hit area (Phase F2).
  *
  * Tangkapan layar: writable/qa/stage/{layar}-{ukuran}.png.
  *
@@ -129,6 +130,41 @@ function inspect() {
   }
   if (outside.length) out.errors.push(`keluar dari #stage: ${[...new Set(outside)].slice(0, 6).join(', ')}`);
   if (overflowing.length) out.errors.push(`isi terpotong di luar .stage-scroll: ${[...new Set(overflowing)].slice(0, 6).join(', ')}`);
+
+  // Hit areas of at least 48 dp (display plan Phase F2): the element's own box
+  // or a ::before/::after hit area grown around it. A checkbox or radio counts
+  // through the label that wraps it. Links inside running text are exempt.
+  const minTap = 48 * s.width / 1280 - 1; // 1 px for rem rounding at odd stage sizes
+  const pseudoSize = (el, which) => {
+    const ps = getComputedStyle(el, which);
+    if (ps.content === 'none' || ps.display === 'none' || ps.position !== 'absolute') return [0, 0];
+    return [parseFloat(ps.width) || 0, parseFloat(ps.height) || 0];
+  };
+  const small = [];
+  const INTERACTIVE = 'a[href], button, input:not([type="hidden"]), select, textarea, summary, [role="button"], [tabindex]:not([tabindex="-1"])';
+  for (const el of stage.querySelectorAll(INTERACTIVE)) {
+    if (el.matches(ANIMATED) || el.closest('[inert], [hidden], template') || !visible(el)) continue;
+    if (el.matches('p a, li > a:not([class]), .rich-text a, .reading a')) continue;
+    // Known exceptions (decision log, Phase F): story/dialogue slide dots get a
+    // 48 dp tall area as wide as dot plus gap (wider areas would overlap their
+    // neighbours), and the map story's stacked narrator buttons keep their
+    // 36 dp height (a taller area would cover the next button). Both repeat
+    // Lanjut/Kembali, which are full size.
+    if (el.matches('.slide-dot, .map-story .icon-btn')) continue;
+    const target = el.matches('input[type="checkbox"], input[type="radio"]') && el.closest('label') ? el.closest('label') : el;
+    const r = target.getBoundingClientRect();
+    // Pseudo-element sizes are in the element's own (unscaled) CSS px; the stage scale applies to both
+    const scale = target.offsetWidth ? r.width / target.offsetWidth : 1;
+    let w = r.width;
+    let h = r.height;
+    for (const which of ['::before', '::after']) {
+      const [pw, ph] = pseudoSize(target, which);
+      w = Math.max(w, pw * scale);
+      h = Math.max(h, ph * scale);
+    }
+    if (w < minTap || h < minTap) small.push(`${describe(target)} ${(w / s.width * 1280).toFixed(0)}×${(h / s.width * 1280).toFixed(0)} dp`);
+  }
+  if (small.length) out.errors.push(`sasaran sentuh < 48 dp: ${[...new Set(small)].slice(0, 8).join(', ')}`);
 
   // Posisi relatif (persen panggung) elemen penanda
   const marks = document.querySelectorAll('.map-point, .object, .stage-box, .challenge-head, .puzzle-board, .hunt-scene, .rumpang-reading, .boleh-passages, .boleh-cards, .cine-caption, .dialogue-box');
@@ -364,7 +400,8 @@ async function check(page, name, size) {
   result.errors.forEach((e) => fail(name, size.name, e));
 
   // Pengerjaan baru (variasi acak lain) punya posisi benda lain: bandingkan per pengerjaan
-  const attempt = await page.getAttribute('[data-screen="challenge"]', 'data-attempt').catch(() => null);
+  // $eval, not getAttribute: getAttribute waits 30 s for a selector that most screens do not have
+  const attempt = await page.$eval('[data-screen="challenge"]', (el) => el.dataset.attempt).catch(() => null);
   const key = `${name}|${page.url().replace(/#.*$/, '')}|${attempt ?? ''}`;
   if (!baseline.has(key)) {
     baseline.set(key, result.marks);

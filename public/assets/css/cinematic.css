@@ -237,6 +237,7 @@
   cursor: pointer;
 }
 .narrator-tap-btn:focus-visible { outline: .1875rem solid var(--gold-500); outline-offset: .25rem; }
+.narrator-tap-btn:active .narrator-tap-glow { filter: brightness(1.12); }
 .narrator-tap-glow {
   display: grid;
   place-items: center;
@@ -251,8 +252,10 @@
 .narrator-tap-hint { display: flex; align-items: center; gap: var(--gap-2); margin: 0; color: var(--ink-dim); font-size: var(--fs-caption); }
 .narrator-tap-hint .icon { width: 1.125rem; height: 1.125rem; }
 
-/* Kontrol ◀ ⏸/▶ ↻ ▶ Otomatis */
-.narrator-controls { display: flex; flex-wrap: wrap; align-items: center; gap: var(--gap-1); }
+/* Narrator controls ◀ ⏸/▶ ↻ ▶ Auto. The 40 dp icon buttons get a 48 dp hit
+   area from .icon-btn::before (components.css); with the 4 dp gap, each
+   area ends at the neighbour's edge, so no button covers another. */
+.narrator-controls { display: flex; flex-wrap: wrap; align-items: center; gap: var(--gap-1); -webkit-touch-callout: none; user-select: none; }
 .narrator-controls[hidden] { display: none; }
 .narrator-controls .icon-btn { width: 2.5rem; height: 2.5rem; }
 .narrator-controls .icon-btn[hidden] { display: none; }
@@ -262,6 +265,7 @@
 .narrator-toggle .icon-pause, .narrator-toggle.is-playing .icon-play { display: none; }
 .narrator-toggle.is-playing .icon-pause { display: block; }
 .narrator-auto {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: var(--gap-2);
@@ -276,6 +280,18 @@
   cursor: pointer;
 }
 .narrator-auto[hidden] { display: none; }
+/* Phase F2: 40 dp tall switch, 48 dp hit area */
+.narrator-auto::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: max(100%, var(--tap));
+  height: max(100%, var(--tap));
+  transform: translate(-50%, -50%);
+}
+.narrator-auto:active { color: var(--gold-300); }
+.narrator-auto:active .narrator-auto-track { background: rgba(223, 192, 135, .4); }
 .narrator-auto:focus-visible { outline: .125rem solid var(--gold-500); outline-offset: .125rem; }
 .narrator-auto-track { position: relative; width: 2rem; height: 1.125rem; border-radius: .5625rem; background: rgba(255, 255, 255, .18); }
 .narrator-auto-track i {
@@ -449,9 +465,13 @@ body.is-cinematic .scene-img.is-visible { animation: kenburns 40s ease-in-out in
 }
 .cine .slide-text { color: var(--ink); font-size: var(--fs-reading); line-height: 1.5; text-wrap: pretty; }
 .cine .slide-nav .btn-quiet { background: rgba(255, 255, 255, .08); color: var(--gold-300); }
-.cine .slide-nav .btn-quiet:hover { background: rgba(255, 255, 255, .14); }
+@media (hover: hover) {
+  .cine .slide-nav .btn-quiet:hover { background: rgba(255, 255, 255, .14); }
+}
+.cine .slide-nav .btn-quiet:active { background: rgba(255, 255, 255, .18); }
 .cine .slide-dot { border-color: var(--gold-600); }
 .cine .slide-dot.is-current { background: var(--gold-500); border-color: var(--gold-500); }
+.cine .slide-dot:active, .kenal .slide-dot:active { background: var(--gold-300); }
 /* ◀ ada di kontrol narasi: tombol Kembali tidak memakan tempat */
 .cine.is-live .slide-nav > .btn-quiet, .cine.is-live .slide-nav-spacer { display: none; }
 
@@ -465,6 +485,9 @@ body.is-cinematic .scene-img.is-visible { animation: kenburns 40s ease-in-out in
 .cine-caption .slide-nav .btn, .dialogue-box .slide-nav .btn { min-height: 2.5rem; padding: var(--gap-1) var(--gap-4); font-size: var(--fs-caption); white-space: nowrap; }
 .cine-caption .slide-dots, .dialogue-box .slide-dots { gap: var(--gap-1); }
 .cine-caption .slide-dot, .dialogue-box .slide-dot { width: .625rem; height: .625rem; }
+/* Phase F2: 10 dp dots, 48 dp tall hit area as wide as dot + gap (14 dp).
+   Lanjut/Kembali (40 dp) grow to 48 dp through .btn::before (components.css). */
+.cine-caption .slide-dot::before, .dialogue-box .slide-dot::before { width: calc(.625rem + var(--gap-1)); }
 
 /* Kontrol narasi + "Lewati" di kanan atas, di bawah HUD (y 72) */
 .cine .narrator-controls, .dialogue .narrator-controls {
@@ -502,6 +525,11 @@ body.is-cinematic .nav-bar {
 .map-story.is-live .map-story-nav .icon-btn { display: none; }
 .map-story .narrator-controls { flex-direction: column; flex-wrap: nowrap; justify-content: center; gap: 0; }
 .map-story .narrator-controls .icon-btn { width: 2.25rem; height: 2.25rem; }
+/* Phase F2: the map story stacks its 36 dp buttons with no gap, so their hit
+   areas widen to 48 dp but keep the button's height: a taller area would
+   cover part of the neighbour. The two buttons in .map-story-nav are apart
+   (the page count sits between them) and keep the full 48 dp square. */
+.map-story .narrator-controls .icon-btn::before { height: 100%; }
 .map-story .narrator-controls .narrator-auto { display: none; }
 
 /* =================== TAHAP 3 · SLIDE TANPA HASH =================== */
@@ -538,7 +566,12 @@ body.is-cinematic .nav-bar {
   transition: transform .15s ease;
 }
 .kenal-btn-face .icon { width: 1rem; height: 1rem; }
-.kenal-btn:hover .kenal-btn-face, .kenal-btn:focus-visible .kenal-btn-face { transform: scale(1.1); }
+.kenal-btn:focus-visible .kenal-btn-face { transform: scale(1.1); }
+@media (hover: hover) {
+  .kenal-btn:hover .kenal-btn-face { transform: scale(1.1); }
+}
+.kenal-btn:active .kenal-btn-face { transform: scale(.92); filter: brightness(1.15); }
+.map-point > .kenal-btn { -webkit-touch-callout: none; user-select: none; }
 .kenal-btn:focus-visible { outline: .1875rem solid var(--gold-500); outline-offset: 0; }
 
 /* Lencana "Belum didengar": titik berdenyut pada ikon, pil bertulisan pada kartu */
@@ -615,6 +648,8 @@ body.has-kenal { overflow: hidden; }
   padding: max(var(--gap-4), env(safe-area-inset-top)) max(var(--gap-5), env(safe-area-inset-right)) 0 max(var(--gap-5), env(safe-area-inset-left));
 }
 .kenal-head .eyebrow { margin: 0; color: var(--ink-dim); }
+.kenal-stage, .cine-stage { -webkit-touch-callout: none; user-select: none; }
+.curtain-bg, .cine-bg, .kenal-bg { -webkit-user-drag: none; user-select: none; }
 .kenal-head h2 { margin: 0; color: var(--gold-300); font-family: var(--font-display); font-size: var(--fs-h2); }
 .kenal-close { flex: none; width: var(--tap); height: var(--tap); background: rgba(11, 19, 32, .6); }
 .kenal .narrator-controls {
@@ -843,7 +878,10 @@ body.has-kenal { overflow: hidden; }
 .slide-nav-final { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--gap-2); margin-left: auto; }
 /* Tombol sekunder (Baca Pustaka {wilayah}) di atas perkamen dialog */
 .dialogue-box .slide-nav-final .btn-ghost { border-color: var(--brown-500); background: rgba(74, 50, 24, .08); color: var(--brown-700); }
-.dialogue-box .slide-nav-final .btn-ghost:hover { background: rgba(74, 50, 24, .16); }
+@media (hover: hover) {
+  .dialogue-box .slide-nav-final .btn-ghost:hover { background: rgba(74, 50, 24, .16); }
+}
+.dialogue-box .slide-nav-final .btn-ghost:active { background: rgba(74, 50, 24, .2); }
 
 /* Pose tokoh yang berbicara terasa juga saat gambar pose belum diunggah (monogram) */
 .dialogue-stage .character.is-speaking.pose-happy { animation: pose-hop .5s ease both; }
@@ -886,6 +924,11 @@ body.has-kenal { overflow: hidden; }
   .dialogue-stage .character.is-speaking.pose-happy, .dialogue-stage .character.is-speaking.pose-afraid,
   .narrator:has(> .narrator-fx.fx-shake) .slide.is-current :is(.kenal-stage, .kenal-caption, .dialogue-box) { animation: none; }
   .kenal-btn-face { transition: none; }
+
+  /* Phase F1.5: the shorthand animations above beat the base rule, so they
+     are switched off explicitly; hover and press do not scale */
+  html.js .kenal.is-open { animation: none; }
+  .kenal-btn:hover .kenal-btn-face, .kenal-btn:focus-visible .kenal-btn-face, .kenal-btn:active .kenal-btn-face { transform: none; }
   .footstep { opacity: .6; }
   .cc-light { left: 50%; }
   .dialogue-stage .character.is-speaking.pose-determined { translate: none; }

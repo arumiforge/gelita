@@ -38,14 +38,70 @@
  * memutar otomatis. Telemetry membawa attempt_id, jadi setiap event narasi
  * petunjuk ikut menambah challenge_attempts.audio_use_count. Petunjuk tanpa
  * rekaman: tanpa tombol, sama seperti sebelumnya.
+ *
+ * "Perbesar adegan" (display plan F3.2): see initZoom() below.
  */
 import { $, $$, el, announce } from '../core/dom.js';
-import { showModal } from '../core/modal.js';
+import { showModal, isModalOpen } from '../core/modal.js';
+import { overlayOpened } from '../core/device.js';
 import { confetti } from '../core/confetti.js';
 import { Sfx, narrationPlayer, pauseNarration } from '../core/audio.js';
 
 const SHAKE_MS = 700;
 const VOICE_DELAY_MS = 600; // bunyi "benar" selesai dulu sebelum petunjuk berikutnya dibacakan
+
+/**
+ * "Perbesar adegan" (display plan F3.2): the button after the scene toggles
+ * `.hunt.is-zoomed` and `body.has-hunt-zoom`; the CSS grows the scene to the
+ * whole stage with the clue on a ribbon at the top. Objects are placed in
+ * percent, so taps keep working while zoomed. Opening logs `overlay_opened`
+ * (`hunt_zoom`); closing (button or Esc) logs nothing.
+ *
+ * Esc belongs to an open modal, native dialog, or open lantern panel first;
+ * otherwise it closes the zoom and stops there (no toast or other Esc
+ * handler reacts to the same key press).
+ *
+ * @returns {{ close: () => void }}
+ */
+function initZoom(ctx, scene) {
+  const button = $('#hunt-zoom', ctx.section);
+  const hunt = scene.closest('.hunt');
+  if (!button || !hunt) return { close: () => {} };
+
+  const label = $('[data-hunt-zoom-label]', button);
+  let zoomed = false;
+
+  const set = (on) => {
+    zoomed = on;
+    hunt.classList.toggle('is-zoomed', on);
+    document.body.classList.toggle('has-hunt-zoom', on);
+    button.setAttribute('aria-pressed', on ? 'true' : 'false');
+    const text = (on ? button.dataset.labelClose : button.dataset.labelOpen) || '';
+    if (label) label.textContent = text;
+    button.title = text;
+  };
+
+  button.hidden = false;
+  button.addEventListener('click', () => {
+    if (zoomed) {
+      set(false);
+      return;
+    }
+    set(true);
+    overlayOpened('hunt_zoom', { levelId: ctx.levelId ?? null, level: ctx.levelCode ?? null });
+  });
+
+  // Capture on window runs before the document-level Esc handlers (toast, HUD)
+  window.addEventListener('keydown', (event) => {
+    if (!zoomed || event.key !== 'Escape' || event.defaultPrevented) return;
+    if (isModalOpen() || document.querySelector('dialog[open], details.lantern[open]')) return;
+    event.preventDefault();
+    event.stopPropagation();
+    set(false);
+  }, true);
+
+  return { close: () => { if (zoomed) set(false); } };
+}
 
 export function mount(ctx) {
   const scene = $('#hunt-scene', ctx.section);
@@ -195,6 +251,7 @@ export function mount(ctx) {
 
     // Semua petunjuk tertutup: server sudah menutup pengerjaan
     if (result.completed) {
+      zoom.close(); // the closing modal and the redirect belong to the normal layout
       clearTimeout(voiceTimer);
       pauseNarration();
       render();
@@ -245,6 +302,8 @@ export function mount(ctx) {
     });
     object.focus({ preventScroll: true });
   };
+
+  const zoom = initZoom(ctx, scene);
 
   scene.addEventListener('click', (event) => {
     const object = event.target.closest('.object');

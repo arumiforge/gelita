@@ -40,4 +40,19 @@ On the laptop with NVDA (Windows) or VoiceOver (macOS), or VoiceOver on the iPad
 - [ ] Download one XLSX and one CSV-ZIP from *Unduh data* and open them in Excel or LibreOffice: Indonesian characters display correctly and every sheet has a Kamus Data entry.
 - [ ] In R, read a CSV with `read.csv("peserta.csv", fileEncoding = "UTF-8-BOM")` or `readr::read_csv()`. Plain `read.csv()` also works when R runs in a UTF-8 locale (default on Windows R 4.2+, macOS, and most Linux desktops).
 
+## 4. Touch and keyboard (display plan Phase F)
+
+On the tablet (iPad Safari or Android Chrome) and the phone held landscape:
+
+- [ ] Fast double taps on buttons, words, and pieces never zoom the page; pinch zoom still works (iOS and Android).
+- [ ] Every button, option, word, blank, piece, object, pin, and card shows a short press effect; nothing stays highlighted after the finger lifts (no "sticky hover").
+- [ ] Small controls are easy to hit with a finger: slide dots, "Keluar", narrator buttons, HUD icons, hint chip, language switch, word chips, and blanks.
+- [ ] A long press on a picture, piece, object, or character shows no copy/save menu and selects no text; story and reading text can still be selected.
+- [ ] Susun Gambar: drag a piece with a finger onto another to swap them; the piece follows the finger; dropping outside the board or on the same piece changes nothing; tapping two pieces still swaps.
+- [ ] Cari Objek: the ⤢ button enlarges the scene to the whole screen with the clue at the top; objects can be tapped while enlarged; the button (or Esc on a keyboard) shrinks it back; it closes by itself when the challenge ends.
+- [ ] Story slides, region dialog, Kenali, and Pustaka: swiping left goes to the next page, swiping right to the previous one; swiping inside a scrolling text box only scrolls it.
+- [ ] `/masuk`, `/daftar` steps 1–3, `/ganti-sandi`, and the reflection form: the on-screen keyboard never covers the field being typed in; the screen moves back when the keyboard closes. The keyboard shows "Next"/"Done" keys, and usernames and school names are not autocorrected.
+- [ ] iPhone/iPad: tapping a text field does not zoom the page in.
+- [ ] Toasts: a message card appears top right, closes when tapped, and is readable above an open dialog.
+
 When done, tell Claude in the project thread what you found; the PROGRESS line for §12.3 is ticked only after this list.
