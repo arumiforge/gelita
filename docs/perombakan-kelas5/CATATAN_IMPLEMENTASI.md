@@ -1365,3 +1365,28 @@ Branch `pbb/practical-ramanujan-sogpm3`. Owner report: the browser console on `h
 - **`/api/events` 500 is a server-state problem, not code.** It does not reproduce on a fully migrated local MariaDB in production mode with the CSP on. Dropping `game_event_logs.clock_offset_ms` (added by migration `2026-01-01-003100`) reproduces it exactly: sign-up and pages work, every event batch answers `SERVER_ERROR`, and the log says `Unknown column 'clock_offset_ms' in 'INSERT INTO'`. Action for the owner: check `writable/logs/log-2026-10-11.log` on the server for that line and run `php spark migrate:status` / `php spark migrate` with the migration account (as `deploy/linux/deploy.sh` does). Never run reset there.
 - **Service worker warning.** "navigation preload request was cancelled" appears when a navigation is cancelled mid-flight; `sw.js` already awaits `preloadResponse`. Harmless, left as is.
 - **Checks.** New `ContentSecurityPolicyTest` (directives with CSP on, no inline `<script>` in any non-error view, `viewport.js` before the stylesheets). Chromium on local MariaDB with the production `.env` and `app.CSPEnabled = true`: before the change, the same inline-script and `data:` media errors as production; after, none on sign-up, intro, map, mission brief, profile, and library, `--app-w`/`--app-h` still set, all `/api/events` 200. Suite green.
+
+## Asset catalogue plan aligned with `gelita-katalog/` (11 October 2026)
+
+Branch `pbb/nifty-faraday-fcw9r6`. Owner request: use the references and images in `gelita-katalog/` (the team catalogue, now committed in the repo) to update `docs/rencana-katalog-aset.md`, and ask before resolving conflicts. Docs only; no code changed.
+
+- **Owner decisions on conflicts.**
+  - **Style: stylized 3D** (catalogue), replacing 2D gouache. The `{GAYA}`, `{NEGATIF}`, `{FRAME}`, and `{LENTERA}` blocks were rewritten, and the map prompts now describe 3D relief.
+  - **Jaka: red-scarf design** (`reference.01`/`.03`/`.13`), replacing lurik and iket. This reverses the 10 October note above that called the red-scarf entries "reference only".
+  - **Mbah Kedu:** outfit from `reference.14`, face from `reference.02`, and he keeps the walking stick. The blangkon and jarik question is closed.
+  - **WebP is the default raster format.** `app.*` stays PNG, because the slots refuse WebP.
+  - **Logo:** `ui.logo-hero` ← `reference.09`, `ui.logo` ← `reference.16`.
+  - **Start button:** two finished images with their labels (MULAI, START), styled like `reference.10`.
+  - **Not used:** `reference.15` (supporting character) is not needed; `reference.12` and `reference.17`–`.24` are reference only.
+  - **UI icons:** the catalogue's redrawn shapes are the target, for a later code change that keeps `currentColor`.
+- **Corrections found on the way.**
+  - Region maps have four stops at `ContentSeeder::NODES` positions, not five.
+  - The `ui.logo` screens follow `ImageSlots`.
+  - The catalogue's `ui.logo-hero`, `ui.logo`, and `ui.btn-start(.en)` files are an ornament or flat placeholders, not the final art.
+  - Fitting commands for `reference.09` (1600 × 700 → padded to 8:3 → 1600 × 600) and `reference.10` (960 × 288 → 960 × 320 → 720 × 240) were checked with ImageMagick: they give the slot sizes and keep alpha.
+- **Still open.**
+  - **Character frames.** The 30 catalogue frames still show the old lurik–iket design and must be redrawn.
+  - **Missing button.** There is no START version of `reference.10` yet.
+  - **Panel texts still describe the old art.** `ImageSlots` texts for `ui.btn-start` (gold button, dark letters) and the avatar brief (portraits; the catalogue avatars are faceless emblems) do not match.
+  - **Library images.** The catalogue's 60 Pustaka images are AI illustrations, while §9.5 asks for real photos for factual pages. They also include a recognisable child with gimbal hair (rule 5), an illustrated regency emblem, and the old Jaka costume. The owner has not decided yet, so the plan's rules are unchanged.
+  - **Icon code change.** Bringing the catalogue icon shapes into `icon()`, including drawing the 11 game icons the catalogue lacks.
