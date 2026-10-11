@@ -1,0 +1,111 @@
+#--------------------------------------------------------------------
+# PRODUCTION ENVIRONMENT — GELITA (https://gelita.id)
+#
+# Ready-to-use production configuration. On the server:
+#
+#     cp env-example-production .env
+#     sudo chown deploy:www-data .env && sudo chmod 640 .env   # Linux
+#
+# This file holds real secrets (encryption.key, gelita.ipSalt). It is
+# committed on purpose because the repository is private; the owner
+# accepted that. Anyone with read access to the repository can read them.
+#
+# Never regenerate encryption.key once production runs: Cari Objek tokens
+# and offline queue tags (sessionTag) are derived from it.
+# Reference: docs/08_DEPLOYMENT.md → ".env production".
+#--------------------------------------------------------------------
+
+#--------------------------------------------------------------------
+# ENVIRONMENT
+#--------------------------------------------------------------------
+CI_ENVIRONMENT = production
+
+#--------------------------------------------------------------------
+# APP
+# app.baseURL must match the HTTPS domain exactly (login redirects use it).
+#--------------------------------------------------------------------
+app.baseURL = 'https://gelita.id/'
+app.forceGlobalSecureRequests = true
+app.appTimezone = 'Asia/Jakarta'
+app.defaultLocale = 'id'
+app.indexPage = ''
+
+#--------------------------------------------------------------------
+# DATABASE
+# root without a password, as requested by the owner. Do not add
+# database.default.DSN here; that key is reserved for the migration
+# account (docs/08_DEPLOYMENT.md → "Kredensial migration lewat DSN").
+# Windows path (Laragon): use 127.0.0.1 instead of localhost.
+#--------------------------------------------------------------------
+database.default.hostname = localhost
+database.default.database = gelita
+database.default.username = root
+database.default.password = ''
+database.default.DBDriver = MySQLi
+database.default.DBPrefix =
+database.default.port = 3306
+database.default.charset = utf8mb4
+database.default.DBCollat = utf8mb4_unicode_ci
+
+#--------------------------------------------------------------------
+# ENCRYPTION
+#--------------------------------------------------------------------
+encryption.key = hex2bin:59284f1c813953e32788e29a2a325d93c40548e1e08feaf1f725611b03e97aea
+
+#--------------------------------------------------------------------
+# SESSION
+#--------------------------------------------------------------------
+session.driver = 'CodeIgniter\Session\Handlers\DatabaseHandler'
+session.savePath = 'ci_sessions'
+session.cookieName = 'gelita_session'
+session.expiration = 14400
+session.regenerateDestroy = true
+session.matchIP = false
+
+#--------------------------------------------------------------------
+# SECURITY (CSRF)
+# security.regenerate = false: the game sends many back-to-back AJAX
+# requests; a token that changes on every request breaks parallel ones.
+#--------------------------------------------------------------------
+security.csrfProtection = 'session'
+security.tokenRandomize = true
+security.tokenName = 'gelita_csrf'
+security.headerName = 'X-CSRF-TOKEN'
+security.cookieName = 'gelita_csrf_cookie'
+security.expires = 7200
+security.regenerate = false
+security.redirect = false
+
+#--------------------------------------------------------------------
+# COOKIE (HTTPS only)
+#--------------------------------------------------------------------
+cookie.samesite = 'Lax'
+cookie.secure = true
+cookie.httponly = true
+
+#--------------------------------------------------------------------
+# LOGGER — production: 4 (errors and above)
+#--------------------------------------------------------------------
+logger.threshold = 4
+
+#--------------------------------------------------------------------
+# DEBUG TOOLBAR (inactive in production; kept for parity with `env`)
+#--------------------------------------------------------------------
+toolbar.collectVarData = false
+
+#--------------------------------------------------------------------
+# GELITA
+# gelita.assetVersion must stay in .env: deploy.sh bumps it on every
+# update and does not add the line when it is missing.
+#--------------------------------------------------------------------
+gelita.ipSalt = 'fcdca7c2b7b9b8186cdfdedbf969ae3c60003835660daa4a0ff1030dafc77208'
+gelita.exportRetentionDays = 7
+gelita.maxEventsPerBatch = 50
+gelita.assetVersion = '1'
+
+#--------------------------------------------------------------------
+# ASSET PACKAGE (docs/rencana-paket-aset.md §6.3)
+# Server-level kill switch for package mode. Uncomment to force normal
+# asset URLs on every device.
+#--------------------------------------------------------------------
+# gelita.paket.aktif = false
