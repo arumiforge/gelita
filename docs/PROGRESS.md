@@ -42,7 +42,7 @@ Owner decisions: phases in order 0 → A → B → C → E → F, one branch and
 - [x] Phase A — app icons, zoom and animation preview, placeholder, story slide backgrounds, `bg.auth` (PR #87)
 - [ ] Phase B — avatars (`tampilan-b-avatar`)
 - [ ] Phase C — city pins, Kenali lanterns, city loading backgrounds (`tampilan-c-kota`)
-- [ ] Phase E — game-style toasts (`tampilan-e-toast`)
+- [x] Phase E — game-style toasts (`tampilan-e-toast`)
 - [ ] Phase F — touch-friendly play (`tampilan-f-sentuh`)
 
 ## Asset package (`docs/rencana-paket-aset.md`, stages in §10)

@@ -35,6 +35,9 @@ return [
     'soundOff'     => 'Suara mati',
     'audioNoSound' => 'Suara belum dapat diputar. Baca teksnya, ya.',
 
+    // Toast
+    'toastClose' => 'Ketuk untuk menutup',
+
     // Refleksi
     'needTwo' => 'Isi minimal dua pertanyaan, ya.',
 
