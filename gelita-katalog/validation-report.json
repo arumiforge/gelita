@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-11",
+  "checks": [
+    "370 unique IDs and keys",
+    "273 visuals have style reviews and existing files",
+    "273 user-overridden style statuses with previous audits preserved",
+    "Active prompts exclude conflicting legacy art direction",
+    "83 icons updated with correct size and alpha",
+    "20 unique selected image_gen icon outputs",
+    "8 native vector control sources present",
+    "9 generated references present",
+    "Semantic filenames verified",
+    "475 migrated paths resolve",
+    "HTML data exactly matches data.json",
+    "97 audio objects unchanged",
+    "Target dimensions unchanged",
+    "Requested folder deleted"
+  ],
+  "passed": true
+}

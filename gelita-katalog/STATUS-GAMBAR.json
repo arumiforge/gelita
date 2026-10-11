@@ -1,0 +1,17 @@
+{
+  "date": "2026-10-11",
+  "total": 370,
+  "visual": 273,
+  "audio": 97,
+  "generated_references": 9,
+  "icons_updated": 83,
+  "visual_prompts_reviewed": 273,
+  "style_status_basis": "User override — 2026-10-11",
+  "style_counts": {
+    "Sesuai gaya": 273,
+    "Belum sesuai": 0,
+    "Perlu tinjau": 0,
+    "Tidak berlaku": 0
+  },
+  "missing": []
+}

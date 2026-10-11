@@ -1,0 +1,3104 @@
+{
+  "timestamp_utc": "20261011T155118391929Z",
+  "backup": "archive/before-resize-20261011T155118391929Z.zip",
+  "raster_assets": 221,
+  "resized": 213,
+  "already_correct": 8,
+  "mismatches_after": 0,
+  "entries": [
+    {
+      "file": "assets/referensi/reference.01.webp",
+      "before": [
+        800,
+        800
+      ],
+      "target": [
+        2048,
+        2048
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/referensi/reference.02.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        1024,
+        1024
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/referensi/reference.03.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        1024,
+        1024
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/referensi/reference.04.webp",
+      "before": [
+        1200,
+        675
+      ],
+      "target": [
+        1920,
+        1080
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/referensi/reference.05.webp",
+      "before": [
+        1672,
+        941
+      ],
+      "target": [
+        1920,
+        1080
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/referensi/reference.06.webp",
+      "before": [
+        1672,
+        941
+      ],
+      "target": [
+        1920,
+        1080
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/referensi/reference.07.webp",
+      "before": [
+        1672,
+        941
+      ],
+      "target": [
+        1920,
+        1080
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/referensi/reference.08.webp",
+      "before": [
+        1200,
+        800
+      ],
+      "target": [
+        1920,
+        1080
+      ],
+      "method": "contain-transparent",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/referensi/reference.09.webp",
+      "before": [
+        1896,
+        830
+      ],
+      "target": [
+        1600,
+        700
+      ],
+      "method": "contain-transparent",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/referensi/reference.10.webp",
+      "before": [
+        2172,
+        724
+      ],
+      "target": [
+        960,
+        288
+      ],
+      "method": "contain-transparent",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/referensi/reference.11.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        900,
+        900
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/referensi/reference.12.webp",
+      "before": [
+        1683,
+        935
+      ],
+      "target": [
+        1800,
+        1000
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/referensi/reference.13.webp",
+      "before": [
+        1024,
+        1536
+      ],
+      "target": [
+        1024,
+        1536
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": false
+    },
+    {
+      "file": "assets/referensi/reference.14.webp",
+      "before": [
+        1024,
+        1536
+      ],
+      "target": [
+        1024,
+        1536
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": false
+    },
+    {
+      "file": "assets/referensi/reference.15.webp",
+      "before": [
+        1024,
+        1536
+      ],
+      "target": [
+        1024,
+        1536
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": false
+    },
+    {
+      "file": "assets/referensi/reference.16.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        1024,
+        1024
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/referensi/reference.17.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        256,
+        256
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/referensi/reference.18.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        256,
+        256
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/referensi/reference.19.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        256,
+        256
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/referensi/reference.20.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        256,
+        256
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/referensi/reference.21.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        256,
+        256
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/referensi/reference.22.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        256,
+        256
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/referensi/reference.23.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        256,
+        256
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/referensi/reference.24.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        256,
+        256
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/referensi/reference.25.webp",
+      "before": [
+        1672,
+        941
+      ],
+      "target": [
+        1920,
+        1080
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/referensi/reference.26.webp",
+      "before": [
+        1672,
+        941
+      ],
+      "target": [
+        1920,
+        1080
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.item.tmg-1-01.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        1200,
+        1200
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.item.tmg-1-03.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        1200,
+        1200
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.item.tmg-1-04.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        1200,
+        1200
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.item.tmg-3-a03.webp",
+      "before": [
+        1448,
+        1086
+      ],
+      "target": [
+        480,
+        360
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.item.tmg-3-b03.webp",
+      "before": [
+        1448,
+        1086
+      ],
+      "target": [
+        480,
+        360
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.item.tmg-3-c03.webp",
+      "before": [
+        1448,
+        1086
+      ],
+      "target": [
+        480,
+        360
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.item.tmg-4-02.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        240,
+        240
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.item.tmg-4-03.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        240,
+        240
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.item.tmg-4-04.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        240,
+        240
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.item.tmg-4-06.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        240,
+        240
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.item.tmg-4-09.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        240,
+        240
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.item.tmg-4-10.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        240,
+        240
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.item.tmg-4-11.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        240,
+        240
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.item.tmg-4-12.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        240,
+        240
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.tmg-4.scene.webp",
+      "before": [
+        1672,
+        941
+      ],
+      "target": [
+        1280,
+        720
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.item.mgl-1-01.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        1200,
+        1200
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.item.mgl-1-02.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        1200,
+        1200
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.item.mgl-1-03.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        1200,
+        1200
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.item.mgl-4-a01.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        240,
+        240
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.item.mgl-4-a02.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        240,
+        240
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.item.mgl-4-a03.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        240,
+        240
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.item.mgl-4-a04.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        240,
+        240
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.item.mgl-4-a05.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        240,
+        240
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.item.mgl-4-a06.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        240,
+        240
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.item.mgl-4-a07.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        240,
+        240
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.item.mgl-4-a08.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        240,
+        240
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.item.mgl-4-a09.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        240,
+        240
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.item.mgl-4-a10.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        240,
+        240
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.mgl-4.scene.webp",
+      "before": [
+        1672,
+        941
+      ],
+      "target": [
+        1280,
+        720
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.item.wnb-1-05.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        1200,
+        1200
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.item.wnb-1-06.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        1200,
+        1200
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.item.wnb-1-07.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        1200,
+        1200
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.item.wnb-4-a01.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        240,
+        240
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.item.wnb-4-a02.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        240,
+        240
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.item.wnb-4-a03.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        240,
+        240
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.item.wnb-4-a04.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        240,
+        240
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.item.wnb-4-a05.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        240,
+        240
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.item.wnb-4-a06.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        240,
+        240
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.item.wnb-4-a07.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        240,
+        240
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.item.wnb-4-a08.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        240,
+        240
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.item.wnb-4-a09.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        240,
+        240
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.item.wnb-4-a10.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        240,
+        240
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.item.wnb-4-a11.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        240,
+        240
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.item.wnb-4-a12.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        240,
+        240
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/tantangan/challenge.wnb-4.scene.webp",
+      "before": [
+        1672,
+        941
+      ],
+      "target": [
+        1280,
+        720
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/latar/bg.welcome.webp",
+      "before": [
+        1672,
+        941
+      ],
+      "target": [
+        1920,
+        1080
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/latar/bg.auth.webp",
+      "before": [
+        1672,
+        940
+      ],
+      "target": [
+        1920,
+        1080
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/latar/bg.intro.webp",
+      "before": [
+        1672,
+        941
+      ],
+      "target": [
+        1920,
+        1080
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/latar/bg.map.webp",
+      "before": [
+        1672,
+        941
+      ],
+      "target": [
+        1920,
+        1080
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/latar/bg.reflection.webp",
+      "before": [
+        1672,
+        941
+      ],
+      "target": [
+        1920,
+        1080
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/latar/bg.loading.webp",
+      "before": [
+        1672,
+        941
+      ],
+      "target": [
+        1920,
+        1080
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/latar/bg.cerita-intro-01.webp",
+      "before": [
+        1672,
+        941
+      ],
+      "target": [
+        1920,
+        1080
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/latar/bg.cerita-intro-02.webp",
+      "before": [
+        1672,
+        941
+      ],
+      "target": [
+        1920,
+        1080
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/latar/bg.cerita-intro-03.webp",
+      "before": [
+        1672,
+        941
+      ],
+      "target": [
+        1920,
+        1080
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/latar/bg.cerita-intro-04.webp",
+      "before": [
+        1672,
+        941
+      ],
+      "target": [
+        1920,
+        1080
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/latar/bg.cerita-intro-05.webp",
+      "before": [
+        1672,
+        941
+      ],
+      "target": [
+        1920,
+        1080
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/latar/bg.cerita-intro-06.webp",
+      "before": [
+        1672,
+        941
+      ],
+      "target": [
+        1920,
+        1080
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/latar/bg.cerita-intro-07.webp",
+      "before": [
+        1672,
+        941
+      ],
+      "target": [
+        1920,
+        1080
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/latar/bg.cerita-intro-08.webp",
+      "before": [
+        1672,
+        941
+      ],
+      "target": [
+        1920,
+        1080
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/latar/bg.cerita-intro-09.webp",
+      "before": [
+        1672,
+        941
+      ],
+      "target": [
+        1920,
+        1080
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/latar/bg.cerita-penutup-01.webp",
+      "before": [
+        1672,
+        941
+      ],
+      "target": [
+        1920,
+        1080
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/latar/bg.cerita-penutup-02.webp",
+      "before": [
+        1672,
+        941
+      ],
+      "target": [
+        1920,
+        1080
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/latar/bg.cerita-penutup-03.webp",
+      "before": [
+        1672,
+        941
+      ],
+      "target": [
+        1920,
+        1080
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/latar/bg.cerita-penutup-04.webp",
+      "before": [
+        1672,
+        941
+      ],
+      "target": [
+        1920,
+        1080
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/latar/bg.cerita-penutup-05.webp",
+      "before": [
+        1672,
+        941
+      ],
+      "target": [
+        1920,
+        1080
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/latar/bg.temanggung.region.webp",
+      "before": [
+        1672,
+        941
+      ],
+      "target": [
+        1920,
+        1080
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/latar/bg.magelang.region.webp",
+      "before": [
+        1672,
+        941
+      ],
+      "target": [
+        1920,
+        1080
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/latar/bg.wonosobo.region.webp",
+      "before": [
+        1672,
+        941
+      ],
+      "target": [
+        1920,
+        1080
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/logo/ui.logo-hero.webp",
+      "before": [
+        2048,
+        768
+      ],
+      "target": [
+        1600,
+        600
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/logo/ui.logo.webp",
+      "before": [
+        2048,
+        768
+      ],
+      "target": [
+        512,
+        512
+      ],
+      "method": "contain-transparent",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/antarmuka/ui.btn-start.webp",
+      "before": [
+        900,
+        300
+      ],
+      "target": [
+        720,
+        240
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/antarmuka/ui.btn-start.en.webp",
+      "before": [
+        900,
+        300
+      ],
+      "target": [
+        720,
+        240
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/ikon/app.icon-512.webp",
+      "before": [
+        512,
+        512
+      ],
+      "target": [
+        512,
+        512
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": false
+    },
+    {
+      "file": "assets/ikon/app.icon-192.webp",
+      "before": [
+        192,
+        192
+      ],
+      "target": [
+        192,
+        192
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": false
+    },
+    {
+      "file": "assets/ikon/app.icon-maskable-512.webp",
+      "before": [
+        512,
+        512
+      ],
+      "target": [
+        512,
+        512
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": false
+    },
+    {
+      "file": "assets/ikon/app.apple-touch-icon.webp",
+      "before": [
+        180,
+        180
+      ],
+      "target": [
+        180,
+        180
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": false
+    },
+    {
+      "file": "assets/ikon/app.favicon.webp",
+      "before": [
+        32,
+        32
+      ],
+      "target": [
+        32,
+        32
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": false
+    },
+    {
+      "file": "assets/peta/map.kedu.webp",
+      "before": [
+        1564,
+        1006
+      ],
+      "target": [
+        1400,
+        900
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/peta/map.region.temanggung.webp",
+      "before": [
+        1564,
+        1006
+      ],
+      "target": [
+        1400,
+        900
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/peta/map.region.magelang.webp",
+      "before": [
+        1565,
+        1005
+      ],
+      "target": [
+        1400,
+        900
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/peta/map.region.wonosobo.webp",
+      "before": [
+        1564,
+        1006
+      ],
+      "target": [
+        1400,
+        900
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/lencana/reward.badge.temanggung.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        320,
+        320
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/lencana/reward.badge.magelang.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        320,
+        320
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/lencana/reward.badge.wonosobo.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        320,
+        320
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/karakter/char.jaka.idle.1.webp",
+      "before": [
+        1106,
+        1422
+      ],
+      "target": [
+        700,
+        900
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/karakter/char.jaka.idle.2.webp",
+      "before": [
+        1106,
+        1422
+      ],
+      "target": [
+        700,
+        900
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/karakter/char.jaka.idle.3.webp",
+      "before": [
+        1106,
+        1422
+      ],
+      "target": [
+        700,
+        900
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/karakter/char.jaka.happy.1.webp",
+      "before": [
+        1106,
+        1422
+      ],
+      "target": [
+        700,
+        900
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/karakter/char.jaka.happy.2.webp",
+      "before": [
+        1105,
+        1423
+      ],
+      "target": [
+        700,
+        900
+      ],
+      "method": "contain-transparent",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/karakter/char.jaka.happy.3.webp",
+      "before": [
+        1106,
+        1422
+      ],
+      "target": [
+        700,
+        900
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/karakter/char.jaka.bow.1.webp",
+      "before": [
+        1106,
+        1422
+      ],
+      "target": [
+        700,
+        900
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/karakter/char.jaka.bow.2.webp",
+      "before": [
+        1106,
+        1422
+      ],
+      "target": [
+        700,
+        900
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/karakter/char.jaka.bow.3.webp",
+      "before": [
+        1106,
+        1422
+      ],
+      "target": [
+        700,
+        900
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/karakter/char.jaka.sad.1.webp",
+      "before": [
+        1106,
+        1422
+      ],
+      "target": [
+        700,
+        900
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/karakter/char.jaka.sad.2.webp",
+      "before": [
+        1106,
+        1422
+      ],
+      "target": [
+        700,
+        900
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/karakter/char.jaka.sad.3.webp",
+      "before": [
+        1106,
+        1422
+      ],
+      "target": [
+        700,
+        900
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/karakter/char.jaka.afraid.1.webp",
+      "before": [
+        1106,
+        1422
+      ],
+      "target": [
+        700,
+        900
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/karakter/char.jaka.afraid.2.webp",
+      "before": [
+        1106,
+        1422
+      ],
+      "target": [
+        700,
+        900
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/karakter/char.jaka.afraid.3.webp",
+      "before": [
+        1106,
+        1422
+      ],
+      "target": [
+        700,
+        900
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/karakter/char.jaka.determined.1.webp",
+      "before": [
+        1106,
+        1422
+      ],
+      "target": [
+        700,
+        900
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/karakter/char.jaka.determined.2.webp",
+      "before": [
+        1106,
+        1422
+      ],
+      "target": [
+        700,
+        900
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/karakter/char.jaka.determined.3.webp",
+      "before": [
+        1106,
+        1422
+      ],
+      "target": [
+        700,
+        900
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/karakter/char.kedu.idle.1.webp",
+      "before": [
+        1106,
+        1422
+      ],
+      "target": [
+        700,
+        900
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/karakter/char.kedu.idle.2.webp",
+      "before": [
+        1106,
+        1422
+      ],
+      "target": [
+        700,
+        900
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/karakter/char.kedu.idle.3.webp",
+      "before": [
+        1106,
+        1422
+      ],
+      "target": [
+        700,
+        900
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/karakter/char.kedu.smile.1.webp",
+      "before": [
+        1106,
+        1422
+      ],
+      "target": [
+        700,
+        900
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/karakter/char.kedu.smile.2.webp",
+      "before": [
+        1106,
+        1422
+      ],
+      "target": [
+        700,
+        900
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/karakter/char.kedu.smile.3.webp",
+      "before": [
+        1106,
+        1422
+      ],
+      "target": [
+        700,
+        900
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/karakter/char.kedu.worried.1.webp",
+      "before": [
+        1106,
+        1422
+      ],
+      "target": [
+        700,
+        900
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/karakter/char.kedu.worried.2.webp",
+      "before": [
+        1106,
+        1422
+      ],
+      "target": [
+        700,
+        900
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/karakter/char.kedu.worried.3.webp",
+      "before": [
+        1106,
+        1422
+      ],
+      "target": [
+        700,
+        900
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/karakter/char.kedu.weak.1.webp",
+      "before": [
+        1106,
+        1422
+      ],
+      "target": [
+        700,
+        900
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/karakter/char.kedu.weak.2.webp",
+      "before": [
+        1106,
+        1422
+      ],
+      "target": [
+        700,
+        900
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/karakter/char.kedu.weak.3.webp",
+      "before": [
+        1106,
+        1422
+      ],
+      "target": [
+        700,
+        900
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/ikon/ui.pin.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        256,
+        256
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/ikon/ui.lantern.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        256,
+        256
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/ikon/map.pin.temanggung.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        256,
+        256
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/ikon/map.pin.magelang.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        256,
+        256
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/ikon/map.pin.wonosobo.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        256,
+        256
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/ikon/map.lantern.temanggung.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        256,
+        256
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/ikon/map.lantern.magelang.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        256,
+        256
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/ikon/map.lantern.wonosobo.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        256,
+        256
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/latar/bg.loading.temanggung.webp",
+      "before": [
+        1672,
+        941
+      ],
+      "target": [
+        1920,
+        1080
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/latar/bg.loading.magelang.webp",
+      "before": [
+        1672,
+        941
+      ],
+      "target": [
+        1920,
+        1080
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/latar/bg.loading.wonosobo.webp",
+      "before": [
+        1672,
+        941
+      ],
+      "target": [
+        1920,
+        1080
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/ikon/avatar.1.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        512,
+        512
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/ikon/avatar.2.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        512,
+        512
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/ikon/avatar.3.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        512,
+        512
+      ],
+      "method": "resize",
+      "alpha": true,
+      "changed": true
+    },
+    {
+      "file": "assets/ikon/avatar.4.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        512,
+        512
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/ikon/avatar.5.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        512,
+        512
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/ikon/avatar.6.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        512,
+        512
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/ikon/avatar.7.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        512,
+        512
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/ikon/avatar.8.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        512,
+        512
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/ikon/avatar.9.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        512,
+        512
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/ikon/avatar.10.webp",
+      "before": [
+        1254,
+        1254
+      ],
+      "target": [
+        512,
+        512
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.temanggung.p1.1.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.temanggung.p1.2.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.temanggung.p2.1.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.temanggung.p2.2.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.temanggung.p2.3.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.temanggung.p3.1.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.temanggung.p4.1.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.temanggung.p4.2.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.temanggung.p4.3.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.temanggung.p5.1.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.temanggung.p5.2.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.temanggung.p5.3.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.temanggung.p6.1.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.temanggung.p8.1.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.temanggung.p8.2.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.magelang.p1.1.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.magelang.p1.2.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.magelang.p2.1.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.magelang.p2.2.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.magelang.p2.3.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.magelang.p3.1.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.magelang.p3.2.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.magelang.p3.3.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.magelang.p4.1.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.magelang.p5.1.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.magelang.p5.2.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.magelang.p5.3.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.magelang.p6.1.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.magelang.p6.2.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.magelang.p6.3.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.magelang.p7.1.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.magelang.p9.1.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.wonosobo.p1.1.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.wonosobo.p1.2.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.wonosobo.p2.1.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.wonosobo.p2.2.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.wonosobo.p3.1.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.wonosobo.p3.2.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.wonosobo.p3.3.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.wonosobo.p4.1.webp",
+      "before": [
+        1672,
+        941
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.wonosobo.p4.2.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.wonosobo.p6.1.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.wonosobo.p6.2.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.wonosobo.p7.1.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.wonosobo.p8.1.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.wonosobo.p9.1.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.wonosobo.p9.2.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.wonosobo.p9.3.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.temanggung.p8.2.poster.webp",
+      "before": [
+        1672,
+        941
+      ],
+      "target": [
+        1280,
+        720
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.magelang.p2.3.poster.webp",
+      "before": [
+        1672,
+        941
+      ],
+      "target": [
+        1280,
+        720
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.magelang.p6.3.poster.webp",
+      "before": [
+        1672,
+        941
+      ],
+      "target": [
+        1280,
+        720
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.wonosobo.p7.1.poster.webp",
+      "before": [
+        1672,
+        941
+      ],
+      "target": [
+        1280,
+        720
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.wonosobo.p8.1.poster.webp",
+      "before": [
+        1672,
+        941
+      ],
+      "target": [
+        1280,
+        720
+      ],
+      "method": "cover-center",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.temanggung.p7.1.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.temanggung.p9.1.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.temanggung.p10.1.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.magelang.p8.1.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.magelang.p10.1.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.wonosobo.p5.1.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    },
+    {
+      "file": "assets/pustaka/library.wonosobo.p10.1.webp",
+      "before": [
+        1536,
+        1024
+      ],
+      "target": [
+        960,
+        640
+      ],
+      "method": "resize",
+      "alpha": false,
+      "changed": true
+    }
+  ]
+}

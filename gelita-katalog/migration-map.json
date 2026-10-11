@@ -1,0 +1,2377 @@
+[
+  {
+    "old": "assets/ref-01.webp",
+    "new": "assets/referensi/reference.01.webp",
+    "key": "reference.01"
+  },
+  {
+    "old": "assets/ref-04.webp",
+    "new": "assets/referensi/reference.04.webp",
+    "key": "reference.04"
+  },
+  {
+    "old": "assets/ref-08.webp",
+    "new": "assets/referensi/reference.08.webp",
+    "key": "reference.08"
+  },
+  {
+    "old": "assets/generated/013.png",
+    "new": "assets/referensi/reference.13.webp",
+    "key": "reference.13"
+  },
+  {
+    "old": "assets/generated/013.webp",
+    "new": "assets/referensi/reference.13.webp",
+    "key": "reference.13"
+  },
+  {
+    "old": "assets/generated/14.png",
+    "new": "assets/referensi/reference.14.webp",
+    "key": "reference.14"
+  },
+  {
+    "old": "assets/generated/14.webp",
+    "new": "assets/referensi/reference.14.webp",
+    "key": "reference.14"
+  },
+  {
+    "old": "assets/generated/15.png",
+    "new": "assets/referensi/reference.15.webp",
+    "key": "reference.15"
+  },
+  {
+    "old": "assets/generated/15.webp",
+    "new": "assets/referensi/reference.15.webp",
+    "key": "reference.15"
+  },
+  {
+    "old": "assets/generated/16.png",
+    "new": "assets/referensi/reference.16.webp",
+    "key": "reference.16"
+  },
+  {
+    "old": "assets/generated/16.webp",
+    "new": "assets/referensi/reference.16.webp",
+    "key": "reference.16"
+  },
+  {
+    "old": "assets/generated/17.png",
+    "new": "assets/referensi/reference.17.webp",
+    "key": "reference.17"
+  },
+  {
+    "old": "assets/generated/17.webp",
+    "new": "assets/referensi/reference.17.webp",
+    "key": "reference.17"
+  },
+  {
+    "old": "assets/generated/18.png",
+    "new": "assets/referensi/reference.18.webp",
+    "key": "reference.18"
+  },
+  {
+    "old": "assets/generated/18.webp",
+    "new": "assets/referensi/reference.18.webp",
+    "key": "reference.18"
+  },
+  {
+    "old": "assets/generated/19.png",
+    "new": "assets/referensi/reference.19.webp",
+    "key": "reference.19"
+  },
+  {
+    "old": "assets/generated/19.webp",
+    "new": "assets/referensi/reference.19.webp",
+    "key": "reference.19"
+  },
+  {
+    "old": "assets/generated/20.png",
+    "new": "assets/referensi/reference.20.webp",
+    "key": "reference.20"
+  },
+  {
+    "old": "assets/generated/20.webp",
+    "new": "assets/referensi/reference.20.webp",
+    "key": "reference.20"
+  },
+  {
+    "old": "assets/generated/21.png",
+    "new": "assets/referensi/reference.21.webp",
+    "key": "reference.21"
+  },
+  {
+    "old": "assets/generated/21.webp",
+    "new": "assets/referensi/reference.21.webp",
+    "key": "reference.21"
+  },
+  {
+    "old": "assets/generated/22.png",
+    "new": "assets/referensi/reference.22.webp",
+    "key": "reference.22"
+  },
+  {
+    "old": "assets/generated/22.webp",
+    "new": "assets/referensi/reference.22.webp",
+    "key": "reference.22"
+  },
+  {
+    "old": "assets/generated/23.png",
+    "new": "assets/referensi/reference.23.webp",
+    "key": "reference.23"
+  },
+  {
+    "old": "assets/generated/23.webp",
+    "new": "assets/referensi/reference.23.webp",
+    "key": "reference.23"
+  },
+  {
+    "old": "assets/generated/24.png",
+    "new": "assets/referensi/reference.24.webp",
+    "key": "reference.24"
+  },
+  {
+    "old": "assets/generated/24.webp",
+    "new": "assets/referensi/reference.24.webp",
+    "key": "reference.24"
+  },
+  {
+    "old": "assets/generated/25.png",
+    "new": "assets/referensi/reference.25.webp",
+    "key": "reference.25"
+  },
+  {
+    "old": "assets/generated/25.webp",
+    "new": "assets/referensi/reference.25.webp",
+    "key": "reference.25"
+  },
+  {
+    "old": "assets/generated/26.png",
+    "new": "assets/referensi/reference.26.webp",
+    "key": "reference.26"
+  },
+  {
+    "old": "assets/generated/26.webp",
+    "new": "assets/referensi/reference.26.webp",
+    "key": "reference.26"
+  },
+  {
+    "old": "assets/generated/027.png",
+    "new": "assets/tantangan/challenge.item.tmg-1-01.webp",
+    "key": "challenge.item.tmg-1-01"
+  },
+  {
+    "old": "assets/generated/027.webp",
+    "new": "assets/tantangan/challenge.item.tmg-1-01.webp",
+    "key": "challenge.item.tmg-1-01"
+  },
+  {
+    "old": "assets/generated/028.png",
+    "new": "assets/tantangan/challenge.item.tmg-1-03.webp",
+    "key": "challenge.item.tmg-1-03"
+  },
+  {
+    "old": "assets/generated/028.webp",
+    "new": "assets/tantangan/challenge.item.tmg-1-03.webp",
+    "key": "challenge.item.tmg-1-03"
+  },
+  {
+    "old": "assets/generated/029.png",
+    "new": "assets/tantangan/challenge.item.tmg-1-04.webp",
+    "key": "challenge.item.tmg-1-04"
+  },
+  {
+    "old": "assets/generated/029.webp",
+    "new": "assets/tantangan/challenge.item.tmg-1-04.webp",
+    "key": "challenge.item.tmg-1-04"
+  },
+  {
+    "old": "assets/generated/030.png",
+    "new": "assets/tantangan/challenge.item.tmg-3-a03.webp",
+    "key": "challenge.item.tmg-3-a03"
+  },
+  {
+    "old": "assets/generated/030.webp",
+    "new": "assets/tantangan/challenge.item.tmg-3-a03.webp",
+    "key": "challenge.item.tmg-3-a03"
+  },
+  {
+    "old": "assets/generated/031.png",
+    "new": "assets/tantangan/challenge.item.tmg-3-b03.webp",
+    "key": "challenge.item.tmg-3-b03"
+  },
+  {
+    "old": "assets/generated/031.webp",
+    "new": "assets/tantangan/challenge.item.tmg-3-b03.webp",
+    "key": "challenge.item.tmg-3-b03"
+  },
+  {
+    "old": "assets/generated/032.png",
+    "new": "assets/tantangan/challenge.item.tmg-3-c03.webp",
+    "key": "challenge.item.tmg-3-c03"
+  },
+  {
+    "old": "assets/generated/032.webp",
+    "new": "assets/tantangan/challenge.item.tmg-3-c03.webp",
+    "key": "challenge.item.tmg-3-c03"
+  },
+  {
+    "old": "assets/generated/033.png",
+    "new": "assets/tantangan/challenge.item.tmg-4-02.webp",
+    "key": "challenge.item.tmg-4-02"
+  },
+  {
+    "old": "assets/generated/033.webp",
+    "new": "assets/tantangan/challenge.item.tmg-4-02.webp",
+    "key": "challenge.item.tmg-4-02"
+  },
+  {
+    "old": "assets/generated/034.png",
+    "new": "assets/tantangan/challenge.item.tmg-4-03.webp",
+    "key": "challenge.item.tmg-4-03"
+  },
+  {
+    "old": "assets/generated/034.webp",
+    "new": "assets/tantangan/challenge.item.tmg-4-03.webp",
+    "key": "challenge.item.tmg-4-03"
+  },
+  {
+    "old": "assets/generated/035.png",
+    "new": "assets/tantangan/challenge.item.tmg-4-04.webp",
+    "key": "challenge.item.tmg-4-04"
+  },
+  {
+    "old": "assets/generated/035.webp",
+    "new": "assets/tantangan/challenge.item.tmg-4-04.webp",
+    "key": "challenge.item.tmg-4-04"
+  },
+  {
+    "old": "assets/generated/036.png",
+    "new": "assets/tantangan/challenge.item.tmg-4-06.webp",
+    "key": "challenge.item.tmg-4-06"
+  },
+  {
+    "old": "assets/generated/036.webp",
+    "new": "assets/tantangan/challenge.item.tmg-4-06.webp",
+    "key": "challenge.item.tmg-4-06"
+  },
+  {
+    "old": "assets/generated/037.png",
+    "new": "assets/tantangan/challenge.item.tmg-4-09.webp",
+    "key": "challenge.item.tmg-4-09"
+  },
+  {
+    "old": "assets/generated/037.webp",
+    "new": "assets/tantangan/challenge.item.tmg-4-09.webp",
+    "key": "challenge.item.tmg-4-09"
+  },
+  {
+    "old": "assets/generated/038.png",
+    "new": "assets/tantangan/challenge.item.tmg-4-10.webp",
+    "key": "challenge.item.tmg-4-10"
+  },
+  {
+    "old": "assets/generated/038.webp",
+    "new": "assets/tantangan/challenge.item.tmg-4-10.webp",
+    "key": "challenge.item.tmg-4-10"
+  },
+  {
+    "old": "assets/generated/039.png",
+    "new": "assets/tantangan/challenge.item.tmg-4-11.webp",
+    "key": "challenge.item.tmg-4-11"
+  },
+  {
+    "old": "assets/generated/039.webp",
+    "new": "assets/tantangan/challenge.item.tmg-4-11.webp",
+    "key": "challenge.item.tmg-4-11"
+  },
+  {
+    "old": "assets/generated/040.png",
+    "new": "assets/tantangan/challenge.item.tmg-4-12.webp",
+    "key": "challenge.item.tmg-4-12"
+  },
+  {
+    "old": "assets/generated/040.webp",
+    "new": "assets/tantangan/challenge.item.tmg-4-12.webp",
+    "key": "challenge.item.tmg-4-12"
+  },
+  {
+    "old": "assets/generated/041.png",
+    "new": "assets/tantangan/challenge.tmg-4.scene.webp",
+    "key": "challenge.tmg-4.scene"
+  },
+  {
+    "old": "assets/generated/041.webp",
+    "new": "assets/tantangan/challenge.tmg-4.scene.webp",
+    "key": "challenge.tmg-4.scene"
+  },
+  {
+    "old": "assets/generated/042.png",
+    "new": "assets/tantangan/challenge.item.mgl-1-01.webp",
+    "key": "challenge.item.mgl-1-01"
+  },
+  {
+    "old": "assets/generated/042.webp",
+    "new": "assets/tantangan/challenge.item.mgl-1-01.webp",
+    "key": "challenge.item.mgl-1-01"
+  },
+  {
+    "old": "assets/generated/043.png",
+    "new": "assets/tantangan/challenge.item.mgl-1-02.webp",
+    "key": "challenge.item.mgl-1-02"
+  },
+  {
+    "old": "assets/generated/043.webp",
+    "new": "assets/tantangan/challenge.item.mgl-1-02.webp",
+    "key": "challenge.item.mgl-1-02"
+  },
+  {
+    "old": "assets/generated/044.png",
+    "new": "assets/tantangan/challenge.item.mgl-1-03.webp",
+    "key": "challenge.item.mgl-1-03"
+  },
+  {
+    "old": "assets/generated/044.webp",
+    "new": "assets/tantangan/challenge.item.mgl-1-03.webp",
+    "key": "challenge.item.mgl-1-03"
+  },
+  {
+    "old": "assets/generated/045.png",
+    "new": "assets/tantangan/challenge.item.mgl-4-a01.webp",
+    "key": "challenge.item.mgl-4-a01"
+  },
+  {
+    "old": "assets/generated/045.webp",
+    "new": "assets/tantangan/challenge.item.mgl-4-a01.webp",
+    "key": "challenge.item.mgl-4-a01"
+  },
+  {
+    "old": "assets/generated/046.png",
+    "new": "assets/tantangan/challenge.item.mgl-4-a02.webp",
+    "key": "challenge.item.mgl-4-a02"
+  },
+  {
+    "old": "assets/generated/046.webp",
+    "new": "assets/tantangan/challenge.item.mgl-4-a02.webp",
+    "key": "challenge.item.mgl-4-a02"
+  },
+  {
+    "old": "assets/generated/047.png",
+    "new": "assets/tantangan/challenge.item.mgl-4-a03.webp",
+    "key": "challenge.item.mgl-4-a03"
+  },
+  {
+    "old": "assets/generated/047.webp",
+    "new": "assets/tantangan/challenge.item.mgl-4-a03.webp",
+    "key": "challenge.item.mgl-4-a03"
+  },
+  {
+    "old": "assets/generated/048.png",
+    "new": "assets/tantangan/challenge.item.mgl-4-a04.webp",
+    "key": "challenge.item.mgl-4-a04"
+  },
+  {
+    "old": "assets/generated/048.webp",
+    "new": "assets/tantangan/challenge.item.mgl-4-a04.webp",
+    "key": "challenge.item.mgl-4-a04"
+  },
+  {
+    "old": "assets/generated/049.png",
+    "new": "assets/tantangan/challenge.item.mgl-4-a05.webp",
+    "key": "challenge.item.mgl-4-a05"
+  },
+  {
+    "old": "assets/generated/049.webp",
+    "new": "assets/tantangan/challenge.item.mgl-4-a05.webp",
+    "key": "challenge.item.mgl-4-a05"
+  },
+  {
+    "old": "assets/generated/050.png",
+    "new": "assets/tantangan/challenge.item.mgl-4-a06.webp",
+    "key": "challenge.item.mgl-4-a06"
+  },
+  {
+    "old": "assets/generated/050.webp",
+    "new": "assets/tantangan/challenge.item.mgl-4-a06.webp",
+    "key": "challenge.item.mgl-4-a06"
+  },
+  {
+    "old": "assets/generated/051.png",
+    "new": "assets/tantangan/challenge.item.mgl-4-a07.webp",
+    "key": "challenge.item.mgl-4-a07"
+  },
+  {
+    "old": "assets/generated/051.webp",
+    "new": "assets/tantangan/challenge.item.mgl-4-a07.webp",
+    "key": "challenge.item.mgl-4-a07"
+  },
+  {
+    "old": "assets/generated/052.png",
+    "new": "assets/tantangan/challenge.item.mgl-4-a08.webp",
+    "key": "challenge.item.mgl-4-a08"
+  },
+  {
+    "old": "assets/generated/052.webp",
+    "new": "assets/tantangan/challenge.item.mgl-4-a08.webp",
+    "key": "challenge.item.mgl-4-a08"
+  },
+  {
+    "old": "assets/generated/053.png",
+    "new": "assets/tantangan/challenge.item.mgl-4-a09.webp",
+    "key": "challenge.item.mgl-4-a09"
+  },
+  {
+    "old": "assets/generated/053.webp",
+    "new": "assets/tantangan/challenge.item.mgl-4-a09.webp",
+    "key": "challenge.item.mgl-4-a09"
+  },
+  {
+    "old": "assets/generated/054.png",
+    "new": "assets/tantangan/challenge.item.mgl-4-a10.webp",
+    "key": "challenge.item.mgl-4-a10"
+  },
+  {
+    "old": "assets/generated/054.webp",
+    "new": "assets/tantangan/challenge.item.mgl-4-a10.webp",
+    "key": "challenge.item.mgl-4-a10"
+  },
+  {
+    "old": "assets/generated/055.png",
+    "new": "assets/tantangan/challenge.mgl-4.scene.webp",
+    "key": "challenge.mgl-4.scene"
+  },
+  {
+    "old": "assets/generated/055.webp",
+    "new": "assets/tantangan/challenge.mgl-4.scene.webp",
+    "key": "challenge.mgl-4.scene"
+  },
+  {
+    "old": "assets/generated/056.png",
+    "new": "assets/tantangan/challenge.item.wnb-1-05.webp",
+    "key": "challenge.item.wnb-1-05"
+  },
+  {
+    "old": "assets/generated/056.webp",
+    "new": "assets/tantangan/challenge.item.wnb-1-05.webp",
+    "key": "challenge.item.wnb-1-05"
+  },
+  {
+    "old": "assets/generated/057.png",
+    "new": "assets/tantangan/challenge.item.wnb-1-06.webp",
+    "key": "challenge.item.wnb-1-06"
+  },
+  {
+    "old": "assets/generated/057.webp",
+    "new": "assets/tantangan/challenge.item.wnb-1-06.webp",
+    "key": "challenge.item.wnb-1-06"
+  },
+  {
+    "old": "assets/generated/058.png",
+    "new": "assets/tantangan/challenge.item.wnb-1-07.webp",
+    "key": "challenge.item.wnb-1-07"
+  },
+  {
+    "old": "assets/generated/058.webp",
+    "new": "assets/tantangan/challenge.item.wnb-1-07.webp",
+    "key": "challenge.item.wnb-1-07"
+  },
+  {
+    "old": "assets/generated/059.png",
+    "new": "assets/tantangan/challenge.item.wnb-4-a01.webp",
+    "key": "challenge.item.wnb-4-a01"
+  },
+  {
+    "old": "assets/generated/059.webp",
+    "new": "assets/tantangan/challenge.item.wnb-4-a01.webp",
+    "key": "challenge.item.wnb-4-a01"
+  },
+  {
+    "old": "assets/generated/060.png",
+    "new": "assets/tantangan/challenge.item.wnb-4-a02.webp",
+    "key": "challenge.item.wnb-4-a02"
+  },
+  {
+    "old": "assets/generated/060.webp",
+    "new": "assets/tantangan/challenge.item.wnb-4-a02.webp",
+    "key": "challenge.item.wnb-4-a02"
+  },
+  {
+    "old": "assets/generated/061.png",
+    "new": "assets/tantangan/challenge.item.wnb-4-a03.webp",
+    "key": "challenge.item.wnb-4-a03"
+  },
+  {
+    "old": "assets/generated/061.webp",
+    "new": "assets/tantangan/challenge.item.wnb-4-a03.webp",
+    "key": "challenge.item.wnb-4-a03"
+  },
+  {
+    "old": "assets/generated/062.png",
+    "new": "assets/tantangan/challenge.item.wnb-4-a04.webp",
+    "key": "challenge.item.wnb-4-a04"
+  },
+  {
+    "old": "assets/generated/062.webp",
+    "new": "assets/tantangan/challenge.item.wnb-4-a04.webp",
+    "key": "challenge.item.wnb-4-a04"
+  },
+  {
+    "old": "assets/generated/063.png",
+    "new": "assets/tantangan/challenge.item.wnb-4-a05.webp",
+    "key": "challenge.item.wnb-4-a05"
+  },
+  {
+    "old": "assets/generated/063.webp",
+    "new": "assets/tantangan/challenge.item.wnb-4-a05.webp",
+    "key": "challenge.item.wnb-4-a05"
+  },
+  {
+    "old": "assets/generated/064.png",
+    "new": "assets/tantangan/challenge.item.wnb-4-a06.webp",
+    "key": "challenge.item.wnb-4-a06"
+  },
+  {
+    "old": "assets/generated/064.webp",
+    "new": "assets/tantangan/challenge.item.wnb-4-a06.webp",
+    "key": "challenge.item.wnb-4-a06"
+  },
+  {
+    "old": "assets/generated/065.png",
+    "new": "assets/tantangan/challenge.item.wnb-4-a07.webp",
+    "key": "challenge.item.wnb-4-a07"
+  },
+  {
+    "old": "assets/generated/065.webp",
+    "new": "assets/tantangan/challenge.item.wnb-4-a07.webp",
+    "key": "challenge.item.wnb-4-a07"
+  },
+  {
+    "old": "assets/generated/066.png",
+    "new": "assets/tantangan/challenge.item.wnb-4-a08.webp",
+    "key": "challenge.item.wnb-4-a08"
+  },
+  {
+    "old": "assets/generated/066.webp",
+    "new": "assets/tantangan/challenge.item.wnb-4-a08.webp",
+    "key": "challenge.item.wnb-4-a08"
+  },
+  {
+    "old": "assets/generated/067.png",
+    "new": "assets/tantangan/challenge.item.wnb-4-a09.webp",
+    "key": "challenge.item.wnb-4-a09"
+  },
+  {
+    "old": "assets/generated/067.webp",
+    "new": "assets/tantangan/challenge.item.wnb-4-a09.webp",
+    "key": "challenge.item.wnb-4-a09"
+  },
+  {
+    "old": "assets/generated/068.png",
+    "new": "assets/tantangan/challenge.item.wnb-4-a10.webp",
+    "key": "challenge.item.wnb-4-a10"
+  },
+  {
+    "old": "assets/generated/068.webp",
+    "new": "assets/tantangan/challenge.item.wnb-4-a10.webp",
+    "key": "challenge.item.wnb-4-a10"
+  },
+  {
+    "old": "assets/generated/069.png",
+    "new": "assets/tantangan/challenge.item.wnb-4-a11.webp",
+    "key": "challenge.item.wnb-4-a11"
+  },
+  {
+    "old": "assets/generated/069.webp",
+    "new": "assets/tantangan/challenge.item.wnb-4-a11.webp",
+    "key": "challenge.item.wnb-4-a11"
+  },
+  {
+    "old": "assets/generated/070.png",
+    "new": "assets/tantangan/challenge.item.wnb-4-a12.webp",
+    "key": "challenge.item.wnb-4-a12"
+  },
+  {
+    "old": "assets/generated/070.webp",
+    "new": "assets/tantangan/challenge.item.wnb-4-a12.webp",
+    "key": "challenge.item.wnb-4-a12"
+  },
+  {
+    "old": "assets/generated/071.png",
+    "new": "assets/tantangan/challenge.wnb-4.scene.webp",
+    "key": "challenge.wnb-4.scene"
+  },
+  {
+    "old": "assets/generated/071.webp",
+    "new": "assets/tantangan/challenge.wnb-4.scene.webp",
+    "key": "challenge.wnb-4.scene"
+  },
+  {
+    "old": "assets/generated/072.png",
+    "new": "assets/latar/bg.welcome.webp",
+    "key": "bg.welcome"
+  },
+  {
+    "old": "assets/generated/072.webp",
+    "new": "assets/latar/bg.welcome.webp",
+    "key": "bg.welcome"
+  },
+  {
+    "old": "assets/generated/073.png",
+    "new": "assets/latar/bg.auth.webp",
+    "key": "bg.auth"
+  },
+  {
+    "old": "assets/generated/073.webp",
+    "new": "assets/latar/bg.auth.webp",
+    "key": "bg.auth"
+  },
+  {
+    "old": "assets/generated/074.png",
+    "new": "assets/latar/bg.intro.webp",
+    "key": "bg.intro"
+  },
+  {
+    "old": "assets/generated/074.webp",
+    "new": "assets/latar/bg.intro.webp",
+    "key": "bg.intro"
+  },
+  {
+    "old": "assets/generated/075.png",
+    "new": "assets/latar/bg.map.webp",
+    "key": "bg.map"
+  },
+  {
+    "old": "assets/generated/075.webp",
+    "new": "assets/latar/bg.map.webp",
+    "key": "bg.map"
+  },
+  {
+    "old": "assets/generated/076.png",
+    "new": "assets/latar/bg.reflection.webp",
+    "key": "bg.reflection"
+  },
+  {
+    "old": "assets/generated/076.webp",
+    "new": "assets/latar/bg.reflection.webp",
+    "key": "bg.reflection"
+  },
+  {
+    "old": "assets/generated/077.png",
+    "new": "assets/latar/bg.loading.webp",
+    "key": "bg.loading"
+  },
+  {
+    "old": "assets/generated/077.webp",
+    "new": "assets/latar/bg.loading.webp",
+    "key": "bg.loading"
+  },
+  {
+    "old": "assets/generated/078.png",
+    "new": "assets/latar/bg.cerita-intro-01.webp",
+    "key": "bg.cerita-intro-01"
+  },
+  {
+    "old": "assets/generated/078.webp",
+    "new": "assets/latar/bg.cerita-intro-01.webp",
+    "key": "bg.cerita-intro-01"
+  },
+  {
+    "old": "assets/generated/079.png",
+    "new": "assets/latar/bg.cerita-intro-02.webp",
+    "key": "bg.cerita-intro-02"
+  },
+  {
+    "old": "assets/generated/079.webp",
+    "new": "assets/latar/bg.cerita-intro-02.webp",
+    "key": "bg.cerita-intro-02"
+  },
+  {
+    "old": "assets/generated/080.png",
+    "new": "assets/latar/bg.cerita-intro-03.webp",
+    "key": "bg.cerita-intro-03"
+  },
+  {
+    "old": "assets/generated/080.webp",
+    "new": "assets/latar/bg.cerita-intro-03.webp",
+    "key": "bg.cerita-intro-03"
+  },
+  {
+    "old": "assets/generated/081.png",
+    "new": "assets/latar/bg.cerita-intro-04.webp",
+    "key": "bg.cerita-intro-04"
+  },
+  {
+    "old": "assets/generated/081.webp",
+    "new": "assets/latar/bg.cerita-intro-04.webp",
+    "key": "bg.cerita-intro-04"
+  },
+  {
+    "old": "assets/generated/082.png",
+    "new": "assets/latar/bg.cerita-intro-05.webp",
+    "key": "bg.cerita-intro-05"
+  },
+  {
+    "old": "assets/generated/082.webp",
+    "new": "assets/latar/bg.cerita-intro-05.webp",
+    "key": "bg.cerita-intro-05"
+  },
+  {
+    "old": "assets/generated/083.png",
+    "new": "assets/latar/bg.cerita-intro-06.webp",
+    "key": "bg.cerita-intro-06"
+  },
+  {
+    "old": "assets/generated/083.webp",
+    "new": "assets/latar/bg.cerita-intro-06.webp",
+    "key": "bg.cerita-intro-06"
+  },
+  {
+    "old": "assets/generated/084.png",
+    "new": "assets/latar/bg.cerita-intro-07.webp",
+    "key": "bg.cerita-intro-07"
+  },
+  {
+    "old": "assets/generated/084.webp",
+    "new": "assets/latar/bg.cerita-intro-07.webp",
+    "key": "bg.cerita-intro-07"
+  },
+  {
+    "old": "assets/generated/085.png",
+    "new": "assets/latar/bg.cerita-intro-08.webp",
+    "key": "bg.cerita-intro-08"
+  },
+  {
+    "old": "assets/generated/085.webp",
+    "new": "assets/latar/bg.cerita-intro-08.webp",
+    "key": "bg.cerita-intro-08"
+  },
+  {
+    "old": "assets/generated/086.png",
+    "new": "assets/latar/bg.cerita-intro-09.webp",
+    "key": "bg.cerita-intro-09"
+  },
+  {
+    "old": "assets/generated/086.webp",
+    "new": "assets/latar/bg.cerita-intro-09.webp",
+    "key": "bg.cerita-intro-09"
+  },
+  {
+    "old": "assets/generated/087.png",
+    "new": "assets/latar/bg.cerita-penutup-01.webp",
+    "key": "bg.cerita-penutup-01"
+  },
+  {
+    "old": "assets/generated/087.webp",
+    "new": "assets/latar/bg.cerita-penutup-01.webp",
+    "key": "bg.cerita-penutup-01"
+  },
+  {
+    "old": "assets/generated/088.png",
+    "new": "assets/latar/bg.cerita-penutup-02.webp",
+    "key": "bg.cerita-penutup-02"
+  },
+  {
+    "old": "assets/generated/088.webp",
+    "new": "assets/latar/bg.cerita-penutup-02.webp",
+    "key": "bg.cerita-penutup-02"
+  },
+  {
+    "old": "assets/generated/089.png",
+    "new": "assets/latar/bg.cerita-penutup-03.webp",
+    "key": "bg.cerita-penutup-03"
+  },
+  {
+    "old": "assets/generated/089.webp",
+    "new": "assets/latar/bg.cerita-penutup-03.webp",
+    "key": "bg.cerita-penutup-03"
+  },
+  {
+    "old": "assets/generated/090.png",
+    "new": "assets/latar/bg.cerita-penutup-04.webp",
+    "key": "bg.cerita-penutup-04"
+  },
+  {
+    "old": "assets/generated/090.webp",
+    "new": "assets/latar/bg.cerita-penutup-04.webp",
+    "key": "bg.cerita-penutup-04"
+  },
+  {
+    "old": "assets/generated/091.png",
+    "new": "assets/latar/bg.cerita-penutup-05.webp",
+    "key": "bg.cerita-penutup-05"
+  },
+  {
+    "old": "assets/generated/091.webp",
+    "new": "assets/latar/bg.cerita-penutup-05.webp",
+    "key": "bg.cerita-penutup-05"
+  },
+  {
+    "old": "assets/generated/092.png",
+    "new": "assets/latar/bg.temanggung.region.webp",
+    "key": "bg.temanggung.region"
+  },
+  {
+    "old": "assets/generated/092.webp",
+    "new": "assets/latar/bg.temanggung.region.webp",
+    "key": "bg.temanggung.region"
+  },
+  {
+    "old": "assets/generated/093.png",
+    "new": "assets/latar/bg.magelang.region.webp",
+    "key": "bg.magelang.region"
+  },
+  {
+    "old": "assets/generated/093.webp",
+    "new": "assets/latar/bg.magelang.region.webp",
+    "key": "bg.magelang.region"
+  },
+  {
+    "old": "assets/generated/094.png",
+    "new": "assets/latar/bg.wonosobo.region.webp",
+    "key": "bg.wonosobo.region"
+  },
+  {
+    "old": "assets/generated/094.webp",
+    "new": "assets/latar/bg.wonosobo.region.webp",
+    "key": "bg.wonosobo.region"
+  },
+  {
+    "old": "assets/generated/095.png",
+    "new": "assets/logo/ui.logo-hero.webp",
+    "key": "ui.logo-hero"
+  },
+  {
+    "old": "assets/generated/095.webp",
+    "new": "assets/logo/ui.logo-hero.webp",
+    "key": "ui.logo-hero"
+  },
+  {
+    "old": "assets/generated/096.png",
+    "new": "assets/logo/ui.logo.webp",
+    "key": "ui.logo"
+  },
+  {
+    "old": "assets/generated/096.webp",
+    "new": "assets/logo/ui.logo.webp",
+    "key": "ui.logo"
+  },
+  {
+    "old": "assets/generated/097.png",
+    "new": "assets/antarmuka/ui.btn-start.webp",
+    "key": "ui.btn-start"
+  },
+  {
+    "old": "assets/generated/097.webp",
+    "new": "assets/antarmuka/ui.btn-start.webp",
+    "key": "ui.btn-start"
+  },
+  {
+    "old": "assets/generated/097.svg",
+    "new": "assets/antarmuka/ui.btn-start.svg",
+    "key": "ui.btn-start"
+  },
+  {
+    "old": "assets/generated/098.png",
+    "new": "assets/antarmuka/ui.btn-start.en.webp",
+    "key": "ui.btn-start.en"
+  },
+  {
+    "old": "assets/generated/098.webp",
+    "new": "assets/antarmuka/ui.btn-start.en.webp",
+    "key": "ui.btn-start.en"
+  },
+  {
+    "old": "assets/generated/098.svg",
+    "new": "assets/antarmuka/ui.btn-start.en.svg",
+    "key": "ui.btn-start.en"
+  },
+  {
+    "old": "assets/generated/099.svg",
+    "new": "assets/antarmuka/ui.placeholder.svg",
+    "key": "ui.placeholder"
+  },
+  {
+    "old": "assets/generated/100.svg",
+    "new": "assets/ikon/app.icon.svg",
+    "key": "app.icon.svg"
+  },
+  {
+    "old": "assets/generated/101.png",
+    "new": "assets/ikon/app.icon-512.webp",
+    "key": "app.icon-512.png"
+  },
+  {
+    "old": "assets/generated/101.webp",
+    "new": "assets/ikon/app.icon-512.webp",
+    "key": "app.icon-512.png"
+  },
+  {
+    "old": "assets/generated/102.png",
+    "new": "assets/ikon/app.icon-192.webp",
+    "key": "app.icon-192.png"
+  },
+  {
+    "old": "assets/generated/102.webp",
+    "new": "assets/ikon/app.icon-192.webp",
+    "key": "app.icon-192.png"
+  },
+  {
+    "old": "assets/generated/103.png",
+    "new": "assets/ikon/app.icon-maskable-512.webp",
+    "key": "app.icon-maskable-512.png"
+  },
+  {
+    "old": "assets/generated/103.webp",
+    "new": "assets/ikon/app.icon-maskable-512.webp",
+    "key": "app.icon-maskable-512.png"
+  },
+  {
+    "old": "assets/generated/104.png",
+    "new": "assets/ikon/app.apple-touch-icon.webp",
+    "key": "app.apple-touch-icon.png"
+  },
+  {
+    "old": "assets/generated/104.webp",
+    "new": "assets/ikon/app.apple-touch-icon.webp",
+    "key": "app.apple-touch-icon.png"
+  },
+  {
+    "old": "assets/generated/105.png",
+    "new": "assets/ikon/app.favicon.webp",
+    "key": "app.favicon.ico"
+  },
+  {
+    "old": "assets/generated/105.webp",
+    "new": "assets/ikon/app.favicon.webp",
+    "key": "app.favicon.ico"
+  },
+  {
+    "old": "assets/generated/106.png",
+    "new": "assets/peta/map.kedu.webp",
+    "key": "map.kedu"
+  },
+  {
+    "old": "assets/generated/106.webp",
+    "new": "assets/peta/map.kedu.webp",
+    "key": "map.kedu"
+  },
+  {
+    "old": "assets/generated/107.png",
+    "new": "assets/peta/map.region.temanggung.webp",
+    "key": "map.region.temanggung"
+  },
+  {
+    "old": "assets/generated/107.webp",
+    "new": "assets/peta/map.region.temanggung.webp",
+    "key": "map.region.temanggung"
+  },
+  {
+    "old": "assets/generated/108.png",
+    "new": "assets/peta/map.region.magelang.webp",
+    "key": "map.region.magelang"
+  },
+  {
+    "old": "assets/generated/108.webp",
+    "new": "assets/peta/map.region.magelang.webp",
+    "key": "map.region.magelang"
+  },
+  {
+    "old": "assets/generated/109.png",
+    "new": "assets/peta/map.region.wonosobo.webp",
+    "key": "map.region.wonosobo"
+  },
+  {
+    "old": "assets/generated/109.webp",
+    "new": "assets/peta/map.region.wonosobo.webp",
+    "key": "map.region.wonosobo"
+  },
+  {
+    "old": "assets/generated/110.png",
+    "new": "assets/lencana/reward.badge.temanggung.webp",
+    "key": "reward.badge.temanggung"
+  },
+  {
+    "old": "assets/generated/110.webp",
+    "new": "assets/lencana/reward.badge.temanggung.webp",
+    "key": "reward.badge.temanggung"
+  },
+  {
+    "old": "assets/generated/111.png",
+    "new": "assets/lencana/reward.badge.magelang.webp",
+    "key": "reward.badge.magelang"
+  },
+  {
+    "old": "assets/generated/111.webp",
+    "new": "assets/lencana/reward.badge.magelang.webp",
+    "key": "reward.badge.magelang"
+  },
+  {
+    "old": "assets/generated/112.png",
+    "new": "assets/lencana/reward.badge.wonosobo.webp",
+    "key": "reward.badge.wonosobo"
+  },
+  {
+    "old": "assets/generated/112.webp",
+    "new": "assets/lencana/reward.badge.wonosobo.webp",
+    "key": "reward.badge.wonosobo"
+  },
+  {
+    "old": "assets/generated/113.png",
+    "new": "assets/karakter/char.jaka.idle.1.webp",
+    "key": "char.jaka.idle.1"
+  },
+  {
+    "old": "assets/generated/113.webp",
+    "new": "assets/karakter/char.jaka.idle.1.webp",
+    "key": "char.jaka.idle.1"
+  },
+  {
+    "old": "assets/generated/114.png",
+    "new": "assets/karakter/char.jaka.idle.2.webp",
+    "key": "char.jaka.idle.2"
+  },
+  {
+    "old": "assets/generated/114.webp",
+    "new": "assets/karakter/char.jaka.idle.2.webp",
+    "key": "char.jaka.idle.2"
+  },
+  {
+    "old": "assets/generated/115.png",
+    "new": "assets/karakter/char.jaka.idle.3.webp",
+    "key": "char.jaka.idle.3"
+  },
+  {
+    "old": "assets/generated/115.webp",
+    "new": "assets/karakter/char.jaka.idle.3.webp",
+    "key": "char.jaka.idle.3"
+  },
+  {
+    "old": "assets/generated/116.png",
+    "new": "assets/karakter/char.jaka.happy.1.webp",
+    "key": "char.jaka.happy.1"
+  },
+  {
+    "old": "assets/generated/116.webp",
+    "new": "assets/karakter/char.jaka.happy.1.webp",
+    "key": "char.jaka.happy.1"
+  },
+  {
+    "old": "assets/generated/117.png",
+    "new": "assets/karakter/char.jaka.happy.2.webp",
+    "key": "char.jaka.happy.2"
+  },
+  {
+    "old": "assets/generated/117.webp",
+    "new": "assets/karakter/char.jaka.happy.2.webp",
+    "key": "char.jaka.happy.2"
+  },
+  {
+    "old": "assets/generated/118.png",
+    "new": "assets/karakter/char.jaka.happy.3.webp",
+    "key": "char.jaka.happy.3"
+  },
+  {
+    "old": "assets/generated/118.webp",
+    "new": "assets/karakter/char.jaka.happy.3.webp",
+    "key": "char.jaka.happy.3"
+  },
+  {
+    "old": "assets/generated/119.png",
+    "new": "assets/karakter/char.jaka.bow.1.webp",
+    "key": "char.jaka.bow.1"
+  },
+  {
+    "old": "assets/generated/119.webp",
+    "new": "assets/karakter/char.jaka.bow.1.webp",
+    "key": "char.jaka.bow.1"
+  },
+  {
+    "old": "assets/generated/120.png",
+    "new": "assets/karakter/char.jaka.bow.2.webp",
+    "key": "char.jaka.bow.2"
+  },
+  {
+    "old": "assets/generated/120.webp",
+    "new": "assets/karakter/char.jaka.bow.2.webp",
+    "key": "char.jaka.bow.2"
+  },
+  {
+    "old": "assets/generated/121.png",
+    "new": "assets/karakter/char.jaka.bow.3.webp",
+    "key": "char.jaka.bow.3"
+  },
+  {
+    "old": "assets/generated/121.webp",
+    "new": "assets/karakter/char.jaka.bow.3.webp",
+    "key": "char.jaka.bow.3"
+  },
+  {
+    "old": "assets/generated/122.png",
+    "new": "assets/karakter/char.jaka.sad.1.webp",
+    "key": "char.jaka.sad.1"
+  },
+  {
+    "old": "assets/generated/122.webp",
+    "new": "assets/karakter/char.jaka.sad.1.webp",
+    "key": "char.jaka.sad.1"
+  },
+  {
+    "old": "assets/generated/123.png",
+    "new": "assets/karakter/char.jaka.sad.2.webp",
+    "key": "char.jaka.sad.2"
+  },
+  {
+    "old": "assets/generated/123.webp",
+    "new": "assets/karakter/char.jaka.sad.2.webp",
+    "key": "char.jaka.sad.2"
+  },
+  {
+    "old": "assets/generated/124.png",
+    "new": "assets/karakter/char.jaka.sad.3.webp",
+    "key": "char.jaka.sad.3"
+  },
+  {
+    "old": "assets/generated/124.webp",
+    "new": "assets/karakter/char.jaka.sad.3.webp",
+    "key": "char.jaka.sad.3"
+  },
+  {
+    "old": "assets/generated/125.png",
+    "new": "assets/karakter/char.jaka.afraid.1.webp",
+    "key": "char.jaka.afraid.1"
+  },
+  {
+    "old": "assets/generated/125.webp",
+    "new": "assets/karakter/char.jaka.afraid.1.webp",
+    "key": "char.jaka.afraid.1"
+  },
+  {
+    "old": "assets/generated/126.png",
+    "new": "assets/karakter/char.jaka.afraid.2.webp",
+    "key": "char.jaka.afraid.2"
+  },
+  {
+    "old": "assets/generated/126.webp",
+    "new": "assets/karakter/char.jaka.afraid.2.webp",
+    "key": "char.jaka.afraid.2"
+  },
+  {
+    "old": "assets/generated/127.png",
+    "new": "assets/karakter/char.jaka.afraid.3.webp",
+    "key": "char.jaka.afraid.3"
+  },
+  {
+    "old": "assets/generated/127.webp",
+    "new": "assets/karakter/char.jaka.afraid.3.webp",
+    "key": "char.jaka.afraid.3"
+  },
+  {
+    "old": "assets/generated/128.png",
+    "new": "assets/karakter/char.jaka.determined.1.webp",
+    "key": "char.jaka.determined.1"
+  },
+  {
+    "old": "assets/generated/128.webp",
+    "new": "assets/karakter/char.jaka.determined.1.webp",
+    "key": "char.jaka.determined.1"
+  },
+  {
+    "old": "assets/generated/129.png",
+    "new": "assets/karakter/char.jaka.determined.2.webp",
+    "key": "char.jaka.determined.2"
+  },
+  {
+    "old": "assets/generated/129.webp",
+    "new": "assets/karakter/char.jaka.determined.2.webp",
+    "key": "char.jaka.determined.2"
+  },
+  {
+    "old": "assets/generated/130.png",
+    "new": "assets/karakter/char.jaka.determined.3.webp",
+    "key": "char.jaka.determined.3"
+  },
+  {
+    "old": "assets/generated/130.webp",
+    "new": "assets/karakter/char.jaka.determined.3.webp",
+    "key": "char.jaka.determined.3"
+  },
+  {
+    "old": "assets/generated/131.png",
+    "new": "assets/karakter/char.kedu.idle.1.webp",
+    "key": "char.kedu.idle.1"
+  },
+  {
+    "old": "assets/generated/131.webp",
+    "new": "assets/karakter/char.kedu.idle.1.webp",
+    "key": "char.kedu.idle.1"
+  },
+  {
+    "old": "assets/generated/132.png",
+    "new": "assets/karakter/char.kedu.idle.2.webp",
+    "key": "char.kedu.idle.2"
+  },
+  {
+    "old": "assets/generated/132.webp",
+    "new": "assets/karakter/char.kedu.idle.2.webp",
+    "key": "char.kedu.idle.2"
+  },
+  {
+    "old": "assets/generated/133.png",
+    "new": "assets/karakter/char.kedu.idle.3.webp",
+    "key": "char.kedu.idle.3"
+  },
+  {
+    "old": "assets/generated/133.webp",
+    "new": "assets/karakter/char.kedu.idle.3.webp",
+    "key": "char.kedu.idle.3"
+  },
+  {
+    "old": "assets/generated/134.png",
+    "new": "assets/karakter/char.kedu.smile.1.webp",
+    "key": "char.kedu.smile.1"
+  },
+  {
+    "old": "assets/generated/134.webp",
+    "new": "assets/karakter/char.kedu.smile.1.webp",
+    "key": "char.kedu.smile.1"
+  },
+  {
+    "old": "assets/generated/135.png",
+    "new": "assets/karakter/char.kedu.smile.2.webp",
+    "key": "char.kedu.smile.2"
+  },
+  {
+    "old": "assets/generated/135.webp",
+    "new": "assets/karakter/char.kedu.smile.2.webp",
+    "key": "char.kedu.smile.2"
+  },
+  {
+    "old": "assets/generated/136.png",
+    "new": "assets/karakter/char.kedu.smile.3.webp",
+    "key": "char.kedu.smile.3"
+  },
+  {
+    "old": "assets/generated/136.webp",
+    "new": "assets/karakter/char.kedu.smile.3.webp",
+    "key": "char.kedu.smile.3"
+  },
+  {
+    "old": "assets/generated/137.png",
+    "new": "assets/karakter/char.kedu.worried.1.webp",
+    "key": "char.kedu.worried.1"
+  },
+  {
+    "old": "assets/generated/137.webp",
+    "new": "assets/karakter/char.kedu.worried.1.webp",
+    "key": "char.kedu.worried.1"
+  },
+  {
+    "old": "assets/generated/138.png",
+    "new": "assets/karakter/char.kedu.worried.2.webp",
+    "key": "char.kedu.worried.2"
+  },
+  {
+    "old": "assets/generated/138.webp",
+    "new": "assets/karakter/char.kedu.worried.2.webp",
+    "key": "char.kedu.worried.2"
+  },
+  {
+    "old": "assets/generated/139.png",
+    "new": "assets/karakter/char.kedu.worried.3.webp",
+    "key": "char.kedu.worried.3"
+  },
+  {
+    "old": "assets/generated/139.webp",
+    "new": "assets/karakter/char.kedu.worried.3.webp",
+    "key": "char.kedu.worried.3"
+  },
+  {
+    "old": "assets/generated/140.png",
+    "new": "assets/karakter/char.kedu.weak.1.webp",
+    "key": "char.kedu.weak.1"
+  },
+  {
+    "old": "assets/generated/140.webp",
+    "new": "assets/karakter/char.kedu.weak.1.webp",
+    "key": "char.kedu.weak.1"
+  },
+  {
+    "old": "assets/generated/141.png",
+    "new": "assets/karakter/char.kedu.weak.2.webp",
+    "key": "char.kedu.weak.2"
+  },
+  {
+    "old": "assets/generated/141.webp",
+    "new": "assets/karakter/char.kedu.weak.2.webp",
+    "key": "char.kedu.weak.2"
+  },
+  {
+    "old": "assets/generated/142.png",
+    "new": "assets/karakter/char.kedu.weak.3.webp",
+    "key": "char.kedu.weak.3"
+  },
+  {
+    "old": "assets/generated/142.webp",
+    "new": "assets/karakter/char.kedu.weak.3.webp",
+    "key": "char.kedu.weak.3"
+  },
+  {
+    "old": "assets/generated/143.png",
+    "new": "assets/ikon/ui.pin.webp",
+    "key": "ui.pin"
+  },
+  {
+    "old": "assets/generated/143.webp",
+    "new": "assets/ikon/ui.pin.webp",
+    "key": "ui.pin"
+  },
+  {
+    "old": "assets/generated/144.png",
+    "new": "assets/ikon/ui.lantern.webp",
+    "key": "ui.lantern"
+  },
+  {
+    "old": "assets/generated/144.webp",
+    "new": "assets/ikon/ui.lantern.webp",
+    "key": "ui.lantern"
+  },
+  {
+    "old": "assets/generated/145.png",
+    "new": "assets/ikon/map.pin.temanggung.webp",
+    "key": "map.pin.temanggung"
+  },
+  {
+    "old": "assets/generated/145.webp",
+    "new": "assets/ikon/map.pin.temanggung.webp",
+    "key": "map.pin.temanggung"
+  },
+  {
+    "old": "assets/generated/146.png",
+    "new": "assets/ikon/map.pin.magelang.webp",
+    "key": "map.pin.magelang"
+  },
+  {
+    "old": "assets/generated/146.webp",
+    "new": "assets/ikon/map.pin.magelang.webp",
+    "key": "map.pin.magelang"
+  },
+  {
+    "old": "assets/generated/147.png",
+    "new": "assets/ikon/map.pin.wonosobo.webp",
+    "key": "map.pin.wonosobo"
+  },
+  {
+    "old": "assets/generated/147.webp",
+    "new": "assets/ikon/map.pin.wonosobo.webp",
+    "key": "map.pin.wonosobo"
+  },
+  {
+    "old": "assets/generated/148.png",
+    "new": "assets/ikon/map.lantern.temanggung.webp",
+    "key": "map.lantern.temanggung"
+  },
+  {
+    "old": "assets/generated/148.webp",
+    "new": "assets/ikon/map.lantern.temanggung.webp",
+    "key": "map.lantern.temanggung"
+  },
+  {
+    "old": "assets/generated/149.png",
+    "new": "assets/ikon/map.lantern.magelang.webp",
+    "key": "map.lantern.magelang"
+  },
+  {
+    "old": "assets/generated/149.webp",
+    "new": "assets/ikon/map.lantern.magelang.webp",
+    "key": "map.lantern.magelang"
+  },
+  {
+    "old": "assets/generated/150.png",
+    "new": "assets/ikon/map.lantern.wonosobo.webp",
+    "key": "map.lantern.wonosobo"
+  },
+  {
+    "old": "assets/generated/150.webp",
+    "new": "assets/ikon/map.lantern.wonosobo.webp",
+    "key": "map.lantern.wonosobo"
+  },
+  {
+    "old": "assets/generated/151.png",
+    "new": "assets/latar/bg.loading.temanggung.webp",
+    "key": "bg.loading.temanggung"
+  },
+  {
+    "old": "assets/generated/151.webp",
+    "new": "assets/latar/bg.loading.temanggung.webp",
+    "key": "bg.loading.temanggung"
+  },
+  {
+    "old": "assets/generated/152.png",
+    "new": "assets/latar/bg.loading.magelang.webp",
+    "key": "bg.loading.magelang"
+  },
+  {
+    "old": "assets/generated/152.webp",
+    "new": "assets/latar/bg.loading.magelang.webp",
+    "key": "bg.loading.magelang"
+  },
+  {
+    "old": "assets/generated/153.png",
+    "new": "assets/latar/bg.loading.wonosobo.webp",
+    "key": "bg.loading.wonosobo"
+  },
+  {
+    "old": "assets/generated/153.webp",
+    "new": "assets/latar/bg.loading.wonosobo.webp",
+    "key": "bg.loading.wonosobo"
+  },
+  {
+    "old": "assets/generated/154.png",
+    "new": "assets/ikon/avatar.1.webp",
+    "key": "avatar.1"
+  },
+  {
+    "old": "assets/generated/154.webp",
+    "new": "assets/ikon/avatar.1.webp",
+    "key": "avatar.1"
+  },
+  {
+    "old": "assets/generated/155.png",
+    "new": "assets/ikon/avatar.2.webp",
+    "key": "avatar.2"
+  },
+  {
+    "old": "assets/generated/155.webp",
+    "new": "assets/ikon/avatar.2.webp",
+    "key": "avatar.2"
+  },
+  {
+    "old": "assets/generated/156.png",
+    "new": "assets/ikon/avatar.3.webp",
+    "key": "avatar.3"
+  },
+  {
+    "old": "assets/generated/156.webp",
+    "new": "assets/ikon/avatar.3.webp",
+    "key": "avatar.3"
+  },
+  {
+    "old": "assets/generated/157.png",
+    "new": "assets/ikon/avatar.4.webp",
+    "key": "avatar.4"
+  },
+  {
+    "old": "assets/generated/157.webp",
+    "new": "assets/ikon/avatar.4.webp",
+    "key": "avatar.4"
+  },
+  {
+    "old": "assets/generated/158.png",
+    "new": "assets/ikon/avatar.5.webp",
+    "key": "avatar.5"
+  },
+  {
+    "old": "assets/generated/158.webp",
+    "new": "assets/ikon/avatar.5.webp",
+    "key": "avatar.5"
+  },
+  {
+    "old": "assets/generated/159.png",
+    "new": "assets/ikon/avatar.6.webp",
+    "key": "avatar.6"
+  },
+  {
+    "old": "assets/generated/159.webp",
+    "new": "assets/ikon/avatar.6.webp",
+    "key": "avatar.6"
+  },
+  {
+    "old": "assets/generated/160.png",
+    "new": "assets/ikon/avatar.7.webp",
+    "key": "avatar.7"
+  },
+  {
+    "old": "assets/generated/160.webp",
+    "new": "assets/ikon/avatar.7.webp",
+    "key": "avatar.7"
+  },
+  {
+    "old": "assets/generated/161.png",
+    "new": "assets/ikon/avatar.8.webp",
+    "key": "avatar.8"
+  },
+  {
+    "old": "assets/generated/161.webp",
+    "new": "assets/ikon/avatar.8.webp",
+    "key": "avatar.8"
+  },
+  {
+    "old": "assets/generated/162.png",
+    "new": "assets/ikon/avatar.9.webp",
+    "key": "avatar.9"
+  },
+  {
+    "old": "assets/generated/162.webp",
+    "new": "assets/ikon/avatar.9.webp",
+    "key": "avatar.9"
+  },
+  {
+    "old": "assets/generated/163.png",
+    "new": "assets/ikon/avatar.10.webp",
+    "key": "avatar.10"
+  },
+  {
+    "old": "assets/generated/163.webp",
+    "new": "assets/ikon/avatar.10.webp",
+    "key": "avatar.10"
+  },
+  {
+    "old": "assets/generated/164.svg",
+    "new": "assets/ikon/icon.home.svg",
+    "key": "icon.home"
+  },
+  {
+    "old": "assets/generated/165.svg",
+    "new": "assets/ikon/icon.left.svg",
+    "key": "icon.left"
+  },
+  {
+    "old": "assets/generated/166.svg",
+    "new": "assets/ikon/icon.right.svg",
+    "key": "icon.right"
+  },
+  {
+    "old": "assets/generated/167.svg",
+    "new": "assets/ikon/icon.up.svg",
+    "key": "icon.up"
+  },
+  {
+    "old": "assets/generated/168.svg",
+    "new": "assets/ikon/icon.down.svg",
+    "key": "icon.down"
+  },
+  {
+    "old": "assets/generated/169.svg",
+    "new": "assets/ikon/icon.sound.svg",
+    "key": "icon.sound"
+  },
+  {
+    "old": "assets/generated/170.svg",
+    "new": "assets/ikon/icon.sound-off.svg",
+    "key": "icon.sound-off"
+  },
+  {
+    "old": "assets/generated/171.svg",
+    "new": "assets/ikon/icon.logout.svg",
+    "key": "icon.logout"
+  },
+  {
+    "old": "assets/generated/172.svg",
+    "new": "assets/ikon/icon.lock.svg",
+    "key": "icon.lock"
+  },
+  {
+    "old": "assets/generated/173.svg",
+    "new": "assets/ikon/icon.check.svg",
+    "key": "icon.check"
+  },
+  {
+    "old": "assets/generated/174.svg",
+    "new": "assets/ikon/icon.cross.svg",
+    "key": "icon.cross"
+  },
+  {
+    "old": "assets/generated/175.svg",
+    "new": "assets/ikon/icon.star.svg",
+    "key": "icon.star"
+  },
+  {
+    "old": "assets/generated/176.svg",
+    "new": "assets/ikon/icon.book.svg",
+    "key": "icon.book"
+  },
+  {
+    "old": "assets/generated/177.svg",
+    "new": "assets/ikon/icon.map.svg",
+    "key": "icon.map"
+  },
+  {
+    "old": "assets/generated/178.svg",
+    "new": "assets/ikon/icon.play.svg",
+    "key": "icon.play"
+  },
+  {
+    "old": "assets/generated/179.svg",
+    "new": "assets/ikon/icon.pause.svg",
+    "key": "icon.pause"
+  },
+  {
+    "old": "assets/generated/180.svg",
+    "new": "assets/ikon/icon.replay.svg",
+    "key": "icon.replay"
+  },
+  {
+    "old": "assets/generated/181.svg",
+    "new": "assets/ikon/icon.text.svg",
+    "key": "icon.text"
+  },
+  {
+    "old": "assets/generated/182.svg",
+    "new": "assets/ikon/icon.hint.svg",
+    "key": "icon.hint"
+  },
+  {
+    "old": "assets/generated/183.svg",
+    "new": "assets/ikon/icon.clock.svg",
+    "key": "icon.clock"
+  },
+  {
+    "old": "assets/generated/184.svg",
+    "new": "assets/ikon/icon.building.svg",
+    "key": "icon.building"
+  },
+  {
+    "old": "assets/generated/185.svg",
+    "new": "assets/ikon/icon.question.svg",
+    "key": "icon.question"
+  },
+  {
+    "old": "assets/generated/186.svg",
+    "new": "assets/ikon/icon.user.svg",
+    "key": "icon.user"
+  },
+  {
+    "old": "assets/generated/187.svg",
+    "new": "assets/ikon/icon.users.svg",
+    "key": "icon.users"
+  },
+  {
+    "old": "assets/generated/188.svg",
+    "new": "assets/ikon/icon.lantern.svg",
+    "key": "icon.lantern"
+  },
+  {
+    "old": "assets/generated/189.svg",
+    "new": "assets/ikon/icon.download.svg",
+    "key": "icon.download"
+  },
+  {
+    "old": "assets/generated/190.svg",
+    "new": "assets/ikon/icon.upload.svg",
+    "key": "icon.upload"
+  },
+  {
+    "old": "assets/generated/191.svg",
+    "new": "assets/ikon/icon.eye.svg",
+    "key": "icon.eye"
+  },
+  {
+    "old": "assets/generated/192.svg",
+    "new": "assets/ikon/icon.menu.svg",
+    "key": "icon.menu"
+  },
+  {
+    "old": "assets/generated/193.svg",
+    "new": "assets/ikon/icon.search.svg",
+    "key": "icon.search"
+  },
+  {
+    "old": "assets/generated/194.svg",
+    "new": "assets/ikon/icon.info.svg",
+    "key": "icon.info"
+  },
+  {
+    "old": "assets/generated/195.svg",
+    "new": "assets/ikon/icon.warn.svg",
+    "key": "icon.warn"
+  },
+  {
+    "old": "assets/generated/196.svg",
+    "new": "assets/ikon/icon.grid.svg",
+    "key": "icon.grid"
+  },
+  {
+    "old": "assets/generated/197.svg",
+    "new": "assets/ikon/icon.chart.svg",
+    "key": "icon.chart"
+  },
+  {
+    "old": "assets/generated/198.svg",
+    "new": "assets/ikon/icon.list.svg",
+    "key": "icon.list"
+  },
+  {
+    "old": "assets/generated/199.svg",
+    "new": "assets/ikon/icon.target.svg",
+    "key": "icon.target"
+  },
+  {
+    "old": "assets/generated/200.svg",
+    "new": "assets/ikon/icon.trend.svg",
+    "key": "icon.trend"
+  },
+  {
+    "old": "assets/generated/201.svg",
+    "new": "assets/ikon/icon.message.svg",
+    "key": "icon.message"
+  },
+  {
+    "old": "assets/generated/202.svg",
+    "new": "assets/ikon/icon.image.svg",
+    "key": "icon.image"
+  },
+  {
+    "old": "assets/generated/203.svg",
+    "new": "assets/ikon/icon.flask.svg",
+    "key": "icon.flask"
+  },
+  {
+    "old": "assets/generated/204.svg",
+    "new": "assets/ikon/icon.shield.svg",
+    "key": "icon.shield"
+  },
+  {
+    "old": "assets/generated/205.svg",
+    "new": "assets/ikon/icon.key.svg",
+    "key": "icon.key"
+  },
+  {
+    "old": "assets/generated/206.svg",
+    "new": "assets/ikon/icon.edit.svg",
+    "key": "icon.edit"
+  },
+  {
+    "old": "assets/generated/207.svg",
+    "new": "assets/ikon/icon.trash.svg",
+    "key": "icon.trash"
+  },
+  {
+    "old": "assets/generated/208.svg",
+    "new": "assets/ikon/icon.puzzle.svg",
+    "key": "icon.puzzle"
+  },
+  {
+    "old": "assets/generated/209.svg",
+    "new": "assets/ikon/icon.sparkle.svg",
+    "key": "icon.sparkle"
+  },
+  {
+    "old": "assets/generated/210.svg",
+    "new": "assets/ikon/icon.link.svg",
+    "key": "icon.link"
+  },
+  {
+    "old": "assets/generated/211.svg",
+    "new": "assets/ikon/icon.video.svg",
+    "key": "icon.video"
+  },
+  {
+    "old": "assets/generated/212.svg",
+    "new": "assets/ikon/icon.footsteps.svg",
+    "key": "icon.footsteps"
+  },
+  {
+    "old": "assets/generated/213.svg",
+    "new": "assets/ikon/icon.rotate-gate.svg",
+    "key": "icon.rotate-gate"
+  },
+  {
+    "old": "assets/generated/223.png",
+    "new": "assets/pustaka/library.temanggung.p1.1.webp",
+    "key": "library.temanggung.p1.1"
+  },
+  {
+    "old": "assets/generated/223.webp",
+    "new": "assets/pustaka/library.temanggung.p1.1.webp",
+    "key": "library.temanggung.p1.1"
+  },
+  {
+    "old": "assets/generated/224.png",
+    "new": "assets/pustaka/library.temanggung.p1.2.webp",
+    "key": "library.temanggung.p1.2"
+  },
+  {
+    "old": "assets/generated/224.webp",
+    "new": "assets/pustaka/library.temanggung.p1.2.webp",
+    "key": "library.temanggung.p1.2"
+  },
+  {
+    "old": "assets/generated/225.png",
+    "new": "assets/pustaka/library.temanggung.p2.1.webp",
+    "key": "library.temanggung.p2.1"
+  },
+  {
+    "old": "assets/generated/225.webp",
+    "new": "assets/pustaka/library.temanggung.p2.1.webp",
+    "key": "library.temanggung.p2.1"
+  },
+  {
+    "old": "assets/generated/226.png",
+    "new": "assets/pustaka/library.temanggung.p2.2.webp",
+    "key": "library.temanggung.p2.2"
+  },
+  {
+    "old": "assets/generated/226.webp",
+    "new": "assets/pustaka/library.temanggung.p2.2.webp",
+    "key": "library.temanggung.p2.2"
+  },
+  {
+    "old": "assets/generated/227.png",
+    "new": "assets/pustaka/library.temanggung.p2.3.webp",
+    "key": "library.temanggung.p2.3"
+  },
+  {
+    "old": "assets/generated/227.webp",
+    "new": "assets/pustaka/library.temanggung.p2.3.webp",
+    "key": "library.temanggung.p2.3"
+  },
+  {
+    "old": "assets/generated/228.png",
+    "new": "assets/pustaka/library.temanggung.p3.1.webp",
+    "key": "library.temanggung.p3.1"
+  },
+  {
+    "old": "assets/generated/228.webp",
+    "new": "assets/pustaka/library.temanggung.p3.1.webp",
+    "key": "library.temanggung.p3.1"
+  },
+  {
+    "old": "assets/generated/229.png",
+    "new": "assets/pustaka/library.temanggung.p4.1.webp",
+    "key": "library.temanggung.p4.1"
+  },
+  {
+    "old": "assets/generated/229.webp",
+    "new": "assets/pustaka/library.temanggung.p4.1.webp",
+    "key": "library.temanggung.p4.1"
+  },
+  {
+    "old": "assets/generated/230.png",
+    "new": "assets/pustaka/library.temanggung.p4.2.webp",
+    "key": "library.temanggung.p4.2"
+  },
+  {
+    "old": "assets/generated/230.webp",
+    "new": "assets/pustaka/library.temanggung.p4.2.webp",
+    "key": "library.temanggung.p4.2"
+  },
+  {
+    "old": "assets/generated/231.png",
+    "new": "assets/pustaka/library.temanggung.p4.3.webp",
+    "key": "library.temanggung.p4.3"
+  },
+  {
+    "old": "assets/generated/231.webp",
+    "new": "assets/pustaka/library.temanggung.p4.3.webp",
+    "key": "library.temanggung.p4.3"
+  },
+  {
+    "old": "assets/generated/232.png",
+    "new": "assets/pustaka/library.temanggung.p5.1.webp",
+    "key": "library.temanggung.p5.1"
+  },
+  {
+    "old": "assets/generated/232.webp",
+    "new": "assets/pustaka/library.temanggung.p5.1.webp",
+    "key": "library.temanggung.p5.1"
+  },
+  {
+    "old": "assets/generated/233.png",
+    "new": "assets/pustaka/library.temanggung.p5.2.webp",
+    "key": "library.temanggung.p5.2"
+  },
+  {
+    "old": "assets/generated/233.webp",
+    "new": "assets/pustaka/library.temanggung.p5.2.webp",
+    "key": "library.temanggung.p5.2"
+  },
+  {
+    "old": "assets/generated/234.png",
+    "new": "assets/pustaka/library.temanggung.p5.3.webp",
+    "key": "library.temanggung.p5.3"
+  },
+  {
+    "old": "assets/generated/234.webp",
+    "new": "assets/pustaka/library.temanggung.p5.3.webp",
+    "key": "library.temanggung.p5.3"
+  },
+  {
+    "old": "assets/generated/235.png",
+    "new": "assets/pustaka/library.temanggung.p6.1.webp",
+    "key": "library.temanggung.p6.1"
+  },
+  {
+    "old": "assets/generated/235.webp",
+    "new": "assets/pustaka/library.temanggung.p6.1.webp",
+    "key": "library.temanggung.p6.1"
+  },
+  {
+    "old": "assets/generated/236.png",
+    "new": "assets/pustaka/library.temanggung.p8.1.webp",
+    "key": "library.temanggung.p8.1"
+  },
+  {
+    "old": "assets/generated/236.webp",
+    "new": "assets/pustaka/library.temanggung.p8.1.webp",
+    "key": "library.temanggung.p8.1"
+  },
+  {
+    "old": "assets/generated/237.png",
+    "new": "assets/pustaka/library.temanggung.p8.2.webp",
+    "key": "library.temanggung.p8.2"
+  },
+  {
+    "old": "assets/generated/237.webp",
+    "new": "assets/pustaka/library.temanggung.p8.2.webp",
+    "key": "library.temanggung.p8.2"
+  },
+  {
+    "old": "assets/generated/238.png",
+    "new": "assets/pustaka/library.magelang.p1.1.webp",
+    "key": "library.magelang.p1.1"
+  },
+  {
+    "old": "assets/generated/238.webp",
+    "new": "assets/pustaka/library.magelang.p1.1.webp",
+    "key": "library.magelang.p1.1"
+  },
+  {
+    "old": "assets/generated/239.png",
+    "new": "assets/pustaka/library.magelang.p1.2.webp",
+    "key": "library.magelang.p1.2"
+  },
+  {
+    "old": "assets/generated/239.webp",
+    "new": "assets/pustaka/library.magelang.p1.2.webp",
+    "key": "library.magelang.p1.2"
+  },
+  {
+    "old": "assets/generated/240.png",
+    "new": "assets/pustaka/library.magelang.p2.1.webp",
+    "key": "library.magelang.p2.1"
+  },
+  {
+    "old": "assets/generated/240.webp",
+    "new": "assets/pustaka/library.magelang.p2.1.webp",
+    "key": "library.magelang.p2.1"
+  },
+  {
+    "old": "assets/generated/241.png",
+    "new": "assets/pustaka/library.magelang.p2.2.webp",
+    "key": "library.magelang.p2.2"
+  },
+  {
+    "old": "assets/generated/241.webp",
+    "new": "assets/pustaka/library.magelang.p2.2.webp",
+    "key": "library.magelang.p2.2"
+  },
+  {
+    "old": "assets/generated/242.png",
+    "new": "assets/pustaka/library.magelang.p2.3.webp",
+    "key": "library.magelang.p2.3"
+  },
+  {
+    "old": "assets/generated/242.webp",
+    "new": "assets/pustaka/library.magelang.p2.3.webp",
+    "key": "library.magelang.p2.3"
+  },
+  {
+    "old": "assets/generated/243.png",
+    "new": "assets/pustaka/library.magelang.p3.1.webp",
+    "key": "library.magelang.p3.1"
+  },
+  {
+    "old": "assets/generated/243.webp",
+    "new": "assets/pustaka/library.magelang.p3.1.webp",
+    "key": "library.magelang.p3.1"
+  },
+  {
+    "old": "assets/generated/244.png",
+    "new": "assets/pustaka/library.magelang.p3.2.webp",
+    "key": "library.magelang.p3.2"
+  },
+  {
+    "old": "assets/generated/244.webp",
+    "new": "assets/pustaka/library.magelang.p3.2.webp",
+    "key": "library.magelang.p3.2"
+  },
+  {
+    "old": "assets/generated/245.png",
+    "new": "assets/pustaka/library.magelang.p3.3.webp",
+    "key": "library.magelang.p3.3"
+  },
+  {
+    "old": "assets/generated/245.webp",
+    "new": "assets/pustaka/library.magelang.p3.3.webp",
+    "key": "library.magelang.p3.3"
+  },
+  {
+    "old": "assets/generated/246.png",
+    "new": "assets/pustaka/library.magelang.p4.1.webp",
+    "key": "library.magelang.p4.1"
+  },
+  {
+    "old": "assets/generated/246.webp",
+    "new": "assets/pustaka/library.magelang.p4.1.webp",
+    "key": "library.magelang.p4.1"
+  },
+  {
+    "old": "assets/generated/247.png",
+    "new": "assets/pustaka/library.magelang.p5.1.webp",
+    "key": "library.magelang.p5.1"
+  },
+  {
+    "old": "assets/generated/247.webp",
+    "new": "assets/pustaka/library.magelang.p5.1.webp",
+    "key": "library.magelang.p5.1"
+  },
+  {
+    "old": "assets/generated/248.png",
+    "new": "assets/pustaka/library.magelang.p5.2.webp",
+    "key": "library.magelang.p5.2"
+  },
+  {
+    "old": "assets/generated/248.webp",
+    "new": "assets/pustaka/library.magelang.p5.2.webp",
+    "key": "library.magelang.p5.2"
+  },
+  {
+    "old": "assets/generated/249.png",
+    "new": "assets/pustaka/library.magelang.p5.3.webp",
+    "key": "library.magelang.p5.3"
+  },
+  {
+    "old": "assets/generated/249.webp",
+    "new": "assets/pustaka/library.magelang.p5.3.webp",
+    "key": "library.magelang.p5.3"
+  },
+  {
+    "old": "assets/generated/250.png",
+    "new": "assets/pustaka/library.magelang.p6.1.webp",
+    "key": "library.magelang.p6.1"
+  },
+  {
+    "old": "assets/generated/250.webp",
+    "new": "assets/pustaka/library.magelang.p6.1.webp",
+    "key": "library.magelang.p6.1"
+  },
+  {
+    "old": "assets/generated/251.png",
+    "new": "assets/pustaka/library.magelang.p6.2.webp",
+    "key": "library.magelang.p6.2"
+  },
+  {
+    "old": "assets/generated/251.webp",
+    "new": "assets/pustaka/library.magelang.p6.2.webp",
+    "key": "library.magelang.p6.2"
+  },
+  {
+    "old": "assets/generated/252.png",
+    "new": "assets/pustaka/library.magelang.p6.3.webp",
+    "key": "library.magelang.p6.3"
+  },
+  {
+    "old": "assets/generated/252.webp",
+    "new": "assets/pustaka/library.magelang.p6.3.webp",
+    "key": "library.magelang.p6.3"
+  },
+  {
+    "old": "assets/generated/253.png",
+    "new": "assets/pustaka/library.magelang.p7.1.webp",
+    "key": "library.magelang.p7.1"
+  },
+  {
+    "old": "assets/generated/253.webp",
+    "new": "assets/pustaka/library.magelang.p7.1.webp",
+    "key": "library.magelang.p7.1"
+  },
+  {
+    "old": "assets/generated/254.png",
+    "new": "assets/pustaka/library.magelang.p9.1.webp",
+    "key": "library.magelang.p9.1"
+  },
+  {
+    "old": "assets/generated/254.webp",
+    "new": "assets/pustaka/library.magelang.p9.1.webp",
+    "key": "library.magelang.p9.1"
+  },
+  {
+    "old": "assets/generated/255.png",
+    "new": "assets/pustaka/library.wonosobo.p1.1.webp",
+    "key": "library.wonosobo.p1.1"
+  },
+  {
+    "old": "assets/generated/255.webp",
+    "new": "assets/pustaka/library.wonosobo.p1.1.webp",
+    "key": "library.wonosobo.p1.1"
+  },
+  {
+    "old": "assets/generated/256.png",
+    "new": "assets/pustaka/library.wonosobo.p1.2.webp",
+    "key": "library.wonosobo.p1.2"
+  },
+  {
+    "old": "assets/generated/256.webp",
+    "new": "assets/pustaka/library.wonosobo.p1.2.webp",
+    "key": "library.wonosobo.p1.2"
+  },
+  {
+    "old": "assets/generated/257.png",
+    "new": "assets/pustaka/library.wonosobo.p2.1.webp",
+    "key": "library.wonosobo.p2.1"
+  },
+  {
+    "old": "assets/generated/257.webp",
+    "new": "assets/pustaka/library.wonosobo.p2.1.webp",
+    "key": "library.wonosobo.p2.1"
+  },
+  {
+    "old": "assets/generated/258.png",
+    "new": "assets/pustaka/library.wonosobo.p2.2.webp",
+    "key": "library.wonosobo.p2.2"
+  },
+  {
+    "old": "assets/generated/258.webp",
+    "new": "assets/pustaka/library.wonosobo.p2.2.webp",
+    "key": "library.wonosobo.p2.2"
+  },
+  {
+    "old": "assets/generated/259.png",
+    "new": "assets/pustaka/library.wonosobo.p3.1.webp",
+    "key": "library.wonosobo.p3.1"
+  },
+  {
+    "old": "assets/generated/259.webp",
+    "new": "assets/pustaka/library.wonosobo.p3.1.webp",
+    "key": "library.wonosobo.p3.1"
+  },
+  {
+    "old": "assets/generated/260.png",
+    "new": "assets/pustaka/library.wonosobo.p3.2.webp",
+    "key": "library.wonosobo.p3.2"
+  },
+  {
+    "old": "assets/generated/260.webp",
+    "new": "assets/pustaka/library.wonosobo.p3.2.webp",
+    "key": "library.wonosobo.p3.2"
+  },
+  {
+    "old": "assets/generated/261.png",
+    "new": "assets/pustaka/library.wonosobo.p3.3.webp",
+    "key": "library.wonosobo.p3.3"
+  },
+  {
+    "old": "assets/generated/261.webp",
+    "new": "assets/pustaka/library.wonosobo.p3.3.webp",
+    "key": "library.wonosobo.p3.3"
+  },
+  {
+    "old": "assets/generated/262.png",
+    "new": "assets/pustaka/library.wonosobo.p4.1.webp",
+    "key": "library.wonosobo.p4.1"
+  },
+  {
+    "old": "assets/generated/262.webp",
+    "new": "assets/pustaka/library.wonosobo.p4.1.webp",
+    "key": "library.wonosobo.p4.1"
+  },
+  {
+    "old": "assets/generated/263.png",
+    "new": "assets/pustaka/library.wonosobo.p4.2.webp",
+    "key": "library.wonosobo.p4.2"
+  },
+  {
+    "old": "assets/generated/263.webp",
+    "new": "assets/pustaka/library.wonosobo.p4.2.webp",
+    "key": "library.wonosobo.p4.2"
+  },
+  {
+    "old": "assets/generated/264.png",
+    "new": "assets/pustaka/library.wonosobo.p6.1.webp",
+    "key": "library.wonosobo.p6.1"
+  },
+  {
+    "old": "assets/generated/264.webp",
+    "new": "assets/pustaka/library.wonosobo.p6.1.webp",
+    "key": "library.wonosobo.p6.1"
+  },
+  {
+    "old": "assets/generated/265.png",
+    "new": "assets/pustaka/library.wonosobo.p6.2.webp",
+    "key": "library.wonosobo.p6.2"
+  },
+  {
+    "old": "assets/generated/265.webp",
+    "new": "assets/pustaka/library.wonosobo.p6.2.webp",
+    "key": "library.wonosobo.p6.2"
+  },
+  {
+    "old": "assets/generated/266.png",
+    "new": "assets/pustaka/library.wonosobo.p7.1.webp",
+    "key": "library.wonosobo.p7.1"
+  },
+  {
+    "old": "assets/generated/266.webp",
+    "new": "assets/pustaka/library.wonosobo.p7.1.webp",
+    "key": "library.wonosobo.p7.1"
+  },
+  {
+    "old": "assets/generated/267.png",
+    "new": "assets/pustaka/library.wonosobo.p8.1.webp",
+    "key": "library.wonosobo.p8.1"
+  },
+  {
+    "old": "assets/generated/267.webp",
+    "new": "assets/pustaka/library.wonosobo.p8.1.webp",
+    "key": "library.wonosobo.p8.1"
+  },
+  {
+    "old": "assets/generated/268.png",
+    "new": "assets/pustaka/library.wonosobo.p9.1.webp",
+    "key": "library.wonosobo.p9.1"
+  },
+  {
+    "old": "assets/generated/268.webp",
+    "new": "assets/pustaka/library.wonosobo.p9.1.webp",
+    "key": "library.wonosobo.p9.1"
+  },
+  {
+    "old": "assets/generated/269.png",
+    "new": "assets/pustaka/library.wonosobo.p9.2.webp",
+    "key": "library.wonosobo.p9.2"
+  },
+  {
+    "old": "assets/generated/269.webp",
+    "new": "assets/pustaka/library.wonosobo.p9.2.webp",
+    "key": "library.wonosobo.p9.2"
+  },
+  {
+    "old": "assets/generated/270.png",
+    "new": "assets/pustaka/library.wonosobo.p9.3.webp",
+    "key": "library.wonosobo.p9.3"
+  },
+  {
+    "old": "assets/generated/270.webp",
+    "new": "assets/pustaka/library.wonosobo.p9.3.webp",
+    "key": "library.wonosobo.p9.3"
+  },
+  {
+    "old": "assets/generated/271.png",
+    "new": "assets/pustaka/library.temanggung.p8.2.poster.webp",
+    "key": "library.temanggung.p8.2.poster"
+  },
+  {
+    "old": "assets/generated/271.webp",
+    "new": "assets/pustaka/library.temanggung.p8.2.poster.webp",
+    "key": "library.temanggung.p8.2.poster"
+  },
+  {
+    "old": "assets/generated/272.png",
+    "new": "assets/pustaka/library.magelang.p2.3.poster.webp",
+    "key": "library.magelang.p2.3.poster"
+  },
+  {
+    "old": "assets/generated/272.webp",
+    "new": "assets/pustaka/library.magelang.p2.3.poster.webp",
+    "key": "library.magelang.p2.3.poster"
+  },
+  {
+    "old": "assets/generated/273.png",
+    "new": "assets/pustaka/library.magelang.p6.3.poster.webp",
+    "key": "library.magelang.p6.3.poster"
+  },
+  {
+    "old": "assets/generated/273.webp",
+    "new": "assets/pustaka/library.magelang.p6.3.poster.webp",
+    "key": "library.magelang.p6.3.poster"
+  },
+  {
+    "old": "assets/generated/274.png",
+    "new": "assets/pustaka/library.wonosobo.p7.1.poster.webp",
+    "key": "library.wonosobo.p7.1.poster"
+  },
+  {
+    "old": "assets/generated/274.webp",
+    "new": "assets/pustaka/library.wonosobo.p7.1.poster.webp",
+    "key": "library.wonosobo.p7.1.poster"
+  },
+  {
+    "old": "assets/generated/275.png",
+    "new": "assets/pustaka/library.wonosobo.p8.1.poster.webp",
+    "key": "library.wonosobo.p8.1.poster"
+  },
+  {
+    "old": "assets/generated/275.webp",
+    "new": "assets/pustaka/library.wonosobo.p8.1.poster.webp",
+    "key": "library.wonosobo.p8.1.poster"
+  },
+  {
+    "old": "assets/generated/276.png",
+    "new": "assets/pustaka/library.temanggung.p7.1.webp",
+    "key": "library.temanggung.p7.1"
+  },
+  {
+    "old": "assets/generated/276.webp",
+    "new": "assets/pustaka/library.temanggung.p7.1.webp",
+    "key": "library.temanggung.p7.1"
+  },
+  {
+    "old": "assets/generated/277.png",
+    "new": "assets/pustaka/library.temanggung.p9.1.webp",
+    "key": "library.temanggung.p9.1"
+  },
+  {
+    "old": "assets/generated/277.webp",
+    "new": "assets/pustaka/library.temanggung.p9.1.webp",
+    "key": "library.temanggung.p9.1"
+  },
+  {
+    "old": "assets/generated/278.png",
+    "new": "assets/pustaka/library.temanggung.p10.1.webp",
+    "key": "library.temanggung.p10.1"
+  },
+  {
+    "old": "assets/generated/278.webp",
+    "new": "assets/pustaka/library.temanggung.p10.1.webp",
+    "key": "library.temanggung.p10.1"
+  },
+  {
+    "old": "assets/generated/279.png",
+    "new": "assets/pustaka/library.magelang.p8.1.webp",
+    "key": "library.magelang.p8.1"
+  },
+  {
+    "old": "assets/generated/279.webp",
+    "new": "assets/pustaka/library.magelang.p8.1.webp",
+    "key": "library.magelang.p8.1"
+  },
+  {
+    "old": "assets/generated/280.png",
+    "new": "assets/pustaka/library.magelang.p10.1.webp",
+    "key": "library.magelang.p10.1"
+  },
+  {
+    "old": "assets/generated/280.webp",
+    "new": "assets/pustaka/library.magelang.p10.1.webp",
+    "key": "library.magelang.p10.1"
+  },
+  {
+    "old": "assets/generated/281.png",
+    "new": "assets/pustaka/library.wonosobo.p5.1.webp",
+    "key": "library.wonosobo.p5.1"
+  },
+  {
+    "old": "assets/generated/281.webp",
+    "new": "assets/pustaka/library.wonosobo.p5.1.webp",
+    "key": "library.wonosobo.p5.1"
+  },
+  {
+    "old": "assets/generated/282.png",
+    "new": "assets/pustaka/library.wonosobo.p10.1.webp",
+    "key": "library.wonosobo.p10.1"
+  },
+  {
+    "old": "assets/generated/282.webp",
+    "new": "assets/pustaka/library.wonosobo.p10.1.webp",
+    "key": "library.wonosobo.p10.1"
+  }
+]

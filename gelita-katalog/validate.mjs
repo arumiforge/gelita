@@ -1,0 +1,15 @@
+import fs from 'node:fs';import path from 'node:path';import assert from 'node:assert/strict';import {fileURLToPath} from 'node:url';
+const root=path.dirname(fileURLToPath(import.meta.url));const read=p=>fs.readFileSync(path.join(root,p),'utf8');const data=JSON.parse(read('data.json'));const html=read('index.html');
+const embedded=JSON.parse(html.match(/const DATA=(.*);\r?\nconst SUMMARY=/s)[1]);assert.deepEqual(embedded,data);
+assert.equal(data.length,370);assert.equal(new Set(data.map(a=>a.key)).size,370);assert.equal(new Set(data.map(a=>a.id)).size,370);
+const audio=data.filter(a=>a.size==='Audio');assert.deepEqual(audio,JSON.parse(read('archive/audio-baseline.json')));
+const visual=data.filter(a=>a.size!=='Audio');for(const a of visual){assert.ok(a.style_review);for(const k of ['file','preview','generated_asset'])if(a[k])assert.ok(fs.existsSync(path.join(root,a[k])),a[k]);const expected=a.key.replace(/\.(png|svg|ico|webp)$/i,'');assert.equal(path.parse(a.file).name,expected)}
+for(const a of visual){assert.equal(a.style_review.status,'Sesuai gaya');assert.equal(a.style_review.basis,'user_override');assert.ok(a.previous_style_review);assert.ok(!a.historical_generation_prompt);assert.ok(!/painterly 2D digital|soft watercolour terrain|storybook illustration/.test(a.prompt));}
+const icons=visual.filter(a=>a.cat==='Ikon');assert.equal(icons.length,83);
+const iconReport=JSON.parse(read('icon-update-report.json'));assert.equal(iconReport.updated,83);assert.equal(new Set(iconReport.changed_keys).size,83);
+const generatedIcons=JSON.parse(read('icon-generation-results.json'));assert.equal(generatedIcons.length,20);assert.equal(new Set(generatedIcons.map(a=>a.key)).size,20);
+for(const a of icons){assert.equal(a.actual,a.size);assert.equal(a.actual_alpha,a.alpha);if(a.vector_source)assert.ok(fs.existsSync(path.join(root,a.vector_source)));}
+assert.equal(visual.filter(a=>a.provenance?.date==='2026-10-11').length,9);assert.ok(!fs.existsSync(path.join(root,'framegambarkarakter/jakahappy')));
+for(const m of JSON.parse(read('migration-map.json')))assert.ok(fs.existsSync(path.join(root,m.new)),m.new);
+const source=JSON.parse(read('archive/before-2026-10-11/data.json'));for(const a of visual){const before=source.find(x=>x.key===a.key);assert.equal(a.size,before.size,'target changed '+a.key)}
+const report={date:'2026-10-11',checks:['370 unique IDs and keys','273 visuals have style reviews and existing files','273 user-overridden style statuses with previous audits preserved','Active prompts exclude conflicting legacy art direction','83 icons updated with correct size and alpha','20 unique selected image_gen icon outputs','8 native vector control sources present','9 generated references present','Semantic filenames verified','475 migrated paths resolve','HTML data exactly matches data.json','97 audio objects unchanged','Target dimensions unchanged','Requested folder deleted'],passed:true};fs.writeFileSync(path.join(root,'validation-report.json'),JSON.stringify(report,null,2)+'\n');console.log(report);
