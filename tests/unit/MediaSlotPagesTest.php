@@ -116,7 +116,7 @@ final class MediaSlotPagesTest extends CIUnitTestCase
     {
         $html = $this->page('admin/media/' . $this->mediaId('challenge.item.tmg-4-09'));
 
-        $this->assertStringContainsString('wajib 240 × 240 px', $html);
+        $this->assertStringContainsString('240 × 240 px (gambar lebih besar dengan bentuk sama diperkecil otomatis)', $html);
         $this->assertStringContainsString('Ya, wajib transparan', $html);
         $this->assertStringContainsString('<code>/tantangan/temanggung/4</code>', $html);
         $this->assertStringContainsString('benda pengecoh (bukan jawaban)', $html);

@@ -1,26 +1,41 @@
 /**
- * Unggah media.
+ * Media upload.
  *
- * 1. Dimensi gambar dibaca dengan createImageBitmap() SEBELUM mengunggah.
- * 2. Dibandingkan dengan "Ukuran wajib" slot (pola asset_key dari
- *    Config\Gelita::$assetSizes, dikirim server di #asset-sizes).
- * 3. Tidak cocok (server selalu mode ketat) → ditolak di client dengan pesan
- *    yang menyebut ukuran yang diminta dan yang diberikan.
- * 4. Lolos → form POST biasa ke /admin/media/unggah; server memeriksa ulang
- *    dengan getimagesize() — unggahan tidak pernah dipercaya karena lolos
- *    pemeriksaan client — lalu kembali ke halaman ini dengan pesan hasil.
+ * 1. Image dimensions are read with createImageBitmap() BEFORE uploading.
+ * 2. They are compared with the slot size (asset_key patterns from
+ *    Config\Gelita::$assetSizes, sent by the server in #asset-sizes) using the
+ *    same rule as App\Libraries\ImageFitter: smaller on either side, or a
+ *    width-to-height ratio more than 1% off, is refused in the browser with a
+ *    message naming both sizes. Larger with the same ratio passes; the server
+ *    shrinks it to the slot size.
+ * 3. Passing files go out as a plain form POST to /admin/media/unggah; the
+ *    server checks again with getimagesize() (passing the browser check is
+ *    never trusted) and returns to this page with the result message.
  *
- * Kotak unggah menerima berkas yang diseret; tombol Unggah di tiap baris aset
- * mengisi asset_key baris itu. Nama berkas asli diabaikan server.
+ * The upload box accepts dropped files; each asset row's Upload button fills
+ * in that row's asset_key. The original file name is ignored by the server.
  */
 import { $, $$, el, readJson, scrollToCenter } from '../core/dom.js';
 
 const MAX_BYTES = 64 * 1024 * 1024;
+const RATIO_TOLERANCE = 0.01; // ImageFitter::RATIO_TOLERANCE
 
 /** fnmatch sederhana: '*' = sembarang karakter (sama dengan pola di server). */
 function matches(pattern, key) {
   const regex = new RegExp(`^${pattern.split('*').map((part) => part.replace(/[.+?^${}()|[\]\\]/g, '\\$&')).join('.*')}$`);
   return regex.test(key);
+}
+
+/** Why an image of size has cannot fill a slot of size need, or null (ImageFitter::problem). */
+function sizeProblem(has, need, key) {
+  if (has[0] < need[0] || has[1] < need[1]) {
+    return `Gambar ini ${has[0]} × ${has[1]} piksel, lebih kecil dari ukuran ${key} (${need[0]} × ${need[1]} piksel). Pakai gambar yang paling kecil ${need[0]} × ${need[1]} piksel, lalu unggah lagi.`;
+  }
+  const slot = need[0] * has[1];
+  if (Math.abs(has[0] * need[1] - slot) > RATIO_TOLERANCE * slot) {
+    return `Bentuk gambar ini (${has[0]} × ${has[1]} piksel) tidak sama dengan bentuk ${key} (${need[0]} × ${need[1]} piksel). Potong dulu gambarnya dengan perbandingan lebar dan tinggi yang sama, lalu unggah lagi.`;
+  }
+  return null;
 }
 
 function requiredSize(sizes, key) {
@@ -66,7 +81,7 @@ export function initMediaUpload(root = document) {
 
   const describe = () => {
     const need = requiredSize(sizes, keyInput.value.trim());
-    info.textContent = need ? `Gambar untuk kode berkas ini wajib berukuran ${need[0]} × ${need[1]} piksel.` : '';
+    info.textContent = need ? `Gambar untuk kode berkas ini berukuran ${need[0]} × ${need[1]} piksel. Gambar yang lebih besar dengan bentuk sama diperkecil otomatis.` : '';
   };
 
   const check = async () => {
@@ -80,8 +95,9 @@ export function initMediaUpload(root = document) {
     const need = requiredSize(sizes, keyInput.value.trim());
     if (!need) return true;
     const has = await dimensions(file);
-    if (has && (has[0] !== need[0] || has[1] !== need[1])) {
-      fail(`Gambar ini berukuran ${has[0]} × ${has[1]} piksel, padahal untuk ${keyInput.value.trim()} harus ${need[0]} × ${need[1]} piksel. Ubah ukurannya dulu, lalu unggah lagi.`);
+    const problem = has && sizeProblem(has, need, keyInput.value.trim());
+    if (problem) {
+      fail(problem);
       return false;
     }
     return true;
