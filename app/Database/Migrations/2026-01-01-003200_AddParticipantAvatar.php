@@ -5,7 +5,7 @@ namespace App\Database\Migrations;
 use App\Database\GelitaMigration;
 
 /**
- * Display plan Phase B (docs/rencana-perbaikan-tampilan.md): the avatar a
+ * Display plan Phase B (docs/arsip/rencana-perbaikan-tampilan.md): the avatar a
  * student picks at sign-up or in the profile, as the number N of the slot
  * `avatar.N`. NULL = the initial of the name (today's look).
  *

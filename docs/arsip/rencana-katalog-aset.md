@@ -1,5 +1,7 @@
 # Rencana: Katalog Aset GELITA — halaman statis berisi semua gambar, ikon, audio, dan narasi beserta prompt pembuatannya
 
+> **Archived, finished (11 October 2026).** Part I (the generated static page) is not built: the team catalogue [`gelita-katalog/`](../../gelita-katalog/README.md) replaced it. Part II (style guide, sizes, prompts) was aligned with that catalogue on 11 October 2026 and its content now lives there (`gelita-katalog/data.json`). The catalogue's images are installed in the game with `php spark gelita:katalog:impor`. Kept as a record; see [`README.md`](README.md).
+>
 > Status: **Bagian I tidak dibangun; Bagian II tetap menjadi acuan prompt** (disusun 29 September 2026, status terakhir 11 Oktober 2026). Dokumen ini punya dua bagian:
 >
 > - **Bagian I** (§1–§8) adalah rencana pengembangan halaman statisnya.
@@ -7,7 +9,7 @@
 >
 > Rencana ini bersinggungan dengan [`rencana-perbaikan-tampilan.md`](rencana-perbaikan-tampilan.md) (katalog slot `ImageSlots`, pemutar frame tokoh, pin per kota, avatar). Titik temunya dijelaskan di §5 Fase F.
 >
-> **Status update (11 October 2026, visual direction from `gelita-katalog/`).** The team catalogue now lives in the repo as [`gelita-katalog/`](../gelita-katalog/README.md) (open `gelita-katalog/index.html`; source `gelita-katalog/data.json`; reference images in `gelita-katalog/assets/referensi/`). Part II below was brought in line with it. Owner decisions on the points where the two disagreed:
+> **Status update (11 October 2026, visual direction from `gelita-katalog/`).** The team catalogue now lives in the repo as [`gelita-katalog/`](../../gelita-katalog/README.md) (open `gelita-katalog/index.html`; source `gelita-katalog/data.json`; reference images in `gelita-katalog/assets/referensi/`). Part II below was brought in line with it. Owner decisions on the points where the two disagreed:
 >
 > - **Style: stylized 3D, not 2D gouache.** `{GAYA}`, `{NEGATIF}`, and `{FRAME}` (§9.2) were rewritten. Every prompt that uses these blocks follows automatically.
 > - **Jaka: red-scarf design** from `reference.01` (sheet), `reference.13` (full body), and `reference.03` (avatar). This replaces the lurik shirt and iket (§9.4).
@@ -44,9 +46,9 @@
 >
 > - **Digantikan:**
 >   - ukuran tampil dalam px/`vw` dan rujukan ke `layout.css` (§2.2, §9.1, §10.1, §11): layar game kini panggung tetap 1280 × 720 dp, dan ukuran tampil per slot ada di `Config\Gelita::$assetDisplaySizes`, di samping ukuran berkas di `$assetSizes`.
->   - gambar tantangan di §10.1 dan §11.8 (`challenge.option.*`, "gambar soal pilihan", `mgl-5`, papan puzzle "maks. 480 px"): bank kelas 5 punya 45 slot gambar tantangan yang didaftar di [`bank-soal/README.md`](bank-soal/README.md#gambar-tantangan-45-slot), dan `php spark gelita:mockups` membuat gambar contohnya.
+>   - gambar tantangan di §10.1 dan §11.8 (`challenge.option.*`, "gambar soal pilihan", `mgl-5`, papan puzzle "maks. 480 px"): bank kelas 5 punya 45 slot gambar tantangan yang didaftar di [`bank-soal/README.md`](../bank-soal/README.md#gambar-tantangan-45-slot), dan `php spark gelita:mockups` membuat gambar contohnya.
 >   - makna ikon `trend` "pretest–posttest" (§12.2): perombakan memakai satu tahap bermain.
-> - **Masih berlaku sebagai acuan:** panduan gaya, lembar tokoh, dan aturan budaya (§9), langkah pasca-produksi (§10.3–§10.6), serta spesifikasi musik, efek suara, dan narasi (§13–§14; rekaman narasi kini 100 per bahasa, lihat [`audio.md`](audio.md)).
+> - **Masih berlaku sebagai acuan:** panduan gaya, lembar tokoh, dan aturan budaya (§9), langkah pasca-produksi (§10.3–§10.6), serta spesifikasi musik, efek suara, dan narasi (§13–§14; rekaman narasi kini 100 per bahasa, lihat [`audio.md`](../audio.md)).
 > - **Tetap ditunda:** seluruh pembangunan Bagian I (§1–§8).
 
 # Bagian I — Rencana pengembangan
@@ -1136,7 +1138,7 @@ Untuk Mbah Kedu, `{JAKA}` diganti `{KEDU}`.
 
 ### 11.8 Tantangan
 
-**Grade 5 (11 October 2026).** The 45 challenge image slots of the grade-5 bank are listed in [`bank-soal/README.md`](bank-soal/README.md#gambar-tantangan-45-slot), and `gelita-katalog/assets/tantangan/` has an AI picture with a prompt for each one. They replace the old item list in §11.8.1–§11.8.3, which describes the earlier bank. The rules in this section still apply: no hints at the answer, decoys in exactly the same style as targets, and real sites drawn from reference photos.
+**Grade 5 (11 October 2026).** The 45 challenge image slots of the grade-5 bank are listed in [`bank-soal/README.md`](../bank-soal/README.md#gambar-tantangan-45-slot), and `gelita-katalog/assets/tantangan/` has an AI picture with a prompt for each one. They replace the old item list in §11.8.1–§11.8.3, which describes the earlier bank. The rules in this section still apply: no hints at the answer, decoys in exactly the same style as targets, and real sites drawn from reference photos.
 
 Kode berkas butir mengikuti editor (`ContentController`):
 
@@ -1154,7 +1156,7 @@ Impor bank soal membuat slot kosong untuk setiap `asset_key` di bank. Begitu ber
 - **Tampil di** papan maks. 480 px:
   - Temanggung 3 × 3 kotak;
   - Magelang 4 × 4 kotak;
-  - Wonosobo 4 × 4 jigsaw, dengan 3 gambar baru `wnb-1-05…07` (lihat [`bank-soal/README.md`](bank-soal/README.md)).
+  - Wonosobo 4 × 4 jigsaw, dengan 3 gambar baru `wnb-1-05…07` (lihat [`bank-soal/README.md`](../bank-soal/README.md)).
 - **Keterangan gambar.** Setiap butir membawa teks keterangan (`prompt`) berisi fakta tentang gambarnya, jadi gambar harus sesuai fakta itu. Keterangan tampil setelah gambar utuh.
 - **Setiap keping harus punya ciri pembeda.** Hindari sepertiga atas yang seluruhnya langit polos; makin kecil kepingnya (4 × 4), makin penting.
 - **Keping tidak bernomor**, jadi tidak ada pojok yang tertutup.

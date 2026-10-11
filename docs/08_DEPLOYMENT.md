@@ -734,6 +734,21 @@ Setelah situs terbuka lewat HTTPS:
 
 Sesudah itu aplikasi siap untuk **uji coba**. Ke-45 gambar tantangan masih gambar contoh bertanda "GAMBAR CONTOH"; permainan tetap berjalan dengan gambar itu.
 
+### Installing the Katalog Aset images
+
+*(New section, English.)* The team catalogue `gelita-katalog/` (in the repo, not under `public/`) holds the current art: logo, MULAI/START buttons, app icons, backgrounds, story slide backgrounds, maps, badges, pins, lanterns, avatars, character frames, the 45 challenge images, and Pustaka illustrations. One command installs all of it into the game's image slots:
+
+```bash
+sudo -u www-data php spark gelita:katalog:impor --dry-run   # Jalur L (Jalur W: without sudo -u www-data); lists what would be installed
+sudo -u www-data php spark gelita:katalog:impor             # install
+```
+
+- Run it after the installation above (the story slides, Pustaka pages, and challenge slots it links to must exist). It is safe to run again: images already installed from the catalogue and images an admin uploaded are skipped. `--timpa` replaces them too; `--sumber=FOLDER` reads another copy of the catalogue.
+- Every image is re-encoded as lossy WebP (about 250 KB per background instead of the catalogue's 2 MB lossless files) and stored in `public/assets/uploads/` under its official name, so it is in the backup and can be replaced in **Gambar & mockup** at any time. App icons are stored as PNG. Installed rows carry the credit "Katalog Aset GELITA (gambar sementara)", which disappears once an admin uploads a new file.
+- Story slide backgrounds are linked to their slide, Pustaka illustrations replace the Commons links (re-importing `docs/pustaka/gelita-pustaka.xlsx` restores the links), video covers already downloaded by `gelita:library:thumbnails` are kept, and each region's four challenge buttons are moved onto the clearings of the catalogue's region map.
+- The art is interim (owner decision 11 October 2026): the 30 character frames still show the old lurik–iket design, and in the three Cari Objek scenes the objects (positions fixed by the question bank) do not sit on the drawn shelves. Check these before research data is collected.
+- When a release uses an asset package, build a new package afterwards (`gelita:paket:bangun`) so devices get the new pictures.
+
 ### Sebelum pengambilan data penelitian
 
 Urutan wajib sebelum siswa penelitian pertama mendaftar: narasi disetujui ([Langkah terakhir](#langkah-terakhir-kedua-jalur) butir 2) → gambar asli → daftar siap penelitian hijau → uji asap → `gelita:reset`.
@@ -910,7 +925,7 @@ Bila kode sudah terlanjur di-reset, pasang lagi commit rilis yang gagal (`git re
 | Berkas unduhan data | `writable/exports/` | aplikasi | tidak publik; dilayani controller berotorisasi |
 | Log / cache | `writable/logs/`, `writable/cache/` | aplikasi | tidak publik |
 
-Aset hanya punya dua jalan masuk ke server: **commit ke repositori** (folder aset resmi, didaftarkan `gelita:media:scan`) atau **unggah lewat panel** (folder `uploads/`, ikut backup). Jangan menyalin berkas langsung ke folder aset resmi di server: berkas itu tidak ada di git, tidak ikut backup, dan hilang saat server dibangun ulang.
+Aset hanya punya tiga jalan masuk ke server: **commit ke repositori** (folder aset resmi, didaftarkan `gelita:media:scan`), **unggah lewat panel** (folder `uploads/`, ikut backup), atau **`gelita:katalog:impor`** dari Katalog Aset `gelita-katalog/` (juga ke `uploads/`, lihat [Installing the Katalog Aset images](#installing-the-katalog-aset-images)). Jangan menyalin berkas langsung ke folder aset resmi di server: berkas itu tidak ada di git, tidak ikut backup, dan hilang saat server dibangun ulang.
 
 ### Cache-busting
 
@@ -965,8 +980,9 @@ curl -s "$U/api/paket/aktif"                                                    
 
 Aset gambar dan video mendominasi ukuran instalasi. Anjuran:
 
-* Latar dan adegan: JPEG kualitas 80, maksimum 1920×1080.
-* Objek dan benda: PNG dengan transparansi, maksimum 400×400.
+* Latar dan adegan: WebP (atau JPEG) kualitas 80, maksimum 1920×1080. Since 11 October 2026 WebP is the default raster format (owner decision); `app.*` icons stay PNG.
+* Objek dan benda: WebP atau PNG dengan transparansi, maksimum 400×400.
+* Frame tokoh: sampai 24 gambar per pose (diputar berulang), WebP ± 60 KB per gambar.
 * Video Pustaka: MP4 H.264, 720p, bitrate ≤ 1.5 Mbps, durasi ≤ 60 detik.
 * Audio narasi: MP3 96–128 kbps mono.
 

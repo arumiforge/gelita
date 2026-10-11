@@ -102,6 +102,7 @@ class MediaController extends BaseAdminController
             'display'  => $this->displaySize($key),
             'uses'     => (new MediaUsage())->forMedia()[$mediaId] ?? [],
             'pins'     => $this->pins($key, $level),
+            'pose'     => $this->poseFrames($key),
             'prev'     => $position !== false && $position > 0 ? $siblings[$position - 1] : null,
             'next'     => $position !== false && isset($siblings[$position + 1]) ? $siblings[$position + 1] : null,
             'counter'  => $position === false ? null : [$position + 1, count($siblings)],
@@ -150,6 +151,87 @@ class MediaController extends BaseAdminController
         }
 
         return $this->done($back, "Berkas {$assetKey} sudah tersimpan.");
+    }
+
+    /**
+     * Upload many frames of one character pose at once (slot detail page of
+     * any frame of that pose). Files are taken in name order (natural sort,
+     * so "jaka-2" comes before "jaka-10") and stored as frames
+     * `start`, `start + 1`, … up to the pose's frame count. Each file goes
+     * through MediaStore::storeCopy(), so type, size, and resizing follow the
+     * same rules as a single upload.
+     */
+    public function uploadFrames(int $mediaId): RedirectResponse
+    {
+        $row = model(MediaAssetModel::class)->find($mediaId);
+
+        if ($row === null || preg_match('/^char\.(jaka|kedu)\.([a-z]+)\.\d+$/', (string) $row['asset_key'], $m) !== 1) {
+            return $this->back('admin/media', 'Halaman gambar tokoh tidak ditemukan.');
+        }
+
+        $back      = 'admin/media/' . $mediaId;
+        $max       = (int) (config('Gelita')->characterAnimations["{$m[1]}.{$m[2]}"]['frames'] ?? 1);
+        $start     = max(1, min($max, (int) ($this->request->getPost('start') ?? 1)));
+        $files     = array_values(array_filter(
+            $this->request->getFileMultiple('frames') ?? [],
+            static fn ($file): bool => $file !== null && $file->getError() !== UPLOAD_ERR_NO_FILE,
+        ));
+
+        if ($files === []) {
+            return $this->back($back, 'Pilih gambar-gambar gerak yang akan diunggah.');
+        }
+
+        usort($files, static fn ($a, $b): int => strnatcasecmp($a->getClientName(), $b->getClientName()));
+
+        if ($start + count($files) - 1 > $max) {
+            return $this->back($back, sprintf('Pose ini paling banyak %d gambar. Mulai dari gambar ke-%d hanya muat %d berkas, tetapi yang dipilih %d.', $max, $start, $max - $start + 1, count($files)));
+        }
+
+        $store  = new MediaStore();
+        $saved  = [];
+        $errors = [];
+
+        foreach ($files as $i => $file) {
+            $number = $start + $i;
+
+            // isValid() also checks is_uploaded_file()
+            if (! $file->isValid()) {
+                $errors[] = 'gambar ' . $number . ' (' . $file->getClientName() . '): ' . MediaStore::uploadErrorText($file->getError());
+
+                continue;
+            }
+
+            $result = $store->storeCopy($file->getTempName(), "char.{$m[1]}.{$m[2]}.{$number}", ['image'], $this->staffId(), true);
+
+            if ($result['error'] !== null) {
+                $errors[] = 'gambar ' . $number . ' (' . $file->getClientName() . '): ' . $result['error'];
+            } else {
+                $saved[] = $number;
+            }
+        }
+
+        if ($saved !== []) {
+            service('contentRepository')->flush();
+
+            model(AuditLogModel::class)->record('media_upload', [
+                'staff_user_id' => $this->staffId(),
+                'target_type'   => 'media_asset',
+                'target_id'     => (string) $mediaId,
+                'metadata'      => ['asset_key' => "char.{$m[1]}.{$m[2]}", 'frames' => $saved, 'via' => 'frames'],
+            ]);
+        }
+
+        $limit = (int) ini_get('max_file_uploads');
+        $note  = $limit > 0 && count($files) >= $limit
+            ? sprintf(' Server menerima paling banyak %d berkas sekali unggah; unggah sisanya lagi mulai dari gambar ke-%d.', $limit, $start + count($files))
+            : '';
+
+        if ($errors !== []) {
+            return $this->back($back, ($saved === [] ? 'Tidak ada gambar yang tersimpan. ' : sprintf('%d gambar tersimpan. ', count($saved)))
+                . 'Belum tersimpan: ' . implode('; ', $errors) . '.' . $note);
+        }
+
+        return $this->done($back, sprintf('%d gambar gerak tersimpan (gambar %d–%d).', count($saved), $saved[0], $saved[count($saved) - 1]) . $note);
     }
 
     public function deactivate(int $mediaId): RedirectResponse
@@ -319,6 +401,43 @@ class MediaController extends BaseAdminController
     // -------------------------------------------------------------- bantuan
 
     /** @return array{0: int, 1: int}|null display size on the 1280 × 720 dp stage */
+    /**
+     * Every frame of the character pose a key belongs to, for the slot
+     * detail page: number, image URL (null when not uploaded), and the
+     * media_assets id when a row exists (to open that frame's own page).
+     *
+     * @return array{frames: list<array{n: int, src: string|null, id: int|null}>, fps: float, loop: bool, max: int}|null
+     */
+    private function poseFrames(string $key): ?array
+    {
+        if (preg_match('/^char\.(jaka|kedu)\.([a-z]+)\.\d+$/', $key, $m) !== 1) {
+            return null;
+        }
+
+        $animation = config('Gelita')->characterAnimations["{$m[1]}.{$m[2]}"] ?? ['frames' => 1, 'seconds' => 2.0, 'loop' => true];
+        $max       = max(1, (int) $animation['frames']);
+        $ids       = array_column(
+            model(MediaAssetModel::class)->select('id, asset_key')->like('asset_key', "char.{$m[1]}.{$m[2]}.", 'after')->findAll(),
+            'id',
+            'asset_key',
+        );
+        $frames = [];
+
+        for ($i = 1; $i <= $max; $i++) {
+            $frameKey = "char.{$m[1]}.{$m[2]}.{$i}";
+            $frames[] = ['n' => $i, 'src' => media_key_src($frameKey), 'id' => isset($ids[$frameKey]) ? (int) $ids[$frameKey] : null];
+        }
+
+        $uploaded = count(array_filter(array_column($frames, 'src')));
+
+        return [
+            'frames' => $frames,
+            'fps'    => character_fps($uploaded, $animation),
+            'loop'   => (bool) ($animation['loop'] ?? true),
+            'max'    => $max,
+        ];
+    }
+
     private function displaySize(string $key): ?array
     {
         foreach (config('Gelita')->assetDisplaySizes as $pattern => $size) {

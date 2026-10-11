@@ -66,6 +66,7 @@ final class RouteWiringTest extends CIUnitTestCase
             'admin/ekspor/xlsx'               => 'Admin\ExportController::xlsx',
             'admin/ekspor/csv'                => 'Admin\ExportController::csv',
             'admin/ekspor/pdf'                => 'Admin\ExportController::pdf',
+            'admin/media/([0-9]+)/unggah-gerak' => 'Admin\MediaController::uploadFrames/$1',
         ],
     ];
 

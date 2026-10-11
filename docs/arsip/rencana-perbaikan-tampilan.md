@@ -1,5 +1,7 @@
 # Plan: GELITA display update — bug fixes, admin images, avatars, city pins and lanterns, game-style toasts, touch-friendly play
 
+> **Archived, finished (11 October 2026).** Every phase (0, A–F) is merged (PR #83–#93); the audit follow-ups are closed (`docs/PROGRESS.md`). Kept as a record; see [`README.md`](README.md).
+>
 > **Status: revised plan, approved for implementation** (revised 11 October 2026 against `main` at PR #83). Phases run in order, **0 → A → B → C → E → F**. Each phase gets its own short-lived branch cut from `main` and its own PR; the next phase starts once the previous PR is merged.
 >
 > The first version of this plan (29 September 2026, in Indonesian) was written for the old responsive layout (`layout.css`, pixel breakpoints, landscape-phone layout). That layout is gone: the game is now one fixed 1280 × 720 dp stage (Dok 3), so most of the old file references and sizes no longer apply. The old text is in git history (commit `1943499`); this version replaces it.

@@ -229,7 +229,7 @@ Sfx.setEnabled(on) // preferensi `sound`; mematikan juga menghentikan musik dan 
 Sfx.isEnabled()
 ```
 
-Berkas di `public/assets/audio/sfx/` dan `public/assets/audio/music/`. Tidak ada yang berbunyi sebelum `unlock()`. Bila Howler atau berkasnya tidak ada, aplikasi tetap berjalan tanpa bunyi; tidak ada nada sintetis pengganti. `game.js` memanggil `Sfx.unlock()` pada `pointerdown`/`keydown` pertama. Layar memanggil `Sfx.music()` saat dimuat, sebelum ketukan pertama; musik yang diminta disimpan dan baru diputar oleh `unlock()`, atau oleh `setEnabled(true)` bila suara tadinya mati (Phase 0, `docs/rencana-perbaikan-tampilan.md`).
+Berkas di `public/assets/audio/sfx/` dan `public/assets/audio/music/`. Tidak ada yang berbunyi sebelum `unlock()`. Bila Howler atau berkasnya tidak ada, aplikasi tetap berjalan tanpa bunyi; tidak ada nada sintetis pengganti. `game.js` memanggil `Sfx.unlock()` pada `pointerdown`/`keydown` pertama. Layar memanggil `Sfx.music()` saat dimuat, sebelum ketukan pertama; musik yang diminta disimpan dan baru diputar oleh `unlock()`, atau oleh `setEnabled(true)` bila suara tadinya mati (Phase 0, `docs/arsip/rencana-perbaikan-tampilan.md`).
 
 **Narasi — elemen `<audio>` per `.audio-player[data-src]` + telemetry:**
 
@@ -319,7 +319,7 @@ Plays the frames of a character pose. `components/character.php` renders frame 1
 - `initSprites(root)` binds every `.character[data-frames]` once. `setFrames(figure, frames, { fps, loop })` replaces the frames and restarts from frame 1; fewer than 2 frames stops the player. `parseFrames(json)` reads the attribute safely.
 - Only the `src` of the existing image changes, never the node, so entrance animations (`cine-rise`) do not replay and the mirrored right-hand figure stays mirrored.
 - Frames are decoded while idle before the cycle starts; a frame that fails to load is skipped. The curtain still preloads frame 1 only.
-- `loop` cycles; otherwise the pose plays once and holds its last frame. It replays from frame 1 each time the figure comes back into view.
+- `loop` cycles; otherwise the pose plays once and holds its last frame. Since 11 October 2026 every pose loops (up to 24 frames, `Config\Gelita::$characterAnimations`), and `data-fps` may be below 1 when only a few interim frames are uploaded. It restarts from frame 1 each time the figure comes back into view.
 - Paused while the tab is hidden (`visibilitychange`) and while the figure is not rendered (IntersectionObserver; hidden slides are `display: none`). With `reducedMotion()` only frame 1 shows.
 
 ### `core/lightbox.js`

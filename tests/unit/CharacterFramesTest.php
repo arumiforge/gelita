@@ -60,12 +60,12 @@ final class CharacterFramesTest extends CIUnitTestCase
 
         $this->assertSame([
             'frames' => [base_url('assets/char/jaka-happy-1.png'), base_url('assets/char/jaka-happy-2.png'), base_url('assets/char/jaka-happy-3.png')],
-            'fps'    => 6,
-            'loop'   => false,
+            'fps'    => 1.5,   // 3 frames in one 2-second loop
+            'loop'   => true,
         ], character_frames('jaka', 'happy'));
 
         $idle = character_frames('jaka');
-        $this->assertSame(4, $idle['fps']);
+        $this->assertSame(1.0, $idle['fps']);
         $this->assertTrue($idle['loop']);
         $this->assertSame(character_frame_src('jaka'), $idle['frames'][0]);
     }
@@ -82,7 +82,7 @@ final class CharacterFramesTest extends CIUnitTestCase
         $worried     = character_frames('mbah_kedu', 'worried');
         $this->assertSame(base_url('assets/char/kedu-idle-1.png'), $worried['frames'][0]);
         $this->assertCount(3, $worried['frames']);
-        $this->assertSame(3, $worried['fps']);
+        $this->assertSame(0.86, $worried['fps'], 'idle speed: 3 frames in 3.5 s');
         $this->assertSame(character_frame_src('mbah_kedu', 'worried'), $worried['frames'][0]);
 
         // A pose another character does not have also falls back to idle
@@ -91,6 +91,27 @@ final class CharacterFramesTest extends CIUnitTestCase
         $this->media = [];
         $this->assertNull(character_frames('jaka', 'happy'));
         $this->assertNull(character_frames('narator'));
+    }
+
+    public function testEveryPoseLoopsUpTo24FramesAndSpeedFollowsTheFrameCount(): void
+    {
+        foreach (config('Gelita')->characterAnimations as $name => $animation) {
+            $this->assertSame(24, $animation['frames'], $name);
+            $this->assertTrue($animation['loop'], "{$name} repeats (owner decision 11 October 2026)");
+        }
+
+        $twoSeconds = ['seconds' => 2.0];
+        $this->assertSame(12.0, character_fps(24, $twoSeconds), '24 frames in 2 s');
+        $this->assertSame(1.5, character_fps(3, $twoSeconds), 'interim 3 frames play slowly, no flicker');
+        $this->assertSame(0.5, character_fps(1, ['seconds' => 3.5]), 'never slower than one frame per 2 s');
+        $this->assertSame(24.0, character_fps(24, ['seconds' => 0.1]), 'never faster than 24 per second');
+
+        // All 24 uploaded frames play in order
+        $this->media = $this->frames('jaka', 'happy', range(1, 24));
+        $happy       = character_frames('jaka', 'happy');
+        $this->assertCount(24, $happy['frames']);
+        $this->assertSame(base_url('assets/char/jaka-happy-24.png'), $happy['frames'][23]);
+        $this->assertSame(12.0, $happy['fps']);
     }
 
     public function testAttributesOnlyForTwoOrMoreFrames(): void
@@ -108,7 +129,7 @@ final class CharacterFramesTest extends CIUnitTestCase
 
         $html = component('character', ['character' => 'jaka', 'pose' => 'bow']);
 
-        $this->assertMatchesRegularExpression('/<figure class="character character-jaka "\s+data-character="jaka" data-pose="bow" data-frames="[^"]+" data-fps="6" data-loop="0">/', $html);
+        $this->assertMatchesRegularExpression('/<figure class="character character-jaka "\s+data-character="jaka" data-pose="bow" data-frames="[^"]+" data-fps="1.2" data-loop="1">/', $html);
         $this->assertStringContainsString('src="' . esc(base_url('assets/char/jaka-bow-1.png'), 'attr') . '"', $html);
         $this->assertStringContainsString(esc(json_encode([
             base_url('assets/char/jaka-bow-1.png'), base_url('assets/char/jaka-bow-2.png'), base_url('assets/char/jaka-bow-3.png'),

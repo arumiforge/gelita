@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Background music check (display plan Phase 0 item 1, docs/rencana-perbaikan-tampilan.md).
+ * Background music check (display plan Phase 0 item 1, docs/arsip/rencana-perbaikan-tampilan.md).
  *
  * Loads the real public/assets/js/core/audio.js in Chromium (Playwright) with
  * a stub `Howl`/`Howler`, and checks the music rules:

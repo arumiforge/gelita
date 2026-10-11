@@ -11,7 +11,7 @@ use Config\Services;
 use Tests\Support\Database\GradeFiveWorld;
 
 /**
- * Display plan Phase B (docs/rencana-perbaikan-tampilan.md): avatars.
+ * Display plan Phase B (docs/arsip/rencana-perbaikan-tampilan.md): avatars.
  *
  * - Only uploaded `avatar.N` slots are offered; with none uploaded the picker
  *   is not rendered and the HUD/profile show the initial as before.

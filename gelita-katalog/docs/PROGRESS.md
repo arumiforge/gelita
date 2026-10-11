@@ -2,6 +2,20 @@
 
 Diperbarui 12 Oktober 2026 (Asia/Bangkok). Urutan di bawah membedakan hasil terkini dari pemeriksaan historis. Keputusan aktif dirangkum dalam [MEMORY.md](MEMORY.md).
 
+## 11 October 2026 (evening) — logo and start buttons from the references, game import
+
+*(New section, English, written from the GELITA app repo; branch `pbb/nifty-faraday-fcw9r6`.)*
+
+- **Owner decisions** in the app repo's decision log (`docs/perombakan-kelas5/CATATAN_IMPLEMENTASI.md`): `ui.logo-hero` ← `reference.09`, `ui.logo` ← `reference.16`, start buttons as finished images styled like `reference.10`.
+- **Replaced four images** (Pillow, Lanczos, lossy WebP q92 with full alpha):
+  - `assets/logo/ui.logo-hero.webp`: `reference.09` padded with transparency to 1867 × 700 (8:3), scaled to 1600 × 600.
+  - `assets/logo/ui.logo.webp`: `reference.16` scaled to 512 × 512.
+  - `assets/antarmuka/ui.btn-start.webp`: `reference.10` padded to 960 × 320 (3:1), scaled to 720 × 240.
+  - `assets/antarmuka/ui.btn-start.en.webp`: START made from `reference.10`. The MULAI letters were removed by rebuilding the enamel between two clean columns, then START was drawn in Cinzel Bold (the app's font) with the gold sampled from the original letters, a dark outline, a shadow, and a light bevel. Interim, until a real START exists.
+- **Data:** in `data.json`, the four entries got a new `desc`, `generated_by`, `content_review`, and `actual`. The old ornament-only logo files and the flat SVG-rendered buttons are replaced; `ui.btn-start*.svg` stay as before.
+- **Checks:** `node build.mjs` and `node scripts/validate.mjs` pass. No other image, prompt, or audio changed. The browser check was not run.
+- **Game import:** the app now installs this catalogue's images with `php spark gelita:katalog:impor`, which re-encodes them as lossy WebP for the game. Images here stay lossless.
+
 ## 12 Oktober 2026 — dokumentasi dan struktur
 
 - Membaca panduan/data/skrip dan memeriksa kondisi folder sebelum perapian.
