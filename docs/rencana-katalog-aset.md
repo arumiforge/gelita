@@ -1,11 +1,26 @@
 # Rencana: Katalog Aset GELITA — halaman statis berisi semua gambar, ikon, audio, dan narasi beserta prompt pembuatannya
 
-> Status: **rencana, belum dikerjakan** (disusun 29 September 2026). Dokumen ini punya dua bagian:
+> Status: **Bagian I tidak dibangun; Bagian II tetap menjadi acuan prompt** (disusun 29 September 2026, status terakhir 11 Oktober 2026). Dokumen ini punya dua bagian:
 >
 > - **Bagian I** (§1–§8) adalah rencana pengembangan halaman statisnya.
 > - **Bagian II** (§9–§15) adalah isi katalog: panduan gaya, ukuran dan rasio, serta prompt setiap aset. Isi ini menjadi berkas data pada Fase B.
 >
 > Rencana ini bersinggungan dengan [`rencana-perbaikan-tampilan.md`](rencana-perbaikan-tampilan.md) (katalog slot `ImageSlots`, pemutar frame tokoh, pin per kota, avatar). Titik temunya dijelaskan di §5 Fase F.
+>
+> **Status update (11 October 2026, after the display update phases).** Every image slot this plan lists now exists in the game and in the panel. Nothing of Part I is built, and none of it is planned.
+>
+> - **Done elsewhere:**
+>   - `App\Libraries\ImageSlots` is the slot catalogue in the app (PR #80): each slot's description, screens, format, fallback, and priority are shown in **Gambar & mockup** → Detail. §5 Phase F item 4 is settled: `ImageSlots` came first.
+>   - Larger uploads with the same shape are accepted and shrunk to the slot size (`ImageFitter`, PR #81). The "generate → target size" steps in §10.4 are therefore optional, but the ratio must still match.
+>   - Character frames 2 and 3 play as an animation (`core/sprite.js`, PR #83). Every "hanya frame 1 yang tampil" note is outdated.
+>   - App icons are uploadable slots `app.*` (§11.3), story slide backgrounds are set per slide in the panel (§11.4.2), and `bg.auth` and `ui.placeholder` are used (PR #87).
+>   - The 21 planned images in §11.10 are real slots: avatars (PR #88), city pins, Kenali lanterns, and city loading backgrounds (PR #89).
+> - **Still open (not code):**
+>   - Producing and uploading the art (`docs/PROGRESS.md`, *Before the research starts*).
+>   - The next edition of the team's ZIP, with the gaps listed in the decision log. It should also stop calling the §11.10 slots "not read by the game".
+>   - The open questions in §8 (Mbah Kedu's blangkon and jarik, the "Jaka holding a key" picture).
+>   - The avatar brief in §11.10 differs from the panel text. The owner decides which one illustrators follow.
+> - **Outdated in the notes below:** the 9 October note's "belum ada … `ImageSlots`", and the 10 October note's follow-ups (story backgrounds, app icons, planned slots), which PRs #87–#89 closed.
 >
 > **Status update (10 October 2026).** The static page is not going to be built: the team's ready catalogue "Katalog Aset dan Prompt, Edisi 03" (ZIP with `index.html`, `data.json`, `KATALOG-PROMPT.md`) covers Part II and is the prompt and style catalogue. Upload status, what each picture shows, and where it appears live in the admin panel (`App\Libraries\ImageSlots`, **Gambar & mockup** → Detail). Decision and the ZIP's known gaps: `perombakan-kelas5/CATATAN_IMPLEMENTASI.md`, "Asset catalogue decision and admin image slots". Part II below stays the reference for the next edition of the ZIP.
 >
@@ -748,6 +763,15 @@ Aset slot resmi dapat dipasang dengan dua cara (`docs/08` §Assets):
 
 Berkas ini ada di repositori dan masih "sementara" (`docs/05` §Aplikasi terpasang). Timpa dengan ukuran yang sama, tanpa perubahan kode. Bila Fase A `rencana-perbaikan-tampilan` selesai, berkas yang sama menjadi slot `app.*`.
 
+> **Update (11 October 2026).** Done in PR #87. Upload the icons in the panel (group "Ikon aplikasi"), PNG only:
+>
+> - `app.icon-512` and `app.icon-maskable`: 512 × 512
+> - `app.icon-192`: 192 × 192
+> - `app.apple-touch`: 180 × 180
+> - `app.favicon`: 48 × 48 (one PNG, not an ICO)
+>
+> The static files in the table below are now only fallbacks, used while a slot is empty. `icon.svg` is not a slot.
+
 | Berkas | Ukuran | Isi |
 |---|---|---|
 | `public/assets/app/icon.svg` | viewBox 512 | sumber vektor; lentera emas di langit malam |
@@ -839,6 +863,7 @@ magick f16.png f32.png ../favicon.ico
 - **Tampil di:** `partials/cine-slides.php`. Kolom `dialogues.background_media_id` digambar sebagai `.cine-bg` dengan Ken Burns 30 detik. Tanpa kolom itu, slide memakai `bg.intro`.
 - **Kode yang diusulkan:** `bg.cerita-intro-01` … `bg.cerita-intro-09` dan `bg.cerita-penutup-01` … `-05`. Nama berkas `assets/bg/bg-cerita-intro-01.jpg` menjadi kunci itu lewat `MediaAssetSeeder::keyFromPath()`, dan pola `bg.*` menegakkan 1920 × 1080.
 - **Pemasangan:** kolom FK belum dapat diisi dari panel. Tunggu Fase A7 `rencana-perbaikan-tampilan` (`media-field` per slide), atau minta petugas teknis mengisi kolomnya.
+- **Update (11 October 2026).** Done in PR #87. Each slide's background is uploaded in **Konten → Cerita pembuka & penutup**. The default code is `bg.story.{context}.{sequence}`, for example `bg.story.intro.1` … `bg.story.intro.9` and `bg.story.ending.1` … `bg.story.ending.5`; the `bg.cerita-*` codes above are not used. 1920 × 1080 is still enforced (`bg.*`). Without a picture, a slide falls back to `bg.intro`, then `bg.welcome`.
 - Semua slide memakai zona aman sinematik.
   - Slide bertokoh: kolom kiri (x ≤ 540) tenang, karena gambar tokoh berdiri di sana.
   - Slide narator: teks di tengah bawah.
@@ -1310,6 +1335,19 @@ Di halaman, tabel ini dibangkitkan dari `docs/bank-soal/data/*.php`, jadi selalu
 ### 11.10 Direncanakan: menunggu `rencana-perbaikan-tampilan.md` (21)
 
 Slot ini belum dibaca kode. Kartunya bertanda **menunggu** beserta fase rencana itu. Setelah fasenya selesai dan `ImageSlots` ada, tandanya hilang sendiri (§5 Fase F).
+
+> **Update (11 October 2026).** Nothing here is waiting any more: every slot below is read by the game and listed in `ImageSlots`, all optional. Phase B (avatars) is PR #88; Phases C1–C3 (pins, lanterns, city loading backgrounds) are PR #89. Sizes and formats in the table match `Config\Gelita::$assetSizes`, and transparent slots accept PNG or WebP. City slots can also be uploaded from the region's edit page under **Konten**.
+>
+> - **Display sizes.** Pins are 56 dp. Avatars are 72 dp in the profile, 64 dp in the picker, and 36 dp in the HUD.
+> - **Fallbacks.**
+>   - `map.pin.*` falls back to `ui.pin`, then the built-in icon.
+>   - `map.lantern.*` falls back to `ui.lantern`, then the built-in icon.
+>   - `bg.loading.*` falls back to `bg.{wilayah}.region`, then the light gradient.
+>   - An avatar slot that is empty is not offered to students.
+> - **Where the panel text differs from this section** (the slot detail page shows the `ImageSlots` text):
+>   - **Avatars.** The panel asks for head-and-shoulders portraits of a child or a friendly figure (coffee farmer, dancer, archer). This section asks for neutral emblems without faces, so that no child has to choose by looks or gender. **Open for the owner.** The two texts should agree before the art is ordered.
+>   - **`ui.pin`.** The panel describes a small lantern or monument. This section describes a gold medallion with a lantern glyph. Either works: locked, completed, and open states are drawn by the game on top.
+>   - **`ui.lantern`.** The panel asks for a flame that is not too bright, because the game adds the glow as regions are completed. Drop "bright flame" from the prompt below.
 
 | Kode | Ukuran | Fase | Tampil di | Prompt (setelah `{GAYA}`) |
 |---|---|---|---|---|
