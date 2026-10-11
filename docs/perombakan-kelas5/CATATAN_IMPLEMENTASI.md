@@ -1242,3 +1242,18 @@ Branch `sky/ecstatic-ritchie-bcmeha`. Owner asked to check whether the multi-ima
 - **Texts.** Kelengkapan help and the character slot tips no longer say only frame 1 is shown; the "(sementara tampil dengan pose diam)" note now appears only when frame 1 is missing, since that is the only case that falls back. `MediaUsage::characterUses()` lists frames 2+ with the same uses as frame 1.
 - **Not done.** Admin preview of the animation on the slot page (Phase A item 3) is still open.
 - **Tests.** `CharacterFramesTest` (helper, fallback, attributes, component, wiring) and a `RegionStoryTest` assertion for dialogue lines. Browser check of `core/sprite.js` in Chromium with a harness page: looping and one-shot poses, a hidden slide shown later, a broken frame skipped, `setFrames()` on pose change, and reduced motion.
+
+## Display update plan revised (11 October 2026)
+
+Branch `sky/eloquent-lamport-6cjmvk`. Owner request: bring `docs/rencana-perbaikan-tampilan.md` in line with the project as it is now, then implement it phase by phase. Docs only; no code changed.
+
+- **How it was checked.** Three read-only audits of `main` at PR #83, one per area (admin images; avatars and city art; toasts and touch), against every item of the 29 September plan. The plan text was rewritten in English for the fixed 16:9 stage; the old Indonesian version stays in git history (`1943499`), since almost none of its file references, sizes, or layouts still apply.
+- **Bugs found, now Phase 0.** Music never plays on challenge and region screens (`Sfx.music()` returns while audio is locked and nothing replays it after the first tap). "Kata sandi baru tersimpan" is consumed by the `/mulai` → `/gerbang` redirect. The must-change-password message shows twice (flash toast plus the page alert). The `$assetSizes` keys `map.region`, `reward.badge`, and `library.image` match no real key, so region maps, badges, and library images are uploaded with no size check; SVG uploads skip the size check on every slot.
+- **Owner decisions.** Order 0 → A → B → C → E → F; a new per-city curtain slot `bg.loading.{wilayah}` (fallback `bg.{wilayah}.region`, then the gradient); full touch scope; one branch and PR per phase.
+- **My calls in the revision** (the owner can still change them):
+  - The "Tampilan permainan" card page is dropped: the `/admin/media` filters and the slot detail page from PR #80 cover it, and new slots join `ImageSlots`.
+  - Toasts keep the Dok 3 place on the stage (x 856, y 72, width 400 dp) instead of moving to the centre; only look and behaviour change. They do not wait for modals, so errors are always seen.
+  - `library.image` leaves `$assetSizes` instead of being enforced as `library.*`, because `ImageSlots` already calls library sizes recommended and Commons images come in many shapes.
+  - Story slide backgrounds use the key `bg.story.{context}.{sequence}`, so the `bg.*` size rule applies.
+  - iOS input zoom is avoided with `maximum-scale=1` on iOS only (iOS keeps pinch zoom), because the stage rules forbid a px font-size floor.
+- **`docs/PROGRESS.md`.** New "Display update" section with one row per phase. The asset package rows there still show Stages 0, 1, 1b, 4, and 5 as open although PRs #74–#78 are merged; those rows belong to the coordinating session and were left as they are.
