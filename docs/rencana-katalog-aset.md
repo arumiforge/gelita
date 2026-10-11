@@ -7,6 +7,22 @@
 >
 > Rencana ini bersinggungan dengan [`rencana-perbaikan-tampilan.md`](rencana-perbaikan-tampilan.md) (katalog slot `ImageSlots`, pemutar frame tokoh, pin per kota, avatar). Titik temunya dijelaskan di §5 Fase F.
 >
+> **Status update (11 October 2026, visual direction from `gelita-katalog/`).** The team catalogue now lives in the repo as [`gelita-katalog/`](../gelita-katalog/README.md) (open `gelita-katalog/index.html`; source `gelita-katalog/data.json`; reference images in `gelita-katalog/assets/referensi/`). Part II below was brought in line with it. Owner decisions on the points where the two disagreed:
+>
+> - **Style: stylized 3D, not 2D gouache.** `{GAYA}`, `{NEGATIF}`, and `{FRAME}` (§9.2) were rewritten. Every prompt that uses these blocks follows automatically.
+> - **Jaka: red-scarf design** from `reference.01` (sheet), `reference.13` (full body), and `reference.03` (avatar). This replaces the lurik shirt and iket (§9.4).
+> - **Mbah Kedu: outfit from `reference.14`, face from `reference.02`, and he keeps the walking stick** (§9.4). The blangkon and jarik questions in §8 are closed.
+> - **The 30 frames in `gelita-katalog/assets/karakter/` still show the old lurik–iket design.** They must be redrawn in the new design (§11.7).
+> - **WebP is the default raster format**, and JPG or PNG are still accepted (§10.1). The app-icon slots `app.*` are the exception: the game accepts PNG only there.
+> - **Logo from the catalogue:** `ui.logo-hero` ← `reference.09`, `ui.logo` ← `reference.16` (§11.2).
+> - **Start button is a finished image with its label.** There are two of them, `ui.btn-start` (MULAI) and `ui.btn-start.en` (START), styled like `reference.10` (§11.2).
+> - **UI icons: the catalogue's redrawn shapes are the target.** A later code change brings them into `icon()` (§12).
+> - **Reference only, not slots:**
+>   - `reference.15` (village guide; the game has only Jaka and Mbah Kedu);
+>   - `reference.12` (map title text);
+>   - `reference.17`–`.24` (round raster buttons);
+>   - `reference.04`–`.08`, `.25`, `.26` (mood references for backgrounds and maps).
+>
 > **Status update (11 October 2026, after the display update phases).** Every image slot this plan lists now exists in the game and in the panel. Nothing of Part I is built, and none of it is planned.
 >
 > - **Done elsewhere:**
@@ -18,7 +34,7 @@
 > - **Still open (not code):**
 >   - Producing and uploading the art (`docs/PROGRESS.md`, *Before the research starts*).
 >   - The next edition of the team's ZIP, with the gaps listed in the decision log. It should also stop calling the §11.10 slots "not read by the game".
->   - The open questions in §8 (Mbah Kedu's blangkon and jarik, the "Jaka holding a key" picture).
+>   - The open question in §8 about the "Jaka holding a key" picture. (The blangkon and jarik question was closed on 11 October 2026; see the note above.)
 >   - The avatar brief in §11.10 differs from the panel text. The owner decides which one illustrators follow.
 > - **Outdated in the notes below:** the 9 October note's "belum ada … `ImageSlots`", and the 10 October note's follow-ups (story backgrounds, app icons, planned slots), which PRs #87–#89 closed.
 >
@@ -232,7 +248,7 @@ Templat dipakai sebagai lapisan acuan di aplikasi gambar (Krita, Photoshop, Figm
 | `templat/peta-kedu-1400x900.svg` | titik pin Temanggung (910, 369), Magelang (784, 639), Wonosobo (392, 495); zona tenang ±130 × ±90 px; garis rute; usulan letak bentang alam (§11.5) |
 | `templat/peta-wilayah-1400x900.svg` | 5 pos: (252, 648), (476, 432), (700, 612), (924, 396), (1148, 558); zona tenang ±110 × ±80 px; rute; usulan letak vinyet per pos |
 | `templat/adegan-cari-1280x720.svg` | 11 kotak objek 154 × 154 px beserta lingkaran objek; garis rak y 197 / 442 / 672 (§11.8.2) |
-| `templat/tokoh-700x900.svg` | garis tanah y 876; puncak kepala Jaka y 156; puncak blangkon Mbah Kedu y 66; sumbu x 350; margin 40 px; panah arah hadap (kanan) |
+| `templat/tokoh-700x900.svg` | garis tanah y 876; puncak kepala Jaka y 156; puncak ikat kepala Mbah Kedu y 66; sumbu x 350; margin 40 px; panah arah hadap (kanan) |
 | `templat/logo-hero-1600x600.svg` | margin 48 px; pita tinggi huruf 260–300 px; kotak pratinjau ukuran tampil 880 × 330 |
 | `templat/tombol-mulai-720x240.svg` | badan tombol 688 × 208 (margin 16); zona teks 520 × 110 |
 | `templat/lencana-320.svg` | lingkaran Ø 312 px |
@@ -342,10 +358,10 @@ Kerjakan per fase, satu commit per fase. Jalankan uji setiap fase, lalu push.
 | Validitas penelitian: mengganti gambar puzzle, objek `cari`, atau menambah gambar `mgl-5` dapat mengubah tingkat kesulitan butir | Diputuskan peneliti. Perubahan pada butir yang sudah dipakai dicatat sebagai rilis baru (`game_releases`), seperti aturan kunci jawaban di `docs/bank-soal/README.md` |
 | Lisensi keluaran alat AI dan lisensi Commons (atribusi, *share-alike*) | Ketentuan layanan alat diperiksa untuk distribusi pendidikan; kredit Commons wajib ditulis di kolom `credit`; tanpa nama seniman hidup di prompt; tanpa kloning suara orang nyata |
 | Tanda jebakan bocor ke siswa | Halaman internal, `noindex`, tidak di `public/`, tidak dipasang di server sekolah |
-| iPad lama tidak menampilkan WebP | Keluaran JPG/PNG; media Pustaka `.webp` (lambang Wonosobo) dikonversi ke PNG saat dilokalkan |
+| iPad lama tidak menampilkan WebP | **Superseded (11 October 2026):** the owner chose WebP as the default raster format, as in `gelita-katalog/`. The game accepts WebP in every image slot except `app.*`, where the slots take PNG only |
 | Tirai "Membuka Peta Kedu" berhenti menunggu setelah 8 detik | Anggaran ukuran berkas di §10.1 (latar ≤ 450 KB, peta ≤ 600 KB, frame tokoh ≤ 250 KB) |
 | **Pertanyaan:** perlukah ilustrasi khusus "Jaka memegang kunci" untuk kotak "Mengapa kata sandi harus kuat?" (`docs/05` menyebutnya, kode memakai pose `bow`)? | Bila ya, perlu slot baru dan perubahan `register.php`; di luar rencana ini |
-| **Pertanyaan:** gaya blangkon Mbah Kedu (mondolan gaya Yogyakarta atau trepes gaya Surakarta) dan motif jarik | Diputuskan bersama budayawan sebelum lembar tokoh dibuat (§9.4) |
+| ~~**Pertanyaan:** gaya blangkon Mbah Kedu (mondolan gaya Yogyakarta atau trepes gaya Surakarta) dan motif jarik~~ | **Closed (11 October 2026):** Mbah Kedu wears the tied batik headwrap and batik sash of `gelita-katalog/assets/referensi/reference.14.webp` (§9.4). A teacher or local culture expert still checks the finished frames (§9.5) |
 | **Pertanyaan:** perlukah efek `page` dan musik `library` yang disebut `core/audio.js` tetapi tidak dipanggil? | Tidak dibuat sampai ada fiturnya |
 
 ---
@@ -356,7 +372,22 @@ Bagian ini menjadi isi `docs/katalog-aset/data/*.php` pada Fase B. Semua ukuran,
 
 ## 9. Panduan gaya visual
 
-Identitas GELITA adalah **navy gelap + emas**: judul serif klasik (Cinzel), isi sans humanis (Plus Jakarta Sans), angka mono (`docs/05`). Suasana cerita adalah dataran Kedu pada malam hingga fajar, diterangi lentera, diselimuti kabut. Gambar permainan mengikuti suasana itu: ilustrasi buku cerita bergaya lukisan, hangat, tenang, dan hormat pada budaya Jawa.
+Identitas GELITA adalah **navy gelap + emas**: judul serif klasik (Cinzel), isi sans humanis (Plus Jakarta Sans), angka mono (`docs/05`). Suasana cerita adalah dataran Kedu pada malam hingga fajar, diterangi lentera, diselimuti kabut.
+
+**Updated 11 October 2026 (owner decision).** Game art is a **stylized 3D animated adventure**: softly rounded dimensional forms, warm cinematic light, clean silhouettes, warm and calm, and respectful of Javanese culture. It no longer uses the painterly 2D storybook look. The visual references are in `gelita-katalog/assets/referensi/`:
+
+| Reference | Use it for |
+|---|---|
+| `reference.01` (Jaka sheet), `reference.13` (Jaka full body), `reference.03` (Jaka avatar) | Jaka's identity, costume, and proportions |
+| `reference.02` (face), `reference.14` (outfit, waist up) | Mbah Kedu |
+| `reference.05` (prologue with Jaka), `reference.04`, `reference.06`, `reference.07` | finish, light, and mood of backgrounds |
+| `reference.08` (Kedu diorama) | mood of the 3D relief maps (§11.5, §11.6.2); not a map layout |
+| `reference.09` (GELITA logo), `reference.16` (lantern emblem) | `ui.logo-hero`, `ui.logo`, and the look of the Lentera Kedu |
+| `reference.10` (MULAI button) | `ui.btn-start`, `ui.btn-start.en` |
+| `reference.11` (coffee medal) | finish of round medals: badges, pins, avatars |
+| `reference.25`, `reference.26` (login, sign-up) | backgrounds with an empty area for a form |
+
+Not used as direction: `reference.12` (title text inside an image, which breaks rule 7 in §9.5), `reference.15` (a supporting character the game does not have), and `reference.17`–`.24` (round raster buttons; the game draws its controls with `icon()`).
 
 ### 9.1 Palet warna
 
@@ -378,6 +409,7 @@ Nilai heksadesimal diambil dari `public/assets/css/tokens.css`, sehingga gambar 
 | `--warn` | `#F0A868` | cahaya matahari terbit |
 | `--bad` | `#D9704A` | terakota, genteng (hemat) |
 | (kabut) | `#8C97AA` → `#5B6478` | Kabut Lupa: biru-kelabu dingin |
+| (turquoise) | deep teal around `#007878`, lighter in highlights | restrained accent only: inlays in the logo, the lantern gem, lake water (as in `reference.09` and `reference.16`) |
 
 Aturan: satu sumber cahaya hangat utama (lentera atau fajar); warna jenuh hanya untuk titik fokus; latar tidak pernah hitam pekat, karena selalu ditimpa gradien navy 35% di atas → 55% → 75% di bawah (`layout.css:39`, `.scene::after`).
 
@@ -388,13 +420,13 @@ Pembangun mengganti penanda `{…}` dengan teks di bawah. Ubah gaya di sini saja
 `{GAYA}`
 
 ```text
-storybook illustration for an Indonesian children's educational game (ages 8–14), painterly 2D digital gouache with soft brush texture and subtle paper grain, clean readable silhouettes, gentle volumetric light, Central Javanese Kedu highlands, warm lantern-gold highlights (#DFC087, #F0DFB8) against deep night navy and twilight blue (#0B1320, #1B2740, #26355A), earthy browns (#4A3218, #8A6A32), soft blue-grey mist, calm and hopeful mood, culturally respectful, no text
+premium stylized 3D animated adventure game art for an Indonesian children's educational game (ages 8–14), softly rounded dimensional forms, rich but clean materials, clean readable silhouettes, warm cinematic volumetric light, matching the finish and mood of GELITA reference.05 and reference.09, Central Javanese Kedu highlands, warm lantern-gold highlights (#DFC087, #F0DFB8) against deep night navy and twilight blue (#0B1320, #1B2740, #26355A), earthy browns (#4A3218, #8A6A32), a restrained deep-teal accent, soft blue-grey mist, calm and hopeful mood, culturally respectful, no text
 ```
 
 `{NEGATIF}`
 
 ```text
-text, letters, numbers, writing, caption, watermark, signature, logo, user interface, frame, border, photorealistic, photograph, 3D render, CGI, plastic look, anime, chibi, manga, horror, creepy, gore, blood, weapon pointed at viewer, smoking, cigarette, alcohol, neon colours, oversaturated, harsh black shadows, blurry, low resolution, jpeg artifacts, deformed hands, extra fingers, extra limbs, duplicate, cropped subject, European castle, Chinese or Japanese architecture, snow
+text, letters, numbers, writing, caption, watermark, signature, logo, user interface, frame, border, photorealistic, photograph, painterly 2D, gouache, brush texture, paper grain, flat painting, plastic toy look, chibi, manga panel, horror, creepy, gore, blood, weapon pointed at viewer, smoking, cigarette, alcohol, neon colours, oversaturated, harsh black shadows, blurry, low resolution, jpeg artifacts, deformed hands, extra fingers, extra limbs, duplicate, cropped subject, European castle, Chinese or Japanese architecture, snow
 ```
 
 `{LATAR}` (latar layar 16:9)
@@ -409,13 +441,15 @@ wide 16:9 cinematic landscape composition, main subject inside the central 75% o
 single isolated subject, centred, whole subject visible with even margins, plain flat light grey background (#D9D9D9) for clean background removal, no cast shadow, no ground, no scenery
 ```
 
-Pada gpt-image (OpenAI), ganti kalimat latar abu-abu dengan parameter `background: "transparent"` dan format PNG.
+Pada gpt-image (OpenAI), ganti kalimat latar abu-abu dengan parameter `background: "transparent"` dan format PNG atau WebP.
 
 `{LENTERA}`
 
 ```text
-the Lentera Kedu: an antique hexagonal brass hand lantern about 30 cm tall with six clear glass panes, a pierced brass cap with a kawung pattern, a ring handle on top, and a warm golden flame inside casting soft light
+the Lentera Kedu: an antique brass hand lantern about 30 cm tall with a pointed pierced cap, warm amber glass panes, two small decorative curls at the sides, a small deep-teal gemstone on the front, a ring handle on top, and a warm golden flame inside casting soft light
 ```
+
+Updated 11 October 2026 to match the lantern in the catalogue logo (`reference.09`) and the emblem (`reference.16`), so the logo, icons, and story art show the same lantern.
 
 `{KABUT}`
 
@@ -432,7 +466,7 @@ Shards of Light: small faceted crystal shards of warm golden light (#F0DFB8 core
 `{JAKA}` dan `{KEDU}` ada di §9.4. `{FRAME}` (khusus frame tokoh):
 
 ```text
-full-body character, three-quarter view facing screen right, standing on an invisible ground line near the bottom, whole figure visible including feet and headwear with even side margins, soft warm key light from the upper left and a faint cool rim light from the right, clean painterly edges suitable for a cut-out, no scenery, no cast shadow
+full-body character, three-quarter view facing screen right, standing on an invisible ground line near the bottom, whole figure visible including feet and headwear with even side margins, soft warm key light from the upper left and a faint cool rim light from the right, clean dimensional edges suitable for a cut-out, no scenery, no cast shadow
 ```
 
 ### 9.3 Motif cerita
@@ -446,14 +480,19 @@ full-body character, three-quarter view facing screen right, standing on an invi
 
 ### 9.4 Lembar tokoh
 
-Buat dan setujui **lembar tokoh** (turnaround + ekspresi) sebelum membuat frame pose apa pun. Lembar ini hanya acuan, tidak diunggah ke permainan. Simpan di `docs/katalog-aset/referensi/` supaya semua pembuat memakai rujukan yang sama.
+**Updated 11 October 2026 (owner decision).** The character sheets already exist in `gelita-katalog/assets/referensi/` and are the locked identity for every frame:
+
+- **Jaka:** `reference.01.webp` (sheet: expressions, four full-body views, details, palette), `reference.13.webp` (full body), `reference.03.webp` (avatar).
+- **Mbah Kedu:** face and headwrap from `reference.02.webp`, outfit from `reference.14.webp` (waist up). He keeps the walking stick, because the `idle` and `weak` poses lean on it (§11.7).
+
+The older lurik–iket design (Jaka with a lurik shirt and iket; Mbah Kedu with a lurik surjan, blangkon, and truntum jarik) is no longer used. The 30 frames in `gelita-katalog/assets/karakter/` still show that older design, so they are redrawn (§11.7). Give the reference image to the tool together with the text block below; the text alone is not enough to keep the face the same.
 
 **Jaka** — kode `jaka`, slot `char.jaka.*`. Anak laki-laki ±11 tahun, bersemangat dan jujur, Pembawa Lentera.
 
 `{JAKA}`
 
 ```text
-Jaka, an 11-year-old Javanese boy from the Kedu highlands of Central Java, slim, about five and a half heads tall, warm light-brown (sawo matang) skin, round-oval face, big dark-brown eyes, thick black eyebrows, short slightly messy black hair with a small cowlick, a brown-and-gold batik kawung head cloth (iket) tied with a small knot at the back, a short-sleeved indigo-and-cream striped lurik shirt with a mandarin collar and two wooden buttons, knee-length earth-brown shorts, simple brown leather sandals, a small woven cloth satchel on a strap across his chest, carrying the Lentera Kedu by its ring handle in his right hand
+Jaka, matching GELITA reference.01: an 11-year-old Javanese boy from the Kedu highlands of Central Java, slim, about five and a half heads tall, warm light-brown skin, large brown eyes, tousled dark-brown hair with an upward cowlick, a cream short-sleeved shirt, a red scarf tied loosely around his neck, dark-brown knee-length shorts with a brown leather belt, an orange-brown batik cloth tied at the waist on one hip, brown sandals, a brown leather backpack with brass buckles, carrying the Lentera Kedu by its ring handle in his right hand
 ```
 
 **Mbah Kedu** — kode `mbah_kedu`, slot `char.kedu.*`. Kakek Jawa ±75 tahun, lembut dan bijak, penjaga lentera; tenaganya ikut melemah bila cahaya meredup.
@@ -461,21 +500,23 @@ Jaka, an 11-year-old Javanese boy from the Kedu highlands of Central Java, slim,
 `{KEDU}`
 
 ```text
-Mbah Kedu, a kind elderly Javanese man of about 75, thin and slightly stooped, about seven heads tall, warm brown wrinkled skin, gentle eyes with smile lines, short white moustache and short white beard, bushy white eyebrows, a sogan-brown batik blangkon head wrap, a long-sleeved dark-brown and cream striped lurik surjan jacket, a sogan-brown batik jarik with a small truntum pattern wrapped to mid-shin, brown leather slippers (selop), a smooth dark teak walking stick with a simple carved knob in his right hand
+Mbah Kedu, matching GELITA reference.02 (face) and reference.14 (outfit): a kind elderly Javanese man of about 75, thin and slightly stooped, about seven heads tall, warm brown wrinkled skin, gentle brown eyes with smile lines, a white moustache and short white goatee beard, bushy white eyebrows, white hair at the temples, a brown-and-gold batik headwrap tied with the ends at the back, a long dark-brown jacket with a mandarin collar, cloth knot buttons and wide sleeves over a cream inner shirt, a brown-and-gold batik sash tied at the waist with long hanging ends, loose dark-brown trousers to the ankles, brown leather slippers, a smooth dark teak walking stick with a simple carved knob in his right hand; never Jaka's red scarf
 ```
+
+`reference.14` stops at the hips. The trousers, slippers, and walking stick are not in it: check them on the first full-body sheet before making frames.
 
 **Aturan yang dikunci untuk semua frame.** Angka ini juga digambar di `templat/tokoh-700x900.svg`.
 
 | Aturan | Jaka | Mbah Kedu | Alasan dari kode |
 |---|---|---|---|
-| Kanvas | 700 × 900 px, PNG transparan | sama | `$assetSizes['char.*']`, ditolak bila beda |
+| Kanvas | 700 × 900 px, WebP atau PNG transparan | sama | `$assetSizes['char.*']`, ditolak bila beda |
 | Arah hadap | tiga-perempat, **menghadap kanan layar** | sama | Mbah Kedu dicerminkan di dialog (`game.css:416`) sehingga keduanya berhadapan; di layar lain tokoh berdiri di kiri, menghadap teks |
 | Garis tanah (telapak kaki) | y = 876 | y = 876 | tokoh dirender `max-height`, jadi posisi kaki harus sama agar tidak "melompat" saat pose berganti |
-| Tinggi figur | ±720 px (puncak kepala y ±156) | ±810 px (puncak blangkon y ±66) | kedua gambar ditampilkan setinggi sama; beda tinggi di kanvas yang membuat Jaka tampak anak-anak |
-| Tinggi kepala (dagu → puncak iket/blangkon) | ±130 px | ±115 px | ukuran yang tidak berubah antarpose, jadi dipakai untuk menyamakan skala (§10.5), juga pada pose membungkuk |
+| Tinggi figur | ±720 px (puncak rambut y ±156, jambul tidak dihitung) | ±810 px (puncak ikat kepala y ±66) | kedua gambar ditampilkan setinggi sama; beda tinggi di kanvas yang membuat Jaka tampak anak-anak |
+| Tinggi kepala (dagu → puncak rambut tanpa jambul / puncak ikat kepala) | ±130 px | ±115 px | ukuran yang tidak berubah antarpose, jadi dipakai untuk menyamakan skala (§10.5), juga pada pose membungkuk |
 | Sumbu badan | x = 350 ± 20 | x = 350 ± 20 | dicerminkan tanpa bergeser |
 | Margin sisi | ≥ 40 px | ≥ 40 px | `drop-shadow` dan gerak tangan tidak terpotong |
-| Tulisan/lambang | tidak ada | tidak ada | dicerminkan di dialog |
+| Tulisan/lambang | tidak ada | tidak ada | dicerminkan di dialog. Jaka's waist batik and scarf knot may sit on one side; he is not mirrored |
 | Cahaya | kunci hangat dari kiri atas, pinggir dingin dari kanan | sama | konsisten antar pose |
 | Frame 1 | **pose kunci yang terbaca sendiri** | sama | tampil sendiri dengan `prefers-reduced-motion` dan sebelum frame lain dimuat (`core/sprite.js`) |
 
@@ -485,12 +526,12 @@ Mbah Kedu, a kind elderly Javanese man of about 75, thin and slightly stooped, a
 {GAYA} character design turnaround sheet of {JAKA}, four full-body views in a row: front, three-quarter facing right, side facing right, back; neutral standing pose, arms relaxed, identical outfit and proportions in every view, flat even lighting, plain warm off-white background, generous spacing between views, no text
 ```
 
-Ganti `{JAKA}` dengan `{KEDU}` untuk lembar Mbah Kedu.
+Ganti `{JAKA}` dengan `{KEDU}` untuk lembar Mbah Kedu. Jaka already has this sheet (`reference.01`); Mbah Kedu still needs one, made from `reference.02` and `reference.14`.
 
 **Prompt lembar ekspresi (acuan):**
 
 ```text
-{GAYA} expression sheet of {JAKA}, six head-and-shoulders portraits in a 3×2 grid: calm curious (idle), joyful grin (happy), respectful calm with lowered eyes (bow), sad and sorry (sad), frightened wide eyes (afraid), confident determined (determined); same face, same hair and head cloth in every portrait, three-quarter view facing right, plain warm off-white background, no text
+{GAYA} expression sheet of {JAKA}, six head-and-shoulders portraits in a 3×2 grid: calm curious (idle), joyful grin (happy), respectful calm with lowered eyes (bow), sad and sorry (sad), frightened wide eyes (afraid), confident determined (determined); same face, same hair and red scarf in every portrait, three-quarter view facing right, plain warm off-white background, no text
 ```
 
 Untuk Mbah Kedu: *gentle calm (idle), warm smile (smile), worried frown looking into the distance (worried), exhausted and pale with half-closed eyes (weak)*, dalam kisi 2 × 2.
@@ -502,12 +543,7 @@ Untuk Mbah Kedu: *gentle calm (idle), warm smile (smile), worried frown looking 
 - **Flux:** Kontext/Redux untuk mengubah pose dengan identitas tetap.
 - **gpt-image:** sunting dengan gambar rujukan.
 - **Paling andal:** ilustrator melukis frame dari lembar tokoh. AI dipakai hanya untuk sketsa awal.
-- **Pertanyaan budaya sebelum lembar tokoh dibuat:**
-  - gaya blangkon Mbah Kedu: mondolan (Yogyakarta) atau trepes (Surakarta);
-  - motif jarik: usulan *truntum*, bermakna tuntunan;
-  - motif iket Jaka: usulan *kawung*.
-
-  Putuskan bersama budayawan atau guru setempat.
+- **Culture check:** the earlier questions (blangkon style, jarik motif, iket motif) are closed by the reference images. A teacher or local culture expert still checks the batik headwrap, sash, and Jaka's waist cloth on the finished frames (§9.5).
 
 ### 9.5 Aturan budaya, fakta, dan keselamatan anak
 
@@ -524,7 +560,7 @@ Setiap kartu memuat daftar periksa dari aturan ini. Kolom `pemeriksa` di lembar 
 4. **Pakaian dan kesenian.** Kuda lumping, Topeng Ireng (kuluk bulu, garis hitam di atas bedak putih, sepatu bot, lonceng kaki), dan Topeng Lengger digambar sesuai deskripsi di bank soal dan Pustaka, lalu ditinjau guru.
 5. **Anak rambut gimbal (Dieng) tidak digambar sebagai wajah yang dapat dikenali.** Pustaka sendiri meminta tidak memotret anak tanpa izin keluarganya.
 6. **Tokoh anak** digambar sopan dan aman, tidak dalam bahaya nyata, dan ketakutannya tidak berlebihan (pose `afraid` = kaget/cemas, bukan ngeri).
-7. **Tanpa teks di gambar.** Pengecualian: tombol Mulai dan logo, yang tulisannya disusun manual dengan font repo (§11.2). Nama tempat, label peta, dan angka ditulis antarmuka, karena permainan dwibahasa.
+7. **Tanpa teks di gambar.** Pengecualian: tombol Mulai (MULAI / START) dan logo GELITA, yang tulisannya bagian dari gambar jadi di `gelita-katalog/` (§11.2). Periksa ejaannya huruf demi huruf. Nama tempat, label peta, dan angka ditulis antarmuka, karena permainan dwibahasa; karena itu judul bergambar seperti `reference.12` tidak dipakai.
 8. **Jebakan arena `cari` tidak boleh berbeda rupa** (§11.8.2).
 9. **Tanpa nama seniman hidup** di prompt, dan tanpa meniru gaya studio tertentu.
 
@@ -536,30 +572,32 @@ Setiap kartu memuat daftar periksa dari aturan ini. Kolom `pemeriksa` di lembar 
 
 | Jenis | Kode berkas (pola) | Ukuran (px) | Rasio | Format | Transparan | Batas berkas | Penegakan | Cara tampil (CSS) |
 |---|---|---|---|---|---|---:|---|---|
-| Latar layar | `bg.*` (termasuk `bg.{wilayah}.region`, `bg.loading`, `bg.cerita-*`) | 1920 × 1080 | 16:9 | JPG q80, sRGB | tidak | 450 KB | wajib | layar penuh `object-fit: cover`, gradien navy 35–75% |
-| Latar node tantangan | `challenge.{ref}.bg` | 1920 × 1080 | 16:9 | JPG q80 | tidak | 450 KB | disarankan | idem |
-| Peta Kedu | `map.kedu` | 1400 × 900 | 14:9 | JPG q85 / PNG-24 | tidak | 600 KB | disarankan | kanvas dikunci `--map-ratio: 1400 / 900`, `cover`, tidak terpotong |
-| Peta wilayah | `map.region.{wilayah}` | 1400 × 900 | 14:9 | JPG q85 / PNG-24 | tidak | 600 KB | disarankan (Kelengkapan menandai "ukuran salah") | idem, bingkai maks. 900 px |
-| Frame tokoh | `char.{jaka,kedu}.{pose}.{1–3}` | 700 × 900 | 7:9 | PNG-32 | ya | 250 KB | wajib | `width: auto`, tinggi 90–560 px, `drop-shadow`; Mbah Kedu dicerminkan di dialog |
-| Logo halaman awal | `ui.logo-hero` | 1600 × 600 | 8:3 | PNG-32 | ya | 250 KB | wajib | maks. 880 px × 46vh (40vh di ponsel) |
-| Emblem logo | `ui.logo` | 512 × 512 | 1:1 | PNG-32 | ya | 80 KB | bebas | tinggi 36 px (kepala panel), lebar 120 px (login staf), maks. 560 px (cadangan halaman awal) |
-| Tombol Mulai | `ui.btn-start`, `ui.btn-start.en` | 720 × 240 | 3:1 | PNG-32 | ya | 80 KB | wajib | lebar `min(360px, 64vw)` |
-| Lencana wilayah | `reward.badge.{wilayah}` | 320 × 320 | 1:1 | PNG-32 | ya (sudut) | 60 KB | disarankan | 72 × 72 di atas cakram emas |
-| Adegan tantangan | `challenge.{ref}.scene` | 1280 × 720 | 16:9 | JPG q80 | tidak | 350 KB | disarankan | `cari`: kanvas 16:9 tanpa potong; `rumpang`: kolom kiri 34% |
-| Gambar puzzle | `challenge.item.{tmg,mgl,wnb}-1-0N` | 900 × 900 (Temanggung), 1200 × 1200 (Magelang, Wonosobo) | 1:1 | JPG q85 | tidak | 350 KB | disarankan | papan persegi maks. 480 px; 3 × 3 kotak / 4 × 4 kotak / 4 × 4 jigsaw sesuai wilayah |
-| Objek cari | `challenge.item.tmg-4-NN` | 240 × 240 | 1:1 | PNG-32 | ya | 80 KB | disarankan | tombol bundar selebar 12% adegan (±154 px pada 1280), `contain` |
-| Gambar soal pilihan | `challenge.item.{ref}-NN` | 960 × 640 | 3:2 | JPG q80 | tidak | 200 KB | bebas | tinggi maks. 200 px, tanpa potong |
-| Gambar kartu boleh | `challenge.item.{ref}-NN` | 480 × 360 | 4:3 | JPG q80 | tidak | 80 KB | disarankan (`challenge.card`) | lebar kartu, tinggi maks. 160 px, `cover` → pita |
-| Gambar opsi | `challenge.option.{butir}-{a–d}` | 400 × 400 | 1:1 | PNG-32 | ya | 80 KB | disarankan (`challenge.option`) | tinggi maks. 140 px, `contain` |
-| Gambar bacaan | `passage.{kunci}` | 960 × 640 | 3:2 | JPG q80 | tidak | 200 KB | bebas | tinggi maks. 180 px |
-| Media Pustaka | `library.{wilayah}.p{n}.{i}` | 960 × 640 | 3:2 | JPG q80 (PNG untuk lambang) | tidak | 250 KB | disarankan (`library.image`) | media pertama 3:2; berikutnya 4:3 `cover`; sampul rak 16:9 |
-| Poster video Pustaka | `library.{wilayah}.p{n}.{i}.poster` | 1280 × 720 | 16:9 | JPG q80 | tidak | 200 KB | bebas | bingkai 16:9 `cover` |
-| Ikon aplikasi | `public/assets/app/*`, `public/favicon.ico` | 512 / 192 / 180 / 48-32-16 | 1:1 | PNG / ICO / SVG | *any*: ya; *maskable* & Apple: tidak | 60 KB | berkas statis | manifest, layar utama, tab |
+| Latar layar | `bg.*` (termasuk `bg.{wilayah}.region`, `bg.loading`, `bg.story.*`) | 1920 × 1080 | 16:9 | WebP q80 (atau JPG q80), sRGB | tidak | 450 KB | wajib | layar penuh `object-fit: cover`, gradien navy 35–75% |
+| Latar node tantangan | `challenge.{ref}.bg` | 1920 × 1080 | 16:9 | WebP / JPG q80 | tidak | 450 KB | disarankan | idem |
+| Peta Kedu | `map.kedu` | 1400 × 900 | 14:9 | WebP / JPG q85 | tidak | 600 KB | disarankan | kanvas dikunci `--map-ratio: 1400 / 900`, `cover`, tidak terpotong |
+| Peta wilayah | `map.region.{wilayah}` | 1400 × 900 | 14:9 | WebP / JPG q85 | tidak | 600 KB | disarankan (Kelengkapan menandai "ukuran salah") | idem, bingkai maks. 900 px |
+| Frame tokoh | `char.{jaka,kedu}.{pose}.{1–3}` | 700 × 900 | 7:9 | WebP / PNG-32 | ya | 250 KB | wajib | `width: auto`, tinggi 90–560 px, `drop-shadow`; Mbah Kedu dicerminkan di dialog |
+| Logo halaman awal | `ui.logo-hero` | 1600 × 600 | 8:3 | WebP / PNG-32 | ya | 250 KB | wajib | maks. 880 px × 46vh (40vh di ponsel) |
+| Emblem logo | `ui.logo` | 512 × 512 | 1:1 | WebP / PNG-32 | ya | 80 KB | bebas | tinggi 36 px (kepala panel), lebar 120 px (login staf), maks. 560 px (cadangan halaman awal) |
+| Tombol Mulai | `ui.btn-start`, `ui.btn-start.en` | 720 × 240 | 3:1 | WebP / PNG-32 | ya | 80 KB | wajib | lebar `min(360px, 64vw)` |
+| Lencana wilayah | `reward.badge.{wilayah}` | 320 × 320 | 1:1 | WebP / PNG-32 | ya (sudut) | 60 KB | disarankan | 72 × 72 di atas cakram emas |
+| Adegan tantangan | `challenge.{ref}.scene` | 1280 × 720 | 16:9 | WebP / JPG q80 | tidak | 350 KB | disarankan | `cari`: kanvas 16:9 tanpa potong; `rumpang`: kolom kiri 34% |
+| Gambar puzzle | `challenge.item.{tmg,mgl,wnb}-1-0N` | 900 × 900 (Temanggung), 1200 × 1200 (Magelang, Wonosobo) | 1:1 | WebP / JPG q85 | tidak | 350 KB | disarankan | papan persegi maks. 480 px; 3 × 3 kotak / 4 × 4 kotak / 4 × 4 jigsaw sesuai wilayah |
+| Objek cari | `challenge.item.tmg-4-NN` | 240 × 240 | 1:1 | WebP / PNG-32 | ya | 80 KB | disarankan | tombol bundar selebar 12% adegan (±154 px pada 1280), `contain` |
+| Gambar soal pilihan | `challenge.item.{ref}-NN` | 960 × 640 | 3:2 | WebP / JPG q80 | tidak | 200 KB | bebas | tinggi maks. 200 px, tanpa potong |
+| Gambar kartu boleh | `challenge.item.{ref}-NN` | 480 × 360 | 4:3 | WebP / JPG q80 | tidak | 80 KB | disarankan (`challenge.card`) | lebar kartu, tinggi maks. 160 px, `cover` → pita |
+| Gambar opsi | `challenge.option.{butir}-{a–d}` | 400 × 400 | 1:1 | WebP / PNG-32 | ya | 80 KB | disarankan (`challenge.option`) | tinggi maks. 140 px, `contain` |
+| Gambar bacaan | `passage.{kunci}` | 960 × 640 | 3:2 | WebP / JPG q80 | tidak | 200 KB | bebas | tinggi maks. 180 px |
+| Media Pustaka | `library.{wilayah}.p{n}.{i}` | 960 × 640 | 3:2 | WebP / JPG q80 (lambang: WebP/PNG transparan) | tidak | 250 KB | disarankan (`library.image`) | media pertama 3:2; berikutnya 4:3 `cover`; sampul rak 16:9 |
+| Poster video Pustaka | `library.{wilayah}.p{n}.{i}.poster` | 1280 × 720 | 16:9 | WebP / JPG q80 | tidak | 200 KB | bebas | bingkai 16:9 `cover` |
+| Ikon aplikasi | slots `app.*` (fallback `public/assets/app/*`, `public/favicon.ico`) | 512 / 192 / 180 / 48 | 1:1 | **PNG only** (the `app.*` slots refuse WebP) | *any*: ya; *maskable* & Apple: tidak | 60 KB | berkas statis | manifest, layar utama, tab |
 | Pengganti | `ui.placeholder` | 400 × 300 (SVG) | 4:3 | SVG | — | 4 KB | — | `media_src()` saat aset belum ada |
-| Direncanakan | `ui.pin`, `ui.lantern`, `map.pin.*`, `map.lantern.*` | 256 × 256 | 1:1 | PNG-32 | ya | 40 KB | — | pin 56 px, lentera 28–30 px |
-| Direncanakan | `avatar.1`–`avatar.10` | 512 × 512 | 1:1 | PNG-32 | ya | 80 KB | — | lingkaran ≥ 64 px |
+| Pin & lentera | `ui.pin`, `ui.lantern`, `map.pin.*`, `map.lantern.*` | 256 × 256 | 1:1 | WebP / PNG-32 | ya | 40 KB | — | pin 56 px, lentera 28–30 px |
+| Avatar | `avatar.1`–`avatar.10` | 512 × 512 | 1:1 | WebP / PNG-32 | ya | 80 KB | — | lingkaran ≥ 64 px |
 
-Anggaran ukuran berkas punya alasan: tirai "Membuka Peta Kedu" memuat peta, latar, dan frame tokoh dengan progres nyata, lalu berhenti menunggu setelah 8 detik (`docs/05` §Tirai). Anjuran JPEG q80 dan PNG ≤ 400 × 400 untuk objek berasal dari `docs/08` §Ukuran aset. Hindari WebP: iPad lama belum menampilkannya.
+Anggaran ukuran berkas punya alasan: tirai "Membuka Peta Kedu" memuat peta, latar, dan frame tokoh dengan progres nyata, lalu berhenti menunggu setelah 8 detik (`docs/05` §Tirai). Anjuran JPEG q80 dan PNG ≤ 400 × 400 untuk objek berasal dari `docs/08` §Ukuran aset.
+
+**Format (updated 11 October 2026, owner decision).** WebP is the default for every raster slot, as in `gelita-katalog/` (lossy q80–85; transparent slots keep their alpha channel). JPG and PNG are still accepted (`MediaStore`, `ImageSlots`). The one exception is the `app.*` slots, which take PNG only. The earlier advice to avoid WebP for old iPads no longer applies. A WebP file is usually smaller than the JPG or PNG budget in this table.
 
 ### 10.2 Zona aman menurut cara gambar dipotong
 
@@ -586,7 +624,7 @@ Anggaran ukuran berkas punya alasan: tirai "Membuka Peta Kedu" memuat peta, lata
 | Latar, latar slide, peta | Midjourney atau Flux, lalu *paintover* manual untuk zona pin | gaya lukisan kuat; posisi pin perlu disunting tangan |
 | Frame tokoh | SDXL/Flux + ControlNet OpenPose + IP-Adapter/LoRA, atau ilustrator | tiga frame harus identik kecuali gerak kecil |
 | Objek `cari`, lencana, ikon raster, avatar | gpt-image (`background: transparent`) atau Flux + penghapus latar | butuh transparansi bersih dan gaya seragam |
-| Logo & tombol Mulai | vektor (Inkscape, Figma, Illustrator) dengan font repo; AI hanya untuk ornamen | teks AI tidak andal |
+| Logo & tombol Mulai | **ready images in `gelita-katalog/`** (`reference.09`, `reference.16`, `reference.10`); only reframe them to the slot ratio (§11.2) | owner decision 11 October 2026; check the spelling of every letter |
 | Media Pustaka | foto Wikimedia Commons (sudah di bank soal) | isi faktual |
 
 Parameter awal: seed tetap per seri, dan satu *style reference* yang disetujui untuk seluruh seri.
@@ -600,7 +638,7 @@ Periksa ulang dokumentasi alat sebelum produksi, karena ukuran dan fitur alat se
 
 ### 10.4 Ukuran generate → ukuran target
 
-Alat AI jarang menghasilkan ukuran target secara langsung. Buat pada rasio yang sama atau sedekat mungkin, lalu potong (atau tambah bidang transparan) dan ubah ukuran.
+Alat AI jarang menghasilkan ukuran target secara langsung. Buat pada rasio yang sama atau sedekat mungkin, lalu potong (atau tambah bidang transparan) dan ubah ukuran. In the "Langkah akhir" column, WebP is the default since 11 October 2026 (§10.1); JPG and PNG are still accepted.
 
 | Target | Rasio | Midjourney | SDXL | Flux (kelipatan 16) | gpt-image | Langkah akhir |
 |---|---|---|---|---|---|---|
@@ -629,7 +667,7 @@ Frame tokoh. Ketiga frame satu pose memakai **transformasi yang sama**: skala da
 # 1) latar sudah transparan (gpt-image) atau dihapus dulu (rembg / Krita / GIMP)
 # 2) ukur sekali pada frame 1 mentah (px):
 #    X = sumbu badan di telapak kaki, KAKI = y telapak kaki,
-#    KEPALA = tinggi kepala dari dagu sampai puncak iket (Jaka) / blangkon (Mbah Kedu)
+#    KEPALA = tinggi kepala dari dagu sampai puncak rambut tanpa jambul (Jaka) / puncak ikat kepala (Mbah Kedu)
 X=512; KAKI=1478; KEPALA=268                  # contoh angka
 S=$(echo "130 / $KEPALA" | bc -l)             # Jaka 130 px; Mbah Kedu 115 px
 # 3) titik (X, KAKI) dipindah ke (350, 876) dengan skala S, sama untuk ketiga frame
@@ -652,6 +690,8 @@ Lencana (320 × 320, medali Ø 312):
 ```bash
 magick lencana.png -trim +repage -resize 312x312 -background none -gravity center -extent 320x320 -strip PNG32:badge-temanggung.png
 ```
+
+**WebP output (default since 11 October 2026).** In the commands above, write `.webp` instead of `.jpg`/`.png` and add `-quality 82` (backgrounds and maps) or `-quality 85 -define webp:alpha-quality=100` (transparent slots). ImageMagick keeps the alpha channel. `pngquant` and `oxipng` are for PNG only; skip them for WebP. For example: `magick masuk.png -resize 1920x1080^ -gravity center -extent 1920x1080 -colorspace sRGB -strip -quality 82 bg-welcome.webp`.
 
 Periksa semua hasil:
 
@@ -677,6 +717,7 @@ magick identify -format "%f  %wx%h  %[colorspace]  %[channels]  %b\n" out/*
 
 Setiap butir di bawah menjadi satu kartu di halaman. Bentuknya:
 
+- **Format.** Wherever a section below says JPG or PNG, WebP is the default and preferred (§10.1); `app.*` slots stay PNG.
 - **Kode berkas.** Untuk slot resmi, `asset_key` sekaligus nama berkas bawaan bila di-commit ke repositori (`MediaAssetSeeder` mencocokkan path tanpa ekstensi). Untuk konten, kode berkas diunggah lewat editor atau **Gambar & mockup**.
 - **Spesifikasi.** Ukuran, rasio, format, dan penegakan mengikuti §10.1. Butir hanya menyebut hal yang berbeda atau khusus.
 - **Prompt.** Bahasa Inggris dengan penanda blok §9.2. **Negatif** selalu `{NEGATIF}` ditambah frasa khusus butir.
@@ -693,43 +734,38 @@ Aset slot resmi dapat dipasang dengan dua cara (`docs/08` §Assets):
 
 - **Tampil di:** `/` (`game/welcome.php`), maks. 880 px × 46vh (40vh di ponsel mendatar), dengan `drop-shadow`.
 - **Spesifikasi:**
-  - 1600 × 600 px (8:3), PNG-32 transparan, ≤ 250 KB;
+  - 1600 × 600 px (8:3), WebP or PNG transparan, ≤ 250 KB;
   - berkas bawaan `public/assets/ui/logo-hero.png`.
 - **Isi:** hanya kata **GELITA**, sama untuk kedua bahasa. Slot ini tidak punya varian bahasa, dan tagline sudah dirender sebagai teks tersembunyi (`welcome.php:33`).
-- **Cara membuat:** tata huruf vektor, bukan AI.
-  - Cinzel Bold (OFL, ada di `public/assets/fonts/cinzel-latin-700-normal.woff2`), jarak huruf +8%, tinggi huruf kapital 260–300 px.
-  - Huruf **I** diganti siluet `{LENTERA}` bernyala.
-  - Isi huruf gradien emas `#F0DFB8 → #DFC087 → #C7A265`, garis dalam cokelat `#4A3218`, cahaya luar `rgba(223,192,135,.35)`.
-  - Ornamen AI dipakai hanya sebagai lapisan di belakang huruf.
-- **Prompt ornamen:**
+- **Source (updated 11 October 2026, owner decision): the catalogue logo** `gelita-katalog/assets/referensi/reference.09.webp`. It is a dimensional gold GELITA wordmark with deep-teal inlays and a small lantern above the letters. It replaces the earlier plan for hand-set Cinzel letters with a lantern in place of the **I**. `gelita-katalog/assets/logo/ui.logo-hero.webp` holds only an ornament without the wordmark, so it is not the logo.
+- **Fit to the slot:** `reference.09` is 1600 × 700 (16:7), while the slot is 8:3 and refuses a shape more than 1% off (`ImageFitter`). Pad the sides with transparency to 1867 × 700, then scale to 1600 × 600. Do not crop or squash the letters.
 
-```text
-{GAYA} ornamental title decoration for a game logo, wide 8:3 banner, large empty space in the centre reserved for a wordmark, delicate antique-gold filigree inspired by Javanese batik kawung and lung-lungan vine motifs curling from both sides, a small glowing brass lantern at the top centre, soft golden light rays, thin wisps of blue-grey mist along the bottom edge, perfectly symmetrical, isolated on a plain flat #0B1320 background for extraction, no letters
+```bash
+magick reference.09.webp -background none -gravity center -extent 1867x700 \
+  -resize 1600x600 -strip -quality 90 -define webp:alpha-quality=100 ui.logo-hero.webp
 ```
 
-- **Negatif:** `{NEGATIF}, letters, wordmark, busy centre, asymmetry`
+- **To make a new version** (only when the logo itself changes), use the catalogue prompt of `reference.09` in `gelita-katalog/data.json` and check every letter.
+- **Negatif:** `{NEGATIF}` without `letters` and `logo`, plus `misspelled letters, tagline, background rectangle`
 - **Cek:**
+  - ejaan G-E-L-I-T-A benar dan tepi huruf bersih;
   - terbaca pada tinggi 150 px (ponsel);
-  - margin 48 px bebas;
   - tidak ada tagline;
   - tepi kilau tetap halus di atas `bg.welcome`.
 
-#### `ui.logo` — Emblem logo (panel, login staf, cadangan halaman awal) · bebas
+#### `ui.logo` — Emblem logo (pita atas akun dan daftar, cadangan halaman awal) · wajib
 
-- **Tampil di:**
-  - kepala panel admin, tinggi 36 px, **di samping tulisan GELITA** (`layouts/admin.php:36`);
-  - login staf, lebar 120 px di atas tulisan GELITA (`layouts/auth.php:31`);
-  - cadangan halaman awal bila `ui.logo-hero` belum ada.
+- **Tampil di** (per `ImageSlots`, 10 October 2026): the top band of `/mulai` and `/daftar/1`–`3`, **next to the word GELITA**, about 36 px tall; and the fallback on `/` while `ui.logo-hero` is missing.
 - **Spesifikasi:**
-  - 512 × 512 px (1:1), PNG-32 transparan, ≤ 80 KB;
+  - 512 × 512 px (1:1), WebP or PNG transparan, ≤ 80 KB;
   - berkas bawaan `public/assets/ui/logo-gelita.png`.
 - **Isi:** emblem **tanpa tulisan**, karena tulisan sudah ada di sebelahnya.
+- **Source (updated 11 October 2026, owner decision): the lantern emblem** `gelita-katalog/assets/referensi/reference.16.webp` (1024 × 1024), which is the lantern of the catalogue logo on its own. Scale it to 512 × 512. `gelita-katalog/assets/logo/ui.logo.webp` is an ornament without the lantern, so it is not used for this slot.
 
-```text
-{GAYA} circular emblem for the GELITA game: {LENTERA} glowing at the centre inside an octagonal antique-gold frame, a ring of tiny kawung batik motifs around it, three small golden shards orbiting the lantern, deep navy enamel background inside the frame, bold simple shapes that stay readable at 36 pixels, symmetrical, {TRANSPARAN}
+```bash
+magick reference.16.webp -resize 512x512 -strip -quality 90 -define webp:alpha-quality=100 ui.logo.webp
 ```
 
-- **Negatif:** `{NEGATIF}, letters, thin details, gradient mesh noise`
 - **Cek:** terbaca pada 36 px dan 16 px (uji perkecil); tidak tertukar dengan ikon aplikasi, tetapi sekeluarga.
 
 #### `ui.btn-start` dan `ui.btn-start.en` — Tombol Mulai bergambar · **wajib**
@@ -737,20 +773,32 @@ Aset slot resmi dapat dipasang dengan dua cara (`docs/08` §Assets):
 - **Tampil di:** `/`, lebar `min(360px, 64vw)`, berdenyut kilau; `:active` mengecil.
   - Locale `en` memakai `ui.btn-start.en` bila ada (`media_key_src_locale()`).
 - **Spesifikasi:**
-  - 720 × 240 px (3:1), PNG-32 transparan, ≤ 80 KB;
+  - 720 × 240 px (3:1), WebP or PNG transparan, ≤ 80 KB;
   - berkas `public/assets/ui/btn-start.png` dan `btn-start-en.png`.
-- **Isi:** badan tombol 688 × 208 px di tengah (margin 16 px untuk kilau).
-  - Tulisan **MULAI** / **START**: Plus Jakarta Sans ExtraBold (800, font repo), tinggi huruf ±84 px, warna `#0B1320`, disusun manual, tidak dibuat AI.
-  - Siluet lentera kecil di kiri tulisan.
-- **Prompt badan tombol (tanpa teks):**
+- **Updated 11 October 2026 (owner decision).** There are exactly two buttons, `ui.btn-start` (**MULAI**) and `ui.btn-start.en` (**START**). Each is delivered as **one finished image with its label**, styled like `gelita-katalog/assets/referensi/reference.10.webp`:
+  - a wide capsule with dark navy enamel in the centre;
+  - a polished, bevelled gold frame with small Javanese ornaments at both ends;
+  - large raised gold serif letters, centred.
 
-```text
-{GAYA} a single wide pill-shaped game button seen straight on, polished antique-gold surface with a soft bevel and a subtle kawung batik pattern engraved near both ends, warm inner glow, a thin darker gold rim, generous empty area in the middle for a label, perfectly symmetrical, {TRANSPARAN}
+  This replaces the earlier gold pill with dark Plus Jakarta Sans letters set by hand.
+- **What exists now.** `reference.10` (MULAI) is 960 × 288 (10:3), and there is no START version yet. `gelita-katalog/assets/antarmuka/ui.btn-start(.en).webp` are flat placeholders rendered from SVG, not the final art.
+- **Make START** from `reference.10` as the image reference, with the same frame, size, and letter style, so both buttons sit in the same place. Then fit both to the slot (3:1). Pad 960 × 288 with transparency to 960 × 320, then scale to 720 × 240:
+
+```bash
+magick reference.10.webp -background none -gravity center -extent 960x320 \
+  -resize 720x240 -strip -quality 90 -define webp:alpha-quality=100 ui.btn-start.webp
 ```
 
-- **Negatif:** `{NEGATIF}, letters, text, icons in the centre, perspective tilt`
+- **Prompt (START), with `reference.10` attached:**
+
+```text
+{GAYA} the same GELITA start button as the attached reference, wide horizontal capsule with dark navy enamel centre and a polished bevelled gold frame with small Javanese gold ornaments at both ends, exact centred text: START, large legible raised gold serif letters in the same font style and size as the reference, perfectly symmetrical, front view, transparent background with generous padding
+```
+
+- **Negatif:** `{NEGATIF}` without `letters` and `text`, plus `misspelled label, extra words, icons, perspective tilt`
 - **Cek:**
-  - kontras tulisan ≥ 4,5:1;
+  - ejaan MULAI / START benar;
+  - kontras huruf emas pada navy ≥ 4,5:1;
   - kedua bahasa berukuran dan berletak sama;
   - tampak tajam pada layar 2×.
 
@@ -786,7 +834,8 @@ Berkas ini ada di repositori dan masih "sementara" (`docs/05` §Aplikasi terpasa
 ```
 
 - **Negatif:** `{NEGATIF}, thin lines, tiny details, photo`
-- **Pasca:** susun ulang sebagai vektor di `icon.svg`, lalu ekspor:
+- **In `gelita-katalog/` (11 October 2026):** `assets/ikon/app.icon-512.webp`, `app.icon-maskable-512.webp`, `app.icon-192.webp`, `app.apple-touch-icon.webp`, `app.favicon.webp`, and the vector `app.icon.svg` show the catalogue lantern on navy. The `app.*` slots accept **PNG only**, so convert before uploading, e.g. `magick app.icon-512.webp -strip PNG32:icon-512.png`. Maskable and Apple icons have no transparency: `magick app.apple-touch-icon.webp -background "#0B1320" -flatten -strip PNG24:apple-touch-icon.png`.
+- **Pasca** (bila dibuat ulang dari vektor): susun ulang sebagai vektor di `icon.svg`, lalu ekspor:
 
 ```bash
 rsvg-convert -w 512 -h 512 icon.svg -o icon-512.png
@@ -851,6 +900,8 @@ magick f16.png f32.png ../favicon.ico
 {GAYA} {LATAR} indigo night filled with slowly swirling {KABUT} in mid-tone blue-grey, a soft circular clearing of calm, detail-free space in the centre, a few {SERPIHAN} glinting at the edges of the clearing, gentle vignette, minimal detail, suspenseful but gentle, overall mid-tone rather than dark because the image is shown at 45% opacity
 ```
 
+- **In `gelita-katalog/assets/latar/`:** `bg.welcome`, `bg.auth`, `bg.intro`, `bg.map`, `bg.reflection`, `bg.loading` (WebP, 1920 × 1080). For mood and finish, see `reference.04`–`.07`. `reference.25` (login) and `reference.26` (sign-up) show backgrounds with an empty area for a form, which suits `bg.auth`.
+
 - **Negatif (keenam):** `{NEGATIF}, people, characters, bright white sky`
 - **Cek:**
   - Tumpangkan `templat/latar-1920x1080.svg`.
@@ -864,6 +915,7 @@ magick f16.png f32.png ../favicon.ico
 - **Kode yang diusulkan:** `bg.cerita-intro-01` … `bg.cerita-intro-09` dan `bg.cerita-penutup-01` … `-05`. Nama berkas `assets/bg/bg-cerita-intro-01.jpg` menjadi kunci itu lewat `MediaAssetSeeder::keyFromPath()`, dan pola `bg.*` menegakkan 1920 × 1080.
 - **Pemasangan:** kolom FK belum dapat diisi dari panel. Tunggu Fase A7 `rencana-perbaikan-tampilan` (`media-field` per slide), atau minta petugas teknis mengisi kolomnya.
 - **Update (11 October 2026).** Done in PR #87. Each slide's background is uploaded in **Konten → Cerita pembuka & penutup**. The default code is `bg.story.{context}.{sequence}`, for example `bg.story.intro.1` … `bg.story.intro.9` and `bg.story.ending.1` … `bg.story.ending.5`; the `bg.cerita-*` codes above are not used. 1920 × 1080 is still enforced (`bg.*`). Without a picture, a slide falls back to `bg.intro`, then `bg.welcome`.
+- **Catalogue file names.** `gelita-katalog/assets/latar/bg.cerita-intro-01.webp` … `-09` and `bg.cerita-penutup-01` … `-05` use the old proposed names. Upload each one on its slide in the panel, where it gets the code `bg.story.intro.{n}` / `bg.story.ending.{n}`.
 - Semua slide memakai zona aman sinematik.
   - Slide bertokoh: kolom kiri (x ≤ 540) tenang, karena gambar tokoh berdiri di sana.
   - Slide narator: teks di tengah bawah.
@@ -887,12 +939,14 @@ magick f16.png f32.png ../favicon.ico
 
 - **Negatif:** `{NEGATIF}, close-up faces, identifiable real people`
 - **Cek:**
-  - Siluet Jaka di `penutup-01` cocok dengan lembar tokoh: iket dan lentera.
+  - Siluet Jaka di `penutup-01` cocok dengan lembar tokoh: rambut berjambul, syal merah, ransel, dan lentera.
   - Tidak ada wajah yang dapat dikenali.
 
 ### 11.5 Peta Kedu (1)
 
 #### `map.kedu` — Peta Karesidenan Kedu · disarankan 1400 × 900
+
+- **In `gelita-katalog/`:** `assets/peta/map.kedu.webp`. `reference.08` (floating 3D diorama) gives the mood only. The map must still fill the whole 14:9 canvas edge to edge with the pin zones below, because the game draws pins on top in percent.
 
 - **Tampil di:** `/peta`. Kanvas mengunci rasio `1400 / 900` (`map-kedu.php:130`).
   - Tiga pin (ikon Ø 56 px + label) berpusat di titik persen `levels.map_x/map_y`.
@@ -925,7 +979,7 @@ magick f16.png f32.png ../favicon.ico
 | Kabut Lupa | sudut kiri atas dan tepi kanan | tidak menutup pin maupun rute |
 
 ```text
-{GAYA} illustrated storybook map of the Kedu region of Central Java seen from above at a slight angle, painted on dark indigo parchment with antique-gold ink linework and soft watercolour terrain, north at the top; the Dieng plateau with a tiny turquoise lake and tiny temples in the upper left, the twin volcanoes Sindoro (north) and Sumbing (south) in the upper centre, terraced tobacco and coffee fields to their east, Merbabu and a gently smoking Merapi on the right edge, a small green Tidar hill, the great stupa temple Borobudur in the lower centre, the Menoreh hills along the lower left, a thin blue Progo river winding from the volcano slopes down to the bottom edge, tiny glowing village dots, soft {KABUT} only in the top-left corner and along the right edge, three calm open areas of plain terrain around the region markers, an ornamental compass rose without letters in the lower right corner
+{GAYA} stylized 3D relief map of the Kedu region of Central Java seen from above at a slight angle, softly sculpted dimensional terrain in deep indigo and muted greens with antique-gold accents on ridges and rivers, cinematic depth, north at the top; the Dieng plateau with a tiny turquoise lake and tiny temples in the upper left, the twin volcanoes Sindoro (north) and Sumbing (south) in the upper centre, terraced tobacco and coffee fields to their east, Merbabu and a gently smoking Merapi on the right edge, a small green Tidar hill, the great stupa temple Borobudur in the lower centre, the Menoreh hills along the lower left, a thin blue Progo river winding from the volcano slopes down to the bottom edge, tiny glowing village dots, soft {KABUT} only in the top-left corner and along the right edge, three calm open areas of plain terrain around the region markers, an ornamental compass rose without letters in the lower right corner
 ```
 
 - **Negatif:** `{NEGATIF}, labels, place names, compass letters, grid lines, modern roads, cars, satellite photo`
@@ -962,39 +1016,46 @@ Tautannya disimpan di kolom FK `levels.*_media_id`. Unggah dari **Konten → wil
 
 #### 11.6.2 Peta wilayah `map.region.{wilayah}` · disarankan 1400 × 900
 
+- **Updated 11 October 2026.** Grade 5 has **four** challenges per region (`ContentSeeder::NODES`, `docs/bank-soal/README.md`), not five, and the catalogue maps in `gelita-katalog/assets/peta/map.region.*.webp` already show four empty stops. The positions and landmarks below follow the code.
 - **Tampil di:** `/wilayah/{kode}`, bingkai maks. 900 px, kanvas 14:9 tanpa potong.
-  - Lima pos berupa ikon Ø 48 px + label ("1. Susun Gambar", bintang).
-  - Rute emas putus-putus menghubungkan pos 1→5.
+  - Empat pos berupa ikon Ø 48 px + label ("1. Susun Gambar", bintang).
+  - Rute emas putus-putus menghubungkan pos 1→4.
 - **Berkas bawaan:** `assets/map/map-{wilayah}.png`.
-- **Posisi pos** (`ContentSeeder::NODE_POSITIONS`, sama untuk ketiga wilayah):
+- **Posisi pos** (`ContentSeeder::NODES`, nilai seeder, sama untuk ketiga wilayah; admin dapat memindahkannya, dan halaman **Gambar & mockup** → Detail menampilkan posisi dari database):
 
-| Pos | Persen | Piksel | Zona tenang (±110 × ±80) |
+| Pos · tantangan | Persen | Piksel | Zona tenang (±110 × ±80) |
 |---|---|---|---|
-| 1 | 18%, 72% | 252, 648 | x 142–362, y 568–728 |
-| 2 | 34%, 48% | 476, 432 | x 366–586, y 352–512 |
-| 3 | 50%, 68% | 700, 612 | x 590–810, y 532–692 |
-| 4 | 66%, 44% | 924, 396 | x 814–1034, y 316–476 |
-| 5 | 82%, 62% | 1148, 558 | x 1038–1258, y 478–638 |
+| 1 · Susun Gambar | 18%, 70% | 252, 630 | x 142–362, y 550–710 |
+| 2 · Isi Rumpang | 40%, 46% | 560, 414 | x 450–670, y 334–494 |
+| 3 · Benar atau Salah | 62%, 68% | 868, 612 | x 758–978, y 532–692 |
+| 4 · Cari Objek | 82%, 44% | 1148, 396 | x 1038–1258, y 316–476 |
 
-- **Vinyet per pos.** Setiap pos diberi penanda tempat kecil yang menggemakan cerita tantangannya (deskripsi node di bank soal). Letaknya di **atas** zona tenang (±120–160 px di atas titik), karena label pos berada di bawah ikon.
+- **Vinyet per pos.** Setiap pos diberi penanda tempat kecil yang menggemakan jenis tantangannya, seperti di peta katalog. Letaknya di **atas** zona tenang (±120–160 px di atas titik), karena label pos berada di bawah ikon. Bentang alam di latar jauh berbeda per wilayah.
 
-| Wilayah | Pos 1 | Pos 2 | Pos 3 | Pos 4 | Pos 5 | Latar jauh |
-|---|---|---|---|---|---|---|
-| Temanggung | gubuk bambu dengan kuda-kuda lukis dan potongan lukisan tertiup angin (*Susun Gambar*) | papan petunjuk di persimpangan, genangan hujan, jembatan rusak di kanan (*Lengkapi Kalimat*) | lapak pasar beratap terpal (*Benar atau Salah?*) | pendopo balai desa dengan meja pajangan (*Temukan Budaya*) | Candi Pringapus kecil di atas batur (*Temukan Jawabannya*) | Sindoro–Sumbing di atas; teras tembakau dan kopi |
-| Magelang | batu-batu relief berserakan di halaman pemugaran (*Susun Gambar*) | gubuk juru kunci dengan buku catatan (*Ketik Jawabanmu*) | pelataran pengunjung dengan bangku (*Benar, Salah, atau Pendapat?*) | gedung museum kecil, gerabah Klipoh di depannya (*Cocokkan Fungsi & Asal*) | Candi Mendut dan Pawon berderet (*Bandingkan Gambar dan Teks*) | Borobudur di tengah atas; Merapi–Merbabu; Menoreh |
-| Wonosobo | warung mi ongklok beruap dengan keranjang ongklok (*Susun Urutan*) | Telaga Warna dan Telaga Pengilon berdampingan (*Lengkapi Kesimpulan*) | kompleks Candi Arjuna dengan papan pengumuman kayu (*Sumber Mana yang Benar?*) | pos ronda dengan kentongan tergantung (*Pilih Sumber Terpercaya*) | puncak Bukit Sikunir saat matahari terbit (*Apa yang Sebaiknya Kamu Lakukan?*) | Dieng di atas awan; kebun teh; Sindoro di kejauhan |
+| Pos | Vinyet (sama di ketiga wilayah, dengan bahan setempat) |
+|---|---|
+| 1 · Susun Gambar | kuda-kuda lukis dengan potongan lukisan |
+| 2 · Isi Rumpang | buku catatan terbuka di atas meja bambu |
+| 3 · Benar atau Salah | papan pengumuman kayu |
+| 4 · Cari Objek | rak pajangan kayu dengan kaca pembesar |
 
-Contoh prompt (Temanggung). Dua lainnya mengganti daftar vinyet dan latar jauh dari tabel.
+| Wilayah | Latar jauh |
+|---|---|
+| Temanggung | Sindoro–Sumbing di atas; teras tembakau dan kopi; sungai kecil |
+| Magelang | Borobudur di tengah atas; Merapi–Merbabu; Menoreh |
+| Wonosobo | Dieng di atas awan; Telaga Warna; kebun teh; Sindoro di kejauhan |
+
+Contoh prompt (Temanggung). Dua lainnya mengganti latar jauh dari tabel.
 
 ```text
-{GAYA} illustrated storybook map of the Temanggung highlands seen from above at a slight angle, painted on dark indigo parchment with antique-gold linework and soft watercolour terrain; Mount Sindoro and Mount Sumbing along the top; terraced tobacco and coffee fields; an earthen footpath winding from the lower left up and down across the map to the right side, passing five small landmarks placed just above the path: a bamboo hut with a painting easel, a wooden signpost at a crossroads with rain puddles and a broken bridge, a small market with tarp-covered stalls, a village-hall pendopo with display tables, and a small Hindu temple on a stone base; plain calm terrain directly on the path at each stop, soft {KABUT} at the far edges only
+{GAYA} stylized 3D relief map of the Temanggung highlands seen from above at a slight angle, softly sculpted dimensional terrain with antique-gold accents on ridges and rivers, cinematic depth; Mount Sindoro and Mount Sumbing along the top; terraced tobacco and coffee fields; an earthen footpath winding from the lower left up and down across the map to the right side, passing four small landmarks placed just above the path: a painting easel with picture pieces, an open notebook on a bamboo table, a wooden notice board, and a wooden display rack with a magnifying glass; plain calm terrain directly on the path at each stop, soft {KABUT} at the far edges only
 ```
 
-- **Negatif:** `{NEGATIF}, labels, numbers, place names, markers, modern roads, cars`
+- **Negatif:** `{NEGATIF}, labels, numbers, place names, markers, pins, buttons, modern roads, cars`
 - **Cek:**
-  - tumpangkan `templat/peta-wilayah-1400x900.svg`;
+  - tumpangkan posisi pos di atas (atau buka halaman Detail slot, yang menggambar pin di atas gambar);
   - tidak ada vinyet di bawah titik pos;
-  - jalur setapak melewati kelima titik secara berurutan.
+  - jalur setapak melewati keempat titik secara berurutan.
 
 #### 11.6.3 Lencana wilayah `reward.badge.{wilayah}` · disarankan 320 × 320
 
@@ -1016,12 +1077,14 @@ Contoh prompt (Temanggung). Dua lainnya mengganti daftar vinyet dan latar jauh d
 
 - **Negatif:** `{NEGATIF}, text, ribbon, thin lines, 3D perspective`
 - **Cek:** ketiga lencana satu keluarga (rim sama, hanya simbol berbeda); terbaca pada 72 px.
+- **In `gelita-katalog/assets/lencana/`:** all three badges exist with these symbols. For the finish of the gold rim, see also `reference.11`.
 
 ### 11.7 Tokoh (30 frame)
 
 - **Kode:** `char.{jaka|kedu}.{pose}.{1|2|3}`.
 - **Berkas bawaan:** `assets/char/{jaka|kedu}-{pose}-{n}.png`.
-- **Spesifikasi:** 700 × 900 px, PNG-32 transparan, ≤ 250 KB, **wajib**. Semua aturan §9.4 berlaku.
+- **Spesifikasi:** 700 × 900 px, WebP atau PNG transparan, ≤ 250 KB, **wajib**. Semua aturan §9.4 berlaku.
+- **Redraw needed (11 October 2026).** The 30 frames in `gelita-katalog/assets/karakter/char.{jaka,kedu}.*.webp` still show the old lurik–iket design. Make all 30 again in the 3D style, with Jaka from `reference.01`/`.13` and Mbah Kedu from `reference.02`/`.14` (§9.4). The `prompt` field of each frame in `gelita-katalog/data.json` already names the right reference, pose, frame, and anchor (y 876, x 350). Use the existing frames only to check pose and anchor, not the costume.
 - **Pemutaran:** `fps` dan `loop` dari `Config\Gelita::$characterAnimations`.
   - Pose tanpa *loop* berhenti di frame 3, jadi frame 3 adalah pose yang "ditahan".
   - Frame 1 tetap harus terbaca sendiri: hanya frame 1 yang tampil dengan `prefers-reduced-motion` dan sebelum frame lain selesai dimuat (`core/sprite.js`, since 11 October 2026).
@@ -1061,16 +1124,19 @@ Untuk Mbah Kedu, `{JAKA}` diganti `{KEDU}`.
 
 **Cara membuat yang disarankan:**
 
-1. Buat frame 1 dari lembar tokoh, dengan ControlNet OpenPose dari sketsa pose di atas `templat/tokoh-700x900.svg`.
+1. Buat frame 1 dari lembar tokoh (`reference.01`/`.13` atau `reference.02`/`.14`, dilampirkan sebagai gambar rujukan), dengan ControlNet OpenPose dari sketsa pose; frame lama di `gelita-katalog/assets/karakter/` boleh menjadi acuan pose dan jangkar.
 2. Buat frame 2 dan 3 dengan *inpainting*/*img2img* berdenoise rendah (0,25–0,4) pada bagian yang bergerak saja, atau ilustrator menyuntingnya di Krita.
 3. Samakan skala dan jangkar ketiganya dengan transformasi yang sama (§10.5).
 
 **Cek:**
 - Putar ketiga frame berurutan pada fps-nya (GIF uji). Kaki tidak bergeser (kecuali lompatan kecil frame 2 `happy`), pakaian dan warna tidak berubah.
 - Mbah Kedu yang dicerminkan tetap wajar: tongkat pindah tangan tidak masalah.
+- Jaka selalu bersyal merah dan beransel; Mbah Kedu tidak pernah memakai syal merah.
 - Tidak ada `char.kedu.happy`: pose itu tidak sah (§2.2 temuan 9).
 
 ### 11.8 Tantangan
+
+**Grade 5 (11 October 2026).** The 45 challenge image slots of the grade-5 bank are listed in [`bank-soal/README.md`](bank-soal/README.md#gambar-tantangan-45-slot), and `gelita-katalog/assets/tantangan/` has an AI picture with a prompt for each one. They replace the old item list in §11.8.1–§11.8.3, which describes the earlier bank. The rules in this section still apply: no hints at the answer, decoys in exactly the same style as targets, and real sites drawn from reference photos.
 
 Kode berkas butir mengikuti editor (`ContentController`):
 
@@ -1151,7 +1217,7 @@ Tiga baris objek duduk di tiga rak: permukaan rak di y ±197, ±442, dan ±672 (
 Prompt tiap objek:
 
 ```text
-{GAYA} a single {ISI}, three-quarter view from slightly above, centred and filling about 80% of a circle, the same soft warm key light from the upper left and the same painterly finish as the rest of this object set, {TRANSPARAN}
+{GAYA} a single {ISI}, three-quarter view from slightly above, centred and filling about 80% of a circle, the same soft warm key light from the upper left and the same 3D finish as the rest of this object set, {TRANSPARAN}
 ```
 
 | Kode | `{ISI}` | Negatif tambahan |
@@ -1237,7 +1303,7 @@ Halaman Pustaka memakai 43 foto Wikimedia Commons dan 5 video YouTube dari bank 
 2. Unduh ukuran asli. Potong dan ubah ukuran ke 960 × 640 (3:2):
    - media pertama setiap halaman tampil utuh 3:2, dan media pertama halaman 1 juga menjadi sampul rak 16:9 (subjek di y 50–590);
    - media ke-2 dan seterusnya dipotong 4:3 (subjek di x 53–907).
-3. Lambang daerah PNG/WebP → PNG (iPad lama tidak menampilkan WebP). Hapus metadata (`-strip`).
+3. Lambang daerah boleh tetap WebP atau PNG transparan (WebP is the default since 11 October 2026). Hapus metadata (`-strip`).
 4. Unggah di editor Pustaka sebagai kode di tabel. Ganti sumber dari **Tautan** ke **Berkas**, dan tulis kredit lengkap: pengarang, lisensi, "via Wikimedia Commons". Kredit tampil lewat ikon ⓘ.
 
 | Wilayah | Hlm | Judul | Jenis | Kode berkas | Berkas Commons / video |
@@ -1379,9 +1445,19 @@ Slot ini belum dibaca kode. Kartunya bertanda **menunggu** beserta fase rencana 
 
 Rim navy membedakan avatar dari lencana wilayah yang berim emas.
 
+**In `gelita-katalog/assets/ikon/` (11 October 2026):** `avatar.1`–`avatar.10`, `ui.pin`, `ui.lantern`, `map.pin.*`, and `map.lantern.*` (WebP). The catalogue avatars follow this section's brief: round medallions with a navy rim, a parchment centre, and no faces. The panel text in `ImageSlots` still asks for portraits, so the owner's open question above still stands.
+
 ## 12. Katalog ikon
 
 ### 12.1 Spesifikasi ikon antarmuka
+
+> **Update (11 October 2026, owner decision): the catalogue's redrawn icon shapes are the target.** `gelita-katalog/assets/ikon/icon.*.svg` (sources in `assets/ikon/vektor/`) redraw the icon set on the same 24-unit grid with 2-unit rounded strokes. A later code change copies their paths into `icon()`, which needs care in three places:
+>
+> - **Colour.** The catalogue SVGs use a fixed gold gradient (`#F0DFB8 → #DFC087 → #B58137`) as a preview. In the game the icons keep `stroke="currentColor"`, so CSS still sets the colour (gold on navy, dark on light buttons, red for errors). Take only the `<path>` data, not the gradient.
+> - **Coverage.** 46 of the catalogue's 48 `icon()` names have new shapes. The game has 11 icons with no catalogue version: `fullscreen`, `fullscreen-exit`, `user-plus`, `login`, `database`, `clipboard`, `tag`, `filter`, `sort`, `columns`, `title`. They are drawn in the same style before the switch, because mixing old and new shapes is not allowed (see below).
+> - **Special icons.** `icon.footsteps.svg` and `icon.rotate-gate.svg` are the catalogue versions of the two special vectors in §12.3. They are not `icon()` names.
+>
+> Until that change lands, the game keeps its current 59 icons, and the list below describes their meaning and place.
 
 Ikon ada di `icon()` (`app/Helpers/ui_helper.php`). Semuanya SVG inline dengan spesifikasi berikut:
 
@@ -1390,7 +1466,7 @@ Ikon ada di `icon()` (`app/Helpers/ui_helper.php`). Semuanya SVG inline dengan s
 - Selalu dekoratif (`aria-hidden`): makna ada di teks atau `aria-label` induknya.
 - Tampil 16–32 px, termasuk di layar proyektor. Beri ruang optis 2 px dari tepi viewBox.
 
-Bila ikon diganti gayanya, **ganti ke-48 ikon sekaligus**, jangan dicampur. Cara paling andal: gambar ulang di Figma/Inkscape pada kisi 24 px, lalu salin atribut `d` ke `icon_paths()` (Fase A).
+Bila ikon diganti gayanya, **ganti semua ikon `icon()` sekaligus** (59 per 11 October 2026), jangan dicampur. Cara paling andal: gambar ulang di Figma/Inkscape pada kisi 24 px, lalu salin atribut `d` ke `icon_paths()` (Fase A).
 
 Prompt AI (hanya untuk eksplorasi gaya, hasilnya tetap digambar ulang sebagai vektor):
 
