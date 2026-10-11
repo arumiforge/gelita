@@ -215,11 +215,15 @@ $labels = ['asli' => 'Asli', 'mockup' => 'Gambar contoh', 'kosong' => 'Kosong'];
         'label'     => static fn (array $row): string => '<a href="' . esc(base_url('admin/media/' . (int) $row['id']), 'attr') . '">' . esc((string) ($row['label'] ?? '')) . '</a>',
         'thumb' => static function (array $row): string {
             // Slot kosong: jangan minta berkas ke server
-            if ($row['asset_type'] !== 'image' || ! $row['is_active']) {
+            // Character frames are stored as sprite_frame, still images to preview
+            if (! in_array($row['asset_type'], ['image', 'sprite_frame'], true) || ! $row['is_active']) {
                 return '<span class="media-thumb is-empty">' . icon($row['asset_type'] === 'video' ? 'video' : 'image') . '</span>';
             }
 
-            return '<span class="media-thumb"><img src="' . esc(base_url(App\Libraries\MediaStore::versionedPath((string) $row['storage_path'], $row['sha256'] ?? null)), 'attr') . '" alt="" loading="lazy" decoding="async"></span>';
+            $src = esc(base_url(App\Libraries\MediaStore::versionedPath((string) $row['storage_path'], $row['sha256'] ?? null)), 'attr');
+
+            // Opens full size in the panel lightbox (admin.js), or in a new tab without JavaScript
+            return '<a class="media-thumb" href="' . $src . '" target="_blank" rel="noopener" data-zoom="' . $src . '" data-zoom-caption="' . esc((string) $row['asset_key'], 'attr') . '" aria-label="Perbesar ' . esc((string) $row['asset_key'], 'attr') . '"><img src="' . $src . '" alt="" loading="lazy" decoding="async"></a>';
         },
         'size' => static function (array $row) use ($requiredFor, $displayFor): string {
             $need = $requiredFor((string) $row['asset_key']);
@@ -320,7 +324,7 @@ $labels = ['asli' => 'Asli', 'mockup' => 'Gambar contoh', 'kosong' => 'Kosong'];
   </section>
 </div>
 <script type="application/json" id="asset-sizes"><?= json_encode(
-    ['sizes' => $assetSizes, 'strict' => true],
+    ['sizes' => $assetSizes, 'strict' => true, 'types' => ImageSlots::typeRules()],
     JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT,
 ) ?></script>
 <?= $this->endSection() ?>

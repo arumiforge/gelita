@@ -96,7 +96,7 @@ Data untuk JavaScript selalu dikirim sebagai `<script type="application/json">` 
 | `#app-config` | `layouts/game.php` (`js_config($locale)`) dan `layouts/admin.php` (`js_config('id')`) | `locale`, `csrfName`, `csrfHash`, `apiBase`, `baseUrl`, `sessionTag`, `maxTries`, `stage`, `text` | `core/config.js` |
 | `#challenge-data` | `game/challenge/_frame.php` (`ChallengeService::buildPayload()`) | payload pengerjaan tanpa kunci jawaban | `game/challenge.js` |
 | `#password-policy` | `components/password-field.php` (`PasswordPolicy::toClient()`) | aturan sandi dari `Config\Gelita::$passwordPolicy` | `game/password-meter.js` |
-| `#asset-sizes` | halaman Media admin | ukuran wajib per pola `asset_key` (`Config\Gelita::$assetSizes`) | `admin/media-upload.js` |
+| `#asset-sizes` | halaman Media admin | `sizes`: ukuran wajib per pola `asset_key` (`Config\Gelita::$assetSizes`); `types`: jenis berkas per pola slot (`ImageSlots::typeRules()`) | `admin/media-upload.js` |
 
 `js_config()` (`app/Helpers/gelita_helper.php`) tidak memuat identitas siswa. Identitas dipegang session server (cookie HttpOnly CodeIgniter). `sessionTag` = `session_tag(game_session_id)`: HMAC 16 karakter atas id sesi permainan, buram tetapi stabil selama sesi itu, dan `null` sebelum siswa masuk. Penanda ini hanya dipakai antrean event offline (lihat [Penyimpanan Lokal](#penyimpanan-lokal)).
 
@@ -725,6 +725,7 @@ Panel admin satu bahasa (Indonesia) dan semua halamannya tetap berfungsi tanpa J
 ### `admin.js` — titik masuk
 
 - Perilaku umum dipasang pada `document` dan dipasang ulang setiap kali `filters.js` mengganti isi halaman: `initTables()`, tombol salin `[data-copy="#selector"]` (mis. sandi sementara; tanpa izin papan klip, teksnya dipilih dan toast meminta Ctrl+C), `initConfirm()` (modal konfirmasi), dan `initTabs()` (`admin/tabs.js`).
+- `a[data-zoom]` (pratinjau di Gambar & mockup, halaman detail slot, `components/media-field`) dibuka di lightbox bersama `core/lightbox.js` (delegasi pada `document`, jadi baris yang diganti `filters.js` ikut); klik dengan Ctrl/Shift/tombol tengah tetap membuka tab baru, dan tanpa JavaScript tautannya membuka gambar di tab baru.
 - Modul khusus halaman dimuat hanya bila markup-nya ada:
 
 | Penanda markup | Modul |
@@ -733,6 +734,7 @@ Panel admin satu bahasa (Indonesia) dan semua halamannya tetap berfungsi tanpa J
 | `form[action$="impor-bank/pratinjau"]` | `admin/bank-import.js` → `initBankImport()` |
 | `form.upload-box[action$="media/unggah"]` | `admin/media-upload.js` → `initMediaUpload()` |
 | `form[data-narration-upload]` | `admin/narration-upload.js` → `initNarrationUpload()` |
+| `.media-sprite .character[data-frames]` | `core/sprite.js` → `initSprites()`; tombol `[data-sprite-replay]` memutar ulang pose sekali-putar |
 | `[data-export-id]` | `admin/export.js` → `initExport()` |
 
 ### `admin/filters.js`
@@ -793,9 +795,11 @@ Feature   Unggah media
 Trigger   seret berkas ke kotak unggah, atau tombol Unggah per baris aset ([data-upload-key])
 Process   1. ukuran berkas ≤ 64 MB
           2. dimensi gambar dibaca createImageBitmap() sebelum mengunggah
-          3. dibandingkan dengan ukuran wajib slot dari #asset-sizes (pola asset_key, '*' = sembarang)
-          4. tidak cocok → ditolak di klien dengan pesan ukuran yang diminta dan yang diberikan
-          5. lolos → form POST multipart biasa ke /admin/media/unggah { asset_key, file }
+          3. jenis berkas dibandingkan dengan jenis slot dari #asset-sizes `types` (mis. PNG atau WebP
+             untuk slot transparan); SVG ditolak di slot berukuran wajib
+          4. dibandingkan dengan ukuran wajib slot dari #asset-sizes `sizes` (pola asset_key, '*' = sembarang)
+          5. tidak cocok → ditolak di klien dengan pesan yang menyebut jenis atau ukuran yang diminta
+          6. lolos → form POST multipart biasa ke /admin/media/unggah { asset_key, file }
 UI        kotak info menyebut ukuran wajib kode berkas yang diketik; tombol Unggah per baris
           mengisi asset_key lalu membuka pemilih berkas
 ```

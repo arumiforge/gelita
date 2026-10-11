@@ -881,6 +881,30 @@ form:has(select[name="status"] option[value="active"]:checked) .confirm-not-read
 .media-thumb { width: 96px; height: 54px; overflow: hidden; border: 1px solid var(--line); border-radius: 6px; background: repeating-conic-gradient(#F2F4F7 0 25%, #fff 0 50%) 0 0 / 12px 12px; }
 .media-thumb img { width: 100%; height: 100%; object-fit: contain; }
 .media-thumb.is-empty { display: grid; place-items: center; background: var(--surface-2); color: #98A2B3; }
+a.media-thumb { display: block; cursor: zoom-in; }
+a.media-thumb:hover, a.media-thumb:focus-visible { border-color: var(--accent); }
+.media-preview-frame[data-zoom] { cursor: zoom-in; }
+/* Character pose: every frame, then the animation (admin/media/show.php) */
+.media-frames { display: flex; flex-wrap: wrap; gap: 12px; margin: 0 0 var(--sp-4); padding: 0; list-style: none; }
+.media-frames li { display: grid; justify-items: center; gap: 4px; font-size: 13px; color: var(--text-dim); }
+.media-frames .media-thumb { width: 70px; height: 90px; }
+.media-frames li[aria-current] .media-thumb { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }
+.media-sprite { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px; }
+.media-sprite .character { width: 140px; height: 180px; border: 1px solid var(--line); border-radius: var(--radius); background: repeating-conic-gradient(#F2F4F7 0 25%, #fff 0 50%) 0 0 / 12px 12px; }
+.media-sprite .character-img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.media-sprite > div:last-child { flex: 1 1 200px; }
+/* Shared lightbox (core/lightbox.js); the game has its own rules in game.css */
+.lightbox { max-width: min(92vw, 1400px); max-height: 92vh; padding: 16px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--surface); color: var(--text); box-shadow: var(--shadow-pop); }
+.lightbox::backdrop { background: rgba(16, 24, 40, .7); }
+.lightbox-stage { position: relative; display: grid; place-items: center; min-width: 240px; min-height: 120px; background: repeating-conic-gradient(#F2F4F7 0 25%, #fff 0 50%) 0 0 / 16px 16px; }
+.lightbox img { display: block; max-width: 100%; max-height: calc(92vh - 110px); object-fit: contain; }
+.lightbox-spinner { position: absolute; top: 50%; left: 50%; display: none; width: 32px; height: 32px; margin: -16px 0 0 -16px; border: 3px solid var(--line); border-top-color: var(--accent); border-radius: 50%; animation: lightbox-spin .8s linear infinite; }
+.lightbox.is-loading .lightbox-spinner { display: block; }
+.lightbox.is-loading img { opacity: 0; }
+@keyframes lightbox-spin { to { transform: rotate(360deg); } }
+.lightbox-caption { margin: 8px 0 0; font-family: var(--font-mono, monospace); font-size: 13px; color: var(--text-dim); text-align: center; }
+.lightbox-close { float: right; margin: 0 0 8px 8px; width: 36px; height: 36px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); font-size: 22px; line-height: 1; cursor: pointer; }
+@media (prefers-reduced-motion: reduce) { .lightbox-spinner { animation: none; } }
 /* Slot detail: preview with map pins on top (admin/media/show.php) */
 .media-preview { display: grid; place-items: center; max-width: 100%; min-height: 160px; max-height: 480px; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--surface-2); }
 .media-preview.is-transparent, .media-preview:has(img) { background: repeating-conic-gradient(#F2F4F7 0 25%, #fff 0 50%) 0 0 / 16px 16px; }

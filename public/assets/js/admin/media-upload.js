@@ -8,6 +8,8 @@
  *    width-to-height ratio more than 1% off, is refused in the browser with a
  *    message naming both sizes. Larger with the same ratio passes; the server
  *    shrinks it to the slot size.
+ *    The file type is checked against the slot's allowed types
+ *    (App\Libraries\ImageSlots::types(), sent in #asset-sizes as `types`).
  * 3. Passing files go out as a plain form POST to /admin/media/unggah; the
  *    server checks again with getimagesize() (passing the browser check is
  *    never trusted) and returns to this page with the result message.
@@ -38,6 +40,25 @@ function sizeProblem(has, need, key) {
   return null;
 }
 
+const TYPE_MIMES = { png: 'image/png', jpg: 'image/jpeg', webp: 'image/webp', gif: 'image/gif', svg: 'image/svg+xml' };
+const typeName = (type) => (type === 'webp' ? 'WebP' : type.toUpperCase());
+
+/** Allowed image types of a key (ImageSlots::types()): exact key first, then the first matching pattern. */
+function allowedTypes(rules, key) {
+  if (rules?.[key]) return rules[key];
+  for (const [pattern, types] of Object.entries(rules || {})) {
+    if (pattern.includes('*') && matches(pattern, key)) return types;
+  }
+  return null;
+}
+
+/** "PNG atau WebP", "JPG, PNG, atau WebP" (ImageSlots::typesText()). */
+function typesText(types) {
+  const names = types.map(typeName);
+  const last = names.pop();
+  return names.length === 0 ? last : `${names.join(', ')}${names.length > 1 ? ',' : ''} atau ${last}`;
+}
+
 function requiredSize(sizes, key) {
   for (const [pattern, size] of Object.entries(sizes || {})) {
     if (pattern === key || matches(pattern, key)) return size;
@@ -64,7 +85,9 @@ export function initMediaUpload(root = document) {
   const keyInput = $('[name="asset_key"]', form);
   const fileInput = $('[name="file"]', form);
   const submit = $('button[type="submit"]', form);
-  const sizes = readJson('asset-sizes')?.sizes ?? {};
+  const config = readJson('asset-sizes') ?? {};
+  const sizes = config.sizes ?? {};
+  const typeRules = config.types ?? {};
   const message = el('p', { class: 'field-error', role: 'alert', hidden: true });
   const info = el('p', { class: 'field-help upload-info', 'aria-live': 'polite' });
   fileInput.after(message, info);
@@ -92,7 +115,13 @@ export function initMediaUpload(root = document) {
       fail(`Berkas ini ${(file.size / 1048576).toFixed(1).replace('.', ',')} MB, lebih besar dari batas 64 MB.`);
       return false;
     }
-    const need = requiredSize(sizes, keyInput.value.trim());
+    const key = keyInput.value.trim();
+    const types = file.type.startsWith('image/') ? allowedTypes(typeRules, key) : null;
+    if (types && !types.some((type) => TYPE_MIMES[type] === file.type)) {
+      fail(`Gambar untuk ${key} harus berformat ${typesText(types)}. Simpan ulang gambarnya dengan format itu, lalu unggah lagi.`);
+      return false;
+    }
+    const need = requiredSize(sizes, key);
     if (!need) return true;
     // Same rule as MediaStore::store(): an SVG has no pixel size to check
     if (file.type === 'image/svg+xml') {

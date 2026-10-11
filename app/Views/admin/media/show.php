@@ -34,6 +34,20 @@ $label       = trim((string) ($row['label'] ?? '')) !== '' ? (string) $row['labe
 $content     = trim((string) ($row['description'] ?? '')) !== '' ? (string) $row['description'] : ($slot['content'] ?? '');
 $screens     = $uses !== [] ? array_map(static fn (array $u): array => [$u['label'], $u['path'], $u['edit']], $uses)
     : array_map(static fn (array $s): array => [$s[0], $s[1], null], $slot['screens'] ?? []);
+$types       = ImageSlots::types($key) ?? array_keys(ImageSlots::TYPE_MIMES);
+$typesText   = ImageSlots::typesText($types);
+$accept      = implode(',', array_map(static fn (string $type): string => ImageSlots::TYPE_MIMES[$type], $types))
+    . (str_starts_with($key, 'library.') || $row['asset_type'] === 'video' ? ',' . MediaStore::ACCEPT['video'] : '');
+// Character frame: every frame of the same pose, plus the animation as the game plays it
+$pose = null;
+if (preg_match('/^char\.(jaka|kedu)\.([a-z]+)\.\d+$/', $key, $m) === 1) {
+    $animation = config('Gelita')->characterAnimations["{$m[1]}.{$m[2]}"] ?? ['frames' => 1, 'fps' => 1, 'loop' => false];
+    $frames    = [];
+    for ($i = 1; $i <= max(1, (int) $animation['frames']); $i++) {
+        $frames[$i] = media_key_src("char.{$m[1]}.{$m[2]}.{$i}");
+    }
+    $pose = ['frames' => $frames, 'fps' => max(1, (int) ($animation['fps'] ?? 1)), 'loop' => (bool) ($animation['loop'] ?? false)];
+}
 $ratio       = $target === null ? null : $target[0] . ' / ' . $target[1];
 $src         = $isActive && $row['asset_type'] !== 'video'
     ? base_url(MediaStore::versionedPath((string) $row['storage_path'], $row['sha256'] ?? null)) : null;
@@ -72,7 +86,7 @@ $src         = $isActive && $row['asset_type'] !== 'video'
     <h2 class="panel-title"><?= icon('image') ?> Pratinjau <span class="badge is-<?= $statusCode ?>"><?= esc($statusText) ?></span></h2>
     <div class="media-preview<?= ($slot['transparent'] ?? false) ? ' is-transparent' : '' ?>"<?= $src === null && $ratio !== null ? ' style="aspect-ratio: ' . esc($ratio, 'attr') . '"' : '' ?>>
       <?php if ($src !== null): ?>
-        <a href="<?= esc($src, 'attr') ?>" target="_blank" rel="noopener" class="media-preview-frame">
+        <a href="<?= esc($src, 'attr') ?>" target="_blank" rel="noopener" class="media-preview-frame" data-zoom="<?= esc($src, 'attr') ?>" data-zoom-caption="<?= esc($key, 'attr') ?>">
           <img src="<?= esc($src, 'attr') ?>" alt="Pratinjau <?= esc($label, 'attr') ?>" decoding="async">
           <?php foreach ($pins as $i => $pin): ?>
             <span class="media-pin" style="left: <?= $pin['x'] ?>%; top: <?= $pin['y'] ?>%" title="<?= esc($pin['label'], 'attr') ?>"><?= $i + 1 ?></span>
@@ -87,7 +101,38 @@ $src         = $isActive && $row['asset_type'] !== 'video'
         </div>
       <?php endif ?>
     </div>
-    <?php if ($src !== null): ?><p class="muted">Klik gambar untuk membuka ukuran penuh.</p><?php endif ?>
+    <?php if ($src !== null): ?><p class="muted">Klik gambar untuk melihat ukuran penuh.</p><?php endif ?>
+
+    <?php if ($pose !== null): ?>
+      <?php $uploaded = array_values(array_filter($pose['frames'])); ?>
+      <h3 class="panel-subtitle">Semua gambar pose ini</h3>
+      <ol class="media-frames">
+        <?php foreach ($pose['frames'] as $i => $frameSrc): ?>
+          <li<?= str_ends_with($key, '.' . $i) ? ' aria-current="true"' : '' ?>>
+            <?php if ($frameSrc !== null): ?>
+              <a class="media-thumb" href="<?= esc($frameSrc, 'attr') ?>" target="_blank" rel="noopener" data-zoom="<?= esc($frameSrc, 'attr') ?>" data-zoom-caption="Gambar <?= $i ?>"><img src="<?= esc($frameSrc, 'attr') ?>" alt="" loading="lazy" decoding="async"></a>
+            <?php else: ?>
+              <span class="media-thumb is-empty"><?= icon('image') ?></span>
+            <?php endif ?>
+            <span>Gambar <?= $i ?><?= $frameSrc === null ? ' (belum ada)' : '' ?></span>
+          </li>
+        <?php endforeach ?>
+      </ol>
+      <?php if (count($uploaded) >= 2): ?>
+        <h3 class="panel-subtitle">Gerakan di permainan</h3>
+        <div class="media-sprite">
+          <div class="character" data-frames="<?= esc(json_encode($uploaded, JSON_UNESCAPED_SLASHES), 'attr') ?>" data-fps="<?= $pose['fps'] ?>" data-loop="<?= $pose['loop'] ? '1' : '0' ?>">
+            <img class="character-img" src="<?= esc($uploaded[0], 'attr') ?>" alt="Gerakan pose ini">
+          </div>
+          <div>
+            <p class="muted"><?= $pose['fps'] ?> gambar per detik, <?= $pose['loop'] ? 'berulang terus' : 'diputar sekali lalu berhenti di gambar terakhir' ?>. Gambar yang belum diunggah dilewati.</p>
+            <button type="button" class="btn btn-quiet btn-sm" data-sprite-replay hidden><?= icon('replay') ?> Putar ulang</button>
+          </div>
+        </div>
+      <?php else: ?>
+        <p class="muted">Gerakan baru terlihat di permainan sesudah paling sedikit dua gambar pose ini diunggah.</p>
+      <?php endif ?>
+    <?php endif ?>
 
     <?php if ($pins !== []): ?>
       <h3 class="panel-subtitle">Titik pin di atas gambar</h3>
@@ -160,8 +205,8 @@ $src         = $isActive && $row['asset_type'] !== 'video'
       <h2 class="panel-title"><?= icon('upload') ?> <?= $isActive && ! $isSample ? 'Ganti gambar' : 'Unggah gambar asli' ?></h2>
       <div class="field">
         <label for="file">Berkas untuk <code><?= esc($key) ?></code> <span class="req">*</span></label>
-        <input type="file" id="file" name="file" required accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml,video/mp4,video/webm,video/ogg">
-        <p class="field-help"><?= $required !== null ? 'Gambar PNG, JPG, atau WebP paling kecil ' . $required[0] . ' × ' . $required[1] . ' piksel dengan bentuk yang sama; yang lebih besar diperkecil otomatis.' : 'Gambar PNG, JPG, WebP, GIF, atau SVG.' ?> Paling besar 64 MB. Gambar lama diganti dan langsung dipakai permainan.</p>
+        <input type="file" id="file" name="file" required accept="<?= esc($accept, 'attr') ?>">
+        <p class="field-help">Gambar <?= esc($typesText) ?><?= $required !== null ? ' paling kecil ' . $required[0] . ' × ' . $required[1] . ' piksel dengan bentuk yang sama; yang lebih besar diperkecil otomatis' : '' ?>. Paling besar 64 MB. Gambar lama diganti dan langsung dipakai permainan.</p>
       </div>
       <div class="form-actions">
         <button class="btn btn-primary" type="submit"><?= icon('upload') ?> Unggah</button>
@@ -183,7 +228,7 @@ $src         = $isActive && $row['asset_type'] !== 'video'
   </div>
 <?php endif ?>
 <script type="application/json" id="asset-sizes"><?= json_encode(
-    ['sizes' => config('Gelita')->assetSizes, 'strict' => true],
+    ['sizes' => config('Gelita')->assetSizes, 'strict' => true, 'types' => ImageSlots::typeRules()],
     JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT,
 ) ?></script>
 <?= $this->endSection() ?>

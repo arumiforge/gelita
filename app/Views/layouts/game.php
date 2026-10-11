@@ -41,10 +41,10 @@ $screenCode = method_exists($request, 'getPath') ? (App\Filters\ScreenViewFilter
   <title><?= $title !== '' ? $title . ' · GELITA' : 'GELITA' ?></title>
   <meta name="csrf-token" content="<?= csrf_hash() ?>">
   <meta name="csrf-name" content="<?= csrf_token() ?>">
-  <link rel="icon" href="<?= base_url('favicon.ico') ?>">
+  <link rel="icon" href="<?= esc(app_icon_src('app.favicon', 'favicon.ico'), 'attr') ?>">
   <?php /* Aplikasi terpasang: di Android manifest mengunci mendatar + layar penuh (docs/05 §Panggung 16:9) */ ?>
   <link rel="manifest" href="<?= base_url('manifest.json') ?>">
-  <link rel="apple-touch-icon" href="<?= base_url('assets/app/apple-touch-icon.png') ?>">
+  <link rel="apple-touch-icon" href="<?= esc(app_icon_src('app.apple-touch', 'assets/app/apple-touch-icon.png'), 'attr') ?>">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="GELITA">

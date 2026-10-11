@@ -851,10 +851,30 @@ class ContentController extends BaseAdminController
                 }
             }
 
-            $payload = [
+            $sequence = (int) ($row['sequence'] ?? $index + 1);
+            $payload  = [];
+
+            // Story slides (intro, ending) take their own full-screen background
+            if ($levelId === 0 && in_array($context, ['intro', 'ending'], true)) {
+                $background = (new MediaStore())->resolve(
+                    (string) ($row['background_key'] ?? ''),
+                    $this->request->getFile('dialogue_bg.' . $index),
+                    'bg.story.' . $context . '.' . $sequence,
+                    ['image'],
+                    $this->staffId(),
+                );
+
+                if ($background['error'] !== null) {
+                    return $this->back($back, 'Latar slide ' . $sequence . ': ' . $background['error']);
+                }
+
+                $payload['background_media_id'] = $background['id'];
+            }
+
+            $payload += [
                 'level_id'       => $levelId === 0 ? null : $levelId,
                 'context_code'   => $context,
-                'sequence'       => (int) ($row['sequence'] ?? $index + 1),
+                'sequence'       => $sequence,
                 'character_code' => (string) ($row['character_code'] ?? 'jaka'),
                 'pose'           => $this->nullIfBlank($row['pose'] ?? null),
                 'effect'         => $this->nullIfBlank($row['effect'] ?? null),

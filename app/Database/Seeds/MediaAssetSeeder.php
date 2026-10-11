@@ -57,6 +57,13 @@ class MediaAssetSeeder extends GelitaSeeder
         ['bg.reflection', 'assets/bg/bg-reflection', 'jpg'],
         // Tirai pemuatan layar penuh (components/curtain.php); tanpa berkas → gradien cahaya CSS
         ['bg.loading', 'assets/bg/bg-loading', 'jpg'],
+        // App icons: empty until uploaded; the static files in assets/app/
+        // (kept in git) are the fallback (app_icon_src()), not these rows
+        ['app.favicon', 'assets/ui/app-favicon', 'png'],
+        ['app.apple-touch', 'assets/ui/app-apple-touch', 'png'],
+        ['app.icon-192', 'assets/ui/app-icon-192', 'png'],
+        ['app.icon-512', 'assets/ui/app-icon-512', 'png'],
+        ['app.icon-maskable', 'assets/ui/app-icon-maskable', 'png'],
     ];
 
     /** Dipakai bila Config\Gelita belum ada; isinya sama dengan $characterAnimations */
@@ -114,7 +121,9 @@ class MediaAssetSeeder extends GelitaSeeder
     {
         $slots = self::SLOTS;
 
-        foreach (['temanggung', 'magelang', 'wonosobo'] as $code) {
+        $regions = class_exists(\Config\Gelita::class) ? array_values(config('Gelita')->levelPrefixes) : ['temanggung', 'magelang', 'wonosobo'];
+
+        foreach ($regions as $code) {
             $slots[] = ["map.region.{$code}", "assets/map/map-{$code}", 'png'];
             $slots[] = ["bg.{$code}.region", "assets/bg/bg-{$code}", 'jpg'];
             $slots[] = ["reward.badge.{$code}", "assets/reward/badge-{$code}", 'png'];

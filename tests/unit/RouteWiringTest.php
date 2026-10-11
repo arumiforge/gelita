@@ -13,7 +13,7 @@ use CodeIgniter\Test\CIUnitTestCase;
 final class RouteWiringTest extends CIUnitTestCase
 {
     private const CONTROLLER_COUNT = [
-        'Game'  => 11,  // 10 controller + BaseGameController
+        'Game'  => 12,  // 11 controller + BaseGameController (AppController: manifest, display plan A3)
         'Admin' => 16,  // 15 controller + BaseAdminController (RawDataController baru, Dok 3 §8.3)
         'Api'   => 11,  // 10 controller + BaseApiController (PackageApiController: asset package Stage 1)
     ];
@@ -22,6 +22,7 @@ final class RouteWiringTest extends CIUnitTestCase
     private const SPOT_CHECKS = [
         'GET'  => [
             '/'                           => 'Game\HomeController::index',
+            'manifest.json'               => 'Game\AppController::manifest',
             'peta'                        => 'Game\MapController::kedu',
             'mulai'                       => 'Game\HomeController::start',
             'daftar'                      => 'Game\RegisterController::index',
