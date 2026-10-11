@@ -105,8 +105,9 @@ if (! function_exists('curtain_attrs')) {
      *
      * @param array<string, string> $text    slot → teks, mis. ['title' => 'Menuju Magelang…']
      * @param list<string>          $preload URL aset halaman tujuan
+     * @param string|null           $bg      background picture faded in behind the curtain (`data-curtain-bg`)
      */
-    function curtain_attrs(string $kind, array $text = [], array $preload = []): string
+    function curtain_attrs(string $kind, array $text = [], array $preload = [], ?string $bg = null): string
     {
         $preload = array_values(array_unique(array_filter($preload, static fn ($url): bool => is_string($url) && $url !== '')));
         $html    = ' data-curtain="' . esc($kind, 'attr') . '"';
@@ -119,7 +120,24 @@ if (! function_exists('curtain_attrs')) {
             $html .= ' data-curtain-preload="' . esc(json_encode($preload, JSON_UNESCAPED_SLASHES), 'attr') . '"';
         }
 
+        if ($bg !== null && $bg !== '') {
+            $html .= ' data-curtain-bg="' . esc($bg, 'attr') . '"';
+        }
+
         return $html;
+    }
+}
+
+if (! function_exists('region_curtain_attrs')) {
+    /**
+     * curtain_attrs() of a "Menuju {wilayah}…" link from the `curtain` array of
+     * GameProgress::regionCurtain() (text, preload, bg). Empty without it.
+     *
+     * @param array{text: array<string, string>, preload: list<string>, bg?: string|null}|null $curtain
+     */
+    function region_curtain_attrs(?array $curtain): string
+    {
+        return $curtain === null ? '' : curtain_attrs('region', $curtain['text'], $curtain['preload'], $curtain['bg'] ?? null);
     }
 }
 

@@ -81,6 +81,9 @@ $engine   = in_array($engine ?? '', config('Gelita')->engineTypes, true) ? $engi
      aria-busy="true">
   <?php if ($bgSrc !== null): ?>
     <img class="curtain-bg" src="<?= esc($bgSrc, 'attr') ?>" alt="" fetchpriority="high">
+  <?php elseif ($kind !== 'map'): ?>
+    <?php // Filled by core/curtain.js from the link's data-curtain-bg (display plan Phase C) ?>
+    <img class="curtain-bg is-deferred" alt="" hidden>
   <?php endif ?>
 
   <?php if ($kind === 'region'): ?>
@@ -94,7 +97,7 @@ $engine   = in_array($engine ?? '', config('Gelita')->engineTypes, true) ? $engi
         <span class="curtain-orbit">
           <i class="curtain-shard"></i><i class="curtain-shard"></i><i class="curtain-shard"></i>
         </span>
-        <span class="curtain-icon"><?= icon('lantern') ?></span>
+        <span class="curtain-icon"><?= art_or_icon(region_art_src('lantern'), 'lantern') ?></span>
       </div>
     <?php elseif ($kind === 'challenge'): ?>
       <?= component('partials/challenge-art', ['engine' => $engine]) ?>

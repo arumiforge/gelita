@@ -169,6 +169,45 @@ if (! function_exists('media_is_placeholder')) {
     }
 }
 
+if (! function_exists('region_art_src')) {
+    /**
+     * City art on the Kedu map (display plan Phase C): `pin` → map.pin.{code},
+     * then ui.pin; `lantern` → map.lantern.{code}, then ui.lantern. Null when
+     * neither is uploaded: the view keeps its SVG icon.
+     */
+    function region_art_src(string $kind, ?string $levelCode = null): ?string
+    {
+        $own = $levelCode === null || $levelCode === '' ? null : media_key_src("map.{$kind}.{$levelCode}");
+
+        return $own ?? media_key_src("ui.{$kind}");
+    }
+}
+
+if (! function_exists('art_or_icon')) {
+    /**
+     * `<img>` of an uploaded picture, or the built-in SVG icon when there is
+     * none. Decorative: the caller names the control in text.
+     */
+    function art_or_icon(?string $src, string $icon): string
+    {
+        return $src === null
+            ? icon($icon)
+            : '<img class="art" src="' . esc($src, 'attr') . '" alt="" decoding="async" draggable="false">';
+    }
+}
+
+if (! function_exists('region_loading_bg')) {
+    /**
+     * Background of the "Menuju {wilayah}…" curtain: bg.loading.{code}, then
+     * the region background already resolved by the caller, else null (the
+     * curtain keeps its light gradient).
+     */
+    function region_loading_bg(string $levelCode, ?string $regionBackground = null): ?string
+    {
+        return media_key_src("bg.loading.{$levelCode}") ?? ($regionBackground !== null && $regionBackground !== '' ? $regionBackground : null);
+    }
+}
+
 if (! function_exists('avatar_choices')) {
     /**
      * Avatars a student can pick: number → image URL, only uploaded

@@ -26,7 +26,7 @@ if ($nextRegion !== null && $nextRegion['status'] !== 'locked') {
     $final = [
         'url'   => base_url($nextRegion['entry']),
         'label' => lang('Game.goToRegion', [$nextRegion['name']]),
-        'attrs' => isset($nextRegion['curtain']) ? curtain_attrs('region', $nextRegion['curtain']['text'], $nextRegion['curtain']['preload']) : '',
+        'attrs' => region_curtain_attrs($nextRegion['curtain'] ?? null),
     ];
 } elseif ($nextRegion === null && $allCompleted) {
     $final = ['url' => base_url('penutup'), 'label' => lang('Game.continue')];

@@ -210,6 +210,19 @@ final class MediaSlotPagesTest extends CIUnitTestCase
         $this->assertSame([1920, 1080], (new MediaStore())->requiredSize('bg.story.ending.4'));
     }
 
+    /** Display plan Phase C: the level editor uploads the city pin, lantern, and curtain picture by fixed key. */
+    public function testLevelEditorOffersTheCityArtSlots(): void
+    {
+        $html = $this->page('admin/konten/level/1');
+
+        foreach (['map.pin.temanggung', 'map.lantern.temanggung', 'bg.loading.temanggung'] as $key) {
+            $this->assertStringContainsString('<code>' . $key . '</code>', $html);
+        }
+        $this->assertStringContainsString('name="slot_pin_file"', $html);
+        $this->assertStringContainsString('accept="image/png,image/webp"', $html, 'transparent pin: PNG or WebP');
+        $this->assertStringContainsString('Latar tirai "Menuju Temanggung…"', $html);
+    }
+
     public function testUploadFromTheDetailPageComesBack(): void
     {
         $id = $this->mediaId('bg.welcome');

@@ -83,7 +83,7 @@ $close  = '#region-' . $code;
               'prefix'     => $prefix,
               'finalUrl'   => base_url($level['entry']),
               'final'      => lang('Game.enterRegionName', [$region]),
-              'finalAttrs' => isset($level['curtain']) ? curtain_attrs('region', $level['curtain']['text'], $level['curtain']['preload']) : '',
+              'finalAttrs' => region_curtain_attrs($level['curtain'] ?? null),
           ] : [
               'n'          => $n,
               'total'      => $total,

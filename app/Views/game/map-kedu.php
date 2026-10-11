@@ -46,7 +46,7 @@ $intros  = $regionIntros ?? [];
 $heardIds = $heard ?? [];
 // Atribut tirai wilayah pada tautan masuk wilayah (pin, kartu); wilayah terkunci tanpa tirai
 $curtainOf = static fn (array $l): string => $l['status'] !== 'locked' && isset($l['curtain'])
-    ? curtain_attrs('region', $l['curtain']['text'], $l['curtain']['preload'])
+    ? region_curtain_attrs($l['curtain'])
     : '';
 ?>
 <?= $this->extend('layouts/game') ?>
@@ -148,9 +148,20 @@ foreach ($levels as $candidate) {
             <li class="map-point is-<?= esc($level['status'], 'attr') ?>"
                 style="left: <?= (float) $level['map_x'] ?>%; top: <?= (float) $level['map_y'] ?>%"
                 <?= $level['status'] !== 'locked' && ! empty($level['background']) ? 'data-preload="' . esc($level['background'], 'attr') . '"' : '' ?>>
-              <a class="map-pin" href="<?= esc($href($level), 'attr') ?>"<?= $curtainOf($level) ?>
+              <?php // The city's own curtain picture is warmed up too (map.js preload), when it is not the region background ?>
+              <?php $curtainBg = $level['status'] !== 'locked' ? ($level['curtain']['bg'] ?? null) : null; ?>
+              <a class="map-pin" href="<?= esc($href($level), 'attr') ?>"<?= $curtainOf($level) ?><?= $curtainBg !== null && $curtainBg !== ($level['background'] ?? null) ? ' data-preload="' . esc($curtainBg, 'attr') . '"' : '' ?>
                  <?= $level['status'] === 'locked' ? 'aria-disabled="true" data-locked-message="' . esc(lang('Game.levelLocked'), 'attr') . '"' : '' ?>>
-                <span class="pin-icon" aria-hidden="true"><?= icon($icons[$level['status']] ?? 'lantern') ?></span>
+                <?php $pinArt = region_art_src('pin', $level['code']); ?>
+                <?php if ($pinArt !== null): ?>
+                  <?php // City pin picture; the status mark is drawn on top (display plan Phase C) ?>
+                  <span class="pin-icon has-art" aria-hidden="true">
+                    <?= art_or_icon($pinArt, 'lantern') ?>
+                    <?php if (in_array($level['status'], ['locked', 'completed'], true)): ?><span class="pin-mark"><?= icon($icons[$level['status']]) ?></span><?php endif ?>
+                  </span>
+                <?php else: ?>
+                  <span class="pin-icon" aria-hidden="true"><?= icon($icons[$level['status']] ?? 'lantern') ?></span>
+                <?php endif ?>
                 <span class="pin-label">
                   <b><?= esc($level['name']) ?></b>
                   <small><?= esc(lang('Game.levelStatus_' . $level['status'])) ?> · <span class="num"><?= esc($level['completed_nodes']) ?>/<?= esc($level['total_nodes']) ?></span></small>
@@ -160,7 +171,8 @@ foreach ($levels as $candidate) {
                 <?php $unheard = ! in_array((int) $level['id'], $heardIds, true); ?>
                 <a class="kenal-btn<?= $unheard ? ' is-unheard' : '' ?>" href="#kenal-<?= esc($level['code'], 'attr') ?>"
                    data-kenal-open="<?= esc($level['code'], 'attr') ?>" title="<?= esc(lang('Game.kenalRegion', [$level['name']]), 'attr') ?>">
-                  <span class="kenal-btn-face" aria-hidden="true"><?= icon('lantern') ?></span>
+                  <?php $lanternArt = region_art_src('lantern', $level['code']); ?>
+                  <span class="kenal-btn-face<?= $lanternArt !== null ? ' has-art' : '' ?>" aria-hidden="true"><?= art_or_icon($lanternArt, 'lantern') ?></span>
                   <span class="visually-hidden"><?= esc(lang('Game.kenalRegion', [$level['name']])) ?></span>
                   <?php if ($unheard): ?>
                     <span class="kenal-dot" data-kenal-badge><span class="visually-hidden"><?= esc(lang('Game.kenalUnheard')) ?></span></span>
@@ -195,7 +207,7 @@ foreach ($levels as $candidate) {
             <?php $unheard = ! in_array((int) $level['id'], $heardIds, true); ?>
             <a class="btn btn-quiet kenal-card-btn<?= $unheard ? ' is-unheard' : '' ?>" href="#kenal-<?= esc($level['code'], 'attr') ?>"
                data-kenal-open="<?= esc($level['code'], 'attr') ?>">
-              <?= icon('lantern') ?> <span><?= esc(lang('Game.kenalRegion', [$level['name']])) ?></span>
+              <?= art_or_icon(region_art_src('lantern', $level['code']), 'lantern') ?> <span><?= esc(lang('Game.kenalRegion', [$level['name']])) ?></span>
               <?php if ($unheard): ?>
                 <span class="kenal-badge" data-kenal-badge><?= esc(lang('Game.kenalUnheard')) ?></span>
               <?php endif ?>

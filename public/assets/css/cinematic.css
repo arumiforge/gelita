@@ -48,6 +48,9 @@
   opacity: .45;
   animation: kenburns 30s ease-out both;
 }
+/* Region/challenge curtain picture (data-curtain-bg): fades in once loaded */
+.curtain-bg.is-deferred { opacity: 0; transition: opacity .3s ease; }
+.curtain-bg.is-deferred.is-in { opacity: .45; }
 /* Gambar latar tidak boleh mengalahkan kontras teks */
 .curtain::after {
   content: "";
@@ -102,6 +105,7 @@
   color: var(--navy-900);
 }
 .curtain-icon .icon { width: 2.125rem; height: 2.125rem; }
+.curtain-icon .art { width: 2.75rem; height: 2.75rem; object-fit: contain; }
 
 /* Tiga Serpihan Cahaya mengorbit lentera */
 .curtain-orbit { position: absolute; inset: 0; }
@@ -513,13 +517,15 @@ body.is-cinematic .nav-bar {
 .kenal-slides[data-managed="class"]:has(.slide:target) > .slide.is-current:not(:target) { display: grid; }
 
 /* ================== TAHAP 3 · KENALI WILAYAH ================== */
-/* Tombol lentera pada pin: area sentuh 2.75rem, wajah 1.875rem di kanan atas pin */
+/* Lantern button at the pin's top right. Its 48 dp hit area starts at the pin's
+   right edge (pin 56 dp, centred), so a tap on the pin never opens Kenali;
+   the face hugs the left of the hit area so it still reads as part of the pin. */
 .map-point > .kenal-btn {
   position: absolute;
   top: -.625rem;
-  left: calc(50% + .875rem);
+  left: calc(50% + 1.75rem);
   display: grid;
-  place-items: center;
+  place-items: center start;
   width: var(--tap);
   height: var(--tap);
   border-radius: 50%;
@@ -538,6 +544,9 @@ body.is-cinematic .nav-bar {
   transition: transform .15s ease;
 }
 .kenal-btn-face .icon { width: 1rem; height: 1rem; }
+.kenal-btn-face.has-art { overflow: hidden; padding: .125rem; }
+.kenal-btn-face .art, .kenal-card-btn .art { display: block; width: 100%; height: 100%; object-fit: contain; }
+.kenal-card-btn .art { flex: none; width: 1.5rem; height: 1.5rem; }
 .kenal-btn:hover .kenal-btn-face, .kenal-btn:focus-visible .kenal-btn-face { transform: scale(1.1); }
 .kenal-btn:focus-visible { outline: .1875rem solid var(--gold-500); outline-offset: 0; }
 
