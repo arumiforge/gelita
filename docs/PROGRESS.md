@@ -41,9 +41,15 @@ Owner decisions: phases in order 0 → A → B → C → E → F, one branch and
 - [x] Phase 0 — bug fixes: music on challenge/region screens, lost and doubled password flash, dead size rules (PR #85)
 - [x] Phase A — app icons, zoom and animation preview, placeholder, story slide backgrounds, `bg.auth` (PR #87)
 - [x] Phase B — avatars (PR #88)
-- [ ] Phase C — city pins, Kenali lanterns, city loading backgrounds (`tampilan-c-kota`)
+- [x] Phase C — city pins, Kenali lanterns, city loading backgrounds (PR #89)
 - [x] Phase E — game-style toasts (PR #86)
-- [x] Phase F — touch-friendly play (`tampilan-f-sentuh`); real-device items in `docs/perombakan-kelas5/device-test-checklist.md` §4 are for the owner
+- [x] Phase F — touch-friendly play (PR #90); real-device items in `docs/perombakan-kelas5/device-test-checklist.md` §4 are for the owner
+
+- **Follow-ups from the audit of 11 October 2026** (every phase checked against the plan on `main`; recorded deviations stay as they are)
+  - [ ] Phase 0: `reward.badge.*` display size, automated music check (`tampilan-0-susulan`)
+  - [ ] Phase F: Next/Done keyboard hints on the new-password fields (`tampilan-f-sandi`)
+  - [ ] Phase A: Nginx/Apache routing of `/manifest.json` in `docs/08_DEPLOYMENT.md` (`sky/beautiful-thompson-u4027f`)
+  - [ ] Owner call: slide dots keep a narrow tap area (14–22 dp wide), or grow to 48 dp wide with 48 dp spacing
 
 ## Asset package (`docs/rencana-paket-aset.md`, stages in §10)
 
@@ -77,5 +83,6 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 | `paket-1b-narasi` | Asset package Stage 1b: narration 48 kbps | PR open |
 | `paket-4-transisi` | Asset package Stage 4: transitions, decode, curtain | PR open |
 | `paket-5-integritas` | Asset package Stage 5: research data integrity | PR open |
-| `tampilan-c-kota` | Display update Phase C: city pins, lanterns, curtain pictures | PR open |
-| `tampilan-f-sentuh` | Display update Phase F: touch-friendly play | PR open |
+| `sky/beautiful-thompson-u4027f` | Display update: audit follow-ups, coordination of the two branches below, `08_DEPLOYMENT` manifest routing | PR open |
+| `tampilan-0-susulan` | Display update follow-up, Phase 0: badge display size, music check | PR open |
+| `tampilan-f-sandi` | Display update follow-up, Phase F: keyboard hints on password fields | PR open |
