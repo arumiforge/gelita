@@ -91,7 +91,7 @@ Jumlah aset statis di repo yang relevan untuk game: **±28,9 MB**, dan 97 % di a
 
 ### 2.2 Gambar: tidak ada di repo, diunggah admin
 
-Semua gambar game diunggah admin ke `public/assets/uploads/` (di-*gitignore*, hanya ada di server dan ikut backup) atau dibuat `gelita:mockups` sebagai SVG gambar contoh di `public/assets/uploads/mockup/`. Ukurannya tidak bisa diukur dari repo. Yang bisa dihitung adalah **jumlah slot** dan **batas ukuran berkas** dari `docs/rencana-katalog-aset.md` §10.1, sehingga tabel di bawah adalah **batas atas**:
+Semua gambar game diunggah admin ke `public/assets/uploads/` (di-*gitignore*, hanya ada di server dan ikut backup) atau dibuat `gelita:mockups` sebagai SVG gambar contoh di `public/assets/uploads/mockup/`. Ukurannya tidak bisa diukur dari repo. Yang bisa dihitung adalah **jumlah slot** dan **batas ukuran berkas** dari `docs/arsip/rencana-katalog-aset.md` §10.1, sehingga tabel di bawah adalah **batas atas**:
 
 | Kelompok | Slot (sumber) | Batas per berkas | Batas atas |
 |---|---|---:|---:|

@@ -220,7 +220,7 @@ final class RegionStoryTest extends CIUnitTestCase
         $this->assertMatchesRegularExpression('/id="line-2"[^>]*data-pose="worried" data-pose-src="[^"]*kedu-idle-1\.png"[^>]*data-effect="fog"/', $page);
         $this->assertMatchesRegularExpression('/id="line-3"[^>]*data-pose="happy" data-pose-src=""/', $page);
         // Several frames: the line also carries them for core/sprite.js; one frame: none
-        $this->assertMatchesRegularExpression('/id="line-1"[^>]*data-pose-frames="[^"]*jaka-afraid-2\.png[^"]*" data-pose-fps="6" data-pose-loop="0"/', $page);
+        $this->assertMatchesRegularExpression('/id="line-1"[^>]*data-pose-frames="[^"]*jaka-afraid-2\.png[^"]*" data-pose-fps="1" data-pose-loop="1"/', $page);
         $this->assertDoesNotMatchRegularExpression('/id="line-2"[^>]*data-pose-frames/', $page);
 
         // Panggung dua tokoh, akhir ke peta wilayah, nav Lewati tetap

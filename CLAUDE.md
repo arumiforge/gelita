@@ -43,12 +43,13 @@ Overview in `README.md`, details in `docs/01`–`08`.
   - Library from `docs/pustaka/`.
   - Story via `ContentSeeder`.
   - Narration via `gelita:narration:import`.
-  - Sample images via `gelita:mockups`.
+  - Sample images via `gelita:mockups`; the team's art via `gelita:katalog:impor` from `gelita-katalog/` (Katalog Aset: images, references, prompts; its own rules in `gelita-katalog/AGENTS.md`).
 
   `ContentRepository` caches content; call `flush()` after changing it.
+- **Art direction (owner, 11 October 2026).** Stylized 3D, Jaka with a red scarf, WebP as the default raster format (`app.*` icons PNG), up to 24 looping frames per character pose. Finished plans live in `docs/arsip/`.
 - **Challenge client.** `game/challenge.js` is the shared frame: `check`/`submit`, `ruleError`, tries indicator, fill time, and `state.leaving` so no false `challenge_abandoned` is sent. Engines live in `engines/{puzzle,rumpang,boleh,cari}.js`.
 - **Research events.** `EventService` and the `game_event_logs` table. `screen_viewed`, `challenge_tries_exhausted`, and `clue_failed` may only be written by the server.
-- **Spark commands** (`app/Commands`): `gelita:reset`, `gelita:bank:import`, `gelita:content:verify`, `gelita:mockups`, `gelita:narration:import`, `gelita:media:scan`, `gelita:retention:run`, `gelita:schools:import`, `gelita:staff:password`, `gelita:library:thumbnails`, `gelita:simulasi` (simulated `sim_*` students for development; FEATURE 19 in `docs/07`).
+- **Spark commands** (`app/Commands`): `gelita:reset`, `gelita:bank:import`, `gelita:content:verify`, `gelita:mockups`, `gelita:narration:import`, `gelita:media:scan`, `gelita:retention:run`, `gelita:schools:import`, `gelita:staff:password`, `gelita:library:thumbnails`, `gelita:katalog:impor` (installs the `gelita-katalog/` images into the slots), `gelita:simulasi` (simulated `sim_*` students for development; FEATURE 19 in `docs/07`).
 
 ### Testing and known pitfalls
 

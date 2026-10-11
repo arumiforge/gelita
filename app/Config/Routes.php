@@ -158,6 +158,7 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
             $routes->get('media/(:num)', 'MediaController::show/$1');
             $routes->post('media/unggah', 'MediaController::upload');
             $routes->post('media/(:num)/nonaktif', 'MediaController::deactivate/$1');
+            $routes->post('media/(:num)/unggah-gerak', 'MediaController::uploadFrames/$1');
             $routes->get('media/audio', 'MediaController::audioIndex');
             $routes->post('media/audio/unggah', 'MediaController::uploadAudio');
             $routes->post('media/audio/(:num)/setujui', 'MediaController::approveAudio/$1');

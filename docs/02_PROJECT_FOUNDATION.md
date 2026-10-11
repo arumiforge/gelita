@@ -274,7 +274,7 @@ Satu-satunya tempat konstanta domain yang tidak perlu masuk database.
 | `$characterPoses` | pose per tokoh (`narator` tanpa pose) | nilai sah `dialogues.pose` |
 | `$dialogueEffects` | `['fog', 'fog-lift', 'glow', 'flash', 'shake', 'dim']` | nilai sah `dialogues.effect` |
 | `$dialogueContexts` | `global`: `intro`, `map_intro`, `ending`; `level`: `region_intro`, `level_open`, `level_done` | nilai sah `dialogues.context_code` |
-| `$characterAnimations` | `jaka.*` dan `kedu.*`, masing-masing 3 frame | animasi tokoh dari frame `char.{jaka\|kedu}.{pose}.{n}` di `media_assets` |
+| `$characterAnimations` | `jaka.*` dan `kedu.*`: up to 24 frames per pose, `loop` true for every pose, `seconds` per loop (owner decision 11 October 2026) | animasi tokoh dari frame `char.{jaka\|kedu}.{pose}.{n}` di `media_assets`; speed from `character_fps()` = uploaded frames ÷ `seconds` (0.5–24 per second) |
 | `$assetSizes` | ukuran piksel berkas per pola `asset_key` (gambar lebih besar dengan bentuk sama diperkecil ke ukuran ini, lihat `ImageFitter`) | validasi unggahan (`MediaStore`), daftar kelengkapan aset, dan ukuran gambar contoh |
 | `$assetDisplaySizes` | ukuran tampil per pola `asset_key`, dalam dp pada panggung 1280 × 720 (benda Cari Objek `[0, 0]`: lebarnya persen adegan) | keterangan di halaman **Gambar & mockup**; tidak dipakai validasi |
 | `$maxUploadBytes` | 64 MB | batas unggahan media |
@@ -437,7 +437,7 @@ Helper `gelita`, `content`, dan `ui` dimuat global lewat `Config\Autoload::$help
 | `media_src()`, `media_exists()`, `media_first()` | URL media aktif menurut id, dengan pengganti `assets/ui/placeholder.svg` |
 | `media_key_src()`, `media_key_src_locale()` | URL media menurut `asset_key`, termasuk varian bahasa (`ui.btn-start.en`); `null` bila belum diunggah |
 | `character_frame_src()` | frame pertama tokoh dalam pose tertentu, cadangan pose `idle` |
-| `character_frames()`, `character_frames_attr()` | all uploaded frames of a pose with `fps`/`loop` (same `idle` fallback), and the `data-frames`/`-fps`/`-loop` attributes for `core/sprite.js` (only with 2 or more frames) |
+| `character_frames()`, `character_frames_attr()`, `character_fps()` | all uploaded frames of a pose with `fps`/`loop` (same `idle` fallback), the `data-frames`/`-fps`/`-loop` attributes for `core/sprite.js` (only with 2 or more frames), and the speed for a number of frames (one loop lasts the pose's `seconds`) |
 | `media_catalog()`, `audio_catalog()` | daftar media dan audio untuk pemilih di panel |
 | `audio_src(?int $audioAssetId)` | URL audio; `null` bila belum `approved` atau medianya nonaktif |
 | `stars_html()` | bintang sebagai ikon + teks alternatif `2 / 3` |

@@ -15,7 +15,7 @@ use Config\Services;
 use Tests\Support\Database\GradeFiveWorld;
 
 /**
- * Display plan Phase 0 (docs/rencana-perbaikan-tampilan.md): the messages
+ * Display plan Phase 0 (docs/arsip/rencana-perbaikan-tampilan.md): the messages
  * around a password change.
  *
  * - "Kata sandi baru tersimpan" used to go to `/mulai`, which redirected a

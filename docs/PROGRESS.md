@@ -27,12 +27,13 @@ Last updated: 11 October 2026.
 ## Before the research starts (after install, done in the panel)
 
 - [ ] Approve draft narration
-- [ ] Upload all required images in the panel (**Gambar & mockup** → Detail per slot; Kelengkapan lists what is missing), including the 45 sample (mockup) challenge images. Prompts, style, and reference images: [`gelita-katalog/`](../gelita-katalog/README.md), with Part II of `docs/rencana-katalog-aset.md` aligned to it (11 October 2026: 3D style, red-scarf Jaka, WebP). The 30 character frames there still need redrawing in the new design
+- [ ] Install the catalogue art: `php spark gelita:katalog:impor` (dry run first; `docs/08_DEPLOYMENT.md` → *Installing the Katalog Aset images*). This fills every slot with the interim art of [`gelita-katalog/`](../gelita-katalog/README.md); the panel's **Gambar & mockup** replaces any of it later
+- [ ] Before data collection, replace or approve the interim art: the 30 character frames (old lurik–iket design; new red-scarf frames, up to 24 per pose), the three Cari Objek scenes (objects do not sit on the drawn shelves), and the AI Pustaka illustrations (owner: fine for now, replaced in the panel later)
 - [ ] Research-ready checklist green, study status set to "Berjalan"
 - [ ] Listening test of the 48 kbps narration, 5 files per language (plan P2). Stage 1b (PR #74) was merged before this gate was recorded as done; the 96 kbps takes are in git history before PR #74 (details in `docs/audio.md` → *Narration at 48 kbps*)
 - [ ] Smoke test, then `gelita:reset` (by the owner, never by Claude on production)
 
-## Display update (`docs/rencana-perbaikan-tampilan.md`, revised 11 October 2026)
+## Display update (`docs/arsip/rencana-perbaikan-tampilan.md`, revised 11 October 2026)
 
 Owner decisions: phases in order 0 → A → B → C → E → F, one branch and one PR per phase, each cut from `main` after the previous PR is merged. Since 11 October 2026 two sessions run in parallel (owner request): one does A → B → C, the other E → F. Phase D (character frame animation) is done (PR #83).
 
@@ -73,5 +74,5 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `pbb/nifty-faraday-fcw9r6` | Asset catalogue plan aligned with `gelita-katalog/` (docs only) | PR open |
+| `pbb/nifty-faraday-fcw9r6` | Catalogue images into the game (`gelita:katalog:impor`), 24 looping frames, panel texts, finished plans archived | PR open |
 | `pbb/practical-ramanujan-sogpm3` | Production console errors: CSP policy, inline viewport script, `/api/events` 500 | PR open |

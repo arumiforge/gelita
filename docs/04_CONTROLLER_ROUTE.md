@@ -264,6 +264,7 @@ Menu kelompok Konten dan Pengaturan tidak dirender untuk guru (`App\Libraries\Ad
 | GET | `/admin/media/kelengkapan` | `MediaController::checklist` | Kelengkapan gambar & suara |
 | GET | `/admin/media/{id}` | `MediaController::show/$1` | Detail slot gambar: isi, ukuran, halaman tampil, titik pin, unggah |
 | POST | `/admin/media/unggah` | `MediaController::upload` | Unggah gambar/video ke `asset_key` |
+| POST | `/admin/media/{id}/unggah-gerak` | `MediaController::uploadFrames/$1` | Upload many frames of the character pose of slot `{id}` at once (`frames[]`, natural name order, from frame `start`, up to 24) |
 | POST | `/admin/media/{id}/nonaktif` | `MediaController::deactivate/$1` | Nonaktifkan berkas |
 | GET | `/admin/media/audio` | `MediaController::audioIndex` | Rekaman suara |
 | POST | `/admin/media/audio/unggah` | `MediaController::uploadAudio` | Unggah rekaman (status `draft`) |

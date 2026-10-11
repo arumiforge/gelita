@@ -252,6 +252,7 @@ return [
         'media_upload'                 => 'Mengunggah gambar/berkas',
         'media_deactivate'             => 'Menonaktifkan gambar/berkas',
         'media_scan'                   => 'Memeriksa berkas',
+        'catalog_import'               => 'Memasang gambar dari Katalog Aset',
         'audio_upload'                 => 'Mengunggah rekaman suara',
         'audio_approve'                => 'Menyetujui rekaman suara',
         'audio_approve_bulk'           => 'Menyetujui banyak rekaman sekaligus',

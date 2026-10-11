@@ -143,4 +143,27 @@ final class ImageSlotsTest extends CIUnitTestCase
         $this->assertSame('other', ImageSlots::groupOf('challenge-lama.topi'));
         $this->assertNull(ImageSlots::describe('challenge-lama.topi'));
     }
+
+    /** Owner decisions of 11 October 2026: 3D red-scarf Jaka, catalogue logo and image buttons, WebP. */
+    public function testTextsFollowTheCurrentDesign(): void
+    {
+        $jaka = ImageSlots::describe('char.jaka.idle.1');
+        $kedu = ImageSlots::describe('char.kedu.idle.1');
+
+        $this->assertStringContainsString('syal merah', $jaka['content']);
+        $this->assertStringContainsString('tanpa syal merah', $kedu['content']);
+        $this->assertStringContainsString('tongkat', $kedu['content']);
+        $this->assertStringContainsString('24 gambar', $jaka['tips']);
+
+        foreach (['char.jaka.idle.1', 'char.kedu.idle.1', 'ui.btn-start', 'ui.btn-start.en', 'avatar.1', 'map.kedu', 'map.region.temanggung'] as $key) {
+            $text = implode(' ', array_filter([ImageSlots::describe($key)['content'], ImageSlots::describe($key)['tips']]));
+            $this->assertDoesNotMatchRegularExpression('/\b(lurik|iket|blangkon|surjan|perkamen)\b/i', $text, $key);
+        }
+
+        $this->assertStringContainsString('MULAI', ImageSlots::describe('ui.btn-start')['content']);
+        $this->assertStringContainsString('START', ImageSlots::describe('ui.btn-start.en')['content']);
+        $this->assertStringContainsString('tanpa wajah', ImageSlots::describe('avatar.3')['content']);
+        $this->assertStringContainsString('WebP', ImageSlots::describe('bg.welcome')['format']);
+        $this->assertSame(['png'], ImageSlots::types('app.icon-512'), 'app icons stay PNG');
+    }
 }

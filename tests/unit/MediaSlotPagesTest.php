@@ -79,7 +79,8 @@ final class MediaSlotPagesTest extends CIUnitTestCase
     {
         // Only the slot table: the upload box lists every key for its datalist
         $characters = $this->listed($this->page('admin/media?kelompok=character'));
-        $this->assertStringContainsString('char.kedu.weak.3', $characters);
+        $this->assertStringContainsString('char.kedu.weak.1', $characters);
+        $this->assertStringNotContainsString('char.kedu.weak.2', $characters, 'frames 2–24 get a row only when uploaded');
         $this->assertStringNotContainsString('bg.welcome', $characters);
         $this->assertStringContainsString('Kelompok: <b>Tokoh</b>', $characters);
 
@@ -156,28 +157,38 @@ final class MediaSlotPagesTest extends CIUnitTestCase
         $this->assertStringContainsString('Berikutnya', $html);
     }
 
-    /** Display plan Phase A4: the pose's frames side by side, then the animation once 2+ frames exist. */
+    /**
+     * Display plan Phase A4: the pose's frames side by side, then the
+     * animation once 2+ frames exist; up to 24 frames per pose, always
+     * looping, and a form that uploads all frames of the pose at once.
+     */
     public function testCharacterDetailShowsThePoseFramesAndAnimation(): void
     {
-        $page = 'admin/media/' . $this->mediaId('char.kedu.weak.2');
+        $page = 'admin/media/' . $this->mediaId('char.kedu.weak.1');
 
         $html = $this->page($page);
-        $this->assertStringContainsString('Semua gambar pose ini', $html);
-        $this->assertSame(3, substr_count($html, '(belum ada)'), 'three empty frames');
+        $this->assertStringContainsString('Semua gambar pose ini (0 dari 24)', $html);
+        $this->assertSame(24, substr_count($html, '(belum ada)'), 'twenty-four empty frames');
         $this->assertStringContainsString('paling sedikit dua gambar', $html);
         $this->assertStringNotContainsString('data-frames=', $html);
+        $this->assertStringContainsString('action="' . site_url('admin/media/' . $this->mediaId('char.kedu.weak.1') . '/unggah-gerak') . '"', $html);
+        $this->assertStringContainsString('name="frames[]" multiple', $html);
 
-        foreach ([1, 2] as $i) {
-            $this->sqlite->table('media_assets')->where('asset_key', "char.kedu.weak.{$i}")
-                ->update(['is_active' => 1, 'storage_path' => "assets/uploads/char.kedu.weak.{$i}.png", 'sha256' => str_repeat((string) $i, 64)]);
-        }
+        $this->sqlite->table('media_assets')->where('asset_key', 'char.kedu.weak.1')
+            ->update(['is_active' => 1, 'storage_path' => 'assets/uploads/char.kedu.weak.1.png', 'sha256' => str_repeat('1', 64)]);
+        $this->sqlite->table('media_assets')->insert([
+            'asset_key' => 'char.kedu.weak.2', 'asset_type' => 'sprite_frame', 'storage_path' => 'assets/uploads/char.kedu.weak.2.png',
+            'mime_type' => 'image/png', 'sha256' => str_repeat('2', 64), 'is_active' => 1,
+        ]);
         service('contentRepository')->flush();
         service('cache')->clean();
 
         $html = $this->page($page);
-        $this->assertSame(1, substr_count($html, '(belum ada)'));
+        $this->assertSame(22, substr_count($html, '(belum ada)'));
         $this->assertMatchesRegularExpression('/class="character" data-frames=.\["[^\]]*char\.kedu\.weak\.1\.png[^\]]*char\.kedu\.weak\.2\.png[^\]]*\]/', html_entity_decode($html));
-        $this->assertStringContainsString('data-fps="3" data-loop="0"', $html, 'Config\Gelita::$characterAnimations kedu.weak');
+        $this->assertStringContainsString('data-fps="0.57" data-loop="1"', $html, '2 frames in the 3.5 s loop of kedu.weak, repeating');
+        $this->assertStringContainsString('berulang terus', $html);
+        $this->assertStringContainsString('href="' . site_url('admin/media/' . $this->mediaId('char.kedu.weak.2')) . '">Gambar 2</a>', $html, 'other frames open their own page');
         $this->assertStringContainsString('data-sprite-replay', $html);
         $this->assertStringContainsString('data-zoom="', $html, 'frames open in the lightbox');
     }

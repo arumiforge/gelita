@@ -1390,3 +1390,55 @@ Branch `pbb/nifty-faraday-fcw9r6`. Owner request: use the references and images 
   - **Panel texts still describe the old art.** `ImageSlots` texts for `ui.btn-start` (gold button, dark letters) and the avatar brief (portraits; the catalogue avatars are faceless emblems) do not match.
   - **Library images.** The catalogue's 60 Pustaka images are AI illustrations, while §9.5 asks for real photos for factual pages. They also include a recognisable child with gimbal hair (rule 5), an illustrated regency emblem, and the old Jaka costume. The owner has not decided yet, so the plan's rules are unchanged.
   - **Icon code change.** Bringing the catalogue icon shapes into `icon()`, including drawing the 11 game icons the catalogue lacks.
+
+## Catalogue images into the game, 24 looping frames, finished plans archived (11 October 2026)
+
+Branch `pbb/nifty-faraday-fcw9r6` (second PR on it; the first, PR #100, is merged). Owner request: use every usable catalogue image, write a migration script that puts them in the database, make the admin image pages and the live game follow the latest decisions, support up to 24 looping frames per character pose, update the old design descriptions, and say whether the finished plans should be renamed.
+
+- **Owner answers (11 October 2026).**
+  - AI Pustaka illustrations are fine for now; the owner replaces them in the panel later.
+  - Each pose has up to 24 frames, always looping.
+  - Old design texts are updated.
+  - The 30 old-design catalogue frames are imported as interim art.
+  - The START button is generated from `reference.10`.
+  - Region map challenge buttons move onto the catalogue maps' clearings.
+  - Finished plans are archived.
+- **Import command `gelita:katalog:impor` (`App\Libraries\CatalogImporter`).** It reads `gelita-katalog/data.json` and stores each usable image through `MediaStore::storeCopy()`, so the same type and size checks and the same shrinking apply as for a panel upload.
+  - **What it installs:**
+    - slot keys the game reads by name;
+    - app icons, converted to PNG because `app.*` takes PNG only; the favicon is made from the 192 icon, since the catalogue's is 32 px;
+    - story slide backgrounds as `bg.story.{intro|ending}.{n}`, linked to `dialogues.background_media_id`;
+    - library illustrations on media `i` of page `n`: they replace the Commons link, or add a media row for a page without one;
+    - video covers as `poster_media_id`.
+  - **What it skips:** reference images, vector icons, and the picture of a video entry.
+  - **Re-encoding:** every image is re-encoded as lossy WebP q82. The catalogue keeps lossless WebP (2 MB backgrounds), which would break the loading curtain's 8-second budget. The full catalogue shrinks from 108 MB to 18 MB, and alpha is kept for transparent slots.
+  - **What it never replaces:** an admin upload, and a previous catalogue import. Both are replaced only with `--timpa`.
+    - Installed rows carry the credit `Katalog Aset GELITA (gambar sementara)`, and `MediaStore::upsert()` clears it when an admin uploads a new file.
+    - Video covers already downloaded by `gelita:library:thumbnails` count as real images and stay.
+  - **Region maps:** for the three catalogue maps (matched by sha256), each region's four `challenge_nodes.map_x/map_y` are moved onto the map's clearings (measured on a 5% grid, in path order).
+  - **Check against the real catalogue** (SQLite grade-5 world with Pustaka): 183 installed, 0 failed, and a second run installs nothing.
+- **Catalogue edits (`gelita-katalog/`).**
+  - `ui.logo-hero.webp` ← `reference.09` (padded to 8:3) and `ui.logo.webp` ← `reference.16`. The old files were ornaments without the logo.
+  - `ui.btn-start.webp` ← `reference.10` (padded to 3:1).
+  - `ui.btn-start.en.webp` is a START version of `reference.10`: the MULAI letters were removed by rebuilding the enamel between two clean columns, and START is drawn in the repo's Cinzel Bold with the gold sampled from the original letters.
+  - `data.json` was updated; `node build.mjs` and `node scripts/validate.mjs` pass.
+- **24 looping frames.**
+  - `Config\Gelita::$characterAnimations` gives every pose `frames` 24, `loop` true, and `seconds`, the length of one loop.
+  - Speed follows the number of frames actually uploaded (`character_fps()`, 0.5–24 per second): 24 frames in 2 s play at 12 per second, and 3 interim frames in 3 s at 1 per second, so few frames do not flicker.
+  - `core/sprite.js` accepts speeds below 1.
+  - **Seeder:** `MediaAssetSeeder` registers only frame 1 of each pose. Frames 2–24 get their row on upload, or when a file `assets/char/{pose}-{n}.*` exists. 240 empty rows would bury the Tokoh group.
+  - **Panel:** new rows for `char.*` keys are `sprite_frame`. Kelengkapan marks a pose missing only when frame 1 is missing and shows `n/24`.
+  - **Detail page:** the slot detail page lists all 24 frames (each links to its own page) and has a new form, **Unggah semua gambar gerak pose ini** (`POST admin/media/{id}/unggah-gerak`, `MediaController::uploadFrames`). It takes files in natural name order from a chosen start frame and warns about PHP's `max_file_uploads`.
+- **Old design texts.** `ImageSlots` texts now describe:
+  - the 3D, red-scarf Jaka and the `reference.14` Mbah Kedu;
+  - the catalogue logo, emblem, and image buttons;
+  - 3D relief maps;
+  - faceless avatar medallions, as in the catalogue. This settles the avatar brief question in favour of the archived plan's emblems.
+  - WebP in every format line except `app.*`.
+- **Not changed, reported to the owner.** In the three catalogue Cari Objek scenes, the objects (positions fixed in the approved question bank) do not sit on the drawn shelves; top-row objects float in the sky. The bank is frozen (`docs/bank-soal/README.md`), so the scenes need redrawing to the bank positions, or the owner decides to move the positions as a new release.
+- **Docs.** `docs/rencana-katalog-aset.md` and `docs/rencana-perbaikan-tampilan.md` moved to `docs/arsip/` with a "finished" note and `docs/arsip/README.md`; links in code comments and docs were updated. Older entries in this log keep the names they had. `docs/rencana-paket-aset.md` stays, since Stages 2, 3, and 6 are open.
+- **Tests.**
+  - New: `CatalogImportTest` (fake catalogue).
+    - **What it covers:** dry run, slots, PNG app icons, story and library links, video cover, the map stops, a second run, admin uploads with and without `--timpa`, and the credit cleared on upload.
+    - **Guard:** it checks that the measured map hashes still match the catalogue files.
+  - Updated: `CharacterFramesTest` (24 frames, loop, `character_fps()`), `MediaSlotPagesTest` (24-frame page, upload form, frame links), `NarrationPagesTest`, and `RegionStoryTest`.
