@@ -12,6 +12,19 @@ use CodeIgniter\Config\BaseConfig;
  * Suggested reference for explanations:
  *
  * @see https://www.html5rocks.com/en/tutorials/security/content-security-policy/
+ *
+ * The policy only applies when `app.CSPEnabled = true` (off in the repo, on in
+ * production via .env). It is tuned to what GELITA actually loads:
+ * - scripts and stylesheets only from this origin; views have no inline
+ *   scripts (data goes through `<script type="application/json">`, which a
+ *   CSP does not block);
+ * - inline `style` attributes are allowed: several views set positions and
+ *   CSS variables that way (docs/02 §7.6);
+ * - images and media also from `data:`/`blob:` (core/audio.js unlocks audio
+ *   with a silent data: WAV, Howler does the same) and from any HTTPS host,
+ *   because library pages show admin-entered image and video links
+ *   (Libraries/MediaLink);
+ * - frames only from the video players MediaLink embeds.
  */
 class ContentSecurityPolicy extends BaseConfig
 {
@@ -52,7 +65,7 @@ class ContentSecurityPolicy extends BaseConfig
      *
      * @var list<string>|string|null
      */
-    public $defaultSrc;
+    public $defaultSrc = 'self';
 
     /**
      * Lists allowed scripts' URLs.
@@ -96,14 +109,14 @@ class ContentSecurityPolicy extends BaseConfig
      *
      * @var list<string>|string
      */
-    public array|string $styleSrcAttr = 'self';
+    public array|string $styleSrcAttr = 'unsafe-inline';
 
     /**
      * Defines the origins from which images can be loaded.
      *
      * @var list<string>|string
      */
-    public $imageSrc = 'self';
+    public $imageSrc = ['self', 'data:', 'blob:', 'https:'];
 
     /**
      * Restricts the URLs that can appear in a page's `<base>` element.
@@ -134,7 +147,7 @@ class ContentSecurityPolicy extends BaseConfig
      *
      * @var list<string>|string
      */
-    public $fontSrc;
+    public $fontSrc = 'self';
 
     /**
      * Lists valid endpoints for submission from `<form>` tags.
@@ -151,7 +164,7 @@ class ContentSecurityPolicy extends BaseConfig
      *
      * @var list<string>|string|null
      */
-    public $frameAncestors;
+    public $frameAncestors = 'self';
 
     /**
      * The frame-src directive restricts the URLs which may
@@ -159,31 +172,31 @@ class ContentSecurityPolicy extends BaseConfig
      *
      * @var list<string>|string|null
      */
-    public $frameSrc;
+    public $frameSrc = ['https://www.youtube-nocookie.com', 'https://player.vimeo.com', 'https://drive.google.com'];
 
     /**
      * Restricts the origins allowed to deliver video and audio.
      *
      * @var list<string>|string|null
      */
-    public $mediaSrc;
+    public $mediaSrc = ['self', 'data:', 'blob:', 'https:'];
 
     /**
      * Allows control over Flash and other plugins.
      *
      * @var list<string>|string
      */
-    public $objectSrc = 'self';
+    public $objectSrc = 'none';
 
     /**
      * @var list<string>|string|null
      */
-    public $manifestSrc;
+    public $manifestSrc = 'self';
 
     /**
      * @var list<string>|string
      */
-    public array|string $workerSrc = [];
+    public array|string $workerSrc = 'self';
 
     /**
      * Limits the kinds of plugins a page may invoke.

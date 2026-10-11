@@ -1,8 +1,8 @@
 /**
  * Panggung 16:9 (Dok 3 §1–§2, §7).
  *
- *   initStage()   → mengisi --app-w/--app-h dari ukuran jendela (skrip sebaris
- *                   layouts/game.php melakukannya lebih dulu sebelum CSS),
+ *   initStage()   → mengisi --app-w/--app-h dari ukuran jendela (core/viewport.js
+ *                   melakukannya lebih dulu sebelum CSS),
  *                   memasang tombol layar penuh di HUD, dan — bila ada sesi —
  *                   event `viewport_changed`.
  *   stageRect()   → kotak #stage di layar (CSS px).

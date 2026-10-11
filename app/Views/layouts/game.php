@@ -35,8 +35,8 @@ $screenCode = method_exists($request, 'getPath') ? (App\Filters\ScreenViewFilter
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <?php /* Ukuran layar untuk panggung 16:9 sebelum CSS dimuat (Dok 3 §2.1); core/stage.js melanjutkan */ ?>
-  <script>(function(){var d=document.documentElement;function f(){d.style.setProperty('--app-w',window.innerWidth+'px');d.style.setProperty('--app-h',window.innerHeight+'px');}f();window.addEventListener('resize',f);window.addEventListener('orientationchange',f);window.addEventListener('load',f);})();</script>
+  <?php /* Window size for the 16:9 stage before CSS loads (Dok 3 §2.1); core/stage.js takes over. A file, not inline, so it passes the CSP */ ?>
+  <script src="<?= asset_url_versioned('js/core/viewport.js') ?>"></script>
   <meta name="theme-color" content="#0B1320">
   <title><?= $title !== '' ? $title . ' · GELITA' : 'GELITA' ?></title>
   <meta name="csrf-token" content="<?= csrf_hash() ?>">
