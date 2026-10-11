@@ -78,8 +78,8 @@ class AuthController extends BaseController
         ]);
 
         if ($staff->mustChangePassword()) {
-            return redirect()->to(site_url(StaffAuthFilter::PASSWORD_PAGE))
-                ->with('message', 'Ganti dulu sandi sementara Anda sebelum memakai panel.');
+            // No flash: the password page already explains it in its alert
+            return redirect()->to(site_url(StaffAuthFilter::PASSWORD_PAGE));
         }
 
         return redirect()->to($target);

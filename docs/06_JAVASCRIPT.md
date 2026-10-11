@@ -222,14 +222,14 @@ Dua peran terpisah.
 Sfx.unlock()       // dipanggil pada interaksi pengguna; juga membuka elemen narasi bersama
 Sfx.isUnlocked()
 Sfx.play(name)     // sfx/{name}.mp3: correct, wrong, click, shard, region-done, lock
-Sfx.music(name)    // music/{name}.mp3, berulang: map, region, challenge
-Sfx.stopMusic()
+Sfx.music(name)    // music/{name}.mp3, berulang: map, region, challenge; diingat bila suara masih terkunci
+Sfx.stopMusic()    // juga melupakan musik yang diminta
 Sfx.setVolume(v)   // 0–1, preferensi `volume`
 Sfx.setEnabled(on) // preferensi `sound`; mematikan juga menghentikan musik dan narasi
 Sfx.isEnabled()
 ```
 
-Berkas di `public/assets/audio/sfx/` dan `public/assets/audio/music/`. Tidak ada yang berbunyi sebelum `unlock()`. Bila Howler atau berkasnya tidak ada, aplikasi tetap berjalan tanpa bunyi; tidak ada nada sintetis pengganti. `game.js` memanggil `Sfx.unlock()` pada `pointerdown`/`keydown` pertama.
+Berkas di `public/assets/audio/sfx/` dan `public/assets/audio/music/`. Tidak ada yang berbunyi sebelum `unlock()`. Bila Howler atau berkasnya tidak ada, aplikasi tetap berjalan tanpa bunyi; tidak ada nada sintetis pengganti. `game.js` memanggil `Sfx.unlock()` pada `pointerdown`/`keydown` pertama. Layar memanggil `Sfx.music()` saat dimuat, sebelum ketukan pertama; musik yang diminta disimpan dan baru diputar oleh `unlock()`, atau oleh `setEnabled(true)` bila suara tadinya mati (Phase 0, `docs/rencana-perbaikan-tampilan.md`).
 
 **Narasi — elemen `<audio>` per `.audio-player[data-src]` + telemetry:**
 

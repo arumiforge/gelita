@@ -322,8 +322,7 @@ class MediaController extends BaseAdminController
     private function displaySize(string $key): ?array
     {
         foreach (config('Gelita')->assetDisplaySizes as $pattern => $size) {
-            // `map.region` also covers `map.region.temanggung`
-            if ($pattern === $key || fnmatch($pattern, $key) || (! str_contains($pattern, '*') && str_starts_with($key, $pattern . '.'))) {
+            if ($pattern === $key || fnmatch($pattern, $key)) {
                 return $size;
             }
         }

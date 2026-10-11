@@ -161,19 +161,23 @@ class Gelita extends BaseConfig
         'kedu.weak'       => ['frames' => 3, 'fps' => 3, 'loop' => false],
     ];
 
-    /** Ukuran piksel wajib per slot aset, dipakai validasi upload */
+    /**
+     * Required file size per asset_key pattern, enforced on upload
+     * (MediaStore::requiredSize(): exact key or fnmatch). Every pattern must
+     * match a real slot key (ImageSlotsTest). Library images have no
+     * required size, only a recommended one in ImageSlots.
+     */
     public array $assetSizes = [
         'bg.*'             => [1920, 1080],
         'char.*'           => [700, 900],
-        'map.region'       => [1400, 900],
+        'map.region.*'     => [1400, 900],
         // tantangan (Dok 1 §6): adegan Cari Objek, gambar Susun Gambar (node 1,
         // minimal), benda Cari Objek (node 4), gambar pernyataan (node 3)
         'challenge.*.scene'     => [1280, 720],
         'challenge.item.*-1-*'  => [1200, 1200],
         'challenge.item.*-4-*'  => [240, 240],
         'challenge.item.*-3-*'  => [480, 360],
-        'library.image'    => [960, 640],
-        'reward.badge'     => [320, 320],
+        'reward.badge.*'   => [320, 320],
         'ui.logo-hero'     => [1600, 600],
         'ui.btn-start'     => [720, 240],
         'ui.btn-start.*'   => [720, 240],   // varian bahasa: ui.btn-start.en
@@ -191,7 +195,7 @@ class Gelita extends BaseConfig
     public array $assetDisplaySizes = [
         'bg.*'                  => [1280, 720],  // latar penuh panggung, rasio sama
         'char.*'                => [300, 386],   // cerita & dialog; 220 × 283 di pendaftaran langkah 3
-        'map.region'            => [880, 566],   // pin wilayah/node dalam persen
+        'map.region.*'          => [880, 566],   // pin wilayah/node dalam persen
         'challenge.*.scene'     => [864, 486],   // benda Cari Objek dalam persen
         'challenge.item.*-1-*'  => [504, 504],   // papan Susun Gambar
         'challenge.item.*-4-*'  => [0, 0],       // lebar = w% adegan (persegi)

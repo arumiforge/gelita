@@ -123,6 +123,10 @@ abstract class BaseGameController extends BaseController
             return null;
         }
 
+        // A message meant for the screen the student asked for (e.g. "Kata
+        // sandi baru tersimpan") is shown on /intro instead of being lost.
+        session()->keepFlashdata('message');
+
         return redirect()->to(site_url('intro'));
     }
 

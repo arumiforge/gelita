@@ -54,12 +54,6 @@ final class AssetChecklist
         'sfx/region-done' => 'MP3 pendek (± 5 detik)',
     ];
 
-    /** Ukuran slot yang tidak tercakup pola Config\Gelita::$assetSizes. */
-    private const FALLBACK_SIZES = [
-        'map.region'   => 'map.region',
-        'reward.badge' => 'reward.badge',
-    ];
-
     private BaseConnection $db;
 
     /** @var array<string, array<string, mixed>> asset_key → baris media_assets */
@@ -434,19 +428,7 @@ final class AssetChecklist
     /** @return array{0: int, 1: int}|null */
     private function requiredSize(string $key): ?array
     {
-        $size = (new MediaStore())->requiredSize($key);
-
-        if ($size !== null) {
-            return $size;
-        }
-
-        foreach (self::FALLBACK_SIZES as $prefix => $pattern) {
-            if (str_starts_with($key, $prefix . '.')) {
-                return config('Gelita')->assetSizes[$pattern] ?? null;
-            }
-        }
-
-        return config('Gelita')->assetSizes[$key] ?? null;
+        return (new MediaStore())->requiredSize($key);
     }
 
     private function sizeText(string $key): string

@@ -37,6 +37,8 @@ import { $, el } from './dom.js';
 const SFX_BASE = `${(document.body.dataset.base || '/').replace(/\/?$/, '/')}assets/audio/`;
 const sounds = new Map();
 let music = null;
+// Track the screen asked for; it starts on unlock or when sound is switched back on
+let wantedMusic = null;
 let unlocked = false;
 
 // WAV hening 10 ms (8 kHz, 8-bit mono): cukup untuk membuka elemen bersama di dalam ketukan
@@ -87,6 +89,15 @@ function load(name, { loop = false, folder = 'sfx' } = {}) {
   return sounds.get(key);
 }
 
+function startWantedMusic() {
+  if (!unlocked || !enabled || !wantedMusic) return;
+  const next = load(wantedMusic, { loop: true, folder: 'music' });
+  if (next === music) return;
+  music?.stop();
+  music = next;
+  music?.play();
+}
+
 export const Sfx = {
   /**
    * Dipanggil pada interaksi pengguna. Aman dipanggil berulang: kartu
@@ -97,6 +108,7 @@ export const Sfx = {
     unlocked = true;
     if (hasHowler()) window.Howler.volume(volume);
     primeShared();
+    startWantedMusic();
   },
 
   isUnlocked() {
@@ -109,17 +121,18 @@ export const Sfx = {
     load(name)?.play();
   },
 
-  /** map, region, challenge */
+  /**
+   * map, region, challenge. Screens call this at load, before the first
+   * tap, so while audio is locked (or sound is off) the track is only
+   * remembered; unlock() or setEnabled(true) starts it.
+   */
   music(name) {
-    if (!unlocked || !enabled) return;
-    const next = load(name, { loop: true, folder: 'music' });
-    if (next === music) return;
-    music?.stop();
-    music = next;
-    music?.play();
+    wantedMusic = name;
+    startWantedMusic();
   },
 
   stopMusic() {
+    wantedMusic = null;
     music?.stop();
     music = null;
   },
@@ -134,8 +147,11 @@ export const Sfx = {
     enabled = Boolean(on);
     Storage.setPref('sound', enabled);
     if (!enabled) {
-      this.stopMusic();
+      music?.stop();
+      music = null;
       stopAllNarration();
+    } else {
+      startWantedMusic();
     }
   },
 

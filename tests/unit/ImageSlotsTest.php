@@ -70,13 +70,39 @@ final class ImageSlotsTest extends CIUnitTestCase
         }
     }
 
+    /**
+     * A size pattern that matches no real key is silently never enforced
+     * (`map.region` once missed every `map.region.{wilayah}`). Each pattern
+     * must match a key the seeder registers or a slot pattern of the catalogue.
+     */
+    public function testEverySizePatternMatchesARealSlot(): void
+    {
+        $seeder     = new MediaAssetSeeder(config('Database'));
+        $candidates = array_column((new ReflectionMethod($seeder, 'slots'))->invoke($seeder), 0);
+        $candidates = [...$candidates, ...array_keys((new ReflectionClassConstant(ImageSlots::class, 'SLOTS'))->getValue())];
+
+        $gelita = config('Gelita');
+
+        foreach (['assetSizes' => $gelita->assetSizes, 'assetDisplaySizes' => $gelita->assetDisplaySizes] as $list => $sizes) {
+            foreach (array_keys($sizes) as $pattern) {
+                $hits = array_filter($candidates, static fn (string $key): bool => $pattern === $key || fnmatch($pattern, $key));
+
+                $this->assertNotEmpty($hits, sprintf('%s pattern "%s" matches no slot', $list, $pattern));
+            }
+        }
+
+        $this->assertSame([1400, 900], (new App\Libraries\MediaStore())->requiredSize('map.region.magelang'));
+        $this->assertSame([320, 320], (new App\Libraries\MediaStore())->requiredSize('reward.badge.wonosobo'));
+        $this->assertNull((new App\Libraries\MediaStore())->requiredSize('library.tmg-p1-1'), 'library sizes are only recommended');
+    }
+
     public function testRegionAndChallengeKeysFillTheirPlaceholders(): void
     {
         $map = ImageSlots::describe('map.region.magelang', ['level_id' => 2]);
         $this->assertSame('region', $map['group']);
         $this->assertSame('Peta wilayah Magelang', $map['label']);
         $this->assertSame('/wilayah/magelang', $map['screens'][0][1]);
-        $this->assertSame([1400, 900], $map['recommended']);
+        $this->assertNull($map['recommended'], 'the size is required ($assetSizes), not only recommended');
         $this->assertSame('admin/konten/level/2', $map['admin'][1]);
 
         // Without ids there is no admin link (no half-filled URL)

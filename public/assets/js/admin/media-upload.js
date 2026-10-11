@@ -94,6 +94,11 @@ export function initMediaUpload(root = document) {
     }
     const need = requiredSize(sizes, keyInput.value.trim());
     if (!need) return true;
+    // Same rule as MediaStore::store(): an SVG has no pixel size to check
+    if (file.type === 'image/svg+xml') {
+      fail(`Gambar untuk ${keyInput.value.trim()} harus PNG, JPG, atau WebP berukuran ${need[0]} × ${need[1]} piksel. Berkas SVG tidak bisa dipakai di sini.`);
+      return false;
+    }
     const has = await dimensions(file);
     const problem = has && sizeProblem(has, need, keyInput.value.trim());
     if (problem) {
