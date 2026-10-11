@@ -2,7 +2,8 @@
 /**
  * 5a. Ganti Sandi — `/ganti-sandi` → LoginController::changePasswordForm
  *
- * Setelah berhasil server mengarahkan ke /mulai dengan toast
+ * After a successful change the server redirects to /gerbang (or /intro
+ * when the opening story is still unseen) with the toast
  * "Kata sandi baru tersimpan".
  *
  * @var bool                  $mustChange  datang dari reset guru

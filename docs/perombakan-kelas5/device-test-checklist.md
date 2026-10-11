@@ -15,6 +15,7 @@ Devices: a laptop (Chrome or Edge), a tablet (Android Chrome or iPad Safari), an
 For each device, from `/masuk` to the region's "tuntas" screen:
 
 - [ ] Intro and region dialog: narration plays, tap moves on, text readable without zooming.
+- [ ] Music: after the first tap, background music plays on the region map and on each challenge screen; with the HUD sound button off it stays silent, and switching sound back on starts it again (display plan Phase 0).
 - [ ] Map: the 16:9 stage fills the screen with bars on the sides or top; the page itself never scrolls.
 - [ ] Susun Gambar: drag and tap-to-swap both work; pieces do not jump when the finger lifts.
 - [ ] Isi Rumpang: tap a blank, then a word; the passage panel scrolls inside its box only.

@@ -317,7 +317,7 @@ Dasar controller yang route-nya ada di grup `gameSession` (filter sudah memuat `
 | `session()` / `participant()` | Sesi permainan dan peserta request ini |
 | `hudData()` | Data HUD setiap layar: `locale`, `participant` (`toSafeArray()`, tanpa `password_hash`), `progress` (`progressSummary()`), `lantern` (`lanternMap()`) |
 | `requireLevel($code)` / `requireNode($levelId, $seq)` | Wilayah/tantangan aktif, atau 404 |
-| `introGate()` | `participants.intro_seen_at` kosong → redirect `/intro` |
+| `introGate()` | `participants.intro_seen_at` kosong → redirect `/intro`; flash `message` dipertahankan satu request lagi (`keepFlashdata`) agar tampil di `/intro` |
 | `dialogueGate($session, $level)` | Wilayah baru terbuka (status `open`) yang dialog pembukanya belum tampil pada sesi login ini → redirect `/dialog/{code}`. Tanda "sudah tampil" disimpan di session PHP `dialogues_shown`, bukan di database |
 | `toMap()` | Redirect `/peta` dengan flash `curtain=map` (tirai "Membuka Peta Kedu") |
 
@@ -375,9 +375,9 @@ Sekolah: NPSN hanya dipakai di provinsi berdirektori; nama sekolah dipakai bila 
 | Method | Aturan | Respons |
 |---|---|---|
 | `form()` | Sudah masuk → redirect `/mulai`; flash `redirect_after_login` dipertahankan sampai POST | view `game/login` |
-| `login()` | `username`, `password` wajib. `SessionService::login()`: `invalid` → `Auth.loginFailed` (identik untuk akun tak ada dan sandi salah); `locked` → `Auth.locked` dengan sisa menit; `must_change` → `/ganti-sandi` + `Auth.mustChange`; `ok` → `redirect_after_login` (path internal) atau `/mulai` | redirect |
+| `login()` | `username`, `password` wajib. `SessionService::login()`: `invalid` → `Auth.loginFailed` (identik untuk akun tak ada dan sandi salah); `locked` → `Auth.locked` dengan sisa menit; `must_change` → `/ganti-sandi` (tanpa flash: halaman itu sudah menampilkan `Auth.mustChange`); `ok` → `redirect_after_login` (path internal) atau `/mulai` | redirect |
 | `changePasswordForm()` | `mustChange`, `username` (untuk syarat "tidak memuat nama pengguna"), `passwordPolicy` | view `game/change-password` |
-| `changePassword()` | `current_password: required`; `password: required\|strong_password[username]\|differs[current_password]`; `password_confirm: required\|matches[password]`; `SessionService::changePassword()` (`invalid_current` → `Auth.wrongCurrent`). Lalu masuk otomatis untuk melanjutkan/membuat sesi; setelah reset guru event `password_changed` dicatat pada sesi baru dengan `via: reset` (ganti biasa: `via: self`) | redirect `/mulai` + `Auth.passwordChanged` |
+| `changePassword()` | `current_password: required`; `password: required\|strong_password[username]\|differs[current_password]`; `password_confirm: required\|matches[password]`; `SessionService::changePassword()` (`invalid_current` → `Auth.wrongCurrent`). Lalu masuk otomatis untuk melanjutkan/membuat sesi; setelah reset guru event `password_changed` dicatat pada sesi baru dengan `via: reset` (ganti biasa: `via: self`) | redirect `/gerbang` + `Auth.passwordChanged` (langsung, karena `/mulai` mengalihkan siswa yang sudah masuk sekali lagi dan menghabiskan flash; `/mulai` hanya bila sesi permainan tidak terbuka) |
 | `logout()` | `SessionService::logout()`: sesi `active` → `paused` + event `session_paused`; attempt `in_progress` tidak ditutup agar dapat dilanjutkan; `session()->destroy()` | redirect `/` |
 
 ### `Game\GateController`

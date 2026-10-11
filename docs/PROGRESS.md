@@ -37,7 +37,7 @@ Last updated: 11 October 2026.
 
 Owner decisions: phases in order 0 → A → B → C → E → F, one branch and one PR per phase, each cut from `main` after the previous PR is merged. Phase D (character frame animation) is done (PR #83).
 
-- [ ] Plan revised against the current code (`sky/eloquent-lamport-6cjmvk`)
+- [x] Plan revised against the current code (PR #84)
 - [ ] Phase 0 — bug fixes: music on challenge/region screens, lost and doubled password flash, dead size rules (`tampilan-0-perbaikan`)
 - [ ] Phase A — app icons, zoom and animation preview, placeholder, story slide backgrounds, `bg.auth` (`tampilan-a-gambar-admin`)
 - [ ] Phase B — avatars (`tampilan-b-avatar`)
@@ -77,4 +77,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 | `paket-1b-narasi` | Asset package Stage 1b: narration 48 kbps | PR open |
 | `paket-4-transisi` | Asset package Stage 4: transitions, decode, curtain | PR open |
 | `paket-5-integritas` | Asset package Stage 5: research data integrity | PR open |
-| `sky/eloquent-lamport-6cjmvk` | Display update: plan revised against the current code | PR open |
+| `tampilan-0-perbaikan` | Display update Phase 0: bug fixes | PR open |

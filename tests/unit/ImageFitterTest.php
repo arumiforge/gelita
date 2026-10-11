@@ -180,6 +180,43 @@ final class ImageFitterTest extends CIUnitTestCase
         $this->assertSame([480, 360], array_slice(getimagesize($absolute), 0, 2));
     }
 
+    /** Display plan Phase 0: the size rule used to miss every region map (`map.region` matched no key). */
+    public function testRegionMapUploadIsSizeChecked(): void
+    {
+        $key    = 'map.region.zz' . bin2hex(random_bytes(3));
+        $result = (new MediaStore())->store($this->upload($this->image('png', 800, 600)), $key, ['image'], null, true);
+
+        $this->assertNotNull($result['error']);
+        $this->assertStringContainsString('1400 × 900', $result['error']);
+        $this->assertNull(model(MediaAssetModel::class)->findByKey($key));
+    }
+
+    /** An SVG has no pixel size, so it is refused wherever a size is required, and accepted elsewhere. */
+    public function testSvgIsRefusedOnSizedSlots(): void
+    {
+        $store = new MediaStore();
+        $key   = 'bg.zz-' . bin2hex(random_bytes(3));
+
+        $result = $store->store($this->upload($this->svg()), $key, ['image'], null, true);
+        $this->assertNotNull($result['error']);
+        $this->assertStringContainsString('SVG', $result['error']);
+        $this->assertNull(model(MediaAssetModel::class)->findByKey($key));
+
+        $free   = 'ui.zz-' . bin2hex(random_bytes(3));
+        $result = $store->store($this->upload($this->svg()), $free, ['image'], null, true);
+        $this->assertNull($result['error'], 'a slot without a required size still takes SVG');
+        $this->cleanup[] = FCPATH . model(MediaAssetModel::class)->findByKey($free)['storage_path'];
+    }
+
+    private function svg(): string
+    {
+        $path            = sys_get_temp_dir() . '/fit-' . bin2hex(random_bytes(6)) . '.svg';
+        $this->cleanup[] = $path;
+        file_put_contents($path, '<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"><rect width="10" height="10"/></svg>');
+
+        return $path;
+    }
+
     /** An upload whose temp file is not a real PHP upload (move_uploaded_file() cannot run in CLI). */
     private function upload(string $path): UploadedFile
     {

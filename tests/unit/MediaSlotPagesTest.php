@@ -98,7 +98,7 @@ final class MediaSlotPagesTest extends CIUnitTestCase
         $html = $this->page('admin/media/' . $id);
 
         $this->assertStringContainsString('Peta wilayah Temanggung', $html);
-        $this->assertStringContainsString('disarankan 1400 × 900 px', $html);
+        $this->assertStringContainsString('1400 × 900 px (gambar lebih besar dengan bentuk sama diperkecil otomatis)', $html);
         $this->assertStringContainsString('<code>/wilayah/temanggung</code>', $html);
         $this->assertStringContainsString('admin/konten/level/1', $html);
 

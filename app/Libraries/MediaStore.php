@@ -29,6 +29,8 @@ class MediaStore
 
     private const UNREADABLE_IMAGE = 'Berkas ini bukan gambar yang dapat dibuka. Simpan ulang sebagai PNG atau JPG, lalu unggah lagi.';
 
+    private const SVG_NOT_SIZED = 'Gambar untuk %s harus PNG, JPG, atau WebP berukuran %d × %d piksel. Berkas SVG tidak bisa dipakai di sini.';
+
     private const NOT_SAVED = 'Berkas gagal disimpan di server. Coba lagi; bila tetap gagal, hubungi petugas teknis.';
 
     /** Nilai atribut `accept` input berkas per jenis aset. */
@@ -81,6 +83,11 @@ class MediaStore
 
         $size     = is_array($size) ? [(int) $size[0], (int) $size[1]] : null;
         $required = $this->requiredSize($assetKey);
+
+        // An SVG has no pixel size, so it would skip the size rule below
+        if ($required !== null && $mime === 'image/svg+xml') {
+            return $this->fail(sprintf(self::SVG_NOT_SIZED, $assetKey, $required[0], $required[1]));
+        }
 
         if ($required !== null && $size !== null) {
             $error = ImageFitter::problem($size, $required, $assetKey)

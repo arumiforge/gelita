@@ -45,7 +45,8 @@ class LoginController extends BaseController
 
         return match ($result['status']) {
             'ok'          => $this->afterLogin(),
-            'must_change' => redirect()->to(site_url('ganti-sandi'))->with('message', lang('Auth.mustChange')),
+            // No flash: /ganti-sandi already explains it in its alert (Auth.mustChange)
+            'must_change' => redirect()->to(site_url('ganti-sandi')),
             'locked'      => redirect()->to(site_url('masuk'))
                 ->with('errors', ['password' => lang('Auth.locked', [$result['lock_minutes'] ?? 5])]),
             default => redirect()->to(site_url('masuk'))
@@ -138,7 +139,11 @@ class LoginController extends BaseController
             service('eventService')->record($login['session'], 'password_changed', ['via' => 'reset']);
         }
 
-        return redirect()->to(site_url('mulai'))->with('message', lang('Auth.passwordChanged'));
+        // Straight to `/gerbang`: going through `/mulai` (one more redirect for
+        // a logged-in student) used up the flash before any page showed it.
+        $target = (int) session('game_session_id') > 0 ? 'gerbang' : 'mulai';
+
+        return redirect()->to(site_url($target))->with('message', lang('Auth.passwordChanged'));
     }
 
     public function logout(): RedirectResponse

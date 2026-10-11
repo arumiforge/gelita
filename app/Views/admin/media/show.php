@@ -161,7 +161,7 @@ $src         = $isActive && $row['asset_type'] !== 'video'
       <div class="field">
         <label for="file">Berkas untuk <code><?= esc($key) ?></code> <span class="req">*</span></label>
         <input type="file" id="file" name="file" required accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml,video/mp4,video/webm,video/ogg">
-        <p class="field-help"><?= $required !== null ? 'Ukuran lain dari ' . $required[0] . ' × ' . $required[1] . ' piksel ditolak.' : 'Gambar PNG, JPG, WebP, GIF, atau SVG.' ?> Paling besar 64 MB. Gambar lama diganti dan langsung dipakai permainan.</p>
+        <p class="field-help"><?= $required !== null ? 'Gambar PNG, JPG, atau WebP paling kecil ' . $required[0] . ' × ' . $required[1] . ' piksel dengan bentuk yang sama; yang lebih besar diperkecil otomatis.' : 'Gambar PNG, JPG, WebP, GIF, atau SVG.' ?> Paling besar 64 MB. Gambar lama diganti dan langsung dipakai permainan.</p>
       </div>
       <div class="form-actions">
         <button class="btn btn-primary" type="submit"><?= icon('upload') ?> Unggah</button>
