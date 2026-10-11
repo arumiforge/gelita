@@ -76,6 +76,11 @@ if (pages[screen]) {
   page = import('./game/password-meter.js').then((m) => m.initPasswordField(document.querySelector('.password-field')));
 }
 
+// Character pose frames (core/sprite.js), only on pages that have them
+if (document.querySelector('.character[data-frames]')) {
+  import('./core/sprite.js').then((m) => m.initSprites());
+}
+
 document.body.dataset.ready = CONFIG.locale;
 // Penanda perilaku halaman sudah terpasang (dipakai uji ujung ke ujung)
 page.then(() => { document.body.dataset.pageReady = '1'; });

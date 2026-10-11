@@ -200,7 +200,7 @@ final class RegionStoryTest extends CIUnitTestCase
 
     public function testDialogueIsNarratedWithChapterCardAndPoseFrames(): void
     {
-        $this->media = ['char.jaka.afraid.1' => 'assets/char/jaka-afraid-1.png', 'char.kedu.idle.1' => 'assets/char/kedu-idle-1.png'];
+        $this->media = ['char.jaka.afraid.1' => 'assets/char/jaka-afraid-1.png', 'char.jaka.afraid.2' => 'assets/char/jaka-afraid-2.png', 'char.kedu.idle.1' => 'assets/char/kedu-idle-1.png'];
 
         $page = $this->dialogue(['magelang' => 'open'])->show('magelang');
 
@@ -217,6 +217,9 @@ final class RegionStoryTest extends CIUnitTestCase
         $this->assertMatchesRegularExpression('/id="line-1"[^>]*data-pose="afraid" data-pose-src="[^"]*jaka-afraid-1\.png"/', $page);
         $this->assertMatchesRegularExpression('/id="line-2"[^>]*data-pose="worried" data-pose-src="[^"]*kedu-idle-1\.png"[^>]*data-effect="fog"/', $page);
         $this->assertMatchesRegularExpression('/id="line-3"[^>]*data-pose="happy" data-pose-src=""/', $page);
+        // Several frames: the line also carries them for core/sprite.js; one frame: none
+        $this->assertMatchesRegularExpression('/id="line-1"[^>]*data-pose-frames="[^"]*jaka-afraid-2\.png[^"]*" data-pose-fps="6" data-pose-loop="0"/', $page);
+        $this->assertDoesNotMatchRegularExpression('/id="line-2"[^>]*data-pose-frames/', $page);
 
         // Panggung dua tokoh, akhir ke peta wilayah, nav Lewati tetap
         $this->assertStringContainsString('character-jaka stage-left', $page);

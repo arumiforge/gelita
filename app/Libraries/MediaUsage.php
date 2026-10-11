@@ -128,8 +128,8 @@ class MediaUsage
     }
 
     /**
-     * Story lines and screens that show a character pose. Only frame 1 of
-     * each pose is shown today (no frame player yet).
+     * Story lines and screens that show a character pose. Every frame of the
+     * pose is listed, since core/sprite.js plays them all where frame 1 shows.
      *
      * @param array<int, string> $levels level id → code
      *
@@ -171,6 +171,16 @@ class MediaUsage
 
         foreach (self::CHARACTER_SCREENS as [$slug, $pose, $label, $path]) {
             $out["char.{$slug}.{$pose}.1"][] = ['label' => $label, 'path' => $path];
+        }
+
+        $animations = config('Gelita')->characterAnimations;
+
+        foreach ($out as $key => $uses) {
+            [, $slug, $pose] = explode('.', $key);
+
+            for ($i = 2; $i <= (int) ($animations["{$slug}.{$pose}"]['frames'] ?? 1); $i++) {
+                $out["char.{$slug}.{$pose}.{$i}"] = $uses;
+            }
         }
 
         return $out;

@@ -13,9 +13,12 @@
  *   hal yang sama;
  * - gambar tokoh yang berbicara ditukar ke frame pose baris itu
  *   (`data-pose-src` dari server, sudah jatuh ke `idle`). Baris tanpa frame
- *   sama sekali membiarkan tokoh apa adanya (monogram).
+ *   sama sekali membiarkan tokoh apa adanya (monogram). A pose with several
+ *   frames (`data-pose-frames`/`-fps`/`-loop`) is played by core/sprite.js,
+ *   restarting from frame 1 on every line.
  */
 import { $, $$ } from '../core/dom.js';
+import { parseFrames, setFrames } from '../core/sprite.js';
 import { initNarrator } from './narrator.js';
 
 /** Frame pose dipramuat sekali agar pergantian gambar tidak berkedip. */
@@ -26,8 +29,9 @@ function preloadPoses(lines) {
   else setTimeout(run, 400);
 }
 
-function setPose(figure, pose, src) {
+function setPose(figure, line) {
   if (!figure) return;
+  const { pose, poseSrc: src } = line.dataset;
   figure.className = figure.className.replace(/\bpose-[a-z]+\b/g, '').trim();
   figure.classList.add(`pose-${pose || 'idle'}`);
   figure.dataset.pose = pose || 'idle';
@@ -45,6 +49,10 @@ function setPose(figure, pose, src) {
     if (!img.isConnected) figure.prepend(img);
   }
   if (img.getAttribute('src') !== src) img.src = src;
+  setFrames(figure, parseFrames(line.dataset.poseFrames), {
+    fps: line.dataset.poseFps,
+    loop: line.dataset.poseLoop === '1',
+  });
 }
 
 export function initDialogue() {
@@ -61,7 +69,7 @@ export function initDialogue() {
       const speaking = figure.dataset.character === speaker;
       figure.classList.toggle('is-speaking', speaking);
       figure.classList.toggle('is-listening', !speaking);
-      if (speaking) setPose(figure, line.dataset.pose, line.dataset.poseSrc);
+      if (speaking) setPose(figure, line);
     }
     screen.dataset.index = line.dataset.index || '1';
   };

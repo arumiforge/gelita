@@ -11,7 +11,8 @@
 >   - Tabel target sentuh, ukuran teks, dan safe-area Fase F1 yang ditulis untuk breakpoint ponsel: ukuran kini dalam dp panggung dan ikut terskala bersama panggung.
 >   - Fase F2 butir 5 ("Selesaikan dengan jawaban ini") dan catatan `pilihan`: digantikan aturan 3 kesempatan dan empat engine kelas 5 (Dok 2).
 >   - Ukuran tampil slot di panel (Fase A): kini `Config\Gelita::$assetDisplaySizes`, ditampilkan di **Gambar & mockup** (`/admin/media`).
-> - **Tetap ditunda (belum dibuat):** avatar (Fase B butir 1–3), pin/lentera dan latar loading per kota (Fase C), animasi frame tokoh (Fase D; `core/sprite.js` belum ada, dan pose `happy` masih diminta di `reflection.php` dan `challenge-finished.php`), antrean dan tutup toast (Fase E butir 2–4), seret/usap dan "Perbesar adegan" (Fase F2 butir 1–4 dan 6), serta katalog slot tunggal `ImageSlots` (Fase A).
+> - **Done (11 October 2026):** Phase D, character frame animation (`core/sprite.js`, `character_frames()`); the Mbah Kedu `happy` pose had already been changed to `smile`. See the decision log.
+> - **Tetap ditunda (belum dibuat):** avatar (Fase B butir 1–3), pin/lentera dan latar loading per kota (Fase C), antrean dan tutup toast (Fase E butir 2–4), seret/usap dan "Perbesar adegan" (Fase F2 butir 1–4 dan 6), serta katalog slot tunggal `ImageSlots` (Fase A).
 
 ## Konteks
 
