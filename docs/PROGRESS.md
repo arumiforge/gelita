@@ -58,7 +58,6 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 |---|---|---|
 | `sky/youthful-turing-l3pvlp` | Asset catalogue decision (team ZIP), `ImageSlots`, slot detail page `/admin/media/{id}`, challenge images in Kelengkapan | PR open |
 | `sky/confident-noether-id40gg` | Display fixes on `/masuk` (crest under the HUD logo), `/daftar/3` (fields hidden below the tips box), registration error labels, and `/daftar` in the dark ornate design | PR open |
-| `sky/funny-keller-o981ko` | Image slot sizes: larger images with the same ratio are shrunk to the slot size (`ImageFitter`); smaller or other ratios refused | PR open |
 | `sky/gracious-archimedes-injcc3` | No session cookie on the no-login API endpoints (`LocaleFilter`) | PR open |
 | `sky/zealous-ritchie-653apc` | Asset package: wave plan and coordination (this file) | PR open |
 | `paket-0-ukur-dasar` | Asset package Stage 0: baseline timing | PR open |
