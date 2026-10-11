@@ -41,7 +41,7 @@ class RegisterController extends BaseController
 
     /** Isian yang disimpan per langkah (langkah 3 tidak pernah disimpan) */
     private const STEP_FIELDS = [
-        1 => ['display_name', 'age', 'gender'],
+        1 => ['display_name', 'age', 'gender', 'avatar_no'],
         2 => ['country_code', 'country_other', 'province_code', 'district_code', 'school_npsn', 'school_manual', 'school_name'],
     ];
 
@@ -188,6 +188,7 @@ class RegisterController extends BaseController
             'display_name'  => $about['display_name'] ?? null,
             'age'           => $about['age'] ?? null,
             'gender'        => $about['gender'] ?? null,
+            'avatar_no'     => $about['avatar_no'] ?? null,
             // Sasaran penelitian: kelas 5 SD/MI saja; tidak ada isian kelas.
             'class_level'   => config('Gelita')->registrationClass,
             // NPSN hanya berlaku di provinsi berdirektori; nama hanya bila bukan jalur NPSN
@@ -237,6 +238,8 @@ class RegisterController extends BaseController
                 'display_name' => 'required|min_length[2]|max_length[150]',
                 'age'          => 'required|integer|greater_than_equal_to[' . $minAge . ']|less_than_equal_to[' . $maxAge . ']',
                 'gender'       => 'required|in_list[' . implode(',', $config->genders) . ']',
+                // Optional; only an uploaded avatar can be chosen (display plan Phase B)
+                'avatar_no'    => 'permit_empty|in_list[' . implode(',', array_keys(avatar_choices())) . ']',
             ]);
         }
 
@@ -277,6 +280,7 @@ class RegisterController extends BaseController
             'display_name'     => 'Game.displayName',
             'age'              => 'Game.age',
             'gender'           => 'Game.gender',
+            'avatar_no'        => 'Game.avatar',
             'country_code'     => 'Game.country',
             'province_code'    => 'Game.province',
             'district_code'    => 'Game.district',
@@ -314,6 +318,9 @@ class RegisterController extends BaseController
             ],
             'gender' => [
                 'in_list' => lang('Game.genderRequired'),
+            ],
+            'avatar_no' => [
+                'in_list' => lang('Game.avatarInvalid'),
             ],
             'province_code' => [
                 'required_without' => lang('Validation.required'),

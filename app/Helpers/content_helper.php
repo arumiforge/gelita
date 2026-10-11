@@ -169,6 +169,74 @@ if (! function_exists('media_is_placeholder')) {
     }
 }
 
+if (! function_exists('region_art_src')) {
+    /**
+     * City art on the Kedu map (display plan Phase C): `pin` → map.pin.{code},
+     * then ui.pin; `lantern` → map.lantern.{code}, then ui.lantern. Null when
+     * neither is uploaded: the view keeps its SVG icon.
+     */
+    function region_art_src(string $kind, ?string $levelCode = null): ?string
+    {
+        $own = $levelCode === null || $levelCode === '' ? null : media_key_src("map.{$kind}.{$levelCode}");
+
+        return $own ?? media_key_src("ui.{$kind}");
+    }
+}
+
+if (! function_exists('art_or_icon')) {
+    /**
+     * `<img>` of an uploaded picture, or the built-in SVG icon when there is
+     * none. Decorative: the caller names the control in text.
+     */
+    function art_or_icon(?string $src, string $icon): string
+    {
+        return $src === null
+            ? icon($icon)
+            : '<img class="art" src="' . esc($src, 'attr') . '" alt="" decoding="async" draggable="false">';
+    }
+}
+
+if (! function_exists('region_loading_bg')) {
+    /**
+     * Background of the "Menuju {wilayah}…" curtain: bg.loading.{code}, then
+     * the region background already resolved by the caller, else null (the
+     * curtain keeps its light gradient).
+     */
+    function region_loading_bg(string $levelCode, ?string $regionBackground = null): ?string
+    {
+        return media_key_src("bg.loading.{$levelCode}") ?? ($regionBackground !== null && $regionBackground !== '' ? $regionBackground : null);
+    }
+}
+
+if (! function_exists('avatar_choices')) {
+    /**
+     * Avatars a student can pick: number → image URL, only uploaded
+     * `avatar.N` slots (1 … Config\Gelita::$avatarSlots), in order.
+     *
+     * @return array<int, string>
+     */
+    function avatar_choices(): array
+    {
+        $choices = [];
+
+        for ($n = 1; $n <= config('Gelita')->avatarSlots; $n++) {
+            if (($src = media_key_src("avatar.{$n}")) !== null) {
+                $choices[$n] = $src;
+            }
+        }
+
+        return $choices;
+    }
+}
+
+if (! function_exists('avatar_src')) {
+    /** Image of a chosen avatar, or null (none chosen, or the slot was emptied): show the initial. */
+    function avatar_src(?int $avatarNo): ?string
+    {
+        return $avatarNo === null || $avatarNo < 1 ? null : media_key_src("avatar.{$avatarNo}");
+    }
+}
+
 if (! function_exists('media_exists')) {
     /** Media aktif dengan id ini ada? Dipakai view yang punya tampilan pengganti sendiri. */
     function media_exists(?int $mediaAssetId): bool

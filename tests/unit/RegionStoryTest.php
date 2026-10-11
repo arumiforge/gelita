@@ -8,7 +8,9 @@ use App\Entities\GameSession;
 use App\Entities\Level;
 use App\Entities\LibraryPage;
 use App\Entities\Participant;
+use App\Libraries\ImageSlots;
 use App\Models\GameEventLogModel;
+use App\Services\AssetPackageBuilder;
 use App\Services\ContentRepository;
 use App\Services\GameContext;
 use CodeIgniter\HTTP\RedirectResponse;
@@ -320,6 +322,65 @@ final class RegionStoryTest extends CIUnitTestCase
         // Tagline & chip dari naskah; aset tujuan dialog: frame tokoh
         $this->assertStringContainsString(esc(json_encode(['title' => 'Menuju Temanggung…', 'tagline' => 'Di Antara Dua Gunung', 'chip' => 'Mudah'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), 'attr'), $page);
         $this->assertStringContainsString(esc(json_encode([base_url('assets/char/jaka-idle-1.png')], JSON_UNESCAPED_SLASHES), 'attr'), $page);
+    }
+
+    /** Display plan Phase C: city pins and Kenali lanterns from the panel, with automatic status marks. */
+    public function testMapUsesCityPinsAndLanternsWithFallbacks(): void
+    {
+        $status = ['temanggung' => 'completed', 'magelang' => 'open', 'wonosobo' => 'locked'];
+
+        // Nothing uploaded: the built-in icons as before
+        $plain = $this->map($status, heard: []);
+        $this->assertStringNotContainsString('has-art', $plain);
+
+        // Global pin and lantern for every city, Magelang with its own pin
+        Services::resetSingle('renderer');
+        $this->media = [
+            'ui.pin'            => 'assets/uploads/ui.pin.png?v=p1',
+            'map.pin.magelang'  => 'assets/uploads/map.pin.magelang.png?v=m1',
+            'ui.lantern'        => 'assets/uploads/ui.lantern.png?v=l1',
+            'map.lantern.wonosobo' => 'assets/uploads/map.lantern.wonosobo.png?v=w1',
+        ];
+        $page = $this->map($status, heard: []);
+
+        $this->assertSame(3, substr_count($page, '<span class="pin-icon has-art"'));
+        $this->assertStringContainsString(esc(base_url('assets/uploads/map.pin.magelang.png?v=m1'), 'attr'), $page);
+        $this->assertSame(2, substr_count($page, esc(base_url('assets/uploads/ui.pin.png?v=p1'), 'attr')), 'Temanggung and Wonosobo use the global pin');
+        $this->assertSame(2, substr_count($page, 'class="pin-mark"'), 'completed and locked get a mark; open gets the pulse');
+        $this->assertStringContainsString(esc(base_url('assets/uploads/map.lantern.wonosobo.png?v=w1'), 'attr'), $page);
+        $this->assertStringContainsString('<span class="flame flame-', $page);
+        $this->assertMatchesRegularExpression('/<span class="flame flame-\d has-art"/', $page, 'HUD lantern uses ui.lantern');
+
+        $this->assertSame('region', ImageSlots::groupOf('map.pin.magelang'));
+        $this->assertSame('wilayah-wonosobo', AssetPackageBuilder::groupFor('bg.loading.wonosobo'));
+        $this->assertSame('wilayah-magelang', AssetPackageBuilder::groupFor('map.lantern.magelang'));
+        $this->assertSame('inti', AssetPackageBuilder::groupFor('ui.pin'));
+    }
+
+    /** Display plan Phase C: the "Menuju …" curtain shows bg.loading.{wilayah}, else the region background. */
+    public function testRegionCurtainCarriesTheCityBackground(): void
+    {
+        $status = ['temanggung' => 'completed', 'magelang' => 'open', 'wonosobo' => 'locked'];
+
+        $plain = $this->map($status, heard: []);
+        $this->assertStringNotContainsString('data-curtain-bg=', $plain, 'no picture: the gradient as before');
+        $this->assertMatchesRegularExpression('/<template id="tpl-curtain-region">.*?<img class="curtain-bg is-deferred" alt="" hidden>/s', $plain);
+
+        Services::resetSingle('renderer');
+        $this->media = ['bg.loading.magelang' => 'assets/uploads/bg.loading.magelang.jpg?v=b1'];
+        $page = $this->map($status, heard: []);
+        $bg   = esc(base_url('assets/uploads/bg.loading.magelang.jpg?v=b1'), 'attr');
+
+        $this->assertSame(3, substr_count($page, 'data-curtain-bg="' . $bg . '"'), 'pin, card, and last Kenali slide of Magelang');
+        $this->assertMatchesRegularExpression('/data-curtain-preload="' . preg_quote(esc(json_encode([base_url('assets/uploads/bg.loading.magelang.jpg?v=b1')], JSON_UNESCAPED_SLASHES), 'attr'), '/') . '/', $page, 'decoded first');
+        $this->assertStringContainsString('data-preload="' . $bg . '"', $page, 'warmed up on the map');
+
+        // Fallback: the region background resolved by levelOverview()
+        $this->assertSame('/bg-region.jpg', region_loading_bg('wonosobo', '/bg-region.jpg'));
+        $this->assertNull(region_loading_bg('wonosobo', ''));
+
+        $js = (string) file_get_contents(FCPATH . 'assets/js/core/curtain.js');
+        $this->assertStringContainsString('bg: link.dataset.curtainBg', $js);
     }
 
     public function testMapDecodesTheCurrentRegionAheadOfTime(): void

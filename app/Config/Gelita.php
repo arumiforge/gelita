@@ -188,6 +188,12 @@ class Gelita extends BaseConfig
         'app.icon-192'      => [192, 192],
         'app.icon-512'      => [512, 512],
         'app.icon-maskable' => [512, 512],
+        'avatar.*'          => [512, 512],
+        // City art (display plan Phase C); bg.loading.{wilayah} falls under bg.*
+        'ui.pin'            => [256, 256],
+        'ui.lantern'        => [256, 256],
+        'map.pin.*'         => [256, 256],
+        'map.lantern.*'     => [256, 256],
     ];
 
     /**
@@ -210,7 +216,16 @@ class Gelita extends BaseConfig
         'ui.btn-start'          => [360, 120],
         'ui.btn-start.*'        => [360, 120],
         'bg.loading'            => [1280, 720],
+        'avatar.*'              => [72, 72],     // profile; 36 × 36 in the HUD
+        'ui.pin'                => [56, 56],     // map pin of every city without its own
+        'map.pin.*'             => [56, 56],
     ];
+
+    /**
+     * Number of avatar slots (`avatar.1` … `avatar.N`) a student can choose
+     * from (display plan Phase B). Only uploaded ones are offered.
+     */
+    public int $avatarSlots = 10;
 
     public int $maxUploadBytes      = 64 * 1024 * 1024;
     public int $maxEventsPerBatch   = 50;

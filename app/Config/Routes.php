@@ -52,6 +52,7 @@ $routes->group('', ['namespace' => 'App\Controllers\Game'], static function ($ro
         $routes->get('pustaka', 'LibraryController::index');
         $routes->get('pustaka/(:segment)', 'LibraryController::show/$1');
         $routes->get('profil', 'ProfileController::index');
+        $routes->post('profil/avatar', 'ProfileController::avatar');
         $routes->get('refleksi', 'ReflectionController::index');
         $routes->post('refleksi', 'ReflectionController::store');
     });

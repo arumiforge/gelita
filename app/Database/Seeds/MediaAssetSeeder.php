@@ -57,6 +57,9 @@ class MediaAssetSeeder extends GelitaSeeder
         ['bg.reflection', 'assets/bg/bg-reflection', 'jpg'],
         // Tirai pemuatan layar penuh (components/curtain.php); tanpa berkas → gradien cahaya CSS
         ['bg.loading', 'assets/bg/bg-loading', 'jpg'],
+        // Map pin and lantern for every city without its own (display plan Phase C)
+        ['ui.pin', 'assets/ui/pin', 'png'],
+        ['ui.lantern', 'assets/ui/lantern', 'png'],
         // App icons: empty until uploaded; the static files in assets/app/
         // (kept in git) are the fallback (app_icon_src()), not these rows
         ['app.favicon', 'assets/ui/app-favicon', 'png'],
@@ -127,6 +130,17 @@ class MediaAssetSeeder extends GelitaSeeder
             $slots[] = ["map.region.{$code}", "assets/map/map-{$code}", 'png'];
             $slots[] = ["bg.{$code}.region", "assets/bg/bg-{$code}", 'jpg'];
             $slots[] = ["reward.badge.{$code}", "assets/reward/badge-{$code}", 'png'];
+            // City art (display plan Phase C), all optional
+            $slots[] = ["map.pin.{$code}", "assets/map/pin-{$code}", 'png'];
+            $slots[] = ["map.lantern.{$code}", "assets/map/lantern-{$code}", 'png'];
+            $slots[] = ["bg.loading.{$code}", "assets/bg/bg-loading-{$code}", 'jpg'];
+        }
+
+        // Avatars (display plan Phase B): empty until uploaded, never offered while empty
+        $avatars = class_exists(\Config\Gelita::class) ? (int) config('Gelita')->avatarSlots : 10;
+
+        for ($i = 1; $i <= $avatars; $i++) {
+            $slots[] = ["avatar.{$i}", "assets/ui/avatar-{$i}", 'png'];
         }
 
         $animations = self::DEFAULT_ANIMATIONS;

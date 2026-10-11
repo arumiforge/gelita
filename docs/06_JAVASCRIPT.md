@@ -276,7 +276,7 @@ initCurtains()  // dipanggil game.js: pembersihan bfcache + delegasi a[data-curt
 - Baris status bergilir tiap 1,8 detik dari `data-statuses`.
 - `tap`: tombol `[data-curtain-tap]` tampil; ketukan di mana pun memanggil `Sfx.unlock()` lalu tirai memudar. `skip`: ketukan atau Enter/Spasi/Esc mengakhirinya lebih awal (`cut: true`). `keep`: tirai dibiarkan menutupi sebelum pindah halaman.
 - Selama tirai tampil, `body > .hud`, `body > main`, dan `body > .nav-bar` diberi `inert`.
-- Tautan `a[data-curtain="{kind}"]` (klik kiri tanpa tombol pengubah) memutar tirai jenis itu tanpa ketukan, lalu berpindah halaman. `data-curtain-text` (JSON slot → teks) mengisi `[data-curtain-text="slot"]` lewat `textContent` (slot kosong disembunyikan), `data-curtain-preload` mengganti daftar aset. Klik kedua selama tirai berjalan diabaikan. Sebelum pindah, antrean event di-`flush()` dan ditunggu paling lama 1,5 detik.
+- Tautan `a[data-curtain="{kind}"]` (klik kiri tanpa tombol pengubah) memutar tirai jenis itu tanpa ketukan, lalu berpindah halaman. `data-curtain-text` (JSON slot → teks) mengisi `[data-curtain-text="slot"]` lewat `textContent` (slot kosong disembunyikan), `data-curtain-preload` mengganti daftar aset, dan `data-curtain-bg` mengisi `img.curtain-bg.is-deferred` tirai `region`/`challenge` lalu memudarkannya masuk sesudah `load` (`showBackground()`). Klik kedua selama tirai berjalan diabaikan. Sebelum pindah, antrean event di-`flush()` dan ditunggu paling lama 1,5 detik.
 - `pageshow` dari bfcache membersihkan tirai yang masih aktif.
 
 Jenis yang dipakai: `map` (tirai peta, dengan ketukan), `region` ("Menuju {wilayah}…", tanpa ketukan), `challenge` (sebelum layar tantangan, dapat dilewati).

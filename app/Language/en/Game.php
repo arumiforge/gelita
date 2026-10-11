@@ -262,6 +262,16 @@ return [
     // Profile
     'profileTitle'       => 'Profile',
     'researchCode'       => 'your research code',
+    // Avatar (display plan Phase B)
+    'avatar'             => 'Avatar',
+    'avatarOptional'     => 'Choose an avatar (you can skip this)',
+    'avatarHelp'         => 'A small picture next to your name. You can change it any time in your Profile.',
+    'avatarInitial'      => 'The first letter of my name',
+    'avatarOption'       => 'Avatar {0}',
+    'avatarChange'       => 'Change avatar',
+    'avatarChosen'       => 'chosen',
+    'avatarSaved'        => 'Your avatar has been changed.',
+    'avatarInvalid'      => 'That avatar cannot be chosen. Please pick one of the ones shown.',
     'changePassword'     => 'Change password',
     'totalTime'          => 'Total time',
     'challengesDone'     => 'Challenges done',

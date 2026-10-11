@@ -21,6 +21,7 @@ $instruction = $node->text('instruction', $locale);
 $audioId     = (int) ($locale === 'en' ? $node->audio_intro_en_id : $node->audio_intro_id);
 $bg          = media_exists($node->background_media_id) ? media_src($node->background_media_id)
     : (media_exists($level->background_media_id) ? media_src($level->background_media_id) : '');
+$curtainBg   = media_key_src('bg.loading.' . $level->code);
 $engine      = (string) $node->engine_type;
 $engineName  = engine_label($engine, $node->variant_code);
 ?>
@@ -76,7 +77,7 @@ $engineName  = engine_label($engine, $node->variant_code);
     <?php endif ?>
 
     <div class="mission-actions">
-      <a class="btn btn-primary btn-xl" href="<?= base_url('tantangan/' . $level->code . '/' . $sequence) ?>"<?= curtain_attrs('challenge', [], [$bg, character_frame_src('jaka')]) ?>>
+      <a class="btn btn-primary btn-xl" href="<?= base_url('tantangan/' . $level->code . '/' . $sequence) ?>"<?= curtain_attrs('challenge', [], [$curtainBg, $bg, character_frame_src('jaka')], $curtainBg) ?>>
         <?= esc(lang('Game.startChallenge')) ?> <?= icon('right') ?>
       </a>
     </div>

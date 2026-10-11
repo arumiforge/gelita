@@ -153,6 +153,7 @@ Namespace `App\Controllers\Game`. Filter global `locale` dan `secureheaders` ber
 | GET | `/pustaka` | `LibraryController::index` | Rak Pustaka Kedu |
 | GET | `/pustaka/{code}` | `LibraryController::show/$1` | Buku Pustaka {wilayah} atau halaman terkunci |
 | GET | `/profil` | `ProfileController::index` | Profil dan capaian sesi berjalan |
+| POST | `/profil/avatar` | `ProfileController::avatar` | Ganti avatar (`avatar_no`: '' = huruf awal, atau nomor avatar yang sudah diunggah) → `/profil` + flash `Game.avatarSaved`; nomor lain → flash `error` |
 | GET | `/refleksi` | `ReflectionController::index` | Balai Refleksi |
 | POST | `/refleksi` | `ReflectionController::store` | Simpan kritik & saran → `/refleksi` |
 
@@ -423,6 +424,7 @@ Adegan bernarasi dari tabel `dialogues`, diputar `game/narrator.js`. Perpindahan
 |---|---|---|
 | `LibraryController::index()` | Baris `levelOverview()` + status Pustaka, jumlah halaman, sampul (gambar pertama galeri halaman pertama → latar wilayah → gradien). Tidak mencatat event | view `game/library-index` |
 | `LibraryController::show($code)` | Wilayah terkunci → `/peta`. Wilayah terbuka tetapi belum tuntas → halaman terkunci berisi progres dan tombol ke `entry` wilayah (bukan redirect; `library_opened` tidak dicatat). Wilayah tuntas → event `library_opened` | view `game/library` / `game/library-locked` |
+| `ProfileController::avatar()` | `avatar_no` kosong atau kunci `avatar_choices()`; menulis `participants.avatar_no`; tidak ada event penelitian | redirect `/profil` |
 | `ProfileController::index()` | Capaian sesi berjalan: attempt, durasi, jumlah benar pada percobaan pertama dari soal dinilai, `canReflect` | view `game/profile` |
 | `ReflectionController::index()` | Hanya bila semua tantangan tuntas, selain itu `/peta` + `Game.reflectionLocked`; ringkasan perjalanan (bintang per wilayah dari 3 × jumlah tantangan, ketepatan per engine, tantangan paling sering terlewat) | view `game/reflection` |
 | `ReflectionController::store()` | `rating: required\|integer\|greater_than[0]\|less_than[6]`; empat isian terbuka (`liked_most`, `hardest_part`, `new_learning`, `suggestion`, maks. 2000) dan minimal dua terisi; simpan `participant_feedback` + event `feedback_submitted` | redirect `/refleksi` |

@@ -86,6 +86,23 @@ $fields = [
     </div>
   </fieldset>
 
+  <fieldset class="form-section">
+    <legend class="panel-subtitle">Pin, lentera, dan tirai di peta Kedu (tidak wajib)</legend>
+    <p class="field-help">Tanpa gambar ini permainan memakai pin dan lentera umum (<code>ui.pin</code>, <code>ui.lantern</code>) atau ikon bawaan, dan tirai memakai latar wilayah.</p>
+    <div class="media-grid">
+      <?= component('components/slot-field', [
+          'id' => 'lvl-pin', 'label' => 'Pin peta', 'assetKey' => 'map.pin.' . $level->code, 'fileName' => 'slot_pin_file',
+          'help' => 'Status terkunci dan tuntas ditambahkan permainan di atas gambar.',
+      ]) ?>
+      <?= component('components/slot-field', [
+          'id' => 'lvl-lantern', 'label' => 'Lentera tombol Kenali', 'assetKey' => 'map.lantern.' . $level->code, 'fileName' => 'slot_lantern_file',
+      ]) ?>
+      <?= component('components/slot-field', [
+          'id' => 'lvl-loading', 'label' => 'Latar tirai "Menuju ' . $level->text('name', 'id') . '…"', 'assetKey' => 'bg.loading.' . $level->code, 'fileName' => 'slot_loading_file',
+      ]) ?>
+    </div>
+  </fieldset>
+
   <div class="form-actions">
     <button class="btn btn-primary" type="submit"><?= icon('check') ?> Simpan wilayah</button>
   </div>

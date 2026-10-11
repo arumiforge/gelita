@@ -262,6 +262,16 @@ return [
     // Profil
     'profileTitle'     => 'Profil',
     'researchCode'     => 'kode penelitianmu',
+    // Avatar (display plan Phase B)
+    'avatar'           => 'Avatar',
+    'avatarOptional'   => 'Pilih avatar (boleh dilewati)',
+    'avatarHelp'       => 'Gambar kecil di samping namamu. Bisa diganti kapan saja di Profil.',
+    'avatarInitial'    => 'Huruf awal namaku',
+    'avatarOption'     => 'Avatar {0}',
+    'avatarChange'     => 'Ganti avatar',
+    'avatarChosen'     => 'dipilih',
+    'avatarSaved'      => 'Avatarmu sudah diganti.',
+    'avatarInvalid'    => 'Avatar itu tidak bisa dipilih. Pilih salah satu yang ada, ya.',
     'changePassword'   => 'Ganti kata sandi',
     'totalTime'        => 'Total waktu',
     'challengesDone'   => 'Tantangan selesai',

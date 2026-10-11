@@ -21,7 +21,8 @@ $status = ['completed' => 'Game.shardDone', 'open' => 'Game.shardOpen', 'locked'
 <details class="lantern" data-shards="<?= $shards ?>" data-total="<?= $total ?>" data-stage="<?= $stage ?>">
   <summary class="lantern-toggle" aria-controls="lantern-detail"
            title="<?= esc(lang('Game.lanternToggle'), 'attr') ?>">
-    <span class="flame flame-<?= $stage ?>" aria-hidden="true"><?= icon('lantern') ?></span>
+    <?php $art = region_art_src('lantern'); ?>
+    <span class="flame flame-<?= $stage ?><?= $art !== null ? ' has-art' : '' ?>" aria-hidden="true"><?= art_or_icon($art, 'lantern') ?></span>
     <span class="lantern-meter">
       <span class="lantern-text">
         <span class="eyebrow"><?= esc(lang('Game.shards')) ?></span>
