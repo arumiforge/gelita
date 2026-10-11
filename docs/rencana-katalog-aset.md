@@ -7,6 +7,8 @@
 >
 > Rencana ini bersinggungan dengan [`rencana-perbaikan-tampilan.md`](rencana-perbaikan-tampilan.md) (katalog slot `ImageSlots`, pemutar frame tokoh, pin per kota, avatar). Titik temunya dijelaskan di §5 Fase F.
 >
+> **Status update (10 October 2026).** The static page is not going to be built: the team's ready catalogue "Katalog Aset dan Prompt, Edisi 03" (ZIP with `index.html`, `data.json`, `KATALOG-PROMPT.md`) covers Part II and is the prompt and style catalogue. Upload status, what each picture shows, and where it appears live in the admin panel (`App\Libraries\ImageSlots`, **Gambar & mockup** → Detail). Decision and the ZIP's known gaps: `perombakan-kelas5/CATATAN_IMPLEMENTASI.md`, "Asset catalogue decision and admin image slots". Part II below stays the reference for the next edition of the ZIP.
+>
 > **Catatan status (9 Oktober 2026, sesudah perombakan kelas 5).** Masih belum dikerjakan (belum ada halaman katalog statis maupun `ImageSlots`). Sebagian isinya digantikan `docs/perombakan-kelas5/` (Dok 1–3):
 >
 > - **Digantikan:**

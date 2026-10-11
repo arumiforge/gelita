@@ -17,19 +17,14 @@ use CodeIgniter\Database\BaseConnection;
  */
 final class AssetChecklist
 {
-    /** Slot UI & latar umum yang dibaca view lewat asset_key. */
+    /**
+     * Logo, button, background, and map slots the game reads by key, in
+     * checklist order. Labels and descriptions come from ImageSlots; `bg.auth`
+     * and `ui.placeholder` are left out because no screen reads them.
+     */
     public const UI_SLOTS = [
-        'ui.logo-hero'    => 'Logo landscape halaman awal',
-        'ui.btn-start'    => 'Tombol Mulai bergambar (Indonesia)',
-        'ui.btn-start.en' => 'Tombol Mulai bergambar (Inggris)',
-        'ui.logo'         => 'Logo panel admin & halaman masuk',
-        'map.kedu'        => 'Peta Karesidenan Kedu',
-        'bg.loading'      => 'Latar tirai pemuatan (Membuka Peta Kedu)',
-        'bg.welcome'      => 'Latar halaman awal',
-        'bg.auth'         => 'Latar halaman masuk & daftar',
-        'bg.intro'        => 'Latar cerita pembuka',
-        'bg.map'          => 'Latar peta Kedu',
-        'bg.reflection'   => 'Latar Balai Refleksi',
+        'ui.logo-hero', 'ui.btn-start', 'ui.btn-start.en', 'ui.logo', 'map.kedu',
+        'bg.loading', 'bg.welcome', 'bg.intro', 'bg.map', 'bg.reflection',
     ];
 
     /**
@@ -92,6 +87,7 @@ final class AssetChecklist
             $this->uiGroup(),
             $this->characterGroup(),
             $this->regionGroup(),
+            $this->challengeGroup(),
             $this->soundGroup(),
             $this->posterGroup(),
             $this->narrationGroup(),
@@ -123,8 +119,8 @@ final class AssetChecklist
     {
         $items = [];
 
-        foreach (self::UI_SLOTS as $key => $label) {
-            $items[] = $this->slotItem($key, $label, site_url('admin/media') . '?asset_key=' . rawurlencode($key));
+        foreach (self::UI_SLOTS as $key) {
+            $items[] = $this->slotItem($key, (string) ImageSlots::label($key), $this->detailLink($key));
         }
 
         return [
@@ -162,13 +158,13 @@ final class AssetChecklist
                 . ($wrong !== [] ? ' · ukuran salah: ' . implode(', ', $wrong) : '');
 
             $items[] = [
-                'label'      => ($who === 'kedu' ? 'Mbah Kedu' : 'Jaka') . ' · pose ' . $pose,
+                'label'      => ($who === 'kedu' ? 'Mbah Kedu' : 'Jaka') . ' · pose ' . ImageSlots::poseLabel($pose) . ' (' . $pose . ')',
                 'key'        => 'char.' . $name . '.1…' . $frames,
                 'size'       => $this->sizeText('char.' . $name . '.1'),
                 'status'     => $status,
                 'note'       => $note . ($pose !== 'idle' && $status === 'missing' ? ' (sementara tampil dengan pose diam)' : ''),
-                'link'       => site_url('admin/media') . '?asset_key=' . rawurlencode('char.' . $name . '.' . ($missing[0] ?? $wrong[0] ?? 1)),
-                'link_label' => 'Unggah gambar',
+                'link'       => $this->detailLink('char.' . $name . '.' . ($missing[0] ?? $wrong[0] ?? 1)),
+                'link_label' => 'Lihat & unggah',
             ];
         }
 
@@ -204,15 +200,93 @@ final class AssetChecklist
                     'size'       => $this->sizeText($key),
                     'status'     => $status,
                     'note'       => $row === null ? 'belum dipasang di wilayah' : ($status === 'missing' ? 'sudah dipasang, tetapi berkasnya belum diunggah' : ''),
-                    'link'       => $link,
-                    'link_label' => 'Buka wilayah',
+                    'link'       => $row === null ? $link : site_url('admin/media/' . (int) $row['id']),
+                    'link_label' => $row === null ? 'Buka wilayah' : 'Lihat & unggah',
                 ];
             }
         }
 
         return [
             'title' => 'Latar & peta wilayah',
-            'help'  => 'Diunggah dari halaman wilayah (menu Konten). Bila belum ada, dialog dan peta wilayah memakai latar warna polos.',
+            'help'  => 'Unggah lewat Lihat & unggah, atau dari halaman wilayah (menu Konten). Bila belum ada, dialog dan peta wilayah memakai latar warna polos.',
+            'items' => $items,
+        ];
+    }
+
+    /**
+     * Challenge images per challenge: sample (mockup) images still to be
+     * replaced, empty slots, and wrong sizes.
+     *
+     * @return array<string, mixed>|null
+     */
+    private function challengeGroup(): ?array
+    {
+        $nodes = $this->db->table('challenge_nodes cn')
+            ->select('cn.id, cn.sequence, cn.title_id, cn.scene_media_id, l.code, l.name_id')
+            ->join('levels l', 'l.id = cn.level_id')
+            ->where('cn.is_active', 1)
+            ->orderBy('l.sequence', 'ASC')->orderBy('cn.sequence', 'ASC')
+            ->get()->getResultArray();
+
+        $items = [];
+
+        foreach ($nodes as $node) {
+            $ids = array_map('intval', array_column($this->db->table('challenge_items')->select('media_asset_id')
+                ->where('challenge_node_id', $node['id'])->where('is_active', 1)->where('media_asset_id IS NOT NULL')
+                ->get()->getResultArray(), 'media_asset_id'));
+
+            if ($node['scene_media_id'] !== null) {
+                $ids[] = (int) $node['scene_media_id'];
+            }
+
+            $ids = array_values(array_unique($ids));
+
+            if ($ids === []) {
+                continue;
+            }
+
+            $sample = $missing = $wrong = [];
+
+            foreach ($ids as $id) {
+                $row = $this->mediaById[$id] ?? null;
+
+                if ($row === null) {
+                    continue;
+                }
+
+                $key   = (string) $row['asset_key'];
+                $state = $this->state($key);
+
+                if ($state === 'missing') {
+                    $missing[] = $key;
+                } elseif ((int) ($row['is_placeholder'] ?? 0) === 1) {
+                    $sample[] = $key;
+                } elseif ($state === 'wrong') {
+                    $wrong[] = $key;
+                }
+            }
+
+            $real   = count($ids) - count($sample) - count($missing) - count($wrong);
+            $status = $missing !== [] || $sample !== [] ? 'missing' : ($wrong !== [] ? 'wrong' : 'ok');
+            $ref    = node_ref((string) $node['code'], (int) $node['sequence']);
+
+            $items[] = [
+                'label'      => 'Tantangan ' . $ref . ' · ' . $node['title_id'] . ' (' . $node['name_id'] . ')',
+                'key'        => count($ids) . ' gambar',
+                'size'       => $this->sizeText((string) ($this->mediaById[$ids[0]]['asset_key'] ?? '')),
+                'status'     => $status,
+                'note'       => sprintf('%d/%d gambar asli', $real, count($ids))
+                    . ($sample !== [] ? ' · masih gambar contoh: ' . count($sample) : '')
+                    . ($missing !== [] ? ' · belum ada: ' . count($missing) : '')
+                    . ($wrong !== [] ? ' · ukuran salah: ' . implode(', ', $wrong) : ''),
+                'link'       => site_url('admin/media') . '?kelompok=challenge&wilayah=' . rawurlencode((string) $node['code']) . '&tantangan=' . rawurlencode($ref),
+                'link_label' => 'Lihat gambarnya',
+            ];
+        }
+
+        return $items === [] ? null : [
+            'title' => 'Gambar tantangan',
+            'help'  => 'Gambar contoh (bertulisan GAMBAR CONTOH) harus diganti gambar asli sebelum pengambilan data, terutama Cari Objek dan pernyataan bergambar. Ukuran setiap gambar ada di halaman detailnya.',
             'items' => $items,
         ];
     }
@@ -311,6 +385,16 @@ final class AssetChecklist
 
     // -------------------------------------------------------------- bantuan
 
+    /** Slot detail page when the slot has a row, else the upload box with the key filled in. */
+    private function detailLink(string $key): string
+    {
+        $row = $this->media[$key] ?? null;
+
+        return $row === null
+            ? site_url('admin/media') . '?asset_key=' . rawurlencode($key) . '#unggah'
+            : site_url('admin/media/' . (int) $row['id']);
+    }
+
     /** @return array<string, string> */
     private function slotItem(string $key, string $label, string $link): array
     {
@@ -324,7 +408,7 @@ final class AssetChecklist
             'status'     => $state,
             'note'       => $state === 'wrong' ? 'ukurannya sekarang ' . $row['width_px'] . '×' . $row['height_px'] : '',
             'link'       => $link,
-            'link_label' => 'Unggah gambar',
+            'link_label' => 'Lihat & unggah',
         ];
     }
 
@@ -369,6 +453,12 @@ final class AssetChecklist
     {
         $size = $this->requiredSize($key);
 
-        return $size === null ? 'ukuran bebas' : $size[0] . ' × ' . $size[1] . ' px';
+        if ($size !== null) {
+            return $size[0] . ' × ' . $size[1] . ' px';
+        }
+
+        $recommended = ImageSlots::describe($key)['recommended'] ?? null;
+
+        return $recommended === null ? 'ukuran bebas' : 'disarankan ' . $recommended[0] . ' × ' . $recommended[1] . ' px';
     }
 }

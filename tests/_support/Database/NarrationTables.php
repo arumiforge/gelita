@@ -61,6 +61,8 @@ trait NarrationTables
             // Narasi kartu misi: dibaca kolom "Dipakai di" halaman Audio
             'audio_intro_id'    => ['type' => 'INTEGER', 'null' => true],
             'audio_intro_en_id' => ['type' => 'INTEGER', 'null' => true],
+            // Challenge images: read by the asset checklist
+            'scene_media_id'    => ['type' => 'INTEGER', 'null' => true],
             'is_active'         => ['type' => 'INTEGER', 'default' => 1],
         ])->addPrimaryKey('id')->createTable('challenge_nodes');
 
@@ -76,6 +78,7 @@ trait NarrationTables
             'audio_prompt_id'    => ['type' => 'INTEGER', 'null' => true],
             'audio_prompt_en_id' => ['type' => 'INTEGER', 'null' => true],
             'scorable'           => ['type' => 'INTEGER', 'default' => 1],
+            'media_asset_id'     => ['type' => 'INTEGER', 'null' => true],
             'is_active'          => ['type' => 'INTEGER', 'default' => 1],
         ])->addPrimaryKey('id')->createTable('challenge_items');
 

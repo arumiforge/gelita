@@ -89,7 +89,7 @@ app/Views/
 │   ├── feedback/index.php · export/index.php
 │   ├── content/index.php · level.php · node.php · items.php · passages.php · library.php · dialogues.php · verify.php · import.php
 │   ├── narration/index.php · upload.php · approve-all.php
-│   ├── media/index.php · audio.php · checklist.php
+│   ├── media/index.php · show.php · audio.php · checklist.php
 │   ├── study/index.php · releases.php
 │   ├── governance/index.php · audit.php
 │   ├── schools/index.php · staff/index.php

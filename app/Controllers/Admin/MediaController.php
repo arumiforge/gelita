@@ -3,6 +3,7 @@
 namespace App\Controllers\Admin;
 
 use App\Libraries\AssetChecklist;
+use App\Libraries\ImageSlots;
 use App\Libraries\MediaIntegrity;
 use App\Libraries\MediaStore;
 use App\Libraries\MediaUsage;
@@ -33,6 +34,10 @@ class MediaController extends BaseAdminController
         $status = (string) ($this->request->getGet('status') ?? '');
         $status = in_array($status, ['asli', 'mockup', 'kosong'], true) ? $status : '';
         $type   = (string) ($this->request->getGet('jenis') ?? '');
+        $group  = (string) ($this->request->getGet('kelompok') ?? '');
+        $region = (string) ($this->request->getGet('wilayah') ?? '');
+        $node   = (string) ($this->request->getGet('tantangan') ?? '');
+        $query  = trim((string) ($this->request->getGet('cari') ?? ''));
         $assets = model(MediaAssetModel::class)->orderBy('asset_key', 'ASC')->findAll();
 
         return $this->panel('admin/media/index', lang('Admin.menuMedia'), [
@@ -43,6 +48,63 @@ class MediaController extends BaseAdminController
             'scan'       => session('media_scan'),
             'status'     => $status,
             'type'       => in_array($type, ['image', 'video'], true) ? $type : '',
+            'group'      => isset(ImageSlots::GROUPS[$group]) ? $group : '',
+            'region'     => in_array($region, config('Gelita')->levelPrefixes, true) ? $region : '',
+            'node'       => preg_match('/^[a-z]{3}-\d{1,2}$/', $node) === 1 ? $node : '',
+            'query'      => mb_substr($query, 0, 80),
+        ]);
+    }
+
+    /**
+     * Detail of one image slot: what the picture should show, sizes,
+     * format, every screen it appears on (to check it after uploading), map
+     * pin positions, and an upload form that comes back here.
+     */
+    public function show(int $mediaId): string|RedirectResponse
+    {
+        $row = model(MediaAssetModel::class)->find($mediaId);
+
+        if ($row === null || $row['asset_type'] === 'audio') {
+            return $this->back('admin/media', 'Berkas tidak ditemukan.');
+        }
+
+        $key    = (string) $row['asset_key'];
+        $db     = db_connect();
+        $region = ImageSlots::regionOf($key);
+        $ids    = [];
+        $level  = $region === null ? null : $db->table('levels')->where('code', $region)->get()->getRowArray();
+
+        if ($level !== null) {
+            $ids['level_id'] = (int) $level['id'];
+
+            if (preg_match('/^challenge\.(?:item\.)?[a-z]+-(\d+)/', $key, $m)) {
+                $nodeId = $db->table('challenge_nodes')->select('id')->where('level_id', $level['id'])
+                    ->where('sequence', (int) $m[1])->get()->getRow('id');
+
+                if ($nodeId !== null) {
+                    $ids['node_id'] = (int) $nodeId;
+                }
+            }
+        }
+
+        // Neighbours in the same group, for stepping through slots one by one
+        $group    = ImageSlots::groupOf($key);
+        $siblings = array_values(array_filter(
+            model(MediaAssetModel::class)->select('id, asset_key, asset_type')->orderBy('asset_key', 'ASC')->findAll(),
+            static fn (array $r): bool => $r['asset_type'] !== 'audio' && ImageSlots::groupOf((string) $r['asset_key']) === $group,
+        ));
+        $position = array_search($mediaId, array_map('intval', array_column($siblings, 'id')), true);
+
+        return $this->panel('admin/media/show', 'Detail gambar ' . $key, [
+            'row'      => $row,
+            'slot'     => ImageSlots::describe($key, $ids),
+            'required' => (new MediaStore())->requiredSize($key),
+            'display'  => $this->displaySize($key),
+            'uses'     => (new MediaUsage())->forMedia()[$mediaId] ?? [],
+            'pins'     => $this->pins($key, $level),
+            'prev'     => $position !== false && $position > 0 ? $siblings[$position - 1] : null,
+            'next'     => $position !== false && isset($siblings[$position + 1]) ? $siblings[$position + 1] : null,
+            'counter'  => $position === false ? null : [$position + 1, count($siblings)],
         ]);
     }
 
@@ -63,7 +125,9 @@ class MediaController extends BaseAdminController
 
     public function upload(): RedirectResponse
     {
-        $back = 'admin/media';
+        // The slot detail page sends its own path to come back to it
+        $back = (string) ($this->request->getPost('back') ?? '');
+        $back = preg_match('#^admin/media/\d+$#', $back) === 1 ? $back : 'admin/media';
 
         if (! $this->validate([
             'asset_key' => ['label' => 'Kode berkas', 'rules' => 'required|max_length[160]'],
@@ -105,7 +169,9 @@ class MediaController extends BaseAdminController
             'target_id'     => (string) $mediaId,
         ]);
 
-        return $this->done('admin/media', 'Berkas dinonaktifkan; permainan kembali memakai tampilan pengganti.');
+        $back = (string) ($this->request->getPost('back') ?? '');
+
+        return $this->done($back === 'admin/media/' . $mediaId ? $back : 'admin/media', 'Berkas dinonaktifkan; permainan kembali memakai tampilan pengganti.');
     }
 
     public function audioIndex(): string
@@ -251,6 +317,44 @@ class MediaController extends BaseAdminController
     }
 
     // -------------------------------------------------------------- bantuan
+
+    /** @return array{0: int, 1: int}|null display size on the 1280 × 720 dp stage */
+    private function displaySize(string $key): ?array
+    {
+        foreach (config('Gelita')->assetDisplaySizes as $pattern => $size) {
+            // `map.region` also covers `map.region.temanggung`
+            if ($pattern === $key || fnmatch($pattern, $key) || (! str_contains($pattern, '*') && str_starts_with($key, $pattern . '.'))) {
+                return $size;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Pin positions drawn on top of a map image (percent of the image, from
+     * the database, so pins moved by the admin are included).
+     *
+     * @param array<string, mixed>|null $level
+     *
+     * @return list<array{label: string, x: float, y: float}>
+     */
+    private function pins(string $key, ?array $level): array
+    {
+        $db = db_connect();
+
+        if ($key === 'map.kedu') {
+            $rows = $db->table('levels')->select('name_id AS label, map_x AS x, map_y AS y')->orderBy('sequence', 'ASC')->get()->getResultArray();
+        } elseif ($level !== null && $key === 'map.region.' . $level['code']) {
+            $rows = $db->table('challenge_nodes')->select("sequence, title_id, map_x AS x, map_y AS y")
+                ->where('level_id', $level['id'])->where('is_active', 1)->orderBy('sequence', 'ASC')->get()->getResultArray();
+            $rows = array_map(static fn (array $r): array => ['label' => $r['sequence'] . '. ' . $r['title_id'], 'x' => $r['x'], 'y' => $r['y']], $rows);
+        } else {
+            return [];
+        }
+
+        return array_map(static fn (array $r): array => ['label' => (string) $r['label'], 'x' => (float) $r['x'], 'y' => (float) $r['y']], $rows);
+    }
 
     private function nullIfBlank($value): ?string
     {

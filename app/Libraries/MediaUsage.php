@@ -3,52 +3,45 @@
 namespace App\Libraries;
 
 /**
- * Di mana setiap aset dipakai permainan — kolom "Dipakai di" halaman Media
- * dan Audio.
+ * Where each asset is used by the game: the "Dipakai di" column of the Media
+ * and Audio pages, and the slot detail page.
  *
- * Aset dirujuk dua cara: lewat kunci resmi (`bg.welcome`, `char.jaka.idle.1`)
- * yang dibaca view dengan media_key_src(), dan lewat kolom FK konten
- * (adegan tantangan, gambar butir, opsi, bacaan, dialog, pustaka). Keduanya
- * dikumpulkan di sini agar admin tahu aset mana yang belum terpakai dan
- * slot mana yang masih kosong.
+ * Assets are referenced two ways: by official key (`bg.welcome`,
+ * `char.jaka.idle.1`, read by views with media_key_src(); described in
+ * ImageSlots) and by content FK columns (challenge scene, item image,
+ * passage, dialogue slide, library). Both are collected here so the admin
+ * knows which screen to open to check an upload, and which assets are not
+ * used at all.
  */
 class MediaUsage
 {
-    /**
-     * Slot resmi yang dibaca view lewat asset_key. Pola `*` = satu segmen apa pun.
-     *
-     * @var array<string, string>
-     */
-    public const SLOTS = [
-        'ui.logo'              => 'Logo panel admin & halaman masuk; cadangan logo halaman awal',
-        'ui.logo-hero'         => 'Logo landscape di halaman awal',
-        'ui.btn-start'         => 'Tombol Mulai di halaman awal (bertulisan, bahasa Indonesia)',
-        'ui.btn-start.*'       => 'Tombol Mulai di halaman awal, varian bahasa (mis. .en)',
-        'ui.placeholder'       => 'Gambar pengganti saat aset belum ada',
-        'bg.welcome'           => 'Latar halaman sambutan / mulai',
-        'bg.auth'              => 'Latar halaman masuk & daftar',
-        'bg.intro'             => 'Latar cerita pembuka',
-        'bg.map'               => 'Latar peta Kedu',
-        'bg.reflection'        => 'Latar Balai Refleksi',
-        'bg.loading'           => 'Latar tirai pemuatan layar penuh (mis. Membuka Peta Kedu)',
-        'map.kedu'             => 'Peta Karesidenan Kedu (halaman peta)',
-        'map.region.*'         => 'Peta wilayah (pos tantangan)',
-        'bg.*.region'          => 'Latar wilayah (dialog, peta wilayah, tantangan)',
-        'reward.badge.*'       => 'Lencana wilayah di profil siswa',
-        'char.jaka.*'          => 'Frame animasi Jaka',
-        'char.kedu.*'          => 'Frame animasi Mbah Kedu',
+    /** Dialogue context → public path; `{code}` is the region code. */
+    private const CONTEXT_PATHS = [
+        'intro'        => '/intro',
+        'map_intro'    => '/peta',
+        'region_intro' => '/peta',
+        'level_open'   => '/dialog/{code}',
+        'level_done'   => '/tuntas/{code}',
+        'ending'       => '/penutup',
+    ];
+
+    /** Character screens outside the story slides: [character slug, pose, screen, path]. */
+    private const CHARACTER_SCREENS = [
+        ['jaka', 'bow', 'Daftar langkah 3 (kotak tips kata sandi)', '/daftar/3'],
+        ['kedu', 'smile', 'Balai Refleksi', '/refleksi'],
+        ['kedu', 'smile', 'Layar tantangan selesai', '/selesai/1'],
     ];
 
     /**
-     * @return array<int, list<string>> media_asset_id → daftar tempat pemakaian
+     * @return array<int, list<array{label: string, path: string|null, edit: string|null}>> media_asset_id → uses
      */
     public function forMedia(): array
     {
         $db   = db_connect();
         $uses = [];
-        $add  = static function (?int $id, string $label) use (&$uses): void {
+        $add  = static function (?int $id, string $label, ?string $path = null, ?string $edit = null) use (&$uses): void {
             if ($id !== null && $id > 0) {
-                $uses[$id][] = $label;
+                $uses[$id][] = ['label' => $label, 'path' => $path, 'edit' => $edit];
             }
         };
 
@@ -56,27 +49,49 @@ class MediaUsage
 
         foreach ($db->table('levels')->select('id, code, name_id, map_media_id, background_media_id, badge_media_id')->get()->getResultArray() as $row) {
             $levels[(int) $row['id']] = (string) $row['code'];
-            $add($this->int($row['map_media_id']), 'Peta wilayah ' . $row['name_id']);
-            $add($this->int($row['background_media_id']), 'Latar wilayah ' . $row['name_id']);
-            $add($this->int($row['badge_media_id']), 'Lencana ' . $row['name_id']);
+            $edit = 'admin/konten/level/' . (int) $row['id'];
+            $add($this->int($row['map_media_id']), 'Peta wilayah ' . $row['name_id'], '/wilayah/' . $row['code'], $edit);
+            $add($this->int($row['background_media_id']), 'Latar wilayah ' . $row['name_id'], '/wilayah/' . $row['code'], $edit);
+            $add($this->int($row['badge_media_id']), 'Lencana ' . $row['name_id'] . ' di Profil', '/profil', $edit);
         }
 
-        foreach ($db->table('challenge_nodes')->select('level_id, sequence, background_media_id, scene_media_id')->get()->getResultArray() as $row) {
-            $ref = node_ref($levels[(int) $row['level_id']] ?? '?', (int) $row['sequence']);
-            $add($this->int($row['scene_media_id']), 'Adegan tantangan ' . $ref);
-            $add($this->int($row['background_media_id']), 'Latar tantangan ' . $ref);
+        foreach ($db->table('challenge_nodes')->select('id, level_id, sequence, title_id, background_media_id, scene_media_id')->get()->getResultArray() as $row) {
+            $code = $levels[(int) $row['level_id']] ?? '?';
+            $ref  = node_ref($code, (int) $row['sequence']);
+            $path = '/tantangan/' . $code . '/' . (int) $row['sequence'];
+            $edit = 'admin/konten/node/' . (int) $row['id'];
+            $add($this->int($row['scene_media_id']), 'Adegan tantangan ' . $ref . ' · ' . $row['title_id'], $path, $edit);
+            $add($this->int($row['background_media_id']), 'Latar tantangan ' . $ref . ' · ' . $row['title_id'], '/misi/' . $code . '/' . (int) $row['sequence'], $edit);
         }
 
-        foreach ($db->table('challenge_items')->select('item_key, media_asset_id')->where('media_asset_id IS NOT NULL')->get()->getResultArray() as $row) {
-            $add($this->int($row['media_asset_id']), 'Soal ' . $row['item_key']);
+        $items = $db->table('challenge_items ci')
+            ->select('ci.item_key, ci.media_asset_id, ci.interaction_type, ci.prompt_id, ci.scorable, ci.variant_group, cn.id AS node_id, cn.level_id, cn.sequence, cn.title_id')
+            ->join('challenge_nodes cn', 'cn.id = ci.challenge_node_id')
+            ->where('ci.media_asset_id IS NOT NULL')
+            ->get()->getResultArray();
+
+        foreach ($items as $row) {
+            $code  = $levels[(int) $row['level_id']] ?? '?';
+            $label = 'Soal ' . $row['item_key'] . ' · ' . $row['title_id'];
+
+            if ($row['interaction_type'] === 'find_object') {
+                $label .= (int) $row['scorable'] === 1
+                    ? ' · benda yang dicari, petunjuk: "' . mb_strimwidth(strip_tags((string) $row['prompt_id']), 0, 120, '…') . '"'
+                    : ' · benda pengecoh (bukan jawaban)';
+            } elseif ($row['variant_group'] !== null && $row['variant_group'] !== '') {
+                $label .= ' · variasi ' . $row['variant_group'];
+            }
+
+            $add($this->int($row['media_asset_id']), $label, '/tantangan/' . $code . '/' . (int) $row['sequence'], 'admin/konten/node/' . (int) $row['node_id']);
         }
 
-        foreach ($db->table('reading_passages')->select('passage_key, media_asset_id')->where('media_asset_id IS NOT NULL')->get()->getResultArray() as $row) {
-            $add($this->int($row['media_asset_id']), 'Bacaan ' . $row['passage_key']);
+        foreach ($db->table('reading_passages')->select('level_id, passage_key, media_asset_id')->where('media_asset_id IS NOT NULL')->get()->getResultArray() as $row) {
+            $add($this->int($row['media_asset_id']), 'Bacaan ' . $row['passage_key'], null, 'admin/konten/bacaan/' . (int) $row['level_id']);
         }
 
         foreach ($db->table('dialogues')->select('level_id, context_code, sequence, background_media_id')->where('background_media_id IS NOT NULL')->get()->getResultArray() as $row) {
-            $add($this->int($row['background_media_id']), 'Latar ' . self::slideLabel($row['context_code'], $row['level_id'] === null ? null : ($levels[(int) $row['level_id']] ?? '?'), (int) $row['sequence']));
+            $code = $row['level_id'] === null ? null : ($levels[(int) $row['level_id']] ?? '?');
+            $add($this->int($row['background_media_id']), 'Latar ' . self::slideLabel($row['context_code'], $code, (int) $row['sequence']), self::contextPath((string) $row['context_code'], $code));
         }
 
         $rows = $db->table('library_media lm')
@@ -85,12 +100,80 @@ class MediaUsage
             ->get()->getResultArray();
 
         foreach ($rows as $row) {
-            $label = 'Pustaka ' . ($levels[(int) $row['level_id']] ?? '?') . ' halaman ' . $row['sequence'];
-            $add($this->int($row['media_asset_id']), $label);
-            $add($this->int($row['poster_media_id']), $label . ' (gambar sampul)');
+            $code  = $levels[(int) $row['level_id']] ?? '?';
+            $label = 'Pustaka ' . $code . ' halaman ' . $row['sequence'];
+            $edit  = 'admin/konten/pustaka/' . (int) $row['level_id'];
+            $add($this->int($row['media_asset_id']), $label, '/pustaka/' . $code, $edit);
+            $add($this->int($row['poster_media_id']), $label . ' (gambar sampul)', '/pustaka/' . $code, $edit);
         }
 
-        return array_map(static fn (array $labels): array => array_values(array_unique($labels)), $uses);
+        foreach ($this->characterUses($db, $levels) as $key => $list) {
+            $id = $this->int($db->table('media_assets')->select('id')->where('asset_key', $key)->get()->getRow('id'));
+
+            foreach ($list as $use) {
+                $add($id, $use['label'], $use['path']);
+            }
+        }
+
+        // Same place listed twice (e.g. one image in two variants of one node) → once
+        return array_map(static function (array $list): array {
+            $seen = [];
+
+            return array_values(array_filter($list, static function (array $use) use (&$seen): bool {
+                $id = $use['label'] . '|' . $use['path'];
+
+                return ! isset($seen[$id]) && ($seen[$id] = true);
+            }));
+        }, $uses);
+    }
+
+    /**
+     * Story lines and screens that show a character pose. Only frame 1 of
+     * each pose is shown today (no frame player yet).
+     *
+     * @param array<int, string> $levels level id → code
+     *
+     * @return array<string, list<array{label: string, path: string|null}>> asset key → uses
+     */
+    public function characterUses(?\CodeIgniter\Database\BaseConnection $db = null, ?array $levels = null): array
+    {
+        $db ??= db_connect();
+        $levels ??= array_column($db->table('levels')->select('id, code')->get()->getResultArray(), 'code', 'id');
+        $count = [];
+
+        $rows = $db->table('dialogues')->select('level_id, context_code, character_code, pose')
+            ->where('is_active', 1)->whereIn('character_code', ['jaka', 'mbah_kedu'])
+            ->get()->getResultArray();
+
+        foreach ($rows as $row) {
+            $slug = $row['character_code'] === 'mbah_kedu' ? 'kedu' : 'jaka';
+            $pose = (string) ($row['pose'] ?? '') ?: 'idle';
+            $code = $row['level_id'] === null ? null : ($levels[(int) $row['level_id']] ?? '?');
+            $key  = "char.{$slug}.{$pose}.1";
+            $id   = $row['context_code'] . '|' . $code;
+
+            $count[$key][$id] ??= ['context' => (string) $row['context_code'], 'code' => $code, 'lines' => 0];
+            $count[$key][$id]['lines']++;
+        }
+
+        $out = [];
+
+        foreach ($count as $key => $places) {
+            foreach ($places as $place) {
+                $out[$key][] = [
+                    'label' => (NarrationCatalog::CONTEXT_LABELS[$place['context']] ?? $place['context'])
+                        . ($place['code'] === null ? '' : ' · ' . $place['code'])
+                        . ' (' . $place['lines'] . ' baris cerita)',
+                    'path'  => self::contextPath($place['context'], $place['code']),
+                ];
+            }
+        }
+
+        foreach (self::CHARACTER_SCREENS as [$slug, $pose, $label, $path]) {
+            $out["char.{$slug}.{$pose}.1"][] = ['label' => $label, 'path' => $path];
+        }
+
+        return $out;
     }
 
     /**
@@ -138,16 +221,18 @@ class MediaUsage
         return $uses;
     }
 
-    /** Keterangan slot resmi untuk asset_key, atau null bila bukan slot. */
+    /** Short label of an official slot for asset_key, or null when it is not a slot. */
     public static function slotLabel(string $assetKey): ?string
     {
-        foreach (self::SLOTS as $pattern => $label) {
-            if ($pattern === $assetKey || fnmatch($pattern, $assetKey)) {
-                return $label;
-            }
-        }
+        return ImageSlots::label($assetKey);
+    }
 
-        return null;
+    /** Public path of a dialogue context (`/dialog/temanggung`), or null. */
+    public static function contextPath(string $context, ?string $levelCode): ?string
+    {
+        $path = self::CONTEXT_PATHS[$context] ?? null;
+
+        return $path === null ? null : str_replace('{code}', $levelCode ?? '', $path);
     }
 
     /** "Cerita pembuka slide 3" / "Dialog masuk wilayah · temanggung slide 2". */

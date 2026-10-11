@@ -27,7 +27,7 @@ Last updated: 10 October 2026.
 ## Before the research starts (after install, done in the panel)
 
 - [ ] Approve draft narration
-- [ ] Replace the 45 sample (mockup) images
+- [ ] Upload all required images in the panel (**Gambar & mockup** → Detail per slot; Kelengkapan lists what is missing), including the 45 sample (mockup) challenge images. Prompts and style: the team's Katalog Aset ZIP (Edisi 03)
 - [ ] Research-ready checklist green, study status set to "Berjalan"
 - [ ] Smoke test, then `gelita:reset` (by the owner, never by Claude on production)
 
@@ -56,6 +56,7 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `sky/youthful-turing-l3pvlp` | Asset catalogue decision (team ZIP), `ImageSlots`, slot detail page `/admin/media/{id}`, challenge images in Kelengkapan | PR open |
 | `sky/confident-noether-id40gg` | Display fixes on `/masuk` (crest under the HUD logo), `/daftar/3` (fields hidden below the tips box), registration error labels, and `/daftar` in the dark ornate design | PR open |
 | `sky/gracious-archimedes-injcc3` | No session cookie on the no-login API endpoints (`LocaleFilter`) | PR open |
 | `sky/zealous-ritchie-653apc` | Asset package: wave plan and coordination (this file) | PR open |
