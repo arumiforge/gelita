@@ -73,3 +73,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `pbb/kind-dijkstra-wmb094` | Fix the false "Koneksi terputus" toast while online (`core/events.js`) | PR open |

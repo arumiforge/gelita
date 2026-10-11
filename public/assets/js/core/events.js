@@ -29,6 +29,13 @@
  *  - events the offline queue cannot keep are counted, a warning toast shows,
  *    and the count goes to the server as `dropped` + `dropped_id` with the
  *    next fetch batch (never with a beacon, which gets no answer).
+ *
+ * The "connection lost" toast (`savedOffline`) only shows for a failure that
+ * holds: the browser reports offline, the server stays rate-limited after
+ * apiRequest's own retries, or a quiet retry RETRY_MS later fails too. Moving
+ * to the next screen cancels a batch still on its way (net::ERR_ABORTED),
+ * which looks like a network error; the page is gone before the retry, so
+ * the student no longer sees "Koneksi terputus" while fully online.
  */
 import { CONFIG, t } from './config.js';
 import { apiRequest, ApiError } from './api.js';
@@ -38,6 +45,8 @@ import { toast } from './toast.js';
 const FLUSH_MS = 3000;
 const FLUSH_AT = 20;
 const BATCH_MAX = 50;
+/** Quiet retry after a single failed batch while the browser says online. */
+const RETRY_MS = 5000;
 
 let offlineNoticeShown = false;
 let queueFullNoticeShown = false;
@@ -63,6 +72,8 @@ class EventQueue {
     this.timer = null;
     this.sending = null;  // Promise pengiriman yang sedang berjalan
     this.inflight = [];   // batch yang dikirim fetch dan belum dijawab server
+    this.failures = 0;    // failed batches in a row; reset by any accepted batch
+    this.retryTimer = null;
   }
 
   push(event) {
@@ -107,6 +118,7 @@ class EventQueue {
       this.inflight = batch;
       try {
         await apiRequest(this.path, { method: 'POST', body });
+        this.failures = 0;
         if (dropped) Storage.clearDropped(CONFIG.sessionTag, this.channel, dropped);
       } catch (error) {
         this.keepForLater(batch, error);
@@ -123,6 +135,16 @@ class EventQueue {
     if (!recoverable) return;
 
     this.store(batch);
+    this.failures++;
+
+    const lasting = navigator.onLine === false || error?.code === 'RATE_LIMITED' || this.failures > 1;
+    if (!lasting) {
+      // One failure while online is often a batch cancelled by leaving the
+      // page; retry once quietly before telling the student anything.
+      clearTimeout(this.retryTimer);
+      this.retryTimer = setTimeout(() => { this.retryTimer = null; this.resend(); }, RETRY_MS);
+      return;
+    }
     if (!offlineNoticeShown) {
       offlineNoticeShown = true;
       toast(t('savedOffline'), 'warn');
