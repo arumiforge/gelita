@@ -49,7 +49,7 @@ Owner decisions: phases in order 0 → A → B → C → E → F, one branch and
   - [ ] Phase 0: `reward.badge.*` display size, automated music check (`tampilan-0-susulan`)
   - [ ] Phase F: Next/Done keyboard hints on the new-password fields (`tampilan-f-sandi`)
   - [ ] Phase A: Nginx/Apache routing of `/manifest.json` in `docs/08_DEPLOYMENT.md` (`sky/beautiful-thompson-u4027f`)
-  - [ ] Owner call: slide dots keep a narrow tap area (14–22 dp wide), or grow to 48 dp wide with 48 dp spacing
+  - [x] Owner call (11 October 2026): slide dots keep their narrow tap area (14–22 dp wide); Lanjut/Kembali and swipe stay the full-size way to move
 
 ## Asset package (`docs/rencana-paket-aset.md`, stages in §10)
 
