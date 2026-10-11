@@ -210,6 +210,71 @@ if (! function_exists('character_frame_src')) {
     }
 }
 
+if (! function_exists('character_frames')) {
+    /**
+     * Animation of a character pose: the uploaded frames `char.{jaka|kedu}.{pose}.{n}`
+     * in order, with fps and loop from Config\Gelita::$characterAnimations.
+     * Falls back to `idle` when frame 1 of the pose is missing, so `frames[0]`
+     * always equals character_frame_src(); a missing later frame is skipped.
+     * NULL for the narrator or when neither pose has frame 1.
+     *
+     * @return array{frames: list<string>, fps: int, loop: bool}|null
+     */
+    function character_frames(string $character, ?string $pose = null): ?array
+    {
+        if ($character === '' || $character === 'narator') {
+            return null;
+        }
+
+        $slug       = $character === 'mbah_kedu' ? 'kedu' : $character;
+        $pose       = $pose === null || $pose === '' ? 'idle' : $pose;
+        $animations = config('Gelita')->characterAnimations;
+
+        foreach (array_unique([$pose, 'idle']) as $candidate) {
+            if (media_key_src("char.{$slug}.{$candidate}.1") === null) {
+                continue;
+            }
+
+            $animation = $animations["{$slug}.{$candidate}"] ?? [];
+            $frames    = [];
+
+            for ($i = 1; $i <= max(1, (int) ($animation['frames'] ?? 1)); $i++) {
+                if (($src = media_key_src("char.{$slug}.{$candidate}.{$i}")) !== null) {
+                    $frames[] = $src;
+                }
+            }
+
+            return [
+                'frames' => $frames,
+                'fps'    => max(1, (int) ($animation['fps'] ?? 1)),
+                'loop'   => (bool) ($animation['loop'] ?? false),
+            ];
+        }
+
+        return null;
+    }
+}
+
+if (! function_exists('character_frames_attr')) {
+    /**
+     * Data attributes for core/sprite.js (`{prefix}frames` as a JSON list,
+     * `{prefix}fps`, `{prefix}loop`), with a leading space. Empty when the
+     * animation has fewer than 2 frames: the figure then stays on frame 1.
+     *
+     * @param array{frames: list<string>, fps: int, loop: bool}|null $animation from character_frames()
+     */
+    function character_frames_attr(?array $animation, string $prefix = 'data-'): string
+    {
+        if ($animation === null || count($animation['frames']) < 2) {
+            return '';
+        }
+
+        return ' ' . $prefix . 'frames="' . esc(json_encode($animation['frames'], JSON_UNESCAPED_SLASHES), 'attr') . '"'
+            . ' ' . $prefix . 'fps="' . $animation['fps'] . '"'
+            . ' ' . $prefix . 'loop="' . ($animation['loop'] ? '1' : '0') . '"';
+    }
+}
+
 if (! function_exists('media_key_src_locale')) {
     /**
      * media_key_src() untuk gambar bertulisan yang punya varian bahasa

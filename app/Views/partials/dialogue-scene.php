@@ -10,7 +10,9 @@
  * - Setiap baris membawa URL frame pose tokohnya (`data-pose-src`,
  *   character_frame_src(): `char.{jaka|kedu}.{pose}.1`, cadangan `idle`,
  *   kosong bila belum ada gambar). dialogue.js menukar gambar tokoh yang
- *   berbicara; tanpa gambar tokoh tetap monogram.
+ *   berbicara; tanpa gambar tokoh tetap monogram. A pose with 2 or more
+ *   frames also carries `data-pose-frames`/`-fps`/`-loop`, which dialogue.js
+ *   hands to core/sprite.js to play the pose.
  * - Efek baris (`data-effect`) diputar lapisan efek narrator; audio, mesin
  *   ketik, dan maju otomatis oleh game/narrator.js mode `tap`, yang juga
  *   satu-satunya pengirim `dialogue_advanced` (context = $context).
@@ -72,7 +74,7 @@ $region = $level->text('name', $locale);
         $audioId   = (int) ($locale === 'en' ? ($slide['audio_en_asset_id'] ?? 0) : ($slide['audio_id_asset_id'] ?? 0));
         ?>
         <li class="slide dialogue-line" id="line-<?= $n ?>" data-index="<?= $n ?>" data-character="<?= esc($character, 'attr') ?>"
-            data-pose="<?= esc($pose, 'attr') ?>" data-pose-src="<?= esc(character_frame_src($character, $pose) ?? '', 'attr') ?>"
+            data-pose="<?= esc($pose, 'attr') ?>" data-pose-src="<?= esc(character_frame_src($character, $pose) ?? '', 'attr') ?>"<?= character_frames_attr(character_frames($character, $pose), 'data-pose-') ?>
             <?= $effect !== '' ? 'data-effect="' . esc($effect, 'attr') . '"' : '' ?>
             aria-label="<?= esc(lang('Game.slideOf', [$n, $total]), 'attr') ?>">
           <div class="dialogue-box panel-parchment" data-narrator-advance>

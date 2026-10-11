@@ -162,7 +162,7 @@ final class AssetChecklist
                 'key'        => 'char.' . $name . '.1…' . $frames,
                 'size'       => $this->sizeText('char.' . $name . '.1'),
                 'status'     => $status,
-                'note'       => $note . ($pose !== 'idle' && $status === 'missing' ? ' (sementara tampil dengan pose diam)' : ''),
+                'note'       => $note . ($pose !== 'idle' && in_array(1, $missing, true) ? ' (sementara tampil dengan pose diam)' : ''),
                 'link'       => $this->detailLink('char.' . $name . '.' . ($missing[0] ?? $wrong[0] ?? 1)),
                 'link_label' => 'Lihat & unggah',
             ];
@@ -170,7 +170,7 @@ final class AssetChecklist
 
         return [
             'title' => 'Gambar gerak tokoh (per pose)',
-            'help'  => 'Setiap pose butuh semua gambar geraknya (PNG berlatar transparan). Pose yang belum lengkap tampil dengan pose diam; bila itu pun belum ada, tampil inisial nama tokoh.',
+            'help'  => 'Setiap pose butuh semua gambar geraknya (PNG berlatar transparan), yang diputar berurutan sebagai animasi. Gambar yang belum ada dilewati. Bila gambar 1 sebuah pose belum ada, tokoh tampil dengan pose diam; bila itu pun belum ada, tampil inisial nama tokoh.',
             'items' => $items,
         ];
     }

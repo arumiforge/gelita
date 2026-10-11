@@ -437,6 +437,7 @@ Helper `gelita`, `content`, dan `ui` dimuat global lewat `Config\Autoload::$help
 | `media_src()`, `media_exists()`, `media_first()` | URL media aktif menurut id, dengan pengganti `assets/ui/placeholder.svg` |
 | `media_key_src()`, `media_key_src_locale()` | URL media menurut `asset_key`, termasuk varian bahasa (`ui.btn-start.en`); `null` bila belum diunggah |
 | `character_frame_src()` | frame pertama tokoh dalam pose tertentu, cadangan pose `idle` |
+| `character_frames()`, `character_frames_attr()` | all uploaded frames of a pose with `fps`/`loop` (same `idle` fallback), and the `data-frames`/`-fps`/`-loop` attributes for `core/sprite.js` (only with 2 or more frames) |
 | `media_catalog()`, `audio_catalog()` | daftar media dan audio untuk pemilih di panel |
 | `audio_src(?int $audioAssetId)` | URL audio; `null` bila belum `approved` atau medianya nonaktif |
 | `stars_html()` | bintang sebagai ikon + teks alternatif `2 / 3` |

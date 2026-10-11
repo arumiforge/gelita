@@ -271,7 +271,7 @@ final class ImageSlots
             'transparent' => true,
             'fallback'    => 'Pose diam (idle), lalu inisial nama tokoh',
             'priority'    => 'wajib',
-            'tips'        => 'Saat ini hanya gambar 1 setiap pose yang tampil; gambar 2 dan 3 untuk animasi berikutnya. Gambar 1 harus terbaca sendiri.',
+            'tips'        => 'Gambar 1, 2, dan 3 diputar berurutan sebagai animasi. Gambar 1 harus terbaca sendiri, karena hanya gambar itu yang tampil bila gerak dikurangi.',
         ],
         'char.kedu.*' => [
             'group'       => 'character',
@@ -284,7 +284,7 @@ final class ImageSlots
             'transparent' => true,
             'fallback'    => 'Pose diam (idle), lalu inisial nama tokoh',
             'priority'    => 'wajib',
-            'tips'        => 'Saat ini hanya gambar 1 setiap pose yang tampil; gambar 2 dan 3 untuk animasi berikutnya. Jangan ada tulisan atau lambang asimetris di pakaian, karena gambar dicerminkan.',
+            'tips'        => 'Gambar 1, 2, dan 3 diputar berurutan sebagai animasi. Jangan ada tulisan atau lambang asimetris di pakaian, karena gambar dicerminkan.',
         ],
 
         // -------------------------------------------------------- challenge

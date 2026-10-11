@@ -462,7 +462,7 @@ Mbah Kedu, a kind elderly Javanese man of about 75, thin and slightly stooped, a
 | Margin sisi | ≥ 40 px | ≥ 40 px | `drop-shadow` dan gerak tangan tidak terpotong |
 | Tulisan/lambang | tidak ada | tidak ada | dicerminkan di dialog |
 | Cahaya | kunci hangat dari kiri atas, pinggir dingin dari kanan | sama | konsisten antar pose |
-| Frame 1 | **pose kunci yang terbaca sendiri** | sama | saat ini hanya frame 1 yang tampil (`components/character.php:18`) |
+| Frame 1 | **pose kunci yang terbaca sendiri** | sama | tampil sendiri dengan `prefers-reduced-motion` dan sebelum frame lain dimuat (`core/sprite.js`) |
 
 **Prompt lembar putar (acuan, 2048 × 1024):**
 
@@ -999,7 +999,7 @@ Contoh prompt (Temanggung). Dua lainnya mengganti daftar vinyet dan latar jauh d
 - **Spesifikasi:** 700 × 900 px, PNG-32 transparan, ≤ 250 KB, **wajib**. Semua aturan §9.4 berlaku.
 - **Pemutaran:** `fps` dan `loop` dari `Config\Gelita::$characterAnimations`.
   - Pose tanpa *loop* berhenti di frame 3, jadi frame 3 adalah pose yang "ditahan".
-  - Frame 1 tetap harus terbaca sendiri: saat ini hanya frame 1 yang tampil, dan juga dengan `prefers-reduced-motion`.
+  - Frame 1 tetap harus terbaca sendiri: hanya frame 1 yang tampil dengan `prefers-reduced-motion` dan sebelum frame lain selesai dimuat (`core/sprite.js`, since 11 October 2026).
   - Perbedaan antarframe kecil: ≤ 12 px pada tubuh, lebih besar hanya pada tangan atau kepala.
 
 Prompt setiap frame:
