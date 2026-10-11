@@ -2,6 +2,8 @@
 
 use App\Database\Seeds\ContentSeeder;
 use App\Database\Seeds\MediaAssetSeeder;
+use App\Libraries\ImageSlots;
+use App\Libraries\MediaStore;
 use App\Libraries\MediaUsage;
 use CodeIgniter\Config\BaseService;
 use CodeIgniter\Database\BaseConnection;
@@ -62,7 +64,10 @@ final class MediaSlotPagesTest extends CIUnitTestCase
         // Official slot without a label in the database: text from ImageSlots
         $this->assertStringContainsString('Latar halaman awal & akun', $html);
         $this->assertStringContainsString('<code>/mulai</code>', $html);
-        $this->assertStringContainsString('belum dipakai permainan', $html, 'bg.auth and ui.placeholder');
+        // Display plan A5/A7: bg.auth and ui.placeholder are read by the game now (optional slots)
+        $this->assertStringContainsString('Latar masuk, daftar, dan ganti kata sandi', $html);
+        $this->assertStringContainsString('<code>/masuk</code>', $html);
+        $this->assertStringNotContainsString('belum dipakai permainan', $html);
 
         // Challenge image: description from the question bank, page of the challenge
         $this->assertStringContainsString('lanskap Gunung Sindoro', $html);
@@ -137,6 +142,72 @@ final class MediaSlotPagesTest extends CIUnitTestCase
         $this->assertStringContainsString('baris cerita', $html);
         $this->assertStringContainsString('Sebelumnya', $html);
         $this->assertStringContainsString('Berikutnya', $html);
+    }
+
+    /** Display plan Phase A4: the pose's frames side by side, then the animation once 2+ frames exist. */
+    public function testCharacterDetailShowsThePoseFramesAndAnimation(): void
+    {
+        $page = 'admin/media/' . $this->mediaId('char.kedu.weak.2');
+
+        $html = $this->page($page);
+        $this->assertStringContainsString('Semua gambar pose ini', $html);
+        $this->assertSame(3, substr_count($html, '(belum ada)'), 'three empty frames');
+        $this->assertStringContainsString('paling sedikit dua gambar', $html);
+        $this->assertStringNotContainsString('data-frames=', $html);
+
+        foreach ([1, 2] as $i) {
+            $this->sqlite->table('media_assets')->where('asset_key', "char.kedu.weak.{$i}")
+                ->update(['is_active' => 1, 'storage_path' => "assets/uploads/char.kedu.weak.{$i}.png", 'sha256' => str_repeat((string) $i, 64)]);
+        }
+        service('contentRepository')->flush();
+        service('cache')->clean();
+
+        $html = $this->page($page);
+        $this->assertSame(1, substr_count($html, '(belum ada)'));
+        $this->assertMatchesRegularExpression('/class="character" data-frames=.\["[^\]]*char\.kedu\.weak\.1\.png[^\]]*char\.kedu\.weak\.2\.png[^\]]*\]/', html_entity_decode($html));
+        $this->assertStringContainsString('data-fps="3" data-loop="0"', $html, 'Config\Gelita::$characterAnimations kedu.weak');
+        $this->assertStringContainsString('data-sprite-replay', $html);
+        $this->assertStringContainsString('data-zoom="', $html, 'frames open in the lightbox');
+    }
+
+    public function testListThumbnailsOpenTheLightbox(): void
+    {
+        $this->sqlite->table('media_assets')->where('asset_key', 'char.jaka.idle.1')
+            ->update(['is_active' => 1, 'storage_path' => 'assets/uploads/char.jaka.idle.1.png', 'sha256' => str_repeat('a', 64)]);
+
+        $html = $this->page('admin/media?kelompok=character');
+
+        $this->assertMatchesRegularExpression('/<a class="media-thumb" href="[^"]*char\.jaka\.idle\.1\.png\?v=aaaa[^"]*" target="_blank" rel="noopener" data-zoom=/', $html, 'sprite frames get a thumbnail too');
+    }
+
+    /** Display plan A6: intro and ending slides get a background field; region dialogues do not. */
+    public function testStorySlidesTakeABackgroundFromTheDialogueEditor(): void
+    {
+        $html = $this->page('admin/konten/dialog/0?konteks=intro');
+        $this->assertStringContainsString('enctype="multipart/form-data"', $html);
+        $this->assertStringContainsString('Latar slide (tidak wajib)', $html);
+        $this->assertStringContainsString('<code>bg.story.intro.1</code>', $html, 'default key per slide');
+
+        $regional = $this->page('admin/konten/dialog/1?konteks=level_open');
+        $this->assertStringNotContainsString('Latar slide', $regional);
+
+        $slide = $this->sqlite->table('dialogues')->where(['context_code' => 'intro', 'sequence' => 1])->get()->getRowArray();
+        $post  = ['context' => 'intro', 'dialogues' => [[
+            'id' => $slide['id'], 'sequence' => 1, 'character_code' => $slide['character_code'],
+            'text_id' => $slide['text_id'], 'text_en' => $slide['text_en'], 'is_active' => '1', 'background_key' => 'bg.welcome',
+        ]]] + self::CSRF;
+
+        $this->asAdmin()->call(Method::POST, 'admin/konten/dialog/0', $post)
+            ->assertRedirectTo(site_url('admin/konten/dialog/0?konteks=intro'));
+        $this->assertSame($this->mediaId('bg.welcome'), (int) $this->sqlite->table('dialogues')->where('id', $slide['id'])->get()->getRow('background_media_id'));
+
+        // Emptying the code box removes the background again
+        $post['dialogues'][0]['background_key'] = '';
+        $this->asAdmin()->call(Method::POST, 'admin/konten/dialog/0', $post);
+        $this->assertNull($this->sqlite->table('dialogues')->where('id', $slide['id'])->get()->getRow('background_media_id'));
+
+        $this->assertSame('background', ImageSlots::groupOf('bg.story.ending.4'));
+        $this->assertSame([1920, 1080], (new MediaStore())->requiredSize('bg.story.ending.4'));
     }
 
     public function testUploadFromTheDetailPageComesBack(): void

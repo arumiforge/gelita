@@ -182,6 +182,12 @@ class Gelita extends BaseConfig
         'ui.btn-start'     => [720, 240],
         'ui.btn-start.*'   => [720, 240],   // varian bahasa: ui.btn-start.en
         'bg.loading'       => [1920, 1080], // tirai layar penuh (components/curtain.php)
+        // App icons (AppController::manifest(), app_icon_src())
+        'app.favicon'       => [48, 48],
+        'app.apple-touch'   => [180, 180],
+        'app.icon-192'      => [192, 192],
+        'app.icon-512'      => [512, 512],
+        'app.icon-maskable' => [512, 512],
     ];
 
     /**

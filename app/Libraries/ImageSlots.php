@@ -26,6 +26,7 @@ final class ImageSlots
     /** Group code → panel heading, in panel order. */
     public const GROUPS = [
         'brand'      => 'Logo & tombol',
+        'app'        => 'Ikon aplikasi',
         'background' => 'Latar layar',
         'map'        => 'Peta',
         'region'     => 'Wilayah: latar, peta, lencana',
@@ -56,7 +57,7 @@ final class ImageSlots
      *
      * screens: list of [screen name, public path or null]
      *
-     * @var array<string, array{group: string, label: string, content: string, screens: list<array{0: string, 1: string|null}>, format: string, transparent: bool, fallback: string, priority: string, tips?: string, recommended?: array{0: int, 1: int}, admin?: array{0: string, 1: string}}>
+     * @var array<string, array{group: string, label: string, content: string, screens: list<array{0: string, 1: string|null}>, format: string, transparent: bool, types?: list<string>, fallback: string, priority: string, tips?: string, recommended?: array{0: int, 1: int}, admin?: array{0: string, 1: string}}>
      */
     private const SLOTS = [
         // ------------------------------------------------------------ brand
@@ -111,13 +112,76 @@ final class ImageSlots
         'ui.placeholder' => [
             'group'       => 'brand',
             'label'       => 'Gambar pengganti',
-            'content'     => 'Saat ini permainan memakai berkas bawaan assets/ui/placeholder.svg langsung; slot ini tidak dibaca.',
-            'screens'     => [],
-            'format'      => 'SVG',
+            'content'     => 'Gambar netral yang tampil sementara bila sebuah gambar soal, bacaan, peta wilayah, atau halaman Pustaka belum diunggah. Polos dan tenang, misalnya bingkai perkamen dengan lambang GELITA kecil di tengah, tanpa tulisan.',
+            'screens'     => [
+                ['Tantangan dengan gambar soal yang belum diunggah', '/tantangan/temanggung/1'],
+                ['Peta wilayah yang gambarnya belum diunggah', '/wilayah/temanggung'],
+                ['Pustaka', '/pustaka'],
+            ],
+            'format'      => 'SVG, PNG, atau WebP',
             'transparent' => false,
-            'fallback'    => 'Berkas bawaan placeholder.svg',
-            'priority'    => 'unused',
-            'tips'        => 'Tidak perlu diunggah.',
+            'types'       => ['svg', 'png', 'webp'],
+            'fallback'    => 'Berkas bawaan assets/ui/placeholder.svg',
+            'priority'    => 'opsional',
+            'tips'        => 'Hanya cadangan: sebelum penelitian semua gambar asli tetap perlu diunggah.',
+        ],
+
+        // ------------------------------------------------------------ app
+        'app.favicon' => [
+            'group'       => 'app',
+            'label'       => 'Ikon tab peramban (favicon)',
+            'content'     => 'Lambang GELITA yang sederhana dan tebal, tetap jelas saat tampil sangat kecil di tab peramban (16–48 piksel). Tanpa tulisan.',
+            'screens'     => [['Tab peramban di semua halaman permainan dan panel', '/']],
+            'format'      => 'PNG persegi, berlatar transparan atau warna gelap',
+            'transparent' => true,
+            'types'       => ['png'],
+            'fallback'    => 'Ikon bawaan favicon.ico',
+            'priority'    => 'opsional',
+        ],
+        'app.apple-touch' => [
+            'group'       => 'app',
+            'label'       => 'Ikon layar utama iPhone dan iPad',
+            'content'     => 'Lambang GELITA di atas latar biru tua penuh (tanpa transparan); iOS membulatkan sudutnya sendiri.',
+            'screens'     => [['Layar utama iPhone/iPad sesudah "Tambahkan ke Layar Utama"', '/']],
+            'format'      => 'PNG persegi tanpa transparan',
+            'transparent' => false,
+            'types'       => ['png'],
+            'fallback'    => 'Ikon bawaan assets/app/apple-touch-icon.png',
+            'priority'    => 'opsional',
+        ],
+        'app.icon-192' => [
+            'group'       => 'app',
+            'label'       => 'Ikon aplikasi 192',
+            'content'     => 'Lambang GELITA untuk aplikasi terpasang (Android, Chromebook, Windows).',
+            'screens'     => [['Layar utama dan daftar aplikasi sesudah GELITA dipasang', '/manifest.json']],
+            'format'      => 'PNG persegi',
+            'transparent' => true,
+            'types'       => ['png'],
+            'fallback'    => 'Ikon bawaan assets/app/icon-192.png',
+            'priority'    => 'opsional',
+        ],
+        'app.icon-512' => [
+            'group'       => 'app',
+            'label'       => 'Ikon aplikasi 512',
+            'content'     => 'Lambang GELITA yang sama dengan ikon 192, dalam ukuran besar (layar pembuka aplikasi terpasang).',
+            'screens'     => [['Layar pembuka dan daftar aplikasi sesudah GELITA dipasang', '/manifest.json']],
+            'format'      => 'PNG persegi',
+            'transparent' => true,
+            'types'       => ['png'],
+            'fallback'    => 'Ikon bawaan assets/app/icon-512.png',
+            'priority'    => 'opsional',
+        ],
+        'app.icon-maskable' => [
+            'group'       => 'app',
+            'label'       => 'Ikon aplikasi Android (maskable)',
+            'content'     => 'Lambang GELITA di tengah latar biru tua penuh. Android memotong ikon menjadi lingkaran atau bentuk lain, jadi lambang harus muat di lingkaran tengah 80%.',
+            'screens'     => [['Layar utama Android sesudah GELITA dipasang', '/manifest.json']],
+            'format'      => 'PNG persegi tanpa transparan',
+            'transparent' => false,
+            'types'       => ['png'],
+            'fallback'    => 'Ikon bawaan assets/app/icon-maskable-512.png',
+            'priority'    => 'opsional',
+            'tips'        => 'Zona aman: lingkaran berdiameter 80% kanvas (410 piksel). Bagian di luarnya bisa terpotong.',
         ],
 
         // ------------------------------------------------------- background
@@ -142,14 +206,18 @@ final class ImageSlots
         ],
         'bg.auth' => [
             'group'       => 'background',
-            'label'       => 'Latar masuk & daftar (cadangan, belum dipakai)',
-            'content'     => 'Saat ini halaman masuk dan daftar siswa memakai latar halaman awal (bg.welcome). Slot ini belum dibaca permainan.',
-            'screens'     => [],
+            'label'       => 'Latar masuk, daftar, dan ganti kata sandi',
+            'content'     => 'Latar khusus halaman akun siswa. Tanpa tokoh dan tanpa tulisan: Jaka berdiri di kiri sebagai gambar sendiri, panel gelap berornamen di tengah-kanan. Bagian tengah-kanan sebaiknya tenang.',
+            'screens'     => [
+                ['Masuk', '/masuk'],
+                ['Daftar langkah 1–3', '/daftar/1'],
+                ['Ganti kata sandi', '/ganti-sandi'],
+            ],
             'format'      => 'JPG kualitas ± 80, paling besar ± 450 KB',
             'transparent' => false,
-            'fallback'    => '—',
-            'priority'    => 'unused',
-            'tips'        => 'Tidak perlu diunggah sekarang.',
+            'fallback'    => 'Latar halaman awal (bg.welcome)',
+            'priority'    => 'opsional',
+            'tips'        => 'Boleh dikosongkan: halaman-halaman ini memakai latar halaman awal sampai gambar ini diunggah.',
         ],
         'bg.intro' => [
             'group'       => 'background',
@@ -202,6 +270,18 @@ final class ImageSlots
         ],
 
         // -------------------------------------------------------------- map
+        'bg.story.*' => [
+            'group'       => 'background',
+            'label'       => 'Latar slide cerita',
+            'content'     => 'Adegan layar penuh untuk satu slide cerita pembuka atau penutup, sesuai isi ucapannya. Tanpa tokoh (Jaka dan Mbah Kedu digambar permainan di atasnya) dan tanpa tulisan. Bagian bawah tenang: kotak narasi menutupinya.',
+            'screens'     => [['Cerita pembuka', '/intro'], ['Cerita penutup', '/penutup']],
+            'format'      => 'JPG kualitas ± 80, paling besar ± 450 KB',
+            'transparent' => false,
+            'fallback'    => 'Latar cerita umum (bg.intro), lalu latar halaman awal',
+            'priority'    => 'opsional',
+            'tips'        => 'Dipasang per slide di halaman Konten → Cerita pembuka / Penutup.',
+            'admin'       => ['Atur di halaman cerita', 'admin/konten/dialog/0'],
+        ],
         'map.kedu' => [
             'group'       => 'map',
             'label'       => 'Peta Karesidenan Kedu',
@@ -360,6 +440,15 @@ final class ImageSlots
         ],
     ];
 
+    /** File type code → MIME type, for the per-slot `types` rule. */
+    public const TYPE_MIMES = [
+        'png'  => 'image/png',
+        'jpg'  => 'image/jpeg',
+        'webp' => 'image/webp',
+        'gif'  => 'image/gif',
+        'svg'  => 'image/svg+xml',
+    ];
+
     /** Human pose names for the slot text. */
     private const POSES = [
         'idle'       => 'diam',
@@ -390,6 +479,57 @@ final class ImageSlots
         }
 
         return null;
+    }
+
+    /**
+     * Image file types an upload to this key may have (enforced by
+     * MediaStore::store() and admin/media-upload.js), or null for keys that
+     * are not a slot. A slot's own `types` wins; otherwise a transparent slot
+     * takes PNG or WebP and any other slot JPG, PNG, or WebP.
+     *
+     * @return list<string>|null codes from TYPE_MIMES
+     */
+    public static function types(string $assetKey): ?array
+    {
+        $pattern = self::patternFor($assetKey);
+
+        if ($pattern === null) {
+            return null;
+        }
+
+        $slot = self::SLOTS[$pattern];
+
+        return $slot['types'] ?? ($slot['transparent'] ? ['png', 'webp'] : ['jpg', 'png', 'webp']);
+    }
+
+    /**
+     * Slot pattern → allowed types, in lookup order (exact keys first, as in
+     * patternFor()), for the browser check in admin/media-upload.js.
+     *
+     * @return array<string, list<string>>
+     */
+    public static function typeRules(): array
+    {
+        $exact = $wild = [];
+
+        foreach (array_keys(self::SLOTS) as $pattern) {
+            if (str_contains($pattern, '*')) {
+                $wild[$pattern] = self::types($pattern);
+            } else {
+                $exact[$pattern] = self::types($pattern);
+            }
+        }
+
+        return $exact + $wild;
+    }
+
+    /** "PNG atau WebP", "JPG, PNG, atau WebP" for messages. */
+    public static function typesText(array $types): string
+    {
+        $names = array_map(static fn (string $type): string => $type === 'webp' ? 'WebP' : strtoupper($type), $types);
+        $last  = array_pop($names);
+
+        return $names === [] ? $last : implode(', ', $names) . (count($names) > 1 ? ',' : '') . ' atau ' . $last;
     }
 
     /** Short label of the slot (placeholders filled), or null when not a slot. */

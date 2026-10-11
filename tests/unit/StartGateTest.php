@@ -109,6 +109,19 @@ final class StartGateTest extends CIUnitTestCase
         $this->assertStringContainsString('ornate-body stage-scroll', $page, 'the form scrolls inside the fixed panel');
     }
 
+    /** Display plan A7: account screens use bg.auth, falling back to bg.welcome. */
+    public function testLoginUsesTheAccountBackgroundWithWelcomeFallback(): void
+    {
+        $this->media = ['bg.welcome' => 'assets/uploads/bg.welcome.jpg?v=w1'];
+        $this->assertStringContainsString('src="' . $this->attr('assets/uploads/bg.welcome.jpg?v=w1') . '"', (new LoginController())->form());
+
+        Services::resetSingle('renderer');
+        $this->media['bg.auth'] = 'assets/uploads/bg.auth.jpg?v=a1';
+        $page = (new LoginController())->form();
+        $this->assertStringContainsString('src="' . $this->attr('assets/uploads/bg.auth.jpg?v=a1') . '"', $page);
+        $this->assertStringNotContainsString('bg.welcome.jpg', $page);
+    }
+
     public function testStartSendsLoggedInPlayerToTheGate(): void
     {
         session()->set(['participant_id' => 5, 'game_session_id' => 9]);

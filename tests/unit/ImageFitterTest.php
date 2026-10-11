@@ -208,6 +208,29 @@ final class ImageFitterTest extends CIUnitTestCase
         $this->cleanup[] = FCPATH . model(MediaAssetModel::class)->findByKey($free)['storage_path'];
     }
 
+    /** Display plan Phase A1: a slot's allowed file types (ImageSlots::types()) are enforced on upload. */
+    public function testSlotFileTypesAreEnforced(): void
+    {
+        $store = new MediaStore();
+
+        // Cari Objek objects are transparent: PNG or WebP only
+        $object = 'challenge.item.zz-4-' . bin2hex(random_bytes(3));
+        $result = $store->store($this->upload($this->image('jpg', 240, 240)), $object, ['image'], null, true);
+        $this->assertNotNull($result['error']);
+        $this->assertStringContainsString('PNG atau WebP', $result['error']);
+        $this->assertNull(model(MediaAssetModel::class)->findByKey($object));
+
+        // Backgrounds take JPG, PNG, or WebP, but not GIF
+        $result = $store->store($this->upload($this->image('gif', 1920, 1080)), 'bg.welcome', ['image'], null, true);
+        $this->assertStringContainsString('JPG, PNG, atau WebP', (string) $result['error']);
+
+        // A key that is no slot keeps the general image rule
+        $free   = 'zz.bebas-' . bin2hex(random_bytes(3));
+        $result = $store->store($this->upload($this->image('gif', 40, 40)), $free, ['image'], null, true);
+        $this->assertNull($result['error']);
+        $this->cleanup[] = FCPATH . model(MediaAssetModel::class)->findByKey($free)['storage_path'];
+    }
+
     private function svg(): string
     {
         $path            = sys_get_temp_dir() . '/fit-' . bin2hex(random_bytes(6)) . '.svg';

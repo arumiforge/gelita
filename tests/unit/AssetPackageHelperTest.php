@@ -74,6 +74,26 @@ final class AssetPackageHelperTest extends CIUnitTestCase
         $this->assertNull(audio_src($this->audioId('audio.narasi.id.kenal-magelang-01')));
     }
 
+    /** Display plan A5: missing media shows the `ui.placeholder` slot once uploaded, else the static SVG. */
+    public function testPlaceholderSlotReplacesTheStaticFile(): void
+    {
+        $static = base_url('assets/ui/placeholder.svg');
+        $this->assertSame($static, media_src(99999));
+        $this->assertTrue(media_is_placeholder($static));
+        $this->assertTrue(media_is_placeholder($static . '?v=abc'));
+
+        $this->addMedia('ui.placeholder', 'assets/uploads/ui.placeholder.png', 'image', 'image/png', 'stand-in');
+        service('contentRepository')->flush();
+        service('cache')->clean();
+
+        $this->assertSame($this->normal('ui.placeholder'), media_src(99999));
+        $this->assertSame($this->normal('ui.placeholder'), media_src(null));
+        $this->assertTrue(media_is_placeholder(media_src(99999)));
+        $this->assertSame(base_url('assets/x.png'), media_src(null, 'assets/x.png'), 'an explicit fallback still wins');
+        $this->assertFalse(media_is_placeholder($this->normal('bg.welcome')));
+        $this->assertFalse(media_is_placeholder(null));
+    }
+
     public function testAssetAddedAfterTheBuildKeepsItsNormalUrl(): void
     {
         $this->useRelease($this->code);

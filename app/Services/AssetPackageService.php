@@ -183,6 +183,8 @@ class AssetPackageService
             ->select('ma.id, ma.asset_key, ma.asset_type, ma.storage_path, ma.mime_type, ma.sha256, ma.locale, ma.is_placeholder')
             ->join('audio_assets aa', 'aa.media_asset_id = ma.id', 'left')
             ->where('ma.is_active', 1)
+            // App icons are read by the browser outside the game (manifest, tab, home screen)
+            ->notLike('ma.asset_key', 'app.', 'after')
             ->groupStart()
             ->where('aa.id', null)
             ->orWhere('aa.approval_status', 'approved')

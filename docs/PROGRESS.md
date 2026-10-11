@@ -35,10 +35,10 @@ Last updated: 11 October 2026.
 
 ## Display update (`docs/rencana-perbaikan-tampilan.md`, revised 11 October 2026)
 
-Owner decisions: phases in order 0 → A → B → C → E → F, one branch and one PR per phase, each cut from `main` after the previous PR is merged. Phase D (character frame animation) is done (PR #83).
+Owner decisions: phases in order 0 → A → B → C → E → F, one branch and one PR per phase, each cut from `main` after the previous PR is merged. Since 11 October 2026 two sessions run in parallel (owner request): one does A → B → C, the other E → F. Phase D (character frame animation) is done (PR #83).
 
 - [x] Plan revised against the current code (PR #84)
-- [ ] Phase 0 — bug fixes: music on challenge/region screens, lost and doubled password flash, dead size rules (`tampilan-0-perbaikan`)
+- [x] Phase 0 — bug fixes: music on challenge/region screens, lost and doubled password flash, dead size rules (PR #85)
 - [ ] Phase A — app icons, zoom and animation preview, placeholder, story slide backgrounds, `bg.auth` (`tampilan-a-gambar-admin`)
 - [ ] Phase B — avatars (`tampilan-b-avatar`)
 - [ ] Phase C — city pins, Kenali lanterns, city loading backgrounds (`tampilan-c-kota`)
@@ -77,4 +77,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 | `paket-1b-narasi` | Asset package Stage 1b: narration 48 kbps | PR open |
 | `paket-4-transisi` | Asset package Stage 4: transitions, decode, curtain | PR open |
 | `paket-5-integritas` | Asset package Stage 5: research data integrity | PR open |
-| `tampilan-0-perbaikan` | Display update Phase 0: bug fixes | PR open |
+| `tampilan-a-gambar-admin` | Display update Phase A: admin images (this session continues with B, C) | PR open |

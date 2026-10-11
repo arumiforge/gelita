@@ -302,7 +302,7 @@ trait GameProgress
             foreach ($content->dialogues($levelId, 'level_open') as $line) {
                 $urls[] = character_frame_src((string) ($line['character_code'] ?? ''), (string) ($line['pose'] ?? ''));
             }
-        } elseif (! empty($row['map_media']) && ! str_ends_with((string) $row['map_media'], 'placeholder.svg')) {
+        } elseif (! empty($row['map_media']) && ! media_is_placeholder((string) $row['map_media'])) {
             $urls[] = $row['map_media'];
         }
 

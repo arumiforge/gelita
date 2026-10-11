@@ -82,6 +82,20 @@ if (! function_exists('icon')) {
     }
 }
 
+if (! function_exists('app_icon_src')) {
+    /**
+     * URL of an app icon slot (`app.favicon`, `app.icon-192`, …) with its
+     * `?v=` hash, or the static file in git when the slot is empty. Never a
+     * package URL: the browser reads icons outside the game.
+     */
+    function app_icon_src(string $slot, string $fallback): string
+    {
+        $path = service('contentRepository')->mediaKeyMap()[$slot] ?? null;
+
+        return base_url($path ?? $fallback);
+    }
+}
+
 if (! function_exists('curtain_attrs')) {
     /**
      * Atribut tautan bertirai (core/curtain.js, initCurtains()): jenis tirai,

@@ -69,6 +69,24 @@ function initConfirm(root) {
   }
 }
 
+/**
+ * Image zoom: a[data-zoom] opens the image in the shared lightbox
+ * (core/lightbox.js) instead of a new tab. Delegated, so rows that
+ * filters.js swaps in work too; modifier clicks keep the browser's tab.
+ */
+let openZoom;
+document.addEventListener('click', async (event) => {
+  const link = event.target.closest?.('a[data-zoom]');
+  if (!link || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+  event.preventDefault();
+  openZoom ??= (await import('./core/lightbox.js')).createLightbox({ closeLabel: 'Tutup' });
+  if (!openZoom) {
+    window.open(link.href, '_blank', 'noopener');
+    return;
+  }
+  openZoom(link.dataset.zoom, '', link.dataset.zoomCaption || '');
+});
+
 function initPage(root) {
   initTables(root);
   initCopy(root);
@@ -93,6 +111,17 @@ if (document.querySelector('form.upload-box[action$="media/unggah"]')) {
 }
 if (document.querySelector('form[data-narration-upload]')) {
   import('./admin/narration-upload.js').then((m) => m.initNarrationUpload());
+}
+// Character pose animation on the slot page (same player as the game)
+if (document.querySelector('.media-sprite .character[data-frames]')) {
+  import('./core/sprite.js').then((m) => {
+    m.initSprites();
+    const figure = document.querySelector('.media-sprite .character[data-frames]');
+    const replay = document.querySelector('[data-sprite-replay]');
+    if (!replay || figure.dataset.loop === '1') return;
+    replay.hidden = false;
+    replay.addEventListener('click', () => m.setFrames(figure, m.parseFrames(figure.dataset.frames), { fps: figure.dataset.fps, loop: false }));
+  });
 }
 if (document.querySelector('[data-export-id]')) {
   import('./admin/export.js').then((m) => m.initExport());

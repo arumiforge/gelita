@@ -50,7 +50,7 @@ Sekilas (keadaan sesudah perombakan kelas 5, Dok 1–3):
 - Tabel formal server-side: header dan kolom pertama lengket, urut per kolom, 25/50/100 baris + total, filter dengan chip, dan **Unduh CSV** per tabel (nilai mentah, filter yang sama).
 - Ringkasan (KPI hitungan + aktivitas dan progres terbaru), Siswa + detail bertab (profil, sesi & perangkat, progres 12 tantangan, pengerjaan, jawaban dengan riwayat percobaan, navigasi, bantuan, kritik & saran), Sesi bermain + linimasa event, **Data mentah** `/admin/data/{dimensi}`, dan Kritik & saran.
 - Ekspor data mentah XLSX atau CSV-ZIP dengan Kamus Data, berlabel atau berkode (guru: selalu anonim, hanya sekolahnya, tanpa Event Mentah dan kunci jawaban), ekspor per siswa, dan laporan PDF satu siswa.
-- Khusus admin: Tantangan (tabel 12 tantangan + editor bertab Info/Variasi/Posisi benda), impor bank soal, narasi, **Gambar & mockup** (status Asli/Gambar contoh/Kosong, unggah per slot), Kelengkapan aset, Penelitian dengan **daftar siap penelitian**, Rilis, Sekolah, Staf, dan Tata kelola (penghapusan berpratinjau, audit, retensi).
+- Khusus admin: Tantangan (tabel 12 tantangan + editor bertab Info/Variasi/Posisi benda), impor bank soal, narasi, **Gambar & mockup** (status Asli/Gambar contoh/Kosong, unggah per slot dengan jenis berkas yang diizinkan, pratinjau diperbesar dan gerakan tokoh; ikon aplikasi, latar halaman akun, dan latar slide cerita juga diganti dari panel), Kelengkapan aset, Penelitian dengan **daftar siap penelitian**, Rilis, Sekolah, Staf, dan Tata kelola (penghapusan berpratinjau, audit, retensi).
 - Guru hanya melihat menu dan data sekolahnya, tanpa kolom identitas siswa.
 - Otorisasi berlapis tiga (route → controller → service); halaman khusus admin membalas `404` untuk guru.
 

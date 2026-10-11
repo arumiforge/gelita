@@ -14,7 +14,7 @@ $title = trim($this->renderSection('title'));
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex">
   <title><?= esc($title !== '' ? $title : lang('Admin.loginTitle')) ?> · GELITA</title>
-  <link rel="icon" href="<?= base_url('favicon.ico') ?>">
+  <link rel="icon" href="<?= esc(app_icon_src('app.favicon', 'favicon.ico'), 'attr') ?>">
   <link rel="stylesheet" href="<?= asset_url_versioned('css/admin.css') ?>">
 </head>
 <body class="auth">

@@ -20,7 +20,7 @@ $focus   = static fn (string $f): string => $first === $f ? ' autofocus' : '';
 <?= $this->extend('layouts/game') ?>
 
 <?= $this->section('title') ?><?= esc(lang('Game.registerTitle')) ?><?= $this->endSection() ?>
-<?= $this->section('background') ?><?= media_key_src('bg.welcome') ?? '' ?><?= $this->endSection() ?>
+<?= $this->section('background') ?><?= media_key_src('bg.auth') ?? media_key_src('bg.welcome') ?? '' ?><?= $this->endSection() ?>
 <?= $this->section('hudBack') ?><?= base_url('mulai') ?><?= $this->endSection() ?>
 
 <?= $this->section('content') ?>

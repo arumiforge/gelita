@@ -31,6 +31,8 @@ $contextNames   = [
     'level_done'   => ['Wilayah tuntas', 'Percakapan setelah siswa menyelesaikan tantangan kelima di wilayah ini.'],
 ];
 $levelId        = $level?->id ?? 0;
+// Full-screen story slides (partials/cine-slides) can have their own background
+$withBackground = $level === null && in_array($context, ['intro', 'ending'], true);
 $rows   = $dialogues;
 $rows[] = null;
 ?>
@@ -64,7 +66,7 @@ $rows[] = null;
   <?php endforeach ?>
 </nav>
 
-<form method="post" action="<?= base_url('admin/konten/dialog/' . $levelId) ?>" class="stack">
+<form method="post" action="<?= base_url('admin/konten/dialog/' . $levelId) ?>" class="stack"<?= $withBackground ? ' enctype="multipart/form-data"' : '' ?>>
   <?= csrf_field() ?>
   <input type="hidden" name="context" value="<?= esc($context, 'attr') ?>">
 
@@ -160,6 +162,19 @@ $rows[] = null;
             'audioId' => $isNew ? null : $row['audio_en_asset_id'], 'locale' => 'en',
         ]) ?>
       </div>
+
+      <?php if ($withBackground): ?>
+        <?= component('components/media-field', [
+            'id'         => $p . '-bg',
+            'label'      => 'Latar slide (tidak wajib)',
+            'keyName'    => 'dialogues[' . $index . '][background_key]',
+            'fileName'   => 'dialogue_bg[' . $index . ']',
+            'mediaId'    => $isNew ? null : ($row['background_media_id'] ?? null),
+            'defaultKey' => $isNew ? 'bg.story.' . $context . '.{urutan}' : 'bg.story.' . $context . '.' . (int) $row['sequence'],
+            'size'       => '1920 × 1080 px',
+            'help'       => 'Mengisi layar penuh di belakang slide ini. Bila kosong, slide memakai latar cerita umum (bg.intro, lalu bg.welcome).',
+        ]) ?>
+      <?php endif ?>
 
       <div class="check-row">
         <label class="check"><input type="checkbox" name="dialogues[<?= $index ?>][is_active]" value="1" <?= $isNew || ! empty($row['is_active']) ? 'checked' : '' ?>> Tampil di permainan</label>

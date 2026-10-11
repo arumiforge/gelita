@@ -30,6 +30,7 @@ class LocaleFilter implements FilterInterface
         'api/auth/username-available',
         'api/schools/lookup',
         'api/paket/aktif',
+        'manifest.json',
     ];
 
     public function before(RequestInterface $request, $arguments = null)
