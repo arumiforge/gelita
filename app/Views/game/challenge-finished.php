@@ -143,7 +143,7 @@ $nextAssets = ! empty($levelCompleted) && isset($nextRegion['curtain'])
           <a class="btn btn-primary btn-lg" href="<?= base_url('misi/' . $level->code . '/' . $next->sequence) ?>"><?= esc(lang('Game.next')) ?> <?= icon('right') ?></a>
         <?php elseif ($toNext): ?>
           <?php // `entry`: wilayah yang baru terbuka → dialog pembukanya, selain itu peta wilayah ?>
-          <a class="btn btn-primary btn-lg" href="<?= base_url($nextRegion['entry']) ?>"<?= isset($nextRegion['curtain']) ? curtain_attrs('region', $nextRegion['curtain']['text'], $nextRegion['curtain']['preload']) : '' ?>><?= esc(lang('Game.goToRegion', [$nextRegion['name']])) ?> <?= icon('right') ?></a>
+          <a class="btn btn-primary btn-lg" href="<?= base_url($nextRegion['entry']) ?>"<?= region_curtain_attrs($nextRegion['curtain'] ?? null) ?>><?= esc(lang('Game.goToRegion', [$nextRegion['name']])) ?> <?= icon('right') ?></a>
         <?php elseif ($levelCompleted): ?>
           <a class="btn btn-primary btn-lg" href="<?= base_url('peta') ?>"><?= icon('map') ?> <?= esc(lang('Game.mapKedu')) ?></a>
         <?php endif ?>

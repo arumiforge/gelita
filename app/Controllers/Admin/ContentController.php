@@ -140,6 +140,21 @@ class ContentController extends BaseAdminController
             return $this->back('admin/konten/level/' . $levelId, $media);
         }
 
+        // City art read by a fixed key, no FK column (display plan Phase C)
+        foreach (['slot_pin_file' => 'map.pin.', 'slot_lantern_file' => 'map.lantern.', 'slot_loading_file' => 'bg.loading.'] as $field => $prefix) {
+            $file = $this->request->getFile($field);
+
+            if ($file === null || $file->getError() === UPLOAD_ERR_NO_FILE) {
+                continue;
+            }
+
+            $stored = (new MediaStore())->store($file, $prefix . $level->code, ['image'], $this->staffId());
+
+            if ($stored['error'] !== null) {
+                return $this->back('admin/konten/level/' . $levelId, $stored['error']);
+            }
+        }
+
         $saved = $levels->update($levelId, $this->bilingual(['name', 'focus', 'cp', 'tp', 'intro']) + $media + [
             'difficulty' => (string) $this->request->getPost('difficulty'),
             'is_active'  => $this->request->getPost('is_active') ? 1 : 0,

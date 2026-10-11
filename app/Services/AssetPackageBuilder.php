@@ -389,7 +389,7 @@ class AssetPackageBuilder
         }
 
         foreach ($regions as $level) {
-            if (in_array($key, ["bg.{$level}.region", "map.region.{$level}", "reward.badge.{$level}"], true)) {
+            if (in_array($key, ["bg.{$level}.region", "map.region.{$level}", "reward.badge.{$level}", "map.pin.{$level}", "map.lantern.{$level}", "bg.loading.{$level}"], true)) {
                 return $region($level);
             }
         }

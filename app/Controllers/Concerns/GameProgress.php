@@ -285,14 +285,19 @@ trait GameProgress
      *
      * @param array<string, mixed> $row baris levelOverview()
      *
-     * @return array{text: array{title: string, tagline: string, chip: string}, preload: list<string>}
+     * `bg` is the curtain's own picture (display plan Phase C): the city's
+     * `bg.loading.{wilayah}`, else the region background; it goes first in
+     * `preload`, so it is decoded before the short curtain needs it.
+     *
+     * @return array{text: array{title: string, tagline: string, chip: string}, preload: list<string>, bg: string|null}
      */
     protected function regionCurtain(array $row, string $locale): array
     {
         $content = service('contentRepository');
         $levelId = (int) $row['id'];
         $intro   = $content->dialogues($levelId, 'region_intro');
-        $urls    = [$row['background'] ?? null];
+        $bg      = region_loading_bg((string) $row['code'], $row['background'] ?? null);
+        $urls    = [$bg, $row['background'] ?? null];
 
         if (str_starts_with((string) ($row['entry'] ?? ''), 'dialog/')) {
             foreach (['jaka', 'mbah_kedu'] as $character) {
@@ -315,6 +320,7 @@ trait GameProgress
                 'chip'    => $difficulty === '' ? '' : lang_or('Game.difficulty_' . $difficulty, $difficulty),
             ],
             'preload' => array_values(array_unique(array_filter($urls, static fn ($url): bool => is_string($url) && $url !== ''))),
+            'bg'      => $bg,
         ];
     }
 

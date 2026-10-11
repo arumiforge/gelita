@@ -87,6 +87,17 @@ function fillText(layer, text) {
   }
 }
 
+/** Fades the link's picture in behind a region/challenge curtain once it has loaded. */
+function showBackground(layer, src) {
+  const img = $('img.curtain-bg.is-deferred', layer);
+  if (!img) return;
+  img.addEventListener('load', () => {
+    img.hidden = false;
+    requestAnimationFrame(() => img.classList.add('is-in'));
+  }, { once: true });
+  img.src = src;
+}
+
 function findLayer(kind) {
   const existing = $(`[data-curtain-layer="${CSS.escape(kind)}"]`);
   if (existing) return { layer: existing, fromPage: true };
@@ -168,6 +179,7 @@ function dismiss(layer, { remove = false } = {}) {
  *         halaman); pageshow dari bfcache membersihkannya.
  *   skip: ketukan/tombol apa pun mengakhiri tirai lebih awal (bawaan dari data-skip).
  *   text: isi slot [data-curtain-text] (mis. nama wilayah pada tirai `region`).
+ *   bg: picture faded in behind a `region`/`challenge` curtain (link's data-curtain-bg).
  * @returns {Promise<{ loaded: number, failed: number, timedOut: boolean, skipped: boolean, cut?: boolean }>}
  *   cut: tirai dilewati dengan ketukan.
  */
@@ -183,6 +195,7 @@ export async function playCurtain(kind, opts = {}) {
   }
 
   if (opts.text) fillText(layer, opts.text);
+  if (opts.bg) showBackground(layer, opts.bg);
 
   const urls = [...new Set(opts.urls ?? parseList(layer.dataset.preload))];
   const minMs = opts.minMs ?? curtainMinMs(layer);
@@ -330,6 +343,7 @@ export function initCurtains() {
     playCurtain(kind, {
       urls: parseList(link.dataset.curtainPreload),
       text: parseText(link.dataset.curtainText),
+      bg: link.dataset.curtainBg || '',
       tap: false,
       keep: true,
     })

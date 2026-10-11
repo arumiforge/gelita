@@ -296,6 +296,62 @@ final class ImageSlots
             'tips'        => 'Rasio 14:9; posisi pin wilayah ada di bagian "Titik pin" halaman ini.',
         ],
 
+        'ui.pin' => [
+            'group'       => 'map',
+            'label'       => 'Pin wilayah (semua kota)',
+            'content'     => 'Penanda peta untuk wilayah yang belum punya pin sendiri: lentera atau tugu kecil bergaya GELITA, dilihat dari depan, berlatar transparan, tanpa tulisan. Status (terkunci, tuntas) ditambahkan permainan di atasnya.',
+            'screens'     => [['Peta Kedu', '/peta']],
+            'format'      => 'PNG atau WebP berlatar transparan, paling besar ± 60 KB',
+            'transparent' => true,
+            'fallback'    => 'Ikon pin bawaan (lingkaran emas)',
+            'priority'    => 'opsional',
+            'tips'        => 'Tampil 56 dp: bentuk sederhana dan tebal. Wilayah yang terkunci digambar abu-abu oleh permainan.',
+        ],
+        'ui.lantern' => [
+            'group'       => 'map',
+            'label'       => 'Lentera (HUD dan tirai peta)',
+            'content'     => 'Lentera Jawa berlatar transparan, menghadap depan, tanpa api yang terlalu terang (permainan menambah cahaya sesuai jumlah wilayah tuntas). Juga dipakai tombol Kenali wilayah yang belum punya lentera sendiri.',
+            'screens'     => [['HUD (lentera serpihan)', '/peta'], ['Tirai "Membuka Peta Kedu"', '/peta'], ['Tombol Kenali di peta', '/peta']],
+            'format'      => 'PNG atau WebP berlatar transparan, paling besar ± 60 KB',
+            'transparent' => true,
+            'fallback'    => 'Ikon lentera bawaan',
+            'priority'    => 'opsional',
+        ],
+        'map.pin.*' => [
+            'group'       => 'region',
+            'label'       => 'Pin peta {Wilayah}',
+            'content'     => 'Penanda khas {Wilayah} di peta Kedu (mis. ikon kecil yang mewakili kota itu), berlatar transparan, tanpa tulisan. Status terkunci dan tuntas ditambahkan permainan.',
+            'screens'     => [['Peta Kedu', '/peta']],
+            'format'      => 'PNG atau WebP berlatar transparan, paling besar ± 60 KB',
+            'transparent' => true,
+            'fallback'    => 'Pin wilayah umum (ui.pin), lalu ikon bawaan',
+            'priority'    => 'opsional',
+            'admin'       => ['Atur di halaman wilayah', 'admin/konten/level/{level_id}'],
+        ],
+        'map.lantern.*' => [
+            'group'       => 'region',
+            'label'       => 'Lentera Kenali {Wilayah}',
+            'content'     => 'Lentera kecil khas {Wilayah} untuk tombol Kenali di peta Kedu, berlatar transparan, tanpa tulisan.',
+            'screens'     => [['Tombol Kenali dan kartu wilayah di peta Kedu', '/peta']],
+            'format'      => 'PNG atau WebP berlatar transparan, paling besar ± 40 KB',
+            'transparent' => true,
+            'fallback'    => 'Lentera umum (ui.lantern), lalu ikon bawaan',
+            'priority'    => 'opsional',
+            'admin'       => ['Atur di halaman wilayah', 'admin/konten/level/{level_id}'],
+        ],
+        'bg.loading.*' => [
+            'group'       => 'region',
+            'label'       => 'Latar tirai menuju {Wilayah}',
+            'content'     => 'Pemandangan khas {Wilayah} untuk tirai "Menuju {Wilayah}…" yang tampil sebentar saat wilayah dibuka. Tanpa tokoh dan tanpa tulisan; bagian tengah tenang karena judul tirai tampil di sana.',
+            'screens'     => [['Tirai menuju wilayah (dari peta Kedu)', '/peta']],
+            'format'      => 'JPG kualitas ± 80, paling besar ± 450 KB',
+            'transparent' => false,
+            'fallback'    => 'Latar wilayah (bg.{wilayah}.region), lalu gradien cahaya',
+            'priority'    => 'opsional',
+            'tips'        => 'Tirai hanya tampil 0,6–2,4 detik: gambar yang sederhana lebih cepat dikenali.',
+            'admin'       => ['Atur di halaman wilayah', 'admin/konten/level/{level_id}'],
+        ],
+
         // ----------------------------------------------------------- region
         'bg.*.region' => [
             'group'       => 'region',
@@ -570,7 +626,7 @@ final class ImageSlots
         }
 
         foreach ($prefixes as $code) {
-            if (in_array($assetKey, ["bg.{$code}.region", "map.region.{$code}", "reward.badge.{$code}"], true)
+            if (in_array($assetKey, ["bg.{$code}.region", "map.region.{$code}", "reward.badge.{$code}", "map.pin.{$code}", "map.lantern.{$code}", "bg.loading.{$code}"], true)
                 || str_starts_with($assetKey, "library.{$code}.")) {
                 return $code;
             }
