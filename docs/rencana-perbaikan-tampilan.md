@@ -1,329 +1,209 @@
-# Rencana: pembaruan tampilan GELITA — avatar, profil lebar, katalog gambar, animasi frame, pin/lentera kota, latar loading kota, toast gaya game, ramah sentuh
+# Plan: GELITA display update — bug fixes, admin images, avatars, city pins and lanterns, game-style toasts, touch-friendly play
 
-> Status: **rencana, belum dikerjakan** (disusun 29 September 2026). Jalankan per fase; keputusan pengguna sudah tercantum di bagian Konteks.
+> **Status: revised plan, approved for implementation** (revised 11 October 2026 against `main` at PR #83). Phases run in order, **0 → A → B → C → E → F**. Each phase gets its own short-lived branch cut from `main` and its own PR; the next phase starts once the previous PR is merged.
 >
-> **Catatan status (9 Oktober 2026, sesudah perombakan kelas 5).** Sebagian rencana ini digantikan `docs/perombakan-kelas5/` (Dok 1–3); sisanya tetap ditunda dan harus direncanakan ulang terhadap panggung 16:9 sebelum dikerjakan.
+> The first version of this plan (29 September 2026, in Indonesian) was written for the old responsive layout (`layout.css`, pixel breakpoints, landscape-phone layout). That layout is gone: the game is now one fixed 1280 × 720 dp stage (Dok 3), so most of the old file references and sizes no longer apply. The old text is in git history (commit `1943499`); this version replaces it.
 >
-> - **Digantikan:**
->   - semua rujukan ke `layout.css`, `.screen-medium`/`.screen-full`, breakpoint piksel, `vw`/`vh`, dan tata letak ponsel mendatar. `layout.css` sudah dihapus; tata letak game ada di `stage.css` sebagai satu panggung tetap 1280 × 720 dp tanpa media query lebar/tinggi (`StageCssTest`), dan panel memakai `admin.css` sendiri. Nomor baris di tabel Konteks tidak cocok lagi.
->   - Fase B butir 4 (profil lebar penuh): profil kini tata letak panggung dengan empat ubin (Dok 3 §4).
->   - Tata letak Fase E (toast di tengah, `min(560px, 90vw)`): toast berada di dalam `#stage` pada x 856, y 72, lebar 400 (`stage.css`).
->   - Tabel target sentuh, ukuran teks, dan safe-area Fase F1 yang ditulis untuk breakpoint ponsel: ukuran kini dalam dp panggung dan ikut terskala bersama panggung.
->   - Fase F2 butir 5 ("Selesaikan dengan jawaban ini") dan catatan `pilihan`: digantikan aturan 3 kesempatan dan empat engine kelas 5 (Dok 2).
->   - Ukuran tampil slot di panel (Fase A): kini `Config\Gelita::$assetDisplaySizes`, ditampilkan di **Gambar & mockup** (`/admin/media`).
-> - **Done (11 October 2026):** Phase D, character frame animation (`core/sprite.js`, `character_frames()`); the Mbah Kedu `happy` pose had already been changed to `smile`. See the decision log.
-> - **Tetap ditunda (belum dibuat):** avatar (Fase B butir 1–3), pin/lentera dan latar loading per kota (Fase C), antrean dan tutup toast (Fase E butir 2–4), seret/usap dan "Perbesar adegan" (Fase F2 butir 1–4 dan 6), serta katalog slot tunggal `ImageSlots` (Fase A).
+> **Already done, not repeated here:**
+> - **Phase D, character frame animation** (PR #83, 11 October 2026): `core/sprite.js`, `character_frames()`, `CharacterFramesTest`; Mbah Kedu's `happy` pose was already changed to `smile`. Only the admin preview of the animation is left (now A4).
+> - **Single slot catalogue `App\Libraries\ImageSlots`** (PR #80, 10 October 2026), in a text-only form, plus the slot detail page `/admin/media/{id}`, filters on `/admin/media`, and the "Gambar tantangan" group in Kelengkapan.
+> - **Shared lightbox `core/lightbox.js`** (Dok 3 §7), used in Pustaka and on Benar atau Salah cards.
+> - **Exact-size rule relaxed** (PR #81): larger images with the same ratio are accepted and shrunk (`ImageFitter`).
 
-## Konteks
+## Owner decisions (11 October 2026)
 
-Permintaan pengguna: nomor 1–7 dan 9. Nomor 8 tidak ada. Temuan dari penelusuran kode:
+1. **Order:** bug fixes first (Phase 0), then A → B → C → E → F.
+2. **Region loading curtain:** a new image slot per city, `bg.loading.{wilayah}`, falling back to the region background `bg.{wilayah}.region`, then to today's gradient.
+3. **Touch scope:** full (Phase F below), not essentials only.
+4. **Branches:** one branch and one PR per phase, cut from `main`.
 
-| # | Keadaan sekarang | Bukti |
+Decisions from the first version that still stand: the avatar is chosen in the profile and in the sign-up form; one pin image per city, with automatic status marks and a global fallback pin; app icons are uploaded per size, with no generator.
+
+## Superseded parts of the first version (not built)
+
+| Old item | Why it is dropped |
+|---|---|
+| Everything referring to `layout.css`, `.screen-medium`/`.screen-full`, pixel breakpoints, `vw`/`vh`, landscape-phone layouts | `layout.css` is deleted. Layout lives in `stage.css` with no width/height media queries (`StageCssTest`). |
+| Phase B4, full-width profile | The profile is a stage layout with two panels and four stat tiles (Dok 3 §4). |
+| "Tampilan permainan" admin page with a card grid (old Phase A3) | `/admin/media` (filters per group, region, challenge) and the slot detail page from PR #80 already do this. New slots join `ImageSlots` and appear there. |
+| Phase E layout (toast in the centre, `min(560px, 90vw)`) | The toast sits inside `#stage` at x 856, y 72, width 400 dp (Dok 3 §3.3). It keeps that place; only its look and behaviour change. |
+| Phase F1 tables of px targets, text sizes, safe-area per phone breakpoint | All sizes are dp and scale with the stage; targets are handled as hit areas (F2). |
+| Phase F2 item 5 ("Selesaikan dengan jawaban ini" modal) and the `pilihan` notes | Replaced by the 3-tries rule and the four grade 5 engines (Dok 2). |
+| Rumpang keyboard handling (old F2.3/F2.4) | Rumpang has no text inputs any more: blanks and words are buttons. |
+| SVG favicon slot `app.favicon-svg` | Not needed; the PNG favicon plus the static `favicon.ico` cover every browser. |
+
+---
+
+## Phase 0 — Bug fixes found in the audit
+
+Branch `tampilan-0-perbaikan`. Small, independent fixes; each gets a test.
+
+1. **Music never plays on challenge and region screens.** `Sfx.music()` (`core/audio.js:113`) returns at once while audio is locked, and audio is locked on every new page until the first tap. So `challenge.js` `Sfx.music('challenge')`, `map.js` `Sfx.music('region')`, and the no-curtain path of `Sfx.music('map')` never play; only the map curtain path works because its tap unlocks first.
+   - Fix: `music(name)` remembers the requested track while locked (`pendingMusic`), and `unlock()` starts it. `stopMusic()` clears it. Turning sound off still wins.
+   - Check in Chromium: open a challenge, tap once, music starts; with sound off it does not.
+2. **"Kata sandi baru tersimpan" never shows.** `LoginController` (change password, line 141) redirects to `/mulai` with the `message` flash; `HomeController::start()` sees a logged-in student and redirects again to `/gerbang` (and `/gerbang` may redirect to `/intro`), so the flash is consumed by `/mulai` and lost.
+   - Fix: redirect straight to `/gerbang`, and let the "intro not seen" redirect in `BaseGameController` keep flash data (`keepFlashdata('message')`), so the toast shows on whichever screen the student lands on.
+   - Test: feature test that follows the redirects and finds the message.
+3. **"Kamu harus mengganti kata sandi" shows twice** on `/ganti-sandi`: once as the flash toast set by `LoginController` (line 48) and once as the alert in `change-password.php`. Fix: drop the flash; the alert stays. Same check for the admin (`AuthController` line 80 against `admin/account/password.php`).
+4. **Uploads to region maps, badges, and library images skip the size check.** The `$assetSizes` keys `map.region`, `reward.badge`, and `library.image` match no real key (`requiredSize()` and `media-upload.js` use an exact match or `fnmatch`; real keys are `map.region.temanggung`, `reward.badge.temanggung`, `library.*`).
+   - Fix: `map.region.*` (1400 × 900) and `reward.badge.*` (320 × 320) in `$assetSizes` and `$assetDisplaySizes`. Remove `library.image`: `ImageSlots` already treats library sizes as recommended only, and Commons images arrive in many shapes.
+   - `AssetChecklist::FALLBACK_SIZES` and `MediaController::displaySize()` use prefix matching to work around the same mismatch; switch them to the shared `fnmatch` rule.
+   - **Slots with a required size accept raster images only.** An SVG has no pixel size, so today it skips the check on any slot; refuse SVG wherever `requiredSize()` returns a size.
+   - New test: every `$assetSizes` / `$assetDisplaySizes` pattern matches at least one key registered by `MediaAssetSeeder::slots()`, so a dead pattern cannot come back.
+   - Files already uploaded at a wrong size stay; Kelengkapan already lists them as "Ukuran tidak sesuai".
+
+Docs: `05_VIEW_UI` (flash flow), decision log entry.
+
+## Phase A — Every game image replaceable from the panel
+
+Branch `tampilan-a-gambar-admin`.
+
+1. **One source for slot lists.**
+   - `MediaAssetSeeder::slots()` takes region codes from `Config\Gelita::$levelPrefixes` instead of its hard-coded list.
+   - `ImageSlots` gets a machine-readable `types` field per slot (for example `['png', 'webp']` for transparent slots). `MediaStore::store()` refuses other types, and `admin/media-upload.js` checks the same list before upload. Today `format` and `transparent` are advice text only.
+   - `ImageSlotsTest` also checks that every `$assetSizes` pattern belongs to a described slot pattern.
+2. **New group "Ikon aplikasi"** in `ImageSlots::GROUPS`, with slots (PNG only):
+
+   | Slot | Size | Used for |
+   |---|---|---|
+   | `app.favicon` | 48 × 48 | `<link rel=icon>` in the game, admin, and admin login layouts |
+   | `app.apple-touch` | 180 × 180 | `apple-touch-icon` |
+   | `app.icon-192` | 192 × 192 | manifest |
+   | `app.icon-512` | 512 × 512 | manifest |
+   | `app.icon-maskable` | 512 × 512, safe zone 80% | manifest, `purpose: maskable` |
+
+3. **Dynamic manifest and icons.**
+   - New `Game\AppController::manifest()` serves `GET manifest.json` at the same URL, so installed apps keep updating. The static `public/manifest.json` is removed; its fields move into the controller. Header `application/manifest+json`.
+   - Icons use the active slot with `?v={sha}`; an empty slot falls back to the static files in `public/assets/app/` (kept in git).
+   - New helper `app_icon_src($slot, $fallback)` in `ui_helper.php`, used by the three layouts.
+   - Check that Nginx and `.htaccess` pass `/manifest.json` to `index.php` once the file is gone; document it in `08_DEPLOYMENT`.
+   - `offline.html` keeps its inline SVG (it must work with no network). Icons and manifest stay out of the asset package, as the package plan says.
+   - `InstallableAppTest` is rewritten for the controller: manifest fields, static fallback icons at the right sizes, slot icons with `?v`, `link rel` tags in the layouts.
+4. **Zoom and animation preview in the panel.**
+   - `core/lightbox.js` is reused in `admin.js` (delegation on `[data-zoom]`), with its own `.lightbox` rules in `admin.css`. Used on the `/admin/media` thumbnails, the detail page preview, and `components/media-field.php`. Without JavaScript the link opens the image in a new tab, as today.
+   - The detail page of a `char.*` slot shows the pose's frames side by side plus a looping preview with `core/sprite.js` (left open by Phase D).
+5. **`ui.placeholder` actually used.** `media_src()` falls back to the `ui.placeholder` slot, then to `assets/ui/placeholder.svg`. The string check `str_ends_with(…, 'placeholder.svg')` in `GameProgress` becomes a helper `media_is_placeholder()`. `ImageSlots` marks the slot as used.
+6. **Story slide backgrounds from the panel.** The dialogue editor (`admin/content/dialogues.php`, contexts `intro` and `ending`) gets a `media-field` per slide; the form becomes multipart; `ContentController::saveDialogues()` resolves each row like the passage editor does. Default key `bg.story.{context}.{sequence}`, described in `ImageSlots` (group "Latar layar", optional, fallback = `bg.intro` → `bg.welcome`). It falls under `bg.*`, so 1920 × 1080 is enforced.
+7. **`bg.auth` actually used.** `/masuk`, `/daftar/1–3`, and `/ganti-sandi` use `bg.auth`, falling back to `bg.welcome`. Nothing changes on screen until a picture is uploaded. `ImageSlots` and Kelengkapan list it as optional.
+
+Docs: `05_VIEW_UI`, `06_JAVASCRIPT`, `08_DEPLOYMENT`, README asset section, decision log.
+
+## Phase B — Avatars
+
+Branch `tampilan-b-avatar`.
+
+1. **Data.** New migration `2026-01-01-003200_AddParticipantAvatar.php` adds `participants.avatar_no TINYINT UNSIGNED NULL`. It is a new file, as the fresh-install rule requires; `ResetTables` and `SystemResetService::REQUIRED_MIGRATION` are updated. `ParticipantModel::$allowedFields` and `Participant::toSafeArray()` gain the field. It is not exported and not logged as a research event (it is not research data).
+2. **Slots and helpers.**
+   - `Config\Gelita::$avatarSlots = 10`. Slots `avatar.1` … `avatar.10`, 512 × 512, PNG or WebP with transparency, new `ImageSlots` group "Avatar", optional. The seeder registers them empty.
+   - `avatar_choices()` returns only active `avatar.N` slots; `avatar_src(?int)` returns the image or null.
+   - New component `components/avatar.php`: the image when there is one, otherwise today's initial. Used in the HUD (`.user-avatar`, 36 dp) and the profile (`.profile-avatar`, 72 dp).
+3. **Picker** `components/avatar-picker.php`: a grid of round tiles of at least 64 dp, "Inisial" first, then the active avatars. The chosen tile has a gold ring and a ✓ (not colour alone). Built on the `.choice` radio pattern (`:has(input:checked)`, `:has(input:focus-visible)`). Not rendered when no avatar is uploaded. Works without JavaScript.
+   - **Sign-up:** optional, on `/daftar/1` below gender (step 1 has the most room; the fields area scrolls). Kept in the `reg_wizard` session with the other step 1 fields and saved by `SessionService::registerAndStart()`. `RegisterController` validates `permit_empty|in_list[active numbers]`.
+   - **Profile:** a `<details>` "Ganti avatar" under the identity card in the left panel (`.profile-side`, which scrolls). Each tile is a submit button, so one tap saves. Route `POST profil/avatar` → `ProfileController::avatar()` in the `gameSession` group, flash "Avatar tersimpan", back to `/profil`.
+   - New texts in `app/Language/{id,en}/Game.php`.
+
+Docs: `01_DATABASE`, `05_VIEW_UI`, `04_CONTROLLER_ROUTE`, decision log.
+
+## Phase C — City pins, Kenali lanterns, city loading backgrounds
+
+Branch `tampilan-c-kota`.
+
+1. **Slots** (new `ImageSlots` entries, all optional, 256 × 256 PNG/WebP with transparency unless noted):
+
+   | Slot | Fallback | Used for |
+   |---|---|---|
+   | `ui.pin` | today's SVG icon | map pin of any city without its own pin |
+   | `map.pin.{wilayah}` | `ui.pin` | that city's pin on `/peta` |
+   | `ui.lantern` | today's SVG icon | HUD lantern, map curtain lantern, Kenali fallback |
+   | `map.lantern.{wilayah}` | `ui.lantern` | that city's Kenali button and card button |
+   | `bg.loading.{wilayah}` (1920 × 1080) | `bg.{wilayah}.region`, then the gradient | the "Menuju {wilayah}…" curtain |
+
+   `AssetPackageBuilder::groupFor()` maps the three per-city patterns to their `wilayah-{code}` group.
+2. **Pins.** Helper `region_art_src('pin'|'lantern', $code)` resolves the chain above. With art, `.pin-icon.has-art` shows the picture (`object-fit: contain`) without the gold disc. Status marks are added automatically on top of the art: locked = greyscale plus a small 🔒 badge, completed = ★ badge, in progress = the existing pulse. The pin keeps its 56 dp size and its percent position (`levels.map_x`/`map_y`).
+3. **Kenali lantern.** `.kenal-btn-face` and `.kenal-card-btn` use the city lantern. Check the overlap the first version found (the 48 dp Kenali hit area covering a corner of the pin) and move the button clear of the pin if it still overlaps.
+4. **HUD and map curtain lantern** use `ui.lantern`; the flame stages `flame-0..3` become a `drop-shadow` glow on the picture.
+5. **Region curtain background.**
+   - `GameProgress::regionCurtain()` adds `bg` (the chain above) and puts it first in `preload`.
+   - `curtain_attrs()` gets a `?string $bg` parameter that writes `data-curtain-bg`. The `region` template gets `<img class="curtain-bg" hidden>`; `core/curtain.js` fills it and fades it in after `load`.
+   - Callers pass it: map pins and region cards (`map-kedu.php`), the last Kenali slide (`partials/region-intro.php`), "Lanjut ke …" on `region-done.php` and `challenge-finished.php`. The mission brief's `challenge` curtain uses the same city background.
+   - Once the asset package is on, the curtain shows for about 0.6 s, so the picture must already be decoded: `map-kedu`'s `data-next-assets` list and `map.js` `preload()` include it.
+6. **Level editor** (`admin/content/level.php`) gets three key-based `media-field`s (map pin, Kenali lantern, loading background) through `MediaStore::resolveKey()`. No new FK columns.
+
+Docs: `05_VIEW_UI`, `06_JAVASCRIPT`, decision log.
+
+## Phase E — Game-style toasts
+
+Branch `tampilan-e-toast`. Applies to `body.game`; the admin keeps its look. The API `toast(message, type, requestId)` is unchanged, so every caller keeps working.
+
+1. **Look.** Same place on the stage (x 856, y 72, width 400 dp). A navy card with a glowing gold frame, a large round icon badge (✓ ! ✕ i) from `<template data-toast-icon>` in `components/toast.php` (JS toasts have no icon today), text at body size. Enters with a short pop (0.6 → 1.06 → 1), leaves by fading upward; reduced motion only fades. Today the toast is simply removed with no exit.
+2. **Behaviour** (`core/toast.js`).
+   - One toast at a time, at most 3 waiting; identical consecutive messages are merged.
+   - Duration follows text length (1.8–5 s).
+   - Tap the card, or press Esc while no modal is open, to close it. The layer stays `pointer-events: none` outside the card.
+   - Toasts do not wait for modals: errors must be seen. The layer stays above the modal veil (z 60 over 50).
+   - `bad` uses `role=alert`, the others polite status.
+3. **Server flash.** Without JavaScript the flash toast fades by CSS after about 3.5 s, as today. With JavaScript it joins the same queue, and faded flash toasts are removed from the DOM (today they stay hidden there).
+4. **Flash `error` in the game** is shown as `warn`: every game `error` flash is a "not open yet" lock message (`MapController`, `ChallengeController`, `DialogueController`, `LibraryController`, `ReflectionController`), the same as the lock toast from JS.
+5. New text (`toastClose`) in `app/Language/{id,en}/Js.php`.
+
+Docs: `05_VIEW_UI`, `06_JAVASCRIPT`, decision log.
+
+## Phase F — Touch-friendly play on tablets and phones
+
+Branch `tampilan-f-sentuh`. On a landscape phone (844 × 390) the stage scale is about 0.54, so 48 dp is about 26 px on screen; an iPad (1024 × 768) is 0.8. The fixed stage cannot enlarge controls on phones only, so the work makes every target use its full area, removes touch-specific annoyances, and adds touch gestures. PC, laptop, and tablet stay the main research devices.
+
+**F1 — CSS basics** (`stage.css`, `base.css`, `components.css`, `game.css`, `cinematic.css`; inside the stage rules of `StageCssTest`)
+
+1. `touch-action: manipulation` on game controls and play surfaces (stops the iOS double-tap zoom on fast taps; pinch zoom still works). `-webkit-tap-highlight-color: transparent` for the whole game (today only on `.piece`).
+2. `user-select: none` and `-webkit-touch-callout: none` on play surfaces (pieces, objects, word chips, map, characters); reading text stays selectable. `draggable="false"` on scene, map, and character images.
+3. **Press feedback:** `:active` (scale .96 or brighter) on buttons, options, words, blanks, pieces, objects, pins, and cards. iOS applies `:active` only when a `touchstart` listener exists, so `game.js` adds one (passive).
+4. **No sticky hover:** about 38 `:hover` rules apply today without `@media (hover: hover)`; the ones that transform or outline (`.object`, `.piece`, `.map-pin`, `.card-link`, `.rating-star`, HUD `.icon-btn`, `.btn`) move inside it (the query is already allowed by `StageCssTest`).
+5. **Reduced motion gaps:** the base rule has no `!important`, so shorthand animations win. Add explicit rules for `.btn-start` `start-glow` (pulses forever), `.kenal.is-open` `cine-in`, `.cine-stage .character-img` `cine-rise`, and the hover/selection transforms above.
+
+**F2 — Hit areas of at least 48 dp** (the stage's `--tap`)
+
+Controls below 48 dp keep their look, but their hit area grows to 48 dp with `::before`:
+
+| Control | Today | Where |
 |---|---|---|
-| 1 Avatar | Belum ada; yang tampil hanya huruf pertama nama. Tabel `participants` tidak punya kolomnya. | `game/profile.php:36`, `components/hud.php:43`, `Participant::toSafeArray()` (`app/Entities/Participant.php:70`) |
-| 2 Profil | Lebar dibatasi `.screen-medium { max-width: 820px }`. Kelas ini dipakai 8 layar lain, jadi jangan diubah. | `public/assets/css/layout.css:91`, `profile.php:34` |
-| 3 Aset | Slot `media_assets` sudah ada, tetapi daftarnya ditulis di 4 tempat (lihat catatan 3a). Ikon PWA dan favicon masih berkas statis yang dilacak git, padahal deploy memakai `git pull --ff-only`, jadi admin tidak boleh menimpanya. Slot `ui.placeholder` terdaftar tetapi tidak pernah dibaca. Latar per slide cerita (`dialogues.background_media_id`) tidak bisa diisi dari admin. Pratinjau di admin tidak bisa diperbesar, dan frame tokoh tidak diberi pratinjau. | `content_helper.php:136`, `admin/media/index.php:139`, `partials/cine-slides.php:27` |
-| 4 Frame | Pemutar frame tidak pernah dibuat. `$characterAnimations` (frames/fps/loop) dan slot `char.*.{1..3}` ada, tetapi semua penampil memakai frame `.1` saja, dan `fps`/`loop` tidak dibaca di mana pun. Pose Mbah Kedu `happy` tidak sah (lihat catatan 4a). | `components/character.php:18`, `character_frame_src()`, `dialogue.js setPose()` |
-| 5 Pin/lentera | SVG `icon()`, belum ada penggantian per kota | `map-kedu.php:144` (pin), `:154` (lentera Kenali), `lantern.php:24`, `curtain.php:92` |
-| 6 Latar loading | **Belum ada pengaturan.** Tirai "Menuju {wilayah}…" hanya gradien dan jejak kaki; `bg.loading` hanya dipakai tirai "Membuka Peta Kedu". | `curtain.php:67` |
-| 7 Toast | Pojok kanan bawah, bertumpuk, tanpa ikon di JS, tidak bisa ditutup. Di ponsel mendatar toast menutupi tombol Periksa. Flash "sandi berhasil diganti" hilang di redirect `/mulai`→`/gerbang`, dan pesan wajib ganti sandi tampil ganda. | `core/toast.js`, `components/toast.php`, `layout.css:127` |
-| 9 Sentuh | Temuan audit ada di Fase F | — |
+| Slide dots | 14 dp, 10 dp in story/dialogue | `game.css:492`, `cinematic.css:467` |
+| `.btn-sm` (challenge "Keluar", map-level, profile) | 36 dp | `components.css:49` |
+| Narrator controls and auto switch | 40 dp, 36 dp on the map story | `cinematic.css:257, 501, 504` |
+| Story/dialogue Lanjut and Kembali | 40 dp | `cinematic.css:465` |
+| HUD icon buttons | 40 dp | `stage.css:150` |
+| Hint chips | 40 dp | `game.css:747` |
+| `.lang-opt` | 38 dp tall | `components.css:251` |
+| Word chips, in-text blanks | 44 dp | `game.css:903, 921` |
+| Checkbox and radio | 22 dp (label is clickable) | `components.css:156` |
 
-Catatan untuk tabel:
+`tools/qa/stage-check.mjs` gets a check that every interactive element in the stage has a 48 dp hit area.
 
-- **3a.** Keempat daftar slot itu: `MediaAssetSeeder::SLOTS`, `MediaUsage::SLOTS`, `AssetChecklist::UI_SLOTS`, dan `Config\Gelita::$assetSizes`.
-- **4a.** Pose `happy` diminta untuk Mbah Kedu di `reflection.php:26` dan `challenge-finished.php:90`. Pose Mbah Kedu yang sah adalah `smile`.
+**F3 — Gestures and screens** (JS)
 
-**Keputusan pengguna:**
+1. **Finger drag for puzzle pieces.** New `core/drag.js` (pointer events, `setPointerCapture`, 8 px threshold): drag a piece onto another to swap them. It replaces the HTML5 drag-and-drop path in `engines/puzzle.js` for mouse and touch alike; tap-swap and the keyboard stay. Swaps send the same events as tap-swap. The puzzle hint text says "ketuk dua keping atau seret".
+2. **Cari Objek "Perbesar adegan"** (⤢ button, 48 dp). The scene (864 × 486 dp, about 468 × 263 px on a phone) grows to the full stage with the clue on a ribbon at the top; close with the button or Esc. Objects are placed in percent, so no data changes. Logged as `overlay_opened` with `overlay: hunt_zoom` (an existing event; the value list in the docs and export dictionary gets the new value).
+3. **Swipe left/right** for story slides, dialogue, Kenali, and Pustaka pages (`game/slides.js`, narrator, library): 50 px threshold, vertical movement and touches that start inside a scrolling panel or on a control are ignored. A swipe does exactly what the Lanjut/Kembali button does, including its events.
+4. **On-screen keyboard on form screens** (`/masuk`, `/daftar/1–3`, `/ganti-sandi`, reflection, feedback). New `core/keyboard.js`: when a field is focused and `visualViewport` shows the keyboard covering it, the stage frame is shifted up just enough to show the field, and shifted back on blur or when the keyboard closes. `autocorrect="off"` on usernames and school fields, `enterkeyhint` next/done.
+5. **No input zoom on iOS.** Inputs are 20 dp, about 11 px on a phone, and iOS zooms the page on focus below 16 px. `game.js` adds `maximum-scale=1` to the viewport meta on iOS only: iOS then skips the focus zoom but still allows pinch zoom (Android would block pinch zoom, so it does not get the flag).
 
-- Avatar dipilih di Profil dan di form daftar.
-- Satu gambar pin per kota, dengan tanda status otomatis dan cadangan pin global.
-- Ikon aplikasi diunggah per ukuran; tidak ada generator.
-
-**Dipakai ulang:**
-
-- `MediaStore::store()`: upsert, hapus berkas lama, flush cache, audit.
-- `media_key_src()`: peta ber-cache.
-- `AssetChecklist`.
-- `ContentController::mediaFields()` dan komponen `media-field`.
-- `curtain_attrs()` dan `GameProgress::regionCurtain()`.
-- `core/dom.js` (`reducedMotion`, `el`, `$$`).
-- Lightbox `<dialog>` di `game/library.js:156-191`.
-- Pola radio-tile Balai Refleksi (`game.css:1410`).
-- Pola pointer-capture di `admin/object-picker.js:63-78`.
-- `safe_internal_url()`.
-- Pola `<template data-modal-icon>` untuk ikon di JS.
-
-Pekerjaan dilakukan di branch `claude/quirky-bardeen-fbaaoh`, satu commit per fase. Uji dijalankan tiap fase, lalu push.
+**Suggested, not in this plan:** iPad Split View shows the rotate screen by mistake; modal background not `inert`; iOS splash images; pins for challenge posts on the region map.
 
 ---
 
-## Fase A — Semua gambar bisa diganti dari admin (#3)
+## Per phase
 
-1. **Katalog tunggal `app/Libraries/ImageSlots.php`.**
-   - Isinya grup → slot. Setiap slot punya kunci, label, keterangan "tampil di", ukuran, jenis berkas, dan penggantinya.
-   - Kode wilayah diambil dari `Config\Gelita::$levelPrefixes`.
-   - Kunci baru ditambahkan juga ke `MediaAssetSeeder::slots()`, `MediaUsage::SLOTS`, dan `$assetSizes`.
-   - `tests/unit/ImageSlotsTest.php` memastikan setiap kunci katalog punya label di `MediaUsage`, slot seeder, dan ukuran di `$assetSizes` bila ukurannya wajib. Dengan begitu daftar-daftar itu tidak bisa berbeda lagi.
-   - Slot per kota yang terhubung lewat FK (latar, peta, lencana wilayah, latar slide cerita) tampil dengan pratinjau dan tautan "Ubah di editor wilayah/dialog". Slot ini tidak diunggah lewat kunci, karena FK bisa menunjuk kunci lain.
+- **Before starting:** cut the branch from the latest `main`, add a row to "Active branches" in `docs/PROGRESS.md`.
+- **Tests:** `vendor/bin/phpunit --no-coverage` green; `php -l` on changed PHP; new or updated tests as listed per phase. Phases that change the game screen also run `tools/qa/stage-check.mjs` at all six stage sizes, and Phase F runs Playwright with `hasTouch`/`isMobile` at 844 × 390 and 1024 × 768.
+- **Real devices (owner):** items for touch, keyboard, and audio are added to `docs/perombakan-kelas5/device-test-checklist.md` by the phase that adds them.
+- **After merge:** tick the phase in `docs/PROGRESS.md`, remove the branch row, and add the phase's entry to the decision log.
 
-   | Grup | Slot (baru dicetak **tebal**) | Ukuran |
-   |---|---|---|
-   | Ikon aplikasi & logo | **`app.favicon`** PNG, **`app.favicon-svg`** SVG (opsional), **`app.apple-touch`**, **`app.icon-192`**, **`app.icon-512`**, **`app.icon-maskable`**, `ui.logo-hero`, `ui.logo` | 48², —, 180², 192², 512², 512² (zona aman 80%) |
-   | Ikon permainan | **`ui.pin`**, **`ui.lantern`** (HUD, tirai peta, cadangan Kenali), `ui.btn-start(.en)`, **`ui.placeholder`** (kini benar-benar dipakai) | 256², 256² |
-   | Latar layar | `bg.welcome`, `bg.auth`, `bg.intro`, `bg.map`, `bg.reflection`, `bg.loading` | 1920×1080 |
-   | Peta & kota | `map.kedu`, lalu per kota: **`map.pin.{kode}`**, **`map.lantern.{kode}`**, **`bg.loading.{kode}`**, serta latar, peta, dan lencana wilayah (FK `levels`) | —, 256², 256², 1920×1080 |
-   | Tokoh | `char.{jaka|kedu}.{pose}.{1..3}` | 700×900 |
-   | Avatar | **`avatar.1` … `avatar.10`** | 512² |
-   | Cerita | Latar per slide `intro`/`ending` (FK `dialogues`) | 1920×1080 |
+## Main files per phase
 
-2. **Aturan jenis berkas per slot.** Slot `app.*` hanya menerima PNG, kecuali `app.favicon-svg` yang hanya menerima SVG. Dicek di `MediaStore` di samping cek ukuran yang sudah ada.
-
-3. **Halaman "Tampilan permainan" `GET /admin/media/tampilan`.**
-   - Dibuat lewat `MediaController::appearance()` dan `admin/media/appearance.php`.
-   - Muncul sebagai sub-menu di bawah Media (`admin-sidebar.php`), dan ditautkan dari `/admin/media` serta Kelengkapan.
-   - Isinya grid kartu per grup. Setiap kartu memuat:
-     - pratinjau **kecil** 96×72 (`object-fit: contain`, latar kotak-kotak untuk PNG transparan);
-     - label, "tampil di", kode, ukuran wajib;
-     - status: ada, memakai pengganti, atau ukuran salah;
-     - form kecil **Ganti gambar** yang POST ke `admin/media/unggah`;
-     - tombol **Pakai bawaan** yang POST ke `…/nonaktif`.
-   - Kedua aksi itu kini menerima `back` (hanya `admin/media` atau `admin/media/tampilan#slot-…`) dan kembali ke kartunya.
-   - Grup Tokoh menampilkan 3 frame beserta pratinjau animasinya; pratinjau ini memakai `core/sprite.js` dari Fase D.
-   - Semua berjalan tanpa JavaScript.
-
-4. **Klik pratinjau untuk ukuran penuh.**
-   - Pindahkan `initZoom()` dari `game/library.js` ke `core/lightbox.js` (delegasi `[data-zoom]`), dan pindahkan CSS `.lightbox*` ke `components.css`.
-   - Dipakai di Pustaka (perilaku sama), kartu Tampilan, tabel `/admin/media` (termasuk `sprite_frame`), dan `components/media-field.php`.
-   - Tanpa JavaScript, tautan membuka gambarnya langsung.
-
-5. **Ikon aplikasi dinamis.**
-   - Manifest:
-     - Controller baru `Game\AppController::manifest()` melayani `GET manifest.json`, di URL yang sama supaya aplikasi yang sudah terpasang tetap diperbarui.
-     - Isi dasarnya dipindah dari `public/manifest.json`; berkas statis itu dihapus. Nginx L/W dan `.htaccess` sudah meneruskan berkas yang tidak ada ke `index.php`.
-     - Ikon memakai slot aktif dengan `?v={sha256:10}`. Bila slot kosong, dipakai berkas statis `assets/app/*.png`.
-     - Header `application/manifest+json`.
-   - Layout:
-     - `app/Helpers/ui_helper.php` mendapat helper `app_icon_src($slot, $fallback)`, dipakai di ketiga layout untuk `<link rel=icon>` (PNG dan SVG) dan `apple-touch-icon`.
-     - `public/favicon.ico` tetap sebagai cadangan.
-   - `offline.html` tetap memakai SVG inline karena harus berjalan tanpa jaringan; hal ini dicatat di docs.
-
-6. **Pengganti sementara.**
-   - `media_src()` memakai `ui.placeholder`, lalu `assets/ui/placeholder.svg`.
-   - Cek `str_ends_with(…'placeholder.svg')` di `GameProgress:308` diganti helper `media_is_placeholder()`.
-
-7. **Latar per slide cerita pembuka & penutup.**
-   - `admin/content/dialogues.php` (konteks `intro`/`ending`) mendapat `media-field` per slide, dan form-nya diubah menjadi multipart.
-   - `ContentController::saveDialogues()` memanggil `mediaFields()` per baris.
-
-8. **`bg.auth` benar-benar dipakai.** Halaman masuk, daftar, persetujuan, dan ganti sandi siswa memakai `bg.auth ?? bg.welcome`, sesuai labelnya.
-
-## Fase B — Avatar (#1) dan profil lebar penuh (#2)
-
-1. **Migration `2026-01-01-004000_AddParticipantAvatar.php`.**
-   - Menambah `participants.avatar_no TINYINT UNSIGNED NULL`, mengikuti pola `003600`.
-   - Ikut diubah: `ParticipantModel::$allowedFields` dan `toSafeArray()`.
-   - Kolom ini tidak diekspor dan tidak dicatat sebagai event penelitian.
-2. **Konfigurasi dan helper.**
-   - `Config\Gelita::$avatarSlots = 10`.
-   - Helper `avatar_choices()` mengembalikan hanya slot `avatar.N` yang aktif; helper `avatar_src(?int)`.
-   - Komponen `components/avatar.php`: gambar bila ada, selain itu monogram. Dipakai di HUD `.user-avatar` dan profil `.profile-avatar`.
-3. **Komponen `components/avatar-picker.php`.**
-   - Grid lingkaran ≥64px: "Inisial" ditambah avatar aktif. Pilihan ditandai cincin emas dan ✓, bukan warna saja.
-   - Bila belum ada avatar yang diunggah, komponen tidak dirender.
-   - **Form daftar:** mode radio (opsional) di langkah 1. `RegisterController::store()` memvalidasi `permit_empty|in_list[…aktif]`, dan `old()` dipertahankan.
-   - **Profil:** mode tombol-kirim, jadi satu ketukan langsung menyimpan.
-     - Route: `POST profil/avatar`, masuk grup `gameSession`.
-     - Ditangani `ProfileController::avatar()`, lalu flash `message` "Avatar tersimpan" dan kembali ke `/profil`.
-   - Teks baru ada di `app/Language/{id,en}/Game.php`, dan tanpa JavaScript semuanya tetap berjalan.
-4. **Profil lebar penuh.**
-   - `profile.php` memakai `screen screen-full profile`, dan `layout.css` mendapat `.screen-full { max-width: none }`.
-   - Pada `≥1100px`, grid dua kolom `minmax(320px, 400px) minmax(0, 1fr)`:
-     - kiri: kartu identitas, pemilih avatar, lencana;
-     - kanan: statistik (auto-fit, jadi lebih banyak kolom) dan tabel riwayat.
-   - Ponsel dan layar sempit tetap satu kolom.
-
-## Fase C — Pin & lentera per kota (#5), latar loading per kota (#6)
-
-1. **Pin kota.**
-   - Urutan sumber: `map.pin.{kode}` → `ui.pin` → SVG yang sekarang, lewat helper `region_art_src('pin'|'lantern', $kode)`.
-   - Bila ada gambar, `.pin-icon.has-art` memakai `object-fit: contain` tanpa lingkaran emas.
-   - Status ditandai otomatis:
-     - terkunci: `grayscale` ditambah lencana 🔒 kecil;
-     - tuntas: lencana ★;
-     - terbuka: denyut `pin-pulse`.
-2. **Lentera Kenali.**
-   - Urutan sumber: `map.lantern.{kode}` → `ui.lantern` → SVG. Dipakai di `.kenal-btn-face` dan `.kenal-card-btn`.
-   - `ui.lantern` juga dipakai lentera HUD (tahap nyala `flame-0..3` diterapkan dengan `drop-shadow`) dan lentera tirai peta.
-   - **Perbaikan tumpang tindih:** area sentuh 44px tombol Kenali sekarang menutupi pojok pin. Tombol itu digeser ke luar lingkaran pin (`--pin-size`) agar ketukan di pin tidak membuka Kenali.
-3. **Latar loading per kota.**
-   - `regionCurtain()` menambah `'bg' => bg.loading.{kode} ?? bg.loading` dan menaruhnya pertama di `preload`.
-   - `curtain_attrs()` mendapat parameter `?string $bg` yang menghasilkan `data-curtain-bg`.
-   - Template `region` mendapat `<img class="curtain-bg" hidden>`. `curtain.js` mengisinya dan memudarkannya masuk setelah `load`.
-   - Keempat pemanggil ikut mengoper `bg`: `map-kedu.php:49`, `region-intro.php:86`, `region-done.php:29`, `challenge-finished.php:120`.
-   - `map.js preload()` memuat latar loading kota yang terbuka saat idle, jadi tirai ±1,8 detik langsung bergambar.
-   - Tirai tantangan (`mission-brief.php:74`) memakai latar loading kotanya juga.
-4. **Editor wilayah** (`admin/content/level.php`) mendapat 3 `media-field` berbasis kunci: Pin peta, Ikon lentera Kenali, Latar tirai pemuatan. Tidak perlu kolom FK baru.
-
-## Fase D — Animasi frame tokoh (#4)
-
-1. **Server.**
-   - Helper `character_frames($who, $pose)` mengembalikan `{frames[], fps, loop}`. Hanya frame aktif yang diambil, dengan cadangan pose `idle`.
-   - `character.php` menambahkan `data-frames`, `data-fps`, dan `data-loop` bila ada ≥2 frame.
-   - `dialogue-scene.php` menambahkan `data-pose-frames`/`-fps`/`-loop` per baris. `data-pose-src` tetap frame 1, jadi tes lama tetap berlaku.
-2. **`core/sprite.js` (baru).**
-   - Cara kerja:
-     - Menukar `src` pada `.character-img` yang sudah ada tanpa mengganti node, sehingga `cine-rise` tidak diputar ulang dan pencerminan sisi kanan tetap.
-     - Frame dipramuat dengan `decode()` sebelum siklus dimulai.
-     - `loop:false` diputar sekali lalu berhenti di frame terakhir.
-   - Animasi dijeda saat `document.hidden`, saat slide bukan `.is-current`, dan saat figur di luar layar (IntersectionObserver).
-   - Dengan `reducedMotion()`, hanya frame 1 yang tampil.
-3. **Pemasangan.**
-   - `game.js` memuat `sprite.js` hanya bila ada `.character[data-frames]`.
-   - `dialogue.js setPose()` memulai ulang siklus dengan frame pose baru.
-   - Tirai tetap hanya memuat frame 1; frame 2–3 dimuat saat idle.
-4. **Perbaikan terkait.**
-   - Pose `happy` diganti `smile` di `reflection.php:26` dan `challenge-finished.php:90`.
-   - Teks bantuan Kelengkapan dan README diperbaiki agar sesuai perilaku sebenarnya.
-
-## Fase E — Toast gaya game (#7)
-
-Hanya di `body.game`; toast admin tidak berubah. API `toast(message, type, requestId)` tetap sama, jadi semua pemanggil tetap bekerja.
-
-1. **Tampilan.**
-   - Kartu/pita di tengah layar (sedikit di atas tengah), lebar `min(560px, 90vw)`.
-   - Navy semi-transparan dengan bingkai emas bercahaya, lencana ikon bulat besar (✓ ! ✕ i) dari `<template data-toast-icon>` di `components/toast.php`, dan teks `--step-1`.
-   - Animasi masuk "pop" (0.6→1.06→1), keluar memudar sambil naik. Dengan reduced-motion hanya memudar.
-   - Lebih ringkas di ponsel mendatar, dan menghormati safe-area.
-2. **Perilaku** (`core/toast.js`).
-   - Antrean: satu toast tampil pada satu waktu (maks 3 antre). Pesan identik berturut-turut digabung.
-   - Durasi 1,8–5 detik mengikuti panjang teks.
-   - Ketuk kartu atau tekan Esc untuk menutup. Lapisan `pointer-events: none` di luar kartu, jadi permainan tidak terhalang.
-   - Toast menunggu selama `isModalOpen()`, dan tidak memasang `has-modal`.
-   - `bad` memakai `role=alert`, jenis lain `status`.
-3. **Flash server tanpa JavaScript:** toast tengah dengan animasi CSS yang hilang sendiri ±3,5 detik. Dengan JavaScript, flash masuk ke antrean yang sama.
-4. **Perbaikan terkait.**
-   - Flash `error` di game (semuanya kunci wilayah/tantangan) ditampilkan sebagai `warn`, sama dengan toast kunci dari JS.
-   - `HomeController::start()` memanggil `keepFlashdata('message')` sebelum mengalihkan ke `/gerbang`, sehingga "sandi berhasil diganti" kini tampil.
-   - Toast ganda `Auth.mustChange` dihapus; alert di halaman sudah menjelaskannya.
-   - Teks baru (mis. `toastDismiss`) masuk `Language/{id,en}/Js.php`.
-
-## Fase F — Ramah sentuh di ponsel/tablet (#9)
-
-**F1 — CSS** (`base.css`, `components.css`, `game.css`, `cinematic.css`, `layout.css`; hanya `body.game`)
-
-1. **Dasar sentuh.**
-   - `touch-action: manipulation` mematikan zoom ketuk-ganda iOS yang terpicu ketukan cepat di narator, keping, dan chip. Cubit-zoom tetap bisa.
-   - `overscroll-behavior-y: none` di html/body game mencegah tarik-untuk-muat-ulang Android menghapus jawaban yang belum diperiksa.
-   - `-webkit-tap-highlight-color: transparent`.
-   - `user-select: none` dan `-webkit-touch-callout: none` di permukaan permainan (keping, objek, chip, peta, tokoh). Teks bacaan tetap bisa diseleksi.
-   - `draggable="false"` pada gambar adegan, peta, dan tokoh.
-2. **Umpan balik tekan.**
-   - `:active` (skala .96 atau lebih terang) pada tombol, opsi, kata, rumpang, keping, objek, pin, dan kartu.
-   - `game.js` memasang listener `touchstart` pasif, karena iOS baru menerapkan `:active` bila ada listener itu.
-   - Efek `:hover` yang berupa transformasi atau garis tepi dibungkus `@media (hover: hover)` agar tidak "lengket" setelah diketuk. Yang dibungkus: `.object`, `.piece`, `.option`, `.map-pin`, `.card-link`, `.rating-star`, `.icon-btn`.
-3. **Target ≥44px.**
-
-   | Elemen | Sekarang | Lokasi |
-   |---|---|---|
-   | Kontrol narator ▶/⏸/↻/◀▶ | 40px, 32–34px di ponsel | `cinematic.css:257,935-936,960,976,997` |
-   | Sakelar Otomatis (`.narrator-auto`) | 40px | `cinematic.css:268` |
-   | Lanjut/Kembali cerita dan Kenali | 38px | `cinematic.css:933,984` |
-   | `.btn-sm` di game (termasuk tombol keluar tantangan dan "Lihat hasil") | 36px | `components.css:49`, `_frame.php:63`, `map-level.php:95` |
-   | Chip petunjuk | 36px | `game.css:623` |
-   | `.chip.card-passage` | ±26px | `components.css:209-219` |
-   | `.lang-opt` | 38px | `components.css:255` |
-   | `summary` sumber | 36px | `game.css:887` |
-   | Tombol rak (ponsel mendatar) | 38px | `game.css:1348` |
-   | Pin di ponsel | 40px | `game.css:1564,1691` |
-
-   Titik slide (14px, atau 9px di ponsel; `game.css:391`, `cinematic.css:1006`) tetap kecil secara visual, tetapi area sentuhnya diperluas lewat `::before`.
-4. **Ukuran teks.** Di ponsel mendatar, narasi, instruksi, label pin, dan daftar cari naik dari `--step--1` ke `--step-0`. Ukuran tetap .68–.75rem (label Serpihan, lencana "Belum didengar", nomor keping) naik ke ≥.8rem.
-5. **Safe-area.** Ditambahkan pada toast, bagian bawah layar tantangan (tombol Periksa tidak lagi berada di zona indikator home iPhone), dan lightbox.
-6. **Bacaan tanpa gulir bersarang.** Di ponsel mendatar `.passage-body` tidak lagi `max-height: 30vh`, jadi hanya arena yang bergulir.
-7. **Input.** Font-size ≥16px pada `pointer: coarse`, supaya iOS tidak zoom saat input difokus.
-8. **Reduced-motion.** Celah yang tersisa ditutup: `start-glow` pada `.btn-start` dan pudar `.kenal.is-open`.
-
-**F2 — JS**
-
-1. **Seret dengan jari di puzzle.**
-   - `core/drag.js` (baru) memakai pointer events, `setPointerCapture`, ambang 8px, dan gulir otomatis di tepi.
-   - Mode susun: seret satu keping ke keping lain untuk menukar.
-   - Mode urut: seret lewat pegangan ⋮⋮ yang ber-`touch-action: none`, sehingga daftar tetap bisa digulir.
-   - Ketuk-tukar dan tombol ▲▼ tetap ada. Seret-lepas HTML5 dimatikan pada `pointer: coarse`.
-   - Teks petunjuk puzzle menyebut "ketuk dua keping atau seret".
-2. **Cari: tombol "Perbesar adegan"** (⤢, 44px).
-   - Adegan menjadi layar penuh (`.hunt.is-expanded`), dengan petunjuk di pita atas; tutup lewat tombol atau Esc.
-   - Koordinat objek dalam persen, jadi tidak ada perubahan data.
-   - Ini menjawab masalah adegan yang hanya 180–364px di ponsel.
-3. **Keyboard layar.**
-   - Saat input atau textarea di arena difokus dan `visualViewport` mengecil, input digulir ke tengah area yang masih terlihat.
-   - `interactive-widget=resizes-content` baru ditambahkan bila uji di perangkat menunjukkan perlu. Alasannya: opsi itu dapat memindahkan tablet ke tata letak ponsel selama mengetik.
-   - Input rumpang dan nama pengguna diberi `autocorrect="off"`; `enterkeyhint` next/done.
-4. **Rumpang.** `focus({preventScroll: true})` ditambah gulir `nearest` agar arena tidak melompat bolak-balik.
-5. **Modal salah setelah 3× periksa.** `showModal` mendapat opsi `focus`, dan fokus awal diarahkan ke "Perbaiki jawaban". Sekarang Enter langsung memilih "Selesaikan dengan jawaban ini" (`challenge.js:157`).
-6. **Usap kiri/kanan** untuk slide cerita, Kenali, dialog, dan halaman Pustaka (`slides.js`). Ambang 50px, gerak vertikal diabaikan.
-7. **Musik tertunda sampai ketukan pertama** (`core/audio.js`). Sekarang musik tantangan dan wilayah tidak pernah berbunyi karena `music()` langsung pulang sebelum `unlock`.
-
-**Disarankan, tidak dikerjakan sekarang** (mengubah alur/penelitian atau berisiko). Akan dijelaskan di ringkasan akhir:
-
-- `pilihan` maju otomatis (1,1+1,4 detik) tanpa tombol Lanjut. Perubahan ini memengaruhi tempo dan durasi penelitian.
-- Layar putar muncul keliru di iPad Split View.
-- Celah breakpoint tablet 7–8" (tinggi 500–600px).
-- Blur HUD di tablet murah.
-- Modal belum `inert`.
-- Gambar splash iOS.
-- Pin pos tantangan di peta wilayah.
-- `?v=` untuk semua media (performa).
-- Menegakkan ukuran "disarankan" (`map.region`, `reward.badge`, `challenge.*`).
-
----
-
-## Berkas utama
-
-**Baru:**
-- `app/Libraries/ImageSlots.php`
-- `app/Controllers/Game/AppController.php`
-- `app/Views/admin/media/appearance.php`
-- `app/Views/components/{avatar,avatar-picker}.php`
-- migration `004000`
-- `public/assets/js/core/{lightbox,sprite,drag}.js`
-
-**Diubah:**
-- `MediaController`, `ContentController`, `MediaStore`, `MediaAssetSeeder`, `MediaUsage`
-- `Config/{Gelita,Routes}.php`
-- `content_helper.php`, `ui_helper.php`
-- `GameProgress`, `ProfileController`, `RegisterController`, `HomeController`
-- Participant model/entity
-- Views: `layouts/*`, `hud`, `lantern`, `character`, `curtain`, `toast`, `map-kedu`, `profile`, `register`, `dialogue-scene`, `admin/content/{level,dialogues}`, `admin-sidebar`
-- CSS: `layout`, `components`, `game`, `cinematic`, `admin`
-- JS: `game.js`, `admin.js`, `core/{toast,curtain,audio,modal}.js`, `game/{library,dialogue,map,slides}.js`, `engines/{puzzle,cari,rumpang}.js`, `challenge.js`
-- Bahasa: `Language/{id,en}/{Game,Js}.php`
-
-**Dihapus:** `public/manifest.json` (diganti route).
-
-**Docs:** `05_VIEW_UI`, `06_JAVASCRIPT`, `01_DATABASE`, `08_DEPLOYMENT` (server lama cukup `php spark migrate`; opsional `php spark gelita:media:scan` untuk mendaftarkan slot kosong baru), dan README.
-
-## Verifikasi
-
-1. **Uji otomatis.** Jalankan `composer install`, lalu `vendor/bin/phpunit` (SQLite).
-   - Tes baru/diperbarui:
-     - `ImageSlotsTest`
-     - `AvatarTest`: helper, validasi `profil/avatar` & daftar, pemilih tersembunyi bila kosong, `toSafeArray`.
-     - `CharacterFramesTest`: `data-frames` hanya bila ≥2, cadangan idle.
-     - `InstallableAppTest`: manifest dari controller, ikon cadangan statis PNG ukuran benar, ikon slot + `?v`, `link rel` di layout.
-     - `RegionStoryTest`: `data-curtain-bg`.
-     - `RouteWiringTest`, `LanguageFilesTest`, `JsConfigTest`.
-   - Semua PHP yang diubah juga dicek dengan `php -l`.
-2. **Uji ujung ke ujung.** Pasang MariaDB lokal bila bisa, lalu `php spark migrate`, `db:seed`, dan `serve`. Jalankan Playwright (Chromium `/opt/pw-browsers`, `hasTouch`/`isMobile`) di 1920×1080, 1366×768, 844×390, dan 568×320. Yang diperiksa:
-   - profil lebar;
-   - pilih avatar di daftar dan profil, lalu cek HUD;
-   - unggah pin/lentera/latar loading per kota, lalu cek peta dan tirai;
-   - unggah 3 frame, lalu cek animasi dan berhentinya dengan reduced-motion;
-   - toast tengah, antrean, dan ketuk-tutup;
-   - lightbox admin;
-   - ikon slot di `/manifest.json`;
-   - seret puzzle, perbesar adegan cari, usap slide;
-   - tidak ada tarik-muat-ulang.
-3. **Cek di perangkat nyata** (dicatat di ringkasan): zoom ketuk-ganda iOS, `:active` di Safari, keyboard layar, dan tarik-muat-ulang Android.
-4. Sebelum push, periksa diff sekali lagi secara kritis. Pull request dibuat hanya bila diminta.
+| Phase | New | Changed |
+|---|---|---|
+| 0 | — | `core/audio.js`, `LoginController`, `BaseGameController`, `HomeController`, `Config/Gelita.php`, `MediaStore`, `AssetChecklist`, `MediaController`, `admin/media-upload.js` |
+| A | `Game\AppController` | `ImageSlots`, `MediaStore`, `MediaAssetSeeder`, `content_helper.php`, `ui_helper.php`, `GameProgress`, `ContentController`, `layouts/*`, `admin/media/*`, `admin/content/dialogues.php`, `components/media-field.php`, `admin.css`, `admin.js`, `Routes.php`; `public/manifest.json` removed |
+| B | migration `003200`, `components/{avatar,avatar-picker}.php` | `Participant`, `ParticipantModel`, `SessionService`, `RegisterController`, `ProfileController`, `hud.php`, `profile.php`, `register/step-1.php`, `ResetTables`, `SystemResetService`, `Routes.php`, `Language/{id,en}/Game.php` |
+| C | — | `ImageSlots`, `MediaAssetSeeder`, `AssetPackageBuilder`, `GameProgress`, `ui_helper.php`, `curtain.php`, `core/curtain.js`, `map-kedu.php`, `lantern.php`, `region-intro.php`, `region-done.php`, `challenge-finished.php`, `mission-brief.php`, `game/map.js`, `admin/content/level.php`, `ContentController`, `game.css`, `cinematic.css` |
+| E | — | `core/toast.js`, `components/toast.php`, `components.css`, `stage.css`, `Language/{id,en}/Js.php` |
+| F | `core/drag.js`, `core/keyboard.js` | `game.js`, `engines/puzzle.js`, `engines/cari.js`, `game/slides.js`, `game/narrator.js`, `game/library.js`, game CSS files, form views, `tools/qa/stage-check.mjs`, `device-test-checklist.md` |

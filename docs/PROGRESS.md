@@ -2,7 +2,7 @@
 
 The single checklist of what is done and what is open. Decisions and their reasons go in `docs/perombakan-kelas5/CATATAN_IMPLEMENTASI.md`; this file only tracks state. Each session updates only its own rows, and ticks an item only once its PR is merged into `main`.
 
-Last updated: 10 October 2026.
+Last updated: 11 October 2026.
 
 ## Kelas 5 overhaul
 
@@ -32,6 +32,18 @@ Last updated: 10 October 2026.
 - [ ] Smoke test, then `gelita:reset` (by the owner, never by Claude on production)
 
 ## Planned, not started
+
+## Display update (`docs/rencana-perbaikan-tampilan.md`, revised 11 October 2026)
+
+Owner decisions: phases in order 0 → A → B → C → E → F, one branch and one PR per phase, each cut from `main` after the previous PR is merged. Phase D (character frame animation) is done (PR #83).
+
+- [ ] Plan revised against the current code (`sky/eloquent-lamport-6cjmvk`)
+- [ ] Phase 0 — bug fixes: music on challenge/region screens, lost and doubled password flash, dead size rules (`tampilan-0-perbaikan`)
+- [ ] Phase A — app icons, zoom and animation preview, placeholder, story slide backgrounds, `bg.auth` (`tampilan-a-gambar-admin`)
+- [ ] Phase B — avatars (`tampilan-b-avatar`)
+- [ ] Phase C — city pins, Kenali lanterns, city loading backgrounds (`tampilan-c-kota`)
+- [ ] Phase E — game-style toasts (`tampilan-e-toast`)
+- [ ] Phase F — touch-friendly play (`tampilan-f-sentuh`)
 
 ## Asset package (`docs/rencana-paket-aset.md`, stages in §10)
 
@@ -65,3 +77,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 | `paket-1b-narasi` | Asset package Stage 1b: narration 48 kbps | PR open |
 | `paket-4-transisi` | Asset package Stage 4: transitions, decode, curtain | PR open |
 | `paket-5-integritas` | Asset package Stage 5: research data integrity | PR open |
+| `sky/eloquent-lamport-6cjmvk` | Display update: plan revised against the current code | PR open |
