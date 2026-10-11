@@ -266,32 +266,65 @@ input[type="checkbox"], input[type="radio"] { width: 1.375rem; height: 1.375rem;
 .lang-opt:hover { color: var(--gold-300); }
 .lang-opt.is-active { background: var(--gold-500); color: var(--navy-900); }
 
-/* ---------- Toast ---------- */
+/* ---------- Toast (display plan Phase E) ----------
+   Navy card with a glowing gold frame and a round icon badge. Enters with a
+   short pop, leaves by fading upward (core/toast.js adds .is-leaving). */
 .toast {
+  position: relative;
   display: flex;
-  gap: var(--gap-3);
-  padding: var(--gap-3) var(--gap-4);
-  border: 1px solid var(--line);
-  border-left: .25rem solid var(--gold-500);
-  border-radius: var(--radius);
-  background: var(--navy-800);
-  box-shadow: var(--shadow-2);
-  animation: toast-in .2s ease-out;
+  align-items: center;
+  gap: var(--gap-4);
+  padding: var(--gap-4) var(--gap-5) var(--gap-4) var(--gap-4);
+  border: .125rem solid var(--gold-500);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, var(--navy-700), var(--navy-900));
+  box-shadow: 0 0 0 .25rem var(--glow), 0 0 1.5rem var(--glow), var(--shadow-2);
+  color: var(--ink);
+  font-size: var(--fs-body);
+  font-weight: 700;
+  line-height: 1.35;
+  cursor: pointer;
+  transform-origin: 50% 0;
+  animation: toast-pop .35s ease-out;
 }
-.toast .icon { margin-top: .1875rem; color: var(--gold-500); }
-.toast.is-ok { border-left-color: var(--ok); }
-.toast.is-ok .icon { color: var(--ok); }
-.toast.is-bad { border-left-color: var(--bad); }
-.toast.is-bad .icon { color: var(--bad); }
-.toast.is-warn { border-left-color: var(--warn); }
-.toast small { display: block; color: var(--ink-dim); font-family: var(--font-mono); font-size: .75rem; }
+.toast-badge {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border: .125rem solid var(--gold-300);
+  border-radius: 50%;
+  background: var(--gold-500);
+  box-shadow: 0 0 1rem var(--glow);
+  color: var(--navy-900);
+}
+.toast-badge .icon { width: 2rem; height: 2rem; }
+.toast.is-ok .toast-badge { background: var(--ok); color: var(--ok-ink); }
+.toast.is-warn .toast-badge { background: var(--warn); color: var(--warn-ink); }
+.toast.is-bad { border-color: var(--bad); }
+.toast.is-bad .toast-badge { background: var(--bad); color: var(--ink); }
+.toast-text { min-width: 0; overflow-wrap: anywhere; }
+.toast small { display: block; margin-top: var(--gap-1); color: var(--ink-dim); font-family: var(--font-mono); font-size: .75rem; font-weight: 400; }
+.toast.is-leaving { pointer-events: none; animation: toast-leave .35s ease-in forwards; }
 
-/* Toast dari server memudar sendiri tanpa JavaScript */
-.toast.is-flash { animation: toast-in .2s ease-out, toast-out .4s ease-in 7s forwards; }
+/* Server flash toasts fade by themselves without JavaScript (with
+   JavaScript they join the queue in core/toast.js instead) */
+.toast.is-flash { animation: toast-pop .35s ease-out, toast-out .4s ease-in 3.5s forwards; }
 
-@keyframes toast-in {
-  from { opacity: 0; transform: translateY(.5rem); }
-  to { opacity: 1; transform: none; }
+@keyframes toast-pop {
+  0% { opacity: 0; transform: scale(.6); }
+  60% { opacity: 1; transform: scale(1.06); }
+  100% { opacity: 1; transform: none; }
+}
+@keyframes toast-leave {
+  to { opacity: 0; transform: translateY(-1.5rem); }
+}
+@keyframes toast-appear {
+  from { opacity: 0; }
+}
+@keyframes toast-fade {
+  to { opacity: 0; }
 }
 @keyframes toast-out {
   to { opacity: 0; visibility: hidden; }
@@ -657,6 +690,8 @@ body.has-modal { overflow: hidden; }
 .disclosure > summary::marker { color: var(--gold-500); }
 
 @media (prefers-reduced-motion: reduce) {
-  .toast.is-flash { animation: toast-out .01ms linear 7s forwards; }
-  .modal-card, .toast, .audio-player.is-attention .audio-btn[data-action="play"] { animation: none; }
+  .toast.is-flash { animation: toast-appear .2s linear, toast-out .4s linear 3.5s forwards; }
+  .toast.is-leaving { animation: toast-fade .3s linear forwards; }
+  .toast:not(.is-flash, .is-leaving) { animation: toast-appear .2s linear; }
+  .modal-card, .audio-player.is-attention .audio-btn[data-action="play"] { animation: none; }
 }

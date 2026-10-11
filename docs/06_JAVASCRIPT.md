@@ -341,7 +341,13 @@ closeModal(value), isModalOpen()
 
 ### `core/toast.js`, `core/timer.js`, `core/confetti.js`, `core/dom.js`
 
-- `toast(message, type, requestId)` — wadah `#toast-layer` di dalam `#stage` (856, 72, 400 dp). `type`: `info`, `ok`, `bad`, `warn`. Paling banyak 3 bertumpuk (toast flash server tidak dihitung), hilang setelah 4 detik; `request_id` tampil kecil bila ada.
+- `toast(message, type, requestId)` — layer `#toast-layer` inside `#stage` (856, 72, 400 dp). `type`: `info`, `ok`, `bad`, `warn`; `request_id` shows small when given. Game behaviour (display plan Phase E, `body.game`):
+  - One toast at a time, at most 3 waiting (the oldest waiting one is dropped). A message identical to the one showing restarts its timer; one identical to the last waiting one is skipped.
+  - Duration follows text length: `toastDuration(message)` = 1.2 s + 60 ms per character, clamped to 1.8–5 s.
+  - Tap the card (title `toastClose`), or press Esc while no modal is open, to close it (`dismissToast()`); the card fades upward and the next one shows. An Esc that a modal already handled (`defaultPrevented`) is ignored.
+  - Toasts do not wait for modals. `bad` cards are `role=alert`, the others `role=status` polite; the layer itself drops its own role once JavaScript runs.
+  - Badges are copied from `<template data-toast-icon>` in `components/toast.php`. Server flash toasts (`.is-flash`, `data-toast-type`) are removed from the DOM on load and join the queue first.
+  - Admin panel (`body.admin`): unchanged, up to 3 stacked toasts, each removed after 4 s.
 - `startTimer(el, elapsedMs)` → `{ stop(), elapsed() }`. Menampilkan `m:ss` (atau `h:mm:ss`) mulai dari `elapsed_ms` payload, yang dihitung server, sehingga benar setelah muat ulang dan kebal jam komputer yang salah. Tidak berdetak selama halaman tersembunyi, lalu menyusul waktu sebenarnya.
 - `confetti(count)` — canvas selebar panggung (ditambahkan ke `#stage`, ukuran dari `stageRect()`), paling banyak 60 partikel, ±2,6 detik, warna dari token CSS; tidak digambar sama sekali bila `prefers-reduced-motion`.
 - `dom.js` — `$`, `$$`, `on(target, type, selector?, handler)` (delegasi, mengembalikan pelepas), `el(tag, attrs, ...children)` (anak string lewat `textContent`), `esc()`, `readJson(id)`, `reducedMotion()`, `sleep()`, `scrollToCenter()` (menggulir panel `.stage-scroll` terdekat ke tengah, bukan `window`), `icon(name)` (salinan `template[data-icon]`), `announce(message)`, `debounce()`.

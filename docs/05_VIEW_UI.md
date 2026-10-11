@@ -151,7 +151,7 @@ Halaman masuk staf bergaya admin (§1.6): `.skip-link` ke `<main id="auth-main">
 | `rotate-gate` | Penghalang "putar perangkat" (`role="alertdialog"`). Tampil murni lewat CSS (lihat *Layar putar dan aplikasi terpasang*). |
 | `nav-bar` | Navigasi bawah dari array `$nav` (`label`, `href`, `style` = `primary`/`ghost`/`quiet`, `arrow`, `icon`, `attrs` untuk `aria-*`/`data-*`). Tombol berpanah kiri di `.nav-bar-start`, sisanya di `.nav-bar-end`. Layar tantangan tidak memakai nav-bar. |
 | `modal` | Kerangka dialog (`.modal-card.modal-{type}`, `.modal-title`, `.modal-text`, `.modal-actions`) di dalam `<template id="tpl-modal">`; ikon per jenis (`correct`, `wrong`, `hint`, `confirm`, `info`, `lock`) disediakan sebagai `<template data-modal-icon>` agar JavaScript tidak merakit SVG dari string. `core/modal.js` yang membukanya. |
-| `toast` | `#toast-layer` (`role="status"`). Flash `message` tampil sebagai `.toast.is-ok.is-flash`, flash `error` (hanya area permainan) sebagai `.toast.is-bad.is-flash`; keduanya memudar lewat CSS. |
+| `toast` | `#toast-layer`. Game (`withErrors`): flash `message` as `.toast.is-ok.is-flash`, flash `error` as `.toast.is-warn.is-flash` (every game `error` flash is a lock message), each with a round `.toast-badge`, plus `<template data-toast-icon="ok|warn|bad|info">` badges for JS toasts. Admin: only `message`, in the admin look. Flash toasts fade by CSS after about 3.5 s without JavaScript; see *Game-style toasts* below. |
 | `character` | `<figure class="character character-{jaka|mbah_kedu}">` dengan frame `char.{jaka|kedu}.{pose}.1` (cadangan pose `idle`); tanpa gambar tampil monogram `.character-fallback` ("J" / "MK"). Opsi `pose`, `showName` (papan nama), `class`. |
 | `narration` | Balon `<blockquote class="narration">` dengan `<cite>` nama tokoh; `tail = down` → `.narration-down`. |
 | `audio-player` | Tombol putar/jeda/ulangi + bar, transkrip di `<details class="audio-transcript">`, dan `<audio controls>` di dalam `<noscript>`. Bila audio belum disetujui (`audioSrc` kosong) hanya kotak transkrip `.is-text-only` yang dirender. Transkrip wajib ada. |
@@ -161,6 +161,15 @@ Halaman masuk staf bergaya admin (§1.6): `.skip-link` ke `<main id="auth-main">
 | `star-rating` | Bintang 0..3 (atau 0..`max`) lewat `stars_html()`; `size = lg` → `.stars-lg`. |
 | `stat-tile` | Satu angka + label (+ ikon, keterangan, `id` untuk diperbarui JavaScript). Nilai berupa kata memakai `.stat-value.is-text`. |
 | `password-field` | Kolom sandi baru + tombol lihat `.pw-toggle` + peringatan Caps Lock `.pw-caps` + meter `.pw-meter` + `.pw-level` + daftar 5 syarat `.pw-rules` (`data-rule` = `length`, `upper`, `lower`, `digit`, `symbol`) + ulangi sandi + `.pw-match`. Aturan dikirim sebagai `<script type="application/json" id="password-policy">` dari `PasswordPolicy::toClient()`; teks tingkat ada di atribut `data-level-*`. Kolom sandi tidak pernah diisi ulang dan sengaja tanpa `minlength`, agar sandi lemah sampai ke server dan tercatat sebagai `pw_weak_submit_count`. |
+
+#### Game-style toasts (display plan Phase E)
+
+Applies to `body.game`; the admin panel keeps its own toast look (`admin.css`).
+
+- **Look** (`components.css`). Same stage place (x 856, y 72, width 400 dp). A navy card with a glowing gold frame (`.is-bad` has a red frame), a 56 dp round icon badge `.toast-badge` (✓ ok, ! warn, ✕ bad, i info), and text at body size (20 dp, bold). Enters with a short pop (`toast-pop`: 0.6 → 1.06 → 1); leaves by fading upward (`.is-leaving`, `toast-leave`). With reduced motion it only fades in and out.
+- **Layer** (`stage.css`). `pointer-events: none` except on the card; z 60, above the modal veil (z 50), so errors are seen even while a modal is open.
+- **Without JavaScript** flash toasts fade after about 3.5 s (`toast-out`). With JavaScript they are removed from the DOM and join the queue of `core/toast.js` (see `06_JAVASCRIPT`).
+- **Flash `error` in the game** shows as `warn`, like the lock toast from JavaScript.
 
 ### Komponen panel admin
 
@@ -596,7 +605,7 @@ Semua layar game digambar di **satu panggung tetap 1280 × 720 dp** (dp = *desig
 | Area isi `main#app.stage-main` | 0, 0, 1280, 720 | `<main>` selebar panggung tanpa stacking context, jadi koordinat isi = koordinat panggung; isi tidak diletakkan di bawah HUD (y < 56) |
 | Nav bar `.nav-bar` | 0, 656, 1280, 64 | kembali di kiri, tombol utama di kanan. Layar sinematik: "Lewati" di kanan atas (y 72). Layar tantangan tanpa nav bar |
 | Modal `#modal-layer` | 0, 0, 1280, 720 | kotak 480–720 × maks 560 dp di tengah, isi bergulir bila panjang |
-| Toast `#toast-layer` | 856, 72, 400 | kanan atas di bawah HUD |
+| Toast `#toast-layer` | 856, 72, 400 | kanan atas di bawah HUD; z 60, di atas tirai modal (z 50) |
 
 `#stage` memakai `contain: layout paint`, sehingga `position: fixed` di dalamnya (tirai, overlay Kenali, konfeti) berlabuh ke panggung, dan apa pun yang keluar dari panggung terpotong. Lightbox `<dialog>` dirender peramban di top layer, tetapi ukurannya dalam rem sehingga tetap di dalam panggung.
 

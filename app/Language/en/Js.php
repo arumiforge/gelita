@@ -34,6 +34,9 @@ return [
     'soundOff'     => 'Sound off',
     'audioNoSound' => 'The sound cannot be played yet. Read the text instead.',
 
+    // Toast
+    'toastClose' => 'Tap to close',
+
     // Reflection
     'needTwo' => 'Please answer at least two questions.',
 
