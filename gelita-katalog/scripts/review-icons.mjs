@@ -2,9 +2,9 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {createRequire} from 'node:module';
-const root=path.dirname(fileURLToPath(import.meta.url));
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const require=createRequire(import.meta.url);
-const sharp=require('C:/Users/cenda/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/sharp');
+const sharp=require(process.env.SHARP_PACKAGE || 'sharp');
 const data=JSON.parse(fs.readFileSync(path.join(root,'data.json'),'utf8'));
 const esc=s=>s.replaceAll('&','&amp;').replaceAll('<','&lt;');
 async function sheet(assets,file,columns,tile){

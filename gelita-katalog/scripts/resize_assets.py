@@ -1,7 +1,7 @@
 """Resize existing WebP assets to data.json targets; no image generation.
 
-Preview: python resize_assets.py
-Apply:   python resize_assets.py --apply
+Preview: python scripts/resize_assets.py
+Apply:   python scripts/resize_assets.py --apply
 Requires Pillow. Originals are backed up before any asset is replaced.
 """
 import argparse
@@ -16,7 +16,7 @@ import zipfile
 
 from PIL import Image, ImageOps
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parent.parent
 
 
 def inspect(data):
@@ -108,16 +108,16 @@ def main():
     remaining = [entry for entry in inspect(data) if entry['changed']]
     if remaining:
         raise ValueError(f'Dimensions still mismatch: {remaining}')
-    subprocess.run([sys.executable, str(ROOT / 'measure_assets.py')], check=True)
+    subprocess.run([sys.executable, str(ROOT / 'scripts/measure_assets.py')], check=True)
     updated = json.loads((ROOT / 'data.json').read_text(encoding='utf8'))
     if [a for a in updated if a['size'] == 'Audio'] != [a for a in data if a['size'] == 'Audio']:
         raise ValueError('Audio changed')
     report = dict(timestamp_utc=stamp, backup=backup.relative_to(ROOT).as_posix(),
                   raster_assets=len(entries), resized=len(changes), already_correct=len(entries)-len(changes),
                   mismatches_after=0, entries=entries)
-    (ROOT / 'resize-report.json').write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n', encoding='utf8')
+    (ROOT / 'reports/resize-report.json').write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n', encoding='utf8')
     subprocess.run(['node', str(ROOT / 'build.mjs')], check=True)
-    subprocess.run(['node', str(ROOT / 'validate.mjs')], check=True)
+    subprocess.run(['node', str(ROOT / 'scripts/validate.mjs')], check=True)
     print('Resize, metadata, build, and validation completed.', flush=True)
 
 

@@ -1,56 +1,61 @@
 # GELITA — Perpustakaan aset
 
-Katalog statis internal untuk game edukasi kelas 5 tentang Temanggung, Magelang, dan Wonosobo. Status diperbarui 11 Oktober 2026 (Asia/Bangkok).
+Katalog statis internal untuk game edukasi kelas 5 tentang Temanggung, Magelang, dan Wonosobo. Dokumentasi diperbarui **12 Oktober 2026**, zona waktu Asia/Bangkok. Paket ini berisi katalog dan aset; kode aplikasi game, backend, workbook soal, serta rekaman audio tidak disertakan.
 
 ## Membuka katalog
 
-Buka `index.html` langsung di browser. Tidak perlu akun, server, atau internet. Bawa seluruh folder `assets` saat membagikan katalog. Cari berdasarkan kode/nama, pilih koleksi, wilayah, atau status gaya. Detail menyediakan gambar, ukuran aktual/target, catatan pemeriksaan, prompt, dan unduhan teks. Saat dibuka langsung sebagai berkas lokal, gambar asli dibuka di tab baru untuk disimpan melalui browser; saat dihosting, tautan mendukung unduhan langsung. JSON/CSV mengekspor hasil filter.
+Buka [index.html](index.html) langsung di browser. Tidak memerlukan akun, server, atau internet. Halaman menyediakan pencarian, kelompok koleksi, filter wilayah/gaya, detail aset, salin prompt, serta ekspor hasil JSON/CSV. Saat dibuka sebagai berkas lokal, gambar asli dibuka di tab baru untuk disimpan melalui browser.
 
-## Keputusan visual aktif
+Untuk membagikan katalog, sertakan `index.html`, seluruh `assets/`, `README.md`, `docs/`, dan `reports/` agar gambar serta tautan panduan/laporan tetap tersedia. Untuk pengembangan, gunakan seluruh folder ini. Mengunggahnya ke GitHub tidak otomatis mengaktifkan hosting web.
 
-- Gaya utama: render 3D bergaya animasi petualangan, material bervolume dan cahaya hangat.
-- Acuan Jaka: `assets/referensi/reference.01.webp`. Rambut cokelat acak, kemeja krem, **syal merah**, celana cokelat, batik pinggang, sandal, ransel kulit. Tidak memakai lurik, iket, atau rompi biru.
-- Avatar baru: `reference.03.webp`; Mbah Kedu: `reference.02.webp`. Syal merah hanya untuk Jaka, bukan semua tokoh.
-- Ikon SVG/UI datar dan media faktual tidak wajib menjadi 3D. Akurasi isi budaya harus diperiksa tersendiri.
-- Sembilan referensi yang hilang dibuat ulang sebagai gambar baru dengan built-in image_gen, bukan pemulihan berkas asli. Prompt generasi tersimpan dalam `generation-manifest.json`.
+## Kondisi saat ini
 
-## Isi dan hasil audit
+| Isi | Jumlah/kondisi |
+|---|---|
+| Entri katalog | 370: 273 visual dan 97 brief audio |
+| Visual utama | 221 WebP dan 52 SVG; 221 raster sesuai ukuran target |
+| Ikon | 83 entri dibuat ulang pada 11 Oktober 2026 |
+| Referensi yang dibuat ulang | 9 gambar baru; bukan pemulihan berkas asli |
+| Audio | 88 narasi, 3 musik, 6 efek suara; identik dengan baseline |
+| Status gaya | 273 “Sesuai gaya” berdasarkan keputusan pengguna (`user_override`) |
 
-370 entri: **273 visual + 97 brief audio**. Keputusan terbaru pengguna: **semua 273 visual ditandai Sesuai gaya** meskipun gambar lama belum diperbaiki. Status memakai basis `user_override`; audit sebelumnya (68 sesuai, 141 belum sesuai, 3 perlu tinjau, 61 tidak berlaku) tetap tersimpan per entri pada `previous_style_review` dan di arsip. Angka menghitung entri unik, bukan varian format. Penandaan ini terpisah dari pemeriksaan visual, dimensi, budaya dan integrasi.
+Jumlah visual menghitung entri utama, bukan seluruh berkas alternatif/sumber kontrol SVG. Semua visual ditandai sesuai atas keputusan pengguna 11 Oktober 2026, termasuk gambar lama yang belum diperbaiki. Ini **bukan audit visual baru**; `previous_style_review` menyimpan penilaian sebelumnya. Ukuran yang sesuai tidak membuktikan budaya, lisensi, kualitas pembesaran, animasi, atau integrasi game telah disahkan.
 
-Seluruh **273 prompt visual aktif** diperiksa dan diperbarui: ilustrasi 3D, identitas Jaka/Mbah Kedu, peta relief 3D, transparansi ikon, label bahasa dan spesifikasi SVG. Foto/video faktual mempertahankan gaya dokumenter. Prompt generasi sebelumnya disimpan dalam arsip, bukan digunakan sebagai instruksi aktif. `PROMPTS-ENGLISH.md` dibangun dari prompt terbaru; `prompt-review-report.json` mencatat lingkup pemeriksaan.
+## Arah visual aktif
 
-Seluruh **83 entri Ikon** dibuat ulang: 20 generasi ilustratif melalui built-in image_gen (termasuk master ikon aplikasi), 4 turunan ukuran aplikasi, 51 SVG asli (50 kontrol + ikon aplikasi), dan 8 kontrol SVG yang diekspor ke WebP. Ikon aplikasi menggunakan Lentera Kedu di atas navy; ikon wilayah dan 10 avatar mempertahankan motif resmi masing-masing. Sumber kontrol SVG tersedia di `assets/ikon/vektor/`; prompt AI dan hasil berada di `icon-generation-results.json` dan `generation-manifest.json`. Semua raster tetap WebP; kode slot resmi tetap. Cadangan data dan ikon sebelumnya: `archive/before-icons-20261011.zip`.
+- Ilustrasi mengikuti render 3D petualangan dengan bentuk bervolume dan pencahayaan hangat.
+- Jaka mengikuti [reference.01.webp](assets/referensi/reference.01.webp): rambut cokelat acak, kemeja krem, syal merah, celana cokelat, batik pinggang, sandal, dan ransel kulit. Jangan kembali ke lurik–iket atau rompi biru dari panduan lama.
+- Avatar Jaka memakai [reference.03.webp](assets/referensi/reference.03.webp); Mbah Kedu mengikuti [reference.02.webp](assets/referensi/reference.02.webp). Syal merah hanya berlaku untuk Jaka.
+- Kontrol UI memakai SVG emas yang jelas pada ukuran kecil; foto/video faktual mempertahankan brief dokumenter.
+- Raster aktif memakai WebP. Nama mengikuti kode aset; kode resmi seperti `app.icon-512.png` tetap memakai berkas `app.icon-512.webp`.
 
-97 brief audio (88 narasi, 3 musik, 6 efek suara) dipertahankan identik dengan data awal. Rekaman dan naskah narasi lengkap belum disertakan. Target 100 baris per bahasa berasal dari dokumen asal, bukan klaim sudah tersedia.
+273 prompt visual aktif sudah diselaraskan. Sumbernya `data.json`; salinan build ada di [docs/PROMPTS-ENGLISH.md](docs/PROMPTS-ENGLISH.md). Prompt yang benar-benar dipakai pada generasi AI dicatat terpisah dalam [provenance/](provenance/README.md).
 
-## Struktur
+## Peta folder
 
 | Lokasi | Fungsi |
 |---|---|
-| `data.json` | Sumber data aktif; termasuk audit dan prompt terbaru |
-| `catalog.template.html` | Template tampilan dan interaksi |
-| `build.mjs` | Membangun HTML, status, audit, dan daftar prompt dari data |
-| `assets/referensi/` | Acuan dan konsep awal dengan kode `reference.*` |
-| `assets/karakter/` | Frame tokoh, misalnya `char.jaka.happy.1.webp` |
-| `assets/latar/`, `peta/`, `tantangan/`, `pustaka/` | Kelompok gambar adegan dan materi |
-| `assets/logo/`, `antarmuka/`, `ikon/`, `lencana/` | Kelompok identitas dan UI |
-| `migration-map.json` | Pemetaan 475 nama lama → baru, termasuk varian format |
-| `archive/` | Metadata, HTML, prompt, dan dokumen sumber sebelum perubahan; bukan berkas aktif |
-| `sources/` | Sumber historis dengan penanda bahwa status lama sudah digantikan |
-| `AGENTS.md`, `MEMORY.md`, `CONTEXT.md`, `PROGRESS.md` | Instruksi dan catatan lokal untuk kelanjutan pekerjaan |
+| [AGENTS.md](AGENTS.md) | Instruksi kerja AI dan urutan membaca dokumentasi |
+| `data.json` | Sumber aktif semua entri katalog |
+| `index.html` | Halaman siap dibuka; dihasilkan melalui build |
+| `build.mjs` | Perintah build dari root |
+| [assets/](assets/README.md) | Gambar menurut kelompok dan sumber kontrol SVG |
+| [docs/](docs/README.md) | Konteks, keputusan, progres, panduan AI, skema, pemeliharaan, prompt |
+| [templates/](templates/README.md) | Template tampilan dan interaksi katalog |
+| [scripts/](scripts/README.md) | Build, validasi, browser, dan pemeliharaan aset |
+| [reports/](reports/README.md) | Ringkasan/status dan hasil pemeriksaan bertanggal |
+| [provenance/](provenance/README.md) | Manifest generasi, pekerjaan ikon, dan pemetaan nama lama |
+| [review/](review/README.md) | Lembar kontak dan tangkapan layar |
+| [archive/](archive/README.md) | Baseline audio, cadangan, dokumen, prompt, dan skrip historis |
 
-Nama berkas mengikuti kode aset. Semua raster aktif dan tangkapan layar disimpan sebagai WebP; varian PNG dihapus atas permintaan pengguna. Kode slot resmi tetap dipertahankan (contoh: kode `app.icon-512.png` memakai berkas `app.icon-512.webp`). SVG dan format lain yang bukan PNG tetap tersedia. `framegambarkarakter/jakahappy` sudah dihapus sesuai permintaan; frame resmi di `assets/karakter` tetap disimpan.
+Folder `sources/` dihapus pada 12 Oktober 2026. Kedua dokumennya memiliki salinan identik di `archive/source-documents/`. `README.txt` root yang mengulang panduan juga dihapus; versi historis di arsip dipertahankan.
 
-## Memperbarui
+## Memperbarui dan memeriksa
 
-1. Ubah `data.json` dan berkas aset yang relevan. Jangan mengubah kode slot resmi sembarangan.
-2. Untuk memeriksa ukuran, jalankan `python resize_assets.py`. Terapkan dengan `python resize_assets.py --apply` (Python + Pillow). Skrip mengambil target dari `data.json`, mencadangkan WebP asli dalam `archive/before-resize-*.zip`, lalu mengganti aset di lokasi yang sama. Proporsi dipertahankan: gambar opak memakai crop tengah, gambar transparan memakai ruang transparan tambahan; ukuran yang sudah benar dilewati. Hasil disimpan sebagai WebP lossless, metadata dan katalog dibangun ulang, serta laporan ditulis ke `resize-report.json`. Pembesaran ukuran tidak menambahkan detail gambar asli. Untuk perubahan manual, jalankan `python measure_assets.py`.
-3. Jalankan `node build.mjs`. Pemeriksaan menolak tautan gambar hilang, kode ganda, dan perubahan pada audio yang dibekukan.
-4. Uji katalog desktop/mobile: filter, detail, keyboard, dan ekspor. `validate.mjs` memeriksa berkas dan data; `browser-check.cjs` menyediakan pemeriksaan browser bila Playwright tersedia.
+1. Baca [panduan AI](docs/AI-GUIDE.md) dan [pemeliharaan](docs/MAINTENANCE.md).
+2. Ubah `data.json`, aset terkait, atau `templates/catalog.template.html`. Jangan mengedit `index.html` secara terpisah.
+3. Jalankan `node build.mjs`, lalu `node scripts/validate.mjs` dari root. Keduanya memakai modul bawaan Node.js.
+4. Bila aset berubah, periksa dimensi/alpha dan tampilan. Python memerlukan Pillow; pemeriksaan browser memerlukan Playwright, Edge, Python, dan Pillow. Perintah lengkap ada di panduan pemeliharaan.
+5. Catat perubahan dan pemeriksaan nyata dalam [docs/PROGRESS.md](docs/PROGRESS.md), lalu tinjau berkas sebelum commit/push.
 
-`migrate.mjs` adalah migrasi satu kali dan menolak dijalankan ulang. Jangan mengedit `index.html` secara terpisah dari template/data. Arsip HTML bukan salinan mandiri yang siap dibuka: jalur lamanya didokumentasikan dalam migration-map.
-
-## Pekerjaan lanjutan
-
-Gambar di luar kategori Ikon dipertahankan, dengan prompt terbaru dan status sesuai atas keputusan pengguna. Bila diminta membuat ulang karakter/adegan lama, gunakan prompt aktif serta reference.01/reference.02. Repositori aplikasi, workbook soal, konfigurasi slot, serta pengujian integrasi game tidak termasuk paket ini.
+Jangan mengubah 97 objek audio atau membuat rekaman tanpa permintaan baru. Skrip migrasi/generasi lama di `archive/scripts/` bukan langkah rutin. Tidak ada regenerasi gambar atau perubahan audio pada perapian 12 Oktober 2026.

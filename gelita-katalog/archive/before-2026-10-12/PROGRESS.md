@@ -1,3 +1,5 @@
+> CATATAN HISTORIS sebelum perapian 12 Oktober 2026. Status dan batas pekerjaan di bawah mengikuti urutan saat dicatat, bukan kondisi terbaru. Baca [progres aktif](../../docs/PROGRESS.md) dan [README proyek](../../README.md).
+
 # Progres — 11 Oktober 2026
 
 ## Status sesuai, prompt, dan ikon — permintaan terbaru

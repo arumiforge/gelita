@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 from PIL import Image, ImageDraw
 
-root=Path(__file__).resolve().parent
+root=Path(__file__).resolve().parent.parent
 data=json.loads((root/'data.json').read_text(encoding='utf-8-sig'))
 out=root/'review'
 out.mkdir(exist_ok=True)
@@ -16,4 +16,4 @@ for start in range(0,len(assets),30):
         page.paste(im,(x+(250-im.width)//2,y),im)
         draw.text((x+6,y+194),a['id']+' '+a['cat'],fill='black')
         draw.text((x+6,y+211),a['key'][:33],fill='black')
-    page.save(out/f'contact-{start//30+1}.jpg')
+    page.save(out/f'contact-{start//30+1}.webp', 'WEBP', lossless=True)

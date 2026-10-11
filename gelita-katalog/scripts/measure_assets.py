@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 from PIL import Image
-root=Path(__file__).resolve().parent
+root=Path(__file__).resolve().parent.parent
 data=json.loads((root/'data.json').read_text(encoding='utf8'))
 for a in data:
     if a['size']=='Audio': continue

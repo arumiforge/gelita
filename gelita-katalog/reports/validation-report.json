@@ -1,5 +1,6 @@
 {
-  "date": "2026-10-11",
+  "date": "2026-10-12",
+  "checked_at_utc": "2026-10-11T18:00:09.766Z",
   "checks": [
     "370 unique IDs and keys",
     "273 visuals have style reviews and existing files",
@@ -14,7 +15,15 @@
     "HTML data exactly matches data.json",
     "97 audio objects unchanged",
     "Target dimensions unchanged",
-    "Requested folder deleted"
+    "Requested character folder deleted",
+    "Organized folders exist and source/sources removed",
+    "Current Markdown and static HTML links resolve"
   ],
+  "documentation": {
+    "files": 16,
+    "links": 343,
+    "historical_archive_body_links_excluded": true
+  },
+  "static_html_links": 6,
   "passed": true
 }

@@ -1,3 +1,7 @@
+> ARSIP HISTORIS — bukan instruksi atau status aktif. Katalog telah tersedia; arahan kini 3D/Jaka syal merah, raster WebP, dan seluruh 273 status visual mengikuti keputusan pengguna, bukan audit baru.
+> Isi asli berikut dipertahankan sebagai bukti. Klaim katalog belum dibangun, arahan 2D, lokasi file, serta tautan aplikasi/workbook dalam isi lama tidak berlaku untuk paket ini.
+> Panduan: [README proyek](../../README.md), [konteks aktif](../../docs/CONTEXT.md), [progres aktif](../../docs/PROGRESS.md). Pembaruan penanda: 12 Oktober 2026.
+
 # Bank Soal GELITA — Kelas 5 SD/MI
 
 Bank soal final penelitian kelas 5 yang disetujui peneliti (Oktober 2026): **12 tantangan** (4 per wilayah), **126 soal** (108 dinilai + 18 benda pengecoh), **30 variasi**, 9 bacaan Benar atau Salah, 9 bacaan Isi Rumpang, 36 petunjuk, dan 12 kata pengecoh bank kata. Isinya ditetapkan di [`docs/perombakan-kelas5/02_TANTANGAN_DAN_BANK_SOAL.md`](../perombakan-kelas5/02_TANTANGAN_DAN_BANK_SOAL.md) §9; jangan diubah kecuali untuk memperbaiki salah ketik yang jelas.

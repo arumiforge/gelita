@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 from zipfile import ZipFile
 
-root = Path(__file__).resolve().parent
+root = Path(__file__).resolve().parent.parent
 data = json.loads((root / 'data.json').read_text(encoding='utf8'))
 icons = [a for a in data if a['cat'] == 'Ikon']
 with ZipFile(root / 'archive/before-icons-20261011.zip') as backup:
@@ -19,5 +19,5 @@ with ZipFile(root / 'archive/before-icons-20261011.zip') as backup:
 png_files = list(root.rglob('*.png'))
 assert not png_files, png_files
 report = {'date': '2026-10-11', 'icons_replaced': len(checks), 'all_icon_files_differ_from_backup': True, 'loose_png_files': 0, 'checks': checks}
-(root / 'icon-replacement-verification.json').write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n', encoding='utf8')
+(root / 'reports/icon-replacement-verification.json').write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n', encoding='utf8')
 print('Verified: all 83 icon files differ from the backup; no loose PNG files.')

@@ -1,3 +1,7 @@
+> ARSIP HISTORIS — bukan instruksi atau status aktif. Katalog telah tersedia; arahan kini 3D/Jaka syal merah, raster WebP, dan seluruh 273 status visual mengikuti keputusan pengguna, bukan audit baru.
+> Isi asli berikut dipertahankan sebagai bukti. Klaim katalog belum dibangun, arahan 2D, lokasi file, serta tautan aplikasi/workbook dalam isi lama tidak berlaku untuk paket ini.
+> Panduan: [README proyek](../../README.md), [konteks aktif](../../docs/CONTEXT.md), [progres aktif](../../docs/PROGRESS.md). Pembaruan penanda: 12 Oktober 2026.
+
 # GELITA — Image prompts
 
 ## 01 — Jaka — lembar karakter
