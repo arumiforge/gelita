@@ -18,6 +18,32 @@ import { initNextAssets } from './game/next-assets.js';
 
 document.documentElement.classList.add('js');
 
+// Touch basics (display plan Phase F1/F3.5):
+// - iOS applies :active press feedback only when a touchstart listener exists.
+// - Scene, map, and character images are not draggable (no ghost image on a
+//   long press or a mouse drag); images swapped in later are covered by the
+//   dragstart guard.
+// - iOS zooms the page when a field below 16 px gets focus, and stage inputs
+//   are 20 dp (about 11 px on a phone). `maximum-scale=1` stops that focus
+//   zoom on iOS while pinch zoom still works there; Android would lose pinch
+//   zoom, so it does not get the flag.
+const NO_DRAG = '.scene-img, .scene-bg, .map-img, .character-img';
+document.addEventListener('touchstart', () => {}, { passive: true });
+document.querySelectorAll(NO_DRAG).forEach((img) => { img.draggable = false; });
+document.addEventListener('dragstart', (event) => {
+  if (event.target instanceof Element && event.target.matches(NO_DRAG)) event.preventDefault();
+});
+if (isIos()) {
+  const meta = document.querySelector('meta[name="viewport"]');
+  if (meta && !/maximum-scale/.test(meta.content)) meta.content = `${meta.content}, maximum-scale=1`;
+}
+
+function isIos() {
+  const ua = navigator.userAgent || '';
+  // iPadOS reports itself as a Mac; touch points tell it apart
+  return /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+}
+
 // Panggung 16:9: ukuran layar, tombol layar penuh, viewport_changed (Dok 3 §7)
 initStage({ track: Boolean(CONFIG.sessionTag) });
 
@@ -74,6 +100,11 @@ if (pages[screen]) {
   page = import('./game/login.js').then((m) => m.initLogin());
 } else if (document.querySelector('.password-field')) {
   page = import('./game/password-meter.js').then((m) => m.initPasswordField(document.querySelector('.password-field')));
+}
+
+// On-screen keyboard: keep the focused field visible (Phase F3.4)
+if (document.querySelector('#stage form input:not([type="hidden"]), #stage form textarea')) {
+  import('./core/keyboard.js').then((m) => m.initKeyboardShift());
 }
 
 // Character pose frames (core/sprite.js), only on pages that have them

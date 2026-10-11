@@ -16,17 +16,28 @@
  * (overlay Kenali wilayah di peta): URL tidak disentuh, slide ditentukan
  * kelas .is-current (`data-managed="class"`, lihat cinematic.css), dan hash
  * milik daftar slide lain diabaikan. Tanpa JavaScript tetap :target.
+ *
+ * Swipe (display plan F3.3, core/drag.js onSwipe): on a touch screen a swipe
+ * to the left clicks the current slide's own Lanjut link and a swipe to the
+ * right its Kembali link, so a swipe runs exactly what those buttons run
+ * (show() → onChange, and with it the caller's events and narration). At the
+ * ends, where that link is absent, a swipe does nothing; it never follows the
+ * final link that leaves the screen. `swipe: { area, ignore }` sets the
+ * element that listens (default: the list) and a selector where swipes must
+ * not start; `swipe: false` turns it off.
  */
 import { $, $$ } from '../core/dom.js';
 import { pauseNarration } from '../core/audio.js';
+import { onSwipe } from '../core/drag.js';
 
 const INTERACTIVE = 'input, textarea, select, button, summary, video, audio, [contenteditable="true"]';
 
 /**
  * @param {{ list: HTMLElement, prefix: string, keyboard?: boolean, hash?: boolean,
+ *           swipe?: boolean | { area?: HTMLElement, ignore?: string },
  *           onChange?: (index: number, slide: HTMLElement, total: number) => void }} options
  */
-export function initSlides({ list, prefix, keyboard = true, hash = true, onChange = null }) {
+export function initSlides({ list, prefix, keyboard = true, hash = true, swipe = true, onChange = null }) {
   if (!list) return null;
 
   const slides = $$(':scope > .slide', list);
@@ -94,6 +105,18 @@ export function initSlides({ list, prefix, keyboard = true, hash = true, onChang
       if (current > 1) show(current - 1);
     }
   });
+
+  // Swipe = the current slide's Lanjut / Kembali link (not the page dots)
+  if (swipe) {
+    const { area = list, ignore = '' } = swipe === true ? {} : swipe;
+    const step = (delta) => {
+      const n = current + delta;
+      if (n < 1 || n > total) return;
+      const link = $(`a[href="#${CSS.escape(`${prefix}${n}`)}"]:not(.slide-dot)`, slides[current - 1]);
+      link?.click();
+    };
+    onSwipe(area, { left: () => step(1), right: () => step(-1), ignore });
+  }
 
   // Tombol Back/Forward browser di dalam hash yang sama. Hash lain membuat CSS
   // menampilkan slide pertama, jadi keadaan JS ikut kembali ke slide pertama.

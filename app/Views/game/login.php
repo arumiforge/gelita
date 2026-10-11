@@ -44,7 +44,7 @@
         <div class="field<?= isset($errors['username']) ? ' has-error' : '' ?>">
           <label for="username"><?= esc(lang('Auth.username')) ?></label>
           <input type="text" id="username" name="username" required autocomplete="username"
-                 autocapitalize="none" spellcheck="false" value="<?= esc(old('username'), 'attr') ?>">
+                 autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="next" value="<?= esc(old('username'), 'attr') ?>">
         </div>
 
         <div class="field<?= isset($errors['password']) ? ' has-error' : '' ?>"
@@ -52,7 +52,7 @@
              data-hide-label="<?= esc(lang('Auth.hidePassword'), 'attr') ?>">
           <label for="password"><?= esc(lang('Auth.password')) ?></label>
           <div class="password-input">
-            <input type="password" id="password" name="password" required autocomplete="current-password">
+            <input type="password" id="password" name="password" required autocomplete="current-password" enterkeyhint="done">
             <button type="button" class="pw-toggle" aria-pressed="false" aria-controls="password"
                     aria-label="<?= esc(lang('Auth.showPassword'), 'attr') ?>"><?= icon('eye') ?></button>
           </div>

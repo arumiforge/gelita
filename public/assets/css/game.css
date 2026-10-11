@@ -181,11 +181,19 @@ body.is-challenge .lang-switch { display: none; }
   filter: drop-shadow(0 .375rem .875rem rgba(0, 0, 0, .45));
   transition: filter .2s;
 }
-.btn-start:hover, .btn-start:focus-visible { transform: translateY(-.125rem); }
-.btn-start.is-image:hover img, .btn-start.is-image:focus-visible img {
+.btn-start:focus-visible { transform: translateY(-.125rem); }
+.btn-start.is-image:focus-visible img,
+.btn-start.is-image:active img {
   filter: drop-shadow(0 .375rem .875rem rgba(0, 0, 0, .45)) drop-shadow(0 0 1.25rem var(--glow)) brightness(1.08);
 }
+@media (hover: hover) {
+  .btn-start:hover { transform: translateY(-.125rem); }
+  .btn-start.is-image:hover img {
+    filter: drop-shadow(0 .375rem .875rem rgba(0, 0, 0, .45)) drop-shadow(0 0 1.25rem var(--glow)) brightness(1.08);
+  }
+}
 .btn-start:active { transform: scale(.96); }
+.btn-start.is-image img { -webkit-user-drag: none; }
 .btn-start:focus-visible { outline: .1875rem solid var(--gold-500); outline-offset: .25rem; }
 @keyframes start-glow {
   0%, 100% { box-shadow: 0 0 0 rgba(223, 192, 135, 0); }
@@ -395,12 +403,19 @@ body.is-challenge .lang-switch { display: none; }
 
 .choice-pill {
   align-items: center;
+  min-height: var(--tap);
   padding: var(--gap-2) var(--gap-4);
   border: 1px solid var(--line-strong);
   border-radius: var(--radius-pill);
   background: rgba(11, 19, 32, .6);
+  transition: transform .15s;
+  -webkit-touch-callout: none;
+  user-select: none;
 }
-.choice-pill:hover { border-color: var(--gold-500); }
+@media (hover: hover) {
+  .choice-pill:hover { border-color: var(--gold-500); }
+}
+.choice-pill:active { transform: scale(.96); border-color: var(--gold-500); }
 .choice-pill:has(input:checked) { border-color: var(--gold-500); background: rgba(199, 162, 101, .18); color: var(--gold-300); }
 .choice-pill input { margin-top: 0; }
 
@@ -531,15 +546,33 @@ body.is-challenge .lang-switch { display: none; }
 .slide-nav-spacer { width: 1px; }
 .slide-dots { display: flex; gap: var(--gap-2); margin: 0; padding: 0; list-style: none; }
 .slide-dot {
+  position: relative;
   display: block;
   width: .875rem;
   height: .875rem;
   border: .125rem solid var(--brown-500);
   border-radius: 50%;
 }
+/* Phase F2: the 14 dp dot keeps its look; its hit area is 48 dp tall and as
+   wide as the dot plus the gap (22 dp), so neighbouring dots share the gap
+   without overlapping and each stays reachable. */
+.slide-dot::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: calc(.875rem + var(--gap-2));
+  height: var(--tap);
+  transform: translate(-50%, -50%);
+}
+.slide-dot:active { background: var(--brown-500); }
 .slide-dot.is-current { background: var(--brown-700); border-color: var(--brown-700); }
+.slide-nav, .slide-dots { -webkit-touch-callout: none; user-select: none; }
 .slide-nav .btn-quiet { background: rgba(74, 50, 24, .1); color: var(--brown-700); }
-.slide-nav .btn-quiet:hover { background: rgba(74, 50, 24, .18); }
+@media (hover: hover) {
+  .slide-nav .btn-quiet:hover { background: rgba(74, 50, 24, .18); }
+}
+.slide-nav .btn-quiet:active { background: rgba(74, 50, 24, .22); }
 
 .story-empty { display: grid; justify-items: center; gap: var(--gap-4); text-align: center; }
 
@@ -594,6 +627,8 @@ body.is-challenge .lang-switch { display: none; }
 }
 .map-canvas {
   position: relative;
+  -webkit-touch-callout: none;
+  user-select: none;
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -610,7 +645,7 @@ body.is-challenge .lang-switch { display: none; }
     repeating-linear-gradient(90deg, rgba(223, 192, 135, .06) 0 1px, transparent 1px 3rem),
     linear-gradient(160deg, var(--navy-600), var(--navy-800));
 }
-.map-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.map-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; -webkit-user-drag: none; }
 .map-route { position: absolute; inset: 0; width: 100%; height: 100%; }
 .map-route polyline { fill: none; stroke: var(--gold-500); stroke-width: .6; stroke-dasharray: 1.6 1.4; stroke-linecap: round; vector-effect: non-scaling-stroke; opacity: .8; }
 .map-points { margin: 0; padding: 0; list-style: none; }
@@ -638,7 +673,10 @@ body.is-challenge .lang-switch { display: none; }
 }
 .pin-icon .icon { width: 1.75rem; height: 1.75rem; }
 .pin-icon b { font-size: var(--fs-h3); }
-.map-pin:hover .pin-icon { transform: scale(1.08); }
+@media (hover: hover) {
+  .map-pin:hover .pin-icon { transform: scale(1.08); }
+}
+.map-pin:active .pin-icon { transform: scale(.94); filter: brightness(1.12); }
 .pin-label {
   display: grid;
   gap: .125rem;
@@ -805,8 +843,19 @@ body.is-challenge .lang-switch { display: none; }
 .tally-ok, .tally-bad { display: inline-flex; align-items: center; gap: .125rem; }
 .tally-ok .icon { color: var(--ok); }
 .tally-bad .icon { color: var(--bad); }
-.chip-btn { border: 1px solid var(--gold-600); color: var(--gold-300); cursor: pointer; }
+.chip-btn { position: relative; border: 1px solid var(--gold-600); color: var(--gold-300); cursor: pointer; transition: transform .15s; user-select: none; }
 .chip-btn:hover { background: rgba(223, 192, 135, .16); }
+.chip-btn:active { transform: scale(.96); background: rgba(223, 192, 135, .24); }
+/* Phase F2: the 40 dp hint chip gets a 48 dp hit area */
+.chip-btn::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: max(100%, var(--tap));
+  height: max(100%, var(--tap));
+  transform: translate(-50%, -50%);
+}
 
 .confirm-down .confirm-box { top: calc(100% + var(--gap-2)); bottom: auto; }
 .challenge-exit > summary { cursor: pointer; }
@@ -846,6 +895,8 @@ body.is-challenge .lang-switch { display: none; }
 .puzzle-wrap { display: contents; }
 .puzzle-board {
   aspect-ratio: 1;
+  -webkit-touch-callout: none;
+  user-select: none;
   border: .125rem solid var(--gold-600);
   border-radius: var(--radius);
   background: var(--navy-900);
@@ -872,6 +923,9 @@ body.is-challenge .lang-switch { display: none; }
   transition: transform .15s;
   -webkit-tap-highlight-color: transparent;
 }
+/* Finger drag (core/drag.js, pointer events) needs the browser to leave
+   moves on the board alone: no scroll, no zoom while a piece is held. */
+.puzzle-board .piece { touch-action: none; }
 .piece-art {
   position: absolute;
   inset: calc(var(--overhang, 0%) * -1);
@@ -892,7 +946,12 @@ body.is-challenge .lang-switch { display: none; }
 }
 .puzzle-board.is-square .piece-art { border-radius: .25rem; }
 .puzzle-board.is-square .piece-edge { stroke: rgba(255, 244, 214, .25); }
-.piece:hover .piece-edge, .piece:focus-visible .piece-edge { stroke: var(--gold-300); stroke-width: 2.5; }
+.piece:focus-visible .piece-edge { stroke: var(--gold-300); stroke-width: 2.5; }
+@media (hover: hover) {
+  .piece:hover .piece-edge { stroke: var(--gold-300); stroke-width: 2.5; }
+}
+/* Press feedback: brighter, not scaled (a scale would shift the dragged art) */
+.piece:not(:disabled):active { filter: brightness(1.12); }
 .piece:focus-visible { outline: none; z-index: 2; }
 .piece:focus-visible .piece-art { filter: drop-shadow(0 0 .1875rem var(--gold-500)); }
 .piece.is-selected { z-index: 2; transform: scale(.94); }
@@ -921,6 +980,7 @@ body.is-challenge .lang-switch { display: none; }
 .sentence-source { display: block; color: var(--ink-dim); font-size: var(--fs-caption); line-height: 1.4; }
 
 .blank {
+  position: relative;
   display: inline-grid;
   place-items: center;
   min-width: 7.5rem;
@@ -933,12 +993,16 @@ body.is-challenge .lang-switch { display: none; }
   color: var(--gold-300);
   font-weight: 700;
   vertical-align: middle;
+  transition: transform .15s;
+  -webkit-touch-callout: none;
+  user-select: none;
 }
 .blank.is-active { border-style: solid; box-shadow: 0 0 0 .1875rem rgba(223, 192, 135, .35); }
 .blank.is-filled { border-style: solid; background: rgba(223, 192, 135, .18); color: var(--ink); }
 .blank.is-correct { border: .125rem solid var(--ok); background: rgba(143, 209, 79, .14); }
 .blank.is-wrong { border: .125rem solid var(--bad); background: rgba(217, 112, 74, .14); }
 .blank.is-correct::after { content: " ✓"; color: var(--ok); }
+.blank:not(:disabled):active { transform: scale(.96); border-style: solid; }
 .blank.is-wrong::after { content: " ✗"; color: var(--bad); }
 
 /* Bacaan rumpang (kelas 5): paragraf utuh, rumpang bernomor di dalam kalimat */
@@ -973,6 +1037,7 @@ body.is-challenge .lang-switch { display: none; }
 }
 .word-bank-title { flex-basis: 100%; color: var(--ink-dim); font-size: var(--fs-caption); font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
 .word {
+  position: relative;
   min-height: 2.75rem;
   padding: var(--gap-1) var(--gap-4);
   border: 1px solid var(--gold-600);
@@ -980,8 +1045,23 @@ body.is-challenge .lang-switch { display: none; }
   background: var(--surface-2);
   color: var(--ink);
   font-weight: 700;
+  transition: transform .15s, background-color .15s;
+  -webkit-touch-callout: none;
+  user-select: none;
 }
 .word:hover { background: rgba(223, 192, 135, .16); }
+.word:not(:disabled):active { transform: scale(.96); background: rgba(223, 192, 135, .24); }
+.word-bank { -webkit-touch-callout: none; user-select: none; }
+/* Phase F2: 44 dp word chips and in-text blanks get a 48 dp hit area */
+.word::before, .blank::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: max(100%, var(--tap));
+  height: max(100%, var(--tap));
+  transform: translate(-50%, -50%);
+}
 .word.is-used { opacity: .35; text-decoration: line-through; }
 
 /* ---------- Boleh (Benar / Salah) ---------- */
@@ -1025,7 +1105,17 @@ body.is-challenge .lang-switch { display: none; }
 .verdict-card.has-error { border-color: var(--warn); box-shadow: 0 0 0 .1875rem rgba(240, 168, 104, .35); }
 .card-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--gap-2); }
 .card-no { color: var(--gold-500); font-size: var(--fs-caption); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
-.card-passage { color: var(--gold-300); text-decoration: none; white-space: normal; }
+.card-passage { position: relative; color: var(--gold-300); text-decoration: none; white-space: normal; }
+/* Phase F2: the passage chip is 30 dp tall; its hit area grows to --tap */
+.card-passage::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: max(100%, var(--tap));
+  transform: translateY(-50%);
+}
 /* Gambar pernyataan 480 × 360 → 192 × 144 dp utuh (tidak terpotong); ketuk = lightbox 640 × 480 */
 .card-image {
   justify-self: start;
@@ -1039,7 +1129,11 @@ body.is-challenge .lang-switch { display: none; }
   cursor: zoom-in;
 }
 .card-image img { width: 100%; height: 100%; object-fit: contain; }
-.card-image:hover { border-color: var(--gold-300); }
+@media (hover: hover) {
+  .card-image:hover { border-color: var(--gold-300); }
+}
+.card-image:active { border-color: var(--gold-300); filter: brightness(1.12); }
+.card-image img { -webkit-user-drag: none; }
 .card-text { margin: 0; font-size: var(--fs-body); font-weight: 600; line-height: 1.45; }
 
 .card-choices { display: flex; flex-wrap: wrap; gap: var(--gap-2); }
@@ -1057,7 +1151,12 @@ body.is-challenge .lang-switch { display: none; }
   color: var(--ink);
   font-weight: 700;
   cursor: pointer;
+  transition: transform .15s;
+  -webkit-touch-callout: none;
+  user-select: none;
 }
+.choice:active { transform: scale(.96); }
+.choice:has(input:disabled):active { transform: none; }
 .choice input { position: absolute; opacity: 0; pointer-events: none; }
 .choice:hover { background: rgba(223, 192, 135, .14); }
 .choice:has(input:checked) { border-color: var(--gold-300); background: var(--gold-500); color: var(--navy-900); }
@@ -1122,6 +1221,8 @@ body.is-challenge .lang-switch { display: none; }
     radial-gradient(circle at 80% 30%, rgba(199, 162, 101, .2), transparent 30%),
     linear-gradient(160deg, var(--navy-600), var(--navy-800));
 }
+.hunt-scene { -webkit-touch-callout: none; user-select: none; }
+.scene-bg, .object img { -webkit-user-drag: none; }
 .scene-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .object {
   position: absolute;
@@ -1134,7 +1235,10 @@ body.is-challenge .lang-switch { display: none; }
   transition: transform .15s, border-color .15s;
 }
 .object img { width: 100%; height: 100%; object-fit: contain; }
-.object:hover { border-color: var(--gold-300); transform: scale(1.05); }
+@media (hover: hover) {
+  .object:hover { border-color: var(--gold-300); transform: scale(1.05); }
+}
+.object:not(:disabled):active { border-color: var(--gold-300); transform: scale(.94); }
 .object.is-found { border: .1875rem solid var(--ok); background: rgba(143, 209, 79, .2); }
 .object.is-shaking { animation: shake .7s; }
 @keyframes shake {
@@ -1149,6 +1253,48 @@ body.is-challenge .lang-switch { display: none; }
 .hunt-target { padding: var(--gap-2) var(--gap-3); border: 1px solid var(--line-ink); border-radius: var(--radius); font-size: var(--fs-caption); }
 .hunt-target.is-current { border-color: var(--gold-500); color: var(--gold-300); font-weight: 700; }
 .hunt-target.is-found { color: var(--ok); text-decoration: line-through; }
+
+/* "Perbesar adegan" (Phase F3.2, engines/cari.js). Coordinates and the zoomed
+   layer order live in stage.css; here only the look. */
+.hunt-zoom {
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: .125rem solid var(--gold-500);
+  border-radius: 50%;
+  background: rgba(11, 19, 32, .78);
+  box-shadow: var(--shadow-1);
+  color: var(--gold-300);
+  cursor: pointer;
+  transition: transform .15s, background-color .15s;
+  -webkit-touch-callout: none;
+  user-select: none;
+}
+.hunt-zoom .icon { width: 1.5rem; height: 1.5rem; }
+.hunt-zoom:hover { background: rgba(38, 53, 90, .92); }
+.hunt-zoom:active { transform: scale(.94); background: rgba(38, 53, 90, .92); }
+.hunt-zoom[aria-pressed="true"] { background: var(--gold-500); color: var(--navy-900); }
+.hunt.is-zoomed .hunt-scene { border: 0; border-radius: 0; }
+/* The clue as a compact ribbon on a semi-opaque navy backing; Mbah Kedu's
+   portrait is dropped to give the text the room */
+.hunt.is-zoomed .hunt-clue {
+  grid-template-columns: minmax(0, 1fr);
+  padding: 0 var(--gap-4);
+  border-color: var(--line-strong);
+  background: rgba(11, 19, 32, .82);
+  box-shadow: var(--shadow-2);
+  color: var(--ink);
+}
+.hunt.is-zoomed .hunt-guide { display: none; }
+/* Taps on the ribbon fall through to objects under it; only the voice button keeps them */
+.hunt.is-zoomed .hunt-clue { pointer-events: none; }
+.hunt.is-zoomed .hunt-clue .clue-voice { pointer-events: auto; }
+.hunt.is-zoomed .hunt-clue .eyebrow, .hunt.is-zoomed .clue-tries { color: var(--gold-300); }
+.hunt.is-zoomed .clue-tries .tries-dot { border-color: var(--gold-300); }
+.hunt.is-zoomed .clue-tries .tries-dot.is-left { background: var(--gold-300); }
+.hunt.is-zoomed .clue-voice .audio-btn { background: rgba(223, 192, 135, .16); color: var(--gold-300); }
+.hunt.is-zoomed .clue-voice .audio-btn[data-action="play"] { background: var(--gold-500); color: var(--navy-900); }
 
 /* =========================== SELESAI =========================== */
 .finished-card {
@@ -1315,9 +1461,9 @@ html.js .book-frame img.is-loaded { opacity: 1; }
 .media-credit > summary {
   display: grid;
   place-items: center;
-  /* area sentuh 2.75rem, lingkaran terlihat 1.625rem */
-  width: 2.75rem;
-  height: 2.75rem;
+  /* Hit area 48 dp (--tap); the visible circle is 1.625rem */
+  width: var(--tap);
+  height: var(--tap);
   list-style: none;
   cursor: pointer;
 }
@@ -1386,7 +1532,11 @@ html.js .book-frame img.is-loaded { opacity: 1; }
   transition: transform .2s ease, background .2s ease;
 }
 .embed-play-icon .icon { width: 44%; height: 44%; margin-left: 6%; }
-.embed-play:hover .embed-play-icon, .embed-play:focus-visible .embed-play-icon { background: var(--gold-300); transform: scale(1.06); }
+.embed-play:focus-visible .embed-play-icon { background: var(--gold-300); transform: scale(1.06); }
+@media (hover: hover) {
+  .embed-play:hover .embed-play-icon { background: var(--gold-300); transform: scale(1.06); }
+}
+.embed-play:active .embed-play-icon { background: var(--gold-300); transform: scale(.94); }
 .embed-play:focus-visible { outline: .1875rem solid var(--gold-300); outline-offset: -.1875rem; }
 .embed-provider {
   position: absolute;
@@ -1605,8 +1755,12 @@ html.js .book-frame img.is-loaded { opacity: 1; }
   cursor: pointer;
 }
 .rating-star input { position: absolute; opacity: 0; pointer-events: none; }
-.rating-star .icon { width: 2.5rem; height: 2.5rem; fill: var(--star-fill, none); }
-.rating-star:hover { color: var(--brown-500); }
+.rating-star .icon { width: 2.5rem; height: 2.5rem; fill: var(--star-fill, none); transition: transform .15s; }
+@media (hover: hover) {
+  .rating-star:hover { color: var(--brown-500); }
+}
+.rating-star:active { color: var(--brown-500); }
+.rating-star:active .icon { transform: scale(.9); }
 .rating-star:has(input:focus-visible) { outline: .1875rem solid var(--navy-800); outline-offset: 1px; }
 .rating-stars:has(input[value="1"]:checked) .rating-star:nth-child(-n + 1),
 .rating-stars:has(input[value="2"]:checked) .rating-star:nth-child(-n + 2),
@@ -1626,7 +1780,18 @@ html.js .book-frame img.is-loaded { opacity: 1; }
 
 /* Puzzle */
 .piece[aria-pressed="true"] { z-index: 2; }
-.piece.is-dragging { opacity: .45; }
+/* Finger drag (Phase F3.1): the held slot rises above the others; the JS
+   moves .piece-art with an inline transform, which must follow the finger
+   with no easing. The slot under the finger is the drop target. */
+.piece.is-dragging { z-index: 5; cursor: grabbing; }
+.piece.is-dragging .piece-art {
+  transition: none;
+  filter: drop-shadow(0 .5rem .75rem rgba(0, 0, 0, .55)) drop-shadow(0 0 .25rem var(--gold-500));
+}
+.piece.is-drop-target { z-index: 3; }
+.piece.is-drop-target .piece-edge { stroke: var(--gold-300); stroke-width: 3.5; }
+.piece.is-drop-target .piece-art { filter: drop-shadow(0 0 .375rem var(--gold-500)); }
+.puzzle-board.is-square .piece.is-drop-target { outline: .1875rem solid var(--gold-500); outline-offset: -.1875rem; }
 .piece:disabled { opacity: 1; cursor: default; }
 .puzzle-board.is-solved .puzzle-grid { gap: 0; }
 .puzzle-board.is-solved .piece-edge { stroke: transparent; }
@@ -1670,6 +1835,7 @@ html.js .book-frame img.is-loaded { opacity: 1; }
   cursor: pointer;
 }
 .hunt-jump:hover:not(:disabled) { background: rgba(223, 192, 135, .1); }
+.hunt-jump:active:not(:disabled) { background: rgba(223, 192, 135, .18); }
 .hunt-jump:disabled { cursor: default; }
 .hunt-target.is-found .hunt-jump::before { content: "✓ "; }
 .object:disabled { cursor: default; }
@@ -1717,4 +1883,14 @@ html.js .book-frame img.is-loaded { opacity: 1; }
   .flame-3, .orb, .map-point.is-open .pin-icon, .map-point.is-in_progress .pin-icon, .map-point.is-open .pin-icon.has-art, .map-point.is-in_progress .pin-icon.has-art { animation: none; }
   .dialogue-stage .character { transition: none; }
   .object.is-shaking, .lantern.is-updated .lantern-count b { animation: none; }
+  /* Phase F1.5: the start button stops pulsing; hover, selection, and press
+     keep their colour cues but do not move or scale */
+  .btn-start, .btn-start.is-image { animation: none; }
+  .btn-start:hover, .btn-start:focus-visible, .btn-start:active,
+  .map-pin:hover .pin-icon, .map-pin:active .pin-icon,
+  .piece.is-selected, .object:hover, .object:not(:disabled):active,
+  .word:not(:disabled):active, .blank:not(:disabled):active,
+  .choice:active, .choice-pill:active, .chip-btn:active, .hunt-zoom:active,
+  .embed-play:hover .embed-play-icon, .embed-play:focus-visible .embed-play-icon, .embed-play:active .embed-play-icon,
+  .rating-star:active .icon { transform: none; }
 }

@@ -7,7 +7,8 @@
  * perkamen, gambar halaman berikutnya dipramuat, perbesar gambar (dengan
  * pemutar tunggu), panel kredit ⓘ yang saling menutup, pemutar video
  * tertanam yang baru dimuat saat tombol Putar ditekan, dan event
- * `library_page_viewed` { page, page_id } tiap halaman dibuka. Membuka
+ * `library_page_viewed` { page, page_id } tiap halaman dibuka. A swipe
+ * left/right (touch, pen) turns the page exactly like Lanjut/Kembali. Membuka
  * pustaka tidak memengaruhi skor sama sekali — `library_opened` sudah
  * dicatat server, hanya bila isi buku benar-benar tampil.
  *
@@ -209,6 +210,8 @@ export function initLibrary() {
   const slides = initSlides({
     list: $('ol.book', screen),
     prefix: 'page-',
+    // Swipe on the whole book turns the page like Lanjut/Kembali (display plan F3.3)
+    swipe: { area: screen },
     onChange: (index, slide, total) => {
       $$('video', screen).forEach((video) => video.pause());
       $$('.book-embed', screen).forEach((box) => box.resetEmbed?.());

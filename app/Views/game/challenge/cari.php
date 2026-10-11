@@ -88,6 +88,13 @@ $maxTries = max(1, (int) ($payload['max_tries'] ?? config('Gelita')->maxTries));
       </button>
     <?php endforeach ?>
   </div>
+  <?php // Enlarge the scene to the whole stage (display plan F3.2); engines/cari.js shows it and swaps the labels ?>
+  <button type="button" class="hunt-zoom" id="hunt-zoom" aria-pressed="false" aria-controls="hunt-scene" hidden
+          title="<?= esc(lang('Game.huntZoom'), 'attr') ?>"
+          data-label-open="<?= esc(lang('Game.huntZoom'), 'attr') ?>"
+          data-label-close="<?= esc(lang('Game.huntZoomClose'), 'attr') ?>">
+    <?= icon('fullscreen') ?><span class="visually-hidden" data-hunt-zoom-label><?= esc(lang('Game.huntZoom')) ?></span>
+  </button>
 
   <div class="hunt-side">
     <p class="hunt-list-title"><?= esc(lang('Game.huntList')) ?></p>

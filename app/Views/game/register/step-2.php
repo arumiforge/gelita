@@ -82,7 +82,7 @@ $country = $val('country_code') ?: 'ID';
 
       <div class="field region-other<?= $invalid('country_other') ?>">
         <label for="country_other"><?= esc(lang('Game.countryOtherName')) ?></label>
-        <input type="text" id="country_other" name="country_other" maxlength="100"
+        <input type="text" id="country_other" name="country_other" maxlength="100" enterkeyhint="next"
                value="<?= esc($val('country_other'), 'attr') ?>">
         <?php if ($err('country_other')): ?><p class="field-error"><?= esc($err('country_other')) ?></p><?php endif ?>
       </div>
@@ -97,7 +97,7 @@ $country = $val('country_code') ?: 'ID';
            data-warn-stage="<?= esc(lang('Game.schoolWarnStage'), 'attr') ?>">
         <label for="school_npsn"><?= esc(lang('Game.schoolNpsn')) ?> <span class="req" aria-hidden="true">*</span></label>
         <input type="text" id="school_npsn" name="school_npsn" maxlength="8" inputmode="numeric"
-               autocomplete="off" spellcheck="false" aria-describedby="school_npsn-help school-card"
+               autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="next" aria-describedby="school_npsn-help school-card"
                value="<?= esc($val('school_npsn'), 'attr') ?>">
         <p class="field-help" id="school_npsn-help"><?= esc(lang('Game.schoolNpsnHelp')) ?></p>
         <div class="school-card" id="school-card" role="status" aria-live="polite" data-school-card>
@@ -123,7 +123,7 @@ $country = $val('country_code') ?: 'ID';
       <div class="field school-name<?= $invalid('school_name') ?>">
         <label for="school_name"><?= esc(lang('Game.school')) ?> <span class="req" aria-hidden="true">*</span></label>
         <input type="text" id="school_name" name="school_name" minlength="3" maxlength="200"
-               autocomplete="off" aria-describedby="school-help"
+               autocomplete="off" autocorrect="off" enterkeyhint="next" aria-describedby="school-help"
                value="<?= esc($val('school_name'), 'attr') ?>">
         <p class="field-help" id="school-help"><?= esc(lang('Game.schoolHelp')) ?></p>
         <?php if ($err('school_name')): ?><p class="field-error"><?= esc($err('school_name')) ?></p><?php endif ?>

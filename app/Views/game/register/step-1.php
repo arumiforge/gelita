@@ -40,7 +40,7 @@ $focus   = static fn (string $f): string => $first === $f ? ' autofocus' : '';
       <div class="field<?= $invalid('display_name') ?>">
         <label for="display_name"><?= esc(lang('Game.displayName')) ?> <span class="req" aria-hidden="true">*</span></label>
         <input type="text" id="display_name" name="display_name" required minlength="2" maxlength="150"
-               aria-describedby="display_name-help" value="<?= esc($val('display_name'), 'attr') ?>"<?= $focus('display_name') ?>>
+               aria-describedby="display_name-help" enterkeyhint="next" value="<?= esc($val('display_name'), 'attr') ?>"<?= $focus('display_name') ?>>
         <p class="field-help" id="display_name-help"><?= esc(lang('Game.displayNameHelp')) ?></p>
         <?php if ($err('display_name')): ?><p class="field-error"><?= esc($err('display_name')) ?></p><?php endif ?>
       </div>
@@ -49,7 +49,7 @@ $focus   = static fn (string $f): string => $first === $f ? ' autofocus' : '';
         <div class="field<?= $invalid('age') ?>">
           <label for="age"><?= esc(lang('Game.age')) ?> <span class="req" aria-hidden="true">*</span></label>
           <div class="input-affix input-affix-lg">
-            <input type="number" id="age" name="age" required min="<?= $minAge ?>" max="<?= $maxAge ?>" inputmode="numeric"
+            <input type="number" id="age" name="age" required min="<?= $minAge ?>" max="<?= $maxAge ?>" inputmode="numeric" enterkeyhint="next"
                    value="<?= esc($val('age'), 'attr') ?>"<?= $focus('age') ?>>
             <span><?= esc(lang('Game.ageUnit')) ?></span>
           </div>

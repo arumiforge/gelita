@@ -678,7 +678,7 @@ Parameter `level` (dan `seq`) diterjemahkan ke kolom `level_id` (dan `challenge_
 |---|---|---|---|
 | `level_opened` | `game/map.js` | peta wilayah dibuka | `code` |
 | `dialogue_advanced` | `game/narrator.js` | slide cerita berpindah | `index`, `total`, `context`, `character` |
-| `overlay_opened` | `core/device.js` (`overlayOpened()` dari `game/map.js`, `game/library.js`, `engines/boleh.js`), `game/challenge.js` | overlay Kenali, modal petunjuk, modal keluar, lightbox Pustaka, gambar pernyataan Benar atau Salah | `overlay` (`kenal`, `hint`, `exit`, `lightbox`, `statement_image`), `level` (kode wilayah) |
+| `overlay_opened` | `core/device.js` (`overlayOpened()` dari `game/map.js`, `game/library.js`, `engines/boleh.js`, `engines/cari.js`), `game/challenge.js` | overlay Kenali, modal petunjuk, modal keluar, lightbox Pustaka, gambar pernyataan Benar atau Salah, adegan Cari Objek diperbesar | `overlay` (`kenal`, `hint`, `exit`, `lightbox`, `statement_image`, `hunt_zoom`), `level` (kode wilayah) |
 | `answer_selected` | `game/challenge.js` | mengisi/mengubah soal sebelum cek | `action` (`set`, `clear`, `swap`), `value`, `from`, `to`, `t_ms` |
 | `reading_progress` | `core/device.js` | panel bacaan digulir melewati 25/50/75/100 % (sekali per pengerjaan) | `passage_id`, `percent` |
 | `challenge_opened` | `game/challenge.js` | pengerjaan dilanjutkan (resume) | `resumed: true`, `attempt_no` |

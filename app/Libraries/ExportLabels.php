@@ -197,7 +197,7 @@ final class ExportLabels
         'navigasi' => [
             'screen'      => ['Layar', 'code', 'Kode layar (payload.screen).'],
             'from_screen' => ['Dari layar', 'code', 'Kode layar sebelumnya (payload.from) untuk screen_viewed.'],
-            'event_type'  => ['Jenis event', 'enum', 'Event navigasi: screen_viewed, overlay_opened, dialogue_advanced, library_opened, library_page_viewed, locale_changed, page_hidden, page_visible, viewport_changed, reading_progress, package_changed (paket aset berganti; payload from, to, reason), events_dropped (catatan yang tidak muat di memori perangkat; payload dropped, channel).', 'event'],
+            'event_type'  => ['Jenis event', 'enum', 'Event navigasi: screen_viewed, overlay_opened (payload overlay: kenal, hint, exit, lightbox, statement_image, hunt_zoom), dialogue_advanced, library_opened, library_page_viewed, locale_changed, page_hidden, page_visible, viewport_changed, reading_progress, package_changed (paket aset berganti; payload from, to, reason), events_dropped (catatan yang tidak muat di memori perangkat; payload dropped, channel).', 'event'],
         ],
         'bantuan' => [
             'jenis'         => ['Jenis bantuan', 'enum', 'petunjuk = petunjuk dibuka (event hint_opened); audio = satu aksi pemutar suara.', 'helpKind'],

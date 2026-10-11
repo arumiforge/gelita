@@ -33,6 +33,9 @@
  * untuk beberapa pemutar dalam satu halaman (overlay Kenali di peta).
  * Pemutar yang sudah `stop()` boleh `start()` lagi (overlay dibuka ulang).
  *
+ * Swipe left/right on the player (touch and pen) does what the slide's
+ * Lanjut/Kembali link does (game/slides.js), including `dialogue_advanced`.
+ *
  * Tanpa JavaScript slide tetap berpindah lewat #{prefix}{n} + CSS :target;
  * kartu ketuk dan kontrol tetap tersembunyi. Dengan prefers-reduced-motion:
  * tanpa mesin ketik, tanpa efek layar, tanpa Ken Burns (CSS).
@@ -88,6 +91,8 @@ export function initNarrator(root, { onFinish = null, onSlide = null } = {}) {
     prefix,
     keyboard: root.dataset.keyboard !== '0',
     hash: root.dataset.hash !== '0',
+    // Swipe anywhere on the player except the "Ketuk untuk mulai" card (display plan F3.3)
+    swipe: { area: root, ignore: '[data-narrator-tap]' },
     onChange: (index, slide, total) => {
       emit('dialogue_advanced', {
         levelId,
