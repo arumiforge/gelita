@@ -226,7 +226,9 @@ body.game {
 .modal-layer > .modal.is-wide { width: 45rem; }
 .modal-layer .modal-card { max-height: 35rem; overflow-y: auto; overscroll-behavior: contain; }
 
-/* ---------- Toast: x 856, y 72, w 400 ---------- */
+/* ---------- Toast: x 856, y 72, w 400 ----------
+   Above the modal veil (z 60 over 50): errors must be seen. Only the card
+   takes taps; the rest of the layer lets them through. */
 .toast-layer {
   position: absolute;
   top: 4.5rem;
