@@ -46,9 +46,9 @@ Owner decisions: phases in order 0 → A → B → C → E → F, one branch and
 - [x] Phase F — touch-friendly play (PR #90); real-device items in `docs/perombakan-kelas5/device-test-checklist.md` §4 are for the owner
 
 - **Follow-ups from the audit of 11 October 2026** (every phase checked against the plan on `main`; recorded deviations stay as they are)
-  - [ ] Phase 0: `reward.badge.*` display size, automated music check (`tampilan-0-susulan`)
-  - [ ] Phase F: Next/Done keyboard hints on the new-password fields (`tampilan-f-sandi`)
-  - [ ] Phase A: Nginx/Apache routing of `/manifest.json` in `docs/08_DEPLOYMENT.md` (`sky/beautiful-thompson-u4027f`)
+  - [x] Phase 0: `reward.badge.*` display size, automated music check `tools/qa/music-check.mjs` (PR #93)
+  - [x] Phase F: Next/Done keyboard hints on the new-password fields (PR #92)
+  - [x] Phase A: Nginx/Apache routing of `/manifest.json` in `docs/08_DEPLOYMENT.md` (PR #91)
   - [x] Owner call (11 October 2026): slide dots keep their narrow tap area (14–22 dp wide); Lanjut/Kembali and swipe stay the full-size way to move
 
 ## Asset package (`docs/rencana-paket-aset.md`, stages in §10)
@@ -83,6 +83,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 | `paket-1b-narasi` | Asset package Stage 1b: narration 48 kbps | PR open |
 | `paket-4-transisi` | Asset package Stage 4: transitions, decode, curtain | PR open |
 | `paket-5-integritas` | Asset package Stage 5: research data integrity | PR open |
-| `sky/beautiful-thompson-u4027f` | Display update: audit follow-ups, coordination of the two branches below, `08_DEPLOYMENT` manifest routing | PR open |
-| `tampilan-0-susulan` | Display update follow-up, Phase 0: badge display size, music check | PR open |
-| `tampilan-f-sandi` | Display update follow-up, Phase F: keyboard hints on password fields | PR open |
