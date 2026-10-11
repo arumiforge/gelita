@@ -212,6 +212,7 @@ class Gelita extends BaseConfig
         'challenge.item.*-1-*'  => [504, 504],   // papan Susun Gambar
         'challenge.item.*-4-*'  => [0, 0],       // lebar = w% adegan (persegi)
         'challenge.item.*-3-*'  => [192, 144],   // kartu pernyataan; lightbox 640 × 480
+        'reward.badge.*'        => [72, 72],     // profile badge shelf (.region-badge-art, 4.5rem); the only screen
         'ui.logo-hero'          => [800, 300],
         'ui.btn-start'          => [360, 120],
         'ui.btn-start.*'        => [360, 120],

@@ -117,6 +117,18 @@ final class MediaSlotPagesTest extends CIUnitTestCase
         $this->assertStringContainsString('<input type="hidden" name="asset_key" value="map.region.temanggung">', $html);
     }
 
+    public function testBadgeDetailShowsFileAndDisplaySize(): void
+    {
+        $html = $this->page('admin/media/' . $this->mediaId('reward.badge.temanggung'));
+
+        $this->assertStringContainsString('320 × 320 px (gambar lebih besar dengan bentuk sama diperkecil otomatis)', $html);
+        $this->assertStringContainsString('72 × 72 dp (layar 1280 × 720)', $html, 'shown at 4.5rem on the profile badge shelf');
+
+        $method = new ReflectionMethod(App\Controllers\Admin\MediaController::class, 'displaySize');
+        $this->assertSame([72, 72], $method->invoke(new App\Controllers\Admin\MediaController(), 'reward.badge.temanggung'));
+        $this->assertSame([880, 566], $method->invoke(new App\Controllers\Admin\MediaController(), 'map.region.temanggung'));
+    }
+
     public function testChallengeImageDetailNamesTheChallengeAndTheObjectRole(): void
     {
         $html = $this->page('admin/media/' . $this->mediaId('challenge.item.tmg-4-09'));
