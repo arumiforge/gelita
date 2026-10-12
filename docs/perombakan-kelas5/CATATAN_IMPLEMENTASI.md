@@ -1435,7 +1435,7 @@ Branch `pbb/nifty-faraday-fcw9r6` (second PR on it; the first, PR #100, is merge
   - 3D relief maps;
   - faceless avatar medallions, as in the catalogue. This settles the avatar brief question in favour of the archived plan's emblems.
   - WebP in every format line except `app.*`.
-- **Not changed, reported to the owner.** In the three catalogue Cari Objek scenes, the objects (positions fixed in the approved question bank) do not sit on the drawn shelves; top-row objects float in the sky. The bank is frozen (`docs/bank-soal/README.md`), so the scenes need redrawing to the bank positions, or the owner decides to move the positions as a new release.
+- **Not changed, reported to the owner** (fixed on 12 October 2026, see *Cari Objek objects onto the scene tables*). In the three catalogue Cari Objek scenes, the objects (positions fixed in the approved question bank) do not sit on the drawn shelves; top-row objects float in the sky. The bank is frozen (`docs/bank-soal/README.md`), so the scenes need redrawing to the bank positions, or the owner decides to move the positions as a new release.
 - **Docs.** `docs/rencana-katalog-aset.md` and `docs/rencana-perbaikan-tampilan.md` moved to `docs/arsip/` with a "finished" note and `docs/arsip/README.md`; links in code comments and docs were updated. Older entries in this log keep the names they had. `docs/rencana-paket-aset.md` stays, since Stages 2, 3, and 6 are open.
 - **Tests.**
   - New: `CatalogImportTest` (fake catalogue).
@@ -1464,3 +1464,24 @@ Branch `pbb/nifty-faraday-fcw9r6` (third PR on it; #100 and #101 are merged). Ow
   - All 240 frame rows are `sprite_frame`, about 15 MB after re-encoding (≈ 64 KB per frame).
   - `character_frames('jaka', 'happy')` returns 24 frames at 12 per second, looping.
 - **Tests.** `CatalogImportTest::testChangedCatalogueFileIsReinstalled`. Suite green.
+
+## Cari Objek objects onto the scene tables (12 October 2026)
+
+Branch `pbb/nifty-faraday-fcw9r6` (fourth PR on it; #100–#102 are merged). Owner request: fix the three Cari Objek scenes. Of the options offered (move the objects, redraw the scenes, or leave them), the owner chose **moving the objects onto the drawn tables and shelves**. This is a **layout change to the approved question bank**: only `x`, `y`, `w` of the 30 objects change; objects, answers, decoys, clues, feedback, and item codes stay the same.
+
+- **How the positions were measured.** Each catalogue scene (`gelita-katalog/assets/tantangan/challenge.{tmg,mgl,wnb}-4.scene.webp`, 1280 × 720) was gridded in 1 % steps. Each object's bottom edge (the item pictures have about 4 % transparent margin at the bottom) is placed in the middle of the depth of a table or shelf top. Each layout was checked by drawing the 30 catalogue object pictures onto the scenes.
+  - **Temanggung** (three long tables, tops at about 47 %, 61 %, 76 %): 3 · 2 · 3 objects, zigzagged so no object hides another. Widths 10 / 11 / 12 % (smaller further back).
+  - **Magelang** (pendopo, three tables on each side, centre aisle empty): per side 3 objects on the front table (w 8), 1 on the middle table (w 7), and 1 on the back table (w 6). The smallest is 52 px in the normal view, still above the 48 px tap minimum.
+  - **Wonosobo** (bamboo shelf, wooden table, bamboo bench): 3 · 4 · 5 objects, w 10 as before.
+  - Largest overlap is 13 % (limit 20 %, `BankRules::MAX_OVERLAP`). `build-workbook.php` reports 0 warnings.
+- **Bank source and workbook.** `docs/bank-soal/data/{temanggung,magelang,wonosobo}.php` were changed and the workbook rebuilt. The three scene notes (`scene_media_note`, shown in the panel's Media page) now describe the catalogue scenes and their surface heights, also in the slot table of `docs/bank-soal/README.md`. The old Temanggung note ("tiga deret rak kosong … 27 %, 61 %, 93 %") described a layout no longer used.
+- **Servers that already have the bank.** `CatalogImporter::SCENE_OBJECTS` maps the sha256 of each measured scene to every object's old and new position. `gelita:katalog:impor` handles it like the map buttons (`MAP_STOPS`), whenever that exact scene is installed from the catalogue:
+  - an object still at its **old bank position** is moved;
+  - an object already at the new position is skipped;
+  - an object at **any other position** (placed by an admin in the challenge editor) is kept, unless `--timpa` is given.
+
+  `gelita:bank:import` also writes the new positions, but it resets admin placements, as it always has.
+- **Not changed.** The `.object` button stays a square circle. One catalogue object picture, `challenge.item.wnb-4-a07` (mi ongklok), has an opaque square background instead of a transparent one, so it shows as a picture tile on the bench. That is for the catalogue team or the panel to fix.
+- **Tests.** In `CatalogImportTest`:
+  - `testMeasuredSceneMovesObjectsOntoItsTables` covers old position → moved, admin position → kept, already moved → skipped, `--timpa`, and dry run;
+  - `testMeasuredScenesMatchTheCatalogueAndTheBank` is a sha guard, and also checks that the bank carries exactly the positions in `SCENE_OBJECTS`.

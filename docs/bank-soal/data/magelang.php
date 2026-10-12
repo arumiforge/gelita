@@ -522,7 +522,7 @@ return [
                 'Di galeri budaya Magelang, benda-benda khas tercampur dengan benda yang mirip. Baca petunjuknya dengan teliti dan temukan empat benda yang dimaksud.',
                 'In Magelang\'s culture gallery, special objects are mixed with look-alikes. Read the clues carefully and find the four objects.',
             ],
-            'scene'       => ['key' => 'challenge.mgl-4.scene', 'label' => 'Galeri Budaya Magelang', 'note' => 'galeri/pendapa budaya, dua deret meja pajang kayu, stupa & Gunung Tidar di latar'],
+            'scene'       => ['key' => 'challenge.mgl-4.scene', 'label' => 'Galeri Budaya Magelang', 'note' => 'galeri/pendapa budaya, tiga meja pajang kayu di kiri dan tiga di kanan dengan lorong lantai di tengah (permukaan meja ± 55 %, 60 %, 67 % tinggi gambar), stupa & Gunung Tidar di latar'],
             'hints'       => [
                 [
                     'Petunjuknya tidak selalu menyebut nama benda. Cocokkan ciri-cirinya: bahan, bentuk, dan kegunaannya.',
@@ -545,9 +545,9 @@ return [
                         [   // mgl-4-a01
                             'type'   => 'find_object',
                             'bloom'  => 'C2',
-                            'x'      => 23.5,
-                            'y'      => 17,
-                            'w'      => 12,
+                            'x'      => 28.5,
+                            'y'      => 48,
+                            'w'      => 7,
                             'prompt' => [
                                 'Temukan bangunan kecil berbentuk lonceng yang berlubang-lubang. Di teras bundar Borobudur ada 72 bangunan seperti ini.',
                                 'Find the small bell-shaped structure full of holes. Borobudur has 72 of these on its round terraces.',
@@ -557,9 +557,9 @@ return [
                         [   // mgl-4-a02
                             'type'   => 'find_object',
                             'bloom'  => 'C3',
-                            'x'      => 4,
-                            'y'      => 56,
-                            'w'      => 12,
+                            'x'      => 1,
+                            'y'      => 54.5,
+                            'w'      => 8,
                             'prompt' => [
                                 'Temukan hiasan kepala dari bulu warna-warni yang dipakai penari tari rakyat dari Desa Tuksongo, Magelang.',
                                 'Find the colourful feather headdress worn by dancers of the folk dance from Tuksongo Village, Magelang.',
@@ -569,9 +569,9 @@ return [
                         [   // mgl-4-a03
                             'type'   => 'find_object',
                             'bloom'  => 'C2',
-                            'x'      => 62.5,
-                            'y'      => 17,
-                            'w'      => 12,
+                            'x'      => 64.5,
+                            'y'      => 48,
+                            'w'      => 7,
                             'prompt' => [
                                 'Temukan jajanan dari singkong yang dikukus, ditumbuk, lalu diberi gula. Jajanan ini membuat Magelang punya julukan khusus.',
                                 'Find the snack made of cassava that is steamed, pounded, and sweetened. This snack gave Magelang a special nickname.',
@@ -581,9 +581,9 @@ return [
                         [   // mgl-4-a04
                             'type'   => 'find_object',
                             'bloom'  => 'C3',
-                            'x'      => 62.5,
-                            'y'      => 56,
-                            'w'      => 12,
+                            'x'      => 81.5,
+                            'y'      => 54.5,
+                            'w'      => 8,
                             'prompt' => [
                                 'Temukan benda dari tanah liat yang dibentuk lalu dibakar, buatan warga Dusun Klipoh.',
                                 'Find the object made of clay that is shaped and then fired, made by the people of Klipoh Hamlet.',
@@ -593,9 +593,9 @@ return [
                         [   // mgl-4-a05 · pengecoh
                             'type'   => 'find_object',
                             'decoy'  => true,
-                            'x'      => 4,
-                            'y'      => 17,
-                            'w'      => 12,
+                            'x'      => 10.5,
+                            'y'      => 54.5,
+                            'w'      => 8,
                             'prompt' => ['Kuda kepang bambu (pengecoh)', 'Bamboo hobby horse (decoy)'],
                             'wrong'  => [
                                 'Ini kuda kepang dari Temanggung, wilayah yang sudah kamu jelajahi. Baca lagi petunjuknya.',
@@ -606,9 +606,9 @@ return [
                         [   // mgl-4-a06 · pengecoh
                             'type'   => 'find_object',
                             'decoy'  => true,
-                            'x'      => 82,
-                            'y'      => 17,
-                            'w'      => 12,
+                            'x'      => 70.5,
+                            'y'      => 45.5,
+                            'w'      => 6,
                             'prompt' => ['Manisan carica dalam stoples (pengecoh)', 'Sweet carica in a jar (decoy)'],
                             'wrong'  => ['Ini manisan carica, oleh-oleh khas Wonosobo.', 'This is sweet carica in syrup, a souvenir from Wonosobo.'],
                             'media'  => ['key' => 'challenge.item.mgl-4-a06', 'label' => 'Manisan carica dalam stoples', 'note' => 'stoples manisan carica'],
@@ -616,9 +616,9 @@ return [
                         [   // mgl-4-a07 · pengecoh
                             'type'   => 'find_object',
                             'decoy'  => true,
-                            'x'      => 43,
-                            'y'      => 17,
-                            'w'      => 12,
+                            'x'      => 23.5,
+                            'y'      => 45.5,
+                            'w'      => 6,
                             'prompt' => ['Dadak merak Reog (pengecoh)', 'Reog dadak merak (decoy)'],
                             'wrong'  => [
                                 'Ini dadak merak dari Reog Ponorogo, Jawa Timur. Bulunya bulu merak, bukan kuluk penari dari Magelang.',
@@ -629,9 +629,9 @@ return [
                         [   // mgl-4-a08 · pengecoh
                             'type'   => 'find_object',
                             'decoy'  => true,
-                            'x'      => 43,
-                            'y'      => 56,
-                            'w'      => 12,
+                            'x'      => 72,
+                            'y'      => 54.5,
+                            'w'      => 8,
                             'prompt' => ['Angklung (pengecoh)', 'Angklung (decoy)'],
                             'wrong'  => [
                                 'Ini angklung dari Jawa Barat — bukan benda yang dimaksud petunjuk.',
@@ -642,9 +642,9 @@ return [
                         [   // mgl-4-a09 · pengecoh
                             'type'   => 'find_object',
                             'decoy'  => true,
-                            'x'      => 23.5,
-                            'y'      => 56,
-                            'w'      => 12,
+                            'x'      => 20,
+                            'y'      => 54.5,
+                            'w'      => 8,
                             'prompt' => ['Bakpia (pengecoh)', 'Bakpia (decoy)'],
                             'wrong'  => [
                                 'Ini bakpia, jajanan dari Yogyakarta. Getuk dibuat dari singkong.',
@@ -655,9 +655,9 @@ return [
                         [   // mgl-4-a10 · pengecoh
                             'type'   => 'find_object',
                             'decoy'  => true,
-                            'x'      => 82,
-                            'y'      => 56,
-                            'w'      => 12,
+                            'x'      => 91,
+                            'y'      => 54.5,
+                            'w'      => 8,
                             'prompt' => ['Panci logam (pengecoh)', 'Metal pot (decoy)'],
                             'wrong'  => ['Ini panci dari logam, bukan gerabah dari tanah liat.', 'This is a metal pot, not pottery made of clay.'],
                             'media'  => ['key' => 'challenge.item.mgl-4-a10', 'label' => 'Panci logam', 'note' => 'panci logam'],

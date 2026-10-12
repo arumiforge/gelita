@@ -154,7 +154,7 @@ Setiap slot langsung berisi **gambar contoh** (SVG bertulisan "GAMBAR CONTOH", `
 | `challenge.item.tmg-4-10` | Ondel-ondel | TMG Cari Objek (benda) | ondel-ondel kecil | 240 × 240, latar transparan |
 | `challenge.item.tmg-4-11` | Perahu pinisi | TMG Cari Objek (benda) | perahu pinisi berlayar | 240 × 240, latar transparan |
 | `challenge.item.tmg-4-12` | Sasando | TMG Cari Objek (benda) | sasando | 240 × 240, latar transparan |
-| `challenge.tmg-4.scene` | Pasar Budaya Temanggung | TMG Cari Objek (adegan) | halaman balai desa/pasar budaya di kaki Sindoro–Sumbing, tiga deret rak kosong (permukaan rak ± 27 %, 61 %, 93 % tinggi gambar) | 1280 × 720 |
+| `challenge.tmg-4.scene` | Pasar Budaya Temanggung | TMG Cari Objek (adegan) | halaman balai desa/pasar budaya di kaki Sindoro–Sumbing, tiga meja panjang kosong berjajar ke depan (permukaan meja ± 47 %, 61 %, 76 % tinggi gambar) | 1280 × 720 |
 | `challenge.item.mgl-1-01` | Stupa Borobudur | MGL Susun Gambar | stupa berlubang teras atas Borobudur, stupa induk di latar | persegi ≥ 1200 px |
 | `challenge.item.mgl-1-02` | Penari Topeng Ireng | MGL Susun Gambar | penari Topeng Ireng dengan kuluk bulu warna-warni | persegi ≥ 1200 px |
 | `challenge.item.mgl-1-03` | Candi Mendut | MGL Susun Gambar | Candi Mendut tampak depan dengan tangga masuk | persegi ≥ 1200 px |
@@ -168,7 +168,7 @@ Setiap slot langsung berisi **gambar contoh** (SVG bertulisan "GAMBAR CONTOH", `
 | `challenge.item.mgl-4-a08` | Angklung | MGL Cari Objek (benda) | angklung bambu | 240 × 240, latar transparan |
 | `challenge.item.mgl-4-a09` | Bakpia | MGL Cari Objek (benda) | beberapa bakpia | 240 × 240, latar transparan |
 | `challenge.item.mgl-4-a10` | Panci logam | MGL Cari Objek (benda) | panci logam | 240 × 240, latar transparan |
-| `challenge.mgl-4.scene` | Galeri Budaya Magelang | MGL Cari Objek (adegan) | galeri/pendapa budaya, dua deret meja pajang kayu, stupa & Gunung Tidar di latar | 1280 × 720 |
+| `challenge.mgl-4.scene` | Galeri Budaya Magelang | MGL Cari Objek (adegan) | galeri/pendapa budaya, tiga meja pajang kayu di kiri dan tiga di kanan dengan lorong lantai di tengah (permukaan meja ± 55 %, 60 %, 67 % tinggi gambar), stupa & Gunung Tidar di latar | 1280 × 720 |
 | `challenge.item.wnb-1-05` | Telaga Warna | WNB Susun Gambar | Telaga Warna hijau kebiruan | persegi ≥ 1200 px |
 | `challenge.item.wnb-1-06` | Matahari Terbit di Sikunir | WNB Susun Gambar | matahari terbit dari puncak Sikunir, lautan awan | persegi ≥ 1200 px |
 | `challenge.item.wnb-1-07` | Mi Ongklok | WNB Susun Gambar | semangkuk mi ongklok dengan sate sapi, tampak atas | persegi ≥ 1200 px |
@@ -184,6 +184,6 @@ Setiap slot langsung berisi **gambar contoh** (SVG bertulisan "GAMBAR CONTOH", `
 | `challenge.item.wnb-4-a10` | Biji kopi | WNB Cari Objek (benda) | segenggam biji kopi | 240 × 240, latar transparan |
 | `challenge.item.wnb-4-a11` | Kuluk Topeng Ireng | WNB Cari Objek (benda) | kuluk bulu Topeng Ireng | 240 × 240, latar transparan |
 | `challenge.item.wnb-4-a12` | Getuk | WNB Cari Objek (benda) | getuk | 240 × 240, latar transparan |
-| `challenge.wnb-4.scene` | Pasar Oleh-oleh Dieng | WNB Cari Objek (adegan) | pasar oleh-oleh Dieng berkabut tipis, tiga deret rak bambu/meja kayu, kebun teh & candi di latar | 1280 × 720 |
+| `challenge.wnb-4.scene` | Pasar Oleh-oleh Dieng | WNB Cari Objek (adegan) | pasar oleh-oleh Dieng berkabut tipis, rak bambu beratap, meja kayu, dan bangku bambu di depan (permukaan ± 43 %, 58 %, 75 % tinggi gambar), kebun teh & candi di latar | 1280 × 720 |
 
 Daftar yang sama ada di sheet DAFTAR_MEDIA workbook (dengan kode soal pemakainya dan saran sumber).

@@ -584,6 +584,8 @@ Petunjuk `tmg-3`:
 
 Benda dicari (target, `scorable = 1`):
 
+> *(English note, 12 October 2026.)* The positions in the two tables below are the original plan. The objects were later moved onto the tables and shelves of the catalogue scene (owner decision; decision log, *Cari Objek objects onto the scene tables*). The current `x · y · w` values are in `docs/bank-soal/data/temanggung.php`.
+
 | Kode | Petunjuk (ID) | Clue (EN) | Bloom | Posisi x · y · w (%) | Media |
 |---|---|---|---|---|---|
 | `tmg-4-a01` | Temukan kuda-kudaan dari anyaman bambu yang dipakai untuk menari kuda lumping. | Find the woven bamboo horse used for the kuda lumping dance. | C1 | 84 · 6 · 12 | `challenge.item.tmg-4-03` · *Kuda kepang bambu / Bamboo hobby horse* |
@@ -751,6 +753,8 @@ Petunjuk `mgl-3`:
 | Adegan | `challenge.mgl-4.scene` (**baru**) — ilustrasi 16:9 ruang galeri/pendapa budaya dengan dua deret meja pajang kayu, siluet stupa Borobudur dan Gunung Tidar di jendela latar. Benda **tidak** digambar di adegan. | |
 
 Benda dicari:
+
+> *(English note, 12 October 2026.)* The positions in the two tables below are the original plan. The objects were later moved onto the tables and shelves of the catalogue scene (owner decision; decision log, *Cari Objek objects onto the scene tables*). The current `x · y · w` values are in `docs/bank-soal/data/magelang.php`.
 
 | Kode | Petunjuk (ID) | Clue (EN) | Bloom | Posisi x · y · w | Media |
 |---|---|---|---|---|---|
@@ -942,6 +946,8 @@ Petunjuk `wnb-3`:
 | Adegan | `challenge.wnb-4.scene` (**baru**) — ilustrasi 16:9 pasar oleh-oleh di Dieng berkabut tipis: tiga deret rak bambu/meja kayu, kebun teh dan candi kecil di latar. Benda **tidak** digambar di adegan. | |
 
 Benda dicari:
+
+> *(English note, 12 October 2026.)* The positions in the two tables below are the original plan. The objects were later moved onto the tables and shelves of the catalogue scene (owner decision; decision log, *Cari Objek objects onto the scene tables*). The current `x · y · w` values are in `docs/bank-soal/data/wonosobo.php`.
 
 | Kode | Petunjuk (ID) | Clue (EN) | Bloom | Posisi x · y · w | Media |
 |---|---|---|---|---|---|
