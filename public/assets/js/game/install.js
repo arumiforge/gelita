@@ -1,22 +1,27 @@
 /**
- * Aplikasi terpasang (PWA): daftarkan service worker dan tawarkan pemasangan.
+ * Installed app (PWA): register the service worker and offer installation.
  *
- * - sw.js didaftarkan di base URL, jadi lingkupnya seluruh aplikasi. Kalau
- *   gagal didaftarkan tidak masalah, karena permainan tidak bergantung padanya.
- * - Chrome/Android: `beforeinstallprompt` ditahan, lalu tombol "Pasang GELITA"
- *   di halaman welcome yang memicunya. Tombol hanya muncul di perangkat sentuh
- *   yang belum menjalankan GELITA sebagai aplikasi terpasang. Setelah
- *   terpasang, manifest mengunci posisi mendatar dan layar penuh.
- * - iPhone/iPad tidak punya event itu, jadi yang tampil petunjuk
- *   Bagikan → Tambah ke Layar Utama. iOS tidak mengunci rotasi, sehingga layar
- *   putar tetap berlaku di sana.
+ * - The worker is registered at the base URL, so its scope is the whole app.
+ *   Registration may fail; the game never depends on it. Normally that is
+ *   sw.js (offline page + asset package, docs/rencana-paket-aset.md §4.1).
+ *   With the server kill switch `gelita.paket.aktif = false` the boot script
+ *   (core/package-boot.js) reports `killed`, and the empty sw-kosong.js is
+ *   registered instead, which takes the worker out of every request (§11.1).
+ * - Chrome/Android: `beforeinstallprompt` is held back, and the "Pasang GELITA"
+ *   button on the welcome page fires it. The button only shows on touch
+ *   devices that are not already running GELITA as an installed app. Once
+ *   installed, the manifest locks landscape and fullscreen.
+ * - iPhone/iPad have no such event, so they get the hint
+ *   Share → Add to Home Screen. iOS does not lock rotation, so the rotate
+ *   screen still applies there.
  */
 const INSTALLED = '(display-mode: fullscreen), (display-mode: standalone)';
 
 export function initInstall() {
   const base = document.body.dataset.base || '/';
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register(`${base}sw.js`, { scope: base }).catch(() => {});
+    const script = window.GELITA_PACKAGE_BOOT?.killed ? 'sw-kosong.js' : 'sw.js';
+    navigator.serviceWorker.register(`${base}${script}`, { scope: base }).catch(() => {});
   }
 
   const box = document.querySelector('[data-install]');
@@ -26,7 +31,7 @@ export function initInstall() {
   const touch = window.matchMedia('(pointer: coarse)').matches;
   if (installed || !touch) return;
 
-  // Safari iOS/iPadOS: navigator.standalone hanya ada di sana
+  // Safari iOS/iPadOS: navigator.standalone only exists there
   if ('standalone' in navigator) {
     box.querySelector('[data-install-ios]').hidden = false;
     box.hidden = false;

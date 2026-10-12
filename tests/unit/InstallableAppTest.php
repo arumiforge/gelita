@@ -15,9 +15,9 @@ use Config\Services;
  *   static files in `assets/app/`, which must exist at the promised sizes
  *   (Chrome refuses to install when the 192/512 icons do not match).
  * - The manifest route starts no session (LocaleFilter::STATELESS_PATHS).
- * - Service worker hanya boleh menangani navigasi GET dan hanya menyimpan
- *   halaman offline: respons API, event, atau formulir tidak boleh pernah
- *   tersimpan di cache perangkat kelas yang dipakai bergantian.
+ * - The offline page is self-contained. What the service worker may cache
+ *   (package files and the offline page only, never HTML, API, or admin) is
+ *   checked by AssetPackageServiceWorkerTest (asset package plan §9.1).
  *
  * @internal
  */
@@ -157,20 +157,9 @@ final class InstallableAppTest extends CIUnitTestCase
         }
     }
 
-    public function testServiceWorkerOnlyCachesTheOfflinePage(): void
-    {
-        $sw = (string) file_get_contents(FCPATH . 'sw.js');
-
-        $this->assertStringContainsString("if (request.mode !== 'navigate' || request.method !== 'GET') return;", $sw);
-        $this->assertSame(1, substr_count($sw, 'cache.add('), 'hanya offline.html yang disimpan');
-        $this->assertStringContainsString("new URL('offline.html', self.registration.scope)", $sw);
-        $this->assertStringNotContainsString('cache.put(', $sw);
-        $this->assertStringNotContainsString('cache.addAll(', $sw);
-        $this->assertFileExists(FCPATH . 'offline.html');
-    }
-
     public function testOfflinePageIsSelfContained(): void
     {
+        $this->assertFileExists(FCPATH . 'offline.html');
         $html = (string) file_get_contents(FCPATH . 'offline.html');
 
         // Saat offline tidak ada berkas lain yang dapat diambil

@@ -6,7 +6,7 @@
  * import agar tiap halaman hanya memuat yang dipakainya. Halaman tetap
  * terbaca dan dapat dipakai bila modul ini gagal dimuat (aturan 9 docs/05).
  */
-import { CONFIG } from './core/config.js';
+import { CONFIG, setAssetsLocal } from './core/config.js';
 import { resendQueued, initVisibilityTracking } from './core/events.js';
 import { Sfx, initAudioPlayers } from './core/audio.js';
 import { initCurtains } from './core/curtain.js';
@@ -68,6 +68,12 @@ initHud();
 initRotateGate();
 initInstall();
 initCurtains();
+
+// Asset package (docs/rencana-paket-aset.md Stage 2): only pages rendered with a
+// package load the package module; with package mode off nothing changes.
+if (window.GELITA_PACKAGE_BOOT?.code) {
+  import('./core/package.js').then((m) => m.initPackage({ setAssetsLocal })).catch(() => {});
+}
 
 const screen = document.querySelector('[data-screen]')?.dataset.screen ?? '';
 const attemptId = Number(document.querySelector('[data-screen="challenge"]')?.dataset.attempt) || null;
