@@ -153,6 +153,8 @@ if (! function_exists('package_audio_urls')) {
      * Music and sound effects of the active asset package for core/audio.js
      * (`CONFIG.audioUrls`): `audio.music.map` → `music/map` => absolute URL.
      * Empty when package mode is off; audio.js then loads assets/audio/ as before.
+     * Like the media helpers it follows a staff preview (`servingCode()`); code
+     * URLs and the boot attributes stay on `activeCode()`, which is what devices hold.
      *
      * @return array<string, string>
      */
@@ -160,7 +162,7 @@ if (! function_exists('package_audio_urls')) {
     {
         try {
             $packages = service('assetPackages');
-            $code     = $packages->activeCode();
+            $code     = $packages->servingCode();
             $keys     = $code === null ? [] : ($packages->map($code)['keys'] ?? []);
         } catch (Throwable) {
             return [];
