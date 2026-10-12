@@ -10,6 +10,8 @@
  * Each option shows its round icon `ui.lang.{code}` from the Katalog Aset
  * (reference.20 ID, reference.19 EN) once both are uploaded; otherwise the
  * text pill ID / EN. The language name stays the button's accessible name.
+ * The <img> carries its 32 px display size, so it stays small even while a
+ * browser or asset package still serves an older stylesheet.
  */
 $current = service('request')->getLocale();
 $locales = config('Gelita')->locales;
@@ -32,7 +34,7 @@ $withIcons = ! in_array(null, $icons, true);
       <button type="submit" name="locale" value="<?= esc($code, 'attr') ?>" lang="<?= esc($code, 'attr') ?>"
               class="lang-opt<?= $active ? ' is-active' : '' ?>" aria-pressed="<?= $active ? 'true' : 'false' ?>"
               aria-label="<?= esc($name, 'attr') ?>" title="<?= esc($name, 'attr') ?>">
-        <img src="<?= esc($icons[$code], 'attr') ?>" alt="" width="256" height="256" draggable="false">
+        <img src="<?= esc($icons[$code], 'attr') ?>" alt="" width="32" height="32" draggable="false">
       </button>
     <?php else: ?>
       <button type="submit" name="locale" value="<?= esc($code, 'attr') ?>" lang="<?= esc($code, 'attr') ?>"

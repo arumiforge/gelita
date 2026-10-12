@@ -310,14 +310,16 @@ input[type="checkbox"], input[type="radio"] { width: 1.375rem; height: 1.375rem;
 .lang-opt.is-active { background: var(--gold-500); color: var(--navy-900); }
 
 /* Icon version (ui.lang.id / ui.lang.en from the Katalog Aset): two round
-   44 dp medallions with no backing; the chosen language is bright with a
-   gold glow, the other dimmed (still readable) until hovered or focused */
-.lang-switch.is-image { gap: var(--gap-1); padding: 0; background: none; }
-.lang-switch.is-image .lang-opt { min-width: 2.75rem; min-height: 2.75rem; padding: 0; background: none; }
+   32 dp medallions with no backing, as small as the other HUD icons (owner,
+   12 October 2026); each button keeps a 40 dp box and a 48 dp hit area.
+   The chosen language is bright with a gold glow, the other dimmed (still
+   readable) until hovered or focused. */
+.lang-switch.is-image { gap: 0; padding: 0; background: none; }
+.lang-switch.is-image .lang-opt { min-width: 2.5rem; min-height: 2.5rem; padding: 0; background: none; }
 .lang-switch.is-image .lang-opt img {
   display: block;
-  width: 2.75rem;
-  height: 2.75rem;
+  width: 2rem;
+  height: 2rem;
   opacity: .7;
   filter: grayscale(.4) drop-shadow(0 1px .1875rem rgba(11, 19, 32, .9));
   transition: opacity .15s, filter .15s, transform .15s;

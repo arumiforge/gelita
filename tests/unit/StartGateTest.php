@@ -278,7 +278,7 @@ final class StartGateTest extends CIUnitTestCase
         Services::resetSingle('renderer');
         $page = (new HomeController())->index();
         $this->assertStringContainsString('class="lang-switch is-image"', $page);
-        $this->assertStringContainsString('src="' . $this->attr('assets/ui/lang-id.webp') . '" alt=""', $page);
+        $this->assertStringContainsString('src="' . $this->attr('assets/ui/lang-id.webp') . '" alt="" width="32" height="32"', $page, 'small even without the stylesheet');
         $this->assertStringContainsString('src="' . $this->attr('assets/ui/lang-en.webp') . '" alt=""', $page);
         $this->assertMatchesRegularExpression('/aria-pressed="true"\s+aria-label="' . preg_quote(esc('Bahasa Indonesia', 'attr'), '/') . '"/', $page);
         $this->assertMatchesRegularExpression('/aria-pressed="false"\s+aria-label="English"/', $page);
