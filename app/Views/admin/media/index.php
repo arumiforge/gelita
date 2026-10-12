@@ -97,6 +97,7 @@ $labels = ['asli' => 'Asli', 'mockup' => 'Gambar contoh', 'kosong' => 'Kosong'];
     'actions' => $actions,
 ]) ?>
 <?= $this->include('partials/flash') ?>
+<?= component('admin/partials/package-notice', ['packageChanged' => $packageChanged ?? null]) ?>
 
 <?php if (is_array($scan)): ?>
   <section class="panel">

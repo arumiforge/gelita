@@ -11,10 +11,15 @@
  * @var list<array<string, mixed>>               $studies
  * @var list<string>                             $locales
  * @var array<string, mixed>                     $readiness ResearchReadiness::check()
+ * @var string|null                              $packageCode package the active release names
  *
  * Daftar siap penelitian (Dok 3 §8.3): 0 gambar contoh, narasi disetujui,
  * verifikasi siap penelitian lolos. Mengubah status ke *berjalan* saat daftar
  * belum hijau meminta centang konfirmasi (diperiksa ulang server).
+ *
+ * Study package lock (docs/rencana-paket-aset.md §7.2): a running study shows
+ * the asset package it was locked to when it became *berjalan*, and a warning
+ * when students now get another package.
  */
 $used = null;
 
@@ -139,6 +144,17 @@ $fields = static function (?array $study, string $p) use ($choices, $locales, $r
         <span class="badge is-<?= esc($study['status'], 'attr') ?>"><?= esc(admin_label('studyStatus', (string) $study['status'])) ?></span>
       <?php endif ?>
     </header>
+
+    <?php if ($study['status'] === 'active'): ?>
+      <?php $locked = $study['package_code'] ?? null; ?>
+      <p class="muted" data-study-package>
+        <?= icon('download') ?> <?= esc(lang('Admin.studyPackage')) ?>:
+        <?= $locked === null ? esc(lang('Admin.studyPackageNone')) : '<code>' . esc($locked) . '</code>' ?>
+      </p>
+      <?php if ($locked !== $packageCode): ?>
+        <div class="alert alert-warn"><?= icon('warn') ?><p><?= esc(lang('Admin.studyPackageDiffers', [$packageCode ?? lang('Admin.releaseNoPackage')])) ?></p></div>
+      <?php endif ?>
+    <?php endif ?>
 
     <?= $fields($study, 's' . $sid) ?>
 

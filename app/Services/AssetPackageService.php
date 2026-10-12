@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use App\Models\AssetPackageModel;
 use App\Models\GameReleaseModel;
+use CodeIgniter\HTTP\IncomingRequest;
 
 /**
  * Runtime side of the asset package (docs/rencana-paket-aset.md §5.2, §6.3).
@@ -19,6 +21,13 @@ use App\Models\GameReleaseModel;
  * at the end of a build and holds media id → package URL, asset_key →
  * package URL, and the source sha256 of every packaged media asset; reading
  * it costs one include per request (opcache keeps it in memory).
+ *
+ * Staff preview (§6.1 step 3, §9.2): `?paket={package_code}` on any game page
+ * makes the URL helpers (urlForId(), urlForKey()) serve that package for the
+ * logged-in staff member only, also while package mode is off. The choice is
+ * kept in the session (`?paket=mati` ends it). activeCode(), and with it
+ * `/api/paket/aktif` and the `X-Gelita-Paket` header, never reflect a preview,
+ * so student devices are not affected.
  */
 class AssetPackageService
 {
@@ -34,6 +43,15 @@ class AssetPackageService
     /** Allowed package code; it ends up in file paths, so nothing else passes. */
     public const CODE_PATTERN = '/^[a-z0-9][a-z0-9.-]{0,29}$/';
 
+    /** Session key of the staff preview package (§6.1 step 3). */
+    public const PREVIEW_SESSION_KEY = 'package_preview';
+
+    /** `?paket=` values that end a staff preview. */
+    public const PREVIEW_OFF = ['', '0', 'mati'];
+
+    /** Panel settings next to the package switch, in the data folder (§8.7). */
+    public const SETTINGS_FILE = 'pengaturan.json';
+
     private string $publicDir;
 
     private string $dataDir;
@@ -43,6 +61,9 @@ class AssetPackageService
 
     /** @var array<string, array<string, mixed>|null> loaded URL maps per code */
     private array $maps = [];
+
+    /** @var array{code: string|null}|null memo for previewCode() */
+    private ?array $preview = null;
 
     public function __construct(?string $publicDir = null, ?string $dataDir = null)
     {
@@ -70,12 +91,7 @@ class AssetPackageService
         $code = null;
 
         try {
-            $release = model(GameReleaseModel::class)->activeOrNull();
-            $value   = trim((string) ($release['asset_version'] ?? ''));
-
-            if ($value !== '' && self::validCode($value) && is_file($this->mapPath($value))) {
-                $code = $value;
-            }
+            $code = $this->packageOfRelease(model(GameReleaseModel::class)->activeOrNull());
         } catch (\Throwable) {
             // No release table yet (fresh install, partial test schema): no package.
         }
@@ -85,26 +101,110 @@ class AssetPackageService
         return $code;
     }
 
+    /**
+     * Package a release row names: its `asset_version` when that is a valid
+     * code of a fully built package, else null. The old free text '1' and an
+     * empty value both mean "no package" (package mode off).
+     *
+     * @param array<string, mixed>|null $release
+     */
+    public function packageOfRelease(?array $release): ?string
+    {
+        $value = trim((string) ($release['asset_version'] ?? ''));
+
+        return $value !== '' && self::validCode($value) && is_file($this->mapPath($value)) ? $value : null;
+    }
+
     /** Package code that students use right now, or null (package mode off). */
     public function activeCode(): ?string
     {
         return $this->enabled() ? $this->releasePackageCode() : null;
     }
 
-    /** Package URL (relative to base URL) of a media id in the active package. */
+    /**
+     * Package URL (relative to base URL) of a media id in the package this
+     * request is served from: the staff preview, else the active package.
+     */
     public function urlForId(int $mediaAssetId): ?string
     {
-        $code = $this->activeCode();
+        $code = $this->servingCode();
 
         return $code === null ? null : ($this->map($code)['ids'][$mediaAssetId] ?? null);
     }
 
-    /** Package URL (relative to base URL) of an asset_key in the active package. */
+    /** Package URL (relative to base URL) of an asset_key; see urlForId(). */
     public function urlForKey(string $assetKey): ?string
     {
-        $code = $this->activeCode();
+        $code = $this->servingCode();
 
         return $code === null ? null : ($this->map($code)['keys'][$assetKey] ?? null);
+    }
+
+    /** Package the URL helpers use for this request: staff preview first. */
+    public function servingCode(): ?string
+    {
+        return $this->previewCode() ?? $this->activeCode();
+    }
+
+    /**
+     * Package a staff member previews in this request (§6.1 step 3, §9.2),
+     * or null. Checked on the server against the staff session: anyone
+     * without an active staff login who adds `?paket=` gets nothing. A valid
+     * `?paket={code}` of a built package is stored in the session, so the
+     * preview follows the staff member across game pages; `?paket=mati` ends
+     * it. Works while package mode is off and regardless of the server kill
+     * switch, since it only changes the URLs on this staff member's pages.
+     * Never starts a session unless `?paket=` is in the URL.
+     */
+    public function previewCode(): ?string
+    {
+        if ($this->preview !== null) {
+            return $this->preview['code'];
+        }
+
+        $code = null;
+
+        try {
+            $request = service('request');
+            $asked   = $request instanceof IncomingRequest ? $request->getGet('paket') : null;
+
+            // Only look at the session when the URL asks or a session already runs
+            if ((is_string($asked) || session_status() === PHP_SESSION_ACTIVE || isset($_SESSION)) && $this->isStaff()) {
+                $session = session();
+
+                if (is_string($asked)) {
+                    $asked = strtolower(trim($asked));
+
+                    if (in_array($asked, self::PREVIEW_OFF, true)) {
+                        $session->remove(self::PREVIEW_SESSION_KEY);
+                    } elseif (self::validCode($asked) && is_file($this->mapPath($asked))) {
+                        $session->set(self::PREVIEW_SESSION_KEY, $asked);
+                    }
+                }
+
+                $stored = $session->get(self::PREVIEW_SESSION_KEY);
+                $code   = is_string($stored) && self::validCode($stored) && is_file($this->mapPath($stored)) ? $stored : null;
+            }
+        } catch (\Throwable) {
+            // No session or staff table (CLI, partial test schema): no preview.
+            $code = null;
+        }
+
+        $this->preview = ['code' => $code];
+
+        return $code;
+    }
+
+    /** A logged-in, active staff account (guru or admin) in this session. */
+    private function isStaff(): bool
+    {
+        if ((int) session('staff_id') <= 0) {
+            return false;
+        }
+
+        $staff = service('staffContext');
+
+        return $staff !== null && (int) $staff->is_active === 1;
     }
 
     /**
@@ -197,8 +297,151 @@ class AssetPackageService
     /** Forget per-request memos (after a build, a release switch, or in tests). */
     public function forget(): void
     {
-        $this->active = null;
-        $this->maps   = [];
+        $this->active  = null;
+        $this->maps    = [];
+        $this->preview = null;
+    }
+
+    // ------------------------------------------------------------ panel (Stage 6)
+
+    /**
+     * "Izinkan mode daring untuk perangkat lab" (§8.7), off by default.
+     *
+     * Stored in writable/paket/pengaturan.json next to the URL maps: it only
+     * means something together with a package, only `/api/paket/aktif` and
+     * the panel read it, the backup scripts already keep that folder, and a
+     * restore without the package folder falls back to the safe default
+     * (off), just as package mode itself does. A missing or broken file
+     * reads as off.
+     */
+    public function onlineLabAllowed(): bool
+    {
+        return ($this->settings()['online_lab_allowed'] ?? false) === true;
+    }
+
+    public function setOnlineLabAllowed(bool $allowed, ?int $staffId = null): void
+    {
+        $settings = ['online_lab_allowed' => $allowed, 'changed_at' => date(DATE_ATOM), 'changed_by' => $staffId] + $this->settings();
+        $path     = $this->dataDir . self::SETTINGS_FILE;
+
+        if (! is_dir($this->dataDir) && ! @mkdir($this->dataDir, 0775, true) && ! is_dir($this->dataDir)) {
+            throw new \RuntimeException("Folder {$this->dataDir} could not be created.");
+        }
+
+        $tmp  = $path . '.tmp-' . bin2hex(random_bytes(4));
+        $json = json_encode($settings, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . "\n";
+
+        if (file_put_contents($tmp, $json, LOCK_EX) !== strlen($json) || ! @rename($tmp, $path)) {
+            @unlink($tmp);
+
+            throw new \RuntimeException("{$path} could not be written.");
+        }
+    }
+
+    /** @return array<string, mixed> */
+    private function settings(): array
+    {
+        $path = $this->dataDir . self::SETTINGS_FILE;
+        $data = is_file($path) ? json_decode((string) file_get_contents($path), true) : null;
+
+        return is_array($data) ? $data : [];
+    }
+
+    /**
+     * Build summary of a finished package for the panel (§6.1 step 2): size
+     * per group, the files and bytes a device that holds the release's
+     * current package still has to download, and the build warnings.
+     *
+     * @return array{package_code: string, status: string, total_bytes: int, file_count: int, built_at: string|null,
+     *               published_at: string|null, notes: string|null, groups: array<string, int>,
+     *               warnings: list<array{code: string, key: string, detail: string|null}>,
+     *               compared_with: string|null, new_files: int, new_bytes: int}|null
+     */
+    public function summary(string $code): ?array
+    {
+        $row = self::validCode($code) ? model(AssetPackageModel::class)->findByCode($code) : null;
+
+        if ($row === null || $row['status'] === AssetPackageModel::STATUS_BUILDING) {
+            return null;
+        }
+
+        $current  = $this->releasePackageCode();
+        $old      = $current === null || $current === $code ? null : $this->manifest($current);
+        $have     = $old === null ? [] : array_flip(array_column($old['files'] ?? [], 'url'));
+        $newFiles = 0;
+        $newBytes = 0;
+
+        if ($current !== $code) {
+            foreach ($this->manifest($code)['files'] ?? [] as $file) {
+                if (! isset($have[$file['url'] ?? ''])) {
+                    $newFiles++;
+                    $newBytes += (int) ($file['bytes'] ?? 0);
+                }
+            }
+        }
+
+        return [
+            'package_code'  => $code,
+            'status'        => (string) $row['status'],
+            'total_bytes'   => (int) $row['total_bytes'],
+            'file_count'    => (int) $row['file_count'],
+            'built_at'      => $row['built_at'],
+            'published_at'  => $row['published_at'],
+            'notes'         => $row['notes'],
+            'groups'        => array_map('intval', (array) json_decode((string) ($row['groups_json'] ?? '[]'), true)),
+            'warnings'      => array_values((array) json_decode((string) ($row['warnings_json'] ?? '[]'), true)),
+            'compared_with' => $old === null ? null : $current,
+            'new_files'     => $newFiles,
+            'new_bytes'     => $newBytes,
+        ];
+    }
+
+    /**
+     * Result of the `gelita:paket:periksa` check (§5.5) for one package, for
+     * the research-ready checklist. Re-hashing a full package takes a while,
+     * so the result is cached per package and manifest for an hour; $fresh
+     * (the panel's Periksa button) checks again now.
+     *
+     * @return array{ok: bool, issues: list<array{key: string, issue: string}>, checked_at: string}
+     */
+    public function verification(string $code, bool $fresh = false): array
+    {
+        $map   = $this->map($code);
+        $key   = 'gelita_paket_periksa_' . preg_replace('/[^a-z0-9]/', '_', $code) . '_' . substr((string) ($map['manifest_sha256'] ?? 'none'), 0, 16);
+        $cache = service('cache');
+
+        if (! $fresh) {
+            $hit = $cache->get($key);
+
+            if (is_array($hit) && isset($hit['ok'], $hit['checked_at'])) {
+                return $hit;
+            }
+        }
+
+        $issues = (new AssetPackageMaintenance($this))->verify($code);
+        $result = ['ok' => $issues === [], 'issues' => $issues, 'checked_at' => date('Y-m-d H:i:s')];
+        $cache->save($key, $result, 3600);
+
+        return $result;
+    }
+
+    /**
+     * Newest build still in progress (status `membangun` with its state file,
+     * not abandoned), or null. The panel resumes driving it instead of
+     * starting a second build.
+     *
+     * @return array<string, mixed>|null asset_packages row
+     */
+    public function runningBuild(): ?array
+    {
+        $cutoff = date('Y-m-d H:i:s', time() - AssetPackageMaintenance::ABANDONED_HOURS * 3600);
+        $row    = model(AssetPackageModel::class)
+            ->where('status', AssetPackageModel::STATUS_BUILDING)
+            ->where('created_at >=', $cutoff)
+            ->orderBy('id', 'DESC')
+            ->first();
+
+        return $row !== null && is_file($this->statePath((string) $row['package_code'])) ? $row : null;
     }
 
     public static function validCode(string $code): bool
