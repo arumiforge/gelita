@@ -64,7 +64,7 @@ Owner decisions in its §12 (9 October 2026): full download before Mulai, admin 
   - [x] Stage 1b — narration re-encoded at 48 kbps mono; the owner's listening test is still open (see *Before the research starts*) (`paket-1b-narasi`, PR #74)
   - [x] Stage 4 — view transitions, image decode, short curtain (`paket-4-transisi`, PR #77)
   - [x] Stage 5 — research data integrity §7.1 and §7.3 (`paket-5-integritas`, PR #76)
-- **Wave 2** (Stage 1 is merged, so this can start; not started yet)
+- **Wave 2** (started 12 October 2026; both stages run in parallel on one branch, `sky/laughing-rubin-l2tmm2`, one PR)
   - [ ] Stage 2 — package service worker and downloader
   - [ ] Stage 6 — Rilis → Paket aset panel with the on/off switch, study package lock (§7.2)
 - **Wave 3** (after Stage 2 is merged)
@@ -77,7 +77,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `pbb/nifty-faraday-fcw9r6` | Cari Objek objects onto the tables and shelves of the catalogue scenes (bank layout + import) | PR open |
-| `pbb/practical-ramanujan-sogpm3` | Production console errors: CSP policy, inline viewport script, `/api/events` 500 | PR open |
-| `pbb/hopeful-bardeen-48ljgp` | Clue play button layout, modal icons above the box, sign-up/login errors in a modal, staff link on the welcome page (#104, #105 merged) | PR open |
-| `sky/epic-hawking-qc1e8p` | Cari Objek clue: play only on tap, steady button slot; Kenali badge on MySQL 8; Kedu map narration strip with Jaka | PR open |
+| `sky/laughing-rubin-l2tmm2` | Asset package Wave 2: Stage 2 (service worker, downloader) and Stage 6 (Paket aset panel, study package lock) | In progress |
