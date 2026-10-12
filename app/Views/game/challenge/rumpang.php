@@ -97,6 +97,8 @@ $blankHtml = static function (int|string $itemId, int $number): string {
 
     <div class="arena-actions">
       <button class="btn btn-primary btn-lg" id="btn-check" type="button"><?= icon('check') ?> <?= esc(lang('Game.check')) ?></button>
+      <?php // Shown by challenge.js once the attempt is closed: moves on to the result screen ?>
+      <button class="btn btn-primary btn-lg" id="btn-next" type="button" hidden><?= esc(lang('Game.continue')) ?> <?= icon('right') ?></button>
     </div>
   </div>
 </div>

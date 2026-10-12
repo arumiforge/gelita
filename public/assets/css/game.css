@@ -1036,9 +1036,27 @@ body.is-challenge .lang-switch { display: none; }
   color: var(--brown-700);
 }
 .rumpang-reading p { margin: 0; font-size: var(--fs-reading); line-height: 2.2; }
-.blank-wrap { white-space: nowrap; }
-.blank-no { margin-left: var(--gap-1); color: var(--gold-600); font-size: .7em; font-weight: 700; vertical-align: super; }
-.rumpang-reading .blank { min-width: 7.5rem; min-height: 2.75rem; margin: 0 .125rem; border-color: var(--brown-500); background: rgba(255, 255, 255, .55); color: var(--brown-700); }
+/* The number sits inside the blank's top-left corner as a tab with the
+   blank's own corner radius. It stays outside the <button> (rumpang.js
+   rewrites the button's text), so the wrap hugs the button exactly. */
+.blank-wrap { position: relative; display: inline-flex; margin: 0 .125rem; vertical-align: middle; white-space: nowrap; }
+.blank-no {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  min-width: 1.375rem;
+  padding: .125rem .375rem;
+  border-radius: var(--radius) 0 var(--radius) 0;
+  background: var(--brown-700);
+  color: var(--parchment);
+  font-size: .8125rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  pointer-events: none;
+}
+.rumpang-reading .blank { min-width: 7.5rem; min-height: 2.75rem; margin: 0; padding: 0 var(--gap-6); border-color: var(--brown-500); background: rgba(255, 255, 255, .55); color: var(--brown-700); }
 .rumpang-reading .blank.is-active { border-color: var(--gold-600); box-shadow: 0 0 0 .1875rem rgba(178, 130, 52, .35); }
 .rumpang-reading .blank.is-filled { background: #FFF6DF; color: var(--brown-700); }
 
@@ -1268,6 +1286,7 @@ body.is-challenge .lang-switch { display: none; }
 .hunt-side .hunt-list-title { font-size: var(--fs-caption); }
 .hunt-list-title { margin: 0; color: var(--gold-300); font-weight: 700; }
 .hunt-list { display: grid; gap: var(--gap-2); margin: 0; padding: 0; list-style: none; }
+.hunt-side .hunt-next { width: 100%; margin-top: var(--gap-2); }
 .hunt-target { padding: var(--gap-2) var(--gap-3); border: 1px solid var(--line-ink); border-radius: var(--radius); font-size: var(--fs-caption); }
 .hunt-target.is-current { border-color: var(--gold-500); color: var(--gold-300); font-weight: 700; }
 .hunt-target.is-found { color: var(--ok); text-decoration: line-through; }
