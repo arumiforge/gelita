@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use App\Libraries\PasswordPolicy;
 use App\Models\ParticipantModel;
 use CodeIgniter\HTTP\RedirectResponse;
+use CodeIgniter\HTTP\ResponseInterface;
 
 /**
  * Masuk, keluar, dan ganti kata sandi siswa.
@@ -30,10 +31,18 @@ class LoginController extends BaseController
         ]);
     }
 
-    public function login(): RedirectResponse
+    /**
+     * A plain POST answers with a redirect, as without JavaScript. game/login.js
+     * sends the form with `X-Requested-With: XMLHttpRequest` and gets JSON
+     * instead, so a wrong password shows a modal without reloading the page:
+     * `{ ok: true, redirect }` or `{ ok: false, field, message }`.
+     */
+    public function login(): ResponseInterface
     {
         if (! $this->validate(['username' => 'required', 'password' => 'required'])) {
-            return redirect()->to(site_url('masuk'))->with('errors', $this->validator->getErrors());
+            $errors = $this->validator->getErrors();
+
+            return $this->failLogin((string) array_key_first($errors), $errors);
         }
 
         $result = service('sessionService')->login(
@@ -46,11 +55,9 @@ class LoginController extends BaseController
         return match ($result['status']) {
             'ok'          => $this->afterLogin(),
             // No flash: /ganti-sandi already explains it in its alert (Auth.mustChange)
-            'must_change' => redirect()->to(site_url('ganti-sandi')),
-            'locked'      => redirect()->to(site_url('masuk'))
-                ->with('errors', ['password' => lang('Auth.locked', [$result['lock_minutes'] ?? 5])]),
-            default => redirect()->to(site_url('masuk'))
-                ->with('errors', ['password' => lang('Auth.loginFailed')]),
+            'must_change' => $this->goTo(site_url('ganti-sandi')),
+            'locked'      => $this->failLogin('password', ['password' => lang('Auth.locked', [$result['lock_minutes'] ?? 5])]),
+            default       => $this->failLogin('password', ['password' => lang('Auth.loginFailed')]),
         };
     }
 
@@ -158,11 +165,45 @@ class LoginController extends BaseController
      * yang meneruskan ke cerita pembuka (belum pernah menonton) atau pilihan
      * pemain lama.
      */
-    private function afterLogin(): RedirectResponse
+    private function afterLogin(): ResponseInterface
     {
         $target = session('redirect_after_login');
         session()->remove('redirect_after_login');
 
-        return redirect()->to(safe_internal_url(is_string($target) ? $target : null, 'mulai'));
+        return $this->goTo(safe_internal_url(is_string($target) ? $target : null, 'mulai'));
+    }
+
+    /** Redirect, or for game/login.js the same target as JSON. */
+    private function goTo(string $url): ResponseInterface
+    {
+        if (! $this->request->isAJAX()) {
+            return redirect()->to($url);
+        }
+
+        return $this->response->setJSON(['ok' => true, 'redirect' => $url]);
+    }
+
+    /**
+     * Back to the form with the message, or for game/login.js the message as
+     * JSON (the page stays; the CSRF token is sent along in case it changed).
+     *
+     * @param array<string, string> $errors
+     */
+    private function failLogin(string $field, array $errors): ResponseInterface
+    {
+        if (! $this->request->isAJAX()) {
+            return redirect()->to(site_url('masuk'))->with('errors', $errors);
+        }
+
+        // The page that would have kept it (form()) is not loaded again
+        session()->keepFlashdata('redirect_after_login');
+
+        return $this->response->setJSON([
+            'ok'       => false,
+            'field'    => $field,
+            'message'  => (string) ($errors[$field] ?? reset($errors)),
+            'csrfName' => csrf_token(),
+            'csrf'     => csrf_hash(),
+        ]);
     }
 }

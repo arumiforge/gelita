@@ -7,7 +7,8 @@
  *
  * Logo dan SATU tombol Mulai → `/mulai`, sama untuk siswa yang sudah maupun
  * belum login (`/mulai` yang memilah). HUD dirender tanpa merek
- * (`hideBrand`): logonya sudah besar di sini. Staf masuk lewat `/admin/login`.
+ * (`hideBrand`): logonya sudah besar di sini. Staf masuk lewat `/admin/login`,
+ * via the thin link in the bottom-right corner (this page only).
  *
  * Logo : `ui.logo-hero` (landscape 1600×600) → `ui.logo` → judul teks.
  *        Bila gambar, tagline tetap ada sebagai teks tersembunyi.
@@ -49,6 +50,9 @@ $btnStart = media_key_src_locale('ui.btn-start', $locale);
       <a class="btn-start btn btn-primary btn-xl" href="<?= base_url('mulai') ?>"><?= esc(lang('Game.start')) ?> <?= icon('right') ?></a>
     <?php endif ?>
   </div>
+
+  <?php // Thin link for teachers and admins, bottom right of the welcome page only (owner, 12 Oct 2026) ?>
+  <a class="welcome-staff" href="<?= base_url('admin/login') ?>"><?= icon('key') ?> <?= esc(lang('Game.staffLogin')) ?></a>
 
   <?php /* Tawaran memasang di layar utama; game/install.js yang memutuskan tampil atau tidak */ ?>
   <div class="welcome-install stage-box" data-install hidden>

@@ -4,8 +4,10 @@
  *
  * Satu pesan galat netral (Auth.loginFailed) atau Auth.locked dengan sisa
  * menit — keduanya datang dari server lewat $errors['password'].
- * login.js (tahap 6): lihat/sembunyikan sandi, peringatan Caps Lock, dan
- * mencegah kirim ganda.
+ * login.js: lihat/sembunyikan sandi, peringatan Caps Lock, and the login sent
+ * without a reload: an empty field or a wrong password opens a modal and the
+ * page stays (LoginController answers JSON to that request). Without
+ * JavaScript the form posts and these errors show below as before.
  *
  * `device_json` diisi core/device.js saat dikirim (DeviceProfile); tanpa
  * JavaScript kosong, server memakai User-Agent + Client Hints header.

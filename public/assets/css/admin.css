@@ -726,17 +726,20 @@ body.has-modal { overflow: hidden; }
   padding: 24px;
   background: rgba(16, 24, 40, .45);
 }
-.modal { width: min(440px, 100%); }
+.modal { position: relative; width: min(440px, 100%); animation: modal-in .15s ease-out; }
 .modal-card {
   display: grid; gap: 8px;
   padding: 24px;
   border-radius: var(--radius-lg);
   background: var(--surface); box-shadow: var(--shadow-pop);
-  animation: modal-in .15s ease-out;
 }
-.modal-icon { display: grid; place-items: center; width: 44px; height: 44px; margin-bottom: 8px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); }
+/* The icon is outside the card in the shared markup (components/modal.php);
+   the panel keeps it in the card's top-left corner */
+.modal > .modal-icon { position: absolute; top: 24px; left: 24px; z-index: 1; }
+.modal > .modal-icon + .modal-card { padding-top: 76px; }
+.modal-icon { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); }
 .modal-icon .icon { width: 22px; height: 22px; }
-.modal-confirm .modal-icon, .modal-wrong .modal-icon { background: var(--bad-soft); color: var(--bad); }
+.modal:is([data-type="confirm"], [data-type="wrong"]) > .modal-icon { background: var(--bad-soft); color: var(--bad); }
 .modal-character { display: none; }
 .modal-title { margin: 0; font-size: 18px; line-height: 28px; }
 .modal-text { margin: 0; color: var(--text-dim); }

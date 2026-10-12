@@ -402,7 +402,10 @@ input[type="checkbox"], input[type="radio"] { width: 1.375rem; height: 1.375rem;
 }
 
 /* ---------- Modal ---------- */
-.modal { width: min(30rem, 100%); }
+/* The icon is the dialog's first child, outside the card (the card scrolls and
+   would clip it): it rises half above the card's top edge, over its border */
+.modal { position: relative; display: grid; justify-items: center; width: min(30rem, 100%); animation: modal-in .2s ease-out; }
+.modal > .modal-card { width: 100%; }
 
 .modal-card {
   position: relative;
@@ -415,17 +418,21 @@ input[type="checkbox"], input[type="radio"] { width: 1.375rem; height: 1.375rem;
   background: linear-gradient(to bottom, var(--navy-700), var(--navy-800));
   box-shadow: var(--shadow-2), 0 0 2.5rem var(--glow);
   text-align: center;
-  animation: modal-in .2s ease-out;
 }
+/* 64 dp: 32 dp above the card, 32 dp over its top padding */
+.modal > .modal-icon + .modal-card { padding-top: calc(2rem + var(--gap-4)); }
 .modal-icon {
+  position: relative;
+  z-index: 1;
   display: grid;
   place-items: center;
   width: 4rem;
   height: 4rem;
-  margin-top: calc(-1 * var(--gap-7) - var(--gap-2));
+  margin-bottom: -2rem;
   border: .1875rem solid var(--navy-800);
   border-radius: 50%;
   background: var(--gold-500);
+  box-shadow: 0 0 1rem var(--glow);
   color: var(--navy-900);
 }
 .modal-icon .icon { width: 2rem; height: 2rem; }
@@ -433,9 +440,9 @@ input[type="checkbox"], input[type="radio"] { width: 1.375rem; height: 1.375rem;
 .modal-title { margin: 0; font-size: var(--fs-h2); }
 .modal-text { margin: 0; color: var(--ink-dim); }
 .modal-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--gap-3); margin-top: var(--gap-2); }
-.modal-correct .modal-icon { background: var(--ok); }
-.modal-wrong .modal-icon { background: var(--bad); }
-.modal-hint .modal-icon { background: var(--gold-300); }
+.modal[data-type="correct"] > .modal-icon { background: var(--ok); }
+.modal[data-type="wrong"] > .modal-icon { background: var(--bad); }
+.modal[data-type="hint"] > .modal-icon { background: var(--gold-300); }
 
 @keyframes modal-in {
   from { opacity: 0; transform: scale(.96); }
@@ -766,7 +773,7 @@ body.has-modal { overflow: hidden; }
   .toast.is-flash { animation: toast-appear .2s linear, toast-out .4s linear 3.5s forwards; }
   .toast.is-leaving { animation: toast-fade .3s linear forwards; }
   .toast:not(.is-flash, .is-leaving) { animation: toast-appear .2s linear; }
-  .modal-card, .audio-player.is-attention .audio-btn[data-action="play"] { animation: none; }
+  .modal, .audio-player.is-attention .audio-btn[data-action="play"] { animation: none; }
   /* Phase F1.5: no hover or press transforms */
   .btn:active, .icon-btn:active, .card-link:hover, .card-link:active { transform: none; }
 }
