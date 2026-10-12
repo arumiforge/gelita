@@ -1639,3 +1639,7 @@ Owner request: fix the admin login page so that it opens with the GELITA logo, c
 - **Deviation from Dok 3 §1.6.** That section keeps game artwork off the login page. The logo is now the one exception; the page still loads only `admin.css` and keeps the neutral background. Dok 3 §1.6 and `docs/05_VIEW_UI.md` note the exception.
 - **Image slots.** `ImageSlots` lists `/admin/login` as a screen for `ui.logo-hero` and `ui.logo`, so the asset checklist shows where the logo appears.
 - **Tests.** `AdminLoginBrandTest` covers each of the three fallbacks. Browser screenshots with the catalogue logo were taken at 1280 × 800 and 390 × 780, with no horizontal scroll.
+
+## No "Panel GELITA" caption on the staff login card (12 October 2026)
+
+Owner request: remove the "Panel GELITA" text under the logo on `/admin/login`. The brand block now shows only the logo (or its fallback). The page title "Masuk Panel Guru & Admin" already names the panel. `Admin.panelTitle` stays, because the admin sidebar and breadcrumbs still use it. `AdminLoginBrandTest` checks that the caption is gone.

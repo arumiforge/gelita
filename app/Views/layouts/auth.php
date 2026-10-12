@@ -38,7 +38,6 @@ $emblem   = $logoHero === null ? media_key_src('ui.logo') : null;
           <span class="sidebar-mark" aria-hidden="true">G</span>
           <span class="auth-wordmark">GELITA</span>
         <?php endif ?>
-        <small><?= esc(lang('Admin.panelTitle')) ?></small>
       </div>
       <?= $this->renderSection('content') ?>
     </section>

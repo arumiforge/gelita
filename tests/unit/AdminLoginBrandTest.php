@@ -34,6 +34,7 @@ final class AdminLoginBrandTest extends CIUnitTestCase
         $this->assertMatchesRegularExpression('/<div class="auth-brand">\s*<img class="auth-logo" src="[^"]*logo-hero\.webp" alt="GELITA"/', $page);
         $this->assertStringNotContainsString('auth-emblem', $page);
         $this->assertStringNotContainsString('sidebar-mark', $page);
+        $this->assertStringNotContainsString(lang('Admin.panelTitle'), $page, 'no "Panel GELITA" caption under the logo');
     }
 
     public function testEmblemWhenOnlyTheEmblemIsUploaded(): void
