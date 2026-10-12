@@ -1535,6 +1535,16 @@ Branch `pbb/hopeful-bardeen-48ljgp` (third PR on it; #104 and #105 are merged). 
   - `StartGateTest`: staff link only on `/`; the modal icon sits outside the card.
   - Browser check in Chromium on local MariaDB: all three sign-up steps and the login stay on the page (0 navigations) and show the modal; a correct login moves on. Suite green (659 tests).
 
+## Stay on the challenge screen until Lanjut; blank number inside the box (12 October 2026)
+
+Branch `sky/trusting-allen-tqi5le`. Owner request: when a challenge is finished, do not jump straight to the finished screen; stay on the last screen and move on only when the student taps the next button, so that e.g. Susun Gambar shows the whole picture. In Isi Rumpang, the blank number moves inside the box's top-left corner with the box's radius.
+
+- **Hold on the finished screen.** `challenge.js` `finish()` no longer redirects. It stops the timer, updates the lantern, hides the check, hint, and exit buttons, and shows a hidden-by-default Lanjut button (`#btn-next`, rendered by each engine view: the action bar for puzzle/rumpang/boleh, under the target list for cari). Lanjut goes to `redirect` (fallback `POST /complete` unchanged). The closing modal's button is now "Oke" instead of "Lanjut" (`ctx.closingLabel`), so the student does not tap Lanjut twice. A page without `#btn-next` keeps the old direct redirect. Rule errors that already point to a finished attempt (`TRIES_EXHAUSTED`/`ATTEMPT_CHANGED` with `redirect`) still redirect at once.
+- **Cari Objek.** After the attempt closes, the scene stays visible but takes no more taps (`done` flag in `engines/cari.js`).
+- **Research events.** Unchanged: the attempt is closed by the server in the same response, and `state.leaving` is set, so leaving the held screen sends no `challenge_abandoned`.
+- **Blank number.** `.blank-no` is an absolute tab in the blank's top-left corner (`border-radius: var(--radius) 0 var(--radius) 0`, the blank's own radius). It stays outside the `<button>` because `rumpang.js` rewrites the button's text; `.blank-wrap` is now an `inline-flex` box that hugs the button. Reading blanks get 2 rem side padding so the word never runs under the tab.
+- **Checks.** Chromium on rendered puzzle, rumpang, and boleh pages with a mocked `/check`: after the modal the page stays, only Lanjut is visible and focused, Lanjut goes to `/selesai/…`. Suite green (659 tests).
+
 ## Clue narration on tap only, Kenali badge, map narration strip (12 October 2026)
 
 Branch `sky/epic-hawking-qc1e8p`. Owner request: the Cari Objek clue play button still looks messy; clue audio must not play on its own, only when ▶ is tapped; check the Kenali badge logic; on `/peta` Jaka (`character-jaka pose-idle`) does not show, and the character, narration box, and play button may be rearranged as wide as the map, covering the unimportant bottom of the Kedu map.

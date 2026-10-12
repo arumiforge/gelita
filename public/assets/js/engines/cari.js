@@ -19,7 +19,8 @@
  * daftar, bendanya TIDAK ditandai/diungkap, petunjuk berikutnya muncul.
  * Semua petunjuk tertutup → server menutup pengerjaan (`completed`,
  * `redirect`): konfeti + modal bila semua ketemu, modal "Kesempatanmu sudah
- * habis" bila ada yang dilewati, lalu redirect. Daftar sisa dapat dipakai
+ * habis" bila ada yang dilewati; the scene stays (objects locked) until the
+ * student taps Lanjut in the side panel. Daftar sisa dapat dipakai
  * untuk melompat ke petunjuk yang masih terbuka (tidak menghitung
  * percobaan). Tab berpindah antar objek, Enter memilih.
  *
@@ -116,6 +117,7 @@ export function mount(ctx) {
   let current = 0;
   let shownAt = performance.now();
   let busy = false;
+  let done = false; // attempt closed: the scene stays visible but takes no more taps
 
   // Narasi petunjuk: slot di samping teks, pemutar dibuat saat petunjuknya tampil
   const voiceTemplate = $('#tpl-clue-voice', ctx.section);
@@ -202,7 +204,7 @@ export function mount(ctx) {
   };
 
   const pick = async (object) => {
-    if (busy || object.disabled) return;
+    if (busy || done || object.disabled) return;
     const index = current; // hasil request selalu milik petunjuk yang aktif saat diketuk
     const clue = clues[index];
     if (!clue) return;
@@ -239,7 +241,8 @@ export function mount(ctx) {
 
     // Semua petunjuk tertutup: server sudah menutup pengerjaan
     if (result.completed) {
-      zoom.close(); // the closing modal and the redirect belong to the normal layout
+      done = true;
+      zoom.close(); // the closing modal and the Lanjut button belong to the normal layout
       pauseNarration();
       render();
       const solved = result.completion_reason !== 'tries_exhausted';
@@ -249,7 +252,7 @@ export function mount(ctx) {
         title: solved ? ctx.t('huntDoneTitle') : ctx.t('triesExhaustedTitle'),
         text: solved ? ctx.t('huntDoneText') : ctx.t('triesExhaustedText'),
         dismissible: false,
-        buttons: [{ label: ctx.t('next'), style: 'primary', value: 'next' }],
+        buttons: [{ label: ctx.closingLabel, style: 'primary', value: 'next' }],
       });
       await ctx.finish(result);
       return;
