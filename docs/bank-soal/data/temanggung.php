@@ -399,7 +399,7 @@ return [
                 'Di pasar budaya, benda khas Temanggung tercampur dengan benda dari daerah lain. Temukan empat benda yang dimaksud Mbah Kedu.',
                 'At the culture fair, typical Temanggung objects are mixed with objects from other regions. Find the four objects Mbah Kedu describes.',
             ],
-            'scene'       => ['key' => 'challenge.tmg-4.scene', 'label' => 'Pasar Budaya Temanggung', 'note' => 'halaman balai desa/pasar budaya di kaki Sindoro–Sumbing, tiga deret rak kosong (permukaan rak ± 27 %, 61 %, 93 % tinggi gambar)', 'source' => 'Ilustrasi buatan tim / ilustrator (hindari foto dengan benda yang sudah ada)'],
+            'scene'       => ['key' => 'challenge.tmg-4.scene', 'label' => 'Pasar Budaya Temanggung', 'note' => 'halaman balai desa/pasar budaya di kaki Sindoro–Sumbing, tiga meja panjang kosong berjajar ke depan (permukaan meja ± 47 %, 61 %, 76 % tinggi gambar)', 'source' => 'Ilustrasi buatan tim / ilustrator (hindari foto dengan benda yang sudah ada)'],
             'hints'       => [
                 [
                     'Baca petunjuknya pelan-pelan: nama, bahan, atau kegunaan benda disebut di sana.',
@@ -419,9 +419,9 @@ return [
                         [   // tmg-4-a01
                             'type'   => 'find_object',
                             'bloom'  => 'C1',
-                            'x'      => 84,
-                            'y'      => 6,
-                            'w'      => 12,
+                            'x'      => 76,
+                            'y'      => 31,
+                            'w'      => 10,
                             'prompt' => [
                                 'Temukan kuda-kudaan dari anyaman bambu yang dipakai untuk menari kuda lumping.',
                                 'Find the woven bamboo horse used for the kuda lumping dance.',
@@ -431,9 +431,9 @@ return [
                         [   // tmg-4-a02
                             'type'   => 'find_object',
                             'bloom'  => 'C1',
-                            'x'      => 44,
-                            'y'      => 6,
-                            'w'      => 12,
+                            'x'      => 14,
+                            'y'      => 31,
+                            'w'      => 10,
                             'prompt' => [
                                 'Temukan biji kopi yang tumbuh di lereng Gunung Sindoro dan Sumbing.',
                                 'Find the coffee beans that grow on the slopes of Mount Sindoro and Mount Sumbing.',
@@ -443,8 +443,8 @@ return [
                         [   // tmg-4-a03
                             'type'   => 'find_object',
                             'bloom'  => 'C1',
-                            'x'      => 4,
-                            'y'      => 72,
+                            'x'      => 12,
+                            'y'      => 56.5,
                             'w'      => 12,
                             'prompt' => [
                                 'Temukan arca lembu Nandi, seperti yang ada di dalam Candi Pringapus.',
@@ -455,9 +455,9 @@ return [
                         [   // tmg-4-a04
                             'type'   => 'find_object',
                             'bloom'  => 'C2',
-                            'x'      => 14,
-                            'y'      => 40,
-                            'w'      => 12,
+                            'x'      => 29,
+                            'y'      => 43,
+                            'w'      => 11,
                             'prompt' => [
                                 'Temukan ikan uceng, ikan sungai kecil yang menjadi makanan khas Temanggung.',
                                 'Find the uceng fish, a small river fish that is a special food of Temanggung.',
@@ -467,8 +467,8 @@ return [
                         [   // tmg-4-a05 · pengecoh
                             'type'   => 'find_object',
                             'decoy'  => true,
-                            'x'      => 74,
-                            'y'      => 40,
+                            'x'      => 76,
+                            'y'      => 56.5,
                             'w'      => 12,
                             'prompt' => ['Angklung (pengecoh)', 'Angklung (decoy)'],
                             'wrong'  => [
@@ -480,8 +480,8 @@ return [
                         [   // tmg-4-a06 · pengecoh
                             'type'   => 'find_object',
                             'decoy'  => true,
-                            'x'      => 24,
-                            'y'      => 72,
+                            'x'      => 44,
+                            'y'      => 56.5,
                             'w'      => 12,
                             'prompt' => ['Ondel-ondel (pengecoh)', 'Ondel-ondel (decoy)'],
                             'wrong'  => [
@@ -493,9 +493,9 @@ return [
                         [   // tmg-4-a07 · pengecoh
                             'type'   => 'find_object',
                             'decoy'  => true,
-                            'x'      => 64,
-                            'y'      => 6,
-                            'w'      => 12,
+                            'x'      => 45,
+                            'y'      => 31,
+                            'w'      => 10,
                             'prompt' => ['Perahu pinisi (pengecoh)', 'Pinisi boat (decoy)'],
                             'wrong'  => [
                                 'Ini perahu pinisi dari Sulawesi Selatan. Temanggung ada di pegunungan, jauh dari laut.',
@@ -506,9 +506,9 @@ return [
                         [   // tmg-4-a08 · pengecoh
                             'type'   => 'find_object',
                             'decoy'  => true,
-                            'x'      => 54,
-                            'y'      => 40,
-                            'w'      => 12,
+                            'x'      => 60,
+                            'y'      => 43,
+                            'w'      => 11,
                             'prompt' => ['Sasando (pengecoh)', 'Sasando (decoy)'],
                             'wrong'  => [
                                 'Ini sasando, alat musik petik dari Pulau Rote, Nusa Tenggara Timur — bukan dari Temanggung.',

@@ -34,6 +34,9 @@ use RuntimeException;
  * - The catalogue's region maps have four clearings for the challenge
  *   buttons. When a map file is the one measured here (same sha256), the
  *   region's challenge buttons are moved onto those clearings.
+ * - The Cari Objek scenes have tables and shelves. When a scene file is the
+ *   one measured here, objects still at their old bank position are moved
+ *   onto them; an object an admin placed elsewhere stays unless overwriting.
  *
  * Nothing an admin uploaded is replaced unless `$overwrite` is set: a slot is
  * filled when it is empty, a sample (mockup), a bundled default file, or a
@@ -61,6 +64,52 @@ final class CatalogImporter
         '44d29140bd864e6ab1244a5bf28a6f9354ff9d2448d005405f194b48fe256823' => ['temanggung', [1 => [29.0, 35.0], 2 => [82.0, 46.0], 3 => [35.0, 65.0], 4 => [80.0, 72.0]]],
         '978611c74fc4e33b26c924ce2070c6c788f43fa9f6623ce3de24432f746c34f7' => ['magelang', [1 => [31.5, 39.0], 2 => [70.0, 45.0], 3 => [78.0, 75.5], 4 => [38.5, 68.0]]],
         '2eac0b7b34e2a570ead3fd41fade25b830578b0b7363177a43380060c9beba07' => ['wonosobo', [1 => [21.5, 35.0], 2 => [61.0, 51.0], 3 => [18.0, 71.0], 4 => [77.0, 81.5]]],
+    ];
+
+    /**
+     * Cari Objek object positions (x, y, w in percent of the 16:9 scene, as in
+     * the question bank) measured on the catalogue's scenes, keyed by the
+     * sha256 of the scene file: object media key → [old bank position, new
+     * position]. Owner decision 12 October 2026: objects sit on the tables
+     * and shelves drawn in the scene (the bank carries the same new values).
+     */
+    public const SCENE_OBJECTS = [
+        '2e51f64d15fc5567617239aae838949fe90adb8715f78a309cd2e83512f01261' => ['challenge.tmg-4.scene', [
+            'challenge.item.tmg-4-02' => [[44.0, 6.0, 12.0], [14.0, 31.0, 10.0]],
+            'challenge.item.tmg-4-11' => [[64.0, 6.0, 12.0], [45.0, 31.0, 10.0]],
+            'challenge.item.tmg-4-03' => [[84.0, 6.0, 12.0], [76.0, 31.0, 10.0]],
+            'challenge.item.tmg-4-04' => [[14.0, 40.0, 12.0], [29.0, 43.0, 11.0]],
+            'challenge.item.tmg-4-12' => [[54.0, 40.0, 12.0], [60.0, 43.0, 11.0]],
+            'challenge.item.tmg-4-06' => [[4.0, 72.0, 12.0], [12.0, 56.5, 12.0]],
+            'challenge.item.tmg-4-10' => [[24.0, 72.0, 12.0], [44.0, 56.5, 12.0]],
+            'challenge.item.tmg-4-09' => [[74.0, 40.0, 12.0], [76.0, 56.5, 12.0]],
+        ]],
+        '0e1696c329f915a3c8c1eb9daa597e218d6335e4c3a438ae5909f002ca092fe2' => ['challenge.mgl-4.scene', [
+            'challenge.item.mgl-4-a02' => [[4.0, 56.0, 12.0], [1.0, 54.5, 8.0]],
+            'challenge.item.mgl-4-a05' => [[4.0, 17.0, 12.0], [10.5, 54.5, 8.0]],
+            'challenge.item.mgl-4-a09' => [[23.5, 56.0, 12.0], [20.0, 54.5, 8.0]],
+            'challenge.item.mgl-4-a01' => [[23.5, 17.0, 12.0], [28.5, 48.0, 7.0]],
+            'challenge.item.mgl-4-a07' => [[43.0, 17.0, 12.0], [23.5, 45.5, 6.0]],
+            'challenge.item.mgl-4-a08' => [[43.0, 56.0, 12.0], [72.0, 54.5, 8.0]],
+            'challenge.item.mgl-4-a04' => [[62.5, 56.0, 12.0], [81.5, 54.5, 8.0]],
+            'challenge.item.mgl-4-a10' => [[82.0, 56.0, 12.0], [91.0, 54.5, 8.0]],
+            'challenge.item.mgl-4-a03' => [[62.5, 17.0, 12.0], [64.5, 48.0, 7.0]],
+            'challenge.item.mgl-4-a06' => [[82.0, 17.0, 12.0], [70.5, 45.5, 6.0]],
+        ]],
+        'e9727ebb0def249783b255a896d1fe3aa39f7194b2bcd7c02228b698cd6738d8' => ['challenge.wnb-4.scene', [
+            'challenge.item.wnb-4-a01' => [[9.0, 8.0, 10.0], [31.0, 26.0, 10.0]],
+            'challenge.item.wnb-4-a08' => [[33.0, 8.0, 10.0], [47.0, 26.0, 10.0]],
+            'challenge.item.wnb-4-a12' => [[81.0, 8.0, 10.0], [63.0, 26.0, 10.0]],
+            'challenge.item.wnb-4-a09' => [[9.0, 39.0, 10.0], [15.0, 41.5, 10.0]],
+            'challenge.item.wnb-4-a03' => [[33.0, 39.0, 10.0], [35.0, 41.5, 10.0]],
+            'challenge.item.wnb-4-a11' => [[57.0, 39.0, 10.0], [55.0, 41.5, 10.0]],
+            'challenge.item.wnb-4-a02' => [[81.0, 39.0, 10.0], [75.0, 41.5, 10.0]],
+            'challenge.item.wnb-4-a06' => [[9.0, 70.0, 10.0], [7.0, 59.0, 10.0]],
+            'challenge.item.wnb-4-a07' => [[33.0, 70.0, 10.0], [25.0, 59.0, 10.0]],
+            'challenge.item.wnb-4-a05' => [[57.0, 8.0, 10.0], [45.0, 59.0, 10.0]],
+            'challenge.item.wnb-4-a04' => [[57.0, 70.0, 10.0], [65.0, 59.0, 10.0]],
+            'challenge.item.wnb-4-a10' => [[81.0, 70.0, 10.0], [83.0, 59.0, 10.0]],
+        ]],
     ];
 
     /** Catalogue app icon key → [slot key, keep transparency]. */
@@ -98,13 +147,19 @@ final class CatalogImporter
     /** @var array<string, array{0: string, 1: array<int, array{0: float, 1: float}>}> */
     private array $mapStops;
 
+    /** @var array<string, array{0: string, 1: array<string, array{0: list<float>, 1: list<float>}>}> */
+    private array $sceneObjects;
+
     /**
      * @param array<string, array{0: string, 1: array<int, array{0: float, 1: float}>}>|null $mapStops
      *        measured maps (sha256 → [region, stops]); MAP_STOPS unless a test passes its own
+     * @param array<string, array{0: string, 1: array<string, array{0: list<float>, 1: list<float>}>}>|null $sceneObjects
+     *        measured Cari Objek scenes (sha256 → [scene key, positions]); SCENE_OBJECTS unless a test passes its own
      */
-    public function __construct(private readonly string $root, ?MediaStore $store = null, ?array $mapStops = null)
+    public function __construct(private readonly string $root, ?MediaStore $store = null, ?array $mapStops = null, ?array $sceneObjects = null)
     {
-        $this->mapStops = $mapStops ?? self::MAP_STOPS;
+        $this->mapStops     = $mapStops ?? self::MAP_STOPS;
+        $this->sceneObjects = $sceneObjects ?? self::SCENE_OBJECTS;
         $this->db    = db_connect();
         $this->store = $store ?? new MediaStore();
     }
@@ -238,6 +293,10 @@ final class CatalogImporter
 
         if (str_starts_with($key, 'map.region.') && ($installed || $planned || $this->isFromCatalog($key))) {
             $this->placeStops($entry['file'], $dryRun);
+        }
+
+        if (str_ends_with($key, '.scene') && ($installed || $planned || $this->isFromCatalog($key))) {
+            $this->placeObjects($entry['file'], $dryRun, $overwrite);
         }
 
         if ($installed && ! $dryRun) {
@@ -435,6 +494,69 @@ final class CatalogImporter
 
             $this->add('map.region.' . $region, $label, $dryRun ? 'planned' : 'installed', sprintf('tombol dipindah ke %s %%, %s %%', $x, $y));
         }
+    }
+
+    /**
+     * Move the Cari Objek objects of a measured catalogue scene onto its
+     * tables and shelves. Only objects still at their old bank position move
+     * (or every object with $overwrite), so an admin's placement is kept.
+     */
+    private function placeObjects(string $file, bool $dryRun, bool $overwrite): void
+    {
+        $known = $this->sceneObjects[(string) hash_file('sha256', $file)] ?? null;
+
+        if ($known === null) {
+            return; // a scene not measured here: positions stay as they are
+        }
+
+        [$scene, $objects] = $known;
+
+        foreach ($objects as $mediaKey => [$from, $to]) {
+            $items = $this->db->table('challenge_items i')->select('i.id, i.item_key, i.config_json')
+                ->join('media_assets m', 'm.id = i.media_asset_id')
+                ->where('m.asset_key', $mediaKey)->where('i.interaction_type', 'find_object')
+                ->get()->getResultArray();
+
+            foreach ($items as $item) {
+                $config = json_decode((string) $item['config_json'], true) ?: [];
+                $label  = 'challenge_items ' . $item['item_key'];
+
+                if ($this->samePosition($config, $to)) {
+                    $this->add($scene, $label, 'skipped', 'benda sudah di atas meja/rak');
+
+                    continue;
+                }
+
+                if (! $overwrite && ! $this->samePosition($config, $from)) {
+                    $this->add($scene, $label, 'skipped', 'posisi sudah diatur admin (pakai --timpa untuk memindah)');
+
+                    continue;
+                }
+
+                if (! $dryRun) {
+                    [$config['x'], $config['y'], $config['w']] = $to;
+                    $this->db->table('challenge_items')->where('id', $item['id'])
+                        ->update(['config_json' => json_encode($config, JSON_UNESCAPED_UNICODE), 'updated_at' => date('Y-m-d H:i:s')]);
+                }
+
+                $this->add($scene, $label, $dryRun ? 'planned' : 'installed', sprintf('benda dipindah ke x %s %%, y %s %%, lebar %s %%', $to[0], $to[1], $to[2]));
+            }
+        }
+    }
+
+    /**
+     * @param array<string, mixed> $config
+     * @param list<float>          $position x, y, w
+     */
+    private function samePosition(array $config, array $position): bool
+    {
+        foreach (['x', 'y', 'w'] as $i => $axis) {
+            if (! is_numeric($config[$axis] ?? null) || abs((float) $config[$axis] - $position[$i]) >= 0.01) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /** Fill the region's map/background/badge column when it is still empty. */

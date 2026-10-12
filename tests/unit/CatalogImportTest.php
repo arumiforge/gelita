@@ -158,6 +158,51 @@ final class CatalogImportTest extends CIUnitTestCase
         }
     }
 
+    public function testMeasuredSceneMovesObjectsOntoItsTables(): void
+    {
+        $this->writeCatalog(['challenge.tmg-4.scene' => ['tantangan/challenge.tmg-4.scene.webp', 1280, 720, false]]);
+        $sha     = hash_file('sha256', $this->catalog . '/assets/tantangan/challenge.tmg-4.scene.webp');
+        $objects = [
+            'challenge.item.tmg-4-02' => [[44.0, 6.0, 12.0], [14.0, 31.0, 10.0]],
+            'challenge.item.tmg-4-03' => [[84.0, 6.0, 12.0], [76.0, 31.0, 10.0]],
+            'challenge.item.tmg-4-11' => [[64.0, 6.0, 12.0], [45.0, 31.0, 10.0]],
+        ];
+        $this->setObject('challenge.item.tmg-4-02', [44.0, 6.0, 12.0]);  // old bank position
+        $this->setObject('challenge.item.tmg-4-03', [50.0, 50.0, 9.0]);  // placed by an admin
+        $this->setObject('challenge.item.tmg-4-11', [45.0, 31.0, 10.0]); // already on the table
+
+        $importer = new CatalogImporter($this->catalog, null, [], [$sha => ['challenge.tmg-4.scene', $objects]]);
+        $notes    = static fn (array $report): array => array_column(array_filter($report, static fn (array $r): bool => str_starts_with($r['target'], 'challenge_items')), 'status', 'target');
+
+        $this->assertSame(['planned', 'skipped', 'skipped'], array_values($notes($importer->run(true))));
+        $this->assertSame([44.0, 6.0, 12.0], $this->object('challenge.item.tmg-4-02'), 'a dry run changes nothing');
+
+        $importer->run();
+        $this->assertSame([14.0, 31.0, 10.0], $this->object('challenge.item.tmg-4-02'));
+        $this->assertSame([50.0, 50.0, 9.0], $this->object('challenge.item.tmg-4-03'), "an admin's placement is kept");
+        $this->assertSame([45.0, 31.0, 10.0], $this->object('challenge.item.tmg-4-11'));
+
+        $importer->run(false, true);
+        $this->assertSame([76.0, 31.0, 10.0], $this->object('challenge.item.tmg-4-03'), '--timpa moves it too');
+    }
+
+    /** The measured positions belong to the catalogue scenes, and the question bank carries the same ones. */
+    public function testMeasuredScenesMatchTheCatalogueAndTheBank(): void
+    {
+        foreach (CatalogImporter::SCENE_OBJECTS as $sha => [$scene, $objects]) {
+            $file = ROOTPATH . 'gelita-katalog/assets/tantangan/' . $scene . '.webp';
+
+            $this->assertFileExists($file);
+            $this->assertSame($sha, hash_file('sha256', $file), "{$scene} changed: measure its tables again");
+
+            foreach ($objects as $key => [, $to]) {
+                $this->assertSame($to, $this->object($key), "{$key} in the bank differs from SCENE_OBJECTS");
+            }
+        }
+
+        $this->assertSame(8 + 10 + 12, array_sum(array_map(static fn (array $s): int => count($s[1]), CatalogImporter::SCENE_OBJECTS)));
+    }
+
     /** A new catalogue edition (e.g. the 24-frame poses) replaces earlier catalogue images, not admin uploads. */
     public function testChangedCatalogueFileIsReinstalled(): void
     {
@@ -225,7 +270,7 @@ final class CatalogImportTest extends CIUnitTestCase
 
     private function importer(): CatalogImporter
     {
-        return new CatalogImporter($this->catalog, null, []);
+        return new CatalogImporter($this->catalog, null, [], []);
     }
 
     /** @return array<string, mixed> */
@@ -234,6 +279,32 @@ final class CatalogImportTest extends CIUnitTestCase
         return $this->sqlite->table('challenge_nodes n')->select('n.map_x, n.map_y')
             ->join('levels l', 'l.id = n.level_id')
             ->where('l.code', $region)->where('n.sequence', $sequence)
+            ->get()->getRowArray();
+    }
+
+    /** @return list<float> x, y, w of the Cari Objek item showing this object */
+    private function object(string $mediaKey): array
+    {
+        $config = json_decode((string) $this->objectRow($mediaKey)['config_json'], true);
+
+        return [(float) $config['x'], (float) $config['y'], (float) $config['w']];
+    }
+
+    /** @param list<float> $position */
+    private function setObject(string $mediaKey, array $position): void
+    {
+        $row    = $this->objectRow($mediaKey);
+        $config = json_decode((string) $row['config_json'], true);
+        [$config['x'], $config['y'], $config['w']] = $position;
+        $this->sqlite->table('challenge_items')->where('id', $row['id'])->update(['config_json' => json_encode($config)]);
+    }
+
+    /** @return array<string, mixed> */
+    private function objectRow(string $mediaKey): array
+    {
+        return $this->sqlite->table('challenge_items i')->select('i.id, i.config_json')
+            ->join('media_assets m', 'm.id = i.media_asset_id')
+            ->where('m.asset_key', $mediaKey)->where('i.interaction_type', 'find_object')
             ->get()->getRowArray();
     }
 

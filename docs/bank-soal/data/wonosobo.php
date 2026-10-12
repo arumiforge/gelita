@@ -630,7 +630,7 @@ return [
                 'Kabut Dieng menyembunyikan benda-benda khas Wonosobo di antara benda yang mirip. Pecahkan teka-teki Mbah Kedu dan temukan keempatnya.',
                 'The Dieng mist hides Wonosobo\'s special objects among look-alikes. Solve Mbah Kedu\'s riddles and find all four.',
             ],
-            'scene'       => ['key' => 'challenge.wnb-4.scene', 'label' => 'Pasar Oleh-oleh Dieng', 'note' => 'pasar oleh-oleh Dieng berkabut tipis, tiga deret rak bambu/meja kayu, kebun teh & candi di latar'],
+            'scene'       => ['key' => 'challenge.wnb-4.scene', 'label' => 'Pasar Oleh-oleh Dieng', 'note' => 'pasar oleh-oleh Dieng berkabut tipis, rak bambu beratap, meja kayu, dan bangku bambu di depan (permukaan ± 43 %, 58 %, 75 % tinggi gambar), kebun teh & candi di latar'],
             'hints'       => [
                 [
                     'Petunjuknya berupa teka-teki. Pikirkan bentuk, bahan, dan kegunaan benda.',
@@ -650,8 +650,8 @@ return [
                         [   // wnb-4-a01
                             'type'   => 'find_object',
                             'bloom'  => 'C4',
-                            'x'      => 9,
-                            'y'      => 8,
+                            'x'      => 31,
+                            'y'      => 26,
                             'w'      => 10,
                             'prompt' => [
                                 'Temukan alat musik berbentuk tudung lengkung dari anyaman bambu. Dulu tudung itu melindungi penggembala bebek dari panas dan hujan, lalu diberi senar untuk dipetik.',
@@ -662,8 +662,8 @@ return [
                         [   // wnb-4-a02
                             'type'   => 'find_object',
                             'bloom'  => 'C4',
-                            'x'      => 81,
-                            'y'      => 39,
+                            'x'      => 75,
+                            'y'      => 41.5,
                             'w'      => 10,
                             'prompt' => [
                                 'Temukan buah pegunungan yang mirip pepaya, tetapi ukurannya kecil. Buah ini tumbuh baik di udara sejuk dan sering dibuat manisan.',
@@ -674,8 +674,8 @@ return [
                         [   // wnb-4-a03
                             'type'   => 'find_object',
                             'bloom'  => 'C4',
-                            'x'      => 33,
-                            'y'      => 39,
+                            'x'      => 35,
+                            'y'      => 41.5,
                             'w'      => 10,
                             'prompt' => [
                                 'Temukan keranjang bambu kecil yang dicelup-celupkan ke air mendidih. Nama alat ini dipakai untuk menamai mi khas Wonosobo.',
@@ -686,8 +686,8 @@ return [
                         [   // wnb-4-a04
                             'type'   => 'find_object',
                             'bloom'  => 'C3',
-                            'x'      => 57,
-                            'y'      => 70,
+                            'x'      => 65,
+                            'y'      => 59,
                             'w'      => 10,
                             'prompt' => [
                                 'Temukan daun yang diseduh menjadi minuman hangat. Daun ini dipetik di perkebunan Tambi yang sudah ada sejak tahun 1865.',
@@ -698,8 +698,8 @@ return [
                         [   // wnb-4-a05 · pengecoh
                             'type'   => 'find_object',
                             'decoy'  => true,
-                            'x'      => 57,
-                            'y'      => 8,
+                            'x'      => 45,
+                            'y'      => 59,
                             'w'      => 10,
                             'prompt' => ['Pepaya biasa (pengecoh)', 'Ordinary papaya (decoy)'],
                             'wrong'  => [
@@ -711,8 +711,8 @@ return [
                         [   // wnb-4-a06 · pengecoh
                             'type'   => 'find_object',
                             'decoy'  => true,
-                            'x'      => 9,
-                            'y'      => 70,
+                            'x'      => 7,
+                            'y'      => 59,
                             'w'      => 10,
                             'prompt' => ['Rigen (pengecoh)', 'Rigen (decoy)'],
                             'wrong'  => [
@@ -724,8 +724,8 @@ return [
                         [   // wnb-4-a07 · pengecoh
                             'type'   => 'find_object',
                             'decoy'  => true,
-                            'x'      => 33,
-                            'y'      => 70,
+                            'x'      => 25,
+                            'y'      => 59,
                             'w'      => 10,
                             'prompt' => ['Semangkuk mi ongklok (pengecoh)', 'A bowl of ongklok noodles (decoy)'],
                             'wrong'  => [
@@ -737,8 +737,8 @@ return [
                         [   // wnb-4-a08 · pengecoh
                             'type'   => 'find_object',
                             'decoy'  => true,
-                            'x'      => 33,
-                            'y'      => 8,
+                            'x'      => 47,
+                            'y'      => 26,
                             'w'      => 10,
                             'prompt' => ['Angklung (pengecoh)', 'Angklung (decoy)'],
                             'wrong'  => [
@@ -750,8 +750,8 @@ return [
                         [   // wnb-4-a09 · pengecoh
                             'type'   => 'find_object',
                             'decoy'  => true,
-                            'x'      => 9,
-                            'y'      => 39,
+                            'x'      => 15,
+                            'y'      => 41.5,
                             'w'      => 10,
                             'prompt' => ['Sasando (pengecoh)', 'Sasando (decoy)'],
                             'wrong'  => [
@@ -763,8 +763,8 @@ return [
                         [   // wnb-4-a10 · pengecoh
                             'type'   => 'find_object',
                             'decoy'  => true,
-                            'x'      => 81,
-                            'y'      => 70,
+                            'x'      => 83,
+                            'y'      => 59,
                             'w'      => 10,
                             'prompt' => ['Biji kopi (pengecoh)', 'Coffee beans (decoy)'],
                             'wrong'  => [
@@ -776,8 +776,8 @@ return [
                         [   // wnb-4-a11 · pengecoh
                             'type'   => 'find_object',
                             'decoy'  => true,
-                            'x'      => 57,
-                            'y'      => 39,
+                            'x'      => 55,
+                            'y'      => 41.5,
                             'w'      => 10,
                             'prompt' => ['Kuluk Topeng Ireng (pengecoh)', 'Topeng Ireng headdress (decoy)'],
                             'wrong'  => [
@@ -789,8 +789,8 @@ return [
                         [   // wnb-4-a12 · pengecoh
                             'type'   => 'find_object',
                             'decoy'  => true,
-                            'x'      => 81,
-                            'y'      => 8,
+                            'x'      => 63,
+                            'y'      => 26,
                             'w'      => 10,
                             'prompt' => ['Getuk (pengecoh)', 'Getuk (decoy)'],
                             'wrong'  => [
