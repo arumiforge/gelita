@@ -14,6 +14,9 @@ return [
     'sound'           => 'Sound',
     'fullscreen'      => 'Full screen',
     'language'        => 'Language',
+    // Each language is named in itself, the same in both locales (switcher labels)
+    'lang_id'         => 'Bahasa Indonesia',
+    'lang_en'         => 'English',
     'logout'          => 'Log out',
     'profile'         => 'Profile',
     'close'           => 'Close',

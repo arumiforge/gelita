@@ -141,17 +141,19 @@ function bind(figure) {
 export function setFrames(figure, frames, { fps = 1, loop = false } = {}) {
   if (!figure) return;
   const player = bind(figure);
+  // Cancel the previous pose first, also while the figure is off screen: its
+  // pending decode must not replace these frames with the old ones, and its
+  // timer must not show one more old frame over the new pose.
+  stopTimer(player);
+  player.token++;
+  player.running = false;
+  active.delete(player);
   player.frames = frames;
+  player.index = 0;
   player.fps = Math.max(0.5, Number(fps) || 1);
   player.loop = Boolean(loop);
 
-  if (frames.length < 2) {
-    stopTimer(player);
-    player.token++;
-    player.running = false;
-    active.delete(player);
-    return;
-  }
+  if (frames.length < 2) return;
   // Not yet observed as visible: the observer starts it when it appears
   if (player.visible) start(player);
 }

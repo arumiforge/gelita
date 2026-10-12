@@ -24,7 +24,7 @@ final class AssetChecklist
      * fallback the research can run with, so they never count as missing.
      */
     public const UI_SLOTS = [
-        'ui.logo-hero', 'ui.btn-start', 'ui.btn-start.en', 'ui.logo', 'map.kedu',
+        'ui.logo-hero', 'ui.btn-start', 'ui.btn-start.en', 'ui.logo', 'ui.lang.id', 'ui.lang.en', 'map.kedu',
         'bg.loading', 'bg.welcome', 'bg.intro', 'bg.map', 'bg.reflection',
     ];
 

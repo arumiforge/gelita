@@ -188,6 +188,7 @@ class Gelita extends BaseConfig
         'ui.logo-hero'     => [1600, 600],
         'ui.btn-start'     => [720, 240],
         'ui.btn-start.*'   => [720, 240],   // varian bahasa: ui.btn-start.en
+        'ui.lang.*'        => [256, 256],   // language switch icons ui.lang.id / ui.lang.en
         'bg.loading'       => [1920, 1080], // tirai layar penuh (components/curtain.php)
         // App icons (AppController::manifest(), app_icon_src())
         'app.favicon'       => [48, 48],
@@ -223,6 +224,7 @@ class Gelita extends BaseConfig
         'ui.logo-hero'          => [800, 300],
         'ui.btn-start'          => [360, 120],
         'ui.btn-start.*'        => [360, 120],
+        'ui.lang.*'             => [44, 44],     // HUD language switch
         'bg.loading'            => [1280, 720],
         'avatar.*'              => [72, 72],     // profile; 36 × 36 in the HUD
         'ui.pin'                => [56, 56],     // map pin of every city without its own
