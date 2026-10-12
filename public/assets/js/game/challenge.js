@@ -19,16 +19,23 @@
  * dihitung ulang untuk percobaan berikutnya. Soal yang tidak disentuh dalam
  * satu percobaan dikirim tanpa waktu. Hanya catatan proses — urutan dan
  * waktu resmi tetap occurred_at server.
- *   finish(result)                 → ikuti `completed` / `redirect` dari /check atau /responses
+ *   finish(result)                 → pengerjaan ditutup server: tetap di layar ini, tombol
+ *                                    Lanjut (#btn-next) membawa ke `redirect` dari /check atau /responses
  *   useHint()                      → POST /api/attempts/{id}/hints
  *
  * Aturan 3 kesempatan (Dok 2 §5.3): server yang menghitung dan menutup
  * pengerjaan. /check dan /responses membalas `tries_left`, `completed`,
  * `completion_reason`, dan `redirect`; klien hanya menampilkan penanda
- * kesempatan (●●○), modal yang sesuai, lalu pindah ke `redirect`.
- * POST /complete hanya cadangan bila respons selesai tanpa `redirect`
- * (endpoint itu idempoten). Pengerjaan sudah diubah tab lain atau request
- * ganda (409 ATTEMPT_CHANGED) → ke `redirect` bila ada, selain itu muat ulang.
+ * kesempatan (●●○) dan modal yang sesuai.
+ *
+ * After the closing modal the student stays on the finished screen (e.g. the
+ * whole picture in Susun Gambar, the marked blanks or cards) and only moves
+ * to `redirect` by tapping Lanjut (#btn-next, rendered hidden by each engine
+ * view). The check, hint, and exit buttons are hidden then: the attempt is
+ * already closed. POST /complete is only a fallback when a closing response
+ * has no `redirect` (that endpoint is idempotent). An attempt already changed
+ * by another tab or a duplicate request (409 ATTEMPT_CHANGED) → straight to
+ * `redirect` when there is one, otherwise reload.
  *
  * Satu-satunya jalan keluar adalah tombol Keluar yang dikonfirmasi; tombol
  * Back browser meminta konfirmasi yang sama. Menutup tab tidak memunculkan
@@ -144,33 +151,69 @@ export async function bootChallenge() {
     }
   }
 
-  /** Pindah ke layar hasil; pengerjaan sudah ditutup server. */
-  async function leaveTo(redirect, shards = null) {
+  /** The server has closed the attempt: stop the clock, update the lantern. */
+  function markClosed(shards = null) {
     state.completed = true;
     state.leaving = true;
     timer.stop();
     if (shards !== null && shards !== undefined) updateLantern(shards);
+  }
+
+  /** Pindah ke layar hasil; pengerjaan sudah ditutup server. */
+  async function leaveTo(redirect, shards = null) {
+    markClosed(shards);
     await flush();
     window.location.href = redirect;
   }
 
   /** Cadangan: respons selesai tanpa `redirect` → POST /complete (idempoten). */
+  let completing = false;
   async function complete() {
-    if (state.completed) return;
+    if (completing) return;
+    completing = true;
     try {
       const result = await post('complete', { client_event_id: uuid(), occurred_at: now() });
       await leaveTo(result.redirect, result.shards);
     } catch (error) {
+      completing = false;
       if (error?.code === 'TRIES_REMAINING') toast(t('itemsPending'), 'warn');
       else await report(error);
     }
   }
 
+  const nextButton = $('#btn-next', section);
+  // Button of the closing modal: "Oke" when Lanjut waits on the screen
+  const closingLabel = nextButton ? t('ok') : t('next');
+
+  /** Go on to the result screen of a closed attempt. */
+  async function proceed(result) {
+    if (result?.redirect) await leaveTo(result.redirect, result.shards);
+    else await complete();
+  }
+
+  /**
+   * Stay on the finished screen: the check, hint, and exit buttons give way
+   * to Lanjut, which moves on to the result screen.
+   */
+  function hold(result) {
+    markClosed(result?.shards);
+    for (const node of [$('#btn-check', section), hintButton, $('details.challenge-exit', section)]) {
+      if (node) node.hidden = true;
+    }
+    nextButton.hidden = false;
+    nextButton.addEventListener('click', async () => {
+      setBusy(nextButton, true);
+      await proceed(result);
+      setBusy(nextButton, false); // still here only when the fallback failed
+    });
+    nextButton.focus({ preventScroll: true });
+  }
+
   /** Ikuti penutupan dari respons /check atau /responses. */
   async function finish(result) {
     if (state.completed) return;
-    if (result?.redirect) await leaveTo(result.redirect, result.shards);
-    else await complete();
+    if (nextButton) hold(result);
+    else await proceed(result);
   }
 
   /**
@@ -257,10 +300,10 @@ export async function bootChallenge() {
   /**
    * Hasil pemeriksaan batch (puzzle, rumpang, boleh).
    *
-   * - `completed` + `solved` → konfeti + modal sukses → redirect;
+   * - `completed` + `solved` → konfeti + modal sukses → finish() (Lanjut);
    * - `completed` + `tries_exhausted` → `beforeExhausted()` (Susun Gambar:
-   *   gambar utuh), modal "Kesempatanmu sudah habis" dengan satu tombol
-   *   Lanjut → redirect; kunci jawaban tidak ditampilkan;
+   *   gambar utuh), modal "Kesempatanmu sudah habis" → finish() (Lanjut);
+   *   kunci jawaban tidak ditampilkan;
    * - selain itu → modal "Belum semuanya tepat" + sisa kesempatan + Perbaiki.
    *
    * @returns {Promise<'complete'|'fix'>}
@@ -278,7 +321,7 @@ export async function bootChallenge() {
         title: okTitle,
         text: okText,
         dismissible: false,
-        buttons: [{ label: t('next'), style: 'primary', value: 'next' }],
+        buttons: [{ label: closingLabel, style: 'primary', value: 'next' }],
       });
       await finish(result);
       return 'complete';
@@ -293,7 +336,7 @@ export async function bootChallenge() {
         title: t('triesExhaustedTitle'),
         text: exhaustedText,
         dismissible: false,
-        buttons: [{ label: t('next'), style: 'primary', value: 'next' }],
+        buttons: [{ label: closingLabel, style: 'primary', value: 'next' }],
       });
       await finish(result);
       return 'complete';
@@ -328,6 +371,7 @@ export async function bootChallenge() {
     check,
     selected,
     finish,
+    closingLabel,
     tally,
     setTries,
     triesText,
