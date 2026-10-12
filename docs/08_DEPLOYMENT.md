@@ -985,6 +985,39 @@ curl -sI "$U/assets/p/$(ls /var/www/gelita/public/assets/p | head -1)" | grep -i
 curl -s "$U/api/paket/aktif"                                                                     # {"success":true,"data":{"package_code":…}}
 ```
 
+#### Service worker and package on devices (Stage 2)
+
+*(New, English.)* With package mode on, devices keep the package in Cache Storage and `public/sw.js` serves it (details: `docs/06_JAVASCRIPT.md` §Asset package — service worker and downloader). Deployment notes:
+
+- **HTTPS is required** for the service worker and for the sha256 check (`crypto.subtle`); `http://localhost` works for development only.
+- **`sw.js` and `sw-kosong.js` must never be cached long.** The Nginx config already gives `.js` without `?v=` the value `no-cache`; browsers also re-check the worker script on navigations. Do not put either file behind `immutable` or a CDN.
+- **Code updates while package mode is on.** Pages then load CSS and JavaScript from the package copy `assets/k/{code_version}/`, a snapshot taken when the package was built. After a deploy that changes game code, build a new package (`php spark gelita:paket:bangun`) and activate a release that names it, or students keep running the old code. Media files are content-addressed, so devices download only the changed code files. The deploy scripts do not do this yet (plan §5.4, §6.3).
+- **Package copy missing on disk** (for example a restore without `public/assets/k/`): pages fall back to the normal `assets/…?v=` URLs for code files that are not on disk, so the game still loads; run `php spark gelita:paket:periksa` and rebuild.
+- `X-Gelita-Paket: {package_code}` is sent on API responses while package mode is on (no student data).
+
+**Kill switch for service worker trouble** (plan §11.1). Two levels, from mild to drastic:
+
+1. **`.env`: `gelita.paket.aktif = false`** (no restart needed; `.env` is read on every request). Every device gets normal asset URLs on its next page load, `/api/paket/aktif` answers `package_code: null` with `disabled_by_server: true`, and game pages register the empty worker `public/sw-kosong.js` instead of `sw.js`. The empty worker has no fetch handler, so every request goes to the network as without a service worker; it removes the device's package marker (`gelita-meta`) and keeps the downloaded files (`gelita-aset`, public assets only) for later. The offline page is not shown while it runs. Undo: remove the line (or set `true`); the next page load registers `sw.js` again, and devices download the package again before Mulai (only what is missing).
+2. **When pages do not load at all** (a worker bug that breaks navigations, so no page can register anything): serve the empty worker at the worker's own URL. Browsers fetch the worker script themselves on navigation, so this reaches every device. Remove the rule once `sw.js` is fixed:
+
+```nginx
+# Both paths (Nginx), inside the HTTPS server block — temporary
+location = /sw.js {
+    default_type application/javascript;
+    add_header Cache-Control "no-cache" always;
+    try_files /sw-kosong.js =404;
+}
+```
+
+Reload Nginx after adding and after removing it. Copying `public/sw-kosong.js` over `public/sw.js` works too, but the next deploy (`git pull`) then stops on the changed file; restore it with `git checkout -- public/sw.js`. Devices pick up the empty worker on their next navigation (browsers re-check the worker script at least once a day).
+
+Check after deploying:
+
+```bash
+curl -sI "$U/sw.js" | grep -i cache-control                     # no-cache
+curl -sI "$U/api/paket/aktif" | grep -i x-gelita-paket           # the package code while package mode is on
+```
+
 ### Ukuran aset
 
 Aset gambar dan video mendominasi ukuran instalasi. Anjuran:
