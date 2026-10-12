@@ -245,8 +245,8 @@ $isOn       = $activeCode !== null;
           'status'       => ['label' => lang('Admin.packageStatusColumn'), 'render' => static fn (array $row): string => esc(admin_label('packageStatus', (string) $row['status']))],
           'total_bytes'  => ['label' => lang('Admin.packageSize'), 'render' => static fn (array $row): string => esc($mb($row['total_bytes']))],
           'file_count'   => ['label' => lang('Admin.packageFiles'), 'render' => static fn (array $row): string => esc(fmt_num($row['file_count']))],
-          'built_at'     => ['label' => lang('Admin.packageBuiltAt'), 'format' => 'datetime'],
-          'published_at' => ['label' => lang('Admin.packagePublishedAt'), 'format' => 'datetime'],
+          'built_at'     => ['label' => lang('Admin.packageBuiltAt'), 'render' => static fn (array $row): string => $row['built_at'] ? esc(fmt_date($row['built_at'], false, 'id')) : '—'],
+          'published_at' => ['label' => lang('Admin.packagePublishedAt'), 'render' => static fn (array $row): string => $row['published_at'] ? esc(fmt_date($row['published_at'], false, 'id')) : '—'],
           'actions'      => ['label' => '', 'render' => static fn (array $row): string => '<a class="btn btn-sm" href="' . esc($previewUrl((string) $row['package_code']), 'attr') . '" target="_blank" rel="noopener">' . icon('eye') . ' ' . esc(lang('Admin.packagePreview')) . '</a>'],
       ],
   ]) ?>

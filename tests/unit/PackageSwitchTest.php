@@ -94,6 +94,33 @@ final class PackageSwitchTest extends CIUnitTestCase
         $this->assertStringContainsString('Matikan', $page);
     }
 
+    public function testBuildWorksWithoutJavaScriptAndNeverRunsTwice(): void
+    {
+        $this->post('admin/studi/rilis/paket/bangun')->assertRedirectTo(site_url('admin/studi/rilis/paket'));
+        $code = model(AssetPackageModel::class)->orderBy('id', 'DESC')->first()['package_code'];
+
+        // A second Nyalakan while building resumes the same build
+        $this->post('admin/studi/rilis/paket/bangun');
+        $this->assertSame(1, model(AssetPackageModel::class)->countAllResults());
+
+        $page = $this->page('admin/studi/rilis/paket');
+        $this->assertStringContainsString('action="' . base_url('admin/studi/rilis/paket/bangun/' . $code . '/lanjut') . '"', $page);
+        $this->assertStringContainsString('Lanjutkan membangun', $page);
+
+        $this->post('admin/studi/rilis/paket/bangun/' . $code . '/lanjut')->assertRedirectTo(site_url('admin/studi/rilis/paket'));
+        $this->assertSame(AssetPackageModel::STATUS_BUILT, model(AssetPackageModel::class)->findByCode($code)['status']);
+        $this->assertSame(1, $this->conn->table('audit_logs')->where('action', 'package_build')->countAllResults());
+
+        // A late batch request after the end changes nothing
+        $this->assertTrue($this->ajax('admin/studi/rilis/paket/bangun/' . $code . '/lanjut')['finished']);
+        $this->assertSame(1, $this->conn->table('audit_logs')->where('action', 'package_build')->countAllResults());
+
+        // Unknown code
+        $response = $this->asAdmin()->withHeaders(['X-Requested-With' => 'XMLHttpRequest'])
+            ->call(Method::POST, 'admin/studi/rilis/paket/bangun/pkt-2000-01-01-01/lanjut', self::CSRF);
+        $this->assertSame(409, $response->response()->getStatusCode());
+    }
+
     public function testSwitchingOffActivatesAReleaseWithoutAPackage(): void
     {
         $code = $this->switchOn();

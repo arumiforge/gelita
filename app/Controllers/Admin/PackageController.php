@@ -47,7 +47,8 @@ class PackageController extends BaseAdminController
         $model    = model(AssetPackageModel::class);
         $code     = $packages->releasePackageCode();
         $building = $packages->runningBuild();
-        $pending  = $this->pendingPackage($code);
+        // While a build runs, an older unpublished build is not offered for publishing
+        $pending  = $building === null ? $this->pendingPackage($code) : null;
         $history  = $model->where('status !=', AssetPackageModel::STATUS_BUILDING)->orderBy('id', 'DESC')->findAll(10);
         $preview  = session(AssetPackageService::PREVIEW_SESSION_KEY);
 
