@@ -216,26 +216,41 @@ body.is-challenge .lang-switch { display: none; }
   color: var(--navy-900);
   font-weight: 600;
 }
-/* Tawaran memasang di layar utama (game/install.js) */
-/* Staff login: a thin, quiet link in the bottom-right corner of the welcome page only */
+/* Staff login: a small, readable link in the bottom-right corner of the welcome
+   page only. It sits on a dark backing like the HUD text so it stays legible on
+   the background art; its corner coordinates live in stage.css. */
 .welcome-staff {
   position: absolute;
-  right: 1rem;
-  bottom: .5rem;
   z-index: 2;
   display: inline-flex;
   align-items: center;
-  gap: var(--gap-1);
-  padding: .125rem var(--gap-2);
-  color: var(--ink-dim);
-  font-size: .75rem;
-  letter-spacing: .02em;
+  gap: var(--gap-2);
+  padding: 0 var(--gap-4) 0 var(--gap-3);
+  border-radius: var(--radius-pill);
+  background: var(--hud-backing);
+  color: var(--ink);
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
   text-decoration: none;
-  opacity: .6;
-  transition: opacity .15s, color .15s;
+  text-shadow: 0 1px .25rem rgba(11, 19, 32, .8);
+  transition: background-color .15s, color .15s;
 }
-.welcome-staff .icon { width: .875rem; height: .875rem; }
-.welcome-staff:hover, .welcome-staff:focus-visible { color: var(--gold-300); opacity: 1; }
+.welcome-staff .icon { width: 1.125rem; height: 1.125rem; color: var(--gold-500); }
+/* 40 dp tall; the hit area grows to --tap like the HUD brand link */
+.welcome-staff::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: var(--tap);
+  transform: translateY(-50%);
+}
+.welcome-staff:hover, .welcome-staff:focus-visible { background: var(--hud-backing-hover); color: var(--gold-300); }
+.welcome-staff:focus-visible { outline: .1875rem solid var(--gold-500); outline-offset: .125rem; }
+/* Tawaran memasang di layar utama (game/install.js) */
 .welcome-install { display: grid; align-content: center; justify-items: end; gap: var(--gap-2); height: auto; min-height: calc(40 * var(--dp)); }
 .welcome-install-hint { display: flex; align-items: flex-start; gap: var(--gap-2); margin: 0; color: var(--ink-dim); font-size: var(--fs-caption); }
 .welcome-install-hint .icon { margin-top: .125rem; color: var(--gold-500); }

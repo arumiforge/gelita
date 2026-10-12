@@ -1616,3 +1616,12 @@ Branch `paket-panel-rilis` (from `main` e20229c), merged via `sky/laughing-rubin
 - **Changed-asset notice** partial on Paket aset, Rilis, Gambar & mockup, and Rekaman narasi, from `changedSinceActive()`; hidden while package mode is off.
 - **Not done:** the deploy scripts do not rebuild the package while the switch is on (§6.3); it needs an owner decision on the running-study rule for an unattended deploy, so docs/08 tells admins to press **Bangun ulang paket** after a code deploy. Migration `003300` was not run on MariaDB/MySQL (none in the agent environment); its backfill SQL was checked on SQLite.
 - **Tests.** `PackageSwitchTest` (9), `ReleasePackageLockTest` (4), `RouteWiringTest` (admin-only routes). Browser pass on a local SQLite world, 35 checks (build progress, publish during a running study, staff-only preview, notices clearing after a rebuild, lab permission in the API, Matikan, no horizontal scroll at 1280/390 px, no console errors). Seen but not changed: `/admin/dashboard` returns 500 on SQLite (`DashboardController::recentEvents()`, "no such column db_e.id"); production runs MySQL.
+
+## Readable staff login link in the bottom-right corner (12 October 2026)
+
+Owner request: fix the "Masuk staf" text on the welcome page and keep it in the bottom-right corner.
+
+- **Problem.** The link from the earlier staff-link entry was 12 px grey text at 60 % opacity. On the real `bg.welcome` art it almost vanished, and on a phone in landscape it shrank to about 7 px.
+- **Fix.** The link is now a small pill like the HUD text: `--fs-caption` (16 dp), semi-bold, `--ink` on `--hud-backing`, gold key icon, 40 dp tall with a 48 dp hit area, and a gold focus ring. The text is still `Game.staffLogin` ("Masuk staf" / "Staff login").
+- **Position.** It is pinned in stage coordinates (`stage.css`): 24 dp from the right and 16 dp from the bottom of the 1280 × 720 stage, so it stays in the corner at every window size.
+- **Install offer moved up.** `.welcome-install` moves from y 600 to y 576. Without this, the two-line Android install hint would overlap the larger link by about 10 dp. Dok 3 §4 and `docs/05_VIEW_UI.md` are updated to match.

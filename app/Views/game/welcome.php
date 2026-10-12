@@ -3,12 +3,13 @@
  * 1. Welcome — `/` → HomeController::index
  *
  * Panggung 16:9 (Dok 3 §4): logo 240, 120, 800 × 300; tombol Mulai 460, 456,
- * 360 × 120; petunjuk pasang aplikasi 896, 600, 352 × 40 (stage.css).
+ * 360 × 120; petunjuk pasang aplikasi 896, 576, 352 × 40 (stage.css);
+ * staff login link pinned 24 dp from the right and 16 dp from the bottom.
  *
  * Logo dan SATU tombol Mulai → `/mulai`, sama untuk siswa yang sudah maupun
  * belum login (`/mulai` yang memilah). HUD dirender tanpa merek
  * (`hideBrand`): logonya sudah besar di sini. Staf masuk lewat `/admin/login`,
- * via the thin link in the bottom-right corner (this page only).
+ * via the small link in the bottom-right corner (this page only).
  *
  * Logo : `ui.logo-hero` (landscape 1600×600) → `ui.logo` → judul teks.
  *        Bila gambar, tagline tetap ada sebagai teks tersembunyi.
