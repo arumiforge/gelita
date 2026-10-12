@@ -2,13 +2,18 @@
 
 Diperbarui 12 Oktober 2026 (Asia/Bangkok). Urutan di bawah membedakan hasil terkini dari pemeriksaan historis. Keputusan aktif dirangkum dalam [MEMORY.md](MEMORY.md).
 
-## 12 October 2026 (later) — merge leftovers fixed, frames installed in the game
+## 12 October 2026 (later) — frames installed in the game
 
 *(New section, English, written from the GELITA app repo; branch `pbb/nifty-faraday-fcw9r6`.)*
 
-- **Conflict markers removed.** The push of the 240 frames left unresolved conflict markers (`<<<<<<<`, `>>>>>>>`) in this file, `index.html`, `reports/STATUS-GAMBAR.json`, and `reports/validation-report.json`. This file keeps both entries. The other three were regenerated with `node build.mjs` and `node scripts/validate.mjs`; the validator passes. `reports/STYLE-AUDIT.csv` stays with LF line endings.
-- **No images or `data.json` changed.**
-- **Game:** `php spark gelita:katalog:impor` now reinstalls an image it installed before when the catalogue file changed. A server that imported the old edition gets the 30 replaced frames plus 210 new ones; everything else is skipped as unchanged.
+- `php spark gelita:katalog:impor` in the app now reinstalls an image it installed before when its catalogue file changed. A server that imported the old edition gets the 30 replaced frames plus 210 new ones, and everything else is skipped as unchanged. No catalogue files were changed for this.
+
+## 12 Oktober 2026 — perbaikan konflik sebelum push GitHub
+
+- Memeriksa PowerShell lokal dan Git repositori induk. Setelah `git fetch origin`, branch `main` dan `origin/main` sama-sama berada pada `8b4d358`; tidak ada perubahan lokal atau staging pada awal pemeriksaan.
+- Menghapus penanda konflik merge yang sudah tersimpan dalam PROGRESS dengan mempertahankan kedua catatan pekerjaan. Menjalankan `node build.mjs` untuk membuat ulang HTML dan laporan status dari `data.json`, lalu `node scripts/validate.mjs` untuk membuat ulang laporan validasi. Tidak mengubah sumber data, aset, atau 97 objek audio.
+- Build dan validator lulus: 580 ID/kode unik, 483 visual tersedia, 240 frame karakter, data HTML identik, audio identik dengan baseline, 563 tautan Markdown dan 6 tautan HTML statis tersedia. Sintaks satu blok JavaScript HTML dan parsing kedua laporan JSON lulus; keempat berkas bebas penanda konflik. Pemeriksaan whitespace Git lulus. Pemeriksaan browser tidak dijalankan dalam pekerjaan ini.
+- Persiapan commit/push dibatasi pada `gelita-katalog/`: PROGRESS, index, laporan status, dan laporan validasi. Commit lama yang sudah ada di GitHub tidak diubah.
 
 ## 12 Oktober 2026 — 24 frame setiap pose Jaka dan Mbah Kedu
 

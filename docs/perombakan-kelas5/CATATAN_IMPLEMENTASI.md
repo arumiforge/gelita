@@ -1451,7 +1451,7 @@ Branch `pbb/nifty-faraday-fcw9r6` (third PR on it; #100 and #101 are merged). Ow
   - The 30 old lurik–iket frames are replaced; the old ones are backed up in `gelita-katalog/archive/before-character-frames-20261012/`.
   - `data.json` has 580 entries (483 visual). The catalogue's own docs, reports, and provenance were updated. Ten AI key poses were given deterministic secondary motion with the feet fixed (`gelita-katalog/reports/character-frame-report.json`).
   - **Mbah Kedu follows `reference.02`** (cream shirt, batik vest, brown trousers, stick), not the `reference.14` jacket chosen on 11 October. The `ImageSlots` text follows the frames, since they are the owner's art.
-- **Merge leftovers fixed.** The push left unresolved conflict markers in four catalogue files.
+- **Merge leftovers fixed.** The push left unresolved conflict markers in four catalogue files. The owner fixed them on `main` as well (`96a68e9`); this branch merged `main` and keeps `main`'s version of the four files, plus one note in the catalogue's `docs/PROGRESS.md`. This branch's own fix was:
   - `docs/PROGRESS.md`: both entries kept.
   - `index.html`, `reports/STATUS-GAMBAR.json`, `reports/validation-report.json`: regenerated with `node build.mjs` and `node scripts/validate.mjs` (validator passes).
   - `STYLE-AUDIT.csv` was kept with LF line endings.
