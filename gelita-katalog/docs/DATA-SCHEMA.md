@@ -1,6 +1,6 @@
 # Skema data katalog
 
-Sumber aktif `../data.json` adalah array 370 objek. Field berbeda menurut jenis entri; jangan menghapus field yang belum dipahami. Build menanam data yang sama persis di `index.html`.
+Sumber aktif `../data.json` adalah array 580 objek. Field berbeda menurut jenis entri; jangan menghapus field yang belum dipahami. Build menanam data yang sama persis di `index.html`.
 
 ## Identitas dan kelompok
 
@@ -16,7 +16,7 @@ Referensi berkode `reference.*` berada di `assets/referensi/` walaupun kategori 
 
 | Kategori | Entri |
 |---|---:|
-| Karakter | 36 |
+| Karakter | 246 |
 | Background | 32 |
 | Peta | 5 |
 | Logo | 5 |
@@ -56,3 +56,4 @@ Nama dasar mengikuti kode setelah ekstensi resmi di ujung kode dilepas: `app.ico
 | `status`, `generation_status`, `style_target` | Label ketersediaan/generasi/arah, bukan pengganti status gaya |
 
 Audio berupa brief, bukan bukti rekaman. Jangan menerapkan migrasi/prompt visual ke audio. Validator membandingkan seluruh objek audio dengan baseline, bukan hanya jumlah.
+

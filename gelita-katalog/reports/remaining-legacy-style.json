@@ -1,0 +1,840 @@
+{
+  "date": "2026-10-12",
+  "basis": "Historical visual-review records, excluding assets regenerated since that review; current catalog user_override is unchanged",
+  "old_style": [
+    {
+      "key": "challenge.item.tmg-1-01",
+      "file": "assets/tantangan/challenge.item.tmg-1-01.webp",
+      "filename": "challenge.item.tmg-1-01.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "019c6a35d12a84f9632cbc9d100b82e976c2c36ee9b8fd4b14768fc743ef2835"
+    },
+    {
+      "key": "challenge.item.tmg-1-04",
+      "file": "assets/tantangan/challenge.item.tmg-1-04.webp",
+      "filename": "challenge.item.tmg-1-04.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "d9ad1d233dbb891941784508103c173e4ac7a7c136d047b2bfdcc5c1439df6dc"
+    },
+    {
+      "key": "challenge.item.tmg-3-c03",
+      "file": "assets/tantangan/challenge.item.tmg-3-c03.webp",
+      "filename": "challenge.item.tmg-3-c03.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "cc30b6f665ffd4e445ce42c607e320b67ea763d576959c61cbf0971d7f990907"
+    },
+    {
+      "key": "challenge.tmg-4.scene",
+      "file": "assets/tantangan/challenge.tmg-4.scene.webp",
+      "filename": "challenge.tmg-4.scene.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "2e51f64d15fc5567617239aae838949fe90adb8715f78a309cd2e83512f01261"
+    },
+    {
+      "key": "challenge.item.mgl-1-01",
+      "file": "assets/tantangan/challenge.item.mgl-1-01.webp",
+      "filename": "challenge.item.mgl-1-01.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "62aacb16f39e273ada40a0e7ea55ec7bab08af4ea74af15761d443eb65f7f12f"
+    },
+    {
+      "key": "challenge.item.mgl-1-02",
+      "file": "assets/tantangan/challenge.item.mgl-1-02.webp",
+      "filename": "challenge.item.mgl-1-02.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "0da5aeca564bacc9ff674fb5518f660a0b03dd5811c1e10b2ffb6405d7d3b344"
+    },
+    {
+      "key": "challenge.item.mgl-1-03",
+      "file": "assets/tantangan/challenge.item.mgl-1-03.webp",
+      "filename": "challenge.item.mgl-1-03.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "b87517679c9b97978bb674b54b1c95c608c08866a5cdb102bac9b6fd1937510d"
+    },
+    {
+      "key": "challenge.mgl-4.scene",
+      "file": "assets/tantangan/challenge.mgl-4.scene.webp",
+      "filename": "challenge.mgl-4.scene.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "0e1696c329f915a3c8c1eb9daa597e218d6335e4c3a438ae5909f002ca092fe2"
+    },
+    {
+      "key": "challenge.item.wnb-1-05",
+      "file": "assets/tantangan/challenge.item.wnb-1-05.webp",
+      "filename": "challenge.item.wnb-1-05.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "6744b6206a8de59faf25c5b2451fc23a16c58ff630f48ed9e425e789684d6574"
+    },
+    {
+      "key": "challenge.item.wnb-1-06",
+      "file": "assets/tantangan/challenge.item.wnb-1-06.webp",
+      "filename": "challenge.item.wnb-1-06.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "274481bc8a0a1778572f7fea7e0acde409faa27acda2cd39a37acc550afed899"
+    },
+    {
+      "key": "challenge.item.wnb-1-07",
+      "file": "assets/tantangan/challenge.item.wnb-1-07.webp",
+      "filename": "challenge.item.wnb-1-07.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "cb18c00f0bfb6230d4279d5e20dad5d687d1affd6b1ba49ab01495271fa425c7"
+    },
+    {
+      "key": "challenge.item.wnb-4-a05",
+      "file": "assets/tantangan/challenge.item.wnb-4-a05.webp",
+      "filename": "challenge.item.wnb-4-a05.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "a87872c8c1908570acb25707816a4e9afae8d6a1144e4be7229e593527b58201"
+    },
+    {
+      "key": "challenge.item.wnb-4-a07",
+      "file": "assets/tantangan/challenge.item.wnb-4-a07.webp",
+      "filename": "challenge.item.wnb-4-a07.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "538ea9638141be4b7fe3ae74a2beb63437973e811f6207237f358be077f99327"
+    },
+    {
+      "key": "challenge.wnb-4.scene",
+      "file": "assets/tantangan/challenge.wnb-4.scene.webp",
+      "filename": "challenge.wnb-4.scene.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "e9727ebb0def249783b255a896d1fe3aa39f7194b2bcd7c02228b698cd6738d8"
+    },
+    {
+      "key": "bg.welcome",
+      "file": "assets/latar/bg.welcome.webp",
+      "filename": "bg.welcome.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "22b5a520d326f4346cea732dd9a3fc8fd4ac689a92fdef8a34f4975f906f51b1"
+    },
+    {
+      "key": "bg.auth",
+      "file": "assets/latar/bg.auth.webp",
+      "filename": "bg.auth.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "aae65a67b5939c5118a44fdde7e71ae1a2e4b068228921bbdc99484a861929dc"
+    },
+    {
+      "key": "bg.intro",
+      "file": "assets/latar/bg.intro.webp",
+      "filename": "bg.intro.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "3a3a364e4c5793a0ac4ac877273e68f90600a3b0506e65fd421683e37e4a6d0a"
+    },
+    {
+      "key": "bg.map",
+      "file": "assets/latar/bg.map.webp",
+      "filename": "bg.map.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "4bfe7b013e10df96494fa0ad27471aa085cff1430df4050efbbc803b975d5afa"
+    },
+    {
+      "key": "bg.reflection",
+      "file": "assets/latar/bg.reflection.webp",
+      "filename": "bg.reflection.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "57f888b6cd0c55f4f5c82e84904932eb134fddc5b71ff136ca4dde666b5a8ba4"
+    },
+    {
+      "key": "bg.loading",
+      "file": "assets/latar/bg.loading.webp",
+      "filename": "bg.loading.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "22408ee6f45fd3c57b4ada4726c1794d5c452f0282a16f766550ad35fbf5927d"
+    },
+    {
+      "key": "bg.cerita-intro-01",
+      "file": "assets/latar/bg.cerita-intro-01.webp",
+      "filename": "bg.cerita-intro-01.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "4e59399398e3131dffb64c2c3720232ad68f2fb25afa1fbf00886f542f2e194b"
+    },
+    {
+      "key": "bg.cerita-intro-02",
+      "file": "assets/latar/bg.cerita-intro-02.webp",
+      "filename": "bg.cerita-intro-02.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "54931bf3ec84d86e57081dd4d174101c53178c4624ea382fb3ee6e22e6419b2c"
+    },
+    {
+      "key": "bg.cerita-intro-03",
+      "file": "assets/latar/bg.cerita-intro-03.webp",
+      "filename": "bg.cerita-intro-03.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "de81cc52608d455158ec832f3d6636a9e013611f20236a6477c69e8b5717a0d1"
+    },
+    {
+      "key": "bg.cerita-intro-04",
+      "file": "assets/latar/bg.cerita-intro-04.webp",
+      "filename": "bg.cerita-intro-04.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "65541d084bde45db521c4d89c1356b5070f16a32344bd5d51d4d3aa264c62e1a"
+    },
+    {
+      "key": "bg.cerita-intro-05",
+      "file": "assets/latar/bg.cerita-intro-05.webp",
+      "filename": "bg.cerita-intro-05.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "960c8c834203af3abdd1192202e1960e45b3dedca63d66ad8dd53f0554807d82"
+    },
+    {
+      "key": "bg.cerita-intro-06",
+      "file": "assets/latar/bg.cerita-intro-06.webp",
+      "filename": "bg.cerita-intro-06.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "326a25982dae5e5718bda9002340da2ee8c4f056c513d62bbfc8cd9f1956da35"
+    },
+    {
+      "key": "bg.cerita-intro-07",
+      "file": "assets/latar/bg.cerita-intro-07.webp",
+      "filename": "bg.cerita-intro-07.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "c2fdaaed5750628c0a85d36d6a77eabed58ee40fdff718c0f4efc23282b4007d"
+    },
+    {
+      "key": "bg.cerita-intro-08",
+      "file": "assets/latar/bg.cerita-intro-08.webp",
+      "filename": "bg.cerita-intro-08.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "c3b0cb39aae7657cf9564f38378473da39b63e94955f8400161773ff412107fa"
+    },
+    {
+      "key": "bg.cerita-intro-09",
+      "file": "assets/latar/bg.cerita-intro-09.webp",
+      "filename": "bg.cerita-intro-09.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "babbd2c25ddad60183fb32ca47307fc35ff24a2bdf0f68aac9b57b46dea30dc7"
+    },
+    {
+      "key": "bg.cerita-penutup-01",
+      "file": "assets/latar/bg.cerita-penutup-01.webp",
+      "filename": "bg.cerita-penutup-01.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "1c85097420ffeea3cdde7f899c4b5550370e6d4a129498c17547c79b59b3629d"
+    },
+    {
+      "key": "bg.cerita-penutup-02",
+      "file": "assets/latar/bg.cerita-penutup-02.webp",
+      "filename": "bg.cerita-penutup-02.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "b441e8ea2536b8a75304c1dd8c303bfa97ccb000d32c9bd2f934c0dc587c6f92"
+    },
+    {
+      "key": "bg.cerita-penutup-03",
+      "file": "assets/latar/bg.cerita-penutup-03.webp",
+      "filename": "bg.cerita-penutup-03.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "a6cbbe9d845c86b9475cd72437834a5d8acefcd6f332a3196978d5ba9366b7d8"
+    },
+    {
+      "key": "bg.cerita-penutup-05",
+      "file": "assets/latar/bg.cerita-penutup-05.webp",
+      "filename": "bg.cerita-penutup-05.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "a548e487440947a2d970b0f9bd54016481987219cd205409ed765f947eccd82a"
+    },
+    {
+      "key": "bg.temanggung.region",
+      "file": "assets/latar/bg.temanggung.region.webp",
+      "filename": "bg.temanggung.region.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "87fb3c322c9178421ee72b703debb6d6434117f796582b04ae4d5a433413c846"
+    },
+    {
+      "key": "bg.magelang.region",
+      "file": "assets/latar/bg.magelang.region.webp",
+      "filename": "bg.magelang.region.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "24e994be5fc4fa1542a87c4062062d49bf91850609fe5302e0071c8749d8e936"
+    },
+    {
+      "key": "bg.wonosobo.region",
+      "file": "assets/latar/bg.wonosobo.region.webp",
+      "filename": "bg.wonosobo.region.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "18bc5b3e5ea1f530a8907ef8fe1fcdde453da3995970812a63a6b35a4b70267f"
+    },
+    {
+      "key": "map.kedu",
+      "file": "assets/peta/map.kedu.webp",
+      "filename": "map.kedu.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "08a99b168df583074b0e33be864c70245b2f8adea4d1424cc76990550b9fd46f"
+    },
+    {
+      "key": "map.region.temanggung",
+      "file": "assets/peta/map.region.temanggung.webp",
+      "filename": "map.region.temanggung.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "44d29140bd864e6ab1244a5bf28a6f9354ff9d2448d005405f194b48fe256823"
+    },
+    {
+      "key": "map.region.magelang",
+      "file": "assets/peta/map.region.magelang.webp",
+      "filename": "map.region.magelang.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "978611c74fc4e33b26c924ce2070c6c788f43fa9f6623ce3de24432f746c34f7"
+    },
+    {
+      "key": "map.region.wonosobo",
+      "file": "assets/peta/map.region.wonosobo.webp",
+      "filename": "map.region.wonosobo.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "2eac0b7b34e2a570ead3fd41fade25b830578b0b7363177a43380060c9beba07"
+    },
+    {
+      "key": "bg.loading.temanggung",
+      "file": "assets/latar/bg.loading.temanggung.webp",
+      "filename": "bg.loading.temanggung.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "3646b86bd69ca1d1af2d71b526de4808544b7f3fbc89fffaee05bec892d438a4"
+    },
+    {
+      "key": "bg.loading.magelang",
+      "file": "assets/latar/bg.loading.magelang.webp",
+      "filename": "bg.loading.magelang.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "d3d14bee3829842586ee87c5655a97df5d8a01cdb11ea80915334f248591470d"
+    },
+    {
+      "key": "bg.loading.wonosobo",
+      "file": "assets/latar/bg.loading.wonosobo.webp",
+      "filename": "bg.loading.wonosobo.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "1c04f4a1680cbafd3eb11232efd330a3d08270a3186e7bcd1dfa06a50ccda78c"
+    },
+    {
+      "key": "library.temanggung.p1.1",
+      "file": "assets/pustaka/library.temanggung.p1.1.webp",
+      "filename": "library.temanggung.p1.1.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "0c5badf8cafc1f8b076a0accf8f64c9c3aade2f55cfbf12658618d1a3a3122d0"
+    },
+    {
+      "key": "library.temanggung.p1.2",
+      "file": "assets/pustaka/library.temanggung.p1.2.webp",
+      "filename": "library.temanggung.p1.2.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "96b3fb039c08124ffb24d3f0d2ada4fd692bcd5c257406345c0a724187ef6a7a"
+    },
+    {
+      "key": "library.temanggung.p2.1",
+      "file": "assets/pustaka/library.temanggung.p2.1.webp",
+      "filename": "library.temanggung.p2.1.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "946bfdb0a1ff8ee1d330aa70930bbad747bc61b4dc214a0069fbbaa676ecaadb"
+    },
+    {
+      "key": "library.temanggung.p2.2",
+      "file": "assets/pustaka/library.temanggung.p2.2.webp",
+      "filename": "library.temanggung.p2.2.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "5c2cfd5376aaca33cfee4c654a38c0aa9865b92009d3dec41bc0a36cf8a698f0"
+    },
+    {
+      "key": "library.temanggung.p2.3",
+      "file": "assets/pustaka/library.temanggung.p2.3.webp",
+      "filename": "library.temanggung.p2.3.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "80d88c43eb41af941eeb2dfef3669fd56c14231edfc085e69461f34fc6ce8840"
+    },
+    {
+      "key": "library.temanggung.p3.1",
+      "file": "assets/pustaka/library.temanggung.p3.1.webp",
+      "filename": "library.temanggung.p3.1.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "da972bff2320aecbd43b4216a301d7af04c37bc5c6c2f094a4618e6fcac7501c"
+    },
+    {
+      "key": "library.temanggung.p4.1",
+      "file": "assets/pustaka/library.temanggung.p4.1.webp",
+      "filename": "library.temanggung.p4.1.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "6a21d94e354cd3e3a9628152efccd259d374bbac40a9553d905ec95985247e01"
+    },
+    {
+      "key": "library.temanggung.p4.2",
+      "file": "assets/pustaka/library.temanggung.p4.2.webp",
+      "filename": "library.temanggung.p4.2.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "50956937a08bc34721dd72581cbb0ac9f23ae96ce8ba8396d3273944005f44df"
+    },
+    {
+      "key": "library.temanggung.p4.3",
+      "file": "assets/pustaka/library.temanggung.p4.3.webp",
+      "filename": "library.temanggung.p4.3.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "f7c5335f38fb5e03581154026f3287d00f74fdc72df0d2c8255ff19600212b22"
+    },
+    {
+      "key": "library.temanggung.p5.1",
+      "file": "assets/pustaka/library.temanggung.p5.1.webp",
+      "filename": "library.temanggung.p5.1.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "23910b48bcec5dab3a74078cc1a3ff3e633c68c437852efcb103c3475c99fca2"
+    },
+    {
+      "key": "library.temanggung.p5.2",
+      "file": "assets/pustaka/library.temanggung.p5.2.webp",
+      "filename": "library.temanggung.p5.2.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "19471cc96c01310f75a5b173028c41338dd7d39d62b0187ddc8b3ea9d3c1c18a"
+    },
+    {
+      "key": "library.temanggung.p5.3",
+      "file": "assets/pustaka/library.temanggung.p5.3.webp",
+      "filename": "library.temanggung.p5.3.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "a6a2eb668bb8536b38016321de9964985478bdcf86fea39784067a1394fd21f0"
+    },
+    {
+      "key": "library.temanggung.p6.1",
+      "file": "assets/pustaka/library.temanggung.p6.1.webp",
+      "filename": "library.temanggung.p6.1.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "cc69db89fb7635aa92d0ca789f28e6c7db204411dc27958458bacb25d15e6dec"
+    },
+    {
+      "key": "library.temanggung.p8.1",
+      "file": "assets/pustaka/library.temanggung.p8.1.webp",
+      "filename": "library.temanggung.p8.1.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "716a0f3ea718ce8ab9d0ca51a80d627dcd4092c0fb34dd928f83606fa47393f6"
+    },
+    {
+      "key": "library.temanggung.p8.2",
+      "file": "assets/pustaka/library.temanggung.p8.2.webp",
+      "filename": "library.temanggung.p8.2.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "7c8ffa0b7f142621de15dbc0dd36f11df830f77eb75c1c28f69559ee8e6f728d"
+    },
+    {
+      "key": "library.magelang.p1.1",
+      "file": "assets/pustaka/library.magelang.p1.1.webp",
+      "filename": "library.magelang.p1.1.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "17967aa4d5ce1a672fea217db2b3c1e336e515f82235cd55b58d0fbd239e198c"
+    },
+    {
+      "key": "library.magelang.p1.2",
+      "file": "assets/pustaka/library.magelang.p1.2.webp",
+      "filename": "library.magelang.p1.2.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "0447b152c5f4314c16b870c4304482eee179a95062de7a6e63d5c69965c832c7"
+    },
+    {
+      "key": "library.magelang.p2.1",
+      "file": "assets/pustaka/library.magelang.p2.1.webp",
+      "filename": "library.magelang.p2.1.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "7105275a7df974cc1588f491a4455f5d8e3bb368e7486ccc5c317d603fdce751"
+    },
+    {
+      "key": "library.magelang.p2.2",
+      "file": "assets/pustaka/library.magelang.p2.2.webp",
+      "filename": "library.magelang.p2.2.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "cc9023c258c78efb91b853fafd49bcd0fbf03dc64925181564d99353b52f35ab"
+    },
+    {
+      "key": "library.magelang.p2.3",
+      "file": "assets/pustaka/library.magelang.p2.3.webp",
+      "filename": "library.magelang.p2.3.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "febcd0f14db6f792048f176e3f4324e4dba1f320845dca8e574daef48f7f832a"
+    },
+    {
+      "key": "library.magelang.p3.1",
+      "file": "assets/pustaka/library.magelang.p3.1.webp",
+      "filename": "library.magelang.p3.1.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "7784abece39ca1807ec11c0fc249378d67578359ff60ec2d8f27e1b0e5f46ce3"
+    },
+    {
+      "key": "library.magelang.p3.2",
+      "file": "assets/pustaka/library.magelang.p3.2.webp",
+      "filename": "library.magelang.p3.2.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "9f2db540aee153ce4f4f1637472e4e689382b6e263e2056e1659c01f6b4441ec"
+    },
+    {
+      "key": "library.magelang.p3.3",
+      "file": "assets/pustaka/library.magelang.p3.3.webp",
+      "filename": "library.magelang.p3.3.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "824410e1f0728a1090885f116d4c9bfbb6b5aaee4fcfa76ed7ffe8fb7c389374"
+    },
+    {
+      "key": "library.magelang.p4.1",
+      "file": "assets/pustaka/library.magelang.p4.1.webp",
+      "filename": "library.magelang.p4.1.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "d757979cf3c7b0432f1d6d411b50641878904a3bff11b0ed36ec36c4d928241e"
+    },
+    {
+      "key": "library.magelang.p5.1",
+      "file": "assets/pustaka/library.magelang.p5.1.webp",
+      "filename": "library.magelang.p5.1.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "19d6682e82c186ec018156bb447a6de643b01b84583cb48b5d11d10db88c3596"
+    },
+    {
+      "key": "library.magelang.p5.2",
+      "file": "assets/pustaka/library.magelang.p5.2.webp",
+      "filename": "library.magelang.p5.2.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "9a70a77841d2c7723c3bd6b655fcc8856a31ffad0346801b523b893d986bc6df"
+    },
+    {
+      "key": "library.magelang.p5.3",
+      "file": "assets/pustaka/library.magelang.p5.3.webp",
+      "filename": "library.magelang.p5.3.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "ec816f877f22ea778405504464e98f2b321e626a45b1f036da052c56147d0ca8"
+    },
+    {
+      "key": "library.magelang.p6.1",
+      "file": "assets/pustaka/library.magelang.p6.1.webp",
+      "filename": "library.magelang.p6.1.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "324936bde2833897e4edcf24699acd228da48cdac4ef1d8deb6a43d5a1a9f01a"
+    },
+    {
+      "key": "library.magelang.p6.2",
+      "file": "assets/pustaka/library.magelang.p6.2.webp",
+      "filename": "library.magelang.p6.2.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "520e247fcb78f1c01acd44e3b89dffaa1b1b2d8e4a71a4aa1bb354a8fa6b97a8"
+    },
+    {
+      "key": "library.magelang.p6.3",
+      "file": "assets/pustaka/library.magelang.p6.3.webp",
+      "filename": "library.magelang.p6.3.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "aa8387944bee7ca55608f22669b2719fe6556f66bbb7ff95dc9b593fb0c94f18"
+    },
+    {
+      "key": "library.magelang.p7.1",
+      "file": "assets/pustaka/library.magelang.p7.1.webp",
+      "filename": "library.magelang.p7.1.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "d405bf23e90c81145a681bcbaa279e4e600a164c135358df52d6ea2931f6ef03"
+    },
+    {
+      "key": "library.magelang.p9.1",
+      "file": "assets/pustaka/library.magelang.p9.1.webp",
+      "filename": "library.magelang.p9.1.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "139d14e2e1fc10aebd2e44b2e7d105dc413b4e2d7713f1af5c00c8d63442a84e"
+    },
+    {
+      "key": "library.wonosobo.p1.1",
+      "file": "assets/pustaka/library.wonosobo.p1.1.webp",
+      "filename": "library.wonosobo.p1.1.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "387df234f724a6f4b5dd4d9a6c8f97bc343bfcbf06787174418bb433b3a2149c"
+    },
+    {
+      "key": "library.wonosobo.p1.2",
+      "file": "assets/pustaka/library.wonosobo.p1.2.webp",
+      "filename": "library.wonosobo.p1.2.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "eecaf4b165ed6ee57a53afff004637ebaeb25408a5eaa1364de9222aa51ac5e1"
+    },
+    {
+      "key": "library.wonosobo.p2.1",
+      "file": "assets/pustaka/library.wonosobo.p2.1.webp",
+      "filename": "library.wonosobo.p2.1.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "a450cc9278cde281aa4caf025876672a493959123d2e10503607e4e6ade16701"
+    },
+    {
+      "key": "library.wonosobo.p2.2",
+      "file": "assets/pustaka/library.wonosobo.p2.2.webp",
+      "filename": "library.wonosobo.p2.2.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "3e8d82e30c61af79bd5fad4b6c103d8b1606b152b6e108814cf0c929b8fcbc44"
+    },
+    {
+      "key": "library.wonosobo.p3.1",
+      "file": "assets/pustaka/library.wonosobo.p3.1.webp",
+      "filename": "library.wonosobo.p3.1.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "eee0def6840b4959de6cec4d7ba7e0d8171b0a814a166f436b6810dd8e2437fb"
+    },
+    {
+      "key": "library.wonosobo.p3.2",
+      "file": "assets/pustaka/library.wonosobo.p3.2.webp",
+      "filename": "library.wonosobo.p3.2.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "9f5b3ffe6b4ec8dc035db776f68cc2213d1b74f6f721eabd72eea3e34a6eb192"
+    },
+    {
+      "key": "library.wonosobo.p3.3",
+      "file": "assets/pustaka/library.wonosobo.p3.3.webp",
+      "filename": "library.wonosobo.p3.3.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "2f9eed5c445ebe8168e51ce033593b523b279deb00c6fbb6dea6f2a43e60a18b"
+    },
+    {
+      "key": "library.wonosobo.p4.1",
+      "file": "assets/pustaka/library.wonosobo.p4.1.webp",
+      "filename": "library.wonosobo.p4.1.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "96ff8c7c1d078d51d43b41666b14b09f9e1a7f8b2da36100244399211524f3dc"
+    },
+    {
+      "key": "library.wonosobo.p4.2",
+      "file": "assets/pustaka/library.wonosobo.p4.2.webp",
+      "filename": "library.wonosobo.p4.2.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "69fbbe4436580310ec765aaf8ce7c3427d6dbaf5dff3b1b48ff03a6dfbc4b9f1"
+    },
+    {
+      "key": "library.wonosobo.p6.1",
+      "file": "assets/pustaka/library.wonosobo.p6.1.webp",
+      "filename": "library.wonosobo.p6.1.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "acbe834bb8bade7442f7f74e382bf64431a08f92b1bf3574fc01a0458d436bd1"
+    },
+    {
+      "key": "library.wonosobo.p6.2",
+      "file": "assets/pustaka/library.wonosobo.p6.2.webp",
+      "filename": "library.wonosobo.p6.2.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "33809419315014ea0fd077dd2b6a5c39d0c36eeb5d16aca54807808d65828481"
+    },
+    {
+      "key": "library.wonosobo.p7.1",
+      "file": "assets/pustaka/library.wonosobo.p7.1.webp",
+      "filename": "library.wonosobo.p7.1.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "de40a95f1b8e8c4270d35a4ea2d7d5580e6bcbc77308dc932e5914dd41c7bfac"
+    },
+    {
+      "key": "library.wonosobo.p8.1",
+      "file": "assets/pustaka/library.wonosobo.p8.1.webp",
+      "filename": "library.wonosobo.p8.1.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "6ee4417e7817d706222f6308d4cdad882f130ab580e32fd29653fa0dd8639b10"
+    },
+    {
+      "key": "library.wonosobo.p9.1",
+      "file": "assets/pustaka/library.wonosobo.p9.1.webp",
+      "filename": "library.wonosobo.p9.1.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "19f658f823d0de6eeadd51f5277c723d2c547add450f8f98cd4da0f29e087ba3"
+    },
+    {
+      "key": "library.wonosobo.p9.2",
+      "file": "assets/pustaka/library.wonosobo.p9.2.webp",
+      "filename": "library.wonosobo.p9.2.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "cc94806e9bb52bbfbf1a7110069c12161039208a8e9a26b778a5803d175c4f27"
+    },
+    {
+      "key": "library.wonosobo.p9.3",
+      "file": "assets/pustaka/library.wonosobo.p9.3.webp",
+      "filename": "library.wonosobo.p9.3.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "53b58ecac305b3cb0a49a8472982fc6092e1e84ac62651f6fbedce6a592a0bd5"
+    },
+    {
+      "key": "library.temanggung.p8.2.poster",
+      "file": "assets/pustaka/library.temanggung.p8.2.poster.webp",
+      "filename": "library.temanggung.p8.2.poster.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "93cd64b656246e81356e7be2798938be57ddca56f9f1d934d3e7b184cb871d47"
+    },
+    {
+      "key": "library.magelang.p2.3.poster",
+      "file": "assets/pustaka/library.magelang.p2.3.poster.webp",
+      "filename": "library.magelang.p2.3.poster.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "a96daf259e0d4a74ba1e8e10070d201c7bef8e68e9e82d3b4b648b03dc721dab"
+    },
+    {
+      "key": "library.magelang.p6.3.poster",
+      "file": "assets/pustaka/library.magelang.p6.3.poster.webp",
+      "filename": "library.magelang.p6.3.poster.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "c7faf74dd945b7c8428b60608af2e3a0ad87454c0cff8a7441dc17411c146ebe"
+    },
+    {
+      "key": "library.wonosobo.p7.1.poster",
+      "file": "assets/pustaka/library.wonosobo.p7.1.poster.webp",
+      "filename": "library.wonosobo.p7.1.poster.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "74cc0af8948e055638f264e63add7d25a417347a056d5a1a205c74b5233407a4"
+    },
+    {
+      "key": "library.wonosobo.p8.1.poster",
+      "file": "assets/pustaka/library.wonosobo.p8.1.poster.webp",
+      "filename": "library.wonosobo.p8.1.poster.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "da959f8084be686c83054f9148073a697f7fa3d6a77fd46638068a6239a2ee35"
+    },
+    {
+      "key": "library.temanggung.p7.1",
+      "file": "assets/pustaka/library.temanggung.p7.1.webp",
+      "filename": "library.temanggung.p7.1.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "669bc7bfd94866d846336144cbde6bc27913aaee23157bdbd81ac6dc947ec5cc"
+    },
+    {
+      "key": "library.temanggung.p9.1",
+      "file": "assets/pustaka/library.temanggung.p9.1.webp",
+      "filename": "library.temanggung.p9.1.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Tampilan ilustrasi/lukisan lama belum konsisten dengan acuan render 3D.",
+      "sha256": "2f1cddfad0564c8b784b1d9faa5961e5360e6b9f393d4cc8752d0931395a498b"
+    },
+    {
+      "key": "library.temanggung.p10.1",
+      "file": "assets/pustaka/library.temanggung.p10.1.webp",
+      "filename": "library.temanggung.p10.1.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Ilustrasi tips Jaka menggunakan kostum tanpa syal merah dan gaya lama.",
+      "sha256": "ea58c429e6bb41a07cb29f5e77ad49007d3e31ffee0563f7222ecb849e3bbf5c"
+    },
+    {
+      "key": "library.magelang.p10.1",
+      "file": "assets/pustaka/library.magelang.p10.1.webp",
+      "filename": "library.magelang.p10.1.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Ilustrasi tips Jaka menggunakan kostum tanpa syal merah dan gaya lama.",
+      "sha256": "29d86e34b7de1f0350a6a630d5fa2b8b3569e115b8a759f88e4d4815ef4d83f0"
+    },
+    {
+      "key": "library.wonosobo.p10.1",
+      "file": "assets/pustaka/library.wonosobo.p10.1.webp",
+      "filename": "library.wonosobo.p10.1.webp",
+      "historical_status": "Belum sesuai",
+      "reason": "Ilustrasi tips Jaka menggunakan kostum tanpa syal merah dan gaya lama.",
+      "sha256": "ce05a535731f37a61d9037f4eca4f24ad1f85f492ade7725b359202bb911e575"
+    }
+  ],
+  "uncertain": [
+    {
+      "key": "challenge.item.tmg-3-a03",
+      "file": "assets/tantangan/challenge.item.tmg-3-a03.webp",
+      "filename": "challenge.item.tmg-3-a03.webp",
+      "historical_status": "Perlu tinjau",
+      "reason": "Gaya/identitas belum cukup pasti dari pratinjau; jangan dihitung sebagai sesuai.",
+      "sha256": "1fba0d90dd57b2346307272db4954d7767a6f093def17a2f1fa510c73a28fc33"
+    },
+    {
+      "key": "challenge.item.tmg-3-b03",
+      "file": "assets/tantangan/challenge.item.tmg-3-b03.webp",
+      "filename": "challenge.item.tmg-3-b03.webp",
+      "historical_status": "Perlu tinjau",
+      "reason": "Gaya/identitas belum cukup pasti dari pratinjau; jangan dihitung sebagai sesuai.",
+      "sha256": "2aa8ec23ecd92caa8e59271c5f76e2f139c66fb03bdf996899788b64777cc53f"
+    },
+    {
+      "key": "bg.cerita-penutup-04",
+      "file": "assets/latar/bg.cerita-penutup-04.webp",
+      "filename": "bg.cerita-penutup-04.webp",
+      "historical_status": "Perlu tinjau",
+      "reason": "Gaya/identitas belum cukup pasti dari pratinjau; jangan dihitung sebagai sesuai.",
+      "sha256": "414707d36cb21866650c86387571468317c6affe3782a5584f04f3ad4209ef1d"
+    }
+  ]
+}

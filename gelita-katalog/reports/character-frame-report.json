@@ -1,0 +1,3212 @@
+{
+  "date": "2026-10-12",
+  "method": "10 AI key poses, 240 deterministic secondary-motion frames",
+  "frames": 240,
+  "replaced": 30,
+  "added": 210,
+  "backup": "archive/before-character-frames-20261012",
+  "poses": [
+    {
+      "key": "char.jaka.idle",
+      "key_pose": "provenance/character-keyposes/char.jaka.idle.webp",
+      "source": "C:\\Users\\cenda\\.codex\\generated_images\\01a12c52-55e8-7380-9ce1-e642d4396d06\\exec-c75e2b00-6ec3-4701-a854-da43cf96dee9.png",
+      "frames": [
+        {
+          "key": "char.jaka.idle.1",
+          "file": "assets/karakter/char.jaka.idle.1.webp",
+          "sha256": "6c19386fe6b39ea7784a81798c51f54147611d6585ac4a3f86f37b0e3d7f72c1",
+          "motion": {
+            "dx": 0,
+            "dy": 0,
+            "breathe": 0.2980039961925918,
+            "t": 0,
+            "loop": true
+          },
+          "opaque_pixels": 134878
+        },
+        {
+          "key": "char.jaka.idle.2",
+          "file": "assets/karakter/char.jaka.idle.2.webp",
+          "sha256": "43c5162d59a9304a0294d0b4a5cf414c1168697fb4fb2b718cba7820d99e16d4",
+          "motion": {
+            "dx": 0.7246933262870581,
+            "dy": 0.6470476127563018,
+            "breathe": 0.6683395999804218,
+            "t": 0.041666666666666664,
+            "loop": true
+          },
+          "opaque_pixels": 135358
+        },
+        {
+          "key": "char.jaka.idle.3",
+          "file": "assets/karakter/char.jaka.idle.3.webp",
+          "sha256": "dfb3fa204fa54fb68e8b5d573d3fc9129f19cd7fe55c563fc1df3c49b2f2b550",
+          "motion": {
+            "dx": 1.3999999999999997,
+            "dy": 1.2499999999999998,
+            "breathe": 0.9931289645129969,
+            "t": 0.08333333333333333,
+            "loop": true
+          },
+          "opaque_pixels": 135400
+        },
+        {
+          "key": "char.jaka.idle.4",
+          "file": "assets/karakter/char.jaka.idle.4.webp",
+          "sha256": "2424c8f61ba6441b8dae272dfb98619afed2c1c1f740d12d1e133185d1e64023",
+          "motion": {
+            "dx": 1.9798989873223327,
+            "dy": 1.7677669529663687,
+            "breathe": 1.2502382313372247,
+            "t": 0.125,
+            "loop": true
+          },
+          "opaque_pixels": 135235
+        },
+        {
+          "key": "char.jaka.idle.5",
+          "file": "assets/karakter/char.jaka.idle.5.webp",
+          "sha256": "87b9fbc6dd3bd9a752603adbc0497633d783bce969335468d98c4e9ae0eba357",
+          "motion": {
+            "dx": 2.424871130596428,
+            "dy": 2.1650635094610964,
+            "breathe": 1.4221458288121873,
+            "t": 0.16666666666666666,
+            "loop": true
+          },
+          "opaque_pixels": 135285
+        },
+        {
+          "key": "char.jaka.idle.6",
+          "file": "assets/karakter/char.jaka.idle.6.webp",
+          "sha256": "6e224bd176a664e0013722e4ac859cc38744424dd1e20c4f6c03ac205d7b7a9b",
+          "motion": {
+            "dx": 2.7045923136093912,
+            "dy": 2.4148145657226707,
+            "breathe": 1.497136538260703,
+            "t": 0.20833333333333334,
+            "loop": true
+          },
+          "opaque_pixels": 135322
+        },
+        {
+          "key": "char.jaka.idle.7",
+          "file": "assets/karakter/char.jaka.idle.7.webp",
+          "sha256": "f27d25420616bef3309abd0490f21767dabd0cea1aed41c7c57a2969ca70d09e",
+          "motion": {
+            "dx": 2.8,
+            "dy": 2.5,
+            "breathe": 1.4700998667618626,
+            "t": 0.25,
+            "loop": true
+          },
+          "opaque_pixels": 135293
+        },
+        {
+          "key": "char.jaka.idle.8",
+          "file": "assets/karakter/char.jaka.idle.8.webp",
+          "sha256": "62bbae7ae29373444fd416a27ba79e8f8b132592e701e6d5b58df810f6e16899",
+          "motion": {
+            "dx": 2.7045923136093912,
+            "dy": 2.4148145657226707,
+            "breathe": 1.3428783187980993,
+            "t": 0.2916666666666667,
+            "loop": true
+          },
+          "opaque_pixels": 135282
+        },
+        {
+          "key": "char.jaka.idle.9",
+          "file": "assets/karakter/char.jaka.idle.9.webp",
+          "sha256": "28624108e167d49f95bf9788b6e0dd69c47d9b982345fbd75d71fd43d4232483",
+          "motion": {
+            "dx": 2.4248711305964283,
+            "dy": 2.165063509461097,
+            "breathe": 1.1241418326195953,
+            "t": 0.3333333333333333,
+            "loop": true
+          },
+          "opaque_pixels": 135196
+        },
+        {
+          "key": "char.jaka.idle.10",
+          "file": "assets/karakter/char.jaka.idle.10.webp",
+          "sha256": "8407e5016eb8db957e63ea97a465637bf5e475546d89e3fbedb3d0223091cf2b",
+          "motion": {
+            "dx": 1.9798989873223332,
+            "dy": 1.7677669529663689,
+            "breathe": 0.8287969382802811,
+            "t": 0.375,
+            "loop": true
+          },
+          "opaque_pixels": 135205
+        },
+        {
+          "key": "char.jaka.idle.11",
+          "file": "assets/karakter/char.jaka.idle.11.webp",
+          "sha256": "ad2dc0bff5a30d0732b3abe428ff39d03b1fe76e443f0caad9bd650102191c51",
+          "motion": {
+            "dx": 1.3999999999999997,
+            "dy": 1.2499999999999998,
+            "breathe": 0.4769709022488653,
+            "t": 0.4166666666666667,
+            "loop": true
+          },
+          "opaque_pixels": 135271
+        },
+        {
+          "key": "char.jaka.idle.12",
+          "file": "assets/karakter/char.jaka.idle.12.webp",
+          "sha256": "286d0d3e4ce96f71b506b88901fa0c2e29e67bc15ad45e5a2bdeab24b9d6fd15",
+          "motion": {
+            "dx": 0.7246933262870588,
+            "dy": 0.6470476127563025,
+            "breathe": 0.09264008746087474,
+            "t": 0.4583333333333333,
+            "loop": true
+          },
+          "opaque_pixels": 135413
+        },
+        {
+          "key": "char.jaka.idle.13",
+          "file": "assets/karakter/char.jaka.idle.13.webp",
+          "sha256": "2fe4cbb89768698a234cae2e0ab79e326374973b9d14cf096ce2cc3538391465",
+          "motion": {
+            "dx": 3.429011037612589e-16,
+            "dy": 3.061616997868383e-16,
+            "breathe": -0.2980039961925919,
+            "t": 0.5,
+            "loop": true
+          },
+          "opaque_pixels": 134655
+        },
+        {
+          "key": "char.jaka.idle.14",
+          "file": "assets/karakter/char.jaka.idle.14.webp",
+          "sha256": "6b3fac5272babef3209663b15c3e51b29fe5c6db27f92e3c1d24e6995364b971",
+          "motion": {
+            "dx": -0.724693326287057,
+            "dy": -0.6470476127563008,
+            "breathe": -0.6683395999804216,
+            "t": 0.5416666666666666,
+            "loop": true
+          },
+          "opaque_pixels": 135399
+        },
+        {
+          "key": "char.jaka.idle.15",
+          "file": "assets/karakter/char.jaka.idle.15.webp",
+          "sha256": "3566707a3b4084561e1e95eb2da61794e23f7ee16eb0ed174f01d0aa30190781",
+          "motion": {
+            "dx": -1.4000000000000001,
+            "dy": -1.2500000000000002,
+            "breathe": -0.9931289645129973,
+            "t": 0.5833333333333334,
+            "loop": true
+          },
+          "opaque_pixels": 135460
+        },
+        {
+          "key": "char.jaka.idle.16",
+          "file": "assets/karakter/char.jaka.idle.16.webp",
+          "sha256": "f6c520555acad6c1ef05bbc91451a7d9a727321bbae788eb9e65b2e549fb3262",
+          "motion": {
+            "dx": -1.9798989873223327,
+            "dy": -1.7677669529663687,
+            "breathe": -1.2502382313372247,
+            "t": 0.625,
+            "loop": true
+          },
+          "opaque_pixels": 135358
+        },
+        {
+          "key": "char.jaka.idle.17",
+          "file": "assets/karakter/char.jaka.idle.17.webp",
+          "sha256": "e3a78284c688eadf61ca18e92b335abf675aa5def31f1dbc63540f3b482aa1f7",
+          "motion": {
+            "dx": -2.4248711305964274,
+            "dy": -2.1650635094610964,
+            "breathe": -1.422145828812187,
+            "t": 0.6666666666666666,
+            "loop": true
+          },
+          "opaque_pixels": 135460
+        },
+        {
+          "key": "char.jaka.idle.18",
+          "file": "assets/karakter/char.jaka.idle.18.webp",
+          "sha256": "ca074e0f92375b217a2fd2fb6153fe5ebce97fbcc7436b306c33158954751eac",
+          "motion": {
+            "dx": -2.7045923136093912,
+            "dy": -2.4148145657226707,
+            "breathe": -1.497136538260703,
+            "t": 0.7083333333333334,
+            "loop": true
+          },
+          "opaque_pixels": 135524
+        },
+        {
+          "key": "char.jaka.idle.19",
+          "file": "assets/karakter/char.jaka.idle.19.webp",
+          "sha256": "d88251f65d38c101a393b0684a859c02c43d1a933f93d6c469e1e3a790b2771b",
+          "motion": {
+            "dx": -2.8,
+            "dy": -2.5,
+            "breathe": -1.4700998667618626,
+            "t": 0.75,
+            "loop": true
+          },
+          "opaque_pixels": 135517
+        },
+        {
+          "key": "char.jaka.idle.20",
+          "file": "assets/karakter/char.jaka.idle.20.webp",
+          "sha256": "0aa506e523cd6df6427a5608415d52d6a5c4d5416cba27e115eee9e9721773d6",
+          "motion": {
+            "dx": -2.7045923136093912,
+            "dy": -2.414814565722671,
+            "breathe": -1.3428783187980995,
+            "t": 0.7916666666666666,
+            "loop": true
+          },
+          "opaque_pixels": 135547
+        },
+        {
+          "key": "char.jaka.idle.21",
+          "file": "assets/karakter/char.jaka.idle.21.webp",
+          "sha256": "a604006374437ea407a952da3345722e06cb3e61797dcb7bd621b729c8d4025f",
+          "motion": {
+            "dx": -2.424871130596428,
+            "dy": -2.1650635094610964,
+            "breathe": -1.1241418326195953,
+            "t": 0.8333333333333334,
+            "loop": true
+          },
+          "opaque_pixels": 135496
+        },
+        {
+          "key": "char.jaka.idle.22",
+          "file": "assets/karakter/char.jaka.idle.22.webp",
+          "sha256": "cd8997ebf6b5554b26bfeedb920d1e6d0acae032b06870e2a8f255f457a10a86",
+          "motion": {
+            "dx": -1.9798989873223334,
+            "dy": -1.7677669529663693,
+            "breathe": -0.8287969382802812,
+            "t": 0.875,
+            "loop": true
+          },
+          "opaque_pixels": 135450
+        },
+        {
+          "key": "char.jaka.idle.23",
+          "file": "assets/karakter/char.jaka.idle.23.webp",
+          "sha256": "1218aeee743c77deee387ca6ca279905d911a1ee31f041f7d0f98e2c72ab770c",
+          "motion": {
+            "dx": -1.4000000000000012,
+            "dy": -1.250000000000001,
+            "breathe": -0.47697090224886607,
+            "t": 0.9166666666666666,
+            "loop": true
+          },
+          "opaque_pixels": 135537
+        },
+        {
+          "key": "char.jaka.idle.24",
+          "file": "assets/karakter/char.jaka.idle.24.webp",
+          "sha256": "c312003e8dc85307f8e76afdefff3eaa3b1d49d5d22c10404128d8949876901e",
+          "motion": {
+            "dx": -0.7246933262870578,
+            "dy": -0.6470476127563017,
+            "breathe": -0.09264008746087427,
+            "t": 0.9583333333333334,
+            "loop": true
+          },
+          "opaque_pixels": 135539
+        }
+      ],
+      "unique_frames": 24
+    },
+    {
+      "key": "char.jaka.happy",
+      "key_pose": "provenance/character-keyposes/char.jaka.happy.webp",
+      "source": "C:\\Users\\cenda\\.codex\\generated_images\\01a12c52-55e8-7380-9ce1-e642d4396d06\\exec-a5cab955-5f1c-4a98-a39f-96d2be3e6581.png",
+      "frames": [
+        {
+          "key": "char.jaka.happy.1",
+          "file": "assets/karakter/char.jaka.happy.1.webp",
+          "sha256": "52612327583834173dc796f3a45238af2364267ee88efe83d7e0bf6e502eda21",
+          "motion": {
+            "dx": 0,
+            "dy": 0,
+            "breathe": 0.2980039961925918,
+            "t": 0,
+            "loop": false
+          },
+          "opaque_pixels": 161445
+        },
+        {
+          "key": "char.jaka.happy.2",
+          "file": "assets/karakter/char.jaka.happy.2.webp",
+          "sha256": "2d38f699089859d8aa3333465919b67d8799959300fbadbe9b117f7cda3aa97c",
+          "motion": {
+            "dx": 0.796742656985878,
+            "dy": -0.5142318137762907,
+            "breathe": 0.6835813969632965,
+            "t": 0.043478260869565216,
+            "loop": false
+          },
+          "opaque_pixels": 162395
+        },
+        {
+          "key": "char.jaka.happy.3",
+          "file": "assets/karakter/char.jaka.happy.3.webp",
+          "sha256": "3e34fd788f21017445d5590795286698846533954ce1e23e12104a20449d552b",
+          "motion": {
+            "dx": 1.5795344152766768,
+            "dy": -1.0183175194107057,
+            "breathe": 1.0184606926980413,
+            "t": 0.08695652173913043,
+            "loop": false
+          },
+          "opaque_pixels": 162688
+        },
+        {
+          "key": "char.jaka.happy.4",
+          "file": "assets/karakter/char.jaka.happy.4.webp",
+          "sha256": "f3f9c55fde18570cb9dcafc5d785531dad86551d7f7ae430c672c7f75f9e1457",
+          "motion": {
+            "dx": 2.334684255023893,
+            "dy": -1.502300011558879,
+            "breathe": 1.277805418003021,
+            "t": 0.13043478260869565,
+            "loop": false
+          },
+          "opaque_pixels": 162872
+        },
+        {
+          "key": "char.jaka.happy.5",
+          "file": "assets/karakter/char.jaka.happy.5.webp",
+          "sha256": "0647b10562bd09f9fe48308bd21064b24f62d1637a62201b52e14e1e154a23dd",
+          "motion": {
+            "dx": 3.0490160730209714,
+            "dy": -1.9565966697069517,
+            "breathe": 1.4423811610255377,
+            "t": 0.17391304347826086,
+            "loop": false
+          },
+          "opaque_pixels": 162725
+        },
+        {
+          "key": "char.jaka.happy.6",
+          "file": "assets/karakter/char.jaka.happy.6.webp",
+          "sha256": "7d992449059d752622646734400eadecaa662f9c87ad5af0862ce04e4da62c11",
+          "motion": {
+            "dx": 3.710114128575899,
+            "dy": -2.372177864260733,
+            "breathe": 1.4999820917895395,
+            "t": 0.21739130434782608,
+            "loop": false
+          },
+          "opaque_pixels": 163073
+        },
+        {
+          "key": "char.jaka.happy.7",
+          "file": "assets/karakter/char.jaka.happy.7.webp",
+          "sha256": "5f8615eefbaf5ea2a1c6c930fa545803b7c8971cb2d8400c3baa9e9db79cf664",
+          "motion": {
+            "dx": 4.306554325268812,
+            "dy": -2.7407351614603224,
+            "breathe": 1.4463362127669843,
+            "t": 0.2608695652173913,
+            "loop": false
+          },
+          "opaque_pixels": 163190
+        },
+        {
+          "key": "char.jaka.happy.8",
+          "file": "assets/karakter/char.jaka.happy.8.webp",
+          "sha256": "f13d87178ddd06c74e15d860296b2c45b94fc696cd9e1c69370593eda5b54c80",
+          "motion": {
+            "dx": 4.828117020253083,
+            "dy": -3.0548360937808985,
+            "breathe": 1.2854221933914083,
+            "t": 0.30434782608695654,
+            "loop": false
+          },
+          "opaque_pixels": 163083
+        },
+        {
+          "key": "char.jaka.happy.9",
+          "file": "assets/karakter/char.jaka.happy.9.webp",
+          "sha256": "8fdbc3d7bab2ae5efae3c38c6a67571d2620b6697e63393cd7075d744fc867d9",
+          "motion": {
+            "dx": 5.265977396865237,
+            "dy": -3.3080626127399357,
+            "breathe": 1.029174290347242,
+            "t": 0.34782608695652173,
+            "loop": false
+          },
+          "opaque_pixels": 163172
+        },
+        {
+          "key": "char.jaka.happy.10",
+          "file": "assets/karakter/char.jaka.happy.10.webp",
+          "sha256": "01acc148cb3eab87543a7fcbcc6ff2b4e7c34966ee90873a784d940287db3928",
+          "motion": {
+            "dx": 5.612869854262209,
+            "dy": -3.495130644997021,
+            "breathe": 0.6965972383471171,
+            "t": 0.391304347826087,
+            "loop": false
+          },
+          "opaque_pixels": 163154
+        },
+        {
+          "key": "char.jaka.happy.11",
+          "file": "assets/karakter/char.jaka.happy.11.webp",
+          "sha256": "f2dd32a7c59e77fa2dd505ece0a534b36e05d2393cbf4b35a502a2a150507454",
+          "motion": {
+            "dx": 5.863223351817993,
+            "dy": -3.6119885246423347,
+            "breathe": 0.31235675589910744,
+            "t": 0.43478260869565216,
+            "loop": false
+          },
+          "opaque_pixels": 162965
+        },
+        {
+          "key": "char.jaka.happy.12",
+          "file": "assets/karakter/char.jaka.happy.12.webp",
+          "sha256": "850ebd23fb90aba5183208f60e90bc740ca2ea4b076715262f6cf53b3347833f",
+          "motion": {
+            "dx": 6.013265187069705,
+            "dy": -3.6558924680665044,
+            "breathe": -0.09504979819686371,
+            "t": 0.4782608695652174,
+            "loop": false
+          },
+          "opaque_pixels": 162719
+        },
+        {
+          "key": "char.jaka.happy.13",
+          "file": "assets/karakter/char.jaka.happy.13.webp",
+          "sha256": "218258c09e6abd29b7b74197872f1b1e2b343d653cbc69a9007a2fdebfde2410",
+          "motion": {
+            "dx": 6.061091274026227,
+            "dy": -3.6254576854578087,
+            "breathe": -0.4954069435844663,
+            "t": 0.5217391304347826,
+            "loop": false
+          },
+          "opaque_pixels": 162675
+        },
+        {
+          "key": "char.jaka.happy.14",
+          "file": "assets/karakter/char.jaka.happy.14.webp",
+          "sha256": "c4c921869cb0772213079c03d672ccedfc4e874c84293dcfdae4513ced95cc98",
+          "motion": {
+            "dx": 6.006701612687559,
+            "dy": -3.520684176816248,
+            "breathe": -0.8590220223023733,
+            "t": 0.5652173913043478,
+            "loop": false
+          },
+          "opaque_pixels": 162563
+        },
+        {
+          "key": "char.jaka.happy.15",
+          "file": "assets/karakter/char.jaka.happy.15.webp",
+          "sha256": "b7e2403a45f337520179e8437e03763ae2abb1e72beea3384d7b0c5cc9b9cad4",
+          "motion": {
+            "dx": 5.852000289044818,
+            "dy": -3.342956731953543,
+            "breathe": -1.1589273673903784,
+            "t": 0.6086956521739131,
+            "loop": false
+          },
+          "opaque_pixels": 162559
+        },
+        {
+          "key": "char.jaka.happy.16",
+          "file": "assets/karakter/char.jaka.happy.16.webp",
+          "sha256": "6e04acb26ab897d211c7f2d98fbc3ab8dd68e6591258427c63b1430e32bf91c1",
+          "motion": {
+            "dx": 5.60076000556089,
+            "dy": -3.0950191344790663,
+            "breathe": -1.3728803713789652,
+            "t": 0.6521739130434783,
+            "loop": false
+          },
+          "opaque_pixels": 162335
+        },
+        {
+          "key": "char.jaka.happy.17",
+          "file": "assets/karakter/char.jaka.happy.17.webp",
+          "sha256": "4633c72fa7016619b1cfb8089eb05c11bf4300d09f644553275ad265600fc29b",
+          "motion": {
+            "dx": 5.2585518028617795,
+            "dy": -2.780923050302638,
+            "breathe": -1.485013118732167,
+            "t": 0.6956521739130435,
+            "loop": false
+          },
+          "opaque_pixels": 162177
+        },
+        {
+          "key": "char.jaka.happy.18",
+          "file": "assets/karakter/char.jaka.happy.18.webp",
+          "sha256": "da7cc2b5546d1faa2abe6f2cbbee494883e0f20a30d08bd5abd718a1e41f9a55",
+          "motion": {
+            "dx": 4.832641281790553,
+            "dy": -2.405952552764671,
+            "breathe": -1.4870092365519816,
+            "t": 0.7391304347826086,
+            "loop": false
+          },
+          "opaque_pixels": 162262
+        },
+        {
+          "key": "char.jaka.happy.19",
+          "file": "assets/karakter/char.jaka.happy.19.webp",
+          "sha256": "eb2e0e06022186dbc973f22c1480a3b079e91694fccd5e8ad5493e6b5ece0e80",
+          "motion": {
+            "dx": 4.331853259010681,
+            "dy": -1.9765256903476889,
+            "breathe": -1.3787206819113451,
+            "t": 0.782608695652174,
+            "loop": false
+          },
+          "opaque_pixels": 162075
+        },
+        {
+          "key": "char.jaka.happy.20",
+          "file": "assets/karakter/char.jaka.happy.20.webp",
+          "sha256": "7a597f913707cd88fecdb7c63d06b80b58cec1559ae21f7a8636795bb61cfb0a",
+          "motion": {
+            "dx": 3.7664073773687967,
+            "dy": -1.5000749305765164,
+            "breathe": -1.1681787215207797,
+            "t": 0.8260869565217391,
+            "loop": false
+          },
+          "opaque_pixels": 162124
+        },
+        {
+          "key": "char.jaka.happy.21",
+          "file": "assets/karakter/char.jaka.happy.21.webp",
+          "sha256": "164d7e3d629b9a0d8177deaa421e180b2e1397ec0dc7b3c1172079e294590cd9",
+          "motion": {
+            "dx": 3.147727733284764,
+            "dy": -0.9849087072110542,
+            "breathe": -0.8709982894170749,
+            "t": 0.8695652173913043,
+            "loop": false
+          },
+          "opaque_pixels": 161915
+        },
+        {
+          "key": "char.jaka.happy.22",
+          "file": "assets/karakter/char.jaka.happy.22.webp",
+          "sha256": "15950f01a47d2de4f9a9a2acb5f6a764e7841913ab39a103abc1ce44ba5d1a89",
+          "motion": {
+            "dx": 2.4882300674505924,
+            "dy": -0.4400566498454902,
+            "breathe": -0.5092198987393457,
+            "t": 0.9130434782608695,
+            "loop": false
+          },
+          "opaque_pixels": 162233
+        },
+        {
+          "key": "char.jaka.happy.23",
+          "file": "assets/karakter/char.jaka.happy.23.webp",
+          "sha256": "1c0535e65b21bd609bdc029763ab4da400275c95ea9a6b84024686d04dd560d1",
+          "motion": {
+            "dx": 1.801090483072835,
+            "dy": 0.12489862100631777,
+            "breathe": -0.10967499769814756,
+            "t": 0.9565217391304348,
+            "loop": false
+          },
+          "opaque_pixels": 161826
+        },
+        {
+          "key": "char.jaka.happy.24",
+          "file": "assets/karakter/char.jaka.happy.24.webp",
+          "sha256": "12d497b9ae637b11e7e6e852fc331ca2d6ccf6b247ea095b9692ad19bb11df7d",
+          "motion": {
+            "dx": 1.1000000000000008,
+            "dy": 0.6999999999999995,
+            "breathe": 0.29800399619259177,
+            "t": 1,
+            "loop": false
+          },
+          "opaque_pixels": 162038
+        }
+      ],
+      "unique_frames": 24
+    },
+    {
+      "key": "char.jaka.sad",
+      "key_pose": "provenance/character-keyposes/char.jaka.sad.webp",
+      "source": "C:\\Users\\cenda\\.codex\\generated_images\\01a12c52-55e8-7380-9ce1-e642d4396d06\\exec-d97e3b34-c101-4dea-8e73-16935cb61aed.png",
+      "frames": [
+        {
+          "key": "char.jaka.sad.1",
+          "file": "assets/karakter/char.jaka.sad.1.webp",
+          "sha256": "cbc7665e6cffe955ceb57a57b42d0ac254cdc857db4afa7a6040de28d7e981c1",
+          "motion": {
+            "dx": 0,
+            "dy": 0,
+            "breathe": 0.2980039961925918,
+            "t": 0,
+            "loop": false
+          },
+          "opaque_pixels": 149355
+        },
+        {
+          "key": "char.jaka.sad.2",
+          "file": "assets/karakter/char.jaka.sad.2.webp",
+          "sha256": "b7ae790758b970697604a51a67ae78f50c8f11d4295a1a1ef3ed5fdb9d4bc4c5",
+          "motion": {
+            "dx": 0.3882427096971382,
+            "dy": 0.3708514053493121,
+            "breathe": 0.6835813969632965,
+            "t": 0.043478260869565216,
+            "loop": false
+          },
+          "opaque_pixels": 149878
+        },
+        {
+          "key": "char.jaka.sad.3",
+          "file": "assets/karakter/char.jaka.sad.3.webp",
+          "sha256": "1c237193bb389b393c42b859fdb8480cda44b0ff9caee1d4995be7d871e9b4e2",
+          "motion": {
+            "dx": 0.7701441018056042,
+            "dy": 0.735361493109952,
+            "breathe": 1.0184606926980413,
+            "t": 0.08695652173913043,
+            "loop": false
+          },
+          "opaque_pixels": 149885
+        },
+        {
+          "key": "char.jaka.sad.4",
+          "file": "assets/karakter/char.jaka.sad.4.webp",
+          "sha256": "19bbe235d137a8b2bf208d78d6c57d780da57fffff27c077d2e4f321106f1e36",
+          "motion": {
+            "dx": 1.1394809854851689,
+            "dy": 1.0873070724416904,
+            "breathe": 1.277805418003021,
+            "t": 0.13043478260869565,
+            "loop": false
+          },
+          "opaque_pixels": 149859
+        },
+        {
+          "key": "char.jaka.sad.5",
+          "file": "assets/karakter/char.jaka.sad.5.webp",
+          "sha256": "ffcf553831a9f294547081e97ca18bc05d29ede668082b55bd7afaee605d3aa1",
+          "motion": {
+            "dx": 1.4902642229146708,
+            "dy": 1.4206990055233664,
+            "breathe": 1.4423811610255377,
+            "t": 0.17391304347826086,
+            "loop": false
+          },
+          "opaque_pixels": 150025
+        },
+        {
+          "key": "char.jaka.sad.6",
+          "file": "assets/karakter/char.jaka.sad.6.webp",
+          "sha256": "a11635ffaf1af90ca590b1cceeb2dd84dc73b83076cf64cc2fb5be95bf9afa7f",
+          "motion": {
+            "dx": 1.8168502955977406,
+            "dy": 1.7298937738586102,
+            "breathe": 1.4999820917895395,
+            "t": 0.21739130434782608,
+            "loop": false
+          },
+          "opaque_pixels": 149927
+        },
+        {
+          "key": "char.jaka.sad.7",
+          "file": "assets/karakter/char.jaka.sad.7.webp",
+          "sha256": "9d56b0b926550d5ccaebd75b1946b56bf211024d6de267d58e03899235026eda",
+          "motion": {
+            "dx": 2.1140464324344403,
+            "dy": 2.009698606347484,
+            "breathe": 1.4463362127669843,
+            "t": 0.2608695652173913,
+            "loop": false
+          },
+          "opaque_pixels": 149794
+        },
+        {
+          "key": "char.jaka.sad.8",
+          "file": "assets/karakter/char.jaka.sad.8.webp",
+          "sha256": "b5a4c9dadeb46f4d8e52abb3a81a82b84564bfdea88616c59bad694e30a99a3a",
+          "motion": {
+            "dx": 2.3772073412217574,
+            "dy": 2.2554682107869746,
+            "breathe": 1.2854221933914083,
+            "t": 0.30434782608695654,
+            "loop": false
+          },
+          "opaque_pixels": 149832
+        },
+        {
+          "key": "char.jaka.sad.9",
+          "file": "assets/karakter/char.jaka.sad.9.webp",
+          "sha256": "3e9b9ca8995d66f4b3a5429389e1f5b6222f2fc89d4dff5ccc1bf7d7cca5c9b7",
+          "motion": {
+            "dx": 2.602321741658112,
+            "dy": 2.4631913068755034,
+            "breathe": 1.029174290347242,
+            "t": 0.34782608695652173,
+            "loop": false
+          },
+          "opaque_pixels": 149774
+        },
+        {
+          "key": "char.jaka.sad.10",
+          "file": "assets/karakter/char.jaka.sad.10.webp",
+          "sha256": "1f4cdcc87bcb7827e8ae9d0992876ecef321769564e5d529f999727c1406f517",
+          "motion": {
+            "dx": 2.786087087905747,
+            "dy": 2.629565348775312,
+            "breathe": 0.6965972383471171,
+            "t": 0.391304347826087,
+            "loop": false
+          },
+          "opaque_pixels": 149632
+        },
+        {
+          "key": "char.jaka.sad.11",
+          "file": "assets/karakter/char.jaka.sad.11.webp",
+          "sha256": "3a63409d79946dac30df391047167abbf680db0125063716f8dd4c0e824873ed",
+          "motion": {
+            "dx": 2.9259710887710244,
+            "dy": 2.7520580452927637,
+            "breathe": 0.31235675589910744,
+            "t": 0.43478260869565216,
+            "loop": false
+          },
+          "opaque_pixels": 149503
+        },
+        {
+          "key": "char.jaka.sad.12",
+          "file": "assets/karakter/char.jaka.sad.12.webp",
+          "sha256": "622dc92d1455bb6ef4870b326d2dc12ffb7c202533a0ff20fd7068b2c6ad4a45",
+          "motion": {
+            "dx": 3.020258879498087,
+            "dy": 2.828954531672,
+            "breathe": -0.09504979819686371,
+            "t": 0.4782608695652174,
+            "loop": false
+          },
+          "opaque_pixels": 149360
+        },
+        {
+          "key": "char.jaka.sad.13",
+          "file": "assets/karakter/char.jaka.sad.13.webp",
+          "sha256": "c831d6fb32823179c78183a6b3f3d0cf78e160441c2d7c94bd44dc96c8141413",
+          "motion": {
+            "dx": 3.0680849664546086,
+            "dy": 2.859389314280696,
+            "breathe": -0.4954069435844663,
+            "t": 0.5217391304347826,
+            "loop": false
+          },
+          "opaque_pixels": 149241
+        },
+        {
+          "key": "char.jaka.sad.14",
+          "file": "assets/karakter/char.jaka.sad.14.webp",
+          "sha256": "57d7f7266dfa11de8cb2fe3030e6b0672c4b51b57455646ea8993811123563f3",
+          "motion": {
+            "dx": 3.06944934964059,
+            "dy": 2.8433623931188503,
+            "breathe": -0.8590220223023733,
+            "t": 0.5652173913043478,
+            "loop": false
+          },
+          "opaque_pixels": 149203
+        },
+        {
+          "key": "char.jaka.sad.15",
+          "file": "assets/karakter/char.jaka.sad.15.webp",
+          "sha256": "08c9137f1e0e06444baeb599635409e02da88427d519ac295971be4fe48070f4",
+          "motion": {
+            "dx": 3.0252175226883558,
+            "dy": 2.7817392618187906,
+            "breathe": -1.1589273673903784,
+            "t": 0.6086956521739131,
+            "loop": false
+          },
+          "opaque_pixels": 149195
+        },
+        {
+          "key": "char.jaka.sad.16",
+          "file": "assets/karakter/char.jaka.sad.16.webp",
+          "sha256": "ae970836fb5bc93d292184a0d942dcc4455e34df1e294d897203b70e28e42e66",
+          "motion": {
+            "dx": 2.9371043503537644,
+            "dy": 2.676234785136373,
+            "breathe": -1.3728803713789652,
+            "t": 0.6521739130434783,
+            "loop": false
+          },
+          "opaque_pixels": 149199
+        },
+        {
+          "key": "char.jaka.sad.17",
+          "file": "assets/karakter/char.jaka.sad.17.webp",
+          "sha256": "937960cec823cf4d81ac2cf481aa33a9abbc08ed3d154808a61e6043b1702c40",
+          "motion": {
+            "dx": 2.807642123830453,
+            "dy": 2.5293812542652354,
+            "breathe": -1.485013118732167,
+            "t": 0.6956521739130435,
+            "loop": false
+          },
+          "opaque_pixels": 149199
+        },
+        {
+          "key": "char.jaka.sad.18",
+          "file": "assets/karakter/char.jaka.sad.18.webp",
+          "sha256": "29333c70c6af804cd8f51cfd436aadf8593d401a5b7f868906d07e3e641fe227",
+          "motion": {
+            "dx": 2.64013338895618,
+            "dy": 2.3444812150431367,
+            "breathe": -1.4870092365519816,
+            "t": 0.7391304347826086,
+            "loop": false
+          },
+          "opaque_pixels": 149196
+        },
+        {
+          "key": "char.jaka.sad.19",
+          "file": "assets/karakter/char.jaka.sad.19.webp",
+          "sha256": "1291e3217d517341b9a258b269c2eeb070ddab5411f7fd2fb3fbc260e764aeeb",
+          "motion": {
+            "dx": 2.4385894260325234,
+            "dy": 2.1255459477716534,
+            "breathe": -1.3787206819113451,
+            "t": 0.782608695652174,
+            "loop": false
+          },
+          "opaque_pixels": 149167
+        },
+        {
+          "key": "char.jaka.sad.20",
+          "file": "assets/karakter/char.jaka.sad.20.webp",
+          "sha256": "833f32f14686e72d03a05fd0fece6a10e86a68836a9060bfd2b25775207416de",
+          "motion": {
+            "dx": 2.2076555272624967,
+            "dy": 1.877220744653801,
+            "breathe": -1.1681787215207797,
+            "t": 0.8260869565217391,
+            "loop": false
+          },
+          "opaque_pixels": 149276
+        },
+        {
+          "key": "char.jaka.sad.21",
+          "file": "assets/karakter/char.jaka.sad.21.webp",
+          "sha256": "ae2e0f2dd232bf28fc904f27b79005ed13ee49b517d20ec2e8f14fc01b7bbed7",
+          "motion": {
+            "dx": 1.9525244637460393,
+            "dy": 1.6046983767895173,
+            "breathe": -0.8709982894170749,
+            "t": 0.8695652173913043,
+            "loop": false
+          },
+          "opaque_pixels": 149490
+        },
+        {
+          "key": "char.jaka.sad.22",
+          "file": "assets/karakter/char.jaka.sad.22.webp",
+          "sha256": "ae46e072368cdd81e4a4ed3ac4ae08aad55c8ee9e99fc72ef15cb12d23316bb4",
+          "motion": {
+            "dx": 1.6788397539795183,
+            "dy": 1.3136223626751704,
+            "breathe": -0.5092198987393457,
+            "t": 0.9130434782608695,
+            "loop": false
+          },
+          "opaque_pixels": 149645
+        },
+        {
+          "key": "char.jaka.sad.23",
+          "file": "assets/karakter/char.jaka.sad.23.webp",
+          "sha256": "bcd75a1e2deb2afdaad4b3ccacf90c4b7482674ec59a789b34b5ac42632afa11",
+          "motion": {
+            "dx": 1.392590535784095,
+            "dy": 1.009981840131921,
+            "breathe": -0.10967499769814756,
+            "t": 0.9565217391304348,
+            "loop": false
+          },
+          "opaque_pixels": 149705
+        },
+        {
+          "key": "char.jaka.sad.24",
+          "file": "assets/karakter/char.jaka.sad.24.webp",
+          "sha256": "37eb5bec8ee68785f1f113bbecda493913899d5a28b0f08c276528b584ecac9d",
+          "motion": {
+            "dx": 1.1000000000000003,
+            "dy": 0.7000000000000003,
+            "breathe": 0.29800399619259177,
+            "t": 1,
+            "loop": false
+          },
+          "opaque_pixels": 149908
+        }
+      ],
+      "unique_frames": 24
+    },
+    {
+      "key": "char.jaka.afraid",
+      "key_pose": "provenance/character-keyposes/char.jaka.afraid.webp",
+      "source": "C:\\Users\\cenda\\.codex\\generated_images\\01a12c52-55e8-7380-9ce1-e642d4396d06\\exec-f127906c-a94e-40c9-b995-017cfdcff67d.png",
+      "frames": [
+        {
+          "key": "char.jaka.afraid.1",
+          "file": "assets/karakter/char.jaka.afraid.1.webp",
+          "sha256": "74cf5cad5ee43c8b66a305f15346d6689a01e03d1cb535d8652004835b69d4c6",
+          "motion": {
+            "dx": 0,
+            "dy": 0,
+            "breathe": 0.2980039961925918,
+            "t": 0,
+            "loop": false
+          },
+          "opaque_pixels": 158162
+        },
+        {
+          "key": "char.jaka.afraid.2",
+          "file": "assets/karakter/char.jaka.afraid.2.webp",
+          "sha256": "907b6f6c4f297b6218704b0bcf28d12d76593c82e927fa27505fc8de0ae39c8f",
+          "motion": {
+            "dx": 0.5924926833415081,
+            "dy": 0.3708514053493121,
+            "breathe": 0.6835813969632965,
+            "t": 0.043478260869565216,
+            "loop": false
+          },
+          "opaque_pixels": 158789
+        },
+        {
+          "key": "char.jaka.afraid.3",
+          "file": "assets/karakter/char.jaka.afraid.3.webp",
+          "sha256": "5ea6d7ee6c4866b561363cd5a1c382a3164ff2d1f9d9ff962c98d7744e616b33",
+          "motion": {
+            "dx": 1.1748392585411405,
+            "dy": 0.735361493109952,
+            "breathe": 1.0184606926980413,
+            "t": 0.08695652173913043,
+            "loop": false
+          },
+          "opaque_pixels": 158678
+        },
+        {
+          "key": "char.jaka.afraid.4",
+          "file": "assets/karakter/char.jaka.afraid.4.webp",
+          "sha256": "76b5bdedcdac0ca6be887c41e04cfacc4cd784d4e29f338e91e74069c1407011",
+          "motion": {
+            "dx": 1.737082620254531,
+            "dy": 1.0873070724416904,
+            "breathe": 1.277805418003021,
+            "t": 0.13043478260869565,
+            "loop": false
+          },
+          "opaque_pixels": 158822
+        },
+        {
+          "key": "char.jaka.afraid.5",
+          "file": "assets/karakter/char.jaka.afraid.5.webp",
+          "sha256": "ca5a6fbc40efad8ab2d9363438523d9445c448bb9eb321d779c4614524dbb0fa",
+          "motion": {
+            "dx": 2.269640147967821,
+            "dy": 1.4206990055233664,
+            "breathe": 1.4423811610255377,
+            "t": 0.17391304347826086,
+            "loop": false
+          },
+          "opaque_pixels": 158817
+        },
+        {
+          "key": "char.jaka.afraid.6",
+          "file": "assets/karakter/char.jaka.afraid.6.webp",
+          "sha256": "5093834c9160ef397d72a2046581f727aa2af61807ed23b8f9acb798beb25ddc",
+          "motion": {
+            "dx": 2.76348221208682,
+            "dy": 1.7298937738586102,
+            "breathe": 1.4999820917895395,
+            "t": 0.21739130434782608,
+            "loop": false
+          },
+          "opaque_pixels": 158722
+        },
+        {
+          "key": "char.jaka.afraid.7",
+          "file": "assets/karakter/char.jaka.afraid.7.webp",
+          "sha256": "6fd675321a57701b27867ca3240ed6b731bcbce50d855bcfaa9de0b0dcfc045e",
+          "motion": {
+            "dx": 3.2103003788516267,
+            "dy": 2.009698606347484,
+            "breathe": 1.4463362127669843,
+            "t": 0.2608695652173913,
+            "loop": false
+          },
+          "opaque_pixels": 158531
+        },
+        {
+          "key": "char.jaka.afraid.8",
+          "file": "assets/karakter/char.jaka.afraid.8.webp",
+          "sha256": "e2705809d552148895d6629502f396e07c63d0a18b5ccc75e1f9f5f7a0ea002a",
+          "motion": {
+            "dx": 3.60266218073742,
+            "dy": 2.2554682107869746,
+            "breathe": 1.2854221933914083,
+            "t": 0.30434782608695654,
+            "loop": false
+          },
+          "opaque_pixels": 158584
+        },
+        {
+          "key": "char.jaka.afraid.9",
+          "file": "assets/karakter/char.jaka.afraid.9.webp",
+          "sha256": "bc8a99fec50155e21c8759e0f5c20eb6946494fb3ee3162d3274cd4ef03f6775",
+          "motion": {
+            "dx": 3.934149569261675,
+            "dy": 2.4631913068755034,
+            "breathe": 1.029174290347242,
+            "t": 0.34782608695652173,
+            "loop": false
+          },
+          "opaque_pixels": 158514
+        },
+        {
+          "key": "char.jaka.afraid.10",
+          "file": "assets/karakter/char.jaka.afraid.10.webp",
+          "sha256": "2401367166e4eec80006fac8689cb9a4519cf6124bc24ab97ea654dca4e7fe85",
+          "motion": {
+            "dx": 4.199478471083978,
+            "dy": 2.629565348775312,
+            "breathe": 0.6965972383471171,
+            "t": 0.391304347826087,
+            "loop": false
+          },
+          "opaque_pixels": 158411
+        },
+        {
+          "key": "char.jaka.afraid.11",
+          "file": "assets/karakter/char.jaka.afraid.11.webp",
+          "sha256": "edb49fc97cab46424a20048caeec4508ece1b08073e226164204b859649ea615",
+          "motion": {
+            "dx": 4.394597220294509,
+            "dy": 2.7520580452927637,
+            "breathe": 0.31235675589910744,
+            "t": 0.43478260869565216,
+            "loop": false
+          },
+          "opaque_pixels": 158215
+        },
+        {
+          "key": "char.jaka.afraid.12",
+          "file": "assets/karakter/char.jaka.afraid.12.webp",
+          "sha256": "55a1df4e740bf8694f5a600a741092697725606244dab0de083657c980b898c3",
+          "motion": {
+            "dx": 4.516762033283896,
+            "dy": 2.828954531672,
+            "breathe": -0.09504979819686371,
+            "t": 0.4782608695652174,
+            "loop": false
+          },
+          "opaque_pixels": 158050
+        },
+        {
+          "key": "char.jaka.afraid.13",
+          "file": "assets/karakter/char.jaka.afraid.13.webp",
+          "sha256": "ddc713d105aa6005eef4f56c15322ea0092fd67ec094b44eda15512850cf6029",
+          "motion": {
+            "dx": 4.564588120240417,
+            "dy": 2.859389314280696,
+            "breathe": -0.4954069435844663,
+            "t": 0.5217391304347826,
+            "loop": false
+          },
+          "opaque_pixels": 157892
+        },
+        {
+          "key": "char.jaka.afraid.14",
+          "file": "assets/karakter/char.jaka.afraid.14.webp",
+          "sha256": "aa06f925063c2ba27079978cac771470bfa6e1d9fd524fc9afafb6f02c7ad866",
+          "motion": {
+            "dx": 4.538075481164074,
+            "dy": 2.8433623931188503,
+            "breathe": -0.8590220223023733,
+            "t": 0.5652173913043478,
+            "loop": false
+          },
+          "opaque_pixels": 157854
+        },
+        {
+          "key": "char.jaka.afraid.15",
+          "file": "assets/karakter/char.jaka.afraid.15.webp",
+          "sha256": "5df8f1efaa61e6613bb6e14cbd1ea542ec1a00bd737e3b92d5e2061994305cf2",
+          "motion": {
+            "dx": 4.4386089058665865,
+            "dy": 2.7817392618187906,
+            "breathe": -1.1589273673903784,
+            "t": 0.6086956521739131,
+            "loop": false
+          },
+          "opaque_pixels": 157874
+        },
+        {
+          "key": "char.jaka.afraid.16",
+          "file": "assets/karakter/char.jaka.afraid.16.webp",
+          "sha256": "fcc5c85b9251bbf1ae413009ec25656718921a7a6e3d69ba0676ccaefd128f50",
+          "motion": {
+            "dx": 4.268932177957327,
+            "dy": 2.676234785136373,
+            "breathe": -1.3728803713789652,
+            "t": 0.6521739130434783,
+            "loop": false
+          },
+          "opaque_pixels": 157850
+        },
+        {
+          "key": "char.jaka.afraid.17",
+          "file": "assets/karakter/char.jaka.afraid.17.webp",
+          "sha256": "3c38ee7593706f0643741504d032010b561a1ed6e2c6b0c65b5c4498347766a3",
+          "motion": {
+            "dx": 4.033096963346116,
+            "dy": 2.5293812542652354,
+            "breathe": -1.485013118732167,
+            "t": 0.6956521739130435,
+            "loop": false
+          },
+          "opaque_pixels": 157695
+        },
+        {
+          "key": "char.jaka.afraid.18",
+          "file": "assets/karakter/char.jaka.afraid.18.webp",
+          "sha256": "24a96a79296db2df8613f6ac7c758eb2af051f06653e1c0b5c2edd69d8d97b93",
+          "motion": {
+            "dx": 3.7363873353733665,
+            "dy": 2.3444812150431367,
+            "breathe": -1.4870092365519816,
+            "t": 0.7391304347826086,
+            "loop": false
+          },
+          "opaque_pixels": 157714
+        },
+        {
+          "key": "char.jaka.afraid.19",
+          "file": "assets/karakter/char.jaka.afraid.19.webp",
+          "sha256": "44697463d5b9bde776665729980f275e31b8ac737ccdd025154bca9ac2202c5a",
+          "motion": {
+            "dx": 3.385221342521602,
+            "dy": 2.1255459477716534,
+            "breathe": -1.3787206819113451,
+            "t": 0.782608695652174,
+            "loop": false
+          },
+          "opaque_pixels": 157744
+        },
+        {
+          "key": "char.jaka.afraid.20",
+          "file": "assets/karakter/char.jaka.afraid.20.webp",
+          "sha256": "0dd66cb03381022e2cb4689628f7162b828bca0e0b80005c7e6e03f02a3ae384",
+          "motion": {
+            "dx": 2.987031452315647,
+            "dy": 1.877220744653801,
+            "breathe": -1.1681787215207797,
+            "t": 0.8260869565217391,
+            "loop": false
+          },
+          "opaque_pixels": 157856
+        },
+        {
+          "key": "char.jaka.afraid.21",
+          "file": "assets/karakter/char.jaka.afraid.21.webp",
+          "sha256": "df16d7aced08c997530cb29f036bc9a34e8c11e43a092673c528d1d9a0421db0",
+          "motion": {
+            "dx": 2.5501260985154017,
+            "dy": 1.6046983767895173,
+            "breathe": -0.8709982894170749,
+            "t": 0.8695652173913043,
+            "loop": false
+          },
+          "opaque_pixels": 158051
+        },
+        {
+          "key": "char.jaka.afraid.22",
+          "file": "assets/karakter/char.jaka.afraid.22.webp",
+          "sha256": "ed0650297ec6e9705df610bd8d402f52cf76df43ab226dc437035f9cd8e9bf9f",
+          "motion": {
+            "dx": 2.0835349107150556,
+            "dy": 1.3136223626751704,
+            "breathe": -0.5092198987393457,
+            "t": 0.9130434782608695,
+            "loop": false
+          },
+          "opaque_pixels": 158278
+        },
+        {
+          "key": "char.jaka.afraid.23",
+          "file": "assets/karakter/char.jaka.afraid.23.webp",
+          "sha256": "ad47890bdee3f990ea490501654c5c2e29dada98b57b17f33d0087fa8826c09b",
+          "motion": {
+            "dx": 1.596840509428465,
+            "dy": 1.009981840131921,
+            "breathe": -0.10967499769814756,
+            "t": 0.9565217391304348,
+            "loop": false
+          },
+          "opaque_pixels": 158441
+        },
+        {
+          "key": "char.jaka.afraid.24",
+          "file": "assets/karakter/char.jaka.afraid.24.webp",
+          "sha256": "d1bbe8960273ccfb7d1c43c3173f16ff37610742c3f2b5fa27f026329087c706",
+          "motion": {
+            "dx": 1.1000000000000005,
+            "dy": 0.7000000000000003,
+            "breathe": 0.29800399619259177,
+            "t": 1,
+            "loop": false
+          },
+          "opaque_pixels": 158630
+        }
+      ],
+      "unique_frames": 24
+    },
+    {
+      "key": "char.jaka.determined",
+      "key_pose": "provenance/character-keyposes/char.jaka.determined.webp",
+      "source": "C:\\Users\\cenda\\.codex\\generated_images\\01a12c52-55e8-7380-9ce1-e642d4396d06\\exec-4b87f315-754d-4e18-87e3-853a4e17e4ce.png",
+      "frames": [
+        {
+          "key": "char.jaka.determined.1",
+          "file": "assets/karakter/char.jaka.determined.1.webp",
+          "sha256": "331ef6dc202e24cf34398d1c820f833f6031f751003386918e82c4303bae0794",
+          "motion": {
+            "dx": 0,
+            "dy": 0,
+            "breathe": 0.2980039961925918,
+            "t": 0,
+            "loop": false
+          },
+          "opaque_pixels": 154037
+        },
+        {
+          "key": "char.jaka.determined.2",
+          "file": "assets/karakter/char.jaka.determined.2.webp",
+          "sha256": "dda60fa81b31fbd40e51501aac29e5d01aa40d75ac2c469efb9b1299e209f33a",
+          "motion": {
+            "dx": 0.4563260342452615,
+            "dy": 0.3708514053493121,
+            "breathe": 0.6835813969632965,
+            "t": 0.043478260869565216,
+            "loop": false
+          },
+          "opaque_pixels": 154822
+        },
+        {
+          "key": "char.jaka.determined.3",
+          "file": "assets/karakter/char.jaka.determined.3.webp",
+          "sha256": "6f7203749bfea6c01380b62ec245566bfb193aa587fd3bf23c822af26fc19ffb",
+          "motion": {
+            "dx": 0.9050424873841163,
+            "dy": 0.735361493109952,
+            "breathe": 1.0184606926980413,
+            "t": 0.08695652173913043,
+            "loop": false
+          },
+          "opaque_pixels": 154597
+        },
+        {
+          "key": "char.jaka.determined.4",
+          "file": "assets/karakter/char.jaka.determined.4.webp",
+          "sha256": "bc81bf0d923570e5d5bddc2c78d8323b6d093d9005523e9c6e35833ccf7bc814",
+          "motion": {
+            "dx": 1.3386815304082897,
+            "dy": 1.0873070724416904,
+            "breathe": 1.277805418003021,
+            "t": 0.13043478260869565,
+            "loop": false
+          },
+          "opaque_pixels": 154760
+        },
+        {
+          "key": "char.jaka.determined.5",
+          "file": "assets/karakter/char.jaka.determined.5.webp",
+          "sha256": "2cf1acd80283167a1c3224f76610601050040b106ad97e4ca23b822b93493271",
+          "motion": {
+            "dx": 1.7500561979323876,
+            "dy": 1.4206990055233664,
+            "breathe": 1.4423811610255377,
+            "t": 0.17391304347826086,
+            "loop": false
+          },
+          "opaque_pixels": 154980
+        },
+        {
+          "key": "char.jaka.determined.6",
+          "file": "assets/karakter/char.jaka.determined.6.webp",
+          "sha256": "0de24bc5cd97516650ab368a9b58083be03149a536957f289a6acdf5d3acc269",
+          "motion": {
+            "dx": 2.132394267760767,
+            "dy": 1.7298937738586102,
+            "breathe": 1.4999820917895395,
+            "t": 0.21739130434782608,
+            "loop": false
+          },
+          "opaque_pixels": 154704
+        },
+        {
+          "key": "char.jaka.determined.7",
+          "file": "assets/karakter/char.jaka.determined.7.webp",
+          "sha256": "f1cd7e388d4b086b07b4da9b220f698dfacdfb98b1bd6d4a551da973a9ba9238",
+          "motion": {
+            "dx": 2.4794644145735028,
+            "dy": 2.009698606347484,
+            "breathe": 1.4463362127669843,
+            "t": 0.2608695652173913,
+            "loop": false
+          },
+          "opaque_pixels": 154698
+        },
+        {
+          "key": "char.jaka.determined.8",
+          "file": "assets/karakter/char.jaka.determined.8.webp",
+          "sha256": "f4b77c7634566ad98644487d7dcbab2c34a3ec1419fa4073256aced540714e60",
+          "motion": {
+            "dx": 2.7856922877269783,
+            "dy": 2.2554682107869746,
+            "breathe": 1.2854221933914083,
+            "t": 0.30434782608695654,
+            "loop": false
+          },
+          "opaque_pixels": 154720
+        },
+        {
+          "key": "char.jaka.determined.9",
+          "file": "assets/karakter/char.jaka.determined.9.webp",
+          "sha256": "fd0d9188b4e5f5be31e045d17e843feab8e72e2d1e2bad30594919d2c1f96db7",
+          "motion": {
+            "dx": 3.0462643508592997,
+            "dy": 2.4631913068755034,
+            "breathe": 1.029174290347242,
+            "t": 0.34782608695652173,
+            "loop": false
+          },
+          "opaque_pixels": 154571
+        },
+        {
+          "key": "char.jaka.determined.10",
+          "file": "assets/karakter/char.jaka.determined.10.webp",
+          "sha256": "4ee691a42e0c8718f945a15d05fadba37e9d37a20c6d3a0a4c34c8480b8c0205",
+          "motion": {
+            "dx": 3.257217548965157,
+            "dy": 2.629565348775312,
+            "breathe": 0.6965972383471171,
+            "t": 0.391304347826087,
+            "loop": false
+          },
+          "opaque_pixels": 154382
+        },
+        {
+          "key": "char.jaka.determined.11",
+          "file": "assets/karakter/char.jaka.determined.11.webp",
+          "sha256": "3fad4df28843ffe6b0afd78ca2ff7855cc9f79cf61fe35b1b622e3d8cef37e07",
+          "motion": {
+            "dx": 3.4155131326121855,
+            "dy": 2.7520580452927637,
+            "breathe": 0.31235675589910744,
+            "t": 0.43478260869565216,
+            "loop": false
+          },
+          "opaque_pixels": 154219
+        },
+        {
+          "key": "char.jaka.determined.12",
+          "file": "assets/karakter/char.jaka.determined.12.webp",
+          "sha256": "d3bdc06422620efa98d724538228753232b1d059d4fd8d9c02121a931dcb5824",
+          "motion": {
+            "dx": 3.5190932640933568,
+            "dy": 2.828954531672,
+            "breathe": -0.09504979819686371,
+            "t": 0.4782608695652174,
+            "loop": false
+          },
+          "opaque_pixels": 154041
+        },
+        {
+          "key": "char.jaka.determined.13",
+          "file": "assets/karakter/char.jaka.determined.13.webp",
+          "sha256": "d889f20cfeb371a03c358f1f9b1074b76235cc2545bc4d39c3777dfcb0e0874b",
+          "motion": {
+            "dx": 3.5669193510498785,
+            "dy": 2.859389314280696,
+            "breathe": -0.4954069435844663,
+            "t": 0.5217391304347826,
+            "loop": false
+          },
+          "opaque_pixels": 153895
+        },
+        {
+          "key": "char.jaka.determined.14",
+          "file": "assets/karakter/char.jaka.determined.14.webp",
+          "sha256": "28144c5b4db0cdffda20f811e025b10d99885734cf437ca57a1d058e019f19a7",
+          "motion": {
+            "dx": 3.558991393481751,
+            "dy": 2.8433623931188503,
+            "breathe": -0.8590220223023733,
+            "t": 0.5652173913043478,
+            "loop": false
+          },
+          "opaque_pixels": 153761
+        },
+        {
+          "key": "char.jaka.determined.15",
+          "file": "assets/karakter/char.jaka.determined.15.webp",
+          "sha256": "cc290091d3d7405d57fc63466629c271c4dfeeb8f041a14d677659adbbe06b1b",
+          "motion": {
+            "dx": 3.496347983747766,
+            "dy": 2.7817392618187906,
+            "breathe": -1.1589273673903784,
+            "t": 0.6086956521739131,
+            "loop": false
+          },
+          "opaque_pixels": 153722
+        },
+        {
+          "key": "char.jaka.determined.16",
+          "file": "assets/karakter/char.jaka.determined.16.webp",
+          "sha256": "a4572b286ca760ba8f8a16351640ac1d835169059708b223ff292a4656fa4780",
+          "motion": {
+            "dx": 3.381046959554952,
+            "dy": 2.676234785136373,
+            "breathe": -1.3728803713789652,
+            "t": 0.6521739130434783,
+            "loop": false
+          },
+          "opaque_pixels": 153723
+        },
+        {
+          "key": "char.jaka.determined.17",
+          "file": "assets/karakter/char.jaka.determined.17.webp",
+          "sha256": "3b2cc21421e6875fbec6612e39d43377d29eb04d8d40cf4076e51ecf8eaf5826",
+          "motion": {
+            "dx": 3.2161270703356744,
+            "dy": 2.5293812542652354,
+            "breathe": -1.485013118732167,
+            "t": 0.6956521739130435,
+            "loop": false
+          },
+          "opaque_pixels": 153719
+        },
+        {
+          "key": "char.jaka.determined.18",
+          "file": "assets/karakter/char.jaka.determined.18.webp",
+          "sha256": "0aafed81e75bce8b697e6f49d5d880c88f438de46f3488075403961689b8cf00",
+          "motion": {
+            "dx": 3.005551371095242,
+            "dy": 2.3444812150431367,
+            "breathe": -1.4870092365519816,
+            "t": 0.7391304347826086,
+            "loop": false
+          },
+          "opaque_pixels": 153735
+        },
+        {
+          "key": "char.jaka.determined.19",
+          "file": "assets/karakter/char.jaka.determined.19.webp",
+          "sha256": "ea0566d7ff080f42e56faef542a18f4860ccca6772e87639dea0f79da2beb441",
+          "motion": {
+            "dx": 2.7541333981955494,
+            "dy": 2.1255459477716534,
+            "breathe": -1.3787206819113451,
+            "t": 0.782608695652174,
+            "loop": false
+          },
+          "opaque_pixels": 153819
+        },
+        {
+          "key": "char.jaka.determined.20",
+          "file": "assets/karakter/char.jaka.determined.20.webp",
+          "sha256": "dd77362606a361dc1a9b1c2058a96783203c7468bd6f909a51a6fcab239691a7",
+          "motion": {
+            "dx": 2.467447502280214,
+            "dy": 1.877220744653801,
+            "breathe": -1.1681787215207797,
+            "t": 0.8260869565217391,
+            "loop": false
+          },
+          "opaque_pixels": 153829
+        },
+        {
+          "key": "char.jaka.determined.21",
+          "file": "assets/karakter/char.jaka.determined.21.webp",
+          "sha256": "c4c2b0283cae1c29f819b388b67782ceb5c43cfd9e5085e87d75f29df045d546",
+          "motion": {
+            "dx": 2.1517250086691604,
+            "dy": 1.6046983767895173,
+            "breathe": -0.8709982894170749,
+            "t": 0.8695652173913043,
+            "loop": false
+          },
+          "opaque_pixels": 154036
+        },
+        {
+          "key": "char.jaka.determined.22",
+          "file": "assets/karakter/char.jaka.determined.22.webp",
+          "sha256": "c62f99a90fba04ff720388b5994e4515565e3b2e2b05b5d38c35cb7494834662",
+          "motion": {
+            "dx": 1.8137381395580308,
+            "dy": 1.3136223626751704,
+            "breathe": -0.5092198987393457,
+            "t": 0.9130434782608695,
+            "loop": false
+          },
+          "opaque_pixels": 154279
+        },
+        {
+          "key": "char.jaka.determined.23",
+          "file": "assets/karakter/char.jaka.determined.23.webp",
+          "sha256": "c2fef4be468a2e160f25d30f6815d15cc774e5db7ed21bc4daac782599d4ddb6",
+          "motion": {
+            "dx": 1.4606738603322182,
+            "dy": 1.009981840131921,
+            "breathe": -0.10967499769814756,
+            "t": 0.9565217391304348,
+            "loop": false
+          },
+          "opaque_pixels": 154355
+        },
+        {
+          "key": "char.jaka.determined.24",
+          "file": "assets/karakter/char.jaka.determined.24.webp",
+          "sha256": "e5a9a3761eaa558af0564c13d7f02d7e6fd4791ecce9bc4adf8dd47011655048",
+          "motion": {
+            "dx": 1.1000000000000005,
+            "dy": 0.7000000000000003,
+            "breathe": 0.29800399619259177,
+            "t": 1,
+            "loop": false
+          },
+          "opaque_pixels": 154573
+        }
+      ],
+      "unique_frames": 24
+    },
+    {
+      "key": "char.jaka.bow",
+      "key_pose": "provenance/character-keyposes/char.jaka.bow.webp",
+      "source": "C:\\Users\\cenda\\.codex\\generated_images\\01a12c52-55e8-7380-9ce1-e642d4396d06\\exec-e0f871be-0493-415e-a06b-b4e8df9c7175.png",
+      "frames": [
+        {
+          "key": "char.jaka.bow.1",
+          "file": "assets/karakter/char.jaka.bow.1.webp",
+          "sha256": "d40172b7d16940ad57236c99a9dff99b69ad31d55cbcbe297534a07c685c92e5",
+          "motion": {
+            "dx": 0,
+            "dy": 0,
+            "breathe": 0.2980039961925918,
+            "t": 0,
+            "loop": false
+          },
+          "opaque_pixels": 146270
+        },
+        {
+          "key": "char.jaka.bow.2",
+          "file": "assets/karakter/char.jaka.bow.2.webp",
+          "sha256": "46412b9f652239e283419a55802c73d8a54f3024095f21480168908730157345",
+          "motion": {
+            "dx": 0.7286593324377546,
+            "dy": 0.7112680280899286,
+            "breathe": 0.6835813969632965,
+            "t": 0.043478260869565216,
+            "loop": false
+          },
+          "opaque_pixels": 146751
+        },
+        {
+          "key": "char.jaka.bow.3",
+          "file": "assets/karakter/char.jaka.bow.3.webp",
+          "sha256": "fa50bb1c077422488a90e52d72b9e5c12d2c36f7361261de36f405fe8bc24270",
+          "motion": {
+            "dx": 1.4446360296981648,
+            "dy": 1.4098534210025129,
+            "breathe": 1.0184606926980413,
+            "t": 0.08695652173913043,
+            "loop": false
+          },
+          "opaque_pixels": 146828
+        },
+        {
+          "key": "char.jaka.bow.4",
+          "file": "assets/karakter/char.jaka.bow.4.webp",
+          "sha256": "0f129e33ae1281d571a57ee82fc36e9274366d6afd193d5f3d8904673ec14e46",
+          "motion": {
+            "dx": 2.135483710100772,
+            "dy": 2.0833097970572942,
+            "breathe": 1.277805418003021,
+            "t": 0.13043478260869565,
+            "loop": false
+          },
+          "opaque_pixels": 146657
+        },
+        {
+          "key": "char.jaka.bow.5",
+          "file": "assets/karakter/char.jaka.bow.5.webp",
+          "sha256": "041970de91fd20e90cddef842f254bae215c97a9e39e89842965e5b7edb97ebe",
+          "motion": {
+            "dx": 2.7892240980032543,
+            "dy": 2.7196588806119504,
+            "breathe": 1.4423811610255377,
+            "t": 0.17391304347826086,
+            "loop": false
+          },
+          "opaque_pixels": 146735
+        },
+        {
+          "key": "char.jaka.bow.6",
+          "file": "assets/karakter/char.jaka.bow.6.webp",
+          "sha256": "a599f90b5279e9f702b25b935d119965835336b47e0a81980c3abd4d097923f8",
+          "motion": {
+            "dx": 3.3945701564128727,
+            "dy": 3.307613634673742,
+            "breathe": 1.4999820917895395,
+            "t": 0.21739130434782608,
+            "loop": false
+          },
+          "opaque_pixels": 146544
+        },
+        {
+          "key": "char.jaka.bow.7",
+          "file": "assets/karakter/char.jaka.bow.7.webp",
+          "sha256": "0015521404b1ff6e9bbb1815cba3f1cf43d157064cb20a720201734f9a9e9a39",
+          "motion": {
+            "dx": 3.9411363431297506,
+            "dy": 3.836788517042794,
+            "breathe": 1.4463362127669843,
+            "t": 0.2608695652173913,
+            "loop": false
+          },
+          "opaque_pixels": 146392
+        },
+        {
+          "key": "char.jaka.bow.8",
+          "file": "assets/karakter/char.jaka.bow.8.webp",
+          "sha256": "5afa07d2d4b9383f4202f49b6cd32c25a6fb2314b5ee1d5a4e252f7e4db05b13",
+          "motion": {
+            "dx": 4.419632073747863,
+            "dy": 4.29789294331308,
+            "breathe": 1.2854221933914083,
+            "t": 0.30434782608695654,
+            "loop": false
+          },
+          "opaque_pixels": 146225
+        },
+        {
+          "key": "char.jaka.bow.9",
+          "file": "assets/karakter/char.jaka.bow.9.webp",
+          "sha256": "3c5fceaf57e7f82c5917c91df0e0fa9408e7683a8d137cd0903642600a7414ad",
+          "motion": {
+            "dx": 4.82203478766405,
+            "dy": 4.682904352881442,
+            "breathe": 1.029174290347242,
+            "t": 0.34782608695652173,
+            "loop": false
+          },
+          "opaque_pixels": 146212
+        },
+        {
+          "key": "char.jaka.bow.10",
+          "file": "assets/karakter/char.jaka.bow.10.webp",
+          "sha256": "0051f4ba2ec089cc9de43d7c205ceac6e2d307d56f3b7a3eaf75254f2e7bbd66",
+          "motion": {
+            "dx": 5.141739393202799,
+            "dy": 4.985217654072363,
+            "breathe": 0.6965972383471171,
+            "t": 0.391304347826087,
+            "loop": false
+          },
+          "opaque_pixels": 145976
+        },
+        {
+          "key": "char.jaka.bow.11",
+          "file": "assets/karakter/char.jaka.bow.11.webp",
+          "sha256": "d3ded624dae62c71fa4167781fa89a79de927797fb5f65e7dea336b270fd3e9d",
+          "motion": {
+            "dx": 5.373681307976832,
+            "dy": 5.19976826449857,
+            "breathe": 0.31235675589910744,
+            "t": 0.43478260869565216,
+            "loop": false
+          },
+          "opaque_pixels": 145926
+        },
+        {
+          "key": "char.jaka.bow.12",
+          "file": "assets/karakter/char.jaka.bow.12.webp",
+          "sha256": "78aa3b77aabd0e6ec47bbfcfc0893611898316f8badce1680e30077c1e69d8c3",
+          "motion": {
+            "dx": 5.514430802474435,
+            "dy": 5.323126454648348,
+            "breathe": -0.09504979819686371,
+            "t": 0.4782608695652174,
+            "loop": false
+          },
+          "opaque_pixels": 145814
+        },
+        {
+          "key": "char.jaka.bow.13",
+          "file": "assets/karakter/char.jaka.bow.13.webp",
+          "sha256": "5990249ac5bfeabe0b2571fd61ad3ed574c0a12c3ba3a76c22004a7baa3cc406",
+          "motion": {
+            "dx": 5.562256889430957,
+            "dy": 5.353561237257043,
+            "breathe": -0.4954069435844663,
+            "t": 0.5217391304347826,
+            "loop": false
+          },
+          "opaque_pixels": 145724
+        },
+        {
+          "key": "char.jaka.bow.14",
+          "file": "assets/karakter/char.jaka.bow.14.webp",
+          "sha256": "8671531efae0ca2c5c964f4b51e87ddcae89066f768c4417638f37d353f7cd7d",
+          "motion": {
+            "dx": 5.517159568846397,
+            "dy": 5.291072612324657,
+            "breathe": -0.8590220223023733,
+            "t": 0.5652173913043478,
+            "loop": false
+          },
+          "opaque_pixels": 145600
+        },
+        {
+          "key": "char.jaka.bow.15",
+          "file": "assets/karakter/char.jaka.bow.15.webp",
+          "sha256": "ec40768cba9181161a3c32f1f6c80d9920258a87533f6563fdb12dab7984b7a9",
+          "motion": {
+            "dx": 5.380869827985407,
+            "dy": 5.137391567115841,
+            "breathe": -1.1589273673903784,
+            "t": 0.6086956521739131,
+            "loop": false
+          },
+          "opaque_pixels": 145485
+        },
+        {
+          "key": "char.jaka.bow.16",
+          "file": "assets/karakter/char.jaka.bow.16.webp",
+          "sha256": "591e2522fba0d3f29868bc1ce19b72b56fe907d52aa206766c86e0970ff34845",
+          "motion": {
+            "dx": 5.156817396359703,
+            "dy": 4.895947831142311,
+            "breathe": -1.3728803713789652,
+            "t": 0.6521739130434783,
+            "loop": false
+          },
+          "opaque_pixels": 145437
+        },
+        {
+          "key": "char.jaka.bow.17",
+          "file": "assets/karakter/char.jaka.bow.17.webp",
+          "sha256": "c0b8abe736464a4f6313d7b95af8dd5c51cfded2450cd038bf12f5e59bd9378a",
+          "motion": {
+            "dx": 4.850066856356558,
+            "dy": 4.5718059867913405,
+            "breathe": -1.485013118732167,
+            "t": 0.6956521739130435,
+            "loop": false
+          },
+          "opaque_pixels": 145474
+        },
+        {
+          "key": "char.jaka.bow.18",
+          "file": "assets/karakter/char.jaka.bow.18.webp",
+          "sha256": "747a07516a802b9be5c99c01033dc9ad9ea340d804993271ac85b8c0c64fd8a2",
+          "motion": {
+            "dx": 4.467223299651491,
+            "dy": 4.171571125738447,
+            "breathe": -1.4870092365519816,
+            "t": 0.7391304347826086,
+            "loop": false
+          },
+          "opaque_pixels": 145516
+        },
+        {
+          "key": "char.jaka.bow.19",
+          "file": "assets/karakter/char.jaka.bow.19.webp",
+          "sha256": "a3726e833d334a1bd7027210a1d0f5bab3f33dea99cc3a4c7d531d6937b3914b",
+          "motion": {
+            "dx": 4.016309286847655,
+            "dy": 3.703265808586785,
+            "breathe": -1.3787206819113451,
+            "t": 0.782608695652174,
+            "loop": false
+          },
+          "opaque_pixels": 145637
+        },
+        {
+          "key": "char.jaka.bow.20",
+          "file": "assets/karakter/char.jaka.bow.20.webp",
+          "sha256": "524398c78a4fec880116e4ac3b18ec5e8cdd3a8fc281d7e0af640d2fdc4377cf",
+          "motion": {
+            "dx": 3.5066154023510805,
+            "dy": 3.1761806197423845,
+            "breathe": -1.1681787215207797,
+            "t": 0.8260869565217391,
+            "loop": false
+          },
+          "opaque_pixels": 145782
+        },
+        {
+          "key": "char.jaka.bow.21",
+          "file": "assets/karakter/char.jaka.bow.21.webp",
+          "sha256": "0f00ffdb891b89b76fbcc6cf9abfd35f14d9b60eb692ab252e14980074612a40",
+          "motion": {
+            "dx": 2.948527188361644,
+            "dy": 2.600701101405122,
+            "breathe": -0.8709982894170749,
+            "t": 0.8695652173913043,
+            "loop": false
+          },
+          "opaque_pixels": 146027
+        },
+        {
+          "key": "char.jaka.bow.22",
+          "file": "assets/karakter/char.jaka.bow.22.webp",
+          "sha256": "288e95af4bbf58306795650f26fa2401fdcd0f741b9e38cca04a979f8811b753",
+          "motion": {
+            "dx": 2.3533316818720804,
+            "dy": 1.9881142905677325,
+            "breathe": -0.5092198987393457,
+            "t": 0.9130434782608695,
+            "loop": false
+          },
+          "opaque_pixels": 146201
+        },
+        {
+          "key": "char.jaka.bow.23",
+          "file": "assets/karakter/char.jaka.bow.23.webp",
+          "sha256": "57bdb4469042e850756f881c5ae120ba5606d882745051073b10788904aeda5e",
+          "motion": {
+            "dx": 1.7330071585247118,
+            "dy": 1.3503984628725376,
+            "breathe": -0.10967499769814756,
+            "t": 0.9565217391304348,
+            "loop": false
+          },
+          "opaque_pixels": 146501
+        },
+        {
+          "key": "char.jaka.bow.24",
+          "file": "assets/karakter/char.jaka.bow.24.webp",
+          "sha256": "1befbea077cc8c6d60a003ecb7993c12a8f2e3d8bb400779ef30f8ce8bd5357d",
+          "motion": {
+            "dx": 1.1000000000000008,
+            "dy": 0.7000000000000006,
+            "breathe": 0.29800399619259177,
+            "t": 1,
+            "loop": false
+          },
+          "opaque_pixels": 146720
+        }
+      ],
+      "unique_frames": 24
+    },
+    {
+      "key": "char.kedu.idle",
+      "key_pose": "provenance/character-keyposes/char.kedu.idle.webp",
+      "source": "C:\\Users\\cenda\\.codex\\generated_images\\01a12c52-55e8-7380-9ce1-e642d4396d06\\exec-e208e9e7-e12a-4e0d-9e95-2f11c366bffe.png",
+      "frames": [
+        {
+          "key": "char.kedu.idle.1",
+          "file": "assets/karakter/char.kedu.idle.1.webp",
+          "sha256": "f443b41b93ce7f56a5549465317d824347701cb930bf8813958e2c420316895e",
+          "motion": {
+            "dx": 0,
+            "dy": 0,
+            "breathe": 0.2980039961925918,
+            "t": 0,
+            "loop": true
+          },
+          "opaque_pixels": 154877
+        },
+        {
+          "key": "char.kedu.idle.2",
+          "file": "assets/karakter/char.kedu.idle.2.webp",
+          "sha256": "5ddb6a5b3bcf354278f2196209f4da57b8dbe7513424f84d1bc59071c667213e",
+          "motion": {
+            "dx": 0.7246933262870581,
+            "dy": 0.6470476127563018,
+            "breathe": 0.6683395999804218,
+            "t": 0.041666666666666664,
+            "loop": true
+          },
+          "opaque_pixels": 155282
+        },
+        {
+          "key": "char.kedu.idle.3",
+          "file": "assets/karakter/char.kedu.idle.3.webp",
+          "sha256": "237566e6475511df6d028326bc5009abc257576be3acec3c214973f327d3245a",
+          "motion": {
+            "dx": 1.3999999999999997,
+            "dy": 1.2499999999999998,
+            "breathe": 0.9931289645129969,
+            "t": 0.08333333333333333,
+            "loop": true
+          },
+          "opaque_pixels": 155361
+        },
+        {
+          "key": "char.kedu.idle.4",
+          "file": "assets/karakter/char.kedu.idle.4.webp",
+          "sha256": "96892d5bd31a652e7257df0b64f6067849a02dfe57f5be00d631c3c537abbd74",
+          "motion": {
+            "dx": 1.9798989873223327,
+            "dy": 1.7677669529663687,
+            "breathe": 1.2502382313372247,
+            "t": 0.125,
+            "loop": true
+          },
+          "opaque_pixels": 155206
+        },
+        {
+          "key": "char.kedu.idle.5",
+          "file": "assets/karakter/char.kedu.idle.5.webp",
+          "sha256": "16091a968b41428fe0652ad12d07002224cf4388746587851a0177c1184162f2",
+          "motion": {
+            "dx": 2.424871130596428,
+            "dy": 2.1650635094610964,
+            "breathe": 1.4221458288121873,
+            "t": 0.16666666666666666,
+            "loop": true
+          },
+          "opaque_pixels": 155268
+        },
+        {
+          "key": "char.kedu.idle.6",
+          "file": "assets/karakter/char.kedu.idle.6.webp",
+          "sha256": "f50817dec9fc074b18ab7968d3cb0996953af50263cdac8a6796b1d4cf8011d7",
+          "motion": {
+            "dx": 2.7045923136093912,
+            "dy": 2.4148145657226707,
+            "breathe": 1.497136538260703,
+            "t": 0.20833333333333334,
+            "loop": true
+          },
+          "opaque_pixels": 155312
+        },
+        {
+          "key": "char.kedu.idle.7",
+          "file": "assets/karakter/char.kedu.idle.7.webp",
+          "sha256": "bb86c7d53ff74bac23fb3e06d1f92afebb78d37bf9c53e7c3836104679578e50",
+          "motion": {
+            "dx": 2.8,
+            "dy": 2.5,
+            "breathe": 1.4700998667618626,
+            "t": 0.25,
+            "loop": true
+          },
+          "opaque_pixels": 155258
+        },
+        {
+          "key": "char.kedu.idle.8",
+          "file": "assets/karakter/char.kedu.idle.8.webp",
+          "sha256": "45222beb265bc6f32dd4f797161b7804bfbd3530f72d83539512cea5c083a393",
+          "motion": {
+            "dx": 2.7045923136093912,
+            "dy": 2.4148145657226707,
+            "breathe": 1.3428783187980993,
+            "t": 0.2916666666666667,
+            "loop": true
+          },
+          "opaque_pixels": 155275
+        },
+        {
+          "key": "char.kedu.idle.9",
+          "file": "assets/karakter/char.kedu.idle.9.webp",
+          "sha256": "c64eb0a5565337fa0cad795a98d44a38a8b6ada120cb52e41c0f964827de42dd",
+          "motion": {
+            "dx": 2.4248711305964283,
+            "dy": 2.165063509461097,
+            "breathe": 1.1241418326195953,
+            "t": 0.3333333333333333,
+            "loop": true
+          },
+          "opaque_pixels": 155139
+        },
+        {
+          "key": "char.kedu.idle.10",
+          "file": "assets/karakter/char.kedu.idle.10.webp",
+          "sha256": "8e6a70028b3af88d96759f636634d64ead696e6d00ea61e5cc03754fd08c8372",
+          "motion": {
+            "dx": 1.9798989873223332,
+            "dy": 1.7677669529663689,
+            "breathe": 0.8287969382802811,
+            "t": 0.375,
+            "loop": true
+          },
+          "opaque_pixels": 155150
+        },
+        {
+          "key": "char.kedu.idle.11",
+          "file": "assets/karakter/char.kedu.idle.11.webp",
+          "sha256": "5f6ffa78779dfec13573fc0c6b2d237377df597afdb5242e08d58dae36a32476",
+          "motion": {
+            "dx": 1.3999999999999997,
+            "dy": 1.2499999999999998,
+            "breathe": 0.4769709022488653,
+            "t": 0.4166666666666667,
+            "loop": true
+          },
+          "opaque_pixels": 155183
+        },
+        {
+          "key": "char.kedu.idle.12",
+          "file": "assets/karakter/char.kedu.idle.12.webp",
+          "sha256": "18d040dffbd7eec7bb1fa7de926c57ed4804af31822a5b06e0b906ad0fe3366e",
+          "motion": {
+            "dx": 0.7246933262870588,
+            "dy": 0.6470476127563025,
+            "breathe": 0.09264008746087474,
+            "t": 0.4583333333333333,
+            "loop": true
+          },
+          "opaque_pixels": 155293
+        },
+        {
+          "key": "char.kedu.idle.13",
+          "file": "assets/karakter/char.kedu.idle.13.webp",
+          "sha256": "5397686c602a16f791466d5f12fa6e8d3f8abc66bfc634bed7fddfb695442436",
+          "motion": {
+            "dx": 3.429011037612589e-16,
+            "dy": 3.061616997868383e-16,
+            "breathe": -0.2980039961925919,
+            "t": 0.5,
+            "loop": true
+          },
+          "opaque_pixels": 154663
+        },
+        {
+          "key": "char.kedu.idle.14",
+          "file": "assets/karakter/char.kedu.idle.14.webp",
+          "sha256": "2f400222cdc7cd6057c5d03c312811e1cb3869ae7f7607d8b3f0276756c611ff",
+          "motion": {
+            "dx": -0.724693326287057,
+            "dy": -0.6470476127563008,
+            "breathe": -0.6683395999804216,
+            "t": 0.5416666666666666,
+            "loop": true
+          },
+          "opaque_pixels": 155357
+        },
+        {
+          "key": "char.kedu.idle.15",
+          "file": "assets/karakter/char.kedu.idle.15.webp",
+          "sha256": "4d4f4e5fbb51cb1a7a000302bccbd17d4720d524f876bf4c3d56f556d1532668",
+          "motion": {
+            "dx": -1.4000000000000001,
+            "dy": -1.2500000000000002,
+            "breathe": -0.9931289645129973,
+            "t": 0.5833333333333334,
+            "loop": true
+          },
+          "opaque_pixels": 155448
+        },
+        {
+          "key": "char.kedu.idle.16",
+          "file": "assets/karakter/char.kedu.idle.16.webp",
+          "sha256": "97644eea790c7017a1211d4dba6a995e96855153aae22ba027756d28fdaa461d",
+          "motion": {
+            "dx": -1.9798989873223327,
+            "dy": -1.7677669529663687,
+            "breathe": -1.2502382313372247,
+            "t": 0.625,
+            "loop": true
+          },
+          "opaque_pixels": 155380
+        },
+        {
+          "key": "char.kedu.idle.17",
+          "file": "assets/karakter/char.kedu.idle.17.webp",
+          "sha256": "4ba86a5f9122541afe8a063f3303a6dfcb040eb062a37224abf80274f78625e2",
+          "motion": {
+            "dx": -2.4248711305964274,
+            "dy": -2.1650635094610964,
+            "breathe": -1.422145828812187,
+            "t": 0.6666666666666666,
+            "loop": true
+          },
+          "opaque_pixels": 155489
+        },
+        {
+          "key": "char.kedu.idle.18",
+          "file": "assets/karakter/char.kedu.idle.18.webp",
+          "sha256": "fb0a6758c4c330e2aab32106f0a9ae7b39b1147ccd1c16ec543ad2830e1d790a",
+          "motion": {
+            "dx": -2.7045923136093912,
+            "dy": -2.4148145657226707,
+            "breathe": -1.497136538260703,
+            "t": 0.7083333333333334,
+            "loop": true
+          },
+          "opaque_pixels": 155551
+        },
+        {
+          "key": "char.kedu.idle.19",
+          "file": "assets/karakter/char.kedu.idle.19.webp",
+          "sha256": "d2d44fa77c15fcadcbbe0818fc637949848f78d3513e4845d07311c53028b495",
+          "motion": {
+            "dx": -2.8,
+            "dy": -2.5,
+            "breathe": -1.4700998667618626,
+            "t": 0.75,
+            "loop": true
+          },
+          "opaque_pixels": 155548
+        },
+        {
+          "key": "char.kedu.idle.20",
+          "file": "assets/karakter/char.kedu.idle.20.webp",
+          "sha256": "bab598fcbfddbb107920f2338c3e5622ddc2321cfe87fae42bc55b10772edc0b",
+          "motion": {
+            "dx": -2.7045923136093912,
+            "dy": -2.414814565722671,
+            "breathe": -1.3428783187980995,
+            "t": 0.7916666666666666,
+            "loop": true
+          },
+          "opaque_pixels": 155591
+        },
+        {
+          "key": "char.kedu.idle.21",
+          "file": "assets/karakter/char.kedu.idle.21.webp",
+          "sha256": "d1ed6eeac33075163c6cc4a72d718b775239d80a054c2bc20bf2bbb7fcad116d",
+          "motion": {
+            "dx": -2.424871130596428,
+            "dy": -2.1650635094610964,
+            "breathe": -1.1241418326195953,
+            "t": 0.8333333333333334,
+            "loop": true
+          },
+          "opaque_pixels": 155530
+        },
+        {
+          "key": "char.kedu.idle.22",
+          "file": "assets/karakter/char.kedu.idle.22.webp",
+          "sha256": "7fbc183dfb2f2db6cbdf4d6838d23d57c1b9fab8101a4a45e087bc3575c32afc",
+          "motion": {
+            "dx": -1.9798989873223334,
+            "dy": -1.7677669529663693,
+            "breathe": -0.8287969382802812,
+            "t": 0.875,
+            "loop": true
+          },
+          "opaque_pixels": 155486
+        },
+        {
+          "key": "char.kedu.idle.23",
+          "file": "assets/karakter/char.kedu.idle.23.webp",
+          "sha256": "1dde0400060bece80a6791ec70149ae08dfea563612a9f853e2a384510906c8a",
+          "motion": {
+            "dx": -1.4000000000000012,
+            "dy": -1.250000000000001,
+            "breathe": -0.47697090224886607,
+            "t": 0.9166666666666666,
+            "loop": true
+          },
+          "opaque_pixels": 155496
+        },
+        {
+          "key": "char.kedu.idle.24",
+          "file": "assets/karakter/char.kedu.idle.24.webp",
+          "sha256": "8da14a8aec7ff0554b02c8060b3101163b91eb4d614707feca3defbf23e03a41",
+          "motion": {
+            "dx": -0.7246933262870578,
+            "dy": -0.6470476127563017,
+            "breathe": -0.09264008746087427,
+            "t": 0.9583333333333334,
+            "loop": true
+          },
+          "opaque_pixels": 155491
+        }
+      ],
+      "unique_frames": 24
+    },
+    {
+      "key": "char.kedu.smile",
+      "key_pose": "provenance/character-keyposes/char.kedu.smile.webp",
+      "source": "C:\\Users\\cenda\\.codex\\generated_images\\01a12c52-55e8-7380-9ce1-e642d4396d06\\exec-42d2eba4-14cb-48a0-8fbd-1ba90f371514.png",
+      "frames": [
+        {
+          "key": "char.kedu.smile.1",
+          "file": "assets/karakter/char.kedu.smile.1.webp",
+          "sha256": "a5eddffdeb3d6b26a37608bb21ce8a05ad303a93c6430c03f5c75a1aacb1f99e",
+          "motion": {
+            "dx": 0,
+            "dy": 0,
+            "breathe": 0.2980039961925918,
+            "t": 0,
+            "loop": false
+          },
+          "opaque_pixels": 172909
+        },
+        {
+          "key": "char.kedu.smile.2",
+          "file": "assets/karakter/char.kedu.smile.2.webp",
+          "sha256": "09022bfa6e18198a0bdab936afa46980456369496d325eca7add09aebbb8a22c",
+          "motion": {
+            "dx": 0.5244093587933849,
+            "dy": 0.3708514053493121,
+            "breathe": 0.6835813969632965,
+            "t": 0.043478260869565216,
+            "loop": false
+          },
+          "opaque_pixels": 173399
+        },
+        {
+          "key": "char.kedu.smile.3",
+          "file": "assets/karakter/char.kedu.smile.3.webp",
+          "sha256": "9ab500f9b9bcd4196a5ebb94120364daece2ccccbf64ce8427349889716c2db5",
+          "motion": {
+            "dx": 1.0399408729626285,
+            "dy": 0.735361493109952,
+            "breathe": 1.0184606926980413,
+            "t": 0.08695652173913043,
+            "loop": false
+          },
+          "opaque_pixels": 173241
+        },
+        {
+          "key": "char.kedu.smile.4",
+          "file": "assets/karakter/char.kedu.smile.4.webp",
+          "sha256": "9f4e9cb98e1329d116dcd245bb7f008445127c9d82170ff9cb961903ff6b614b",
+          "motion": {
+            "dx": 1.5378820753314104,
+            "dy": 1.0873070724416904,
+            "breathe": 1.277805418003021,
+            "t": 0.13043478260869565,
+            "loop": false
+          },
+          "opaque_pixels": 173420
+        },
+        {
+          "key": "char.kedu.smile.5",
+          "file": "assets/karakter/char.kedu.smile.5.webp",
+          "sha256": "e40a2a12b2b2cf418329a611fcb2b60e919f4c3196e3033de72f1f985b78c85d",
+          "motion": {
+            "dx": 2.0098481729501048,
+            "dy": 1.4206990055233664,
+            "breathe": 1.4423811610255377,
+            "t": 0.17391304347826086,
+            "loop": false
+          },
+          "opaque_pixels": 173360
+        },
+        {
+          "key": "char.kedu.smile.6",
+          "file": "assets/karakter/char.kedu.smile.6.webp",
+          "sha256": "5dcb1a47aff968e81d9d3b1f22d6829262fa6df4e4e5f2e7732f1a2630acbf64",
+          "motion": {
+            "dx": 2.4479382399237934,
+            "dy": 1.7298937738586102,
+            "breathe": 1.4999820917895395,
+            "t": 0.21739130434782608,
+            "loop": false
+          },
+          "opaque_pixels": 173379
+        },
+        {
+          "key": "char.kedu.smile.7",
+          "file": "assets/karakter/char.kedu.smile.7.webp",
+          "sha256": "c70b28fcfd798f3736ff53753b54f662d1045d918cd31412e4ce2d3507f4253b",
+          "motion": {
+            "dx": 2.8448823967125647,
+            "dy": 2.009698606347484,
+            "breathe": 1.4463362127669843,
+            "t": 0.2608695652173913,
+            "loop": false
+          },
+          "opaque_pixels": 173304
+        },
+        {
+          "key": "char.kedu.smile.8",
+          "file": "assets/karakter/char.kedu.smile.8.webp",
+          "sha256": "00cdc9115df4733ebc0b243514a0e9aba6d102f61f354336ab55083ac14c91f1",
+          "motion": {
+            "dx": 3.1941772342321992,
+            "dy": 2.2554682107869746,
+            "breathe": 1.2854221933914083,
+            "t": 0.30434782608695654,
+            "loop": false
+          },
+          "opaque_pixels": 173187
+        },
+        {
+          "key": "char.kedu.smile.9",
+          "file": "assets/karakter/char.kedu.smile.9.webp",
+          "sha256": "03bf4ad20302e1ac44bdb0c478e32bcea7429f8a22e42d27d17ab7430c8c5ffc",
+          "motion": {
+            "dx": 3.4902069600604873,
+            "dy": 2.4631913068755034,
+            "breathe": 1.029174290347242,
+            "t": 0.34782608695652173,
+            "loop": false
+          },
+          "opaque_pixels": 173109
+        },
+        {
+          "key": "char.kedu.smile.10",
+          "file": "assets/karakter/char.kedu.smile.10.webp",
+          "sha256": "de0f9fade0e1a9f4c1926b63348182817883592a3a2161e58811edfff500eb24",
+          "motion": {
+            "dx": 3.7283480100245674,
+            "dy": 2.629565348775312,
+            "breathe": 0.6965972383471171,
+            "t": 0.391304347826087,
+            "loop": false
+          },
+          "opaque_pixels": 173041
+        },
+        {
+          "key": "char.kedu.smile.11",
+          "file": "assets/karakter/char.kedu.smile.11.webp",
+          "sha256": "9844190a3d4a2f6690041d5cbc38e67f1ded79be837b54dc214183a0f79952db",
+          "motion": {
+            "dx": 3.905055176453347,
+            "dy": 2.7520580452927637,
+            "breathe": 0.31235675589910744,
+            "t": 0.43478260869565216,
+            "loop": false
+          },
+          "opaque_pixels": 172814
+        },
+        {
+          "key": "char.kedu.smile.12",
+          "file": "assets/karakter/char.kedu.smile.12.webp",
+          "sha256": "1957986d2890b39f0b4f336dd6c11ac0e8b743e0007030fd7370e8f4209b38e5",
+          "motion": {
+            "dx": 4.017927648688627,
+            "dy": 2.828954531672,
+            "breathe": -0.09504979819686371,
+            "t": 0.4782608695652174,
+            "loop": false
+          },
+          "opaque_pixels": 172654
+        },
+        {
+          "key": "char.kedu.smile.13",
+          "file": "assets/karakter/char.kedu.smile.13.webp",
+          "sha256": "6a729ac6f4c3892521233c29ffa55246fc3b997e22cdd2a0a962109818d3e96f",
+          "motion": {
+            "dx": 4.065753735645148,
+            "dy": 2.859389314280696,
+            "breathe": -0.4954069435844663,
+            "t": 0.5217391304347826,
+            "loop": false
+          },
+          "opaque_pixels": 172527
+        },
+        {
+          "key": "char.kedu.smile.14",
+          "file": "assets/karakter/char.kedu.smile.14.webp",
+          "sha256": "3c41075d10d0067024cf82e286715ec0230e99dba49b14cdab3dc08c6e36845f",
+          "motion": {
+            "dx": 4.048533437322913,
+            "dy": 2.8433623931188503,
+            "breathe": -0.8590220223023733,
+            "t": 0.5652173913043478,
+            "loop": false
+          },
+          "opaque_pixels": 172448
+        },
+        {
+          "key": "char.kedu.smile.15",
+          "file": "assets/karakter/char.kedu.smile.15.webp",
+          "sha256": "9c214aa7a0889dff58fc823aadaa997316142f1d695eaf3f646803c11c6ba36d",
+          "motion": {
+            "dx": 3.9674784448071763,
+            "dy": 2.7817392618187906,
+            "breathe": -1.1589273673903784,
+            "t": 0.6086956521739131,
+            "loop": false
+          },
+          "opaque_pixels": 172449
+        },
+        {
+          "key": "char.kedu.smile.16",
+          "file": "assets/karakter/char.kedu.smile.16.webp",
+          "sha256": "e447c4fadf6a88a24e8bd1253d0f237bbe816707be8303eac689e603fac1b6fe",
+          "motion": {
+            "dx": 3.8249895687561395,
+            "dy": 2.676234785136373,
+            "breathe": -1.3728803713789652,
+            "t": 0.6521739130434783,
+            "loop": false
+          },
+          "opaque_pixels": 172400
+        },
+        {
+          "key": "char.kedu.smile.17",
+          "file": "assets/karakter/char.kedu.smile.17.webp",
+          "sha256": "98bcafcb7bcb0d8ce558f2ef088f6c2274c5b12582118a346afcb691b1295f1a",
+          "motion": {
+            "dx": 3.6246120168408953,
+            "dy": 2.5293812542652354,
+            "breathe": -1.485013118732167,
+            "t": 0.6956521739130435,
+            "loop": false
+          },
+          "opaque_pixels": 172389
+        },
+        {
+          "key": "char.kedu.smile.18",
+          "file": "assets/karakter/char.kedu.smile.18.webp",
+          "sha256": "db867ed6ba7f63cb692ed71d77e20bcec1cf26ca42da81150a6b01dba870c91f",
+          "motion": {
+            "dx": 3.3709693532343046,
+            "dy": 2.3444812150431367,
+            "breathe": -1.4870092365519816,
+            "t": 0.7391304347826086,
+            "loop": false
+          },
+          "opaque_pixels": 172355
+        },
+        {
+          "key": "char.kedu.smile.19",
+          "file": "assets/karakter/char.kedu.smile.19.webp",
+          "sha256": "18cce3edf321b0511ab09cb1f21d11cba1c45a3b7f84a3539243ca9ea978a981",
+          "motion": {
+            "dx": 3.0696773703585754,
+            "dy": 2.1255459477716534,
+            "breathe": -1.3787206819113451,
+            "t": 0.782608695652174,
+            "loop": false
+          },
+          "opaque_pixels": 172362
+        },
+        {
+          "key": "char.kedu.smile.20",
+          "file": "assets/karakter/char.kedu.smile.20.webp",
+          "sha256": "d11cf44dcaf9be910932483588b5bb197c02611ed8d475682e5dd49532891a27",
+          "motion": {
+            "dx": 2.72723947729793,
+            "dy": 1.877220744653801,
+            "breathe": -1.1681787215207797,
+            "t": 0.8260869565217391,
+            "loop": false
+          },
+          "opaque_pixels": 172591
+        },
+        {
+          "key": "char.kedu.smile.21",
+          "file": "assets/karakter/char.kedu.smile.21.webp",
+          "sha256": "ba2041af5f1d9af431906119f3f7a6e905de09cbf5f570bbcd12e0b7ca9dee6e",
+          "motion": {
+            "dx": 2.350925553592281,
+            "dy": 1.6046983767895173,
+            "breathe": -0.8709982894170749,
+            "t": 0.8695652173913043,
+            "loop": false
+          },
+          "opaque_pixels": 172724
+        },
+        {
+          "key": "char.kedu.smile.22",
+          "file": "assets/karakter/char.kedu.smile.22.webp",
+          "sha256": "e8b71c6a8bdd3705d59c96eb5b377af65a569c6b6798644ed31a89722f2be9bc",
+          "motion": {
+            "dx": 1.948636525136543,
+            "dy": 1.3136223626751704,
+            "breathe": -0.5092198987393457,
+            "t": 0.9130434782608695,
+            "loop": false
+          },
+          "opaque_pixels": 172871
+        },
+        {
+          "key": "char.kedu.smile.23",
+          "file": "assets/karakter/char.kedu.smile.23.webp",
+          "sha256": "d4665ebbe430789be25577cf9389fd1b3e968cae418dc4359d2f81fa8d1f5d2f",
+          "motion": {
+            "dx": 1.5287571848803416,
+            "dy": 1.009981840131921,
+            "breathe": -0.10967499769814756,
+            "t": 0.9565217391304348,
+            "loop": false
+          },
+          "opaque_pixels": 173023
+        },
+        {
+          "key": "char.kedu.smile.24",
+          "file": "assets/karakter/char.kedu.smile.24.webp",
+          "sha256": "8767ad0f0b4e66bb8a75209ca1f668c4163aded75743c3c87c09ccc28303889d",
+          "motion": {
+            "dx": 1.1000000000000005,
+            "dy": 0.7000000000000003,
+            "breathe": 0.29800399619259177,
+            "t": 1,
+            "loop": false
+          },
+          "opaque_pixels": 173228
+        }
+      ],
+      "unique_frames": 24
+    },
+    {
+      "key": "char.kedu.worried",
+      "key_pose": "provenance/character-keyposes/char.kedu.worried.webp",
+      "source": "C:\\Users\\cenda\\.codex\\generated_images\\01a12c52-55e8-7380-9ce1-e642d4396d06\\exec-5b7df7db-d92a-4563-b355-b4302569fe7f.png",
+      "frames": [
+        {
+          "key": "char.kedu.worried.1",
+          "file": "assets/karakter/char.kedu.worried.1.webp",
+          "sha256": "a613e39b4398ce257032f1dd31cfc6ee4494306440c9de2cb2d81f217db35c7a",
+          "motion": {
+            "dx": 0,
+            "dy": 0,
+            "breathe": 0.2980039961925918,
+            "t": 0,
+            "loop": false
+          },
+          "opaque_pixels": 165748
+        },
+        {
+          "key": "char.kedu.worried.2",
+          "file": "assets/karakter/char.kedu.worried.2.webp",
+          "sha256": "e0102b4f239695ee41b97b0ae35304da19348c175ad17366cfeb8d7cf88a399d",
+          "motion": {
+            "dx": 0.42909270442601216,
+            "dy": 0.3708514053493121,
+            "breathe": 0.6835813969632965,
+            "t": 0.043478260869565216,
+            "loop": false
+          },
+          "opaque_pixels": 166172
+        },
+        {
+          "key": "char.kedu.worried.3",
+          "file": "assets/karakter/char.kedu.worried.3.webp",
+          "sha256": "3d836105537fa980f1b1eea9c8e93a86d60f4f3d8a8acb8b18a5579c7ebd691a",
+          "motion": {
+            "dx": 0.8510831331527114,
+            "dy": 0.735361493109952,
+            "breathe": 1.0184606926980413,
+            "t": 0.08695652173913043,
+            "loop": false
+          },
+          "opaque_pixels": 166107
+        },
+        {
+          "key": "char.kedu.worried.4",
+          "file": "assets/karakter/char.kedu.worried.4.webp",
+          "sha256": "d7b7404dbee8d6519d7b79d4147d7aff4a0ab40e4e602a55cb0d191bc80c6447",
+          "motion": {
+            "dx": 1.2590013124390413,
+            "dy": 1.0873070724416904,
+            "breathe": 1.277805418003021,
+            "t": 0.13043478260869565,
+            "loop": false
+          },
+          "opaque_pixels": 166207
+        },
+        {
+          "key": "char.kedu.worried.5",
+          "file": "assets/karakter/char.kedu.worried.5.webp",
+          "sha256": "d40fc474619d24a6c5c908c630eb1225ef3dedb381ff8c5abe45bc9aaf8c6660",
+          "motion": {
+            "dx": 1.646139407925301,
+            "dy": 1.4206990055233664,
+            "breathe": 1.4423811610255377,
+            "t": 0.17391304347826086,
+            "loop": false
+          },
+          "opaque_pixels": 166257
+        },
+        {
+          "key": "char.kedu.worried.6",
+          "file": "assets/karakter/char.kedu.worried.6.webp",
+          "sha256": "903d6374e6aa9e0f04b1d237375624a8212e58ff3b2f117b009ff0225e5cde67",
+          "motion": {
+            "dx": 2.006176678895556,
+            "dy": 1.7298937738586102,
+            "breathe": 1.4999820917895395,
+            "t": 0.21739130434782608,
+            "loop": false
+          },
+          "opaque_pixels": 166082
+        },
+        {
+          "key": "char.kedu.worried.7",
+          "file": "assets/karakter/char.kedu.worried.7.webp",
+          "sha256": "f6b506582077734d090d4fc4f5d9736937565dccca731c9e1751fc5f8f7adf44",
+          "motion": {
+            "dx": 2.333297221717878,
+            "dy": 2.009698606347484,
+            "breathe": 1.4463362127669843,
+            "t": 0.2608695652173913,
+            "loop": false
+          },
+          "opaque_pixels": 166096
+        },
+        {
+          "key": "char.kedu.worried.8",
+          "file": "assets/karakter/char.kedu.worried.8.webp",
+          "sha256": "11defe7cadda1ff267c3f484991b7ee52845ee5a92793ac832b6cb2389b20aef",
+          "motion": {
+            "dx": 2.6222983091248895,
+            "dy": 2.2554682107869746,
+            "breathe": 1.2854221933914083,
+            "t": 0.30434782608695654,
+            "loop": false
+          },
+          "opaque_pixels": 166123
+        },
+        {
+          "key": "char.kedu.worried.9",
+          "file": "assets/karakter/char.kedu.worried.9.webp",
+          "sha256": "5b2ac602f0759e809c1bccc6a61f83bf557888d87731254960ad06c185f36436",
+          "motion": {
+            "dx": 2.8686873071788246,
+            "dy": 2.4631913068755034,
+            "breathe": 1.029174290347242,
+            "t": 0.34782608695652173,
+            "loop": false
+          },
+          "opaque_pixels": 165961
+        },
+        {
+          "key": "char.kedu.worried.10",
+          "file": "assets/karakter/char.kedu.worried.10.webp",
+          "sha256": "fadc4a2a0971ddd91aeae1889f905af58db53c6b37dac8dbb170620a8e9fe980",
+          "motion": {
+            "dx": 3.068765364541393,
+            "dy": 2.629565348775312,
+            "breathe": 0.6965972383471171,
+            "t": 0.391304347826087,
+            "loop": false
+          },
+          "opaque_pixels": 165841
+        },
+        {
+          "key": "char.kedu.worried.11",
+          "file": "assets/karakter/char.kedu.worried.11.webp",
+          "sha256": "a8b540a5135d1ed10458ed32490aa181d5189b281520ff54b3e8db3a0fef8fee",
+          "motion": {
+            "dx": 3.219696315075721,
+            "dy": 2.7520580452927637,
+            "breathe": 0.31235675589910744,
+            "t": 0.43478260869565216,
+            "loop": false
+          },
+          "opaque_pixels": 165733
+        },
+        {
+          "key": "char.kedu.worried.12",
+          "file": "assets/karakter/char.kedu.worried.12.webp",
+          "sha256": "c6728cdd4f34ae42e9edc5337471b4b445705fc66c419de9a8e78352931f1536",
+          "motion": {
+            "dx": 3.3195595102552486,
+            "dy": 2.828954531672,
+            "breathe": -0.09504979819686371,
+            "t": 0.4782608695652174,
+            "loop": false
+          },
+          "opaque_pixels": 165644
+        },
+        {
+          "key": "char.kedu.worried.13",
+          "file": "assets/karakter/char.kedu.worried.13.webp",
+          "sha256": "c06489b8f7cef270e180288842a5dcdefed21ce113831d5bfe3d4f8bead29f24",
+          "motion": {
+            "dx": 3.3673855972117703,
+            "dy": 2.859389314280696,
+            "breathe": -0.4954069435844663,
+            "t": 0.5217391304347826,
+            "loop": false
+          },
+          "opaque_pixels": 165519
+        },
+        {
+          "key": "char.kedu.worried.14",
+          "file": "assets/karakter/char.kedu.worried.14.webp",
+          "sha256": "fbcc85fffbf9fb9a2c4a88a99cecf2a67cd5c843bdf1db460145d6372a0e643e",
+          "motion": {
+            "dx": 3.363174575945287,
+            "dy": 2.8433623931188503,
+            "breathe": -0.8590220223023733,
+            "t": 0.5652173913043478,
+            "loop": false
+          },
+          "opaque_pixels": 165473
+        },
+        {
+          "key": "char.kedu.worried.15",
+          "file": "assets/karakter/char.kedu.worried.15.webp",
+          "sha256": "50d4d422a25ea9465e960b761f1533f47c050d4423728b05ff433c1b2d219220",
+          "motion": {
+            "dx": 3.307895799324002,
+            "dy": 2.7817392618187906,
+            "breathe": -1.1589273673903784,
+            "t": 0.6086956521739131,
+            "loop": false
+          },
+          "opaque_pixels": 165444
+        },
+        {
+          "key": "char.kedu.worried.16",
+          "file": "assets/karakter/char.kedu.worried.16.webp",
+          "sha256": "8e0def5dfd0452ae40f409e16aa63583aafa192f113a5c40abf6495dd1a91230",
+          "motion": {
+            "dx": 3.203469915874477,
+            "dy": 2.676234785136373,
+            "breathe": -1.3728803713789652,
+            "t": 0.6521739130434783,
+            "loop": false
+          },
+          "opaque_pixels": 165393
+        },
+        {
+          "key": "char.kedu.worried.17",
+          "file": "assets/karakter/char.kedu.worried.17.webp",
+          "sha256": "1cd1ea68acb1ca39328496b7c7cf9f821bc12b650b31cab9f93170c08282a624",
+          "motion": {
+            "dx": 3.0527330917335855,
+            "dy": 2.5293812542652354,
+            "breathe": -1.485013118732167,
+            "t": 0.6956521739130435,
+            "loop": false
+          },
+          "opaque_pixels": 165319
+        },
+        {
+          "key": "char.kedu.worried.18",
+          "file": "assets/karakter/char.kedu.worried.18.webp",
+          "sha256": "4b0bd363383f7a8330c32e6e3e801769c3f000a58ef2c8e2aa494ad330e68059",
+          "motion": {
+            "dx": 2.859384178239617,
+            "dy": 2.3444812150431367,
+            "breathe": -1.4870092365519816,
+            "t": 0.7391304347826086,
+            "loop": false
+          },
+          "opaque_pixels": 165352
+        },
+        {
+          "key": "char.kedu.worried.19",
+          "file": "assets/karakter/char.kedu.worried.19.webp",
+          "sha256": "5dd98b7158170ed79cac9db4a9dcc6661194ad205cadc589c4f4cadb455f10b2",
+          "motion": {
+            "dx": 2.6279158093303385,
+            "dy": 2.1255459477716534,
+            "breathe": -1.3787206819113451,
+            "t": 0.782608695652174,
+            "loop": false
+          },
+          "opaque_pixels": 165375
+        },
+        {
+          "key": "char.kedu.worried.20",
+          "file": "assets/karakter/char.kedu.worried.20.webp",
+          "sha256": "2bd671adc4bb0f186e9bb907e1270114f5c066189bb5c9b7764215e0dd04c570",
+          "motion": {
+            "dx": 2.3635307122731266,
+            "dy": 1.877220744653801,
+            "breathe": -1.1681787215207797,
+            "t": 0.8260869565217391,
+            "loop": false
+          },
+          "opaque_pixels": 165489
+        },
+        {
+          "key": "char.kedu.worried.21",
+          "file": "assets/karakter/char.kedu.worried.21.webp",
+          "sha256": "3daf6a397c11cc6c9ee8fd33b4f729cf5b721f1ee8ed31458710aafff05d7feb",
+          "motion": {
+            "dx": 2.0720447906999118,
+            "dy": 1.6046983767895173,
+            "breathe": -0.8709982894170749,
+            "t": 0.8695652173913043,
+            "loop": false
+          },
+          "opaque_pixels": 165601
+        },
+        {
+          "key": "char.kedu.worried.22",
+          "file": "assets/karakter/char.kedu.worried.22.webp",
+          "sha256": "4372844e0d79d531e6bbfbb62d96b79bf99aadb513e95c5a7abbaf13dff3d53b",
+          "motion": {
+            "dx": 1.7597787853266258,
+            "dy": 1.3136223626751704,
+            "breathe": -0.5092198987393457,
+            "t": 0.9130434782608695,
+            "loop": false
+          },
+          "opaque_pixels": 165782
+        },
+        {
+          "key": "char.kedu.worried.23",
+          "file": "assets/karakter/char.kedu.worried.23.webp",
+          "sha256": "712f1e38372a8a724235fa1db26ec107b648d823fced27ec2409fbba1cb7df86",
+          "motion": {
+            "dx": 1.433440530512969,
+            "dy": 1.009981840131921,
+            "breathe": -0.10967499769814756,
+            "t": 0.9565217391304348,
+            "loop": false
+          },
+          "opaque_pixels": 165904
+        },
+        {
+          "key": "char.kedu.worried.24",
+          "file": "assets/karakter/char.kedu.worried.24.webp",
+          "sha256": "79785951327e612e890ae0f37f15b9e6b016603f967c9f024946334a100d3e1b",
+          "motion": {
+            "dx": 1.1000000000000005,
+            "dy": 0.7000000000000003,
+            "breathe": 0.29800399619259177,
+            "t": 1,
+            "loop": false
+          },
+          "opaque_pixels": 166090
+        }
+      ],
+      "unique_frames": 24
+    },
+    {
+      "key": "char.kedu.weak",
+      "key_pose": "provenance/character-keyposes/char.kedu.weak.webp",
+      "source": "C:\\Users\\cenda\\.codex\\generated_images\\01a12c52-55e8-7380-9ce1-e642d4396d06\\exec-86a3791a-3563-46e3-88f7-0bced7632568.png",
+      "frames": [
+        {
+          "key": "char.kedu.weak.1",
+          "file": "assets/karakter/char.kedu.weak.1.webp",
+          "sha256": "cf4a8beb437ae0491c6c843c3a866ec4a4f40f5742c9ebdd4ecb187b1710ee64",
+          "motion": {
+            "dx": 0,
+            "dy": 0,
+            "breathe": 0.2980039961925918,
+            "t": 0,
+            "loop": false
+          },
+          "opaque_pixels": 187860
+        },
+        {
+          "key": "char.kedu.weak.2",
+          "file": "assets/karakter/char.kedu.weak.2.webp",
+          "sha256": "5ab1a500089ab34ceb346e2f3670456ff5d7a21f45995ef57b010aa2c5d728bf",
+          "motion": {
+            "dx": 0.32015938514901493,
+            "dy": 0.3708514053493121,
+            "breathe": 0.6835813969632965,
+            "t": 0.043478260869565216,
+            "loop": false
+          },
+          "opaque_pixels": 188421
+        },
+        {
+          "key": "char.kedu.weak.3",
+          "file": "assets/karakter/char.kedu.weak.3.webp",
+          "sha256": "b41353fedaa5fd121a5843f3ec408da18e676819ca5c4e010ec94d74e5ea68b9",
+          "motion": {
+            "dx": 0.635245716227092,
+            "dy": 0.735361493109952,
+            "breathe": 1.0184606926980413,
+            "t": 0.08695652173913043,
+            "loop": false
+          },
+          "opaque_pixels": 188442
+        },
+        {
+          "key": "char.kedu.weak.4",
+          "file": "assets/karakter/char.kedu.weak.4.webp",
+          "sha256": "2e91b090de4d3e610b4242926fc6a793e2c4b3b9d0abcec2a6e576bd9e92ec15",
+          "motion": {
+            "dx": 0.9402804405620482,
+            "dy": 1.0873070724416904,
+            "breathe": 1.277805418003021,
+            "t": 0.13043478260869565,
+            "loop": false
+          },
+          "opaque_pixels": 188302
+        },
+        {
+          "key": "char.kedu.weak.5",
+          "file": "assets/karakter/char.kedu.weak.5.webp",
+          "sha256": "4768c3f545dfc5919d02541ffa17a5d5b3940d896c705352d97bd84860d6824e",
+          "motion": {
+            "dx": 1.230472247896954,
+            "dy": 1.4206990055233664,
+            "breathe": 1.4423811610255377,
+            "t": 0.17391304347826086,
+            "loop": false
+          },
+          "opaque_pixels": 188425
+        },
+        {
+          "key": "char.kedu.weak.6",
+          "file": "assets/karakter/char.kedu.weak.6.webp",
+          "sha256": "dfd5f67b0a9ce0465abf119d445198c3d368dfb7820f3e57e8a0d6ea65e63fba",
+          "motion": {
+            "dx": 1.5013063234347142,
+            "dy": 1.7298937738586102,
+            "breathe": 1.4999820917895395,
+            "t": 0.21739130434782608,
+            "loop": false
+          },
+          "opaque_pixels": 188407
+        },
+        {
+          "key": "char.kedu.weak.7",
+          "file": "assets/karakter/char.kedu.weak.7.webp",
+          "sha256": "966228622a5a0aed4e197a74284fb81cd0c251a46851d101cd18a66f68d0ee5a",
+          "motion": {
+            "dx": 1.7486284502953784,
+            "dy": 2.009698606347484,
+            "breathe": 1.4463362127669843,
+            "t": 0.2608695652173913,
+            "loop": false
+          },
+          "opaque_pixels": 188285
+        },
+        {
+          "key": "char.kedu.weak.8",
+          "file": "assets/karakter/char.kedu.weak.8.webp",
+          "sha256": "1170576356285aea1f226ce77a43d4faf0c919bfcf9cabed98ea5127011b9e48",
+          "motion": {
+            "dx": 1.9687223947165362,
+            "dy": 2.2554682107869746,
+            "breathe": 1.2854221933914083,
+            "t": 0.30434782608695654,
+            "loop": false
+          },
+          "opaque_pixels": 188219
+        },
+        {
+          "key": "char.kedu.weak.9",
+          "file": "assets/karakter/char.kedu.weak.9.webp",
+          "sha256": "6758357b479a230a80795814e19d9a61e15c021c5262e4349cb9eb2bf16a1750",
+          "motion": {
+            "dx": 2.1583791324569246,
+            "dy": 2.4631913068755034,
+            "breathe": 1.029174290347242,
+            "t": 0.34782608695652173,
+            "loop": false
+          },
+          "opaque_pixels": 188163
+        },
+        {
+          "key": "char.kedu.weak.10",
+          "file": "assets/karakter/char.kedu.weak.10.webp",
+          "sha256": "be27a17c237579aa099997bf1479dd1d52d6e1c345d12d597ed2f2bdd5d3569a",
+          "motion": {
+            "dx": 2.3149566268463366,
+            "dy": 2.629565348775312,
+            "breathe": 0.6965972383471171,
+            "t": 0.391304347826087,
+            "loop": false
+          },
+          "opaque_pixels": 188078
+        },
+        {
+          "key": "char.kedu.weak.11",
+          "file": "assets/karakter/char.kedu.weak.11.webp",
+          "sha256": "b3864c07a9609355c67ce31d6c583d64490515c4d13ed0372dd6023f03e3b959",
+          "motion": {
+            "dx": 2.436429044929863,
+            "dy": 2.7520580452927637,
+            "breathe": 0.31235675589910744,
+            "t": 0.43478260869565216,
+            "loop": false
+          },
+          "opaque_pixels": 187888
+        },
+        {
+          "key": "char.kedu.weak.12",
+          "file": "assets/karakter/char.kedu.weak.12.webp",
+          "sha256": "2c794f8a86fc51f751d4860e2d647e1f3e3c32b4f1b2acda22df056234739b52",
+          "motion": {
+            "dx": 2.5214244949028175,
+            "dy": 2.828954531672,
+            "breathe": -0.09504979819686371,
+            "t": 0.4782608695652174,
+            "loop": false
+          },
+          "opaque_pixels": 187824
+        },
+        {
+          "key": "char.kedu.weak.13",
+          "file": "assets/karakter/char.kedu.weak.13.webp",
+          "sha256": "cac17dab92abf682105c371d6e02258b8e9c2ea591275a544447e47a50b365f0",
+          "motion": {
+            "dx": 2.569250581859339,
+            "dy": 2.859389314280696,
+            "breathe": -0.4954069435844663,
+            "t": 0.5217391304347826,
+            "loop": false
+          },
+          "opaque_pixels": 187663
+        },
+        {
+          "key": "char.kedu.weak.14",
+          "file": "assets/karakter/char.kedu.weak.14.webp",
+          "sha256": "636fcb3ca548d62074da1507813633d10a3ffc5dcd092a3510841512239f9864",
+          "motion": {
+            "dx": 2.5799073057994284,
+            "dy": 2.8433623931188503,
+            "breathe": -0.8590220223023733,
+            "t": 0.5652173913043478,
+            "loop": false
+          },
+          "opaque_pixels": 187540
+        },
+        {
+          "key": "char.kedu.weak.15",
+          "file": "assets/karakter/char.kedu.weak.15.webp",
+          "sha256": "41693b257d34326b41b96ee6b9af71822fa6a8885d3410cd2a5f01666e3dd808",
+          "motion": {
+            "dx": 2.5540870616289455,
+            "dy": 2.7817392618187906,
+            "breathe": -1.1589273673903784,
+            "t": 0.6086956521739131,
+            "loop": false
+          },
+          "opaque_pixels": 187551
+        },
+        {
+          "key": "char.kedu.weak.16",
+          "file": "assets/karakter/char.kedu.weak.16.webp",
+          "sha256": "e6308a10f2cd62539103e8e50febf4962c248b0e253331c1a0c2332c3759df6e",
+          "motion": {
+            "dx": 2.4931617411525764,
+            "dy": 2.676234785136373,
+            "breathe": -1.3728803713789652,
+            "t": 0.6521739130434783,
+            "loop": false
+          },
+          "opaque_pixels": 187561
+        },
+        {
+          "key": "char.kedu.weak.17",
+          "file": "assets/karakter/char.kedu.weak.17.webp",
+          "sha256": "14b2562e73f64fe38fc3c9020028d4e561120ac58dd88a268856646c62ad3719",
+          "motion": {
+            "dx": 2.399157177325232,
+            "dy": 2.5293812542652354,
+            "breathe": -1.485013118732167,
+            "t": 0.6956521739130435,
+            "loop": false
+          },
+          "opaque_pixels": 187479
+        },
+        {
+          "key": "char.kedu.weak.18",
+          "file": "assets/karakter/char.kedu.weak.18.webp",
+          "sha256": "2249556dd6cc5f031ac9ba23ac91d57a0aaee12a9b8230f66d56bfae9a70897c",
+          "motion": {
+            "dx": 2.2747154068171183,
+            "dy": 2.3444812150431367,
+            "breathe": -1.4870092365519816,
+            "t": 0.7391304347826086,
+            "loop": false
+          },
+          "opaque_pixels": 187492
+        },
+        {
+          "key": "char.kedu.weak.19",
+          "file": "assets/karakter/char.kedu.weak.19.webp",
+          "sha256": "6fcbde2698c6d1ddd5c54ff8b415c9d0f72845c6a0c1df96a7802e1e32ecf215",
+          "motion": {
+            "dx": 2.123045453869497,
+            "dy": 2.1255459477716534,
+            "breathe": -1.3787206819113451,
+            "t": 0.782608695652174,
+            "loop": false
+          },
+          "opaque_pixels": 187501
+        },
+        {
+          "key": "char.kedu.weak.20",
+          "file": "assets/karakter/char.kedu.weak.20.webp",
+          "sha256": "ef796f6db97e96ce807b4cafd7b77c3b16dc16f520b37457089d839a495ab6cd",
+          "motion": {
+            "dx": 1.94786355224478,
+            "dy": 1.877220744653801,
+            "breathe": -1.1681787215207797,
+            "t": 0.8260869565217391,
+            "loop": false
+          },
+          "opaque_pixels": 187738
+        },
+        {
+          "key": "char.kedu.weak.21",
+          "file": "assets/karakter/char.kedu.weak.21.webp",
+          "sha256": "6ea80fe7d4104c5011ea5daf7f44ce94747e1b7cf1e23d04e572292f0ab1a14d",
+          "motion": {
+            "dx": 1.7533239188229184,
+            "dy": 1.6046983767895173,
+            "breathe": -0.8709982894170749,
+            "t": 0.8695652173913043,
+            "loop": false
+          },
+          "opaque_pixels": 187949
+        },
+        {
+          "key": "char.kedu.weak.22",
+          "file": "assets/karakter/char.kedu.weak.22.webp",
+          "sha256": "127219e20dceef8a7292d13a57891b93b67f05cf8c0ff52597e43fea41256d17",
+          "motion": {
+            "dx": 1.543941368401006,
+            "dy": 1.3136223626751704,
+            "breathe": -0.5092198987393457,
+            "t": 0.9130434782608695,
+            "loop": false
+          },
+          "opaque_pixels": 188072
+        },
+        {
+          "key": "char.kedu.weak.23",
+          "file": "assets/karakter/char.kedu.weak.23.webp",
+          "sha256": "a4ed522f82423cb77cc636d8995561c10088ba4a50a4a3a1d70bc2196596f6cb",
+          "motion": {
+            "dx": 1.3245072112359717,
+            "dy": 1.009981840131921,
+            "breathe": -0.10967499769814756,
+            "t": 0.9565217391304348,
+            "loop": false
+          },
+          "opaque_pixels": 188140
+        },
+        {
+          "key": "char.kedu.weak.24",
+          "file": "assets/karakter/char.kedu.weak.24.webp",
+          "sha256": "3cf66f6c70089ee4f05e0116488105176ec541a43a3bbd66c6c6409ce2025a95",
+          "motion": {
+            "dx": 1.1000000000000003,
+            "dy": 0.7000000000000003,
+            "breathe": 0.29800399619259177,
+            "t": 1,
+            "loop": false
+          },
+          "opaque_pixels": 188354
+        }
+      ],
+      "unique_frames": 24
+    }
+  ],
+  "audio_unchanged": true,
+  "limits": "Not independent AI frames or joint-rig animation. Visual/contact-sheet review is not culture, licensing, or game integration validation."
+}

@@ -1,0 +1,82 @@
+[
+  {
+    "key": "char.jaka.idle",
+    "prompt": "Use case: stylized-concept. Generate ONE new GELITA animation frame: char.jaka.idle.1, frame 1 of 24. The input is an identity/style REFERENCE only, not an edit target: match Jaka in assets/referensi/reference.01.webp. Full body of the same approximately 11-year-old Javanese boy with warm tan skin, tousled dark brown hair and cowlick, large brown eyes, cream short sleeve shirt, RED scarf, brown knee-length shorts, orange-brown batik tied at waist, brown sandals, brown leather backpack. Premium dimensional stylized 3D animated adventure rendering, soft warm upper-left lighting, subtle cool rim. Three-quarter facing screen right, relaxed neutral standing pose, arms loose, curious friendly half smile. Frame 1 is the neutral start of a subtle breathing loop. One subject centered on 7:9 portrait canvas intended for 700x900 delivery, complete hair and feet visible, 8% head padding, feet at 97.3% canvas height, torso centered. Genuine transparent background outside subject, no scenery, floor, cast shadow, frame, labels, text, watermark or fake checkerboard. No 2D paint, paper grain, headwrap on Jaka, blue vest, duplicate figure or cropped feet. Return a saved image file, do not show the image in chat; user wants filenames only.",
+    "source": "C:\\Users\\cenda\\.codex\\generated_images\\01a12c52-55e8-7380-9ce1-e642d4396d06\\exec-c75e2b00-6ec3-4701-a854-da43cf96dee9.png",
+    "date": "2026-10-12",
+    "tool": "image_gen",
+    "visual_review": "Individual key pose inspected for character identity, costume, whole body and pose; not culture/licensing/game validation"
+  },
+  {
+    "key": "char.jaka.happy",
+    "prompt": "Use case: stylized-concept. Generate ONE full-body GELITA character key pose char.jaka.happy. Input 1 is reference.01 identity/style, input 2 is the newly generated Jaka idle full-body identity reference. Match this EXACT boy and costume. Approximately 11-year-old Javanese boy, warm tan skin, tousled dark brown hair/cowlick, brown eyes, cream short sleeve shirt, RED scarf, brown knee-length shorts, orange-brown batik waist cloth, brown sandals and brown leather backpack. Premium dimensional stylized 3D animated adventure render with warm upper-left key light and cool faint rim. Pose/action: joyful big open grin, eyes bright, lift a small antique brass hand lantern slightly in the right hand, free hand celebrating, feet grounded. Three-quarter facing screen right. Portrait 7:9 canvas intended for 700x900, whole figure including hair and BOTH FEET visible, 8% top padding and generous side margins, feet at 97.3% height. Keep size/proportions consistent with input 2. Transparent alpha exterior. No scenery, ground, cast shadow, gold frame, text, labels, watermark, checkerboard, cropped parts, extra limbs, duplicate character, painted 2D, iket/headwrap, blue vest. ONE finished isolated character only. Saved file for project; user requests filenames only in chat.",
+    "source": "C:\\Users\\cenda\\.codex\\generated_images\\01a12c52-55e8-7380-9ce1-e642d4396d06\\exec-a5cab955-5f1c-4a98-a39f-96d2be3e6581.png",
+    "date": "2026-10-12",
+    "tool": "image_gen",
+    "visual_review": "Individual key pose inspected for character identity, costume, whole body and pose; not culture/licensing/game validation"
+  },
+  {
+    "key": "char.jaka.sad",
+    "prompt": "Create one complete isolated full-body 3D cartoon game character pose, char.jaka.sad, matching the two supplied character identity references. Same Jaka, fully dressed in cream short sleeve shirt, red scarf, brown knee-length shorts, brown-orange batik waist sash, leather backpack and sandals, tousled dark brown hair, brown eyes. Action: disappointed expression, small closed-mouth frown, slightly lowered head and shoulders, both arms relaxed, holding a brass hand lantern low at right side. Soft cinematic lighting and detailed modeled materials, match the reference character exactly. Facing slightly right in three-quarter view. Whole figure visible from hair to sandals, ample transparent margins on all sides, portrait canvas 7:9. Transparent background. No environment, floor, shadows on ground, lettering, frame, watermark or other characters. This is a family educational game character expression asset.",
+    "source": "C:\\Users\\cenda\\.codex\\generated_images\\01a12c52-55e8-7380-9ce1-e642d4396d06\\exec-d97e3b34-c101-4dea-8e73-16935cb61aed.png",
+    "date": "2026-10-12",
+    "tool": "image_gen",
+    "visual_review": "Individual key pose inspected for character identity, costume, whole body and pose; not culture/licensing/game validation"
+  },
+  {
+    "key": "char.jaka.afraid",
+    "prompt": "Create one complete isolated full-body 3D cartoon game character pose, char.jaka.afraid, matching the two supplied character identity references. Same Jaka, fully dressed in cream short sleeve shirt, red scarf, brown knee-length shorts, brown-orange batik waist sash, leather backpack and sandals, tousled dark brown hair, brown eyes. Action: mild surprised expression, wide curious eyes, lifted eyebrows, small round open mouth, lean back slightly while holding a brass hand lantern near chest; friendly child-safe acting pose. Soft cinematic lighting and detailed modeled materials, match the reference character exactly. Facing slightly right in three-quarter view. Whole figure visible from hair to sandals, ample transparent margins on all sides, portrait canvas 7:9. Transparent background. No environment, floor, shadows on ground, lettering, frame, watermark or other characters. This is a family educational game character expression asset.",
+    "source": "C:\\Users\\cenda\\.codex\\generated_images\\01a12c52-55e8-7380-9ce1-e642d4396d06\\exec-f127906c-a94e-40c9-b995-017cfdcff67d.png",
+    "date": "2026-10-12",
+    "tool": "image_gen",
+    "visual_review": "Individual key pose inspected for character identity, costume, whole body and pose; not culture/licensing/game validation"
+  },
+  {
+    "key": "char.jaka.determined",
+    "prompt": "Use case: stylized-concept. Generate ONE isolated full-body GELITA character key pose char.jaka.determined. Input is identity/style REFERENCE only. Match EXACT Jaka reference.01: approximately 11-year-old Javanese boy, warm tan skin, tousled dark brown hair/cowlick, large brown eyes, cream short sleeve shirt, RED scarf, brown knee-length shorts, orange-brown batik waist cloth, brown sandals and brown leather backpack. No headwrap. Premium dimensional stylized 3D animated adventure render with warm upper-left key light and cool faint rim, rounded modeled forms, detailed cloth, no painted strokes. Pose/action: confident and brave, chin up, firm friendly smile, one foot forward on ground, brass hand lantern lifted at chest height. Three-quarter facing screen right. Portrait 7:9 canvas intended for 700x900, whole figure including hair/headwrap and BOTH FEET visible, 8% top padding and generous side margins, feet at 97.3% height. ONE character. Genuine transparent alpha exterior. No scenery, floor, ground shadow, gold border, frame, text, labels, watermark, fake checkerboard, cropped feet, duplicate figure or extra limbs. Save project image; user requests filenames only in chat.",
+    "source": "C:\\Users\\cenda\\.codex\\generated_images\\01a12c52-55e8-7380-9ce1-e642d4396d06\\exec-4b87f315-754d-4e18-87e3-853a4e17e4ce.png",
+    "date": "2026-10-12",
+    "tool": "image_gen",
+    "visual_review": "Individual key pose inspected for character identity, costume, whole body and pose; not culture/licensing/game validation"
+  },
+  {
+    "key": "char.jaka.bow",
+    "prompt": "Use case: stylized-concept. Generate ONE isolated full-body GELITA character key pose char.jaka.bow. Input is identity/style REFERENCE only. Match EXACT Jaka reference.01: approximately 11-year-old Javanese boy, warm tan skin, tousled dark brown hair/cowlick, large brown eyes, cream short sleeve shirt, RED scarf, brown knee-length shorts, orange-brown batik waist cloth, brown sandals and brown leather backpack. No headwrap. Premium dimensional stylized 3D animated adventure render with warm upper-left key light and cool faint rim, rounded modeled forms, detailed cloth, no painted strokes. Pose/action: respectful gentle Javanese bow from waist, head lowered modestly, feet grounded, both hands clasped in front at waist (ngapurancang), sincere calm smile, no lantern or hand prop. Three-quarter facing screen right. Portrait 7:9 canvas intended for 700x900, whole figure including hair/headwrap and BOTH FEET visible, 8% top padding and generous side margins, feet at 97.3% height. ONE character. Genuine transparent alpha exterior. No scenery, floor, ground shadow, gold border, frame, text, labels, watermark, fake checkerboard, cropped feet, duplicate figure or extra limbs. Save project image; user requests filenames only in chat.",
+    "source": "C:\\Users\\cenda\\.codex\\generated_images\\01a12c52-55e8-7380-9ce1-e642d4396d06\\exec-e0f871be-0493-415e-a06b-b4e8df9c7175.png",
+    "date": "2026-10-12",
+    "tool": "image_gen",
+    "visual_review": "Individual key pose inspected for character identity, costume, whole body and pose; not culture/licensing/game validation"
+  },
+  {
+    "key": "char.kedu.idle",
+    "prompt": "Use case: stylized-concept. Generate ONE isolated full-body GELITA character key pose char.kedu.idle. Input is identity/style REFERENCE only. Match EXACT Mbah Kedu face/style from reference.02: kind elderly Javanese man, warm tan skin, white eyebrows and hair at sides, thick curled white moustache and short white beard, brown-gold batik headwrap, cream long sleeve collar shirt and brown-gold batik vest, loose dark brown trousers, brown sandals, wooden walking stick. NO red scarf, NO gold medallion or avatar frame. This is the full-body elder version of the supplied bust reference. Premium dimensional stylized 3D animated adventure render with warm upper-left key light and cool faint rim, rounded modeled forms, detailed cloth, no painted strokes. Pose/action: calm wise standing stance, both hands resting on top of a wooden walking stick whose tip touches foot line, gentle neutral expression. Three-quarter facing screen right. Portrait 7:9 canvas intended for 700x900, whole figure including hair/headwrap and BOTH FEET visible, 8% top padding and generous side margins, feet at 97.3% height. ONE character. Genuine transparent alpha exterior. No scenery, floor, ground shadow, gold border, frame, text, labels, watermark, fake checkerboard, cropped feet, duplicate figure or extra limbs. Save project image; user requests filenames only in chat.",
+    "source": "C:\\Users\\cenda\\.codex\\generated_images\\01a12c52-55e8-7380-9ce1-e642d4396d06\\exec-e208e9e7-e12a-4e0d-9e95-2f11c366bffe.png",
+    "date": "2026-10-12",
+    "tool": "image_gen",
+    "visual_review": "Individual key pose inspected for character identity, costume, whole body and pose; not culture/licensing/game validation"
+  },
+  {
+    "key": "char.kedu.smile",
+    "prompt": "Create one complete isolated full-body premium stylized 3D animated adventure game character key pose: char.kedu.smile. Reference 1 is Mbah Kedu face and batik identity; reference 2 is his approved full-body costume and scale. Match this EXACT elderly Javanese man with warm tan skin, white eyebrows, curled white moustache and short beard, brown-gold batik headwrap, cream long-sleeve collared shirt, brown-gold batik vest, loose dark brown trousers, sandals and wooden walking stick. No red scarf. Action: warm kind smile, eyes slightly crinkled, one hand holding wooden walking stick and free hand raised palm up in a gentle explaining gesture. Three-quarter facing screen right, same proportions as reference 2, warm soft key light upper left and subtle cool rim. Whole headwrap, entire body, both feet and walking stick visible with generous margins. One character on a portrait 7:9 canvas, transparent alpha outside subject. No ground, scenery, shadows on floor, avatar medallion, frame, text, labels, watermark, duplicate figures, extra limbs or cropped feet. No 2D brushwork or paper grain. Family educational game character asset.",
+    "source": "C:\\Users\\cenda\\.codex\\generated_images\\01a12c52-55e8-7380-9ce1-e642d4396d06\\exec-42d2eba4-14cb-48a0-8fbd-1ba90f371514.png",
+    "date": "2026-10-12",
+    "tool": "image_gen",
+    "visual_review": "Individual key pose inspected for character identity, costume, whole body and pose; not culture/licensing/game validation"
+  },
+  {
+    "key": "char.kedu.worried",
+    "prompt": "Create one complete isolated full-body premium stylized 3D animated adventure game character key pose: char.kedu.worried. Reference 1 is Mbah Kedu face and batik identity; reference 2 is his approved full-body costume and scale. Match this EXACT elderly Javanese man with warm tan skin, white eyebrows, curled white moustache and short beard, brown-gold batik headwrap, cream long-sleeve collared shirt, brown-gold batik vest, loose dark brown trousers, sandals and wooden walking stick. No red scarf. Action: concerned thoughtful expression, brows gently knit, looking ahead into distance, slightly hunched shoulders, hands leaning on a wooden walking stick. Three-quarter facing screen right, same proportions as reference 2, warm soft key light upper left and subtle cool rim. Whole headwrap, entire body, both feet and walking stick visible with generous margins. One character on a portrait 7:9 canvas, transparent alpha outside subject. No ground, scenery, shadows on floor, avatar medallion, frame, text, labels, watermark, duplicate figures, extra limbs or cropped feet. No 2D brushwork or paper grain. Family educational game character asset.",
+    "source": "C:\\Users\\cenda\\.codex\\generated_images\\01a12c52-55e8-7380-9ce1-e642d4396d06\\exec-5b7df7db-d92a-4563-b355-b4302569fe7f.png",
+    "date": "2026-10-12",
+    "tool": "image_gen",
+    "visual_review": "Individual key pose inspected for character identity, costume, whole body and pose; not culture/licensing/game validation"
+  },
+  {
+    "key": "char.kedu.weak",
+    "prompt": "Create one complete isolated full-body premium stylized 3D animated adventure game character key pose: char.kedu.weak. Reference 1 is Mbah Kedu face and batik identity; reference 2 is his approved full-body costume and scale. Match this EXACT elderly Javanese man with warm tan skin, white eyebrows, curled white moustache and short beard, brown-gold batik headwrap, cream long-sleeve collared shirt, brown-gold batik vest, loose dark brown trousers, sandals and wooden walking stick. No red scarf. Action: tired expression, half-closed eyes, knees slightly bent, leaning on a wooden walking stick with one hand, other hand resting on chest, gentle fatigue acting. Three-quarter facing screen right, same proportions as reference 2, warm soft key light upper left and subtle cool rim. Whole headwrap, entire body, both feet and walking stick visible with generous margins. One character on a portrait 7:9 canvas, transparent alpha outside subject. No ground, scenery, shadows on floor, avatar medallion, frame, text, labels, watermark, duplicate figures, extra limbs or cropped feet. No 2D brushwork or paper grain. Family educational game character asset.",
+    "source": "C:\\Users\\cenda\\.codex\\generated_images\\01a12c52-55e8-7380-9ce1-e642d4396d06\\exec-86a3791a-3563-46e3-88f7-0bced7632568.png",
+    "date": "2026-10-12",
+    "tool": "image_gen",
+    "visual_review": "Individual key pose inspected for character identity, costume, whole body and pose; not culture/licensing/game validation"
+  }
+]

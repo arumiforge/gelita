@@ -1,18 +1,27 @@
 {
   "date": "2026-10-11",
-  "built_at_utc": "2026-10-11T17:58:00.536Z",
-  "total": 370,
-  "visual": 273,
+  "built_at_utc": "2026-10-12T01:16:55.973Z",
+  "total": 580,
+  "visual": 483,
   "audio": 97,
   "generated_references": 9,
   "icons_updated": 83,
   "visual_prompts_reviewed": 273,
-  "style_status_basis": "User override — 2026-10-11",
+  "style_status_basis": "User override — original 273 visuals: 2026-10-11; 210 additional character frames: 2026-10-12",
   "style_counts": {
-    "Sesuai gaya": 273,
+    "Sesuai gaya": 483,
     "Belum sesuai": 0,
     "Perlu tinjau": 0,
     "Tidak berlaku": 0
   },
-  "missing": []
+  "missing": [],
+  "character_update": {
+    "date": "2026-10-12",
+    "poses": 10,
+    "frames_per_pose": 24,
+    "total_frames": 240,
+    "replaced": 30,
+    "added": 210,
+    "method": "10 AI key poses + deterministic secondary motion"
+  }
 }

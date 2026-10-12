@@ -1,0 +1,26 @@
+{
+  "date": "2026-10-12",
+  "passed": true,
+  "checks": [
+    "240 files decode as 700 × 900 RGBA",
+    "240 distinct file hashes match generation report",
+    "Foot rows 853–899 visible pixels and alpha remain identical within each pose",
+    "All 30 original character files replaced",
+    "Original user_override and previous_style_review preserved",
+    "All 340 unrelated data entries unchanged, including 97 audio",
+    "253 unrelated baseline asset hashes unchanged",
+    "431 active raster images have target dimensions; alpha verified for all 240 new frames"
+  ],
+  "contact_sheets": [
+    "review/char.jaka.idle.frames.webp",
+    "review/char.jaka.happy.frames.webp",
+    "review/char.jaka.sad.frames.webp",
+    "review/char.jaka.afraid.frames.webp",
+    "review/char.jaka.determined.frames.webp",
+    "review/char.jaka.bow.frames.webp",
+    "review/char.kedu.idle.frames.webp",
+    "review/char.kedu.smile.frames.webp",
+    "review/char.kedu.worried.frames.webp",
+    "review/char.kedu.weak.frames.webp"
+  ]
+}

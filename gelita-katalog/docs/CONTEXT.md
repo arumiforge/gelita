@@ -4,7 +4,7 @@ Kondisi terdokumentasi: 12 Oktober 2026 (Asia/Bangkok). Paket `gelita-katalog` a
 
 ## Batas paket
 
-Tersedia: 370 entri, gambar, template HTML, skrip, provenance, laporan, dan arsip. Backend, database game, workbook bank soal, konfigurasi slot aplikasi, rekaman audio, dan pengujian integrasi game tidak disertakan. Dokumen lama menyebut 12 tantangan kelas 5; katalog memiliki 45 entri visual Tantangan, sehingga kedua angka mengukur hal berbeda.
+Tersedia: 580 entri, gambar, template HTML, skrip, provenance, laporan, dan arsip. Backend, database game, workbook bank soal, konfigurasi slot aplikasi, rekaman audio, dan pengujian integrasi game tidak disertakan. Dokumen lama menyebut 12 tantangan kelas 5; katalog memiliki 45 entri visual Tantangan, sehingga kedua angka mengukur hal berbeda.
 
 ## Sumber kebenaran
 
@@ -22,9 +22,9 @@ Manifest bisa memuat lokasi gambar di komputer pembuat yang tidak tersedia di ch
 
 ## Kondisi visual dan audio
 
-273 visual terdiri dari 221 WebP dan 52 SVG utama. Sembilan referensi hilang telah dibuat ulang sebagai gambar baru. Semua 83 Ikon sudah dibuat ulang; gambar di luar pekerjaan referensi/ikon memakai aset yang tersedia, dengan prompt aktif terbaru.
+483 visual terdiri dari 431 WebP dan 52 SVG utama. Sembilan referensi hilang telah dibuat ulang sebagai gambar baru. Semua 83 Ikon sudah dibuat ulang. Pada 12 Oktober, 30 frame lama Jaka/Mbah Kedu diganti dan 210 ditambah: 10 key pose AI menjadi 240 frame gerak sekunder deterministik. Gambar di luar pekerjaan referensi/ikon/karakter memakai aset yang tersedia, dengan prompt aktif terbaru.
 
-Semua visual “Sesuai gaya” berdasarkan `user_override`, termasuk aset lama yang belum diperbaiki. Audit lama (68 sesuai, 141 belum sesuai, 3 perlu tinjau, 61 tidak berlaku) tetap di `previous_style_review`; angka itu bukan status saat ini. Semua 221 raster aktif tepat target. Resize mempertahankan proporsi melalui crop/padding, tidak menambah detail atau memperbaiki gaya.
+Semua visual “Sesuai gaya” berdasarkan `user_override`: 273 entri awal mempertahankan keputusan 11 Oktober dan 210 frame tambahan mengikuti permintaan 12 Oktober. Termasuk aset lama di luar karakter yang belum diperbaiki. Audit lama (68 sesuai, 141 belum sesuai, 3 perlu tinjau, 61 tidak berlaku) tetap di `previous_style_review`; angka itu bukan status saat ini. Semua 431 raster aktif tepat target. Resize mempertahankan proporsi melalui crop/padding, tidak menambah detail atau memperbaiki gaya.
 
 97 brief audio (88 narasi, 3 musik, 6 efek suara) identik dengan baseline. Target 100 narasi per bahasa pada dokumen asal adalah kebutuhan aplikasi terdahulu, bukan rekaman yang tersedia dalam paket ini.
 
@@ -33,3 +33,4 @@ Semua visual “Sesuai gaya” berdasarkan `user_override`, termasuk aset lama y
 Pada 12 Oktober 2026, dokumentasi dipusatkan di `docs/`, laporan di `reports/`, manifest di `provenance/`, template di `templates/`, pemeliharaan di `scripts/`. README, AGENTS, data, index, dan pintu masuk build tetap di root. `sources/` dihapus setelah salinannya dipastikan ada di `archive/source-documents/`.
 
 Arsip merekam kondisi lama, termasuk arahan 2D dan rencana katalog belum dibangun. Pernyataan itu telah digantikan keputusan terbaru. Rujukan aplikasi/workbook/tautan di isi arsip tidak membuktikan berkas tersebut tersedia di sini.
+

@@ -12,14 +12,15 @@ Untuk membagikan katalog, sertakan `index.html`, seluruh `assets/`, `README.md`,
 
 | Isi | Jumlah/kondisi |
 |---|---|
-| Entri katalog | 370: 273 visual dan 97 brief audio |
-| Visual utama | 221 WebP dan 52 SVG; 221 raster sesuai ukuran target |
+| Entri katalog | 580: 483 visual dan 97 brief audio |
+| Visual utama | 431 WebP dan 52 SVG; 431 raster sesuai ukuran target |
+| Frame karakter | 240: 10 pose × 24 frame; mengganti 30 frame lama |
 | Ikon | 83 entri dibuat ulang pada 11 Oktober 2026 |
 | Referensi yang dibuat ulang | 9 gambar baru; bukan pemulihan berkas asli |
 | Audio | 88 narasi, 3 musik, 6 efek suara; identik dengan baseline |
-| Status gaya | 273 “Sesuai gaya” berdasarkan keputusan pengguna (`user_override`) |
+| Status gaya | 483 “Sesuai gaya” berbasis `user_override`; 273 awal dan 210 frame tambahan |
 
-Jumlah visual menghitung entri utama, bukan seluruh berkas alternatif/sumber kontrol SVG. Semua visual ditandai sesuai atas keputusan pengguna 11 Oktober 2026, termasuk gambar lama yang belum diperbaiki. Ini **bukan audit visual baru**; `previous_style_review` menyimpan penilaian sebelumnya. Ukuran yang sesuai tidak membuktikan budaya, lisensi, kualitas pembesaran, animasi, atau integrasi game telah disahkan.
+Jumlah visual menghitung entri utama, bukan seluruh berkas alternatif/sumber kontrol SVG. Status 273 visual awal dipertahankan dari keputusan pengguna 11 Oktober 2026, termasuk gambar lama di luar karakter yang belum diperbaiki; 210 frame tambahan mengikuti permintaan 12 Oktober. Ini **bukan audit visual baru**; `previous_style_review` menyimpan penilaian atau catatan asal sebelumnya. Ukuran yang sesuai tidak membuktikan budaya, lisensi, kualitas pembesaran, animasi, atau integrasi game telah disahkan.
 
 ## Arah visual aktif
 
@@ -29,7 +30,9 @@ Jumlah visual menghitung entri utama, bukan seluruh berkas alternatif/sumber kon
 - Kontrol UI memakai SVG emas yang jelas pada ukuran kecil; foto/video faktual mempertahankan brief dokumenter.
 - Raster aktif memakai WebP. Nama mengikuti kode aset; kode resmi seperti `app.icon-512.png` tetap memakai berkas `app.icon-512.webp`.
 
-273 prompt visual aktif sudah diselaraskan. Sumbernya `data.json`; salinan build ada di [docs/PROMPTS-ENGLISH.md](docs/PROMPTS-ENGLISH.md). Prompt yang benar-benar dipakai pada generasi AI dicatat terpisah dalam [provenance/](provenance/README.md).
+483 prompt visual aktif tersedia. Sumbernya `data.json`; salinan build ada di [docs/PROMPTS-ENGLISH.md](docs/PROMPTS-ENGLISH.md). Prompt yang benar-benar dipakai pada generasi AI dicatat terpisah dalam [provenance/](provenance/README.md).
+
+Frame karakter diperbarui 12 Oktober 2026: enam pose Jaka dan empat pose Mbah Kedu, masing-masing 24 WebP transparan 700 × 900. Sepuluh key pose dibuat dengan image_gen, kemudian diberi gerak sekunder bertahap; bukan 240 generasi AI terpisah atau animasi rig sendi. Kode frame 1–3 dipertahankan, frame 4–24 ditambahkan. Rincian di [laporan frame](reports/character-frame-report.json); [nama aset gaya lama](reports/remaining-legacy-style.txt) mengikuti riwayat audit dengan mengecualikan aset yang telah dibuat ulang.
 
 ## Peta folder
 

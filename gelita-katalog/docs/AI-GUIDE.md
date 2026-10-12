@@ -42,12 +42,12 @@ node scripts/validate.mjs --> reports/validation-report.json
 
 ## 4. Invarian yang dipertahankan
 
-- 370 entri: 273 visual dan 97 audio; ID dan `key` unik. Jangan mengubah kode slot untuk menyesuaikan ekstensi.
+- 580 entri: 483 visual dan 97 audio; ID dan `key` unik. Jangan mengubah kode slot untuk menyesuaikan ekstensi.
 - Objek audio identik dengan baseline; dikenali melalui `size === "Audio"`.
 - Visual memakai status “Sesuai gaya” berbasis `user_override` dan memiliki `previous_style_review`. Ini keputusan pengguna, bukan review baru.
 - Ilustrasi 3D/Jaka syal merah mengikuti reference.01; Mbah Kedu reference.02. SVG UI sederhana, media faktual dokumenter.
 - `file`, `preview`, `generated_asset`, `vector_source` yang terisi menunjuk berkas tersedia relatif root. SVG kontrol di `assets/ikon/vektor/`.
-- Raster aktif WebP; 221 raster tepat target. Jangan membuat PNG atau memperbaiki gambar hanya karena audit lamanya berbeda tanpa permintaan baru.
+- Raster aktif WebP; 431 raster tepat target. Jangan membuat PNG atau memperbaiki gambar hanya karena audit lamanya berbeda tanpa permintaan baru.
 - Jangan membuat kembali folder sumber atau folder karakter tambahan yang dihapus.
 
 ## 5. Verifikasi dan pencatatan
@@ -55,3 +55,4 @@ node scripts/validate.mjs --> reports/validation-report.json
 Ikuti [MAINTENANCE.md](MAINTENANCE.md). Untuk gambar ukur berkas nyata; untuk UI/perpindahan tautan periksa browser bila dependensi tersedia. Tinjau tautan Markdown setelah pemindahan.
 
 Catat hasil nyata dan batas pemeriksaan di [PROGRESS.md](PROGRESS.md). Laporan lama bukan pemeriksaan terbaru hanya karena dipindahkan. Perubahan dokumentasi tidak mengizinkan regenerasi gambar/audio. Jangan menyatakan seluruh gambar siap produksi.
+

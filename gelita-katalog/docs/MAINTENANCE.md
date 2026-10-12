@@ -21,7 +21,7 @@ Python dan Pillow diperlukan. Periksa tanpa perubahan:
 python scripts/resize_assets.py
 ```
 
-221 raster saat ini tepat target. Hanya jika resize diperlukan:
+431 raster saat ini tepat target. Hanya jika resize diperlukan:
 
 ```powershell
 python scripts/resize_assets.py --apply
@@ -52,3 +52,4 @@ Delapan `contact-*.jpg` yang tersedia adalah lembar audit historis. Perapian dok
 ## Sebelum commit/push
 
 Tinjau sumber, hasil build, tautan, dan [PROGRESS.md](PROGRESS.md). Commit hasil build bersama sumber yang relevan agar katalog cocok dengan data aktif. `.git` berada di repositori induk; masalah lingkungan Git tidak mengizinkan perubahan konfigurasi tanpa kebutuhan jelas. Perapian ini tidak membuat commit atau push.
+

@@ -1,0 +1,13 @@
+{
+  "date": "2026-10-12",
+  "passed": true,
+  "checks": [
+    "240 character cards",
+    "All ten poses have 24 cards in numeric order",
+    "Frame 24 of every pose opens as 700 × 900",
+    "Ten preview options, slider and playback work",
+    "Preview desktop/mobile without horizontal overflow",
+    "No JavaScript page errors"
+  ],
+  "limits": "Local catalog and secondary-motion preview only; game integration is not tested"
+}

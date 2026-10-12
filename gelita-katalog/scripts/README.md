@@ -12,6 +12,10 @@ Contoh perintah dijalankan dari root katalog. Skrip menentukan root dari lokasi 
 | `inspect_assets.py` | Membuat lembar kontak raster WebP di `review/` |
 | `review-icons.mjs` | Membuat lembar kontak ikon melalui `sharp` |
 | `verify-icon-replacement.py` | Membandingkan hash ikon dengan ZIP cadangan dan memeriksa PNG lepas |
+| `expand-character-frames.mjs` | Pekerjaan penggantian karakter 12 Oktober; 10 key pose AI menjadi 240 frame. Memerlukan `sharp`, 30 frame awal, dan cadangan belum ada; jangan dijalankan ulang rutin |
+| `review-character-frames.mjs` | Memeriksa 240 frame/riwayat dan membuat lembar kontak serta preview gerak |
+| `browser-character-check.cjs` | Memeriksa 24 frame setiap pose di katalog dan kontrol preview lokal |
+| `review-legacy-style.mjs` | Mendaftar aset dari riwayat gaya lama yang belum dibuat ulang dan membuat lembar kontak; tidak mengubah status |
 
 Build/validator hanya memerlukan Node.js. Skrip gambar Python memerlukan Pillow kecuali pemeriksaan hash. Browser memerlukan Playwright, Edge, Python/Pillow; lembar ikon memerlukan `sharp`. Pengaturan paket opsional dijelaskan di [MAINTENANCE.md](../docs/MAINTENANCE.md).
 

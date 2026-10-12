@@ -13,5 +13,9 @@ Laporan bukan sumber entri. Baca tanggal/lingkupnya bersama [PROGRESS.md](../doc
 | `icon-replacement-verification.json` | Hash ikon dibandingkan cadangan; bukan review visual |
 | `resize-report.json` | Resize 213 raster pada 11 Oktober 2026; 8 sudah tepat saat itu |
 | `reorganization-report.json` | Pemindahan/perapian 12 Oktober 2026 dan pembandingan hash data/aset |
+| `character-frame-report.json` | 10 key pose AI menjadi 240 frame gerak sekunder; hash, dimensi, alpha, dan cadangan |
+| `character-frame-verification.json` | Pemeriksaan berkas frame, kaki tetap, riwayat, serta aset/data lain tidak berubah |
+| `character-browser-check-report.json` | Pemeriksaan setiap pose/frame 24 dan kontrol preview lokal di Edge |
+| `remaining-legacy-style.json`, `remaining-legacy-style.txt` | Nama aset yang belum diganti sejak riwayat audit lama; status katalog tetap `user_override` |
 
 Keputusan gaya tetap 11 Oktober 2026 meskipun build dilakukan kemudian. Data audit lama per entri berada di `previous_style_review` dalam data aktif. Tidak semua laporan di folder ini dibuat ulang pada perapian dokumen.

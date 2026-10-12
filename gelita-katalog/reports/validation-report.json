@@ -1,10 +1,11 @@
 {
   "date": "2026-10-12",
-  "checked_at_utc": "2026-10-11T18:00:09.766Z",
+  "checked_at_utc": "2026-10-12T01:21:06.014Z",
   "checks": [
-    "370 unique IDs and keys",
-    "273 visuals have style reviews and existing files",
-    "273 user-overridden style statuses with previous audits preserved",
+    "580 unique IDs and keys",
+    "483 visuals have style reviews and existing files",
+    "483 user-overridden style statuses with previous reviews preserved",
+    "240 character frames: ten poses with frames 1–24 and saved key poses",
     "Active prompts exclude conflicting legacy art direction",
     "83 icons updated with correct size and alpha",
     "20 unique selected image_gen icon outputs",
@@ -14,14 +15,14 @@
     "475 migrated paths resolve",
     "HTML data exactly matches data.json",
     "97 audio objects unchanged",
-    "Target dimensions unchanged",
+    "Original target dimensions unchanged; new frames are 700 × 900",
     "Requested character folder deleted",
     "Organized folders exist and source/sources removed",
     "Current Markdown and static HTML links resolve"
   ],
   "documentation": {
     "files": 16,
-    "links": 343,
+    "links": 563,
     "historical_archive_body_links_excluded": true
   },
   "static_html_links": 6,

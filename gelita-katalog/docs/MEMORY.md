@@ -22,6 +22,10 @@ Pengguna meminta seluruh Markdown diselaraskan dengan folder yang sudah diunggah
 
 Struktur: `docs/`, `reports/`, `provenance/`, `templates/`, `scripts/`; skrip sekali pakai di `archive/scripts/`. Folder sebenarnya bernama `sources/` dihapus sesudah dibandingkan dengan salinan arsip. `README.txt` root dihapus karena mengulang README; salinan historisnya tetap di arsip. Data, aset, dan baseline audio tidak diubah oleh perapian.
 
+## Keputusan frame — 12 Oktober 2026
+
+Pengguna meminta seluruh pose Jaka dan Mbah Kedu menjadi 24 gambar per pose, mengganti frame lama, serta daftar nama file gaya lama tanpa menampilkan gambarnya. Enam pose Jaka dan empat pose Mbah Kedu menghasilkan 240 frame; 30 slot lama tetap dan 210 slot baru ditambahkan. Sepuluh key pose 3D dibuat menggunakan image_gen; frame memakai gerak sekunder deterministik, bukan 240 generasi AI terpisah atau rig sendi. Jumlah aktif menjadi 580 entri: 483 visual dan 97 audio. `user_override` serta `previous_style_review` 273 visual awal tetap dipertahankan; frame tambahan memiliki catatan asal tersendiri.
+
 ## Batas klaim
 
 Status sesuai dan dimensi target tidak menyatakan kesiapan produksi. Budaya, lisensi, animasi, kualitas individual, dan integrasi harus dibuktikan terpisah. Jangan menjalankan generasi/migrasi historis tanpa permintaan baru.
