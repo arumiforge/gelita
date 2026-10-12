@@ -65,6 +65,7 @@ app/Controllers/
 │   ├── NarrationController.php       rekaman narasi naskah
 │   ├── MediaController.php           gambar/video, audio, kelengkapan aset
 │   ├── StudyController.php           penelitian & versi permainan
+│   ├── PackageController.php         Rilis → Paket aset: package mode switch, batch build (asset package Stage 6)
 │   ├── GovernanceController.php      penghapusan data, retensi, audit log
 │   ├── SchoolController.php          direktori sekolah
 │   └── StaffController.php           akun guru & admin
@@ -169,7 +170,7 @@ Namespace `App\Controllers\Api`, grup `api` dengan filter `jsonResponse`. POST m
 |---|---|---|---|---|---|
 | GET | `/api/auth/username-available?u=` | `AuthApiController::usernameAvailable` | `jsonResponse` | 20/menit per hash IP | Umpan balik nama pengguna saat mengetik di `/daftar/3` |
 | GET | `/api/schools/lookup?npsn=` | `SchoolApiController::lookup` | `jsonResponse` | 60/menit per hash IP | Kartu "Benar ini sekolahmu?" di `/daftar/2` |
-| GET | `/api/paket/aktif` | `PackageApiController::active` | `jsonResponse` | — | Active asset package (`package_code`, `manifest_url`, `manifest_sha256`; `package_code: null` when package mode is off). `Cache-Control: no-store`, no login. See `docs/rencana-paket-aset.md` §5.3 |
+| GET | `/api/paket/aktif` | `PackageApiController::active` | `jsonResponse` | — | Active asset package (`package_code`, `manifest_url`, `manifest_sha256`; `package_code: null` when package mode is off), `disabled_by_server`, and `online_lab_allowed` (the panel's lab permission, always the stored value, also while package mode is off). Never reflects a staff preview. `Cache-Control: no-store`, no login. See `docs/rencana-paket-aset.md` §5.3 |
 | GET | `/api/session` | `SessionApiController::show` | `jsonResponse`, `apiSession` | — | Bootstrap payload |
 | POST | `/api/session/locale` | `SessionApiController::setLocale` | `jsonResponse`, `apiSession` | — | Ganti bahasa sesi |
 | POST | `/api/session/heartbeat` | `SessionApiController::heartbeat` | `jsonResponse`, `apiSession` | — | Perbarui aktivitas |
@@ -275,7 +276,15 @@ Menu kelompok Konten dan Pengaturan tidak dirender untuk guru (`App\Libraries\Ad
 | POST | `/admin/studi/{id}` | `StudyController::update/$1` | Ubah penelitian |
 | GET | `/admin/studi/rilis` | `StudyController::releases` | Versi permainan |
 | POST | `/admin/studi/rilis` | `StudyController::storeRelease` | Buat versi |
+| GET | `/admin/studi/rilis/{id}/aktifkan` | `StudyController::confirmActivation/$1` | Confirmation page: the release changes the asset package during a running study (tick + reason) |
 | POST | `/admin/studi/rilis/{id}/aktifkan` | `StudyController::activateRelease/$1` | Aktifkan versi |
+| GET | `/admin/studi/rilis/paket` | `PackageController::index` | Rilis → Paket aset: package mode switch, build progress and summary, lab permission, history |
+| POST | `/admin/studi/rilis/paket/bangun` | `PackageController::startBuild` | Nyalakan / Bangun ulang paket: start a build (or resume the running one). JSON for the page driver, redirect otherwise |
+| POST | `/admin/studi/rilis/paket/bangun/{code}/lanjut` | `PackageController::stepBuild/$1` | One batch of the build; the last one finishes the package |
+| POST | `/admin/studi/rilis/paket/{code}/terbitkan` | `PackageController::publish/$1` | Create a release naming the package and activate it (switch on / publish rebuild) |
+| POST | `/admin/studi/rilis/paket/matikan` | `PackageController::switchOff` | Create a release without a package and activate it (switch off) |
+| POST | `/admin/studi/rilis/paket/izin-daring` | `PackageController::saveOnlineLab` | "Izinkan mode daring untuk perangkat lab" |
+| POST | `/admin/studi/rilis/paket/periksa` | `PackageController::verify` | Re-hash the active package now (`gelita:paket:periksa`) |
 | GET | `/admin/tata-kelola` | `GovernanceController::index` | Hapus data & perawatan |
 | POST | `/admin/tata-kelola/hapus/pratinjau` | `GovernanceController::deletePreview` | Langkah 1: hitung baris terdampak |
 | POST | `/admin/tata-kelola/hapus/{id}/jalankan` | `GovernanceController::deleteExecute/$1` | Langkah 2: hapus dengan konfirmasi `HAPUS` |
@@ -696,6 +705,29 @@ Aturan impor di `App\Libraries\NarrationImporter` (dipakai juga `gelita:narratio
 | `index()` / `store()` / `update($id)` | Penelitian: `code` (unik, tidak diubah saat update), `name`, `status` ∈ `draft,active,closed` (*active* = Berjalan), `default_locale`, `unlock_mode` ∈ `sequential,free`, `retention_days`; audit `study_create` / `study_update`. Halaman menampilkan **daftar siap penelitian** (`App\Libraries\ResearchReadiness`: 0 gambar contoh aktif, semua narasi disetujui, `ContentVerifier::run(true)` tanpa galat). Mengubah status menjadi `active` saat daftar belum hijau ditolak kecuali POST `confirm_not_ready = 1`; view `admin/study/index` |
 | `releases()` / `storeRelease()` | Versi permainan (`release_code` unik, `app_version`, `content_version`, `asset_version`, `scoring_version`, `notes`), dibuat nonaktif; audit `release_create`; view `admin/study/releases` |
 | `activateRelease($id)` | `GameReleaseModel::activate()`, flush cache konten; audit `release_activate`. Sesi baru memakai versi ini |
+
+*(Asset package Stage 6, English.)* Release activation now goes through `App\Services\ReleaseActivation`, shared with `PackageController`:
+
+| Method | Rule |
+|---|---|
+| `activateRelease($id)` | `ReleaseActivation::activate()`. While a study is `active`, a release whose package (`AssetPackageService::packageOfRelease()`) differs from the active release's package needs POST `confirm_running_study = 1` and a non-empty `reason` (max 500 characters); otherwise it redirects to `confirmActivation`. Audit `release_activate` metadata: `release_code`, `package_from`, `package_to`, `reason` (null when no confirmation was needed), `running_study`, `via` (`rilis` \| `paket`). Package statuses follow the active release (`terbit` / `ditarik`) |
+| `confirmActivation($id)` | GET page with the package change, the running study, the tick, and the reason; redirects back to Rilis when no confirmation is needed; view `admin/study/confirm-activation` |
+| `store()` / `update($id)` | When the status changes to `active`, `research_studies.package_code` = the active release's package (rencana-paket-aset §7.2); kept while the study stays active; audit metadata `package_code`. The checklist has a fourth item, **Paket terbit, lengkap, dan terverifikasi** |
+| `releases()` | Also shows package mode, a link to Paket aset, and the changed-asset notice; during a running study, rows with another package link to `confirmActivation` |
+
+### `Admin\PackageController` (admin)
+
+*(New section, English.)* Rilis → Paket aset, `docs/rencana-paket-aset.md` §6.3, §7.2, §8.7, §9.2. Package mode has no setting of its own: it is on when the active release's `asset_version` names a built package.
+
+| Method | Rule |
+|---|---|
+| `index()` | Mode paket (Nyala/Mati, or "Mode paket dimatikan dari server" when `gelita.paket.aktif = false`), active package size/date/verification, changed-asset notice, running build with progress, the newest unpublished build's summary (`AssetPackageService::summary()`: size per group, files new to devices that hold the active package, warnings), lab permission, last 10 packages with **Pratinjau** links (`/?paket={code}`); view `admin/study/package` |
+| `startBuild()` | `AssetPackageBuilder::start()` with the staff id; resumes a build still running (`runningBuild()`, under 24 h) instead of starting a second one. AJAX (`X-Requested-With`) → `{package_code, done, total, finished, percent, step_url}`; otherwise redirect to the page |
+| `stepBuild($code)` | Builder steps of 5 files until the time budget is used (4 s for the page driver, 20 s without JavaScript); when everything is processed, `finish()` once under a file lock (`writable/paket/{code}.finish.lock`), so two tabs never finish twice. Errors → JSON `PACKAGE_BUILD` 409 or a flash message |
+| `publish($code)` | Refuses an unknown/unfinished package or the active one. Running-study check first (no release is created when refused), then `ReleaseActivation::createForPackage($code)` + `activate()` with `via = paket` |
+| `switchOff()` | Same with `createForPackage(null)` (asset_version empty); refused when already off |
+| `saveOnlineLab()` | `AssetPackageService::setOnlineLabAllowed()`; audit `package_online_lab` `{online_lab_allowed}` |
+| `verify()` | `AssetPackageService::verification($code, true)`: re-hash the active package now and refresh the cached result the checklist reads |
 
 ### `Admin\GovernanceController` (admin)
 

@@ -985,6 +985,17 @@ curl -sI "$U/assets/p/$(ls /var/www/gelita/public/assets/p | head -1)" | grep -i
 curl -s "$U/api/paket/aktif"                                                                     # {"success":true,"data":{"package_code":…}}
 ```
 
+#### Admin switch: Rilis → Paket aset
+
+*(New subsection, English; asset package Stage 6, plan §6.3.)* Admins switch package mode on the panel page **Rilis → Paket aset** (`/admin/studi/rilis/paket`); the CLI commands above stay available.
+
+- **Nyalakan** builds a package in batches driven by the open page (one POST every few seconds, each at most ~4 s of work; 20 s without JavaScript), so the default PHP `max_execution_time` (30 s) and Nginx `fastcgi_read_timeout` (60 s) are enough. The summary is then confirmed with **Terbitkan dan nyalakan**, which creates and activates a release with the same versions and the new package code. **Matikan** activates a release without a package.
+- During a running study every package change asks for a tick and a reason (audit `release_activate` with `package_from`, `package_to`, `reason`).
+- When `.env` sets `gelita.paket.aktif = false`, the page shows "Mode paket dimatikan dari server" and students get normal URLs whatever the switch says.
+- The setting **Izinkan mode daring untuk perangkat lab** lives in `writable/paket/pengaturan.json`, which the backup scripts already archive with `writable/paket/`.
+- **After a code deploy while package mode is on**, press **Bangun ulang paket** on Paket aset and publish it, so devices get the new `kode` group (only changed files are downloaded). The deploy scripts do not rebuild the package automatically yet.
+- Before data collection, `php spark gelita:content:verify --siap-penelitian` also re-hashes the active package and fails while package mode is off.
+
 ### Ukuran aset
 
 Aset gambar dan video mendominasi ukuran instalasi. Anjuran:
