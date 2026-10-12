@@ -28,7 +28,8 @@ Last updated: 11 October 2026.
 
 - [ ] Approve draft narration
 - [ ] Install the catalogue art: `php spark gelita:katalog:impor` (dry run first; `docs/08_DEPLOYMENT.md` → *Installing the Katalog Aset images*). This fills every slot with the interim art of [`gelita-katalog/`](../gelita-katalog/README.md); the panel's **Gambar & mockup** replaces any of it later
-- [ ] Before data collection, replace or approve the interim art: the 30 character frames (old lurik–iket design; new red-scarf frames, up to 24 per pose), the three Cari Objek scenes (objects do not sit on the drawn shelves), and the AI Pustaka illustrations (owner: fine for now, replaced in the panel later)
+- [x] New character frames in the catalogue: 10 poses × 24 frames, red-scarf Jaka and Mbah Kedu (catalogue edition of 12 October 2026). On a server that already ran the import, run `gelita:katalog:impor` again: it replaces the 30 old frames and adds 210
+- [ ] Before data collection, replace or approve the remaining interim art: the three Cari Objek scenes (objects do not sit on the drawn shelves) and the AI Pustaka illustrations (owner: fine for now, replaced in the panel later)
 - [ ] Research-ready checklist green, study status set to "Berjalan"
 - [ ] Listening test of the 48 kbps narration, 5 files per language (plan P2). Stage 1b (PR #74) was merged before this gate was recorded as done; the 96 kbps takes are in git history before PR #74 (details in `docs/audio.md` → *Narration at 48 kbps*)
 - [ ] Smoke test, then `gelita:reset` (by the owner, never by Claude on production)
@@ -74,5 +75,5 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `pbb/nifty-faraday-fcw9r6` | Catalogue images into the game (`gelita:katalog:impor`), 24 looping frames, panel texts, finished plans archived | PR open |
+| `pbb/nifty-faraday-fcw9r6` | 240 new character frames from the catalogue; import reinstalls changed catalogue images | PR open |
 | `pbb/practical-ramanujan-sogpm3` | Production console errors: CSP policy, inline viewport script, `/api/events` 500 | PR open |

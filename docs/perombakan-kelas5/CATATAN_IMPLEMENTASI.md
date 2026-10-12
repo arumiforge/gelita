@@ -1442,3 +1442,25 @@ Branch `pbb/nifty-faraday-fcw9r6` (second PR on it; the first, PR #100, is merge
     - **What it covers:** dry run, slots, PNG app icons, story and library links, video cover, the map stops, a second run, admin uploads with and without `--timpa`, and the credit cleared on upload.
     - **Guard:** it checks that the measured map hashes still match the catalogue files.
   - Updated: `CharacterFramesTest` (24 frames, loop, `character_fps()`), `MediaSlotPagesTest` (24-frame page, upload form, frame links), `NarrationPagesTest`, and `RegionStoryTest`.
+
+## New character frames from the catalogue: 24 per pose (12 October 2026)
+
+Branch `pbb/nifty-faraday-fcw9r6` (third PR on it; #100 and #101 are merged). Owner request: the catalogue now has new frames for Jaka and Mbah Kedu, 24 per pose; add them to the game and update the documents.
+
+- **What the owner pushed** (`main`, commits `c132e4b`, `8b4d358`): `gelita-katalog/assets/karakter/` now holds 240 transparent WebP frames, 700 × 900, ten poses × 24.
+  - The 30 old lurik–iket frames are replaced; the old ones are backed up in `gelita-katalog/archive/before-character-frames-20261012/`.
+  - `data.json` has 580 entries (483 visual). The catalogue's own docs, reports, and provenance were updated. Ten AI key poses were given deterministic secondary motion with the feet fixed (`gelita-katalog/reports/character-frame-report.json`).
+  - **Mbah Kedu follows `reference.02`** (cream shirt, batik vest, brown trousers, stick), not the `reference.14` jacket chosen on 11 October. The `ImageSlots` text follows the frames, since they are the owner's art.
+- **Merge leftovers fixed.** The push left unresolved conflict markers in four catalogue files. The owner fixed them on `main` as well (`96a68e9`); this branch merged `main` and keeps `main`'s version of the four files, plus one note in the catalogue's `docs/PROGRESS.md`. This branch's own fix was:
+  - `docs/PROGRESS.md`: both entries kept.
+  - `index.html`, `reports/STATUS-GAMBAR.json`, `reports/validation-report.json`: regenerated with `node build.mjs` and `node scripts/validate.mjs` (validator passes).
+  - `STYLE-AUDIT.csv` was kept with LF line endings.
+- **Import change: a changed catalogue file is reinstalled.** Before, an image installed from the catalogue was skipped on every later run, so a server that had imported the old 3 frames per pose would never get the new frames 1–3. Now `CatalogImporter::installSlot()` re-encodes the catalogue file and compares its sha256 with the stored file. The re-encode is deterministic, so the outcome is:
+  - same sha256 → skipped ("gambarnya sama");
+  - different sha256 → reinstalled ("gambar katalog berubah, dipasang ulang");
+  - admin uploads stay protected unless `--timpa` is given.
+- **Upgrade check** (SQLite grade-5 world with Pustaka): import the previous edition (`6d30b54`), then the new one.
+  - The new edition replaces 30 frames, adds 210, and skips the other 177 entries as unchanged; a third run skips everything.
+  - All 240 frame rows are `sprite_frame`, about 15 MB after re-encoding (≈ 64 KB per frame).
+  - `character_frames('jaka', 'happy')` returns 24 frames at 12 per second, looping.
+- **Tests.** `CatalogImportTest::testChangedCatalogueFileIsReinstalled`. Suite green.

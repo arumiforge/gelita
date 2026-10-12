@@ -37,8 +37,11 @@ use RuntimeException;
  *
  * Nothing an admin uploaded is replaced unless `$overwrite` is set: a slot is
  * filled when it is empty, a sample (mockup), a bundled default file, or a
- * Commons link. Rows installed by this class carry CREDIT, so a second run
- * skips them and an admin can find what is still interim art.
+ * Commons link. Rows installed by this class carry CREDIT, so an admin can
+ * find what is still interim art; a later run reinstalls such a row only
+ * when its catalogue file changed (same re-encoded sha256 → skipped), so a
+ * new catalogue edition (e.g. the 24-frame poses of 12 October 2026) reaches
+ * a server that imported an older one.
  */
 final class CatalogImporter
 {
@@ -258,16 +261,25 @@ final class CatalogImporter
             return false;
         }
 
-        if ($dryRun) {
-            $this->add($source, $target, 'planned', $row === null ? 'slot baru' : $this->replaces($row));
+        $fromCatalog = $row !== null && $this->isCatalogRow($row);
+        $path        = ($fromCatalog && ! $overwrite) || ! $dryRun ? $file() : null;
+
+        if ($path === null && ! $dryRun) {
+            $this->add($source, $target, 'failed', 'gambar katalog tidak dapat dibuka');
 
             return false;
         }
 
-        $path = $file();
+        // An earlier catalogue image is replaced only when the catalogue file changed
+        // (the re-encode is deterministic, so an unchanged file gives the same sha256)
+        if ($fromCatalog && ! $overwrite && $path !== null && hash_file('sha256', $path) === (string) $row['sha256']) {
+            $this->add($source, $target, 'skipped', 'sudah dipasang dari katalog, gambarnya sama');
 
-        if ($path === null) {
-            $this->add($source, $target, 'failed', 'gambar katalog tidak dapat dibuka');
+            return false;
+        }
+
+        if ($dryRun) {
+            $this->add($source, $target, 'planned', $row === null ? 'slot baru' : $this->replaces($row));
 
             return false;
         }
@@ -462,8 +474,8 @@ final class CatalogImporter
             return null;
         }
 
-        if ((string) ($row['credit'] ?? '') === self::CREDIT) {
-            return 'sudah dipasang dari katalog (pakai --timpa untuk memasang ulang)';
+        if ($this->isCatalogRow($row)) {
+            return null; // installSlot() compares it with the catalogue file
         }
 
         if (! str_starts_with((string) $row['storage_path'], MediaStore::UPLOAD_DIR)) {
@@ -479,10 +491,16 @@ final class CatalogImporter
         return match (true) {
             (int) $row['is_active'] !== 1               => 'mengisi slot kosong',
             (int) ($row['is_placeholder'] ?? 0) === 1   => 'mengganti gambar contoh',
-            (string) ($row['credit'] ?? '') === self::CREDIT => 'memasang ulang dari katalog',
+            $this->isCatalogRow($row)                   => 'gambar katalog berubah, dipasang ulang',
             ! str_starts_with((string) $row['storage_path'], MediaStore::UPLOAD_DIR) => 'mengganti berkas bawaan',
             default                                     => 'mengganti gambar unggahan admin',
         };
+    }
+
+    /** @param array<string, mixed> $row */
+    private function isCatalogRow(array $row): bool
+    {
+        return (int) $row['is_active'] === 1 && (string) ($row['credit'] ?? '') === self::CREDIT;
     }
 
     private function isFromCatalog(string $key): bool

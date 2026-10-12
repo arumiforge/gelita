@@ -2,6 +2,12 @@
 
 Diperbarui 12 Oktober 2026 (Asia/Bangkok). Urutan di bawah membedakan hasil terkini dari pemeriksaan historis. Keputusan aktif dirangkum dalam [MEMORY.md](MEMORY.md).
 
+## 12 October 2026 (later) — frames installed in the game
+
+*(New section, English, written from the GELITA app repo; branch `pbb/nifty-faraday-fcw9r6`.)*
+
+- `php spark gelita:katalog:impor` in the app now reinstalls an image it installed before when its catalogue file changed. A server that imported the old edition gets the 30 replaced frames plus 210 new ones, and everything else is skipped as unchanged. No catalogue files were changed for this.
+
 ## 12 Oktober 2026 — perbaikan konflik sebelum push GitHub
 
 - Memeriksa PowerShell lokal dan Git repositori induk. Setelah `git fetch origin`, branch `main` dan `origin/main` sama-sama berada pada `8b4d358`; tidak ada perubahan lokal atau staging pada awal pemeriksaan.

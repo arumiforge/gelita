@@ -158,6 +158,37 @@ final class CatalogImportTest extends CIUnitTestCase
         }
     }
 
+    /** A new catalogue edition (e.g. the 24-frame poses) replaces earlier catalogue images, not admin uploads. */
+    public function testChangedCatalogueFileIsReinstalled(): void
+    {
+        $this->importer()->run();
+        $before = model(MediaAssetModel::class)->findByKey('char.jaka.idle.2');
+
+        // Redraw the frame in the catalogue
+        $file  = $this->catalog . '/assets/karakter/char.jaka.idle.2.webp';
+        $image = imagecreatetruecolor(700, 900);
+        imagesavealpha($image, true);
+        imagealphablending($image, false);
+        imagefill($image, 0, 0, imagecolorallocatealpha($image, 0, 0, 0, 127));
+        imagefilledrectangle($image, 300, 100, 400, 876, imagecolorallocate($image, 200, 40, 40));
+        imagewebp($image, $file, 90);
+
+        $dry = array_values(array_filter($this->importer()->run(true), static fn (array $r): bool => $r['target'] === 'char.jaka.idle.2'));
+        $this->assertSame('planned', $dry[0]['status']);
+        $this->assertStringContainsString('berubah', $dry[0]['note']);
+
+        $rows = $this->importer()->run();
+        $byTarget = array_column($rows, null, 'target');
+        $this->assertSame('installed', $byTarget['char.jaka.idle.2']['status']);
+        $this->assertSame('skipped', $byTarget['ui.logo-hero']['status'], 'unchanged catalogue images stay');
+        $this->assertStringContainsString('gambarnya sama', $byTarget['ui.logo-hero']['note']);
+
+        $after = model(MediaAssetModel::class)->findByKey('char.jaka.idle.2');
+        $this->assertSame((int) $before['id'], (int) $after['id'], 'same slot row, new file');
+        $this->assertNotSame($before['sha256'], $after['sha256']);
+        $this->assertSame(CatalogImporter::CREDIT, $after['credit']);
+    }
+
     public function testSecondRunAndAdminUploadsAreKept(): void
     {
         $this->importer()->run();
