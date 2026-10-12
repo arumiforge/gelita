@@ -54,6 +54,7 @@ Overview in `README.md`, details in `docs/01`–`08`.
 ### Testing and known pitfalls
 
 - **Test environment.** Tests use SQLite (group `tests`). Game tests use the trait `Tests\Support\Database\GradeFiveWorld`, which sets up the schema, `gelita:reset`, the kelas 5 bank, and one student ready to play. See `tests/unit/TryLimitTest.php` for the pattern.
+- **Worktrees need their own `vendor/`.** A `vendor` symlinked from another checkout makes Composer load `App\`/`Config\` from that checkout, so tests silently run the wrong code. Run `composer install` (or copy `vendor/` and run `composer dump-autoload`) in the worktree.
 - **SQLite does not emulate MySQL row locks.** Race tests simulate stale data, e.g. an old entity or a mock model via `Factories::injectMock`. Real behaviour must be checked on MariaDB/MySQL.
 - **Content cache in tests.** Tests that change `challenge_items` need `service('contentRepository')->flush()` **and** `service('cache')->clean()`, because MockCache stores keys without a prefix.
 - **Language files.** Every key in `app/Language/id/*` needs a counterpart in `app/Language/en/*` (`LanguageFilesTest`), except `Admin.php`, which is Indonesian only.

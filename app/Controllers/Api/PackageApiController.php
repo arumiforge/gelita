@@ -16,6 +16,11 @@ use CodeIgniter\HTTP\ResponseInterface;
  * `package_code` is null when package mode is off: the active release names
  * no built package, or the server kill switch `gelita.paket.aktif` is false
  * (then `disabled_by_server` is true).
+ *
+ * `online_lab_allowed` (Stage 6, §8.7) is the admin's "Izinkan mode daring
+ * untuk perangkat lab" setting. It is always the stored value, also while
+ * package mode is off; the client only reads it when `package_code` is set,
+ * since without a package there is no download screen to skip.
  */
 class PackageApiController extends BaseController
 {
@@ -25,6 +30,7 @@ class PackageApiController extends BaseController
         $code     = $packages->activeCode();
         $row      = $code === null ? null : model(AssetPackageModel::class)->findByCode($code);
         $map      = $code === null ? null : $packages->map($code);
+        $lab      = $packages->onlineLabAllowed();
 
         $this->response->setHeader('Cache-Control', 'no-store');
 
@@ -36,6 +42,7 @@ class PackageApiController extends BaseController
                 'total_bytes'        => null,
                 'file_count'         => null,
                 'disabled_by_server' => ! $packages->enabled(),
+                'online_lab_allowed' => $lab,
             ]);
         }
 
@@ -46,6 +53,7 @@ class PackageApiController extends BaseController
             'total_bytes'        => $row === null ? null : (int) $row['total_bytes'],
             'file_count'         => $row === null ? null : (int) $row['file_count'],
             'disabled_by_server' => false,
+            'online_lab_allowed' => $lab,
         ]);
     }
 }

@@ -65,8 +65,10 @@ Owner decisions in its §12 (9 October 2026): full download before Mulai, admin 
   - [x] Stage 4 — view transitions, image decode, short curtain (`paket-4-transisi`, PR #77)
   - [x] Stage 5 — research data integrity §7.1 and §7.3 (`paket-5-integritas`, PR #76)
 - **Wave 2** (started 12 October 2026; both stages run in parallel on one branch, `sky/laughing-rubin-l2tmm2`, one PR)
-  - [ ] Stage 2 — package service worker and downloader
-  - [ ] Stage 6 — Rilis → Paket aset panel with the on/off switch, study package lock (§7.2)
+  - [ ] Stage 2 — package service worker and downloader (`core/package.js` API for Stage 3; PR open)
+  - [ ] Stage 6 — Rilis → Paket aset panel with the on/off switch, study package lock (§7.2) (PR open)
+  - [ ] Owner decisions from Wave 2: deploy scripts rebuilding the package while the switch is on (§6.3); running-study lock compares with the active release's package (§7.2); preview banner in the game; pin a running session's URLs to its own package (S8)
+  - [ ] Run migration `2026-01-01-003300` (study package lock) on MariaDB/MySQL before release; checked on SQLite only
 - **Wave 3** (after Stage 2 is merged)
   - [ ] Stage 3 — "Siapkan GELITA" download screen and teacher's Periksa paket screen
   - [ ] Re-run Stage 0 timing; owner decides on Stage 7 (P1)
@@ -77,4 +79,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `sky/laughing-rubin-l2tmm2` | Asset package Wave 2: Stage 2 (service worker, downloader) and Stage 6 (Paket aset panel, study package lock) | In progress |
+| `sky/laughing-rubin-l2tmm2` | Asset package Wave 2: Stage 2 (service worker, downloader) and Stage 6 (Paket aset panel, study package lock) | PR open |

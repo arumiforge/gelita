@@ -30,12 +30,15 @@ Menjelaskan seluruh JavaScript GELITA di `public/assets/js/`: lapisan inti (API,
 
 ```text
 public/
-├── sw.js                    service worker: offline.html untuk navigasi saat jaringan putus
+├── sw.js                    service worker: offline.html when the network is down + asset package cache-first (Stage 2)
+├── sw-kosong.js             empty service worker, kill switch for sw.js
 └── assets/js/
     ├── game.js              titik masuk halaman permainan
     ├── admin.js             titik masuk panel admin
     ├── core/
     │   ├── config.js        membaca #app-config: CONFIG, LOCALE, url(), t()
+    │   ├── package-boot.js  classic early script: data-assets-local, window.GELITA_PACKAGE (asset package)
+    │   ├── package.js       asset package on the device: check(), download(), verify(), clear(), chooseOnline()
     │   ├── api.js           apiRequest(), ApiError, handleApiError()
     │   ├── stage.js         panggung 16:9: initStage(), stageRect(), stageScale(), viewport_changed, layar penuh
     │   ├── events.js        antrean event + pengiriman batch: emit(), emitAudio(), flush(), resendQueued(), page_hidden/visible
@@ -93,7 +96,7 @@ Data untuk JavaScript selalu dikirim sebagai `<script type="application/json">` 
 
 | Elemen | Dirender oleh | Isi | Dibaca |
 |---|---|---|---|
-| `#app-config` | `layouts/game.php` (`js_config($locale)`) dan `layouts/admin.php` (`js_config('id')`) | `locale`, `csrfName`, `csrfHash`, `apiBase`, `baseUrl`, `sessionTag`, `maxTries`, `stage`, `text` | `core/config.js` |
+| `#app-config` | `layouts/game.php` (`js_config($locale)`) dan `layouts/admin.php` (`js_config('id')`) | `locale`, `csrfName`, `csrfHash`, `apiBase`, `baseUrl`, `sessionTag`, `sequenceFloor`, `maxTries`, `stage`, `audioUrls`, `text` | `core/config.js` |
 | `#challenge-data` | `game/challenge/_frame.php` (`ChallengeService::buildPayload()`) | payload pengerjaan tanpa kunci jawaban | `game/challenge.js` |
 | `#password-policy` | `components/password-field.php` (`PasswordPolicy::toClient()`) | aturan sandi dari `Config\Gelita::$passwordPolicy` | `game/password-meter.js` |
 | `#asset-sizes` | halaman Media admin | `sizes`: ukuran wajib per pola `asset_key` (`Config\Gelita::$assetSizes`); `types`: jenis berkas per pola slot (`ImageSlots::typeRules()`) | `admin/media-upload.js` |
@@ -136,7 +139,103 @@ The language button (`components/lang-switch`, `game/hud.js`) still posts to `/b
 1. `<html data-assets-local="1">` set **before** `game.js` runs (an inline script in `layouts/game.php`, e.g. from a value the service worker or the download page left in `sessionStorage`), or
 2. `setAssetsLocal(true)` from a module once the service worker confirms the active package is complete. `setAssetsLocal(false)` switches it off again and wins over the attribute.
 
-Readers call `assetsLocal()` at the moment they decide, so a curtain that already started keeps its minimum. Today the only reader is `core/curtain.js` (`curtainMinMs()`). Option 1 is preferred because the page's own curtain starts as soon as `game.js` loads.
+Readers call `assetsLocal()` at the moment they decide, so a curtain that already started keeps its minimum. Today the only reader is `core/curtain.js` (`curtainMinMs()`). Option 1 is preferred because the page's own curtain starts as soon as `game.js` loads. Stage 2 uses option 1 from the external classic script `core/package-boot.js` (CSP: no inline scripts), and `setAssetsLocal(false)` when the package turns out to be gone (next section).
+
+### Asset package — service worker and downloader (Stage 2)
+
+*(New section, English.)* Plan: `docs/rencana-paket-aset.md` §4.1, §5.5, §5.6, §6.2, §8, §9.1. With package mode **off** (the active release names no package, or the `.env` kill switch) nothing here changes what a student sees: pages use the normal URLs, `package-boot.js` reports `nonaktif`, and the service worker leaves every asset request to the browser.
+
+**Pieces.**
+
+| Piece | Role |
+|---|---|
+| `asset_url_versioned()` / `game_asset_url()` (PHP) | With a package: CSS/JS entries, Howler, `viewport.js`, and the two font preloads point at `assets/k/{code_version}/…` (only files the package lists and that exist on disk); otherwise the old `assets/…?v=` URLs. Media helpers switched in Stage 1. |
+| `js_config()` `audioUrls` | `{ 'music/map': url, 'sfx/click': url, … }` from the package's `audio.music.*` / `audio.sfx.*` keys, empty when off; `core/audio.js` `soundUrl()` uses it. |
+| `core/package-boot.js` | Classic blocking script in `<head>`, before the stylesheets and `game.js`. Its tag carries `data-package="{code}"` (package mode on) and `data-sw="off"` (kill switch), from `asset_package_attrs()`. Sets `<html data-assets-local="1">` only when the page's package equals the device's active package (localStorage mirror), a service worker controls the page, and online mode was not chosen. Sets `window.GELITA_PACKAGE_BOOT` and a first `window.GELITA_PACKAGE`. |
+| `game.js` | Imports `core/package.js` only on pages that name a package and calls `initPackage({ setAssetsLocal })`: `window.GELITA_PACKAGE` becomes the async `packageInfo()`, the mirror is reconciled with Cache Storage, and the local-assets hook is switched off when the package is gone. |
+| `game/install.js` | Registers `sw.js`, or `sw-kosong.js` while `GELITA_PACKAGE_BOOT.killed`. |
+| `public/sw.js` | Serves package URLs cache-first from `gelita-aset`; stores nothing itself except `offline.html`. |
+| `core/package.js` | Downloader, device state, online-mode choice: the API Stage 3 calls. |
+| `X-Gelita-Paket` | `App\Filters\PackageHeaderFilter`: the active package code on API responses handled by a controller; absent while package mode is off. No client reads it yet. |
+
+**Service worker (`sw.js`, `SW_VERSION = 2`).**
+
+- Package URLs (`assets/p/{sha16}.{ext}`, `assets/k/{version}/…`, `paket/pkt-*.json`): answered from `gelita-aset`; on a miss, fetched from the network unchanged (not stored). `Range` requests (`<audio>`) get a `206` built from the full cached copy (one range; suffix and open ranges; past the end `416`; a header it does not understand gets the whole file).
+- Navigations: network with navigation preload, `offline.html` from `gelita-offline-v1` when the network is down; HTML is never cached.
+- `/api*` and `/admin*`: no `respondWith()`. Everything else (normal assets, uploads, other origins) is left to the browser.
+- One cache write function, `putChecked()`: only package URLs and `offline.html`; refuses non-200, redirected, `Set-Cookie`, and `Cache-Control: private/no-store` responses. `tests/unit/AssetPackageServiceWorkerTest.php` checks these rules statically.
+- Messages on a `MessageChannel`: `{type:'gelita:ping'}` → `{type:'gelita:pong', version}`; `{type:'gelita:prune'}` deletes `gelita-aset` entries the active package does not list, only while a single window is open (`clients.matchAll`), else `deferred: true` and `core/package.js` asks again on its next `check()` or page.
+- Updating `sw.js` keeps `gelita-aset`, `gelita-meta`, and `gelita-offline-v1`; other `gelita-*` caches are deleted on activation.
+- `sw-kosong.js`: no fetch handler, deletes `gelita-meta` on activation (no device reports `lengkap` while it runs), keeps the package files. See `docs/08_DEPLOYMENT.md` §Asset package.
+
+**Device state.** `gelita-meta/aktif.json` in cache `gelita-meta` is the package active on this device: `{ format, package_code, manifest_sha256, manifest_url, groups, file_count, total_bytes, activated_at }`. It is written last, after every manifest URL is in `gelita-aset` (atomic switch; the previous package stays in use until then). localStorage `gelita.paket` mirrors `package_code` + `manifest_sha256` for the synchronous boot script.
+
+**`core/package.js` API (for the Stage 3 screens "Siapkan GELITA" and "Periksa paket").**
+
+```js
+import * as Package from './core/package.js';
+
+const state = await Package.check();      // throws PackageError 'server' when /api/paket/aktif fails
+// state.status   'off' | 'ready' | 'online' | 'unsupported' | 'download'
+// state.canStart true unless status === 'download'   → gate Mulai on this (P11)
+// state.mode     'nonaktif' | 'lengkap' | 'daring'   (what the session would record)
+// state.server   { package_code, manifest_url, manifest_sha256, total_bytes, file_count,
+//                  disabled_by_server, online_lab_allowed }   (missing online_lab_allowed → false)
+// state.device   { package_code, manifest_sha256, activated_at, complete }
+// state.support  { serviceWorker, cacheStorage, crypto, download, serviceWorkerReady }
+// state.storage  { usage, quota, persisted, neededBytes, availableBytes, enough }   (estimate, × 1.2)
+// state.online   online reason chosen in this browser session, or null
+// state.onlineReasons  reasons the screen may offer for "Main daring di perangkat ini"
+
+await Package.download({
+  onProgress(p) {},   // { phase: 'files'|'activate'|'done', totalBytes, doneBytes, totalFiles, doneFiles,
+                      //   groups: [{ name, totalBytes, doneBytes, complete }] }   (groups in §5.1 order)
+  signal,             // AbortSignal; finished files are kept
+  server: state.server, // optional, saves a request
+  // activate: default true only while no student session runs in the page (S8)
+});
+// → { package_code, activated, downloadedFiles, downloadedBytes, skippedFiles, persisted, serviceWorkerReady }
+
+Package.chooseOnline(reason, state); // 'unsupported' | 'storage' | 'lab' → true when allowed; sessionStorage only
+Package.onlineChoice();              // reason or null;  Package.clearOnlineChoice()
+await Package.verify({ onProgress }); // teacher: re-hash every file → { package_code, files, missing, corrupt, ok };
+                                      // broken files are removed and the package is no longer active
+await Package.clear();               // "Hapus paket di perangkat ini"
+await Package.persist();             // "Simpan permanen" (Firefox asks; after a download it is skipped there)
+await Package.storageEstimate();     // { usage, quota, persisted }
+await Package.packageInfo();         // { package_code, package_mode } (also window.GELITA_PACKAGE)
+```
+
+Errors are `PackageError` with a `code` from `Package.ERRORS` and a `detail` object. The screen turns codes into text (`Js.*`); the module has no user text.
+
+| `code` | Meaning | `detail` | Screen |
+|---|---|---|---|
+| `unsupported` | no service worker, Cache Storage, or `crypto.subtle` | — | play online, no download screen (§8.6) |
+| `disabled` | package mode is off | `{ disabledByServer }` | play as today |
+| `server` | `/api/paket/aktif` failed | `{ status }` | Coba lagi |
+| `manifest` | manifest missing, unreadable, or its sha256 differs | `{ url }` | Coba lagi; tell the teacher |
+| `quota` | not enough storage (before starting, or `QuotaExceededError` while writing) | `{ neededBytes, availableBytes, shortBytes }` (nulls after a write error) | "Ruang penyimpanan perangkat ini kurang ±{n} MB", Coba lagi, **Main daring di perangkat ini** (`chooseOnline('storage')`) |
+| `network` | a file failed after retries at 2, 4, 8 s | `{ key, url, status }` | **Coba lagi** (finished files are kept) |
+| `missing` | the server has no such file (404/410) | `{ key, url, status }` | tell the teacher |
+| `corrupt` | sha256 still wrong after one retry | `{ key, url }` | "berkas rusak: {key}" for the teacher |
+| `incomplete` | files vanished from the cache before the switch | `{ keys }` | Coba lagi |
+| `aborted` | the signal fired | — | — |
+
+**Rules the module enforces.**
+
+- 4 files in parallel; sha256 of every file (`crypto.subtle`) before `cache.put`; one retry on a mismatch (a cached copy is dropped first), then `corrupt`.
+- Resume per file: files already in `gelita-aset` (same URL) are skipped without re-hashing (S7). URLs are content-addressed, so a new package only downloads changed files (S9).
+- Storage check before anything is written: missing bytes × 1.2 against `quota − usage`; `QuotaExceededError` while writing stops with the same `quota` error.
+- One download at a time per browser (Web Locks, where available).
+- No switch during a running session (S8): with `CONFIG.sessionTag` set, `download()` fetches the files but does not write `aktif.json`; the next call without a session switches at once.
+- After a switch: `requestPrune()` and `navigator.storage.persist()` (not automatically in Firefox).
+- Online mode (§8.7): `unsupported` whenever the browser cannot hold a package; `storage` after a check or download found too little space; `lab` only when the server sends `online_lab_allowed: true` (Stage 6). Kept in `sessionStorage` `gelita.paket.daring`, so it never outlives the browser session.
+
+**`package_mode` at login and sign-up** (`window.GELITA_PACKAGE`, read by `core/device.js`): `nonaktif` when the page names no package; `daring` when online mode was chosen, the device does not hold the page's package, or no package service worker answers; `lengkap` otherwise. `package_code` is the page's package (the one whose URLs the session uses).
+
+**What Stage 3 still owns:** the screens and their texts, the Mulai gate, install hints, and the teacher's buttons. Until then nothing in the game calls `download()`, so a device only holds a package that was downloaded by calling the module (as `tools/qa/package-check.mjs` does), and students with package mode on play in `daring` mode.
+
+**Browser check:** `tools/qa/package-check.mjs` (usage in its header).
 
 ### Next-screen decode (`game/next-assets.js`, asset package Stage 4)
 
@@ -223,6 +322,8 @@ Sfx.unlock()       // dipanggil pada interaksi pengguna; juga membuka elemen nar
 Sfx.isUnlocked()
 Sfx.play(name)     // sfx/{name}.mp3: correct, wrong, click, shard, region-done, lock
 Sfx.music(name)    // music/{name}.mp3, berulang: map, region, challenge; diingat bila suara masih terkunci
+soundUrl(folder, name) // package URL from CONFIG.audioUrls (`music/map`, `sfx/click`) when a package is active,
+                       // else assets/audio/{folder}/{name}.mp3
 Sfx.stopMusic()    // juga melupakan musik yang diminta
 Sfx.setVolume(v)   // 0–1, preferensi `volume`
 Sfx.setEnabled(on) // preferensi `sound`; mematikan juga menghentikan musik dan narasi
@@ -402,7 +503,7 @@ Tanpa `data-screen` yang cocok: `form.register-form` → `register.js`, `[data-l
 
 - `initRotateGate()`: penghalang potret `.rotate-gate` tampil/hilang sepenuhnya lewat CSS dengan media query `(orientation: portrait) and (pointer: coarse)`. Modul ini membuat sisa isi `<body>` `inert` dan memindah fokus ke penghalang selama tampil, lalu mengembalikan fokus saat perangkat diputar mendatar.
 - `initInstall()`: mendaftarkan `sw.js` di base URL (gagal didaftarkan tidak masalah). Di halaman awal (`[data-install]`), hanya pada perangkat sentuh yang belum menjalankan GELITA sebagai aplikasi terpasang: Chrome/Android menahan `beforeinstallprompt` dan menampilkan tombol `[data-install-button]`; Safari iOS/iPadOS menampilkan petunjuk `[data-install-ios]` (Bagikan → Tambah ke Layar Utama).
-- `public/sw.js` hanya menangani navigasi GET: bila jaringan putus, `offline.html` dari cache `gelita-offline-v1` ditampilkan. API, event, POST formulir, dan aset tidak pernah disentuh, jadi tidak ada data penelitian di cache.
+- `public/sw.js`: offline page for navigations and the asset package, see [Asset package — service worker and downloader](#asset-package--service-worker-and-downloader-stage-2). With the server kill switch `initInstall()` registers `sw-kosong.js` instead.
 
 ### `game/register.js` — pendaftaran tiga langkah
 
@@ -904,7 +1005,9 @@ Storage.getPref(name, fallback), Storage.setPref(name, value)
 
 Setiap event yang disimpan ditandai `sessionTag`. Komputer kelas dipakai bergantian: tanpa tanda ini, event siswa A yang tertunda akan terkirim ke sesi siswa B yang masuk sesudahnya. `resendQueued()` (saat halaman dimuat dan saat `online`) hanya mengambil event bertanda sesi yang sedang berjalan; server membalas `duplicate` untuk yang ternyata sudah masuk.
 
-Isi kata sandi tidak pernah disimpan di browser storage. Service worker tidak menyimpan data penelitian; cache-nya hanya berisi `offline.html`.
+Isi kata sandi tidak pernah disimpan di browser storage. Service worker tidak menyimpan data penelitian; cache-nya hanya berisi `offline.html` dan berkas paket aset (konten publik).
+
+Asset package keys (Stage 2): `localStorage` `gelita.paket` (mirror of the device's active package: `package_code`, `manifest_sha256`) and `gelita.paket.prune` (old files still to remove); `sessionStorage` `gelita.paket.daring` (online mode chosen for this browser session). Cache Storage `gelita-aset`, `gelita-meta`, `gelita-offline-v1`. Details in [Asset package — service worker and downloader](#asset-package--service-worker-and-downloader-stage-2).
 
 ---
 
@@ -975,9 +1078,11 @@ Tidak ada test runner JavaScript; kontrak JavaScript dijaga dari sisi PHP (`vend
 | `tests/unit/HuntClueAudioTest.php` | tombol ▶ narasi petunjuk di view `cari` dan pemilih rekamannya di panel |
 | `tests/unit/StageCssTest.php` | CSS game dalam rem tanpa satuan viewport, media query lebar/tinggi, atau `layout.css` |
 | `tests/unit/RotateGateTest.php` | media query layar putar sama di `stage.css` dan `game/rotate-gate.js` |
-| `tests/unit/InstallableAppTest.php` | manifest, ikon, dan `sw.js` yang hanya menangani navigasi GET |
+| `tests/unit/InstallableAppTest.php` | manifest, ikon, dan `offline.html` yang berdiri sendiri |
+| `tests/unit/AssetPackageServiceWorkerTest.php` | asset package: `sw.js` and `core/package.js` write caches only through a guard for package URLs + `offline.html`; navigations, `/api`, `/admin`, login pages, POST, and private responses never cached; `/api` and `/admin` without `respondWith`; Range → 206; kill-switch worker; boot script before `game.js` |
+| `tests/unit/AssetPackageCodeUrlTest.php` | `asset_url_versioned()`/`game_asset_url()` → `assets/k/…` with a package, normal URLs without one or with the kill switch; boot script attributes; `audioUrls`; `X-Gelita-Paket` on API responses |
 
-Sintaks modul dapat diperiksa cepat dengan `node --check public/assets/js/<berkas>.js`. Skrip Playwright + Chromium di `tools/qa/` menguji JavaScript di peramban sungguhan terhadap `php spark serve`: `stage-check.mjs` (panggung 16:9 di berbagai ukuran layar, lihat [05_VIEW_UI.md](05_VIEW_UI.md)) dan `challenge-races.mjs` (MariaDB/MySQL; `--only=freeze|timing|cari|reload|race`: isian dibekukan selama `/check`, `first_input_ms`/`last_input_ms` tersimpan, lompat petunjuk diabaikan selama ketukan menunggu, muat ulang karena galat aturan tidak menulis `challenge_abandoned`, dan dua tab yang mengecek bersamaan), serta `a11y-check.mjs` (keempat engine dengan keyboard saja: Tab mencapai semua kontrol, nama aksesibel dan cincin fokus, Enter/Spasi/panah mengoperasikan engine, dialog petunjuk dan hasil menerima fokus, Escape mengembalikan fokus ke tombol petunjuk; `--axe=…/axe.min.js` menambah pemindaian WCAG 2.1 A/AA). Semuanya keluar dengan kode 1 bila ada yang gagal. Pemeriksaan di peramban mencakup alur siswa penuh (pendaftaran, cerita, peta, keempat engine benar dan salah sampai kesempatan habis, muat ulang di tengah tantangan, Pustaka, Balai Refleksi), JavaScript mati, `prefers-reduced-motion`, dan konsol tanpa galat.
+Sintaks modul dapat diperiksa cepat dengan `node --check public/assets/js/<berkas>.js`. Skrip Playwright + Chromium di `tools/qa/` menguji JavaScript di peramban sungguhan terhadap `php spark serve`: `stage-check.mjs` (panggung 16:9 di berbagai ukuran layar, lihat [05_VIEW_UI.md](05_VIEW_UI.md)) dan `challenge-races.mjs` (MariaDB/MySQL; `--only=freeze|timing|cari|reload|race`: isian dibekukan selama `/check`, `first_input_ms`/`last_input_ms` tersimpan, lompat petunjuk diabaikan selama ketukan menunggu, muat ulang karena galat aturan tidak menulis `challenge_abandoned`, dan dua tab yang mengecek bersamaan), `package-check.mjs` (asset package Stage 2: download, resume, sha256, cache contents, 206, online mode, kill switch; see its header), serta `a11y-check.mjs` (keempat engine dengan keyboard saja: Tab mencapai semua kontrol, nama aksesibel dan cincin fokus, Enter/Spasi/panah mengoperasikan engine, dialog petunjuk dan hasil menerima fokus, Escape mengembalikan fokus ke tombol petunjuk; `--axe=…/axe.min.js` menambah pemindaian WCAG 2.1 A/AA). Semuanya keluar dengan kode 1 bila ada yang gagal. Pemeriksaan di peramban mencakup alur siswa penuh (pendaftaran, cerita, peta, keempat engine benar dan salah sampai kesempatan habis, muat ulang di tengah tantangan, Pustaka, Balai Refleksi), JavaScript mati, `prefers-reduced-motion`, dan konsol tanpa galat.
 
 ---
 

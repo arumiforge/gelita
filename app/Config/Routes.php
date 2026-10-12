@@ -169,7 +169,17 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
             $routes->post('studi/(:num)', 'StudyController::update/$1');
             $routes->get('studi/rilis', 'StudyController::releases');
             $routes->post('studi/rilis', 'StudyController::storeRelease');
+            $routes->get('studi/rilis/(:num)/aktifkan', 'StudyController::confirmActivation/$1');
             $routes->post('studi/rilis/(:num)/aktifkan', 'StudyController::activateRelease/$1');
+
+            // Rilis → Paket aset: package mode switch and batch build (docs/rencana-paket-aset.md §6.3)
+            $routes->get('studi/rilis/paket', 'PackageController::index');
+            $routes->post('studi/rilis/paket/bangun', 'PackageController::startBuild');
+            $routes->post('studi/rilis/paket/bangun/(:segment)/lanjut', 'PackageController::stepBuild/$1');
+            $routes->post('studi/rilis/paket/(:segment)/terbitkan', 'PackageController::publish/$1');
+            $routes->post('studi/rilis/paket/matikan', 'PackageController::switchOff');
+            $routes->post('studi/rilis/paket/izin-daring', 'PackageController::saveOnlineLab');
+            $routes->post('studi/rilis/paket/periksa', 'PackageController::verify');
 
             $routes->get('tata-kelola', 'GovernanceController::index');
             $routes->post('tata-kelola/hapus/pratinjau', 'GovernanceController::deletePreview');

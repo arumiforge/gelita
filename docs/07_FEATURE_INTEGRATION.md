@@ -925,6 +925,32 @@ Admin yang lupa sandi tanpa admin lain: `php spark gelita:staff:password USERNAM
 
 Instalasi baru membuat satu studi `STUDI-KEDU-KELAS5-2026` (aktif, `retention_days` 1825, `sequential`) dan rilis `GELITA-KELAS5-2026` (`ResearchStudySeeder`, `GameReleaseSeeder`).
 
+### Rilis → Paket aset: package mode switch (asset package Stage 6)
+
+*(New section, English.)* Plan: `docs/rencana-paket-aset.md` §6.3, §7.2, §8.7, §9.2; owner decisions P10, P12.
+
+**One switch, no setting of its own.** Package mode is on when the active release's `asset_version` names a built package (`AssetPackageService::releasePackageCode()`) and the server kill switch `gelita.paket.aktif` is not false. Every switch creates a release and activates it through `App\Services\ReleaseActivation`, the same code Rilis uses: same `app_version`, `content_version`, and `scoring_version` as the active release; `asset_version` = the package code (release code = package code) or empty (release code `tanpa-paket-YYYY-MM-DD-NN`).
+
+**Switching on / rebuilding.**
+
+1. **Nyalakan** or **Bangun ulang paket** (on Paket aset, Rilis, Gambar & mockup, or Rekaman narasi) posts to `/admin/studi/rilis/paket/bangun`: `AssetPackageBuilder::start()` plans a package from everything active now (a build already running is resumed instead).
+2. The Paket aset page drives the build: `js/admin/package-build.js` posts `/admin/studi/rilis/paket/bangun/{code}/lanjut` again and again; each request runs builder steps for about 4 seconds and answers `{done, total, percent, finished}`. The last batch calls `finish()` once (file lock), which writes the manifest and URL map. The build state stays on the server, so closing the tab and opening the page again continues from the last file. Without JavaScript the **Lanjutkan membangun** button runs 20-second batches.
+3. The page shows the build summary (size per part, files new to devices that hold the active package, warnings) and a **Pratinjau** link. **Terbitkan dan nyalakan** creates the release and activates it. Devices see it at the start of their next session (Stage 2/3).
+
+**Switching off.** **Matikan** activates a release without a package; `/api/paket/aktif` answers `package_code: null`, helpers return normal URLs. The package row becomes `ditarik`; its files stay on the server.
+
+**Running study (P10, §7.2).** While a study is `active`, any activation whose package differs from the active one (switch on, publish a rebuild, switch off, or a release on Rilis) needs a tick and a reason; without them nothing changes and no release is created. The audit entry `release_activate` carries `release_code`, `package_from`, `package_to`, `reason`, `running_study`, and `via`. A study stores the active release's package in `research_studies.package_code` when it becomes `active` (shown on Penelitian, with a warning when students now get another package). Releases that keep the package (e.g. a new content version) need no confirmation.
+
+**Changed-asset notice (§6.3).** `AssetPackageService::changedSinceActive()` compares the sha256 of the media that would be packaged now (active media, approved narration) with the active package's URL map: one query and one include. Any count above zero shows "Ada {n} gambar/suara yang berubah sejak paket terakhir. Siswa belum melihatnya." with **Bangun ulang paket**; publishing the rebuild clears it.
+
+**Server kill switch.** `gelita.paket.aktif = false` overrides the admin switch: the page shows "Mode paket dimatikan dari server", the badge reads Mati, and the API answers `disabled_by_server: true`. The release still names the package, so lifting the kill switch brings it back.
+
+**Lab online permission (§8.7).** **Izinkan mode daring untuk perangkat lab** (off by default) is stored in `writable/paket/pengaturan.json` (no settings table; it only means something with a package, and that folder is already backed up with the package files). `/api/paket/aktif` returns it as `online_lab_allowed`, always the stored value; the downloader (Stage 2/3) reads it only when `package_code` is set. Changes are audited as `package_online_lab`.
+
+**Staff preview (§6.1 step 3, §9.2).** `?paket={package_code}` on any game page, for a session with an active staff account, makes the media helpers (`AssetPackageService::urlForId()`/`urlForKey()` → `media_src()`, `media_key_src()`, `audio_src()`) serve that package, also while package mode is off. The choice is kept in the session (`package_preview`) so it follows the staff member across pages; `?paket=mati` ends it. `activeCode()`, `/api/paket/aktif`, and the `X-Gelita-Paket` header never reflect it, so student devices are not affected; anyone without a staff session gets nothing.
+
+**Research-ready checklist (§7.2).** `ResearchReadiness` adds **Paket terbit, lengkap, dan terverifikasi**: package mode on and `gelita:paket:periksa` clean. The re-hash result is cached for an hour per package and manifest (`AssetPackageService::verification()`); **Periksa sekarang** on Paket aset and `php spark gelita:content:verify --siap-penelitian` re-hash immediately (the command also reports package mode off as an error).
+
 ---
 
 ## FITUR 10c: Sekolah
@@ -1628,6 +1654,7 @@ Semua opsi bernilai menerima `--opsi nilai` maupun `--opsi=nilai` (trait `App\Co
 | `gelita:narration:import [--locale=id\|en] [--dry-run]` | impor narasi dari folder (FITUR 13a); audit `narration_import` | ada berkas gagal atau `--locale` tidak dikenal |
 | `gelita:paket:bangun […]` | `AssetPackageBuilder::build()`; audit `package_build` (asset package Stage 1) | build fails (file cannot be copied, code changed during the build) |
 | `gelita:paket:periksa [kode]` | `AssetPackageMaintenance::verify()` | no package, or any file/manifest mismatch |
+| `gelita:content:verify --siap-penelitian` | also re-hashes the active asset package (Stage 6) | package mode off, or any package file mismatch (besides the content findings) |
 | `gelita:paket:bersihkan [--hapus …] [--coba]` | `AssetPackageMaintenance::prune()`; audit `package_prune` | a package to delete is unknown or still named by a release |
 | `gelita:schools:import [--file=…] [--dry-run] [--link-existing]` | daftar sekolah resmi (FITUR 10c) | impor gagal |
 | `gelita:staff:password USERNAME` | sandi sementara staf (FITUR 10a) | nama pengguna kosong/tidak ditemukan |

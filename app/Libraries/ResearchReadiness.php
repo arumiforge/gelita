@@ -11,6 +11,11 @@ use CodeIgniter\Database\BaseConnection;
  * 1. 0 gambar contoh (mockup) aktif — `media_assets.is_placeholder = 1`.
  * 2. Semua rekaman narasi disetujui di setiap bahasa.
  * 3. `gelita:content:verify --siap-penelitian` lolos (0 galat).
+ * 4. Asset package published, complete, and verified (docs/rencana-paket-aset.md
+ *    §7.2, §6.3): package mode is on (the active release names a built
+ *    package and the server kill switch is not set) and `gelita:paket:periksa`
+ *    finds no problem. The check re-hashes the package, so its result is
+ *    cached for an hour (AssetPackageService::verification()).
  */
 final class ResearchReadiness
 {
@@ -23,7 +28,7 @@ final class ResearchReadiness
 
     /**
      * @return array{ready: bool, items: list<array{key: string, label: string, ok: bool, detail: string, link: string}>,
-     *               mockups: int, narration_pending: int, errors: int, warnings: int}
+     *               mockups: int, narration_pending: int, errors: int, warnings: int, package_ok: bool}
      */
     public function check(): array
     {
@@ -70,15 +75,39 @@ final class ResearchReadiness
                     : $errors . ' galat, ' . $warnings . ' peringatan.',
                 'link'   => 'admin/konten',
             ],
+            $package = $this->packageItem(),
         ];
 
         return [
-            'ready'             => $mockups === 0 && $pending === 0 && $errors === 0,
+            'ready'             => $mockups === 0 && $pending === 0 && $errors === 0 && $package['ok'],
             'items'             => $items,
             'mockups'           => $mockups,
             'narration_pending' => $pending,
             'errors'            => $errors,
             'warnings'          => $warnings,
+            'package_ok'        => $package['ok'],
         ];
+    }
+
+    /** @return array{key: string, label: string, ok: bool, detail: string, link: string} */
+    private function packageItem(): array
+    {
+        $packages = service('assetPackages');
+        $code     = $packages->activeCode();
+        $item     = ['key' => 'package', 'label' => lang('Admin.readyPackageLabel'), 'ok' => false, 'detail' => '', 'link' => 'admin/studi/rilis/paket'];
+
+        if ($code === null) {
+            return ['detail' => lang($packages->enabled() ? 'Admin.readyPackageOff' : 'Admin.readyPackageKilled')] + $item;
+        }
+
+        $check = $packages->verification($code);
+        $when  = fmt_date($check['checked_at'], false, 'id');
+
+        return [
+            'ok'     => $check['ok'],
+            'detail' => $check['ok']
+                ? lang('Admin.readyPackageOk', [$code, $when])
+                : lang('Admin.readyPackageBad', [$code, count($check['issues'])]),
+        ] + $item;
     }
 }

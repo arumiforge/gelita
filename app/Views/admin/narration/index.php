@@ -47,6 +47,7 @@ $audioCell   = static function (array $audio, string $code, string $locale) use 
     'actions' => $actions,
 ]) ?>
 <?= $this->include('partials/flash') ?>
+<?= component('admin/partials/package-notice', ['packageChanged' => $packageChanged ?? null]) ?>
 
 <section class="panel">
   <h2 class="panel-title"><?= icon('sound') ?> Kemajuan rekaman</h2>

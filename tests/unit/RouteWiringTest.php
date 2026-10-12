@@ -14,7 +14,7 @@ final class RouteWiringTest extends CIUnitTestCase
 {
     private const CONTROLLER_COUNT = [
         'Game'  => 12,  // 11 controller + BaseGameController (AppController: manifest, display plan A3)
-        'Admin' => 16,  // 15 controller + BaseAdminController (RawDataController baru, Dok 3 §8.3)
+        'Admin' => 17,  // 16 controller + BaseAdminController (PackageController: asset package Stage 6)
         'Api'   => 11,  // 10 controller + BaseApiController (PackageApiController: asset package Stage 1)
     ];
 
@@ -50,6 +50,8 @@ final class RouteWiringTest extends CIUnitTestCase
             'admin/sekolah'               => 'Admin\SchoolController::index',
             'admin/data'                  => 'Admin\RawDataController::index',
             'admin/data/([^/]+)'          => 'Admin\RawDataController::show',
+            'admin/studi/rilis/paket'     => 'Admin\PackageController::index',
+            'admin/studi/rilis/([0-9]+)/aktifkan' => 'Admin\StudyController::confirmActivation/$1',
         ],
         'POST' => [
             'daftar/([0-9]+)'        => 'Game\RegisterController::saveStep/$1',
@@ -67,6 +69,13 @@ final class RouteWiringTest extends CIUnitTestCase
             'admin/ekspor/csv'                => 'Admin\ExportController::csv',
             'admin/ekspor/pdf'                => 'Admin\ExportController::pdf',
             'admin/media/([0-9]+)/unggah-gerak' => 'Admin\MediaController::uploadFrames/$1',
+            'admin/studi/rilis/paket/bangun'                => 'Admin\PackageController::startBuild',
+            'admin/studi/rilis/paket/bangun/([^/]+)/lanjut' => 'Admin\PackageController::stepBuild/$1',
+            'admin/studi/rilis/paket/([^/]+)/terbitkan'     => 'Admin\PackageController::publish/$1',
+            'admin/studi/rilis/paket/matikan'               => 'Admin\PackageController::switchOff',
+            'admin/studi/rilis/paket/izin-daring'           => 'Admin\PackageController::saveOnlineLab',
+            'admin/studi/rilis/paket/periksa'               => 'Admin\PackageController::verify',
+            'admin/studi/rilis/([0-9]+)/aktifkan'           => 'Admin\StudyController::activateRelease/$1',
         ],
     ];
 
@@ -201,6 +210,31 @@ final class RouteWiringTest extends CIUnitTestCase
         $paths  = [
             'GET'  => ['admin/konten/narasi', 'admin/konten/narasi/unggah', 'admin/konten/narasi/daftar-rekaman', 'admin/media/kelengkapan'],
             'POST' => ['admin/konten/narasi/unggah', 'admin/konten/narasi/impor-folder', 'admin/konten/narasi/setujui'],
+        ];
+
+        foreach ($paths as $method => $list) {
+            $routes->setHTTPVerb($method);
+
+            foreach ($list as $path) {
+                $this->assertSame(['staffAuth', 'staffRole:admin'], $routes->getFiltersForRoute($path), $method . ' ' . $path);
+            }
+        }
+    }
+
+    /**
+     * Asset package Stage 6: the package panel switches what students get,
+     * so it needs the same role as activating a release (admin only).
+     */
+    public function testPackagePanelIsAdminOnlyLikeReleases(): void
+    {
+        $routes = $this->routes();
+        $paths  = [
+            'GET'  => ['admin/studi/rilis', 'admin/studi/rilis/paket', 'admin/studi/rilis/([0-9]+)/aktifkan'],
+            'POST' => [
+                'admin/studi/rilis/([0-9]+)/aktifkan', 'admin/studi/rilis/paket/bangun', 'admin/studi/rilis/paket/bangun/([^/]+)/lanjut',
+                'admin/studi/rilis/paket/([^/]+)/terbitkan', 'admin/studi/rilis/paket/matikan',
+                'admin/studi/rilis/paket/izin-daring', 'admin/studi/rilis/paket/periksa',
+            ],
         ];
 
         foreach ($paths as $method => $list) {

@@ -68,11 +68,117 @@ if (! function_exists('ms_to_human')) {
     }
 }
 
+if (! function_exists('asset_package_path')) {
+    /**
+     * Path (relative to the base URL) of a game code file such as `js/game.js`
+     * or `css/game.css` in the active asset package (`assets/k/{code_version}/…`,
+     * docs/rencana-paket-aset.md §5.2), or null when package mode is off, the
+     * file is not packaged (admin.css, admin.js), or its package copy is
+     * missing on disk (e.g. a restore without public/assets/k/): a missing
+     * script would break the game, the normal file never does.
+     */
+    function asset_package_path(string $path): ?string
+    {
+        try {
+            $packages = service('assetPackages');
+            $code     = $packages->activeCode();
+            $url      = $code === null ? null : ($packages->map($code)['keys'][ltrim($path, '/')] ?? null);
+
+            if (is_string($url) && ! is_file($packages->publicDir() . $url)) {
+                $url = null;
+            }
+        } catch (Throwable) {
+            $url = null;
+        }
+
+        return is_string($url) && $url !== '' ? $url : null;
+    }
+}
+
 if (! function_exists('asset_url_versioned')) {
-    /** base_url('assets/…') + ?v=assetVersion untuk cache-busting */
+    /**
+     * URL of a CSS/JS entry or vendor file. With an active asset package it is
+     * the package copy (`assets/k/…`, immutable, served by the service worker);
+     * otherwise base_url('assets/…') + ?v=assetVersion for cache-busting.
+     */
     function asset_url_versioned(string $path): string
     {
+        $packaged = asset_package_path($path);
+
+        if ($packaged !== null) {
+            return base_url($packaged);
+        }
+
         return base_url('assets/' . ltrim($path, '/')) . '?v=' . rawurlencode(config('Gelita')->assetVersion);
+    }
+}
+
+if (! function_exists('game_asset_url')) {
+    /**
+     * URL of a game file that CSS refers to without `?v=` (fonts): the package
+     * copy when a package is active, so a `<link rel="preload">` matches the
+     * URL the stylesheet asks for; otherwise base_url('assets/…').
+     */
+    function game_asset_url(string $path): string
+    {
+        return base_url(asset_package_path($path) ?? 'assets/' . ltrim($path, '/'));
+    }
+}
+
+if (! function_exists('asset_package_attrs')) {
+    /**
+     * Attributes for the <script> tag of core/package-boot.js (asset package
+     * Stage 2): ` data-package="{code}"` while package mode is on, and
+     * ` data-sw="off"` while the server kill switch `gelita.paket.aktif` is
+     * false (the page then registers the empty sw-kosong.js). Only a package
+     * code, never anything about the student.
+     */
+    function asset_package_attrs(): string
+    {
+        try {
+            $packages = service('assetPackages');
+            $code     = $packages->activeCode();
+            $enabled  = $packages->enabled();
+        } catch (Throwable) {
+            return '';
+        }
+
+        return ($code !== null ? ' data-package="' . esc($code, 'attr') . '"' : '')
+            . ($enabled ? '' : ' data-sw="off"');
+    }
+}
+
+if (! function_exists('package_audio_urls')) {
+    /**
+     * Music and sound effects of the active asset package for core/audio.js
+     * (`CONFIG.audioUrls`): `audio.music.map` → `music/map` => absolute URL.
+     * Empty when package mode is off; audio.js then loads assets/audio/ as before.
+     * Like the media helpers it follows a staff preview (`servingCode()`); code
+     * URLs and the boot attributes stay on `activeCode()`, which is what devices hold.
+     *
+     * @return array<string, string>
+     */
+    function package_audio_urls(): array
+    {
+        try {
+            $packages = service('assetPackages');
+            $code     = $packages->servingCode();
+            $keys     = $code === null ? [] : ($packages->map($code)['keys'] ?? []);
+        } catch (Throwable) {
+            return [];
+        }
+
+        $urls = [];
+
+        foreach ($keys as $key => $url) {
+            if (preg_match('/^audio\.(music|sfx)\.([a-z0-9-]+)$/', (string) $key, $m) === 1) {
+                $urls[$m[1] . '/' . $m[2]] = base_url((string) $url);
+            }
+        }
+
+        ksort($urls);
+
+        return $urls;
     }
 }
 
@@ -135,6 +241,8 @@ if (! function_exists('js_config')) {
             'maxTries'   => config('Gelita')->maxTries,
             // panggung game 16:9 (dp); dipakai Dok 3 dan event viewport_changed
             'stage'      => ['w' => 1280, 'h' => 720],
+            // asset package Stage 2: package URLs of music and sound effects (empty when off)
+            'audioUrls'  => package_audio_urls(),
             'text'       => $text,
         ];
     }
