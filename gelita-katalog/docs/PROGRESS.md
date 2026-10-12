@@ -2,7 +2,13 @@
 
 Diperbarui 12 Oktober 2026 (Asia/Bangkok). Urutan di bawah membedakan hasil terkini dari pemeriksaan historis. Keputusan aktif dirangkum dalam [MEMORY.md](MEMORY.md).
 
-<<<<<<< HEAD
+## 12 Oktober 2026 — perbaikan konflik sebelum push GitHub
+
+- Memeriksa PowerShell lokal dan Git repositori induk. Setelah `git fetch origin`, branch `main` dan `origin/main` sama-sama berada pada `8b4d358`; tidak ada perubahan lokal atau staging pada awal pemeriksaan.
+- Menghapus penanda konflik merge yang sudah tersimpan dalam PROGRESS dengan mempertahankan kedua catatan pekerjaan. Menjalankan `node build.mjs` untuk membuat ulang HTML dan laporan status dari `data.json`, lalu `node scripts/validate.mjs` untuk membuat ulang laporan validasi. Tidak mengubah sumber data, aset, atau 97 objek audio.
+- Build dan validator lulus: 580 ID/kode unik, 483 visual tersedia, 240 frame karakter, data HTML identik, audio identik dengan baseline, 563 tautan Markdown dan 6 tautan HTML statis tersedia. Sintaks satu blok JavaScript HTML dan parsing kedua laporan JSON lulus; keempat berkas bebas penanda konflik. Pemeriksaan whitespace Git lulus. Pemeriksaan browser tidak dijalankan dalam pekerjaan ini.
+- Persiapan commit/push dibatasi pada `gelita-katalog/`: PROGRESS, index, laporan status, dan laporan validasi. Commit lama yang sudah ada di GitHub tidak diubah.
+
 ## 12 Oktober 2026 — 24 frame setiap pose Jaka dan Mbah Kedu
 
 - Mengikuti permintaan pengguna: enam pose Jaka (idle, happy, bow, sad, afraid, determined) dan empat pose Mbah Kedu (idle, smile, worried, weak), masing-masing 24 frame. Total 240 WebP transparan 700 × 900 mengganti 30 file lama dan menambah 210. Kode frame 1–3 dipertahankan; frame ditampilkan dalam urutan angka per pose.
@@ -16,7 +22,7 @@ Diperbarui 12 Oktober 2026 (Asia/Bangkok). Urutan di bawah membedakan hasil terk
 - Membuat sepuluh lembar kontak frame dan [preview gerak lokal](../review/character-animation.html). Memeriksa seluruh key pose dan lembar frame happy/bow/weak; bukan review individual 240 gambar atau validasi budaya, lisensi, rig, maupun integrasi game.
 - [Daftar nama gaya lama](../reports/remaining-legacy-style.txt) berisi 101 aset yang belum diganti berdasarkan `previous_style_review`; tiga aset lain masih tidak pasti di [laporan](../reports/remaining-legacy-style.json). Membaca enam lembar kontak sebelum penggantian dan membuat lima lembar kontak terbaru setelah karakter dikecualikan. Status katalog tidak diubah dan daftar ini bukan audit visual baru. Lembar keenam sementara yang sudah kedaluwarsa dihapus.
 - Sintaks tujuh skrip JavaScript baru/diubah dan pemeriksaan whitespace Git lulus. Validator akhir lulus dengan 563 tautan Markdown; satu percobaan sempat gagal menulis laporan dengan galat filesystem `UNKNOWN`, lalu percobaan ulang berhasil. Tidak membuat commit atau push; staging yang sudah ada tidak diubah oleh agen. Audio tidak diubah dan tidak ada rekaman baru.
-=======
+
 ## 11 October 2026 (evening) — logo and start buttons from the references, game import
 
 *(New section, English, written from the GELITA app repo; branch `pbb/nifty-faraday-fcw9r6`.)*
@@ -30,7 +36,6 @@ Diperbarui 12 Oktober 2026 (Asia/Bangkok). Urutan di bawah membedakan hasil terk
 - **Data:** in `data.json`, the four entries got a new `desc`, `generated_by`, `content_review`, and `actual`. The old ornament-only logo files and the flat SVG-rendered buttons are replaced; `ui.btn-start*.svg` stay as before.
 - **Checks:** `node build.mjs` and `node scripts/validate.mjs` pass. No other image, prompt, or audio changed. The browser check was not run.
 - **Game import:** the app now installs this catalogue's images with `php spark gelita:katalog:impor`, which re-encodes them as lossy WebP for the game. Images here stay lossless.
->>>>>>> 6d30b54b168ef0feff8401bfef34b30accad661e
 
 ## 12 Oktober 2026 — dokumentasi dan struktur
 
