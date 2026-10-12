@@ -328,7 +328,11 @@ body.game {
 /* ---------- Halaman awal `/` ---------- */
 .welcome-hero    { --x: 240; --y: 120; --w: 800; --h: 300; }
 .welcome-actions { --x: 460; --y: 456; --w: 360; --h: 120; }
-.welcome-install { --x: 896; --y: 600; --w: 352; --h: 40; }
+.welcome-install { --x: 896; --y: 576; --w: 352; --h: 40; }
+/* Staff login link: anchored to the bottom-right corner (24 dp from the right,
+   16 dp from the bottom), its width follows the text. .welcome-install moved up
+   from y 600 to 576 so its two-line Android hint stays clear of this link. */
+.welcome-staff   { right: calc(24 * var(--dp)); bottom: calc(16 * var(--dp)); height: calc(40 * var(--dp)); }
 
 /* ---------- Mulai `/mulai`, Gerbang `/gerbang` ---------- */
 .start-jaka  { --x: 140; --y: 196; --w: 280; --h: 460; }

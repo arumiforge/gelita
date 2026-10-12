@@ -622,7 +622,7 @@ Semua layar game digambar di **satu panggung tetap 1280 × 720 dp** (dp = *desig
 
 | Layar | Elemen (x, y, w, h dp) |
 |---|---|
-| Halaman awal | logo 240, 120, 800 × 300; Mulai 460, 456, 360 × 120; tawaran pasang 896, 600, 352 × 40 |
+| Halaman awal | logo 240, 120, 800 × 300; Mulai 460, 456, 360 × 120; tawaran pasang 896, 576, 352 × 40; staff login link bottom-right (right 24, bottom 16) |
 | Mulai, Gerbang | judul 0, 88, 1280 × 96; kartu 212, 200, 400 × 300 dan 668, 200 |
 | Masuk / Ganti sandi | panel 360, 88, 560 × 544 / 360, 72, 560 × 576 (gulir) |
 | Daftar 1–3 | panel 200, 72, 880 × 576: kepala + stepper 0–64, isian gulir, bilah tombol 80 dp di bawah; langkah 3 kotak "Mengapa sandi harus kuat?" dengan Jaka 220 dp |
