@@ -131,7 +131,9 @@ Dasbor SaaS netral (Dok 3 §8.1), hanya memuat `admin.css` (CSS permainan tidak 
 
 ### `layouts/auth.php`
 
-Halaman masuk staf bergaya admin (§1.6): `.skip-link` ke `<main id="auth-main">`, satu kartu `.auth-card` di tengah latar netral, merek `.auth-brand` (tanda "G" + "GELITA" + `Admin.panelTitle`), hanya `admin.css`. Dipakai `admin/login.php`.
+Halaman masuk staf bergaya admin (§1.6): `.skip-link` ke `<main id="auth-main">`, satu kartu `.auth-card` di tengah latar netral, merek `.auth-brand` di tengah, hanya `admin.css`. Dipakai `admin/login.php`.
+
+Since 12 October 2026 the brand is the centred GELITA logo: `ui.logo-hero` (`.auth-logo`, up to 280 px wide), else the emblem `ui.logo` above the word GELITA, else the "G" mark above the word GELITA; `Admin.panelTitle` sits underneath. The title and lead line are centred too.
 
 ---
 

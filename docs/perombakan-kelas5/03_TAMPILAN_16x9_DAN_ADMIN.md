@@ -33,7 +33,7 @@ Keputusan:
 3. **Posisi visual tetap.** Latar 1920 × 1080 mengisi panggung tepat (rasio sama, tidak pernah terpotong berbeda). Pin peta, benda Cari Objek, tokoh cerita, dan panel memakai koordinat persen atau dp di panggung, jadi posisinya sama di semua perangkat. Koordinat tata letak dikumpulkan di satu berkas (`stage.css`, §3.3).
 4. **Gulir hanya di dalam panel.** Panggung tidak pernah bergulir. Panel yang isinya bisa panjang (bacaan, daftar pernyataan, formulir, Pustaka, riwayat) memakai kelas `.stage-scroll` dengan tinggi tetap.
 5. **Putar layar tetap wajib.** Perangkat sentuh tegak (`orientation: portrait` + `pointer: coarse`) melihat layar "Putar perangkatmu" (`components/rotate-gate.php`, tidak berubah).
-6. **Hanya area game.** Panel admin bukan bagian panggung; admin adalah dasbor SaaS yang mengikuti lebar layar (§8), karena tabel data mentah membutuhkan lebar dan tidak memuat aset visual game. Halaman masuk admin (`layouts/auth.php`) ikut gaya admin.
+6. **Hanya area game.** Panel admin bukan bagian panggung; admin adalah dasbor SaaS yang mengikuti lebar layar (§8), karena tabel data mentah membutuhkan lebar dan tidak memuat aset visual game. Halaman masuk admin (`layouts/auth.php`) ikut gaya admin. Exception (owner, 12 October 2026): the login card opens with the centred GELITA logo (`ui.logo-hero`).
 
 Contoh skala:
 

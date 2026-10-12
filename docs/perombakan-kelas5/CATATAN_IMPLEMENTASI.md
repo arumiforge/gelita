@@ -1625,3 +1625,17 @@ Owner request: fix the "Masuk staf" text on the welcome page and keep it in the 
 - **Fix.** The link is now a small pill like the HUD text: `--fs-caption` (16 dp), semi-bold, `--ink` on `--hud-backing`, gold key icon, 40 dp tall with a 48 dp hit area, and a gold focus ring. The text is still `Game.staffLogin` ("Masuk staf" / "Staff login").
 - **Position.** It is pinned in stage coordinates (`stage.css`): 24 dp from the right and 16 dp from the bottom of the 1280 × 720 stage, so it stays in the corner at every window size.
 - **Install offer moved up.** `.welcome-install` moves from y 600 to y 576. Without this, the two-line Android install hint would overlap the larger link by about 10 dp. Dok 3 §4 and `docs/05_VIEW_UI.md` are updated to match.
+
+## GELITA logo, centred, on the staff login page (12 October 2026)
+
+Owner request: fix the admin login page so that it opens with the GELITA logo, centred.
+
+- **Brand block.** `layouts/auth.php` now opens the card with the centred logo, using the first of these that exists:
+  1. `ui.logo-hero` (`.auth-logo`, up to 280 px wide);
+  2. the emblem `ui.logo` (72 px) above the word GELITA;
+  3. the old "G" mark above the word GELITA.
+
+  `Admin.panelTitle` sits underneath. The title "Masuk Panel Guru & Admin" and the lead line are centred; the form labels stay left-aligned.
+- **Deviation from Dok 3 §1.6.** That section keeps game artwork off the login page. The logo is now the one exception; the page still loads only `admin.css` and keeps the neutral background. Dok 3 §1.6 and `docs/05_VIEW_UI.md` note the exception.
+- **Image slots.** `ImageSlots` lists `/admin/login` as a screen for `ui.logo-hero` and `ui.logo`, so the asset checklist shows where the logo appears.
+- **Tests.** `AdminLoginBrandTest` covers each of the three fallbacks. Browser screenshots with the catalogue logo were taken at 1280 × 800 and 390 × 780, with no horizontal scroll.
