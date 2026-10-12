@@ -79,4 +79,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 |---|---|---|
 | `pbb/nifty-faraday-fcw9r6` | Cari Objek objects onto the tables and shelves of the catalogue scenes (bank layout + import) | PR open |
 | `pbb/practical-ramanujan-sogpm3` | Production console errors: CSP policy, inline viewport script, `/api/events` 500 | PR open |
-| `pbb/hopeful-bardeen-48ljgp` | Catalogue start buttons, language icons, red-scarf Jaka frames on servers with old uploads, logo-only HUD centre, dialogue pose frames | PR open |
+| `pbb/hopeful-bardeen-48ljgp` | Smaller HUD language icons (first PR on this branch, #104, merged) | PR open |

@@ -224,7 +224,7 @@ class Gelita extends BaseConfig
         'ui.logo-hero'          => [800, 300],
         'ui.btn-start'          => [360, 120],
         'ui.btn-start.*'        => [360, 120],
-        'ui.lang.*'             => [44, 44],     // HUD language switch
+        'ui.lang.*'             => [32, 32],     // HUD language switch
         'bg.loading'            => [1280, 720],
         'avatar.*'              => [72, 72],     // profile; 36 × 36 in the HUD
         'ui.pin'                => [56, 56],     // map pin of every city without its own

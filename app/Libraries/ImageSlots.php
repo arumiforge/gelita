@@ -122,7 +122,7 @@ final class ImageSlots
             'transparent' => true,
             'fallback'    => 'Tombol tulisan ID / EN (dipakai untuk kedua bahasa selama salah satu ikon belum ada)',
             'priority'    => 'opsional',
-            'tips'        => 'Pasangan ui.lang.en: ukuran, bingkai, dan letak tulisan harus sama. Tampil 44 dp; bahasa yang tidak dipilih tampil redup.',
+            'tips'        => 'Pasangan ui.lang.en: ukuran, bingkai, dan letak tulisan harus sama. Tampil 32 dp; bahasa yang tidak dipilih tampil redup.',
         ],
         'ui.lang.en' => [
             'group'       => 'brand',

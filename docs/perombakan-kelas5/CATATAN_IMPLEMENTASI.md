@@ -1502,3 +1502,11 @@ Branch `pbb/hopeful-bardeen-48ljgp`. Owner request: use the catalogue's two star
   - **Browser check** (Chromium, both opening dialogues, Temanggung 15 lines and Magelang 16): each line was shown and both figures sampled every 40 ms for 2.5 s. 0 frames from another pose, the speaker always on its line's pose with 15–24 distinct frames, no CSS animation or rotation on the drawn figures. The listener keeps looping the pose of its own last line.
 - **Not changed.** The dialogue box still covers the lower part of the figures and their name plates (existing layout, not part of this request).
 - **Tests.** `CatalogImportTest`: language icons from their references, `--kunci` limiting `--timpa`, mixed pose warning (and gone after the scoped overwrite). `StartGateTest`: icon switch only when both icons exist, accessible names, slot size and seeder path. Suite green (651 tests).
+
+## Smaller language icons (12 October 2026)
+
+Branch `pbb/hopeful-bardeen-48ljgp` (second PR on it; #104 is merged). Owner report: the ID and English icons of the language switch show too large.
+
+- **Size.** The icons are now 32 dp (`2rem`), the size of the other HUD icons, instead of 44 dp. Each button keeps a 40 dp box, like `.hud .icon-btn`, and the 48 dp hit area from `.lang-opt::before`. `$assetDisplaySizes['ui.lang.*']` and the slot tip say 32 dp.
+- **Old stylesheet.** The `<img>` used to carry `width="256" height="256"` (the file size). A browser or an asset package that still served the `components.css` from before PR #104 had no `.lang-switch.is-image` rules, so it drew the icons at 256 px. The attributes are now the display size (32 × 32), so the icons stay small even then. Checked in Chromium with `components.css` blocked: 32 × 32.
+- **Tests.** `StartGateTest` checks the 32 px attributes.
