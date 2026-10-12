@@ -2,7 +2,14 @@
 
 Diperbarui 12 Oktober 2026 (Asia/Bangkok). Urutan di bawah membedakan hasil terkini dari pemeriksaan historis. Keputusan aktif dirangkum dalam [MEMORY.md](MEMORY.md).
 
-<<<<<<< HEAD
+## 12 October 2026 (later) — merge leftovers fixed, frames installed in the game
+
+*(New section, English, written from the GELITA app repo; branch `pbb/nifty-faraday-fcw9r6`.)*
+
+- **Conflict markers removed.** The push of the 240 frames left unresolved conflict markers (`<<<<<<<`, `>>>>>>>`) in this file, `index.html`, `reports/STATUS-GAMBAR.json`, and `reports/validation-report.json`. This file keeps both entries. The other three were regenerated with `node build.mjs` and `node scripts/validate.mjs`; the validator passes. `reports/STYLE-AUDIT.csv` stays with LF line endings.
+- **No images or `data.json` changed.**
+- **Game:** `php spark gelita:katalog:impor` now reinstalls an image it installed before when the catalogue file changed. A server that imported the old edition gets the 30 replaced frames plus 210 new ones; everything else is skipped as unchanged.
+
 ## 12 Oktober 2026 — 24 frame setiap pose Jaka dan Mbah Kedu
 
 - Mengikuti permintaan pengguna: enam pose Jaka (idle, happy, bow, sad, afraid, determined) dan empat pose Mbah Kedu (idle, smile, worried, weak), masing-masing 24 frame. Total 240 WebP transparan 700 × 900 mengganti 30 file lama dan menambah 210. Kode frame 1–3 dipertahankan; frame ditampilkan dalam urutan angka per pose.
@@ -16,7 +23,7 @@ Diperbarui 12 Oktober 2026 (Asia/Bangkok). Urutan di bawah membedakan hasil terk
 - Membuat sepuluh lembar kontak frame dan [preview gerak lokal](../review/character-animation.html). Memeriksa seluruh key pose dan lembar frame happy/bow/weak; bukan review individual 240 gambar atau validasi budaya, lisensi, rig, maupun integrasi game.
 - [Daftar nama gaya lama](../reports/remaining-legacy-style.txt) berisi 101 aset yang belum diganti berdasarkan `previous_style_review`; tiga aset lain masih tidak pasti di [laporan](../reports/remaining-legacy-style.json). Membaca enam lembar kontak sebelum penggantian dan membuat lima lembar kontak terbaru setelah karakter dikecualikan. Status katalog tidak diubah dan daftar ini bukan audit visual baru. Lembar keenam sementara yang sudah kedaluwarsa dihapus.
 - Sintaks tujuh skrip JavaScript baru/diubah dan pemeriksaan whitespace Git lulus. Validator akhir lulus dengan 563 tautan Markdown; satu percobaan sempat gagal menulis laporan dengan galat filesystem `UNKNOWN`, lalu percobaan ulang berhasil. Tidak membuat commit atau push; staging yang sudah ada tidak diubah oleh agen. Audio tidak diubah dan tidak ada rekaman baru.
-=======
+
 ## 11 October 2026 (evening) — logo and start buttons from the references, game import
 
 *(New section, English, written from the GELITA app repo; branch `pbb/nifty-faraday-fcw9r6`.)*
@@ -30,7 +37,6 @@ Diperbarui 12 Oktober 2026 (Asia/Bangkok). Urutan di bawah membedakan hasil terk
 - **Data:** in `data.json`, the four entries got a new `desc`, `generated_by`, `content_review`, and `actual`. The old ornament-only logo files and the flat SVG-rendered buttons are replaced; `ui.btn-start*.svg` stay as before.
 - **Checks:** `node build.mjs` and `node scripts/validate.mjs` pass. No other image, prompt, or audio changed. The browser check was not run.
 - **Game import:** the app now installs this catalogue's images with `php spark gelita:katalog:impor`, which re-encodes them as lossy WebP for the game. Images here stay lossless.
->>>>>>> 6d30b54b168ef0feff8401bfef34b30accad661e
 
 ## 12 Oktober 2026 — dokumentasi dan struktur
 

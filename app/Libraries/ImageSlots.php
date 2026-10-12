@@ -414,7 +414,7 @@ final class ImageSlots
         'char.kedu.*' => [
             'group'       => 'character',
             'label'       => 'Mbah Kedu · pose {pose} · gambar {frame}',
-            'content'     => 'Mbah Kedu sesuai Katalog Aset (wajah reference.02, pakaian reference.14): kakek penjaga lentera bergaya 3D, ikat kepala batik cokelat, jas panjang cokelat tua berkerah tegak, selendang batik di pinggang, tongkat kayu jati, tanpa syal merah. Seluruh badan, pose {pose}, menghadap ke kanan layar (permainan mencerminkannya saat berdiri di kanan). Latar transparan, kaki di garis bawah yang sama untuk semua gambar.',
+            'content'     => 'Mbah Kedu sesuai Katalog Aset (reference.02, gambar gerak 12 Oktober 2026): kakek penjaga lentera bergaya 3D, ikat kepala batik cokelat, kemeja krem berkerah tegak dengan rompi batik cokelat, celana cokelat longgar, sandal, tongkat kayu, tanpa syal merah. Seluruh badan, pose {pose}, menghadap ke kanan layar (permainan mencerminkannya saat berdiri di kanan). Latar transparan, kaki di garis bawah yang sama untuk semua gambar.',
             'screens'     => [
                 ['Baris cerita yang memakai pose ini: cerita pembuka, dialog dan wilayah tuntas, penutup (rinciannya di halaman detail)', '/intro'],
             ],
