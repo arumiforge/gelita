@@ -138,6 +138,7 @@ Semua command mengembalikan kode keluar 1 saat gagal, sehingga dapat dipakai di 
 |---|---|
 | `gelita:bank:import <file> [--dry-run] [--staff <username>]` | Mengimpor workbook XLSX (bank soal atau Pustaka) dalam satu transaction; `--dry-run` hanya memvalidasi. Sama dengan **Konten → Impor soal dari Excel**. |
 | `gelita:content:verify [--strict] [--siap-penelitian]` | Memeriksa 3 wilayah × 4 tantangan, variasi, aturan bank soal, kunci, dan media. `--strict`: peringatan juga gagal; `--siap-penelitian`: gambar contoh yang masih dipakai menjadi galat. |
+| `gelita:katalog:impor [--sumber=FOLDER] [--dry-run] [--timpa]` | Installs the images of the Katalog Aset (`gelita-katalog/`) into every image slot: logo, buttons, app icons, backgrounds, story slides, maps, badges, pins, lanterns, avatars, character frames, challenge images, and Pustaka illustrations (lossy WebP, `app.*` as PNG). Images an admin uploaded are kept unless `--timpa`; safe to run again. See `docs/08_DEPLOYMENT.md`. |
 | `gelita:library:thumbnails [--force]` | Mengunduh thumbnail video luar Pustaka (YouTube, Vimeo, Google Drive) dan memasangnya sebagai poster; butuh HTTPS keluar. |
 | `gelita:media:scan [--check-only]` | Menyinkronkan `public/assets` dengan tabel `media_assets` dan melaporkan berkas yang hilang atau berubah. |
 | `gelita:mockups [--dry-run] [--paksa] [--node=tmg-4]` | Membuat gambar contoh untuk slot gambar tantangan yang belum berisi gambar asli; gambar asli tidak pernah ditimpa. |
@@ -173,7 +174,8 @@ Suite memakai SQLite in-memory (grup database `tests`) dengan skema tiruan di `t
 | `app/Views/`, `app/Language/{id,en}/` | tampilan dan teks dwibahasa |
 | `public/assets/` | CSS, JavaScript (`core/`, `game/`, `engines/`, `admin/`), audio, font, vendor; unggahan admin di `uploads/` (tidak dilacak Git) |
 | `deploy/` | skrip deploy, backup, retensi, dan konfigurasi Nginx untuk Linux dan Windows |
-| `docs/` | dokumentasi, sumber bank soal, Pustaka, dan daftar sekolah |
+| `docs/` | dokumentasi, sumber bank soal, Pustaka, dan daftar sekolah; rencana yang sudah selesai di `docs/arsip/` |
+| `gelita-katalog/` | Katalog Aset tim: gambar, gambar rujukan, prompt, dan arahan gaya (buka `index.html`); dipasang ke permainan dengan `gelita:katalog:impor`. Internal: memuat tanda benda pengecoh, jadi tidak pernah di bawah `public/` |
 | `tests/` | suite PHPUnit |
 | `tools/audio/` | generator musik, efek suara, dan narasi |
 | `tools/qa/` | skrip uji peramban Playwright: `stage-check.mjs` (panggung 16:9), `challenge-races.mjs` (aturan kesempatan dan cek bersamaan), `a11y-check.mjs` (keyboard dan pembaca layar di layar tantangan), dan `nav-timing.mjs` (waktu pindah layar dan ganti bahasa di jaringan acuan; `node tools/qa/nav-timing.mjs --serve`, rencana paket aset Tahap 0) |
@@ -199,6 +201,9 @@ Daftar route lengkap: `php spark routes`.
 | [`docs/sekolah/README.md`](docs/sekolah/README.md) | daftar sekolah resmi Jawa Tengah |
 | [`docs/perombakan-kelas5/`](docs/perombakan-kelas5/) | rencana perombakan kelas 5 (Dok 1–3: fondasi data, tantangan dan bank soal, panggung 16:9 dan panel admin) dan [catatan implementasinya](docs/perombakan-kelas5/CATATAN_IMPLEMENTASI.md) |
 | [`docs/PROGRESS.md`](docs/PROGRESS.md) | daftar pekerjaan selesai dan terbuka, serta branch yang sedang berjalan |
+| [`docs/rencana-paket-aset.md`](docs/rencana-paket-aset.md) | rencana paket aset (unduh sekali), masih berjalan |
+| [`docs/arsip/`](docs/arsip/README.md) | rencana yang sudah selesai (perbaikan tampilan, katalog aset), disimpan sebagai catatan |
+| [`gelita-katalog/README.md`](gelita-katalog/README.md) | Katalog Aset: gambar, rujukan, dan prompt |
 
 ## Ukuran aset wajib
 
@@ -207,7 +212,7 @@ Ukuran gambar per slot ditetapkan di `Config\Gelita::$assetSizes`. Slot bertanda
 | Slot | Ukuran (px) | Ditolak bila lain |
 |---|---|---|
 | Latar layar `bg.*` (`bg.loading`, `bg.welcome`, `bg.auth`, `bg.intro`, `bg.map`, `bg.reflection`, `bg.{wilayah}.region`) | 1920 × 1080 | ya |
-| Frame pose tokoh `char.jaka.{pose}.{1–3}`, `char.kedu.{pose}.{1–3}` (PNG transparan) | 700 × 900 | ya |
+| Frame pose tokoh `char.jaka.{pose}.{1–24}`, `char.kedu.{pose}.{1–24}` (WebP/PNG transparan; sampai 24 gambar per pose, diputar berulang) | 700 × 900 | ya |
 | Logo halaman awal `ui.logo-hero` | 1600 × 600 | ya |
 | Tombol Mulai `ui.btn-start`, `ui.btn-start.en` | 720 × 240 | ya |
 | Adegan Cari Objek `challenge.{tmg,mgl,wnb}-4.scene` | 1280 × 720 | ya |

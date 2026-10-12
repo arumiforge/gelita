@@ -145,20 +145,27 @@ class Gelita extends BaseConfig
     ];
 
     /**
-     * Animasi karakter: frame sekuensial di media_assets.
-     * Menggantikan tabel sprite_sheets/sprite_animations.
+     * Character animation per pose: up to `frames` images
+     * `char.{jaka|kedu}.{pose}.{1..frames}` in media_assets, always looping
+     * (owner decision 11 October 2026: 24 frames per pose, repeated).
+     * `seconds` is the length of one loop. The speed follows the number of
+     * frames actually uploaded (character_fps()): 24 frames in 2 s play at
+     * 12 per second, 3 interim frames in 3 s at 1 per second. Frames that are
+     * not uploaded are skipped.
+     *
+     * @var array<string, array{frames: int, seconds: float, loop: bool}>
      */
     public array $characterAnimations = [
-        'jaka.idle'       => ['frames' => 3, 'fps' => 4, 'loop' => true],
-        'jaka.bow'        => ['frames' => 3, 'fps' => 6, 'loop' => false],
-        'jaka.happy'      => ['frames' => 3, 'fps' => 6, 'loop' => false],
-        'jaka.sad'        => ['frames' => 3, 'fps' => 4, 'loop' => false],
-        'jaka.afraid'     => ['frames' => 3, 'fps' => 6, 'loop' => false],
-        'jaka.determined' => ['frames' => 3, 'fps' => 6, 'loop' => false],
-        'kedu.idle'       => ['frames' => 3, 'fps' => 3, 'loop' => true],
-        'kedu.smile'      => ['frames' => 3, 'fps' => 4, 'loop' => false],
-        'kedu.worried'    => ['frames' => 3, 'fps' => 4, 'loop' => false],
-        'kedu.weak'       => ['frames' => 3, 'fps' => 3, 'loop' => false],
+        'jaka.idle'       => ['frames' => 24, 'seconds' => 3.0, 'loop' => true],
+        'jaka.bow'        => ['frames' => 24, 'seconds' => 2.5, 'loop' => true],
+        'jaka.happy'      => ['frames' => 24, 'seconds' => 2.0, 'loop' => true],
+        'jaka.sad'        => ['frames' => 24, 'seconds' => 3.0, 'loop' => true],
+        'jaka.afraid'     => ['frames' => 24, 'seconds' => 2.0, 'loop' => true],
+        'jaka.determined' => ['frames' => 24, 'seconds' => 2.0, 'loop' => true],
+        'kedu.idle'       => ['frames' => 24, 'seconds' => 3.5, 'loop' => true],
+        'kedu.smile'      => ['frames' => 24, 'seconds' => 3.0, 'loop' => true],
+        'kedu.worried'    => ['frames' => 24, 'seconds' => 3.0, 'loop' => true],
+        'kedu.weak'       => ['frames' => 24, 'seconds' => 3.5, 'loop' => true],
     ];
 
     /**

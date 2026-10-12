@@ -298,15 +298,33 @@ if (! function_exists('character_frame_src')) {
     }
 }
 
+if (! function_exists('character_fps')) {
+    /**
+     * Frames per second for a pose with `$count` uploaded frames: one loop
+     * lasts `seconds` from Config\Gelita::$characterAnimations, so 24 frames
+     * play smoothly and a few interim frames do not flicker. Kept between
+     * 0.5 and 24 per second.
+     *
+     * @param array{seconds?: float|int} $animation
+     */
+    function character_fps(int $count, array $animation): float
+    {
+        $seconds = max(0.5, (float) ($animation['seconds'] ?? 2.0));
+
+        return round(min(24.0, max(0.5, max(1, $count) / $seconds)), 2);
+    }
+}
+
 if (! function_exists('character_frames')) {
     /**
      * Animation of a character pose: the uploaded frames `char.{jaka|kedu}.{pose}.{n}`
-     * in order, with fps and loop from Config\Gelita::$characterAnimations.
+     * in order, with the speed from character_fps() and loop from
+     * Config\Gelita::$characterAnimations (every pose loops).
      * Falls back to `idle` when frame 1 of the pose is missing, so `frames[0]`
      * always equals character_frame_src(); a missing later frame is skipped.
      * NULL for the narrator or when neither pose has frame 1.
      *
-     * @return array{frames: list<string>, fps: int, loop: bool}|null
+     * @return array{frames: list<string>, fps: float, loop: bool}|null
      */
     function character_frames(string $character, ?string $pose = null): ?array
     {
@@ -334,8 +352,8 @@ if (! function_exists('character_frames')) {
 
             return [
                 'frames' => $frames,
-                'fps'    => max(1, (int) ($animation['fps'] ?? 1)),
-                'loop'   => (bool) ($animation['loop'] ?? false),
+                'fps'    => character_fps(count($frames), $animation),
+                'loop'   => (bool) ($animation['loop'] ?? true),
             ];
         }
 
@@ -349,7 +367,7 @@ if (! function_exists('character_frames_attr')) {
      * `{prefix}fps`, `{prefix}loop`), with a leading space. Empty when the
      * animation has fewer than 2 frames: the figure then stays on frame 1.
      *
-     * @param array{frames: list<string>, fps: int, loop: bool}|null $animation from character_frames()
+     * @param array{frames: list<string>, fps: float, loop: bool}|null $animation from character_frames()
      */
     function character_frames_attr(?array $animation, string $prefix = 'data-'): string
     {

@@ -610,8 +610,10 @@ class MediaStore
         $media    = model(MediaAssetModel::class);
         $absolute = FCPATH . $storagePath;
 
-        // Frame karakter tetap berjenis sprite_frame saat berkasnya diganti
-        if ($existing !== null && $existing['asset_type'] === 'sprite_frame' && $type === 'image') {
+        // Character frames stay sprite_frame when replaced, and frames 2+ (no
+        // row until their first upload) start as one
+        if ($type === 'image' && (($existing !== null && $existing['asset_type'] === 'sprite_frame')
+            || ($existing === null && preg_match('/^char\.(jaka|kedu)\.[a-z]+\.\d+$/', $assetKey) === 1))) {
             $type = 'sprite_frame';
         }
 
@@ -630,7 +632,8 @@ class MediaStore
             'is_placeholder' => 0,
         ];
 
-        if ($existing !== null && (string) ($existing['credit'] ?? '') === MockupGenerator::CREDIT) {
+        // A new file is no longer the sample or the interim catalogue image
+        if ($existing !== null && in_array((string) ($existing['credit'] ?? ''), [MockupGenerator::CREDIT, CatalogImporter::CREDIT], true)) {
             $payload['credit'] = null;
         }
 

@@ -417,7 +417,7 @@ Detail siswa → **Unduh data siswa**: lembar yang sama, difilter satu peserta (
 | `docs/07_FEATURE_INTEGRATION.md` | ekspor data mentah, reset, mockup, pendaftaran 3 langkah |
 | `docs/08_DEPLOYMENT.md` | prosedur §13 sebagai bagian "Memperbarui server ke perombakan kelas 5" |
 | `docs/bank-soal/README.md`, `docs/naskah-cerita.md`, `docs/audio.md` | (Dok 2) bank kelas 5, 12 serpihan, 100 rekaman per bahasa |
-| `docs/rencana-perbaikan-tampilan.md`, `docs/rencana-katalog-aset.md` | catatan di atas: bagian yang digantikan perombakan kelas 5, sisanya tetap ditunda |
+| `docs/arsip/rencana-perbaikan-tampilan.md`, `docs/arsip/rencana-katalog-aset.md` | catatan di atas: bagian yang digantikan perombakan kelas 5, sisanya tetap ditunda |
 
 ---
 

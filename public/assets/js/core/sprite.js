@@ -1,15 +1,17 @@
 /**
  * Frame player for character figures (`.character[data-frames]`, rendered by
- * components/character.php from Config\Gelita::$characterAnimations).
+ * components/character.php from Config\Gelita::$characterAnimations: up to
+ * 24 frames per pose, every pose looping, speed from character_fps()).
  *
  * - The server renders frame 1 in `.character-img`; this module only swaps
  *   that image's `src`, never the node, so CSS entrance animations do not
  *   replay and the mirrored right-hand figure stays mirrored.
  * - Frames 2+ are decoded while idle, before the cycle starts, so the swap
  *   does not flicker. A frame that fails to load is skipped.
- * - `data-loop="1"` cycles; otherwise the pose plays once and holds its last
- *   frame. It replays from frame 1 whenever the figure comes back into view
- *   (a slide shown again, an overlay reopened).
+ * - `data-loop="1"` cycles (every pose since 11 October 2026); otherwise the
+ *   pose plays once and holds its last frame. It restarts from frame 1
+ *   whenever the figure comes back into view (a slide shown again, an
+ *   overlay reopened).
  * - Paused while the tab is hidden and while the figure is not rendered
  *   (hidden slides are `display: none`, which IntersectionObserver reports
  *   as not intersecting).
@@ -140,7 +142,7 @@ export function setFrames(figure, frames, { fps = 1, loop = false } = {}) {
   if (!figure) return;
   const player = bind(figure);
   player.frames = frames;
-  player.fps = Math.max(1, Number(fps) || 1);
+  player.fps = Math.max(0.5, Number(fps) || 1);
   player.loop = Boolean(loop);
 
   if (frames.length < 2) {
