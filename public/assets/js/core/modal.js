@@ -28,8 +28,8 @@ function buildFromTemplate() {
 
   // Cadangan bila layout tidak menyertakan template (mis. halaman galat)
   return el('div', { class: 'modal', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'modal-title' },
+    el('div', { class: 'modal-icon', 'aria-hidden': 'true' }),
     el('div', { class: 'modal-card modal-info' },
-      el('div', { class: 'modal-icon', 'aria-hidden': 'true' }),
       el('h3', { class: 'modal-title', id: 'modal-title' }),
       el('p', { class: 'modal-text', id: 'modal-text' }),
       el('div', { class: 'modal-actions' })));
@@ -57,6 +57,7 @@ export function showModal({ type = 'info', icon = null, character = null, title 
   const modal = buildFromTemplate();
   const card = modal.querySelector('.modal-card');
   card.className = `modal-card modal-${type}`;
+  modal.dataset.type = type;
 
   const iconHost = modal.querySelector('.modal-icon');
   const iconTpl = modal.querySelector(`template[data-modal-icon="${icon || type}"]`);

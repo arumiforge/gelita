@@ -104,4 +104,13 @@ return [
     'huntDecoyText'  => 'That is not the object in the clue. Read the clue again.',
     'huntOtherTitle' => 'Not this one',
     'huntOtherText'  => 'That object is also part of the heritage of {0}, but it is not what this clue means.',
+
+    // Student form fields (game/form-check.js, game/login.js)
+    'formMissingTitle'  => 'Something is still empty',
+    'formMissingText'   => 'Please fill in: {0}.',
+    'formInvalidTitle'  => 'Something needs another look',
+    'formInvalidText'   => 'Please check: {0}.',
+    'formAnd'           => 'and',
+    'formFix'           => 'OK, I will fill it in',
+    'loginFailedTitle'  => 'Cannot log in yet',
 ];

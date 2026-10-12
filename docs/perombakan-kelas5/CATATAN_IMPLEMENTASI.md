@@ -1510,3 +1510,27 @@ Branch `pbb/hopeful-bardeen-48ljgp` (second PR on it; #104 is merged). Owner rep
 - **Size.** The icons are now 32 dp (`2rem`), the size of the other HUD icons, instead of 44 dp. Each button keeps a 40 dp box, like `.hud .icon-btn`, and the 48 dp hit area from `.lang-opt::before`. `$assetDisplaySizes['ui.lang.*']` and the slot tip say 32 dp.
 - **Old stylesheet.** The `<img>` used to carry `width="256" height="256"` (the file size). A browser or an asset package that still served the `components.css` from before PR #104 had no `.lang-switch.is-image` rules, so it drew the icons at 256 px. The attributes are now the display size (32 × 32), so the icons stay small even then. Checked in Chromium with `components.css` blocked: 32 × 32.
 - **Tests.** `StartGateTest` checks the 32 px attributes.
+
+## Clue play button, modal icons, form errors in a modal, staff link (12 October 2026)
+
+Branch `pbb/hopeful-bardeen-48ljgp` (third PR on it; #104 and #105 are merged). Owner request: the play button of the Cari Objek clue narration overlaps or looks messy; some modal icons are cut off (they may stick out above the box); on sign-up, empty fields should open a modal explaining the problem without reloading the page; a wrong login should also be a modal without a reload; a thin link to the admin login in the bottom-right corner of the welcome page only.
+
+- **Clue play button.** `game.css` had two rules for `.hunt-clue-body.has-voice`. The later, older one (two columns) overrode the three-column layout (label and tries | ▶ | clue text), so the button and the clue text shared one cell. The old rule is removed. Checked in Chromium on `tmg-4` with approved narration: label 97–273 px, button 285–333 px, text from 345 px, no overlap.
+- **Modal icons.** The game modal card scrolls (`max-height` 35rem, `overflow-y: auto`, stage.css), which clipped the round icon pulled above the card with a negative margin. The icon is now the dialog's first child, outside the card (`components/modal.php`, also the fallback markup in `core/modal.js`). It rises 32 dp above the card and overlaps 32 dp into its top padding. The kind is now on the dialog as `data-type`, used for the icon colour; the `modal-{type}` class stays on the card. The entrance animation moved from the card to the dialog, so the icon animates with it. The panel shares the markup: `admin.css` puts the icon back in the card's top-left corner (checked in Chromium, same look as before).
+- **Sign-up: empty or invalid fields in a modal.** New `game/form-check.js`:
+  - It sets `noValidate` (JavaScript only; without it the browser bubbles and the server still apply) and adds a capture-phase submit check before device.js and the double-submit guard.
+  - It lists every field that is empty or invalid in one modal ("Masih ada yang kosong" — "Isi dulu bagian ini, ya: Nama lengkap, Umur dan Jenis kelamin."). It marks the fields with `.has-error` and focuses the first one when the modal closes.
+  - Field names come from `data-field-name`, the `<label>`, or the fieldset `<legend>`; the assent checkbox uses `Game.assentName`.
+  - It replaces `markInvalidFields()`. Server validation is unchanged; errors only the server can find (e.g. a taken name) still come back with a reload.
+- **Login without a reload.** `game/login.js` sends the form with fetch and `X-Requested-With: XMLHttpRequest`. For that request `LoginController::login()` answers JSON instead of a redirect:
+  - success and must-change-password: `{ ok: true, redirect }`;
+  - wrong password, locked account, or empty field: `{ ok: false, field, message, csrfName, csrf }`.
+  - A failure opens a modal ("Belum bisa masuk" with the server's message); the name stays, the password is cleared and focused.
+  - Because `/masuk` is not loaded again after a failure, the controller keeps the `redirect_after_login` flash for the next try.
+  - Any other answer (CSRF page, rate limit, network error) falls back to the plain POST. Without JavaScript the form still posts and redirects.
+- **Staff link.** A thin "Masuk staf" link (key icon, 12 px text, 60 % opacity, brighter on hover or focus) in the bottom-right corner of `/` only, to `/admin/login`. This reverses the earlier rule in `StartGateTest` that the welcome page has no admin link; the test now allows exactly this one link.
+- **Language keys.** New `Js.formMissingTitle`, `formMissingText`, `formInvalidTitle`, `formInvalidText`, `formAnd`, `formFix`, `loginFailedTitle`, and `Game.assentName`, `Game.staffLogin`, each in both languages.
+- **Tests.**
+  - New `LoginModalTest`: JSON on a wrong password, an empty field, success, and must-change; the kept `redirect_after_login` flash (fails without the fix); a plain POST still redirects.
+  - `StartGateTest`: staff link only on `/`; the modal icon sits outside the card.
+  - Browser check in Chromium on local MariaDB: all three sign-up steps and the login stay on the page (0 navigations) and show the modal; a correct login moves on. Suite green (659 tests).

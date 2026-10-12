@@ -33,6 +33,7 @@ return [
 
     // Aplikasi terpasang (halaman welcome)
     'installApp'      => 'Pasang GELITA',
+    'staffLogin'     => 'Masuk staf',
     'installHint'     => 'Pasang di layar utama: layar selalu mendatar dan penuh, tanpa bilah alamat.',
     'installIos'      => 'Di iPhone/iPad: ketuk Bagikan, lalu pilih Tambah ke Layar Utama.',
 
@@ -117,6 +118,7 @@ return [
     'regStepOf'      => 'Langkah {0} dari {1}',
     'regStepsLabel'  => 'Langkah pendaftaran',
     'assentLabel'    => 'Aku mau ikut bermain GELITA. Aku tahu jawaban dan langkahku di dalam permainan dicatat untuk penelitian.',
+    'assentName'     => 'Persetujuan ikut bermain',
     'assentRequired' => 'Centang dulu tanda setujumu untuk ikut bermain, ya.',
     'ageRange'       => 'Umur harus antara {0} dan {1} tahun.',
     'genderRequired' => 'Pilih laki-laki atau perempuan.',

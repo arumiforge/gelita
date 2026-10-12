@@ -74,7 +74,7 @@ $focus   = static fn (string $f): string => $first === $f ? ' autofocus' : '';
           'usernameField' => 'username',
       ]) ?>
 
-      <div class="field assent-field<?= $invalid('assent') ?>">
+      <div class="field assent-field<?= $invalid('assent') ?>" data-field-name="<?= esc(lang('Game.assentName'), 'attr') ?>">
         <label class="check assent-check">
           <input type="checkbox" name="assent" value="1" required <?= old('assent') ? 'checked' : '' ?><?= $focus('assent') ?>>
           <span><?= esc(lang('Game.assentLabel')) ?></span>

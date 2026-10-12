@@ -33,6 +33,7 @@ return [
 
     // Installed app (welcome page)
     'installApp'      => 'Install GELITA',
+    'staffLogin'     => 'Staff login',
     'installHint'     => 'Add it to the home screen: the screen stays sideways and full, with no address bar.',
     'installIos'      => 'On iPhone/iPad: tap Share, then choose Add to Home Screen.',
 
@@ -117,6 +118,7 @@ return [
     'regStepOf'      => 'Step {0} of {1}',
     'regStepsLabel'  => 'Registration steps',
     'assentLabel'    => 'I want to play GELITA. I know my answers and steps in the game are recorded for research.',
+    'assentName'     => 'Agreement to play',
     'assentRequired' => 'Please tick that you agree to play first.',
     'ageRange'       => 'Age must be between {0} and {1} years.',
     'genderRequired' => 'Choose boy or girl.',

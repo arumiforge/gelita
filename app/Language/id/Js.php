@@ -105,4 +105,13 @@ return [
     'huntDecoyText'  => 'Benda itu bukan yang dimaksud petunjuk. Baca lagi petunjuknya, ya.',
     'huntOtherTitle' => 'Bukan yang ini',
     'huntOtherText'  => 'Benda itu juga warisan {0}, tetapi bukan yang dimaksud petunjuk kali ini.',
+
+    // Isian formulir siswa (game/form-check.js, game/login.js)
+    'formMissingTitle'  => 'Masih ada yang kosong',
+    'formMissingText'   => 'Isi dulu bagian ini, ya: {0}.',
+    'formInvalidTitle'  => 'Ada isian yang belum pas',
+    'formInvalidText'   => 'Periksa lagi bagian ini, ya: {0}.',
+    'formAnd'           => 'dan',
+    'formFix'           => 'Oke, aku isi',
+    'loginFailedTitle'  => 'Belum bisa masuk',
 ];

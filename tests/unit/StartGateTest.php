@@ -234,7 +234,8 @@ final class StartGateTest extends CIUnitTestCase
         $this->assertSame(1, substr_count($page, 'class="btn-start'), 'tepat satu tombol Mulai');
         $this->assertStringContainsString('href="' . base_url('mulai') . '"', $page);
         $this->assertStringNotContainsString('hud-brand', $page, 'merek HUD tidak diulang di halaman awal');
-        $this->assertStringNotContainsString(base_url('admin/login'), $page, 'staf masuk lewat /admin/login langsung');
+        // Owner decision 12 October 2026: one thin staff link (welcome-staff), no other admin entry
+        $this->assertSame(1, substr_count($page, base_url('admin/login')), 'only the thin staff link');
         $this->assertStringNotContainsString(base_url('masuk'), $page);
     }
 
@@ -289,6 +290,23 @@ final class StartGateTest extends CIUnitTestCase
         $slots = array_column((new ReflectionClassConstant(MediaAssetSeeder::class, 'SLOTS'))->getValue(), 1, 0);
         $this->assertSame('assets/ui/lang-en', $slots['ui.lang.en']);
         $this->assertNotNull(MediaUsage::slotLabel('ui.lang.id'));
+    }
+
+    /** A thin staff login link sits on the welcome page only (owner, 12 October 2026). */
+    public function testStaffLinkOnlyOnTheWelcomePage(): void
+    {
+        $this->assertMatchesRegularExpression('/<a class="welcome-staff" href="[^"]*admin\/login">.*' . preg_quote(lang('Game.staffLogin'), '/') . '<\/a>/s', (new HomeController())->index());
+
+        Services::resetSingle('renderer');
+        $this->assertStringNotContainsString('welcome-staff', (new HomeController())->start());
+    }
+
+    /** The modal icon sits outside the scrolling card, so it can rise above it without being clipped. */
+    public function testModalIconIsOutsideTheCard(): void
+    {
+        $html = view('components/modal');
+
+        $this->assertMatchesRegularExpression('/<div class="modal"[^>]*data-type="info">\s*(?:<\?php.*?\?>\s*)?<div class="modal-icon"[^>]*>.*?<\/div>\s*<div class="modal-card/s', $html);
     }
 
     public function testLogoPrefersLandscapeThenSquareThenText(): void

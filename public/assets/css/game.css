@@ -217,6 +217,25 @@ body.is-challenge .lang-switch { display: none; }
   font-weight: 600;
 }
 /* Tawaran memasang di layar utama (game/install.js) */
+/* Staff login: a thin, quiet link in the bottom-right corner of the welcome page only */
+.welcome-staff {
+  position: absolute;
+  right: 1rem;
+  bottom: .5rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gap-1);
+  padding: .125rem var(--gap-2);
+  color: var(--ink-dim);
+  font-size: .75rem;
+  letter-spacing: .02em;
+  text-decoration: none;
+  opacity: .6;
+  transition: opacity .15s, color .15s;
+}
+.welcome-staff .icon { width: .875rem; height: .875rem; }
+.welcome-staff:hover, .welcome-staff:focus-visible { color: var(--gold-300); opacity: 1; }
 .welcome-install { display: grid; align-content: center; justify-items: end; gap: var(--gap-2); height: auto; min-height: calc(40 * var(--dp)); }
 .welcome-install-hint { display: flex; align-items: flex-start; gap: var(--gap-2); margin: 0; color: var(--ink-dim); font-size: var(--fs-caption); }
 .welcome-install-hint .icon { margin-top: .125rem; color: var(--gold-500); }
@@ -1197,13 +1216,12 @@ body.is-challenge .lang-switch { display: none; }
 .hunt-clue-body > .clue-text,
 .hunt-clue-body.has-voice > .clue-text { grid-column: 3; grid-row: 1 / span 2; }
 .clue-text { display: -webkit-box; margin: 0; overflow: hidden; font-size: 1.125rem; font-weight: 700; line-height: 1.25; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
-/* Narasi petunjuk (engines/cari.js): tombol ▶/⏸ di samping teks, hanya bila ada rekaman yang disetujui */
-.hunt-clue-body.has-voice { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; column-gap: var(--gap-2); }
-.hunt-clue-body.has-voice > .eyebrow { grid-column: 1 / -1; }
-.hunt-clue-body.has-voice > .clue-text { grid-column: 2; }
+/* Narasi petunjuk (engines/cari.js): tombol ▶/⏸ di kolom 2, di antara label dan teks, hanya bila ada
+   rekaman yang disetujui. An older two-column rule for .has-voice used to follow here and put the
+   button and the clue text in the same cell (owner report, 12 October 2026). */
 .clue-voice:not(:has(> .audio-player:not([hidden]))) { display: none; }
 .clue-voice .audio-player { padding: 0; border: 0; background: none; }
-.clue-voice .audio-controls { flex: none; }
+.clue-voice .audio-controls { flex: none; flex-wrap: nowrap; gap: var(--gap-1); }
 .clue-voice .audio-btn { background: rgba(74, 50, 24, .12); color: var(--brown-700); }
 .clue-voice .audio-btn[data-action="play"] { background: var(--brown-700); color: var(--parchment); }
 .clue-voice .audio-error { font-size: var(--fs-caption); }

@@ -22,17 +22,19 @@
  *   (tanda salah ketik). NPSN tak dikenal → muncul centang "Sekolahku tidak
  *   ada di daftar" untuk menulis nama. Pertukaran blok NPSN/nama dilakukan CSS
  *   :has(); di sini hanya `required` yang diselaraskan.
- * - Kolom wajib yang kosong ditandai .has-error dan digulirkan ke tampak;
- *   validasi yang mengikat tetap di server.
+ * - Empty or invalid fields stop the submit with one modal that names them
+ *   (game/form-check.js), without a reload; the field gets .has-error and
+ *   focus. Validasi yang mengikat tetap di server.
  *
  * Setiap langkah POST biasa, bukan AJAX. Tombol Daftar TIDAK dinonaktifkan walau
  * sandi belum kuat: penolakan server adalah bagian dari pembelajaran dan
  * tercatat sebagai pw_weak_submit_count.
  */
-import { $, $$, debounce, el, reducedMotion, scrollToCenter } from '../core/dom.js';
+import { $, $$, debounce, el, reducedMotion } from '../core/dom.js';
 import { apiRequest } from '../core/api.js';
 import { initPasswordField } from './password-meter.js';
 import { attachDeviceField } from '../core/device.js';
+import { checkBeforeSubmit } from './form-check.js';
 
 const USERNAME_PATTERN = /^[a-z0-9._]{3,30}$/;
 const NPSN_PATTERN = /^\d{8}$/;
@@ -250,29 +252,6 @@ function initSchool(form) {
   if (NPSN_PATTERN.test(npsn.value)) lookup(); // kembali dari galat: cek ulang + peringatan
 }
 
-/** Kolom wajib kosong → .has-error + gulir ke kolom pertama. */
-export function markInvalidFields(form) {
-  let first = true;
-
-  form.addEventListener('invalid', (event) => {
-    const field = event.target.closest('.field, fieldset, .check') || event.target.parentElement;
-    field?.classList.add('has-error');
-    if (first) {
-      first = false;
-      scrollToCenter(field || event.target);
-      setTimeout(() => { first = true; }, 300);
-    }
-  }, true);
-
-  const clear = (event) => {
-    if (event.target.validity?.valid) {
-      event.target.closest('.field, fieldset, .check')?.classList.remove('has-error');
-    }
-  };
-  form.addEventListener('input', clear);
-  form.addEventListener('change', clear);
-}
-
 /** Cegah kirim ganda: tombol submit dinonaktifkan setelah form benar-benar terkirim. */
 export function preventDoubleSubmit(form) {
   form.addEventListener('submit', (event) => {
@@ -302,6 +281,10 @@ export function initRegister() {
 
   const step = form.dataset.step ?? '';
 
+  // First: an empty or invalid field stops the submit with a modal, before
+  // device.js or the double-submit guard run (no reload just to say "empty")
+  checkBeforeSubmit(form);
+
   if (step === '2') {
     initRegion(form);
     initSchool(form);
@@ -313,6 +296,5 @@ export function initRegister() {
     attachDeviceField(form); // sebelum penjaga kirim-ganda
   }
 
-  markInvalidFields(form);
   preventDoubleSubmit(form);
 }
