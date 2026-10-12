@@ -49,6 +49,9 @@ class MediaAssetSeeder extends GelitaSeeder
         ['ui.logo-hero', 'assets/ui/logo-hero', 'png'],
         ['ui.btn-start', 'assets/ui/btn-start', 'png'],
         ['ui.btn-start.en', 'assets/ui/btn-start-en', 'png'],
+        // Language switch icons in the HUD; without both the switch stays text
+        ['ui.lang.id', 'assets/ui/lang-id', 'png'],
+        ['ui.lang.en', 'assets/ui/lang-en', 'png'],
         ['ui.placeholder', 'assets/ui/placeholder', 'svg'],
         ['map.kedu', 'assets/map/map-kedu', 'png'],
         // Latar layar umum yang dibaca view lewat media_key_src()

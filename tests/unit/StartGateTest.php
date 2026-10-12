@@ -263,6 +263,34 @@ final class StartGateTest extends CIUnitTestCase
         $this->assertStringContainsString($this->attr('assets/ui/btn-start.png'), $this->homeIn('en'));
     }
 
+    /** The HUD language switch shows both catalogue icons, or text for both while one is missing. */
+    public function testLanguageSwitchUsesIconsOnlyWhenBothExist(): void
+    {
+        $text = (new HomeController())->index();
+        $this->assertStringContainsString('class="lang-switch"', $text);
+        $this->assertMatchesRegularExpression('/aria-pressed="true">ID<\/button>/', $text);
+
+        $this->media = ['ui.lang.id' => 'assets/ui/lang-id.webp'];
+        Services::resetSingle('renderer');
+        $this->assertStringNotContainsString($this->attr('assets/ui/lang-id.webp'), (new HomeController())->index(), 'one icon alone is not mixed with text');
+
+        $this->media['ui.lang.en'] = 'assets/ui/lang-en.webp';
+        Services::resetSingle('renderer');
+        $page = (new HomeController())->index();
+        $this->assertStringContainsString('class="lang-switch is-image"', $page);
+        $this->assertStringContainsString('src="' . $this->attr('assets/ui/lang-id.webp') . '" alt=""', $page);
+        $this->assertStringContainsString('src="' . $this->attr('assets/ui/lang-en.webp') . '" alt=""', $page);
+        $this->assertMatchesRegularExpression('/aria-pressed="true"\s+aria-label="' . preg_quote(esc('Bahasa Indonesia', 'attr'), '/') . '"/', $page);
+        $this->assertMatchesRegularExpression('/aria-pressed="false"\s+aria-label="English"/', $page);
+
+        $store = new MediaStore();
+        $this->assertSame([256, 256], $store->requiredSize('ui.lang.id'));
+        $this->assertSame([256, 256], $store->requiredSize('ui.lang.en'));
+        $slots = array_column((new ReflectionClassConstant(MediaAssetSeeder::class, 'SLOTS'))->getValue(), 1, 0);
+        $this->assertSame('assets/ui/lang-en', $slots['ui.lang.en']);
+        $this->assertNotNull(MediaUsage::slotLabel('ui.lang.id'));
+    }
+
     public function testLogoPrefersLandscapeThenSquareThenText(): void
     {
         $this->assertStringContainsString('class="welcome-title"', (new HomeController())->index());

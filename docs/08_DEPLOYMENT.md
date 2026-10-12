@@ -748,6 +748,14 @@ sudo -u www-data php spark gelita:katalog:impor             # install
 - Story slide backgrounds are linked to their slide, Pustaka illustrations replace the Commons links (re-importing `docs/pustaka/gelita-pustaka.xlsx` restores the links), video covers already downloaded by `gelita:library:thumbnails` are kept, and each region's four challenge buttons are moved onto the clearings of the catalogue's region map.
 - The catalogue has 24 frames per pose for all ten poses (240, red-scarf Jaka and Mbah Kedu, added 12 October 2026). The Cari Objek objects sit on the tables and shelves of the catalogue scenes (question bank layout of 12 October 2026). On a server whose bank still has the old positions, the command moves every object that is still at its old position, as long as the installed scene is the catalogue one; an object an admin placed elsewhere stays (`--timpa` moves it too). Re-importing the bank (`gelita:bank:import`) gives the same positions, but resets every admin placement to the bank.
 - **After a new catalogue edition** (pull the repo first), run the command again. An image installed from an earlier edition is reinstalled when its catalogue file changed and skipped when it is the same; admin uploads stay. The 12 October 2026 edition replaces the 30 old frames and adds 210 (about 15 MB in the game).
+- The two round language icons of the HUD switch come from the catalogue references `reference.20` (ID) and `reference.19` (EN) and are stored as `ui.lang.id`/`ui.lang.en`. Until both exist the switch shows the text ID / EN.
+- **Old art kept as an admin upload** (e.g. the lurik Jaka frames or an older start button uploaded in the panel before the catalogue existed) is never replaced by a plain run. The report says "sudah ada gambar unggahan admin" for such a slot, and a pose whose frames now come from both sources is listed as **perlu dicek**, because its loop would switch between two drawings. Replace only those slots with `--kunci` (comma-separated, `*` allowed), dry run first:
+
+  ```bash
+  sudo -u www-data php spark gelita:katalog:impor --timpa --kunci="ui.btn-start*,ui.lang.*,char.jaka.*" --dry-run
+  sudo -u www-data php spark gelita:katalog:impor --timpa --kunci="ui.btn-start*,ui.lang.*,char.jaka.*"
+  ```
+
 - When a release uses an asset package, build a new package afterwards (`gelita:paket:bangun`) so devices get the new pictures.
 
 ### Sebelum pengambilan data penelitian

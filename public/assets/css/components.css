@@ -309,6 +309,32 @@ input[type="checkbox"], input[type="radio"] { width: 1.375rem; height: 1.375rem;
 }
 .lang-opt.is-active { background: var(--gold-500); color: var(--navy-900); }
 
+/* Icon version (ui.lang.id / ui.lang.en from the Katalog Aset): two round
+   44 dp medallions with no backing; the chosen language is bright with a
+   gold glow, the other dimmed (still readable) until hovered or focused */
+.lang-switch.is-image { gap: var(--gap-1); padding: 0; background: none; }
+.lang-switch.is-image .lang-opt { min-width: 2.75rem; min-height: 2.75rem; padding: 0; background: none; }
+.lang-switch.is-image .lang-opt img {
+  display: block;
+  width: 2.75rem;
+  height: 2.75rem;
+  opacity: .7;
+  filter: grayscale(.4) drop-shadow(0 1px .1875rem rgba(11, 19, 32, .9));
+  transition: opacity .15s, filter .15s, transform .15s;
+  -webkit-user-drag: none;
+}
+.lang-switch.is-image .lang-opt.is-active img {
+  opacity: 1;
+  filter: drop-shadow(0 0 .375rem var(--glow)) drop-shadow(0 1px .1875rem rgba(11, 19, 32, .9));
+}
+@media (hover: hover) {
+  .lang-switch.is-image .lang-opt:hover img { opacity: 1; filter: drop-shadow(0 1px .1875rem rgba(11, 19, 32, .9)); transform: scale(1.08); }
+}
+.lang-switch.is-image .lang-opt:focus-visible { outline: .1875rem solid var(--gold-500); outline-offset: .125rem; border-radius: 50%; }
+.lang-switch.is-image .lang-opt:active img { transform: scale(.92); }
+.lang-switch.is-image .lang-opt:active,
+.lang-switch.is-image .lang-opt.is-active:active { background: none; }
+
 /* ---------- Toast (display plan Phase E) ----------
    Navy card with a glowing gold frame and a round icon badge. Enters with a
    short pop, leaves by fading upward (core/toast.js adds .is-leaving). */

@@ -23,6 +23,8 @@ use RuntimeException;
  * - Slot keys the game reads by name (logo, buttons, backgrounds, maps,
  *   badges, pins, lanterns, avatars, character frames, challenge images)
  *   are stored under the same key.
+ * - Two reference icons also fill a slot (REFERENCE_SLOTS): `reference.20`
+ *   and `reference.19` become the language switch icons `ui.lang.id`/`.en`.
  * - App icons are converted to PNG, because the `app.*` slots take PNG only;
  *   the favicon is made from the 192 icon, since the catalogue one is
  *   smaller than the slot.
@@ -45,6 +47,11 @@ use RuntimeException;
  * when its catalogue file changed (same re-encoded sha256 → skipped), so a
  * new catalogue edition (e.g. the 24-frame poses of 12 October 2026) reaches
  * a server that imported an older one.
+ *
+ * `$only` limits a run to some slots, so `$overwrite` can replace e.g. the
+ * old lurik frames of one character without touching other admin uploads.
+ * A pose left with frames from two sources (a kept upload among catalogue
+ * frames) is reported as a warning, since its loop would switch drawings.
  */
 final class CatalogImporter
 {
@@ -120,6 +127,15 @@ final class CatalogImporter
         'app.apple-touch-icon.png'  => ['app.apple-touch', false],
     ];
 
+    /**
+     * Catalogue reference entries that also fill a game slot (owner request
+     * 12 October 2026): the round language icons of the HUD switch.
+     */
+    public const REFERENCE_SLOTS = [
+        'reference.20' => 'ui.lang.id',
+        'reference.19' => 'ui.lang.en',
+    ];
+
     /** Lossy WebP quality for every stored image except the PNG app icons. */
     public const WEBP_QUALITY = 82;
 
@@ -131,6 +147,7 @@ final class CatalogImporter
         'installed' => 'dipasang',
         'planned'   => 'akan dipasang',
         'skipped'   => 'dilewati',
+        'warning'   => 'perlu dicek',
         'failed'    => 'gagal',
     ];
 
@@ -203,16 +220,20 @@ final class CatalogImporter
     /**
      * Install every usable catalogue image.
      *
-     * @param bool $dryRun    report what would happen, change nothing
-     * @param bool $overwrite also replace images uploaded by an admin or installed before
+     * @param bool         $dryRun    report what would happen, change nothing
+     * @param bool         $overwrite also replace images uploaded by an admin or installed before
+     * @param list<string> $only      fnmatch patterns (e.g. `char.jaka.*`, `ui.btn-start*`); when given,
+     *                                only entries whose catalogue key (or, for a reference, the slot it
+     *                                fills) matches are handled, so `$overwrite` can be limited to them
      *
      * @return list<array{source: string, target: string, status: string, note: string}>
      */
-    public function run(bool $dryRun = false, bool $overwrite = false, ?int $staffId = null): array
+    public function run(bool $dryRun = false, bool $overwrite = false, ?int $staffId = null, array $only = []): array
     {
         $this->report = [];
-        $entries      = $this->entries();
-        $byKey        = array_column($entries, null, 'key');
+        $all          = $this->entries();
+        $byKey        = array_column($all, null, 'key');
+        $entries      = $only === [] ? $all : array_values(array_filter($all, fn (array $entry): bool => $this->matches($entry['key'], $only)));
 
         try {
             foreach ($entries as $entry) {
@@ -224,6 +245,10 @@ final class CatalogImporter
             }
 
             $this->temp = [];
+        }
+
+        if (! $overwrite) {
+            $this->checkPoses($byKey, $only);
         }
 
         $installed = count(array_filter($this->report, static fn (array $r): bool => $r['status'] === 'installed'));
@@ -244,13 +269,20 @@ final class CatalogImporter
     private function importEntry(array $entry, array $byKey, bool $dryRun, bool $overwrite): void
     {
         $key = $entry['key'];
+        $ref = self::REFERENCE_SLOTS[$key] ?? null;
 
-        if (str_starts_with($key, 'reference.') || str_starts_with($key, 'icon.') || in_array($key, ['ui.placeholder', 'app.icon.svg'], true)) {
+        if (($ref === null && str_starts_with($key, 'reference.')) || str_starts_with($key, 'icon.') || in_array($key, ['ui.placeholder', 'app.icon.svg'], true)) {
             return; // references, vector icons, and the placeholder are not game slots
         }
 
         if (! is_file($entry['file'])) {
             $this->add($key, '—', 'failed', 'berkas tidak ada di katalog');
+
+            return;
+        }
+
+        if ($ref !== null) {
+            $this->installSlot($key, $ref, fn (): ?string => $this->webp($entry['file'], $ref), $dryRun, $overwrite);
 
             return;
         }
@@ -557,6 +589,77 @@ final class CatalogImporter
         }
 
         return true;
+    }
+
+    /**
+     * A catalogue key, or the slot it fills, matches one of the patterns.
+     *
+     * @param list<string> $patterns
+     */
+    private function matches(string $key, array $patterns): bool
+    {
+        foreach ($patterns as $pattern) {
+            if (fnmatch($pattern, $key) || (isset(self::REFERENCE_SLOTS[$key]) && fnmatch($pattern, self::REFERENCE_SLOTS[$key]))) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Warn about character poses whose frames now come from two sources: the
+     * catalogue and an upload that was kept (an admin upload without
+     * `--timpa`). The loop would switch between two drawings, e.g. old
+     * lurik frames among the red-scarf ones.
+     *
+     * @param array<string, array{key: string, file: string, cat: string}> $byKey
+     * @param list<string>                                                 $only
+     */
+    private function checkPoses(array $byKey, array $only): void
+    {
+        $poses   = [];
+        $planned = array_column(array_filter($this->report, static fn (array $r): bool => $r['status'] === 'planned'), 'target', 'target');
+
+        foreach (array_keys($byKey) as $key) {
+            if (preg_match('/^char\.([a-z]+\.[a-z]+)\.(\d+)$/', $key, $m) === 1 && ($only === [] || $this->matches($key, $only))) {
+                $poses[$m[1]][] = $key;
+            }
+        }
+
+        foreach ($poses as $pose => $keys) {
+            $kept = [];
+            $ours = 0;
+
+            foreach ($keys as $key) {
+                $row = model(MediaAssetModel::class)->findByKey($key);
+
+                if (isset($planned[$key])) {
+                    $ours++; // dry run: the catalogue frame would be installed
+
+                    continue;
+                }
+
+                if ($row === null || (int) $row['is_active'] !== 1 || (int) ($row['is_placeholder'] ?? 0) === 1) {
+                    continue;
+                }
+
+                if ($this->isCatalogRow($row)) {
+                    $ours++;
+                } else {
+                    $kept[] = (int) substr($key, strrpos($key, '.') + 1);
+                }
+            }
+
+            if ($kept !== [] && $ours > 0) {
+                sort($kept);
+                $this->add('char.' . $pose . '.*', 'char.' . $pose, 'warning', sprintf(
+                    'gambar gerak %s bukan dari katalog, sisanya dari katalog: gerakannya bisa berganti gambar lain. Ganti dengan --timpa --kunci=char.%s.*',
+                    implode(', ', $kept),
+                    $pose,
+                ));
+            }
+        }
     }
 
     /** Fill the region's map/background/badge column when it is still empty. */

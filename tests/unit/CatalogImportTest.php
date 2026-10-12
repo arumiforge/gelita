@@ -49,6 +49,8 @@ final class CatalogImportTest extends CIUnitTestCase
             'app.favicon.ico'                 => ['ikon/app.favicon.webp', 32, 32, true],
             'bg.cerita-intro-01'              => ['latar/bg.cerita-intro-01.webp', 1920, 1080, false],
             'map.region.temanggung'           => ['peta/map.region.temanggung.webp', 1400, 900, false],
+            'ui.btn-start'                    => ['antarmuka/ui.btn-start.webp', 720, 240, true],
+            'char.jaka.idle.1'                => ['karakter/char.jaka.idle.1.webp', 700, 900, true],
             'char.jaka.idle.2'                => ['karakter/char.jaka.idle.2.webp', 700, 900, true],
             'challenge.item.tmg-1-01'         => ['tantangan/challenge.item.tmg-1-01.webp', 1200, 1200, false],
             'library.temanggung.p1.1'         => ['pustaka/library.temanggung.p1.1.webp', 960, 640, false],
@@ -56,6 +58,8 @@ final class CatalogImportTest extends CIUnitTestCase
             'library.temanggung.p8.2'         => ['pustaka/library.temanggung.p8.2.webp', 960, 640, false],
             'library.temanggung.p8.2.poster'  => ['pustaka/library.temanggung.p8.2.poster.webp', 1280, 720, false],
             'reference.01'                    => ['referensi/reference.01.webp', 64, 64, false],
+            'reference.19'                    => ['referensi/reference.19.webp', 256, 256, true],
+            'reference.20'                    => ['referensi/reference.20.webp', 256, 256, true],
             'icon.home'                       => ['ikon/icon.home.webp', 24, 24, true],
         ]);
     }
@@ -249,6 +253,58 @@ final class CatalogImportTest extends CIUnitTestCase
 
         $forced = array_values(array_filter($this->importer()->run(false, true), static fn (array $r): bool => $r['target'] === 'ui.logo-hero'));
         $this->assertSame('installed', $forced[0]['status']);
+    }
+
+    /** reference.20 / reference.19 are the HUD language icons (owner request 12 October 2026). */
+    public function testLanguageIconsComeFromTheirReferences(): void
+    {
+        $report = array_column($this->importer()->run(), null, 'source');
+
+        $this->assertSame(['ui.lang.id', 'installed'], [$report['reference.20']['target'], $report['reference.20']['status']]);
+        $this->assertSame(['ui.lang.en', 'installed'], [$report['reference.19']['target'], $report['reference.19']['status']]);
+        $this->assertArrayNotHasKey('reference.01', $report, 'other references are still not slots');
+
+        foreach (['ui.lang.id', 'ui.lang.en'] as $key) {
+            $row = model(MediaAssetModel::class)->findByKey($key);
+            $this->assertSame(CatalogImporter::CREDIT, $row['credit'], $key);
+            $this->assertSame([256, 256], [(int) $row['width_px'], (int) $row['height_px']], $key);
+        }
+    }
+
+    /** --kunci limits the run, and so --timpa, to the named slots. */
+    public function testOnlyLimitsTheOverwriteToMatchingSlots(): void
+    {
+        $this->importer()->run();
+        // Both slots now hold an admin upload (e.g. the old lurik frame, an old button)
+        model(MediaAssetModel::class)->whereIn('asset_key', ['char.jaka.idle.1', 'ui.logo-hero'])->set(['credit' => null])->update();
+
+        $report = $this->importer()->run(false, true, null, ['char.jaka.*', 'ui.lang.*']);
+        $byTarget = array_column($report, null, 'target');
+
+        $this->assertSame('installed', $byTarget['char.jaka.idle.1']['status']);
+        $this->assertSame('installed', $byTarget['ui.lang.en']['status'], 'a pattern also matches the slot a reference fills');
+        $this->assertArrayNotHasKey('ui.logo-hero', $byTarget);
+        $this->assertArrayNotHasKey('bg.story.intro.1', $byTarget);
+        $this->assertSame(CatalogImporter::CREDIT, model(MediaAssetModel::class)->findByKey('char.jaka.idle.1')['credit']);
+        $this->assertNull(model(MediaAssetModel::class)->findByKey('ui.logo-hero')['credit'], 'other admin uploads stay');
+    }
+
+    /** A kept upload among catalogue frames would make the loop switch drawings. */
+    public function testPoseWithFramesFromTwoSourcesIsReported(): void
+    {
+        $this->importer()->run();
+        model(MediaAssetModel::class)->where('asset_key', 'char.jaka.idle.1')->set(['credit' => null])->update();
+
+        $warnings = array_values(array_filter($this->importer()->run(), static fn (array $r): bool => $r['status'] === 'warning'));
+
+        $this->assertCount(1, $warnings);
+        $this->assertSame('char.jaka.idle', $warnings[0]['target']);
+        $this->assertStringContainsString('gambar gerak 1 bukan dari katalog', $warnings[0]['note']);
+        $this->assertStringContainsString('--timpa --kunci=char.jaka.idle.*', $warnings[0]['note']);
+
+        $this->assertNotContains('warning', array_column($this->importer()->run(true, true), 'status'), 'overwriting fixes it');
+        $this->importer()->run(false, true, null, ['char.jaka.idle.*']);
+        $this->assertNotContains('warning', array_column($this->importer()->run(), 'status'));
     }
 
     public function testAdminUploadClearsTheCatalogueCredit(): void

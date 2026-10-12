@@ -25,11 +25,12 @@ class CatalogImport extends BaseCommand
     protected $group       = 'GELITA';
     protected $name        = 'gelita:katalog:impor';
     protected $description = 'Memasang semua gambar Katalog Aset (gelita-katalog/) ke slot gambar permainan.';
-    protected $usage       = 'gelita:katalog:impor [--sumber=folder] [--dry-run] [--timpa]';
+    protected $usage       = 'gelita:katalog:impor [--sumber=folder] [--dry-run] [--timpa] [--kunci=pola,pola]';
     protected $options     = [
         '--sumber'  => 'Folder Katalog Aset (bawaan: gelita-katalog di folder aplikasi)',
         '--dry-run' => 'Tampilkan yang akan dipasang tanpa mengubah apa pun',
         '--timpa'   => 'Ganti juga gambar yang sudah diunggah admin atau dipasang sebelumnya',
+        '--kunci'   => 'Hanya slot ini, dipisah koma, boleh pakai * (mis. "ui.btn-start*,ui.lang.*,char.jaka.*")',
     ];
 
     public function run(array $params)
@@ -39,13 +40,14 @@ class CatalogImport extends BaseCommand
         $root      = $this->option('sumber', $params) ?? ROOTPATH . 'gelita-katalog';
         $dryRun    = $this->flag('dry-run', $params);
         $overwrite = $this->flag('timpa', $params);
+        $only      = array_values(array_filter(array_map('trim', explode(',', (string) ($this->option('kunci', $params) ?? '')))));
 
         if ($dryRun) {
             CLI::write('Uji coba (--dry-run): tidak ada yang diubah.', 'yellow');
         }
 
         try {
-            $report = (new CatalogImporter($root))->run($dryRun, $overwrite);
+            $report = (new CatalogImporter($root))->run($dryRun, $overwrite, null, $only);
         } catch (\Throwable $e) {
             CLI::error($e->getMessage());
 
@@ -58,15 +60,16 @@ class CatalogImport extends BaseCommand
             CLI::table($rows, ['Katalog', 'Slot', 'Hasil', 'Keterangan']);
         }
 
-        $count = array_count_values(array_column($report, 'status')) + ['installed' => 0, 'planned' => 0, 'skipped' => 0, 'failed' => 0];
+        $count = array_count_values(array_column($report, 'status')) + ['installed' => 0, 'planned' => 0, 'skipped' => 0, 'warning' => 0, 'failed' => 0];
 
         CLI::write(sprintf(
-            '%d dipasang, %d akan dipasang, %d dilewati, %d gagal.',
+            '%d dipasang, %d akan dipasang, %d dilewati, %d perlu dicek, %d gagal.',
             $count['installed'],
             $count['planned'],
             $count['skipped'],
+            $count['warning'],
             $count['failed'],
-        ), $count['failed'] > 0 ? 'yellow' : 'green');
+        ), $count['failed'] > 0 || $count['warning'] > 0 ? 'yellow' : 'green');
 
         if (! $dryRun && $count['installed'] > 0 && service('assetPackages')->releasePackageCode() !== null) {
             CLI::write('Rilis aktif memakai paket aset: bangun paket baru (php spark gelita:paket:bangun) dan pasang di rilis agar siswa melihat gambar baru.', 'yellow');

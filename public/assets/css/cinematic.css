@@ -892,11 +892,14 @@ body.has-kenal { overflow: hidden; }
 }
 .dialogue-box .slide-nav-final .btn-ghost:active { background: rgba(74, 50, 24, .2); }
 
-/* Pose tokoh yang berbicara terasa juga saat gambar pose belum diunggah (monogram) */
-.dialogue-stage .character.is-speaking.pose-happy { animation: pose-hop .5s ease both; }
-.dialogue-stage .character.is-speaking.pose-afraid { animation: pose-shiver .6s linear both; }
-.dialogue-stage .character.is-speaking.pose-determined { translate: 0 -.25rem; }
-.dialogue-stage .character.pose-sad, .dialogue-stage .character.pose-weak { rotate: -3deg; filter: saturate(.7) brightness(.9); }
+/* Pose tokoh yang berbicara terasa juga saat gambar pose belum diunggah
+   (monogram). Only then: drawn pose frames carry their own motion, and a
+   hop, shiver, or tilt on top of them would fight the frames (owner check,
+   12 October 2026). */
+.dialogue-stage .character.is-speaking.pose-happy:has(> .character-fallback) { animation: pose-hop .5s ease both; }
+.dialogue-stage .character.is-speaking.pose-afraid:has(> .character-fallback) { animation: pose-shiver .6s linear both; }
+.dialogue-stage .character.is-speaking.pose-determined:has(> .character-fallback) { translate: 0 -.25rem; }
+.dialogue-stage .character:is(.pose-sad, .pose-weak):has(> .character-fallback) { rotate: -3deg; filter: saturate(.7) brightness(.9); }
 .dialogue-stage .character.is-speaking.pose-smile .character-fallback,
 :is(.kenal-stage, .cine-stage) .pose-smile .character-fallback { box-shadow: 0 0 0 .1875rem var(--gold-500), 0 0 1.5rem var(--glow); }
 :is(.kenal-stage, .cine-stage) :is(.pose-worried, .pose-weak, .pose-sad) .character-fallback { rotate: -4deg; filter: saturate(.7) brightness(.9); }
@@ -930,7 +933,7 @@ body.has-kenal { overflow: hidden; }
   .kenal-dot, .kenal-badge, .kenal-slide, .kenal-stage .character-img, .footstep,
   .curtain-region .curtain-title, .curtain-region .curtain-tagline,
   .cc-puzzle i, .cc-gap b, .cc-card, .cc-light,
-  .dialogue-stage .character.is-speaking.pose-happy, .dialogue-stage .character.is-speaking.pose-afraid,
+  .dialogue-stage .character.is-speaking:is(.pose-happy, .pose-afraid):has(> .character-fallback),
   .narrator:has(> .narrator-fx.fx-shake) .slide.is-current :is(.kenal-stage, .kenal-caption, .dialogue-box) { animation: none; }
   .kenal-btn-face { transition: none; }
 
@@ -940,5 +943,5 @@ body.has-kenal { overflow: hidden; }
   .kenal-btn:hover .kenal-btn-face, .kenal-btn:focus-visible .kenal-btn-face, .kenal-btn:active .kenal-btn-face { transform: none; }
   .footstep { opacity: .6; }
   .cc-light { left: 50%; }
-  .dialogue-stage .character.is-speaking.pose-determined { translate: none; }
+  .dialogue-stage .character.is-speaking.pose-determined:has(> .character-fallback) { translate: none; }
 }

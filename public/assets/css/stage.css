@@ -190,7 +190,8 @@ body.game {
 /* Account screens before login: Back top-left, logo centred (section hudBack) */
 .hud .hud-back { min-height: var(--tap); padding: var(--gap-1) var(--gap-4) var(--gap-1) var(--gap-3); background: var(--hud-backing); }
 .hud .hud-back:hover { background: var(--hud-backing-hover); }
-.hud-logo { display: flex; justify-content: center; }
+/* The logo stands alone: no backing, padding, or rounded frame (owner, 12 Oct 2026) */
+.hud-center.hud-logo { display: flex; justify-content: center; padding: 0; border-radius: 0; background: none; }
 .hud-logo img { display: block; width: auto; height: 2.5rem; }
 .hud-logo .hud-brand { font-size: var(--fs-h3); }
 .hud-fullscreen .icon-exit { display: none; }
