@@ -80,3 +80,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 | `pbb/nifty-faraday-fcw9r6` | Cari Objek objects onto the tables and shelves of the catalogue scenes (bank layout + import) | PR open |
 | `pbb/practical-ramanujan-sogpm3` | Production console errors: CSP policy, inline viewport script, `/api/events` 500 | PR open |
 | `pbb/hopeful-bardeen-48ljgp` | Clue play button layout, modal icons above the box, sign-up/login errors in a modal, staff link on the welcome page (#104, #105 merged) | PR open |
+| `sky/epic-hawking-qc1e8p` | Cari Objek clue: play only on tap, steady button slot; Kenali badge on MySQL 8; Kedu map narration strip with Jaka | PR open |
