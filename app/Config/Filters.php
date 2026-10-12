@@ -8,6 +8,7 @@ use App\Filters\DebugToolbar;
 use App\Filters\GameSessionFilter;
 use App\Filters\JsonResponseFilter;
 use App\Filters\LocaleFilter;
+use App\Filters\PackageHeaderFilter;
 use App\Filters\ParticipantAuthFilter;
 use App\Filters\ScreenViewFilter;
 use App\Filters\StaffAuthFilter;
@@ -45,6 +46,7 @@ class Filters extends BaseFilters
         'jsonResponse'    => JsonResponseFilter::class,
         'clientHints'     => ClientHintsFilter::class,
         'screenView'      => ScreenViewFilter::class,
+        'packageHeader'   => PackageHeaderFilter::class,
     ];
 
     /**
@@ -90,10 +92,12 @@ class Filters extends BaseFilters
 
     /**
      * Client Hints entropi tinggi diminta sebelum masuk/daftar (Dok 1 §11.4).
+     * `packageHeader`: X-Gelita-Paket on every API response (asset package Stage 2).
      *
      * @var array<string, array<string, list<string>>>
      */
     public array $filters = [
         'clientHints' => ['after' => ['/', 'mulai', 'masuk', 'daftar', 'daftar/*']],
+        'packageHeader' => ['after' => ['api', 'api/*']],
     ];
 }

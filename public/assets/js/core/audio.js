@@ -29,12 +29,23 @@
  */
 import { Storage } from './storage.js';
 import { emitAudio } from './events.js';
-import { t } from './config.js';
+import { CONFIG, t } from './config.js';
 import { $, el } from './dom.js';
 
 // ------------------------------------------------------------------ Sfx
 
 const SFX_BASE = `${(document.body.dataset.base || '/').replace(/\/?$/, '/')}assets/audio/`;
+
+/**
+ * URL of a music or sound-effect file: the asset package URL when the server
+ * sent one (CONFIG.audioUrls, keys `music/map`, `sfx/click`; asset package
+ * Stage 2), else the file in assets/audio/ as before.
+ */
+export function soundUrl(folder, name) {
+  const packaged = CONFIG.audioUrls[`${folder}/${name}`];
+  return typeof packaged === 'string' && packaged !== '' ? packaged : `${SFX_BASE}${folder}/${name}.mp3`;
+}
+
 const sounds = new Map();
 let music = null;
 // Track the screen asked for; it starts on unlock or when sound is switched back on
@@ -79,7 +90,7 @@ function load(name, { loop = false, folder = 'sfx' } = {}) {
   const key = `${folder}/${name}`;
   if (!sounds.has(key)) {
     sounds.set(key, new window.Howl({
-      src: [`${SFX_BASE}${folder}/${name}.mp3`],
+      src: [soundUrl(folder, name)],
       loop,
       volume,
       preload: true,

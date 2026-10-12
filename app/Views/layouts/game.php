@@ -37,6 +37,8 @@ $screenCode = method_exists($request, 'getPath') ? (App\Filters\ScreenViewFilter
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <?php /* Window size for the 16:9 stage before CSS loads (Dok 3 §2.1); core/stage.js takes over. A file, not inline, so it passes the CSP */ ?>
   <script src="<?= asset_url_versioned('js/core/viewport.js') ?>"></script>
+  <?php /* Asset package boot (Stage 2): local-assets hook and package mode before game.js; a file for the CSP */ ?>
+  <script src="<?= asset_url_versioned('js/core/package-boot.js') ?>"<?= asset_package_attrs() ?>></script>
   <meta name="theme-color" content="#0B1320">
   <title><?= $title !== '' ? $title . ' · GELITA' : 'GELITA' ?></title>
   <meta name="csrf-token" content="<?= csrf_hash() ?>">
@@ -49,8 +51,8 @@ $screenCode = method_exists($request, 'getPath') ? (App\Filters\ScreenViewFilter
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="GELITA">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <link rel="preload" href="<?= base_url('assets/fonts/plus-jakarta-sans-latin-400-normal.woff2') ?>" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="<?= base_url('assets/fonts/cinzel-latin-700-normal.woff2') ?>" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="<?= game_asset_url('fonts/plus-jakarta-sans-latin-400-normal.woff2') ?>" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="<?= game_asset_url('fonts/cinzel-latin-700-normal.woff2') ?>" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="<?= asset_url_versioned('css/tokens.css') ?>">
   <link rel="stylesheet" href="<?= asset_url_versioned('css/base.css') ?>">
   <link rel="stylesheet" href="<?= asset_url_versioned('css/stage.css') ?>">

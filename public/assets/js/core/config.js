@@ -36,6 +36,8 @@ export const CONFIG = Object.freeze({
   sessionTag: parsed.sessionTag || null,
   // lowest sequence_no for this page's client events (core/events.js)
   sequenceFloor: Number(parsed.sequenceFloor) || 0,
+  // music and sound effects of the active asset package: { 'music/map': url, 'sfx/click': url } (core/audio.js)
+  audioUrls: parsed.audioUrls && typeof parsed.audioUrls === 'object' && !Array.isArray(parsed.audioUrls) ? Object.freeze({ ...parsed.audioUrls }) : Object.freeze({}),
   text: parsed.text && typeof parsed.text === 'object' ? parsed.text : {},
 });
 
