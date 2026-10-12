@@ -69,6 +69,8 @@ $maxTries = max(1, (int) ($payload['max_tries'] ?? config('Gelita')->maxTries));
             <button type="button" class="audio-btn" data-action="play" aria-label="<?= esc(lang('Game.clueListen'), 'attr') ?>"><?= icon('play') ?></button>
             <button type="button" class="audio-btn" data-action="pause" aria-label="<?= esc(lang('Game.audioPause'), 'attr') ?>" hidden><?= icon('pause') ?></button>
           </div>
+          <?php // Shown in the button's place when the recording fails (NarrationPlayer#fail); the sentence itself is read by screen readers ?>
+          <span class="clue-voice-off" aria-hidden="true" title="<?= esc(lang('Js.audioNoSound'), 'attr') ?>"><?= icon('sound-off') ?></span>
         </div>
       </template>
     <?php endif ?>

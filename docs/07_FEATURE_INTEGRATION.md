@@ -1268,9 +1268,10 @@ Instalasi baru: `php spark gelita:narration:import`, lalu **Setujui semua rekama
 5. Payload Cari Objek: clues[i].audio = audio_src(audio_prompt_{locale}) (hanya
    approved + berkas aktif); audio_id hanya dikirim bersama audio, jadi rekaman
    draft tidak terlihat di sumber halaman
-6. engines/cari.js: petunjuk pertama hanya lewat tombol ▶ (action `play`);
-   setelah jawaban benar petunjuk berikutnya diputar sendiri (`autoplay`) bila
-   suara aktif; ganti atau lompat petunjuk → `pause`; lompat tidak memutar otomatis
+6. engines/cari.js: setiap petunjuk hanya diputar lewat tombol ▶ (action `play`),
+   tidak pernah otomatis, juga tidak sesudah jawaban benar (sejak 12 Oktober 2026);
+   ganti atau lompat petunjuk → `pause`. Rekaman gagal dimuat → tanda suara mati
+   di tempat tombol, kalimatnya untuk pembaca layar
 ```
 
 Form soal Cari Objek juga dapat memilih audio petunjuk secara manual (ID/EN). Nomor NN tidak melekat pada soal: menonaktifkan, menyisipkan, atau mengurutkan ulang target menggeser nomor sesudahnya, jadi setelah perubahan seperti itu cocokkan ulang daftar rekaman. Workbook bank soal tidak membawa kolom audio.

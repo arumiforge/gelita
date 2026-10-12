@@ -626,15 +626,22 @@ body.is-challenge .lang-switch { display: none; }
 }
 
 /* =========================== PETA =========================== */
-/* Koordinat: stage.css §Peta. Peta 880 × 566 (rasio 1400:900), panel kanan
-   bergulir, narasi Jaka sebagai balon di kiri bawah peta. */
+/* Coordinates: stage.css §Peta. Map 880 × 566 (ratio 1400:900), scrolling
+   right panel, Jaka's narration as a strip along the bottom of the map. */
 .map-screen { position: absolute; inset: 0; }
 .map-layout { display: contents; }
 
-/* Balon narasi: tokoh besar tidak tampil di atas peta, cukup nama di balon */
-.map-balloon { z-index: 3; display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: minmax(0, 1fr); align-items: stretch; gap: var(--gap-2); }
-.map-balloon > .character { display: none; }
-.map-balloon .narration { display: grid; align-content: start; width: 100%; max-width: none; height: 100%; overflow-y: auto; padding: var(--gap-2) var(--gap-4); font-size: 1.125rem; line-height: 1.4; }
+/* Narration strip: Jaka (124 × 168, taller than the strip, so he rises over the
+   map) | balloon | controls. Without map_intro lines the strip holds Jaka and
+   the Game.mapLead balloon; with them, each slide carries its own Jaka pose
+   (cinematic.css §Narasi peta). The figure sits in a grid cell, aligned to the
+   bottom, so it overflows upwards and never depends on a positioned parent. */
+.map-balloon { z-index: 3; display: grid; grid-template-columns: calc(124 * var(--dp)) minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); align-items: stretch; gap: var(--gap-3); }
+.map-balloon .character { align-self: end; justify-self: center; width: calc(124 * var(--dp)); height: calc(168 * var(--dp)); pointer-events: none; }
+.map-balloon .character-img { width: 100%; height: 100%; max-height: none; object-fit: contain; object-position: 50% 100%; }
+.map-balloon .character-fallback { align-self: end; width: calc(72 * var(--dp)); font-size: var(--fs-h3); }
+.map-balloon .character-name { display: none; }
+.map-balloon .narration { display: grid; align-content: center; width: 100%; max-width: none; height: 100%; overflow-y: auto; padding: var(--gap-2) var(--gap-4); box-shadow: var(--shadow-2); font-size: 1rem; line-height: 1.35; }
 .map-balloon .narration::before { display: none; }
 
 .map-frame {
@@ -1222,13 +1229,13 @@ body.is-challenge .lang-switch { display: none; }
 .hunt-clue-body,
 .hunt-clue-body.has-voice {
   display: grid;
-  grid-template-columns: 11rem auto minmax(0, 1fr);
+  grid-template-columns: max-content auto minmax(0, 1fr);
   grid-template-rows: auto auto;
   align-items: center;
   column-gap: var(--gap-3);
 }
 .hunt-clue-body > .eyebrow,
-.hunt-clue-body.has-voice > .eyebrow { grid-column: 1; grid-row: 1; align-self: end; font-size: .8125rem; white-space: nowrap; }
+.hunt-clue-body.has-voice > .eyebrow { grid-column: 1; grid-row: 1; align-self: end; font-size: .8125rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .hunt-clue-body > .clue-tries { grid-column: 1; grid-row: 2; align-self: start; margin: 0; font-size: .8125rem; white-space: nowrap; }
 .hunt-clue-body > .clue-voice { grid-column: 2; grid-row: 1 / span 2; }
 .hunt-clue-body > .clue-text,
@@ -1238,11 +1245,30 @@ body.is-challenge .lang-switch { display: none; }
    rekaman yang disetujui. An older two-column rule for .has-voice used to follow here and put the
    button and the clue text in the same cell (owner report, 12 October 2026). */
 .clue-voice:not(:has(> .audio-player:not([hidden]))) { display: none; }
-.clue-voice .audio-player { padding: 0; border: 0; background: none; }
-.clue-voice .audio-controls { flex: none; flex-wrap: nowrap; gap: var(--gap-1); }
-.clue-voice .audio-btn { background: rgba(74, 50, 24, .12); color: var(--brown-700); }
+/* One fixed 48 dp round slot, whatever the player's state, so the clue text never moves */
+.clue-voice { display: grid; place-items: center; width: var(--tap); height: var(--tap); }
+.clue-voice .audio-player { display: grid; place-items: center; width: 100%; height: 100%; padding: 0; border: 0; background: none; }
+.clue-voice .audio-player[hidden] { display: none; }
+.clue-voice .audio-controls { display: contents; }
+.clue-voice .audio-controls[hidden] { display: none; }
+.clue-voice .audio-btn { width: var(--tap); min-width: 0; padding: 0; border-radius: 50%; background: rgba(74, 50, 24, .12); color: var(--brown-700); }
 .clue-voice .audio-btn[data-action="play"] { background: var(--brown-700); color: var(--parchment); }
-.clue-voice .audio-error { font-size: var(--fs-caption); }
+.clue-voice .audio-btn .icon { width: 1.25rem; height: 1.25rem; }
+/* Recording failed: a muted mark keeps the slot; the sentence stays for screen readers only
+   (owner report, 12 October 2026: the sentence used to push the clue text onto two lines) */
+.clue-voice .audio-error { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.clue-voice-off { display: none; }
+.clue-voice .audio-player.is-error .clue-voice-off {
+  display: grid;
+  place-items: center;
+  width: var(--tap);
+  height: var(--tap);
+  border: .125rem dashed rgba(74, 50, 24, .35);
+  border-radius: 50%;
+  color: var(--brown-500);
+  cursor: help;
+}
+.clue-voice-off .icon { width: 1.25rem; height: 1.25rem; }
 
 .hunt-scene {
   aspect-ratio: 16 / 9;
@@ -1332,6 +1358,7 @@ body.is-challenge .lang-switch { display: none; }
 .hunt.is-zoomed .clue-tries .tries-dot.is-left { background: var(--gold-300); }
 .hunt.is-zoomed .clue-voice .audio-btn { background: rgba(223, 192, 135, .16); color: var(--gold-300); }
 .hunt.is-zoomed .clue-voice .audio-btn[data-action="play"] { background: var(--gold-500); color: var(--navy-900); }
+.hunt.is-zoomed .clue-voice .audio-player.is-error .clue-voice-off { border-color: rgba(223, 192, 135, .45); color: var(--gold-300); }
 
 /* =========================== SELESAI =========================== */
 .finished-card {

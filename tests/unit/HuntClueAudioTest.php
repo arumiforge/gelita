@@ -123,18 +123,32 @@ final class HuntClueAudioTest extends CIUnitTestCase
         $this->assertStringContainsString('<p class="clue-text" id="clue-text" aria-live="polite">Temukan tembakau.</p>', $voiced);
     }
 
-    public function testEngineScriptPlaysFirstClueManuallyAndLaterCluesAutomatically(): void
+    /** Clue narration only plays on the ▶ tap (owner, 12 October 2026): never on load, never after a correct answer. */
+    public function testEngineScriptPlaysCluesOnlyWhenTapped(): void
     {
         $js = (string) file_get_contents(FCPATH . 'assets/js/engines/cari.js');
+        $code = (string) preg_replace('~/\*.*?\*/~s', '', $js); // comments may mention autoplay
 
         $this->assertStringContainsString("import { Sfx, narrationPlayer, pauseNarration } from '../core/audio.js';", $js);
         $this->assertStringContainsString("narrationPlayer(node, { attemptId: ctx.attemptId, shared: true })", $js);
-        $this->assertStringContainsString('showVoice(current); // petunjuk pertama: tombol ▶ saja, tanpa putar otomatis', $js);
-        $this->assertStringContainsString('goTo(next, { autoplay: true })', $js, 'setelah jawaban benar');
-        $this->assertStringContainsString('goTo(Number(jump.dataset.clue))', $js, 'lompat tanpa putar otomatis');
+        $this->assertStringNotContainsString('autoplay', $code, 'no clue is read out without a tap');
+        $this->assertStringContainsString('if (next !== null) goTo(next);', $js, 'after a correct answer: next clue, button only');
+        $this->assertStringContainsString('goTo(Number(jump.dataset.clue))', $js, 'jumping does not play either');
+        $this->assertStringContainsString('showVoice(current);', $js);
         $this->assertStringContainsString('pauseNarration();', $js, 'ganti petunjuk menghentikan narasi');
-        // autoplay() menolak berbunyi sebelum interaksi atau saat suara dimatikan
-        $this->assertMatchesRegularExpression('/autoplay\(\) \{\s*if \(!unlocked \|\| !enabled/', (string) file_get_contents(FCPATH . 'assets/js/core/audio.js'));
+    }
+
+    /** A failed recording keeps a muted mark in the button's slot instead of a sentence beside the clue. */
+    public function testFailedClueRecordingKeepsTheButtonSlot(): void
+    {
+        $voiced = $this->cariPage([
+            ['item_id' => 12, 'text' => 'Temukan candi.', 'audio' => '/assets/audio/narasi/id/petunjuk-tmg-4-02.mp3', 'audio_id' => 5],
+        ]);
+        $css = (string) file_get_contents(FCPATH . 'assets/css/game.css');
+
+        $this->assertMatchesRegularExpression('/<span class="clue-voice-off" aria-hidden="true" title="' . preg_quote(esc(lang('Js.audioNoSound'), 'attr'), '/') . '">/', $voiced);
+        $this->assertStringContainsString('.clue-voice .audio-player.is-error .clue-voice-off {', $css);
+        $this->assertMatchesRegularExpression('/\.clue-voice \.audio-error \{ position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect\(0 0 0 0\);/', $css);
     }
 
     // --------------------------------------------------------------- admin

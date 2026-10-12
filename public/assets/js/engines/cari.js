@@ -27,18 +27,15 @@
  * Muat ulang: `clues[i].state` ({found, closed, tries}) dan `objects[].found`
  * memulihkan temuan, petunjuk yang dilewati, dan sisa kesempatan.
  *
- * Narasi petunjuk (`clues[i].audio` / `audio_id`, hanya rekaman yang
- * disetujui): tombol ▶/⏸ dari <template id="tpl-clue-voice"> dipasang di
- * samping teks petunjuk, satu pemutar per petunjuk (core/audio.js, elemen
- * <audio> bersama agar Safari iPad mengizinkan putar otomatis). Petunjuk
- * pertama hanya diputar lewat tombol (action `play`): sebelum halaman
- * disentuh, browser menolak audio bersuara. Setelah jawaban benar, petunjuk
- * berikutnya diputar sendiri (action `autoplay`) bila suara aktif — setelah
- * jeda singkat agar tidak menimpa bunyi "benar". Berganti petunjuk
- * (maju atau lompat) selalu menghentikan narasi sebelumnya; lompat tidak
- * memutar otomatis. Telemetry membawa attempt_id, jadi setiap event narasi
- * petunjuk ikut menambah challenge_attempts.audio_use_count. Petunjuk tanpa
- * rekaman: tanpa tombol, sama seperti sebelumnya.
+ * Clue narration (`clues[i].audio` / `audio_id`, approved recordings only):
+ * the ▶/⏸ button from <template id="tpl-clue-voice"> sits next to the clue
+ * text, one player per clue (core/audio.js, shared <audio> element for
+ * Safari iPad). A clue is only ever read out when the student taps ▶
+ * (action `play`): nothing plays on its own, not on load and not after a
+ * correct answer (owner request, 12 October 2026). Switching clues (moving on
+ * or jumping) always stops the previous narration. Telemetry carries
+ * attempt_id, so every clue narration event also counts toward
+ * challenge_attempts.audio_use_count. Clues without a recording get no button.
  *
  * "Perbesar adegan" (display plan F3.2): see initZoom() below.
  */
@@ -49,7 +46,6 @@ import { confetti } from '../core/confetti.js';
 import { Sfx, narrationPlayer, pauseNarration } from '../core/audio.js';
 
 const SHAKE_MS = 700;
-const VOICE_DELAY_MS = 600; // bunyi "benar" selesai dulu sebelum petunjuk berikutnya dibacakan
 
 /**
  * "Perbesar adegan" (display plan F3.2): the button after the scene toggles
@@ -122,7 +118,6 @@ export function mount(ctx) {
   let shownAt = performance.now();
   let busy = false;
   let done = false; // attempt closed: the scene stays visible but takes no more taps
-  let voiceTimer = null;
 
   // Narasi petunjuk: slot di samping teks, pemutar dibuat saat petunjuknya tampil
   const voiceTemplate = $('#tpl-clue-voice', ctx.section);
@@ -151,18 +146,12 @@ export function mount(ctx) {
     return voices.get(i);
   };
 
-  const showVoice = (i, { autoplay = false } = {}) => {
-    clearTimeout(voiceTimer);
+  // Shows the ▶ button of clue i; playback only starts when the student taps it
+  const showVoice = (i) => {
     pauseNarration();
     voices.forEach((player, index) => { player.root.hidden = index !== i; });
     const player = voiceOf(i);
-    if (!player) return;
-    player.root.hidden = false;
-    if (autoplay) {
-      voiceTimer = setTimeout(() => {
-        if (current === i && !closed(i)) player.autoplay();
-      }, VOICE_DELAY_MS);
-    }
+    if (player) player.root.hidden = false;
   };
 
   // Daftar sisa → tombol lompat ke petunjuk
@@ -189,12 +178,11 @@ export function mount(ctx) {
     shownAt = performance.now();
   };
 
-  /** autoplay: hanya setelah jawaban benar, bukan saat pemain melompat. */
-  const goTo = (i, { autoplay = false } = {}) => {
+  const goTo = (i) => {
     if (closed(i)) return;
     current = i;
     render();
-    showVoice(i, { autoplay });
+    showVoice(i);
     announce(`${ctx.t('clueLabel', i + 1)}: ${clues[i]?.text ?? ''}`);
   };
 
@@ -255,7 +243,6 @@ export function mount(ctx) {
     if (result.completed) {
       done = true;
       zoom.close(); // the closing modal and the Lanjut button belong to the normal layout
-      clearTimeout(voiceTimer);
       pauseNarration();
       render();
       const solved = result.completion_reason !== 'tries_exhausted';
@@ -273,7 +260,7 @@ export function mount(ctx) {
 
     if (result.correct) {
       const next = nextUnfound();
-      if (next !== null) goTo(next, { autoplay: true });
+      if (next !== null) goTo(next);
       return;
     }
 
@@ -335,5 +322,5 @@ export function mount(ctx) {
   if (closed(current)) current = nextUnfound() ?? current;
 
   render();
-  showVoice(current); // petunjuk pertama: tombol ▶ saja, tanpa putar otomatis
+  showVoice(current);
 }

@@ -516,24 +516,34 @@ body.is-cinematic .nav-bar {
 }
 
 /* ======================= NARASI PETA ======================= */
-/* Balon 48, 560, 600 × 96 (stage.css): satu baris slide + kontrol di kanan */
+/* Strip 40, 536, 864 × 98 (stage.css): slide (Jaka | balloon | n/N) + controls in a row */
+/* The controls column is as wide as the full pill (◀ ⏸ ↻ ▶): ↻ appears while
+   playing, and the balloon must not shrink when it does */
+.map-story { grid-template-columns: minmax(0, 1fr) 12.75rem; }
 .map-story .slides { min-width: 0; height: 100%; margin: 0; }
-.map-story-slide { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: minmax(0, 1fr); align-items: stretch; gap: var(--gap-2); height: 100%; }
-.map-story-slide > .character { display: none; }
+.map-story-slide { display: grid; grid-template-columns: calc(124 * var(--dp)) minmax(0, 1fr) auto; grid-template-rows: minmax(0, 1fr); align-items: stretch; gap: var(--gap-3); height: 100%; }
 .map-story-slide > .audio-player { display: none; }
 .map-story .narration cite { display: flex; flex-wrap: wrap; gap: 0 var(--gap-1); margin: 0; }
 .map-story-title { color: var(--brown-700); font-weight: 400; }
 .map-story .slide-text { margin: 0; font-size: inherit; line-height: inherit; }
-.map-story-nav { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--gap-1); color: var(--ink-dim); font-size: var(--fs-caption); }
+.map-story-nav { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--gap-1); color: var(--ink); font-size: var(--fs-caption); text-shadow: 0 .0625rem .125rem rgba(0, 0, 0, .8); }
 .map-story-nav .icon-btn { width: 2.25rem; height: 2.25rem; }
 .map-story.is-live .map-story-nav .icon-btn { display: none; }
-.map-story .narrator-controls { flex-direction: column; flex-wrap: nowrap; justify-content: center; gap: 0; }
-.map-story .narrator-controls .icon-btn { width: 2.25rem; height: 2.25rem; }
-/* Phase F2: the map story stacks its 36 dp buttons with no gap, so their hit
-   areas widen to 48 dp but keep the button's height: a taller area would
-   cover part of the neighbour. The two buttons in .map-story-nav are apart
-   (the page count sits between them) and keep the full 48 dp square. */
-.map-story .narrator-controls .icon-btn::before { height: 100%; }
+/* Controls as one pill on a navy backing, so they read on any part of the map */
+.map-story .narrator-controls {
+  flex-wrap: nowrap;
+  align-self: center;
+  justify-self: end;
+  gap: var(--gap-2); /* 40 dp buttons 8 dp apart: their 48 dp hit areas (Phase F2) just meet */
+  padding: var(--gap-1);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  background: rgba(11, 19, 32, .82);
+  box-shadow: var(--shadow-2);
+}
+.map-story .narrator-controls .icon-btn { width: 2.5rem; height: 2.5rem; }
+.map-story .narrator-controls .narrator-toggle { width: 3rem; height: 3rem; background: var(--gold-500); color: var(--navy-900); }
+.map-story .narrator-controls .narrator-toggle .icon { width: 1.5rem; height: 1.5rem; }
 .map-story .narrator-controls .narrator-auto { display: none; }
 
 /* =================== TAHAP 3 · SLIDE TANPA HASH =================== */

@@ -357,7 +357,10 @@ body.game {
 /* ---------- Peta Kedu `/peta`, peta wilayah `/wilayah/{code}` ---------- */
 .map-frame   { --x: 32;  --y: 72;  --w: 880; --h: 566; }
 .map-side    { --x: 936; --y: 72;  --w: 312; --h: 576; }
-.map-balloon { --x: 48;  --y: 560; --w: 600; --h: 96; }
+/* Narration strip over the bottom of the map, as wide as the map (owner, 12 October 2026):
+   Jaka stands at its left end and rises into the map's empty lower-left corner; the strip
+   stays below the lowest pin label (Magelang, about y 530) */
+.map-balloon { --x: 40;  --y: 536; --w: 864; --h: 98; }
 
 /* ---------- Kartu misi `/misi/{code}/{n}` ---------- */
 .mission-card { --x: 280; --y: 96; --w: 720; --h: 528; }

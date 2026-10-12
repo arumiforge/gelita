@@ -106,6 +106,11 @@ class GameEventLogModel extends Model
      * Memakai index (participant_id, event_type, occurred_at); satu peserta
      * hanya punya puluhan event dialog, jadi murah dibaca di setiap peta.
      *
+     * The LIKE is only a cheap prefilter on the bare context word: MySQL 8
+     * returns a JSON column re-serialised with spaces (`"context": "…"`), so
+     * matching `"context":"region_intro"` found nothing there and the badge
+     * never went away. reachedLastSlide() checks the decoded context exactly.
+     *
      * @return list<int> level_id
      */
     public function heardRegionIntros(int $participantId): array
@@ -116,7 +121,7 @@ class GameEventLogModel extends Model
             ->where('event_type', 'dialogue_advanced')
             ->where('level_id IS NOT NULL', null, false)
             ->where('deleted_at', null)
-            ->like('payload_json', '"context":"region_intro"')
+            ->like('payload_json', 'region_intro')
             ->get()
             ->getResultArray();
 

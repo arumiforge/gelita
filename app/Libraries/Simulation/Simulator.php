@@ -534,8 +534,8 @@ final class Simulator
             $correct = (string) $this->objectRef->invoke($this->challenges, $attempt->id, $itemId);
             $others  = array_values(array_filter($refs, static fn (string $ref): bool => $ref !== $correct));
 
-            // Narasi petunjuk: tombol ▶ (petunjuk pertama), putar otomatis sesudah jawaban benar
-            $this->clueAudio($attempt, $clue, $index === 0 ? 'play' : 'autoplay');
+            // Clue narration plays only when the ▶ button is tapped (no autoplay since 12 October 2026)
+            $this->clueAudio($attempt, $clue, 'play');
 
             // Ketukan salah sebelum benar: 0, 1, 2, atau 3 (= dilewati)
             $misses = match (true) {
