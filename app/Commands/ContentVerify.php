@@ -14,6 +14,9 @@ use CodeIgniter\CLI\CLI;
  *
  * `--siap-penelitian`: gambar contoh (mockup) yang masih dipakai tantangan
  * menjadi galat (Dok 2 §7.5, §10.3) — syarat sebelum pengambilan data.
+ * It also requires the asset package (docs/rencana-paket-aset.md §5.5, §7.2):
+ * package mode must be on and `gelita:paket:periksa` must find no problem in
+ * the active package (every file re-hashed here, never from a cache).
  */
 class ContentVerify extends BaseCommand
 {
@@ -25,7 +28,7 @@ class ContentVerify extends BaseCommand
     protected $usage       = 'gelita:content:verify [--strict] [--siap-penelitian]';
     protected $options     = [
         '--strict'          => 'Peringatan juga dianggap gagal (kode keluar 1).',
-        '--siap-penelitian' => 'Gambar contoh (mockup) yang masih dipakai tantangan dianggap galat.',
+        '--siap-penelitian' => 'Gambar contoh (mockup) yang masih dipakai tantangan dianggap galat; paket aset wajib menyala dan utuh.',
     ];
 
     public function run(array $params)
@@ -35,6 +38,10 @@ class ContentVerify extends BaseCommand
 
         $ready    = $this->flag('siap-penelitian', $params);
         $findings = (new ContentVerifier())->run($ready);
+
+        if ($ready) {
+            $findings = array_merge($findings, $this->packageFindings());
+        }
         $errors   = ContentVerifier::errorCount($findings);
         $warnings = count($findings) - $errors;
 
@@ -58,5 +65,35 @@ class ContentVerify extends BaseCommand
         $strict = $this->flag('strict', $params);
 
         return $errors > 0 || ($strict && $warnings > 0) ? EXIT_ERROR : EXIT_SUCCESS;
+    }
+
+    /**
+     * Research-ready package check: package mode on, active package intact.
+     *
+     * @return list<array{level: string, scope: string, message: string}>
+     */
+    private function packageFindings(): array
+    {
+        $packages = service('assetPackages');
+        $code     = $packages->activeCode();
+
+        if ($code === null) {
+            return [[
+                'level'   => 'error',
+                'scope'   => 'paket aset',
+                'message' => $packages->enabled()
+                    ? 'Mode paket mati: belum ada paket aset yang terbit (Rilis → Paket aset, atau gelita:paket:bangun lalu rilis dengan paket itu).'
+                    : 'Mode paket dimatikan dari server (gelita.paket.aktif = false).',
+            ]];
+        }
+
+        // Fresh re-hash; it also refreshes the cached result the panel checklist shows
+        $issues = $packages->verification($code, true)['issues'];
+
+        return array_map(static fn (array $issue): array => [
+            'level'   => 'error',
+            'scope'   => 'paket ' . $code,
+            'message' => $issue['key'] . ': ' . $issue['issue'],
+        ], $issues);
     }
 }

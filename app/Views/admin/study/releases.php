@@ -9,7 +9,21 @@
  *
  * @var list<array<string, mixed>> $releases
  * @var array<string, mixed>|null  $active
+ *
+ * Asset package (docs/rencana-paket-aset.md §6.3, §7.2): a status line with a
+ * link to Rilis → Paket aset, the changed-asset notice, and the running-study
+ * lock. While a study is running, a release that names another package than
+ * the active one opens a confirmation page instead of activating at once.
+ *
+ * @var string|null                $packageCode     package the active release names
+ * @var bool                       $packageOn       package mode on for students
+ * @var bool                       $killSwitch      server kill switch set
+ * @var array<string, mixed>       $changed         AssetPackageService::changedSinceActive()
+ * @var array<string, mixed>|null  $runningStudy
+ * @var array<int, string|null>    $releasePackages release id => package it names
  */
+$needsConfirm = static fn (array $row): bool => $runningStudy !== null
+    && ($releasePackages[(int) $row['id']] ?? null) !== $packageCode;
 ?>
 <?= $this->extend('layouts/admin') ?>
 
@@ -38,6 +52,21 @@
   </div>
 <?php endif ?>
 
+<section class="panel" data-release-package>
+  <div class="panel-head">
+    <h2 class="panel-title"><?= icon('download') ?> <?= esc(lang('Admin.packageMode')) ?></h2>
+    <span class="badge <?= $packageOn ? 'is-ok' : 'is-muted' ?>"><?= esc(lang($packageOn ? 'Admin.packageOn' : 'Admin.packageOff')) ?><?= $killSwitch ? ' · ' . esc(lang('Admin.packageKilled')) : '' ?></span>
+  </div>
+  <p class="muted">
+    <?php if ($packageCode !== null): ?>
+      <?= esc(lang('Admin.packageActiveCode')) ?>: <code><?= esc($packageCode) ?></code>.
+    <?php endif ?>
+    <?= esc(lang($packageCode !== null ? 'Admin.packageOnHelp' : 'Admin.packageOffHelp')) ?>
+  </p>
+  <div class="form-actions"><a class="btn" href="<?= base_url('admin/studi/rilis/paket') ?>"><?= icon('download') ?> <?= esc(lang('Admin.packageOpen')) ?></a></div>
+</section>
+<?= component('admin/partials/package-notice', ['packageChanged' => $changed]) ?>
+
 <section class="panel">
   <h2 class="panel-title"><?= icon('list') ?> Semua versi</h2>
   <?= component('components/admin-table', [
@@ -49,12 +78,19 @@
           'release_code'    => ['label' => 'Nama versi', 'render' => static fn (array $row): string => '<code>' . esc($row['release_code']) . '</code>' . ($row['notes'] ? '<span class="cell-sub">' . esc($row['notes']) . '</span>' : '')],
           'app_version'     => 'Aplikasi',
           'content_version' => 'Konten',
-          'asset_version'   => 'Gambar & suara',
+          'asset_version'   => ['label' => 'Gambar & suara', 'render' => static fn (array $row): string => ($releasePackages[(int) $row['id']] ?? null) !== null
+              ? '<code>' . esc($row['asset_version']) . '</code>'
+              : '<span class="muted">' . esc(lang('Admin.releaseNoPackage')) . '</span>'],
           'scoring_version' => 'Aturan bintang',
           'published_at'    => ['label' => 'Diaktifkan', 'format' => 'datetime'],
-          'actions'         => ['label' => '', 'render' => static function (array $row): string {
+          'actions'         => ['label' => '', 'render' => static function (array $row) use ($needsConfirm): string {
               if ($row['is_active']) {
                   return '<span class="badge is-active">' . icon('check') . ' aktif</span>';
+              }
+
+              // Another asset package during a running study: confirmation page with a reason (§7.2)
+              if ($needsConfirm($row)) {
+                  return '<a class="btn btn-sm" href="' . esc(base_url('admin/studi/rilis/' . $row['id'] . '/aktifkan'), 'attr') . '">' . icon('check') . ' ' . esc(lang('Admin.releaseActivateMore')) . '</a>';
               }
 
               return '<form method="post" action="' . esc(base_url('admin/studi/rilis/' . $row['id'] . '/aktifkan'), 'attr') . '" class="inline-form"'
@@ -89,6 +125,7 @@
       <div class="field">
         <label for="asset_version">Versi gambar & suara</label>
         <input type="text" id="asset_version" name="asset_version" maxlength="20" value="<?= esc($active['asset_version'] ?? '1', 'attr') ?>">
+        <p class="field-help"><?= esc(lang('Admin.releaseAssetVersionHelp')) ?></p>
       </div>
       <div class="field">
         <label for="scoring_version">Versi aturan bintang <span class="req">*</span></label>

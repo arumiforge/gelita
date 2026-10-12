@@ -6,23 +6,30 @@ use App\Libraries\ResearchReadiness;
 use App\Models\AuditLogModel;
 use App\Models\GameReleaseModel;
 use App\Models\ResearchStudyModel;
+use App\Services\ReleaseActivation;
 use CodeIgniter\HTTP\RedirectResponse;
 
 /**
- * Studi penelitian dan rilis konten. Satu tahap bermain; studi mengatur
- * periode dan mode buka wilayah.
+ * Research studies and game releases. One play stage; a study sets the
+ * period and how regions unlock.
  *
- * Mengaktifkan rilis mengubah konten yang dipakai sesi berikutnya, jadi
- * setiap perubahan dicatat di `audit_logs`.
+ * Activating a release changes what the next game sessions use, so every
+ * change is recorded in `audit_logs`. Activation goes through
+ * ReleaseActivation, shared with Rilis → Paket aset (PackageController):
+ * while a study is running, a release with another asset package needs a
+ * confirmation and a reason (docs/rencana-paket-aset.md §7.2). A study locks
+ * the active release's package when it becomes *berjalan*.
  */
 class StudyController extends BaseAdminController
 {
     public function index(): string
     {
         return $this->panel('admin/study/index', lang('Admin.menuStudy'), [
-            'studies'   => model(ResearchStudyModel::class)->orderBy('created_at', 'DESC')->findAll(),
-            'locales'   => config('Gelita')->locales,
-            'readiness' => (new ResearchReadiness())->check(),
+            'studies'     => model(ResearchStudyModel::class)->orderBy('created_at', 'DESC')->findAll(),
+            'locales'     => config('Gelita')->locales,
+            'readiness'   => (new ResearchReadiness())->check(),
+            // Study package lock (§7.2): compared with what students get now
+            'packageCode' => service('assetPackages')->releasePackageCode(),
         ]);
     }
 
@@ -38,13 +45,13 @@ class StudyController extends BaseAdminController
             return $blocked;
         }
 
-        $studyId = $studies->insert($this->studyPayload(), true);
+        $studyId = $studies->insert($this->studyPayload() + $this->packageLock(null), true);
 
         if ($studyId === false) {
             return $this->back('admin/studi', 'Penelitian belum dapat disimpan: ' . $this->modelErrors($studies));
         }
 
-        $this->audit('study_create', 'research_study', (int) $studyId);
+        $this->audit('study_create', 'research_study', (int) $studyId, $this->packageLock(null));
 
         return $this->done('admin/studi', 'Penelitian baru sudah dibuat.');
     }
@@ -61,15 +68,19 @@ class StudyController extends BaseAdminController
             return redirect()->to(site_url('admin/studi'))->with('errors', $this->validator->getErrors());
         }
 
-        if (($blocked = $this->readinessGuard($studies->find($studyId)['status'] ?? null)) !== null) {
+        $previous = $studies->find($studyId)['status'] ?? null;
+
+        if (($blocked = $this->readinessGuard($previous)) !== null) {
             return $blocked;
         }
 
-        if (! $studies->update($studyId, $this->studyPayload(true))) {
+        $lock = $this->packageLock($previous);
+
+        if (! $studies->update($studyId, $this->studyPayload(true) + $lock)) {
             return $this->back('admin/studi', 'Penelitian belum dapat disimpan: ' . $this->modelErrors($studies));
         }
 
-        $this->audit('study_update', 'research_study', $studyId);
+        $this->audit('study_update', 'research_study', $studyId, $lock);
 
         return $this->done('admin/studi', 'Perubahan penelitian sudah disimpan.');
     }
@@ -78,9 +89,23 @@ class StudyController extends BaseAdminController
 
     public function releases(): string
     {
+        $packages = service('assetPackages');
+        $releases = model(GameReleaseModel::class)->orderBy('id', 'DESC')->findAll();
+        $code     = $packages->releasePackageCode();
+
         return $this->panel('admin/study/releases', lang('Admin.menuReleases'), [
-            'releases' => model(GameReleaseModel::class)->orderBy('id', 'DESC')->findAll(),
-            'active'   => model(GameReleaseModel::class)->activeOrNull(),
+            'releases'        => $releases,
+            'active'          => model(GameReleaseModel::class)->activeOrNull(),
+            'packageCode'     => $code,
+            'packageOn'       => $code !== null && $packages->enabled(),
+            'killSwitch'      => ! $packages->enabled(),
+            'changed'         => $packages->changedSinceActive(),
+            'runningStudy'    => model(ResearchStudyModel::class)->activeStudy(),
+            // release id => package it names (null = none), for the running-study lock
+            'releasePackages' => array_combine(
+                array_map(static fn (array $row): int => (int) $row['id'], $releases),
+                array_map(static fn (array $row): ?string => $packages->packageOfRelease($row), $releases),
+            ),
         ]);
     }
 
@@ -120,20 +145,48 @@ class StudyController extends BaseAdminController
 
     public function activateRelease(int $releaseId): RedirectResponse
     {
-        $releases = model(GameReleaseModel::class);
+        $result = (new ReleaseActivation())->activate($releaseId, [
+            'confirmed' => (string) $this->request->getPost('confirm_running_study') === '1',
+            'reason'    => (string) $this->request->getPost('reason'),
+            'staff_id'  => $this->staffId(),
+        ]);
 
-        if ($releases->find($releaseId) === null) {
+        if ($result['status'] === ReleaseActivation::NOT_FOUND) {
             return $this->back('admin/studi/rilis', 'Versi permainan tidak ditemukan.');
         }
 
-        $releases->activate($releaseId);
-
-        // content_version ikut jadi kunci cache konten
-        service('contentRepository')->flush();
-
-        $this->audit('release_activate', 'game_release', $releaseId);
+        if ($result['status'] === ReleaseActivation::NEEDS_CONFIRMATION) {
+            return redirect()->to(site_url('admin/studi/rilis/' . $releaseId . '/aktifkan'))
+                ->with('error', lang('Admin.releaseNeedsReason', [$result['study']['name']]));
+        }
 
         return $this->done('admin/studi/rilis', 'Versi permainan sudah diaktifkan. Sesi bermain baru memakai versi ini.');
+    }
+
+    /**
+     * Confirmation page for a release that changes the asset package during
+     * a running study (§7.2): what changes, a confirmation tick, and a reason.
+     * Without a running study or a package change it goes straight back.
+     */
+    public function confirmActivation(int $releaseId): string|RedirectResponse
+    {
+        $release = model(GameReleaseModel::class)->find($releaseId);
+
+        if ($release === null) {
+            return $this->back('admin/studi/rilis', 'Versi permainan tidak ditemukan.');
+        }
+
+        $lock = (new ReleaseActivation())->lockFor($release);
+
+        if ($lock === null) {
+            return redirect()->to(site_url('admin/studi/rilis'));
+        }
+
+        return $this->panel('admin/study/confirm-activation', lang('Admin.releaseConfirmTitle'), [
+            'breadcrumb' => [lang('Admin.releaseConfirmTitle') => null],
+            'release'    => $release,
+            'lock'       => $lock,
+        ]);
     }
 
     // -------------------------------------------------------------- bantuan
@@ -200,12 +253,30 @@ class StudyController extends BaseAdminController
         return $payload;
     }
 
-    private function audit(string $action, string $targetType, int $targetId): void
+    /**
+     * Study package lock (§7.2): when the status changes to *berjalan*, the
+     * study keeps the package the active release names (null = package mode
+     * off). Empty when the status does not change to *berjalan*.
+     *
+     * @return array{package_code?: string|null}
+     */
+    private function packageLock(?string $previousStatus): array
+    {
+        if ($this->request->getPost('status') !== 'active' || $previousStatus === 'active') {
+            return [];
+        }
+
+        return ['package_code' => service('assetPackages')->releasePackageCode()];
+    }
+
+    /** @param array<string, mixed> $metadata */
+    private function audit(string $action, string $targetType, int $targetId, array $metadata = []): void
     {
         model(AuditLogModel::class)->record($action, [
             'staff_user_id' => $this->staffId(),
             'target_type'   => $targetType,
             'target_id'     => (string) $targetId,
+            'metadata'      => $metadata === [] ? null : $metadata,
         ]);
     }
 }

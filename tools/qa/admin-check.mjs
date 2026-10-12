@@ -115,6 +115,7 @@ const adminPages = [
   ['media-audio', 'admin/media/audio'],
   ['studi', 'admin/studi'],
   ['rilis', 'admin/studi/rilis'],
+  ['rilis-paket', 'admin/studi/rilis/paket'],
   ['tata-kelola', 'admin/tata-kelola'],
   ['audit', 'admin/tata-kelola/audit'],
   ['sekolah', 'admin/sekolah'],

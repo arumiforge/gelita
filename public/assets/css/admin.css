@@ -1044,6 +1044,28 @@ body.auth { display: grid; min-height: 100vh; place-items: center; padding: 24px
   .item-card > summary { grid-template-columns: 1fr; }
 }
 
+/* ==========================================================================
+   Rilis → Paket aset (docs/rencana-paket-aset.md §6.3): switch, build
+   progress, summary, changed-asset notice, running-study confirmation
+   ========================================================================== */
+.package-notice { align-items: center; flex-wrap: wrap; }
+.package-notice .inline-form { margin-left: auto; }
+.package-verify { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin: 8px 0 0; }
+.package-verify p { display: inline-flex; align-items: center; gap: 6px; margin: 0; }
+.package-verify .is-ok { color: var(--ok); }
+.package-verify .is-bad { color: var(--bad); }
+.package-progress { height: 12px; margin: 12px 0 8px; }
+.package-progress > i { transition: width .3s; }
+.package-progress-text { margin: 0 0 8px; font-variant-numeric: tabular-nums; }
+.package-summary-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 16px 24px; margin: 16px 0; }
+.package-warnings { display: grid; gap: 8px; margin: 0; padding-left: 18px; }
+.package-warnings code { font-size: 12px; }
+.study-confirm textarea { width: 100%; }
+.study-confirm .field { margin: 0; }
+@media (max-width: 767.98px) {
+  .package-summary-grid { grid-template-columns: 1fr; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }

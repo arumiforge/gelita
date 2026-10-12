@@ -958,7 +958,7 @@ php spark gelita:paket:periksa [kode]          # re-hash every package file agai
 php spark gelita:paket:bersihkan [--coba]      # delete package files no package refers to; --hapus kode removes a package not used by any release
 ```
 
-- Building changes nothing for students. Package mode switches on when the active release's **Versi gambar & suara** (`game_releases.asset_version`) is the package code (until the admin switch of Stage 6 exists: create a release with that value and activate it). Any other value, such as the default `1`, means package mode is off.
+- Building changes nothing for students. Package mode switches on when the active release's **Versi gambar & suara** (`game_releases.asset_version`) is the package code. Admins switch it on **Rilis → Paket aset** (see *Admin switch* below); a release with that value, created and activated by hand, works too. Any other value, such as the default `1`, means package mode is off.
 - Emergency kill switch: `gelita.paket.aktif = false` in `.env` forces normal URLs on every device, whatever the release says. `GET /api/paket/aktif` then answers `package_code: null` with `disabled_by_server: true`.
 - The build copies the library's Commons images to `public/assets/uploads/library.commons.*` (owner decision P4a). The server needs outbound HTTPS to `commons.wikimedia.org` and `upload.wikimedia.org`; without it the build only warns and those images stay external links.
 - `backup.sh`/`backup.ps1` archive `public/assets/p/`, `public/assets/k/`, `public/paket/`, and `writable/paket/` next to the uploads (see [Backup](#backup)). A package referenced by a release must stay on the server even after newer packages exist (devices may still request its files).
@@ -991,7 +991,7 @@ curl -s "$U/api/paket/aktif"                                                    
 
 - **HTTPS is required** for the service worker and for the sha256 check (`crypto.subtle`); `http://localhost` works for development only.
 - **`sw.js` and `sw-kosong.js` must never be cached long.** The Nginx config already gives `.js` without `?v=` the value `no-cache`; browsers also re-check the worker script on navigations. Do not put either file behind `immutable` or a CDN.
-- **Code updates while package mode is on.** Pages then load CSS and JavaScript from the package copy `assets/k/{code_version}/`, a snapshot taken when the package was built. After a deploy that changes game code, build a new package (`php spark gelita:paket:bangun`) and activate a release that names it, or students keep running the old code. Media files are content-addressed, so devices download only the changed code files. The deploy scripts do not do this yet (plan §5.4, §6.3).
+- **Code updates while package mode is on.** Pages then load CSS and JavaScript from the package copy `assets/k/{code_version}/`, a snapshot taken when the package was built. After a deploy that changes game code, press **Bangun ulang paket** on Rilis → Paket aset and publish it (or `php spark gelita:paket:bangun` plus a release that names the package), or students keep running the old code. Media files are content-addressed, so devices download only the changed code files. The deploy scripts do not do this yet (plan §5.4, §6.3).
 - **Package copy missing on disk** (for example a restore without `public/assets/k/`): pages fall back to the normal `assets/…?v=` URLs for code files that are not on disk, so the game still loads; run `php spark gelita:paket:periksa` and rebuild.
 - `X-Gelita-Paket: {package_code}` is sent on API responses while package mode is on (no student data).
 
@@ -1017,6 +1017,17 @@ Check after deploying:
 curl -sI "$U/sw.js" | grep -i cache-control                     # no-cache
 curl -sI "$U/api/paket/aktif" | grep -i x-gelita-paket           # the package code while package mode is on
 ```
+
+#### Admin switch: Rilis → Paket aset
+
+*(New subsection, English; asset package Stage 6, plan §6.3.)* Admins switch package mode on the panel page **Rilis → Paket aset** (`/admin/studi/rilis/paket`); the CLI commands above stay available.
+
+- **Nyalakan** builds a package in batches driven by the open page (one POST every few seconds, each at most ~4 s of work; 20 s without JavaScript), so the default PHP `max_execution_time` (30 s) and Nginx `fastcgi_read_timeout` (60 s) are enough. The summary is then confirmed with **Terbitkan dan nyalakan**, which creates and activates a release with the same versions and the new package code. **Matikan** activates a release without a package.
+- During a running study every package change asks for a tick and a reason (audit `release_activate` with `package_from`, `package_to`, `reason`).
+- When `.env` sets `gelita.paket.aktif = false`, the page shows "Mode paket dimatikan dari server" and students get normal URLs whatever the switch says.
+- The setting **Izinkan mode daring untuk perangkat lab** lives in `writable/paket/pengaturan.json`, which the backup scripts already archive with `writable/paket/`.
+- **After a code deploy while package mode is on**, press **Bangun ulang paket** on Paket aset and publish it, so devices get the new `kode` group (only changed files are downloaded). The deploy scripts do not rebuild the package automatically yet.
+- Before data collection, `php spark gelita:content:verify --siap-penelitian` also re-hashes the active package and fails while package mode is off.
 
 ### Ukuran aset
 

@@ -29,7 +29,7 @@ Nama tampilan keempat jenis tantangan: Susun Gambar (`puzzle`), Isi Rumpang (`ru
 
 Skema dibuat oleh **29 migration** di `app/Database/Migrations/`, satu tabel per berkas, dari `2026-01-01-000100_CreateSchools.php` sampai `2026-01-01-002900_CreateCiSessions.php`. Hasilnya 28 tabel domain + `ci_sessions`, ditambah tabel `migrations` milik CodeIgniter (30 tabel). Urutan berkas mengikuti ketergantungan foreign key, sehingga `php spark migrate` berjalan bersih dari database kosong dan `php spark migrate:rollback` membuang tabel dalam urutan terbalik.
 
-Migration `2026-01-01-003100_AddPackageTrackingToSessionsAndEvents.php` (asset package Stage 5) adds columns to existing tables: `game_sessions.package_code`, `game_sessions.package_mode`, a wider `game_sessions.app_client_version`, and `game_event_logs.clock_offset_ms`. Migration `2026-01-01-003200_AddParticipantAvatar.php` (display plan Phase B) adds `participants.avatar_no`; `SystemResetService::REQUIRED_MIGRATION` now points at it.
+Migration `2026-01-01-003100_AddPackageTrackingToSessionsAndEvents.php` (asset package Stage 5) adds columns to existing tables: `game_sessions.package_code`, `game_sessions.package_mode`, a wider `game_sessions.app_client_version`, and `game_event_logs.clock_offset_ms`. Migration `2026-01-01-003200_AddParticipantAvatar.php` (display plan Phase B) adds `participants.avatar_no`. Migration `2026-01-01-003300_AddPackageCodeToResearchStudies.php` (asset package Stage 6) adds `research_studies.package_code`; `SystemResetService::REQUIRED_MIGRATION` now points at it.
 
 Database menyimpan lima kelompok data:
 
@@ -276,7 +276,10 @@ Studi penelitian. Sesi baru selalu masuk studi berstatus `active` terbaru (`Rese
 | retention_days | INT UNSIGNED | tidak | 1825 | Masa simpan data sesi studi ini (5 tahun); lihat [Retensi](#retensi-dan-penghapusan-data) |
 | default_locale | VARCHAR(5) | tidak | `id` | `id` \| `en` |
 | unlock_mode | VARCHAR(20) | tidak | `sequential` | `sequential` (wilayah terbuka berurutan) \| `free` (semua wilayah terbuka). Nilai `free`, bukan `open`, agar tidak tertukar dengan status wilayah/tantangan `open` di layar peta |
+| package_code | VARCHAR(30) | ya | NULL | Asset package locked when the study became `active` (the package the active release named then); NULL = not running yet, or started while package mode was off. Written by the server only (migration `003300`) |
 | created_at, updated_at | DATETIME(6) | tidak | NOW, NOW↻ | |
+
+**Study package lock (rencana-paket-aset §7.2, migration `003300`).** When the Penelitian page changes a study's status to `active` (new or from `draft`/`closed`), `StudyController` stores `AssetPackageService::releasePackageCode()` in `package_code`; saving a study that is already running keeps it. The page shows the locked package and a warning when students now get another one. While a study runs, activating a release with another package (Rilis, or the package switch on Rilis → Paket aset) needs a confirmation tick and a reason, recorded in the `release_activate` audit entry with `package_from` and `package_to` (`App\Services\ReleaseActivation`). The migration locks a study that is already running to its active release's package when that package exists in `asset_packages`.
 
 #### `game_releases`
 
@@ -295,6 +298,8 @@ Versi permainan, konten, aset, dan aturan bintang. Setiap sesi mencatat rilis ak
 | is_active | TINYINT(1) | tidak | 0 | Hanya satu baris boleh 1; `GameReleaseModel::activate()` menegakkannya dalam satu transaction |
 
 Tabel ini tanpa `created_at`/`updated_at`.
+
+**`asset_version` and package mode (rencana-paket-aset §5.4, §6.3).** `asset_version` names the asset package of the release: a `package_code` of a built package means package mode is on, anything else (empty, or the old default `1`) means off. The package switch on Rilis → Paket aset creates releases itself (`ReleaseActivation::createForPackage()`): same `app_version`, `content_version`, and `scoring_version` as the active release, `asset_version` = the new package code (release code = the package code) or empty (release code `tanpa-paket-YYYY-MM-DD-NN`), with a note saying it was made automatically.
 
 #### `game_sessions`
 
@@ -625,7 +630,7 @@ Tabel ini tanpa `created_at`/`updated_at`. Hanya rekaman `approved` dengan berka
 
 #### `asset_packages`
 
-*(New section, English.)* One row per asset package (`docs/rencana-paket-aset.md` §5.4), written by `App\Services\AssetPackageBuilder` (`php spark gelita:paket:bangun`, later the admin panel). The files are not in the database: media are copied content-addressed to `public/assets/p/{sha256[0:16]}.{ext}`, game code to `public/assets/k/{code_version}/`, the manifest to `public/paket/{package_code}.json`, and the URL map used by the media helpers to `writable/paket/{package_code}.php`. A release uses a package when `game_releases.asset_version` equals its `package_code`; any other value (the old default `1`) means package mode is off.
+*(New section, English.)* One row per asset package (`docs/rencana-paket-aset.md` §5.4), written by `App\Services\AssetPackageBuilder` (`php spark gelita:paket:bangun`, or the batch build on Rilis → Paket aset). The files are not in the database: media are copied content-addressed to `public/assets/p/{sha256[0:16]}.{ext}`, game code to `public/assets/k/{code_version}/`, the manifest to `public/paket/{package_code}.json`, and the URL map used by the media helpers to `writable/paket/{package_code}.php`. A release uses a package when `game_releases.asset_version` equals its `package_code`; any other value (the old default `1`) means package mode is off.
 
 | Kolom | Tipe | Null | Bawaan | Arti |
 |---|---|---|---|---|
@@ -639,14 +644,16 @@ Tabel ini tanpa `created_at`/`updated_at`. Hanya rekaman `approved` dengan berka
 | file_count | INT UNSIGNED | tidak | 0 | Files in the manifest |
 | groups_json | JSON | ya | NULL | Bytes per group (`kode`, `inti`, `wilayah-*`, `penutup`) |
 | warnings_json | JSON | ya | NULL | Build warnings `[{code, key, detail}]`: `placeholder`, `narration_not_approved`, `over_budget`, `file_missing`, `hash_mismatch`, `library_copy_failed` |
-| status | VARCHAR(20) | tidak | `membangun` | Stored codes: `membangun` (batch build running) \| `dibangun` (built) \| `terbit` (published) \| `ditarik` (withdrawn). INDEX |
+| status | VARCHAR(20) | tidak | `membangun` | Stored codes: `membangun` (batch build running) \| `dibangun` (built, never published) \| `terbit` (named by the active release) \| `ditarik` (was published, no longer active). Every release activation updates `terbit`/`ditarik` (`ReleaseActivation`). INDEX |
 | built_by | BIGINT UNSIGNED | ya | NULL | FK `staff_users.id` SET NULL; NULL for the CLI |
 | built_at | DATETIME(6) | ya | NULL | Build finished |
-| published_at | DATETIME(6) | ya | NULL | Set by the admin panel (Stage 6) |
+| published_at | DATETIME(6) | ya | NULL | Last time a release naming this package was activated |
 | notes | TEXT | ya | NULL | |
 | created_at, updated_at | DATETIME(6) | tidak | NOW, NOW↻ | |
 
 `gelita:reset` does not touch this table (group E). `gelita:paket:bersihkan` deletes package files no row refers to, and builds left in `membangun` for more than 24 hours.
+
+The panel setting **Izinkan mode daring untuk perangkat lab** (rencana-paket-aset §8.7) is not in the database: it lives in `writable/paket/pengaturan.json` (`{"online_lab_allowed": bool, "changed_at", "changed_by"}`, `AssetPackageService::onlineLabAllowed()`), next to the package URL maps it qualifies. A missing file means off.
 
 ### D. Data penelitian mentah
 

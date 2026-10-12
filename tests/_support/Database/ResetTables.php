@@ -508,6 +508,7 @@ trait ResetTables
             'retention_days' => 'INTEGER=1825',
             'default_locale' => 'VARCHAR(5)=id',
             'unlock_mode'    => 'VARCHAR(20)=sequential',
+            'package_code'   => 'VARCHAR(30)?',
             'created_at'     => 'DATETIME=CURRENT_TIMESTAMP',
             'updated_at'     => 'DATETIME=CURRENT_TIMESTAMP',
             '_unique'        => [['code']],

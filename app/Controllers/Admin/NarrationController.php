@@ -34,6 +34,8 @@ class NarrationController extends BaseAdminController
                 array_map(static fn (string $locale): int => count($catalog->draftIds($locale)), config('Gelita')->locales),
             ),
             'locales'  => config('Gelita')->locales,
+            // Asset package Stage 6: images/audio changed since the package students have
+            'packageChanged' => service('assetPackages')->changedSinceActive(),
         ]);
     }
 

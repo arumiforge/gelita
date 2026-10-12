@@ -13,7 +13,7 @@ class ResearchStudyModel extends Model
     protected $dateFormat    = 'datetime';
     protected $allowedFields = [
         'code', 'name', 'description', 'year_label', 'status', 'retention_days',
-        'default_locale', 'unlock_mode',
+        'default_locale', 'unlock_mode', 'package_code',
     ];
     protected $validationRules = [
         'code'                => ['label' => 'Kode singkat studi', 'rules' => 'required|max_length[50]|is_unique[research_studies.code,id,{id}]'],

@@ -52,6 +52,8 @@ class MediaController extends BaseAdminController
             'region'     => in_array($region, config('Gelita')->levelPrefixes, true) ? $region : '',
             'node'       => preg_match('/^[a-z]{3}-\d{1,2}$/', $node) === 1 ? $node : '',
             'query'      => mb_substr($query, 0, 80),
+            // Asset package Stage 6: images/audio changed since the package students have
+            'packageChanged' => service('assetPackages')->changedSinceActive(),
         ]);
     }
 
