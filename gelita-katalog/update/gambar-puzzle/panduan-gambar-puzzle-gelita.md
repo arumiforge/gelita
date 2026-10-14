@@ -1,5 +1,7 @@
 # Panduan Gambar Susun Gambar (Puzzle) GELITA
 
+**Status produksi katalog — 14 Oktober 2026:** 21 gambar tambahan d–j serta empat penggantian yang direkomendasikan di bawah telah dibuat dan dipasang. [Daftar final, prompt dan hasil pemeriksaan](../../docs/PUZZLE-UPDATE-20261014.md). Tinjauan bagian 6 adalah kondisi sebelum pekerjaan ini; label buat baru/wajib ganti pada kartu merupakan brief asal, bukan antrian generasi ulang. Needs_verification dan uji susun oleh manusia tetap perlu diselesaikan oleh peneliti.
+
 Panduan ini untuk siapa pun yang membuat gambar tantangan **Susun Gambar** (`tmg-1`, `mgl-1`, `wnb-1`) dengan ChatGPT. Isinya:
 
 - aturan agar gambar tidak ambigu saat dipotong menjadi keping;

@@ -45,3 +45,7 @@ Pengguna meminta ikon Indonesia memakai bendera Indonesia dan English memakai be
 ## Keputusan konsep hasil bersama — 13 Oktober 2026
 
 Pengguna menegaskan bahwa halaman Tantangan selesai digunakan bersama di kota/wilayah lain. Temanggung adalah contoh mockup, bukan batas cakupan. Gunakan satu desain/komponen; nama kota, jenis tantangan, latar, data hasil, label/rute peta dan Berikutnya mengikuti konfigurasi serta state aplikasi. Nama folder, kode aset yang sudah ada dan gambar pilihan dipertahankan.
+
+## Keputusan gambar puzzle — 14 Oktober 2026
+
+Pengguna meminta aset gambar mengikuti perubahan terbaru dan generasi tambahan. Panduan di update/gambar-puzzle menjadi acuan: menambah 21 variasi d–j (tujuh per wilayah), mengganti empat gambar yang direkomendasikan, mempertahankan kode lama serta lima puzzle lama lainnya. Hasil akhir 25 WebP opak 1200 × 1200; adegan puzzle tanpa Jaka/Mbah Kedu, memakai arah render 3D aktif. Total menjadi 611 entri: 514 visual/97 audio, 66 Tantangan. Objek audio tetap baseline. Basis user_override/previous_style_review lama dipertahankan; penandaan 21 entri baru mengikuti permintaan ini, bukan audit baru. Detail: [paket revisi](PUZZLE-UPDATE-20261014.md).

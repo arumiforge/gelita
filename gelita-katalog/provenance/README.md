@@ -18,3 +18,5 @@ Lokasi absolut `source`/`path` di manifest bisa berada di komputer pembuat dan t
 Revisi hasil 13 Oktober: [prompt pekerjaan](result-ui-generation-prompts-20261013.json), [hasil dan pemetaan delapan slot](result-ui-generation-results-20261013.json), serta sumber WebP lossless di result-ui-keyassets-20261013/. Enam gambar AI dipilih dari tujuh panggilan; lanskap dipakai ulang dan efek medali SVG native.
 
 Ikon bahasa bendera: [prompt](language-flag-prompts-20261013.json) dan [hasil/pemetaan](language-flag-generation-results-20261013.json); dua hasil AI WebP native disimpan dalam language-flag-keyassets-20261013/.
+
+Puzzle 14 Oktober: [manifest final](puzzle-generation-results-20261014.json), [prompt panduan](puzzle-generation-20261014/jobs.json), [prompt aktual dan koreksi](puzzle-generation-20261014/results.json), [sumber foto dan lisensi](puzzle-generation-20261014/factual-references/sources.json). Native WebP, kandidat, dan riwayat koreksi disimpan lokal di puzzle-generation-20261014/. 30 panggilan ImageGen: satu percobaan awal tidak dipakai, 25 generasi, empat koreksi; 25 hasil dipilih, 21 slot baru dan empat penggantian.

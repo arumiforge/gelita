@@ -15,3 +15,5 @@ Baca [README.md](README.md), [docs/CONTEXT.md](docs/CONTEXT.md), [docs/MEMORY.md
 - Struktur terbaru 12 Oktober 2026: dokumentasi di `docs/`, laporan di `reports/`, catatan generasi/migrasi di `provenance/`, pemeliharaan di `scripts/`. `README.md` tetap di root.
 - `archive/` berisi sejarah, baseline, dan cadangan; perintah dalam dokumen/skrip historis bukan instruksi aktif. Jangan menjalankan ulang skripnya sebagai pemeliharaan rutin.
 - Catat perubahan nyata dan hasil pemeriksaan dalam `docs/PROGRESS.md`. Jangan mengklaim pemeriksaan yang belum dijalankan. Panduan ada di `docs/MAINTENANCE.md`.
+
+- Revisi puzzle 14 Oktober 2026: 611 entri (514 visual/97 audio), 66 visual Tantangan. 21 variasi d–j baru dan empat penggantian mengikuti update/gambar-puzzle. Gunakan [paket revisi](docs/PUZZLE-UPDATE-20261014.md) dan [manifest](provenance/puzzle-generation-results-20261014.json); jangan menjalankan ulang produksi bertanggal sebagai pemeliharaan rutin.

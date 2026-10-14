@@ -19,3 +19,7 @@ Laporan bukan sumber entri. Baca tanggal/lingkupnya bersama [PROGRESS.md](../doc
 | `remaining-legacy-style.json`, `remaining-legacy-style.txt` | Nama aset yang belum diganti sejak riwayat audit lama; status katalog tetap `user_override` |
 
 Keputusan gaya tetap 11 Oktober 2026 meskipun build dilakukan kemudian. Data audit lama per entri berada di `previous_style_review` dalam data aktif. Tidak semua laporan di folder ini dibuat ulang pada perapian dokumen.
+
+Revisi puzzle 14 Oktober: [metrik keping](puzzle-tile-review-20261014.json) dan [verifikasi data/hash/ukuran](puzzle-update-verification-20261014.json). Metrik bukan validasi budaya atau uji susun manusia.
+
+[Browser puzzle](puzzle-browser-check-20261014.json) mencatat 10 puzzle tiap wilayah, koleksi 66 Tantangan, detail dan pembukaan WebP baru. Pemeriksaan 25 detail dilakukan dalam browser-check.cjs.

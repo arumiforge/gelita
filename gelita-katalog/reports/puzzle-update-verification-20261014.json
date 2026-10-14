@@ -1,0 +1,14 @@
+{
+  "date": "2026-10-14",
+  "passed": true,
+  "total": 611,
+  "visual": 514,
+  "audio": 97,
+  "added": 21,
+  "replaced": 4,
+  "unchanged_original_entries": 586,
+  "unchanged_original_asset_hashes": 489,
+  "raster_at_target": 461,
+  "old_style_and_previous_reviews_preserved": true,
+  "audio_identical_to_baseline": true
+}

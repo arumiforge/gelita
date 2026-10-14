@@ -1,15 +1,15 @@
 {
   "date": "2026-10-11",
-  "built_at_utc": "2026-10-12T19:26:13.519Z",
-  "total": 590,
-  "visual": 493,
+  "built_at_utc": "2026-10-14T03:20:29.266Z",
+  "total": 611,
+  "visual": 514,
   "audio": 97,
   "generated_references": 9,
   "icons_updated": 83,
   "visual_prompts_reviewed": 273,
-  "style_status_basis": "User override — original 273 visuals: 2026-10-11; 210 additional character frames: 2026-10-12; 8 result UI assets follow the user-selected reference: 2026-10-13; 2 language flag icons: 2026-10-13",
+  "style_status_basis": "User override — original 273 visuals: 2026-10-11; 210 additional character frames: 2026-10-12; 8 result UI assets follow the user-selected reference: 2026-10-13; 2 language flag icons: 2026-10-13; 21 additional puzzle scenes follow the requested active direction: 2026-10-14",
   "style_counts": {
-    "Sesuai gaya": 493,
+    "Sesuai gaya": 514,
     "Belum sesuai": 0,
     "Perlu tinjau": 0,
     "Tidak berlaku": 0
@@ -40,5 +40,14 @@
       "United Kingdom"
     ],
     "method": "built-in image_gen"
+  },
+  "puzzle_update": {
+    "date": "2026-10-14",
+    "assets": 25,
+    "added": 21,
+    "replaced": 4,
+    "generation_calls": 30,
+    "method": "built-in image_gen; square proportional normalization to 1200px WebP lossless",
+    "content_status": "needs_verification"
   }
 }

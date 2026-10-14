@@ -1,6 +1,6 @@
 # Skema data katalog
 
-Sumber aktif `../data.json` adalah array 590 objek. Field berbeda menurut jenis entri; jangan menghapus field yang belum dipahami. Build menanam data yang sama persis di `index.html`.
+Sumber aktif `../data.json` adalah array 611 objek. Field berbeda menurut jenis entri; jangan menghapus field yang belum dipahami. Build menanam data yang sama persis di `index.html`.
 
 ## Identitas dan kelompok
 
@@ -22,7 +22,7 @@ Referensi berkode `reference.*` berada di `assets/referensi/` walaupun kategori 
 | Logo | 5 |
 | Antarmuka | 11 |
 | Ikon | 85 |
-| Tantangan | 45 |
+| Tantangan | 66 |
 | Lencana | 3 |
 | Pustaka | 60 |
 | Narasi | 88 |
@@ -57,3 +57,7 @@ Nama dasar mengikuti kode setelah ekstensi resmi di ujung kode dilepas: `app.ico
 
 Audio berupa brief, bukan bukti rekaman. Jangan menerapkan migrasi/prompt visual ke audio. Validator membandingkan seluruh objek audio dengan baseline, bukan hanya jumlah.
 
+
+## Metadata puzzle — 14 Oktober 2026
+
+25 entri yang dibuat/diperbarui memiliki puzzle: prompt_code, item_key, grid (3 atau 4), description_id/en, review_status (needs_verification), tile_result dan human_assembly_test. puzzle_provenance menyimpan manifest, source_native, references, revision dan replaced. Ini metadata revisi; tidak mengubah identitas kode slot lama atau kunci butir workbook. Lima puzzle lama lainnya dipertahankan.

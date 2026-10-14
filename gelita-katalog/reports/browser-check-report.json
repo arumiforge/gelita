@@ -1,20 +1,29 @@
 {
-  "date": "2026-10-13",
+  "date": "2026-10-14",
+  "checked_at_utc": "2026-10-14T03:22:21.464Z",
   "passed": true,
+  "bootstrap_version": "5.3.8",
   "checks": [
-    "Initial 493 visual cards",
-    "493 user-approved style entries",
-    "No unmatched entries",
-    "144 Jaka frames",
-    "Detail and Escape",
-    "7 new result UI slots visible and panel WebP loaded",
-    "2 language flag icons visible and UK WebP loaded",
-    "26 reference collection entries",
-    "Original WebP opens from offline catalog",
-    "Filtered JSON download",
-    "97 audio cards",
-    "Empty results and reset",
-    "Mobile no horizontal overflow",
+    "514 visual cards; 97 unchanged audio briefs",
+    "Local Bootstrap CSS/JS and Jakarta font loaded; no remote or failed requests",
+    "Bootstrap update collapse and export dropdown; Escape support",
+    "Style, region, search and empty-state reset",
+    "144 Jaka frames; dialog/Escape and focus return; collection focus retained",
+    "7 result UI slots; 2 language flags; 512 px app icon",
+    "Natural sorting by title and key; 26 references",
+    "Original offline WebP opens; prompt TXT, filtered JSON and CSV downloads",
+    "Prompt, brief and group copy text/feedback verified with clipboard stub",
+    "Audio detail labels distinguish briefs from recordings",
+    "No horizontal overflow at 360, 390, 768, 1024, 1440 and 1920 px",
+    "Mobile updates and asset detail; reduced-motion preference",
     "No JavaScript page errors"
+  ],
+  "screenshots": [
+    "catalog-desktop.webp",
+    "catalog-collection.webp",
+    "catalog-detail.webp",
+    "catalog-mobile.webp",
+    "catalog-mobile-collection.webp",
+    "catalog-mobile-detail.webp"
   ]
 }

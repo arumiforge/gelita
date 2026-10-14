@@ -1,0 +1,2467 @@
+[
+  {
+    "key": "reference.01",
+    "file": "assets/referensi/reference.01.webp",
+    "sha256": "c1dcd260911ed431b3ebea805af2c9fda3dc41c985d9e4ca422fc3494bbe75b7"
+  },
+  {
+    "key": "reference.02",
+    "file": "assets/referensi/reference.02.webp",
+    "sha256": "4c710a88b97169f978c3a3a5f74515dc9ef6dbce224912218d04ab4500548814"
+  },
+  {
+    "key": "reference.03",
+    "file": "assets/referensi/reference.03.webp",
+    "sha256": "0a326339e8bbabc9826d2290b663daa93d76462dbadf20f539b28a47696d4792"
+  },
+  {
+    "key": "reference.04",
+    "file": "assets/referensi/reference.04.webp",
+    "sha256": "bfae98a7593b4c0065353a9a11611bd572d3522b13af8329df51a7b2aecd6f5f"
+  },
+  {
+    "key": "reference.05",
+    "file": "assets/referensi/reference.05.webp",
+    "sha256": "2058dc1198b30c85171d5205d9921bd0ffb84c79c28f537a6ae8418df4c7ff18"
+  },
+  {
+    "key": "reference.06",
+    "file": "assets/referensi/reference.06.webp",
+    "sha256": "c05b69a4ac6a958894168edd9a4a9b602e38d7ce23f67c71f1e2c0e789c368d9"
+  },
+  {
+    "key": "reference.07",
+    "file": "assets/referensi/reference.07.webp",
+    "sha256": "46da1341413983c382b56d9954ce37475831c9d4f8c48c73b7da1b8d1fc7b725"
+  },
+  {
+    "key": "reference.08",
+    "file": "assets/referensi/reference.08.webp",
+    "sha256": "750013a40d41510dcf950d4c57d9f5343086b00c5fbbe1aad20febdb8235aba6"
+  },
+  {
+    "key": "reference.09",
+    "file": "assets/referensi/reference.09.webp",
+    "sha256": "30c85120356403769ed81d52f98b4749461f0d47d6c9110ed44d5fcabad2469a"
+  },
+  {
+    "key": "reference.10",
+    "file": "assets/referensi/reference.10.webp",
+    "sha256": "0b59a6b99e36f6a17719077d625440d9fe7122e50dcc0436b1850071a637b6ce"
+  },
+  {
+    "key": "reference.11",
+    "file": "assets/referensi/reference.11.webp",
+    "sha256": "9dadd4fd39c316ec296472d8634069e242372d5c4fd76addf8eb4c1874a0af59"
+  },
+  {
+    "key": "reference.12",
+    "file": "assets/referensi/reference.12.webp",
+    "sha256": "3cad8b281a111507be457085bcde7b21930700c8a7823e467c796811f46cf8cf"
+  },
+  {
+    "key": "reference.13",
+    "file": "assets/referensi/reference.13.webp",
+    "sha256": "dcc874f7946adcd94f3cf9ffeb601b91efad32a521b7e4da54026fd47824bb50"
+  },
+  {
+    "key": "reference.14",
+    "file": "assets/referensi/reference.14.webp",
+    "sha256": "1b62c782e091c7c3201f63b4911c261c1efcd09699d81d41d8537cf04b854a3f"
+  },
+  {
+    "key": "reference.15",
+    "file": "assets/referensi/reference.15.webp",
+    "sha256": "bbd67b659af26afdd6500d156c29c09e95bf072bc2c458a85a1118f6b1e50a5d"
+  },
+  {
+    "key": "reference.16",
+    "file": "assets/referensi/reference.16.webp",
+    "sha256": "28ef6f2e8b5f16ea437ef8b30bc5b02657f42c340b6e93947bbeb1c566b00e16"
+  },
+  {
+    "key": "reference.17",
+    "file": "assets/referensi/reference.17.webp",
+    "sha256": "81b5b0f19b70b3829b860c48a509fce7ce9fe5167622fb3ac700d8217b4ae359"
+  },
+  {
+    "key": "reference.18",
+    "file": "assets/referensi/reference.18.webp",
+    "sha256": "d6dad30a0851eb43081bba7b79b03a867e35cc41bb0b887acd8c6b59a589f720"
+  },
+  {
+    "key": "reference.19",
+    "file": "assets/referensi/reference.19.webp",
+    "sha256": "d11a03385ba83d9f4c8a0f230c9464d7b99686deaac00a44ee093cdd6264a25a"
+  },
+  {
+    "key": "reference.20",
+    "file": "assets/referensi/reference.20.webp",
+    "sha256": "4ad11033c7f0fda28105cefe0ec647a3a93fb6258ba88d78e978156e56838aaa"
+  },
+  {
+    "key": "reference.21",
+    "file": "assets/referensi/reference.21.webp",
+    "sha256": "88e2cc0d6e260c08ec1c38fb7a57518813405ee4fee50824de8a0b0c1ab6ec23"
+  },
+  {
+    "key": "reference.22",
+    "file": "assets/referensi/reference.22.webp",
+    "sha256": "e4e8e59b7c31da497f2c0878e6e66b34b0c50d5367b0c5f836d1464a1217c59d"
+  },
+  {
+    "key": "reference.23",
+    "file": "assets/referensi/reference.23.webp",
+    "sha256": "28c765a8e0b5b862171bd815b8c5ed4465b680020cd2aab3f9c67a5703847545"
+  },
+  {
+    "key": "reference.24",
+    "file": "assets/referensi/reference.24.webp",
+    "sha256": "acd1f4e82e15b78392d633442df28bd2636a2e74f97ea07b45eb52c9045edb67"
+  },
+  {
+    "key": "reference.25",
+    "file": "assets/referensi/reference.25.webp",
+    "sha256": "db9fe329180b24cad615770531172a6c996bb8a2a2d91652602eb8bc42ba93f9"
+  },
+  {
+    "key": "reference.26",
+    "file": "assets/referensi/reference.26.webp",
+    "sha256": "46d5fc11eeb5d8e6c2db52c6b407c912fe76519e23088b559d6f829452d9af42"
+  },
+  {
+    "key": "challenge.item.tmg-1-01",
+    "file": "assets/tantangan/challenge.item.tmg-1-01.webp",
+    "sha256": "019c6a35d12a84f9632cbc9d100b82e976c2c36ee9b8fd4b14768fc743ef2835"
+  },
+  {
+    "key": "challenge.item.tmg-1-03",
+    "file": "assets/tantangan/challenge.item.tmg-1-03.webp",
+    "sha256": "bd3014f0d2b1ddb52b3f242c1cec56338fb27fe5e114c3241d5aba4db56466f3"
+  },
+  {
+    "key": "challenge.item.tmg-1-04",
+    "file": "assets/tantangan/challenge.item.tmg-1-04.webp",
+    "sha256": "d9ad1d233dbb891941784508103c173e4ac7a7c136d047b2bfdcc5c1439df6dc"
+  },
+  {
+    "key": "challenge.item.tmg-3-a03",
+    "file": "assets/tantangan/challenge.item.tmg-3-a03.webp",
+    "sha256": "1fba0d90dd57b2346307272db4954d7767a6f093def17a2f1fa510c73a28fc33"
+  },
+  {
+    "key": "challenge.item.tmg-3-b03",
+    "file": "assets/tantangan/challenge.item.tmg-3-b03.webp",
+    "sha256": "2aa8ec23ecd92caa8e59271c5f76e2f139c66fb03bdf996899788b64777cc53f"
+  },
+  {
+    "key": "challenge.item.tmg-3-c03",
+    "file": "assets/tantangan/challenge.item.tmg-3-c03.webp",
+    "sha256": "cc30b6f665ffd4e445ce42c607e320b67ea763d576959c61cbf0971d7f990907"
+  },
+  {
+    "key": "challenge.item.tmg-4-02",
+    "file": "assets/tantangan/challenge.item.tmg-4-02.webp",
+    "sha256": "302e865b7d421c18b72352167058daab55d00408fe832269cf3f12fdad9b731b"
+  },
+  {
+    "key": "challenge.item.tmg-4-03",
+    "file": "assets/tantangan/challenge.item.tmg-4-03.webp",
+    "sha256": "df6cc8b7c04d430d4a8325b73576e05af30424d5fb92c2c1108c0fd9bcb4cbea"
+  },
+  {
+    "key": "challenge.item.tmg-4-04",
+    "file": "assets/tantangan/challenge.item.tmg-4-04.webp",
+    "sha256": "e80b87dcf90cf5645fc30871bbe1dece03253d6e03a2d9a0d8ff8a2bdb4c7072"
+  },
+  {
+    "key": "challenge.item.tmg-4-06",
+    "file": "assets/tantangan/challenge.item.tmg-4-06.webp",
+    "sha256": "e534beebe1b5d3d68f273a758bcd49c42fb6651ebce613fad49c798866a99e2a"
+  },
+  {
+    "key": "challenge.item.tmg-4-09",
+    "file": "assets/tantangan/challenge.item.tmg-4-09.webp",
+    "sha256": "e733ace4899678776a1fb675143591260c0c666bf80421fc8a8f00b3a4aaae35"
+  },
+  {
+    "key": "challenge.item.tmg-4-10",
+    "file": "assets/tantangan/challenge.item.tmg-4-10.webp",
+    "sha256": "74b46d69c7cc2c2725e117e794e7c3598480aec3344396a0c3f9cbfaa5cf9bb3"
+  },
+  {
+    "key": "challenge.item.tmg-4-11",
+    "file": "assets/tantangan/challenge.item.tmg-4-11.webp",
+    "sha256": "391bc5f078d9db2d55c019ce5f4733c168fecb804b5b91745eceade669368077"
+  },
+  {
+    "key": "challenge.item.tmg-4-12",
+    "file": "assets/tantangan/challenge.item.tmg-4-12.webp",
+    "sha256": "5a9c8b38f0e5d0929cf3818882d7a5f9cc658a078b0aba674c924b93c46eabbf"
+  },
+  {
+    "key": "challenge.tmg-4.scene",
+    "file": "assets/tantangan/challenge.tmg-4.scene.webp",
+    "sha256": "2e51f64d15fc5567617239aae838949fe90adb8715f78a309cd2e83512f01261"
+  },
+  {
+    "key": "challenge.item.mgl-1-01",
+    "file": "assets/tantangan/challenge.item.mgl-1-01.webp",
+    "sha256": "62aacb16f39e273ada40a0e7ea55ec7bab08af4ea74af15761d443eb65f7f12f"
+  },
+  {
+    "key": "challenge.item.mgl-1-02",
+    "file": "assets/tantangan/challenge.item.mgl-1-02.webp",
+    "sha256": "0da5aeca564bacc9ff674fb5518f660a0b03dd5811c1e10b2ffb6405d7d3b344"
+  },
+  {
+    "key": "challenge.item.mgl-1-03",
+    "file": "assets/tantangan/challenge.item.mgl-1-03.webp",
+    "sha256": "b87517679c9b97978bb674b54b1c95c608c08866a5cdb102bac9b6fd1937510d"
+  },
+  {
+    "key": "challenge.item.mgl-4-a01",
+    "file": "assets/tantangan/challenge.item.mgl-4-a01.webp",
+    "sha256": "7efbed05a0ca23998fc85510716c1ffc88b40165e79357548acf860db3aaf11b"
+  },
+  {
+    "key": "challenge.item.mgl-4-a02",
+    "file": "assets/tantangan/challenge.item.mgl-4-a02.webp",
+    "sha256": "a63be3c348a1032633df51028ff0631996293dba33d7a8ac317a2a1354d05bc1"
+  },
+  {
+    "key": "challenge.item.mgl-4-a03",
+    "file": "assets/tantangan/challenge.item.mgl-4-a03.webp",
+    "sha256": "d0e2ec8147b81171150db0e353e9dc9338436af98c6f700b3c90b04b1f69dd48"
+  },
+  {
+    "key": "challenge.item.mgl-4-a04",
+    "file": "assets/tantangan/challenge.item.mgl-4-a04.webp",
+    "sha256": "078079d6268bbd6594b5a860722513197726f42c6a0f6688184ecff814acfebc"
+  },
+  {
+    "key": "challenge.item.mgl-4-a05",
+    "file": "assets/tantangan/challenge.item.mgl-4-a05.webp",
+    "sha256": "3665292826b49c9c656cfee6d5f8a7d1245cb052674ae41b400e681d67f7bf7e"
+  },
+  {
+    "key": "challenge.item.mgl-4-a06",
+    "file": "assets/tantangan/challenge.item.mgl-4-a06.webp",
+    "sha256": "8a10c4e908a01806f22a002e5c930a5ff3ce075191c896d3abd347b4a5677e40"
+  },
+  {
+    "key": "challenge.item.mgl-4-a07",
+    "file": "assets/tantangan/challenge.item.mgl-4-a07.webp",
+    "sha256": "6113456ab4e6dee64785c602e0a9ce096e2b14f97d8351593619e67644ed844b"
+  },
+  {
+    "key": "challenge.item.mgl-4-a08",
+    "file": "assets/tantangan/challenge.item.mgl-4-a08.webp",
+    "sha256": "7d563572ae8f3e241ccacd190179ca2211c377415a53a3c771c1be051385aa5d"
+  },
+  {
+    "key": "challenge.item.mgl-4-a09",
+    "file": "assets/tantangan/challenge.item.mgl-4-a09.webp",
+    "sha256": "aaf5ce6fbe88961c500a0703371aaec056cac82f6592ff82b69577ba8cc949ad"
+  },
+  {
+    "key": "challenge.item.mgl-4-a10",
+    "file": "assets/tantangan/challenge.item.mgl-4-a10.webp",
+    "sha256": "843467bf69a42059cf2016d096a95d05abb7faa89426ed0bb4a217fcab2816f3"
+  },
+  {
+    "key": "challenge.mgl-4.scene",
+    "file": "assets/tantangan/challenge.mgl-4.scene.webp",
+    "sha256": "0e1696c329f915a3c8c1eb9daa597e218d6335e4c3a438ae5909f002ca092fe2"
+  },
+  {
+    "key": "challenge.item.wnb-1-05",
+    "file": "assets/tantangan/challenge.item.wnb-1-05.webp",
+    "sha256": "6744b6206a8de59faf25c5b2451fc23a16c58ff630f48ed9e425e789684d6574"
+  },
+  {
+    "key": "challenge.item.wnb-1-06",
+    "file": "assets/tantangan/challenge.item.wnb-1-06.webp",
+    "sha256": "274481bc8a0a1778572f7fea7e0acde409faa27acda2cd39a37acc550afed899"
+  },
+  {
+    "key": "challenge.item.wnb-1-07",
+    "file": "assets/tantangan/challenge.item.wnb-1-07.webp",
+    "sha256": "cb18c00f0bfb6230d4279d5e20dad5d687d1affd6b1ba49ab01495271fa425c7"
+  },
+  {
+    "key": "challenge.item.wnb-4-a01",
+    "file": "assets/tantangan/challenge.item.wnb-4-a01.webp",
+    "sha256": "89f111fae74ca47497e35e6fdf5aa2210583dd7fc81d4115bb136ef657cef466"
+  },
+  {
+    "key": "challenge.item.wnb-4-a02",
+    "file": "assets/tantangan/challenge.item.wnb-4-a02.webp",
+    "sha256": "d9e901591eaf4db825dbe6028b6f1d9eb6350a0d9d9c2ab1ea8bb02aa95b2aa1"
+  },
+  {
+    "key": "challenge.item.wnb-4-a03",
+    "file": "assets/tantangan/challenge.item.wnb-4-a03.webp",
+    "sha256": "d2a3b0c0810423f1ac15889f4e0664372e441a959e51e858277692cf88e70f02"
+  },
+  {
+    "key": "challenge.item.wnb-4-a04",
+    "file": "assets/tantangan/challenge.item.wnb-4-a04.webp",
+    "sha256": "ace63367780869a4d46ee1267f5bcfac5c34b015859eb2d0ec44f02e694eb0c3"
+  },
+  {
+    "key": "challenge.item.wnb-4-a05",
+    "file": "assets/tantangan/challenge.item.wnb-4-a05.webp",
+    "sha256": "a87872c8c1908570acb25707816a4e9afae8d6a1144e4be7229e593527b58201"
+  },
+  {
+    "key": "challenge.item.wnb-4-a06",
+    "file": "assets/tantangan/challenge.item.wnb-4-a06.webp",
+    "sha256": "e0d6f7721c3116d1cbdb4618af0dc9861f06d0ad4f2c628d5559da398f02704d"
+  },
+  {
+    "key": "challenge.item.wnb-4-a07",
+    "file": "assets/tantangan/challenge.item.wnb-4-a07.webp",
+    "sha256": "538ea9638141be4b7fe3ae74a2beb63437973e811f6207237f358be077f99327"
+  },
+  {
+    "key": "challenge.item.wnb-4-a08",
+    "file": "assets/tantangan/challenge.item.wnb-4-a08.webp",
+    "sha256": "e733ace4899678776a1fb675143591260c0c666bf80421fc8a8f00b3a4aaae35"
+  },
+  {
+    "key": "challenge.item.wnb-4-a09",
+    "file": "assets/tantangan/challenge.item.wnb-4-a09.webp",
+    "sha256": "5a9c8b38f0e5d0929cf3818882d7a5f9cc658a078b0aba674c924b93c46eabbf"
+  },
+  {
+    "key": "challenge.item.wnb-4-a10",
+    "file": "assets/tantangan/challenge.item.wnb-4-a10.webp",
+    "sha256": "302e865b7d421c18b72352167058daab55d00408fe832269cf3f12fdad9b731b"
+  },
+  {
+    "key": "challenge.item.wnb-4-a11",
+    "file": "assets/tantangan/challenge.item.wnb-4-a11.webp",
+    "sha256": "a63be3c348a1032633df51028ff0631996293dba33d7a8ac317a2a1354d05bc1"
+  },
+  {
+    "key": "challenge.item.wnb-4-a12",
+    "file": "assets/tantangan/challenge.item.wnb-4-a12.webp",
+    "sha256": "d0e2ec8147b81171150db0e353e9dc9338436af98c6f700b3c90b04b1f69dd48"
+  },
+  {
+    "key": "challenge.wnb-4.scene",
+    "file": "assets/tantangan/challenge.wnb-4.scene.webp",
+    "sha256": "e9727ebb0def249783b255a896d1fe3aa39f7194b2bcd7c02228b698cd6738d8"
+  },
+  {
+    "key": "bg.welcome",
+    "file": "assets/latar/bg.welcome.webp",
+    "sha256": "22b5a520d326f4346cea732dd9a3fc8fd4ac689a92fdef8a34f4975f906f51b1"
+  },
+  {
+    "key": "bg.auth",
+    "file": "assets/latar/bg.auth.webp",
+    "sha256": "aae65a67b5939c5118a44fdde7e71ae1a2e4b068228921bbdc99484a861929dc"
+  },
+  {
+    "key": "bg.intro",
+    "file": "assets/latar/bg.intro.webp",
+    "sha256": "3a3a364e4c5793a0ac4ac877273e68f90600a3b0506e65fd421683e37e4a6d0a"
+  },
+  {
+    "key": "bg.map",
+    "file": "assets/latar/bg.map.webp",
+    "sha256": "4bfe7b013e10df96494fa0ad27471aa085cff1430df4050efbbc803b975d5afa"
+  },
+  {
+    "key": "bg.reflection",
+    "file": "assets/latar/bg.reflection.webp",
+    "sha256": "57f888b6cd0c55f4f5c82e84904932eb134fddc5b71ff136ca4dde666b5a8ba4"
+  },
+  {
+    "key": "bg.loading",
+    "file": "assets/latar/bg.loading.webp",
+    "sha256": "22408ee6f45fd3c57b4ada4726c1794d5c452f0282a16f766550ad35fbf5927d"
+  },
+  {
+    "key": "bg.cerita-intro-01",
+    "file": "assets/latar/bg.cerita-intro-01.webp",
+    "sha256": "4e59399398e3131dffb64c2c3720232ad68f2fb25afa1fbf00886f542f2e194b"
+  },
+  {
+    "key": "bg.cerita-intro-02",
+    "file": "assets/latar/bg.cerita-intro-02.webp",
+    "sha256": "54931bf3ec84d86e57081dd4d174101c53178c4624ea382fb3ee6e22e6419b2c"
+  },
+  {
+    "key": "bg.cerita-intro-03",
+    "file": "assets/latar/bg.cerita-intro-03.webp",
+    "sha256": "de81cc52608d455158ec832f3d6636a9e013611f20236a6477c69e8b5717a0d1"
+  },
+  {
+    "key": "bg.cerita-intro-04",
+    "file": "assets/latar/bg.cerita-intro-04.webp",
+    "sha256": "65541d084bde45db521c4d89c1356b5070f16a32344bd5d51d4d3aa264c62e1a"
+  },
+  {
+    "key": "bg.cerita-intro-05",
+    "file": "assets/latar/bg.cerita-intro-05.webp",
+    "sha256": "960c8c834203af3abdd1192202e1960e45b3dedca63d66ad8dd53f0554807d82"
+  },
+  {
+    "key": "bg.cerita-intro-06",
+    "file": "assets/latar/bg.cerita-intro-06.webp",
+    "sha256": "326a25982dae5e5718bda9002340da2ee8c4f056c513d62bbfc8cd9f1956da35"
+  },
+  {
+    "key": "bg.cerita-intro-07",
+    "file": "assets/latar/bg.cerita-intro-07.webp",
+    "sha256": "c2fdaaed5750628c0a85d36d6a77eabed58ee40fdff718c0f4efc23282b4007d"
+  },
+  {
+    "key": "bg.cerita-intro-08",
+    "file": "assets/latar/bg.cerita-intro-08.webp",
+    "sha256": "c3b0cb39aae7657cf9564f38378473da39b63e94955f8400161773ff412107fa"
+  },
+  {
+    "key": "bg.cerita-intro-09",
+    "file": "assets/latar/bg.cerita-intro-09.webp",
+    "sha256": "babbd2c25ddad60183fb32ca47307fc35ff24a2bdf0f68aac9b57b46dea30dc7"
+  },
+  {
+    "key": "bg.cerita-penutup-01",
+    "file": "assets/latar/bg.cerita-penutup-01.webp",
+    "sha256": "1c85097420ffeea3cdde7f899c4b5550370e6d4a129498c17547c79b59b3629d"
+  },
+  {
+    "key": "bg.cerita-penutup-02",
+    "file": "assets/latar/bg.cerita-penutup-02.webp",
+    "sha256": "b441e8ea2536b8a75304c1dd8c303bfa97ccb000d32c9bd2f934c0dc587c6f92"
+  },
+  {
+    "key": "bg.cerita-penutup-03",
+    "file": "assets/latar/bg.cerita-penutup-03.webp",
+    "sha256": "a6cbbe9d845c86b9475cd72437834a5d8acefcd6f332a3196978d5ba9366b7d8"
+  },
+  {
+    "key": "bg.cerita-penutup-04",
+    "file": "assets/latar/bg.cerita-penutup-04.webp",
+    "sha256": "414707d36cb21866650c86387571468317c6affe3782a5584f04f3ad4209ef1d"
+  },
+  {
+    "key": "bg.cerita-penutup-05",
+    "file": "assets/latar/bg.cerita-penutup-05.webp",
+    "sha256": "a548e487440947a2d970b0f9bd54016481987219cd205409ed765f947eccd82a"
+  },
+  {
+    "key": "bg.temanggung.region",
+    "file": "assets/latar/bg.temanggung.region.webp",
+    "sha256": "87fb3c322c9178421ee72b703debb6d6434117f796582b04ae4d5a433413c846"
+  },
+  {
+    "key": "bg.magelang.region",
+    "file": "assets/latar/bg.magelang.region.webp",
+    "sha256": "24e994be5fc4fa1542a87c4062062d49bf91850609fe5302e0071c8749d8e936"
+  },
+  {
+    "key": "bg.wonosobo.region",
+    "file": "assets/latar/bg.wonosobo.region.webp",
+    "sha256": "18bc5b3e5ea1f530a8907ef8fe1fcdde453da3995970812a63a6b35a4b70267f"
+  },
+  {
+    "key": "ui.logo-hero",
+    "file": "assets/logo/ui.logo-hero.webp",
+    "sha256": "3843b1cc6ef3bf6608900adda9f478efd7d812e3d5cb42eec9c3963d566a90f0"
+  },
+  {
+    "key": "ui.logo",
+    "file": "assets/logo/ui.logo.webp",
+    "sha256": "0edb7d10df18f69aae22ca8e8b3f20ac2d50a0f25de0a70c533d81a303da5707"
+  },
+  {
+    "key": "ui.btn-start",
+    "file": "assets/antarmuka/ui.btn-start.webp",
+    "sha256": "692a7e6222584426dd9338689cb8a4ed48c977ca6fe982d5ba57252fc9095d7a"
+  },
+  {
+    "key": "ui.btn-start.en",
+    "file": "assets/antarmuka/ui.btn-start.en.webp",
+    "sha256": "d6cf5eb023cfa81cb6494a9a2b25fddb3dc4a73119841a0f41b0f9278a1e42da"
+  },
+  {
+    "key": "ui.placeholder",
+    "file": "assets/antarmuka/ui.placeholder.svg",
+    "sha256": "8199ab5a0885662ea40be6c2bf689d65bca626ce56c57c1b21a0fb3211d50818"
+  },
+  {
+    "key": "app.icon.svg",
+    "file": "assets/ikon/app.icon.svg",
+    "sha256": "5c1a8637b20ba015767e6053edd1fe514562778cf5c17c6e6eed72c4df6bba93"
+  },
+  {
+    "key": "app.icon-512.png",
+    "file": "assets/ikon/app.icon-512.webp",
+    "sha256": "a2fa8e394db8bdda6fbfa279cd524cc1d6ec5f33848fc413275f3296ba9006c6"
+  },
+  {
+    "key": "app.icon-192.png",
+    "file": "assets/ikon/app.icon-192.webp",
+    "sha256": "2117a8b83c31ce6af2472754dbf67d96f435d415e296637ee7702f1003d15079"
+  },
+  {
+    "key": "app.icon-maskable-512.png",
+    "file": "assets/ikon/app.icon-maskable-512.webp",
+    "sha256": "a2fa8e394db8bdda6fbfa279cd524cc1d6ec5f33848fc413275f3296ba9006c6"
+  },
+  {
+    "key": "app.apple-touch-icon.png",
+    "file": "assets/ikon/app.apple-touch-icon.webp",
+    "sha256": "3136c77630789b8bbae68056881bc716d895338e4a996d49877be71aa58f0572"
+  },
+  {
+    "key": "app.favicon.ico",
+    "file": "assets/ikon/app.favicon.webp",
+    "sha256": "5619afd4e3de6220a5c61e0fb16c67c36bbb2664c65cd4c5daff4cb97ccee4f9"
+  },
+  {
+    "key": "map.kedu",
+    "file": "assets/peta/map.kedu.webp",
+    "sha256": "08a99b168df583074b0e33be864c70245b2f8adea4d1424cc76990550b9fd46f"
+  },
+  {
+    "key": "map.region.temanggung",
+    "file": "assets/peta/map.region.temanggung.webp",
+    "sha256": "44d29140bd864e6ab1244a5bf28a6f9354ff9d2448d005405f194b48fe256823"
+  },
+  {
+    "key": "map.region.magelang",
+    "file": "assets/peta/map.region.magelang.webp",
+    "sha256": "978611c74fc4e33b26c924ce2070c6c788f43fa9f6623ce3de24432f746c34f7"
+  },
+  {
+    "key": "map.region.wonosobo",
+    "file": "assets/peta/map.region.wonosobo.webp",
+    "sha256": "2eac0b7b34e2a570ead3fd41fade25b830578b0b7363177a43380060c9beba07"
+  },
+  {
+    "key": "reward.badge.temanggung",
+    "file": "assets/lencana/reward.badge.temanggung.webp",
+    "sha256": "c9168b12754cf661275acef56f0d7846c0645a63554ac52c7a480d163198a26d"
+  },
+  {
+    "key": "reward.badge.magelang",
+    "file": "assets/lencana/reward.badge.magelang.webp",
+    "sha256": "93c4ddaf1d656566d6ec3a25e6449c46ca5dc5dff4ee43ecfd5d5d87ef828a2e"
+  },
+  {
+    "key": "reward.badge.wonosobo",
+    "file": "assets/lencana/reward.badge.wonosobo.webp",
+    "sha256": "1639f13cb9cf9e8434006561dd3ca71bed903836c617aad873f69d35cbdd8b29"
+  },
+  {
+    "key": "char.jaka.idle.1",
+    "file": "assets/karakter/char.jaka.idle.1.webp",
+    "sha256": "6c19386fe6b39ea7784a81798c51f54147611d6585ac4a3f86f37b0e3d7f72c1"
+  },
+  {
+    "key": "char.jaka.idle.2",
+    "file": "assets/karakter/char.jaka.idle.2.webp",
+    "sha256": "43c5162d59a9304a0294d0b4a5cf414c1168697fb4fb2b718cba7820d99e16d4"
+  },
+  {
+    "key": "char.jaka.idle.3",
+    "file": "assets/karakter/char.jaka.idle.3.webp",
+    "sha256": "dfb3fa204fa54fb68e8b5d573d3fc9129f19cd7fe55c563fc1df3c49b2f2b550"
+  },
+  {
+    "key": "char.jaka.idle.4",
+    "file": "assets/karakter/char.jaka.idle.4.webp",
+    "sha256": "2424c8f61ba6441b8dae272dfb98619afed2c1c1f740d12d1e133185d1e64023"
+  },
+  {
+    "key": "char.jaka.idle.5",
+    "file": "assets/karakter/char.jaka.idle.5.webp",
+    "sha256": "87b9fbc6dd3bd9a752603adbc0497633d783bce969335468d98c4e9ae0eba357"
+  },
+  {
+    "key": "char.jaka.idle.6",
+    "file": "assets/karakter/char.jaka.idle.6.webp",
+    "sha256": "6e224bd176a664e0013722e4ac859cc38744424dd1e20c4f6c03ac205d7b7a9b"
+  },
+  {
+    "key": "char.jaka.idle.7",
+    "file": "assets/karakter/char.jaka.idle.7.webp",
+    "sha256": "f27d25420616bef3309abd0490f21767dabd0cea1aed41c7c57a2969ca70d09e"
+  },
+  {
+    "key": "char.jaka.idle.8",
+    "file": "assets/karakter/char.jaka.idle.8.webp",
+    "sha256": "62bbae7ae29373444fd416a27ba79e8f8b132592e701e6d5b58df810f6e16899"
+  },
+  {
+    "key": "char.jaka.idle.9",
+    "file": "assets/karakter/char.jaka.idle.9.webp",
+    "sha256": "28624108e167d49f95bf9788b6e0dd69c47d9b982345fbd75d71fd43d4232483"
+  },
+  {
+    "key": "char.jaka.idle.10",
+    "file": "assets/karakter/char.jaka.idle.10.webp",
+    "sha256": "8407e5016eb8db957e63ea97a465637bf5e475546d89e3fbedb3d0223091cf2b"
+  },
+  {
+    "key": "char.jaka.idle.11",
+    "file": "assets/karakter/char.jaka.idle.11.webp",
+    "sha256": "ad2dc0bff5a30d0732b3abe428ff39d03b1fe76e443f0caad9bd650102191c51"
+  },
+  {
+    "key": "char.jaka.idle.12",
+    "file": "assets/karakter/char.jaka.idle.12.webp",
+    "sha256": "286d0d3e4ce96f71b506b88901fa0c2e29e67bc15ad45e5a2bdeab24b9d6fd15"
+  },
+  {
+    "key": "char.jaka.idle.13",
+    "file": "assets/karakter/char.jaka.idle.13.webp",
+    "sha256": "2fe4cbb89768698a234cae2e0ab79e326374973b9d14cf096ce2cc3538391465"
+  },
+  {
+    "key": "char.jaka.idle.14",
+    "file": "assets/karakter/char.jaka.idle.14.webp",
+    "sha256": "6b3fac5272babef3209663b15c3e51b29fe5c6db27f92e3c1d24e6995364b971"
+  },
+  {
+    "key": "char.jaka.idle.15",
+    "file": "assets/karakter/char.jaka.idle.15.webp",
+    "sha256": "3566707a3b4084561e1e95eb2da61794e23f7ee16eb0ed174f01d0aa30190781"
+  },
+  {
+    "key": "char.jaka.idle.16",
+    "file": "assets/karakter/char.jaka.idle.16.webp",
+    "sha256": "f6c520555acad6c1ef05bbc91451a7d9a727321bbae788eb9e65b2e549fb3262"
+  },
+  {
+    "key": "char.jaka.idle.17",
+    "file": "assets/karakter/char.jaka.idle.17.webp",
+    "sha256": "e3a78284c688eadf61ca18e92b335abf675aa5def31f1dbc63540f3b482aa1f7"
+  },
+  {
+    "key": "char.jaka.idle.18",
+    "file": "assets/karakter/char.jaka.idle.18.webp",
+    "sha256": "ca074e0f92375b217a2fd2fb6153fe5ebce97fbcc7436b306c33158954751eac"
+  },
+  {
+    "key": "char.jaka.idle.19",
+    "file": "assets/karakter/char.jaka.idle.19.webp",
+    "sha256": "d88251f65d38c101a393b0684a859c02c43d1a933f93d6c469e1e3a790b2771b"
+  },
+  {
+    "key": "char.jaka.idle.20",
+    "file": "assets/karakter/char.jaka.idle.20.webp",
+    "sha256": "0aa506e523cd6df6427a5608415d52d6a5c4d5416cba27e115eee9e9721773d6"
+  },
+  {
+    "key": "char.jaka.idle.21",
+    "file": "assets/karakter/char.jaka.idle.21.webp",
+    "sha256": "a604006374437ea407a952da3345722e06cb3e61797dcb7bd621b729c8d4025f"
+  },
+  {
+    "key": "char.jaka.idle.22",
+    "file": "assets/karakter/char.jaka.idle.22.webp",
+    "sha256": "cd8997ebf6b5554b26bfeedb920d1e6d0acae032b06870e2a8f255f457a10a86"
+  },
+  {
+    "key": "char.jaka.idle.23",
+    "file": "assets/karakter/char.jaka.idle.23.webp",
+    "sha256": "1218aeee743c77deee387ca6ca279905d911a1ee31f041f7d0f98e2c72ab770c"
+  },
+  {
+    "key": "char.jaka.idle.24",
+    "file": "assets/karakter/char.jaka.idle.24.webp",
+    "sha256": "c312003e8dc85307f8e76afdefff3eaa3b1d49d5d22c10404128d8949876901e"
+  },
+  {
+    "key": "char.jaka.happy.1",
+    "file": "assets/karakter/char.jaka.happy.1.webp",
+    "sha256": "52612327583834173dc796f3a45238af2364267ee88efe83d7e0bf6e502eda21"
+  },
+  {
+    "key": "char.jaka.happy.2",
+    "file": "assets/karakter/char.jaka.happy.2.webp",
+    "sha256": "2d38f699089859d8aa3333465919b67d8799959300fbadbe9b117f7cda3aa97c"
+  },
+  {
+    "key": "char.jaka.happy.3",
+    "file": "assets/karakter/char.jaka.happy.3.webp",
+    "sha256": "3e34fd788f21017445d5590795286698846533954ce1e23e12104a20449d552b"
+  },
+  {
+    "key": "char.jaka.happy.4",
+    "file": "assets/karakter/char.jaka.happy.4.webp",
+    "sha256": "f3f9c55fde18570cb9dcafc5d785531dad86551d7f7ae430c672c7f75f9e1457"
+  },
+  {
+    "key": "char.jaka.happy.5",
+    "file": "assets/karakter/char.jaka.happy.5.webp",
+    "sha256": "0647b10562bd09f9fe48308bd21064b24f62d1637a62201b52e14e1e154a23dd"
+  },
+  {
+    "key": "char.jaka.happy.6",
+    "file": "assets/karakter/char.jaka.happy.6.webp",
+    "sha256": "7d992449059d752622646734400eadecaa662f9c87ad5af0862ce04e4da62c11"
+  },
+  {
+    "key": "char.jaka.happy.7",
+    "file": "assets/karakter/char.jaka.happy.7.webp",
+    "sha256": "5f8615eefbaf5ea2a1c6c930fa545803b7c8971cb2d8400c3baa9e9db79cf664"
+  },
+  {
+    "key": "char.jaka.happy.8",
+    "file": "assets/karakter/char.jaka.happy.8.webp",
+    "sha256": "f13d87178ddd06c74e15d860296b2c45b94fc696cd9e1c69370593eda5b54c80"
+  },
+  {
+    "key": "char.jaka.happy.9",
+    "file": "assets/karakter/char.jaka.happy.9.webp",
+    "sha256": "8fdbc3d7bab2ae5efae3c38c6a67571d2620b6697e63393cd7075d744fc867d9"
+  },
+  {
+    "key": "char.jaka.happy.10",
+    "file": "assets/karakter/char.jaka.happy.10.webp",
+    "sha256": "01acc148cb3eab87543a7fcbcc6ff2b4e7c34966ee90873a784d940287db3928"
+  },
+  {
+    "key": "char.jaka.happy.11",
+    "file": "assets/karakter/char.jaka.happy.11.webp",
+    "sha256": "f2dd32a7c59e77fa2dd505ece0a534b36e05d2393cbf4b35a502a2a150507454"
+  },
+  {
+    "key": "char.jaka.happy.12",
+    "file": "assets/karakter/char.jaka.happy.12.webp",
+    "sha256": "850ebd23fb90aba5183208f60e90bc740ca2ea4b076715262f6cf53b3347833f"
+  },
+  {
+    "key": "char.jaka.happy.13",
+    "file": "assets/karakter/char.jaka.happy.13.webp",
+    "sha256": "218258c09e6abd29b7b74197872f1b1e2b343d653cbc69a9007a2fdebfde2410"
+  },
+  {
+    "key": "char.jaka.happy.14",
+    "file": "assets/karakter/char.jaka.happy.14.webp",
+    "sha256": "c4c921869cb0772213079c03d672ccedfc4e874c84293dcfdae4513ced95cc98"
+  },
+  {
+    "key": "char.jaka.happy.15",
+    "file": "assets/karakter/char.jaka.happy.15.webp",
+    "sha256": "b7e2403a45f337520179e8437e03763ae2abb1e72beea3384d7b0c5cc9b9cad4"
+  },
+  {
+    "key": "char.jaka.happy.16",
+    "file": "assets/karakter/char.jaka.happy.16.webp",
+    "sha256": "6e04acb26ab897d211c7f2d98fbc3ab8dd68e6591258427c63b1430e32bf91c1"
+  },
+  {
+    "key": "char.jaka.happy.17",
+    "file": "assets/karakter/char.jaka.happy.17.webp",
+    "sha256": "4633c72fa7016619b1cfb8089eb05c11bf4300d09f644553275ad265600fc29b"
+  },
+  {
+    "key": "char.jaka.happy.18",
+    "file": "assets/karakter/char.jaka.happy.18.webp",
+    "sha256": "da7cc2b5546d1faa2abe6f2cbbee494883e0f20a30d08bd5abd718a1e41f9a55"
+  },
+  {
+    "key": "char.jaka.happy.19",
+    "file": "assets/karakter/char.jaka.happy.19.webp",
+    "sha256": "eb2e0e06022186dbc973f22c1480a3b079e91694fccd5e8ad5493e6b5ece0e80"
+  },
+  {
+    "key": "char.jaka.happy.20",
+    "file": "assets/karakter/char.jaka.happy.20.webp",
+    "sha256": "7a597f913707cd88fecdb7c63d06b80b58cec1559ae21f7a8636795bb61cfb0a"
+  },
+  {
+    "key": "char.jaka.happy.21",
+    "file": "assets/karakter/char.jaka.happy.21.webp",
+    "sha256": "164d7e3d629b9a0d8177deaa421e180b2e1397ec0dc7b3c1172079e294590cd9"
+  },
+  {
+    "key": "char.jaka.happy.22",
+    "file": "assets/karakter/char.jaka.happy.22.webp",
+    "sha256": "15950f01a47d2de4f9a9a2acb5f6a764e7841913ab39a103abc1ce44ba5d1a89"
+  },
+  {
+    "key": "char.jaka.happy.23",
+    "file": "assets/karakter/char.jaka.happy.23.webp",
+    "sha256": "1c0535e65b21bd609bdc029763ab4da400275c95ea9a6b84024686d04dd560d1"
+  },
+  {
+    "key": "char.jaka.happy.24",
+    "file": "assets/karakter/char.jaka.happy.24.webp",
+    "sha256": "12d497b9ae637b11e7e6e852fc331ca2d6ccf6b247ea095b9692ad19bb11df7d"
+  },
+  {
+    "key": "char.jaka.bow.1",
+    "file": "assets/karakter/char.jaka.bow.1.webp",
+    "sha256": "d40172b7d16940ad57236c99a9dff99b69ad31d55cbcbe297534a07c685c92e5"
+  },
+  {
+    "key": "char.jaka.bow.2",
+    "file": "assets/karakter/char.jaka.bow.2.webp",
+    "sha256": "46412b9f652239e283419a55802c73d8a54f3024095f21480168908730157345"
+  },
+  {
+    "key": "char.jaka.bow.3",
+    "file": "assets/karakter/char.jaka.bow.3.webp",
+    "sha256": "fa50bb1c077422488a90e52d72b9e5c12d2c36f7361261de36f405fe8bc24270"
+  },
+  {
+    "key": "char.jaka.bow.4",
+    "file": "assets/karakter/char.jaka.bow.4.webp",
+    "sha256": "0f129e33ae1281d571a57ee82fc36e9274366d6afd193d5f3d8904673ec14e46"
+  },
+  {
+    "key": "char.jaka.bow.5",
+    "file": "assets/karakter/char.jaka.bow.5.webp",
+    "sha256": "041970de91fd20e90cddef842f254bae215c97a9e39e89842965e5b7edb97ebe"
+  },
+  {
+    "key": "char.jaka.bow.6",
+    "file": "assets/karakter/char.jaka.bow.6.webp",
+    "sha256": "a599f90b5279e9f702b25b935d119965835336b47e0a81980c3abd4d097923f8"
+  },
+  {
+    "key": "char.jaka.bow.7",
+    "file": "assets/karakter/char.jaka.bow.7.webp",
+    "sha256": "0015521404b1ff6e9bbb1815cba3f1cf43d157064cb20a720201734f9a9e9a39"
+  },
+  {
+    "key": "char.jaka.bow.8",
+    "file": "assets/karakter/char.jaka.bow.8.webp",
+    "sha256": "5afa07d2d4b9383f4202f49b6cd32c25a6fb2314b5ee1d5a4e252f7e4db05b13"
+  },
+  {
+    "key": "char.jaka.bow.9",
+    "file": "assets/karakter/char.jaka.bow.9.webp",
+    "sha256": "3c5fceaf57e7f82c5917c91df0e0fa9408e7683a8d137cd0903642600a7414ad"
+  },
+  {
+    "key": "char.jaka.bow.10",
+    "file": "assets/karakter/char.jaka.bow.10.webp",
+    "sha256": "0051f4ba2ec089cc9de43d7c205ceac6e2d307d56f3b7a3eaf75254f2e7bbd66"
+  },
+  {
+    "key": "char.jaka.bow.11",
+    "file": "assets/karakter/char.jaka.bow.11.webp",
+    "sha256": "d3ded624dae62c71fa4167781fa89a79de927797fb5f65e7dea336b270fd3e9d"
+  },
+  {
+    "key": "char.jaka.bow.12",
+    "file": "assets/karakter/char.jaka.bow.12.webp",
+    "sha256": "78aa3b77aabd0e6ec47bbfcfc0893611898316f8badce1680e30077c1e69d8c3"
+  },
+  {
+    "key": "char.jaka.bow.13",
+    "file": "assets/karakter/char.jaka.bow.13.webp",
+    "sha256": "5990249ac5bfeabe0b2571fd61ad3ed574c0a12c3ba3a76c22004a7baa3cc406"
+  },
+  {
+    "key": "char.jaka.bow.14",
+    "file": "assets/karakter/char.jaka.bow.14.webp",
+    "sha256": "8671531efae0ca2c5c964f4b51e87ddcae89066f768c4417638f37d353f7cd7d"
+  },
+  {
+    "key": "char.jaka.bow.15",
+    "file": "assets/karakter/char.jaka.bow.15.webp",
+    "sha256": "ec40768cba9181161a3c32f1f6c80d9920258a87533f6563fdb12dab7984b7a9"
+  },
+  {
+    "key": "char.jaka.bow.16",
+    "file": "assets/karakter/char.jaka.bow.16.webp",
+    "sha256": "591e2522fba0d3f29868bc1ce19b72b56fe907d52aa206766c86e0970ff34845"
+  },
+  {
+    "key": "char.jaka.bow.17",
+    "file": "assets/karakter/char.jaka.bow.17.webp",
+    "sha256": "c0b8abe736464a4f6313d7b95af8dd5c51cfded2450cd038bf12f5e59bd9378a"
+  },
+  {
+    "key": "char.jaka.bow.18",
+    "file": "assets/karakter/char.jaka.bow.18.webp",
+    "sha256": "747a07516a802b9be5c99c01033dc9ad9ea340d804993271ac85b8c0c64fd8a2"
+  },
+  {
+    "key": "char.jaka.bow.19",
+    "file": "assets/karakter/char.jaka.bow.19.webp",
+    "sha256": "a3726e833d334a1bd7027210a1d0f5bab3f33dea99cc3a4c7d531d6937b3914b"
+  },
+  {
+    "key": "char.jaka.bow.20",
+    "file": "assets/karakter/char.jaka.bow.20.webp",
+    "sha256": "524398c78a4fec880116e4ac3b18ec5e8cdd3a8fc281d7e0af640d2fdc4377cf"
+  },
+  {
+    "key": "char.jaka.bow.21",
+    "file": "assets/karakter/char.jaka.bow.21.webp",
+    "sha256": "0f00ffdb891b89b76fbcc6cf9abfd35f14d9b60eb692ab252e14980074612a40"
+  },
+  {
+    "key": "char.jaka.bow.22",
+    "file": "assets/karakter/char.jaka.bow.22.webp",
+    "sha256": "288e95af4bbf58306795650f26fa2401fdcd0f741b9e38cca04a979f8811b753"
+  },
+  {
+    "key": "char.jaka.bow.23",
+    "file": "assets/karakter/char.jaka.bow.23.webp",
+    "sha256": "57bdb4469042e850756f881c5ae120ba5606d882745051073b10788904aeda5e"
+  },
+  {
+    "key": "char.jaka.bow.24",
+    "file": "assets/karakter/char.jaka.bow.24.webp",
+    "sha256": "1befbea077cc8c6d60a003ecb7993c12a8f2e3d8bb400779ef30f8ce8bd5357d"
+  },
+  {
+    "key": "char.jaka.sad.1",
+    "file": "assets/karakter/char.jaka.sad.1.webp",
+    "sha256": "cbc7665e6cffe955ceb57a57b42d0ac254cdc857db4afa7a6040de28d7e981c1"
+  },
+  {
+    "key": "char.jaka.sad.2",
+    "file": "assets/karakter/char.jaka.sad.2.webp",
+    "sha256": "b7ae790758b970697604a51a67ae78f50c8f11d4295a1a1ef3ed5fdb9d4bc4c5"
+  },
+  {
+    "key": "char.jaka.sad.3",
+    "file": "assets/karakter/char.jaka.sad.3.webp",
+    "sha256": "1c237193bb389b393c42b859fdb8480cda44b0ff9caee1d4995be7d871e9b4e2"
+  },
+  {
+    "key": "char.jaka.sad.4",
+    "file": "assets/karakter/char.jaka.sad.4.webp",
+    "sha256": "19bbe235d137a8b2bf208d78d6c57d780da57fffff27c077d2e4f321106f1e36"
+  },
+  {
+    "key": "char.jaka.sad.5",
+    "file": "assets/karakter/char.jaka.sad.5.webp",
+    "sha256": "ffcf553831a9f294547081e97ca18bc05d29ede668082b55bd7afaee605d3aa1"
+  },
+  {
+    "key": "char.jaka.sad.6",
+    "file": "assets/karakter/char.jaka.sad.6.webp",
+    "sha256": "a11635ffaf1af90ca590b1cceeb2dd84dc73b83076cf64cc2fb5be95bf9afa7f"
+  },
+  {
+    "key": "char.jaka.sad.7",
+    "file": "assets/karakter/char.jaka.sad.7.webp",
+    "sha256": "9d56b0b926550d5ccaebd75b1946b56bf211024d6de267d58e03899235026eda"
+  },
+  {
+    "key": "char.jaka.sad.8",
+    "file": "assets/karakter/char.jaka.sad.8.webp",
+    "sha256": "b5a4c9dadeb46f4d8e52abb3a81a82b84564bfdea88616c59bad694e30a99a3a"
+  },
+  {
+    "key": "char.jaka.sad.9",
+    "file": "assets/karakter/char.jaka.sad.9.webp",
+    "sha256": "3e9b9ca8995d66f4b3a5429389e1f5b6222f2fc89d4dff5ccc1bf7d7cca5c9b7"
+  },
+  {
+    "key": "char.jaka.sad.10",
+    "file": "assets/karakter/char.jaka.sad.10.webp",
+    "sha256": "1f4cdcc87bcb7827e8ae9d0992876ecef321769564e5d529f999727c1406f517"
+  },
+  {
+    "key": "char.jaka.sad.11",
+    "file": "assets/karakter/char.jaka.sad.11.webp",
+    "sha256": "3a63409d79946dac30df391047167abbf680db0125063716f8dd4c0e824873ed"
+  },
+  {
+    "key": "char.jaka.sad.12",
+    "file": "assets/karakter/char.jaka.sad.12.webp",
+    "sha256": "622dc92d1455bb6ef4870b326d2dc12ffb7c202533a0ff20fd7068b2c6ad4a45"
+  },
+  {
+    "key": "char.jaka.sad.13",
+    "file": "assets/karakter/char.jaka.sad.13.webp",
+    "sha256": "c831d6fb32823179c78183a6b3f3d0cf78e160441c2d7c94bd44dc96c8141413"
+  },
+  {
+    "key": "char.jaka.sad.14",
+    "file": "assets/karakter/char.jaka.sad.14.webp",
+    "sha256": "57d7f7266dfa11de8cb2fe3030e6b0672c4b51b57455646ea8993811123563f3"
+  },
+  {
+    "key": "char.jaka.sad.15",
+    "file": "assets/karakter/char.jaka.sad.15.webp",
+    "sha256": "08c9137f1e0e06444baeb599635409e02da88427d519ac295971be4fe48070f4"
+  },
+  {
+    "key": "char.jaka.sad.16",
+    "file": "assets/karakter/char.jaka.sad.16.webp",
+    "sha256": "ae970836fb5bc93d292184a0d942dcc4455e34df1e294d897203b70e28e42e66"
+  },
+  {
+    "key": "char.jaka.sad.17",
+    "file": "assets/karakter/char.jaka.sad.17.webp",
+    "sha256": "937960cec823cf4d81ac2cf481aa33a9abbc08ed3d154808a61e6043b1702c40"
+  },
+  {
+    "key": "char.jaka.sad.18",
+    "file": "assets/karakter/char.jaka.sad.18.webp",
+    "sha256": "29333c70c6af804cd8f51cfd436aadf8593d401a5b7f868906d07e3e641fe227"
+  },
+  {
+    "key": "char.jaka.sad.19",
+    "file": "assets/karakter/char.jaka.sad.19.webp",
+    "sha256": "1291e3217d517341b9a258b269c2eeb070ddab5411f7fd2fb3fbc260e764aeeb"
+  },
+  {
+    "key": "char.jaka.sad.20",
+    "file": "assets/karakter/char.jaka.sad.20.webp",
+    "sha256": "833f32f14686e72d03a05fd0fece6a10e86a68836a9060bfd2b25775207416de"
+  },
+  {
+    "key": "char.jaka.sad.21",
+    "file": "assets/karakter/char.jaka.sad.21.webp",
+    "sha256": "ae2e0f2dd232bf28fc904f27b79005ed13ee49b517d20ec2e8f14fc01b7bbed7"
+  },
+  {
+    "key": "char.jaka.sad.22",
+    "file": "assets/karakter/char.jaka.sad.22.webp",
+    "sha256": "ae46e072368cdd81e4a4ed3ac4ae08aad55c8ee9e99fc72ef15cb12d23316bb4"
+  },
+  {
+    "key": "char.jaka.sad.23",
+    "file": "assets/karakter/char.jaka.sad.23.webp",
+    "sha256": "bcd75a1e2deb2afdaad4b3ccacf90c4b7482674ec59a789b34b5ac42632afa11"
+  },
+  {
+    "key": "char.jaka.sad.24",
+    "file": "assets/karakter/char.jaka.sad.24.webp",
+    "sha256": "37eb5bec8ee68785f1f113bbecda493913899d5a28b0f08c276528b584ecac9d"
+  },
+  {
+    "key": "char.jaka.afraid.1",
+    "file": "assets/karakter/char.jaka.afraid.1.webp",
+    "sha256": "74cf5cad5ee43c8b66a305f15346d6689a01e03d1cb535d8652004835b69d4c6"
+  },
+  {
+    "key": "char.jaka.afraid.2",
+    "file": "assets/karakter/char.jaka.afraid.2.webp",
+    "sha256": "907b6f6c4f297b6218704b0bcf28d12d76593c82e927fa27505fc8de0ae39c8f"
+  },
+  {
+    "key": "char.jaka.afraid.3",
+    "file": "assets/karakter/char.jaka.afraid.3.webp",
+    "sha256": "5ea6d7ee6c4866b561363cd5a1c382a3164ff2d1f9d9ff962c98d7744e616b33"
+  },
+  {
+    "key": "char.jaka.afraid.4",
+    "file": "assets/karakter/char.jaka.afraid.4.webp",
+    "sha256": "76b5bdedcdac0ca6be887c41e04cfacc4cd784d4e29f338e91e74069c1407011"
+  },
+  {
+    "key": "char.jaka.afraid.5",
+    "file": "assets/karakter/char.jaka.afraid.5.webp",
+    "sha256": "ca5a6fbc40efad8ab2d9363438523d9445c448bb9eb321d779c4614524dbb0fa"
+  },
+  {
+    "key": "char.jaka.afraid.6",
+    "file": "assets/karakter/char.jaka.afraid.6.webp",
+    "sha256": "5093834c9160ef397d72a2046581f727aa2af61807ed23b8f9acb798beb25ddc"
+  },
+  {
+    "key": "char.jaka.afraid.7",
+    "file": "assets/karakter/char.jaka.afraid.7.webp",
+    "sha256": "6fd675321a57701b27867ca3240ed6b731bcbce50d855bcfaa9de0b0dcfc045e"
+  },
+  {
+    "key": "char.jaka.afraid.8",
+    "file": "assets/karakter/char.jaka.afraid.8.webp",
+    "sha256": "e2705809d552148895d6629502f396e07c63d0a18b5ccc75e1f9f5f7a0ea002a"
+  },
+  {
+    "key": "char.jaka.afraid.9",
+    "file": "assets/karakter/char.jaka.afraid.9.webp",
+    "sha256": "bc8a99fec50155e21c8759e0f5c20eb6946494fb3ee3162d3274cd4ef03f6775"
+  },
+  {
+    "key": "char.jaka.afraid.10",
+    "file": "assets/karakter/char.jaka.afraid.10.webp",
+    "sha256": "2401367166e4eec80006fac8689cb9a4519cf6124bc24ab97ea654dca4e7fe85"
+  },
+  {
+    "key": "char.jaka.afraid.11",
+    "file": "assets/karakter/char.jaka.afraid.11.webp",
+    "sha256": "edb49fc97cab46424a20048caeec4508ece1b08073e226164204b859649ea615"
+  },
+  {
+    "key": "char.jaka.afraid.12",
+    "file": "assets/karakter/char.jaka.afraid.12.webp",
+    "sha256": "55a1df4e740bf8694f5a600a741092697725606244dab0de083657c980b898c3"
+  },
+  {
+    "key": "char.jaka.afraid.13",
+    "file": "assets/karakter/char.jaka.afraid.13.webp",
+    "sha256": "ddc713d105aa6005eef4f56c15322ea0092fd67ec094b44eda15512850cf6029"
+  },
+  {
+    "key": "char.jaka.afraid.14",
+    "file": "assets/karakter/char.jaka.afraid.14.webp",
+    "sha256": "aa06f925063c2ba27079978cac771470bfa6e1d9fd524fc9afafb6f02c7ad866"
+  },
+  {
+    "key": "char.jaka.afraid.15",
+    "file": "assets/karakter/char.jaka.afraid.15.webp",
+    "sha256": "5df8f1efaa61e6613bb6e14cbd1ea542ec1a00bd737e3b92d5e2061994305cf2"
+  },
+  {
+    "key": "char.jaka.afraid.16",
+    "file": "assets/karakter/char.jaka.afraid.16.webp",
+    "sha256": "fcc5c85b9251bbf1ae413009ec25656718921a7a6e3d69ba0676ccaefd128f50"
+  },
+  {
+    "key": "char.jaka.afraid.17",
+    "file": "assets/karakter/char.jaka.afraid.17.webp",
+    "sha256": "3c38ee7593706f0643741504d032010b561a1ed6e2c6b0c65b5c4498347766a3"
+  },
+  {
+    "key": "char.jaka.afraid.18",
+    "file": "assets/karakter/char.jaka.afraid.18.webp",
+    "sha256": "24a96a79296db2df8613f6ac7c758eb2af051f06653e1c0b5c2edd69d8d97b93"
+  },
+  {
+    "key": "char.jaka.afraid.19",
+    "file": "assets/karakter/char.jaka.afraid.19.webp",
+    "sha256": "44697463d5b9bde776665729980f275e31b8ac737ccdd025154bca9ac2202c5a"
+  },
+  {
+    "key": "char.jaka.afraid.20",
+    "file": "assets/karakter/char.jaka.afraid.20.webp",
+    "sha256": "0dd66cb03381022e2cb4689628f7162b828bca0e0b80005c7e6e03f02a3ae384"
+  },
+  {
+    "key": "char.jaka.afraid.21",
+    "file": "assets/karakter/char.jaka.afraid.21.webp",
+    "sha256": "df16d7aced08c997530cb29f036bc9a34e8c11e43a092673c528d1d9a0421db0"
+  },
+  {
+    "key": "char.jaka.afraid.22",
+    "file": "assets/karakter/char.jaka.afraid.22.webp",
+    "sha256": "ed0650297ec6e9705df610bd8d402f52cf76df43ab226dc437035f9cd8e9bf9f"
+  },
+  {
+    "key": "char.jaka.afraid.23",
+    "file": "assets/karakter/char.jaka.afraid.23.webp",
+    "sha256": "ad47890bdee3f990ea490501654c5c2e29dada98b57b17f33d0087fa8826c09b"
+  },
+  {
+    "key": "char.jaka.afraid.24",
+    "file": "assets/karakter/char.jaka.afraid.24.webp",
+    "sha256": "d1bbe8960273ccfb7d1c43c3173f16ff37610742c3f2b5fa27f026329087c706"
+  },
+  {
+    "key": "char.jaka.determined.1",
+    "file": "assets/karakter/char.jaka.determined.1.webp",
+    "sha256": "331ef6dc202e24cf34398d1c820f833f6031f751003386918e82c4303bae0794"
+  },
+  {
+    "key": "char.jaka.determined.2",
+    "file": "assets/karakter/char.jaka.determined.2.webp",
+    "sha256": "dda60fa81b31fbd40e51501aac29e5d01aa40d75ac2c469efb9b1299e209f33a"
+  },
+  {
+    "key": "char.jaka.determined.3",
+    "file": "assets/karakter/char.jaka.determined.3.webp",
+    "sha256": "6f7203749bfea6c01380b62ec245566bfb193aa587fd3bf23c822af26fc19ffb"
+  },
+  {
+    "key": "char.jaka.determined.4",
+    "file": "assets/karakter/char.jaka.determined.4.webp",
+    "sha256": "bc81bf0d923570e5d5bddc2c78d8323b6d093d9005523e9c6e35833ccf7bc814"
+  },
+  {
+    "key": "char.jaka.determined.5",
+    "file": "assets/karakter/char.jaka.determined.5.webp",
+    "sha256": "2cf1acd80283167a1c3224f76610601050040b106ad97e4ca23b822b93493271"
+  },
+  {
+    "key": "char.jaka.determined.6",
+    "file": "assets/karakter/char.jaka.determined.6.webp",
+    "sha256": "0de24bc5cd97516650ab368a9b58083be03149a536957f289a6acdf5d3acc269"
+  },
+  {
+    "key": "char.jaka.determined.7",
+    "file": "assets/karakter/char.jaka.determined.7.webp",
+    "sha256": "f1cd7e388d4b086b07b4da9b220f698dfacdfb98b1bd6d4a551da973a9ba9238"
+  },
+  {
+    "key": "char.jaka.determined.8",
+    "file": "assets/karakter/char.jaka.determined.8.webp",
+    "sha256": "f4b77c7634566ad98644487d7dcbab2c34a3ec1419fa4073256aced540714e60"
+  },
+  {
+    "key": "char.jaka.determined.9",
+    "file": "assets/karakter/char.jaka.determined.9.webp",
+    "sha256": "fd0d9188b4e5f5be31e045d17e843feab8e72e2d1e2bad30594919d2c1f96db7"
+  },
+  {
+    "key": "char.jaka.determined.10",
+    "file": "assets/karakter/char.jaka.determined.10.webp",
+    "sha256": "4ee691a42e0c8718f945a15d05fadba37e9d37a20c6d3a0a4c34c8480b8c0205"
+  },
+  {
+    "key": "char.jaka.determined.11",
+    "file": "assets/karakter/char.jaka.determined.11.webp",
+    "sha256": "3fad4df28843ffe6b0afd78ca2ff7855cc9f79cf61fe35b1b622e3d8cef37e07"
+  },
+  {
+    "key": "char.jaka.determined.12",
+    "file": "assets/karakter/char.jaka.determined.12.webp",
+    "sha256": "d3bdc06422620efa98d724538228753232b1d059d4fd8d9c02121a931dcb5824"
+  },
+  {
+    "key": "char.jaka.determined.13",
+    "file": "assets/karakter/char.jaka.determined.13.webp",
+    "sha256": "d889f20cfeb371a03c358f1f9b1074b76235cc2545bc4d39c3777dfcb0e0874b"
+  },
+  {
+    "key": "char.jaka.determined.14",
+    "file": "assets/karakter/char.jaka.determined.14.webp",
+    "sha256": "28144c5b4db0cdffda20f811e025b10d99885734cf437ca57a1d058e019f19a7"
+  },
+  {
+    "key": "char.jaka.determined.15",
+    "file": "assets/karakter/char.jaka.determined.15.webp",
+    "sha256": "cc290091d3d7405d57fc63466629c271c4dfeeb8f041a14d677659adbbe06b1b"
+  },
+  {
+    "key": "char.jaka.determined.16",
+    "file": "assets/karakter/char.jaka.determined.16.webp",
+    "sha256": "a4572b286ca760ba8f8a16351640ac1d835169059708b223ff292a4656fa4780"
+  },
+  {
+    "key": "char.jaka.determined.17",
+    "file": "assets/karakter/char.jaka.determined.17.webp",
+    "sha256": "3b2cc21421e6875fbec6612e39d43377d29eb04d8d40cf4076e51ecf8eaf5826"
+  },
+  {
+    "key": "char.jaka.determined.18",
+    "file": "assets/karakter/char.jaka.determined.18.webp",
+    "sha256": "0aafed81e75bce8b697e6f49d5d880c88f438de46f3488075403961689b8cf00"
+  },
+  {
+    "key": "char.jaka.determined.19",
+    "file": "assets/karakter/char.jaka.determined.19.webp",
+    "sha256": "ea0566d7ff080f42e56faef542a18f4860ccca6772e87639dea0f79da2beb441"
+  },
+  {
+    "key": "char.jaka.determined.20",
+    "file": "assets/karakter/char.jaka.determined.20.webp",
+    "sha256": "dd77362606a361dc1a9b1c2058a96783203c7468bd6f909a51a6fcab239691a7"
+  },
+  {
+    "key": "char.jaka.determined.21",
+    "file": "assets/karakter/char.jaka.determined.21.webp",
+    "sha256": "c4c2b0283cae1c29f819b388b67782ceb5c43cfd9e5085e87d75f29df045d546"
+  },
+  {
+    "key": "char.jaka.determined.22",
+    "file": "assets/karakter/char.jaka.determined.22.webp",
+    "sha256": "c62f99a90fba04ff720388b5994e4515565e3b2e2b05b5d38c35cb7494834662"
+  },
+  {
+    "key": "char.jaka.determined.23",
+    "file": "assets/karakter/char.jaka.determined.23.webp",
+    "sha256": "c2fef4be468a2e160f25d30f6815d15cc774e5db7ed21bc4daac782599d4ddb6"
+  },
+  {
+    "key": "char.jaka.determined.24",
+    "file": "assets/karakter/char.jaka.determined.24.webp",
+    "sha256": "e5a9a3761eaa558af0564c13d7f02d7e6fd4791ecce9bc4adf8dd47011655048"
+  },
+  {
+    "key": "char.kedu.idle.1",
+    "file": "assets/karakter/char.kedu.idle.1.webp",
+    "sha256": "f443b41b93ce7f56a5549465317d824347701cb930bf8813958e2c420316895e"
+  },
+  {
+    "key": "char.kedu.idle.2",
+    "file": "assets/karakter/char.kedu.idle.2.webp",
+    "sha256": "5ddb6a5b3bcf354278f2196209f4da57b8dbe7513424f84d1bc59071c667213e"
+  },
+  {
+    "key": "char.kedu.idle.3",
+    "file": "assets/karakter/char.kedu.idle.3.webp",
+    "sha256": "237566e6475511df6d028326bc5009abc257576be3acec3c214973f327d3245a"
+  },
+  {
+    "key": "char.kedu.idle.4",
+    "file": "assets/karakter/char.kedu.idle.4.webp",
+    "sha256": "96892d5bd31a652e7257df0b64f6067849a02dfe57f5be00d631c3c537abbd74"
+  },
+  {
+    "key": "char.kedu.idle.5",
+    "file": "assets/karakter/char.kedu.idle.5.webp",
+    "sha256": "16091a968b41428fe0652ad12d07002224cf4388746587851a0177c1184162f2"
+  },
+  {
+    "key": "char.kedu.idle.6",
+    "file": "assets/karakter/char.kedu.idle.6.webp",
+    "sha256": "f50817dec9fc074b18ab7968d3cb0996953af50263cdac8a6796b1d4cf8011d7"
+  },
+  {
+    "key": "char.kedu.idle.7",
+    "file": "assets/karakter/char.kedu.idle.7.webp",
+    "sha256": "bb86c7d53ff74bac23fb3e06d1f92afebb78d37bf9c53e7c3836104679578e50"
+  },
+  {
+    "key": "char.kedu.idle.8",
+    "file": "assets/karakter/char.kedu.idle.8.webp",
+    "sha256": "45222beb265bc6f32dd4f797161b7804bfbd3530f72d83539512cea5c083a393"
+  },
+  {
+    "key": "char.kedu.idle.9",
+    "file": "assets/karakter/char.kedu.idle.9.webp",
+    "sha256": "c64eb0a5565337fa0cad795a98d44a38a8b6ada120cb52e41c0f964827de42dd"
+  },
+  {
+    "key": "char.kedu.idle.10",
+    "file": "assets/karakter/char.kedu.idle.10.webp",
+    "sha256": "8e6a70028b3af88d96759f636634d64ead696e6d00ea61e5cc03754fd08c8372"
+  },
+  {
+    "key": "char.kedu.idle.11",
+    "file": "assets/karakter/char.kedu.idle.11.webp",
+    "sha256": "5f6ffa78779dfec13573fc0c6b2d237377df597afdb5242e08d58dae36a32476"
+  },
+  {
+    "key": "char.kedu.idle.12",
+    "file": "assets/karakter/char.kedu.idle.12.webp",
+    "sha256": "18d040dffbd7eec7bb1fa7de926c57ed4804af31822a5b06e0b906ad0fe3366e"
+  },
+  {
+    "key": "char.kedu.idle.13",
+    "file": "assets/karakter/char.kedu.idle.13.webp",
+    "sha256": "5397686c602a16f791466d5f12fa6e8d3f8abc66bfc634bed7fddfb695442436"
+  },
+  {
+    "key": "char.kedu.idle.14",
+    "file": "assets/karakter/char.kedu.idle.14.webp",
+    "sha256": "2f400222cdc7cd6057c5d03c312811e1cb3869ae7f7607d8b3f0276756c611ff"
+  },
+  {
+    "key": "char.kedu.idle.15",
+    "file": "assets/karakter/char.kedu.idle.15.webp",
+    "sha256": "4d4f4e5fbb51cb1a7a000302bccbd17d4720d524f876bf4c3d56f556d1532668"
+  },
+  {
+    "key": "char.kedu.idle.16",
+    "file": "assets/karakter/char.kedu.idle.16.webp",
+    "sha256": "97644eea790c7017a1211d4dba6a995e96855153aae22ba027756d28fdaa461d"
+  },
+  {
+    "key": "char.kedu.idle.17",
+    "file": "assets/karakter/char.kedu.idle.17.webp",
+    "sha256": "4ba86a5f9122541afe8a063f3303a6dfcb040eb062a37224abf80274f78625e2"
+  },
+  {
+    "key": "char.kedu.idle.18",
+    "file": "assets/karakter/char.kedu.idle.18.webp",
+    "sha256": "fb0a6758c4c330e2aab32106f0a9ae7b39b1147ccd1c16ec543ad2830e1d790a"
+  },
+  {
+    "key": "char.kedu.idle.19",
+    "file": "assets/karakter/char.kedu.idle.19.webp",
+    "sha256": "d2d44fa77c15fcadcbbe0818fc637949848f78d3513e4845d07311c53028b495"
+  },
+  {
+    "key": "char.kedu.idle.20",
+    "file": "assets/karakter/char.kedu.idle.20.webp",
+    "sha256": "bab598fcbfddbb107920f2338c3e5622ddc2321cfe87fae42bc55b10772edc0b"
+  },
+  {
+    "key": "char.kedu.idle.21",
+    "file": "assets/karakter/char.kedu.idle.21.webp",
+    "sha256": "d1ed6eeac33075163c6cc4a72d718b775239d80a054c2bc20bf2bbb7fcad116d"
+  },
+  {
+    "key": "char.kedu.idle.22",
+    "file": "assets/karakter/char.kedu.idle.22.webp",
+    "sha256": "7fbc183dfb2f2db6cbdf4d6838d23d57c1b9fab8101a4a45e087bc3575c32afc"
+  },
+  {
+    "key": "char.kedu.idle.23",
+    "file": "assets/karakter/char.kedu.idle.23.webp",
+    "sha256": "1dde0400060bece80a6791ec70149ae08dfea563612a9f853e2a384510906c8a"
+  },
+  {
+    "key": "char.kedu.idle.24",
+    "file": "assets/karakter/char.kedu.idle.24.webp",
+    "sha256": "8da14a8aec7ff0554b02c8060b3101163b91eb4d614707feca3defbf23e03a41"
+  },
+  {
+    "key": "char.kedu.smile.1",
+    "file": "assets/karakter/char.kedu.smile.1.webp",
+    "sha256": "a5eddffdeb3d6b26a37608bb21ce8a05ad303a93c6430c03f5c75a1aacb1f99e"
+  },
+  {
+    "key": "char.kedu.smile.2",
+    "file": "assets/karakter/char.kedu.smile.2.webp",
+    "sha256": "09022bfa6e18198a0bdab936afa46980456369496d325eca7add09aebbb8a22c"
+  },
+  {
+    "key": "char.kedu.smile.3",
+    "file": "assets/karakter/char.kedu.smile.3.webp",
+    "sha256": "9ab500f9b9bcd4196a5ebb94120364daece2ccccbf64ce8427349889716c2db5"
+  },
+  {
+    "key": "char.kedu.smile.4",
+    "file": "assets/karakter/char.kedu.smile.4.webp",
+    "sha256": "9f4e9cb98e1329d116dcd245bb7f008445127c9d82170ff9cb961903ff6b614b"
+  },
+  {
+    "key": "char.kedu.smile.5",
+    "file": "assets/karakter/char.kedu.smile.5.webp",
+    "sha256": "e40a2a12b2b2cf418329a611fcb2b60e919f4c3196e3033de72f1f985b78c85d"
+  },
+  {
+    "key": "char.kedu.smile.6",
+    "file": "assets/karakter/char.kedu.smile.6.webp",
+    "sha256": "5dcb1a47aff968e81d9d3b1f22d6829262fa6df4e4e5f2e7732f1a2630acbf64"
+  },
+  {
+    "key": "char.kedu.smile.7",
+    "file": "assets/karakter/char.kedu.smile.7.webp",
+    "sha256": "c70b28fcfd798f3736ff53753b54f662d1045d918cd31412e4ce2d3507f4253b"
+  },
+  {
+    "key": "char.kedu.smile.8",
+    "file": "assets/karakter/char.kedu.smile.8.webp",
+    "sha256": "00cdc9115df4733ebc0b243514a0e9aba6d102f61f354336ab55083ac14c91f1"
+  },
+  {
+    "key": "char.kedu.smile.9",
+    "file": "assets/karakter/char.kedu.smile.9.webp",
+    "sha256": "03bf4ad20302e1ac44bdb0c478e32bcea7429f8a22e42d27d17ab7430c8c5ffc"
+  },
+  {
+    "key": "char.kedu.smile.10",
+    "file": "assets/karakter/char.kedu.smile.10.webp",
+    "sha256": "de0f9fade0e1a9f4c1926b63348182817883592a3a2161e58811edfff500eb24"
+  },
+  {
+    "key": "char.kedu.smile.11",
+    "file": "assets/karakter/char.kedu.smile.11.webp",
+    "sha256": "9844190a3d4a2f6690041d5cbc38e67f1ded79be837b54dc214183a0f79952db"
+  },
+  {
+    "key": "char.kedu.smile.12",
+    "file": "assets/karakter/char.kedu.smile.12.webp",
+    "sha256": "1957986d2890b39f0b4f336dd6c11ac0e8b743e0007030fd7370e8f4209b38e5"
+  },
+  {
+    "key": "char.kedu.smile.13",
+    "file": "assets/karakter/char.kedu.smile.13.webp",
+    "sha256": "6a729ac6f4c3892521233c29ffa55246fc3b997e22cdd2a0a962109818d3e96f"
+  },
+  {
+    "key": "char.kedu.smile.14",
+    "file": "assets/karakter/char.kedu.smile.14.webp",
+    "sha256": "3c41075d10d0067024cf82e286715ec0230e99dba49b14cdab3dc08c6e36845f"
+  },
+  {
+    "key": "char.kedu.smile.15",
+    "file": "assets/karakter/char.kedu.smile.15.webp",
+    "sha256": "9c214aa7a0889dff58fc823aadaa997316142f1d695eaf3f646803c11c6ba36d"
+  },
+  {
+    "key": "char.kedu.smile.16",
+    "file": "assets/karakter/char.kedu.smile.16.webp",
+    "sha256": "e447c4fadf6a88a24e8bd1253d0f237bbe816707be8303eac689e603fac1b6fe"
+  },
+  {
+    "key": "char.kedu.smile.17",
+    "file": "assets/karakter/char.kedu.smile.17.webp",
+    "sha256": "98bcafcb7bcb0d8ce558f2ef088f6c2274c5b12582118a346afcb691b1295f1a"
+  },
+  {
+    "key": "char.kedu.smile.18",
+    "file": "assets/karakter/char.kedu.smile.18.webp",
+    "sha256": "db867ed6ba7f63cb692ed71d77e20bcec1cf26ca42da81150a6b01dba870c91f"
+  },
+  {
+    "key": "char.kedu.smile.19",
+    "file": "assets/karakter/char.kedu.smile.19.webp",
+    "sha256": "18cce3edf321b0511ab09cb1f21d11cba1c45a3b7f84a3539243ca9ea978a981"
+  },
+  {
+    "key": "char.kedu.smile.20",
+    "file": "assets/karakter/char.kedu.smile.20.webp",
+    "sha256": "d11cf44dcaf9be910932483588b5bb197c02611ed8d475682e5dd49532891a27"
+  },
+  {
+    "key": "char.kedu.smile.21",
+    "file": "assets/karakter/char.kedu.smile.21.webp",
+    "sha256": "ba2041af5f1d9af431906119f3f7a6e905de09cbf5f570bbcd12e0b7ca9dee6e"
+  },
+  {
+    "key": "char.kedu.smile.22",
+    "file": "assets/karakter/char.kedu.smile.22.webp",
+    "sha256": "e8b71c6a8bdd3705d59c96eb5b377af65a569c6b6798644ed31a89722f2be9bc"
+  },
+  {
+    "key": "char.kedu.smile.23",
+    "file": "assets/karakter/char.kedu.smile.23.webp",
+    "sha256": "d4665ebbe430789be25577cf9389fd1b3e968cae418dc4359d2f81fa8d1f5d2f"
+  },
+  {
+    "key": "char.kedu.smile.24",
+    "file": "assets/karakter/char.kedu.smile.24.webp",
+    "sha256": "8767ad0f0b4e66bb8a75209ca1f668c4163aded75743c3c87c09ccc28303889d"
+  },
+  {
+    "key": "char.kedu.worried.1",
+    "file": "assets/karakter/char.kedu.worried.1.webp",
+    "sha256": "a613e39b4398ce257032f1dd31cfc6ee4494306440c9de2cb2d81f217db35c7a"
+  },
+  {
+    "key": "char.kedu.worried.2",
+    "file": "assets/karakter/char.kedu.worried.2.webp",
+    "sha256": "e0102b4f239695ee41b97b0ae35304da19348c175ad17366cfeb8d7cf88a399d"
+  },
+  {
+    "key": "char.kedu.worried.3",
+    "file": "assets/karakter/char.kedu.worried.3.webp",
+    "sha256": "3d836105537fa980f1b1eea9c8e93a86d60f4f3d8a8acb8b18a5579c7ebd691a"
+  },
+  {
+    "key": "char.kedu.worried.4",
+    "file": "assets/karakter/char.kedu.worried.4.webp",
+    "sha256": "d7b7404dbee8d6519d7b79d4147d7aff4a0ab40e4e602a55cb0d191bc80c6447"
+  },
+  {
+    "key": "char.kedu.worried.5",
+    "file": "assets/karakter/char.kedu.worried.5.webp",
+    "sha256": "d40fc474619d24a6c5c908c630eb1225ef3dedb381ff8c5abe45bc9aaf8c6660"
+  },
+  {
+    "key": "char.kedu.worried.6",
+    "file": "assets/karakter/char.kedu.worried.6.webp",
+    "sha256": "903d6374e6aa9e0f04b1d237375624a8212e58ff3b2f117b009ff0225e5cde67"
+  },
+  {
+    "key": "char.kedu.worried.7",
+    "file": "assets/karakter/char.kedu.worried.7.webp",
+    "sha256": "f6b506582077734d090d4fc4f5d9736937565dccca731c9e1751fc5f8f7adf44"
+  },
+  {
+    "key": "char.kedu.worried.8",
+    "file": "assets/karakter/char.kedu.worried.8.webp",
+    "sha256": "11defe7cadda1ff267c3f484991b7ee52845ee5a92793ac832b6cb2389b20aef"
+  },
+  {
+    "key": "char.kedu.worried.9",
+    "file": "assets/karakter/char.kedu.worried.9.webp",
+    "sha256": "5b2ac602f0759e809c1bccc6a61f83bf557888d87731254960ad06c185f36436"
+  },
+  {
+    "key": "char.kedu.worried.10",
+    "file": "assets/karakter/char.kedu.worried.10.webp",
+    "sha256": "fadc4a2a0971ddd91aeae1889f905af58db53c6b37dac8dbb170620a8e9fe980"
+  },
+  {
+    "key": "char.kedu.worried.11",
+    "file": "assets/karakter/char.kedu.worried.11.webp",
+    "sha256": "a8b540a5135d1ed10458ed32490aa181d5189b281520ff54b3e8db3a0fef8fee"
+  },
+  {
+    "key": "char.kedu.worried.12",
+    "file": "assets/karakter/char.kedu.worried.12.webp",
+    "sha256": "c6728cdd4f34ae42e9edc5337471b4b445705fc66c419de9a8e78352931f1536"
+  },
+  {
+    "key": "char.kedu.worried.13",
+    "file": "assets/karakter/char.kedu.worried.13.webp",
+    "sha256": "c06489b8f7cef270e180288842a5dcdefed21ce113831d5bfe3d4f8bead29f24"
+  },
+  {
+    "key": "char.kedu.worried.14",
+    "file": "assets/karakter/char.kedu.worried.14.webp",
+    "sha256": "fbcc85fffbf9fb9a2c4a88a99cecf2a67cd5c843bdf1db460145d6372a0e643e"
+  },
+  {
+    "key": "char.kedu.worried.15",
+    "file": "assets/karakter/char.kedu.worried.15.webp",
+    "sha256": "50d4d422a25ea9465e960b761f1533f47c050d4423728b05ff433c1b2d219220"
+  },
+  {
+    "key": "char.kedu.worried.16",
+    "file": "assets/karakter/char.kedu.worried.16.webp",
+    "sha256": "8e0def5dfd0452ae40f409e16aa63583aafa192f113a5c40abf6495dd1a91230"
+  },
+  {
+    "key": "char.kedu.worried.17",
+    "file": "assets/karakter/char.kedu.worried.17.webp",
+    "sha256": "1cd1ea68acb1ca39328496b7c7cf9f821bc12b650b31cab9f93170c08282a624"
+  },
+  {
+    "key": "char.kedu.worried.18",
+    "file": "assets/karakter/char.kedu.worried.18.webp",
+    "sha256": "4b0bd363383f7a8330c32e6e3e801769c3f000a58ef2c8e2aa494ad330e68059"
+  },
+  {
+    "key": "char.kedu.worried.19",
+    "file": "assets/karakter/char.kedu.worried.19.webp",
+    "sha256": "5dd98b7158170ed79cac9db4a9dcc6661194ad205cadc589c4f4cadb455f10b2"
+  },
+  {
+    "key": "char.kedu.worried.20",
+    "file": "assets/karakter/char.kedu.worried.20.webp",
+    "sha256": "2bd671adc4bb0f186e9bb907e1270114f5c066189bb5c9b7764215e0dd04c570"
+  },
+  {
+    "key": "char.kedu.worried.21",
+    "file": "assets/karakter/char.kedu.worried.21.webp",
+    "sha256": "3daf6a397c11cc6c9ee8fd33b4f729cf5b721f1ee8ed31458710aafff05d7feb"
+  },
+  {
+    "key": "char.kedu.worried.22",
+    "file": "assets/karakter/char.kedu.worried.22.webp",
+    "sha256": "4372844e0d79d531e6bbfbb62d96b79bf99aadb513e95c5a7abbaf13dff3d53b"
+  },
+  {
+    "key": "char.kedu.worried.23",
+    "file": "assets/karakter/char.kedu.worried.23.webp",
+    "sha256": "712f1e38372a8a724235fa1db26ec107b648d823fced27ec2409fbba1cb7df86"
+  },
+  {
+    "key": "char.kedu.worried.24",
+    "file": "assets/karakter/char.kedu.worried.24.webp",
+    "sha256": "79785951327e612e890ae0f37f15b9e6b016603f967c9f024946334a100d3e1b"
+  },
+  {
+    "key": "char.kedu.weak.1",
+    "file": "assets/karakter/char.kedu.weak.1.webp",
+    "sha256": "cf4a8beb437ae0491c6c843c3a866ec4a4f40f5742c9ebdd4ecb187b1710ee64"
+  },
+  {
+    "key": "char.kedu.weak.2",
+    "file": "assets/karakter/char.kedu.weak.2.webp",
+    "sha256": "5ab1a500089ab34ceb346e2f3670456ff5d7a21f45995ef57b010aa2c5d728bf"
+  },
+  {
+    "key": "char.kedu.weak.3",
+    "file": "assets/karakter/char.kedu.weak.3.webp",
+    "sha256": "b41353fedaa5fd121a5843f3ec408da18e676819ca5c4e010ec94d74e5ea68b9"
+  },
+  {
+    "key": "char.kedu.weak.4",
+    "file": "assets/karakter/char.kedu.weak.4.webp",
+    "sha256": "2e91b090de4d3e610b4242926fc6a793e2c4b3b9d0abcec2a6e576bd9e92ec15"
+  },
+  {
+    "key": "char.kedu.weak.5",
+    "file": "assets/karakter/char.kedu.weak.5.webp",
+    "sha256": "4768c3f545dfc5919d02541ffa17a5d5b3940d896c705352d97bd84860d6824e"
+  },
+  {
+    "key": "char.kedu.weak.6",
+    "file": "assets/karakter/char.kedu.weak.6.webp",
+    "sha256": "dfd5f67b0a9ce0465abf119d445198c3d368dfb7820f3e57e8a0d6ea65e63fba"
+  },
+  {
+    "key": "char.kedu.weak.7",
+    "file": "assets/karakter/char.kedu.weak.7.webp",
+    "sha256": "966228622a5a0aed4e197a74284fb81cd0c251a46851d101cd18a66f68d0ee5a"
+  },
+  {
+    "key": "char.kedu.weak.8",
+    "file": "assets/karakter/char.kedu.weak.8.webp",
+    "sha256": "1170576356285aea1f226ce77a43d4faf0c919bfcf9cabed98ea5127011b9e48"
+  },
+  {
+    "key": "char.kedu.weak.9",
+    "file": "assets/karakter/char.kedu.weak.9.webp",
+    "sha256": "6758357b479a230a80795814e19d9a61e15c021c5262e4349cb9eb2bf16a1750"
+  },
+  {
+    "key": "char.kedu.weak.10",
+    "file": "assets/karakter/char.kedu.weak.10.webp",
+    "sha256": "be27a17c237579aa099997bf1479dd1d52d6e1c345d12d597ed2f2bdd5d3569a"
+  },
+  {
+    "key": "char.kedu.weak.11",
+    "file": "assets/karakter/char.kedu.weak.11.webp",
+    "sha256": "b3864c07a9609355c67ce31d6c583d64490515c4d13ed0372dd6023f03e3b959"
+  },
+  {
+    "key": "char.kedu.weak.12",
+    "file": "assets/karakter/char.kedu.weak.12.webp",
+    "sha256": "2c794f8a86fc51f751d4860e2d647e1f3e3c32b4f1b2acda22df056234739b52"
+  },
+  {
+    "key": "char.kedu.weak.13",
+    "file": "assets/karakter/char.kedu.weak.13.webp",
+    "sha256": "cac17dab92abf682105c371d6e02258b8e9c2ea591275a544447e47a50b365f0"
+  },
+  {
+    "key": "char.kedu.weak.14",
+    "file": "assets/karakter/char.kedu.weak.14.webp",
+    "sha256": "636fcb3ca548d62074da1507813633d10a3ffc5dcd092a3510841512239f9864"
+  },
+  {
+    "key": "char.kedu.weak.15",
+    "file": "assets/karakter/char.kedu.weak.15.webp",
+    "sha256": "41693b257d34326b41b96ee6b9af71822fa6a8885d3410cd2a5f01666e3dd808"
+  },
+  {
+    "key": "char.kedu.weak.16",
+    "file": "assets/karakter/char.kedu.weak.16.webp",
+    "sha256": "e6308a10f2cd62539103e8e50febf4962c248b0e253331c1a0c2332c3759df6e"
+  },
+  {
+    "key": "char.kedu.weak.17",
+    "file": "assets/karakter/char.kedu.weak.17.webp",
+    "sha256": "14b2562e73f64fe38fc3c9020028d4e561120ac58dd88a268856646c62ad3719"
+  },
+  {
+    "key": "char.kedu.weak.18",
+    "file": "assets/karakter/char.kedu.weak.18.webp",
+    "sha256": "2249556dd6cc5f031ac9ba23ac91d57a0aaee12a9b8230f66d56bfae9a70897c"
+  },
+  {
+    "key": "char.kedu.weak.19",
+    "file": "assets/karakter/char.kedu.weak.19.webp",
+    "sha256": "6fcbde2698c6d1ddd5c54ff8b415c9d0f72845c6a0c1df96a7802e1e32ecf215"
+  },
+  {
+    "key": "char.kedu.weak.20",
+    "file": "assets/karakter/char.kedu.weak.20.webp",
+    "sha256": "ef796f6db97e96ce807b4cafd7b77c3b16dc16f520b37457089d839a495ab6cd"
+  },
+  {
+    "key": "char.kedu.weak.21",
+    "file": "assets/karakter/char.kedu.weak.21.webp",
+    "sha256": "6ea80fe7d4104c5011ea5daf7f44ce94747e1b7cf1e23d04e572292f0ab1a14d"
+  },
+  {
+    "key": "char.kedu.weak.22",
+    "file": "assets/karakter/char.kedu.weak.22.webp",
+    "sha256": "127219e20dceef8a7292d13a57891b93b67f05cf8c0ff52597e43fea41256d17"
+  },
+  {
+    "key": "char.kedu.weak.23",
+    "file": "assets/karakter/char.kedu.weak.23.webp",
+    "sha256": "a4ed522f82423cb77cc636d8995561c10088ba4a50a4a3a1d70bc2196596f6cb"
+  },
+  {
+    "key": "char.kedu.weak.24",
+    "file": "assets/karakter/char.kedu.weak.24.webp",
+    "sha256": "3cf66f6c70089ee4f05e0116488105176ec541a43a3bbd66c6c6409ce2025a95"
+  },
+  {
+    "key": "ui.pin",
+    "file": "assets/ikon/ui.pin.webp",
+    "sha256": "1e23b5d7b2e37fc2e13fdfa284270a351edb4a95fa5cb2c4a5b187a27f04938c"
+  },
+  {
+    "key": "ui.lantern",
+    "file": "assets/ikon/ui.lantern.webp",
+    "sha256": "b42aa75457f099b03d589dd1de63457d08f2f152ed3eb4b9d94304eeff0d5489"
+  },
+  {
+    "key": "map.pin.temanggung",
+    "file": "assets/ikon/map.pin.temanggung.webp",
+    "sha256": "26d437a63da56fda66a4818ea53e9c1bd2d0d4847410c4f1991629b9c037a1ca"
+  },
+  {
+    "key": "map.pin.magelang",
+    "file": "assets/ikon/map.pin.magelang.webp",
+    "sha256": "f58e610b83f536b0e6289338990de12c764f6bcb046506534fba40c14cbe68a3"
+  },
+  {
+    "key": "map.pin.wonosobo",
+    "file": "assets/ikon/map.pin.wonosobo.webp",
+    "sha256": "e43dd9bf897c94506dc96aa7aabf5806ba45c91631a074b32e2126317320faf9"
+  },
+  {
+    "key": "map.lantern.temanggung",
+    "file": "assets/ikon/map.lantern.temanggung.webp",
+    "sha256": "554f7c70b934b498730aa86aef238d6126c596e1bf37d631645faf4ef2f37dd9"
+  },
+  {
+    "key": "map.lantern.magelang",
+    "file": "assets/ikon/map.lantern.magelang.webp",
+    "sha256": "d8975d5c9841f63b925b0fe1a6eae517874c4a7627800a0cd3e45b997da51243"
+  },
+  {
+    "key": "map.lantern.wonosobo",
+    "file": "assets/ikon/map.lantern.wonosobo.webp",
+    "sha256": "775b3a541fd0ee4245e4b86ac49690855e6631ee07803e318ab082a256ba5e2e"
+  },
+  {
+    "key": "bg.loading.temanggung",
+    "file": "assets/latar/bg.loading.temanggung.webp",
+    "sha256": "3646b86bd69ca1d1af2d71b526de4808544b7f3fbc89fffaee05bec892d438a4"
+  },
+  {
+    "key": "bg.loading.magelang",
+    "file": "assets/latar/bg.loading.magelang.webp",
+    "sha256": "d3d14bee3829842586ee87c5655a97df5d8a01cdb11ea80915334f248591470d"
+  },
+  {
+    "key": "bg.loading.wonosobo",
+    "file": "assets/latar/bg.loading.wonosobo.webp",
+    "sha256": "1c04f4a1680cbafd3eb11232efd330a3d08270a3186e7bcd1dfa06a50ccda78c"
+  },
+  {
+    "key": "avatar.1",
+    "file": "assets/ikon/avatar.1.webp",
+    "sha256": "faa3d82ed60dd8796254377d39b854629db51f7d83df5f9f2a556ffebea65038"
+  },
+  {
+    "key": "avatar.2",
+    "file": "assets/ikon/avatar.2.webp",
+    "sha256": "e7e226b61beb37d571305ad365901940656310601805fb98ab44423d28a361b3"
+  },
+  {
+    "key": "avatar.3",
+    "file": "assets/ikon/avatar.3.webp",
+    "sha256": "853d7ec2e83c190c41722c92a701cae0a4f1bb8ab17d2f52a429f0b95030019b"
+  },
+  {
+    "key": "avatar.4",
+    "file": "assets/ikon/avatar.4.webp",
+    "sha256": "7af54ba8b0bad185259f43dfeb758c66f141ad44d52bcdbc123bc9fadcf2e724"
+  },
+  {
+    "key": "avatar.5",
+    "file": "assets/ikon/avatar.5.webp",
+    "sha256": "24884de0b4a3727fdc402d59caa3098516e335ebefc25ab90bbe53b01125e501"
+  },
+  {
+    "key": "avatar.6",
+    "file": "assets/ikon/avatar.6.webp",
+    "sha256": "eb9b244c56701a76dcfba907d0dbace25ff2c069d82f187f7c039dec91dbb27c"
+  },
+  {
+    "key": "avatar.7",
+    "file": "assets/ikon/avatar.7.webp",
+    "sha256": "23416b69315129531d50c4f18124924195a5c9ed26fd82878632b91560ef8cdd"
+  },
+  {
+    "key": "avatar.8",
+    "file": "assets/ikon/avatar.8.webp",
+    "sha256": "58d148752896e47dba8769677fb79f63573c38e6ee161888054f29d9adcf886b"
+  },
+  {
+    "key": "avatar.9",
+    "file": "assets/ikon/avatar.9.webp",
+    "sha256": "3b4565a97b8fcbd0f6e71d58935b2259966ec396d8d06de962f210de6ab889d4"
+  },
+  {
+    "key": "avatar.10",
+    "file": "assets/ikon/avatar.10.webp",
+    "sha256": "747b0149abb94e3b301fc0081ffd17e4380999289e6bbf1f638f67f0481c42fc"
+  },
+  {
+    "key": "icon.home",
+    "file": "assets/ikon/icon.home.svg",
+    "sha256": "8e6eb280b2bf880212e86222a9e38af8d1bbebf1e784fbab5b574eb2656ffb5f"
+  },
+  {
+    "key": "icon.left",
+    "file": "assets/ikon/icon.left.svg",
+    "sha256": "74b5c40488a393f355f3410c77d540fe9e658ddfbe8edca8fdd63f361c8bd662"
+  },
+  {
+    "key": "icon.right",
+    "file": "assets/ikon/icon.right.svg",
+    "sha256": "0b48497c81f89c95e1f661df312cdea9172bd4e2e87a1ea1137539f0888d39a1"
+  },
+  {
+    "key": "icon.up",
+    "file": "assets/ikon/icon.up.svg",
+    "sha256": "3e12586bb74d40bbfd06907043cb49a972296e747d4f0596443b934e62b54fa0"
+  },
+  {
+    "key": "icon.down",
+    "file": "assets/ikon/icon.down.svg",
+    "sha256": "4df4d32414a744e2bd0e3baf15f2be1c47fc11b99c7b8633db157480c381fd94"
+  },
+  {
+    "key": "icon.sound",
+    "file": "assets/ikon/icon.sound.svg",
+    "sha256": "68e0ca0a3592f1dd110c1c5686dc6a63ab75bfe6369e07682b228ef9d6660997"
+  },
+  {
+    "key": "icon.sound-off",
+    "file": "assets/ikon/icon.sound-off.svg",
+    "sha256": "e53c5ec91c7cf678aefee64f95b5e466874e38e013ee20278b8353511547ec54"
+  },
+  {
+    "key": "icon.logout",
+    "file": "assets/ikon/icon.logout.svg",
+    "sha256": "dd5e2450e0736a766029e75ec7c25415bda94f432254c8a06f0e73d01ddcc31b"
+  },
+  {
+    "key": "icon.lock",
+    "file": "assets/ikon/icon.lock.svg",
+    "sha256": "c3089b64ddbbb91ff0c21f18f214827119a7c829bd1dcfc338bae03faa13411c"
+  },
+  {
+    "key": "icon.check",
+    "file": "assets/ikon/icon.check.svg",
+    "sha256": "4ed0482234d648b0d284fb20bb17456860d8d2a453ae4c31b05f2a384b8cb0de"
+  },
+  {
+    "key": "icon.cross",
+    "file": "assets/ikon/icon.cross.svg",
+    "sha256": "02c425258d8bb0f2d7f2760db75b24bd99628ea72b0561c0dbcfe533bce6f2f5"
+  },
+  {
+    "key": "icon.star",
+    "file": "assets/ikon/icon.star.svg",
+    "sha256": "478f7379d89ca05053449b09505aada3f290e740a4c0154f06b276058de9df95"
+  },
+  {
+    "key": "icon.book",
+    "file": "assets/ikon/icon.book.svg",
+    "sha256": "458de8238d7b0c1ada324deca92a130173a707b3f6ef4df76a096fe87c292b8b"
+  },
+  {
+    "key": "icon.map",
+    "file": "assets/ikon/icon.map.svg",
+    "sha256": "61bd39afe08912f47b56bebb5c766719f06dab37301e8c7fdb37c4711059289b"
+  },
+  {
+    "key": "icon.play",
+    "file": "assets/ikon/icon.play.svg",
+    "sha256": "d35dbec7bad6077ca370e8aca26d9d08476475f1923bc09ca67692daad205fca"
+  },
+  {
+    "key": "icon.pause",
+    "file": "assets/ikon/icon.pause.svg",
+    "sha256": "d1145f8f6542319754dd8146c653e7b323741011b50f4d18c0cf3121584a443e"
+  },
+  {
+    "key": "icon.replay",
+    "file": "assets/ikon/icon.replay.svg",
+    "sha256": "a421470d6c69809142302e2397d3183d7d2850d52e4fbc719a35dec26bda0faa"
+  },
+  {
+    "key": "icon.text",
+    "file": "assets/ikon/icon.text.svg",
+    "sha256": "1962639d002c27285bb256989a2acfb77b26c6ce04a6c791da2b636646623d8d"
+  },
+  {
+    "key": "icon.hint",
+    "file": "assets/ikon/icon.hint.svg",
+    "sha256": "f9585dafc11eb29f6f25fd1b31ab2a432f1edcdb02ad37c3bb8721a9dd464574"
+  },
+  {
+    "key": "icon.clock",
+    "file": "assets/ikon/icon.clock.svg",
+    "sha256": "c2e9ac496fcfddbed80b14953d7c37c31bbf5616f4c2d5cf723ee58c465a0603"
+  },
+  {
+    "key": "icon.building",
+    "file": "assets/ikon/icon.building.svg",
+    "sha256": "768fec2d96445b0c048b2826d70aba601d20bcca23b4e60f64328415916840ef"
+  },
+  {
+    "key": "icon.question",
+    "file": "assets/ikon/icon.question.svg",
+    "sha256": "e306f576ba28ff2325289d9752059733ea688b5624ee41ddfb98a99375b90e5b"
+  },
+  {
+    "key": "icon.user",
+    "file": "assets/ikon/icon.user.svg",
+    "sha256": "70deb764b84779a97cdeb800a1c1636dd5ff04ebc308c0888d9edfd478cb4e80"
+  },
+  {
+    "key": "icon.users",
+    "file": "assets/ikon/icon.users.svg",
+    "sha256": "99316770095d7aad4f792f4eca1b6e177b8043ad75881aa1c2ef3d1dfd31be8e"
+  },
+  {
+    "key": "icon.lantern",
+    "file": "assets/ikon/icon.lantern.svg",
+    "sha256": "55ad3b68fec8fe9bcca77d06f78628793abb92f044e4bd97bf0c5fa63e0ff6a3"
+  },
+  {
+    "key": "icon.download",
+    "file": "assets/ikon/icon.download.svg",
+    "sha256": "d2282a238da9efce60cfdc407d002d13858c67ed2a5b3781a4f0d324c63cf853"
+  },
+  {
+    "key": "icon.upload",
+    "file": "assets/ikon/icon.upload.svg",
+    "sha256": "d6ee6b5867a641fac054963cebe604c27412ec4ae30afcb048c8c4dd194f47fd"
+  },
+  {
+    "key": "icon.eye",
+    "file": "assets/ikon/icon.eye.svg",
+    "sha256": "8d3252cdfc8fcce701c2c20c74b13d4e7c5658110c7d56fb1a265f30f7141019"
+  },
+  {
+    "key": "icon.menu",
+    "file": "assets/ikon/icon.menu.svg",
+    "sha256": "4ed9a271d76fdbcc0ae9942e77b8ad854dcb5d74f873c882b7d8dc3bcc0df8db"
+  },
+  {
+    "key": "icon.search",
+    "file": "assets/ikon/icon.search.svg",
+    "sha256": "f58a5280fd6afb15d34ba960c528145b1703c6d89e70a20e7e815d4211d9c75f"
+  },
+  {
+    "key": "icon.info",
+    "file": "assets/ikon/icon.info.svg",
+    "sha256": "9f12c47f80aae8be28a308c40cd97f903d91e5dfdc8609cefaafc598cb7cd168"
+  },
+  {
+    "key": "icon.warn",
+    "file": "assets/ikon/icon.warn.svg",
+    "sha256": "e447090f029d1a6135b987beb5c98d455ccdce0dd61258a6daadbd501e4228bd"
+  },
+  {
+    "key": "icon.grid",
+    "file": "assets/ikon/icon.grid.svg",
+    "sha256": "4c50a80c06cbf334ecea91d1e2b5aed4499549fd22924fe9eba1c61340e0be0e"
+  },
+  {
+    "key": "icon.chart",
+    "file": "assets/ikon/icon.chart.svg",
+    "sha256": "bebe7dfc4df9e32b03287274806ec787e9e00ec209fcd2d378376f6ff88cad2c"
+  },
+  {
+    "key": "icon.list",
+    "file": "assets/ikon/icon.list.svg",
+    "sha256": "3a959ee4f172e4df4f6844eb0227f0c521143abb87c752505c307055f508ceea"
+  },
+  {
+    "key": "icon.target",
+    "file": "assets/ikon/icon.target.svg",
+    "sha256": "29561423741cdb8fc896b5ef6a6df0dbe3463d2e7ef99b21fa947de34ea9506f"
+  },
+  {
+    "key": "icon.trend",
+    "file": "assets/ikon/icon.trend.svg",
+    "sha256": "d98ebc9ec98bd857df35d82bda6b26cea5cf96d790758048bd5694a9d1f5df3f"
+  },
+  {
+    "key": "icon.message",
+    "file": "assets/ikon/icon.message.svg",
+    "sha256": "563d96da6c8b06d22fa0d4f0e944c18e8ac9c63a76f3542def959575b779477a"
+  },
+  {
+    "key": "icon.image",
+    "file": "assets/ikon/icon.image.svg",
+    "sha256": "58962087e47901dc79aaf19fd5187a02ac5fc0e23222bd1133467f653ec22629"
+  },
+  {
+    "key": "icon.flask",
+    "file": "assets/ikon/icon.flask.svg",
+    "sha256": "6ff29b288fc0c92f91e13423414e00ab6c4940508ea36be04a7ee95ac5003c31"
+  },
+  {
+    "key": "icon.shield",
+    "file": "assets/ikon/icon.shield.svg",
+    "sha256": "2b174efd0a35dc51a855cfdd9b3590b2cb1e79ebadbc9cad93648d77e61b740a"
+  },
+  {
+    "key": "icon.key",
+    "file": "assets/ikon/icon.key.svg",
+    "sha256": "c7bc32f98782d056713b8f552ce8fd0e398b6ece7d208e78c4f310c94379f9d7"
+  },
+  {
+    "key": "icon.edit",
+    "file": "assets/ikon/icon.edit.svg",
+    "sha256": "0a42b5d44b837fe3440764d983d67cd2a2880a06d62865bdf0954b463c2f85ab"
+  },
+  {
+    "key": "icon.trash",
+    "file": "assets/ikon/icon.trash.svg",
+    "sha256": "4881acc7aad12ad81cb22972fb1bb0d06bf512d0741884bfb9a40893891ae3b8"
+  },
+  {
+    "key": "icon.puzzle",
+    "file": "assets/ikon/icon.puzzle.svg",
+    "sha256": "f4df4df9ffe5ef9d9bf64add2a63224fa6c26234754c2e6bf34b1a171add193e"
+  },
+  {
+    "key": "icon.sparkle",
+    "file": "assets/ikon/icon.sparkle.svg",
+    "sha256": "6564c91fefcc7e7c8486b9b6befc1a096c07895f9c0b52d255c8976077ff296e"
+  },
+  {
+    "key": "icon.link",
+    "file": "assets/ikon/icon.link.svg",
+    "sha256": "a22321818be430216c6435876075cb4dcf0fc574dc433197181c7d7c216e36cb"
+  },
+  {
+    "key": "icon.video",
+    "file": "assets/ikon/icon.video.svg",
+    "sha256": "c2abc8fce334ea45adf1cde4b8015e4a9e29f28881b21cbcdf5f7393bc9d0424"
+  },
+  {
+    "key": "icon.footsteps",
+    "file": "assets/ikon/icon.footsteps.svg",
+    "sha256": "3e545f8e1f563865f083270d0a131ec4a7c27c2b402ed276e3d6c8aa9b355dee"
+  },
+  {
+    "key": "icon.rotate-gate",
+    "file": "assets/ikon/icon.rotate-gate.svg",
+    "sha256": "19e719ab682f17b81e8f8b49a39e165b6796d8f14b4a2703e966eee46f0bad6d"
+  },
+  {
+    "key": "library.temanggung.p1.1",
+    "file": "assets/pustaka/library.temanggung.p1.1.webp",
+    "sha256": "0c5badf8cafc1f8b076a0accf8f64c9c3aade2f55cfbf12658618d1a3a3122d0"
+  },
+  {
+    "key": "library.temanggung.p1.2",
+    "file": "assets/pustaka/library.temanggung.p1.2.webp",
+    "sha256": "96b3fb039c08124ffb24d3f0d2ada4fd692bcd5c257406345c0a724187ef6a7a"
+  },
+  {
+    "key": "library.temanggung.p2.1",
+    "file": "assets/pustaka/library.temanggung.p2.1.webp",
+    "sha256": "946bfdb0a1ff8ee1d330aa70930bbad747bc61b4dc214a0069fbbaa676ecaadb"
+  },
+  {
+    "key": "library.temanggung.p2.2",
+    "file": "assets/pustaka/library.temanggung.p2.2.webp",
+    "sha256": "5c2cfd5376aaca33cfee4c654a38c0aa9865b92009d3dec41bc0a36cf8a698f0"
+  },
+  {
+    "key": "library.temanggung.p2.3",
+    "file": "assets/pustaka/library.temanggung.p2.3.webp",
+    "sha256": "80d88c43eb41af941eeb2dfef3669fd56c14231edfc085e69461f34fc6ce8840"
+  },
+  {
+    "key": "library.temanggung.p3.1",
+    "file": "assets/pustaka/library.temanggung.p3.1.webp",
+    "sha256": "da972bff2320aecbd43b4216a301d7af04c37bc5c6c2f094a4618e6fcac7501c"
+  },
+  {
+    "key": "library.temanggung.p4.1",
+    "file": "assets/pustaka/library.temanggung.p4.1.webp",
+    "sha256": "6a21d94e354cd3e3a9628152efccd259d374bbac40a9553d905ec95985247e01"
+  },
+  {
+    "key": "library.temanggung.p4.2",
+    "file": "assets/pustaka/library.temanggung.p4.2.webp",
+    "sha256": "50956937a08bc34721dd72581cbb0ac9f23ae96ce8ba8396d3273944005f44df"
+  },
+  {
+    "key": "library.temanggung.p4.3",
+    "file": "assets/pustaka/library.temanggung.p4.3.webp",
+    "sha256": "f7c5335f38fb5e03581154026f3287d00f74fdc72df0d2c8255ff19600212b22"
+  },
+  {
+    "key": "library.temanggung.p5.1",
+    "file": "assets/pustaka/library.temanggung.p5.1.webp",
+    "sha256": "23910b48bcec5dab3a74078cc1a3ff3e633c68c437852efcb103c3475c99fca2"
+  },
+  {
+    "key": "library.temanggung.p5.2",
+    "file": "assets/pustaka/library.temanggung.p5.2.webp",
+    "sha256": "19471cc96c01310f75a5b173028c41338dd7d39d62b0187ddc8b3ea9d3c1c18a"
+  },
+  {
+    "key": "library.temanggung.p5.3",
+    "file": "assets/pustaka/library.temanggung.p5.3.webp",
+    "sha256": "a6a2eb668bb8536b38016321de9964985478bdcf86fea39784067a1394fd21f0"
+  },
+  {
+    "key": "library.temanggung.p6.1",
+    "file": "assets/pustaka/library.temanggung.p6.1.webp",
+    "sha256": "cc69db89fb7635aa92d0ca789f28e6c7db204411dc27958458bacb25d15e6dec"
+  },
+  {
+    "key": "library.temanggung.p8.1",
+    "file": "assets/pustaka/library.temanggung.p8.1.webp",
+    "sha256": "716a0f3ea718ce8ab9d0ca51a80d627dcd4092c0fb34dd928f83606fa47393f6"
+  },
+  {
+    "key": "library.temanggung.p8.2",
+    "file": "assets/pustaka/library.temanggung.p8.2.webp",
+    "sha256": "7c8ffa0b7f142621de15dbc0dd36f11df830f77eb75c1c28f69559ee8e6f728d"
+  },
+  {
+    "key": "library.magelang.p1.1",
+    "file": "assets/pustaka/library.magelang.p1.1.webp",
+    "sha256": "17967aa4d5ce1a672fea217db2b3c1e336e515f82235cd55b58d0fbd239e198c"
+  },
+  {
+    "key": "library.magelang.p1.2",
+    "file": "assets/pustaka/library.magelang.p1.2.webp",
+    "sha256": "0447b152c5f4314c16b870c4304482eee179a95062de7a6e63d5c69965c832c7"
+  },
+  {
+    "key": "library.magelang.p2.1",
+    "file": "assets/pustaka/library.magelang.p2.1.webp",
+    "sha256": "7105275a7df974cc1588f491a4455f5d8e3bb368e7486ccc5c317d603fdce751"
+  },
+  {
+    "key": "library.magelang.p2.2",
+    "file": "assets/pustaka/library.magelang.p2.2.webp",
+    "sha256": "cc9023c258c78efb91b853fafd49bcd0fbf03dc64925181564d99353b52f35ab"
+  },
+  {
+    "key": "library.magelang.p2.3",
+    "file": "assets/pustaka/library.magelang.p2.3.webp",
+    "sha256": "febcd0f14db6f792048f176e3f4324e4dba1f320845dca8e574daef48f7f832a"
+  },
+  {
+    "key": "library.magelang.p3.1",
+    "file": "assets/pustaka/library.magelang.p3.1.webp",
+    "sha256": "7784abece39ca1807ec11c0fc249378d67578359ff60ec2d8f27e1b0e5f46ce3"
+  },
+  {
+    "key": "library.magelang.p3.2",
+    "file": "assets/pustaka/library.magelang.p3.2.webp",
+    "sha256": "9f2db540aee153ce4f4f1637472e4e689382b6e263e2056e1659c01f6b4441ec"
+  },
+  {
+    "key": "library.magelang.p3.3",
+    "file": "assets/pustaka/library.magelang.p3.3.webp",
+    "sha256": "824410e1f0728a1090885f116d4c9bfbb6b5aaee4fcfa76ed7ffe8fb7c389374"
+  },
+  {
+    "key": "library.magelang.p4.1",
+    "file": "assets/pustaka/library.magelang.p4.1.webp",
+    "sha256": "d757979cf3c7b0432f1d6d411b50641878904a3bff11b0ed36ec36c4d928241e"
+  },
+  {
+    "key": "library.magelang.p5.1",
+    "file": "assets/pustaka/library.magelang.p5.1.webp",
+    "sha256": "19d6682e82c186ec018156bb447a6de643b01b84583cb48b5d11d10db88c3596"
+  },
+  {
+    "key": "library.magelang.p5.2",
+    "file": "assets/pustaka/library.magelang.p5.2.webp",
+    "sha256": "9a70a77841d2c7723c3bd6b655fcc8856a31ffad0346801b523b893d986bc6df"
+  },
+  {
+    "key": "library.magelang.p5.3",
+    "file": "assets/pustaka/library.magelang.p5.3.webp",
+    "sha256": "ec816f877f22ea778405504464e98f2b321e626a45b1f036da052c56147d0ca8"
+  },
+  {
+    "key": "library.magelang.p6.1",
+    "file": "assets/pustaka/library.magelang.p6.1.webp",
+    "sha256": "324936bde2833897e4edcf24699acd228da48cdac4ef1d8deb6a43d5a1a9f01a"
+  },
+  {
+    "key": "library.magelang.p6.2",
+    "file": "assets/pustaka/library.magelang.p6.2.webp",
+    "sha256": "520e247fcb78f1c01acd44e3b89dffaa1b1b2d8e4a71a4aa1bb354a8fa6b97a8"
+  },
+  {
+    "key": "library.magelang.p6.3",
+    "file": "assets/pustaka/library.magelang.p6.3.webp",
+    "sha256": "aa8387944bee7ca55608f22669b2719fe6556f66bbb7ff95dc9b593fb0c94f18"
+  },
+  {
+    "key": "library.magelang.p7.1",
+    "file": "assets/pustaka/library.magelang.p7.1.webp",
+    "sha256": "d405bf23e90c81145a681bcbaa279e4e600a164c135358df52d6ea2931f6ef03"
+  },
+  {
+    "key": "library.magelang.p9.1",
+    "file": "assets/pustaka/library.magelang.p9.1.webp",
+    "sha256": "139d14e2e1fc10aebd2e44b2e7d105dc413b4e2d7713f1af5c00c8d63442a84e"
+  },
+  {
+    "key": "library.wonosobo.p1.1",
+    "file": "assets/pustaka/library.wonosobo.p1.1.webp",
+    "sha256": "387df234f724a6f4b5dd4d9a6c8f97bc343bfcbf06787174418bb433b3a2149c"
+  },
+  {
+    "key": "library.wonosobo.p1.2",
+    "file": "assets/pustaka/library.wonosobo.p1.2.webp",
+    "sha256": "eecaf4b165ed6ee57a53afff004637ebaeb25408a5eaa1364de9222aa51ac5e1"
+  },
+  {
+    "key": "library.wonosobo.p2.1",
+    "file": "assets/pustaka/library.wonosobo.p2.1.webp",
+    "sha256": "a450cc9278cde281aa4caf025876672a493959123d2e10503607e4e6ade16701"
+  },
+  {
+    "key": "library.wonosobo.p2.2",
+    "file": "assets/pustaka/library.wonosobo.p2.2.webp",
+    "sha256": "3e8d82e30c61af79bd5fad4b6c103d8b1606b152b6e108814cf0c929b8fcbc44"
+  },
+  {
+    "key": "library.wonosobo.p3.1",
+    "file": "assets/pustaka/library.wonosobo.p3.1.webp",
+    "sha256": "eee0def6840b4959de6cec4d7ba7e0d8171b0a814a166f436b6810dd8e2437fb"
+  },
+  {
+    "key": "library.wonosobo.p3.2",
+    "file": "assets/pustaka/library.wonosobo.p3.2.webp",
+    "sha256": "9f5b3ffe6b4ec8dc035db776f68cc2213d1b74f6f721eabd72eea3e34a6eb192"
+  },
+  {
+    "key": "library.wonosobo.p3.3",
+    "file": "assets/pustaka/library.wonosobo.p3.3.webp",
+    "sha256": "2f9eed5c445ebe8168e51ce033593b523b279deb00c6fbb6dea6f2a43e60a18b"
+  },
+  {
+    "key": "library.wonosobo.p4.1",
+    "file": "assets/pustaka/library.wonosobo.p4.1.webp",
+    "sha256": "96ff8c7c1d078d51d43b41666b14b09f9e1a7f8b2da36100244399211524f3dc"
+  },
+  {
+    "key": "library.wonosobo.p4.2",
+    "file": "assets/pustaka/library.wonosobo.p4.2.webp",
+    "sha256": "69fbbe4436580310ec765aaf8ce7c3427d6dbaf5dff3b1b48ff03a6dfbc4b9f1"
+  },
+  {
+    "key": "library.wonosobo.p6.1",
+    "file": "assets/pustaka/library.wonosobo.p6.1.webp",
+    "sha256": "acbe834bb8bade7442f7f74e382bf64431a08f92b1bf3574fc01a0458d436bd1"
+  },
+  {
+    "key": "library.wonosobo.p6.2",
+    "file": "assets/pustaka/library.wonosobo.p6.2.webp",
+    "sha256": "33809419315014ea0fd077dd2b6a5c39d0c36eeb5d16aca54807808d65828481"
+  },
+  {
+    "key": "library.wonosobo.p7.1",
+    "file": "assets/pustaka/library.wonosobo.p7.1.webp",
+    "sha256": "de40a95f1b8e8c4270d35a4ea2d7d5580e6bcbc77308dc932e5914dd41c7bfac"
+  },
+  {
+    "key": "library.wonosobo.p8.1",
+    "file": "assets/pustaka/library.wonosobo.p8.1.webp",
+    "sha256": "6ee4417e7817d706222f6308d4cdad882f130ab580e32fd29653fa0dd8639b10"
+  },
+  {
+    "key": "library.wonosobo.p9.1",
+    "file": "assets/pustaka/library.wonosobo.p9.1.webp",
+    "sha256": "19f658f823d0de6eeadd51f5277c723d2c547add450f8f98cd4da0f29e087ba3"
+  },
+  {
+    "key": "library.wonosobo.p9.2",
+    "file": "assets/pustaka/library.wonosobo.p9.2.webp",
+    "sha256": "cc94806e9bb52bbfbf1a7110069c12161039208a8e9a26b778a5803d175c4f27"
+  },
+  {
+    "key": "library.wonosobo.p9.3",
+    "file": "assets/pustaka/library.wonosobo.p9.3.webp",
+    "sha256": "53b58ecac305b3cb0a49a8472982fc6092e1e84ac62651f6fbedce6a592a0bd5"
+  },
+  {
+    "key": "library.temanggung.p8.2.poster",
+    "file": "assets/pustaka/library.temanggung.p8.2.poster.webp",
+    "sha256": "93cd64b656246e81356e7be2798938be57ddca56f9f1d934d3e7b184cb871d47"
+  },
+  {
+    "key": "library.magelang.p2.3.poster",
+    "file": "assets/pustaka/library.magelang.p2.3.poster.webp",
+    "sha256": "a96daf259e0d4a74ba1e8e10070d201c7bef8e68e9e82d3b4b648b03dc721dab"
+  },
+  {
+    "key": "library.magelang.p6.3.poster",
+    "file": "assets/pustaka/library.magelang.p6.3.poster.webp",
+    "sha256": "c7faf74dd945b7c8428b60608af2e3a0ad87454c0cff8a7441dc17411c146ebe"
+  },
+  {
+    "key": "library.wonosobo.p7.1.poster",
+    "file": "assets/pustaka/library.wonosobo.p7.1.poster.webp",
+    "sha256": "74cc0af8948e055638f264e63add7d25a417347a056d5a1a205c74b5233407a4"
+  },
+  {
+    "key": "library.wonosobo.p8.1.poster",
+    "file": "assets/pustaka/library.wonosobo.p8.1.poster.webp",
+    "sha256": "da959f8084be686c83054f9148073a697f7fa3d6a77fd46638068a6239a2ee35"
+  },
+  {
+    "key": "library.temanggung.p7.1",
+    "file": "assets/pustaka/library.temanggung.p7.1.webp",
+    "sha256": "669bc7bfd94866d846336144cbde6bc27913aaee23157bdbd81ac6dc947ec5cc"
+  },
+  {
+    "key": "library.temanggung.p9.1",
+    "file": "assets/pustaka/library.temanggung.p9.1.webp",
+    "sha256": "2f1cddfad0564c8b784b1d9faa5961e5360e6b9f393d4cc8752d0931395a498b"
+  },
+  {
+    "key": "library.temanggung.p10.1",
+    "file": "assets/pustaka/library.temanggung.p10.1.webp",
+    "sha256": "ea58c429e6bb41a07cb29f5e77ad49007d3e31ffee0563f7222ecb849e3bbf5c"
+  },
+  {
+    "key": "library.magelang.p8.1",
+    "file": "assets/pustaka/library.magelang.p8.1.webp",
+    "sha256": "80d187fa06cf592371109fae001b163dee1e3825adc84f137003fc5071845717"
+  },
+  {
+    "key": "library.magelang.p10.1",
+    "file": "assets/pustaka/library.magelang.p10.1.webp",
+    "sha256": "29d86e34b7de1f0350a6a630d5fa2b8b3569e115b8a759f88e4d4815ef4d83f0"
+  },
+  {
+    "key": "library.wonosobo.p5.1",
+    "file": "assets/pustaka/library.wonosobo.p5.1.webp",
+    "sha256": "9492427d19b95edbe974e8d0c514040d2d32f9a6e88fb07fe35b0cd93abc2167"
+  },
+  {
+    "key": "library.wonosobo.p10.1",
+    "file": "assets/pustaka/library.wonosobo.p10.1.webp",
+    "sha256": "ce05a535731f37a61d9037f4eca4f24ad1f85f492ade7725b359202bb911e575"
+  },
+  {
+    "key": "ui.result-panel",
+    "file": "assets/antarmuka/ui.result-panel.webp",
+    "sha256": "542a6eb9a2b6d394bee6de5b325052e9ad08f5a30e327e4cdbdf2f95824d367e"
+  },
+  {
+    "key": "ui.result-button-primary",
+    "file": "assets/antarmuka/ui.result-button-primary.webp",
+    "sha256": "95cecaa235771cd37ae6c862e304bd4af91f8d882087a8bff4352f033a2ae2ad"
+  },
+  {
+    "key": "ui.result-button-secondary",
+    "file": "assets/antarmuka/ui.result-button-secondary.webp",
+    "sha256": "e354c3e1a89d664b714cc82480f8bf6208a7a1bc57fc6297cb0ab252189fa3f1"
+  },
+  {
+    "key": "ui.result-button-detail",
+    "file": "assets/antarmuka/ui.result-button-detail.webp",
+    "sha256": "8f0c498fbd195ed6df1945919ae07b9be0f31d7ffa9e8599cf81eb40e78db09f"
+  },
+  {
+    "key": "ui.result-hud-control",
+    "file": "assets/antarmuka/ui.result-hud-control.webp",
+    "sha256": "505acc6bdc296d6c79b15781758db5a26a6dfb4d71114d224e210e5e19597601"
+  },
+  {
+    "key": "ui.result-star",
+    "file": "assets/antarmuka/ui.result-star.webp",
+    "sha256": "6fd40e77771aec13441f632f4b44db537a2a0f10cd2db5c4fd63e4c3d95c9bf5"
+  },
+  {
+    "key": "bg.result.temanggung",
+    "file": "assets/latar/bg.result.temanggung.webp",
+    "sha256": "b10327e51ed9d74529d246a3482f4418fa291ce17950149fc3d37d90f982b5ad"
+  },
+  {
+    "key": "ui.result-shard-effects",
+    "file": "assets/antarmuka/ui.result-shard-effects.svg",
+    "sha256": "b3287f5a0b1f65aaf386b5140196144e9c4895224f641fd7d013e035471ae35d"
+  },
+  {
+    "key": "icon.language-id",
+    "file": "assets/ikon/icon.language-id.webp",
+    "sha256": "3aada0a40ef82f04fa62ba14de2bc969e522466a7a620c2e041a6ec06f48b441"
+  },
+  {
+    "key": "icon.language-en",
+    "file": "assets/ikon/icon.language-en.webp",
+    "sha256": "78efd469490f33725d6f21340f93d65b5f9db5ad0b335d1972da20d06faa762e"
+  }
+]

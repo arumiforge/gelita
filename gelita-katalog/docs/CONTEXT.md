@@ -1,10 +1,10 @@
 # Konteks proyek
 
-Kondisi terdokumentasi: 12 Oktober 2026 (Asia/Bangkok). Paket `gelita-katalog` adalah katalog statis internal aset game edukasi kelas 5 tentang Temanggung, Magelang, dan Wonosobo. Buka melalui [index.html](../index.html); ini bukan source aplikasi GELITA lengkap.
+Kondisi terdokumentasi: 14 Oktober 2026 (Asia/Bangkok). Paket `gelita-katalog` adalah katalog statis internal aset game edukasi kelas 5 tentang Temanggung, Magelang, dan Wonosobo. Buka melalui [index.html](../index.html); ini bukan source aplikasi GELITA lengkap.
 
 ## Batas paket
 
-Tersedia: 590 entri, gambar, template HTML, skrip, provenance, laporan, dan arsip. Backend, database game, workbook bank soal, konfigurasi slot aplikasi, rekaman audio, dan pengujian integrasi game tidak disertakan. Dokumen lama menyebut 12 tantangan kelas 5; katalog memiliki 45 entri visual Tantangan, sehingga kedua angka mengukur hal berbeda.
+Tersedia: 611 entri, gambar, template HTML, skrip, provenance, laporan, arsip, serta bahan revisi bank soal XLSX/naskah/puzzle di `update/`. Backend, database game, konfigurasi slot aplikasi, rekaman audio, dan pengujian integrasi game tidak disertakan. Dokumen lama menyebut 12 tantangan kelas 5; katalog memiliki 66 entri visual Tantangan, sehingga kedua angka mengukur hal berbeda.
 
 ## Layar aplikasi asli
 
@@ -17,7 +17,7 @@ Menurut keterangan pengguna pada 12 Oktober 2026, seluruh aset gambar katalog di
 | Instruksi dan keputusan aktif | [AGENTS.md](../AGENTS.md), [MEMORY.md](MEMORY.md), [README.md](../README.md) |
 | Entri, prompt aktif, target, jalur, status | `../data.json` |
 | Isi/dimensi/alpha nyata | `../assets/` |
-| Tampilan/interaksi | `../templates/catalog.template.html` |
+| Struktur/tampilan/interaksi | `../templates/catalog.template.html`, `../assets/catalog/catalog.css`, `../assets/catalog/catalog.js`; Bootstrap/font lokal di `../assets/vendor/` |
 | Hasil build | `../index.html`, `../reports/STATUS-GAMBAR.json`, `../reports/STYLE-AUDIT.*`, [PROMPTS-ENGLISH.md](PROMPTS-ENGLISH.md) |
 | Prompt/output generasi sebelumnya | [provenance/](../provenance/README.md) |
 | Bukti pekerjaan/pemeriksaan | [PROGRESS.md](PROGRESS.md), [reports/](../reports/README.md) |
@@ -26,9 +26,9 @@ Manifest bisa memuat lokasi gambar di komputer pembuat yang tidak tersedia di ch
 
 ## Kondisi visual dan audio
 
-493 visual terdiri dari 440 WebP dan 53 SVG utama. Sembilan referensi hilang telah dibuat ulang sebagai gambar baru. Semua 83 Ikon sudah dibuat ulang. Pada 12 Oktober, 30 frame lama Jaka/Mbah Kedu diganti dan 210 ditambah: 10 key pose AI menjadi 240 frame gerak sekunder deterministik. Gambar di luar pekerjaan referensi/ikon/karakter/UI hasil memakai aset yang tersedia, dengan prompt aktif terbaru.
+514 visual terdiri dari 461 WebP dan 53 SVG utama. Sembilan referensi hilang telah dibuat ulang sebagai gambar baru. Semua 83 Ikon sudah dibuat ulang. Pada 12 Oktober, 30 frame lama Jaka/Mbah Kedu diganti dan 210 ditambah: 10 key pose AI menjadi 240 frame gerak sekunder deterministik. Gambar di luar pekerjaan referensi/ikon/karakter/UI hasil/puzzle memakai aset yang tersedia, dengan prompt aktif terbaru.
 
-Semua visual “Sesuai gaya” berdasarkan `user_override`: 273 entri awal mempertahankan keputusan 11 Oktober dan 210 frame tambahan mengikuti permintaan 12 Oktober; 8 aset hasil mengikuti contoh UI pilihan pada 13 Oktober. Termasuk aset lama di luar karakter yang belum diperbaiki. Audit lama (68 sesuai, 141 belum sesuai, 3 perlu tinjau, 61 tidak berlaku) tetap di `previous_style_review`; angka itu bukan status saat ini. Semua 440 raster aktif tepat target. Resize mempertahankan proporsi melalui crop/padding, tidak menambah detail atau memperbaiki gaya.
+Semua visual “Sesuai gaya” berdasarkan `user_override`: 273 entri awal mempertahankan keputusan 11 Oktober dan 210 frame tambahan mengikuti permintaan 12 Oktober; 8 aset hasil mengikuti contoh UI pilihan pada 13 Oktober. Termasuk aset lama di luar karakter yang belum diperbaiki. Audit lama (68 sesuai, 141 belum sesuai, 3 perlu tinjau, 61 tidak berlaku) tetap di `previous_style_review`; angka itu bukan status saat ini. Semua 461 raster aktif tepat target. Resize mempertahankan proporsi melalui crop/padding, tidak menambah detail atau memperbaiki gaya.
 
 97 brief audio (88 narasi, 3 musik, 6 efek suara) identik dengan baseline. Target 100 narasi per bahasa pada dokumen asal adalah kebutuhan aplikasi terdahulu, bukan rekaman yang tersedia dalam paket ini.
 
@@ -44,3 +44,5 @@ Revisi 13 Oktober: full UI hasil memakai skin panel/tombol khusus sesuai mockup 
 Bahasa mengikuti keputusan terbaru: icon.language-id menampilkan merah–putih Indonesia dan icon.language-en menampilkan bendera UK. Dua slot baru; reference.19/20 tetap utuh. Ikon dipakai pada HUD dan popover preview.
 
 Keputusan cakupan hasil 13 Oktober: satu konsep UI “Tantangan selesai” digunakan bersama pada seluruh kota/wilayah, bukan khusus Temanggung. Kota pada screenshot hanya contoh. Implementasi memakai konteks wilayah dan hasil dinamis; pemilihan background mengikuti mapping aset aplikasi.
+
+Revisi gambar puzzle 14 Oktober: menambah 21 slot d–j dan mengganti empat slot lama sesuai panduan revisi. Katalog kini memiliki 66 visual Tantangan, termasuk 30 gambar Susun Gambar (lima gambar lama lainnya dipertahankan). 25 gambar hasil generasi memakai prompt terbaru dan WebP opak 1200 × 1200. Sebanyak 21 entri baru mengikuti basis user_override dalam permintaan pengguna; riwayat semua entri lama dipertahankan. [Catatan paket](PUZZLE-UPDATE-20261014.md). Ini belum merupakan pemasangan ke aplikasi atau verifikasi penelitian.

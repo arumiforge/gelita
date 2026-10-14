@@ -1,0 +1,592 @@
+{
+  "date": "2026-10-14",
+  "total": 25,
+  "failures": 0,
+  "warnings": 11,
+  "source": "Guide section 9.2; thresholds unchanged",
+  "human_assembly_test": false,
+  "cultural_validation": false,
+  "assets": [
+    {
+      "key": "challenge.item.mgl-1-01",
+      "code": "MGL-P01",
+      "file": "provenance/puzzle-generation-20261014/candidates/challenge.item.mgl-1-01.webp",
+      "grid": 4,
+      "size": [
+        1200,
+        1200
+      ],
+      "alpha": false,
+      "putusan": "LULUS DENGAN CATATAN",
+      "polos": [],
+      "luas": [],
+      "kembar": [],
+      "mirip": [],
+      "pola": [
+        [
+          9,
+          12,
+          0.9218222222222223
+        ]
+      ],
+      "warna": []
+    },
+    {
+      "key": "challenge.item.mgl-1-d01",
+      "code": "MGL-P04",
+      "file": "provenance/puzzle-generation-20261014/candidates/challenge.item.mgl-1-d01.webp",
+      "grid": 4,
+      "size": [
+        1200,
+        1200
+      ],
+      "alpha": false,
+      "putusan": "LULUS DENGAN CATATAN",
+      "polos": [],
+      "luas": [],
+      "kembar": [],
+      "mirip": [],
+      "pola": [
+        [
+          5,
+          6,
+          0.8404333333333334
+        ],
+        [
+          6,
+          7,
+          0.8893
+        ],
+        [
+          6,
+          10,
+          0.906611111111111
+        ],
+        [
+          6,
+          11,
+          0.8538888888888889
+        ],
+        [
+          7,
+          11,
+          0.8843222222222222
+        ],
+        [
+          10,
+          11,
+          0.8452999999999999
+        ]
+      ],
+      "warna": []
+    },
+    {
+      "key": "challenge.item.mgl-1-e01",
+      "code": "MGL-P05",
+      "file": "provenance/puzzle-generation-20261014/candidates/challenge.item.mgl-1-e01.webp",
+      "grid": 4,
+      "size": [
+        1200,
+        1200
+      ],
+      "alpha": false,
+      "putusan": "LULUS DENGAN CATATAN",
+      "polos": [],
+      "luas": [
+        3
+      ],
+      "kembar": [],
+      "mirip": [],
+      "pola": [
+        [
+          6,
+          10,
+          0.8488555555555556
+        ],
+        [
+          9,
+          14,
+          0.8773333333333333
+        ]
+      ],
+      "warna": []
+    },
+    {
+      "key": "challenge.item.mgl-1-f01",
+      "code": "MGL-P06",
+      "file": "provenance/puzzle-generation-20261014/candidates/challenge.item.mgl-1-f01.webp",
+      "grid": 4,
+      "size": [
+        1200,
+        1200
+      ],
+      "alpha": false,
+      "putusan": "LULUS DENGAN CATATAN",
+      "polos": [],
+      "luas": [],
+      "kembar": [],
+      "mirip": [],
+      "pola": [
+        [
+          9,
+          13,
+          0.8438888888888889
+        ],
+        [
+          10,
+          11,
+          0.8428666666666667
+        ]
+      ],
+      "warna": []
+    },
+    {
+      "key": "challenge.item.mgl-1-g01",
+      "code": "MGL-P07",
+      "file": "provenance/puzzle-generation-20261014/candidates/challenge.item.mgl-1-g01.webp",
+      "grid": 4,
+      "size": [
+        1200,
+        1200
+      ],
+      "alpha": false,
+      "putusan": "LULUS",
+      "polos": [],
+      "luas": [],
+      "kembar": [],
+      "mirip": [],
+      "pola": [],
+      "warna": []
+    },
+    {
+      "key": "challenge.item.mgl-1-h01",
+      "code": "MGL-P08",
+      "file": "provenance/puzzle-generation-20261014/candidates/challenge.item.mgl-1-h01.webp",
+      "grid": 4,
+      "size": [
+        1200,
+        1200
+      ],
+      "alpha": false,
+      "putusan": "LULUS",
+      "polos": [],
+      "luas": [],
+      "kembar": [],
+      "mirip": [],
+      "pola": [],
+      "warna": []
+    },
+    {
+      "key": "challenge.item.mgl-1-i01",
+      "code": "MGL-P09",
+      "file": "provenance/puzzle-generation-20261014/candidates/challenge.item.mgl-1-i01.webp",
+      "grid": 4,
+      "size": [
+        1200,
+        1200
+      ],
+      "alpha": false,
+      "putusan": "LULUS",
+      "polos": [],
+      "luas": [],
+      "kembar": [],
+      "mirip": [],
+      "pola": [],
+      "warna": []
+    },
+    {
+      "key": "challenge.item.mgl-1-j01",
+      "code": "MGL-P10",
+      "file": "provenance/puzzle-generation-20261014/candidates/challenge.item.mgl-1-j01.webp",
+      "grid": 4,
+      "size": [
+        1200,
+        1200
+      ],
+      "alpha": false,
+      "putusan": "LULUS DENGAN CATATAN",
+      "polos": [],
+      "luas": [],
+      "kembar": [],
+      "mirip": [],
+      "pola": [
+        [
+          9,
+          11,
+          0.8410777777777778
+        ],
+        [
+          10,
+          11,
+          0.9320444444444445
+        ]
+      ],
+      "warna": []
+    },
+    {
+      "key": "challenge.item.tmg-1-01",
+      "code": "TMG-P01",
+      "file": "provenance/puzzle-generation-20261014/candidates/challenge.item.tmg-1-01.webp",
+      "grid": 3,
+      "size": [
+        1200,
+        1200
+      ],
+      "alpha": false,
+      "putusan": "LULUS",
+      "polos": [],
+      "luas": [],
+      "kembar": [],
+      "mirip": [],
+      "pola": [],
+      "warna": []
+    },
+    {
+      "key": "challenge.item.tmg-1-03",
+      "code": "TMG-P02",
+      "file": "provenance/puzzle-generation-20261014/candidates/challenge.item.tmg-1-03.webp",
+      "grid": 3,
+      "size": [
+        1200,
+        1200
+      ],
+      "alpha": false,
+      "putusan": "LULUS",
+      "polos": [],
+      "luas": [],
+      "kembar": [],
+      "mirip": [],
+      "pola": [],
+      "warna": []
+    },
+    {
+      "key": "challenge.item.tmg-1-d01",
+      "code": "TMG-P04",
+      "file": "provenance/puzzle-generation-20261014/candidates/challenge.item.tmg-1-d01.webp",
+      "grid": 3,
+      "size": [
+        1200,
+        1200
+      ],
+      "alpha": false,
+      "putusan": "LULUS DENGAN CATATAN",
+      "polos": [],
+      "luas": [],
+      "kembar": [],
+      "mirip": [],
+      "pola": [
+        [
+          5,
+          8,
+          0.8407374999999999
+        ]
+      ],
+      "warna": []
+    },
+    {
+      "key": "challenge.item.tmg-1-e01",
+      "code": "TMG-P05",
+      "file": "provenance/puzzle-generation-20261014/candidates/challenge.item.tmg-1-e01.webp",
+      "grid": 3,
+      "size": [
+        1200,
+        1200
+      ],
+      "alpha": false,
+      "putusan": "LULUS",
+      "polos": [],
+      "luas": [],
+      "kembar": [],
+      "mirip": [],
+      "pola": [],
+      "warna": []
+    },
+    {
+      "key": "challenge.item.tmg-1-f01",
+      "code": "TMG-P06",
+      "file": "provenance/puzzle-generation-20261014/candidates/challenge.item.tmg-1-f01.webp",
+      "grid": 3,
+      "size": [
+        1200,
+        1200
+      ],
+      "alpha": false,
+      "putusan": "LULUS",
+      "polos": [],
+      "luas": [],
+      "kembar": [],
+      "mirip": [],
+      "pola": [],
+      "warna": []
+    },
+    {
+      "key": "challenge.item.tmg-1-g01",
+      "code": "TMG-P07",
+      "file": "provenance/puzzle-generation-20261014/candidates/challenge.item.tmg-1-g01.webp",
+      "grid": 3,
+      "size": [
+        1200,
+        1200
+      ],
+      "alpha": false,
+      "putusan": "LULUS DENGAN CATATAN",
+      "polos": [],
+      "luas": [],
+      "kembar": [],
+      "mirip": [],
+      "pola": [
+        [
+          4,
+          7,
+          0.86253125
+        ]
+      ],
+      "warna": []
+    },
+    {
+      "key": "challenge.item.tmg-1-h01",
+      "code": "TMG-P08",
+      "file": "provenance/puzzle-generation-20261014/candidates/challenge.item.tmg-1-h01.webp",
+      "grid": 3,
+      "size": [
+        1200,
+        1200
+      ],
+      "alpha": false,
+      "putusan": "LULUS",
+      "polos": [],
+      "luas": [],
+      "kembar": [],
+      "mirip": [],
+      "pola": [],
+      "warna": []
+    },
+    {
+      "key": "challenge.item.tmg-1-i01",
+      "code": "TMG-P09",
+      "file": "provenance/puzzle-generation-20261014/candidates/challenge.item.tmg-1-i01.webp",
+      "grid": 3,
+      "size": [
+        1200,
+        1200
+      ],
+      "alpha": false,
+      "putusan": "LULUS DENGAN CATATAN",
+      "polos": [],
+      "luas": [],
+      "kembar": [],
+      "mirip": [],
+      "pola": [
+        [
+          3,
+          8,
+          0.868625
+        ],
+        [
+          4,
+          5,
+          0.8473999999999999
+        ]
+      ],
+      "warna": []
+    },
+    {
+      "key": "challenge.item.tmg-1-j01",
+      "code": "TMG-P10",
+      "file": "provenance/puzzle-generation-20261014/candidates/challenge.item.tmg-1-j01.webp",
+      "grid": 3,
+      "size": [
+        1200,
+        1200
+      ],
+      "alpha": false,
+      "putusan": "LULUS",
+      "polos": [],
+      "luas": [],
+      "kembar": [],
+      "mirip": [],
+      "pola": [],
+      "warna": []
+    },
+    {
+      "key": "challenge.item.wnb-1-07",
+      "code": "WNB-P03",
+      "file": "provenance/puzzle-generation-20261014/candidates/challenge.item.wnb-1-07.webp",
+      "grid": 4,
+      "size": [
+        1200,
+        1200
+      ],
+      "alpha": false,
+      "putusan": "LULUS",
+      "polos": [],
+      "luas": [],
+      "kembar": [],
+      "mirip": [],
+      "pola": [],
+      "warna": []
+    },
+    {
+      "key": "challenge.item.wnb-1-d01",
+      "code": "WNB-P04",
+      "file": "provenance/puzzle-generation-20261014/candidates/challenge.item.wnb-1-d01.webp",
+      "grid": 4,
+      "size": [
+        1200,
+        1200
+      ],
+      "alpha": false,
+      "putusan": "LULUS DENGAN CATATAN",
+      "polos": [],
+      "luas": [
+        2
+      ],
+      "kembar": [],
+      "mirip": [
+        [
+          2,
+          3,
+          0.07917574793100357
+        ]
+      ],
+      "pola": [
+        [
+          9,
+          10,
+          0.8855777777777778
+        ]
+      ],
+      "warna": []
+    },
+    {
+      "key": "challenge.item.wnb-1-e01",
+      "code": "WNB-P05",
+      "file": "provenance/puzzle-generation-20261014/candidates/challenge.item.wnb-1-e01.webp",
+      "grid": 4,
+      "size": [
+        1200,
+        1200
+      ],
+      "alpha": false,
+      "putusan": "LULUS",
+      "polos": [],
+      "luas": [],
+      "kembar": [],
+      "mirip": [],
+      "pola": [],
+      "warna": []
+    },
+    {
+      "key": "challenge.item.wnb-1-f01",
+      "code": "WNB-P06",
+      "file": "provenance/puzzle-generation-20261014/candidates/challenge.item.wnb-1-f01.webp",
+      "grid": 4,
+      "size": [
+        1200,
+        1200
+      ],
+      "alpha": false,
+      "putusan": "LULUS",
+      "polos": [],
+      "luas": [],
+      "kembar": [],
+      "mirip": [],
+      "pola": [],
+      "warna": []
+    },
+    {
+      "key": "challenge.item.wnb-1-g01",
+      "code": "WNB-P07",
+      "file": "provenance/puzzle-generation-20261014/candidates/challenge.item.wnb-1-g01.webp",
+      "grid": 4,
+      "size": [
+        1200,
+        1200
+      ],
+      "alpha": false,
+      "putusan": "LULUS",
+      "polos": [],
+      "luas": [],
+      "kembar": [],
+      "mirip": [],
+      "pola": [],
+      "warna": []
+    },
+    {
+      "key": "challenge.item.wnb-1-h01",
+      "code": "WNB-P08",
+      "file": "provenance/puzzle-generation-20261014/candidates/challenge.item.wnb-1-h01.webp",
+      "grid": 4,
+      "size": [
+        1200,
+        1200
+      ],
+      "alpha": false,
+      "putusan": "LULUS DENGAN CATATAN",
+      "polos": [],
+      "luas": [],
+      "kembar": [],
+      "mirip": [],
+      "pola": [
+        [
+          10,
+          11,
+          0.8410666666666666
+        ]
+      ],
+      "warna": []
+    },
+    {
+      "key": "challenge.item.wnb-1-i01",
+      "code": "WNB-P09",
+      "file": "provenance/puzzle-generation-20261014/candidates/challenge.item.wnb-1-i01.webp",
+      "grid": 4,
+      "size": [
+        1200,
+        1200
+      ],
+      "alpha": false,
+      "putusan": "LULUS",
+      "polos": [],
+      "luas": [],
+      "kembar": [],
+      "mirip": [],
+      "pola": [],
+      "warna": []
+    },
+    {
+      "key": "challenge.item.wnb-1-j01",
+      "code": "WNB-P10",
+      "file": "provenance/puzzle-generation-20261014/candidates/challenge.item.wnb-1-j01.webp",
+      "grid": 4,
+      "size": [
+        1200,
+        1200
+      ],
+      "alpha": false,
+      "putusan": "LULUS DENGAN CATATAN",
+      "polos": [],
+      "luas": [],
+      "kembar": [],
+      "mirip": [],
+      "pola": [
+        [
+          5,
+          6,
+          0.8679222222222223
+        ],
+        [
+          6,
+          7,
+          0.8821444444444445
+        ],
+        [
+          9,
+          13,
+          0.8505222222222223
+        ]
+      ],
+      "warna": []
+    }
+  ]
+}

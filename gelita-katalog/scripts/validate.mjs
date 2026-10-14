@@ -1,11 +1,20 @@
 import fs from 'node:fs';import path from 'node:path';import assert from 'node:assert/strict';import {fileURLToPath} from 'node:url';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');const read=p=>fs.readFileSync(path.join(root,p),'utf8');const data=JSON.parse(read('data.json'));const html=read('index.html');
 const embedded=JSON.parse(html.match(/const DATA=(.*);\r?\nconst SUMMARY=/s)[1]);assert.deepEqual(embedded,data);
+const puzzles=JSON.parse(read('provenance/puzzle-generation-results-20261014.json'));
+const puzzleKeys=new Set(puzzles.assets.map(a=>a.key));
+const replacements=new Set(puzzles.assets.filter(a=>a.replaced).map(a=>a.key));
+assert.deepEqual(replacements,new Set(['challenge.item.tmg-1-01','challenge.item.tmg-1-03','challenge.item.mgl-1-01','challenge.item.wnb-1-07']));
+const addedPuzzles=puzzles.assets.filter(a=>!a.replaced);assert.equal(addedPuzzles.length,21);
+for(const prefix of ['tmg','mgl','wnb'])for(const variant of 'defghij')assert.ok(addedPuzzles.some(a=>a.key===`challenge.item.${prefix}-1-${variant}01`));
+const allowedPuzzleFields=new Set(['title','desc','prompt','negative','prompt_revision','generation_prompt','generated_by','status','generation_status','content_review','production','note','puzzle','puzzle_provenance']);
+const assertPreserved=before=>{const actual=data.find(x=>x.key===before.key);assert.ok(actual);if(!replacements.has(before.key)){assert.deepEqual(actual,before,'Original entry changed: '+before.key);return;}const stable=o=>Object.fromEntries(Object.entries(o).filter(([k])=>!allowedPuzzleFields.has(k)));assert.deepEqual(stable(actual),stable(before),'Unapproved original field changed: '+before.key);};
+for(const before of JSON.parse(read(puzzles.original_catalog_snapshot)))assertPreserved(before);
 const resultUi=JSON.parse(read('provenance/result-ui-generation-results-20261013.json'));const resultUiKeys=new Set(resultUi.assets.map(a=>a.key));
 const languageFlags=JSON.parse(read('provenance/language-flag-generation-results-20261013.json'));const flagKeys=new Set(languageFlags.assets.map(a=>a.key));
-const beforeFlags=JSON.parse(read(languageFlags.original_catalog_snapshot));for(const a of beforeFlags)assert.deepEqual(data.find(x=>x.key===a.key),a,'Pre-flag entry changed: '+a.key);
-assert.equal(data.length,languageFlags.base_entries+languageFlags.assets.length);assert.equal(new Set(data.map(a=>a.key)).size,data.length);assert.equal(new Set(data.map(a=>a.id)).size,data.length);
-const beforeResultUi=JSON.parse(read(resultUi.original_catalog_snapshot));for(const a of beforeResultUi)assert.deepEqual(data.find(x=>x.key===a.key),a,'Original entry changed: '+a.key);
+const beforeFlags=JSON.parse(read(languageFlags.original_catalog_snapshot));for(const a of beforeFlags)assertPreserved(a);
+assert.equal(data.length,languageFlags.base_entries+languageFlags.assets.length+addedPuzzles.length);assert.equal(new Set(data.map(a=>a.key)).size,data.length);assert.equal(new Set(data.map(a=>a.id)).size,data.length);
+const beforeResultUi=JSON.parse(read(resultUi.original_catalog_snapshot));for(const a of beforeResultUi)assertPreserved(a);
 for(const a of [...resultUi.assets,...languageFlags.assets]){const actual=data.find(x=>x.key===a.key);assert.ok(actual);assert.equal(actual.file,a.file);assert.equal(actual.size,a.size.join(' × '));assert.equal(actual.alpha,a.alpha);}
 const audio=data.filter(a=>a.size==='Audio');assert.deepEqual(audio,JSON.parse(read('archive/audio-baseline.json')));
 const visual=data.filter(a=>a.size!=='Audio');for(const a of visual){assert.ok(a.style_review);for(const k of ['file','preview','generated_asset'])if(a[k])assert.ok(fs.existsSync(path.join(root,a[k])),a[k]);const expected=a.key.replace(/\.(png|svg|ico|webp)$/i,'');assert.equal(path.parse(a.file).name,expected)}
@@ -16,7 +25,7 @@ const generatedIcons=JSON.parse(read('provenance/icon-generation-results.json'))
 for(const a of icons){assert.equal(a.actual,a.size);assert.equal(a.actual_alpha,a.alpha);if(a.vector_source)assert.ok(fs.existsSync(path.join(root,a.vector_source)));}
 assert.equal(visual.filter(a=>a.provenance?.date==='2026-10-11').length,9);assert.ok(!fs.existsSync(path.join(root,'framegambarkarakter/jakahappy')));
 for(const m of JSON.parse(read('provenance/migration-map.json')))assert.ok(fs.existsSync(path.join(root,m.new)),m.new);
-const source=JSON.parse(read('archive/before-2026-10-11/data.json'));for(const a of visual){const before=source.find(x=>x.key===a.key);if(before)assert.equal(a.size,before.size,'target changed '+a.key);else if(resultUiKeys.has(a.key)||flagKeys.has(a.key)){assert.equal(a.size,[...resultUi.assets,...languageFlags.assets].find(x=>x.key===a.key).size.join(' × '));}else {assert.match(a.key,/^char\.(jaka|kedu)\.\w+\.(?:[4-9]|1\d|2[0-4])$/);assert.equal(a.size,'700 × 900');}}
+const source=JSON.parse(read('archive/before-2026-10-11/data.json'));for(const a of visual){const before=source.find(x=>x.key===a.key);if(before)assert.equal(a.size,before.size,'target changed '+a.key);else if(resultUiKeys.has(a.key)||flagKeys.has(a.key)){assert.equal(a.size,[...resultUi.assets,...languageFlags.assets].find(x=>x.key===a.key).size.join(' × '));}else if(puzzleKeys.has(a.key)){assert.equal(a.size,'1200 × 1200');assert.equal(a.alpha,false);assert.equal(a.puzzle.review_status,'needs_verification');assert.ok(fs.existsSync(path.join(root,a.puzzle_provenance.source_native)));}else {assert.match(a.key,/^char\.(jaka|kedu)\.\w+\.(?:[4-9]|1\d|2[0-4])$/);assert.equal(a.size,'700 × 900');}}
 const characters=visual.filter(a=>/^char\.(jaka|kedu)\./.test(a.key));assert.equal(characters.length,240);
 for(const stem of new Set(characters.map(a=>a.key.replace(/\.\d+$/,'')))){const frames=characters.filter(a=>a.key.startsWith(stem+'.'));assert.equal(frames.length,24);for(let n=1;n<=24;n++){const a=frames.find(a=>a.key===stem+'.'+n);assert.ok(a);assert.equal(a.character_provenance.frame_count,24);assert.ok(fs.existsSync(path.join(root,a.character_provenance.key_pose)));}}
 for(const folder of ['docs','scripts','templates','reports','provenance','assets','review','archive'])assert.ok(fs.statSync(path.join(root,folder)).isDirectory(),folder);

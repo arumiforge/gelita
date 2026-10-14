@@ -1,5 +1,7 @@
 # Skrip aktif
 
+Puzzle: `check_puzzle_tiles.py` mengadaptasi pemeriksa pada panduan (ambang asli; output WebP). `review-puzzle-generation-20261014.py`, `verify-puzzle-update-20261014.py` dan `browser-puzzle-check.cjs` memeriksa keluaran, preservasi data/aset, serta akses di katalog. Skrip prepare/fetch/normalize/install/sync-puzzle bertanggal menyimpan proses sekali pakai 14 Oktober; bukan pemeliharaan rutin. Skrip install menolak katalog yang sudah berbeda dari snapshot. Tidak ada skrip yang menjalankan ulang AI secara otomatis.
+
 Contoh perintah dijalankan dari root katalog. Skrip menentukan root dari lokasi berkas, sehingga pemindahan ke folder ini tidak mengubah lokasi data/aset.
 
 | Skrip | Fungsi dan dampak |

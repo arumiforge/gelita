@@ -21,7 +21,7 @@ Python dan Pillow diperlukan. Periksa tanpa perubahan:
 python scripts/resize_assets.py
 ```
 
-440 raster saat ini tepat target. Hanya jika resize diperlukan:
+461 raster saat ini tepat target. Hanya jika resize diperlukan:
 
 ```powershell
 python scripts/resize_assets.py --apply
@@ -41,7 +41,7 @@ node scripts/browser-check.cjs
 
 Playwright dapat tersedia melalui resolusi paket Node atau `$env:PLAYWRIGHT_PACKAGE` yang menunjuk folder paket. `$env:BROWSER_CHANNEL` mengganti channel bawaan `msedge`. Tidak ada lokasi komputer pembuat yang diwajibkan oleh skrip aktif.
 
-Pemeriksaan menguji pencarian/filter, dialog/Escape, pembukaan gambar asli, ekspor JSON, audio, mobile, serta galat JavaScript. Hasil lulus ke `reports/browser-check-report.json`; screenshot WebP ke `review/`. Jika gagal, catat percobaan terbaru di PROGRESS; laporan lama bisa tetap ada dan bukan bukti hasil percobaan terbaru.
+Pemeriksaan menguji Bootstrap/font lokal tanpa jaringan, pencarian/filter/pengurutan, collapse/dropdown, dialog/Escape/fokus, pembukaan gambar asli, ekspor JSON/CSV/TXT, audio, mobile serta galat JavaScript. Teks salin prompt/brief memakai clipboard stub agar tidak mengubah clipboard sistem pengguna. Hasil lulus ke `reports/browser-check-report.json`; enam screenshot WebP (halaman, koleksi, detail pada desktop/mobile) ke `review/`. Jika gagal, catat percobaan terbaru di PROGRESS; laporan lama bisa tetap ada dan bukan bukti hasil percobaan terbaru.
 
 ## Lembar kontak
 
@@ -53,3 +53,7 @@ Delapan `contact-*.jpg` yang tersedia adalah lembar audit historis. Perapian dok
 
 Tinjau sumber, hasil build, tautan, dan [PROGRESS.md](PROGRESS.md). Commit hasil build bersama sumber yang relevan agar katalog cocok dengan data aktif. `.git` berada di repositori induk; masalah lingkungan Git tidak mengizinkan perubahan konfigurasi tanpa kebutuhan jelas. Perapian ini tidak membuat commit atau push.
 
+
+## Pemeriksaan puzzle
+
+`python scripts/verify-puzzle-update-20261014.py` memeriksa 21 penambahan/empat penggantian, preservasi 586 objek lama dan 489 hash aset, riwayat gaya, dimensi 461 raster serta baseline audio. `python scripts/review-puzzle-generation-20261014.py` memeriksa keping menurut ambang panduan dan membuat lembar kontak/kisi/acak WebP. Pemeriksaan otomatis tidak menggantikan uji susun dua orang atau verifikasi isi. Skrip produksi bertanggal bukan pemeliharaan rutin dan tidak boleh digenerasi ulang tanpa permintaan baru.

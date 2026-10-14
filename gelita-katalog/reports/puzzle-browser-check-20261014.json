@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-14",
+  "checked_at_utc": "2026-10-14T03:23:43.531Z",
+  "passed": true,
+  "checks": [
+    "66 challenge cards",
+    "10 puzzle cards per region including 21 new slots",
+    "25 selected 1200px puzzle details checked in browser-check.cjs",
+    "Bundengan detail and original offline WebP open correctly",
+    "No JavaScript errors"
+  ],
+  "screenshots": [
+    "review/puzzle-20261014/catalog-temanggung.webp",
+    "review/puzzle-20261014/catalog-bundengan.webp"
+  ]
+}

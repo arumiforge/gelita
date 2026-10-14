@@ -1,0 +1,15 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
+const guide=fs.readFileSync(path.join(root,'update/gambar-puzzle/panduan-gambar-puzzle-gelita.md'),'utf8');
+const replacementKeys=new Set(['challenge.item.tmg-1-01','challenge.item.tmg-1-03','challenge.item.mgl-1-01','challenge.item.wnb-1-07']);
+const jobs=[...guide.matchAll(/#### ([A-Z]{3}-P\d+) · ([^\r\n]+)([\s\S]*?)(?=\r?\n#### |\r?\n### |$)/g)].map(m=>({code:m[1],title:m[2],key:m[3].match(/Asset: ([\w.-]+)/)?.[1],prompt:m[3].match(/```text\r?\n([\s\S]*?)```/)?.[1].trim(),desc_id:m[3].match(/> \*\*ID:\*\* ([^\r\n]+)/)?.[1],desc_en:m[3].match(/> \*\*EN:\*\* ([^\r\n]+)/)?.[1],required_photo:m[3].includes('| Foto referensi | **Wajib** |')})).filter(j=>/-[d-j]01$/.test(j.key)||replacementKeys.has(j.key));
+if(jobs.length!==25||jobs.some(j=>!j.prompt||!j.desc_id||!j.desc_en))throw Error('Incomplete prompt extraction');
+const destination=path.join(root,'provenance/puzzle-generation-20261014');
+fs.mkdirSync(destination,{recursive:true});
+fs.writeFileSync(path.join(destination,'jobs.json'),JSON.stringify(jobs,null,2)+'\n');
+const checker=[...guide.matchAll(/```python\r?\n([\s\S]*?)```/g)].find(m=>m[1].includes('POLOS_FRAKSI'))?.[1];
+if(!checker)throw Error('Missing tile checker in guide');
+fs.writeFileSync(path.join(root,'scripts/check_puzzle_tiles.py'),'# Adapted from the current puzzle guide, 2026-10-14; review outputs use WebP.\n'+checker.replaceAll('_kisi.png','_kisi.webp').replaceAll('_acak.png','_acak.webp'));
+console.log(JSON.stringify(jobs));

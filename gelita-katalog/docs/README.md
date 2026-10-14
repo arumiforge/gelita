@@ -10,6 +10,6 @@ Mulai dari [README proyek](../README.md). Folder ini menjelaskan kondisi aktif; 
 | [AI-GUIDE.md](AI-GUIDE.md) | Peta folder, aliran data, pilihan berkas untuk diedit |
 | [DATA-SCHEMA.md](DATA-SCHEMA.md) | Bentuk entri dan field penting |
 | [MAINTENANCE.md](MAINTENANCE.md) | Build, validasi, resize, browser |
-| [PROMPTS-ENGLISH.md](PROMPTS-ENGLISH.md) | 273 prompt aktif; otomatis dari data |
+| [PROMPTS-ENGLISH.md](PROMPTS-ENGLISH.md) | 514 prompt aktif; otomatis dari data |
 
 Ubah prompt di `data.json`, lalu jalankan `node build.mjs`. Tanggal keputusan/generasi terdahulu dipertahankan sebagai bukti; tanggal dokumentasi tidak mengubah tanggal pekerjaan.

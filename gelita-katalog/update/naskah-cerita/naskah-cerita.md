@@ -33,7 +33,7 @@ Di teks Inggris, Jaka tetap memanggil "Mbah" agar nuansa lokalnya terjaga, semen
 
 ## Konvensi berkas audio
 
-Repositori sudah membawa **rekaman sintetis (TTS) bawaan** untuk ke-100 baris di kedua bahasa, dengan suara Narator, Jaka, dan Mbah Kedu yang diolah menurut arahan di atas. Asal-usul, pengolahan, dan lisensinya ada di [`docs/audio.md`](audio.md). Rekaman pengisi suara dapat menggantikannya kapan saja dengan konvensi di bawah ini. Rekaman pengganti otomatis tercatat sebagai rekaman sendiri, bukan TTS.
+Repositori aplikasi sudah membawa **rekaman sintetis (TTS) bawaan** untuk ke-100 baris di kedua bahasa, dengan suara Narator, Jaka, dan Mbah Kedu yang diolah menurut arahan di atas. Asal-usul, pengolahan, dan lisensinya ada di `docs/audio.md` pada repositori aplikasi; dokumen dan rekamannya tidak disertakan dalam paket katalog ini. Rekaman pengisi suara dapat menggantikannya kapan saja dengan konvensi di bawah ini. Rekaman pengganti otomatis tercatat sebagai rekaman sendiri, bukan TTS.
 
 - Folder: `public/assets/audio/narasi/id/` untuk bahasa Indonesia dan `public/assets/audio/narasi/en/` untuk bahasa Inggris.
 - Nama berkas mengikuti kode di setiap judul baris di bawah, ditambah `.mp3`, misalnya `narasi/id/dialog-magelang-09.mp3`.
@@ -55,7 +55,7 @@ Repositori sudah membawa **rekaman sintetis (TTS) bawaan** untuk ke-100 baris di
 | `hunt_clue` | `petunjuk-{node}-NN` | 12 | Petunjuk Mbah Kedu di Cari Objek (`tmg-4`, `mgl-4`, `wnb-4`, masing-masing 4), di samping teks petunjuk — teks dari bank soal, bukan naskah ini |
 | **Total rekaman** | | **100** | |
 
-Baris `petunjuk-*` **tidak ada di naskah ini**: teksnya berasal dari bank soal, yaitu kolom pertanyaan (`prompt_id` / `prompt_en`) butir `find_object` target di [`docs/bank-soal/data/`](bank-soal/data/) (node `tmg-4`, `mgl-4`, `wnb-4`). Dibacakan Mbah Kedu. `{node}` = kode tantangan; NN = urutan petunjuk target menurut urutan butir, dimulai 01, sehingga `petunjuk-tmg-4-01` … `-04` sama dengan butir `tmg-4-a01` … `tmg-4-a04`. Benda pengecoh tidak punya petunjuk dan tidak direkam. Teks terkini ada di daftar rekaman XLSX (kelompok "Petunjuk Cari Objek"), karena admin dapat menyuntingnya di bank soal.
+Baris `petunjuk-*` **tidak ada di naskah ini**: teksnya berasal dari bank soal, yaitu kolom pertanyaan (`prompt_id` / `prompt_en`) butir `find_object` target di `docs/bank-soal/data/` pada repositori aplikasi (node `tmg-4`, `mgl-4`, `wnb-4`). Salinan bank soal revisi dalam paket ini ada di [bank-soal-kelas5.xlsx](../bank-soal/bank-soal-kelas5.xlsx). Dibacakan Mbah Kedu. `{node}` = kode tantangan; NN = urutan petunjuk target menurut urutan butir, dimulai 01, sehingga `petunjuk-tmg-4-01` … `-04` sama dengan butir `tmg-4-a01` … `tmg-4-a04`. Benda pengecoh tidak punya petunjuk dan tidak direkam. Teks terkini ada di daftar rekaman XLSX (kelompok "Petunjuk Cari Objek"), karena admin dapat menyuntingnya di bank soal.
 
 ## Mengimpor dan menyetujui audio
 

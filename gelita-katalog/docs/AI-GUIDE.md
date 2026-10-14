@@ -35,7 +35,8 @@ node scripts/validate.mjs --> reports/validation-report.json
 |---|---|
 | Nama/deskripsi/prompt/status entri | `data.json`, lihat [skema](DATA-SCHEMA.md) |
 | Mengganti gambar | Jalur `file` di `assets/<kelompok>/`; pertahankan kode |
-| Tampilan/filter/dialog/ekspor | `templates/catalog.template.html`, lalu build |
+| Struktur halaman | `templates/catalog.template.html`, lalu build |
+| Tampilan/filter/dialog/ekspor/pengurutan | `assets/catalog/catalog.css` dan `assets/catalog/catalog.js`; dependensi lokal di `assets/vendor/` |
 | Proses build/pemeriksaan | `scripts/` |
 | Konteks/keputusan/progres | `docs/`, README/AGENTS bila relevan |
 | Riwayat generasi/nama lama | `provenance/`; lokasi sumber pembuat bisa tidak tersedia |
@@ -44,12 +45,12 @@ node scripts/validate.mjs --> reports/validation-report.json
 
 ## 4. Invarian yang dipertahankan
 
-- 590 entri: 493 visual dan 97 audio; ID dan `key` unik. Jangan mengubah kode slot untuk menyesuaikan ekstensi.
+- 611 entri: 514 visual dan 97 audio; ID dan `key` unik. Jangan mengubah kode slot untuk menyesuaikan ekstensi.
 - Objek audio identik dengan baseline; dikenali melalui `size === "Audio"`.
 - Visual memakai status “Sesuai gaya” berbasis `user_override` dan memiliki `previous_style_review`. Ini keputusan pengguna, bukan review baru.
 - Ilustrasi 3D/Jaka syal merah mengikuti reference.01; Mbah Kedu reference.02. SVG kontrol jelas pada ukuran kecil; skin panel/tombol ui.result-* mengikuti full UI pilihan, media faktual dokumenter.
 - `file`, `preview`, `generated_asset`, `vector_source` yang terisi menunjuk berkas tersedia relatif root. SVG kontrol di `assets/ikon/vektor/`.
-- Raster aktif WebP; 440 raster tepat target. Jangan membuat PNG atau memperbaiki gambar hanya karena audit lamanya berbeda tanpa permintaan baru.
+- Raster aktif WebP; 461 raster tepat target. Jangan membuat PNG atau memperbaiki gambar hanya karena audit lamanya berbeda tanpa permintaan baru.
 - Jangan membuat kembali folder sumber atau folder karakter tambahan yang dihapus.
 
 ## 5. Verifikasi dan pencatatan
@@ -58,3 +59,7 @@ Ikuti [MAINTENANCE.md](MAINTENANCE.md). Untuk gambar ukur berkas nyata; untuk UI
 
 Catat hasil nyata dan batas pemeriksaan di [PROGRESS.md](PROGRESS.md). Laporan lama bukan pemeriksaan terbaru hanya karena dipindahkan. Perubahan dokumentasi tidak mengizinkan regenerasi gambar/audio. Jangan menyatakan seluruh gambar siap produksi.
 
+
+## 6. Puzzle terbaru
+
+21 variasi d–j tersedia untuk tmg-1, mgl-1 dan wnb-1; empat gambar lama yang direkomendasikan panduan sudah diganti. Field puzzle berisi item_key, kisi, keterangan bilingual dan needs_verification; puzzle_provenance menunjuk manifest serta sumber WebP lokal. Pertahankan kode a–c lama, jangan membuat ulang gambar yang sudah tersedia hanya karena panduan menyebut buat baru. Ikuti [paket revisi](PUZZLE-UPDATE-20261014.md).
