@@ -21,7 +21,7 @@ Python dan Pillow diperlukan. Periksa tanpa perubahan:
 python scripts/resize_assets.py
 ```
 
-431 raster saat ini tepat target. Hanya jika resize diperlukan:
+440 raster saat ini tepat target. Hanya jika resize diperlukan:
 
 ```powershell
 python scripts/resize_assets.py --apply

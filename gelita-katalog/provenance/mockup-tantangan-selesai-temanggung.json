@@ -1,0 +1,456 @@
+{
+  "schema_version": 1,
+  "id": "tantangan-selesai-temanggung",
+  "date": "2026-10-12",
+  "timezone": "Asia/Bangkok",
+  "created_at_utc": "2026-10-12T10:09:33.321845+00:00",
+  "package": "mockup/gambar-mockup/tantangan-selesai-temanggung",
+  "status": "selected-reference; not implemented in game",
+  "screen_ratio": "16:9 fixed landscape; no responsive reflow",
+  "mockup": {
+    "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/mockup-tantangan-selesai-temanggung-16-9.webp",
+    "source_file": "C:\\Users\\cenda\\.codex\\generated_images\\01a12df0-a171-7481-b8f6-3100da7e670d\\exec-2171e211-fd61-4654-8332-4ec849e3ec9f.png",
+    "source_sha256": "f71734ed3a7d40bd51a0bce279547983f0b80be60178818b0de6ed923698c869",
+    "sha256": "a28e4cbd84576d3ca9de15f517e5682ef9721ecef0fb72e50208733cba9c4d23",
+    "size": [
+      1672,
+      941
+    ],
+    "decoded_rgb_sha256": "d2a12b89314c1c506ea97612e24da8d49b1b8e72db16d9ef0df9608459b96b04",
+    "selection": "Confirmed by user: first landscape 16:9 revision, before larger-controls variant",
+    "encoding": "Lossless WebP; native dimensions and RGB pixels preserved",
+    "approximate_16_9": true
+  },
+  "new_background": {
+    "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-baru/bg-tantangan-selesai-temanggung-3d.webp",
+    "source_file": "C:\\Users\\cenda\\.codex\\generated_images\\01a12df0-a171-7481-b8f6-3100da7e670d\\exec-7521338d-e881-47d8-b3b6-6ddbaa4665a6.png",
+    "source_sha256": "ab3cb5d29ca2545dd7ecbbb7c939d332858e3426cc9884ece69329e0a3fd3d93",
+    "sha256": "b10327e51ed9d74529d246a3482f4418fa291ce17950149fc3d37d90f982b5ad",
+    "size": [
+      1920,
+      1080
+    ],
+    "opaque": true,
+    "native_file": "provenance/mockup-tantangan-selesai-temanggung/bg-tantangan-selesai-temanggung-3d-asli.webp",
+    "native_sha256": "a20f3cb2ed9356f921b512289b5060bac3709f4955c35170f2eb3a1482579fdb",
+    "native_size": [
+      1672,
+      941
+    ],
+    "native_decoded_rgb_sha256": "3ed3c2afe527b85492204308dae3d950f55213e309c763e4266502d25094784e",
+    "method": "built-in image_gen",
+    "generation_count": 1,
+    "prompt_file": "mockup/gambar-mockup/tantangan-selesai-temanggung/prompt-lanskap.txt",
+    "prompt": "Use case: stylized-concept / background-only asset.\nCreate the clean standalone landscape background needed by the approved GELITA challenge-complete mockup in input image 1. Image 1 is the chosen layout and landscape reference, but remove ALL interface content and reconstruct the entire landscape behind it coherently. Image 2 (GELITA reference.01, Jaka character sheet) is ONLY a reference for premium polished stylized 3D animated adventure finish and materials; DO NOT include Jaka, any character or any text from that sheet.\n\nAsset destination: mockup reference package, background for fixed 16:9 landscape mobile game. Target canvas 1920 x 1080, wide exact 16:9. Full bleed opaque background, no alpha.\n\nScene and composition:\nAn imaginative scenic landscape inspired by the Kedu/Temanggung mountain valleys, not a factual geographic map. Sunset with layered volcanic mountain silhouettes receding into cool blue mist, warm amber sun in the upper-right quarter, rich orange-pink-violet cloud formations. Across the left foreground and middle distance, lush dimensional green forest foliage and terraced cultivated slopes sweep down into the valley. Across the right third, a calm lake or broad river reflects the gold sunset with gentle highlights. Complete the broad centre with low-detail terraces, valley floor, distant vegetation and atmospheric water so it remains quiet beneath a future result panel. Foreground foliage softly frames lower corners without blocking the view. Closely match the approved screenshot's warm golden sunset, depth, camera angle, terrain and lake placement while creating a complete original backdrop behind the missing panel.\n\nStyle:\nPremium stylized 3D animated adventure environment for Indonesian grade-five pupils, cohesive with GELITA's Jaka reference. Rounded dimensional vegetation, rich but restrained material detail, soft physically plausible lighting, cinematic depth and atmospheric perspective. Colour palette: deep navy #0B1320 and #1B2740 shadows, brass-gold warm light #DFC087 and #F0DFB8, natural greens, earthy browns, warm sunset coral and cool blue haze. No painterly brush texture or paper grain. Distinct separation of foreground, midground and mountains.\n\nUI-safe composition:\nThe central approximately 75 percent width and middle 65 percent height should have low visual complexity so a navy result panel can be layered there later. Keep upper-left and upper-right HUD locations reasonably calm. Lighting remains beautiful without harsh white glare beneath possible controls. No embedded dark panel or added HUD strip. All panel edges, UI text, buttons, stars, medallions, icons and particles will be rendered separately by the web app.\n\nStrict exclusions:\nNO letters, words, GELITA logo, labels, interface, buttons, borders, gold frame, HUD, cards, stars, medallion, crystal shards, lanterns, reward symbols, characters, foreground people, watermark, signature, diagram, phone hardware or duplicate screenshot. Do not invent a specific identifiable temple or place claim. Do not reproduce the reference character sheet. The output is landscape art ONLY. Deliver one full-bleed clean 16:9 background.",
+    "references": [
+      "mockup/gambar-mockup/tantangan-selesai-temanggung/mockup-tantangan-selesai-temanggung-16-9.webp",
+      "assets/referensi/reference.01.webp"
+    ],
+    "normalization": "Centre-fit proportional LANCZOS to 1920x1080; negligible aspect crop and enlargement from native output; no new AI detail",
+    "integration_status": "active catalogue bg.result.temanggung; promoted 2026-10-13 without new generation",
+    "visual_review": "Opened generated image: landscape-only, no UI or characters; new reconstruction of area hidden by panel, not exact pixel extraction"
+  },
+  "new_vector_controls": [
+    {
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-baru/ikon-layar-penuh.svg",
+      "sha256": "fcbf36676eee8e334ec45b0b0b3a3b2298474d018ab380703e415462786d82c0",
+      "size": [
+        24,
+        24
+      ],
+      "method": "native SVG, catalogue gold geometry family; no image generation",
+      "integration_status": "reference-package-only; no official slot assigned"
+    },
+    {
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-baru/ikon-keluar-layar-penuh.svg",
+      "sha256": "18d264454d97dfa713e12ce776549c325e57a2f749fc92920070425da5a411cf",
+      "size": [
+        24,
+        24
+      ],
+      "method": "native SVG, catalogue gold geometry family; no image generation",
+      "integration_status": "reference-package-only; no official slot assigned"
+    }
+  ],
+  "reused_assets": [
+    {
+      "key": "ui.logo-hero",
+      "source_file": "assets/logo/ui.logo-hero.webp",
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-katalog/logo-gelita.webp",
+      "sha256": "3843b1cc6ef3bf6608900adda9f478efd7d812e3d5cb42eec9c3963d566a90f0",
+      "source_sha256": "3843b1cc6ef3bf6608900adda9f478efd7d812e3d5cb42eec9c3963d566a90f0",
+      "role": "Logo HUD; gunakan sumber, jangan membuat logotipe baru.",
+      "generation_required": false
+    },
+    {
+      "key": "avatar.2",
+      "source_file": "assets/ikon/avatar.2.webp",
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-katalog/medali-serpihan-cahaya.webp",
+      "sha256": "e7e226b61beb37d571305ad365901940656310601805fb98ab44423d28a361b3",
+      "source_sha256": "e7e226b61beb37d571305ad365901940656310601805fb98ab44423d28a361b3",
+      "role": "Visual koleksi; pertahankan medali dan kristal emas.",
+      "generation_required": false
+    },
+    {
+      "key": "reference.20",
+      "source_file": "assets/referensi/reference.20.webp",
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-katalog/bahasa-indonesia-id.webp",
+      "sha256": "4ad11033c7f0fda28105cefe0ec647a3a93fb6258ba88d78e978156e56838aaa",
+      "source_sha256": "4ad11033c7f0fda28105cefe0ec647a3a93fb6258ba88d78e978156e56838aaa",
+      "role": "Pemicu bahasa ID dan baris Bahasa Indonesia.",
+      "generation_required": false
+    },
+    {
+      "key": "reference.19",
+      "source_file": "assets/referensi/reference.19.webp",
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-katalog/bahasa-english-en.webp",
+      "sha256": "d11a03385ba83d9f4c8a0f230c9464d7b99686deaac00a44ee093cdd6264a25a",
+      "source_sha256": "d11a03385ba83d9f4c8a0f230c9464d7b99686deaac00a44ee093cdd6264a25a",
+      "role": "Baris pilihan English.",
+      "generation_required": false
+    },
+    {
+      "key": "reference.01",
+      "source_file": "assets/referensi/reference.01.webp",
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-katalog/acuan-gaya-jaka-3d.webp",
+      "sha256": "c1dcd260911ed431b3ebea805af2c9fda3dc41c985d9e4ca422fc3494bbe75b7",
+      "source_sha256": "c1dcd260911ed431b3ebea805af2c9fda3dc41c985d9e4ca422fc3494bbe75b7",
+      "role": "Acuan finishing 3D saja; tidak ditampilkan pada layar hasil.",
+      "generation_required": false
+    },
+    {
+      "key": "icon.sound",
+      "source_file": "assets/ikon/icon.sound.svg",
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-katalog/ikon-speaker.svg",
+      "sha256": "68e0ca0a3592f1dd110c1c5686dc6a63ab75bfe6369e07682b228ef9d6660997",
+      "source_sha256": "68e0ca0a3592f1dd110c1c5686dc6a63ab75bfe6369e07682b228ef9d6660997",
+      "role": "Suara aktif di HUD.",
+      "generation_required": false
+    },
+    {
+      "key": "icon.sound-off",
+      "source_file": "assets/ikon/icon.sound-off.svg",
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-katalog/ikon-speaker-nonaktif.svg",
+      "sha256": "e53c5ec91c7cf678aefee64f95b5e466874e38e013ee20278b8353511547ec54",
+      "source_sha256": "e53c5ec91c7cf678aefee64f95b5e466874e38e013ee20278b8353511547ec54",
+      "role": "Suara nonaktif di HUD.",
+      "generation_required": false
+    },
+    {
+      "key": "icon.menu",
+      "source_file": "assets/ikon/icon.menu.svg",
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-katalog/ikon-menu.svg",
+      "sha256": "4ed9a271d76fdbcc0ae9942e77b8ad854dcb5d74f873c882b7d8dc3bcc0df8db",
+      "source_sha256": "4ed9a271d76fdbcc0ae9942e77b8ad854dcb5d74f873c882b7d8dc3bcc0df8db",
+      "role": "Pemicu menu HUD.",
+      "generation_required": false
+    },
+    {
+      "key": "icon.home",
+      "source_file": "assets/ikon/icon.home.svg",
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-katalog/ikon-home.svg",
+      "sha256": "8e6eb280b2bf880212e86222a9e38af8d1bbebf1e784fbab5b574eb2656ffb5f",
+      "source_sha256": "8e6eb280b2bf880212e86222a9e38af8d1bbebf1e784fbab5b574eb2656ffb5f",
+      "role": "Home/Beranda di menu; tujuan diperiksa di aplikasi.",
+      "generation_required": false
+    },
+    {
+      "key": "icon.user",
+      "source_file": "assets/ikon/icon.user.svg",
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-katalog/ikon-profil.svg",
+      "sha256": "70deb764b84779a97cdeb800a1c1636dd5ff04ebc308c0888d9edfd478cb4e80",
+      "source_sha256": "70deb764b84779a97cdeb800a1c1636dd5ff04ebc308c0888d9edfd478cb4e80",
+      "role": "Akses profil; avatar aktual mengikuti akun.",
+      "generation_required": false
+    },
+    {
+      "key": "icon.logout",
+      "source_file": "assets/ikon/icon.logout.svg",
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-katalog/ikon-keluar.svg",
+      "sha256": "dd5e2450e0736a766029e75ec7c25415bda94f432254c8a06f0e73d01ddcc31b",
+      "source_sha256": "dd5e2450e0736a766029e75ec7c25415bda94f432254c8a06f0e73d01ddcc31b",
+      "role": "Keluar akun dalam menu.",
+      "generation_required": false
+    },
+    {
+      "key": "icon.left",
+      "source_file": "assets/ikon/icon.left.svg",
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-katalog/ikon-panah-kembali.svg",
+      "sha256": "74b5c40488a393f355f3410c77d540fe9e658ddfbe8edca8fdd63f361c8bd662",
+      "source_sha256": "74b5c40488a393f355f3410c77d540fe9e658ddfbe8edca8fdd63f361c8bd662",
+      "role": "Kembali ke peta wilayah.",
+      "generation_required": false
+    },
+    {
+      "key": "icon.right",
+      "source_file": "assets/ikon/icon.right.svg",
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-katalog/ikon-panah-berikutnya.svg",
+      "sha256": "0b48497c81f89c95e1f661df312cdea9172bd4e2e87a1ea1137539f0888d39a1",
+      "source_sha256": "0b48497c81f89c95e1f661df312cdea9172bd4e2e87a1ea1137539f0888d39a1",
+      "role": "Tombol Berikutnya.",
+      "generation_required": false
+    },
+    {
+      "key": "icon.down",
+      "source_file": "assets/ikon/icon.down.svg",
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-katalog/ikon-chevron-bawah.svg",
+      "sha256": "4df4d32414a744e2bd0e3baf15f2be1c47fc11b99c7b8633db157480c381fd94",
+      "source_sha256": "4df4d32414a744e2bd0e3baf15f2be1c47fc11b99c7b8633db157480c381fd94",
+      "role": "Detail tertutup atau popover.",
+      "generation_required": false
+    },
+    {
+      "key": "icon.up",
+      "source_file": "assets/ikon/icon.up.svg",
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-katalog/ikon-chevron-atas.svg",
+      "sha256": "3e12586bb74d40bbfd06907043cb49a972296e747d4f0596443b934e62b54fa0",
+      "source_sha256": "3e12586bb74d40bbfd06907043cb49a972296e747d4f0596443b934e62b54fa0",
+      "role": "Detail terbuka.",
+      "generation_required": false
+    },
+    {
+      "key": "icon.star",
+      "source_file": "assets/ikon/icon.star.svg",
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-katalog/ikon-bintang.svg",
+      "sha256": "478f7379d89ca05053449b09505aada3f290e740a4c0154f06b276058de9df95",
+      "source_sha256": "478f7379d89ca05053449b09505aada3f290e740a4c0154f06b276058de9df95",
+      "role": "Rating; keadaan isi/outline diatur kode.",
+      "generation_required": false
+    },
+    {
+      "key": "icon.clock",
+      "source_file": "assets/ikon/icon.clock.svg",
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-katalog/ikon-waktu.svg",
+      "sha256": "c2e9ac496fcfddbed80b14953d7c37c31bbf5616f4c2d5cf723ee58c465a0603",
+      "source_sha256": "c2e9ac496fcfddbed80b14953d7c37c31bbf5616f4c2d5cf723ee58c465a0603",
+      "role": "Kartu waktu.",
+      "generation_required": false
+    },
+    {
+      "key": "icon.replay",
+      "source_file": "assets/ikon/icon.replay.svg",
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-katalog/ikon-percobaan.svg",
+      "sha256": "a421470d6c69809142302e2397d3183d7d2850d52e4fbc719a35dec26bda0faa",
+      "source_sha256": "a421470d6c69809142302e2397d3183d7d2850d52e4fbc719a35dec26bda0faa",
+      "role": "Kartu percobaan.",
+      "generation_required": false
+    },
+    {
+      "key": "icon.check",
+      "source_file": "assets/ikon/icon.check.svg",
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-katalog/ikon-centang.svg",
+      "sha256": "4ed0482234d648b0d284fb20bb17456860d8d2a453ae4c31b05f2a384b8cb0de",
+      "source_sha256": "4ed0482234d648b0d284fb20bb17456860d8d2a453ae4c31b05f2a384b8cb0de",
+      "role": "Semua benar dan bahasa terpilih.",
+      "generation_required": false
+    },
+    {
+      "key": "icon.cross",
+      "source_file": "assets/ikon/icon.cross.svg",
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-katalog/ikon-tutup.svg",
+      "sha256": "02c425258d8bb0f2d7f2760db75b24bd99628ea72b0561c0dbcfe533bce6f2f5",
+      "source_sha256": "02c425258d8bb0f2d7f2760db75b24bd99628ea72b0561c0dbcfe533bce6f2f5",
+      "role": "Tutup menu/popover bila diperlukan.",
+      "generation_required": false
+    }
+  ],
+  "original_catalog_baseline": {
+    "data_sha256": "d52bbff1829f194de4ed1d01d841429eb7363675ebc8b9a82074966317a03af1",
+    "index_sha256": "538082d3fa947ed30136784357d5175475d52ef6a3496158b11300c81b99f2a7",
+    "audio_baseline_sha256": "4ab3bb3f5bfd9f152e0c4c41b62b02a99549cbfa3db8d1e78f28692945e2a82a",
+    "assets_count": 494,
+    "assets_tree_sha256": "1fab7e5ac016745a2caf6dc4face770ca29886ee23e626e40006b8b3fff1e4a7"
+  },
+  "excluded_variants": [
+    "exec-5c1685c2-37da-4dde-a1e9-f43013443538.png",
+    "exec-84f406fc-e47c-4ba2-8a90-511222addbe9.png",
+    "exec-2a3f1b4d-27d1-4a22-9d40-34b7b1629496.png"
+  ],
+  "limitations": [
+    "Regenerated panel and button ornament differs slightly from reference; no pixel-identical claim",
+    "Original application routes, auth, reward and physical device fullscreen remain untested",
+    "Selected reference preserves native 1672x941 rounding; preview uses exact 16:9",
+    "Touch areas verified only in standalone preview at 640x360 and 854x480",
+    "No new cultural, licensing or production certification"
+  ],
+  "pre_existing_git_changes": [
+    "README.md",
+    "docs/AI-GUIDE.md",
+    "docs/CONTEXT.md",
+    "docs/MEMORY.md",
+    "docs/PROGRESS.md",
+    "reports/validation-report.json"
+  ],
+  "ui_components": [
+    {
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-ui/panel-hasil.svg",
+      "sha256": "86b59ea8315e65dace7fcdc51abe5676113a623c6e25da364a9ca57be5c51c14",
+      "size": [
+        1560,
+        752
+      ],
+      "role": "Panel hasil navy/emas dengan ornamen sudut, tanpa tulisan.",
+      "method": "native SVG; no AI image generation"
+    },
+    {
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-ui/tombol-primer.svg",
+      "sha256": "ef6e3f0762593a4db157c573b027a943ac6450592e95c9bfa356261e70e9c969",
+      "size": [
+        620,
+        132
+      ],
+      "role": "Permukaan tombol primer emas dengan bevel.",
+      "method": "native SVG; no AI image generation"
+    },
+    {
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-ui/tombol-sekunder.svg",
+      "sha256": "62c2ed98f85589d483c93d9f708ae5bd0e919690aa345cf5d5e6ee8957faaed6",
+      "size": [
+        480,
+        132
+      ],
+      "role": "Permukaan tombol peta navy berbingkai emas.",
+      "method": "native SVG; no AI image generation"
+    },
+    {
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-ui/tombol-hud.svg",
+      "sha256": "a947eda38c9b97bd14225b1affdedf423560d7ef67a02e08f88b664caf336ffb",
+      "size": [
+        104,
+        104
+      ],
+      "role": "Permukaan lingkaran kontrol HUD; hit area terpisah.",
+      "method": "native SVG; no AI image generation"
+    },
+    {
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-ui/kartu-statistik.svg",
+      "sha256": "b9f85938c949543d817cfef4e6521d1195ec18fcec34c4b00da1ec51f4f5b8c7",
+      "size": [
+        336,
+        160
+      ],
+      "role": "Permukaan kartu waktu/percobaan.",
+      "method": "native SVG; no AI image generation"
+    },
+    {
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-ui/panel-bahasa.svg",
+      "sha256": "29ad96af2e850da1121b79363306632627e0d821afc3f03e00064a114271737b",
+      "size": [
+        720,
+        360
+      ],
+      "role": "Permukaan popover pilihan bahasa.",
+      "method": "native SVG; no AI image generation"
+    },
+    {
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-ui/panel-menu.svg",
+      "sha256": "77d20d59472904b3d7d194125c6fe6649e9994a55fec05b770bf29c3c77b0a26",
+      "size": [
+        650,
+        828
+      ],
+      "role": "Permukaan menu yang mengelompokkan kontrol.",
+      "method": "native SVG; no AI image generation"
+    },
+    {
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-ui/panel-detail.svg",
+      "sha256": "7cf4ae6d537a339fe9425d5c93b9e7f22e31dcd29165413bbe84f70371bcb6d0",
+      "size": [
+        840,
+        444
+      ],
+      "role": "Permukaan panel informasi detail hasil.",
+      "method": "native SVG; no AI image generation"
+    }
+  ],
+  "ui_preview": {
+    "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/preview-ui-lengkap.html",
+    "sha256": "166129ced65d1b0fc4bdc0182a42f3bb0e3fac5520a1a86df0ff0ab37045f93d",
+    "canvas": [
+      1920,
+      1080
+    ],
+    "method": "native HTML/CSS/JS complete UI preview",
+    "status": "reference derivative; selected mockup unchanged; not integrated into original application"
+  },
+  "ui_states": [
+    {
+      "state": "tampilan-utama",
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/variasi-ui/tampilan-utama/mockup-ui-tampilan-utama-16-9.webp",
+      "sha256": "94f0ff76c899da391724b18eb740df320414098960a3eb49bc0c95a69e3efe9f",
+      "size": [
+        1920,
+        1080
+      ],
+      "method": "browser render of coded UI preview; no AI image generation"
+    },
+    {
+      "state": "bahasa-terbuka",
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/variasi-ui/bahasa-terbuka/mockup-ui-bahasa-terbuka-16-9.webp",
+      "sha256": "754388e99d6d3b4d1a3a2f2fdcdb25cab9244b2f1893feee8752608b69675adc",
+      "size": [
+        1920,
+        1080
+      ],
+      "method": "browser render of coded UI preview; no AI image generation"
+    },
+    {
+      "state": "menu-terbuka",
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/variasi-ui/menu-terbuka/mockup-ui-menu-terbuka-16-9.webp",
+      "sha256": "655518fcac8eef7c4d04d5a1edf13f828106d598f32506bb6c21cbc57bcd9f6f",
+      "size": [
+        1920,
+        1080
+      ],
+      "method": "browser render of coded UI preview; no AI image generation"
+    },
+    {
+      "state": "detail-hasil-terbuka",
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/variasi-ui/detail-hasil-terbuka/mockup-ui-detail-hasil-terbuka-16-9.webp",
+      "sha256": "9ab425b8c84373488864981b50baf6e37acd8d95acc93151522eeade8c087e54",
+      "size": [
+        1920,
+        1080
+      ],
+      "method": "browser render of coded UI preview; no AI image generation"
+    }
+  ],
+  "ui_browser_report": "reports/mockup-ui-browser-check.json",
+  "updated_date": "2026-10-13",
+  "integrated_catalog_manifest": "provenance/result-ui-generation-results-20261013.json",
+  "ui_dependencies": [
+    {
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/reference-layout.css",
+      "sha256": "ec08ff2fc9cf253912461f106e9f4be9e3448917a7435c5bfdff80198faf5b85"
+    },
+    {
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-font/plus-jakarta-sans-latin-400-normal.woff2",
+      "sha256": "221a4135d06a4b33abbd535e9a0da4e565d19545ddd9267c4e678a916d54d9b6"
+    },
+    {
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-font/plus-jakarta-sans-latin-700-normal.woff2",
+      "sha256": "2050755bf475817c96ac7d914c7f07cc3c2d11ff4b3fb4747b8d41de584aad17"
+    },
+    {
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-font/plus-jakarta-sans-latin-800-normal.woff2",
+      "sha256": "5f301a8ef9c266c8b596e6793d3cc826daeff9849c5af035f5386439137955ad"
+    }
+  ],
+  "additional_catalog_manifests": [
+    "provenance/language-flag-generation-results-20261013.json"
+  ],
+  "screen_scope": {
+    "concept": "Shared challenge-complete UI for all game cities/regions",
+    "example_region": "Temanggung",
+    "dynamic_context": [
+      "active city/region",
+      "challenge type",
+      "background mapping",
+      "result data",
+      "region map label and route",
+      "next challenge flow"
+    ],
+    "implementation": "one shared component; selected image and asset keys preserved",
+    "decision_date": "2026-10-13"
+  }
+}

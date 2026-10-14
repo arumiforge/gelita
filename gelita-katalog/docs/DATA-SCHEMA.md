@@ -1,6 +1,6 @@
 # Skema data katalog
 
-Sumber aktif `../data.json` adalah array 580 objek. Field berbeda menurut jenis entri; jangan menghapus field yang belum dipahami. Build menanam data yang sama persis di `index.html`.
+Sumber aktif `../data.json` adalah array 590 objek. Field berbeda menurut jenis entri; jangan menghapus field yang belum dipahami. Build menanam data yang sama persis di `index.html`.
 
 ## Identitas dan kelompok
 
@@ -17,11 +17,11 @@ Referensi berkode `reference.*` berada di `assets/referensi/` walaupun kategori 
 | Kategori | Entri |
 |---|---:|
 | Karakter | 246 |
-| Background | 32 |
+| Background | 33 |
 | Peta | 5 |
 | Logo | 5 |
-| Antarmuka | 4 |
-| Ikon | 83 |
+| Antarmuka | 11 |
+| Ikon | 85 |
 | Tantangan | 45 |
 | Lencana | 3 |
 | Pustaka | 60 |

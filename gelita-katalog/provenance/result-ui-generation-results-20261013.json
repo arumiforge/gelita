@@ -1,0 +1,261 @@
+{
+  "date": "2026-10-13",
+  "timezone": "Asia/Bangkok",
+  "reference": "mockup/gambar-mockup/tantangan-selesai-temanggung/mockup-tantangan-selesai-temanggung-16-9.webp",
+  "original_catalog_snapshot": "archive/before-result-ui-20261013/data.json",
+  "base_entries": 580,
+  "assets": [
+    {
+      "key": "ui.result-panel",
+      "file": "assets/antarmuka/ui.result-panel.webp",
+      "size": [
+        1536,
+        752
+      ],
+      "alpha": true,
+      "sha256": "542a6eb9a2b6d394bee6de5b325052e9ad08f5a30e327e4cdbdf2f95824d367e",
+      "native_file": "provenance/result-ui-keyassets-20261013/ui.result-panel-source.webp",
+      "native_size": [
+        1793,
+        877
+      ],
+      "source_file": "C:\\Users\\cenda\\.codex\\generated_images\\01a12df0-a171-7481-b8f6-3100da7e670d\\exec-ae857a36-22b8-4fa3-8c7c-c27c7d67ee58.png",
+      "source_sha256": "fc45c56dc416349914c35a10879a8a86a7e903479c3322774055419cd7e41257",
+      "prompt": "Use case: precise-object-edit / standalone UI asset. Input image: approved full UI screenshot; it is the sole appearance reference.\nCreate ONLY the empty result panel artwork from the supplied GELITA screenshot. Match its exact premium navy-and-antique-gold material, rounded rectangular proportions, thin raised double gold edge, intricate but restrained Javanese cloud corner engraving, fine mountain contour line patterns in upper corners and lower corners, subtle distant forest silhouettes fading through its dark navy interior, dimensional bevel and soft outer shadow. Panel shape about 1328 wide by 647 high, target artwork 1536 x 752. Keep the entire rounded rectangle visible with only very small transparent outer padding. The interior is opaque deep navy #0B1320/#1B2740 with subtle scene ornament, not flat uniform blue. Remove every letter, star, icon, medallion, line dividing the columns, progress bar, badge, card and button. Those will be layered separately. No lantern. NO UI content inside the panel. Preserve the ornate perimeter and quiet decorative texture only. Genuine transparent background outside the panel. Straight-on orthographic UI texture, no perspective, no landscape outside, no extra objects. Faithfully match this screenshot rather than inventing a new panel design.\nGELITA active direction: polished stylized 3D adventure for Indonesian grade-five children, navy and brass gold, no painterly textures, no watermarks. Preserve all design cues of the reference. Output exactly one isolated asset, not a screenshot or UI kit sheet.",
+      "generation_prompt": "Edit ONLY the empty panel in image 1 to match image 2 (the approved GELITA screenshot) much more precisely. Keep the exact navy forest silhouettes, mountain and cloud engraving, quiet interior and fine corner ornament. The gold rim in image 1 is too thick: reduce total gold-frame thickness to roughly 40 percent of its current thickness. The desired rim is a slender 4-7 pixels on a 1536px-wide panel, with subtle double hairlines and a very small bevel, not a broad brass picture frame. Make the actual panel outline proportions about 2.05:1 (wide 1536 x 752), with only 4-8px transparent padding around its outer contour, not large blank margins. Top and bottom should be straighter, with restrained softly rounded corners, no extra raised cloud lobes. Transparent alpha outside the panel. Navy interior solid/near opaque. NO text, no UI contents, no stars, no cards, no medallion, no lines dividing columns, no buttons. Return only this single blank standalone panel artwork.",
+      "attempts": 2,
+      "crop_box": [
+        21,
+        43,
+        1774,
+        809
+      ],
+      "normalization": "alpha-margin crop, proportional contain, centred transparent padding; no new detail",
+      "visible_bounds": [
+        9,
+        48,
+        1527,
+        702
+      ],
+      "package_file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-ui/panel-hasil-referensi.webp",
+      "method": "built-in image_gen",
+      "id": "581"
+    },
+    {
+      "key": "ui.result-button-primary",
+      "file": "assets/antarmuka/ui.result-button-primary.webp",
+      "size": [
+        600,
+        132
+      ],
+      "alpha": true,
+      "sha256": "95cecaa235771cd37ae6c862e304bd4af91f8d882087a8bff4352f033a2ae2ad",
+      "native_file": "provenance/result-ui-keyassets-20261013/ui.result-button-primary-source.webp",
+      "native_size": [
+        2046,
+        768
+      ],
+      "source_file": "C:\\Users\\cenda\\.codex\\generated_images\\01a12df0-a171-7481-b8f6-3100da7e670d\\exec-37146a03-1881-4736-8212-db4a2e653a55.png",
+      "source_sha256": "2ace62a05eaf61ec8bd9e5c6504ac621348a5d92c13d23f98db49fd23cdeb19f",
+      "prompt": "Use case: precise-object-edit / standalone UI asset. Input image: approved full UI screenshot; it is the sole appearance reference.\nCreate ONLY the blank gold primary button skin of the Berikutnya button in the supplied GELITA screenshot. Target 600 x 132, pill silhouette about 5.9:1 when used. Warm light antique-gold enamel central surface, dimensional rounded bevel, thin raised gold rim, top edge glossy warm white-gold highlight, soft amber halo just outside rim, low gold shadow below, subtle gold-on-gold cloud/batik scroll engraving concentrated at far left and far right ends. Centre remains clear for dynamic black text. Closely match the original screenshot's button colour, restrained brightness, edge and pattern. Whole pill fully visible, very small transparent padding. NO text, NO letters, NO arrow, NO icon, NO label, NO landscape, no other buttons. Background outside pill is truly transparent. Orthographic straight-on premium stylized 3D adventure-game UI texture.\nGELITA active direction: polished stylized 3D adventure for Indonesian grade-five children, navy and brass gold, no painterly textures, no watermarks. Preserve all design cues of the reference. Output exactly one isolated asset, not a screenshot or UI kit sheet.",
+      "generation_prompt": "Use case: precise-object-edit / standalone UI asset. Input image: approved full UI screenshot; it is the sole appearance reference.\nCreate ONLY the blank gold primary button skin of the Berikutnya button in the supplied GELITA screenshot. Target 600 x 132, pill silhouette about 5.9:1 when used. Warm light antique-gold enamel central surface, dimensional rounded bevel, thin raised gold rim, top edge glossy warm white-gold highlight, soft amber halo just outside rim, low gold shadow below, subtle gold-on-gold cloud/batik scroll engraving concentrated at far left and far right ends. Centre remains clear for dynamic black text. Closely match the original screenshot's button colour, restrained brightness, edge and pattern. Whole pill fully visible, very small transparent padding. NO text, NO letters, NO arrow, NO icon, NO label, NO landscape, no other buttons. Background outside pill is truly transparent. Orthographic straight-on premium stylized 3D adventure-game UI texture.\nGELITA active direction: polished stylized 3D adventure for Indonesian grade-five children, navy and brass gold, no painterly textures, no watermarks. Preserve all design cues of the reference. Output exactly one isolated asset, not a screenshot or UI kit sheet.",
+      "attempts": 1,
+      "crop_box": [
+        21,
+        144,
+        2024,
+        608
+      ],
+      "normalization": "alpha-margin crop, proportional contain, centred transparent padding; no new detail",
+      "visible_bounds": [
+        27,
+        12,
+        574,
+        120
+      ],
+      "package_file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-ui/tombol-primer-referensi.webp",
+      "method": "built-in image_gen",
+      "id": "582"
+    },
+    {
+      "key": "ui.result-button-secondary",
+      "file": "assets/antarmuka/ui.result-button-secondary.webp",
+      "size": [
+        480,
+        112
+      ],
+      "alpha": true,
+      "sha256": "e354c3e1a89d664b714cc82480f8bf6208a7a1bc57fc6297cb0ab252189fa3f1",
+      "native_file": "provenance/result-ui-keyassets-20261013/ui.result-button-secondary-source.webp",
+      "native_size": [
+        2048,
+        768
+      ],
+      "source_file": "C:\\Users\\cenda\\.codex\\generated_images\\01a12df0-a171-7481-b8f6-3100da7e670d\\exec-1d939a5e-a9de-4281-af59-a0b38d25fed9.png",
+      "source_sha256": "71cbd05a0a3224b9f75043c3cc1748f705bdb1a507ec247920112c496b9dde94",
+      "prompt": "Use case: precise-object-edit / standalone UI asset. Input image: approved full UI screenshot; it is the sole appearance reference.\nCreate ONLY the blank dark secondary map button skin from the supplied GELITA screenshot, same as Peta Temanggung but WITHOUT any lettering or arrow. Target 480 x 112, wide pill proportions about 5:1. Deep navy lightly translucent-looking enamel centre, delicate raised warm-gold border, fine pale-gold top rim highlight, rounded capsule ends, subtle dark shadow and depth, quiet clean empty interior. Match screenshot exactly in colour and restrained bevel. Entire button visible with very little transparent padding. No text, no glyphs, no ornament in centre, no scenery, no extra objects. Real transparent alpha outside pill. Straight-on UI texture.\nGELITA active direction: polished stylized 3D adventure for Indonesian grade-five children, navy and brass gold, no painterly textures, no watermarks. Preserve all design cues of the reference. Output exactly one isolated asset, not a screenshot or UI kit sheet.",
+      "generation_prompt": "Use case: precise-object-edit / standalone UI asset. Input image: approved full UI screenshot; it is the sole appearance reference.\nCreate ONLY the blank dark secondary map button skin from the supplied GELITA screenshot, same as Peta Temanggung but WITHOUT any lettering or arrow. Target 480 x 112, wide pill proportions about 5:1. Deep navy lightly translucent-looking enamel centre, delicate raised warm-gold border, fine pale-gold top rim highlight, rounded capsule ends, subtle dark shadow and depth, quiet clean empty interior. Match screenshot exactly in colour and restrained bevel. Entire button visible with very little transparent padding. No text, no glyphs, no ornament in centre, no scenery, no extra objects. Real transparent alpha outside pill. Straight-on UI texture.\nGELITA active direction: polished stylized 3D adventure for Indonesian grade-five children, navy and brass gold, no painterly textures, no watermarks. Preserve all design cues of the reference. Output exactly one isolated asset, not a screenshot or UI kit sheet.",
+      "attempts": 1,
+      "crop_box": [
+        9,
+        165,
+        2040,
+        582
+      ],
+      "normalization": "alpha-margin crop, proportional contain, centred transparent padding; no new detail",
+      "visible_bounds": [
+        5,
+        12,
+        475,
+        100
+      ],
+      "package_file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-ui/tombol-peta-referensi.webp",
+      "method": "built-in image_gen",
+      "id": "583"
+    },
+    {
+      "key": "ui.result-button-detail",
+      "file": "assets/antarmuka/ui.result-button-detail.webp",
+      "size": [
+        320,
+        112
+      ],
+      "alpha": true,
+      "sha256": "8f0c498fbd195ed6df1945919ae07b9be0f31d7ffa9e8599cf81eb40e78db09f",
+      "native_file": "provenance/result-ui-keyassets-20261013/ui.result-button-detail-source.webp",
+      "native_size": [
+        2120,
+        742
+      ],
+      "source_file": "C:\\Users\\cenda\\.codex\\generated_images\\01a12df0-a171-7481-b8f6-3100da7e670d\\exec-49201b2b-6dd7-4c4e-b484-e7fa57f3f590.png",
+      "source_sha256": "17947f6ae195fdedd0fcd8aeaf9f5c63e07468d4d75ec1b7fb8445a6236f7dd3",
+      "prompt": "Use case: precise-object-edit / standalone UI asset. Input image: approved full UI screenshot; it is the sole appearance reference.\nCreate ONLY the blank Detail hasil button skin from the supplied GELITA screenshot. Target 320 x 112, rounded rectangle proportions about 3.3:1 rather than capsule. Deep navy enamel with understated central blue highlight, thin bronze-gold outline, corners radius about 20 percent of height, slight 3D edge and dark outer shadow. Empty centre for dynamic label. Closely match original screenshot's Detail hasil shape and material. NO text, NO chevron, NO arrows, no labels, no landscape, no other assets. All edges visible with tiny transparent outer margin, truly transparent background outside button. Straight-on premium adventure-game UI texture.\nGELITA active direction: polished stylized 3D adventure for Indonesian grade-five children, navy and brass gold, no painterly textures, no watermarks. Preserve all design cues of the reference. Output exactly one isolated asset, not a screenshot or UI kit sheet.",
+      "generation_prompt": "Use case: precise-object-edit / standalone UI asset. Input image: approved full UI screenshot; it is the sole appearance reference.\nCreate ONLY the blank Detail hasil button skin from the supplied GELITA screenshot. Target 320 x 112, rounded rectangle proportions about 3.3:1 rather than capsule. Deep navy enamel with understated central blue highlight, thin bronze-gold outline, corners radius about 20 percent of height, slight 3D edge and dark outer shadow. Empty centre for dynamic label. Closely match original screenshot's Detail hasil shape and material. NO text, NO chevron, NO arrows, no labels, no landscape, no other assets. All edges visible with tiny transparent outer margin, truly transparent background outside button. Straight-on premium adventure-game UI texture.\nGELITA active direction: polished stylized 3D adventure for Indonesian grade-five children, navy and brass gold, no painterly textures, no watermarks. Preserve all design cues of the reference. Output exactly one isolated asset, not a screenshot or UI kit sheet.",
+      "attempts": 1,
+      "crop_box": [
+        49,
+        97,
+        2071,
+        615
+      ],
+      "normalization": "alpha-margin crop, proportional contain, centred transparent padding; no new detail",
+      "visible_bounds": [
+        2,
+        17,
+        318,
+        95
+      ],
+      "package_file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-ui/tombol-detail-referensi.webp",
+      "method": "built-in image_gen",
+      "id": "584"
+    },
+    {
+      "key": "ui.result-hud-control",
+      "file": "assets/antarmuka/ui.result-hud-control.webp",
+      "size": [
+        128,
+        128
+      ],
+      "alpha": true,
+      "sha256": "505acc6bdc296d6c79b15781758db5a26a6dfb4d71114d224e210e5e19597601",
+      "native_file": "provenance/result-ui-keyassets-20261013/ui.result-hud-control-source.webp",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "source_file": "C:\\Users\\cenda\\.codex\\generated_images\\01a12df0-a171-7481-b8f6-3100da7e670d\\exec-48630d55-8233-4e8f-a19b-95b76f4bb534.png",
+      "source_sha256": "098aaf5ac81019e9c5f1ae14b7b84518cb508e01768ff788f53eafd47bc0d7ea",
+      "prompt": "Use case: precise-object-edit / standalone UI asset. Input image: approved full UI screenshot; it is the sole appearance reference.\nCreate ONLY one empty circular navy-gold HUD button base matching the speaker/menu/ID controls in the supplied GELITA screenshot. Target 128 x 128. Deep midnight navy softly dimensional face, fine beveled antique-gold rim, subtle lighter highlight upper-left, restrained soft shadow/glow outside, circular symmetrical contour. Whole disc in frame with very little transparent padding. Centre completely empty: NO ID, no EN, no letters, no speaker, no hamburger, no icons, no symbols, no lantern. Genuine transparent background outside the disc. Match screenshot precisely, not an overornate medallion.\nGELITA active direction: polished stylized 3D adventure for Indonesian grade-five children, navy and brass gold, no painterly textures, no watermarks. Preserve all design cues of the reference. Output exactly one isolated asset, not a screenshot or UI kit sheet.",
+      "generation_prompt": "Use case: precise-object-edit / standalone UI asset. Input image: approved full UI screenshot; it is the sole appearance reference.\nCreate ONLY one empty circular navy-gold HUD button base matching the speaker/menu/ID controls in the supplied GELITA screenshot. Target 128 x 128. Deep midnight navy softly dimensional face, fine beveled antique-gold rim, subtle lighter highlight upper-left, restrained soft shadow/glow outside, circular symmetrical contour. Whole disc in frame with very little transparent padding. Centre completely empty: NO ID, no EN, no letters, no speaker, no hamburger, no icons, no symbols, no lantern. Genuine transparent background outside the disc. Match screenshot precisely, not an overornate medallion.\nGELITA active direction: polished stylized 3D adventure for Indonesian grade-five children, navy and brass gold, no painterly textures, no watermarks. Preserve all design cues of the reference. Output exactly one isolated asset, not a screenshot or UI kit sheet.",
+      "attempts": 1,
+      "crop_box": [
+        95,
+        94,
+        1160,
+        1158
+      ],
+      "normalization": "alpha-margin crop, proportional contain, centred transparent padding; no new detail",
+      "visible_bounds": [
+        1,
+        1,
+        127,
+        127
+      ],
+      "package_file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-ui/kontrol-hud.webp",
+      "method": "built-in image_gen",
+      "id": "585"
+    },
+    {
+      "key": "ui.result-star",
+      "file": "assets/antarmuka/ui.result-star.webp",
+      "size": [
+        128,
+        128
+      ],
+      "alpha": true,
+      "sha256": "6fd40e77771aec13441f632f4b44db537a2a0f10cd2db5c4fd63e4c3d95c9bf5",
+      "native_file": "provenance/result-ui-keyassets-20261013/ui.result-star-source.webp",
+      "native_size": [
+        1254,
+        1254
+      ],
+      "source_file": "C:\\Users\\cenda\\.codex\\generated_images\\01a12df0-a171-7481-b8f6-3100da7e670d\\exec-dd5ba544-2ae6-47c2-b5b8-77af6d46fccd.png",
+      "source_sha256": "995ad64ff4de570af309d2f80deee31477ddde319e3f6ad1315602155ff97d79",
+      "prompt": "Use case: precise-object-edit / standalone UI asset. Input image: approved full UI screenshot; it is the sole appearance reference.\nCreate ONLY one filled earned rating star matching the two glowing gold stars in the supplied GELITA screenshot. Five-point star, slightly rounded points, dimensional bevel, warm pale-gold face, fine luminous edge, controlled amber glow, softly embossed adventure-game 3D appearance. Target 128 x 128. Whole star and small glow entirely visible with modest transparent margin. No face, no text, no extra stars, no number, no circle badge, no background scene. Genuine transparent background outside the star and its subtle glow. Faithfully match the screenshot's star shape and lighting.\nGELITA active direction: polished stylized 3D adventure for Indonesian grade-five children, navy and brass gold, no painterly textures, no watermarks. Preserve all design cues of the reference. Output exactly one isolated asset, not a screenshot or UI kit sheet.",
+      "generation_prompt": "Use case: precise-object-edit / standalone UI asset. Input image: approved full UI screenshot; it is the sole appearance reference.\nCreate ONLY one filled earned rating star matching the two glowing gold stars in the supplied GELITA screenshot. Five-point star, slightly rounded points, dimensional bevel, warm pale-gold face, fine luminous edge, controlled amber glow, softly embossed adventure-game 3D appearance. Target 128 x 128. Whole star and small glow entirely visible with modest transparent margin. No face, no text, no extra stars, no number, no circle badge, no background scene. Genuine transparent background outside the star and its subtle glow. Faithfully match the screenshot's star shape and lighting.\nGELITA active direction: polished stylized 3D adventure for Indonesian grade-five children, navy and brass gold, no painterly textures, no watermarks. Preserve all design cues of the reference. Output exactly one isolated asset, not a screenshot or UI kit sheet.",
+      "attempts": 1,
+      "crop_box": [
+        45,
+        75,
+        1210,
+        1158
+      ],
+      "normalization": "alpha-margin crop, proportional contain, centred transparent padding; no new detail",
+      "visible_bounds": [
+        5,
+        9,
+        123,
+        118
+      ],
+      "package_file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-ui/bintang-hasil.webp",
+      "method": "built-in image_gen",
+      "id": "586"
+    },
+    {
+      "key": "bg.result.temanggung",
+      "file": "assets/latar/bg.result.temanggung.webp",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha": false,
+      "sha256": "b10327e51ed9d74529d246a3482f4418fa291ce17950149fc3d37d90f982b5ad",
+      "method": "promoted existing 2026-10-12 background; no new generation",
+      "generation_prompt": "Use case: stylized-concept / background-only asset.\nCreate the clean standalone landscape background needed by the approved GELITA challenge-complete mockup in input image 1. Image 1 is the chosen layout and landscape reference, but remove ALL interface content and reconstruct the entire landscape behind it coherently. Image 2 (GELITA reference.01, Jaka character sheet) is ONLY a reference for premium polished stylized 3D animated adventure finish and materials; DO NOT include Jaka, any character or any text from that sheet.\n\nAsset destination: mockup reference package, background for fixed 16:9 landscape mobile game. Target canvas 1920 x 1080, wide exact 16:9. Full bleed opaque background, no alpha.\n\nScene and composition:\nAn imaginative scenic landscape inspired by the Kedu/Temanggung mountain valleys, not a factual geographic map. Sunset with layered volcanic mountain silhouettes receding into cool blue mist, warm amber sun in the upper-right quarter, rich orange-pink-violet cloud formations. Across the left foreground and middle distance, lush dimensional green forest foliage and terraced cultivated slopes sweep down into the valley. Across the right third, a calm lake or broad river reflects the gold sunset with gentle highlights. Complete the broad centre with low-detail terraces, valley floor, distant vegetation and atmospheric water so it remains quiet beneath a future result panel. Foreground foliage softly frames lower corners without blocking the view. Closely match the approved screenshot's warm golden sunset, depth, camera angle, terrain and lake placement while creating a complete original backdrop behind the missing panel.\n\nStyle:\nPremium stylized 3D animated adventure environment for Indonesian grade-five pupils, cohesive with GELITA's Jaka reference. Rounded dimensional vegetation, rich but restrained material detail, soft physically plausible lighting, cinematic depth and atmospheric perspective. Colour palette: deep navy #0B1320 and #1B2740 shadows, brass-gold warm light #DFC087 and #F0DFB8, natural greens, earthy browns, warm sunset coral and cool blue haze. No painterly brush texture or paper grain. Distinct separation of foreground, midground and mountains.\n\nUI-safe composition:\nThe central approximately 75 percent width and middle 65 percent height should have low visual complexity so a navy result panel can be layered there later. Keep upper-left and upper-right HUD locations reasonably calm. Lighting remains beautiful without harsh white glare beneath possible controls. No embedded dark panel or added HUD strip. All panel edges, UI text, buttons, stars, medallions, icons and particles will be rendered separately by the web app.\n\nStrict exclusions:\nNO letters, words, GELITA logo, labels, interface, buttons, borders, gold frame, HUD, cards, stars, medallion, crystal shards, lanterns, reward symbols, characters, foreground people, watermark, signature, diagram, phone hardware or duplicate screenshot. Do not invent a specific identifiable temple or place claim. Do not reproduce the reference character sheet. The output is landscape art ONLY. Deliver one full-bleed clean 16:9 background.",
+      "prompt": "Use case: stylized-concept / background-only asset.\nCreate the clean standalone landscape background needed by the approved GELITA challenge-complete mockup in input image 1. Image 1 is the chosen layout and landscape reference, but remove ALL interface content and reconstruct the entire landscape behind it coherently. Image 2 (GELITA reference.01, Jaka character sheet) is ONLY a reference for premium polished stylized 3D animated adventure finish and materials; DO NOT include Jaka, any character or any text from that sheet.\n\nAsset destination: mockup reference package, background for fixed 16:9 landscape mobile game. Target canvas 1920 x 1080, wide exact 16:9. Full bleed opaque background, no alpha.\n\nScene and composition:\nAn imaginative scenic landscape inspired by the Kedu/Temanggung mountain valleys, not a factual geographic map. Sunset with layered volcanic mountain silhouettes receding into cool blue mist, warm amber sun in the upper-right quarter, rich orange-pink-violet cloud formations. Across the left foreground and middle distance, lush dimensional green forest foliage and terraced cultivated slopes sweep down into the valley. Across the right third, a calm lake or broad river reflects the gold sunset with gentle highlights. Complete the broad centre with low-detail terraces, valley floor, distant vegetation and atmospheric water so it remains quiet beneath a future result panel. Foreground foliage softly frames lower corners without blocking the view. Closely match the approved screenshot's warm golden sunset, depth, camera angle, terrain and lake placement while creating a complete original backdrop behind the missing panel.\n\nStyle:\nPremium stylized 3D animated adventure environment for Indonesian grade-five pupils, cohesive with GELITA's Jaka reference. Rounded dimensional vegetation, rich but restrained material detail, soft physically plausible lighting, cinematic depth and atmospheric perspective. Colour palette: deep navy #0B1320 and #1B2740 shadows, brass-gold warm light #DFC087 and #F0DFB8, natural greens, earthy browns, warm sunset coral and cool blue haze. No painterly brush texture or paper grain. Distinct separation of foreground, midground and mountains.\n\nUI-safe composition:\nThe central approximately 75 percent width and middle 65 percent height should have low visual complexity so a navy result panel can be layered there later. Keep upper-left and upper-right HUD locations reasonably calm. Lighting remains beautiful without harsh white glare beneath possible controls. No embedded dark panel or added HUD strip. All panel edges, UI text, buttons, stars, medallions, icons and particles will be rendered separately by the web app.\n\nStrict exclusions:\nNO letters, words, GELITA logo, labels, interface, buttons, borders, gold frame, HUD, cards, stars, medallion, crystal shards, lanterns, reward symbols, characters, foreground people, watermark, signature, diagram, phone hardware or duplicate screenshot. Do not invent a specific identifiable temple or place claim. Do not reproduce the reference character sheet. The output is landscape art ONLY. Deliver one full-bleed clean 16:9 background.",
+      "package_file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-baru/bg-tantangan-selesai-temanggung-3d.webp",
+      "id": "587"
+    },
+    {
+      "key": "ui.result-shard-effects",
+      "file": "assets/antarmuka/ui.result-shard-effects.svg",
+      "size": [
+        512,
+        512
+      ],
+      "alpha": true,
+      "sha256": "a9ad490d19904f512cb4e9a5669d8387178948f3397d0ea114b8c6f3f8b81db4",
+      "method": "native SVG glow, arcs and sparkles; existing avatar.2 unchanged",
+      "prompt": "Create a transparent 512x512 native SVG effect overlay for the existing GELITA avatar.2 shard medallion. Warm gold halo, three subtle curved light streaks and a few tiny four-point sparkles, exact warm palette #FFF2BD #F3CA73 #DFAB49. Leave central medallion identity unchanged; no words, new crystal, lantern, characters, frame or opaque background. Use restrained blur only for glints and the ring.",
+      "generation_prompt": null,
+      "package_file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-ui/efek-medali-serpihan.svg",
+      "id": "588"
+    }
+  ],
+  "new_image_generations": 7,
+  "selected_ai_images": 6,
+  "reused_background": 1,
+  "native_effect_overlays": 1,
+  "original_assets_preserved": true,
+  "reference_geometry": "Coordinates measured on 1672x941 reference and mapped to fixed 1920x1080 canvas; asset appearance re-generated, not a pixel-identical extraction"
+}

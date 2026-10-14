@@ -1,0 +1,104 @@
+{
+  "date": "2026-10-13",
+  "timezone": "Asia/Bangkok",
+  "checked_at_utc": "2026-10-12T19:26:33.569Z",
+  "passed": true,
+  "images": [
+    "mockup/gambar-mockup/tantangan-selesai-temanggung/variasi-ui/tampilan-utama/mockup-ui-tampilan-utama-16-9.webp",
+    "mockup/gambar-mockup/tantangan-selesai-temanggung/variasi-ui/bahasa-terbuka/mockup-ui-bahasa-terbuka-16-9.webp",
+    "mockup/gambar-mockup/tantangan-selesai-temanggung/variasi-ui/menu-terbuka/mockup-ui-menu-terbuka-16-9.webp",
+    "mockup/gambar-mockup/tantangan-selesai-temanggung/variasi-ui/detail-hasil-terbuka/mockup-ui-detail-hasil-terbuka-16-9.webp"
+  ],
+  "checks": [
+    "All local images loaded",
+    "Four complete UI states rendered at 1920x1080",
+    "Indonesia and UK flag catalogue icons; language choices, translations and active flag switch",
+    "Speaker UI toggle",
+    "Menu open/Escape and focus return",
+    "Detail first-attempt information",
+    "Fixed 16:9 canvas scaling",
+    "Visible touch controls at least 44px and inside game viewport at 640x360 and 854x480",
+    "No JavaScript page errors"
+  ],
+  "touch_measurements": [
+    {
+      "viewport": {
+        "width": 640,
+        "height": 360
+      },
+      "state": "main",
+      "minimum_height": 44,
+      "controls": 6
+    },
+    {
+      "viewport": {
+        "width": 640,
+        "height": 360
+      },
+      "state": "language",
+      "minimum_height": 48,
+      "controls": 2
+    },
+    {
+      "viewport": {
+        "width": 640,
+        "height": 360
+      },
+      "state": "menu",
+      "minimum_height": 48,
+      "controls": 5
+    },
+    {
+      "viewport": {
+        "width": 640,
+        "height": 360
+      },
+      "state": "detail",
+      "minimum_height": 48.00000762939453,
+      "controls": 1
+    },
+    {
+      "viewport": {
+        "width": 854,
+        "height": 480
+      },
+      "state": "main",
+      "minimum_height": 58.66668701171875,
+      "controls": 6
+    },
+    {
+      "viewport": {
+        "width": 854,
+        "height": 480
+      },
+      "state": "language",
+      "minimum_height": 63.99999237060547,
+      "controls": 2
+    },
+    {
+      "viewport": {
+        "width": 854,
+        "height": 480
+      },
+      "state": "menu",
+      "minimum_height": 64,
+      "controls": 5
+    },
+    {
+      "viewport": {
+        "width": 854,
+        "height": 480
+      },
+      "state": "detail",
+      "minimum_height": 64,
+      "controls": 1
+    }
+  ],
+  "limitations": [
+    "This is a standalone coded preview, not the original game",
+    "Route, account and reward actions are preview placeholders",
+    "Speaker state does not create or play audio",
+    "Fullscreen implementation present; physical device/browser fullscreen behavior not verified",
+    "Coded preview and state images are derivatives, not replacement approval of the selected mockup"
+  ]
+}

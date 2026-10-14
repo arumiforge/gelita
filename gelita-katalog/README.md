@@ -1,6 +1,10 @@
 # GELITA — Perpustakaan aset
 
-Katalog statis internal untuk game edukasi kelas 5 tentang Temanggung, Magelang, dan Wonosobo. Dokumentasi diperbarui **12 Oktober 2026**, zona waktu Asia/Bangkok. Paket ini berisi katalog dan aset; kode aplikasi game, backend, workbook soal, serta rekaman audio tidak disertakan.
+Katalog statis internal untuk game edukasi kelas 5 tentang Temanggung, Magelang, dan Wonosobo. Dokumentasi diperbarui **13 Oktober 2026**, zona waktu Asia/Bangkok. Paket ini berisi katalog dan aset; kode aplikasi game, backend, workbook soal, serta rekaman audio tidak disertakan.
+
+## Konteks layar aplikasi GELITA
+
+Seluruh aset gambar dalam katalog ini digunakan di aplikasi GELITA yang memakai rasio layar tetap **16:9** (landscape). Halaman aplikasi tidak mendukung tata letak responsif yang menyesuaikan susunan elemen untuk rasio layar lain. Komposisi latar, penempatan karakter, dan elemen antarmuka perlu dipahami dalam konteks halaman 16:9 tersebut. Rasio ini berlaku pada halaman aplikasi; setiap aset tetap mengikuti ukuran dan proporsi slotnya masing-masing.
 
 ## Membuka katalog
 
@@ -12,15 +16,15 @@ Untuk membagikan katalog, sertakan `index.html`, seluruh `assets/`, `README.md`,
 
 | Isi | Jumlah/kondisi |
 |---|---|
-| Entri katalog | 580: 483 visual dan 97 brief audio |
-| Visual utama | 431 WebP dan 52 SVG; 431 raster sesuai ukuran target |
+| Entri katalog | 590: 493 visual dan 97 brief audio |
+| Visual utama | 440 WebP dan 53 SVG; 440 raster sesuai ukuran target |
 | Frame karakter | 240: 10 pose × 24 frame; mengganti 30 frame lama |
-| Ikon | 83 entri dibuat ulang pada 11 Oktober 2026 |
+| Ikon | 85: 83 diperbarui 11 Oktober; 2 bendera bahasa ditambahkan 13 Oktober |
 | Referensi yang dibuat ulang | 9 gambar baru; bukan pemulihan berkas asli |
 | Audio | 88 narasi, 3 musik, 6 efek suara; identik dengan baseline |
-| Status gaya | 483 “Sesuai gaya” berbasis `user_override`; 273 awal dan 210 frame tambahan |
+| Status gaya | 493 “Sesuai gaya” berbasis `user_override`; 273 awal, 210 frame tambahan, 8 aset hasil, dan 2 ikon bahasa |
 
-Jumlah visual menghitung entri utama, bukan seluruh berkas alternatif/sumber kontrol SVG. Status 273 visual awal dipertahankan dari keputusan pengguna 11 Oktober 2026, termasuk gambar lama di luar karakter yang belum diperbaiki; 210 frame tambahan mengikuti permintaan 12 Oktober. Ini **bukan audit visual baru**; `previous_style_review` menyimpan penilaian atau catatan asal sebelumnya. Ukuran yang sesuai tidak membuktikan budaya, lisensi, kualitas pembesaran, animasi, atau integrasi game telah disahkan.
+Jumlah visual menghitung entri utama, bukan seluruh berkas alternatif/sumber kontrol SVG. Status 273 visual awal dipertahankan dari keputusan pengguna 11 Oktober 2026, termasuk gambar lama di luar karakter yang belum diperbaiki; 210 frame tambahan mengikuti permintaan 12 Oktober dan 8 aset hasil mengikuti contoh full UI pada 13 Oktober. Ini **bukan audit visual baru**; `previous_style_review` menyimpan penilaian atau catatan asal sebelumnya. Ukuran yang sesuai tidak membuktikan budaya, lisensi, kualitas pembesaran, animasi, atau integrasi game telah disahkan.
 
 ## Arah visual aktif
 
@@ -30,7 +34,7 @@ Jumlah visual menghitung entri utama, bukan seluruh berkas alternatif/sumber kon
 - Kontrol UI memakai SVG emas yang jelas pada ukuran kecil; foto/video faktual mempertahankan brief dokumenter.
 - Raster aktif memakai WebP. Nama mengikuti kode aset; kode resmi seperti `app.icon-512.png` tetap memakai berkas `app.icon-512.webp`.
 
-483 prompt visual aktif tersedia. Sumbernya `data.json`; salinan build ada di [docs/PROMPTS-ENGLISH.md](docs/PROMPTS-ENGLISH.md). Prompt yang benar-benar dipakai pada generasi AI dicatat terpisah dalam [provenance/](provenance/README.md).
+493 prompt visual aktif tersedia. Sumbernya `data.json`; salinan build ada di [docs/PROMPTS-ENGLISH.md](docs/PROMPTS-ENGLISH.md). Prompt yang benar-benar dipakai pada generasi AI dicatat terpisah dalam [provenance/](provenance/README.md).
 
 Frame karakter diperbarui 12 Oktober 2026: enam pose Jaka dan empat pose Mbah Kedu, masing-masing 24 WebP transparan 700 × 900. Sepuluh key pose dibuat dengan image_gen, kemudian diberi gerak sekunder bertahap; bukan 240 generasi AI terpisah atau animasi rig sendi. Kode frame 1–3 dipertahankan, frame 4–24 ditambahkan. Rincian di [laporan frame](reports/character-frame-report.json); [nama aset gaya lama](reports/remaining-legacy-style.txt) mengikuti riwayat audit dengan mengecualikan aset yang telah dibuat ulang.
 
@@ -49,6 +53,7 @@ Frame karakter diperbarui 12 Oktober 2026: enam pose Jaka dan empat pose Mbah Ke
 | [reports/](reports/README.md) | Ringkasan/status dan hasil pemeriksaan bertanggal |
 | [provenance/](provenance/README.md) | Manifest generasi, pekerjaan ikon, dan pemetaan nama lama |
 | [review/](review/README.md) | Lembar kontak dan tangkapan layar |
+| [mockup/](mockup/README.md) | Mockup pilihan pengguna, kebutuhan aset, prompt, dan petunjuk perombakan web |
 | [archive/](archive/README.md) | Baseline audio, cadangan, dokumen, prompt, dan skrip historis |
 
 Folder `sources/` dihapus pada 12 Oktober 2026. Kedua dokumennya memiliki salinan identik di `archive/source-documents/`. `README.txt` root yang mengulang panduan juga dihapus; versi historis di arsip dipertahankan.
@@ -62,3 +67,9 @@ Folder `sources/` dihapus pada 12 Oktober 2026. Kedua dokumennya memiliki salina
 5. Catat perubahan dan pemeriksaan nyata dalam [docs/PROGRESS.md](docs/PROGRESS.md), lalu tinjau berkas sebelum commit/push.
 
 Jangan mengubah 97 objek audio atau membuat rekaman tanpa permintaan baru. Skrip migrasi/generasi lama di `archive/scripts/` bukan langkah rutin. Tidak ada regenerasi gambar atau perubahan audio pada perapian 12 Oktober 2026.
+
+Revisi full UI hasil 13 Oktober: [preview 16:9](mockup/gambar-mockup/tantangan-selesai-temanggung/preview-ui-lengkap.html), [aset dan petunjuk](mockup/gambar-mockup/tantangan-selesai-temanggung/kebutuhan-aset.md). Enam gambar baru, satu lanskap yang dipakai ulang, dan satu efek SVG menambah delapan slot tanpa mengganti entri lama.
+
+Ikon bahasa aktif baru: [Indonesia](assets/ikon/icon.language-id.webp) dan [English/UK](assets/ikon/icon.language-en.webp). Slot reference.19/20 tetap disimpan sebagai referensi lama.
+
+Halaman “Tantangan selesai” pada paket mockup adalah satu konsep bersama untuk seluruh kota/wilayah game. Temanggung hanya contoh visual; komponen menerima konteks wilayah, jenis tantangan, hasil, latar dan navigasi dari aplikasi. [Petunjuk komponen bersama](mockup/gambar-mockup/tantangan-selesai-temanggung/petunjuk-agent.md).

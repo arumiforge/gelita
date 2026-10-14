@@ -1,0 +1,28 @@
+warning: in the working copy of 'gelita-katalog/docs/PROMPTS-ENGLISH.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'gelita-katalog/reports/STATUS-GAMBAR.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'gelita-katalog/reports/STYLE-AUDIT.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'gelita-katalog/reports/browser-check-report.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'gelita-katalog/reports/validation-report.json', LF will be replaced by CRLF the next time Git touches it
+M	gelita-katalog/README.md
+M	gelita-katalog/data.json
+M	gelita-katalog/docs/AI-GUIDE.md
+M	gelita-katalog/docs/CONTEXT.md
+M	gelita-katalog/docs/DATA-SCHEMA.md
+M	gelita-katalog/docs/MAINTENANCE.md
+M	gelita-katalog/docs/MEMORY.md
+M	gelita-katalog/docs/PROGRESS.md
+M	gelita-katalog/docs/PROMPTS-ENGLISH.md
+M	gelita-katalog/index.html
+M	gelita-katalog/provenance/README.md
+M	gelita-katalog/reports/STATUS-GAMBAR.json
+M	gelita-katalog/reports/STYLE-AUDIT.csv
+M	gelita-katalog/reports/STYLE-AUDIT.json
+M	gelita-katalog/reports/browser-check-report.json
+M	gelita-katalog/reports/icon-replacement-verification.json
+M	gelita-katalog/reports/validation-report.json
+M	gelita-katalog/review/catalog-desktop.webp
+M	gelita-katalog/review/catalog-mobile.webp
+M	gelita-katalog/scripts/browser-check.cjs
+M	gelita-katalog/scripts/build.mjs
+M	gelita-katalog/scripts/validate.mjs
+M	gelita-katalog/scripts/verify-icon-replacement.py

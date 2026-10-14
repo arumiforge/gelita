@@ -1,0 +1,16 @@
+Use case: stylized-concept / background-only asset.
+Create the clean standalone landscape background needed by the approved GELITA challenge-complete mockup in input image 1. Image 1 is the chosen layout and landscape reference, but remove ALL interface content and reconstruct the entire landscape behind it coherently. Image 2 (GELITA reference.01, Jaka character sheet) is ONLY a reference for premium polished stylized 3D animated adventure finish and materials; DO NOT include Jaka, any character or any text from that sheet.
+
+Asset destination: mockup reference package, background for fixed 16:9 landscape mobile game. Target canvas 1920 x 1080, wide exact 16:9. Full bleed opaque background, no alpha.
+
+Scene and composition:
+An imaginative scenic landscape inspired by the Kedu/Temanggung mountain valleys, not a factual geographic map. Sunset with layered volcanic mountain silhouettes receding into cool blue mist, warm amber sun in the upper-right quarter, rich orange-pink-violet cloud formations. Across the left foreground and middle distance, lush dimensional green forest foliage and terraced cultivated slopes sweep down into the valley. Across the right third, a calm lake or broad river reflects the gold sunset with gentle highlights. Complete the broad centre with low-detail terraces, valley floor, distant vegetation and atmospheric water so it remains quiet beneath a future result panel. Foreground foliage softly frames lower corners without blocking the view. Closely match the approved screenshot's warm golden sunset, depth, camera angle, terrain and lake placement while creating a complete original backdrop behind the missing panel.
+
+Style:
+Premium stylized 3D animated adventure environment for Indonesian grade-five pupils, cohesive with GELITA's Jaka reference. Rounded dimensional vegetation, rich but restrained material detail, soft physically plausible lighting, cinematic depth and atmospheric perspective. Colour palette: deep navy #0B1320 and #1B2740 shadows, brass-gold warm light #DFC087 and #F0DFB8, natural greens, earthy browns, warm sunset coral and cool blue haze. No painterly brush texture or paper grain. Distinct separation of foreground, midground and mountains.
+
+UI-safe composition:
+The central approximately 75 percent width and middle 65 percent height should have low visual complexity so a navy result panel can be layered there later. Keep upper-left and upper-right HUD locations reasonably calm. Lighting remains beautiful without harsh white glare beneath possible controls. No embedded dark panel or added HUD strip. All panel edges, UI text, buttons, stars, medallions, icons and particles will be rendered separately by the web app.
+
+Strict exclusions:
+NO letters, words, GELITA logo, labels, interface, buttons, borders, gold frame, HUD, cards, stars, medallion, crystal shards, lanterns, reward symbols, characters, foreground people, watermark, signature, diagram, phone hardware or duplicate screenshot. Do not invent a specific identifiable temple or place claim. Do not reproduce the reference character sheet. The output is landscape art ONLY. Deliver one full-bleed clean 16:9 background.

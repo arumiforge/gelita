@@ -1,0 +1,31 @@
+{
+  "date": "2026-10-13",
+  "passed": true,
+  "icons": [
+    {
+      "key": "icon.language-id",
+      "size": [
+        256,
+        256
+      ],
+      "alpha_range": [
+        0,
+        255
+      ],
+      "sha256": "3aada0a40ef82f04fa62ba14de2bc969e522466a7a620c2e041a6ec06f48b441"
+    },
+    {
+      "key": "icon.language-en",
+      "size": [
+        256,
+        256
+      ],
+      "alpha_range": [
+        0,
+        255
+      ],
+      "sha256": "78efd469490f33725d6f21340f93d65b5f9db5ad0b335d1972da20d06faa762e"
+    }
+  ],
+  "manual_review": "Opened both generated icons: Indonesia red over white; UK Union Jack; no text; navy/gold medallions"
+}

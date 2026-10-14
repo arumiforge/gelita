@@ -1,0 +1,95 @@
+{
+  "date": "2026-10-13",
+  "passed": true,
+  "assets": [
+    {
+      "key": "ui.result-panel",
+      "size": [
+        1536,
+        752
+      ],
+      "alpha_range": [
+        0,
+        255
+      ],
+      "passed": true
+    },
+    {
+      "key": "ui.result-button-primary",
+      "size": [
+        600,
+        132
+      ],
+      "alpha_range": [
+        0,
+        255
+      ],
+      "passed": true
+    },
+    {
+      "key": "ui.result-button-secondary",
+      "size": [
+        480,
+        112
+      ],
+      "alpha_range": [
+        0,
+        255
+      ],
+      "passed": true
+    },
+    {
+      "key": "ui.result-button-detail",
+      "size": [
+        320,
+        112
+      ],
+      "alpha_range": [
+        0,
+        255
+      ],
+      "passed": true
+    },
+    {
+      "key": "ui.result-hud-control",
+      "size": [
+        128,
+        128
+      ],
+      "alpha_range": [
+        0,
+        255
+      ],
+      "passed": true
+    },
+    {
+      "key": "ui.result-star",
+      "size": [
+        128,
+        128
+      ],
+      "alpha_range": [
+        0,
+        255
+      ],
+      "passed": true
+    },
+    {
+      "key": "bg.result.temanggung",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_range": [
+        255,
+        255
+      ],
+      "passed": true
+    },
+    {
+      "key": "ui.result-shard-effects",
+      "viewBox": "0 0 512 512",
+      "passed": true
+    }
+  ]
+}

@@ -1,0 +1,355 @@
+{
+  "date": "2026-10-13",
+  "timezone": "Asia/Bangkok",
+  "checked_at_utc": "2026-10-12T19:32:28.974454+00:00",
+  "passed": true,
+  "package": "mockup/gambar-mockup/tantangan-selesai-temanggung",
+  "package_file_count": 62,
+  "selected_mockup_size": [
+    1672,
+    941
+  ],
+  "selected_mockup_rgb_identical_to_source": true,
+  "selected_mockup_ratio_is_rounded_reference": true,
+  "background_exact_16_9": true,
+  "background_opaque": true,
+  "background_generations": 1,
+  "prompt_matches_provenance": true,
+  "copied_catalog_files_identical": 20,
+  "new_native_svg_controls": 2,
+  "raster": [
+    {
+      "file": "aset-baru/bg-tantangan-selesai-temanggung-3d.webp",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "aset-katalog/acuan-gaya-jaka-3d.webp",
+      "size": [
+        2048,
+        2048
+      ],
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "aset-katalog/bahasa-english-en.webp",
+      "size": [
+        256,
+        256
+      ],
+      "alpha_range": [
+        0,
+        255
+      ]
+    },
+    {
+      "file": "aset-katalog/bahasa-english-uk-flag.webp",
+      "size": [
+        256,
+        256
+      ],
+      "alpha_range": [
+        0,
+        255
+      ]
+    },
+    {
+      "file": "aset-katalog/bahasa-indonesia-flag.webp",
+      "size": [
+        256,
+        256
+      ],
+      "alpha_range": [
+        0,
+        255
+      ]
+    },
+    {
+      "file": "aset-katalog/bahasa-indonesia-id.webp",
+      "size": [
+        256,
+        256
+      ],
+      "alpha_range": [
+        0,
+        255
+      ]
+    },
+    {
+      "file": "aset-katalog/logo-gelita.webp",
+      "size": [
+        1600,
+        600
+      ],
+      "alpha_range": [
+        0,
+        255
+      ]
+    },
+    {
+      "file": "aset-katalog/medali-serpihan-cahaya.webp",
+      "size": [
+        512,
+        512
+      ],
+      "alpha_range": [
+        0,
+        255
+      ]
+    },
+    {
+      "file": "aset-ui/bintang-hasil.webp",
+      "size": [
+        128,
+        128
+      ],
+      "alpha_range": [
+        0,
+        255
+      ]
+    },
+    {
+      "file": "aset-ui/kontrol-hud.webp",
+      "size": [
+        128,
+        128
+      ],
+      "alpha_range": [
+        0,
+        255
+      ]
+    },
+    {
+      "file": "aset-ui/panel-hasil-referensi.webp",
+      "size": [
+        1536,
+        752
+      ],
+      "alpha_range": [
+        0,
+        255
+      ]
+    },
+    {
+      "file": "aset-ui/tombol-detail-referensi.webp",
+      "size": [
+        320,
+        112
+      ],
+      "alpha_range": [
+        0,
+        255
+      ]
+    },
+    {
+      "file": "aset-ui/tombol-peta-referensi.webp",
+      "size": [
+        480,
+        112
+      ],
+      "alpha_range": [
+        0,
+        255
+      ]
+    },
+    {
+      "file": "aset-ui/tombol-primer-referensi.webp",
+      "size": [
+        600,
+        132
+      ],
+      "alpha_range": [
+        0,
+        255
+      ]
+    },
+    {
+      "file": "mockup-tantangan-selesai-temanggung-16-9.webp",
+      "size": [
+        1672,
+        941
+      ],
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "variasi-ui/bahasa-terbuka/mockup-ui-bahasa-terbuka-16-9.webp",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "variasi-ui/detail-hasil-terbuka/mockup-ui-detail-hasil-terbuka-16-9.webp",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "variasi-ui/menu-terbuka/mockup-ui-menu-terbuka-16-9.webp",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_range": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "variasi-ui/tampilan-utama/mockup-ui-tampilan-utama-16-9.webp",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_range": [
+        255,
+        255
+      ]
+    }
+  ],
+  "vectors": [
+    {
+      "file": "aset-baru/ikon-keluar-layar-penuh.svg",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "file": "aset-baru/ikon-layar-penuh.svg",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "file": "aset-katalog/ikon-bintang.svg",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "file": "aset-katalog/ikon-centang.svg",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "file": "aset-katalog/ikon-chevron-atas.svg",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "file": "aset-katalog/ikon-chevron-bawah.svg",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "file": "aset-katalog/ikon-home.svg",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "file": "aset-katalog/ikon-keluar.svg",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "file": "aset-katalog/ikon-menu.svg",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "file": "aset-katalog/ikon-panah-berikutnya.svg",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "file": "aset-katalog/ikon-panah-kembali.svg",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "file": "aset-katalog/ikon-percobaan.svg",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "file": "aset-katalog/ikon-profil.svg",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "file": "aset-katalog/ikon-speaker-nonaktif.svg",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "file": "aset-katalog/ikon-speaker.svg",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "file": "aset-katalog/ikon-tutup.svg",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "file": "aset-katalog/ikon-waktu.svg",
+      "viewBox": "0 0 24 24"
+    },
+    {
+      "file": "aset-ui/efek-medali-serpihan.svg",
+      "viewBox": "0 0 512 512"
+    },
+    {
+      "file": "aset-ui/kartu-statistik.svg",
+      "viewBox": "0 0 336 160"
+    },
+    {
+      "file": "aset-ui/panel-bahasa.svg",
+      "viewBox": "0 0 720 360"
+    },
+    {
+      "file": "aset-ui/panel-detail.svg",
+      "viewBox": "0 0 840 444"
+    },
+    {
+      "file": "aset-ui/panel-hasil.svg",
+      "viewBox": "0 0 1560 752"
+    },
+    {
+      "file": "aset-ui/panel-menu.svg",
+      "viewBox": "0 0 650 828"
+    },
+    {
+      "file": "aset-ui/tombol-hud.svg",
+      "viewBox": "0 0 104 104"
+    },
+    {
+      "file": "aset-ui/tombol-primer.svg",
+      "viewBox": "0 0 620 132"
+    },
+    {
+      "file": "aset-ui/tombol-sekunder.svg",
+      "viewBox": "0 0 480 132"
+    }
+  ],
+  "catalog_data_and_html_unchanged": false,
+  "original_catalog_entries_unchanged": 580,
+  "new_catalog_entries": 10,
+  "catalog_entries": 590,
+  "all_original_asset_files_unchanged": 494,
+  "audio_objects_unchanged": 97,
+  "application_integration_tested": false,
+  "touch_targets_tested": true,
+  "limitations": [
+    "Regenerated panel and button ornament differs slightly from reference; no pixel-identical claim",
+    "Original application routes, auth, reward and physical device fullscreen remain untested",
+    "Selected reference preserves native 1672x941 rounding; preview uses exact 16:9",
+    "Touch areas verified only in standalone preview at 640x360 and 854x480",
+    "No new cultural, licensing or production certification"
+  ],
+  "native_ui_components": 8,
+  "complete_ui_states": 4,
+  "ui_preview_browser_report": "reports/mockup-ui-browser-check.json"
+}

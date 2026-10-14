@@ -4,6 +4,8 @@
 
 Ini katalog aset statis, bukan aplikasi game lengkap. `index.html` menanam data JSON; browser tidak mengambil `data.json` melalui `fetch`. Aset dibaca melalui jalur relatif dari root katalog.
 
+Seluruh aset gambar digunakan di aplikasi GELITA dengan rasio layar tetap **16:9** (landscape); halaman aplikasi tidak mendukung tata letak responsif untuk rasio layar lain. Pahami komposisi dan penempatan aset dalam konteks halaman tersebut. Rasio halaman tidak mengubah ukuran atau proporsi slot tiap aset. Pemeriksaan katalog pada desktop/mobile hanya memeriksa halaman katalog, bukan dukungan responsif aplikasi game.
+
 Sebelum mengedit, baca [AGENTS.md](../AGENTS.md), [README.md](../README.md), [CONTEXT.md](CONTEXT.md), [MEMORY.md](MEMORY.md), dan [PROGRESS.md](PROGRESS.md). Instruksi historis dalam arsip bukan panduan aktif.
 
 ## 2. Aliran data
@@ -42,12 +44,12 @@ node scripts/validate.mjs --> reports/validation-report.json
 
 ## 4. Invarian yang dipertahankan
 
-- 580 entri: 483 visual dan 97 audio; ID dan `key` unik. Jangan mengubah kode slot untuk menyesuaikan ekstensi.
+- 590 entri: 493 visual dan 97 audio; ID dan `key` unik. Jangan mengubah kode slot untuk menyesuaikan ekstensi.
 - Objek audio identik dengan baseline; dikenali melalui `size === "Audio"`.
 - Visual memakai status “Sesuai gaya” berbasis `user_override` dan memiliki `previous_style_review`. Ini keputusan pengguna, bukan review baru.
-- Ilustrasi 3D/Jaka syal merah mengikuti reference.01; Mbah Kedu reference.02. SVG UI sederhana, media faktual dokumenter.
+- Ilustrasi 3D/Jaka syal merah mengikuti reference.01; Mbah Kedu reference.02. SVG kontrol jelas pada ukuran kecil; skin panel/tombol ui.result-* mengikuti full UI pilihan, media faktual dokumenter.
 - `file`, `preview`, `generated_asset`, `vector_source` yang terisi menunjuk berkas tersedia relatif root. SVG kontrol di `assets/ikon/vektor/`.
-- Raster aktif WebP; 431 raster tepat target. Jangan membuat PNG atau memperbaiki gambar hanya karena audit lamanya berbeda tanpa permintaan baru.
+- Raster aktif WebP; 440 raster tepat target. Jangan membuat PNG atau memperbaiki gambar hanya karena audit lamanya berbeda tanpa permintaan baru.
 - Jangan membuat kembali folder sumber atau folder karakter tambahan yang dihapus.
 
 ## 5. Verifikasi dan pencatatan

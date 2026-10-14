@@ -1,0 +1,55 @@
+/* Geometry follows exec-2171e211: source 1672 x 941; game canvas 1920 x 1080. */
+@font-face{font-family:Jakarta;src:url('aset-font/plus-jakarta-sans-latin-400-normal.woff2') format('woff2');font-weight:400;font-display:block}
+@font-face{font-family:Jakarta;src:url('aset-font/plus-jakarta-sans-latin-700-normal.woff2') format('woff2');font-weight:700;font-display:block}
+@font-face{font-family:Jakarta;src:url('aset-font/plus-jakarta-sans-latin-800-normal.woff2') format('woff2');font-weight:800;font-display:block}
+body{font-family:Jakarta,'Trebuchet MS',sans-serif}
+.hud{left:0;right:auto;top:0;width:1920px;height:180px;display:block}
+.brand{display:block}.brand:after{content:'';position:absolute;left:400px;top:57px;width:2px;height:54px;background:#DFC08799}
+.logo{position:absolute;left:22px;top:14px;width:400px;height:150px}
+.region{position:absolute;left:433px;top:56px;padding:0;border:0;font-family:'Times New Roman',serif;font-size:44px;line-height:56px;font-weight:700}
+.controls{position:absolute;left:1496px;top:11px;gap:6px}
+.hud-button{width:132px;height:144px}.hud-button:before{width:102px;height:102px;background-image:url('aset-ui/kontrol-hud.webp')}.hud-button img{width:57px;height:57px}.hud-button.language img{width:112px;height:112px}
+.panel{left:199.8px;top:218.1px;width:1525px;height:742.6px;background-image:url('aset-ui/panel-hasil-referensi.webp');filter:drop-shadow(0 8px 15px #01071370)}
+.heading{padding:0}.context{position:absolute;top:30px;left:0;right:0;font-size:30px;line-height:36px;letter-spacing:.5px}
+.heading h1{position:absolute;left:0;right:0;top:73px;font-family:Jakarta,sans-serif;font-weight:800;font-size:94px;line-height:1.1;letter-spacing:-2px;margin:0;color:#FFE8B0;text-shadow:0 3px 0 #75512D,0 0 15px #EEB84B70}
+.stars{position:absolute;top:160px;left:0;right:0;gap:30px;margin:0;align-items:center}.star{width:86px;height:86px;object-fit:contain;filter:none}.star.empty{width:82px;height:82px}
+.result-body{position:absolute;inset:0;display:block}
+.collection{position:absolute;left:59.7px;top:211.2px;width:742px;height:340px;border:0;padding:0;display:block}
+.collection:before{content:'';position:absolute;left:-23px;top:-22px;width:382px;height:382px;background:url('aset-ui/efek-medali-serpihan.svg') center/contain no-repeat;pointer-events:none}
+.collection:after{content:'';position:absolute;left:372px;top:85px;width:1px;height:236px;background:linear-gradient(transparent,#DFC08799 12%,#DFC08799 90%,transparent)}
+.medallion{position:absolute;left:0;top:0;width:335px;height:335px;filter:drop-shadow(0 0 10px #E6B54F88)}
+.collection-text{position:absolute;left:406.5px;top:108px;width:344px}.collection-text h2{font-size:36px;font-weight:700;line-height:44px;margin:0 0 16px;white-space:nowrap}.collection-count{font-size:64px;line-height:76px;margin:0 0 10px}.progress{position:relative;left:-12px;width:356px;height:51px;padding:10px;gap:7px;border-radius:16px}
+.right-result{position:absolute;left:836px;top:266.3px;width:640px;height:291px;border-left:1px solid #DFC08788;text-align:left}
+.right-result:before{content:'';position:absolute;left:-4px;top:0;width:7px;height:7px;border:1px solid #DFC087;rotate:45deg;background:#142139}
+.stats{margin-left:36.7px;display:grid;grid-template-columns:280px 298.5px;gap:18.4px}.stat{height:165.3px;padding:22px 23px;background-image:url('aset-ui/kartu-statistik.svg')}.stat-label{font-size:26px;line-height:44px;gap:14px}.stat-label img{width:44px;height:44px}.stat-value{font-size:60px;font-weight:800;line-height:1.1;margin:8px 0 0 68px;text-align:left;white-space:nowrap}.stat:nth-child(2) .stat-value{font-size:42px;margin-top:17px}
+.correct{position:absolute;left:178px;top:182.5px;height:64px;min-height:0;margin:0;padding:6px 20px;font-size:30px;line-height:46px;gap:14px;white-space:nowrap;box-shadow:inset 0 0 14px #82D94116}.correct .check{width:42px;height:42px;font-size:32px}
+.encouragement{position:absolute;left:73px;top:260px;width:570px;margin:0;font-size:24px;line-height:31px;font-weight:400;white-space:nowrap}
+.footer{top:583px;bottom:auto;left:59.7px;right:auto;width:1407.8px;padding-top:9.8px;grid-template-columns:459.3px 300.8px 578.8px;gap:34.45px}
+.action{position:relative;height:132px;background:none;font-size:34px;line-height:42px;padding:0 24px;gap:22px;isolation:isolate}.action:before{content:'';position:absolute;inset:20px 0;background:url('aset-ui/tombol-peta-referensi.webp') center/100% 100% no-repeat;z-index:-1}.action img{width:40px;height:40px}
+.action.detail{font-size:28px;border:0;background:none;border-radius:0}.action.detail:before{background-image:url('aset-ui/tombol-detail-referensi.webp')}.action.detail img{width:36px;height:36px}
+.action.primary{font-size:46px;background:none;text-shadow:none;color:#081426}.action.primary:before{inset:13px 0;background-image:url('aset-ui/tombol-primer-referensi.webp')}.primary .arrow{font-size:62px;line-height:1}
+.language-popover{top:174px;right:340px;font-family:Jakarta,sans-serif}.menu-sheet,.detail-sheet{font-family:Jakarta,sans-serif}
+
+/* Align the opaque artwork edges; exported textures include transparent padding. */
+.panel{background-size:1543.08px 853.88px;background-position:-9.04px -54.50px;background-repeat:no-repeat}
+.action.primary:before{background-size:634.88px 129.56px;background-position:-28.57px -11.78px;background-repeat:no-repeat}
+.action:not(.detail):not(.primary):before{background-size:469.07px 117.09px;background-position:-4.89px -12.55px;background-repeat:no-repeat}
+.action.detail:before{background-size:304.61px 132.10px;background-position:-1.90px -20.05px;background-repeat:no-repeat}
+.hud-button:before{background-size:103.62px 103.62px;background-position:-0.81px -0.81px;background-repeat:no-repeat}
+
+.context:before,.context:after{content:'';display:inline-block;width:126px;height:1px;vertical-align:middle;margin:0 32px;background:linear-gradient(90deg,transparent,#DFC087)}
+.context:after{transform:scaleX(-1)}
+.collection:after{background:#DFC08799}
+.collection-text:before{content:'';position:absolute;left:-45px;top:107px;width:14px;height:14px;rotate:45deg;border:2px solid #DFC087;background:#102034}
+.heading:after{content:'';position:absolute;left:360px;right:710px;top:266px;height:1px;background:linear-gradient(90deg,transparent,#DFC08744)}
+.right-result:after{content:'';position:absolute;left:-4px;bottom:0;width:7px;height:7px;rotate:45deg;border:1px solid #DFC087;background:#142139}
+.hud-button:not(.language):before{filter:brightness(.83) saturate(.8)}
+
+/* Reuse the catalogue ID/EN artwork; enlarge its centre inside the common HUD skin. */
+.hud-button.language:before{display:block;filter:brightness(.83) saturate(.8)}
+.hud-button.language img{width:144px;height:144px;clip-path:circle(26% at 50% 50%)}
+.collection:before{left:-57px;top:-57px;width:450px;height:450px}
+
+/* Current language icons use full flag medallions, without the old ID/EN centre crop. */
+.hud-button.language:before{display:none}
+.hud-button.language img{width:104px;height:104px;clip-path:none}

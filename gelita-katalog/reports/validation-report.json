@@ -1,10 +1,10 @@
 {
-  "date": "2026-10-12",
-  "checked_at_utc": "2026-10-12T01:52:42.440Z",
+  "date": "2026-10-13",
+  "checked_at_utc": "2026-10-12T19:32:27.067Z",
   "checks": [
-    "580 unique IDs and keys",
-    "483 visuals have style reviews and existing files",
-    "483 user-overridden style statuses with previous reviews preserved",
+    "590 unique IDs and keys",
+    "493 visuals have style reviews and existing files",
+    "493 user-overridden style statuses with previous reviews preserved",
     "240 character frames: ten poses with frames 1–24 and saved key poses",
     "Active prompts exclude conflicting legacy art direction",
     "83 icons updated with correct size and alpha",
@@ -21,8 +21,8 @@
     "Current Markdown and static HTML links resolve"
   ],
   "documentation": {
-    "files": 16,
-    "links": 563,
+    "files": 29,
+    "links": 774,
     "historical_archive_body_links_excluded": true
   },
   "static_html_links": 6,

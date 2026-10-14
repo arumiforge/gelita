@@ -1,12 +1,14 @@
 {
-  "date": "2026-10-12",
+  "date": "2026-10-13",
   "passed": true,
   "checks": [
-    "Initial 483 visual cards",
-    "483 user-approved style entries",
+    "Initial 493 visual cards",
+    "493 user-approved style entries",
     "No unmatched entries",
     "144 Jaka frames",
     "Detail and Escape",
+    "7 new result UI slots visible and panel WebP loaded",
+    "2 language flag icons visible and UK WebP loaded",
     "26 reference collection entries",
     "Original WebP opens from offline catalog",
     "Filtered JSON download",

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="url(#gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <title>Keluar layar penuh</title>
+  <defs><linearGradient id="gold" x1="0" y1="0" x2="0.6" y2="1"><stop stop-color="#F0DFB8"/><stop offset=".45" stop-color="#DFC087"/><stop offset="1" stop-color="#B58137"/></linearGradient></defs>
+  <path d="M3 8h5V3 M21 8h-5V3 M16 21v-5h5 M3 16h5v5"/>
+</svg>

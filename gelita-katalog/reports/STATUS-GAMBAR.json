@@ -1,15 +1,15 @@
 {
   "date": "2026-10-11",
-  "built_at_utc": "2026-10-12T01:51:51.297Z",
-  "total": 580,
-  "visual": 483,
+  "built_at_utc": "2026-10-12T19:26:13.519Z",
+  "total": 590,
+  "visual": 493,
   "audio": 97,
   "generated_references": 9,
   "icons_updated": 83,
   "visual_prompts_reviewed": 273,
-  "style_status_basis": "User override — original 273 visuals: 2026-10-11; 210 additional character frames: 2026-10-12",
+  "style_status_basis": "User override — original 273 visuals: 2026-10-11; 210 additional character frames: 2026-10-12; 8 result UI assets follow the user-selected reference: 2026-10-13; 2 language flag icons: 2026-10-13",
   "style_counts": {
-    "Sesuai gaya": 483,
+    "Sesuai gaya": 493,
     "Belum sesuai": 0,
     "Perlu tinjau": 0,
     "Tidak berlaku": 0
@@ -23,5 +23,22 @@
     "replaced": 30,
     "added": 210,
     "method": "10 AI key poses + deterministic secondary motion"
+  },
+  "result_ui_update": {
+    "date": "2026-10-13",
+    "assets": 8,
+    "generated_images": 6,
+    "generation_calls": 7,
+    "reused_background": 1,
+    "native_effect_overlay": 1
+  },
+  "language_flag_update": {
+    "date": "2026-10-13",
+    "icons": 2,
+    "flags": [
+      "Indonesia",
+      "United Kingdom"
+    ],
+    "method": "built-in image_gen"
   }
 }
