@@ -199,7 +199,11 @@ Targets (proposal): at 90 students, telemetry ≤ 5 requests per student per min
 
 ## 10. Owner decisions (17 October 2026)
 
-1. **Phases 1 and 2 approved, one branch each.** Phase 1 (client) first; Phase 2 (server) on its own branch after Phase 1 is merged, so each effect can be measured on its own.
+1. **Phases 1 and 2 approved, one branch each, developed in parallel** (owner, 17 October 2026, revising "Phase 1 first"). The split is by layer so the two sessions never edit the same file:
+   - **Phase 1, branch `log-1-klien`: browser only.** `public/assets/js/**`, `tools/qa/event-integrity.mjs`, `docs/06_JAVASCRIPT.md`. R1 (30 s flush, persist-on-push), R2 client side (one request carrying `events` and `audio`), R3 client side (heartbeat only when no batch went out for 60 s), R4.
+   - **Phase 2, branch `log-2-server`: PHP only.** R2 and R3 server side (`/api/events` accepts `audio`; heartbeat folded into the batch), R5 (session lock released early), R6 (batched audio writes), R7, `Gelita::$eventFlush` and its `js_config()` entry, the dashboard note, `docs/04_CONTROLLER_ROUTE.md`, `docs/08_DEPLOYMENT.md`.
+   - **Contract between them** (both sessions build against it): `POST /api/events` takes `{events, audio?, client_sent_at, dropped?, dropped_id?, audio_dropped?, audio_dropped_id?}`, at most 50 entries in each array, and answers `{accepted, duplicate, rejected, audio?: {accepted, duplicate, rejected}, server_time}`; the `audio` key is present in the answer whenever the request carried an `audio` array. `js_config()` exposes `eventFlush: {intervalMs, maxEvents}`. `/api/audio-events` and `/api/session/heartbeat` keep working.
+   - **Merge order: Phase 2 first.** Phase 1 still works against a server without Phase 2: when the answer has no `audio` key, the client keeps those audio events and sends them through `/api/audio-events`, and it falls back to 30 000 ms / 40 events when `CONFIG.eventFlush` is missing.
 2. **Flush interval: 30 s** (the proposal was 15 s). It is server-configurable (`Gelita::$eventFlush`, R1), so it can be lowered later without a JS deploy. Forced sends on tab hide, page close, and before navigation stay as they are.
 3. **Phase 3: decide after measuring.** Run the §7 load test after Phases 1 and 2; build the inbox only if the targets are still missed at 90 students.
 4. **Dashboard lag accepted, with a note.** "20 event terakhir" may be up to one interval behind; Phase 1 adds a short note under the list (§9).
