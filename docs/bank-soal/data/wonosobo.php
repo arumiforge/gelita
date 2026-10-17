@@ -4,15 +4,20 @@
  * Bank soal kelas 5 — WONOSOBO (wilayah 3, tingkat sulit).
  * Fokus literasi: membandingkan informasi, menilai pilihan, dan menentukan solusi berdasarkan bukti.
  *
- * Isi final yang disetujui peneliti sebagai bank soal penelitian kelas 5
- * (docs/perombakan-kelas5/02_TANTANGAN_DAN_BANK_SOAL.md §9, Oktober 2026).
- * Jangan diubah kecuali untuk memperbaiki salah ketik yang jelas.
+ * October 2026 revision (bank draft 2: gelita-katalog/update/bank-soal/bank-soal-kelas5.xlsx,
+ * see gelita-katalog/update/catatan-revisi-gelita.md §2 and §7) of the bank the
+ * researcher approved in docs/perombakan-kelas5/02_TANTANGAN_DAN_BANK_SOAL.md §9.
+ * Revised and new items carry `review` status `needs_verification` until the
+ * researcher checks them; untouched items keep the default `verified` status.
+ * Explicit `key` values (moved or inserted items) and `active => false` (retired
+ * items, kept in the workbook) keep students' stored answers linked to their item.
  *
  * Bentuk data dijelaskan di docs/bank-soal/README.md. Teks berpasangan
  * [Indonesia, English]. Kode soal {node}-{variasi}{nn} (mis. wnb-2-a01) dan kode
  * bacaan {node}-{variasi} (wnb-3-a) diberi build-workbook.php menurut urutan di
- * berkas ini — jangan menyisipkan atau menghapus soal di tengah variasi setelah
- * bank dipakai siswa. Potongan Isi Rumpang ditulis persis seperti disimpan:
+ * berkas ini. Once students have used the bank, never insert, move, or delete an
+ * item without an explicit `key`: the automatic keys after it would shift.
+ * Potongan Isi Rumpang ditulis persis seperti disimpan:
  * ___ = tempat kosong, "\n\n" = jeda paragraf di tengah potongan sesudah ___.
  * `bloom_reason` hanya catatan penyusun (tidak ikut workbook).
  */
@@ -24,6 +29,13 @@ $ref = [
     'news'    => 'Panduan cek fakta Siberkreasi & Mafindo; laman resmi PVMBG/MAGMA Indonesia; pengelola kawasan Dieng',
     'sikunir' => 'Tempo (Desa Sembungan); Kompas Travel (2022); Indonesia Kaya',
     'hunt'    => 'Indonesia Kaya; BRIN Audiovisual (Bundengan); Kompas Travel (2023) Kebun Teh Tambi; Wikipedia (Pepaya gunung)',
+];
+
+// Review notes shared by several items of the October 2026 revision (draft 2).
+$note = [
+    'linker' => 'Revisi Oktober 2026: label Bloom C4 → C3 (kata hubung di dalam satu kalimat: menerapkan, belum menganalisis). Perlu dicek ulang peneliti.',
+    'retry'  => ' | Revisi v2 (17 Okt 2026): Penelitian: pengerjaan pertama Susun Gambar memakai variasi a–c (dinilai); variasi d–j hanya untuk pengerjaan ulang. Perlu perubahan pemilihan variasi di aplikasi sebelum dipakai.',
+    'hunt'   => 'Revisi v2 (17 Okt 2026): label C4 → C3: mencocokkan ciri (bahan, bentuk, kegunaan) yang kini juga dikenalkan di narasi Kenali Wonosobo. | Sebelumnya: Disetujui peneliti sebagai bank soal final penelitian kelas 5 (Oktober 2026).',
 ];
 
 return [
@@ -66,10 +78,14 @@ return [
                         [   // wnb-1-a01
                             'type'   => 'puzzle_arrange',
                             'prompt' => [
-                                'Air Telaga Warna di Dieng mengandung belerang. Saat terkena cahaya matahari, warnanya tampak berganti: hijau, kebiruan, atau putih. Airnya tidak untuk diminum.',
-                                'The water of Telaga Warna in Dieng contains sulphur. In sunlight its colour seems to change: green, bluish, or white. The water is not for drinking.',
+                                'Air Telaga Warna di Dieng mengandung belerang. Saat terkena cahaya matahari, warnanya tampak berganti: hijau, biru, atau kekuningan. Airnya tidak untuk diminum.',
+                                'The water of Telaga Warna in Dieng contains sulphur. In sunlight its colour seems to change: green, blue, or yellowish. The water is not for drinking.',
                             ],
-                            'media'  => ['key' => 'challenge.item.wnb-1-05', 'label' => 'Telaga Warna', 'note' => 'Telaga Warna hijau kebiruan', 'source' => 'https://commons.wikimedia.org/wiki/File:Telaga_Warna_Dieng_Jawa_Tengah.jpg'],
+                            'media'  => ['key' => 'challenge.item.wnb-1-05', 'label' => 'Telaga Warna', 'note' => 'Telaga Warna dari titik pandang tinggi: air hijau, biru, dan kekuningan berbelerang, Telaga Pengilon yang lebih gelap, hutan cemara, jalan papan dengan pengunjung kecil', 'source' => 'Lulus uji keping. Warna air sudah hijau-biru; pastikan ada bagian kekuningan di tepi telaga sesuai keterangan baru. Rujukan: https://commons.wikimedia.org/wiki/File:Telaga_Warna_Dieng_Jawa_Tengah.jpg'],
+                            'review' => [
+                                'status' => 'needs_verification',
+                                'note'   => 'Revisi Oktober 2026: warna telaga diselaraskan dengan naskah: hijau, biru, atau kekuningan. Perlu dicek ulang peneliti.',
+                            ],
                         ],
                     ],
                 ],
@@ -83,7 +99,11 @@ return [
                                 'Bukit Sikunir ada di Desa Sembungan, desa tertinggi di Pulau Jawa (sekitar 2.300 meter). Wisatawan mendaki sebelum subuh untuk melihat matahari terbit di atas awan.',
                                 'Sikunir Hill is in Sembungan Village, the highest village in Java (about 2,300 metres). Visitors climb before dawn to watch the sun rise above the clouds.',
                             ],
-                            'media'  => ['key' => 'challenge.item.wnb-1-06', 'label' => 'Matahari Terbit di Sikunir', 'note' => 'matahari terbit dari puncak Sikunir, lautan awan', 'source' => 'https://commons.wikimedia.org/wiki/File:Sunrise_di_Bukit_Sikunir.jpg'],
+                            'media'  => ['key' => 'challenge.item.wnb-1-06', 'label' => 'Matahari Terbit di Sikunir', 'note' => 'fajar dari puncak Sikunir: lautan awan bertekstur (emas dekat matahari, ungu-biru menjauh), kerucut Sindoro menembus awan, pengunjung berjaket di balik pagar, anak memegang senter', 'source' => 'Boleh dipakai (lulus dengan catatan, K3~K4 langit mirip). Rujukan: https://commons.wikimedia.org/wiki/File:Sunrise_di_Bukit_Sikunir.jpg'],
+                            'review' => [
+                                'status' => 'needs_verification',
+                                'note'   => 'Revisi Oktober 2026: catatan isi gambar diperbarui (lautan awan bertekstur, Sindoro menembus awan). Perlu dicek ulang peneliti.',
+                            ],
                         ],
                     ],
                 ],
@@ -97,7 +117,140 @@ return [
                                 'Mi ongklok adalah makanan khas Wonosobo. Mi dan sayur direbus di keranjang bambu kecil bernama ongklok, lalu disiram kuah kental dan disajikan bersama sate sapi.',
                                 'Ongklok noodles are Wonosobo\'s special dish. The noodles and vegetables are boiled in a small bamboo basket called an ongklok, then covered with a thick sauce and served with beef satay.',
                             ],
-                            'media'  => ['key' => 'challenge.item.wnb-1-07', 'label' => 'Mi Ongklok', 'note' => 'semangkuk mi ongklok dengan sate sapi, tampak atas', 'source' => 'https://commons.wikimedia.org/wiki/File:Mi_ongklok_sate_sapi_Wonosobo.JPG'],
+                            'media'  => ['key' => 'challenge.item.wnb-1-07', 'label' => 'Mi Ongklok', 'note' => 'warung mi ongklok dari sudut 3/4 (bukan tampak atas): mangkuk mi ongklok, sate sapi, tempe kemul, juru masak mencelup keranjang ongklok, jendela ke perbukitan berkabut', 'source' => 'DISARANKAN GANTI: tampak atas membuat keping K10~K11 berpola sama, dan kuahnya tampak bening seperti ramen, bukan kuah kanji kental kecokelatan. Buat ulang dengan prompt WNB-P03 (sudut 3/4). Rujukan: https://commons.wikimedia.org/wiki/File:Mi_ongklok_sate_sapi_Wonosobo.JPG'],
+                            'review' => [
+                                'status' => 'needs_verification',
+                                'note'   => 'Revisi Oktober 2026: catatan isi gambar: sudut 3/4, bukan tampak atas; kuah kental kecokelatan. Perlu dicek ulang peneliti.',
+                            ],
+                        ],
+                    ],
+                ],
+                // Variants d–j are new in draft 2. Per their review note, the
+                // research scores the first attempt on variants a–c only and
+                // uses d–j for retries, which needs an app change first.
+                'd' => [
+                    'title' => ['Kompleks Candi Arjuna', 'The Arjuna Temple Complex'],
+                    'ref'   => 'Wikipedia: Dataran Tinggi Dieng; Wikipedia: Kompleks Candi Arjuna',
+                    'items' => [
+                        [   // wnb-1-d01
+                            'type'   => 'puzzle_arrange',
+                            'prompt' => [
+                                'Kompleks Candi Arjuna di Dataran Tinggi Dieng adalah salah satu kompleks candi Hindu tertua di Jawa. Candi-candinya diberi nama tokoh wayang, seperti Arjuna, Semar, Srikandi, dan Puntadewa.',
+                                'The Arjuna Temple complex on the Dieng Plateau is one of the oldest Hindu temple complexes in Java. Its temples are named after wayang characters such as Arjuna, Semar, Srikandi and Puntadewa.',
+                            ],
+                            'media'  => ['key' => 'challenge.item.wnb-1-d01', 'label' => 'Kompleks Candi Arjuna', 'note' => 'deretan candi Hindu kecil dari andesit gelap di lapangan rumput Dieng, Candi Semar menghadap Candi Arjuna, bukit berteras kentang, pengunjung berjaket', 'source' => 'BARU. Buat dengan prompt WNB-P04 di panduan gambar puzzle; foto rujukan WAJIB. Jalankan uji keping sebelum diunggah.'],
+                            'review' => [
+                                'status' => 'needs_verification',
+                                'note'   => 'Revisi Oktober 2026: gambar & keterangan baru (WNB-P04 di panduan gambar puzzle). Fakta baru yang wajib dicek: "diberi nama tokoh wayang". Lokasi administratifnya Kabupaten Banjarnegara, jadi tulis "di Dataran Tinggi Dieng", jangan "di Wonosobo".. Gambar belum dibuat.' . $note['retry'],
+                            ],
+                        ],
+                    ],
+                ],
+                'e' => [
+                    'title' => ['Kawah di Dieng: Tetap di Balik Pagar', 'Dieng Crater: Stay Behind the Fence'],
+                    'ref'   => 'Laman resmi PVMBG/MAGMA Indonesia; pengelola kawasan Dieng',
+                    'items' => [
+                        [   // wnb-1-e01
+                            'type'   => 'puzzle_arrange',
+                            'prompt' => [
+                                'Dataran Tinggi Dieng terbentuk oleh kegiatan gunung api, sehingga di sana ada beberapa kawah. Gas di sekitar kawah dapat berbahaya, jadi pengunjung harus mengikuti rambu dan tetap berdiri di belakang pagar pembatas.',
+                                'The Dieng Plateau was formed by volcanic activity, so it has several craters. Gas around a crater can be harmful, so visitors must follow the signs and stay behind the safety fence.',
+                            ],
+                            'media'  => ['key' => 'challenge.item.wnb-1-e01', 'label' => 'Kawah di Dieng: Tetap di Balik Pagar', 'note' => 'kawah beruap di Dieng: kolam lumpur abu-abu, endapan belerang kuning, pagar pengaman dan jalan papan, rambu bergambar tanpa tulisan, petugas, pengunjung di balik pagar', 'source' => 'BARU. Buat dengan prompt WNB-P05 di panduan gambar puzzle; foto rujukan disarankan. Jalankan uji keping sebelum diunggah.'],
+                            'review' => [
+                                'status' => 'needs_verification',
+                                'note'   => 'Revisi Oktober 2026: gambar & keterangan baru (WNB-P05 di panduan gambar puzzle). Fakta diambil dari bank soal; cek ulang rumusannya. Gambar belum dibuat.' . $note['retry'],
+                            ],
+                        ],
+                    ],
+                ],
+                'f' => [
+                    'title' => ['Carica, Pepaya Gunung', 'Carica, the Mountain Papaya'],
+                    'ref'   => 'Wikipedia (Pepaya gunung); Indonesia Kaya',
+                    'items' => [
+                        [   // wnb-1-f01
+                            'type'   => 'puzzle_arrange',
+                            'prompt' => [
+                                'Carica adalah pepaya gunung yang buahnya kecil. Carica tumbuh baik di udara sejuk pada ketinggian 1.400–2.400 meter, dan buahnya sering dibuat manisan.',
+                                'Carica is a mountain papaya with small fruit. It grows well in cool air at 1,400–2,400 metres, and its fruit is often made into sweets.',
+                            ],
+                            'media'  => ['key' => 'challenge.item.wnb-1-f01', 'label' => 'Carica, Pepaya Gunung', 'note' => 'kebun carica di teras Dieng: pohon carica berbuah kuning kecil bergerigi, petani berjaket memetik, teras rumah dengan buah dikupas dan stoples manisan carica', 'source' => 'BARU. Buat dengan prompt WNB-P06 di panduan gambar puzzle; foto rujukan disarankan. Jalankan uji keping sebelum diunggah.'],
+                            'review' => [
+                                'status' => 'needs_verification',
+                                'note'   => 'Revisi Oktober 2026: gambar & keterangan baru (WNB-P06 di panduan gambar puzzle). Fakta diambil dari bank soal; cek ulang rumusannya. Gambar belum dibuat.' . $note['retry'],
+                            ],
+                        ],
+                    ],
+                ],
+                'g' => [
+                    'title' => ['Bundengan', 'Bundengan'],
+                    'ref'   => 'BRIN Audiovisual (Bundengan); GNFI (2019); Indonesia Kaya',
+                    'items' => [
+                        [   // wnb-1-g01
+                            'type'   => 'puzzle_arrange',
+                            'prompt' => [
+                                'Bundengan adalah alat musik khas Wonosobo. Dulu benda ini berupa kowangan, tudung anyaman bambu yang melindungi penggembala bebek dari panas dan hujan. Tudung itu kemudian diberi senar dan dipetik; suaranya mirip gamelan.',
+                                'The bundengan is a musical instrument from Wonosobo. It began as a kowangan, a woven bamboo hood that protected duck herders from the sun and rain. Strings were later added to pluck, and it sounds like a gamelan.',
+                            ],
+                            'media'  => ['key' => 'challenge.item.wnb-1-g01', 'label' => 'Bundengan', 'note' => 'pemusik dewasa memetik bundengan di teras rumah, dua anak mendengarkan; di sawah, penggembala bebek memakai kowangan (tudung bambu) di punggung', 'source' => 'BARU. Buat dengan prompt WNB-P07 di panduan gambar puzzle; foto rujukan WAJIB. Jalankan uji keping sebelum diunggah.'],
+                            'review' => [
+                                'status' => 'needs_verification',
+                                'note'   => 'Revisi Oktober 2026: gambar & keterangan baru (WNB-P07 di panduan gambar puzzle). Fakta baru yang wajib dicek: "suaranya mirip gamelan" (sumber: GNFI 2019). Gambar belum dibuat.' . $note['retry'],
+                            ],
+                        ],
+                    ],
+                ],
+                'h' => [
+                    'title' => ['Kebun Teh Tambi', 'The Tambi Tea Garden'],
+                    'ref'   => 'Kompas Travel (2023) Kebun Teh Tambi',
+                    'items' => [
+                        [   // wnb-1-h01
+                            'type'   => 'puzzle_arrange',
+                            'prompt' => [
+                                'Kebun teh Tambi di Wonosobo sudah ada sejak tahun 1865. Pucuk daun teh dipetik, diolah, lalu diseduh menjadi minuman hangat.',
+                                'The Tambi tea estate in Wonosobo has been there since 1865. The young tea leaves are picked, processed and then brewed into a warm drink.',
+                            ],
+                            'media'  => ['key' => 'challenge.item.wnb-1-h01', 'label' => 'Kebun Teh Tambi', 'note' => 'kebun teh Tambi: deretan teh di lereng, pemetik dewasa bercaping dengan keranjang, pohon peneduh, truk kecil di jalan berkelok, bangunan pabrik lama, Sindoro di latar', 'source' => 'BARU. Buat dengan prompt WNB-P08 di panduan gambar puzzle; foto rujukan disarankan. Jalankan uji keping sebelum diunggah.'],
+                            'review' => [
+                                'status' => 'needs_verification',
+                                'note'   => 'Revisi Oktober 2026: gambar & keterangan baru (WNB-P08 di panduan gambar puzzle). Fakta diambil dari bank soal; cek ulang rumusannya. Gambar belum dibuat.' . $note['retry'],
+                            ],
+                        ],
+                    ],
+                ],
+                'i' => [
+                    'title' => ['Tari Topeng Lengger', 'The Topeng Lengger Dance'],
+                    'ref'   => 'Visit Jawa Tengah (Tari Topeng Lengger); Kemendikbudristek: Penetapan WBTb 2020',
+                    'items' => [
+                        [   // wnb-1-i01
+                            'type'   => 'puzzle_arrange',
+                            'prompt' => [
+                                'Tari Topeng Lengger adalah tari khas Wonosobo. Penarinya memakai topeng yang menggambarkan tokoh-tokoh dalam cerita. Pada tahun 2020, tarian ini ditetapkan sebagai Warisan Budaya Takbenda Indonesia.',
+                                'The Topeng Lengger dance is a traditional dance of Wonosobo. The dancers wear masks that show the characters in a story. In 2020, the dance was named part of Indonesia\'s Intangible Cultural Heritage.',
+                            ],
+                            'media'  => ['key' => 'challenge.item.wnb-1-i01', 'label' => 'Tari Topeng Lengger', 'note' => 'pentas Topeng Lengger di pendapa desa pada sore hari: penari bertopeng kayu dan penari berkebaya dengan sampur, pemain gamelan, penonton berjaket, bukit berkabut', 'source' => 'BARU. Buat dengan prompt WNB-P09 di panduan gambar puzzle; foto rujukan WAJIB. Jalankan uji keping sebelum diunggah.'],
+                            'review' => [
+                                'status' => 'needs_verification',
+                                'note'   => 'Revisi Oktober 2026: gambar & keterangan baru (WNB-P09 di panduan gambar puzzle). Fakta baru yang wajib dicek: "topeng menggambarkan tokoh" dan "Warisan Budaya Takbenda 2020" (sumber: Visit Jawa Tengah). Gambar belum dibuat.' . $note['retry'],
+                            ],
+                        ],
+                    ],
+                ],
+                'j' => [
+                    'title' => ['Embun Upas', 'Embun Upas (Mountain Frost)'],
+                    'ref'   => $ref['upas'],
+                    'items' => [
+                        [   // wnb-1-j01
+                            'type'   => 'puzzle_arrange',
+                            'prompt' => [
+                                'Pada musim kemarau, suhu pagi di Dataran Tinggi Dieng bisa turun di bawah 0 °C, sehingga embun membeku menjadi es tipis. Warga menyebutnya embun upas. Upas berarti racun, sebab es ini bisa merusak tanaman kentang.',
+                                'In the dry season, early-morning temperatures on the Dieng Plateau can drop below 0 °C, so the dew freezes into thin ice. People call it embun upas. Upas means poison, because the ice can damage potato plants.',
+                            ],
+                            'media'  => ['key' => 'challenge.item.wnb-1-j01', 'label' => 'Embun Upas', 'note' => 'pagi berembun beku di Dieng: es tipis putih menutupi sebagian rumput dan daun kentang, petani berjaket memeriksa tanaman, pengunjung memotret, siluet candi kecil di latar', 'source' => 'BARU. Buat dengan prompt WNB-P10 di panduan gambar puzzle; foto rujukan disarankan. Jalankan uji keping sebelum diunggah.'],
+                            'review' => [
+                                'status' => 'needs_verification',
+                                'note'   => 'Revisi Oktober 2026: gambar & keterangan baru (WNB-P10 di panduan gambar puzzle). Fakta diambil dari bank soal; cek ulang rumusannya. Gambar belum dibuat.' . $note['retry'],
+                            ],
                         ],
                     ],
                 ],
@@ -141,23 +294,25 @@ return [
                     'items'       => [
                         [   // wnb-2-a01
                             'type'         => 'fill_blank_bank',
-                            'bloom'        => 'C4',
+                            'bloom'        => 'C3',
                             'prompt'       => [
                                 'Sebagian Dataran Tinggi Dieng berada di Kabupaten Wonosobo. Dataran tinggi ini terletak lebih dari 2.000 meter di atas permukaan laut. Dieng sering tertutup kabut ___ dijuluki negeri di atas awan.',
                                 'Part of the Dieng Plateau lies in Wonosobo Regency. The plateau is more than 2,000 metres above sea level. Dieng is often covered in mist, ___ it is called the land above the clouds.',
                             ],
                             'answer'       => ['sehingga', 'so'],
-                            'bloom_reason' => 'Menentukan arah hubungan sebab → akibat.',
+                            'bloom_reason' => 'Menerapkan kata hubung sebab → akibat di dalam satu kalimat.',
+                            'review'       => ['status' => 'needs_verification', 'note' => $note['linker']],
                         ],
                         [   // wnb-2-a02
                             'type'         => 'fill_blank_bank',
-                            'bloom'        => 'C4',
+                            'bloom'        => 'C3',
                             'prompt'       => [
                                 'Pada musim kemarau, embun pagi bisa membeku menjadi es ___ suhunya turun di bawah 0 °C.',
                                 'In the dry season, the morning dew can freeze into ice ___ the temperature drops below 0 °C.',
                             ],
                             'answer'       => ['karena', 'because'],
-                            'bloom_reason' => 'Hubungan akibat ← sebab.',
+                            'bloom_reason' => 'Menerapkan kata hubung akibat ← sebab di dalam satu kalimat.',
+                            'review'       => ['status' => 'needs_verification', 'note' => $note['linker']],
                         ],
                         [   // wnb-2-a03
                             'type'         => 'fill_blank_bank',
@@ -171,13 +326,14 @@ return [
                         ],
                         [   // wnb-2-a04
                             'type'         => 'fill_blank_bank',
-                            'bloom'        => 'C4',
+                            'bloom'        => 'C3',
                             'prompt'       => [
                                 'Carica tumbuh baik di ketinggian 1.400–2.400 meter, ___ sulit tumbuh di dataran rendah yang panas.',
                                 'Carica grows well at 1,400–2,400 metres, ___ it struggles to grow in hot lowlands.',
                             ],
                             'answer'       => ['tetapi', 'but'],
-                            'bloom_reason' => 'Hubungan pertentangan dua keadaan.',
+                            'bloom_reason' => 'Menerapkan kata hubung pertentangan dua keadaan di dalam satu kalimat.',
+                            'review'       => ['status' => 'needs_verification', 'note' => $note['linker']],
                         ],
                         [   // wnb-2-a05
                             'type'         => 'fill_blank_bank',
@@ -215,68 +371,92 @@ return [
                     'title'       => ['Mi Ongklok', 'Ongklok Noodles'],
                     'ref'         => $ref['ongklok'],
                     'distractors' => [['agar', 'unless'], ['panas', 'hot']],
+                    // Draft 2 moved wnb-2-b02 to the end of the passage, so every
+                    // item here has an explicit key.
                     'items'       => [
                         [   // wnb-2-b01
+                            'key'          => 'wnb-2-b01',
                             'type'         => 'fill_blank_bank',
                             'bloom'        => 'C3',
                             'prompt'       => [
-                                'Mi ongklok adalah makanan khas Wonosobo. Mi kuning, kol, dan daun kucai dimasukkan ke dalam keranjang bambu kecil, ___ keranjang itu dicelupkan berulang kali ke air mendidih.',
-                                'Ongklok noodles are a special dish from Wonosobo. Yellow noodles, cabbage, and chives are put into a small bamboo basket, ___ the basket is dipped again and again into boiling water.',
+                                'Mi ongklok adalah makanan khas Wonosobo. Mi kuning, kol, dan daun kucai dimasukkan ke dalam ongklok, yaitu keranjang bambu kecil, ___ keranjang itu dicelupkan berulang kali ke air mendidih.',
+                                'Ongklok noodles are a special dish from Wonosobo. Yellow noodles, cabbage, and chives are put into an ongklok, a small bamboo basket, ___ the basket is dipped again and again into boiling water.',
                             ],
                             'answer'       => ['lalu', 'then'],
                             'bloom_reason' => 'Menerapkan urutan langkah memasak.',
-                        ],
-                        [   // wnb-2-b02
-                            'type'         => 'fill_blank_bank',
-                            'bloom'        => 'C4',
-                            'prompt'       => [
-                                'Keranjang itu bernama ongklok. Jadi, nama mi ongklok berasal dari nama ___ untuk merebusnya.',
-                                'The basket is called an ongklok. So the name of the dish comes from the name of the ___ used to boil it.',
+                            'review'       => [
+                                'status' => 'needs_verification',
+                                'note'   => 'Revisi Oktober 2026: nama ongklok disebut di sini ("ongklok, yaitu keranjang bambu kecil") agar wnb-2-b02 harus menghubungkan informasi yang berjauhan. Perlu dicek ulang peneliti.',
                             ],
-                            'answer'       => ['alat', 'tool'],
-                            'bloom_reason' => 'Menganalisis asal-usul nama.',
                         ],
                         [   // wnb-2-b03
+                            'key'          => 'wnb-2-b03',
                             'type'         => 'fill_blank_bank',
-                            'bloom'        => 'C4',
+                            'bloom'        => 'C3',
                             'prompt'       => [
                                 "Setelah ditiriskan, mi disiram kuah kental. Kuahnya kental ___ dibuat dari tepung kanji.\n\nMi ongklok biasanya dimakan bersama sate sapi dan tempe kemul.",
                                 "After draining, the noodles are covered with a thick sauce. The sauce is thick ___ it is made from tapioca starch.\n\nOngklok noodles are usually eaten with beef satay and tempe kemul.",
                             ],
                             'answer'       => ['karena', 'because'],
-                            'bloom_reason' => 'Hubungan akibat ← sebab.',
+                            'bloom_reason' => 'Menerapkan kata hubung akibat ← sebab di dalam satu kalimat.',
+                            'review'       => ['status' => 'needs_verification', 'note' => $note['linker']],
                         ],
                         [   // wnb-2-b04
+                            'key'          => 'wnb-2-b04',
                             'type'         => 'fill_blank_bank',
-                            'bloom'        => 'C4',
+                            'bloom'        => 'C3',
                             'prompt'       => [
                                 'Udara Wonosobo dingin, ___ warga senang menyantap makanan berkuah yang hangat seperti mi ongklok.',
                                 'The air in Wonosobo is cold, ___ people love to eat warm dishes with sauce, like ongklok noodles.',
                             ],
                             'answer'       => ['sehingga', 'so'],
-                            'bloom_reason' => 'Hubungan sebab → akibat.',
+                            'bloom_reason' => 'Menerapkan kata hubung sebab → akibat di dalam satu kalimat.',
+                            'review'       => ['status' => 'needs_verification', 'note' => $note['linker']],
                         ],
                         [   // wnb-2-b05
+                            'key'          => 'wnb-2-b05',
                             'type'         => 'fill_blank_bank',
                             'bloom'        => 'C3',
                             'prompt'       => [
-                                'Jika ingin membuat mi ongklok sendiri, kamu perlu menyiapkan mi kuning, kol, dan daun ___.',
-                                'If you want to make ongklok noodles yourself, you need yellow noodles, cabbage, and ___.',
+                                'Rina ingin memasak mi ongklok. Di rumahnya hanya ada mi kuning dan kol, jadi ia masih harus membeli daun ___.',
+                                'Rina wants to cook ongklok noodles. At home she only has yellow noodles and cabbage, so she still needs to buy some ___.',
                             ],
                             'answer'       => ['kucai', 'chives'],
-                            'bloom_reason' => 'Menerapkan daftar bahan pada situasi baru.',
+                            'bloom_reason' => 'Menerapkan daftar bahan pada situasi baru (Rina kekurangan satu bahan).',
+                            'review'       => [
+                                'status' => 'needs_verification',
+                                'note'   => 'Revisi Oktober 2026: diubah menjadi situasi baru (Rina kekurangan satu bahan) agar sungguh C3; jawaban tetap. Perlu dicek ulang peneliti.',
+                            ],
                         ],
                         [   // wnb-2-b06
+                            'key'          => 'wnb-2-b06',
                             'type'         => 'fill_blank_bank',
-                            'bloom'        => 'C4',
+                            'bloom'        => 'C3',
                             'prompt'       => [
                                 'Mi ongklok enak disantap selagi hangat, ___ kuahnya bisa sangat panas. Tiuplah dulu sebelum menyuapkannya.',
                                 'Ongklok noodles taste best while warm, ___ the sauce can be very hot. Blow on it before you take a bite.',
                             ],
                             'answer'       => ['tetapi', 'but'],
-                            'bloom_reason' => 'Hubungan pertentangan.',
+                            'bloom_reason' => 'Menerapkan kata hubung pertentangan di dalam satu kalimat.',
+                            'review'       => ['status' => 'needs_verification', 'note' => $note['linker']],
+                        ],
+                        [   // wnb-2-b02
+                            'key'          => 'wnb-2-b02',
+                            'type'         => 'fill_blank_bank',
+                            'bloom'        => 'C4',
+                            'prompt'       => [
+                                'Sekarang kamu tahu bahwa nama mi ongklok berasal dari nama ___ untuk merebusnya.',
+                                'Now you know that the name of ongklok noodles comes from the name of the ___ used to boil them.',
+                            ],
+                            'answer'       => ['alat', 'tool'],
+                            'bloom_reason' => 'Menganalisis asal-usul nama dengan menghubungkan informasi yang berjauhan (nama ongklok disebut di awal bacaan).',
+                            'review'       => [
+                                'status' => 'needs_verification',
+                                'note'   => 'Revisi Oktober 2026: dipindah ke akhir bacaan; kalimat "Keranjang itu bernama ongklok." dihapus, jadi siswa menghubungkan informasi jauh (C4 sungguhan). Perlu dicek ulang peneliti.',
+                            ],
                         ],
                         [   // wnb-2-b07
+                            'key'          => 'wnb-2-b07',
                             'type'         => 'fill_blank_bank',
                             'bloom'        => 'C4',
                             'prompt'       => [
@@ -291,29 +471,36 @@ return [
                 'c' => [
                     'title'       => ['Embun Upas', 'Embun Upas (Mountain Frost)'],
                     'ref'         => $ref['upas'],
-                    'distractors' => [['mencair', 'melts'], ['siang', 'afternoon']],
+                    'distractors' => [['berawan', 'cloudy'], ['siang', 'afternoon']],
+                    // Draft 2 retired wnb-2-c05 and wnb-2-c07 (listed last) and
+                    // added wnb-2-c08 and wnb-2-c09, so every item has an explicit key.
                     'items'       => [
                         [   // wnb-2-c01
+                            'key'          => 'wnb-2-c01',
                             'type'         => 'fill_blank_bank',
-                            'bloom'        => 'C4',
+                            'bloom'        => 'C3',
                             'prompt'       => [
                                 'Pada musim kemarau, langit Dataran Tinggi Dieng sering sangat cerah. Pada malam hari, panas bumi cepat lepas ke angkasa ___ tidak ada awan yang menahannya.',
                                 'In the dry season, the sky over the Dieng Plateau is often very clear. At night, the earth\'s heat escapes quickly into space ___ there are no clouds to hold it in.',
                             ],
                             'answer'       => ['karena', 'because'],
-                            'bloom_reason' => 'Hubungan akibat ← sebab.',
+                            'bloom_reason' => 'Menerapkan kata hubung akibat ← sebab di dalam satu kalimat.',
+                            'review'       => ['status' => 'needs_verification', 'note' => $note['linker']],
                         ],
                         [   // wnb-2-c02
+                            'key'          => 'wnb-2-c02',
                             'type'         => 'fill_blank_bank',
-                            'bloom'        => 'C4',
+                            'bloom'        => 'C3',
                             'prompt'       => [
                                 'Udara dingin lalu turun dan terkumpul di cekungan dataran tinggi, ___ suhu di dekat tanah bisa turun di bawah 0 °C.',
                                 'Cold air then sinks and collects in the hollows of the plateau, ___ the temperature near the ground can drop below 0 °C.',
                             ],
                             'answer'       => ['sehingga', 'so'],
-                            'bloom_reason' => 'Hubungan sebab → akibat.',
+                            'bloom_reason' => 'Menerapkan kata hubung sebab → akibat di dalam satu kalimat.',
+                            'review'       => ['status' => 'needs_verification', 'note' => $note['linker']],
                         ],
                         [   // wnb-2-c03
+                            'key'          => 'wnb-2-c03',
                             'type'         => 'fill_blank_bank',
                             'bloom'        => 'C3',
                             'prompt'       => [
@@ -321,29 +508,37 @@ return [
                                 "At such a low temperature, the morning dew ___ into thin ice.\n\nThe people of Dieng call this thin ice embun upas.",
                             ],
                             'answer'       => ['membeku', 'freezes'],
-                            'bloom_reason' => 'Menerapkan pengetahuan suhu di bawah 0 °C; pengecoh *mencair*.',
+                            'bloom_reason' => 'Menerapkan pengetahuan suhu di bawah 0 °C.',
                         ],
                         [   // wnb-2-c04
+                            'key'          => 'wnb-2-c04',
                             'type'         => 'fill_blank_bank',
-                            'bloom'        => 'C4',
+                            'bloom'        => 'C3',
                             'prompt'       => [
                                 'Bagi wisatawan, embun upas tampak indah, ___ bagi petani es itu bisa merusak daun kentang.',
                                 'To visitors, embun upas looks beautiful, ___ for farmers the ice can damage potato leaves.',
                             ],
                             'answer'       => ['tetapi', 'but'],
-                            'bloom_reason' => 'Hubungan pertentangan dua sudut pandang.',
+                            'bloom_reason' => 'Menerapkan kata hubung pertentangan dua sudut pandang di dalam satu kalimat.',
+                            'review'       => ['status' => 'needs_verification', 'note' => $note['linker']],
                         ],
-                        [   // wnb-2-c05
+                        [   // wnb-2-c08 (replaces wnb-2-c05)
+                            'key'          => 'wnb-2-c08',
                             'type'         => 'fill_blank_bank',
                             'bloom'        => 'C3',
                             'prompt'       => [
-                                'Kata upas dalam bahasa Jawa berarti ___, sebab es itu seolah meracuni tanaman petani.',
-                                'In Javanese, the word upas means ___, because the ice seems to poison the farmers\' plants.',
+                                'Dalam bahasa Jawa, upas berarti racun. Es itu dijuluki begitu karena bisa membuat tanaman kentang ___ lalu mati.',
+                                'In Javanese, upas means poison. The ice got this nickname because it can make potato plants ___ and then die.',
                             ],
-                            'answer'       => ['racun', 'poison'],
-                            'bloom_reason' => 'Menerapkan petunjuk konteks untuk arti kata.',
+                            'answer'       => ['layu', 'wilt'],
+                            'bloom_reason' => 'Menyimpulkan akibat es pada tanaman dari arti kata upas.',
+                            'review'       => [
+                                'status' => 'needs_verification',
+                                'note'   => 'Revisi Oktober 2026: soal baru (C3, menyimpulkan akibat es pada tanaman; menggantikan wnb-2-c05 yang jawabannya tersurat di klausa sebab). Perlu dicek ulang peneliti.',
+                            ],
                         ],
                         [   // wnb-2-c06
+                            'key'          => 'wnb-2-c06',
                             'type'         => 'fill_blank_bank',
                             'bloom'        => 'C3',
                             'prompt'       => [
@@ -353,7 +548,40 @@ return [
                             'answer'       => ['pagi', 'morning'],
                             'bloom_reason' => 'Menerapkan informasi pada rencana kunjungan; pengecoh *siang*.',
                         ],
-                        [   // wnb-2-c07
+                        [   // wnb-2-c09 (replaces wnb-2-c07)
+                            'key'          => 'wnb-2-c09',
+                            'type'         => 'fill_blank_bank',
+                            'bloom'        => 'C4',
+                            'prompt'       => [
+                                'Dari semua keterangan itu, embun upas paling mudah terbentuk setelah malam yang ___.',
+                                'From all this information, embun upas forms most easily after a ___ night.',
+                            ],
+                            'answer'       => ['cerah', 'clear'],
+                            'bloom_reason' => 'Kesimpulan syarat terbentuknya embun upas dari seluruh bacaan; pengecoh *berawan*.',
+                            'review'       => [
+                                'status' => 'needs_verification',
+                                'note'   => 'Revisi Oktober 2026: soal baru (C4, menyimpulkan syarat terbentuknya embun upas dari seluruh bacaan; menggantikan wnb-2-c07). Perlu dicek ulang peneliti.',
+                            ],
+                        ],
+                        [   // wnb-2-c05 · retired
+                            'key'          => 'wnb-2-c05',
+                            'active'       => false,
+                            'type'         => 'fill_blank_bank',
+                            'bloom'        => 'C3',
+                            'prompt'       => [
+                                'Kata upas dalam bahasa Jawa berarti ___, sebab es itu seolah meracuni tanaman petani.',
+                                'In Javanese, the word upas means ___, because the ice seems to poison the farmers\' plants.',
+                            ],
+                            'answer'       => ['racun', 'poison'],
+                            'bloom_reason' => 'Menerapkan petunjuk konteks untuk arti kata.',
+                            'review'       => [
+                                'status' => 'verified',
+                                'note'   => 'Revisi Oktober 2026: diistirahatkan (is_active = 0), diganti wnb-2-c08. Baris tidak dihapus agar data lama tetap tersambung.',
+                            ],
+                        ],
+                        [   // wnb-2-c07 · retired
+                            'key'          => 'wnb-2-c07',
+                            'active'       => false,
                             'type'         => 'fill_blank_bank',
                             'bloom'        => 'C3',
                             'prompt'       => [
@@ -362,6 +590,10 @@ return [
                             ],
                             'answer'       => ['dingin', 'cold'],
                             'bloom_reason' => 'Menerapkan informasi suhu.',
+                            'review'       => [
+                                'status' => 'verified',
+                                'note'   => 'Revisi Oktober 2026: diistirahatkan (is_active = 0), diganti wnb-2-c09. Baris tidak dihapus agar data lama tetap tersambung.',
+                            ],
                         ],
                     ],
                 ],
@@ -392,8 +624,8 @@ return [
                     'A good choice is supported by evidence in the reading, not just because it sounds exciting.',
                 ],
                 [
-                    'Waspadai kata seperti "pasti", "sebarkan!", atau "semua orang juga begitu".',
-                    'Watch out for words like "surely", "share this!", or "everyone does it".',
+                    'Pada pesan berantai, waspadai kata seperti "pasti", "sebarkan!", atau "semua orang juga begitu".',
+                    'In chain messages, watch out for words like "surely", "share this!", or "everyone does it".',
                 ],
             ],
             'variants' => [
@@ -401,8 +633,8 @@ return [
                     'passage' => [
                         'title' => ['Dua Kabar tentang Telaga Warna', 'Two Pieces of News about Telaga Warna'],
                         'body'  => [
-                            "Raka membaca dua kabar tentang Telaga Warna di Dieng. Kabar pertama berasal dari papan informasi pengelola kawasan wisata. Isinya: air Telaga Warna mengandung belerang, sehingga warnanya bisa tampak hijau, kebiruan, atau putih. Air telaga tidak untuk diminum.\n\nKabar kedua adalah pesan berantai di grup percakapan. Pesan itu tidak mencantumkan nama pembuat maupun tanggal. Isinya: \"Minum air Telaga Warna bikin awet muda! Sebarkan ke semua grup!\"\n\nRaka ingin tahu kabar mana yang dapat dipercaya. Ia memeriksa siapa pembuat setiap kabar, lalu bertanya kepada gurunya. Gurunya menjelaskan bahwa air yang mengandung belerang tidak aman untuk diminum.",
-                            "Raka read two pieces of news about Telaga Warna in Dieng. The first came from an information board put up by the managers of the tourist area. It said: the water of Telaga Warna contains sulphur, so its colour can look green, bluish, or white. The lake water is not for drinking.\n\nThe second was a chain message in a chat group. It did not show the name of whoever made it or a date. It said: \"Drinking Telaga Warna water keeps you young! Share this with every group!\"\n\nRaka wanted to know which news he could trust. He checked who had made each piece of news, then asked his teacher. His teacher explained that water containing sulphur is not safe to drink.",
+                            "Raka membaca dua kabar tentang Telaga Warna di Dieng. Kabar pertama berasal dari papan informasi pengelola kawasan wisata. Isinya: air Telaga Warna mengandung belerang, sehingga warnanya bisa tampak hijau, biru, atau kekuningan. Air telaga tidak untuk diminum.\n\nKabar kedua adalah pesan berantai di grup percakapan. Pesan itu tidak mencantumkan nama pembuat maupun tanggal. Isinya: \"Minum air Telaga Warna bikin awet muda! Sebarkan ke semua grup!\"\n\nRaka ingin tahu kabar mana yang dapat dipercaya. Ia memeriksa siapa pembuat setiap kabar, lalu bertanya kepada gurunya. Gurunya menjelaskan bahwa air yang mengandung belerang tidak aman untuk diminum.",
+                            "Raka read two pieces of news about Telaga Warna in Dieng. The first came from an information board put up by the managers of the tourist area. It said: the water of Telaga Warna contains sulphur, so its colour can look green, blue, or yellowish. The lake water is not for drinking.\n\nThe second was a chain message in a chat group. It did not show the name of whoever made it or a date. It said: \"Drinking Telaga Warna water keeps you young! Share this with every group!\"\n\nRaka wanted to know which news he could trust. He checked who had made each piece of news, then asked his teacher. His teacher explained that water containing sulphur is not safe to drink.",
                         ],
                         'ref'   => $ref['news'],
                     ],
@@ -421,10 +653,14 @@ return [
                             'type'   => 'verdict_card',
                             'bloom'  => 'C4',
                             'skill'  => 'membandingkan_informasi',
-                            'answer' => 'salah',
+                            'answer' => 'benar',
                             'prompt' => [
-                                'Kedua kabar sama-sama menyebutkan nama pembuat dan tanggalnya.',
-                                'Both pieces of news show the name of their maker and a date.',
+                                'Kedua kabar sama-sama membicarakan air Telaga Warna, tetapi isinya bertentangan.',
+                                'Both pieces of news talk about the water of Telaga Warna, but they say opposite things.',
+                            ],
+                            'review' => [
+                                'status' => 'needs_verification',
+                                'note'   => 'Revisi v2 (17 Okt 2026): satu pernyataan "sama-sama" kini BENAR, agar kata "sama" tidak selalu berarti salah; kunci salah → benar. | Sebelumnya: Disetujui peneliti sebagai bank soal final penelitian kelas 5 (Oktober 2026).',
                             ],
                         ],
                         [   // wnb-3-a03
@@ -453,18 +689,26 @@ return [
                             'skill'  => 'menilai_pilihan',
                             'answer' => 'salah',
                             'prompt' => [
-                                'Raka sebaiknya langsung menyebarkan pesan berantai itu agar teman-temannya ikut awet muda.',
-                                'Raka should share the chain message straight away so that his friends stay young too.',
+                                'Bertanya kepada teman sekelas akan lebih membantu Raka daripada bertanya kepada guru.',
+                                'Asking a classmate would have helped Raka more than asking his teacher.',
+                            ],
+                            'review' => [
+                                'status' => 'needs_verification',
+                                'note'   => 'Revisi Oktober 2026: pernyataan SALAH baru tanpa kata ekstrem; menilai sumber (guru vs teman) berdasarkan bukti. Perlu dicek ulang peneliti.',
                             ],
                         ],
                         [   // wnb-3-a06
                             'type'   => 'verdict_card',
                             'bloom'  => 'C5',
                             'skill'  => 'menentukan_solusi',
-                            'answer' => 'benar',
+                            'answer' => 'salah',
                             'prompt' => [
-                                'Berdasarkan bukti dalam bacaan, pengunjung yang haus di Telaga Warna sebaiknya membawa air minum sendiri.',
-                                'Based on the evidence in the text, visitors who get thirsty at Telaga Warna should bring their own drinking water.',
+                                'Berdasarkan bukti dalam bacaan, pengunjung yang haus boleh meminum air Telaga Warna asalkan airnya tampak jernih.',
+                                'Based on the evidence in the text, thirsty visitors may drink the water of Telaga Warna as long as it looks clear.',
+                            ],
+                            'review' => [
+                                'status' => 'needs_verification',
+                                'note'   => 'Revisi v2 (17 Okt 2026): solusi SALAH yang masuk akal (air jernih dianggap aman) untuk menjaga imbangan 3 : 3; kunci benar → salah. | Sebelumnya: Disetujui peneliti sebagai bank soal final penelitian kelas 5 (Oktober 2026).',
                             ],
                         ],
                     ],
@@ -473,8 +717,8 @@ return [
                     'passage' => [
                         'title' => ['Berangkat ke Bukit Sikunir', 'Off to Sikunir Hill'],
                         'body'  => [
-                            "Kelas Sinta akan berwisata ke Bukit Sikunir di Desa Sembungan, Wonosobo. Desa Sembungan berada di ketinggian sekitar 2.300 meter dan disebut desa tertinggi di Pulau Jawa. Wisatawan biasanya mendaki Bukit Sikunir sebelum subuh untuk melihat matahari terbit.\n\nPengelola desa wisata memberi pesan: suhu subuh di puncak sangat dingin, jadi bawalah jaket, sarung tangan, dan senter. Setiap tahun sekitar 250.000 wisatawan datang ke Sembungan. Agar alamnya tetap indah, wisatawan diminta membawa pulang sampahnya dan tetap berjalan di jalur yang disediakan.\n\nTeman Sinta, Bayu, berkata, \"Tidak usah bawa jaket. Di puncak pasti hangat seperti di kota.\" Sinta lalu membandingkan ucapan Bayu dengan pesan pengelola. Ia memutuskan tetap membawa jaket.",
-                            "Sinta's class is going on a trip to Sikunir Hill in Sembungan Village, Wonosobo. Sembungan Village is about 2,300 metres high and is called the highest village in Java. Visitors usually climb Sikunir Hill before dawn to watch the sun rise.\n\nThe managers of the tourist village give this advice: dawn at the top is very cold, so bring a jacket, gloves, and a torch. About 250,000 visitors come to Sembungan every year. To keep nature beautiful, visitors are asked to take their rubbish home and to stay on the paths provided.\n\nSinta's friend Bayu said, \"No need for a jacket. It must be warm at the top, just like in town.\" Sinta compared what Bayu said with the managers' advice. She decided to bring her jacket anyway.",
+                            "Kelas Sinta akan berwisata ke Bukit Sikunir di Desa Sembungan, Wonosobo. Desa Sembungan berada di ketinggian sekitar 2.300 meter dan disebut desa tertinggi di Pulau Jawa. Wisatawan biasanya mendaki Bukit Sikunir sebelum subuh untuk melihat matahari terbit.\n\nPengelola desa wisata memberi pesan: suhu subuh di puncak sangat dingin, jadi bawalah jaket, sarung tangan, dan senter. Setiap tahun sekitar 250.000 wisatawan datang ke Sembungan. Agar alamnya tetap indah, wisatawan diminta tetap berjalan di jalur yang disediakan. Di puncak bukit tidak ada tempat sampah.\n\nTeman Sinta, Bayu, berkata, \"Tidak usah bawa jaket. Di puncak pasti hangat seperti di kota.\" Sinta lalu membandingkan ucapan Bayu dengan pesan pengelola. Ia memutuskan tetap membawa jaket.",
+                            "Sinta's class is going on a trip to Sikunir Hill in Sembungan Village, Wonosobo. Sembungan Village is about 2,300 metres high and is called the highest village in Java. Visitors usually climb Sikunir Hill before dawn to watch the sun rise.\n\nThe managers of the tourist village give this advice: dawn at the top is very cold, so bring a jacket, gloves, and a torch. About 250,000 visitors come to Sembungan every year. To keep nature beautiful, visitors are asked to stay on the paths provided. There are no rubbish bins at the top of the hill.\n\nSinta's friend Bayu said, \"No need for a jacket. It must be warm at the top, just like in town.\" Sinta compared what Bayu said with the managers' advice. She decided to bring her jacket anyway.",
                         ],
                         'ref'   => $ref['sikunir'],
                     ],
@@ -501,6 +745,20 @@ return [
                         ],
                         [   // wnb-3-b03
                             'type'   => 'verdict_card',
+                            'bloom'  => 'C4',
+                            'skill'  => 'membandingkan_informasi',
+                            'answer' => 'benar',
+                            'prompt' => [
+                                'Senter perlu dibawa karena pendakian dilakukan sebelum matahari terbit.',
+                                'A torch is needed because the climb happens before sunrise.',
+                            ],
+                            'review' => [
+                                'status' => 'needs_verification',
+                                'note'   => 'Revisi v2 (17 Okt 2026): isi ditukar dengan wnb-3-b04 agar kunci variasi b tidak berselang-seling S-B-S-B-S-B. | Sebelumnya: Disetujui peneliti sebagai bank soal final penelitian kelas 5 (Oktober 2026).',
+                            ],
+                        ],
+                        [   // wnb-3-b04
+                            'type'   => 'verdict_card',
                             'bloom'  => 'C5',
                             'skill'  => 'menilai_pilihan',
                             'answer' => 'salah',
@@ -508,15 +766,9 @@ return [
                                 'Ucapan Bayu adalah bukti yang kuat bahwa puncak Sikunir hangat.',
                                 'Bayu\'s words are strong evidence that the top of Sikunir is warm.',
                             ],
-                        ],
-                        [   // wnb-3-b04
-                            'type'   => 'verdict_card',
-                            'bloom'  => 'C4',
-                            'skill'  => 'membandingkan_informasi',
-                            'answer' => 'benar',
-                            'prompt' => [
-                                'Senter perlu dibawa karena pendakian dilakukan sebelum matahari terbit.',
-                                'A torch is needed because the climb happens before sunrise.',
+                            'review' => [
+                                'status' => 'needs_verification',
+                                'note'   => 'Revisi v2 (17 Okt 2026): isi ditukar dengan wnb-3-b03 agar kunci variasi b tidak berselang-seling S-B-S-B-S-B. | Sebelumnya: Disetujui peneliti sebagai bank soal final penelitian kelas 5 (Oktober 2026).',
                             ],
                         ],
                         [   // wnb-3-b05
@@ -525,8 +777,12 @@ return [
                             'skill'  => 'menilai_pilihan',
                             'answer' => 'salah',
                             'prompt' => [
-                                'Membuat jalan pintas lewat ladang warga agar cepat sampai di puncak adalah pilihan yang baik.',
-                                'Making a shortcut through the villagers\' fields to reach the top faster is a good choice.',
+                                'Karena wisatawan di Sembungan sangat banyak, keluar sebentar dari jalur untuk berfoto bukanlah masalah.',
+                                'Because Sembungan has so many visitors, leaving the path for a moment to take a photo is not a problem.',
+                            ],
+                            'review' => [
+                                'status' => 'needs_verification',
+                                'note'   => 'Revisi Oktober 2026: pernyataan SALAH baru tanpa kata ekstrem; memakai alasan jumlah wisatawan yang masuk akal di permukaan. Perlu dicek ulang peneliti.',
                             ],
                         ],
                         [   // wnb-3-b06
@@ -538,6 +794,10 @@ return [
                                 'Karena wisatawannya sangat banyak, solusi yang tepat agar Sikunir tetap bersih adalah setiap wisatawan membawa pulang sampahnya sendiri.',
                                 'Because there are so many visitors, the right solution to keep Sikunir clean is for every visitor to take their own rubbish home.',
                             ],
+                            'review' => [
+                                'status' => 'needs_verification',
+                                'note'   => 'Revisi Oktober 2026: solusi tidak lagi tersurat di bacaan (pesan membawa pulang sampah dihapus, diganti fakta tidak ada tempat sampah); kini sungguh C5. Perlu dicek ulang peneliti.',
+                            ],
                         ],
                     ],
                 ],
@@ -545,8 +805,8 @@ return [
                     'passage' => [
                         'title' => ['Kabar tentang Kawah', 'News about the Crater'],
                         'body'  => [
-                            "Dataran Tinggi Dieng terbentuk oleh kegiatan gunung api. Karena itu, di sana ada beberapa kawah. Di sekitar kawah dapat keluar gas yang berbahaya bagi kesehatan. Petugas memasang rambu dan pagar pembatas agar pengunjung tetap berada pada jarak aman.\n\nSuatu hari, keluarga Dimas hendak berwisata ke sebuah kawah di Dieng. Pagi itu, beredar pesan berantai tanpa nama pembuat: \"Kawah aman kok, dekati saja biar fotonya bagus!\" Pada saat yang sama, akun resmi badan gunung api (PVMBG) mengumumkan bahwa pengunjung harus mengikuti rambu dan menjaga jarak aman dari kawah.\n\nDimas membandingkan kedua kabar itu. Ia melihat bahwa pengumuman resmi menyebutkan lembaga pembuatnya, sedangkan pesan berantai tidak. Keluarga Dimas akhirnya tetap berwisata, tetapi mereka berdiri di belakang pagar pembatas saat berfoto.",
-                            "The Dieng Plateau was formed by volcanic activity. That is why it has several craters. Gas that is harmful to health can come out around the craters. Officers put up signs and safety fences so that visitors stay a safe distance away.\n\nOne day, Dimas's family planned to visit a crater in Dieng. That morning, a chain message with no maker's name was spreading: \"The crater is safe, just go close for a nice photo!\" At the same time, the official account of the volcano agency (PVMBG) announced that visitors must follow the signs and keep a safe distance from the crater.\n\nDimas compared the two pieces of news. He noticed that the official announcement named the agency that made it, but the chain message did not. In the end, Dimas's family still went on the trip, but they stood behind the safety fence when taking photos.",
+                            "Dataran Tinggi Dieng terbentuk oleh kegiatan gunung api. Karena itu, di sana ada beberapa kawah. Di sekitar kawah dapat keluar gas yang berbahaya bagi kesehatan. Petugas memasang rambu dan pagar pembatas agar pengunjung tetap berada pada jarak aman.\n\nSuatu hari, keluarga Dinda hendak berwisata ke sebuah kawah di Dieng. Pagi itu, beredar pesan berantai tanpa nama pembuat: \"Kawah aman kok, dekati saja biar fotonya bagus!\" Pada saat yang sama, akun resmi badan gunung api (PVMBG) mengumumkan bahwa pengunjung harus mengikuti rambu dan menjaga jarak aman dari kawah.\n\nDinda membandingkan kedua kabar itu. Ia melihat bahwa pengumuman resmi menyebutkan lembaga pembuatnya, sedangkan pesan berantai tidak. Keluarga Dinda akhirnya tetap berwisata, tetapi mereka berdiri di belakang pagar pembatas saat berfoto.",
+                            "The Dieng Plateau was formed by volcanic activity. That is why it has several craters. Gas that is harmful to health can come out around the craters. Officers put up signs and safety fences so that visitors stay a safe distance away.\n\nOne day, Dinda's family planned to visit a crater in Dieng. That morning, a chain message with no maker's name was spreading: \"The crater is safe, just go close for a nice photo!\" At the same time, the official account of the volcano agency (PVMBG) announced that visitors must follow the signs and keep a safe distance from the crater.\n\nDinda compared the two pieces of news. She noticed that the official announcement named the agency that made it, but the chain message did not. In the end, Dinda's family still went on the trip, but they stood behind the safety fence when taking photos.",
                         ],
                         'ref'   => $ref['news'],
                     ],
@@ -567,8 +827,12 @@ return [
                             'skill'  => 'menilai_pilihan',
                             'answer' => 'salah',
                             'prompt' => [
-                                'Pesan berantai lebih dapat dipercaya karena isinya membuat foto lebih bagus.',
-                                'The chain message is more trustworthy because it helps you take nicer photos.',
+                                'Pesan berantai itu dapat dipercaya karena sudah banyak beredar pagi itu.',
+                                'The chain message can be trusted because it was spreading widely that morning.',
+                            ],
+                            'review' => [
+                                'status' => 'needs_verification',
+                                'note'   => 'Revisi Oktober 2026: pernyataan SALAH baru tanpa kata ekstrem; menguji alasan keliru (banyak beredar = benar). Perlu dicek ulang peneliti.',
                             ],
                         ],
                         [   // wnb-3-c03
@@ -583,12 +847,16 @@ return [
                         ],
                         [   // wnb-3-c04
                             'type'   => 'verdict_card',
-                            'bloom'  => 'C4',
-                            'skill'  => 'membandingkan_informasi',
+                            'bloom'  => 'C5',
+                            'skill'  => 'menilai_pilihan',
                             'answer' => 'benar',
                             'prompt' => [
-                                'Rambu dan pagar pembatas dipasang karena gas di sekitar kawah dapat berbahaya.',
-                                'The signs and safety fences are put up because the gas around the crater can be harmful.',
+                                'Rambu dan pagar dari petugas lebih pantas diikuti daripada pesan berantai, karena petugas mengetahui bahaya gas di kawah.',
+                                'The officers\' signs and fences deserve to be followed more than the chain message, because the officers know about the dangerous gas at the crater.',
+                            ],
+                            'review' => [
+                                'status' => 'needs_verification',
+                                'note'   => 'Revisi Oktober 2026: pernyataan BENAR baru tingkat C5 (menilai sumber mana yang pantas diikuti); menggantikan sebab–akibat tersurat. Perlu dicek ulang peneliti.',
                             ],
                         ],
                         [   // wnb-3-c05
@@ -597,8 +865,12 @@ return [
                             'skill'  => 'menilai_pilihan',
                             'answer' => 'salah',
                             'prompt' => [
-                                'Berfoto di belakang pagar pembatas adalah pilihan yang tidak aman.',
-                                'Taking photos behind the safety fence is an unsafe choice.',
+                                'Keluarga Dinda boleh mendekati kawah asalkan cuaca pagi itu cerah.',
+                                'Dinda\'s family may go near the crater as long as the morning weather is clear.',
+                            ],
+                            'review' => [
+                                'status' => 'needs_verification',
+                                'note'   => 'Revisi Oktober 2026: pernyataan SALAH baru tanpa kata ekstrem; syarat palsu (cuaca cerah). Perlu dicek ulang peneliti.',
                             ],
                         ],
                         [   // wnb-3-c06
@@ -607,8 +879,12 @@ return [
                             'skill'  => 'menentukan_solusi',
                             'answer' => 'salah',
                             'prompt' => [
-                                'Berdasarkan bukti dalam bacaan, keluarga Dimas sebaiknya membatalkan wisata karena semua kawah pasti berbahaya.',
-                                'Based on the evidence in the text, Dimas\'s family should cancel the trip because every crater is surely dangerous.',
+                                'Berdasarkan bukti dalam bacaan, keluarga Dinda harus membatalkan wisata karena pengumuman resmi melarang pengunjung datang ke kawah.',
+                                'Based on the evidence in the text, Dinda\'s family must cancel the trip because the official announcement bans visitors from coming to the crater.',
+                            ],
+                            'review' => [
+                                'status' => 'needs_verification',
+                                'note'   => 'Revisi v2 (17 Okt 2026): premis keliru ("pengumuman resmi melarang datang") menggantikan "sebaiknya membatalkan wisata", yang bisa mengajarkan bahwa sikap hati-hati itu salah. | Sebelumnya: Revisi Oktober 2026: pernyataan SALAH baru tanpa "pasti/semua"; tokoh Dimas → Dinda. Perlu dicek ulang peneliti.',
                             ],
                         ],
                     ],
@@ -649,7 +925,7 @@ return [
                     'items' => [
                         [   // wnb-4-a01
                             'type'   => 'find_object',
-                            'bloom'  => 'C4',
+                            'bloom'  => 'C3',
                             'x'      => 31,
                             'y'      => 26,
                             'w'      => 10,
@@ -658,10 +934,11 @@ return [
                                 'Find the musical instrument shaped like a curved hood of woven bamboo. The hood once protected duck herders from the sun and rain, and then strings were added to pluck.',
                             ],
                             'media'  => ['key' => 'challenge.item.wnb-4-a01', 'label' => 'Bundengan', 'note' => 'bundengan (tudung bambu lengkung bersenar)'],
+                            'review' => ['status' => 'needs_verification', 'note' => $note['hunt']],
                         ],
                         [   // wnb-4-a02
                             'type'   => 'find_object',
-                            'bloom'  => 'C4',
+                            'bloom'  => 'C3',
                             'x'      => 75,
                             'y'      => 41.5,
                             'w'      => 10,
@@ -670,10 +947,11 @@ return [
                                 'Find the mountain fruit that looks like a papaya but is small. It grows well in cool air and is often made into sweets.',
                             ],
                             'media'  => ['key' => 'challenge.item.wnb-4-a02', 'label' => 'Buah carica', 'note' => 'beberapa buah carica kuning kecil'],
+                            'review' => ['status' => 'needs_verification', 'note' => $note['hunt']],
                         ],
                         [   // wnb-4-a03
                             'type'   => 'find_object',
-                            'bloom'  => 'C4',
+                            'bloom'  => 'C3',
                             'x'      => 35,
                             'y'      => 41.5,
                             'w'      => 10,
@@ -682,6 +960,7 @@ return [
                                 'Find the small bamboo basket that is dipped again and again into boiling water. Its name was used to name Wonosobo\'s special noodles.',
                             ],
                             'media'  => ['key' => 'challenge.item.wnb-4-a03', 'label' => 'Keranjang ongklok', 'note' => 'keranjang ongklok bambu kecil bergagang'],
+                            'review' => ['status' => 'needs_verification', 'note' => $note['hunt']],
                         ],
                         [   // wnb-4-a04
                             'type'   => 'find_object',

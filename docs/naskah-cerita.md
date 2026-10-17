@@ -117,37 +117,37 @@ Wajib ditonton pada kesempatan pertama. Pemain tetap dapat menekan Lanjut di set
 #### `intro-01` · Narator · efek `glow`
 **Judul:** Dataran yang Bercahaya / *The Shining Plain*
 
-**ID:** Dahulu kala, di antara Gunung Sindoro, Sumbing, Merapi, Merbabu, dan Perbukitan Menoreh, terbentang Dataran Kedu. Setiap malam, desa-desanya diterangi cahaya lembut yang disebut Cahaya Kedu.
+**ID:** Dahulu kala, ada dataran luas bernama Dataran Kedu. Di sekelilingnya berdiri Gunung Sindoro, Sumbing, Merapi, Merbabu, dan Perbukitan Menoreh. Setiap malam, desa-desanya diterangi cahaya lembut yang disebut Cahaya Kedu.
 
-**EN:** Long ago, surrounded by Mount Sindoro, Mount Sumbing, Mount Merapi, Mount Merbabu, and the Menoreh Hills, lay the Kedu Plain. Every night, its villages glowed with a gentle light called the Light of Kedu.
+**EN:** Long ago, there was a wide plain called the Kedu Plain. Around it stood Mount Sindoro, Mount Sumbing, Mount Merapi, Mount Merbabu, and the Menoreh Hills. Every night, its villages glowed with a gentle light called the Light of Kedu.
 
 #### `intro-02` · Narator
 **Judul:** Cahaya dari Ilmu dan Budaya / *A Light of Knowledge and Culture*
 
-**ID:** Cahaya itu lahir dari ilmu dan budaya: dari dongeng para kakek dan nenek, dari relief Candi Borobudur, dari tembang para petani, dan dari setiap tulisan yang dibaca dengan teliti. Cahaya itu disimpan di dalam sebuah lentera tua bernama Lentera Kedu.
+**ID:** Cahaya itu lahir dari ilmu dan budaya. Ia datang dari dongeng para kakek dan nenek, dari relief Candi Borobudur, dan dari tembang para petani. Ia juga menyala setiap kali seseorang membaca dengan teliti. Cahaya itu disimpan di dalam sebuah lentera tua bernama Lentera Kedu.
 
-**EN:** That light was born from knowledge and culture: from grandparents' tales, from the reliefs of Borobudur Temple, from the songs of the farmers, and from every piece of writing read with care. It was kept inside an old lantern called the Lantern of Kedu.
+**EN:** That light was born from knowledge and culture. It came from grandparents' tales, from the reliefs of Borobudur Temple, and from the songs of the farmers. It also shone every time someone read with care. The light was kept inside an old lantern called the Lantern of Kedu.
 
 #### `intro-03` · Narator · efek `fog`
 **Judul:** Kabut Lupa / *The Mist of Forgetting*
 
-**ID:** Namun perlahan, orang-orang mulai lupa. Mereka membaca dengan terburu-buru, memercayai kabar tanpa memeriksanya, dan meninggalkan cerita para leluhur. Dari kelupaan itu, naiklah kabut kelabu yang dingin: Kabut Lupa.
+**ID:** Namun perlahan, orang-orang mulai lupa. Mereka membaca dengan terburu-buru, memercayai kabar tanpa memeriksanya, dan meninggalkan cerita para leluhur. Dari kebiasaan itu, naiklah kabut kelabu yang dingin. Namanya Kabut Lupa.
 
-**EN:** But slowly, people began to forget. They read in a hurry, believed news without checking it, and left their ancestors' stories behind. From all that forgetting rose a cold grey mist: the Mist of Forgetting.
+**EN:** But slowly, people began to forget. They read in a hurry, believed news without checking it, and left their ancestors' stories behind. From those habits, a cold grey mist rose up. It was called the Mist of Forgetting.
 
 #### `intro-04` · Narator · efek `shake`
 **Judul:** Malam Lentera Retak / *The Night the Lantern Cracked*
 
-**ID:** Pada suatu malam, Kabut Lupa membelit Lentera Kedu. Kacanya retak, apinya bergetar, lalu cahayanya pecah! Dua belas Serpihan Cahaya melesat ke langit dan jatuh di Temanggung, Magelang, dan Wonosobo.
+**ID:** Pada suatu malam, Kabut Lupa melilit Lentera Kedu. Kacanya retak, apinya bergetar, lalu cahayanya pecah! Dua belas Serpihan Cahaya melesat ke langit dan jatuh di Temanggung, Magelang, dan Wonosobo.
 
 **EN:** One night, the Mist of Forgetting coiled around the Lantern of Kedu. Its glass cracked, its flame trembled, and then its light shattered! Twelve Shards of Light shot into the sky and fell across Temanggung, Magelang, and Wonosobo.
 
 #### `intro-05` · Mbah Kedu · pose `weak` · efek `dim`
 **Judul:** Penjaga yang Menua / *The Ageing Keeper*
 
-**ID:** Aku Mbah Kedu, penjaga lentera ini. Kakiku sudah terlalu tua untuk berjalan jauh, dan setiap kali cahayanya meredup, tubuhku ikut melemah. Aku butuh anak yang berani dan mau membaca dengan sungguh-sungguh.
+**ID:** Aku Mbah Kedu, penjaga lentera ini. Kakiku sudah tua, jadi aku hanya bisa menemanimu pelan-pelan. Setiap kali cahayanya meredup, tubuhku ikut melemah. Aku butuh anak yang berani dan mau membaca dengan sungguh-sungguh.
 
-**EN:** I am Mbah Kedu, which means Grandpa Kedu, the keeper of this lantern. My legs are too old to walk far, and each time its light fades, my body grows weaker too. I need a child who is brave and willing to read with all their heart.
+**EN:** I am Mbah Kedu, which means Grandpa Kedu, the keeper of this lantern. My legs are old, so I can only walk slowly beside you. Each time its light fades, my body grows weaker too. I need a child who is brave and willing to read with all their heart.
 
 #### `intro-06` · Jaka · pose `determined` · efek `glow`
 **Judul:** Jaka, Pembawa Lentera / *Jaka, the Lantern Bearer*
@@ -166,9 +166,9 @@ Wajib ditonton pada kesempatan pertama. Pemain tetap dapat menekan Lanjut di set
 #### `intro-08` · Mbah Kedu · pose `smile`
 **Judul:** Tiga Kunci Cahaya / *Three Keys of Light*
 
-**ID:** Ingat tiga kunci ini, Le. Di Temanggung, temukan informasi yang tertulis jelas. Di Magelang, hubungkan informasi dan bedakan fakta dari pendapat. Di Wonosobo, nilailah setiap kabar sebelum kamu memercayainya.
+**ID:** Ingat tiga kunci ini, Le. Di Temanggung, temukan informasi yang tertulis jelas. Di Magelang, hubungkan informasi dan bedakan fakta dari pendapat. Di Wonosobo, periksa dan timbang setiap kabar sebelum kamu memercayainya.
 
-**EN:** Remember these three keys, my boy. In Temanggung, find the information that is clearly written. In Magelang, connect information and tell facts from opinions. In Wonosobo, judge every piece of news before you believe it.
+**EN:** Remember these three keys, my boy. In Temanggung, find the information that is clearly written. In Magelang, connect information and tell facts from opinions. In Wonosobo, check and weigh every piece of news before you believe it.
 
 #### `intro-09` · Narator · efek `glow`
 **Judul:** Perjalanan Dimulai / *The Journey Begins*
@@ -186,9 +186,9 @@ Diputar otomatis setelah loading "Membuka Peta Kedu". Pada kunjungan berikutnya,
 #### `peta-01` · Jaka · pose `idle` · efek `fog`
 **Judul:** Dataran Kedu / *The Kedu Plain*
 
-**ID:** Inilah Dataran Kedu. Dulu lembah ini menyimpan cahaya ilmu dan budaya. Sekarang lihatlah... Kabut Lupa menutupi hampir semuanya.
+**ID:** Inilah Dataran Kedu. Dulu dataran ini menyimpan cahaya ilmu dan budaya. Sekarang lihatlah... Kabut Lupa menutupi hampir semuanya.
 
-**EN:** This is the Kedu Plain. This valley once held the light of knowledge and culture. Now look... the Mist of Forgetting covers almost all of it.
+**EN:** This is the Kedu Plain. This plain once held the light of knowledge and culture. Now look... the Mist of Forgetting covers almost all of it.
 
 #### `peta-02` · Jaka · pose `determined`
 **Judul:** Tiga Wilayah / *Three Regions*
@@ -215,30 +215,30 @@ Mbah Kedu memperkenalkan geografi dan budaya tiap wilayah. Narasi ini dibuka dar
 #### `kenal-temanggung-01` · Mbah Kedu · pose `smile`
 **Judul:** Di Antara Dua Gunung / *Between Two Mountains*
 
-**ID:** Inilah Temanggung, Le. Tanahnya diapit dua gunung, Sindoro dan Sumbing. Kalau pagi cerah, kedua puncaknya tampak berdiri berdampingan, seperti kakak dan adik yang saling menjaga.
+**ID:** Inilah Temanggung, Le. Tanahnya diapit dua gunung, Sindoro dan Sumbing. Kalau pagi cerah, kedua puncaknya tampak berdiri berdampingan, seperti kakak dan adik yang saling menjaga. Di lereng Sindoro ada mata air Umbul Jumprit, hulu Sungai Progo.
 
-**EN:** This is Temanggung, my boy. It lies between two mountains, Sindoro and Sumbing. On a clear morning, their peaks stand side by side, like an older and a younger sibling looking after each other.
+**EN:** This is Temanggung, my boy. It lies between two mountains, Sindoro and Sumbing. On a clear morning, their peaks stand side by side, like an older and a younger sibling looking after each other. On the slopes of Sindoro is the Umbul Jumprit spring, the source of the Progo River.
 
 #### `kenal-temanggung-02` · Mbah Kedu · pose `idle`
 **Judul:** Tanah Para Petani / *Land of Farmers*
 
-**ID:** Tanah di lereng gunung ini sangat subur. Para petani menanam tembakau, kopi, dan sayuran. Kopi dari lereng Sindoro dan Sumbing terkenal harum sampai ke luar daerah.
+**ID:** Tanah di lereng gunung ini sangat subur. Para petani menanam tembakau, kopi, dan sayuran. Kopi dari lereng Sindoro dan Sumbing terkenal harum sampai ke luar daerah. Sungai-sungainya yang jernih menjadi rumah ikan uceng, ikan sungai yang kecil. Uceng goreng adalah makanan khas Temanggung.
 
-**EN:** The soil on these mountain slopes is very fertile. Farmers grow tobacco, coffee, and vegetables. Coffee from the slopes of Sindoro and Sumbing is famous for its aroma, even far beyond the region.
+**EN:** The soil on these mountain slopes is very fertile. Farmers grow tobacco, coffee, and vegetables. Coffee from the slopes of Sindoro and Sumbing is famous for its aroma, even far beyond the region. Its clear rivers are home to the uceng, a small river fish. Fried uceng is a special dish of Temanggung.
 
 #### `kenal-temanggung-03` · Mbah Kedu · pose `idle`
 **Judul:** Jejak Masa Lalu / *Traces of the Past*
 
-**ID:** Temanggung juga menyimpan jejak masa lalu. Ada Situs Liyangan, permukiman kuno yang pernah tertimbun material letusan Gunung Sindoro. Ada pula Candi Pringapus, dan Prasasti Gondosuli yang dibuat pada tahun 832 Masehi.
+**ID:** Temanggung juga menyimpan jejak masa lalu. Ada Situs Liyangan, permukiman kuno yang pernah tertimbun pasir dan batu dari letusan Gunung Sindoro. Ada pula Candi Pringapus dengan arca lembu Nandi di dalamnya, dan Prasasti Gondosuli yang dibuat pada tahun 832 Masehi.
 
-**EN:** Temanggung also keeps traces of the past. There is the Liyangan Site, an ancient settlement once buried by material from an eruption of Mount Sindoro. There is also Pringapus Temple, and the Gondosuli Inscription, made in the year 832 CE.
+**EN:** Temanggung also keeps traces of the past. There is the Liyangan Site, an ancient settlement once buried under sand and stones from an eruption of Mount Sindoro. There is also Pringapus Temple, with a statue of Nandi the bull inside, and the Gondosuli Inscription, made in the year 832 CE.
 
 #### `kenal-temanggung-04` · Mbah Kedu · pose `smile` · efek `glow`
 **Judul:** Pesan Mbah / *Mbah's Advice*
 
-**ID:** Saat ada perayaan, warga menari jaran kepang diiringi kendang dan gamelan. Di sini kamu akan belajar menemukan informasi yang tertulis jelas dari gambar, teks pendek, dan suara. Jawabannya sering ada di depan mata, asal kamu membacanya dengan teliti.
+**ID:** Saat ada perayaan, warga menari kuda lumping, yang juga disebut jaran kepang. Penarinya menunggang kuda kepang, kuda-kudaan dari anyaman bambu. Di sini kamu belajar menemukan informasi yang tertulis jelas di gambar, teks pendek, dan suara. Bacalah dengan teliti karena jawabannya sering ada di depan mata.
 
-**EN:** At celebrations, people dance the jaran kepang, the hobby-horse dance, to the beat of drums and gamelan. Here you will learn to find information that is clearly stated in pictures, short texts, and sounds. The answer is often right in front of you, as long as you read carefully.
+**EN:** At celebrations, people dance the kuda lumping, also called jaran kepang. The dancers ride a kuda kepang, a horse made of woven bamboo. Here you will learn to find information that is clearly stated in pictures, short texts, and sounds. Read carefully, because the answer is often right in front of you.
 
 ### Magelang
 
@@ -259,16 +259,16 @@ Mbah Kedu memperkenalkan geografi dan budaya tiap wilayah. Narasi ini dibuka dar
 #### `kenal-magelang-03` · Mbah Kedu · pose `idle`
 **Judul:** Tiga Candi Segaris / *Three Temples in a Line*
 
-**ID:** Tak jauh dari Borobudur ada Candi Mendut dan Candi Pawon. Ketiganya berdiri hampir segaris. Di tengah kota ada Gunung Tidar, yang dalam cerita rakyat dijuluki paku tanah Jawa.
+**ID:** Tak jauh dari Borobudur ada Candi Mendut dan Candi Pawon. Ketiganya berdiri hampir segaris. Setiap Waisak, umat Buddha berjalan dari Mendut ke Borobudur membawa air suci dari Umbul Jumprit, Temanggung. Di tengah kota ada Gunung Tidar, si paku tanah Jawa dalam cerita rakyat.
 
-**EN:** Not far from Borobudur stand Mendut Temple and Pawon Temple. The three temples stand almost in a straight line. In the middle of the city is Mount Tidar, which folk tales call the nail of the land of Java.
+**EN:** Not far from Borobudur stand Mendut Temple and Pawon Temple. The three temples stand almost in a straight line. Every Vesak, Buddhists walk from Mendut to Borobudur carrying holy water from Umbul Jumprit in Temanggung. In the middle of the city is Mount Tidar, the nail of Java in folk tales.
 
 #### `kenal-magelang-04` · Mbah Kedu · pose `smile` · efek `glow`
 **Judul:** Pesan Mbah / *Mbah's Advice*
 
-**ID:** Jangan lewatkan tari Topeng Ireng yang gagah, dengan hiasan kepala berbulu warna-warni. Di Magelang, satu informasi saja tidak cukup. Kamu harus menghubungkan beberapa informasi, lalu membedakan mana fakta dan mana pendapat.
+**ID:** Jangan lewatkan tari Topeng Ireng yang gagah. Penarinya memakai kuluk, hiasan kepala dari bulu warna-warni. Di Magelang, satu informasi saja tidak cukup. Kamu harus menghubungkan beberapa informasi, lalu membedakan mana fakta dan mana pendapat.
 
-**EN:** Don't miss the bold Topeng Ireng dance, with its colourful feathered headdresses. In Magelang, one piece of information is not enough. You must connect several pieces of information, then tell which are facts and which are opinions.
+**EN:** Don't miss the bold Topeng Ireng dance. The dancers wear a kuluk, a headdress of colourful feathers. In Magelang, one piece of information is not enough. You must connect several pieces of information, then tell which are facts and which are opinions.
 
 ### Wonosobo
 
@@ -280,25 +280,25 @@ Mbah Kedu memperkenalkan geografi dan budaya tiap wilayah. Narasi ini dibuka dar
 **EN:** Wonosobo is the gateway to the Dieng Plateau, known as the land above the clouds. It is so high up that clouds and mist often drift between people's houses.
 
 #### `kenal-wonosobo-02` · Mbah Kedu · pose `idle`
-**Judul:** Candi dan Telaga / *Temples and a Lake*
+**Judul:** Candi, Telaga, dan Tradisi / *Temples, a Lake, and a Tradition*
 
-**ID:** Di Dieng berdiri kompleks Candi Arjuna, salah satu candi Hindu tertua di Jawa. Ada juga Telaga Warna. Airnya mengandung belerang, sehingga warnanya bisa tampak hijau, biru, atau kekuningan.
+**ID:** Di Dieng berdiri kompleks Candi Arjuna, salah satu candi Hindu tertua di Jawa. Ada juga Telaga Warna, yang airnya mengandung belerang sehingga bisa tampak hijau, biru, atau kekuningan. Warga Dieng juga punya tradisi memotong rambut gimbal, yaitu rambut yang menggumpal dengan sendirinya, pada anak-anak.
 
-**EN:** On Dieng stands the Arjuna Temple complex, one of the oldest Hindu temples in Java. There is also Telaga Warna, the Lake of Colours. Its water contains sulphur, so it can look green, blue, or yellowish.
+**EN:** On Dieng stands the Arjuna Temple complex, one of the oldest Hindu temples in Java. There is also Telaga Warna, the Lake of Colours, whose sulphurous water can look green, blue, or yellowish. The people of Dieng also keep a tradition of cutting the naturally matted hair of some children.
 
 #### `kenal-wonosobo-03` · Mbah Kedu · pose `idle`
 **Judul:** Hangatnya Budaya Pegunungan / *The Warmth of Mountain Culture*
 
-**ID:** Udara di sini dingin sekali. Untuk menghangatkan badan, warga menyantap mi ongklok yang berkuah kental, lalu menikmati manisan carica, si pepaya gunung. Ada pula tari Lengger dan tradisi ruwatan anak berambut gimbal.
+**ID:** Udara di sini dingin sekali. Warga menghangatkan badan dengan teh dari kebun Tambi dan mi ongklok berkuah kental. Mi itu direbus di ongklok, keranjang bambu kecil yang dicelup-celupkan ke air mendidih. Ada juga manisan carica, si pepaya gunung.
 
-**EN:** The air here is very cold. To warm up, people eat mie ongklok, noodles in a thick sauce, and enjoy sweet carica, the mountain papaya. There is also the Lengger dance and the ruwatan ceremony for children with naturally matted hair.
+**EN:** The air here is very cold. People warm up with tea from the Tambi estate and ongklok noodles in a thick sauce. The noodles are boiled in an ongklok, a small bamboo basket dipped into boiling water. There is also sweet carica, the mountain papaya.
 
 #### `kenal-wonosobo-04` · Mbah Kedu · pose `worried` · efek `fog`
 **Judul:** Pesan Mbah / *Mbah's Advice*
 
-**ID:** Di sinilah Kabut Lupa paling tebal, Le. Kamu akan menemukan banyak kabar, dan tidak semuanya benar. Periksa sumbernya, timbang alasannya, lalu putuskan dengan bijak.
+**ID:** Di sini ada tari Topeng Lengger dan bundengan, alat musik dari tudung bambu penggembala bebek. Tapi di sinilah Kabut Lupa paling tebal, Le. Kamu akan menemukan banyak kabar, dan tidak semuanya benar. Periksa sumbernya, timbang alasannya, lalu putuskan dengan bijak.
 
-**EN:** This is where the Mist of Forgetting is thickest, my boy. You will come across a lot of news, and not all of it is true. Check the source, weigh the reasons, then decide wisely.
+**EN:** Here you will find the Topeng Lengger mask dance and the bundengan, an instrument made from a duck herder's bamboo hood. But this is also where the Mist of Forgetting is thickest, my boy. You will come across a lot of news, and not all of it is true. Check the source, weigh the reasons, then decide wisely.
 
 ---
 
@@ -329,9 +329,9 @@ Tampil setiap kali wilayah baru terbuka (aturan dialog gate). Jaka berdiri di ki
 **EN:** Lost? How, Mbah? Isn't there a signpost at every crossroads?
 
 #### `dialog-temanggung-05` · Mbah Kedu · pose `worried`
-**ID:** Ada. Tapi kabut membuat tulisannya samar. Orang hanya melirik sekilas, lalu menebak arah. Satu tebakan keliru, dan mereka berputar-putar di ladang sampai senja.
+**ID:** Ada. Tapi kabut membuat tulisannya samar. Orang hanya melirik sekilas, lalu menebak arah. Kalau tebakannya keliru, mereka bisa berputar-putar di ladang sampai senja.
 
-**EN:** There is. But the mist makes the writing faint. People only glance at it, then guess the way. One wrong guess, and they wander in circles through the fields until dusk.
+**EN:** There is. But the mist makes the writing faint. People only glance at it, then guess the way. If they guess wrong, they can wander in circles through the fields until dusk.
 
 #### `dialog-temanggung-06` · Jaka · pose `determined` · efek `glow`
 **ID:** Kalau begitu kita harus cepat, Mbah! Aku langsung cari serpihannya saja. Pasti ada yang bersinar di balik kabut!
@@ -339,9 +339,9 @@ Tampil setiap kali wilayah baru terbuka (aturan dialog gate). Jaka berdiri di ki
 **EN:** Then we have to hurry, Mbah! I'll just go straight for the shards. Something must be shining behind the mist!
 
 #### `dialog-temanggung-07` · Jaka · pose `happy`
-**ID:** Lihat, ada papan petunjuk! Panahnya ke kanan... Ayo, Mbah, lewat sini!
+**ID:** Lihat, ada papan petunjuk! Tulisannya "Jembatan", panahnya ke kanan... Ayo, Mbah, lewat sini!
 
-**EN:** Look, a signpost! The arrow points right... Come on, Mbah, this way!
+**EN:** Look, a signpost! It says "Bridge", and the arrow points right... Come on, Mbah, this way!
 
 #### `dialog-temanggung-08` · Mbah Kedu · pose `worried` · efek `shake`
 **ID:** Tunggu, Le! Berhenti! Jangan hanya melihat panahnya. Baca dulu seluruh tulisannya.
@@ -349,14 +349,14 @@ Tampil setiap kali wilayah baru terbuka (aturan dialog gate). Jaka berdiri di ki
 **EN:** Wait, my boy! Stop! Don't just look at the arrow. Read all the words first.
 
 #### `dialog-temanggung-09` · Jaka · pose `sad`
-**ID:** "Jembatan rusak. Silakan lewat kiri." Aduh... Kalau tadi aku berlari ke kanan, kita bisa terperosok ke sungai.
+**ID:** "Jembatan rusak! Silakan lewat jalan kiri." Aduh... Kalau tadi aku langsung berlari ke kanan, kita bisa tercebur ke sungai.
 
-**EN:** "Bridge broken. Please go left." Oh no... If I had run to the right, we could have fallen into the river.
+**EN:** "Bridge broken! Please take the left path." Oh no... If I had run straight to the right, we could have fallen into the river.
 
 #### `dialog-temanggung-10` · Mbah Kedu · pose `smile`
-**ID:** Nah. Mata yang terburu-buru melewatkan jawaban yang tertulis jelas. Kabut Lupa paling senang pada anak yang tidak sabar.
+**ID:** Nah. Mata yang terburu-buru melewatkan jawaban yang tertulis jelas. Kabut Lupa paling senang kalau kita terburu-buru.
 
-**EN:** There, you see. Hurried eyes miss answers that are written clearly. The Mist of Forgetting loves an impatient child most of all.
+**EN:** There, you see. Hurried eyes miss answers that are written clearly. The Mist of Forgetting is happiest when we rush.
 
 #### `dialog-temanggung-11` · Jaka · pose `sad`
 **ID:** Maaf, Mbah. Aku cuma ingin cepat-cepat menolong semua orang.
@@ -391,14 +391,14 @@ Tampil setiap kali wilayah baru terbuka (aturan dialog gate). Jaka berdiri di ki
 **EN:** Mbah, look at my lantern! The shards from Temanggung are glowing inside it. Magelang will be easy!
 
 #### `dialog-magelang-02` · Mbah Kedu · pose `idle`
-**ID:** Jangan cepat merasa hebat, Le. Kabut di Magelang punya tipu daya yang lain.
+**ID:** Jangan cepat merasa hebat, Le. Kabut di Magelang punya jebakan yang lain.
 
-**EN:** Don't feel too sure of yourself, my boy. The mist in Magelang has other tricks.
+**EN:** Don't feel too sure of yourself, my boy. The mist in Magelang has other traps.
 
 #### `dialog-magelang-03` · Jaka · pose `idle`
-**ID:** Tipu daya apa, Mbah? Itu Candi Borobudur, kan? Megah sekali... Tapi kenapa relief-reliefnya tampak aneh?
+**ID:** Jebakan apa, Mbah? Itu Candi Borobudur, kan? Megah sekali... Tapi kenapa relief-reliefnya tampak aneh?
 
-**EN:** What tricks, Mbah? That's Borobudur Temple, isn't it? It's magnificent... But why do the reliefs look strange?
+**EN:** What traps, Mbah? That's Borobudur Temple, isn't it? It's magnificent... But why do the reliefs look strange?
 
 #### `dialog-magelang-04` · Mbah Kedu · pose `worried` · efek `fog`
 **ID:** Kabut Lupa mengacak urutannya. Awal cerita ada di akhir, akhir cerita ada di tengah. Siapa pun yang membacanya sekarang hanya mendapat potongan-potongan yang membingungkan.
@@ -411,9 +411,9 @@ Tampil setiap kali wilayah baru terbuka (aturan dialog gate). Jaka berdiri di ki
 **EN:** Mbah, listen... Down there, two men are arguing.
 
 #### `dialog-magelang-06` · Mbah Kedu · pose `worried`
-**ID:** Yang satu berteriak, "Katanya candi ini dibangun dalam satu malam!" Yang lain membalas, "Katanya semua itu cuma dongeng!" Keduanya bersuara keras, tapi tak seorang pun mau memeriksa.
+**ID:** Bapak yang satu berteriak, "Katanya candi ini dibangun dengan semen!" Bapak yang lain membalas, "Katanya candi ini baru dibangun seratus tahun lalu!" Keduanya hanya berkata "katanya". Tak seorang pun mau memeriksa.
 
-**EN:** One shouts, "They say this temple was built in a single night!" The other shouts back, "They say it's all just a fairy tale!" Both are loud, but neither of them wants to check.
+**EN:** One man shouts, "They say this temple was built with cement!" The other shouts back, "They say it was built only a hundred years ago!" Both of them only say "they say". Neither of them wants to check.
 
 #### `dialog-magelang-07` · Jaka · pose `idle`
 **ID:** Jadi, mana yang benar, Mbah?
@@ -421,9 +421,9 @@ Tampil setiap kali wilayah baru terbuka (aturan dialog gate). Jaka berdiri di ki
 **EN:** So which one is right, Mbah?
 
 #### `dialog-magelang-08` · Mbah Kedu · pose `smile`
-**ID:** Itulah tugasmu, Le. Pendapat boleh berbeda, tapi fakta bisa dibuktikan. Hubungkan informasi yang satu dengan yang lain, maka kebenaran akan terlihat.
+**ID:** Itulah tugasmu, Le. Pendapat, atau opini, boleh berbeda, tapi fakta bisa dibuktikan. "Candi ini indah sekali" itu pendapat. "Candi ini dibangun lebih dari seribu tahun lalu" itu fakta. Hubungkan informasi yang satu dengan yang lain, maka kebenaran akan terlihat.
 
-**EN:** That is your task, my boy. Opinions may differ, but facts can be proven. Connect one piece of information with another, and the truth will appear.
+**EN:** That is your task, my boy. Opinions may differ, but facts can be proven. "This temple is very beautiful" is an opinion. "This temple was built more than a thousand years ago" is a fact. Connect one piece of information with another, and the truth will appear.
 
 #### `dialog-magelang-09` · Mbah Kedu · pose `weak` · efek `dim`
 **ID:** Uhh... Maaf, Le. Kaki Mbah gemetar. Setiap kali kabut menebal, tenaga Mbah seperti ikut tersedot.
@@ -456,7 +456,7 @@ Tampil setiap kali wilayah baru terbuka (aturan dialog gate). Jaka berdiri di ki
 **EN:** Because I learned from you, Mbah. Read carefully first, then act!
 
 #### `dialog-magelang-15` · Mbah Kedu · pose `smile` · efek `glow`
-**ID:** Ingat pesan Mbah: temukan ide pokoknya, susun urutannya, dan pisahkan fakta dari pendapat. Empat serpihan Magelang menunggumu.
+**ID:** Ingat pesan Mbah: temukan gagasan pokoknya, susun urutannya, dan pisahkan fakta dari pendapat. Empat serpihan Magelang menunggumu.
 
 **EN:** Remember my advice: find the main idea, put things in order, and separate facts from opinions. Four shards of Magelang are waiting for you.
 
@@ -478,12 +478,12 @@ Tampil setiap kali wilayah baru terbuka (aturan dialog gate). Jaka berdiri di ki
 **EN:** We are on Dieng, my boy, the land above the clouds. But this is no ordinary mist. This is the heart of the Mist of Forgetting.
 
 #### `dialog-wonosobo-03` · Jaka · pose `afraid` · efek `shake`
-**ID:** Mbah, dengar! Ada kentongan dipukul. Orang-orang berlarian sambil memegang ponsel!
+**ID:** Mbah, dengar! Ada warga yang panik memukul kentongan. Orang-orang berlarian sambil memegang ponsel!
 
-**EN:** Mbah, listen! Someone is beating the kentongan drum. People are running around holding their phones!
+**EN:** Mbah, listen! A frightened villager is beating the kentongan, a wooden alarm drum. People are running around holding their phones!
 
 #### `dialog-wonosobo-04` · Mbah Kedu · pose `worried`
-**ID:** Mereka menerima pesan berantai: "Kawah akan meledak besok pagi! Cepat mengungsi! Sebarkan ke semua orang!" Tak ada nama pengirim, tak ada sumber resmi.
+**ID:** Mereka menerima pesan berantai: "Kawah akan meletus besok pagi! Cepat mengungsi! Sebarkan ke semua orang!" Tak ada nama pengirim, tak ada sumber resmi.
 
 **EN:** They have received a chain message: "The crater will erupt tomorrow morning! Evacuate now! Share this with everyone!" There is no sender's name and no official source.
 
@@ -523,9 +523,9 @@ Tampil setiap kali wilayah baru terbuka (aturan dialog gate). Jaka berdiri di ki
 **EN:** Being scared is normal, my boy. This lantern shines because of your courage, not because you are never afraid.
 
 #### `dialog-wonosobo-12` · Mbah Kedu · pose `idle`
-**ID:** Dengarkan pesan Mbah. Sebelum percaya, periksa sumbernya. Sebelum membagikan, pikirkan akibatnya. Kalau ragu, tanyakan kepada orang yang tepat.
+**ID:** Dengarkan pesan Mbah. Sebelum percaya, periksa sumbernya. Sebelum membagikan, pikirkan akibatnya. Kalau ragu, tanyakan kepada orang yang tepat, seperti guru, orang tua, atau petugas resmi.
 
-**EN:** Listen to my advice. Before you believe, check the source. Before you share, think about what could happen. When in doubt, ask the right person.
+**EN:** Listen to my advice. Before you believe, check the source. Before you share, think about what could happen. When in doubt, ask the right person, such as a teacher, a parent, or an official.
 
 #### `dialog-wonosobo-13` · Jaka · pose `idle`
 **ID:** Periksa sumbernya... pikirkan akibatnya... tanyakan kepada orang yang tepat. Aku akan mengingatnya, Mbah.
@@ -566,7 +566,7 @@ Tampil saat tantangan keempat sebuah wilayah selesai, bersamaan dengan momen "Pu
 **EN:** Four shards are back in the lantern! It feels so warm, Mbah.
 
 #### `tuntas-temanggung-03` · Mbah Kedu · pose `smile`
-**ID:** Itu buah ketelitianmu. Pustaka Temanggung kini terbuka untukmu. Bacalah sepuasnya.
+**ID:** Itu hasil ketelitianmu. Pustaka Temanggung kini terbuka untukmu. Bacalah sepuasnya.
 
 **EN:** That is the reward for your care. The Temanggung Library is now open to you. Read as much as you like.
 
@@ -578,9 +578,9 @@ Tampil saat tantangan keempat sebuah wilayah selesai, bersamaan dengan momen "Pu
 ### Magelang
 
 #### `tuntas-magelang-01` · Mbah Kedu · pose `smile` · efek `fog-lift`
-**ID:** Dengar, Le... Kedua bapak itu berhenti bertengkar. Sekarang mereka membaca relief bersama-sama, dari awal sampai akhir.
+**ID:** Dengar, Le... Kedua bapak itu berhenti bertengkar. Di papan informasi tertulis: Borobudur dibangun pada abad ke-8 dan ke-9 dari batu yang disusun saling mengunci, tanpa semen. Jadi, kedua kabar "katanya" tadi keliru. Sekarang mereka membaca relief bersama-sama.
 
-**EN:** Listen, my boy... Those two men have stopped arguing. Now they are reading the reliefs together, from beginning to end.
+**EN:** Listen, my boy... Those two men have stopped arguing. The information board says: Borobudur was built in the 8th and 9th centuries from interlocking stones, without cement. So both "they say" stories were wrong. Now they are reading the reliefs together.
 
 #### `tuntas-magelang-02` · Jaka · pose `happy`
 **ID:** Dan Mbah... Mbah sudah bisa berdiri tegak lagi!
@@ -600,9 +600,9 @@ Tampil saat tantangan keempat sebuah wilayah selesai, bersamaan dengan momen "Pu
 ### Wonosobo
 
 #### `tuntas-wonosobo-01` · Jaka · pose `happy` · efek `fog-lift`
-**ID:** Mbah! Aku berhasil! Warga sudah menanyakan kabar itu kepada petugas resmi. Kawahnya aman, tidak ada yang perlu mengungsi!
+**ID:** Mbah! Aku berhasil! Aku mengajak warga bertanya kepada petugas resmi. Kata petugas, keadaan kawah normal, jadi tidak ada yang perlu mengungsi. Semua tetap menjaga jarak sesuai rambu.
 
-**EN:** Mbah! I did it! People asked the officials about the message. The crater is safe, and nobody needs to evacuate!
+**EN:** Mbah! I did it! I got people to ask the officials. The officials say the crater is at normal status, so nobody needs to evacuate. Everyone is still keeping a safe distance, as the signs say.
 
 #### `tuntas-wonosobo-02` · Mbah Kedu · pose `smile` · efek `glow`
 **ID:** Mbah melihatnya dari tepi telaga, Le. Setiap kali kamu memilih dengan bijak, kabut di puncak itu menipis sedikit demi sedikit.
@@ -635,9 +635,9 @@ Tampil setelah seluruh wilayah tuntas, sebelum Balai Refleksi.
 #### `penutup-02` · Narator · efek `fog-lift`
 **Judul:** Kabut Tersibak / *The Mist Clears*
 
-**ID:** Kabut Lupa tersibak dari Temanggung, Magelang, sampai Wonosobo. Papan petunjuk terbaca jelas, relief bercerita dengan urutan yang benar, dan pesan berantai tak lagi ditelan mentah-mentah.
+**ID:** Kabut Lupa tersibak dari Temanggung, Magelang, sampai Wonosobo. Papan petunjuk terbaca jelas, relief bercerita dengan urutan yang benar, dan pesan berantai tidak lagi langsung dipercaya begitu saja.
 
-**EN:** The Mist of Forgetting cleared from Temanggung to Magelang to Wonosobo. Signposts could be read clearly, the reliefs told their stories in the right order, and chain messages were no longer swallowed whole.
+**EN:** The Mist of Forgetting cleared from Temanggung to Magelang to Wonosobo. Signposts could be read clearly, the reliefs told their stories in the right order, and chain messages were no longer believed without checking.
 
 #### `penutup-03` · Mbah Kedu · pose `smile` · efek `glow`
 **Judul:** Mbah Kedu Pulih / *Mbah Kedu Recovers*

@@ -77,8 +77,9 @@ Owner decisions in its §12 (9 October 2026): full download before Mulai, admin 
 
 - [x] Review of the owner's draft 1 against the live script and bank, and revised draft 2 in `gelita-katalog/update/` (review: `telaah-draf-1-naskah-bank-soal.md`; changes: `catatan-revisi-gelita.md` §7)
 - [ ] Researcher checks every `needs_verification` item and the facts in review §6
-- [ ] Integrate draft 2 into the app on its own branch (review §7): puzzle variants a–j with the first attempt drawn from a–c, skill `membedakan_fakta_pendapat`, one Temanggung distractor, explicit item keys in `docs/bank-soal/data/*.php`, 32 script lines in `data/story.php`, tests
-- [ ] Re-record 32 ID and 28 EN narration lines after integration
+- [ ] Integrate draft 2 into the app on its own branch (review §7): puzzle variants a–j with the first attempt drawn from a–c, skill `membedakan_fakta_pendapat`, one Temanggung distractor, explicit item keys in `docs/bank-soal/data/*.php`, 32 script lines in `data/story.php`, tests (`claude/integrasi-draf-2-aplikasi-g6shf6`, PR open)
+- [ ] Re-record 32 ID and 28 EN narration lines after integration. Until then, do not use "Setujui semua rekaman": the bundled recordings of those lines still say the old text, and nothing marks them stale (decision log, 17 October 2026)
+- [ ] On a server that already has content: re-import the bank (`gelita:bank:import`), update the 32 script lines in the dialogue editor (the seeder does not overwrite existing lines), run `gelita:katalog:impor` for the 21 new puzzle images, and fix old slot notes in **Gambar & mockup** (the import does not overwrite filled notes)
 
 ## Active branches
 
@@ -88,3 +89,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 |---|---|---|
 | `sky/laughing-rubin-l2tmm2` | Asset package Wave 2: Stage 2 (service worker, downloader) and Stage 6 (Paket aset panel, study package lock) | PR open |
 | `sky/focused-keller-fnnr3t` | Review of script/bank draft 1 and revised draft 2 (content only, no app code) | PR open |
+| `claude/integrasi-draf-2-aplikasi-g6shf6` | Integrate draft 2 into the app: bank data files, rules, first attempt from a–c, story script (contains `sky/focused-keller-fnnr3t`) | PR open |

@@ -358,8 +358,10 @@ Ini fitur inti. Setiap wilayah punya 4 tantangan dengan urutan sama; tingkatnya 
            served = ChallengeAttemptModel::variantsServed(siswa, node)
                     (variasi yang pernah didapat siswa ini di SEMUA sesinya)
            picked = ChallengeItemModel::pickVariant(node, served):
-                    variasi yang belum pernah didapat, dipilih random_int()
-                    (bila semua sudah pernah, semua variasi jadi kandidat);
+                    pengerjaan pertama (served kosong) hanya dari a–c;
+                    sesudahnya variasi yang belum pernah didapat, dipilih
+                    random_int() (bila semua sudah pernah, semua variasi
+                    jadi kandidat);
                     semua soal aktif variasi itu, urut sequence
            insert challenge_attempts: attempt_no, variant_group,
                   selected_item_ids_json, scorable_items,
@@ -1069,7 +1071,7 @@ Halaman lain di bawah Konten: bacaan per wilayah (`/admin/konten/bacaan/{level}`
 
 ## FITUR 12a: Bank Soal Kelas 5 — Workbook, Impor, dan Verifikasi
 
-Bank soal final kelas 5 (disetujui peneliti): **126 soal** (108 dinilai + 18 benda pengecoh), 30 variasi, 9 bacaan Benar atau Salah, 36 petunjuk (3 per tantangan), 12 kata pengecoh, dan 45 slot gambar tantangan. Rinciannya di [`docs/bank-soal/`](bank-soal/README.md).
+Bank soal kelas 5, revisi Oktober 2026 (draf 2): **147 soal aktif** (129 dinilai + 18 benda pengecoh) dan 4 diistirahatkan, 51 variasi, 9 bacaan Benar atau Salah, 36 petunjuk (3 per tantangan), 15 kata pengecoh, dan 66 slot gambar tantangan. Soal revisi berstatus `needs_verification` sampai dicek peneliti. Rinciannya di [`docs/bank-soal/`](bank-soal/README.md).
 
 ### Sumber dan alur
 
@@ -1142,9 +1144,9 @@ Satu sumber aturan untuk skrip penyusun workbook, importer, `ContentVerifier`, d
 Galat (impor ditolak / verifikasi gagal):
 
 - tiap wilayah tepat 4 tantangan aktif berurutan `puzzle`, `rumpang`, `boleh`, `cari`; satu jenis soal per tantangan;
-- Susun Gambar, Isi Rumpang, Benar atau Salah: tepat 3 variasi aktif; Cari Objek ≥ 1 variasi;
+- Isi Rumpang, Benar atau Salah: tepat 3 variasi aktif; Susun Gambar 3–10 variasi aktif dengan a, b, c wajib ada; Cari Objek ≥ 1 variasi;
 - Susun Gambar: 1 soal bergambar per variasi;
-- Isi Rumpang: jumlah rumpang 3/5/7; tepat satu `___` per potongan di ID dan EN; potongan tidak diawali `___`; jawaban unik dalam variasi; jumlah pengecoh = `distractor_count` (0/2/2) dan tidak sama dengan jawaban;
+- Isi Rumpang: jumlah rumpang 3/5/7; tepat satu `___` per potongan di ID dan EN; potongan tidak diawali `___`; jawaban unik dalam variasi; jumlah pengecoh = `distractor_count` (1/2/2) dan tidak sama dengan jawaban;
 - Benar atau Salah: satu bacaan per variasi dengan 1/2/3 paragraf; 3/5/6 pernyataan; kunci hanya `benar`/`salah`; setiap pernyataan punya keterampilan sah;
 - Cari Objek: 4 target + 4/6/8 pengecoh per variasi; setiap pengecoh punya umpan balik ID; semua benda bergambar; posisi di dalam 0–100 % dan tidak saling tumpuk lebih dari 20 % luasnya;
 - `bloom_level` wajib untuk rumpang, pernyataan, dan target Cari Objek; `item_key` unik.

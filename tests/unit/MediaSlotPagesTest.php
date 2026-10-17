@@ -70,7 +70,7 @@ final class MediaSlotPagesTest extends CIUnitTestCase
         $this->assertStringNotContainsString('belum dipakai permainan', $html);
 
         // Challenge image: description from the question bank, page of the challenge
-        $this->assertStringContainsString('lanskap Gunung Sindoro', $html);
+        $this->assertStringContainsString('Candi Pringapus tampak depan', $html);
         $this->assertStringContainsString('<code>/tantangan/temanggung/1</code>', $html);
         $this->assertMatchesRegularExpression('#href="[^"]*admin/media/\d+"[^>]*>.*Detail#', $html);
     }

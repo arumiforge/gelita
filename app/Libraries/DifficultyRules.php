@@ -48,7 +48,7 @@ final class DifficultyRules
     public const BY_DIFFICULTY = [
         'mudah' => [
             'puzzle'    => ['grid' => 3, 'shape' => 'square'],
-            'reading'   => ['blanks' => [3, 3], 'distractors' => [0, 0], 'default_distractors' => 0],
+            'reading'   => ['blanks' => [3, 3], 'distractors' => [1, 1], 'default_distractors' => 1],
             'bloom'     => ['C1', 'C2'],                       // Isi Rumpang
             'truefalse' => ['paragraphs' => 1, 'statements' => 3, 'bloom' => ['C1', 'C2'],
                             'skills' => ['informasi_tersurat', 'mengenali_fakta', 'mengenali_gambar']],
@@ -59,7 +59,7 @@ final class DifficultyRules
             'reading'   => ['blanks' => [5, 5], 'distractors' => [2, 2], 'default_distractors' => 2],
             'bloom'     => ['C2', 'C3'],
             'truefalse' => ['paragraphs' => 2, 'statements' => 5, 'bloom' => ['C2', 'C4'],
-                            'skills' => ['gagasan_pokok', 'menghubungkan_informasi', 'mengklasifikasikan_tindakan']],
+                            'skills' => ['gagasan_pokok', 'menghubungkan_informasi', 'mengklasifikasikan_tindakan', 'membedakan_fakta_pendapat']],
             'hunt'      => ['targets' => 4, 'decoys' => 6, 'bloom' => ['C2', 'C3']],
         ],
         'sulit' => [
@@ -80,6 +80,7 @@ final class DifficultyRules
         'gagasan_pokok'               => 'Menentukan gagasan pokok',
         'menghubungkan_informasi'     => 'Menghubungkan informasi',
         'mengklasifikasikan_tindakan' => 'Mengklasifikasikan tindakan',
+        'membedakan_fakta_pendapat'   => 'Membedakan fakta dan pendapat',
         'membandingkan_informasi'     => 'Membandingkan informasi',
         'menilai_pilihan'             => 'Menilai pilihan',
         'menentukan_solusi'           => 'Menentukan solusi berdasarkan bukti',

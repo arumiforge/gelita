@@ -2,19 +2,21 @@
 
 use App\Libraries\BankRules;
 use App\Libraries\BankSource;
+use App\Libraries\DifficultyRules;
 use CodeIgniter\Test\CIUnitTestCase;
 
 /**
- * Bank soal final kelas 5 (docs/bank-soal/data/*.php, Dok 2 §9) lolos seluruh
- * pemeriksaan §7.5 tanpa galat maupun peringatan, isinya lengkap (126 soal,
- * 30 variasi, 9 bacaan, 36 petunjuk, 12 kata pengecoh, 45 slot gambar), dan
- * setiap aturan §7.5 benar-benar menolak bank yang melanggarnya.
+ * The grade-5 bank (docs/bank-soal/data/*.php, revision of October 2026 =
+ * draft 2) passes every §7.5 check without errors or warnings, is complete
+ * (151 item rows: 147 active + 4 retired; 51 variants, 9 passages, 36 hints,
+ * 15 distractors, 66 image slots), and every §7.5 rule really rejects a bank
+ * that breaks it.
  *
  * @internal
  */
 final class BankKelas5DataTest extends CIUnitTestCase
 {
-    /** Dok 2 §10.4: 45 slot gambar tantangan. */
+    /** Dok 2 §10.4: 45 challenge image slots, plus 21 for Susun Gambar variants d–j (draft 2). */
     private const MEDIA_SLOTS = [
         'challenge.item.tmg-1-01', 'challenge.item.tmg-1-03', 'challenge.item.tmg-1-04',
         'challenge.item.tmg-3-a03', 'challenge.item.tmg-3-b03', 'challenge.item.tmg-3-c03',
@@ -31,7 +33,16 @@ final class BankKelas5DataTest extends CIUnitTestCase
         'challenge.item.wnb-4-a01', 'challenge.item.wnb-4-a02', 'challenge.item.wnb-4-a03', 'challenge.item.wnb-4-a04',
         'challenge.item.wnb-4-a05', 'challenge.item.wnb-4-a06', 'challenge.item.wnb-4-a07', 'challenge.item.wnb-4-a08',
         'challenge.item.wnb-4-a09', 'challenge.item.wnb-4-a10', 'challenge.item.wnb-4-a11', 'challenge.item.wnb-4-a12',
+        'challenge.item.tmg-1-d01', 'challenge.item.tmg-1-e01', 'challenge.item.tmg-1-f01', 'challenge.item.tmg-1-g01',
+        'challenge.item.tmg-1-h01', 'challenge.item.tmg-1-i01', 'challenge.item.tmg-1-j01',
+        'challenge.item.mgl-1-d01', 'challenge.item.mgl-1-e01', 'challenge.item.mgl-1-f01', 'challenge.item.mgl-1-g01',
+        'challenge.item.mgl-1-h01', 'challenge.item.mgl-1-i01', 'challenge.item.mgl-1-j01',
+        'challenge.item.wnb-1-d01', 'challenge.item.wnb-1-e01', 'challenge.item.wnb-1-f01', 'challenge.item.wnb-1-g01',
+        'challenge.item.wnb-1-h01', 'challenge.item.wnb-1-i01', 'challenge.item.wnb-1-j01',
     ];
+
+    /** Retired items (is_active 0): kept so stored answers keep their item. */
+    private const RETIRED = ['mgl-2-a04', 'mgl-2-c04', 'wnb-2-c05', 'wnb-2-c07'];
 
     /** @var array<string, mixed>|null */
     private static ?array $flat = null;
@@ -46,17 +57,19 @@ final class BankKelas5DataTest extends CIUnitTestCase
     public function testBankIsCompleteAsAgreed(): void
     {
         $sheets = $this->flat()['sheets'];
-        $items  = $sheets['items'];
+        $items  = array_filter($sheets['items'], static fn (array $row): bool => $row['is_active'] === '1');
 
         $this->assertCount(12, $sheets['nodes']);
-        $this->assertCount(126, $items);
-        $this->assertCount(108, array_filter($items, static fn (array $row): bool => $row['scorable'] === '1'));
+        $this->assertCount(151, $sheets['items']);
+        $this->assertCount(147, $items);
+        $this->assertSame(self::RETIRED, array_values(array_column(array_filter($sheets['items'], static fn (array $row): bool => $row['is_active'] === '0'), 'item_key')));
+        $this->assertCount(129, array_filter($items, static fn (array $row): bool => $row['scorable'] === '1'));
         $this->assertCount(18, array_filter($items, static fn (array $row): bool => $row['decoy'] === '1'));
-        $this->assertCount(30, $sheets['variants']);
+        $this->assertCount(51, $sheets['variants']);
         $this->assertCount(9, $sheets['passages']);
         $this->assertCount(36, $sheets['hints']);
-        $this->assertCount(12, $sheets['distractors']);
-        $this->assertCount(45, $this->flat()['media']);
+        $this->assertCount(15, $sheets['distractors']);
+        $this->assertCount(66, $this->flat()['media']);
 
         // Ringkasan §8: rumpang 9 bacaan (3 per wilayah), B/S 9 bacaan
         $this->assertCount(9, array_unique(array_map(
@@ -69,9 +82,9 @@ final class BankKelas5DataTest extends CIUnitTestCase
     {
         $seeder   = (string) file_get_contents(APPPATH . 'Database/Seeds/LevelSeeder.php');
         $expected = [
-            'temanggung' => ['mudah', ['tmg-1' => [1, 1, 1], 'tmg-2' => [3, 3, 3], 'tmg-3' => [3, 3, 3], 'tmg-4' => [8]]],
-            'magelang'   => ['sedang', ['mgl-1' => [1, 1, 1], 'mgl-2' => [5, 5, 5], 'mgl-3' => [5, 5, 5], 'mgl-4' => [10]]],
-            'wonosobo'   => ['sulit', ['wnb-1' => [1, 1, 1], 'wnb-2' => [7, 7, 7], 'wnb-3' => [6, 6, 6], 'wnb-4' => [12]]],
+            'temanggung' => ['mudah', ['tmg-1' => array_fill(0, 10, 1), 'tmg-2' => [3, 3, 3], 'tmg-3' => [3, 3, 3], 'tmg-4' => [8]]],
+            'magelang'   => ['sedang', ['mgl-1' => array_fill(0, 10, 1), 'mgl-2' => [5, 5, 5], 'mgl-3' => [5, 5, 5], 'mgl-4' => [10]]],
+            'wonosobo'   => ['sulit', ['wnb-1' => array_fill(0, 10, 1), 'wnb-2' => [7, 7, 7], 'wnb-3' => [6, 6, 6], 'wnb-4' => [12]]],
         ];
 
         foreach (BankSource::load(ROOTPATH . 'docs/bank-soal/data') as $region => $data) {
@@ -83,7 +96,9 @@ final class BankKelas5DataTest extends CIUnitTestCase
             $this->assertSame(['puzzle', 'rumpang', 'boleh', 'cari'], array_values(array_column($data['nodes'], 'engine')), $region);
 
             foreach ($nodes as $ref => $counts) {
-                $this->assertSame($counts, array_values(array_map(static fn (array $v): int => count($v['items']), $data['nodes'][$ref]['variants'])), $ref);
+                $active = static fn (array $v): int => count(array_filter($v['items'], static fn (array $item): bool => ($item['active'] ?? true) !== false));
+
+                $this->assertSame($counts, array_values(array_map($active, $data['nodes'][$ref]['variants'])), "{$ref}: active items per variant");
             }
         }
     }
@@ -92,11 +107,26 @@ final class BankKelas5DataTest extends CIUnitTestCase
     {
         $perNode = [];
 
+        $retired = [];
+
         foreach ($this->flat()['sheets']['items'] as $row) {
             $this->assertMatchesRegularExpression('/^' . preg_quote($row['node_ref'], '/') . '-' . $row['variant_group'] . '\d{2}$/', $row['item_key']);
-            $perNode[$row['node_ref']][] = (int) $row['sequence'];
-            $this->assertSame('verified', $row['review_status'], $row['item_key']);
-            $this->assertSame('Disetujui peneliti sebagai bank soal final penelitian kelas 5 (Oktober 2026).', $row['review_note']);
+
+            if ($row['is_active'] === '1') {
+                $perNode[$row['node_ref']][] = (int) $row['sequence'];
+            } else {
+                $retired[$row['node_ref']][] = (int) $row['sequence'];
+            }
+
+            // Revised items wait for the researcher's check; the rest stay as approved.
+            $this->assertContains($row['review_status'], ['verified', 'needs_verification'], $row['item_key']);
+
+            if ($row['review_status'] === 'verified' && ! str_starts_with($row['review_note'], 'Revisi')) {
+                $this->assertSame(BankSource::REVIEW_NOTE, $row['review_note'], $row['item_key']);
+            } else {
+                $this->assertNotSame('', $row['review_note'], "{$row['item_key']}: reason for the revision");
+            }
+
             $this->assertNotSame('', $row['reference_source'], "{$row['item_key']}: rujukan §9.4");
 
             if ($row['interaction_type'] === 'verdict_card') {
@@ -107,6 +137,13 @@ final class BankKelas5DataTest extends CIUnitTestCase
         foreach ($perNode as $ref => $sequence) {
             $this->assertSame(range(1, count($sequence)), $sequence, "{$ref}: sequence = urutan global di tantangan");
         }
+
+        $this->assertSame(['mgl-2' => [91, 92], 'wnb-2' => [91, 92]], $retired, 'retired items sort after every active item');
+
+        // Explicit keys: inserted items keep the numbering of the items around them
+        $sequence = array_column($this->flat()['sheets']['items'], 'sequence', 'item_key');
+        $this->assertSame(['3', '4', '91'], [$sequence['mgl-2-a06'], $sequence['mgl-2-a03'], $sequence['mgl-2-a04']]);
+        $this->assertSame(['13', '19', '21'], [$sequence['wnb-2-b02'], $sequence['wnb-2-c08'], $sequence['wnb-2-c09']]);
 
         $this->assertSame(['tmg-2-a01', 'tmg-3-b03', 'tmg-4-a08', 'mgl-4-a10', 'wnb-4-a12'], array_values(array_intersect(
             ['tmg-2-a01', 'tmg-3-b03', 'tmg-4-a08', 'mgl-4-a10', 'wnb-4-a12'],
@@ -127,6 +164,8 @@ final class BankKelas5DataTest extends CIUnitTestCase
         }
 
         $this->assertSame('Kuda kepang bambu', $media['challenge.item.tmg-4-03']['label']);
+        $this->assertSame('puzzle', $media['challenge.item.wnb-1-j01']['kind']);
+        $this->assertSame(['wnb-1-j01'], $media['challenge.item.wnb-1-j01']['used_by']);
         $this->assertSame('Pasar Budaya Temanggung', $media['challenge.tmg-4.scene']['label']);
         $this->assertSame('arca Buddha duduk dari batu (sengaja tidak sesuai bacaan)', $media['challenge.item.tmg-3-b03']['note']);
     }
@@ -151,13 +190,57 @@ final class BankKelas5DataTest extends CIUnitTestCase
         }
     }
 
+    /**
+     * Fact/opinion in Magelang Benar atau Salah (draft 2): two items per
+     * variant, and the answer keys approved in the review (catatan-revisi §7.2)
+     * so the true/false pattern cannot be guessed.
+     */
+    public function testTrueFalseKeysAndFactOpinionItems(): void
+    {
+        $keys   = [];
+        $skills = [];
+
+        foreach ($this->flat()['sheets']['items'] as $row) {
+            if ($row['interaction_type'] === 'verdict_card' && $row['is_active'] === '1') {
+                $keys[$row['node_ref']][$row['variant_group']]   = ($keys[$row['node_ref']][$row['variant_group']] ?? '') . strtoupper($row['answer_id'][0]);
+                $skills[$row['node_ref']][$row['variant_group']][] = $row['skill'];
+            }
+        }
+
+        $this->assertSame(['a' => 'BBSBS', 'b' => 'SBBSB', 'c' => 'BSBBS'], $keys['mgl-3']);
+        $this->assertSame(['a' => 'BBSBSS', 'b' => 'SBBSSB', 'c' => 'BSBBSS'], $keys['wnb-3']);
+
+        foreach ($skills['mgl-3'] as $group => $list) {
+            $this->assertSame(
+                ['gagasan_pokok' => 1, 'membedakan_fakta_pendapat' => 2, 'menghubungkan_informasi' => 1, 'mengklasifikasikan_tindakan' => 1],
+                (static function (array $count): array { ksort($count); return $count; })(array_count_values($list)),
+                "mgl-3-{$group}",
+            );
+        }
+
+        $this->assertSame('Membedakan fakta dan pendapat', DifficultyRules::skillLabel('membedakan_fakta_pendapat'));
+    }
+
     // ------------------------------------------------- aturan §7.5 menolak
 
     public function testVariantAndPuzzleRules(): void
     {
-        $node = $this->node('tmg-1');
+        $node = $this->node('tmg-2');
         unset($node['variants']['c']);
         $this->assertProblem($node, 'error', 'tepat 3 variasi');
+
+        // Susun Gambar: 3–10 variants, and a–c (first attempt) must exist
+        $node = $this->node('tmg-1');
+        unset($node['variants']['c']);
+        $this->assertProblem($node, 'error', 'Variasi c belum ada');
+
+        $node             = $this->node('tmg-1');
+        $node['variants'] = ['a' => $node['variants']['a'], 'b' => $node['variants']['b']];
+        $this->assertProblem($node, 'error', 'paling sedikit 3 variasi');
+
+        $node                     = $this->node('tmg-1');
+        $node['variants']['k']    = $node['variants']['a'];
+        $this->assertProblem($node, 'error', 'paling banyak 10');
 
         $node                                   = $this->node('mgl-1');
         $node['variants']['b']['items'][]        = $node['variants']['b']['items'][0];
@@ -193,8 +276,8 @@ final class BankKelas5DataTest extends CIUnitTestCase
         $this->assertProblem($node, 'error', 'Variasi ini punya 3 kata pengecoh; harus tepat 2');
 
         $node                     = $this->node('tmg-2');
-        $node['distractor_count'] = 1;
-        $this->assertProblem($node, 'error', 'aturan tingkat mudah adalah 0');
+        $node['distractor_count'] = 0;
+        $this->assertProblem($node, 'error', 'aturan tingkat mudah adalah 1');
 
         $node = $this->node('tmg-2');
         $node['variants']['a']['items'][0]['bloom'] = 'C4';
@@ -249,6 +332,18 @@ final class BankKelas5DataTest extends CIUnitTestCase
         $this->assertEqualsWithDelta(0.5, BankRules::overlap(['x' => 10, 'y' => 10, 'w' => 12], ['x' => 16, 'y' => 10, 'w' => 12]), 0.0001);
         $this->assertEqualsWithDelta(0.1, BankRules::overlap(['x' => 10, 'y' => 10, 'w' => 10], ['x' => 19, 'y' => 10, 'w' => 10]), 0.0001);
         $this->assertSame(0.0, BankRules::overlap(['x' => 10, 'y' => 10, 'w' => 10], ['x' => 30, 'y' => 10, 'w' => 10]));
+    }
+
+    /** Explicit item keys must belong to their own challenge and variant, and stay unique. */
+    public function testExplicitItemKeys(): void
+    {
+        $regions = BankSource::load(ROOTPATH . 'docs/bank-soal/data');
+        $regions['magelang']['nodes']['mgl-2']['variants']['a']['items'][0]['key'] = 'mgl-2-b01';
+
+        $problems = array_map([BankRules::class, 'format'], BankSource::problems(BankSource::flatten($regions)));
+
+        $this->assertContains('mgl-2 · variasi a · mgl-2-b01: Kode soal harus diawali mgl-2-a.', $problems);
+        $this->assertContains('mgl-2 · mgl-2-b01: Kode soal ini dipakai lebih dari sekali.', $problems);
     }
 
     public function testRegionOrderAndUniqueKeys(): void

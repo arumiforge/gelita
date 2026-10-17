@@ -357,7 +357,7 @@ tidak pernah ditanyakan.
 |---|---|
 | `bankForNode($nodeId)` | soal aktif satu tantangan, urut `variant_group`, `sequence`, `id` |
 | `groupByVariant($bank)` (static) | kelompokkan per variasi (kosong → `a`), urut nama variasi lalu `sequence` |
-| `pickVariant($nodeId, $excludeGroups, ?$bank)` | satu variasi untuk pengerjaan baru: variasi yang sudah pernah didapat siswa dibuang selama masih ada yang lain, lalu dipilih acak lewat `randomIndex()` (`random_int()`, tanpa benih; `gelita:simulasi` menimpanya dengan `App\Libraries\Simulation\SeededItemModel`). Mengembalikan `{group, items}`; objek pengecoh `cari` diletakkan di akhir |
+| `pickVariant($nodeId, $excludeGroups, ?$bank)` | satu variasi untuk pengerjaan baru: pengerjaan pertama hanya dari `BankRules::FIRST_ATTEMPT_GROUPS` (a–c); sesudahnya variasi yang sudah pernah didapat siswa dibuang selama masih ada yang lain, lalu dipilih acak lewat `randomIndex()` (`random_int()`, tanpa benih; `gelita:simulasi` menimpanya dengan `App\Libraries\Simulation\SeededItemModel`). Mengembalikan `{group, items}`; objek pengecoh `cari` diletakkan di akhir |
 | `hasResponses($itemId)` | soal sudah pernah dijawab; panel dan impor menolak mengubah kunci jawabannya |
 | `findByKey($itemKey)` | cari menurut `item_key` |
 
@@ -498,7 +498,7 @@ baru; browser menggambar tiap keping sebagai SVG dengan clip-path.
 - `node($node, $passages)` — semua pemeriksaan satu tantangan; `region($scope, $nodes)` — wilayah wajib
   punya 4 tantangan aktif berurutan `ENGINES` (`puzzle`, `rumpang`, `boleh`, `cari`);
   `duplicateKeys($keys)` — `item_key` ganda.
-- Isi aturan: jumlah variasi aktif (`VARIANTS`: 3, 3, 3, dan paling sedikit 1 untuk `cari`); jenis soal
+- Isi aturan: jumlah variasi aktif (`VARIANTS`: Susun Gambar 3–10 dengan a, b, c wajib ada; Isi Rumpang dan Benar atau Salah tepat 3; `cari` paling sedikit 1); jenis soal
   sesuai `INTERACTION`; Bloom wajib untuk `fill_blank_bank`, `verdict_card`, dan target `find_object`
   (di luar rentang tingkat = peringatan); Susun Gambar tepat satu gambar per variasi; Isi Rumpang jumlah
   rumpang dan pengecoh tepat, satu `___` per potongan, jawaban dan pengecoh tidak kembar; Benar atau
@@ -509,7 +509,7 @@ baru; browser menggambar tiap keping sebagai SVG dengan clip-path.
 - Hasil: daftar `{level: error|warning, node, variant, item, message}`; galat menolak impor dan
   menggagalkan verifikasi. `format($problem)` membentuk satu baris teks untuk CLI.
 
-Dengan aturan ini bank soal final berisi 126 soal (108 dinilai + 18 pengecoh) dalam 30 variasi,
+Dengan aturan ini bank soal kelas 5 (revisi Oktober 2026) berisi 147 soal aktif (129 dinilai + 18 pengecoh) dan 4 soal diistirahatkan dalam 51 variasi,
 9 bacaan, dan 12 kata pengecoh; sumbernya `docs/bank-soal/`.
 
 ## Kelompok 3 — Media dan audio

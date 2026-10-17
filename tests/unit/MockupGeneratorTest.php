@@ -63,13 +63,13 @@ final class MockupGeneratorTest extends CIUnitTestCase
         parent::tearDown();
     }
 
-    public function testBankKelas5HasTheFortyFiveSlotsOfSection104(): void
+    public function testBankKelas5HasEveryChallengeImageSlot(): void
     {
         $slots = $this->generator()->slots();
 
-        $this->assertCount(45, $slots);
+        $this->assertCount(66, $slots);
         $this->assertSame(
-            ['object' => 30, 'puzzle' => 9, 'scene' => 3, 'statement' => 3],
+            ['object' => 30, 'puzzle' => 30, 'scene' => 3, 'statement' => 3],
             $this->tally(array_column($slots, 'kind')),
         );
         $this->assertSame(['empty'], array_values(array_unique(array_column($slots, 'status'))), 'slot impor belum berisi berkas');
@@ -87,10 +87,10 @@ final class MockupGeneratorTest extends CIUnitTestCase
     {
         $result = $this->generator()->generateMissing();
 
-        $this->assertSame(45, $result['count']);
-        $this->assertSame(45, $result['created']);
+        $this->assertSame(66, $result['count']);
+        $this->assertSame(66, $result['created']);
         $this->assertSame([], $result['failed']);
-        $this->assertSame(45, model(MediaAssetModel::class)->placeholderCount());
+        $this->assertSame(66, model(MediaAssetModel::class)->placeholderCount());
 
         $sizes = config('Gelita')->assetSizes;
 
@@ -191,14 +191,14 @@ final class MockupGeneratorTest extends CIUnitTestCase
         $this->assertSame('0', (string) $row['is_placeholder'], 'unggahan admin = gambar asli');
         $this->assertNull($row['credit'], 'kredit mockup dibuang');
         $this->assertFileDoesNotExist($mockup, 'berkas mockup lama dibuang');
-        $this->assertSame(44, model(MediaAssetModel::class)->placeholderCount());
+        $this->assertSame(65, model(MediaAssetModel::class)->placeholderCount());
 
         $hash = hash_file('sha256', FCPATH . $row['storage_path']);
 
         foreach ([[false, 'existing'], [true, 'refresh']] as [$force, $action]) {
             $result = $generator->run($force);
             $this->assertSame(1, $result['kept']);
-            $this->assertSame(44, $force ? $result['refreshed'] : $result['existing']);
+            $this->assertSame(65, $force ? $result['refreshed'] : $result['existing']);
             $this->assertSame(0, $result['created']);
 
             $actions = array_column($result['slots'], 'action', 'asset_key');
@@ -219,7 +219,7 @@ final class MockupGeneratorTest extends CIUnitTestCase
         $generator = $this->generator();
 
         $plan = $generator->run(false, true);
-        $this->assertSame(45, $plan['created']);
+        $this->assertSame(66, $plan['created']);
         $this->assertSame(0, $plan['count']);
         $this->assertDirectoryDoesNotExist(FCPATH . $this->dir);
         $this->assertSame(0, model(MediaAssetModel::class)->placeholderCount());
@@ -229,7 +229,7 @@ final class MockupGeneratorTest extends CIUnitTestCase
 
         $again = $generator->generateMissing();
         $this->assertSame(1, $again['created']);
-        $this->assertSame(44, $again['existing']);
+        $this->assertSame(65, $again['existing']);
         $this->assertFileExists(FCPATH . $this->path('challenge.item.wnb-1-05'));
     }
 
@@ -239,7 +239,7 @@ final class MockupGeneratorTest extends CIUnitTestCase
 
         $ready = (new ContentVerifier())->run(true);
         $this->assertGreaterThan(0, ContentVerifier::errorCount($ready));
-        $this->assertStringContainsString('45 gambar masih gambar contoh', implode(' ', array_column($ready, 'message')));
+        $this->assertStringContainsString('66 gambar masih gambar contoh', implode(' ', array_column($ready, 'message')));
 
         $normal = (new ContentVerifier())->run();
         $this->assertSame(0, ContentVerifier::errorCount($normal), 'tanpa --siap-penelitian mockup hanya peringatan');

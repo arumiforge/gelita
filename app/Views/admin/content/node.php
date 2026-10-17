@@ -123,15 +123,15 @@ $itemFormData = [
 
   <div class="stack" id="tab-variasi" data-tab-panel="variasi">
   <fieldset class="form-section">
-    <legend class="panel-subtitle">Variasi a/b/c</legend>
+    <legend class="panel-subtitle">Variasi</legend>
     <div class="form-grid">
-      <p class="field-help span-all">Setiap kali bermain, siswa mendapat SATU variasi (a, b, atau c) yang dipilih acak — variasi yang sudah pernah didapat siswa itu dihindari selama masih ada yang lain. Semua soal aktif variasi itu dipakai, urut nomor urutnya. Siswa boleh mencoba sampai <?= (int) config('Gelita')->maxTries ?> kali per soal.</p>
+      <p class="field-help span-all">Setiap kali bermain, siswa mendapat SATU variasi yang dipilih acak. Pengerjaan pertama selalu memakai variasi a, b, atau c (set penelitian); pengerjaan ulang menghindari variasi yang sudah pernah didapat siswa itu selama masih ada yang lain, termasuk variasi d–j Susun Gambar. Semua soal aktif variasi itu dipakai, urut nomor urutnya. Siswa boleh mencoba sampai <?= (int) config('Gelita')->maxTries ?> kali per soal.</p>
       <?php if ($engine === 'puzzle'): ?>
         <?php $puzzleRule = App\Libraries\DifficultyRules::puzzle($level?->difficulty); ?>
         <div class="field">
           <span class="label">Ukuran papan</span>
           <p><b><?= esc(App\Libraries\DifficultyRules::layoutLabel($puzzleRule['grid'], $puzzleRule['shape'])) ?></b> — mengikuti tingkat kesulitan wilayah (<?= esc((string) ($level?->difficulty ?? 'mudah')) ?>).</p>
-          <p class="field-help">Setiap variasi berisi SATU gambar (sediakan 3 variasi: a, b, c). Admin cukup mengunggah gambar utuh; sistem memotongnya otomatis. Soal yang sudah pernah dijawab tetap memakai ukuran saat soal itu dibuat.</p>
+          <p class="field-help">Setiap variasi berisi SATU gambar. Sediakan paling sedikit 3 variasi (a, b, c); variasi d sampai j boleh ditambah untuk pengerjaan ulang. Admin cukup mengunggah gambar utuh; sistem memotongnya otomatis. Soal yang sudah pernah dijawab tetap memakai ukuran saat soal itu dibuat.</p>
         </div>
       <?php elseif ($engine === 'rumpang'): ?>
         <input type="hidden" name="cfg[use_word_bank]" value="1">

@@ -219,12 +219,13 @@ final class SystemResetTest extends CIUnitTestCase
         $this->assertSame(1, $this->conn->table('research_studies')->where('status', 'active')->countAllResults());
         $this->assertSame(1, $this->conn->table('research_studies')->countAllResults());
 
-        // Dok 2 §9: 126 soal (108 dinilai + 18 pengecoh), 9 bacaan, 36 petunjuk
-        $this->assertSame(126, $this->conn->table('challenge_items')->where('is_active', 1)->countAllResults());
+        // Bank draft 2: 147 active items (129 scored + 18 decoys) and 4 retired, 9 passages, 36 hints
+        $this->assertSame(147, $this->conn->table('challenge_items')->where('is_active', 1)->countAllResults());
+        $this->assertSame(4, $this->conn->table('challenge_items')->where('is_active', 0)->countAllResults());
         $this->assertSame(18, $this->conn->table('challenge_items')->where('scorable', 0)->countAllResults());
         $this->assertSame(9, $this->conn->table('reading_passages')->countAllResults());
         $this->assertSame(36, $this->conn->table('hints')->countAllResults());
-        $this->assertSame('verified', $this->conn->table('challenge_items')->select('review_status')->distinct()->get()->getRow('review_status'));
+        $this->assertEqualsCanonicalizing(['needs_verification', 'verified'], array_column($this->conn->table('challenge_items')->select('review_status')->distinct()->get()->getResultArray(), 'review_status'));
 
         $rumpang = json_decode((string) $this->node('temanggung', 2)['config_json'], true);
         $this->assertSame('Gunung Kembar', $rumpang['variants']['a']['title_id'] ?? null);
@@ -241,10 +242,10 @@ final class SystemResetTest extends CIUnitTestCase
         $this->assertSame('menentukan_solusi', json_decode((string) $statement['config_json'], true)['skill'] ?? null);
         $this->assertSame('C5', $statement['bloom_level']);
 
-        // 45 slot gambar tantangan, masing-masing dengan nama dan isi gambar yang diharapkan
+        // 66 slot gambar tantangan (45 + 21 for Susun Gambar d–j), masing-masing dengan nama dan isi gambar yang diharapkan
         $slots = $this->conn->table('media_assets')->like('asset_key', 'challenge.', 'after')
             ->where('label IS NOT NULL', null, false)->where('description IS NOT NULL', null, false)->countAllResults();
-        $this->assertSame(45, $slots);
+        $this->assertSame(66, $slots);
         $this->assertSame('Kuda kepang bambu', $this->conn->table('media_assets')->where('asset_key', 'challenge.item.tmg-4-03')->get()->getRow('label'));
 
         $kept = $this->keptHashes();
@@ -257,11 +258,11 @@ final class SystemResetTest extends CIUnitTestCase
     }
 
     /**
-     * Langkah 8 (Dok 2 §10): ke-45 slot gambar tantangan langsung berisi
+     * Langkah 8 (Dok 2 §10): ke-66 slot gambar tantangan langsung berisi
      * gambar contoh; reset berikutnya tidak membuatnya ulang dan gambar asli
      * tetap.
      */
-    public function testResetFillsTheFortyFiveSlotsWithMockups(): void
+    public function testResetFillsEveryChallengeSlotWithMockups(): void
     {
         $dir = MediaStore::UPLOAD_DIR . 'mockup-reset-' . bin2hex(random_bytes(4)) . '/';
 
@@ -270,18 +271,18 @@ final class SystemResetTest extends CIUnitTestCase
             $result  = $service->run();
 
             $this->assertSame('done', $result['mockups']['status']);
-            $this->assertSame(45, $result['mockups']['count']);
+            $this->assertSame(66, $result['mockups']['count']);
             $this->assertSame([], $result['mockups']['failed']);
-            $this->assertSame(45, model(MediaAssetModel::class)->placeholderCount());
+            $this->assertSame(66, model(MediaAssetModel::class)->placeholderCount());
             $this->assertSame(0, $result['errors'], 'mockup hanya peringatan pada verifikasi biasa');
-            $this->assertStringContainsString('45 gambar masih gambar contoh', implode(' ', array_column($result['findings'], 'message')));
+            $this->assertStringContainsString('66 gambar masih gambar contoh', implode(' ', array_column($result['findings'], 'message')));
 
             // Satu slot diganti gambar asli (seperti unggahan admin)
             $this->conn->table('media_assets')->where('asset_key', 'challenge.wnb-4.scene')->update(['is_placeholder' => 0, 'credit' => null]);
 
             $again = $service->run();
             $this->assertSame(0, $again['mockups']['count']);
-            $this->assertSame(44, $again['mockups']['existing']);
+            $this->assertSame(65, $again['mockups']['existing']);
             $this->assertSame(1, $again['mockups']['kept']);
             $this->assertSame('0', (string) $this->conn->table('media_assets')->where('asset_key', 'challenge.wnb-4.scene')->get()->getRow('is_placeholder'));
         } finally {

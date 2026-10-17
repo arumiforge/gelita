@@ -4,9 +4,12 @@
  * Bank soal kelas 5 — TEMANGGUNG (wilayah 1, tingkat mudah).
  * Fokus literasi: menemukan informasi yang tersurat di dalam teks.
  *
- * Isi final yang disetujui peneliti sebagai bank soal penelitian kelas 5
- * (docs/perombakan-kelas5/02_TANTANGAN_DAN_BANK_SOAL.md §9, Oktober 2026).
- * Jangan diubah kecuali untuk memperbaiki salah ketik yang jelas.
+ * Content: the October 2026 revision (draft 2) of the grade 5 research bank
+ * (docs/perombakan-kelas5/02_TANTANGAN_DAN_BANK_SOAL.md §9;
+ * gelita-katalog/update/catatan-revisi-gelita.md §2 and §7). Revised and new
+ * items carry `review` status `needs_verification` until the researcher
+ * checks them. An explicit `key` and `active => false` keep stored answers
+ * linked to their item when items are inserted or retired.
  *
  * Bentuk data dijelaskan di docs/bank-soal/README.md. Teks berpasangan
  * [Indonesia, English]. Kode soal {node}-{variasi}{nn} (mis. tmg-2-a01) dan kode
@@ -25,6 +28,9 @@ $ref = [
     'coffee'  => 'Dinas Pertanian Kab. Temanggung; MPIG Kopi Java Arabika Sindoro Sumbing',
     'hunt'    => 'DPRD Jateng: Kuda Lumping, Kesenian Khas Temanggung; Dinas Pertanian Kab. Temanggung; MPIG Kopi Java Arabika Sindoro Sumbing; Pemkab Temanggung (Sejarah Temanggung); BPK Wilayah X Jateng; DJKI (indikasi geografis ikan uceng)',
 ];
+
+// Draft 2 review note shared by the new Susun Gambar variants d–j.
+$replayOnly = 'Revisi v2 (17 Okt 2026): Penelitian: pengerjaan pertama Susun Gambar memakai variasi a–c (dinilai); variasi d–j hanya untuk pengerjaan ulang. Perlu perubahan pemilihan variasi di aplikasi sebelum dipakai.';
 
 return [
     'difficulty' => 'mudah',
@@ -63,7 +69,11 @@ return [
                                 'Gunung Sindoro (3.136 m) dan Gunung Sumbing (3.371 m) disebut gunung kembar. Keduanya mengapit Temanggung dan membuat tanahnya subur.',
                                 'Mount Sindoro (3,136 m) and Mount Sumbing (3,371 m) are called the twin mountains. They stand on either side of Temanggung and make its soil fertile.',
                             ],
-                            'media'  => ['key' => 'challenge.item.tmg-1-01', 'label' => 'Gunung Sindoro dan Sumbing', 'note' => 'lanskap Gunung Sindoro & Sumbing, langit cerah, kebun di kaki gunung', 'source' => 'https://commons.wikimedia.org/wiki/File:Sindoro_sumbing.jpg (cek lisensi & catat kredit)'],
+                            'media'  => ['key' => 'challenge.item.tmg-1-01', 'label' => 'Gunung Sindoro dan Sumbing', 'note' => 'Sindoro (kanan) dan Sumbing (kiri) dilihat dari ladang bertingkat di Temanggung; awan khas dan burung di celah puncak; petani dan kebun kopi di latar depan', 'source' => 'DISARANKAN GANTI: versi katalog malam hari, padahal keterangan menyebut langit cerah dan kebun; keping K2~K3 mirip. Buat ulang dengan prompt TMG-P01. Rujukan: https://commons.wikimedia.org/wiki/File:Sindoro_sumbing.jpg (cek lisensi & catat kredit)'],
+                            'review' => [
+                                'status' => 'needs_verification',
+                                'note'   => 'Revisi Oktober 2026: catatan isi gambar diganti ke suasana siang (gambar katalog malam hari disarankan diganti). Perlu dicek ulang peneliti.',
+                            ],
                         ],
                     ],
                 ],
@@ -77,7 +87,12 @@ return [
                                 'Candi Pringapus adalah candi Hindu dari abad ke-9. Di dalam ruang candinya tersimpan arca Nandi, arca lembu yang dihormati umat Hindu.',
                                 'Pringapus Temple is a Hindu temple from the 9th century. Its chamber holds a statue of Nandi, the bull honoured by Hindus.',
                             ],
-                            'media'  => ['key' => 'challenge.item.tmg-1-03', 'label' => 'Candi Pringapus', 'note' => 'Candi Pringapus tampak depan', 'source' => 'https://commons.wikimedia.org/wiki/File:Candi_Pringapus_Temanggung_Jateng.jpg'],
+                            'media'  => ['key' => 'challenge.item.tmg-1-03', 'label' => 'Candi Pringapus', 'note' => 'Candi Pringapus tampak depan', 'source' => 'WAJIB GANTI: versi katalog berlatar putih; uji keping GAGAL (K1 dan K3 polos dan kembar). Buat ulang dengan prompt TMG-P02 dan foto rujukan. Rujukan: https://commons.wikimedia.org/wiki/File:Candi_Pringapus_Temanggung_Jateng.jpg'],
+                            // Only the picture changes; the draft keeps this caption verified.
+                            'review' => [
+                                'status' => 'verified',
+                                'note'   => 'Revisi Oktober 2026: gambar katalog berlatar putih gagal uji keping; buat ulang dengan prompt TMG-P02 (kode berkas tetap). Keterangan tidak berubah.',
+                            ],
                         ],
                     ],
                 ],
@@ -91,7 +106,135 @@ return [
                                 'Kuda lumping atau jaran kepang memakai kuda-kudaan dari anyaman bambu. Di Temanggung ada lebih dari 1.500 kelompok kuda lumping.',
                                 'Kuda lumping, or jaran kepang, uses horses made of woven bamboo. Temanggung has more than 1,500 kuda lumping groups.',
                             ],
-                            'media'  => ['key' => 'challenge.item.tmg-1-04', 'label' => 'Kuda Lumping', 'note' => 'penari kuda lumping dengan kuda anyaman bambu berwarna', 'source' => 'https://commons.wikimedia.org/wiki/File:Kuda_lumping_Temanggung.jpg'],
+                            'media'  => ['key' => 'challenge.item.tmg-1-04', 'label' => 'Kuda Lumping', 'note' => 'penari kuda lumping dengan kuda anyaman bambu berwarna', 'source' => 'Boleh dipakai (lulus dengan catatan). Bila ingin satu gaya siang hari, buat ulang dengan prompt TMG-P03. Rujukan: https://commons.wikimedia.org/wiki/File:Kuda_lumping_Temanggung.jpg'],
+                        ],
+                    ],
+                ],
+                // Variants d–j (draft 2): new pictures for replays; the first,
+                // scored attempt is meant to use a–c (see the review notes).
+                'd' => [
+                    'title' => ['Situs Liyangan', 'The Liyangan Site'],
+                    'ref'   => $ref['history'],
+                    'items' => [
+                        [   // tmg-1-d01
+                            'type'   => 'puzzle_arrange',
+                            'prompt' => [
+                                'Situs Liyangan di Desa Purbosari, Ngadirejo, ditemukan pada tahun 2008 saat warga menambang pasir. Para peneliti menemukan sisa rumah kayu, bangunan candi, jalan batu, dan butir padi hangus yang tertimbun pasir dan batu dari letusan Gunung Sindoro.',
+                                'The Liyangan Site in Purbosari Village, Ngadirejo, was found in 2008 while villagers were digging for sand. Researchers found the remains of wooden houses, temple buildings, stone paths and burnt grains of rice, all buried under sand and stones from an eruption of Mount Sindoro.',
+                            ],
+                            'media'  => ['key' => 'challenge.item.tmg-1-d01', 'label' => 'Situs Liyangan', 'note' => 'situs ekskavasi di lereng Sindoro: talud batu bertingkat, kaki candi, jalan batu kuno, dinding galian berlapis, peneliti dewasa bekerja', 'source' => 'BARU. Buat dengan prompt TMG-P04 di panduan gambar puzzle; foto rujukan WAJIB. Jalankan uji keping sebelum diunggah.'],
+                            'review' => [
+                                'status' => 'needs_verification',
+                                'note'   => 'Revisi Oktober 2026: gambar & keterangan baru (TMG-P04 di panduan gambar puzzle). Fakta diambil dari bank soal; cek ulang rumusannya. Gambar belum dibuat. | ' . $replayOnly,
+                            ],
+                        ],
+                    ],
+                ],
+                'e' => [
+                    'title' => ['Prasasti Gondosuli', 'The Gondosuli Inscription'],
+                    'ref'   => 'Pemkab Temanggung (Sejarah Temanggung); BPK Wilayah X Jateng',
+                    'items' => [
+                        [   // tmg-1-e01
+                            'type'   => 'puzzle_arrange',
+                            'prompt' => [
+                                'Prasasti Gondosuli dibuat pada tahun 832 Masehi. Prasasti adalah tulisan pada batu atau logam yang mencatat peristiwa penting.',
+                                'The Gondosuli Inscription was made in the year 832 CE. An inscription is writing on stone or metal that records an important event.',
+                            ],
+                            'media'  => ['key' => 'challenge.item.tmg-1-e01', 'label' => 'Prasasti Gondosuli', 'note' => 'situs Prasasti Gondosuli: batu andesit besar beraksara kuno di halaman situs, susunan pelindung dan pagar sesuai aslinya, batu-batu candi kuno di sekitarnya', 'source' => 'BARU. Buat dengan prompt TMG-P05 di panduan gambar puzzle; foto rujukan WAJIB. Jalankan uji keping sebelum diunggah.'],
+                            'review' => [
+                                'status' => 'needs_verification',
+                                'note'   => 'Revisi Oktober 2026: gambar & keterangan baru (TMG-P05 di panduan gambar puzzle). Fakta diambil dari bank soal; cek ulang rumusannya. Gambar belum dibuat. | ' . $replayOnly,
+                            ],
+                        ],
+                    ],
+                ],
+                'f' => [
+                    'title' => ['Umbul Jumprit', 'Umbul Jumprit Spring'],
+                    'ref'   => 'Wikipedia: Umbul Jumprit; Mongabay (2018) Berkah Air dari Umbul Jumprit; Liputan6 (Umbul Jumprit & Waisak)',
+                    'items' => [
+                        [   // tmg-1-f01
+                            'type'   => 'puzzle_arrange',
+                            'prompt' => [
+                                'Umbul Jumprit adalah mata air di lereng Gunung Sindoro. Airnya jernih dan tidak pernah kering, lalu mengalir menjadi hulu Sungai Progo. Setiap Waisak, air suci untuk perayaan di Candi Borobudur diambil dari sini.',
+                                'Umbul Jumprit is a spring on the slopes of Mount Sindoro. Its clear water never dries up and flows on to become the source of the Progo River. Every Vesak, holy water for the celebration at Borobudur Temple is taken from here.',
+                            ],
+                            'media'  => ['key' => 'challenge.item.tmg-1-f01', 'label' => 'Umbul Jumprit', 'note' => 'mata air keluar dari bawah batu berlumut dan pohon besar, kolam jernih berkerikil, aliran awal Sungai Progo, pinus, monyet ekor panjang, gapura batu', 'source' => 'BARU. Buat dengan prompt TMG-P06 di panduan gambar puzzle; foto rujukan disarankan. Jalankan uji keping sebelum diunggah.'],
+                            'review' => [
+                                'status' => 'needs_verification',
+                                'note'   => 'Revisi Oktober 2026: gambar & keterangan baru (TMG-P06 di panduan gambar puzzle). Fakta diambil dari bank soal; cek ulang rumusannya. Gambar belum dibuat. | ' . $replayOnly,
+                            ],
+                        ],
+                    ],
+                ],
+                'g' => [
+                    'title' => ['Panen Kopi di Lereng Sindoro–Sumbing', 'Coffee Harvest on the Sindoro–Sumbing Slopes'],
+                    'ref'   => $ref['coffee'],
+                    'items' => [
+                        [   // tmg-1-g01
+                            'type'   => 'puzzle_arrange',
+                            'prompt' => [
+                                'Petani di lereng Gunung Sindoro dan Sumbing menanam kopi arabika di ketinggian lebih dari 900 meter. Buah kopi yang sudah merah dipetik, diolah, lalu dikeringkan.',
+                                'Farmers on the slopes of Mount Sindoro and Mount Sumbing grow arabica coffee at more than 900 metres. The ripe red coffee cherries are picked, processed and then dried.',
+                            ],
+                            'media'  => ['key' => 'challenge.item.tmg-1-g01', 'label' => 'Panen Kopi di Lereng Sindoro–Sumbing', 'note' => 'panen kopi arabika di lereng bertingkat: petani dewasa memetik buah merah, pohon peneduh, buah dijemur di depan pondok, Sindoro di latar', 'source' => 'BARU. Buat dengan prompt TMG-P07 di panduan gambar puzzle; foto rujukan tidak perlu. Jalankan uji keping sebelum diunggah.'],
+                            'review' => [
+                                'status' => 'needs_verification',
+                                'note'   => 'Revisi Oktober 2026: gambar & keterangan baru (TMG-P07 di panduan gambar puzzle). Fakta diambil dari bank soal; cek ulang rumusannya. Gambar belum dibuat. | ' . $replayOnly,
+                            ],
+                        ],
+                    ],
+                ],
+                'h' => [
+                    'title' => ['Ikan Uceng dan Sungai Jernih', 'Uceng Fish and the Clear River'],
+                    'ref'   => 'DJKI (indikasi geografis ikan uceng)',
+                    'items' => [
+                        [   // tmg-1-h01
+                            'type'   => 'puzzle_arrange',
+                            'prompt' => [
+                                'Ikan uceng adalah ikan sungai kecil yang menjadi makanan khas Temanggung. Ikan ini hidup di sungai yang airnya jernih dan biasanya digoreng kering.',
+                                'Uceng is a small river fish and a special food of Temanggung. It lives in clear rivers and is usually fried until crispy.',
+                            ],
+                            'media'  => ['key' => 'challenge.item.tmg-1-h01', 'label' => 'Ikan Uceng dan Sungai Jernih', 'note' => 'sungai pegunungan jernih berbatu, pencari ikan dengan serok kecil, ikan uceng kecil di atas kerikil, warung tepi sungai dengan uceng goreng', 'source' => 'BARU. Buat dengan prompt TMG-P08 di panduan gambar puzzle; foto rujukan disarankan. Jalankan uji keping sebelum diunggah.'],
+                            'review' => [
+                                'status' => 'needs_verification',
+                                'note'   => 'Revisi Oktober 2026: gambar & keterangan baru (TMG-P08 di panduan gambar puzzle). Fakta baru yang wajib dicek: "hidup di sungai yang airnya jernih" dan "biasanya digoreng kering". Gambar belum dibuat. | ' . $replayOnly,
+                            ],
+                        ],
+                    ],
+                ],
+                'i' => [
+                    'title' => ['Pasar Papringan', 'Papringan Market'],
+                    'ref'   => 'GNFI (2022) Pasar Papringan',
+                    'items' => [
+                        [   // tmg-1-i01
+                            'type'   => 'puzzle_arrange',
+                            'prompt' => [
+                                'Pasar Papringan di Dusun Ngadiprono, Desa Ngadimulyo, Kecamatan Kedu, digelar di bawah rumpun bambu setiap Minggu Wage dan Minggu Pon. Pembeli membayar dengan pring, alat tukar dari bambu, dan pasar ini tidak memakai plastik.',
+                                'Papringan Market in Ngadiprono Hamlet, Ngadimulyo Village, Kedu District, is held under a bamboo grove on the Javanese market days Minggu Wage and Minggu Pon. Shoppers pay with pring, tokens made of bamboo, and no plastic is used.',
+                            ],
+                            'media'  => ['key' => 'challenge.item.tmg-1-i01', 'label' => 'Pasar Papringan', 'note' => 'pasar pagi di bawah rumpun bambu: lapak bambu, jajanan di tampah daun pisang, mainan kayu, pembeli membayar dengan keping bambu, tanpa plastik', 'source' => 'BARU. Buat dengan prompt TMG-P09 di panduan gambar puzzle; foto rujukan disarankan. Jalankan uji keping sebelum diunggah.'],
+                            'review' => [
+                                'status' => 'needs_verification',
+                                'note'   => 'Revisi Oktober 2026: gambar & keterangan baru (TMG-P09 di panduan gambar puzzle). Fakta baru yang wajib dicek: semua isi keterangan (sumber: GNFI 2022). Gambar belum dibuat. | ' . $replayOnly,
+                            ],
+                        ],
+                    ],
+                ],
+                'j' => [
+                    'title' => ['Perajin Kuda Kepang', 'The Kuda Kepang Makers'],
+                    'ref'   => $ref['art'],
+                    'items' => [
+                        [   // tmg-1-j01
+                            'type'   => 'puzzle_arrange',
+                            'prompt' => [
+                                'Kuda kepang untuk tari kuda lumping dibuat dari anyaman bambu, lalu dicat dan dihias kain warna-warni. Agar kesenian ini tidak hilang, anak-anak muda diajak berlatih menari kuda lumping.',
+                                'The hobby horses for the kuda lumping dance are made of woven bamboo, then painted and decorated with colourful cloth. So that this art does not disappear, young people are invited to practise the dance.',
+                            ],
+                            'media'  => ['key' => 'challenge.item.tmg-1-j01', 'label' => 'Perajin Kuda Kepang', 'note' => 'halaman bengkel perajin: menganyam dan mengecat kuda kepang, kuda jadi digantung, tumpukan bilah bambu, remaja siap berlatih, Sumbing di latar', 'source' => 'BARU. Buat dengan prompt TMG-P10 di panduan gambar puzzle; foto rujukan disarankan. Jalankan uji keping sebelum diunggah.'],
+                            'review' => [
+                                'status' => 'needs_verification',
+                                'note'   => 'Revisi Oktober 2026: gambar & keterangan baru (TMG-P10 di panduan gambar puzzle). Fakta diambil dari bank soal; cek ulang rumusannya. Gambar belum dibuat. | ' . $replayOnly,
+                            ],
                         ],
                     ],
                 ],
@@ -103,11 +246,11 @@ return [
             'engine'           => 'rumpang',
             'variant'          => 'rumpang_bacaan',
             'indicator'        => 'literasi',
-            'distractor_count' => 0,
+            'distractor_count' => 1,
             'title'            => ['Lengkapi Bacaan Temanggung', 'Complete the Temanggung Reading'],
             'instruction'      => [
-                'Baca paragrafnya. Ketuk kotak kosong, lalu ketuk kata yang tepat. Setiap kata dipakai satu kali.',
-                'Read the paragraph. Tap an empty box, then tap the right word. Each word is used once.',
+                'Baca paragrafnya. Ketuk kotak kosong, lalu ketuk kata yang tepat. Ada satu kata yang tidak terpakai.',
+                'Read the paragraph. Tap an empty box, then tap the right word. One word will not be used.',
             ],
             'description'      => [
                 'Catatan Jaka tentang Temanggung ada yang terhapus hujan. Lengkapi bacaannya supaya bisa dibaca lagi.',
@@ -119,13 +262,13 @@ return [
                     'Perhatikan kata-kata di sekitar kotak kosong. Kadang jawabannya sudah disebut di kalimat sebelumnya.',
                     'Look at the words around each box. Sometimes the answer was already mentioned in an earlier sentence.',
                 ],
-                ['Setiap kata di bank kata dipakai satu kali.', 'Each word in the word bank is used once.'],
+                ['Ada satu kata pengecoh. Setiap kata hanya dipakai satu kali.', 'There is one decoy word. Each word is used only once.'],
             ],
             'variants' => [
                 'a' => [
                     'title'       => ['Gunung Kembar', 'The Twin Mountains'],
                     'ref'         => $ref['geo'],
-                    'distractors' => [],
+                    'distractors' => [['tandus', 'barren']],
                     'items'       => [
                         [   // tmg-2-a01
                             'type'         => 'fill_blank_bank',
@@ -162,7 +305,7 @@ return [
                 'b' => [
                     'title'       => ['Umbul Jumprit', 'Umbul Jumprit'],
                     'ref'         => $ref['jumprit'],
-                    'distractors' => [],
+                    'distractors' => [['hujan', 'rainy']],
                     'items'       => [
                         [   // tmg-2-b01
                             'type'         => 'fill_blank_bank',
@@ -199,7 +342,7 @@ return [
                 'c' => [
                     'title'       => ['Kuda Lumping', 'Kuda Lumping'],
                     'ref'         => $ref['art'],
-                    'distractors' => [],
+                    'distractors' => [['kayu', 'wooden']],
                     'items'       => [
                         [   // tmg-2-c01
                             'type'         => 'fill_blank_bank',
@@ -269,8 +412,8 @@ return [
                     'passage' => [
                         'title' => ['Situs Liyangan', 'The Liyangan Site'],
                         'body'  => [
-                            'Situs Liyangan berada di Desa Purbosari, Kecamatan Ngadirejo, Temanggung. Situs ini ditemukan pada tahun 2008 ketika warga sedang menambang pasir. Di dalam tanah, para peneliti menemukan sisa rumah kayu, bangunan candi, jalan batu, dan butir padi yang hangus. Semua itu tertimbun material letusan Gunung Sindoro pada masa lalu.',
-                            'The Liyangan Site is in Purbosari Village, Ngadirejo District, Temanggung. It was found in 2008 while villagers were digging for sand. Under the ground, researchers found the remains of wooden houses, temple buildings, stone paths, and burnt grains of rice. All of it had been buried by material from an eruption of Mount Sindoro long ago.',
+                            'Situs Liyangan berada di Desa Purbosari, Kecamatan Ngadirejo, Temanggung. Situs ini ditemukan pada tahun 2008 ketika warga sedang menambang pasir. Di dalam tanah, para peneliti menemukan sisa rumah kayu, bangunan candi, jalan batu, dan butir padi yang hangus. Semua itu tertimbun pasir dan batu dari letusan Gunung Sindoro pada masa lalu.',
+                            'The Liyangan Site is in Purbosari Village, Ngadirejo District, Temanggung. It was found in 2008 while villagers were digging for sand. Under the ground, researchers found the remains of wooden houses, temple buildings, stone paths, and burnt grains of rice. All of it had been buried under sand and stones from an eruption of Mount Sindoro long ago.',
                         ],
                         'ref'   => $ref['history'],
                     ],
@@ -288,8 +431,12 @@ return [
                             'skill'  => 'mengenali_fakta',
                             'answer' => 'salah',
                             'prompt' => [
-                                'Situs Liyangan tertimbun material letusan Gunung Merapi.',
-                                'The Liyangan Site was buried by material from an eruption of Mount Merapi.',
+                                'Situs Liyangan tertimbun pasir dan batu dari letusan Gunung Merapi.',
+                                'The Liyangan Site was buried under sand and stones from an eruption of Mount Merapi.',
+                            ],
+                            'review' => [
+                                'status' => 'needs_verification',
+                                'note'   => 'Revisi v2 (17 Okt 2026): "material letusan" → "pasir dan batu dari letusan", sama dengan naskah kenal-temanggung-03 dan lebih mudah untuk tingkat C1. | Sebelumnya: Disetujui peneliti sebagai bank soal final penelitian kelas 5 (Oktober 2026).',
                             ],
                         ],
                         [   // tmg-3-a03

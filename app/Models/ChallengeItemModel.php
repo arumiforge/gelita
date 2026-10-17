@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Entities\ChallengeItem;
+use App\Libraries\BankRules;
 use App\Models\Traits\EncodesJson;
 use CodeIgniter\Model;
 
@@ -80,11 +81,14 @@ class ChallengeItemModel extends Model
     }
 
     /**
-     * Memilih satu variasi untuk pengerjaan baru (Dok 1 §9.2): variasi yang
-     * sudah pernah didapat siswa ($excludeGroups) dibuang selama masih ada
-     * yang lain, lalu satu dipilih dengan random_int() — acak sungguhan, tidak
-     * berbenih. Semua soal aktif variasi itu dipakai, urut sequence; objek
-     * jebakan `cari` ikut di akhir agar tetap tampil di adegan.
+     * Picks one variant for a new attempt (Dok 1 §9.2). The first attempt
+     * (nothing served yet) draws only from the research set
+     * BankRules::FIRST_ATTEMPT_GROUPS (a–c) when the bank has any of them, so
+     * Susun Gambar variants d–j appear on replays only. Later attempts drop
+     * the variants the student already got ($excludeGroups) while others
+     * remain. The pick uses random_int(), truly random and unseeded. Every
+     * active item of the variant is used in sequence order; `cari` decoys go
+     * last so they still show in the scene.
      *
      * @param list<string>             $excludeGroups
      * @param list<ChallengeItem>|null $bank          bank yang sudah dimuat, hindari query ulang
@@ -99,10 +103,16 @@ class ChallengeItemModel extends Model
             return ['group' => '', 'items' => []];
         }
 
-        $candidates = array_values(array_diff(array_keys($groups), $excludeGroups));
+        $all = array_map('strval', array_keys($groups));
+
+        if ($excludeGroups === []) {
+            $candidates = array_values(array_intersect($all, BankRules::FIRST_ATTEMPT_GROUPS));
+        } else {
+            $candidates = array_values(array_diff($all, $excludeGroups));
+        }
 
         if ($candidates === []) {
-            $candidates = array_keys($groups);
+            $candidates = $all;
         }
 
         $group = (string) $candidates[$this->randomIndex(count($candidates))];

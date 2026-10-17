@@ -679,7 +679,7 @@ Bahan berikut ada di repositori tetapi tidak dijalankan server saat permainan be
 
 | Lokasi | Isi | Cara memakai |
 |---|---|---|
-| [`docs/bank-soal/`](bank-soal/README.md) | bank soal final kelas 5: `data/{temanggung,magelang,wonosobo}.php` → `build-workbook.php` → `gelita-bank-soal-kelas5.xlsx` (126 soal: 108 dinilai + 18 pengecoh, 30 variasi, 45 slot gambar tantangan di sheet DAFTAR_MEDIA) | `php docs/bank-soal/build-workbook.php [keluaran.xlsx]`; workbook diimpor `KontenKelas5Seeder`, `gelita:reset`, atau `gelita:bank:import` |
+| [`docs/bank-soal/`](bank-soal/README.md) | bank soal kelas 5 (revisi Oktober 2026): `data/{temanggung,magelang,wonosobo}.php` → `build-workbook.php` → `gelita-bank-soal-kelas5.xlsx` (151 baris soal: 147 aktif + 4 diistirahatkan, 51 variasi, 66 slot gambar tantangan di sheet DAFTAR_MEDIA) | `php docs/bank-soal/build-workbook.php [keluaran.xlsx]`; workbook diimpor `KontenKelas5Seeder`, `gelita:reset`, atau `gelita:bank:import` |
 | [`docs/pustaka/`](pustaka/README.md) | Pustaka Kedu: 30 halaman dan 48 gambar/video, `data/*.php` → `build-workbook.php` → `gelita-pustaka.xlsx` | `php docs/pustaka/build-workbook.php [keluaran.xlsx]`; diimpor `KontenKelas5Seeder` saat instalasi |
 | [`docs/sekolah/`](sekolah/README.md) | penyusun daftar sekolah resmi Jawa Tengah (`build-sekolah-jateng.php`) → `app/Database/Seeds/data/sekolah-jateng.csv` + `sekolah-jateng.meta.json` | `php docs/sekolah/build-sekolah-jateng.php [--source=…] [--out=…]`, lalu `php spark gelita:schools:import` |
 | [`docs/naskah-cerita.md`](naskah-cerita.md) | naskah cerita; salinan datanya `app/Database/Seeds/data/story.php` (88 baris `dialogues`) | disemai `ContentSeeder` |

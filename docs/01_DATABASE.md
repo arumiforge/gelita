@@ -482,7 +482,7 @@ Isi soal per jenis tantangan:
 | Benar atau Salah | `verdict_card` | 3 / 5 / 6 | Pernyataan | `passage_id` = bacaan variasi; `media_asset_id` = gambar pernyataan (opsional) |
 | Cari Objek | `find_object` | 4 target + 4 / 6 / 8 pengecoh | Target: kalimat petunjuk; pengecoh: nama benda | Satu variasi `a`; `media_asset_id` = gambar benda; adegan di `challenge_nodes.scene_media_id` |
 
-Susun Gambar, Isi Rumpang, dan Benar atau Salah punya tiga variasi (a/b/c), Cari Objek satu (`BankRules::VARIANTS`). Bank final kelas 5: 126 soal (108 dinilai + 18 pengecoh), 30 variasi.
+Isi Rumpang dan Benar atau Salah punya tiga variasi (a/b/c), Susun Gambar 3–10 (bank kelas 5: a–j), Cari Objek satu (`BankRules::VARIANTS`). Bank kelas 5 revisi Oktober 2026: 151 baris soal (147 aktif: 129 dinilai + 18 pengecoh; 4 diistirahatkan), 51 variasi.
 
 #### `reading_passages`
 
@@ -690,7 +690,7 @@ Waktu ditulis ISO 8601 WIB dengan milidetik dan durasi dalam milidetik. Baris `g
 
 #### `challenge_attempts`
 
-Satu pengerjaan satu tantangan dalam satu sesi. Pengerjaan `in_progress` yang sudah ada dilanjutkan saat tantangan dibuka lagi; pengerjaan baru memilih **satu variasi acak** (`random_int`), dengan menghindari variasi yang sudah pernah didapat siswa itu di sesi mana pun selama masih ada yang lain (`ChallengeItemModel::pickVariant()`, `ChallengeAttemptModel::variantsServed()`).
+Satu pengerjaan satu tantangan dalam satu sesi. Pengerjaan `in_progress` yang sudah ada dilanjutkan saat tantangan dibuka lagi; pengerjaan baru memilih **satu variasi acak** (`random_int`), dengan menghindari variasi yang sudah pernah didapat siswa itu di sesi mana pun selama masih ada yang lain (`ChallengeItemModel::pickVariant()`, `ChallengeAttemptModel::variantsServed()`). Pengerjaan pertama hanya memilih dari variasi a–c (`BankRules::FIRST_ATTEMPT_GROUPS`), sehingga variasi Susun Gambar d–j hanya muncul pada pengerjaan ulang.
 
 | Kolom | Tipe | Null | Bawaan | Arti |
 |---|---|---|---|---|
