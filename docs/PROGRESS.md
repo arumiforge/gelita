@@ -79,7 +79,7 @@ Owner decisions in its §12 (9 October 2026): full download before Mulai, admin 
 - [ ] Researcher checks every `needs_verification` item and the facts in review §6
 - [ ] Integrate draft 2 into the app on its own branch (review §7): puzzle variants a–j with the first attempt drawn from a–c, skill `membedakan_fakta_pendapat`, one Temanggung distractor, explicit item keys in `docs/bank-soal/data/*.php`, 32 script lines in `data/story.php`, tests (`claude/integrasi-draf-2-aplikasi-g6shf6`, PR open)
 - [ ] Re-record 32 ID and 28 EN narration lines after integration. Until then, do not use "Setujui semua rekaman": the bundled recordings of those lines still say the old text, and nothing marks them stale (decision log, 17 October 2026)
-- [ ] On a server that already has content: re-import the bank (`gelita:bank:import`), update the 32 script lines in the dialogue editor (the seeder does not overwrite existing lines), run `gelita:katalog:impor` for the 21 new puzzle images, and fix old slot notes in **Gambar & mockup** (the import does not overwrite filled notes)
+- [ ] On a server that already has content: re-import the bank (`gelita:bank:import`), update the 32 script lines with `gelita:story:sync` (dry run first; lines edited in the panel are kept unless `--timpa`), run `gelita:katalog:impor` for the 21 new puzzle images, and fix old slot notes in **Gambar & mockup** (the import does not overwrite filled notes)
 
 ## Active branches
 
@@ -89,3 +89,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 |---|---|---|
 | `sky/laughing-rubin-l2tmm2` | Asset package Wave 2: Stage 2 (service worker, downloader) and Stage 6 (Paket aset panel, study package lock) | PR open |
 | `claude/integrasi-draf-2-aplikasi-g6shf6` | Integrate draft 2 into the app: bank data files, rules, first attempt from a–c, story script | PR open |
+| `sky/focused-keller-fnnr3t` | `gelita:story:sync`: update the story lines of an installed server to the current script | PR open |

@@ -3,7 +3,7 @@
 Naskah lengkap seluruh narasi dan dialog permainan, dalam bahasa Indonesia dan Inggris. Naskah ini dipakai untuk dua hal:
 
 1. **Rekaman audio.** Setiap baris punya nama berkas audio sendiri, jadi pengisi suara cukup membaca dari atas ke bawah.
-2. **Isi tabel `dialogues`.** Teks di sini disalin persis ke `app/Database/Seeds/data/story.php` (`StoryDataTest` mencocokkan keduanya baris demi baris) dan dipasang saat instalasi oleh `ContentSeeder`. Sesudah instalasi, teks disunting lewat panel (editor dialog). Bila teks naskah perlu diubah, ubah dulu di berkas ini lalu di `data/story.php`, agar rekaman dan isi permainan tetap sama.
+2. **Isi tabel `dialogues`.** Teks di sini disalin persis ke `app/Database/Seeds/data/story.php` (`StoryDataTest` mencocokkan keduanya baris demi baris) dan dipasang saat instalasi oleh `ContentSeeder`. Sesudah instalasi, teks disunting lewat panel (editor dialog). Bila teks naskah perlu diubah, ubah dulu di berkas ini lalu di `data/story.php`, agar rekaman dan isi permainan tetap sama. When a line changes, also append its replaced title and text to `app/Database/Seeds/data/story-previous.php`; on a server that already has content, `php spark gelita:story:sync` then updates the unedited lines (`docs/08_DEPLOYMENT.md` → *Story script changed*).
 
 ## Benang merah
 
