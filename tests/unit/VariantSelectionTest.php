@@ -155,6 +155,44 @@ final class VariantSelectionTest extends CIUnitTestCase
         $this->assertContains($this->current($nodeId, 2)->variant_group, ['a', 'b', 'c']);
     }
 
+    /**
+     * Susun Gambar has ten variants (a–j), but a first attempt only draws from
+     * the research set a–c (owner decision, 17 October 2026).
+     */
+    public function testFirstPuzzleAttemptUsesTheResearchSet(): void
+    {
+        foreach (['tmg-1', 'mgl-1', 'wnb-1'] as $offset => $ref) {
+            $nodeId = $this->nodeId($this->conn, $ref);
+
+            $this->assertSame(10, $this->conn->table('challenge_items')->where('challenge_node_id', $nodeId)->where('is_active', 1)->countAllResults(), $ref);
+
+            for ($n = 2; $n <= 21; $n++) {
+                $session = $this->newStudent($n + 100 * $offset);
+
+                $this->service->openNode($session, $nodeId);
+                $this->assertContains((string) $this->current($nodeId, $session->id)->variant_group, ['a', 'b', 'c'], $ref);
+            }
+        }
+    }
+
+    /** Replays avoid served variants, so ten attempts at Susun Gambar visit all of a–j once. */
+    public function testPuzzleReplaysReachVariantsDToJ(): void
+    {
+        $nodeId  = $this->nodeId($this->conn, 'mgl-1');
+        $session = $this->session();
+        $groups  = [];
+
+        for ($n = 1; $n <= 10; $n++) {
+            $this->service->openNode($session, $nodeId);
+            $attempt  = $this->current($nodeId);
+            $groups[] = (string) $attempt->variant_group;
+            $this->service->abandonAttempt($attempt);
+        }
+
+        $this->assertContains($groups[0], ['a', 'b', 'c'], 'first attempt from the research set');
+        $this->assertSame(range('a', 'j'), $this->sorted($groups), 'each replay picks a variant not served yet');
+    }
+
     /** Siswa lain tidak memengaruhi variasi yang dihindari. */
     public function testServedVariantsArePerStudent(): void
     {

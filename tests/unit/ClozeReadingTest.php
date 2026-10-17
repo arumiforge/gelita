@@ -57,7 +57,7 @@ final class ClozeReadingTest extends CIUnitTestCase
         $this->assertSame([3, 3], DifficultyRules::reading('mudah')['blanks']);
         $this->assertSame([5, 5], DifficultyRules::reading('sedang')['blanks']);
         $this->assertSame([7, 7], DifficultyRules::reading('sulit')['blanks']);
-        $this->assertSame([[0, 0], [2, 2], [2, 2]], array_map(static fn (string $d): array => DifficultyRules::reading($d)['distractors'], ['mudah', 'sedang', 'sulit']));
+        $this->assertSame([[1, 1], [2, 2], [2, 2]], array_map(static fn (string $d): array => DifficultyRules::reading($d)['distractors'], ['mudah', 'sedang', 'sulit']));
         $this->assertSame(['C1', 'C2'], DifficultyRules::bloomRange('mudah'));
         $this->assertSame(['C2', 'C3'], DifficultyRules::bloomRange('sedang'));
         $this->assertSame(['C3', 'C4'], DifficultyRules::bloomRange('sulit'));

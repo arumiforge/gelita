@@ -569,7 +569,7 @@ Instalasi juga membaca isi bawaan dari repositori, jadi folder `docs/` dan `app/
 | `app/Database/Seeds/data/sekolah-jateng.csv` | `SchoolSeeder`, `gelita:schools:import` | 28.487 sekolah resmi Jawa Tengah (NPSN), dari [`docs/sekolah/`](sekolah/README.md) |
 | `app/Database/Seeds/data/story.php` | `ContentSeeder` | 88 baris cerita (salinan [`docs/naskah-cerita.md`](naskah-cerita.md)) |
 | `docs/pustaka/gelita-pustaka.xlsx` | `KontenKelas5Seeder` | Pustaka Kedu: 30 halaman, 48 media ([`docs/pustaka/`](pustaka/README.md)) |
-| `docs/bank-soal/gelita-bank-soal-kelas5.xlsx` | `KontenKelas5Seeder`, `gelita:reset` | bank soal kelas 5: 12 tantangan, 126 soal ([`docs/bank-soal/`](bank-soal/README.md)) |
+| `docs/bank-soal/gelita-bank-soal-kelas5.xlsx` | `KontenKelas5Seeder`, `gelita:reset` | bank soal kelas 5: 12 tantangan, 147 soal aktif ([`docs/bank-soal/`](bank-soal/README.md)) |
 | `public/assets/audio/narasi/{id,en}/*.mp3` + `produksi.json` | `gelita:narration:import` | 100 rekaman narasi bawaan per bahasa ([`docs/audio.md`](audio.md)) |
 
 ### Ringkasan alur

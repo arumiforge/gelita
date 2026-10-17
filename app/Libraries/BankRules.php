@@ -56,8 +56,20 @@ final class BankRules
     /** Jenis soal yang wajib bertanda Bloom → rentang aturannya (DifficultyRules::bloomRange()). */
     private const BLOOM_KIND = ['fill_blank_bank' => 'reading', 'verdict_card' => 'truefalse', 'find_object' => 'hunt'];
 
-    /** Variasi aktif yang wajib ada; Cari Objek cukup satu (satu adegan tetap). */
-    public const VARIANTS = ['puzzle' => 3, 'rumpang' => 3, 'boleh' => 3, 'cari' => 1];
+    /**
+     * Active variants each challenge needs: exactly 3 for Isi Rumpang and
+     * Benar atau Salah; Susun Gambar at least 3 and at most 10 (a–j, draft 2
+     * of the bank); Cari Objek at least one (one fixed scene).
+     */
+    public const VARIANTS = ['puzzle' => [3, 10], 'rumpang' => [3, 3], 'boleh' => [3, 3], 'cari' => [1, null]];
+
+    /**
+     * The research set: a student's first attempt at a challenge draws only
+     * from these variants, so first-attempt scores stay comparable
+     * (ChallengeItemModel::pickVariant()). Susun Gambar variants d–j are for
+     * replays only (owner decision, 17 October 2026).
+     */
+    public const FIRST_ATTEMPT_GROUPS = ['a', 'b', 'c'];
 
     /** Batas tumpang tindih dua benda Cari Objek: bagian dari luas kotak yang lebih kecil. */
     public const MAX_OVERLAP = 0.20;
@@ -84,17 +96,22 @@ final class BankRules
             return [self::problem('error', $ref, null, null, "Jenis tantangan '{$engine}' tidak dikenali.")];
         }
 
-        $want = self::VARIANTS[$engine];
-        $have = array_keys(array_filter($variants, static fn ($v): bool => ((array) ($v['items'] ?? [])) !== []));
+        [$min, $max] = self::VARIANTS[$engine];
+        $have        = array_map('strval', array_keys(array_filter($variants, static fn ($v): bool => ((array) ($v['items'] ?? [])) !== [])));
 
         if ($have === []) {
             $out[] = self::problem('error', $ref, null, null, 'Belum ada soal aktif.');
-        } elseif ($engine === 'cari' ? count($have) < $want : count($have) !== $want) {
+        } elseif (count($have) < $min || ($max !== null && count($have) > $max)) {
             $out[] = self::problem('error', $ref, null, null, sprintf(
                 'Ada %d variasi aktif (%s); aturan kelas 5: %s.',
                 count($have),
                 implode(', ', $have),
-                $engine === 'cari' ? 'paling sedikit 1 variasi' : 'tepat 3 variasi (a, b, c)',
+                self::variantRuleLabel($engine),
+            ));
+        } elseif ($engine === 'puzzle' && ($missing = array_diff(self::FIRST_ATTEMPT_GROUPS, $have)) !== []) {
+            $out[] = self::problem('error', $ref, null, null, sprintf(
+                'Variasi %s belum ada; Susun Gambar wajib punya variasi a, b, dan c untuk pengerjaan pertama.',
+                implode(', ', $missing),
             ));
         }
 
@@ -116,6 +133,16 @@ final class BankRules
         }
 
         return $out;
+    }
+
+    /** "tepat 3 variasi (a, b, c)" — the variant rule of one engine, for messages. */
+    public static function variantRuleLabel(string $engine): string
+    {
+        return match ($engine) {
+            'cari'   => 'paling sedikit 1 variasi',
+            'puzzle' => 'paling sedikit 3 variasi (a, b, c) dan paling banyak 10 (a sampai j)',
+            default  => 'tepat 3 variasi (a, b, c)',
+        };
     }
 
     /**

@@ -14,10 +14,8 @@ use Tests\Support\Database\GradeFiveWorld;
  * Bank kata Isi Rumpang (Dok 2 §4) pada bank soal kelas 5 sungguhan, untuk
  * 1 000 pengerjaan per variasi dan kedua bahasa:
  *
- * - Temanggung (3 kata, tanpa pengecoh): tidak ada kata di posisi rumpangnya
- *   sendiri (derangement);
- * - Magelang dan Wonosobo: urutan jawaban di dalam bank tidak sama dengan
- *   urutan rumpang;
+ * - every region (Temanggung 3 words + 1 distractor since draft 2, Magelang
+ *   and Wonosobo + 2): the answers never appear in blank order inside the bank;
  * - isi bank = jawaban variasi itu + `distractor_count` pengecoh variasi itu;
  * - urutannya tetap untuk pengerjaan yang sama (muat ulang).
  *
@@ -53,37 +51,9 @@ final class WordBankShuffleTest extends CIUnitTestCase
         parent::tearDown();
     }
 
-    public function testTemanggungBankIsAlwaysADerangement(): void
+    public function testAnswerOrderIsNeverTheBlankOrder(): void
     {
-        foreach ($this->variants('tmg-2') as $group => [$node, $items]) {
-            foreach (['id', 'en'] as $locale) {
-                $answers = $this->answers($items, $locale);
-                $orders  = [];
-
-                $this->assertCount(3, $answers, "tmg-2 {$group}");
-                $this->assertSame([], $node->distractors($locale, $group), 'Temanggung tanpa pengecoh');
-
-                for ($attemptId = 1; $attemptId <= self::SEEDS; $attemptId++) {
-                    $bank = $this->bank($node, $items, $locale, $attemptId, $group);
-
-                    $this->assertEqualsCanonicalizing($answers, $bank, "tmg-2 {$group} {$locale} #{$attemptId}");
-
-                    foreach ($answers as $position => $word) {
-                        $this->assertNotSame($word, $bank[$position], "tmg-2 {$group} {$locale} #{$attemptId}: kata di posisi rumpangnya sendiri");
-                    }
-
-                    $orders[implode('|', $bank)] = true;
-                }
-
-                // Tiga kata hanya punya dua derangement; keduanya muncul
-                $this->assertCount(2, $orders, "tmg-2 {$group} {$locale}");
-            }
-        }
-    }
-
-    public function testMagelangAndWonosoboAnswerOrderIsNeverTheBlankOrder(): void
-    {
-        foreach (['mgl-2' => 5, 'wnb-2' => 7] as $ref => $blanks) {
+        foreach (['tmg-2' => [3, 1], 'mgl-2' => [5, 2], 'wnb-2' => [7, 2]] as $ref => [$blanks, $decoys]) {
             foreach ($this->variants($ref) as $group => [$node, $items]) {
                 foreach (['id', 'en'] as $locale) {
                     $answers     = $this->answers($items, $locale);
@@ -91,7 +61,7 @@ final class WordBankShuffleTest extends CIUnitTestCase
                     $orders      = [];
 
                     $this->assertCount($blanks, $answers, "{$ref} {$group}");
-                    $this->assertCount(2, $distractors, "{$ref} {$group}: 2 pengecoh variasi");
+                    $this->assertCount($decoys, $distractors, "{$ref} {$group}: distractors of the variant");
 
                     for ($attemptId = 1; $attemptId <= self::SEEDS; $attemptId++) {
                         $bank = $this->bank($node, $items, $locale, $attemptId, $group);
@@ -106,7 +76,8 @@ final class WordBankShuffleTest extends CIUnitTestCase
                         $orders[implode('|', $bank)] = true;
                     }
 
-                    $this->assertGreaterThan(self::SEEDS * 0.9, count($orders), "{$ref} {$group} {$locale}: urutan beragam");
+                    // Temanggung: 4 words = 24 orders, 20 of them allowed; the others vary far more
+                    $this->assertGreaterThan(min(self::SEEDS * 0.9, 19), count($orders), "{$ref} {$group} {$locale}: urutan beragam");
                 }
             }
         }

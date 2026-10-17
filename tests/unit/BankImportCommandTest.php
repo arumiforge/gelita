@@ -39,7 +39,7 @@ final class BankImportCommandTest extends CIUnitTestCase
         $code = (new BankImport(Services::logger(), Services::commands()))->run([ROOTPATH . SystemResetService::DEFAULT_BANK, 'dry-run' => null]);
 
         $this->assertSame(EXIT_SUCCESS, $code, $io->getOutput());
-        $this->assertStringContainsString('Workbook: 12 node, 30 variasi, 9 bacaan, 126 butir, 36 petunjuk, 12 pengecoh', $io->getOutput());
+        $this->assertStringContainsString('Workbook: 12 node, 51 variasi, 9 bacaan, 151 butir, 36 petunjuk, 15 pengecoh', $io->getOutput());
         $this->assertMatchesRegularExpression('/\|\s*wnb-4\s*\|\s*1\s*\|\s*12\s*\|/', $io->getOutput(), 'wnb-4: 1 variasi, 4 target + 8 pengecoh');
     }
 }

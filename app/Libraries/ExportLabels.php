@@ -45,7 +45,7 @@ final class ExportLabels
         'node_ref'           => ['Kode tantangan', 'code', 'Awalan wilayah + urutan tantangan, mis. tmg-1 … wnb-4.'],
         'node_sequence'      => ['Tantangan ke-', 'int', 'Urutan tantangan dalam wilayah (1–4).'],
         'engine_type'        => ['Jenis tantangan', 'enum', 'Jenis tantangan.', 'engine'],
-        'variant_group'      => ['Variasi', 'code', 'Variasi soal yang dipakai (a, b, atau c).'],
+        'variant_group'      => ['Variasi', 'code', 'Variasi soal yang dipakai: a, b, atau c (Susun Gambar a sampai j). Pengerjaan pertama selalu memakai a, b, atau c; d–j hanya muncul pada pengerjaan ulang.'],
         'variant_title'      => ['Judul variasi', 'text', 'Judul tantangan pada variasi itu.'],
         'item_key'           => ['Kode soal', 'code', 'Kode soal {tantangan}-{variasi}{NN}, mis. tmg-2-a01.'],
         'interaction_type'   => ['Jenis soal', 'enum', 'Bentuk interaksi soal.', 'interaction'],

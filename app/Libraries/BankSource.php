@@ -15,6 +15,15 @@ namespace App\Libraries;
  * - kode bacaan Benar atau Salah `{node}-{variasi}`;
  * - `sequence` soal = urutan global di tantangan (a01…, b01…, c01…);
  * - judul variasi Benar atau Salah = judul bacaannya.
+ *
+ * Optional item fields (bank draft 2, October 2026):
+ * - `key`: explicit item key, for items inserted in the middle of a variant
+ *   (e.g. mgl-2-a06 played third). It must start with `{node}-{variant}`.
+ * - `active` => false: a retired item. It stays in the workbook with
+ *   `is_active = 0` so stored answers keep their item, gets sequence 91, 92, …
+ *   per challenge, and is left out of the BankRules checks.
+ * - `review` => ['status' => …, 'note' => …]: overrides the default
+ *   `verified` status and note, e.g. `needs_verification` for revised items.
  */
 final class BankSource
 {
@@ -25,9 +34,12 @@ final class BankSource
 
     public const REVIEW_NOTE = 'Disetujui peneliti sebagai bank soal final penelitian kelas 5 (Oktober 2026).';
 
+    /** Retired items get sequence 91, 92, … so they sort after every active item. */
+    public const RETIRED_SEQUENCE = 90;
+
     /** Ukuran & format gambar per jenis slot (sheet DAFTAR_MEDIA). */
     public const MEDIA_SIZES = [
-        'puzzle' => 'persegi, minimal 1200 × 1200 px (JPG/WebP); gambar tidak persegi dipotong bagian tengahnya',
+        'puzzle' => 'persegi tepat 1200 × 1200 px, WebP, latar penuh (tidak transparan)',
         'scene'  => '1280 × 720 px (16:9), JPG/WebP',
         'object' => '240 × 240 px, PNG/WebP berlatar transparan',
         'card'   => '480 × 360 px, JPG/WebP',
@@ -58,7 +70,8 @@ final class BankSource
      *     passages: array<string, array<string, string>>,
      *     regions: array<string, list<array{sequence: int, engine: string}>>,
      *     media: array<string, array<string, mixed>>,
-     *     keys: list<string>
+     *     keys: list<string>,
+     *     problems: list<array{level: string, node: string, variant: ?string, item: ?string, message: string}>
      * }
      */
     public static function flatten(array $regions): array
@@ -69,6 +82,7 @@ final class BankSource
         $layout   = [];
         $media    = [];
         $keys     = [];
+        $problems = [];
 
         foreach ($regions as $region => $data) {
             $difficulty = DifficultyRules::normalize((string) ($data['difficulty'] ?? ''));
@@ -120,6 +134,7 @@ final class BankSource
                     'variants'         => [],
                 ];
                 $position = 0;
+                $retired  = 0;
 
                 foreach ((array) $node['variants'] as $group => $variant) {
                     $group      = (string) $group;
@@ -169,11 +184,16 @@ final class BankSource
                     $items = [];
 
                     foreach (array_values((array) $variant['items']) as $index => $item) {
-                        $position++;
-                        $key    = sprintf('%s-%s%02d', $ref, $group, $index + 1);
-                        $type   = (string) $item['type'];
-                        $decoy  = ! empty($item['decoy']);
-                        $keys[] = $key;
+                        $active   = ($item['active'] ?? true) !== false;
+                        $sequence = $active ? ++$position : self::RETIRED_SEQUENCE + ++$retired;
+                        $key      = isset($item['key']) ? (string) $item['key'] : sprintf('%s-%s%02d', $ref, $group, $index + 1);
+                        $type     = (string) $item['type'];
+                        $decoy    = ! empty($item['decoy']);
+                        $keys[]   = $key;
+
+                        if (! str_starts_with($key, $ref . '-' . $group)) {
+                            $problems[] = ['level' => 'error', 'node' => $ref, 'variant' => $group, 'item' => $key, 'message' => "Kode soal harus diawali {$ref}-{$group}."];
+                        }
 
                         $answerId = match ($type) {
                             'fill_blank_bank' => self::bi($item['answer'] ?? null, 0),
@@ -186,7 +206,7 @@ final class BankSource
                             'item_key'          => $key,
                             'node_ref'          => $ref,
                             'variant_group'     => $group,
-                            'sequence'          => (string) $position,
+                            'sequence'          => (string) $sequence,
                             'interaction_type'  => $type,
                             'indicator'         => (string) ($item['indicator'] ?? $node['indicator'] ?? ''),
                             'bloom_level'       => (string) ($item['bloom'] ?? ''),
@@ -206,9 +226,9 @@ final class BankSource
                             'media_label'       => (string) ($item['media']['label'] ?? ''),
                             'media_note'        => (string) ($item['media']['note'] ?? ''),
                             'scorable'          => $decoy ? '0' : '1',
-                            'is_active'         => '1',
-                            'review_status'     => self::REVIEW_STATUS,
-                            'review_note'       => self::REVIEW_NOTE,
+                            'is_active'         => $active ? '1' : '0',
+                            'review_status'     => (string) ($item['review']['status'] ?? self::REVIEW_STATUS),
+                            'review_note'       => (string) ($item['review']['note'] ?? self::REVIEW_NOTE),
                             'reference_source'  => (string) ($item['ref'] ?? $variant['ref'] ?? $variant['passage']['ref'] ?? $node['ref'] ?? ''),
                         ];
 
@@ -218,6 +238,10 @@ final class BankSource
                                 'cari'   => 'object',
                                 default  => 'card',
                             }, $region, $ref, $key . ($decoy ? ' (pengecoh)' : ''));
+                        }
+
+                        if (! $active) {
+                            continue;
                         }
 
                         $items[] = [
@@ -255,6 +279,7 @@ final class BankSource
             'regions'  => $layout,
             'media'    => $media,
             'keys'     => $keys,
+            'problems' => $problems,
         ];
     }
 
@@ -268,7 +293,7 @@ final class BankSource
      */
     public static function problems(array $flat): array
     {
-        $out = [];
+        $out = $flat['problems'] ?? [];
 
         foreach ($flat['regions'] as $region => $layout) {
             $out = [...$out, ...BankRules::region($region, $layout)];
@@ -279,7 +304,7 @@ final class BankSource
         }
 
         foreach (BankRules::duplicateKeys($flat['keys']) as $key) {
-            $out[] = ['level' => 'error', 'node' => explode('-', $key)[0], 'variant' => null, 'item' => $key, 'message' => 'Kode soal ini dipakai lebih dari sekali.'];
+            $out[] = ['level' => 'error', 'node' => implode('-', array_slice(explode('-', $key), 0, 2)), 'variant' => null, 'item' => $key, 'message' => 'Kode soal ini dipakai lebih dari sekali.'];
         }
 
         return $out;
