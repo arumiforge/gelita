@@ -1761,3 +1761,22 @@ Implements `docs/rencana-log-asinkron.md` §5.1 R2/R3 (server half) and §5.2 R5
 - **Flush config.** `Config\Gelita::$eventFlush = ['intervalMs' => 30000, 'maxEvents' => 40]`, overridable with `gelita.eventFlush.intervalMs` / `gelita.eventFlush.maxEvents` in `.env`. `js_config()` exposes it as `eventFlush` through `event_flush_config()`, which casts `.env` strings and clamps to at least 1 s and at most `maxEventsPerBatch` events.
 - **Dashboard note.** Under "Aktivitas terbaru" on Ringkasan: "Diperbarui tiap ±30 detik." (`Admin.recentEventsLag`, worded from `eventFlush.intervalMs`), through a new optional `note` on the `data-table` component.
 - **Still to check on MariaDB/MySQL** (SQLite shows no locks): a `check` request is not held by a telemetry batch of the same student (session lock released); two concurrent batches with the same audio entry write one usage row; `INSERT IGNORE` affected-row counts match the SQLite tests.
+
+## Asynchronous logging: §7 load test (17 October 2026)
+
+Owner request: run the load test of `docs/rencana-log-asinkron.md` §7. Results are in its new §7.1; the decisions and deviations are here.
+
+- **Protocol-level students instead of Playwright browsers.**
+  - Ninety Chromium contexts would have used most of the 4 CPUs the server needed, so the load came from the clients instead of the code under test.
+  - `tools/qa/load-test.mjs` sends the requests a real tab sends: login, rendered game pages, graded checks on the Benar atau Salah nodes, and telemetry, beacons, and heartbeats.
+  - Telemetry follows the old or the new rules of `core/events.js`, both taken from the code and listed in the script header.
+  - The rhythm matches `tools/qa/event-requests.mjs` (an event every 2 s, audio every 6 s). Its old-client figure of 30 requests per student per minute agrees with Phase 1's browser measurement of 26.6 with longer screens.
+- **Same machine, two deployments.** Before (`cc54041`) and after (`d1ba33c`) ran side by side behind Nginx + PHP-FPM + MariaDB, set up as in `docs/08` Jalur L, over plain HTTP on localhost. Each run starts from one shared database snapshot with PHP-FPM restarted. No migration differs between the two versions, so one snapshot serves both.
+- **Students** are registered by `tools/qa/load-students.php` through `SessionService::registerAndStart()`. On the CLI that method's final session-ID regeneration throws, because there is no web session. The script ignores only that error; everything before it is already written.
+- **Extra stress run at 300 students** (baseline vs Phases 1 + 2, not in the plan). At 90 students the baseline was also far from the limits, so the larger run shows where the difference becomes visible:
+  - check p95 52 → 37 ms;
+  - page p95 60 → 38 ms;
+  - host CPU 58 → 22 %.
+- **Phase 3.** All §7 targets hold at 90 students, so under owner decision 3 the write-behind inbox is not built. PROGRESS keeps an item for the owner to confirm it.
+- **Seen in passing, not fixed here.** Four 401 answers out of 45,129 telemetry requests in the 300-student baseline run. A likely cause, not verified: session-ID regeneration every 300 s with `regenerateDestroy = true` racing a parallel request that carries the old ID. The new client sends fewer parallel requests and had none. The old client does not keep a 401 batch for a later re-send, so the new client's behaviour on a 401 should be checked if the issue shows up on the real server.
+

@@ -1,6 +1,6 @@
 # Asynchronous logging plan
 
-*(New, English.)* Recommendation document: which logs must reach the database synchronously, which can be sent or written later, and how to do that without losing research data. Status: **approved plan; owner decisions recorded 17 October 2026 (§10). Phases 1 and 2 are implemented (PR #123 browser, PR #122 server); next is the §7 load measurement and the Phase 3 decision.** Written 17 October 2026 against `main` at the Draft 2 / voice-over merge (PR #118).
+*(New, English.)* Recommendation document: which logs must reach the database synchronously, which can be sent or written later, and how to do that without losing research data. Status: **approved plan; owner decisions recorded 17 October 2026 (§10). Phases 1 and 2 are implemented (PR #123 browser, PR #122 server) and load-tested (§7.1): every target met at 90 students, so Phase 3 is not needed under the agreed rule.** Written 17 October 2026 against `main` at the Draft 2 / voice-over merge (PR #118).
 
 Code references in §2–§4 describe the state before Phases 1 and 2; the decision log (`docs/perombakan-kelas5/CATATAN_IMPLEMENTASI.md`, sections of 17 October 2026) records what was built and any deviations.
 
@@ -173,9 +173,64 @@ Measure on a MariaDB/MySQL copy, never on production.
 
 Targets (proposal): at 90 students, telemetry ≤ 5 requests per student per minute, check p95 ≤ 300 ms, FPM never at `max_children`.
 
+### 7.1 Results (17 October 2026)
+
+**Setup.**
+- **Server.** One machine (4 vCPU, 15 GB RAM) with the `docs/08` Jalur L stack and its settings: Nginx 1.24, PHP-FPM 8.3.6 (`pm.max_children = 20`, opcache), MariaDB 10.11.14 (`innodb_flush_log_at_trx_commit = 1`, 1 GB buffer pool). Plain HTTP on localhost instead of HTTPS.
+- **Two deployments side by side.**
+  - *Before:* `main` at `cc54041`, before PR #123 and PR #122.
+  - *After:* `main` at `d1ba33c`, with both.
+  - Every run restores the same database snapshot and restarts PHP-FPM. The snapshot holds the seeded content, the test students, the study in `unlock_mode = free`, and one audio asset.
+- **Load.** `tools/qa/load-test.mjs` (students from `tools/qa/load-students.php`) plays N students over plain HTTP, without a browser.
+  - Each student logs in, then cycles peta → wilayah → dialog → misi → tantangan (the Benar atau Salah node of each region).
+  - On each challenge it sends three graded checks with all items answered.
+  - Throughout it emits one gameplay event every 2 s and one audio event every 6 s. Screens change every 29 s on average.
+  - Telemetry follows the old client's rules or the new client's (the script header lists both).
+- **Run shape.** Logins ramp over 60 s (90 s at N = 300), then 5 minutes are measured.
+- **Shared host.** The load generator runs on the same machine. It costs some CPU, equally in every run.
+
+**Results** (per configuration; "Phase 2 only" = after server with the old client):
+
+| | Baseline, N = 30 | Phase 2 only, N = 30 | Phases 1 + 2, N = 30 | Baseline, N = 90 | Phase 2 only, N = 90 | Phases 1 + 2, N = 90 | Baseline, N = 300 | Phases 1 + 2, N = 300 |
+|---|---|---|---|---|---|---|---|---|
+| Telemetry requests / student / min | 30.2 + 1 heartbeat | 30.2 + 1 | **5.0** + 0 | 30.2 + 1 | 30.2 + 1 | **5.0** + 0 | 30.1 + 1 | **5.0** + 0 |
+| Database statements / s | 337 | 343 | **110** | 1,008 | 1,028 | **332** | 3,358 | **1,097** |
+| InnoDB fsyncs / s | 30 | 31 | **10** | 87 | 89 | **30** | 280 | **97** |
+| Rows written / s (`Handler_write`) | 32.9 | 32.8 | 32.5 | 98.5 | 98.5 | 97.9 | 330 | 327 |
+| Host CPU busy | 9.1 % | 8.5 % | **3.3 %** | 20.7 % | 20.1 % | **7.4 %** | 57.7 % | **22.1 %** |
+| Check p95 / p99 (ms) | 39 / 45 | 35 / 40 | 38 / 44 | 35 / 46 | 35 / 40 | 35 / 42 | 52 / 75 | **37 / 46** |
+| Page p95 / p99 (ms) | 36 / 44 | 33 / 47 | 36 / 43 | 35 / 45 | 33 / 40 | 33 / 39 | 60 / 85 | **38 / 49** |
+| Slowest telemetry request (ms) | 69 | 62 | 100 | 293 | 167 | 52 | 165 | 140 |
+| PHP-FPM busy workers, max (of 20) | 5 | 4 | 3 | 6 | 6 | 5 | 9 | 6 |
+| Errors | 0 | 0 | 0 | 0 | 0 | 0 | 4 × 401 | 0 |
+
+**What the numbers say.**
+- **Targets met.** At 90 students all §7 targets hold in every configuration: telemetry ≤ 5 per student per minute with the new client, check p95 35 ms, and PHP-FPM never at `max_children`. Under the owner's rule (§10, decision 3), **Phase 3 is not needed.**
+- **The server does about a third of the work.** Phase 1 with Phase 2 cuts telemetry requests by 83 % and database statements, fsyncs, and CPU by about two thirds, at every size. Rows written stay the same, so the same research data arrives in fewer, larger requests.
+- **Phase 2 alone changes little on average** (the old client still sends the same requests). It trims the tail: the slowest telemetry request at N = 90 fell from 293 to 167 ms, and the check p99 from 46 to 40 ms.
+- **Where it matters: N = 300.** The baseline's check p95 rises to 52 ms (p99 75 ms) and page p95 to 60 ms, with the host at 58 % CPU. With Phases 1 + 2 the same 300 students stay at check p95 37 ms and page p95 38 ms, with the host at 22 % CPU.
+- **New client lands on the target, not well under it.** It sits at 5.0 requests per student per minute because this scenario changes screens every 29 s, and each change still costs one curtain flush plus one pagehide beacon. With 45-second screens, Phase 1 measured 3.7.
+- **401s in the baseline at N = 300.** Four of 45,129 telemetry requests were answered 401. A likely cause, not verified: the session ID is regenerated every 300 s (`timeToUpdate`, with `regenerateDestroy = true`) while another request of the same student still carries the old ID. The old client sends more parallel requests per student, so it hits this more often. The new client had none at any size. A 401 batch is not kept for a later re-send, so those events were lost to the old client.
+
+**Limits.**
+- The test machine has more RAM than the 2–4 GB `docs/08` recommends, and one load generator shares its CPU. Absolute numbers are a guide; the before/after comparison is the result.
+- A protocol-level client does not load static assets or run JavaScript. Nginx serves the assets and PHP-FPM never sees them, but a real classroom also loads them over the school network.
+
+**Rerunning.** As root, on a test machine only (never production):
+
+```bash
+# students in the test database
+cd /var/www/gelita && sudo -u www-data php tools/qa/load-students.php 90 beban
+# open every region, add an audio asset for telemetry, then run
+QA_BASE_URL=http://127.0.0.1 QA_STUDENTS=90 QA_CLIENT=new QA_AUDIO_ASSET=<id> \
+  QA_MYSQL="mysql -uroot gelita" QA_FPM_STATUS=http://127.0.0.1/fpm-status node tools/qa/load-test.mjs
+```
+
 ---
 
 ## 8. Expected effect (estimates)
+
+*(Estimates written before implementation; the measured numbers are in §7.1.)*
 
 | | Today | After Phase 1 | After Phase 2 |
 |---|---|---|---|
