@@ -64,7 +64,7 @@ function initRegionIntros(mapStory) {
     const { root, story, trigger } = open;
     open = null;
     story.stop();
-    flush(); // status "sudah didengar" segera sampai di server, tanpa menunggu antrean 3 detik
+    flush(); // "heard" status reaches the server now, without waiting for the event timer
     root.classList.remove('is-open');
     document.body.classList.remove('has-kenal');
     for (const node of $$(PAGE_LAYERS)) node.removeAttribute('inert');

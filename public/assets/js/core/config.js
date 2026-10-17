@@ -37,6 +37,8 @@ export const CONFIG = Object.freeze({
   // lowest sequence_no for this page's client events (core/events.js)
   sequenceFloor: Number(parsed.sequenceFloor) || 0,
   // music and sound effects of the active asset package: { 'music/map': url, 'sfx/click': url } (core/audio.js)
+  // telemetry flush rhythm { intervalMs, maxEvents } from Gelita::$eventFlush; null on a server without it (core/events.js)
+  eventFlush: parsed.eventFlush && typeof parsed.eventFlush === 'object' && !Array.isArray(parsed.eventFlush) ? Object.freeze({ ...parsed.eventFlush }) : null,
   audioUrls: parsed.audioUrls && typeof parsed.audioUrls === 'object' && !Array.isArray(parsed.audioUrls) ? Object.freeze({ ...parsed.audioUrls }) : Object.freeze({}),
   text: parsed.text && typeof parsed.text === 'object' ? parsed.text : {},
 });

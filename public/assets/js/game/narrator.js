@@ -99,7 +99,7 @@ export function initNarrator(root, { onFinish = null, onSlide = null } = {}) {
         payload: { index, total, context, character: slide.dataset.character || null },
       });
       // Slide terakhir = narasi didengar sampai habis (lencana Kenali, analitik):
-      // kirim sekarang, jangan menunggu antrean 3 detik atau beacon saat halaman ditutup
+      // send now, not on the event timer or by beacon when the page closes
       if (index >= total) flush();
       enter(slide);
       onSlide?.(index, slide, total);
