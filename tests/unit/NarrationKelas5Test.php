@@ -9,8 +9,8 @@ use Tests\Support\Database\GradeFiveWorld;
 /**
  * Rekaman narasi sesudah perombakan kelas 5 (Dok 2 §11.2): 88 baris naskah
  * + 12 petunjuk Cari Objek (tmg-4, mgl-4, wnb-4 masing-masing 4) = 100
- * rekaman per bahasa, dan rekaman bawaan di repositori tepat sebanyak itu,
- * tanpa sisa petunjuk lama `petunjuk-tmg-4-05…08`.
+ * rekaman per bahasa, tanpa sisa petunjuk lama `petunjuk-tmg-4-05…08`.
+ * Since 17 October 2026 no recording ships with the repository (voice-over).
  *
  * @internal
  */
@@ -58,25 +58,20 @@ final class NarrationKelas5Test extends CIUnitTestCase
         $this->assertStringStartsWith('Temukan daun yang diseduh', (string) $clues['petunjuk-wnb-4-04']['text_id']);
     }
 
-    public function testBundledRecordingsMatchTheLines(): void
+    /**
+     * Narration is voice-over by real people (owner, 17 October 2026): no
+     * recording or TTS manifest ships with the repository, only the empty
+     * drop-in folders for `gelita:narration:import`.
+     */
+    public function testNoBundledNarrationShipsWithTheRepository(): void
     {
-        $codes    = array_keys((new NarrationImporter($this->conn))->lines());
-        $manifest = json_decode((string) file_get_contents(FCPATH . 'assets/audio/narasi/produksi.json'), true);
-        sort($codes);
+        $this->assertFileDoesNotExist(FCPATH . 'assets/audio/narasi/produksi.json');
 
         foreach (['id', 'en'] as $locale) {
-            $files = array_map(static fn (string $path): string => basename($path, '.mp3'), glob(FCPATH . "assets/audio/narasi/{$locale}/*.mp3") ?: []);
-            sort($files);
+            $dir = FCPATH . NarrationImporter::FOLDER . $locale . '/';
 
-            $this->assertSame($codes, $files, "rekaman {$locale} = 88 naskah + 12 petunjuk");
-
-            $listed = array_keys($manifest['files'][$locale]);
-            sort($listed);
-            $this->assertSame($codes, $listed, "produksi.json {$locale}");
-
-            foreach ($manifest['files'][$locale] as $code => $entry) {
-                $this->assertSame($entry['sha256'], hash_file('sha256', FCPATH . "assets/audio/narasi/{$locale}/{$code}.mp3"), "{$locale}/{$code}");
-            }
+            $this->assertDirectoryExists($dir);
+            $this->assertSame([], glob($dir . '*.{mp3,m4a,ogg,wav}', GLOB_BRACE) ?: [], "no bundled {$locale} recordings");
         }
     }
 }

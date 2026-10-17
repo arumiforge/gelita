@@ -185,7 +185,8 @@ final class RouteWiringTest extends CIUnitTestCase
         $this->assertFileDoesNotExist(FCPATH . 'assets/vendor/echarts.min.js');
 
         // Dok 3 §9–§10: tanpa laporan studi PDF, lembar olahan, dan metrik olahan
-        $this->assertEqualsCanonicalizing(['report-participant.php', '_style.php'], array_map('basename', glob(APPPATH . 'Views/pdf/*.php')));
+        // The voice-actor script (17 October 2026) is the only PDF besides the participant report
+        $this->assertEqualsCanonicalizing(['report-participant.php', 'narration-script.php', '_style.php'], array_map('basename', glob(APPPATH . 'Views/pdf/*.php')));
         $this->assertFalse(method_exists(App\Services\AnalyticsService::class, 'digitalSecurityLiteracy'));
         $this->assertFalse(method_exists(App\Models\AudioUsageEventModel::class, 'usageStats'));
         $this->assertFalse(method_exists(App\Models\ParticipantModel::class, 'digitalSecurityStats'));

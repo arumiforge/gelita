@@ -179,7 +179,7 @@ gelita/
 | `vendor/` | library frontend yang di-host sendiri (lihat di bawah) |
 | `fonts/` | font lokal dan lisensinya |
 | `data/` | `wilayah-id.json` |
-| `audio/` | `music/`, `sfx/`, `narasi/{id,en}/` + `narasi/produksi.json` |
+| `audio/` | `music/`, `sfx/`, `narasi/{id,en}/` (folder impor rekaman pengisi suara, kosong di repositori) |
 | `app/` | ikon aplikasi terpasang |
 | `ui/` | `placeholder.svg` (pengganti media yang belum ada) |
 | `bg/`, `char/`, `map/`, `challenge/`, `library/`, `reward/`, `images/` | folder aset bawaan per jenis (saat ini kosong, hanya `.gitkeep`) |

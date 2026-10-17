@@ -26,14 +26,14 @@ Last updated: 17 October 2026.
 
 ## Before the research starts (after install, done in the panel)
 
-- [ ] Approve draft narration
+- [ ] Record the voice-over narration (100 lines per language) from the script PDF in **Rekaman narasi**, upload it, listen, and approve it. On a server that still has the old TTS takes, press **Batalkan semua rekaman** for each language first (decision log, 17 October 2026)
 - [ ] Install the catalogue art: `php spark gelita:katalog:impor` (dry run first; `docs/08_DEPLOYMENT.md` → *Installing the Katalog Aset images*). This fills every slot with the interim art of [`gelita-katalog/`](../gelita-katalog/README.md); the panel's **Gambar & mockup** replaces any of it later
 - [x] New character frames in the catalogue: 10 poses × 24 frames, red-scarf Jaka and Mbah Kedu (catalogue edition of 12 October 2026). On a server that already ran the import, run `gelita:katalog:impor` again: it replaces the 30 old frames and adds 210
 - [x] Cari Objek objects moved onto the tables and shelves of the three catalogue scenes (question bank layout change, 12 October 2026). On a server that already ran the import, run `gelita:katalog:impor` again (or `gelita:bank:import`) to apply the new positions
 - [ ] Language icons and old uploads (12 October 2026): run `gelita:katalog:impor` again to install the HUD language icons (`ui.lang.id`/`ui.lang.en`). If it reports a pose as "perlu dicek", or the server still shows the old start button or the lurik Jaka, replace only those slots: `gelita:katalog:impor --timpa --kunci="ui.btn-start*,ui.lang.*,char.jaka.*"` (dry run first), then rebuild the asset package if a release uses one
 - [ ] Before data collection, replace or approve the remaining interim art: the AI Pustaka illustrations (owner: fine for now, replaced in the panel later)
 - [ ] Research-ready checklist green, study status set to "Berjalan"
-- [ ] Listening test of the 48 kbps narration, 5 files per language (plan P2). Stage 1b (PR #74) was merged before this gate was recorded as done; the 96 kbps takes are in git history before PR #74 (details in `docs/audio.md` → *Narration at 48 kbps*)
+- [~] Listening test of the 48 kbps narration (plan P2): **dropped**. The TTS takes were removed for the voice-over (17 October 2026)
 - [ ] Smoke test, then `gelita:reset` (by the owner, never by Claude on production)
 
 ## Display update (`docs/arsip/rencana-perbaikan-tampilan.md`, revised 11 October 2026)
@@ -79,7 +79,7 @@ Owner decisions in its §12 (9 October 2026): full download before Mulai, admin 
 - [ ] Researcher checks every `needs_verification` item and the facts in review §6
 - [x] Integrate draft 2 into the app (review §7): puzzle variants a–j with the first attempt drawn from a–c, skill `membedakan_fakta_pendapat`, one Temanggung distractor, explicit item keys in `docs/bank-soal/data/*.php`, 32 script lines in `data/story.php`, tests (PR #115)
 - [x] `gelita:story:sync` to update the story lines of an installed server to the current script (PR #116)
-- [ ] Re-record 32 ID and 28 EN narration lines after integration. Until then, do not use "Setujui semua rekaman": the bundled recordings of those lines still say the old text, and nothing marks them stale (decision log, 17 October 2026)
+- [~] Re-record 32 ID and 28 EN narration lines after integration: **replaced** by the full voice-over (see *Before the research starts*)
 - [ ] On a server that already has content: re-import the bank (`gelita:bank:import`), update the 32 script lines with `gelita:story:sync` (dry run first; lines edited in the panel are kept unless `--timpa`), run `gelita:katalog:impor` for the 21 new puzzle images, and fix old slot notes in **Gambar & mockup** (the import does not overwrite filled notes)
 
 ## Active branches
@@ -88,4 +88,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| — | No active branches (17 October 2026) | — |
+| `claude/integrasi-draf-2-aplikasi-g6shf6` | Narration: bulk cancel, voice-actor script PDF, bundled TTS files removed | PR open |

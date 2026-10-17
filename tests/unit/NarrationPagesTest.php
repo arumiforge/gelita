@@ -163,6 +163,122 @@ final class NarrationPagesTest extends CIUnitTestCase
             ->assertSessionHas('error', 'Bahasa tidak dikenal.');
     }
 
+    /**
+     * "Batalkan semua rekaman" for one language (owner, 17 October 2026): lines
+     * and clues lose their recording, imported narration files are deleted,
+     * other languages and other audio stay.
+     */
+    public function testCancelAllRecordingsOfOneLanguage(): void
+    {
+        $nodeId   = $this->seedHuntNode($this->sqlite);
+        $intro    = $this->audio('audio.narasi.id.intro-01', 'id', 'approved');
+        $clue     = $this->audio('audio.narasi.id.petunjuk-tmg-4-01', 'id', 'draft', 'hunt_clue');
+        $loose    = $this->audio('audio.narasi.id.peta-01', 'id', 'draft');   // imported, not linked yet
+        $english  = $this->audio('audio.narasi.en.intro-01', 'en', 'approved');
+        $mission  = $this->audio('audio.mission.tmg-1.id', 'id', 'approved', 'mission.tmg-1');
+        $this->sqlite->table('dialogues')->where(['level_id' => null, 'context_code' => 'intro', 'sequence' => 1])
+            ->update(['audio_id_asset_id' => $intro, 'audio_en_asset_id' => $english]);
+        // Mission audio picked by hand for another line: unlinked only, it stays approved for its mission card
+        $this->sqlite->table('dialogues')->where(['level_id' => null, 'context_code' => 'intro', 'sequence' => 2])
+            ->update(['audio_id_asset_id' => $mission]);
+        $this->sqlite->table('challenge_items')->where('item_key', 'tmg-4-a01')->update(['audio_prompt_id' => $clue]);
+
+        // Real files: only the imported narration files of this language may go
+        $file = FCPATH . 'assets/uploads/audio.narasi.id.intro-01.mp3';
+        $keep = FCPATH . 'assets/uploads/audio.narasi.en.intro-01.mp3';
+        $this->skipIfExists($file, $keep);
+        file_put_contents($file, 'ID');
+        file_put_contents($keep, 'EN');
+
+        try {
+            $html = html_entity_decode((string) $this->asAdmin()->call(Method::GET, 'admin/konten/narasi')->getBody(), ENT_QUOTES | ENT_HTML5);
+            $this->assertStringContainsString('Batalkan semua rekaman bahasa Indonesia (4)', $html);
+            $this->assertStringContainsString('Batalkan semua rekaman bahasa Inggris (1)', $html);
+
+            $this->asAdmin()->call(Method::POST, 'admin/konten/narasi/batalkan', ['locale' => 'id'] + self::CSRF)
+                ->assertRedirectTo(site_url('admin/konten/narasi'));
+
+            $this->assertSame('4 rekaman bahasa Indonesia dibatalkan dan 1 berkas lama dihapus. Semua baris kini berstatus belum ada; unggah rekaman baru dengan nama berkas yang sama.', session('message'));
+            $this->assertFileDoesNotExist($file);
+            $this->assertFileExists($keep, 'other language kept');
+        } finally {
+            @unlink($file);
+            @unlink($keep);
+        }
+
+        $line = $this->sqlite->table('dialogues')->where(['level_id' => null, 'context_code' => 'intro', 'sequence' => 1])->get()->getRowArray();
+        $this->assertNull($line['audio_id_asset_id']);
+        $this->assertNull($this->sqlite->table('dialogues')->where(['level_id' => null, 'context_code' => 'intro', 'sequence' => 2])->get()->getRow('audio_id_asset_id'));
+        $this->assertSame($english, (int) $line['audio_en_asset_id']);
+        $this->assertNull($this->sqlite->table('challenge_items')->where('item_key', 'tmg-4-a01')->get()->getRow('audio_prompt_id'));
+
+        foreach ([$intro, $clue, $loose] as $id) {
+            $this->assertSame('rejected', $this->approvalOf($id), 'bulk approval skips cancelled recordings');
+        }
+
+        $this->assertSame('approved', $this->approvalOf($english));
+        $this->assertSame('approved', $this->approvalOf($mission), 'mission narration is not a script recording');
+        $this->assertSame(0, $this->sqlite->table('media_assets')->like('asset_key', 'audio.narasi.id.', 'after')->where('is_active', 1)->countAllResults());
+        $this->assertSame(1, (int) $this->sqlite->table('media_assets')->where('asset_key', 'audio.mission.tmg-1.id')->get()->getRow('is_active'));
+
+        $audit = $this->sqlite->table('audit_logs')->where('action', 'narration_cancel_bulk')->get()->getRowArray();
+        $this->assertSame(['locale' => 'id', 'count' => 4, 'files_deleted' => 1], array_slice(json_decode((string) $audit['metadata_json'], true), 0, 3));
+
+        // Nothing left: no button, a second run changes nothing, unknown language rejected
+        $html = html_entity_decode((string) $this->asAdmin()->call(Method::GET, 'admin/konten/narasi')->getBody(), ENT_QUOTES | ENT_HTML5);
+        $this->assertStringNotContainsString('Batalkan semua rekaman bahasa Indonesia', $html);
+        $this->assertStringContainsString('0/92 disetujui, 0 menunggu persetujuan, 92 belum ada', $html);
+        $this->assertStringContainsString('admin/konten/node/' . $nodeId, $html);
+        $this->asAdmin()->call(Method::POST, 'admin/konten/narasi/batalkan', ['locale' => 'id'] + self::CSRF)
+            ->assertSessionHas('message', 'Tidak ada rekaman bahasa Indonesia yang perlu dibatalkan.');
+        $this->asAdmin()->call(Method::POST, 'admin/konten/narasi/batalkan', ['locale' => 'fr'] + self::CSRF)
+            ->assertSessionHas('error', 'Bahasa tidak dikenal.');
+    }
+
+    /** The voice-actor script: one compact table, every line in game order, per language. */
+    public function testScriptForTheVoiceActors(): void
+    {
+        $this->seedHuntNode($this->sqlite);
+        $pdf = new App\Libraries\NarrationScriptPdf();
+
+        $id = $pdf->html('id');
+        $this->assertSame(92, substr_count($id, '<td class="tick">☐</td>'), '88 script lines + 4 clues of tmg-4');
+        $this->assertStringContainsString('<td class="code">intro-01</td>', $id);
+        $this->assertStringContainsString('Petunjuk Cari Objek · Temanggung (tmg-4) · 4 baris', $id);
+        $this->assertStringContainsString('<b>Mbah Kedu</b>', $id);
+        $this->assertStringContainsString('Teks bahasa Indonesia', $id);
+        $this->assertStringNotContainsString('Teks bahasa Inggris', $id);
+        $this->assertStringContainsString('92 baris (', $id);
+        $this->assertLessThan(strpos($id, '>penutup-01<'), strpos($id, '>intro-01<'), 'game order');
+
+        $intro = $this->sqlite->table('dialogues')->where(['level_id' => null, 'context_code' => 'intro', 'sequence' => 1])->get()->getRowArray();
+        $this->assertStringContainsString(esc((string) $intro['text_en']), $pdf->html('en'));
+        $this->assertStringNotContainsString(esc((string) $intro['text_id']), $pdf->html('en'));
+
+        $both = $pdf->html('semua');
+        $this->assertStringContainsString(esc((string) $intro['text_id']), $both);
+        $this->assertStringContainsString(esc((string) $intro['text_en']), $both);
+        $this->assertSame('id', App\Libraries\NarrationScriptPdf::normalize('xx'));
+
+        // Download from the panel: a real PDF, audited, temporary file removed
+        $response = $this->asAdmin()->call(Method::GET, 'admin/konten/narasi/naskah-pdf', ['bahasa' => 'en'])->response();
+        $this->assertInstanceOf(CodeIgniter\HTTP\DownloadResponse::class, $response);
+        $response->buildHeaders();
+        ob_start();
+        $response->sendBody();
+        $body = (string) ob_get_clean();
+
+        $this->assertStringStartsWith('%PDF', $body);
+        $this->assertStringContainsString('gelita-naskah-rekaman-en-', $response->getHeaderLine('Content-Disposition'));
+        $this->assertStringContainsString('application/pdf', $response->getHeaderLine('Content-Type'));
+        $this->assertSame('naskah.en', $this->sqlite->table('audit_logs')->where('action', 'narration_script_download')->get()->getRow('target_id'));
+        $this->assertSame([], glob(WRITEPATH . 'exports/naskah-rekaman-*') ?: []);
+
+        $html = html_entity_decode((string) $this->asAdmin()->call(Method::GET, 'admin/konten/narasi')->getBody(), ENT_QUOTES | ENT_HTML5);
+        $this->assertStringContainsString('admin/konten/narasi/naskah-pdf?bahasa=id', $html);
+        $this->assertStringContainsString('admin/konten/narasi/naskah-pdf?bahasa=semua', $html);
+    }
+
     public function testUploadPageExplainsLimitsAndShowsTheReport(): void
     {
         $report = [
@@ -198,8 +314,8 @@ final class NarrationPagesTest extends CIUnitTestCase
     {
         $dir = FCPATH . 'assets/audio/narasi/en/';
         $new = ! is_dir($dir);
-        // Rekaman bawaan (ikut repositori) dipakai apa adanya dan tidak pernah ditimpa;
-        // tanpa rekaman itu, uji menulis WAV kecil lalu menghapusnya lagi.
+        // A recording already in the folder (e.g. a voice-over take) is used as it is
+        // and never overwritten; without one, the test writes a tiny WAV and removes it.
         $own = (glob($dir . 'penutup-02.*') ?: []) === [];
 
         if ($new) {
@@ -267,6 +383,15 @@ final class NarrationPagesTest extends CIUnitTestCase
         ]);
 
         return (int) $this->sqlite->insertID();
+    }
+
+    private function skipIfExists(string ...$paths): void
+    {
+        foreach ($paths as $path) {
+            if (is_file($path)) {
+                $this->markTestSkipped("{$path} already exists on this machine; the test would delete it.");
+            }
+        }
     }
 
     private function approvalOf(int $audioId): string
