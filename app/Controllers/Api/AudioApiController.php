@@ -2,7 +2,6 @@
 
 namespace App\Controllers\Api;
 
-use App\Models\ChallengeAttemptModel;
 use CodeIgniter\HTTP\ResponseInterface;
 
 /**
@@ -11,13 +10,19 @@ use CodeIgniter\HTTP\ResponseInterface;
  *
  * Aksi yang diterima: AudioUsageEventModel::ACTIONS — `play` (pemain menekan
  * putar), `autoplay` (layar bernarasi memutar sendiri), `pause`, `replay`,
- * `complete`. Aksi lain ditolak per event (`audio_event_invalid`) oleh
- * EventService::recordAudio().
+ * `complete`. Other actions are rejected per entry (`audio_event_invalid`)
+ * by EventService::recordAudioBatch().
+ *
+ * Kept for tabs opened before the combined batch (rencana-log-asinkron
+ * §5.1 R2): new clients send audio inside POST /api/events.
  */
 class AudioApiController extends BaseApiController
 {
     public function ingest(): ResponseInterface
     {
+        // Telemetry never writes $_SESSION: free the session lock at once (R5)
+        session()->close();
+
         if ($limited = $this->rateLimited('events')) {
             return $limited;
         }
@@ -35,55 +40,15 @@ class AudioApiController extends BaseApiController
             return $this->fail('TOO_MANY_EVENTS', lang('Game.errTooManyEvents', [$max]), 413);
         }
 
-        $session   = $this->gameSession();
-        $service   = service('eventService');
-        $sentAt    = is_string($body['client_sent_at'] ?? null) ? $body['client_sent_at'] : null;
-        $accepted  = 0;
-        $duplicate = 0;
-        $rejected  = [];
+        $session = $this->gameSession();
+        $service = service('eventService');
+        $sentAt  = is_string($body['client_sent_at'] ?? null) ? $body['client_sent_at'] : null;
 
         // Events the client audio queue had to discard (rencana-paket-aset §7.3)
         $service->recordDropped($session, $body, 'audio');
 
-        foreach (array_values($events) as $index => $event) {
-            if (! is_array($event)) {
-                $rejected[] = ['index' => $index, 'reason' => 'format_invalid'];
+        $result = $service->recordAudioBatch($session, array_values($events), $sentAt);
 
-                continue;
-            }
-
-            // Kontrak klien (06): attempt_id; nama kolom lengkap tetap diterima
-            $attemptId = (int) ($event['challenge_attempt_id'] ?? $event['attempt_id'] ?? 0);
-
-            if ($attemptId > 0 && ! $this->ownsAttempt($attemptId)) {
-                $rejected[] = ['index' => $index, 'reason' => 'attempt_not_in_session'];
-
-                continue;
-            }
-
-            try {
-                if ($service->recordAudio($session, $event, $sentAt)) {
-                    $accepted++;
-                } else {
-                    $duplicate++;
-                }
-            } catch (\InvalidArgumentException) {
-                $rejected[] = ['index' => $index, 'reason' => 'audio_event_invalid'];
-            }
-        }
-
-        return $this->ok([
-            'accepted'    => $accepted,
-            'duplicate'   => $duplicate,
-            'rejected'    => $rejected,
-            'server_time' => $this->serverTime(),
-        ]);
-    }
-
-    private function ownsAttempt(int $attemptId): bool
-    {
-        $attempt = model(ChallengeAttemptModel::class)->find($attemptId);
-
-        return $attempt !== null && $attempt->session_id === $this->gameSession()->id;
+        return $this->ok($result + ['server_time' => $this->serverTime()]);
     }
 }

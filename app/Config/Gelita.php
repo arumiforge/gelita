@@ -239,6 +239,18 @@ class Gelita extends BaseConfig
 
     public int $maxUploadBytes      = 64 * 1024 * 1024;
     public int $maxEventsPerBatch   = 50;
+
+    /**
+     * Client event queue rhythm (core/events.js via js_config() `eventFlush`;
+     * rencana-log-asinkron §5.1 R1, owner decision 17 October 2026): send a
+     * batch every `intervalMs`, or as soon as `maxEvents` are waiting. Forced
+     * sends (tab hidden, page close, before navigation) do not wait for it.
+     * Tunable per server in `.env` without a JS deploy:
+     * `gelita.eventFlush.intervalMs = 30000`, `gelita.eventFlush.maxEvents = 40`.
+     *
+     * @var array{intervalMs: int, maxEvents: int}
+     */
+    public array $eventFlush = ['intervalMs' => 30000, 'maxEvents' => 40];
     public int $exportRetentionDays = 7;
     public int $sessionIdleMinutes  = 45;   // lewat ini → status 'paused'
 

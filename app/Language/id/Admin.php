@@ -49,6 +49,9 @@ return [
     'roleGuru'     => 'Guru',
     'emptyDefault' => 'Belum ada data untuk ditampilkan.',
 
+    // Under "Aktivitas terbaru" on Ringkasan; {0} = seconds between event batches
+    'recentEventsLag' => 'Diperbarui tiap ±{0} detik.',
+
     // Answer view switch on the raw data tables
     'answerView'         => 'Tampilan jawaban',
     'answerViewReadable' => 'Mudah dibaca',

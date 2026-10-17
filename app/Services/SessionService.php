@@ -363,7 +363,37 @@ class SessionService
         service('eventService')->record($session, 'locale_changed', ['from' => $session->locale, 'to' => $locale]);
     }
 
-    /** Update last_active_at + akumulasi duration_ms sejak denyut terakhir. */
+    /** Seconds between heartbeats taken from event batches (rencana-log-asinkron R3). */
+    public const BATCH_HEARTBEAT_SECONDS = 50;
+
+    /**
+     * heartbeat() at most once per BATCH_HEARTBEAT_SECONDS for this session,
+     * for callers that run often (every POST /api/events). The throttle lives
+     * in the cache, so it holds across tabs and requests.
+     *
+     * @return bool true when the heartbeat ran
+     */
+    public function heartbeatIfDue(int $sessionId): bool
+    {
+        $cache = service('cache');
+        $key   = 'gelita_heartbeat_' . $sessionId;
+
+        if ($cache->get($key) !== null) {
+            return false;
+        }
+
+        $cache->save($key, time(), self::BATCH_HEARTBEAT_SECONDS);
+        $this->heartbeat($sessionId);
+
+        return true;
+    }
+
+    /**
+     * Update last_active_at + akumulasi duration_ms sejak denyut terakhir.
+     *
+     * Conditional on the `last_active_at` it read (ChallengeService::updateIf()
+     * pattern): when two tabs beat at once, only one adds the elapsed time.
+     */
     public function heartbeat(int $sessionId): void
     {
         $sessions = model(GameSessionModel::class);
@@ -377,7 +407,8 @@ class SessionService
         $elapsedMs  = max(0, (time() - $lastActive) * 1000);
         $idleLimit  = config('Gelita')->sessionIdleMinutes * 60 * 1000;
 
-        $sessions->update($sessionId, [
+        // The loser of a race changes nothing: the winner already counted this time
+        $sessions->where('last_active_at', $session->last_active_at)->update($sessionId, [
             'last_active_at' => date('Y-m-d H:i:s'),
             // waktu menganggur panjang tidak dihitung sebagai waktu bermain
             'duration_ms'    => $session->duration_ms + ($elapsedMs > $idleLimit ? 0 : $elapsedMs),

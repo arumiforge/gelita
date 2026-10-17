@@ -55,6 +55,9 @@ class SessionApiController extends BaseApiController
 
     public function heartbeat(): ResponseInterface
     {
+        // Never writes $_SESSION: free the session lock at once (rencana-log-asinkron R5)
+        session()->close();
+
         $session = $this->gameSession();
 
         service('sessionService')->heartbeat($session->id);

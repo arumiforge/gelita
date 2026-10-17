@@ -31,6 +31,15 @@ class EventService
     /** Largest `dropped` count accepted from one batch envelope. */
     public const MAX_DROPPED_REPORT = 1_000_000;
 
+    /** Raw event type per audio action. */
+    private const AUDIO_EVENT_TYPES = [
+        'play'     => 'audio_play',
+        'autoplay' => 'audio_autoplay',
+        'pause'    => 'audio_pause',
+        'replay'   => 'audio_replay',
+        'complete' => 'audio_completed',
+    ];
+
     /**
      * Menerima batch event dari klien.
      *
@@ -228,93 +237,199 @@ class EventService
     }
 
     /**
-     * Telemetry audio terstruktur: baris audio_usage_events + raw event, dalam
-     * satu transaction.
+     * One structured audio event (audio_usage_events row + raw event).
+     * Kept for single writers such as the simulator; the API endpoints use
+     * recordAudioBatch().
      *
-     * Idempotent terhadap `client_event_id` seperti ingest(): kiriman ulang
-     * dengan id yang sama tidak menulis baris apa pun dan mengembalikan false.
+     * @param array<string, mixed> $audioEvent see recordAudioBatch()
+     * @param ?string              $clientSentAt `client_sent_at` of the batch (clock offset, §7.3)
      *
-     * @param array{audio_asset_id: int, action: string, listened_ms?: ?int, completed?: bool,
-     *              attempt_id?: ?int, challenge_attempt_id?: ?int, occurred_at?: ?string,
-     *              client_event_id?: ?string} $audioEvent
+     * @return bool true when written, false when it is a duplicate
      *
-     * @param ?string $clientSentAt `client_sent_at` of the batch (clock offset, §7.3)
-     *
-     * @return bool true bila ditulis, false bila duplikat
+     * @throws \InvalidArgumentException when the event is incomplete or not of this session
      */
     public function recordAudio(GameSession $session, array $audioEvent, ?string $clientSentAt = null): bool
     {
-        $assetId = (int) ($audioEvent['audio_asset_id'] ?? 0);
-        $action  = (string) ($audioEvent['action'] ?? '');
+        $result = $this->recordAudioBatch($session, [$audioEvent], $clientSentAt);
 
-        if ($assetId <= 0 || ! in_array($action, AudioUsageEventModel::ACTIONS, true)) {
-            throw new \InvalidArgumentException('Event audio tidak lengkap atau aksinya tidak dikenali.');
+        if ($result['rejected'] !== []) {
+            throw new \InvalidArgumentException('Audio event rejected: ' . $result['rejected'][0]['reason']);
         }
 
-        $clientEventId = trim((string) ($audioEvent['client_event_id'] ?? ''));
+        return $result['accepted'] > 0;
+    }
 
-        if (mb_strlen($clientEventId) > 120) {
-            throw new \InvalidArgumentException('client_event_id terlalu panjang.');
-        }
-
-        $events = model(GameEventLogModel::class);
-
-        if ($clientEventId !== '' && $events->existsClientEvent($session->id, $clientEventId)) {
-            return false;
-        }
-
-        $usage      = model(AudioUsageEventModel::class);
-        $attemptRef = $audioEvent['challenge_attempt_id'] ?? $audioEvent['attempt_id'] ?? null;
-        $attemptId  = $attemptRef === null ? null : ((int) $attemptRef ?: null);
-        $occurredAt = $this->clientTime($audioEvent['occurred_at'] ?? null);
+    /**
+     * Writes a batch of client audio telemetry (rencana-log-asinkron §5.2 R6):
+     * one audio_usage_events row and one raw event per accepted entry, and
+     * `challenge_attempts.audio_use_count`, all in one transaction.
+     *
+     * Each entry: `audio_asset_id`, `action` (AudioUsageEventModel::ACTIONS),
+     * optional `listened_ms`, `completed`, `attempt_id` (or
+     * `challenge_attempt_id`), `occurred_at`, `client_event_id`.
+     * Per-entry rejections, in this order:
+     *  - `format_invalid`: not an object;
+     *  - `attempt_not_in_session`: the attempt is not one of this session;
+     *  - `audio_event_invalid`: unknown asset or action, or a
+     *    `client_event_id` over 120 characters.
+     * An entry whose `client_event_id` is already stored for the session, or
+     * repeated earlier in the same batch, counts as `duplicate` and writes
+     * nothing. Entries without a `client_event_id` are never duplicates.
+     *
+     * Statements: attempt and asset lookups, one existence check, one
+     * `MAX(sequence_no)`, then in the transaction one INSERT IGNORE of the
+     * raw events, one grouped `MAX(play_index)`, one insertBatch into
+     * audio_usage_events, and one counter update per attempt.
+     *
+     * Two tabs may send the same stored entry at once. The raw event's unique
+     * `(session_id, client_event_id)` decides the winner, like updateIf() in
+     * ChallengeService: only rows whose `event_uuid` this request actually
+     * inserted get an audio_usage_events row and count on the attempt.
+     *
+     * @param list<mixed> $entries
+     * @param ?string     $clientSentAt `client_sent_at` of the batch (clock offset, §7.3)
+     *
+     * @return array{accepted: int, duplicate: int, rejected: list<array{index: int, reason: string}>}
+     */
+    public function recordAudioBatch(GameSession $session, array $entries, ?string $clientSentAt = null): array
+    {
+        $entries    = array_values($entries);
         $receivedAt = $this->now();
+        $offset     = $this->clockOffsetMs($clientSentAt, $receivedAt);
+        $rejected   = [];
+        $duplicate  = 0;
 
-        $eventType = match ($action) {
-            'play'     => 'audio_play',
-            'autoplay' => 'audio_autoplay',
-            'pause'    => 'audio_pause',
-            'replay'   => 'audio_replay',
-            'complete' => 'audio_completed',
-        };
+        $attemptIds = [];
+        $assetIds   = [];
+
+        foreach ($entries as $entry) {
+            if (is_array($entry)) {
+                $attemptIds[] = $this->refOrNull($entry['challenge_attempt_id'] ?? $entry['attempt_id'] ?? null);
+                $assetIds[]   = $this->refOrNull($entry['audio_asset_id'] ?? null);
+            }
+        }
+
+        $ownAttempts = $this->existingIds('challenge_attempts', array_filter($attemptIds), $session->id);
+        $knownAssets = $this->existingIds('audio_assets', array_filter($assetIds));
+
+        // 1. Validate in batch order
+        $valid = [];
+
+        foreach ($entries as $index => $entry) {
+            if (! is_array($entry)) {
+                $rejected[] = ['index' => $index, 'reason' => 'format_invalid'];
+
+                continue;
+            }
+
+            $attemptId = $this->refOrNull($entry['challenge_attempt_id'] ?? $entry['attempt_id'] ?? null);
+
+            if ($attemptId !== null && ! isset($ownAttempts[$attemptId])) {
+                $rejected[] = ['index' => $index, 'reason' => 'attempt_not_in_session'];
+
+                continue;
+            }
+
+            $assetId       = (int) ($entry['audio_asset_id'] ?? 0);
+            $action        = (string) ($entry['action'] ?? '');
+            $clientEventId = trim((string) ($entry['client_event_id'] ?? ''));
+
+            if (! isset($knownAssets[$assetId]) || ! in_array($action, AudioUsageEventModel::ACTIONS, true) || mb_strlen($clientEventId) > 120) {
+                $rejected[] = ['index' => $index, 'reason' => 'audio_event_invalid'];
+
+                continue;
+            }
+
+            $valid[] = [
+                'entry'           => $entry,
+                'attempt_id'      => $attemptId,
+                'asset_id'        => $assetId,
+                'action'          => $action,
+                'client_event_id' => $clientEventId,
+            ];
+        }
+
+        // 2. Duplicates: already stored, or repeated within this batch
+        $stored = $this->storedClientEventIds($session->id, array_filter(array_column($valid, 'client_event_id')));
+        $seen   = [];
+        $fresh  = [];
+
+        foreach ($valid as $item) {
+            $id = $item['client_event_id'];
+
+            if ($id !== '' && (isset($stored[$id]) || isset($seen[$id]))) {
+                $duplicate++;
+
+                continue;
+            }
+
+            if ($id !== '') {
+                $seen[$id] = true;
+            }
+
+            $fresh[] = $item;
+        }
+
+        if ($fresh === []) {
+            return ['accepted' => 0, 'duplicate' => $duplicate, 'rejected' => $rejected];
+        }
+
+        // 3. Raw events: server sequence numbers in batch order
+        $sequence = $this->nextServerSequence($session->id);
+        $rows     = [];
+
+        foreach ($fresh as $i => $item) {
+            $entry      = $item['entry'];
+            $occurredAt = $this->clientTime($entry['occurred_at'] ?? null);
+
+            $fresh[$i]['occurred_at'] = $occurredAt;
+            $fresh[$i]['row']         = $this->buildRow(
+                $session,
+                self::AUDIO_EVENT_TYPES[$item['action']],
+                [
+                    'audio_asset_id' => $item['asset_id'],
+                    'listened_ms'    => $entry['listened_ms'] ?? null,
+                    'completed'      => ! empty($entry['completed']),
+                ],
+                ['challenge_attempt_id' => $item['attempt_id']],
+                $item['client_event_id'] !== '' ? $item['client_event_id'] : 'srv-' . uuid4(),
+                $sequence++,
+                $occurredAt,
+                $receivedAt,
+                $offset,
+            );
+            $rows[] = $fresh[$i]['row'];
+        }
 
         $db = $this->db();
         $db->transBegin();
 
         try {
-            $usage->insert([
-                'session_id'           => $session->id,
-                'challenge_attempt_id' => $attemptId,
-                'audio_asset_id'       => $assetId,
-                'action'               => $action,
-                'play_index'           => $usage->nextPlayIndex($session->id, $assetId, $action),
-                'listened_ms'          => isset($audioEvent['listened_ms']) ? (int) $audioEvent['listened_ms'] : null,
-                'completed'            => ! empty($audioEvent['completed']) ? 1 : 0,
-                'occurred_at'          => $occurredAt,
-                'server_received_at'   => $receivedAt,
-            ], false);
+            $written = model(GameEventLogModel::class)->appendBatch($rows);
 
-            $events->appendBatch([
-                $this->buildRow(
-                    $session,
-                    $eventType,
-                    [
-                        'audio_asset_id' => $assetId,
-                        'listened_ms'    => $audioEvent['listened_ms'] ?? null,
-                        'completed'      => ! empty($audioEvent['completed']),
-                    ],
-                    ['challenge_attempt_id' => $attemptId],
-                    $clientEventId !== '' ? $clientEventId : 'srv-' . uuid4(),
-                    $this->nextServerSequence($session->id),
-                    $occurredAt,
-                    $receivedAt,
-                    $this->clockOffsetMs($clientSentAt, $receivedAt),
-                ),
-            ]);
+            // Lost a race with another tab for some entries: keep only ours
+            if ($written['accepted'] < count($rows)) {
+                $ours = array_flip(array_column(
+                    $db->table('game_event_logs')->select('event_uuid')
+                        ->where('session_id', $session->id)
+                        ->whereIn('event_uuid', array_column($rows, 'event_uuid'))
+                        ->get()->getResultArray(),
+                    'event_uuid',
+                ));
+                $won        = array_values(array_filter($fresh, static fn (array $item): bool => isset($ours[$item['row']['event_uuid']])));
+                $duplicate += count($fresh) - count($won);
+                $fresh      = $won;
+            }
 
-            if ($attemptId) {
+            $this->insertAudioUsage($session->id, $fresh, $receivedAt);
+
+            $perAttempt = array_count_values(array_filter(array_column($fresh, 'attempt_id')));
+
+            foreach ($perAttempt as $attemptId => $count) {
                 $db->table('challenge_attempts')
                     ->where('id', $attemptId)
-                    ->set('audio_use_count', 'audio_use_count + 1', false)
+                    ->where('session_id', $session->id)
+                    ->set('audio_use_count', 'audio_use_count + ' . (int) $count, false)
                     ->update();
             }
 
@@ -325,7 +440,113 @@ class EventService
             throw $e;
         }
 
-        return true;
+        return ['accepted' => count($fresh), 'duplicate' => $duplicate, 'rejected' => $rejected];
+    }
+
+    /**
+     * audio_usage_events rows for the accepted entries, with `play_index`
+     * assigned in batch order from one grouped MAX per asset. Same rule as
+     * AudioUsageEventModel::nextPlayIndex(): `play`, `autoplay`, and
+     * `replay` open the next playback; `pause` and `complete` belong to the
+     * current one (at least 1).
+     *
+     * @param list<array<string, mixed>> $items
+     */
+    private function insertAudioUsage(int $sessionId, array $items, string $receivedAt): void
+    {
+        if ($items === []) {
+            return;
+        }
+
+        $db      = $this->db();
+        $current = [];
+
+        $maxRows = $db->table('audio_usage_events')
+            ->select('audio_asset_id')
+            ->selectMax('play_index', 'max_index')
+            ->where('session_id', $sessionId)
+            ->whereIn('audio_asset_id', array_values(array_unique(array_column($items, 'asset_id'))))
+            ->groupBy('audio_asset_id')
+            ->get()
+            ->getResultArray();
+
+        foreach ($maxRows as $row) {
+            $current[(int) $row['audio_asset_id']] = (int) $row['max_index'];
+        }
+
+        $rows = [];
+
+        foreach ($items as $item) {
+            $assetId = $item['asset_id'];
+            $last    = $current[$assetId] ?? 0;
+            $index   = in_array($item['action'], AudioUsageEventModel::OPENING_ACTIONS, true) ? $last + 1 : max(1, $last);
+
+            $current[$assetId] = max($last, $index);
+
+            $entry  = $item['entry'];
+            $rows[] = [
+                'session_id'           => $sessionId,
+                'challenge_attempt_id' => $item['attempt_id'],
+                'audio_asset_id'       => $assetId,
+                'action'               => $item['action'],
+                'play_index'           => $index,
+                'listened_ms'          => isset($entry['listened_ms']) ? max(0, (int) $entry['listened_ms']) : null,
+                'completed'            => ! empty($entry['completed']) ? 1 : 0,
+                'occurred_at'          => $item['occurred_at'],
+                'server_received_at'   => $receivedAt,
+            ];
+        }
+
+        $db->table('audio_usage_events')->insertBatch($rows);
+    }
+
+    /**
+     * The given ids that exist in `$table` (and belong to `$sessionId` when given).
+     *
+     * @param array<int> $ids
+     *
+     * @return array<int, true>
+     */
+    private function existingIds(string $table, array $ids, ?int $sessionId = null): array
+    {
+        $ids = array_values(array_unique($ids));
+
+        if ($ids === []) {
+            return [];
+        }
+
+        $builder = $this->db()->table($table)->select('id')->whereIn('id', $ids);
+
+        if ($sessionId !== null) {
+            $builder->where('session_id', $sessionId);
+        }
+
+        return array_fill_keys(array_map('intval', array_column($builder->get()->getResultArray(), 'id')), true);
+    }
+
+    /**
+     * The given client event ids already stored for the session.
+     *
+     * @param array<string> $clientEventIds
+     *
+     * @return array<string, true>
+     */
+    private function storedClientEventIds(int $sessionId, array $clientEventIds): array
+    {
+        $clientEventIds = array_values(array_unique($clientEventIds));
+
+        if ($clientEventIds === []) {
+            return [];
+        }
+
+        $rows = $this->db()->table('game_event_logs')
+            ->select('client_event_id')
+            ->where('session_id', $sessionId)
+            ->whereIn('client_event_id', $clientEventIds)
+            ->get()
+            ->getResultArray();
+
+        return array_fill_keys(array_map('strval', array_column($rows, 'client_event_id')), true);
     }
 
     /**

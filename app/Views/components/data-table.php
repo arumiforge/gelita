@@ -27,6 +27,7 @@
  * @var bool|null                     $stickyFirst  kolom pertama lengket (bawaan: ya)
  * @var string|null                   $anchor       fragmen yang ditambahkan ke tautan urut/halaman
  * @var bool|null                     $paginate     false = daftar pendek tanpa pagination (Ringkasan)
+ * @var string|null                   $note         short muted line under the table (plain text)
  */
 use App\Libraries\AdminTable;
 
@@ -117,6 +118,10 @@ sort($window);
         </tbody>
       </table>
     </div>
+  <?php endif ?>
+
+  <?php if (! empty($note)): ?>
+    <p class="table-note muted"><?= esc($note) ?></p>
   <?php endif ?>
 
   <?php if ($paginate ?? true): ?>

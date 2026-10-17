@@ -243,7 +243,28 @@ if (! function_exists('js_config')) {
             'stage'      => ['w' => 1280, 'h' => 720],
             // asset package Stage 2: package URLs of music and sound effects (empty when off)
             'audioUrls'  => package_audio_urls(),
+            'eventFlush' => event_flush_config(),
             'text'       => $text,
+        ];
+    }
+}
+
+if (! function_exists('event_flush_config')) {
+    /**
+     * Client event queue rhythm from Config\Gelita::$eventFlush, cast and
+     * clamped because `.env` values arrive as strings: at least 1 s between
+     * timed sends, and `maxEvents` within one batch (`maxEventsPerBatch`).
+     *
+     * @return array{intervalMs: int, maxEvents: int}
+     */
+    function event_flush_config(): array
+    {
+        $config = config('Gelita');
+        $flush  = $config->eventFlush;
+
+        return [
+            'intervalMs' => max(1000, (int) ($flush['intervalMs'] ?? 30000)),
+            'maxEvents'  => min($config->maxEventsPerBatch, max(1, (int) ($flush['maxEvents'] ?? 40))),
         ];
     }
 }

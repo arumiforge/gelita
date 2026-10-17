@@ -70,6 +70,8 @@
       'paginate'     => false,
       'stickyFirst'  => false,
       'emptyMessage' => 'Belum ada aktivitas. Aktivitas muncul setelah siswa mulai bermain.',
+      // The game sends its events in batches (Config\Gelita::$eventFlush), so the list may lag one interval
+      'note'         => lang('Admin.recentEventsLag', [fmt_num(round(event_flush_config()['intervalMs'] / 1000), 0, 'id')]),
       'tools'        => '<a class="btn btn-sm btn-quiet" href="' . base_url('admin/sesi') . '">Semua sesi</a>',
   ]) ?>
   <?= component('data-table', [
