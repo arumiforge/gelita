@@ -82,10 +82,19 @@ Owner decisions in its §12 (9 October 2026): full download before Mulai, admin 
 - [~] Re-record 32 ID and 28 EN narration lines after integration: **replaced** by the full voice-over (see *Before the research starts*)
 - [ ] On a server that already has content: re-import the bank (`gelita:bank:import`), update the 32 script lines with `gelita:story:sync` (dry run first; lines edited in the panel are kept unless `--timpa`), run `gelita:katalog:impor` for the 21 new puzzle images, and fix old slot notes in **Gambar & mockup** (the import does not overwrite filled notes)
 
+## Asynchronous logging (`docs/rencana-log-asinkron.md`)
+
+- [x] Recommendation document: which logs stay synchronous, which are batched or written later, phases and guardrails
+- [ ] Owner decisions in its §10 (phases, flush interval, Phase 3 after measuring, dashboard lag, targets)
+- [ ] Phase 1 — client: 15 s flush with persist-on-push, events + audio in one request, heartbeat in the batch, page-load re-send in the first batch
+- [ ] Phase 2 — server: session lock released early on telemetry endpoints, batched audio writes
+- [ ] Load measurement before and after (§7), then the Phase 3 decision
+
 ## Active branches
 
 Add a row (branch, owner / scope, status) when a session starts a branch; remove it when its PR is merged.
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `sky/quirky-ptolemy-figayc` | Asynchronous logging recommendation document (docs only) | PR open |
 | `claude/integrasi-draf-2-aplikasi-g6shf6` | Narration: bulk cancel, voice-actor script PDF, bundled TTS files removed | PR open |
