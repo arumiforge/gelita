@@ -41,7 +41,7 @@ public/
     │   ├── package.js       asset package on the device: check(), download(), verify(), clear(), chooseOnline()
     │   ├── api.js           apiRequest(), ApiError, handleApiError()
     │   ├── stage.js         panggung 16:9: initStage(), stageRect(), stageScale(), viewport_changed, layar penuh
-    │   ├── events.js        antrean event + pengiriman batch: emit(), emitAudio(), flush(), resendQueued(), page_hidden/visible
+    │   ├── events.js        antrean event + pengiriman batch: emit(), emitAudio(), flush(), resendQueued(), restoreQueued(), lastBatchAt(), page_hidden/visible
     │   ├── storage.js       antrean offline & preferensi di localStorage
     │   ├── audio.js         Sfx (Howler) + pemutar narasi (NarrationPlayer)
     │   ├── curtain.js       tirai pemuatan layar penuh: playCurtain(), initCurtains()
@@ -289,27 +289,32 @@ Modal sesi hanya muncul sekali walau beberapa permintaan gagal bersamaan. Anak t
 
 ### `core/events.js`
 
-Antrean event dengan pengiriman batch dan idempotensi. Dua kanal dengan amplop yang sama `{ events: [...] }`:
+*(Rewritten in English for asynchronous logging Phase 1, `docs/rencana-log-asinkron.md` §5.1.)* Event queue with batched sending and idempotency. Two channels, one transport:
 
 ```js
-emit(type, { levelId, nodeId, attemptId, itemId, payload })  // → POST /api/events (game_event_logs)
+emit(type, { levelId, nodeId, attemptId, itemId, payload })  // channel `events` → game_event_logs
 emitAudio({ audio_asset_id, action, play_index, listened_ms, completed, attempt_id })
-                                                             // → POST /api/audio-events (audio_usage_events)
-flush(force = false)   // kirim sekarang; tanpa force mengembalikan Promise pengiriman yang sedang berjalan
-resendQueued()         // kirim ulang antrean offline milik sesi ini
-uuid(), now()          // client_event_id (crypto.randomUUID atau cadangan getRandomValues) & waktu ISO
+                                                             // channel `audio` → audio_usage_events
+flush(force = false)   // send now; without force it returns the running send
+resendQueued()         // offline queue of this session → send now (`online`, quiet retry)
+restoreQueued()        // offline queue of this session → joins the first batch (page load)
+lastBatchAt()          // performance.now() of the last accepted request (game/hud.js)
+uuid(), now()          // client_event_id (crypto.randomUUID or a getRandomValues fallback) and ISO time
 ```
 
-- Event hanya diantre bila `CONFIG.sessionTag` ada; layar sebelum masuk tidak mengirim event.
-- Antrean dikirim 3 detik setelah event pertama, atau segera saat mencapai 20 event; satu request paling banyak 50 event (= `Config\Gelita::$maxEventsPerBatch`).
-- Batch yang sedang dikirim diingat (`inflight`) sampai server menjawab. Saat tab disembunyikan (`visibilitychange`) atau ditutup (`pagehide`), `flush(true)` mengirim `inflight` + antrean lewat `navigator.sendBeacon()` (Blob `application/json`), dengan cadangan `fetch(…, { keepalive: true })`. Beacon tidak dapat memasang header, jadi token CSRF ikut di badan JSON (`{ events, [csrfName]: csrfHash }`).
-- Gagal kirim karena jaringan, 5xx, atau `RATE_LIMITED` → batch disimpan ke antrean offline (`Storage.queueEvents`). Toast `savedOffline` ("Koneksi terputus …") muncul sekali per halaman, tetapi hanya bila gangguannya nyata: peramban melaporkan offline, `RATE_LIMITED` bertahan setelah percobaan ulang `apiRequest`, atau satu kiriman ulang diam-diam 5 detik kemudian (`RETRY_MS`) gagal lagi. Pindah layar membatalkan batch yang masih di jalan (`net::ERR_ABORTED`) dan terlihat seperti galat jaringan; halaman sudah berganti sebelum kiriman ulang, jadi siswa yang online tidak melihat toast itu. Penolakan lain (401, 403, 422) dibuang karena tidak akan pernah diterima.
-- `client_event_id` dibuat sekali saat event lahir dan ikut tersimpan di antrean offline; kiriman ulang dibalas `duplicate` oleh server.
-- `sequence_no` adalah penghitung per halaman (mulai dari 1 setiap halaman dimuat). Urutan linimasa di server memakai `occurred_at`, lalu `sequence_no`.
+- Events are queued only when `CONFIG.sessionTag` exists; screens before login send nothing.
+- **Rhythm (R1).** A batch leaves `FLUSH_MS` after the first waiting event, or at once when a channel holds `FLUSH_AT` events; at most 50 events per channel per request (`BATCH_MAX` = `Config\Gelita::$maxEventsPerBatch`). `FLUSH_MS`/`FLUSH_AT` come from `CONFIG.eventFlush = { intervalMs, maxEvents }` (`Gelita::$eventFlush` via `js_config()`), falling back to 30 000 ms / 40 events when the server does not send it.
+- **One request for both channels (R2).** `POST /api/events` carries `{ events, audio?, client_sent_at, dropped?, dropped_id?, audio_dropped?, audio_dropped_id? }`; `events` may be empty when only audio waits. The answer `{ accepted, duplicate, rejected, audio?: { accepted, duplicate, rejected }, server_time }` has an `audio` key whenever the request carried audio. When it does not (a server without the combined request), the client sends that audio batch to `POST /api/audio-events` as before and keeps using that endpoint for the rest of the page, so an older server never loses audio.
+- **Persist-on-push (R1).** Every event is written to the offline queue (`Storage.persistEvents`) when it is created and removed (`Storage.removeEvents`) only after the server accepted the batch that carried it. A browser crash between two batches therefore loses nothing: the next page sends the event again and the server answers `duplicate` for what had arrived. Every event id in memory (waiting or in flight) is tracked, so restoring the offline queue never queues an event twice. When the browser refuses to store an event at push time nothing is counted yet; it is stored (and a loss counted) only if its batch then fails.
+- **Forced sends stay immediate.** Tab hidden (`visibilitychange`) and page closed (`pagehide`) call `flush(true)`: the in-flight batch and the waiting events go out by `navigator.sendBeacon()` (Blob `application/json`, fallback `fetch(…, { keepalive: true })`), **one beacon per channel to its own endpoint** (`/api/events`, `/api/audio-events`), so a server of any version keeps the audio. A beacon cannot set headers, so the CSRF token rides in the JSON body. Beaconed events stay in the offline queue, marked as beaconed, and are not beaconed twice by the same page. The curtain (`core/curtain.js`), the narrator's last slide (`game/narrator.js`), and closing the Kenali overlay (`game/map.js`) await or call `flush()`, so `dialogue_advanced` reaches the server by fetch before the next screen and the map's "Belum didengar" badge is right (F6).
+- **Page load (R4).** `game.js` calls `restoreQueued()`: the session's offline queue (mostly copies of the previous page's beacon) joins this page's queue and leaves with its first batch, on the timer or at `FLUSH_AT`, instead of a request of its own. The `online` event still calls `resendQueued()`, which sends at once.
+- **Failures.** A network error, 5xx, or `RATE_LIMITED` leaves the events in the offline queue for a re-send. The `savedOffline` toast ("Koneksi terputus …") shows once per page, only for a failure that holds: the browser reports offline, `RATE_LIMITED` persists after `apiRequest`'s retries, or one quiet re-send 5 s later (`RETRY_MS`) fails too. Leaving the screen cancels a batch still on its way (`net::ERR_ABORTED`), which looks like a network error; the page is gone before the re-send, so an online student does not see the toast. Other refusals (401, 403, 422) are dropped from memory and the offline queue because they would never be accepted.
+- `client_event_id` is created once when the event is born and is stored with it; a re-send is answered `duplicate`. `sequence_no` continues across the pages of a session (`Storage.nextSequence`, never below `CONFIG.sequenceFloor`), and every request carries its own `client_sent_at`.
+- Events the offline queue cannot keep (over `QUEUE_MAX`, or storage refused) are counted per session and channel; the `eventQueueFull` toast shows once, and the count goes to the server with the next fetch batch (`dropped`/`dropped_id` for events, `audio_dropped`/`audio_dropped_id` for audio; `dropped`/`dropped_id` on the `/api/audio-events` fallback), never with a beacon.
 
 ### `core/storage.js`
 
-Lihat [Penyimpanan Lokal](#penyimpanan-lokal).
+Lihat [Penyimpanan Lokal](#penyimpanan-lokal). Since asynchronous logging Phase 1 the event queue holds every event that is not acknowledged yet (persist-on-push), not only events whose batch failed.
 
 ### `core/audio.js`
 
@@ -472,7 +477,7 @@ closeModal(value), isModalOpen()
 Selalu aktif di setiap halaman layout game:
 
 1. `<html>` diberi kelas `js`; `Sfx.unlock()` dipasang pada `pointerdown`/`keydown` pertama.
-2. `initStage({ track: Boolean(sessionTag) })` (`core/stage.js`). Bila ada `sessionTag`: `resendQueued()` saat dimuat dan saat event `online`, lalu `initVisibilityTracking()`.
+2. `initStage({ track: Boolean(sessionTag) })` (`core/stage.js`). With a `sessionTag`: `restoreQueued()` on load (the offline queue leaves with the page's first batch), `resendQueued()` on the `online` event (sends at once), then `initVisibilityTracking()`.
 3. `initHud()`, `initRotateGate()`, `initInstall()`, `initCurtains()`.
 4. `initAudioPlayers(document, { attemptId, attention })`.
 5. Modul halaman dipilih dari `[data-screen]` (lalu `initNextAssets({ ready })`, see "Next-screen decode"):
@@ -496,7 +501,7 @@ Tanpa `data-screen` yang cocok: `form.register-form` → `register.js`, `[data-l
 
 - Tombol suara `#btn-sound` → `Sfx.setEnabled()`; `aria-pressed` dan judul `soundOn`/`soundOff` ikut berubah.
 - Lentera (`details.lantern`) tetap dapat dibuka tanpa JavaScript; di sini ditambah tutup dengan Esc dan klik di luar. `updateLantern(shards)` memperbarui angka dan bilah serpihan dari angka server (dipanggil `challenge.js` sebelum pindah ke layar selesai), tidak pernah dari hitungan sendiri.
-- Heartbeat `POST /api/session/heartbeat` tiap 60 detik selama tab terlihat, hanya di dalam permainan (ada lentera dan `sessionTag`), tanpa percobaan ulang.
+- Heartbeat `POST /api/session/heartbeat`: a 60-second tick while the tab is visible, only inside the game (lantern and `sessionTag` present), without retries. When the server folds the heartbeat into every event batch (it sends `CONFIG.eventFlush`; `rencana-log-asinkron` R3), the tick is skipped if an event batch was accepted in the last 60 s (`lastBatchAt()`), so only an idle open tab sends its own heartbeat. Without `CONFIG.eventFlush` the heartbeat goes every 60 s as before.
 - Language switch: on submit of `form.lang-switch`, `setLocale(code)` switches JS texts at once and marks the pressed button; the form then posts as before. The active language is a no-op (see "Two-language texts").
 
 ### `game/rotate-gate.js` dan `game/install.js`
@@ -950,6 +955,8 @@ POST /api/events
 → { "accepted": 1, "duplicate": 0, "rejected": [], "server_time": "…" }
 ```
 
+The client sends audio telemetry in the same request as an `audio` array (with `audio_dropped`/`audio_dropped_id`), and the answer then has an `audio` key with its own counts; see `core/events.js` and Telemetry audio below.
+
 `EventService::ingest()` menerima `event_type` yang ada di `Config\Gelita::$eventTypes`, menolak `client_event_id` kosong atau ganda dalam satu batch, dan membalas `duplicate` untuk id yang sudah tersimpan. Waktu klien yang tidak dapat diurai diganti waktu server.
 
 ### Event yang dikirim klien
@@ -975,6 +982,8 @@ Hasil tantangan dicatat server di dalam transaksi yang sama dengan datanya, buka
 
 ### Telemetry audio
 
+Since asynchronous logging Phase 1 the client sends audio events as the `audio` array of `POST /api/events` (see `core/events.js`); `POST /api/audio-events` takes the beacons of the audio channel and the fallback for a server without the combined request. The audio objects are the same in both.
+
 ```json
 POST /api/audio-events
 { "events": [ { "client_event_id": "…", "occurred_at": "2026-10-06T02:14:22.481Z",
@@ -992,18 +1001,21 @@ POST /api/audio-events
 
 | Kunci | Isi | Pemakai |
 |---|---|---|
-| `gelita.queue.events` | event `/api/events` yang gagal terkirim, `{ tag, event }` | `core/events.js` |
-| `gelita.queue.audio` | event `/api/audio-events` yang gagal terkirim, `{ tag, event }` | `core/events.js` |
+| `gelita.queue.events` | gameplay events not acknowledged by the server yet (persist-on-push), `{ tag, event, b? }`; `b: 1` = also sent by beacon | `core/events.js` |
+| `gelita.queue.audio` | audio events not acknowledged yet, same shape | `core/events.js` |
 | `gelita.prefs` | `sound` (bawaan `true`), `volume` (bawaan 0,8), `narrationAuto` (bawaan `true`) | `core/audio.js`, `game/narrator.js` |
 
 ```js
-Storage.queueEvents(batch, tag, channel)  // simpan bertanda sesi; dipotong ke 500 entri terbaru
-Storage.takeAll(tag, channel)             // ambil milik sesi ini saja; milik sesi lain tetap tersimpan
+Storage.persistEvents(batch, tag, channel)          // persist-on-push → { stored, lost }; nothing counted when refused
+Storage.queueEvents(batch, tag, channel, beaconed)  // store and count what cannot be kept (QUEUE_MAX = 5000)
+Storage.pendingEvents(tag, channel)                 // read this session's events without removing them
+Storage.removeEvents(tag, channel, ids)             // acknowledged (or refused for good): forget
+Storage.markBeaconed(tag, channel, ids)             // also sent by beacon: losing it over QUEUE_MAX is not counted
 Storage.size(tag, channel)
 Storage.getPref(name, fallback), Storage.setPref(name, value)
 ```
 
-Setiap event yang disimpan ditandai `sessionTag`. Komputer kelas dipakai bergantian: tanpa tanda ini, event siswa A yang tertunda akan terkirim ke sesi siswa B yang masuk sesudahnya. `resendQueued()` (saat halaman dimuat dan saat `online`) hanya mengambil event bertanda sesi yang sedang berjalan; server membalas `duplicate` untuk yang ternyata sudah masuk.
+Setiap event yang disimpan ditandai `sessionTag`. Komputer kelas dipakai bergantian: tanpa tanda ini, event siswa A yang tertunda akan terkirim ke sesi siswa B yang masuk sesudahnya. `restoreQueued()` (page load) and `resendQueued()` (`online`) only read events stamped with the running session; the server answers `duplicate` for those that had already arrived.
 
 Isi kata sandi tidak pernah disimpan di browser storage. Service worker tidak menyimpan data penelitian; cache-nya hanya berisi `offline.html` dan berkas paket aset (konten publik).
 
@@ -1024,7 +1036,7 @@ Asset package keys (Stage 2): `localStorage` `gelita.paket` (mirror of the devic
 - **Cari Objek**: teks petunjuk aktif tampil dan diumumkan ke pembaca layar; bila petunjuknya punya rekaman yang disetujui, tombol ▶ membacakannya; tidak ada yang diputar otomatis.
 - **Konfirmasi keluar** dan tombol Back memakai `confirmDialog`; `<details>` tanpa JavaScript tetap ada di markup.
 - **Tidak ada yang berbunyi sebelum interaksi pengguna.** Layar bernarasi memakai kartu "Ketuk untuk mulai" atau ketukan tirai, yang sekaligus membuka elemen narasi bersama untuk Safari iPad.
-- **Event penting tidak menunggu antrean.** Slide terakhir narasi, penutupan overlay Kenali, dan tirai sebelum pindah halaman memanggil `flush()`, agar tanda "sudah didengar" sampai di server lewat fetch biasa, bukan bergantung pada beacon saat `pagehide`.
+- **Event penting tidak menunggu antrean.** Slide terakhir narasi, penutupan overlay Kenali, dan tirai sebelum pindah halaman memanggil `flush()`, agar tanda "sudah didengar" sampai di server lewat fetch biasa, bukan bergantung pada beacon saat `pagehide`. This matters more with the 30-second flush interval (asynchronous logging Phase 1): everything else waits for the timer.
 
 ---
 

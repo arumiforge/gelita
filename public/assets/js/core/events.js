@@ -172,21 +172,150 @@ const gameEvents = new Channel('events', '/events');
 const audioEvents = new Channel('audio', '/audio-events');
 const channels = [gameEvents, audioEvents];
 
-let timer = null;
-let sending = null;    // the running send; callers that wait (curtain) await the same one
-let failures = 0;      // failed requests in a row; reset by any accepted request
-let retryTimer = null;
-let legacyAudio = false;
-let lastAccepted = -Infinity;
+/**
+ * The shared sender of both channels: timer, the running send, failure
+ * count, and whether the server needs the old audio endpoint.
+ */
+class Transport {
+  constructor(path) {
+    this.path = path;
+    this.timer = null;
+    this.sending = null;     // the running send; callers that wait (curtain) await the same one
+    this.failures = 0;       // failed requests in a row; reset by any accepted request
+    this.retryTimer = null;
+    this.legacyAudio = false;
+    this.lastAccepted = -Infinity;
+  }
 
-/** Starts the timer, or sends at once when a channel reached FLUSH_AT. */
-function schedule() {
-  if (channels.some((channel) => channel.queue.length >= FLUSH_AT)) {
-    flush();
-  } else if (!timer && channels.some((channel) => channel.queue.length)) {
-    timer = setTimeout(() => flush(), FLUSH_MS);
+  /** Starts the timer, or sends at once when a channel reached FLUSH_AT. */
+  schedule() {
+    if (channels.some((channel) => channel.queue.length >= FLUSH_AT)) {
+      this.flush();
+    } else if (!this.timer && channels.some((channel) => channel.queue.length)) {
+      this.timer = setTimeout(() => this.flush(), FLUSH_MS);
+    }
+  }
+
+  async flush(force = false) {
+    clearTimeout(this.timer);
+    this.timer = null;
+
+    if (force) {
+      // Offline no beacon is tried at all; the events wait in the offline queue
+      const online = navigator.onLine !== false;
+      for (const channel of channels) {
+        const batch = channel.takeForBeacon(online);
+        while (batch.length) beacon(channel.path, batch.splice(0, BATCH_MAX));
+      }
+      return;
+    }
+
+    if (!this.sending) this.sending = this.drain().finally(() => { this.sending = null; });
+    await this.sending;
+  }
+
+  async drain() {
+    while (gameEvents.queue.length || audioEvents.queue.length) {
+      const events = gameEvents.take();
+      const audio = audioEvents.take();
+      let audioDone = !audio.length;
+
+      if (events.length || (audio.length && !this.legacyAudio)) {
+        const body = { events, client_sent_at: now() };
+        const report = dropped('events');
+        if (report) Object.assign(body, { dropped: report.count, dropped_id: report.id });
+        const combined = audio.length > 0 && !this.legacyAudio;
+        let audioReport = null;
+        if (combined) {
+          body.audio = audio;
+          audioReport = dropped('audio');
+          if (audioReport) Object.assign(body, { audio_dropped: audioReport.count, audio_dropped_id: audioReport.id });
+        }
+
+        let answer;
+        try {
+          answer = await apiRequest(this.path, { method: 'POST', body });
+          this.failures = 0;
+        } catch (error) {
+          this.keepForLater([[gameEvents, events], [audioEvents, audio]], error);
+          return;
+        }
+        this.lastAccepted = performance.now();
+        gameEvents.settle(events);
+        clearDropped('events', report);
+
+        if (combined) {
+          if (answer && typeof answer === 'object' && Object.hasOwn(answer, 'audio')) {
+            audioEvents.settle(audio);
+            clearDropped('audio', audioReport);
+            audioDone = true;
+          } else {
+            // A server without the combined request ignored the audio: use its own endpoint
+            this.legacyAudio = true;
+          }
+        }
+      }
+
+      if (!audioDone) {
+        const body = { events: audio, client_sent_at: now() };
+        const report = dropped('audio');
+        if (report) Object.assign(body, { dropped: report.count, dropped_id: report.id });
+        try {
+          await apiRequest(audioEvents.path, { method: 'POST', body });
+          this.failures = 0;
+        } catch (error) {
+          this.keepForLater([[audioEvents, audio]], error);
+          return;
+        }
+        this.lastAccepted = performance.now();
+        audioEvents.settle(audio);
+        clearDropped('audio', report);
+      }
+    }
+  }
+
+  /**
+   * Only recoverable failures (network, busy server) keep the events for a
+   * re-send. `batch` lists the request's [channel, events] pairs.
+   */
+  keepForLater(batch, error) {
+    const recoverable = !(error instanceof ApiError) || error.isNetwork || error.code === 'RATE_LIMITED';
+    if (!recoverable) {
+      // Refused for good (401, 403, 422): it would never be accepted
+      for (const [channel, events] of batch) channel.settle(events);
+      return;
+    }
+
+    this.store(batch);
+    this.failures++;
+
+    const lasting = navigator.onLine === false || error?.code === 'RATE_LIMITED' || this.failures > 1;
+    if (!lasting) {
+      // One failure while online is often a batch cancelled by leaving the
+      // page; retry once quietly before telling the student anything.
+      clearTimeout(this.retryTimer);
+      this.retryTimer = setTimeout(() => { this.retryTimer = null; this.resend(); }, RETRY_MS);
+      return;
+    }
+    if (!offlineNoticeShown) {
+      offlineNoticeShown = true;
+      toast(t('savedOffline'), 'warn');
+    }
+  }
+
+  /** The events leave memory and wait in the offline queue (persisted on push). */
+  store(batch) {
+    for (const [channel, events] of batch) channel.fail(events);
+  }
+
+  /** Moves this session's offline queue into memory and sends it now. */
+  async resend() {
+    for (const channel of channels) channel.restore();
+    await this.flush();
   }
 }
+
+const transport = new Transport('/events');
 
 function dropped(channel) {
   return Storage.droppedReport(CONFIG.sessionTag, channel);
@@ -194,93 +323,6 @@ function dropped(channel) {
 
 function clearDropped(channel, report) {
   if (report) Storage.clearDropped(CONFIG.sessionTag, channel, report);
-}
-
-async function drain() {
-  while (gameEvents.queue.length || audioEvents.queue.length) {
-    const events = gameEvents.take();
-    const audio = audioEvents.take();
-    let audioDone = !audio.length;
-
-    if (events.length || (audio.length && !legacyAudio)) {
-      const body = { events, client_sent_at: now() };
-      const report = dropped('events');
-      if (report) Object.assign(body, { dropped: report.count, dropped_id: report.id });
-      const combined = audio.length > 0 && !legacyAudio;
-      let audioReport = null;
-      if (combined) {
-        body.audio = audio;
-        audioReport = dropped('audio');
-        if (audioReport) Object.assign(body, { audio_dropped: audioReport.count, audio_dropped_id: audioReport.id });
-      }
-
-      let answer;
-      try {
-        answer = await apiRequest('/events', { method: 'POST', body });
-      } catch (error) {
-        keepForLater([[gameEvents, events], [audioEvents, audio]], error);
-        return;
-      }
-      accepted();
-      gameEvents.settle(events);
-      clearDropped('events', report);
-
-      if (combined) {
-        if (answer && typeof answer === 'object' && Object.hasOwn(answer, 'audio')) {
-          audioEvents.settle(audio);
-          clearDropped('audio', audioReport);
-          audioDone = true;
-        } else {
-          // A server without the combined request ignored the audio: use its own endpoint
-          legacyAudio = true;
-        }
-      }
-    }
-
-    if (!audioDone) {
-      const body = { events: audio, client_sent_at: now() };
-      const report = dropped('audio');
-      if (report) Object.assign(body, { dropped: report.count, dropped_id: report.id });
-      try {
-        await apiRequest(audioEvents.path, { method: 'POST', body });
-      } catch (error) {
-        keepForLater([[audioEvents, audio]], error);
-        return;
-      }
-      accepted();
-      audioEvents.settle(audio);
-      clearDropped('audio', report);
-    }
-  }
-}
-
-function accepted() {
-  failures = 0;
-  lastAccepted = performance.now();
-}
-
-/** Only recoverable failures (network, busy server) keep the events for a re-send. */
-function keepForLater(batches, error) {
-  const recoverable = !(error instanceof ApiError) || error.isNetwork || error.code === 'RATE_LIMITED';
-  for (const [channel, batch] of batches) {
-    if (recoverable) channel.fail(batch);
-    else channel.settle(batch);   // refused for good (401, 403, 422): it would never be accepted
-  }
-  if (!recoverable) return;
-
-  failures++;
-  const lasting = navigator.onLine === false || error?.code === 'RATE_LIMITED' || failures > 1;
-  if (!lasting) {
-    // One failure while online is often a batch cancelled by leaving the
-    // page; retry once quietly before telling the student anything.
-    clearTimeout(retryTimer);
-    retryTimer = setTimeout(() => { retryTimer = null; resendQueued(); }, RETRY_MS);
-    return;
-  }
-  if (!offlineNoticeShown) {
-    offlineNoticeShown = true;
-    toast(t('savedOffline'), 'warn');
-  }
 }
 
 function beacon(path, batch) {
@@ -319,7 +361,7 @@ export function emit(type, { levelId, nodeId, attemptId, itemId, payload } = {})
     item_id: itemId ?? null,
     payload: payload ?? null,
   });
-  schedule();
+  transport.schedule();
 }
 
 /**
@@ -334,7 +376,7 @@ export function emitAudio(event) {
     occurred_at: now(),
     ...event,
   });
-  schedule();
+  transport.schedule();
 }
 
 /**
@@ -343,27 +385,12 @@ export function emitAudio(event) {
  * channel to its own endpoint, so a server of any version keeps the audio.
  */
 export async function flush(force = false) {
-  clearTimeout(timer);
-  timer = null;
-
-  if (force) {
-    // Offline no beacon is tried at all; the events wait in the offline queue
-    const online = navigator.onLine !== false;
-    for (const channel of channels) {
-      const batch = channel.takeForBeacon(online);
-      while (batch.length) beacon(channel.path, batch.splice(0, BATCH_MAX));
-    }
-    return;
-  }
-
-  if (!sending) sending = drain().finally(() => { sending = null; });
-  await sending;
+  await transport.flush(force);
 }
 
 /** Re-sends this session's offline queue now (back online, quiet retry). The server answers "duplicate" for what arrived. */
 export async function resendQueued() {
-  for (const channel of channels) channel.restore();
-  await flush();
+  await transport.resend();
 }
 
 /**
@@ -374,11 +401,11 @@ export async function resendQueued() {
 export function restoreQueued() {
   if (!CONFIG.sessionTag) return;
   for (const channel of channels) channel.restore();
-  schedule();
+  transport.schedule();
 }
 
 /** performance.now() of the last request the server accepted (-Infinity before any); game/hud.js skips its heartbeat after one. */
-export const lastBatchAt = () => lastAccepted;
+export const lastBatchAt = () => transport.lastAccepted;
 
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'hidden') flush(true);
