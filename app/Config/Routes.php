@@ -151,6 +151,8 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
             $routes->post('konten/narasi/impor-folder', 'NarrationController::importFolder');
             $routes->post('konten/narasi/setujui', 'NarrationController::approveAll');
             $routes->get('konten/narasi/daftar-rekaman', 'NarrationController::recordingList');
+            $routes->post('konten/narasi/batalkan', 'NarrationController::cancelAll');
+            $routes->get('konten/narasi/naskah-pdf', 'NarrationController::scriptPdf');
             $routes->post('konten/verifikasi', 'ContentController::verify');
 
             $routes->get('media', 'MediaController::index');

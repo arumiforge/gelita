@@ -5,6 +5,7 @@ namespace App\Controllers\Admin;
 use App\Libraries\NarrationCatalog;
 use App\Libraries\MediaStore;
 use App\Libraries\NarrationImporter;
+use App\Libraries\NarrationScriptPdf;
 use App\Models\AuditLogModel;
 use CodeIgniter\HTTP\DownloadResponse;
 use CodeIgniter\HTTP\RedirectResponse;
@@ -14,6 +15,9 @@ use CodeIgniter\HTTP\RedirectResponse;
  * Cari Objek (88 + 12 baris), unggah banyak
  * rekaman sekaligus, impor dari folder server, persetujuan massal, dan
  * daftar rekaman untuk pengisi suara. Hanya role `admin`.
+ *
+ * Also: cancel every recording of one language at once, and the printable
+ * script (PDF) for the voice actors.
  *
  * Aturan impor ada di App\Libraries\NarrationImporter (dipakai juga oleh
  * `php spark gelita:narration:import`), status dan persetujuan massal di
@@ -32,6 +36,10 @@ class NarrationController extends BaseAdminController
             'drafts'   => array_combine(
                 config('Gelita')->locales,
                 array_map(static fn (string $locale): int => count($catalog->draftIds($locale)), config('Gelita')->locales),
+            ),
+            'linked'   => array_combine(
+                config('Gelita')->locales,
+                array_map(static fn (string $locale): int => count($catalog->cancelIds($locale)), config('Gelita')->locales),
             ),
             'locales'  => config('Gelita')->locales,
             // Asset package Stage 6: images/audio changed since the package students have
@@ -126,6 +134,48 @@ class NarrationController extends BaseAdminController
         return $this->done($back, $count === 0
             ? 'Tidak ada rekaman ' . self::localeName($locale) . ' yang menunggu persetujuan.'
             : "{$count} rekaman " . self::localeName($locale) . ' disetujui dan kini terdengar oleh siswa.');
+    }
+
+    /** "Batalkan semua rekaman" of one language (NarrationCatalog::cancelAll()). */
+    public function cancelAll(): RedirectResponse
+    {
+        $locale = (string) $this->request->getPost('locale');
+        $back   = 'admin/konten/narasi';
+
+        if (! in_array($locale, config('Gelita')->locales, true)) {
+            return $this->back($back, 'Bahasa tidak dikenal.');
+        }
+
+        $result = (new NarrationCatalog())->cancelAll($locale, $this->staffId() ?: null);
+
+        return $this->done($back, $result['cancelled'] === 0
+            ? 'Tidak ada rekaman ' . self::localeName($locale) . ' yang perlu dibatalkan.'
+            : "{$result['cancelled']} rekaman " . self::localeName($locale) . " dibatalkan dan {$result['files_deleted']} berkas lama dihapus. Semua baris kini berstatus belum ada; unggah rekaman baru dengan nama berkas yang sama.");
+    }
+
+    /** Printable script (PDF) for the voice actors; `?bahasa=id|en|semua`. */
+    public function scriptPdf(): DownloadResponse
+    {
+        $language = NarrationScriptPdf::normalize((string) $this->request->getGet('bahasa'));
+        $path     = WRITEPATH . 'exports/naskah-rekaman-' . bin2hex(random_bytes(4)) . '.pdf';
+
+        if (! is_dir(dirname($path))) {
+            mkdir(dirname($path), 0775, true);
+        }
+
+        (new NarrationScriptPdf())->write($language, $path);
+
+        model(AuditLogModel::class)->record('narration_script_download', [
+            'staff_user_id' => $this->staffId(),
+            'target_type'   => 'dialogues',
+            'target_id'     => 'naskah.' . $language,
+        ]);
+
+        // A few hundred KB at most: sent from memory, the temporary file goes at once
+        $bytes = (string) file_get_contents($path);
+        @unlink($path);
+
+        return $this->response->download(NarrationScriptPdf::filename($language), $bytes)->setContentType('application/pdf');
     }
 
     /** Daftar rekaman (XLSX) untuk pengisi suara. */

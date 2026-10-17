@@ -1235,7 +1235,7 @@ Unggahan dari editor konten memakai jalur `MediaStore` yang sama. Audio dialog, 
 
 ## FITUR 13a: Narasi — Rekaman, Impor, dan Persetujuan
 
-Seluruh layar cerita bernarasi memakai **100 rekaman per bahasa**: 88 baris naskah (`dialogues`) + 12 petunjuk Cari Objek. Rekaman bawaan (suara sintetis) ada di `public/assets/audio/narasi/{id,en}/` beserta manifest `produksi.json`; cara membuat dan memeriksanya ada di [`docs/audio.md`](audio.md).
+Seluruh layar cerita bernarasi memakai **100 rekaman per bahasa**: 88 baris naskah (`dialogues`) + 12 petunjuk Cari Objek. Rekaman dibuat pengisi suara dari naskah PDF (`GET /admin/konten/narasi/naskah-pdf?bahasa=id|en|semua`); rekaman sintetis bawaan beserta `produksi.json` dihapus 17 Oktober 2026. Tombol **Batalkan semua rekaman** (`POST /admin/konten/narasi/batalkan`, satu bahasa) melepas semua rekaman dari barisnya, menandainya `rejected`, menonaktifkan berkas impor `audio.narasi.*`, dan menghapus berkasnya; lihat [`docs/audio.md`](audio.md).
 
 ```text
  1. Daftar rekaman: GET /admin/konten/narasi/daftar-rekaman (XLSX: kode berkas,

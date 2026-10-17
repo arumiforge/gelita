@@ -173,30 +173,7 @@ final class NarrationCatalog
      */
     public function draftIds(string $locale): array
     {
-        $column = 'audio_' . $locale . '_asset_id';
-
-        $linked = array_map('intval', array_column(
-            $this->db->table('dialogues')
-                ->select($column)
-                ->where($column . ' IS NOT NULL')
-                ->whereIn('context_code', array_keys(NarrationImporter::PREFIXES))
-                ->get()
-                ->getResultArray(),
-            $column,
-        ));
-
-        // Audio petunjuk arena `cari` yang dipilih manual di form butir
-        $clueColumn = NarrationImporter::CLUE_COLUMNS[$locale];
-        $linked     = array_merge($linked, array_map('intval', array_column(
-            $this->db->table('challenge_items')
-                ->select($clueColumn)
-                ->where($clueColumn . ' IS NOT NULL')
-                ->where('interaction_type', 'find_object')
-                ->get()
-                ->getResultArray(),
-            $clueColumn,
-        )));
-
+        $linked  = $this->linkedIds($locale);
         $builder = $this->db->table('audio_assets aa')
             ->select('aa.id')
             ->join('media_assets ma', 'ma.id = aa.media_asset_id')
@@ -206,10 +183,109 @@ final class NarrationCatalog
             ->like('ma.asset_key', NarrationImporter::assetKey($locale, ''), 'after');
 
         if ($linked !== []) {
-            $builder->orWhereIn('aa.id', array_values(array_unique($linked)));
+            $builder->orWhereIn('aa.id', $linked);
         }
 
         return array_map('intval', array_column($builder->groupEnd()->get()->getResultArray(), 'id'));
+    }
+
+    /**
+     * Narration audio of one locale that "Batalkan semua rekaman" would
+     * cancel: every recording linked to a script line or a Cari Objek clue,
+     * plus active imported recordings (`audio.narasi.{locale}.*`) that are
+     * not linked (yet).
+     *
+     * @return list<int>
+     */
+    public function cancelIds(string $locale): array
+    {
+        $linked  = $this->linkedIds($locale);
+        $builder = $this->db->table('audio_assets aa')
+            ->select('aa.id')
+            ->join('media_assets ma', 'ma.id = aa.media_asset_id')
+            ->where('aa.locale', $locale)
+            ->groupStart()
+            ->groupStart()
+            ->like('ma.asset_key', NarrationImporter::assetKey($locale, ''), 'after')
+            ->where('ma.is_active', 1)
+            ->groupEnd();
+
+        if ($linked !== []) {
+            $builder->orWhereIn('aa.id', $linked);
+        }
+
+        return array_map('intval', array_column($builder->groupEnd()->get()->getResultArray(), 'id'));
+    }
+
+    /**
+     * Cancels every narration recording of one locale, e.g. to replace the
+     * old TTS takes with a voice-over (owner, 17 October 2026). Lines and
+     * clues lose their link (status "belum ada"), the audio rows become
+     * imported narration files (`audio.narasi.*`) become `rejected` (bulk
+     * approval skips them), are deactivated, and are deleted from disk. Rows
+     * stay, so research data that refers to an audio id keeps it. Audio that
+     * is not an imported narration file (e.g. picked by hand from the media
+     * library, possibly used elsewhere) is only unlinked. A new upload with the same file name brings the line
+     * back as a draft.
+     *
+     * @return array{cancelled: int, files_deleted: int}
+     */
+    public function cancelAll(string $locale, ?int $staffId): array
+    {
+        $ids     = $this->cancelIds($locale);
+        $deleted = 0;
+
+        if ($ids !== []) {
+            $this->db->transStart();
+
+            $column = 'audio_' . $locale . '_asset_id';
+            $this->db->table('dialogues')->whereIn($column, $ids)->update([$column => null]);
+
+            $clueColumn = NarrationImporter::CLUE_COLUMNS[$locale];
+            $this->db->table('challenge_items')->whereIn($clueColumn, $ids)->update([$clueColumn => null]);
+
+            // Only imported narration files change status; other audio may be in use elsewhere
+            $media = $this->db->table('audio_assets aa')
+                ->select('aa.id AS audio_id, ma.id, ma.storage_path')
+                ->join('media_assets ma', 'ma.id = aa.media_asset_id')
+                ->whereIn('aa.id', $ids)
+                ->like('ma.asset_key', NarrationImporter::assetKey($locale, ''), 'after')
+                ->get()
+                ->getResultArray();
+
+            if ($media !== []) {
+                $this->db->table('audio_assets')->whereIn('id', array_map('intval', array_column($media, 'audio_id')))->update([
+                    'approval_status' => 'rejected',
+                    'approved_by'     => null,
+                    'approved_at'     => null,
+                ]);
+                $this->db->table('media_assets')->whereIn('id', array_map('intval', array_column($media, 'id')))->update(['is_active' => 0]);
+            }
+
+            $this->db->transComplete();
+
+            // Files go only after the rows changed; only files inside the
+            // upload or narration folders are ever deleted
+            foreach ($media as $row) {
+                $path = (string) $row['storage_path'];
+
+                if ((str_starts_with($path, MediaStore::UPLOAD_DIR) || str_starts_with($path, NarrationImporter::FOLDER))
+                    && ! str_contains($path, '..') && is_file(FCPATH . $path) && @unlink(FCPATH . $path)) {
+                    $deleted++;
+                }
+            }
+
+            service('contentRepository')->flush();
+        }
+
+        model(AuditLogModel::class)->record('narration_cancel_bulk', [
+            'staff_user_id' => $staffId,
+            'target_type'   => 'audio_asset',
+            'target_id'     => 'narasi.' . $locale,
+            'metadata'      => ['locale' => $locale, 'count' => count($ids), 'files_deleted' => $deleted, 'audio_ids' => array_slice($ids, 0, 200)],
+        ]);
+
+        return ['cancelled' => count($ids), 'files_deleted' => $deleted];
     }
 
     /** Setujui seluruh audio narasi draft satu bahasa; mengembalikan jumlahnya. */
@@ -235,6 +311,40 @@ final class NarrationCatalog
         ]);
 
         return count($ids);
+    }
+
+    /**
+     * Audio ids linked to a script line of the narration contexts or to a
+     * Cari Objek clue (picked by hand in the item form) in one locale.
+     *
+     * @return list<int>
+     */
+    private function linkedIds(string $locale): array
+    {
+        $column = 'audio_' . $locale . '_asset_id';
+
+        $linked = array_map('intval', array_column(
+            $this->db->table('dialogues')
+                ->select($column)
+                ->where($column . ' IS NOT NULL')
+                ->whereIn('context_code', array_keys(NarrationImporter::PREFIXES))
+                ->get()
+                ->getResultArray(),
+            $column,
+        ));
+
+        $clueColumn = NarrationImporter::CLUE_COLUMNS[$locale];
+        $linked     = array_merge($linked, array_map('intval', array_column(
+            $this->db->table('challenge_items')
+                ->select($clueColumn)
+                ->where($clueColumn . ' IS NOT NULL')
+                ->where('interaction_type', 'find_object')
+                ->get()
+                ->getResultArray(),
+            $clueColumn,
+        )));
+
+        return array_values(array_unique($linked));
     }
 
     /**

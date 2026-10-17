@@ -15,6 +15,7 @@
  * @var list<array{context: string, level_code: string|null, label: string, rows: list<array<string, mixed>>}> $groups
  * @var array<string, array{total: int, approved: int, draft: int, none: int}> $progress
  * @var array<string, int> $drafts  locale → jumlah narasi draft yang ikut "Setujui semua"
+ * @var array<string, int> $linked  locale → recordings "Batalkan semua rekaman" would cancel
  * @var list<string>       $locales
  */
 use App\Libraries\NarrationCatalog;
@@ -63,11 +64,24 @@ $audioCell   = static function (array $audio, string $code, string $locale) use 
           <span class="progress-seg is-approved" style="width: <?= round($p['approved'] / $total * 100, 2) ?>%"></span>
           <span class="progress-seg is-draft" style="width: <?= round($p['draft'] / $total * 100, 2) ?>%"></span>
         </div>
-        <?= component('admin/narration/approve-all', ['locale' => $locale, 'count' => $drafts[$locale] ?? 0, 'back' => 'narasi']) ?>
+        <div class="btn-row">
+          <?= component('admin/narration/approve-all', ['locale' => $locale, 'count' => $drafts[$locale] ?? 0, 'back' => 'narasi']) ?>
+          <?= component('admin/narration/cancel-all', ['locale' => $locale, 'count' => $linked[$locale] ?? 0]) ?>
+        </div>
       </div>
     <?php endforeach ?>
   </div>
   <p class="field-help">“Menunggu persetujuan” menghitung semua rekaman yang sudah dipasang tetapi belum terdengar oleh siswa (belum disetujui, sedang ditinjau, ditolak, atau berkasnya dinonaktifkan).</p>
+</section>
+
+<section class="panel">
+  <h2 class="panel-title"><?= icon('download') ?> Naskah untuk pengisi suara</h2>
+  <p>Naskah siap cetak (PDF) berisi semua baris yang perlu direkam, urut alur permainan: nama berkas, tokoh dengan petunjuk nada suara, teks, dan kotak centang. Dibuat ringkas agar hemat kertas.</p>
+  <div class="btn-row">
+    <a class="btn btn-ghost btn-sm" href="<?= base_url('admin/konten/narasi/naskah-pdf?bahasa=id') ?>"><?= icon('download') ?> Naskah bahasa Indonesia (PDF)</a>
+    <a class="btn btn-ghost btn-sm" href="<?= base_url('admin/konten/narasi/naskah-pdf?bahasa=en') ?>"><?= icon('download') ?> Naskah bahasa Inggris (PDF)</a>
+    <a class="btn btn-quiet btn-sm" href="<?= base_url('admin/konten/narasi/naskah-pdf?bahasa=semua') ?>"><?= icon('download') ?> Kedua bahasa berdampingan (PDF)</a>
+  </div>
 </section>
 
 <?php if ($groups === []): ?>

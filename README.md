@@ -194,7 +194,7 @@ Daftar route lengkap: `php spark routes`.
 | [`docs/06_JAVASCRIPT.md`](docs/06_JAVASCRIPT.md) | JavaScript |
 | [`docs/07_FEATURE_INTEGRATION.md`](docs/07_FEATURE_INTEGRATION.md) | integrasi fitur |
 | [`docs/08_DEPLOYMENT.md`](docs/08_DEPLOYMENT.md) | instalasi server dan operasional |
-| [`docs/audio.md`](docs/audio.md) | musik, efek suara, narasi TTS |
+| [`docs/audio.md`](docs/audio.md) | musik, efek suara, narasi pengisi suara |
 | [`docs/naskah-cerita.md`](docs/naskah-cerita.md) | naskah cerita dwibahasa dan konvensi rekaman |
 | [`docs/bank-soal/README.md`](docs/bank-soal/README.md) | bank soal kelas 5, aturan, 45 slot gambar tantangan |
 | [`docs/pustaka/README.md`](docs/pustaka/README.md) | isi Pustaka Kedu |
@@ -231,7 +231,7 @@ Seluruh audio ikut di repositori dan dibangkitkan oleh [`tools/audio/`](tools/au
 
 - **Musik gamelan** (`public/assets/audio/music/`): `map`, `region`, `challenge`, komposisi dan sintesis orisinal.
 - **Efek suara** (`public/assets/audio/sfx/`): `click`, `correct`, `wrong`, `lock`, `shard`, `region-done`.
-- **Narasi** (`public/assets/audio/narasi/{id,en}/`): 100 rekaman per bahasa (88 baris naskah + 12 petunjuk Cari Objek), suara sintetis (TTS) yang tercatat sebagai `production_method = tts`. Dipasang dengan `php spark gelita:narration:import` dan disetujui di **Rekaman narasi**; rekaman pengisi suara dapat menggantikannya dengan nama berkas yang sama.
+- **Narasi**: 100 rekaman per bahasa (88 baris naskah + 12 petunjuk Cari Objek), direkam pengisi suara. Tidak ikut di repositori (rekaman TTS lama dihapus 17 Oktober 2026). Naskahnya diunduh sebagai PDF di **Rekaman narasi**, rekamannya diunggah di sana (atau diletakkan di `public/assets/audio/narasi/{id,en}/` lalu `php spark gelita:narration:import`) dan disetujui.
 
 Rincian, spesifikasi berkas, dan lisensi model suara ada di [`docs/audio.md`](docs/audio.md).
 

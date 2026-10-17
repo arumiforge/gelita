@@ -1,16 +1,15 @@
 # Audio GELITA
 
-Seluruh audio bawaan permainan ikut di repositori: **3 musik gamelan**, **6 efek suara**, dan **100 rekaman narasi × 2 bahasa**. Semuanya dibangkitkan oleh [`tools/audio/`](../tools/audio/README.md).
+Audio bawaan permainan yang ikut di repositori: **3 musik gamelan** dan **6 efek suara**, dibangkitkan oleh [`tools/audio/`](../tools/audio/README.md). Narasi (100 rekaman × 2 bahasa) tidak lagi ikut di repositori: rekaman suara sintetis lama dihapus (17 Oktober 2026) dan diganti rekaman pengisi suara (lihat *Voice-over narration* di bawah).
 
 - Musik dan efek suara disintesis dari nol, tanpa sampel rekaman, dengan penalaan pelog–slendro. Gendingnya komposisi orisinal.
-- Narasi adalah **suara sintetis (text-to-speech)** yang diolah per tokoh. Rekaman ini tercatat sebagai TTS di basis data (`audio_assets.production_method = tts`). Kapan saja dapat diganti rekaman pengisi suara tanpa mengubah kode.
+- Narasi direkam pengisi suara (suara asli, bukan sintetis) dan diunggah di panel **Rekaman narasi**. Bagian tentang suara sintetis di bawah tinggal sebagai catatan sejarah.
 
 | Kelompok | Lokasi | Isi | Dipakai oleh |
 |---|---|---|---|
 | Musik | `public/assets/audio/music/` | `map`, `region`, `challenge` (MP3 stereo 128 kbps, loop) | `core/audio.js` → `Sfx.music()` |
 | Efek suara | `public/assets/audio/sfx/` | `click`, `correct`, `wrong`, `lock`, `shard`, `region-done` | `core/audio.js` → `Sfx.play()` |
-| Narasi | `public/assets/audio/narasi/{id,en}/` | 88 baris naskah + 12 petunjuk Cari Objek (tmg-4, mgl-4, wnb-4 masing-masing 4) per bahasa (MP3 mono 48 kbps) | `gelita:narration:import` → `dialogues` / `challenge_items` |
-| Manifest | `public/assets/audio/narasi/produksi.json` | sha256 + profil suara tiap rekaman sintetis | `NarrationImporter::production()` |
+| Narasi | `public/assets/audio/narasi/{id,en}/` (kosong di repositori) | folder impor rekaman pengisi suara: 88 baris naskah + 12 petunjuk Cari Objek per bahasa | `gelita:narration:import` → `dialogues` / `challenge_items` |
 
 ## Musik gamelan
 
@@ -189,3 +188,11 @@ The Whisper CER figures above were measured on the 96 kbps (or WAV) files and we
 - **Narasi Indonesia**: dibangkitkan dengan model Mimic 3 `jv_ID/google-gmu_low` (MycroftAI, **CC BY-SA 4.0**). Model itu dilatih dari *High quality TTS data for Javanese* (OpenSLR 41, Google & Universitas Gadjah Mada, CC BY-SA 4.0). Untuk amannya, perlakukan rekaman ini dengan syarat yang sama: cantumkan atribusi di atas dan bagikan turunannya dengan lisensi serupa.
 - **Narasi Inggris**: suara Piper `en_US-kristin-medium` (domain publik, dataset LibriVox), `en_GB-jenny_dioco-medium` (suara "Jenny (Dioco)"; klip hasil boleh dipakai, termasuk komersial, atribusi dianjurkan), dan `en_US-joe-medium` (CC0).
 - **Whisper small** (MIT) hanya dipakai untuk memeriksa kejelasan, bukan bagian dari permainan.
+
+## Voice-over narration (17 October 2026)
+
+Owner decision: narration is recorded by voice actors (real voices, not TTS). The 200 bundled TTS files and `produksi.json` were removed from the repository; the TTS sections above stay as history, and `tools/audio/` still builds music and sound effects.
+
+1. **Script.** In **Rekaman narasi**, *Naskah untuk pengisi suara* downloads a printable PDF (`/admin/konten/narasi/naskah-pdf?bahasa=id|en|semua`, `App\Libraries\NarrationScriptPdf`): A4 portrait, 7 mm margins, condensed 8.5 pt type, one table in game order with a tick box, the file name, the speaker with pose/effect as a delivery cue, and the text. One language is about 5 pages; both side by side about 7.
+2. **Old recordings.** On a server that still has the TTS takes, press **Batalkan semua rekaman** once per language (`NarrationCatalog::cancelAll()`). Every line and clue goes back to "belum ada". Imported `audio.narasi.*` recordings become `rejected` (bulk approval skips them) and their files are deactivated and deleted; other audio picked by hand is only unlinked. The rows themselves stay, because `audio_usage_events` refers to them.
+3. **New recordings.** Name each take after its code (`intro-01.mp3`, `petunjuk-tmg-4-01.mp3`) and upload it in **Unggah rekaman**, or put it in `public/assets/audio/narasi/{id,en}/` and run `php spark gelita:narration:import`. A cancelled line comes back as a draft (`production_method = own_recording`); listen to it, then approve it.

@@ -570,7 +570,7 @@ Instalasi juga membaca isi bawaan dari repositori, jadi folder `docs/` dan `app/
 | `app/Database/Seeds/data/story.php` | `ContentSeeder` | 88 baris cerita (salinan [`docs/naskah-cerita.md`](naskah-cerita.md)) |
 | `docs/pustaka/gelita-pustaka.xlsx` | `KontenKelas5Seeder` | Pustaka Kedu: 30 halaman, 48 media ([`docs/pustaka/`](pustaka/README.md)) |
 | `docs/bank-soal/gelita-bank-soal-kelas5.xlsx` | `KontenKelas5Seeder`, `gelita:reset` | bank soal kelas 5: 12 tantangan, 147 soal aktif ([`docs/bank-soal/`](bank-soal/README.md)) |
-| `public/assets/audio/narasi/{id,en}/*.mp3` + `produksi.json` | `gelita:narration:import` | 100 rekaman narasi bawaan per bahasa ([`docs/audio.md`](audio.md)) |
+| `public/assets/audio/narasi/{id,en}/` (kosong di repositori) | `gelita:narration:import` | folder impor rekaman pengisi suara, 100 per bahasa ([`docs/audio.md`](audio.md)) |
 
 ### Ringkasan alur
 
@@ -643,7 +643,7 @@ read -rsp 'Sandi admin pertama: ' GELITA_ADMIN_PASSWORD && echo && export GELITA
 sudo --preserve-env=GELITA_ADMIN_PASSWORD -u www-data php spark db:seed DatabaseSeeder
 unset GELITA_ADMIN_PASSWORD
 
-# 6. Rekaman narasi bawaan → audio draft
+# 6. Rekaman narasi pengisi suara di public/assets/audio/narasi/{id,en}/ → audio draft (folder kosong: dilewati; rekaman juga dapat diunggah di panel)
 sudo -u www-data php spark gelita:narration:import --dry-run
 sudo -u www-data php spark gelita:narration:import
 
@@ -728,7 +728,7 @@ Sintaks `GELITA_ADMIN_PASSWORD='…' php spark …` adalah sintaks Bash; di Powe
 Setelah situs terbuka lewat HTTPS:
 
 1. **Ganti sandi admin.** Sandi awal pernah diketik di terminal. Masuk di `/admin/login` sebagai `admin`, buka **Ganti kata sandi** di menu akun kanan atas (`/admin/akun/sandi`), dan ganti dengan sandi baru minimal 12 karakter yang disimpan di pengelola sandi.
-2. **Setujui narasi.** Buka **Rekaman narasi** (`/admin/konten/narasi`), dengarkan contoh rekaman, lalu tekan **Setujui semua rekaman …** untuk bahasa Indonesia dan Inggris. Rekaman draft tidak pernah terdengar pemain. Rekaman satu per satu juga dapat disetujui di **Gambar & mockup → Rekaman suara** (`/admin/media/audio`).
+2. **Rekam dan setujui narasi.** Buka **Rekaman narasi** (`/admin/konten/narasi`), unduh naskah PDF untuk pengisi suara, unggah rekamannya, dengarkan, lalu tekan **Setujui semua rekaman …** untuk bahasa Indonesia dan Inggris. Server yang masih menyimpan rekaman TTS lama: tekan dulu **Batalkan semua rekaman …** per bahasa ([`docs/audio.md`](audio.md) → *Voice-over narration*). Rekaman draft tidak pernah terdengar pemain. Rekaman satu per satu juga dapat disetujui di **Gambar & mockup → Rekaman suara** (`/admin/media/audio`).
 3. **Buat akun guru.** Satu akun `guru` per guru di **Staf** (`/admin/staf`), dengan **NPSN sekolahnya** (cari di **Sekolah**, `/admin/sekolah`). Guru dan siswanya lalu menunjuk baris sekolah resmi yang sama, sehingga cakupan data guru pasti lengkap. Sandi awal yang Anda pilih wajib diganti guru saat pertama masuk.
 4. Jalankan [Verifikasi Setelah Deploy](#verifikasi-setelah-deploy).
 
@@ -939,8 +939,8 @@ Bila kode sudah terlanjur di-reset, pasang lagi commit rilis yang gagal (`git re
 | Font | `public/assets/fonts/` (Cinzel, Plus Jakarta Sans, IBM Plex Mono) | git | revalidasi |
 | Ikon aplikasi | bawaan `public/assets/app/`, `public/favicon.ico`, `public/sw.js` (git); ikon pengganti dari panel (slot `app.*`) di `public/assets/uploads/` | git / panel | revalidasi; `/manifest.json` dibuat PHP (`AppController`), `no-cache` |
 | Data referensi | `public/assets/data/wilayah-id.json` | git | revalidasi |
-| Aset resmi | `public/assets/{ui,char,bg,map,challenge,library,reward,audio}/` | **git**; gambar: baru `ui/placeholder.svg` (view memakai pengganti); audio: musik, efek suara, dan narasi bawaan ([`docs/audio.md`](audio.md)) | revalidasi |
-| Rekaman narasi (folder) | `public/assets/audio/narasi/{id,en}/{kode}.mp3` | git, lalu `gelita:narration:import` | revalidasi |
+| Aset resmi | `public/assets/{ui,char,bg,map,challenge,library,reward,audio}/` | **git**; gambar: baru `ui/placeholder.svg` (view memakai pengganti); audio: musik dan efek suara; narasi pengisi suara tidak ikut git ([`docs/audio.md`](audio.md)) | revalidasi |
+| Rekaman narasi (folder) | `public/assets/audio/narasi/{id,en}/{kode}.mp3` | salin ke server, lalu `gelita:narration:import` | revalidasi |
 | Musik & efek suara | `public/assets/audio/{music,sfx}/{nama}.mp3` | git (dibaca langsung `core/audio.js`, bukan `media_assets`) | revalidasi |
 | Unggahan dan berkas bangkitan | `public/assets/uploads/` (`{asset_key}.{ext}`, `mockup/`, `library.thumb.*`) | panel `/admin/media`, editor konten, unggah narasi, gambar contoh, poster video — **hanya di server** | revalidasi |
 | Asset package: media | `public/assets/p/{sha256[0:16]}.{ext}` | `gelita:paket:bangun` — **only on the server**, back it up with `uploads/` | immutable without `?v=` |
