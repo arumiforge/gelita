@@ -1680,3 +1680,25 @@ Owner request: integrate draft 2 (`gelita-katalog/update/`, review §7) into the
 - **Narration does not notice changed text.** Recordings are matched by line code only (`NarrationImporter::importOne`); there is no text hash. On a fresh install, `gelita:narration:import` registers the bundled MP3s of the 32 changed lines as drafts, and "Setujui semua rekaman" would approve audio that still says the old text. The catalogue note (catatan-revisi §5 item 6) that changed recordings "go back to draft" is only true once a new audio file is imported. Until the lines are re-recorded, approve narration line by line and skip those codes. No code change here; the owner decides whether a text-hash check is worth adding.
 - **Existing databases.** `ContentSeeder` inserts missing dialogue lines only, so a server that already has content keeps the old script; update the 32 lines in the dialogue editor. The bank import does not overwrite a filled `media_note`, so revised slot notes (e.g. `challenge.item.tmg-1-01`) need the **Gambar & mockup** panel.
 - **Draft content kept as is.** The port reproduces the draft exactly, including points the agents flagged for the researcher rather than fixing them: wnb-1-d01 (Candi Arjuna) and wnb-1-e01 (a Dieng crater) are administratively in Banjarnegara; retired items keep `verified`; a doubled full stop in the wnb-1-d01 review note; small EN wording differences in `kenal-wonosobo-02`, `dialog-magelang-08`, `tuntas-wonosobo-01`, and wnb-3-a05.
+
+## `gelita:story:sync` for servers that already have content (17 October 2026)
+
+Owner request: a command that brings the revised story lines to a server that already has content, instead of retyping 32 lines in the dialogue editor.
+
+- **Why it is needed.** `ContentSeeder::seedDialogues()` only inserts missing rows, and `gelita:reset` keeps `dialogues`. A revised `data/story.php` therefore never reaches an installed server.
+- **Overwrite rule.** A row is replaced only when its title and text equal the current script or an earlier version listed in the new `app/Database/Seeds/data/story-previous.php`. That file now holds the pre-draft-2 text of the 32 changed lines, taken from `data/story.php` at `2dcef33`. Any other text counts as a panel edit: it is reported and kept unless `--timpa` is given, the flag `gelita:katalog:impor` already uses for the same purpose. The alternative, overwriting every line that differs, would silently undo an admin's edits.
+- **Scope of a write.**
+  - Written: `title_id`, `title_en`, `text_id`, and `text_en`.
+  - Untouched: character, pose, effect, background, active flag, and linked recordings.
+  - Each update is conditional on the row still holding the text read in the plan (repo concurrency pattern), so a panel save during the run wins and is reported.
+  - Missing lines are inserted like the seeder does.
+  - The content cache is flushed.
+  - A write is audited as `story_sync`.
+- **Recordings stay stale.** The command lists replaced lines that still have linked audio, and warns not to use **Setujui semua rekaman** until they are re-recorded. Detecting stale audio in the panel itself (a text hash per recording) remains an open owner decision.
+- **When the script changes again,** append the replaced versions to `story-previous.php` in the same commit; `docs/naskah-cerita.md` and `docs/08_DEPLOYMENT.md` say so.
+- **Tests.** `StorySyncTest` covers:
+  - the data guard: 32 codes, each a real script line, no earlier version equal to the current text;
+  - the plan statuses, with no writes during planning;
+  - the apply rules: known versions updated, panel edit kept, missing line inserted, recordings and active flag untouched;
+  - idempotence, `--timpa`, and a row changed between plan and apply;
+  - the command's dry run and real run, with the audit row.

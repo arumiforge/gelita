@@ -861,6 +861,21 @@ Catatan skrip:
 
 Pembaruan **tidak** menjalankan `gelita:reset`, `db:seed`, atau impor ulang bank soal; isi konten di server dikelola lewat panel. Migration yang menghapus kolom atau tabel **tidak pernah digabung** dalam pembaruan yang sama dengan perubahan lain, dan selalu didahului satu rilis yang berhenti memakai kolom itu.
 
+### Story script changed (`gelita:story:sync`)
+
+`ContentSeeder` only inserts missing story lines, and `gelita:reset` keeps `dialogues`, so a revised script (`app/Database/Seeds/data/story.php`, e.g. the 32 lines of draft 2, October 2026) does not reach a server that already has content. After the code update, run as `www-data`:
+
+```bash
+sudo -u www-data php spark gelita:story:sync --dry-run   # what would change
+sudo -u www-data php spark gelita:story:sync
+```
+
+- A line is replaced only when it still holds the current script or an earlier version listed in `app/Database/Seeds/data/story-previous.php`. A line whose text was edited in the panel is listed as "Disunting di panel" and kept; `--timpa` replaces it too.
+- Missing lines are added. Lines of a region that is not installed are skipped.
+- Only titles and text change. Character, pose, effect, background, active flag, and linked recordings stay as they are.
+- The command lists the replaced lines that still have a recording: that audio speaks the old text. Approve narration line by line, skipping those codes, until they are re-recorded; do not use **Setujui semua rekaman**.
+- A run that writes something is recorded in the audit log as `story_sync`. Running it again changes nothing.
+
 ### Rollback
 
 Urutannya penting: **rollback migration dulu, baru kembalikan kode.** `migrate:rollback` menjalankan `down()` dari berkas migration rilis baru. Setelah `git reset`, berkas itu sudah tidak ada; CodeIgniter lalu berhenti dengan `There is a gap in the migration sequence near version number …` tanpa mengubah apa pun, tetapi kode keluarnya tetap **0**.
