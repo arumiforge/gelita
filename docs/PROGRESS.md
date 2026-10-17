@@ -64,12 +64,12 @@ Owner decisions in its §12 (9 October 2026): full download before Mulai, admin 
   - [x] Stage 1b — narration re-encoded at 48 kbps mono; the owner's listening test is still open (see *Before the research starts*) (`paket-1b-narasi`, PR #74)
   - [x] Stage 4 — view transitions, image decode, short curtain (`paket-4-transisi`, PR #77)
   - [x] Stage 5 — research data integrity §7.1 and §7.3 (`paket-5-integritas`, PR #76)
-- **Wave 2** (started 12 October 2026; both stages run in parallel on one branch, `sky/laughing-rubin-l2tmm2`, one PR)
-  - [ ] Stage 2 — package service worker and downloader (`core/package.js` API for Stage 3; PR open)
-  - [ ] Stage 6 — Rilis → Paket aset panel with the on/off switch, study package lock (§7.2) (PR open)
+- **Wave 2** (started 12 October 2026; both stages ran in parallel on one branch, `sky/laughing-rubin-l2tmm2`; merged 12 October 2026)
+  - [x] Stage 2 — package service worker and downloader (`core/package.js` API for Stage 3) (PR #109, PR #110)
+  - [x] Stage 6 — Rilis → Paket aset panel with the on/off switch, study package lock (§7.2) (PR #109, PR #110)
   - [ ] Owner decisions from Wave 2: deploy scripts rebuilding the package while the switch is on (§6.3); running-study lock compares with the active release's package (§7.2); preview banner in the game; pin a running session's URLs to its own package (S8)
   - [ ] Run migration `2026-01-01-003300` (study package lock) on MariaDB/MySQL before release; checked on SQLite only
-- **Wave 3** (after Stage 2 is merged)
+- **Wave 3** (unblocked: Stage 2 is merged)
   - [ ] Stage 3 — "Siapkan GELITA" download screen and teacher's Periksa paket screen
   - [ ] Re-run Stage 0 timing; owner decides on Stage 7 (P1)
 
@@ -77,7 +77,8 @@ Owner decisions in its §12 (9 October 2026): full download before Mulai, admin 
 
 - [x] Review of the owner's draft 1 against the live script and bank, and revised draft 2 in `gelita-katalog/update/` (review: `telaah-draf-1-naskah-bank-soal.md`; changes: `catatan-revisi-gelita.md` §7)
 - [ ] Researcher checks every `needs_verification` item and the facts in review §6
-- [ ] Integrate draft 2 into the app on its own branch (review §7): puzzle variants a–j with the first attempt drawn from a–c, skill `membedakan_fakta_pendapat`, one Temanggung distractor, explicit item keys in `docs/bank-soal/data/*.php`, 32 script lines in `data/story.php`, tests (`claude/integrasi-draf-2-aplikasi-g6shf6`, PR open)
+- [x] Integrate draft 2 into the app (review §7): puzzle variants a–j with the first attempt drawn from a–c, skill `membedakan_fakta_pendapat`, one Temanggung distractor, explicit item keys in `docs/bank-soal/data/*.php`, 32 script lines in `data/story.php`, tests (PR #115)
+- [x] `gelita:story:sync` to update the story lines of an installed server to the current script (PR #116)
 - [ ] Re-record 32 ID and 28 EN narration lines after integration. Until then, do not use "Setujui semua rekaman": the bundled recordings of those lines still say the old text, and nothing marks them stale (decision log, 17 October 2026)
 - [ ] On a server that already has content: re-import the bank (`gelita:bank:import`), update the 32 script lines with `gelita:story:sync` (dry run first; lines edited in the panel are kept unless `--timpa`), run `gelita:katalog:impor` for the 21 new puzzle images, and fix old slot notes in **Gambar & mockup** (the import does not overwrite filled notes)
 
@@ -87,6 +88,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `sky/laughing-rubin-l2tmm2` | Asset package Wave 2: Stage 2 (service worker, downloader) and Stage 6 (Paket aset panel, study package lock) | PR open |
-| `claude/integrasi-draf-2-aplikasi-g6shf6` | Integrate draft 2 into the app: bank data files, rules, first attempt from a–c, story script | PR open |
-| `sky/focused-keller-fnnr3t` | `gelita:story:sync`: update the story lines of an installed server to the current script | PR open |
+| — | No active branches (17 October 2026) | — |
