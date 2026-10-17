@@ -8,6 +8,8 @@ Catatan ini merangkum revisi bank soal kelas 5, naskah cerita, dan panduan gamba
 | `naskah-cerita.md` | 27 baris disentuh (bahasa, konsistensi dengan bank, pesan keselamatan kawah, pengenalan benda yang dibutuhkan soal); tetap 88 baris dengan kode yang sama |
 | `panduan-gambar-puzzle-gelita.md` | Gaya mengikuti katalog, 1200 × 1200 px WebP, kode gambar baru, tinjauan dan pengganti gambar katalog yang ambigu |
 
+> **Draf 2 (17 Oktober 2026)** sudah menimpa berkas-berkas ini setelah telaah [telaah-draf-1-naskah-bank-soal.md](telaah-draf-1-naskah-bank-soal.md). Bagian 1–6 di bawah menjelaskan draf 1; perubahan draf 2 ada di bagian 7.
+
 Semua butir yang diubah atau ditambahkan di bank berstatus **`needs_verification`** dengan alasan perubahan di kolom `review_note`, supaya peneliti bisa memeriksanya satu per satu sebelum pengambilan data.
 
 ---
@@ -219,3 +221,96 @@ Selain 24 baris dari analisis (`kenal-wonosobo-02` tidak perlu diubah karena sud
 - **Susun Gambar dan indikator budaya.** Keterangan dibaca setelah puzzle selesai dan tidak diperiksa. Bila skor Susun Gambar dipakai sebagai ukuran budaya, pertimbangkan satu pertanyaan singkat tentang keterangannya.
 - **Pola kata "sama" di Wonosobo.** Tiga pernyataan pembanding yang memakai "sama-sama" atau "keterangan yang sama" (wnb-3-a02, a03, b01) semuanya salah. Ini bukan kata ekstrem, tetapi bisa menjadi pola. Pertimbangkan satu pernyataan "sama" yang benar, misalnya "Kedua kabar sama-sama menyebut Telaga Warna."
 - **Skor percobaan pertama.** Untuk Benar atau Salah, analisis sebaiknya memakai jawaban pada percobaan pertama.
+
+---
+
+## 7. Revisi v2 (17 Oktober 2026)
+
+Draf 2 menjalankan hasil telaah [telaah-draf-1-naskah-bank-soal.md](telaah-draf-1-naskah-bank-soal.md). Alasan lengkap setiap perubahan ada di telaah itu; di sini hanya ringkasannya.
+
+**Putusan pemilik (17 Oktober 2026):**
+
+- Susun Gambar: variasi a–c dinilai pada pengerjaan pertama dan menjadi set penelitian; variasi d–j hanya untuk pengerjaan ulang.
+- Tembakau tetap disebut di `kenal-temanggung-02` sebagai fakta wilayah.
+- Telaah ditulis dalam bahasa Indonesia.
+
+Draf 2 belum dipasang di aplikasi (lihat 7.4).
+
+### 7.1 Naskah: 15 baris disentuh
+
+Dibanding naskah aplikasi kini **32 baris ID** dan **28 baris EN** berbeda. Kode baris, tokoh, pose, efek, dan jumlah baris tetap. Baris terpanjang 45 kata.
+
+| Baris | Alasan | Teks ID draf 2 |
+|---|---|---|
+| `intro-03` | Logika berputar ("mulai lupa … karena terlupakan") | Namun perlahan, orang-orang mulai lupa. Mereka membaca dengan terburu-buru, memercayai kabar tanpa memeriksanya, dan meninggalkan cerita para leluhur. Dari kebiasaan itu, naiklah kabut kelabu yang dingin. Namanya Kabut Lupa. |
+| `kenal-temanggung-02` | Kalimat uceng lebih runtut; tembakau tetap (putusan pemilik) | Tanah di lereng gunung ini sangat subur. Para petani menanam tembakau, kopi, dan sayuran. Kopi dari lereng Sindoro dan Sumbing terkenal harum sampai ke luar daerah. Sungai-sungainya yang jernih menjadi rumah ikan uceng, ikan sungai yang kecil. Uceng goreng adalah makanan khas Temanggung. |
+| `kenal-temanggung-04` | Memetakan kuda lumping = jaran kepang (tarian) dan kuda kepang (kuda-kudaan); 46 → 43 kata | Saat ada perayaan, warga menari kuda lumping, yang juga disebut jaran kepang. Penarinya menunggang kuda kepang, kuda-kudaan dari anyaman bambu. Di sini kamu belajar menemukan informasi yang tertulis jelas di gambar, teks pendek, dan suara. Bacalah dengan teliti karena jawabannya sering ada di depan mata. |
+| `kenal-magelang-03` | Dipadatkan; benang Umbul Jumprit tetap | Tak jauh dari Borobudur ada Candi Mendut dan Candi Pawon. Ketiganya berdiri hampir segaris. Setiap Waisak, umat Buddha berjalan dari Mendut ke Borobudur membawa air suci dari Umbul Jumprit, Temanggung. Di tengah kota ada Gunung Tidar, si paku tanah Jawa dalam cerita rakyat. |
+| `kenal-magelang-04` | Mengenalkan "kuluk" (dipakai mgl-2-b02, mgl-4-a02, wnb-4-a11) | Jangan lewatkan tari Topeng Ireng yang gagah. Penarinya memakai kuluk, hiasan kepala dari bulu warna-warni. Di Magelang, satu informasi saja tidak cukup. Kamu harus menghubungkan beberapa informasi, lalu membedakan mana fakta dan mana pendapat. |
+| `kenal-wonosobo-02` | Menampung tradisi rambut gimbal dari -03; judul menjadi *Candi, Telaga, dan Tradisi* | Di Dieng berdiri kompleks Candi Arjuna, salah satu candi Hindu tertua di Jawa. Ada juga Telaga Warna, yang airnya mengandung belerang sehingga bisa tampak hijau, biru, atau kekuningan. Warga Dieng juga punya tradisi memotong rambut gimbal, yaitu rambut yang menggumpal dengan sendirinya, pada anak-anak. |
+| `kenal-wonosobo-03` | 57 → 36 kata; menyebut keranjang bernama ongklok (wnb-4-a03) | Udara di sini dingin sekali. Warga menghangatkan badan dengan teh dari kebun Tambi dan mi ongklok berkuah kental. Mi itu direbus di ongklok, keranjang bambu kecil yang dicelup-celupkan ke air mendidih. Ada juga manisan carica, si pepaya gunung. |
+| `kenal-wonosobo-04` | Menampung Topeng Lengger dan bundengan; pola -04 sama dengan wilayah lain | Di sini ada tari Topeng Lengger dan bundengan, alat musik dari tudung bambu penggembala bebek. Tapi di sinilah Kabut Lupa paling tebal, Le. Kamu akan menemukan banyak kabar, dan tidak semuanya benar. Periksa sumbernya, timbang alasannya, lalu putuskan dengan bijak. |
+| `dialog-temanggung-07` | Jaka hanya membaca kata "Jembatan" dan panahnya, bukan papan yang bertentangan | Lihat, ada papan petunjuk! Tulisannya "Jembatan", panahnya ke kanan... Ayo, Mbah, lewat sini! |
+| `dialog-magelang-06` | Legenda "satu malam" milik Prambanan; rumor semen menjembatani ke mgl-3-a | Bapak yang satu berteriak, "Katanya candi ini dibangun dengan semen!" Bapak yang lain membalas, "Katanya candi ini baru dibangun seratus tahun lalu!" Keduanya hanya berkata "katanya". Tak seorang pun mau memeriksa. |
+| `dialog-magelang-08` | Menambah istilah "opini" yang dipakai di kelas | Itulah tugasmu, Le. Pendapat, atau opini, boleh berbeda, tapi fakta bisa dibuktikan. "Candi ini indah sekali" itu pendapat. "Candi ini dibangun lebih dari seribu tahun lalu" itu fakta. Hubungkan informasi yang satu dengan yang lain, maka kebenaran akan terlihat. |
+| `dialog-magelang-15` | "ide pokok" → "gagasan pokok", sama dengan bank | Ingat pesan Mbah: temukan gagasan pokoknya, susun urutannya, dan pisahkan fakta dari pendapat. Empat serpihan Magelang menunggumu. |
+| `dialog-wonosobo-04` | "meledak" → "meletus" | Mereka menerima pesan berantai: "Kawah akan meletus besok pagi! Cepat mengungsi! Sebarkan ke semua orang!" Tak ada nama pengirim, tak ada sumber resmi. |
+| `tuntas-magelang-01` | Dituntaskan dengan fakta yang sama dengan bacaan mgl-3-a (tanpa semen) | Dengar, Le... Kedua bapak itu berhenti bertengkar. Di papan informasi tertulis: Borobudur dibangun pada abad ke-8 dan ke-9 dari batu yang disusun saling mengunci, tanpa semen. Jadi, kedua kabar "katanya" tadi keliru. Sekarang mereka membaca relief bersama-sama. |
+| `tuntas-wonosobo-01` | Status, bukan jaminan; Jaka ikut bertindak | Mbah! Aku berhasil! Aku mengajak warga bertanya kepada petugas resmi. Kata petugas, keadaan kawah normal, jadi tidak ada yang perlu mengungsi. Semua tetap menjaga jarak sesuai rambu. |
+
+**Baris yang perlu direkam ulang (ID, 32):** `intro-01`, `intro-02`, `intro-03`, `intro-04`, `intro-05`, `intro-08`, `peta-01`, `kenal-temanggung-01`, `kenal-temanggung-02`, `kenal-temanggung-03`, `kenal-temanggung-04`, `kenal-magelang-03`, `kenal-magelang-04`, `kenal-wonosobo-02`, `kenal-wonosobo-03`, `kenal-wonosobo-04`, `dialog-temanggung-05`, `dialog-temanggung-07`, `dialog-temanggung-09`, `dialog-temanggung-10`, `dialog-magelang-02`, `dialog-magelang-03`, `dialog-magelang-06`, `dialog-magelang-08`, `dialog-magelang-15`, `dialog-wonosobo-03`, `dialog-wonosobo-04`, `dialog-wonosobo-12`, `tuntas-temanggung-03`, `tuntas-magelang-01`, `tuntas-wonosobo-01`, `penutup-02`.
+
+Rekaman EN cukup untuk 28 baris itu minus `intro-04`, `dialog-magelang-15`, `dialog-wonosobo-04`, dan `tuntas-temanggung-03`, yang teks EN-nya tidak berubah.
+
+### 7.2 Bank soal
+
+| Butir | Perubahan | Kunci |
+|---|---|---|
+| Bacaan mgl-3-a | Kutipan Pak Darto dipindah sebelum kalimat UNESCO; ditambah "Menjaga Borobudur adalah tugas yang sangat mulia." di akhir paragraf 2 | — |
+| `mgl-3-a02` | Relief yang tidak boleh disentuh pengunjung berjumlah lebih dari dua ribu panel. | salah → benar |
+| `mgl-3-a05` | Kalimat "Menjaga Borobudur adalah tugas yang sangat mulia" adalah fakta. | benar → salah |
+| Bacaan mgl-3-b | Ditambah: Seorang biksu menjelaskan, "Perjalanan kami selalu dimulai dari Candi Mendut." | — |
+| `mgl-3-b01` | Paragraf pertama terutama menjelaskan perjalanan umat Buddha saat Waisak. | benar → salah |
+| `mgl-3-b05` | Ucapan biksu bahwa perjalanan mereka dimulai dari Candi Mendut adalah fakta. | salah → benar |
+| Bacaan mgl-3-c | Ucapan Kak Dewi tanpa "Menurut saya" | — |
+| Petunjuk mgl-3 nomor 1 dan 2 | Fakta dan pendapat (opini) dengan peringatan pola; "gagasan pokok (ide pokok)" | — |
+| `mgl-2-c06` | Kegunaan kendil dan cobek tertulis; tokoh Dina menggantikan "Ibu" | cobek |
+| `mgl-2-a06` | Bloom C3 → C2 | 72 |
+| `mgl-1-i01` | Air suci dari Umbul Jumprit, api dari Mrapen (Grobogan) | — |
+| Bacaan tmg-3-a, `tmg-3-a02`, `tmg-1-d01` | "material letusan" → "pasir dan batu dari letusan" | tetap |
+| `wnb-3-a02` | Kedua kabar sama-sama membicarakan air Telaga Warna, tetapi isinya bertentangan. | salah → benar |
+| `wnb-3-a06` | … pengunjung yang haus boleh meminum air Telaga Warna asalkan airnya tampak jernih. | benar → salah |
+| `wnb-3-b03` ↔ `wnb-3-b04` | Isi ditukar agar kunci tidak berselang-seling | tetap per isi |
+| `wnb-3-c06` | … harus membatalkan wisata karena pengumuman resmi melarang pengunjung datang ke kawah. | salah |
+| `wnb-4-a01`–`a03` | Bloom C4 → C3 | — |
+| PETUNJUK, KAMUS_KOLOM, `review_note` d–j | Aturan Susun Gambar: a–c untuk pengerjaan pertama, d–j untuk pengerjaan ulang | — |
+
+**Imbangan kunci draf 2:**
+
+| Tantangan | Variasi a | Variasi b | Variasi c |
+|---|---|---|---|
+| mgl-3 | B B S B S | S B B S B | B S B B S |
+| wnb-3 | B B S B S S | S B B S S B | B S B B S S |
+
+Fakta–pendapat: 3 benar : 3 salah. Subjek "Ucapan …" kini berisi pendapat maupun fakta (b05), subjek "Kalimat …" berisi fakta maupun pendapat (a05), dan "Menurut saya" hanya muncul di dua dari tiga bacaan.
+
+**Sebaran Bloom draf 2:** C1 12 · C2 26 · C3 30 · C4 18 · C5 13; HOTS 31 dari 99.
+
+**Pemeriksaan otomatis:** imbangan, pola kunci, satu `___` per rumpang, jawaban unik, pengecoh ≠ jawaban, rentang Bloom, dan kutipan ada di bacaan. Hasilnya 0 kesalahan. Daftar pilihan dan catatan judul kolom tetap utuh.
+
+### 7.3 Hasil uji impor (dry-run, SQLite lokal)
+
+Draf 1 dan draf 2 sama-sama ditolak dengan **6 galat**: skill `membedakan_fakta_pendapat` belum dikenal aplikasi. Bila skill itu sementara diganti, muncul 6 galat lain:
+
+- `tmg-1`, `mgl-1`, dan `wnb-1` punya 10 variasi (aturan: tepat 3);
+- `tmg-2` punya 1 pengecoh (aturan: 0).
+
+Tidak ada galat lain. Ketiga hal ini sudah tercantum di bagian 5 nomor 1–3.
+
+### 7.4 Integrasi ke aplikasi (cabang terpisah)
+
+Daftar lengkapnya ada di telaah bagian 7. Hal baru dibanding bagian 5:
+
+- **Pemilihan variasi.** Pengerjaan pertama Susun Gambar hanya boleh mengambil a–c (`ChallengeItemModel::pickVariant`).
+- **Kode soal di `docs/bank-soal/data/*.php`.** Kode dibuat menurut urutan (`BankSource`), jadi sisipan a06, c08, dan c09 butuh dukungan kode eksplisit.
+- **Naskah.** Salin 32 baris (bukan 27) ke `data/story.php`.

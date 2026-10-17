@@ -1643,3 +1643,26 @@ Owner request: fix the admin login page so that it opens with the GELITA logo, c
 ## No "Panel GELITA" caption on the staff login card (12 October 2026)
 
 Owner request: remove the "Panel GELITA" text under the logo on `/admin/login`. The brand block now shows only the logo (or its fallback). The page title "Masuk Panel Guru & Admin" already names the panel. `Admin.panelTitle` stays, because the admin sidebar and breadcrumbs still use it. `AdminLoginBrandTest` checks that the caption is gone.
+
+## Review of the script and question bank draft 1, and draft 2 (17 October 2026)
+
+Owner request: review the owner's draft changes in `gelita-katalog/update/` against the live script (`docs/naskah-cerita.md` = `data/story.php`) and bank (`docs/bank-soal/`) from the views of a language expert, a grade-5 teacher, Kurikulum Merdeka, Bloom C1–C6, script–bank continuity, and Kedu culture. Then apply the fixes as draft 2.
+
+- **Scope.** Content only. Draft 2 overwrites the draft files in `gelita-katalog/update/`; draft 1 stays in git history. No app code, seed data, or tests changed. Integration into the app is a separate branch (review §7).
+- **Language exception.** The review document `gelita-katalog/update/telaah-draf-1-naskah-bank-soal.md` is in Indonesian, by owner decision, because its readers are teachers and researchers. This entry stays in English.
+- **Main finding.** In draft 1 the six fact/opinion items could be answered from surface cues: every "Ucapan …" was an opinion, every "Kalimat …" was a fact, and every opinion began with "Menurut saya". Draft 2 breaks the confound with these changes:
+  - a quoted fact from a person (mgl-3-b05);
+  - an unmarked opinion sentence (mgl-3-a05);
+  - an opinion without "menurut saya" (mgl-3-c).
+
+  It also breaks other key patterns: gagasan pokok was always true, wnb-3-b alternated strictly, and "sama-sama" was always false. It fixes the remaining script–bank inconsistencies. Draft 2 differs from the live script in 32 lines.
+- **Owner decisions.**
+  - Puzzle variants a–c are the scored research set on the first attempt; d–j are for replays only. This needs a `pickVariant` change at integration.
+  - Tobacco stays in `kenal-temanggung-02` as a regional fact.
+- **Item keys edited in place.** Several true/false keys flip in draft 2 (mgl-3-a02, a05, b01, b05; wnb-3-a02, a06; wnb-3-b03/b04 swapped). This is allowed because research data collection has not started (`docs/PROGRESS.md`). After data collection starts, a changed key needs a new `item_key`.
+- **Import dry-run** (local SQLite, never production). Both drafts fail only on rules the app does not yet allow:
+  - skill `membedakan_fakta_pendapat`;
+  - 10 puzzle variants per region;
+  - one Temanggung distractor.
+
+  Item keys in the workbook are explicit. Only `docs/bank-soal/data/*.php` → `BankSource` generates keys by position, so the inserted items a06, c08, and c09 need explicit-key support there.
