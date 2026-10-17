@@ -7,7 +7,7 @@
  * terbaca dan dapat dipakai bila modul ini gagal dimuat (aturan 9 docs/05).
  */
 import { CONFIG, setAssetsLocal } from './core/config.js';
-import { resendQueued, initVisibilityTracking } from './core/events.js';
+import { resendQueued, restoreQueued, initVisibilityTracking } from './core/events.js';
 import { Sfx, initAudioPlayers } from './core/audio.js';
 import { initCurtains } from './core/curtain.js';
 import { initHud } from './game/hud.js';
@@ -56,9 +56,10 @@ const unlock = () => {
 window.addEventListener('pointerdown', unlock);
 window.addEventListener('keydown', unlock);
 
-// Kirim ulang event milik sesi ini yang tertunda saat offline
+// This session's unacknowledged events (offline, crash, previous page's
+// beacon) leave with this page's first batch; back online they go at once.
 if (CONFIG.sessionTag) {
-  resendQueued();
+  restoreQueued();
   window.addEventListener('online', () => resendQueued());
   // Pindah tab/aplikasi (page_hidden/visible)
   initVisibilityTracking();
