@@ -1,8 +1,8 @@
 # Asynchronous logging plan
 
-*(New, English.)* Recommendation document: which logs must reach the database synchronously, which can be sent or written later, and how to do that without losing research data. Status: **approved plan; owner decisions recorded 17 October 2026 (§10). Phase 1 is next.** Written 17 October 2026 against `main` at the Draft 2 / voice-over merge (PR #118).
+*(New, English.)* Recommendation document: which logs must reach the database synchronously, which can be sent or written later, and how to do that without losing research data. Status: **approved plan; owner decisions recorded 17 October 2026 (§10). Phases 1 and 2 are implemented (PR #123 browser, PR #122 server); next is the §7 load measurement and the Phase 3 decision.** Written 17 October 2026 against `main` at the Draft 2 / voice-over merge (PR #118).
 
-Nothing in this document is implemented yet. Every code reference describes the current state.
+Code references in §2–§4 describe the state before Phases 1 and 2; the decision log (`docs/perombakan-kelas5/CATATAN_IMPLEMENTASI.md`, sections of 17 October 2026) records what was built and any deviations.
 
 ---
 
