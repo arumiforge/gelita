@@ -312,7 +312,8 @@ Catatan:
 3. `gelita.ipSalt` wajib acak. Bila bocor, `ip_hash` dapat dibalik dengan pencarian menyeluruh karena ruang alamat IPv4 kecil. Perintah `php -r` di atas bekerja di kedua jalur.
 4. `gelita.assetVersion` dibiarkan ada di `.env` (templat: `'1'`). Skrip deploy menaikkan nilainya setiap pembaruan; baris yang hilang tidak akan ditambahkan skrip.
 5. **Jangan menambahkan `database.default.DSN` ke `.env`.** Kunci itu disisihkan untuk akun migrasi (bagian berikut).
-6. Perubahan `.env` langsung berlaku di request berikutnya. Jangan menjalankan `php spark optimize`: perintah itu mengubah `app/Config/Optimize.php` (berkas yang dilacak git) dan mengaktifkan cache konfigurasi yang membekukan nilai `.env`, termasuk `gelita.assetVersion`.
+6. *(New, English.)* Optional: `gelita.eventFlush.intervalMs` (default `30000`) and `gelita.eventFlush.maxEvents` (default `40`, at most `maxEventsPerBatch` = 50) set how often the game sends its event batches (`Config\Gelita::$eventFlush`, rencana-log-asinkron §5.1). Lowering the interval makes Ringkasan's "Aktivitas terbaru" fresher at the cost of more requests; the note under that list follows the value. Leave both out to keep the defaults.
+7. Perubahan `.env` langsung berlaku di request berikutnya. Jangan menjalankan `php spark optimize`: perintah itu mengubah `app/Config/Optimize.php` (berkas yang dilacak git) dan mengaktifkan cache konfigurasi yang membekukan nilai `.env`, termasuk `gelita.assetVersion`.
 
 ### Kredensial migration lewat DSN
 

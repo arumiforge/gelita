@@ -15,6 +15,9 @@ class AudioUsageEventModel extends Model
      */
     public const ACTIONS = ['play', 'autoplay', 'pause', 'replay', 'complete'];
 
+    /** Actions that open a new playback (next `play_index`); see nextPlayIndex(). */
+    public const OPENING_ACTIONS = ['play', 'autoplay', 'replay'];
+
     protected $table         = 'audio_usage_events';
     protected $primaryKey    = 'id';
     protected $returnType    = 'array';
@@ -57,6 +60,6 @@ class AudioUsageEventModel extends Model
 
         $current = (int) ($row['max_index'] ?? 0);
 
-        return in_array($action, ['play', 'autoplay', 'replay'], true) ? $current + 1 : max(1, $current);
+        return in_array($action, self::OPENING_ACTIONS, true) ? $current + 1 : max(1, $current);
     }
 }

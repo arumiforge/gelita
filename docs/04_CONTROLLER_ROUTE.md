@@ -570,6 +570,25 @@ POST /api/events
 
 `POST /api/audio-events` memakai amplop dan batas yang sama. Isi per event: `{audio_asset_id, action, listened_ms, completed, occurred_at, client_event_id, attempt_id?}`. `action` ∈ `play` (pemain menekan putar), `autoplay` (layar bernarasi memutar sendiri), `pause`, `replay`, `complete`; aksi lain → `audio_event_invalid`. `attempt_id` milik sesi lain → `attempt_not_in_session`. Hasilnya baris `audio_usage_events` beserta raw event pendampingnya (`audio_play`, `audio_autoplay`, …).
 
+#### Combined batch, early session release, heartbeat (rencana-log-asinkron Phase 2)
+
+*(New, English.)*
+
+```text
+POST /api/events
+  {events:[…], audio?:[…], client_sent_at, dropped?, dropped_id?, audio_dropped?, audio_dropped_id?}
+  → {accepted, duplicate, rejected, audio?:{accepted, duplicate, rejected}, server_time}
+```
+
+* `audio` holds the entries `/api/audio-events` takes; `events` may be `[]` when only audio is sent. Each array has at most `maxEventsPerBatch` (50) entries, else `413 TOO_MANY_EVENTS`; `audio` that is not an array → `422 INVALID_PAYLOAD`.
+* The answer has the `audio` key whenever the request carried an `audio` array, even an empty one.
+* `audio_dropped` + `audio_dropped_id` are written as `events_dropped` with `channel: audio`, exactly like `dropped`/`dropped_id` on `/api/audio-events`.
+* The combined request counts once against the `events` bucket (120/minute per session).
+* Every successful request runs `SessionService::heartbeat()` at most once per 50 s per session (`heartbeatIfDue()`, cache key `gelita_heartbeat_{session}`), so a tab that sends batches needs no separate heartbeat. `heartbeat()` only adds time when `last_active_at` is still the value it read, so two tabs beating at once count the time once.
+* `/api/events`, `/api/audio-events`, and `/api/session/heartbeat` call `session()->close()` first: they never write `$_SESSION`, and the PHP session lock is released before any database work, so a `check`/`submit` from the same student does not wait for telemetry.
+* Audio entries from both endpoints are written by `EventService::recordAudioBatch()` in one transaction: one `whereIn(client_event_id)` existence check, server `sequence_no` from `nextServerSequence()` in batch order, one `INSERT IGNORE` per table, one grouped `MAX(play_index)` per asset (play indexes assigned in batch order, rule of `AudioUsageEventModel::nextPlayIndex()`), and one `audio_use_count = audio_use_count + n` per attempt. An unknown `audio_asset_id` is rejected as `audio_event_invalid` instead of failing the batch on the foreign key.
+* `/api/audio-events` and `/api/session/heartbeat` stay for tabs opened before the combined batch.
+
 ### `Api\AdminApiController`
 
 Memakai trait `StaffScope`; lihat tabel [Route — API panel admin](#route--api-panel-admin-json). `exportStatus()` hanya untuk pemohon ekspor atau admin (`403 FORBIDDEN`), dan membalas `{id, status, format, anonymized, row_count, file_sha256, expires_at, error}`.

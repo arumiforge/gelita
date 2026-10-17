@@ -87,7 +87,7 @@ Owner decisions in its §12 (9 October 2026): full download before Mulai, admin 
 - [x] Recommendation document merged (PR #119)
 - [x] Owner decisions in its §10 (17 October 2026): Phases 1 and 2 approved, one branch each, developed in parallel (split by layer, Phase 2 merges first); 30 s flush; Phase 3 after measuring; dashboard lag accepted with a note
 - [ ] Phase 1 — browser (`log-1-klien`): 30 s flush with persist-on-push, events + audio in one request, heartbeat only when idle, page-load re-send in the first batch
-- [ ] Phase 2 — server (`log-2-server`, merges first): `/api/events` takes `audio`, heartbeat in the batch, session lock released early, batched audio writes, `Gelita::$eventFlush`, dashboard note
+- [x] Phase 2 — server (PR #122): `/api/events` takes `audio`, heartbeat in the batch, session lock released early, batched audio writes, `Gelita::$eventFlush`, dashboard note
 - [ ] Load measurement before and after (§7), then the Phase 3 decision
 
 ## Active branches
