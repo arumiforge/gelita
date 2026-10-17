@@ -7,7 +7,11 @@
  *   penutupan dengan Escape / klik di luar, dan updateLantern() untuk angka
  *   baru dari respons server (`shards` di /check, /responses, /complete) —
  *   bukan dihitung sendiri.
- * - Heartbeat POST /api/session/heartbeat tiap 60 detik selama tab terlihat.
+ * - Heartbeat POST /api/session/heartbeat every 60 s while the tab is visible,
+ *   but only when no event batch reached the server in the last 60 s: a
+ *   server with `CONFIG.eventFlush` folds the heartbeat into every batch
+ *   (rencana-log-asinkron R3), so only an idle open tab needs its own. A
+ *   server without it gets the heartbeat every 60 s as before.
  * - Language switch (asset package Stage 4, §4.4 L1): the form still posts
  *   to /bahasa and the page reloads under a view transition, but JS texts
  *   switch at once from the two-language config (setLocale()), so a toast or
@@ -18,6 +22,7 @@ import { $ } from '../core/dom.js';
 import { Sfx } from '../core/audio.js';
 import { apiRequest } from '../core/api.js';
 import { CONFIG, t, currentLocale, setLocale } from '../core/config.js';
+import { lastBatchAt } from '../core/events.js';
 
 const HEARTBEAT_MS = 60_000;
 
@@ -75,7 +80,11 @@ function initHeartbeat() {
   if (!$('.lantern') || !CONFIG.sessionTag) return;
 
   let timer = null;
-  const beat = () => apiRequest('/session/heartbeat', { method: 'POST', body: {}, retry: false }).catch(() => {});
+  const folded = Boolean(CONFIG.eventFlush);
+  const beat = () => {
+    if (folded && performance.now() - lastBatchAt() < HEARTBEAT_MS) return;
+    apiRequest('/session/heartbeat', { method: 'POST', body: {}, retry: false }).catch(() => {});
+  };
 
   const schedule = () => {
     clearInterval(timer);

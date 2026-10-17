@@ -98,3 +98,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 |---|---|---|
 | `sky/quirky-ptolemy-figayc` | Asynchronous logging: parallel Phase 1/2 split recorded (docs only) | PR open |
 | `claude/integrasi-draf-2-aplikasi-g6shf6` | Narration: bulk cancel, voice-actor script PDF, bundled TTS files removed | PR open |
+| `log-1-klien` | Asynchronous logging Phase 1, browser only (`public/assets/js/**`, `tools/qa/**`, `docs/06`); merges after `log-2-server` | PR open |

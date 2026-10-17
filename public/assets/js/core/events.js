@@ -1,34 +1,45 @@
 /**
- * Antrean event dengan pengiriman batch dan idempotensi (client_event_id).
+ * Event queue with batched sending and idempotency (client_event_id).
  *
- * Dua kanal dengan amplop yang sama `{ events: [...] }`:
- *   emit()       → POST /api/events        (game_event_logs)
- *   emitAudio()  → POST /api/audio-events  (audio_usage_events)
+ * Two channels, one transport (rencana-log-asinkron §5.1):
+ *   emit()       → channel `events` (game_event_logs)
+ *   emitAudio()  → channel `audio`  (audio_usage_events)
+ * Both go out together in one `POST /api/events`
+ * `{ events, audio?, client_sent_at, dropped?, dropped_id?, audio_dropped?, audio_dropped_id? }`.
+ * A server that answers without an `audio` key does not know the combined
+ * request yet: the audio batch then goes to `POST /api/audio-events` as
+ * before, and so does all later audio of this page.
  *
- * Dikirim tiap 3 detik atau saat antrean mencapai 20 event, maksimum 50 per
- * request (= Config\Gelita::$maxEventsPerBatch). Saat tab disembunyikan atau
- * ditutup, dikirim lewat sendBeacon (fallback fetch keepalive).
+ * Rhythm (R1): a batch leaves FLUSH_MS after the first waiting event, or at
+ * once when a channel holds FLUSH_AT events; at most BATCH_MAX per channel
+ * per request (= Config\Gelita::$maxEventsPerBatch). Both values come from
+ * `CONFIG.eventFlush` (Gelita::$eventFlush) and fall back to 30 s / 40 events.
+ * Forced sends stay immediate: tab hidden and page closed beacon whatever is
+ * waiting, and the curtain (core/curtain.js) and the narrator's last slide
+ * await flush() before the next screen, so `dialogue_advanced` is on the
+ * server when the map renders its "Belum didengar" badge.
  *
- * `client_event_id` dibuat sekali saat event lahir dan ikut tersimpan di
- * antrean offline, jadi pengiriman ulang dibalas `duplicate` oleh server —
- * tidak pernah menggandakan data.
+ * Persist-on-push (R1): every event is written to the offline queue
+ * (core/storage.js) when it is created and removed only after the server
+ * accepted the batch that carried it. A browser crash between two batches
+ * loses nothing; the next page (restoreQueued, R4) sends it with its first
+ * batch, and the server answers `duplicate` for anything that had arrived.
  *
- * Batch yang sedang dikirim (fetch biasa) dibatalkan browser bila halaman
- * berpindah di tengah jalan — makin mungkin sejak tirai (Tahap 3) menunda
- * perpindahan ±1,8 detik. Karena itu batch itu diingat sampai server
- * menjawab, dan ikut dikirim lewat sendBeacon saat halaman ditutup;
- * bila ternyata sudah sampai, server membalasnya `duplicate`.
+ * A batch sent with fetch is cancelled by the browser when the page changes
+ * in the middle, so it is remembered (`inflight`) until the server answers
+ * and goes out by beacon too when the page closes.
  *
  * Research data integrity (rencana-paket-aset §7.3):
  *  - `sequence_no` continues across pages of one session (Storage.nextSequence,
  *    never below CONFIG.sequenceFloor);
  *  - every request carries `client_sent_at`, from which the server stores
  *    `clock_offset_ms` per event;
- *  - a forced flush (tab hidden or closed) beacons the events AND keeps a copy
- *    in the offline queue, because a beacon can be aborted or lost silently;
+ *  - a beacon can be aborted or lost silently, so beaconed events stay in the
+ *    offline queue (marked as beaconed) until a later fetch is acknowledged;
  *  - events the offline queue cannot keep are counted, a warning toast shows,
- *    and the count goes to the server as `dropped` + `dropped_id` with the
- *    next fetch batch (never with a beacon, which gets no answer).
+ *    and the count goes to the server with the next fetch batch (`dropped`
+ *    for events, `audio_dropped` for audio), never with a beacon, which gets
+ *    no answer.
  *
  * The "connection lost" toast (`savedOffline`) only shows for a failure that
  * holds: the browser reports offline, the server stays rate-limited after
@@ -42,16 +53,17 @@ import { apiRequest, ApiError } from './api.js';
 import { Storage } from './storage.js';
 import { toast } from './toast.js';
 
-const FLUSH_MS = 3000;
-const FLUSH_AT = 20;
 const BATCH_MAX = 50;
+const positive = (value) => (Number.isFinite(Number(value)) && Number(value) > 0 ? Math.floor(Number(value)) : 0);
+const FLUSH_MS = positive(CONFIG.eventFlush?.intervalMs) || 30_000;
+const FLUSH_AT = Math.min(BATCH_MAX, positive(CONFIG.eventFlush?.maxEvents) || 40);
 /** Quiet retry after a single failed batch while the browser says online. */
 const RETRY_MS = 5000;
 
 let offlineNoticeShown = false;
 let queueFullNoticeShown = false;
 
-/** UUID v4; crypto.randomUUID hanya ada di konteks aman (HTTPS/localhost). */
+/** UUID v4; crypto.randomUUID only exists in a secure context (HTTPS/localhost). */
 export function uuid() {
   if (window.crypto?.randomUUID) return window.crypto.randomUUID();
   const bytes = window.crypto.getRandomValues(new Uint8Array(16));
@@ -61,27 +73,127 @@ export function uuid() {
   return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
 }
 
-/** Waktu klien ISO-8601 dengan milidetik, mis. 2026-09-21T02:14:22.481Z */
+/** Client time, ISO-8601 with milliseconds, e.g. 2026-09-21T02:14:22.481Z */
 export const now = () => new Date().toISOString();
 
-class EventQueue {
-  constructor(channel, path) {
-    this.channel = channel;
-    this.path = path;
+const idOf = (event) => event.client_event_id;
+
+function warnQueueFull(lost) {
+  if (lost > 0 && !queueFullNoticeShown) {
+    queueFullNoticeShown = true;
+    toast(t('eventQueueFull'), 'warn');
+  }
+}
+
+/**
+ * One channel: events waiting in memory (`queue`), the batch on its way
+ * (`inflight`), and their copies in the offline queue. `held` holds the ids
+ * of both, so restoring the offline queue never queues an event twice.
+ */
+class Channel {
+  constructor(name, path) {
+    this.name = name;
+    this.path = path;          // own endpoint: beacons and the old-server fallback
     this.queue = [];
-    this.timer = null;
-    this.sending = null;  // Promise pengiriman yang sedang berjalan
-    this.inflight = [];   // batch yang dikirim fetch dan belum dijawab server
-    this.failures = 0;    // failed batches in a row; reset by any accepted batch
-    this.retryTimer = null;
+    this.inflight = [];
+    this.held = new Set();
+    this.unstored = new Set(); // ids the browser refused to persist
+    this.beaconed = new Set(); // ids already beaconed by this page
   }
 
-  push(event) {
-    // Tanpa sesi permainan (layar sebelum login) server pasti menolak: jangan antre.
-    if (!CONFIG.sessionTag) return;
+  add(event) {
+    const { stored, lost } = Storage.persistEvents([event], CONFIG.sessionTag, this.name);
+    if (!stored) this.unstored.add(idOf(event));
+    warnQueueFull(lost);
     this.queue.push(event);
-    if (this.queue.length >= FLUSH_AT) this.flush();
-    else if (!this.timer) this.timer = setTimeout(() => this.flush(), FLUSH_MS);
+    this.held.add(idOf(event));
+  }
+
+  take() {
+    this.inflight = this.queue.splice(0, BATCH_MAX);
+    return this.inflight;
+  }
+
+  /** The server took the batch (or refused it for good): forget it everywhere. */
+  settle(batch) {
+    this.inflight = [];
+    if (!batch.length) return;
+    const ids = new Set(batch.map(idOf));
+    Storage.removeEvents(CONFIG.sessionTag, this.name, ids);
+    for (const id of ids) {
+      this.held.delete(id);
+      this.unstored.delete(id);
+      this.beaconed.delete(id);
+    }
+  }
+
+  /** The batch may succeed later: it leaves memory and waits in the offline queue. */
+  fail(batch) {
+    this.inflight = [];
+    const unsaved = [];
+    for (const event of batch) {
+      this.held.delete(idOf(event));
+      if (this.unstored.delete(idOf(event))) unsaved.push(event);
+    }
+    if (unsaved.length) warnQueueFull(Storage.queueEvents(unsaved, CONFIG.sessionTag, this.name));
+  }
+
+  /** Moves stored events of this session that are not in memory yet to the front of the queue. */
+  restore() {
+    const pending = Storage.pendingEvents(CONFIG.sessionTag, this.name).filter((event) => !this.held.has(idOf(event)));
+    for (const event of pending) this.held.add(idOf(event));
+    this.queue = pending.concat(this.queue);
+  }
+
+  /**
+   * Forced send (tab hidden or page closed): returns what to beacon. The
+   * events stay in the offline queue, marked as beaconed; the next page sends
+   * them again and the server answers `duplicate` for what arrived.
+   */
+  takeForBeacon(online) {
+    const pending = this.inflight.concat(this.queue).filter((event) => !this.beaconed.has(idOf(event)));
+    for (const event of this.queue) this.held.delete(idOf(event));
+    this.queue = [];
+    if (!pending.length) return [];
+
+    const unsaved = pending.filter((event) => this.unstored.has(idOf(event)));
+    for (const event of unsaved) this.unstored.delete(idOf(event));
+    if (unsaved.length) warnQueueFull(Storage.queueEvents(unsaved, CONFIG.sessionTag, this.name, online));
+    if (!online) return [];
+
+    const ids = new Set(pending.map(idOf));
+    Storage.markBeaconed(CONFIG.sessionTag, this.name, ids);
+    for (const id of ids) this.beaconed.add(id);
+    return pending;
+  }
+}
+
+const gameEvents = new Channel('events', '/events');
+const audioEvents = new Channel('audio', '/audio-events');
+const channels = [gameEvents, audioEvents];
+
+/**
+ * The shared sender of both channels: timer, the running send, failure
+ * count, and whether the server needs the old audio endpoint.
+ */
+class Transport {
+  constructor(path) {
+    this.path = path;
+    this.timer = null;
+    this.sending = null;     // the running send; callers that wait (curtain) await the same one
+    this.failures = 0;       // failed requests in a row; reset by any accepted request
+    this.retryTimer = null;
+    this.legacyAudio = false;
+    this.lastAccepted = -Infinity;
+  }
+
+  /** Starts the timer, or sends at once when a channel reached FLUSH_AT. */
+  schedule() {
+    if (channels.some((channel) => channel.queue.length >= FLUSH_AT)) {
+      this.flush();
+    } else if (!this.timer && channels.some((channel) => channel.queue.length)) {
+      this.timer = setTimeout(() => this.flush(), FLUSH_MS);
+    }
   }
 
   async flush(force = false) {
@@ -89,50 +201,90 @@ class EventQueue {
     this.timer = null;
 
     if (force) {
-      // Batch yang masih di jalan ikut dikirim: fetch-nya batal bila halaman ditutup
-      const pending = this.inflight.concat(this.queue);
-      this.queue = [];
-      if (!pending.length) return;
-      // A beacon can be aborted by the navigation or lost offline without any
-      // error, so a copy also waits in the offline queue; the next page
-      // re-sends it and the server answers `duplicate` for what arrived (§7.3).
-      // Offline no beacon is tried at all.
+      // Offline no beacon is tried at all; the events wait in the offline queue
       const online = navigator.onLine !== false;
-      this.store(pending, online);
-      if (online) while (pending.length) this.beacon(pending.splice(0, BATCH_MAX));
+      for (const channel of channels) {
+        const batch = channel.takeForBeacon(online);
+        while (batch.length) beacon(channel.path, batch.splice(0, BATCH_MAX));
+      }
       return;
     }
 
-    // Pengiriman yang sedang berjalan ikut mengambil event yang masuk sesudahnya;
-    // pemanggil yang menunggu (tirai sebelum pindah halaman) menunggu yang sama
     if (!this.sending) this.sending = this.drain().finally(() => { this.sending = null; });
     await this.sending;
   }
 
   async drain() {
-    while (this.queue.length) {
-      const batch = this.queue.splice(0, BATCH_MAX);
-      const dropped = Storage.droppedReport(CONFIG.sessionTag, this.channel);
-      const body = { events: batch, client_sent_at: now() };
-      if (dropped) Object.assign(body, { dropped: dropped.count, dropped_id: dropped.id });
-      this.inflight = batch;
-      try {
-        await apiRequest(this.path, { method: 'POST', body });
-        this.failures = 0;
-        if (dropped) Storage.clearDropped(CONFIG.sessionTag, this.channel, dropped);
-      } catch (error) {
-        this.keepForLater(batch, error);
-        return;
-      } finally {
-        this.inflight = [];
+    while (gameEvents.queue.length || audioEvents.queue.length) {
+      const events = gameEvents.take();
+      const audio = audioEvents.take();
+      let audioDone = !audio.length;
+
+      if (events.length || (audio.length && !this.legacyAudio)) {
+        const body = { events, client_sent_at: now() };
+        const report = dropped('events');
+        if (report) Object.assign(body, { dropped: report.count, dropped_id: report.id });
+        const combined = audio.length > 0 && !this.legacyAudio;
+        let audioReport = null;
+        if (combined) {
+          body.audio = audio;
+          audioReport = dropped('audio');
+          if (audioReport) Object.assign(body, { audio_dropped: audioReport.count, audio_dropped_id: audioReport.id });
+        }
+
+        let answer;
+        try {
+          answer = await apiRequest(this.path, { method: 'POST', body });
+          this.failures = 0;
+        } catch (error) {
+          this.keepForLater([[gameEvents, events], [audioEvents, audio]], error);
+          return;
+        }
+        this.lastAccepted = performance.now();
+        gameEvents.settle(events);
+        clearDropped('events', report);
+
+        if (combined) {
+          if (answer && typeof answer === 'object' && Object.hasOwn(answer, 'audio')) {
+            audioEvents.settle(audio);
+            clearDropped('audio', audioReport);
+            audioDone = true;
+          } else {
+            // A server without the combined request ignored the audio: use its own endpoint
+            this.legacyAudio = true;
+          }
+        }
+      }
+
+      if (!audioDone) {
+        const body = { events: audio, client_sent_at: now() };
+        const report = dropped('audio');
+        if (report) Object.assign(body, { dropped: report.count, dropped_id: report.id });
+        try {
+          await apiRequest(audioEvents.path, { method: 'POST', body });
+          this.failures = 0;
+        } catch (error) {
+          this.keepForLater([[audioEvents, audio]], error);
+          return;
+        }
+        this.lastAccepted = performance.now();
+        audioEvents.settle(audio);
+        clearDropped('audio', report);
       }
     }
   }
 
-  /** Hanya galat yang bisa pulih (jaringan, server sibuk) yang disimpan untuk dikirim ulang. */
+  /**
+   * Only recoverable failures (network, busy server) keep the events for a
+   * re-send. `batch` lists the request's [channel, events] pairs.
+   */
   keepForLater(batch, error) {
     const recoverable = !(error instanceof ApiError) || error.isNetwork || error.code === 'RATE_LIMITED';
-    if (!recoverable) return;
+    if (!recoverable) {
+      // Refused for good (401, 403, 422): it would never be accepted
+      for (const [channel, events] of batch) channel.settle(events);
+      return;
+    }
 
     this.store(batch);
     this.failures++;
@@ -151,51 +303,54 @@ class EventQueue {
     }
   }
 
-  /** Offline queue; a loss is never silent (counted by Storage, toast here). */
-  store(batch, beaconed = false) {
-    const lost = Storage.queueEvents(batch, CONFIG.sessionTag, this.channel, beaconed);
-    if (lost > 0 && !queueFullNoticeShown) {
-      queueFullNoticeShown = true;
-      toast(t('eventQueueFull'), 'warn');
-    }
+  /** The events leave memory and wait in the offline queue (persisted on push). */
+  store(batch) {
+    for (const [channel, events] of batch) channel.fail(events);
   }
 
-  beacon(batch) {
-    const body = JSON.stringify({ events: batch, client_sent_at: now(), [CONFIG.csrfName]: CONFIG.csrfHash });
-    const target = `${CONFIG.apiBase}${this.path}`;
-
-    try {
-      if (navigator.sendBeacon && navigator.sendBeacon(target, new Blob([body], { type: 'application/json' }))) return;
-    } catch {
-      /* sebagian browser menolak Blob JSON: pakai fetch keepalive */
-    }
-
-    fetch(target, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CONFIG.csrfHash },
-      credentials: 'same-origin',
-      body,
-      keepalive: true,
-    }).catch(() => {});   // the copy already waits in the offline queue
-  }
-
-  /** Kirim ulang antrean offline milik sesi ini. */
+  /** Moves this session's offline queue into memory and sends it now. */
   async resend() {
-    const pending = Storage.takeAll(CONFIG.sessionTag, this.channel);
-    if (!pending.length) return;
-    this.queue = pending.concat(this.queue);
+    for (const channel of channels) channel.restore();
     await this.flush();
   }
 }
 
-const gameEvents = new EventQueue('events', '/events');
-const audioEvents = new EventQueue('audio', '/audio-events');
+const transport = new Transport('/events');
+
+function dropped(channel) {
+  return Storage.droppedReport(CONFIG.sessionTag, channel);
+}
+
+function clearDropped(channel, report) {
+  if (report) Storage.clearDropped(CONFIG.sessionTag, channel, report);
+}
+
+function beacon(path, batch) {
+  const body = JSON.stringify({ events: batch, client_sent_at: now(), [CONFIG.csrfName]: CONFIG.csrfHash });
+  const target = `${CONFIG.apiBase}${path}`;
+
+  try {
+    if (navigator.sendBeacon && navigator.sendBeacon(target, new Blob([body], { type: 'application/json' }))) return;
+  } catch {
+    /* some browsers refuse a JSON Blob: use fetch keepalive */
+  }
+
+  fetch(target, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CONFIG.csrfHash },
+    credentials: 'same-origin',
+    body,
+    keepalive: true,
+  }).catch(() => {});   // the copy already waits in the offline queue
+}
 
 /**
- * Event gameplay mentah. `type` wajib salah satu Config\Gelita::$eventTypes.
+ * Raw gameplay event. `type` must be one of Config\Gelita::$eventTypes.
  */
 export function emit(type, { levelId, nodeId, attemptId, itemId, payload } = {}) {
-  gameEvents.push({
+  // Without a game session (screens before login) the server always refuses: do not queue
+  if (!CONFIG.sessionTag) return;
+  gameEvents.add({
     client_event_id: uuid(),
     event_type: type,
     occurred_at: now(),
@@ -206,29 +361,51 @@ export function emit(type, { levelId, nodeId, attemptId, itemId, payload } = {})
     item_id: itemId ?? null,
     payload: payload ?? null,
   });
+  transport.schedule();
 }
 
 /**
- * Telemetry audio terstruktur:
+ * Structured audio telemetry:
  * { audio_asset_id, action: play|pause|replay|complete, play_index,
  *   listened_ms, completed, attempt_id? }
  */
 export function emitAudio(event) {
-  audioEvents.push({
+  if (!CONFIG.sessionTag) return;
+  audioEvents.add({
     client_event_id: uuid(),
     occurred_at: now(),
     ...event,
   });
+  transport.schedule();
 }
 
+/**
+ * Sends now. Without `force` it returns the running send (both channels in
+ * one request); with `force` (tab hidden, page closed) it beacons each
+ * channel to its own endpoint, so a server of any version keeps the audio.
+ */
 export async function flush(force = false) {
-  await Promise.all([gameEvents.flush(force), audioEvents.flush(force)]);
+  await transport.flush(force);
 }
 
-/** Kirim ulang antrean offline. Server membalas "duplicate" untuk yang sudah masuk. */
+/** Re-sends this session's offline queue now (back online, quiet retry). The server answers "duplicate" for what arrived. */
 export async function resendQueued() {
-  await Promise.all([gameEvents.resend(), audioEvents.resend()]);
+  await transport.resend();
 }
+
+/**
+ * Page load (R4): the offline queue (mostly copies of the previous page's
+ * beacon) joins this page's queue and leaves with its first batch, on the
+ * normal timer or at FLUSH_AT, instead of a request of its own.
+ */
+export function restoreQueued() {
+  if (!CONFIG.sessionTag) return;
+  for (const channel of channels) channel.restore();
+  transport.schedule();
+}
+
+/** performance.now() of the last request the server accepted (-Infinity before any); game/hud.js skips its heartbeat after one. */
+export const lastBatchAt = () => transport.lastAccepted;
 
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'hidden') flush(true);
@@ -236,16 +413,16 @@ document.addEventListener('visibilitychange', () => {
 window.addEventListener('pagehide', () => flush(true));
 
 /**
- * Kode layar Dok 1 §12.4 dari <body data-screen-code> (dirender layout dengan
- * resolver yang sama dengan screen_viewed di server). Pustaka terkunci
- * dikenali dari halamannya, seperti di ScreenViewFilter.
+ * Screen code (Dok 1 §12.4) from <body data-screen-code> (rendered by the
+ * layout with the same resolver as the server's screen_viewed). The locked
+ * library is recognised from its page, as in ScreenViewFilter.
  */
 const screenName = () => {
   const code = document.body?.dataset.screenCode || null;
   return code === 'library' && document.querySelector('[data-screen="library-locked"]') ? 'library_locked' : code;
 };
 
-/** `page_hidden` / `page_visible` dari visibilitychange (Dok 3 §7). */
+/** `page_hidden` / `page_visible` from visibilitychange (Dok 3 §7). */
 export function initVisibilityTracking() {
   document.addEventListener('visibilitychange', () => {
     emit(document.visibilityState === 'hidden' ? 'page_hidden' : 'page_visible', { payload: { screen: screenName() } });
