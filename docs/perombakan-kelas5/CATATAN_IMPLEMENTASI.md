@@ -1711,3 +1711,14 @@ Owner request: in **Rekaman narasi**, add a way to cancel every recording in bul
 - **Old files.** The 200 TTS MP3s in `public/assets/audio/narasi/{id,en}/` and `produksi.json` are removed from git; the folders stay (`.gitkeep`) as the drop-in folder for `gelita:narration:import`. `NarrationKelas5Test::testBundledRecordingsMatchTheLines` is replaced by a check that no narration ships with the repo. `tools/audio/` (TTS scripts, `qa-narasi.json`) stays as history, since it also builds music and sound effects.
 - **Script PDF** (`GET /admin/konten/narasi/naskah-pdf?bahasa=id|en|semua`, `App\Libraries\NarrationScriptPdf`, view `pdf/narration-script`). It uses mPDF like the report PDFs: A4 portrait, 7 mm side margins, DejaVu Sans Condensed 8.5 pt, and one table in game order (repeating header, a shaded row per scene) with a tick box, running number, file name, speaker with pose/effect as a delivery cue, and the text. With one language per print, the full script (88 lines without clue nodes) fits on about 5 pages; both languages side by side take about 7. Audited as `narration_script_download`.
 - **Deploy note.** Servers that imported the TTS takes keep rows pointing at files this release deletes from git. Press **Batalkan semua rekaman** for both languages right after the deploy. Until then, approved lines still point at the deleted files: the browser gets a 404 and plays nothing, and a package rebuild reports them as `file_missing` warnings.
+
+## Asynchronous logging: owner decisions (17 October 2026)
+
+The plan in `docs/rencana-log-asinkron.md` (PR #119) asked for five decisions in its §10. The owner decided four of them on 17 October 2026:
+
+- **Phases 1 and 2 approved, one branch and one PR each.** Phase 1 (client batching) goes first, then Phase 2 (early session close, batched audio writes). Separate PRs keep the two effects measurable on their own.
+- **Flush interval 30 s, not the proposed 15 s.** At peak that is about 2–3 telemetry requests per playing student per minute, down from up to 21–41. Persist-on-push (R1) means the longer interval does not add loss on a browser crash, and the forced sends on tab hide, page close, and navigation are unchanged. The `dialogue_advanced` read-back on the map is not affected: the narrator flushes at the last slide and the curtain awaits the flush. The interval comes from server config, so it can be lowered without a JS deploy.
+- **Phase 3 (write-behind inbox) is decided after the §7 load test,** not now.
+- **Dashboard lag accepted.** "20 event terakhir" may be up to one interval behind; Phase 1 adds a short note under the list.
+- **Not decided separately:** the §7 targets. They stay the proposal and serve as the bar for the Phase 3 decision.
+
