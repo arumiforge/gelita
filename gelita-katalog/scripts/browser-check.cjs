@@ -25,6 +25,43 @@ const saveWebp=(buffer,file)=>require('child_process').execFileSync('python',['-
     await page.waitForFunction(()=>document.querySelector('.hero-image').complete&&document.querySelector('.hero-image').naturalWidth>0);
     saveWebp(await page.screenshot(),'review/catalog-desktop.webp');
 
+    // Mockups are a separate page gallery; derived state images do not change asset counts.
+    assert.equal(await page.locator('.mockup-feature').count(),1);
+    assert.equal(await page.locator('.mockup-plan').count(),12);
+    for(let state=0;state<5;state++){
+      await page.locator(`[data-state="${state}"]`).click();
+      await page.waitForFunction(()=>{const i=document.querySelector('.mockup-image');return i.complete&&i.naturalWidth>0;});
+      assert.equal(await page.locator(`[data-state="${state}"]`).getAttribute('aria-pressed'),'true');
+    }
+    await page.locator('[data-state="1"]').click();
+    await page.locator('#mockups').scrollIntoViewIfNeeded();
+    saveWebp(await page.screenshot(),'review/catalog-mockups-desktop.webp');
+    if(!await page.locator('.mockup-roadmap').evaluate(el=>el.open))await page.locator('.mockup-roadmap summary').click();
+    const plans=JSON.parse(fs.readFileSync(path.join(root,'mockup/catalog.json'),'utf8')).pages.filter(p=>p.status==='planned');
+    assert.equal(await page.locator('.mockup-plan a').count(),plans.reduce((n,p)=>n+2+(p.candidate?3:0)+(p.candidate?.preview?1:0),0));
+    for(const candidate of plans.filter(p=>p.candidate)){
+      const image=page.locator(`.mockup-candidate-image img[src="${candidate.candidate.image}"]`);
+      await image.scrollIntoViewIfNeeded();
+      await image.evaluate(img=>img.decode());
+      assert.equal(await image.evaluate(img=>img.naturalWidth),1920);
+      assert.equal(await image.evaluate(img=>img.naturalHeight),1080);
+    }
+    await page.locator('.mockup-roadmap summary').click();
+    await page.locator('.mockup-launch').click();
+    const frame=page.frameLocator('.mockup-frame-wrap iframe');
+    await frame.locator('#language-trigger').click();
+    await frame.locator('[data-language="en"]').click();
+    assert.equal(await frame.locator('#result-title').innerText(),'Challenge complete!');
+    assert.equal(await frame.locator('#sound-trigger').getAttribute('aria-pressed'),'true');
+    await frame.locator('#sound-trigger').click();
+    const livePage=await (await page.locator('.mockup-frame-wrap iframe').elementHandle()).contentFrame();
+    await livePage.waitForFunction(()=>window.gelitaPreview.audio[0].currentTime>0);
+    await frame.locator('#sound-trigger').click();
+    assert.ok(await livePage.evaluate(()=>window.gelitaPreview.audio.every(a=>a.paused)));
+    await page.locator('.mockup-stop').click();
+    assert.equal(await page.locator('.mockup-frame-wrap iframe').count(),0);
+    assert.equal(await page.evaluate(()=>document.activeElement.classList.contains('mockup-launch')),true);
+
     await page.locator('#updatesToggle').click();
     await page.waitForFunction(()=>document.querySelector('#updatesContent').classList.contains('show'));
     assert.equal(await page.locator('#updatesContent .update-item').count(),3);
@@ -137,6 +174,25 @@ const saveWebp=(buffer,file)=>require('child_process').execFileSync('python',['-
     await page.locator('#reset').click();
     await page.locator('[data-group="Audio"]').click();
     assert.equal(await page.locator('.asset-card').count(),97);
+    assert.equal(await page.locator('#collections audio').count(),9);
+    assert.ok(await page.locator('#collections audio').evaluateAll(elements=>elements.every(a=>a.paused&&!a.autoplay)));
+    await page.locator('#audioKind').selectOption('available');
+    assert.equal(await page.locator('.asset-card').count(),9);
+    for(const a of data.filter(a=>a.size==='Audio'&&a.file)){
+      await page.locator(`[data-key="${a.key}"]`).click();
+      await page.locator('#detail audio').evaluate(async el=>{await el.play();});
+      await page.waitForFunction(()=>document.querySelector('#detail audio').duration>0);
+      assert.equal(await page.locator('#detail audio').evaluate(el=>el.error),null);
+      assert.equal(await page.locator('#detail audio').evaluate(el=>el.loop),a.cat==='Musik');
+      await page.keyboard.press('Escape');
+      await page.waitForFunction(()=>!document.querySelector('#dialog').open&&document.querySelector('#detail audio').paused);
+    }
+    await page.locator('#audioKind').selectOption('Musik');
+    assert.equal(await page.locator('.asset-card').count(),3);
+    await page.locator('#audioKind').selectOption('Efek suara');
+    assert.equal(await page.locator('.asset-card').count(),6);
+    await page.locator('#audioKind').selectOption('Narasi');
+    assert.equal(await page.locator('.asset-card').count(),88);
     await page.locator('[data-key]').first().click();
     assert.ok((await page.locator('#detail').innerText()).includes('Rekaman belum tersedia'));
     assert.equal(await page.locator('#copyPrompt').innerText(),'Salin brief');
@@ -177,7 +233,7 @@ const saveWebp=(buffer,file)=>require('child_process').execFileSync('python',['-
     assert.deepEqual(errors,[]);
     assert.deepEqual(remoteRequests,[]);
     assert.deepEqual(failedRequests,[]);
-    const report={date:new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Bangkok'}),checked_at_utc:new Date().toISOString(),passed:true,bootstrap_version:'5.3.8',checks:[visuals.length+' visual cards; 97 unchanged audio briefs','Local Bootstrap CSS/JS and Jakarta font loaded; no remote or failed requests','Bootstrap update collapse and export dropdown; Escape support','Style, region, search and empty-state reset','144 Jaka frames; dialog/Escape and focus return; collection focus retained','7 result UI slots; 2 language flags; 512 px app icon','Natural sorting by title and key; 26 references','Original offline WebP opens; prompt TXT, filtered JSON and CSV downloads','Prompt, brief and group copy text/feedback verified with clipboard stub','Audio detail labels distinguish briefs from recordings','No horizontal overflow at 360, 390, 768, 1024, 1440 and 1920 px','Mobile updates and asset detail; reduced-motion preference','No JavaScript page errors'],screenshots:['catalog-desktop.webp','catalog-collection.webp','catalog-detail.webp','catalog-mobile.webp','catalog-mobile-collection.webp','catalog-mobile-detail.webp']};
+    const report={date:new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Bangkok'}),checked_at_utc:new Date().toISOString(),passed:true,bootstrap_version:'5.3.8',checks:[visuals.length+' visual cards; 88 unchanged narration briefs and 9 playable synthesized music/sfx previews','Local Bootstrap CSS/JS and Jakarta font loaded; no remote or failed requests','Bootstrap update collapse and export dropdown; Escape support','Style, region, search and empty-state reset','144 Jaka frames; dialog/Escape and focus return; collection focus retained','7 result UI slots; 2 language flags; 512 px app icon','Natural sorting by title and key; 26 references','Original offline WebP opens; prompt TXT, filtered JSON and CSV downloads','Prompt, brief and group copy text/feedback verified with clipboard stub','Nine MP3 previews decode/play in browser, stop on dialog close; three audio-type filters and 88 narration briefs', 'Mockup gallery: selected reference, four coded states, 12 planned briefs and embedded preview', 'Embedded language switching, click-activated audio and mute; closing iframe stops playback','No horizontal overflow at 360, 390, 768, 1024, 1440 and 1920 px','Mobile updates and asset detail; reduced-motion preference','No JavaScript page errors'],screenshots:['catalog-mockups-desktop.webp','catalog-desktop.webp','catalog-collection.webp','catalog-detail.webp','catalog-mobile.webp','catalog-mobile-collection.webp','catalog-mobile-detail.webp']};
     fs.writeFileSync(path.join(root,'reports/browser-check-report.json'),JSON.stringify(report,null,2)+'\n');
     console.log(JSON.stringify(report,null,2));
   }finally{await browser.close();}

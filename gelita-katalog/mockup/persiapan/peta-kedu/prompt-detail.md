@@ -1,0 +1,9 @@
+# Prompt mockup — Peta Kedu
+
+Status: **kandidat04 interaktif dibuat15Oktober2026, belum dipilih pengguna**. Prompt rencana di bawah adalah brief awal; terbaru adalah [prompt master diorama04](../../gambar-mockup/peta-kedu/revisi-04/prompt-diorama.txt), [kode preview04](../../gambar-mockup/peta-kedu/revisi-04/preview.html) dan [riwayat prompt01–03](../../gambar-mockup/peta-kedu/prompt-detail.md). Full UI04 merupakan render kode memakai skin katalog; hanya master diorama dibuat lewat ImageGen.
+
+```text
+Use case: ui-mockup. Create a COMPLETE GELITA educational adventure game screen for “Peta Kedu”, exactly 1920 × 1080, fixed landscape 16:9. Premium warm stylized 3D environments, midnight navy panels, restrained antique-gold bevels, cream readable text. Match the user-selected challenge-result reference and assets/referensi/reference.01.webp for Jaka (cream shirt, red scarf, brown shorts, batik waist cloth, sandals, leather backpack). Mbah Kedu follows reference.02 without Jaka's scarf. Composition: Peta relief sebagai fokus; tiga pin wilayah, ringkasan serpihan, HUD konsisten; jalur belum dibuka tetap terbaca. Maintain consistent top HUD with Indonesia/UK flag language selector, speaker and menu. Include the full interface, content hierarchy and all primary controls. Required state for the first image: Wilayah tersedia. Use minimal Indonesian placeholder text; keep critical labels editable in HTML later. No invented quiz answers, real personal data, extra costume, painterly 2D, watermark, portrait reflow or background-only image. Assets to reuse: map.kedu,bg.map,map.pin.temanggung,map.pin.magelang,map.pin.wonosobo. Preserve cultural details; mark factual content pending review. This is a proposed next mockup, not an approved design.
+```
+
+[Brief halaman](README.md) · [Arah visual](../ARAH-VISUAL.md).

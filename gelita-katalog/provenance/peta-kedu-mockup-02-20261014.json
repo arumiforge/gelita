@@ -1,0 +1,101 @@
+{
+  "date": "2026-10-14",
+  "timezone": "Asia/Bangkok",
+  "page": "peta-kedu",
+  "candidate": "02",
+  "status": "candidate",
+  "user_selected": false,
+  "method": "built-in image_gen",
+  "generation_calls": 1,
+  "prompt_file": "mockup/gambar-mockup/peta-kedu/kandidat/prompt-aktual-02.txt",
+  "prompt": "Use case: ui-mockup.\nCreate ONE refined full UI mockup of the CURRENT GELITA Peta Kedu game page, candidate 02, fixed 16:9 landscape target 1920 x 1080. This is a LIMITED VISUAL REVISION of the actual current game, not a wholesale product or information-architecture redesign.\nINPUT ROLES: Image 1 and Image 2 are screenshots of the ACTUAL current web page and define its functions, region-pin relationships, and layout. Image 3 is the original map.kedu terrain reference, preserve its arrangement of volcanoes, river, terraces, lake and Borobudur architectural motif. Image 4 is the previously selected challenge-result design and defines warm premium 3D finishing and restrained navy/gold UI skin. Image 5 is reference.01 Jaka identity: brown tousled hair, cream shirt, red scarf, brown shorts, batik waist cloth, sandals and leather backpack. Never reproduce a character reference sheet.\nMAINTAIN THE ACTUAL PAGE STRUCTURE: one wide map on the left (~68% screen width); three ordered region cards in a right column (~27% screen width); story narration along the bottom left; top HUD; footer Pustaka Kedu and Profil. Replace the previous one-region \"Jelajah Kedu\" panel concept with the actual three-card region list. Do not remove, collapse into a menu, or invent game functions. All UI fully visible within the frame. No scrolling needed for three cards in this VISUAL proposal: compact the cards while retaining legible type.\nART AND BACKGROUND: Keep the existing map's recognizable relief/terrain composition, improve its depth and warm stylized 3D material without reshaping it into a new geography. Dark blue misty adventure backdrop. Navy panels, antique gold bevels, warm cream text. Not watercolor or painterly 2D. Restrained ornaments at edges; avoid busy decorations covering controls.\nGEOMETRY OF MAP: Rounded rectangular navy/gold frame approximately x=48,y=148,width=1268,height=684 on the target 1920x1080 canvas. Keep the entire irregular terrain silhouette and small compass visible inside. Reference region coordinates measured from actual web DOM and expressed in percentages of the MAP IMAGE, not the full screen: Temanggung x65%,y41%; Magelang x56%,y71%; Wonosobo x28%,y55%. Make the three pin centers visually follow these locations closely: Temanggung middle-right, Wonosobo left-middle BELOW Temanggung, Magelang lower-middle/right BELOW both. Absolutely do not put Wonosobo in the top-left lake area or Magelang at the extreme bottom-right. Use map pins with miniature geographic medallions, adjacent small lantern narration controls and completion/star accents as in the screenshots. Pin labels: \"Temanggung\" then \"Tuntas · 4/4\"; \"Magelang\" then \"Tuntas · 4/4\"; \"Wonosobo\" then \"Sedang dijelajahi · 1/4\". No locked regions for this observed-state mockup. No new dashed travel routes.\nTOP HUD y20-126: a compact lantern + gold-lined pill \"SERPIHAN CAHAYA\", \"9/12\" and a three-quarter progress track at upper left; recognizable ornate \"GELITA\" wordmark beside it; title \"PETA KEDU\". Right aligned controls: two circular language medals showing the Indonesian red-white flag and the UK flag, speaker, fullscreen corners, home, small fictional avatar/name \"Penjelajah\", exit arrow. Keep controls evenly spaced and retain all functions, not a new hamburger-only menu. Do not copy the real user name/handle from screenshots.\nRIGHT REGION COLUMN x1354,y148,width518,height~840: THREE complete compact navy/gold cards, approximately 265px tall each, gaps 16px; all visible with consistent padding and aligned controls. Card 1: circular \"1\", \"WILAYAH 1 · MUDAH\", heading \"Temanggung\", green outlined status \"Tuntas\", full progress track \"4/4 tantangan\", three gold stars, small lantern button \"Kenali Temanggung\", outlined button \"Lanjut\" with chevron. Card 2: circular \"2\", \"WILAYAH 2 · SEDANG\", \"Magelang\", green \"Tuntas\", \"4/4 tantangan\", three gold stars, lantern button \"Kenali Magelang\", small amber indicator \"Belum didengar\", \"Lanjut\" with chevron. Card 3: circular \"3\", \"WILAYAH 3 · SULIT\", \"Wonosobo\", amber status \"Sedang dijelajahi\", quarter-filled track \"1/4 tantangan\", three gold stars as shown in actual DOM, lantern button \"Kenali Wonosobo\", amber \"Belum didengar\", warm gold \"Lanjut\" button. Use compact but very readable sans serif; no omitted card. Align status/progress on a compact row where needed. Star ratings reflect the read-only observed page, not newly calculated rewards.\nSTORY AREA: A separate shallow cream/gold panel under the map at x48,y852,width1268,height132; do not overlap the map or cut off text. Small Jaka portrait medallion at left as a guide, not a giant standing character blocking pins. Name line \"Jaka · Dataran Kedu\". Exact short first-part paragraph in readable dark navy: \"Inilah Dataran Kedu. Dulu lembah ini menyimpan cahaya ilmu dan budaya. Sekarang lihatlah... Kabut Lupa menutupi hampir semuanya.\" It must fit on 2-3 lines. Controls at right of this story bar: subdued previous chevron, \"1/3\", play triangle, next chevron. Preserve narration controls; do not replace story with a generic guidance speech bubble.\nFOOTER y1004: left outlined navy/gold book button \"Pustaka Kedu\"; right small profile button \"Profil\". Quiet center note \"Contoh tampilan\". Footer and story must not touch the bottom crop.\nQUALITY: Gorgeous cohesive educational adventure game screen, warm detailed 3D relief, very sharp cream labels, big readable headings, consistent restrained navy/gold skin inspired by the selected result reference. Exact spelling of provided Indonesian copy. Do not reproduce current clipping/overflow bugs. No browser chrome, watermark, real personal data, new characters, new UI functions, perspective skew of the whole screenshot, multiple screenshots, portrait layout or background-only image. Preserve region ordering, reading progression and existing feature inventory.",
+  "references": [
+    {
+      "file": "provenance/peta-kedu-revision-02/referensi/screenshot-web-asli-01.webp",
+      "sha256": "20e02cf9ee9bfe13f7676206d5f03487d6d473df8e75aee1f3c14c1964218216"
+    },
+    {
+      "file": "provenance/peta-kedu-revision-02/referensi/screenshot-web-asli-02.webp",
+      "sha256": "bcb31138482a53bd43b67d69f857b3c56c7d6007b39f8c4484218e508f0e7970"
+    },
+    {
+      "file": "assets/peta/map.kedu.webp",
+      "sha256": "08a99b168df583074b0e33be864c70245b2f8adea4d1424cc76990550b9fd46f"
+    },
+    {
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/mockup-tantangan-selesai-temanggung-16-9.webp",
+      "sha256": "a28e4cbd84576d3ca9de15f517e5682ef9721ecef0fb72e50208733cba9c4d23"
+    },
+    {
+      "file": "assets/referensi/reference.01.webp",
+      "sha256": "c1dcd260911ed431b3ebea805af2c9fda3dc41c985d9e4ca422fc3494bbe75b7"
+    }
+  ],
+  "source_tool_output": "C:\\Users\\cenda\\.codex\\generated_images\\01a13941-052e-7d82-ada6-57e8a0c2f92c\\exec-c1137ad0-04de-4263-84e6-f7df1a57a1e7.png",
+  "native": {
+    "file": "mockup/gambar-mockup/peta-kedu/kandidat/mockup-peta-kedu-kandidat-02-native.webp",
+    "size": [
+      1672,
+      941
+    ],
+    "sha256": "22fc179be83d64b9cbe46d59b63d7c1985d1e75f5d3aeb04ca2cad8e6bfbeedb"
+  },
+  "output": {
+    "file": "mockup/gambar-mockup/peta-kedu/kandidat/mockup-peta-kedu-kandidat-02-16-9.webp",
+    "size": [
+      1920,
+      1080
+    ],
+    "format": "WebP",
+    "alpha": false,
+    "sha256": "6b956d70caad3446eecd4a8316661aa198753d2430e7799a0117b02805c6a05c"
+  },
+  "normalization": "Proportional LANCZOS resize with tiny centered crop to exact 16:9; no new AI detail.",
+  "inspection": {
+    "url": "https://gelita.id/peta#app",
+    "browser": "Existing user Chrome tab",
+    "method": "Read-only DOM and screenshot through cua_repl; no game controls activated",
+    "original_pin_style_percent": {
+      "temanggung": {
+        "left": 65,
+        "top": 41
+      },
+      "magelang": {
+        "left": 56,
+        "top": 71
+      },
+      "wonosobo": {
+        "left": 28,
+        "top": 55
+      }
+    },
+    "observed_progress": {
+      "total_shards": "9/12",
+      "temanggung": "Tuntas · 4/4",
+      "magelang": "Tuntas · 4/4",
+      "wonosobo": "Sedang dijelajahi · 1/4"
+    },
+    "functions": [
+      "Two language choices",
+      "Sound",
+      "Fullscreen",
+      "Home/map",
+      "Profile",
+      "Exit",
+      "Three region routes",
+      "Kenali per region",
+      "Region difficulty/progress/stars",
+      "Three-part Jaka story and previous/play/next controls",
+      "Pustaka Kedu"
+    ]
+  },
+  "scope": "Limited visual revision preserving actual page structure; three compact cards and separate story bar. No total redesign or web changes.",
+  "pin_layout_note": "AI raster positions approximate source CSS anchors. Wonosobo appears slightly lower; Magelang slightly right and lower; Temanggung retains its relative position. No production coordinates changed. See local posisi-titik.md.",
+  "catalog_data_sha256": "93e0d96c6d6cb038891b344267b71e183ef2dee008ef43d16cc7e0a849f3297b",
+  "review_limits": [
+    "Illustrative geography not verified",
+    "Interactive UI, text translations and hit areas not implemented",
+    "Culture and licensing not verified",
+    "Approval of candidate pending"
+  ]
+}

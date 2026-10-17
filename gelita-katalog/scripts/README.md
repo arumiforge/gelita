@@ -22,3 +22,6 @@ Contoh perintah dijalankan dari root katalog. Skrip menentukan root dari lokasi 
 Build/validator hanya memerlukan Node.js. Skrip gambar Python memerlukan Pillow kecuali pemeriksaan hash. Browser memerlukan Playwright, Edge, Python/Pillow; lembar ikon memerlukan `sharp`. Pengaturan paket opsional dijelaskan di [MAINTENANCE.md](../docs/MAINTENANCE.md).
 
 Migrasi dan pembuatan ikon sekali pakai disimpan di [archive/scripts/](../archive/scripts/README.md), bukan prosedur pemeliharaan aktif.
+
+
+Revisi katalog/audio/mockup: `catalog-revisions.mjs` menyediakan pemeriksaan baseline dengan field yang diizinkan. `verify-catalog-update-20261014.py` memeriksa hasil terbaru tanpa mengubah aset. `produce-nonnarration-audio-20261014.py --apply`, `update-catalog-package-20261014.mjs`, dan `prepare-mockup-briefs-20261014.mjs` adalah produksi/persiapan sekali pakai; jangan dijalankan ulang rutin.

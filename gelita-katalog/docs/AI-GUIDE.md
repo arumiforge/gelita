@@ -11,10 +11,10 @@ Sebelum mengedit, baca [AGENTS.md](../AGENTS.md), [README.md](../README.md), [CO
 ## 2. Aliran data
 
 ```text
-data.json + templates/catalog.template.html
+data.json + mockup/catalog.json + templates/catalog.template.html
     + reports/icon-update-report.json
     + reports/prompt-review-report.json
-    + archive/audio-baseline.json (pemeriksaan pembekuan)
+    + archive/audio-baseline.json + provenance/nonnarration-audio-20261014.json (88 narasi beku; 9 produksi diizinkan)
             |
        node build.mjs
             |
@@ -36,6 +36,7 @@ node scripts/validate.mjs --> reports/validation-report.json
 | Nama/deskripsi/prompt/status entri | `data.json`, lihat [skema](DATA-SCHEMA.md) |
 | Mengganti gambar | Jalur `file` di `assets/<kelompok>/`; pertahankan kode |
 | Struktur halaman | `templates/catalog.template.html`, lalu build |
+| Galeri halaman dan rencana redesain | `mockup/catalog.json`, `assets/catalog/mockups.js`, `mockup/persiapan/` |
 | Tampilan/filter/dialog/ekspor/pengurutan | `assets/catalog/catalog.css` dan `assets/catalog/catalog.js`; dependensi lokal di `assets/vendor/` |
 | Proses build/pemeriksaan | `scripts/` |
 | Konteks/keputusan/progres | `docs/`, README/AGENTS bila relevan |
@@ -46,7 +47,7 @@ node scripts/validate.mjs --> reports/validation-report.json
 ## 4. Invarian yang dipertahankan
 
 - 611 entri: 514 visual dan 97 audio; ID dan `key` unik. Jangan mengubah kode slot untuk menyesuaikan ekstensi.
-- Objek audio identik dengan baseline; dikenali melalui `size === "Audio"`.
+- 88 objek Narasi identik dengan baseline; sembilan Musik/Efek suara boleh berbeda hanya pada field produksi di manifest permintaan 14 Oktober. Semua audio tetap dikenali melalui `size === "Audio"`; file audio nyata wajib ada.
 - Visual memakai status “Sesuai gaya” berbasis `user_override` dan memiliki `previous_style_review`. Ini keputusan pengguna, bukan review baru.
 - Ilustrasi 3D/Jaka syal merah mengikuti reference.01; Mbah Kedu reference.02. SVG kontrol jelas pada ukuran kecil; skin panel/tombol ui.result-* mengikuti full UI pilihan, media faktual dokumenter.
 - `file`, `preview`, `generated_asset`, `vector_source` yang terisi menunjuk berkas tersedia relatif root. SVG kontrol di `assets/ikon/vektor/`.

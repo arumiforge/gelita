@@ -1,0 +1,132 @@
+{
+  "date": "2026-10-14",
+  "timezone": "Asia/Bangkok",
+  "recorded_at_utc": "2026-10-14T07:03:17.442982+00:00",
+  "authorization": "User requested adding mockups to the catalogue and preparing documents for other mockups",
+  "inventory": "mockup/catalog.json",
+  "gallery_script": "assets/catalog/mockups.js",
+  "method": "Reuse user-selected reference and coded HTML previews; document preparation only for future pages",
+  "available_pages": 1,
+  "planned_pages": 12,
+  "new_ai_image_generations": 0,
+  "selected_reference_preserved": true,
+  "selected_reference_sha256": "a28e4cbd84576d3ca9de15f517e5682ef9721ecef0fb72e50208733cba9c4d23",
+  "state_images": [
+    {
+      "label": "Pilihan pengguna",
+      "kind": "selected-reference",
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/mockup-tantangan-selesai-temanggung-16-9.webp",
+      "sha256": "a28e4cbd84576d3ca9de15f517e5682ef9721ecef0fb72e50208733cba9c4d23"
+    },
+    {
+      "label": "UI utama",
+      "kind": "coded-preview",
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/variasi-ui/tampilan-utama/mockup-ui-tampilan-utama-16-9.webp",
+      "sha256": "144dc0f9cc19a135f809b875414309919249bdbce1dee064d2b13b8ab0e73c8c"
+    },
+    {
+      "label": "Bahasa",
+      "kind": "coded-preview",
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/variasi-ui/bahasa-terbuka/mockup-ui-bahasa-terbuka-16-9.webp",
+      "sha256": "d0eeece7a2cb1b19e9c0faff2900d8e0a2de64bab3cc284d12731b63c5533be1"
+    },
+    {
+      "label": "Menu",
+      "kind": "coded-preview",
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/variasi-ui/menu-terbuka/mockup-ui-menu-terbuka-16-9.webp",
+      "sha256": "281ed1aba0798b498b82b4518da8fb54c8e4f6d1a52bbfec3602590ab690e6e3"
+    },
+    {
+      "label": "Detail hasil",
+      "kind": "coded-preview",
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/variasi-ui/detail-hasil-terbuka/mockup-ui-detail-hasil-terbuka-16-9.webp",
+      "sha256": "2c10c82422c815add4289b38c31aabc5a4df3102984c6960df57b9c1d0bd2a7c"
+    }
+  ],
+  "package_updated_files": [
+    {
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/preview-ui-lengkap.html",
+      "sha256": "ec165d784923081d27285c5cafb12d1ddcc59ae466045a9fbb9152a1bffc2b33"
+    },
+    {
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-katalog/bahasa-english-en.webp",
+      "sha256": "78efd469490f33725d6f21340f93d65b5f9db5ad0b335d1972da20d06faa762e"
+    },
+    {
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/aset-katalog/bahasa-indonesia-id.webp",
+      "sha256": "3aada0a40ef82f04fa62ba14de2bc969e522466a7a620c2e041a6ec06f48b441"
+    }
+  ],
+  "prepared_documents": [
+    {
+      "page": "welcome",
+      "brief": "mockup/persiapan/welcome/README.md",
+      "prompt": "mockup/persiapan/welcome/prompt-detail.md"
+    },
+    {
+      "page": "akun",
+      "brief": "mockup/persiapan/akun/README.md",
+      "prompt": "mockup/persiapan/akun/prompt-detail.md"
+    },
+    {
+      "page": "peta-kedu",
+      "brief": "mockup/persiapan/peta-kedu/README.md",
+      "prompt": "mockup/persiapan/peta-kedu/prompt-detail.md"
+    },
+    {
+      "page": "peta-wilayah",
+      "brief": "mockup/persiapan/peta-wilayah/README.md",
+      "prompt": "mockup/persiapan/peta-wilayah/prompt-detail.md"
+    },
+    {
+      "page": "cerita",
+      "brief": "mockup/persiapan/cerita/README.md",
+      "prompt": "mockup/persiapan/cerita/prompt-detail.md"
+    },
+    {
+      "page": "susun-gambar",
+      "brief": "mockup/persiapan/susun-gambar/README.md",
+      "prompt": "mockup/persiapan/susun-gambar/prompt-detail.md"
+    },
+    {
+      "page": "kata-rumpang",
+      "brief": "mockup/persiapan/kata-rumpang/README.md",
+      "prompt": "mockup/persiapan/kata-rumpang/prompt-detail.md"
+    },
+    {
+      "page": "cari-kata",
+      "brief": "mockup/persiapan/cari-kata/README.md",
+      "prompt": "mockup/persiapan/cari-kata/prompt-detail.md"
+    },
+    {
+      "page": "boleh-tidak",
+      "brief": "mockup/persiapan/boleh-tidak/README.md",
+      "prompt": "mockup/persiapan/boleh-tidak/prompt-detail.md"
+    },
+    {
+      "page": "pustaka",
+      "brief": "mockup/persiapan/pustaka/README.md",
+      "prompt": "mockup/persiapan/pustaka/prompt-detail.md"
+    },
+    {
+      "page": "profil",
+      "brief": "mockup/persiapan/profil/README.md",
+      "prompt": "mockup/persiapan/profil/prompt-detail.md"
+    },
+    {
+      "page": "refleksi",
+      "brief": "mockup/persiapan/refleksi/README.md",
+      "prompt": "mockup/persiapan/refleksi/prompt-detail.md"
+    }
+  ],
+  "audio": "assets/audio/README.md",
+  "checks": [
+    "reports/catalog-update-20261014.json",
+    "reports/mockup-ui-browser-check.json",
+    "reports/browser-check-report.json"
+  ],
+  "limitations": [
+    "Future page images have not been generated or approved",
+    "Game integration and listening review are pending"
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "date": "2026-10-14",
+  "timezone": "Asia/Bangkok",
+  "page": "peta-kedu",
+  "status": "candidate",
+  "user_selected": false,
+  "method": "built-in image_gen",
+  "generation_calls": 1,
+  "prompt_file": "mockup/gambar-mockup/peta-kedu/kandidat/prompt-aktual.txt",
+  "prompt": "Use case: ui-mockup.\nCreate ONE polished COMPLETE GELITA educational adventure game screen titled \"Peta Kedu\". Fixed landscape 16:9, target 1920 x 1080. This is a proposed design candidate, not an approved design. Render the full screen edge-to-edge, no device frame, no multiple panels showing alternative screenshots.\nREFERENCE INPUTS: image 1 assets/peta/map.kedu.webp is the existing terrain map content reference: keep its mountains, winding river, terraces, woodland and Borobudur motif, adapt its finishing to warm stylized 3D; do not claim a geographically exact map. Image 2 assets/latar/bg.map.webp is the atmospheric background reference with cool mist and warm horizon. Image 3 selected challenge-result mockup defines GELITA gold/navy UI material, bevels, ornamental corners, cream lettering, HUD structure, readable hierarchy. Image 4 reference.01.webp defines Jaka identity exactly: youthful Indonesian boy, messy brown hair, cream shirt, red scarf, brown knee shorts, batik waist cloth, sandals, leather backpack. Do NOT reproduce the reference character sheet.\nCOMPOSITION: Top HUD occupies about 12% height. Ornate gold GELITA wordmark at upper left, a fine gold divider, then cream \"Peta Kedu\". Upper right three large round navy/gold controls: red-over-white Indonesian flag language button, gold speaker symbol, gold three-line menu symbol. Use the actual flag, not the old ID letter medallion.\nThe dominant LEFT and CENTER 68% area is an exciting raised 3D terrain map, aerial isometric relief, clearly separated from the background by a delicate irregular gold coastline-like outline and shadow, framed with subtle navy/gold corner ornaments. Green volcanic mountains, tiny terraced fields, villages, forest, river and small temple architectural motif. Exactly three readable large navy/gold destination plaques anchored by map pins: \"Wonosobo\" in the western/left part, \"Temanggung\" upper-middle/right, \"Magelang\" lower-right. Wonosobo and Magelang each have a small unmistakable gold padlock plus the word \"Terkunci\". Temanggung is brightly highlighted with a glowing gold ring, the word \"Tersedia\", and a gold dashed route leading toward the next destination. Locked routes remain visible in muted gray-gold. Plaques don't cover mountain summits or important temple motifs. No additional destination labels.\nThe RIGHT 27% is an elegant readable midnight navy vertical mission panel with gold bevel, corner ornament and generous inner padding. Top title \"Jelajah Kedu\", subtitle \"Pilih wilayah petualanganmu\". A compact golden shard medallion, label \"Serpihan cahaya\", value \"1 / 12\", and a horizontal 12-slot progress bar with precisely one gold slot. Thin separator. Selected-region heading \"Temanggung\", status pill \"Tersedia\", short two-line copy \"Lanjutkan petualangan dan kumpulkan serpihan cahaya.\" A large inviting rounded luminous gold primary button near the bottom of the panel: \"Jelajahi\" with dark right chevron. Keep ample safe area around text.\nBOTTOM LEFT: Jaka as a small friendly 3D guide, full-body or knee-up, about 28% screen height, not dominant and not obscuring pins. Beside him a navy/gold short guidance bubble: \"Ayo, pilih wilayah untuk dijelajahi!\" Below terrain along the bottom a compact key showing gold dot \"Tersedia\" and lock \"Terkunci\". A quiet small footer \"Data contoh\" identifies the fictional progression state.\nVISUAL FINISH: Premium warm stylized 3D game art, volumetric mist, beautiful tiny material details, sunrise rim light, dark midnight navy UI, antique gold edges and cream text. Broad readable spacing, clean sans-serif text with restrained serif map title and logo. Controlled ornament only at borders. All spelling EXACT Indonesian as given. No extraneous text, quiz answers, new characters, watermark, mobile portrait, browser chrome, wireframe, 2D painted look, or background-only image. One cohesive game UI screen with all controls visible.",
+  "references": [
+    {
+      "file": "assets/peta/map.kedu.webp",
+      "sha256": "08a99b168df583074b0e33be864c70245b2f8adea4d1424cc76990550b9fd46f"
+    },
+    {
+      "file": "assets/latar/bg.map.webp",
+      "sha256": "4bfe7b013e10df96494fa0ad27471aa085cff1430df4050efbbc803b975d5afa"
+    },
+    {
+      "file": "mockup/gambar-mockup/tantangan-selesai-temanggung/mockup-tantangan-selesai-temanggung-16-9.webp",
+      "sha256": "a28e4cbd84576d3ca9de15f517e5682ef9721ecef0fb72e50208733cba9c4d23"
+    },
+    {
+      "file": "assets/referensi/reference.01.webp",
+      "sha256": "c1dcd260911ed431b3ebea805af2c9fda3dc41c985d9e4ca422fc3494bbe75b7"
+    }
+  ],
+  "source_tool_output": "C:\\Users\\cenda\\.codex\\generated_images\\01a13941-052e-7d82-ada6-57e8a0c2f92c\\exec-972b2750-87cf-41f6-9f2a-0976dc029b1f.png",
+  "native": {
+    "file": "mockup/gambar-mockup/peta-kedu/kandidat/mockup-peta-kedu-kandidat-01-native.webp",
+    "size": [
+      1672,
+      941
+    ],
+    "sha256": "ad6be000e3f7be0166a926adb2b6c079dd786678e590c8a77ecec5e5922bb7aa"
+  },
+  "output": {
+    "file": "mockup/gambar-mockup/peta-kedu/kandidat/mockup-peta-kedu-kandidat-01-16-9.webp",
+    "size": [
+      1920,
+      1080
+    ],
+    "format": "WebP",
+    "alpha": false,
+    "sha256": "d1a003ca9e5985013d263f8a47aa3c4d5973cd72c27f57e169e931a791b3cdbc"
+  },
+  "normalization": "Proportional LANCZOS resize with tiny centered crop to exact 16:9; no new AI detail.",
+  "example_state": {
+    "region": "Temanggung",
+    "available": [
+      "Temanggung"
+    ],
+    "locked": [
+      "Wonosobo",
+      "Magelang"
+    ],
+    "shards": "1 / 12",
+    "label": "Data contoh"
+  },
+  "scope": "Full UI visual candidate only; no approved design, interactive preview or game integration.",
+  "review_limits": [
+    "Illustrative geography, not a verified scale map",
+    "Culture and licensing not verified",
+    "HTML text, translations, touch targets and interaction not yet implemented"
+  ],
+  "catalog_data_sha256": "93e0d96c6d6cb038891b344267b71e183ef2dee008ef43d16cc7e0a849f3297b"
+}

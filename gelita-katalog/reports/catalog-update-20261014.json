@@ -1,0 +1,123 @@
+{
+  "date": "2026-10-14",
+  "timezone": "Asia/Bangkok",
+  "checked_at_utc": "2026-10-14T07:05:20.443935+00:00",
+  "passed": true,
+  "entries": 611,
+  "visuals": 514,
+  "audio": 97,
+  "unchanged_narrations": 88,
+  "unchanged_entries": 600,
+  "changed_language_slots": 2,
+  "produced_audio": 9,
+  "unchanged_original_asset_files": 530,
+  "authorized_changed_files": [
+    "assets/catalog/catalog.css",
+    "assets/catalog/catalog.js",
+    "assets/referensi/reference.19.webp",
+    "assets/referensi/reference.20.webp"
+  ],
+  "original_asset_files": 534,
+  "selected_mockup_hash": "a28e4cbd84576d3ca9de15f517e5682ef9721ecef0fb72e50208733cba9c4d23",
+  "mockups": {
+    "available": 1,
+    "planned": 12
+  },
+  "audio_measurements": [
+    {
+      "key": "music/map.mp3",
+      "duration_seconds": 58.18181405895692,
+      "decoded_duration_seconds": 58.18181405895692,
+      "sample_peak_dbfs": -12.146878638721727,
+      "oversampled_peak_dbtp_estimate": -12.146878638721727,
+      "rms_dbfs": -27.342002868652344,
+      "loop_boundary_sample_delta": 0.006640516221523285,
+      "decoded": true
+    },
+    {
+      "key": "music/region.mp3",
+      "duration_seconds": 68.57142857142857,
+      "decoded_duration_seconds": 68.57142857142857,
+      "sample_peak_dbfs": -12.146190579410863,
+      "oversampled_peak_dbtp_estimate": -12.14601346405296,
+      "rms_dbfs": -28.625429153442383,
+      "loop_boundary_sample_delta": 0.0002146330662071705,
+      "decoded": true
+    },
+    {
+      "key": "music/challenge.mp3",
+      "duration_seconds": 73.84614512471656,
+      "decoded_duration_seconds": 73.84614512471656,
+      "sample_peak_dbfs": -12.145375249907461,
+      "oversampled_peak_dbtp_estimate": -12.145224348984032,
+      "rms_dbfs": -28.020503997802734,
+      "loop_boundary_sample_delta": 0.00083903968334198,
+      "decoded": true
+    },
+    {
+      "key": "sfx/click.mp3",
+      "duration_seconds": 0.13,
+      "decoded_duration_seconds": 0.13,
+      "sample_peak_dbfs": -5.4834870065760555,
+      "oversampled_peak_dbtp_estimate": -5.480452633259333,
+      "rms_dbfs": -16.617645263671875,
+      "loop_boundary_sample_delta": null,
+      "decoded": true
+    },
+    {
+      "key": "sfx/correct.mp3",
+      "duration_seconds": 0.9,
+      "decoded_duration_seconds": 0.9,
+      "sample_peak_dbfs": -5.483646637342984,
+      "oversampled_peak_dbtp_estimate": -5.483646637342984,
+      "rms_dbfs": -16.70677375793457,
+      "loop_boundary_sample_delta": null,
+      "decoded": true
+    },
+    {
+      "key": "sfx/wrong.mp3",
+      "duration_seconds": 0.9,
+      "decoded_duration_seconds": 0.9,
+      "sample_peak_dbfs": -5.481992070566674,
+      "oversampled_peak_dbtp_estimate": -5.480274574361444,
+      "rms_dbfs": -17.32592010498047,
+      "loop_boundary_sample_delta": null,
+      "decoded": true
+    },
+    {
+      "key": "sfx/lock.mp3",
+      "duration_seconds": 0.5,
+      "decoded_duration_seconds": 0.5,
+      "sample_peak_dbfs": -5.480918717274012,
+      "oversampled_peak_dbtp_estimate": -5.480918717274012,
+      "rms_dbfs": -19.352066040039062,
+      "loop_boundary_sample_delta": null,
+      "decoded": true
+    },
+    {
+      "key": "sfx/shard.mp3",
+      "duration_seconds": 3.2,
+      "decoded_duration_seconds": 3.2,
+      "sample_peak_dbfs": -5.46649921584565,
+      "oversampled_peak_dbtp_estimate": -5.461554012767946,
+      "rms_dbfs": -19.1607608795166,
+      "loop_boundary_sample_delta": null,
+      "decoded": true
+    },
+    {
+      "key": "sfx/region-done.mp3",
+      "duration_seconds": 5.1,
+      "decoded_duration_seconds": 5.1,
+      "sample_peak_dbfs": -5.481501600746636,
+      "oversampled_peak_dbtp_estimate": -5.481440293966431,
+      "rms_dbfs": -16.938907623291016,
+      "loop_boundary_sample_delta": null,
+      "decoded": true
+    }
+  ],
+  "limitations": [
+    "Oversampled peak is a four-times interpolation estimate, not certified BS.1770 metering",
+    "No subjective listening, traditional tuning or game mix validation",
+    "Preview and documents do not establish integration into the game"
+  ]
+}

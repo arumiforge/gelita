@@ -1,5 +1,11 @@
 # Laporan dan lingkup pemeriksaan
 
+Peta Kedu kandidat04: [browser/DOM](peta-kedu-04-browser-check.json) memeriksa typewriter, lapisan terkunci, ID/EN, menu/audio, tujuh gambar galeri/iframe dan target sentuh nyata pada delapan konfigurasi. [Paket/hash](peta-kedu-04-package-check.json) memeriksa master1774×887, empat render1920×1080, enam skin asli dan preservasi data/kandidat01–03. Perangkat fisik/fullscreen dan integrasi game belum diuji.
+
+[Peta Kedu kandidat03](peta-kedu-candidate-03-check-20261014.json) memeriksa native/final, preservasi kandidat01/02/data dan14 kotak sentuh rencana pada640×360/854×480. Ukuran kecil disimpan untuk review visual. Perhitungan kotak bukan validasi DOM, touchscreen atau integrasi game.
+
+[Peta Kedu kandidat 02](peta-kedu-candidate-02-check-20261014.json) memeriksa native/final, hash referensi/data/kandidat01 dan inventaris berlabel belum dipilih. Mencatat pembacaan web asli secara baca saja, serta browser galeri lokal yang diblokir protokol file. Bukan uji interaksi/integrasi Peta Kedu.
+
 Laporan bukan sumber entri. Baca tanggal/lingkupnya bersama [PROGRESS.md](../docs/PROGRESS.md). Memindahkan laporan tidak berarti pemeriksaan dijalankan ulang.
 
 | Berkas | Asal dan makna |
@@ -23,3 +29,6 @@ Keputusan gaya tetap 11 Oktober 2026 meskipun build dilakukan kemudian. Data aud
 Revisi puzzle 14 Oktober: [metrik keping](puzzle-tile-review-20261014.json) dan [verifikasi data/hash/ukuran](puzzle-update-verification-20261014.json). Metrik bukan validasi budaya atau uji susun manusia.
 
 [Browser puzzle](puzzle-browser-check-20261014.json) mencatat 10 puzzle tiap wilayah, koleksi 66 Tantangan, detail dan pembukaan WebP baru. Pemeriksaan 25 detail dilakukan dalam browser-check.cjs.
+
+
+[Pemeriksaan paket katalog 14 Oktober](catalog-update-20261014.json) meliputi slot bahasa, preservasi 600 entri, 88 Narasi, decode/durasi/puncak audio serta inventaris mockup. Laporan historis hash/mockup/puzzle tetap memakai snapshot terdahulu.

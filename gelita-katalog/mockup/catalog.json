@@ -1,0 +1,170 @@
+{
+  "revision": "2026-10-15",
+  "canvas": {
+    "width": 1920,
+    "height": 1080
+  },
+  "pages": [
+    {
+      "id": "hasil",
+      "title": "Tantangan selesai",
+      "status": "available",
+      "description": "Konsep bersama lintas wilayah. Temanggung sebagai contoh; lihat referensi pilihan dan empat keadaan UI.",
+      "brief": "mockup/gambar-mockup/tantangan-selesai-temanggung/README.md",
+      "image": "mockup/gambar-mockup/tantangan-selesai-temanggung/mockup-tantangan-selesai-temanggung-16-9.webp",
+      "preview": "mockup/gambar-mockup/tantangan-selesai-temanggung/preview-ui-lengkap.html",
+      "states": [
+        {
+          "label": "Pilihan pengguna",
+          "kind": "selected-reference",
+          "image": "mockup/gambar-mockup/tantangan-selesai-temanggung/mockup-tantangan-selesai-temanggung-16-9.webp"
+        },
+        {
+          "label": "UI utama",
+          "kind": "coded-preview",
+          "image": "mockup/gambar-mockup/tantangan-selesai-temanggung/variasi-ui/tampilan-utama/mockup-ui-tampilan-utama-16-9.webp"
+        },
+        {
+          "label": "Bahasa",
+          "kind": "coded-preview",
+          "image": "mockup/gambar-mockup/tantangan-selesai-temanggung/variasi-ui/bahasa-terbuka/mockup-ui-bahasa-terbuka-16-9.webp"
+        },
+        {
+          "label": "Menu",
+          "kind": "coded-preview",
+          "image": "mockup/gambar-mockup/tantangan-selesai-temanggung/variasi-ui/menu-terbuka/mockup-ui-menu-terbuka-16-9.webp"
+        },
+        {
+          "label": "Detail hasil",
+          "kind": "coded-preview",
+          "image": "mockup/gambar-mockup/tantangan-selesai-temanggung/variasi-ui/detail-hasil-terbuka/mockup-ui-detail-hasil-terbuka-16-9.webp"
+        }
+      ],
+      "default_state": 1
+    },
+    {
+      "id": "welcome",
+      "title": "Halaman pembuka",
+      "status": "planned",
+      "priority": "P1",
+      "description": "Logo besar pada sisi kiri, Jaka di sisi kanan; satu tombol Mulai yang dominan dan akses Masuk yang jelas.",
+      "brief": "mockup/persiapan/welcome/README.md",
+      "prompt": "mockup/persiapan/welcome/prompt-detail.md"
+    },
+    {
+      "id": "akun",
+      "title": "Masuk dan daftar",
+      "status": "planned",
+      "priority": "P2",
+      "description": "Panel formulir navy di tengah; lentera penyambut menjadi dekorasi tepi. Label dan kesalahan tetap teks HTML.",
+      "brief": "mockup/persiapan/akun/README.md",
+      "prompt": "mockup/persiapan/akun/prompt-detail.md"
+    },
+    {
+      "id": "peta-kedu",
+      "title": "Peta Kedu",
+      "status": "planned",
+      "priority": "P1",
+      "description": "Kandidat 04 interaktif: diorama tiga lapisan, wilayah terkunci meredup, jalur putus, cerita mengetik dengan dot progres, kontrol ikon dan tombol bergambar katalog. Pustaka/Profil di menu; belum dipilih pengguna.",
+      "candidate": {
+        "label": "Kandidat 04 interaktif · belum dipilih",
+        "image": "mockup/gambar-mockup/peta-kedu/revisi-04/variasi-ui/wilayah-terkunci/mockup-wilayah-terkunci-16-9.webp",
+        "brief": "mockup/gambar-mockup/peta-kedu/revisi-04/README.md",
+        "prompt": "mockup/gambar-mockup/peta-kedu/revisi-04/prompt-diorama.txt",
+        "preview": "mockup/gambar-mockup/peta-kedu/revisi-04/preview.html",
+        "states": [
+          {"label": "04 · wilayah terkunci", "kind": "coded-preview", "image": "mockup/gambar-mockup/peta-kedu/revisi-04/variasi-ui/wilayah-terkunci/mockup-wilayah-terkunci-16-9.webp"},
+          {"label": "04 · progres 9/12", "kind": "coded-preview", "image": "mockup/gambar-mockup/peta-kedu/revisi-04/variasi-ui/progres-terbuka/mockup-progres-terbuka-16-9.webp"},
+          {"label": "04 · menu", "kind": "coded-preview", "image": "mockup/gambar-mockup/peta-kedu/revisi-04/variasi-ui/menu-terbuka/mockup-menu-terbuka-16-9.webp"},
+          {"label": "04 · English", "kind": "coded-preview", "image": "mockup/gambar-mockup/peta-kedu/revisi-04/variasi-ui/english/mockup-english-16-9.webp"},
+          {"label": "Riwayat 03", "kind": "candidate-history", "image": "mockup/gambar-mockup/peta-kedu/kandidat/mockup-peta-kedu-kandidat-03-16-9.webp"},
+          {"label": "Riwayat 02", "kind": "candidate-history", "image": "mockup/gambar-mockup/peta-kedu/kandidat/mockup-peta-kedu-kandidat-02-16-9.webp"},
+          {"label": "Riwayat 01", "kind": "candidate-history", "image": "mockup/gambar-mockup/peta-kedu/kandidat/mockup-peta-kedu-kandidat-01-16-9.webp"}
+        ]
+      },
+      "brief": "mockup/persiapan/peta-kedu/README.md",
+      "prompt": "mockup/persiapan/peta-kedu/prompt-detail.md"
+    },
+    {
+      "id": "peta-wilayah",
+      "title": "Peta wilayah",
+      "status": "planned",
+      "priority": "P1",
+      "description": "Satu komponen lintas wilayah: titik tantangan, jalur perjalanan, ringkasan misi dan tombol masuk.",
+      "brief": "mockup/persiapan/peta-wilayah/README.md",
+      "prompt": "mockup/persiapan/peta-wilayah/prompt-detail.md"
+    },
+    {
+      "id": "cerita",
+      "title": "Cerita dan dialog",
+      "status": "planned",
+      "priority": "P1",
+      "description": "Latar sinematik dan Jaka/Mbah Kedu; panel dialog di bagian bawah dengan teks pendek, nama pembicara dan navigasi.",
+      "brief": "mockup/persiapan/cerita/README.md",
+      "prompt": "mockup/persiapan/cerita/prompt-detail.md"
+    },
+    {
+      "id": "susun-gambar",
+      "title": "Susun Gambar",
+      "status": "planned",
+      "priority": "P1",
+      "description": "Papan puzzle di tengah kiri, contoh kecil di kanan, petunjuk dan kontrol di safe area; jangan menutup keping dengan HUD.",
+      "brief": "mockup/persiapan/susun-gambar/README.md",
+      "prompt": "mockup/persiapan/susun-gambar/prompt-detail.md"
+    },
+    {
+      "id": "kata-rumpang",
+      "title": "Kata Rumpang",
+      "status": "planned",
+      "priority": "P1",
+      "description": "Teks cerita di panel krem/navy berkontras tinggi, slot kata dan pilihan yang lega. Pertahankan urutan membaca.",
+      "brief": "mockup/persiapan/kata-rumpang/README.md",
+      "prompt": "mockup/persiapan/kata-rumpang/prompt-detail.md"
+    },
+    {
+      "id": "cari-kata",
+      "title": "Cari Kata",
+      "status": "planned",
+      "priority": "P2",
+      "description": "Kisi huruf sebagai fokus, daftar kata di kanan dan petunjuk ringkas. Gunakan label HTML agar bentuk huruf tajam.",
+      "brief": "mockup/persiapan/cari-kata/README.md",
+      "prompt": "mockup/persiapan/cari-kata/prompt-detail.md"
+    },
+    {
+      "id": "boleh-tidak",
+      "title": "Boleh atau Tidak",
+      "status": "planned",
+      "priority": "P1",
+      "description": "Adegan budaya lebar, kartu objek yang jelas, dua kontrol keputusan dan umpan balik yang ramah.",
+      "brief": "mockup/persiapan/boleh-tidak/README.md",
+      "prompt": "mockup/persiapan/boleh-tidak/prompt-detail.md"
+    },
+    {
+      "id": "pustaka",
+      "title": "Pustaka budaya",
+      "status": "planned",
+      "priority": "P2",
+      "description": "Galeri budaya dengan filter wilayah; detail gambar dan teks pendukung. Foto/media faktual tetap dokumenter.",
+      "brief": "mockup/persiapan/pustaka/README.md",
+      "prompt": "mockup/persiapan/pustaka/prompt-detail.md"
+    },
+    {
+      "id": "profil",
+      "title": "Profil penjelajah",
+      "status": "planned",
+      "priority": "P2",
+      "description": "Avatar dan progres perjalanan di kiri; pengaturan akun di kanan. Gunakan data contoh fiktif, tanpa data pribadi.",
+      "brief": "mockup/persiapan/profil/README.md",
+      "prompt": "mockup/persiapan/profil/prompt-detail.md"
+    },
+    {
+      "id": "refleksi",
+      "title": "Refleksi dan penutup wilayah",
+      "status": "planned",
+      "priority": "P2",
+      "description": "Jaka/Mbah Kedu mendampingi pertanyaan refleksi, serpihan sebagai penanda capaian dan tombol lanjut yang jelas.",
+      "brief": "mockup/persiapan/refleksi/README.md",
+      "prompt": "mockup/persiapan/refleksi/prompt-detail.md"
+    }
+  ]
+}

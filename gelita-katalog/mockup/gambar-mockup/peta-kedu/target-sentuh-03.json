@@ -1,0 +1,144 @@
+{
+  "canvas": {
+    "width": 1920,
+    "height": 1080
+  },
+  "type": "proposed_code_geometry_not_measured_from_raster",
+  "viewports": [
+    {
+      "width": 640,
+      "height": 360
+    },
+    {
+      "width": 854,
+      "height": 480
+    }
+  ],
+  "minimum_screen_target": 44,
+  "map": {
+    "x": 48,
+    "y": 170,
+    "width": 1240,
+    "height": 520
+  },
+  "story": {
+    "x": 40,
+    "y": 710,
+    "width": 1840,
+    "height": 190
+  },
+  "avatar": {
+    "x": 60,
+    "y": 713,
+    "width": 184,
+    "height": 184
+  },
+  "targets": [
+    {
+      "id": "language",
+      "x": 1424,
+      "y": 4,
+      "width": 144,
+      "height": 144
+    },
+    {
+      "id": "sound",
+      "x": 1592,
+      "y": 4,
+      "width": 144,
+      "height": 144
+    },
+    {
+      "id": "menu",
+      "x": 1760,
+      "y": 4,
+      "width": 144,
+      "height": 144
+    },
+    {
+      "id": "shards",
+      "x": 750,
+      "y": 14,
+      "width": 520,
+      "height": 132
+    },
+    {
+      "id": "wonosobo",
+      "x": 244,
+      "y": 330,
+      "width": 300,
+      "height": 240
+    },
+    {
+      "id": "temanggung",
+      "x": 800,
+      "y": 194,
+      "width": 288,
+      "height": 224
+    },
+    {
+      "id": "magelang",
+      "x": 704,
+      "y": 444,
+      "width": 300,
+      "height": 224
+    },
+    {
+      "id": "kenali",
+      "x": 1350,
+      "y": 536,
+      "width": 244,
+      "height": 144
+    },
+    {
+      "id": "region-next",
+      "x": 1620,
+      "y": 536,
+      "width": 244,
+      "height": 144
+    },
+    {
+      "id": "story-previous",
+      "x": 1076,
+      "y": 734,
+      "width": 144,
+      "height": 144
+    },
+    {
+      "id": "story-play",
+      "x": 1270,
+      "y": 734,
+      "width": 144,
+      "height": 144
+    },
+    {
+      "id": "story-next",
+      "x": 1470,
+      "y": 734,
+      "width": 360,
+      "height": 144
+    },
+    {
+      "id": "library",
+      "x": 40,
+      "y": 946,
+      "width": 600,
+      "height": 132
+    },
+    {
+      "id": "profile",
+      "x": 1440,
+      "y": 946,
+      "width": 440,
+      "height": 132
+    }
+  ],
+  "notes": [
+    "Coordinate plan for code implementation; image_gen output only approximates these rectangles.",
+    "144 base pixels equals 48px at 640x360; footer/shard 132 base pixels equals44px.",
+    "Map destination target includes whole medallion and city label.",
+    "Star/check accents and part1/3 are display-only; no nested tiny targets.",
+    "Language selector opens ID/EN rows of144px height; menu holds profile/home/fullscreen/logout.",
+    "Story shows a short excerpt; preserve source narration order and full text during integration."
+  ]
+}

@@ -39,7 +39,7 @@ HUD: logo + nama wilayah di kiri; bahasa + suara + menu di kanan. Tanpa bilah ba
 
 Waktu, percobaan, bintang, semua-benar, total koleksi dan pesan diambil dari state permainan. Jangan hardcode hasil screenshot atau menambah hadiah saat layar dibuka ulang. Rating tiga bintang harus mempunyai label yang terbaca, misalnya “2 dari 3 bintang”.
 
-Gunakan button/link sesuai fungsi, nama aksesibel pada ikon, indikator fokus, keyboard, dan kontras yang terukur pada latar sebenarnya. Popover/menu menutup melalui tombol tutup, klik luar bila sesuai, dan Escape; kembalikan fokus ke pemicu. Kelola fokus sebagai modal hanya jika menu benar-benar modal. Animasi kilau singkat dan menghormati prefers-reduced-motion; jangan mengubah audio yang dibekukan.
+Gunakan button/link sesuai fungsi, nama aksesibel pada ikon, indikator fokus, keyboard, dan kontras yang terukur pada latar sebenarnya. Popover/menu menutup melalui tombol tutup, klik luar bila sesuai, dan Escape; kembalikan fokus ke pemicu. Kelola fokus sebagai modal hanya jika menu benar-benar modal. Animasi kilau singkat dan menghormati prefers-reduced-motion; jangan mengubah 88 Narasi yang dibekukan; preview memakai sembilan audio nonnarasi yang diminta 14 Oktober.
 
 ## 6. Integrasikan aset melalui pemetaan slot
 
@@ -52,3 +52,6 @@ Katalog kini 590 entri: 580 entri awal, 8 aset hasil, dan 2 ikon bahasa. Seluruh
 Bandingkan komposisi dengan mockup 01. Uji komponen hasil pada seluruh kota/wilayah yang dikonfigurasi: pergantian nama, jenis tantangan, latar, label/rute peta, hasil dan kondisi tantangan terakhir. Uji landscape pada lebar tampilan game yang benar-benar didukung, termasuk 640 px dan 854 px bila didukung. Ukur area klik akhir; target 44–48 px. Uji batas panel, crop/letterbox sesuai aplikasi, menu, bahasa, speaker, detail, profil, fullscreen, keluar, kedua tujuan peta, Berikutnya, refresh, pembukaan ulang hasil, dan kondisi akhir wilayah/game.
 
 Jalankan pemeriksaan repositori yang relevan; simpan screenshot hasil aktual. Laporkan file berubah, uji yang benar-benar dijalankan, nilai ukuran sentuh terukur, serta kendala. Paket referensi ini belum membuktikan integrasi game, budaya, lisensi, atau seluruh gambar siap produksi.
+
+
+Revisi 14 Oktober: speaker preview kini nyata, diawali mute; musik region looping + efek shard saat pertama diaktifkan, click pada kontrol. Gunakan file resmi assets/audio dan jangan membuat narasi. Alias gambar ID/EN juga sekarang menggunakan bendera terbaru; SVG label lama hanya riwayat. Integrasi audio/rute/hasil ke aplikasi asli tetap perlu pekerjaan terpisah.

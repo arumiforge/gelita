@@ -1,0 +1,45 @@
+{
+  "date": "2026-10-14",
+  "timezone": "Asia/Bangkok",
+  "checked_at_utc": "2026-10-14T07:37:46.422718+00:00",
+  "passed": true,
+  "scope": "Candidate 02 packaging and source inventory; not an interactive-game test",
+  "checks": [
+    "Final opaque RGB WebP 1920x1080",
+    "Native RGB identical to tool output",
+    "Five local reference hashes match manifest",
+    "Candidate 01 final/native hashes unchanged",
+    "data.json hash unchanged from candidate 01",
+    "Candidate 02 labeled unselected, page remains planned, no interactive preview claimed",
+    "Build and catalog validator passed"
+  ],
+  "original_web_inspection": {
+    "url": "https://gelita.id/peta#app",
+    "method": "Read-only Chrome DOM and screenshot",
+    "pin_coordinates": {
+      "temanggung": {
+        "left": 65,
+        "top": 41
+      },
+      "magelang": {
+        "left": 56,
+        "top": 71
+      },
+      "wonosobo": {
+        "left": 28,
+        "top": 55
+      }
+    }
+  },
+  "local_browser_gallery": {
+    "status": "blocked",
+    "reason": "Browser policy rejects file protocol; no workaround attempted",
+    "fallback": "Static inventory/build/link checks and local image decode"
+  },
+  "limits": [
+    "Raster pin locations approximate source CSS percentages",
+    "No interactive Peta Kedu UI, hit-area or game integration test",
+    "Candidate not user-selected",
+    "Culture/licensing not verified"
+  ]
+}

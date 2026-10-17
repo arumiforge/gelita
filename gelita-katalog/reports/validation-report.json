@@ -1,6 +1,6 @@
 {
-  "date": "2026-10-14",
-  "checked_at_utc": "2026-10-14T03:29:25.009Z",
+  "date": "2026-10-15",
+  "checked_at_utc": "2026-10-15T01:42:17.218Z",
   "checks": [
     "611 unique IDs and keys",
     "514 visuals have style reviews and existing files",
@@ -14,17 +14,26 @@
     "Semantic filenames verified",
     "475 migrated paths resolve",
     "HTML data exactly matches data.json",
-    "97 audio objects unchanged",
+    "88 narration objects unchanged; 9 non-narration audio objects changed only in authorized production fields",
     "Original target dimensions unchanged; new frames are 700 × 900",
     "Requested character folder deleted",
     "Organized folders exist and source/sources removed",
     "Current Markdown and static HTML links resolve"
   ],
   "documentation": {
-    "files": 35,
-    "links": 894,
+    "files": 73,
+    "links": 1234,
     "historical_archive_body_links_excluded": true
   },
-  "static_html_links": 20,
+  "static_html_links": 26,
+  "audio": {
+    "total": 97,
+    "narration_unchanged": 88,
+    "available": 9
+  },
+  "mockups": {
+    "available": 1,
+    "planned": 12
+  },
   "passed": true
 }

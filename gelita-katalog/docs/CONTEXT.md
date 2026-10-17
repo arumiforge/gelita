@@ -1,10 +1,12 @@
 # Konteks proyek
 
-Kondisi terdokumentasi: 14 Oktober 2026 (Asia/Bangkok). Paket `gelita-katalog` adalah katalog statis internal aset game edukasi kelas 5 tentang Temanggung, Magelang, dan Wonosobo. Buka melalui [index.html](../index.html); ini bukan source aplikasi GELITA lengkap.
+Revisi Peta Kedu terbaru15Oktober: [kandidat04](../mockup/gambar-mockup/peta-kedu/revisi-04/README.md) memiliki preview HTML interaktif, efek ketik/dot progres/kontrol ikon, Pustaka/Profil dalam menu, ikon Kenali buku/kaca pembesar dan tombol bergambar katalog. Master diorama baru1774×887 dipotong tiga lapisan clip-path; wilayah terkunci meredup dan jalur putus terpisah. [Browser check](../reports/peta-kedu-04-browser-check.json) mengukur target DOM preview640×360/854×480, bukan perangkat fisik. Kandidat belum dipilih pengguna dan belum diintegrasikan ke web asli.
+
+Kondisi terdokumentasi: 15 Oktober 2026 (Asia/Bangkok). Paket `gelita-katalog` adalah katalog statis internal aset game edukasi kelas 5 tentang Temanggung, Magelang, dan Wonosobo. Buka melalui [index.html](../index.html); ini bukan source aplikasi GELITA lengkap.
 
 ## Batas paket
 
-Tersedia: 611 entri, gambar, template HTML, skrip, provenance, laporan, arsip, serta bahan revisi bank soal XLSX/naskah/puzzle di `update/`. Backend, database game, konfigurasi slot aplikasi, rekaman audio, dan pengujian integrasi game tidak disertakan. Dokumen lama menyebut 12 tantangan kelas 5; katalog memiliki 66 entri visual Tantangan, sehingga kedua angka mengukur hal berbeda.
+Tersedia: 611 entri, gambar, template HTML, skrip, provenance, laporan, arsip, serta bahan revisi bank soal XLSX/naskah/puzzle di `update/`. Backend, database game, konfigurasi slot aplikasi, rekaman narasi, dan pengujian integrasi game tidak disertakan. Sembilan pratinjau audio sintetis nonnarasi tersedia. Dokumen lama menyebut 12 tantangan kelas 5; katalog memiliki 66 entri visual Tantangan, sehingga kedua angka mengukur hal berbeda.
 
 ## Layar aplikasi asli
 
@@ -30,7 +32,7 @@ Manifest bisa memuat lokasi gambar di komputer pembuat yang tidak tersedia di ch
 
 Semua visual “Sesuai gaya” berdasarkan `user_override`: 273 entri awal mempertahankan keputusan 11 Oktober dan 210 frame tambahan mengikuti permintaan 12 Oktober; 8 aset hasil mengikuti contoh UI pilihan pada 13 Oktober. Termasuk aset lama di luar karakter yang belum diperbaiki. Audit lama (68 sesuai, 141 belum sesuai, 3 perlu tinjau, 61 tidak berlaku) tetap di `previous_style_review`; angka itu bukan status saat ini. Semua 461 raster aktif tepat target. Resize mempertahankan proporsi melalui crop/padding, tidak menambah detail atau memperbaiki gaya.
 
-97 brief audio (88 narasi, 3 musik, 6 efek suara) identik dengan baseline. Target 100 narasi per bahasa pada dokumen asal adalah kebutuhan aplikasi terdahulu, bukan rekaman yang tersedia dalam paket ini.
+97 entri audio: 88 narasi berupa brief identik baseline; 3 musik dan 6 efek suara memiliki MP3/master WAV sintetis atas permintaan 14 Oktober. Baseline 97 brief asli tetap utuh; validator mengizinkan hanya metadata produksi sembilan slot tersebut. Target 100 narasi per bahasa pada dokumen asal adalah kebutuhan aplikasi terdahulu, bukan rekaman yang tersedia dalam paket ini.
 
 ## Struktur dan sejarah
 
@@ -41,8 +43,11 @@ Arsip merekam kondisi lama, termasuk arahan 2D dan rencana katalog belum dibangu
 
 Revisi 13 Oktober: full UI hasil memakai skin panel/tombol khusus sesuai mockup pilihan. Enam WebP dibuat, lanskap yang sudah tersedia dipromosikan sebagai bg.result.temanggung, dan efek SVG dilapis di avatar.2. [Manifest](../provenance/result-ui-generation-results-20261013.json). Ini bahan katalog dan preview; halaman aplikasi asli belum diintegrasikan.
 
-Bahasa mengikuti keputusan terbaru: icon.language-id menampilkan merah–putih Indonesia dan icon.language-en menampilkan bendera UK. Dua slot baru; reference.19/20 tetap utuh. Ikon dipakai pada HUD dan popover preview.
+Bahasa mengikuti keputusan terbaru: icon.language-id menampilkan merah–putih Indonesia dan icon.language-en menampilkan bendera UK. Dua slot bendera ditambahkan 13 Oktober; pada 14 Oktober, reference.19/20 juga memakai salinan bendera terbaru, mempertahankan kode, ukuran, alpha dan riwayat gaya. Ikon dipakai pada HUD dan popover preview.
 
 Keputusan cakupan hasil 13 Oktober: satu konsep UI “Tantangan selesai” digunakan bersama pada seluruh kota/wilayah, bukan khusus Temanggung. Kota pada screenshot hanya contoh. Implementasi memakai konteks wilayah dan hasil dinamis; pemilihan background mengikuti mapping aset aplikasi.
 
 Revisi gambar puzzle 14 Oktober: menambah 21 slot d–j dan mengganti empat slot lama sesuai panduan revisi. Katalog kini memiliki 66 visual Tantangan, termasuk 30 gambar Susun Gambar (lima gambar lama lainnya dipertahankan). 25 gambar hasil generasi memakai prompt terbaru dan WebP opak 1200 × 1200. Sebanyak 21 entri baru mengikuti basis user_override dalam permintaan pengguna; riwayat semua entri lama dipertahankan. [Catatan paket](PUZZLE-UPDATE-20261014.md). Ini belum merupakan pemasangan ke aplikasi atau verifikasi penelitian.
+
+
+Galeri mockup ditanam dari [inventaris halaman](../mockup/catalog.json), terpisah dari 611 aset/brief. Satu desain hasil tersedia dengan referensi pilihan dan empat render state; 12 paket halaman berikutnya masih status planned. Peta Kedu memiliki [kandidat full UI 1920 × 1080](../mockup/gambar-mockup/peta-kedu/README.md), belum dipilih pengguna; kandidat04 memiliki preview interaktif dan riwayat01–03; 11 halaman lain belum memiliki gambar baru. [Dokumen persiapan](../mockup/persiapan/README.md). Audio memakai sintesis modal lokal untuk review; bukan rekaman tradisional autentik. Speaker preview hasil kini memainkan musik wilayah, serpihan dan klik setelah diaktifkan pengguna.

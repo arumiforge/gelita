@@ -26,7 +26,8 @@ const saveWebp=(buffer,file)=>execFileSync('python',['-c','import io,sys; from P
   assert.equal(await page.locator('#result-title').innerText(),'Challenge complete!');
   assert.ok((await page.locator('#current-language-icon').getAttribute('src')).endsWith('bahasa-english-uk-flag.webp'));
   await page.locator('#language-trigger').click();await page.locator('[data-language="id"]').click();
-  await page.locator('#sound-trigger').click();assert.equal(await page.locator('#sound-trigger').getAttribute('aria-pressed'),'true');
+  await page.locator('#sound-trigger').click();assert.equal(await page.locator('#sound-trigger').getAttribute('aria-pressed'),'false');
+  await page.waitForFunction(()=>window.gelitaPreview.state.audioStarted&&window.gelitaPreview.audio[0].currentTime>0);
   await page.locator('#sound-trigger').click();
   await page.locator('#menu-trigger').click();assert.equal(await page.locator('#menu-sheet').isVisible(),true);
   await capture('menu-terbuka');
@@ -49,7 +50,7 @@ const saveWebp=(buffer,file)=>execFileSync('python',['-c','import io,sys; from P
   }
   await page.evaluate(()=>window.gelitaPreview.close());
   assert.deepEqual(errors,[]);
-  const report={date:new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Bangkok'}),timezone:'Asia/Bangkok',checked_at_utc:new Date().toISOString(),passed:true,images,checks:['All local images loaded','Four complete UI states rendered at 1920x1080','Indonesia and UK flag catalogue icons; language choices, translations and active flag switch','Speaker UI toggle','Menu open/Escape and focus return','Detail first-attempt information','Fixed 16:9 canvas scaling','Visible touch controls at least 44px and inside game viewport at 640x360 and 854x480','No JavaScript page errors'],touch_measurements:touch,limitations:['This is a standalone coded preview, not the original game','Route, account and reward actions are preview placeholders','Speaker state does not create or play audio','Fullscreen implementation present; physical device/browser fullscreen behavior not verified','Coded preview and state images are derivatives, not replacement approval of the selected mockup']};
+  const report={date:new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Bangkok'}),timezone:'Asia/Bangkok',checked_at_utc:new Date().toISOString(),passed:true,images,checks:['All local images loaded','Four complete UI states rendered at 1920x1080','Indonesia and UK flag catalogue icons; language choices, translations and active flag switch','Speaker enables local instrumental and reward audio after user click; mute pauses playback','Menu open/Escape and focus return','Detail first-attempt information','Fixed 16:9 canvas scaling','Visible touch controls at least 44px and inside game viewport at 640x360 and 854x480','No JavaScript page errors'],touch_measurements:touch,limitations:['This is a standalone coded preview, not the original game','Route, account and reward actions are preview placeholders','Local synthesized preview sounds; subjective listening and game mix review pending','Fullscreen implementation present; physical device/browser fullscreen behavior not verified','Coded preview and state images are derivatives, not replacement approval of the selected mockup']};
   fs.writeFileSync(path.join(root,'reports/mockup-ui-browser-check.json'),JSON.stringify(report,null,2)+'\n');
   console.log(JSON.stringify({passed:true,states:images.length,touch_viewports:2,errors}));
   await browser.close();

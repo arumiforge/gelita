@@ -1,0 +1,82 @@
+{
+  "date": "2026-10-15",
+  "checked_at_utc": "2026-10-15T01:40:26.117978+00:00",
+  "passed": true,
+  "checks": [
+    "Master RGB identical to image_gen output; native and shipped WebP hashes identical",
+    "Four full UI renders1920x1080",
+    "Six official skin hashes match original generation provenance",
+    "data.json and six native/final files for candidates01-03 unchanged",
+    "Candidate04 nested preview and7 states/history available without user-selection claim"
+  ],
+  "data_sha256": "93e0d96c6d6cb038891b344267b71e183ef2dee008ef43d16cc7e0a849f3297b",
+  "master": {
+    "file": "mockup/gambar-mockup/peta-kedu/revisi-04/aset/diorama.kedu-tiga-wilayah.webp",
+    "size": [
+      1774,
+      887
+    ],
+    "format": "WEBP",
+    "alpha": false,
+    "sha256": "938f1fca00c210e25651275e420f117bd77b8b05316074bbf3922e61d219b534"
+  },
+  "renders": [
+    {
+      "file": "mockup/gambar-mockup/peta-kedu/revisi-04/variasi-ui/wilayah-terkunci/mockup-wilayah-terkunci-16-9.webp",
+      "size": [
+        1920,
+        1080
+      ],
+      "format": "WEBP",
+      "alpha": false,
+      "sha256": "7e594472d4ee6b7c2cd01bd268eed3938a9279d8dfd3ec5d1bbf5b2e6c67faa9"
+    },
+    {
+      "file": "mockup/gambar-mockup/peta-kedu/revisi-04/variasi-ui/progres-terbuka/mockup-progres-terbuka-16-9.webp",
+      "size": [
+        1920,
+        1080
+      ],
+      "format": "WEBP",
+      "alpha": false,
+      "sha256": "a24923481ab09f5ac6555500278d7dc04cef10781a489828812e6e6a9a5690f8"
+    },
+    {
+      "file": "mockup/gambar-mockup/peta-kedu/revisi-04/variasi-ui/menu-terbuka/mockup-menu-terbuka-16-9.webp",
+      "size": [
+        1920,
+        1080
+      ],
+      "format": "WEBP",
+      "alpha": false,
+      "sha256": "e480c0d5fa52b5b81572b4a168af44780988d6a5692ae41068d76f0bf3392470"
+    },
+    {
+      "file": "mockup/gambar-mockup/peta-kedu/revisi-04/variasi-ui/english/mockup-english-16-9.webp",
+      "size": [
+        1920,
+        1080
+      ],
+      "format": "WEBP",
+      "alpha": false,
+      "sha256": "7cfed1e8e35912cb5fdfb8c14ffdd0b4ee13106c24115eae49d5500d72147b7c"
+    }
+  ],
+  "reused_skin_files": [
+    "assets/antarmuka/ui.result-panel.webp",
+    "assets/antarmuka/ui.result-button-primary.webp",
+    "assets/antarmuka/ui.result-button-secondary.webp",
+    "assets/antarmuka/ui.result-button-detail.webp",
+    "assets/antarmuka/ui.result-hud-control.webp",
+    "assets/antarmuka/ui.result-star.webp"
+  ],
+  "preserved_files": [
+    "mockup/gambar-mockup/peta-kedu/kandidat/mockup-peta-kedu-kandidat-01-native.webp",
+    "mockup/gambar-mockup/peta-kedu/kandidat/mockup-peta-kedu-kandidat-01-16-9.webp",
+    "mockup/gambar-mockup/peta-kedu/kandidat/mockup-peta-kedu-kandidat-02-native.webp",
+    "mockup/gambar-mockup/peta-kedu/kandidat/mockup-peta-kedu-kandidat-02-16-9.webp",
+    "mockup/gambar-mockup/peta-kedu/kandidat/mockup-peta-kedu-kandidat-03-native.webp",
+    "mockup/gambar-mockup/peta-kedu/kandidat/mockup-peta-kedu-kandidat-03-16-9.webp"
+  ],
+  "scope": "Local mockup/package preservation; browser measurements in separate report"
+}

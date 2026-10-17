@@ -1,0 +1,280 @@
+{
+  "date": "2026-10-15",
+  "timezone": "Asia/Bangkok",
+  "page": "peta-kedu",
+  "candidate": "04",
+  "user_selected": false,
+  "method": "One built-in image_gen diorama; full UI composed/rendered with local HTML/CSS/JS and existing catalog skins",
+  "generation_calls": 1,
+  "prompt_file": "mockup/gambar-mockup/peta-kedu/revisi-04/prompt-diorama.txt",
+  "prompt": "Use case: stylized-concept. Asset: new standalone Kedu game-map diorama background for the GELITA phone-landscape mockup. Create a WIDE approximately2:1 landscape composition, target1600x800, with EXACTLY THREE DISTINCT land diorama regions separated by generous winding deep-navy river/chasm channels, suitable for separately clipping and darkening each region in code. This is an educational adventure illustration, not a geographically accurate map.\nReference image is GELITA candidate03 for warm premium volumetric3D finishing ONLY. Do NOT copy any user interface, portrait, labels, pins or text from it.\nCRITICAL REGION GEOMETRY relative to total image:\n- WEST region occupies left0-35% across most height, centre approximately20%/52%. A rounded floating highland landmass with a turquoise mountain lake, a few small Dieng-style ancient temple silhouettes, terraces and one hill, clearly bounded by dark channels on its right.\n- NORTHEAST region occupies approximately40-94% width and4-46% height, centre approximately66%/25%. A distinct warm green island with twin volcanic peaks, tidy tobacco/coffee terraces and small village roofs. Clear navy channel below it, separate from the southeast island.\n- SOUTHEAST region occupies approximately45-95% width and54-95% height, centre approximately69%/74%. A distinct rounded green island with a recognizable small Borobudur-inspired stepped stupa motif, low rounded hill and riverbend.\nThe three regions are ONE coherent stylized world-map scene, not three framed panels or three individual images. All three visible in their entirety with room around edges; steep dimensional rock/soil edges, soft contact shadows and small trees. Chasm boundaries follow roughly: vertical channel between west and east near x37-41%; horizontal meandering channel between northeast and southeast around y49%. All river/chasm gaps are wide enough to visually separate the regions. Calm dark navy (#071525) behind/between all terrain. All three regions equally illuminated in this master image; darkness for locked regions will be applied by code later, NOT baked into the master.\nNo paths, bridges, dotted lines, pins, medals, portraits, UI controls, banners, labels, lettering or text: these will be vector overlays in the mockup. Main land details live within their region's space without crossing channels. Top-down slight isometric camera, friendly toy-like 3D rather than painterly2D, softly rounded forms, golden morning rimlight, controlled mist on edges only, lush green/teal/earth/gold palette, crisp silhouettes, less busy background so large pins can sit on top. No tiny additional islands suggesting more than three regions; no extra volcanoes or repeated giant temples. The entire master will be displayed at about1280x640 inside a game page. No watermark, transparent checkerboard or browser/device frame.",
+  "input_reference": {
+    "file": "mockup/gambar-mockup/peta-kedu/kandidat/mockup-peta-kedu-kandidat-03-16-9.webp",
+    "sha256": "6632e7a3bbf02da2484766af185b2de603f2e62731edd06fc8339daebc2e84b4"
+  },
+  "source_tool_output": "C:\\Users\\cenda\\.codex\\generated_images\\01a13941-052e-7d82-ada6-57e8a0c2f92c\\exec-9d608c7c-f6fa-4480-9a3a-01e4e6601c32.png",
+  "native": {
+    "file": "provenance/peta-kedu-revision-04/diorama-native.webp",
+    "size": [
+      1774,
+      887
+    ],
+    "format": "WEBP",
+    "alpha": false,
+    "sha256": "938f1fca00c210e25651275e420f117bd77b8b05316074bbf3922e61d219b534"
+  },
+  "master": {
+    "file": "mockup/gambar-mockup/peta-kedu/revisi-04/aset/diorama.kedu-tiga-wilayah.webp",
+    "size": [
+      1774,
+      887
+    ],
+    "format": "WEBP",
+    "alpha": false,
+    "sha256": "938f1fca00c210e25651275e420f117bd77b8b05316074bbf3922e61d219b534"
+  },
+  "normalization": "RGB conversion and lossless WebP encoding only; no resize, native1774x887",
+  "reuse": [
+    {
+      "file": "assets/antarmuka/ui.result-panel.webp",
+      "sha256": "542a6eb9a2b6d394bee6de5b325052e9ad08f5a30e327e4cdbdf2f95824d367e"
+    },
+    {
+      "file": "assets/antarmuka/ui.result-button-primary.webp",
+      "sha256": "95cecaa235771cd37ae6c862e304bd4af91f8d882087a8bff4352f033a2ae2ad"
+    },
+    {
+      "file": "assets/antarmuka/ui.result-button-secondary.webp",
+      "sha256": "e354c3e1a89d664b714cc82480f8bf6208a7a1bc57fc6297cb0ab252189fa3f1"
+    },
+    {
+      "file": "assets/antarmuka/ui.result-button-detail.webp",
+      "sha256": "8f0c498fbd195ed6df1945919ae07b9be0f31d7ffa9e8599cf81eb40e78db09f"
+    },
+    {
+      "file": "assets/antarmuka/ui.result-hud-control.webp",
+      "sha256": "505acc6bdc296d6c79b15781758db5a26a6dfb4d71114d224e210e5e19597601"
+    },
+    {
+      "file": "assets/antarmuka/ui.result-star.webp",
+      "sha256": "6fd40e77771aec13441f632f4b44db537a2a0f10cd2db5c4fd63e4c3d95c9bf5"
+    },
+    {
+      "file": "assets/logo/ui.logo-hero.webp",
+      "sha256": "3843b1cc6ef3bf6608900adda9f478efd7d812e3d5cb42eec9c3963d566a90f0"
+    },
+    {
+      "file": "assets/latar/bg.result.temanggung.webp",
+      "sha256": "b10327e51ed9d74529d246a3482f4418fa291ce17950149fc3d37d90f982b5ad"
+    },
+    {
+      "file": "assets/referensi/reference.03.webp",
+      "sha256": "0a326339e8bbabc9826d2290b663daa93d76462dbadf20f539b28a47696d4792"
+    },
+    {
+      "file": "assets/ikon/map.pin.temanggung.webp",
+      "sha256": "26d437a63da56fda66a4818ea53e9c1bd2d0d4847410c4f1991629b9c037a1ca"
+    },
+    {
+      "file": "assets/ikon/map.pin.magelang.webp",
+      "sha256": "f58e610b83f536b0e6289338990de12c764f6bcb046506534fba40c14cbe68a3"
+    },
+    {
+      "file": "assets/ikon/map.pin.wonosobo.webp",
+      "sha256": "e43dd9bf897c94506dc96aa7aabf5806ba45c91631a074b32e2126317320faf9"
+    },
+    {
+      "file": "assets/ikon/icon.language-id.webp",
+      "sha256": "3aada0a40ef82f04fa62ba14de2bc969e522466a7a620c2e041a6ec06f48b441"
+    },
+    {
+      "file": "assets/ikon/icon.language-en.webp",
+      "sha256": "78efd469490f33725d6f21340f93d65b5f9db5ad0b335d1972da20d06faa762e"
+    },
+    {
+      "file": "assets/ikon/icon.lantern.svg",
+      "sha256": "55ad3b68fec8fe9bcca77d06f78628793abb92f044e4bd97bf0c5fa63e0ff6a3"
+    },
+    {
+      "file": "assets/ikon/icon.lock.svg",
+      "sha256": "c3089b64ddbbb91ff0c21f18f214827119a7c829bd1dcfc338bae03faa13411c"
+    },
+    {
+      "file": "assets/ikon/icon.sound.svg",
+      "sha256": "68e0ca0a3592f1dd110c1c5686dc6a63ab75bfe6369e07682b228ef9d6660997"
+    },
+    {
+      "file": "assets/ikon/icon.sound-off.svg",
+      "sha256": "e53c5ec91c7cf678aefee64f95b5e466874e38e013ee20278b8353511547ec54"
+    },
+    {
+      "file": "assets/ikon/icon.play.svg",
+      "sha256": "d35dbec7bad6077ca370e8aca26d9d08476475f1923bc09ca67692daad205fca"
+    },
+    {
+      "file": "assets/ikon/icon.pause.svg",
+      "sha256": "d1145f8f6542319754dd8146c653e7b323741011b50f4d18c0cf3121584a443e"
+    },
+    {
+      "file": "assets/ikon/icon.menu.svg",
+      "sha256": "4ed9a271d76fdbcc0ae9942e77b8ad854dcb5d74f873c882b7d8dc3bcc0df8db"
+    },
+    {
+      "file": "assets/ikon/icon.book.svg",
+      "sha256": "458de8238d7b0c1ada324deca92a130173a707b3f6ef4df76a096fe87c292b8b"
+    },
+    {
+      "file": "assets/ikon/icon.user.svg",
+      "sha256": "70deb764b84779a97cdeb800a1c1636dd5ff04ebc308c0888d9edfd478cb4e80"
+    },
+    {
+      "file": "assets/ikon/icon.home.svg",
+      "sha256": "8e6eb280b2bf880212e86222a9e38af8d1bbebf1e784fbab5b574eb2656ffb5f"
+    },
+    {
+      "file": "assets/ikon/icon.logout.svg",
+      "sha256": "dd5e2450e0736a766029e75ec7c25415bda94f432254c8a06f0e73d01ddcc31b"
+    },
+    {
+      "file": "assets/audio/music/map.mp3",
+      "sha256": "0f66b69f6d2d46f671276287566ef8c5cd5180fb7cffb7c5e2d95b688521628a"
+    },
+    {
+      "file": "assets/audio/sfx/click.mp3",
+      "sha256": "0d7151c21f3243e1f90812c90033edb7d52f27062ce050d21f9b3144cfd16370"
+    },
+    {
+      "file": "assets/audio/sfx/lock.mp3",
+      "sha256": "548d87e55d383f7e51078774815d5cd5e01da2b4dc9680832beb4adebe23acab"
+    }
+  ],
+  "ui_sources": [
+    {
+      "file": "mockup/gambar-mockup/peta-kedu/revisi-04/preview.html",
+      "sha256": "a3e08a5c7f2a83997f3a52d584f92decbbb48a6565e2f7349e931e3f1f17e1d5"
+    },
+    {
+      "file": "mockup/gambar-mockup/peta-kedu/revisi-04/preview.css",
+      "sha256": "241093aabc7f747cb491141301c0b1d4d4b11db50b8bd018278930a16723e780"
+    },
+    {
+      "file": "mockup/gambar-mockup/peta-kedu/revisi-04/preview.js",
+      "sha256": "419bc5f4bdaa959715326b57cca24086aacbdf65835cf0fb315fe99e1b7d2465"
+    },
+    {
+      "file": "mockup/gambar-mockup/peta-kedu/revisi-04/aset/icon.kenali.svg",
+      "sha256": "78e4d539ac502dee264f4a7bebe79c24469a740e023cd24b809ddd9f8123109f"
+    },
+    {
+      "file": "mockup/gambar-mockup/peta-kedu/revisi-04/aset/icon.previous.svg",
+      "sha256": "829cefe52bba123e5e67367359e82a92024ff89efb93fee7f0b0803943a7102c"
+    },
+    {
+      "file": "mockup/gambar-mockup/peta-kedu/revisi-04/aset/icon.next.svg",
+      "sha256": "97ba660ae0cc960ff467f5273ae88fb71b4221707260c39fbca0984a74a2a184"
+    }
+  ],
+  "renders": [
+    {
+      "file": "mockup/gambar-mockup/peta-kedu/revisi-04/variasi-ui/wilayah-terkunci/mockup-wilayah-terkunci-16-9.webp",
+      "size": [
+        1920,
+        1080
+      ],
+      "format": "WEBP",
+      "alpha": false,
+      "sha256": "7e594472d4ee6b7c2cd01bd268eed3938a9279d8dfd3ec5d1bbf5b2e6c67faa9"
+    },
+    {
+      "file": "mockup/gambar-mockup/peta-kedu/revisi-04/variasi-ui/progres-terbuka/mockup-progres-terbuka-16-9.webp",
+      "size": [
+        1920,
+        1080
+      ],
+      "format": "WEBP",
+      "alpha": false,
+      "sha256": "a24923481ab09f5ac6555500278d7dc04cef10781a489828812e6e6a9a5690f8"
+    },
+    {
+      "file": "mockup/gambar-mockup/peta-kedu/revisi-04/variasi-ui/menu-terbuka/mockup-menu-terbuka-16-9.webp",
+      "size": [
+        1920,
+        1080
+      ],
+      "format": "WEBP",
+      "alpha": false,
+      "sha256": "e480c0d5fa52b5b81572b4a168af44780988d6a5692ae41068d76f0bf3392470"
+    },
+    {
+      "file": "mockup/gambar-mockup/peta-kedu/revisi-04/variasi-ui/english/mockup-english-16-9.webp",
+      "size": [
+        1920,
+        1080
+      ],
+      "format": "WEBP",
+      "alpha": false,
+      "sha256": "7cfed1e8e35912cb5fdfb8c14ffdd0b4ee13106c24115eae49d5500d72147b7c"
+    }
+  ],
+  "slicing": "Three registered clip-path polygons, independently darkened/lightened in CSS; paths/pins/text overlaid, no UI baked into master",
+  "preview": "mockup/gambar-mockup/peta-kedu/revisi-04/preview.html",
+  "states": [
+    {
+      "label": "04 · wilayah terkunci",
+      "kind": "coded-preview",
+      "image": "mockup/gambar-mockup/peta-kedu/revisi-04/variasi-ui/wilayah-terkunci/mockup-wilayah-terkunci-16-9.webp"
+    },
+    {
+      "label": "04 · progres 9/12",
+      "kind": "coded-preview",
+      "image": "mockup/gambar-mockup/peta-kedu/revisi-04/variasi-ui/progres-terbuka/mockup-progres-terbuka-16-9.webp"
+    },
+    {
+      "label": "04 · menu",
+      "kind": "coded-preview",
+      "image": "mockup/gambar-mockup/peta-kedu/revisi-04/variasi-ui/menu-terbuka/mockup-menu-terbuka-16-9.webp"
+    },
+    {
+      "label": "04 · English",
+      "kind": "coded-preview",
+      "image": "mockup/gambar-mockup/peta-kedu/revisi-04/variasi-ui/english/mockup-english-16-9.webp"
+    },
+    {
+      "label": "Riwayat 03",
+      "kind": "candidate-history",
+      "image": "mockup/gambar-mockup/peta-kedu/kandidat/mockup-peta-kedu-kandidat-03-16-9.webp"
+    },
+    {
+      "label": "Riwayat 02",
+      "kind": "candidate-history",
+      "image": "mockup/gambar-mockup/peta-kedu/kandidat/mockup-peta-kedu-kandidat-02-16-9.webp"
+    },
+    {
+      "label": "Riwayat 01",
+      "kind": "candidate-history",
+      "image": "mockup/gambar-mockup/peta-kedu/kandidat/mockup-peta-kedu-kandidat-01-16-9.webp"
+    }
+  ],
+  "copy_source": {
+    "file": "update/naskah-cerita/naskah-cerita.md",
+    "sha256": "e6fbdebb418d8069640e7c0c329a365eb01020dd2d9fb6b13dbc15d641c227f1",
+    "adaptation": "Only preview peta03 copy changes lantern instruction to Kenali button; source and88 narration briefs unchanged"
+  },
+  "audio": "Reuse existing3 non-narration MP3, only after click; no narration recording, Play controls typewriter",
+  "catalog_data_sha256": "93e0d96c6d6cb038891b344267b71e183ef2dee008ef43d16cc7e0a849f3297b",
+  "preserved_prior_candidates": [
+    "mockup/gambar-mockup/peta-kedu/kandidat/mockup-peta-kedu-kandidat-01-native.webp",
+    "mockup/gambar-mockup/peta-kedu/kandidat/mockup-peta-kedu-kandidat-01-16-9.webp",
+    "mockup/gambar-mockup/peta-kedu/kandidat/mockup-peta-kedu-kandidat-02-native.webp",
+    "mockup/gambar-mockup/peta-kedu/kandidat/mockup-peta-kedu-kandidat-02-16-9.webp",
+    "mockup/gambar-mockup/peta-kedu/kandidat/mockup-peta-kedu-kandidat-03-native.webp",
+    "mockup/gambar-mockup/peta-kedu/kandidat/mockup-peta-kedu-kandidat-03-16-9.webp"
+  ],
+  "browser_report": "reports/peta-kedu-04-browser-check.json",
+  "limits": [
+    "Candidate not selected or integrated into original game",
+    "Demo unlock fixtures do not establish gameplay rules",
+    "Device fullscreen and real-phone testing not performed",
+    "Illustrative geography/culture/licensing not verified"
+  ]
+}

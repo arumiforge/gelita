@@ -1,6 +1,6 @@
 # Daftar berkas mockup 01
 
-Revisi 13 Oktober 2026. Konsep hasil dipakai bersama seluruh kota/wilayah; Temanggung hanya contoh pada gambar dan folder. Referensi utama tetap mockup full UI pilihan; preview dan keadaan menu adalah bahan penerapan. Tiap gambar keadaan berada di subfolder sendiri.
+Revisi 14 Oktober 2026. Konsep hasil dipakai bersama seluruh kota/wilayah; Temanggung hanya contoh pada gambar dan folder. Referensi utama tetap mockup full UI pilihan; preview dan keadaan menu adalah bahan penerapan. Tiap gambar keadaan berada di subfolder sendiri.
 
 | Berkas | Keterangan |
 |---|---|
@@ -11,8 +11,8 @@ Revisi 13 Oktober 2026. Konsep hasil dipakai bersama seluruh kota/wilayah; Teman
 | [aset-font/plus-jakarta-sans-latin-700-normal.woff2](aset-font/plus-jakarta-sans-latin-700-normal.woff2) | Font Plus Jakarta Sans dari aplikasi asli |
 | [aset-font/plus-jakarta-sans-latin-800-normal.woff2](aset-font/plus-jakarta-sans-latin-800-normal.woff2) | Font Plus Jakarta Sans dari aplikasi asli |
 | [aset-katalog/acuan-gaya-jaka-3d.webp](aset-katalog/acuan-gaya-jaka-3d.webp) | Salinan aset katalog asli, hash dipertahankan |
-| [aset-katalog/bahasa-english-en.webp](aset-katalog/bahasa-english-en.webp) | Salinan aset katalog asli, hash dipertahankan |
-| [aset-katalog/bahasa-indonesia-id.webp](aset-katalog/bahasa-indonesia-id.webp) | Salinan aset katalog asli, hash dipertahankan |
+| [aset-katalog/bahasa-english-en.webp](aset-katalog/bahasa-english-en.webp) | Alias slot lama, diperbarui dengan bendera terbaru 14 Oktober; file lama dicadangkan |
+| [aset-katalog/bahasa-indonesia-id.webp](aset-katalog/bahasa-indonesia-id.webp) | Alias slot lama, diperbarui dengan bendera terbaru 14 Oktober; file lama dicadangkan |
 | [aset-katalog/ikon-bintang.svg](aset-katalog/ikon-bintang.svg) | Salinan aset katalog asli, hash dipertahankan |
 | [aset-katalog/ikon-centang.svg](aset-katalog/ikon-centang.svg) | Salinan aset katalog asli, hash dipertahankan |
 | [aset-katalog/ikon-chevron-atas.svg](aset-katalog/ikon-chevron-atas.svg) | Salinan aset katalog asli, hash dipertahankan |
@@ -66,3 +66,6 @@ Revisi 13 Oktober 2026. Konsep hasil dipakai bersama seluruh kota/wilayah; Teman
 | [variasi-ui/tampilan-utama/README.md](variasi-ui/tampilan-utama/README.md) | Keterangan gambar keadaan ini |
 | [aset-katalog/bahasa-indonesia-flag.webp](aset-katalog/bahasa-indonesia-flag.webp) | Ikon bendera bahasa baru, slot icon.language-id; mengganti ikon huruf pada preview |
 | [aset-katalog/bahasa-english-uk-flag.webp](aset-katalog/bahasa-english-uk-flag.webp) | Ikon bendera bahasa baru, slot icon.language-en; mengganti ikon huruf pada preview |
+
+
+Preview HTML membaca tiga audio dari assets/audio di root katalog (region, shard, click), yang dicatat di [kebutuhan aset](kebutuhan-aset.md). Empat render keadaan diperbarui setelah speaker dihubungkan 14 Oktober; gambar pilihan tidak berubah. Pemeriksaan/hash terdahulu tetap merupakan catatan historis.

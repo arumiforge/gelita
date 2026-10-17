@@ -31,3 +31,6 @@ Preview kode dan gambar keadaan terbuka melengkapi mockup 01. Keduanya bukan pen
 Lanskap pendukung berada di [aset-baru/bg-tantangan-selesai-temanggung-3d.webp](aset-baru/bg-tantangan-selesai-temanggung-3d.webp). Lanskap merupakan gambar tanpa UI yang dibuat dengan acuan mockup; bagian yang semula tertutup panel direkonstruksi, sehingga tidak diklaim sebagai ekstraksi piksel persis. Penggantian lanskap saja tidak memenuhi tujuan perombakan UI ini.
 
 Revisi bahasa terbaru: [bendera Indonesia](aset-katalog/bahasa-indonesia-flag.webp) dan [bendera UK untuk English](aset-katalog/bahasa-english-uk-flag.webp) mengganti medali huruf ID/EN pada preview. Keduanya sudah tersedia di katalog.
+
+
+14 Oktober: preview menggunakan audio lokal nonnarasi. Speaker awalnya mute; aktivasi memainkan musik wilayah dan efek serpihan, kontrol lain memakai klik. Semua dapat dihentikan lewat speaker; tidak autoplay. [Audio dan master](../../../assets/audio/README.md). Alias file bahasa-indonesia-id/bahasa-english-en juga sekarang berisi bendera terbaru; gambar pilihan tetap utuh.

@@ -1,5 +1,13 @@
 # Catatan asal dan generasi
 
+[Peta Kedu kandidat04 —15Oktober](peta-kedu-mockup-04-20261015.json) mencatat satu master diorama ImageGen1774×887, tiga potongan viewport CSS, sumber SVG Kenali baru, skin katalog yang dipakai ulang, empat render kode serta hash/preservasi kandidat01–03. Preview mengetik/dot/menu termasuk paket, belum terintegrasi game.
+
+[Peta Kedu kandidat03 — 14 Oktober](peta-kedu-mockup-03-20261014.json) merekam generasi dan dua koreksi ImageGen untuk perombakan bebas mockup berfokus HP landscape, acuan kandidat02/hasil pilihan/Jaka, draf, native/final dan rencana sentuh. Diorama baru berupa usulan dalam full UI; belum mengganti aset map.kedu.
+
+[Peta Kedu kandidat 02 — 14 Oktober](peta-kedu-mockup-02-20261014.json) mengikuti dua screenshot pengguna dan pembacaan DOM web asli di Chrome. Merekam satu panggilan ImageGen, lima input, prompt/hash, koordinat asli dan catatan pergeseran visual. Revisi terbatas; kandidat belum dipilih, tidak mengganti kandidat 01 atau data web.
+
+[Peta Kedu kandidat 01 — 14 Oktober](peta-kedu-mockup-20261014.json) mencatat satu panggilan built-in ImageGen, empat input, prompt aktual, native WebP/final 16:9 serta hash. Kandidat belum dipilih dan belum dipecah menjadi aset aplikasi.
+
 Catatan ini membantu menelusuri pekerjaan terdahulu. Prompt aktif untuk pekerjaan baru tetap ada di `../data.json` dan [daftar prompt hasil build](../docs/PROMPTS-ENGLISH.md).
 
 | Berkas | Isi |
@@ -20,3 +28,9 @@ Revisi hasil 13 Oktober: [prompt pekerjaan](result-ui-generation-prompts-2026101
 Ikon bahasa bendera: [prompt](language-flag-prompts-20261013.json) dan [hasil/pemetaan](language-flag-generation-results-20261013.json); dua hasil AI WebP native disimpan dalam language-flag-keyassets-20261013/.
 
 Puzzle 14 Oktober: [manifest final](puzzle-generation-results-20261014.json), [prompt panduan](puzzle-generation-20261014/jobs.json), [prompt aktual dan koreksi](puzzle-generation-20261014/results.json), [sumber foto dan lisensi](puzzle-generation-20261014/factual-references/sources.json). Native WebP, kandidat, dan riwayat koreksi disimpan lokal di puzzle-generation-20261014/. 30 panggilan ImageGen: satu percobaan awal tidak dipakai, 25 generasi, empat koreksi; 25 hasil dipilih, 21 slot baru dan empat penggantian.
+
+
+14 Oktober: [produksi audio nonnarasi](nonnarration-audio-20261014.json) merekam sintesis lokal, master/hash dan batas klaim; [penggantian slot bahasa](language-slot-update-20261014.json) merekam reuse bendera dan cadangan slot lama. Prompt rencana mockup di mockup/persiapan belum merupakan riwayat generasi.
+
+
+[Galeri/persiapan halaman 14 Oktober](catalog-page-update-20261014.json) mencatat reuse referensi pilihan, hash empat render terkini, alias bahasa dan 12 brief/prompt. Tidak ada generasi gambar AI baru dalam pembaruan katalog ini.

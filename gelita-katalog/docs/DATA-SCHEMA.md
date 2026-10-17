@@ -33,7 +33,7 @@ Referensi berkode `reference.*` berada di `assets/referensi/` walaupun kategori 
 
 | Field | Makna |
 |---|---|
-| `file` | Berkas visual utama relatif root katalog |
+| `file` | Berkas visual atau audio utama relatif root katalog |
 | `preview`, `generated_asset` | Pratinjau/hasil bila tersedia; sering sama dengan `file` |
 | `vector_source` | Sumber SVG untuk kontrol yang diekspor menjadi WebP |
 | `size`, `ratio`, `alpha`, `format` | Spesifikasi target; `size: "Audio"` menandai audio |
@@ -55,9 +55,14 @@ Nama dasar mengikuti kode setelah ekstensi resmi di ujung kode dilepas: `app.ico
 | `content_review`, `production`, `note` | Catatan isi/batas kesiapan produksi |
 | `status`, `generation_status`, `style_target` | Label ketersediaan/generasi/arah, bukan pengganti status gaya |
 
-Audio berupa brief, bukan bukti rekaman. Jangan menerapkan migrasi/prompt visual ke audio. Validator membandingkan seluruh objek audio dengan baseline, bukan hanya jumlah.
+88 Narasi tetap berupa brief tanpa rekaman dan identik baseline. Sembilan Musik/Efek suara sekarang memiliki berkas MP3, status pratinjau sintetis, durasi aktual dan audio_provenance (manifest, master WAV, loop, date). preview tetap null untuk audio; pemutar membaca file. Jangan menerapkan migrasi/prompt visual ke audio. Validator memeriksa baseline narasi penuh, identitas/urutan 97 audio dan semua field di luar perubahan produksi yang diizinkan.
 
 
 ## Metadata puzzle — 14 Oktober 2026
 
 25 entri yang dibuat/diperbarui memiliki puzzle: prompt_code, item_key, grid (3 atau 4), description_id/en, review_status (needs_verification), tile_result dan human_assembly_test. puzzle_provenance menyimpan manifest, source_native, references, revision dan replaced. Ini metadata revisi; tidak mengubah identitas kode slot lama atau kunci butir workbook. Lima puzzle lama lainnya dipertahankan.
+
+
+## Inventaris halaman mockup
+
+[../mockup/catalog.json](../mockup/catalog.json) memuat revision, canvas dan pages; setiap halaman memiliki id/title/status/description/brief. Halaman available memiliki image, preview dan states (label, kind, image); planned memiliki prompt dan belum boleh mengisi image/preview utama sebagai hasil terpilih. Planned boleh memiliki objek candidate (label, image, brief, prompt, preview opsional dan states opsional), selalu berlabel belum dipilih. Kandidat04 memiliki preview interaktif dan tujuh state/riwayat atas permintaan pengguna; status halaman tetap planned. State candidate menggunakan coded-preview atau candidate-history, tidak selected-reference. Jenis state terpilih membedakan selected-reference dan coded-preview; default_state menentukan keadaan awal. Inventaris di-embed ke const MOCKUPS oleh build, bukan entri aset tambahan dan tidak mengambil JSON via fetch.

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Peta Kedu · kandidat 04 GELITA</title><link rel="stylesheet" href="preview.css"></head>
+<body><main id="game" aria-label="Mockup interaktif Peta Kedu">
+<header id="hud" class="surface">
+  <img class="logo" src="../../../../assets/logo/ui.logo-hero.webp" alt="GELITA"><h1>Peta Kedu</h1>
+  <div class="shards"><img src="../../../../assets/ikon/icon.lantern.svg" alt=""><div><span data-text="shards">Serpihan cahaya</span><strong id="shard-count">0 <small>/ 12</small></strong></div><div class="shard-track"><span id="shard-fill"></span></div></div>
+  <div class="hud-actions"><button class="round" id="language-trigger" aria-label="Pilih bahasa" aria-expanded="false" aria-controls="language-sheet"><img id="flag" src="../../../../assets/ikon/icon.language-id.webp" alt="Bahasa Indonesia"></button><button class="round" id="sound-trigger" aria-label="Aktifkan suara" aria-pressed="false"><img id="sound-icon" src="../../../../assets/ikon/icon.sound-off.svg" alt=""></button><button class="round" id="menu-trigger" aria-label="Buka menu" aria-expanded="false" aria-controls="menu-sheet"><img src="../../../../assets/ikon/icon.menu.svg" alt=""></button></div>
+</header>
+<section id="map" class="surface" aria-label="Peta tiga wilayah Kedu">
+  <div class="map-art" aria-hidden="true"><div class="slice wonosobo" data-slice="wnb"></div><div class="slice temanggung" data-slice="tmg"></div><div class="slice magelang" data-slice="mgl"></div></div>
+  <svg class="routes" viewBox="0 0 1280 650" aria-hidden="true"><path class="route-shadow" d="M850 225C1040 280 1080 350 970 415M920 470C720 620 440 590 280 440"/><path id="route-mgl" d="M850 225C1040 280 1080 350 970 415"/><path id="route-wnb" d="M920 470C720 620 440 590 280 440"/></svg>
+  <button class="city" id="pin-tmg" data-region="tmg" aria-pressed="true"><img src="../../../../assets/ikon/map.pin.temanggung.webp" alt=""><span class="city-caption"><strong>Temanggung</strong><small></small></span><img class="lock" src="../../../../assets/ikon/icon.lock.svg" alt=""></button>
+  <button class="city" id="pin-mgl" data-region="mgl" aria-pressed="false"><img src="../../../../assets/ikon/map.pin.magelang.webp" alt=""><span class="city-caption"><strong>Magelang</strong><small></small></span><img class="lock" src="../../../../assets/ikon/icon.lock.svg" alt=""></button>
+  <button class="city" id="pin-wnb" data-region="wnb" aria-pressed="false"><img src="../../../../assets/ikon/map.pin.wonosobo.webp" alt=""><span class="city-caption"><strong>Wonosobo</strong><small></small></span><img class="lock" src="../../../../assets/ikon/icon.lock.svg" alt=""></button>
+  <div class="map-caption"><span class="legend-dot"></span><span data-text="tapMap">Ketuk wilayah untuk menjelajah</span></div>
+</section>
+<section id="region-panel" class="surface skinned" aria-labelledby="region-title">
+  <p class="eyebrow" data-text="selected">WILAYAH DIPILIH</p><h2 id="region-title">Temanggung</h2><p id="region-level"></p><span id="region-status"></span>
+  <div class="region-progress"><div><span id="region-fill"></span></div><strong id="region-count"></strong></div>
+  <div id="rating" aria-label="Bintang contoh"><img src="../../../../assets/antarmuka/ui.result-star.webp" alt=""><img src="../../../../assets/antarmuka/ui.result-star.webp" alt=""><img src="../../../../assets/antarmuka/ui.result-star.webp" alt=""></div>
+  <p id="region-hint"></p>
+  <div class="region-actions"><button class="skin secondary" id="kenali-trigger"><img src="aset/icon.kenali.svg" alt=""><span data-text="kenali">Kenali</span></button><button class="skin primary" id="region-next"><span data-text="continue">Lanjut</span><img src="aset/icon.next.svg" alt=""></button></div>
+  <span class="example-label" data-text="demo">Contoh keadaan peta</span>
+</section>
+<section id="story" class="surface skinned" aria-labelledby="story-title">
+  <div class="portrait"><img src="../../../../assets/referensi/reference.03.webp" alt="Jaka bersyal merah"></div>
+  <div class="story-heading"><span class="speaker">Jaka</span><span class="divider">·</span><h2 id="story-title">Dataran Kedu</h2><div id="dots" role="img" aria-label="Bagian 1 dari 3"><i class="on"></i><i></i><i></i></div></div>
+  <p id="story-text"></p><span class="sr-only" id="story-announcement" role="status" aria-live="polite"></span>
+  <div class="story-controls"><button class="round play" id="play-trigger" aria-label="Jeda cerita" aria-pressed="true"><img src="../../../../assets/ikon/icon.pause.svg" alt=""></button><div class="step-controls"><button class="round" id="previous-trigger" aria-label="Bagian sebelumnya" disabled><img src="aset/icon.previous.svg" alt=""></button><button class="skin primary next-icon" id="next-trigger" aria-label="Bagian berikutnya"><img src="aset/icon.next.svg" alt=""></button></div></div>
+</section>
+<div id="scrim" hidden></div>
+<section class="sheet skinned" id="menu-sheet" role="dialog" aria-modal="true" aria-labelledby="menu-title" hidden><div class="sheet-heading"><h2 id="menu-title" data-text="menu">Menu</h2><button class="round close" data-close aria-label="Tutup menu">×</button></div>
+  <button class="menu-row" data-demo="library"><img src="../../../../assets/ikon/icon.book.svg" alt=""><span data-text="library">Pustaka Kedu</span></button><button class="menu-row" data-demo="profile"><img src="../../../../assets/ikon/icon.user.svg" alt=""><span data-text="profile">Profil</span></button><button class="menu-row" id="home-trigger"><img src="../../../../assets/ikon/icon.home.svg" alt=""><span data-text="home">Peta Kedu</span></button><button class="menu-row" id="fullscreen-trigger"><span class="symbol">⛶</span><span data-text="fullscreen">Layar penuh</span></button><button class="menu-row" id="scenario-trigger"><span class="symbol">◐</span><span data-text="scenario">Lihat contoh progres 9/12</span></button><button class="menu-row" data-demo="logout"><img src="../../../../assets/ikon/icon.logout.svg" alt=""><span data-text="logout">Keluar</span></button>
+</section>
+<section class="sheet skinned" id="language-sheet" role="dialog" aria-modal="true" aria-labelledby="language-title" hidden><div class="sheet-heading"><h2 id="language-title">Bahasa / Language</h2><button class="round close" data-close aria-label="Tutup pilihan bahasa">×</button></div><button class="language-row" data-language="id" aria-pressed="true"><img src="../../../../assets/ikon/icon.language-id.webp" alt="">Bahasa Indonesia</button><button class="language-row" data-language="en" aria-pressed="false"><img src="../../../../assets/ikon/icon.language-en.webp" alt="">English</button></section>
+<section class="sheet skinned" id="kenali-sheet" role="dialog" aria-modal="true" aria-labelledby="kenali-title" hidden><div class="sheet-heading"><h2 id="kenali-title">Kenali Temanggung</h2><button class="round close" data-close aria-label="Tutup cerita wilayah">×</button></div><img class="kenali-emblem" src="aset/icon.kenali.svg" alt=""><p id="kenali-text"></p></section>
+<div id="toast" role="status" hidden></div>
+</main><script src="preview.js"></script></body></html>

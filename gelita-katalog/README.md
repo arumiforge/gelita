@@ -1,6 +1,6 @@
 # GELITA — Perpustakaan aset
 
-Katalog statis internal untuk game edukasi kelas 5 tentang Temanggung, Magelang, dan Wonosobo. Dokumentasi diperbarui **14 Oktober 2026**, zona waktu Asia/Bangkok. Paket ini berisi katalog, aset, serta bahan revisi bank soal/naskah/puzzle di `update/`; kode aplikasi game, backend, serta rekaman audio tidak disertakan.
+Katalog statis internal untuk game edukasi kelas 5 tentang Temanggung, Magelang, dan Wonosobo. Dokumentasi diperbarui **15 Oktober 2026**, zona waktu Asia/Bangkok. Paket ini berisi katalog, aset, serta bahan revisi bank soal/naskah/puzzle di `update/`; kode aplikasi game dan backend tidak disertakan. Sembilan audio nonnarasi sintetis tersedia untuk pratinjau; rekaman narasi belum disertakan.
 
 ## Konteks layar aplikasi GELITA
 
@@ -16,12 +16,12 @@ Untuk membagikan katalog, sertakan `index.html`, seluruh `assets/` (termasuk `ca
 
 | Isi | Jumlah/kondisi |
 |---|---|
-| Entri katalog | 611: 514 visual dan 97 brief audio |
+| Entri katalog | 611: 514 visual dan 97 audio/brief (9 dapat diputar) |
 | Visual utama | 461 WebP dan 53 SVG; 461 raster sesuai ukuran target |
 | Frame karakter | 240: 10 pose × 24 frame; mengganti 30 frame lama |
-| Ikon | 85: 83 diperbarui 11 Oktober; 2 bendera bahasa ditambahkan 13 Oktober |
+| Ikon | 85: 83 diperbarui 11 Oktober; 2 bendera bahasa ditambahkan 13 Oktober; slot reference.19/20 diperbarui 14 Oktober |
 | Referensi yang dibuat ulang | 9 gambar baru; bukan pemulihan berkas asli |
-| Audio | 88 narasi, 3 musik, 6 efek suara; identik dengan baseline |
+| Audio | 88 brief narasi identik dengan baseline; 3 musik dan 6 efek suara sintetis tersedia |
 | Status gaya | 514 “Sesuai gaya” berbasis `user_override`; 273 awal, 210 frame tambahan, 8 aset hasil, 2 ikon bahasa, dan 21 puzzle tambahan |
 
 Jumlah visual menghitung entri utama, bukan seluruh berkas alternatif/sumber kontrol SVG. Status 273 visual awal dipertahankan dari keputusan pengguna 11 Oktober 2026, termasuk gambar lama di luar karakter yang belum diperbaiki; 210 frame tambahan mengikuti permintaan 12 Oktober dan 8 aset hasil mengikuti contoh full UI pada 13 Oktober. Ini **bukan audit visual baru**; `previous_style_review` menyimpan penilaian atau catatan asal sebelumnya. Ukuran yang sesuai tidak membuktikan budaya, lisensi, kualitas pembesaran, animasi, atau integrasi game telah disahkan.
@@ -66,12 +66,15 @@ Folder `sources/` dihapus pada 12 Oktober 2026. Kedua dokumennya memiliki salina
 4. Bila aset berubah, periksa dimensi/alpha dan tampilan. Python memerlukan Pillow; pemeriksaan browser memerlukan Playwright, Edge, Python, dan Pillow. Perintah lengkap ada di panduan pemeliharaan.
 5. Catat perubahan dan pemeriksaan nyata dalam [docs/PROGRESS.md](docs/PROGRESS.md), lalu tinjau berkas sebelum commit/push.
 
-Jangan mengubah 97 objek audio atau membuat rekaman tanpa permintaan baru. Skrip migrasi/generasi lama di `archive/scripts/` bukan langkah rutin. Tidak ada regenerasi gambar atau perubahan audio pada perapian 12 Oktober 2026.
+Permintaan 14 Oktober mengizinkan produksi 3 musik dan 6 efek suara tanpa narasi. 88 objek Narasi tetap dibekukan; baseline 97 brief tetap disimpan sebagai sejarah. Jangan mengubah narasi atau menjalankan ulang produksi audio tanpa permintaan baru. Skrip migrasi/generasi lama di `archive/scripts/` bukan langkah rutin. Tidak ada regenerasi gambar atau perubahan audio pada perapian 12 Oktober 2026.
 
 Revisi full UI hasil 13 Oktober: [preview 16:9](mockup/gambar-mockup/tantangan-selesai-temanggung/preview-ui-lengkap.html), [aset dan petunjuk](mockup/gambar-mockup/tantangan-selesai-temanggung/kebutuhan-aset.md). Enam gambar baru, satu lanskap yang dipakai ulang, dan satu efek SVG menambah delapan slot tanpa mengganti entri lama.
 
-Ikon bahasa aktif baru: [Indonesia](assets/ikon/icon.language-id.webp) dan [English/UK](assets/ikon/icon.language-en.webp). Slot reference.19/20 tetap disimpan sebagai referensi lama.
+Ikon bahasa aktif baru: [Indonesia](assets/ikon/icon.language-id.webp) dan [English/UK](assets/ikon/icon.language-en.webp). Slot reference.19/20 sekarang memakai bendera terbaru pada kode/jalur yang sama; gambar dan sumber SVG huruf lama tersimpan sebagai riwayat.
 
 Halaman “Tantangan selesai” pada paket mockup adalah satu konsep bersama untuk seluruh kota/wilayah game. Temanggung hanya contoh visual; komponen menerima konteks wilayah, jenis tantangan, hasil, latar dan navigasi dari aplikasi. [Petunjuk komponen bersama](mockup/gambar-mockup/tantangan-selesai-temanggung/petunjuk-agent.md).
 
 Revisi puzzle 14 Oktober: 21 gambar baru untuk variasi d–j (tujuh per wilayah) dan empat penggantian untuk Sindoro–Sumbing, Pringapus, stupa Borobudur, serta mi ongklok. Semua 25 gambar berupa WebP opak 1200 × 1200. [Daftar dan prompt](docs/PUZZLE-UPDATE-20261014.md), [asal generasi](provenance/puzzle-generation-results-20261014.json), dan [hasil pemeriksa keping](reports/puzzle-tile-review-20261014.json). Tidak ditemukan keping polos/kembar; 11 gambar memiliki catatan kemiripan/pola. Uji susun dua orang dan verifikasi budaya/agama belum dijalankan.
+
+
+Revisi katalog 14 Oktober: [galeri mockup](index.html#mockups) menampilkan referensi pilihan, empat keadaan UI dan preview interaktif di halaman. [12 brief halaman berikutnya](mockup/persiapan/README.md) berisi komposisi, state, aset, audio, prompt dan kriteria pemeriksaan; [Peta Kedu kandidat 04](mockup/gambar-mockup/peta-kedu/revisi-04/README.md) memiliki preview interaktif, efek ketik, diorama tiga lapisan dan empat render full UI; riwayat 01–03 juga tampil. Kandidat belum dipilih pengguna. Sebelas halaman lain belum memiliki gambar baru. [Audio nonnarasi](assets/audio/README.md) dapat diputar dari koleksi Audio & narasi dan speaker preview hasil. [Manifest audio](provenance/nonnarration-audio-20261014.json), [penggantian slot bahasa](provenance/language-slot-update-20261014.json), dan [pemeriksaan paket](reports/catalog-update-20261014.json).

@@ -1,0 +1,85 @@
+{
+  "date": "2026-10-14",
+  "checked_at_utc": "2026-10-14T07:57:45.886515+00:00",
+  "passed": true,
+  "scope": "Raster packaging, preservation and mathematical checks of proposed code targets; NOT DOM or device touch validation",
+  "output": {
+    "file": "mockup/gambar-mockup/peta-kedu/kandidat/mockup-peta-kedu-kandidat-03-16-9.webp",
+    "size": [
+      1920,
+      1080
+    ],
+    "format": "WebP",
+    "alpha": false,
+    "sha256": "6632e7a3bbf02da2484766af185b2de603f2e62731edd06fc8339daebc2e84b4"
+  },
+  "checks": [
+    "Native RGB identical to tool",
+    "Final opaque WebP1920x1080",
+    "Candidate01/02 final/native hashes unchanged",
+    "data.json hash unchanged",
+    "14 proposed targets inside canvas and do not overlap",
+    "Proposed target minimum44px in both requested landscape sizes"
+  ],
+  "proposed_viewport_checks": [
+    {
+      "viewport": [
+        640,
+        360
+      ],
+      "scale": 0.3333333333333333,
+      "minimum_proposed_target_px": 44.0
+    },
+    {
+      "viewport": [
+        854,
+        480
+      ],
+      "scale": 0.4444444444444444,
+      "minimum_proposed_target_px": 58.667
+    }
+  ],
+  "proposed_story_footer_gap_base_px": 46,
+  "proposed_avatar_footer_gap_base_px": 49,
+  "phone_visual_previews": [
+    "review/mockup-peta-kedu-03-640x360.webp",
+    "review/mockup-peta-kedu-03-854x480.webp"
+  ],
+  "preserved_files": [
+    "mockup/gambar-mockup/peta-kedu/kandidat/mockup-peta-kedu-kandidat-01-native.webp",
+    "mockup/gambar-mockup/peta-kedu/kandidat/mockup-peta-kedu-kandidat-01-16-9.webp",
+    "mockup/gambar-mockup/peta-kedu/kandidat/mockup-peta-kedu-kandidat-02-native.webp",
+    "mockup/gambar-mockup/peta-kedu/kandidat/mockup-peta-kedu-kandidat-02-16-9.webp"
+  ],
+  "limits": [
+    "Proposed target rectangles are not measurements of image pixels or implemented DOM",
+    "Real-device touch, language overlays and fullscreen not tested",
+    "Diorama geography/culture/licensing not verified",
+    "Diorama is embedded in full UI candidate; separate background not generated"
+  ],
+  "catalog_validation": {
+    "passed": true,
+    "checked_at_utc": "2026-10-14T08:05:59.591Z",
+    "candidate_label": "Kandidat 03 · belum dipilih",
+    "page_status": "planned"
+  },
+  "visual_review": {
+    "reviewed": [
+      "Final generated UI",
+      "640x360 raster copy",
+      "854x480 raster copy"
+    ],
+    "observations": [
+      "Large city groups and selected-panel actions visible",
+      "Teal round Play and gold long Next distinct",
+      "Story/portrait lifted with visible separation from footer",
+      "Large HUD flag/speaker/menu and enlarged footer"
+    ],
+    "not_tested": [
+      "Actual DOM target sizes",
+      "Real phone touch or fullscreen",
+      "Game integration",
+      "Browser gallery in this turn"
+    ]
+  }
+}

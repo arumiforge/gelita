@@ -26,7 +26,7 @@ Permukaan utama UI tersedia sebagai WebP transparan tanpa tulisan; kartu dan ove
 - Bahasa: pemicu ID membuka dua baris berisi bendera Indonesia/UK dari katalog dan nama bahasa. Pilihan EN/ID mengganti teks preview dan ikon pemicu; tidak menambahkan kontrol bahasa ke menu.
 - Menu: grup profil/avatar, Home/Peta Kedu, layar penuh, dan keluar. Speaker serta bahasa tetap pada HUD. Escape/tutup mengembalikan fokus ke pemicu.
 - Detail: menampilkan informasi percobaan pertama tanpa kartu negatif permanen pada hasil utama.
-- Speaker: preview menampilkan keadaan aktif/nonaktif; tidak membuat atau memutar rekaman audio.
+- Speaker: awalnya mute. Aktivasi pengguna memainkan loop musik region dan efek shard pertama; kontrol memakai click. Mute/keluar menjeda semua audio. Berkas adalah sintesis nonnarasi lokal; tidak autoplay.
 - Layar penuh: kode memakai API browser dan mengubah ikon sesuai keadaan; dukungan fullscreen pada perangkat asli belum disahkan.
 - Tombol navigasi, profil, dan keluar adalah placeholder referensi. Integrasi harus memakai route/account/state aplikasi asli. Preview tidak menyimpan hadiah, hasil, atau akun.
 

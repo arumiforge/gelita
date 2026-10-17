@@ -13,3 +13,6 @@ Mulai dari [README proyek](../README.md). Folder ini menjelaskan kondisi aktif; 
 | [PROMPTS-ENGLISH.md](PROMPTS-ENGLISH.md) | 514 prompt aktif; otomatis dari data |
 
 Ubah prompt di `data.json`, lalu jalankan `node build.mjs`. Tanggal keputusan/generasi terdahulu dipertahankan sebagai bukti; tanggal dokumentasi tidak mengubah tanggal pekerjaan.
+
+
+[Panduan audio tersedia](../assets/audio/README.md) · [12 brief redesain](../mockup/persiapan/README.md).

@@ -1,6 +1,6 @@
 {
   "date": "2026-10-11",
-  "built_at_utc": "2026-10-14T03:20:29.266Z",
+  "built_at_utc": "2026-10-15T01:15:12.159Z",
   "total": 611,
   "visual": 514,
   "audio": 97,
@@ -40,6 +40,26 @@
       "United Kingdom"
     ],
     "method": "built-in image_gen"
+  },
+  "language_slot_update": {
+    "date": "2026-10-14",
+    "replaced_slots": [
+      "reference.19",
+      "reference.20"
+    ],
+    "method": "Reuse existing flag icons"
+  },
+  "audio_update": {
+    "date": "2026-10-14",
+    "total": 97,
+    "narration_unchanged": 88,
+    "available": 9,
+    "method": "Local procedural synthesis; listening review pending"
+  },
+  "mockups": {
+    "available": 1,
+    "planned": 12,
+    "candidates": 1
   },
   "puzzle_update": {
     "date": "2026-10-14",

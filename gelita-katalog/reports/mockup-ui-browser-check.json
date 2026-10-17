@@ -1,7 +1,7 @@
 {
-  "date": "2026-10-13",
+  "date": "2026-10-14",
   "timezone": "Asia/Bangkok",
-  "checked_at_utc": "2026-10-12T19:26:33.569Z",
+  "checked_at_utc": "2026-10-14T06:58:16.439Z",
   "passed": true,
   "images": [
     "mockup/gambar-mockup/tantangan-selesai-temanggung/variasi-ui/tampilan-utama/mockup-ui-tampilan-utama-16-9.webp",
@@ -13,7 +13,7 @@
     "All local images loaded",
     "Four complete UI states rendered at 1920x1080",
     "Indonesia and UK flag catalogue icons; language choices, translations and active flag switch",
-    "Speaker UI toggle",
+    "Speaker enables local instrumental and reward audio after user click; mute pauses playback",
     "Menu open/Escape and focus return",
     "Detail first-attempt information",
     "Fixed 16:9 canvas scaling",
@@ -97,7 +97,7 @@
   "limitations": [
     "This is a standalone coded preview, not the original game",
     "Route, account and reward actions are preview placeholders",
-    "Speaker state does not create or play audio",
+    "Local synthesized preview sounds; subjective listening and game mix review pending",
     "Fullscreen implementation present; physical device/browser fullscreen behavior not verified",
     "Coded preview and state images are derivatives, not replacement approval of the selected mockup"
   ]

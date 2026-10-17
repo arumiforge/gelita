@@ -1,10 +1,10 @@
 {
   "date": "2026-10-14",
-  "checked_at_utc": "2026-10-14T03:22:21.464Z",
+  "checked_at_utc": "2026-10-14T07:22:13.139Z",
   "passed": true,
   "bootstrap_version": "5.3.8",
   "checks": [
-    "514 visual cards; 97 unchanged audio briefs",
+    "514 visual cards; 88 unchanged narration briefs and 9 playable synthesized music/sfx previews",
     "Local Bootstrap CSS/JS and Jakarta font loaded; no remote or failed requests",
     "Bootstrap update collapse and export dropdown; Escape support",
     "Style, region, search and empty-state reset",
@@ -13,12 +13,15 @@
     "Natural sorting by title and key; 26 references",
     "Original offline WebP opens; prompt TXT, filtered JSON and CSV downloads",
     "Prompt, brief and group copy text/feedback verified with clipboard stub",
-    "Audio detail labels distinguish briefs from recordings",
+    "Nine MP3 previews decode/play in browser, stop on dialog close; three audio-type filters and 88 narration briefs",
+    "Mockup gallery: selected reference, four coded states, 12 planned briefs and embedded preview",
+    "Embedded language switching, click-activated audio and mute; closing iframe stops playback",
     "No horizontal overflow at 360, 390, 768, 1024, 1440 and 1920 px",
     "Mobile updates and asset detail; reduced-motion preference",
     "No JavaScript page errors"
   ],
   "screenshots": [
+    "catalog-mockups-desktop.webp",
     "catalog-desktop.webp",
     "catalog-collection.webp",
     "catalog-detail.webp",

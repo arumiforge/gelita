@@ -1,6 +1,6 @@
 # Revisi aset puzzle — 14 Oktober 2026
 
-Permintaan pengguna: gunakan perubahan terbaru dan buat gambar tambahan. Acuan aktif: [panduan puzzle](../update/gambar-puzzle/panduan-gambar-puzzle-gelita.md) dan [catatan revisi](../update/catatan-revisi-gelita.md). Katalog berisi 611 entri: 514 visual dan 97 brief audio. Seluruh 97 objek audio identik baseline.
+Permintaan pengguna: gunakan perubahan terbaru dan buat gambar tambahan. Acuan aktif: [panduan puzzle](../update/gambar-puzzle/panduan-gambar-puzzle-gelita.md) dan [catatan revisi](../update/catatan-revisi-gelita.md). Saat revisi puzzle, katalog berisi 611 entri: 514 visual dan 97 brief audio; seluruh audio saat itu identik baseline. Permintaan katalog berikutnya pada 14 Oktober menyediakan sembilan pratinjau Musik/Efek suara; 88 Narasi tetap baseline. Revisi tersebut tercatat terpisah di [manifest audio](../provenance/nonnarration-audio-20261014.json).
 
 21 variasi d–j ditambahkan (tujuh per wilayah), empat gambar lama diganti. Semua 25 gambar adalah ilustrasi 3D, WebP lossless opak 1200 × 1200, tanpa Jaka/Mbah Kedu. Lima puzzle a–c lain tetap memakai aset sebelumnya; total Susun Gambar menjadi 30. Gambar baru di [assets/tantangan](../assets/tantangan/), tersedia melalui [katalog](../index.html).
 

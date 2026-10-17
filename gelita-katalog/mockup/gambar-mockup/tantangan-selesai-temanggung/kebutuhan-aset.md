@@ -27,8 +27,8 @@ Salinan berikut identik byte demi byte dengan sumber aktif. Nama salinan memakai
 |---|---|---|---|
 | `ui.logo-hero` | [logo-gelita.webp](aset-katalog/logo-gelita.webp) | [sumber](../../../assets/logo/ui.logo-hero.webp) | Logo HUD; gunakan sumber, jangan membuat logotipe baru. |
 | `avatar.2` | [medali-serpihan-cahaya.webp](aset-katalog/medali-serpihan-cahaya.webp) | [sumber](../../../assets/ikon/avatar.2.webp) | Visual koleksi; pertahankan medali dan kristal emas. |
-| `reference.20` | [bahasa-indonesia-id.webp](aset-katalog/bahasa-indonesia-id.webp) | [sumber](../../../assets/referensi/reference.20.webp) | Referensi medali ID lama; dipertahankan, bukan ikon preview aktif. |
-| `reference.19` | [bahasa-english-en.webp](aset-katalog/bahasa-english-en.webp) | [sumber](../../../assets/referensi/reference.19.webp) | Referensi medali EN lama; dipertahankan, bukan ikon preview aktif. |
+| `reference.20` | [bahasa-indonesia-id.webp](aset-katalog/bahasa-indonesia-id.webp) | [sumber](../../../assets/referensi/reference.20.webp) | Slot resmi lama sekarang memakai bendera Indonesia terbaru; kode dan ukuran tetap. |
+| `reference.19` | [bahasa-english-en.webp](aset-katalog/bahasa-english-en.webp) | [sumber](../../../assets/referensi/reference.19.webp) | Slot resmi lama sekarang memakai bendera UK terbaru; kode dan ukuran tetap. |
 | `reference.01` | [acuan-gaya-jaka-3d.webp](aset-katalog/acuan-gaya-jaka-3d.webp) | [sumber](../../../assets/referensi/reference.01.webp) | Acuan finishing 3D saja; tidak ditampilkan pada layar hasil. |
 | `icon.sound` | [ikon-speaker.svg](aset-katalog/ikon-speaker.svg) | [sumber](../../../assets/ikon/icon.sound.svg) | Suara aktif di HUD. |
 | `icon.sound-off` | [ikon-speaker-nonaktif.svg](aset-katalog/ikon-speaker-nonaktif.svg) | [sumber](../../../assets/ikon/icon.sound-off.svg) | Suara nonaktif di HUD. |
@@ -63,8 +63,11 @@ Tidak membuat lentera atau serpihan baru: pengguna memilih medali avatar.2. Aset
 | icon.language-id | [bahasa-indonesia-flag.webp](aset-katalog/bahasa-indonesia-flag.webp) | 256 × 256, alpha | Bendera Indonesia pada HUD/pilihan Bahasa Indonesia |
 | icon.language-en | [bahasa-english-uk-flag.webp](aset-katalog/bahasa-english-uk-flag.webp) | 256 × 256, alpha | Bendera UK pada HUD/pilihan English |
 
-Dua generasi baru menggunakan alas HUD sebagai acuan material. Salinan reference.19/20 pada tabel sebelumnya tetap tersimpan sebagai riwayat, tidak lagi menjadi ikon bahasa aktif preview. [Prompt dan provenance](../../../provenance/language-flag-generation-results-20261013.json).
+Dua generasi baru menggunakan alas HUD sebagai acuan material. Pada 14 Oktober salinan reference.19/20 dan alias ID/EN juga memakai bendera terbaru. Gambar huruf lama dicadangkan di archive/before-catalog-update-20261014; kode slot tetap. [Prompt dan provenance](../../../provenance/language-flag-generation-results-20261013.json).
 
 ## Penggunaan aset lintas kota
 
 Skin ui.result-*, logo, medali, efek dan ikon bahasa dipakai bersama pada semua kota/wilayah. Temanggung pada mockup hanya contoh. Slot bg.result.temanggung merupakan contoh mapping latar wilayah; pilih latar dari aset aplikasi yang sudah tersedia sesuai konfigurasi, tanpa mewajibkan generasi baru untuk setiap kota. Label/tulisan dan hasil tidak dimasukkan ke gambar karena mengikuti konteks permainan.
+
+
+Audio preview memakai [music/region.mp3](../../../assets/audio/music/region.mp3), [sfx/shard.mp3](../../../assets/audio/sfx/shard.mp3), dan [sfx/click.mp3](../../../assets/audio/sfx/click.mp3), relatif ke sumber resmi; tidak disalin ke paket. Sertakan assets/audio bila membagikan preview.

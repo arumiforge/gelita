@@ -1,0 +1,40 @@
+{
+  "date": "2026-10-14",
+  "authorization": "User requested updating Indonesia and English icons with the new icons",
+  "method": "Reuse existing approved flag assets; preserve slot codes, filenames, dimensions and style history",
+  "original_catalog_snapshot": "archive/before-catalog-update-20261014/data.json",
+  "allowed_changed_fields": [
+    "title",
+    "desc",
+    "prompt",
+    "negative",
+    "prompt_revision",
+    "note",
+    "status",
+    "generated_by",
+    "generation_status",
+    "generation_prompt",
+    "vector_source",
+    "language_provenance",
+    "content_review",
+    "production"
+  ],
+  "assets": [
+    {
+      "key": "reference.19",
+      "file": "assets/referensi/reference.19.webp",
+      "source": "assets/ikon/icon.language-en.webp",
+      "backup": "archive/before-catalog-update-20261014/reference.19.webp",
+      "previous_sha256": "d11a03385ba83d9f4c8a0f230c9464d7b99686deaac00a44ee093cdd6264a25a",
+      "sha256": "78efd469490f33725d6f21340f93d65b5f9db5ad0b335d1972da20d06faa762e"
+    },
+    {
+      "key": "reference.20",
+      "file": "assets/referensi/reference.20.webp",
+      "source": "assets/ikon/icon.language-id.webp",
+      "backup": "archive/before-catalog-update-20261014/reference.20.webp",
+      "previous_sha256": "4ad11033c7f0fda28105cefe0ec647a3a93fb6258ba88d78e978156e56838aaa",
+      "sha256": "3aada0a40ef82f04fa62ba14de2bc969e522466a7a620c2e041a6ec06f48b441"
+    }
+  ]
+}

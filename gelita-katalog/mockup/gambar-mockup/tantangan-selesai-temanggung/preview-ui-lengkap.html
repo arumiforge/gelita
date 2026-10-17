@@ -67,7 +67,15 @@
   const overlays={language:document.getElementById('language-popover'),menu:document.getElementById('menu-sheet'),detail:document.getElementById('detail-sheet')};
   const triggers={language:document.getElementById('language-trigger'),menu:document.getElementById('menu-trigger'),detail:document.getElementById('detail-trigger')};
   const text={id:{context:'SUSUN GAMBAR',title:'Tantangan selesai!',shards:'Serpihan cahaya',time:'Waktu',attempts:'Percobaan',attemptValue:'2 dari 3',correct:'Semua benar',encourage1:'Kamu mencoba 2 kali.',encourage2:'Terus berusaha itu hebat!',regionMap:'Peta Temanggung',details:'Detail hasil',next:'Berikutnya',menu:'Menu',home:'Beranda / Peta Kedu',fullscreen:'Layar penuh',logout:'Keluar',firstAttempt:'Berhasil pada percobaan pertama',notYet:'Belum'},en:{context:'PICTURE PUZZLE',title:'Challenge complete!',shards:'Light shards',time:'Time',attempts:'Attempts',attemptValue:'2 of 3',correct:'All correct',encourage1:'You tried twice.',encourage2:'Great effort. Keep going!',regionMap:'Temanggung map',details:'Result details',next:'Next',menu:'Menu',home:'Home / Kedu map',fullscreen:'Fullscreen',logout:'Sign out',firstAttempt:'Completed on the first attempt',notYet:'Not yet'}};
-  let active=null, language='id', muted=false, toastTimer;
+  let active=null, language='id', muted=true, audioStarted=false, toastTimer;
+  const music=new Audio('../../../assets/audio/music/region.mp3');music.loop=true;music.preload='none';music.volume=.25;
+  const click=new Audio('../../../assets/audio/sfx/click.mp3');click.preload='none';click.volume=.45;
+  const reward=new Audio('../../../assets/audio/sfx/shard.mp3');reward.preload='none';reward.volume=.55;
+  const sounds=[music,click,reward];
+  function playSound(sound){sound.play().catch(()=>announce(language==='id'?'Audio belum dapat diputar. Coba aktifkan suara lagi.':'Audio unavailable. Try enabling sound again.'));}
+  game.addEventListener('click',event=>{if(!muted&&event.target.closest('button')&&event.target.closest('button').id!=='sound-trigger'){click.currentTime=0;playSound(click)}},true);
+  window.addEventListener('pagehide',()=>sounds.forEach(sound=>sound.pause()));
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)sounds.forEach(sound=>sound.pause());else if(!muted&&audioStarted)playSound(music)});
   function scale(){const s=Math.min(innerWidth/1920,innerHeight/1080);game.style.transform=`scale(${s})`;game.style.left=`${(innerWidth-1920*s)/2}px`;game.style.top=`${(innerHeight-1080*s)/2}px`;game.dataset.scale=String(s)}
   function close(){const old=active;active=null;Object.values(overlays).forEach(el=>el.hidden=true);Object.values(triggers).forEach(el=>el.setAttribute('aria-expanded','false'));scrim.hidden=true;hud.inert=false;panel.inert=false;if(old)triggers[old].focus()}
   function open(name){if(active===name){close();return}close();active=name;overlays[name].hidden=false;triggers[name].setAttribute('aria-expanded','true');const modal=name!=='language';scrim.hidden=!modal;hud.inert=modal;panel.inert=modal;overlays[name].querySelector('button').focus()}
@@ -78,7 +86,7 @@
   Object.entries(triggers).forEach(([name,el])=>el.addEventListener('click',()=>open(name)));
   document.querySelectorAll('[data-close]').forEach(el=>el.addEventListener('click',close));scrim.addEventListener('click',close);
   document.querySelectorAll('[data-language]').forEach(el=>el.addEventListener('click',()=>{setLanguage(el.dataset.language);close()}));
-  document.getElementById('sound-trigger').addEventListener('click',()=>{muted=!muted;updateSound()});
+  document.getElementById('sound-trigger').addEventListener('click',()=>{muted=!muted;if(muted)sounds.forEach(sound=>sound.pause());else{playSound(music);if(!audioStarted){reward.currentTime=0;playSound(reward);audioStarted=true}}updateSound()});
   document.getElementById('fullscreen-trigger').addEventListener('click',async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else if(document.fullscreenEnabled)await document.documentElement.requestFullscreen();else announce(language==='id'?'Layar penuh tidak tersedia':'Fullscreen unavailable')}catch{announce(language==='id'?'Layar penuh tidak tersedia':'Fullscreen unavailable')}});
   document.addEventListener('fullscreenchange',()=>{scale();updateFullscreen()});
   document.querySelectorAll('[data-demo]').forEach(el=>el.addEventListener('click',()=>{const label={profile:'Profil Dino',home:'Peta Kedu',logout:'Keluar akun'}[el.dataset.demo];close();announce(`Preview: ${label}`)}));
@@ -86,7 +94,7 @@
   document.addEventListener('click',event=>{if(active==='language'&&!overlays.language.contains(event.target)&&!triggers.language.contains(event.target))close()});
   document.addEventListener('keydown',event=>{if(event.key==='Escape'&&active){event.preventDefault();close()}else if(event.key==='Tab'&&active){const buttons=[...overlays[active].querySelectorAll('button')];const first=buttons[0],last=buttons.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus()}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}}});
   window.addEventListener('resize',scale);scale();setLanguage('id');
-  window.gelitaPreview={open,close,setLanguage,get state(){return{active,language,muted}},note:'Standalone UI reference; no game routes, auth, audio playback or reward writes.'};
+  window.gelitaPreview={open,close,setLanguage,get state(){return{active,language,muted,audioStarted}},audio:sounds,note:'Standalone UI reference with local non-narration audio; game routes, auth and reward writes remain placeholders.'};
 })();
 </script>
 </body>

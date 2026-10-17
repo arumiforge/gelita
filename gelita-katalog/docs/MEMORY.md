@@ -1,6 +1,6 @@
 # Keputusan dan memori proyek
 
-Catatan lokal proyek, diperbarui 12 Oktober 2026. Ini tidak mengubah memori global aplikasi AI. Kondisi aktual ada di [CONTEXT.md](CONTEXT.md); pekerjaan dan bukti di [PROGRESS.md](PROGRESS.md).
+Catatan lokal proyek, diperbarui 14 Oktober 2026. Ini tidak mengubah memori global aplikasi AI. Kondisi aktual ada di [CONTEXT.md](CONTEXT.md); pekerjaan dan bukti di [PROGRESS.md](PROGRESS.md).
 
 ## Keputusan aktif — 11 Oktober 2026
 
@@ -49,3 +49,8 @@ Pengguna menegaskan bahwa halaman Tantangan selesai digunakan bersama di kota/wi
 ## Keputusan gambar puzzle — 14 Oktober 2026
 
 Pengguna meminta aset gambar mengikuti perubahan terbaru dan generasi tambahan. Panduan di update/gambar-puzzle menjadi acuan: menambah 21 variasi d–j (tujuh per wilayah), mengganti empat gambar yang direkomendasikan, mempertahankan kode lama serta lima puzzle lama lainnya. Hasil akhir 25 WebP opak 1200 × 1200; adegan puzzle tanpa Jaka/Mbah Kedu, memakai arah render 3D aktif. Total menjadi 611 entri: 514 visual/97 audio, 66 Tantangan. Objek audio tetap baseline. Basis user_override/previous_style_review lama dipertahankan; penandaan 21 entri baru mengikuti permintaan ini, bukan audit baru. Detail: [paket revisi](PUZZLE-UPDATE-20261014.md).
+
+
+## Keputusan katalog/audio/mockup — 14 Oktober 2026
+
+Pengguna meminta ikon bahasa menggunakan ikon baru, audio selain narasi, pembaruan katalog, mockup ditampilkan dalam katalog dan dokumen untuk mockup berikutnya. Slot reference.19/20 kini memakai ikon bendera yang sudah tersedia; kode, target, alpha dan riwayat gaya dipertahankan, gambar lama dicadangkan. Sembilan objek Musik/Efek suara diberi MP3 dan master WAV dari sintesis lokal tanpa vokal; 88 Narasi tetap persis baseline. Baseline asli 97 brief tidak diubah. Galeri halaman memakai mockup/catalog.json: satu mockup pilihan dengan empat render state dan preview interaktif, 12 brief rencana tanpa gambar baru. Persiapan berisi komposisi, aset, state, audio, prompt dan kriteria review. Tidak mengintegrasikan perubahan ke aplikasi induk.
