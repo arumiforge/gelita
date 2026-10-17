@@ -2,6 +2,13 @@
 
 Diperbarui 14 Oktober 2026 (Asia/Bangkok). Urutan di bawah membedakan hasil terkini dari pemeriksaan historis. Keputusan aktif dirangkum dalam [MEMORY.md](MEMORY.md).
 
+## 17 Oktober 2026 — telaah draf 1 dan draf 2 naskah/bank soal
+
+- Menambah `update/telaah-draf-1-naskah-bank-soal.md`: telaah draf 1 dari sisi bahasa, guru kelas 5, Kurikulum Merdeka, Bloom, validitas, kesinambungan naskah–bank, budaya Kedu, dan keselamatan anak.
+- Draf 2 menimpa `update/naskah-cerita/naskah-cerita.md` (15 baris disentuh; 32 baris berbeda dari naskah aplikasi) dan `update/bank-soal/bank-soal-kelas5.xlsx` (bacaan mgl-3, butir fakta–pendapat, pola kunci wnb-3, mgl-2-c06, mgl-1-i01, label Bloom). Ringkasannya ada di `update/catatan-revisi-gelita.md` bagian 7.
+- Pemeriksaan yang dijalankan: aturan bank dan pola kunci memberi 0 kesalahan. Uji impor dry-run di SQLite lokal hanya menemukan tiga aturan aplikasi yang belum menerima draf ini (skill baru, 10 variasi Susun Gambar, 1 pengecoh Temanggung).
+- Audio katalog tetap dibekukan. Brief narasi untuk baris yang berubah belum diperbarui; tunggu permintaan terpisah.
+
 ## 14 Oktober 2026 — aset puzzle mengikuti revisi terbaru
 
 - Membaca dokumentasi aktif, panduan puzzle dan catatan revisi; mengikuti permintaan pengguna untuk memakai perubahan terbaru dan membuat gambar tambahan. Menambah 21 variasi d–j (tujuh per wilayah) serta mengganti empat slot rekomendasi: challenge.item.tmg-1-01, tmg-1-03, mgl-1-01 dan wnb-1-07. Kode lama dipertahankan; lima puzzle lama lainnya tetap utuh. Total menjadi 611 entri: 514 visual (461 WebP/53 SVG), 66 Tantangan, dan 97 audio.
