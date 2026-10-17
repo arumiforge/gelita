@@ -1722,6 +1722,14 @@ The plan in `docs/rencana-log-asinkron.md` (PR #119) asked for five decisions in
 - **Dashboard lag accepted.** "20 event terakhir" may be up to one interval behind; Phase 1 adds a short note under the list.
 - **Not decided separately:** the §7 targets. They stay the proposal and serve as the bar for the Phase 3 decision.
 
+## Asynchronous logging: Phases 1 and 2 in parallel (17 October 2026)
+
+Owner request, later the same day: start Phases 1 and 2 at the same time in separate sessions, instead of Phase 2 after Phase 1. To keep the parallel-agent rule (no two sessions own the same file), the phases are split by layer rather than by recommendation number:
+
+- **`log-1-klien` owns the browser** (`public/assets/js/**`, the event-integrity browser check, `docs/06`). **`log-2-server` owns every PHP file**, including the server half of R2/R3 that the plan had listed under Phase 1, the flush config, and the dashboard note.
+- **A written contract** (plan §10 item 1) fixes the `/api/events` envelope and answer and the `eventFlush` config entry, so both sides are built at once.
+- **Phase 2 merges first.** Phase 1 is still safe on its own: it falls back to `/api/audio-events` when the answer has no `audio` key, so audio is never silently dropped by an older server.
+- **Measuring the two effects separately** (the reason for "one branch each") still works: the load test runs on Phase 2 alone, then on both.
 
 ## Asynchronous logging Phase 1: browser (branch `log-1-klien`, 17 October 2026)
 
