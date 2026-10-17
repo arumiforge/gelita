@@ -88,5 +88,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 | Branch | Owner / scope | Status |
 |---|---|---|
 | `sky/laughing-rubin-l2tmm2` | Asset package Wave 2: Stage 2 (service worker, downloader) and Stage 6 (Paket aset panel, study package lock) | PR open |
-| `sky/focused-keller-fnnr3t` | Review of script/bank draft 1 and revised draft 2 (content only, no app code) | PR open |
-| `claude/integrasi-draf-2-aplikasi-g6shf6` | Integrate draft 2 into the app: bank data files, rules, first attempt from a–c, story script (contains `sky/focused-keller-fnnr3t`) | PR open |
+| `claude/integrasi-draf-2-aplikasi-g6shf6` | Integrate draft 2 into the app: bank data files, rules, first attempt from a–c, story script | PR open |
