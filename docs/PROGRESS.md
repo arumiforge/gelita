@@ -84,9 +84,9 @@ Owner decisions in its §12 (9 October 2026): full download before Mulai, admin 
 
 ## Asynchronous logging (`docs/rencana-log-asinkron.md`)
 
-- [x] Recommendation document: which logs stay synchronous, which are batched or written later, phases and guardrails
-- [ ] Owner decisions in its §10 (phases, flush interval, Phase 3 after measuring, dashboard lag, targets)
-- [ ] Phase 1 — client: 15 s flush with persist-on-push, events + audio in one request, heartbeat in the batch, page-load re-send in the first batch
+- [x] Recommendation document merged (PR #119)
+- [x] Owner decisions in its §10 (17 October 2026): Phases 1 and 2 approved, one branch each; 30 s flush; Phase 3 after measuring; dashboard lag accepted with a note
+- [ ] Phase 1 — client: 30 s flush with persist-on-push, events + audio in one request, heartbeat in the batch, page-load re-send in the first batch, dashboard note
 - [ ] Phase 2 — server: session lock released early on telemetry endpoints, batched audio writes
 - [ ] Load measurement before and after (§7), then the Phase 3 decision
 
@@ -96,5 +96,5 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `sky/quirky-ptolemy-figayc` | Asynchronous logging recommendation document (docs only) | PR open |
+| `sky/quirky-ptolemy-figayc` | Asynchronous logging: owner decisions recorded (docs only) | PR open |
 | `claude/integrasi-draf-2-aplikasi-g6shf6` | Narration: bulk cancel, voice-actor script PDF, bundled TTS files removed | PR open |

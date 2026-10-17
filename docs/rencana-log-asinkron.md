@@ -1,6 +1,6 @@
 # Asynchronous logging plan
 
-*(New, English.)* Recommendation document: which logs must reach the database synchronously, which can be sent or written later, and how to do that without losing research data. Status: **proposal, waiting for owner decisions (§10)**. Written 17 October 2026 against `main` at the Draft 2 / voice-over merge (PR #118).
+*(New, English.)* Recommendation document: which logs must reach the database synchronously, which can be sent or written later, and how to do that without losing research data. Status: **approved plan; owner decisions recorded 17 October 2026 (§10). Phase 1 is next.** Written 17 October 2026 against `main` at the Draft 2 / voice-over merge (PR #118).
 
 Nothing in this document is implemented yet. Every code reference describes the current state.
 
@@ -11,7 +11,7 @@ Nothing in this document is implemented yet. Every code reference describes the 
 1. **Most of the load is request overhead, not the log write itself.** One telemetry batch (`POST /api/events`) runs about 11 database statements, and only one of them stores events (§3.2). The biggest win is therefore *fewer telemetry requests*, not a faster insert.
 2. **Client telemetry is already asynchronous for the student** (queue in `core/events.js`, batch every 3 s, beacon on page exit, offline queue). What is still "synchronous" is the rhythm: a batch every 3 s per channel, a separate audio channel, a separate heartbeat every 60 s, and a duplicate re-send on every page load.
 3. **Recommended order:**
-   - **Phase 1 (client, low risk):** flush every 15 s instead of 3 s, persist each event to the offline queue the moment it is created, send events and audio in one request, fold the heartbeat into the batch, merge the page-load re-send into the first batch (§5.1). Estimated effect: about 5–10× fewer telemetry requests at peak.
+   - **Phase 1 (client, low risk):** flush every 30 s instead of 3 s (owner decision), persist each event to the offline queue the moment it is created, send events and audio in one request, fold the heartbeat into the batch, merge the page-load re-send into the first batch (§5.1). Estimated effect: about 10× fewer telemetry requests at peak.
    - **Phase 2 (server, low risk):** release the PHP session lock at the start of telemetry endpoints, and write audio events as a batch instead of one transaction per event (§5.2).
    - **Phase 3 (server, optional):** a write-behind inbox (`event_inbox`) drained by a scheduled worker, only if measurements after Phase 1–2 still show the event insert as a bottleneck (§5.3).
 4. **What stays synchronous:** everything that decides or records game state (check, submit, tries, stars, attempt open/close and the events written inside those transactions), session lifecycle, `audit_logs`, `device_logs`, and the client events the game reads back during play (`dialogue_advanced`, §4).
@@ -108,15 +108,15 @@ A log may be sent late or written late when **all** of these hold:
 
 Files: `public/assets/js/core/events.js`, `core/storage.js`, `game/hud.js`, `game.js`, `app/Controllers/Api/EventApiController.php`, `app/Config/Gelita.php`, `js_config()`. No schema change.
 
-- **R1 — Flush every 15 s, at 40 events, persist on push.**
-  - `FLUSH_MS` 3,000 → 15,000 and `FLUSH_AT` 20 → 40 (keep `BATCH_MAX = 50` = `$maxEventsPerBatch`). Make both values come from `CONFIG` (server config `Gelita::$eventFlush`) so they can be tuned per school without a deploy of JS.
+- **R1 — Flush every 30 s, at 40 events, persist on push.**
+  - `FLUSH_MS` 3,000 → 30,000 (owner decision, §10) and `FLUSH_AT` 20 → 40 (keep `BATCH_MAX = 50` = `$maxEventsPerBatch`). Make both values come from `CONFIG` (server config `Gelita::$eventFlush`) so they can be tuned per school without a deploy of JS.
   - Write each event to the offline queue (`Storage.queueEvents`) when it is created, and remove it after the server accepts its batch. Today an event lives only in memory until its batch is sent, so a longer interval would mean more loss on a browser crash. Persist-on-push makes the window irrelevant: whatever is not acknowledged is re-sent next time.
   - Keep every forced flush exactly as now: tab hidden, `pagehide`, and the curtain awaiting `flush()` before navigation. Those already send whatever is waiting, so the longer timer only affects events in the middle of a long screen.
 - **R2 — One request for both channels.** `POST /api/events` accepts an optional `audio` array next to `events` (same envelope, same `client_sent_at`, separate `dropped` reports per channel). The client keeps two logical queues and sends them together. `POST /api/audio-events` stays for old tabs during the rollout.
 - **R3 — Heartbeat inside the batch.** `EventApiController::ingest` calls `SessionService::heartbeat()` when the last one for this session is older than 50 s (cache key per session). `game/hud.js` sends its own heartbeat only when no batch went out in the last 60 s (an idle student who keeps the tab open).
 - **R4 — Page-load re-send rides the first batch.** `resendQueued()` on page load moves the stored events into the queue and lets the normal timer (or the first `FLUSH_AT`) send them, instead of flushing at once. `online` events keep the immediate re-send.
 
-Estimated effect at peak (per playing student): from up to 21–41 requests per minute to about 4–5. Effect on research data: none (§6).
+Estimated effect at peak (per playing student): from up to 21–41 requests per minute to about 2–3 (two timed batches, plus one more when a burst reaches `FLUSH_AT`). Effect on research data: none (§6).
 
 ### 5.2 Phase 2 — server: cheaper telemetry endpoints
 
@@ -179,7 +179,7 @@ Targets (proposal): at 90 students, telemetry ≤ 5 requests per student per min
 
 | | Today | After Phase 1 | After Phase 2 |
 |---|---|---|---|
-| Telemetry requests per playing student per minute (peak) | 21–41 | ≈ 4–5 | ≈ 4–5 |
+| Telemetry requests per playing student per minute (peak) | 21–41 | ≈ 2–3 | ≈ 2–3 |
 | Statements per audio event | ≈ 7 | ≈ 7 | ≈ 1–2 (amortised) |
 | A check waits for a telemetry batch (same student) | yes | yes, rarer | no |
 | Extra requests per page change | 1–2 | 0–1 | 0–1 |
@@ -189,7 +189,7 @@ Targets (proposal): at 90 students, telemetry ≤ 5 requests per student per min
 
 ## 9. Risks and trade-offs
 
-- **Dashboard freshness.** "20 event terakhir" lags up to 15 s (Phase 1) or one drain cycle (Phase 3). Acceptable for monitoring; the label can say so.
+- **Dashboard freshness.** "20 event terakhir" lags up to 30 s (Phase 1) or one drain cycle (Phase 3). Accepted by the owner; Phase 1 adds a short note under the list (e.g. "Diperbarui tiap ±30 detik", in `app/Language/id/Admin.php`), worded from the configured interval.
 - **`localStorage` writes per event** (R1). Each `emit()` rewrites the channel's queue array. With ≤ 50 pending events this is small; if profiling shows jank on old tablets, append to a per-event key instead of rewriting the array.
 - **Mixed versions during rollout.** Old tabs keep calling `/api/audio-events` and the heartbeat endpoint; both stay until a release later.
 - **Phase 3 adds a moving part** (cron/Task Scheduler). A stopped drain means data waits, not data lost; the Ringkasan lag warning makes it visible.
@@ -197,10 +197,10 @@ Targets (proposal): at 90 students, telemetry ≤ 5 requests per student per min
 
 ---
 
-## 10. Owner decisions needed
+## 10. Owner decisions (17 October 2026)
 
-1. Approve Phase 1 and Phase 2 as one or two branches (proposal: one branch each, Phase 1 first).
-2. Flush interval: 15 s (proposal), or another value. It is server-configurable either way.
-3. Phase 3: decide after the §7 measurement, or rule it out now.
-4. Dashboard: is a recent-events list up to 15 s behind acceptable?
-5. Targets in §7 (90 students, check p95 ≤ 300 ms).
+1. **Phases 1 and 2 approved, one branch each.** Phase 1 (client) first; Phase 2 (server) on its own branch after Phase 1 is merged, so each effect can be measured on its own.
+2. **Flush interval: 30 s** (the proposal was 15 s). It is server-configurable (`Gelita::$eventFlush`, R1), so it can be lowered later without a JS deploy. Forced sends on tab hide, page close, and before navigation stay as they are.
+3. **Phase 3: decide after measuring.** Run the §7 load test after Phases 1 and 2; build the inbox only if the targets are still missed at 90 students.
+4. **Dashboard lag accepted, with a note.** "20 event terakhir" may be up to one interval behind; Phase 1 adds a short note under the list (§9).
+5. Targets in §7 (90 students, telemetry ≤ 5 requests per student per minute, check p95 ≤ 300 ms, FPM never at `max_children`): not decided separately; they stay the proposal and are used as the bar for decision 3 unless the owner changes them.
