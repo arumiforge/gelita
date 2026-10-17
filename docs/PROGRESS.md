@@ -2,7 +2,7 @@
 
 The single checklist of what is done and what is open. Decisions and their reasons go in `docs/perombakan-kelas5/CATATAN_IMPLEMENTASI.md`; this file only tracks state. Each session updates only its own rows, and ticks an item only once its PR is merged into `main`.
 
-Last updated: 12 October 2026.
+Last updated: 17 October 2026.
 
 ## Kelas 5 overhaul
 
@@ -73,6 +73,13 @@ Owner decisions in its §12 (9 October 2026): full download before Mulai, admin 
   - [ ] Stage 3 — "Siapkan GELITA" download screen and teacher's Periksa paket screen
   - [ ] Re-run Stage 0 timing; owner decides on Stage 7 (P1)
 
+## Story script and question bank revision (draft in `gelita-katalog/update/`)
+
+- [x] Review of the owner's draft 1 against the live script and bank, and revised draft 2 in `gelita-katalog/update/` (review: `telaah-draf-1-naskah-bank-soal.md`; changes: `catatan-revisi-gelita.md` §7)
+- [ ] Researcher checks every `needs_verification` item and the facts in review §6
+- [ ] Integrate draft 2 into the app on its own branch (review §7): puzzle variants a–j with the first attempt drawn from a–c, skill `membedakan_fakta_pendapat`, one Temanggung distractor, explicit item keys in `docs/bank-soal/data/*.php`, 32 script lines in `data/story.php`, tests
+- [ ] Re-record 32 ID and 28 EN narration lines after integration
+
 ## Active branches
 
 Add a row (branch, owner / scope, status) when a session starts a branch; remove it when its PR is merged.
@@ -80,3 +87,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 | Branch | Owner / scope | Status |
 |---|---|---|
 | `sky/laughing-rubin-l2tmm2` | Asset package Wave 2: Stage 2 (service worker, downloader) and Stage 6 (Paket aset panel, study package lock) | PR open |
+| `sky/focused-keller-fnnr3t` | Review of script/bank draft 1 and revised draft 2 (content only, no app code) | PR open |
