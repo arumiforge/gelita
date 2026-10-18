@@ -577,9 +577,10 @@ body.game {
 
 /* ---------- Selesai `/selesai/{id}` (redesign 18 Oct 2026, mockup 01) ----------
    Mockup canvas 1920 × 1080 px = 1280 × 720 dp (× 2/3). The region-done card
-   (Mbah Kedu, Pustaka) covers the upper panel and leaves the buttons free. */
+   (Mbah Kedu, Pustaka) is a modal over the blurred stage. */
 .result-card { --x: 133; --y: 145; --w: 1017; --h: 495; }
-.result-kedu { --x: 290; --y: 168; --w: 700; --h: 352; }
+/* Region-done modal: large and touch-friendly (owner, 18 Oct 2026), below the HUD controls */
+.result-kedu { --x: 120; --y: 128; --w: 1040; --h: 560; }
 
 /* ---------- Hasil `/hasil/{code}/{n}` ---------- */
 .result-panel { --x: 160; --y: 72; --w: 960; --h: 576; }
