@@ -13,6 +13,7 @@ use App\Libraries\BankState;
 use App\Libraries\BankWorkbookGuide;
 use App\Libraries\DifficultyRules;
 use App\Libraries\MediaLink;
+use App\Libraries\MediaStore;
 use App\Models\LevelModel;
 use App\Models\LibraryMediaModel;
 use App\Models\LibraryPageModel;
@@ -1199,7 +1200,7 @@ class ContentImportService
             $id = $model->insert([
                 'asset_key'    => $key,
                 'asset_type'   => $type,
-                'storage_path' => 'assets/uploads/' . (preg_replace('/[^a-z0-9._-]+/i', '-', $key) ?? $key) . ($type === 'video' ? '.mp4' : '.png'),
+                'storage_path' => MediaStore::uploadDir() . (preg_replace('/[^a-z0-9._-]+/i', '-', $key) ?? $key) . ($type === 'video' ? '.mp4' : '.png'),
                 'mime_type'    => $type === 'video' ? 'video/mp4' : 'image/png',
                 'is_active'    => 0,
             ] + array_filter($labels[$key] ?? [], static fn (string $value): bool => $value !== ''), true);

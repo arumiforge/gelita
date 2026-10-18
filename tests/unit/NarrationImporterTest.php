@@ -49,7 +49,7 @@ final class NarrationImporterTest extends CIUnitTestCase
 
         // Hanya salinan unggahan yang dibuat uji ini (tercatat di basis data uji),
         // bukan unggahan sungguhan di public/assets/uploads/ mesin pengembang
-        foreach ($this->sqlite->table('media_assets')->like('storage_path', MediaStore::UPLOAD_DIR, 'after')->get()->getResultArray() as $row) {
+        foreach ($this->sqlite->table('media_assets')->like('storage_path', MediaStore::uploadDir(), 'after')->get()->getResultArray() as $row) {
             @unlink(FCPATH . $row['storage_path']);
         }
 
@@ -387,8 +387,6 @@ final class NarrationImporterTest extends CIUnitTestCase
 
     public function testUploadedFilesAreCopiedToUploadsAndReportedPerName(): void
     {
-        $this->skipIfUploadExists('audio.narasi.en.tuntas-wonosobo-02');
-
         $files = [
             ['name' => 'tuntas-wonosobo-02.wav', 'path' => $this->tempWav(1)],
             ['name' => 'tuntas-wonosobo-2.wav', 'path' => $this->tempWav(2)],
@@ -404,7 +402,7 @@ final class NarrationImporterTest extends CIUnitTestCase
         $this->assertSame('penutup-01.wav', $report['failed'][0]['file']);
 
         $media = $this->sqlite->table('media_assets')->where('asset_key', 'audio.narasi.en.tuntas-wonosobo-02')->get()->getRowArray();
-        $this->assertSame(MediaStore::UPLOAD_DIR . 'audio.narasi.en.tuntas-wonosobo-02.wav', $media['storage_path']);
+        $this->assertSame(MediaStore::uploadDir() . 'audio.narasi.en.tuntas-wonosobo-02.wav', $media['storage_path']);
         $this->assertFileExists(FCPATH . $media['storage_path']);
 
         $line = $this->line('wonosobo', 'level_done', 2);
@@ -427,8 +425,6 @@ final class NarrationImporterTest extends CIUnitTestCase
 
     public function testFolderDoesNotOverwriteANewerPanelUpload(): void
     {
-        $this->skipIfUploadExists('audio.narasi.id.intro-03');
-
         $this->folderFile('id', 'intro-03.wav', 1);
         touch(FCPATH . $this->folder . 'id/intro-03.wav', time() - 3600);
 
@@ -436,14 +432,14 @@ final class NarrationImporterTest extends CIUnitTestCase
         $report = $this->importer()->importFolder('id');
 
         $this->assertSame(['intro-03'], $report['kept']);
-        $this->assertStringStartsWith(MediaStore::UPLOAD_DIR, $this->sqlite->table('media_assets')->get()->getRowArray()['storage_path']);
+        $this->assertStringStartsWith(MediaStore::uploadDir(), $this->sqlite->table('media_assets')->get()->getRowArray()['storage_path']);
     }
 
     public function testDryRunWritesNothing(): void
     {
         $this->folderFile('id', 'intro-01.wav', 1);
         $this->folderFile('id', 'dialog-temanggung-01.wav', 2);
-        $uploads = glob(FCPATH . MediaStore::UPLOAD_DIR . '*') ?: [];
+        $uploads = glob(FCPATH . MediaStore::uploadDir() . '*') ?: [];
 
         $folder = $this->importer()->importFolder('id', true);
         $upload = $this->importer()->importFiles([['name' => 'peta-01.wav', 'path' => $this->tempWav(3)]], 'id', true);
@@ -455,7 +451,7 @@ final class NarrationImporterTest extends CIUnitTestCase
         $this->assertSame(0, $this->sqlite->table('audio_assets')->countAllResults());
         $this->assertSame(0, $this->sqlite->table('dialogues')->where('audio_id_asset_id IS NOT NULL')->countAllResults());
         $this->assertSame(0, $this->sqlite->table('audit_logs')->countAllResults());
-        $this->assertSame($uploads, glob(FCPATH . MediaStore::UPLOAD_DIR . '*') ?: []);
+        $this->assertSame($uploads, glob(FCPATH . MediaStore::uploadDir() . '*') ?: []);
     }
 
     public function testCommandDryRunAndLocaleOption(): void
@@ -568,14 +564,6 @@ final class NarrationImporterTest extends CIUnitTestCase
     }
 
     // -------------------------------------------------------------- bantuan
-
-    /** Uji yang menyalin ke public/assets/uploads/ tidak boleh menimpa unggahan sungguhan. */
-    private function skipIfUploadExists(string $assetKey): void
-    {
-        if ((glob(FCPATH . MediaStore::UPLOAD_DIR . $assetKey . '.*') ?: []) !== []) {
-            $this->markTestSkipped("Unggahan sungguhan {$assetKey} sudah ada di public/assets/uploads/; uji ini tidak menimpanya.");
-        }
-    }
 
     private function importer(): NarrationImporter
     {

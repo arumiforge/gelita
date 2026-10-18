@@ -19,8 +19,6 @@ use CodeIgniter\HTTP\IncomingRequest;
  */
 class MediaStore
 {
-    public const UPLOAD_DIR = 'assets/uploads/';
-
     public const IMAGE_MIMES = ['image/png', 'image/jpeg', 'image/webp', 'image/gif', 'image/svg+xml'];
 
     public const AUDIO_MIMES = ['audio/mpeg', 'audio/ogg', 'audio/wav', 'audio/x-wav', 'audio/wave', 'audio/mp4', 'audio/x-m4a'];
@@ -146,7 +144,7 @@ class MediaStore
             return $this->fail(self::UNREADABLE_IMAGE);
         }
 
-        $dir = FCPATH . self::UPLOAD_DIR;
+        $dir = FCPATH . self::uploadDir();
 
         if (! is_dir($dir) && ! mkdir($dir, 0775, true) && ! is_dir($dir)) {
             return $this->fail(self::NOT_SAVED);
@@ -163,7 +161,7 @@ class MediaStore
 
         $existing = model(MediaAssetModel::class)->findByKey($assetKey);
 
-        return $this->commit($existing, $assetKey, 'image', self::UPLOAD_DIR . $name, $mime, [(int) $size[0], (int) $size[1]], $staffId, $via);
+        return $this->commit($existing, $assetKey, 'image', self::uploadDir() . $name, $mime, [(int) $size[0], (int) $size[1]], $staffId, $via);
     }
 
     /**
@@ -220,7 +218,7 @@ class MediaStore
             return $this->fail($inspected);
         }
 
-        $dir = FCPATH . self::UPLOAD_DIR;
+        $dir = FCPATH . self::uploadDir();
 
         if (! is_dir($dir) && ! mkdir($dir, 0775, true) && ! is_dir($dir)) {
             return $this->fail(self::NOT_SAVED);
@@ -244,7 +242,7 @@ class MediaStore
 
         $existing = model(MediaAssetModel::class)->findByKey($assetKey);
 
-        return $this->commit($existing, $assetKey, $inspected['type'], self::UPLOAD_DIR . $name, $inspected['mime'], $inspected['size'], $staffId, 'upload', $quiet, $locale);
+        return $this->commit($existing, $assetKey, $inspected['type'], self::uploadDir() . $name, $inspected['mime'], $inspected['size'], $staffId, 'upload', $quiet, $locale);
     }
 
     /**
@@ -503,6 +501,15 @@ class MediaStore
     }
 
     /**
+     * Folder for uploaded media relative to public/, ending in `/`
+     * (`assets/uploads/`; tests use their own folder, see Config\Gelita::$uploadDir).
+     */
+    public static function uploadDir(): string
+    {
+        return rtrim(str_replace('\\', '/', config('Gelita')->uploadDir), '/') . '/';
+    }
+
+    /**
      * storage_path plus `?v=` taken from the file's sha256, for building URLs.
      *
      * Replacing a file with one of the same extension keeps the same
@@ -535,7 +542,7 @@ class MediaStore
      */
     private function moveWithOfficialName(UploadedFile $file, string $assetKey, ?string $extension = null): ?string
     {
-        $dir = FCPATH . self::UPLOAD_DIR;
+        $dir = FCPATH . self::uploadDir();
 
         if (! is_dir($dir) && ! mkdir($dir, 0775, true) && ! is_dir($dir)) {
             return null;
@@ -551,7 +558,7 @@ class MediaStore
 
         $file->move($dir, $name, true);
 
-        return is_file($target) ? self::UPLOAD_DIR . $name : null;
+        return is_file($target) ? self::uploadDir() . $name : null;
     }
 
     /**
@@ -573,7 +580,7 @@ class MediaStore
 
         // Berkas lama berekstensi lain (mis. .png diganti .jpg) tidak dibiarkan menjadi yatim
         if ($existing !== null && $existing['storage_path'] !== $stored
-            && str_starts_with((string) $existing['storage_path'], self::UPLOAD_DIR)
+            && str_starts_with((string) $existing['storage_path'], self::uploadDir())
             && is_file(FCPATH . $existing['storage_path'])) {
             @unlink(FCPATH . $existing['storage_path']);
         }

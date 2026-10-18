@@ -288,6 +288,14 @@ class Gelita extends BaseConfig
     public int $maxEventsPerBatch   = 50;
 
     /**
+     * Folder for uploaded and installed media, relative to public/ and ending
+     * in `/` (read through MediaStore::uploadDir()). The test suite uses its
+     * own folder (see __construct()) so a test run never overwrites or
+     * deletes the real uploads of a developer machine.
+     */
+    public string $uploadDir = 'assets/uploads/';
+
+    /**
      * Client event queue rhythm (core/events.js via js_config() `eventFlush`;
      * rencana-log-asinkron §5.1 R1, owner decision 17 October 2026): send a
      * batch every `intervalMs`, or as soon as `maxEvents` are waiting. Forced
@@ -354,4 +362,15 @@ class Gelita extends BaseConfig
             'library.*'            => 250 * 1024,
         ],
     ];
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        // Tests store media under the same official names as a real install
+        // (e.g. ui.logo-hero.webp), so they get a folder of their own
+        if (ENVIRONMENT === 'testing') {
+            $this->uploadDir = 'assets/uploads-test/';
+        }
+    }
 }
