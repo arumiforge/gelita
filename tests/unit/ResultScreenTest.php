@@ -148,6 +148,24 @@ final class ResultScreenTest extends CIUnitTestCase
         $this->assertSame(3, substr_count($page, 'class="result-star is-on"'));
     }
 
+    /** Owner request 18 October 2026: the region-done card is a modal over a blurred, dimmed layer. */
+    public function testRegionDoneCardSitsOverABlurLayer(): void
+    {
+        $page = $this->finished(levelDone: true);
+
+        $this->assertMatchesRegularExpression('/<div class="result-scrim" aria-hidden="true"><\/div>\s*<aside class="result-sheet result-kedu stage-box" role="dialog" aria-labelledby="result-kedu-title">/', $page);
+        $this->assertStringContainsString(lang('Game.regionDone', ['Temanggung']) . ' ' . lang('Game.allShardsDone', [12]), $page);
+        $this->assertMatchesRegularExpression('/class="hud-sheet-close" data-dismiss hidden/', $page, 'the close button needs JavaScript');
+        $this->assertStringNotContainsString('result-scrim', $this->finishedPlain(), 'no layer while the region is open');
+    }
+
+    private function finishedPlain(): string
+    {
+        Services::resetSingle('renderer');
+
+        return $this->finished();
+    }
+
     public function testSkinsComeFromTheirSlots(): void
     {
         $plain = $this->finished();
@@ -196,7 +214,7 @@ final class ResultScreenTest extends CIUnitTestCase
     }
 
     /** @param array<string, mixed> $attempt */
-    private function finished(array $attempt = [], string $engine = 'puzzle', ?int $wrongTaps = null): string
+    private function finished(array $attempt = [], string $engine = 'puzzle', ?int $wrongTaps = null, bool $levelDone = false): string
     {
         $entity = new ChallengeAttempt();
         $entity->injectRawData($attempt + ['id' => 105, 'session_id' => 9, 'challenge_node_id' => 11, 'status' => 'completed',
@@ -208,10 +226,10 @@ final class ResultScreenTest extends CIUnitTestCase
             'node'            => self::node(1, $engine),
             'level'           => $this->level(),
             'levelSummary'    => ['stars' => 2, 'completed_nodes' => 1, 'total_nodes' => 4],
-            'levelCompleted'  => false,
+            'levelCompleted'  => $levelDone,
             'closesRegion'    => false,
             'libraryUnlocked' => false,
-            'allCompleted'    => false,
+            'allCompleted'    => $levelDone,
             'nextRegion'      => null,
             'wrongTaps'       => $wrongTaps,
         ]);

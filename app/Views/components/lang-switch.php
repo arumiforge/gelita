@@ -8,7 +8,7 @@
  * safe_internal_url().
  *
  * Each option shows its round icon `ui.lang.{code}` from the Katalog Aset
- * (reference.20 ID, reference.19 EN) once both are uploaded; otherwise the
+ * (flag icons icon.language-id / icon.language-en) once both are uploaded; otherwise the
  * text pill ID / EN. The language name stays the button's accessible name.
  * The <img> carries its 32 px display size, so it stays small even while a
  * browser or asset package still serves an older stylesheet.

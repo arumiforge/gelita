@@ -23,8 +23,9 @@ use RuntimeException;
  * - Slot keys the game reads by name (logo, buttons, backgrounds, maps,
  *   badges, pins, lanterns, avatars, character frames, challenge images)
  *   are stored under the same key.
- * - Two reference icons also fill a slot (REFERENCE_SLOTS): `reference.20`
- *   and `reference.19` become the language switch icons `ui.lang.id`/`.en`.
+ * - The two flag icons `icon.language-id` / `icon.language-en` become the
+ *   language switch icons `ui.lang.id`/`.en` (ICON_SLOTS); other vector
+ *   icons and every `reference.*` entry are not game slots.
  * - Some entries also fill a second slot (COPY_SLOTS): `avatar.2` stays an
  *   avatar and is copied to the result screen medal `ui.result-medal`.
  * - App icons are converted to PNG, because the `app.*` slots take PNG only;
@@ -130,12 +131,14 @@ final class CatalogImporter
     ];
 
     /**
-     * Catalogue reference entries that also fill a game slot (owner request
-     * 12 October 2026): the round language icons of the HUD switch.
+     * Catalogue icon entries that fill a game slot: the flag icons of the HUD
+     * language switch (catalogue edition of 13–14 October 2026, owner request
+     * 18 October 2026). Until then the slots came from `reference.20` /
+     * `reference.19`, which the catalogue keeps only as old aliases.
      */
-    public const REFERENCE_SLOTS = [
-        'reference.20' => 'ui.lang.id',
-        'reference.19' => 'ui.lang.en',
+    public const ICON_SLOTS = [
+        'icon.language-id' => 'ui.lang.id',
+        'icon.language-en' => 'ui.lang.en',
     ];
 
     /**
@@ -285,10 +288,10 @@ final class CatalogImporter
     private function importEntry(array $entry, array $byKey, bool $dryRun, bool $overwrite): void
     {
         $key = $entry['key'];
-        $ref = self::REFERENCE_SLOTS[$key] ?? null;
+        $ref = self::ICON_SLOTS[$key] ?? null;
 
-        if (($ref === null && str_starts_with($key, 'reference.')) || str_starts_with($key, 'icon.') || in_array($key, ['ui.placeholder', 'app.icon.svg'], true)) {
-            return; // references, vector icons, and the placeholder are not game slots
+        if (($ref === null && (str_starts_with($key, 'reference.') || str_starts_with($key, 'icon.'))) || in_array($key, ['ui.placeholder', 'app.icon.svg'], true)) {
+            return; // references, other icons, and the placeholder are not game slots
         }
 
         if (! is_file($entry['file'])) {
@@ -636,7 +639,7 @@ final class CatalogImporter
     private function matches(string $key, array $patterns): bool
     {
         foreach ($patterns as $pattern) {
-            $slot = self::REFERENCE_SLOTS[$key] ?? self::COPY_SLOTS[$key] ?? null;
+            $slot = self::ICON_SLOTS[$key] ?? self::COPY_SLOTS[$key] ?? null;
 
             if (fnmatch($pattern, $key) || ($slot !== null && fnmatch($pattern, $slot))) {
                 return true;

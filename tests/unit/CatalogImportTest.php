@@ -60,6 +60,8 @@ final class CatalogImportTest extends CIUnitTestCase
             'reference.01'                    => ['referensi/reference.01.webp', 64, 64, false],
             'reference.19'                    => ['referensi/reference.19.webp', 256, 256, true],
             'reference.20'                    => ['referensi/reference.20.webp', 256, 256, true],
+            'icon.language-id'                => ['ikon/icon.language-id.webp', 256, 256, true],
+            'icon.language-en'                => ['ikon/icon.language-en.webp', 256, 256, true],
             'icon.home'                       => ['ikon/icon.home.webp', 24, 24, true],
         ]);
     }
@@ -255,14 +257,16 @@ final class CatalogImportTest extends CIUnitTestCase
         $this->assertSame('installed', $forced[0]['status']);
     }
 
-    /** reference.20 / reference.19 are the HUD language icons (owner request 12 October 2026). */
-    public function testLanguageIconsComeFromTheirReferences(): void
+    /** The flag icons icon.language-id / -en are the HUD language icons (owner request 18 October 2026). */
+    public function testLanguageIconsComeFromTheFlagIcons(): void
     {
         $report = array_column($this->importer()->run(), null, 'source');
 
-        $this->assertSame(['ui.lang.id', 'installed'], [$report['reference.20']['target'], $report['reference.20']['status']]);
-        $this->assertSame(['ui.lang.en', 'installed'], [$report['reference.19']['target'], $report['reference.19']['status']]);
-        $this->assertArrayNotHasKey('reference.01', $report, 'other references are still not slots');
+        $this->assertSame(['ui.lang.id', 'installed'], [$report['icon.language-id']['target'], $report['icon.language-id']['status']]);
+        $this->assertSame(['ui.lang.en', 'installed'], [$report['icon.language-en']['target'], $report['icon.language-en']['status']]);
+        foreach (['reference.01', 'reference.19', 'reference.20', 'icon.home'] as $key) {
+            $this->assertArrayNotHasKey($key, $report, $key . ' is not a slot (the old language references included)');
+        }
 
         foreach (['ui.lang.id', 'ui.lang.en'] as $key) {
             $row = model(MediaAssetModel::class)->findByKey($key);
@@ -311,7 +315,7 @@ final class CatalogImportTest extends CIUnitTestCase
         $byTarget = array_column($report, null, 'target');
 
         $this->assertSame('installed', $byTarget['char.jaka.idle.1']['status']);
-        $this->assertSame('installed', $byTarget['ui.lang.en']['status'], 'a pattern also matches the slot a reference fills');
+        $this->assertSame('installed', $byTarget['ui.lang.en']['status'], 'a pattern also matches the slot an icon fills');
         $this->assertArrayNotHasKey('ui.logo-hero', $byTarget);
         $this->assertArrayNotHasKey('bg.story.intro.1', $byTarget);
         $this->assertSame(CatalogImporter::CREDIT, model(MediaAssetModel::class)->findByKey('char.jaka.idle.1')['credit']);
