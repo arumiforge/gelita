@@ -44,10 +44,13 @@ function buildFromTemplate() {
  *   text?: string|string[],
  *   buttons?: Array<{ label: string, style?: string, value?: string, href?: string }>,
  *   dismissible?: boolean,
+ *   blur?: boolean,
  * }} options
+ * `blur` blurs the stage behind the dialog (`.modal-layer.is-blur`), for a
+ * dialog that should hold all attention, such as the install offer.
  * @returns {Promise<string|null>} `value` tombol yang ditekan; null bila dibatalkan
  */
-export function showModal({ type = 'info', icon = null, character = null, title = '', text = '', buttons = null, dismissible = true } = {}) {
+export function showModal({ type = 'info', icon = null, character = null, title = '', text = '', buttons = null, dismissible = true, blur = false } = {}) {
   closeModal(null);
 
   const host = layer();
@@ -132,6 +135,7 @@ export function showModal({ type = 'info', icon = null, character = null, title 
     };
 
     host.replaceChildren(modal);
+    host.classList.toggle('is-blur', blur);
     host.hidden = false;
     document.body.classList.add('has-modal');
     document.addEventListener('keydown', onKey, true);
@@ -152,6 +156,7 @@ export function closeModal(value = null) {
   host?.removeEventListener('click', onBackdrop);
   if (host) {
     host.replaceChildren();
+    host.classList.remove('is-blur');
     host.hidden = true;
   }
   document.body.classList.remove('has-modal');

@@ -42,6 +42,8 @@ $screenCode = method_exists($request, 'getPath') ? (App\Filters\ScreenViewFilter
   <script src="<?= asset_url_versioned('js/core/viewport.js') ?>"></script>
   <?php /* Asset package boot (Stage 2): local-assets hook and package mode before game.js; a file for the CSP */ ?>
   <script src="<?= asset_url_versioned('js/core/package-boot.js') ?>"<?= asset_package_attrs() ?>></script>
+  <?php /* Holds Chrome's install offer until game/install.js is ready; before the manifest link, so it listens first (a file, for the CSP) */ ?>
+  <script src="<?= asset_url_versioned('js/core/install-boot.js') ?>"></script>
   <meta name="theme-color" content="#0B1320">
   <title><?= $title !== '' ? $title . ' · GELITA' : 'GELITA' ?></title>
   <meta name="csrf-token" content="<?= csrf_hash() ?>">
