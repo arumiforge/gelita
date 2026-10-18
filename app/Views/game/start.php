@@ -17,7 +17,7 @@
 <?= $this->section('hudBack') ?><?= base_url() ?><?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<section class="start">
+<section class="start" data-package-gate="page" data-package-next="mulai">
   <?= component('character', ['character' => 'jaka', 'pose' => 'happy', 'class' => 'start-jaka stage-box']) ?>
 
   <div class="start-panel ornate-panel stage-box">

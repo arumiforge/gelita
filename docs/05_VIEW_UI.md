@@ -249,6 +249,8 @@ Dimuat global lewat `Config\Autoload::$helpers`.
 | Pilihan akun | `/mulai` | `HomeController::start` | `game/start` | — | — |
 | Pendaftaran | `/daftar/1..3` | `RegisterController::step` | `game/register/step-{n}` | — (`data-step`) | — |
 | Masuk | `/masuk` | `LoginController::form` | `game/login` | — | — |
+| Siapkan GELITA *(asset package)* | `/siapkan` | `PackageController::prepare` | `game/prepare` | `prepare` | — |
+| Periksa paket *(teachers)* | `/periksa-paket` | `PackageController::inspect` | `game/package-inspect` | `package-inspect` | — |
 | Ganti sandi | `/ganti-sandi` | `LoginController::changePasswordForm` | `game/change-password` | — | `change_password` |
 | Gerbang | `/gerbang` | `GateController::index` | `game/start-choice` | — | `gate` |
 | Cerita pembuka | `/intro` | `GateController::intro` | `game/intro` | `intro` | `intro` |
@@ -276,6 +278,14 @@ Semua layar sesudah login menerima data HUD (`hudData()`), kecuali cerita pembuk
 * **Satu** tombol Mulai `.btn-start` → `/mulai`, sama untuk siswa yang sudah maupun belum login. Gambarnya slot `ui.btn-start` (720 × 240, bertulisan, jadi memakai `media_key_src_locale()`: `ui.btn-start.en` untuk bahasa Inggris); tanpa gambar menjadi `btn btn-primary btn-xl` bertuliskan `Game.start`.
 * Tawaran memasang aplikasi `.welcome-install` (`data-install`, tersembunyi sampai `game/install.js` memutuskan): tombol `Game.installApp` atau petunjuk iPhone/iPad `Game.installIos`.
 * Staf masuk lewat `/admin/login`; halaman awal tidak menautkannya.
+
+### Siapkan GELITA and Periksa paket (asset package Stage 3)
+
+*(New, English.)* Plan `docs/rencana-paket-aset.md` §5.1, §8.1–§8.7, P7, P11. Texts in `app/Language/{id,en}/Package.php` (view) and `Js.php` (`package*`, `inspect*`, written by the scripts).
+
+* **Gate markers.** `section.welcome[data-package-gate="link"]` with `[data-package-start]` on the Mulai link; `section.start`, `section.login`, and `section.register` carry `data-package-gate="page"` and `data-package-next` (`mulai`, `masuk`, `daftar/{n}`). With package mode on, `game/package-gate.js` sends a device that still needs the package to `/siapkan` (see `docs/06_JAVASCRIPT.md`).
+* **`game/prepare`** (`/siapkan`, only while package mode is on). One full-width ornate panel `.prepare-panel` (32, 88, 1216 × 600 dp; no character, owner 18 October 2026): head (eyebrow `Package.prepareEyebrow`, title), scrolling `.prepare-body` (lead, total bar `role="progressbar"` with "{n} dari {m} MB" as `aria-valuetext`, one `.prepare-group[data-group][data-bytes]` row per part in download order with its own bar and state "Menunggu · n MB" / "a dari b MB" / "Siap", status line `role="status"`, install hint `[data-install]` with the iPad text `Package.prepareInstallIos`, `<details class="prepare-teacher">` "Untuk guru" holding the lab choice `[data-prepare-lab]` and a link to `/periksa-paket`), and the button bar: **Main daring di perangkat ini** `[data-prepare-online="storage"]` and **Coba lagi** (both hidden until needed) and **Mulai** (`button[data-prepare-start]`, `disabled` until the package is verified; then focused). No skip button. `section.prepare[data-state]` is `checking | downloading | error | ready | online`.
+* **`game/package-inspect`** (`/periksa-paket`, teacher tone). Same panel `.inspect-panel` (32, 88, 1216 × 600 dp): facts (`dl.inspect-facts`: state, package on this device, package for students, storage, "Simpan permanen" with its small button), progress bar while checking or downloading, status line `role="status"`, damaged/missing keys, **Hapus paket di perangkat ini** (`.btn-danger`, confirmation modal), and the button bar **Periksa semua berkas** / **Unduh yang kurang**. `section.inspect[data-state]` is `loading | idle | busy`.
 
 ### Pilihan akun — `game/start`
 

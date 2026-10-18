@@ -76,6 +76,17 @@ if (window.GELITA_PACKAGE_BOOT?.code) {
   import('./core/package.js').then((m) => m.initPackage({ setAssetsLocal })).catch(() => {});
 }
 
+// Stage 3: before a game session, a device that needs the package goes
+// through "Siapkan GELITA" before Mulai (P11); <body data-package-gate> records
+// the outcome (skip | pass | hold) for browser checks.
+const gate = document.querySelector('[data-package-gate]');
+if (gate && window.GELITA_PACKAGE_BOOT?.code && !CONFIG.sessionTag) {
+  import('./game/package-gate.js')
+    .then((m) => m.initPackageGate(gate))
+    .then((result) => { document.body.dataset.packageGate = result; })
+    .catch(() => {});
+}
+
 const screen = document.querySelector('[data-screen]')?.dataset.screen ?? '';
 const attemptId = Number(document.querySelector('[data-screen="challenge"]')?.dataset.attempt) || null;
 
@@ -96,6 +107,8 @@ const pages = {
   reflection: () => import('./game/reflection.js').then((m) => m.initReflection()),
   challenge: () => import('./game/challenge.js').then((m) => m.bootChallenge()),
   finished: () => import('./game/finished.js').then((m) => m.initFinished()),
+  prepare: () => import('./game/prepare.js').then((m) => m.initPrepare()),
+  'package-inspect': () => import('./game/package-inspect.js').then((m) => m.initPackageInspect()),
 };
 
 let page = Promise.resolve();

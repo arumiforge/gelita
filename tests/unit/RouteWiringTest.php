@@ -13,7 +13,7 @@ use CodeIgniter\Test\CIUnitTestCase;
 final class RouteWiringTest extends CIUnitTestCase
 {
     private const CONTROLLER_COUNT = [
-        'Game'  => 12,  // 11 controller + BaseGameController (AppController: manifest, display plan A3)
+        'Game'  => 13,  // 12 controller + BaseGameController (AppController: manifest, display plan A3; PackageController: asset package Stage 3)
         'Admin' => 17,  // 16 controller + BaseAdminController (PackageController: asset package Stage 6)
         'Api'   => 11,  // 10 controller + BaseApiController (PackageApiController: asset package Stage 1)
     ];
@@ -25,6 +25,8 @@ final class RouteWiringTest extends CIUnitTestCase
             'manifest.json'               => 'Game\AppController::manifest',
             'peta'                        => 'Game\MapController::kedu',
             'mulai'                       => 'Game\HomeController::start',
+            'siapkan'                     => 'Game\PackageController::prepare',
+            'periksa-paket'               => 'Game\PackageController::inspect',
             'daftar'                      => 'Game\RegisterController::index',
             'daftar/([0-9]+)'             => 'Game\RegisterController::step/$1',
             'gerbang'                     => 'Game\GateController::index',
@@ -244,6 +246,21 @@ final class RouteWiringTest extends CIUnitTestCase
             foreach ($list as $path) {
                 $this->assertSame(['staffAuth', 'staffRole:admin'], $routes->getFiltersForRoute($path), $method . ' ' . $path);
             }
+        }
+    }
+
+    /**
+     * Asset package Stage 3: "Siapkan GELITA" runs before Mulai and "Periksa
+     * paket" is the teacher's check of a student device, so both open without
+     * a login or game session, like the welcome screen (decision log, Stage 3).
+     */
+    public function testPackageScreensNeedNoLogin(): void
+    {
+        $routes = $this->routes();
+        $routes->setHTTPVerb('GET');
+
+        foreach (['siapkan', 'periksa-paket'] as $path) {
+            $this->assertSame([], $routes->getFiltersForRoute($path), $path);
         }
     }
 

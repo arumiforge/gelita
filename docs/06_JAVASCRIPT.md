@@ -155,7 +155,7 @@ Readers call `assetsLocal()` at the moment they decide, so a curtain that alread
 | `game.js` | Imports `core/package.js` only on pages that name a package and calls `initPackage({ setAssetsLocal })`: `window.GELITA_PACKAGE` becomes the async `packageInfo()`, the mirror is reconciled with Cache Storage, and the local-assets hook is switched off when the package is gone. |
 | `game/install.js` | Registers `sw.js`, or `sw-kosong.js` while `GELITA_PACKAGE_BOOT.killed`. |
 | `public/sw.js` | Serves package URLs cache-first from `gelita-aset`; stores nothing itself except `offline.html`. |
-| `core/package.js` | Downloader, device state, online-mode choice: the API Stage 3 calls. |
+| `core/package.js` | Downloader, device state, online-mode choice: the API the Stage 3 screens call. |
 | `X-Gelita-Paket` | `App\Filters\PackageHeaderFilter`: the active package code on API responses handled by a controller; absent while package mode is off. No client reads it yet. |
 
 **Service worker (`sw.js`, `SW_VERSION = 2`).**
@@ -233,9 +233,22 @@ Errors are `PackageError` with a `code` from `Package.ERRORS` and a `detail` obj
 
 **`package_mode` at login and sign-up** (`window.GELITA_PACKAGE`, read by `core/device.js`): `nonaktif` when the page names no package; `daring` when online mode was chosen, the device does not hold the page's package, or no package service worker answers; `lengkap` otherwise. `package_code` is the page's package (the one whose URLs the session uses).
 
-**What Stage 3 still owns:** the screens and their texts, the Mulai gate, install hints, and the teacher's buttons. Until then nothing in the game calls `download()`, so a device only holds a package that was downloaded by calling the module (as `tools/qa/package-check.mjs` does), and students with package mode on play in `daring` mode.
-
 **Browser check:** `tools/qa/package-check.mjs` (usage in its header).
+
+### Asset package screens: Mulai gate, Siapkan GELITA, Periksa paket (Stage 3)
+
+*(New section, English.)* Plan §5.6, §8.1–§8.7, P7, P11. Views and routes in `docs/05_VIEW_UI.md` and `docs/04_CONTROLLER_ROUTE.md`.
+
+| Module | Loaded by `game.js` when | Role |
+|---|---|---|
+| `game/package-gate.js` | the page has `[data-package-gate]`, names a package, and no game session runs | Decides whether Mulai may go on. Returns and records on `<body data-package-gate>`: `skip` (no package, session running, online mode chosen, or the browser cannot hold a package), `pass` (`check().canStart`), `hold`. `hold` on the welcome screen rewrites `[data-package-start]` to `/siapkan`; on `/mulai`, `/masuk`, `/daftar/{n}` it calls `location.replace('/siapkan?lanjut={next}')`. When the boot mirror says the device does not hold the page's package the decision is immediate (no request); otherwise `check()` confirms it, and a failing `/api/paket/aktif` lets the page be. |
+| `game/prepare.js` | `data-screen="prepare"` | Runs `check()`; `canStart` → Mulai enabled (`ready`, or `online` text). Otherwise `download()` with per-part progress (painted once per animation frame), then `check()` again (waits up to 10 s for the worker; a worker that never answers gives `packageErrWorker`, and Coba lagi reloads). Errors through `package-ui.js`; `network`, `server`, `incomplete` retry by themselves after 10 s and on the `online` event, finished files kept. `quota` shows the private-mode text when the whole quota is below the package × 1.2, else the shortfall, and offers **Main daring di perangkat ini** (`chooseOnline('storage')`). The lab choice is shown while `onlineReasons` includes `lab`. Choosing online aborts the download (files kept). With a game session running nothing is downloaded (S8). |
+| `game/package-inspect.js` | `data-screen="package-inspect"` | Shows `check()` + `activePackage()`; buttons call `verify()` (progress, missing/damaged keys, up to 8 named), `download()` (only what is missing), `persist()`, and `clear()` after `confirmDialog()`. |
+| `game/package-ui.js` | (imported) | `formatMb()`, `formatCount()`, `formatDate()` (WIB, like `fmt_date()`), `quotaTooSmall()`, `errorText()` for every `PackageError` code, `retriesAlone()`. |
+
+`core/package.js` and `public/sw.js` are unchanged in Stage 3.
+
+**Browser check:** `tools/qa/package-screens.mjs` (usage in its header): welcome and `/masuk` gate, held on Siapkan GELITA until verified, progress per part, server stopped mid-download and resumed without re-downloading, Mulai focus and Enter, sign-up `lengkap`; Periksa paket verify/damaged file/repair/clear; private mode, storage too small, storage full mid-download, lab device (`daring`); package mode off (`nonaktif`); no service worker.
 
 ### Next-screen decode (`game/next-assets.js`, asset package Stage 4)
 

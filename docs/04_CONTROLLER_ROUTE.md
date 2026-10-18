@@ -123,6 +123,8 @@ Namespace `App\Controllers\Game`. Filter global `locale` dan `secureheaders` ber
 | GET | `/masuk` | `LoginController::form` | `clientHints` | Form masuk siswa; sudah masuk → `/mulai` |
 | POST | `/masuk` | `LoginController::login` | `clientHints` | Masuk + lanjutkan/buat sesi → tujuan tersimpan atau `/mulai`; wajib ganti sandi → `/ganti-sandi` |
 | POST | `/bahasa` | `HomeController::setLocale` | — | Ganti bahasa → redirect ke `redirect_to` (path internal) |
+| GET | `/siapkan` | `PackageController::prepare` | — | *(Asset package Stage 3.)* "Siapkan GELITA": package mode off → redirect to `?lanjut=` (`mulai`, `masuk`, `daftar`, `daftar/1–3`; anything else → `/mulai`); on → download screen |
+| GET | `/periksa-paket` | `PackageController::inspect` | — | *(Asset package Stage 3.)* Teacher's "Periksa paket" for this device; also with package mode off |
 
 ### Sudah masuk, sandi belum tentu sah (`participantAuth`, `screenView`)
 
@@ -345,6 +347,16 @@ Status yang dipakai layar dan API berasal dari trait `GameProgress`:
 | `index()` | Satu tombol Mulai; `hideBrand = true` | view `game/welcome` |
 | `start()` | `participant_id` dan `game_session_id` ada → redirect `/gerbang`; selain itu pilihan akun | view `game/start` / redirect |
 | `setLocale()` | `locale: required\|valid_locale`; disimpan ke `session('locale')`; bila ada sesi permainan milik peserta → `SessionService::setLocale()` (event `locale_changed`). Tidak membuat sesi baru dan tidak menyentuh progres | redirect ke `safe_internal_url(redirect_to)` |
+
+### `Game\PackageController` (asset package Stage 3, no login)
+
+*(New, English.)* The device-side package screens (plan `docs/rencana-paket-aset.md` §5.6, §8.1–§8.7, P7, P11). Both are open without login like the welcome screen: what they act on is this browser's copy of the package, which holds public images and sounds only (§9.1). The server cannot tell whether a device holds the package, so the gate before Mulai is client-side (`game/package-gate.js`, see `docs/06_JAVASCRIPT.md`).
+
+| Method | Rule | Response |
+|---|---|---|
+| `prepare()` | `?lanjut=` must match `mulai`, `masuk`, `daftar`, `daftar/1–3`, else `mulai`. No active package (`AssetPackageService::activeCode()` null) → redirect there. Otherwise the parts of the active package (`asset_packages.groups_json`, empty parts left out, in `AssetPackageBuilder::groupOrder()`) with labels from `groupLabel()` | view `game/prepare` / redirect |
+| `inspect()` | Nothing server-side; the page reads the device through `core/package.js` | view `game/package-inspect` |
+| `groupLabel()` (static) | `kode`, `inti`, `penutup` → `Package.group*`; `wilayah-{x}` → `Package.groupRegion` with the capitalised region code | string |
 
 ### `Game\RegisterController` (pendaftaran 3 langkah)
 

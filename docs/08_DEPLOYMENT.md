@@ -1053,6 +1053,17 @@ curl -sI "$U/api/paket/aktif" | grep -i x-gelita-paket           # the package c
 - **After a code deploy while package mode is on**, press **Bangun ulang paket** on Paket aset and publish it, so devices get the new `kode` group (only changed files are downloaded). The deploy scripts do not rebuild the package automatically yet.
 - Before data collection, `php spark gelita:content:verify --siap-penelitian` also re-hashes the active package and fails while package mode is off.
 
+#### Teacher routine before class: Siapkan GELITA and Periksa paket
+
+*(New subsection, English; asset package Stage 3, plan §8.1, §8.2, §11.1.)* With package mode on, every device must hold the full package (both languages) before **Mulai** works; there is no skip button.
+
+- **The day before, or an hour before class** (30 devices downloading at once can fill the school Wi-Fi): on each device open GELITA and press **Mulai**. The device shows **Siapkan GELITA** and downloads the package (about the size shown on **Rilis → Paket aset**); when it says "GELITA siap dimainkan!", the device is ready for every student who uses it. A dropped connection only pauses the download; it continues by itself, from where it stopped.
+- **Right before class**, on each device open `/periksa-paket` (also linked under "Untuk guru" on Siapkan GELITA) and press **Periksa semua berkas**. Anything missing or damaged → **Unduh yang kurang**. **Simpan permanen** asks the browser to keep the package (Firefox shows a question). No staff login is needed, so the teacher never leaves a staff session on a student device; the page only touches this browser's copy of public images and sounds.
+- **iPad:** add GELITA to the Home Screen (Bagikan → Tambah ke Layar Utama). In a normal Safari tab the package can be removed after 7 days without a visit (school holidays).
+- **Devices that cannot hold the package** get **Main daring di perangkat ini** for the current browser session (recorded as `package_mode = daring`): private windows, too little storage (free space and press **Coba lagi** instead where possible), and, only when **Izinkan mode daring untuk perangkat lab** is on, lab profiles that are wiped at logout (the choice is under "Untuk guru"). Prefer normal device accounts for GELITA labs.
+- **Hapus paket di perangkat ini** on Periksa paket frees the space (for example after package mode is switched off). While package mode is on, the device must then download again before Mulai.
+- After a code deploy or a rebuild, devices download only the changed files the next time someone presses Mulai.
+
 ### Ukuran aset
 
 Aset gambar dan video mendominasi ukuran instalasi. Anjuran:

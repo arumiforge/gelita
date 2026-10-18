@@ -26,7 +26,7 @@
 <?= $this->section('hudBack') ?><?= base_url('mulai') ?><?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<section class="login">
+<section class="login" data-package-gate="page" data-package-next="masuk">
   <?= component('character', ['character' => 'jaka', 'pose' => 'bow', 'class' => 'start-jaka stage-box']) ?>
 
   <div class="login-panel ornate-panel stage-box">
