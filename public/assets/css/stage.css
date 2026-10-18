@@ -512,7 +512,7 @@ body.game {
 
 /* =========================== KOORDINAT LAYAR (§4) =========================== */
 /* ---------- Halaman awal `/` ---------- */
-.welcome-hero    { --x: 240; --y: 120; --w: 800; --h: 300; }
+.welcome-hero    { --x: 240; --y: 104; --w: 800; --h: 336; } /* logo 280 dp + tagline (owner, 18 Oct 2026) */
 .welcome-actions { --x: 460; --y: 456; --w: 360; --h: 120; }
 .welcome-install { --x: 896; --y: 576; --w: 352; --h: 40; }
 /* Staff login link: anchored to the bottom-right corner (24 dp from the right,

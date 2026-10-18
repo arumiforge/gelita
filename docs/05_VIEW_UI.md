@@ -274,7 +274,7 @@ Semua layar sesudah login menerima data HUD (`hudData()`), kecuali cerita pembuk
 ### Halaman awal — `game/welcome`
 
 * Latar `bg.welcome`, `body.is-welcome`, HUD tanpa merek (`hideBrand`).
-* Logo: slot `ui.logo-hero` (1600 × 600), cadangan `ui.logo`, lalu judul teks `Game.appName` + `Game.tagline`. Bila logo berupa gambar, tagline tetap ada sebagai teks `.visually-hidden`.
+* Logo: slot `ui.logo-hero` (1600 × 600), cadangan `ui.logo`, lalu judul teks `Game.appName` + `Game.tagline`. The tagline `Game.tagline` is always shown under the logo image as `.welcome-tagline`, in the page language (owner, 18 October 2026).
 * **Satu** tombol Mulai `.btn-start` → `/mulai`, sama untuk siswa yang sudah maupun belum login. Gambarnya slot `ui.btn-start` (720 × 240, bertulisan, jadi memakai `media_key_src_locale()`: `ui.btn-start.en` untuk bahasa Inggris); tanpa gambar menjadi `btn btn-primary btn-xl` bertuliskan `Game.start`.
 * Tawaran memasang aplikasi `.welcome-install` (`data-install`, tersembunyi sampai `game/install.js` memutuskan): tombol `Game.installApp` atau petunjuk iPhone/iPad `Game.installIos`.
 * Staf masuk lewat `/admin/login`; halaman awal tidak menautkannya.
@@ -636,7 +636,7 @@ Semua layar game digambar di **satu panggung tetap 1280 × 720 dp** (dp = *desig
 
 | Layar | Elemen (x, y, w, h dp) |
 |---|---|
-| Halaman awal | logo 240, 120, 800 × 300; Mulai 460, 456, 360 × 120; tawaran pasang 896, 576, 352 × 40; staff login link bottom-right (right 24, bottom 16) |
+| Halaman awal | logo + tagline 240, 104, 800 × 336 (logo at most 280 high); Mulai 460, 456, 360 × 120; tawaran pasang 896, 576, 352 × 40; staff login link bottom-right (right 24, bottom 16) |
 | Mulai, Gerbang | judul 0, 88, 1280 × 96; kartu 212, 200, 400 × 300 dan 668, 200 |
 | Masuk / Ganti sandi | panel 360, 88, 560 × 544 / 360, 72, 560 × 576 (gulir) |
 | Daftar 1–3 | panel 200, 72, 880 × 576: kepala + stepper 0–64, isian gulir, bilah tombol 80 dp di bawah; langkah 3 kotak "Mengapa sandi harus kuat?" dengan Jaka 220 dp |

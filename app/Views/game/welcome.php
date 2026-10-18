@@ -2,7 +2,7 @@
 /**
  * 1. Welcome — `/` → HomeController::index
  *
- * Panggung 16:9 (Dok 3 §4): logo 240, 120, 800 × 300; tombol Mulai 460, 456,
+ * Panggung 16:9 (Dok 3 §4): logo + tagline 240, 104, 800 × 336; tombol Mulai 460, 456,
  * 360 × 120; petunjuk pasang aplikasi 896, 576, 352 × 40 (stage.css);
  * staff login link pinned 24 dp from the right and 16 dp from the bottom.
  *
@@ -16,7 +16,8 @@
  * and this device does not hold the package yet (P11).
  *
  * Logo : `ui.logo-hero` (landscape 1600×600) → `ui.logo` → judul teks.
- *        Bila gambar, tagline tetap ada sebagai teks tersembunyi.
+ *        The tagline `Game.tagline` is always shown under the logo, in the
+ *        page language (owner, 18 October 2026).
  * Mulai: gambar `ui.btn-start` (bertulisan, jadi berlaku varian bahasa
  *        `ui.btn-start.en`) → tombol CSS emas-navy (05_VIEW_UI.md §Kondisi aset hilang).
  *
@@ -39,7 +40,7 @@ $btnStart = media_key_src_locale('ui.btn-start', $locale);
         <img src="<?= esc($logo, 'attr') ?>" alt="<?= esc(lang('Game.appName'), 'attr') ?>"
              <?= $logoHero !== null ? 'width="1600" height="600"' : 'width="560"' ?> fetchpriority="high">
       </h1>
-      <p class="visually-hidden"><?= esc(lang('Game.tagline')) ?></p>
+      <p class="welcome-tagline"><?= esc(lang('Game.tagline')) ?></p>
     <?php else: ?>
       <h1 class="welcome-title"><?= esc(lang('Game.appName')) ?></h1>
       <p class="welcome-tagline"><?= esc(lang('Game.tagline')) ?></p>

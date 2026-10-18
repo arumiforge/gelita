@@ -313,7 +313,7 @@ final class StartGateTest extends CIUnitTestCase
         Services::resetSingle('renderer');
         $page = (new HomeController())->index();
         $this->assertStringContainsString($this->attr('assets/ui/logo-gelita.png'), $page);
-        $this->assertStringContainsString('<p class="visually-hidden">' . esc(lang('Game.tagline')) . '</p>', $page);
+        $this->assertStringContainsString('<p class="welcome-tagline">' . esc(lang('Game.tagline')) . '</p>', $page);
 
         $this->media['ui.logo-hero'] = 'assets/ui/logo-hero.png';
         Services::resetSingle('renderer');
