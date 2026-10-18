@@ -1837,3 +1837,14 @@ Owner request after PR #133:
 - **Mulai/Lanjut** in the region panel carries no arrow icon.
 - **Checked.** Screenshots at 1280 × 720 in ID and EN (the all-done row previewed in the browser); at 640 × 360 every visible control is at least 48 dp.
 
+
+## Susun Gambar images from the catalogue (18 October 2026, branch `sky/gracious-heisenberg-ps39sd`)
+
+Owner request: the catalogue has new images that suit Susun Gambar better; integrate them and replace the old ones.
+
+- **What the catalogue has.** Puzzle edition of 14 October 2026 (`gelita-katalog/docs/PUZZLE-UPDATE-20261014.md`): 21 new variants d–j and four redrawn images (`challenge.item.tmg-1-01`, `tmg-1-03`, `mgl-1-01`, `wnb-1-07`; the old ones were night or white-background scenes that failed or nearly failed the tile check). All 30 are full-bleed daylight scenes, 1200 × 1200, listed in `data.json` under their slot keys. The five other a–c images stay.
+- **No importer change needed.** The bank already has the 30 slots (draft 2 integration, 17 October 2026), and `CatalogImporter` installs `challenge.item.*` by key. On an existing server a plain `gelita:katalog:impor` fills the d–j slots (empty or sample) and reinstalls the four redrawn ones when the old file came from the catalogue (sha256 differs). An admin upload of one of the four is kept; `docs/08_DEPLOYMENT.md` gives the `--timpa --kunci=…` command limited to those four keys.
+- **Guard test.** `CatalogImportTest::testCatalogueHasEveryPuzzleImageOfTheBank` reads the real `gelita-katalog/`: every puzzle slot of the bank has a catalogue entry with a square image of at least 1200 px, and a dry run limited to `challenge.item.*-1-*` plans all 30.
+- **Deviation from the draft workbook.** The DAFTAR_MEDIA `source` column of the 25 affected slots still told the team to make the images ("BARU. Buat dengan prompt …", "WAJIB GANTI …"). It now says the image is in the catalogue (prompt code kept, Commons reference kept for the redrawn four) and that fact checking and a two-person assembly test remain before data collection. The workbook is rebuilt; `gelita-katalog/update/bank-soal/bank-soal-kelas5.xlsx` is the catalogue's own draft and is not changed.
+- **Counts in active docs.** `docs/07` and `docs/08` said 45 challenge image slots (9 Susun Gambar); they now say 66 (30). Plan documents and older log entries keep their historical numbers.
+- **Not done.** No server was touched. Fact checks (inscription script, reliefs, costumes, bundengan) and the two-person assembly test are the researcher's, as the catalogue's review notes say; `puzzle.review_status` there stays `needs_verification`.

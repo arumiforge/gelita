@@ -30,6 +30,7 @@ Last updated: 18 October 2026.
 - [ ] Install the catalogue art: `php spark gelita:katalog:impor` (dry run first; `docs/08_DEPLOYMENT.md` → *Installing the Katalog Aset images*). This fills every slot with the interim art of [`gelita-katalog/`](../gelita-katalog/README.md); the panel's **Gambar & mockup** replaces any of it later
 - [x] New character frames in the catalogue: 10 poses × 24 frames, red-scarf Jaka and Mbah Kedu (catalogue edition of 12 October 2026). On a server that already ran the import, run `gelita:katalog:impor` again: it replaces the 30 old frames and adds 210
 - [x] Cari Objek objects moved onto the tables and shelves of the three catalogue scenes (question bank layout change, 12 October 2026). On a server that already ran the import, run `gelita:katalog:impor` again (or `gelita:bank:import`) to apply the new positions
+- [ ] Susun Gambar images (catalogue edition of 14 October 2026): all 30 puzzle variants a–j now have catalogue art (21 new d–j, four redrawn: `tmg-1-01`, `tmg-1-03`, `mgl-1-01`, `wnb-1-07`). On a server that already ran the import, run `gelita:katalog:impor` again (dry run first); if one of the four was uploaded by hand, see `docs/08_DEPLOYMENT.md` → *Installing the Katalog Aset images*. Before data collection, the researcher still checks facts against the reference photos and has two people assemble each puzzle
 - [ ] Language icons and old uploads (12 October 2026): run `gelita:katalog:impor` again to install the HUD language icons (`ui.lang.id`/`ui.lang.en`). If it reports a pose as "perlu dicek", or the server still shows the old start button or the lurik Jaka, replace only those slots: `gelita:katalog:impor --timpa --kunci="ui.btn-start*,ui.lang.*,char.jaka.*"` (dry run first), then rebuild the asset package if a release uses one
 - [ ] Before data collection, replace or approve the remaining interim art: the AI Pustaka illustrations (owner: fine for now, replaced in the panel later)
 - [ ] Research-ready checklist green, study status set to "Berjalan"
@@ -111,3 +112,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 | Branch | Owner / scope | Status |
 |---|---|---|
 | `sky/clever-hopper-yaht5p` | Page redesign 2 follow-up: Peta Kedu story bar and page buttons | PR open |
+| `sky/gracious-heisenberg-ps39sd` | Susun Gambar images a–j from the catalogue (guard test, bank media notes, deploy docs) | PR open |

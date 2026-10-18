@@ -69,7 +69,7 @@ return [
                                 'Gunung Sindoro (3.136 m) dan Gunung Sumbing (3.371 m) disebut gunung kembar. Keduanya mengapit Temanggung dan membuat tanahnya subur.',
                                 'Mount Sindoro (3,136 m) and Mount Sumbing (3,371 m) are called the twin mountains. They stand on either side of Temanggung and make its soil fertile.',
                             ],
-                            'media'  => ['key' => 'challenge.item.tmg-1-01', 'label' => 'Gunung Sindoro dan Sumbing', 'note' => 'Sindoro (kanan) dan Sumbing (kiri) dilihat dari ladang bertingkat di Temanggung; awan khas dan burung di celah puncak; petani dan kebun kopi di latar depan', 'source' => 'DISARANKAN GANTI: versi katalog malam hari, padahal keterangan menyebut langit cerah dan kebun; keping K2~K3 mirip. Buat ulang dengan prompt TMG-P01. Rujukan: https://commons.wikimedia.org/wiki/File:Sindoro_sumbing.jpg (cek lisensi & catat kredit)'],
+                            'media'  => ['key' => 'challenge.item.tmg-1-01', 'label' => 'Gunung Sindoro dan Sumbing', 'note' => 'Sindoro (kanan) dan Sumbing (kiri) dilihat dari ladang bertingkat di Temanggung; awan khas dan burung di celah puncak; petani dan kebun kopi di latar depan', 'source' => 'Sudah dibuat ulang di Katalog Aset (14 Oktober 2026, prompt TMG-P01; uji keping otomatis lulus). Pasang dengan php spark gelita:katalog:impor. Sebelum pengambilan data: cek fakta dengan foto rujukan dan uji susun oleh dua orang. Rujukan: https://commons.wikimedia.org/wiki/File:Sindoro_sumbing.jpg'],
                             'review' => [
                                 'status' => 'needs_verification',
                                 'note'   => 'Revisi Oktober 2026: catatan isi gambar diganti ke suasana siang (gambar katalog malam hari disarankan diganti). Perlu dicek ulang peneliti.',
@@ -87,7 +87,7 @@ return [
                                 'Candi Pringapus adalah candi Hindu dari abad ke-9. Di dalam ruang candinya tersimpan arca Nandi, arca lembu yang dihormati umat Hindu.',
                                 'Pringapus Temple is a Hindu temple from the 9th century. Its chamber holds a statue of Nandi, the bull honoured by Hindus.',
                             ],
-                            'media'  => ['key' => 'challenge.item.tmg-1-03', 'label' => 'Candi Pringapus', 'note' => 'Candi Pringapus tampak depan', 'source' => 'WAJIB GANTI: versi katalog berlatar putih; uji keping GAGAL (K1 dan K3 polos dan kembar). Buat ulang dengan prompt TMG-P02 dan foto rujukan. Rujukan: https://commons.wikimedia.org/wiki/File:Candi_Pringapus_Temanggung_Jateng.jpg'],
+                            'media'  => ['key' => 'challenge.item.tmg-1-03', 'label' => 'Candi Pringapus', 'note' => 'Candi Pringapus tampak depan', 'source' => 'Sudah dibuat ulang di Katalog Aset (14 Oktober 2026, prompt TMG-P02; uji keping otomatis lulus). Pasang dengan php spark gelita:katalog:impor. Sebelum pengambilan data: cek fakta dengan foto rujukan dan uji susun oleh dua orang. Rujukan: https://commons.wikimedia.org/wiki/File:Candi_Pringapus_Temanggung_Jateng.jpg'],
                             // Only the picture changes; the draft keeps this caption verified.
                             'review' => [
                                 'status' => 'verified',
@@ -122,7 +122,7 @@ return [
                                 'Situs Liyangan di Desa Purbosari, Ngadirejo, ditemukan pada tahun 2008 saat warga menambang pasir. Para peneliti menemukan sisa rumah kayu, bangunan candi, jalan batu, dan butir padi hangus yang tertimbun pasir dan batu dari letusan Gunung Sindoro.',
                                 'The Liyangan Site in Purbosari Village, Ngadirejo, was found in 2008 while villagers were digging for sand. Researchers found the remains of wooden houses, temple buildings, stone paths and burnt grains of rice, all buried under sand and stones from an eruption of Mount Sindoro.',
                             ],
-                            'media'  => ['key' => 'challenge.item.tmg-1-d01', 'label' => 'Situs Liyangan', 'note' => 'situs ekskavasi di lereng Sindoro: talud batu bertingkat, kaki candi, jalan batu kuno, dinding galian berlapis, peneliti dewasa bekerja', 'source' => 'BARU. Buat dengan prompt TMG-P04 di panduan gambar puzzle; foto rujukan WAJIB. Jalankan uji keping sebelum diunggah.'],
+                            'media'  => ['key' => 'challenge.item.tmg-1-d01', 'label' => 'Situs Liyangan', 'note' => 'situs ekskavasi di lereng Sindoro: talud batu bertingkat, kaki candi, jalan batu kuno, dinding galian berlapis, peneliti dewasa bekerja', 'source' => 'Tersedia di Katalog Aset (14 Oktober 2026, prompt TMG-P04; uji keping otomatis lulus). Pasang dengan php spark gelita:katalog:impor. Sebelum pengambilan data: cek fakta dengan foto rujukan dan uji susun oleh dua orang.'],
                             'review' => [
                                 'status' => 'needs_verification',
                                 'note'   => 'Revisi Oktober 2026: gambar & keterangan baru (TMG-P04 di panduan gambar puzzle). Fakta diambil dari bank soal; cek ulang rumusannya. Gambar belum dibuat. | ' . $replayOnly,
@@ -140,7 +140,7 @@ return [
                                 'Prasasti Gondosuli dibuat pada tahun 832 Masehi. Prasasti adalah tulisan pada batu atau logam yang mencatat peristiwa penting.',
                                 'The Gondosuli Inscription was made in the year 832 CE. An inscription is writing on stone or metal that records an important event.',
                             ],
-                            'media'  => ['key' => 'challenge.item.tmg-1-e01', 'label' => 'Prasasti Gondosuli', 'note' => 'situs Prasasti Gondosuli: batu andesit besar beraksara kuno di halaman situs, susunan pelindung dan pagar sesuai aslinya, batu-batu candi kuno di sekitarnya', 'source' => 'BARU. Buat dengan prompt TMG-P05 di panduan gambar puzzle; foto rujukan WAJIB. Jalankan uji keping sebelum diunggah.'],
+                            'media'  => ['key' => 'challenge.item.tmg-1-e01', 'label' => 'Prasasti Gondosuli', 'note' => 'situs Prasasti Gondosuli: batu andesit besar beraksara kuno di halaman situs, susunan pelindung dan pagar sesuai aslinya, batu-batu candi kuno di sekitarnya', 'source' => 'Tersedia di Katalog Aset (14 Oktober 2026, prompt TMG-P05; uji keping otomatis lulus). Pasang dengan php spark gelita:katalog:impor. Sebelum pengambilan data: cek fakta dengan foto rujukan dan uji susun oleh dua orang.'],
                             'review' => [
                                 'status' => 'needs_verification',
                                 'note'   => 'Revisi Oktober 2026: gambar & keterangan baru (TMG-P05 di panduan gambar puzzle). Fakta diambil dari bank soal; cek ulang rumusannya. Gambar belum dibuat. | ' . $replayOnly,
@@ -158,7 +158,7 @@ return [
                                 'Umbul Jumprit adalah mata air di lereng Gunung Sindoro. Airnya jernih dan tidak pernah kering, lalu mengalir menjadi hulu Sungai Progo. Setiap Waisak, air suci untuk perayaan di Candi Borobudur diambil dari sini.',
                                 'Umbul Jumprit is a spring on the slopes of Mount Sindoro. Its clear water never dries up and flows on to become the source of the Progo River. Every Vesak, holy water for the celebration at Borobudur Temple is taken from here.',
                             ],
-                            'media'  => ['key' => 'challenge.item.tmg-1-f01', 'label' => 'Umbul Jumprit', 'note' => 'mata air keluar dari bawah batu berlumut dan pohon besar, kolam jernih berkerikil, aliran awal Sungai Progo, pinus, monyet ekor panjang, gapura batu', 'source' => 'BARU. Buat dengan prompt TMG-P06 di panduan gambar puzzle; foto rujukan disarankan. Jalankan uji keping sebelum diunggah.'],
+                            'media'  => ['key' => 'challenge.item.tmg-1-f01', 'label' => 'Umbul Jumprit', 'note' => 'mata air keluar dari bawah batu berlumut dan pohon besar, kolam jernih berkerikil, aliran awal Sungai Progo, pinus, monyet ekor panjang, gapura batu', 'source' => 'Tersedia di Katalog Aset (14 Oktober 2026, prompt TMG-P06; uji keping otomatis lulus). Pasang dengan php spark gelita:katalog:impor. Sebelum pengambilan data: cek fakta dengan foto rujukan dan uji susun oleh dua orang.'],
                             'review' => [
                                 'status' => 'needs_verification',
                                 'note'   => 'Revisi Oktober 2026: gambar & keterangan baru (TMG-P06 di panduan gambar puzzle). Fakta diambil dari bank soal; cek ulang rumusannya. Gambar belum dibuat. | ' . $replayOnly,
@@ -176,7 +176,7 @@ return [
                                 'Petani di lereng Gunung Sindoro dan Sumbing menanam kopi arabika di ketinggian lebih dari 900 meter. Buah kopi yang sudah merah dipetik, diolah, lalu dikeringkan.',
                                 'Farmers on the slopes of Mount Sindoro and Mount Sumbing grow arabica coffee at more than 900 metres. The ripe red coffee cherries are picked, processed and then dried.',
                             ],
-                            'media'  => ['key' => 'challenge.item.tmg-1-g01', 'label' => 'Panen Kopi di Lereng Sindoro–Sumbing', 'note' => 'panen kopi arabika di lereng bertingkat: petani dewasa memetik buah merah, pohon peneduh, buah dijemur di depan pondok, Sindoro di latar', 'source' => 'BARU. Buat dengan prompt TMG-P07 di panduan gambar puzzle; foto rujukan tidak perlu. Jalankan uji keping sebelum diunggah.'],
+                            'media'  => ['key' => 'challenge.item.tmg-1-g01', 'label' => 'Panen Kopi di Lereng Sindoro–Sumbing', 'note' => 'panen kopi arabika di lereng bertingkat: petani dewasa memetik buah merah, pohon peneduh, buah dijemur di depan pondok, Sindoro di latar', 'source' => 'Tersedia di Katalog Aset (14 Oktober 2026, prompt TMG-P07; uji keping otomatis lulus). Pasang dengan php spark gelita:katalog:impor. Sebelum pengambilan data: cek fakta dengan foto rujukan dan uji susun oleh dua orang.'],
                             'review' => [
                                 'status' => 'needs_verification',
                                 'note'   => 'Revisi Oktober 2026: gambar & keterangan baru (TMG-P07 di panduan gambar puzzle). Fakta diambil dari bank soal; cek ulang rumusannya. Gambar belum dibuat. | ' . $replayOnly,
@@ -194,7 +194,7 @@ return [
                                 'Ikan uceng adalah ikan sungai kecil yang menjadi makanan khas Temanggung. Ikan ini hidup di sungai yang airnya jernih dan biasanya digoreng kering.',
                                 'Uceng is a small river fish and a special food of Temanggung. It lives in clear rivers and is usually fried until crispy.',
                             ],
-                            'media'  => ['key' => 'challenge.item.tmg-1-h01', 'label' => 'Ikan Uceng dan Sungai Jernih', 'note' => 'sungai pegunungan jernih berbatu, pencari ikan dengan serok kecil, ikan uceng kecil di atas kerikil, warung tepi sungai dengan uceng goreng', 'source' => 'BARU. Buat dengan prompt TMG-P08 di panduan gambar puzzle; foto rujukan disarankan. Jalankan uji keping sebelum diunggah.'],
+                            'media'  => ['key' => 'challenge.item.tmg-1-h01', 'label' => 'Ikan Uceng dan Sungai Jernih', 'note' => 'sungai pegunungan jernih berbatu, pencari ikan dengan serok kecil, ikan uceng kecil di atas kerikil, warung tepi sungai dengan uceng goreng', 'source' => 'Tersedia di Katalog Aset (14 Oktober 2026, prompt TMG-P08; uji keping otomatis lulus). Pasang dengan php spark gelita:katalog:impor. Sebelum pengambilan data: cek fakta dengan foto rujukan dan uji susun oleh dua orang.'],
                             'review' => [
                                 'status' => 'needs_verification',
                                 'note'   => 'Revisi Oktober 2026: gambar & keterangan baru (TMG-P08 di panduan gambar puzzle). Fakta baru yang wajib dicek: "hidup di sungai yang airnya jernih" dan "biasanya digoreng kering". Gambar belum dibuat. | ' . $replayOnly,
@@ -212,7 +212,7 @@ return [
                                 'Pasar Papringan di Dusun Ngadiprono, Desa Ngadimulyo, Kecamatan Kedu, digelar di bawah rumpun bambu setiap Minggu Wage dan Minggu Pon. Pembeli membayar dengan pring, alat tukar dari bambu, dan pasar ini tidak memakai plastik.',
                                 'Papringan Market in Ngadiprono Hamlet, Ngadimulyo Village, Kedu District, is held under a bamboo grove on the Javanese market days Minggu Wage and Minggu Pon. Shoppers pay with pring, tokens made of bamboo, and no plastic is used.',
                             ],
-                            'media'  => ['key' => 'challenge.item.tmg-1-i01', 'label' => 'Pasar Papringan', 'note' => 'pasar pagi di bawah rumpun bambu: lapak bambu, jajanan di tampah daun pisang, mainan kayu, pembeli membayar dengan keping bambu, tanpa plastik', 'source' => 'BARU. Buat dengan prompt TMG-P09 di panduan gambar puzzle; foto rujukan disarankan. Jalankan uji keping sebelum diunggah.'],
+                            'media'  => ['key' => 'challenge.item.tmg-1-i01', 'label' => 'Pasar Papringan', 'note' => 'pasar pagi di bawah rumpun bambu: lapak bambu, jajanan di tampah daun pisang, mainan kayu, pembeli membayar dengan keping bambu, tanpa plastik', 'source' => 'Tersedia di Katalog Aset (14 Oktober 2026, prompt TMG-P09; uji keping otomatis lulus). Pasang dengan php spark gelita:katalog:impor. Sebelum pengambilan data: cek fakta dengan foto rujukan dan uji susun oleh dua orang.'],
                             'review' => [
                                 'status' => 'needs_verification',
                                 'note'   => 'Revisi Oktober 2026: gambar & keterangan baru (TMG-P09 di panduan gambar puzzle). Fakta baru yang wajib dicek: semua isi keterangan (sumber: GNFI 2022). Gambar belum dibuat. | ' . $replayOnly,
@@ -230,7 +230,7 @@ return [
                                 'Kuda kepang untuk tari kuda lumping dibuat dari anyaman bambu, lalu dicat dan dihias kain warna-warni. Agar kesenian ini tidak hilang, anak-anak muda diajak berlatih menari kuda lumping.',
                                 'The hobby horses for the kuda lumping dance are made of woven bamboo, then painted and decorated with colourful cloth. So that this art does not disappear, young people are invited to practise the dance.',
                             ],
-                            'media'  => ['key' => 'challenge.item.tmg-1-j01', 'label' => 'Perajin Kuda Kepang', 'note' => 'halaman bengkel perajin: menganyam dan mengecat kuda kepang, kuda jadi digantung, tumpukan bilah bambu, remaja siap berlatih, Sumbing di latar', 'source' => 'BARU. Buat dengan prompt TMG-P10 di panduan gambar puzzle; foto rujukan disarankan. Jalankan uji keping sebelum diunggah.'],
+                            'media'  => ['key' => 'challenge.item.tmg-1-j01', 'label' => 'Perajin Kuda Kepang', 'note' => 'halaman bengkel perajin: menganyam dan mengecat kuda kepang, kuda jadi digantung, tumpukan bilah bambu, remaja siap berlatih, Sumbing di latar', 'source' => 'Tersedia di Katalog Aset (14 Oktober 2026, prompt TMG-P10; uji keping otomatis lulus). Pasang dengan php spark gelita:katalog:impor. Sebelum pengambilan data: cek fakta dengan foto rujukan dan uji susun oleh dua orang.'],
                             'review' => [
                                 'status' => 'needs_verification',
                                 'note'   => 'Revisi Oktober 2026: gambar & keterangan baru (TMG-P10 di panduan gambar puzzle). Fakta diambil dari bank soal; cek ulang rumusannya. Gambar belum dibuat. | ' . $replayOnly,

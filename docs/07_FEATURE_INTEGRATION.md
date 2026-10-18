@@ -61,7 +61,7 @@ Istilah yang dipakai di seluruh dokumen:
 | `DeviceProfile` | `app/Libraries/DeviceProfile.php` | profil perangkat untuk `device_logs` |
 | `BankRules`, `DifficultyRules` | `app/Libraries/` | aturan bank soal dan aturan per tingkat |
 | `ContentVerifier` | `app/Libraries/ContentVerifier.php` | verifikasi konten, termasuk `--siap-penelitian` |
-| `MockupGenerator` | `app/Libraries/MockupGenerator.php` | gambar contoh 45 slot |
+| `MockupGenerator` | `app/Libraries/MockupGenerator.php` | gambar contoh 66 slot |
 | `MediaStore`, `MediaIntegrity`, `MediaUsage`, `AssetChecklist`, `VideoThumbnail` | `app/Libraries/` | simpan berkas media, pindai, "Dipakai di", kelengkapan aset, poster video |
 | `NarrationImporter`, `NarrationCatalog` | `app/Libraries/` | impor dan persetujuan narasi |
 | `SchoolImporter` | `app/Libraries/SchoolImporter.php` | daftar sekolah resmi dari CSV |
@@ -1157,7 +1157,7 @@ Peringatan: Bloom di luar rentang tingkat; variasi tanpa pernyataan `benar` atau
 
 ## FITUR 12b: Gambar Contoh (Mockup) dan Penggantiannya
 
-Agar permainan dapat diuji ujung ke ujung sebelum gambar asli tersedia, setiap slot gambar tantangan yang dipakai konten aktif diisi gambar contoh SVG buatan sistem (`App\Libraries\MockupGenerator`). Bank kelas 5 punya **45 slot**: 9 gambar Susun Gambar, 3 gambar pernyataan, 3 adegan Cari Objek, dan 30 benda.
+Agar permainan dapat diuji ujung ke ujung sebelum gambar asli tersedia, setiap slot gambar tantangan yang dipakai konten aktif diisi gambar contoh SVG buatan sistem (`App\Libraries\MockupGenerator`). Bank kelas 5 punya **66 slot**: 30 gambar Susun Gambar (variasi a–j), 3 gambar pernyataan, 3 adegan Cari Objek, dan 30 benda.
 
 ```text
 MEMBUAT

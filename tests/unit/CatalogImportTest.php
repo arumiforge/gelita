@@ -2,6 +2,7 @@
 
 use App\Libraries\CatalogImporter;
 use App\Libraries\MediaStore;
+use App\Libraries\MockupGenerator;
 use App\Models\MediaAssetModel;
 use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\Test\CIUnitTestCase;
@@ -214,6 +215,35 @@ final class CatalogImportTest extends CIUnitTestCase
         }
 
         $this->assertSame(8 + 10 + 12, array_sum(array_map(static fn (array $s): int => count($s[1]), CatalogImporter::SCENE_OBJECTS)));
+    }
+
+    /**
+     * Every Susun Gambar slot of the bank (variants a–j, 30) has a square
+     * catalogue image of at least 1200 px, and the importer would install it.
+     */
+    public function testCatalogueHasEveryPuzzleImageOfTheBank(): void
+    {
+        $slots = array_values(array_filter((new MockupGenerator())->slots(), static fn (array $s): bool => $s['kind'] === 'puzzle'));
+        $keys  = array_column($slots, 'asset_key');
+        sort($keys);
+
+        $catalog = new CatalogImporter(ROOTPATH . 'gelita-katalog');
+        $files   = array_column(array_filter($catalog->entries(), static fn (array $e): bool => in_array($e['key'], $keys, true)), 'file', 'key');
+        ksort($files);
+
+        $this->assertCount(30, $keys);
+        $this->assertSame($keys, array_keys($files), 'puzzle slots without a catalogue entry');
+
+        foreach ($files as $key => $file) {
+            $this->assertFileExists($file);
+            [$width, $height] = getimagesize($file) ?: [0, 0];
+            $this->assertSame($width, $height, "{$key} is not square");
+            $this->assertGreaterThanOrEqual(1200, $width, "{$key} is smaller than the puzzle minimum");
+        }
+
+        $report = $catalog->run(true, false, null, ['challenge.item.*-1-*']);
+        $this->assertSame($keys, array_column($report, 'target'));
+        $this->assertSame(['planned'], array_values(array_unique(array_column($report, 'status'))));
     }
 
     /** A new catalogue edition (e.g. the 24-frame poses) replaces earlier catalogue images, not admin uploads. */

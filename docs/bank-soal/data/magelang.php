@@ -78,7 +78,7 @@ return [
                                 'key'    => 'challenge.item.mgl-1-01',
                                 'label'  => 'Stupa Borobudur',
                                 'note'   => 'teras bundar Borobudur saat fajar: stupa berlubang pada berbagai jarak, arca Buddha terlihat dari lubang stupa terdekat, stupa induk, Merapi dan Merbabu di cakrawala',
-                                'source' => 'WAJIB GANTI: uji keping GAGAL (K13 polos; K1~K3, K2~K3, K13~K14 kembar) dan stupa induk tampak sebagai candi terpisah di seberang lembah. Buat ulang dengan prompt MGL-P01. Rujukan: https://commons.wikimedia.org/wiki/File:Borobudur_stupas_on_upper_terrace.jpg',
+                                'source' => 'Sudah dibuat ulang di Katalog Aset (14 Oktober 2026, prompt MGL-P01; uji keping otomatis lulus). Pasang dengan php spark gelita:katalog:impor. Sebelum pengambilan data: cek fakta dengan foto rujukan dan uji susun oleh dua orang. Rujukan: https://commons.wikimedia.org/wiki/File:Borobudur_stupas_on_upper_terrace.jpg',
                             ],
                             'review' => [
                                 'status' => 'needs_verification',
@@ -140,7 +140,7 @@ return [
                                 'key'    => 'challenge.item.mgl-1-d01',
                                 'label'  => 'Relief Borobudur',
                                 'note'   => 'lorong galeri Borobudur: panel relief (kapal bercadik, orang di pantai, pohon, hewan) dengan cahaya samping, pemandu menunjuk tanpa menyentuh, dua anak mengamati',
-                                'source' => 'BARU. Buat dengan prompt MGL-P04 di panduan gambar puzzle; foto rujukan WAJIB. Jalankan uji keping sebelum diunggah.',
+                                'source' => 'Tersedia di Katalog Aset (14 Oktober 2026, prompt MGL-P04; uji keping otomatis lulus). Pasang dengan php spark gelita:katalog:impor. Sebelum pengambilan data: cek fakta dengan foto rujukan dan uji susun oleh dua orang.',
                             ],
                             'review' => [
                                 'status' => 'needs_verification',
@@ -163,7 +163,7 @@ return [
                                 'key'    => 'challenge.item.mgl-1-e01',
                                 'label'  => 'Candi Pawon',
                                 'note'   => 'Candi Pawon di taman desa di antara sawah: tangga, panel berukir, stupa kecil di atap, rumah beratap merah, Perbukitan Menoreh di latar',
-                                'source' => 'BARU. Buat dengan prompt MGL-P05 di panduan gambar puzzle; foto rujukan WAJIB. Jalankan uji keping sebelum diunggah.',
+                                'source' => 'Tersedia di Katalog Aset (14 Oktober 2026, prompt MGL-P05; uji keping otomatis lulus). Pasang dengan php spark gelita:katalog:impor. Sebelum pengambilan data: cek fakta dengan foto rujukan dan uji susun oleh dua orang.',
                             ],
                             'review' => [
                                 'status' => 'needs_verification',
@@ -186,7 +186,7 @@ return [
                                 'key'    => 'challenge.item.mgl-1-f01',
                                 'label'  => 'Gunung Tidar',
                                 'note'   => 'tangga batu mendaki di hutan Gunung Tidar, keluarga dan orang berolahraga, celah pohon memperlihatkan atap kota Magelang dan Gunung Sumbing',
-                                'source' => 'BARU. Buat dengan prompt MGL-P06 di panduan gambar puzzle; foto rujukan disarankan. Jalankan uji keping sebelum diunggah.',
+                                'source' => 'Tersedia di Katalog Aset (14 Oktober 2026, prompt MGL-P06; uji keping otomatis lulus). Pasang dengan php spark gelita:katalog:impor. Sebelum pengambilan data: cek fakta dengan foto rujukan dan uji susun oleh dua orang.',
                             ],
                             'review' => [
                                 'status' => 'needs_verification',
@@ -209,7 +209,7 @@ return [
                                 'key'    => 'challenge.item.mgl-1-g01',
                                 'label'  => 'Getuk Magelang',
                                 'note'   => 'lapak pasar dari sudut agak tinggi (bukan tampak atas): getuk tiga warna di tampah, singkong, lumpang dan alu, dandang beruap, latar pasar tajam',
-                                'source' => 'BARU. Buat dengan prompt MGL-P07 di panduan gambar puzzle; foto rujukan tidak perlu. Jalankan uji keping sebelum diunggah.',
+                                'source' => 'Tersedia di Katalog Aset (14 Oktober 2026, prompt MGL-P07; uji keping otomatis lulus). Pasang dengan php spark gelita:katalog:impor. Sebelum pengambilan data: cek fakta dengan foto rujukan dan uji susun oleh dua orang.',
                             ],
                             'review' => [
                                 'status' => 'needs_verification',
@@ -232,7 +232,7 @@ return [
                                 'key'    => 'challenge.item.mgl-1-h01',
                                 'label'  => 'Gerabah Klipoh',
                                 'note'   => 'halaman perajin gerabah Klipoh: membentuk tanah liat di alat putar tangan, kendil/cobek/kuali dijemur, pembakaran terbuka kecil, anggota keluarga belajar',
-                                'source' => 'BARU. Buat dengan prompt MGL-P08 di panduan gambar puzzle; foto rujukan disarankan. Jalankan uji keping sebelum diunggah.',
+                                'source' => 'Tersedia di Katalog Aset (14 Oktober 2026, prompt MGL-P08; uji keping otomatis lulus). Pasang dengan php spark gelita:katalog:impor. Sebelum pengambilan data: cek fakta dengan foto rujukan dan uji susun oleh dua orang.',
                             ],
                             'review' => [
                                 'status' => 'needs_verification',
@@ -255,7 +255,7 @@ return [
                                 'key'    => 'challenge.item.mgl-1-i01',
                                 'label'  => 'Perjalanan Waisak',
                                 'note'   => 'prosesi Waisak yang tenang di jalan desa: biksu membawa air suci dan api, umat berbaju putih dengan bunga teratai, bendera Buddhis, penonton tertib di balik tali, Borobudur di kejauhan',
-                                'source' => 'BARU. Buat dengan prompt MGL-P09 di panduan gambar puzzle; foto rujukan disarankan. Jalankan uji keping sebelum diunggah.',
+                                'source' => 'Tersedia di Katalog Aset (14 Oktober 2026, prompt MGL-P09; uji keping otomatis lulus). Pasang dengan php spark gelita:katalog:impor. Sebelum pengambilan data: cek fakta dengan foto rujukan dan uji susun oleh dua orang.',
                             ],
                             'review' => [
                                 'status' => 'needs_verification',
@@ -278,7 +278,7 @@ return [
                                 'key'    => 'challenge.item.mgl-1-j01',
                                 'label'  => 'Borobudur di Antara Dua Pasang Gunung Kembar',
                                 'note'   => 'fajar dari bukit di barat Borobudur: candi terlihat jelas di tengah, kabut tipis hanya di cekungan, Merbabu dan Merapi di cakrawala timur, dek pandang dengan pengunjung',
-                                'source' => 'BARU. Buat dengan prompt MGL-P10 di panduan gambar puzzle; foto rujukan disarankan. Jalankan uji keping sebelum diunggah.',
+                                'source' => 'Tersedia di Katalog Aset (14 Oktober 2026, prompt MGL-P10; uji keping otomatis lulus). Pasang dengan php spark gelita:katalog:impor. Sebelum pengambilan data: cek fakta dengan foto rujukan dan uji susun oleh dua orang.',
                             ],
                             'review' => [
                                 'status' => 'needs_verification',
