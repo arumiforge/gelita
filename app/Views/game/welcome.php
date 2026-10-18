@@ -11,6 +11,10 @@
  * (`hideBrand`): logonya sudah besar di sini. Staf masuk lewat `/admin/login`,
  * via the small link in the bottom-right corner (this page only).
  *
+ * Asset package (Stage 3): `data-package-gate="link"` + `data-package-start`
+ * let game/package-gate.js point Mulai at `/siapkan` while package mode is on
+ * and this device does not hold the package yet (P11).
+ *
  * Logo : `ui.logo-hero` (landscape 1600×600) → `ui.logo` → judul teks.
  *        Bila gambar, tagline tetap ada sebagai teks tersembunyi.
  * Mulai: gambar `ui.btn-start` (bertulisan, jadi berlaku varian bahasa
@@ -28,7 +32,7 @@ $btnStart = media_key_src_locale('ui.btn-start', $locale);
 <?= $this->section('bodyClass') ?>is-welcome<?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<section class="welcome">
+<section class="welcome" data-package-gate="link">
   <header class="welcome-hero stage-box">
     <?php if ($logo !== null): ?>
       <h1 class="welcome-logo<?= $logoHero !== null ? ' is-hero' : '' ?>">
@@ -44,11 +48,11 @@ $btnStart = media_key_src_locale('ui.btn-start', $locale);
 
   <div class="welcome-actions stage-box">
     <?php if ($btnStart !== null): ?>
-      <a class="btn-start is-image" href="<?= base_url('mulai') ?>">
+      <a class="btn-start is-image" href="<?= base_url('mulai') ?>" data-package-start>
         <img src="<?= esc($btnStart, 'attr') ?>" alt="<?= esc(lang('Game.start'), 'attr') ?>" width="720" height="240">
       </a>
     <?php else: ?>
-      <a class="btn-start btn btn-primary btn-xl" href="<?= base_url('mulai') ?>"><?= esc(lang('Game.start')) ?> <?= icon('right') ?></a>
+      <a class="btn-start btn btn-primary btn-xl" href="<?= base_url('mulai') ?>" data-package-start><?= esc(lang('Game.start')) ?> <?= icon('right') ?></a>
     <?php endif ?>
   </div>
 

@@ -30,7 +30,7 @@ $country = $val('country_code') ?: 'ID';
 <?= $this->section('hudBack') ?><?= base_url('daftar/1') ?><?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<section class="register" data-step="2">
+<section class="register" data-step="2" data-package-gate="page" data-package-next="daftar/2">
   <?= component('character', ['character' => 'jaka', 'pose' => 'happy', 'class' => 'start-jaka stage-box']) ?>
 
   <div class="register-panel ornate-panel stage-box">

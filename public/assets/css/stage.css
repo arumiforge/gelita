@@ -533,6 +533,11 @@ body.game {
    head is 32–96 (below the crest), the fields scroll, the button bar is the last 80 ---------- */
 .register-panel { --x: 432; --y: 96; --w: 784; --h: 576; }
 
+/* ---------- Siapkan GELITA `/siapkan` and Periksa paket `/periksa-paket` (asset package
+   Stage 3): one full-width panel below the HUD, no character (owner, 18 October 2026) ---------- */
+.prepare-panel,
+.inspect-panel { --x: 32; --y: 88; --w: 1216; --h: 600; }
+
 /* ---------- Sinematik: cerita pembuka `/intro`, penutup `/penutup` ---------- */
 .cine-stage   { --x: 64;  --y: 136; --w: 300; --h: 520; }
 .cine-caption { --x: 160; --y: 520; --w: 960; --h: 168; }

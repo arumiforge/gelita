@@ -29,7 +29,7 @@ $focus   = static fn (string $f): string => $first === $f ? ' autofocus' : '';
 <?= $this->section('hudBack') ?><?= base_url('daftar/2') ?><?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<section class="register" data-step="3">
+<section class="register" data-step="3" data-package-gate="page" data-package-next="daftar/3">
   <?= component('character', ['character' => 'jaka', 'pose' => 'bow', 'class' => 'start-jaka stage-box']) ?>
 
   <div class="register-panel ornate-panel stage-box">

@@ -378,6 +378,52 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
 .start-go { color: var(--gold-500); }
 .start-go .icon { width: 1.75rem; height: 1.75rem; }
 
+/* =========================== PAKET ASET (Stage 3) ===========================
+   Siapkan GELITA `/siapkan` and Periksa paket `/periksa-paket`: the ornate
+   panel of /daftar at full stage width (head 64 dp, scrolling body, button bar 80 dp).
+   Coordinates live in stage.css. */
+.prepare-panel, .inspect-panel { grid-template-rows: 4rem minmax(0, 1fr) 5rem; }
+.prepare-head h1 { grid-column: 1; }
+.prepare-body { display: grid; align-content: start; gap: var(--gap-3); padding: var(--gap-4) var(--gap-6); }
+.prepare-lead { margin: 0; color: var(--ink-dim); line-height: 1.45; }
+.prepare-total-head { display: flex; justify-content: space-between; gap: var(--gap-3); margin-bottom: var(--gap-1); color: var(--gold-300); font-weight: 700; }
+.prepare-size { font-variant-numeric: tabular-nums; }
+.prepare-bar { height: .875rem; }
+.prepare-bar > i, .prepare-group-bar > i { width: 0; transition: width .3s; }
+.prepare-groups { display: grid; gap: var(--gap-2); margin: 0; padding: 0; list-style: none; }
+.prepare-group {
+  display: grid;
+  grid-template-columns: minmax(0, 16rem) minmax(4rem, 1fr) minmax(0, 12rem);
+  align-items: center;
+  gap: var(--gap-3);
+  font-size: var(--fs-caption);
+}
+.prepare-group-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.prepare-group-state { color: var(--ink-dim); font-variant-numeric: tabular-nums; text-align: right; }
+.prepare-group.is-done .prepare-group-state { color: var(--ok); font-weight: 700; }
+.prepare-status { margin: 0; min-height: 1.5em; color: var(--gold-300); font-weight: 700; line-height: 1.4; }
+.prepare[data-state="error"] .prepare-status { color: var(--warn); }
+.prepare-install { display: grid; gap: var(--gap-2); }
+.prepare-teacher { border-top: 1px solid var(--line); padding-top: var(--gap-2); font-size: var(--fs-caption); }
+.prepare-teacher summary { display: inline-flex; align-items: center; gap: var(--gap-2); min-height: var(--tap); color: var(--gold-300); font-weight: 700; cursor: pointer; }
+.prepare-teacher summary:focus-visible { outline: .1875rem solid var(--gold-500); outline-offset: .125rem; }
+.prepare-teacher p { margin: var(--gap-2) 0 0; color: var(--ink-dim); }
+.prepare-teacher a { display: inline-flex; align-items: center; gap: var(--gap-1); min-height: var(--tap); color: var(--gold-300); font-weight: 700; }
+.prepare-lab { display: grid; justify-items: start; gap: var(--gap-2); }
+.prepare-actions, .inspect-actions { padding: 0 var(--gap-6); }
+.prepare-actions .btn, .inspect-actions .btn, .inspect-persisted .btn, .inspect-clear .btn { white-space: nowrap; }
+.prepare-actions .btn-primary { min-width: 12rem; }
+.prepare-actions .btn-primary:disabled { filter: grayscale(.85) brightness(.7); cursor: not-allowed; }
+
+.inspect-facts { display: grid; gap: var(--gap-2); margin: 0; }
+.inspect-facts > div { display: grid; grid-template-columns: minmax(0, 14rem) minmax(0, 1fr); gap: var(--gap-3); }
+.inspect-facts dt { color: var(--gold-300); font-weight: 700; }
+.inspect-facts dd { margin: 0; overflow-wrap: anywhere; }
+.inspect-keys { margin: 0; color: var(--ink-dim); font-size: var(--fs-caption); overflow-wrap: anywhere; }
+.inspect-persisted { display: flex; flex-wrap: wrap; align-items: center; gap: var(--gap-3); }
+.inspect-clear { margin: var(--gap-2) 0 0; }
+.inspect[aria-busy="true"] .inspect-actions .btn { cursor: progress; }
+
 /* =========================== AKUN (perkamen) =========================== */
 .password-panel { padding: var(--gap-5) var(--gap-6); }
 .password-panel .form { gap: var(--gap-3); }

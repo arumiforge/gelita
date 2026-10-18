@@ -26,6 +26,9 @@ $routes->group('', ['namespace' => 'App\Controllers\Game'], static function ($ro
     $routes->get('masuk', 'LoginController::form');
     $routes->post('masuk', 'LoginController::login');
     $routes->post('bahasa', 'HomeController::setLocale');
+    // Asset package on this device (rencana-paket-aset Stage 3): download before Mulai, teacher check
+    $routes->get('siapkan', 'PackageController::prepare');
+    $routes->get('periksa-paket', 'PackageController::inspect');
 
     // Sudah login, belum tentu boleh bermain (mis. wajib ganti sandi)
     $routes->group('', ['filter' => ['participantAuth', 'screenView']], static function ($routes): void {
