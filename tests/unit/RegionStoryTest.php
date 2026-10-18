@@ -422,7 +422,7 @@ final class RegionStoryTest extends CIUnitTestCase
     {
         $page = $this->finished(closes: true, allDone: false);
 
-        $this->assertMatchesRegularExpression('/class="finished-actions">\s*<a class="btn btn-primary btn-xl" href="' . preg_quote(base_url('tuntas/temanggung'), '/') . '">' . preg_quote(lang('Game.continue'), '/') . '/', $page);
+        $this->assertMatchesRegularExpression('/<a class="result-btn is-primary" href="' . preg_quote(base_url('tuntas/temanggung'), '/') . '"><span>' . preg_quote(lang('Game.continue'), '/') . '/', $page);
         $this->assertStringContainsString('class="library-unlocked"', $page, 'sorotan Pustaka Tahap 4 tetap');
 
         // Wilayah terakhir yang menuntaskan semua node pun lewat adegan tuntas dulu (lalu penutup)
@@ -435,7 +435,7 @@ final class RegionStoryTest extends CIUnitTestCase
         $page = $this->finished(closes: false, allDone: false);
 
         $this->assertStringNotContainsString(base_url('tuntas/temanggung'), $page);
-        $this->assertMatchesRegularExpression('/href="[^"]*wilayah\/magelang" data-curtain="region"[^>]*>' . preg_quote(lang('Game.goToRegion', ['Magelang']), '/') . '/', $page);
+        $this->assertMatchesRegularExpression('/href="[^"]*wilayah\/magelang" data-curtain="region"[^>]*><span>' . preg_quote(lang('Game.goToRegion', ['Magelang']), '/') . '/', $page);
         $this->assertStringContainsString('<template id="tpl-curtain-region">', $page);
     }
 

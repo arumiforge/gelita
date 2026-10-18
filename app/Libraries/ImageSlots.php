@@ -35,6 +35,7 @@ final class ImageSlots
         'region'     => 'Wilayah: latar, peta, lencana',
         'character'  => 'Tokoh',
         'avatar'     => 'Avatar',
+        'result'     => 'Layar tantangan selesai',
         'challenge'  => 'Gambar tantangan',
         'library'    => 'Pustaka',
         'other'      => 'Lainnya',
@@ -153,6 +154,83 @@ final class ImageSlots
             'fallback'    => 'Berkas bawaan assets/ui/placeholder.svg',
             'priority'    => 'opsional',
             'tips'        => 'Hanya cadangan: sebelum penelitian semua gambar asli tetap perlu diunggah.',
+        ],
+
+        // ----------------------------------------------------------- result
+        // Skin of the "Tantangan selesai" screen (/selesai/{id}), redesign of
+        // 18 October 2026 from gelita-katalog/mockup/gambar-mockup/tantangan-selesai-temanggung.
+        // Every label stays text: the pictures carry no writing.
+        'ui.result-panel' => [
+            'group'       => 'result',
+            'label'       => 'Panel hasil tantangan',
+            'content'     => 'Panel kosong biru tua berbingkai emas ganda dengan ukiran awan Jawa di sudut dan siluet gunung samar di dalamnya, tanpa tulisan, bintang, tombol, atau kartu (Katalog Aset ui.result-panel). Berlatar transparan di luar panel.',
+            'screens'     => [['Tantangan selesai, panel tengah', null]],
+            'format'      => 'WebP berlatar transparan, paling besar ± 250 KB',
+            'transparent' => true,
+            'fallback'    => 'Panel biru tua polos berbingkai emas',
+            'priority'    => 'opsional',
+            'tips'        => 'Tampil 1017 × 495 dp. Bagian dalam harus tenang, karena judul, bintang, kartu, dan tombol tampil di atasnya.',
+        ],
+        'ui.result-button-primary' => [
+            'group'       => 'result',
+            'label'       => 'Tombol utama (Berikutnya)',
+            'content'     => 'Kapsul emas timbul dengan motif awan halus di kedua ujung, tanpa tulisan dan tanpa panah (Katalog Aset ui.result-button-primary).',
+            'screens'     => [['Tantangan selesai, tombol kanan bawah', null]],
+            'format'      => 'WebP berlatar transparan, paling besar ± 60 KB',
+            'transparent' => true,
+            'fallback'    => 'Tombol emas biasa',
+            'priority'    => 'opsional',
+        ],
+        'ui.result-button-secondary' => [
+            'group'       => 'result',
+            'label'       => 'Tombol peta wilayah',
+            'content'     => 'Kapsul biru tua berbingkai emas tipis, tanpa tulisan dan tanpa panah (Katalog Aset ui.result-button-secondary).',
+            'screens'     => [['Tantangan selesai, tombol kiri bawah', null]],
+            'format'      => 'WebP berlatar transparan, paling besar ± 40 KB',
+            'transparent' => true,
+            'fallback'    => 'Tombol biru tua berbingkai emas',
+            'priority'    => 'opsional',
+        ],
+        'ui.result-button-detail' => [
+            'group'       => 'result',
+            'label'       => 'Tombol Detail hasil',
+            'content'     => 'Kapsul biru tua berbingkai emas yang lebih pendek, sekeluarga dengan tombol peta wilayah, tanpa tulisan (Katalog Aset ui.result-button-detail).',
+            'screens'     => [['Tantangan selesai, tombol tengah bawah', null]],
+            'format'      => 'WebP berlatar transparan, paling besar ± 30 KB',
+            'transparent' => true,
+            'fallback'    => 'Tombol biru tua berbingkai emas',
+            'priority'    => 'opsional',
+        ],
+        'ui.result-hud-control' => [
+            'group'       => 'result',
+            'label'       => 'Alas tombol bundar HUD',
+            'content'     => 'Lingkaran biru tua berbingkai emas, kosong di tengah (ikon bahasa, suara, dan menu digambar permainan di atasnya). Katalog Aset ui.result-hud-control.',
+            'screens'     => [['Tantangan selesai, tombol suara dan menu di kanan atas', null]],
+            'format'      => 'WebP berlatar transparan, paling besar ± 30 KB',
+            'transparent' => true,
+            'fallback'    => 'Lingkaran biru tua berbingkai emas',
+            'priority'    => 'opsional',
+        ],
+        'ui.result-star' => [
+            'group'       => 'result',
+            'label'       => 'Bintang hasil (terisi)',
+            'content'     => 'Satu bintang emas timbul yang berkilau, tanpa tulisan (Katalog Aset ui.result-star). Bintang kosong digambar permainan sebagai garis.',
+            'screens'     => [['Tantangan selesai, bintang di bawah judul', null]],
+            'format'      => 'WebP berlatar transparan, paling besar ± 30 KB',
+            'transparent' => true,
+            'fallback'    => 'Ikon bintang emas',
+            'priority'    => 'opsional',
+        ],
+        'ui.result-medal' => [
+            'group'       => 'result',
+            'label'       => 'Medali Serpihan Cahaya',
+            'content'     => 'Medali bundar berbingkai biru tua dengan tengah krem dan kristal serpihan cahaya emas. Diisi dari Katalog Aset avatar.2 (keputusan pemilik 18 Oktober 2026) tetapi slotnya sendiri, jadi mengganti avatar 2 tidak mengubah layar ini.',
+            'screens'     => [['Tantangan selesai, medali di kiri panel', null]],
+            'format'      => 'WebP atau PNG berlatar transparan, paling besar ± 120 KB',
+            'transparent' => true,
+            'fallback'    => 'Bola cahaya dengan ikon lentera',
+            'priority'    => 'opsional',
+            'tips'        => 'Tampil 223 dp dengan cahaya tambahan dari permainan.',
         ],
 
         // ------------------------------------------------------------ app
@@ -366,6 +444,16 @@ final class ImageSlots
             'fallback'    => 'Lentera umum (ui.lantern), lalu ikon bawaan',
             'priority'    => 'opsional',
             'admin'       => ['Atur di halaman wilayah', 'admin/konten/level/{level_id}'],
+        ],
+        'bg.result.*' => [
+            'group'       => 'region',
+            'label'       => 'Latar tantangan selesai {Wilayah}',
+            'content'     => 'Lanskap khas {Wilayah} saat senja yang hangat, tanpa tokoh dan tanpa tulisan. Bagian tengah boleh ramai karena tertutup panel hasil; tepi kiri, kanan, dan atas tetap terlihat (Katalog Aset bg.result.temanggung sebagai contoh).',
+            'screens'     => [['Tantangan selesai di wilayah ini', null]],
+            'format'      => 'WebP atau JPG kualitas ± 80, paling besar ± 450 KB',
+            'transparent' => false,
+            'fallback'    => 'Latar wilayah (bg.{wilayah}.region)',
+            'priority'    => 'opsional',
         ],
         'bg.loading.*' => [
             'group'       => 'region',
@@ -654,7 +742,7 @@ final class ImageSlots
         }
 
         foreach ($prefixes as $code) {
-            if (in_array($assetKey, ["bg.{$code}.region", "map.region.{$code}", "reward.badge.{$code}", "map.pin.{$code}", "map.lantern.{$code}", "bg.loading.{$code}"], true)
+            if (in_array($assetKey, ["bg.{$code}.region", "map.region.{$code}", "reward.badge.{$code}", "map.pin.{$code}", "map.lantern.{$code}", "bg.loading.{$code}", "bg.result.{$code}"], true)
                 || str_starts_with($assetKey, "library.{$code}.")) {
                 return $code;
             }

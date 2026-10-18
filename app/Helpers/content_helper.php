@@ -381,6 +381,31 @@ if (! function_exists('character_frames_attr')) {
     }
 }
 
+if (! function_exists('skin_style_attr')) {
+    /**
+     * ` style="--name: url(…); …"` for the image slots that are filled, so CSS
+     * can draw a catalogue skin and keep its plain fallback for empty slots
+     * (result screen redesign). Empty string when no slot is filled.
+     *
+     * @param array<string, string> $vars custom property name (without `--`) → asset key
+     */
+    function skin_style_attr(array $vars): string
+    {
+        $parts = [];
+
+        foreach ($vars as $name => $assetKey) {
+            $src = media_key_src($assetKey);
+
+            if ($src !== null) {
+                $parts[] = '--' . $name . ': url("' . str_replace(['"', '\\', "\n"], ['%22', '%5C', ''], $src) . '")';
+            }
+        }
+
+        // htmlspecialchars is enough inside a quoted attribute and keeps the CSS readable
+        return $parts === [] ? '' : ' style="' . esc(implode('; ', $parts)) . '"';
+    }
+}
+
 if (! function_exists('media_key_src_locale')) {
     /**
      * media_key_src() untuk gambar bertulisan yang punya varian bahasa

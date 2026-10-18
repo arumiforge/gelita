@@ -2,7 +2,7 @@
 
 The single checklist of what is done and what is open. Decisions and their reasons go in `docs/perombakan-kelas5/CATATAN_IMPLEMENTASI.md`; this file only tracks state. Each session updates only its own rows, and ticks an item only once its PR is merged into `main`.
 
-Last updated: 17 October 2026.
+Last updated: 18 October 2026.
 
 ## Kelas 5 overhaul
 
@@ -92,9 +92,17 @@ Owner decisions in its §12 (9 October 2026): full download before Mulai, admin 
 - [x] Owner decision (18 October 2026): Phase 3 (write-behind inbox) is not built; the targets are met at 90 students
 - [ ] On the real server: re-run the load test (or watch Ringkasan and `fpm-status` in a full class) once the school hardware is known, since the test machine had more RAM than `docs/08` recommends
 
+## Page redesigns (`gelita-katalog/mockup/gambar-mockup/`)
+
+Owner request (18 October 2026): several pages get a new design from the catalogue mockups, one page per branch.
+
+- [ ] Page 1 — Tantangan selesai `/selesai/{id}` (mockup `tantangan-selesai-temanggung`): redesigned panel, opt-in menu HUD, result skin slots, `ui.result-medal` from `avatar.2`
+- [ ] After merge, on a server that already ran the import: `php spark gelita:katalog:impor --kunci="ui.result*,bg.result*"` (dry run first) to install the new skins
+
 ## Active branches
 
 Add a row (branch, owner / scope, status) when a session starts a branch; remove it when its PR is merged.
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `sky/clever-hopper-yaht5p` | Page redesign 1, Tantangan selesai | PR open |

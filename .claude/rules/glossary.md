@@ -30,6 +30,9 @@ One concept, one word, in every layer. "UI (id)" is what users read; "Code (en)"
 | pustaka | `library` | `library_pages` |
 | narasi, rekaman | `narration`, `audio asset` | `audio_assets` |
 | refleksi | `reflection` | `ReflectionController` |
+| Tantangan selesai (layar hasil) | `result screen`, `finished` | route `/selesai/{id}`; slots `ui.result-*`, `bg.result.{wilayah}` |
+| Detail hasil | `result details` | popover on the result screen |
+| menu (HUD baru) | `menu HUD` | `components/hud-menu`, section `hudStyle` = `menu` |
 
 ## People, data, and the panel
 

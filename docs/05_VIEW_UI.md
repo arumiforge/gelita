@@ -114,6 +114,7 @@ Section yang diisi halaman:
 | `overlay` | lapisan selebar panggung di luar `<main>` (tirai, `<template id="tpl-curtain-…">`, overlay Kenali wilayah) |
 | `content` | isi halaman di `<main id="app" class="stage-main">` |
 | `hudTitle` | teks tengah HUD (mis. Peta Kedu, Pustaka); tanpa ini HUD menampilkan nama wilayah dari `$level` |
+| `hudStyle` | `menu` puts the redesigned HUD `components/hud-menu` in place of `components/hud` (result screen only, 18 October 2026) |
 | `nav` | `components/nav-bar` (opsional) |
 | `head`, `scripts` | tambahan khusus halaman |
 
@@ -148,6 +149,7 @@ Since 12 October 2026 the brand is the centred GELITA logo: `ui.logo-hero` (`.au
 | Komponen | Isi dan aturan |
 |---|---|
 | `hud` | Pita atas panggung (0, 0, 1280 × 56 dp), tiga kolom. Kiri `.hud-left`: `lantern` + merek kecil `.hud-brand.is-small`. Tengah `.hud-center`: section `hudTitle`, atau nama wilayah dari `$level`. Kanan `.hud-right`: `lang-switch`, tombol suara `#btn-sound` (`aria-pressed`), tombol layar penuh `#btn-fullscreen` (`hidden` sampai `core/stage.js` memastikan Fullscreen API ada), tombol beranda ke `/peta`, chip peserta `.user-chip` (avatar `components/avatar`: gambar `avatar.N` pilihan siswa atau huruf awal, nama, `@username`) ke `/profil`, dan tombol keluar `/keluar`. Lentera, beranda, chip, dan keluar hanya dirender bila controller mengirim data HUD (`BaseGameController::hudData()`: `participant` dari `toSafeArray()`, `progress`, `lantern`); sebelum itu kiri berisi merek teks `.hud-brand` ke `/`, kecuali halaman awal yang mengirim `hideBrand`. Section `hudBack` (URL) mengganti isi kiri dengan tombol **Kembali** `.hud-back` dan menaruh logo `ui.logo` (cadangan merek teks) di tengah `.hud-logo`; dipakai `/mulai`, `/masuk`, dan `/daftar/1…3`. HUD tidak berlatar dan tidak bergaris bawah, dan kontrolnya juga tanpa bingkai: ikon (suara, layar penuh, beranda, keluar, nyala lentera) tanpa latar dan garis, hanya diberi bayangan. Teks diberi latar gelap `--hud-backing` tanpa garis agar tetap terbaca di atas gambar terang: judul tengah, merek, pemilih bahasa, tombol Kembali, nama dan `@username` di chip peserta, serta hitungan serpihan dan bilahnya (`.lantern-meter`). Tautan yang meninggalkan layar diberi kelas `hud-leave` dan disembunyikan selama tantangan (`body.is-challenge`). |
+| `hud-menu` | Redesigned HUD (result screen redesign, 18 October 2026), opted in with section `hudStyle` = `menu`. Left `.hud-identity`: logo `ui.logo-hero` (else `ui.logo`, else the text brand) and the region name. Right `.hud-controls`: three `.hud-ctl` controls 88 × 96 dp on the round skin `ui.result-hud-control` — language popover `<details class="hud-pop hud-lang" data-popover>` (flags `ui.lang.*` or text codes, the `form.lang-switch` POST to `/bahasa`), sound `#btn-sound`, and menu `<details class="hud-pop hud-menu" data-popover>` with a scrim: profile (avatar, name, `@username`) to `/profil`, Peta Kedu, fullscreen `#btn-fullscreen`, Keluar. No lantern. `data-in-game` marks a HUD with session data (both HUDs; the heartbeat keys on it). `game/hud.js` keeps one popover open, closes it on Escape, outside click, or its `[data-popover-close]` button, and returns focus to its `summary`. |
 | `lantern` | `<details class="lantern">` berisi nyala `.flame-{0..3}` (jumlah wilayah tuntas), "Serpihan Cahaya" `{shards}/{shards_total}`, bar isi, dan rincian `.lantern-detail`: titik `.shard.is-completed/is-open/is-locked` per tantangan, dikelompokkan per wilayah, dengan legenda. `shards_total` selalu dari jumlah tantangan aktif (`GameProgress::progressSummary()`), tidak pernah angka tetap. |
 | `lang-switch` | Form POST `/bahasa` dengan `redirect_to` = path saat ini (divalidasi `safe_internal_url()`); satu tombol per `Config\Gelita::$locales`, `aria-pressed` pada bahasa aktif. |
 | `rotate-gate` | Penghalang "putar perangkat" (`role="alertdialog"`). Tampil murni lewat CSS (lihat *Layar putar dan aplikasi terpasang*). |
@@ -384,16 +386,16 @@ Tiap wilayah berisi empat tantangan berurutan: 1 Susun Gambar (`puzzle`), 2 Isi 
 
 ### Selesai — `game/challenge-finished`
 
-`body.is-celebrate`, konfeti `.confetti` (24 keping, mati pada gerak dikurangi). Kartu tunggal `.panel-carved.finished-card` 280, 72, 720 × 576 di tengah panggung, **tanpa Jaka** (Dok 3 §5.3); bagian tengahnya `.finished-body.stage-scroll`, tombol di bilah bawah kartu:
+Redesigned 18 October 2026 from catalogue mockup 01 (`gelita-katalog/mockup/gambar-mockup/tantangan-selesai-temanggung/`); one layout for every region and challenge kind. Decisions in the decision log, *Page redesign 1*.
 
-* orb cahaya, eyebrow wilayah · judul, `Game.finishedTitle`, bintang besar (`star-rating` `lg`);
-* tiga `stat-tile`: Waktu (`Game.timeSpent`), Berhasil pada Percobaan Pertama (`first_pass_text()`), dan Percobaan dipakai (`Game.triesUsed`, "{cek} dari {max_tries}") — untuk Cari Objek diganti Ketukan salah (`Game.wrongTaps`, jumlah `wrong_click_count`);
-* lencana alasan selesai `.finished-reason`: `Game.completionSolved` / `Game.completionExhausted`; bila kesempatan habis ditambah baris lembut `Game.exhaustedNote`;
-* catatan `Game.multiCheckNote` bila lebih dari satu cek, dan `Game.shardEarned`;
-* bila wilayah tuntas: panel Mbah Kedu `.finished-kedu` (`Game.regionDone` + `Game.nextRegionOpen` atau `Game.allShardsDone`);
-* bila pengerjaan ini yang menuntaskan wilayah dan wilayahnya punya Pustaka: sorotan `aside.library-unlocked` (`Game.libraryUnlockedTitle`, tombol `Game.libraryReadNow`).
+`body.is-celebrate`, CSS confetti `.confetti` (24 pieces, off with reduced motion), HUD variant `components/hud-menu` (section `hudStyle` = `menu`), background `bg.result.{code}` or else the region background, no nav bar. Panel `.result-card` 133, 145, 1017 × 495 dp (skin `ui.result-panel`, plain navy and gold while empty):
 
-Tombol utama `.finished-actions`, berurutan menurut kondisi: pengerjaan ini menuntaskan wilayah → **Lanjut** ke `/tuntas/{code}`; semua tantangan tuntas → **Balai Refleksi**; masih ada tantangan berikutnya → **Berikutnya** ke kartu misi berikutnya; mengulang di wilayah yang sudah tuntas → **Lanjut ke {wilayah berikutnya}** (`Game.goToRegion`, ke `entry`, dengan tirai wilayah); selain itu Peta Kedu. Nav: kembali ke peta wilayah, Peta Kedu.
+* `.result-kind` (`Game.engine_*`), `h1` `Game.finishedTitle`, `.result-stars` (`role="img"`, `Game.resultStarsOf`; filled stars `ui.result-star`, else the star icon);
+* `.result-shards`: medal `ui.result-medal` (else the light orb) with the glow of catalogue `ui.result-shard-effects` (inline in `game.css`), `Game.resultShards`, "{shards} / {total}", one bar segment per shard;
+* `.result-summary`: cards Waktu and Percobaan (`Game.resultTries`, "{cek} dari {max_tries}"), or Ketukan salah for Cari Objek; badge `.result-badge.is-solved` / `.is-saved`; one `.result-message`: `Game.exhaustedNote`, `Game.multiCheckNote`, or `Game.resultFirstTry`;
+* `.result-actions`: `Game.resultRegionMap` to `/wilayah/{code}` (skin `ui.result-button-secondary`), **Detail hasil** `<details class="result-detail" data-popover>` with Berhasil pada Percobaan Pertama (`first_pass_text()`, skin `ui.result-button-detail`), and the main button (skin `ui.result-button-primary`) in this order: this attempt completes the region → **Lanjut** to `/tuntas/{code}`; every challenge done → **Balai Refleksi**; a next challenge → **Berikutnya** to its mission card; replay in a completed region → **Lanjut ke {wilayah berikutnya}** (`entry`, region curtain); region completed → Peta Kedu; else **Berikutnya** to the region map.
+
+When the region is complete, `aside.result-kedu` (290, 168, 700 × 352) covers the upper panel: Mbah Kedu `.finished-kedu` (`Game.regionDone` + `Game.nextRegionOpen` or `Game.allShardsDone`) and, for the attempt that opened it, `.library-unlocked` with Baca Pustaka. `game/finished.js` shows its close button and plays `region-done` instead of `shard` (`data-region-done`).
 
 ### Hasil tantangan — `game/challenge-result`
 

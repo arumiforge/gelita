@@ -271,6 +271,35 @@ final class CatalogImportTest extends CIUnitTestCase
         }
     }
 
+    /** Result screen redesign (18 October 2026): its skin slots, and avatar.2 copied to ui.result-medal. */
+    public function testResultScreenSlotsAndTheMedalCopy(): void
+    {
+        $this->writeCatalog([
+            'avatar.2'             => ['ikon/avatar.2.webp', 512, 512, true],
+            'ui.result-panel'      => ['antarmuka/ui.result-panel.webp', 1536, 752, true],
+            'ui.result-star'       => ['antarmuka/ui.result-star.webp', 128, 128, true],
+            'bg.result.temanggung' => ['latar/bg.result.temanggung.webp', 1920, 1080, false],
+        ]);
+
+        $report = $this->importer()->run();
+        $pairs  = array_map(static fn (array $r): string => $r['source'] . ' → ' . $r['target'] . ': ' . $r['status'], $report);
+
+        foreach (['avatar.2 → avatar.2', 'avatar.2 → ui.result-medal', 'ui.result-panel → ui.result-panel', 'ui.result-star → ui.result-star', 'bg.result.temanggung → bg.result.temanggung'] as $pair) {
+            $this->assertContains($pair . ': installed', $pairs);
+        }
+
+        $medal = model(MediaAssetModel::class)->findByKey('ui.result-medal');
+        $this->assertSame([512, 512], [(int) $medal['width_px'], (int) $medal['height_px']]);
+        $this->assertNotSame($medal['storage_path'], model(MediaAssetModel::class)->findByKey('avatar.2')['storage_path'], 'a file of its own');
+
+        // --kunci on the copy's slot reaches its catalogue entry, and only that slot's entry
+        model(MediaAssetModel::class)->where('asset_key', 'ui.result-medal')->set(['credit' => null])->update();
+        $only = array_column($this->importer()->run(false, true, null, ['ui.result-medal']), 'status', 'target');
+        $this->assertSame('installed', $only['ui.result-medal']);
+        $this->assertArrayNotHasKey('avatar.2', $only, 'the avatar itself is not overwritten');
+        $this->assertArrayNotHasKey('ui.result-panel', $only);
+    }
+
     /** --kunci limits the run, and so --timpa, to the named slots. */
     public function testOnlyLimitsTheOverwriteToMatchingSlots(): void
     {

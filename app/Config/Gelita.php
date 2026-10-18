@@ -202,6 +202,14 @@ class Gelita extends BaseConfig
         'ui.lantern'        => [256, 256],
         'map.pin.*'         => [256, 256],
         'map.lantern.*'     => [256, 256],
+        // Result screen skin (redesign 18 October 2026); bg.result.{wilayah} falls under bg.*
+        'ui.result-panel'            => [1536, 752],
+        'ui.result-button-primary'   => [600, 132],
+        'ui.result-button-secondary' => [480, 112],
+        'ui.result-button-detail'    => [320, 112],
+        'ui.result-hud-control'      => [128, 128],
+        'ui.result-star'             => [128, 128],
+        'ui.result-medal'            => [512, 512],
     ];
 
     /**
@@ -229,6 +237,10 @@ class Gelita extends BaseConfig
         'avatar.*'              => [72, 72],     // profile; 36 × 36 in the HUD
         'ui.pin'                => [56, 56],     // map pin of every city without its own
         'map.pin.*'             => [56, 56],
+        'ui.result-panel'       => [1017, 495], // result screen (/selesai/{id})
+        'ui.result-medal'       => [223, 223],
+        'ui.result-star'        => [57, 57],
+        'ui.result-hud-control' => [68, 68],
     ];
 
     /**

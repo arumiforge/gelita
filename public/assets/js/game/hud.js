@@ -7,6 +7,10 @@
  *   penutupan dengan Escape / klik di luar, dan updateLantern() untuk angka
  *   baru dari respons server (`shards` di /check, /responses, /complete) —
  *   bukan dihitung sendiri.
+ * - Popovers `details[data-popover]` (redesigned HUD language and menu, the
+ *   result screen's Detail hasil) also open without JavaScript; here only one
+ *   stays open, Escape / outside click / the close button shut it, and focus
+ *   returns to its trigger.
  * - Heartbeat POST /api/session/heartbeat every 60 s while the tab is visible,
  *   but only when no event batch reached the server in the last 60 s: a
  *   server with `CONFIG.eventFlush` folds the heartbeat into every batch
@@ -61,6 +65,40 @@ function initLantern() {
   });
 }
 
+function initPopovers() {
+  const popovers = [...document.querySelectorAll('details[data-popover]')];
+  if (!popovers.length) return;
+
+  const close = (popover, focus = false) => {
+    if (!popover.open) return;
+    popover.open = false;
+    if (focus) $('summary', popover)?.focus();
+  };
+
+  for (const popover of popovers) {
+    popover.addEventListener('toggle', () => {
+      if (popover.open) popovers.filter((other) => other !== popover).forEach((other) => close(other));
+    });
+    for (const button of popover.querySelectorAll('[data-popover-close]')) {
+      button.hidden = false;
+      button.addEventListener('click', () => close(popover, true));
+    }
+  }
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape') return;
+    const open = popovers.find((popover) => popover.open);
+    if (open) close(open, true);
+  });
+  document.addEventListener('click', (event) => {
+    for (const popover of popovers) {
+      // A click on the menu's scrim lands on the <details> itself, outside its sheet
+      const inside = popover.contains(event.target) && event.target !== popover;
+      if (popover.open && !inside) close(popover);
+    }
+  });
+}
+
 /** Angka serpihan baru dari server (`shards` di respons tantangan). */
 export function updateLantern(shards, total = null) {
   const lantern = $('.lantern');
@@ -76,8 +114,8 @@ export function updateLantern(shards, total = null) {
 }
 
 function initHeartbeat() {
-  // Hanya di dalam permainan (lentera dirender bila ada sesi)
-  if (!$('.lantern') || !CONFIG.sessionTag) return;
+  // Only inside the game: the HUD carries data-in-game when there is a session
+  if (!$('[data-in-game]') || !CONFIG.sessionTag) return;
 
   let timer = null;
   const folded = Boolean(CONFIG.eventFlush);
@@ -120,5 +158,6 @@ export function initHud() {
   initLanguageSwitch();
   initSound();
   initLantern();
+  initPopovers();
   initHeartbeat();
 }
