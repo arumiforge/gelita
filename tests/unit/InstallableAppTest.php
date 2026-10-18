@@ -9,9 +9,10 @@ use Config\Services;
 /**
  * GELITA sebagai aplikasi terpasang (layar utama).
  *
- * - The manifest (`GET /manifest.json`, AppController) locks landscape and
- *   fullscreen; its URLs are relative so an install in a subfolder stays
- *   right. Icons come from the panel slots `app.*` with `?v=`, or from the
+ * - The manifest (`GET /manifest.json`, AppController) is plain standalone
+ *   with no fixed orientation (HyperOS will not start an installed app that
+ *   asks for fullscreen or landscape); its URLs are relative so an install in
+ *   a subfolder stays right. Icons come from the panel slots `app.*` with `?v=`, or from the
  *   static files in `assets/app/`, which must exist at the promised sizes
  *   (Chrome refuses to install when the 192/512 icons do not match).
  * - The manifest route starts no session (LocaleFilter::STATELESS_PATHS).
@@ -74,13 +75,14 @@ final class InstallableAppTest extends CIUnitTestCase
         $this->assertFileDoesNotExist(FCPATH . 'manifest.json', 'a static file would shadow the route on Nginx and Apache');
     }
 
-    public function testManifestLocksLandscapeFullscreen(): void
+    public function testManifestIsStandaloneWithoutFixedOrientation(): void
     {
         $manifest = $this->manifest();
 
-        $this->assertSame('landscape', $manifest['orientation']);
-        $this->assertSame('fullscreen', $manifest['display']);
-        $this->assertSame(['fullscreen', 'standalone'], $manifest['display_override']);
+        // Xiaomi HyperOS will not start the installed app from its icon otherwise
+        $this->assertSame('standalone', $manifest['display']);
+        $this->assertArrayNotHasKey('display_override', $manifest);
+        $this->assertArrayNotHasKey('orientation', $manifest);
         $this->assertSame('GELITA', $manifest['short_name']);
 
         foreach (['id', 'start_url', 'scope'] as $key) {
