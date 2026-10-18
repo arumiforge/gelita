@@ -108,3 +108,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 | Branch | Owner / scope | Status |
 |---|---|---|
 | `sky/clever-hopper-yaht5p` | Page redesign 1 touch fix: larger region-done modal | PR open |
+| `sky/intelligent-hopper-w4yzc2` | Test suite: own upload folder, real `public/assets/uploads/` left alone | PR #131 open |

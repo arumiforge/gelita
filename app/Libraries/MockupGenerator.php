@@ -28,9 +28,6 @@ class MockupGenerator
 {
     public const CREDIT = 'Gambar contoh GELITA (mockup)';
 
-    /** Folder bawaan berkas mockup, relatif terhadap FCPATH. */
-    public const DIR = MediaStore::UPLOAD_DIR . 'mockup/';
-
     public const FONT = 'Plus Jakarta Sans, Arial, sans-serif';
 
     /** Jenis slot → ukuran (sama dengan Config\Gelita::$assetSizes). */
@@ -60,7 +57,13 @@ class MockupGenerator
     public function __construct(?BaseConnection $db = null, ?string $dir = null)
     {
         $this->db  = $db ?? db_connect();
-        $this->dir = rtrim(str_replace('\\', '/', $dir ?? self::DIR), '/') . '/';
+        $this->dir = rtrim(str_replace('\\', '/', $dir ?? self::defaultDir()), '/') . '/';
+    }
+
+    /** Default folder for mockup files, relative to FCPATH. */
+    public static function defaultDir(): string
+    {
+        return MediaStore::uploadDir() . 'mockup/';
     }
 
     /** Jenis slot dari kunci aset (pola Dok 2 §10.3), atau null bila bukan slot mockup. */

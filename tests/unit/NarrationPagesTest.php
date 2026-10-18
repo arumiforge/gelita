@@ -1,6 +1,7 @@
 <?php
 
 use App\Database\Seeds\ContentSeeder;
+use App\Libraries\MediaStore;
 use CodeIgniter\Config\BaseService;
 use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\HTTP\Method;
@@ -183,10 +184,10 @@ final class NarrationPagesTest extends CIUnitTestCase
             ->update(['audio_id_asset_id' => $mission]);
         $this->sqlite->table('challenge_items')->where('item_key', 'tmg-4-a01')->update(['audio_prompt_id' => $clue]);
 
-        // Real files: only the imported narration files of this language may go
-        $file = FCPATH . 'assets/uploads/audio.narasi.id.intro-01.mp3';
-        $keep = FCPATH . 'assets/uploads/audio.narasi.en.intro-01.mp3';
-        $this->skipIfExists($file, $keep);
+        // Real files (in the test upload folder): only the imported narration files of this language may go
+        $file = FCPATH . MediaStore::uploadDir() . 'audio.narasi.id.intro-01.mp3';
+        $keep = FCPATH . MediaStore::uploadDir() . 'audio.narasi.en.intro-01.mp3';
+        is_dir(dirname($file)) || mkdir(dirname($file), 0775, true);
         file_put_contents($file, 'ID');
         file_put_contents($keep, 'EN');
 
@@ -376,22 +377,13 @@ final class NarrationPagesTest extends CIUnitTestCase
 
     private function audio(string $key, string $locale, string $status, ?string $context = null): int
     {
-        $this->sqlite->table('media_assets')->insert(['asset_key' => $key, 'asset_type' => 'audio', 'storage_path' => 'assets/uploads/' . $key . '.mp3', 'mime_type' => 'audio/mpeg', 'is_active' => 1]);
+        $this->sqlite->table('media_assets')->insert(['asset_key' => $key, 'asset_type' => 'audio', 'storage_path' => MediaStore::uploadDir() . $key . '.mp3', 'mime_type' => 'audio/mpeg', 'is_active' => 1]);
         $this->sqlite->table('audio_assets')->insert([
             'media_asset_id' => $this->sqlite->insertID(), 'locale' => $locale, 'context_code' => $context ?? 'intro',
             'transcript' => 'Uji', 'approval_status' => $status,
         ]);
 
         return (int) $this->sqlite->insertID();
-    }
-
-    private function skipIfExists(string ...$paths): void
-    {
-        foreach ($paths as $path) {
-            if (is_file($path)) {
-                $this->markTestSkipped("{$path} already exists on this machine; the test would delete it.");
-            }
-        }
     }
 
     private function approvalOf(int $audioId): string

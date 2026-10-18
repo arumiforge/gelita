@@ -131,7 +131,7 @@ final class ImageFitterTest extends CIUnitTestCase
             $this->assertNull($result['id']);
             $this->assertNotNull($result['error']);
             $this->assertNull(model(MediaAssetModel::class)->findByKey($key));
-            $this->assertFileDoesNotExist(FCPATH . MediaStore::UPLOAD_DIR . $key . '.png');
+            $this->assertFileDoesNotExist(FCPATH . MediaStore::uploadDir() . $key . '.png');
         }
     }
 
@@ -161,7 +161,7 @@ final class ImageFitterTest extends CIUnitTestCase
     public function testRegisterFileShrinksInPlace(): void
     {
         $key      = 'challenge.item.zz-3-' . bin2hex(random_bytes(3));
-        $relative = MediaStore::UPLOAD_DIR . $key . '.jpg';
+        $relative = MediaStore::uploadDir() . $key . '.jpg';
         $absolute = FCPATH . $relative;
         $this->cleanup[] = $absolute;
 

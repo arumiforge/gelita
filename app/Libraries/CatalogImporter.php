@@ -745,7 +745,7 @@ final class CatalogImporter
             return null; // installSlot() compares it with the catalogue file
         }
 
-        if (! str_starts_with((string) $row['storage_path'], MediaStore::UPLOAD_DIR)) {
+        if (! str_starts_with((string) $row['storage_path'], MediaStore::uploadDir())) {
             return null; // bundled default file under public/assets/{ui,bg,…}
         }
 
@@ -759,7 +759,7 @@ final class CatalogImporter
             (int) $row['is_active'] !== 1               => 'mengisi slot kosong',
             (int) ($row['is_placeholder'] ?? 0) === 1   => 'mengganti gambar contoh',
             $this->isCatalogRow($row)                   => 'gambar katalog berubah, dipasang ulang',
-            ! str_starts_with((string) $row['storage_path'], MediaStore::UPLOAD_DIR) => 'mengganti berkas bawaan',
+            ! str_starts_with((string) $row['storage_path'], MediaStore::uploadDir()) => 'mengganti berkas bawaan',
             default                                     => 'mengganti gambar unggahan admin',
         };
     }

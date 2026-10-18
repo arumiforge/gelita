@@ -76,6 +76,10 @@ Vagrantfile
 /public/assets/uploads/*
 !/public/assets/uploads/.gitkeep
 
+# Upload folder of the test suite (Config\Gelita::$uploadDir in testing), so
+# tests never overwrite or delete the real uploads above
+/public/assets/uploads-test/
+
 # Asset packages are generated on the server by gelita:paket:bangun and are
 # backed up with the uploads (docs/rencana-paket-aset.md §5.2): content-addressed
 # media, per-version code copies, manifests, and the URL maps / build state.
