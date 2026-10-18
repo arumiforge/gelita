@@ -122,6 +122,22 @@ final class CinematicViewTest extends CIUnitTestCase
         $this->assertDoesNotMatchRegularExpression('/id="slide-2".*?data-slide-final.*?id="slide-3"/s', $page);
     }
 
+    /** Owner, 18 October 2026: the intro menu has Profil, Kembali ke awal, Layar penuh, and Keluar, but no Peta Kedu yet. */
+    public function testIntroMenuHasTheAccountRows(): void
+    {
+        $page = $this->intro(introSeen: false);
+        $menu = substr($page, (int) strpos($page, '<details class="hud-pop hud-menu"'));
+        $menu = substr($menu, 0, (int) strpos($menu, '</details>'));
+
+        $this->assertStringContainsString('href="' . base_url('profil') . '"', $menu);
+        $this->assertStringContainsString('href="' . base_url() . '">', $menu);
+        $this->assertStringContainsString(esc(lang('Game.backHome')), $menu);
+        $this->assertStringContainsString('id="btn-fullscreen"', $menu);
+        $this->assertStringContainsString('href="' . base_url('keluar') . '"', $menu);
+        $this->assertStringNotContainsString('href="' . base_url('peta') . '"', $menu);
+        $this->assertStringNotContainsString('class="hud-shards"', $page);
+    }
+
     public function testFirstTimePlayerHasNoSkipAndEndsAtFinish(): void
     {
         $page = $this->intro(introSeen: false);

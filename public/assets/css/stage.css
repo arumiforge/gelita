@@ -550,7 +550,8 @@ body.is-auth-art .scene::after { background: linear-gradient(to right, transpare
 .inspect-panel { --x: 32; --y: 88; --w: 1216; --h: 600; }
 
 /* ---------- Sinematik: cerita pembuka `/intro`, penutup `/penutup` ---------- */
-.cine-stage   { --x: 64;  --y: 112; --w: 300; --h: 400; }
+/* Character beside the caption text, feet on the bottom edge, drawn over the caption */
+.cine-stage   { --x: 24;  --y: 288; --w: 336; --h: 432; }
 .cine-caption { --x: 0;   --y: 496; --w: 1280; --h: 224; }
 
 /* ---------- Dialog wilayah `/dialog/{code}`, wilayah tuntas `/tuntas/{code}` ----------
@@ -569,12 +570,14 @@ body.is-auth-art .scene::after { background: linear-gradient(to right, transpare
 .map-balloon { --x: 40;  --y: 536; --w: 864; --h: 98; }
 
 /* ---------- Peta Kedu `/peta`, page redesign 2 (18 Oct 2026, mockup candidate 04 × 2/3)
-   HUD 0–120; map and region panel 116–516; story bar under the map, as wide as the map, and
-   the page buttons right of it under the panel, 524–700 (owner, 18 October 2026: no nav bar) ---------- */
-.map-kedu .kedu-map    { --x: 20;  --y: 116; --w: 853;  --h: 400; }
-.map-kedu .kedu-panels { --x: 887; --y: 116; --w: 373;  --h: 400; }
-.map-kedu .kedu-story  { --x: 20;  --y: 524; --w: 853;  --h: 176; }
-.map-kedu .kedu-nav    { --x: 887; --y: 524; --w: 373;  --h: 176; }
+   HUD 0–120; map and region panel 116–544; story bar under the map, as wide as the map, and
+   the page buttons right of it under the panel, 556–700 (owner, 18 October 2026: no nav bar).
+   The story bar lost its big Previous/Next buttons, so it is 144 tall (was 176) and the map
+   frame grew to 428: the 2:1 diorama (853 × 427) now shows whole ---------- */
+.map-kedu .kedu-map    { --x: 20;  --y: 116; --w: 853;  --h: 428; }
+.map-kedu .kedu-panels { --x: 887; --y: 116; --w: 373;  --h: 428; }
+.map-kedu .kedu-story  { --x: 20;  --y: 556; --w: 853;  --h: 144; }
+.map-kedu .kedu-nav    { --x: 887; --y: 556; --w: 373;  --h: 144; }
 
 /* ---------- Kartu misi `/misi/{code}/{n}` ---------- */
 /* Owner's card picture, 18 October 2026: a little wider; the medallion rises above the card to y 72 */

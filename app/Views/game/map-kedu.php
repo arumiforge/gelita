@@ -19,6 +19,14 @@
  *   penutup and Balai Refleksi) sit right of the story, under the region
  *   panel, instead of the bottom nav bar (owner, 18 October 2026).
  *
+ * Owner follow-up (18 October 2026): the region panel shows the city's
+ * loading picture (`bg.loading.{code}`, else its background) fading to the
+ * left, "Wilayah dipilih" between gold diamonds, a status pill with its own
+ * icon and colour, a wider progress bar with "n/N tantangan", and Lanjut as
+ * tall as Kenali; the city captions wear the panel skin; the story controls
+ * are small in the bar's top-right corner, so the bar is lower and the map
+ * shows the whole diorama.
+ *
  * Earlier notes (still true unless replaced above):
  *
  * Tiga titik pada posisi `levels.map_x` / `map_y` (persen). Tujuan tautan
@@ -62,6 +70,8 @@ $shapes  = $diorama !== null ? config('Gelita')->mapDiorama : [];
 $starSrc = media_key_src('ui.result-star');
 $jakaSrc = media_key_src('ui.jaka-avatar');
 $icons   = ['open' => 'lantern', 'in_progress' => 'lantern', 'completed' => 'star', 'locked' => 'lock'];
+// Status pill of the region panel: its own icon and colour per status (owner, 18 October 2026)
+$statusIcons = ['open' => 'sparkle', 'in_progress' => 'compass', 'completed' => 'check', 'locked' => 'lock'];
 $href    = static fn (array $l): string => base_url($l['entry']);
 $allDone = $progress['shards_total'] > 0 && $progress['completed_nodes'] >= $progress['shards_total'];
 $intros  = $regionIntros ?? [];
@@ -173,19 +183,26 @@ $unheard  = static fn (array $l): bool => ($intros[$l['code']] ?? []) !== [] && 
 
   <div class="kedu-panels stage-box">
     <?php foreach ($levels as $level): ?>
-      <?php $locked = $level['status'] === 'locked'; ?>
-      <section class="kedu-panel is-<?= esc($level['status'], 'attr') ?><?= $level['code'] === $selected ? ' is-selected' : '' ?>"
+      <?php
+      $locked = $level['status'] === 'locked';
+      // The region's loading picture (bg.loading.{code}, else its background) fills the panel, fading to the left
+      $panelArt = region_loading_bg($level['code'], $level['background'] ?? null);
+      ?>
+      <section class="kedu-panel is-<?= esc($level['status'], 'attr') ?><?= $level['code'] === $selected ? ' is-selected' : '' ?><?= $panelArt !== null ? ' has-art' : '' ?>"
                id="region-<?= esc($level['code'], 'attr') ?>" aria-labelledby="region-<?= esc($level['code'], 'attr') ?>-title">
-        <p class="kedu-panel-eyebrow"><?= esc(lang('Game.mapSelected')) ?></p>
+        <?php if ($panelArt !== null): ?>
+          <img class="kedu-panel-art" src="<?= esc($panelArt, 'attr') ?>" alt="" decoding="async" draggable="false"<?= $level['code'] === $selected ? '' : ' loading="lazy"' ?>>
+        <?php endif ?>
+        <p class="kedu-panel-eyebrow"><span><?= esc(lang('Game.mapSelected')) ?></span></p>
         <h2 id="region-<?= esc($level['code'], 'attr') ?>-title"><?= esc($level['name']) ?></h2>
         <p class="kedu-panel-meta"><?= esc(lang('Game.levelOrder', [$level['sequence']])) ?> · <?= esc(lang_or('Game.difficulty_' . $level['difficulty'], $level['difficulty'])) ?></p>
-        <span class="kedu-panel-status is-<?= esc($level['status'], 'attr') ?>"><?= esc(lang('Game.levelStatus_' . $level['status'])) ?></span>
+        <span class="kedu-panel-status is-<?= esc($level['status'], 'attr') ?>"><?= icon($statusIcons[$level['status']] ?? 'sparkle') ?> <span><?= esc(lang('Game.levelStatus_' . $level['status'])) ?></span></span>
         <?php if ($locked): ?>
           <p class="kedu-panel-hint"><?= icon('lock') ?> <?= esc(lang('Game.levelLocked')) ?></p>
         <?php else: ?>
           <div class="kedu-panel-progress">
             <span class="kedu-bar" aria-hidden="true"><i style="width: <?= $level['total_nodes'] > 0 ? (int) round($level['completed_nodes'] / $level['total_nodes'] * 100) : 0 ?>%"></i></span>
-            <span class="num" aria-label="<?= esc(lang('Game.nodesProgress', [$level['completed_nodes'], $level['total_nodes']]), 'attr') ?>"><?= esc($level['completed_nodes']) ?> / <?= esc($level['total_nodes']) ?></span>
+            <span class="num"><?= esc(lang('Game.nodesProgress', [$level['completed_nodes'], $level['total_nodes']])) ?></span>
           </div>
           <?php $stars = max(0, min(3, (int) $level['stars'])); ?>
           <p class="kedu-panel-stars" role="img" aria-label="<?= esc(lang('Game.resultStarsOf', [$stars, 3]), 'attr') ?>">

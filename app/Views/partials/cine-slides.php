@@ -10,7 +10,10 @@
  * - `.cine-top`: "Bagian n dari N" and the page dots, centred in the HUD band;
  * - `.cine-caption`: full-width subtitle panel along the bottom edge; the
  *   speaker and title share their row with the narrator controls (right);
- * - `.cine-final`: the last slide's main button, centred on the page.
+ * - `.cine-final`: the last slide's main button, centred on the page, in
+ *   capitals without an arrow (owner, 18 October 2026);
+ * - `.cine-stage`: on a slide with a character, the figure stands at the left
+ *   of the caption text, drawn over the caption.
  * The caption's own Kembali/Lanjut links are the no-JavaScript fallback; once
  * narrator.js runs they are hidden (swipe still clicks them) and the ▶ button
  * in the narrator controls reads "Lanjut".
@@ -90,7 +93,7 @@ $total = count($slides);
 
       <?php if ($n === $total): ?>
         <div class="cine-final">
-          <a class="btn btn-primary btn-lg" href="<?= esc($finalUrl, 'attr') ?>" data-slide-final><?= esc($final) ?> <?= icon('right') ?></a>
+          <a class="btn btn-primary btn-lg" href="<?= esc($finalUrl, 'attr') ?>" data-slide-final><?= esc($final) ?></a>
         </div>
       <?php endif ?>
     </li>

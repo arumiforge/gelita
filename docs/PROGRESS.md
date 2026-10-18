@@ -108,6 +108,7 @@ Owner request (18 October 2026): several pages get a new design from the catalog
 - [ ] Intro redesign (owner, 18 October 2026): full-size HUD with "Bagian n dari N" and the page dots in its centre, Lewati under the menu button, full-width caption at the bottom with the narrator controls on its title row (▶ reads "Lanjut", the caption's Lanjut button is gone), "Mulai petualangan" centred on the page; bigger touch targets. The ending (`/penutup`) shares the layout
 - [ ] Account pages and tap card (owner, 18 October 2026): `/masuk` and `/ganti-sandi` on the owner's lantern-tree picture, `/daftar/1–3` on the gate picture (both shipped in `public/assets/ui/`), form panel in the empty right side, no Jaka; "Ketuk untuk mulai" covers the whole stage with the HUD, shows the `ui.lantern` picture, large text, no frame; CSS/JS `?v=` follows each file while package mode is off. After merge, run `php spark gelita:katalog:impor --kunci="ui.lantern"` (dry run first) if the server has no lantern picture yet
 - [ ] Jaka on the account pages (owner, 18 October 2026): the owner's waving Jaka as one still picture (`public/assets/ui/jaka-wave.webp`, no animation frames) on `/masuk`, `/ganti-sandi`, and `/daftar/1–3`, standing on each background's path
+- [ ] Intro, curtain, and Peta Kedu polish (owner, 18 October 2026): intro without focus ring on the title or borders in the controls, character beside the caption on top, more room under the eyebrow, dark ring on the current dot, menu with Profil · Kembali ke awal · Layar penuh · Keluar, "MULAI PETUALANGAN" without arrow; map curtain lantern as a plain larger picture and the tap button pulsing as its picture; Peta Kedu city captions on the panel skin without outline, region panel on `bg.loading.{wilayah}` with status icons and colours, wider progress bar, Lanjut as tall as Kenali, small story controls top right, story bar 144 tall and the whole diorama shown
 - [ ] After merge, on a server that already has content: `php spark gelita:katalog:impor --kunci="map.kedu-diorama"` (dry run first) and `php spark gelita:story:sync` (dry run first) for the new `peta-03` line; its voice-over line changes too
 
 ## Active branches
@@ -116,3 +117,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `sky/blissful-brown-pmxupk` | Intro, curtain, and Peta Kedu polish | PR open |

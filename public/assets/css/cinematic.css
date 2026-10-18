@@ -105,7 +105,9 @@
   color: var(--navy-900);
 }
 .curtain-icon .icon { width: 2.125rem; height: 2.125rem; }
-.curtain-icon .art { width: 2.75rem; height: 2.75rem; object-fit: contain; }
+/* The lantern picture alone (owner, 18 October 2026): no disc, larger */
+.curtain-icon:has(> .art) { width: 7.5rem; height: 7.5rem; border-radius: 0; background: none; box-shadow: none; }
+.curtain-icon .art { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 0 1rem var(--glow)); }
 
 /* Tiga Serpihan Cahaya mengorbit lentera */
 .curtain-orbit { position: absolute; inset: 0; }
@@ -185,13 +187,21 @@
 
 .curtain-tap {
   gap: var(--gap-2);
-  animation: tap-glow 2s ease-in-out infinite;
+  animation: tap-pulse 2s ease-in-out infinite;
 }
+/* The button is its picture (`ui.result-button-primary` PNG): no box, frame, or
+   focus ring around it, and the pulse follows the picture's own outline */
+.curtain-tap, .curtain-tap:focus, .curtain-tap:focus-visible { border-color: transparent; outline: none; box-shadow: none; }
+.stage .curtain-tap { box-shadow: none; }
 .curtain-tap[hidden] { display: none; }
 
 @keyframes glow-breathe {
   0%, 100% { opacity: .55; transform: scale(.94); }
   50% { opacity: 1; transform: scale(1.08); }
+}
+@keyframes tap-pulse {
+  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 0 rgba(223, 192, 135, 0)); }
+  50% { transform: scale(1.05); filter: drop-shadow(0 0 .875rem rgba(255, 226, 150, .85)); }
 }
 @keyframes tap-glow {
   0%, 100% { box-shadow: 0 0 0 0 rgba(223, 192, 135, .45), var(--shadow-1); }
@@ -445,11 +455,11 @@ body.is-cinematic .scene-img.is-visible { animation: kenburns 40s ease-in-out in
 /* Tokoh: kotak tetap, gambar (700 × 900) menempel di dasar kotak */
 .cine-stage { display: grid; justify-items: center; align-items: end; }
 .cine-stage .character, .dialogue-stage .character { align-self: end; }
-/* Tokoh 700 × 900 tampil 300 × 386 dp (Dok 3 §6); monogram cadangan di tengah kotak */
+/* Character 700 × 900 shown at 336 × 432 dp beside the caption (owner, 18 October 2026); fallback monogram centred */
 .cine-stage > .character:has(.character-fallback),
 .dialogue-stage > .character:has(.character-fallback) { align-self: center; align-content: center; }
 .cine-stage .character-img {
-  width: calc(300 * var(--dp));
+  width: calc(336 * var(--dp));
   max-height: none;
   filter: drop-shadow(0 1rem 1.5rem rgba(0, 0, 0, .55));
   animation: cine-rise .7s ease both;
@@ -522,11 +532,12 @@ body.is-cinematic .hud-identity, body.is-cinematic .hud-controls { pointer-event
 
 .cine-top {
   position: absolute;
-  top: calc(12 * var(--dp));
+  top: calc(10 * var(--dp));
   left: 50%;
   z-index: 3;
   display: grid;
   justify-items: center;
+  row-gap: var(--gap-2); /* the dots sit clear of the eyebrow pill (owner, 18 October 2026) */
   transform: translateX(-50%);
   -webkit-touch-callout: none;
   user-select: none;
@@ -544,7 +555,7 @@ body.is-cinematic .hud-identity, body.is-cinematic .hud-controls { pointer-event
 /* 16 dp dots, 48 dp hit area as wide as dot + gap */
 .cine-top .slide-dots { gap: var(--gap-4); }
 .cine-top .slide-dot { width: 1rem; height: 1rem; box-shadow: 0 0 .375rem rgba(11, 19, 32, .8); }
-.cine-top .slide-dot.is-current { box-shadow: 0 0 .75rem var(--glow); }
+.cine-top .slide-dot.is-current { border-color: var(--navy-900); box-shadow: 0 0 0 .125rem var(--gold-500), 0 0 .75rem var(--glow); }
 .cine-top .slide-dot::before { width: calc(1rem + var(--gap-4)); }
 
 .cine-caption {
@@ -561,7 +572,14 @@ body.is-cinematic .hud-identity, body.is-cinematic .hud-controls { pointer-event
 .cine-caption .cine-caption-head { min-height: calc(66 * var(--dp)); }
 .cine.is-live .cine-caption .cine-caption-head { padding-right: calc(var(--cine-controls-w) + var(--gap-4)); }
 .cine-caption .cine-speaker { padding: var(--gap-1) var(--gap-4); font-size: var(--fs-body); }
+/* A slide with a character: the figure stands at the left of the caption, on
+   top of it (owner, 18 October 2026), so the caption text starts after it */
+.cine-slide:not(.is-narrator) .cine-caption { padding-left: calc(328 * var(--dp)); }
+.cine-slide > .cine-stage { z-index: 4; pointer-events: none; }
 .cine-caption .cine-title { margin: 0; font-size: 1.75rem; }
+/* slides.js focuses the new slide's title (or text) for screen readers; that
+   programmatic focus is not a control, so it draws no ring */
+.cine-caption :is(.cine-title, .slide-text):focus { outline: none; }
 /* Kembali/Lanjut without JavaScript; narrator.js puts them in the controls */
 .cine-caption .slide-nav { justify-content: flex-end; gap: var(--gap-3); margin: 0; }
 .cine-caption .slide-nav .btn { min-height: var(--tap); }
@@ -581,15 +599,18 @@ body.is-cinematic .hud-identity, body.is-cinematic .hud-controls { pointer-event
   min-height: 4.5rem;
   padding: var(--gap-3) var(--gap-7);
   font-size: 1.75rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
   pointer-events: auto;
   animation: cine-rise .6s ease .3s both;
 }
-.cine-final .btn .icon { width: 1.75rem; height: 1.75rem; }
 .narrator.is-finished .slide.is-current .cine-final .btn { animation: tap-glow 1.8s ease-in-out infinite; }
 
 /* Narrator controls on the caption's first row, at the right: 56 dp buttons
    8 dp apart, so their hit areas never overlap */
-.cine { --cine-controls-w: 33rem; }
+.cine { --cine-controls-w: 15rem; }
+/* With narration audio the controls also hold ⏸/▶, ↻, and Otomatis (narrator.js sets .has-audio) */
+.cine.has-audio { --cine-controls-w: 33rem; }
 .cine .narrator-controls {
   position: absolute;
   top: calc(508 * var(--dp));
@@ -598,14 +619,15 @@ body.is-cinematic .hud-identity, body.is-cinematic .hud-controls { pointer-event
   flex-wrap: nowrap;
   gap: var(--gap-2);
   padding: var(--gap-1);
-  border: 1px solid var(--line-strong);
+  border: 0;
   border-radius: var(--radius-pill);
   background: rgba(11, 19, 32, .82);
   box-shadow: var(--shadow-2);
 }
-.cine .narrator-controls .icon-btn { width: 3.5rem; height: 3.5rem; }
+/* No borders inside either (owner, 18 October 2026): the buttons are plain discs */
+.cine .narrator-controls .icon-btn { width: 3.5rem; height: 3.5rem; border: 0; }
 .cine .narrator-controls .icon-btn .icon { width: 1.75rem; height: 1.75rem; }
-.cine .narrator-controls .narrator-toggle { border: .125rem solid var(--gold-500); color: var(--gold-300); }
+.cine .narrator-controls .narrator-toggle { background: rgba(223, 192, 135, .2); color: var(--gold-300); }
 /* ▶ reads "Lanjut" while there is a next slide (the old Lanjut button) */
 .cine .narrator-next.has-label:not(:disabled) {
   width: auto;

@@ -442,6 +442,26 @@ final class RegionStoryTest extends CIUnitTestCase
         $this->assertStringContainsString('bg: link.dataset.curtainBg', $js);
     }
 
+    /** Owner, 18 October 2026 (mockup "Wilayah dipilih"): the city's loading picture fills the panel; each status has its own icon. */
+    public function testRegionPanelShowsTheCityPictureAndStatus(): void
+    {
+        $status = ['temanggung' => 'completed', 'magelang' => 'in_progress', 'wonosobo' => 'locked'];
+
+        $plain = $this->map($status, heard: []);
+        $this->assertStringNotContainsString('kedu-panel-art', $plain, 'no picture: the plain dark panel');
+
+        Services::resetSingle('renderer');
+        $this->media = ['bg.loading.magelang' => 'assets/uploads/bg.loading.magelang.jpg?v=b1'];
+        $page = $this->map($status, heard: []);
+
+        $this->assertMatchesRegularExpression('/<section class="kedu-panel is-in_progress is-selected has-art"[^>]*>\s*<img class="kedu-panel-art" src="' . preg_quote(esc(base_url('assets/uploads/bg.loading.magelang.jpg?v=b1'), 'attr'), '/') . '"/', $page);
+        $this->assertStringContainsString('<p class="kedu-panel-eyebrow"><span>' . lang('Game.mapSelected') . '</span></p>', $page);
+        foreach (['completed' => 'check', 'in_progress' => 'compass', 'locked' => 'lock'] as $state => $icon) {
+            $this->assertMatchesRegularExpression('/<span class="kedu-panel-status is-' . $state . '">' . preg_quote(icon($icon), '/') . ' <span>/', $page, $state);
+        }
+        $this->assertStringContainsString('<span class="num">' . esc(lang('Game.nodesProgress', [5, 5])) . '</span>', $page);
+    }
+
     public function testMapDecodesTheCurrentRegionAheadOfTime(): void
     {
         $this->media = ['char.jaka.idle.1' => 'assets/char/jaka-idle-1.png'];
