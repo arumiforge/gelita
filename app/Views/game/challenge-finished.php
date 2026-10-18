@@ -2,30 +2,39 @@
 /**
  * 12. Selesai — `/selesai/{attemptId}` → ChallengeController::finished
  *
- * Kartu tunggal di tengah panggung, tanpa Jaka (Dok 3 §5.3). Orb cahaya,
- * bintang 0–3, tiga statistik (Waktu, Berhasil pada Percobaan Pertama,
- * Percobaan dipakai — atau Ketukan salah untuk Cari Objek) dan alasan selesai
- * (Semua benar / Disimpan apa adanya; bila kesempatan habis ditambah baris
- * lembut Game.exhaustedNote).
- * Bila wilayah tuntas: panel Mbah Kedu bangga. Bila attempt ini yang
- * menuntaskan wilayah: tombol utama "Lanjut" ke adegan /tuntas/{code}
- * ("Serpihan {wilayah} kembali!", Tahap 3), dan bila wilayahnya punya
- * Pustaka, sorotan "Pustaka {wilayah} terbuka!" dengan tombol Baca Pustaka.
- * Bila semua node tuntas (mengulang tantangan sesudahnya): tombol Balai
- * Refleksi. "Lanjut ke {wilayah berikutnya}" memutar tirai wilayah.
- * Konfeti CSS mati otomatis pada prefers-reduced-motion.
+ * Result screen redesign of 18 October 2026 (mockup 01 in
+ * gelita-katalog/mockup/gambar-mockup/tantangan-selesai-temanggung): one
+ * shared layout for every region and challenge kind, on the redesigned HUD
+ * (section hudStyle `menu`). Temanggung and "Susun Gambar" in the mockup are
+ * only sample data.
+ *
+ * Panel (skin `ui.result-panel`, plain navy and gold while empty):
+ * - challenge kind, title, stars 0–3 (`ui.result-star`, outline when empty);
+ * - shard medal (`ui.result-medal`) with the shard count and a segment bar;
+ * - two cards: Waktu and Percobaan (Ketukan salah for Cari Objek);
+ * - finish reason badge (Semua benar / Disimpan apa adanya) and one message:
+ *   tries exhausted, several checks, or right on the first try;
+ * - buttons: Peta {wilayah}, Detail hasil (first-try result, closed at
+ *   first), and the main button, whose target is unchanged: "Lanjut" to
+ *   /tuntas/{code} when this attempt completes the region, Balai Refleksi when
+ *   every challenge is done, Berikutnya to the next challenge, "Lanjut ke
+ *   {wilayah}" with the region curtain, Peta Kedu, or else the region map.
+ * When the region is complete, a card over the panel keeps Mbah Kedu's words
+ * and, when this attempt opened it, the Pustaka highlight (owner decision
+ * 18 October 2026); it can be closed. CSS confetti stops on
+ * prefers-reduced-motion.
  *
  * @var App\Entities\ChallengeAttempt    $attempt
  * @var App\Entities\ChallengeNode|null  $node
  * @var App\Entities\Level|null          $level
  * @var array<string, mixed>             $levelSummary
  * @var bool                             $levelCompleted
- * @var bool|null                        $closesRegion    attempt ini yang menuntaskan wilayahnya
- * @var bool                             $libraryUnlocked attempt ini membuka Pustaka wilayahnya
+ * @var bool|null                        $closesRegion    this attempt completed its region
+ * @var bool                             $libraryUnlocked this attempt opened the region's Pustaka
  * @var bool                             $allCompleted
  * @var array<string, mixed>             $progress
- * @var array<string, mixed>|null        $nextRegion baris levelOverview wilayah sesudahnya (+ `curtain`)
- * @var int|null                         $wrongTaps  Cari Objek: jumlah ketukan salah
+ * @var array<string, mixed>|null        $nextRegion levelOverview row of the region after it (+ `curtain`)
+ * @var int|null                         $wrongTaps  Cari Objek: number of wrong taps
  * @var string                           $locale
  */
 $region = $level?->text('name', $locale) ?? '';
@@ -41,16 +50,34 @@ if ($level !== null && $node !== null && ! $levelCompleted) {
 }
 
 $checks       = (int) ($attempt->check_count ?? 0);
+$maxTries     = (int) ($attempt->max_tries ?? config('Gelita')->maxTries);
+$stars        = max(0, min(3, (int) $attempt->stars));
+$shards       = (int) ($progress['shards'] ?? 0);
+$shardsTotal  = (int) ($progress['shards_total'] ?? 0);
+$solved       = $attempt->completion_reason === 'solved';
+$exhausted    = $attempt->completion_reason === 'tries_exhausted';
 $closesRegion = ! empty($closesRegion);
-// "Lanjut ke {wilayah berikutnya}" (mengulang tantangan di wilayah yang sudah tuntas)
+// "Lanjut ke {wilayah berikutnya}" (replaying a challenge in a completed region)
 $toNext = ! $closesRegion && ! $allCompleted && $next === null && $levelCompleted
     && $nextRegion !== null && $nextRegion['status'] !== 'locked';
+
+$message = match (true) {
+    $exhausted              => lang('Game.exhaustedNote'),
+    $checks > 1             => lang('Game.multiCheckNote', [$checks]),
+    $solved && $checks === 1 => lang('Game.resultFirstTry'),
+    default                 => null,
+};
+
+$starSrc  = media_key_src('ui.result-star');
+$medalSrc = media_key_src('ui.result-medal');
+$bgResult = $level !== null ? media_key_src('bg.result.' . $level->code) : null;
 ?>
 <?= $this->extend('layouts/game') ?>
 
 <?= $this->section('title') ?><?= esc(lang('Game.finishedTitle')) ?><?= $this->endSection() ?>
-<?= $this->section('background') ?><?= $level !== null ? media_first($level->background_media_id) : '' ?><?= $this->endSection() ?>
+<?= $this->section('background') ?><?= $bgResult ?? ($level !== null ? media_first($level->background_media_id) : '') ?><?= $this->endSection() ?>
 <?= $this->section('bodyClass') ?>is-celebrate<?= $this->endSection() ?>
+<?= $this->section('hudStyle') ?>menu<?= $this->endSection() ?>
 
 <?php if ($toNext): ?>
 <?= $this->section('overlay') ?>
@@ -69,96 +96,144 @@ $nextAssets = ! empty($levelCompleted) && isset($nextRegion['curtain'])
     ? $nextRegion['curtain']['preload']
     : [$level !== null && media_exists($level->map_media_id) ? media_src($level->map_media_id) : null];
 ?>
-<section class="finished" data-screen="finished" data-attempt="<?= esc($attempt->id, 'attr') ?>"<?= next_assets_attr($nextAssets) ?>>
-    <?php // Kartu tunggal 280, 72, 720 × 576 tanpa Jaka (Dok 3 §5.3); bagian tengah bergulir, tombol di bilah bawah kartu ?>
-    <article class="panel-carved finished-card stage-box">
-      <div class="orb" aria-hidden="true"><span class="orb-core"><?= icon('lantern') ?></span></div>
+<section class="finished" data-screen="finished" data-attempt="<?= esc($attempt->id, 'attr') ?>"<?= $levelCompleted ? ' data-region-done' : '' ?><?= next_assets_attr($nextAssets) ?>>
+  <article class="result-card stage-box" aria-labelledby="result-title"<?= skin_style_attr([
+      'skin-panel'     => 'ui.result-panel',
+      'skin-primary'   => 'ui.result-button-primary',
+      'skin-secondary' => 'ui.result-button-secondary',
+      'skin-detail'    => 'ui.result-button-detail',
+  ]) ?>>
+    <header class="result-heading">
       <?php if ($node !== null): ?>
-        <span class="eyebrow"><?= esc($region) ?> · <?= esc($node->text('title', $locale)) ?></span>
+        <p class="result-kind"><?= esc(lang_or('Game.engine_' . $node->engine_type, $node->text('title', $locale))) ?></p>
       <?php endif ?>
-      <h1><?= esc(lang('Game.finishedTitle')) ?></h1>
+      <h1 id="result-title"><?= esc(lang('Game.finishedTitle')) ?></h1>
+      <p class="result-stars" role="img" aria-label="<?= esc(lang('Game.resultStarsOf', [$stars, 3]), 'attr') ?>">
+        <?php for ($i = 1; $i <= 3; $i++): ?>
+          <?php if ($i <= $stars && $starSrc !== null): ?>
+            <img class="result-star is-on" src="<?= esc($starSrc, 'attr') ?>" alt="" draggable="false">
+          <?php else: ?>
+            <span class="result-star<?= $i <= $stars ? ' is-on' : '' ?>"><?= icon('star') ?></span>
+          <?php endif ?>
+        <?php endfor ?>
+      </p>
+    </header>
 
-      <div class="finished-body stage-scroll">
-      <?= component('star-rating', ['stars' => (int) $attempt->stars, 'size' => 'lg']) ?>
-
-      <div class="stat-grid finished-stats">
-        <?= component('stat-tile', ['label' => lang('Game.timeSpent'), 'value' => ms_to_human((int) $attempt->duration_ms), 'icon' => 'clock']) ?>
-        <?= component('stat-tile', ['label' => lang('Game.firstPass'), 'value' => first_pass_text($attempt, $locale, $node?->engine_type), 'icon' => 'target']) ?>
-        <?php if (($wrongTaps ?? null) !== null): ?>
-          <?= component('stat-tile', ['label' => lang('Game.wrongTaps'), 'value' => (string) $wrongTaps, 'icon' => 'cross']) ?>
+    <div class="result-shards">
+      <div class="result-medal<?= $medalSrc !== null ? ' has-art' : '' ?>" aria-hidden="true">
+        <?php if ($medalSrc !== null): ?>
+          <img src="<?= esc($medalSrc, 'attr') ?>" alt="" draggable="false">
         <?php else: ?>
-          <?= component('stat-tile', ['label' => lang('Game.triesUsed'), 'value' => lang('Game.triesOf', [$checks, (int) ($attempt->max_tries ?? config('Gelita')->maxTries)]), 'icon' => 'replay']) ?>
+          <span class="orb"><span class="orb-core"><?= icon('lantern') ?></span></span>
         <?php endif ?>
       </div>
+      <div class="result-shards-text">
+        <h2><?= esc(lang('Game.resultShards')) ?></h2>
+        <p class="result-shards-count num" aria-label="<?= esc(lang('Game.shardEarned', [$shards, $shardsTotal]), 'attr') ?>"><?= $shards ?> / <?= $shardsTotal ?></p>
+        <?php if ($shardsTotal > 0): ?>
+          <span class="result-shards-bar" aria-hidden="true">
+            <?php for ($i = 1; $i <= $shardsTotal; $i++): ?><i<?= $i <= $shards ? ' class="is-on"' : '' ?>></i><?php endfor ?>
+          </span>
+        <?php endif ?>
+      </div>
+    </div>
+
+    <div class="result-summary">
+      <dl class="result-stats">
+        <div class="result-stat">
+          <dt><?= icon('clock') ?> <?= esc(lang('Game.timeSpent')) ?></dt>
+          <dd class="num"><?= esc(ms_to_human((int) $attempt->duration_ms)) ?></dd>
+        </div>
+        <?php if (($wrongTaps ?? null) !== null): ?>
+          <div class="result-stat">
+            <dt><?= icon('cross') ?> <?= esc(lang('Game.wrongTaps')) ?></dt>
+            <dd class="num"><?= (int) $wrongTaps ?></dd>
+          </div>
+        <?php else: ?>
+          <div class="result-stat">
+            <dt><?= icon('replay') ?> <?= esc(lang('Game.resultTries')) ?></dt>
+            <dd class="num is-words"><?= esc(lang('Game.triesOf', [$checks, $maxTries])) ?></dd>
+          </div>
+        <?php endif ?>
+      </dl>
 
       <?php if ($attempt->completion_reason !== null): ?>
-        <p class="finished-reason badge <?= $attempt->completion_reason === 'solved' ? 'is-completed' : 'is-open' ?>">
-          <?= esc(lang($attempt->completion_reason === 'solved' ? 'Game.completionSolved' : 'Game.completionExhausted')) ?>
+        <p class="result-badge <?= $solved ? 'is-solved' : 'is-saved' ?>">
+          <span class="result-badge-mark" aria-hidden="true"><?= icon($solved ? 'check' : 'info') ?></span>
+          <?= esc(lang($solved ? 'Game.completionSolved' : 'Game.completionExhausted')) ?>
         </p>
       <?php endif ?>
 
-      <?php if ($attempt->completion_reason === 'tries_exhausted'): ?>
-        <p class="finished-note"><?= icon('lantern') ?> <?= esc(lang('Game.exhaustedNote')) ?></p>
+      <?php if ($message !== null): ?>
+        <p class="result-message"><?= esc($message) ?></p>
+      <?php endif ?>
+    </div>
+
+    <div class="result-actions">
+      <?php if ($level !== null): ?>
+        <a class="result-btn is-secondary" href="<?= base_url('wilayah/' . $level->code) ?>"><?= icon('left') ?> <span><?= esc(lang('Game.resultRegionMap', [$region])) ?></span></a>
       <?php endif ?>
 
-      <?php if ($checks > 1): ?>
-        <p class="finished-note"><?= icon('info') ?> <?= esc(lang('Game.multiCheckNote', [$checks])) ?></p>
-      <?php endif ?>
-
-      <p class="finished-shards">
-        <?= icon('lantern') ?> <?= esc(lang('Game.shardEarned', [$progress['shards'], $progress['shards_total']])) ?>
-      </p>
-
-      <?php if ($levelCompleted && $level !== null): ?>
-        <div class="finished-kedu">
-          <?= component('character', ['character' => 'mbah_kedu', 'pose' => 'smile']) ?>
-          <?= component('narration', [
-              'speaker' => 'mbah_kedu',
-              'text'    => lang('Game.regionDone', [$region]) . ' '
-                  . ($allCompleted ? lang('Game.allShardsDone', [$progress['shards_total']]) : lang('Game.nextRegionOpen')),
-          ]) ?>
+      <details class="result-detail" data-popover>
+        <summary class="result-btn is-detail"><span><?= esc(lang('Game.resultDetail')) ?></span> <?= icon('down') ?></summary>
+        <div class="result-sheet result-detail-sheet" role="group" aria-labelledby="result-detail-title">
+          <div class="result-sheet-head">
+            <h2 id="result-detail-title"><?= esc(lang('Game.resultDetail')) ?></h2>
+            <button type="button" class="hud-sheet-close" data-popover-close hidden
+                    aria-label="<?= esc(lang('Game.close'), 'attr') ?>"><?= icon('cross') ?></button>
+          </div>
+          <dl class="result-detail-list">
+            <div>
+              <dt><?= esc(lang('Game.firstPass')) ?></dt>
+              <dd><?= esc(first_pass_text($attempt, $locale, $node?->engine_type)) ?></dd>
+            </div>
+          </dl>
         </div>
-      <?php endif ?>
+      </details>
 
-      <?php if ($libraryUnlocked && $level !== null): ?>
-        <aside class="library-unlocked" role="status">
+      <?php if ($closesRegion && $level !== null): ?>
+        <?php // Region just completed: the "Serpihan {wilayah} kembali!" scene first ?>
+        <a class="result-btn is-primary" href="<?= base_url('tuntas/' . $level->code) ?>"><span><?= esc(lang('Game.continue')) ?></span> <?= icon('right') ?></a>
+      <?php elseif ($allCompleted): ?>
+        <a class="result-btn is-primary" href="<?= base_url('refleksi') ?>"><?= icon('sparkle') ?> <span><?= esc(lang('Game.reflection')) ?></span></a>
+      <?php elseif ($next !== null): ?>
+        <a class="result-btn is-primary" href="<?= base_url('misi/' . $level->code . '/' . $next->sequence) ?>"><span><?= esc(lang('Game.next')) ?></span> <?= icon('right') ?></a>
+      <?php elseif ($toNext): ?>
+        <?php // `entry`: a region just opened → its opening dialogue, else its region map ?>
+        <a class="result-btn is-primary" href="<?= base_url($nextRegion['entry']) ?>"<?= region_curtain_attrs($nextRegion['curtain'] ?? null) ?>><span><?= esc(lang('Game.goToRegion', [$nextRegion['name']])) ?></span> <?= icon('right') ?></a>
+      <?php elseif ($levelCompleted): ?>
+        <a class="result-btn is-primary" href="<?= base_url('peta') ?>"><?= icon('map') ?> <span><?= esc(lang('Game.mapKedu')) ?></span></a>
+      <?php elseif ($level !== null): ?>
+        <?php // Last challenge done, an earlier one still open: pick it on the region map ?>
+        <a class="result-btn is-primary" href="<?= base_url('wilayah/' . $level->code) ?>"><span><?= esc(lang('Game.next')) ?></span> <?= icon('right') ?></a>
+      <?php endif ?>
+    </div>
+  </article>
+
+  <?php if ($levelCompleted && $level !== null): ?>
+    <aside class="result-sheet result-kedu stage-box" aria-labelledby="result-kedu-title">
+      <button type="button" class="hud-sheet-close" data-dismiss hidden
+              aria-label="<?= esc(lang('Game.close'), 'attr') ?>"><?= icon('cross') ?></button>
+      <h2 id="result-kedu-title" class="visually-hidden"><?= esc(lang('Game.regionDone', [$region])) ?></h2>
+      <div class="finished-kedu">
+        <?= component('character', ['character' => 'mbah_kedu', 'pose' => 'smile']) ?>
+        <?= component('narration', [
+            'speaker' => 'mbah_kedu',
+            'text'    => lang('Game.regionDone', [$region]) . ' '
+                . ($allCompleted ? lang('Game.allShardsDone', [$progress['shards_total']]) : lang('Game.nextRegionOpen')),
+        ]) ?>
+      </div>
+      <?php if ($libraryUnlocked): ?>
+        <div class="library-unlocked" role="status">
           <span class="library-unlocked-icon" aria-hidden="true"><?= icon('book') ?></span>
           <div>
-            <h2><?= esc(lang('Game.libraryUnlockedTitle', [$region])) ?></h2>
+            <h3><?= esc(lang('Game.libraryUnlockedTitle', [$region])) ?></h3>
             <p><?= esc(lang('Game.libraryUnlockedText', [$region])) ?></p>
           </div>
           <a class="btn btn-ghost" href="<?= base_url('pustaka/' . $level->code) ?>"><?= icon('book') ?> <?= esc(lang('Game.libraryReadNow')) ?></a>
-        </aside>
+        </div>
       <?php endif ?>
-
-      </div>
-
-      <div class="finished-actions">
-        <?php if ($closesRegion && $level !== null): ?>
-          <?php // Wilayah baru saja tuntas: adegan "Serpihan {wilayah} kembali!" lebih dulu ?>
-          <a class="btn btn-primary btn-xl" href="<?= base_url('tuntas/' . $level->code) ?>"><?= esc(lang('Game.continue')) ?> <?= icon('right') ?></a>
-        <?php elseif ($allCompleted): ?>
-          <a class="btn btn-primary btn-xl" href="<?= base_url('refleksi') ?>"><?= icon('sparkle') ?> <?= esc(lang('Game.reflection')) ?></a>
-        <?php elseif ($next !== null): ?>
-          <a class="btn btn-primary btn-lg" href="<?= base_url('misi/' . $level->code . '/' . $next->sequence) ?>"><?= esc(lang('Game.next')) ?> <?= icon('right') ?></a>
-        <?php elseif ($toNext): ?>
-          <?php // `entry`: wilayah yang baru terbuka → dialog pembukanya, selain itu peta wilayah ?>
-          <a class="btn btn-primary btn-lg" href="<?= base_url($nextRegion['entry']) ?>"<?= region_curtain_attrs($nextRegion['curtain'] ?? null) ?>><?= esc(lang('Game.goToRegion', [$nextRegion['name']])) ?> <?= icon('right') ?></a>
-        <?php elseif ($levelCompleted): ?>
-          <a class="btn btn-primary btn-lg" href="<?= base_url('peta') ?>"><?= icon('map') ?> <?= esc(lang('Game.mapKedu')) ?></a>
-        <?php endif ?>
-      </div>
-    </article>
+    </aside>
+  <?php endif ?>
 </section>
-<?= $this->endSection() ?>
-
-<?= $this->section('nav') ?>
-<?php
-$nav = [];
-if ($level !== null) {
-    $nav[] = ['label' => lang('Game.backToRegion'), 'href' => base_url('wilayah/' . $level->code), 'style' => 'quiet', 'arrow' => 'left'];
-}
-$nav[] = ['label' => lang('Game.mapKedu'), 'href' => base_url('peta'), 'style' => 'quiet', 'icon' => 'map'];
-?>
-<?= component('nav-bar', ['nav' => $nav]) ?>
 <?= $this->endSection() ?>

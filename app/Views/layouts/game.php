@@ -15,6 +15,8 @@
  *               dirender paling awal agar tampil sejak paint pertama
  *   content     isi halaman
  *   nav         komponen nav-bar (opsional)
+ *   hudStyle    `menu` for the redesigned HUD (components/hud-menu: logo, region,
+ *               language, sound, menu); any other value keeps components/hud
  *   scripts     skrip khusus halaman (tahap 6)
  *
  * Data untuk JavaScript dikirim lewat <script type="application/json">,
@@ -26,6 +28,7 @@ $locale     = service('request')->getLocale();
 $background = trim($this->renderSection('background'));
 $bodyClass  = trim($this->renderSection('bodyClass'));
 $title      = trim($this->renderSection('title'));
+$hudStyle   = trim($this->renderSection('hudStyle'));
 $request    = service('request');
 // Kode layar Dok 1 §12.4 (sama dengan screen_viewed di server) untuk event page_hidden/visible
 $screenCode = method_exists($request, 'getPath') ? (App\Filters\ScreenViewFilter::resolve(trim((string) $request->getPath(), '/'))[0] ?? null) : null;
@@ -81,7 +84,7 @@ $screenCode = method_exists($request, 'getPath') ? (App\Filters\ScreenViewFilter
 
       <?= $this->renderSection('overlay') ?>
 
-      <?= $this->include('components/hud') ?>
+      <?= $this->include($hudStyle === 'menu' ? 'components/hud-menu' : 'components/hud') ?>
 
       <main id="app" class="stage-main" tabindex="-1">
         <?= $this->renderSection('content') ?>

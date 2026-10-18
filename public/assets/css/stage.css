@@ -198,6 +198,166 @@ body.game {
 .hud-fullscreen[aria-pressed="true"] .icon-enter { display: none; }
 .hud-fullscreen[aria-pressed="true"] .icon-exit { display: block; }
 
+/* ---------- Redesigned HUD (components/hud-menu, section hudStyle `menu`) ----------
+   Result screen redesign of 18 October 2026: logo and region on the left,
+   three 88 × 96 dp controls on the right (68 dp round skin
+   `ui.result-hud-control`, else a navy disc with a gold ring), no band. */
+.hud.hud-menu-style { display: block; height: 7.5rem; padding: 0; }
+.hud-identity { position: absolute; top: .5625rem; left: .9375rem; gap: 0; }
+.hud-identity-logo { display: block; width: auto; height: 6.25rem; filter: drop-shadow(0 .125rem .375rem rgba(11, 19, 32, .6)); }
+.hud-identity .hud-brand { font-size: var(--fs-h2); }
+.hud-identity-region {
+  position: relative;
+  margin-left: .875rem;
+  padding-left: 1.375rem;
+  color: var(--gold-300);
+  /* Mixed-case serif as in the mockup; Cinzel has capitals only */
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.8125rem;
+  font-weight: 700;
+  line-height: 1.3;
+  white-space: nowrap;
+  text-shadow: 0 .125rem .375rem rgba(11, 19, 32, .9);
+}
+.hud-identity-region::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: .125rem;
+  height: 2.25rem;
+  background: rgba(223, 192, 135, .6);
+  transform: translateY(-50%);
+}
+.hud-controls { position: absolute; top: .4375rem; right: .6875rem; gap: .25rem; }
+.hud-pop { position: static; }
+.hud-pop > summary { list-style: none; }
+.hud-pop > summary::-webkit-details-marker { display: none; }
+.hud-ctl {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 5.5rem;
+  height: 6rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--gold-300);
+  cursor: pointer;
+}
+.hud-ctl::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4.25rem;
+  height: 4.25rem;
+  border: .125rem solid var(--gold-500);
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 35%, var(--navy-600), var(--navy-900));
+  box-shadow: 0 .25rem .75rem rgba(1, 7, 19, .5);
+  transform: translate(-50%, -50%);
+  transition: transform .15s, box-shadow .15s;
+}
+.hud-menu-style[style*="--skin-hud"] .hud-ctl::before {
+  border: 0;
+  background: var(--skin-hud) center / 101.6% 101.6% no-repeat;
+  filter: brightness(.83) saturate(.8);
+}
+.hud-ctl > .icon, .hud-ctl > img, .hud-ctl > span { position: relative; }
+.hud-ctl .icon { width: 2.375rem; height: 2.375rem; filter: drop-shadow(0 1px .1875rem rgba(11, 19, 32, .9)); }
+.hud-ctl-flag { width: 4.3125rem; height: 4.3125rem; border-radius: 50%; }
+.hud-lang > .hud-ctl:has(.hud-ctl-flag)::before { display: none; }
+.hud-ctl-code { font-weight: 800; font-size: var(--fs-body); }
+#btn-sound.hud-ctl .icon-off, #btn-sound.hud-ctl.is-muted .icon-on { display: none; }
+#btn-sound.hud-ctl.is-muted .icon-off { display: block; }
+@media (hover: hover) {
+  .hud-ctl:hover::before { box-shadow: 0 0 0 .1875rem var(--glow), 0 .25rem .75rem rgba(1, 7, 19, .5); }
+}
+.hud-ctl:active::before { transform: translate(-50%, -50%) scale(.94); }
+.hud-ctl:focus-visible { outline: none; }
+.hud-ctl:focus-visible::before { outline: .1875rem solid var(--gold-300); outline-offset: .1875rem; }
+.hud-pop[open] > .hud-ctl::before { box-shadow: 0 0 0 .1875rem var(--gold-500), 0 0 1rem var(--glow); }
+
+/* Popover sheets: language 480 × 240 under its control, menu 433 × 552 with a scrim */
+.hud-sheet {
+  position: absolute;
+  z-index: 2;
+  display: grid;
+  align-content: start;
+  padding: .875rem;
+  border: .1875rem solid var(--gold-500);
+  border-radius: 1.25rem;
+  background: linear-gradient(to bottom, var(--navy-700), var(--navy-900));
+  box-shadow: inset 0 0 0 .25rem rgba(11, 19, 32, .9), inset 0 0 0 .3125rem rgba(223, 192, 135, .35), var(--shadow-2);
+  color: var(--ink);
+  font-family: var(--font-body);
+  text-shadow: none;
+}
+.hud-lang-sheet { top: 7.25rem; right: 9.4375rem; width: 30rem; }
+.hud-sheet .hud-lang-list { display: grid; gap: .5rem; padding: 0; border-radius: 0; background: none; }
+.hud-menu[open]::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  background: rgba(5, 8, 15, .6);
+}
+.hud-menu > summary { position: relative; z-index: 2; }
+.hud-menu-sheet { top: 8rem; right: 2.1875rem; width: 27.0625rem; gap: .5rem; }
+.hud-sheet-head { display: flex; align-items: center; justify-content: space-between; min-height: 3.5rem; padding: 0 .25rem 0 .5rem; }
+.hud-sheet-head h2 { margin: 0; color: var(--gold-300); font-family: var(--font-body); font-size: 1.75rem; font-weight: 800; }
+.hud-sheet-close {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--tap);
+  height: var(--tap);
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--ink);
+  cursor: pointer;
+}
+.hud-sheet-close .icon { width: 1.75rem; height: 1.75rem; }
+.hud-sheet-close:hover { color: var(--gold-300); }
+.hud-sheet-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1rem;
+  min-height: 6rem;
+  padding: 0 1.25rem;
+  border: 1px solid rgba(223, 192, 135, .18);
+  border-radius: .75rem;
+  background: rgba(27, 39, 64, .6);
+  color: var(--ink);
+  font: inherit;
+  font-size: 1.5rem;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+.hud-sheet-row[hidden] { display: none; }
+.hud-sheet-row:hover { border-color: var(--gold-500); background: rgba(38, 53, 90, .8); }
+.hud-sheet-row:focus-visible { outline: .1875rem solid var(--gold-300); outline-offset: .125rem; }
+.hud-sheet-row > .icon { width: 2rem; height: 2rem; color: var(--gold-500); }
+.hud-sheet-row .hud-sheet-go { width: 1.5rem; height: 1.5rem; color: var(--ink-dim); }
+.hud-sheet-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hud-lang-row { min-height: 6rem; font-size: 1.625rem; font-weight: 700; }
+.hud-sheet-flag { width: 4.25rem; height: 4.25rem; border-radius: 50%; }
+.hud-sheet-code { display: grid; place-items: center; width: 4.25rem; height: 4.25rem; border: .125rem solid var(--gold-500); border-radius: 50%; font-weight: 800; }
+.hud-lang-row .hud-sheet-mark { width: 2rem; height: 2rem; color: var(--ok); visibility: hidden; }
+.hud-lang-row.is-active { border-color: var(--gold-500); background: rgba(223, 192, 135, .14); }
+.hud-lang-row.is-active .hud-sheet-mark { visibility: visible; }
+.hud-profile .user-avatar { width: 3.75rem; height: 3.75rem; font-size: 1.75rem; }
+.hud-profile .hud-sheet-label { display: grid; }
+.hud-profile-name { overflow: hidden; font-weight: 800; text-overflow: ellipsis; }
+.hud-profile-code { color: var(--ink-dim); font-size: 1.125rem; }
+.hud-sheet-row.hud-fullscreen .icon-exit { display: none; }
+.hud-sheet-row.hud-fullscreen[aria-pressed="true"] .icon-enter { display: none; }
+.hud-sheet-row.hud-fullscreen[aria-pressed="true"] .icon-exit { display: block; }
+
 /* ---------- Content area: the whole stage, 0, 0, 1280 × 720 ----------
    <main> covers the stage (inset: 0) with no stacking context, so content
    coordinates are stage coordinates (table §4) and overlays inside it (Kenali)
@@ -415,8 +575,11 @@ body.game {
 .challenge-cari .hunt.is-zoomed .hunt-clue  { --x: 16;   --y: 16; --w: 1184; --h: 56;  z-index: 41; }
 .challenge-cari .hunt.is-zoomed .hunt-zoom  { --x: 1216; --y: 20; z-index: 42; }
 
-/* ---------- Selesai `/selesai/{id}` (tanpa Jaka, Dok 3 §5.3) ---------- */
-.finished-card { --x: 280; --y: 72; --w: 720; --h: 576; }
+/* ---------- Selesai `/selesai/{id}` (redesign 18 Oct 2026, mockup 01) ----------
+   Mockup canvas 1920 × 1080 px = 1280 × 720 dp (× 2/3). The region-done card
+   (Mbah Kedu, Pustaka) covers the upper panel and leaves the buttons free. */
+.result-card { --x: 133; --y: 145; --w: 1017; --h: 495; }
+.result-kedu { --x: 290; --y: 168; --w: 700; --h: 352; }
 
 /* ---------- Hasil `/hasil/{code}/{n}` ---------- */
 .result-panel { --x: 160; --y: 72; --w: 960; --h: 576; }

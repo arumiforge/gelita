@@ -31,7 +31,7 @@ $hudRegion = $hudTitle !== '' ? $hudTitle : (isset($level) && $level instanceof 
 $hudBack = trim($this->renderSection('hudBack'));
 $hudLogo = $hudBack !== '' ? media_key_src('ui.logo') : null;
 ?>
-<header class="hud">
+<header class="hud"<?= $inGame ? ' data-in-game' : '' ?>>
   <div class="hud-left">
     <?php if ($hudBack !== ''): ?>
       <a class="btn btn-quiet hud-back" href="<?= esc($hudBack, 'attr') ?>"><?= icon('left') ?> <span><?= esc(lang('Game.back')) ?></span></a>

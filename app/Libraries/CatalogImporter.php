@@ -25,6 +25,8 @@ use RuntimeException;
  *   are stored under the same key.
  * - Two reference icons also fill a slot (REFERENCE_SLOTS): `reference.20`
  *   and `reference.19` become the language switch icons `ui.lang.id`/`.en`.
+ * - Some entries also fill a second slot (COPY_SLOTS): `avatar.2` stays an
+ *   avatar and is copied to the result screen medal `ui.result-medal`.
  * - App icons are converted to PNG, because the `app.*` slots take PNG only;
  *   the favicon is made from the 192 icon, since the catalogue one is
  *   smaller than the slot.
@@ -136,6 +138,16 @@ final class CatalogImporter
         'reference.19' => 'ui.lang.en',
     ];
 
+    /**
+     * Catalogue entries installed under their own key and also copied to a
+     * second slot (owner decision 18 October 2026): the result screen uses
+     * the shard medal `avatar.2`, but from a slot of its own, so changing
+     * avatar 2 later does not change the result screen.
+     */
+    public const COPY_SLOTS = [
+        'avatar.2' => 'ui.result-medal',
+    ];
+
     /** Lossy WebP quality for every stored image except the PNG app icons. */
     public const WEBP_QUALITY = 82;
 
@@ -157,6 +169,9 @@ final class CatalogImporter
 
     /** @var list<array{source: string, target: string, status: string, note: string}> */
     private array $report = [];
+
+    /** @var list<string> `$only` patterns of the current run() */
+    private array $only = [];
 
     /** @var list<string> temporary files to remove at the end */
     private array $temp = [];
@@ -231,6 +246,7 @@ final class CatalogImporter
     public function run(bool $dryRun = false, bool $overwrite = false, ?int $staffId = null, array $only = []): array
     {
         $this->report = [];
+        $this->only   = $only;
         $all          = $this->entries();
         $byKey        = array_column($all, null, 'key');
         $entries      = $only === [] ? $all : array_values(array_filter($all, fn (array $entry): bool => $this->matches($entry['key'], $only)));
@@ -279,6 +295,16 @@ final class CatalogImporter
             $this->add($key, '—', 'failed', 'berkas tidak ada di katalog');
 
             return;
+        }
+
+        if (isset(self::COPY_SLOTS[$key])) {
+            $copy = self::COPY_SLOTS[$key];
+            $this->installSlot($key, $copy, fn (): ?string => $this->webp($entry['file'], $copy), $dryRun, $overwrite);
+
+            // Matched by --kunci only through the copy's slot: leave the entry's own slot alone
+            if ($this->only !== [] && ! $this->matchesOwnKey($key)) {
+                return;
+            }
         }
 
         if ($ref !== null) {
@@ -596,10 +622,23 @@ final class CatalogImporter
      *
      * @param list<string> $patterns
      */
+    private function matchesOwnKey(string $key): bool
+    {
+        foreach ($this->only as $pattern) {
+            if (fnmatch($pattern, $key)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private function matches(string $key, array $patterns): bool
     {
         foreach ($patterns as $pattern) {
-            if (fnmatch($pattern, $key) || (isset(self::REFERENCE_SLOTS[$key]) && fnmatch($pattern, self::REFERENCE_SLOTS[$key]))) {
+            $slot = self::REFERENCE_SLOTS[$key] ?? self::COPY_SLOTS[$key] ?? null;
+
+            if (fnmatch($pattern, $key) || ($slot !== null && fnmatch($pattern, $slot))) {
                 return true;
             }
         }
