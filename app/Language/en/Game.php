@@ -36,6 +36,13 @@ return [
     'staffLogin'     => 'Staff login',
     'installHint'     => 'Add it to the home screen: GELITA opens like an app, with no address bar.',
     'installIos'      => 'On iPhone/iPad: tap Share, then choose Add to Home Screen.',
+    'installTitle'    => 'Install GELITA first!',
+    'installText'     => 'Install GELITA on your phone\'s home screen. Then just tap its icon to play, with no address bar.',
+    'installNow'      => 'Install now',
+    'installLater'    => 'Maybe later',
+    'installOk'       => 'Got it',
+    'installMenu'     => 'Tap the ⋮ menu at the top right of Chrome, then choose Install app or Add to Home screen.',
+    'installAlready'  => 'Already installed GELITA? Open it from its icon on the home screen.',
 
     // HUD & lantern
     'shards'          => 'Light Shards',

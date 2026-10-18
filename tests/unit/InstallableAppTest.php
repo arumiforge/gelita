@@ -16,6 +16,9 @@ use Config\Services;
  *   static files in `assets/app/`, which must exist at the promised sizes
  *   (Chrome refuses to install when the 192/512 icons do not match).
  * - The manifest route starts no session (LocaleFilter::STATELESS_PATHS).
+ * - Install offer (owner, 18 October 2026): core/install-boot.js listens for
+ *   Chrome's offer before the manifest link, and the welcome page carries the
+ *   install dialog's text for game/install.js.
  * - The offline page is self-contained. What the service worker may cache
  *   (package files and the offline page only, never HTML, API, or admin) is
  *   checked by AssetPackageServiceWorkerTest (asset package plan §9.1).
@@ -156,6 +159,32 @@ final class InstallableAppTest extends CIUnitTestCase
             if ($layout !== 'game') {
                 $this->assertStringNotContainsString('rel="manifest"', $html, 'only the game is installable');
             }
+        }
+    }
+
+    public function testInstallBootListensBeforeTheManifestLink(): void
+    {
+        $layout = (string) file_get_contents(APPPATH . 'Views/layouts/game.php');
+        $boot   = strpos($layout, "<script src=\"<?= asset_url_versioned('js/core/install-boot.js') ?>\"></script>");
+
+        $this->assertNotFalse($boot, 'a blocking classic script, not async or a module');
+        $this->assertLessThan(strpos($layout, 'rel="manifest"'), $boot);
+
+        $script = (string) file_get_contents(FCPATH . 'assets/js/core/install-boot.js');
+        $this->assertStringContainsString("addEventListener('beforeinstallprompt'", $script);
+        $this->assertStringContainsString('window.GELITA_INSTALL_PROMPT = event', $script);
+    }
+
+    public function testWelcomePageCarriesTheInstallDialog(): void
+    {
+        $html = (string) $this->call('GET', '/')->response()->getBody();
+
+        $this->assertMatchesRegularExpression('/<div class="welcome-install stage-box" data-install="modal" hidden/', $html);
+        $this->assertStringContainsString('data-install-button', $html);
+
+        foreach (['Title', 'Text', 'Now', 'Later', 'Ok', 'Menu', 'Ios', 'Already'] as $part) {
+            $attr = 'data-install-' . strtolower($part);
+            $this->assertStringContainsString($attr . '="' . esc(lang('Game.install' . $part), 'attr') . '"', $html, $attr);
         }
     }
 

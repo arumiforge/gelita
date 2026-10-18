@@ -36,6 +36,13 @@ return [
     'staffLogin'     => 'Masuk staf',
     'installHint'     => 'Pasang di layar utama: GELITA terbuka seperti aplikasi, tanpa bilah alamat.',
     'installIos'      => 'Di iPhone/iPad: ketuk Bagikan, lalu pilih Tambah ke Layar Utama.',
+    'installTitle'    => 'Pasang GELITA dulu, yuk!',
+    'installText'     => 'Pasang GELITA di layar utama HP-mu. Nanti tinggal ketuk ikonnya untuk bermain, tanpa bilah alamat.',
+    'installNow'      => 'Pasang sekarang',
+    'installLater'    => 'Nanti saja',
+    'installOk'       => 'Mengerti',
+    'installMenu'     => 'Ketuk menu ⋮ di pojok kanan atas Chrome, lalu pilih Instal aplikasi atau Tambahkan ke layar utama.',
+    'installAlready'  => 'Sudah memasang GELITA? Buka GELITA dari ikonnya di layar utama.',
 
     // HUD & lentera
     'shards'          => 'Serpihan Cahaya',

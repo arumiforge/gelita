@@ -1893,3 +1893,16 @@ Owner report: on a Xiaomi phone (HyperOS), GELITA installed from Chrome opens on
 
 Decision: the manifest (`Game\AppController::manifest()`) is `display: standalone` with no `display_override` and no `orientation`. Deviation from Dok 3 / display plan Phase A3, which locked landscape + fullscreen for the installed app: on every device the rotate screen now asks for landscape (as it already did on iPhone/iPad), and the HUD full-screen button stays. `Game.installHint` no longer promises a sideways, full screen. The manifest is made by PHP and is not part of the asset package, so no package rebuild is needed.
 - [ ] After deploy: on phones that already installed GELITA, uninstall it and install again from Chrome (the broken icon cannot start, so it cannot pick up the new manifest by itself); then confirm the icon opens GELITA on the Xiaomi phone
+
+## Install dialog on the welcome page (18 October 2026, branch `sky/focused-heisenberg-aqw3qx`)
+
+Owner report and request: the "Pasang GELITA" button did not appear on the phone; on mobile the install offer should come first, as a dialog over a blurred background.
+
+Why the button could stay hidden: it only appeared once Chrome fired `beforeinstallprompt`, and only `game/install.js` (inside the `game.js` module graph) listened for it. Chrome never fires the event while GELITA is already installed, after a recent dismissal, or in other browsers, and on a slow phone it can fire before the modules load, so it was missed.
+
+Decisions:
+- `core/install-boot.js`, a classic blocking script in `<head>` before the manifest link, holds the event in `window.GELITA_INSTALL_PROMPT`.
+- Welcome page, touch devices not running the installed app: the **Pasang GELITA** button always shows, and a dialog (`showModal` with the new `blur` option and `install` icon) opens over the blurred stage. With Chrome's offer: *Nanti saja* / *Pasang sekarang*. Without it after 2.5 s: the Chrome menu steps plus "already installed? open it from its icon"; iPhone/iPad: Share → Add to Home Screen.
+- It opens once per browser session (`sessionStorage`), after the rotate screen is gone; the button reopens it. Computers: no automatic dialog, the button only with Chrome's offer. The Siapkan GELITA page keeps its inline hint.
+- Not done: asking for Android or Xiaomi permissions (a web page cannot), or detecting an existing install with `getInstalledRelatedApps()` (the dialog's "already installed" line covers that case).
+- `docs/08` device step no longer says the installed app locks landscape (left over from the standalone manifest change, PR #142).

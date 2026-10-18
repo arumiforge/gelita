@@ -436,6 +436,8 @@ body.game {
 .modal-layer > .modal { width: 30rem; max-width: 45rem; }
 .modal-layer > .modal.is-wide { width: 45rem; }
 .modal-layer .modal-card { max-height: 35rem; overflow-y: auto; overscroll-behavior: contain; }
+/* Blurred stage behind a dialog that should hold all attention (install offer) */
+.modal-layer.is-blur { background: var(--veil); -webkit-backdrop-filter: blur(.5rem); backdrop-filter: blur(.5rem); }
 
 /* ---------- Toast: x 856, y 72, w 400 ----------
    Above the modal veil (z 60 over 50): errors must be seen. Only the card

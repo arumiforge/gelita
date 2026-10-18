@@ -56,7 +56,7 @@ public/
     ├── game/
     │   ├── hud.js           tombol suara, lentera, heartbeat sesi
     │   ├── rotate-gate.js   aksesibilitas layar putar (potret)
-    │   ├── install.js       service worker + tawaran pasang aplikasi
+    │   ├── install.js       service worker + tawaran pasang aplikasi (dialog di halaman awal)
     │   ├── register.js      pendaftaran tiga langkah
     │   ├── password-meter.js meter & syarat kata sandi
     │   ├── login.js         formulir masuk
@@ -151,6 +151,7 @@ Readers call `assetsLocal()` at the moment they decide, so a curtain that alread
 |---|---|
 | `asset_url_versioned()` / `game_asset_url()` (PHP) | With a package: CSS/JS entries, Howler, `viewport.js`, and the two font preloads point at `assets/k/{code_version}/…` (only files the package lists and that exist on disk); otherwise the old `assets/…?v=` URLs. Media helpers switched in Stage 1. |
 | `js_config()` `audioUrls` | `{ 'music/map': url, 'sfx/click': url, … }` from the package's `audio.music.*` / `audio.sfx.*` keys, empty when off; `core/audio.js` `soundUrl()` uses it. |
+| `core/install-boot.js` | Classic blocking script in `<head>`, after `package-boot.js` and before the manifest link. Holds Chrome's `beforeinstallprompt` in `window.GELITA_INSTALL_PROMPT` for `game/install.js` (install dialog). |
 | `core/package-boot.js` | Classic blocking script in `<head>`, before the stylesheets and `game.js`. Its tag carries `data-package="{code}"` (package mode on) and `data-sw="off"` (kill switch), from `asset_package_attrs()`. Sets `<html data-assets-local="1">` only when the page's package equals the device's active package (localStorage mirror), a service worker controls the page, and online mode was not chosen. Sets `window.GELITA_PACKAGE_BOOT` and a first `window.GELITA_PACKAGE`. |
 | `game.js` | Imports `core/package.js` only on pages that name a package and calls `initPackage({ setAssetsLocal })`: `window.GELITA_PACKAGE` becomes the async `packageInfo()`, the mirror is reconciled with Cache Storage, and the local-assets hook is switched off when the package is gone. |
 | `game/install.js` | Registers `sw.js`, or `sw-kosong.js` while `GELITA_PACKAGE_BOOT.killed`. |
@@ -521,6 +522,7 @@ Tanpa `data-screen` yang cocok: `form.register-form` → `register.js`, `[data-l
 
 - `initRotateGate()`: penghalang potret `.rotate-gate` tampil/hilang sepenuhnya lewat CSS dengan media query `(orientation: portrait) and (pointer: coarse)`. Modul ini membuat sisa isi `<body>` `inert` dan memindah fokus ke penghalang selama tampil, lalu mengembalikan fokus saat perangkat diputar mendatar.
 - `initInstall()`: mendaftarkan `sw.js` di base URL (gagal didaftarkan tidak masalah). Di halaman awal (`[data-install]`), hanya pada perangkat sentuh yang belum menjalankan GELITA sebagai aplikasi terpasang: Chrome/Android menahan `beforeinstallprompt` dan menampilkan tombol `[data-install-button]`; Safari iOS/iPadOS menampilkan petunjuk `[data-install-ios]` (Bagikan → Tambah ke Layar Utama).
+- *Install dialog (English, 18 October 2026, owner request).* `core/install-boot.js` is a classic blocking script in `<head>`, before the manifest link: it calls `preventDefault()` on `beforeinstallprompt` and keeps the event in `window.GELITA_INSTALL_PROMPT`, because Chrome can make its offer before the `game.js` module graph has loaded and a missed event meant no install button. The welcome page marks its box `data-install="modal"` and carries the dialog text as `data-install-*` attributes (`Game.installTitle`, `installText`, `installNow`, `installLater`, `installOk`, `installMenu`, `installIos`, `installAlready`). On a touch device that is not running GELITA as an installed app, `initInstall()` shows the **Pasang GELITA** button at once and opens `showModal({ icon: 'install', blur: true })` over the blurred stage: with the held offer it has *Nanti saja* / *Pasang sekarang* (`prompt()` runs inside the tap's user activation); without an offer after 2.5 s it explains the Chrome menu (⋮ → *Instal aplikasi* / *Tambahkan ke layar utama*) and says to open an already installed GELITA from its icon; on iPhone/iPad it shows Share → Add to Home Screen at once. It waits while the rotate screen is up and opens once per browser session (`sessionStorage` `gelita.install.later` after *Nanti saja*, *Mengerti*, Escape, or a tap outside); the button reopens it. On a computer the button only appears with Chrome's offer and the dialog never opens by itself. Other pages with `[data-install]` (Siapkan GELITA) keep the inline hint. `showModal()` gained the `blur` option (`.modal-layer.is-blur`) and the modal icon `install`.
 - `public/sw.js`: offline page for navigations and the asset package, see [Asset package — service worker and downloader](#asset-package--service-worker-and-downloader-stage-2). With the server kill switch `initInstall()` registers `sw-kosong.js` instead.
 
 ### `game/register.js` — pendaftaran tiga langkah
