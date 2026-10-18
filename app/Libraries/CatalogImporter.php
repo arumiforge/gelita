@@ -24,8 +24,9 @@ use RuntimeException;
  *   badges, pins, lanterns, avatars, character frames, challenge images)
  *   are stored under the same key.
  * - The two flag icons `icon.language-id` / `icon.language-en` become the
- *   language switch icons `ui.lang.id`/`.en` (ICON_SLOTS); other vector
- *   icons and every `reference.*` entry are not game slots.
+ *   language switch icons `ui.lang.id`/`.en` (ICON_SLOTS), and the Jaka bust
+ *   `reference.03` becomes `ui.jaka-avatar` (REFERENCE_SLOTS); other vector
+ *   icons and the other `reference.*` entries are not game slots.
  * - A few pictures live only in a catalogue mockup package, not in data.json
  *   (MOCKUP_FILES): the Peta Kedu diorama becomes `map.kedu-diorama`.
  * - Some entries also fill a second slot (COPY_SLOTS): `avatar.2` stays an
@@ -141,6 +142,15 @@ final class CatalogImporter
     public const ICON_SLOTS = [
         'icon.language-id' => 'ui.lang.id',
         'icon.language-en' => 'ui.lang.en',
+    ];
+
+    /**
+     * Catalogue reference entries that fill a game slot: the Jaka bust avatar
+     * in the Peta Kedu story bar (owner request 18 October 2026, the picture
+     * mockup candidate 04 uses there).
+     */
+    public const REFERENCE_SLOTS = [
+        'reference.03' => 'ui.jaka-avatar',
     ];
 
     /**
@@ -311,7 +321,7 @@ final class CatalogImporter
     private function importEntry(array $entry, array $byKey, bool $dryRun, bool $overwrite): void
     {
         $key = $entry['key'];
-        $ref = self::ICON_SLOTS[$key] ?? null;
+        $ref = self::ICON_SLOTS[$key] ?? self::REFERENCE_SLOTS[$key] ?? null;
 
         if (($ref === null && (str_starts_with($key, 'reference.') || str_starts_with($key, 'icon.'))) || in_array($key, ['ui.placeholder', 'app.icon.svg'], true)) {
             return; // references, other icons, and the placeholder are not game slots
@@ -662,7 +672,7 @@ final class CatalogImporter
     private function matches(string $key, array $patterns): bool
     {
         foreach ($patterns as $pattern) {
-            $slot = self::ICON_SLOTS[$key] ?? self::COPY_SLOTS[$key] ?? null;
+            $slot = self::ICON_SLOTS[$key] ?? self::REFERENCE_SLOTS[$key] ?? self::COPY_SLOTS[$key] ?? null;
 
             if (fnmatch($pattern, $key) || ($slot !== null && fnmatch($pattern, $slot))) {
                 return true;

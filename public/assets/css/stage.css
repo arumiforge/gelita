@@ -551,10 +551,12 @@ body.game {
 .map-balloon { --x: 40;  --y: 536; --w: 864; --h: 98; }
 
 /* ---------- Peta Kedu `/peta`, page redesign 2 (18 Oct 2026, mockup candidate 04 × 2/3)
-   HUD 0–120; map and region panel 116–516; story bar 524–656; bottom row (nav bar) 656–720 ---------- */
+   HUD 0–120; map and region panel 116–516; story bar under the map, as wide as the map, and
+   the page buttons right of it under the panel, 524–700 (owner, 18 October 2026: no nav bar) ---------- */
 .map-kedu .kedu-map    { --x: 20;  --y: 116; --w: 853;  --h: 400; }
 .map-kedu .kedu-panels { --x: 887; --y: 116; --w: 373;  --h: 400; }
-.map-kedu .kedu-story  { --x: 20;  --y: 524; --w: 1240; --h: 132; }
+.map-kedu .kedu-story  { --x: 20;  --y: 524; --w: 853;  --h: 176; }
+.map-kedu .kedu-nav    { --x: 887; --y: 524; --w: 373;  --h: 176; }
 
 /* ---------- Kartu misi `/misi/{code}/{n}` ---------- */
 .mission-card { --x: 280; --y: 96; --w: 720; --h: 528; }

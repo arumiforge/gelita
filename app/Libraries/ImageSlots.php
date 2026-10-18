@@ -535,6 +535,17 @@ final class ImageSlots
             'priority'    => 'wajib',
             'tips'        => 'Sampai 24 gambar per pose, diputar berurutan dan berulang terus. Gambar 1 wajib dan harus terbaca sendiri, karena hanya gambar itu yang tampil bila gerak dikurangi. Semua gambar pose dapat diunggah sekaligus di halaman ini.',
         ],
+        'ui.jaka-avatar' => [
+            'group'       => 'character',
+            'label'       => 'Avatar Jaka (potret cerita Peta Kedu)',
+            'content'     => 'Potret dada Jaka sesuai Katalog Aset reference.03: anak laki-laki ± 11 tahun bergaya 3D, rambut cokelat berjambul, kemeja krem, syal merah, tali ransel kulit, wajah ceria. Kepala dan bahu di tengah, berlatar transparan, tanpa tulisan.',
+            'screens'     => [['Pita cerita Jaka di bawah Peta Kedu', '/peta']],
+            'format'      => 'WebP atau PNG berlatar transparan, persegi, paling besar ± 80 KB',
+            'transparent' => true,
+            'fallback'    => 'Huruf pertama nama Jaka dalam lingkaran emas',
+            'priority'    => 'opsional',
+            'tips'        => 'Tampil dalam lingkaran 120 dp, jadi wajah harus terbaca kecil. Bukan gambar gerak: pita cerita sengaja tidak memakai gambar pose Jaka.',
+        ],
         'char.kedu.*' => [
             'group'       => 'character',
             'label'       => 'Mbah Kedu · pose {pose} · gambar {frame}',
