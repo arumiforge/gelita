@@ -584,7 +584,7 @@ Instalasi baru adalah satu-satunya cara memasang GELITA. Urutannya sama di kedua
 | 3 | Isi awal | `GELITA_ADMIN_PASSWORD='…' php spark db:seed DatabaseSeeder` | `gelita_app` | `www-data` |
 | 4 | Narasi | `php spark gelita:narration:import`, lalu setujui di panel | `gelita_app` | `www-data` |
 | 5 | Verifikasi konten | `php spark gelita:content:verify` | `gelita_app` | `www-data` |
-| 6 | Gambar asli | ganti 45 gambar contoh lewat panel, sampai daftar siap penelitian hijau | — | — |
+| 6 | Gambar asli | ganti 66 gambar contoh lewat panel, sampai daftar siap penelitian hijau | — | — |
 | 7 | Uji asap | [Verifikasi Setelah Deploy](#verifikasi-setelah-deploy) | — | — |
 | 8 | Sebelum pengambilan data | `php spark gelita:reset`, lalu `php spark gelita:content:verify --siap-penelitian` | `gelita_migrate` (DSN) | `www-data` |
 
@@ -602,7 +602,7 @@ Instalasi baru adalah satu-satunya cara memasang GELITA. Urutannya sama di kedua
 | `LevelSeeder` | tiga wilayah: Temanggung (mudah), Magelang (sedang), Wonosobo (sulit) |
 | `MediaAssetSeeder` | slot media bawaan (sama dengan `gelita:media:scan`) |
 | `ContentSeeder` | 12 tantangan (4 per wilayah: Susun Gambar, Isi Rumpang, Benar atau Salah, Cari Objek) dan 88 baris cerita |
-| `KontenKelas5Seeder` | impor Pustaka Kedu (30 halaman, 48 media), impor bank soal kelas 5 (126 soal: 108 dinilai + 18 pengecoh, 30 variasi, 9 bacaan Benar atau Salah, 36 petunjuk), lalu 45 gambar contoh (mockup) |
+| `KontenKelas5Seeder` | impor Pustaka Kedu (30 halaman, 48 media), impor bank soal kelas 5 (126 soal: 108 dinilai + 18 pengecoh, 30 variasi, 9 bacaan Benar atau Salah, 36 petunjuk), lalu 66 gambar contoh (mockup) |
 
 Semua seeder aman dijalankan ulang: baris yang sudah ada tidak ditimpa, dan sandi `admin` yang sudah ada tidak diubah ("Akun admin sudah ada — kata sandi tidak diubah"). Kedua impor dicatat di audit log atas nama akun admin pertama. Gambar contoh ditulis ke `public/assets/uploads/mockup/` dan poster video Pustaka ke `public/assets/uploads/` (lihat [Akses keluar server](#akses-keluar-server-thumbnail-video-pustaka)); karena itu seeder dijalankan sebagai `www-data` di Jalur L.
 
@@ -658,7 +658,7 @@ exit
 ```
 
 - `read -rs` membuat sandi admin tidak tercatat di riwayat shell. Bentuk singkat `GELITA_ADMIN_PASSWORD='…' php spark db:seed DatabaseSeeder` hanya untuk mesin pengembangan.
-- Keluaran langkah 5 menyebut jumlah sekolah resmi, "Akun admin dibuat (username: admin)", hasil impor Pustaka Kedu dan bank soal kelas 5, lalu "Gambar contoh: 45 dibuat, …". Peringatan berwarna kuning (berkas workbook tidak ditemukan, impor gagal, gambar contoh gagal) harus diselesaikan sebelum lanjut; seeder aman diulang.
+- Keluaran langkah 5 menyebut jumlah sekolah resmi, "Akun admin dibuat (username: admin)", hasil impor Pustaka Kedu dan bank soal kelas 5, lalu "Gambar contoh: 66 dibuat, …". Peringatan berwarna kuning (berkas workbook tidak ditemukan, impor gagal, gambar contoh gagal) harus diselesaikan sebelum lanjut; seeder aman diulang.
 - Langkah 6 memetakan 100 rekaman per bahasa (88 baris cerita + 12 petunjuk Cari Objek) ke baris yang dibuat langkah 5, jadi urutannya wajib. Rekaman masuk sebagai **draft** dan belum terdengar pemain sampai disetujui di panel (Langkah terakhir).
 
 ### Instalasi — Jalur W
@@ -733,11 +733,11 @@ Setelah situs terbuka lewat HTTPS:
 3. **Buat akun guru.** Satu akun `guru` per guru di **Staf** (`/admin/staf`), dengan **NPSN sekolahnya** (cari di **Sekolah**, `/admin/sekolah`). Guru dan siswanya lalu menunjuk baris sekolah resmi yang sama, sehingga cakupan data guru pasti lengkap. Sandi awal yang Anda pilih wajib diganti guru saat pertama masuk.
 4. Jalankan [Verifikasi Setelah Deploy](#verifikasi-setelah-deploy).
 
-Sesudah itu aplikasi siap untuk **uji coba**. Ke-45 gambar tantangan masih gambar contoh bertanda "GAMBAR CONTOH"; permainan tetap berjalan dengan gambar itu.
+Sesudah itu aplikasi siap untuk **uji coba**. Ke-66 gambar tantangan masih gambar contoh bertanda "GAMBAR CONTOH"; permainan tetap berjalan dengan gambar itu.
 
 ### Installing the Katalog Aset images
 
-*(New section, English.)* The team catalogue `gelita-katalog/` (in the repo, not under `public/`) holds the current art: logo, MULAI/START buttons, app icons, backgrounds, story slide backgrounds, maps, badges, pins, lanterns, avatars, character frames, the 45 challenge images, and Pustaka illustrations. One command installs all of it into the game's image slots:
+*(New section, English.)* The team catalogue `gelita-katalog/` (in the repo, not under `public/`) holds the current art: logo, MULAI/START buttons, app icons, backgrounds, story slide backgrounds, maps, badges, pins, lanterns, avatars, character frames, the 66 challenge images, and Pustaka illustrations. One command installs all of it into the game's image slots:
 
 ```bash
 sudo -u www-data php spark gelita:katalog:impor --dry-run   # Jalur L (Jalur W: without sudo -u www-data); lists what would be installed
@@ -757,13 +757,21 @@ sudo -u www-data php spark gelita:katalog:impor             # install
   sudo -u www-data php spark gelita:katalog:impor --timpa --kunci="ui.btn-start*,ui.lang.*,char.jaka.*"
   ```
 
+- **Susun Gambar edition of 14 October 2026.** The catalogue has all 30 puzzle images (variants a–j, 1200 × 1200, full-bleed daylight scenes): 21 new d–j images and four redrawn ones (`challenge.item.tmg-1-01`, `tmg-1-03`, `mgl-1-01`, `wnb-1-07`; the old night or white-background versions failed or nearly failed the tile check). A plain run fills the d–j slots and replaces the four when the old version came from the catalogue. If an admin uploaded one of the four by hand, the report says "sudah ada gambar unggahan admin"; replace just those four:
+
+  ```bash
+  sudo -u www-data php spark gelita:katalog:impor --timpa --kunci="challenge.item.tmg-1-01,challenge.item.tmg-1-03,challenge.item.mgl-1-01,challenge.item.wnb-1-07" --dry-run
+  sudo -u www-data php spark gelita:katalog:impor --timpa --kunci="challenge.item.tmg-1-01,challenge.item.tmg-1-03,challenge.item.mgl-1-01,challenge.item.wnb-1-07"
+  ```
+
+  The slot notes (`media_note`) of the four redrawn slots are not changed by either command; edit them in **Gambar & mockup** if the bank's note differs.
 - When a release uses an asset package, build a new package afterwards (`gelita:paket:bangun`) so devices get the new pictures.
 
 ### Sebelum pengambilan data penelitian
 
 Urutan wajib sebelum siswa penelitian pertama mendaftar: narasi disetujui ([Langkah terakhir](#langkah-terakhir-kedua-jalur) butir 2) → gambar asli → daftar siap penelitian hijau → uji asap → `gelita:reset`.
 
-**1. Ganti gambar contoh dengan gambar asli.** Ada 45 slot gambar tantangan: 9 gambar Susun Gambar, 3 gambar pernyataan Benar atau Salah, 3 adegan Cari Objek, dan 30 benda Cari Objek. Unggah gambar asli lewat **Gambar & mockup** (`/admin/media`; saring status "Gambar contoh", lalu **Unggah gambar asli** per slot) atau editor tantangan (`/admin/konten/node/{id}`, bagian "Gambar & suara tantangan"); daftar yang belum beres ada di **Kelengkapan aset** (`/admin/media/kelengkapan`). Ukuran wajib tiap slot ada di `Config\Gelita::$assetSizes` dan ditegakkan saat unggah. Gambar yang diunggah otomatis tercatat sebagai gambar asli (`media_assets.is_placeholder = 0`) dan tidak pernah ditimpa `gelita:mockups` maupun `gelita:reset`. Status per slot:
+**1. Ganti gambar contoh dengan gambar asli.** Ada 66 slot gambar tantangan: 30 gambar Susun Gambar (variasi a–j), 3 gambar pernyataan Benar atau Salah, 3 adegan Cari Objek, dan 30 benda Cari Objek. Unggah gambar asli lewat **Gambar & mockup** (`/admin/media`; saring status "Gambar contoh", lalu **Unggah gambar asli** per slot) atau editor tantangan (`/admin/konten/node/{id}`, bagian "Gambar & suara tantangan"); daftar yang belum beres ada di **Kelengkapan aset** (`/admin/media/kelengkapan`). Ukuran wajib tiap slot ada di `Config\Gelita::$assetSizes` dan ditegakkan saat unggah. Gambar yang diunggah otomatis tercatat sebagai gambar asli (`media_assets.is_placeholder = 0`) dan tidak pernah ditimpa `gelita:mockups` maupun `gelita:reset`. Status per slot:
 
 ```bash
 sudo -u www-data php spark gelita:mockups --dry-run            # Jalur L (Jalur W: tanpa sudo -u www-data)
@@ -1198,7 +1206,7 @@ mysql --defaults-extra-file=/home/deploy/.gelita/backup.cnf gelita -e "
   SELECT COUNT(*) AS soal, SUM(scorable) AS dinilai FROM challenge_items WHERE is_active = 1; -- 126, 108
   SELECT COUNT(*) AS dialog FROM dialogues;                                                 -- 88
   SELECT COUNT(*) AS pustaka FROM library_pages WHERE is_active = 1;                        -- 30
-  SELECT COUNT(*) AS gambar_contoh FROM media_assets WHERE is_placeholder = 1 AND is_active = 1; -- 45, lalu 0
+  SELECT COUNT(*) AS gambar_contoh FROM media_assets WHERE is_placeholder = 1 AND is_active = 1; -- 66, lalu 0
   SELECT locale, approval_status, COUNT(*) FROM audio_assets GROUP BY locale, approval_status; -- 100 approved per bahasa
   SELECT release_code FROM game_releases WHERE is_active = 1;                               -- GELITA-KELAS5-2026"
 
@@ -1487,7 +1495,7 @@ Hal berikut butuh mesin Windows atau domain sungguhan, dan tetap masuk daftar ve
 Setelah panduan ini dijalankan:
 
 * GELITA berjalan sebagai satu instansi server lewat HTTPS, di Linux (Nginx + PHP-FPM) atau Windows + Laragon (Nginx + php-cgi), dengan header keamanan di setiap respons dan berkas sensitif tidak terlayani.
-* Instalasi baru mengisi 28.487 sekolah resmi, akun admin, tiga wilayah dengan 12 tantangan, 126 soal kelas 5, 88 baris cerita, 30 halaman Pustaka, 45 gambar contoh, dan 100 rekaman narasi per bahasa yang disetujui, lalu lolos verifikasi konten.
+* Instalasi baru mengisi 28.487 sekolah resmi, akun admin, tiga wilayah dengan 12 tantangan, 126 soal kelas 5, 88 baris cerita, 30 halaman Pustaka, 66 gambar contoh, dan 100 rekaman narasi per bahasa yang disetujui, lalu lolos verifikasi konten.
 * Sebelum pengambilan data, gambar contoh diganti gambar asli, daftar siap penelitian hijau, uji asap lolos, data uji coba dikosongkan dengan `gelita:reset`, dan `gelita:content:verify --siap-penelitian` lolos.
 * Pembaruan kode berjalan dengan satu skrip (`deploy.sh` / `deploy.ps1`) yang menolak berjalan saat kelas aktif, membuat backup, memakai mode pemeliharaan, dan hanya membuka situs bila konten lolos verifikasi. Rollback terdokumentasi untuk kedua jalur.
 * Migration dan reset memakai akun DDL terpisah lewat DSN; aplikasi dan backup memakai akun tanpa hak DDL.
