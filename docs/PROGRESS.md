@@ -114,4 +114,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `sky/blissful-brown-pmxupk` | Intro (and ending) cinematic layout redesign | PR open |
