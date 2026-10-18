@@ -98,4 +98,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `sky/quirky-ptolemy-figayc` | Asynchronous logging: §7 load test and results (`tools/qa/load-test.mjs`, docs) | PR open |
