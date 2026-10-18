@@ -370,9 +370,11 @@ final class RegionStoryTest extends CIUnitTestCase
         $plain = $this->map($status, heard: []);
         $this->assertStringNotContainsString('kedu-slice', $plain);
         $this->assertStringContainsString('<div class="kedu-art is-drawn">', $plain);
+        $this->assertStringContainsString('<span class="kedu-portrait" aria-hidden="true"><span class="kedu-portrait-initial">J</span></span>', $plain, 'no avatar yet: his initial');
 
         Services::resetSingle('renderer');
-        $this->media = ['map.kedu-diorama' => 'assets/uploads/map.kedu-diorama.webp?v=d1'];
+        $this->media = ['map.kedu-diorama' => 'assets/uploads/map.kedu-diorama.webp?v=d1', 'ui.jaka-avatar' => 'assets/uploads/ui.jaka-avatar.webp?v=a1',
+            'char.jaka.idle.1' => 'assets/uploads/char.jaka.idle.1.webp'];
         $page   = $this->map($status, heard: []);
         $shapes = config('Gelita')->mapDiorama;
 
@@ -388,11 +390,20 @@ final class RegionStoryTest extends CIUnitTestCase
         $this->assertStringContainsString('<section class="kedu-panel is-open is-selected"', $page);
         $this->assertStringContainsString('<a class="kedu-city" href="#region-wonosobo" data-region-select="wonosobo"', $page);
 
-        // Menu HUD with the title and the shard lantern; Profil is in the menu, not in the bottom row
+        // Owner, 18 October 2026: the story portrait is Jaka's avatar, never a pose frame; Mulai/Lanjut without the arrow
+        $story = substr($page, (int) strpos($page, '<aside class="kedu-story'));
+        $story = substr($story, 0, (int) strpos($story, '</aside>'));
+        $this->assertStringContainsString('<img class="kedu-avatar" src="' . esc(base_url('assets/uploads/ui.jaka-avatar.webp?v=a1'), 'attr') . '"', $story);
+        $this->assertStringNotContainsString('char.jaka.idle', $story);
+        $this->assertMatchesRegularExpression('/<a class="kedu-btn is-primary" href="[^"]*"[^>]*>\s*<span>' . lang('Game.start') . '<\/span>\s*<\/a>/', $page);
+
+        // Menu HUD with the title and the shard lantern; Profil is in the menu, not in the page buttons
         $this->assertStringContainsString('class="hud hud-menu-style" data-in-game', $page);
         $this->assertStringContainsString('<span class="hud-identity-region">' . lang('Game.mapKedu') . '</span>', $page);
         $this->assertMatchesRegularExpression('/<div class="hud-shards">(?:<!--[^>]*-->\s*)?<details class="lantern"/', $page);
-        $nav = substr($page, (int) strpos($page, 'class="nav-bar'));
+        // Page buttons right of the story, under the region panel; no bottom nav bar
+        $this->assertStringNotContainsString('class="nav-bar"', $page);
+        $nav = substr($page, (int) strpos($page, '<nav class="kedu-nav stage-box"'));
         $this->assertStringContainsString($this->href('pustaka'), $nav);
         $this->assertStringNotContainsString(base_url('profil'), $nav);
         $this->assertStringNotContainsString(base_url('penutup'), $nav, 'the ending only once everything is done');
@@ -450,8 +461,9 @@ final class RegionStoryTest extends CIUnitTestCase
     {
         $page = $this->map(['temanggung' => 'completed', 'magelang' => 'completed', 'wonosobo' => 'completed'], heard: [1, 2, 3], allDone: true);
 
-        $this->assertMatchesRegularExpression('/' . preg_quote($this->href('penutup'), '/') . '><svg[^>]*>.*?<\/svg><span>' . preg_quote(lang('Game.watchEnding'), '/') . '/s', $page);
-        $this->assertStringContainsString($this->href('refleksi'), $page);
+        $this->assertStringContainsString('<nav class="kedu-nav stage-box is-all-done"', $page);
+        $this->assertMatchesRegularExpression('/' . preg_quote($this->href('penutup'), '/') . '><svg[^>]*>.*?<\/svg> <span>' . preg_quote(lang('Game.watchEnding'), '/') . '/s', $page);
+        $this->assertStringContainsString('<a class="kedu-btn is-primary" ' . $this->href('refleksi') . '><span>' . lang('Game.reflection') . '</span></a>', $page);
 
         Services::resetSingle('renderer');
         $this->assertStringNotContainsString(base_url('penutup'), $this->map(['temanggung' => 'completed'], heard: []));

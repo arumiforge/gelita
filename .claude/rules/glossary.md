@@ -34,6 +34,7 @@ One concept, one word, in every layer. "UI (id)" is what users read; "Code (en)"
 | Detail hasil | `result details` | popover on the result screen |
 | menu (HUD baru) | `menu HUD` | `components/hud-menu`, section `hudStyle` = `menu` |
 | diorama Peta Kedu | `diorama` | slot `map.kedu-diorama`; `Config\Gelita::$mapDiorama` |
+| avatar Jaka (potret cerita Peta Kedu) | `Jaka avatar`, `portrait` | slot `ui.jaka-avatar` from catalogue `reference.03`; `partials/kedu-portrait` |
 | Wilayah dipilih (panel) | `region panel`, `selected region` | `.kedu-panel`, `data-region-select` |
 
 ## People, data, and the panel

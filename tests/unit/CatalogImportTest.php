@@ -282,6 +282,28 @@ final class CatalogImportTest extends CIUnitTestCase
         }
     }
 
+    /** Owner, 18 October 2026: the Jaka bust reference.03 is the Peta Kedu story portrait; other references stay out. */
+    public function testJakaAvatarComesFromTheBustReference(): void
+    {
+        $this->writeCatalog([
+            'reference.01' => ['referensi/reference.01.webp', 64, 64, false],
+            'reference.03' => ['referensi/reference.03.webp', 1024, 1024, true],
+        ]);
+
+        $report = $this->importer()->run();
+
+        $this->assertContains('reference.03 → ui.jaka-avatar: installed', array_map(static fn (array $r): string => $r['source'] . ' → ' . $r['target'] . ': ' . $r['status'], $report));
+        $this->assertNotContains('reference.01', array_column($report, 'source'));
+
+        $row = model(MediaAssetModel::class)->findByKey('ui.jaka-avatar');
+        $this->assertSame([512, 512], [(int) $row['width_px'], (int) $row['height_px']]);
+        $this->assertNull(model(MediaAssetModel::class)->findByKey('reference.03'));
+
+        // --kunci on the slot reaches its reference entry
+        model(MediaAssetModel::class)->where('asset_key', 'ui.jaka-avatar')->set(['credit' => null])->update();
+        $this->assertSame(['ui.jaka-avatar' => 'installed'], array_column($this->importer()->run(false, true, null, ['ui.jaka-avatar']), 'status', 'target'));
+    }
+
     /** Result screen redesign (18 October 2026): its skin slots, and avatar.2 copied to ui.result-medal. */
     public function testResultScreenSlotsAndTheMedalCopy(): void
     {

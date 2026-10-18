@@ -1828,3 +1828,12 @@ Source: catalogue mockup Peta Kedu **candidate 04** (`gelita-katalog/mockup/gamb
 - **Kept behaviour.** Region curtain on Lanjut, locked toast (`aria-disabled` link), Kenali overlays with "Belum didengar" (now a badge on Kenali and a dot on the pin), preload of the next region, narration controls and events, `#region-{code}` as the target of a locked region's last Kenali slide.
 - **Checked.** Browser screenshots at 1280 × 720 against the four rendered states of candidate 04; region selection, locked region, Kenali open/Escape with focus return, menu; at 640 × 360 every visible control is at least 48 dp.
 
+### Follow-up after merge (18 October 2026)
+
+Owner request after PR #133:
+- **Story bar** is as wide as the map (20, 524, 853 × 176). Next is a round button like Previous with the mirrored chevron (it used the gold primary skin).
+- **Portrait** is Jaka's bust avatar, not a pose frame. The new slot `ui.jaka-avatar` (512 × 512, shown at 120 dp) is filled from catalogue `reference.03`, the picture mockup candidate 04 uses there (`CatalogImporter::REFERENCE_SLOTS`; the other references stay out). Without it the circle shows his initial; a speaker other than Jaka would still get a pose frame.
+- **Page buttons** (Pustaka Kedu, and once everything is done Tonton penutup and Balai Refleksi) moved from the bottom nav bar to the right of the story, under the region panel (887, 524, 373 × 176), drawn with the panel's button skins. The page no longer has a nav bar, so the story and the buttons take the freed bottom strip (up to y 700). With three buttons, Pustaka and Penutup share a row and a long label (EN "Watch the ending") wraps to two lines instead of being cut.
+- **Mulai/Lanjut** in the region panel carries no arrow icon.
+- **Checked.** Screenshots at 1280 × 720 in ID and EN (the all-done row previewed in the browser); at 640 × 360 every visible control is at least 48 dp.
+

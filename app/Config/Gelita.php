@@ -212,6 +212,8 @@ class Gelita extends BaseConfig
         'ui.result-medal'            => [512, 512],
         // Peta Kedu diorama (page redesign 2, 18 October 2026): the region shapes below are measured on this size
         'map.kedu-diorama'           => [1774, 887],
+        // Jaka's bust avatar in the Peta Kedu story bar (owner, 18 October 2026)
+        'ui.jaka-avatar'             => [512, 512],
     ];
 
     /**
@@ -244,6 +246,7 @@ class Gelita extends BaseConfig
         'ui.result-star'        => [57, 57],
         'ui.result-hud-control' => [68, 68],
         'map.kedu-diorama'      => [853, 427],  // Peta Kedu, width of the map frame (2:1, cropped top and bottom)
+        'ui.jaka-avatar'        => [120, 120],  // Peta Kedu story bar portrait
     ];
 
     /**

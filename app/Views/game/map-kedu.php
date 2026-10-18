@@ -12,10 +12,12 @@
  *   its name and status; tapping it selects the region (no navigation);
  * - one region panel (the selected region; without JavaScript the panel is
  *   chosen with :target) with Kenali and Lanjut;
- * - Jaka's story as a bar under the map (portrait, dots, icon controls,
- *   narration unchanged);
- * - bottom row: Pustaka Kedu, and once every challenge is done Tonton
- *   penutup and Balai Refleksi.
+ * - Jaka's story as a bar under the map, as wide as the map (portrait,
+ *   dots, icon controls, narration unchanged). The portrait is Jaka's bust
+ *   avatar `ui.jaka-avatar`, never a pose frame (owner, 18 October 2026);
+ * - the page buttons (Pustaka Kedu, and once every challenge is done Tonton
+ *   penutup and Balai Refleksi) sit right of the story, under the region
+ *   panel, instead of the bottom nav bar (owner, 18 October 2026).
  *
  * Earlier notes (still true unless replaced above):
  *
@@ -58,6 +60,7 @@ $diorama = media_key_src('map.kedu-diorama');
 $mapSrc  = $diorama ?? media_key_src('map.kedu');
 $shapes  = $diorama !== null ? config('Gelita')->mapDiorama : [];
 $starSrc = media_key_src('ui.result-star');
+$jakaSrc = media_key_src('ui.jaka-avatar');
 $icons   = ['open' => 'lantern', 'in_progress' => 'lantern', 'completed' => 'star', 'locked' => 'lock'];
 $href    = static fn (array $l): string => base_url($l['entry']);
 $allDone = $progress['shards_total'] > 0 && $progress['completed_nodes'] >= $progress['shards_total'];
@@ -206,7 +209,7 @@ $unheard  = static fn (array $l): bool => ($intros[$l['code']] ?? []) !== [] && 
           <?php endif ?>
           <?php if (! $locked): ?>
             <a class="kedu-btn is-primary" href="<?= esc($href($level), 'attr') ?>"<?= $curtainOf($level) ?>>
-              <span><?= esc($level['status'] === 'open' ? lang('Game.start') : lang('Game.continue')) ?></span> <?= icon('right') ?>
+              <span><?= esc($level['status'] === 'open' ? lang('Game.start') : lang('Game.continue')) ?></span>
             </a>
           <?php else: ?>
             <a class="kedu-btn is-primary" href="<?= esc($href($level), 'attr') ?>" aria-disabled="true" data-locked-message="<?= esc(lang('Game.levelLocked'), 'attr') ?>">
@@ -220,7 +223,7 @@ $unheard  = static fn (array $l): bool => ($intros[$l['code']] ?? []) !== [] && 
 
   <?php if (($story ?? []) === []): ?>
     <aside class="kedu-story kedu-story-plain stage-box">
-      <?= component('character', ['character' => 'jaka', 'pose' => 'idle']) ?>
+      <?= component('partials/kedu-portrait', ['src' => $jakaSrc, 'name' => lang('Game.char_jaka')]) ?>
       <?= component('narration', ['text' => lang('Game.mapLead'), 'speaker' => 'jaka', 'tail' => 'down', 'class' => 'stage-scroll']) ?>
     </aside>
   <?php else: ?>
@@ -245,7 +248,9 @@ $unheard  = static fn (array $l): bool => ($intros[$l['code']] ?? []) !== [] && 
               data-character="<?= esc($character, 'attr') ?>" data-pose="<?= esc($pose, 'attr') ?>"
               <?= $effect !== '' ? 'data-effect="' . esc($effect, 'attr') . '"' : '' ?>
               aria-label="<?= esc(lang('Game.slideOf', [$n, $storyTotal]), 'attr') ?>">
-            <?php if ($character !== 'narator'): ?>
+            <?php if ($character === 'jaka'): ?>
+              <?= component('partials/kedu-portrait', ['src' => $jakaSrc, 'name' => lang('Game.char_jaka')]) ?>
+            <?php elseif ($character !== 'narator'): ?>
               <span class="kedu-portrait"><?= component('character', ['character' => $character, 'pose' => $pose, 'class' => 'pose-' . $pose]) ?></span>
             <?php endif ?>
             <blockquote class="narration narration-down map-story-line stage-scroll" data-narrator-advance>
@@ -271,21 +276,16 @@ $unheard  = static fn (array $l): bool => ($intros[$l['code']] ?? []) !== [] && 
       <?= component('narrator-controls') ?>
     </aside>
   <?php endif ?>
+
+  <?php // Page buttons right of the story, under the region panel (owner, 18 October 2026); no bottom nav bar on this page ?>
+  <nav class="kedu-nav stage-box<?= $allDone ? ' is-all-done' : '' ?>" aria-label="<?= esc(lang('Game.continue'), 'attr') ?>">
+    <a class="kedu-btn is-secondary" href="<?= esc(base_url('pustaka'), 'attr') ?>"><?= icon('book') ?> <span><?= esc(lang('Game.library')) ?></span></a>
+    <?php if ($allDone): ?>
+      <?php // The ending may be watched again any time once every region is done ?>
+      <a class="kedu-btn is-secondary" href="<?= esc(base_url('penutup'), 'attr') ?>"><?= icon('sparkle') ?> <span><?= esc(lang('Game.watchEnding')) ?></span></a>
+      <a class="kedu-btn is-primary" href="<?= esc(base_url('refleksi'), 'attr') ?>"><span><?= esc(lang('Game.reflection')) ?></span></a>
+    <?php endif ?>
+  </nav>
   </div>
 </section>
-<?= $this->endSection() ?>
-
-<?= $this->section('nav') ?>
-<?php
-// Bottom row (owner, 18 October 2026): Pustaka Kedu, and once everything is done the ending and Balai Refleksi.
-// Profil moved to the HUD menu.
-$nav = [['label' => lang('Game.library'), 'href' => base_url('pustaka'), 'style' => 'ghost', 'arrow' => 'left', 'icon' => 'book']];
-
-if ($allDone) {
-    // Penutup cerita boleh ditonton ulang kapan saja setelah semua wilayah tuntas
-    $nav[] = ['label' => lang('Game.watchEnding'), 'href' => base_url('penutup'), 'style' => 'ghost', 'icon' => 'sparkle'];
-    $nav[] = ['label' => lang('Game.reflection'), 'href' => base_url('refleksi'), 'style' => 'primary', 'arrow' => 'right'];
-}
-?>
-<?= component('nav-bar', ['nav' => $nav]) ?>
 <?= $this->endSection() ?>
