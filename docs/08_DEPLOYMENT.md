@@ -964,6 +964,8 @@ Aset hanya punya tiga jalan masuk ke server: **commit ke repositori** (folder as
 
 `asset_url_versioned()` menambahkan `?v={gelita.assetVersion}` pada CSS, JavaScript entry, dan vendor. Setiap pembaruan menaikkan nilai itu, jadi browser mengambil versi baru tanpa hard-refresh. Ini penting karena komputer sekolah jarang dibersihkan cache-nya.
 
+**Automatic file version (18 October 2026).** While package mode is off, `?v=` is `{gelita.assetVersion}.{fingerprint}`, where the fingerprint comes from the file's modification time and size (`asset_file_version()`). A changed CSS/JS file therefore gets a new URL even when the server was updated without `deploy.sh`/`deploy.ps1` (git pull, copied files) and `assetVersion` stayed the same, so there is no need to build a package and turn it off again just to push new code to browsers. Modules imported from the entry keep relying on revalidation (`no-cache` in the nginx config above). With package mode on, code still comes from the package snapshot and needs **Bangun ulang paket**.
+
 Tidak semua URL ber-`?v=`:
 
 - **Modul JavaScript** di-`import` relatif dari entry (`import … from '../core/dom.js'`). URL-nya tidak mewarisi query string entry.

@@ -434,13 +434,15 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
 .inspect-clear { margin: var(--gap-2) 0 0; }
 .inspect[aria-busy="true"] .inspect-actions .btn { cursor: progress; }
 
-/* =========================== AKUN (perkamen) =========================== */
-.password-panel { padding: var(--gap-5) var(--gap-6); }
+/* =========================== AKUN =========================== */
+/* Ganti sandi: the ornate dark panel like /masuk (owner redesign, 18 October 2026) */
+.password-panel .ornate-body { gap: var(--gap-2); }
+.password-panel .alert { margin: 0; }
 .password-panel .form { gap: var(--gap-3); }
-.password-panel h1 { margin: 0 0 var(--gap-3); font-size: var(--fs-h2); }
+.password-panel .start-head .eyebrow { margin: 0 0 var(--gap-1); }
 
-/* Form controls on the ornate dark panel (/masuk, /daftar/1–3). The password
-   field is shared with the parchment /ganti-sandi, so its dark colours are
+/* Form controls on the ornate dark panel (/masuk, /ganti-sandi, /daftar/1–3).
+   The password field is shared with parchment panels, so its dark colours are
    scoped here; status texts use the bright colours, not the parchment inks. */
 .ornate-panel .field > label, .ornate-panel .field > .label { color: var(--gold-300); }
 .ornate-panel .pw-toggle { border-color: var(--line-strong); background: rgba(255, 255, 255, .06); color: var(--gold-300); }
@@ -460,20 +462,23 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
 .login-foot .muted { color: var(--ink-dim); }
 
 /* ---------- Pendaftaran ----------
-   Same look as /mulai and /masuk (10 Oct 2026): Jaka on the left, the ornate
-   dark panel with the head (title + stepper), scrolling fields, and the
-   button bar. */
-.register-panel { grid-template-rows: 4rem minmax(0, 1fr); }
+   The ornate dark panel with the head (title + stepper), scrolling fields, and
+   the button bar, in the empty right side of the gate picture (owner redesign,
+   18 October 2026; before that Jaka stood on the left as on /mulai). */
+/* Head in three centred rows (eyebrow, title, stepper): the panel is 576 dp
+   wide since the 18 October 2026 redesign, too narrow for one row */
+.register-panel { grid-template-rows: 6.25rem minmax(0, 1fr); }
 .register-head {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  justify-items: center;
   align-content: center;
-  column-gap: var(--gap-4);
-  padding: 0 var(--gap-6); /* clear of the corner ornaments */
+  row-gap: .25rem;
+  padding: 0 var(--gap-6) var(--gap-2); /* clear of the corner ornaments */
   border-bottom: 1px solid var(--line);
+  text-align: center;
 }
-.register-head .eyebrow { grid-column: 1; margin: 0; color: var(--gold-500); font-size: .75rem; line-height: 1.3; }
-.register-head .reg-stepper { grid-column: 2; grid-row: 1 / span 2; align-self: center; }
+.register-head .eyebrow { margin: 0; color: var(--gold-500); font-size: .75rem; line-height: 1.3; }
+.register-head .reg-stepper { margin-top: .125rem; }
 .register-head h1 { margin: 0; color: var(--gold-300); font-size: var(--fs-h3); line-height: 1.15; }
 .register-form { display: grid; grid-template-rows: minmax(0, 1fr) 5rem; gap: 0; min-height: 0; }
 .register-fields { display: grid; align-content: start; gap: var(--gap-4); padding: var(--gap-4); }

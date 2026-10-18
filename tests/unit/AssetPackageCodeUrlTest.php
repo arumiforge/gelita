@@ -45,7 +45,7 @@ final class AssetPackageCodeUrlTest extends CIUnitTestCase
 
     private function versioned(string $path): string
     {
-        return base_url('assets/' . $path) . '?v=' . rawurlencode(config('Gelita')->assetVersion);
+        return base_url('assets/' . $path) . '?v=' . rawurlencode(asset_file_version($path));
     }
 
     public function testWithoutPackageEverythingIsAsBefore(): void

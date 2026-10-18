@@ -95,11 +95,30 @@ if (! function_exists('asset_package_path')) {
     }
 }
 
+if (! function_exists('asset_file_version')) {
+    /**
+     * `?v=` value of a CSS/JS entry or vendor file outside an asset package:
+     * `gelita.assetVersion` plus a short fingerprint of the file's modification
+     * time and size. The URL changes as soon as the file changes, so a server
+     * updated without the deploy scripts (git pull, copied files; owner,
+     * 18 October 2026) still sends every browser the new code, although
+     * nginx marks `?v=` URLs immutable. A missing file keeps only assetVersion.
+     */
+    function asset_file_version(string $path): string
+    {
+        $version = config('Gelita')->assetVersion;
+        $file    = FCPATH . 'assets/' . ltrim($path, '/');
+        $stat    = is_file($file) ? @stat($file) : false;
+
+        return $stat === false ? $version : $version . '.' . substr(md5($stat['mtime'] . ':' . $stat['size']), 0, 8);
+    }
+}
+
 if (! function_exists('asset_url_versioned')) {
     /**
      * URL of a CSS/JS entry or vendor file. With an active asset package it is
      * the package copy (`assets/k/…`, immutable, served by the service worker);
-     * otherwise base_url('assets/…') + ?v=assetVersion for cache-busting.
+     * otherwise base_url('assets/…') + ?v=asset_file_version() for cache-busting.
      */
     function asset_url_versioned(string $path): string
     {
@@ -109,7 +128,7 @@ if (! function_exists('asset_url_versioned')) {
             return base_url($packaged);
         }
 
-        return base_url('assets/' . ltrim($path, '/')) . '?v=' . rawurlencode(config('Gelita')->assetVersion);
+        return base_url('assets/' . ltrim($path, '/')) . '?v=' . rawurlencode(asset_file_version($path));
     }
 }
 
