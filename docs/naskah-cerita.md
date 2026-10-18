@@ -159,9 +159,9 @@ Wajib ditonton pada kesempatan pertama. Pemain tetap dapat menekan Lanjut di set
 #### `intro-07` · Narator
 **Judul:** Cara Mengumpulkan Serpihan / *How to Gather the Shards*
 
-**ID:** Setiap wilayah menyimpan empat serpihan, dan setiap serpihan dijaga oleh satu tantangan. Selesaikan tantangannya untuk mendapatkan serpihan dan bintang. Lihat lentera di pojok kiri atas: lentera itu makin terang setiap kali serpihan kembali.
+**ID:** Setiap wilayah menyimpan empat serpihan, dan setiap serpihan dijaga oleh satu tantangan. Selesaikan tantangannya untuk mendapatkan serpihan dan bintang. Lihat lentera di bagian atas layar: lentera itu makin terang setiap kali serpihan kembali.
 
-**EN:** Each region holds four shards, and each shard is guarded by a challenge. Complete the challenge to win its shard and stars. Watch the lantern in the top-left corner: it grows brighter every time a shard returns.
+**EN:** Each region holds four shards, and each shard is guarded by a challenge. Complete the challenge to win its shard and stars. Watch the lantern at the top of the screen: it grows brighter every time a shard returns.
 
 #### `intro-08` · Mbah Kedu · pose `smile`
 **Judul:** Tiga Kunci Cahaya / *Three Keys of Light*

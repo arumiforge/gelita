@@ -107,17 +107,20 @@ final class RegisterWizardTest extends CIUnitTestCase
         }
     }
 
-    public function testBackSitsInTheHudWithTheLogoCentred(): void
+    /** Owner, 18 October 2026: one HUD everywhere; before login Back comes first, then the logo (text brand without one). */
+    public function testBackSitsInTheHudBeforeTheLogo(): void
     {
         $back = ['1' => 'mulai', '2' => 'daftar/1', '3' => 'daftar/2'];
         $_SESSION[RegisterController::WIZARD] = ['1' => self::ABOUT, '2' => self::SCHOOL];
 
         foreach ($back as $step => $target) {
             $html = (string) $this->send(Method::GET, 'daftar/' . $step)->getBody();
-            $hud  = substr($html, (int) strpos($html, '<header class="hud">'), (int) strpos($html, '</header>') - (int) strpos($html, '<header class="hud">'));
+            $at   = (int) strpos($html, '<header class="hud hud-menu-style is-compact"');
+            $hud  = substr($html, $at, (int) strpos($html, '</header>') - $at);
 
             $this->assertStringContainsString('class="btn btn-quiet hud-back" href="' . base_url($target) . '"', html_entity_decode($hud), "step {$step}");
-            $this->assertStringContainsString('hud-logo', $hud, "step {$step}");
+            $this->assertLessThan(strpos($hud, 'hud-brand'), strpos($hud, 'hud-back'), "step {$step}: Back, then the brand");
+            $this->assertStringNotContainsString('hud-shards', $hud, "step {$step}: no shards before login");
 
             $actions = substr($html, (int) strpos($html, 'register-actions'));
             $this->assertStringNotContainsString('btn-quiet', substr($actions, 0, (int) strpos($actions, '</div>')), "step {$step}: no Back in the panel");

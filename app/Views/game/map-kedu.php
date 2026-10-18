@@ -76,7 +76,6 @@ $curtainOf = static fn (array $l): string => $l['status'] !== 'locked' && isset(
 <?= $this->section('title') ?><?= esc(lang('Game.mapKedu')) ?><?= $this->endSection() ?>
 <?= $this->section('hudTitle') ?><?= esc(lang('Game.mapKedu')) ?><?= $this->endSection() ?>
 <?= $this->section('hudStyle') ?>menu<?= $this->endSection() ?>
-<?= $this->section('hudShards') ?>1<?= $this->endSection() ?>
 <?= $this->section('background') ?><?= media_key_src('bg.map') ?? '' ?><?= $this->endSection() ?>
 
 <?= $this->section('overlay') ?>
@@ -156,6 +155,8 @@ $unheard  = static fn (array $l): bool => ($intros[$l['code']] ?? []) !== [] && 
               <span class="kedu-medal<?= $pinArt !== null ? ' has-art' : '' ?>" aria-hidden="true">
                 <?= art_or_icon($pinArt, $icons[$level['status']] ?? 'lantern') ?>
                 <?php if ($level['status'] === 'locked'): ?><span class="kedu-lock"><?= icon('lock') ?></span><?php endif ?>
+                <?php // Completed: a gold check badge in the lock badge's place (owner's picture, 18 October 2026) ?>
+                <?php if ($level['status'] === 'completed'): ?><span class="kedu-lock kedu-done"><?= icon('check') ?></span><?php endif ?>
                 <?php if ($unheard($level)): ?><span class="kedu-unheard"></span><?php endif ?>
               </span>
               <span class="kedu-city-caption">
@@ -201,7 +202,8 @@ $unheard  = static fn (array $l): bool => ($intros[$l['code']] ?? []) !== [] && 
           <?php if (($intros[$level['code']] ?? []) !== []): ?>
             <a class="kedu-btn is-secondary kenal-card-btn<?= $unheard($level) ? ' is-unheard' : '' ?>" href="#kenal-<?= esc($level['code'], 'attr') ?>"
                data-kenal-open="<?= esc($level['code'], 'attr') ?>" aria-label="<?= esc(lang('Game.kenalRegion', [$level['name']]), 'attr') ?>">
-              <?= icon('kenali') ?> <span><?= esc(lang('Game.kenali')) ?></span>
+              <?php // The owner's Kenali picture (book, magnifier, bulb; 18 October 2026), shipped in assets/ui ?>
+              <img class="kenali-art" src="<?= esc(game_asset_url('ui/icon-kenali.webp'), 'attr') ?>" alt="" width="40" height="40" draggable="false"> <span><?= esc(lang('Game.kenali')) ?></span>
               <?php if ($unheard($level)): ?>
                 <span class="kenal-badge" data-kenal-badge><?= esc(lang('Game.kenalUnheard')) ?></span>
               <?php endif ?>

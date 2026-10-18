@@ -51,6 +51,7 @@ body.is-challenge .hud-leave { display: none; }
 /* Language button hidden too (owner decision P5): switching reloads the page
    and would drop unchecked answers, until Stage 7 keeps the engine state */
 body.is-challenge .lang-switch { display: none; }
+body.is-challenge .hud-lang { display: none; } /* the HUD language control: no switch mid-challenge */
 
 /* ---------- Lentera ---------- */
 .lantern { position: relative; }
@@ -102,10 +103,27 @@ body.is-challenge .lang-switch { display: none; }
 
 .lantern-text { display: grid; line-height: 1.15; }
 .lantern-text .eyebrow { font-size: .68rem; }
-.lantern-count { font-size: var(--fs-body); }
-.lantern-count b { color: var(--gold-300); font-size: var(--fs-h3); }
-.lantern-bar { width: 5.5rem; height: .375rem; overflow: hidden; border-radius: var(--radius-pill); background: rgba(255, 255, 255, .12); }
-.lantern-bar i { display: block; height: 100%; background: linear-gradient(to right, var(--gold-600), var(--gold-300)); }
+/* Count and bar on one row; the whole count bold (owner, 18 October 2026) */
+.lantern-row { display: flex; align-items: center; gap: .75rem; }
+.lantern-count { font-size: var(--fs-body); font-weight: 800; white-space: nowrap; }
+.lantern-count b { color: var(--gold-300); font-size: var(--fs-h3); font-weight: 800; }
+/* A slim gold groove: dark track with a fine gold rim, warm gradient fill with a soft highlight */
+.lantern-bar {
+  width: 5.5rem;
+  height: .375rem;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(to bottom, rgba(5, 12, 24, .9), rgba(32, 46, 70, .9));
+  box-shadow: inset 0 0 0 .0625rem rgba(223, 192, 135, .45), 0 0 .375rem rgba(223, 192, 135, .15);
+}
+.lantern-bar i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(to bottom, rgba(255, 248, 225, .55), transparent 55%), linear-gradient(to right, #B9883C, var(--gold-500) 60%, #F5DFA5);
+  box-shadow: 0 0 .5rem rgba(245, 223, 165, .7);
+  transition: width .6s ease-out;
+}
 
 .lantern-detail {
   position: absolute;
@@ -798,41 +816,121 @@ body.is-challenge .lang-switch { display: none; }
 .node-card-body { display: grid; gap: .125rem; min-width: 0; }
 
 /* =========================== KARTU MISI =========================== */
-/* Kartu 280, 96, 720 × 528 (stage.css); deskripsi bergulir, tombol di bawah */
+/* Card 260, 112, 760 × 536 (stage.css), after the owner's picture of 18 October 2026: cream
+   parchment with gold corners, a dark green medallion n/total between gold flourishes, the
+   region on a rule, a large serif title, the story, the hint box, and the gold main button.
+   The story scrolls when long; the button stays at the bottom. */
 .mission-card {
   display: grid;
-  grid-template-rows: auto auto auto minmax(0, 1fr) auto auto;
+  grid-template-rows: auto auto auto minmax(0, 1fr) auto;
   justify-items: center;
-  gap: var(--gap-2);
-  padding: var(--gap-7) var(--gap-6) var(--gap-5);
+  gap: .5rem;
+  padding: 2.75rem 3rem 1.5rem;
+  border-color: #C9A45E;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, .7), transparent 60%),
+    radial-gradient(ellipse at 50% 110%, rgba(201, 164, 94, .2), transparent 60%),
+    #F7EEDB;
+  box-shadow: inset 0 0 0 .5rem #F7EEDB, inset 0 0 0 .5625rem rgba(201, 164, 94, .6), 0 1rem 2.5rem rgba(4, 10, 22, .55);
+  color: #2D2A2E;
   text-align: center;
 }
-.mission-card h1 { margin: 0; font-size: var(--fs-h2); }
+.mission-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+.mission-corner { position: absolute; width: 3rem; height: 3rem; fill: none; stroke: #B8893D; stroke-width: 1.5; pointer-events: none; }
+.mission-corner.is-tl { top: .875rem; left: .875rem; }
+.mission-corner.is-tr { top: .875rem; right: .875rem; transform: scaleX(-1); }
+.mission-corner.is-bl { bottom: .875rem; left: .875rem; transform: scaleY(-1); }
+.mission-corner.is-br { right: .875rem; bottom: .875rem; transform: scale(-1); }
+
+/* Medallion: dark green disc, double gold ring, "3" large and "/4" small */
+.mission-crest { position: absolute; top: -2.5rem; left: 50%; display: flex; align-items: center; gap: .25rem; transform: translateX(-50%); }
 .mission-seal {
-  position: absolute;
-  top: calc(-1 * var(--gap-6));
-  left: 50%;
-  display: grid;
-  place-items: center;
-  width: 4.5rem;
-  height: 4.5rem;
-  border: .25rem solid var(--parchment);
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  width: 5.25rem;
+  height: 5.25rem;
+  padding-top: 1.125rem;
+  border: .25rem solid #D7B46A;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #B7432A, #7A2412);
-  color: var(--parchment);
-  font-size: var(--fs-h2);
-  font-weight: 600;
-  box-shadow: var(--shadow-1);
-  transform: translateX(-50%);
+  background: radial-gradient(circle at 50% 30%, #1F5446, #0B2B24 70%);
+  box-shadow: 0 0 0 .1875rem #6B4B1C, 0 0 0 .3125rem #E9CC88, 0 .5rem 1rem rgba(0, 0, 0, .4), inset 0 .25rem .5rem rgba(255, 255, 255, .12);
+  color: #F5E6C3;
+  font-family: Georgia, 'Times New Roman', serif;
 }
-.mission-engine { margin: 0; }
-.mission-card .chip { background: rgba(74, 50, 24, .12); color: var(--brown-700); }
-.mission-body { display: grid; align-content: start; justify-items: center; gap: var(--gap-3); width: 100%; padding: 0 var(--gap-2); }
-.mission-description { max-width: 52ch; margin: 0; font-size: var(--fs-reading); line-height: 1.5; }
-.mission-instruction { display: flex; gap: var(--gap-2); max-width: 52ch; margin: 0; text-align: left; }
+.mission-seal b { font-size: 2.25rem; line-height: 1; }
+.mission-seal small { font-size: 1.0625rem; font-weight: 700; }
+.mission-wing { width: 3.5rem; height: 1.5rem; fill: none; stroke: #C39A4E; stroke-width: 2; stroke-linecap: round; }
+.mission-wing.is-left { transform: scaleX(-1); }
+.mission-crest .mission-wing { margin-top: .75rem; }
+
+/* Region line: a rule with a diamond on each side, the pin, the name in spaced capitals */
+.mission-region {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .625rem;
+  width: 100%;
+  margin: .25rem 0 0;
+  color: #2D2A2E;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+}
+.mission-region::before, .mission-region::after {
+  content: "";
+  flex: 0 1 9rem;
+  height: .0625rem;
+  margin: 0 .5rem;
+  background: linear-gradient(to right, transparent, #8C7550);
+}
+.mission-region::after { background: linear-gradient(to left, transparent, #8C7550); }
+.mission-region .icon { width: 1.25rem; height: 1.25rem; fill: #2D2A2E; stroke: #F7EEDB; stroke-width: 1.5; }
+.mission-card h1 {
+  margin: 0;
+  color: #0E1A2B;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -.01em;
+}
+.mission-body { display: grid; align-content: start; justify-items: center; gap: 1rem; width: 100%; padding: .25rem .5rem 0; }
+.mission-description { max-width: 40rem; margin: 0; color: #2D2A2E; font-size: 1.375rem; line-height: 1.55; }
+/* Hint box: rounded cream panel with a brown "i" */
+.mission-instruction {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  width: min(100%, 39rem);
+  margin: 0;
+  padding: 1rem 1.75rem 1rem 2.25rem;
+  border: .0625rem solid rgba(184, 137, 61, .45);
+  border-radius: 1rem;
+  background: rgba(214, 190, 140, .22);
+  color: #3B3328;
+  font-size: 1.0625rem;
+  line-height: 1.45;
+  text-align: left;
+}
+.mission-info {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: #5B3A1E;
+  color: #F7EEDB;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
 .mission-card .audio-player { width: 100%; }
 .mission-best { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--gap-1) var(--gap-3); padding: var(--gap-2) var(--gap-4); border-radius: var(--radius-pill); background: rgba(74, 50, 24, .1); font-size: var(--fs-caption); }
-.mission-actions { margin: 0; }
+.mission-actions { display: flex; align-items: center; gap: 1rem; margin: .5rem 0 0; }
+.mission-actions .btn-xl { min-width: 20.5rem; }
 
 /* =========================== LAYAR TANTANGAN =========================== */
 /* Dok 3 §5: lebar penuh tanpa Jaka. Koordinat semua panel di stage.css
@@ -1451,6 +1549,18 @@ body.is-challenge .lang-switch { display: none; }
   color: var(--gold-300);
 }
 .kedu-lock .icon { width: 1.25rem; height: 1.25rem; }
+/* Completed region: a gold medallion with a check in the lock badge's place (owner's picture) */
+.kedu-lock.kedu-done {
+  top: 2.875rem;
+  right: -1rem;
+  width: 3rem;
+  height: 3rem;
+  border: .1875rem solid #F3D58D;
+  background: radial-gradient(circle at 50% 35%, #1D3354, #0A1A31 70%);
+  box-shadow: 0 0 0 .125rem #8A6326, 0 .25rem .625rem rgba(0, 0, 0, .55), inset 0 0 .5rem rgba(243, 213, 141, .25);
+  color: #F6DE9C;
+}
+.kedu-done .icon { width: 1.75rem; height: 1.75rem; stroke-width: 3.2; filter: drop-shadow(0 0 .25rem rgba(246, 222, 156, .6)); }
 .kedu-unheard {
   position: absolute;
   top: .75rem;
@@ -1595,6 +1705,7 @@ span.kedu-star.is-on .icon { fill: currentColor; }
 .kedu-btn[aria-disabled="true"] { filter: grayscale(.8); opacity: .55; }
 .kedu-btn .icon { width: 1.75rem; height: 1.75rem; flex: none; }
 .kedu-btn.is-secondary .icon { width: 2.125rem; height: 2.125rem; color: var(--gold-300); }
+.kedu-btn .kenali-art { flex: none; width: 2.5rem; height: 2.5rem; object-fit: contain; filter: drop-shadow(0 .125rem .25rem rgba(0, 0, 0, .5)); }
 .kedu-btn > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 @media (hover: hover) {
   .kedu-btn:hover::before { filter: brightness(1.14); }
@@ -2591,3 +2702,29 @@ html.js .book-frame img.is-loaded { opacity: 1; }
   .kedu-unheard { animation: none; }
   .kedu-slice, .kedu-medal { transition: none; }
 }
+
+/* =========================== MAIN BUTTONS =========================== */
+/* Every main button on a game page (Mulai tantangan, Cek jawabanku, Ulangi, Lanjut, Masuk, …)
+   takes the look of Lanjut on Peta Kedu and Balai Refleksi on the result screen (owner,
+   18 October 2026): the `ui.result-button-primary` skin set on #stage by the layout, else
+   the same light-gold gradient. Scoped to .stage, so the admin panel keeps its buttons. */
+.stage .btn-primary {
+  border-color: #FFF2BD;
+  background: linear-gradient(to bottom, #FFF0C2, var(--gold-500) 50%, var(--gold-600));
+  color: #0B1B2E;
+  font-weight: 800;
+  box-shadow: 0 .25rem .5rem rgba(1, 7, 19, .45);
+}
+.stage[style*="--skin-primary"] .btn-primary {
+  border-color: transparent;
+  border-radius: 0;
+  background: var(--skin-primary) 50% 50% / 109.69% 122.23% no-repeat;
+  box-shadow: none;
+}
+.stage .btn-primary .icon { stroke-width: 2.6; }
+@media (hover: hover) {
+  .stage .btn-primary:hover { color: #0B1B2E; filter: brightness(1.12); }
+  .stage:not([style*="--skin-primary"]) .btn-primary:hover { background: linear-gradient(to bottom, #FFF0C2, var(--gold-500) 50%, var(--gold-600)); }
+}
+.stage .btn-primary:active { filter: brightness(1.18); }
+.stage[style*="--skin-primary"] .btn-primary:active { background: var(--skin-primary) 50% 50% / 109.69% 122.23% no-repeat; }

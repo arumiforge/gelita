@@ -80,8 +80,8 @@ return [
         'character' => 'narator', 'pose' => null, 'effect' => null,
         'title_id' => 'Cara Mengumpulkan Serpihan',
         'title_en' => 'How to Gather the Shards',
-        'text_id'  => 'Setiap wilayah menyimpan empat serpihan, dan setiap serpihan dijaga oleh satu tantangan. Selesaikan tantangannya untuk mendapatkan serpihan dan bintang. Lihat lentera di pojok kiri atas: lentera itu makin terang setiap kali serpihan kembali.',
-        'text_en'  => 'Each region holds four shards, and each shard is guarded by a challenge. Complete the challenge to win its shard and stars. Watch the lantern in the top-left corner: it grows brighter every time a shard returns.',
+        'text_id'  => 'Setiap wilayah menyimpan empat serpihan, dan setiap serpihan dijaga oleh satu tantangan. Selesaikan tantangannya untuk mendapatkan serpihan dan bintang. Lihat lentera di bagian atas layar: lentera itu makin terang setiap kali serpihan kembali.',
+        'text_en'  => 'Each region holds four shards, and each shard is guarded by a challenge. Complete the challenge to win its shard and stars. Watch the lantern at the top of the screen: it grows brighter every time a shard returns.',
     ],
     [
         'code' => 'intro-08', 'level' => null, 'context' => 'intro', 'sequence' => 8,

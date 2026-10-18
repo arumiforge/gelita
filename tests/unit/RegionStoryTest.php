@@ -390,6 +390,13 @@ final class RegionStoryTest extends CIUnitTestCase
         $this->assertStringContainsString('<section class="kedu-panel is-open is-selected"', $page);
         $this->assertStringContainsString('<a class="kedu-city" href="#region-wonosobo" data-region-select="wonosobo"', $page);
 
+        // Owner, 18 October 2026: completed Temanggung wears the gold check badge; Kenali is the shipped picture
+        $this->assertSame(1, substr_count($page, '<span class="kedu-lock kedu-done"><svg'));
+        $this->assertSame(1, substr_count($page, 'class="kedu-lock"><svg'), 'locked Wonosobo keeps its lock');
+        $this->assertStringContainsString('<img class="kenali-art" src="' . esc(base_url('assets/ui/icon-kenali.webp'), 'attr') . '"', $page);
+        $this->assertFileExists(FCPATH . 'assets/ui/icon-kenali.webp');
+        $this->assertContains('webp', \App\Services\AssetPackageBuilder::CODE_SOURCES['assets/ui']['ext'], 'offline packages carry it');
+
         // Owner, 18 October 2026: the story portrait is Jaka's avatar, never a pose frame; Mulai/Lanjut without the arrow
         $story = substr($page, (int) strpos($page, '<aside class="kedu-story'));
         $story = substr($story, 0, (int) strpos($story, '</aside>'));

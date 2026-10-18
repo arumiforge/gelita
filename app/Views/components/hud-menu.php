@@ -1,21 +1,30 @@
 <?php
 /**
- * Redesigned HUD (result screen redesign, 18 October 2026; mockup in
- * gelita-katalog/mockup/gambar-mockup/tantangan-selesai-temanggung). A page
- * opts in with `<?= $this->section('hudStyle') ?>menu<?= $this->endSection() ?>`;
- * every other page keeps components/hud.
+ * The game HUD (result screen redesign, 18 October 2026; mockup in
+ * gelita-katalog/mockup/gambar-mockup/tantangan-selesai-temanggung). Every
+ * page uses it (owner, 18 October 2026: the same logo, language, sound, and
+ * menu everywhere). Two sizes:
+ * - full (120 dp): pages laid out for it set section `hudStyle` = `menu`
+ *   (Peta Kedu, the result screen);
+ * - compact (56 dp, `.is-compact`): every other page, laid out for the old
+ *   56 dp HUD strip.
  *
- * Left : GELITA logo (`ui.logo-hero`, else the text brand) and the section
- *        `hudTitle` (e.g. Peta Kedu), else the region name.
- * Middle: the shard lantern when the page sets section `hudShards` (Peta Kedu,
- *        page redesign 2); the result screen shows shards in its panel instead.
+ * Left : section `hudBack` (a URL) first puts a Back button (account screens
+ *        before login); then the GELITA logo (`ui.logo-hero`, else `ui.logo`,
+ *        else the text brand; hidden with `$hideBrand` on the welcome page,
+ *        whose logo is already large) and the section `hudTitle` (e.g. Peta
+ *        Kedu), else the region name.
+ * Middle: the shard lantern pill on in-game pages; a page sets section
+ *        `hudShards` = `off` to leave it out (the result screen shows shards
+ *        in its panel).
  * Right: three round controls on the `ui.result-hud-control` skin:
- *        - language: popover with the flag icons (`ui.lang.*`), the same
- *          POST form as components/lang-switch (class `lang-switch`, so
- *          game/hud.js and the challenge frame keep working);
+ *        - language: popover with the flag icons (`ui.lang.*`), a POST form
+ *          with class `lang-switch` (game/hud.js, the challenge frame);
+ *          hidden during a challenge;
  *        - sound (#btn-sound, game/hud.js);
  *        - menu: profile, Peta Kedu, fullscreen (#btn-fullscreen,
- *          core/stage.js; hidden when unsupported), and logout.
+ *          core/stage.js; hidden when unsupported), and logout. Before login
+ *          only fullscreen; the menu hides itself when it has no row left.
  *
  * Both popovers are <details data-popover>: they open without JavaScript;
  * game/hud.js adds Escape, outside click, one-open-at-a-time, the close
@@ -24,25 +33,30 @@
  * @var array<string, mixed>|null $participant safe shape (toSafeArray)
  * @var array<string, mixed>|null $progress
  * @var \App\Entities\Level|null   $level
+ * @var bool|null                 $hideBrand
  */
-$inGame  = isset($participant, $progress) && is_array($participant) && is_array($progress);
-$locale  = service('request')->getLocale();
-$locales = config('Gelita')->locales;
+$inGame   = isset($participant, $progress) && is_array($participant) && is_array($progress);
+$compact  = trim($this->renderSection('hudStyle')) !== 'menu';
+$locale   = service('request')->getLocale();
+$locales  = config('Gelita')->locales;
 $hudTitle = trim($this->renderSection('hudTitle'));
 $region   = $hudTitle !== '' ? $hudTitle : (isset($level) && $level instanceof \App\Entities\Level ? $level->text('name', $locale) : null);
-// Section `hudShards`: the shard lantern (components/lantern) in the middle, e.g. on Peta Kedu
-$shards   = $inGame && trim($this->renderSection('hudShards')) !== '';
-$logo    = media_key_src('ui.logo-hero') ?? media_key_src('ui.logo');
-$flags   = ['id' => media_key_src('ui.lang.id'), 'en' => media_key_src('ui.lang.en')];
+$back     = trim($this->renderSection('hudBack'));
+$shards   = $inGame && trim($this->renderSection('hudShards')) !== 'off';
+$logo     = empty($hideBrand) ? (media_key_src('ui.logo-hero') ?? media_key_src('ui.logo')) : null;
+$flags    = ['id' => media_key_src('ui.lang.id'), 'en' => media_key_src('ui.lang.en')];
 
 $langName = static fn (string $code): string => lang_or('Game.lang_' . $code, strtoupper($code));
 $userName = $inGame ? (string) ($participant['display_name'] ?: $participant['username']) : '';
 ?>
-<header class="hud hud-menu-style"<?= $inGame ? ' data-in-game' : '' ?><?= skin_style_attr(['skin-hud' => 'ui.result-hud-control']) ?>>
+<header class="hud hud-menu-style<?= $compact ? ' is-compact' : '' ?>"<?= $inGame ? ' data-in-game' : '' ?><?= skin_style_attr(['skin-hud' => 'ui.result-hud-control']) ?>>
   <div class="hud-left hud-identity">
+    <?php if ($back !== ''): ?>
+      <a class="btn btn-quiet hud-back" href="<?= esc($back, 'attr') ?>"><?= icon('left') ?> <span><?= esc(lang('Game.back')) ?></span></a>
+    <?php endif ?>
     <?php if ($logo !== null): ?>
       <img class="hud-identity-logo" src="<?= esc($logo, 'attr') ?>" alt="<?= esc(lang('Game.appName'), 'attr') ?>" decoding="async" draggable="false">
-    <?php else: ?>
+    <?php elseif (empty($hideBrand)): ?>
       <span class="hud-brand"><?= esc(lang('Game.appName')) ?></span>
     <?php endif ?>
     <?php if ($region !== null): ?>

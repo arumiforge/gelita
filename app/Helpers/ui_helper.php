@@ -16,6 +16,8 @@ if (! function_exists('icon')) {
             'home'      => '<path d="M3 11l9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/>',
             'left'      => '<path d="M15 18l-6-6 6-6"/>',
             'right'     => '<path d="M9 18l6-6-6-6"/>',
+            'arrow-right' => '<path d="M4.5 12h15"/><path d="M13.5 6l6 6-6 6"/>',
+            'pin'       => '<path d="M12 21.5s-6.5-6-6.5-11.5a6.5 6.5 0 0 1 13 0c0 5.5-6.5 11.5-6.5 11.5z"/><circle cx="12" cy="10" r="2.25"/>',
             'up'        => '<path d="M18 15l-6-6-6 6"/>',
             'down'      => '<path d="M6 9l6 6 6-6"/>',
             'sound'     => '<path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7"/><path d="M19 6a8.5 8.5 0 0 1 0 12"/>',
