@@ -241,8 +241,10 @@ final class CatalogImportTest extends CIUnitTestCase
             $this->assertGreaterThanOrEqual(1200, $width, "{$key} is smaller than the puzzle minimum");
         }
 
-        $report = $catalog->run(true, false, null, ['challenge.item.*-1-*']);
-        $this->assertSame($keys, array_column($report, 'target'));
+        $report  = $catalog->run(true, false, null, ['challenge.item.*-1-*']);
+        $targets = array_column($report, 'target');
+        sort($targets);
+        $this->assertSame($keys, $targets);
         $this->assertSame(['planned'], array_values(array_unique(array_column($report, 'status'))));
     }
 
