@@ -1672,19 +1672,29 @@ span.result-star.is-on .icon { fill: currentColor; filter: drop-shadow(0 0 .375r
   backdrop-filter: blur(.375rem);
 }
 html:not(.js) .result-scrim { display: none; }
-.result-kedu { display: grid; align-content: center; gap: var(--gap-4); }
+/* Large type and targets for touch (owner, 18 Oct 2026): close 64 dp, Baca Pustaka 72 dp */
+.result-kedu { display: grid; align-content: center; gap: 1.5rem; padding: 2rem 2.5rem; }
 .finished.is-kedu-closed .result-kedu, .finished.is-kedu-closed .result-scrim { display: none; }
-.result-kedu > .hud-sheet-close { position: absolute; top: .5rem; right: .5rem; }
+.result-kedu > .hud-sheet-close { position: absolute; top: .75rem; right: .75rem; width: 4rem; height: 4rem; }
+.result-kedu > .hud-sheet-close .icon { width: 2.25rem; height: 2.25rem; }
 .finished-kedu {
   display: grid;
   grid-template-columns: auto 1fr;
   align-items: center;
-  gap: var(--gap-4);
-  padding-right: var(--gap-6);
+  gap: 1.5rem;
+  padding-right: 3.5rem;
 }
-.finished-kedu .character-img { max-height: 10rem; }
-.finished-kedu .character-fallback { width: 5rem; font-size: var(--fs-h2); }
-.result-kedu .library-unlocked { margin: 0; }
+.finished-kedu .character-img { max-height: 15rem; }
+.finished-kedu .character-fallback { width: 8rem; font-size: var(--fs-h1); }
+.result-kedu .narration { max-width: none; padding: 1.25rem 1.75rem; font-size: 1.875rem; line-height: 1.4; }
+.result-kedu .narration cite { font-size: 1.25rem; }
+.result-kedu .library-unlocked { gap: 1.25rem; margin: 0; padding: 1.25rem 1.5rem; }
+.result-kedu .library-unlocked h3 { font-size: 1.75rem; }
+.result-kedu .library-unlocked p { margin-top: .25rem; font-size: 1.25rem; line-height: 1.4; }
+.result-kedu .library-unlocked-icon { width: 4.5rem; height: 4.5rem; }
+.result-kedu .library-unlocked-icon .icon { width: 2.25rem; height: 2.25rem; }
+.result-kedu .library-unlocked .btn { min-height: 4.5rem; padding: 0 2rem; font-size: 1.5rem; }
+.result-kedu .library-unlocked .btn .icon { width: 1.75rem; height: 1.75rem; }
 
 .orb {
   position: absolute;
