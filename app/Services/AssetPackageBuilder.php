@@ -359,7 +359,7 @@ class AssetPackageBuilder
         $region   = static fn (string $level): string => 'wilayah-' . $level;
 
         // Shared by every screen
-        if (preg_match('/^(char\.|ui\.|audio\.sfx\.)/', $key) || in_array($key, ['map.kedu', 'audio.music.map'], true)
+        if (preg_match('/^(char\.|ui\.|audio\.sfx\.)/', $key) || in_array($key, ['map.kedu', 'map.kedu-diorama', 'audio.music.map'], true)
             || in_array($key, ['bg.welcome', 'bg.auth', 'bg.intro', 'bg.map', 'bg.reflection', 'bg.loading'], true)) {
             return self::GROUP_CORE;
         }

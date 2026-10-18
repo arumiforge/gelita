@@ -13,7 +13,9 @@
  * same commit that updates data/story.php.
  *
  * Versions listed now: the script used before draft 2 of October 2026
- * (data/story.php at commit 2dcef33), for the 32 lines draft 2 changed.
+ * (data/story.php at commit 2dcef33), for the 32 lines draft 2 changed;
+ * peta-03 before the Peta Kedu redesign of 18 October 2026 (lantern icon →
+ * Kenali button).
  *
  * @return array<string, list<array{title_id: ?string, title_en: ?string, text_id: string, text_en: string}>>
  */
@@ -272,6 +274,14 @@ return [
             'title_en' => 'The Mist Clears',
             'text_id'  => 'Kabut Lupa tersibak dari Temanggung, Magelang, sampai Wonosobo. Papan petunjuk terbaca jelas, relief bercerita dengan urutan yang benar, dan pesan berantai tak lagi ditelan mentah-mentah.',
             'text_en'  => 'The Mist of Forgetting cleared from Temanggung to Magelang to Wonosobo. Signposts could be read clearly, the reliefs told their stories in the right order, and chain messages were no longer swallowed whole.',
+        ],
+    ],
+    'peta-03' => [
+        [
+            'title_id' => 'Kenali Dulu',
+            'title_en' => 'Get to Know Them First',
+            'text_id'  => 'Ketuk ikon lentera di setiap wilayah untuk mendengar cerita Mbah Kedu tentang tempat itu. Kalau sudah siap, ketuk wilayah yang lenteranya menyala. Ayo, kita berangkat!',
+            'text_en'  => 'Tap the lantern icon on each region to hear Mbah Kedu\'s story about that place. When you are ready, tap the region whose lantern is lit. Come on, let\'s go!',
         ],
     ],
 ];

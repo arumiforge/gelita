@@ -122,8 +122,8 @@ return [
         'character' => 'jaka', 'pose' => 'happy', 'effect' => 'glow',
         'title_id' => 'Kenali Dulu',
         'title_en' => 'Get to Know Them First',
-        'text_id'  => 'Ketuk ikon lentera di setiap wilayah untuk mendengar cerita Mbah Kedu tentang tempat itu. Kalau sudah siap, ketuk wilayah yang lenteranya menyala. Ayo, kita berangkat!',
-        'text_en'  => 'Tap the lantern icon on each region to hear Mbah Kedu\'s story about that place. When you are ready, tap the region whose lantern is lit. Come on, let\'s go!',
+        'text_id'  => 'Ketuk tombol Kenali di setiap wilayah untuk mendengar cerita Mbah Kedu tentang tempat itu. Kalau sudah siap, pilih wilayah yang sudah terbuka, lalu ketuk Lanjut. Ayo, kita berangkat!',
+        'text_en'  => 'Tap Get to know on each region to hear Mbah Kedu\'s story about that place. When you are ready, choose an open region and tap Continue. Come on, let\'s go!',
     ],
 
     // 3. Kenali wilayah (region_intro) · Temanggung

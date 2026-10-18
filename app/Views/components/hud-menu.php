@@ -5,7 +5,10 @@
  * opts in with `<?= $this->section('hudStyle') ?>menu<?= $this->endSection() ?>`;
  * every other page keeps components/hud.
  *
- * Left : GELITA logo (`ui.logo-hero`, else the text brand) and the region name.
+ * Left : GELITA logo (`ui.logo-hero`, else the text brand) and the section
+ *        `hudTitle` (e.g. Peta Kedu), else the region name.
+ * Middle: the shard lantern when the page sets section `hudShards` (Peta Kedu,
+ *        page redesign 2); the result screen shows shards in its panel instead.
  * Right: three round controls on the `ui.result-hud-control` skin:
  *        - language: popover with the flag icons (`ui.lang.*`), the same
  *          POST form as components/lang-switch (class `lang-switch`, so
@@ -13,7 +16,6 @@
  *        - sound (#btn-sound, game/hud.js);
  *        - menu: profile, Peta Kedu, fullscreen (#btn-fullscreen,
  *          core/stage.js; hidden when unsupported), and logout.
- * No shard lantern here: the result panel shows the shard count itself.
  *
  * Both popovers are <details data-popover>: they open without JavaScript;
  * game/hud.js adds Escape, outside click, one-open-at-a-time, the close
@@ -26,7 +28,10 @@
 $inGame  = isset($participant, $progress) && is_array($participant) && is_array($progress);
 $locale  = service('request')->getLocale();
 $locales = config('Gelita')->locales;
-$region  = isset($level) && $level instanceof \App\Entities\Level ? $level->text('name', $locale) : null;
+$hudTitle = trim($this->renderSection('hudTitle'));
+$region   = $hudTitle !== '' ? $hudTitle : (isset($level) && $level instanceof \App\Entities\Level ? $level->text('name', $locale) : null);
+// Section `hudShards`: the shard lantern (components/lantern) in the middle, e.g. on Peta Kedu
+$shards   = $inGame && trim($this->renderSection('hudShards')) !== '';
 $logo    = media_key_src('ui.logo-hero') ?? media_key_src('ui.logo');
 $flags   = ['id' => media_key_src('ui.lang.id'), 'en' => media_key_src('ui.lang.en')];
 
@@ -44,6 +49,10 @@ $userName = $inGame ? (string) ($participant['display_name'] ?: $participant['us
       <span class="hud-identity-region"><?= esc($region) ?></span>
     <?php endif ?>
   </div>
+
+  <?php if ($shards): ?>
+    <div class="hud-shards"><?= $this->include('components/lantern') ?></div>
+  <?php endif ?>
 
   <div class="hud-right hud-controls">
     <details class="hud-pop hud-lang" data-popover>

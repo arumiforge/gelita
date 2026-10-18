@@ -90,7 +90,8 @@ class MapController extends BaseGameController
      */
     private function mapCurtainAssets(array $levels, array $story, string $locale): array
     {
-        $urls = [media_key_src('map.kedu'), media_key_src('bg.map')];
+        // The map picture the page shows: the diorama (page redesign 2), else the old map
+        $urls = [media_key_src('map.kedu-diorama') ?? media_key_src('map.kedu'), media_key_src('bg.map')];
 
         foreach ($story as $line) {
             $slug = ($line['character_code'] ?? '') === 'mbah_kedu' ? 'kedu' : (string) ($line['character_code'] ?? '');

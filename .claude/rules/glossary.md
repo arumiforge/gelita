@@ -33,6 +33,8 @@ One concept, one word, in every layer. "UI (id)" is what users read; "Code (en)"
 | Tantangan selesai (layar hasil) | `result screen`, `finished` | route `/selesai/{id}`; slots `ui.result-*`, `bg.result.{wilayah}` |
 | Detail hasil | `result details` | popover on the result screen |
 | menu (HUD baru) | `menu HUD` | `components/hud-menu`, section `hudStyle` = `menu` |
+| diorama Peta Kedu | `diorama` | slot `map.kedu-diorama`; `Config\Gelita::$mapDiorama` |
+| Wilayah dipilih (panel) | `region panel`, `selected region` | `.kedu-panel`, `data-region-select` |
 
 ## People, data, and the panel
 

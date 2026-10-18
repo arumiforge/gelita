@@ -174,7 +174,7 @@ return [
     'enterRegion'      => 'Enter the region',
 
     // Map
-    'mapLead'                 => 'Choose a region whose lantern is already lit.',
+    'mapLead'                 => 'Choose an open region, then tap Continue.',
     'levelStatus_open'        => 'Open',
     'levelStatus_in_progress' => 'Exploring',
     'levelStatus_completed'   => 'Complete',
@@ -242,6 +242,10 @@ return [
     'allShardsDone'    => 'All {0} light shards are gathered!',
     'shardEarned'      => 'Light shards: {0} of {1}',
     'backToRegion'     => 'Region map',
+    // Peta Kedu redesign (18 October 2026)
+    'mapSelected'      => 'Selected region',
+    'mapTapHint'       => 'Tap a region to explore',
+    'kenali'           => 'Get to know',
     // Result screen redesign (18 October 2026)
     'resultMenu'       => 'Menu',
     'resultLanguage'   => 'Choose a language',

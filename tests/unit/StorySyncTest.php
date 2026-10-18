@@ -56,7 +56,8 @@ final class StorySyncTest extends CIUnitTestCase
 
     public function testPreviousVersionsBelongToChangedScriptLines(): void
     {
-        $this->assertCount(32, $this->previous);
+        // 32 lines of draft 2, and peta-03 of the Peta Kedu redesign (18 October 2026)
+        $this->assertCount(33, $this->previous);
 
         foreach ($this->previous as $code => $versions) {
             $this->assertArrayHasKey($code, $this->script, "{$code} is not a script line");
@@ -87,7 +88,7 @@ final class StorySyncTest extends CIUnitTestCase
         $this->assertSame('same', $status['intro-06']);
         $counts = array_count_values($status);
         ksort($counts);
-        $this->assertSame(['edited' => 1, 'missing' => 1, 'same' => 55, 'update' => 31], $counts);
+        $this->assertSame(['edited' => 1, 'missing' => 1, 'same' => 54, 'update' => 32], $counts);
         $this->assertSame($before, $this->sqlite->table('dialogues')->get()->getResultArray(), 'plan() writes nothing');
     }
 
@@ -101,7 +102,7 @@ final class StorySyncTest extends CIUnitTestCase
         $sync   = new StorySync($this->sqlite);
         $result = $sync->apply($sync->plan());
 
-        $this->assertCount(31, $result['updated']);
+        $this->assertCount(32, $result['updated']);
         $this->assertSame(['penutup-05'], $result['inserted']);
         $this->assertSame([], $result['overwritten']);
         $this->assertSame(['intro-01'], $result['stale_audio']);
@@ -153,7 +154,7 @@ final class StorySyncTest extends CIUnitTestCase
         $command = new StorySyncCommand(Services::logger(), Services::commands());
 
         $this->assertSame(EXIT_SUCCESS, $command->run(['dry-run' => null]));
-        $this->assertStringContainsString('88 baris naskah: 56 sudah sama, 31 diperbarui, 0 ditambahkan, 1 disunting di panel (dibiarkan), 0 dilewati.', $io->getOutput());
+        $this->assertStringContainsString('88 baris naskah: 55 sudah sama, 32 diperbarui, 0 ditambahkan, 1 disunting di panel (dibiarkan), 0 dilewati.', $io->getOutput());
         $this->assertStringContainsString('intro-02', $io->getOutput());
         $this->assertStringContainsString('Setujui semua rekaman', $io->getOutput());
         $this->assertNotSame($this->script['intro-01']['text_id'], $this->rowOf('intro-01')['text_id'], 'dry run writes nothing');
@@ -164,12 +165,12 @@ final class StorySyncTest extends CIUnitTestCase
         CLI::setInputOutput($io);
 
         $this->assertSame(EXIT_SUCCESS, $command->run([]));
-        $this->assertStringContainsString('31 baris ditulis.', $io->getOutput());
+        $this->assertStringContainsString('32 baris ditulis.', $io->getOutput());
         $this->assertSame($this->script['intro-01']['text_id'], $this->rowOf('intro-01')['text_id']);
 
         $audit = $this->sqlite->table('audit_logs')->get()->getRowArray();
         $this->assertSame('story_sync', $audit['action']);
-        $this->assertSame(31, json_decode((string) $audit['metadata_json'], true)['updated']);
+        $this->assertSame(32, json_decode((string) $audit['metadata_json'], true)['updated']);
     }
 
     /** Puts every changed line back to its earlier version, as on a server installed before the revision. */
