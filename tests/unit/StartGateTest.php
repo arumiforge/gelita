@@ -91,7 +91,7 @@ final class StartGateTest extends CIUnitTestCase
         $page = (new HomeController())->start();
 
         $this->assertStringContainsString('class="btn btn-quiet hud-back" href="' . base_url() . '"', html_entity_decode($page));
-        $this->assertStringContainsString('hud-logo', $page);
+        $this->assertStringContainsString('<header class="hud hud-menu-style is-compact">', $page);
         $this->assertStringNotContainsString('class="nav-bar"', $page);
         $this->assertStringContainsString('start-jaka', $page, 'Jaka is his own image, not part of the background');
         $this->assertSame(1, substr_count($page, 'start-card is-primary'));
@@ -264,25 +264,21 @@ final class StartGateTest extends CIUnitTestCase
         $this->assertStringContainsString($this->attr('assets/ui/btn-start.png'), $this->homeIn('en'));
     }
 
-    /** The HUD language switch shows both catalogue icons, or text for both while one is missing. */
+    /** The HUD language popover (every page since 18 October 2026): flag icons, or the language code while one is missing. */
     public function testLanguageSwitchUsesIconsOnlyWhenBothExist(): void
     {
         $text = (new HomeController())->index();
-        $this->assertStringContainsString('class="lang-switch"', $text);
-        $this->assertMatchesRegularExpression('/aria-pressed="true">ID<\/button>/', $text);
+        $this->assertStringContainsString('<form class="lang-switch hud-lang-list" method="post"', $text);
+        $this->assertMatchesRegularExpression('/<summary class="hud-ctl" aria-label="' . preg_quote(esc(lang('Game.language') . ': Bahasa Indonesia', 'attr'), '/') . '"[^>]*>\s*<span class="hud-ctl-code" aria-hidden="true">ID<\/span>/', $text);
+        $this->assertMatchesRegularExpression('/value="id" lang="id"\s+class="hud-sheet-row hud-lang-row is-active" aria-pressed="true">\s*<span class="hud-sheet-code" aria-hidden="true">ID<\/span>/', $text);
 
-        $this->media = ['ui.lang.id' => 'assets/ui/lang-id.webp'];
-        Services::resetSingle('renderer');
-        $this->assertStringNotContainsString($this->attr('assets/ui/lang-id.webp'), (new HomeController())->index(), 'one icon alone is not mixed with text');
-
-        $this->media['ui.lang.en'] = 'assets/ui/lang-en.webp';
+        $this->media = ['ui.lang.id' => 'assets/ui/lang-id.webp', 'ui.lang.en' => 'assets/ui/lang-en.webp'];
         Services::resetSingle('renderer');
         $page = (new HomeController())->index();
-        $this->assertStringContainsString('class="lang-switch is-image"', $page);
-        $this->assertStringContainsString('src="' . $this->attr('assets/ui/lang-id.webp') . '" alt="" width="32" height="32"', $page, 'small even without the stylesheet');
-        $this->assertStringContainsString('src="' . $this->attr('assets/ui/lang-en.webp') . '" alt=""', $page);
-        $this->assertMatchesRegularExpression('/aria-pressed="true"\s+aria-label="' . preg_quote(esc('Bahasa Indonesia', 'attr'), '/') . '"/', $page);
-        $this->assertMatchesRegularExpression('/aria-pressed="false"\s+aria-label="English"/', $page);
+        $this->assertStringContainsString('<img class="hud-ctl-flag" src="' . $this->attr('assets/ui/lang-id.webp') . '" alt=""', $page, 'the current language on the control');
+        $this->assertStringContainsString('<img class="hud-sheet-flag" src="' . $this->attr('assets/ui/lang-en.webp') . '" alt=""', $page);
+        $this->assertMatchesRegularExpression('/value="en" lang="en"\s+class="hud-sheet-row hud-lang-row" aria-pressed="false">/', $page);
+        $this->assertStringContainsString('<span class="hud-sheet-label">English</span>', $page);
 
         $store = new MediaStore();
         $this->assertSame([256, 256], $store->requiredSize('ui.lang.id'));

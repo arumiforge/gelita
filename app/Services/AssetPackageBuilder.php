@@ -53,6 +53,8 @@ class AssetPackageBuilder
         'assets/js'     => ['ext' => ['js'], 'exclude' => ['admin.js', 'admin/']],
         'assets/vendor' => ['ext' => ['js'], 'exclude' => []],
         'assets/fonts'  => ['ext' => ['woff2'], 'exclude' => []],
+        // Fixed game pictures: the Kenali icon (owner, 18 October 2026) and the placeholder
+        'assets/ui'     => ['ext' => ['webp', 'svg'], 'exclude' => []],
     ];
 
     /** Single code files outside assets/ (key = path inside the code folder). */
@@ -68,6 +70,8 @@ class AssetPackageBuilder
         'js'    => 'text/javascript',
         'woff2' => 'font/woff2',
         'html'  => 'text/html',
+        'webp'  => 'image/webp',
+        'svg'   => 'image/svg+xml',
     ];
 
     private AssetPackageService $packages;

@@ -79,6 +79,7 @@ $bgResult = $level !== null ? media_key_src('bg.result.' . $level->code) : null;
 <?= $this->section('background') ?><?= $bgResult ?? ($level !== null ? media_first($level->background_media_id) : '') ?><?= $this->endSection() ?>
 <?= $this->section('bodyClass') ?>is-celebrate<?= $this->endSection() ?>
 <?= $this->section('hudStyle') ?>menu<?= $this->endSection() ?>
+<?= $this->section('hudShards') ?>off<?= $this->endSection() ?>
 
 <?php if ($toNext): ?>
 <?= $this->section('overlay') ?>

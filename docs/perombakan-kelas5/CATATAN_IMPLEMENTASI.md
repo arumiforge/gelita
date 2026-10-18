@@ -1837,3 +1837,22 @@ Owner request after PR #133:
 - **Mulai/Lanjut** in the region panel carries no arrow icon.
 - **Checked.** Screenshots at 1280 × 720 in ID and EN (the all-done row previewed in the browser); at 640 × 360 every visible control is at least 48 dp.
 
+
+## One look on every page (18 October 2026, branch `sky/clever-hopper-yaht5p`)
+
+Owner request after PR #134, with four choices settled in a short interview:
+- **One HUD.** `components/hud-menu` is now the only HUD; `components/hud` and `components/lang-switch` are removed. Every page has the same logo, language flag popover, sound control, and grouped menu.
+  - The 120 dp HUD would cover the top of every page laid out for the old 56 dp strip. The owner chose a **compact size** (`.is-compact`, 56 dp: 48 dp logo, 56 dp controls with a 46 dp disc, a 352 × 48 dp shard pill). Pages setting `hudStyle` = `menu` (Peta Kedu, the result screen) keep the full size. No page layout moved.
+  - Before login, Back (`hudBack`) comes first, then the logo; the welcome page still hides the brand. The menu then holds only fullscreen and hides itself when that is unsupported.
+  - The shard pill is on every in-game page; the result screen turns it off (`hudShards` = `off`). The language control stays hidden during a challenge.
+- **Shard pill.** The bar now sits on the count's row and fills the rest of the pill (pill 25 rem on the full HUD). The bar is a slim gold groove. The whole count is bold at its earlier sizes.
+- **Story line `intro-07`** said the lantern was "in the top-left corner". It now says "at the top of the screen" (ID and EN). The old text is in `story-previous.php`, so `gelita:story:sync` updates installed servers.
+- **Main buttons.** The owner chose **every main button**. Every `.btn-primary` on `#stage` takes the Lanjut / Balai Refleksi look: the layout sets `--skin-primary` (`ui.result-button-primary`) on `#stage`, and without the picture the same light-gold gradient is used. This is scoped to `.stage`, so the admin panel keeps its buttons. Narrow buttons stretch the skin a little.
+- **Mission card** after the owner's picture: parchment with gold corners; a dark green `{n}/{total}` medallion between flourishes above the card; the region with a pin on a rule; a large serif title; the story; the hint box with a brown "i"; and the gold button with an arrow between flourishes. It moved to 260, 112, 760 × 536 so the medallion clears the compact HUD. The engine chip is dropped (the title names it); the position line stays for screen readers. The best result stays, for replays.
+- **Diorama.** A completed region gets a **gold check badge** in the lock badge's place (owner's choice over replacing the whole medallion).
+- **Kenali picture.** The owner's picture (book, magnifier, bulb) is **shipped with the game** as `public/assets/ui/icon-kenali.webp` (192 px, alpha), cropped from the attachment. `AssetPackageBuilder::CODE_SOURCES` now packs `assets/ui` (webp, svg), so offline packages carry it and the placeholder.
+- **Checked.** Screenshots at 1280 × 720:
+  - Peta Kedu, a region map, two mission cards, a challenge, login, `/mulai`, the welcome page, and the profile;
+  - the menu, language, and shard popovers in the compact HUD.
+
+  At 640 × 360 every HUD control and main button is at least 48 dp.
