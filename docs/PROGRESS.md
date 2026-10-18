@@ -88,7 +88,9 @@ Owner decisions in its §12 (9 October 2026): full download before Mulai, admin 
 - [x] Owner decisions in its §10 (17 October 2026): Phases 1 and 2 approved, one branch each, developed in parallel (split by layer, Phase 2 merges first); 30 s flush; Phase 3 after measuring; dashboard lag accepted with a note
 - [x] Phase 1 — browser (PR #123): 30 s flush with persist-on-push, events + audio in one request, heartbeat only when idle, page-load re-send in the first batch
 - [x] Phase 2 — server (PR #122): `/api/events` takes `audio`, heartbeat in the batch, session lock released early, batched audio writes, `Gelita::$eventFlush`, dashboard note
-- [ ] Load measurement before and after (§7), then the Phase 3 decision
+- [x] Load measurement before and after (§7.1, `tools/qa/load-test.mjs`): at 90 students every target is met; Phases 1 + 2 cut telemetry requests by 83 % and database statements, fsyncs, and CPU by about two thirds
+- [x] Owner decision (18 October 2026): Phase 3 (write-behind inbox) is not built; the targets are met at 90 students
+- [ ] On the real server: re-run the load test (or watch Ringkasan and `fpm-status` in a full class) once the school hardware is known, since the test machine had more RAM than `docs/08` recommends
 
 ## Active branches
 
@@ -96,3 +98,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `sky/quirky-ptolemy-figayc` | Asynchronous logging: §7 load test and results (`tools/qa/load-test.mjs`, docs) | PR open |
