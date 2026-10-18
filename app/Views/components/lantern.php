@@ -1,6 +1,7 @@
 <?php
 /**
- * Lentera — meter serpihan cahaya pada HUD.
+ * Lentera — meter serpihan cahaya pada HUD (the shard pill in the middle of
+ * components/hud-menu).
  *
  * `shards_total` selalu datang dari COUNT(challenge_nodes aktif) lewat
  * GameProgress::progressSummary(), tidak pernah ditulis sebagai angka tetap.
@@ -26,9 +27,12 @@ $status = ['completed' => 'Game.shardDone', 'open' => 'Game.shardOpen', 'locked'
     <span class="lantern-meter">
       <span class="lantern-text">
         <span class="eyebrow"><?= esc(lang('Game.shards')) ?></span>
-        <span class="lantern-count num"><b><?= $shards ?></b>/<?= $total ?></span>
+        <?php // The bar sits on the count's row (owner, 18 October 2026) ?>
+        <span class="lantern-row">
+          <span class="lantern-count num"><b><?= $shards ?></b>/<?= $total ?></span>
+          <span class="lantern-bar" aria-hidden="true"><i style="width: <?= $fill ?>%"></i></span>
+        </span>
       </span>
-      <span class="lantern-bar" aria-hidden="true"><i style="width: <?= $fill ?>%"></i></span>
     </span>
   </summary>
 

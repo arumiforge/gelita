@@ -12,8 +12,8 @@ use Config\Services;
  * gelita-katalog/mockup/gambar-mockup/tantangan-selesai-temanggung).
  *
  * Rules kept:
- * - the page uses the redesigned HUD (logo, region, language popover, sound,
- *   menu) and only this page; other screens keep the lantern HUD;
+ * - the page uses the full-size HUD (logo, region, language popover, sound,
+ *   menu) without the shard pill; other screens get the same HUD compact;
  * - every value comes from the attempt and progress, nothing from the mockup;
  * - skins come from image slots, with the plain look while a slot is empty;
  * - Cari Objek shows wrong taps instead of tries.
@@ -99,11 +99,17 @@ final class ResultScreenTest extends CIUnitTestCase
             $this->assertStringContainsString($needle, $menu, $needle);
         }
 
-        // Other screens keep the old HUD
+        // Owner, 18 October 2026: every other screen has the same HUD, compact, with the shard pill in the middle
         Services::resetSingle('renderer');
-        $this->assertStringContainsString('<header class="hud" data-in-game>', view('game/challenge-result', $this->hud() + [
+        $other = view('game/challenge-result', $this->hud() + [
             'level' => $this->level(), 'node' => self::node(1, 'puzzle'), 'sequence' => 1, 'attempts' => [], 'best' => null,
-        ]));
+        ]);
+        $this->assertStringContainsString('<header class="hud hud-menu-style is-compact" data-in-game', $other);
+        $this->assertMatchesRegularExpression('/<div class="hud-shards">(?:<!--[^>]*-->\s*)?<details class="lantern"/', $other);
+        $this->assertMatchesRegularExpression('/<span class="lantern-row">\s*<span class="lantern-count num"><b>5<\/b>\/12<\/span>\s*<span class="lantern-bar"/', $other, 'the bar beside the count');
+        foreach (['class="hud-pop hud-lang"', 'id="btn-sound"', 'class="hud-pop hud-menu"', '<span class="hud-identity-region">Temanggung</span>'] as $needle) {
+            $this->assertStringContainsString($needle, $other, $needle);
+        }
     }
 
     public function testPanelShowsTheAttempt(): void

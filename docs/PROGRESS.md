@@ -102,7 +102,8 @@ Owner request (18 October 2026): several pages get a new design from the catalog
 - [x] Page 1 follow-up (PR #129): HUD language icons from the catalogue's newest flags `icon.language-id/-en`; region-done card as a modal over a blurred, dimmed stage. After merge, run `php spark gelita:katalog:impor --kunci="ui.lang.*"` (dry run first; add `--timpa` if an admin uploaded the language icons)
 - [x] Page 1 touch fix: the region-done modal and its Pustaka card enlarged (card 1040 × 560 dp, close button 64 dp, Baca Pustaka 72 dp) (PR #130)
 - [x] Page 2 — Peta Kedu `/peta` (mockup Peta Kedu candidate 04 with owner changes): diorama `map.kedu-diorama`, one region panel, menu HUD with shard pill, story bar, bottom row Pustaka/Penutup/Refleksi (PR #133)
-- [ ] Page 2 follow-up: story bar as wide as the map with Jaka's avatar `ui.jaka-avatar` (from catalogue `reference.03`) instead of a pose frame and a round Next like Previous; page buttons right of the story under the region panel; Mulai/Lanjut without the arrow. After merge, run `php spark gelita:katalog:impor --kunci="ui.jaka-avatar"` (dry run first)
+- [x] Page 2 follow-up (PR #134): story bar as wide as the map with Jaka's avatar `ui.jaka-avatar` (from catalogue `reference.03`) instead of a pose frame and a round Next like Previous; page buttons right of the story under the region panel; Mulai/Lanjut without the arrow. After merge, run `php spark gelita:katalog:impor --kunci="ui.jaka-avatar"` (dry run first)
+- [ ] One look on every page: the game HUD (logo, shard pill with the bar beside the bold count, language, sound, menu) on every page, compact on pages laid out for the old 56 dp strip; every main button with the Lanjut / Balai Refleksi gold skin; mission card after the owner's picture; check badge on completed diorama regions; the owner's Kenali picture (`assets/ui/icon-kenali.webp`); story line `intro-07` names the lantern "at the top of the screen". After merge, run `php spark gelita:story:sync` (dry run first) for `intro-07`; its voice-over line changes too
 - [ ] After merge, on a server that already has content: `php spark gelita:katalog:impor --kunci="map.kedu-diorama"` (dry run first) and `php spark gelita:story:sync` (dry run first) for the new `peta-03` line; its voice-over line changes too
 
 ## Active branches
@@ -111,5 +112,5 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `sky/clever-hopper-yaht5p` | Page redesign 2 follow-up: Peta Kedu story bar and page buttons | PR open |
+| `sky/clever-hopper-yaht5p` | One look on every page: HUD, main buttons, mission card | PR open |
 | `sky/gracious-heisenberg-ps39sd` | Susun Gambar images a–j from the catalogue (guard test, bank media notes, deploy docs) | PR open |

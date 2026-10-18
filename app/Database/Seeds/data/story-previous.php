@@ -15,7 +15,8 @@
  * Versions listed now: the script used before draft 2 of October 2026
  * (data/story.php at commit 2dcef33), for the 32 lines draft 2 changed;
  * peta-03 before the Peta Kedu redesign of 18 October 2026 (lantern icon →
- * Kenali button).
+ * Kenali button); intro-07 before the one HUD of 18 October 2026 (the lantern
+ * moved from the top-left corner to the top middle).
  *
  * @return array<string, list<array{title_id: ?string, title_en: ?string, text_id: string, text_en: string}>>
  */
@@ -282,6 +283,14 @@ return [
             'title_en' => 'Get to Know Them First',
             'text_id'  => 'Ketuk ikon lentera di setiap wilayah untuk mendengar cerita Mbah Kedu tentang tempat itu. Kalau sudah siap, ketuk wilayah yang lenteranya menyala. Ayo, kita berangkat!',
             'text_en'  => 'Tap the lantern icon on each region to hear Mbah Kedu\'s story about that place. When you are ready, tap the region whose lantern is lit. Come on, let\'s go!',
+        ],
+    ],
+    'intro-07' => [
+        [
+            'title_id' => 'Cara Mengumpulkan Serpihan',
+            'title_en' => 'How to Gather the Shards',
+            'text_id'  => 'Setiap wilayah menyimpan empat serpihan, dan setiap serpihan dijaga oleh satu tantangan. Selesaikan tantangannya untuk mendapatkan serpihan dan bintang. Lihat lentera di pojok kiri atas: lentera itu makin terang setiap kali serpihan kembali.',
+            'text_en'  => 'Each region holds four shards, and each shard is guarded by a challenge. Complete the challenge to win its shard and stars. Watch the lantern in the top-left corner: it grows brighter every time a shard returns.',
         ],
     ],
 ];

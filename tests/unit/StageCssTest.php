@@ -96,7 +96,7 @@ final class StageCssTest extends CIUnitTestCase
         $this->assertNotFalse($stage);
         $this->assertLessThan($stage, $gate, 'layar putar di luar panggung');
 
-        foreach (['id="modal-layer"', "component('toast'", "'components/hud'", "'components/hud-menu'", '<main id="app"', "renderSection('overlay')", "renderSection('nav')"] as $needle) {
+        foreach (['id="modal-layer"', "component('toast'", "'components/hud-menu'", '<main id="app"', "renderSection('overlay')", "renderSection('nav')"] as $needle) {
             $at = strpos($layout, $needle);
             $this->assertNotFalse($at, $needle);
             $this->assertGreaterThan($stage, $at, "{$needle} harus di dalam #stage");
