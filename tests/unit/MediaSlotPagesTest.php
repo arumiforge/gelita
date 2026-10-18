@@ -64,11 +64,11 @@ final class MediaSlotPagesTest extends CIUnitTestCase
         // Official slot without a label in the database: text from ImageSlots
         $this->assertStringContainsString('Latar halaman awal & akun', $html);
         $this->assertStringContainsString('<code>/mulai</code>', $html);
-        // Display plan A5/A7: bg.auth and ui.placeholder are read by the game now (optional slots)
+        // Unused: the city lanterns (Peta Kedu redesign: Kenali uses a book icon) and bg.auth
+        // (account screens use the owner's shipped pictures; both 18 October 2026)
         $this->assertStringContainsString('Latar masuk, daftar, dan ganti kata sandi', $html);
-        $this->assertStringContainsString('<code>/masuk</code>', $html);
-        // Only the city lanterns are unused (Peta Kedu redesign, 18 October 2026: Kenali uses a book icon)
-        $this->assertSame(3, substr_count($html, 'belum dipakai permainan'));
+        $this->assertStringNotContainsString('<code>/masuk</code>', $html);
+        $this->assertSame(4, substr_count($html, 'belum dipakai permainan'));
         $this->assertSame(3, substr_count($html, '>Lentera Kenali '));
 
         // Challenge image: description from the question bank, page of the challenge

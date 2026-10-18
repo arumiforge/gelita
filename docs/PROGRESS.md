@@ -106,6 +106,7 @@ Owner request (18 October 2026): several pages get a new design from the catalog
 - [x] Page 2 follow-up (PR #134): story bar as wide as the map with Jaka's avatar `ui.jaka-avatar` (from catalogue `reference.03`) instead of a pose frame and a round Next like Previous; page buttons right of the story under the region panel; Mulai/Lanjut without the arrow. After merge, run `php spark gelita:katalog:impor --kunci="ui.jaka-avatar"` (dry run first)
 - [ ] One look on every page: the game HUD (logo, shard pill with the bar beside the bold count, language, sound, menu) on every page, compact on pages laid out for the old 56 dp strip; every main button with the Lanjut / Balai Refleksi gold skin; mission card after the owner's picture; check badge on completed diorama regions; the owner's Kenali picture (`assets/ui/icon-kenali.webp`); story line `intro-07` names the lantern "at the top of the screen". After merge, run `php spark gelita:story:sync` (dry run first) for `intro-07`; its voice-over line changes too
 - [ ] Intro redesign (owner, 18 October 2026): full-size HUD with "Bagian n dari N" and the page dots in its centre, Lewati under the menu button, full-width caption at the bottom with the narrator controls on its title row (▶ reads "Lanjut", the caption's Lanjut button is gone), "Mulai petualangan" centred on the page; bigger touch targets. The ending (`/penutup`) shares the layout
+- [ ] Account pages and tap card (owner, 18 October 2026): `/masuk` and `/ganti-sandi` on the owner's lantern-tree picture, `/daftar/1–3` on the gate picture (both shipped in `public/assets/ui/`), form panel in the empty right side, no Jaka; "Ketuk untuk mulai" covers the whole stage with the HUD, shows the `ui.lantern` picture, large text, no frame; CSS/JS `?v=` follows each file while package mode is off. After merge, run `php spark gelita:katalog:impor --kunci="ui.lantern"` (dry run first) if the server has no lantern picture yet
 - [ ] After merge, on a server that already has content: `php spark gelita:katalog:impor --kunci="map.kedu-diorama"` (dry run first) and `php spark gelita:story:sync` (dry run first) for the new `peta-03` line; its voice-over line changes too
 
 ## Active branches
@@ -114,3 +115,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `sky/blissful-brown-pmxupk` | Account pages redesign, full-page tap card, automatic code version | PR open |

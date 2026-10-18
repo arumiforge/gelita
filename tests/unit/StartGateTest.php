@@ -97,29 +97,30 @@ final class StartGateTest extends CIUnitTestCase
         $this->assertSame(1, substr_count($page, 'start-card is-primary'));
     }
 
-    public function testLoginMatchesTheStartScreen(): void
+    public function testLoginKeepsTheOrnatePanelWithBackInTheHud(): void
     {
         $page = (new LoginController())->form();
 
         $this->assertIsString($page);
         $this->assertStringContainsString('class="btn btn-quiet hud-back" href="' . base_url('mulai') . '"', html_entity_decode($page));
         $this->assertStringNotContainsString('class="nav-bar"', $page);
-        $this->assertStringContainsString('start-jaka', $page);
+        $this->assertStringNotContainsString('start-jaka', $page, 'the picture is the scene (owner redesign, 18 October 2026)');
         $this->assertStringContainsString('login-panel ornate-panel stage-box', $page);
         $this->assertStringContainsString('ornate-body stage-scroll', $page, 'the form scrolls inside the fixed panel');
     }
 
-    /** Display plan A7: account screens use bg.auth, falling back to bg.welcome. */
-    public function testLoginUsesTheAccountBackgroundWithWelcomeFallback(): void
+    /** Owner redesign (18 October 2026): the shipped lantern-tree picture, whatever bg.auth or bg.welcome hold. */
+    public function testLoginUsesTheShippedPicture(): void
     {
-        $this->media = ['bg.welcome' => 'assets/uploads/bg.welcome.jpg?v=w1'];
-        $this->assertStringContainsString('src="' . $this->attr('assets/uploads/bg.welcome.jpg?v=w1') . '"', (new LoginController())->form());
+        $this->media = ['bg.welcome' => 'assets/uploads/bg.welcome.jpg?v=w1', 'bg.auth' => 'assets/uploads/bg.auth.jpg?v=a1'];
+        $page        = (new LoginController())->form();
 
-        Services::resetSingle('renderer');
-        $this->media['bg.auth'] = 'assets/uploads/bg.auth.jpg?v=a1';
-        $page = (new LoginController())->form();
-        $this->assertStringContainsString('src="' . $this->attr('assets/uploads/bg.auth.jpg?v=a1') . '"', $page);
+        $this->assertStringContainsString('src="' . $this->attr('assets/ui/bg-auth-login.webp') . '"', $page);
+        $this->assertStringContainsString('is-auth-art', $page);
+        $this->assertStringNotContainsString('bg.auth.jpg', $page);
         $this->assertStringNotContainsString('bg.welcome.jpg', $page);
+        $this->assertFileExists(FCPATH . 'assets/ui/bg-auth-login.webp');
+        $this->assertFileExists(FCPATH . 'assets/ui/bg-auth-register.webp');
     }
 
     public function testStartSendsLoggedInPlayerToTheGate(): void

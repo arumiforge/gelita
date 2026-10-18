@@ -91,19 +91,19 @@ final class RegisterWizardTest extends CIUnitTestCase
         $this->send(Method::GET, 'daftar/1')->assertOK();   // kembali ke langkah selesai tetap boleh
     }
 
-    public function testStepsMatchTheStartScreen(): void
+    /** Owner redesign (18 October 2026): the gate picture with the ornate panel on its right, no Jaka. */
+    public function testStepsShowTheGatePictureWithTheOrnatePanel(): void
     {
-        $poses = ['1' => 'happy', '2' => 'happy', '3' => 'bow'];
         $_SESSION[RegisterController::WIZARD] = ['1' => self::ABOUT, '2' => self::SCHOOL];
 
-        foreach ($poses as $step => $pose) {
+        foreach (['1', '2', '3'] as $step) {
             $html = (string) $this->send(Method::GET, 'daftar/' . $step)->getBody();
 
             $this->assertStringContainsString('register-panel ornate-panel stage-box', $html, "step {$step}");
             $this->assertStringContainsString('class="ornate"', $html, "step {$step}: gold frame");
             $this->assertStringNotContainsString('panel-parchment', $html, "step {$step}");
-            $this->assertMatchesRegularExpression('/class="character character-jaka start-jaka stage-box"\s+data-character="jaka" data-pose="' . $pose . '"/', $html, "step {$step}");
-            $this->assertSame(1, substr_count($html, 'data-character="jaka"'), "step {$step}: Jaka only once");
+            $this->assertStringContainsString('src="' . base_url('assets/ui/bg-auth-register.webp') . '"', $html, "step {$step}");
+            $this->assertStringNotContainsString('data-character="jaka"', $html, "step {$step}: the picture is the scene");
         }
     }
 

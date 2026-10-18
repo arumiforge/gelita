@@ -21,13 +21,12 @@ $focus   = static fn (string $f): string => $first === $f ? ' autofocus' : '';
 <?= $this->extend('layouts/game') ?>
 
 <?= $this->section('title') ?><?= esc(lang('Game.registerTitle')) ?><?= $this->endSection() ?>
-<?= $this->section('background') ?><?= media_key_src('bg.auth') ?? media_key_src('bg.welcome') ?? '' ?><?= $this->endSection() ?>
+<?= $this->section('background') ?><?= game_asset_url('ui/bg-auth-register.webp') ?><?= $this->endSection() ?>
+<?= $this->section('bodyClass') ?>is-auth-art<?= $this->endSection() ?>
 <?= $this->section('hudBack') ?><?= base_url('mulai') ?><?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
 <section class="register" data-step="1" data-package-gate="page" data-package-next="daftar/1">
-  <?= component('character', ['character' => 'jaka', 'pose' => 'happy', 'class' => 'start-jaka stage-box']) ?>
-
   <div class="register-panel ornate-panel stage-box">
     <?= $this->include('partials/ornate-frame') ?>
     <?= $this->include('game/register/_head') ?>

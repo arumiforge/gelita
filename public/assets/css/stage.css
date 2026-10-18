@@ -119,6 +119,9 @@ body.game {
   inset: 0;
   background: linear-gradient(to bottom, rgba(11, 19, 32, .35), var(--veil) 40%, rgba(11, 19, 32, .75));
 }
+/* Account pictures (owner, 18 October 2026): the scene on the left stays bright;
+   only the empty right side, where the panel sits, is darkened a little more */
+body.is-auth-art .scene::after { background: linear-gradient(to right, transparent 40%, rgba(11, 19, 32, .35) 70%); }
 
 /* ---------- HUD: 0, 0, 1280 × 56 ---------- */
 .hud {
@@ -527,13 +530,16 @@ body.game {
 .start-panel { --x: 432; --y: 176; --w: 560; --h: 400; }
 .start-choice .start-panel { --y: 160; --h: 432; }
 
-/* ---------- Masuk `/masuk`, Ganti sandi `/ganti-sandi` ---------- */
-.login-panel    { --x: 432; --y: 96; --w: 560; --h: 576; }
-.password-panel { --x: 360; --y: 72; --w: 560; --h: 576; }
+/* ---------- Masuk `/masuk`, Ganti sandi `/ganti-sandi` (owner redesign, 18 October 2026):
+   the panel sits in the empty right side of the owner's picture (x ≥ 720), no Jaka.
+   Ganti sandi ends at 640 above the nav bar (Profil) ---------- */
+.login-panel    { --x: 720; --y: 88;  --w: 512; --h: 584; }
+.password-panel { --x: 720; --y: 72;  --w: 512; --h: 568; }
 
-/* ---------- Daftar `/daftar/1…3`: Jaka like /mulai (.start-jaka); inside the panel the
-   head is 32–96 (below the crest), the fields scroll, the button bar is the last 80 ---------- */
-.register-panel { --x: 432; --y: 96; --w: 784; --h: 576; }
+/* ---------- Daftar `/daftar/1…3` (owner redesign, 18 October 2026): the panel in the
+   empty right side of the gate picture (x ≥ 656), no Jaka; inside the panel the head is
+   32–96 (below the crest), the fields scroll, the button bar is the last 80 ---------- */
+.register-panel { --x: 656; --y: 72; --w: 576; --h: 600; }
 
 /* ---------- Siapkan GELITA `/siapkan` and Periksa paket `/periksa-paket` (asset package
    Stage 3): one full-width panel below the HUD, no character (owner, 18 October 2026) ---------- */

@@ -12,8 +12,10 @@
  * `device_json` diisi core/device.js saat dikirim (DeviceProfile); tanpa
  * JavaScript kosong, server memakai User-Agent + Client Hints header.
  *
- * Same look as `/mulai` (9 Oct 2026): Jaka on the left, the ornate dark panel
- * with the form scrolling inside it, Back in the HUD top-left, logo centred.
+ * Owner redesign (18 October 2026): the owner's picture (lantern tree above a
+ * lit village, `assets/ui/bg-auth-login.webp`, shipped with the game) fills the
+ * stage; the ornate dark panel with the form sits in its empty right side. No
+ * Jaka figure: the picture is the scene. Back in the HUD top-left.
  *
  * @var array<string, string> $errors
  */
@@ -21,14 +23,13 @@
 <?= $this->extend('layouts/game') ?>
 
 <?= $this->section('title') ?><?= esc(lang('Game.loginTitle')) ?><?= $this->endSection() ?>
-<?= $this->section('background') ?><?= media_key_src('bg.auth') ?? media_key_src('bg.welcome') ?? '' ?><?= $this->endSection() ?>
+<?= $this->section('background') ?><?= game_asset_url('ui/bg-auth-login.webp') ?><?= $this->endSection() ?>
+<?= $this->section('bodyClass') ?>is-auth-art<?= $this->endSection() ?>
 
 <?= $this->section('hudBack') ?><?= base_url('mulai') ?><?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
 <section class="login" data-package-gate="page" data-package-next="masuk">
-  <?= component('character', ['character' => 'jaka', 'pose' => 'bow', 'class' => 'start-jaka stage-box']) ?>
-
   <div class="login-panel ornate-panel stage-box">
     <?= $this->include('partials/ornate-frame') ?>
     <div class="ornate-body stage-scroll">
