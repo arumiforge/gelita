@@ -47,7 +47,7 @@ $screenCode = method_exists($request, 'getPath') ? (App\Filters\ScreenViewFilter
   <meta name="csrf-token" content="<?= csrf_hash() ?>">
   <meta name="csrf-name" content="<?= csrf_token() ?>">
   <link rel="icon" href="<?= esc(app_icon_src('app.favicon', 'favicon.ico'), 'attr') ?>">
-  <?php /* Aplikasi terpasang: di Android manifest mengunci mendatar + layar penuh (docs/05 §Panggung 16:9) */ ?>
+  <?php /* Installed app: standalone, no fixed orientation; the rotate screen asks for landscape (docs/05 §Panggung 16:9) */ ?>
   <link rel="manifest" href="<?= base_url('manifest.json') ?>">
   <link rel="apple-touch-icon" href="<?= esc(app_icon_src('app.apple-touch', 'assets/app/apple-touch-icon.png'), 'attr') ?>">
   <meta name="mobile-web-app-capable" content="yes">

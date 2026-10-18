@@ -34,7 +34,7 @@ return [
     // Installed app (welcome page)
     'installApp'      => 'Install GELITA',
     'staffLogin'     => 'Staff login',
-    'installHint'     => 'Add it to the home screen: the screen stays sideways and full, with no address bar.',
+    'installHint'     => 'Add it to the home screen: GELITA opens like an app, with no address bar.',
     'installIos'      => 'On iPhone/iPad: tap Share, then choose Add to Home Screen.',
 
     // HUD & lantern

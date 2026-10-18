@@ -91,7 +91,7 @@ Area game dapat dipasang di layar utama perangkat:
 
 | Berkas | Fungsi |
 |---|---|
-| `GET /manifest.json` | dibuat `Game\AppController::manifest()`: nama, ikon (slot `app.*` atau berkas bawaan `public/assets/app/`), tampilan `fullscreen`, orientasi `landscape`; ditautkan `layouts/game.php` |
+| `GET /manifest.json` | dibuat `Game\AppController::manifest()`: nama, ikon (slot `app.*` atau berkas bawaan `public/assets/app/`), tampilan `standalone`, tanpa orientasi tetap (HyperOS menolak `fullscreen`/`landscape`); ditautkan `layouts/game.php` |
 | `public/sw.js` | service worker yang hanya menangani navigasi GET: bila jaringan putus, `offline.html` ditampilkan. API, event, POST formulir, dan aset tidak disentuh, sehingga tidak ada data penelitian di cache |
 | `public/offline.html` | halaman mandiri dwibahasa tanpa CSS/JS luar |
 | `public/assets/js/game/install.js` | mendaftarkan service worker |

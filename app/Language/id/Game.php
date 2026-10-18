@@ -34,7 +34,7 @@ return [
     // Aplikasi terpasang (halaman welcome)
     'installApp'      => 'Pasang GELITA',
     'staffLogin'     => 'Masuk staf',
-    'installHint'     => 'Pasang di layar utama: layar selalu mendatar dan penuh, tanpa bilah alamat.',
+    'installHint'     => 'Pasang di layar utama: GELITA terbuka seperti aplikasi, tanpa bilah alamat.',
     'installIos'      => 'Di iPhone/iPad: ketuk Bagikan, lalu pilih Tambah ke Layar Utama.',
 
     // HUD & lentera

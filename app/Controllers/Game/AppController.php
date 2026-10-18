@@ -14,6 +14,13 @@ use CodeIgniter\HTTP\ResponseInterface;
  * An empty slot falls back to the static icon in `public/assets/app/`.
  * The route is listed in LocaleFilter::STATELESS_PATHS: browsers fetch the
  * manifest without cookies, and each fetch must not start a session.
+ *
+ * Display is plain `standalone` with no fixed orientation. Xiaomi phones
+ * (HyperOS) refuse to start an installed app from its home-screen icon when
+ * the manifest asks for `fullscreen` or `landscape`: it opens once from
+ * Chrome, then the icon only flashes a "Web App" card and closes (decision
+ * log, 18 October 2026). The rotate screen (components/rotate-gate) asks for
+ * landscape instead, and the HUD keeps its full-screen button.
  */
 class AppController extends BaseController
 {
@@ -42,9 +49,7 @@ class AppController extends BaseController
             'dir'              => 'ltr',
             'start_url'        => './',
             'scope'            => './',
-            'display'          => 'fullscreen',
-            'display_override' => ['fullscreen', 'standalone'],
-            'orientation'      => 'landscape',
+            'display'          => 'standalone',
             'background_color' => '#0B1320',
             'theme_color'      => '#0B1320',
             'categories'       => ['education', 'games'],

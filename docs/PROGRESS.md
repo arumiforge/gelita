@@ -113,3 +113,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `sky/focused-heisenberg-aqw3qx` | Installed app: manifest `standalone` without fixed orientation so the icon opens on Xiaomi HyperOS | PR open |

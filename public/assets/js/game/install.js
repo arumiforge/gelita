@@ -9,11 +9,11 @@
  *   registered instead, which takes the worker out of every request (§11.1).
  * - Chrome/Android: `beforeinstallprompt` is held back, and the "Pasang GELITA"
  *   button on the welcome page fires it. The button only shows on touch
- *   devices that are not already running GELITA as an installed app. Once
- *   installed, the manifest locks landscape and fullscreen.
+ *   devices that are not already running GELITA as an installed app. The
+ *   installed app is standalone with no fixed orientation (Xiaomi HyperOS
+ *   will not start it otherwise); the rotate screen asks for landscape.
  * - iPhone/iPad have no such event, so they get the hint
- *   Share → Add to Home Screen. iOS does not lock rotation, so the rotate
- *   screen still applies there.
+ *   Share → Add to Home Screen.
  */
 const INSTALLED = '(display-mode: fullscreen), (display-mode: standalone)';
 
