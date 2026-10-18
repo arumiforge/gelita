@@ -14,8 +14,9 @@
  *
  * Owner redesign (18 October 2026): the owner's picture (lantern tree above a
  * lit village, `assets/ui/bg-auth-login.webp`, shipped with the game) fills the
- * stage; the ornate dark panel with the form sits in its empty right side. No
- * Jaka figure: the picture is the scene. Back in the HUD top-left.
+ * stage; the ornate dark panel with the form sits in its empty right side and
+ * Jaka waves from the stone path (`assets/ui/jaka-wave.webp`, one still picture,
+ * no animation frames). Back in the HUD top-left.
  *
  * @var array<string, string> $errors
  */
@@ -30,6 +31,9 @@
 
 <?= $this->section('content') ?>
 <section class="login" data-package-gate="page" data-package-next="masuk">
+  <?php /* Jaka waving, one still picture (owner, 18 October 2026), standing on the picture's path */ ?>
+  <img class="auth-jaka stage-box" src="<?= esc(game_asset_url('ui/jaka-wave.webp'), 'attr') ?>" alt="" width="658" height="1490" decoding="async" draggable="false">
+
   <div class="login-panel ornate-panel stage-box">
     <?= $this->include('partials/ornate-frame') ?>
     <div class="ornate-body stage-scroll">

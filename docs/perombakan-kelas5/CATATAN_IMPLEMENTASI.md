@@ -1930,3 +1930,12 @@ Decisions:
 - **Tap card** (`components/narrator-tap`, intro, ending, region dialogue, region done): `inset: 0` at z-index 30, above the HUD (the intro's z-index 14 exception from the morning is gone). The `ui.lantern` picture at 192 dp (136 dp on the chapter and region-done cards, which also carry a title) with a breathing glow behind it; the SVG on a gold disc stays only while no picture is uploaded. Label 56 dp, hint 24 dp. No outline, also on the focus `narrator.js` gives the button on load; focus and press brighten the lantern instead.
 - **Code version:** `asset_url_versioned()` adds `asset_file_version()` = `gelita.assetVersion` + 8 hex characters from the file's mtime and size while package mode is off, so a changed CSS/JS entry gets a new immutable URL with or without the deploy scripts. Imported modules still rely on nginx revalidation (`no-cache`); package mode on is unchanged (code from the package snapshot).
 - **Tests.** `AssetFileVersionTest` (new), `AssetPackageCodeUrlTest`, `StartGateTest`, `RegisterWizardTest`, `MediaSlotPagesTest` updated. Checked in Chromium at 1280 × 720 on a local SQLite world: `/masuk`, `/daftar/1–3`, `/ganti-sandi`, the intro tap card, and the chapter tap card.
+
+## Jaka on the account pages (18 October 2026, branch `sky/blissful-brown-pmxupk`)
+
+Owner request: add the attached Jaka (waving, red scarf, backpack) without animation frames to `/masuk`, `/ganti-sandi`, and `/daftar/1–3`, placed to match the background; a tall figure is fine.
+
+Decisions:
+- **One still picture shipped with the game:** `public/assets/ui/jaka-wave.webp`, the owner's transparent 1024 × 1536 WebP trimmed to the figure (658 × 1490, quality 85). It is a plain `<img class="auth-jaka">`, not `components/character`, so no pose frames or `char.jaka.*` slots are involved; `assets/ui` is already packed into asset packages.
+- **Placement (dp):** 265 × 600 with the feet at y 712. `/masuk` and `/ganti-sandi`: x 340, on the stone steps below the lantern tree. `/daftar/1–3`: x 372, on the path at the right pillar of the gate, so the lit arch opening stays visible and the panel (x ≥ 656) stays clear. This partly reverses "no Jaka" from the morning's redesign.
+- **Tests.** `StartGateTest` and `RegisterWizardTest` check the still picture (and still no `data-character="jaka"`). Checked in Chromium at 1280 × 720 on `/masuk`, `/ganti-sandi`, `/daftar/1`, and `/daftar/3`.

@@ -91,7 +91,7 @@ final class RegisterWizardTest extends CIUnitTestCase
         $this->send(Method::GET, 'daftar/1')->assertOK();   // kembali ke langkah selesai tetap boleh
     }
 
-    /** Owner redesign (18 October 2026): the gate picture with the ornate panel on its right, no Jaka. */
+    /** Owner redesign (18 October 2026): the gate picture, Jaka as one still picture, the ornate panel on the right. */
     public function testStepsShowTheGatePictureWithTheOrnatePanel(): void
     {
         $_SESSION[RegisterController::WIZARD] = ['1' => self::ABOUT, '2' => self::SCHOOL];
@@ -103,7 +103,8 @@ final class RegisterWizardTest extends CIUnitTestCase
             $this->assertStringContainsString('class="ornate"', $html, "step {$step}: gold frame");
             $this->assertStringNotContainsString('panel-parchment', $html, "step {$step}");
             $this->assertStringContainsString('src="' . base_url('assets/ui/bg-auth-register.webp') . '"', $html, "step {$step}");
-            $this->assertStringNotContainsString('data-character="jaka"', $html, "step {$step}: the picture is the scene");
+            $this->assertStringNotContainsString('data-character="jaka"', $html, "step {$step}: no animated figure");
+            $this->assertSame(1, substr_count($html, 'class="auth-jaka stage-box"'), "step {$step}: Jaka once, still");
         }
     }
 
