@@ -7,7 +7,7 @@
  * "Kata sandi baru tersimpan".
  *
  * Owner redesign (18 October 2026): the same picture and right-side ornate
- * panel as `/masuk` (`assets/ui/bg-auth-login.webp`).
+ * panel as `/masuk` (`assets/ui/bg-auth-login.webp`), with Jaka on the path.
  *
  * @var bool                  $mustChange  datang dari reset guru
  * @var string|null           $username    nama pengguna siswa ini (cek "memuat nama pengguna")
@@ -23,6 +23,9 @@
 
 <?= $this->section('content') ?>
 <section class="change-password">
+  <?php /* Jaka waving, one still picture (owner, 18 October 2026), standing on the picture's path */ ?>
+  <img class="auth-jaka stage-box" src="<?= esc(game_asset_url('ui/jaka-wave.webp'), 'attr') ?>" alt="" width="658" height="1490" decoding="async" draggable="false">
+
   <div class="password-panel ornate-panel stage-box">
     <?= $this->include('partials/ornate-frame') ?>
     <div class="ornate-body stage-scroll">

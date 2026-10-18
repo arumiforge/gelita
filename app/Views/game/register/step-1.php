@@ -27,6 +27,9 @@ $focus   = static fn (string $f): string => $first === $f ? ' autofocus' : '';
 
 <?= $this->section('content') ?>
 <section class="register" data-step="1" data-package-gate="page" data-package-next="daftar/1">
+  <?php /* Jaka waving, one still picture (owner, 18 October 2026), standing on the picture's path */ ?>
+  <img class="auth-jaka stage-box" src="<?= esc(game_asset_url('ui/jaka-wave.webp'), 'attr') ?>" alt="" width="658" height="1490" decoding="async" draggable="false">
+
   <div class="register-panel ornate-panel stage-box">
     <?= $this->include('partials/ornate-frame') ?>
     <?= $this->include('game/register/_head') ?>

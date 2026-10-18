@@ -531,14 +531,17 @@ body.is-auth-art .scene::after { background: linear-gradient(to right, transpare
 .start-choice .start-panel { --y: 160; --h: 432; }
 
 /* ---------- Masuk `/masuk`, Ganti sandi `/ganti-sandi` (owner redesign, 18 October 2026):
-   the panel sits in the empty right side of the owner's picture (x ≥ 720), no Jaka.
+   the panel sits in the empty right side of the owner's picture (x ≥ 720), Jaka on the path.
    Ganti sandi ends at 640 above the nav bar (Profil) ---------- */
+/* Jaka (one still picture, 658 × 1490) stands on the stone path, feet at y 712 */
+.auth-jaka      { --x: 340; --y: 112; --w: 265; --h: 600; }
 .login-panel    { --x: 720; --y: 88;  --w: 512; --h: 584; }
 .password-panel { --x: 720; --y: 72;  --w: 512; --h: 568; }
 
 /* ---------- Daftar `/daftar/1…3` (owner redesign, 18 October 2026): the panel in the
-   empty right side of the gate picture (x ≥ 656), no Jaka; inside the panel the head is
+   empty right side of the gate picture (x ≥ 656), Jaka on the path; inside the panel the head is
    32–96 (below the crest), the fields scroll, the button bar is the last 80 ---------- */
+.register .auth-jaka { --x: 372; }
 .register-panel { --x: 656; --y: 72; --w: 576; --h: 600; }
 
 /* ---------- Siapkan GELITA `/siapkan` and Periksa paket `/periksa-paket` (asset package

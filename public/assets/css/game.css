@@ -435,6 +435,10 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
 .inspect[aria-busy="true"] .inspect-actions .btn { cursor: progress; }
 
 /* =========================== AKUN =========================== */
+/* Account pages: Jaka waving, one still picture without animation frames (owner,
+   18 October 2026); his feet rest on the bottom of his box */
+.auth-jaka { object-fit: contain; object-position: bottom; filter: drop-shadow(0 .75rem 1.25rem rgba(6, 10, 18, .55)); pointer-events: none; user-select: none; }
+
 /* Ganti sandi: the ornate dark panel like /masuk (owner redesign, 18 October 2026) */
 .password-panel .ornate-body { gap: var(--gap-2); }
 .password-panel .alert { margin: 0; }
@@ -464,7 +468,7 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
 /* ---------- Pendaftaran ----------
    The ornate dark panel with the head (title + stepper), scrolling fields, and
    the button bar, in the empty right side of the gate picture (owner redesign,
-   18 October 2026; before that Jaka stood on the left as on /mulai). */
+   18 October 2026), with Jaka on the path (.auth-jaka). */
 /* Head in three centred rows (eyebrow, title, stepper): the panel is 576 dp
    wide since the 18 October 2026 redesign, too narrow for one row */
 .register-panel { grid-template-rows: 6.25rem minmax(0, 1fr); }
