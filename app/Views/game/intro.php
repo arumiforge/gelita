@@ -21,6 +21,12 @@
  * Perpindahan slide memakai jangkar #slide-n dan CSS :target, sehingga tetap
  * berjalan tanpa JavaScript (kartu ketuk dan kontrol narasi tersembunyi).
  *
+ * Layout (owner, 18 October 2026): full-size HUD (big logo and controls)
+ * without the shard pill; "Bagian n dari N" and the page dots centred in the
+ * HUD; Lewati under the menu button; a full-width caption along the bottom
+ * whose title row holds the narrator controls (▶ reads "Lanjut"); "Mulai
+ * petualangan" centred on the page. See partials/cine-slides.
+ *
  * Setelah registrasi, halaman diawali kartu sambutan (flash `welcome`); JS
  * memindahkannya ke kartu ketuk. Kode peserta TIDAK ditampilkan di sini —
  * kode itu untuk penelitian.
@@ -36,6 +42,9 @@ $welcome = session('welcome');
 <?= $this->section('title') ?><?= esc(lang('Game.introTitle')) ?><?= $this->endSection() ?>
 <?= $this->section('background') ?><?= media_key_src('bg.intro') ?? media_key_src('bg.welcome') ?? '' ?><?= $this->endSection() ?>
 <?= $this->section('bodyClass') ?>is-cinematic<?= $this->endSection() ?>
+<?php /* Full-size HUD (big logo and controls); its centre holds the slide progress, so no shard pill */ ?>
+<?= $this->section('hudStyle') ?>menu<?= $this->endSection() ?>
+<?= $this->section('hudShards') ?>off<?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
 <?php /* Next screen: Peta Kedu behind the opening map curtain */ ?>
@@ -70,7 +79,7 @@ $welcome = session('welcome');
         'final'    => lang('Game.startJourney'),
     ]) ?>
 
-    <?= component('narrator-controls') ?>
+    <?= component('narrator-controls', ['nextLabel' => true]) ?>
     <?= component('narrator-tap') ?>
   <?php endif ?>
 </section>

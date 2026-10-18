@@ -1906,3 +1906,16 @@ Decisions:
 - It opens once per browser session (`sessionStorage`), after the rotate screen is gone; the button reopens it. Computers: no automatic dialog, the button only with Chrome's offer. The Siapkan GELITA page keeps its inline hint.
 - Not done: asking for Android or Xiaomi permissions (a web page cannot), or detecting an existing install with `getInstalledRelatedApps()` (the dialog's "already installed" line covers that case).
 - `docs/08` device step no longer says the installed app locks landscape (left over from the standalone manifest change, PR #142).
+
+## Intro screen redesign (18 October 2026, branch `sky/blissful-brown-pmxupk`)
+
+Owner request: bigger, touch-friendly icons on the intro; "Bagian n dari N" at the top centre inside the HUD with the page dots below it; the narrator controls on the caption title's row at the far right, the caption's Lanjut button replaced by ▶ reading "Lanjut" while there is a next slide; "Mulai petualangan" in the middle of the page; Lewati right under the menu button; a full-width caption filling the bottom; a bigger GELITA logo.
+
+Decisions:
+- **Full-size HUD on `/intro` and `/penutup`** (section `hudStyle` = `menu`): the 100 dp logo and 68 dp round controls. Section `hudShards` = `off`, because the HUD centre now holds the slide progress. Story line `intro-07` still points at "the lantern at the top of the screen"; it is visible on every page after the intro.
+- **The ending shares the layout.** Both screens render `partials/cine-slides`, so the change applies to both; the dialogue, Kenali, and map story keep theirs.
+- **Coordinates (dp):** `.cine-top` centred at y 12; caption 0, 496, 1280 × 224; narrator controls at y 508, 48 dp from the right (56 dp buttons, 8 dp apart; the head row keeps `--cine-controls-w` = 33rem free for them); character box 64, 112, 300 × 400; `.cine-final` centred between the HUD (120) and the caption; Lewati at y 104 flush with the menu disc's right edge (21 dp).
+- **HUD band passes taps through on these screens** (`pointer-events: none` on `.hud`, back on its logo and controls), so the page dots under the HUD band work. "Ketuk untuk mulai" now covers the whole stage at z-index 14, under the HUD and Lewati, so both work before the story starts.
+- **No-JavaScript fallback kept:** the caption still renders Kembali/Lanjut links (`.slide-nav.cine-step`); `.cine.is-live` hides them, and the swipe still clicks them. The final link moved out of `.slide-nav`, so `narrator.js` and `slides.js` now find it by `[data-slide-final]:not([href^="#"])` (same element in every other screen).
+- **`narrator-controls` takes `nextLabel`:** ▶ gets the visible label and accessible name "Lanjut"; the label hides while the button is disabled (last slide).
+- **Tests.** `CinematicViewTest::testIntroLayoutPutsProgressInTheHudAndTheFinalButtonInTheMiddle`. Checked in Chromium at 1280 × 720 (tap card, narrated slides, a character slide, the last slide, and without JavaScript) on a local SQLite world.

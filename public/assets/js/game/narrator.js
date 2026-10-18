@@ -232,7 +232,7 @@ export function initNarrator(root, { onFinish = null, onSlide = null } = {}) {
       onFinish();
       return;
     }
-    const final = $('.slide-nav a.btn-primary:not([href^="#"])', current());
+    const final = $('[data-slide-final]:not([href^="#"])', current());
     if (final) final.click();
   }
 

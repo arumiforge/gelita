@@ -6,6 +6,15 @@
  * bergaya subtitle, efek layar, dan audio narasi bahasa aktif. Slide
  * berpindah lewat #{prefix}{n} + :target tanpa JavaScript.
  *
+ * Layout (intro redesign, 18 October 2026):
+ * - `.cine-top`: "Bagian n dari N" and the page dots, centred in the HUD band;
+ * - `.cine-caption`: full-width subtitle panel along the bottom edge; the
+ *   speaker and title share their row with the narrator controls (right);
+ * - `.cine-final`: the last slide's main button, centred on the page.
+ * The caption's own Kembali/Lanjut links are the no-JavaScript fallback; once
+ * narrator.js runs they are hidden (swipe still clicks them) and the ▶ button
+ * in the narrator controls reads "Lanjut".
+ *
  * @var list<array<string, mixed>> $slides
  * @var string                     $locale
  * @var string                     $prefix
@@ -25,11 +34,12 @@ $total = count($slides);
     $text      = tr($slide, 'text', $locale);
     $audioId   = (int) ($locale === 'en' ? ($slide['audio_en_asset_id'] ?? 0) : ($slide['audio_id_asset_id'] ?? 0));
     $bgId      = (int) ($slide['background_media_id'] ?? 0);
+    $progress  = lang('Game.slideOf', [$n, $total]);
     ?>
     <li class="slide cine-slide<?= $character === 'narator' ? ' is-narrator' : '' ?>" id="<?= esc($prefix . $n, 'attr') ?>" data-index="<?= $n ?>"
         data-character="<?= esc($character, 'attr') ?>" data-pose="<?= esc($pose, 'attr') ?>"
         <?= $effect !== '' ? 'data-effect="' . esc($effect, 'attr') . '"' : '' ?>
-        aria-label="<?= esc(lang('Game.slideOf', [$n, $total]), 'attr') ?>">
+        aria-label="<?= esc($progress, 'attr') ?>">
       <?php if (media_exists($bgId)): ?>
         <img class="cine-bg" src="<?= esc(media_src($bgId), 'attr') ?>" alt="" <?= $n === 1 ? 'fetchpriority="high"' : 'loading="lazy"' ?>>
       <?php endif ?>
@@ -38,30 +48,51 @@ $total = count($slides);
           <?= component('character', ['character' => $character, 'pose' => $pose, 'class' => 'pose-' . $pose]) ?>
         </div>
       <?php endif ?>
+
+      <nav class="cine-top" aria-label="<?= esc($progress, 'attr') ?>">
+        <span class="eyebrow"><?= esc($progress) ?></span>
+        <ol class="slide-dots">
+          <?php for ($i = 1; $i <= $total; $i++): ?>
+            <li>
+              <a class="slide-dot<?= $i === $n ? ' is-current' : '' ?>" href="#<?= esc($prefix . $i, 'attr') ?>"
+                 <?= $i === $n ? 'aria-current="step"' : '' ?>><span class="visually-hidden"><?= esc(lang('Game.slideOf', [$i, $total])) ?></span></a>
+            </li>
+          <?php endfor ?>
+        </ol>
+      </nav>
+
       <div class="cine-caption" data-narrator-advance>
         <div class="cine-caption-head">
-          <span class="eyebrow"><?= esc(lang('Game.slideOf', [$n, $total])) ?></span>
           <?php if ($character !== 'narator'): ?>
             <span class="cine-speaker"><?= esc(lang_or('Game.char_' . $character, $character)) ?></span>
           <?php endif ?>
-        </div>
-        <div class="cine-caption-body stage-scroll">
           <?php if ($title !== ''): ?>
             <h2 class="cine-title"><?= esc($title) ?></h2>
           <?php endif ?>
+        </div>
+        <div class="cine-caption-body stage-scroll">
           <p class="slide-text"><?= esc($text) ?></p>
           <?php if (($audioSrc = audio_src($audioId ?: null)) !== null): ?>
             <?= component('audio-player', ['audioId' => $audioId, 'audioSrc' => $audioSrc, 'transcript' => $text]) ?>
           <?php endif ?>
         </div>
-        <?= component('partials/slide-nav', [
-            'n'        => $n,
-            'total'    => $total,
-            'prefix'   => $prefix,
-            'finalUrl' => $finalUrl,
-            'final'    => $final,
-        ]) ?>
+        <?php if ($total > 1): ?>
+          <div class="slide-nav cine-step">
+            <?php if ($n > 1): ?>
+              <a class="btn btn-quiet" href="#<?= esc($prefix . ($n - 1), 'attr') ?>"><?= icon('left') ?> <?= esc(lang('Game.back')) ?></a>
+            <?php endif ?>
+            <?php if ($n < $total): ?>
+              <a class="btn btn-primary" href="#<?= esc($prefix . ($n + 1), 'attr') ?>"><?= esc(lang('Game.continue')) ?> <?= icon('right') ?></a>
+            <?php endif ?>
+          </div>
+        <?php endif ?>
       </div>
+
+      <?php if ($n === $total): ?>
+        <div class="cine-final">
+          <a class="btn btn-primary btn-lg" href="<?= esc($finalUrl, 'attr') ?>" data-slide-final><?= esc($final) ?> <?= icon('right') ?></a>
+        </div>
+      <?php endif ?>
     </li>
   <?php endforeach ?>
 </ol>
