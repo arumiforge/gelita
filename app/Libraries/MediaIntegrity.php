@@ -62,7 +62,7 @@ class MediaIntegrity
     /** @return list<string> path relatif terhadap public/ */
     private function uploadedFiles(): array
     {
-        $dir = FCPATH . 'assets' . DIRECTORY_SEPARATOR . 'uploads';
+        $dir = FCPATH . MediaStore::uploadDir();
 
         if (! is_dir($dir)) {
             return [];

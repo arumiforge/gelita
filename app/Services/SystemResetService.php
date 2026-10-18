@@ -73,7 +73,7 @@ class SystemResetService
     /** @var list<string> */
     private array $warnings = [];
 
-    /** Folder gambar mockup relatif FCPATH; null = MockupGenerator::DIR */
+    /** Folder gambar mockup relatif FCPATH; null = MockupGenerator::defaultDir() */
     private ?string $mockupDir;
 
     public function __construct(?BaseConnection $db = null, ?string $exportsDir = null, ?string $mockupDir = null)

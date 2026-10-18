@@ -269,7 +269,7 @@ final class NarrationCatalog
             foreach ($media as $row) {
                 $path = (string) $row['storage_path'];
 
-                if ((str_starts_with($path, MediaStore::UPLOAD_DIR) || str_starts_with($path, NarrationImporter::FOLDER))
+                if ((str_starts_with($path, MediaStore::uploadDir()) || str_starts_with($path, NarrationImporter::FOLDER))
                     && ! str_contains($path, '..') && is_file(FCPATH . $path) && @unlink(FCPATH . $path)) {
                     $deleted++;
                 }

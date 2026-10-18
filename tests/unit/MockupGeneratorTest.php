@@ -36,7 +36,7 @@ final class MockupGeneratorTest extends CIUnitTestCase
         parent::setUp();
 
         $this->conn = $this->createGradeFiveWorld();
-        $this->dir  = MediaStore::UPLOAD_DIR . 'mockup-uji-' . bin2hex(random_bytes(4)) . '/';
+        $this->dir  = MediaStore::uploadDir() . 'mockup-uji-' . bin2hex(random_bytes(4)) . '/';
 
         // Slot impor menunjuk ke assets/uploads/{kunci}.png; gambar asli yang mungkin
         // ada di folder unggahan mesin pengembang tidak boleh memengaruhi uji.
@@ -177,10 +177,6 @@ final class MockupGeneratorTest extends CIUnitTestCase
         $this->assertFileExists($mockup);
 
         // Admin mengganti satu mockup dengan gambar asli lewat MediaStore
-        if (is_file(FCPATH . MediaStore::UPLOAD_DIR . 'challenge.item.tmg-4-03.png')) {
-            $this->markTestSkipped('Folder unggahan sudah berisi gambar asli challenge.item.tmg-4-03.png; uji tidak menimpanya.');
-        }
-
         $png    = $this->png(240, 240);
         $stored = (new MediaStore())->storeCopy($png, 'challenge.item.tmg-4-03', ['image'], null, true);
         unlink($png);

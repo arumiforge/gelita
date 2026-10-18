@@ -6,6 +6,7 @@ use App\Models\MediaAssetModel;
 use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\Test\CIUnitTestCase;
 use Tests\Support\Database\GradeFiveWorld;
+use Tests\Support\RealUploadsGuard;
 
 /**
  * `gelita:katalog:impor` (CatalogImporter): images of a small fake Katalog
@@ -18,6 +19,7 @@ use Tests\Support\Database\GradeFiveWorld;
 final class CatalogImportTest extends CIUnitTestCase
 {
     use GradeFiveWorld;
+    use RealUploadsGuard;
 
     private BaseConnection $sqlite;
 
@@ -26,6 +28,10 @@ final class CatalogImportTest extends CIUnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        // The importer stores files under these official names; the copies in
+        // the real upload folder must survive every test of this class
+        $this->guardRealUploads(['ui.logo-hero.webp', 'app.icon-192.png', 'app.favicon.png', 'char.jaka.idle.1.webp', 'bg.story.intro.1.webp']);
 
         $this->sqlite      = $this->createGradeFiveWorld();
         $this->catalog = sys_get_temp_dir() . '/gelita-katalog-' . bin2hex(random_bytes(4));
@@ -68,7 +74,7 @@ final class CatalogImportTest extends CIUnitTestCase
 
     protected function tearDown(): void
     {
-        foreach (model(MediaAssetModel::class)->like('storage_path', MediaStore::UPLOAD_DIR, 'after')->findAll() as $row) {
+        foreach (model(MediaAssetModel::class)->like('storage_path', MediaStore::uploadDir(), 'after')->findAll() as $row) {
             if (is_file(FCPATH . $row['storage_path'])) {
                 unlink(FCPATH . $row['storage_path']);
             }
@@ -77,6 +83,7 @@ final class CatalogImportTest extends CIUnitTestCase
         $this->removeDir($this->catalog);
         $this->dropResetTables();
         parent::tearDown();
+        $this->assertRealUploadsUntouched();
     }
 
     public function testDryRunChangesNothing(): void
@@ -101,7 +108,7 @@ final class CatalogImportTest extends CIUnitTestCase
         $logo = $byKey('ui.logo-hero');
         $this->assertSame(CatalogImporter::CREDIT, $logo['credit']);
         $this->assertSame(1, (int) $logo['is_active']);
-        $this->assertStringStartsWith(MediaStore::UPLOAD_DIR, $logo['storage_path']);
+        $this->assertStringStartsWith(MediaStore::uploadDir(), $logo['storage_path']);
         $this->assertFileExists(FCPATH . $logo['storage_path']);
         $this->assertSame('image/webp', $logo['mime_type'], 'stored as lossy WebP');
 

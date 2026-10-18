@@ -264,7 +264,7 @@ final class SystemResetTest extends CIUnitTestCase
      */
     public function testResetFillsEveryChallengeSlotWithMockups(): void
     {
-        $dir = MediaStore::UPLOAD_DIR . 'mockup-reset-' . bin2hex(random_bytes(4)) . '/';
+        $dir = MediaStore::uploadDir() . 'mockup-reset-' . bin2hex(random_bytes(4)) . '/';
 
         try {
             $service = new SystemResetService($this->conn, $this->exportsDir, $dir);
