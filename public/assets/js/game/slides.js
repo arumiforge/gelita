@@ -97,7 +97,7 @@ export function initSlides({ list, prefix, keyboard = true, hash = true, swipe =
         show(current + 1);
       } else {
         // Slide terakhir: ikuti tautan akhirnya (peta / wilayah / tutup)
-        const final = $('.slide-nav a.btn-primary:not([href^="#"])', slides[total - 1]);
+        const final = $('[data-slide-final]:not([href^="#"])', slides[total - 1]);
         if (final) final.click();
       }
     } else if (event.key === 'ArrowLeft' || event.key === 'PageUp') {

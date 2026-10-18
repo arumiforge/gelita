@@ -313,7 +313,7 @@
 .narrator-auto[aria-pressed="true"] .narrator-auto-track i { transform: translateX(.875rem); background: var(--navy-900); }
 
 /* Slide terakhir selesai dibacakan: tombol akhirnya berdenyut */
-.narrator.is-finished .slide.is-current .slide-nav a.btn-primary { animation: tap-glow 1.8s ease-in-out infinite; }
+.narrator.is-finished .slide.is-current [data-slide-final] { animation: tap-glow 1.8s ease-in-out infinite; }
 
 /* ======================= EFEK LAYAR ======================= */
 /* Diputar sekali saat slide muncul (narrator.js mengganti kelas fx-*). */
@@ -381,7 +381,7 @@
 body.is-cinematic .scene-img.is-visible { animation: kenburns 40s ease-in-out infinite alternate; }
 
 .story { position: absolute; inset: 0; }
-.cine > .welcome-card { position: absolute; top: calc(72 * var(--dp)); left: calc(260 * var(--dp)); z-index: 2; width: calc(760 * var(--dp)); margin: 0; }
+.cine > .welcome-card { position: absolute; top: calc(128 * var(--dp)); left: calc(260 * var(--dp)); z-index: 2; width: calc(760 * var(--dp)); margin: 0; }
 .story > .story-empty { position: absolute; top: calc(200 * var(--dp)); left: calc(320 * var(--dp)); width: calc(640 * var(--dp)); }
 
 .cine-slides { position: absolute; inset: 0; }
@@ -433,7 +433,8 @@ body.is-cinematic .scene-img.is-visible { animation: kenburns 40s ease-in-out in
 }
 .cine-stage .character-fallback { width: 7.5rem; font-size: var(--fs-h1); }
 
-/* Kotak teks bergaya subtitle: kepala + navigasi sebaris, isi bergulir */
+/* Subtitle box. Dialogue: head + navigation in one row, body scrolls below.
+   Cinematic (intro redesign, 18 October 2026): see the block below. */
 .cine-caption, .dialogue-box {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
@@ -441,12 +442,6 @@ body.is-cinematic .scene-img.is-visible { animation: kenburns 40s ease-in-out in
   column-gap: var(--gap-4);
   row-gap: var(--gap-2);
   padding: var(--gap-3) var(--gap-5);
-}
-.cine-caption {
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  background: linear-gradient(to bottom, rgba(11, 19, 32, .82), rgba(11, 19, 32, .92));
-  box-shadow: var(--shadow-2);
 }
 .cine-caption-head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--gap-2) var(--gap-3); min-width: 0; }
 .cine-caption-head .eyebrow { margin: 0; color: var(--ink-dim); }
@@ -467,34 +462,153 @@ body.is-cinematic .scene-img.is-visible { animation: kenburns 40s ease-in-out in
   font-size: var(--fs-h3);
   letter-spacing: .02em;
 }
-.cine .slide-text { color: var(--ink); font-size: var(--fs-reading); line-height: 1.5; text-wrap: pretty; }
+.cine .slide-text { margin: 0; color: var(--ink); font-size: var(--fs-reading); line-height: 1.5; text-wrap: pretty; }
 .cine .slide-nav .btn-quiet { background: rgba(255, 255, 255, .08); color: var(--gold-300); }
 @media (hover: hover) {
   .cine .slide-nav .btn-quiet:hover { background: rgba(255, 255, 255, .14); }
 }
 .cine .slide-nav .btn-quiet:active { background: rgba(255, 255, 255, .18); }
-.cine .slide-dot { border-color: var(--gold-600); }
+.cine .slide-dot { border-color: var(--gold-500); background: rgba(11, 19, 32, .55); }
 .cine .slide-dot.is-current { background: var(--gold-500); border-color: var(--gold-500); }
 .cine .slide-dot:active, .kenal .slide-dot:active { background: var(--gold-300); }
-/* ◀ ada di kontrol narasi: tombol Kembali tidak memakan tempat */
-.cine.is-live .slide-nav > .btn-quiet, .cine.is-live .slide-nav-spacer { display: none; }
 
-.cine-caption .slide-nav, .dialogue-box .slide-nav {
+.dialogue-box .slide-nav {
   grid-column: 2;
   grid-row: 1;
   flex-wrap: nowrap;
   gap: var(--gap-2);
   margin: 0;
 }
-.cine-caption .slide-nav .btn, .dialogue-box .slide-nav .btn { min-height: 2.5rem; padding: var(--gap-1) var(--gap-4); font-size: var(--fs-caption); white-space: nowrap; }
-.cine-caption .slide-dots, .dialogue-box .slide-dots { gap: var(--gap-1); }
-.cine-caption .slide-dot, .dialogue-box .slide-dot { width: .625rem; height: .625rem; }
+.dialogue-box .slide-nav .btn { min-height: 2.5rem; padding: var(--gap-1) var(--gap-4); font-size: var(--fs-caption); white-space: nowrap; }
+.dialogue-box .slide-dots { gap: var(--gap-1); }
+.dialogue-box .slide-dot { width: .625rem; height: .625rem; }
 /* Phase F2: 10 dp dots, 48 dp tall hit area as wide as dot + gap (14 dp).
    Lanjut/Kembali (40 dp) grow to 48 dp through .btn::before (components.css). */
-.cine-caption .slide-dot::before, .dialogue-box .slide-dot::before { width: calc(.625rem + var(--gap-1)); }
+.dialogue-box .slide-dot::before { width: calc(.625rem + var(--gap-1)); }
 
-/* Kontrol narasi + "Lewati" di kanan atas, di bawah HUD (y 72) */
-.cine .narrator-controls, .dialogue .narrator-controls {
+/* ---------- Cinematic layout (intro, ending) ----------
+   Coordinates in dp (stage.css §Sinematik): full-size HUD 0–120 with
+   "Bagian n dari N" and the page dots centred in it; Lewati under the menu
+   button; caption 0, 496, 1280 × 224 along the bottom edge, its first row
+   (speaker, title) shared with the narrator controls at the right; the last
+   slide's main button centred between the HUD and the caption. */
+
+/* The HUD band lets taps through to the page dots; its own controls still take them */
+body.is-cinematic .hud { pointer-events: none; }
+body.is-cinematic .hud-identity, body.is-cinematic .hud-controls { pointer-events: auto; }
+/* "Ketuk untuk mulai" veils the whole stage but stays under the HUD and Lewati,
+   so both work before the story starts */
+body.is-cinematic .narrator-tap { inset: 0; z-index: 14; }
+
+.cine-top {
+  position: absolute;
+  top: calc(12 * var(--dp));
+  left: 50%;
+  z-index: 3;
+  display: grid;
+  justify-items: center;
+  transform: translateX(-50%);
+  -webkit-touch-callout: none;
+  user-select: none;
+}
+.cine-top .eyebrow {
+  margin: 0;
+  padding: var(--gap-1) var(--gap-4);
+  border-radius: var(--radius-pill);
+  background: var(--hud-backing);
+  color: var(--gold-300);
+  font-size: 1.125rem;
+  letter-spacing: .06em;
+  text-shadow: 0 1px .25rem rgba(11, 19, 32, .8);
+}
+/* 16 dp dots, 48 dp hit area as wide as dot + gap */
+.cine-top .slide-dots { gap: var(--gap-4); }
+.cine-top .slide-dot { width: 1rem; height: 1rem; box-shadow: 0 0 .375rem rgba(11, 19, 32, .8); }
+.cine-top .slide-dot.is-current { box-shadow: 0 0 .75rem var(--glow); }
+.cine-top .slide-dot::before { width: calc(1rem + var(--gap-4)); }
+
+.cine-caption {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  row-gap: var(--gap-2);
+  padding: var(--gap-3) var(--gap-7) var(--gap-4);
+  border-top: 1px solid var(--line);
+  background: linear-gradient(to bottom, rgba(11, 19, 32, .84), rgba(11, 19, 32, .94) 45%);
+  box-shadow: 0 -.75rem 2rem rgba(11, 19, 32, .55);
+}
+/* Speaker + title, as tall as the narrator controls beside them; once those
+   controls show, the right side stays free for them (`--cine-controls-w`) */
+.cine-caption .cine-caption-head { min-height: calc(66 * var(--dp)); }
+.cine.is-live .cine-caption .cine-caption-head { padding-right: calc(var(--cine-controls-w) + var(--gap-4)); }
+.cine-caption .cine-speaker { padding: var(--gap-1) var(--gap-4); font-size: var(--fs-body); }
+.cine-caption .cine-title { margin: 0; font-size: 1.75rem; }
+/* Kembali/Lanjut without JavaScript; narrator.js puts them in the controls */
+.cine-caption .slide-nav { justify-content: flex-end; gap: var(--gap-3); margin: 0; }
+.cine-caption .slide-nav .btn { min-height: var(--tap); }
+.cine.is-live .cine-caption .slide-nav { display: none; }
+.cine.is-live .cine-caption { grid-template-rows: auto minmax(0, 1fr); }
+
+/* Last slide: the main button in the middle of the page */
+.cine-final {
+  position: absolute;
+  inset: calc(120 * var(--dp)) 0 calc(224 * var(--dp));
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+.cine-final .btn {
+  min-height: 4.5rem;
+  padding: var(--gap-3) var(--gap-7);
+  font-size: 1.75rem;
+  pointer-events: auto;
+  animation: cine-rise .6s ease .3s both;
+}
+.cine-final .btn .icon { width: 1.75rem; height: 1.75rem; }
+.narrator.is-finished .slide.is-current .cine-final .btn { animation: tap-glow 1.8s ease-in-out infinite; }
+
+/* Narrator controls on the caption's first row, at the right: 56 dp buttons
+   8 dp apart, so their hit areas never overlap */
+.cine { --cine-controls-w: 33rem; }
+.cine .narrator-controls {
+  position: absolute;
+  top: calc(508 * var(--dp));
+  right: var(--gap-7);
+  z-index: 5;
+  flex-wrap: nowrap;
+  gap: var(--gap-2);
+  padding: var(--gap-1);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  background: rgba(11, 19, 32, .82);
+  box-shadow: var(--shadow-2);
+}
+.cine .narrator-controls .icon-btn { width: 3.5rem; height: 3.5rem; }
+.cine .narrator-controls .icon-btn .icon { width: 1.75rem; height: 1.75rem; }
+.cine .narrator-controls .narrator-toggle { border: .125rem solid var(--gold-500); color: var(--gold-300); }
+/* ▶ reads "Lanjut" while there is a next slide (the old Lanjut button) */
+.cine .narrator-next.has-label:not(:disabled) {
+  width: auto;
+  gap: var(--gap-2);
+  grid-auto-flow: column;
+  padding: 0 var(--gap-4) 0 var(--gap-5);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(to bottom, var(--gold-300), var(--gold-500));
+  color: var(--navy-900);
+  font-size: var(--fs-body);
+  font-weight: 800;
+}
+.cine .narrator-next.has-label:not(:disabled) .icon { filter: none; }
+.narrator-next-label { white-space: nowrap; }
+.narrator-next:disabled .narrator-next-label { display: none; }
+.cine .narrator-auto { min-height: 3.5rem; padding: 0 var(--gap-4) 0 var(--gap-3); font-size: var(--fs-body); }
+.cine .narrator-auto-track { width: 2.75rem; height: 1.5rem; border-radius: .75rem; }
+.cine .narrator-auto-track i { width: 1.25rem; height: 1.25rem; }
+.cine .narrator-auto[aria-pressed="true"] .narrator-auto-track i { transform: translateX(1.25rem); }
+
+/* Dialogue scenes keep their controls at the top right, under the HUD (y 72) */
+.dialogue .narrator-controls {
   position: absolute;
   top: calc(72 * var(--dp));
   right: calc(160 * var(--dp));
@@ -504,15 +618,27 @@ body.is-cinematic .scene-img.is-visible { animation: kenburns 40s ease-in-out in
   border-radius: var(--radius-pill);
   background: rgba(11, 19, 32, .66);
 }
+/* "Lewati" right under the HUD menu button, flush with its right edge */
 body.is-cinematic .nav-bar {
-  top: calc(72 * var(--dp));
-  right: var(--gutter);
+  top: calc(104 * var(--dp));
+  right: calc(21 * var(--dp));
   bottom: auto;
   left: auto;
   width: auto;
   height: var(--tap);
   padding: 0;
   background: none;
+}
+body.is-cinematic .nav-bar .btn {
+  min-height: var(--tap);
+  padding: var(--gap-2) var(--gap-5);
+  border: 1px solid var(--line-strong);
+  background: var(--hud-backing);
+  color: var(--gold-300);
+  font-size: var(--fs-body);
+}
+@media (hover: hover) {
+  body.is-cinematic .nav-bar .btn:hover { background: var(--hud-backing-hover); }
 }
 
 /* ======================= NARASI PETA ======================= */
@@ -927,7 +1053,7 @@ body.has-kenal { overflow: hidden; }
 /* Tanpa mesin ketik & efek (narrator.js), tanpa Ken Burns & orbit (di sini). */
 @media (prefers-reduced-motion: reduce) {
   .curtain-bg, .curtain-light::after, .curtain-shard, .curtain-beam i::after,
-  .curtain-tap, .narrator-tap-glow, .narrator.is-finished .slide.is-current .slide-nav a.btn-primary,
+  .curtain-tap, .narrator-tap-glow, .narrator.is-finished .slide.is-current [data-slide-final], .cine-final .btn,
   body.is-cinematic .scene-img.is-visible, .cine-bg, .cine-slide, .cine-stage .character-img,
   .narrator-fx, .narrator:has(> .narrator-fx.fx-shake) .slide.is-current :is(.cine-stage, .cine-caption, .map-story-line) { animation: none; }
   /* Pengaman tetap berlaku, hanya tanpa pudar */

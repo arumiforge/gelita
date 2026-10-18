@@ -19,6 +19,9 @@
 <?= $this->section('title') ?><?= esc(lang('Game.endingTitle')) ?><?= $this->endSection() ?>
 <?= $this->section('background') ?><?= media_key_src('bg.intro') ?? media_key_src('bg.welcome') ?? '' ?><?= $this->endSection() ?>
 <?= $this->section('bodyClass') ?>is-cinematic<?= $this->endSection() ?>
+<?php /* Full-size HUD (big logo and controls); its centre holds the slide progress, so no shard pill */ ?>
+<?= $this->section('hudStyle') ?>menu<?= $this->endSection() ?>
+<?= $this->section('hudShards') ?>off<?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
 <section class="story ending cine narrator" data-screen="ending"
@@ -41,7 +44,7 @@
         'final'    => lang('Game.reflection'),
     ]) ?>
 
-    <?= component('narrator-controls') ?>
+    <?= component('narrator-controls', ['nextLabel' => true]) ?>
     <?= component('narrator-tap') ?>
   <?php endif ?>
 </section>

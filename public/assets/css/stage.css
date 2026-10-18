@@ -541,8 +541,8 @@ body.game {
 .inspect-panel { --x: 32; --y: 88; --w: 1216; --h: 600; }
 
 /* ---------- Sinematik: cerita pembuka `/intro`, penutup `/penutup` ---------- */
-.cine-stage   { --x: 64;  --y: 136; --w: 300; --h: 520; }
-.cine-caption { --x: 160; --y: 520; --w: 960; --h: 168; }
+.cine-stage   { --x: 64;  --y: 112; --w: 300; --h: 400; }
+.cine-caption { --x: 0;   --y: 496; --w: 1280; --h: 224; }
 
 /* ---------- Dialog wilayah `/dialog/{code}`, wilayah tuntas `/tuntas/{code}` ----------
    Kotak teks naik ke y 472 (bukan 520): layar ini punya nav bar 656–720. */

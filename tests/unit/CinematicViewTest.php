@@ -107,6 +107,21 @@ final class CinematicViewTest extends CIUnitTestCase
         $this->assertStringContainsString('data-pose="determined"', $page);
     }
 
+    /** Intro redesign (18 October 2026): progress in the HUD, controls on the caption, final button centred. */
+    public function testIntroLayoutPutsProgressInTheHudAndTheFinalButtonInTheMiddle(): void
+    {
+        $page = $this->intro(introSeen: false);
+
+        $this->assertStringContainsString('class="hud hud-menu-style"', $page, 'full-size HUD');
+        $this->assertStringNotContainsString('class="hud-shards"', $page, 'the HUD centre holds the slide progress');
+        $this->assertMatchesRegularExpression('/id="slide-1".*?<nav class="cine-top"[^>]*>\s*<span class="eyebrow">' . preg_quote(esc(lang('Game.slideOf', [1, 3])), '/') . '<\/span>\s*<ol class="slide-dots">/s', $page);
+        // ▶ in the narrator controls reads "Lanjut"; the caption keeps Lanjut only as the no-JS link
+        $this->assertStringContainsString('data-narrator="next" aria-label="' . esc(lang('Game.continue'), 'attr') . '"><span class="narrator-next-label"', $page);
+        // The last slide's main button sits outside the caption, in the middle of the page
+        $this->assertMatchesRegularExpression('/id="slide-3".*?<div class="cine-final">\s*<a class="btn btn-primary btn-lg" href="' . preg_quote(esc(base_url('intro/selesai'), 'attr'), '/') . '" data-slide-final>/s', $page);
+        $this->assertDoesNotMatchRegularExpression('/id="slide-2".*?data-slide-final.*?id="slide-3"/s', $page);
+    }
+
     public function testFirstTimePlayerHasNoSkipAndEndsAtFinish(): void
     {
         $page = $this->intro(introSeen: false);
