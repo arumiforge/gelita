@@ -67,7 +67,9 @@ final class MediaSlotPagesTest extends CIUnitTestCase
         // Display plan A5/A7: bg.auth and ui.placeholder are read by the game now (optional slots)
         $this->assertStringContainsString('Latar masuk, daftar, dan ganti kata sandi', $html);
         $this->assertStringContainsString('<code>/masuk</code>', $html);
-        $this->assertStringNotContainsString('belum dipakai permainan', $html);
+        // Only the city lanterns are unused (Peta Kedu redesign, 18 October 2026: Kenali uses a book icon)
+        $this->assertSame(3, substr_count($html, 'belum dipakai permainan'));
+        $this->assertSame(3, substr_count($html, '>Lentera Kenali '));
 
         // Challenge image: description from the question bank, page of the challenge
         $this->assertStringContainsString('Candi Pringapus tampak depan', $html);

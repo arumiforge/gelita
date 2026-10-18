@@ -200,9 +200,9 @@ Diputar otomatis setelah loading "Membuka Peta Kedu". Pada kunjungan berikutnya,
 #### `peta-03` · Jaka · pose `happy` · efek `glow`
 **Judul:** Kenali Dulu / *Get to Know Them First*
 
-**ID:** Ketuk ikon lentera di setiap wilayah untuk mendengar cerita Mbah Kedu tentang tempat itu. Kalau sudah siap, ketuk wilayah yang lenteranya menyala. Ayo, kita berangkat!
+**ID:** Ketuk tombol Kenali di setiap wilayah untuk mendengar cerita Mbah Kedu tentang tempat itu. Kalau sudah siap, pilih wilayah yang sudah terbuka, lalu ketuk Lanjut. Ayo, kita berangkat!
 
-**EN:** Tap the lantern icon on each region to hear Mbah Kedu's story about that place. When you are ready, tap the region whose lantern is lit. Come on, let's go!
+**EN:** Tap Get to know on each region to hear Mbah Kedu's story about that place. When you are ready, choose an open region and tap Continue. Come on, let's go!
 
 ---
 

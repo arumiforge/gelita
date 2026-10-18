@@ -2,6 +2,23 @@
 /**
  * 7. Peta Kedu — `/peta` → MapController::kedu
  *
+ * Page redesign 2 (18 October 2026, catalogue mockup Peta Kedu candidate 04
+ * with the owner's changes; decision log *Page redesign 2*):
+ * - redesigned HUD (hudStyle `menu`) with the title and the shard lantern;
+ *   profile, Peta Kedu, fullscreen, and logout are in its menu;
+ * - map: the three-region diorama `map.kedu-diorama` cut into one slice per
+ *   region (Config\Gelita::$mapDiorama; locked slices dimmed, trails gold or
+ *   grey), else the old `map.kedu` picture. Each region is one large pin with
+ *   its name and status; tapping it selects the region (no navigation);
+ * - one region panel (the selected region; without JavaScript the panel is
+ *   chosen with :target) with Kenali and Lanjut;
+ * - Jaka's story as a bar under the map (portrait, dots, icon controls,
+ *   narration unchanged);
+ * - bottom row: Pustaka Kedu, and once every challenge is done Tonton
+ *   penutup and Balai Refleksi.
+ *
+ * Earlier notes (still true unless replaced above):
+ *
  * Tiga titik pada posisi `levels.map_x` / `map_y` (persen). Tujuan tautan
  * datang dari `entry` (GameProgress::regionEntryPath()): wilayah yang baru
  * terbuka selalu menuju dialog pembuka, wilayah yang sedang dijelajahi atau
@@ -37,11 +54,13 @@
  * @var array<string, list<array<string, mixed>>>  $regionIntros   dialogues region_intro per kode wilayah
  * @var list<int>                                  $heard          level_id yang Kenali-nya sudah didengar
  */
-$mapSrc  = media_key_src('map.kedu');
+$diorama = media_key_src('map.kedu-diorama');
+$mapSrc  = $diorama ?? media_key_src('map.kedu');
+$shapes  = $diorama !== null ? config('Gelita')->mapDiorama : [];
+$starSrc = media_key_src('ui.result-star');
 $icons   = ['open' => 'lantern', 'in_progress' => 'lantern', 'completed' => 'star', 'locked' => 'lock'];
 $href    = static fn (array $l): string => base_url($l['entry']);
 $allDone = $progress['shards_total'] > 0 && $progress['completed_nodes'] >= $progress['shards_total'];
-$points  = implode(' ', array_map(static fn (array $l): string => (float) $l['map_x'] . ',' . (float) $l['map_y'], $levels));
 $intros  = $regionIntros ?? [];
 $heardIds = $heard ?? [];
 // Atribut tirai wilayah pada tautan masuk wilayah (pin, kartu); wilayah terkunci tanpa tirai
@@ -53,6 +72,8 @@ $curtainOf = static fn (array $l): string => $l['status'] !== 'locked' && isset(
 
 <?= $this->section('title') ?><?= esc(lang('Game.mapKedu')) ?><?= $this->endSection() ?>
 <?= $this->section('hudTitle') ?><?= esc(lang('Game.mapKedu')) ?><?= $this->endSection() ?>
+<?= $this->section('hudStyle') ?>menu<?= $this->endSection() ?>
+<?= $this->section('hudShards') ?>1<?= $this->endSection() ?>
 <?= $this->section('background') ?><?= media_key_src('bg.map') ?? '' ?><?= $this->endSection() ?>
 
 <?= $this->section('overlay') ?>
@@ -77,167 +98,193 @@ foreach ($levels as $candidate) {
         break;
     }
 }
+// Selected at first: the region to play next, else the first one
+$selected = $nextLevel['code'] ?? ($levels[0]['code'] ?? null);
+$unheard  = static fn (array $l): bool => ($intros[$l['code']] ?? []) !== [] && ! in_array((int) $l['id'], $heardIds, true);
 ?>
 <section class="map-screen map-kedu" data-screen="map-kedu" data-unlock-mode="<?= esc($unlockMode, 'attr') ?>"<?= next_assets_attr($nextLevel['curtain']['preload'] ?? []) ?>>
   <h1 class="visually-hidden"><?= esc(lang('Game.mapKedu')) ?></h1>
 
-  <div class="map-layout">
-    <?php if (($story ?? []) === []): ?>
-      <aside class="map-guide map-balloon stage-box">
-        <?= component('character', ['character' => 'jaka', 'pose' => 'idle']) ?>
-        <?= component('narration', ['text' => lang('Game.mapLead'), 'speaker' => 'jaka', 'tail' => 'down', 'class' => 'stage-scroll']) ?>
-      </aside>
-    <?php else: ?>
-      <?php $storyTotal = count($story); ?>
-      <aside class="map-guide map-balloon map-story narrator stage-box" aria-labelledby="map-story-title"
-             data-narrator data-context="map_intro" data-prefix="peta-" data-keyboard="0"
-             data-mode="<?= ! empty($curtain) ? 'external' : 'manual' ?>">
-        <h2 class="visually-hidden" id="map-story-title"><?= esc(lang('Game.mapStoryTitle')) ?></h2>
-        <div class="narrator-fx" data-narrator-fx aria-hidden="true"></div>
-        <ol class="slides map-story-slides">
-          <?php foreach ($story as $index => $line): ?>
-            <?php
-            $n         = $index + 1;
-            $character = (string) ($line['character_code'] ?? 'jaka');
-            $pose      = (string) ($line['pose'] ?? '') ?: 'idle';
-            $effect    = (string) ($line['effect'] ?? '');
-            $title     = tr($line, 'title', $locale);
-            $text      = tr($line, 'text', $locale);
-            $audioId   = (int) ($locale === 'en' ? ($line['audio_en_asset_id'] ?? 0) : ($line['audio_id_asset_id'] ?? 0));
-            ?>
-            <li class="slide map-story-slide" id="peta-<?= $n ?>" data-index="<?= $n ?>"
-                data-character="<?= esc($character, 'attr') ?>" data-pose="<?= esc($pose, 'attr') ?>"
-                <?= $effect !== '' ? 'data-effect="' . esc($effect, 'attr') . '"' : '' ?>
-                aria-label="<?= esc(lang('Game.slideOf', [$n, $storyTotal]), 'attr') ?>">
-              <?php if ($character !== 'narator'): ?>
-                <?= component('character', ['character' => $character, 'pose' => $pose, 'class' => 'pose-' . $pose]) ?>
-              <?php endif ?>
-              <blockquote class="narration narration-down map-story-line stage-scroll" data-narrator-advance>
-                <cite><?= esc(lang_or('Game.char_' . $character, $character)) ?><?php if ($title !== ''): ?><span class="map-story-title">· <?= esc($title) ?></span><?php endif ?></cite>
-                <p class="slide-text"><?= esc($text) ?></p>
-              </blockquote>
-              <?php if (($audioSrc = audio_src($audioId ?: null)) !== null): ?>
-                <?= component('audio-player', ['audioId' => $audioId, 'audioSrc' => $audioSrc, 'transcript' => $text]) ?>
-              <?php endif ?>
-              <nav class="map-story-nav" aria-label="<?= esc(lang('Game.slideOf', [$n, $storyTotal]), 'attr') ?>">
-                <?php if ($n > 1): ?>
-                  <a class="icon-btn" href="#peta-<?= $n - 1 ?>" aria-label="<?= esc(lang('Game.narratorPrev'), 'attr') ?>"><?= icon('left') ?></a>
-                <?php endif ?>
-                <span class="num"><?= $n ?>/<?= $storyTotal ?></span>
-                <?php if ($n < $storyTotal): ?>
-                  <a class="icon-btn" href="#peta-<?= $n + 1 ?>" aria-label="<?= esc(lang('Game.narratorNext'), 'attr') ?>"><?= icon('right') ?></a>
-                <?php endif ?>
-              </nav>
-            </li>
-          <?php endforeach ?>
-        </ol>
-        <?= component('narrator-controls') ?>
-      </aside>
-    <?php endif ?>
-
-    <div class="map-frame stage-box">
-      <div class="map-canvas<?= $mapSrc === null ? ' is-drawn' : '' ?>" style="--map-ratio: 1400 / 900">
-        <?php if ($mapSrc !== null): ?>
-          <img class="map-img" src="<?= esc($mapSrc, 'attr') ?>" alt="<?= esc(lang('Game.mapImageAlt', [lang('Game.mapKedu')]), 'attr') ?>">
-        <?php endif ?>
-        <svg class="map-route" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-          <polyline points="<?= esc($points, 'attr') ?>"/>
-        </svg>
-        <ol class="map-points">
+  <?php // Skins of the result screen redesign, shared here (ui.result-*); empty slots keep the plain look ?>
+  <div class="kedu-skins"<?= skin_style_attr([
+      'skin-panel'     => 'ui.result-panel',
+      'skin-primary'   => 'ui.result-button-primary',
+      'skin-secondary' => 'ui.result-button-secondary',
+      'skin-detail'    => 'ui.result-button-detail',
+      'skin-hud'       => 'ui.result-hud-control',
+  ]) ?>>
+  <div class="kedu-map stage-box">
+    <div class="kedu-art<?= $diorama !== null ? ' is-diorama' : '' ?><?= $mapSrc === null ? ' is-drawn' : '' ?>">
+      <?php if ($diorama !== null): ?>
+        <?php foreach ($levels as $level): ?>
+          <?php if (isset($shapes[$level['code']])): ?>
+            <img class="kedu-slice<?= $level['status'] === 'locked' ? ' is-locked' : '' ?>" src="<?= esc($diorama, 'attr') ?>" alt=""
+                 style="clip-path: polygon(<?= esc($shapes[$level['code']]['clip'], 'attr') ?>)" draggable="false">
+          <?php endif ?>
+        <?php endforeach ?>
+        <span class="visually-hidden"><?= esc(lang('Game.mapImageAlt', [lang('Game.mapKedu')])) ?></span>
+        <svg class="kedu-routes" viewBox="0 0 1280 640" aria-hidden="true">
           <?php foreach ($levels as $level): ?>
-            <li class="map-point is-<?= esc($level['status'], 'attr') ?>"
-                style="left: <?= (float) $level['map_x'] ?>%; top: <?= (float) $level['map_y'] ?>%"
-                <?= $level['status'] !== 'locked' && ! empty($level['background']) ? 'data-preload="' . esc($level['background'], 'attr') . '"' : '' ?>>
-              <?php // The city's own curtain picture is warmed up too (map.js preload), when it is not the region background ?>
-              <?php $curtainBg = $level['status'] !== 'locked' ? ($level['curtain']['bg'] ?? null) : null; ?>
-              <a class="map-pin" href="<?= esc($href($level), 'attr') ?>"<?= $curtainOf($level) ?><?= $curtainBg !== null && $curtainBg !== ($level['background'] ?? null) ? ' data-preload="' . esc($curtainBg, 'attr') . '"' : '' ?>
-                 <?= $level['status'] === 'locked' ? 'aria-disabled="true" data-locked-message="' . esc(lang('Game.levelLocked'), 'attr') . '"' : '' ?>>
-                <?php $pinArt = region_art_src('pin', $level['code']); ?>
-                <?php if ($pinArt !== null): ?>
-                  <?php // City pin picture; the status mark is drawn on top (display plan Phase C) ?>
-                  <span class="pin-icon has-art" aria-hidden="true">
-                    <?= art_or_icon($pinArt, 'lantern') ?>
-                    <?php if (in_array($level['status'], ['locked', 'completed'], true)): ?><span class="pin-mark"><?= icon($icons[$level['status']]) ?></span><?php endif ?>
-                  </span>
-                <?php else: ?>
-                  <span class="pin-icon" aria-hidden="true"><?= icon($icons[$level['status']] ?? 'lantern') ?></span>
-                <?php endif ?>
-                <span class="pin-label">
-                  <b><?= esc($level['name']) ?></b>
-                  <small><?= esc(lang('Game.levelStatus_' . $level['status'])) ?> · <span class="num"><?= esc($level['completed_nodes']) ?>/<?= esc($level['total_nodes']) ?></span></small>
-                </span>
-              </a>
-              <?php if (($intros[$level['code']] ?? []) !== []): ?>
-                <?php $unheard = ! in_array((int) $level['id'], $heardIds, true); ?>
-                <a class="kenal-btn<?= $unheard ? ' is-unheard' : '' ?>" href="#kenal-<?= esc($level['code'], 'attr') ?>"
-                   data-kenal-open="<?= esc($level['code'], 'attr') ?>" title="<?= esc(lang('Game.kenalRegion', [$level['name']]), 'attr') ?>">
-                  <?php $lanternArt = region_art_src('lantern', $level['code']); ?>
-                  <span class="kenal-btn-face<?= $lanternArt !== null ? ' has-art' : '' ?>" aria-hidden="true"><?= art_or_icon($lanternArt, 'lantern') ?></span>
-                  <span class="visually-hidden"><?= esc(lang('Game.kenalRegion', [$level['name']])) ?></span>
-                  <?php if ($unheard): ?>
-                    <span class="kenal-dot" data-kenal-badge><span class="visually-hidden"><?= esc(lang('Game.kenalUnheard')) ?></span></span>
-                  <?php endif ?>
-                </a>
-              <?php endif ?>
-            </li>
+            <?php if (isset($shapes[$level['code']]['route'])): ?>
+              <path class="kedu-route-shadow" d="<?= esc($shapes[$level['code']]['route'], 'attr') ?>"/>
+              <path class="kedu-route<?= $level['status'] === 'locked' ? ' is-locked' : '' ?>" d="<?= esc($shapes[$level['code']]['route'], 'attr') ?>"/>
+            <?php endif ?>
           <?php endforeach ?>
-        </ol>
-      </div>
+        </svg>
+      <?php elseif ($mapSrc !== null): ?>
+        <img class="map-img" src="<?= esc($mapSrc, 'attr') ?>" alt="<?= esc(lang('Game.mapImageAlt', [lang('Game.mapKedu')]), 'attr') ?>">
+      <?php endif ?>
+
+      <ol class="kedu-pins">
+        <?php foreach ($levels as $level): ?>
+          <?php
+          [$x, $y] = $shapes[$level['code']]['pin'] ?? [(float) $level['map_x'], (float) $level['map_y']];
+          $curtainBg = $level['status'] !== 'locked' ? ($level['curtain']['bg'] ?? null) : null;
+          $preload   = array_values(array_unique(array_filter([
+              $level['status'] !== 'locked' ? ($level['background'] ?? null) : null,
+              $curtainBg,
+          ])));
+          $pinArt = region_art_src('pin', $level['code']);
+          ?>
+          <li class="kedu-pin is-<?= esc($level['status'], 'attr') ?>" style="left: <?= (float) $x ?>%; top: <?= (float) $y ?>%"<?= $preload !== [] ? ' data-preload="' . esc($preload[0], 'attr') . '"' : '' ?>>
+            <?php // Selects the region (game/map.js); without JavaScript the panel shows through :target ?>
+            <a class="kedu-city" href="#region-<?= esc($level['code'], 'attr') ?>" data-region-select="<?= esc($level['code'], 'attr') ?>"
+               aria-controls="region-<?= esc($level['code'], 'attr') ?>"<?= $level['code'] === $selected ? ' aria-current="true"' : '' ?><?= isset($preload[1]) ? ' data-preload="' . esc($preload[1], 'attr') . '"' : '' ?>>
+              <span class="kedu-medal<?= $pinArt !== null ? ' has-art' : '' ?>" aria-hidden="true">
+                <?= art_or_icon($pinArt, $icons[$level['status']] ?? 'lantern') ?>
+                <?php if ($level['status'] === 'locked'): ?><span class="kedu-lock"><?= icon('lock') ?></span><?php endif ?>
+                <?php if ($unheard($level)): ?><span class="kedu-unheard"></span><?php endif ?>
+              </span>
+              <span class="kedu-city-caption">
+                <b><?= esc($level['name']) ?></b>
+                <small><?= esc(lang('Game.levelStatus_' . $level['status'])) ?> · <span class="num"><?= esc($level['completed_nodes']) ?>/<?= esc($level['total_nodes']) ?></span></small>
+              </span>
+            </a>
+          </li>
+        <?php endforeach ?>
+      </ol>
     </div>
+    <p class="kedu-hint" aria-hidden="true"><span class="kedu-hint-dot"></span><?= esc(lang('Game.mapTapHint')) ?></p>
   </div>
 
-  <ol class="region-list map-side stage-box stage-scroll">
+  <div class="kedu-panels stage-box">
     <?php foreach ($levels as $level): ?>
-      <li class="region-card panel is-<?= esc($level['status'], 'attr') ?>" id="region-<?= esc($level['code'], 'attr') ?>">
-        <div class="region-card-head">
-          <span class="region-seq num" aria-hidden="true"><?= esc($level['sequence']) ?></span>
-          <div>
-            <span class="eyebrow"><?= esc(lang('Game.levelOrder', [$level['sequence']])) ?> · <?= esc(lang_or('Game.difficulty_' . $level['difficulty'], $level['difficulty'])) ?></span>
-            <h2><?= esc($level['name']) ?></h2>
+      <?php $locked = $level['status'] === 'locked'; ?>
+      <section class="kedu-panel is-<?= esc($level['status'], 'attr') ?><?= $level['code'] === $selected ? ' is-selected' : '' ?>"
+               id="region-<?= esc($level['code'], 'attr') ?>" aria-labelledby="region-<?= esc($level['code'], 'attr') ?>-title">
+        <p class="kedu-panel-eyebrow"><?= esc(lang('Game.mapSelected')) ?></p>
+        <h2 id="region-<?= esc($level['code'], 'attr') ?>-title"><?= esc($level['name']) ?></h2>
+        <p class="kedu-panel-meta"><?= esc(lang('Game.levelOrder', [$level['sequence']])) ?> · <?= esc(lang_or('Game.difficulty_' . $level['difficulty'], $level['difficulty'])) ?></p>
+        <span class="kedu-panel-status is-<?= esc($level['status'], 'attr') ?>"><?= esc(lang('Game.levelStatus_' . $level['status'])) ?></span>
+        <?php if ($locked): ?>
+          <p class="kedu-panel-hint"><?= icon('lock') ?> <?= esc(lang('Game.levelLocked')) ?></p>
+        <?php else: ?>
+          <div class="kedu-panel-progress">
+            <span class="kedu-bar" aria-hidden="true"><i style="width: <?= $level['total_nodes'] > 0 ? (int) round($level['completed_nodes'] / $level['total_nodes'] * 100) : 0 ?>%"></i></span>
+            <span class="num" aria-label="<?= esc(lang('Game.nodesProgress', [$level['completed_nodes'], $level['total_nodes']]), 'attr') ?>"><?= esc($level['completed_nodes']) ?> / <?= esc($level['total_nodes']) ?></span>
           </div>
-          <span class="badge is-<?= esc($level['status'], 'attr') ?>"><?= icon($icons[$level['status']] ?? 'lantern') ?> <?= esc(lang('Game.levelStatus_' . $level['status'])) ?></span>
-        </div>
-        <div class="region-card-progress">
-          <div class="progress" aria-hidden="true"><i style="width: <?= $level['total_nodes'] > 0 ? (int) round($level['completed_nodes'] / $level['total_nodes'] * 100) : 0 ?>%"></i></div>
-          <span><?= esc(lang('Game.nodesProgress', [$level['completed_nodes'], $level['total_nodes']])) ?></span>
-          <?= stars_html((int) $level['stars']) ?>
-        </div>
-        <div class="region-card-actions">
+          <?php $stars = max(0, min(3, (int) $level['stars'])); ?>
+          <p class="kedu-panel-stars" role="img" aria-label="<?= esc(lang('Game.resultStarsOf', [$stars, 3]), 'attr') ?>">
+            <?php for ($i = 1; $i <= 3; $i++): ?>
+              <?php if ($i <= $stars && $starSrc !== null): ?>
+                <img class="kedu-star is-on" src="<?= esc($starSrc, 'attr') ?>" alt="" draggable="false">
+              <?php else: ?>
+                <span class="kedu-star<?= $i <= $stars ? ' is-on' : '' ?>"><?= icon('star') ?></span>
+              <?php endif ?>
+            <?php endfor ?>
+          </p>
+        <?php endif ?>
+        <div class="kedu-panel-actions">
           <?php if (($intros[$level['code']] ?? []) !== []): ?>
-            <?php $unheard = ! in_array((int) $level['id'], $heardIds, true); ?>
-            <a class="btn btn-quiet kenal-card-btn<?= $unheard ? ' is-unheard' : '' ?>" href="#kenal-<?= esc($level['code'], 'attr') ?>"
-               data-kenal-open="<?= esc($level['code'], 'attr') ?>">
-              <?= art_or_icon(region_art_src('lantern', $level['code']), 'lantern') ?> <span><?= esc(lang('Game.kenalRegion', [$level['name']])) ?></span>
-              <?php if ($unheard): ?>
+            <a class="kedu-btn is-secondary kenal-card-btn<?= $unheard($level) ? ' is-unheard' : '' ?>" href="#kenal-<?= esc($level['code'], 'attr') ?>"
+               data-kenal-open="<?= esc($level['code'], 'attr') ?>" aria-label="<?= esc(lang('Game.kenalRegion', [$level['name']]), 'attr') ?>">
+              <?= icon('kenali') ?> <span><?= esc(lang('Game.kenali')) ?></span>
+              <?php if ($unheard($level)): ?>
                 <span class="kenal-badge" data-kenal-badge><?= esc(lang('Game.kenalUnheard')) ?></span>
               <?php endif ?>
             </a>
           <?php endif ?>
-          <?php if ($level['status'] !== 'locked'): ?>
-            <a class="btn <?= $level['status'] === 'completed' ? 'btn-ghost' : 'btn-primary' ?>" href="<?= esc($href($level), 'attr') ?>"<?= $curtainOf($level) ?>>
-              <?= esc($level['status'] === 'open' ? lang('Game.start') : lang('Game.continue')) ?> <?= icon('right') ?>
+          <?php if (! $locked): ?>
+            <a class="kedu-btn is-primary" href="<?= esc($href($level), 'attr') ?>"<?= $curtainOf($level) ?>>
+              <span><?= esc($level['status'] === 'open' ? lang('Game.start') : lang('Game.continue')) ?></span> <?= icon('right') ?>
             </a>
           <?php else: ?>
-            <p class="region-locked muted"><?= icon('lock') ?> <?= esc(lang('Game.levelLocked')) ?></p>
+            <a class="kedu-btn is-primary" href="<?= esc($href($level), 'attr') ?>" aria-disabled="true" data-locked-message="<?= esc(lang('Game.levelLocked'), 'attr') ?>">
+              <?= icon('lock') ?> <span><?= esc(lang('Game.continue')) ?></span>
+            </a>
           <?php endif ?>
         </div>
-      </li>
+      </section>
     <?php endforeach ?>
-  </ol>
+  </div>
+
+  <?php if (($story ?? []) === []): ?>
+    <aside class="kedu-story kedu-story-plain stage-box">
+      <?= component('character', ['character' => 'jaka', 'pose' => 'idle']) ?>
+      <?= component('narration', ['text' => lang('Game.mapLead'), 'speaker' => 'jaka', 'tail' => 'down', 'class' => 'stage-scroll']) ?>
+    </aside>
+  <?php else: ?>
+    <?php $storyTotal = count($story); ?>
+    <aside class="map-story kedu-story narrator stage-box" aria-labelledby="map-story-title"
+           data-narrator data-context="map_intro" data-prefix="peta-" data-keyboard="0"
+           data-mode="<?= ! empty($curtain) ? 'external' : 'manual' ?>">
+      <h2 class="visually-hidden" id="map-story-title"><?= esc(lang('Game.mapStoryTitle')) ?></h2>
+      <div class="narrator-fx" data-narrator-fx aria-hidden="true"></div>
+      <ol class="slides map-story-slides">
+        <?php foreach ($story as $index => $line): ?>
+          <?php
+          $n         = $index + 1;
+          $character = (string) ($line['character_code'] ?? 'jaka');
+          $pose      = (string) ($line['pose'] ?? '') ?: 'idle';
+          $effect    = (string) ($line['effect'] ?? '');
+          $title     = tr($line, 'title', $locale);
+          $text      = tr($line, 'text', $locale);
+          $audioId   = (int) ($locale === 'en' ? ($line['audio_en_asset_id'] ?? 0) : ($line['audio_id_asset_id'] ?? 0));
+          ?>
+          <li class="slide map-story-slide" id="peta-<?= $n ?>" data-index="<?= $n ?>"
+              data-character="<?= esc($character, 'attr') ?>" data-pose="<?= esc($pose, 'attr') ?>"
+              <?= $effect !== '' ? 'data-effect="' . esc($effect, 'attr') . '"' : '' ?>
+              aria-label="<?= esc(lang('Game.slideOf', [$n, $storyTotal]), 'attr') ?>">
+            <?php if ($character !== 'narator'): ?>
+              <span class="kedu-portrait"><?= component('character', ['character' => $character, 'pose' => $pose, 'class' => 'pose-' . $pose]) ?></span>
+            <?php endif ?>
+            <blockquote class="narration narration-down map-story-line stage-scroll" data-narrator-advance>
+              <cite><?= esc(lang_or('Game.char_' . $character, $character)) ?><?php if ($title !== ''): ?><span class="map-story-title">· <?= esc($title) ?></span><?php endif ?>
+                <span class="kedu-dots" aria-hidden="true"><?php for ($d = 1; $d <= $storyTotal; $d++): ?><i<?= $d === $n ? ' class="is-on"' : '' ?>></i><?php endfor ?></span></cite>
+              <p class="slide-text"><?= esc($text) ?></p>
+            </blockquote>
+            <?php if (($audioSrc = audio_src($audioId ?: null)) !== null): ?>
+              <?= component('audio-player', ['audioId' => $audioId, 'audioSrc' => $audioSrc, 'transcript' => $text]) ?>
+            <?php endif ?>
+            <nav class="map-story-nav" aria-label="<?= esc(lang('Game.slideOf', [$n, $storyTotal]), 'attr') ?>">
+              <?php if ($n > 1): ?>
+                <a class="icon-btn" href="#peta-<?= $n - 1 ?>" aria-label="<?= esc(lang('Game.narratorPrev'), 'attr') ?>"><?= icon('left') ?></a>
+              <?php endif ?>
+              <span class="visually-hidden"><?= esc(lang('Game.slideOf', [$n, $storyTotal])) ?></span>
+              <?php if ($n < $storyTotal): ?>
+                <a class="icon-btn" href="#peta-<?= $n + 1 ?>" aria-label="<?= esc(lang('Game.narratorNext'), 'attr') ?>"><?= icon('right') ?></a>
+              <?php endif ?>
+            </nav>
+          </li>
+        <?php endforeach ?>
+      </ol>
+      <?= component('narrator-controls') ?>
+    </aside>
+  <?php endif ?>
+  </div>
 </section>
 <?= $this->endSection() ?>
 
 <?= $this->section('nav') ?>
 <?php
-// Pustaka Kedu: rak semua wilayah; kunci per wilayah dijelaskan di sana
+// Bottom row (owner, 18 October 2026): Pustaka Kedu, and once everything is done the ending and Balai Refleksi.
+// Profil moved to the HUD menu.
 $nav = [['label' => lang('Game.library'), 'href' => base_url('pustaka'), 'style' => 'ghost', 'arrow' => 'left', 'icon' => 'book']];
 
 if ($allDone) {
     // Penutup cerita boleh ditonton ulang kapan saja setelah semua wilayah tuntas
     $nav[] = ['label' => lang('Game.watchEnding'), 'href' => base_url('penutup'), 'style' => 'ghost', 'icon' => 'sparkle'];
     $nav[] = ['label' => lang('Game.reflection'), 'href' => base_url('refleksi'), 'style' => 'primary', 'arrow' => 'right'];
-} else {
-    $nav[] = ['label' => lang('Game.profile'), 'href' => base_url('profil'), 'style' => 'quiet', 'icon' => 'user'];
 }
 ?>
 <?= component('nav-bar', ['nav' => $nav]) ?>

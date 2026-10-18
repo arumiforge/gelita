@@ -354,6 +354,30 @@ body.game {
 .hud-profile .hud-sheet-label { display: grid; }
 .hud-profile-name { overflow: hidden; font-weight: 800; text-overflow: ellipsis; }
 .hud-profile-code { color: var(--ink-dim); font-size: 1.125rem; }
+/* Shard lantern as a pill in the middle (section hudShards, Peta Kedu; mockup Peta Kedu 04:
+   533, 16, 352 × 79 dp). The lantern keeps its <details> breakdown. */
+.hud-shards { position: absolute; top: 1rem; left: 33.3125rem; width: 22rem; }
+.hud-shards .lantern-toggle { min-height: 4.9375rem; gap: 0; }
+.hud-shards .lantern-meter {
+  flex: 1;
+  gap: 1rem;
+  height: 4.9375rem;
+  padding: 0 1.5rem 0 1rem;
+  border: .125rem solid var(--gold-600);
+  background: rgba(6, 23, 45, .88);
+  box-shadow: 0 .25rem .875rem rgba(0, 0, 0, .4);
+}
+.hud-shards .flame { order: -1; width: 3rem; height: 3.5rem; background: none; box-shadow: none; }
+.hud-shards .lantern-toggle { position: relative; }
+.hud-shards .lantern-toggle > .flame { position: absolute; left: 1.125rem; z-index: 1; }
+.hud-shards .lantern-meter { padding-left: 4.75rem; }
+.hud-shards .flame .icon { width: 2.25rem; height: 2.25rem; }
+.hud-shards .flame.has-art .art { width: 3rem; height: 3.5rem; }
+.hud-shards .lantern-text .eyebrow { color: var(--ink); font-size: 1.125rem; font-weight: 700; letter-spacing: 0; text-transform: none; }
+.hud-shards .lantern-count { color: #AFBDD0; font-family: var(--font-body); font-size: 1.25rem; }
+.hud-shards .lantern-count b { color: var(--ink); font-size: 1.8125rem; }
+.hud-shards .lantern-bar { flex: 1; width: auto; height: .6875rem; background: #314056; }
+.hud-shards .lantern-detail { left: 50%; transform: translateX(-50%); }
 .hud-sheet-row.hud-fullscreen .icon-exit { display: none; }
 .hud-sheet-row.hud-fullscreen[aria-pressed="true"] .icon-enter { display: none; }
 .hud-sheet-row.hud-fullscreen[aria-pressed="true"] .icon-exit { display: block; }
@@ -525,6 +549,12 @@ body.game {
    Jaka stands at its left end and rises into the map's empty lower-left corner; the strip
    stays below the lowest pin label (Magelang, about y 530) */
 .map-balloon { --x: 40;  --y: 536; --w: 864; --h: 98; }
+
+/* ---------- Peta Kedu `/peta`, page redesign 2 (18 Oct 2026, mockup candidate 04 × 2/3)
+   HUD 0–120; map and region panel 116–516; story bar 524–656; bottom row (nav bar) 656–720 ---------- */
+.map-kedu .kedu-map    { --x: 20;  --y: 116; --w: 853;  --h: 400; }
+.map-kedu .kedu-panels { --x: 887; --y: 116; --w: 373;  --h: 400; }
+.map-kedu .kedu-story  { --x: 20;  --y: 524; --w: 1240; --h: 132; }
 
 /* ---------- Kartu misi `/misi/{code}/{n}` ---------- */
 .mission-card { --x: 280; --y: 96; --w: 720; --h: 528; }

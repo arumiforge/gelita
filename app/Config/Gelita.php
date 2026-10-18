@@ -210,6 +210,8 @@ class Gelita extends BaseConfig
         'ui.result-hud-control'      => [128, 128],
         'ui.result-star'             => [128, 128],
         'ui.result-medal'            => [512, 512],
+        // Peta Kedu diorama (page redesign 2, 18 October 2026): the region shapes below are measured on this size
+        'map.kedu-diorama'           => [1774, 887],
     ];
 
     /**
@@ -241,6 +243,39 @@ class Gelita extends BaseConfig
         'ui.result-medal'       => [223, 223],
         'ui.result-star'        => [57, 57],
         'ui.result-hud-control' => [68, 68],
+        'map.kedu-diorama'      => [853, 427],  // Peta Kedu, width of the map frame (2:1, cropped top and bottom)
+    ];
+
+    /**
+     * Peta Kedu diorama (`map.kedu-diorama`, catalogue mockup Peta Kedu
+     * candidate 04, owner decision 18 October 2026), keyed by region code.
+     * Measured on the catalogue picture; a replacement picture needs new values.
+     *
+     * - clip:  the region's part of the picture, CSS polygon points in percent;
+     *          a locked region's part is dimmed;
+     * - pin:   centre of the region's medallion, percent x / y of the picture;
+     * - route: SVG path (viewBox 0 0 1280 640) of the trail that leads into the
+     *          region, gold once the region is open, grey while it is locked.
+     *
+     * Regions without an entry show no slice and use their own map_x / map_y.
+     *
+     * @var array<string, array{clip: string, pin: array{0: float, 1: float}, route?: string}>
+     */
+    public array $mapDiorama = [
+        'temanggung' => [
+            'clip' => '34% 0, 100% 0, 100% 49%, 43% 49%, 43% 46%, 36% 25%',
+            'pin'  => [67.19, 24.38],
+        ],
+        'magelang' => [
+            'clip'  => '43% 49%, 100% 49%, 100% 100%, 34% 100%, 37% 80%, 43% 58%',
+            'pin'   => [74.22, 68.59],
+            'route' => 'M850 220C1040 275 1080 345 970 410',
+        ],
+        'wonosobo' => [
+            'clip'  => '0 0, 34% 0, 36% 25%, 43% 46%, 43% 58%, 37% 80%, 34% 100%, 0 100%',
+            'pin'   => [19.84, 48.75],
+            'route' => 'M920 465C720 615 440 585 280 435',
+        ],
     ];
 
     /**

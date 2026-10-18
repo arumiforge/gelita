@@ -1375,6 +1375,319 @@ body.is-challenge .lang-switch { display: none; }
 .hunt.is-zoomed .clue-voice .audio-btn[data-action="play"] { background: var(--gold-500); color: var(--navy-900); }
 .hunt.is-zoomed .clue-voice .audio-player.is-error .clue-voice-off { border-color: rgba(223, 192, 135, .45); color: var(--gold-300); }
 
+/* =========================== PETA KEDU (redesign) =========================== */
+/* Page redesign 2, 18 October 2026: catalogue mockup Peta Kedu candidate 04 with the owner's
+   changes (bottom row kept, wider city captions). 1 rem = 16 dp; mockup px × 2/3 = dp. */
+.kedu-skins { display: contents; }
+
+/* Map frame 853 × 400; the diorama box is 2:1 and centred, so its top and bottom 13 dp are cropped */
+.kedu-map {
+  overflow: hidden;
+  border: .125rem solid var(--gold-600);
+  border-radius: 1.3333rem;
+  background: #061729;
+  box-shadow: 0 .625rem 2rem rgba(0, 0, 0, .45), inset 0 0 1rem rgba(219, 173, 68, .12);
+}
+.kedu-art { position: absolute; top: 50%; left: 0; width: 100%; aspect-ratio: 2 / 1; transform: translateY(-50%); isolation: isolate; background: #0B233B; }
+/* Old map.kedu (14:9) while the diorama slot is empty: whole picture, centred */
+.kedu-art:not(.is-diorama) { top: 0; left: 50%; width: auto; height: 100%; aspect-ratio: 14 / 9; transform: translateX(-50%); }
+.kedu-art .map-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; -webkit-user-drag: none; }
+.kedu-art.is-drawn { background: radial-gradient(ellipse at 50% 40%, var(--navy-600), var(--navy-900)); }
+.kedu-slice {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  mix-blend-mode: lighten;
+  filter: brightness(1) saturate(1.03);
+  transition: filter .7s;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+.kedu-slice.is-locked { filter: brightness(.32) saturate(.12); }
+.kedu-routes { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.kedu-routes path { fill: none; stroke-linecap: round; }
+.kedu-route-shadow { stroke: #06101C; stroke-width: 14; }
+.kedu-route { stroke: #EBC271; stroke-width: 6; stroke-dasharray: 5 18; filter: drop-shadow(0 0 .25rem #FFC15A); }
+.kedu-route.is-locked { stroke: #8B8B90; opacity: .7; filter: none; }
+
+/* City pins: one large target (medallion + name + status); the point is the medallion centre */
+.kedu-pins { margin: 0; padding: 0; list-style: none; }
+.kedu-pin { position: absolute; z-index: 2; transform: translate(-50%, -3.625rem); }
+.kedu-city {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--ink);
+  text-decoration: none;
+  -webkit-touch-callout: none;
+  user-select: none;
+}
+.kedu-medal { position: relative; display: grid; place-items: center; width: 7.25rem; height: 7.25rem; }
+.kedu-medal .art { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 .1875rem .5rem rgba(0, 0, 0, .7)); }
+.kedu-medal > .icon {
+  width: 4.5rem;
+  height: 4.5rem;
+  padding: 1rem;
+  border: .1875rem solid var(--gold-500);
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 35%, var(--navy-600), var(--navy-900));
+  color: var(--gold-300);
+}
+.kedu-pin.is-locked .kedu-medal .art, .kedu-pin.is-locked .kedu-medal > .icon { filter: grayscale(.9) brightness(.55); }
+.kedu-lock {
+  position: absolute;
+  top: 3.125rem;
+  right: -.75rem;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: .125rem solid var(--gold-500);
+  border-radius: 50%;
+  background: rgba(9, 26, 45, .95);
+  color: var(--gold-300);
+}
+.kedu-lock .icon { width: 1.25rem; height: 1.25rem; }
+.kedu-unheard {
+  position: absolute;
+  top: .75rem;
+  right: .75rem;
+  width: .875rem;
+  height: .875rem;
+  border: .125rem solid var(--navy-900);
+  border-radius: 50%;
+  background: var(--warn);
+  animation: kenal-ping 1.8s ease-in-out infinite;
+}
+/* Wider than the mockup (owner, 18 Oct 2026): padding keeps the name off the frame of the skin */
+.kedu-city-caption {
+  display: grid;
+  justify-items: center;
+  min-width: 12.5rem;
+  min-height: 3.875rem;
+  margin-top: -.875rem;
+  padding: .5rem 1.5rem .4375rem;
+  border: .125rem solid var(--gold-500);
+  border-radius: var(--radius-pill);
+  background: linear-gradient(to bottom, #1B2A4A, var(--navy-900));
+  box-shadow: 0 .25rem .5rem rgba(0, 0, 0, .45);
+  text-align: center;
+  text-shadow: 0 .125rem .25rem #000;
+  white-space: nowrap;
+}
+.kedu-skins[style*="--skin-detail"] .kedu-city-caption { border: 0; border-radius: 0; background: var(--skin-detail) center / 100% 100% no-repeat; box-shadow: none; padding-inline: 1.75rem; }
+.kedu-city-caption b { font-size: 1.5rem; line-height: 1.12; }
+.kedu-city-caption small { margin-top: .125rem; color: #DEDACB; font-size: 1.0625rem; }
+.kedu-city[aria-current="true"] { filter: drop-shadow(0 0 .5rem rgba(67, 218, 220, .6)); }
+.kedu-city[aria-current="true"] .kedu-city-caption { outline: .1875rem solid #62DFD4; outline-offset: .0625rem; border-radius: 1rem; }
+.kedu-city:focus-visible { outline: none; }
+.kedu-city:focus-visible .kedu-city-caption { outline: .1875rem solid var(--gold-300); outline-offset: .1875rem; border-radius: 1rem; }
+@media (hover: hover) {
+  .kedu-city:hover .kedu-medal { transform: scale(1.04); }
+}
+.kedu-medal { transition: transform .15s; }
+.kedu-city:active .kedu-medal { transform: scale(.96); }
+.kedu-hint {
+  position: absolute;
+  left: 1.25rem;
+  bottom: .625rem;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: .4375rem;
+  margin: 0;
+  padding: .375rem .75rem;
+  border: 1px solid rgba(223, 192, 135, .27);
+  border-radius: .8333rem;
+  background: rgba(7, 21, 37, .86);
+  color: #DDD1B4;
+  font-size: 1rem;
+  pointer-events: none;
+}
+.kedu-hint-dot { width: .4375rem; height: .4375rem; border-radius: 50%; background: #ECCA7B; }
+
+/* Region panel: the selected region only (JS class, else :target, else the region to play) */
+.kedu-panel {
+  position: absolute;
+  inset: 0;
+  display: none;
+  align-content: start;
+  justify-items: start;
+  padding: 1.5rem 1.625rem;
+  border: .125rem solid var(--gold-500);
+  border-radius: 1.25rem;
+  background: linear-gradient(to bottom, #13203A, var(--navy-900));
+  box-shadow: inset 0 0 0 .3125rem rgba(11, 19, 32, .9), inset 0 0 0 .375rem rgba(223, 192, 135, .4), 0 .5rem 1rem rgba(1, 7, 19, .45);
+  isolation: isolate;
+}
+/* The result panel skin, stretched by its frame so the ornaments keep their shape */
+.kedu-skins[style*="--skin-panel"] .kedu-panel, .kedu-skins[style*="--skin-panel"] .kedu-story { border: 0; border-radius: 0; background: none; box-shadow: none; }
+.kedu-skins[style*="--skin-panel"] .kedu-panel::before, .kedu-skins[style*="--skin-panel"] .kedu-story::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border: 1.8333rem solid transparent;
+  border-image: var(--skin-panel) 100 fill stretch;
+  pointer-events: none;
+}
+.kedu-panel.is-selected { display: grid; }
+.kedu-panels:has(.kedu-panel:target) .kedu-panel { display: none; }
+.kedu-panels .kedu-panel:target { display: grid; }
+.kedu-panels.is-live .kedu-panel { display: none; }
+.kedu-panels.is-live .kedu-panel.is-selected { display: grid; }
+.kedu-panel-eyebrow { margin: 0 0 .25rem; color: #D9BE83; font-size: 1rem; letter-spacing: .08em; text-transform: uppercase; }
+.kedu-panel h2 { margin: 0 0 .375rem; color: var(--parchment); font-family: Georgia, 'Times New Roman', serif; font-size: 2.625rem; line-height: 1.1; letter-spacing: -.03em; }
+.kedu-panel-meta { margin: 0 0 .75rem; color: #D4C7AE; font-size: 1.1875rem; }
+.kedu-panel-status { padding: .25rem .875rem; border: .125rem solid #DAB866; border-radius: var(--radius-pill); color: #F1CF85; font-size: 1.125rem; }
+.kedu-panel-status.is-completed { border-color: #81B35B; color: #B2E486; }
+.kedu-panel-status.is-locked { border-color: rgba(234, 240, 250, .4); color: var(--ink-dim); }
+.kedu-panel-progress { display: flex; align-items: center; gap: .75rem; margin-top: 1.25rem; font-size: 1.25rem; font-weight: 700; }
+.kedu-panel-progress .num, .kedu-city-caption .num { font-family: var(--font-body); }
+.kedu-bar { width: 9rem; height: .8125rem; overflow: hidden; border-radius: var(--radius-pill); background: #293B50; box-shadow: inset 0 0 0 1px #657081; }
+.kedu-bar i { display: block; height: 100%; background: linear-gradient(90deg, #B9883C, #F5DFA5); }
+.kedu-panel-stars { display: flex; gap: .625rem; margin: .75rem 0 0; }
+.kedu-star { display: grid; place-items: center; width: 2.375rem; height: 2.375rem; object-fit: contain; color: #6F7C99; }
+.kedu-star .icon { width: 100%; height: 100%; fill: none; stroke-width: 1.4; }
+.kedu-star.is-on { color: var(--gold-300); }
+span.kedu-star.is-on .icon { fill: currentColor; }
+.kedu-panel-hint { display: flex; gap: .5rem; margin: 1.25rem 0 0; color: #B8C8D6; font-size: 1.125rem; line-height: 1.4; }
+.kedu-panel-hint .icon { flex: none; width: 1.25rem; height: 1.25rem; margin-top: .1875rem; }
+
+/* Panel and story buttons: 88 dp hit area on the result screen skins */
+.kedu-panel-actions { position: absolute; left: 1.25rem; right: 1.25rem; bottom: .75rem; display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+.kedu-btn {
+  position: relative;
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  height: 5.5rem;
+  min-width: 0;
+  padding: 0 .75rem;
+  color: var(--ink);
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  -webkit-touch-callout: none;
+  user-select: none;
+}
+.kedu-btn::before {
+  content: "";
+  position: absolute;
+  inset: .75rem 0;
+  z-index: -1;
+  border: .125rem solid var(--gold-500);
+  border-radius: var(--radius-pill);
+  background: linear-gradient(to bottom, #1B2A4A, var(--navy-900));
+  box-shadow: 0 .25rem .5rem rgba(1, 7, 19, .45);
+  transition: filter .15s, transform .15s;
+}
+.kedu-btn.is-primary { color: #0B1B2E; }
+.kedu-btn.is-primary::before { border-color: #FFF2BD; background: linear-gradient(to bottom, #FFF0C2, var(--gold-500) 50%, var(--gold-600)); }
+.kedu-skins[style*="--skin-secondary"] .kedu-btn.is-secondary::before { border: 0; border-radius: 0; background: var(--skin-secondary) center / 100% 100% no-repeat; box-shadow: none; }
+.kedu-skins[style*="--skin-primary"] .kedu-btn.is-primary::before { border: 0; border-radius: 0; background: var(--skin-primary) center / 109.69% 122.23% no-repeat; box-shadow: none; }
+.kedu-btn[aria-disabled="true"] { filter: grayscale(.8); opacity: .55; }
+.kedu-btn .icon { width: 1.75rem; height: 1.75rem; flex: none; }
+.kedu-btn.is-secondary .icon { width: 2.125rem; height: 2.125rem; color: var(--gold-300); }
+.kedu-btn > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+@media (hover: hover) {
+  .kedu-btn:hover::before { filter: brightness(1.14); }
+}
+.kedu-btn:active::before { transform: scale(.97); }
+.kedu-btn:focus-visible { outline: none; }
+.kedu-btn:focus-visible::before { outline: .1875rem solid var(--gold-300); outline-offset: .125rem; }
+.kedu-btn .kenal-badge { position: absolute; top: .125rem; right: .25rem; padding: .0625rem .5rem; border-radius: var(--radius-pill); background: var(--warn); color: var(--navy-900); font-size: .8125rem; }
+
+/* Story bar: portrait, speaker · title · dots, text; controls at the right (narration unchanged) */
+.kedu-story {
+  z-index: 3;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1rem;
+  padding: 0 1.25rem 0 0;
+  border: .125rem solid var(--gold-500);
+  border-radius: 1.25rem;
+  background: linear-gradient(to bottom, #13203A, var(--navy-900));
+  box-shadow: 0 .5rem 1rem rgba(1, 7, 19, .45);
+  isolation: isolate;
+}
+.kedu-story .slides { height: 100%; margin: 0; }
+.kedu-story .map-story-slide { grid-template-columns: 9.25rem minmax(0, 1fr) auto; gap: 1.25rem; }
+.kedu-portrait {
+  position: relative;
+  align-self: center;
+  justify-self: end;
+  width: 7.5rem;
+  height: 7.5rem;
+  overflow: hidden;
+  border: .1875rem solid #DFBC73;
+  border-radius: 50%;
+  background: radial-gradient(#EDCE8B, #81613C);
+  box-shadow: 0 0 0 .25rem #08192E, 0 .25rem .75rem rgba(0, 0, 0, .55);
+}
+.kedu-portrait .character { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+/* Head and shoulders of the full-body pose frame (700 × 900) */
+.kedu-portrait .character-img { position: absolute; top: .25rem; left: 50%; width: 18rem; max-width: none; height: auto; max-height: none; transform: translateX(-50%); filter: none; }
+.kedu-portrait .character-name { display: none; }
+.kedu-portrait .character-fallback { width: 100%; height: 100%; border: 0; border-radius: 50%; font-size: var(--fs-h1); }
+.kedu-story .narration {
+  align-self: center;
+  max-width: none;
+  max-height: calc(100% - 2rem);
+  overflow-y: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0; /* the balloon's rounded corner would clip the last line (overflow) */
+  background: none;
+  box-shadow: none;
+  color: #F3ECD9;
+  font-size: 1.25rem;
+  line-height: 1.28;
+}
+.kedu-story .narration::before { display: none; }
+.kedu-story .narration cite { display: flex; flex-wrap: nowrap; align-items: center; gap: .625rem; margin: 0 0 .125rem; color: var(--parchment); font-family: Georgia, 'Times New Roman', serif; font-size: 1.625rem; white-space: nowrap; }
+.kedu-story .map-story-title { color: var(--parchment); font-size: 1.3125rem; font-weight: 700; }
+.kedu-dots { display: inline-flex; gap: .375rem; margin-left: .375rem; }
+.kedu-dots i { width: .5rem; height: .5rem; border-radius: 50%; background: #53677E; opacity: .7; }
+.kedu-dots i.is-on { background: #FFE2A2; opacity: 1; box-shadow: 0 0 .5rem #FFD377; }
+/* Controls: Play on the round HUD skin, Next on the gold button skin; Otomatis stays hidden here */
+.map-kedu .kedu-story .narrator-controls { gap: .5rem; padding: 0; border: 0; background: none; box-shadow: none; }
+.map-kedu .kedu-story .narrator-controls .icon-btn,
+.map-kedu .kedu-story .map-story-nav .icon-btn {
+  width: 5.5rem;
+  height: 5.5rem;
+  border: 0;
+  background: none;
+  color: var(--gold-300);
+}
+.map-kedu .kedu-story .narrator-controls .icon-btn::after,
+.map-kedu .kedu-story .map-story-nav .icon-btn::after {
+  content: "";
+  position: absolute;
+  inset: .625rem;
+  z-index: -1;
+  border: .125rem solid var(--gold-500);
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 35%, var(--navy-600), var(--navy-900));
+}
+.map-kedu .kedu-skins[style*="--skin-hud"] .kedu-story .icon-btn::after { border: 0; background: var(--skin-hud) center / 101.6% 101.6% no-repeat; }
+.map-kedu .kedu-story .narrator-controls .icon-btn { isolation: isolate; }
+.map-kedu .kedu-story .narrator-controls .icon-btn .icon, .map-kedu .kedu-story .map-story-nav .icon-btn .icon { width: 2.25rem; height: 2.25rem; }
+.map-kedu .kedu-story .narrator-controls .narrator-toggle { background: none; color: var(--gold-300); box-shadow: none; }
+.map-kedu .kedu-story .narrator-controls .narrator-toggle::after { box-shadow: inset 0 0 1.5rem rgba(19, 200, 203, .4), 0 0 .5rem rgba(44, 188, 188, .35); }
+.map-kedu .kedu-story .narrator-controls [data-narrator="next"]::after { border-radius: 1.25rem; }
+.map-kedu .kedu-skins[style*="--skin-primary"] .kedu-story .narrator-controls [data-narrator="next"]::after { background: var(--skin-primary) center / 140% 100% no-repeat; }
+.map-kedu .kedu-story .narrator-controls [data-narrator="next"] { color: #0B1B2E; }
+.map-kedu .kedu-story .map-story-nav { flex-direction: row; gap: .5rem; }
+.kedu-story-plain { grid-template-columns: 10.75rem minmax(0, 1fr); }
+
 /* =========================== SELESAI =========================== */
 /* Result screen redesign, 18 October 2026 (mockup 01, canvas 1920 × 1080 px;
    1 rem = 24 mockup px). Panel 1017 × 495 dp; every part sits at a fixed
@@ -2261,4 +2574,10 @@ html.js .book-frame img.is-loaded { opacity: 1; }
   .choice:active, .choice-pill:active, .chip-btn:active, .hunt-zoom:active,
   .embed-play:hover .embed-play-icon, .embed-play:focus-visible .embed-play-icon, .embed-play:active .embed-play-icon,
   .rating-star:active .icon { transform: none; }
+}
+
+/* Peta Kedu redesign without motion */
+@media (prefers-reduced-motion: reduce) {
+  .kedu-unheard { animation: none; }
+  .kedu-slice, .kedu-medal { transition: none; }
 }

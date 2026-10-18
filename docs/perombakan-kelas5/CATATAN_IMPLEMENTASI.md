@@ -1812,3 +1812,19 @@ Problem seen on a developer machine: after `php spark gelita:katalog:impor`, one
 - **Tests.** `Tests\Support\RealUploadsGuard` puts files with the official names into the real folder (only where none exists), then checks that every file there is unchanged after the test. `CatalogImportTest` and the new `UploadFolderIsolationTest` use it. The old "skip if a real upload exists" guards in `NarrationImporterTest`, `NarrationPagesTest` and `MockupGeneratorTest` are removed.
 - **Checked.** I filled the real folder with files under every name the suite writes (32 names plus a mockup) and ran the full suite: all of them were unchanged. An `strace` of a full run showed no access to the real folder apart from the guard's own files.
 
+## Page redesign 2: Peta Kedu (18 October 2026, branch `sky/clever-hopper-yaht5p`)
+
+Source: catalogue mockup Peta Kedu **candidate 04** (`gelita-katalog/mockup/gambar-mockup/peta-kedu/revisi-04/`: preview, spec, four rendered states), until now marked "not yet chosen".
+
+- **Owner decisions (interview, 18 October 2026).**
+  1. Candidate 04 is the base, with changes: fullscreen, home (Peta Kedu), profile, and logout (separate icons in candidate 02's HUD) go into the one Menu icon; **Pustaka Kedu, Tonton penutup, and Balai Refleksi stay in a bottom row** (04 had moved Pustaka into the menu); pins follow 04 with a wider name box so the text is not cramped.
+  2. The three-region diorama replaces the map picture. It lives only in the mockup package, so the importer installs it from there into the new slot `map.kedu-diorama` (`CatalogImporter::MOCKUP_FILES`; a later data.json entry for the slot takes over). Without it the page keeps the old `map.kedu` picture with pins at `map_x`/`map_y`.
+  3. Tapping a region selects it; one region panel shows that region (Kenali, Lanjut).
+  4. The story bar takes the 04 look but keeps the voice narration (and its automatic start after the map curtain).
+  5. Story line `peta-03` now names the Kenali button instead of the lantern icon (ID and EN, `data/story.php`; the old text is in `story-previous.php`, so `gelita:story:sync` updates installed servers). `Game.mapLead` changed the same way.
+- **Layout (dp, mockup px × 2/3).** HUD 0–120 (logo, "Peta Kedu", shard pill 533, 16, 352 × 79, language/sound/menu); map 20, 116, 853 × 400 (04 had 433 dp; 33 dp went to the bottom row); region panel 887, 116, 373 × 400; story bar 20, 524, 1240 × 132; bottom row 656–720 (the existing nav bar). The diorama box stays 2:1 at full width, so 13 dp are cropped at its top and bottom; pins are placed in percent of that box.
+- **Diorama geometry** in `Config\Gelita::$mapDiorama`: per region the 04 clip polygon, the medallion centre (04 pin box top-left + medallion centre, re-measured on the 1280 × 640 picture inside 04's 1280 × 650 frame), and the trail path into it. Measured on the catalogue picture; a replacement picture needs new values (slot tips say so).
+- **Kenali** uses a book-and-magnifier icon (`icon('kenali')`, drawn after the catalogue's candidate `icon.kenali.svg`). The city lanterns `map.lantern.*` are no longer shown anywhere, so that slot is now `unused`; `ui.lantern` stays for the HUD lantern and the map curtain.
+- **Kept behaviour.** Region curtain on Lanjut, locked toast (`aria-disabled` link), Kenali overlays with "Belum didengar" (now a badge on Kenali and a dot on the pin), preload of the next region, narration controls and events, `#region-{code}` as the target of a locked region's last Kenali slide.
+- **Checked.** Browser screenshots at 1280 × 720 against the four rendered states of candidate 04; region selection, locked region, Kenali open/Escape with focus return, menu; at 640 × 360 every visible control is at least 48 dp.
+

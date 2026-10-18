@@ -258,11 +258,11 @@ final class RegionStoryTest extends CIUnitTestCase
             $this->assertStringContainsString(self::TAGLINES[$id], $page);
             $this->assertStringContainsString('id="kenal-' . $code . '-4"', $page, '4 slide');
             $this->assertStringNotContainsString('id="kenal-' . $code . '-5"', $page);
-            // Tombol lentera pada pin dan kartu, keduanya tautan :target tanpa JavaScript
-            $this->assertSame(2, substr_count($page, 'href="#kenal-' . $code . '"'), "tombol Kenali {$code}");
+            // Peta Kedu redesign: one Kenali button, in the region panel, a :target link without JavaScript
+            $this->assertSame(1, substr_count($page, 'href="#kenal-' . $code . '"'), "tombol Kenali {$code}");
         }
 
-        $this->assertStringContainsString(esc(lang('Game.kenalRegion', ['Wonosobo'])), $page);
+        $this->assertStringContainsString('aria-label="' . esc(lang('Game.kenalRegion', ['Wonosobo']), 'attr') . '"', $page);
         // Overlay di luar <main>, pose & efek naskah sampai ke markup
         $this->assertLessThan(strpos($page, '<main id="app"'), strpos($page, 'id="kenal-temanggung"'));
         $this->assertMatchesRegularExpression('/id="kenal-wonosobo-1"[^>]*data-pose="smile"\s+data-effect="fog"/', $page);
@@ -285,9 +285,10 @@ final class RegionStoryTest extends CIUnitTestCase
     {
         $page = $this->map(['temanggung' => 'open', 'magelang' => 'locked', 'wonosobo' => 'locked'], heard: [2]);
 
-        $this->assertStringContainsString('class="kenal-btn is-unheard" href="#kenal-temanggung"', $page);
-        $this->assertStringContainsString('class="kenal-btn" href="#kenal-magelang"', $page, 'Magelang sudah didengar');
-        $this->assertSame(2, substr_count($page, esc(lang('Game.kenalUnheard'))) / 2, 'lencana pin + kartu untuk 2 wilayah');
+        $this->assertStringContainsString('class="kedu-btn is-secondary kenal-card-btn is-unheard" href="#kenal-temanggung"', $page);
+        $this->assertStringContainsString('class="kedu-btn is-secondary kenal-card-btn" href="#kenal-magelang"', $page, 'Magelang sudah didengar');
+        $this->assertSame(2, substr_count($page, esc(lang('Game.kenalUnheard'))), 'badge on the Kenali button of 2 regions');
+        $this->assertSame(2, substr_count($page, 'class="kedu-unheard"'), 'and a dot on their pins');
     }
 
     public function testReachedLastSlideReadsOnlyRegionIntroEventsAtTheEnd(): void
@@ -315,10 +316,12 @@ final class RegionStoryTest extends CIUnitTestCase
         $this->assertStringContainsString('<template id="tpl-curtain-region">', $page);
         $this->assertMatchesRegularExpression('/<template id="tpl-curtain-region">.*?data-curtain-layer="region"\s+data-tap="0"\s+data-min-ms="1800" data-max-ms="2400" data-skip="0"/s', $page);
         $this->assertMatchesRegularExpression('/<template id="tpl-curtain-region">.*?class="footsteps curtain-trail"/s', $page);
-        // Pin + kartu wilayah terbuka bertirai; terkunci tidak
-        $this->assertSame(2, substr_count($page, $this->href('dialog/magelang') . ' data-curtain="region"'));
-        $this->assertSame(2, substr_count($page, $this->href('wilayah/temanggung') . ' data-curtain="region"'));
+        // Peta Kedu redesign: pins select a region; Lanjut in its panel enters with the curtain; locked does not
+        $this->assertSame(1, substr_count($page, $this->href('dialog/magelang') . ' data-curtain="region"'));
+        $this->assertSame(1, substr_count($page, $this->href('wilayah/temanggung') . ' data-curtain="region"'));
         $this->assertStringNotContainsString($this->href('wilayah/wonosobo') . ' data-curtain', $page);
+        $this->assertStringContainsString($this->href('wilayah/wonosobo') . ' aria-disabled="true" data-locked-message="', $page, 'locked Lanjut only shows the toast');
+        $this->assertMatchesRegularExpression('/<a class="kedu-city" href="#region-magelang" data-region-select="magelang"\s+aria-controls="region-magelang" aria-current="true"/', $page, 'the region to play is selected');
         // Tagline & chip dari naskah; aset tujuan dialog: frame tokoh
         $this->assertStringContainsString(esc(json_encode(['title' => 'Menuju Temanggung…', 'tagline' => 'Di Antara Dua Gunung', 'chip' => 'Mudah'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), 'attr'), $page);
         $this->assertStringContainsString(esc(json_encode([base_url('assets/char/jaka-idle-1.png')], JSON_UNESCAPED_SLASHES), 'attr'), $page);
@@ -343,11 +346,12 @@ final class RegionStoryTest extends CIUnitTestCase
         ];
         $page = $this->map($status, heard: []);
 
-        $this->assertSame(3, substr_count($page, '<span class="pin-icon has-art"'));
+        $this->assertSame(3, substr_count($page, '<span class="kedu-medal has-art"'));
         $this->assertStringContainsString(esc(base_url('assets/uploads/map.pin.magelang.png?v=m1'), 'attr'), $page);
         $this->assertSame(2, substr_count($page, esc(base_url('assets/uploads/ui.pin.png?v=p1'), 'attr')), 'Temanggung and Wonosobo use the global pin');
-        $this->assertSame(2, substr_count($page, 'class="pin-mark"'), 'completed and locked get a mark; open gets the pulse');
-        $this->assertStringContainsString(esc(base_url('assets/uploads/map.lantern.wonosobo.png?v=w1'), 'attr'), $page);
+        $this->assertSame(1, substr_count($page, 'class="kedu-lock"'), 'a locked region gets the lock badge');
+        // Peta Kedu redesign: Kenali uses the book icon, so the city lanterns are no longer shown
+        $this->assertStringNotContainsString('map.lantern.wonosobo', $page);
         $this->assertStringContainsString('<span class="flame flame-', $page);
         $this->assertMatchesRegularExpression('/<span class="flame flame-\d has-art"/', $page, 'HUD lantern uses ui.lantern');
 
@@ -355,6 +359,43 @@ final class RegionStoryTest extends CIUnitTestCase
         $this->assertSame('wilayah-wonosobo', AssetPackageBuilder::groupFor('bg.loading.wonosobo'));
         $this->assertSame('wilayah-magelang', AssetPackageBuilder::groupFor('map.lantern.magelang'));
         $this->assertSame('inti', AssetPackageBuilder::groupFor('ui.pin'));
+    }
+
+    /** Page redesign 2 (18 October 2026): diorama slices, trails, one panel, menu HUD, bottom row without Profil. */
+    public function testMapIsTheThreeRegionDiorama(): void
+    {
+        $status = ['temanggung' => 'completed', 'magelang' => 'open', 'wonosobo' => 'locked'];
+
+        // No diorama yet: the old map picture, pins at their map_x / map_y
+        $plain = $this->map($status, heard: []);
+        $this->assertStringNotContainsString('kedu-slice', $plain);
+        $this->assertStringContainsString('<div class="kedu-art is-drawn">', $plain);
+
+        Services::resetSingle('renderer');
+        $this->media = ['map.kedu-diorama' => 'assets/uploads/map.kedu-diorama.webp?v=d1'];
+        $page   = $this->map($status, heard: []);
+        $shapes = config('Gelita')->mapDiorama;
+
+        $this->assertSame(3, substr_count($page, 'class="kedu-slice'));
+        $this->assertSame(1, substr_count($page, 'class="kedu-slice is-locked"'), 'locked Wonosobo is dimmed');
+        $this->assertStringContainsString('style="clip-path: polygon(' . esc($shapes['magelang']['clip'], 'attr') . ')"', $page);
+        $this->assertStringContainsString('<path class="kedu-route" d="' . esc($shapes['magelang']['route'], 'attr') . '"/>', $page, 'open trail is gold');
+        $this->assertStringContainsString('<path class="kedu-route is-locked" d="' . esc($shapes['wonosobo']['route'], 'attr') . '"/>', $page);
+        $this->assertStringContainsString('style="left: ' . $shapes['temanggung']['pin'][0] . '%; top: ' . $shapes['temanggung']['pin'][1] . '%"', $page);
+
+        // One panel per region, the region to play selected; a city pin selects, it does not leave
+        $this->assertSame(3, substr_count($page, '<section class="kedu-panel '));
+        $this->assertStringContainsString('<section class="kedu-panel is-open is-selected"', $page);
+        $this->assertStringContainsString('<a class="kedu-city" href="#region-wonosobo" data-region-select="wonosobo"', $page);
+
+        // Menu HUD with the title and the shard lantern; Profil is in the menu, not in the bottom row
+        $this->assertStringContainsString('class="hud hud-menu-style" data-in-game', $page);
+        $this->assertStringContainsString('<span class="hud-identity-region">' . lang('Game.mapKedu') . '</span>', $page);
+        $this->assertMatchesRegularExpression('/<div class="hud-shards">(?:<!--[^>]*-->\s*)?<details class="lantern"/', $page);
+        $nav = substr($page, (int) strpos($page, 'class="nav-bar'));
+        $this->assertStringContainsString($this->href('pustaka'), $nav);
+        $this->assertStringNotContainsString(base_url('profil'), $nav);
+        $this->assertStringNotContainsString(base_url('penutup'), $nav, 'the ending only once everything is done');
     }
 
     /** Display plan Phase C: the "Menuju …" curtain shows bg.loading.{wilayah}, else the region background. */
@@ -371,7 +412,7 @@ final class RegionStoryTest extends CIUnitTestCase
         $page = $this->map($status, heard: []);
         $bg   = esc(base_url('assets/uploads/bg.loading.magelang.jpg?v=b1'), 'attr');
 
-        $this->assertSame(3, substr_count($page, 'data-curtain-bg="' . $bg . '"'), 'pin, card, and last Kenali slide of Magelang');
+        $this->assertSame(2, substr_count($page, 'data-curtain-bg="' . $bg . '"'), 'Lanjut in the panel and the last Kenali slide of Magelang');
         $this->assertMatchesRegularExpression('/data-curtain-preload="' . preg_quote(esc(json_encode([base_url('assets/uploads/bg.loading.magelang.jpg?v=b1')], JSON_UNESCAPED_SLASHES), 'attr'), '/') . '/', $page, 'decoded first');
         $this->assertStringContainsString('data-preload="' . $bg . '"', $page, 'warmed up on the map');
 

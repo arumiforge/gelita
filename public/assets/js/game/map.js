@@ -27,6 +27,12 @@
  *   membuka kunci audio), lalu hash dibersihkan. Narasi peta tidak dimulai
  *   selama overlay Kenali terbuka.
  * - Tautan pin/kartu wilayah memutar tirai wilayah (core/curtain.js).
+ * - Peta Kedu redesign (18 October 2026): a city pin ([data-region-select])
+ *   selects its region instead of leaving the page: one region panel
+ *   (#region-{code}) is shown and the pin is marked aria-current. Without
+ *   JavaScript the pin's #region-{code} link shows the panel through :target.
+ *   Lanjut in the panel enters the region (curtain); a locked region's Lanjut
+ *   only shows the toast.
  */
 import { $, $$, on } from '../core/dom.js';
 import { toast } from '../core/toast.js';
@@ -149,6 +155,37 @@ function initRegionIntros(mapStory) {
   return () => open !== null;
 }
 
+function initRegionSelect(screen) {
+  const pins = $$('[data-region-select]', screen);
+  const panels = $('.kedu-panels', screen);
+  if (!pins.length || !panels) return;
+
+  const select = (code, { sound = true } = {}) => {
+    const panel = document.getElementById(`region-${code}`);
+    if (!panel || !panels.contains(panel)) return;
+    for (const node of $$('.kedu-panel', panels)) node.classList.toggle('is-selected', node === panel);
+    for (const pin of pins) {
+      if (pin.dataset.regionSelect === code) pin.setAttribute('aria-current', 'true');
+      else pin.removeAttribute('aria-current');
+    }
+    if (sound) Sfx.play(panel.classList.contains('is-locked') ? 'lock' : 'click');
+  };
+
+  // From here the class decides, not :target (game.css .kedu-panels.is-live)
+  panels.classList.add('is-live');
+  on(screen, 'click', '[data-region-select]', (event, pin) => {
+    event.preventDefault();
+    select(pin.dataset.regionSelect);
+  });
+
+  // #region-{code} from a link without JavaScript (e.g. Tutup at the end of Kenali): select it, then drop the hash
+  const hashed = /^#region-(.+)$/.exec(decodeURIComponent(location.hash || ''));
+  if (hashed) {
+    select(hashed[1], { sound: false });
+    history.replaceState(null, '', location.pathname + location.search);
+  }
+}
+
 function preload(root) {
   const urls = new Set($$('[data-preload]', root).map((node) => node.dataset.preload).filter(Boolean));
   const run = () => urls.forEach((src) => { const img = new Image(); img.decoding = 'async'; img.src = src; });
@@ -177,6 +214,7 @@ export function initMap() {
   });
 
   preload(screen);
+  initRegionSelect(screen);
 
   if (screen.dataset.screen === 'map-level') {
     emit('level_opened', { levelId: Number(screen.dataset.levelId) || null, payload: { code: screen.dataset.level || null } });

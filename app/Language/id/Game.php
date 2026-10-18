@@ -174,7 +174,7 @@ return [
     'enterRegion'      => 'Masuk ke wilayah',
 
     // Peta
-    'mapLead'            => 'Pilih wilayah yang lenteranya sudah menyala.',
+    'mapLead'            => 'Pilih wilayah yang sudah terbuka, lalu ketuk Lanjut.',
     'levelStatus_open'        => 'Terbuka',
     'levelStatus_in_progress' => 'Sedang dijelajahi',
     'levelStatus_completed'   => 'Tuntas',
@@ -242,6 +242,10 @@ return [
     'allShardsDone'    => 'Semua {0} serpihan cahaya sudah terkumpul!',
     'shardEarned'      => 'Serpihan cahaya: {0} dari {1}',
     'backToRegion'     => 'Peta wilayah',
+    // Peta Kedu redesign (18 October 2026)
+    'mapSelected'      => 'Wilayah dipilih',
+    'mapTapHint'       => 'Ketuk wilayah untuk menjelajah',
+    'kenali'           => 'Kenali',
     // Result screen redesign (18 October 2026)
     'resultMenu'       => 'Menu',
     'resultLanguage'   => 'Pilih bahasa',

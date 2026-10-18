@@ -25,6 +25,8 @@ if (! function_exists('icon')) {
             'logout'    => '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/>',
             'lock'      => '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
             'check'     => '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+            // Kenali (Peta Kedu, page redesign 2): open book and magnifier, from the catalogue mockup icon.kenali
+            'kenali'    => '<path d="M10 5Q6 2.5 2 4.5V18q4-2 8 .5V5zm0 0q4-2.5 8-.5v5M10 18.5q1.5-1 3-1M4.5 8l3 .5M4.5 11.5l3 .5"/><circle cx="16" cy="14" r="4.5"/><path d="M19.5 17.5l3 4"/>',
             'cross'     => '<path d="M6 6l12 12M18 6L6 18"/>',
             'star'      => '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/>',
             'book'      => '<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5"/><path d="M8 7h7"/>',

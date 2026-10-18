@@ -402,6 +402,17 @@ final class ImageSlots
             'tips'        => 'Rasio 14:9; posisi pin wilayah ada di bagian "Titik pin" halaman ini.',
         ],
 
+        'map.kedu-diorama' => [
+            'group'       => 'map',
+            'label'       => 'Diorama tiga wilayah Peta Kedu',
+            'content'     => 'Diorama 3D Dataran Kedu dari atas yang terbagi menjadi tiga pulau: Wonosobo di kiri, Temanggung di kanan atas, Magelang di kanan bawah, dipisahkan celah air. Tanpa tulisan, pin, atau jalur: permainan menggambar pin, nama wilayah, jalur putus-putus, dan meredupkan wilayah yang terkunci.',
+            'screens'     => [['Peta Kedu', '/peta']],
+            'format'      => 'WebP 1774 × 887 (rasio 2:1), paling besar ± 450 KB',
+            'transparent' => false,
+            'fallback'    => 'Peta Kedu lama (map.kedu) dengan pin di titik masing-masing wilayah',
+            'priority'    => 'opsional',
+            'tips'        => 'Bentuk potongan tiap wilayah diukur pada gambar Katalog Aset (mockup Peta Kedu kandidat 04). Gambar pengganti harus berkomposisi sama; bila tidak, potongan dan letak pin perlu diukur ulang oleh pengembang.',
+        ],
         'ui.pin' => [
             'group'       => 'map',
             'label'       => 'Pin wilayah (semua kota)',
@@ -416,8 +427,8 @@ final class ImageSlots
         'ui.lantern' => [
             'group'       => 'map',
             'label'       => 'Lentera (HUD dan tirai peta)',
-            'content'     => 'Lentera Jawa berlatar transparan, menghadap depan, tanpa api yang terlalu terang (permainan menambah cahaya sesuai jumlah wilayah tuntas). Juga dipakai tombol Kenali wilayah yang belum punya lentera sendiri.',
-            'screens'     => [['HUD (lentera serpihan)', '/peta'], ['Tirai "Membuka Peta Kedu"', '/peta'], ['Tombol Kenali di peta', '/peta']],
+            'content'     => 'Lentera Jawa berlatar transparan, menghadap depan, tanpa api yang terlalu terang (permainan menambah cahaya sesuai jumlah wilayah tuntas).',
+            'screens'     => [['HUD (lentera serpihan)', '/peta'], ['Tirai "Membuka Peta Kedu"', '/peta']],
             'format'      => 'PNG atau WebP berlatar transparan, paling besar ± 60 KB',
             'transparent' => true,
             'fallback'    => 'Ikon lentera bawaan',
@@ -437,12 +448,12 @@ final class ImageSlots
         'map.lantern.*' => [
             'group'       => 'region',
             'label'       => 'Lentera Kenali {Wilayah}',
-            'content'     => 'Lentera kecil khas {Wilayah} untuk tombol Kenali di peta Kedu, berlatar transparan, tanpa tulisan.',
-            'screens'     => [['Tombol Kenali dan kartu wilayah di peta Kedu', '/peta']],
+            'content'     => 'Lentera kecil khas {Wilayah}, berlatar transparan, tanpa tulisan. Sejak Peta Kedu dirombak (18 Oktober 2026) tombol Kenali memakai ikon buku dan kaca pembesar, jadi gambar ini belum tampil di permainan.',
+            'screens'     => [],
             'format'      => 'PNG atau WebP berlatar transparan, paling besar ± 40 KB',
             'transparent' => true,
-            'fallback'    => 'Lentera umum (ui.lantern), lalu ikon bawaan',
-            'priority'    => 'opsional',
+            'fallback'    => 'Tidak ada (belum dipakai)',
+            'priority'    => 'unused',
             'admin'       => ['Atur di halaman wilayah', 'admin/konten/level/{level_id}'],
         ],
         'bg.result.*' => [

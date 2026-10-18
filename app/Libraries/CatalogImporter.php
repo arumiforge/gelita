@@ -26,6 +26,8 @@ use RuntimeException;
  * - The two flag icons `icon.language-id` / `icon.language-en` become the
  *   language switch icons `ui.lang.id`/`.en` (ICON_SLOTS); other vector
  *   icons and every `reference.*` entry are not game slots.
+ * - A few pictures live only in a catalogue mockup package, not in data.json
+ *   (MOCKUP_FILES): the Peta Kedu diorama becomes `map.kedu-diorama`.
  * - Some entries also fill a second slot (COPY_SLOTS): `avatar.2` stays an
  *   avatar and is copied to the result screen medal `ui.result-medal`.
  * - App icons are converted to PNG, because the `app.*` slots take PNG only;
@@ -151,6 +153,15 @@ final class CatalogImporter
         'avatar.2' => 'ui.result-medal',
     ];
 
+    /**
+     * Pictures that exist only in a catalogue mockup package (path relative to
+     * the catalogue root) → slot (owner decision 18 October 2026: install the
+     * Peta Kedu diorama from the mockup until the catalogue lists it).
+     */
+    public const MOCKUP_FILES = [
+        'mockup/gambar-mockup/peta-kedu/revisi-04/aset/diorama.kedu-tiga-wilayah.webp' => 'map.kedu-diorama',
+    ];
+
     /** Lossy WebP quality for every stored image except the PNG app icons. */
     public const WEBP_QUALITY = 82;
 
@@ -257,6 +268,18 @@ final class CatalogImporter
         try {
             foreach ($entries as $entry) {
                 $this->importEntry($entry, $byKey, $dryRun, $overwrite);
+            }
+
+            foreach (self::MOCKUP_FILES as $path => $slot) {
+                if (isset($byKey[$slot]) || ($only !== [] && ! $this->matches($slot, $only))) {
+                    continue; // once data.json lists the slot itself, the catalogue entry wins
+                }
+
+                $file = rtrim($this->root, '/\\') . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $path);
+
+                if (is_file($file)) {
+                    $this->installSlot(basename($path), $slot, fn (): ?string => $this->webp($file, $slot), $dryRun, $overwrite);
+                }
             }
         } finally {
             foreach ($this->temp as $file) {

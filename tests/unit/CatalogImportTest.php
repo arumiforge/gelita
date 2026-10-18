@@ -311,6 +311,25 @@ final class CatalogImportTest extends CIUnitTestCase
         $this->assertArrayNotHasKey('ui.result-panel', $only);
     }
 
+    /** Page redesign 2: the Peta Kedu diorama is installed from its mockup package (not in data.json). */
+    public function testDioramaComesFromTheMockupPackage(): void
+    {
+        $file = $this->catalog . '/' . array_key_first(CatalogImporter::MOCKUP_FILES);
+        mkdir(dirname($file), 0777, true);
+        $image = imagecreatetruecolor(1774, 887);
+        imagewebp($image, $file, 90);
+
+        $report = array_column($this->importer()->run(), null, 'target');
+        $this->assertSame(['diorama.kedu-tiga-wilayah.webp', 'installed'], [$report['map.kedu-diorama']['source'], $report['map.kedu-diorama']['status']]);
+
+        $row = model(MediaAssetModel::class)->findByKey('map.kedu-diorama');
+        $this->assertSame([1774, 887], [(int) $row['width_px'], (int) $row['height_px']]);
+
+        // --kunci reaches it by its slot key
+        $only = array_column($this->importer()->run(true, true, null, ['map.kedu-*']), 'target');
+        $this->assertSame(['map.kedu-diorama'], $only);
+    }
+
     /** --kunci limits the run, and so --timpa, to the named slots. */
     public function testOnlyLimitsTheOverwriteToMatchingSlots(): void
     {
