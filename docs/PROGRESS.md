@@ -113,4 +113,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `sky/focused-heisenberg-aqw3qx` | Install dialog on the welcome page (mobile, blurred background) | PR open |
