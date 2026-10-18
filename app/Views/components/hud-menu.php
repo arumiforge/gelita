@@ -23,8 +23,10 @@
  *          hidden during a challenge;
  *        - sound (#btn-sound, game/hud.js);
  *        - menu: profile, Peta Kedu, fullscreen (#btn-fullscreen,
- *          core/stage.js; hidden when unsupported), and logout. Before login
- *          only fullscreen; the menu hides itself when it has no row left.
+ *          core/stage.js; hidden when unsupported), and logout. Signed in
+ *          without progress data (the opening story): Kembali ke awal (`/`)
+ *          instead of Peta Kedu. Before login only fullscreen; the menu
+ *          hides itself when it has no row left.
  *
  * Both popovers are <details data-popover>: they open without JavaScript;
  * game/hud.js adds Escape, outside click, one-open-at-a-time, the close
@@ -36,6 +38,8 @@
  * @var bool|null                 $hideBrand
  */
 $inGame   = isset($participant, $progress) && is_array($participant) && is_array($progress);
+// Signed in without progress data (the opening story): the menu still has the account rows
+$signedIn = isset($participant) && is_array($participant);
 $compact  = trim($this->renderSection('hudStyle')) !== 'menu';
 $locale   = service('request')->getLocale();
 $locales  = config('Gelita')->locales;
@@ -47,7 +51,7 @@ $logo     = empty($hideBrand) ? (media_key_src('ui.logo-hero') ?? media_key_src(
 $flags    = ['id' => media_key_src('ui.lang.id'), 'en' => media_key_src('ui.lang.en')];
 
 $langName = static fn (string $code): string => lang_or('Game.lang_' . $code, strtoupper($code));
-$userName = $inGame ? (string) ($participant['display_name'] ?: $participant['username']) : '';
+$userName = $signedIn ? (string) ($participant['display_name'] ?: $participant['username']) : '';
 ?>
 <header class="hud hud-menu-style<?= $compact ? ' is-compact' : '' ?>"<?= $inGame ? ' data-in-game' : '' ?><?= skin_style_attr(['skin-hud' => 'ui.result-hud-control']) ?>>
   <div class="hud-left hud-identity">
@@ -115,7 +119,7 @@ $userName = $inGame ? (string) ($participant['display_name'] ?: $participant['us
           <button type="button" class="hud-sheet-close" data-popover-close hidden
                   aria-label="<?= esc(lang('Game.close'), 'attr') ?>"><?= icon('cross') ?></button>
         </div>
-        <?php if ($inGame): ?>
+        <?php if ($signedIn): ?>
           <a class="hud-sheet-row hud-leave hud-profile" href="<?= base_url('profil') ?>"
              aria-label="<?= esc(lang('Game.profile') . ': ' . $userName, 'attr') ?>">
             <?= component('components/avatar', ['participant' => $participant, 'class' => 'user-avatar']) ?>
@@ -125,15 +129,21 @@ $userName = $inGame ? (string) ($participant['display_name'] ?: $participant['us
             </span>
             <?= icon('right', 'hud-sheet-go') ?>
           </a>
-          <a class="hud-sheet-row hud-leave" href="<?= base_url('peta') ?>">
-            <?= icon('home') ?><span class="hud-sheet-label"><?= esc(lang('Game.mapKedu')) ?></span><?= icon('right', 'hud-sheet-go') ?>
-          </a>
+          <?php if ($inGame): ?>
+            <a class="hud-sheet-row hud-leave" href="<?= base_url('peta') ?>">
+              <?= icon('home') ?><span class="hud-sheet-label"><?= esc(lang('Game.mapKedu')) ?></span><?= icon('right', 'hud-sheet-go') ?>
+            </a>
+          <?php else: ?>
+            <a class="hud-sheet-row hud-leave" href="<?= base_url() ?>">
+              <?= icon('home') ?><span class="hud-sheet-label"><?= esc(lang('Game.backHome')) ?></span><?= icon('right', 'hud-sheet-go') ?>
+            </a>
+          <?php endif ?>
         <?php endif ?>
         <button type="button" class="hud-sheet-row hud-fullscreen" id="btn-fullscreen" aria-pressed="false" hidden>
           <?= icon('fullscreen', 'icon-enter') ?><?= icon('fullscreen-exit', 'icon-exit') ?>
           <span class="hud-sheet-label"><?= esc(lang('Game.fullscreen')) ?></span><?= icon('right', 'hud-sheet-go') ?>
         </button>
-        <?php if ($inGame): ?>
+        <?php if ($signedIn): ?>
           <a class="hud-sheet-row hud-leave" href="<?= base_url('keluar') ?>">
             <?= icon('logout') ?><span class="hud-sheet-label"><?= esc(lang('Game.logout')) ?></span><?= icon('right', 'hud-sheet-go') ?>
           </a>

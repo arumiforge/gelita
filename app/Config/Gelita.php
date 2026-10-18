@@ -245,7 +245,7 @@ class Gelita extends BaseConfig
         'ui.result-medal'       => [223, 223],
         'ui.result-star'        => [57, 57],
         'ui.result-hud-control' => [68, 68],
-        'map.kedu-diorama'      => [853, 427],  // Peta Kedu, width of the map frame (2:1, cropped top and bottom)
+        'map.kedu-diorama'      => [853, 427],  // Peta Kedu, the whole 2:1 picture in the map frame (since 18 Oct 2026)
         'ui.jaka-avatar'        => [120, 120],  // Peta Kedu story bar portrait
     ];
 

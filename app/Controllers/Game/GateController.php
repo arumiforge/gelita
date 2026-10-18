@@ -41,6 +41,9 @@ class GateController extends BaseGameController
     {
         return view('game/intro', [
             'locale'  => $this->session()->resolvedLocale(),
+            // HUD menu: profile, Kembali ke awal, fullscreen, logout (owner, 18 October 2026);
+            // no progress, so no shard pill and no Peta Kedu row before the story is seen
+            'participant' => $this->participant()->toSafeArray(),
             'slides'  => service('contentRepository')->dialogues(null, 'intro'),
             'canSkip' => $this->participant()->hasSeenIntro(),
         ]);

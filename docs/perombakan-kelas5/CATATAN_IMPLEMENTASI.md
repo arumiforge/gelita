@@ -1939,3 +1939,29 @@ Decisions:
 - **One still picture shipped with the game:** `public/assets/ui/jaka-wave.webp`, the owner's transparent 1024 × 1536 WebP trimmed to the figure (658 × 1490, quality 85). It is a plain `<img class="auth-jaka">`, not `components/character`, so no pose frames or `char.jaka.*` slots are involved; `assets/ui` is already packed into asset packages.
 - **Placement (dp):** 265 × 600 with the feet at y 712. `/masuk` and `/ganti-sandi`: x 340, on the stone steps below the lantern tree. `/daftar/1–3`: x 372, on the path at the right pillar of the gate, so the lit arch opening stays visible and the panel (x ≥ 656) stays clear. This partly reverses "no Jaka" from the morning's redesign.
 - **Tests.** `StartGateTest` and `RegisterWizardTest` check the still picture (and still no `data-character="jaka"`). Checked in Chromium at 1280 × 720 on `/masuk`, `/ganti-sandi`, `/daftar/1`, and `/daftar/3`.
+
+## Intro, map curtain, and Peta Kedu polish (18 October 2026, branch `sky/blissful-brown-pmxupk`)
+
+Owner list (with a mockup of the "Wilayah dipilih" panel):
+
+- **Intro.**
+  - The slide title gets no focus ring: `slides.js` focuses it for screen readers on every change, and that is not a control.
+  - The narrator controls lose their borders (pill and buttons); ⏸/▶ is marked by a soft gold fill.
+  - On a slide with a character, the figure stands at the left of the caption text and is drawn over it: `.cine-stage` 24, 288, 336 × 432 dp at z-index 4, and the caption text starts at x 328.
+  - The space kept free for the controls on the title row follows them: 15rem without narration audio, 33rem with it (`.has-audio`), so titles no longer wrap beside a character.
+  - The dots sit 8 dp under the eyebrow pill, and the current dot has a navy border inside a gold ring.
+  - "Mulai petualangan" has no arrow and is set in capitals (CSS `text-transform`, the language string is unchanged).
+- **Intro menu.** `GateController::intro()` now passes the signed-in participant. `components/hud-menu` shows the account rows to any signed-in player (`$signedIn`) and keeps the Peta Kedu row and the shard pill for pages with progress data (`$inGame`). Without progress (the opening story), the menu has Profil, **Kembali ke awal** (`/`, `Game.backHome`), Layar penuh, and Keluar.
+- **Map curtain.**
+  - The lantern picture (`ui.lantern`) is shown alone at 120 dp, without the gold disc. The SVG keeps the disc.
+  - The tap button is just its PNG skin: no border, focus ring, or box shadow. It pulses with `transform` plus `drop-shadow`, which follows the picture's outline, instead of a box shadow (`tap-pulse`). This applies to every curtain.
+- **Peta Kedu.**
+  - **City captions** use the panel skin as a small 9-slice frame instead of the detail button. The selected city glows instead of getting an outline, and keyboard focus glows gold.
+  - **Region panel background:** `bg.loading.{code}` (`region_loading_bg()`, else the region background) fills the panel inside the frame and is masked out towards the left and bottom; locked regions are greyed.
+  - **Region panel text:** the eyebrow sits between two gold diamonds. The status pill has its own icon and colour: Terbuka sparkle and gold, Sedang dijelajahi a new `compass` icon and orange, Tuntas check and green, Terkunci lock and grey.
+  - **Progress:** the bar takes the free width, followed by "n/N tantangan".
+  - **Lanjut** in the panel uses a lower skin box, so it is as tall as Kenali. The Kenali picture stays the owner's book and magnifier, not the mockup's lantern.
+  - **Story bar:** Previous, Play, Replay, and Next are 40 dp round buttons in the bar's top-right corner, level with the dots, and the first line keeps that corner free. The bar is 144 dp tall instead of 176, and the map and region panel grew to 428 dp, so the 2:1 diorama now shows whole (pins are in % of the picture, unaffected).
+- **Tests.**
+  - `CinematicViewTest::testIntroMenuHasTheAccountRows` and `RegionStoryTest::testRegionPanelShowsTheCityPictureAndStatus` are new.
+  - Checked in Chromium at 1280 × 720 on a local SQLite world with the catalogue installed: intro slides with Mbah Kedu, a keyboard advance, the intro menu, the map curtain, and Peta Kedu with Temanggung and Wonosobo selected.
