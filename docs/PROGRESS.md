@@ -71,7 +71,8 @@ Owner decisions in its §12 (9 October 2026): full download before Mulai, admin 
   - [ ] Owner decisions from Wave 2: deploy scripts rebuilding the package while the switch is on (§6.3); running-study lock compares with the active release's package (§7.2); preview banner in the game; pin a running session's URLs to its own package (S8)
   - [ ] Run migration `2026-01-01-003300` (study package lock) on MariaDB/MySQL before release; checked on SQLite only
 - **Wave 3** (unblocked: Stage 2 is merged)
-  - [ ] Stage 3 — "Siapkan GELITA" download screen (`/siapkan`, Mulai gate) and teacher's Periksa paket screen (`/periksa-paket`): built on `paket-3-layar`, PR open; manual pass on iPad, Chromebook guest session, and a real private window still open
+  - [x] Stage 3 — "Siapkan GELITA" download screen (`/siapkan`, Mulai gate) and teacher's Periksa paket screen (`/periksa-paket`) (`paket-3-layar`, PR #139)
+  - [ ] Stage 3 manual pass on real devices: iPad (Safari tab and Home Screen), Chromebook guest session, a real private window
   - [ ] Re-run Stage 0 timing; owner decides on Stage 7 (P1)
 
 ## Story script and question bank revision (draft in `gelita-katalog/update/`)
@@ -112,4 +113,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `paket-3-layar` | Asset package Stage 3: Siapkan GELITA, Mulai gate, Periksa paket | PR open, waiting for review |
