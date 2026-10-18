@@ -1777,6 +1777,6 @@ Owner request: run the load test of `docs/rencana-log-asinkron.md` §7. Results 
   - check p95 52 → 37 ms;
   - page p95 60 → 38 ms;
   - host CPU 58 → 22 %.
-- **Phase 3.** All §7 targets hold at 90 students, so under owner decision 3 the write-behind inbox is not built. PROGRESS keeps an item for the owner to confirm it.
+- **Phase 3.** All §7 targets hold at 90 students, so under owner decision 3 the write-behind inbox is not built. The owner confirmed this on 18 October 2026. Reopen it only if one server hosts many schools at once and the load test (`tools/qa/load-test.mjs`) on that hardware misses the §7 targets.
 - **Seen in passing, not fixed here.** Four 401 answers out of 45,129 telemetry requests in the 300-student baseline run. A likely cause, not verified: session-ID regeneration every 300 s with `regenerateDestroy = true` racing a parallel request that carries the old ID. The new client sends fewer parallel requests and had none. The old client does not keep a 401 batch for a later re-send, so the new client's behaviour on a 401 should be checked if the issue shows up on the real server.
 

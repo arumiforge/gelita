@@ -1,6 +1,6 @@
 # Asynchronous logging plan
 
-*(New, English.)* Recommendation document: which logs must reach the database synchronously, which can be sent or written later, and how to do that without losing research data. Status: **approved plan; owner decisions recorded 17 October 2026 (§10). Phases 1 and 2 are implemented (PR #123 browser, PR #122 server) and load-tested (§7.1): every target met at 90 students, so Phase 3 is not needed under the agreed rule.** Written 17 October 2026 against `main` at the Draft 2 / voice-over merge (PR #118).
+*(New, English.)* Recommendation document: which logs must reach the database synchronously, which can be sent or written later, and how to do that without losing research data. Status: **approved plan; owner decisions recorded 17 October 2026 (§10). Phases 1 and 2 are implemented (PR #123 browser, PR #122 server) and load-tested (§7.1): every target met at 90 students; the owner decided on 18 October 2026 not to build Phase 3.** Written 17 October 2026 against `main` at the Draft 2 / voice-over merge (PR #118).
 
 Code references in §2–§4 describe the state before Phases 1 and 2; the decision log (`docs/perombakan-kelas5/CATATAN_IMPLEMENTASI.md`, sections of 17 October 2026) records what was built and any deviations.
 
@@ -124,7 +124,7 @@ Estimated effect at peak (per playing student): from up to 21–41 requests per 
 - **R6 — Batch audio writes.** Rewrite `EventService::recordAudio()` as `recordAudioBatch()`: one `whereIn(client_event_id)` existence check, one grouped `MAX(play_index)` per asset, play indexes assigned in memory in batch order, one `insertBatch` per table, one `UPDATE challenge_attempts SET audio_use_count = audio_use_count + n` per attempt, all in one transaction. Keep the per-event `rejected` reasons. Writes that can race follow the `updateIf()` pattern from `ChallengeService` where a race is possible (two tabs).
 - **R7 — Keep the rate limit.** `rateLimited('events')` stays at 120 requests per minute per session. After Phase 1 the normal rate is far below it; check that a re-send burst after a long offline period (up to 5,000 queued events = 100 batches) still drains within a few minutes, and let the combined endpoint (R2) count as one request.
 
-### 5.3 Phase 3 — write-behind inbox (optional, decide after measuring)
+### 5.3 Phase 3 — write-behind inbox (not built: owner decision 18 October 2026, after §7.1)
 
 Only worth doing if, after Phase 1–2, the database write itself (F8) is the bottleneck, e.g. many schools on one server. It changes the data path, so it needs its own branch and the event-integrity browser check.
 
@@ -260,6 +260,6 @@ QA_BASE_URL=http://127.0.0.1 QA_STUDENTS=90 QA_CLIENT=new QA_AUDIO_ASSET=<id> \
    - **Contract between them** (both sessions build against it): `POST /api/events` takes `{events, audio?, client_sent_at, dropped?, dropped_id?, audio_dropped?, audio_dropped_id?}`, at most 50 entries in each array, and answers `{accepted, duplicate, rejected, audio?: {accepted, duplicate, rejected}, server_time}`; the `audio` key is present in the answer whenever the request carried an `audio` array. `js_config()` exposes `eventFlush: {intervalMs, maxEvents}`. `/api/audio-events` and `/api/session/heartbeat` keep working.
    - **Merge order: Phase 2 first.** Phase 1 still works against a server without Phase 2: when the answer has no `audio` key, the client keeps those audio events and sends them through `/api/audio-events`, and it falls back to 30 000 ms / 40 events when `CONFIG.eventFlush` is missing.
 2. **Flush interval: 30 s** (the proposal was 15 s). It is server-configurable (`Gelita::$eventFlush`, R1), so it can be lowered later without a JS deploy. Forced sends on tab hide, page close, and before navigation stay as they are.
-3. **Phase 3: decide after measuring.** Run the §7 load test after Phases 1 and 2; build the inbox only if the targets are still missed at 90 students.
+3. **Phase 3: decide after measuring.** Run the §7 load test after Phases 1 and 2; build the inbox only if the targets are still missed at 90 students. *Decided 18 October 2026, after §7.1: not built.*
 4. **Dashboard lag accepted, with a note.** "20 event terakhir" may be up to one interval behind; Phase 1 adds a short note under the list (§9).
 5. Targets in §7 (90 students, telemetry ≤ 5 requests per student per minute, check p95 ≤ 300 ms, FPM never at `max_children`): not decided separately; they stay the proposal and are used as the bar for decision 3 unless the owner changes them.
