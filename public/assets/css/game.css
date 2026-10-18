@@ -1660,8 +1660,20 @@ span.result-star.is-on .icon { fill: currentColor; filter: drop-shadow(0 0 .375r
 .result-detail-list dt { color: var(--ink-dim); font-size: 1.5rem; }
 .result-detail-list dd { margin: .25rem 0 0; color: var(--ink); font-size: 2.25rem; font-weight: 800; }
 
+/* Region-done modal: the stage under it blurred and a little darker (owner,
+   18 October 2026). The HUD (z 20) stays above. Without JavaScript nothing
+   could close it, so the layer is only drawn with JS. */
+.result-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 4;
+  background: rgba(5, 8, 15, .4);
+  -webkit-backdrop-filter: blur(.375rem);
+  backdrop-filter: blur(.375rem);
+}
+html:not(.js) .result-scrim { display: none; }
 .result-kedu { display: grid; align-content: center; gap: var(--gap-4); }
-.result-kedu.is-dismissed { display: none; }
+.finished.is-kedu-closed .result-kedu, .finished.is-kedu-closed .result-scrim { display: none; }
 .result-kedu > .hud-sheet-close { position: absolute; top: .5rem; right: .5rem; }
 .finished-kedu {
   display: grid;

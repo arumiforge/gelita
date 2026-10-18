@@ -21,7 +21,8 @@
  *   {wilayah}" with the region curtain, Peta Kedu, or else the region map.
  * When the region is complete, a card over the panel keeps Mbah Kedu's words
  * and, when this attempt opened it, the Pustaka highlight (owner decision
- * 18 October 2026); it can be closed. CSS confetti stops on
+ * 18 October 2026). With JavaScript it is a modal over a blurred, dimmed
+ * stage and can be closed; without it the card stays and the buttons stay free. CSS confetti stops on
  * prefers-reduced-motion.
  *
  * @var App\Entities\ChallengeAttempt    $attempt
@@ -211,7 +212,9 @@ $nextAssets = ! empty($levelCompleted) && isset($nextRegion['curtain'])
   </article>
 
   <?php if ($levelCompleted && $level !== null): ?>
-    <aside class="result-sheet result-kedu stage-box" aria-labelledby="result-kedu-title">
+    <?php // Blurred, dimmed layer under the card (owner, 18 October 2026); shown only with JavaScript, which can close it ?>
+    <div class="result-scrim" aria-hidden="true"></div>
+    <aside class="result-sheet result-kedu stage-box" role="dialog" aria-labelledby="result-kedu-title">
       <button type="button" class="hud-sheet-close" data-dismiss hidden
               aria-label="<?= esc(lang('Game.close'), 'attr') ?>"><?= icon('cross') ?></button>
       <h2 id="result-kedu-title" class="visually-hidden"><?= esc(lang('Game.regionDone', [$region])) ?></h2>
