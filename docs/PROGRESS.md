@@ -98,7 +98,8 @@ Owner request (18 October 2026): several pages get a new design from the catalog
 
 - [x] Page 1 — Tantangan selesai `/selesai/{id}` (mockup `tantangan-selesai-temanggung`): redesigned panel, opt-in menu HUD, result skin slots, `ui.result-medal` from `avatar.2` (PR #128)
 - [ ] After merge, on a server that already ran the import: `php spark gelita:katalog:impor --kunci="ui.result*,bg.result*"` (dry run first) to install the new skins
-- [ ] Page 1 follow-up (PR #129): HUD language icons from the catalogue's newest flags `icon.language-id/-en`; region-done card as a modal over a blurred, dimmed stage. After merge, run `php spark gelita:katalog:impor --kunci="ui.lang.*"` (dry run first; add `--timpa` if an admin uploaded the language icons)
+- [x] Page 1 follow-up (PR #129): HUD language icons from the catalogue's newest flags `icon.language-id/-en`; region-done card as a modal over a blurred, dimmed stage. After merge, run `php spark gelita:katalog:impor --kunci="ui.lang.*"` (dry run first; add `--timpa` if an admin uploaded the language icons)
+- [ ] Page 1 touch fix: the region-done modal and its Pustaka card enlarged (card 1040 × 560 dp, close button 64 dp, Baca Pustaka 72 dp)
 
 ## Active branches
 
@@ -106,5 +107,5 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `sky/clever-hopper-yaht5p` | Page redesign 1 follow-up: language flags, region-done modal | PR #129 open |
-| `sky/intelligent-hopper-w4yzc2` | Test suite: own upload folder, real `public/assets/uploads/` left alone | PR open |
+| `sky/clever-hopper-yaht5p` | Page redesign 1 touch fix: larger region-done modal | PR open |
+| `sky/intelligent-hopper-w4yzc2` | Test suite: own upload folder, real `public/assets/uploads/` left alone | PR #131 open |
