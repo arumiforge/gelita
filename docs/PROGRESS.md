@@ -120,7 +120,7 @@ Decided in an interview with the owner; decisions in the decision log, section *
 - [x] Part 1 — own background per slide for `region_intro`, `level_open`, `level_done`: field in **Konten → Dialog**, crossfade with slow zoom, fallback to the region background, catalogue keys `bg.cerita-{kenal|dialog|tuntas}-{wilayah}-NN`, optional `bg` in `data/story.php` (PR #164)
 - [ ] Art for the region slides (catalogue team); until it exists every slide shows the region background. After it lands: `php spark gelita:katalog:impor --kunci="bg.cerita-*"` (dry run first)
 - [x] Part 2 — screen effects with three.js 0.186.1 (vendored, loaded only on the narrated scenes, CSS effects as the fallback): drifting fog, lantern sparks, light rays with bloom, background parallax; switch `gelita.screenFx` (PR #165)
-- [ ] Dip to black between opening and ending story slides (owner report: another picture flashed between slides); only the background goes dark (branch `sky/beautiful-thompson-817hm4`)
+- [x] Dip to black between opening and ending story slides (owner report: another picture flashed between slides); only the background goes dark (PR #167)
 - [ ] On a server with package mode on: **Bangun ulang paket** so the package carries the three.js files (PR #165)
 - [ ] Owner check of the screen effects on the class devices (frame rate, look): `docs/perombakan-kelas5/device-test-checklist.md`
 
@@ -130,4 +130,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `sky/beautiful-thompson-817hm4` | Story screens: dip to black between opening/ending slides | In review |
