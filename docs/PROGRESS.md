@@ -118,4 +118,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `sky/loving-hopper-6fbsjl` | Full-size HUD menu sheet reported outside `#stage` by stage-check | PR open |
