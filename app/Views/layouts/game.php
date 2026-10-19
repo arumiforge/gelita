@@ -57,7 +57,7 @@ $screenCode = method_exists($request, 'getPath') ? (App\Filters\ScreenViewFilter
   <meta name="apple-mobile-web-app-title" content="GELITA">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <link rel="preload" href="<?= game_asset_url('fonts/plus-jakarta-sans-latin-400-normal.woff2') ?>" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="<?= game_asset_url('fonts/cinzel-latin-700-normal.woff2') ?>" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="<?= game_asset_url('fonts/cinzel-decorative-700-normal.woff2') ?>" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="<?= asset_url_versioned('css/tokens.css') ?>">
   <link rel="stylesheet" href="<?= asset_url_versioned('css/base.css') ?>">
   <link rel="stylesheet" href="<?= asset_url_versioned('css/stage.css') ?>">

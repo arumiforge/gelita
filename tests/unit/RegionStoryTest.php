@@ -382,44 +382,63 @@ final class RegionStoryTest extends CIUnitTestCase
         $this->assertStringContainsString('id="region-magelang"', $page);
     }
 
-    /** Owner, 19 October 2026: HUD-like band, title under it, avatar on the caption, no progress text. */
-    public function testRegionIntroLayoutHasABackBandAvatarAndASingleCaptionRow(): void
+    /**
+     * Owner, 19 October 2026: HUD-like band, the gold title over its ornament
+     * rule under it, the avatar with its nameplate and the caption at the
+     * bottom, the owner's plates on Back/Kembali (navy) and Lanjut (gold), the
+     * narrator controls on the HUD skin, no progress text.
+     */
+    public function testRegionIntroLayoutHasPlatesANameplateAndAGoldTitle(): void
     {
         $this->media = ['ui.kedu-avatar' => 'assets/uploads/ui.kedu-avatar.webp?v=k1', 'ui.logo-hero' => 'assets/uploads/ui.logo-hero.webp?v=l1',
-            'char.mbah_kedu.idle.1' => 'assets/uploads/char.kedu.idle.1.webp'];
+            'ui.result-hud-control' => 'assets/uploads/ui.result-hud-control.webp?v=h1', 'char.mbah_kedu.idle.1' => 'assets/uploads/char.kedu.idle.1.webp'];
         $page    = $this->map(['temanggung' => 'open', 'magelang' => 'locked', 'wonosobo' => 'locked'], heard: []);
         $overlay = substr($page, (int) strpos($page, 'id="kenal-temanggung"'));
         $overlay = substr($overlay, 0, (int) strpos($overlay, '</section>'));
+        $open    = substr($overlay, 0, (int) strpos($overlay, '>'));
         $head    = substr($overlay, (int) strpos($overlay, '<header class="kenal-head">'));
         $head    = substr($head, 0, (int) strpos($head, '</header>'));
 
-        // Band: Back (no cross) and the logo; the title is under the band, not in it
+        // Band: Back (no cross, on the navy plate) and the logo; the title is under the band, not in it
         $this->assertStringContainsString('class="btn btn-quiet kenal-back" href="' . esc('#region-temanggung', 'attr') . '" data-kenal-close', $head);
         $this->assertStringContainsString('<img class="kenal-logo" src="' . esc(base_url('assets/uploads/ui.logo-hero.webp?v=l1'), 'attr') . '"', $head);
         $this->assertStringNotContainsString('icon-btn kenal-close', $overlay);
         $this->assertStringNotContainsString('<h2', $head);
-        $this->assertMatchesRegularExpression('/<\/header>\s*<h2 class="kenal-title" id="kenal-temanggung-title">' . preg_quote(esc(lang('Game.kenalTitle', ['Temanggung'])), '/') . '<\/h2>/', $overlay);
+        $this->assertMatchesRegularExpression('/<\/header>\s*<div class="kenal-heading">\s*<h2 class="kenal-title" id="kenal-temanggung-title">' . preg_quote(esc(lang('Game.kenalTitle', ['Temanggung'])), '/') . '<\/h2>\s*<span class="kenal-rule" aria-hidden="true">\s*<svg class="kenal-ornament"/', $overlay);
 
-        // No "Wilayah n · tingkat" and no "Bagian n dari N" text; the dots and Lanjut share the speaker/title row
+        // The plates (shipped pictures) and the HUD skin reach the CSS as custom properties
+        foreach (['kenal-plate-gold', 'kenal-plate-navy'] as $plate) {
+            $this->assertStringContainsString(esc('--' . $plate . ': url("' . game_asset_url('ui/' . $plate . '.webp') . '")', 'attr'), $open);
+            $this->assertFileExists(FCPATH . 'assets/ui/' . $plate . '.webp');
+        }
+        $this->assertStringContainsString(esc('--skin-hud: url("' . base_url('assets/uploads/ui.result-hud-control.webp?v=h1') . '")', 'attr'), $open);
+
+        // No "Wilayah n · tingkat" and no "Bagian n dari N" text; the dots and Lanjut share the title row
         $this->assertStringNotContainsString('class="eyebrow"', $overlay);
         $this->assertStringNotContainsString('class="kenal-stage"', $overlay);
-        $this->assertSame(4, preg_match_all('/<div class="cine-caption-head">\s*<span class="cine-speaker">[^<]*<\/span>\s*<h3 class="cine-title">[^<]*<\/h3>\s*(?:<!--[^>]*-->\s*)*<nav class="slide-nav"/', $overlay));
+        $this->assertStringNotContainsString('cine-speaker', $overlay, 'the name is on the nameplate');
+        $this->assertSame(4, preg_match_all('/<div class="cine-caption-head">\s*<h3 class="cine-title">[^<]*<\/h3>\s*(?:<!--[^>]*-->\s*)*<nav class="slide-nav"/', $overlay));
 
-        // Mbah Kedu's round avatar, never a pose frame
-        $this->assertSame(4, substr_count($overlay, '<div class="kenal-avatar">'));
+        // Mbah Kedu's round avatar with his name on the nameplate, never a pose frame
+        $this->assertSame(4, preg_match_all('/<div class="kenal-avatar">\s*(?:<!--[^>]*-->\s*)*<span class="kedu-portrait has-art" aria-hidden="true">.*?<\/span>\s*(?:<!--[^>]*-->\s*)*<span class="kenal-nameplate">' . preg_quote(esc(lang('Game.char_mbah_kedu')), '/') . '<\/span>\s*<\/div>/s', $overlay));
         $this->assertStringContainsString('<img class="kedu-avatar" src="' . esc(base_url('assets/uploads/ui.kedu-avatar.webp?v=k1'), 'attr') . '"', $overlay);
         $this->assertStringNotContainsString('char.kedu.idle', $overlay);
 
-        // Without the picture: his initial in the gold disc
+        // Without the pictures: his initial in the gold disc, no HUD skin (the plates are shipped)
         Services::resetSingle('renderer');
         $this->media = [];
         $plain       = $this->map(['temanggung' => 'open', 'magelang' => 'locked', 'wonosobo' => 'locked'], heard: []);
         $this->assertStringContainsString('<span class="kedu-portrait-initial">M</span>', $plain);
         $this->assertStringContainsString('<span class="hud-brand kenal-logo">GELITA</span>', $plain);
+        $this->assertStringNotContainsString('--skin-hud', $plain);
 
         $css = (string) file_get_contents(FCPATH . 'assets/css/cinematic.css');
         $this->assertStringContainsString('.kenal-avatar {', $css);
         $this->assertStringContainsString('margin-left: calc(var(--kenal-avatar) / 2);', $css, 'the bar starts under the avatar centre');
+        $this->assertMatchesRegularExpression('/\.kenal-avatar \{[^}]*bottom: 0;/', $css, 'the avatar stands on the bar\'s bottom');
+        $this->assertStringContainsString('border-image: var(--kenal-plate-gold) 0 250 fill / 0 4rem stretch;', $css);
+        $this->assertStringContainsString('border-image: var(--kenal-plate-navy) 0 115 fill / 0 3.5rem stretch;', $css);
+        $this->assertStringContainsString('.kenal[style*="--skin-hud"] .narrator-controls .icon-btn::after {', $css);
         $this->assertStringContainsString('.kenal.is-live .slide-nav > .btn-quiet { display: none; }', $css);
     }
 
@@ -544,6 +563,8 @@ final class RegionStoryTest extends CIUnitTestCase
         $story = substr($story, 0, (int) strpos($story, '</aside>'));
         $this->assertStringContainsString('<img class="kedu-avatar" src="' . esc(base_url('assets/uploads/ui.jaka-avatar.webp?v=a1'), 'attr') . '"', $story);
         $this->assertStringNotContainsString('char.jaka.idle', $story);
+        // Owner, 19 October 2026: the avatar brings its own gold ring, so the portrait draws none
+        $this->assertMatchesRegularExpression('/\.kedu-portrait\.has-art \{[^}]*border: 0;[^}]*background: none;/', (string) file_get_contents(FCPATH . 'assets/css/game.css'));
         $this->assertMatchesRegularExpression('/<a class="kedu-btn is-primary" href="[^"]*"[^>]*>\s*<span>' . lang('Game.start') . '<\/span>\s*<\/a>/', $page);
 
         // Menu HUD with the title and the shard lantern; Profil is in the menu, not in the page buttons

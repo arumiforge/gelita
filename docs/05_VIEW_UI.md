@@ -11,7 +11,7 @@ Ada dua wajah:
 * **Permainan** — layar penuh berlatar gambar, HUD lentera di atas, navigasi bawah, tombol besar ramah anak kelas 5 SD/MI, dwibahasa Indonesia/Inggris.
 * **Panel admin** — kepala panel, sidebar kiri, panel dan tabel padat, satu bahasa (Indonesia), tanpa chart.
 
-Identitas visual: **navy gelap + emas**, judul dengan serif klasik (Cinzel), isi dengan sans humanis (Plus Jakarta Sans), angka dengan mono (IBM Plex Mono). Panel perkamen (`.panel-parchment`) dipakai untuk formulir dan teks cerita, panel berukir (`.panel-carved`) untuk arena dan layar selesai.
+Identitas visual: **navy gelap + emas**, judul dengan serif klasik (Cinzel Decorative), isi dengan sans humanis (Plus Jakarta Sans), angka dengan mono (IBM Plex Mono). Panel perkamen (`.panel-parchment`) dipakai untuk formulir dan teks cerita, panel berukir (`.panel-carved`) untuk arena dan layar selesai.
 
 **Bahasa.** Teks antarmuka permainan selalu lewat `lang()` dari `app/Language/{id,en}/Game.php` dan `Auth.php`; teks yang dipakai JavaScript dari `Js.php` (dikirim lewat `js_config()`). Teks konten memakai `$entity->text('field', $locale)` atau `tr($row, 'field', $locale)`, yang jatuh ke bahasa Indonesia bila versi Inggris kosong. Panel admin memakai `app/Language/id/Admin.php` dan bahasa sehari-hari untuk guru ("soal", bukan "butir"; "kesalahan", bukan "galat"); kode yang tersimpan di database ditampilkan lewat `admin_label()`. Pemilih bahasa adalah form POST biasa (`components/lang-switch`): halaman dimuat ulang pada URL yang sama dan progres tidak berubah karena seluruh state ada di database.
 
@@ -123,7 +123,7 @@ Section yang diisi halaman:
 
 Urutan `<body class="game …" data-locale data-base data-screen-code>`: `components/rotate-gate` (di **luar** panggung), lalu `.stage-frame` › `#stage.stage` yang berisi `.skip-link`, latar `.scene` (dua `<img class="scene-img">` `#scene-a`/`#scene-b` untuk crossfade), section `overlay`, `components/hud`, `<main id="app" class="stage-main">`, section `nav`, `#modal-layer`, dan `components/toast` (dengan flash `error`). Sesudah panggung: `<template id="tpl-modal">` (isi `components/modal`), `<script type="application/json" id="app-config">` berisi `js_config($locale)`, `vendor/howler.min.js`, dan modul `js/game.js`. Lihat *Panggung 16:9*.
 
-* `<head>` memuat `tokens.css`, `base.css`, `stage.css`, `components.css`, `game.css`, `cinematic.css`, dan `<noscript><link … noscript.css></noscript>`; font Plus Jakarta Sans 400 dan Cinzel 700 di-preload. Layout ini juga menautkan `manifest.json` dan ikon aplikasi terpasang (lihat *Layar putar dan aplikasi terpasang*).
+* `<head>` memuat `tokens.css`, `base.css`, `stage.css`, `components.css`, `game.css`, `cinematic.css`, dan `<noscript><link … noscript.css></noscript>`; font Plus Jakarta Sans 400 dan Cinzel Decorative 700 di-preload. Layout ini juga menautkan `manifest.json` dan ikon aplikasi terpasang (lihat *Layar putar dan aplikasi terpasang*).
 * `data-screen-code` adalah kode layar dari `App\Filters\ScreenViewFilter::resolve()` untuk path saat ini — sama dengan `screen` pada event `screen_viewed` — dan dipakai JavaScript untuk `page_hidden`/`page_visible`. Atribut ini hanya ada pada path yang dikenal filter (lihat tabel di *Layar permainan*).
 * Data untuk JavaScript selalu lewat `<script type="application/json">` (`app-config`, `challenge-data`, `password-policy`), tidak pernah disisipkan ke string JavaScript. Selain skrip ukuran panggung di `<head>` (tanpa data), view tidak memuat skrip inline atau atribut `on…`.
 
@@ -607,7 +607,7 @@ Delapan berkas di `public/assets/css/`, dimuat berurutan lewat `asset_url_versio
 |---|---|
 | Warna | `--navy-900` `#0B1320`, `--navy-800`, `--navy-700`, `--navy-600`; `--gold-500` `#DFC087`, `--gold-600`, `--gold-300`; `--parchment`, `--parchment-dark`; `--brown-700`, `--brown-500`; `--ok`, `--bad`, `--warn` dan versi teksnya `--ok-ink`, `--bad-ink`, `--warn-ink`; `--ink`, `--ink-dim` |
 | Lapisan & garis | `--veil` (lapisan gelap di belakang teks di atas gambar), `--veil-strong`, `--line`, `--line-strong`, `--line-ink`, `--surface`, `--surface-2`, `--glow` |
-| Tipografi | `--font-display` (Cinzel), `--font-body` (Plus Jakarta Sans), `--font-mono` (IBM Plex Mono); ukuran `--fs-caption` 16, `--fs-body` 20, `--fs-reading` 22 (bacaan), `--fs-h3` 24, `--fs-h2` 32, `--fs-h1` 40, `--fs-display` 56 dp |
+| Tipografi | `--font-display` (Cinzel Decorative), `--font-body` (Plus Jakarta Sans), `--font-mono` (IBM Plex Mono); ukuran `--fs-caption` 16, `--fs-body` 20, `--fs-reading` 22 (bacaan), `--fs-h3` 24, `--fs-h2` 32, `--fs-h1` 40, `--fs-display` 56 dp |
 | Ruang & bentuk | `--gap-1` … `--gap-7` (4, 8, 12, 16, 24, 32, 48 dp), `--gutter` 32 dp, `--radius` 12, `--radius-lg` 20, `--radius-pill`, `--shadow-1`, `--shadow-2`, `--shadow-glow`, `--line-w` |
 | Sentuh & layout | `--tap` 48 dp, `--hud-h` 56 dp, `--nav-h` 64 dp; panggung `--app-w`/`--app-h`, `--stage-w`/`--stage-h`, `--letterbox` (`:root.game-stage`) |
 

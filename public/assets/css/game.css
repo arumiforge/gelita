@@ -1871,8 +1871,11 @@ span.kedu-star.is-on .icon { fill: currentColor; }
   background: radial-gradient(#EDCE8B, #81613C);
   box-shadow: 0 0 0 .25rem #08192E, 0 .25rem .75rem rgba(0, 0, 0, .55);
 }
-/* Jaka's bust avatar (ui.jaka-avatar), else his initial; other speakers keep their pose frame */
+/* Jaka's avatar (ui.jaka-avatar), else his initial; other speakers keep their pose frame */
 .kedu-portrait .kedu-avatar { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; }
+/* Since 19 October 2026 the avatar is the owner's Jaka in a gold ring: no ring of ours around it */
+.kedu-portrait.has-art { overflow: visible; border: 0; border-radius: 0; background: none; box-shadow: none; }
+.kedu-portrait.has-art .kedu-avatar { object-fit: contain; object-position: 50% 50%; filter: drop-shadow(0 .25rem .5rem rgba(0, 0, 0, .55)); }
 .kedu-portrait-initial { display: grid; place-items: center; width: 100%; height: 100%; color: var(--navy-900); font-family: Georgia, 'Times New Roman', serif; font-size: var(--fs-h1); font-weight: 700; }
 .kedu-portrait .character { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
 /* Head and shoulders of the full-body pose frame (700 × 900) */
@@ -2409,7 +2412,7 @@ html.js .book-frame img.is-loaded { opacity: 1; }
   border-radius: 50%;
   background: rgba(11, 19, 32, .55);
   color: #fff6e1;
-  /* huruf i kecil bergaya "ⓘ"; Cinzel (font judul) hanya punya kapital */
+  /* huruf i kecil bergaya "ⓘ"; Cinzel Decorative (font judul) hanya punya kapital */
   font: italic 700 .9375rem/1 Georgia, "Times New Roman", serif;
   transition: background .2s ease;
 }
