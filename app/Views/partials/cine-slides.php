@@ -18,6 +18,13 @@
  * narrator.js runs they are hidden (swipe still clicks them) and the ▶ button
  * in the narrator controls reads "Lanjut".
  *
+ * Backgrounds (owner, 19 October 2026): with JavaScript the slide's own
+ * `.cine-bg` is hidden and its picture (`data-bg`) is shown by the layout's
+ * scene images instead, with a dip to black between slides (core/backdrop.js,
+ * `data-backdrop-mode="dip"` on the root), so no other picture shows between
+ * two slides. The caption and the characters stay in place. Without
+ * JavaScript each slide still shows its own `.cine-bg`.
+ *
  * @var list<array<string, mixed>> $slides
  * @var string                     $locale
  * @var string                     $prefix
@@ -41,7 +48,7 @@ $total = count($slides);
     ?>
     <li class="slide cine-slide<?= $character === 'narator' ? ' is-narrator' : '' ?>" id="<?= esc($prefix . $n, 'attr') ?>" data-index="<?= $n ?>"
         data-character="<?= esc($character, 'attr') ?>" data-pose="<?= esc($pose, 'attr') ?>"
-        <?= $effect !== '' ? 'data-effect="' . esc($effect, 'attr') . '"' : '' ?>
+        <?= $effect !== '' ? 'data-effect="' . esc($effect, 'attr') . '"' : '' ?><?= slide_bg_attr($slide) ?>
         aria-label="<?= esc($progress, 'attr') ?>">
       <?php if (media_exists($bgId)): ?>
         <img class="cine-bg" src="<?= esc(media_src($bgId), 'attr') ?>" alt="" <?= $n === 1 ? 'fetchpriority="high"' : 'loading="lazy"' ?>>

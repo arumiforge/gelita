@@ -118,20 +118,28 @@ export function initNarrator(root, { onFinish = null, onSlide = null } = {}) {
 
   // A slide may carry its own picture (`data-bg`); a slide without one shows the
   // default again. The pair: the overlay's own two `.kenal-bg`, or the stage's
-  // scene images when the root says `data-backdrop="stage"`.
+  // scene images when the root says `data-backdrop="stage"`. The story screens
+  // add `data-backdrop-mode="dip"` (a dip to black under `.scene` on every slide)
+  // and `data-bg-default` (the story background, as the layout starts on slide 1's).
   const bgPair = (() => {
     const own = $$(':scope > .kenal-bg', root);
     if (own.length === 2) return own;
     const stage = [$('#scene-a'), $('#scene-b')];
     return root.dataset.backdrop === 'stage' && stage.every(Boolean) ? stage : null;
   })();
-  const backdrop = bgPair ? createBackdrop(bgPair) : null;
+  const backdrop = bgPair ? createBackdrop(bgPair, {
+    fallback: root.dataset.bgDefault ?? bgPair[0].getAttribute('src') ?? '',
+    veil: root.dataset.backdropMode === 'dip' ? $('#stage > .scene') : null,
+  }) : null;
+  let syncedSlide = null;
 
-  /** Only while the player is on screen: a closed Kenali overlay loads nothing. */
+  /** On a new slide only, and only while the player is on screen: a closed Kenali overlay loads nothing. */
   function syncBackdrop() {
     const slide = slidesEls[slides.current - 1];
-    if (!slide || root.getClientRects().length === 0) return;
-    backdrop.show(slide.dataset.bg);
+    if (!slide || slide === syncedSlide || root.getClientRects().length === 0) return;
+    const first = syncedSlide === null;
+    syncedSlide = slide;
+    backdrop.show(slide.dataset.bg, { always: !first });
     backdrop.preload(slidesEls[slides.current]?.dataset.bg);
   }
 

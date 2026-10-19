@@ -38,11 +38,15 @@
  * @var bool                       $canSkip sudah pernah menonton (intro_seen_at terisi)
  */
 $welcome = session('welcome');
+// The page starts on slide 1's own picture, so nothing else shows before it;
+// the story background is the default for slides without one (core/backdrop.js)
+$defaultBg = media_key_src('bg.intro') ?? media_key_src('bg.welcome') ?? '';
+$firstBg   = $slides === [] ? null : slide_bg_src($slides[0]);
 ?>
 <?= $this->extend('layouts/game') ?>
 
 <?= $this->section('title') ?><?= esc(lang('Game.introTitle')) ?><?= $this->endSection() ?>
-<?= $this->section('background') ?><?= media_key_src('bg.intro') ?? media_key_src('bg.welcome') ?? '' ?><?= $this->endSection() ?>
+<?= $this->section('background') ?><?= $firstBg ?? $defaultBg ?><?= $this->endSection() ?>
 <?= $this->section('bodyClass') ?>is-cinematic<?= $this->endSection() ?>
 <?php /* Full-size HUD (big logo and controls); its centre holds the slide progress, so no shard pill */ ?>
 <?= $this->section('hudStyle') ?>menu<?= $this->endSection() ?>
@@ -51,7 +55,8 @@ $welcome = session('welcome');
 <?= $this->section('content') ?>
 <?php /* Next screen: Peta Kedu behind the opening map curtain */ ?>
 <section class="story intro cine narrator" data-screen="intro"<?= next_assets_attr([media_key_src('bg.loading'), media_key_src('map.kedu'), media_key_src('bg.map')]) ?>
-         data-narrator data-context="intro" data-prefix="slide-" data-mode="tap"<?= screen_fx_attr() ?>>
+         data-narrator data-context="intro" data-prefix="slide-" data-mode="tap"<?= screen_fx_attr() ?>
+         data-backdrop="stage" data-backdrop-mode="dip" data-bg-default="<?= esc($defaultBg, 'attr') ?>">
   <?php if (is_string($welcome) && $welcome !== ''): ?>
     <div class="welcome-card" role="status">
       <span class="welcome-card-icon" aria-hidden="true"><?= icon('key') ?></span>

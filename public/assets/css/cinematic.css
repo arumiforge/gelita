@@ -437,12 +437,35 @@
 body.is-cinematic .scene-img:is(.is-visible, .is-leaving),
 .scene-img.is-own:is(.is-visible, .is-leaving) { animation: kenburns 40s ease-in-out infinite alternate; }
 
+/* Dip to black between story slides (core/backdrop.js veil, owner 19 October
+   2026): black over the pictures in 0.35 s, the pictures swap under it at
+   once, and it lifts in 0.5 s. Only the background goes dark; the caption,
+   characters, and HUD sit above .scene. */
+.scene::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: #000;
+  opacity: 0;
+  transition: opacity .5s ease;
+}
+.scene.is-dark::before { opacity: 1; transition-duration: .35s; }
+.scene.is-dark .scene-img { transition: none; }
+
 .story { position: absolute; inset: 0; }
 .cine > .welcome-card { position: absolute; top: calc(128 * var(--dp)); left: calc(260 * var(--dp)); z-index: 2; width: calc(760 * var(--dp)); margin: 0; }
 .story > .story-empty { position: absolute; top: calc(200 * var(--dp)); left: calc(320 * var(--dp)); width: calc(640 * var(--dp)); }
 
 .cine-slides { position: absolute; inset: 0; }
-.cine-slide { position: absolute; inset: 0; animation: cine-in .8s ease both; }
+.cine-slide { position: absolute; inset: 0; isolation: isolate; animation: cine-in .8s ease both; }
+/* With JavaScript the story background is the layout's scene (dip to black,
+   see .scene::before): each slide's own picture stays hidden and the slide
+   itself does not fade, so no other picture shows between two slides. The
+   isolation above keeps the slide's gradient (::after) over the scene, as the
+   fade's stacking context used to. */
+.cine.is-live .cine-bg { display: none; }
+.cine.is-live .cine-slide { animation: none; }
 
 /* Latar milik slide (dialogues.background_media_id), di atas latar layout */
 .cine-bg {
@@ -1332,7 +1355,7 @@ body.has-kenal { overflow: hidden; }
   .narrator-fx, .narrator:has(> .narrator-fx.fx-shake) .slide.is-current :is(.cine-stage, .cine-caption, .map-story-line) { animation: none; }
   /* Pengaman tetap berlaku, hanya tanpa pudar */
   .curtain { animation-duration: .01s; transition: none; }
-  .curtain-light, .curtain-beam i, .narrator-auto-track i, .kenal-bg { transition: none; }
+  .curtain-light, .curtain-beam i, .narrator-auto-track i, .kenal-bg, .scene::before { transition: none; }
   .curtain-shard { transform: rotate(45deg) translateX(0); }
   .curtain-shard:nth-child(1) { transform: translate(-3.75rem, -1.875rem) rotate(45deg); }
   .curtain-shard:nth-child(2) { transform: translate(3.75rem, -1.875rem) rotate(45deg); }

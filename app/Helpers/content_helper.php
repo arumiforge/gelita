@@ -264,19 +264,34 @@ if (! function_exists('media_first')) {
     }
 }
 
+if (! function_exists('slide_bg_src')) {
+    /**
+     * URL of a narrated slide's own background (`dialogues.background_media_id`),
+     * or null when it has none and keeps the default background.
+     *
+     * @param array<string, mixed> $slide a `dialogues` row
+     */
+    function slide_bg_src(array $slide): ?string
+    {
+        $id = (int) ($slide['background_media_id'] ?? 0);
+
+        return media_exists($id) ? media_src($id) : null;
+    }
+}
+
 if (! function_exists('slide_bg_attr')) {
     /**
-     * ` data-bg="…"` for a narrated slide with a background of its own
-     * (`dialogues.background_media_id`); empty otherwise, so the slide keeps
-     * the default background (core/backdrop.js crossfades between them).
+     * ` data-bg="…"` for a narrated slide with a background of its own; empty
+     * otherwise, so the slide keeps the default background (core/backdrop.js
+     * changes between them).
      *
      * @param array<string, mixed> $slide a `dialogues` row
      */
     function slide_bg_attr(array $slide): string
     {
-        $id = (int) ($slide['background_media_id'] ?? 0);
+        $src = slide_bg_src($slide);
 
-        return media_exists($id) ? ' data-bg="' . esc(media_src($id), 'attr') . '"' : '';
+        return $src === null ? '' : ' data-bg="' . esc($src, 'attr') . '"';
     }
 }
 

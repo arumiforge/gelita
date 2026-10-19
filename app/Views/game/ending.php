@@ -13,11 +13,15 @@
  * @var list<array<string, mixed>> $slides
  * @var string                     $locale
  */
+// The page starts on slide 1's own picture, so nothing else shows before it;
+// the story background is the default for slides without one (core/backdrop.js)
+$defaultBg = media_key_src('bg.intro') ?? media_key_src('bg.welcome') ?? '';
+$firstBg   = $slides === [] ? null : slide_bg_src($slides[0]);
 ?>
 <?= $this->extend('layouts/game') ?>
 
 <?= $this->section('title') ?><?= esc(lang('Game.endingTitle')) ?><?= $this->endSection() ?>
-<?= $this->section('background') ?><?= media_key_src('bg.intro') ?? media_key_src('bg.welcome') ?? '' ?><?= $this->endSection() ?>
+<?= $this->section('background') ?><?= $firstBg ?? $defaultBg ?><?= $this->endSection() ?>
 <?= $this->section('bodyClass') ?>is-cinematic<?= $this->endSection() ?>
 <?php /* Full-size HUD (big logo and controls); its centre holds the slide progress, so no shard pill */ ?>
 <?= $this->section('hudStyle') ?>menu<?= $this->endSection() ?>
@@ -25,7 +29,8 @@
 
 <?= $this->section('content') ?>
 <section class="story ending cine narrator" data-screen="ending"
-         data-narrator data-context="ending" data-prefix="slide-" data-mode="tap"<?= screen_fx_attr() ?>>
+         data-narrator data-context="ending" data-prefix="slide-" data-mode="tap"<?= screen_fx_attr() ?>
+         data-backdrop="stage" data-backdrop-mode="dip" data-bg-default="<?= esc($defaultBg, 'attr') ?>">
   <h1 class="visually-hidden"><?= esc(lang('Game.endingTitle')) ?></h1>
 
   <?php if ($slides === []): ?>
