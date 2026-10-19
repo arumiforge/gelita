@@ -41,6 +41,8 @@ One concept, one word, in every layer. "UI (id)" is what users read; "Code (en)"
 | tingkat kesulitan (wilayah) | `difficulty`, `difficulty badge` | stored `mudah`, `sedang`, `sulit` in `levels.difficulty`; `.region-difficulty` (`partials/region-difficulty`) in the HUD section `hudBadge` on `/dialog/{code}` (body class `is-region-dialogue`) |
 | kartu sambutan (setelah daftar) | `welcome card`, `welcome modal` | flash `welcome`; `.welcome-card`, opened as a modal by `game/intro.js` |
 | latar slide (cerita) | `slide background`, `backdrop` | `dialogues.background_media_id`; slot `bg.story.{context}[.{wilayah}].{n}` (`DialogueModel::backgroundKey()`); `data-bg` on the slide, `core/backdrop.js`; catalogue `bg.cerita-{intro, penutup, kenal-{wilayah}, dialog-{wilayah}, tuntas-{wilayah}}-NN` |
+| efek layar 3D | `screen effects`, `screen fx` | `game/screen-fx.js` (three.js); `data-fx3d`, `screen_fx_attr()`, `.has-fx3d`; switch `Config\Gelita::$screenFx` |
+| paralaks | `parallax` | `game/parallax.js`; `--plx`/`--ply` and `.has-parallax` on `#stage` |
 | salinan ringkas (JS/CSS) | `minified mirror`, `minified assets` | `public/assets/min/{version}/`; command `gelita:aset:minify`; `AssetMinifier`; switch `Config\Gelita::$minifyAssets` |
 
 ## People, data, and the panel

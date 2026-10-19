@@ -376,6 +376,28 @@
   animation: fx-shake .55s cubic-bezier(.36, .07, .19, .97) both;
 }
 
+/* WebGL screen effects (game/screen-fx.js, owner 19 October 2026): one canvas
+   over the scene, under the caption. While it runs (.has-fx3d) it draws the
+   fog, fog-lift, and glow itself and the sparks replace the CSS light motes;
+   flash, dim, and shake stay CSS. */
+.screen-fx { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.kenal > .screen-fx { position: fixed; }
+.narrator.has-fx3d > .narrator-fx:is(.fx-fog, .fx-fog-lift, .fx-glow) { background: none; }
+.narrator.has-fx3d .dialogue-ambience::after { display: none; }
+
+/* Parallax (game/parallax.js: --plx/--ply in -1…1 on #stage): far layers move
+   least. The pictures are scaled up a little so their edges never show. */
+.has-parallax :is(.scene-img, .kenal-bg, .cine-bg) {
+  translate: calc(var(--plx, 0) * -10 * var(--dp)) calc(var(--ply, 0) * -6 * var(--dp));
+  scale: 1.04;
+}
+.has-parallax :is(.dialogue-stage, .cine-stage, .kenal-stage) {
+  translate: calc(var(--plx, 0) * -20 * var(--dp)) calc(var(--ply, 0) * -10 * var(--dp));
+}
+/* The dialogue stage holds its characters by stage coordinates: as a moving
+   layer it must span the stage itself (a translate makes it their containing block) */
+.dialogue-stage { position: absolute; inset: 0; }
+
 @keyframes fx-fog {
   from { opacity: 0; transform: scale(1.25); }
   to { opacity: 1; transform: scale(1); }

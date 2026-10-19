@@ -25,7 +25,7 @@
 
 <?= $this->section('content') ?>
 <section class="story ending cine narrator" data-screen="ending"
-         data-narrator data-context="ending" data-prefix="slide-" data-mode="tap">
+         data-narrator data-context="ending" data-prefix="slide-" data-mode="tap"<?= screen_fx_attr() ?>>
   <h1 class="visually-hidden"><?= esc(lang('Game.endingTitle')) ?></h1>
 
   <?php if ($slides === []): ?>

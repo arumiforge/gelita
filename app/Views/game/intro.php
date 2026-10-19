@@ -51,7 +51,7 @@ $welcome = session('welcome');
 <?= $this->section('content') ?>
 <?php /* Next screen: Peta Kedu behind the opening map curtain */ ?>
 <section class="story intro cine narrator" data-screen="intro"<?= next_assets_attr([media_key_src('bg.loading'), media_key_src('map.kedu'), media_key_src('bg.map')]) ?>
-         data-narrator data-context="intro" data-prefix="slide-" data-mode="tap">
+         data-narrator data-context="intro" data-prefix="slide-" data-mode="tap"<?= screen_fx_attr() ?>>
   <?php if (is_string($welcome) && $welcome !== ''): ?>
     <div class="welcome-card" role="status">
       <span class="welcome-card-icon" aria-hidden="true"><?= icon('key') ?></span>

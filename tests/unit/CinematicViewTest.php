@@ -87,6 +87,7 @@ final class CinematicViewTest extends CIUnitTestCase
         $page = $this->intro(introSeen: false);
 
         $this->assertStringContainsString('data-narrator data-context="intro" data-prefix="slide-" data-mode="tap"', $page);
+        $this->assertMatchesRegularExpression('#data-mode="tap" data-fx3d="[^"]*three-0\.186\.1/three\.module\.js\?v=#', html_entity_decode($page), 'WebGL screen effects');
         $this->assertMatchesRegularExpression('/class="narrator-tap" data-narrator-tap hidden/', $page, 'tersembunyi tanpa JS');
         $this->assertMatchesRegularExpression('/data-narrator-controls[^>]*hidden/', $page);
         $this->assertStringContainsString(esc(lang('Game.tapToStart')), $page);

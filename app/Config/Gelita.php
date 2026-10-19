@@ -77,6 +77,19 @@ class Gelita extends BaseConfig
     public array $dialogueBackgroundContexts = ['intro', 'ending', 'region_intro', 'level_open', 'level_done'];
 
     /**
+     * WebGL screen effects on the narrated scenes (owner, 19 October 2026):
+     * drifting fog, lantern sparks, light rays with bloom, and background
+     * parallax, drawn by game/screen-fx.js with three.js. Off: the scenes keep
+     * the CSS effects only (`.env`: gelita.screenFx = false). The browser
+     * also falls back to the CSS effects without WebGL, on reduced motion,
+     * after a lost WebGL context, or when frames stay too slow.
+     */
+    public bool $screenFx = true;
+
+    /** three.js entry under public/assets/ (the folder carries the version; vendor/README.md) */
+    public string $screenFxThree = 'vendor/three-0.186.1/three.module.js';
+
+    /**
      * Event type yang boleh ditulis ke game_event_logs (perombakan kelas 5,
      * Dok 1 §12.3). Data mentah: tidak ada skor atau indeks yang dihitung.
      */

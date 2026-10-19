@@ -331,6 +331,21 @@ if (! function_exists('event_sequence_floor')) {
     }
 }
 
+if (! function_exists('screen_fx_attr')) {
+    /**
+     * ` data-fx3d="…"` for a narrated scene root: the three.js entry URL that
+     * game/screen-fx.js loads for the WebGL screen effects (asset package copy
+     * or `?v=` URL, as for Howler). Empty while Config\Gelita::$screenFx is
+     * off, so the scene keeps the CSS effects.
+     */
+    function screen_fx_attr(): string
+    {
+        $config = config('Gelita');
+
+        return $config->screenFx ? ' data-fx3d="' . esc(asset_url_versioned($config->screenFxThree), 'attr') . '"' : '';
+    }
+}
+
 if (! function_exists('next_assets_attr')) {
     /**
      * ` data-next-assets="[…]"` for a screen element: images of the screen the

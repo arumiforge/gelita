@@ -50,6 +50,7 @@ import { emit, flush } from '../core/events.js';
 import { Sfx, narrationPlayer, pauseNarration } from '../core/audio.js';
 import { Storage } from '../core/storage.js';
 import { createBackdrop } from '../core/backdrop.js';
+import { acquireParallax, releaseParallax } from './parallax.js';
 import { initSlides } from './slides.js';
 
 const ADVANCE_MS = 1200;
@@ -134,13 +135,63 @@ export function initNarrator(root, { onFinish = null, onSlide = null } = {}) {
     backdrop.preload(slidesEls[slides.current]?.dataset.bg);
   }
 
-  if (backdrop) {
+  // ------------------------------------------------------ efek layar 3D
+
+  // `data-fx3d` (the three.js URL): WebGL fog, sparks, rays, and bloom from
+  // game/screen-fx.js plus parallax, only while the player is on screen and
+  // never under reduced motion. Until it runs, or after it gives up, the CSS
+  // effects of `.narrator-fx` play as before.
+  const fxUrl = root.dataset.fx3d || '';
+  let screenFx = null;
+  let fxLoading = false;
+  let fxGaveUp = false;    // no WebGL 2, or it failed once: CSS effects for the rest of this page
+  let fxEffect = null;
+  let onScreen = false;
+
+  function syncScreen() {
+    const visible = root.getClientRects().length > 0 && !reducedMotion();
+    if (visible === onScreen) return;
+    onScreen = visible;
+
+    if (!visible) {
+      screenFx?.pause();
+      releaseParallax();
+      return;
+    }
+
+    acquireParallax();
+    if (screenFx) {
+      screenFx.resume();
+      return;
+    }
+    if (fxLoading || fxGaveUp) return;
+    fxLoading = true;
+    import('./screen-fx.js')
+      .then(({ createScreenFx }) => createScreenFx(root, { threeUrl: fxUrl, onFail: () => { screenFx = null; fxGaveUp = true; } }))
+      .then((created) => {
+        screenFx = created;
+        if (!screenFx) {
+          fxGaveUp = true;
+          return;
+        }
+        screenFx.setEffect(fxEffect);
+        if (onScreen) screenFx.resume();
+        else screenFx.pause();
+      })
+      .catch(() => { fxGaveUp = true; })
+      .finally(() => { fxLoading = false; });
+  }
+
+  if (backdrop || fxUrl) {
     // Follows `.is-current` however it changed (buttons, swipe, auto-advance,
     // `show(n, { notify: false })` from map.js) and the overlay opening
     new MutationObserver((records) => {
-      if (records.some(({ target }) => target === root || target.parentElement === list)) syncBackdrop();
+      if (!records.some(({ target }) => target === root || target.parentElement === list)) return;
+      if (backdrop) syncBackdrop();
+      if (fxUrl) syncScreen();
     }).observe(root, { subtree: true, attributes: true, attributeFilter: ['class'] });
-    syncBackdrop();
+    if (backdrop) syncBackdrop();
+    if (fxUrl) syncScreen();
   }
 
   const current = () => slidesEls[slides.current - 1];
@@ -202,7 +253,9 @@ export function initNarrator(root, { onFinish = null, onSlide = null } = {}) {
     if (!fx) return;
     fx.className = fx.className.replace(/\bfx-[a-z-]+\b/g, '').trim();
     const effect = slide.dataset.effect;
-    if (!effect || !EFFECTS.includes(effect) || reducedMotion()) return;
+    fxEffect = effect && EFFECTS.includes(effect) && !reducedMotion() ? effect : null;
+    screenFx?.setEffect(fxEffect);
+    if (!fxEffect) return;
     void fx.offsetWidth; // mulai ulang animasi CSS efek yang sama berturut-turut
     fx.classList.add(`fx-${effect}`);
   }
@@ -306,6 +359,8 @@ export function initNarrator(root, { onFinish = null, onSlide = null } = {}) {
     paused = false;
     root.classList.remove('is-started', 'is-playing', 'is-finished');
     if (fx) fx.className = fx.className.replace(/\bfx-[a-z-]+\b/g, '').trim();
+    fxEffect = null;
+    screenFx?.setEffect(null);
     refresh();
   }
 
