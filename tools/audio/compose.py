@@ -62,7 +62,7 @@ def index_note(idx: int, steps: list[int]) -> tuple[int, int]:
 
 
 class Piece:
-    def __init__(self, laras: Laras, bpm: float, balungan: str, form: str, name: str):
+    def __init__(self, laras: Laras, bpm: float, balungan: str, form: str, name: str, steps: list[int] | None = None):
         self.laras = laras
         self.beat = 60.0 / bpm
         self.notes = parse_balungan(balungan)
@@ -72,7 +72,8 @@ class Piece:
         self.name = name
         self.seconds = self.n_beats * self.beat
         self.mix = Mixer(self.seconds)
-        self.steps = scale_steps(laras)
+        # the five notes gender and gambang walk on; pelog barang passes [2, 3, 5, 6, 7]
+        self.steps = steps or scale_steps(laras)
         self.cycle = {'ladrang': 32, 'ketawang': 16, 'lancaran': 16}[form]
         self.detune_inst: dict = {}
 

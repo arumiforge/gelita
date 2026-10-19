@@ -18,6 +18,11 @@
  *    mulai" atau saat maju otomatis. Server menghitung keduanya terpisah
  *    (audio_usage_events.action), agar peneliti dapat membedakannya.
  *
+ * Background music (owner, 19 October 2026): each screen names its track
+ * (`<body data-music>`, or the screen's own call); a new track crossfades in,
+ * and while a narration voice plays the music drops to DUCKED of its level,
+ * coming back up only after a pause longer than the gap between two slides.
+ *
  * Kebijakan autoplay: tidak ada yang berbunyi sebelum interaksi pengguna.
  * NarrationPlayer#autoplay() menolak berbunyi sebelum Sfx.unlock().
  *
@@ -48,6 +53,13 @@ export function soundUrl(folder, name) {
 
 const sounds = new Map();
 let music = null;
+// Music under a narration voice: a fifth of its level, so the voice stays clear
+const DUCKED = 0.2;
+const FADE_MS = 900;
+const DUCK_MS = 350;
+const RELEASE_MS = 1200; // longer than the gap between two narrated slides
+let ducked = false;
+let releaseTimer = null;
 // Track the screen asked for; it starts on unlock or when sound is switched back on
 let wantedMusic = null;
 let unlocked = false;
@@ -100,13 +112,43 @@ function load(name, { loop = false, folder = 'sfx' } = {}) {
   return sounds.get(key);
 }
 
+const musicLevel = () => volume * (ducked ? DUCKED : 1);
+
 function startWantedMusic() {
   if (!unlocked || !enabled || !wantedMusic) return;
   const next = load(wantedMusic, { loop: true, folder: 'music' });
   if (next === music) return;
-  music?.stop();
+
+  // Crossfade: the old track fades out and stops unless it was asked for again meanwhile
+  const previous = music;
   music = next;
-  music?.play();
+  if (previous) {
+    previous.fade(previous.volume(), 0, FADE_MS);
+    previous.once('fade', () => { if (previous !== music) previous.stop(); });
+  }
+  if (music) {
+    if (!music.playing()) {
+      music.volume(0);
+      music.play();
+    }
+    music.fade(music.volume(), musicLevel(), FADE_MS);
+  }
+}
+
+function applyDuck(on) {
+  if (ducked === on) return;
+  ducked = on;
+  if (music?.playing()) music.fade(music.volume(), musicLevel(), on ? DUCK_MS : FADE_MS);
+}
+
+/** Called whenever a narration voice starts or stops. */
+function narrationChanged(speaking) {
+  clearTimeout(releaseTimer);
+  if (speaking) {
+    applyDuck(true);
+  } else {
+    releaseTimer = setTimeout(() => applyDuck(false), RELEASE_MS);
+  }
 }
 
 export const Sfx = {
@@ -133,8 +175,9 @@ export const Sfx = {
   },
 
   /**
-   * map, region, challenge. Screens call this at load, before the first
-   * tap, so while audio is locked (or sound is off) the track is only
+   * map, region, challenge, welcome, opening, ending, and per region
+   * kenal-/dialog-/tuntas-{wilayah}. Screens call this at load, before the
+   * first tap, so while audio is locked (or sound is off) the track is only
    * remembered; unlock() or setEnabled(true) starts it.
    */
   music(name) {
@@ -152,6 +195,12 @@ export const Sfx = {
     volume = Math.min(1, Math.max(0, Number(v) || 0));
     Storage.setPref('volume', volume);
     if (hasHowler()) window.Howler.volume(volume);
+    music?.volume(musicLevel());
+  },
+
+  /** True while the music is held down under a narration voice (browser checks). */
+  isDucked() {
+    return ducked;
   },
 
   setEnabled(on) {
@@ -389,6 +438,7 @@ class NarrationPlayer {
   }
 
   toggle(playing) {
+    narrationChanged(playing || [...players].some((player) => player !== this && player.isPlaying));
     if (this.btnPlay) this.btnPlay.hidden = playing;
     if (this.btnPause) this.btnPause.hidden = !playing;
     this.root.classList.toggle('is-playing', playing);

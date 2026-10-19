@@ -369,7 +369,7 @@ class AssetPackageBuilder
         $region   = static fn (string $level): string => 'wilayah-' . $level;
 
         // Shared by every screen
-        if (preg_match('/^(char\.|ui\.|audio\.sfx\.)/', $key) || in_array($key, ['map.kedu', 'map.kedu-diorama', 'audio.music.map'], true)
+        if (preg_match('/^(char\.|ui\.|audio\.sfx\.)/', $key) || in_array($key, ['map.kedu', 'map.kedu-diorama', 'audio.music.map', 'audio.music.welcome', 'audio.music.opening'], true)
             || in_array($key, ['bg.welcome', 'bg.auth', 'bg.intro', 'bg.map', 'bg.reflection', 'bg.loading'], true)) {
             return self::GROUP_CORE;
         }
@@ -392,6 +392,11 @@ class AssetPackageBuilder
             if ($m[1] === 'petunjuk' && preg_match('/^([a-z]+)-\d/', $m[2], $p) && isset($prefixes[$p[1]])) {
                 return $region($prefixes[$p[1]]);
             }
+        }
+
+        // A region's own background music (Kenali, dialogue, region done) travels with the region
+        if (preg_match('/^audio\.music\.(?:kenal|dialog|tuntas)-([a-z]+)$/', $key, $m) && in_array($m[1], $regions, true)) {
+            return $region($m[1]);
         }
 
         if (str_starts_with($key, 'audio.music.')) {

@@ -2,6 +2,10 @@
 
 python music.py [map|region|challenge ...] → out/music/{nama}.wav (stereo, loop mulus)
 
+The background music of the narrated scenes and the account pages (twelve
+tracks, owner 19 October 2026) lives in music_scenes.py and renders the same
+way: `python music.py welcome opening kenal-magelang …`.
+
 Gending orisinal (bukan salinan gending tradisional), laras dan bentuknya
 mengikuti karawitan Jawa gaya Surakarta/Yogyakarta: ladrang slendro manyura
 (peta), ketawang pelog nem (peta wilayah), ketawang slendro sanga (tantangan).
@@ -14,6 +18,7 @@ import soundfile as sf
 
 import compose
 import gamelan as G
+import music_scenes
 from compose import Piece
 from gamelan import SR, Laras
 import paths
@@ -111,13 +116,14 @@ def piece_challenge() -> Piece:
     return p
 
 
-PIECES = {'map': piece_map, 'region': piece_region, 'challenge': piece_challenge}
+PIECES = {'map': piece_map, 'region': piece_region, 'challenge': piece_challenge, **music_scenes.pieces(kendang_patterns)}
 SENDS = {'gong': 0.10, 'kempul': 0.18, 'kenong': 0.25, 'kethuk': 0.2, 'sarondemung': 0.22, 'saronbarung': 0.22,
          'slenthem': 0.2, 'peking': 0.28, 'bonangbarung': 0.26, 'bonangpanerus': 0.3, 'kendang': 0.15,
          'gender': 0.3, 'gambang': 0.25, 'siter': 0.3, 'suling': 0.35}
 
 
-SEEDS = {'map': 101, 'region': 202, 'challenge': 303}
+SEEDS = {'map': 101, 'region': 202, 'challenge': 303, **music_scenes.SEEDS}
+RT60 = {'map': 1.5, 'region': 1.8, 'challenge': 2.2, **music_scenes.RT60}
 
 
 def render(name: str) -> Path:
@@ -125,7 +131,7 @@ def render(name: str) -> Path:
     G.RNG = np.random.default_rng(SEEDS[name])
     compose.RNG = np.random.default_rng(SEEDS[name] + 1)
     p = PIECES[name]()
-    ir = G.make_ir(rt60={'map': 1.5, 'region': 1.8, 'challenge': 2.2}[name])
+    ir = G.make_ir(rt60=RT60[name])
     mix = p.mix.render(SENDS, ir, loop=True)
     mix = G.highpass(mix.T, 28, order=2).T
     mix /= np.max(np.abs(mix)) + 1e-9
@@ -137,5 +143,6 @@ def render(name: str) -> Path:
 
 
 if __name__ == '__main__':
-    for name in sys.argv[1:] or PIECES:
+    # Without names only the three original tracks, so their files stay as they are unless asked for
+    for name in sys.argv[1:] or ['map', 'region', 'challenge']:
         render(name)

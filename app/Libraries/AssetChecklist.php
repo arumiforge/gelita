@@ -32,27 +32,54 @@ final class AssetChecklist
      * Musik & efek suara yang diputar core/audio.js (Sfx) dari
      * public/assets/audio/{music|sfx}/{nama}.mp3. Bukan media_assets: berkas
      * disalin langsung ke folder itu (git atau salin berkas). Berkas yang tidak
-     * ada membuat suara itu diam, permainan tetap berjalan.
+     * ada membuat suara itu diam, permainan tetap berjalan. The background
+     * tracks of 19 October 2026 (home/account, story, per region) are
+     * synthesized gamelan from tools/audio/gamelan.py; a recording can replace
+     * any of them under the same name.
      */
     public const SOUNDS = [
-        'music/map'       => 'Musik Peta Kedu',
-        'music/region'    => 'Musik peta wilayah',
-        'music/challenge' => 'Musik tantangan',
-        'sfx/click'       => 'Efek klik tombol',
-        'sfx/correct'     => 'Efek jawaban benar',
-        'sfx/wrong'       => 'Efek jawaban salah',
-        'sfx/lock'        => 'Efek wilayah/tantangan terkunci',
-        'sfx/shard'       => 'Efek serpihan kembali (layar selesai)',
-        'sfx/region-done' => 'Efek wilayah tuntas (layar selesai penuntas)',
+        'music/map'               => 'Musik Peta Kedu',
+        'music/region'            => 'Musik peta wilayah',
+        'music/challenge'         => 'Musik tantangan dan kartu misi',
+        'music/welcome'           => 'Musik halaman awal dan akun (masuk, daftar, ganti sandi)',
+        'music/opening'           => 'Musik cerita pembuka',
+        'music/ending'            => 'Musik cerita penutup',
+        'music/kenal-temanggung'  => 'Musik layar Mengenal Temanggung',
+        'music/dialog-temanggung' => 'Musik dialog wilayah Temanggung',
+        'music/tuntas-temanggung' => 'Musik wilayah Temanggung tuntas',
+        'music/kenal-magelang'    => 'Musik layar Mengenal Magelang',
+        'music/dialog-magelang'   => 'Musik dialog wilayah Magelang',
+        'music/tuntas-magelang'   => 'Musik wilayah Magelang tuntas',
+        'music/kenal-wonosobo'    => 'Musik layar Mengenal Wonosobo',
+        'music/dialog-wonosobo'   => 'Musik dialog wilayah Wonosobo',
+        'music/tuntas-wonosobo'   => 'Musik wilayah Wonosobo tuntas',
+        'sfx/click'               => 'Efek klik tombol',
+        'sfx/correct'             => 'Efek jawaban benar',
+        'sfx/wrong'               => 'Efek jawaban salah',
+        'sfx/lock'                => 'Efek wilayah/tantangan terkunci',
+        'sfx/shard'               => 'Efek serpihan kembali (layar selesai)',
+        'sfx/region-done'         => 'Efek wilayah tuntas (layar selesai penuntas)',
     ];
 
     /** Keterangan format per bunyi; efek lain: MP3 pendek (< 1 detik). */
     private const SOUND_SIZES = [
-        'music/map'       => 'MP3, musik yang diputar berulang',
-        'music/region'    => 'MP3, musik yang diputar berulang',
-        'music/challenge' => 'MP3, musik yang diputar berulang',
-        'sfx/shard'       => 'MP3 pendek (± 3 detik)',
-        'sfx/region-done' => 'MP3 pendek (± 5 detik)',
+        'music/map'               => 'MP3, musik yang diputar berulang',
+        'music/region'            => 'MP3, musik yang diputar berulang',
+        'music/challenge'         => 'MP3, musik yang diputar berulang',
+        'music/welcome'           => 'MP3, musik yang diputar berulang',
+        'music/opening'           => 'MP3, musik yang diputar berulang',
+        'music/ending'            => 'MP3, musik yang diputar berulang',
+        'music/kenal-temanggung'  => 'MP3, musik yang diputar berulang',
+        'music/dialog-temanggung' => 'MP3, musik yang diputar berulang',
+        'music/tuntas-temanggung' => 'MP3, musik yang diputar berulang',
+        'music/kenal-magelang'    => 'MP3, musik yang diputar berulang',
+        'music/dialog-magelang'   => 'MP3, musik yang diputar berulang',
+        'music/tuntas-magelang'   => 'MP3, musik yang diputar berulang',
+        'music/kenal-wonosobo'    => 'MP3, musik yang diputar berulang',
+        'music/dialog-wonosobo'   => 'MP3, musik yang diputar berulang',
+        'music/tuntas-wonosobo'   => 'MP3, musik yang diputar berulang',
+        'sfx/shard'               => 'MP3 pendek (± 3 detik)',
+        'sfx/region-done'         => 'MP3 pendek (± 5 detik)',
     ];
 
     private BaseConnection $db;

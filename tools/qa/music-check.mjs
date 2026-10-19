@@ -11,7 +11,12 @@
  *   - setEnabled(false) stops the music;
  *   - a track asked for while sound is off is the one that plays when sound
  *     is turned back on;
- *   - stopMusic() clears the request (no music after sound off/on or unlock).
+ *   - stopMusic() clears the request (no music after sound off/on or unlock);
+ *   - a new track crossfades in and the old one stops after its fade, and a
+ *     track asked for again while it fades out is faded back up, not started twice;
+ *   - while a narration voice plays the music is held at 20 % of its level and
+ *     comes back after a pause longer than the gap between two slides, not
+ *     between them (owner, 19 October 2026).
  *
  * No PHP server or database is needed: the page and the files under
  * public/assets/ are served from disk through Playwright request routing.
@@ -59,19 +64,34 @@ const HARNESS = `<!doctype html>
   window.Howl = class {
     constructor(options) {
       this.src = options.src[0].replace(/^.*assets\\/audio\\//, '').replace(/\\.mp3$/, '');
-      this.playing = false;
+      this.on = false;
+      this.level = options.volume ?? 1;
+      this.handlers = {};
       (window.qaSounds ||= []).push(this);
     }
-    play() { this.playing = true; window.qaLog.push('play ' + this.src); }
-    stop() { this.playing = false; window.qaLog.push('stop ' + this.src); }
+    play() { this.on = true; window.qaLog.push('play ' + this.src); }
+    stop() { this.on = false; window.qaLog.push('stop ' + this.src); }
+    playing() { return this.on; }
+    volume(v) { if (v === undefined) return this.level; this.level = v; return this; }
+    once(event, fn) { (this.handlers[event] ||= []).push(fn); return this; }
+    // Like Howler: the level moves at once here, the 'fade' event comes after the duration
+    fade(from, to, ms) {
+      this.level = to;
+      clearTimeout(this.fadeTimer);
+      this.fadeTimer = setTimeout(() => (this.handlers.fade || []).splice(0).forEach((fn) => fn()), ms);
+      return this;
+    }
   };
-  // Which music tracks are sounding now
-  window.qaPlaying = () => (window.qaSounds || []).filter((s) => s.playing && s.src.startsWith('music/')).map((s) => s.src);
+  // Which music tracks are sounding now, and the level of one
+  window.qaPlaying = () => (window.qaSounds || []).filter((s) => s.on && s.src.startsWith('music/')).map((s) => s.src);
+  window.qaLevel = (src) => (window.qaSounds || []).find((s) => s.src === src)?.level;
 </script>
 </head><body data-base="/">
+<div class="audio-player" id="voice" data-src="/qa/voice.wav"></div>
 <script type="module">
-  import { Sfx } from '/assets/js/core/audio.js';
+  import { Sfx, narrationPlayer } from '/assets/js/core/audio.js';
   window.Sfx = Sfx;
+  window.qaVoice = narrationPlayer(document.getElementById('voice'));
   window.qaReady = true;
 </script>
 </body></html>`;
@@ -81,6 +101,10 @@ async function serve(route) {
 
   if (url.pathname === '/') {
     return route.fulfill({ status: 200, contentType: 'text/html', body: HARNESS });
+  }
+
+  if (url.pathname === '/qa/voice.wav') {
+    return route.fulfill({ status: 200, contentType: 'audio/wav', body: silentWav(4) });
   }
 
   if (url.pathname.startsWith('/assets/')) {
@@ -97,7 +121,20 @@ async function serve(route) {
   return route.fulfill({ status: url.pathname.startsWith('/api/') ? 204 : 404, body: '' });
 }
 
-const browser = await chromium.launch();
+/** A silent mono WAV standing in for a narration line. */
+function silentWav(seconds) {
+  const rate = 8000;
+  const data = Buffer.alloc(rate * seconds, 128);
+  const head = Buffer.alloc(44);
+  head.write('RIFF', 0); head.writeUInt32LE(36 + data.length, 4); head.write('WAVE', 8);
+  head.write('fmt ', 12); head.writeUInt32LE(16, 16); head.writeUInt16LE(1, 20); head.writeUInt16LE(1, 22);
+  head.writeUInt32LE(rate, 24); head.writeUInt32LE(rate, 28); head.writeUInt16LE(1, 32); head.writeUInt16LE(8, 34);
+  head.write('data', 36); head.writeUInt32LE(data.length, 40);
+  return Buffer.concat([head, data]);
+}
+
+// The voice stand-in plays without a real tap
+const browser = await chromium.launch({ args: ['--autoplay-policy=no-user-gesture-required'] });
 
 try {
   const context = await browser.newContext();
@@ -148,6 +185,44 @@ try {
   await page.evaluate(() => { window.Sfx.setEnabled(false); window.Sfx.setEnabled(true); window.Sfx.unlock(); });
   now = await playing();
   check(same(now, []), 'stopMusic() clears the request (nothing on sound on or unlock)', `playing: ${JSON.stringify(now)}`);
+
+  // 7. Crossfade: both sound during the fade, then only the new one
+  await page.evaluate(() => { window.Sfx.music('map'); window.Sfx.unlock(); });
+  await page.waitForTimeout(1200);
+  await page.evaluate(() => window.Sfx.music('kenal-magelang'));
+  now = await playing();
+  check(same(now.sort(), ['music/kenal-magelang', 'music/map']), 'both tracks sound during the crossfade', `playing: ${JSON.stringify(now)}`);
+  await page.waitForTimeout(1200);
+  now = await playing();
+  check(same(now, ['music/kenal-magelang']), 'the old track stops after its fade', `playing: ${JSON.stringify(now)}`);
+
+  // 8. Asked for again while it fades out: faded back up, not started a second time
+  const before = await plays('kenal-magelang');
+  await page.evaluate(() => { window.Sfx.music('map'); window.Sfx.music('kenal-magelang'); });
+  await page.waitForTimeout(1200);
+  now = await playing();
+  const after = await plays('kenal-magelang');
+  const full = await page.evaluate(() => window.qaLevel('music/kenal-magelang'));
+  check(same(now, ['music/kenal-magelang']) && after === before && full > 0.5, 'a track asked for again during its fade-out comes back up', `playing: ${JSON.stringify(now)}, play calls ${before}→${after}, level ${full}`);
+
+  // 9. Ducking under a narration voice
+  const level = () => page.evaluate(() => window.qaLevel('music/kenal-magelang'));
+  const base = await level();
+  await page.evaluate(() => window.qaVoice.play());
+  await page.waitForFunction(() => window.qaVoice.isPlaying, null, { timeout: 5_000 });
+  const low = await level();
+  check(await page.evaluate(() => window.Sfx.isDucked()) && Math.abs(low - base * 0.2) < 1e-6, 'music drops to 20 % while the voice plays', `level ${base} → ${low}`);
+  // A slide change: the voice stops and the next one starts within the release time
+  await page.evaluate(() => window.qaVoice.pause());
+  await page.waitForTimeout(500);
+  check(await page.evaluate(() => window.Sfx.isDucked()), 'the music stays down in the short gap between two slides');
+  await page.evaluate(() => window.qaVoice.play());
+  await page.waitForTimeout(900);
+  check(await page.evaluate(() => window.Sfx.isDucked()), 'still down while the next line plays');
+  await page.evaluate(() => window.qaVoice.pause());
+  await page.waitForTimeout(1500);
+  const back = await level();
+  check(!(await page.evaluate(() => window.Sfx.isDucked())) && Math.abs(back - base) < 1e-6, 'the music comes back after a longer pause', `level ${back}`);
 
   await context.close();
 } catch (error) {

@@ -148,6 +148,7 @@ final class RegionStoryTest extends CIUnitTestCase
 
         $this->assertIsString($page);
         $this->assertStringContainsString('data-screen="region-done"', $page);
+        $this->assertStringContainsString('data-music="tuntas-temanggung"', $page, 'the region\'s celebration track');
         $this->assertStringContainsString('data-context="level_done" data-prefix="line-" data-mode="tap"', $page);
         // Kartu ketuk "Serpihan {wilayah} kembali!"
         $this->assertStringContainsString('class="narrator-tap is-done" data-narrator-tap hidden', $page);
@@ -196,6 +197,7 @@ final class RegionStoryTest extends CIUnitTestCase
         $this->assertIsString($page);
         $this->assertStringContainsString('is-cinematic', $page);
         $this->assertStringContainsString('data-screen="ending"', $page);
+        $this->assertStringContainsString('data-music="ending"', $page);
         $this->assertStringContainsString('data-narrator data-context="ending" data-prefix="slide-" data-mode="tap"', $page);
         $this->assertMatchesRegularExpression('/class="narrator-tap" data-narrator-tap hidden/', $page);
         $this->assertStringContainsString('Lentera Menyala Kembali', $page);
@@ -212,6 +214,7 @@ final class RegionStoryTest extends CIUnitTestCase
         $page = $this->dialogue(['magelang' => 'open'])->show('magelang');
 
         $this->assertStringContainsString('data-screen="dialogue"', $page);
+        $this->assertStringContainsString('data-music="dialog-magelang"', $page, 'the region\'s dialogue track');
         $this->assertStringContainsString('data-narrator data-context="level_open" data-prefix="line-" data-mode="tap"', $page);
         // Kartu bab: "Bab {n} · {wilayah}", tagline, ajakan, jejak kaki
         $this->assertStringContainsString('class="narrator-tap is-chapter"', $page);
@@ -412,6 +415,8 @@ final class RegionStoryTest extends CIUnitTestCase
             $this->assertFileExists(FCPATH . 'assets/ui/' . $plate . '.webp');
         }
         $this->assertStringContainsString(esc('--skin-hud: url("' . base_url('assets/uploads/ui.result-hud-control.webp?v=h1') . '")', 'attr'), $open);
+        // The region's Kenali track while the overlay is open (game/map.js)
+        $this->assertStringContainsString('data-music="kenal-temanggung"', $open);
 
         // No "Wilayah n · tingkat" and no "Bagian n dari N" text; the dots and Lanjut share the title row
         $this->assertStringNotContainsString('class="eyebrow"', $overlay);

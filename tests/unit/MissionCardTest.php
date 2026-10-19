@@ -102,6 +102,12 @@ final class MissionCardTest extends CIUnitTestCase
         $this->assertStringContainsString('.stage[style*="--skin-primary"] .btn-primary {', $css, 'scoped to the stage: the admin panel keeps its buttons');
     }
 
+    /** Owner, 19 October 2026: the mission card plays the challenge music under its narrated line. */
+    public function testCardPlaysTheChallengeMusic(): void
+    {
+        $this->assertStringContainsString('data-music="challenge"', $this->brief());
+    }
+
     private function brief(): string
     {
         $level = new Level();

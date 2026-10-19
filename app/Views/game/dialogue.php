@@ -28,6 +28,7 @@ $region = $level->text('name', $locale);
 ?>
 <?= $this->extend('layouts/game') ?>
 
+<?= $this->section('music') ?><?= esc('dialog-' . $level->code) ?><?= $this->endSection() ?>
 <?= $this->section('title') ?><?= esc($region) ?><?= $this->endSection() ?>
 <?= $this->section('background') ?><?= $bg ?><?= $this->endSection() ?>
 <?= $this->section('bodyClass') ?>is-cinematic is-region-dialogue<?= $this->endSection() ?>

@@ -14,6 +14,9 @@
  * region background (core/backdrop.js, through game/narrator.js); a slide
  * without one shows the region background again.
  *
+ * Music: the region's Kenali track (`data-music`, game/map.js) while the
+ * overlay is open, Peta Kedu's track again when it closes.
+ *
  * Wilayah terkunci boleh dikenali. Slide akhir: "Masuk ke {wilayah}" (tirai
  * wilayah, ke `entry`) bila wilayah terbuka, selain itu "Tutup".
  *
@@ -66,7 +69,7 @@ foreach ($skins as $name => $src) {
          aria-labelledby="kenal-<?= esc($code, 'attr') ?>-title"
          data-kenal="<?= esc($code, 'attr') ?>" data-narrator data-context="region_intro"
          data-prefix="<?= esc($prefix, 'attr') ?>" data-mode="external" data-keyboard="0" data-hash="0"
-         data-level-id="<?= esc($level['id'], 'attr') ?>" style="<?= esc(implode('; ', $style), 'attr') ?>"<?= screen_fx_attr() ?>>
+         data-level-id="<?= esc($level['id'], 'attr') ?>" data-music="<?= esc('kenal-' . $code, 'attr') ?>" style="<?= esc(implode('; ', $style), 'attr') ?>"<?= screen_fx_attr() ?>>
   <?php // Two pictures: a slide's own background (data-bg) crossfades over the region one (core/backdrop.js) ?>
   <?php if (! empty($level['background'])): ?>
     <img class="kenal-bg is-visible" src="<?= esc($level['background'], 'attr') ?>" alt="" loading="lazy">

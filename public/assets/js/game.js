@@ -56,6 +56,9 @@ const unlock = () => {
 window.addEventListener('pointerdown', unlock);
 window.addEventListener('keydown', unlock);
 
+// The page's background track (layout section `music`); it starts with the first tap
+if (document.body.dataset.music) Sfx.music(document.body.dataset.music);
+
 // This session's unacknowledged events (offline, crash, previous page's
 // beacon) leave with this page's first batch; back online they go at once.
 if (CONFIG.sessionTag) {

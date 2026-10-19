@@ -11,6 +11,7 @@
 ?>
 <?= $this->extend('layouts/game') ?>
 
+<?= $this->section('music') ?>welcome<?= $this->endSection() ?>
 <?= $this->section('title') ?><?= esc(lang('Game.startTitle')) ?><?= $this->endSection() ?>
 <?= $this->section('background') ?><?= media_key_src('bg.welcome') ?? '' ?><?= $this->endSection() ?>
 

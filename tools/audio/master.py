@@ -1,6 +1,9 @@
 """Mastering musik & efek suara → MP3 di public/assets/audio/{music,sfx}/.
 
-python master.py music|sfx [DEST_DIR]
+python master.py music|sfx [DEST_DIR] [--only=welcome,opening,…]
+
+Without --only, `music` masters the three original tracks (map, region,
+challenge); the scene tracks of music_scenes.py are mastered by name.
 """
 import subprocess
 import sys
@@ -10,6 +13,7 @@ import numpy as np
 import pyloudnorm as pyln
 import soundfile as sf
 
+import music_scenes
 import paths
 
 # core/audio.js memakai volume Howler dua kali (per bunyi × global; bawaan 0,8 × 0,8 ≈ −3,9 dB),
@@ -18,6 +22,7 @@ import paths
 # mode CBR mengalikan sinyal 0,95×, jadi MP3-nya terukur ±0,45 LU lebih pelan (angka di
 # docs/audio.md diukur dari MP3 yang didekode).
 MUSIC_LUFS = {'map': -20.0, 'region': -20.5, 'challenge': -21.5}
+SCENE_LUFS = music_scenes.LUFS
 # SFX diukur dengan hening dibantalkan ke 3 s agar bunyi pendek punya blok gating
 SFX_LUFS = {'click': -24.0, 'lock': -20.0, 'wrong': -19.0, 'correct': -17.0, 'shard': -16.5, 'region-done': -15.0}
 
@@ -72,8 +77,10 @@ def encode(wav: Path, mp3: Path, kbps: int, mono: bool = False) -> None:
     subprocess.run(cmd, check=True)
 
 
-def master_music(dest: Path) -> None:
-    for name, target in MUSIC_LUFS.items():
+def master_music(dest: Path, only: list[str] | None = None) -> None:
+    targets = {**MUSIC_LUFS, **SCENE_LUFS}
+    for name in only or list(MUSIC_LUFS):
+        target = targets[name]
         x, sr = sf.read(str(paths.OUT / 'music' / f'{name}.wav'), always_2d=True)
         x = glue(x, sr)
         meter = pyln.Meter(sr)
@@ -86,7 +93,8 @@ def master_music(dest: Path) -> None:
         tmp = paths.OUT / 'master' / f'{name}.wav'
         tmp.parent.mkdir(parents=True, exist_ok=True)
         sf.write(str(tmp), y.astype(np.float32), sr, subtype='FLOAT')
-        encode(tmp, dest / f'{name}.mp3', 128)
+        # the scene tracks play under a voice, mostly ducked: 96 kbps keeps the asset package lighter
+        encode(tmp, dest / f'{name}.mp3', 96 if name in SCENE_LUFS else 128)
         print(f'music/{name}: {loud:.1f} → {meter.integrated_loudness(np.concatenate([y, y])):.1f} LUFS, '
               f'TP {20 * np.log10(true_peak(y, sr)):.1f} dBTP, {len(y) / sr:.1f} s')
 
@@ -109,6 +117,11 @@ def master_sfx(dest: Path) -> None:
 
 
 if __name__ == '__main__':
-    kind = sys.argv[1]
-    dest = Path(sys.argv[2]) if len(sys.argv) > 2 else paths.PUBLIC_AUDIO / kind
-    {'music': master_music, 'sfx': master_sfx}[kind](dest)
+    args = [a for a in sys.argv[1:] if not a.startswith('--only=')]
+    only = [n for a in sys.argv[1:] if a.startswith('--only=') for n in a[7:].split(',') if n]
+    kind = args[0]
+    dest = Path(args[1]) if len(args) > 1 else paths.PUBLIC_AUDIO / kind
+    if kind == 'music':
+        master_music(dest, only)
+    else:
+        master_sfx(dest)
