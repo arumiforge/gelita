@@ -394,16 +394,16 @@ final class RegionStoryTest extends CIUnitTestCase
         $head    = substr($head, 0, (int) strpos($head, '</header>'));
 
         // Band: Back (no cross) and the logo; the title is under the band, not in it
-        $this->assertStringContainsString('class="btn btn-quiet kenal-back" href="#region-temanggung" data-kenal-close', $head);
+        $this->assertStringContainsString('class="btn btn-quiet kenal-back" href="' . esc('#region-temanggung', 'attr') . '" data-kenal-close', $head);
         $this->assertStringContainsString('<img class="kenal-logo" src="' . esc(base_url('assets/uploads/ui.logo-hero.webp?v=l1'), 'attr') . '"', $head);
-        $this->assertStringNotContainsString('kenal-close', $overlay);
+        $this->assertStringNotContainsString('icon-btn kenal-close', $overlay);
         $this->assertStringNotContainsString('<h2', $head);
         $this->assertMatchesRegularExpression('/<\/header>\s*<h2 class="kenal-title" id="kenal-temanggung-title">' . preg_quote(esc(lang('Game.kenalTitle', ['Temanggung'])), '/') . '<\/h2>/', $overlay);
 
         // No "Wilayah n · tingkat" and no "Bagian n dari N" text; the dots and Lanjut share the speaker/title row
         $this->assertStringNotContainsString('class="eyebrow"', $overlay);
         $this->assertStringNotContainsString('class="kenal-stage"', $overlay);
-        $this->assertSame(4, preg_match_all('/<div class="cine-caption-head">\s*<span class="cine-speaker">[^<]*<\/span>\s*<h3 class="cine-title">[^<]*<\/h3>\s*<nav class="slide-nav"/', $overlay));
+        $this->assertSame(4, preg_match_all('/<div class="cine-caption-head">\s*<span class="cine-speaker">[^<]*<\/span>\s*<h3 class="cine-title">[^<]*<\/h3>\s*(?:<!--[^>]*-->\s*)*<nav class="slide-nav"/', $overlay));
 
         // Mbah Kedu's round avatar, never a pose frame
         $this->assertSame(4, substr_count($overlay, '<div class="kenal-avatar">'));
