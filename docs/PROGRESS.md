@@ -2,7 +2,7 @@
 
 The single checklist of what is done and what is open. Decisions and their reasons go in `docs/perombakan-kelas5/CATATAN_IMPLEMENTASI.md`; this file only tracks state. Each session updates only its own rows, and ticks an item only once its PR is merged into `main`.
 
-Last updated: 18 October 2026.
+Last updated: 19 October 2026.
 
 ## Kelas 5 overhaul
 
@@ -117,3 +117,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `sky/loving-hopper-6fbsjl` | Full-size HUD menu sheet reported outside `#stage` by stage-check | PR open |
