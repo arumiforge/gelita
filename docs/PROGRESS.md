@@ -119,4 +119,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `pbb/admiring-archimedes-sa2m0n` | Owner request (19 October 2026): minify HTML pages, "Mr. F" watermark in ANSI Shadow at the top of the page source | PR open |
