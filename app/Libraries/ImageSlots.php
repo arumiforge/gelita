@@ -372,13 +372,16 @@ final class ImageSlots
         'bg.story.*' => [
             'group'       => 'background',
             'label'       => 'Latar slide cerita',
-            'content'     => 'Adegan layar penuh untuk satu slide cerita pembuka atau penutup, sesuai isi ucapannya. Tanpa tokoh (Jaka dan Mbah Kedu digambar permainan di atasnya) dan tanpa tulisan. Bagian bawah tenang: kotak narasi menutupinya.',
-            'screens'     => [['Cerita pembuka', '/intro'], ['Cerita penutup', '/penutup']],
+            'content'     => 'Adegan layar penuh untuk satu slide cerita (pembuka, penutup, Kenali wilayah, dialog masuk wilayah, atau wilayah tuntas), sesuai isi ucapannya. Tanpa tokoh (Jaka dan Mbah Kedu digambar permainan di atasnya) dan tanpa tulisan. Bagian bawah tenang: kotak narasi menutupinya.',
+            'screens'     => [
+                ['Cerita pembuka', '/intro'], ['Cerita penutup', '/penutup'], ['Kenali wilayah', '/peta'],
+                ['Dialog masuk wilayah', '/dialog/{wilayah}'], ['Wilayah tuntas', '/tuntas/{wilayah}'],
+            ],
             'format'      => 'WebP atau JPG kualitas ± 80, paling besar ± 450 KB',
             'transparent' => false,
-            'fallback'    => 'Latar cerita umum (bg.intro), lalu latar halaman awal',
+            'fallback'    => 'Cerita pembuka dan penutup: latar cerita umum (bg.intro), lalu latar halaman awal. Slide wilayah: latar wilayah',
             'priority'    => 'opsional',
-            'tips'        => 'Dipasang per slide di halaman Konten → Cerita pembuka / Penutup.',
+            'tips'        => 'Dipasang per slide di halaman Konten → Cerita pembuka / Penutup, atau Konten → wilayah → Dialog. Kunci slide wilayah: bg.story.{konteks}.{wilayah}.{urutan}.',
             'admin'       => ['Atur di halaman cerita', 'admin/konten/dialog/0'],
         ],
         'map.kedu' => [

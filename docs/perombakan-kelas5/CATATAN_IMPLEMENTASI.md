@@ -2060,3 +2060,34 @@ Owner decision: use a PHP library for JS/CSS. HTML keeps the in-house `HtmlMinif
   - `AssetMinifierTest` (8 tests, including the syntax-tree comparison of all real files) and the full suite (770 tests) pass.
   - Real pages (`/`, `/masuk`, `/intro`, `/profil`, `/pustaka`, `/admin/login`) were rendered from the grade-5 test world with the switch off and on in Chromium at 1280 × 720. Screenshots, text, element boxes, and loaded fonts are identical, and both sides load the same set of files. With the switch on, code comes only from `assets/min/{version}/`. No page or console errors.
   - The password eye toggle on `/masuk` works with the minified JS.
+
+## Own background per slide for the region scenes (19 October 2026, branch `sky/beautiful-thompson-817hm4`)
+
+Owner request: the `region_intro`, `level_open`, and `level_done` slides can each have their own background; a slide without one keeps today's background. The owner also asked about deeper screen effects with Three.js or Babylon. An interview settled both before any code (answers below). This branch is part 1; the effects are part 2 on a later branch.
+
+**Interview answers (owner, 19 October 2026)**
+
+- Background motion: crossfade with a slow Ken Burns zoom, like the intro.
+- Scope: admin field, catalogue keys, and seed data.
+- Effects library: Three.js, self-hosted, loaded only where needed; Babylon.js rejected (several MB, heavy on school Chromebooks and iPads, a full 3D engine these slides do not need).
+- Effects wanted: drifting fog, fireflies / lantern sparks, light rays with bloom, parallax depth on the background.
+
+**Part 1, as built**
+
+- **No migration.** `dialogues.background_media_id`, the editor's "Latar slide" field, `MediaUsage`, and the asset package already covered it for `intro`/`ending`; only the region contexts ignored the column.
+- **Which contexts:** `Config\Gelita::$dialogueBackgroundContexts` = everything but `map_intro` (it plays in the Peta Kedu story bar, which has no backdrop of its own).
+- **Fallback:** the region background (`levels.background_media_id`) the layout already draws; for `region_intro` the overlay's dimmed `.kenal-bg`. A slide's own picture in the overlay shows at 0.85 opacity instead of 0.55, so the art reads while the overlay's shade keeps the caption legible.
+- **Slot names:** `bg.story.{context}.{wilayah}.{n}` (e.g. `bg.story.level_open.temanggung.3`); global slides keep `bg.story.{intro|ending}.{n}`. One method, `DialogueModel::backgroundKey()`, serves the editor, the catalogue importer, and the seeder. The existing `bg.story.*` slot pattern already matches the longer keys.
+- **Motion:** `core/backdrop.js` crossfades two stacked `<img>`: the layout's `#scene-a`/`#scene-b` (built for a crossfade, unused until now) on `/dialog` and `/tuntas`, two `.kenal-bg` in the overlay. A slide's own picture is `.is-own` and drifts on every screen, also on `/tuntas`, whose region background stays still as before. Consecutive slides with the same picture do not restart the fade. The next slide's picture is preloaded.
+- **Why a `MutationObserver`:** `map.js` reopens an overlay with `show(n, { notify: false })`, which skips `onChange`, and an overlay can reopen on the slide that is already current. The observer on the narrator root follows `.is-current` and `.is-open`, and a closed overlay loads no pictures (three overlays share the map page).
+- **Without JavaScript** the region slides keep the region background. The intro's per-slide `<img>` pattern works without JavaScript but would restart the fade on every line and cannot crossfade; the region scenes need the narrator anyway for the dialogue layout.
+- **Catalogue:** `gelita:katalog:impor` reads `bg.cerita-kenal-{wilayah}-NN`, `bg.cerita-dialog-{wilayah}-NN`, and `bg.cerita-tuntas-{wilayah}-NN`, the same words as the narration codes (`NarrationImporter`). A picture for a slide or region the database does not have is skipped. `--kunci` matches catalogue keys, so the filter is `--kunci="bg.cerita-*"`.
+- **Seed data:** `data/story.php` takes an optional `bg` (asset key); without it the derived key is used. `ContentSeeder::seedDialogues()` links the slide when that media row already exists. No line sets `bg` yet: the art does not exist. `StoryDataTest` compares lines with the script without `bg` and checks any `bg` is a `bg.story.*` slot. `gelita:story:sync` stays a text sync and does not touch backgrounds.
+- **Deploy:** nothing to run. Pictures go in through **Konten → {wilayah} → Dialog** or, once the catalogue has them, `php spark gelita:katalog:impor --kunci="bg.cerita-*"` (dry run first).
+
+**Part 2, decided and not built yet**
+
+- Three.js as one vendored ES module under `public/assets/vendor/` (no bundler), loaded by dynamic `import()` only on the narrated scenes, included in the asset package for offline play.
+- The CSS effects (`fog`, `fog-lift`, `glow`, `flash`, `shake`, `dim`) stay as the fallback: no WebGL, lost context, `prefers-reduced-motion`, or a low frame rate.
+- Parallax starts without depth maps: the background, the characters, and the fog layers shift by different amounts with device tilt or pointer. Per-image depth maps would multiply the art work and stay a later option.
+- To settle at its start: the Three.js version and file size, the frame-rate budget on the oldest class tablet, and whether the WebGL layer replaces `.narrator-fx` or sits beside it.

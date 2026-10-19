@@ -31,8 +31,11 @@ $contextNames   = [
     'level_done'   => ['Wilayah tuntas', 'Percakapan setelah siswa menyelesaikan tantangan kelima di wilayah ini.'],
 ];
 $levelId        = $level?->id ?? 0;
-// Full-screen story slides (partials/cine-slides) can have their own background
-$withBackground = $level === null && in_array($context, ['intro', 'ending'], true);
+// Story and region slides can have their own background (Config\Gelita::$dialogueBackgroundContexts)
+$withBackground = in_array($context, config('Gelita')->dialogueBackgroundContexts, true);
+$bgFallback     = $level === null
+    ? 'Bila kosong, slide memakai latar cerita umum (bg.intro, lalu bg.welcome).'
+    : 'Bila kosong, slide memakai latar wilayah ' . $level->text('name', 'id') . '.';
 $rows   = $dialogues;
 $rows[] = null;
 ?>
@@ -170,9 +173,11 @@ $rows[] = null;
             'keyName'    => 'dialogues[' . $index . '][background_key]',
             'fileName'   => 'dialogue_bg[' . $index . ']',
             'mediaId'    => $isNew ? null : ($row['background_media_id'] ?? null),
-            'defaultKey' => $isNew ? 'bg.story.' . $context . '.{urutan}' : 'bg.story.' . $context . '.' . (int) $row['sequence'],
+            'defaultKey' => $isNew
+                ? substr(App\Models\DialogueModel::backgroundKey($context, $level?->code, 0), 0, -1) . '{urutan}'
+                : App\Models\DialogueModel::backgroundKey($context, $level?->code, (int) $row['sequence']),
             'size'       => '1920 × 1080 px',
-            'help'       => 'Mengisi layar penuh di belakang slide ini. Bila kosong, slide memakai latar cerita umum (bg.intro, lalu bg.welcome).',
+            'help'       => 'Mengisi layar penuh di belakang slide ini. ' . $bgFallback,
         ]) ?>
       <?php endif ?>
 

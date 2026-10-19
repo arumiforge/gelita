@@ -13,6 +13,11 @@
  *   berbicara; tanpa gambar tokoh tetap monogram. A pose with 2 or more
  *   frames also carries `data-pose-frames`/`-fps`/`-loop`, which dialogue.js
  *   hands to core/sprite.js to play the pose.
+ * - A line with a background of its own (`data-bg`, slide_bg_attr()) shows
+ *   it over the stage: `data-backdrop="stage"` tells game/narrator.js to
+ *   crossfade the layout's scene images (core/backdrop.js). A line without
+ *   one shows the region background again. Without JavaScript every line
+ *   keeps the region background.
  * - Efek baris (`data-effect`) diputar lapisan efek narrator; audio, mesin
  *   ketik, dan maju otomatis oleh game/narrator.js mode `tap`, yang juga
  *   satu-satunya pengirim `dialogue_advanced` (context = $context).
@@ -46,7 +51,7 @@ $cinematic = ! empty($cinematic);
 <section class="story dialogue narrator<?= $cinematic ? ' cine dialogue-cine' : '' ?>" data-screen="<?= esc($screen, 'attr') ?>"
          data-narrator data-context="<?= esc($context, 'attr') ?>" data-prefix="line-" data-mode="tap"
          data-level="<?= esc($level->code, 'attr') ?>" data-level-id="<?= esc($level->id, 'attr') ?>"
-         data-first="<?= esc($first, 'attr') ?>" data-index="1"<?= next_assets_attr($nextAssets ?? []) ?>>
+         data-first="<?= esc($first, 'attr') ?>" data-index="1" data-backdrop="stage"<?= next_assets_attr($nextAssets ?? []) ?>>
   <?php if ($cinematic): ?>
     <h1 class="visually-hidden"><?= esc($region) ?></h1>
   <?php else: ?>
@@ -92,7 +97,7 @@ $cinematic = ! empty($cinematic);
         $audioId   = (int) ($locale === 'en' ? ($slide['audio_en_asset_id'] ?? 0) : ($slide['audio_id_asset_id'] ?? 0));
         ?>
         <li class="slide dialogue-line" id="line-<?= $n ?>" data-index="<?= $n ?>" data-character="<?= esc($character, 'attr') ?>"
-            data-pose="<?= esc($pose, 'attr') ?>" data-pose-src="<?= esc(character_frame_src($character, $pose) ?? '', 'attr') ?>"<?= character_frames_attr(character_frames($character, $pose), 'data-pose-') ?>
+            data-pose="<?= esc($pose, 'attr') ?>" data-pose-src="<?= esc(character_frame_src($character, $pose) ?? '', 'attr') ?>"<?= character_frames_attr(character_frames($character, $pose), 'data-pose-') ?><?= slide_bg_attr($slide) ?>
             <?= $effect !== '' ? 'data-effect="' . esc($effect, 'attr') . '"' : '' ?>
             aria-label="<?= esc(lang('Game.slideOf', [$n, $total]), 'attr') ?>">
           <?php if ($cinematic): ?>

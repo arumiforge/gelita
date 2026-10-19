@@ -113,9 +113,18 @@ Owner request (18 October 2026): several pages get a new design from the catalog
 - [x] Welcome modal and region dialogue (owner, 19 October 2026): the welcome card after sign-up opens as a modal over the intro's tap card; `/dialog/{code}` uses the intro layout (full-size HUD, Lewati under the menu button, no Peta Kedu button, full-width caption with room for both characters at its ends, "Bagian n dari N" and the dots right of the speaker's name) and shows the region's difficulty as an animated badge in the HUD left of the language control, instead of the screen head (PR #154)
 - [x] Region dialogue, second follow-up (owner, 19 October 2026): the parchment box is back (not full width) with the speaker's name, small dots (no "Bagian x dari x"), and the narrator controls in its first row; characters at the stage's edges; shard pill under the logo; region name in capitals (PR #158)
 
+## Story screen backgrounds and effects (owner, 19 October 2026)
+
+Decided in an interview with the owner; decisions in the decision log, section *Own background per slide for the region scenes*.
+
+- [ ] Part 1 — own background per slide for `region_intro`, `level_open`, `level_done`: field in **Konten → Dialog**, crossfade with slow zoom, fallback to the region background, catalogue keys `bg.cerita-{kenal|dialog|tuntas}-{wilayah}-NN`, optional `bg` in `data/story.php`
+- [ ] Art for the region slides (catalogue team); until it exists every slide shows the region background. After it lands: `php spark gelita:katalog:impor --kunci="bg.cerita-*"` (dry run first)
+- [ ] Part 2 — screen effects with Three.js (self-hosted, lazy-loaded, CSS effects as the fallback): drifting fog, fireflies / lantern sparks, light rays with bloom, background parallax. Starts after part 1 is merged
+
 ## Active branches
 
 Add a row (branch, owner / scope, status) when a session starts a branch; remove it when its PR is merged.
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `sky/beautiful-thompson-817hm4` | Story screen backgrounds, part 1 (own background per region slide) | In review |

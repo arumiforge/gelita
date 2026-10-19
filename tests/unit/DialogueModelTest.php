@@ -86,6 +86,18 @@ final class DialogueModelTest extends CIUnitTestCase
         $this->assertSame(['Intro satu', 'Intro dua'], array_column($repo->dialogues(null, 'intro'), 'text_id'));
     }
 
+    /** Slot of a slide's own background: global slides without a region part, region slides with it. */
+    public function testBackgroundKeyNamesTheSlotOfASlide(): void
+    {
+        $this->assertSame('bg.story.intro.3', DialogueModel::backgroundKey('intro', null, 3));
+        $this->assertSame('bg.story.level_open.temanggung.7', DialogueModel::backgroundKey('level_open', 'temanggung', 7));
+        $this->assertSame('bg.story.region_intro.wonosobo.1', DialogueModel::backgroundKey('region_intro', 'wonosobo', 1));
+
+        $config = config('Gelita');
+        $this->assertSame([], array_diff($config->dialogueBackgroundContexts, array_merge(...array_values($config->dialogueContexts))));
+        $this->assertNotContains('map_intro', $config->dialogueBackgroundContexts, 'the map story bar has no backdrop');
+    }
+
     public function testIntroMethodIsGone(): void
     {
         $this->assertFalse(method_exists(DialogueModel::class, 'intro'), 'digantikan global(\'intro\')');

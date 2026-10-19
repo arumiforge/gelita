@@ -68,6 +68,15 @@ class Gelita extends BaseConfig
     ];
 
     /**
+     * Contexts whose slides may have a background of their own
+     * (`dialogues.background_media_id`, slot DialogueModel::backgroundKey()).
+     * A slide without one keeps the default: the story background for
+     * `intro`/`ending`, the region background for the region contexts.
+     * `map_intro` plays in the Peta Kedu story bar and has no backdrop.
+     */
+    public array $dialogueBackgroundContexts = ['intro', 'ending', 'region_intro', 'level_open', 'level_done'];
+
+    /**
      * Event type yang boleh ditulis ke game_event_logs (perombakan kelas 5,
      * Dok 1 §12.3). Data mentah: tidak ada skor atau indeks yang dihitung.
      */

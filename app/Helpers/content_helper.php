@@ -264,6 +264,22 @@ if (! function_exists('media_first')) {
     }
 }
 
+if (! function_exists('slide_bg_attr')) {
+    /**
+     * ` data-bg="…"` for a narrated slide with a background of its own
+     * (`dialogues.background_media_id`); empty otherwise, so the slide keeps
+     * the default background (core/backdrop.js crossfades between them).
+     *
+     * @param array<string, mixed> $slide a `dialogues` row
+     */
+    function slide_bg_attr(array $slide): string
+    {
+        $id = (int) ($slide['background_media_id'] ?? 0);
+
+        return media_exists($id) ? ' data-bg="' . esc(media_src($id), 'attr') . '"' : '';
+    }
+}
+
 if (! function_exists('media_key_src')) {
     /**
      * URL media aktif menurut asset_key resmi (mis. `bg.welcome`, `char.jaka.idle.1`).

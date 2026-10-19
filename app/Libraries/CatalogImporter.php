@@ -3,6 +3,7 @@
 namespace App\Libraries;
 
 use App\Models\AuditLogModel;
+use App\Models\DialogueModel;
 use App\Models\MediaAssetModel;
 use CodeIgniter\Database\BaseConnection;
 use RuntimeException;
@@ -36,6 +37,11 @@ use RuntimeException;
  *   smaller than the slot.
  * - Story slide backgrounds `bg.cerita-intro-NN` / `bg.cerita-penutup-NN`
  *   become `bg.story.{intro|ending}.{n}` and are linked to their slide.
+ *   Region slides use the narration words: `bg.cerita-kenal-{wilayah}-NN`
+ *   (region_intro), `bg.cerita-dialog-{wilayah}-NN` (level_open), and
+ *   `bg.cerita-tuntas-{wilayah}-NN` (level_done) become
+ *   `bg.story.{context}.{wilayah}.{n}`. A picture for a slide the script
+ *   does not have is skipped.
  * - Library images `library.{wilayah}.p{n}.{i}` are linked to media `i` of
  *   page `n` (a new media row for pages without one); `….poster` becomes the
  *   cover of that page's video. The image of a video entry is not used.
@@ -174,6 +180,13 @@ final class CatalogImporter
 
     /** Lossy WebP quality for every stored image except the PNG app icons. */
     public const WEBP_QUALITY = 82;
+
+    /** Catalogue word of a region slide background → `dialogues.context_code` (the narration codes use the same words) */
+    private const REGION_STORY_CONTEXTS = [
+        'kenal'  => 'region_intro',
+        'dialog' => 'level_open',
+        'tuntas' => 'level_done',
+    ];
 
     /** Background of app icons without transparency (--navy-900). */
     private const ICON_BACKGROUND = [0x0B, 0x13, 0x20];
@@ -365,7 +378,13 @@ final class CatalogImporter
         }
 
         if (preg_match('/^bg\.cerita-(intro|penutup)-(\d+)$/', $key, $m) === 1) {
-            $this->installStory($key, $entry['file'], $m[1] === 'intro' ? 'intro' : 'ending', (int) $m[2], $dryRun, $overwrite);
+            $this->installStory($key, $entry['file'], $m[1] === 'intro' ? 'intro' : 'ending', null, (int) $m[2], $dryRun, $overwrite);
+
+            return;
+        }
+
+        if (preg_match('/^bg\.cerita-(kenal|dialog|tuntas)-([a-z]+)-(\d+)$/', $key, $m) === 1) {
+            $this->installStory($key, $entry['file'], self::REGION_STORY_CONTEXTS[$m[1]], $m[2], (int) $m[3], $dryRun, $overwrite);
 
             return;
         }
@@ -451,16 +470,21 @@ final class CatalogImporter
         return true;
     }
 
-    /** Story slide background: stored as bg.story.{context}.{n} and linked to that slide. */
-    private function installStory(string $source, string $file, string $context, int $sequence, bool $dryRun, bool $overwrite): void
+    /**
+     * Story slide background: stored as DialogueModel::backgroundKey()
+     * (`bg.story.{context}[.{region}].{n}`) and linked to that slide.
+     * $region is null for the global contexts (intro, ending).
+     */
+    private function installStory(string $source, string $file, string $context, ?string $region, int $sequence, bool $dryRun, bool $overwrite): void
     {
-        $target = "bg.story.{$context}.{$sequence}";
-        $slide  = $this->db->table('dialogues')->select('id, background_media_id')
-            ->where('level_id', null)->where('context_code', $context)->where('sequence', $sequence)
+        $target  = DialogueModel::backgroundKey($context, $region, $sequence);
+        $levelId = $region === null ? null : $this->db->table('levels')->select('id')->where('code', $region)->get()->getRow('id');
+        $slide   = $region !== null && $levelId === null ? null : $this->db->table('dialogues')->select('id, background_media_id')
+            ->where('level_id', $levelId === null ? null : (int) $levelId)->where('context_code', $context)->where('sequence', $sequence)
             ->get()->getRowArray();
 
         if ($slide === null) {
-            $this->add($source, $target, 'skipped', 'slide cerita ' . $context . ' ' . $sequence . ' tidak ada');
+            $this->add($source, $target, 'skipped', 'slide cerita ' . $context . ($region === null ? '' : ' ' . $region) . ' ' . $sequence . ' tidak ada');
 
             return;
         }

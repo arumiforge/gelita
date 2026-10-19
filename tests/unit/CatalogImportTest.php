@@ -145,6 +145,47 @@ final class CatalogImportTest extends CIUnitTestCase
         $this->assertNull($byKey('library.temanggung.p8.2'), 'the picture of a video entry is not used');
     }
 
+    /** Owner, 19 October 2026: region slide backgrounds use the narration words kenal/dialog/tuntas. */
+    public function testRegionSlideBackgroundsAreLinkedToTheirSlide(): void
+    {
+        $levels = array_column($this->sqlite->table('levels')->select('id, code')->get()->getResultArray(), 'id', 'code');
+
+        foreach (['region_intro', 'level_open', 'level_done'] as $context) {
+            foreach (['temanggung', 'magelang'] as $code) {
+                $this->sqlite->table('dialogues')->insert(['level_id' => $levels[$code], 'context_code' => $context, 'sequence' => 2, 'character_code' => 'jaka', 'text_id' => 'a', 'text_en' => 'a']);
+            }
+        }
+
+        $this->writeCatalog([
+            'bg.cerita-kenal-temanggung-02'  => ['latar/bg.cerita-kenal-temanggung-02.webp', 1920, 1080, false],
+            'bg.cerita-dialog-temanggung-02' => ['latar/bg.cerita-dialog-temanggung-02.webp', 1920, 1080, false],
+            'bg.cerita-tuntas-temanggung-02' => ['latar/bg.cerita-tuntas-temanggung-02.webp', 1920, 1080, false],
+            'bg.cerita-dialog-temanggung-09' => ['latar/bg.cerita-dialog-temanggung-09.webp', 1920, 1080, false],
+            'bg.cerita-dialog-atlantis-01'   => ['latar/bg.cerita-dialog-atlantis-01.webp', 1920, 1080, false],
+        ]);
+
+        $this->importer()->run(true);
+        $this->assertNull(model(MediaAssetModel::class)->findByKey('bg.story.level_open.temanggung.2'), 'dry run');
+
+        $report = array_column($this->importer()->run(), null, 'source');
+
+        foreach (['region_intro' => 'kenal', 'level_open' => 'dialog', 'level_done' => 'tuntas'] as $context => $word) {
+            $media = model(MediaAssetModel::class)->findByKey("bg.story.{$context}.temanggung.2");
+            $this->assertNotNull($media, $context);
+            $this->assertSame('installed', $report["bg.cerita-{$word}-temanggung-02"]['status']);
+
+            $linked = fn (string $code): ?string => $this->sqlite->table('dialogues')
+                ->where(['level_id' => $levels[$code], 'context_code' => $context, 'sequence' => 2])->get()->getRow('background_media_id');
+            $this->assertSame((int) $media['id'], (int) $linked('temanggung'), $context);
+            $this->assertNull($linked('magelang'), 'the other region keeps its own slide');
+        }
+
+        // A slide the script does not have, or an unknown region: skipped, nothing stored
+        $this->assertSame('skipped', $report['bg.cerita-dialog-temanggung-09']['status']);
+        $this->assertSame('skipped', $report['bg.cerita-dialog-atlantis-01']['status']);
+        $this->assertNull(model(MediaAssetModel::class)->findByKey('bg.story.level_open.temanggung.9'));
+    }
+
     public function testMeasuredMapMovesChallengeButtons(): void
     {
         $sha  = hash_file('sha256', $this->catalog . '/assets/peta/map.region.temanggung.webp');
