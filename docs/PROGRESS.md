@@ -138,4 +138,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `pbb/sharp-edison-tnww8e` | Background music for scenes and account pages, Kenali title | In review |
+| `pbb/sharp-edison-tnww8e` | Background music for scenes and account pages, Kenali title | PR #173 in review |
