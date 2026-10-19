@@ -26,6 +26,12 @@ final class CinematicViewTest extends CIUnitTestCase
     /** @var list<array<string, mixed>> */
     private array $dialogues = [];
 
+    /** @var array<int, string> media id → storage path (slide backgrounds) */
+    public array $media = [];
+
+    /** @var array<string, string> asset_key → storage path */
+    public array $mediaKeys = [];
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -40,12 +46,12 @@ final class CinematicViewTest extends CIUnitTestCase
 
             public function mediaKeyMap(): array
             {
-                return [];
+                return $this->test->mediaKeys;
             }
 
             public function mediaMap(): array
             {
-                return [];
+                return $this->test->media;
             }
 
             public function dialogues(?int $levelId, string $context = 'level_open'): array
@@ -81,6 +87,34 @@ final class CinematicViewTest extends CIUnitTestCase
     }
 
     // ------------------------------------------------------------ /intro
+
+    /** Owner, 19 October 2026: a dip to black between story slides, with no other picture in between. */
+    public function testIntroBackgroundsDipToBlackThroughTheLayoutScene(): void
+    {
+        $this->mediaKeys = ['bg.intro' => 'assets/uploads/bg-intro.webp'];
+        $this->media     = [801 => 'assets/uploads/intro-1.webp'];
+        $this->dialogues[0]['background_media_id'] = 801;
+
+        $page = html_entity_decode($this->intro(introSeen: false));
+
+        // The page starts on slide 1's own picture; the story background is the default for the others
+        $this->assertMatchesRegularExpression('#id="scene-a"\s+src="[^"]*intro-1\.webp#', $page);
+        $this->assertMatchesRegularExpression('#data-backdrop="stage" data-backdrop-mode="dip" data-bg-default="[^"]*bg-intro\.webp"#', $page);
+        $this->assertMatchesRegularExpression('#id="slide-1"[^>]*data-bg="[^"]*intro-1\.webp"#', $page);
+        $this->assertDoesNotMatchRegularExpression('#id="slide-2"[^>]*data-bg=#', $page);
+        // Without JavaScript each slide keeps its own picture
+        $this->assertMatchesRegularExpression('#<img class="cine-bg" src="[^"]*intro-1\.webp"#', $page);
+
+        // A first slide without a picture starts on the story background
+        $this->dialogues[0]['background_media_id'] = null;
+        $this->assertMatchesRegularExpression('#id="scene-a"\s+src="[^"]*bg-intro\.webp#', html_entity_decode($this->intro(introSeen: false)));
+
+        $css = (string) file_get_contents(FCPATH . 'assets/css/cinematic.css');
+        $this->assertStringContainsString('.cine.is-live .cine-bg { display: none; }', $css);
+        $this->assertStringContainsString('.cine.is-live .cine-slide { animation: none; }', $css);
+        $this->assertStringContainsString('.scene.is-dark::before { opacity: 1; transition-duration: .35s; }', $css);
+        $this->assertStringContainsString('.scene.is-dark .scene-img { transition: none; }', $css);
+    }
 
     public function testIntroIsANarratedScreenWithTapToStart(): void
     {
