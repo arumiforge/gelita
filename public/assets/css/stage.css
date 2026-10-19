@@ -269,6 +269,10 @@ body.is-auth-art .scene::after { background: linear-gradient(to right, transpare
   font-family: var(--font-body);
   text-shadow: none;
 }
+/* Closed: no box at all. Chromium keeps a closed <details>' content laid out in a
+   content-visibility: hidden slot that becomes the sheet's containing block, so the
+   hidden menu sheet would sit below its button and past the stage bottom. */
+.hud-pop:not([open]) > .hud-sheet { display: none; }
 .hud-lang-sheet { top: 7.25rem; right: 9.4375rem; width: 30rem; }
 .hud-sheet .hud-lang-list { display: grid; gap: .5rem; padding: 0; border-radius: 0; background: none; }
 .hud-menu[open]::before {
