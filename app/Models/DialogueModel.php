@@ -37,6 +37,17 @@ class DialogueModel extends Model
     ];
 
     /**
+     * Media slot of a slide's own background: `bg.story.{context}.{n}` for a
+     * global slide, `bg.story.{context}.{region}.{n}` for a region slide
+     * (e.g. `bg.story.level_open.temanggung.3`). The dialogue editor, the
+     * catalogue importer, and the seeder all name the slot through here.
+     */
+    public static function backgroundKey(string $context, ?string $levelCode, int $sequence): string
+    {
+        return 'bg.story.' . $context . ($levelCode === null ? '' : '.' . $levelCode) . '.' . $sequence;
+    }
+
+    /**
      * Baris global (level_id NULL) satu konteks, mis. `intro`, `map_intro`,
      * `ending`. Kolom level_id NULL tidak dijaga UNIQUE oleh MySQL, jadi
      * nomor urut ganda mungkin ada; id menjadi urutan kedua agar hasilnya stabil.

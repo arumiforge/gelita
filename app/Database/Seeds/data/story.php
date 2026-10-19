@@ -20,10 +20,16 @@
  *   effect     Config\Gelita::$dialogueEffects, atau null
  *   title_*    judul slide (null untuk baris dialog wilayah)
  *   text_*     teks narasi/dialog
+ *   bg         optional: asset key of the slide's own background (e.g.
+ *              `bg.story.level_open.temanggung.3`); left out = the key from
+ *              DialogueModel::backgroundKey(). The seeder links it when that
+ *              slot exists; otherwise the slide shows the default background
+ *              until a picture is uploaded or installed by gelita:katalog:impor.
  *
  * @return list<array{code: string, level: ?string, context: string, sequence: int,
  *                    character: string, pose: ?string, effect: ?string,
- *                    title_id: ?string, title_en: ?string, text_id: string, text_en: string}>
+ *                    title_id: ?string, title_en: ?string, text_id: string, text_en: string,
+ *                    bg?: string}>
  */
 return [
     // 1. Cerita pembuka (intro)

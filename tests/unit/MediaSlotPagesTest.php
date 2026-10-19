@@ -205,16 +205,33 @@ final class MediaSlotPagesTest extends CIUnitTestCase
         $this->assertMatchesRegularExpression('/<a class="media-thumb" href="[^"]*char\.jaka\.idle\.1\.png\?v=aaaa[^"]*" target="_blank" rel="noopener" data-zoom=/', $html, 'sprite frames get a thumbnail too');
     }
 
-    /** Display plan A6: intro and ending slides get a background field; region dialogues do not. */
+    /** Display plan A6, widened by the owner on 19 October 2026: story slides and the three region contexts get a background field. */
     public function testStorySlidesTakeABackgroundFromTheDialogueEditor(): void
     {
         $html = $this->page('admin/konten/dialog/0?konteks=intro');
         $this->assertStringContainsString('enctype="multipart/form-data"', $html);
         $this->assertStringContainsString('Latar slide (tidak wajib)', $html);
         $this->assertStringContainsString('<code>bg.story.intro.1</code>', $html, 'default key per slide');
+        $this->assertStringContainsString('<code>bg.story.intro.{urutan}</code>', $html, 'new slide');
 
-        $regional = $this->page('admin/konten/dialog/1?konteks=level_open');
-        $this->assertStringNotContainsString('Latar slide', $regional);
+        // Region slides name their slot after the region and fall back to its background
+        foreach (['region_intro', 'level_open', 'level_done'] as $context) {
+            $regional = $this->page('admin/konten/dialog/1?konteks=' . $context);
+            $this->assertStringContainsString('enctype="multipart/form-data"', $regional, $context);
+            $this->assertStringContainsString('<code>bg.story.' . $context . '.temanggung.1</code>', $regional, $context);
+            $this->assertStringContainsString('<code>bg.story.' . $context . '.temanggung.{urutan}</code>', $regional, $context);
+            $this->assertStringContainsString('slide memakai latar wilayah Temanggung', $regional, $context);
+        }
+
+        // The Peta Kedu story bar has no backdrop of its own
+        $this->assertStringNotContainsString('Latar slide', $this->page('admin/konten/dialog/0?konteks=map_intro'));
+
+        $line = $this->sqlite->table('dialogues')->where(['level_id' => 1, 'context_code' => 'level_done', 'sequence' => 2])->get()->getRowArray();
+        $this->asAdmin()->call(Method::POST, 'admin/konten/dialog/1', ['context' => 'level_done', 'dialogues' => [[
+            'id' => $line['id'], 'sequence' => 2, 'character_code' => $line['character_code'],
+            'text_id' => $line['text_id'], 'text_en' => $line['text_en'], 'is_active' => '1', 'background_key' => 'bg.welcome',
+        ]]] + self::CSRF)->assertRedirectTo(site_url('admin/konten/dialog/1?konteks=level_done'));
+        $this->assertSame($this->mediaId('bg.welcome'), (int) $this->sqlite->table('dialogues')->where('id', $line['id'])->get()->getRow('background_media_id'));
 
         $slide = $this->sqlite->table('dialogues')->where(['context_code' => 'intro', 'sequence' => 1])->get()->getRowArray();
         $post  = ['context' => 'intro', 'dialogues' => [[

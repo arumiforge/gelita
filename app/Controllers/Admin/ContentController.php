@@ -840,7 +840,9 @@ class ContentController extends BaseAdminController
 
     public function saveDialogues(int $levelId): RedirectResponse
     {
-        if ($levelId !== 0 && model(LevelModel::class)->find($levelId) === null) {
+        $level = $levelId === 0 ? null : model(LevelModel::class)->find($levelId);
+
+        if ($levelId !== 0 && $level === null) {
             throw PageNotFoundException::forPageNotFound("Level {$levelId} tidak ditemukan.");
         }
 
@@ -869,12 +871,12 @@ class ContentController extends BaseAdminController
             $sequence = (int) ($row['sequence'] ?? $index + 1);
             $payload  = [];
 
-            // Story slides (intro, ending) take their own full-screen background
-            if ($levelId === 0 && in_array($context, ['intro', 'ending'], true)) {
+            // Story and region slides can take their own full-screen background
+            if (in_array($context, config('Gelita')->dialogueBackgroundContexts, true)) {
                 $background = (new MediaStore())->resolve(
                     (string) ($row['background_key'] ?? ''),
                     $this->request->getFile('dialogue_bg.' . $index),
-                    'bg.story.' . $context . '.' . $sequence,
+                    DialogueModel::backgroundKey($context, $level?->code, $sequence),
                     ['image'],
                     $this->staffId(),
                 );

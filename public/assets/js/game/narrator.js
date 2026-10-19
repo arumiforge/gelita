@@ -33,6 +33,11 @@
  * untuk beberapa pemutar dalam satu halaman (overlay Kenali di peta).
  * Pemutar yang sudah `stop()` boleh `start()` lagi (overlay dibuka ulang).
  *
+ * A slide with `data-bg` shows that picture as its background; a slide
+ * without one shows the default again (core/backdrop.js crossfade). The
+ * pictures are the overlay's two `.kenal-bg`, or the stage's scene images when
+ * the root has `data-backdrop="stage"`.
+ *
  * Swipe left/right on the player (touch and pen) does what the slide's
  * Lanjut/Kembali link does (game/slides.js), including `dialogue_advanced`.
  *
@@ -44,6 +49,7 @@ import { $, $$ } from '../core/dom.js';
 import { emit, flush } from '../core/events.js';
 import { Sfx, narrationPlayer, pauseNarration } from '../core/audio.js';
 import { Storage } from '../core/storage.js';
+import { createBackdrop } from '../core/backdrop.js';
 import { initSlides } from './slides.js';
 
 const ADVANCE_MS = 1200;
@@ -106,6 +112,36 @@ export function initNarrator(root, { onFinish = null, onSlide = null } = {}) {
     },
   });
   if (!slides) return null;
+
+  // ------------------------------------------------------ latar slide
+
+  // A slide may carry its own picture (`data-bg`); a slide without one shows the
+  // default again. The pair: the overlay's own two `.kenal-bg`, or the stage's
+  // scene images when the root says `data-backdrop="stage"`.
+  const bgPair = (() => {
+    const own = $$(':scope > .kenal-bg', root);
+    if (own.length === 2) return own;
+    const stage = [$('#scene-a'), $('#scene-b')];
+    return root.dataset.backdrop === 'stage' && stage.every(Boolean) ? stage : null;
+  })();
+  const backdrop = bgPair ? createBackdrop(bgPair) : null;
+
+  /** Only while the player is on screen: a closed Kenali overlay loads nothing. */
+  function syncBackdrop() {
+    const slide = slidesEls[slides.current - 1];
+    if (!slide || root.getClientRects().length === 0) return;
+    backdrop.show(slide.dataset.bg);
+    backdrop.preload(slidesEls[slides.current]?.dataset.bg);
+  }
+
+  if (backdrop) {
+    // Follows `.is-current` however it changed (buttons, swipe, auto-advance,
+    // `show(n, { notify: false })` from map.js) and the overlay opening
+    new MutationObserver((records) => {
+      if (records.some(({ target }) => target === root || target.parentElement === list)) syncBackdrop();
+    }).observe(root, { subtree: true, attributes: true, attributeFilter: ['class'] });
+    syncBackdrop();
+  }
 
   const current = () => slidesEls[slides.current - 1];
   const playerOf = (slide) => narrationPlayer($('.audio-player[data-src]', slide), {

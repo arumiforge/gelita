@@ -2,6 +2,8 @@
 
 namespace App\Database\Seeds;
 
+use App\Models\DialogueModel;
+
 /**
  * Struktur konten: 12 challenge_nodes (4 per wilayah, metadata saja) dan
  * cerita (data/story.php). Judul, instruksi, deskripsi, dan isi soal datang
@@ -137,6 +139,12 @@ class ContentSeeder extends GelitaSeeder
                 continue;
             }
 
+            // The slide's own background: linked when its slot (the line's `bg`, else the
+            // derived key) already exists; uploads or gelita:katalog:impor fill it later
+            $background = $this->db->table('media_assets')->select('id')
+                ->where('asset_key', $line['bg'] ?? DialogueModel::backgroundKey($line['context'], $line['level'], $line['sequence']))
+                ->get()->getRow('id');
+
             // level_id NULL tidak dijaga UNIQUE oleh MySQL → cek manual lewat insertIfMissing
             $this->insertIfMissing('dialogues', [
                 'level_id'     => $line['level'] === null ? null : $levels[$line['level']],
@@ -150,6 +158,7 @@ class ContentSeeder extends GelitaSeeder
                 'title_en'       => $line['title_en'],
                 'text_id'        => $line['text_id'],
                 'text_en'        => $line['text_en'],
+                'background_media_id' => $background === null ? null : (int) $background,
                 'is_active'      => 1,
             ]);
         }

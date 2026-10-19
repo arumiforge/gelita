@@ -47,6 +47,9 @@ final class RegionStoryTest extends CIUnitTestCase
     /** asset_key → storage_path aktif */
     private array $media = [];
 
+    /** `{context}.{sequence}` → media id of that test slide's own background (ids in mediaMap()) */
+    public static array $slideBackgrounds = [];
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -89,11 +92,12 @@ final class RegionStoryTest extends CIUnitTestCase
 
             public function mediaMap(): array
             {
-                return [];
+                return [701 => 'assets/uploads/bg-story-a.webp', 702 => 'assets/uploads/bg-story-b.webp'];
             }
         });
 
-        $session = new GameSession();
+        self::$slideBackgrounds = [];
+        $session                = new GameSession();
         $session->injectRawData(['id' => 9, 'participant_id' => 5, 'locale' => 'id', 'status' => 'active']);
 
         $participant = new Participant();
@@ -115,6 +119,7 @@ final class RegionStoryTest extends CIUnitTestCase
         }
 
         session()->remove(['curtain', 'dialogues_shown']);
+        self::$slideBackgrounds = [];
         parent::tearDown();
     }
 
@@ -229,6 +234,49 @@ final class RegionStoryTest extends CIUnitTestCase
         $this->assertStringContainsString(esc(lang('Game.enterRegionName', ['Magelang'])), $page);
         $this->assertStringContainsString('href="' . esc(base_url('wilayah/magelang'), 'attr') . '" data-slide-final', $page);
         $this->assertStringContainsString('<span>' . esc(lang('Game.skip')) . '</span>', $page);
+    }
+
+    /** Owner, 19 October 2026: a region slide may have its own background; a slide without one keeps the region background. */
+    public function testRegionDialogueLineCarriesItsOwnBackground(): void
+    {
+        self::$slideBackgrounds = ['level_open.2' => 701];
+
+        $page = $this->dialogue(['magelang' => 'open'])->show('magelang');
+
+        $this->assertStringContainsString('data-backdrop="stage"', $page);
+        $this->assertMatchesRegularExpression('/id="line-2"[^>]*data-bg="[^"]*bg-story-a\.webp"/', $page);
+        $this->assertDoesNotMatchRegularExpression('/id="line-1"[^>]*data-bg=/', $page);
+        $this->assertDoesNotMatchRegularExpression('/id="line-3"[^>]*data-bg=/', $page);
+        // The layout still draws both scene images the crossfade uses
+        $this->assertStringContainsString('id="scene-b"', $page);
+    }
+
+    public function testRegionDoneLineCarriesItsOwnBackground(): void
+    {
+        self::$slideBackgrounds = ['level_done.1' => 702];
+
+        $page = $this->dialogue(['temanggung' => 'completed', 'magelang' => 'open', 'wonosobo' => 'locked'])->done('temanggung');
+
+        $this->assertStringContainsString('data-backdrop="stage"', $page);
+        $this->assertMatchesRegularExpression('/id="line-1"[^>]*data-bg="[^"]*bg-story-b\.webp"/', $page);
+        $this->assertDoesNotMatchRegularExpression('/id="line-2"[^>]*data-bg=/', $page);
+    }
+
+    public function testRegionIntroSlideCarriesItsOwnBackground(): void
+    {
+        self::$slideBackgrounds = ['region_intro.3' => 701];
+
+        $page = $this->map(['temanggung' => 'open', 'magelang' => 'locked', 'wonosobo' => 'locked'], heard: []);
+
+        $this->assertMatchesRegularExpression('/id="kenal-wonosobo-3"[^>]*data-bg="[^"]*bg-story-a\.webp"/', $page);
+        $this->assertDoesNotMatchRegularExpression('/id="kenal-wonosobo-2"[^>]*data-bg=/', $page);
+
+        // Every overlay has the two pictures the crossfade needs, before its header
+        foreach (array_keys(self::LEVELS) as $code) {
+            $overlay = substr($page, strpos($page, 'id="kenal-' . $code . '"'));
+            $overlay = substr($overlay, 0, strpos($overlay, 'class="kenal-head"'));
+            $this->assertSame(2, substr_count($overlay, '<img class="kenal-bg'), $code);
+        }
     }
 
     /** Owner, 19 October 2026 (with the same day's follow-ups): the region dialogue in the intro layout, parchment box, difficulty in the HUD. */
@@ -656,7 +704,8 @@ final class RegionStoryTest extends CIUnitTestCase
             'id' => $n, 'level_id' => $levelId, 'context_code' => $context, 'sequence' => $n,
             'character_code' => $character, 'pose' => $pose, 'effect' => $effect,
             'title_id' => $title, 'title_en' => $title, 'text_id' => $text, 'text_en' => $text,
-            'audio_id_asset_id' => null, 'audio_en_asset_id' => null, 'background_media_id' => null, 'is_active' => 1,
+            'audio_id_asset_id' => null, 'audio_en_asset_id' => null,
+            'background_media_id' => self::$slideBackgrounds[$context . '.' . $n] ?? null, 'is_active' => 1,
         ];
 
         return match ($context) {

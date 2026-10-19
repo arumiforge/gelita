@@ -1,6 +1,8 @@
 <?php
 
+use App\Libraries\ImageSlots;
 use App\Libraries\NarrationImporter;
+use App\Models\DialogueModel;
 use CodeIgniter\Test\CIUnitTestCase;
 
 /**
@@ -61,8 +63,26 @@ final class StoryDataTest extends CIUnitTestCase
         $this->assertCount(count($script), $story);
 
         foreach ($script as $i => $expected) {
-            $this->assertSame($expected, $story[$i], 'baris ' . $expected['code']);
+            // `bg` is a media slot, not script text
+            $this->assertSame($expected, array_diff_key($story[$i], ['bg' => true]), 'baris ' . $expected['code']);
         }
+    }
+
+    /** An optional `bg` names a story background slot, on a line whose context takes one. */
+    public function testOptionalBackgroundKeysAreStorySlots(): void
+    {
+        $contexts = config('Gelita')->dialogueBackgroundContexts;
+
+        foreach ((require APPPATH . 'Database/Seeds/data/story.php') as $line) {
+            if (! isset($line['bg'])) {
+                continue;
+            }
+
+            $this->assertSame('bg.story.*', ImageSlots::patternFor($line['bg']), $line['code']);
+            $this->assertContains($line['context'], $contexts, $line['code']);
+        }
+
+        $this->assertSame('bg.story.*', ImageSlots::patternFor(DialogueModel::backgroundKey('level_done', 'wonosobo', 4)));
     }
 
     public function testSequencesStartAtOneAndHaveNoGaps(): void

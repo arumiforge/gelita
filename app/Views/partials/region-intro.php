@@ -10,6 +10,10 @@
  * Tanpa JavaScript: target `:target` #kenal-{code}, slide lewat
  * #kenal-{code}-{n}, dan tautan tutup menuju kartu wilayahnya.
  *
+ * A slide with a background of its own (`data-bg`) crossfades it over the
+ * region background (core/backdrop.js, through game/narrator.js); a slide
+ * without one shows the region background again.
+ *
  * Wilayah terkunci boleh dikenali. Slide akhir: "Masuk ke {wilayah}" (tirai
  * wilayah, ke `entry`) bila wilayah terbuka, selain itu "Tutup".
  *
@@ -29,9 +33,13 @@ $close  = '#region-' . $code;
          data-kenal="<?= esc($code, 'attr') ?>" data-narrator data-context="region_intro"
          data-prefix="<?= esc($prefix, 'attr') ?>" data-mode="external" data-keyboard="0" data-hash="0"
          data-level-id="<?= esc($level['id'], 'attr') ?>">
+  <?php // Two pictures: a slide's own background (data-bg) crossfades over the region one (core/backdrop.js) ?>
   <?php if (! empty($level['background'])): ?>
-    <img class="kenal-bg" src="<?= esc($level['background'], 'attr') ?>" alt="" loading="lazy">
+    <img class="kenal-bg is-visible" src="<?= esc($level['background'], 'attr') ?>" alt="" loading="lazy">
+  <?php else: ?>
+    <img class="kenal-bg" alt="" loading="lazy">
   <?php endif ?>
+  <img class="kenal-bg" alt="" loading="lazy">
   <header class="kenal-head">
     <div>
       <span class="eyebrow"><?= esc(lang('Game.levelOrder', [$level['sequence']])) ?> · <?= esc(lang_or('Game.difficulty_' . $level['difficulty'], (string) $level['difficulty'])) ?></span>
@@ -56,7 +64,7 @@ $close  = '#region-' . $code;
       ?>
       <li class="slide kenal-slide<?= $character === 'narator' ? ' is-narrator' : '' ?>" id="<?= esc($prefix . $n, 'attr') ?>" data-index="<?= $n ?>"
           data-character="<?= esc($character, 'attr') ?>" data-pose="<?= esc($pose, 'attr') ?>"
-          <?= $effect !== '' ? 'data-effect="' . esc($effect, 'attr') . '"' : '' ?>
+          <?= $effect !== '' ? 'data-effect="' . esc($effect, 'attr') . '"' : '' ?><?= slide_bg_attr($slide) ?>
           aria-label="<?= esc(lang('Game.slideOf', [$n, $total]), 'attr') ?>">
         <?php if ($character !== 'narator'): ?>
           <div class="kenal-stage">

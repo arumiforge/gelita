@@ -410,7 +410,10 @@
 /* Koordinat (stage.css §Sinematik): latar slide 1280 × 720, tokoh kiri 64, 136,
    300 × 520 (kanan 916, 136), kotak teks 160, 520, 960 × 168 (gulir),
    kontrol di kanan atas, kartu "Ketuk untuk mulai" di tengah. */
-body.is-cinematic .scene-img.is-visible { animation: kenburns 40s ease-in-out infinite alternate; }
+/* A slide's own background (core/backdrop.js: .is-own) drifts on every screen;
+   .is-leaving keeps the zoom while the picture fades out */
+body.is-cinematic .scene-img:is(.is-visible, .is-leaving),
+.scene-img.is-own:is(.is-visible, .is-leaving) { animation: kenburns 40s ease-in-out infinite alternate; }
 
 .story { position: absolute; inset: 0; }
 .cine > .welcome-card { position: absolute; top: calc(128 * var(--dp)); left: calc(260 * var(--dp)); z-index: 2; width: calc(760 * var(--dp)); margin: 0; }
@@ -1018,7 +1021,12 @@ html.js .kenal { display: none; }
 html.js .kenal.is-open { display: grid; animation: cine-in .35s ease both; }
 body.has-kenal { overflow: hidden; }
 
-.kenal-bg { position: fixed; inset: 0; z-index: -1; width: 100%; height: 100%; object-fit: cover; opacity: .55; }
+/* Two stacked pictures (partials/region-intro): the region background, dimmed,
+   and a slide's own background (.is-own), crossfaded by core/backdrop.js */
+.kenal-bg { position: fixed; inset: 0; z-index: -1; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .6s ease; }
+.kenal-bg.is-visible { opacity: .55; }
+.kenal-bg.is-own.is-visible { opacity: .85; }
+.kenal-bg.is-own:is(.is-visible, .is-leaving) { animation: kenburns 40s ease-in-out infinite alternate; }
 .kenal::after {
   content: "";
   position: fixed;
@@ -1298,11 +1306,11 @@ body.has-kenal { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .curtain-bg, .curtain-light::after, .curtain-shard, .curtain-beam i::after,
   .curtain-tap, .narrator-tap-glow::before, .narrator.is-finished .slide.is-current [data-slide-final], .cine-final .btn,
-  body.is-cinematic .scene-img.is-visible, .cine-bg, .cine-slide, .cine-stage .character-img,
+  body.is-cinematic .scene-img:is(.is-visible, .is-leaving), .scene-img.is-own, .kenal-bg, .cine-bg, .cine-slide, .cine-stage .character-img,
   .narrator-fx, .narrator:has(> .narrator-fx.fx-shake) .slide.is-current :is(.cine-stage, .cine-caption, .map-story-line) { animation: none; }
   /* Pengaman tetap berlaku, hanya tanpa pudar */
   .curtain { animation-duration: .01s; transition: none; }
-  .curtain-light, .curtain-beam i, .narrator-auto-track i { transition: none; }
+  .curtain-light, .curtain-beam i, .narrator-auto-track i, .kenal-bg { transition: none; }
   .curtain-shard { transform: rotate(45deg) translateX(0); }
   .curtain-shard:nth-child(1) { transform: translate(-3.75rem, -1.875rem) rotate(45deg); }
   .curtain-shard:nth-child(2) { transform: translate(3.75rem, -1.875rem) rotate(45deg); }
