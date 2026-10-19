@@ -128,7 +128,7 @@ Decided in an interview with the owner; decisions in the decision log, section *
 
 - [x] Mengenal {wilayah} overlay (PR #169, test fix in the follow-up): Mbah Kedu's round avatar `ui.kedu-avatar` (catalogue `reference.02`) on the caption's left end instead of animation frames; no "Wilayah n · tingkat" and "Bagian n dari N" text; speaker, title, dots, and Lanjut on one row; Kembali (no cross) at the top left, the logo in the middle of the top band, the title centred under it. After merge, run `php spark gelita:katalog:impor --kunci="ui.kedu-avatar"` (dry run first)
 
-- [ ] Kenali follow-up (owner, 19 October 2026): avatar and caption at the bottom; Cinzel Decorative as the display font everywhere; Kembali on the owner's navy plate, Lanjut on the gold plate (Kenali only); the speaker's name on a navy nameplate over the avatar ring; "Mengenal {wilayah}" in gold letters over an ornament rule; narrator controls on the HUD skin without a band; the framed Jaka avatar everywhere (Peta Kedu too). After merge, run `php spark gelita:katalog:impor --kunci="ui.jaka-avatar"` (dry run first), then **Bangun ulang paket** if package mode is on
+- [x] Kenali follow-up (owner, 19 October 2026): avatar and caption at the bottom; Cinzel Decorative as the display font everywhere; Kembali on the owner's navy plate, Lanjut on the gold plate (Kenali only); the speaker's name on a navy nameplate over the avatar ring; "Mengenal {wilayah}" in gold letters over an ornament rule; narrator controls on the HUD skin without a band; the framed Jaka avatar everywhere (Peta Kedu too) (PR #171). After merge, run `php spark gelita:katalog:impor --kunci="ui.jaka-avatar"` (dry run first), then **Bangun ulang paket** if package mode is on
 
 ## Active branches
 
@@ -136,4 +136,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `pbb/sharp-edison-tnww8e` | Kenali follow-up: plates, nameplate, gold title, display font, framed Jaka | PR #171 in review |
