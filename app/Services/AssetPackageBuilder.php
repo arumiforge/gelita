@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Libraries\AssetMinifier;
 use App\Libraries\CommonsImage;
 use App\Models\AssetPackageModel;
 use App\Models\AuditLogModel;
@@ -78,10 +79,14 @@ class AssetPackageBuilder
 
     private CommonsImage $commons;
 
-    public function __construct(?AssetPackageService $packages = null, ?CommonsImage $commons = null)
+    private AssetMinifier $minifier;
+
+    public function __construct(?AssetPackageService $packages = null, ?CommonsImage $commons = null, ?AssetMinifier $minifier = null)
     {
         $this->packages = $packages ?? service('assetPackages');
         $this->commons  = $commons ?? new CommonsImage();
+        // Same public/ as the package, so a test package never touches the real mirror
+        $this->minifier = $minifier ?? new AssetMinifier($this->packages->publicDir());
     }
 
     // ------------------------------------------------------------ public API
@@ -99,6 +104,7 @@ class AssetPackageBuilder
 
         $release    = $this->activeRelease();
         $appVersion = self::versionSlug((string) ($options['app_version'] ?? $release['app_version'] ?? '0')) ?: '0';
+        $warnings   = $this->refreshMinified();
         $codeTasks  = $this->codeTasks();
         $codeHash   = hash('sha256', implode("\n", array_map(static fn (array $t): string => $t['key'] . ':' . $t['sha'], $codeTasks)));
         $copy       = $options['copy_library'] ?? (bool) (config('Gelita')->paket['copyLibraryImages'] ?? true);
@@ -121,7 +127,7 @@ class AssetPackageBuilder
             'cursor'          => 0,
             'files'           => [],
             'sha'             => [],
-            'warnings'        => [],
+            'warnings'        => $warnings,
         ];
 
         $id = $model->insert([
@@ -413,7 +419,33 @@ class AssetPackageBuilder
     // ------------------------------------------------------------ tasks
 
     /**
-     * Every code file with its sha256 at planning time.
+     * Brings the minified JS/CSS mirror up to date before the code is planned,
+     * so the package carries the minified bytes (AssetMinifier). A failure
+     * only warns: the package then carries the original files.
+     *
+     * @return list<array{code: string, key: string, detail: string}>
+     */
+    private function refreshMinified(): array
+    {
+        if (! $this->minifier->enabled()) {
+            return [];
+        }
+
+        try {
+            $this->minifier->refresh();
+        } catch (\Throwable $e) {
+            log_message('warning', 'Asset package: minified code not used: {message}', ['message' => $e->getMessage()]);
+
+            return [['code' => 'minify_failed', 'key' => 'kode', 'detail' => $e->getMessage()]];
+        }
+
+        return [];
+    }
+
+    /**
+     * Every code file with its sha256 at planning time. A JS/CSS file comes
+     * from the minified mirror while it is fresh (same key, so imports and
+     * URLs stay the same); otherwise the file itself is copied.
      *
      * @return list<array{kind: string, key: string, source: string, sha: string}>
      */
@@ -442,8 +474,10 @@ class AssetPackageBuilder
                     }
                 }
 
-                $source  = $dir . '/' . $relative;
-                $tasks[] = ['kind' => 'code', 'key' => substr($source, strlen('assets/')), 'source' => $source, 'sha' => hash_file('sha256', $file->getPathname())];
+                $key     = substr($dir . '/' . $relative, strlen('assets/'));
+                $min     = in_array($dir, ['assets/css', 'assets/js'], true) ? $this->minifier->path($key) : null;
+                $source  = $min === null ? $dir . '/' . $relative : 'assets/' . $min;
+                $tasks[] = ['kind' => 'code', 'key' => $key, 'source' => $source, 'sha' => hash_file('sha256', $public . $source)];
             }
         }
 

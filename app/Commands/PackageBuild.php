@@ -105,6 +105,7 @@ class PackageBuild extends BaseCommand
             'file_missing'           => 'berkas tidak ditemukan (tidak ikut paket)',
             'hash_mismatch'          => 'isi berkas berbeda dengan catatan media',
             'library_copy_failed'    => 'gambar Pustaka gagal disalin dari Commons (tetap tautan luar)',
+            'minify_failed'          => 'kode ringkas gagal dibuat (paket memakai kode asli)',
         ][$code] ?? $code;
     }
 

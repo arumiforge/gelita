@@ -2,6 +2,7 @@
 
 namespace Config;
 
+use App\Libraries\AssetMinifier;
 use App\Libraries\HeadAsGetRouteCollection;
 use App\Libraries\RequestId;
 use App\Libraries\VideoThumbnail;
@@ -86,6 +87,16 @@ class Services extends BaseService
         }
 
         return $staff;
+    }
+
+    /** Minified JS/CSS mirror in public/assets/min/ (gelita:aset:minify). */
+    public static function assetMinifier(bool $getShared = true): AssetMinifier
+    {
+        if ($getShared) {
+            return static::getSharedInstance('assetMinifier');
+        }
+
+        return new AssetMinifier();
     }
 
     /** Active asset package and its URL map (docs/rencana-paket-aset.md §5.2). */

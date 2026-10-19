@@ -40,6 +40,7 @@ One concept, one word, in every layer. "UI (id)" is what users read; "Code (en)"
 | Wilayah dipilih (panel) | `region panel`, `selected region` | `.kedu-panel`, `data-region-select` |
 | tingkat kesulitan (wilayah) | `difficulty`, `difficulty badge` | stored `mudah`, `sedang`, `sulit` in `levels.difficulty`; `.region-difficulty` (`partials/region-difficulty`) in the HUD section `hudBadge` on `/dialog/{code}` (body class `is-region-dialogue`) |
 | kartu sambutan (setelah daftar) | `welcome card`, `welcome modal` | flash `welcome`; `.welcome-card`, opened as a modal by `game/intro.js` |
+| salinan ringkas (JS/CSS) | `minified mirror`, `minified assets` | `public/assets/min/{version}/`; command `gelita:aset:minify`; `AssetMinifier`; switch `Config\Gelita::$minifyAssets` |
 
 ## People, data, and the panel
 

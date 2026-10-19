@@ -293,6 +293,15 @@ class Gelita extends BaseConfig
      */
     public bool $minifyHtml = true;
 
+    /**
+     * Serve the minified mirror of JS/CSS (public/assets/min/, built by
+     * `gelita:aset:minify`, App\Libraries\AssetMinifier) to browsers and into
+     * asset packages while it is fresh. The sources stay unminified. Off in
+     * tests (see __construct()), so a mirror on a developer machine never
+     * changes the URLs other tests expect.
+     */
+    public bool $minifyAssets = true;
+
     public int $maxUploadBytes      = 64 * 1024 * 1024;
     public int $maxEventsPerBatch   = 50;
 
@@ -379,7 +388,8 @@ class Gelita extends BaseConfig
         // Tests store media under the same official names as a real install
         // (e.g. ui.logo-hero.webp), so they get a folder of their own
         if (ENVIRONMENT === 'testing') {
-            $this->uploadDir = 'assets/uploads-test/';
+            $this->uploadDir    = 'assets/uploads-test/';
+            $this->minifyAssets = false;
         }
     }
 }

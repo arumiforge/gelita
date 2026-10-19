@@ -284,6 +284,7 @@ return [
         'file_missing'           => 'Berkas tidak ditemukan di server (tidak ikut paket)',
         'hash_mismatch'          => 'Isi berkas berbeda dengan catatan gambar',
         'library_copy_failed'    => 'Gambar Pustaka belum dapat disalin dari Wikimedia (tetap tautan luar)',
+        'minify_failed'          => 'Kode ringkas belum dapat dibuat (paket memakai kode asli)',
     ],
 
     'studyStatus' => [

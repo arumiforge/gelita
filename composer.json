@@ -8,7 +8,8 @@
         "codeigniter4/framework": "^4.7",
         "matomo/device-detector": "^6.4",
         "mpdf/mpdf": "^8.3",
-        "phpoffice/phpspreadsheet": "^5.10"
+        "phpoffice/phpspreadsheet": "^5.10",
+        "wikimedia/minify": "^2.12"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9",
@@ -43,6 +44,7 @@
             "phpoffice/phpspreadsheet": "export XLSX multi-sheet untuk SPSS/R dan impor workbook bank soal",
             "mpdf/mpdf": "export PDF laporan HTML/CSS berbahasa Indonesia",
             "matomo/device-detector": "pelacakan perangkat siswa yang tepat (jenis, merek, model, OS, peramban) dari User-Agent + Client Hints untuk data penelitian",
+            "wikimedia/minify": "salinan JS/CSS ringkas untuk peramban dan paket aset (gelita:aset:minify) dengan tokenizer JS yang tahan template literal bersarang; berkas sumber tetap utuh, server produksi hanya punya PHP",
             "_batas": "paket produksi dibatasi daftar ini; paket baru wajib diberi alasan di sini"
         }
     }
