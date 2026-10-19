@@ -192,6 +192,12 @@ return [
     'difficulty_mudah'        => 'Easy',
     'difficulty_sedang'       => 'Medium',
     'difficulty_sulit'        => 'Hard',
+    // Region dialogue badge (owner, 19 October 2026): label, level, and a short cheer
+    'difficultyLabel'         => 'Difficulty',
+    'difficultyLevel'         => 'Difficulty: {0}',
+    'difficultyHint_mudah'    => "Let's warm up first!",
+    'difficultyHint_sedang'   => 'Getting harder. Keep going!',
+    'difficultyHint_sulit'    => 'The most exciting challenge yet. You can do it!',
     'viewResult'              => 'See result',
     'mapImageAlt'             => 'Map of {0}',
 

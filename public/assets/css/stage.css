@@ -560,6 +560,11 @@ body.is-auth-art .scene::after { background: linear-gradient(to right, transpare
 .dialogue-stage > .stage-left  { --x: 64;  --y: 136; --w: 300; --h: 520; }
 .dialogue-stage > .stage-right { --x: 916; --y: 136; --w: 300; --h: 520; }
 .dialogue-box                  { --x: 160; --y: 472; --w: 960; --h: 168; }
+/* Region dialogue in the intro layout (owner, 19 October 2026): HUD 0–120, difficulty
+   badge centred from y 132, the two characters standing on the caption (0, 496,
+   1280 × 224, as in the intro), their feet tucked 24 dp behind its top edge */
+.dialogue-cine .dialogue-stage > .stage-left  { --x: 56;  --y: 112; --w: 340; --h: 408; }
+.dialogue-cine .dialogue-stage > .stage-right { --x: 884; --y: 112; --w: 340; --h: 408; }
 
 /* ---------- Peta Kedu `/peta`, peta wilayah `/wilayah/{code}` ---------- */
 .map-frame   { --x: 32;  --y: 72;  --w: 880; --h: 566; }

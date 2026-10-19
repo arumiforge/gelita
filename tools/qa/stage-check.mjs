@@ -101,8 +101,9 @@ function inspect() {
     return r.width > 0 && r.height > 0;
   };
   const describe = (el) => `${el.tagName.toLowerCase()}${el.id ? `#${el.id}` : ''}${el.classList.length ? `.${[...el.classList].slice(0, 3).join('.')}` : ''}`;
-  // Latar beranimasi Ken Burns sengaja sedikit lebih besar dan dipotong panggung
-  const ANIMATED = '.scene, .scene *, .cine-bg, .curtain-bg, .kenal-bg, .confetti, .confetti *, .narrator-fx, .visually-hidden, .skip-link, .rotate-gate, .rotate-gate *, dialog:not([open]), template *';
+  // Latar beranimasi Ken Burns sengaja sedikit lebih besar dan dipotong panggung;
+  // the region dialogue's ambience clips its own rising light motes
+  const ANIMATED = '.scene, .scene *, .cine-bg, .curtain-bg, .kenal-bg, .confetti, .confetti *, .narrator-fx, .dialogue-ambience, .visually-hidden, .skip-link, .rotate-gate, .rotate-gate *, dialog:not([open]), template *';
   const clippedBy = (el) => {
     for (let p = el.parentElement; p && p !== stage; p = p.parentElement) {
       const ov = getComputedStyle(p);

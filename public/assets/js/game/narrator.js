@@ -375,9 +375,6 @@ export function initNarrator(root, { onFinish = null, onSlide = null } = {}) {
 
   if (mode === 'tap' && tapCard) {
     tapCard.hidden = false;
-    const welcome = $('.welcome-card', root);
-    const slot = $('[data-narrator-welcome]', tapCard);
-    if (welcome && slot) slot.append(welcome);
     $('button', tapCard)?.focus({ preventScroll: true });
     tapCard.addEventListener('click', () => {
       Sfx.unlock(); // di dalam ketukan: elemen narasi bersama terbuka (Safari iPad)

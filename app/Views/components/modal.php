@@ -31,4 +31,5 @@
   <template data-modal-icon="info"><?= icon('info') ?></template>
   <template data-modal-icon="lock"><?= icon('lock') ?></template>
   <template data-modal-icon="install"><?= icon('download') ?></template>
+  <template data-modal-icon="key"><?= icon('key') ?></template>
 </div>

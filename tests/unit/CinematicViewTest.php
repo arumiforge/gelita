@@ -160,8 +160,14 @@ final class CinematicViewTest extends CIUnitTestCase
 
         $page = $this->intro(introSeen: false);
 
-        $this->assertStringContainsString('class="welcome-card"', $page);
-        $this->assertStringContainsString('data-narrator-welcome', $page, 'JS memindahkannya ke kartu ketuk');
+        $this->assertStringContainsString('class="welcome-card"', $page, 'readable without JavaScript');
+        $this->assertStringNotContainsString('data-narrator-welcome', $page, 'no longer moved into the tap card');
+
+        // Owner, 19 October 2026: intro.js opens it as a modal over the tap card first
+        $intro = (string) file_get_contents(FCPATH . 'assets/js/game/intro.js');
+        $this->assertStringContainsString("$('.welcome-card', screen)", $intro);
+        $this->assertStringContainsString("icon: 'key'", $intro);
+        $this->assertStringContainsString('<template data-modal-icon="key">', (string) file_get_contents(APPPATH . 'Views/components/modal.php'));
     }
 
     // ------------------------------------------------------------- tirai

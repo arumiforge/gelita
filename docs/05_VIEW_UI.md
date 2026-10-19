@@ -159,7 +159,7 @@ Since 12 October 2026 the brand is the centred GELITA logo: `ui.logo-hero` (`.au
 | `narration` | Balon `<blockquote class="narration">` dengan `<cite>` nama tokoh; `tail = down` → `.narration-down`. |
 | `audio-player` | Tombol putar/jeda/ulangi + bar, transkrip di `<details class="audio-transcript">`, dan `<audio controls>` di dalam `<noscript>`. Bila audio belum disetujui (`audioSrc` kosong) hanya kotak transkrip `.is-text-only` yang dirender. Transkrip wajib ada. |
 | `narrator-controls` | Kendali pemutar narasi ◀ · ⏸/▶ · ↻ · ▶ · sakelar **Otomatis** (`data-narrator="…"`), tersembunyi sampai `game/narrator.js` aktif. |
-| `narrator-tap` | Kartu "Ketuk untuk mulai" (`data-narrator-tap`, `hidden`). Varian berjudul: `is-chapter` (kartu bab dialog wilayah, dengan jejak kaki) dan `is-done` (wilayah tuntas). Slot `[data-narrator-welcome]` menampung kartu sambutan setelah pendaftaran. |
+| `narrator-tap` | Kartu "Ketuk untuk mulai" (`data-narrator-tap`, `hidden`). Varian berjudul: `is-chapter` (kartu bab dialog wilayah, dengan jejak kaki) dan `is-done` (wilayah tuntas). The welcome card after sign-up is no longer moved in here; `game/intro.js` opens it as a modal above this card. |
 | `curtain` | Tirai pemuatan layar penuh, lihat *Tirai*. |
 | `star-rating` | Bintang 0..3 (atau 0..`max`) lewat `stars_html()`; `size = lg` → `.stars-lg`. |
 | `stat-tile` | Satu angka + label (+ ikon, keterangan, `id` untuk diperbarui JavaScript). Nilai berupa kata memakai `.stat-value.is-text`. |
@@ -195,7 +195,7 @@ Gaya seragam lain (§8.2) ada di `admin.css`: kepala halaman (`partials/admin-he
 | Partial | Dipakai di | Isi |
 |---|---|---|
 | `cine-slides` | intro, penutup | `ol.slides.cine-slides`; tiap `li.slide.cine-slide` (`id = {prefix}{n}`, `data-character`, `data-pose`, `data-effect`) berisi latar `.cine-bg` (`dialogues.background_media_id`), tokoh di `.cine-stage` (narator tanpa gambar, `.is-narrator`), kotak `.cine-caption` (`data-narrator-advance`: "Bagian n dari N", `.cine-speaker`, `.cine-title`, `.slide-text`, `audio-player`, `slide-nav`). |
-| `dialogue-scene` | dialog wilayah, wilayah tuntas | `section.story.dialogue.narrator` (`data-screen`, `data-context`, `data-prefix="line-"`, `data-mode="tap"`), `.dialogue-stage` dengan Jaka (`.stage-left`) dan Mbah Kedu (`.stage-right`), baris `li.dialogue-line` (`data-pose-src` dari `character_frame_src()`), kotak `.dialogue-box.panel-parchment`, `narrator-controls`, `narrator-tap`. Tanpa baris dialog: `Game.dialogueEmpty` dan tombol lanjut. |
+| `dialogue-scene` | dialog wilayah, wilayah tuntas | `section.story.dialogue.narrator` (`data-screen`, `data-context`, `data-prefix="line-"`, `data-mode="tap"`), `.dialogue-stage` dengan Jaka (`.stage-left`) dan Mbah Kedu (`.stage-right`), baris `li.dialogue-line` (`data-pose-src` dari `character_frame_src()`), kotak `.dialogue-box.panel-parchment`, `narrator-controls`, `narrator-tap`. Tanpa baris dialog: `Game.dialogueEmpty` dan tombol lanjut. `cinematic` (region dialogue only): the intro layout, see *Dialog wilayah* below. |
 | `region-intro` | Peta Kedu | Overlay `section.kenal` (`role="dialog"`, `id="kenal-{code}"`, `data-mode="external"`, `data-keyboard="0"`, `data-hash="0"`): latar wilayah, judul `Game.kenalTitle`, tombol tutup `.kenal-close`, slide `kenal-{code}-{n}`. Slide akhir: **Masuk ke {wilayah}** (tirai wilayah) bila wilayah terbuka, selain itu **Tutup** ke `#region-{code}`. |
 | `slide-nav` | semua slide | Kembali · titik `.slide-dot` · Lanjut; slide terakhir menjadi tombol akhir `data-slide-final` (opsional `finalAttrs`, `finalIcon`, tombol sekunder `extra`). |
 | `footsteps` | tirai wilayah, kartu bab | Jejak `svg.footstep.is-left/is-right` dengan `--i`; dekoratif. |
@@ -323,7 +323,7 @@ Layar sinematik (`body.is-cinematic`, `section.intro.cine.narrator`, `data-conte
 
 * Slide terakhir **Mulai petualangan** → `/intro/selesai` (mengisi `intro_seen_at` sekali, mencatat `intro_completed`, lalu `/peta` dengan tirai peta).
 * **Pemain baru wajib menonton:** nav **Lewati** (→ `/gerbang/peta`) hanya dirender bila `canSkip` (sudah pernah menonton).
-* Setelah pendaftaran, kartu sambutan `.welcome-card` (`Game.welcomeCardTitle`, pesan flash, `Game.welcomeCardTip`) tampil di atas; dengan JavaScript kartu itu dipindah ke kartu ketuk.
+* Setelah pendaftaran, kartu sambutan `.welcome-card` (`Game.welcomeCardTitle`, pesan flash, `Game.welcomeCardTip`) tampil di atas. With JavaScript, `game/intro.js` lifts it into the shared game modal (key icon, blurred stage, a short confetti burst, button **Lanjut**) over the "Ketuk untuk mulai" card, so the student reads it first and then starts the intro (owner, 19 October 2026).
 * Tanpa slide: `Game.introEmpty` + tombol ke `/intro/selesai`.
 
 ### Peta Kedu — `game/map-kedu`
@@ -338,7 +338,17 @@ Redesigned 18 October 2026 from catalogue mockup Peta Kedu candidate 04 with the
 
 ### Dialog wilayah — `game/dialogue`
 
-Dialog pembuka wilayah (`level_open`, 15–16 baris) lewat `partials/dialogue-scene` (`data-screen="dialogue"`), latar wilayah. Kartu ketuk varian `chapter`: `Game.chapterOf` ("Bab {n} · {wilayah}"), tagline (judul slide pertama `region_intro`, sama dengan tirai wilayah), tombol `Game.chapterTap`, dan jejak kaki. Panggung dua tokoh: yang berbicara maju dan terang (`.is-speaking`), yang mendengar mundur dan meredup (`.is-listening`); tanpa JavaScript lewat `:target`/`:has()`. Gambar tokoh yang berbicara berganti menurut `data-pose-src` baris itu. Slide akhir **Masuk ke {wilayah}** (`Game.enterRegionName`) → `/wilayah/{code}`. Nav: Peta Kedu dan **Lewati** → `/wilayah/{code}`.
+Dialog pembuka wilayah (`level_open`, 15–16 baris) lewat `partials/dialogue-scene` (`data-screen="dialogue"`), latar wilayah. Kartu ketuk varian `chapter`: `Game.chapterOf` ("Bab {n} · {wilayah}"), tagline (judul slide pertama `region_intro`, sama dengan tirai wilayah), tombol `Game.chapterTap`, dan jejak kaki. Panggung dua tokoh: yang berbicara maju dan terang (`.is-speaking`), yang mendengar mundur dan meredup (`.is-listening`); tanpa JavaScript lewat `:target`/`:has()`. Gambar tokoh yang berbicara berganti menurut `data-pose-src` baris itu. Slide akhir **Masuk ke {wilayah}** (`Game.enterRegionName`) → `/wilayah/{code}`.
+
+Layout (owner, 19 October 2026), like the intro: `partials/dialogue-scene` with `cinematic`, body class `is-cinematic`, the full-size HUD without the shard pill (`hudStyle` = `menu`, `hudShards` = `off`).
+- **HUD centre:** "Bagian n dari N" and the page dots (`.cine-top`, 11 dp dots so 16 lines stay clear of the region name).
+- **Difficulty badge** instead of the old screen head (`.region-difficulty`, centred from y 132): `Game.difficultyLabel`, the level (`Game.difficulty_{mudah|sedang|sulit}`), a three-bar meter with 1–3 bars lit, and a short cheer (`Game.difficultyHint_*`); green, gold, or ember per level. It drops in when the chapter card is tapped away, the lit bars rise and glow, and a light sweeps across it.
+- **Stage:** Jaka 56, 112 and Mbah Kedu 884, 112, both 340 × 408 dp, standing on the caption. The speaker gets a breathing halo and a slow float; light motes rise through `.dialogue-ambience`.
+- **Caption:** full width at 0, 496, 1280 × 224 (`.cine-caption.dialogue-caption`). Its first row holds the speaker chip (Jaka red, Mbah Kedu gold, popping in on every line) and the narrator controls (▶ reads "Lanjut"). A notch on its top edge points at the speaker. Kembali/Lanjut in the caption are the no-JavaScript fallback.
+- **Last line:** **Masuk ke {wilayah}** centred on the page (`.cine-final`).
+- **Nav:** only **Lewati** → `/wilayah/{code}`, under the menu button. Peta Kedu is in the menu.
+
+`/tuntas/{code}` keeps the parchment box and its own nav.
 
 Wilayah yang baru terbuka wajib lewat dialog ini: `/wilayah/{code}`, `/misi/…`, dan `/tantangan/…` dialihkan ke `/dialog/{code}` (`BaseGameController::dialogueGate()`) sampai dialog tampil pada sesi login itu.
 
@@ -641,7 +651,8 @@ Semua layar game digambar di **satu panggung tetap 1280 × 720 dp** (dp = *desig
 | Masuk / Ganti sandi | panel 360, 88, 560 × 544 / 360, 72, 560 × 576 (gulir) |
 | Daftar 1–3 | panel 200, 72, 880 × 576: kepala + stepper 0–64, isian gulir, bilah tombol 80 dp di bawah; langkah 3 kotak "Mengapa sandi harus kuat?" dengan Jaka 220 dp |
 | Cerita pembuka, penutup | tokoh 64, 136, 300 × 520 (gambar 300 × 386); kotak teks 160, 520, 960 × 168 (judul + teks bergulir, navigasi slide di baris kepala); kontrol narasi + Lewati di kanan atas y 72 |
-| Dialog wilayah, wilayah tuntas | judul 0, 64, 1280 × 64; Jaka 64, 136 dan Mbah Kedu 916, 136 (300 × 520); kotak teks 160, 472, 960 × 168 (naik dari 520 karena ada nav bar) |
+| Dialog wilayah | difficulty badge centred from 132; Jaka 56, 112 and Mbah Kedu 884, 112 (340 × 408); caption 0, 496, 1280 × 224; Lewati under the menu button (intro layout, 19 October 2026) |
+| Wilayah tuntas | judul 0, 64, 1280 × 64; Jaka 64, 136 dan Mbah Kedu 916, 136 (300 × 520); kotak teks 160, 472, 960 × 168 (naik dari 520 karena ada nav bar) |
 | Peta Kedu | peta 32, 72, 880 × 566; panel wilayah kanan 936, 72, 312 × 576 (gulir); bilah narasi Jaka 40, 536, 864 × 98 (Jaka 124 × 168 menjulang ke atas) |
 | Kenali wilayah | overlay penuh 0, 0, 1280 × 720, isi dan komposisi slide sama |
 | Peta wilayah | peta 32, 72, 880 × 566; panel kanan 936, 72, 312 × 576: judul, fokus, progres, daftar tantangan (gulir) |
