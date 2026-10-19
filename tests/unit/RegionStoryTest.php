@@ -231,16 +231,16 @@ final class RegionStoryTest extends CIUnitTestCase
         $this->assertStringContainsString('<span>' . esc(lang('Game.skip')) . '</span>', $page);
     }
 
-    /** Owner, 19 October 2026: the region dialogue is laid out like the intro, with the difficulty badge in the HUD. */
+    /** Owner, 19 October 2026 (with the same day's follow-ups): the region dialogue in the intro layout, parchment box, difficulty in the HUD. */
     public function testDialogueUsesTheIntroLayoutWithTheDifficultyBadge(): void
     {
         $page  = $this->dialogue(['magelang' => 'open'])->show('magelang');
         $total = count(self::lines(2, 'level_open'));
 
-        // Full-size HUD without the shard pill; Lewati under the menu button (is-cinematic)
-        $this->assertStringContainsString('is-cinematic', $page);
+        // Full-size HUD with the shard pill (placed under the logo); Lewati under the menu button (is-cinematic)
+        $this->assertStringContainsString('is-cinematic is-region-dialogue', $page);
         $this->assertStringContainsString('class="hud hud-menu-style"', $page);
-        $this->assertStringNotContainsString('class="hud-shards"', $page);
+        $this->assertStringContainsString('class="hud-shards"', $page);
         $this->assertStringContainsString('class="story dialogue narrator cine dialogue-cine"', $page);
         $this->assertStringNotContainsString('dialogue-head', $page);
         $this->assertStringNotContainsString('class="cine-top"', $page, 'no progress in the HUD centre');
@@ -255,9 +255,10 @@ final class RegionStoryTest extends CIUnitTestCase
         $this->assertStringContainsString(esc(lang('Game.difficultyLevel', [lang('Game.difficulty_sedang')])), $page);
         $this->assertStringNotContainsString('region-difficulty-hint', $page);
 
-        // "Bagian n dari N" and the dots right of the speaker's name in the caption; ▶ reads "Lanjut"
-        $this->assertMatchesRegularExpression('/id="line-1".*?<div class="cine-caption dialogue-caption" data-narrator-advance>\s*<div class="cine-caption-head">\s*<cite class="cine-speaker dialogue-speaker">[^<]+<\/cite>\s*<nav class="dialogue-progress"[^>]*>\s*<span class="eyebrow">' . preg_quote(esc(lang('Game.slideOf', [1, $total])), '/') . '<\/span>\s*<ol class="slide-dots">/s', $page);
-        $this->assertStringNotContainsString('dialogue-box panel-parchment', $page);
+        // The parchment box: the speaker's name, then the dots only (no "Bagian n dari N" text); ▶ reads "Lanjut"
+        $this->assertMatchesRegularExpression('/id="line-1".*?<div class="dialogue-box panel-parchment dialogue-caption" data-narrator-advance>\s*<div class="dialogue-caption-head">\s*<cite class="dialogue-speaker">[^<]+<\/cite>\s*<nav class="dialogue-progress" aria-label="' . preg_quote(esc(lang('Game.slideOf', [1, $total]), 'attr'), '/') . '">\s*<ol class="slide-dots">/s', $page);
+        $this->assertStringNotContainsString('<span class="eyebrow">' . esc(lang('Game.slideOf', [1, $total])), $page);
+        $this->assertStringNotContainsString('cine-caption', $page);
         $this->assertStringContainsString('data-narrator="next" aria-label="' . esc(lang('Game.continue'), 'attr') . '"><span class="narrator-next-label"', $page);
 
         // The last line's main button sits in the middle of the page

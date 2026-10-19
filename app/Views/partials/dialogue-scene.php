@@ -18,16 +18,14 @@
  *   satu-satunya pengirim `dialogue_advanced` (context = $context).
  * - Kartu ketuk berjudul ($tap) menutupi panggung sampai diketuk.
  *
- * `$cinematic` (the region dialogue, owner 19 October 2026) lays the scene
- * out like the intro (partials/cine-slides): no screen head (the page puts
- * the difficulty badge in the HUD); a full-width caption along the bottom
- * with both ends left free for the two characters standing over it; its
- * first row holds the speaker's name with "Bagian n dari N" and the page
- * dots to its right, and the narrator controls (▶ reads "Lanjut") sit at the
- * bottom right of the text; the last line's main button is centred on the
- * page. The caption's own Kembali/Lanjut links stay as the no-JavaScript
- * fallback. Without it (the region-done scene) the parchment box keeps its
- * own nav.
+ * `$cinematic` (the region dialogue, owner 19 October 2026) borrows the
+ * intro's pieces (full-size HUD, narrator controls with "Lanjut", the last
+ * line's main button centred on the page) but keeps the parchment box
+ * (owner follow-up, same day): its first row holds the speaker's name, the
+ * page dots (no "Bagian n dari N" text), and, at the right, the narrator
+ * controls; the two characters stand at the stage's left and right edges.
+ * The box's own Kembali/Lanjut links stay as the no-JavaScript fallback.
+ * Without it (the region-done scene) the box keeps partials/slide-nav.
  *
  * @var App\Entities\Level         $level
  * @var list<array<string, mixed>> $slides
@@ -98,12 +96,10 @@ $cinematic = ! empty($cinematic);
             <?= $effect !== '' ? 'data-effect="' . esc($effect, 'attr') . '"' : '' ?>
             aria-label="<?= esc(lang('Game.slideOf', [$n, $total]), 'attr') ?>">
           <?php if ($cinematic): ?>
-            <?php $progress = lang('Game.slideOf', [$n, $total]) ?>
-            <div class="cine-caption dialogue-caption" data-narrator-advance>
-              <div class="cine-caption-head">
-                <cite class="cine-speaker dialogue-speaker"><?= esc(lang_or('Game.char_' . $character, $character)) ?></cite>
-                <nav class="dialogue-progress" aria-label="<?= esc($progress, 'attr') ?>">
-                  <span class="eyebrow"><?= esc($progress) ?></span>
+            <div class="dialogue-box panel-parchment dialogue-caption" data-narrator-advance>
+              <div class="dialogue-caption-head">
+                <cite class="dialogue-speaker"><?= esc(lang_or('Game.char_' . $character, $character)) ?></cite>
+                <nav class="dialogue-progress" aria-label="<?= esc(lang('Game.slideOf', [$n, $total]), 'attr') ?>">
                   <ol class="slide-dots">
                     <?php for ($i = 1; $i <= $total; $i++): ?>
                       <li>
@@ -113,25 +109,23 @@ $cinematic = ! empty($cinematic);
                     <?php endfor ?>
                   </ol>
                 </nav>
+                <?php if ($total > 1): ?>
+                  <div class="slide-nav dialogue-step">
+                    <?php if ($n > 1): ?>
+                      <a class="btn btn-quiet" href="#line-<?= $n - 1 ?>"><?= icon('left') ?> <?= esc(lang('Game.back')) ?></a>
+                    <?php endif ?>
+                    <?php if ($n < $total): ?>
+                      <a class="btn btn-primary" href="#line-<?= $n + 1 ?>"><?= esc(lang('Game.continue')) ?> <?= icon('right') ?></a>
+                    <?php endif ?>
+                  </div>
+                <?php endif ?>
               </div>
-              <div class="cine-caption-body stage-scroll">
+              <div class="dialogue-body stage-scroll">
                 <p class="dialogue-text slide-text"><?= esc($text) ?></p>
                 <?php if (($audioSrc = audio_src($audioId ?: null)) !== null): ?>
                   <?= component('audio-player', ['audioId' => $audioId, 'audioSrc' => $audioSrc, 'transcript' => $text]) ?>
                 <?php endif ?>
               </div>
-              <?php if ($n < $total): ?>
-                <div class="slide-nav cine-step">
-                  <?php if ($n > 1): ?>
-                    <a class="btn btn-quiet" href="#line-<?= $n - 1 ?>"><?= icon('left') ?> <?= esc(lang('Game.back')) ?></a>
-                  <?php endif ?>
-                  <a class="btn btn-primary" href="#line-<?= $n + 1 ?>"><?= esc(lang('Game.continue')) ?> <?= icon('right') ?></a>
-                </div>
-              <?php elseif ($n > 1): ?>
-                <div class="slide-nav cine-step">
-                  <a class="btn btn-quiet" href="#line-<?= $n - 1 ?>"><?= icon('left') ?> <?= esc(lang('Game.back')) ?></a>
-                </div>
-              <?php endif ?>
             </div>
 
             <?php if ($n === $total): ?>

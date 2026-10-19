@@ -10,14 +10,13 @@
  * game/narrator.js. Slide akhir "Masuk ke {wilayah}" → `/wilayah/{code}`.
  * Nav "Lewati" dan gerbang dialog (dialogueGate()/markDialogueShown()) tetap.
  *
- * Layout (owner, 19 October 2026): like the intro (partials/dialogue-scene
- * with `cinematic`): full-size HUD without the shard pill, its centre holding
- * "Bagian n dari N" and the page dots; Lewati under the menu button; no Peta
- * Kedu button (the menu has it); a full-width caption along the bottom.
- * Owner follow-up (same day): the region's difficulty badge sits in the HUD
- * left of the language control (section `hudBadge`), "Bagian n dari N" and
- * the dots sit right of the speaker's name in the caption, and the caption
- * keeps both ends free for the two characters standing over it.
+ * Layout (owner, 19 October 2026), with the same day's follow-ups: the
+ * full-size HUD with the shard pill under the logo, the region name in
+ * capitals, and the difficulty badge left of the language control (section
+ * `hudBadge`); Lewati under the menu button; no Peta Kedu button (the menu
+ * has it); the parchment box with the speaker's name, the page dots, and
+ * the narrator controls in its first row; the two characters at the stage's
+ * edges; the last line's main button centred on the page.
  *
  * @var App\Entities\Level         $level
  * @var list<array<string, mixed>> $slides
@@ -31,10 +30,9 @@ $region = $level->text('name', $locale);
 
 <?= $this->section('title') ?><?= esc($region) ?><?= $this->endSection() ?>
 <?= $this->section('background') ?><?= $bg ?><?= $this->endSection() ?>
-<?= $this->section('bodyClass') ?>is-cinematic<?= $this->endSection() ?>
-<?php /* Full-size HUD; its centre holds the line progress, so no shard pill */ ?>
+<?= $this->section('bodyClass') ?>is-cinematic is-region-dialogue<?= $this->endSection() ?>
+<?php /* Full-size HUD; the shard pill sits under the logo (cinematic.css) */ ?>
 <?= $this->section('hudStyle') ?>menu<?= $this->endSection() ?>
-<?= $this->section('hudShards') ?>off<?= $this->endSection() ?>
 <?= $this->section('hudBadge') ?><?= component('partials/region-difficulty', ['level' => $level]) ?><?= $this->endSection() ?>
 
 <?= $this->section('content') ?>

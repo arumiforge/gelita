@@ -1987,6 +1987,18 @@ Decisions:
   - The badge's entrance keys off `body:has(.dialogue-cine.is-started)`, since it is no longer inside the scene.
 - **Tests.** `RegionStoryTest::testDialogueUsesTheIntroLayoutWithTheDifficultyBadge` and `testRegionDoneSceneKeepsTheParchmentBox` are new; `CinematicViewTest::testWelcomeCardSurvivesAfterRegistration` checks the modal hand-off. Checked in Chromium on a local MariaDB install with the catalogue art: sign-up → welcome modal → tap card → intro, and `/dialog/temanggung`, `/dialog/magelang`, `/dialog/wonosobo` (first line, last line); `stage-check --only=intro,dialog` at all six sizes passes apart from the pre-existing finding above.
 
+### Region dialogue, second owner follow-up (19 October 2026, branch `sky/pensive-einstein-x7fcqo`, after PR #154)
+
+Owner request with a picture of the old box: bring the old narration box back (not full width), drop the "Bagian x dari x" text and keep the dots, put the region name in capitals and larger, move the characters closer to the left, right, and bottom edges, drop the name labels, show the shard pill under the logo, make the dots smaller, and put the narrator controls in the row of the name and the dots, at the right.
+
+Decisions:
+- **Box.** The parchment box is back at 160, 520, 960 × 176. It sits lower than the old 472 because the bottom nav bar is gone. Its first row holds the name, 8 dp dots, and the narrator controls. The controls stay one shared element (`narrator-controls`), placed over the row's right end; the row keeps `--dlg-controls-w` free for them (11.5rem, or 30rem with narration audio for ⏸ ↻ and Otomatis). The controls are restyled for parchment, with brown discs and "Lanjut" on the gold main-button skin like the old box's Lanjut. Kembali/Lanjut links stay in that row as the no-JavaScript fallback.
+- **Final button.** "Masuk ke {wilayah}" stays centred on the page (from PR #154); the owner did not ask to move it back into the box.
+- **Speaker name.** Back to the old brown pill for both characters, as in the owner's picture (PR #154 had Jaka red). It still pops in on every line.
+- **Characters.** 320 × 464 dp at x 0 and x 960, feet on the bottom edge, behind the box as in the old layout. The name labels under them stay hidden.
+- **HUD.** The shard pill comes back (`hudShards` no longer `off`) and sits under the logo at 24, 116, 360 wide. `body.is-cinematic` lets taps reach `.hud-shards`, which it blocked before. The region name is in Cinzel capitals at 36 dp. Both are scoped to `.is-region-dialogue`; other pages keep their HUD.
+- **Tests.** `RegionStoryTest::testDialogueUsesTheIntroLayoutWithTheDifficultyBadge` was rewritten for the box. Checked in Chromium on a local MariaDB install: all three regions, the control row with simulated narration audio, and the shard detail popover; after merging `main` (closed HUD sheets hidden, PR #156), `stage-check --only=intro,dialog` passes at all six sizes.
+
 ## Closed HUD menu sheet reported outside the stage (19 October 2026, branch `sky/loving-hopper-6fbsjl`)
 
 `node tools/qa/stage-check.mjs --only=intro,peta` reported `keluar dari #stage: div.hud-sheet.hud-menu-sheet` at every size on the pages with the full-size HUD (`/intro`, `/peta`, `/dialog/{code}`), also on `main`.
