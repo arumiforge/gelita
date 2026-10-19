@@ -27,9 +27,11 @@
  * whose title row holds the narrator controls (▶ reads "Lanjut"); "Mulai
  * petualangan" centred on the page. See partials/cine-slides.
  *
- * Setelah registrasi, halaman diawali kartu sambutan (flash `welcome`); JS
- * memindahkannya ke kartu ketuk. Kode peserta TIDAK ditampilkan di sini —
- * kode itu untuk penelitian.
+ * Right after sign-up the page carries the welcome card (flash `welcome`);
+ * game/intro.js opens it as a modal over the tap card (owner, 19 October
+ * 2026), and Lanjut leads into the intro. Without JavaScript it stays above
+ * the first slide. Kode peserta TIDAK ditampilkan di sini — kode itu untuk
+ * penelitian.
  *
  * @var list<array<string, mixed>> $slides
  * @var string                     $locale

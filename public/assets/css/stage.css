@@ -560,6 +560,13 @@ body.is-auth-art .scene::after { background: linear-gradient(to right, transpare
 .dialogue-stage > .stage-left  { --x: 64;  --y: 136; --w: 300; --h: 520; }
 .dialogue-stage > .stage-right { --x: 916; --y: 136; --w: 300; --h: 520; }
 .dialogue-box                  { --x: 160; --y: 472; --w: 960; --h: 168; }
+/* Region dialogue in the intro layout (owner, 19 October 2026): HUD 0–120 (difficulty
+   badge left of the language control), caption 0, 448, 1280 × 272 with its text
+   between x 360 and 920; Jaka and Mbah Kedu stand over its two ends, feet on the
+   bottom edge */
+.dialogue-cine .cine-caption                  { --y: 448; --h: 272; }
+.dialogue-cine .dialogue-stage > .stage-left  { --x: 8;   --y: 264; --w: 352; --h: 456; }
+.dialogue-cine .dialogue-stage > .stage-right { --x: 920; --y: 264; --w: 352; --h: 456; }
 
 /* ---------- Peta Kedu `/peta`, peta wilayah `/wilayah/{code}` ---------- */
 .map-frame   { --x: 32;  --y: 72;  --w: 880; --h: 566; }

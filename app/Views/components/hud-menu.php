@@ -17,7 +17,9 @@
  * Middle: the shard lantern pill on in-game pages; a page sets section
  *        `hudShards` = `off` to leave it out (the result screen shows shards
  *        in its panel).
- * Right: three round controls on the `ui.result-hud-control` skin:
+ * Right: section `hudBadge` first (e.g. the region dialogue's difficulty
+ *        badge, partials/region-difficulty), then three round controls on
+ *        the `ui.result-hud-control` skin:
  *        - language: popover with the flag icons (`ui.lang.*`), a POST form
  *          with class `lang-switch` (game/hud.js, the challenge frame);
  *          hidden during a challenge;
@@ -46,6 +48,7 @@ $locales  = config('Gelita')->locales;
 $hudTitle = trim($this->renderSection('hudTitle'));
 $region   = $hudTitle !== '' ? $hudTitle : (isset($level) && $level instanceof \App\Entities\Level ? $level->text('name', $locale) : null);
 $back     = trim($this->renderSection('hudBack'));
+$badge    = trim($this->renderSection('hudBadge'));
 $shards   = $inGame && trim($this->renderSection('hudShards')) !== 'off';
 $logo     = empty($hideBrand) ? (media_key_src('ui.logo-hero') ?? media_key_src('ui.logo')) : null;
 $flags    = ['id' => media_key_src('ui.lang.id'), 'en' => media_key_src('ui.lang.en')];
@@ -73,6 +76,7 @@ $userName = $signedIn ? (string) ($participant['display_name'] ?: $participant['
   <?php endif ?>
 
   <div class="hud-right hud-controls">
+    <?= $badge ?>
     <details class="hud-pop hud-lang" data-popover>
       <summary class="hud-ctl" aria-label="<?= esc(lang('Game.language') . ': ' . $langName($locale), 'attr') ?>"
                title="<?= esc(lang('Game.language'), 'attr') ?>">

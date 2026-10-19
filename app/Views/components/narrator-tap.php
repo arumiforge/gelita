@@ -6,8 +6,8 @@
  * mengetuk halaman ITU, dan GELITA adalah aplikasi multi-halaman. Ketukan
  * kartu ini membuka kunci audio (Sfx.unlock()), lalu narasi diputar
  * otomatis. Tersembunyi tanpa JavaScript: slide tetap dapat dibaca.
- * Kartu sambutan setelah registrasi (bila ada) dipindah JS ke dalam slot
- * [data-narrator-welcome] agar tetap terbaca di atas lapisan ini.
+ * The welcome card after sign-up opens as a modal above this card
+ * (game/intro.js), so it is read first.
  *
  * Tahap 3: kartu boleh berjudul — kartu bab dialog wilayah ("Bab {n} ·
  * {wilayah}", tagline, "Ketuk untuk mendengar kisahnya", jejak kaki yang
@@ -30,7 +30,6 @@ $lantern = media_key_src('ui.lantern');
 ?>
 <div class="narrator-tap<?= $variant !== '' ? ' is-' . esc($variant, 'attr') : '' ?>" data-narrator-tap hidden>
   <div class="narrator-tap-card">
-    <div data-narrator-welcome></div>
     <?php if (! empty($trail)): ?>
       <?= component('partials/footsteps', ['steps' => 6, 'class' => 'tap-trail']) ?>
     <?php endif ?>
