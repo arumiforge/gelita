@@ -192,6 +192,9 @@ return [
     'difficulty_mudah'   => 'Mudah',
     'difficulty_sedang'  => 'Sedang',
     'difficulty_sulit'   => 'Sulit',
+    // Region dialogue difficulty badge in the HUD (owner, 19 October 2026)
+    'difficultyLabel'    => 'Tingkat kesulitan',
+    'difficultyLevel'    => 'Tingkat kesulitan: {0}',
     'viewResult'         => 'Lihat hasil',
     'mapImageAlt'        => 'Peta {0}',
 

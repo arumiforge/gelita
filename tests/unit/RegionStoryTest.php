@@ -231,6 +231,56 @@ final class RegionStoryTest extends CIUnitTestCase
         $this->assertStringContainsString('<span>' . esc(lang('Game.skip')) . '</span>', $page);
     }
 
+    /** Owner, 19 October 2026: the region dialogue is laid out like the intro, with the difficulty badge in the HUD. */
+    public function testDialogueUsesTheIntroLayoutWithTheDifficultyBadge(): void
+    {
+        $page  = $this->dialogue(['magelang' => 'open'])->show('magelang');
+        $total = count(self::lines(2, 'level_open'));
+
+        // Full-size HUD without the shard pill; Lewati under the menu button (is-cinematic)
+        $this->assertStringContainsString('is-cinematic', $page);
+        $this->assertStringContainsString('class="hud hud-menu-style"', $page);
+        $this->assertStringNotContainsString('class="hud-shards"', $page);
+        $this->assertStringContainsString('class="story dialogue narrator cine dialogue-cine"', $page);
+        $this->assertStringNotContainsString('dialogue-head', $page);
+        $this->assertStringNotContainsString('class="cine-top"', $page, 'no progress in the HUD centre');
+
+        // The difficulty badge sits in the HUD, right before the language control, without a cheer line
+        $controls = (int) strpos($page, '<div class="hud-right hud-controls">');
+        $badge    = (int) strpos($page, '<div class="region-difficulty is-sedang">');
+        $this->assertGreaterThan($controls, $badge);
+        $this->assertGreaterThan($badge, (int) strpos($page, '<details class="hud-pop hud-lang"'));
+        $this->assertSame(2, substr_count($page, '<i class="is-on"'), 'two of three bars lit');
+        $this->assertStringContainsString(esc(lang('Game.difficultyLabel')), $page);
+        $this->assertStringContainsString(esc(lang('Game.difficultyLevel', [lang('Game.difficulty_sedang')])), $page);
+        $this->assertStringNotContainsString('region-difficulty-hint', $page);
+
+        // "Bagian n dari N" and the dots right of the speaker's name in the caption; ▶ reads "Lanjut"
+        $this->assertMatchesRegularExpression('/id="line-1".*?<div class="cine-caption dialogue-caption" data-narrator-advance>\s*<div class="cine-caption-head">\s*<cite class="cine-speaker dialogue-speaker">[^<]+<\/cite>\s*<nav class="dialogue-progress"[^>]*>\s*<span class="eyebrow">' . preg_quote(esc(lang('Game.slideOf', [1, $total])), '/') . '<\/span>\s*<ol class="slide-dots">/s', $page);
+        $this->assertStringNotContainsString('dialogue-box panel-parchment', $page);
+        $this->assertStringContainsString('data-narrator="next" aria-label="' . esc(lang('Game.continue'), 'attr') . '"><span class="narrator-next-label"', $page);
+
+        // The last line's main button sits in the middle of the page
+        $this->assertMatchesRegularExpression('/id="line-' . $total . '".*?<div class="cine-final">\s*<a class="btn btn-primary btn-lg" ' . preg_quote($this->href('wilayah/magelang'), '/') . ' data-slide-final>/s', $page);
+
+        // Only Lewati at the bottom; Peta Kedu lives in the menu
+        $nav = substr($page, (int) strpos($page, '<nav class="nav-bar"'));
+        $nav = substr($nav, 0, (int) strpos($nav, '</nav>'));
+        $this->assertStringContainsString(esc(lang('Game.skip')), $nav);
+        $this->assertStringNotContainsString(esc(lang('Game.mapKedu')), $nav);
+        $this->assertStringNotContainsString($this->href('peta'), $nav);
+    }
+
+    public function testRegionDoneSceneKeepsTheParchmentBox(): void
+    {
+        $page = $this->dialogue(['temanggung' => 'completed', 'magelang' => 'open', 'wonosobo' => 'locked'])->done('temanggung');
+
+        $this->assertStringContainsString('class="story dialogue narrator"', $page);
+        $this->assertStringContainsString('dialogue-box panel-parchment', $page);
+        $this->assertStringContainsString('screen-head dialogue-head stage-box', $page);
+        $this->assertStringNotContainsString('region-difficulty', $page);
+    }
+
     public function testDialogueJsLeavesTheEventToTheNarrator(): void
     {
         $dialogue = (string) file_get_contents(FCPATH . 'assets/js/game/dialogue.js');

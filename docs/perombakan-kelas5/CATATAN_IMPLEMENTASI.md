@@ -1966,6 +1966,27 @@ Owner list (with a mockup of the "Wilayah dipilih" panel):
   - `CinematicViewTest::testIntroMenuHasTheAccountRows` and `RegionStoryTest::testRegionPanelShowsTheCityPictureAndStatus` are new.
   - Checked in Chromium at 1280 × 720 on a local SQLite world with the catalogue installed: intro slides with Mbah Kedu, a keyboard advance, the intro menu, the map curtain, and Peta Kedu with Temanggung and Wonosobo selected.
 
+## Welcome modal and region dialogue in the intro layout (19 October 2026, branch `sky/pensive-einstein-x7fcqo`)
+
+Owner request: the welcome card should appear as a modal right after the account is created, then lead into the intro. Redesign the region dialogue page like the intro: Lewati under the menu button, no Peta Kedu button at the bottom left (it is in the menu), and the screen head replaced by each region's difficulty, with extra style and animation.
+
+Decisions:
+- **Welcome modal.** The server still renders `.welcome-card` on `/intro` (readable without JavaScript). `game/intro.js` lifts it into the shared game modal: key icon, blurred stage, a 40-piece confetti burst, one **Lanjut** button. It opens above the "Ketuk untuk mulai" card, so the student reads it first and the next tap starts the intro; the extra tap is kept on purpose because the tap card is what unlocks audio on iPad. The `[data-narrator-welcome]` slot in the tap card is gone.
+- **Region dialogue layout.** `partials/dialogue-scene` takes `cinematic`; only `/dialog/{code}` sets it. `/tuntas/{code}` keeps the parchment box, its screen head, and its nav, because the owner did not ask for it. The page uses the intro's pieces (`is-cinematic`, full-size HUD without the shard pill, `.cine-top`, `.cine-caption`, `.cine-final`, narrator controls with "Lanjut") rather than new ones.
+- **Two characters, one caption.** Unlike the intro, both characters stay on stage (they talk to each other), standing on the caption with their feet tucked behind it, instead of one figure drawn over the caption text. The caption text keeps the full width.
+- **Difficulty text.** The stored `levels.difficulty` (`mudah`, `sedang`, `sulit`) is shown as a badge between the characters: label, level, a three-bar meter, and a short cheer per level (`Game.difficultyHint_*`, new). Bars, not stars, so it is never read as the score stars (rule `bintang-1`). Colour per level: green, gold, ember.
+- **Extra motion.** The badge drops in when the chapter card is tapped away, its bars rise and glow, and a light sweeps across it. The speaker has a breathing halo and a slow float, and the speaker chip pops in on every line (Jaka red, Mbah Kedu gold). A notch on the caption points at the speaker, and light motes rise through the scene. All of it is off under `prefers-reduced-motion`.
+- **Page dots.** At 15–16 lines the intro's 16 dp dots ran into the region name in the HUD, so the dialogue uses 11 dp dots 8 dp apart (hit area 48 × 19 dp, within the owner's call on narrow dot targets, 11 October 2026).
+- **QA tool.** `tools/qa/stage-check.mjs` exempts `.dialogue-ambience` from the clipped-content check, like the Ken Burns backgrounds: its motes layer is deliberately taller than the stage and clipped.
+- **Pre-existing, not fixed here.** `stage-check` reports `div.hud-sheet.hud-menu-sheet` outside `#stage` on every full-size HUD page (`/intro`, `/peta`, and now `/dialog/{code}`); it is the same on `main`.
+- **Owner follow-up (same day).** These points replace the badge, dots, and stage placement above:
+  - The difficulty badge moved into the HUD, left of the language control (new HUD section `hudBadge`, `partials/region-difficulty`), without the cheer line (`Game.difficultyHint_*` removed).
+  - "Bagian n dari N" and the dots moved from the HUD centre to the right of the speaker's name in the caption.
+  - The caption stays full width (0, 448, 1280 × 272), but its content keeps to x 360–920. Jaka and Mbah Kedu (352 × 456 dp) stand over its two ends, feet on the bottom edge, instead of above it. The caption's notch is gone, since the speakers now flank the text.
+  - The narrator controls moved to the bottom right of the text, because the first row now holds the name and the progress.
+  - The badge's entrance keys off `body:has(.dialogue-cine.is-started)`, since it is no longer inside the scene.
+- **Tests.** `RegionStoryTest::testDialogueUsesTheIntroLayoutWithTheDifficultyBadge` and `testRegionDoneSceneKeepsTheParchmentBox` are new; `CinematicViewTest::testWelcomeCardSurvivesAfterRegistration` checks the modal hand-off. Checked in Chromium on a local MariaDB install with the catalogue art: sign-up → welcome modal → tap card → intro, and `/dialog/temanggung`, `/dialog/magelang`, `/dialog/wonosobo` (first line, last line); `stage-check --only=intro,dialog` at all six sizes passes apart from the pre-existing finding above.
+
 ## Closed HUD menu sheet reported outside the stage (19 October 2026, branch `sky/loving-hopper-6fbsjl`)
 
 `node tools/qa/stage-check.mjs --only=intro,peta` reported `keluar dari #stage: div.hud-sheet.hud-menu-sheet` at every size on the pages with the full-size HUD (`/intro`, `/peta`, `/dialog/{code}`), also on `main`.

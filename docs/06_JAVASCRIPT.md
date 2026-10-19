@@ -602,6 +602,7 @@ initNarrator(root, { onFinish, onSlide })
 ### `game/intro.js` dan `game/dialogue.js`
 
 - `initStory('intro' | 'ending')` memasang narrator mode `tap` pada `[data-screen="intro"][data-narrator]` (`/intro`) atau `[data-screen="ending"][data-narrator]` (`/penutup`).
+- Welcome after sign-up (owner, 19 October 2026): when the screen holds the server's `.welcome-card` (flash `welcome`), `initStory()` removes it and opens `showModal({ icon: 'key', blur: true })` with its title, message, and tip and one **Lanjut** button (`t('next')`), plus `confetti(40)`. The modal sits above the "Ketuk untuk mulai" card; closing it (Lanjut, Escape, or a tap outside) returns focus to that card, so the intro starts with the next tap as before. `components/modal` gained the `key` icon.
 - `initDialogue()` memasang narrator pada `[data-screen="dialogue"]` (`/dialog/{code}`, context `level_open`) atau `[data-screen="region-done"]` (`/tuntas/{code}`, context `level_done`), markup `partials/dialogue-scene`. `onSlide` memberi tokoh yang berbicara `.is-speaking` dan yang mendengar `.is-listening`, lalu menukar gambarnya ke frame pose baris itu (`data-pose`, `data-pose-src`; monogram diganti `<img class="character-img">` begitu ada frame, baris tanpa frame membiarkan tokoh apa adanya). Frame pose dipramuat saat idle. A line whose pose has several frames carries `data-pose-frames`/`-fps`/`-loop`; `setPose()` hands them to `core/sprite.js` `setFrames()`, so the pose plays from frame 1 on every line.
 
 ### `game/map.js`
