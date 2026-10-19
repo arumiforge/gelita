@@ -231,7 +231,7 @@ final class AdminTable
                     return esc($text);
                 }
 
-                return '<details class="cell-more"><summary title="Klik untuk teks lengkap">' . esc(mb_substr($text, 0, 32)) . '…</summary><p>' . esc($text) . '</p></details>';
+                return '<details class="cell-more"><summary title="Klik untuk teks lengkap">' . esc(mb_substr($text, 0, 32)) . '…</summary><p data-keep-space>' . esc($text) . '</p></details>';
 
             case 'json':
                 $raw = is_string($value) ? $value : (string) json_encode($value, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
@@ -242,7 +242,7 @@ final class AdminTable
                 $text = is_array($value) ? AnswerText::fromData($value) : (string) $value;
 
                 if (mb_strlen($text) > 80) {
-                    return '<details class="cell-more"><summary>' . esc(mb_substr($text, 0, 60)) . '…</summary><p>' . esc($text) . '</p></details>';
+                    return '<details class="cell-more"><summary>' . esc(mb_substr($text, 0, 60)) . '…</summary><p data-keep-space>' . esc($text) . '</p></details>';
                 }
 
                 return esc($text);

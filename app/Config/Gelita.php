@@ -287,6 +287,12 @@ class Gelita extends BaseConfig
      */
     public int $avatarSlots = 10;
 
+    /**
+     * Minify full HTML pages and put the "Mr. F" watermark at the top of the
+     * page source (App\Filters\HtmlMinifyFilter, App\Libraries\HtmlMinifier).
+     */
+    public bool $minifyHtml = true;
+
     public int $maxUploadBytes      = 64 * 1024 * 1024;
     public int $maxEventsPerBatch   = 50;
 
