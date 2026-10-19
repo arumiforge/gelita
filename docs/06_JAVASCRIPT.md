@@ -63,6 +63,8 @@ public/
     │   ├── login.js         formulir masuk
     │   ├── slides.js        slide bersama (cerita, dialog, Pustaka)
     │   ├── narrator.js      pemutar narasi sinematik
+    │   ├── screen-fx.js     WebGL screen effects (three.js): fog, sparks, light rays, bloom; createScreenFx()
+    │   ├── parallax.js      parallax depth: acquireParallax(), releaseParallax(), parallaxValue()
     │   ├── intro.js         cerita pembuka & penutup
     │   ├── dialogue.js      dialog wilayah & wilayah tuntas
     │   ├── map.js           peta Kedu (narasi peta, overlay Kenali) & peta wilayah
@@ -87,7 +89,7 @@ public/
         └── export.js        pantau status ekspor
 ```
 
-Library pihak ketiga hanya `public/assets/vendor/howler.min.js` (lihat [Library JavaScript](#library-javascript)).
+Library pihak ketiga hanya `public/assets/vendor/howler.min.js` dan three.js (`public/assets/vendor/three-0.186.1/`, only for the screen effects) (lihat [Library JavaScript](#library-javascript)).
 
 ---
 
@@ -573,6 +575,15 @@ initSlides({ list, prefix, keyboard = true, hash = true, onChange })
 - Spasi, panah kanan, PageDown = lanjut; panah kiri, PageUp = kembali; di slide terakhir lanjut mengklik tautan akhir `.slide-nav a.btn-primary`. Pintasan diabaikan di dalam kontrol, saat modal terbuka, atau bila `keyboard: false`.
 - `hash: false` untuk beberapa daftar slide dalam satu halaman (overlay Kenali): URL tidak disentuh.
 - Berganti slide menghentikan narasi (`pauseNarration()`) dan memindah fokus ke judul/teks slide; `show(n, { focus: false })` dipakai perpindahan otomatis agar fokus pengguna tidak direbut.
+
+### `game/screen-fx.js` and `game/parallax.js` — WebGL screen effects (owner, 19 October 2026)
+
+- **Where.** A narrated scene root with `data-fx3d` (`screen_fx_attr()`: intro, ending, Kenali overlay, region dialogue, region done; not the Peta Kedu story bar). The value is the three.js entry URL (`asset_url_versioned(Config\Gelita::$screenFxThree)`, so the asset package serves it offline). `Config\Gelita::$screenFx = false` (`.env` `gelita.screenFx = false`) leaves the attribute out.
+- **When.** `narrator.js` starts it the first time the root is on screen (`getClientRects()`), pauses it when the root leaves the screen (a closed Kenali overlay), and never starts it under `prefers-reduced-motion`. `screen-fx.js` is loaded with `import()`; it probes for WebGL 2 before it imports three.js (2.1 MB), so a device without WebGL 2 downloads nothing and logs nothing.
+- **What it draws.** One transparent `<canvas class="screen-fx">` after `.narrator-fx`, under the characters and the caption: layered-noise fog, 110 lantern sparks (points), light rays, and a bloom (bright pass, two blur rounds at 1/4 size, soft tone curve). Everything is built from three.js core classes; the `examples/jsm` add-ons are not used because they need an import map (inline script, blocked by the CSP, iOS 16.4+).
+- **Script effects.** `narrator.js` forwards each slide's effect (`setEffect()`): `fog` thickens the mist, `fog-lift` clears it, `glow` brings the rays and a warm halo, `flash` a burst of sparks, `dim` dims the sparks; anything else returns to a thin base mist with slow sparks. While the canvas runs the root has `.has-fx3d`, and `cinematic.css` blanks the CSS fog, fog-lift, and glow and the CSS light motes of the region dialogue. Flash, dim, and shake stay CSS.
+- **Fallback.** No WebGL 2, a failed import, a shader that does not compile (`renderer.debug.onShaderError`), or a lost WebGL context remove the canvas and the class: the CSS effects play again. A watchdog steps down when frames stay slower than 45 ms for 4 s: canvas at 0.75× size, then 0.5× without bloom, then the CSS effects.
+- **Parallax.** `parallax.js` keeps one smoothed value per axis (-1…1) and writes `--plx`/`--ply` on `#stage` with `.has-parallax`. Source: a mouse or pen; else device tilt where the browser sends it without a permission prompt (not iOS); else a slow sway. `cinematic.css` moves the backgrounds (`.scene-img`, `.kenal-bg`, `.cine-bg`, scaled 1.04) by 10/6 dp and the character layers (`.dialogue-stage`, `.cine-stage`, `.kenal-stage`) by 20/10 dp through the `translate` property, which composes with Ken Burns and the speaking zoom; the WebGL fog and sparks move as nearer layers. Users are counted (three Kenali overlays share the map), and the last release removes the variables.
 
 ### `game/narrator.js` — pemutar narasi sinematik
 
@@ -1063,8 +1074,9 @@ Asset package keys (Stage 2): `localStorage` `gelita.paket` (mirror of the devic
 | Nama | Tujuan | Versi | Lokasi | Dimuat |
 |---|---|---|---|---|
 | **Howler.js** | efek suara dan musik latar; kebijakan autoplay dan pemutaran tumpang tindih yang konsisten lintas browser | 2.2.4 (dikunci pada 2.2.x) | `public/assets/vendor/howler.min.js` (+ `LICENSE-howler.md`) | `layouts/game.php`, `<script defer>` sebelum `game.js` |
+| **three.js** | WebGL screen effects of the narrated scenes (owner, 19 October 2026) | 0.186.1 (core build only, no add-ons) | `public/assets/vendor/three-0.186.1/three.module.js` + `three.core.js` (+ `LICENSE-three.txt`) | `game/screen-fx.js` by dynamic `import()` of the URL in `data-fx3d`, only on a narrated scene, with WebGL 2, without reduced motion |
 
-Itu satu-satunya library. Tidak ada CDN: berkas vendor ada di repositori dan dimuat dari domain sendiri; versi dan checksum dicatat di `public/assets/vendor/README.md`. Narasi memakai elemen `<audio>` bawaan, bukan Howler, karena telemetry dengarnya perlu dihitung sendiri.
+Selain itu tidak ada library. Tidak ada CDN: berkas vendor ada di repositori dan dimuat dari domain sendiri; versi dan checksum dicatat di `public/assets/vendor/README.md`. Narasi memakai elemen `<audio>` bawaan, bukan Howler, karena telemetry dengarnya perlu dihitung sendiri.
 
 Alasan library lain tidak dipakai:
 

@@ -703,7 +703,7 @@ Area permainan hanya dilayani **mendatar** di perangkat sentuh, karena semua ase
 
 ### Pustaka pihak ketiga
 
-Satu-satunya pustaka frontend adalah **Howler.js** (`public/assets/vendor/howler.min.js`, lisensi `LICENSE-howler.md`) untuk efek suara dan musik latar di area permainan. Narasi memakai elemen `<audio>` bawaan. Semua berkas dimuat dari domain sendiri; tidak ada CDN.
+Pustaka frontend: **Howler.js** (`public/assets/vendor/howler.min.js`, lisensi `LICENSE-howler.md`) untuk efek suara dan musik latar di area permainan, dan **three.js** 0.186.1 (`public/assets/vendor/three-0.186.1/`, MIT) only for the WebGL screen effects of the narrated scenes (`data-fx3d` from `screen_fx_attr()` on the intro, ending, Kenali overlay, region dialogue, and region done; `docs/06_JAVASCRIPT.md` → *WebGL screen effects*). Narasi memakai elemen `<audio>` bawaan. Semua berkas dimuat dari domain sendiri; tidak ada CDN.
 
 ---
 

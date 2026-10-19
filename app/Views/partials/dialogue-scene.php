@@ -51,7 +51,7 @@ $cinematic = ! empty($cinematic);
 <section class="story dialogue narrator<?= $cinematic ? ' cine dialogue-cine' : '' ?>" data-screen="<?= esc($screen, 'attr') ?>"
          data-narrator data-context="<?= esc($context, 'attr') ?>" data-prefix="line-" data-mode="tap"
          data-level="<?= esc($level->code, 'attr') ?>" data-level-id="<?= esc($level->id, 'attr') ?>"
-         data-first="<?= esc($first, 'attr') ?>" data-index="1" data-backdrop="stage"<?= next_assets_attr($nextAssets ?? []) ?>>
+         data-first="<?= esc($first, 'attr') ?>" data-index="1" data-backdrop="stage"<?= screen_fx_attr() ?><?= next_assets_attr($nextAssets ?? []) ?>>
   <?php if ($cinematic): ?>
     <h1 class="visually-hidden"><?= esc($region) ?></h1>
   <?php else: ?>

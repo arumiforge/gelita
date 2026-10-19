@@ -55,4 +55,13 @@ On the tablet (iPad Safari or Android Chrome) and the phone held landscape:
 - [ ] iPhone/iPad: tapping a text field does not zoom the page in.
 - [ ] Toasts: a message card appears top right, closes when tapped, and is readable above an open dialog.
 
+## 5. Story screen effects (three.js, 19 October 2026)
+
+On the oldest class tablet and one class laptop, play the opening story, one region dialog, and one Kenali:
+
+- [ ] Mist drifts, small golden sparks rise, and on "glow" lines soft light rays come from above; the text box always stays easy to read.
+- [ ] The background and the characters shift slightly when the mouse moves (laptop) or by themselves (tablet); nothing shows an empty edge.
+- [ ] Moving between slides feels smooth, not jerky. If a device stutters, the effects switch themselves to the simpler CSS look after a few seconds; if that happens on most class devices, set `gelita.screenFx = false` in `.env` (`docs/08_DEPLOYMENT.md`).
+- [ ] With "Reduce motion" on (iPad: Settings → Accessibility → Motion), none of these effects move.
+
 When done, tell Claude in the project thread what you found; the PROGRESS line for §12.3 is ticked only after this list.

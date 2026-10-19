@@ -244,6 +244,7 @@ final class RegionStoryTest extends CIUnitTestCase
         $page = $this->dialogue(['magelang' => 'open'])->show('magelang');
 
         $this->assertStringContainsString('data-backdrop="stage"', $page);
+        $this->assertMatchesRegularExpression('#data-backdrop="stage" data-fx3d="[^"]*three-0\.186\.1/three\.module\.js\?v=#', html_entity_decode($page), 'WebGL screen effects');
         $this->assertMatchesRegularExpression('/id="line-2"[^>]*data-bg="[^"]*bg-story-a\.webp"/', $page);
         $this->assertDoesNotMatchRegularExpression('/id="line-1"[^>]*data-bg=/', $page);
         $this->assertDoesNotMatchRegularExpression('/id="line-3"[^>]*data-bg=/', $page);
@@ -271,7 +272,8 @@ final class RegionStoryTest extends CIUnitTestCase
         $this->assertMatchesRegularExpression('/id="kenal-wonosobo-3"[^>]*data-bg="[^"]*bg-story-a\.webp"/', $page);
         $this->assertDoesNotMatchRegularExpression('/id="kenal-wonosobo-2"[^>]*data-bg=/', $page);
 
-        // Every overlay has the two pictures the crossfade needs, before its header
+        // Every overlay has the two pictures the crossfade needs, before its header, and the WebGL effects
+        $this->assertSame(3, preg_match_all('#data-kenal="[a-z]+"[^>]*data-fx3d="[^"]*three\.module\.js#', html_entity_decode($page)));
         foreach (array_keys(self::LEVELS) as $code) {
             $overlay = substr($page, strpos($page, 'id="kenal-' . $code . '"'));
             $overlay = substr($overlay, 0, strpos($overlay, 'class="kenal-head"'));

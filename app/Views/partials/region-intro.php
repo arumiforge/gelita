@@ -32,7 +32,7 @@ $close  = '#region-' . $code;
          aria-labelledby="kenal-<?= esc($code, 'attr') ?>-title"
          data-kenal="<?= esc($code, 'attr') ?>" data-narrator data-context="region_intro"
          data-prefix="<?= esc($prefix, 'attr') ?>" data-mode="external" data-keyboard="0" data-hash="0"
-         data-level-id="<?= esc($level['id'], 'attr') ?>">
+         data-level-id="<?= esc($level['id'], 'attr') ?>"<?= screen_fx_attr() ?>>
   <?php // Two pictures: a slide's own background (data-bg) crossfades over the region one (core/backdrop.js) ?>
   <?php if (! empty($level['background'])): ?>
     <img class="kenal-bg is-visible" src="<?= esc($level['background'], 'attr') ?>" alt="" loading="lazy">

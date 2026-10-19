@@ -81,6 +81,7 @@ Yang sengaja tidak dipakai:
 | Berkas | Isi |
 |---|---|
 | `public/assets/vendor/howler.min.js` | Howler.js 2.2.4 untuk audio permainan, dimuat `layouts/game.php`. Versi, SHA-256, lisensi, dan cara memperbarui ada di [`public/assets/vendor/README.md`](../public/assets/vendor/README.md) |
+| `public/assets/vendor/three-0.186.1/` | three.js 0.186.1 (official core build, unchanged) for the WebGL screen effects of the narrated scenes, loaded by `game/screen-fx.js` only on those scenes. Version and SHA-256 in the same README |
 | `public/assets/fonts/` | Cinzel, Plus Jakarta Sans, IBM Plex Mono (`.woff2` subset latin, lisensi OFL), dimuat lewat `@font-face` |
 | `public/assets/data/wilayah-id.json` | daftar provinsi dan kabupaten/kota Kemendagri (`RegionDirectory`) |
 | `public/assets/audio/` | musik, efek suara, dan rekaman narasi bawaan (lihat [§ 11](#11-alat-dan-sumber-pendukung)) |
@@ -193,7 +194,7 @@ Aturan folder aset:
 
 #### `public/assets/vendor/`
 
-Berisi `howler.min.js` (Howler.js 2.2.4), lisensinya `LICENSE-howler.md`, dan [`README.md`](../public/assets/vendor/README.md) dengan versi, SHA-256, dan langkah memperbarui. Library diambil dari paket rilis resmi dan di-commit apa adanya.
+Berisi `howler.min.js` (Howler.js 2.2.4), lisensinya `LICENSE-howler.md`, dan [`README.md`](../public/assets/vendor/README.md) dengan versi, SHA-256, dan langkah memperbarui. Library diambil dari paket rilis resmi dan di-commit apa adanya. Since 19 October 2026 also `three-0.186.1/` (three.js core build and `LICENSE-three.txt`) for the screen effects; the version is part of the folder name, see the README.
 
 `.gitignore` sengaja memakai pola `/vendor/` (khusus folder Composer di root). Pola `vendor/` tanpa garis miring depan juga cocok dengan `public/assets/vendor/` dan membuat berkasnya tidak ikut ter-commit.
 
