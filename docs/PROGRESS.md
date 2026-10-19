@@ -110,7 +110,7 @@ Owner request (18 October 2026): several pages get a new design from the catalog
 - [ ] Jaka on the account pages (owner, 18 October 2026): the owner's waving Jaka as one still picture (`public/assets/ui/jaka-wave.webp`, no animation frames) on `/masuk`, `/ganti-sandi`, and `/daftar/1–3`, standing on each background's path
 - [ ] Intro, curtain, and Peta Kedu polish (owner, 18 October 2026): intro without focus ring on the title or borders in the controls, character beside the caption on top, more room under the eyebrow, dark ring on the current dot, menu with Profil · Kembali ke awal · Layar penuh · Keluar, "MULAI PETUALANGAN" without arrow; map curtain lantern as a plain larger picture and the tap button pulsing as its picture; Peta Kedu city captions on the panel skin without outline, region panel on `bg.loading.{wilayah}` with status icons and colours, wider progress bar, Lanjut as tall as Kenali, small story controls top right, story bar 144 tall and the whole diorama shown
 - [ ] After merge, on a server that already has content: `php spark gelita:katalog:impor --kunci="map.kedu-diorama"` (dry run first) and `php spark gelita:story:sync` (dry run first) for the new `peta-03` line; its voice-over line changes too
-- [ ] Welcome modal and region dialogue (owner, 19 October 2026): the welcome card after sign-up opens as a modal over the intro's tap card; `/dialog/{code}` uses the intro layout (full-size HUD, Lewati under the menu button, no Peta Kedu button, full-width caption with room for both characters at its ends, "Bagian n dari N" and the dots right of the speaker's name) and shows the region's difficulty as an animated badge in the HUD left of the language control, instead of the screen head
+- [x] Welcome modal and region dialogue (owner, 19 October 2026): the welcome card after sign-up opens as a modal over the intro's tap card; `/dialog/{code}` uses the intro layout (full-size HUD, Lewati under the menu button, no Peta Kedu button, full-width caption with room for both characters at its ends, "Bagian n dari N" and the dots right of the speaker's name) and shows the region's difficulty as an animated badge in the HUD left of the language control, instead of the screen head (PR #154)
 
 ## Active branches
 
@@ -118,4 +118,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `sky/pensive-einstein-x7fcqo` | Welcome modal and region dialogue in the intro layout | PR open |
