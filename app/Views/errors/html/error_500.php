@@ -22,8 +22,8 @@ $requestId = (string) service('gelitaRequestId');
     .card { max-width: 520px; text-align: center; padding: 40px 32px; border-radius: 20px;
             background: rgba(18, 28, 46, .9); border: 1px solid rgba(217, 112, 74, .45);
             box-shadow: 0 12px 32px rgba(0, 0, 0, .4); }
-    .code { font: 700 3.5rem/1 'Cinzel', Georgia, serif; color: #D9704A; letter-spacing: .08em; }
-    h1 { font: 700 1.6rem/1.3 'Cinzel', Georgia, serif; color: #F0DFB8; margin: 16px 0 8px; }
+    .code { font: 700 3.5rem/1 'Cinzel Decorative', Georgia, serif; color: #D9704A; letter-spacing: .08em; }
+    h1 { font: 700 1.6rem/1.3 'Cinzel Decorative', Georgia, serif; color: #F0DFB8; margin: 16px 0 8px; }
     p { color: rgba(234, 240, 250, .8); margin: 0 0 16px; }
     .rid { display: inline-block; margin-bottom: 24px; padding: 6px 12px; border-radius: 8px;
            background: rgba(255, 255, 255, .08); font: .95rem 'IBM Plex Mono', ui-monospace, Consolas, monospace; }

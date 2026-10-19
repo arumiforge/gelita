@@ -20,15 +20,21 @@
  * Layout (owner, 19 October 2026), stage coordinates in dp:
  * - `.kenal-head`: a 120 dp band like the HUD. Back (leaves the overlay,
  *   replaces the old cross) at the left, the GELITA logo in the middle, the
- *   narrator controls at the right (cinematic.css);
- * - `.kenal-title`: "Mengenal {wilayah}" centred under the band, not in it;
- * - `.kenal-caption`: speaker and title share one row, with the page dots and
- *   Lanjut at the right corner. No "Wilayah n · tingkat" and no "Bagian n dari
- *   N" text; the slide's aria-label and the dots still say which part it is;
+ *   narrator controls at the right, each on the HUD's round
+ *   `ui.result-hud-control` skin with no band behind them (cinematic.css);
+ * - `.kenal-heading`: "Mengenal {wilayah}" centred under the band in gold
+ *   Cinzel Decorative letters over a gold rule with an ornament in its middle;
+ * - `.kenal-caption`: the title shares one row with the page dots and Lanjut
+ *   at the right corner; caption and avatar sit at the bottom of the stage.
+ *   No "Wilayah n · tingkat" and no "Bagian n dari N" text; the slide's
+ *   aria-label and the dots still say which part it is;
  * - `.kenal-avatar`: the speaker's round avatar (`ui.kedu-avatar` for Mbah
- *   Kedu, `ui.jaka-avatar` for Jaka, else an initial) sits on top of the
- *   caption's left end; the caption starts under its centre, so the avatar's
- *   circle is the visible left edge. Never an animation frame.
+ *   Kedu, `ui.jaka-avatar` for Jaka, both in a gold ring, else an initial) on
+ *   the caption's left end, with the speaker's name on a navy nameplate over
+ *   the ring's lower part. Never an animation frame;
+ * - Back and the previous-slide Kembali sit on the owner's navy plate, Lanjut
+ *   and the final button on the gold plate (`assets/ui/kenal-plate-*.webp`,
+ *   Kenali only; other pages keep `ui.result-button-primary`).
  *
  * @var array<string, mixed>       $level  baris levelOverview() + `curtain`
  * @var list<array<string, mixed>> $slides dialogues region_intro wilayah itu
@@ -42,12 +48,25 @@ $open    = $level['status'] !== 'locked';
 $close   = '#region-' . $code;
 $logo    = media_key_src('ui.logo-hero') ?? media_key_src('ui.logo');
 $avatars = ['mbah_kedu' => media_key_src('ui.kedu-avatar'), 'jaka' => media_key_src('ui.jaka-avatar')];
+// Skins as custom properties (absolute URLs, so the minified mirror and the asset package keep them)
+$skins = [
+    'kenal-plate-gold' => game_asset_url('ui/kenal-plate-gold.webp'),
+    'kenal-plate-navy' => game_asset_url('ui/kenal-plate-navy.webp'),
+    'skin-hud'         => media_key_src('ui.result-hud-control'),
+];
+$style = [];
+
+foreach ($skins as $name => $src) {
+    if ($src !== null) {
+        $style[] = '--' . $name . ': url("' . str_replace(['"', '\\', "\n"], ['%22', '%5C', ''], $src) . '")';
+    }
+}
 ?>
 <section class="kenal narrator" id="kenal-<?= esc($code, 'attr') ?>" role="dialog" aria-modal="true"
          aria-labelledby="kenal-<?= esc($code, 'attr') ?>-title"
          data-kenal="<?= esc($code, 'attr') ?>" data-narrator data-context="region_intro"
          data-prefix="<?= esc($prefix, 'attr') ?>" data-mode="external" data-keyboard="0" data-hash="0"
-         data-level-id="<?= esc($level['id'], 'attr') ?>"<?= screen_fx_attr() ?>>
+         data-level-id="<?= esc($level['id'], 'attr') ?>" style="<?= esc(implode('; ', $style), 'attr') ?>"<?= screen_fx_attr() ?>>
   <?php // Two pictures: a slide's own background (data-bg) crossfades over the region one (core/backdrop.js) ?>
   <?php if (! empty($level['background'])): ?>
     <img class="kenal-bg is-visible" src="<?= esc($level['background'], 'attr') ?>" alt="" loading="lazy">
@@ -63,7 +82,15 @@ $avatars = ['mbah_kedu' => media_key_src('ui.kedu-avatar'), 'jaka' => media_key_
       <span class="hud-brand kenal-logo">GELITA</span>
     <?php endif ?>
   </header>
-  <h2 class="kenal-title" id="kenal-<?= esc($code, 'attr') ?>-title"><?= esc(lang('Game.kenalTitle', [$region])) ?></h2>
+  <div class="kenal-heading">
+    <h2 class="kenal-title" id="kenal-<?= esc($code, 'attr') ?>-title"><?= esc(lang('Game.kenalTitle', [$region])) ?></h2>
+    <span class="kenal-rule" aria-hidden="true">
+      <svg class="kenal-ornament" viewBox="0 0 64 30" focusable="false">
+        <path class="kenal-ornament-fill" d="M32 1C36.5 7 37.5 13 32 20 26.5 13 27.5 7 32 1ZM30.5 19.5C24 18 19 13 17.5 6.5 23.5 8.5 28.5 12.5 30.5 19.5ZM33.5 19.5C40 18 45 13 46.5 6.5 40.5 8.5 35.5 12.5 33.5 19.5ZM19 20.5Q32 26 45 20.5 32 23 19 20.5ZM32 23.5 34.5 26.5 32 29.5 29.5 26.5Z"/>
+        <path class="kenal-ornament-line" d="M18 21C11 22 7 17 10.5 13.5 13 11 16.5 13 15 15.5M46 21C53 22 57 17 53.5 13.5 51 11 47.5 13 49 15.5"/>
+      </svg>
+    </span>
+  </div>
 
   <div class="narrator-fx" data-narrator-fx aria-hidden="true"></div>
 
@@ -86,12 +113,10 @@ $avatars = ['mbah_kedu' => media_key_src('ui.kedu-avatar'), 'jaka' => media_key_
           <?php if ($character !== 'narator'): ?>
             <div class="kenal-avatar">
               <?= component('partials/kedu-portrait', ['src' => $avatars[$character] ?? null, 'name' => lang_or('Game.char_' . $character, $character)]) ?>
+              <span class="kenal-nameplate"><?= esc(lang_or('Game.char_' . $character, $character)) ?></span>
             </div>
           <?php endif ?>
           <div class="cine-caption-head">
-            <?php if ($character !== 'narator'): ?>
-              <span class="cine-speaker"><?= esc(lang_or('Game.char_' . $character, $character)) ?></span>
-            <?php endif ?>
             <?php if ($title !== ''): ?>
               <h3 class="cine-title"><?= esc($title) ?></h3>
             <?php endif ?>

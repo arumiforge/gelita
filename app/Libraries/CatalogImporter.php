@@ -25,12 +25,12 @@ use RuntimeException;
  *   badges, pins, lanterns, avatars, character frames, challenge images)
  *   are stored under the same key.
  * - The two flag icons `icon.language-id` / `icon.language-en` become the
- *   language switch icons `ui.lang.id`/`.en` (ICON_SLOTS), and the Jaka bust
- *   `reference.03` and the Mbah Kedu avatar `reference.02` become
- *   `ui.jaka-avatar` and `ui.kedu-avatar` (REFERENCE_SLOTS); other vector
- *   icons and the other `reference.*` entries are not game slots.
+ *   language switch icons `ui.lang.id`/`.en` (ICON_SLOTS), and the Mbah Kedu
+ *   avatar `reference.02` becomes `ui.kedu-avatar` (REFERENCE_SLOTS); other
+ *   vector icons and the other `reference.*` entries are not game slots.
  * - A few pictures live only in a catalogue mockup package, not in data.json
- *   (MOCKUP_FILES): the Peta Kedu diorama becomes `map.kedu-diorama`.
+ *   (MOCKUP_FILES): the Peta Kedu diorama becomes `map.kedu-diorama`, and the
+ *   owner's framed Jaka avatar (Kenali package) becomes `ui.jaka-avatar`.
  * - Some entries also fill a second slot (COPY_SLOTS): `avatar.2` stays an
  *   avatar and is copied to the result screen medal `ui.result-medal`.
  * - App icons are converted to PNG, because the `app.*` slots take PNG only;
@@ -152,14 +152,13 @@ final class CatalogImporter
     ];
 
     /**
-     * Catalogue reference entries that fill a game slot: the Jaka bust avatar
-     * in the Peta Kedu story bar (owner request 18 October 2026, the picture
-     * mockup candidate 04 uses there) and the Mbah Kedu avatar in the Kenali
-     * overlay (owner request 19 October 2026).
+     * Catalogue reference entries that fill a game slot: the Mbah Kedu avatar
+     * in the Kenali overlay (owner request 19 October 2026). The Jaka bust
+     * `reference.03` filled `ui.jaka-avatar` until the owner's framed Jaka
+     * replaced it (MOCKUP_FILES, owner request 19 October 2026).
      */
     public const REFERENCE_SLOTS = [
         'reference.02' => 'ui.kedu-avatar',
-        'reference.03' => 'ui.jaka-avatar',
     ];
 
     /**
@@ -175,10 +174,13 @@ final class CatalogImporter
     /**
      * Pictures that exist only in a catalogue mockup package (path relative to
      * the catalogue root) → slot (owner decision 18 October 2026: install the
-     * Peta Kedu diorama from the mockup until the catalogue lists it).
+     * Peta Kedu diorama from the mockup until the catalogue lists it). The
+     * owner's Jaka avatar in a gold ring like Mbah Kedu's (19 October 2026)
+     * is used wherever Jaka's avatar shows: Peta Kedu's story bar and Kenali.
      */
     public const MOCKUP_FILES = [
         'mockup/gambar-mockup/peta-kedu/revisi-04/aset/diorama.kedu-tiga-wilayah.webp' => 'map.kedu-diorama',
+        'mockup/gambar-mockup/kenali/aset/ui.jaka-avatar.webp'                       => 'ui.jaka-avatar',
     ];
 
     /** Lossy WebP quality for every stored image except the PNG app icons. */

@@ -17,9 +17,14 @@ Diambil dari paket rilis resmi di registry npm (`howler@2.2.4`
 sha256sum public/assets/vendor/*.js
 ```
 
-Font lokal ada di `public/assets/fonts/` (Cinzel, Plus Jakarta Sans,
+Font lokal ada di `public/assets/fonts/` (Plus Jakarta Sans,
 IBM Plex Mono — subset latin `.woff2` dari paket Fontsource 5.3.0, lisensi SIL OFL 1.1 disertakan);
 dimuat `base.css` lewat `@font-face` tanpa Google Fonts.
+
+The display font is Cinzel Decorative 1.002 (Regular 400, Bold 700, Black
+900; owner's TTF files, 19 October 2026), replacing Cinzel. The TTFs were
+converted to `.woff2` with fontTools without subsetting, so the files are the
+unmodified fonts in another container; licence in `OFL-CinzelDecorative.txt`.
 
 ## Memperbarui versi
 

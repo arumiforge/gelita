@@ -36,8 +36,10 @@ One concept, one word, in every layer. "UI (id)" is what users read; "Code (en)"
 | kartu misi | `mission card`, `brief` | `game/mission-brief`, `.mission-card`, `.mission-seal` |
 | tombol utama | `main button` | `.btn-primary` on `#stage`, skin `ui.result-button-primary` |
 | diorama Peta Kedu | `diorama` | slot `map.kedu-diorama`; `Config\Gelita::$mapDiorama` |
-| avatar Jaka (potret cerita Peta Kedu) | `Jaka avatar`, `portrait` | slot `ui.jaka-avatar` from catalogue `reference.03`; `partials/kedu-portrait` |
+| avatar Jaka (potret cerita Peta Kedu, layar Kenali) | `Jaka avatar`, `portrait` | slot `ui.jaka-avatar`, the owner's framed picture `gelita-katalog/mockup/gambar-mockup/kenali/aset/` (since 19 Oct 2026; was `reference.03`); `partials/kedu-portrait` |
 | avatar Mbah Kedu (layar Kenali) | `Mbah Kedu avatar` | slot `ui.kedu-avatar` from catalogue `reference.02`; `.kenal-avatar` (round, on the caption's left end) |
+| papan nama (layar Kenali) | `nameplate` | `.kenal-nameplate` on the navy plate, over the avatar ring's lower part |
+| papan tombol emas / biru (layar Kenali) | `gold plate`, `navy plate` | `public/assets/ui/kenal-plate-{gold,navy}.webp`; Lanjut gold, Kembali navy; Kenali only |
 | Wilayah dipilih (panel) | `region panel`, `selected region` | `.kedu-panel`, `data-region-select` |
 | tingkat kesulitan (wilayah) | `difficulty`, `difficulty badge` | stored `mudah`, `sedang`, `sulit` in `levels.difficulty`; `.region-difficulty` (`partials/region-difficulty`) in the HUD section `hudBadge` on `/dialog/{code}` (body class `is-region-dialogue`) |
 | kartu sambutan (setelah daftar) | `welcome card`, `welcome modal` | flash `welcome`; `.welcome-card`, opened as a modal by `game/intro.js` |

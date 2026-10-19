@@ -186,7 +186,7 @@ body.is-auth-art .scene::after { background: linear-gradient(to right, transpare
   margin-left: .875rem;
   padding-left: 1.375rem;
   color: var(--gold-300);
-  /* Mixed-case serif as in the mockup; Cinzel has capitals only */
+  /* Mixed-case serif as in the mockup; Cinzel Decorative has capitals only */
   font-family: Georgia, 'Times New Roman', serif;
   font-size: 1.8125rem;
   font-weight: 700;

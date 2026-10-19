@@ -270,7 +270,7 @@ class Gelita extends BaseConfig
         'ui.result-star'        => [57, 57],
         'ui.result-hud-control' => [68, 68],
         'map.kedu-diorama'      => [853, 427],  // Peta Kedu, the whole 2:1 picture in the map frame (since 18 Oct 2026)
-        'ui.jaka-avatar'        => [120, 120],  // Peta Kedu story bar portrait
+        'ui.jaka-avatar'        => [232, 232],  // Kenali overlay avatar; 120 × 120 in the Peta Kedu story bar
         'ui.kedu-avatar'        => [232, 232],  // Kenali overlay: round avatar on the caption's left end
     ];
 
