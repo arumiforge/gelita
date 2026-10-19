@@ -136,4 +136,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `pbb/sharp-edison-tnww8e` | Kenali follow-up: plates, nameplate, gold title, display font, framed Jaka | In review |
+| `pbb/sharp-edison-tnww8e` | Kenali follow-up: plates, nameplate, gold title, display font, framed Jaka | PR #171 in review |
