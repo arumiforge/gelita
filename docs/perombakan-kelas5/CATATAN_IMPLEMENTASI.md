@@ -2017,3 +2017,46 @@ Owner request: minify the pages and put "Mr. F" in the figlet font ANSI Shadow a
 - **`data-keep-space`.** The only `white-space: pre-wrap` element that is not one of the kept tags is the full-text `<p>` in `.cell-more` (AdminTable); it now carries the marker. A marked element must not contain another element of the same tag.
 - **Saving.** Small, about 2–6 % on the game pages: the views are already compact.
 - **Checks.** `HtmlMinifierTest`. Real pages (`/`, `/masuk`, `/profil`, `/pustaka`, `/admin/login`) rendered from the grade-5 test world with the switch off and on, then compared in Chromium at 1280 × 720: identical screenshots, `innerText`, and element boxes, no page errors. `vendor/bin/phpunit --no-coverage`: 762 tests pass.
+
+## Minified JS/CSS for browsers and packages (19 October 2026, branch `pbb/admiring-archimedes-sa2m0n`)
+
+Owner questions after PR #160:
+- Is the in-house approach good enough without a library?
+- Can all JS/CSS be minified too, including in package mode?
+- Can only what the browser gets be minified, with the source files left as they are?
+
+Owner decision: use a PHP library for JS/CSS. HTML keeps the in-house `HtmlMinifier`; a library would add only a few percent, and nginx already gzips.
+
+- **Library: `wikimedia/minify` 2.12 (Apache-2.0), not `matthiasmullie/minify`.**
+  - `matthiasmullie/minify` 1.3.75 was the planned choice. A syntax-tree comparison of all 58 JS files (acorn, original against minified) found 2 changed files: it drops the spaces next to `${…}` inside a nested template literal. `admin/bank-import.js` would show "12soal untuk 3tantangan", and the error text in `core/package.js` changes the same way.
+  - `tedivm/jshrink` 1.8.1 changed 4 files.
+  - `wikimedia/minify` (MediaWiki's tokenizer-based minifier) changed none and gives the smallest output. Its dependencies are `pear/net_url2`, `ext-fileinfo`, and `ext-mbstring`. Production has PHP only, so a Node-based minifier was not an option.
+  - The dependency is justified in `composer.json` → `gelita-dependency-notes`.
+- **Mirror, not in place.**
+  - `gelita:aset:minify` (`AssetMinifier`) writes `public/assets/min/{version}/{js,css,fonts}/…`, keeping names and folders so relative imports and `url('../fonts/…')` still resolve. Fonts are copied so the minified CSS finds them.
+  - `{version}` is the first 12 hex digits of the sha256 over all minified files, so imported modules (no `?v=`) also get new URLs per build.
+  - Everything happens inside `public/assets/min/`, the only new folder `www-data` must own. A build is written to a temporary folder, then becomes current with one rename of `sources.json`. The previous build is kept for open pages; older ones are deleted.
+  - The sources in git are never written (checked with `git status` after a run).
+- **Freshness guard, all or nothing.**
+  - The helpers use the mirror only while every source still has the mtime and size recorded at build time and the set of files is unchanged.
+  - One stale file switches every URL back to the originals. Checking files one by one would let a new `game.js` import old modules.
+  - Cost: about 75 `stat()` calls per request, once (memoised in the shared `assetMinifier` service).
+- **Package mode.**
+  - `AssetPackageBuilder::start()` refreshes the mirror, and `codeTasks()` takes JS/CSS from it under the same keys. `runTask()`, the manifest hashes, `core/package.js`, and `sw.js` are unchanged.
+  - The first package with minification gets a new `code_version`, so devices download the code group once more.
+  - A failed run only adds the warning `minify_failed`, and the package keeps the original files.
+- **Not minified:** `sw.js`, `sw-kosong.js`, `offline.html`, vendor files, media.
+- **Off in tests** (`Config\Gelita::$minifyAssets` is false under `ENVIRONMENT === 'testing'`), so a mirror on a developer machine never changes the URLs other tests expect. `AssetMinifierTest` switches it on for its own temporary `public/`.
+- **The JS tokenizer is lenient.** It does not report broken input; it passes it through. Correctness therefore rests on the syntax-tree check:
+  - `tools/qa/minify-check.mjs` checks every real file;
+  - `AssetMinifierTest` runs it whenever Node and acorn are present (in this cloud environment and on developer machines);
+  - the server itself cannot run it (no Node).
+- **Deploy.** A new step 9 runs `gelita:aset:minify` after `cache:clear`. A failure only warns, so a deploy never stays in maintenance because of it. `docs/08_DEPLOYMENT.md` → *Minified JS/CSS* covers permissions on existing servers.
+- **Sizes (measured).**
+  - JS: 380 KB → 221 KB.
+  - CSS: 329 KB → 245 KB.
+  - Gzipped per file, as nginx sends them: 221 KB → 137 KB.
+- **Checks.**
+  - `AssetMinifierTest` (8 tests, including the syntax-tree comparison of all real files) and the full suite (770 tests) pass.
+  - Real pages (`/`, `/masuk`, `/intro`, `/profil`, `/pustaka`, `/admin/login`) were rendered from the grade-5 test world with the switch off and on in Chromium at 1280 × 720. Screenshots, text, element boxes, and loaded fonts are identical, and both sides load the same set of files. With the switch on, code comes only from `assets/min/{version}/`. No page or console errors.
+  - The password eye toggle on `/masuk` works with the minified JS.

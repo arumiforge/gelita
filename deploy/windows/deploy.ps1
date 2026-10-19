@@ -58,6 +58,13 @@ try {
     Langkah 'Daftar sekolah resmi (NPSN; hanya baris yang berubah)' { & $c.Php $spark gelita:schools:import }
     Langkah 'Bersihkan cache' { & $c.Php $spark cache:clear }
 
+    # Gagal = peramban tetap mendapat berkas asli, jadi deploy jalan terus
+    try {
+        Langkah 'Salinan ringkas JS/CSS' { & $c.Php $spark gelita:aset:minify }
+    } catch {
+        Write-Warning "Salinan ringkas gagal dibuat; situs tetap jalan dengan berkas asli. $_"
+    }
+
     Write-Output '-> Naikkan versi aset'
     $envFile = Join-Path $c.App '.env'
     $versi   = [DateTimeOffset]::UtcNow.ToUnixTimeSeconds()

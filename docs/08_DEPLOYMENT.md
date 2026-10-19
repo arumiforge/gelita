@@ -240,16 +240,17 @@ Pemisahan hak ini berarti bila aplikasi diretas lewat SQL injection, skema datab
 | Pengguna | Memiliki | Menjalankan |
 |---|---|---|
 | `deploy` | kode (`git pull`, `composer`), `.env`, `/home/deploy/.gelita/`, `/var/backups/gelita/` | `deploy.sh`, `backup.sh` (cron) |
-| `www-data` | `writable/`, `public/assets/uploads/` | PHP-FPM, Nginx, **semua `php spark`**, cron retensi |
+| `www-data` | `writable/`, `public/assets/uploads/`, `public/assets/min/` | PHP-FPM, Nginx, **semua `php spark`**, cron retensi |
 
 ```bash
 sudo adduser --disabled-password --gecos '' deploy
 sudo usermod -aG www-data deploy          # wajib — lihat butir 2 di bawah
 
 cd /var/www/gelita
+sudo mkdir -p public/assets/min           # salinan ringkas JS/CSS (gelita:aset:minify), tidak ada di git
 sudo chown -R deploy:www-data .
-sudo chown -R www-data:www-data writable public/assets/uploads
-sudo find writable public/assets/uploads -type d -exec chmod 2775 {} +
+sudo chown -R www-data:www-data writable public/assets/uploads public/assets/min
+sudo find writable public/assets/uploads public/assets/min -type d -exec chmod 2775 {} +
 sudo chown deploy:www-data .env && sudo chmod 640 .env
 ```
 
@@ -554,7 +555,7 @@ Selama berkas ada, semua halaman dan API menjawab **503** dengan pesan dwibahasa
 
 | Berkas | Isi |
 |---|---|
-| `deploy/linux/deploy.sh` | pembaruan kode: cek kelas aktif → backup → pemeliharaan → pull → composer → migrate (DSN) → daftar sekolah → cache → `assetVersion` → reload FPM → verifikasi → buka |
+| `deploy/linux/deploy.sh` | pembaruan kode: cek kelas aktif → backup → pemeliharaan → pull → composer → migrate (DSN) → daftar sekolah → cache → salinan ringkas JS/CSS → `assetVersion` → reload FPM → verifikasi → buka |
 | `deploy/linux/backup.sh` | backup database (tanpa isi `ci_sessions`), unggahan, `.env`; simpan 30 hari; salinan kedua |
 | `deploy/linux/nginx/gelita-http.conf`, `gelita-https.conf` | konfigurasi Nginx Jalur L |
 | `deploy/windows/deploy.ps1`, `backup.ps1`, `retensi.ps1` | padanan PowerShell (kompatibel Windows PowerShell 5.1; **hanya ASCII**) |
@@ -854,10 +855,11 @@ Langkah skrip:
 | 6 | Migration | `php spark migrate` sebagai `www-data` dengan `database_default_DSN` dari `migrate.dsn` | `php spark migrate` dengan `$env:database_default_DSN`, dihapus di `finally` |
 | 7 | Daftar sekolah resmi | `php spark gelita:schools:import` (hanya baris yang berubah) | sama |
 | 8 | Cache | `php spark cache:clear` | sama |
-| 9 | Versi aset | `sed -i` menaikkan `gelita.assetVersion` di `.env`, lalu `chgrp www-data .env && chmod 640 .env` | `[IO.File]::WriteAllText` (UTF-8 tanpa BOM) |
-| 10 | Reload PHP | `sudo systemctl reload php8.3-fpm` (`FPM` dapat diganti di `ops.conf`) | — (opcache memeriksa stempel waktu) |
-| 11 | Verifikasi konten | `php spark gelita:content:verify` | sama |
-| 12 | Buka kembali | hapus `pemeliharaan.flag` | sama |
+| 9 | Salinan ringkas JS/CSS | `php spark gelita:aset:minify` (see [Minified JS/CSS](#minified-jscss)); a failure only prints a warning, the site keeps the original files | same, inside `try/catch` with `Write-Warning` |
+| 10 | Versi aset | `sed -i` menaikkan `gelita.assetVersion` di `.env`, lalu `chgrp www-data .env && chmod 640 .env` | `[IO.File]::WriteAllText` (UTF-8 tanpa BOM) |
+| 11 | Reload PHP | `sudo systemctl reload php8.3-fpm` (`FPM` dapat diganti di `ops.conf`) | — (opcache memeriksa stempel waktu) |
+| 12 | Verifikasi konten | `php spark gelita:content:verify` | sama |
+| 13 | Buka kembali | hapus `pemeliharaan.flag` | sama |
 
 Semua `php spark` di `deploy.sh` berjalan sebagai `www-data` (fungsi `spark`). Bila langkah apa pun gagal, termasuk verifikasi konten, situs **tetap** dalam mode pemeliharaan dan skrip mencetak "DEPLOY GAGAL — situs tetap dalam mode pemeliharaan": lebih baik 503 yang jelas daripada kelas yang membuka konten rusak. Perbaiki penyebabnya, lalu hapus berkas penanda. Verifikasi di sini tanpa `--siap-penelitian`, jadi gambar contoh tidak menghalangi pembaruan.
 
@@ -966,6 +968,17 @@ Aset hanya punya tiga jalan masuk ke server: **commit ke repositori** (folder as
 
 **Automatic file version (18 October 2026).** While package mode is off, `?v=` is `{gelita.assetVersion}.{fingerprint}`, where the fingerprint comes from the file's modification time and size (`asset_file_version()`). A changed CSS/JS file therefore gets a new URL even when the server was updated without `deploy.sh`/`deploy.ps1` (git pull, copied files) and `assetVersion` stayed the same, so there is no need to build a package and turn it off again just to push new code to browsers. Modules imported from the entry keep relying on revalidation (`no-cache` in the nginx config above). With package mode on, code still comes from the package snapshot and needs **Bangun ulang paket**.
 
+#### Minified JS/CSS
+
+*(New, English; owner, 19 October 2026.)* Browsers get minified copies of the code, while the files in git stay readable and unminified.
+
+- **What.** `php spark gelita:aset:minify` (`App\Libraries\AssetMinifier`, library `wikimedia/minify`) writes every `public/assets/js/**/*.js` and `public/assets/css/*.css` in minified form, plus a plain copy of `public/assets/fonts/*.woff2`, to `public/assets/min/{version}/` with the same names and folders. Relative module imports and the CSS `url('../fonts/…')` therefore keep working. `{version}` is a hash of the minified bytes, so every build also gives the imported modules new URLs. `public/assets/min/sources.json` names the current build. The previous build is kept for pages that are still open; older ones are removed. JavaScript loses only comments and whitespace (no renaming), CSS likewise. Measured on 19 October 2026: 709 KB of JS/CSS becomes 466 KB, and what nginx sends gzipped per file drops from about 221 KB to 137 KB.
+- **When it is used.** `asset_url_versioned()` and `game_asset_url()` point to `assets/min/{version}/…` only while the mirror is **fresh**: every source still has the modification time and size recorded at build time, and no source was added or removed. One changed file without a new run (a `git pull` by hand, a copied file) makes the whole site fall back to the original files until the command runs again. A missed run is slower, never broken. Switch: `Config\Gelita::$minifyAssets` (on; off in tests).
+- **Package mode.** **Bangun ulang paket** / `gelita:paket:bangun` refreshes the mirror first and puts the minified bytes in `assets/k/{code_version}/` under the usual keys, so the manifest hashes and the device-side sha256 check describe the minified files. The first package built with minification gets a new `code_version`, so devices download the code group (about 0.5 MB) once more. If minifying fails, the package carries the original files and the build reports the warning `minify_failed`.
+- **Not minified:** `public/sw.js`, `sw-kosong.js`, `offline.html`, `public/assets/vendor/` (Howler is already minified), images, and audio.
+- **Permissions (Path L).** `public/assets/min/` must belong to `www-data` (see the `chown` lines in the server setup above). On a server installed before this change: `sudo mkdir -p public/assets/min && sudo chown www-data:www-data public/assets/min && sudo chmod 2775 public/assets/min`, then `sudo -u www-data php spark gelita:aset:minify`.
+- **Checks.** `php spark gelita:aset:minify --periksa` reports whether the mirror is fresh (exit code 1 when it is not). On a developer machine, `node tools/qa/minify-check.mjs` compares the syntax trees of every source file and its minified copy. `AssetMinifierTest` runs the same comparison whenever Node and acorn are available.
+
 Tidak semua URL ber-`?v=`:
 
 - **Modul JavaScript** di-`import` relatif dari entry (`import … from '../core/dom.js'`). URL-nya tidak mewarisi query string entry.
@@ -1017,7 +1030,7 @@ curl -s "$U/api/paket/aktif"                                                    
 
 - **HTTPS is required** for the service worker and for the sha256 check (`crypto.subtle`); `http://localhost` works for development only.
 - **`sw.js` and `sw-kosong.js` must never be cached long.** The Nginx config already gives `.js` without `?v=` the value `no-cache`; browsers also re-check the worker script on navigations. Do not put either file behind `immutable` or a CDN.
-- **Code updates while package mode is on.** Pages then load CSS and JavaScript from the package copy `assets/k/{code_version}/`, a snapshot taken when the package was built. After a deploy that changes game code, press **Bangun ulang paket** on Rilis → Paket aset and publish it (or `php spark gelita:paket:bangun` plus a release that names the package), or students keep running the old code. Media files are content-addressed, so devices download only the changed code files. The deploy scripts do not do this yet (plan §5.4, §6.3).
+- **Code updates while package mode is on.** Pages then load CSS and JavaScript from the package copy `assets/k/{code_version}/`, a snapshot taken when the package was built (minified, see [Minified JS/CSS](#minified-jscss)). After a deploy that changes game code, press **Bangun ulang paket** on Rilis → Paket aset and publish it (or `php spark gelita:paket:bangun` plus a release that names the package), or students keep running the old code. Media files are content-addressed, so devices download only the changed code files. The deploy scripts do not do this yet (plan §5.4, §6.3).
 - **Package copy missing on disk** (for example a restore without `public/assets/k/`): pages fall back to the normal `assets/…?v=` URLs for code files that are not on disk, so the game still loads; run `php spark gelita:paket:periksa` and rebuild.
 - `X-Gelita-Paket: {package_code}` is sent on API responses while package mode is on (no student data).
 

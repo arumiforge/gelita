@@ -85,6 +85,8 @@ Vagrantfile
 # media, per-version code copies, manifests, and the URL maps / build state.
 /public/assets/p/
 /public/assets/k/
+# Minified JS/CSS mirror (gelita:aset:minify); the sources stay unminified
+/public/assets/min/
 /public/paket/
 /writable/paket/
 

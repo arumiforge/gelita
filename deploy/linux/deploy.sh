@@ -50,6 +50,9 @@ spark gelita:schools:import
 echo "→ Bersihkan cache"
 spark cache:clear
 
+echo "→ Salinan ringkas JS/CSS (gagal = peramban tetap mendapat berkas asli)"
+spark gelita:aset:minify || echo "  PERINGATAN: salinan ringkas gagal dibuat; situs tetap jalan dengan berkas asli. Periksa izin public/assets/min/ (docs/08_DEPLOYMENT.md)."
+
 echo "→ Naikkan versi aset"
 sed -i "s/^gelita.assetVersion.*/gelita.assetVersion = '$(date +%s)'/" .env
 chgrp www-data .env && chmod 640 .env      # sed -i membuat berkas baru; jaga grupnya

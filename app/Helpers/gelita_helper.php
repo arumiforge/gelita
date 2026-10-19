@@ -95,6 +95,23 @@ if (! function_exists('asset_package_path')) {
     }
 }
 
+if (! function_exists('asset_min_path')) {
+    /**
+     * Path of the minified copy of a CSS/JS/font file relative to
+     * public/assets/ (`min/{version}/js/game.js`), or null when minification is off or
+     * the mirror is not fresh (App\Libraries\AssetMinifier). The source
+     * files themselves are never minified.
+     */
+    function asset_min_path(string $path): ?string
+    {
+        try {
+            return service('assetMinifier')->path($path);
+        } catch (Throwable) {
+            return null;
+        }
+    }
+}
+
 if (! function_exists('asset_file_version')) {
     /**
      * `?v=` value of a CSS/JS entry or vendor file outside an asset package:
@@ -118,7 +135,8 @@ if (! function_exists('asset_url_versioned')) {
     /**
      * URL of a CSS/JS entry or vendor file. With an active asset package it is
      * the package copy (`assets/k/…`, immutable, served by the service worker);
-     * otherwise base_url('assets/…') + ?v=asset_file_version() for cache-busting.
+     * otherwise base_url('assets/…') + ?v=asset_file_version() for cache-busting,
+     * pointing at the minified mirror (`assets/min/…`) while it is fresh.
      */
     function asset_url_versioned(string $path): string
     {
@@ -128,7 +146,9 @@ if (! function_exists('asset_url_versioned')) {
             return base_url($packaged);
         }
 
-        return base_url('assets/' . ltrim($path, '/')) . '?v=' . rawurlencode(asset_file_version($path));
+        $served = asset_min_path($path) ?? ltrim($path, '/');
+
+        return base_url('assets/' . $served) . '?v=' . rawurlencode(asset_file_version($served));
     }
 }
 
@@ -136,11 +156,12 @@ if (! function_exists('game_asset_url')) {
     /**
      * URL of a game file that CSS refers to without `?v=` (fonts): the package
      * copy when a package is active, so a `<link rel="preload">` matches the
-     * URL the stylesheet asks for; otherwise base_url('assets/…').
+     * URL the stylesheet asks for; otherwise base_url('assets/…'), in the
+     * minified mirror for fonts while the minified CSS is served.
      */
     function game_asset_url(string $path): string
     {
-        return base_url(asset_package_path($path) ?? 'assets/' . ltrim($path, '/'));
+        return base_url(asset_package_path($path) ?? 'assets/' . (asset_min_path($path) ?? ltrim($path, '/')));
     }
 }
 

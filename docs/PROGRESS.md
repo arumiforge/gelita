@@ -119,3 +119,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `pbb/admiring-archimedes-sa2m0n` | Owner request (19 October 2026): minified JS/CSS for browsers and asset packages (`gelita:aset:minify`), sources unminified | PR open |
