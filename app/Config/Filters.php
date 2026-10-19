@@ -6,6 +6,7 @@ use App\Filters\ApiSessionFilter;
 use App\Filters\ClientHintsFilter;
 use App\Filters\DebugToolbar;
 use App\Filters\GameSessionFilter;
+use App\Filters\HtmlMinifyFilter;
 use App\Filters\JsonResponseFilter;
 use App\Filters\LocaleFilter;
 use App\Filters\PackageHeaderFilter;
@@ -47,6 +48,7 @@ class Filters extends BaseFilters
         'clientHints'     => ClientHintsFilter::class,
         'screenView'      => ScreenViewFilter::class,
         'packageHeader'   => PackageHeaderFilter::class,
+        'minifyHtml'      => HtmlMinifyFilter::class,
     ];
 
     /**
@@ -73,6 +75,8 @@ class Filters extends BaseFilters
         ],
         'after' => [
             'secureheaders',
+            // Full HTML pages only; see HtmlMinifyFilter
+            'minifyHtml',
         ],
     ];
 
