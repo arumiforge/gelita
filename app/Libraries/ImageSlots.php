@@ -541,6 +541,17 @@ final class ImageSlots
             'priority'    => 'opsional',
             'tips'        => 'Tampil dalam lingkaran 120 dp, jadi wajah harus terbaca kecil. Bukan gambar gerak: pita cerita sengaja tidak memakai gambar pose Jaka.',
         ],
+        'ui.kedu-avatar' => [
+            'group'       => 'character',
+            'label'       => 'Avatar Mbah Kedu (potret layar Kenali)',
+            'content'     => 'Potret Mbah Kedu sesuai Katalog Aset reference.02: kakek ramah dengan ikat kepala batik cokelat, kumis dan janggut putih, rompi batik cokelat di atas kemeja krem, wajah tersenyum. Bingkai emas bulat sudah ada di gambar; bagian luar bingkai transparan, tanpa tulisan.',
+            'screens'     => [['Layar Mengenal wilayah, di ujung kiri kotak teks (tombol Kenali di Peta Kedu)', '/peta']],
+            'format'      => 'WebP atau PNG berlatar transparan, persegi, paling besar ± 120 KB',
+            'transparent' => true,
+            'fallback'    => 'Huruf pertama nama Mbah Kedu dalam lingkaran emas',
+            'priority'    => 'opsional',
+            'tips'        => 'Tampil bulat 232 dp, tepat di atas ujung kiri kotak teks, jadi bingkainya sudah termasuk gambar. Bukan gambar gerak: layar Kenali sengaja tidak memakai gambar pose Mbah Kedu.',
+        ],
         'char.kedu.*' => [
             'group'       => 'character',
             'label'       => 'Mbah Kedu · pose {pose} · gambar {frame}',

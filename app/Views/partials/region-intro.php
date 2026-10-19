@@ -17,16 +17,31 @@
  * Wilayah terkunci boleh dikenali. Slide akhir: "Masuk ke {wilayah}" (tirai
  * wilayah, ke `entry`) bila wilayah terbuka, selain itu "Tutup".
  *
+ * Layout (owner, 19 October 2026), stage coordinates in dp:
+ * - `.kenal-head`: a 120 dp band like the HUD. Back (leaves the overlay,
+ *   replaces the old cross) at the left, the GELITA logo in the middle, the
+ *   narrator controls at the right (cinematic.css);
+ * - `.kenal-title`: "Mengenal {wilayah}" centred under the band, not in it;
+ * - `.kenal-caption`: speaker and title share one row, with the page dots and
+ *   Lanjut at the right corner. No "Wilayah n · tingkat" and no "Bagian n dari
+ *   N" text; the slide's aria-label and the dots still say which part it is;
+ * - `.kenal-avatar`: the speaker's round avatar (`ui.kedu-avatar` for Mbah
+ *   Kedu, `ui.jaka-avatar` for Jaka, else an initial) sits on top of the
+ *   caption's left end; the caption starts under its centre, so the avatar's
+ *   circle is the visible left edge. Never an animation frame.
+ *
  * @var array<string, mixed>       $level  baris levelOverview() + `curtain`
  * @var list<array<string, mixed>> $slides dialogues region_intro wilayah itu
  * @var string                     $locale
  */
-$code   = (string) $level['code'];
-$region = (string) $level['name'];
-$prefix = 'kenal-' . $code . '-';
-$total  = count($slides);
-$open   = $level['status'] !== 'locked';
-$close  = '#region-' . $code;
+$code    = (string) $level['code'];
+$region  = (string) $level['name'];
+$prefix  = 'kenal-' . $code . '-';
+$total   = count($slides);
+$open    = $level['status'] !== 'locked';
+$close   = '#region-' . $code;
+$logo    = media_key_src('ui.logo-hero') ?? media_key_src('ui.logo');
+$avatars = ['mbah_kedu' => media_key_src('ui.kedu-avatar'), 'jaka' => media_key_src('ui.jaka-avatar')];
 ?>
 <section class="kenal narrator" id="kenal-<?= esc($code, 'attr') ?>" role="dialog" aria-modal="true"
          aria-labelledby="kenal-<?= esc($code, 'attr') ?>-title"
@@ -41,13 +56,14 @@ $close  = '#region-' . $code;
   <?php endif ?>
   <img class="kenal-bg" alt="" loading="lazy">
   <header class="kenal-head">
-    <div>
-      <span class="eyebrow"><?= esc(lang('Game.levelOrder', [$level['sequence']])) ?> · <?= esc(lang_or('Game.difficulty_' . $level['difficulty'], (string) $level['difficulty'])) ?></span>
-      <h2 id="kenal-<?= esc($code, 'attr') ?>-title"><?= esc(lang('Game.kenalTitle', [$region])) ?></h2>
-    </div>
-    <a class="icon-btn kenal-close" href="<?= esc($close, 'attr') ?>" data-kenal-close
-       aria-label="<?= esc(lang('Game.close'), 'attr') ?>"><?= icon('cross') ?></a>
+    <a class="btn btn-quiet kenal-back" href="<?= esc($close, 'attr') ?>" data-kenal-close><?= icon('left') ?> <span><?= esc(lang('Game.back')) ?></span></a>
+    <?php if ($logo !== null): ?>
+      <img class="kenal-logo" src="<?= esc($logo, 'attr') ?>" alt="<?= esc(lang('Game.appName'), 'attr') ?>" decoding="async" draggable="false">
+    <?php else: ?>
+      <span class="hud-brand kenal-logo">GELITA</span>
+    <?php endif ?>
   </header>
+  <h2 class="kenal-title" id="kenal-<?= esc($code, 'attr') ?>-title"><?= esc(lang('Game.kenalTitle', [$region])) ?></h2>
 
   <div class="narrator-fx" data-narrator-fx aria-hidden="true"></div>
 
@@ -66,41 +82,40 @@ $close  = '#region-' . $code;
           data-character="<?= esc($character, 'attr') ?>" data-pose="<?= esc($pose, 'attr') ?>"
           <?= $effect !== '' ? 'data-effect="' . esc($effect, 'attr') . '"' : '' ?><?= slide_bg_attr($slide) ?>
           aria-label="<?= esc(lang('Game.slideOf', [$n, $total]), 'attr') ?>">
-        <?php if ($character !== 'narator'): ?>
-          <div class="kenal-stage">
-            <?= component('character', ['character' => $character, 'pose' => $pose, 'class' => 'pose-' . $pose]) ?>
-          </div>
-        <?php endif ?>
         <div class="kenal-caption" data-narrator-advance>
+          <?php if ($character !== 'narator'): ?>
+            <div class="kenal-avatar">
+              <?= component('partials/kedu-portrait', ['src' => $avatars[$character] ?? null, 'name' => lang_or('Game.char_' . $character, $character)]) ?>
+            </div>
+          <?php endif ?>
           <div class="cine-caption-head">
-            <span class="eyebrow"><?= esc(lang('Game.slideOf', [$n, $total])) ?></span>
             <?php if ($character !== 'narator'): ?>
               <span class="cine-speaker"><?= esc(lang_or('Game.char_' . $character, $character)) ?></span>
             <?php endif ?>
+            <?php if ($title !== ''): ?>
+              <h3 class="cine-title"><?= esc($title) ?></h3>
+            <?php endif ?>
+            <?= component('partials/slide-nav', $open ? [
+                'n'          => $n,
+                'total'      => $total,
+                'prefix'     => $prefix,
+                'finalUrl'   => base_url($level['entry']),
+                'final'      => lang('Game.enterRegionName', [$region]),
+                'finalAttrs' => region_curtain_attrs($level['curtain'] ?? null),
+            ] : [
+                'n'          => $n,
+                'total'      => $total,
+                'prefix'     => $prefix,
+                'finalUrl'   => $close,
+                'final'      => lang('Game.close'),
+                'finalIcon'  => 'cross',
+                'finalAttrs' => ' data-kenal-close',
+            ]) ?>
           </div>
-          <?php if ($title !== ''): ?>
-            <h3 class="cine-title"><?= esc($title) ?></h3>
-          <?php endif ?>
           <p class="slide-text"><?= esc($text) ?></p>
           <?php if (($audioSrc = audio_src($audioId ?: null)) !== null): ?>
             <?= component('audio-player', ['audioId' => $audioId, 'audioSrc' => $audioSrc, 'transcript' => $text]) ?>
           <?php endif ?>
-          <?= component('partials/slide-nav', $open ? [
-              'n'          => $n,
-              'total'      => $total,
-              'prefix'     => $prefix,
-              'finalUrl'   => base_url($level['entry']),
-              'final'      => lang('Game.enterRegionName', [$region]),
-              'finalAttrs' => region_curtain_attrs($level['curtain'] ?? null),
-          ] : [
-              'n'          => $n,
-              'total'      => $total,
-              'prefix'     => $prefix,
-              'finalUrl'   => $close,
-              'final'      => lang('Game.close'),
-              'finalIcon'  => 'cross',
-              'finalAttrs' => ' data-kenal-close',
-          ]) ?>
         </div>
       </li>
     <?php endforeach ?>

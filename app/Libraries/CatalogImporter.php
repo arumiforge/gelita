@@ -26,7 +26,8 @@ use RuntimeException;
  *   are stored under the same key.
  * - The two flag icons `icon.language-id` / `icon.language-en` become the
  *   language switch icons `ui.lang.id`/`.en` (ICON_SLOTS), and the Jaka bust
- *   `reference.03` becomes `ui.jaka-avatar` (REFERENCE_SLOTS); other vector
+ *   `reference.03` and the Mbah Kedu avatar `reference.02` become
+ *   `ui.jaka-avatar` and `ui.kedu-avatar` (REFERENCE_SLOTS); other vector
  *   icons and the other `reference.*` entries are not game slots.
  * - A few pictures live only in a catalogue mockup package, not in data.json
  *   (MOCKUP_FILES): the Peta Kedu diorama becomes `map.kedu-diorama`.
@@ -153,9 +154,11 @@ final class CatalogImporter
     /**
      * Catalogue reference entries that fill a game slot: the Jaka bust avatar
      * in the Peta Kedu story bar (owner request 18 October 2026, the picture
-     * mockup candidate 04 uses there).
+     * mockup candidate 04 uses there) and the Mbah Kedu avatar in the Kenali
+     * overlay (owner request 19 October 2026).
      */
     public const REFERENCE_SLOTS = [
+        'reference.02' => 'ui.kedu-avatar',
         'reference.03' => 'ui.jaka-avatar',
     ];
 

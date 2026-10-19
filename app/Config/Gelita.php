@@ -236,6 +236,8 @@ class Gelita extends BaseConfig
         'map.kedu-diorama'           => [1774, 887],
         // Jaka's bust avatar in the Peta Kedu story bar (owner, 18 October 2026)
         'ui.jaka-avatar'             => [512, 512],
+        // Mbah Kedu's avatar in the Kenali overlay (owner, 19 October 2026)
+        'ui.kedu-avatar'             => [512, 512],
     ];
 
     /**
@@ -269,6 +271,7 @@ class Gelita extends BaseConfig
         'ui.result-hud-control' => [68, 68],
         'map.kedu-diorama'      => [853, 427],  // Peta Kedu, the whole 2:1 picture in the map frame (since 18 Oct 2026)
         'ui.jaka-avatar'        => [120, 120],  // Peta Kedu story bar portrait
+        'ui.kedu-avatar'        => [232, 232],  // Kenali overlay: round avatar on the caption's left end
     ];
 
     /**
