@@ -124,9 +124,14 @@ Decided in an interview with the owner; decisions in the decision log, section *
 - [ ] On a server with package mode on: **Bangun ulang paket** so the package carries the three.js files (PR #165)
 - [ ] Owner check of the screen effects on the class devices (frame rate, look): `docs/perombakan-kelas5/device-test-checklist.md`
 
+## Kenali screen redesign (owner, 19 October 2026)
+
+- [ ] `sky/friendly-volta-8fyowz` — Mengenal {wilayah} overlay: Mbah Kedu's round avatar `ui.kedu-avatar` (catalogue `reference.02`) on the caption's left end instead of animation frames; no "Wilayah n · tingkat" and "Bagian n dari N" text; speaker, title, dots, and Lanjut on one row; Kembali (no cross) at the top left, the logo in the middle of the top band, the title centred under it. After merge, run `php spark gelita:katalog:impor --kunci="ui.kedu-avatar"` (dry run first)
+
 ## Active branches
 
 Add a row (branch, owner / scope, status) when a session starts a branch; remove it when its PR is merged.
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `sky/friendly-volta-8fyowz` | Kenali screen redesign (avatar, one caption row, top band) | In progress |

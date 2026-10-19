@@ -92,7 +92,7 @@ function initRegionIntros(mapStory) {
 
     entry.story.show(slide, { notify: false, focus: false });
     if (autoplay) entry.story.start({ userInitiated: true });
-    $('.kenal-close', entry.root)?.focus({ preventScroll: true });
+    $('.kenal-back', entry.root)?.focus({ preventScroll: true });
   };
 
   for (const root of $$('[data-kenal]')) {

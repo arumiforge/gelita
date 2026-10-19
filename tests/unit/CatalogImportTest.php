@@ -377,6 +377,24 @@ final class CatalogImportTest extends CIUnitTestCase
         $this->assertSame(['ui.jaka-avatar' => 'installed'], array_column($this->importer()->run(false, true, null, ['ui.jaka-avatar']), 'status', 'target'));
     }
 
+    /** Owner, 19 October 2026: the Mbah Kedu avatar reference.02 is the Kenali overlay's portrait. */
+    public function testKeduAvatarComesFromTheMbahKeduReference(): void
+    {
+        $this->writeCatalog([
+            'reference.02' => ['referensi/reference.02.webp', 1024, 1024, true],
+            'reference.14' => ['referensi/reference.14.webp', 64, 64, false],
+        ]);
+
+        $report = $this->importer()->run();
+
+        $this->assertContains('reference.02 → ui.kedu-avatar: installed', array_map(static fn (array $r): string => $r['source'] . ' → ' . $r['target'] . ': ' . $r['status'], $report));
+        $this->assertNotContains('reference.14', array_column($report, 'source'));
+
+        $row = model(MediaAssetModel::class)->findByKey('ui.kedu-avatar');
+        $this->assertSame([512, 512], [(int) $row['width_px'], (int) $row['height_px']]);
+        $this->assertNull(model(MediaAssetModel::class)->findByKey('reference.02'));
+    }
+
     /** Result screen redesign (18 October 2026): its skin slots, and avatar.2 copied to ui.result-medal. */
     public function testResultScreenSlotsAndTheMedalCopy(): void
     {

@@ -100,7 +100,7 @@ final class ScreenFxTest extends CIUnitTestCase
 
         // Parallax moves layers through the translate property, so it composes with Ken Burns and the speaking zoom
         $this->assertStringContainsString('.has-parallax :is(.scene-img, .kenal-bg, .cine-bg) {', $css);
-        $this->assertStringContainsString('.has-parallax :is(.dialogue-stage, .cine-stage, .kenal-stage) {', $css);
+        $this->assertStringContainsString('.has-parallax :is(.dialogue-stage, .cine-stage) {', $css);
     }
 
     public function testNarratorLoadsTheEffectsOnlyWithoutReducedMotion(): void

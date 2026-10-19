@@ -382,6 +382,47 @@ final class RegionStoryTest extends CIUnitTestCase
         $this->assertStringContainsString('id="region-magelang"', $page);
     }
 
+    /** Owner, 19 October 2026: HUD-like band, title under it, avatar on the caption, no progress text. */
+    public function testRegionIntroLayoutHasABackBandAvatarAndASingleCaptionRow(): void
+    {
+        $this->media = ['ui.kedu-avatar' => 'assets/uploads/ui.kedu-avatar.webp?v=k1', 'ui.logo-hero' => 'assets/uploads/ui.logo-hero.webp?v=l1',
+            'char.mbah_kedu.idle.1' => 'assets/uploads/char.kedu.idle.1.webp'];
+        $page    = $this->map(['temanggung' => 'open', 'magelang' => 'locked', 'wonosobo' => 'locked'], heard: []);
+        $overlay = substr($page, (int) strpos($page, 'id="kenal-temanggung"'));
+        $overlay = substr($overlay, 0, (int) strpos($overlay, '</section>'));
+        $head    = substr($overlay, (int) strpos($overlay, '<header class="kenal-head">'));
+        $head    = substr($head, 0, (int) strpos($head, '</header>'));
+
+        // Band: Back (no cross) and the logo; the title is under the band, not in it
+        $this->assertStringContainsString('class="btn btn-quiet kenal-back" href="#region-temanggung" data-kenal-close', $head);
+        $this->assertStringContainsString('<img class="kenal-logo" src="' . esc(base_url('assets/uploads/ui.logo-hero.webp?v=l1'), 'attr') . '"', $head);
+        $this->assertStringNotContainsString('kenal-close', $overlay);
+        $this->assertStringNotContainsString('<h2', $head);
+        $this->assertMatchesRegularExpression('/<\/header>\s*<h2 class="kenal-title" id="kenal-temanggung-title">' . preg_quote(esc(lang('Game.kenalTitle', ['Temanggung'])), '/') . '<\/h2>/', $overlay);
+
+        // No "Wilayah n · tingkat" and no "Bagian n dari N" text; the dots and Lanjut share the speaker/title row
+        $this->assertStringNotContainsString('class="eyebrow"', $overlay);
+        $this->assertStringNotContainsString('class="kenal-stage"', $overlay);
+        $this->assertSame(4, preg_match_all('/<div class="cine-caption-head">\s*<span class="cine-speaker">[^<]*<\/span>\s*<h3 class="cine-title">[^<]*<\/h3>\s*<nav class="slide-nav"/', $overlay));
+
+        // Mbah Kedu's round avatar, never a pose frame
+        $this->assertSame(4, substr_count($overlay, '<div class="kenal-avatar">'));
+        $this->assertStringContainsString('<img class="kedu-avatar" src="' . esc(base_url('assets/uploads/ui.kedu-avatar.webp?v=k1'), 'attr') . '"', $overlay);
+        $this->assertStringNotContainsString('char.kedu.idle', $overlay);
+
+        // Without the picture: his initial in the gold disc
+        Services::resetSingle('renderer');
+        $this->media = [];
+        $plain       = $this->map(['temanggung' => 'open', 'magelang' => 'locked', 'wonosobo' => 'locked'], heard: []);
+        $this->assertStringContainsString('<span class="kedu-portrait-initial">M</span>', $plain);
+        $this->assertStringContainsString('<span class="hud-brand kenal-logo">GELITA</span>', $plain);
+
+        $css = (string) file_get_contents(FCPATH . 'assets/css/cinematic.css');
+        $this->assertStringContainsString('.kenal-avatar {', $css);
+        $this->assertStringContainsString('margin-left: calc(var(--kenal-avatar) / 2);', $css, 'the bar starts under the avatar centre');
+        $this->assertStringContainsString('.kenal.is-live .slide-nav > .btn-quiet { display: none; }', $css);
+    }
+
     public function testUnheardBadgeFollowsServerEvents(): void
     {
         $page = $this->map(['temanggung' => 'open', 'magelang' => 'locked', 'wonosobo' => 'locked'], heard: [2]);
