@@ -684,11 +684,14 @@ body.is-cinematic .nav-bar .btn {
 }
 
 /* ---------- Region dialogue in the intro layout (owner, 19 October 2026) ----------
-   `/dialog/{code}` with partials/dialogue-scene `cinematic`: the cinematic rules
-   above (.cine-top, .cine-caption, .cine-final, the narrator controls) plus the
-   two-character stage, the difficulty badge, and a little extra motion: drifting
-   light motes, a halo and a slow float on the speaker, a speaker chip that pops
-   in on every line, and a caption notch pointing at whoever speaks. */
+   `/dialog/{code}` with partials/dialogue-scene `cinematic`: the cinematic caption
+   and final button above, the two-character stage, and a little extra motion:
+   drifting light motes, a halo and a slow float on the speaker, and a speaker
+   chip that pops in on every line. Owner follow-up the same day: the characters
+   stand over both ends of the caption, so its text keeps to the middle (x 360–920);
+   "Bagian n dari N" and the dots sit right of the speaker's name; the narrator
+   controls sit at the bottom right of the text; the difficulty badge is in the HUD. */
+
 /* Ambience layer behind the characters and the caption (first in the scene) */
 .dialogue-ambience { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
 /* Shade under the HUD and over the caption, so both read on any background */
@@ -696,7 +699,7 @@ body.is-cinematic .nav-bar .btn {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(11, 19, 32, .45), transparent 26%, transparent 58%, rgba(11, 19, 32, .55));
+  background: linear-gradient(to bottom, rgba(11, 19, 32, .45), transparent 26%, transparent 55%, rgba(11, 19, 32, .55));
 }
 /* Light motes rising slowly through the scene (one tall layer moved by transform) */
 .dialogue-ambience::after {
@@ -715,17 +718,18 @@ body.is-cinematic .nav-bar .btn {
   to { transform: translateY(-50%); }
 }
 
-/* Characters: the speaker steps forward with a warm halo and breathes slowly */
-.dialogue-cine .dialogue-stage > .character { isolation: isolate; }
-.dialogue-cine .dialogue-stage .character-img { width: auto; height: calc(408 * var(--dp)); max-width: 100%; }
+/* Characters over the caption's ends (z 4); taps go through them to the caption */
+.dialogue-cine .dialogue-stage > .character { z-index: 4; isolation: isolate; pointer-events: none; }
+.dialogue-cine .dialogue-stage .character-img { width: auto; height: calc(448 * var(--dp)); max-width: 100%; }
 .dialogue-cine .dialogue-stage .character-name { display: none; }
+/* The speaker steps forward with a warm halo and breathes slowly */
 .dialogue-cine .dialogue-stage > .character::before {
   content: "";
   position: absolute;
-  inset: 12% 4% 0;
+  inset: 10% 4% 6%;
   z-index: -1;
   border-radius: 50%;
-  background: radial-gradient(ellipse at 50% 60%, rgba(255, 230, 170, .42), rgba(223, 192, 135, .14) 45%, transparent 70%);
+  background: radial-gradient(ellipse at 50% 55%, rgba(255, 230, 170, .42), rgba(223, 192, 135, .14) 45%, transparent 70%);
   opacity: 0;
   transition: opacity .4s ease;
 }
@@ -738,29 +742,59 @@ body.is-cinematic .nav-bar .btn {
   50% { translate: 0 -.375rem; }
 }
 
-/* Difficulty badge, centred under the HUD between the two characters; its
-   colour follows the level (mudah green, sedang gold, sulit ember) */
+/* Caption: full width, its content between the two characters */
+.dialogue-cine .dialogue-caption {
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  padding: var(--gap-4) calc(360 * var(--dp)) var(--gap-4);
+  cursor: default;
+}
+.dialogue-cine.is-started .dialogue-caption { cursor: pointer; }
+/* Room under the text for the narrator controls once narrator.js shows them */
+.dialogue-cine.is-live .dialogue-caption { grid-template-rows: auto minmax(0, 1fr); padding-bottom: calc(80 * var(--dp)); }
+.dialogue-cine.is-live .dialogue-caption .cine-caption-head { padding-right: 0; }
+.dialogue-cine .dialogue-caption .cine-caption-head { flex-wrap: nowrap; gap: var(--gap-4); min-height: 3rem; }
+.dialogue-cine .dialogue-speaker { flex: none; justify-self: auto; font-style: normal; }
+.dialogue-cine .slide[data-character="jaka"] .dialogue-speaker { background: linear-gradient(to bottom, #EE8A66, #C2462C); color: #FFF6EE; }
+.dialogue-cine .slide.is-current .dialogue-speaker { animation: speaker-pop .45s cubic-bezier(.3, 1.6, .5, 1) both; }
+@keyframes speaker-pop {
+  from { opacity: 0; transform: translateY(.5rem) scale(.8); }
+  to { opacity: 1; transform: none; }
+}
+.dialogue-cine .dialogue-text { font-size: 1.375rem; line-height: 1.45; }
+
+/* "Bagian n dari N" above the dots, right of the speaker's name; 11 dp dots
+   8 dp apart keep 16 lines inside the text column (hit area 48 × 19 dp) */
+.dialogue-progress { display: grid; justify-items: start; row-gap: var(--gap-1); min-width: 0; -webkit-touch-callout: none; user-select: none; }
+.dialogue-progress .eyebrow { margin: 0; color: var(--gold-300); font-size: .875rem; letter-spacing: .08em; white-space: nowrap; }
+.dialogue-progress .slide-dots { gap: var(--gap-2); }
+.dialogue-progress .slide-dot { width: .6875rem; height: .6875rem; }
+.dialogue-progress .slide-dot.is-current { border-color: var(--navy-900); box-shadow: 0 0 0 .125rem var(--gold-500), 0 0 .5rem var(--glow); }
+.dialogue-progress .slide-dot::before { width: calc(.6875rem + var(--gap-2)); }
+
+/* Narrator controls at the bottom right of the text column */
+.dialogue-cine .narrator-controls { top: auto; right: calc(360 * var(--dp)); bottom: var(--gap-4); }
+
+/* Last line: "Masuk ke {wilayah}" in the middle between the HUD and the caption */
+.dialogue-cine .cine-final { inset: calc(120 * var(--dp)) 0 calc(272 * var(--dp)); grid-auto-flow: column; place-content: center; gap: var(--gap-4); }
+
+/* Difficulty badge in the HUD, left of the language control (partials/region-difficulty);
+   its colour follows the level: mudah green, sedang gold, sulit ember */
 .region-difficulty { --diff: var(--gold-500); --diff-soft: rgba(223, 192, 135, .28); }
 .region-difficulty.is-mudah { --diff: var(--ok); --diff-soft: rgba(143, 209, 79, .28); }
 .region-difficulty.is-sulit { --diff: #F07A4A; --diff-soft: rgba(240, 122, 74, .3); }
 .region-difficulty {
-  position: absolute;
-  top: calc(132 * var(--dp));
-  right: 0;
-  left: 0;
-  z-index: 3;
+  position: relative;
   display: flex;
+  align-self: center;
   align-items: center;
-  gap: var(--gap-4);
-  width: max-content;
-  max-width: calc(460 * var(--dp));
-  margin: 0 auto;
+  gap: var(--gap-3);
+  margin-right: var(--gap-3);
   overflow: hidden;
-  padding: var(--gap-3) var(--gap-6) var(--gap-3) var(--gap-5);
+  padding: var(--gap-2) var(--gap-5) var(--gap-2) var(--gap-4);
   border: .125rem solid var(--diff);
-  border-radius: var(--radius-lg);
-  background: linear-gradient(to right, var(--diff-soft), rgba(11, 19, 32, .88) 55%), rgba(11, 19, 32, .6);
-  box-shadow: 0 .75rem 1.75rem rgba(11, 19, 32, .55), 0 0 1.5rem var(--diff-soft), inset 0 0 0 .25rem rgba(11, 19, 32, .35);
+  border-radius: var(--radius-pill);
+  background: linear-gradient(to right, var(--diff-soft), rgba(11, 19, 32, .88) 60%), rgba(11, 19, 32, .6);
+  box-shadow: 0 .5rem 1.25rem rgba(11, 19, 32, .5), 0 0 1.25rem var(--diff-soft);
   -webkit-touch-callout: none;
   user-select: none;
 }
@@ -775,38 +809,37 @@ body.is-cinematic .nav-bar .btn {
   animation: diff-shine 5s ease-in-out 1.6s infinite;
   pointer-events: none;
 }
-.region-difficulty-meter { display: flex; align-items: flex-end; gap: .3125rem; height: 2.5rem; }
+.region-difficulty-meter { display: flex; align-items: flex-end; gap: .25rem; height: 1.875rem; }
 .region-difficulty-meter i {
-  width: .75rem;
-  height: calc(var(--i) * .8125rem);
-  border-radius: .25rem;
+  width: .625rem;
+  height: calc(var(--i) * .625rem);
+  border-radius: .1875rem;
   background: rgba(234, 240, 250, .16);
   box-shadow: inset 0 0 0 1px rgba(234, 240, 250, .18);
   transform-origin: 50% 100%;
 }
 .region-difficulty-meter i.is-on {
   background: linear-gradient(to top, var(--diff), #FFF6DD 140%);
-  box-shadow: 0 0 .75rem var(--diff);
+  box-shadow: 0 0 .625rem var(--diff);
   animation: bar-rise .5s cubic-bezier(.3, 1.6, .5, 1) calc(.5s + var(--i) * .15s) both, bar-glow 2.4s ease-in-out calc(1.4s + var(--i) * .25s) infinite;
 }
 .region-difficulty-text { display: grid; justify-items: start; line-height: 1.1; }
-.region-difficulty-label { color: var(--ink-dim); font-size: .875rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.region-difficulty-label { color: var(--ink-dim); font-size: .75rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; white-space: nowrap; }
 .region-difficulty-level {
   background: linear-gradient(to bottom, #FFF6DD, var(--diff));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   font-family: var(--font-display);
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: 700;
   letter-spacing: .04em;
   filter: drop-shadow(0 .125rem .375rem rgba(11, 19, 32, .8));
 }
-.region-difficulty-hint { margin-top: var(--gap-1); color: var(--gold-300); font-size: var(--fs-caption); font-style: italic; }
-/* Drops in once the chapter card is tapped away (without JavaScript it just stands there) */
-.dialogue-cine.is-started .region-difficulty { animation: diff-drop .8s cubic-bezier(.25, 1.5, .45, 1) .15s both; }
+/* Pops in once the chapter card is tapped away (without JavaScript it just stands there) */
+body:has(.dialogue-cine.is-started) .region-difficulty { animation: diff-drop .8s cubic-bezier(.25, 1.5, .45, 1) .15s both; }
 @keyframes diff-drop {
-  from { opacity: 0; transform: translateY(-2.5rem) scale(.7); }
+  from { opacity: 0; transform: translateY(-1.5rem) scale(.7); }
   60% { opacity: 1; }
   to { opacity: 1; transform: none; }
 }
@@ -819,44 +852,8 @@ body.is-cinematic .nav-bar .btn {
   to { transform: none; opacity: 1; }
 }
 @keyframes bar-glow {
-  50% { filter: brightness(1.35); box-shadow: 0 0 1.25rem var(--diff); }
+  50% { filter: brightness(1.35); box-shadow: 0 0 1rem var(--diff); }
 }
-
-/* Caption: the speaker's name on its first row, coloured per character */
-.dialogue-cine .dialogue-speaker { justify-self: auto; font-style: normal; }
-.dialogue-cine .slide[data-character="jaka"] .dialogue-speaker { background: linear-gradient(to bottom, #EE8A66, #C2462C); color: #FFF6EE; }
-.dialogue-cine .slide.is-current .dialogue-speaker { animation: speaker-pop .45s cubic-bezier(.3, 1.6, .5, 1) both; }
-@keyframes speaker-pop {
-  from { opacity: 0; transform: translateY(.5rem) scale(.8); }
-  to { opacity: 1; transform: none; }
-}
-.dialogue-cine .dialogue-text { font-size: 1.5rem; line-height: 1.5; }
-.dialogue-cine .dialogue-caption { cursor: default; }
-.dialogue-cine.is-started .dialogue-caption { cursor: pointer; }
-/* A notch on the caption's top edge points at whoever speaks */
-.dialogue-cine .dialogue-caption::before {
-  content: "";
-  position: absolute;
-  top: -.6875rem;
-  left: calc(214 * var(--dp));
-  width: 1.25rem;
-  height: 1.25rem;
-  border-top: 1px solid var(--line-strong);
-  border-left: 1px solid var(--line-strong);
-  background: rgb(11, 19, 32);
-  transform: rotate(45deg);
-  transition: left .35s ease;
-}
-.dialogue-cine .slide[data-character="mbah_kedu"] .dialogue-caption::before { left: calc(1046 * var(--dp)); }
-
-/* 15–16 lines: smaller dots closer together, so the row stays clear of the
-   region name in the HUD (11 dp dots, hit area as wide as dot + gap, 19 dp) */
-.dialogue-cine .cine-top .slide-dots { gap: var(--gap-2); }
-.dialogue-cine .cine-top .slide-dot { width: .6875rem; height: .6875rem; }
-.dialogue-cine .cine-top .slide-dot::before { width: calc(.6875rem + var(--gap-2)); }
-
-/* Last line: "Masuk ke {wilayah}" in the middle, under the difficulty badge */
-.dialogue-cine .cine-final { inset: calc(256 * var(--dp)) 0 calc(224 * var(--dp)); grid-auto-flow: column; place-content: center; gap: var(--gap-4); }
 
 /* ======================= NARASI PETA ======================= */
 /* Strip 40, 536, 864 × 98 (stage.css): slide (Jaka | balloon | n/N) + controls in a row */
@@ -1290,7 +1287,7 @@ body.has-kenal { overflow: hidden; }
   .cc-puzzle i, .cc-gap b, .cc-card, .cc-light,
   .dialogue-ambience::after, .dialogue-cine .dialogue-stage > .character.is-speaking::before,
   .dialogue-cine .dialogue-stage .character.is-speaking .character-img, .region-difficulty::after,
-  .region-difficulty-meter i.is-on, .dialogue-cine.is-started .region-difficulty, .dialogue-cine .slide.is-current .dialogue-speaker,
+  .region-difficulty-meter i.is-on, body:has(.dialogue-cine.is-started) .region-difficulty, .dialogue-cine .slide.is-current .dialogue-speaker,
   .dialogue-stage .character.is-speaking:is(.pose-happy, .pose-afraid):has(> .character-fallback),
   .narrator:has(> .narrator-fx.fx-shake) .slide.is-current :is(.kenal-stage, .kenal-caption, .dialogue-box) { animation: none; }
   .kenal-btn-face { transition: none; }

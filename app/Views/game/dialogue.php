@@ -13,8 +13,11 @@
  * Layout (owner, 19 October 2026): like the intro (partials/dialogue-scene
  * with `cinematic`): full-size HUD without the shard pill, its centre holding
  * "Bagian n dari N" and the page dots; Lewati under the menu button; no Peta
- * Kedu button (the menu has it); the region's difficulty badge instead of
- * the old screen head; a full-width caption along the bottom.
+ * Kedu button (the menu has it); a full-width caption along the bottom.
+ * Owner follow-up (same day): the region's difficulty badge sits in the HUD
+ * left of the language control (section `hudBadge`), "Bagian n dari N" and
+ * the dots sit right of the speaker's name in the caption, and the caption
+ * keeps both ends free for the two characters standing over it.
  *
  * @var App\Entities\Level         $level
  * @var list<array<string, mixed>> $slides
@@ -32,6 +35,7 @@ $region = $level->text('name', $locale);
 <?php /* Full-size HUD; its centre holds the line progress, so no shard pill */ ?>
 <?= $this->section('hudStyle') ?>menu<?= $this->endSection() ?>
 <?= $this->section('hudShards') ?>off<?= $this->endSection() ?>
+<?= $this->section('hudBadge') ?><?= component('partials/region-difficulty', ['level' => $level]) ?><?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
 <?= component('partials/dialogue-scene', [

@@ -1979,4 +1979,10 @@ Decisions:
 - **Page dots.** At 15–16 lines the intro's 16 dp dots ran into the region name in the HUD, so the dialogue uses 11 dp dots 8 dp apart (hit area 48 × 19 dp, within the owner's call on narrow dot targets, 11 October 2026).
 - **QA tool.** `tools/qa/stage-check.mjs` exempts `.dialogue-ambience` from the clipped-content check, like the Ken Burns backgrounds: its motes layer is deliberately taller than the stage and clipped.
 - **Pre-existing, not fixed here.** `stage-check` reports `div.hud-sheet.hud-menu-sheet` outside `#stage` on every full-size HUD page (`/intro`, `/peta`, and now `/dialog/{code}`); it is the same on `main`.
+- **Owner follow-up (same day).** These points replace the badge, dots, and stage placement above:
+  - The difficulty badge moved into the HUD, left of the language control (new HUD section `hudBadge`, `partials/region-difficulty`), without the cheer line (`Game.difficultyHint_*` removed).
+  - "Bagian n dari N" and the dots moved from the HUD centre to the right of the speaker's name in the caption.
+  - The caption stays full width (0, 448, 1280 × 272), but its content keeps to x 360–920. Jaka and Mbah Kedu (352 × 456 dp) stand over its two ends, feet on the bottom edge, instead of above it. The caption's notch is gone, since the speakers now flank the text.
+  - The narrator controls moved to the bottom right of the text, because the first row now holds the name and the progress.
+  - The badge's entrance keys off `body:has(.dialogue-cine.is-started)`, since it is no longer inside the scene.
 - **Tests.** `RegionStoryTest::testDialogueUsesTheIntroLayoutWithTheDifficultyBadge` and `testRegionDoneSceneKeepsTheParchmentBox` are new; `CinematicViewTest::testWelcomeCardSurvivesAfterRegistration` checks the modal hand-off. Checked in Chromium on a local MariaDB install with the catalogue art: sign-up → welcome modal → tap card → intro, and `/dialog/temanggung`, `/dialog/magelang`, `/dialog/wonosobo` (first line, last line); `stage-check --only=intro,dialog` at all six sizes passes apart from the pre-existing finding above.

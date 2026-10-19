@@ -231,7 +231,7 @@ final class RegionStoryTest extends CIUnitTestCase
         $this->assertStringContainsString('<span>' . esc(lang('Game.skip')) . '</span>', $page);
     }
 
-    /** Owner, 19 October 2026: the region dialogue is laid out like the intro, with the difficulty badge. */
+    /** Owner, 19 October 2026: the region dialogue is laid out like the intro, with the difficulty badge in the HUD. */
     public function testDialogueUsesTheIntroLayoutWithTheDifficultyBadge(): void
     {
         $page  = $this->dialogue(['magelang' => 'open'])->show('magelang');
@@ -242,17 +242,21 @@ final class RegionStoryTest extends CIUnitTestCase
         $this->assertStringContainsString('class="hud hud-menu-style"', $page);
         $this->assertStringNotContainsString('class="hud-shards"', $page);
         $this->assertStringContainsString('class="story dialogue narrator cine dialogue-cine"', $page);
-
-        // The old screen head is gone; the difficulty badge takes its place
         $this->assertStringNotContainsString('dialogue-head', $page);
-        $this->assertStringContainsString('<div class="region-difficulty is-sedang">', $page);
-        $this->assertSame(2, substr_count($page, '<i class="is-on"'), 'two of three bars lit');
-        $this->assertStringContainsString(esc(lang('Game.difficultyLevel', [lang('Game.difficulty_sedang')])), $page);
-        $this->assertStringContainsString(esc(lang('Game.difficultyHint_sedang')), $page);
+        $this->assertStringNotContainsString('class="cine-top"', $page, 'no progress in the HUD centre');
 
-        // "Bagian n dari N" and the dots per line, the full-width caption, ▶ reads "Lanjut"
-        $this->assertMatchesRegularExpression('/id="line-1".*?<nav class="cine-top"[^>]*>\s*<span class="eyebrow">' . preg_quote(esc(lang('Game.slideOf', [1, $total])), '/') . '<\/span>\s*<ol class="slide-dots">/s', $page);
-        $this->assertStringContainsString('class="cine-caption dialogue-caption" data-narrator-advance', $page);
+        // The difficulty badge sits in the HUD, right before the language control, without a cheer line
+        $controls = (int) strpos($page, '<div class="hud-right hud-controls">');
+        $badge    = (int) strpos($page, '<div class="region-difficulty is-sedang">');
+        $this->assertGreaterThan($controls, $badge);
+        $this->assertGreaterThan($badge, (int) strpos($page, '<details class="hud-pop hud-lang"'));
+        $this->assertSame(2, substr_count($page, '<i class="is-on"'), 'two of three bars lit');
+        $this->assertStringContainsString(esc(lang('Game.difficultyLabel')), $page);
+        $this->assertStringContainsString(esc(lang('Game.difficultyLevel', [lang('Game.difficulty_sedang')])), $page);
+        $this->assertStringNotContainsString('region-difficulty-hint', $page);
+
+        // "Bagian n dari N" and the dots right of the speaker's name in the caption; ▶ reads "Lanjut"
+        $this->assertMatchesRegularExpression('/id="line-1".*?<div class="cine-caption dialogue-caption" data-narrator-advance>\s*<div class="cine-caption-head">\s*<cite class="cine-speaker dialogue-speaker">[^<]+<\/cite>\s*<nav class="dialogue-progress"[^>]*>\s*<span class="eyebrow">' . preg_quote(esc(lang('Game.slideOf', [1, $total])), '/') . '<\/span>\s*<ol class="slide-dots">/s', $page);
         $this->assertStringNotContainsString('dialogue-box panel-parchment', $page);
         $this->assertStringContainsString('data-narrator="next" aria-label="' . esc(lang('Game.continue'), 'attr') . '"><span class="narrator-next-label"', $page);
 

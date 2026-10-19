@@ -19,13 +19,15 @@
  * - Kartu ketuk berjudul ($tap) menutupi panggung sampai diketuk.
  *
  * `$cinematic` (the region dialogue, owner 19 October 2026) lays the scene
- * out like the intro (partials/cine-slides): no screen head, but the
- * region's difficulty badge between the two characters; "Bagian n dari N"
- * and the page dots centred in the full-size HUD; a full-width caption along
- * the bottom whose first row holds the speaker and the narrator controls
- * (▶ reads "Lanjut"); the last line's main button centred on the page. The
- * caption's own Kembali/Lanjut links stay as the no-JavaScript fallback.
- * Without it (the region-done scene) the parchment box keeps its own nav.
+ * out like the intro (partials/cine-slides): no screen head (the page puts
+ * the difficulty badge in the HUD); a full-width caption along the bottom
+ * with both ends left free for the two characters standing over it; its
+ * first row holds the speaker's name with "Bagian n dari N" and the page
+ * dots to its right, and the narrator controls (▶ reads "Lanjut") sit at the
+ * bottom right of the text; the last line's main button is centred on the
+ * page. The caption's own Kembali/Lanjut links stay as the no-JavaScript
+ * fallback. Without it (the region-done scene) the parchment box keeps its
+ * own nav.
  *
  * @var App\Entities\Level         $level
  * @var list<array<string, mixed>> $slides
@@ -38,13 +40,10 @@
  * @var list<string|null>|null     $nextAssets images of the next screen (next_assets_attr())
  * @var bool|null                  $cinematic intro-like layout (see above)
  */
-$total      = count($slides);
-$first      = (string) ($slides[0]['character_code'] ?? 'jaka');
-$region     = $level->text('name', $locale);
-$cinematic  = ! empty($cinematic);
-$difficulty = (string) $level->difficulty;
-// Lit bars of the three-step meter; an unknown level shows the text only
-$steps = ['mudah' => 1, 'sedang' => 2, 'sulit' => 3][$difficulty] ?? 0;
+$total     = count($slides);
+$first     = (string) ($slides[0]['character_code'] ?? 'jaka');
+$region    = $level->text('name', $locale);
+$cinematic = ! empty($cinematic);
 ?>
 <section class="story dialogue narrator<?= $cinematic ? ' cine dialogue-cine' : '' ?>" data-screen="<?= esc($screen, 'attr') ?>"
          data-narrator data-context="<?= esc($context, 'attr') ?>" data-prefix="line-" data-mode="tap"
@@ -52,24 +51,6 @@ $steps = ['mudah' => 1, 'sedang' => 2, 'sulit' => 3][$difficulty] ?? 0;
          data-first="<?= esc($first, 'attr') ?>" data-index="1"<?= next_assets_attr($nextAssets ?? []) ?>>
   <?php if ($cinematic): ?>
     <h1 class="visually-hidden"><?= esc($region) ?></h1>
-    <?php if ($difficulty !== ''): ?>
-      <?php $levelName = lang_or('Game.difficulty_' . $difficulty, $difficulty) ?>
-      <div class="region-difficulty is-<?= esc($difficulty, 'attr') ?>">
-        <span class="region-difficulty-meter" aria-hidden="true">
-          <?php for ($i = 1; $i <= 3; $i++): ?>
-            <i<?= $i <= $steps ? ' class="is-on"' : '' ?> style="--i: <?= $i ?>"></i>
-          <?php endfor ?>
-        </span>
-        <span class="region-difficulty-text">
-          <span class="region-difficulty-label" aria-hidden="true"><?= esc(lang('Game.difficultyLabel')) ?></span>
-          <span class="region-difficulty-level" aria-hidden="true"><?= esc($levelName) ?></span>
-          <span class="visually-hidden"><?= esc(lang('Game.difficultyLevel', [$levelName])) ?></span>
-          <?php if (($hint = lang_or('Game.difficultyHint_' . $difficulty, '')) !== ''): ?>
-            <span class="region-difficulty-hint"><?= esc($hint) ?></span>
-          <?php endif ?>
-        </span>
-      </div>
-    <?php endif ?>
   <?php else: ?>
     <header class="screen-head dialogue-head stage-box">
       <span class="eyebrow"><?= esc($eyebrow) ?></span>
@@ -118,21 +99,20 @@ $steps = ['mudah' => 1, 'sedang' => 2, 'sulit' => 3][$difficulty] ?? 0;
             aria-label="<?= esc(lang('Game.slideOf', [$n, $total]), 'attr') ?>">
           <?php if ($cinematic): ?>
             <?php $progress = lang('Game.slideOf', [$n, $total]) ?>
-            <nav class="cine-top" aria-label="<?= esc($progress, 'attr') ?>">
-              <span class="eyebrow"><?= esc($progress) ?></span>
-              <ol class="slide-dots">
-                <?php for ($i = 1; $i <= $total; $i++): ?>
-                  <li>
-                    <a class="slide-dot<?= $i === $n ? ' is-current' : '' ?>" href="#line-<?= $i ?>"
-                       <?= $i === $n ? 'aria-current="step"' : '' ?>><span class="visually-hidden"><?= esc(lang('Game.slideOf', [$i, $total])) ?></span></a>
-                  </li>
-                <?php endfor ?>
-              </ol>
-            </nav>
-
             <div class="cine-caption dialogue-caption" data-narrator-advance>
               <div class="cine-caption-head">
                 <cite class="cine-speaker dialogue-speaker"><?= esc(lang_or('Game.char_' . $character, $character)) ?></cite>
+                <nav class="dialogue-progress" aria-label="<?= esc($progress, 'attr') ?>">
+                  <span class="eyebrow"><?= esc($progress) ?></span>
+                  <ol class="slide-dots">
+                    <?php for ($i = 1; $i <= $total; $i++): ?>
+                      <li>
+                        <a class="slide-dot<?= $i === $n ? ' is-current' : '' ?>" href="#line-<?= $i ?>"
+                           <?= $i === $n ? 'aria-current="step"' : '' ?>><span class="visually-hidden"><?= esc(lang('Game.slideOf', [$i, $total])) ?></span></a>
+                      </li>
+                    <?php endfor ?>
+                  </ol>
+                </nav>
               </div>
               <div class="cine-caption-body stage-scroll">
                 <p class="dialogue-text slide-text"><?= esc($text) ?></p>
