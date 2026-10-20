@@ -79,6 +79,16 @@ if (window.GELITA_PACKAGE_BOOT?.code) {
   import('./core/package.js').then((m) => m.initPackage({ setAssetsLocal })).catch(() => {});
 }
 
+// Cinematic entrance of the start screens (game/cine.js). Loaded first: the
+// page parts stay hidden (cinematic.css) until it starts; if it cannot load,
+// they are shown at once.
+const cineRoot = document.querySelector('[data-cine]');
+if (cineRoot) {
+  import('./game/cine.js')
+    .then((m) => m.initCine(cineRoot))
+    .catch(() => cineRoot.classList.add('is-cine-live'));
+}
+
 // Stage 3: before a game session, a device that needs the package goes
 // through "Siapkan GELITA" before Mulai (P11); <body data-package-gate> records
 // the outcome (skip | pass | hold) for browser checks.

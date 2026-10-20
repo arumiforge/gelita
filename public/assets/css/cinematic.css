@@ -399,6 +399,78 @@
 .narrator.has-fx3d > .narrator-fx:is(.fx-fog, .fx-fog-lift, .fx-glow) { background: none; }
 .narrator.has-fx3d .dialogue-ambience::after { display: none; }
 
+/* =========================== CINEMATIC ENTRANCES ===========================
+   game/cine.js (owner, 20 October 2026) on the welcome page, Mulai, Masuk,
+   Daftar, and Gerbang ([data-cine]). From the first paint the page's parts are
+   held hidden (core/viewport.js sets html.cine-ok when motion is allowed) until
+   the module adds .is-cine-live and plays its cues; should it never run, they
+   fade in after 4 s. Under prefers-reduced-motion nothing is held. */
+.cine-ok .stage:has([data-cine]:not(.is-cine-live)) > :is(.scene, .hud),
+.cine-ok [data-cine]:not(.is-cine-live) > :is(.welcome-hero, .welcome-actions, .welcome-staff, .gate-jaka, .gate-panel, .start-jaka, .auth-jaka, .ornate-panel) {
+  animation: cine-hold .6s ease 4s both;
+}
+@keyframes cine-hold { from { opacity: 0; } to { opacity: 1; } }
+
+/* Letterbox bars (welcome, first visit): they fold away toward the edges. Folded is their
+   resting state, so they never cover the page once their cue is over */
+.cine-bar { position: absolute; left: 0; z-index: 40; width: 100%; height: 4.5rem; background: #000; scale: 1 0; pointer-events: none; }
+.cine-bar.is-top { top: 0; transform-origin: 50% 0; }
+.cine-bar.is-bottom { bottom: 0; transform-origin: 50% 100%; }
+/* The burst of light the logo comes out of; the logo and tagline paint over it */
+.welcome-hero > :not(.cine-flare) { position: relative; }
+.cine-flare {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  width: 46rem;
+  height: 24rem;
+  margin: -12rem 0 0 -23rem;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 240, 205, .95), rgba(245, 200, 120, .5) 34%, rgba(240, 170, 80, 0) 74%);
+  mix-blend-mode: screen;
+  opacity: 0;
+  pointer-events: none;
+}
+/* The background eases into its parallax scale instead of jumping to it */
+:is(body.is-welcome, body.is-gate-art) .scene-img { transition: opacity .6s ease, scale 1.6s ease; }
+.has-parallax .welcome-hero { translate: calc(var(--plx, 0) * 8 * var(--dp)) calc(var(--ply, 0) * 5 * var(--dp)); }
+.has-parallax .gate-jaka { translate: calc(var(--plx, 0) * -18 * var(--dp)) calc(var(--ply, 0) * -6 * var(--dp)); }
+.has-parallax .gate-panel { translate: calc(var(--plx, 0) * 6 * var(--dp)) calc(var(--ply, 0) * 3 * var(--dp)); }
+
+@media (prefers-reduced-motion: no-preference) {
+  /* A slow camera drift on the welcome and gate pictures */
+  :is(body.is-welcome, body.is-gate-art) .scene { animation: scene-drift 40s ease-in-out infinite alternate; }
+
+  /* Logo: floats a little, a warm glow breathes behind it, and a band of light
+     sweeps across it every 7 s, masked by the logo itself (--logo-src, welcome.php) */
+  .welcome-logo.is-hero { position: relative; isolation: isolate; animation: logo-float 6s ease-in-out infinite; }
+  .welcome-logo.is-hero::before {
+    content: "";
+    position: absolute;
+    inset: 12% 14%;
+    z-index: -1;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(255, 210, 130, .42), rgba(255, 210, 130, 0));
+    animation: logo-breathe 5s ease-in-out infinite;
+    pointer-events: none;
+  }
+  .welcome-logo.is-hero[style*="--logo-src"]::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, rgba(255, 236, 190, 0) 42%, rgba(255, 236, 190, .6) 50%, rgba(255, 236, 190, 0) 58%) 100% 0 / 250% 100% no-repeat;
+    -webkit-mask: var(--logo-src) center / contain no-repeat;
+    mask: var(--logo-src) center / contain no-repeat;
+    mix-blend-mode: screen;
+    animation: logo-sheen 7s ease-in-out 3.4s infinite;
+    pointer-events: none;
+  }
+}
+@keyframes scene-drift { from { scale: 1; } to { scale: 1.06; } }
+@keyframes logo-float { 0%, 100% { translate: 0 0; } 50% { translate: 0 -.3125rem; } }
+@keyframes logo-breathe { 0%, 100% { opacity: .55; scale: .96; } 50% { opacity: 1; scale: 1.04; } }
+@keyframes logo-sheen { 0% { background-position: 100% 0; } 28%, 100% { background-position: 0 0; } }
+
 /* Parallax (game/parallax.js: --plx/--ply in -1…1 on #stage): far layers move
    least. The pictures are scaled up a little so their edges never show. */
 .has-parallax :is(.scene-img, .kenal-bg, .cine-bg) {

@@ -161,10 +161,16 @@ Decided in an interview with the owner; decisions in the decision log, section *
 - [x] GELITA logo in the middle of the HUD and Kembali in the top-right corner on Mulai, Masuk, Daftar, Gerbang; the owner's compass emblem as the crest of every ornate panel; Gerbang on the owner's arch picture with a tall still Jaka (feet darkened into the path), the book and map-scroll emblems on its cards, no panel fill or corner ornaments, the logo instead of the shard plate (PR #196)
 - [ ] After merge, **Bangun ulang paket** if package mode is on
 
+## Cinematic start screens (owner, 20 October 2026)
+
+- [ ] Cinematic entrances on the welcome page, Gerbang, Mulai, Masuk, and Daftar (`game/cine.js`, Web Animations API; Theatre.js considered and not needed), the story scenes' WebGL sparks, mist, and light rays plus parallax on the welcome page and Gerbang, the logo's float, glow, and light sweep; the owner's long Mulai/Start plates (`ui.btn-start*`, 1200 × 220)
+- [ ] After merge, on the server: `php spark gelita:katalog:impor --kunci="ui.btn-start*"` (dry run first), then **Bangun ulang paket** if package mode is on
+
 ## Active branches
 
 Add a row (branch, owner / scope, status) when a session starts a branch; remove it when its PR is merged.
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `sky/vigilant-cerf-lj5cx0` | Cinematic start screens, long Mulai plate | PR open |
 | `pbb/nice-carson-7yeoiz` | Brighter logo, Mulai plate, lettered form buttons, start-page menu (owner, 20 October 2026) | PR open |
