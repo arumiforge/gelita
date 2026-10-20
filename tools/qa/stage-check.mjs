@@ -262,13 +262,19 @@ async function exhaust(page) {
       if (!object) return false;
       await object.click().catch(() => {});
     } else {
-      await page.click('#btn-check').catch(() => {});
+      await page.click('#btn-check', { timeout: 3000 }).catch(() => {});
     }
     await page.waitForTimeout(700);
     const modalButton = await page.$('#modal-layer:not([hidden]) .modal-actions > :last-child');
     if (modalButton) {
       await modalButton.click().catch(() => {});
       await page.waitForTimeout(500);
+    }
+    // A closed batch challenge waits on its screen with Lanjut (#btn-next) instead of leaving by itself
+    const next = await page.$('#btn-next:not([hidden])');
+    if (next) {
+      await next.click().catch(() => {});
+      await page.waitForURL(/\/selesai\//, { timeout: 10000 }).catch(() => {});
     }
   }
   return /\/selesai\//.test(page.url());
