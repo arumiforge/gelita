@@ -14,9 +14,10 @@
  *        else the text brand; hidden with `$hideBrand` on the welcome page,
  *        whose logo is already large) and the section `hudTitle` (e.g. Peta
  *        Kedu), else the region name.
- * Middle: the shard lantern pill on in-game pages; a page sets section
- *        `hudShards` = `off` to leave it out (the result screen shows shards
- *        in its panel).
+ * Middle: the shard plate on in-game pages (the owner's carved frame
+ *        `assets/ui/hud-shards-frame.webp`, the bar filled by the page with
+ *        `hud-shards-fill.webp`); a page sets section `hudShards` = `off` to
+ *        leave it out (the result screen shows shards in its panel).
  * Right: section `hudBadge` first (e.g. the region dialogue's difficulty
  *        badge, partials/region-difficulty), then three round controls on
  *        the `ui.result-hud-control` skin:
@@ -72,7 +73,8 @@ $userName = $signedIn ? (string) ($participant['display_name'] ?: $participant['
   </div>
 
   <?php if ($shards): ?>
-    <div class="hud-shards"><?= $this->include('components/lantern') ?></div>
+    <?php // The owner's shard plate (20 October 2026); absolute URLs, as for Kenali's plates ?>
+    <div class="hud-shards" style="--shards-frame: url(&quot;<?= esc(game_asset_url('ui/hud-shards-frame.webp'), 'attr') ?>&quot;); --shards-fill: url(&quot;<?= esc(game_asset_url('ui/hud-shards-fill.webp'), 'attr') ?>&quot;)"><?= $this->include('components/lantern') ?></div>
   <?php endif ?>
 
   <div class="hud-right hud-controls">

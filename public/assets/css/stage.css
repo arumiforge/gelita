@@ -335,30 +335,120 @@ body.is-auth-art .scene::after { background: linear-gradient(to right, transpare
 .hud-profile .hud-sheet-label { display: grid; }
 .hud-profile-name { overflow: hidden; font-weight: 800; text-overflow: ellipsis; }
 .hud-profile-code { color: var(--ink-dim); font-size: 1.125rem; }
-/* Shard lantern as a pill in the middle on in-game pages (mockup Peta Kedu 04: 533, 16 dp, 79 dp
-   tall). The bar sits beside the count, as wide as the pill allows (owner, 18 October 2026);
-   the count is bold at its earlier sizes. The lantern keeps its <details> breakdown. */
-.hud-shards { position: absolute; top: 1rem; left: 33.3125rem; width: 25rem; }
-.hud-shards .lantern-toggle { position: relative; min-height: 4.9375rem; gap: 0; }
-.hud-shards .lantern-meter {
-  flex: 1;
-  gap: 1rem;
-  height: 4.9375rem;
-  padding: 0 1.5rem 0 4.75rem;
-  border: .125rem solid var(--gold-600);
-  background: rgba(6, 23, 45, .88);
-  box-shadow: 0 .25rem .875rem rgba(0, 0, 0, .4);
+/* Shard plate in the middle on in-game pages (owner, 20 October 2026): the owner's carved frame
+   (assets/ui/hud-shards-frame.webp, 909 × 300, its groove emptied; passed as --shards-frame by
+   components/hud-menu) with the label and count over its body, as in the owner's picture. The
+   page fills the groove from the real count: the owner's glowing texture (--shards-fill) over a
+   warm gradient, a top highlight, an outer glow, a hot leading edge, and a slow light sweep, so
+   the bar is never one flat colour. The crystal on the left replaces the lantern icon and glows
+   brighter per completed region (data-stage 0–3). Everything sits at fractions of the frame, so
+   one rule set serves every size: a size sets --plate-w only. The <details> breakdown stays. */
+.hud-shards { --plate-w: 23.25rem; position: absolute; top: 0; left: 34.1875rem; width: var(--plate-w); }
+.hud-shards .lantern-toggle {
+  position: relative;
+  display: block;
+  min-height: 0;
+  aspect-ratio: 909 / 300;
+  border-radius: 0;
+  background: var(--shards-frame) center / 100% 100% no-repeat;
+  filter: drop-shadow(0 .25rem .5rem rgba(0, 0, 0, .5));
+  transition: filter .2s ease-out;
 }
-.hud-shards .lantern-toggle > .flame { position: absolute; left: 1.125rem; z-index: 1; width: 3rem; height: 3.5rem; background: none; box-shadow: none; }
-.hud-shards .flame .icon { width: 2.25rem; height: 2.25rem; }
-.hud-shards .flame.has-art .art { width: 3rem; height: 3.5rem; }
-.hud-shards .lantern-text { flex: 1; min-width: 0; }
-.hud-shards .lantern-text .eyebrow { color: var(--ink); font-size: 1.125rem; font-weight: 700; letter-spacing: 0; text-transform: none; }
-.hud-shards .lantern-row { gap: 1rem; }
-.hud-shards .lantern-count { color: #AFBDD0; font-family: var(--font-body); font-size: 1.25rem; }
-.hud-shards .lantern-count b { color: var(--ink); font-size: 1.8125rem; }
-.hud-shards .lantern-bar { flex: 1; width: auto; height: .625rem; }
+.hud-shards .lantern-toggle:hover, .hud-shards .lantern[open] .lantern-toggle { filter: drop-shadow(0 .25rem .5rem rgba(0, 0, 0, .5)) brightness(1.1); }
+.hud-shards .lantern-meter,
+.hud-shards .lantern-toggle:hover .lantern-meter,
+.hud-shards .lantern[open] .lantern-meter { position: absolute; inset: 0; display: block; padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none; }
+.hud-shards .lantern-text, .hud-shards .lantern-row { display: contents; }
+.hud-shards .lantern-toggle > .flame { display: none; }
+/* Label left and count right on the plate's upper half; the count's right edge meets the groove's */
+.hud-shards .lantern-text .eyebrow,
+.hud-shards .lantern-count {
+  position: absolute;
+  bottom: 47%;
+  color: #F6E2B8;
+  font-family: var(--font-display);
+  font-size: calc(var(--plate-w) * .04);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0;
+  text-shadow: 0 .0625rem .125rem rgba(0, 0, 0, .9), 0 0 .5rem rgba(255, 196, 110, .35);
+  text-transform: none;
+  white-space: nowrap;
+}
+.hud-shards .lantern-text .eyebrow { left: 28.2%; }
+.hud-shards .lantern-count { right: 13.6%; font-size: calc(var(--plate-w) * .048); }
+.hud-shards .lantern-count b { color: inherit; font-size: inherit; font-weight: inherit; }
+/* The groove (frame px 250–782 × 180–198): the frame's own dark track shows through */
+.hud-shards .lantern-bar {
+  position: absolute;
+  top: 60%;
+  left: 27.5%;
+  width: 58.55%;
+  height: 6.4%;
+  overflow: visible;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+.hud-shards .lantern-bar i {
+  position: relative;
+  /* The texture spans the whole groove, so a short fill shows its start, not a squeezed copy */
+  background:
+    linear-gradient(105deg, transparent 38%, rgba(255, 250, 225, .55) 50%, transparent 62%) -200% 0 / 50% 100% no-repeat,
+    linear-gradient(to bottom, rgba(255, 248, 220, .55), rgba(255, 248, 220, 0) 40%, rgba(120, 50, 0, 0) 70%, rgba(120, 50, 0, .35)),
+    var(--shards-fill) left center / calc(var(--plate-w) * .5855) 100% no-repeat,
+    linear-gradient(to right, #B4600F, #F0A43A 45%, #FFD27A);
+  border-radius: .0625rem;
+  box-shadow: 0 0 calc(var(--plate-w) * .012) rgba(255, 176, 64, .85), 0 0 calc(var(--plate-w) * .035) rgba(255, 140, 30, .45);
+  animation: shard-sweep 4.5s ease-in-out infinite;
+}
+/* The hot leading edge */
+.hud-shards .lantern-bar i::after {
+  content: '';
+  position: absolute;
+  top: -60%;
+  right: calc(var(--plate-w) * -.012);
+  width: calc(var(--plate-w) * .03);
+  height: 220%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 252, 235, .95), rgba(255, 210, 120, .6) 45%, rgba(255, 160, 50, 0));
+  pointer-events: none;
+}
+.hud-shards .lantern-bar i[style*="width: 0%"] { box-shadow: none; }
+.hud-shards .lantern-bar i[style*="width: 0%"]::after { display: none; }
+@keyframes shard-sweep {
+  0%, 30% { background-position: -200% 0, 0 0, left center, 0 0; }
+  100% { background-position: 300% 0, 0 0, left center, 0 0; }
+}
+/* The crystal (frame px 95–170 × 85–225): a glow over it, brighter per completed region */
+.hud-shards .lantern-gem {
+  position: absolute;
+  top: 26%;
+  left: 7.6%;
+  width: 13.6%;
+  height: 52%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 236, 190, .55), rgba(255, 170, 60, .25) 55%, rgba(255, 150, 40, 0));
+  mix-blend-mode: screen;
+  opacity: 0;
+  pointer-events: none;
+}
+.hud-shards .lantern[data-stage="1"] .lantern-gem { opacity: .35; }
+.hud-shards .lantern[data-stage="2"] .lantern-gem { opacity: .7; }
+.hud-shards .lantern[data-stage="3"] .lantern-gem { opacity: 1; animation: gem-pulse 2.8s ease-in-out infinite; }
+@keyframes gem-pulse {
+  50% { opacity: .6; transform: scale(1.12); }
+}
+/* Stage 0: the crystal still sleeps, a soft dark veil over it */
+.hud-shards .lantern[data-stage="0"] .lantern-gem {
+  opacity: 1;
+  background: radial-gradient(closest-side, rgba(10, 18, 32, .6), rgba(10, 18, 32, .3) 60%, rgba(10, 18, 32, 0));
+  mix-blend-mode: multiply;
+}
 .hud-shards .lantern-detail { left: 50%; transform: translateX(-50%); }
+@media (prefers-reduced-motion: reduce) {
+  .hud-shards .lantern-bar i, .hud-shards .lantern[data-stage="3"] .lantern-gem { animation: none; }
+}
 
 /* Compact HUD (every page without hudStyle `menu`): the same parts in the old 56 dp strip,
    so those pages keep their layout. Controls 56 dp with a 46 dp disc; pill 352 × 48 dp, centred. */
@@ -375,18 +465,9 @@ body.is-auth-art .scene::after { background: linear-gradient(to right, transpare
 .is-compact .hud-ctl-flag { width: 2.875rem; height: 2.875rem; }
 .is-compact .hud-lang-sheet { top: 3.75rem; right: 7.5rem; }
 .is-compact .hud-menu-sheet { top: 4rem; right: .5rem; }
-.is-compact .hud-shards { top: .25rem; left: 29rem; width: 22rem; }
-.is-compact .hud-shards .lantern-toggle, .is-compact .hud-shards .lantern-meter { min-height: 3rem; height: 3rem; }
-.is-compact .hud-shards .lantern-meter { gap: .75rem; padding: 0 1.125rem 0 3.25rem; border-width: .0625rem; }
-.is-compact .hud-shards .lantern-toggle > .flame { left: .625rem; width: 2.25rem; height: 2.5rem; }
-.is-compact .hud-shards .flame .icon { width: 1.5rem; height: 1.5rem; }
-.is-compact .hud-shards .flame.has-art .art { width: 2.25rem; height: 2.5rem; }
-.is-compact .hud-shards .lantern-text { line-height: 1.1; }
-.is-compact .hud-shards .lantern-text .eyebrow { font-size: .8125rem; }
-.is-compact .hud-shards .lantern-row { gap: .75rem; }
-.is-compact .hud-shards .lantern-count { font-size: .9375rem; }
-.is-compact .hud-shards .lantern-count b { font-size: 1.25rem; }
-.is-compact .hud-shards .lantern-bar { height: .4375rem; }
+/* The shard plate a little larger than the strip (owner, 20 October 2026): 230 × 76 dp, centred,
+   hanging about 20 dp below it so the text stays readable */
+.is-compact .hud-shards { --plate-w: 14.375rem; top: 0; left: 32.8125rem; }
 .hud-sheet-row.hud-fullscreen .icon-exit { display: none; }
 .hud-sheet-row.hud-fullscreen[aria-pressed="true"] .icon-enter { display: none; }
 .hud-sheet-row.hud-fullscreen[aria-pressed="true"] .icon-exit { display: block; }

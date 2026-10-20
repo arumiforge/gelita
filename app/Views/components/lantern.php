@@ -1,17 +1,22 @@
 <?php
 /**
- * Lentera — meter serpihan cahaya pada HUD (the shard pill in the middle of
- * components/hud-menu).
+ * Lantern: the Serpihan Cahaya (shard) meter in the HUD, the plate in the
+ * middle of components/hud-menu.
  *
- * `shards_total` selalu datang dari COUNT(challenge_nodes aktif) lewat
- * GameProgress::progressSummary(), tidak pernah ditulis sebagai angka tetap.
- * Nyala lentera punya 4 tahap sesuai jumlah wilayah tuntas (0–3).
+ * `shards_total` always comes from COUNT(active challenge_nodes) through
+ * GameProgress::progressSummary(), never from a fixed number. The light has
+ * 4 stages, one per completed region (0–3): the lantern icon's glow, or on
+ * the owner's shard plate (20 October 2026) the crystal's glow
+ * (`.lantern-gem`, see stage.css).
  *
- * Rincian per wilayah memakai <details>, jadi tetap dapat dibuka tanpa
- * JavaScript; hud.js (tahap 6) hanya menambah animasi dan pembaruan angka.
+ * The bar is drawn by the page from the real count (`.lantern-bar i` width);
+ * game/hud.js updateLantern() moves it live after a challenge.
+ *
+ * The per-region breakdown is a <details>, so it opens without JavaScript;
+ * hud.js only adds the animation and the live numbers.
  *
  * @var array<string, mixed>                  $progress
- * @var list<array<string, mixed>>|null       $lantern  wilayah → daftar status node
+ * @var list<array<string, mixed>>|null       $lantern  region → list of node statuses
  */
 $shards = (int) ($progress['shards'] ?? 0);
 $total  = (int) ($progress['shards_total'] ?? 0);
@@ -37,6 +42,8 @@ $shard = static function (array $node, string $inner = ''): string {
            title="<?= esc(lang('Game.lanternToggle'), 'attr') ?>">
     <?php $art = region_art_src('lantern'); ?>
     <span class="flame flame-<?= $stage ?><?= $art !== null ? ' has-art' : '' ?>" aria-hidden="true"><?= art_or_icon($art, 'lantern') ?></span>
+    <?php // The crystal's glow on the shard plate; hidden without the plate ?>
+    <span class="lantern-gem" aria-hidden="true"></span>
     <span class="lantern-meter">
       <span class="lantern-text">
         <span class="eyebrow"><?= esc(lang('Game.shards')) ?></span>
