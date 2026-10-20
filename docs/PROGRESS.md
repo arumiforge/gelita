@@ -167,11 +167,16 @@ Decided in an interview with the owner; decisions in the decision log, section *
 - [x] Cinematic entrances on the welcome page, Gerbang, Mulai, Masuk, and Daftar (`game/cine.js`, Web Animations API; Theatre.js considered and not needed), the story scenes' WebGL sparks, mist, and light rays plus parallax on the welcome page and Gerbang, the logo's float, glow, and light sweep; the owner's long Mulai/Start plates (`ui.btn-start*`, 1200 × 220) (PR #198)
 - [ ] After merge, on the server: `php spark gelita:katalog:impor --kunci="ui.btn-start*"` (dry run first), then **Bangun ulang paket** if package mode is on
 
+## Start-page smoothness and light (owner, 20 October 2026)
+
+- [ ] Analysis of the start-page animation (notes in the decision log) and its fixes: no filter animations, gentler and slower cues, wait for the pictures, no second entrance on slow connections, WebGL fetched during the entrance and faded in at lower quality, the logo sweep on the compositor; the welcome light follows the sun of the background picture (`findLight()`). After merge, **Bangun ulang paket** if package mode is on; owner checks the frame rate on a class tablet
+
 ## Active branches
 
 Add a row (branch, owner / scope, status) when a session starts a branch; remove it when its PR is merged.
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `sky/vigilant-cerf-lj5cx0` | Start-page smoothness and light | PR open |
 | `pbb/nice-carson-7yeoiz` | Brighter logo, Mulai plate, lettered form buttons, start-page menu (owner, 20 October 2026) | PR open |
 | `claude/redesain-auth-pages-1f8h8r` | Back plate, wide sign-up card in columns, login without panel (owner, 20 October 2026) | PR open |

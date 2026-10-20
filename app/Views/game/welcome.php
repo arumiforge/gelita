@@ -16,8 +16,9 @@
  * Cinematic entrance (game/cine.js, `data-cine="welcome"`, owner 20 October
  * 2026): letterbox bars, the background pushing in from dark, the logo coming
  * into focus behind a flare, then tagline and Mulai; afterwards a light sweep
- * across the logo, a slow drift of the background, and the WebGL sparks and
- * light rays of the story scenes (`screen_fx_attr()`).
+ * across the logo (`.logo-sheen`), a slow drift of the background, and the
+ * WebGL sparks and light rays of the story scenes (`screen_fx_attr()`), the
+ * rays coming from the light of the background picture (its sun).
  *
  * Asset package (Stage 3): `data-package-gate="link"` + `data-package-start`
  * let game/package-gate.js point Mulai at `/siapkan` while package mode is on
@@ -49,6 +50,7 @@ $btnStart = media_key_src_locale('ui.btn-start', $locale);
       <h1 class="welcome-logo<?= $logoHero !== null ? ' is-hero' : '' ?>" style="--logo-src: url(&quot;<?= esc($logo, 'attr') ?>&quot;)">
         <img src="<?= esc($logo, 'attr') ?>" alt="<?= esc(lang('Game.appName'), 'attr') ?>"
              <?= $logoHero !== null ? 'width="1600" height="600"' : 'width="560"' ?> fetchpriority="high">
+        <?php if ($logoHero !== null): ?><span class="logo-sheen" aria-hidden="true"></span><?php endif ?>
       </h1>
       <p class="welcome-tagline"><?= esc(lang('Game.tagline')) ?></p>
     <?php else: ?>

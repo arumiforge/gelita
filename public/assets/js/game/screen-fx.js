@@ -11,12 +11,18 @@
  *   output scene + bloom → canvas, alpha = max(fog, light) so the light
  *          brightens the page underneath instead of covering it
  *
+ * Options for pages outside the story scenes (game/cine.js): `light` puts the
+ * rays' source and halo on a point of the background picture (the welcome
+ * page's sun), and `quality` starts one step lower, so a first page does not
+ * spend four slow seconds at full resolution before the watchdog steps down.
+ *
  * Script effects (`dialogues.effect`, setEffect()):
  *   fog       the mist thickens, the sparks fade
  *   fog-lift  thick mist clears, sparks and a little light come through
  *   glow      light rays from above with a warm halo, brighter sparks
  *   flash     a short burst of sparks and light (the CSS flash stays)
  *   dim       the sparks dim (the CSS dim stays)
+ *   sun       rays from the picture's light source ease in over 4 s and stay soft
  *   shake / none  back to the calm base: a thin mist and slow sparks
  * While the layer runs the root has `.has-fx3d`, and cinematic.css hides the
  * CSS fog, fog-lift, and glow and the CSS light motes it replaces.
@@ -90,21 +96,33 @@ void main() {
   gl_FragColor = vec4(col * a, a);
 }`;
 
+// Rays fan out from uOrigin (uv, y up). The story scenes keep a source above the
+// top edge whose rays fall in a downward cone (uCone 1) with a halo mid-screen;
+// a page with its own light source (the sun of the welcome picture, createScreenFx
+// option `light`) puts origin and halo on it and lets the rays spread all round.
 const RAYS_FRAGMENT = /* glsl */ `
 uniform float uTime;
 uniform float uRays;
 uniform float uAspect;
+uniform vec2 uOrigin;
+uniform vec2 uHalo;
+uniform float uCone;
+uniform float uHaloScale;
 varying vec2 vUv;
 void main() {
-  vec2 d = vec2((vUv.x - 0.5) * uAspect, vUv.y - 1.18);
+  vec2 d = vec2((vUv.x - uOrigin.x) * uAspect, vUv.y - uOrigin.y);
   float ang = atan(d.x, -d.y);
   float dist = length(d);
   float r = pow(0.5 + 0.5 * sin(ang * 13.0 + uTime * 0.35), 6.0);
   r += pow(0.5 + 0.5 * sin(ang * 7.3 - uTime * 0.22 + 1.7), 8.0) * 0.8;
   r += pow(0.5 + 0.5 * sin(ang * 21.0 + uTime * 0.5 + 3.1), 10.0) * 0.5;
   float fall = smoothstep(1.55, 0.2, dist) * smoothstep(0.0, 0.25, dist);
-  float cone = smoothstep(0.95, 0.1, abs(ang));
-  float halo = exp(-pow(length(vec2((vUv.x - 0.5) * uAspect, vUv.y - 0.58)) * 2.2, 2.0)) * 0.22;
+  float cone = mix(1.0, smoothstep(0.95, 0.1, abs(ang)), uCone);
+  // Around a picture's own light (uCone 0) the rays mostly rise and spread sideways;
+  // those falling across the land below it stay faint
+  float rise = mix(0.3, 1.0, smoothstep(-0.7, 0.25, d.y / max(dist, 0.001)));
+  cone *= mix(rise, 1.0, uCone);
+  float halo = exp(-pow(length(vec2((vUv.x - uHalo.x) * uAspect, vUv.y - uHalo.y)) * uHaloScale, 2.0)) * 0.22;
   float i = (r * fall * cone * 0.3 + halo) * uRays;
   gl_FragColor = vec4(vec3(1.0, 0.86, 0.58) * i, 0.0);
 }`;
@@ -202,11 +220,12 @@ function channel(initial) {
 
 /**
  * @param {HTMLElement} root narrated scene with `data-fx3d`
- * @param {{ threeUrl: string, onFail?: () => void }} options
+ * @param {{ threeUrl: string, onFail?: () => void, light?: { x: number, y: number } | null, quality?: number }} options
+ *        light: point of the stage in 0…1 from the left and from the top
  * @returns {Promise<{ setEffect: (name: string | null) => void, pause: () => void,
  *                     resume: () => void, destroy: () => void } | null>}
  */
-export async function createScreenFx(root, { threeUrl, onFail = null }) {
+export async function createScreenFx(root, { threeUrl, onFail = null, light = null, quality: startQuality = 0 }) {
   // three.js r163+ needs WebGL 2: without it, skip the 2 MB download and three's console errors
   const probe = document.createElement('canvas').getContext('webgl2');
   if (!probe) return null;
@@ -256,7 +275,14 @@ export async function createScreenFx(root, { threeUrl, onFail = null }) {
   };
 
   const fogUniforms = { ...shared, uFog: { value: BASE.fog }, uShift: { value: new THREE.Vector2() } };
-  const raysUniforms = { ...shared, uRays: { value: BASE.rays } };
+  const raysUniforms = {
+    ...shared,
+    uRays: { value: BASE.rays },
+    uOrigin: { value: light ? new THREE.Vector2(light.x, 1 - light.y) : new THREE.Vector2(0.5, 1.18) },
+    uHalo: { value: light ? new THREE.Vector2(light.x, 1 - light.y) : new THREE.Vector2(0.5, 0.58) },
+    uCone: { value: light ? 0 : 1 },
+    uHaloScale: { value: light ? 3.2 : 2.2 },
+  };
   const sparkUniforms = { uTime: shared.uTime, uSpark: { value: BASE.spark }, uPixel: { value: 1 }, uShift: { value: new THREE.Vector2() } };
 
   const scene = new THREE.Scene();
@@ -311,7 +337,7 @@ export async function createScreenFx(root, { threeUrl, onFail = null }) {
 
   // ------------------------------------------------------------ size and quality
 
-  let quality = 0;
+  let quality = Math.min(Math.max(0, startQuality), QUALITY.length - 1);
   let width = 0;
   let height = 0;
 
@@ -363,6 +389,11 @@ export async function createScreenFx(root, { threeUrl, onFail = null }) {
       case 'dim':
         levels.spark.track(now, [[1600, 0.3]]);
         levels.rays.track(now, [[1200, 0]]);
+        break;
+      case 'sun':
+        levels.rays.track(now, [[4000, 0.6]]);
+        levels.spark.track(now, [[3000, 0.9]]);
+        levels.fog.track(now, [[3000, BASE.fog]]);
         break;
       default:
         levels.fog.track(now, [[1800, BASE.fog]]);
