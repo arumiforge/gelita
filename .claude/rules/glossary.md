@@ -48,7 +48,8 @@ One concept, one word, in every layer. "UI (id)" is what users read; "Code (en)"
 | kartu tantangan (peta wilayah) | `challenge card` | `.node-card` in `.map-side`; engine picture `public/assets/ui/node-card-{engine}.webp`, in sepia inside the green scarf frame `node-card-frame.webp` (`.has-frame`, since 20 Oct 2026) |
 | lambang kompas (panel berornamen) | `crest`, `compass crest` | `public/assets/ui/ornate-crest.webp` (the owner's emblem, 20 Oct 2026), `.ornate-crest` in `partials/ornate-frame`, `.gate-crest` on `/gerbang` |
 | lambang kartu gerbang | `gate emblem` | `public/assets/ui/gate-icon-{intro,map}.webp` (book, map scroll), `.start-emblem` on the two `/gerbang` cards |
-| logo di tengah HUD | `logo-centre` | section `hudLayout` = `logo-centre` (`.is-logo-centre`): `/mulai`, `/masuk`, `/daftar/1–3`, `/gerbang`; no shard plate; Kembali (`hudBack`) in the top-right corner (`.hud-end`) |
+| logo di tengah HUD | `logo-centre` | section `hudLayout` = `logo-centre` (`.is-logo-centre`): `/mulai`, `/masuk`, `/daftar/1–3`, `/gerbang`; no shard plate; Kembali (`hudBack`) on the navy plate in the top-left corner (`.hud-back-plate`, since 20 Oct 2026) |
+| tombol Kembali berpapan (HUD) | `back plate` | `a.hud-back-plate` in the HUD's top-left corner on the `logo-centre` pages (Mulai, Masuk, Daftar, Gerbang), on the navy plate `kenal-plate-navy.webp` (`--plate-navy`), since 20 Oct 2026 |
 | efek sinematik pembuka | `cinematic entrance`, `cue sheet` | `game/cine.js`, `data-cine` = `welcome`/`gate`/`account`; `html.cine-ok`, `.is-cine-live`, `.is-cine-done`; session key `gelita.cine.seen` |
 | cahaya gambar latar (matahari) | `picture light`, `light source` | `findLight()` in `game/cine.js`; `createScreenFx(…, { light })`, effect `sun` (welcome page) |
 | papan tombol hijau | `green plate` | `public/assets/ui/plate-green.webp` (`--plate-green`): Lihat hasil on the region map |

@@ -26,12 +26,20 @@
  * @var string|null                $label         label kolom sandi
  * @var string|null                $usernameField id input nama pengguna (registrasi)
  * @var string|null                $username      nama pengguna tetap (ganti sandi)
+ * @var bool|null                  $split         true wraps the parts in two boxes for a
+ *                                                column layout (/daftar/3): `.pw-main` (password,
+ *                                                meter, level, error) and `.pw-aside` (rules,
+ *                                                repeat field); same order for the tab key
  */
 $errors = is_array($errors ?? null) ? $errors : [];
 $label  = $label ?? lang('Auth.password');
 $max    = (int) ($policy['max_length'] ?? 64);
+$split  = ! empty($split);
+$pwError = isset($errors['password'])
+    ? '<p class="field-error" id="pw-error">' . esc($errors['password']) . '</p>'
+    : '';
 ?>
-<div class="password-field"
+<div class="password-field<?= $split ? ' is-split' : '' ?>"
      data-username-field="<?= esc($usernameField ?? 'username', 'attr') ?>"
      <?= isset($username) ? 'data-username="' . esc($username, 'attr') . '"' : '' ?>
      data-level-weak="<?= esc(lang('Auth.levelWeak'), 'attr') ?>"
@@ -42,6 +50,7 @@ $max    = (int) ($policy['max_length'] ?? 64);
      data-match-ok="<?= esc(lang('Auth.matchOk'), 'attr') ?>"
      data-show-label="<?= esc(lang('Auth.showPassword'), 'attr') ?>"
      data-hide-label="<?= esc(lang('Auth.hidePassword'), 'attr') ?>">
+  <?php if ($split): ?><div class="pw-main"><?php endif ?>
 
   <div class="field<?= isset($errors['password']) ? ' has-error' : '' ?>">
     <label for="password"><?= esc($label) ?> <span class="req" aria-hidden="true">*</span></label>
@@ -58,6 +67,11 @@ $max    = (int) ($policy['max_length'] ?? 64);
 
   <div class="pw-meter" aria-hidden="true"><i data-level="none"></i></div>
   <p class="pw-level" id="pw-level" aria-live="polite"></p>
+  <?php if ($split): ?>
+  <?= $pwError ?>
+  </div>
+  <div class="pw-aside">
+  <?php endif ?>
 
   <p class="pw-rules-title" id="pw-rules-title"><?= esc(lang('Auth.rulesTitle')) ?></p>
   <ul class="pw-rules" id="pw-rules" aria-labelledby="pw-rules-title">
@@ -67,9 +81,7 @@ $max    = (int) ($policy['max_length'] ?? 64);
     <li data-rule="digit"><?= esc(lang('Auth.ruleDigit')) ?></li>
     <li data-rule="symbol"><?= esc(lang('Auth.ruleSymbol')) ?></li>
   </ul>
-  <?php if (isset($errors['password'])): ?>
-    <p class="field-error" id="pw-error"><?= esc($errors['password']) ?></p>
-  <?php endif ?>
+  <?php if (! $split): ?><?= $pwError ?><?php endif ?>
 
   <div class="field<?= isset($errors['password_confirm']) ? ' has-error' : '' ?>">
     <label for="password_confirm"><?= esc(lang('Auth.passwordRepeat')) ?> <span class="req" aria-hidden="true">*</span></label>
@@ -81,6 +93,7 @@ $max    = (int) ($policy['max_length'] ?? 64);
       <p class="field-error" id="pw-confirm-error"><?= esc($errors['password_confirm']) ?></p>
     <?php endif ?>
   </div>
+  <?php if ($split): ?></div><?php endif ?>
 </div>
 <script type="application/json" id="password-policy"><?= json_encode(
     $policy,

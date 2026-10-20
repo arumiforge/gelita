@@ -34,11 +34,9 @@ $country = $val('country_code') ?: 'ID';
 
 <?= $this->section('content') ?>
 <section class="register" data-step="2" data-package-gate="page" data-package-next="daftar/2" data-cine="account">
-  <?php /* Jaka waving, one still picture (owner, 18 October 2026), standing on the picture's path */ ?>
-  <img class="auth-jaka stage-box" src="<?= esc(asset_url_versioned('ui/jaka-wave.webp'), 'attr') ?>" alt="" width="658" height="1490" decoding="async" draggable="false">
-
   <div class="register-panel ornate-panel stage-box">
-    <?= $this->include('partials/ornate-frame') ?>
+    <?php // Corner flourishes only: no compass crest on the wide card (owner, 20 October 2026) ?>
+    <?= view('partials/ornate-frame', ['crest' => false]) ?>
     <?= $this->include('game/register/_head') ?>
 
     <form method="post" action="<?= base_url('daftar/2') ?>" class="form register-form" data-step="2" autocomplete="off">
@@ -46,6 +44,9 @@ $country = $val('country_code') ?: 'ID';
       <div class="register-fields stage-scroll">
       <?= view('partials/form-errors', ['errors' => $errors]) ?>
 
+      <?php // Two columns, region and school, so the whole step fits the card (owner, 20 October 2026) ?>
+      <div class="register-grid">
+      <div class="register-col">
       <div class="field<?= $invalid('country_code') ?>">
         <label for="country_code"><?= esc(lang('Game.country')) ?> <span class="req" aria-hidden="true">*</span></label>
         <select id="country_code" name="country_code" required data-region-country>
@@ -90,7 +91,9 @@ $country = $val('country_code') ?: 'ID';
                value="<?= esc($val('country_other'), 'attr') ?>">
         <?php if ($err('country_other')): ?><p class="field-error"><?= esc($err('country_other')) ?></p><?php endif ?>
       </div>
+      </div>
 
+      <div class="register-col">
       <!-- Sekolah: NPSN di provinsi berdirektori, nama bebas di tempat lain -->
       <div class="field school-npsn<?= $invalid('school_npsn') ?>" data-school-npsn
            data-checking="<?= esc(lang('Game.schoolNpsnChecking'), 'attr') ?>"
@@ -131,6 +134,8 @@ $country = $val('country_code') ?: 'ID';
                value="<?= esc($val('school_name'), 'attr') ?>">
         <p class="field-help" id="school-help"><?= esc(lang('Game.schoolHelp')) ?></p>
         <?php if ($err('school_name')): ?><p class="field-error"><?= esc($err('school_name')) ?></p><?php endif ?>
+      </div>
+      </div>
       </div>
 
       </div>

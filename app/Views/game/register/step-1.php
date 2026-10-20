@@ -29,11 +29,9 @@ $focus   = static fn (string $f): string => $first === $f ? ' autofocus' : '';
 
 <?= $this->section('content') ?>
 <section class="register" data-step="1" data-package-gate="page" data-package-next="daftar/1" data-cine="account">
-  <?php /* Jaka waving, one still picture (owner, 18 October 2026), standing on the picture's path */ ?>
-  <img class="auth-jaka stage-box" src="<?= esc(asset_url_versioned('ui/jaka-wave.webp'), 'attr') ?>" alt="" width="658" height="1490" decoding="async" draggable="false">
-
   <div class="register-panel ornate-panel stage-box">
-    <?= $this->include('partials/ornate-frame') ?>
+    <?php // Corner flourishes only: no compass crest on the wide card (owner, 20 October 2026) ?>
+    <?= view('partials/ornate-frame', ['crest' => false]) ?>
     <?= $this->include('game/register/_head') ?>
 
     <form method="post" action="<?= base_url('daftar/1') ?>" class="form register-form" data-step="1" autocomplete="off">
@@ -41,6 +39,9 @@ $focus   = static fn (string $f): string => $first === $f ? ' autofocus' : '';
       <div class="register-fields stage-scroll">
       <?= view('partials/form-errors', ['errors' => $errors]) ?>
 
+      <?php // Two columns, so the whole step fits the card without scrolling (owner, 20 October 2026) ?>
+      <div class="register-grid">
+      <div class="register-col">
       <div class="field<?= $invalid('display_name') ?>">
         <label for="display_name"><?= esc(lang('Game.displayName')) ?> <span class="req" aria-hidden="true">*</span></label>
         <input type="text" id="display_name" name="display_name" required minlength="2" maxlength="150"
@@ -65,6 +66,9 @@ $focus   = static fn (string $f): string => $first === $f ? ' autofocus' : '';
           <p class="class-fixed"><?= icon('lock') ?> <?= esc(class_label(config('Gelita')->registrationClass, service('request')->getLocale())) ?></p>
         </div>
       </div>
+      </div>
+
+      <div class="register-col">
 
       <fieldset class="field<?= $invalid('gender') ?>">
         <legend class="label"><?= esc(lang('Game.gender')) ?> <span class="req" aria-hidden="true">*</span></legend>
@@ -87,6 +91,8 @@ $focus   = static fn (string $f): string => $first === $f ? ' autofocus' : '';
           'help'    => lang('Game.avatarHelp'),
           'error'   => $err('avatar_no'),
       ]) ?>
+      </div>
+      </div>
 
       </div>
 

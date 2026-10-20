@@ -91,8 +91,11 @@ final class RegisterWizardTest extends CIUnitTestCase
         $this->send(Method::GET, 'daftar/1')->assertOK();   // kembali ke langkah selesai tetap boleh
     }
 
-    /** Owner redesign (18 October 2026): the gate picture, Jaka as one still picture, the ornate panel on the right. */
-    public function testStepsShowTheGatePictureWithTheOrnatePanel(): void
+    /**
+     * Owner redesign (20 October 2026): one wide ornate card on the gate picture, without Jaka
+     * or the compass crest, its fields in columns so a whole step fits without scrolling.
+     */
+    public function testStepsShowOneWideCardWithColumns(): void
     {
         $_SESSION[RegisterController::WIZARD] = ['1' => self::ABOUT, '2' => self::SCHOOL];
 
@@ -100,12 +103,40 @@ final class RegisterWizardTest extends CIUnitTestCase
             $html = (string) $this->send(Method::GET, 'daftar/' . $step)->getBody();
 
             $this->assertStringContainsString('register-panel ornate-panel stage-box', $html, "step {$step}");
-            $this->assertStringContainsString('class="ornate"', $html, "step {$step}: gold frame");
+            $this->assertStringContainsString('class="ornate"', $html, "step {$step}: gold corners");
+            $this->assertStringNotContainsString('ornate-crest', $html, "step {$step}: no compass crest");
             $this->assertStringNotContainsString('panel-parchment', $html, "step {$step}");
             $this->assertStringContainsString('src="' . asset_url_versioned('ui/bg-auth-register.webp') . '"', $html, "step {$step}");
             $this->assertStringNotContainsString('data-character="jaka"', $html, "step {$step}: no animated figure");
-            $this->assertSame(1, substr_count($html, 'class="auth-jaka stage-box"'), "step {$step}: Jaka once, still");
+            $this->assertStringNotContainsString('auth-jaka', $html, "step {$step}: no Jaka");
+            $this->assertStringContainsString('class="register-grid', $html, "step {$step}: fields in columns");
         }
+
+        foreach (['1', '2'] as $step) {
+            $html = (string) $this->send(Method::GET, 'daftar/' . $step)->getBody();
+
+            $this->assertSame(2, substr_count($html, 'class="register-col"'), "step {$step}: two columns");
+        }
+    }
+
+    /** /daftar/3: the password field comes split into its inputs and its rules; the tab order stays name, password, repeat, consent. */
+    public function testAccountStepSplitsThePasswordFieldInReadingOrder(): void
+    {
+        $_SESSION[RegisterController::WIZARD] = ['1' => self::ABOUT, '2' => self::SCHOOL];
+
+        $html  = (string) $this->send(Method::GET, 'daftar/3')->getBody();
+        $main  = (int) strpos($html, 'class="pw-main"');
+        $aside = (int) strpos($html, 'class="pw-aside"');
+
+        $this->assertStringContainsString('class="register-grid register-grid-account"', $html);
+        $this->assertStringContainsString('class="password-field is-split"', $html);
+        $this->assertGreaterThan(0, $main);
+        $this->assertGreaterThan($main, (int) strpos($html, 'id="password"'));
+        $this->assertGreaterThan((int) strpos($html, 'id="password"'), $aside);
+        $this->assertGreaterThan($aside, (int) strpos($html, 'id="pw-rules"'));
+        $this->assertGreaterThan((int) strpos($html, 'id="pw-rules"'), (int) strpos($html, 'id="password_confirm"'));
+        $this->assertGreaterThan((int) strpos($html, 'id="password_confirm"'), (int) strpos($html, 'name="assent"'));
+        $this->assertLessThan((int) strpos($html, 'id="password"'), (int) strpos($html, 'id="username"'));
     }
 
     /** Owner, 20 October 2026: Berikutnya and Daftar are the lettered lantern plates, without text of their own. */
@@ -128,7 +159,7 @@ final class RegisterWizardTest extends CIUnitTestCase
         }
     }
 
-    /** One HUD everywhere (owner, 18 October 2026); the logo in its middle and Back in the top-right corner, after the controls (20 October 2026). */
+    /** One HUD everywhere (owner, 18 October 2026); the logo in its middle and Back on the navy plate in the top-left corner (20 October 2026). */
     public function testBackSitsInTheHudCornerWithTheLogoInTheMiddle(): void
     {
         $back = ['1' => 'mulai', '2' => 'daftar/1', '3' => 'daftar/2'];
@@ -140,9 +171,10 @@ final class RegisterWizardTest extends CIUnitTestCase
             $hud  = substr($html, $at, (int) strpos($html, '</header>') - $at);
 
             $this->assertNotSame(0, $at, "step {$step}: logo in the middle");
-            $this->assertStringContainsString('class="btn btn-quiet hud-back" href="' . base_url($target) . '"', html_entity_decode($hud), "step {$step}");
-            $this->assertLessThan(strpos($hud, 'hud-back'), strpos($hud, 'hud-menu-sheet'), "step {$step}: the controls, then Back");
-            $this->assertLessThan(strpos($hud, 'hud-end'), strpos($hud, 'hud-brand'), "step {$step}: the brand stays on its own");
+            $this->assertStringContainsString('class="hud-back-plate" href="' . base_url($target) . '"', html_entity_decode($hud), "step {$step}");
+            $this->assertLessThan(strpos($hud, 'hud-controls'), strpos($hud, 'hud-back-plate'), "step {$step}: Back, then the controls");
+            $this->assertLessThan(strpos($hud, 'hud-back-plate'), strpos($hud, 'hud-brand'), "step {$step}: the brand stays on its own");
+            $this->assertStringNotContainsString('hud-end', $hud, "step {$step}: Back is not beside the controls");
             $this->assertStringNotContainsString('hud-shards', $hud, "step {$step}: no shards before login");
 
             $actions = substr($html, (int) strpos($html, 'register-actions'));

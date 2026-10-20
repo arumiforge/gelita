@@ -504,6 +504,43 @@ body.is-auth-art .scene::after { background: linear-gradient(to right, transpare
 }
 .is-logo-centre .hud-identity { top: .25rem; left: 50%; height: 3rem; transform: translateX(-50%); }
 .is-logo-centre .hud-identity-logo { height: 3rem; }
+/* logo-centre: Back alone in the top-left corner on the owner's navy plate (as Kembali on
+   Kenali; owner, 20 October 2026). border-image keeps both ornamented ends (115 of the
+   picture's 131 px height) at their shape and stretches only the plain middle; 48 dp tall,
+   centred in the 56 dp strip. */
+.hud-back-plate {
+  position: absolute;
+  top: .25rem;
+  left: .75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .25rem;
+  height: 3rem;
+  padding: 0 .25rem;
+  border-style: solid;
+  border-width: 0 2.625rem;
+  border-image: var(--plate-navy) 0 115 fill / 0 2.625rem stretch;
+  color: #F3D58A;
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: .02em;
+  line-height: 1;
+  text-decoration: none;
+  text-shadow: 0 1px .1875rem rgba(0, 0, 0, .8);
+  white-space: nowrap;
+  filter: drop-shadow(0 .125rem .375rem rgba(6, 12, 24, .55));
+  -webkit-touch-callout: none;
+  user-select: none;
+  transition: filter .15s, transform .15s;
+}
+.hud-back-plate .icon { width: 1.125rem; height: 1.125rem; margin-left: -1rem; }
+@media (hover: hover) {
+  .hud-back-plate:hover { color: #FFE7A8; filter: drop-shadow(0 .125rem .375rem rgba(6, 12, 24, .55)) brightness(1.12); }
+}
+.hud-back-plate:active { transform: scale(.96); filter: drop-shadow(0 .125rem .375rem rgba(6, 12, 24, .55)) brightness(1.18); }
+.hud-back-plate:focus-visible { outline: .1875rem solid var(--gold-300); outline-offset: .125rem; }
 /* Tall HUD (hudStyle `tall`, the region map; owner 20 October 2026): an 84 dp band with
    touch-friendly 72 dp controls on a 60 dp disc, a larger logo and region name, and the shard
    plate centred with room above and below */
@@ -672,17 +709,17 @@ body.is-auth-art .scene::after { background: linear-gradient(to right, transpare
 
 /* ---------- Masuk `/masuk`, Ganti sandi `/ganti-sandi` (owner redesign, 18 October 2026):
    the panel sits in the empty right side of the owner's picture (x ≥ 720), Jaka on the path.
-   Ganti sandi ends at 640 above the nav bar (Profil) ---------- */
+   Since 20 October 2026 the login form has no panel, so its box runs from under the HUD to
+   near the bottom. Ganti sandi ends at 640 above the nav bar (Profil) ---------- */
 /* Jaka (one still picture, 658 × 1490) stands on the stone path, feet at y 712 */
 .auth-jaka      { --x: 340; --y: 112; --w: 265; --h: 600; }
-.login-panel    { --x: 720; --y: 88;  --w: 512; --h: 584; }
+.login-panel    { --x: 720; --y: 72;  --w: 512; --h: 624; }
 .password-panel { --x: 720; --y: 72;  --w: 512; --h: 568; }
 
-/* ---------- Daftar `/daftar/1…3` (owner redesign, 18 October 2026): the panel in the
-   empty right side of the gate picture (x ≥ 656), Jaka on the path; inside the panel the head is
-   32–96 (below the crest), the fields scroll, the button bar is the last 80 ---------- */
-.register .auth-jaka { --x: 372; }
-.register-panel { --x: 656; --y: 72; --w: 576; --h: 600; }
+/* ---------- Daftar `/daftar/1…3` (owner redesign, 20 October 2026): one wide card, centred
+   under the HUD, no Jaka; inside it the head is 12–76, the fields fill the middle, the button
+   bar is the last 80 ---------- */
+.register-panel { --x: 40; --y: 64; --w: 1200; --h: 632; }
 
 /* ---------- Siapkan GELITA `/siapkan` and Periksa paket `/periksa-paket` (asset package
    Stage 3): one full-width panel below the HUD, no character (owner, 18 October 2026) ---------- */

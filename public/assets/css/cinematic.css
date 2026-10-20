@@ -406,7 +406,7 @@
    the module adds .is-cine-live and plays its cues; should it never run, they
    fade in after 4 s. Under prefers-reduced-motion nothing is held. */
 .cine-ok .stage:has([data-cine]:not(.is-cine-live)) > :is(.scene, .hud),
-.cine-ok [data-cine]:not(.is-cine-live) > :is(.welcome-hero, .welcome-actions, .welcome-staff, .gate-jaka, .gate-panel, .start-jaka, .auth-jaka, .ornate-panel) {
+.cine-ok [data-cine]:not(.is-cine-live) > :is(.welcome-hero, .welcome-actions, .welcome-staff, .gate-jaka, .gate-panel, .start-jaka, .auth-jaka, .ornate-panel, .login-panel) {
   animation: cine-hold .6s ease 4s both;
 }
 @keyframes cine-hold { from { opacity: 0; } to { opacity: 1; } }

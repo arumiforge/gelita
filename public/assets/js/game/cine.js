@@ -85,7 +85,7 @@ const SHEETS = {
     cues: [
       ['.scene', { opacity: [0, 1], scale: [1.05, 1] }, 0, 1900],
       [':is(.auth-jaka, .start-jaka)', { opacity: [0, 1], translate: ['0 1rem', '0 0'] }, 300, 1300],
-      ['.ornate-panel', { opacity: [0, 1], translate: ['0 .75rem', '0 0'] }, 400, 1100],
+      [':is(.ornate-panel, .login-panel)', { opacity: [0, 1], translate: ['0 .75rem', '0 0'] }, 400, 1100],
       ['.ornate-crest', { opacity: [0, 1], scale: [0.6, 1], rotate: ['-20deg', '0deg'] }, 900, 1100, BACK],
       ['.hud', { opacity: [0, 1] }, 700, 900],
     ],
@@ -93,7 +93,7 @@ const SHEETS = {
 };
 
 /** Parts the CSS holds hidden until `.is-cine-live` (cinematic.css): the quick fade brings them in. */
-const HELD = '.scene, .hud, [data-cine] > :is(.welcome-hero, .welcome-actions, .welcome-staff, .gate-jaka, .gate-panel, .start-jaka, .auth-jaka, .ornate-panel)';
+const HELD = '.scene, .hud, [data-cine] > :is(.welcome-hero, .welcome-actions, .welcome-staff, .gate-jaka, .gate-panel, .start-jaka, .auth-jaka, .ornate-panel, .login-panel)';
 
 function seenBefore(key) {
   try {
