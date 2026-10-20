@@ -158,7 +158,8 @@ Decided in an interview with the owner; decisions in the decision log, section *
 
 ## Account pages and gate redesign (owner, 20 October 2026)
 
-- [ ] GELITA logo in the middle of the HUD and Kembali in the top-right corner on Mulai, Masuk, Daftar, Gerbang; the owner's compass emblem as the crest of every ornate panel; Gerbang on the owner's arch picture with a tall still Jaka (feet darkened into the path), the book and map-scroll emblems on its cards, no panel fill or corner ornaments, the logo instead of the shard plate. After merge, **Bangun ulang paket** if package mode is on
+- [x] GELITA logo in the middle of the HUD and Kembali in the top-right corner on Mulai, Masuk, Daftar, Gerbang; the owner's compass emblem as the crest of every ornate panel; Gerbang on the owner's arch picture with a tall still Jaka (feet darkened into the path), the book and map-scroll emblems on its cards, no panel fill or corner ornaments, the logo instead of the shard plate (PR #196)
+- [ ] After merge, **Bangun ulang paket** if package mode is on
 
 ## Active branches
 
@@ -167,4 +168,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 | Branch | Owner / scope | Status |
 |---|---|---|
 | `pbb/nice-carson-7yeoiz` | Brighter logo, Mulai plate, lettered form buttons, start-page menu (owner, 20 October 2026) | PR open |
-| `sky/vigilant-cerf-lj5cx0` | Account pages and gate redesign | PR open |
