@@ -80,24 +80,6 @@ class ChallengeAttemptModel extends Model
     }
 
     /**
-     * Nodes this session has started but not finished: an attempt still
-     * `in_progress` (the gold "started" badge on the maps and the lantern).
-     *
-     * @return array<int, true> node id → true
-     */
-    public function startedNodeIds(int $sessionId): array
-    {
-        $rows = $this->builder()
-            ->select('challenge_node_id')
-            ->where('session_id', $sessionId)
-            ->where('status', 'in_progress')
-            ->get()
-            ->getResultArray();
-
-        return array_fill_keys(array_map(static fn (array $row): int => (int) $row['challenge_node_id'], $rows), true);
-    }
-
-    /**
      * Variasi yang sudah pernah didapat seorang siswa pada satu node, di semua
      * sesinya (Dok 2 §3.2) — termasuk pengerjaan yang ditinggalkan.
      *

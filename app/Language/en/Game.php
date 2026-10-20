@@ -51,7 +51,6 @@ return [
     'shardDone'       => 'Done',
     'shardOpen'       => 'Open',
     'shardLocked'     => 'Locked',
-    'shardStarted'    => 'In progress',
     'mapKedu'         => 'Kedu Map',
 
     // Characters
@@ -257,6 +256,7 @@ return [
     'mapSelected'      => 'Selected region',
     'mapTapHint'       => 'Tap a region to explore',
     'kenali'           => 'Get to know',
+    'watchRegionOpening' => 'Watch the opening story',
     // Result screen redesign (18 October 2026)
     'resultMenu'       => 'Menu',
     'resultLanguage'   => 'Choose a language',

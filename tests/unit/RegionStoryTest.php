@@ -629,6 +629,17 @@ final class RegionStoryTest extends CIUnitTestCase
             $this->assertMatchesRegularExpression('/<span class="kedu-panel-status is-' . $state . '">' . preg_quote(icon($icon), '/') . ' <span>/', $page, $state);
         }
         $this->assertStringContainsString('<span class="num">' . esc(lang('Game.nodesProgress', [5, 5])) . '</span>', $page);
+
+        // Owner, 20 October 2026: no "Wilayah n · difficulty" line; "Lihat cerita pembuka" opens the
+        // region's opening dialogue, except in a locked region
+        $this->assertStringNotContainsString('kedu-panel-meta', $page);
+        foreach (['temanggung' => true, 'magelang' => true, 'wonosobo' => false] as $code => $link) {
+            $panel = substr($page, (int) strpos($page, 'id="region-' . $code . '"'));
+            $panel = substr($panel, 0, (int) strpos($panel, '</section>'));
+            $href  = '<a class="kedu-opening" href="' . esc(base_url('dialog/' . $code), 'attr') . '">';
+            $link ? $this->assertStringContainsString($href, $panel, $code) : $this->assertStringNotContainsString('kedu-opening', $panel, $code);
+        }
+        $this->assertStringContainsString('<span>' . esc(lang('Game.watchRegionOpening')) . '</span>', $page);
     }
 
     public function testMapDecodesTheCurrentRegionAheadOfTime(): void

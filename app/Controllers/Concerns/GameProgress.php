@@ -80,7 +80,6 @@ trait GameProgress
     protected function nodeOverview(GameSession $session, int $levelId): array
     {
         $done    = model(ChallengeAttemptModel::class)->completedForSession($session->id);
-        $started = model(ChallengeAttemptModel::class)->startedNodeIds($session->id);
         $free    = $this->unlockMode($session) === 'free';
         $locale  = $session->resolvedLocale();
 
@@ -100,8 +99,6 @@ trait GameProgress
                 'title'       => $node->text('title', $locale),
                 'description' => $node->text('description', $locale),
                 'status'      => $completed ? 'completed' : ($open ? 'open' : 'locked'),
-                // Badge only (open attempt, not finished); the status logic ignores it
-                'started'     => ! $completed && $open && isset($started[$node->id]),
                 'stars'       => $attempt?->stars === null ? null : (int) $attempt->stars,
                 'map_x'       => $node->map_x,
                 'map_y'       => $node->map_y,
@@ -120,12 +117,11 @@ trait GameProgress
      * attempt selesai dibaca SEKALI untuk semua wilayah karena HUD ada di
      * setiap layar permainan.
      *
-     * @return list<array{code: string, name: string, nodes: list<array{sequence: int, title: string, status: string, started: bool}>}>
+     * @return list<array{code: string, name: string, nodes: list<array{sequence: int, title: string, status: string}>}>
      */
     protected function lanternMap(GameSession $session): array
     {
         $done     = model(ChallengeAttemptModel::class)->completedForSession($session->id);
-        $started  = model(ChallengeAttemptModel::class)->startedNodeIds($session->id);
         $free     = $this->unlockMode($session) === 'free';
         $progress = model(SessionProgressModel::class)->ensure($session->id);
         $unlocked = (int) $progress['unlocked_level_sequence'];
@@ -147,7 +143,6 @@ trait GameProgress
                     'sequence' => $node->sequence,
                     'title'    => $node->text('title', $locale),
                     'status'   => $completed ? 'completed' : ($open ? 'open' : 'locked'),
-                    'started'  => ! $completed && $open && isset($started[$node->id]),
                 ];
 
                 $previousDone = $completed;

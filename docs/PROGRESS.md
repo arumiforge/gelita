@@ -141,9 +141,14 @@ Decided in an interview with the owner; decisions in the decision log, section *
 
 - [x] Intro, ending, region dialogue, and region done: the slide picture stays dark until "Ketuk untuk mulai" is tapped; intro and ending caption and narrator controls without band or shadow, round controls on the `ui.result-hud-control` skin and Lanjut on `ui.result-button-primary`, all 40 dp; no "Bagian n dari N" text, only the dots (also the region dialogue's round controls) (PR #182)
 
+## Region map and medallion follow-up (owner, 20 October 2026)
+
+- [ ] Status medallions with three states only (done green ✓, open gold arc, locked navy with a lock) on the lantern, region-map pins (larger, number in the middle), and challenge list; no "Sedang dikerjakan"; region-map side column with fixed head, progress, and Pustaka {wilayah} at the bottom, no bottom nav bar, one title per card, the owner's engine pictures as card backgrounds; Peta Kedu panel without the "Wilayah n · difficulty" line and with **Lihat cerita pembuka**. After merge, **Bangun ulang paket** if package mode is on
+
 ## Active branches
 
 Add a row (branch, owner / scope, status) when a session starts a branch; remove it when its PR is merged.
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `sky/fervent-curie-k4riwe` | Region map side column, three medallion states, opening story link | PR #184 open |

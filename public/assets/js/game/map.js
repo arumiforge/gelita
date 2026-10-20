@@ -205,7 +205,7 @@ export function initMap() {
     toast(link.dataset.lockedMessage || link.textContent.trim(), 'warn');
   });
 
-  // Tombol Pustaka ada di nav-bar, di luar <section> layar
+  // Pustaka {wilayah} sits at the bottom of the side column (it used to be in the nav bar)
   on(document, 'click', 'a[data-library-locked]', (event, link) => {
     event.preventDefault();
     Sfx.play('lock');
