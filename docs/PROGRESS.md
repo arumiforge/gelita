@@ -152,4 +152,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `sky/youthful-cannon-wbzf9t` | Versioned URLs for the UI pictures (stale shard plate after a refresh) | In review |
