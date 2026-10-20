@@ -139,7 +139,7 @@ Decided in an interview with the owner; decisions in the decision log, section *
 
 ## Story screens: tap card first, lighter caption (owner, 20 October 2026)
 
-- [ ] Intro, ending, region dialogue, and region done: the slide picture stays dark until "Ketuk untuk mulai" is tapped; intro and ending caption and narrator controls without band or shadow, round controls on the `ui.result-hud-control` skin and Lanjut on `ui.result-button-primary`, all 40 dp; no "Bagian n dari N" text, only the dots (also the region dialogue's round controls)
+- [x] Intro, ending, region dialogue, and region done: the slide picture stays dark until "Ketuk untuk mulai" is tapped; intro and ending caption and narrator controls without band or shadow, round controls on the `ui.result-hud-control` skin and Lanjut on `ui.result-button-primary`, all 40 dp; no "Bagian n dari N" text, only the dots (also the region dialogue's round controls) (PR #182)
 
 ## Active branches
 
@@ -147,4 +147,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `pbb/determined-tesla-qpw54u` | Story screens: tap card first, lighter caption | PR #182 open |
