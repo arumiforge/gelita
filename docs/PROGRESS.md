@@ -2,7 +2,7 @@
 
 The single checklist of what is done and what is open. Decisions and their reasons go in `docs/perombakan-kelas5/CATATAN_IMPLEMENTASI.md`; this file only tracks state. Each session updates only its own rows, and ticks an item only once its PR is merged into `main`.
 
-Last updated: 19 October 2026.
+Last updated: 20 October 2026.
 
 ## Kelas 5 overhaul
 
@@ -134,7 +134,7 @@ Decided in an interview with the owner; decisions in the decision log, section *
 
 ## Challenge screen redesign (owner, 20 October 2026)
 
-- [ ] Challenge header (number ring, title, one stats capsule, no region/position line), centred gold action bar, Isi Rumpang dotted blanks without box or number, words and Benar/Salah on the navy plate, "Tentang gambar ini" panel, the star picture for every game star, status medallions on the lantern, region map, and Peta Kedu
+- [x] Challenge header (number ring, title, one stats capsule, no region/position line), centred gold action bar, Isi Rumpang dotted blanks without box or number, words and Benar/Salah on the navy plate, "Tentang gambar ini" panel, the star picture for every game star, status medallions on the lantern, region map, and Peta Kedu (PR #175)
 - [ ] Add the owner's three status medallions as `public/assets/ui/status-open.webp`, `status-progress.webp`, `status-done.webp` (until then the old dots and discs show); then **Bangun ulang paket** if package mode is on
 
 ## Active branches
@@ -143,4 +143,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `pbb/jolly-heisenberg-5r78py` | Challenge screen redesign, star picture, status medallions | PR open |
