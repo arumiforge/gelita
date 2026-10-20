@@ -198,6 +198,13 @@ final class AssetPackageBuilderTest extends CIUnitTestCase
 
         $this->assertSame('inti', AssetPackageBuilder::groupFor('map.kedu'));
         $this->assertSame('inti', AssetPackageBuilder::groupFor('audio.music.map'));
+        // Background music (owner, 19 October 2026): home/account and opening tracks with the core, region tracks with their region
+        $this->assertSame('inti', AssetPackageBuilder::groupFor('audio.music.welcome'));
+        $this->assertSame('inti', AssetPackageBuilder::groupFor('audio.music.opening'));
+        $this->assertSame('wilayah-temanggung', AssetPackageBuilder::groupFor('audio.music.kenal-temanggung'));
+        $this->assertSame('wilayah-magelang', AssetPackageBuilder::groupFor('audio.music.dialog-magelang'));
+        $this->assertSame('wilayah-wonosobo', AssetPackageBuilder::groupFor('audio.music.tuntas-wonosobo'));
+        $this->assertSame('penutup', AssetPackageBuilder::groupFor('audio.music.ending'));
         $this->assertSame('wilayah-wonosobo', AssetPackageBuilder::groupFor('map.region.wonosobo'));
         $this->assertSame('wilayah-magelang', AssetPackageBuilder::groupFor('reward.badge.magelang'));
         $this->assertSame('wilayah-temanggung', AssetPackageBuilder::groupFor('challenge.tmg-1.scene'));

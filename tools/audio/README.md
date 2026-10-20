@@ -5,6 +5,7 @@ Skrip yang membangkitkan seluruh audio bawaan permainan: musik gamelan, efek sua
 | Skrip | Keluaran |
 |---|---|
 | `music.py` → `master.py music` | `public/assets/audio/music/{map,region,challenge}.mp3` |
+| `music.py <names>` → `master.py music --only=<names>` (pieces in `music_scenes.py`) | `public/assets/audio/music/{welcome,opening,ending}.mp3` and `{kenal,dialog,tuntas}-{wilayah}.mp3` (19 October 2026) |
 | `sfx.py` → `master.py sfx` | `public/assets/audio/sfx/{click,correct,wrong,lock,shard,region-done}.mp3` |
 | `narrate.py` → `publish.py` | `public/assets/audio/narasi/{id,en}/{kode}.mp3` + `narasi/produksi.json` |
 | `reencode.py` | re-encodes the committed narration MP3s in place to `publish.py`'s bitrate (48 kbps) and updates `produksi.json`; only ffmpeg needed |
@@ -37,6 +38,10 @@ bash setup-models.sh            # ±600 MB ke tools/audio/models/ dan node_modul
 ```bash
 # musik & efek suara (±1 menit)
 python music.py && python master.py music
+# scene and account music (twelve tracks, ±5 minutes)
+python music.py welcome opening ending kenal-temanggung kenal-magelang kenal-wonosobo \
+    dialog-temanggung dialog-magelang dialog-wonosobo tuntas-temanggung tuntas-magelang tuntas-wonosobo
+python master.py music --only=welcome,opening,ending,kenal-temanggung,kenal-magelang,kenal-wonosobo,dialog-temanggung,dialog-magelang,dialog-wonosobo,tuntas-temanggung,tuntas-magelang,tuntas-wonosobo
 python sfx.py && python master.py sfx
 
 # narasi: sintesis → efek tokoh → pilih kandidat terbaik via Whisper (±1–1,5 jam per bahasa)

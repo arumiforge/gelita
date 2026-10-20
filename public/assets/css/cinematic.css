@@ -1164,18 +1164,18 @@ body.has-kenal { overflow: hidden; }
   color: #F6DB8C; /* shown where the gradient cannot be drawn */
   -webkit-text-fill-color: transparent;
   font-family: var(--font-display);
-  font-size: 2.75rem;
+  font-size: 2rem;
   font-weight: 700;
   letter-spacing: .04em;
   line-height: 1.2;
   text-align: center;
   filter: drop-shadow(0 .125rem .125rem rgba(11, 19, 32, .95)) drop-shadow(0 0 .5rem rgba(11, 19, 32, .6));
 }
-.kenal-rule { display: flex; align-items: center; width: calc(100% + 4rem); margin-top: -.125rem; color: #E9BE62; }
+.kenal-rule { display: flex; align-items: center; width: calc(100% + 3rem); margin-top: -.125rem; color: #E9BE62; }
 .kenal-rule::before, .kenal-rule::after { content: ""; flex: 1 1 0; height: .125rem; border-radius: .0625rem; }
 .kenal-rule::before { background: linear-gradient(to right, rgba(233, 190, 98, 0), #E9BE62 35%, #F6DB8C); }
 .kenal-rule::after { background: linear-gradient(to left, rgba(233, 190, 98, 0), #E9BE62 35%, #F6DB8C); }
-.kenal-ornament { flex: none; width: 4rem; height: 1.875rem; margin: 0 .25rem; overflow: visible; filter: drop-shadow(0 1px .1875rem rgba(11, 19, 32, .9)); }
+.kenal-ornament { flex: none; width: 3.25rem; height: 1.5rem; margin: 0 .25rem; overflow: visible; filter: drop-shadow(0 1px .1875rem rgba(11, 19, 32, .9)); }
 .kenal-ornament-fill { fill: currentColor; }
 .kenal-ornament-line { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; }
 

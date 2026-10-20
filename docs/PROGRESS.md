@@ -130,9 +130,12 @@ Decided in an interview with the owner; decisions in the decision log, section *
 
 - [x] Kenali follow-up (owner, 19 October 2026): avatar and caption at the bottom; Cinzel Decorative as the display font everywhere; Kembali on the owner's navy plate, Lanjut on the gold plate (Kenali only); the speaker's name on a navy nameplate over the avatar ring; "Mengenal {wilayah}" in gold letters over an ornament rule; narrator controls on the HUD skin without a band; the framed Jaka avatar everywhere (Peta Kedu too) (PR #171). After merge, run `php spark gelita:katalog:impor --kunci="ui.jaka-avatar"` (dry run first), then **Bangun ulang paket** if package mode is on
 
+- [ ] Background music and Kenali title (owner, 19 October 2026): twelve synthesized gamelan tracks (home/account pages, opening, ending, and per region Kenali, dialogue, and region done), music down to about 20 % under a narration voice, the mission card with the challenge music; Kenali title 32 dp; the HUD flag "overflow" was a missing file in the local check, not a bug. After merge, on a server with package mode on: `php spark gelita:media:scan`, then **Bangun ulang paket**. Owner: listen on a class device that the music sits well under the recorded voices
+
 ## Active branches
 
 Add a row (branch, owner / scope, status) when a session starts a branch; remove it when its PR is merged.
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `pbb/sharp-edison-tnww8e` | Background music for scenes and account pages, Kenali title | PR #173 in review |

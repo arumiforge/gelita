@@ -23,6 +23,7 @@
 ?>
 <?= $this->extend('layouts/game') ?>
 
+<?= $this->section('music') ?>welcome<?= $this->endSection() ?>
 <?= $this->section('title') ?><?= esc(lang('Game.loginTitle')) ?><?= $this->endSection() ?>
 <?= $this->section('background') ?><?= game_asset_url('ui/bg-auth-login.webp') ?><?= $this->endSection() ?>
 <?= $this->section('bodyClass') ?>is-auth-art<?= $this->endSection() ?>

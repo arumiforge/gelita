@@ -1,13 +1,13 @@
 # Audio GELITA
 
-Audio bawaan permainan yang ikut di repositori: **3 musik gamelan** dan **6 efek suara**, dibangkitkan oleh [`tools/audio/`](../tools/audio/README.md). Narasi (100 rekaman × 2 bahasa) tidak lagi ikut di repositori: rekaman suara sintetis lama dihapus (17 Oktober 2026) dan diganti rekaman pengisi suara (lihat *Voice-over narration* di bawah).
+Audio bawaan permainan yang ikut di repositori: **3 musik gamelan** (plus 12 scene and account tracks since 19 October 2026) dan **6 efek suara**, dibangkitkan oleh [`tools/audio/`](../tools/audio/README.md). Narasi (100 rekaman × 2 bahasa) tidak lagi ikut di repositori: rekaman suara sintetis lama dihapus (17 Oktober 2026) dan diganti rekaman pengisi suara (lihat *Voice-over narration* di bawah).
 
 - Musik dan efek suara disintesis dari nol, tanpa sampel rekaman, dengan penalaan pelog–slendro. Gendingnya komposisi orisinal.
 - Narasi direkam pengisi suara (suara asli, bukan sintetis) dan diunggah di panel **Rekaman narasi**. Bagian tentang suara sintetis di bawah tinggal sebagai catatan sejarah.
 
 | Kelompok | Lokasi | Isi | Dipakai oleh |
 |---|---|---|---|
-| Musik | `public/assets/audio/music/` | `map`, `region`, `challenge` (MP3 stereo 128 kbps, loop) | `core/audio.js` → `Sfx.music()` |
+| Musik | `public/assets/audio/music/` | `map`, `region`, `challenge` (MP3 stereo 128 kbps, loop); since 19 October 2026 also `welcome`, `opening`, `ending`, and `kenal-`/`dialog-`/`tuntas-{wilayah}` (96 kbps, see *Scene and account music*) | `core/audio.js` → `Sfx.music()` |
 | Efek suara | `public/assets/audio/sfx/` | `click`, `correct`, `wrong`, `lock`, `shard`, `region-done` | `core/audio.js` → `Sfx.play()` |
 | Narasi | `public/assets/audio/narasi/{id,en}/` (kosong di repositori) | folder impor rekaman pengisi suara: 88 baris naskah + 12 petunjuk Cari Objek per bahasa | `gelita:narration:import` → `dialogues` / `challenge_items` |
 
@@ -39,6 +39,28 @@ Catatan teknis:
   | `map` | −20,4 LUFS | −15,6 LUFS | −5,8 dBTP |
   | `region` | −20,9 LUFS | −16,6 LUFS | −6,8 dBTP |
   | `challenge` | −21,9 LUFS | −16,4 LUFS | −7,2 dBTP |
+
+## Scene and account music (19 October 2026)
+
+Owner request: Javanese gamelan under every narrated scene and on the home and account pages, matching the mood and never covering the voice. Interview answers: one track per scene type **and per region**, synthesized now (a recording can replace any file under the same name), music down to **about 20 %** while a voice speaks, and the mission card plays the challenge music. Jaka's story bar on Peta Kedu keeps the map music.
+
+The twelve gending are in `tools/audio/music_scenes.py` and use the same instruments, garap, and mastering as the three above (`python music.py welcome …`, `python master.py music --only=…`).
+
+| File | Screen | Mood | Laras · form · tempo | Loop |
+|---|---|---|---|---|
+| `welcome` | `/`, `/mulai`, `/masuk`, `/daftar/1–3`, `/ganti-sandi`, `/gerbang` | gentle welcome | slendro manyura · ketawang · 48 | 60 s |
+| `opening` | `/intro` (the Kabut Lupa) | misty, mysterious; no kendang | pelog barang · ketawang nibani · 36 | 107 s |
+| `ending` | `/penutup` | warm, bright | slendro manyura · ladrang · 60 | 64 s |
+| `kenal-{wilayah}` | Kenali overlay on Peta Kedu | calm storytelling | Temanggung slendro sanga 40, Magelang pelog nem 36 (deep gong), Wonosobo pelog barang 34 (airy, no kendang) · ketawang | 72–85 s |
+| `dialog-{wilayah}` | `/dialog/{code}` | light, on the way | same laras · ladrang (Temanggung, Magelang) or ketawang (Wonosobo) · 54–58 | 66–71 s |
+| `tuntas-{wilayah}` | `/tuntas/{code}` | festive | same laras · lancaran · 100–108 | 53–58 s |
+| `challenge` (existing) | `/misi/…` and the challenge | quiet for reading | — | — |
+
+- **Which track plays.** A page names its track in the layout section `music` (`<body data-music>`), started by `game.js` on the first tap. Peta Kedu keeps `map` and `game/map.js` switches to `kenal-{wilayah}` while the Kenali overlay is open. A new track crossfades in over 0.9 s.
+- **Under the voice.** `core/audio.js` drops the music to 20 % of its level (0.35 s fade) whenever a narration player starts, and brings it back (0.9 s) only after the voice has been quiet for 1.2 s, so it does not pump between two narrated slides. This applies to every narration, Jaka's story bar on Peta Kedu included.
+- **Loudness.** −20 to −21.5 LUFS before encoding, the calm Kenali and opening tracks the quietest. Under a voice they sit another 14 dB lower.
+- **Package.** `welcome` and `opening` travel in the core group of the asset package; each region's three tracks in that region's group; `ending` with the ending.
+- **Checks.** `tools/qa/music-check.mjs` (crossfade, ducking, release after a pause), `BackgroundMusicTest`.
 
 ## Efek suara
 
@@ -184,7 +206,7 @@ The Whisper CER figures above were measured on the 96 kbps (or WAV) files and we
 
 ## Lisensi dan kredit
 
-- **Musik dan efek suara**: komposisi dan sintesis orisinal untuk GELITA (`tools/audio/gamelan.py`, `compose.py`), tanpa sampel atau rekaman pihak ketiga.
+- **Musik dan efek suara**: komposisi dan sintesis orisinal untuk GELITA (`tools/audio/gamelan.py`, `compose.py`, `music_scenes.py`), tanpa sampel atau rekaman pihak ketiga.
 - **Narasi Indonesia**: dibangkitkan dengan model Mimic 3 `jv_ID/google-gmu_low` (MycroftAI, **CC BY-SA 4.0**). Model itu dilatih dari *High quality TTS data for Javanese* (OpenSLR 41, Google & Universitas Gadjah Mada, CC BY-SA 4.0). Untuk amannya, perlakukan rekaman ini dengan syarat yang sama: cantumkan atribusi di atas dan bagikan turunannya dengan lisensi serupa.
 - **Narasi Inggris**: suara Piper `en_US-kristin-medium` (domain publik, dataset LibriVox), `en_GB-jenny_dioco-medium` (suara "Jenny (Dioco)"; klip hasil boleh dipakai, termasuk komersial, atribusi dianjurkan), dan `en_US-joe-medium` (CC0).
 - **Whisper small** (MIT) hanya dipakai untuk memeriksa kejelasan, bukan bagian dari permainan.

@@ -32,6 +32,7 @@ $engineName  = engine_label($engine, $node->variant_code);
 ?>
 <?= $this->extend('layouts/game') ?>
 
+<?= $this->section('music') ?>challenge<?= $this->endSection() ?>
 <?= $this->section('title') ?><?= esc($node->text('title', $locale)) ?><?= $this->endSection() ?>
 <?= $this->section('background') ?><?= $bg ?><?= $this->endSection() ?>
 

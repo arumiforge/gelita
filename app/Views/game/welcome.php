@@ -30,6 +30,7 @@ $btnStart = media_key_src_locale('ui.btn-start', $locale);
 ?>
 <?= $this->extend('layouts/game') ?>
 
+<?= $this->section('music') ?>welcome<?= $this->endSection() ?>
 <?= $this->section('background') ?><?= media_key_src('bg.welcome') ?? '' ?><?= $this->endSection() ?>
 <?= $this->section('bodyClass') ?>is-welcome<?= $this->endSection() ?>
 

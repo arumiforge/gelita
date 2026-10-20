@@ -70,6 +70,7 @@ function initRegionIntros(mapStory) {
     const { root, story, trigger } = open;
     open = null;
     story.stop();
+    Sfx.music('map');
     flush(); // "heard" status reaches the server now, without waiting for the event timer
     root.classList.remove('is-open');
     document.body.classList.remove('has-kenal');
@@ -85,6 +86,7 @@ function initRegionIntros(mapStory) {
 
     if (autoplay) Sfx.unlock(); // di dalam ketukan: elemen narasi bersama terbuka (Safari iPad)
     mapStory?.stop();
+    Sfx.music(entry.root.dataset.music || 'map'); // the region's Kenali track while the overlay is open
     open = { ...entry, trigger };
     entry.root.classList.add('is-open');
     document.body.classList.add('has-kenal');
@@ -227,12 +229,14 @@ export function initMap() {
 
   const kenalOpen = initRegionIntros(story);
 
+  // An overlay opened from the address (#kenal-…) keeps its own track
+  const mapMusic = () => { if (!document.body.classList.contains('has-kenal')) Sfx.music('map'); };
   if ($('[data-curtain-layer="map"]')) {
     playCurtain('map').then(() => {
-      Sfx.music('map');
+      mapMusic();
       if (!kenalOpen()) story?.start();
     });
   } else {
-    Sfx.music('map');
+    mapMusic();
   }
 }

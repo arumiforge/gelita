@@ -44,6 +44,7 @@ if ($hasLibrary) {
 ?>
 <?= $this->extend('layouts/game') ?>
 
+<?= $this->section('music') ?><?= esc('tuntas-' . $level->code) ?><?= $this->endSection() ?>
 <?= $this->section('title') ?><?= esc(lang('Game.doneTitle', [$region])) ?><?= $this->endSection() ?>
 <?= $this->section('background') ?><?= $bg ?><?= $this->endSection() ?>
 

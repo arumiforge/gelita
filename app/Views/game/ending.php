@@ -20,6 +20,7 @@ $firstBg   = $slides === [] ? null : slide_bg_src($slides[0]);
 ?>
 <?= $this->extend('layouts/game') ?>
 
+<?= $this->section('music') ?>ending<?= $this->endSection() ?>
 <?= $this->section('title') ?><?= esc(lang('Game.endingTitle')) ?><?= $this->endSection() ?>
 <?= $this->section('background') ?><?= $firstBg ?? $defaultBg ?><?= $this->endSection() ?>
 <?= $this->section('bodyClass') ?>is-cinematic<?= $this->endSection() ?>

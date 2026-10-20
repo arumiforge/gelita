@@ -18,6 +18,9 @@
  *   hudStyle    `menu` for the full-size HUD (120 dp; components/hud-menu); any
  *               other page gets the same HUD compact in the 56 dp strip
  *   hudTitle, hudBack, hudShards  see components/hud-menu
+ *   music       background track of the page (`<body data-music>`, file
+ *               assets/audio/music/{name}.mp3, started by game.js after the
+ *               first tap); pages that switch tracks themselves leave it empty
  *   scripts     skrip khusus halaman (tahap 6)
  *
  * Data untuk JavaScript dikirim lewat <script type="application/json">,
@@ -29,6 +32,7 @@ $locale     = service('request')->getLocale();
 $background = trim($this->renderSection('background'));
 $bodyClass  = trim($this->renderSection('bodyClass'));
 $title      = trim($this->renderSection('title'));
+$music      = trim($this->renderSection('music'));
 $request    = service('request');
 // Kode layar Dok 1 §12.4 (sama dengan screen_viewed di server) untuk event page_hidden/visible
 $screenCode = method_exists($request, 'getPath') ? (App\Filters\ScreenViewFilter::resolve(trim((string) $request->getPath(), '/'))[0] ?? null) : null;
@@ -70,7 +74,7 @@ $screenCode = method_exists($request, 'getPath') ? (App\Filters\ScreenViewFilter
 </head>
 <body class="game <?= esc($bodyClass) ?>"
       data-locale="<?= esc($locale) ?>"
-      data-base="<?= esc(base_url()) ?>"<?= $screenCode !== null ? ' data-screen-code="' . esc($screenCode, 'attr') . '"' : '' ?>>
+      data-base="<?= esc(base_url()) ?>"<?= $music !== '' ? ' data-music="' . esc($music, 'attr') . '"' : '' ?><?= $screenCode !== null ? ' data-screen-code="' . esc($screenCode, 'attr') . '"' : '' ?>>
   <?php /* Di luar panggung: layar putar menutup seluruh layar */ ?>
   <?= $this->include('components/rotate-gate') ?>
 
