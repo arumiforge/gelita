@@ -51,7 +51,6 @@ return [
     'shardDone'       => 'Selesai',
     'shardOpen'       => 'Terbuka',
     'shardLocked'     => 'Terkunci',
-    'shardStarted'    => 'Sedang dikerjakan',
     'mapKedu'         => 'Peta Kedu',
 
     // Karakter
@@ -257,6 +256,7 @@ return [
     'mapSelected'      => 'Wilayah dipilih',
     'mapTapHint'       => 'Ketuk wilayah untuk menjelajah',
     'kenali'           => 'Kenali',
+    'watchRegionOpening' => 'Lihat cerita pembuka',
     // Result screen redesign (18 October 2026)
     'resultMenu'       => 'Menu',
     'resultLanguage'   => 'Pilih bahasa',

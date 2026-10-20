@@ -157,12 +157,11 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
 .lantern-legend { display: flex; flex-wrap: wrap; align-items: center; gap: var(--gap-1) var(--gap-2); margin: 0; color: var(--ink-dim); font-size: var(--fs-caption); }
 .lantern-legend .shard { width: .75rem; height: .75rem; }
 .shard-item { display: inline-flex; }
-/* Started, not finished: half a dot until the owner's medallion is installed */
-.shard.is-started { border-style: solid; background: linear-gradient(to right, var(--gold-500) 50%, transparent 50%); }
-/* The owner's status medallions (20 October 2026), status_badge_src(): navy = open, gold arc =
-   started, green with a check = done. A locked shard keeps its dot. */
-.shard.has-badge { width: 1.5rem; height: 1.5rem; border: 0; background: none; box-shadow: none; }
+/* The owner's status medallions (20 October 2026), status_badge_src(), three states only:
+   green with a check = done, gold arc = open, navy with a small lock = locked. */
+.shard.has-badge { position: relative; width: 1.5rem; height: 1.5rem; border: 0; background: none; box-shadow: none; }
 .shard.has-badge img { display: block; width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 .0625rem .125rem rgba(0, 0, 0, .6)); }
+.shard-lock { position: absolute; inset: 0; width: 50%; height: 50%; margin: auto; color: #F6E7C4; stroke-width: 2.75; filter: drop-shadow(0 .0625rem .125rem rgba(0, 0, 0, .9)); }
 .lantern-legend .shard.has-badge { width: 1.125rem; height: 1.125rem; }
 
 /* =========================== WELCOME =========================== */
@@ -834,19 +833,40 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
 .map-point.is-locked .pin-icon.has-art { background: none; box-shadow: none; }
 .map-point.is-locked .pin-icon.has-art .art { filter: grayscale(1) brightness(.7) drop-shadow(0 .125rem .375rem rgba(11, 19, 32, .8)); }
 /* Status medallion on a region-map pin (owner, 20 October 2026): the picture replaces the
-   gold disc and its icon; open and started pins keep their number on top. Locked stays. */
+   gold disc and its icon. Green ✓ done, gold arc with the number open, navy with a lock
+   locked. Larger than the old disc so the number sits neatly in the medallion's middle. */
+.node-point .pin-icon.has-badge { width: 4rem; height: 4rem; }
 .map-point .pin-icon.has-badge { position: relative; border: 0; background: none; box-shadow: none; }
 .pin-badge {
   position: absolute;
-  inset: -.375rem;
-  width: calc(100% + .75rem);
-  height: calc(100% + .75rem);
+  inset: -.5rem;
+  width: calc(100% + 1rem);
+  max-width: none;
+  height: calc(100% + 1rem);
   object-fit: contain;
   filter: drop-shadow(0 .125rem .375rem rgba(11, 19, 32, .8));
   -webkit-user-drag: none;
 }
-.pin-icon.has-badge b { position: relative; color: #F6E7C4; text-shadow: 0 .0625rem .25rem rgba(0, 0, 0, .9); }
+/* Number and lock on a medallion (pins and the challenge list) */
+:is(.pin-icon, .node-no).has-badge b {
+  position: relative;
+  color: #FFF4D6;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 700;
+  line-height: 1;
+  text-shadow: 0 .0625rem .25rem rgba(0, 0, 0, .9), 0 0 .5rem rgba(0, 0, 0, .6);
+}
+.pin-icon.has-badge b { font-size: 1.625rem; }
+:is(.pin-icon, .node-no).has-badge .badge-lock {
+  position: relative;
+  width: 42%;
+  height: 42%;
+  color: #F6E7C4;
+  stroke-width: 2.5;
+  filter: drop-shadow(0 .0625rem .1875rem rgba(0, 0, 0, .9));
+}
 .map-point.is-open .pin-icon.has-badge { animation: pin-art-pulse 2s ease-in-out infinite; }
+.map-point.is-locked .pin-badge { filter: saturate(.75) brightness(.85) drop-shadow(0 .125rem .375rem rgba(11, 19, 32, .8)); }
 .pin-mark { position: absolute; right: -.25rem; bottom: -.25rem; display: grid; place-items: center; width: 1.5rem; height: 1.5rem; border: .125rem solid var(--navy-900); border-radius: 50%; background: var(--navy-700); color: var(--ink-dim); }
 .map-point.is-completed .pin-mark { background: var(--gold-300); color: var(--navy-900); }
 .pin-mark .icon { width: .875rem; height: .875rem; }
@@ -878,15 +898,22 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
 .region-locked { display: flex; align-items: center; gap: var(--gap-2); margin: 0; }
 
 .map-side { display: grid; align-content: start; gap: var(--gap-3); }
+/* Region map (owner, 20 October 2026): the head and the progress stay at the top and
+   Pustaka {wilayah} at the bottom; only the challenge list between them scrolls */
+.map-level .map-side { grid-template-rows: auto auto minmax(0, 1fr) auto; align-content: stretch; }
+/* The list has a fixed height now: rows keep the cards' full height (a card clips its picture) */
+.map-level .node-list { grid-auto-rows: max-content; }
 .map-side .map-head { margin: 0; }
 .map-side .map-head h1 { margin: 0; font-size: var(--fs-h2); }
 .map-side .map-head p { margin: var(--gap-1) 0 0; color: var(--ink-dim); font-size: var(--fs-caption); }
-.map-progress { display: grid; gap: var(--gap-2); margin: 0; }
+/* A little narrower than the column, clear of the list's scrollbar */
+.map-progress { display: grid; gap: var(--gap-2); margin: 0; padding-right: var(--gap-4); }
 .map-progress p { margin: 0; font-weight: 700; }
+.map-side-foot { display: grid; padding-right: var(--gap-1); }
+.map-side .map-library { min-height: var(--tap); }
 
 .node-card { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: var(--gap-2) var(--gap-3); padding: var(--gap-3); }
 .node-card > .btn, .node-card > .badge { grid-column: 1 / -1; justify-self: end; }
-.node-card h2 { margin: 0; font-size: var(--fs-caption); font-family: var(--font-body); color: var(--ink); }
 .node-no {
   display: grid;
   place-items: center;
@@ -900,7 +927,23 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
 .node-card.is-completed .node-no { background: var(--gold-500); color: var(--navy-900); }
 .node-card.is-locked { opacity: .65; }
 .node-card.is-locked .node-no { border-color: rgba(234, 240, 250, .3); color: var(--ink-dim); }
+/* The same status medallion as the region-map pin (owner, 20 October 2026) */
+.node-card .node-no.has-badge { position: relative; width: 3.25rem; height: 3.25rem; border: 0; background: none; }
+.node-badge { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 .0625rem .25rem rgba(0, 0, 0, .7)); -webkit-user-drag: none; }
+.node-no.has-badge b { font-size: 1.25rem; }
 .node-card-body { display: grid; gap: .125rem; min-width: 0; }
+.node-card-body .eyebrow { text-shadow: 0 .0625rem .25rem rgba(0, 0, 0, .8); }
+/* Each challenge card shows its engine's picture (owner, 20 October 2026), darkened on
+   the left where the medallion and the title sit */
+.node-card.has-art { position: relative; isolation: isolate; overflow: hidden; min-height: 7.5rem; }
+.node-card-art { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; -webkit-user-drag: none; }
+.node-card.has-art::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(100deg, rgba(11, 19, 32, .9), rgba(11, 19, 32, .62) 55%, rgba(11, 19, 32, .3));
+}
 
 /* =========================== KARTU MISI =========================== */
 /* Card 260, 112, 760 × 536 (stage.css), after the owner's picture of 18 October 2026: cream
@@ -1974,7 +2017,45 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
   transform: rotate(45deg);
 }
 .kedu-panel h2 { margin: 0 0 .25rem; color: #FFF8EA; font-family: Georgia, 'Times New Roman', serif; font-size: 2.875rem; font-weight: 700; line-height: 1.05; letter-spacing: -.02em; }
-.kedu-panel-meta { margin: 0 0 .75rem; color: #E7C982; font-size: 1.1875rem; font-weight: 700; }
+/* "Lihat cerita pembuka" under the region name (owner, 20 October 2026): a gold play medallion
+   with a soft pulse, then the label; 48 dp tall */
+.kedu-opening {
+  display: inline-flex;
+  align-items: center;
+  gap: .625rem;
+  min-height: var(--tap);
+  margin: 0 0 .375rem;
+  color: #F5DFA5;
+  font-size: 1.125rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+.kedu-opening-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: .125rem solid #FFF2BD;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #FFF0C2, var(--gold-500) 55%, var(--gold-600));
+  box-shadow: 0 0 0 .1875rem rgba(11, 19, 32, .6), 0 0 .75rem rgba(255, 211, 119, .55);
+  color: #0B1B2E;
+  animation: opening-glow 2.4s ease-in-out infinite;
+}
+.kedu-opening-icon .icon { width: 1.125rem; height: 1.125rem; margin-left: .125rem; fill: currentColor; }
+.kedu-opening > span:last-child { border-bottom: .125rem solid rgba(245, 223, 165, .35); transition: border-color .15s, color .15s; }
+@media (hover: hover) {
+  .kedu-opening:hover > span:last-child { border-color: #F5DFA5; color: #FFF8EA; }
+}
+.kedu-opening:active .kedu-opening-icon { transform: scale(.94); }
+.kedu-opening:focus-visible { outline: .1875rem solid var(--gold-300); outline-offset: .25rem; border-radius: var(--radius-pill); }
+@keyframes opening-glow {
+  50% { box-shadow: 0 0 0 .1875rem rgba(11, 19, 32, .6), 0 0 1.375rem rgba(255, 211, 119, .95); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .kedu-opening-icon { animation: none; }
+}
 /* Status pill: its own icon and colour per status */
 .kedu-panel-status {
   display: inline-flex;

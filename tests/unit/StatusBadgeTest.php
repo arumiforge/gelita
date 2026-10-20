@@ -5,12 +5,13 @@ use CodeIgniter\Test\CIUnitTestCase;
 use Config\Services;
 
 /**
- * Owner request of 20 October 2026: the status medallions (navy = open, gold
- * arc = started, green with a check = done) replace the shard dots, the
- * region-map pin icons, and the Peta Kedu "done" badge; a locked challenge
- * keeps its lock. The pictures ship in `assets/ui/status-*.webp`; without
- * them status_badge_src() returns null and the old marks show. No database:
- * ContentRepository is replaced by a stub.
+ * Owner requests of 20 October 2026: the status medallions replace the shard
+ * dots, the region-map pin icons, the challenge list numbers, and the Peta
+ * Kedu "done" badge. Three states only, no "Sedang dikerjakan": green with a
+ * check = done, gold arc = open, navy with a lock = locked. The pictures ship
+ * in `assets/ui/status-*.webp`; without them status_badge_src() returns null
+ * and the old marks show. No database: ContentRepository is replaced by a
+ * stub.
  *
  * @internal
  */
@@ -56,10 +57,10 @@ final class StatusBadgeTest extends CIUnitTestCase
                 'code'  => 'temanggung',
                 'name'  => 'Temanggung',
                 'nodes' => [
-                    ['sequence' => 1, 'title' => 'Susun Gambar', 'status' => 'completed', 'started' => false],
-                    ['sequence' => 2, 'title' => 'Isi Rumpang', 'status' => 'open', 'started' => true],
-                    ['sequence' => 3, 'title' => 'Benar atau Salah', 'status' => 'open', 'started' => false],
-                    ['sequence' => 4, 'title' => 'Cari Objek', 'status' => 'locked', 'started' => false],
+                    ['sequence' => 1, 'title' => 'Susun Gambar', 'status' => 'completed'],
+                    ['sequence' => 2, 'title' => 'Isi Rumpang', 'status' => 'open'],
+                    ['sequence' => 3, 'title' => 'Benar atau Salah', 'status' => 'locked'],
+                    ['sequence' => 4, 'title' => 'Cari Objek', 'status' => 'locked'],
                 ],
             ]],
         ]);
@@ -67,25 +68,29 @@ final class StatusBadgeTest extends CIUnitTestCase
 
     public function testBadgeFollowsTheStatus(): void
     {
-
         $this->assertSame(game_asset_url('ui/status-done.webp'), status_badge_src(['status' => 'completed']));
-        $this->assertSame(game_asset_url('ui/status-progress.webp'), status_badge_src(['status' => 'open', 'started' => true]));
-        $this->assertSame(game_asset_url('ui/status-open.webp'), status_badge_src(['status' => 'open', 'started' => false]));
-        $this->assertNull(status_badge_src(['status' => 'locked']), 'a locked challenge keeps its lock');
+        $this->assertSame(game_asset_url('ui/status-progress.webp'), status_badge_src(['status' => 'open']), 'open wears the gold arc');
+        $this->assertSame(game_asset_url('ui/status-open.webp'), status_badge_src(['status' => 'locked']), 'locked wears the navy medallion');
+        $this->assertNull(status_badge_src(['status' => 'unknown']));
     }
 
-    public function testLanternShowsOneMedallionPerNodeButTheLockedOne(): void
+    public function testLanternShowsThreeStatesWithALockOnTheLockedMedallion(): void
     {
         $html = $this->lantern();
         $dots = substr($html, (int) strpos($html, '<ol class="shard-dots">'));
         $dots = substr($dots, 0, (int) strpos($dots, '</ol>'));
 
-        $this->assertSame(3, substr_count($dots, ' has-badge'));
+        $this->assertSame(4, substr_count($dots, ' has-badge'));
         $this->assertStringContainsString('<span class="shard is-completed has-badge" aria-hidden="true"><img src="' . esc(game_asset_url('ui/status-done.webp'), 'attr'), $dots);
-        $this->assertStringContainsString('<span class="shard is-open is-started has-badge" aria-hidden="true"><img src="' . esc(game_asset_url('ui/status-progress.webp'), 'attr'), $dots);
-        $this->assertStringContainsString('<span class="shard is-locked" aria-hidden="true"></span>', $dots);
-        $this->assertStringContainsString('2. Isi Rumpang: ' . lang('Game.shardStarted'), $dots);
-        $this->assertStringContainsString(lang('Game.shardStarted'), substr($html, (int) strpos($html, 'lantern-legend')));
+        $this->assertStringContainsString('<span class="shard is-open has-badge" aria-hidden="true"><img src="' . esc(game_asset_url('ui/status-progress.webp'), 'attr'), $dots);
+        $this->assertStringContainsString('<span class="shard is-locked has-badge" aria-hidden="true"><img src="' . esc(game_asset_url('ui/status-open.webp'), 'attr'), $dots);
+        $this->assertSame(2, substr_count($dots, 'shard-lock'), 'only the locked medallions carry a lock');
+        $this->assertStringContainsString('2. Isi Rumpang: ' . lang('Game.shardOpen'), $dots);
+
+        $legend = substr($html, (int) strpos($html, 'lantern-legend'));
+        $this->assertSame(3, substr_count($legend, 'class="shard '), 'done, open, locked');
+        $this->assertStringNotContainsString('Sedang dikerjakan', $html);
+        $this->assertStringNotContainsString('is-started', $html);
     }
 
     /** The owner's three pictures ship with the game: square, transparent WebP. */
@@ -102,14 +107,17 @@ final class StatusBadgeTest extends CIUnitTestCase
         }
     }
 
-    public function testMapsUseTheBadgeAndKeepTheLock(): void
+    public function testMapsUseTheBadgeWithNumberOrLock(): void
     {
         $level = (string) file_get_contents(APPPATH . 'Views/game/map-level.php');
-        $this->assertStringContainsString('$badge = status_badge_src($node);', $level);
-        $this->assertStringContainsString("<?php elseif (\$badge === null): ?>\n                  <?= icon(\$icons[\$node['status']]) ?>", $level);
+        $this->assertStringContainsString("<?= \$medal(\$node, 'pin-badge') ?>", $level, 'the pin');
+        $this->assertStringContainsString("<?= \$medal(\$node, 'node-badge') ?>", $level, 'the challenge list number');
+        $this->assertStringContainsString("'open'   => '<b class=\"num\">' . esc(\$n['sequence']) . '</b>',", $level);
+        $this->assertStringContainsString("'locked' => icon('lock', 'badge-lock'),", $level);
+        $this->assertStringNotContainsString('started', $level);
 
         $kedu = (string) file_get_contents(APPPATH . 'Views/game/map-kedu.php');
         $this->assertStringContainsString("status_badge_src(['status' => 'completed'])", $kedu);
-        $this->assertStringContainsString("<span class=\"kedu-lock\"><?= icon('lock') ?></span>", $kedu, 'the lock stays');
+        $this->assertStringContainsString("<span class=\"kedu-lock\"><?= icon('lock') ?></span>", $kedu, 'the region lock stays');
     }
 }

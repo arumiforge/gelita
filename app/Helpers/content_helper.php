@@ -544,18 +544,20 @@ if (! function_exists('audio_src')) {
 if (! function_exists('status_badge_src')) {
     /**
      * The owner's status medallion (20 October 2026) for a challenge on the
-     * maps and in the lantern: `open` (navy), `progress` (gold arc, an
-     * attempt started but not finished), `done` (green with a check).
-     * Locked has none and keeps its lock. Null while the picture
-     * `assets/ui/status-{state}.webp` is not installed: the old mark stays.
+     * maps and in the lantern. Three states only (owner, 20 October 2026):
+     * `done` (green with a check) = completed, `progress` (gold arc) = open,
+     * `open` (the plain navy medallion) = locked; the views draw a lock on
+     * the locked one. Null while the picture `assets/ui/status-{state}.webp`
+     * is not installed: the old mark stays.
      *
-     * @param array{status?: string, started?: bool} $node
+     * @param array{status?: string} $node
      */
     function status_badge_src(array $node): ?string
     {
         $state = match ($node['status'] ?? '') {
             'completed' => 'done',
-            'open'      => ! empty($node['started']) ? 'progress' : 'open',
+            'open'      => 'progress',
+            'locked'    => 'open',
             default     => null,
         };
 

@@ -27,6 +27,10 @@
  * are small in the bar's top-right corner, so the bar is lower and the map
  * shows the whole diorama.
  *
+ * Owner request (20 October 2026): the panel drops the "Wilayah n · difficulty"
+ * line and links "Lihat cerita pembuka" (the region's opening dialogue,
+ * `/dialog/{code}`) under the region name; locked regions have no link.
+ *
  * Earlier notes (still true unless replaced above):
  *
  * Tiga titik pada posisi `levels.map_x` / `map_y` (persen). Tujuan tautan
@@ -195,7 +199,13 @@ $unheard  = static fn (array $l): bool => ($intros[$l['code']] ?? []) !== [] && 
         <?php endif ?>
         <p class="kedu-panel-eyebrow"><span><?= esc(lang('Game.mapSelected')) ?></span></p>
         <h2 id="region-<?= esc($level['code'], 'attr') ?>-title"><?= esc($level['name']) ?></h2>
-        <p class="kedu-panel-meta"><?= esc(lang('Game.levelOrder', [$level['sequence']])) ?> · <?= esc(lang_or('Game.difficulty_' . $level['difficulty'], $level['difficulty'])) ?></p>
+        <?php // The region's opening dialogue may be watched again (owner, 20 October 2026); a locked region has none yet ?>
+        <?php if (! $locked): ?>
+          <a class="kedu-opening" href="<?= esc(base_url('dialog/' . $level['code']), 'attr') ?>">
+            <span class="kedu-opening-icon" aria-hidden="true"><?= icon('play') ?></span>
+            <span><?= esc(lang('Game.watchRegionOpening')) ?></span>
+          </a>
+        <?php endif ?>
         <span class="kedu-panel-status is-<?= esc($level['status'], 'attr') ?>"><?= icon($statusIcons[$level['status']] ?? 'sparkle') ?> <span><?= esc(lang('Game.levelStatus_' . $level['status'])) ?></span></span>
         <?php if ($locked): ?>
           <p class="kedu-panel-hint"><?= icon('lock') ?> <?= esc(lang('Game.levelLocked')) ?></p>

@@ -5,6 +5,14 @@
  * Empat pos pada `challenge_nodes.map_x` / `map_y`. Pos selesai → hasil,
  * pos terbuka → kartu misi, pos terkunci → server menolak dengan toast.
  *
+ * Owner request (20 October 2026): pins and the challenge list wear the
+ * same status medallion (status_badge_src(): green ✓ done, gold arc with
+ * the number open, navy with a lock locked); each challenge card shows its
+ * engine's picture (`assets/ui/node-card-{engine}.webp`); the side column
+ * keeps the region name and progress at the top and Pustaka {wilayah} at
+ * the bottom while only the list scrolls. No bottom nav bar: Peta Kedu is
+ * in the HUD menu.
+ *
  * @var App\Entities\Level         $level
  * @var array<string, mixed>       $levelSummary
  * @var list<array<string, mixed>> $nodes
@@ -16,6 +24,22 @@ $region = $level->text('name', $locale);
 $mapSrc = media_exists($level->map_media_id) ? media_src($level->map_media_id) : null;
 $bg     = media_exists($level->background_media_id) ? media_src($level->background_media_id) : '';
 $icons  = ['completed' => 'check', 'open' => 'right', 'locked' => 'lock'];
+// Status medallion with its mark: the number on open, a lock on locked, none on done (the
+// picture has its check). Without the pictures the old marks show.
+$medal = static function (array $n, string $class) use ($icons): string {
+    $badge = status_badge_src($n);
+
+    if ($badge === null) {
+        return $n['status'] === 'open' ? '<b class="num">' . esc($n['sequence']) . '</b>' : icon($icons[$n['status']]);
+    }
+
+    return '<img class="' . $class . '" src="' . esc($badge, 'attr') . '" alt="" decoding="async" draggable="false">'
+        . match ($n['status']) {
+            'open'   => '<b class="num">' . esc($n['sequence']) . '</b>',
+            'locked' => icon('lock', 'badge-lock'),
+            default  => '',
+        };
+};
 $href   = static fn (array $n): string => base_url(($n['status'] === 'completed' ? 'hasil/' : 'misi/') . $level->code . '/' . $n['sequence']);
 $done   = (int) $levelSummary['completed_nodes'];
 $total  = (int) $levelSummary['total_nodes'];
@@ -60,25 +84,13 @@ $points = implode(' ', array_map(static fn (array $n): string => (float) $n['map
               style="left: <?= (float) $node['map_x'] ?>%; top: <?= (float) $node['map_y'] ?>%">
             <a class="map-pin" href="<?= esc($href($node), 'attr') ?>"
                <?= $node['status'] === 'locked' ? 'aria-disabled="true" data-locked-message="' . esc(lang('Game.nodeLocked'), 'attr') . '"' : '' ?>>
-              <?php // The owner's status medallion when installed (20 October 2026); a locked pin keeps its lock ?>
-              <?php $badge = status_badge_src($node); ?>
-              <span class="pin-icon<?= $badge !== null ? ' has-badge' : '' ?><?= ! empty($node['started']) ? ' is-started' : '' ?>" aria-hidden="true">
-                <?php if ($badge !== null): ?>
-                  <img class="pin-badge" src="<?= esc($badge, 'attr') ?>" alt="" decoding="async" draggable="false">
-                <?php endif ?>
-                <?php // The gold "started" medallion has its own arc in the middle: no number on it ?>
-                <?php if ($node['status'] === 'open' && ($badge === null || empty($node['started']))): ?>
-                  <b class="num"><?= esc($node['sequence']) ?></b>
-                <?php elseif ($badge === null): ?>
-                  <?= icon($icons[$node['status']]) ?>
-                <?php endif ?>
-              </span>
+              <span class="pin-icon<?= status_badge_src($node) !== null ? ' has-badge' : '' ?>" aria-hidden="true"><?= $medal($node, 'pin-badge') ?></span>
               <span class="pin-label">
                 <b><?= esc($node['sequence']) ?>. <?= esc(engine_label($node['engine_type'], $node['variant'])) ?></b>
                 <?php if ($node['status'] === 'completed'): ?>
                   <?= stars_html((int) $node['stars']) ?>
                 <?php else: ?>
-                  <small><?= esc(lang($node['status'] === 'locked' ? 'Game.shardLocked' : (! empty($node['started']) ? 'Game.shardStarted' : 'Game.shardOpen'))) ?></small>
+                  <small><?= esc(lang($node['status'] === 'locked' ? 'Game.shardLocked' : 'Game.shardOpen')) ?></small>
                 <?php endif ?>
               </span>
             </a>
@@ -88,9 +100,8 @@ $points = implode(' ', array_map(static fn (array $n): string => (float) $n['map
     </div>
   </div>
 
-  <aside class="map-side stage-box stage-scroll" aria-label="<?= esc($region, 'attr') ?>">
+  <aside class="map-side stage-box" aria-label="<?= esc($region, 'attr') ?>">
     <header class="map-head">
-      <span class="eyebrow"><?= esc(lang('Game.levelOrder', [$level->sequence])) ?> · <?= esc(lang_or('Game.difficulty_' . $level->difficulty, (string) $level->difficulty)) ?></span>
       <h1><?= esc($region) ?></h1>
       <?php if ($level->text('focus', $locale) !== ''): ?>
         <p><?= esc($level->text('focus', $locale)) ?></p>
@@ -102,15 +113,18 @@ $points = implode(' ', array_map(static fn (array $n): string => (float) $n['map
       <p><?= esc(lang('Game.nodesDoneOf', [$done, $total])) ?></p>
     </div>
 
-    <ol class="node-list">
+    <?php // Only the list scrolls; the head, the progress, and Pustaka stay in place ?>
+    <ol class="node-list stage-scroll">
       <?php foreach ($nodes as $node): ?>
-        <li class="node-card panel is-<?= esc($node['status'], 'attr') ?>">
-          <span class="node-no num" aria-hidden="true">
-            <?= $node['status'] === 'completed' ? icon('check') : ($node['status'] === 'locked' ? icon('lock') : esc($node['sequence'])) ?>
-          </span>
+        <?php $art = is_file(FCPATH . 'assets/ui/node-card-' . $node['engine_type'] . '.webp') ? game_asset_url('ui/node-card-' . $node['engine_type'] . '.webp') : null; ?>
+        <li class="node-card panel is-<?= esc($node['status'], 'attr') ?><?= $art !== null ? ' has-art' : '' ?>">
+          <?php if ($art !== null): ?>
+            <img class="node-card-art" src="<?= esc($art, 'attr') ?>" alt="" decoding="async" draggable="false">
+          <?php endif ?>
+          <span class="node-no<?= status_badge_src($node) !== null ? ' has-badge' : '' ?>" aria-hidden="true"><?= $medal($node, 'node-badge') ?></span>
           <div class="node-card-body">
-            <span class="eyebrow"><?= esc(lang('Game.challengeOf', [$node['sequence'], $total])) ?> · <?= esc(engine_label($node['engine_type'], $node['variant'])) ?></span>
-            <h2><?= esc($node['title']) ?></h2>
+            <span class="visually-hidden"><?= esc(lang('Game.challengeOf', [$node['sequence'], $total])) ?>:</span>
+            <span class="eyebrow"><?= esc($node['title']) ?></span>
             <?php if ($node['status'] === 'completed'): ?>
               <?= stars_html((int) $node['stars']) ?>
             <?php endif ?>
@@ -125,35 +139,25 @@ $points = implode(' ', array_map(static fn (array $n): string => (float) $n['map
         </li>
       <?php endforeach ?>
     </ol>
+
+    <?php if ($hasLibrary): ?>
+      <?php
+      // "Pustaka {wilayah}" terkunci sampai keempat tantangan selesai: map.js
+      // menampilkan penjelasannya di modal; tanpa JavaScript tautannya membuka
+      // halaman terkunci /pustaka/{code} yang berisi penjelasan yang sama.
+      $libraryOpen = $library['status'] === 'open';
+      ?>
+      <div class="map-side-foot">
+        <a class="btn btn-ghost btn-block map-library" href="<?= esc(base_url('pustaka/' . $level->code), 'attr') ?>"<?php if (! $libraryOpen): ?>
+           aria-disabled="true" data-library-locked="<?= esc($level->code, 'attr') ?>"
+           data-locked-title="<?= esc(lang('Game.libraryLockedTitle', [$region]), 'attr') ?>"
+           data-locked-message="<?= esc(lang('Game.libraryLockedText', [$region, $total]), 'attr') ?>"
+           data-locked-progress="<?= esc(lang('Game.nodesProgress', [$done, $total]), 'attr') ?>"
+           data-locked-ok="<?= esc(lang('Game.libraryUnderstood'), 'attr') ?>"
+           data-index-label="<?= esc(lang('Game.library'), 'attr') ?>"
+           data-index-href="<?= esc(base_url('pustaka'), 'attr') ?>"<?php endif ?>><?= icon($libraryOpen ? 'book' : 'lock') ?> <span><?= esc(lang('Game.libraryRegion', [$region])) ?></span></a>
+      </div>
+    <?php endif ?>
   </aside>
 </section>
-<?= $this->endSection() ?>
-
-<?= $this->section('nav') ?>
-<?php
-$nav = [['label' => lang('Game.mapKedu'), 'href' => base_url('peta'), 'style' => 'quiet', 'arrow' => 'left']];
-if ($hasLibrary) {
-    // "Pustaka {wilayah}" terkunci sampai keempat tantangan selesai: map.js
-    // menampilkan penjelasannya di modal; tanpa JavaScript tautannya membuka
-    // halaman terkunci /pustaka/{code} yang berisi penjelasan yang sama.
-    $book = ['label' => lang('Game.libraryRegion', [$region]), 'href' => base_url('pustaka/' . $level->code), 'style' => 'ghost', 'icon' => 'book'];
-
-    if ($library['status'] !== 'open') {
-        $book['icon']  = 'lock';
-        $book['attrs'] = [
-            'aria-disabled'        => 'true',
-            'data-library-locked'  => (string) $level->code,
-            'data-locked-title'    => lang('Game.libraryLockedTitle', [$region]),
-            'data-locked-message'  => lang('Game.libraryLockedText', [$region, $total]),
-            'data-locked-progress' => lang('Game.nodesProgress', [$done, $total]),
-            'data-locked-ok'       => lang('Game.libraryUnderstood'),
-            'data-index-label'     => lang('Game.library'),
-            'data-index-href'      => base_url('pustaka'),
-        ];
-    }
-
-    $nav[] = $book;
-}
-?>
-<?= component('nav-bar', ['nav' => $nav]) ?>
 <?= $this->endSection() ?>

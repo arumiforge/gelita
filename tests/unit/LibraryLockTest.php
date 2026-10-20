@@ -82,6 +82,16 @@ final class LibraryLockTest extends CIUnitTestCase
             {
                 return [];
             }
+
+            public function mediaMap(): array
+            {
+                return [];
+            }
+
+            public function nodesForLevel(int $levelId): array
+            {
+                return [];
+            }
         });
 
         Services::injectMock('eventService', new class ($test) extends EventService {
@@ -257,6 +267,54 @@ final class LibraryLockTest extends CIUnitTestCase
         $open = view('game/map-level', $data + ['library' => ['status' => 'open', 'level_status' => 'completed', 'entry' => 'wilayah/magelang', 'completed_nodes' => 5, 'total_nodes' => 5]]);
         $this->assertStringContainsString('<span>Pustaka Magelang</span>', $open);
         $this->assertStringNotContainsString('data-library-locked', $open);
+
+        // Owner, 20 October 2026: Pustaka sits at the bottom of the side column, no bottom nav bar
+        // (Peta Kedu is in the HUD menu)
+        $foot = substr($open, (int) strpos($open, '<div class="map-side-foot">'));
+        $this->assertStringContainsString('<span>Pustaka Magelang</span>', substr($foot, 0, (int) strpos($foot, '</aside>')));
+        $this->assertStringNotContainsString('class="nav-bar"', $open);
+    }
+
+    /**
+     * Owner, 20 October 2026: no eyebrow in the head; each card shows only its title (with
+     * the position for screen readers), the status medallion with the number or a lock, and
+     * its engine's picture; only the list scrolls.
+     */
+    public function testRegionMapCardsWearTheirMedallionAndPicture(): void
+    {
+        $nodes = [];
+        foreach ([[1, 'puzzle', 'completed'], [2, 'rumpang', 'open'], [3, 'boleh', 'locked'], [4, 'cari', 'locked']] as [$n, $engine, $status]) {
+            $nodes[] = ['id' => $n, 'sequence' => $n, 'engine_type' => $engine, 'variant' => '', 'title' => lang('Game.engine_' . $engine),
+                'description' => '', 'status' => $status, 'stars' => $status === 'completed' ? 2 : null, 'map_x' => 20 * $n, 'map_y' => 50];
+        }
+
+        $page = view('game/map-level', self::hud() + [
+            'level'        => self::level(2, 'magelang'),
+            'levelSummary' => ['stars' => 2, 'completed_nodes' => 1, 'total_nodes' => 4],
+            'nodes'        => $nodes,
+            'hasLibrary'   => false,
+            'library'      => ['status' => 'locked'],
+        ]);
+        $side = substr($page, (int) strpos($page, '<aside class="map-side stage-box"'));
+        $head = substr($side, 0, (int) strpos($side, '</header>'));
+        $list = substr($side, (int) strpos($side, '<ol class="node-list stage-scroll">'));
+        $list = substr($list, 0, (int) strpos($list, '</ol>'));
+
+        $this->assertStringNotContainsString('eyebrow', $head);
+        $this->assertStringNotContainsString('<h2>', $list, 'the title shows once');
+        $this->assertStringContainsString('<span class="visually-hidden">' . esc(lang('Game.challengeOf', [2, 4])) . ':</span>', $list);
+        $this->assertStringContainsString('<span class="eyebrow">' . esc(lang('Game.engine_rumpang')) . '</span>', $list);
+
+        $progress = esc(game_asset_url('ui/status-progress.webp'), 'attr');
+        $this->assertStringContainsString('<span class="node-no has-badge" aria-hidden="true"><img class="node-badge" src="' . $progress . '" alt="" decoding="async" draggable="false"><b class="num">2</b></span>', $list);
+        $this->assertSame(2, substr_count($list, icon('lock', 'badge-lock')), 'locked cards carry a lock on the navy medallion');
+        $this->assertSame(4, substr_count($page, 'class="pin-badge"'), 'every pin wears its medallion');
+
+        foreach (['puzzle', 'rumpang', 'boleh', 'cari'] as $engine) {
+            $this->assertFileExists(FCPATH . 'assets/ui/node-card-' . $engine . '.webp');
+            $this->assertStringContainsString('<img class="node-card-art" src="' . esc(game_asset_url('ui/node-card-' . $engine . '.webp'), 'attr') . '"', $list, $engine);
+        }
+        $this->assertStringNotContainsString('map-side-foot', $page, 'no library: no button');
     }
 
     // ------------------------------------------------------------ momen terbuka
