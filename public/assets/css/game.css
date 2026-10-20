@@ -241,6 +241,43 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
   50%      { filter: drop-shadow(0 0 .875rem var(--glow)); }
 }
 
+/* Lettered picture buttons (owner, 20 October 2026; picture_button()): the
+   lantern plates MASUK / LOG IN, BERIKUTNYA / NEXT, DAFTAR / SIGN UP. The
+   picture carries the word, so the button has no text of its own. */
+.btn-art {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--tap);
+  min-height: var(--tap);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-lg);
+  background: none;
+  line-height: 0;
+  cursor: pointer;
+  transition: transform .15s;
+}
+.btn-art img {
+  width: auto;
+  height: 4rem; /* 64 dp, inside the 80 dp register bar */
+  filter: drop-shadow(0 .25rem .625rem rgba(0, 0, 0, .45));
+  transition: filter .2s;
+  -webkit-user-drag: none;
+}
+@media (hover: hover) {
+  .btn-art:hover { transform: translateY(-.125rem); }
+  .btn-art:hover img { filter: drop-shadow(0 .25rem .625rem rgba(0, 0, 0, .45)) drop-shadow(0 0 1rem var(--glow)) brightness(1.08); }
+}
+.btn-art:focus-visible { outline: .1875rem solid var(--gold-500); outline-offset: .25rem; }
+.btn-art:focus-visible img,
+.btn-art:active img { filter: drop-shadow(0 .25rem .625rem rgba(0, 0, 0, .45)) drop-shadow(0 0 1rem var(--glow)) brightness(1.08); }
+.btn-art:active { transform: scale(.96); }
+.btn-art:disabled { cursor: progress; opacity: .7; transform: none; }
+.login-form .form-actions { justify-content: center; }
+/* The MASUK / LOG IN plate is nearly 2:1, so its letters need the extra height */
+.login-form .btn-art img { height: 5rem; }
+
 .region-seq {
   display: inline-grid;
   place-items: center;
@@ -3322,6 +3359,7 @@ html.js .book-frame img.is-loaded { opacity: 1; }
      keep their colour cues but do not move or scale */
   .btn-start, .btn-start.is-image { animation: none; }
   .btn-start:hover, .btn-start:focus-visible, .btn-start:active,
+  .btn-art:hover, .btn-art:active,
   .map-pin:hover .pin-icon, .map-pin:active .pin-icon,
   .piece.is-selected, .object:hover, .object:not(:disabled):active,
   .word:not(:disabled):active, .blank:not(:disabled):active,

@@ -56,7 +56,7 @@ final class CatalogImportTest extends CIUnitTestCase
             'app.favicon.ico'                 => ['ikon/app.favicon.webp', 32, 32, true],
             'bg.cerita-intro-01'              => ['latar/bg.cerita-intro-01.webp', 1920, 1080, false],
             'map.region.temanggung'           => ['peta/map.region.temanggung.webp', 1400, 900, false],
-            'ui.btn-start'                    => ['antarmuka/ui.btn-start.webp', 720, 240, true],
+            'ui.btn-start'                    => ['antarmuka/ui.btn-start.webp', 720, 360, true],
             'char.jaka.idle.1'                => ['karakter/char.jaka.idle.1.webp', 700, 900, true],
             'char.jaka.idle.2'                => ['karakter/char.jaka.idle.2.webp', 700, 900, true],
             'challenge.item.tmg-1-01'         => ['tantangan/challenge.item.tmg-1-01.webp', 1200, 1200, false],

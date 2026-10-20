@@ -72,7 +72,8 @@
         <input type="hidden" name="device_json" value="">
 
         <div class="form-actions">
-          <button class="btn btn-primary btn-lg btn-block" type="submit"><?= esc(lang('Game.login')) ?> <?= icon('right') ?></button>
+          <?php // The owner's lettered MASUK / LOG IN plate (20 October 2026) ?>
+          <?= picture_button('login', lang('Game.login'), 'btn btn-primary btn-lg btn-block') ?>
         </div>
       </form>
 

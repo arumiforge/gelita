@@ -214,7 +214,7 @@ Ukuran gambar per slot ditetapkan di `Config\Gelita::$assetSizes`. Slot bertanda
 | Latar layar `bg.*` (`bg.loading`, `bg.welcome`, `bg.auth`, `bg.intro`, `bg.map`, `bg.reflection`, `bg.{wilayah}.region`) | 1920 × 1080 | ya |
 | Frame pose tokoh `char.jaka.{pose}.{1–24}`, `char.kedu.{pose}.{1–24}` (WebP/PNG transparan; sampai 24 gambar per pose, diputar berulang) | 700 × 900 | ya |
 | Logo halaman awal `ui.logo-hero` | 1600 × 600 | ya |
-| Tombol Mulai `ui.btn-start`, `ui.btn-start.en` | 720 × 240 | ya |
+| Tombol Mulai `ui.btn-start`, `ui.btn-start.en` | 720 × 360 | ya |
 | Adegan Cari Objek `challenge.{tmg,mgl,wnb}-4.scene` | 1280 × 720 | ya |
 | Gambar Susun Gambar `challenge.item.{tmg,mgl,wnb}-1-…` | 1200 × 1200 | ya |
 | Gambar pernyataan Benar atau Salah `challenge.item.{tmg,mgl,wnb}-3-…` | 480 × 360 | ya |

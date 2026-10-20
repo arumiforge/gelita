@@ -136,7 +136,7 @@ $country = $val('country_code') ?: 'ID';
       </div>
 
       <div class="form-actions register-actions">
-        <button class="btn btn-primary btn-lg" type="submit"><?= esc(lang('Game.next')) ?> <?= icon('right') ?></button>
+        <?= picture_button('next', lang('Game.next')) ?>
       </div>
     </form>
   </div>

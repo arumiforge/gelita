@@ -108,6 +108,26 @@ final class RegisterWizardTest extends CIUnitTestCase
         }
     }
 
+    /** Owner, 20 October 2026: Berikutnya and Daftar are the lettered lantern plates, without text of their own. */
+    public function testStepButtonsAreTheLetteredPictures(): void
+    {
+        $_SESSION[RegisterController::WIZARD] = ['1' => self::ABOUT, '2' => self::SCHOOL];
+        $expect = ['1' => ['btn-next.webp', 'Game.next'], '2' => ['btn-next.webp', 'Game.next'], '3' => ['btn-register.webp', 'Game.registerSubmit']];
+
+        foreach ($expect as $step => [$file, $label]) {
+            $html    = (string) $this->send(Method::GET, 'daftar/' . $step)->getBody();
+            $actions = substr($html, (int) strpos($html, 'register-actions'));
+            $actions = substr($actions, 0, (int) strpos($actions, '</div>'));
+
+            $this->assertStringContainsString('<button class="btn-art" type="submit"><img src="' . asset_url_versioned('ui/' . $file) . '" alt="' . lang($label) . '"', $actions, "step {$step}");
+            $this->assertStringNotContainsString('btn-primary', $actions, "step {$step}: no plain button");
+        }
+
+        foreach (['next', 'next-en', 'register', 'register-en'] as $name) {
+            $this->assertFileExists(FCPATH . 'assets/ui/btn-' . $name . '.webp');
+        }
+    }
+
     /** One HUD everywhere (owner, 18 October 2026); the logo in its middle and Back in the top-right corner, after the controls (20 October 2026). */
     public function testBackSitsInTheHudCornerWithTheLogoInTheMiddle(): void
     {
