@@ -152,4 +152,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 | Branch | Owner / scope | Status |
 |---|---|---|
 | `pbb/determined-tesla-qpw54u` | Story screens: tap card first, lighter caption | PR #182 open |
-| `sky/fervent-curie-k4riwe` | Region map side column, three medallion states, opening story link | PR open |
+| `sky/fervent-curie-k4riwe` | Region map side column, three medallion states, opening story link | PR #184 open |
