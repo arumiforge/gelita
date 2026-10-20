@@ -444,19 +444,23 @@ final class CatalogImportTest extends CIUnitTestCase
         $this->assertArrayNotHasKey('ui.result-panel', $only);
     }
 
-    /** Page redesign 2: the Peta Kedu diorama is installed from its mockup package (not in data.json). */
+    /**
+     * Page redesign 2: the Peta Kedu diorama is installed from its mockup package (not in data.json);
+     * since 20 October 2026 the owner's island map (revisi-05, 1672 × 941) fitted to 1600 × 900.
+     */
     public function testDioramaComesFromTheMockupPackage(): void
     {
         $file = $this->catalog . '/' . array_key_first(CatalogImporter::MOCKUP_FILES);
         mkdir(dirname($file), 0777, true);
-        $image = imagecreatetruecolor(1774, 887);
+        $image = imagecreatetruecolor(1672, 941);
         imagewebp($image, $file, 90);
 
         $report = array_column($this->importer()->run(), null, 'target');
-        $this->assertSame(['diorama.kedu-tiga-wilayah.webp', 'installed'], [$report['map.kedu-diorama']['source'], $report['map.kedu-diorama']['status']]);
+        $this->assertSame(['diorama.kedu-pulau.webp', 'installed'], [$report['map.kedu-diorama']['source'], $report['map.kedu-diorama']['status']]);
 
         $row = model(MediaAssetModel::class)->findByKey('map.kedu-diorama');
-        $this->assertSame([1774, 887], [(int) $row['width_px'], (int) $row['height_px']]);
+        $this->assertSame([1600, 900], [(int) $row['width_px'], (int) $row['height_px']]);
+        $this->assertFileExists(dirname(APPPATH) . '/gelita-katalog/' . array_key_first(CatalogImporter::MOCKUP_FILES), 'the real picture ships in the catalogue');
 
         // --kunci reaches it by its slot key
         $only = array_column($this->importer()->run(true, true, null, ['map.kedu-*']), 'target');

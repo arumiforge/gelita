@@ -15,9 +15,10 @@
  *               dirender paling awal agar tampil sejak paint pertama
  *   content     isi halaman
  *   nav         komponen nav-bar (opsional)
- *   hudStyle    `menu` for the full-size HUD (120 dp; components/hud-menu); any
- *               other page gets the same HUD compact in the 56 dp strip
- *   hudTitle, hudBack, hudShards  see components/hud-menu
+ *   hudStyle    `menu` for the full-size HUD (120 dp; components/hud-menu),
+ *               `tall` for the 84 dp one (region map); any other page gets
+ *               the same HUD compact in the 56 dp strip
+ *   hudTitle, hudBack, hudShards, hudLayout  see components/hud-menu
  *   music       background track of the page (`<body data-music>`, file
  *               assets/audio/music/{name}.mp3, started by game.js after the
  *               first tap); pages that switch tracks themselves leave it empty
@@ -60,8 +61,7 @@ $screenCode = method_exists($request, 'getPath') ? (App\Filters\ScreenViewFilter
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="GELITA">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <link rel="preload" href="<?= game_asset_url('fonts/plus-jakarta-sans-latin-400-normal.woff2') ?>" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="<?= game_asset_url('fonts/cinzel-decorative-700-normal.woff2') ?>" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="<?= game_asset_url('fonts/marcellus-latin-400-normal.woff2') ?>" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="<?= asset_url_versioned('css/tokens.css') ?>">
   <link rel="stylesheet" href="<?= asset_url_versioned('css/base.css') ?>">
   <link rel="stylesheet" href="<?= asset_url_versioned('css/stage.css') ?>">

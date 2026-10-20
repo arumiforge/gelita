@@ -246,6 +246,6 @@ Rincian, spesifikasi berkas, dan lisensi model suara ada di [`docs/audio.md`](do
 ## Lisensi dan kredit
 
 - Daftar sekolah resmi berasal dari Data Induk Pendidikan lewat cermin [`bahrye/api-sekolah`](https://github.com/bahrye/api-sekolah) (MIT); lihat [`docs/sekolah/README.md`](docs/sekolah/README.md).
-- Howler.js 2.2.4 (MIT) dan font Cinzel Decorative, Plus Jakarta Sans, IBM Plex Mono (SIL OFL 1.1) di-host sendiri; versi dan lisensinya di [`public/assets/vendor/README.md`](public/assets/vendor/README.md).
+- Howler.js 2.2.4 (MIT) dan font Marcellus, Plus Jakarta Sans, IBM Plex Mono (SIL OFL 1.1) di-host sendiri; versi dan lisensinya di [`public/assets/vendor/README.md`](public/assets/vendor/README.md).
 - Model suara narasi (Mimic 3 `jv_ID`, CC BY-SA 4.0; suara Piper) beserta syarat atribusinya tercantum di [`docs/audio.md`](docs/audio.md#lisensi-dan-kredit).
 - Kredit gambar dan video Pustaka Kedu tercantum per media di [`docs/pustaka/data/`](docs/pustaka/data/).

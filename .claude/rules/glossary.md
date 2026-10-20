@@ -35,7 +35,8 @@ One concept, one word, in every layer. "UI (id)" is what users read; "Code (en)"
 | menu (HUD baru) | `menu HUD`, `compact HUD` | `components/hud-menu` on every page: full size with section `hudStyle` = `menu`, else `.is-compact`; `hudShards` = `off` hides the shard pill |
 | kartu misi | `mission card`, `brief` | `game/mission-brief`, `.mission-card`, `.mission-seal` |
 | tombol utama | `main button` | `.btn-primary` on `#stage`, skin `ui.result-button-primary` |
-| diorama Peta Kedu | `diorama` | slot `map.kedu-diorama`; `Config\Gelita::$mapDiorama` |
+| diorama Peta Kedu (peta pulau) | `diorama`, `island map` | slot `map.kedu-diorama` (the owner's island picture since 20 Oct 2026, catalogue `mockup/…/peta-kedu/revisi-05`); `Config\Gelita::$mapDiorama` |
+| bagian wilayah yang terkunci (gelap) | `region shade`, `region mask` | `img.kedu-shade` through `public/assets/ui/kedu-region-{wilayah}.webp` (feathered land mask, rivers as borders) |
 | avatar Jaka (potret cerita Peta Kedu, layar Kenali) | `Jaka avatar`, `portrait` | slot `ui.jaka-avatar`, the owner's framed picture `gelita-katalog/mockup/gambar-mockup/kenali/aset/` (since 19 Oct 2026; was `reference.03`); `partials/kedu-portrait` |
 | avatar Mbah Kedu (layar Kenali) | `Mbah Kedu avatar` | slot `ui.kedu-avatar` from catalogue `reference.02`; `.kenal-avatar` (round, on the caption's left end) |
 | papan nama (layar Kenali, cerita Peta Kedu) | `nameplate` | `.kenal-nameplate` on the navy plate, over the avatar ring's lower part; on Peta Kedu inside `.kedu-speaker` (since 20 Oct 2026) |
@@ -44,7 +45,9 @@ One concept, one word, in every layer. "UI (id)" is what users read; "Code (en)"
 | bilah tombol tantangan | `action bar` | `.arena-actions` (32, 648, 1216 × 56): gold `.btn-action` between two gold rules; `#btn-check`, `#btn-next` |
 | medali status tantangan | `status badge`, `status medallion` | `status_badge_src()`: three states only (owner, 20 Oct 2026): `public/assets/ui/status-done.webp` (green ✓) = completed, `status-progress.webp` (gold arc) = open, `status-open.webp` (navy) + a lock = locked; on the shard dots, region-map pins and challenge list (`.node-no`, number on open), and the Peta Kedu done badge. No "started"/"Sedang dikerjakan" state. Every badge picture (and the challenge number ring) wears `--badge-halo`, a black rim that follows its outline |
 | papan Serpihan Cahaya (HUD) | `shard plate` | the owner's carved frame `public/assets/ui/hud-shards-frame.webp` (about 4.9 : 1, empty groove, small spaced label above the groove) on `.hud-shards .lantern-toggle`, passed as `--shards-frame`; the bar is filled by the page from the real count with `hud-shards-fill.webp` (`--shards-fill`) plus glow and sweep; the frame's crystal glows per completed region (`.lantern-gem`, `data-stage`), since 20 Oct 2026 |
-| kartu tantangan (peta wilayah) | `challenge card` | `.node-card` in `.map-side`; engine picture `public/assets/ui/node-card-{engine}.webp` |
+| kartu tantangan (peta wilayah) | `challenge card` | `.node-card` in `.map-side`; engine picture `public/assets/ui/node-card-{engine}.webp`, in sepia inside the green scarf frame `node-card-frame.webp` (`.has-frame`, since 20 Oct 2026) |
+| papan tombol hijau | `green plate` | `public/assets/ui/plate-green.webp` (`--plate-green`): Lihat hasil on the region map |
+| gambar buku Pustaka | `library icon` | `library_icon()`, `public/assets/ui/icon-pustaka.webp`, `.library-icon`; on the Pustaka buttons |
 | gambar bintang | `star picture` | `star_src()`/`star_img()`/`stars_html()`: slot `ui.result-star`, else `public/assets/ui/star.webp`; empty star `.is-off` (grey, faded); admin keeps the line icon |
 | Wilayah dipilih (panel) | `region panel`, `selected region` | `.kedu-panel`, `data-region-select` |
 | Lihat cerita pembuka (panel wilayah) | `opening story link` | `.kedu-opening` → `/dialog/{code}`, label `Game.watchRegionOpening` |

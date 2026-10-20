@@ -648,8 +648,7 @@ body.is-cinematic :is(.hud-identity, .hud-controls, .hud-shards) { pointer-event
   min-height: 4.5rem;
   padding: var(--gap-3) var(--gap-7);
   font-size: 1.75rem;
-  letter-spacing: .06em;
-  text-transform: uppercase;
+  letter-spacing: .02em;
   pointer-events: auto;
   animation: cine-rise .6s ease .3s both;
 }
@@ -770,7 +769,7 @@ body.is-cinematic .nav-bar .btn {
    full-width caption; its first row holds the name, small page dots (no
    "Bagian n dari N" text), and the narrator controls at the right; the
    characters stand at the stage's edges, feet on the bottom; the HUD shows the
-   shard pill under the logo, the region name in capitals, and the difficulty
+   shard pill under the logo, the region name, and the difficulty
    badge left of the language control. */
 
 /* Ambience layer behind the characters and the caption (first in the scene) */
@@ -869,9 +868,9 @@ body.is-cinematic .nav-bar .btn {
 /* Last line: "Masuk ke {wilayah}" in the middle between the HUD and the box */
 .dialogue-cine .cine-final { inset: calc(120 * var(--dp)) 0 calc(200 * var(--dp)); grid-auto-flow: column; place-content: center; gap: var(--gap-4); }
 
-/* HUD on this page: the region name in capitals and larger; the shard pill
+/* HUD on this page: the region name larger; the shard pill
    (only with progress data) under the logo instead of the centre */
-.is-region-dialogue .hud-identity-region { font-family: var(--font-display); font-size: 2.25rem; letter-spacing: .06em; text-transform: uppercase; }
+.is-region-dialogue .hud-identity-region { font-family: var(--font-display); font-size: 2.25rem; letter-spacing: .02em; }
 .is-region-dialogue .hud-shards { top: calc(116 * var(--dp)); left: calc(24 * var(--dp)); width: calc(360 * var(--dp)); }
 
 /* Difficulty badge in the HUD, left of the language control (partials/region-difficulty);
@@ -923,7 +922,7 @@ body.is-cinematic .nav-bar .btn {
   animation: bar-rise .5s cubic-bezier(.3, 1.6, .5, 1) calc(.5s + var(--i) * .15s) both, bar-glow 2.4s ease-in-out calc(1.4s + var(--i) * .25s) infinite;
 }
 .region-difficulty-text { display: grid; justify-items: start; line-height: 1.1; }
-.region-difficulty-label { color: var(--ink-dim); font-size: .75rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; white-space: nowrap; }
+.region-difficulty-label { color: var(--ink-dim); font-size: .75rem; font-weight: 700; letter-spacing: .02em; white-space: nowrap; }
 .region-difficulty-level {
   background: linear-gradient(to bottom, #FFF6DD, var(--diff));
   -webkit-background-clip: text;
@@ -1376,7 +1375,7 @@ body.has-kenal { overflow: hidden; }
 /* ==================== TAHAP 3 · TIRAI TANTANGAN ==================== */
 .curtain-challenge { cursor: pointer; }
 .curtain-challenge .curtain-core { gap: var(--gap-2); }
-.curtain-eyebrow { margin: var(--gap-2) 0 0; color: var(--gold-500); font-size: var(--fs-caption); font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.curtain-eyebrow { margin: var(--gap-2) 0 0; color: var(--gold-500); font-size: var(--fs-caption); font-weight: 700; letter-spacing: .02em; }
 .curtain-challenge .curtain-title { font-size: var(--fs-h2); }
 .curtain-lead { margin: 0; color: var(--ink); font-size: var(--fs-h3); }
 .curtain-skip { margin: var(--gap-2) 0 0; color: var(--ink-dim); font-size: var(--fs-caption); }
@@ -1489,7 +1488,7 @@ body.has-kenal { overflow: hidden; }
 }
 
 /* ================= TAHAP 3 · KARTU BAB & DIALOG ================= */
-.narrator-tap-eyebrow { color: var(--gold-500); font-size: var(--fs-body); font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.narrator-tap-eyebrow { color: var(--gold-500); font-size: var(--fs-body); font-weight: 700; letter-spacing: .02em; }
 .narrator-tap-title {
   margin: 0;
   background: linear-gradient(to bottom, #FFF6DD, var(--gold-500));

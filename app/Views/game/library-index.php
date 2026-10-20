@@ -57,7 +57,7 @@ $badges = ['open' => 'book', 'locked' => 'lock', 'unavailable' => 'lock'];
 
           <?php if ($state === 'open'): ?>
             <?php if ($region['pages'] > 0): ?>
-              <a class="btn btn-primary" href="<?= base_url('pustaka/' . $region['code']) ?>"><?= icon('book') ?> <?= esc(lang('Game.libraryRead')) ?></a>
+              <a class="btn btn-primary" href="<?= base_url('pustaka/' . $region['code']) ?>"><?= library_icon() ?> <?= esc(lang('Game.libraryRead')) ?></a>
             <?php else: ?>
               <p class="muted"><?= esc(lang('Game.libraryEmpty')) ?></p>
             <?php endif ?>

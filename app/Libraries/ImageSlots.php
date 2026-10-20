@@ -406,14 +406,14 @@ final class ImageSlots
 
         'map.kedu-diorama' => [
             'group'       => 'map',
-            'label'       => 'Diorama tiga wilayah Peta Kedu',
-            'content'     => 'Diorama 3D Dataran Kedu dari atas yang terbagi menjadi tiga pulau: Wonosobo di kiri, Temanggung di kanan atas, Magelang di kanan bawah, dipisahkan celah air. Tanpa tulisan, pin, atau jalur: permainan menggambar pin, nama wilayah, jalur putus-putus, dan meredupkan wilayah yang terkunci.',
+            'label'       => 'Peta pulau Dataran Kedu',
+            'content'     => 'Pulau Dataran Kedu dari atas (gambar pemilik, 20 Oktober 2026): Wonosobo di barat (telaga, dataran tinggi, pelabuhan), Temanggung di timur laut (dua gunung, kebun bertingkat), Magelang di tenggara (Borobudur dan candi-candi). Sungai menjadi batas wilayah. Tanpa tulisan, pin, atau jalur: permainan menggambar pin dan nama wilayah, menggelapkan wilayah yang terkunci, dan memudarkan tepi gambar ke latar halaman.',
             'screens'     => [['Peta Kedu', '/peta']],
-            'format'      => 'WebP 1774 × 887 (rasio 2:1), paling besar ± 450 KB',
+            'format'      => 'WebP 1600 × 900 (rasio 16:9), paling besar ± 450 KB',
             'transparent' => false,
             'fallback'    => 'Peta Kedu lama (map.kedu) dengan pin di titik masing-masing wilayah',
             'priority'    => 'opsional',
-            'tips'        => 'Bentuk potongan tiap wilayah diukur pada gambar Katalog Aset (mockup Peta Kedu kandidat 04). Gambar pengganti harus berkomposisi sama; bila tidak, potongan dan letak pin perlu diukur ulang oleh pengembang.',
+            'tips'        => 'Bagian tiap wilayah (masker) dan letak pin diukur pada gambar Katalog Aset (mockup Peta Kedu revisi-05). Gambar pengganti harus berkomposisi sama; bila tidak, masker dan letak pin perlu dibuat ulang oleh pengembang.',
         ],
         'ui.pin' => [
             'group'       => 'map',

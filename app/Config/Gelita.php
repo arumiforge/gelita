@@ -232,8 +232,8 @@ class Gelita extends BaseConfig
         'ui.result-hud-control'      => [128, 128],
         'ui.result-star'             => [128, 128],
         'ui.result-medal'            => [512, 512],
-        // Peta Kedu diorama (page redesign 2, 18 October 2026): the region shapes below are measured on this size
-        'map.kedu-diorama'           => [1774, 887],
+        // Peta Kedu island map (owner, 20 October 2026): the region masks and pins below are measured on it
+        'map.kedu-diorama'           => [1600, 900],
         // Jaka's bust avatar in the Peta Kedu story bar (owner, 18 October 2026)
         'ui.jaka-avatar'             => [512, 512],
         // Mbah Kedu's avatar in the Kenali overlay (owner, 19 October 2026)
@@ -269,40 +269,37 @@ class Gelita extends BaseConfig
         'ui.result-medal'       => [223, 223],
         'ui.result-star'        => [57, 57],
         'ui.result-hud-control' => [68, 68],
-        'map.kedu-diorama'      => [853, 427],  // Peta Kedu, the whole 2:1 picture in the map frame (since 18 Oct 2026)
+        'map.kedu-diorama'      => [896, 504],  // Peta Kedu, the whole 16:9 picture, edges fading into the page (since 20 Oct 2026)
         'ui.jaka-avatar'        => [232, 232],  // Kenali overlay avatar; 120 × 120 in the Peta Kedu story bar
         'ui.kedu-avatar'        => [232, 232],  // Kenali overlay: round avatar on the caption's left end
     ];
 
     /**
-     * Peta Kedu diorama (`map.kedu-diorama`, catalogue mockup Peta Kedu
-     * candidate 04, owner decision 18 October 2026), keyed by region code.
-     * Measured on the catalogue picture; a replacement picture needs new values.
+     * Peta Kedu island map (`map.kedu-diorama`, the owner's picture of
+     * 20 October 2026, catalogue mockup revisi-05), keyed by region code.
+     * Measured on that picture; a replacement picture needs new values.
      *
-     * - clip:  the region's part of the picture, CSS polygon points in percent;
-     *          a locked region's part is dimmed;
-     * - pin:   centre of the region's medallion, percent x / y of the picture;
-     * - route: SVG path (viewBox 0 0 1280 640) of the trail that leads into the
-     *          region, gold once the region is open, grey while it is locked.
+     * - mask: the region's land as a feathered alpha picture in
+     *         public/assets/ui/ (the rivers are the borders); a locked
+     *         region's land is darkened through it;
+     * - pin:  centre of the region's medallion, percent x / y of the picture.
      *
-     * Regions without an entry show no slice and use their own map_x / map_y.
+     * Regions without an entry show no shade and use their own map_x / map_y.
      *
-     * @var array<string, array{clip: string, pin: array{0: float, 1: float}, route?: string}>
+     * @var array<string, array{mask: string, pin: array{0: float, 1: float}}>
      */
     public array $mapDiorama = [
         'temanggung' => [
-            'clip' => '34% 0, 100% 0, 100% 49%, 43% 49%, 43% 46%, 36% 25%',
-            'pin'  => [67.19, 24.38],
+            'mask' => 'ui/kedu-region-temanggung.webp',
+            'pin'  => [69.0, 26.0],
         ],
         'magelang' => [
-            'clip'  => '43% 49%, 100% 49%, 100% 100%, 34% 100%, 37% 80%, 43% 58%',
-            'pin'   => [74.22, 68.59],
-            'route' => 'M850 220C1040 275 1080 345 970 410',
+            'mask' => 'ui/kedu-region-magelang.webp',
+            'pin'  => [66.0, 68.0],
         ],
         'wonosobo' => [
-            'clip'  => '0 0, 34% 0, 36% 25%, 43% 46%, 43% 58%, 37% 80%, 34% 100%, 0 100%',
-            'pin'   => [19.84, 48.75],
-            'route' => 'M920 465C720 615 440 585 280 435',
+            'mask' => 'ui/kedu-region-wonosobo.webp',
+            'pin'  => [27.0, 42.0],
         ],
     ];
 

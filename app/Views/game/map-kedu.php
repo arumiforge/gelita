@@ -6,10 +6,10 @@
  * with the owner's changes; decision log *Page redesign 2*):
  * - redesigned HUD (hudStyle `menu`) with the title and the shard lantern;
  *   profile, Peta Kedu, fullscreen, and logout are in its menu;
- * - map: the three-region diorama `map.kedu-diorama` cut into one slice per
- *   region (Config\Gelita::$mapDiorama; locked slices dimmed, trails gold or
- *   grey), else the old `map.kedu` picture. Each region is one large pin with
- *   its name and status; tapping it selects the region (no navigation);
+ * - map: the diorama `map.kedu-diorama` (since 20 October 2026 the island
+ *   map, see below), else the old `map.kedu` picture. Each region is one
+ *   large pin with its name and status; tapping it selects the region (no
+ *   navigation);
  * - one region panel (the selected region; without JavaScript the panel is
  *   chosen with :target) with Kenali and Lanjut;
  * - Jaka's story as a bar under the map, as wide as the map (portrait,
@@ -35,6 +35,14 @@
  * lose their backdrop and gold frame, and the speaker's name moves out of
  * the story line onto the navy nameplate over the avatar's lower ring, as on
  * the Kenali screen (`.kedu-speaker`, `.kenal-nameplate`).
+ *
+ * Owner request (20 October 2026, island map): `map.kedu-diorama` is the
+ * owner's single-island picture (16:9). No frame, backdrop, or trails; its
+ * edges fade into the page. A locked region's land is darkened through a
+ * feathered mask per region (Config\Gelita::$mapDiorama `mask`); open
+ * regions stay bright. The HUD has no logo: the shard plate sits on the
+ * left, "Peta Kedu" in the middle (section `hudLayout`), over a soft dark
+ * gradient that fades down into the page.
  *
  * Earlier notes (still true unless replaced above):
  *
@@ -99,6 +107,8 @@ $plateStyle = ' style="--kenal-plate-navy: url(&quot;' . esc(asset_url_versioned
 <?= $this->section('title') ?><?= esc(lang('Game.mapKedu')) ?><?= $this->endSection() ?>
 <?= $this->section('hudTitle') ?><?= esc(lang('Game.mapKedu')) ?><?= $this->endSection() ?>
 <?= $this->section('hudStyle') ?>menu<?= $this->endSection() ?>
+<?php // No logo; shard plate on the left, the title in the middle (owner, 20 October 2026) ?>
+<?= $this->section('hudLayout') ?>title-centre<?= $this->endSection() ?>
 <?= $this->section('background') ?><?= media_key_src('bg.map') ?? '' ?><?= $this->endSection() ?>
 
 <?= $this->section('overlay') ?>
@@ -141,21 +151,17 @@ $unheard  = static fn (array $l): bool => ($intros[$l['code']] ?? []) !== [] && 
   <div class="kedu-map stage-box">
     <div class="kedu-art<?= $diorama !== null ? ' is-diorama' : '' ?><?= $mapSrc === null ? ' is-drawn' : '' ?>">
       <?php if ($diorama !== null): ?>
-        <?php foreach ($levels as $level): ?>
-          <?php if (isset($shapes[$level['code']])): ?>
-            <img class="kedu-slice<?= $level['status'] === 'locked' ? ' is-locked' : '' ?>" src="<?= esc($diorama, 'attr') ?>" alt=""
-                 style="clip-path: polygon(<?= esc($shapes[$level['code']]['clip'], 'attr') ?>)" draggable="false">
-          <?php endif ?>
-        <?php endforeach ?>
-        <span class="visually-hidden"><?= esc(lang('Game.mapImageAlt', [lang('Game.mapKedu')])) ?></span>
-        <svg class="kedu-routes" viewBox="0 0 1280 640" aria-hidden="true">
+        <?php // The island fades into the page at its edges; a locked region's land is a darkened copy through its mask ?>
+        <div class="kedu-island">
+          <img class="kedu-island-img" src="<?= esc($diorama, 'attr') ?>" alt="" draggable="false">
           <?php foreach ($levels as $level): ?>
-            <?php if (isset($shapes[$level['code']]['route'])): ?>
-              <path class="kedu-route-shadow" d="<?= esc($shapes[$level['code']]['route'], 'attr') ?>"/>
-              <path class="kedu-route<?= $level['status'] === 'locked' ? ' is-locked' : '' ?>" d="<?= esc($shapes[$level['code']]['route'], 'attr') ?>"/>
+            <?php if ($level['status'] === 'locked' && isset($shapes[$level['code']]['mask'])): ?>
+              <img class="kedu-shade" src="<?= esc($diorama, 'attr') ?>" alt="" draggable="false"
+                   style="--region-mask: url(&quot;<?= esc(asset_url_versioned($shapes[$level['code']]['mask']), 'attr') ?>&quot;)">
             <?php endif ?>
           <?php endforeach ?>
-        </svg>
+        </div>
+        <span class="visually-hidden"><?= esc(lang('Game.mapImageAlt', [lang('Game.mapKedu')])) ?></span>
       <?php elseif ($mapSrc !== null): ?>
         <img class="map-img" src="<?= esc($mapSrc, 'attr') ?>" alt="<?= esc(lang('Game.mapImageAlt', [lang('Game.mapKedu')]), 'attr') ?>">
       <?php endif ?>
@@ -220,7 +226,7 @@ $unheard  = static fn (array $l): bool => ($intros[$l['code']] ?? []) !== [] && 
           <p class="kedu-panel-hint"><?= icon('lock') ?> <?= esc(lang('Game.levelLocked')) ?></p>
         <?php else: ?>
           <div class="kedu-panel-progress">
-            <span class="kedu-bar" aria-hidden="true"><i style="width: <?= $level['total_nodes'] > 0 ? (int) round($level['completed_nodes'] / $level['total_nodes'] * 100) : 0 ?>%"></i></span>
+            <span class="kedu-bar" aria-hidden="true"><span class="kedu-bar-cap"></span><i style="width: <?= $level['total_nodes'] > 0 ? (int) round($level['completed_nodes'] / $level['total_nodes'] * 100) : 0 ?>%"></i><span class="kedu-bar-cap"></span></span>
             <span class="num"><?= esc(lang('Game.nodesProgress', [$level['completed_nodes'], $level['total_nodes']])) ?></span>
           </div>
           <?php $stars = max(0, min(3, (int) $level['stars'])); ?>
@@ -315,7 +321,7 @@ $unheard  = static fn (array $l): bool => ($intros[$l['code']] ?? []) !== [] && 
 
   <?php // Page buttons right of the story, under the region panel (owner, 18 October 2026); no bottom nav bar on this page ?>
   <nav class="kedu-nav stage-box<?= $allDone ? ' is-all-done' : '' ?>" aria-label="<?= esc(lang('Game.continue'), 'attr') ?>">
-    <a class="kedu-btn is-secondary" href="<?= esc(base_url('pustaka'), 'attr') ?>"><?= icon('book') ?> <span><?= esc(lang('Game.library')) ?></span></a>
+    <a class="kedu-btn is-secondary" href="<?= esc(base_url('pustaka'), 'attr') ?>"><?= library_icon() ?> <span><?= esc(lang('Game.library')) ?></span></a>
     <?php if ($allDone): ?>
       <?php // The ending may be watched again any time once every region is done ?>
       <a class="kedu-btn is-secondary" href="<?= esc(base_url('penutup'), 'attr') ?>"><?= icon('sparkle') ?> <span><?= esc(lang('Game.watchEnding')) ?></span></a>

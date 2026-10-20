@@ -128,7 +128,8 @@ final class ResultScreenTest extends CIUnitTestCase
         $this->assertStringContainsString('var(--shards-fill) left center', $css, 'the fill uses the owner\'s texture, not one flat colour');
         $this->assertStringContainsString('.hud-shards .lantern-toggle > .flame { display: none; }', $css, 'the crystal replaces the lantern icon');
         $this->assertMatchesRegularExpression('/\.hud-shards \.lantern\[data-stage="3"\] \.lantern-gem \{[^}]*animation: gem-pulse/', $css);
-        $this->assertStringContainsString('.is-compact .hud-shards { --plate-w: 18.75rem;', $css);
+        // Owner, 20 October 2026: the compact plate fits the 56 dp strip with room above and below
+        $this->assertStringContainsString('.is-compact .hud-shards { --plate-w: 16rem;', $css);
     }
 
     public function testPanelShowsTheAttempt(): void

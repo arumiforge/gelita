@@ -225,12 +225,12 @@ $nextAssets = ! empty($levelCompleted) && isset($nextRegion['curtain'])
       </div>
       <?php if ($libraryUnlocked): ?>
         <div class="library-unlocked" role="status">
-          <span class="library-unlocked-icon" aria-hidden="true"><?= icon('book') ?></span>
+          <span class="library-unlocked-icon" aria-hidden="true"><?= library_icon() ?></span>
           <div>
             <h3><?= esc(lang('Game.libraryUnlockedTitle', [$region])) ?></h3>
             <p><?= esc(lang('Game.libraryUnlockedText', [$region])) ?></p>
           </div>
-          <a class="btn btn-ghost" href="<?= base_url('pustaka/' . $level->code) ?>"><?= icon('book') ?> <?= esc(lang('Game.libraryReadNow')) ?></a>
+          <a class="btn btn-ghost" href="<?= base_url('pustaka/' . $level->code) ?>"><?= library_icon() ?> <?= esc(lang('Game.libraryReadNow')) ?></a>
         </div>
       <?php endif ?>
     </aside>

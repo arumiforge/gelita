@@ -26,7 +26,7 @@
  *   narrator controls at the right, each on the HUD's round
  *   `ui.result-hud-control` skin with no band behind them (cinematic.css);
  * - `.kenal-heading`: "Mengenal {wilayah}" centred under the band in gold
- *   Cinzel Decorative letters over a gold rule with an ornament in its middle;
+ *   Marcellus letters over a gold rule with an ornament in its middle;
  * - `.kenal-caption`: the title shares one row with the page dots and Lanjut
  *   at the right corner; caption and avatar sit at the bottom of the stage.
  *   No "Wilayah n · tingkat" and no "Bagian n dari N" text; the slide's

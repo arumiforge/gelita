@@ -177,10 +177,12 @@ final class CatalogImporter
      * Peta Kedu diorama from the mockup until the catalogue lists it). The
      * owner's Jaka avatar in a gold ring like Mbah Kedu's (19 October 2026)
      * is used wherever Jaka's avatar shows: Peta Kedu's story bar and Kenali.
+     * Since 20 October 2026 the diorama is the owner's single-island map
+     * (revisi-05), which replaced the three-island picture of revisi-04.
      */
     public const MOCKUP_FILES = [
-        'mockup/gambar-mockup/peta-kedu/revisi-04/aset/diorama.kedu-tiga-wilayah.webp' => 'map.kedu-diorama',
-        'mockup/gambar-mockup/kenali/aset/ui.jaka-avatar.webp'                       => 'ui.jaka-avatar',
+        'mockup/gambar-mockup/peta-kedu/revisi-05/aset/diorama.kedu-pulau.webp' => 'map.kedu-diorama',
+        'mockup/gambar-mockup/kenali/aset/ui.jaka-avatar.webp'                   => 'ui.jaka-avatar',
     ];
 
     /** Lossy WebP quality for every stored image except the PNG app icons. */

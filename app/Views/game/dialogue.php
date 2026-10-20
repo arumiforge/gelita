@@ -11,8 +11,8 @@
  * Nav "Lewati" dan gerbang dialog (dialogueGate()/markDialogueShown()) tetap.
  *
  * Layout (owner, 19 October 2026), with the same day's follow-ups: the
- * full-size HUD with the shard pill under the logo, the region name in
- * capitals, and the difficulty badge left of the language control (section
+ * full-size HUD with the shard pill under the logo, the region name (proper
+ * case since 20 October), and the difficulty badge left of the language control (section
  * `hudBadge`); Lewati under the menu button; no Peta Kedu button (the menu
  * has it); the parchment box with the speaker's name, the page dots, and
  * the narrator controls in its first row; the two characters at the stage's

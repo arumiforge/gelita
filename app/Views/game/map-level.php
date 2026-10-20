@@ -13,6 +13,13 @@
  * the bottom while only the list scrolls. No bottom nav bar: Peta Kedu is
  * in the HUD menu.
  *
+ * Owner request (20 October 2026, later): a taller HUD (section hudStyle
+ * `tall`) with the map and the side column lower; each card is the owner's
+ * green scarf frame (`assets/ui/node-card-frame.webp`) with the engine
+ * picture in sepia, like a drawing in an old manuscript, in its window;
+ * Lihat hasil on the green plate, Terkunci on the navy plate, Pustaka
+ * {wilayah} on the wide gold plate.
+ *
  * @var App\Entities\Level         $level
  * @var array<string, mixed>       $levelSummary
  * @var list<array<string, mixed>> $nodes
@@ -61,14 +68,25 @@ $nextAssets = $nextNode === null ? [] : [
     character_frame_src('jaka'),
 ];
 $points = implode(' ', array_map(static fn (array $n): string => (float) $n['map_x'] . ',' . (float) $n['map_y'], $nodes));
+// The owner's pictures for the side column (20 October 2026): the green scarf frame of each
+// card, the green plate (Lihat hasil), the navy plate (Terkunci), the wide gold plate (Pustaka)
+$plates = [];
+foreach (['card-frame' => 'node-card-frame', 'plate-green' => 'plate-green', 'plate-navy' => 'kenal-plate-navy', 'plate-gold' => 'kenal-plate-gold'] as $var => $file) {
+    if (is_file(FCPATH . 'assets/ui/' . $file . '.webp')) {
+        $plates[] = '--' . $var . ': url(&quot;' . esc(asset_url_versioned('ui/' . $file . '.webp'), 'attr') . '&quot;)';
+    }
+}
+$hasFrame = is_file(FCPATH . 'assets/ui/node-card-frame.webp');
 ?>
 <?= $this->extend('layouts/game') ?>
 
 <?= $this->section('title') ?><?= esc($region) ?><?= $this->endSection() ?>
+<?php // A taller HUD with larger controls; the map and the side column sit lower (owner, 20 October 2026) ?>
+<?= $this->section('hudStyle') ?>tall<?= $this->endSection() ?>
 <?= $this->section('background') ?><?= $bg ?><?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<section class="map-screen map-level" data-screen="map-level"<?= next_assets_attr($nextAssets) ?>
+<section class="map-screen map-level" data-screen="map-level"<?= next_assets_attr($nextAssets) ?><?= $plates !== [] ? ' style="' . implode('; ', $plates) . '"' : '' ?>
          data-level="<?= esc($level->code, 'attr') ?>" data-level-id="<?= esc($level->id, 'attr') ?>">
   <div class="map-frame stage-box">
     <div class="map-canvas<?= $mapSrc === null ? ' is-drawn' : '' ?>" style="--map-ratio: 1400 / 900">
@@ -117,7 +135,7 @@ $points = implode(' ', array_map(static fn (array $n): string => (float) $n['map
     <ol class="node-list stage-scroll">
       <?php foreach ($nodes as $node): ?>
         <?php $art = is_file(FCPATH . 'assets/ui/node-card-' . $node['engine_type'] . '.webp') ? asset_url_versioned('ui/node-card-' . $node['engine_type'] . '.webp') : null; ?>
-        <li class="node-card panel is-<?= esc($node['status'], 'attr') ?><?= $art !== null ? ' has-art' : '' ?>">
+        <li class="node-card panel is-<?= esc($node['status'], 'attr') ?><?= $art !== null ? ' has-art' : '' ?><?= $hasFrame ? ' has-frame' : '' ?>">
           <?php if ($art !== null): ?>
             <img class="node-card-art" src="<?= esc($art, 'attr') ?>" alt="" decoding="async" draggable="false">
           <?php endif ?>
@@ -130,11 +148,11 @@ $points = implode(' ', array_map(static fn (array $n): string => (float) $n['map
             <?php endif ?>
           </div>
           <?php if ($node['status'] === 'completed'): ?>
-            <a class="btn btn-ghost btn-sm" href="<?= esc($href($node), 'attr') ?>"><?= esc(lang('Game.viewResult')) ?></a>
+            <a class="btn btn-ghost btn-sm node-action is-green" href="<?= esc($href($node), 'attr') ?>"><?= esc(lang('Game.viewResult')) ?></a>
           <?php elseif ($node['status'] === 'open'): ?>
-            <a class="btn btn-primary" href="<?= esc($href($node), 'attr') ?>"><?= esc(lang('Game.start')) ?> <?= icon('right') ?></a>
+            <a class="btn btn-primary node-action" href="<?= esc($href($node), 'attr') ?>"><?= esc(lang('Game.start')) ?> <?= icon('right') ?></a>
           <?php else: ?>
-            <span class="badge is-locked"><?= icon('lock') ?> <?= esc(lang('Game.shardLocked')) ?></span>
+            <span class="badge is-locked node-action is-navy"><?= icon('lock') ?> <?= esc(lang('Game.shardLocked')) ?></span>
           <?php endif ?>
         </li>
       <?php endforeach ?>
@@ -148,14 +166,14 @@ $points = implode(' ', array_map(static fn (array $n): string => (float) $n['map
       $libraryOpen = $library['status'] === 'open';
       ?>
       <div class="map-side-foot">
-        <a class="btn btn-ghost btn-block map-library" href="<?= esc(base_url('pustaka/' . $level->code), 'attr') ?>"<?php if (! $libraryOpen): ?>
+        <a class="btn btn-ghost btn-block map-library is-gold-plate" href="<?= esc(base_url('pustaka/' . $level->code), 'attr') ?>"<?php if (! $libraryOpen): ?>
            aria-disabled="true" data-library-locked="<?= esc($level->code, 'attr') ?>"
            data-locked-title="<?= esc(lang('Game.libraryLockedTitle', [$region]), 'attr') ?>"
            data-locked-message="<?= esc(lang('Game.libraryLockedText', [$region, $total]), 'attr') ?>"
            data-locked-progress="<?= esc(lang('Game.nodesProgress', [$done, $total]), 'attr') ?>"
            data-locked-ok="<?= esc(lang('Game.libraryUnderstood'), 'attr') ?>"
            data-index-label="<?= esc(lang('Game.library'), 'attr') ?>"
-           data-index-href="<?= esc(base_url('pustaka'), 'attr') ?>"<?php endif ?>><?= icon($libraryOpen ? 'book' : 'lock') ?> <span><?= esc(lang('Game.libraryRegion', [$region])) ?></span></a>
+           data-index-href="<?= esc(base_url('pustaka'), 'attr') ?>"<?php endif ?>><?= $libraryOpen ? library_icon() : icon('lock') ?> <span><?= esc(lang('Game.libraryRegion', [$region])) ?></span></a>
       </div>
     <?php endif ?>
   </aside>
