@@ -305,14 +305,14 @@ final class LibraryLockTest extends CIUnitTestCase
         $this->assertStringContainsString('<span class="visually-hidden">' . esc(lang('Game.challengeOf', [2, 4])) . ':</span>', $list);
         $this->assertStringContainsString('<span class="eyebrow">' . esc(lang('Game.engine_rumpang')) . '</span>', $list);
 
-        $progress = esc(game_asset_url('ui/status-progress.webp'), 'attr');
+        $progress = esc(asset_url_versioned('ui/status-progress.webp'), 'attr');
         $this->assertStringContainsString('<span class="node-no has-badge" aria-hidden="true"><img class="node-badge" src="' . $progress . '" alt="" decoding="async" draggable="false"><b class="num">2</b></span>', $list);
         $this->assertSame(2, substr_count($list, icon('lock', 'badge-lock')), 'locked cards carry a lock on the navy medallion');
         $this->assertSame(4, substr_count($page, 'class="pin-badge"'), 'every pin wears its medallion');
 
         foreach (['puzzle', 'rumpang', 'boleh', 'cari'] as $engine) {
             $this->assertFileExists(FCPATH . 'assets/ui/node-card-' . $engine . '.webp');
-            $this->assertStringContainsString('<img class="node-card-art" src="' . esc(game_asset_url('ui/node-card-' . $engine . '.webp'), 'attr') . '"', $list, $engine);
+            $this->assertStringContainsString('<img class="node-card-art" src="' . esc(asset_url_versioned('ui/node-card-' . $engine . '.webp'), 'attr') . '"', $list, $engine);
         }
         $this->assertStringNotContainsString('map-side-foot', $page, 'no library: no button');
     }

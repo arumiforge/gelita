@@ -68,9 +68,9 @@ final class StatusBadgeTest extends CIUnitTestCase
 
     public function testBadgeFollowsTheStatus(): void
     {
-        $this->assertSame(game_asset_url('ui/status-done.webp'), status_badge_src(['status' => 'completed']));
-        $this->assertSame(game_asset_url('ui/status-progress.webp'), status_badge_src(['status' => 'open']), 'open wears the gold arc');
-        $this->assertSame(game_asset_url('ui/status-open.webp'), status_badge_src(['status' => 'locked']), 'locked wears the navy medallion');
+        $this->assertSame(asset_url_versioned('ui/status-done.webp'), status_badge_src(['status' => 'completed']));
+        $this->assertSame(asset_url_versioned('ui/status-progress.webp'), status_badge_src(['status' => 'open']), 'open wears the gold arc');
+        $this->assertSame(asset_url_versioned('ui/status-open.webp'), status_badge_src(['status' => 'locked']), 'locked wears the navy medallion');
         $this->assertNull(status_badge_src(['status' => 'unknown']));
     }
 
@@ -81,9 +81,9 @@ final class StatusBadgeTest extends CIUnitTestCase
         $dots = substr($dots, 0, (int) strpos($dots, '</ol>'));
 
         $this->assertSame(4, substr_count($dots, ' has-badge'));
-        $this->assertStringContainsString('<span class="shard is-completed has-badge" aria-hidden="true"><img src="' . esc(game_asset_url('ui/status-done.webp'), 'attr'), $dots);
-        $this->assertStringContainsString('<span class="shard is-open has-badge" aria-hidden="true"><img src="' . esc(game_asset_url('ui/status-progress.webp'), 'attr'), $dots);
-        $this->assertStringContainsString('<span class="shard is-locked has-badge" aria-hidden="true"><img src="' . esc(game_asset_url('ui/status-open.webp'), 'attr'), $dots);
+        $this->assertStringContainsString('<span class="shard is-completed has-badge" aria-hidden="true"><img src="' . esc(asset_url_versioned('ui/status-done.webp'), 'attr'), $dots);
+        $this->assertStringContainsString('<span class="shard is-open has-badge" aria-hidden="true"><img src="' . esc(asset_url_versioned('ui/status-progress.webp'), 'attr'), $dots);
+        $this->assertStringContainsString('<span class="shard is-locked has-badge" aria-hidden="true"><img src="' . esc(asset_url_versioned('ui/status-open.webp'), 'attr'), $dots);
         $this->assertSame(2, substr_count($dots, 'shard-lock'), 'only the locked medallions carry a lock');
         $this->assertStringContainsString('2. Isi Rumpang: ' . lang('Game.shardOpen'), $dots);
 

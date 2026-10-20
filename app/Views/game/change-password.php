@@ -19,13 +19,13 @@
 
 <?= $this->section('music') ?>welcome<?= $this->endSection() ?>
 <?= $this->section('title') ?><?= esc(lang('Auth.changeTitle')) ?><?= $this->endSection() ?>
-<?= $this->section('background') ?><?= game_asset_url('ui/bg-auth-login.webp') ?><?= $this->endSection() ?>
+<?= $this->section('background') ?><?= asset_url_versioned('ui/bg-auth-login.webp') ?><?= $this->endSection() ?>
 <?= $this->section('bodyClass') ?>is-auth-art<?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
 <section class="change-password">
   <?php /* Jaka waving, one still picture (owner, 18 October 2026), standing on the picture's path */ ?>
-  <img class="auth-jaka stage-box" src="<?= esc(game_asset_url('ui/jaka-wave.webp'), 'attr') ?>" alt="" width="658" height="1490" decoding="async" draggable="false">
+  <img class="auth-jaka stage-box" src="<?= esc(asset_url_versioned('ui/jaka-wave.webp'), 'attr') ?>" alt="" width="658" height="1490" decoding="async" draggable="false">
 
   <div class="password-panel ornate-panel stage-box">
     <?= $this->include('partials/ornate-frame') ?>

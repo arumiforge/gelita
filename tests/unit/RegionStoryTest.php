@@ -411,7 +411,7 @@ final class RegionStoryTest extends CIUnitTestCase
 
         // The plates (shipped pictures) and the HUD skin reach the CSS as custom properties
         foreach (['kenal-plate-gold', 'kenal-plate-navy'] as $plate) {
-            $this->assertStringContainsString(esc('--' . $plate . ': url("' . game_asset_url('ui/' . $plate . '.webp') . '")', 'attr'), $open);
+            $this->assertStringContainsString(esc('--' . $plate . ': url("' . asset_url_versioned('ui/' . $plate . '.webp') . '")', 'attr'), $open);
             $this->assertFileExists(FCPATH . 'assets/ui/' . $plate . '.webp');
         }
         $this->assertStringContainsString(esc('--skin-hud: url("' . base_url('assets/uploads/ui.result-hud-control.webp?v=h1') . '")', 'attr'), $open);
@@ -558,9 +558,9 @@ final class RegionStoryTest extends CIUnitTestCase
 
         // Owner, 18 October 2026: completed Temanggung wears a done badge, since 20 October 2026 the
         // owner's green medallion (assets/ui/status-done.webp); Kenali is the shipped picture
-        $this->assertSame(1, substr_count($page, '<span class="kedu-lock kedu-done has-badge"><img src="' . esc(game_asset_url('ui/status-done.webp'), 'attr') . '"'));
+        $this->assertSame(1, substr_count($page, '<span class="kedu-lock kedu-done has-badge"><img src="' . esc(asset_url_versioned('ui/status-done.webp'), 'attr') . '"'));
         $this->assertSame(1, substr_count($page, 'class="kedu-lock"><svg'), 'locked Wonosobo keeps its lock');
-        $this->assertStringContainsString('<img class="kenali-art" src="' . esc(base_url('assets/ui/icon-kenali.webp'), 'attr') . '"', $page);
+        $this->assertStringContainsString('<img class="kenali-art" src="' . esc(asset_url_versioned('ui/icon-kenali.webp'), 'attr') . '"', $page);
         $this->assertFileExists(FCPATH . 'assets/ui/icon-kenali.webp');
         $this->assertContains('webp', \App\Services\AssetPackageBuilder::CODE_SOURCES['assets/ui']['ext'], 'offline packages carry it');
 
@@ -574,7 +574,7 @@ final class RegionStoryTest extends CIUnitTestCase
         // Owner, 20 October 2026: Jaka's name sits on the navy nameplate over his avatar, as on Kenali,
         // not in the story line; the story bar and the region panel have no backdrop or gold frame
         $this->assertMatchesRegularExpression('/<div class="kedu-speaker">(?:<!--[^>]*-->\s*)*<span class="kedu-portrait has-art" aria-hidden="true">.*?<\/span>\s*(?:<!--[^>]*-->\s*)*<span class="kenal-nameplate">' . preg_quote(esc(lang('Game.char_jaka')), '/') . '<\/span><\/div>/s', $story);
-        $this->assertStringContainsString('--kenal-plate-navy: url(&quot;' . esc(game_asset_url('ui/kenal-plate-navy.webp'), 'attr') . '&quot;)', $story);
+        $this->assertStringContainsString('--kenal-plate-navy: url(&quot;' . esc(asset_url_versioned('ui/kenal-plate-navy.webp'), 'attr') . '&quot;)', $story);
         $this->assertDoesNotMatchRegularExpression('/<cite>' . preg_quote(esc(lang('Game.char_jaka')), '/') . '/', $story);
         $css = (string) file_get_contents(FCPATH . 'assets/css/game.css');
         $this->assertDoesNotMatchRegularExpression('/\n\.kedu-(?:panel|story) \{[^}]*(?:border|background):/', $css);

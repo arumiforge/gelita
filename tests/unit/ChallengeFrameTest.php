@@ -90,7 +90,7 @@ final class ChallengeFrameTest extends CIUnitTestCase
     {
         $frame = $this->view('game/challenge/_frame');
 
-        $this->assertStringContainsString("game_asset_url('ui/challenge-badge.webp')", $frame);
+        $this->assertStringContainsString("asset_url_versioned('ui/challenge-badge.webp')", $frame);
         $this->assertFileExists(FCPATH . 'assets/ui/challenge-badge.webp');
         $this->assertStringContainsString('<span class="badge-pos-no">', $frame);
         $this->assertStringContainsString('<div class="challenge-stats">', $frame);
@@ -140,7 +140,7 @@ final class ChallengeFrameTest extends CIUnitTestCase
     /** Owner, 20 October 2026: Isi Rumpang words and Benar/Salah choices on the navy plate. */
     public function testAnswerChoicesUseTheNavyPlate(): void
     {
-        $this->assertStringContainsString("--plate-navy: url(&quot;<?= esc(game_asset_url('ui/kenal-plate-navy.webp'), 'attr') ?>&quot;)", $this->view('game/challenge/_frame'));
+        $this->assertStringContainsString("--plate-navy: url(&quot;<?= esc(asset_url_versioned('ui/kenal-plate-navy.webp'), 'attr') ?>&quot;)", $this->view('game/challenge/_frame'));
 
         $css = (string) file_get_contents(FCPATH . 'assets/css/game.css');
         $this->assertStringContainsString('.challenge[style*="--plate-navy"] :is(.word, .choice) {', $css);

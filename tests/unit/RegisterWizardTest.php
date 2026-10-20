@@ -102,7 +102,7 @@ final class RegisterWizardTest extends CIUnitTestCase
             $this->assertStringContainsString('register-panel ornate-panel stage-box', $html, "step {$step}");
             $this->assertStringContainsString('class="ornate"', $html, "step {$step}: gold frame");
             $this->assertStringNotContainsString('panel-parchment', $html, "step {$step}");
-            $this->assertStringContainsString('src="' . base_url('assets/ui/bg-auth-register.webp') . '"', $html, "step {$step}");
+            $this->assertStringContainsString('src="' . asset_url_versioned('ui/bg-auth-register.webp') . '"', $html, "step {$step}");
             $this->assertStringNotContainsString('data-character="jaka"', $html, "step {$step}: no animated figure");
             $this->assertSame(1, substr_count($html, 'class="auth-jaka stage-box"'), "step {$step}: Jaka once, still");
         }
