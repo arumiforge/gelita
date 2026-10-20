@@ -591,6 +591,33 @@ if (! function_exists('library_icon')) {
     }
 }
 
+if (! function_exists('picture_button')) {
+    /**
+     * A submit button drawn as the owner's lettered lantern plate (20 October
+     * 2026): `assets/ui/btn-{name}.webp`, `btn-{name}-en.webp` in English
+     * (`login`, `next`, `register`). The picture carries the word, so the
+     * label only goes into `alt`. Without the file: the plain gold button
+     * with the label and an arrow.
+     */
+    function picture_button(string $name, string $label, string $fallbackClass = 'btn btn-primary btn-lg'): string
+    {
+        $locale = service('request')->getLocale();
+        $file   = 'ui/btn-' . $name . ($locale === 'en' ? '-en' : '') . '.webp';
+        $size   = is_file(FCPATH . 'assets/' . $file) ? @getimagesize(FCPATH . 'assets/' . $file) : false;
+
+        if ($size === false) {
+            if (! function_exists('icon')) {
+                helper('ui');
+            }
+
+            return '<button class="' . esc($fallbackClass, 'attr') . '" type="submit">' . esc($label) . ' ' . icon('right') . '</button>';
+        }
+
+        return '<button class="btn-art" type="submit"><img src="' . esc(asset_url_versioned($file), 'attr') . '" alt="'
+            . esc($label, 'attr') . '" width="' . $size[0] . '" height="' . $size[1] . '" decoding="async" draggable="false"></button>';
+    }
+}
+
 if (! function_exists('star_src')) {
     /**
      * The game's star picture (owner, 20 October 2026: every star in the

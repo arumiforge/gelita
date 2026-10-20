@@ -69,7 +69,7 @@ final class ImageSlots
         'ui.logo-hero' => [
             'group'       => 'brand',
             'label'       => 'Logo GELITA besar (landscape)',
-            'content'     => 'Logo GELITA dari Katalog Aset (reference.09): tulisan GELITA emas timbul dengan aksen biru kehijauan dan lentera kecil, tanpa tagline, sama untuk kedua bahasa, berlatar transparan.',
+            'content'     => 'Logo GELITA dari pemilik (20 Oktober 2026): tulisan GELITA emas berukir dengan isian biru kehijauan, candi dan lentera menyala di atasnya, awan dan sulur emas di kedua sisi, tanpa tagline, sama untuk kedua bahasa, berlatar transparan.',
             'screens'     => [
                 ['Halaman awal (logo besar di atas tombol Mulai)', '/'],
                 ['Halaman masuk panel staf (logo di tengah, di atas formulir)', '/admin/login'],
@@ -100,9 +100,9 @@ final class ImageSlots
         'ui.btn-start' => [
             'group'       => 'brand',
             'label'       => 'Tombol MULAI bergambar (bahasa Indonesia)',
-            'content'     => 'Gambar tombol jadi beserta tulisannya (Katalog Aset reference.10): kapsul berisi enamel biru tua, bingkai emas berukir dengan ornamen Jawa kecil di kedua ujung, dan tulisan MULAI emas timbul berhuruf serif di tengah.',
+            'content'     => 'Gambar tombol jadi beserta tulisannya (pemilik, 20 Oktober 2026): papan enamel hijau tua berbingkai emas berukir dengan lentera menyala di kiri, permata biru kehijauan di atas dan bawah, dan tulisan MULAI emas timbul berhuruf serif di tengah. Rasio 2 : 1.',
             'screens'     => [['Halaman awal, tombol utama (bahasa Indonesia)', '/']],
-            'format'      => 'WebP atau PNG berlatar transparan, paling besar ± 80 KB',
+            'format'      => 'WebP atau PNG berlatar transparan, paling besar ± 100 KB',
             'transparent' => true,
             'fallback'    => 'Tombol biasa bertulisan Mulai',
             'priority'    => 'wajib',
@@ -111,9 +111,9 @@ final class ImageSlots
         'ui.btn-start.*' => [
             'group'       => 'brand',
             'label'       => 'Tombol START bergambar (bahasa Inggris)',
-            'content'     => 'Sama persis dengan ui.btn-start (kapsul biru tua berbingkai emas), hanya tulisannya START.',
+            'content'     => 'Pasangan ui.btn-start (papan hijau tua berbingkai emas dengan lentera), bertulisan START dan berujung panah.',
             'screens'     => [['Halaman awal saat bahasa permainan diganti ke bahasa itu', '/']],
-            'format'      => 'WebP atau PNG berlatar transparan, paling besar ± 80 KB',
+            'format'      => 'WebP atau PNG berlatar transparan, paling besar ± 100 KB',
             'transparent' => true,
             'fallback'    => 'Tombol MULAI bahasa Indonesia (ui.btn-start), lalu tombol biasa',
             'priority'    => 'wajib',

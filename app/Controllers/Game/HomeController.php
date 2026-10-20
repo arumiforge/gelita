@@ -4,6 +4,7 @@ namespace App\Controllers\Game;
 
 use App\Controllers\BaseController;
 use App\Models\GameSessionModel;
+use App\Models\ParticipantModel;
 use CodeIgniter\HTTP\RedirectResponse;
 
 /**
@@ -13,13 +14,32 @@ use CodeIgniter\HTTP\RedirectResponse;
  */
 class HomeController extends BaseController
 {
-    /** Halaman awal: logo dan satu tombol Mulai; HUD tanpa merek (logo sudah besar). */
+    /**
+     * Halaman awal: logo dan satu tombol Mulai; HUD tanpa merek (logo sudah besar).
+     * A signed-in student gets Profil and Keluar in the HUD menu (owner, 20 October 2026).
+     */
     public function index(): string
     {
         return view('game/welcome', [
-            'locale'    => $this->locale,
-            'hideBrand' => true,
+            'locale'      => $this->locale,
+            'hideBrand'   => true,
+            'homePage'    => true,
+            'participant' => $this->signedInParticipant(),
         ]);
+    }
+
+    /** The signed-in student in its safe shape (toSafeArray), or null before login. */
+    private function signedInParticipant(): ?array
+    {
+        $participantId = (int) session('participant_id');
+
+        if ($participantId <= 0) {
+            return null;
+        }
+
+        $participant = model(ParticipantModel::class)->find($participantId);
+
+        return $participant === null ? null : $participant->toSafeArray();
     }
 
     /**

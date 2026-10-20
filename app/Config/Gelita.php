@@ -208,8 +208,8 @@ class Gelita extends BaseConfig
         'challenge.item.*-3-*'  => [480, 360],
         'reward.badge.*'   => [320, 320],
         'ui.logo-hero'     => [1600, 600],
-        'ui.btn-start'     => [720, 240],
-        'ui.btn-start.*'   => [720, 240],   // varian bahasa: ui.btn-start.en
+        'ui.btn-start'     => [720, 360],   // 2:1 lantern plate (owner, 20 October 2026)
+        'ui.btn-start.*'   => [720, 360],   // varian bahasa: ui.btn-start.en
         'ui.lang.*'        => [256, 256],   // language switch icons ui.lang.id / ui.lang.en
         'bg.loading'       => [1920, 1080], // tirai layar penuh (components/curtain.php)
         // App icons (AppController::manifest(), app_icon_src())
@@ -258,8 +258,8 @@ class Gelita extends BaseConfig
         'challenge.item.*-3-*'  => [192, 144],   // kartu pernyataan; lightbox 640 × 480
         'reward.badge.*'        => [72, 72],     // profile badge shelf (.region-badge-art, 4.5rem); the only screen
         'ui.logo-hero'          => [800, 300],
-        'ui.btn-start'          => [360, 120],
-        'ui.btn-start.*'        => [360, 120],
+        'ui.btn-start'          => [360, 180],
+        'ui.btn-start.*'        => [360, 180],
         'ui.lang.*'             => [32, 32],     // HUD language switch
         'bg.loading'            => [1280, 720],
         'avatar.*'              => [72, 72],     // profile; 36 × 36 in the HUD
