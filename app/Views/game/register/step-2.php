@@ -30,6 +30,7 @@ $country = $val('country_code') ?: 'ID';
 <?= $this->section('background') ?><?= asset_url_versioned('ui/bg-auth-register.webp') ?><?= $this->endSection() ?>
 <?= $this->section('bodyClass') ?>is-auth-art<?= $this->endSection() ?>
 <?= $this->section('hudBack') ?><?= base_url('daftar/1') ?><?= $this->endSection() ?>
+<?= $this->section('hudLayout') ?>logo-centre<?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
 <section class="register" data-step="2" data-package-gate="page" data-package-next="daftar/2">

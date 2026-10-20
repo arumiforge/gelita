@@ -128,19 +128,21 @@ final class RegisterWizardTest extends CIUnitTestCase
         }
     }
 
-    /** Owner, 18 October 2026: one HUD everywhere; before login Back comes first, then the logo (text brand without one). */
-    public function testBackSitsInTheHudBeforeTheLogo(): void
+    /** One HUD everywhere (owner, 18 October 2026); the logo in its middle and Back in the top-right corner, after the controls (20 October 2026). */
+    public function testBackSitsInTheHudCornerWithTheLogoInTheMiddle(): void
     {
         $back = ['1' => 'mulai', '2' => 'daftar/1', '3' => 'daftar/2'];
         $_SESSION[RegisterController::WIZARD] = ['1' => self::ABOUT, '2' => self::SCHOOL];
 
         foreach ($back as $step => $target) {
             $html = (string) $this->send(Method::GET, 'daftar/' . $step)->getBody();
-            $at   = (int) strpos($html, '<header class="hud hud-menu-style is-compact"');
+            $at   = (int) strpos($html, '<header class="hud hud-menu-style is-compact is-logo-centre"');
             $hud  = substr($html, $at, (int) strpos($html, '</header>') - $at);
 
+            $this->assertNotSame(0, $at, "step {$step}: logo in the middle");
             $this->assertStringContainsString('class="btn btn-quiet hud-back" href="' . base_url($target) . '"', html_entity_decode($hud), "step {$step}");
-            $this->assertLessThan(strpos($hud, 'hud-brand'), strpos($hud, 'hud-back'), "step {$step}: Back, then the brand");
+            $this->assertLessThan(strpos($hud, 'hud-back'), strpos($hud, 'hud-menu-sheet'), "step {$step}: the controls, then Back");
+            $this->assertLessThan(strpos($hud, 'hud-end'), strpos($hud, 'hud-brand'), "step {$step}: the brand stays on its own");
             $this->assertStringNotContainsString('hud-shards', $hud, "step {$step}: no shards before login");
 
             $actions = substr($html, (int) strpos($html, 'register-actions'));

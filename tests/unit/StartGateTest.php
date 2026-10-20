@@ -95,7 +95,8 @@ final class StartGateTest extends CIUnitTestCase
         $page = (new HomeController())->start();
 
         $this->assertStringContainsString('class="btn btn-quiet hud-back" href="' . base_url() . '"', html_entity_decode($page));
-        $this->assertStringContainsString('<header class="hud hud-menu-style is-compact">', $page);
+        $this->assertStringContainsString('<header class="hud hud-menu-style is-compact is-logo-centre">', $page);
+        $this->assertStringContainsString('<div class="hud-end">', $page, 'Back in the top-right corner, beside the controls');
         $this->assertStringNotContainsString('class="nav-bar"', $page);
         $this->assertStringContainsString('start-jaka', $page, 'Jaka is his own image, not part of the background');
         $this->assertSame(1, substr_count($page, 'start-card is-primary'));
@@ -156,6 +157,48 @@ final class StartGateTest extends CIUnitTestCase
 
         $this->assertInstanceOf(RedirectResponse::class, $gate);
         $this->assertStringEndsWith('/intro', $gate->getHeaderLine('Location'));
+    }
+
+    /**
+     * Owner redesign (20 October 2026): the arch picture, Jaka as one tall still picture, the
+     * cards without a panel or corner ornaments, the owner's emblems as card icons; in the HUD the
+     * logo instead of the shard plate, Back in the top-right corner instead of the nav bar.
+     */
+    public function testGateShowsTheOwnersPictureAndEmblems(): void
+    {
+        $page = view('game/start-choice', [
+            'name'        => 'Jaka',
+            'participant' => ['id' => 5, 'username' => 'jaka', 'display_name' => 'Jaka'],
+            'progress'    => ['shards_total' => 0],
+        ]);
+
+        $this->assertStringContainsString('src="' . esc(asset_url_versioned('ui/bg-gate.webp'), 'attr') . '"', $page);
+        $this->assertStringContainsString('is-gate-art', $page);
+        $this->assertStringContainsString('class="gate-jaka stage-box" src="' . esc(asset_url_versioned('ui/jaka-gate.webp'), 'attr') . '"', $page);
+        $this->assertStringNotContainsString('data-character="jaka"', $page, 'no animation frames');
+        $this->assertStringNotContainsString('ornate-panel', $page, 'no panel fill');
+        $this->assertStringNotContainsString('ornate-corner', $page, 'no corner ornaments');
+        $this->assertStringContainsString(esc(asset_url_versioned('ui/gate-icon-intro.webp'), 'attr'), $page);
+        $this->assertStringContainsString(esc(asset_url_versioned('ui/gate-icon-map.webp'), 'attr'), $page);
+        $this->assertStringNotContainsString('start-icon', $page);
+
+        $this->assertStringContainsString('<header class="hud hud-menu-style is-compact is-logo-centre" data-in-game>', $page);
+        $this->assertStringNotContainsString('hud-shards', $page, 'the logo replaces the shard plate');
+        $this->assertStringContainsString('class="btn btn-quiet hud-back" href="' . base_url() . '"', html_entity_decode($page));
+        $this->assertStringNotContainsString('class="nav-bar"', $page);
+
+        foreach (['bg-gate', 'jaka-gate', 'gate-icon-intro', 'gate-icon-map', 'ornate-crest'] as $file) {
+            $this->assertFileExists(FCPATH . 'assets/ui/' . $file . '.webp');
+        }
+    }
+
+    /** The compass crest of every ornate panel is the owner's emblem picture (20 October 2026). */
+    public function testOrnateCrestIsTheOwnersEmblem(): void
+    {
+        $html = view('partials/ornate-frame');
+
+        $this->assertStringContainsString('<img class="ornate-crest" src="' . esc(asset_url_versioned('ui/ornate-crest.webp'), 'attr') . '"', $html);
+        $this->assertStringNotContainsString('<svg class="ornate-crest"', $html);
     }
 
     public function testGateToMapCarriesTheCurtainFlash(): void

@@ -11,12 +11,13 @@
  * - tall (84 dp, `.is-compact.is-tall`, section `hudStyle` = `tall`): the
  *   region map, whose content sits lower (owner, 20 October 2026).
  *
- * Left : section `hudBack` (a URL) first puts a Back button (account screens
- *        before login); then the GELITA logo (`ui.logo-hero`, else `ui.logo`,
- *        else the text brand; hidden with `$hideBrand` on the welcome page,
- *        whose logo is already large) and the section `hudTitle` (e.g. Peta
- *        Kedu), else the region name. Section `hudLayout` = `title-centre`
- *        drops the logo and centres the title (Peta Kedu, 20 October 2026).
+ * Left : the GELITA logo (`ui.logo-hero`, else `ui.logo`, else the text
+ *        brand; hidden with `$hideBrand` on the welcome page, whose logo is
+ *        already large) and the section `hudTitle` (e.g. Peta Kedu), else the
+ *        region name. Section `hudLayout` = `title-centre` drops the logo and
+ *        centres the title (Peta Kedu, 20 October 2026); `logo-centre` puts
+ *        the logo alone in the middle and leaves out the shard plate
+ *        (Mulai, Masuk, Daftar, Gerbang; owner, 20 October 2026).
  * Middle: the shard plate on in-game pages (the owner's carved frame
  *        `assets/ui/hud-shards-frame.webp`, the bar filled by the page with
  *        `hud-shards-fill.webp`; on the left with `title-centre`); a page
@@ -36,6 +37,10 @@
  *          neither, so it holds profile, fullscreen, and logout (owner,
  *          20 October 2026). Before login only fullscreen; the menu hides
  *          itself when it has no row left.
+ *        Section `hudBack` (a URL) adds a Back button in the top-right
+ *        corner, after the controls (owner, 20 October 2026); the controls
+ *        and Back then share the `.hud-end` row, so the popover sheets stay
+ *        anchored to the controls.
  *
  * Both popovers are <details data-popover>: they open without JavaScript;
  * game/hud.js adds Escape, outside click, one-open-at-a-time, the close
@@ -56,31 +61,32 @@ $compact  = $hudStyle !== 'menu';
 $tall     = $hudStyle === 'tall';
 // Section `hudLayout` = `title-centre` (Peta Kedu, owner 20 October 2026): no logo, the shard
 // plate on the left, the title in the middle
-$titleCentre = trim($this->renderSection('hudLayout')) === 'title-centre';
+$hudLayout   = trim($this->renderSection('hudLayout'));
+$titleCentre = $hudLayout === 'title-centre';
+// Section `hudLayout` = `logo-centre` (account pages and the gate, owner 20 October 2026): the logo
+// alone in the middle, no shard plate
+$logoCentre = $hudLayout === 'logo-centre';
 $locale   = service('request')->getLocale();
 $locales  = config('Gelita')->locales;
 $hudTitle = trim($this->renderSection('hudTitle'));
 $region   = $hudTitle !== '' ? $hudTitle : (isset($level) && $level instanceof \App\Entities\Level ? $level->text('name', $locale) : null);
 $back     = trim($this->renderSection('hudBack'));
 $badge    = trim($this->renderSection('hudBadge'));
-$shards   = $inGame && trim($this->renderSection('hudShards')) !== 'off';
+$shards   = $inGame && ! $logoCentre && trim($this->renderSection('hudShards')) !== 'off';
 $logo     = empty($hideBrand) && ! $titleCentre ? (media_key_src('ui.logo-hero') ?? media_key_src('ui.logo')) : null;
 $flags    = ['id' => media_key_src('ui.lang.id'), 'en' => media_key_src('ui.lang.en')];
 
 $langName = static fn (string $code): string => lang_or('Game.lang_' . $code, strtoupper($code));
 $userName = $signedIn ? (string) ($participant['display_name'] ?: $participant['username']) : '';
 ?>
-<header class="hud hud-menu-style<?= $compact ? ' is-compact' : '' ?><?= $tall ? ' is-tall' : '' ?><?= $titleCentre ? ' is-title-centre' : '' ?>"<?= $inGame ? ' data-in-game' : '' ?><?= skin_style_attr(['skin-hud' => 'ui.result-hud-control']) ?>>
+<header class="hud hud-menu-style<?= $compact ? ' is-compact' : '' ?><?= $tall ? ' is-tall' : '' ?><?= $titleCentre ? ' is-title-centre' : '' ?><?= $logoCentre ? ' is-logo-centre' : '' ?>"<?= $inGame ? ' data-in-game' : '' ?><?= skin_style_attr(['skin-hud' => 'ui.result-hud-control']) ?>>
   <div class="hud-left hud-identity">
-    <?php if ($back !== ''): ?>
-      <a class="btn btn-quiet hud-back" href="<?= esc($back, 'attr') ?>"><?= icon('left') ?> <span><?= esc(lang('Game.back')) ?></span></a>
-    <?php endif ?>
     <?php if ($logo !== null): ?>
       <img class="hud-identity-logo" src="<?= esc($logo, 'attr') ?>" alt="<?= esc(lang('Game.appName'), 'attr') ?>" decoding="async" draggable="false">
     <?php elseif (empty($hideBrand) && ! $titleCentre): ?>
       <span class="hud-brand"><?= esc(lang('Game.appName')) ?></span>
     <?php endif ?>
-    <?php if ($region !== null): ?>
+    <?php if ($region !== null && ! $logoCentre): ?>
       <span class="hud-identity-region"><?= esc($region) ?></span>
     <?php endif ?>
   </div>
@@ -90,6 +96,7 @@ $userName = $signedIn ? (string) ($participant['display_name'] ?: $participant['
     <div class="hud-shards" style="--shards-frame: url(&quot;<?= esc(asset_url_versioned('ui/hud-shards-frame.webp'), 'attr') ?>&quot;); --shards-fill: url(&quot;<?= esc(asset_url_versioned('ui/hud-shards-fill.webp'), 'attr') ?>&quot;)"><?= $this->include('components/lantern') ?></div>
   <?php endif ?>
 
+  <?php if ($back !== ''): ?><div class="hud-end"><?php endif ?>
   <div class="hud-right hud-controls">
     <?= $badge ?>
     <details class="hud-pop hud-lang" data-popover>
@@ -170,4 +177,8 @@ $userName = $signedIn ? (string) ($participant['display_name'] ?: $participant['
       </div>
     </details>
   </div>
+  <?php if ($back !== ''): ?>
+    <a class="btn btn-quiet hud-back" href="<?= esc($back, 'attr') ?>"><?= icon('left') ?> <span><?= esc(lang('Game.back')) ?></span></a>
+  </div>
+  <?php endif ?>
 </header>

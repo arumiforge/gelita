@@ -5,8 +5,8 @@
  * Dua kartu: "Saya baru" → /daftar; "Saya sudah punya akun" → /masuk.
  *
  * Layout (owner mockup, 9 Oct 2026): Jaka on the left as his own image, one
- * ornate dark panel holding the title and two row cards; Back sits in the HUD
- * (top-left) and the GELITA logo in the HUD centre.
+ * ornate dark panel holding the title and two row cards; the GELITA logo in the
+ * HUD centre and Back in its top-right corner (owner, 20 October 2026).
  */
 ?>
 <?= $this->extend('layouts/game') ?>
@@ -16,6 +16,7 @@
 <?= $this->section('background') ?><?= media_key_src('bg.welcome') ?? '' ?><?= $this->endSection() ?>
 
 <?= $this->section('hudBack') ?><?= base_url() ?><?= $this->endSection() ?>
+<?= $this->section('hudLayout') ?>logo-centre<?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
 <section class="start" data-package-gate="page" data-package-next="mulai">

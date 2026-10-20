@@ -366,15 +366,16 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
 .ornate-corner.is-tr { top: .25rem; right: .25rem; transform: scaleX(-1); }
 .ornate-corner.is-bl { bottom: .25rem; left: .25rem; transform: scaleY(-1); }
 .ornate-corner.is-br { right: .25rem; bottom: .25rem; transform: scale(-1); }
+/* The owner's compass emblem (274 × 320) on the top edge, a little more above it than below */
 .ornate-crest {
+  position: absolute;
   top: 0;
   left: 50%;
-  width: 4.5rem;
-  height: 4.5rem;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(11, 19, 32, .98) 60%, transparent 72%);
-  filter: drop-shadow(0 0 .5rem var(--glow));
-  transform: translate(-50%, -50%);
+  width: auto;
+  height: 4.75rem;
+  filter: drop-shadow(0 .25rem .5rem rgba(6, 10, 18, .7)) drop-shadow(0 0 .625rem var(--glow));
+  transform: translate(-50%, -58%);
+  user-select: none;
 }
 .ornate-divider {
   position: relative;
@@ -431,6 +432,23 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
 .start-icon .icon { width: 1.75rem; height: 1.75rem; }
 .start-go { color: var(--gold-500); }
 .start-go .icon { width: 1.75rem; height: 1.75rem; }
+
+/* Gerbang (owner redesign, 20 October 2026): the owner's arch picture, Jaka as one tall still
+   picture, and the cards straight on the picture's plain dark right side: no panel fill and no
+   corner ornaments, only the compass emblem above the title. Coordinates live in stage.css. */
+body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30, 37, .25), transparent 45%); }
+.gate-jaka { object-fit: contain; object-position: bottom; filter: drop-shadow(0 0 1.5rem rgba(1, 20, 26, .45)); pointer-events: none; user-select: none; }
+.gate-panel { display: flex; flex-direction: column; gap: var(--gap-3); padding: var(--gap-2); }
+/* Centred while it fits; scrolls from the top when it does not (as .ornate-body) */
+.gate-panel > * { flex-shrink: 0; }
+.gate-panel > :first-child { margin-top: auto; }
+.gate-panel > :last-child { margin-bottom: auto; }
+.gate-crest { align-self: center; width: auto; height: 6rem; margin-bottom: calc(var(--gap-2) * -1); filter: drop-shadow(0 .25rem .5rem rgba(0, 0, 0, .5)) drop-shadow(0 0 .75rem var(--glow)); user-select: none; }
+.start-choice .start-head h1 { text-shadow: 0 .125rem .5rem rgba(0, 0, 0, .55); }
+.start-choice .start-card { padding: var(--gap-2) var(--gap-4) var(--gap-2) var(--gap-2); border-color: rgba(223, 192, 135, .35); background: rgba(1, 22, 28, .25); }
+.start-choice .start-card.is-primary { background: linear-gradient(to right, rgba(199, 162, 101, .18), rgba(1, 22, 28, .25) 70%); }
+/* The owner's emblems (book, map scroll; about 220 × 256) instead of line icons */
+.start-emblem { width: auto; height: 5rem; filter: drop-shadow(0 .25rem .5rem rgba(0, 0, 0, .5)); user-select: none; }
 
 /* =========================== PAKET ASET (Stage 3) ===========================
    Siapkan GELITA `/siapkan` and Periksa paket `/periksa-paket`: the ornate
