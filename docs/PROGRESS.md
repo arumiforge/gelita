@@ -143,7 +143,7 @@ Decided in an interview with the owner; decisions in the decision log, section *
 
 ## Region map and medallion follow-up (owner, 20 October 2026)
 
-- [ ] Status medallions with three states only (done green ✓, open gold arc, locked navy with a lock) on the lantern, region-map pins (larger, number in the middle), and challenge list; no "Sedang dikerjakan"; region-map side column with fixed head, progress, and Pustaka {wilayah} at the bottom, no bottom nav bar, one title per card, the owner's engine pictures as card backgrounds; Peta Kedu panel without the "Wilayah n · difficulty" line and with **Lihat cerita pembuka**. After merge, **Bangun ulang paket** if package mode is on
+- [x] Status medallions with three states only (done green ✓, open gold arc, locked navy with a lock) on the lantern, region-map pins (larger, number in the middle), and challenge list; no "Sedang dikerjakan"; region-map side column with fixed head, progress, and Pustaka {wilayah} at the bottom, no bottom nav bar, one title per card, the owner's engine pictures as card backgrounds; Peta Kedu panel without the "Wilayah n · difficulty" line and with **Lihat cerita pembuka** (PR #184). After merge, **Bangun ulang paket** if package mode is on
 
 ## Active branches
 
@@ -151,4 +151,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `sky/fervent-curie-k4riwe` | Region map side column, three medallion states, opening story link | PR #184 open |
