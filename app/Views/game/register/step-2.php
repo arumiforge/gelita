@@ -33,7 +33,7 @@ $country = $val('country_code') ?: 'ID';
 <?= $this->section('hudLayout') ?>logo-centre<?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<section class="register" data-step="2" data-package-gate="page" data-package-next="daftar/2">
+<section class="register" data-step="2" data-package-gate="page" data-package-next="daftar/2" data-cine="account">
   <div class="register-panel ornate-panel stage-box">
     <?php // Corner flourishes only: no compass crest on the wide card (owner, 20 October 2026) ?>
     <?= view('partials/ornate-frame', ['crest' => false]) ?>

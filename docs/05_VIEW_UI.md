@@ -275,7 +275,7 @@ Semua layar sesudah login menerima data HUD (`hudData()`), kecuali cerita pembuk
 
 * Latar `bg.welcome`, `body.is-welcome`, HUD tanpa merek (`hideBrand`).
 * Logo: slot `ui.logo-hero` (1600 × 600), cadangan `ui.logo`, lalu judul teks `Game.appName` + `Game.tagline`. The tagline `Game.tagline` is always shown under the logo image as `.welcome-tagline`, in the page language (owner, 18 October 2026).
-* **Satu** tombol Mulai `.btn-start` → `/mulai`, sama untuk siswa yang sudah maupun belum login. Gambarnya slot `ui.btn-start` (720 × 360 since 20 October 2026, bertulisan, jadi memakai `media_key_src_locale()`: `ui.btn-start.en` untuk bahasa Inggris); tanpa gambar menjadi `btn btn-primary btn-xl` bertuliskan `Game.start`.
+* **Satu** tombol Mulai `.btn-start` → `/mulai`, sama untuk siswa yang sudah maupun belum login. Gambarnya slot `ui.btn-start` (1200 × 220, the owner's long carved plate since 20 October 2026, shown 480 × 88 dp; bertulisan, jadi memakai `media_key_src_locale()`: `ui.btn-start.en` untuk bahasa Inggris); tanpa gambar menjadi `btn btn-primary btn-xl` bertuliskan `Game.start`.
 * Tawaran memasang aplikasi `.welcome-install` (`data-install="modal"`, tersembunyi sampai `game/install.js` memutuskan): tombol `Game.installApp`. *Since 18 October 2026 (English):* on phones and tablets a dialog over the blurred stage offers the install first, once per browser session, and the button reopens it; its text rides on the box's `data-install-*` attributes (details in docs/06 §`game/install.js`).
 * Staf masuk lewat `/admin/login`; halaman awal tidak menautkannya.
 
@@ -650,7 +650,7 @@ Semua layar game digambar di **satu panggung tetap 1280 × 720 dp** (dp = *desig
 
 | Layar | Elemen (x, y, w, h dp) |
 |---|---|
-| Halaman awal | logo + tagline 240, 104, 800 × 336 (logo at most 280 high); Mulai 460, 448, 360 × 180; tawaran pasang 896, 576, 352 × 40; staff login link bottom-right (right 24, bottom 16) |
+| Halaman awal | logo + tagline 240, 104, 800 × 336 (logo at most 280 high); Mulai 400, 472, 480 × 112; tawaran pasang 896, 576, 352 × 40; staff login link bottom-right (right 24, bottom 16) |
 | Mulai | Jaka 140, 196, 280 × 460; panel 432, 176, 560 × 400 |
 | Gerbang | Jaka 476, 80, 277 × 640 (feet on the bottom edge); cards 776, 80, 472 × 608 (no panel) |
 | Masuk / Ganti sandi | panel 360, 88, 560 × 544 / 360, 72, 560 × 576 (gulir) |
@@ -680,7 +680,7 @@ Semua layar game digambar di **satu panggung tetap 1280 × 720 dp** (dp = *desig
 
 **Gulir.** Panggung dan halaman tidak pernah bergulir. Panel yang isinya bisa panjang memakai `.stage-scroll` (tinggi tetap, `overflow-y: auto`); huruf tidak pernah dikecilkan untuk memuatkan teks. `core/dom.js` `scrollToCenter()` menggulir panel `.stage-scroll` terdekat.
 
-**Aset** (Dok 3 §6, `Config\Gelita::$assetDisplaySizes` di samping `$assetSizes`): latar 1920 × 1080 → 1280 × 720 dp; peta 1400 × 900 → 880 × 566; adegan Cari Objek 1280 × 720 → 864 × 486; gambar Susun Gambar ≥ 1200² → 504 × 504; gambar pernyataan 480 × 360 → 192 × 144 (lightbox 640 × 480); tokoh 700 × 900 → 300 × 386 (cerita), 220 × 283 (pendaftaran); logo hero 1600 × 600 → 800 × 300; tombol Mulai 720 × 360 → 360 × 180. Pin peta dan benda Cari Objek dalam persen gambar, jadi posisinya sama di semua ukuran.
+**Aset** (Dok 3 §6, `Config\Gelita::$assetDisplaySizes` di samping `$assetSizes`): latar 1920 × 1080 → 1280 × 720 dp; peta 1400 × 900 → 880 × 566; adegan Cari Objek 1280 × 720 → 864 × 486; gambar Susun Gambar ≥ 1200² → 504 × 504; gambar pernyataan 480 × 360 → 192 × 144 (lightbox 640 × 480); tokoh 700 × 900 → 300 × 386 (cerita), 220 × 283 (pendaftaran); logo hero 1600 × 600 → 800 × 300; tombol Mulai 1200 × 220 → 480 × 88. Pin peta dan benda Cari Objek dalam persen gambar, jadi posisinya sama di semua ukuran.
 
 **Media query yang boleh** di CSS game: `(orientation: portrait) and (pointer: coarse)` (layar putar), `prefers-reduced-motion`, `hover: hover`. `tests/unit/StageCssTest.php` menjaga aturan satuan dan media query; `tools/qa/stage-check.mjs` memeriksa hasil tampilannya di peramban.
 

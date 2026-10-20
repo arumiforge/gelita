@@ -35,7 +35,7 @@
 <?= $this->section('hudLayout') ?>logo-centre<?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<section class="login" data-package-gate="page" data-package-next="masuk">
+<section class="login" data-package-gate="page" data-package-next="masuk" data-cine="account">
   <?php /* Jaka waving, one still picture (owner, 18 October 2026), standing on the picture's path */ ?>
   <img class="auth-jaka stage-box" src="<?= esc(asset_url_versioned('ui/jaka-wave.webp'), 'attr') ?>" alt="" width="658" height="1490" decoding="async" draggable="false">
 

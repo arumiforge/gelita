@@ -100,7 +100,7 @@ final class ImageSlots
         'ui.btn-start' => [
             'group'       => 'brand',
             'label'       => 'Tombol MULAI bergambar (bahasa Indonesia)',
-            'content'     => 'Gambar tombol jadi beserta tulisannya (pemilik, 20 Oktober 2026): papan enamel hijau tua berbingkai emas berukir dengan lentera menyala di kiri, permata biru kehijauan di atas dan bawah, dan tulisan MULAI emas timbul berhuruf serif di tengah. Rasio 2 : 1.',
+            'content'     => 'Gambar tombol jadi beserta tulisannya (pemilik, 20 Oktober 2026, versi kedua): papan panjang berisi enamel hijau toska, bingkai emas tipis dengan ukiran sulur emas dan permata di kedua ujung yang meruncing, dan tulisan MULAI emas timbul berhuruf serif di tengah. Rasio ± 5,5 : 1, papan di tengah kanvas.',
             'screens'     => [['Halaman awal, tombol utama (bahasa Indonesia)', '/']],
             'format'      => 'WebP atau PNG berlatar transparan, paling besar ± 100 KB',
             'transparent' => true,
@@ -111,7 +111,7 @@ final class ImageSlots
         'ui.btn-start.*' => [
             'group'       => 'brand',
             'label'       => 'Tombol START bergambar (bahasa Inggris)',
-            'content'     => 'Pasangan ui.btn-start (papan hijau tua berbingkai emas dengan lentera), bertulisan START dan berujung panah.',
+            'content'     => 'Pasangan ui.btn-start (papan panjang hijau toska berbingkai emas dengan ukiran di kedua ujung), bertulisan START.',
             'screens'     => [['Halaman awal saat bahasa permainan diganti ke bahasa itu', '/']],
             'format'      => 'WebP atau PNG berlatar transparan, paling besar ± 100 KB',
             'transparent' => true,

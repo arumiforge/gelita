@@ -452,8 +452,8 @@ final class StartGateTest extends CIUnitTestCase
         $store = new MediaStore();
 
         $this->assertSame([1600, 600], $store->requiredSize('ui.logo-hero'));
-        $this->assertSame([720, 360], $store->requiredSize('ui.btn-start'));
-        $this->assertSame([720, 360], $store->requiredSize('ui.btn-start.en'));
+        $this->assertSame([1200, 220], $store->requiredSize('ui.btn-start'));
+        $this->assertSame([1200, 220], $store->requiredSize('ui.btn-start.en'));
 
         $this->assertNull(MediaStore::localeFromKey('ui.btn-start'));
         $this->assertSame('en', MediaStore::localeFromKey('ui.btn-start.en'));

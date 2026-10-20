@@ -19,7 +19,7 @@
 <?= $this->section('hudLayout') ?>logo-centre<?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<section class="start" data-package-gate="page" data-package-next="mulai">
+<section class="start" data-package-gate="page" data-package-next="mulai" data-cine="account">
   <?= component('character', ['character' => 'jaka', 'pose' => 'happy', 'class' => 'start-jaka stage-box']) ?>
 
   <div class="start-panel ornate-panel stage-box">

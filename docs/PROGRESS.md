@@ -162,6 +162,11 @@ Decided in an interview with the owner; decisions in the decision log, section *
 - [ ] After merge, **Bangun ulang paket** if package mode is on
 - [ ] Back plate and sign-up/login redesign (owner, 20 October 2026): Kembali on the owner's navy plate in the HUD's top-left corner on Mulai, Masuk, Daftar, Gerbang; `/daftar/1–3` as one wide centred card without Jaka or compass crest, fields in two or three columns so each step fits without scrolling; `/masuk` without panel fill, frame, ornaments, or crest, rounded fields with icons. After merge, **Bangun ulang paket** if package mode is on
 
+## Cinematic start screens (owner, 20 October 2026)
+
+- [x] Cinematic entrances on the welcome page, Gerbang, Mulai, Masuk, and Daftar (`game/cine.js`, Web Animations API; Theatre.js considered and not needed), the story scenes' WebGL sparks, mist, and light rays plus parallax on the welcome page and Gerbang, the logo's float, glow, and light sweep; the owner's long Mulai/Start plates (`ui.btn-start*`, 1200 × 220) (PR #198)
+- [ ] After merge, on the server: `php spark gelita:katalog:impor --kunci="ui.btn-start*"` (dry run first), then **Bangun ulang paket** if package mode is on
+
 ## Active branches
 
 Add a row (branch, owner / scope, status) when a session starts a branch; remove it when its PR is merged.

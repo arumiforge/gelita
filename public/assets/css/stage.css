@@ -692,7 +692,7 @@ body.is-auth-art .scene::after { background: linear-gradient(to right, transpare
 /* =========================== KOORDINAT LAYAR (§4) =========================== */
 /* ---------- Halaman awal `/` ---------- */
 .welcome-hero    { --x: 240; --y: 104; --w: 800; --h: 336; } /* logo 280 dp + tagline (owner, 18 Oct 2026) */
-.welcome-actions { --x: 460; --y: 448; --w: 360; --h: 180; } /* 2:1 Mulai plate (owner, 20 Oct 2026) */
+.welcome-actions { --x: 400; --y: 472; --w: 480; --h: 112; } /* long Mulai plate, 480 × 88 dp (owner, 20 Oct 2026) */
 .welcome-install { --x: 896; --y: 576; --w: 352; --h: 40; }
 /* Staff login link: anchored to the bottom-right corner (24 dp from the right,
    16 dp from the bottom), its width follows the text. .welcome-install moved up
