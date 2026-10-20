@@ -133,7 +133,9 @@ if (! function_exists('asset_file_version')) {
 
 if (! function_exists('asset_url_versioned')) {
     /**
-     * URL of a CSS/JS entry or vendor file. With an active asset package it is
+     * URL of a CSS/JS entry, a vendor file, or one of the owner's UI pictures
+     * in assets/ui/ (owner, 20 October 2026: a replaced picture kept its URL
+     * and stayed cached after a refresh). With an active asset package it is
      * the package copy (`assets/k/…`, immutable, served by the service worker);
      * otherwise base_url('assets/…') + ?v=asset_file_version() for cache-busting,
      * pointing at the minified mirror (`assets/min/…`) while it is fresh.
@@ -154,7 +156,8 @@ if (! function_exists('asset_url_versioned')) {
 
 if (! function_exists('game_asset_url')) {
     /**
-     * URL of a game file that CSS refers to without `?v=` (fonts): the package
+     * URL of a game file that CSS refers to without `?v=` (fonts; pictures in
+     * assets/ui/ use asset_url_versioned() instead): the package
      * copy when a package is active, so a `<link rel="preload">` matches the
      * URL the stylesheet asks for; otherwise base_url('assets/…'), in the
      * minified mirror for fonts while the minified CSS is served.

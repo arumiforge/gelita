@@ -92,7 +92,7 @@ $curtainOf = static fn (array $l): string => $l['status'] !== 'locked' && isset(
 // Speaker of the story bar: the round avatar with the name on the navy plate over its lower ring (as on Kenali)
 $speaker = static fn (string $portrait, string $name): string => '<div class="kedu-speaker">' . $portrait
     . '<span class="kenal-nameplate">' . esc($name) . '</span></div>';
-$plateStyle = ' style="--kenal-plate-navy: url(&quot;' . esc(game_asset_url('ui/kenal-plate-navy.webp'), 'attr') . '&quot;)"';
+$plateStyle = ' style="--kenal-plate-navy: url(&quot;' . esc(asset_url_versioned('ui/kenal-plate-navy.webp'), 'attr') . '&quot;)"';
 ?>
 <?= $this->extend('layouts/game') ?>
 
@@ -235,7 +235,7 @@ $unheard  = static fn (array $l): bool => ($intros[$l['code']] ?? []) !== [] && 
             <a class="kedu-btn is-secondary kenal-card-btn<?= $unheard($level) ? ' is-unheard' : '' ?>" href="#kenal-<?= esc($level['code'], 'attr') ?>"
                data-kenal-open="<?= esc($level['code'], 'attr') ?>" aria-label="<?= esc(lang('Game.kenalRegion', [$level['name']]), 'attr') ?>">
               <?php // The owner's Kenali picture (book, magnifier, bulb; 18 October 2026), shipped in assets/ui ?>
-              <img class="kenali-art" src="<?= esc(game_asset_url('ui/icon-kenali.webp'), 'attr') ?>" alt="" width="40" height="40" draggable="false"> <span><?= esc(lang('Game.kenali')) ?></span>
+              <img class="kenali-art" src="<?= esc(asset_url_versioned('ui/icon-kenali.webp'), 'attr') ?>" alt="" width="40" height="40" draggable="false"> <span><?= esc(lang('Game.kenali')) ?></span>
               <?php if ($unheard($level)): ?>
                 <span class="kenal-badge" data-kenal-badge><?= esc(lang('Game.kenalUnheard')) ?></span>
               <?php endif ?>

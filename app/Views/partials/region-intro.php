@@ -53,8 +53,8 @@ $logo    = media_key_src('ui.logo-hero') ?? media_key_src('ui.logo');
 $avatars = ['mbah_kedu' => media_key_src('ui.kedu-avatar'), 'jaka' => media_key_src('ui.jaka-avatar')];
 // Skins as custom properties (absolute URLs, so the minified mirror and the asset package keep them)
 $skins = [
-    'kenal-plate-gold' => game_asset_url('ui/kenal-plate-gold.webp'),
-    'kenal-plate-navy' => game_asset_url('ui/kenal-plate-navy.webp'),
+    'kenal-plate-gold' => asset_url_versioned('ui/kenal-plate-gold.webp'),
+    'kenal-plate-navy' => asset_url_versioned('ui/kenal-plate-navy.webp'),
     'skin-hud'         => media_key_src('ui.result-hud-control'),
 ];
 $style = [];

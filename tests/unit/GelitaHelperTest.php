@@ -104,7 +104,7 @@ final class GelitaHelperTest extends CIUnitTestCase
         $this->assertSame(2, substr_count($html, '<span class="star is-on">'));
         $this->assertStringContainsString('aria-label="2 / 3"', $html);
         // Every star is the game's star picture; the empty one is the same picture, grey and faded
-        $this->assertSame(3, substr_count($html, 'src="' . esc(game_asset_url('ui/star.webp'), 'attr') . '"'));
+        $this->assertSame(3, substr_count($html, 'src="' . esc(asset_url_versioned('ui/star.webp'), 'attr') . '"'));
         $this->assertSame(1, substr_count($html, 'class="star-art is-off"'));
         $this->assertStringNotContainsString('<svg', $html);
 

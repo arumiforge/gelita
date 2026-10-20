@@ -105,7 +105,7 @@ final class StartGateTest extends CIUnitTestCase
         $this->assertStringContainsString('class="btn btn-quiet hud-back" href="' . base_url('mulai') . '"', html_entity_decode($page));
         $this->assertStringNotContainsString('class="nav-bar"', $page);
         $this->assertStringNotContainsString('start-jaka', $page, 'no animated figure (owner redesign, 18 October 2026)');
-        $this->assertStringContainsString('class="auth-jaka stage-box" src="' . $this->attr('assets/ui/jaka-wave.webp') . '"', $page, 'one still picture of Jaka');
+        $this->assertStringContainsString('class="auth-jaka stage-box" src="' . esc(asset_url_versioned('ui/jaka-wave.webp'), 'attr') . '"', $page, 'one still picture of Jaka');
         $this->assertStringContainsString('login-panel ornate-panel stage-box', $page);
         $this->assertStringContainsString('ornate-body stage-scroll', $page, 'the form scrolls inside the fixed panel');
     }
@@ -116,7 +116,7 @@ final class StartGateTest extends CIUnitTestCase
         $this->media = ['bg.welcome' => 'assets/uploads/bg.welcome.jpg?v=w1', 'bg.auth' => 'assets/uploads/bg.auth.jpg?v=a1'];
         $page        = (new LoginController())->form();
 
-        $this->assertStringContainsString('src="' . $this->attr('assets/ui/bg-auth-login.webp') . '"', $page);
+        $this->assertStringContainsString('src="' . esc(asset_url_versioned('ui/bg-auth-login.webp'), 'attr') . '"', $page);
         $this->assertStringContainsString('is-auth-art', $page);
         $this->assertStringNotContainsString('bg.auth.jpg', $page);
         $this->assertStringNotContainsString('bg.welcome.jpg', $page);

@@ -565,7 +565,7 @@ if (! function_exists('status_badge_src')) {
             return null;
         }
 
-        return game_asset_url('ui/status-' . $state . '.webp');
+        return asset_url_versioned('ui/status-' . $state . '.webp');
     }
 }
 
@@ -577,7 +577,7 @@ if (! function_exists('star_src')) {
      */
     function star_src(): string
     {
-        return media_key_src('ui.result-star') ?? game_asset_url('ui/star.webp');
+        return media_key_src('ui.result-star') ?? asset_url_versioned('ui/star.webp');
     }
 }
 

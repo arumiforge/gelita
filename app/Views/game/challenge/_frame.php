@@ -53,13 +53,13 @@ $triesAria  = lang('Game.triesLabel') . ': ' . lang('Game.triesOf', ['{0}', '{1}
          data-region-name="<?= esc($region, 'attr') ?>"
          data-sequence="<?= esc($sequence, 'attr') ?>"
          data-exit-url="<?= esc(base_url('wilayah/' . $level->code), 'attr') ?>"
-         style="--plate-navy: url(&quot;<?= esc(game_asset_url('ui/kenal-plate-navy.webp'), 'attr') ?>&quot;)">
+         style="--plate-navy: url(&quot;<?= esc(asset_url_versioned('ui/kenal-plate-navy.webp'), 'attr') ?>&quot;)">
 
   <div class="arena-panel">
     <?php // Owner's header, 20 October 2026: number on the gold-and-navy ring, title, one stats capsule ?>
     <header class="challenge-head stage-box">
       <div class="badge-pos" aria-hidden="true">
-        <img src="<?= esc(game_asset_url('ui/challenge-badge.webp'), 'attr') ?>" alt="" width="192" height="192" decoding="async" draggable="false">
+        <img src="<?= esc(asset_url_versioned('ui/challenge-badge.webp'), 'attr') ?>" alt="" width="192" height="192" decoding="async" draggable="false">
         <span class="badge-pos-no"><?= esc($sequence) ?></span>
       </div>
       <div class="challenge-info">

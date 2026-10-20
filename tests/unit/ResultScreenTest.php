@@ -107,8 +107,8 @@ final class ResultScreenTest extends CIUnitTestCase
         $this->assertStringContainsString('<header class="hud hud-menu-style is-compact" data-in-game', $other);
         $this->assertMatchesRegularExpression('/<div class="hud-shards" style="[^"]*">(?:<!--[^>]*-->\s*)?<details class="lantern"/', $other);
         // The owner's shard plate (20 October 2026): frame and fill texture as absolute URLs, the crystal's glow layer
-        $this->assertStringContainsString('--shards-frame: url(&quot;' . esc(game_asset_url('ui/hud-shards-frame.webp'), 'attr') . '&quot;)', $other);
-        $this->assertStringContainsString('--shards-fill: url(&quot;' . esc(game_asset_url('ui/hud-shards-fill.webp'), 'attr') . '&quot;)', $other);
+        $this->assertStringContainsString('--shards-frame: url(&quot;' . esc(asset_url_versioned('ui/hud-shards-frame.webp'), 'attr') . '&quot;)', $other);
+        $this->assertStringContainsString('--shards-fill: url(&quot;' . esc(asset_url_versioned('ui/hud-shards-fill.webp'), 'attr') . '&quot;)', $other);
         $this->assertStringContainsString('<span class="lantern-gem" aria-hidden="true"></span>', $other);
         $this->assertMatchesRegularExpression('/<span class="lantern-row">\s*<span class="lantern-count num"><b>5<\/b>\/12<\/span>\s*<span class="lantern-bar"/', $other, 'the bar beside the count');
         foreach (['class="hud-pop hud-lang"', 'id="btn-sound"', 'class="hud-pop hud-menu"', '<span class="hud-identity-region">Temanggung</span>'] as $needle) {
@@ -197,7 +197,7 @@ final class ResultScreenTest extends CIUnitTestCase
         $plain = $this->finished();
         $this->assertStringNotContainsString('--skin-', $plain, 'empty slots keep the plain look');
         $this->assertStringContainsString('<span class="orb">', $plain, 'medal fallback');
-        $this->assertStringContainsString('<img class="result-star is-on" src="' . esc(game_asset_url('ui/star.webp'), 'attr'), $plain, 'the shipped star until the slot is filled');
+        $this->assertStringContainsString('<img class="result-star is-on" src="' . esc(asset_url_versioned('ui/star.webp'), 'attr'), $plain, 'the shipped star until the slot is filled');
 
         $this->media = [
             'ui.result-panel'          => 'assets/uploads/ui.result-panel.webp',

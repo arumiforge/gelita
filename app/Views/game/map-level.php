@@ -116,7 +116,7 @@ $points = implode(' ', array_map(static fn (array $n): string => (float) $n['map
     <?php // Only the list scrolls; the head, the progress, and Pustaka stay in place ?>
     <ol class="node-list stage-scroll">
       <?php foreach ($nodes as $node): ?>
-        <?php $art = is_file(FCPATH . 'assets/ui/node-card-' . $node['engine_type'] . '.webp') ? game_asset_url('ui/node-card-' . $node['engine_type'] . '.webp') : null; ?>
+        <?php $art = is_file(FCPATH . 'assets/ui/node-card-' . $node['engine_type'] . '.webp') ? asset_url_versioned('ui/node-card-' . $node['engine_type'] . '.webp') : null; ?>
         <li class="node-card panel is-<?= esc($node['status'], 'attr') ?><?= $art !== null ? ' has-art' : '' ?>">
           <?php if ($art !== null): ?>
             <img class="node-card-art" src="<?= esc($art, 'attr') ?>" alt="" decoding="async" draggable="false">
