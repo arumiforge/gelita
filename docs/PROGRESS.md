@@ -144,6 +144,7 @@ Decided in an interview with the owner; decisions in the decision log, section *
 ## Region map and medallion follow-up (owner, 20 October 2026)
 
 - [x] Status medallions with three states only (done green ✓, open gold arc, locked navy with a lock) on the lantern, region-map pins (larger, number in the middle), and challenge list; no "Sedang dikerjakan"; region-map side column with fixed head, progress, and Pustaka {wilayah} at the bottom, no bottom nav bar, one title per card, the owner's engine pictures as card backgrounds; Peta Kedu panel without the "Wilayah n · difficulty" line and with **Lihat cerita pembuka** (PR #184). After merge, **Bangun ulang paket** if package mode is on
+- [x] Peta Kedu story bar and region panel without backdrop or gold frame; Jaka's name on the navy nameplate over his avatar, as on Kenali; a black halo that follows the outline of every badge picture (shard medallions, region-map pins, challenge list, challenge number ring, Peta Kedu done badge) (PR #186). After merge, **Bangun ulang paket** if package mode is on
 
 ## Active branches
 
@@ -151,4 +152,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `sky/admiring-mendel-am6ed0` | Peta Kedu story bar and region panel without backdrop or frame, Jaka's nameplate on his avatar, black halo on every badge | PR open |
