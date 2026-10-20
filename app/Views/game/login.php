@@ -16,7 +16,8 @@
  * lit village, `assets/ui/bg-auth-login.webp`, shipped with the game) fills the
  * stage; the ornate dark panel with the form sits in its empty right side and
  * Jaka waves from the stone path (`assets/ui/jaka-wave.webp`, one still picture,
- * no animation frames). Back in the HUD top-left.
+ * no animation frames). The GELITA logo in the HUD centre, Back in its top-right
+ * corner (owner, 20 October 2026).
  *
  * @var array<string, string> $errors
  */
@@ -29,6 +30,7 @@
 <?= $this->section('bodyClass') ?>is-auth-art<?= $this->endSection() ?>
 
 <?= $this->section('hudBack') ?><?= base_url('mulai') ?><?= $this->endSection() ?>
+<?= $this->section('hudLayout') ?>logo-centre<?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
 <section class="login" data-package-gate="page" data-package-next="masuk">

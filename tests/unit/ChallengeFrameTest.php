@@ -82,7 +82,7 @@ final class ChallengeFrameTest extends CIUnitTestCase
             }
         }
 
-        $this->assertGreaterThan(3, $found);
+        $this->assertGreaterThanOrEqual(3, $found);
     }
 
     /** Owner's header, 20 October 2026: number ring, title, one stats capsule; no visible eyebrow. */

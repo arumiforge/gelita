@@ -151,9 +151,14 @@ Decided in an interview with the owner; decisions in the decision log, section *
 - [x] Peta Kedu on the owner's island picture: locked regions darkened through a mask per region (rivers as borders), no trails, frame, or backdrop, faded edges; HUD without logo, shard plate left, title centred over a soft gradient; 3D progress bar. Marcellus for all game text, no forced capitals (digits from Plus Jakarta Sans). New logo `ui.logo-hero`; the Pustaka book picture on the Pustaka buttons. Region map: 84 dp HUD, map and side column 28 dp lower, cards on the green scarf frame with the engine picture in sepia, Lihat hasil on the green plate, Terkunci on the navy plate, Pustaka on the wide gold plate; roomier compact HUD on the other pages (PR #193)
 - [ ] After merge, on the server: `php spark gelita:katalog:impor --kunci="map.kedu-diorama,ui.logo-hero"` (dry run first), then **Bangun ulang paket** if package mode is on
 
+## Account pages and gate redesign (owner, 20 October 2026)
+
+- [ ] GELITA logo in the middle of the HUD and Kembali in the top-right corner on Mulai, Masuk, Daftar, Gerbang; the owner's compass emblem as the crest of every ornate panel; Gerbang on the owner's arch picture with a tall still Jaka (feet darkened into the path), the book and map-scroll emblems on its cards, no panel fill or corner ornaments, the logo instead of the shard plate. After merge, **Bangun ulang paket** if package mode is on
+
 ## Active branches
 
 Add a row (branch, owner / scope, status) when a session starts a branch; remove it when its PR is merged.
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `sky/vigilant-cerf-lj5cx0` | Account pages and gate redesign | PR open |

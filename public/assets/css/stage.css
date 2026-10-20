@@ -167,7 +167,7 @@ body.is-auth-art .scene::after { background: linear-gradient(to right, transpare
   height: max(100%, var(--tap));
   transform: translateY(-50%);
 }
-/* Account screens before login: Back before the logo (section hudBack) */
+/* Section hudBack: Back in the top-right corner, after the controls (owner, 20 October 2026) */
 .hud .hud-back { min-height: var(--tap); padding: var(--gap-1) var(--gap-4) var(--gap-1) var(--gap-3); background: var(--hud-backing); }
 .hud .hud-back:hover { background: var(--hud-backing-hover); }
 
@@ -486,6 +486,24 @@ body.is-auth-art .scene::after { background: linear-gradient(to right, transpare
 .is-compact .hud-menu-sheet { top: 4rem; right: .5rem; }
 /* The shard plate fits the strip: 256 × 53 dp, centred, 2 dp clear of top and bottom */
 .is-compact .hud-shards { --plate-w: 16rem; top: .125rem; left: 32rem; }
+/* Section hudBack: the controls and Back share one row in the top-right corner (.hud-end).
+   The controls keep their own box, so the popover sheets above stay under their buttons. */
+.hud-end { position: absolute; top: 0; right: .75rem; display: flex; align-items: center; gap: .25rem; height: var(--hud-h); }
+.hud-end > .hud-controls { position: relative; top: auto; right: auto; }
+/* Section hudLayout `logo-centre` (Mulai, Masuk, Daftar, Gerbang; owner 20 October 2026): the
+   logo alone in the middle of the strip, a little larger, over a soft shade that keeps it clear
+   of bright art */
+.hud.is-logo-centre::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: -1;
+  height: 6rem;
+  background: linear-gradient(to bottom, rgba(6, 12, 24, .55), rgba(6, 12, 24, .2) 60%, transparent);
+  pointer-events: none;
+}
+.is-logo-centre .hud-identity { top: .25rem; left: 50%; height: 3rem; transform: translateX(-50%); }
+.is-logo-centre .hud-identity-logo { height: 3rem; }
 /* Tall HUD (hudStyle `tall`, the region map; owner 20 October 2026): an 84 dp band with
    touch-friendly 72 dp controls on a 60 dp disc, a larger logo and region name, and the shard
    plate centred with room above and below */
@@ -647,7 +665,10 @@ body.is-auth-art .scene::after { background: linear-gradient(to right, transpare
 /* ---------- Mulai `/mulai`, Gerbang `/gerbang` ---------- */
 .start-jaka  { --x: 140; --y: 196; --w: 280; --h: 460; }
 .start-panel { --x: 432; --y: 176; --w: 560; --h: 400; }
-.start-choice .start-panel { --y: 160; --h: 432; }
+/* Gerbang (owner redesign, 20 October 2026): Jaka on the path next to the arch, 640 dp tall with
+   his darkened feet on the bottom edge; the cards on the plain dark right side of the picture */
+.gate-jaka   { --x: 476; --y: 80;  --w: 277; --h: 640; }
+.gate-panel  { --x: 776; --y: 80;  --w: 472; --h: 608; }
 
 /* ---------- Masuk `/masuk`, Ganti sandi `/ganti-sandi` (owner redesign, 18 October 2026):
    the panel sits in the empty right side of the owner's picture (x ≥ 720), Jaka on the path.
