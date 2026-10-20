@@ -105,11 +105,30 @@ final class ResultScreenTest extends CIUnitTestCase
             'level' => $this->level(), 'node' => self::node(1, 'puzzle'), 'sequence' => 1, 'attempts' => [], 'best' => null,
         ]);
         $this->assertStringContainsString('<header class="hud hud-menu-style is-compact" data-in-game', $other);
-        $this->assertMatchesRegularExpression('/<div class="hud-shards">(?:<!--[^>]*-->\s*)?<details class="lantern"/', $other);
+        $this->assertMatchesRegularExpression('/<div class="hud-shards" style="[^"]*">(?:<!--[^>]*-->\s*)?<details class="lantern"/', $other);
+        // The owner's shard plate (20 October 2026): frame and fill texture as absolute URLs, the crystal's glow layer
+        $this->assertStringContainsString('--shards-frame: url(&quot;' . esc(game_asset_url('ui/hud-shards-frame.webp'), 'attr') . '&quot;)', $other);
+        $this->assertStringContainsString('--shards-fill: url(&quot;' . esc(game_asset_url('ui/hud-shards-fill.webp'), 'attr') . '&quot;)', $other);
+        $this->assertStringContainsString('<span class="lantern-gem" aria-hidden="true"></span>', $other);
         $this->assertMatchesRegularExpression('/<span class="lantern-row">\s*<span class="lantern-count num"><b>5<\/b>\/12<\/span>\s*<span class="lantern-bar"/', $other, 'the bar beside the count');
         foreach (['class="hud-pop hud-lang"', 'id="btn-sound"', 'class="hud-pop hud-menu"', '<span class="hud-identity-region">Temanggung</span>'] as $needle) {
             $this->assertStringContainsString($needle, $other, $needle);
         }
+    }
+
+    /** The owner's shard plate (20 October 2026): the pictures ship with the game, the page draws the fill. */
+    public function testShardPlateDrawsTheFillOverTheOwnersFrame(): void
+    {
+        foreach (['hud-shards-frame.webp', 'hud-shards-fill.webp'] as $file) {
+            $this->assertFileExists(FCPATH . 'assets/ui/' . $file);
+        }
+
+        $css = (string) file_get_contents(FCPATH . 'assets/css/stage.css');
+        $this->assertStringContainsString('background: var(--shards-frame) center / 100% 100% no-repeat;', $css);
+        $this->assertStringContainsString('var(--shards-fill) left center', $css, 'the fill uses the owner\'s texture, not one flat colour');
+        $this->assertStringContainsString('.hud-shards .lantern-toggle > .flame { display: none; }', $css, 'the crystal replaces the lantern icon');
+        $this->assertMatchesRegularExpression('/\.hud-shards \.lantern\[data-stage="3"\] \.lantern-gem \{[^}]*animation: gem-pulse/', $css);
+        $this->assertStringContainsString('.is-compact .hud-shards { --plate-w: 14.375rem;', $css);
     }
 
     public function testPanelShowsTheAttempt(): void

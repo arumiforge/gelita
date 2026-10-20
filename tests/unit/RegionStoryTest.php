@@ -588,7 +588,7 @@ final class RegionStoryTest extends CIUnitTestCase
         // Menu HUD with the title and the shard lantern; Profil is in the menu, not in the page buttons
         $this->assertStringContainsString('class="hud hud-menu-style" data-in-game', $page);
         $this->assertStringContainsString('<span class="hud-identity-region">' . lang('Game.mapKedu') . '</span>', $page);
-        $this->assertMatchesRegularExpression('/<div class="hud-shards">(?:<!--[^>]*-->\s*)?<details class="lantern"/', $page);
+        $this->assertMatchesRegularExpression('/<div class="hud-shards" style="[^"]*">(?:<!--[^>]*-->\s*)?<details class="lantern"/', $page);
         // Page buttons right of the story, under the region panel; no bottom nav bar
         $this->assertStringNotContainsString('class="nav-bar"', $page);
         $nav = substr($page, (int) strpos($page, '<nav class="kedu-nav stage-box"'));
