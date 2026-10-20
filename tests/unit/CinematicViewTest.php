@@ -149,12 +149,44 @@ final class CinematicViewTest extends CIUnitTestCase
 
         $this->assertStringContainsString('class="hud hud-menu-style"', $page, 'full-size HUD');
         $this->assertStringNotContainsString('class="hud-shards"', $page, 'the HUD centre holds the slide progress');
-        $this->assertMatchesRegularExpression('/id="slide-1".*?<nav class="cine-top"[^>]*>\s*<span class="eyebrow">' . preg_quote(esc(lang('Game.slideOf', [1, 3])), '/') . '<\/span>\s*<ol class="slide-dots">/s', $page);
+        // Only the dots (owner, 20 October 2026): "Bagian n dari N" is their label for screen readers
+        $this->assertMatchesRegularExpression('/id="slide-1".*?<nav class="cine-top" aria-label="' . preg_quote(esc(lang('Game.slideOf', [1, 3]), 'attr'), '/') . '">\s*<ol class="slide-dots">/s', $page);
+        $this->assertStringNotContainsString('<span class="eyebrow">', $page);
         // ▶ in the narrator controls reads "Lanjut"; the caption keeps Lanjut only as the no-JS link
         $this->assertStringContainsString('data-narrator="next" aria-label="' . esc(lang('Game.continue'), 'attr') . '"><span class="narrator-next-label"', $page);
         // The last slide's main button sits outside the caption, in the middle of the page
         $this->assertMatchesRegularExpression('/id="slide-3".*?<div class="cine-final">\s*<a class="btn btn-primary btn-lg" href="' . preg_quote(esc(base_url('intro/selesai'), 'attr'), '/') . '" data-slide-final>/s', $page);
         $this->assertDoesNotMatchRegularExpression('/id="slide-2".*?data-slide-final.*?id="slide-3"/s', $page);
+    }
+
+    /**
+     * Owner, 20 October 2026: the caption and the narrator controls sit on the
+     * picture with no band; the round controls wear the HUD skin, Lanjut the
+     * main-button skin, all 40 dp; the picture stays dark until the tap card
+     * is tapped.
+     */
+    public function testIntroCaptionAndControlsHaveNoBandAndThePictureWaitsForTheTap(): void
+    {
+        $this->mediaKeys = ['ui.result-hud-control' => 'assets/uploads/ui.result-hud-control.webp'];
+        $page            = $this->intro(introSeen: false);
+        $this->assertMatchesRegularExpression('/<div class="stage" id="stage" style="[^"]*--skin-hud: url\(&quot;[^"]*ui\.result-hud-control\.webp&quot;\)/', $page);
+
+        $css = (string) file_get_contents(FCPATH . 'assets/css/cinematic.css');
+        $this->assertMatchesRegularExpression('/\n\.cine-caption \{[^}]*\}/', $css);
+        preg_match('/\n\.cine-caption \{([^}]*)\}/', $css, $caption);
+        $this->assertDoesNotMatchRegularExpression('/border-top|background|box-shadow/', $caption[1]);
+        preg_match('/\n\.cine \.narrator-controls \{([^}]*)\}/', $css, $controls);
+        $this->assertStringContainsString('background: none;', $controls[1]);
+        $this->assertStringContainsString('box-shadow: none;', $controls[1]);
+        $this->assertStringContainsString('.stage[style*="--skin-hud"] .cine .narrator-controls .icon-btn::after {', $css);
+        $this->assertStringContainsString('.stage[style*="--skin-primary"] .cine .narrator-next.has-label:not(:disabled) {', $css);
+        $this->assertMatchesRegularExpression('/\n\.cine \.narrator-controls \.icon-btn \{[^}]*width: 2\.5rem;[^}]*height: 2\.5rem;/', $css);
+        $this->assertStringNotContainsString('.cine-top .eyebrow', $css);
+
+        // Dark until the tap; noscript.css and a failsafe show the picture without JavaScript
+        $this->assertStringContainsString('.stage:has(.narrator:not(.is-started) [data-narrator-tap]) > .scene {', $css);
+        $this->assertStringContainsString('animation: scene-failsafe .8s ease 10s forwards;', $css);
+        $this->assertStringContainsString('.stage > .scene { opacity: 1 !important; animation: none !important; }', (string) file_get_contents(FCPATH . 'assets/css/noscript.css'));
     }
 
     /** Owner, 18 October 2026: the intro menu has Profil, Kembali ke awal, Layar penuh, and Keluar, but no Peta Kedu yet. */

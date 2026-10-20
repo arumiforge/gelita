@@ -79,8 +79,8 @@ $screenCode = method_exists($request, 'getPath') ? (App\Filters\ScreenViewFilter
   <?= $this->include('components/rotate-gate') ?>
 
   <div class="stage-frame">
-    <?php // The gold main-button skin for every .btn-primary on the stage (owner, 18 October 2026) ?>
-    <div class="stage" id="stage"<?= skin_style_attr(['skin-primary' => 'ui.result-button-primary']) ?>>
+    <?php // The gold main-button skin for every .btn-primary on the stage (owner, 18 October 2026) and the round HUD skin for the story narrator controls ?>
+    <div class="stage" id="stage"<?= skin_style_attr(['skin-primary' => 'ui.result-button-primary', 'skin-hud' => 'ui.result-hud-control']) ?>>
       <a class="skip-link" href="#app"><?= esc(lang('Game.skipToContent')) ?></a>
 
       <div class="scene" aria-hidden="true">

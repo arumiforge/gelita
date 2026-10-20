@@ -22,10 +22,12 @@
  * berjalan tanpa JavaScript (kartu ketuk dan kontrol narasi tersembunyi).
  *
  * Layout (owner, 18 October 2026): full-size HUD (big logo and controls)
- * without the shard pill; "Bagian n dari N" and the page dots centred in the
- * HUD; Lewati under the menu button; a full-width caption along the bottom
- * whose title row holds the narrator controls (▶ reads "Lanjut"); "Mulai
- * petualangan" centred on the page. See partials/cine-slides.
+ * without the shard pill; the page dots centred in the HUD; Lewati under the
+ * menu button; a full-width caption along the bottom whose title row holds
+ * the narrator controls (▶ reads "Lanjut"); "Mulai petualangan" centred on
+ * the page. See partials/cine-slides. Owner, 20 October 2026: no "Bagian n
+ * dari N" text, no band behind the caption or the controls, and the slide
+ * picture stays dark until the tap card is tapped (cinematic.css).
  *
  * Right after sign-up the page carries the welcome card (flash `welcome`);
  * game/intro.js opens it as a modal over the tap card (owner, 19 October
