@@ -8,17 +8,15 @@ use Config\Services;
  * Owner request of 20 October 2026: the status medallions (navy = open, gold
  * arc = started, green with a check = done) replace the shard dots, the
  * region-map pin icons, and the Peta Kedu "done" badge; a locked challenge
- * keeps its lock. Until the pictures are installed in `assets/ui/` the old
- * marks stay. No database: ContentRepository is replaced by a stub.
+ * keeps its lock. The pictures ship in `assets/ui/status-*.webp`; without
+ * them status_badge_src() returns null and the old marks show. No database:
+ * ContentRepository is replaced by a stub.
  *
  * @internal
  */
 final class StatusBadgeTest extends CIUnitTestCase
 {
     private const STATES = ['open', 'progress', 'done'];
-
-    /** @var list<string> pictures this test wrote, removed again in tearDown */
-    private array $written = [];
 
     protected function setUp(): void
     {
@@ -45,26 +43,9 @@ final class StatusBadgeTest extends CIUnitTestCase
 
     protected function tearDown(): void
     {
-        foreach ($this->written as $path) {
-            @unlink($path);
-        }
-
         Services::resetSingle('contentRepository');
         Services::resetSingle('renderer');
         parent::tearDown();
-    }
-
-    /** Puts the three pictures in place for the test, unless the real ones are installed. */
-    private function installBadges(): void
-    {
-        foreach (self::STATES as $state) {
-            $path = FCPATH . 'assets/ui/status-' . $state . '.webp';
-
-            if (! is_file($path)) {
-                file_put_contents($path, 'RIFF');
-                $this->written[] = $path;
-            }
-        }
     }
 
     private function lantern(): string
@@ -86,7 +67,6 @@ final class StatusBadgeTest extends CIUnitTestCase
 
     public function testBadgeFollowsTheStatus(): void
     {
-        $this->installBadges();
 
         $this->assertSame(game_asset_url('ui/status-done.webp'), status_badge_src(['status' => 'completed']));
         $this->assertSame(game_asset_url('ui/status-progress.webp'), status_badge_src(['status' => 'open', 'started' => true]));
@@ -96,7 +76,6 @@ final class StatusBadgeTest extends CIUnitTestCase
 
     public function testLanternShowsOneMedallionPerNodeButTheLockedOne(): void
     {
-        $this->installBadges();
         $html = $this->lantern();
         $dots = substr($html, (int) strpos($html, '<ol class="shard-dots">'));
         $dots = substr($dots, 0, (int) strpos($dots, '</ol>'));
@@ -109,18 +88,18 @@ final class StatusBadgeTest extends CIUnitTestCase
         $this->assertStringContainsString(lang('Game.shardStarted'), substr($html, (int) strpos($html, 'lantern-legend')));
     }
 
-    public function testWithoutThePicturesTheOldMarksStay(): void
+    /** The owner's three pictures ship with the game: square, transparent WebP. */
+    public function testThePicturesShipWithTheGame(): void
     {
         foreach (self::STATES as $state) {
-            if (is_file(FCPATH . 'assets/ui/status-' . $state . '.webp')) {
-                $this->markTestSkipped('the real pictures are installed');
-            }
-        }
+            $path = FCPATH . 'assets/ui/status-' . $state . '.webp';
+            $this->assertFileExists($path, $state);
 
-        $this->assertNull(status_badge_src(['status' => 'completed']));
-        $html = $this->lantern();
-        $this->assertStringNotContainsString('has-badge', $html);
-        $this->assertStringContainsString('<span class="shard is-open is-started" aria-hidden="true"></span>', $html, 'half dot for a started node');
+            $info = getimagesize($path);
+            $this->assertSame(IMAGETYPE_WEBP, $info[2], $state);
+            $this->assertSame($info[0], $info[1], "{$state} is square");
+            $this->assertStringContainsString('ALPH', (string) file_get_contents($path), "{$state} keeps its transparency");
+        }
     }
 
     public function testMapsUseTheBadgeAndKeepTheLock(): void
