@@ -152,4 +152,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `sky/youthful-cannon-wbzf9t` | Owner's Serpihan Cahaya plate in the HUD, web-drawn glowing fill | In review |
