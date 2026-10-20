@@ -556,8 +556,9 @@ final class RegionStoryTest extends CIUnitTestCase
         $this->assertStringContainsString('<section class="kedu-panel is-open is-selected"', $page);
         $this->assertStringContainsString('<a class="kedu-city" href="#region-wonosobo" data-region-select="wonosobo"', $page);
 
-        // Owner, 18 October 2026: completed Temanggung wears the gold check badge; Kenali is the shipped picture
-        $this->assertSame(1, substr_count($page, '<span class="kedu-lock kedu-done"><svg'));
+        // Owner, 18 October 2026: completed Temanggung wears a done badge, since 20 October 2026 the
+        // owner's green medallion (assets/ui/status-done.webp); Kenali is the shipped picture
+        $this->assertSame(1, substr_count($page, '<span class="kedu-lock kedu-done has-badge"><img src="' . esc(game_asset_url('ui/status-done.webp'), 'attr') . '"'));
         $this->assertSame(1, substr_count($page, 'class="kedu-lock"><svg'), 'locked Wonosobo keeps its lock');
         $this->assertStringContainsString('<img class="kenali-art" src="' . esc(base_url('assets/ui/icon-kenali.webp'), 'attr') . '"', $page);
         $this->assertFileExists(FCPATH . 'assets/ui/icon-kenali.webp');
