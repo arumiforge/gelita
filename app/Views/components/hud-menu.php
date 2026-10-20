@@ -32,8 +32,10 @@
  *        - menu: profile, Peta Kedu, fullscreen (#btn-fullscreen,
  *          core/stage.js; hidden when unsupported), and logout. Signed in
  *          without progress data (the opening story): Kembali ke awal (`/`)
- *          instead of Peta Kedu. Before login only fullscreen; the menu
- *          hides itself when it has no row left.
+ *          instead of Peta Kedu; on the start page itself (`$homePage`)
+ *          neither, so it holds profile, fullscreen, and logout (owner,
+ *          20 October 2026). Before login only fullscreen; the menu hides
+ *          itself when it has no row left.
  *
  * Both popovers are <details data-popover>: they open without JavaScript;
  * game/hud.js adds Escape, outside click, one-open-at-a-time, the close
@@ -43,6 +45,7 @@
  * @var array<string, mixed>|null $progress
  * @var \App\Entities\Level|null   $level
  * @var bool|null                 $hideBrand
+ * @var bool|null                 $homePage  the start page `/`: no Kembali ke awal row
  */
 $inGame   = isset($participant, $progress) && is_array($participant) && is_array($progress);
 // Signed in without progress data (the opening story): the menu still has the account rows
@@ -149,7 +152,7 @@ $userName = $signedIn ? (string) ($participant['display_name'] ?: $participant['
             <a class="hud-sheet-row hud-leave" href="<?= base_url('peta') ?>">
               <?= icon('home') ?><span class="hud-sheet-label"><?= esc(lang('Game.mapKedu')) ?></span><?= icon('right', 'hud-sheet-go') ?>
             </a>
-          <?php else: ?>
+          <?php elseif (empty($homePage)): ?>
             <a class="hud-sheet-row hud-leave" href="<?= base_url() ?>">
               <?= icon('home') ?><span class="hud-sheet-label"><?= esc(lang('Game.backHome')) ?></span><?= icon('right', 'hud-sheet-go') ?>
             </a>

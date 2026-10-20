@@ -2,15 +2,16 @@
 /**
  * 1. Welcome — `/` → HomeController::index
  *
- * Panggung 16:9 (Dok 3 §4): logo + tagline 240, 104, 800 × 336; tombol Mulai 460, 456,
- * 360 × 120; tombol Pasang GELITA 896, 576, 352 × 40 (stage.css), which reopens the
+ * Panggung 16:9 (Dok 3 §4): logo + tagline 240, 104, 800 × 336; tombol Mulai 460, 448,
+ * 360 × 180 (the owner's 2:1 lantern plate, 20 October 2026); tombol Pasang GELITA 896, 576, 352 × 40 (stage.css), which reopens the
  * install dialog (game/install.js);
  * staff login link pinned 24 dp from the right and 16 dp from the bottom.
  *
  * Logo dan SATU tombol Mulai → `/mulai`, sama untuk siswa yang sudah maupun
  * belum login (`/mulai` yang memilah). HUD dirender tanpa merek
  * (`hideBrand`): logonya sudah besar di sini. Staf masuk lewat `/admin/login`,
- * via the small link in the bottom-right corner (this page only).
+ * via the small link in the bottom-right corner (this page only). A signed-in
+ * student finds Profil and Keluar in the HUD menu (HomeController::index).
  *
  * Asset package (Stage 3): `data-package-gate="link"` + `data-package-start`
  * let game/package-gate.js point Mulai at `/siapkan` while package mode is on
@@ -52,7 +53,7 @@ $btnStart = media_key_src_locale('ui.btn-start', $locale);
   <div class="welcome-actions stage-box">
     <?php if ($btnStart !== null): ?>
       <a class="btn-start is-image" href="<?= base_url('mulai') ?>" data-package-start>
-        <img src="<?= esc($btnStart, 'attr') ?>" alt="<?= esc(lang('Game.start'), 'attr') ?>" width="720" height="240">
+        <img src="<?= esc($btnStart, 'attr') ?>" alt="<?= esc(lang('Game.start'), 'attr') ?>" width="720" height="360">
       </a>
     <?php else: ?>
       <a class="btn-start btn btn-primary btn-xl" href="<?= base_url('mulai') ?>" data-package-start><?= esc(lang('Game.start')) ?> <?= icon('right') ?></a>

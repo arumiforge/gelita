@@ -91,7 +91,7 @@ $focus   = static fn (string $f): string => $first === $f ? ' autofocus' : '';
       </div>
 
       <div class="form-actions register-actions">
-        <button class="btn btn-primary btn-xl" type="submit"><?= esc(lang('Game.registerSubmit')) ?> <?= icon('right') ?></button>
+        <?= picture_button('register', lang('Game.registerSubmit'), 'btn btn-primary btn-xl') ?>
       </div>
     </form>
   </div>

@@ -9,9 +9,11 @@ use App\Entities\GameSession;
 use App\Entities\Participant;
 use App\Libraries\MediaStore;
 use App\Libraries\MediaUsage;
+use App\Models\ParticipantModel;
 use App\Services\ContentRepository;
 use App\Services\GameContext;
 use CodeIgniter\HTTP\RedirectResponse;
+use CodeIgniter\Config\Factories;
 use CodeIgniter\Test\CIUnitTestCase;
 use Config\Services;
 
@@ -68,6 +70,8 @@ final class StartGateTest extends CIUnitTestCase
     protected function tearDown(): void
     {
         service('language')->setLocale(config('App')->defaultLocale);
+        service('request')->setLocale(config('App')->defaultLocale);
+        Factories::reset('models');
         Services::resetSingle('contentRepository');
         Services::resetSingle('gameContext');
         session()->remove(['participant_id', 'game_session_id', 'curtain']);
@@ -291,6 +295,50 @@ final class StartGateTest extends CIUnitTestCase
         $this->assertNotNull(MediaUsage::slotLabel('ui.lang.id'));
     }
 
+    /** Owner, 20 October 2026: a signed-in student finds Profil and Keluar in the start page's menu. */
+    public function testWelcomeMenuHasProfileAndLogoutWhenSignedIn(): void
+    {
+        $out = (new HomeController())->index();
+        $this->assertStringNotContainsString('href="' . base_url('profil') . '"', $out, 'before login: no profile');
+        $this->assertStringNotContainsString('href="' . base_url('keluar') . '"', $out, 'before login: no logout');
+
+        Factories::injectMock('models', ParticipantModel::class, new class () extends ParticipantModel {
+            public function __construct()
+            {
+            }
+
+            public function find($id = null)
+            {
+                $participant = new Participant();
+                $participant->injectRawData(['id' => $id, 'username' => 'jaka', 'display_name' => 'Jaka', 'avatar_no' => null]);
+
+                return $participant;
+            }
+        });
+        session()->set('participant_id', 5);
+        Services::resetSingle('renderer');
+        $in = (new HomeController())->index();
+
+        $this->assertStringContainsString('class="hud-sheet-row hud-leave hud-profile" href="' . base_url('profil') . '"', $in);
+        $this->assertStringContainsString('@jaka', $in);
+        $this->assertStringContainsString('href="' . base_url('keluar') . '"', $in);
+        $this->assertStringNotContainsString(esc(lang('Game.backHome')), $in, 'no Kembali ke awal on the start page itself');
+        $this->assertSame(1, substr_count($in, 'class="btn-start'), 'still one Mulai button');
+    }
+
+    /** Owner, 20 October 2026: Masuk is the lettered lantern plate, MASUK or LOG IN by language. */
+    public function testLoginButtonIsTheLetteredPicture(): void
+    {
+        $id = view('game/login', ['errors' => []]);
+        $this->assertStringContainsString('<button class="btn-art" type="submit"><img src="' . esc(asset_url_versioned('ui/btn-login.webp'), 'attr') . '" alt="' . esc(lang('Game.login'), 'attr') . '"', $id);
+        $this->assertStringNotContainsString('btn-block', $id);
+
+        Services::resetSingle('renderer');
+        service('request')->setLocale('en');
+        $this->assertStringContainsString(esc(asset_url_versioned('ui/btn-login-en.webp'), 'attr'), view('game/login', ['errors' => []]));
+        $this->assertFileExists(FCPATH . 'assets/ui/btn-login-en.webp');
+    }
+
     /** A thin staff login link sits on the welcome page only (owner, 12 October 2026). */
     public function testStaffLinkOnlyOnTheWelcomePage(): void
     {
@@ -331,8 +379,8 @@ final class StartGateTest extends CIUnitTestCase
         $store = new MediaStore();
 
         $this->assertSame([1600, 600], $store->requiredSize('ui.logo-hero'));
-        $this->assertSame([720, 240], $store->requiredSize('ui.btn-start'));
-        $this->assertSame([720, 240], $store->requiredSize('ui.btn-start.en'));
+        $this->assertSame([720, 360], $store->requiredSize('ui.btn-start'));
+        $this->assertSame([720, 360], $store->requiredSize('ui.btn-start.en'));
 
         $this->assertNull(MediaStore::localeFromKey('ui.btn-start'));
         $this->assertSame('en', MediaStore::localeFromKey('ui.btn-start.en'));
