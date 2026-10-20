@@ -2223,3 +2223,13 @@ Owner request: replace the HUD shard pill with the owner's new design (a carved 
 - **Crystal.** Owner's choice: it glows by stage (completed regions): veiled at 0, 35 % and 70 % glow at 1–2, full glow with a slow pulse at 3. Sweep and pulse stop under reduced motion.
 - **Deploy:** the files come with git. Rebuild the asset package if package mode is on (new pictures in `assets/ui`, changed CSS).
 - **Checks.** `ResultScreenTest::testShardPlateDrawsTheFillOverTheOwnersFrame` (pictures shipped, frame and texture rules, crystal replaces the icon, stage-3 pulse, compact size) and the plate URLs and `.lantern-gem` in the compact HUD; `RegionStoryTest` (Peta Kedu HUD); full suite 804 tests. Chromium at 1280 × 720 (2×) on pages rendered by the view tests: Peta Kedu at 0/12, 10/12, 12/12 (stages 0, 2, 3) and the compact HUD at 6/12. The fill stays inside the groove from 0 % to 100 %, there is no white rim on the frame, and the label and count do not touch. In the compact HUD only the crystal's lower point and the curl reach about 16 dp below the strip.
+
+## Serpihan Cahaya plate, second version (20 October 2026, branch `sky/youthful-cannon-wbzf9t`)
+
+Owner request: use a new plate picture in place of the first one, so the HUD plate is better proportioned.
+
+- **Picture.** The owner's 1774 × 887 RGB picture on black: the plate (1755 × 440, about 4 : 1) with an empty groove, so nothing had to be repainted. The black background was cut out (one area connected to the border, a 3 px soft rim, the colour un-mixed from the black) and scaled to 1170 × 293 for `public/assets/ui/hud-shards-frame.webp` (65 KB). The fill texture `hud-shards-fill.webp` from the first version stays.
+- **Sizes.** Full HUD 440 × 110 dp at (513, 5), same centre as before, inside the 120 dp band; compact HUD 240 × 60 dp, centred, 4 dp below the 56 dp strip (was 230 × 76, 20 dp below); the region dialogue keeps 360 dp wide (90 dp tall).
+- **Fractions.** Groove 25.07 % / 60 %, 64.84 % × 13.86 % (frame px 440–1578 × 264–324); the fill has rounded ends like the groove's own. Label at 26 % and count right edge at 10.8 % (the groove's ends), baseline at half height; crystal glow box 7.1 % / 12.7 %, 9.5 % × 60 %.
+- **Checks.** `ResultScreenTest` (compact size), full suite. Chromium at 1280 × 720 (2×) on pages rendered by the view tests: Peta Kedu at 0/12, 10/12, 12/12 and the compact HUD at 6/12; the fill stays inside the groove, no dark rim around the frame, label and count apart.
+- **Deploy:** the files come with git. Rebuild the asset package if package mode is on (changed picture and CSS).
