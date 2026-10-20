@@ -82,7 +82,7 @@ Yang sengaja tidak dipakai:
 |---|---|
 | `public/assets/vendor/howler.min.js` | Howler.js 2.2.4 untuk audio permainan, dimuat `layouts/game.php`. Versi, SHA-256, lisensi, dan cara memperbarui ada di [`public/assets/vendor/README.md`](../public/assets/vendor/README.md) |
 | `public/assets/vendor/three-0.186.1/` | three.js 0.186.1 (official core build, unchanged) for the WebGL screen effects of the narrated scenes, loaded by `game/screen-fx.js` only on those scenes. Version and SHA-256 in the same README |
-| `public/assets/fonts/` | Cinzel Decorative, Plus Jakarta Sans, IBM Plex Mono (`.woff2`, lisensi OFL), dimuat lewat `@font-face` |
+| `public/assets/fonts/` | Marcellus, Plus Jakarta Sans, IBM Plex Mono (`.woff2`, lisensi OFL), dimuat lewat `@font-face` |
 | `public/assets/data/wilayah-id.json` | daftar provinsi dan kabupaten/kota Kemendagri (`RegionDirectory`) |
 | `public/assets/audio/` | musik, efek suara, dan rekaman narasi bawaan (lihat [§ 11](#11-alat-dan-sumber-pendukung)) |
 

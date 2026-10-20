@@ -527,14 +527,18 @@ final class RegionStoryTest extends CIUnitTestCase
         $this->assertSame('inti', AssetPackageBuilder::groupFor('ui.pin'));
     }
 
-    /** Page redesign 2 (18 October 2026): diorama slices, trails, one panel, menu HUD, bottom row without Profil. */
-    public function testMapIsTheThreeRegionDiorama(): void
+    /**
+     * Page redesign 2 (18 October 2026): one panel, menu HUD, bottom row without Profil. Island map
+     * (owner, 20 October 2026): no trails, a darkened copy through its mask per locked region, no
+     * logo in the HUD, the shard plate left and the title in the middle.
+     */
+    public function testMapIsTheIslandWithShadedLockedRegions(): void
     {
         $status = ['temanggung' => 'completed', 'magelang' => 'open', 'wonosobo' => 'locked'];
 
         // No diorama yet: the old map picture, pins at their map_x / map_y
         $plain = $this->map($status, heard: []);
-        $this->assertStringNotContainsString('kedu-slice', $plain);
+        $this->assertStringNotContainsString('kedu-shade', $plain);
         $this->assertStringContainsString('<div class="kedu-art is-drawn">', $plain);
         $this->assertStringContainsString('<span class="kedu-portrait" aria-hidden="true"><span class="kedu-portrait-initial">J</span></span>', $plain, 'no avatar yet: his initial');
 
@@ -544,11 +548,15 @@ final class RegionStoryTest extends CIUnitTestCase
         $page   = $this->map($status, heard: []);
         $shapes = config('Gelita')->mapDiorama;
 
-        $this->assertSame(3, substr_count($page, 'class="kedu-slice'));
-        $this->assertSame(1, substr_count($page, 'class="kedu-slice is-locked"'), 'locked Wonosobo is dimmed');
-        $this->assertStringContainsString('style="clip-path: polygon(' . esc($shapes['magelang']['clip'], 'attr') . ')"', $page);
-        $this->assertStringContainsString('<path class="kedu-route" d="' . esc($shapes['magelang']['route'], 'attr') . '"/>', $page, 'open trail is gold');
-        $this->assertStringContainsString('<path class="kedu-route is-locked" d="' . esc($shapes['wonosobo']['route'], 'attr') . '"/>', $page);
+        $this->assertSame(1, substr_count($page, '<img class="kedu-island-img"'));
+        $this->assertSame(1, substr_count($page, '<img class="kedu-shade"'), 'only locked Wonosobo is darkened');
+        $this->assertStringContainsString('--region-mask: url(&quot;' . esc(asset_url_versioned($shapes['wonosobo']['mask']), 'attr') . '&quot;)', $page);
+        foreach ($shapes as $shape) {
+            $this->assertFileExists(FCPATH . 'assets/' . $shape['mask']);
+        }
+        $this->assertStringNotContainsString('kedu-route', $page, 'no trails on the island');
+        $this->assertStringNotContainsString('hud-identity-logo', $page, 'no logo in the Peta Kedu HUD');
+        $this->assertStringContainsString('class="hud hud-menu-style is-title-centre" data-in-game', $page);
         $this->assertStringContainsString('style="left: ' . $shapes['temanggung']['pin'][0] . '%; top: ' . $shapes['temanggung']['pin'][1] . '%"', $page);
 
         // One panel per region, the region to play selected; a city pin selects, it does not leave
@@ -586,7 +594,6 @@ final class RegionStoryTest extends CIUnitTestCase
         $this->assertMatchesRegularExpression('/<a class="kedu-btn is-primary" href="[^"]*"[^>]*>\s*<span>' . lang('Game.start') . '<\/span>\s*<\/a>/', $page);
 
         // Menu HUD with the title and the shard lantern; Profil is in the menu, not in the page buttons
-        $this->assertStringContainsString('class="hud hud-menu-style" data-in-game', $page);
         $this->assertStringContainsString('<span class="hud-identity-region">' . lang('Game.mapKedu') . '</span>', $page);
         $this->assertMatchesRegularExpression('/<div class="hud-shards" style="[^"]*">(?:<!--[^>]*-->\s*)?<details class="lantern"/', $page);
         // Page buttons right of the story, under the region panel; no bottom nav bar

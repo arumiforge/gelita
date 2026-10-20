@@ -21,10 +21,12 @@ Font lokal ada di `public/assets/fonts/` (Plus Jakarta Sans,
 IBM Plex Mono — subset latin `.woff2` dari paket Fontsource 5.3.0, lisensi SIL OFL 1.1 disertakan);
 dimuat `base.css` lewat `@font-face` tanpa Google Fonts.
 
-The display font is Cinzel Decorative 1.002 (Regular 400, Bold 700, Black
-900; owner's TTF files, 19 October 2026), replacing Cinzel. The TTFs were
-converted to `.woff2` with fontTools without subsetting, so the files are the
-unmodified fonts in another container; licence in `OFL-CinzelDecorative.txt`.
+Since 20 October 2026 (owner) every game text uses Marcellus 400 (latin
+subset `.woff2` from Fontsource `@fontsource/marcellus` 5.3.0, licence in
+`OFL-Marcellus.txt`), replacing Cinzel Decorative and, in the game, Plus
+Jakarta Sans. The digits 0–9 still come from Plus Jakarta Sans (`unicode-range`
+face `Gelita Digits` in `base.css`), because Marcellus draws 1 like I and 0
+like O. The panel keeps Plus Jakarta Sans.
 
 ## Memperbarui versi
 

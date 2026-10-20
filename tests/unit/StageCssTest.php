@@ -104,6 +104,27 @@ final class StageCssTest extends CIUnitTestCase
         }
     }
 
+    /**
+     * Owner, 20 October 2026: every game text in Marcellus (real lowercase letters, so names and
+     * labels keep proper Indonesian casing), digits from Plus Jakarta Sans, no forced capitals.
+     */
+    public function testGameTextIsMarcellusWithoutForcedCapitals(): void
+    {
+        $tokens = $this->css('tokens');
+        $this->assertStringContainsString("--font-display: 'Gelita Digits', 'Marcellus',", $tokens);
+        $this->assertStringContainsString("--font-body: 'Gelita Digits', 'Marcellus',", $tokens);
+        $this->assertFileExists(FCPATH . 'assets/fonts/marcellus-latin-400-normal.woff2');
+        $this->assertFileExists(FCPATH . 'assets/fonts/OFL-Marcellus.txt');
+        $this->assertMatchesRegularExpression("~font-family: 'Gelita Digits';[^}]*unicode-range: U\+0030-0039;~", $this->css('base'));
+        $this->assertStringContainsString("fonts/marcellus-latin-400-normal.woff2') ?>\" as=\"font\"", (string) file_get_contents(APPPATH . 'Views/layouts/game.php'));
+
+        foreach (self::GAME_CSS as $name) {
+            $css = $this->css($name);
+            $this->assertStringNotContainsString('uppercase', $css, $name);
+            $this->assertStringNotContainsString('Cinzel', $css, $name);
+        }
+    }
+
     public function testAdminLayoutsNoLongerLoadLayoutCss(): void
     {
         foreach (['admin', 'auth'] as $layout) {

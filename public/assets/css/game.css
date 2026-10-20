@@ -851,7 +851,7 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
 :is(.pin-icon, .node-no).has-badge b {
   position: relative;
   color: #FFF4D6;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-display);
   font-weight: 700;
   line-height: 1;
   text-shadow: 0 .0625rem .25rem rgba(0, 0, 0, .9), 0 0 .5rem rgba(0, 0, 0, .6);
@@ -945,6 +945,119 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
   background: linear-gradient(100deg, rgba(11, 19, 32, .9), rgba(11, 19, 32, .62) 55%, rgba(11, 19, 32, .3));
 }
 
+/* The owner's green scarf frame (20 October 2026; 2.34 : 1, its window 3.5–94.5 % × 11–86.5 %)
+   on each card. The engine picture fills the window in sepia under a parchment wash, like a
+   drawing in an old manuscript; the medallion sits on the scarf, the title and the button in
+   the clear right part of the window, in dark ink. */
+.map-level .node-list { gap: .5rem; }
+.node-card.has-frame {
+  position: relative;
+  isolation: isolate;
+  display: block;
+  min-height: 0;
+  aspect-ratio: 1000 / 427;
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+.node-card.has-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--card-frame) center / 100% 100% no-repeat;
+  filter: drop-shadow(0 .25rem .375rem rgba(0, 0, 0, .55));
+  pointer-events: none;
+}
+.node-card.has-frame .node-card-art {
+  inset: 11% auto auto 3.5%;
+  width: 91%;
+  height: 75.5%;
+  filter: sepia(.95) saturate(.6) contrast(.92) brightness(1.04);
+}
+/* Parchment wash and a darker, burnt rim over the sepia picture */
+.node-card.has-frame::before {
+  inset: 11% 5.5% 13.5% 3.5%;
+  background:
+    radial-gradient(ellipse 75% 85% at 62% 50%, rgba(244, 228, 190, .46), rgba(214, 186, 132, .34) 70%, rgba(92, 58, 22, .5)),
+    linear-gradient(rgba(240, 220, 175, .12), rgba(240, 220, 175, .12));
+}
+.node-card.has-frame .node-no {
+  position: absolute;
+  top: 50%;
+  left: 13%;
+  width: 3.5rem;
+  height: 3.5rem;
+  transform: translate(-50%, -54%);
+}
+.node-card.has-frame .node-card-body {
+  position: absolute;
+  top: 15%;
+  left: 31%;
+  right: 8%;
+  align-content: start;
+}
+.node-card.has-frame .node-card-body .eyebrow {
+  color: #2E1B08;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: 0;
+  text-shadow: 0 0 .375rem rgba(250, 238, 210, .9), 0 0 .125rem rgba(250, 238, 210, .9);
+}
+.node-card.has-frame .node-card-body .stars { gap: .125rem; }
+.node-card.has-frame .node-card-body .star-art { width: 1.25rem; height: 1.25rem; }
+.node-card.has-frame .node-action { position: absolute; right: 7%; bottom: 17%; }
+.node-card.has-frame.is-locked { opacity: 1; }
+.node-card.has-frame.is-locked .node-card-art { filter: sepia(.8) saturate(.3) contrast(.75) brightness(.8); }
+.node-card.has-frame.is-locked .node-card-body .eyebrow { color: #4A3A28; }
+/* Lihat hasil on the owner's green plate; Terkunci on the navy plate; both 40 dp tall, with
+   a 48 dp hit area */
+.map-level .node-action.is-green,
+.map-level .node-action.is-navy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .375rem;
+  min-width: 7rem;
+  min-height: 2.5rem;
+  padding: .25rem 1rem;
+  border: 0;
+  border-radius: 0;
+  background: var(--plate-green) center / 100% 100% no-repeat;
+  box-shadow: none;
+  color: #F6E4B4;
+  font-size: 1rem;
+  font-weight: 700;
+  text-shadow: 0 .0625rem .1875rem rgba(0, 0, 0, .85);
+  filter: drop-shadow(0 .1875rem .3125rem rgba(0, 0, 0, .5));
+}
+.map-level .node-action.is-navy { min-width: 7rem; background-image: var(--plate-navy); color: #E7D7B0; }
+.map-level .node-action.is-navy .icon { width: 1rem; height: 1rem; }
+@media (hover: hover) {
+  .map-level .node-action.is-green:hover { background-color: transparent; color: #FFF4D6; filter: drop-shadow(0 .1875rem .3125rem rgba(0, 0, 0, .5)) brightness(1.15); }
+}
+.map-level .node-card.has-frame .btn-primary.node-action { min-height: 2.5rem; padding: .25rem 1.125rem; font-size: 1rem; }
+/* Pustaka {wilayah} on the wide gold plate */
+.map-side .map-library.is-gold-plate {
+  min-height: 3.5rem;
+  border: 0;
+  border-radius: 0;
+  background: var(--plate-gold) center / 100% 100% no-repeat;
+  color: #2E1B08;
+  font-size: 1.1875rem;
+  text-shadow: 0 .0625rem 0 rgba(255, 244, 210, .6);
+  filter: drop-shadow(0 .25rem .375rem rgba(0, 0, 0, .5));
+}
+.map-side .map-library.is-gold-plate[aria-disabled="true"] { opacity: 1; filter: drop-shadow(0 .25rem .375rem rgba(0, 0, 0, .5)) saturate(.55) brightness(.85); }
+@media (hover: hover) {
+  .map-side .map-library.is-gold-plate:hover { background-color: transparent; color: #1B0F02; filter: drop-shadow(0 .25rem .375rem rgba(0, 0, 0, .5)) brightness(1.08); }
+}
+.map-side .map-library.is-gold-plate .library-icon { width: 2.5rem; height: 2.5rem; margin: -.5rem 0; }
+
 /* =========================== KARTU MISI =========================== */
 /* Card 260, 112, 760 × 536 (stage.css), after the owner's picture of 18 October 2026: cream
    parchment with gold corners, a dark green medallion n/total between gold flourishes, the
@@ -986,7 +1099,7 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
   background: radial-gradient(circle at 50% 30%, #1F5446, #0B2B24 70%);
   box-shadow: 0 0 0 .1875rem #6B4B1C, 0 0 0 .3125rem #E9CC88, 0 .5rem 1rem rgba(0, 0, 0, .4), inset 0 .25rem .5rem rgba(255, 255, 255, .12);
   color: #F5E6C3;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-display);
 }
 .mission-seal b { font-size: 2.25rem; line-height: 1; }
 .mission-seal small { font-size: 1.0625rem; font-weight: 700; }
@@ -994,7 +1107,7 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
 .mission-wing.is-left { transform: scaleX(-1); }
 .mission-crest .mission-wing { margin-top: .75rem; }
 
-/* Region line: a rule with a diamond on each side, the pin, the name in spaced capitals */
+/* Region line: a rule with a diamond on each side, the pin, the name in spaced letters */
 .mission-region {
   display: flex;
   align-items: center;
@@ -1005,8 +1118,7 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
   color: #2D2A2E;
   font-size: 1.0625rem;
   font-weight: 700;
-  letter-spacing: .2em;
-  text-transform: uppercase;
+  letter-spacing: .02em;
 }
 .mission-region::before, .mission-region::after {
   content: "";
@@ -1020,7 +1132,7 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
 .mission-card h1 {
   margin: 0;
   color: #0E1A2B;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-display);
   font-size: 3rem;
   font-weight: 700;
   line-height: 1.12;
@@ -1053,7 +1165,7 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
   border-radius: 50%;
   background: #5B3A1E;
   color: #F7EEDB;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-display);
   font-size: 1.5rem;
   font-weight: 700;
 }
@@ -1135,7 +1247,7 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
 .badge-pos-no {
   position: relative;
   color: var(--navy-900);
-  font-family: Georgia, 'Times New Roman', serif; /* Cinzel Decorative draws 1 like I */
+  font-family: var(--font-display);
   font-size: 1.625rem;
   font-weight: 700;
   line-height: 1;
@@ -1271,12 +1383,12 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
     linear-gradient(to left, transparent, var(--gold-600)) right center / calc(100% - 1.75rem) 1px no-repeat;
 }
 .arena-actions .btn-lg { min-height: var(--tap); padding: var(--gap-2) var(--gap-6); font-size: var(--fs-body); }
-/* Mixed-case serif label as in the owner's picture (Cinzel would set it in capitals) */
+/* Mixed-case serif label as in the owner's picture */
 .arena-actions .btn-action {
   min-width: 16rem;
   min-height: 3.25rem;
   gap: var(--gap-4);
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-display);
   font-size: 1.375rem;
 }
 .arena-actions .btn-action .icon { width: 1.25rem; height: 1.25rem; stroke-width: 3; }
@@ -1404,12 +1516,12 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
   background: radial-gradient(circle at 50% 35%, #1D3157, #0B1730);
   box-shadow: 0 0 0 .1875rem rgba(8, 16, 34, .8), 0 0 0 .25rem rgba(223, 192, 135, .4);
   color: var(--gold-300);
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-display);
   font-size: 1.375rem;
   font-weight: 700;
   line-height: 1;
 }
-.puzzle-caption-head b { color: #F0D58C; font-family: Georgia, 'Times New Roman', serif; font-size: 1.375rem; line-height: 1.2; }
+.puzzle-caption-head b { color: #F0D58C; font-family: var(--font-display); font-size: 1.375rem; line-height: 1.2; }
 .puzzle-caption p { margin: var(--gap-4) 0 0; font-size: var(--fs-body); line-height: 1.6; }
 
 /* ---------- Rumpang ---------- */
@@ -1487,7 +1599,7 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
   border-radius: var(--radius);
   background: rgba(11, 19, 32, .4);
 }
-.word-bank-title { flex-basis: 100%; color: var(--ink-dim); font-size: var(--fs-caption); font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+.word-bank-title { flex-basis: 100%; color: var(--ink-dim); font-size: var(--fs-caption); font-weight: 700; letter-spacing: .02em; }
 .word {
   position: relative;
   min-height: 2.75rem;
@@ -1586,7 +1698,7 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
 .verdict-card.is-wrong { border-color: var(--bad); }
 .verdict-card.has-error { border-color: var(--warn); box-shadow: 0 0 0 .1875rem rgba(240, 168, 104, .35); }
 .card-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--gap-2); }
-.card-no { color: var(--gold-500); font-size: var(--fs-caption); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.card-no { color: var(--gold-500); font-size: var(--fs-caption); font-weight: 700; letter-spacing: .02em; }
 .card-passage { position: relative; color: var(--gold-300); text-decoration: none; white-space: normal; }
 /* Phase F2: the passage chip is 30 dp tall; its hit area grows to --tap */
 .card-passage::before {
@@ -1803,37 +1915,32 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
    changes (bottom row kept, wider city captions). 1 rem = 16 dp; mockup px × 2/3 = dp. */
 .kedu-skins { display: contents; }
 
-/* Map frame 853 × 400; the diorama box is 2:1 and centred, so its top and bottom 13 dp are cropped */
-.kedu-map {
-  overflow: hidden;
-  border: .125rem solid var(--gold-600);
-  border-radius: 1.3333rem;
-  background: #061729;
-  box-shadow: 0 .625rem 2rem rgba(0, 0, 0, .45), inset 0 0 1rem rgba(219, 173, 68, .12);
-}
-.kedu-art { position: absolute; top: 50%; left: 0; width: 100%; aspect-ratio: 2 / 1; transform: translateY(-50%); isolation: isolate; background: #0B233B; }
+/* Island map (owner, 20 October 2026): no frame, border, or backdrop; the 16:9 picture fills
+   the map box and its edges fade into the page background. The pins sit on the picture. */
+.kedu-map { overflow: visible; }
+.kedu-art { position: absolute; inset: 0; isolation: isolate; }
 /* Old map.kedu (14:9) while the diorama slot is empty: whole picture, centred */
 .kedu-art:not(.is-diorama) { top: 0; left: 50%; width: auto; height: 100%; aspect-ratio: 14 / 9; transform: translateX(-50%); }
 .kedu-art .map-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; -webkit-user-drag: none; }
 .kedu-art.is-drawn { background: radial-gradient(ellipse at 50% 40%, var(--navy-600), var(--navy-900)); }
-.kedu-slice {
+.kedu-island {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: fill;
-  mix-blend-mode: lighten;
-  filter: brightness(1) saturate(1.03);
-  transition: filter .7s;
   pointer-events: none;
-  -webkit-user-drag: none;
+  /* Soft edges on all four sides (sea and clouds melt into the page) */
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 10%, #000 88%, transparent), linear-gradient(to bottom, transparent, #000 14%, #000 84%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to right, transparent, #000 10%, #000 88%, transparent), linear-gradient(to bottom, transparent, #000 14%, #000 84%, transparent);
+  mask-composite: intersect;
 }
-.kedu-slice.is-locked { filter: brightness(.32) saturate(.12); }
-.kedu-routes { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
-.kedu-routes path { fill: none; stroke-linecap: round; }
-.kedu-route-shadow { stroke: #06101C; stroke-width: 14; }
-.kedu-route { stroke: #EBC271; stroke-width: 6; stroke-dasharray: 5 18; filter: drop-shadow(0 0 .25rem #FFC15A); }
-.kedu-route.is-locked { stroke: #8B8B90; opacity: .7; filter: none; }
+.kedu-island img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: fill; -webkit-user-drag: none; }
+/* A locked region: a darkened, nearly grey copy of the picture through the region's feathered
+   land mask (Config\Gelita::$mapDiorama), so the rivers stay the borders */
+.kedu-shade {
+  filter: brightness(.3) saturate(.15);
+  -webkit-mask: var(--region-mask) center / 100% 100% no-repeat;
+  mask: var(--region-mask) center / 100% 100% no-repeat;
+}
 
 /* City pins: one large target (medallion + name + status); the point is the medallion centre */
 .kedu-pins { margin: 0; padding: 0; list-style: none; }
@@ -1938,8 +2045,8 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
 .kedu-city:active .kedu-medal { transform: scale(.96); }
 .kedu-hint {
   position: absolute;
-  left: 1.25rem;
-  bottom: .625rem;
+  left: 3.5rem;
+  bottom: 3.5rem;
   z-index: 3;
   display: flex;
   align-items: center;
@@ -2002,7 +2109,7 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
   box-shadow: 0 0 .375rem rgba(255, 211, 119, .7);
   transform: rotate(45deg);
 }
-.kedu-panel h2 { margin: 0 0 .25rem; color: #FFF8EA; font-family: Georgia, 'Times New Roman', serif; font-size: 2.875rem; font-weight: 700; line-height: 1.05; letter-spacing: -.02em; }
+.kedu-panel h2 { margin: 0 0 .25rem; color: #FFF8EA; font-family: var(--font-display); font-size: 2.875rem; font-weight: 700; line-height: 1.05; letter-spacing: -.02em; }
 /* "Lihat cerita pembuka" under the region name (owner, 20 October 2026): a gold play medallion
    with a soft pulse, then the label; 48 dp tall */
 .kedu-opening {
@@ -2062,9 +2169,87 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
 /* Wider bar (owner, 18 October 2026): it takes the room the count leaves */
 .kedu-panel-progress { display: flex; align-items: center; gap: .75rem; width: 100%; margin-top: 1.25rem; font-size: 1.1875rem; font-weight: 700; }
 .kedu-panel-progress .num, .kedu-city-caption .num { font-family: var(--font-body); }
-.kedu-bar { width: 9rem; height: .8125rem; overflow: hidden; border-radius: var(--radius-pill); background: #293B50; box-shadow: inset 0 0 0 1px #657081; }
-.kedu-bar i { display: block; height: 100%; background: linear-gradient(90deg, #B9883C, #F5DFA5); }
-.kedu-panel-progress .kedu-bar { flex: 1; min-width: 8rem; height: 1rem; }
+/* Region progress bar (owner, 20 October 2026: more epic, 3D): a carved gold rim around a deep
+   groove, and a glowing gold rod that fills it, lit from above with a slow light sweep and a
+   hot leading edge */
+.kedu-bar {
+  position: relative;
+  display: block;
+  width: 9rem;
+  height: 1.5rem;
+  padding: .25rem;
+  border-radius: var(--radius-pill);
+  background:
+    linear-gradient(to bottom, #FFF1C4, #E1B562 28%, #8C5E1E 62%, #C99A48 82%, #5E3D12);
+  box-shadow: 0 .25rem .5rem rgba(0, 0, 0, .6), 0 0 0 .0625rem #3B260A, inset 0 .0625rem 0 rgba(255, 255, 255, .55);
+}
+.kedu-bar::before {
+  content: "";
+  position: absolute;
+  inset: .25rem;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(to bottom, #050B14, #13233A 55%, #1C3150);
+  box-shadow: inset 0 .1875rem .375rem rgba(0, 0, 0, .85), inset 0 -.0625rem .125rem rgba(120, 160, 210, .25);
+}
+.kedu-bar i {
+  position: relative;
+  display: block;
+  height: 100%;
+  max-width: 100%;
+  border-radius: var(--radius-pill);
+  background:
+    linear-gradient(105deg, transparent 35%, rgba(255, 252, 235, .7) 50%, transparent 65%) -200% 0 / 40% 100% no-repeat,
+    linear-gradient(to bottom, rgba(255, 252, 230, .9), rgba(255, 236, 170, .35) 32%, rgba(180, 110, 20, 0) 55%, rgba(110, 55, 0, .45)),
+    linear-gradient(to right, #B3681A, #F2B445 55%, #FFE39A);
+  box-shadow: 0 0 .5rem rgba(255, 190, 80, .8), 0 0 1.25rem rgba(255, 150, 40, .4);
+  animation: kedu-bar-sweep 4s ease-in-out infinite;
+}
+.kedu-bar i::after {
+  content: "";
+  position: absolute;
+  top: -35%;
+  right: -.375rem;
+  width: .875rem;
+  height: 170%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 253, 240, .95), rgba(255, 214, 125, .6) 45%, rgba(255, 160, 50, 0));
+}
+/* Notches at each quarter (one per challenge) over the fill, and a small gem cap at each end */
+.kedu-bar::after {
+  content: "";
+  position: absolute;
+  inset: .25rem;
+  z-index: 1;
+  border-radius: var(--radius-pill);
+  background:
+    linear-gradient(to right, transparent calc(25% - .0625rem), rgba(30, 14, 0, .55) calc(25% - .0625rem), rgba(30, 14, 0, .55) 25%, rgba(255, 240, 200, .35) 25%, rgba(255, 240, 200, .35) calc(25% + .0625rem), transparent calc(25% + .0625rem)),
+    linear-gradient(to right, transparent calc(50% - .0625rem), rgba(30, 14, 0, .55) calc(50% - .0625rem), rgba(30, 14, 0, .55) 50%, rgba(255, 240, 200, .35) 50%, rgba(255, 240, 200, .35) calc(50% + .0625rem), transparent calc(50% + .0625rem)),
+    linear-gradient(to right, transparent calc(75% - .0625rem), rgba(30, 14, 0, .55) calc(75% - .0625rem), rgba(30, 14, 0, .55) 75%, rgba(255, 240, 200, .35) 75%, rgba(255, 240, 200, .35) calc(75% + .0625rem), transparent calc(75% + .0625rem));
+  pointer-events: none;
+}
+.kedu-bar-cap {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  width: .875rem;
+  height: .875rem;
+  border: .125rem solid #FFF1C4;
+  background: radial-gradient(circle at 35% 30%, #CFFAF6, #2FB9B4 45%, #0C5458);
+  box-shadow: 0 0 .5rem rgba(80, 230, 220, .7), 0 .125rem .25rem rgba(0, 0, 0, .6);
+  transform: translateY(-50%) rotate(45deg);
+}
+.kedu-bar-cap:first-child { left: -.375rem; }
+.kedu-bar-cap:last-child { right: -.375rem; }
+.kedu-bar i[style*="width: 0%"] { box-shadow: none; }
+.kedu-bar i[style*="width: 0%"]::after { display: none; }
+@keyframes kedu-bar-sweep {
+  0%, 30% { background-position: -200% 0, 0 0, 0 0; }
+  100% { background-position: 300% 0, 0 0, 0 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .kedu-bar i { animation: none; }
+}
+.kedu-panel-progress .kedu-bar { flex: 1; min-width: 8rem; margin: 0 .5rem 0 .375rem; }
 .kedu-panel-progress .num { flex: none; color: #F3ECD9; }
 .kedu-panel-stars { display: flex; gap: .625rem; margin: .75rem 0 0; }
 .kedu-star { display: block; width: 2.375rem; height: 2.375rem; object-fit: contain; }
@@ -2112,6 +2297,8 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
 .kedu-btn[aria-disabled="true"] { filter: grayscale(.8); opacity: .55; }
 .kedu-btn .icon { width: 1.75rem; height: 1.75rem; flex: none; }
 .kedu-btn.is-secondary .icon { width: 2.125rem; height: 2.125rem; color: var(--gold-300); }
+.kedu-btn .library-icon { width: 3rem; height: 3rem; margin: -.5rem 0; }
+.kedu-nav.is-all-done .kedu-btn .library-icon { width: 2.25rem; height: 2.25rem; }
 .kedu-btn .kenali-art { flex: none; width: 2.5rem; height: 2.5rem; object-fit: contain; filter: drop-shadow(0 .125rem .25rem rgba(0, 0, 0, .5)); }
 .kedu-btn > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 @media (hover: hover) {
@@ -2158,7 +2345,7 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
 /* Since 19 October 2026 the avatar is the owner's Jaka in a gold ring: no ring of ours around it */
 .kedu-portrait.has-art { overflow: visible; border: 0; border-radius: 0; background: none; box-shadow: none; }
 .kedu-portrait.has-art .kedu-avatar { object-fit: contain; object-position: 50% 50%; filter: drop-shadow(0 .25rem .5rem rgba(0, 0, 0, .55)); }
-.kedu-portrait-initial { display: grid; place-items: center; width: 100%; height: 100%; color: var(--navy-900); font-family: Georgia, 'Times New Roman', serif; font-size: var(--fs-h1); font-weight: 700; }
+.kedu-portrait-initial { display: grid; place-items: center; width: 100%; height: 100%; color: var(--navy-900); font-family: var(--font-display); font-size: var(--fs-h1); font-weight: 700; }
 .kedu-portrait .character { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
 /* Head and shoulders of the full-body pose frame (700 × 900) */
 .kedu-portrait .character-img { position: absolute; top: .25rem; left: 50%; width: 18rem; max-width: none; height: auto; max-height: none; transform: translateX(-50%); filter: none; }
@@ -2179,7 +2366,7 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
   line-height: 1.28;
 }
 .kedu-story .narration::before { display: none; }
-.kedu-story .narration cite { display: flex; flex-wrap: nowrap; align-items: center; gap: .625rem; margin: 0 0 .125rem; color: var(--parchment); font-family: Georgia, 'Times New Roman', serif; font-size: 1.625rem; white-space: nowrap; }
+.kedu-story .narration cite { display: flex; flex-wrap: nowrap; align-items: center; gap: .625rem; margin: 0 0 .125rem; color: var(--parchment); font-family: var(--font-display); font-size: 1.625rem; white-space: nowrap; }
 .kedu-story .map-story-title { color: var(--parchment); font-size: 1.3125rem; font-weight: 700; }
 .kedu-dots { display: inline-flex; gap: .375rem; margin-left: .375rem; }
 .kedu-dots i { width: .5rem; height: .5rem; border-radius: 50%; background: #53677E; opacity: .7; }
@@ -2275,7 +2462,6 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
   font-weight: 700;
   line-height: 1.5rem;
   letter-spacing: .02em;
-  text-transform: uppercase;
 }
 .result-kind::before, .result-kind::after {
   content: "";
@@ -2707,7 +2893,7 @@ html.js .book-frame img.is-loaded { opacity: 1; }
   border-radius: 50%;
   background: rgba(11, 19, 32, .55);
   color: #fff6e1;
-  /* huruf i kecil bergaya "ⓘ"; Cinzel Decorative (font judul) hanya punya kapital */
+  /* Small italic "i" styled like "ⓘ"; the game font has no italic, so Georgia draws it */
   font: italic 700 .9375rem/1 Georgia, "Times New Roman", serif;
   transition: background .2s ease;
 }
@@ -2900,6 +3086,9 @@ html.js .book-frame img.is-loaded { opacity: 1; }
 .library-unlocked .btn { white-space: nowrap; }
 .library-unlocked p { margin: .125rem 0 0; color: var(--ink-dim); font-size: var(--fs-caption); }
 .library-unlocked-icon { display: grid; place-items: center; width: 3rem; height: 3rem; border-radius: 50%; background: var(--gold-500); color: var(--navy-900); }
+/* The book picture needs no gold disc behind it */
+.library-unlocked-icon:has(.library-icon) { background: none; }
+.library-unlocked-icon .library-icon { width: 100%; height: 100%; margin: 0; }
 
 /* Tanpa gerak: skeleton tetap tampil, tetapi diam */
 @media (prefers-reduced-motion: reduce) {
@@ -3126,7 +3315,7 @@ html.js .book-frame img.is-loaded { opacity: 1; }
 /* Peta Kedu redesign without motion */
 @media (prefers-reduced-motion: reduce) {
   .kedu-unheard { animation: none; }
-  .kedu-slice, .kedu-medal { transition: none; }
+  .kedu-medal { transition: none; }
 }
 
 /* =========================== MAIN BUTTONS =========================== */

@@ -273,6 +273,12 @@ final class LibraryLockTest extends CIUnitTestCase
         $foot = substr($open, (int) strpos($open, '<div class="map-side-foot">'));
         $this->assertStringContainsString('<span>Pustaka Magelang</span>', substr($foot, 0, (int) strpos($foot, '</aside>')));
         $this->assertStringNotContainsString('class="nav-bar"', $open);
+
+        // Owner, 20 October 2026: the button sits on the wide gold plate with the owner's book picture
+        $this->assertStringContainsString('class="btn btn-ghost btn-block map-library is-gold-plate"', $open);
+        $this->assertStringContainsString('<img class="library-icon" src="' . esc(asset_url_versioned('ui/icon-pustaka.webp'), 'attr') . '"', $foot);
+        $this->assertStringContainsString('--plate-gold: url(&quot;' . esc(asset_url_versioned('ui/kenal-plate-gold.webp'), 'attr') . '&quot;)', $open);
+        $this->assertStringNotContainsString('library-icon', substr($locked, (int) strpos($locked, '<div class="map-side-foot">')), 'a locked Pustaka keeps the lock');
     }
 
     /**
@@ -315,6 +321,20 @@ final class LibraryLockTest extends CIUnitTestCase
             $this->assertStringContainsString('<img class="node-card-art" src="' . esc(asset_url_versioned('ui/node-card-' . $engine . '.webp'), 'attr') . '"', $list, $engine);
         }
         $this->assertStringNotContainsString('map-side-foot', $page, 'no library: no button');
+
+        // Owner, 20 October 2026: each card on the green scarf frame (its picture in sepia in the
+        // window, css), Lihat hasil on the green plate, Terkunci on the navy plate; a taller HUD
+        foreach (['node-card-frame', 'plate-green', 'kenal-plate-navy'] as $file) {
+            $this->assertFileExists(FCPATH . 'assets/ui/' . $file . '.webp');
+        }
+        $this->assertStringContainsString('--card-frame: url(&quot;' . esc(asset_url_versioned('ui/node-card-frame.webp'), 'attr') . '&quot;)', $page);
+        $this->assertSame(4, substr_count($list, ' has-art has-frame"'));
+        $this->assertSame(1, substr_count($list, 'class="btn btn-ghost btn-sm node-action is-green"'));
+        $this->assertSame(2, substr_count($list, 'class="badge is-locked node-action is-navy"'));
+        $this->assertStringContainsString('class="hud hud-menu-style is-compact is-tall"', $page);
+        $css = (string) file_get_contents(FCPATH . 'assets/css/game.css');
+        $this->assertMatchesRegularExpression('/\.node-card\.has-frame \.node-card-art \{[^}]*filter: sepia\(/', $css);
+        $this->assertStringContainsString('.map-level .map-frame { --y: 100; }', (string) file_get_contents(FCPATH . 'assets/css/stage.css'));
     }
 
     // ------------------------------------------------------------ momen terbuka

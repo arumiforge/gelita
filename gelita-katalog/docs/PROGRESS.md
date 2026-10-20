@@ -2,6 +2,10 @@
 
 Diperbarui 15 Oktober 2026 (Asia/Bangkok). Urutan di bawah membedakan hasil terkini dari pemeriksaan historis. Keputusan aktif dirangkum dalam [MEMORY.md](MEMORY.md).
 
+## 20 October 2026 — Peta Kedu island map from the owner (game integration)
+
+- The owner's single-island picture replaces the revisi-04 three-island diorama in the game slot `map.kedu-diorama`: [revisi-05](../mockup/gambar-mockup/peta-kedu/revisi-05/README.md). The game's region masks were measured on it. The new GELITA logo from the owner replaces `assets/logo/ui.logo-hero.webp` (same 8:3 shape). `data.json` entries are unchanged; the build was not re-run.
+
 ## 15 Oktober 2026 — Peta Kedu kandidat04 interaktif, tiga wilayah dan efek ketik
 
 - Mengikuti permintaan merapikan/pengelompokan UI, menaruh Pustaka/Profil di menu, kontrol narasi tanpa label, dot progres dan ruang teks lebih lebar, ikon Kenali baru, diorama tiga wilayah yang dapat diredupkan, jalur penghubung dan pemakaian gambar tombol katalog. Pengguna meminta sisa pekerjaan sesi diselesaikan.

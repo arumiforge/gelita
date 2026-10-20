@@ -569,6 +569,28 @@ if (! function_exists('status_badge_src')) {
     }
 }
 
+if (! function_exists('library_icon')) {
+    /**
+     * The Pustaka book (owner's picture, 20 October 2026: a leather book with a
+     * turquoise gem) on the Pustaka buttons and the Pustaka shelf, decorative
+     * (the label says "Pustaka"). The line icon `book` while the picture
+     * `assets/ui/icon-pustaka.webp` is not installed.
+     */
+    function library_icon(string $class = 'library-icon'): string
+    {
+        if (! is_file(FCPATH . 'assets/ui/icon-pustaka.webp')) {
+            if (! function_exists('icon')) {
+                helper('ui');
+            }
+
+            return icon('book');
+        }
+
+        return '<img class="' . esc($class, 'attr') . '" src="' . esc(asset_url_versioned('ui/icon-pustaka.webp'), 'attr')
+            . '" alt="" width="192" height="192" decoding="async" draggable="false">';
+    }
+}
+
 if (! function_exists('star_src')) {
     /**
      * The game's star picture (owner, 20 October 2026: every star in the

@@ -31,8 +31,8 @@
   --glow: rgba(223, 192, 135, .35);
 
   /* Tipografi */
-  --font-display: 'Cinzel Decorative', Georgia, 'Times New Roman', serif;
-  --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Gelita Digits', 'Marcellus', Georgia, 'Times New Roman', serif;
+  --font-body: 'Gelita Digits', 'Marcellus', Georgia, 'Times New Roman', serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Consolas, monospace;
 
   /* Ukuran (dp ÷ 16) */

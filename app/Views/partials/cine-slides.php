@@ -13,7 +13,7 @@
  *   the picture (no band, owner 20 October 2026); the speaker and title share
  *   their row with the narrator controls (right);
  * - `.cine-final`: the last slide's main button, centred on the page, in
- *   capitals without an arrow (owner, 18 October 2026);
+ *   without an arrow (owner, 18 October 2026; proper case since 20 October);
  * - `.cine-stage`: on a slide with a character, the figure stands at the left
  *   of the caption text, drawn over the caption.
  * The caption's own Kembali/Lanjut links are the no-JavaScript fallback; once

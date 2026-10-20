@@ -5,61 +5,34 @@
    diandalkan, dan font pihak ketiga mengirim alamat IP anak ke luar.
    ========================================================================== */
 
+/* Marcellus for every game text, titles and body alike (owner, 20 October 2026): a carved,
+   classical serif like the old Cinzel Decorative, but with real lowercase letters, so
+   names and labels read in proper Indonesian casing. One weight; bold is synthesized */
 @font-face {
-  font-family: 'Cinzel Decorative';
+  font-family: 'Marcellus';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('../fonts/cinzel-decorative-400-normal.woff2') format('woff2');
+  src: url('../fonts/marcellus-latin-400-normal.woff2') format('woff2');
 }
+/* Digits only, from Plus Jakarta Sans (already shipped for the panel): Marcellus draws 1 like
+   I and 0 like O, which children misread in counts such as 0/12. --font-display and
+   --font-body list this face first, so only 0–9 come from it */
 @font-face {
-  font-family: 'Cinzel Decorative';
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: url('../fonts/cinzel-decorative-700-normal.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Cinzel Decorative';
-  font-style: normal;
-  font-weight: 900;
-  font-display: swap;
-  src: url('../fonts/cinzel-decorative-900-normal.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Plus Jakarta Sans';
+  font-family: 'Gelita Digits';
   font-style: normal;
   font-weight: 400;
-  font-display: swap;
-  src: url('../fonts/plus-jakarta-sans-latin-400-normal.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Plus Jakarta Sans';
-  font-style: italic;
-  font-weight: 400;
-  font-display: swap;
-  src: url('../fonts/plus-jakarta-sans-latin-400-italic.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Plus Jakarta Sans';
-  font-style: normal;
-  font-weight: 600;
   font-display: swap;
   src: url('../fonts/plus-jakarta-sans-latin-600-normal.woff2') format('woff2');
+  unicode-range: U+0030-0039;
 }
 @font-face {
-  font-family: 'Plus Jakarta Sans';
+  font-family: 'Gelita Digits';
   font-style: normal;
   font-weight: 700;
   font-display: swap;
   src: url('../fonts/plus-jakarta-sans-latin-700-normal.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Plus Jakarta Sans';
-  font-style: normal;
-  font-weight: 800;
-  font-display: swap;
-  src: url('../fonts/plus-jakarta-sans-latin-800-normal.woff2') format('woff2');
+  unicode-range: U+0030-0039;
 }
 @font-face {
   font-family: 'IBM Plex Mono';
@@ -175,8 +148,7 @@ dd { margin: 0; }
   display: block;
   font-size: var(--fs-caption);
   font-weight: 700;
-  letter-spacing: .08em;
-  text-transform: uppercase;
+  letter-spacing: .02em;
   color: var(--gold-500);
 }
 

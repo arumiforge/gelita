@@ -146,10 +146,14 @@ Decided in an interview with the owner; decisions in the decision log, section *
 - [x] Status medallions with three states only (done green ✓, open gold arc, locked navy with a lock) on the lantern, region-map pins (larger, number in the middle), and challenge list; no "Sedang dikerjakan"; region-map side column with fixed head, progress, and Pustaka {wilayah} at the bottom, no bottom nav bar, one title per card, the owner's engine pictures as card backgrounds; Peta Kedu panel without the "Wilayah n · difficulty" line and with **Lihat cerita pembuka** (PR #184). After merge, **Bangun ulang paket** if package mode is on
 - [x] Peta Kedu story bar and region panel without backdrop or gold frame; Jaka's name on the navy nameplate over his avatar, as on Kenali; a black halo that follows the outline of every badge picture (shard medallions, region-map pins, challenge list, challenge number ring, Peta Kedu done badge) (PR #186). After merge, **Bangun ulang paket** if package mode is on
 
+## Island map, Marcellus, region-map cards (owner, 20 October 2026)
+
+- [ ] Peta Kedu on the owner's island picture: locked regions darkened through a mask per region (rivers as borders), no trails, frame, or backdrop, faded edges; HUD without logo, shard plate left, title centred over a soft gradient; 3D progress bar. Marcellus for all game text, no forced capitals (digits from Plus Jakarta Sans). New logo `ui.logo-hero`; the Pustaka book picture on the Pustaka buttons. Region map: 84 dp HUD, map and side column 28 dp lower, cards on the green scarf frame with the engine picture in sepia, Lihat hasil on the green plate, Terkunci on the navy plate, Pustaka on the wide gold plate; roomier compact HUD on the other pages. After merge: `php spark gelita:katalog:impor --kunci="map.kedu-diorama,ui.logo-hero"` (dry run first), then **Bangun ulang paket** if package mode is on
+
 ## Active branches
 
 Add a row (branch, owner / scope, status) when a session starts a branch; remove it when its PR is merged.
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `sky/youthful-cannon-wbzf9t` | Versioned URLs for the UI pictures (stale shard plate after a refresh) | In review |
+| `pbb/affectionate-brahmagupta-t80b4y` | Island map, Marcellus, region-map cards (owner, 20 October 2026) | In review |

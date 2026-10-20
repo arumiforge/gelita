@@ -36,7 +36,7 @@ $title  = lang('Game.libraryRegion', [$region]);
 
     <div class="library-locked-actions">
       <a class="btn btn-primary" href="<?= esc(base_url($access['entry']), 'attr') ?>"><?= esc(lang('Game.libraryContinue')) ?> <?= icon('right') ?></a>
-      <a class="btn btn-quiet" href="<?= base_url('pustaka') ?>"><?= icon('book') ?> <?= esc(lang('Game.library')) ?></a>
+      <a class="btn btn-quiet" href="<?= base_url('pustaka') ?>"><?= library_icon() ?> <?= esc(lang('Game.library')) ?></a>
     </div>
   </article>
 </section>
