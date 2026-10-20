@@ -213,12 +213,19 @@ final class ImageSlots
         ],
         'ui.result-star' => [
             'group'       => 'result',
-            'label'       => 'Bintang hasil (terisi)',
-            'content'     => 'Satu bintang emas timbul yang berkilau, tanpa tulisan (Katalog Aset ui.result-star). Bintang kosong digambar permainan sebagai garis.',
-            'screens'     => [['Tantangan selesai, bintang di bawah judul', null]],
+            'label'       => 'Bintang permainan',
+            'content'     => 'Satu bintang emas timbul yang berkilau, tanpa tulisan (Katalog Aset ui.result-star). Dipakai untuk setiap bintang di permainan. Bintang yang belum didapat memakai gambar yang sama, dibuat abu-abu dan pudar oleh permainan.',
+            'screens'     => [
+                ['Tantangan selesai, bintang di bawah judul', null],
+                ['Peta Kedu, panel wilayah yang dipilih', '/peta'],
+                ['Peta wilayah, label dan daftar tantangan', null],
+                ['Kartu misi, hasil terbaik', null],
+                ['Profil: jumlah bintang, lencana, dan riwayat tantangan', '/profil'],
+                ['Balai Refleksi: bintang per wilayah dan penilaian', '/refleksi'],
+            ],
             'format'      => 'WebP berlatar transparan, paling besar ± 30 KB',
             'transparent' => true,
-            'fallback'    => 'Ikon bintang emas',
+            'fallback'    => 'Gambar bintang bawaan permainan (sama dengan gambar katalog)',
             'priority'    => 'opsional',
         ],
         'ui.result-medal' => [
