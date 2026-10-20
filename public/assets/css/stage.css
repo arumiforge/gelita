@@ -336,19 +336,19 @@ body.is-auth-art .scene::after { background: linear-gradient(to right, transpare
 .hud-profile-name { overflow: hidden; font-weight: 800; text-overflow: ellipsis; }
 .hud-profile-code { color: var(--ink-dim); font-size: 1.125rem; }
 /* Shard plate in the middle on in-game pages (owner, 20 October 2026): the owner's carved frame
-   (assets/ui/hud-shards-frame.webp, 909 × 300, its groove emptied; passed as --shards-frame by
-   components/hud-menu) with the label and count over its body, as in the owner's picture. The
-   page fills the groove from the real count: the owner's glowing texture (--shards-fill) over a
+   (assets/ui/hud-shards-frame.webp, 1400 × 288, about 4.9 : 1, third version of the same day;
+   passed as --shards-frame by components/hud-menu) with a small, spaced label and count in the
+   band above the groove (owner: the text need not be large, keep it elegant). The page fills the groove from the real count: the owner's glowing texture (--shards-fill) over a
    warm gradient, a top highlight, an outer glow, a hot leading edge, and a slow light sweep, so
    the bar is never one flat colour. The crystal on the left replaces the lantern icon and glows
    brighter per completed region (data-stage 0–3). Everything sits at fractions of the frame, so
    one rule set serves every size: a size sets --plate-w only. The <details> breakdown stays. */
-.hud-shards { --plate-w: 23.25rem; position: absolute; top: 0; left: 34.1875rem; width: var(--plate-w); }
+.hud-shards { --plate-w: 30rem; position: absolute; top: .625rem; left: 30.8125rem; width: var(--plate-w); }
 .hud-shards .lantern-toggle {
   position: relative;
   display: block;
   min-height: 0;
-  aspect-ratio: 909 / 300;
+  aspect-ratio: 1999 / 411;
   border-radius: 0;
   background: var(--shards-frame) center / 100% 100% no-repeat;
   filter: drop-shadow(0 .25rem .5rem rgba(0, 0, 0, .5));
@@ -360,31 +360,32 @@ body.is-auth-art .scene::after { background: linear-gradient(to right, transpare
 .hud-shards .lantern[open] .lantern-meter { position: absolute; inset: 0; display: block; padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none; }
 .hud-shards .lantern-text, .hud-shards .lantern-row { display: contents; }
 .hud-shards .lantern-toggle > .flame { display: none; }
-/* Label left and count right on the plate's upper half; the count's right edge meets the groove's */
+/* Label left and count right in the band above the groove, their ends level with the groove's;
+   small capitals with air between the letters, never below 11 dp */
 .hud-shards .lantern-text .eyebrow,
 .hud-shards .lantern-count {
   position: absolute;
-  bottom: 47%;
-  color: #F6E2B8;
+  bottom: 58%;
+  color: #EBD3A0;
   font-family: var(--font-display);
-  font-size: calc(var(--plate-w) * .04);
+  font-size: max(.6875rem, calc(var(--plate-w) * .027));
   font-weight: 700;
   line-height: 1;
-  letter-spacing: 0;
-  text-shadow: 0 .0625rem .125rem rgba(0, 0, 0, .9), 0 0 .5rem rgba(255, 196, 110, .35);
+  letter-spacing: .08em;
+  text-shadow: 0 .0625rem .125rem rgba(0, 0, 0, .9), 0 0 .375rem rgba(255, 196, 110, .25);
   text-transform: none;
   white-space: nowrap;
 }
-.hud-shards .lantern-text .eyebrow { left: 28.2%; }
-.hud-shards .lantern-count { right: 13.6%; font-size: calc(var(--plate-w) * .048); }
+.hud-shards .lantern-text .eyebrow { left: 22.8%; }
+.hud-shards .lantern-count { right: 7.6%; font-size: max(.75rem, calc(var(--plate-w) * .03)); letter-spacing: .04em; }
 .hud-shards .lantern-count b { color: inherit; font-size: inherit; font-weight: inherit; }
-/* The groove (frame px 250–782 × 180–198): the frame's own dark track shows through */
+/* The groove (frame px 446–1852 × 200–256 of 1999 × 411): the frame's own dark track shows through */
 .hud-shards .lantern-bar {
   position: absolute;
-  top: 60%;
-  left: 27.5%;
-  width: 58.55%;
-  height: 6.4%;
+  top: 48.66%;
+  left: 22.31%;
+  width: 70.34%;
+  height: 13.87%;
   overflow: visible;
   border-radius: 0;
   background: none;
@@ -396,9 +397,10 @@ body.is-auth-art .scene::after { background: linear-gradient(to right, transpare
   background:
     linear-gradient(105deg, transparent 38%, rgba(255, 250, 225, .55) 50%, transparent 62%) -200% 0 / 50% 100% no-repeat,
     linear-gradient(to bottom, rgba(255, 248, 220, .55), rgba(255, 248, 220, 0) 40%, rgba(120, 50, 0, 0) 70%, rgba(120, 50, 0, .35)),
-    var(--shards-fill) left center / calc(var(--plate-w) * .5855) 100% no-repeat,
+    var(--shards-fill) left center / calc(var(--plate-w) * .7034) 100% no-repeat,
     linear-gradient(to right, #B4600F, #F0A43A 45%, #FFD27A);
-  border-radius: .0625rem;
+  /* Slightly rounded corners like the groove's own */
+  border-radius: calc(var(--plate-w) * .003);
   box-shadow: 0 0 calc(var(--plate-w) * .012) rgba(255, 176, 64, .85), 0 0 calc(var(--plate-w) * .035) rgba(255, 140, 30, .45);
   animation: shard-sweep 4.5s ease-in-out infinite;
 }
@@ -406,10 +408,10 @@ body.is-auth-art .scene::after { background: linear-gradient(to right, transpare
 .hud-shards .lantern-bar i::after {
   content: '';
   position: absolute;
-  top: -60%;
+  top: -30%;
   right: calc(var(--plate-w) * -.012);
   width: calc(var(--plate-w) * .03);
-  height: 220%;
+  height: 160%;
   border-radius: 50%;
   background: radial-gradient(closest-side, rgba(255, 252, 235, .95), rgba(255, 210, 120, .6) 45%, rgba(255, 160, 50, 0));
   pointer-events: none;
@@ -420,13 +422,13 @@ body.is-auth-art .scene::after { background: linear-gradient(to right, transpare
   0%, 30% { background-position: -200% 0, 0 0, left center, 0 0; }
   100% { background-position: 300% 0, 0 0, left center, 0 0; }
 }
-/* The crystal (frame px 95–170 × 85–225): a glow over it, brighter per completed region */
+/* The crystal (frame px 155–270 × 65–300): a glow over it, brighter per completed region */
 .hud-shards .lantern-gem {
   position: absolute;
-  top: 26%;
-  left: 7.6%;
-  width: 13.6%;
-  height: 52%;
+  top: 15.8%;
+  left: 7%;
+  width: 7.2%;
+  height: 57%;
   border-radius: 50%;
   background: radial-gradient(closest-side, rgba(255, 236, 190, .55), rgba(255, 170, 60, .25) 55%, rgba(255, 150, 40, 0));
   mix-blend-mode: screen;
@@ -465,9 +467,9 @@ body.is-auth-art .scene::after { background: linear-gradient(to right, transpare
 .is-compact .hud-ctl-flag { width: 2.875rem; height: 2.875rem; }
 .is-compact .hud-lang-sheet { top: 3.75rem; right: 7.5rem; }
 .is-compact .hud-menu-sheet { top: 4rem; right: .5rem; }
-/* The shard plate a little larger than the strip (owner, 20 October 2026): 230 × 76 dp, centred,
-   hanging about 20 dp below it so the text stays readable */
-.is-compact .hud-shards { --plate-w: 14.375rem; top: 0; left: 32.8125rem; }
+/* The shard plate a little larger than the strip (owner, 20 October 2026): 300 × 62 dp, centred,
+   6 dp below it, so the text stays readable */
+.is-compact .hud-shards { --plate-w: 18.75rem; top: 0; left: 30.625rem; }
 .hud-sheet-row.hud-fullscreen .icon-exit { display: none; }
 .hud-sheet-row.hud-fullscreen[aria-pressed="true"] .icon-enter { display: none; }
 .hud-sheet-row.hud-fullscreen[aria-pressed="true"] .icon-exit { display: block; }
