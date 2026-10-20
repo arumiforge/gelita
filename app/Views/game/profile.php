@@ -87,7 +87,7 @@ foreach (service('contentRepository')->levels() as $entity) {
           <?php if ($badge !== null && $done): ?>
             <img src="<?= esc($badge, 'attr') ?>" alt="">
           <?php else: ?>
-            <?= icon($done ? 'star' : 'lock') ?>
+            <?= $done ? star_img() : icon('lock') ?>
           <?php endif ?>
         </span>
         <span class="region-badge-name"><?= esc($level['name']) ?></span>

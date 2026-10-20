@@ -6,7 +6,11 @@
  *
  * Panggung 16:9 (Dok 3 §5): tanpa tokoh Jaka, isi selebar panggung. Kepala
  * 32, 64, 1216 × 56; arena 32, 128, 1216 × 576; tanpa nav bar. Bingkai ukiran
- * digambar .challenge::before. .arena-panel dan .arena hanya pembungkus
+ * digambar .challenge::before, below the header plate (owner's header,
+ * 20 October 2026: number ring `assets/ui/challenge-badge.webp`, title, and
+ * one capsule for timer | ✓/✗ | Kesempatan, then Petunjuk and Keluar).
+ * `--plate-navy` carries the navy plate of Kenali for the answer choices
+ * (Isi Rumpang words, Benar/Salah), owner's call of the same day. .arena-panel dan .arena hanya pembungkus
  * (display: contents), jadi panel engine memakai koordinat panggung langsung
  * (stage.css §Tantangan). Panel instruksi (.challenge-aside) diletakkan per
  * engine: panel kiri Susun Gambar, baris pertama arena Isi Rumpang dan Benar
@@ -48,32 +52,41 @@ $triesAria  = lang('Game.triesLabel') . ': ' . lang('Game.triesOf', ['{0}', '{1}
          data-level-id="<?= esc($level->id, 'attr') ?>"
          data-region-name="<?= esc($region, 'attr') ?>"
          data-sequence="<?= esc($sequence, 'attr') ?>"
-         data-exit-url="<?= esc(base_url('wilayah/' . $level->code), 'attr') ?>">
+         data-exit-url="<?= esc(base_url('wilayah/' . $level->code), 'attr') ?>"
+         style="--plate-navy: url(&quot;<?= esc(game_asset_url('ui/kenal-plate-navy.webp'), 'attr') ?>&quot;)">
 
   <div class="arena-panel">
+    <?php // Owner's header, 20 October 2026: number on the gold-and-navy ring, title, one stats capsule ?>
     <header class="challenge-head stage-box">
-      <div class="badge-pos num" aria-hidden="true"><?= esc($sequence) ?></div>
+      <div class="badge-pos" aria-hidden="true">
+        <img src="<?= esc(game_asset_url('ui/challenge-badge.webp'), 'attr') ?>" alt="" width="192" height="192" decoding="async" draggable="false">
+        <span class="badge-pos-no"><?= esc($sequence) ?></span>
+      </div>
       <div class="challenge-info">
-        <span class="eyebrow"><?= esc($region) ?> · <?= esc(lang('Game.challengeOf', [$sequence, $totalNodes])) ?> · <?= esc(engine_label($engine, $node->variant_code)) ?></span>
+        <?php // The region · position · kind line left the screen (owner); screen readers still hear it ?>
+        <span class="visually-hidden"><?= esc($region) ?> · <?= esc(lang('Game.challengeOf', [$sequence, $totalNodes])) ?> · <?= esc(engine_label($engine, $node->variant_code)) ?></span>
         <h1 class="title"><?= esc($node->text('title', $locale)) ?></h1>
       </div>
       <div class="challenge-chips">
-        <span class="chip" title="<?= esc(lang('Game.timer'), 'attr') ?>">
-          <?= icon('clock') ?><span class="visually-hidden"><?= esc(lang('Game.timer')) ?></span> <b id="timer" class="num">0:00</b>
-        </span>
-        <span class="chip chip-tally">
-          <span class="tally-ok"><?= icon('check') ?><span class="visually-hidden"><?= esc(lang('Game.countCorrect')) ?></span> <b id="count-correct" class="num">0</b></span>
-          <span class="tally-bad"><?= icon('cross') ?><span class="visually-hidden"><?= esc(lang('Game.countWrong')) ?></span> <b id="count-wrong" class="num">0</b></span>
-        </span>
-        <?php if ($engine !== 'cari'): ?>
-          <?php // Penanda 3 kesempatan engine batch (Dok 2 §5.3): bulatan terisi = sisa ?>
-          <span class="chip chip-tries" id="tries" role="img" data-left="<?= $triesLeft ?>"
-                data-label="<?= esc($triesAria, 'attr') ?>"
-                aria-label="<?= esc(lang('Game.triesLabel') . ': ' . lang('Game.triesOf', [$triesLeft, $maxTries]), 'attr') ?>">
-            <span class="tries-label" aria-hidden="true"><?= esc(lang('Game.triesLabel')) ?></span>
-            <span class="tries-dots" aria-hidden="true"><?php for ($i = 0; $i < $maxTries; $i++): ?><i class="tries-dot<?= $i < $triesLeft ? ' is-left' : '' ?>"></i><?php endfor ?></span>
+        <div class="challenge-stats">
+          <span class="stat-timer" title="<?= esc(lang('Game.timer'), 'attr') ?>">
+            <?= icon('clock') ?><span class="visually-hidden"><?= esc(lang('Game.timer')) ?></span> <b id="timer" class="num">0:00</b>
           </span>
-        <?php endif ?>
+          <span class="chip-tally">
+            <span class="tally-ok"><?= icon('check') ?><span class="visually-hidden"><?= esc(lang('Game.countCorrect')) ?></span> <b id="count-correct" class="num">0</b></span>
+            <span class="tally-sep" aria-hidden="true">/</span>
+            <span class="tally-bad"><?= icon('cross') ?><span class="visually-hidden"><?= esc(lang('Game.countWrong')) ?></span> <b id="count-wrong" class="num">0</b></span>
+          </span>
+          <?php if ($engine !== 'cari'): ?>
+            <?php // Penanda 3 kesempatan engine batch (Dok 2 §5.3): bulatan terisi = sisa ?>
+            <span class="chip-tries" id="tries" role="img" data-left="<?= $triesLeft ?>"
+                  data-label="<?= esc($triesAria, 'attr') ?>"
+                  aria-label="<?= esc(lang('Game.triesLabel') . ': ' . lang('Game.triesOf', [$triesLeft, $maxTries]), 'attr') ?>">
+              <span class="tries-label" aria-hidden="true"><?= esc(lang('Game.triesLabel')) ?></span>
+              <span class="tries-dots" aria-hidden="true"><?php for ($i = 0; $i < $maxTries; $i++): ?><i class="tries-dot<?= $i < $triesLeft ? ' is-left' : '' ?>"></i><?php endfor ?></span>
+            </span>
+          <?php endif ?>
+        </div>
         <button type="button" class="chip chip-btn" id="btn-hint" data-hints="<?= $hints ?>" hidden>
           <?= icon('hint') ?> <?= esc(lang('Game.hint')) ?>
         </button>

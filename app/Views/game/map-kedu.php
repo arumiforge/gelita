@@ -67,7 +67,7 @@
 $diorama = media_key_src('map.kedu-diorama');
 $mapSrc  = $diorama ?? media_key_src('map.kedu');
 $shapes  = $diorama !== null ? config('Gelita')->mapDiorama : [];
-$starSrc = media_key_src('ui.result-star');
+$starSrc = star_src();
 $jakaSrc = media_key_src('ui.jaka-avatar');
 $icons   = ['open' => 'lantern', 'in_progress' => 'lantern', 'completed' => 'star', 'locked' => 'lock'];
 // Status pill of the region panel: its own icon and colour per status (owner, 18 October 2026)
@@ -163,7 +163,7 @@ $unheard  = static fn (array $l): bool => ($intros[$l['code']] ?? []) !== [] && 
             <a class="kedu-city" href="#region-<?= esc($level['code'], 'attr') ?>" data-region-select="<?= esc($level['code'], 'attr') ?>"
                aria-controls="region-<?= esc($level['code'], 'attr') ?>"<?= $level['code'] === $selected ? ' aria-current="true"' : '' ?><?= isset($preload[1]) ? ' data-preload="' . esc($preload[1], 'attr') . '"' : '' ?>>
               <span class="kedu-medal<?= $pinArt !== null ? ' has-art' : '' ?>" aria-hidden="true">
-                <?= art_or_icon($pinArt, $icons[$level['status']] ?? 'lantern') ?>
+                <?= art_or_icon($pinArt ?? ($level['status'] === 'completed' ? star_src() : null), $icons[$level['status']] ?? 'lantern') ?>
                 <?php if ($level['status'] === 'locked'): ?><span class="kedu-lock"><?= icon('lock') ?></span><?php endif ?>
                 <?php // Completed: a gold check badge in the lock badge's place (owner's picture, 18 October 2026) ?>
                 <?php if ($level['status'] === 'completed'): ?><span class="kedu-lock kedu-done"><?= icon('check') ?></span><?php endif ?>
@@ -207,11 +207,7 @@ $unheard  = static fn (array $l): bool => ($intros[$l['code']] ?? []) !== [] && 
           <?php $stars = max(0, min(3, (int) $level['stars'])); ?>
           <p class="kedu-panel-stars" role="img" aria-label="<?= esc(lang('Game.resultStarsOf', [$stars, 3]), 'attr') ?>">
             <?php for ($i = 1; $i <= 3; $i++): ?>
-              <?php if ($i <= $stars && $starSrc !== null): ?>
-                <img class="kedu-star is-on" src="<?= esc($starSrc, 'attr') ?>" alt="" draggable="false">
-              <?php else: ?>
-                <span class="kedu-star<?= $i <= $stars ? ' is-on' : '' ?>"><?= icon('star') ?></span>
-              <?php endif ?>
+              <img class="kedu-star<?= $i <= $stars ? ' is-on' : ' is-off' ?>" src="<?= esc($starSrc, 'attr') ?>" alt="" draggable="false">
             <?php endfor ?>
           </p>
         <?php endif ?>

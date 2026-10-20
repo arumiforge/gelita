@@ -78,10 +78,11 @@ $labels   = ['benar' => 'Game.verdictBenar', 'salah' => 'Game.verdictSalah'];
 </div>
 </div>
 
+<?php // Owner's action bar, 20 October 2026: centred gold button between two gold rules (CSS) ?>
 <div class="arena-actions">
-  <button class="btn btn-primary btn-lg" id="btn-check" type="button"><?= icon('check') ?> <?= esc(lang('Game.check')) ?></button>
+  <button class="btn btn-primary btn-lg btn-action" id="btn-check" type="button"><span><?= esc(lang('Game.check')) ?></span> <?= icon('right') ?></button>
   <?php // Shown by challenge.js once the attempt is closed: moves on to the result screen ?>
-  <button class="btn btn-primary btn-lg" id="btn-next" type="button" hidden><?= esc(lang('Game.continue')) ?> <?= icon('right') ?></button>
+  <button class="btn btn-primary btn-lg btn-action" id="btn-next" type="button" hidden><span><?= esc(lang('Game.continue')) ?></span> <?= icon('right') ?></button>
 </div>
 <?= $this->endSection() ?>
 

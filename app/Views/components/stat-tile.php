@@ -5,7 +5,7 @@
  * @var string      $label
  * @var string|int|float $value  sudah diformat pemanggil
  * @var string|null $hint   keterangan kecil di bawah angka
- * @var string|null $icon   nama ikon (ui_helper)
+ * @var string|null $icon   nama ikon (ui_helper); `star` draws the game's star picture
  * @var string|null $id     id elemen angka, untuk diperbarui JavaScript
  */
 $value = (string) ($value ?? '—');
@@ -13,7 +13,7 @@ $value = (string) ($value ?? '—');
 $isText = preg_match('/\p{L}{3,}/u', $value) === 1;
 ?>
 <div class="stat-tile">
-  <span class="stat-label"><?php if (! empty($icon)): ?><?= icon($icon) ?> <?php endif ?><?= esc($label ?? '') ?></span>
+  <span class="stat-label"><?php if (! empty($icon)): ?><?= $icon === 'star' ? star_img() : icon($icon) ?> <?php endif ?><?= esc($label ?? '') ?></span>
   <p class="stat-value<?= $isText ? ' is-text' : '' ?>"<?= ! empty($id) ? ' id="' . esc($id, 'attr') . '"' : '' ?>><?= esc($value) ?></p>
   <?php if (! empty($hint)): ?>
     <span class="stat-hint"><?= esc($hint) ?></span>

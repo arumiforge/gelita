@@ -1,6 +1,8 @@
 <?php
 
+use App\Services\ContentRepository;
 use CodeIgniter\Test\CIUnitTestCase;
+use Config\Services;
 
 /**
  * @internal
@@ -76,10 +78,40 @@ final class GelitaHelperTest extends CIUnitTestCase
 
     public function testStarsHtml(): void
     {
+        // No database here: no uploaded slots, so the shipped star is used
+        Services::injectMock('contentRepository', new class () extends ContentRepository {
+            public function __construct()
+            {
+            }
+
+            public function mediaKeyMap(): array
+            {
+                return [];
+            }
+        });
+
+        try {
+            $this->assertStarsHtml();
+        } finally {
+            Services::resetSingle('contentRepository');
+        }
+    }
+
+    private function assertStarsHtml(): void
+    {
         $html = stars_html(2);
 
-        $this->assertSame(2, substr_count($html, 'is-on'));
+        $this->assertSame(2, substr_count($html, '<span class="star is-on">'));
         $this->assertStringContainsString('aria-label="2 / 3"', $html);
+        // Every star is the game's star picture; the empty one is the same picture, grey and faded
+        $this->assertSame(3, substr_count($html, 'src="' . esc(game_asset_url('ui/star.webp'), 'attr') . '"'));
+        $this->assertSame(1, substr_count($html, 'class="star-art is-off"'));
+        $this->assertStringNotContainsString('<svg', $html);
+
+        // The admin panel keeps its line icon
+        $admin = stars_html(3, 5, false);
+        $this->assertSame(5, substr_count($admin, '<svg'));
+        $this->assertStringNotContainsString('<img', $admin);
     }
 
     public function testSafeInternalUrlKeepsInternalPaths(): void

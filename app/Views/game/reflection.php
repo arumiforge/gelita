@@ -48,7 +48,7 @@ $rating    = (int) old('rating');
           <li class="bar-row">
             <span><?= esc($row['name']) ?></span>
             <span class="progress" aria-hidden="true"><i style="width: <?= $row['stars_max'] > 0 ? round(100 * $row['stars'] / $row['stars_max'], 1) : 0 ?>%"></i></span>
-            <span class="bar-value"><?= icon('star') ?> <?= esc(lang('Game.triesOf', [$row['stars'], $row['stars_max']])) ?></span>
+            <span class="bar-value"><?= star_img() ?> <?= esc(lang('Game.triesOf', [$row['stars'], $row['stars_max']])) ?></span>
           </li>
         <?php endforeach ?>
       </ul>
@@ -96,7 +96,7 @@ $rating    = (int) old('rating');
           <?php for ($star = 1; $star <= 5; $star++): ?>
             <label class="rating-star">
               <input type="radio" name="rating" value="<?= $star ?>" required <?= $rating === $star ? 'checked' : '' ?>>
-              <?= icon('star') ?>
+              <?= star_img(false) ?>
               <span class="visually-hidden"><?= esc(lang('Game.ratingStar', [$star])) ?></span>
             </label>
           <?php endfor ?>

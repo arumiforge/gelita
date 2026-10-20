@@ -84,4 +84,80 @@ final class ChallengeFrameTest extends CIUnitTestCase
 
         $this->assertGreaterThan(3, $found);
     }
+
+    /** Owner's header, 20 October 2026: number ring, title, one stats capsule; no visible eyebrow. */
+    public function testHeaderFollowsTheOwnersPicture(): void
+    {
+        $frame = $this->view('game/challenge/_frame');
+
+        $this->assertStringContainsString("game_asset_url('ui/challenge-badge.webp')", $frame);
+        $this->assertFileExists(FCPATH . 'assets/ui/challenge-badge.webp');
+        $this->assertStringContainsString('<span class="badge-pos-no">', $frame);
+        $this->assertStringContainsString('<div class="challenge-stats">', $frame);
+        $this->assertStringNotContainsString('class="eyebrow"', $frame, 'the region · position · kind line left the screen');
+        $this->assertMatchesRegularExpression("~<span class=\"visually-hidden\">[^\n]*Game\.challengeOf~", $frame, 'screen readers still hear it');
+
+        // Timer, tally, and tries sit in the capsule; hint and exit come after it
+        $capsule = substr($frame, (int) strpos($frame, 'challenge-stats'), (int) strpos($frame, 'id="btn-hint"') - (int) strpos($frame, 'challenge-stats'));
+        foreach (['id="timer"', 'id="count-correct"', 'id="count-wrong"', 'id="tries"'] as $needle) {
+            $this->assertStringContainsString($needle, $capsule, $needle);
+        }
+    }
+
+    /** Owner's action bar, 20 October 2026: one centred bar across the arena in the batch engines. */
+    public function testBatchEnginesShareTheCentredActionBar(): void
+    {
+        $stage = (string) file_get_contents(FCPATH . 'assets/css/stage.css');
+
+        foreach (['puzzle', 'rumpang', 'boleh'] as $engine) {
+            $view = $this->view('game/challenge/' . $engine);
+            $this->assertMatchesRegularExpression('~class="btn btn-primary btn-lg btn-action" id="btn-check" type="button"><span><\?= esc\(lang\(\'Game\.\w+\'\)\) \?></span> <\?= icon\(\'right\'\) \?></button>~', $view, $engine);
+            $this->assertStringContainsString('class="btn btn-primary btn-lg btn-action" id="btn-next" type="button" hidden>', $view, $engine);
+            $this->assertMatchesRegularExpression('~\.challenge-' . $engine . ' \.arena-actions\s*\{\s*--x:\s*32;\s*--y:\s*648;\s*--w:\s*1216;\s*--h:\s*56;~', $stage, $engine);
+        }
+
+        $css = (string) file_get_contents(FCPATH . 'assets/css/game.css');
+        $this->assertStringContainsString('.arena-actions::before,', $css, 'gold rules on both sides');
+        $this->assertMatchesRegularExpression('~\.arena-actions \{[^}]*justify-content: center;~', $css);
+    }
+
+    /** Owner, 20 October 2026: a blank is a dotted line with the word on it; no box, no number. */
+    public function testRumpangBlanksAreDottedLinesWithoutNumbers(): void
+    {
+        $view = $this->view('game/challenge/rumpang');
+        $this->assertStringNotContainsString('blank-no', $view);
+        $this->assertStringNotContainsString('blank-wrap', $view);
+        $this->assertSame(2, substr_count($view, '>&nbsp;</button>'), 'reading and sentence blanks start empty');
+
+        $js = (string) file_get_contents(FCPATH . 'assets/js/engines/rumpang.js');
+        $this->assertStringContainsString("const placeholder = '\\u00a0';", $js);
+
+        $css = (string) file_get_contents(FCPATH . 'assets/css/game.css');
+        $this->assertStringNotContainsString('.blank-no', $css);
+        $this->assertMatchesRegularExpression('~\.blank \{[^}]*border: 0;[^}]*radial-gradient\(circle, var\(--dots\)~', $css);
+    }
+
+    /** Owner, 20 October 2026: Isi Rumpang words and Benar/Salah choices on the navy plate. */
+    public function testAnswerChoicesUseTheNavyPlate(): void
+    {
+        $this->assertStringContainsString("--plate-navy: url(&quot;<?= esc(game_asset_url('ui/kenal-plate-navy.webp'), 'attr') ?>&quot;)", $this->view('game/challenge/_frame'));
+
+        $css = (string) file_get_contents(FCPATH . 'assets/css/game.css');
+        $this->assertStringContainsString('.challenge[style*="--plate-navy"] :is(.word, .choice) {', $css);
+        $this->assertStringContainsString('border-image: var(--plate-navy) 0 115 fill / 0 2.375rem stretch;', $css);
+    }
+
+    /** Owner's "Tentang gambar ini" panel, 20 October 2026; puzzle.js still reads the one <p>. */
+    public function testPuzzleCaptionFollowsTheOwnersPanel(): void
+    {
+        $view    = $this->view('game/challenge/puzzle');
+        $caption = substr($view, (int) strpos($view, 'id="puzzle-caption"'));
+        $caption = substr($caption, 0, (int) strpos($caption, '</div>' . "
+" . '    <?php endif ?>'));
+
+        $this->assertStringContainsString('<span class="puzzle-caption-icon" aria-hidden="true">i</span>', $caption);
+        $this->assertStringContainsString("<b><?= esc(lang('Game.puzzleCaption')) ?></b>", $caption);
+        $this->assertSame(1, substr_count($caption, '<p>'));
+        $this->assertStringContainsString("\$('p', caption)", (string) file_get_contents(FCPATH . 'assets/js/engines/puzzle.js'));
+    }
 }

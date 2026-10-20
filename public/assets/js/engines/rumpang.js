@@ -33,7 +33,7 @@ export function mount(ctx) {
   const button = $('#btn-check', root);
   const blanks = $$('.blank', root);
   const words = $$('.word', root);
-  const placeholder = '?';
+  const placeholder = '\u00a0'; // empty blank: just its dotted line, kept on the text baseline
   const filled = new Map(); // itemId → chip kata
   let active = null;
   let checking = false; // isian dibekukan selama /check berjalan
