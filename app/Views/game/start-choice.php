@@ -15,7 +15,10 @@
  * right side: no panel fill, no corner ornaments, only the compass emblem
  * above the title. The two card icons are the owner's emblems (book, map
  * scroll). HUD: the GELITA logo in the middle instead of the shard plate,
- * Back in the top-right corner.
+ * Back in the top-right corner. Cinematic entrance (game/cine.js,
+ * `data-cine="gate"`): the picture pushes in from dark, Jaka walks in, the
+ * crest turns into place, the cards slide in one after the other; then the
+ * WebGL sparks and mist (`screen_fx_attr()`) and parallax.
  *
  * @var string $name display_name ?: username
  */
@@ -31,7 +34,7 @@
 <?= $this->section('hudLayout') ?>logo-centre<?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<section class="start start-choice">
+<section class="start start-choice" data-cine="gate"<?= screen_fx_attr() ?>>
   <img class="gate-jaka stage-box" src="<?= esc(asset_url_versioned('ui/jaka-gate.webp'), 'attr') ?>" alt="" width="605" height="1400" decoding="async" draggable="false">
 
   <div class="gate-panel stage-box stage-scroll">

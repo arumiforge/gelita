@@ -33,7 +33,7 @@ $country = $val('country_code') ?: 'ID';
 <?= $this->section('hudLayout') ?>logo-centre<?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<section class="register" data-step="2" data-package-gate="page" data-package-next="daftar/2">
+<section class="register" data-step="2" data-package-gate="page" data-package-next="daftar/2" data-cine="account">
   <?php /* Jaka waving, one still picture (owner, 18 October 2026), standing on the picture's path */ ?>
   <img class="auth-jaka stage-box" src="<?= esc(asset_url_versioned('ui/jaka-wave.webp'), 'attr') ?>" alt="" width="658" height="1490" decoding="async" draggable="false">
 

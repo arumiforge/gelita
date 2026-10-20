@@ -12,6 +12,11 @@
     d.style.setProperty('--app-h', window.innerHeight + 'px');
   }
   f();
+  // Cinematic entrances (game/cine.js): with motion allowed, cinematic.css holds the
+  // parts of a [data-cine] page hidden from the first paint until the entrance starts
+  if (!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+    d.classList.add('cine-ok');
+  }
   window.addEventListener('resize', f);
   window.addEventListener('orientationchange', f);
   window.addEventListener('load', f);
