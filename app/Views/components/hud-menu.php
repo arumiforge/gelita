@@ -40,7 +40,10 @@
  *        Section `hudBack` (a URL) adds a Back button in the top-right
  *        corner, after the controls (owner, 20 October 2026); the controls
  *        and Back then share the `.hud-end` row, so the popover sheets stay
- *        anchored to the controls.
+ *        anchored to the controls. With `logo-centre` Back sits alone in the
+ *        top-left corner on the owner's navy plate instead
+ *        (`assets/ui/kenal-plate-navy.webp`, as Kembali on Kenali; owner,
+ *        20 October 2026).
  *
  * Both popovers are <details data-popover>: they open without JavaScript;
  * game/hud.js adds Escape, outside click, one-open-at-a-time, the close
@@ -71,6 +74,9 @@ $locales  = config('Gelita')->locales;
 $hudTitle = trim($this->renderSection('hudTitle'));
 $region   = $hudTitle !== '' ? $hudTitle : (isset($level) && $level instanceof \App\Entities\Level ? $level->text('name', $locale) : null);
 $back     = trim($this->renderSection('hudBack'));
+// logo-centre: Back on the navy plate in the free top-left corner, not beside the controls
+$backPlate = $back !== '' && $logoCentre;
+$backEnd   = $back !== '' && ! $logoCentre;
 $badge    = trim($this->renderSection('hudBadge'));
 $shards   = $inGame && ! $logoCentre && trim($this->renderSection('hudShards')) !== 'off';
 $logo     = empty($hideBrand) && ! $titleCentre ? (media_key_src('ui.logo-hero') ?? media_key_src('ui.logo')) : null;
@@ -96,7 +102,11 @@ $userName = $signedIn ? (string) ($participant['display_name'] ?: $participant['
     <div class="hud-shards" style="--shards-frame: url(&quot;<?= esc(asset_url_versioned('ui/hud-shards-frame.webp'), 'attr') ?>&quot;); --shards-fill: url(&quot;<?= esc(asset_url_versioned('ui/hud-shards-fill.webp'), 'attr') ?>&quot;)"><?= $this->include('components/lantern') ?></div>
   <?php endif ?>
 
-  <?php if ($back !== ''): ?><div class="hud-end"><?php endif ?>
+  <?php if ($backPlate): ?>
+    <a class="hud-back-plate" href="<?= esc($back, 'attr') ?>" style="--plate-navy: url(&quot;<?= esc(asset_url_versioned('ui/kenal-plate-navy.webp'), 'attr') ?>&quot;)"><?= icon('left') ?><span><?= esc(lang('Game.back')) ?></span></a>
+  <?php endif ?>
+
+  <?php if ($backEnd): ?><div class="hud-end"><?php endif ?>
   <div class="hud-right hud-controls">
     <?= $badge ?>
     <details class="hud-pop hud-lang" data-popover>
@@ -177,7 +187,7 @@ $userName = $signedIn ? (string) ($participant['display_name'] ?: $participant['
       </div>
     </details>
   </div>
-  <?php if ($back !== ''): ?>
+  <?php if ($backEnd): ?>
     <a class="btn btn-quiet hud-back" href="<?= esc($back, 'attr') ?>"><?= icon('left') ?> <span><?= esc(lang('Game.back')) ?></span></a>
   </div>
   <?php endif ?>

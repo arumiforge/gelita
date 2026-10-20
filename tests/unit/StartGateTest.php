@@ -94,25 +94,50 @@ final class StartGateTest extends CIUnitTestCase
     {
         $page = (new HomeController())->start();
 
-        $this->assertStringContainsString('class="btn btn-quiet hud-back" href="' . base_url() . '"', html_entity_decode($page));
+        $this->assertStringContainsString('class="hud-back-plate" href="' . base_url() . '"', html_entity_decode($page));
         $this->assertStringContainsString('<header class="hud hud-menu-style is-compact is-logo-centre">', $page);
-        $this->assertStringContainsString('<div class="hud-end">', $page, 'Back in the top-right corner, beside the controls');
+        $this->assertStringNotContainsString('hud-end', $page, 'Back in the top-left corner, not beside the controls');
+        $this->assertStringNotContainsString('btn-quiet hud-back', $page);
         $this->assertStringNotContainsString('class="nav-bar"', $page);
         $this->assertStringContainsString('start-jaka', $page, 'Jaka is his own image, not part of the background');
         $this->assertSame(1, substr_count($page, 'start-card is-primary'));
     }
 
-    public function testLoginKeepsTheOrnatePanelWithBackInTheHud(): void
+    /** Owner redesign (20 October 2026): the form stands on the picture, with no panel fill, frame, ornaments, or crest. */
+    public function testLoginStandsOnThePictureWithBackInTheHud(): void
     {
         $page = (new LoginController())->form();
 
         $this->assertIsString($page);
-        $this->assertStringContainsString('class="btn btn-quiet hud-back" href="' . base_url('mulai') . '"', html_entity_decode($page));
+        $this->assertStringContainsString('class="hud-back-plate" href="' . base_url('mulai') . '"', html_entity_decode($page));
         $this->assertStringNotContainsString('class="nav-bar"', $page);
         $this->assertStringNotContainsString('start-jaka', $page, 'no animated figure (owner redesign, 18 October 2026)');
         $this->assertStringContainsString('class="auth-jaka stage-box" src="' . esc(asset_url_versioned('ui/jaka-wave.webp'), 'attr') . '"', $page, 'one still picture of Jaka');
-        $this->assertStringContainsString('login-panel ornate-panel stage-box', $page);
-        $this->assertStringContainsString('ornate-body stage-scroll', $page, 'the form scrolls inside the fixed panel');
+        $this->assertStringContainsString('class="login-panel stage-box stage-scroll"', $page, 'the form scrolls inside its fixed box');
+        $this->assertStringNotContainsString('ornate-panel', $page, 'no panel fill or frame');
+        $this->assertStringNotContainsString('ornate-corner', $page, 'no corner ornaments');
+        $this->assertStringNotContainsString('ornate-crest', $page, 'no compass crest');
+        $this->assertStringContainsString('class="input-lead"', $page);
+        $this->assertStringContainsString('class="password-input input-lead"', $page, 'the show/hide button keeps its wrapper');
+    }
+
+    /**
+     * Owner, 20 October 2026: on the logo-centre pages Back is the navy plate (the picture of
+     * Kenali's Kembali) in the top-left corner; elsewhere it stays beside the controls.
+     */
+    public function testBackPlateUsesTheNavyPlatePicture(): void
+    {
+        $page = (new HomeController())->start();
+
+        $this->assertStringContainsString('class="hud-back-plate" href="' . esc(base_url(), 'attr') . '" style="--plate-navy: url(&quot;' . esc(asset_url_versioned('ui/kenal-plate-navy.webp'), 'attr') . '&quot;)"', $page);
+        $this->assertLessThan(strpos($page, 'hud-controls'), strpos($page, 'hud-back-plate'), 'Back before the controls, on the left');
+        $this->assertFileExists(FCPATH . 'assets/ui/kenal-plate-navy.webp');
+
+        $other = view('game/package-inspect');
+
+        $this->assertStringContainsString('class="btn btn-quiet hud-back"', $other, 'pages without logo-centre keep Back beside the controls');
+        $this->assertStringContainsString('<div class="hud-end">', $other);
+        $this->assertStringNotContainsString('hud-back-plate', $other);
     }
 
     /** Owner redesign (18 October 2026): the shipped lantern-tree picture, whatever bg.auth or bg.welcome hold. */
@@ -184,7 +209,7 @@ final class StartGateTest extends CIUnitTestCase
 
         $this->assertStringContainsString('<header class="hud hud-menu-style is-compact is-logo-centre" data-in-game>', $page);
         $this->assertStringNotContainsString('hud-shards', $page, 'the logo replaces the shard plate');
-        $this->assertStringContainsString('class="btn btn-quiet hud-back" href="' . base_url() . '"', html_entity_decode($page));
+        $this->assertStringContainsString('class="hud-back-plate" href="' . base_url() . '"', html_entity_decode($page));
         $this->assertStringNotContainsString('class="nav-bar"', $page);
 
         foreach (['bg-gate', 'jaka-gate', 'gate-icon-intro', 'gate-icon-map', 'ornate-crest'] as $file) {
@@ -199,6 +224,11 @@ final class StartGateTest extends CIUnitTestCase
 
         $this->assertStringContainsString('<img class="ornate-crest" src="' . esc(asset_url_versioned('ui/ornate-crest.webp'), 'attr') . '"', $html);
         $this->assertStringNotContainsString('<svg class="ornate-crest"', $html);
+
+        $plain = view('partials/ornate-frame', ['crest' => false]);
+
+        $this->assertStringNotContainsString('ornate-crest', $plain, 'the wide sign-up card leaves the crest out');
+        $this->assertSame(4, substr_count($plain, 'class="ornate-corner'), 'the corners stay');
     }
 
     public function testGateToMapCarriesTheCurtainFlash(): void

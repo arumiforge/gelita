@@ -33,11 +33,9 @@ $focus   = static fn (string $f): string => $first === $f ? ' autofocus' : '';
 
 <?= $this->section('content') ?>
 <section class="register" data-step="3" data-package-gate="page" data-package-next="daftar/3">
-  <?php /* Jaka waving, one still picture (owner, 18 October 2026), standing on the picture's path */ ?>
-  <img class="auth-jaka stage-box" src="<?= esc(asset_url_versioned('ui/jaka-wave.webp'), 'attr') ?>" alt="" width="658" height="1490" decoding="async" draggable="false">
-
   <div class="register-panel ornate-panel stage-box">
-    <?= $this->include('partials/ornate-frame') ?>
+    <?php // Corner flourishes only: no compass crest on the wide card (owner, 20 October 2026) ?>
+    <?= view('partials/ornate-frame', ['crest' => false]) ?>
     <?= $this->include('game/register/_head') ?>
 
     <form method="post" action="<?= base_url('daftar/3') ?>" class="form register-form" data-step="3" autocomplete="off">
@@ -45,6 +43,8 @@ $focus   = static fn (string $f): string => $first === $f ? ' autofocus' : '';
       <div class="register-fields stage-scroll">
       <?= view('partials/form-errors', ['errors' => $errors]) ?>
 
+      <?php // Three columns (tips | name and password | rules and repeat), consent below; see .register-grid-account ?>
+      <div class="register-grid register-grid-account">
       <aside class="why-strong" aria-labelledby="why-strong-title">
         <div class="why-strong-body">
           <h2 class="why-strong-title" id="why-strong-title"><?= icon('key') ?> <?= esc(lang('Game.whyStrongTitle')) ?></h2>
@@ -76,6 +76,7 @@ $focus   = static fn (string $f): string => $first === $f ? ' autofocus' : '';
           'policy'        => $passwordPolicy,
           'errors'        => $errors,
           'usernameField' => 'username',
+          'split'         => true,
       ]) ?>
 
       <div class="field assent-field<?= $invalid('assent') ?>" data-field-name="<?= esc(lang('Game.assentName'), 'attr') ?>">
@@ -84,6 +85,8 @@ $focus   = static fn (string $f): string => $first === $f ? ' autofocus' : '';
           <span><?= esc(lang('Game.assentLabel')) ?></span>
         </label>
         <?php if ($err('assent')): ?><p class="field-error"><?= esc($err('assent')) ?></p><?php endif ?>
+      </div>
+
       </div>
 
       <input type="hidden" name="locale" value="<?= esc($locale, 'attr') ?>">

@@ -187,5 +187,9 @@ final class TouchPlayTest extends CIUnitTestCase
             $this->assertMatchesRegularExpression('~<input id="password" [^>]*enterkeyhint="next"~s', $html, $page);
             $this->assertMatchesRegularExpression('~<input id="password_confirm" [^>]*enterkeyhint="done"~s', $html, $page);
         }
+
+        $this->assertStringContainsString('class="password-field is-split"', $pages['/daftar/3'], 'sign-up: split for its columns');
+        $this->assertStringContainsString('class="password-field"', $pages['/ganti-sandi'], 'ganti sandi: one column as before');
+        $this->assertStringNotContainsString('pw-main', $pages['/ganti-sandi']);
     }
 }
