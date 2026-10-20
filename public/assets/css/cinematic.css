@@ -235,6 +235,20 @@
   cursor: pointer;
 }
 .narrator-tap[hidden] { display: none; }
+/* No slide picture before the tap (owner, 20 October 2026): on a page with a
+   "Ketuk untuk mulai" card the layout's scene stays dark from the first paint
+   until the card is tapped (.is-started), then the picture fades in with
+   slide 1. Without JavaScript noscript.css shows it; if the module never runs
+   (.is-live never comes), it fades in by itself after 10 s, as the curtain does. */
+.stage:has(.narrator:not(.is-started) [data-narrator-tap]) > .scene {
+  opacity: 0;
+  animation: scene-failsafe .8s ease 10s forwards;
+}
+.stage:has(.narrator.is-live:not(.is-started) [data-narrator-tap]) > .scene { animation: none; }
+.stage > .scene { transition: opacity .6s ease; }
+@keyframes scene-failsafe {
+  to { opacity: 1; }
+}
 .narrator-tap-card { display: grid; justify-items: center; gap: var(--gap-5); max-width: 52rem; text-align: center; }
 .narrator-tap-btn {
   display: grid;
@@ -567,37 +581,28 @@ body.is-cinematic .scene-img:is(.is-visible, .is-leaving),
 .dialogue-box .slide-dot::before { width: calc(.625rem + var(--gap-1)); }
 
 /* ---------- Cinematic layout (intro, ending) ----------
-   Coordinates in dp (stage.css §Sinematik): full-size HUD 0–120 with
-   "Bagian n dari N" and the page dots centred in it; Lewati under the menu
-   button; caption 0, 496, 1280 × 224 along the bottom edge, its first row
-   (speaker, title) shared with the narrator controls at the right; the last
-   slide's main button centred between the HUD and the caption. */
+   Coordinates in dp (stage.css §Sinematik): full-size HUD 0–120 with the
+   page dots centred in it (no "Bagian n dari N" text, owner 20 October 2026);
+   Lewati under the menu button; caption 0, 496, 1280 × 224 along the bottom
+   edge, its first row (speaker, title) shared with the narrator controls at
+   the right; the last slide's main button centred between the HUD and the
+   caption. */
 
 /* The HUD band lets taps through to the page dots; its own controls still take them */
 body.is-cinematic .hud { pointer-events: none; }
 body.is-cinematic :is(.hud-identity, .hud-controls, .hud-shards) { pointer-events: auto; }
 
+/* The dots alone, level with the centre of the HUD controls (y 55) */
 .cine-top {
   position: absolute;
-  top: calc(10 * var(--dp));
+  top: calc(55 * var(--dp));
   left: 50%;
   z-index: 3;
   display: grid;
   justify-items: center;
-  row-gap: var(--gap-2); /* the dots sit clear of the eyebrow pill (owner, 18 October 2026) */
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
   -webkit-touch-callout: none;
   user-select: none;
-}
-.cine-top .eyebrow {
-  margin: 0;
-  padding: var(--gap-1) var(--gap-4);
-  border-radius: var(--radius-pill);
-  background: var(--hud-backing);
-  color: var(--gold-300);
-  font-size: 1.125rem;
-  letter-spacing: .06em;
-  text-shadow: 0 1px .25rem rgba(11, 19, 32, .8);
 }
 /* 16 dp dots, 48 dp hit area as wide as dot + gap */
 .cine-top .slide-dots { gap: var(--gap-4); }
@@ -610,11 +615,8 @@ body.is-cinematic :is(.hud-identity, .hud-controls, .hud-shards) { pointer-event
   grid-template-rows: auto minmax(0, 1fr) auto;
   row-gap: var(--gap-2);
   padding: var(--gap-3) var(--gap-7) var(--gap-4);
-  border-top: 1px solid var(--line);
-  background: linear-gradient(to bottom, rgba(11, 19, 32, .84), rgba(11, 19, 32, .94) 45%);
-  box-shadow: 0 -.75rem 2rem rgba(11, 19, 32, .55);
 }
-/* Speaker + title, as tall as the narrator controls beside them; once those
+/* Speaker + title, centred on the narrator controls beside them; once those
    controls show, the right side stays free for them (`--cine-controls-w`) */
 .cine-caption .cine-caption-head { min-height: calc(66 * var(--dp)); }
 .cine.is-live .cine-caption .cine-caption-head { padding-right: calc(var(--cine-controls-w) + var(--gap-4)); }
@@ -653,28 +655,51 @@ body.is-cinematic :is(.hud-identity, .hud-controls, .hud-shards) { pointer-event
 }
 .narrator.is-finished .slide.is-current .cine-final .btn { animation: tap-glow 1.8s ease-in-out infinite; }
 
-/* Narrator controls on the caption's first row, at the right: 56 dp buttons
-   8 dp apart, so their hit areas never overlap */
-.cine { --cine-controls-w: 15rem; }
+/* Narrator controls on the caption's first row, at the right (owner, 20 October
+   2026): no band behind them; 40 dp round buttons on the HUD's skin
+   (`ui.result-hud-control`, else a navy disc with a gold ring) and "Lanjut" on
+   the main-button skin (`ui.result-button-primary`), 40 dp tall. The 48 dp hit
+   areas (.icon-btn::before) with the 8 dp gap end at the neighbour's edge. */
+.cine { --cine-controls-w: 11.5rem; }
 /* With narration audio the controls also hold ⏸/▶, ↻, and Otomatis (narrator.js sets .has-audio) */
-.cine.has-audio { --cine-controls-w: 33rem; }
+.cine.has-audio { --cine-controls-w: 28rem; }
 .cine .narrator-controls {
   position: absolute;
-  top: calc(508 * var(--dp));
+  top: calc(521 * var(--dp));
   right: var(--gap-7);
   z-index: 5;
   flex-wrap: nowrap;
   gap: var(--gap-2);
-  padding: var(--gap-1);
+  padding: 0;
   border: 0;
-  border-radius: var(--radius-pill);
-  background: rgba(11, 19, 32, .82);
-  box-shadow: var(--shadow-2);
+  background: none;
+  box-shadow: none;
 }
-/* No borders inside either (owner, 18 October 2026): the buttons are plain discs */
-.cine .narrator-controls .icon-btn { width: 3.5rem; height: 3.5rem; border: 0; }
-.cine .narrator-controls .icon-btn .icon { width: 1.75rem; height: 1.75rem; }
-.cine .narrator-controls .narrator-toggle { background: rgba(223, 192, 135, .2); color: var(--gold-300); }
+.cine .narrator-controls .icon-btn {
+  isolation: isolate;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 0;
+  background: none;
+  color: var(--gold-300);
+}
+.cine .narrator-controls .icon-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border: .125rem solid var(--gold-500);
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 35%, var(--navy-600), var(--navy-900));
+  box-shadow: 0 .25rem .75rem rgba(1, 7, 19, .5);
+}
+.stage[style*="--skin-hud"] .cine .narrator-controls .icon-btn::after {
+  border: 0;
+  background: var(--skin-hud) center / 101.6% 101.6% no-repeat;
+  filter: brightness(.83) saturate(.8);
+}
+.cine .narrator-controls .icon-btn .icon { width: 1.125rem; height: 1.125rem; filter: drop-shadow(0 1px .1875rem rgba(11, 19, 32, .9)); }
+.cine .narrator-controls .narrator-toggle::after { box-shadow: 0 0 0 .125rem rgba(223, 192, 135, .5), 0 0 .75rem var(--glow); }
 /* ▶ reads "Lanjut" while there is a next slide (the old Lanjut button) */
 .cine .narrator-next.has-label:not(:disabled) {
   width: auto;
@@ -683,18 +708,23 @@ body.is-cinematic :is(.hud-identity, .hud-controls, .hud-shards) { pointer-event
   padding: 0 var(--gap-4) 0 var(--gap-5);
   border: 0;
   border-radius: var(--radius-pill);
-  background: linear-gradient(to bottom, var(--gold-300), var(--gold-500));
+  background: linear-gradient(to bottom, #FFF0C2, var(--gold-500) 50%, var(--gold-600));
   color: var(--navy-900);
-  font-size: var(--fs-body);
+  font-size: var(--fs-caption);
   font-weight: 800;
 }
+.stage[style*="--skin-primary"] .cine .narrator-next.has-label:not(:disabled) {
+  border-radius: 0;
+  background: var(--skin-primary) 50% 50% / 109.69% 122.23% no-repeat;
+}
+.cine .narrator-next.has-label:not(:disabled)::after { display: none; }
 .cine .narrator-next.has-label:not(:disabled) .icon { filter: none; }
 .narrator-next-label { white-space: nowrap; }
 .narrator-next:disabled .narrator-next-label { display: none; }
-.cine .narrator-auto { min-height: 3.5rem; padding: 0 var(--gap-4) 0 var(--gap-3); font-size: var(--fs-body); }
-.cine .narrator-auto-track { width: 2.75rem; height: 1.5rem; border-radius: .75rem; }
-.cine .narrator-auto-track i { width: 1.25rem; height: 1.25rem; }
-.cine .narrator-auto[aria-pressed="true"] .narrator-auto-track i { transform: translateX(1.25rem); }
+.cine .narrator-auto { min-height: 2.5rem; padding: 0 var(--gap-3) 0 var(--gap-2); color: var(--gold-300); font-size: var(--fs-caption); text-shadow: 0 1px .25rem rgba(11, 19, 32, .95); }
+.cine .narrator-auto-track { width: 2rem; height: 1.125rem; border-radius: .5625rem; }
+.cine .narrator-auto-track i { width: .875rem; height: .875rem; }
+.cine .narrator-auto[aria-pressed="true"] .narrator-auto-track i { transform: translateX(.875rem); }
 
 /* Dialogue scenes keep their controls at the top right, under the HUD (y 72);
    the region dialogue's cinematic layout puts them on the caption like the intro */
@@ -830,20 +860,11 @@ body.is-cinematic .nav-bar .btn {
   background: none;
   box-shadow: none;
 }
-.dialogue-cine .narrator-controls .icon-btn { width: 2.5rem; height: 2.5rem; background: rgba(74, 50, 24, .1); color: var(--brown-700); }
-.dialogue-cine .narrator-controls .icon-btn .icon { width: 1.25rem; height: 1.25rem; filter: none; }
-.dialogue-cine .narrator-controls .narrator-toggle { background: rgba(74, 50, 24, .2); color: var(--brown-700); }
-.dialogue-cine .narrator-next.has-label:not(:disabled) { color: var(--navy-900); font-size: var(--fs-caption); }
-/* "Lanjut" wears the gold main-button skin, like the box's old Lanjut */
-.stage[style*="--skin-primary"] .dialogue-cine .narrator-next.has-label:not(:disabled) {
-  border-radius: 0;
-  background: var(--skin-primary) 50% 50% / 109.69% 122.23% no-repeat;
-}
-.dialogue-cine .narrator-auto { min-height: 2.5rem; padding: 0 var(--gap-3) 0 var(--gap-2); color: var(--brown-700); font-size: var(--fs-caption); }
-.dialogue-cine .narrator-auto-track { width: 2rem; height: 1.125rem; border-radius: .5625rem; background: rgba(74, 50, 24, .2); }
-.dialogue-cine .narrator-auto-track i { width: .875rem; height: .875rem; }
+/* The round buttons and "Lanjut" are the intro's (HUD skin, main-button skin,
+   owner 20 October 2026); only Otomatis is drawn in brown on the parchment */
+.dialogue-cine .narrator-auto { color: var(--brown-700); text-shadow: none; }
+.dialogue-cine .narrator-auto-track { background: rgba(74, 50, 24, .2); }
 .dialogue-cine .narrator-auto[aria-pressed="true"] { color: var(--brown-700); }
-.dialogue-cine .narrator-auto[aria-pressed="true"] .narrator-auto-track i { transform: translateX(.875rem); }
 
 /* Last line: "Masuk ke {wilayah}" in the middle between the HUD and the box */
 .dialogue-cine .cine-final { inset: calc(120 * var(--dp)) 0 calc(200 * var(--dp)); grid-auto-flow: column; place-content: center; gap: var(--gap-4); }

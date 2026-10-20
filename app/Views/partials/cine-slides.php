@@ -7,9 +7,11 @@
  * berpindah lewat #{prefix}{n} + :target tanpa JavaScript.
  *
  * Layout (intro redesign, 18 October 2026):
- * - `.cine-top`: "Bagian n dari N" and the page dots, centred in the HUD band;
- * - `.cine-caption`: full-width subtitle panel along the bottom edge; the
- *   speaker and title share their row with the narrator controls (right);
+ * - `.cine-top`: the page dots, centred in the HUD band ("Bagian n dari N"
+ *   only as their label for screen readers, owner 20 October 2026);
+ * - `.cine-caption`: full-width subtitle along the bottom edge, straight on
+ *   the picture (no band, owner 20 October 2026); the speaker and title share
+ *   their row with the narrator controls (right);
  * - `.cine-final`: the last slide's main button, centred on the page, in
  *   capitals without an arrow (owner, 18 October 2026);
  * - `.cine-stage`: on a slide with a character, the figure stands at the left
@@ -60,7 +62,6 @@ $total = count($slides);
       <?php endif ?>
 
       <nav class="cine-top" aria-label="<?= esc($progress, 'attr') ?>">
-        <span class="eyebrow"><?= esc($progress) ?></span>
         <ol class="slide-dots">
           <?php for ($i = 1; $i <= $total; $i++): ?>
             <li>

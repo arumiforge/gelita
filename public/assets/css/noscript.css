@@ -4,3 +4,6 @@
    ada yang dapat menutup tirai, jadi tirai tidak pernah ditampilkan.
    ========================================================================== */
 .curtain { display: none !important; }
+/* Pages with a "Ketuk untuk mulai" card keep their picture dark until the tap
+   (cinematic.css); without JavaScript there is no tap, so it shows at once. */
+.stage > .scene { opacity: 1 !important; animation: none !important; }

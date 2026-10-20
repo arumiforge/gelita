@@ -137,9 +137,14 @@ Decided in an interview with the owner; decisions in the decision log, section *
 - [x] Challenge header (number ring, title, one stats capsule, no region/position line), centred gold action bar, Isi Rumpang dotted blanks without box or number, words and Benar/Salah on the navy plate, "Tentang gambar ini" panel, the star picture for every game star, status medallions on the lantern, region map, and Peta Kedu (PR #175)
 - [x] Add the owner's three status medallions as `public/assets/ui/status-open.webp`, `status-progress.webp`, `status-done.webp` (PR #180); then **Bangun ulang paket** if package mode is on
 
+## Story screens: tap card first, lighter caption (owner, 20 October 2026)
+
+- [ ] Intro, ending, region dialogue, and region done: the slide picture stays dark until "Ketuk untuk mulai" is tapped; intro and ending caption and narrator controls without band or shadow, round controls on the `ui.result-hud-control` skin and Lanjut on `ui.result-button-primary`, all 40 dp; no "Bagian n dari N" text, only the dots (also the region dialogue's round controls)
+
 ## Active branches
 
 Add a row (branch, owner / scope, status) when a session starts a branch; remove it when its PR is merged.
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `pbb/determined-tesla-qpw54u` | Story screens: tap card first, lighter caption | PR open |
