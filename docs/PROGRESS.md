@@ -160,7 +160,7 @@ Decided in an interview with the owner; decisions in the decision log, section *
 
 - [x] GELITA logo in the middle of the HUD and Kembali in the top-right corner on Mulai, Masuk, Daftar, Gerbang; the owner's compass emblem as the crest of every ornate panel; Gerbang on the owner's arch picture with a tall still Jaka (feet darkened into the path), the book and map-scroll emblems on its cards, no panel fill or corner ornaments, the logo instead of the shard plate (PR #196)
 - [ ] After merge, **Bangun ulang paket** if package mode is on
-- [ ] Back plate and sign-up/login redesign (owner, 20 October 2026): Kembali on the owner's navy plate in the HUD's top-left corner on Mulai, Masuk, Daftar, Gerbang; `/daftar/1–3` as one wide centred card without Jaka or compass crest, fields in two or three columns so each step fits without scrolling; `/masuk` without panel fill, frame, ornaments, or crest, rounded fields with icons. After merge, **Bangun ulang paket** if package mode is on
+- [x] Back plate and sign-up/login redesign (owner, 20 October 2026): Kembali on the owner's navy plate in the HUD's top-left corner on Mulai, Masuk, Daftar, Gerbang; `/daftar/1–3` as one wide centred card without Jaka or compass crest, fields in two or three columns so each step fits without scrolling; `/masuk` without panel fill, frame, ornaments, or crest, rounded fields with icons (PR #200). After merge, **Bangun ulang paket** if package mode is on
 
 ## Cinematic start screens (owner, 20 October 2026)
 
@@ -179,4 +179,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 |---|---|---|
 | `sky/vigilant-cerf-lj5cx0` | Start-page smoothness and light | PR open |
 | `pbb/nice-carson-7yeoiz` | Brighter logo, Mulai plate, lettered form buttons, start-page menu (owner, 20 October 2026) | PR open |
-| `claude/redesain-auth-pages-1f8h8r` | Back plate, wide sign-up card in columns, login without panel (owner, 20 October 2026) | PR open |
