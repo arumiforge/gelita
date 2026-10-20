@@ -119,6 +119,7 @@ final class ResultScreenTest extends CIUnitTestCase
         $this->assertStringContainsString('<p class="result-kind">' . lang('Game.engine_puzzle') . '</p>', $page);
         $this->assertStringContainsString('aria-label="' . esc(lang('Game.resultStarsOf', [2, 3]), 'attr') . '"', $page);
         $this->assertSame(2, substr_count($page, 'class="result-star is-on"'));
+        $this->assertSame(1, substr_count($page, 'class="result-star is-off"'), 'the empty star is the same picture, grey and faded');
         $this->assertStringContainsString('<p class="result-shards-count num" aria-label="' . esc(lang('Game.shardEarned', [5, 12]), 'attr') . '">5 / 12</p>', $page);
         $this->assertSame(5, substr_count($page, '<i class="is-on"></i>'), 'one lit segment per shard');
         $this->assertStringContainsString('<dd class="num">2:05</dd>', $page);
@@ -177,7 +178,7 @@ final class ResultScreenTest extends CIUnitTestCase
         $plain = $this->finished();
         $this->assertStringNotContainsString('--skin-', $plain, 'empty slots keep the plain look');
         $this->assertStringContainsString('<span class="orb">', $plain, 'medal fallback');
-        $this->assertStringContainsString('<span class="result-star is-on"><svg', $plain);
+        $this->assertStringContainsString('<img class="result-star is-on" src="' . esc(game_asset_url('ui/star.webp'), 'attr'), $plain, 'the shipped star until the slot is filled');
 
         $this->media = [
             'ui.result-panel'          => 'assets/uploads/ui.result-panel.webp',

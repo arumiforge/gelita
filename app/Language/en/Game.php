@@ -51,6 +51,7 @@ return [
     'shardDone'       => 'Done',
     'shardOpen'       => 'Open',
     'shardLocked'     => 'Locked',
+    'shardStarted'    => 'In progress',
     'mapKedu'         => 'Kedu Map',
 
     // Characters

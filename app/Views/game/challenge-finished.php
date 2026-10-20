@@ -9,7 +9,7 @@
  * only sample data.
  *
  * Panel (skin `ui.result-panel`, plain navy and gold while empty):
- * - challenge kind, title, stars 0–3 (`ui.result-star`, outline when empty);
+ * - challenge kind, title, stars 0–3 (`star_src()`: `ui.result-star` or the shipped star, grey and faded when empty);
  * - shard medal (`ui.result-medal`) with the shard count and a segment bar;
  * - two cards: Waktu and Percobaan (Ketukan salah for Cari Objek);
  * - finish reason badge (Semua benar / Disimpan apa adanya) and one message:
@@ -69,7 +69,7 @@ $message = match (true) {
     default                 => null,
 };
 
-$starSrc  = media_key_src('ui.result-star');
+$starSrc  = star_src();
 $medalSrc = media_key_src('ui.result-medal');
 $bgResult = $level !== null ? media_key_src('bg.result.' . $level->code) : null;
 ?>
@@ -112,11 +112,7 @@ $nextAssets = ! empty($levelCompleted) && isset($nextRegion['curtain'])
       <h1 id="result-title"><?= esc(lang('Game.finishedTitle')) ?></h1>
       <p class="result-stars" role="img" aria-label="<?= esc(lang('Game.resultStarsOf', [$stars, 3]), 'attr') ?>">
         <?php for ($i = 1; $i <= 3; $i++): ?>
-          <?php if ($i <= $stars && $starSrc !== null): ?>
-            <img class="result-star is-on" src="<?= esc($starSrc, 'attr') ?>" alt="" draggable="false">
-          <?php else: ?>
-            <span class="result-star<?= $i <= $stars ? ' is-on' : '' ?>"><?= icon('star') ?></span>
-          <?php endif ?>
+          <img class="result-star<?= $i <= $stars ? ' is-on' : ' is-off' ?>" src="<?= esc($starSrc, 'attr') ?>" alt="" draggable="false">
         <?php endfor ?>
       </p>
     </header>

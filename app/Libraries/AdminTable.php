@@ -222,7 +222,7 @@ final class AdminTable
                 return filter_var($value, FILTER_VALIDATE_BOOLEAN) ? 'ya' : 'tidak';
 
             case 'stars':
-                return stars_html((int) $value, 5);
+                return stars_html((int) $value, 5, false);
 
             case 'clip':
                 $text = (string) $value;

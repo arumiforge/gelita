@@ -156,6 +156,14 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
 .shard.is-locked { border-color: rgba(234, 240, 250, .3); background: rgba(234, 240, 250, .08); }
 .lantern-legend { display: flex; flex-wrap: wrap; align-items: center; gap: var(--gap-1) var(--gap-2); margin: 0; color: var(--ink-dim); font-size: var(--fs-caption); }
 .lantern-legend .shard { width: .75rem; height: .75rem; }
+.shard-item { display: inline-flex; }
+/* Started, not finished: half a dot until the owner's medallion is installed */
+.shard.is-started { border-style: solid; background: linear-gradient(to right, var(--gold-500) 50%, transparent 50%); }
+/* The owner's status medallions (20 October 2026), status_badge_src(): navy = open, gold arc =
+   started, green with a check = done. A locked shard keeps its dot. */
+.shard.has-badge { width: 1.5rem; height: 1.5rem; border: 0; background: none; box-shadow: none; }
+.shard.has-badge img { display: block; width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 .0625rem .125rem rgba(0, 0, 0, .6)); }
+.lantern-legend .shard.has-badge { width: 1.125rem; height: 1.125rem; }
 
 /* =========================== WELCOME =========================== */
 /* Hanya logo dan satu tombol Mulai, di tengah layar (tanpa navigasi bawah) */
@@ -825,6 +833,20 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
 .map-point.is-completed .pin-icon.has-art { background: none; }
 .map-point.is-locked .pin-icon.has-art { background: none; box-shadow: none; }
 .map-point.is-locked .pin-icon.has-art .art { filter: grayscale(1) brightness(.7) drop-shadow(0 .125rem .375rem rgba(11, 19, 32, .8)); }
+/* Status medallion on a region-map pin (owner, 20 October 2026): the picture replaces the
+   gold disc and its icon; open and started pins keep their number on top. Locked stays. */
+.map-point .pin-icon.has-badge { position: relative; border: 0; background: none; box-shadow: none; }
+.pin-badge {
+  position: absolute;
+  inset: -.375rem;
+  width: calc(100% + .75rem);
+  height: calc(100% + .75rem);
+  object-fit: contain;
+  filter: drop-shadow(0 .125rem .375rem rgba(11, 19, 32, .8));
+  -webkit-user-drag: none;
+}
+.pin-icon.has-badge b { position: relative; color: #F6E7C4; text-shadow: 0 .0625rem .25rem rgba(0, 0, 0, .9); }
+.map-point.is-open .pin-icon.has-badge { animation: pin-art-pulse 2s ease-in-out infinite; }
 .pin-mark { position: absolute; right: -.25rem; bottom: -.25rem; display: grid; place-items: center; width: 1.5rem; height: 1.5rem; border: .125rem solid var(--navy-900); border-radius: 50%; background: var(--navy-700); color: var(--ink-dim); }
 .map-point.is-completed .pin-mark { background: var(--gold-300); color: var(--navy-900); }
 .pin-mark .icon { width: .875rem; height: .875rem; }
@@ -1002,14 +1024,15 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
    §Tantangan; di sini hanya rupa. .arena-panel/.arena/.arena-body hanyalah
    pembungkus (display: contents) agar panel engine memakai koordinat panggung. */
 .challenge { position: absolute; inset: 0; }
-/* Bingkai ukiran di belakang kepala + arena: 16, 56, 1248 × 656 */
+/* Bingkai ukiran di belakang arena: 16, 124, 1248 × 588. The header is a
+   plate of its own above it (owner's header, 20 October 2026). */
 .challenge::before {
   content: "";
   position: absolute;
   left: calc(16 * var(--dp));
-  top: calc(60 * var(--dp));
+  top: calc(124 * var(--dp));
   width: calc(1248 * var(--dp));
-  height: calc(652 * var(--dp));
+  height: calc(588 * var(--dp));
   border: .125rem solid var(--gold-600);
   border-radius: var(--radius-lg);
   background: linear-gradient(to bottom, rgba(38, 53, 90, .94), rgba(18, 28, 46, .96));
@@ -1017,34 +1040,117 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
 }
 .arena-panel, .arena, .arena-body { display: contents; }
 
+/* Header plate (owner's picture, 20 October 2026): a navy pill with a thin gold
+   rim and a blue glow along its lower edge. The number sits on the gold-and-navy
+   ring at the left end; the ring is a little taller than the plate. */
 .challenge-head {
   z-index: 5;
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  gap: var(--gap-3);
-  border-bottom: 1px solid var(--line);
+  gap: var(--gap-4);
+  padding: 0 var(--gap-2) 0 var(--gap-2);
+  border: 1px solid rgba(223, 192, 135, .7);
+  border-radius: var(--radius-pill);
+  background:
+    radial-gradient(60% 140% at 50% 120%, rgba(64, 120, 220, .28), transparent 70%),
+    linear-gradient(to bottom, #172A4E, #0A1730 70%, #081226);
+  box-shadow:
+    inset 0 0 0 .1875rem rgba(8, 18, 38, .9),
+    inset 0 0 0 .25rem rgba(223, 192, 135, .28),
+    0 .375rem 1.25rem rgba(0, 0, 0, .45);
+}
+.challenge-head::after {
+  content: "";
+  position: absolute;
+  right: 22%;
+  bottom: -1px;
+  left: 22%;
+  height: .125rem;
+  border-radius: 50%;
+  background: linear-gradient(to right, transparent, rgba(126, 182, 255, .95), transparent);
+  box-shadow: 0 0 .75rem rgba(90, 150, 255, .75);
+  pointer-events: none;
 }
 .badge-pos {
+  position: relative;
   display: grid;
   place-items: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  border: .125rem solid var(--gold-300);
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, var(--gold-300), var(--gold-600));
+  width: 4rem;
+  height: 4rem;
+  margin: -.25rem 0;
+}
+.badge-pos img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 .125rem .25rem rgba(0, 0, 0, .55));
+  -webkit-user-drag: none;
+}
+.badge-pos-no {
+  position: relative;
   color: var(--navy-900);
-  font-size: var(--fs-body);
-  font-weight: 600;
+  font-family: Georgia, 'Times New Roman', serif; /* Cinzel Decorative draws 1 like I */
+  font-size: 1.625rem;
+  font-weight: 700;
+  line-height: 1;
 }
 .challenge-info { display: grid; min-width: 0; line-height: 1.2; }
-.challenge-info .eyebrow { overflow: hidden; font-size: .8125rem; text-overflow: ellipsis; white-space: nowrap; }
-.challenge-info .title { margin: 0; overflow: hidden; font-size: var(--fs-body); text-overflow: ellipsis; white-space: nowrap; }
+.challenge-info .title {
+  margin: 0;
+  overflow: hidden;
+  color: #F6E7C4;
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  text-shadow: 0 .125rem .25rem rgba(0, 0, 0, .7);
+  white-space: nowrap;
+}
 .challenge-chips { display: flex; flex-wrap: nowrap; align-items: center; justify-content: flex-end; gap: var(--gap-2); }
 .challenge-chips .chip { min-height: 2.5rem; font-size: var(--fs-caption); }
 .challenge-chips .btn-sm { min-height: 2.5rem; }
-.chip-tally { gap: var(--gap-3); }
+/* One capsule: timer | ✓/✗ (its own small pill) | Kesempatan ○○○, split by thin gold lines */
+.challenge-stats {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  height: 2.75rem;
+  padding: 0 var(--gap-4);
+  border: 1px solid rgba(223, 192, 135, .55);
+  border-radius: var(--radius-pill);
+  background: rgba(6, 14, 30, .72);
+  box-shadow: inset 0 0 .75rem rgba(80, 130, 220, .2);
+  color: var(--ink);
+  font-weight: 700;
+  white-space: nowrap;
+}
+.challenge-stats > * { position: relative; display: inline-flex; align-items: center; gap: var(--gap-2); }
+.challenge-stats > * + *::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -.625rem;
+  width: 1px;
+  height: 1.75rem;
+  transform: translateY(-50%);
+  background: linear-gradient(to bottom, transparent, rgba(223, 192, 135, .6), transparent);
+}
+.challenge-stats b { font-size: var(--fs-body); }
+.stat-timer .icon { width: 1.375rem; height: 1.375rem; color: var(--gold-300); }
+.chip-tally {
+  gap: var(--gap-2);
+  height: 2rem;
+  padding: 0 var(--gap-3);
+  border: 1px solid rgba(223, 192, 135, .4);
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, .04);
+}
+.tally-sep { color: var(--ink-dim); font-weight: 400; }
 .tally-ok, .tally-bad { display: inline-flex; align-items: center; gap: .125rem; }
+.tally-ok .icon, .tally-bad .icon { width: 1.125rem; height: 1.125rem; stroke-width: 3; }
 .tally-ok .icon { color: var(--ok); }
 .tally-bad .icon { color: var(--bad); }
 .chip-btn { position: relative; border: 1px solid var(--gold-600); color: var(--gold-300); cursor: pointer; transition: transform .15s; user-select: none; }
@@ -1063,6 +1169,22 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
 
 .confirm-down .confirm-box { top: calc(100% + var(--gap-2)); bottom: auto; }
 .challenge-exit > summary { cursor: pointer; }
+/* Petunjuk and Keluar right of the capsule, in its navy-and-gold look */
+.challenge-chips .chip-btn,
+.challenge-exit > .btn {
+  min-height: 2.75rem;
+  padding: 0 var(--gap-4);
+  border: 1px solid rgba(223, 192, 135, .55);
+  border-radius: var(--radius-pill);
+  background: rgba(6, 14, 30, .72);
+  color: var(--gold-300);
+  font-size: var(--fs-caption);
+  font-weight: 700;
+}
+@media (hover: hover) {
+  .challenge-chips .chip-btn:hover,
+  .challenge-exit > .btn:hover { background: rgba(38, 53, 90, .9); color: #FFE7A8; }
+}
 
 /* Panel instruksi (tempatnya per engine, stage.css) */
 .challenge-aside { display: grid; align-content: start; gap: var(--gap-3); }
@@ -1084,9 +1206,49 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
 .challenge-tips { display: grid; gap: var(--gap-3); margin: 0; padding: 0 var(--gap-2) 0 var(--gap-6); color: var(--ink); font-size: var(--fs-caption); line-height: 1.5; }
 .challenge-tips li::marker { color: var(--gold-500); }
 .hint-text { margin: 0; color: var(--ink-dim); font-size: var(--fs-caption); text-align: center; }
-.arena-actions { display: flex; align-items: center; justify-content: flex-end; gap: var(--gap-3); }
+/* Action bar of the batch engines (owner's picture, 20 October 2026): the gold
+   button centred across the arena, a thin gold rule on each side ending in a
+   four-point ornament next to the button, and a blue glow under the button. */
+.arena-actions { z-index: 1; display: flex; align-items: center; justify-content: center; gap: var(--gap-3); }
+.arena-actions::before,
+.arena-actions::after {
+  content: "";
+  flex: 0 1 20rem;
+  height: 1.5rem;
+  --ornament: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2.5Q13 11 21.5 12Q13 13 12 21.5Q11 13 2.5 12Q11 11 12 2.5Z' fill='none' stroke='%23DFC087' stroke-width='1.4'/%3E%3Cpath d='M12 9.5L14.5 12L12 14.5L9.5 12Z' fill='%23DFC087'/%3E%3C/svg%3E");
+}
+.arena-actions::before {
+  background:
+    var(--ornament) right center / 1.5rem no-repeat,
+    linear-gradient(to right, transparent, var(--gold-600)) left center / calc(100% - 1.75rem) 1px no-repeat;
+}
+.arena-actions::after {
+  background:
+    var(--ornament) left center / 1.5rem no-repeat,
+    linear-gradient(to left, transparent, var(--gold-600)) right center / calc(100% - 1.75rem) 1px no-repeat;
+}
 .arena-actions .btn-lg { min-height: var(--tap); padding: var(--gap-2) var(--gap-6); font-size: var(--fs-body); }
-.challenge-puzzle .arena-actions { justify-content: center; }
+/* Mixed-case serif label as in the owner's picture (Cinzel would set it in capitals) */
+.arena-actions .btn-action {
+  min-width: 16rem;
+  min-height: 3.25rem;
+  gap: var(--gap-4);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.375rem;
+}
+.arena-actions .btn-action .icon { width: 1.25rem; height: 1.25rem; stroke-width: 3; }
+.arena-actions .btn-action::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  right: 12%;
+  bottom: -.625rem;
+  left: 12%;
+  height: .875rem;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(96, 160, 255, .85), rgba(96, 160, 255, 0));
+  pointer-events: none;
+}
 .arena-alert, .arena-empty { margin: 0; }
 
 /* ---------- Puzzle ----------
@@ -1163,16 +1325,49 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
 .piece.is-selected .piece-art { filter: drop-shadow(0 0 .25rem var(--gold-500)); }
 .piece.is-misplaced .piece-edge { stroke: var(--bad); stroke-width: 3; }
 .piece.is-locked { cursor: default; }
+/* "Tentang gambar ini" (owner's picture, 20 October 2026): a navy panel with a thin
+   gold rim and a gold corner at the top right, an "i" medallion and gold title over
+   a gold rule, white text, and faint mountains along the bottom. The ornaments are
+   backgrounds, so they stay put while a long text scrolls. */
 .puzzle-caption {
-  align-self: start;
   margin: 0;
-  padding: var(--gap-2) var(--gap-3);
-  border-left: .1875rem solid var(--gold-500);
-  border-radius: .375rem;
-  background: var(--veil-strong);
+  padding: var(--gap-5) var(--gap-5) var(--gap-7);
+  border: 1px solid rgba(223, 192, 135, .6);
+  border-radius: var(--radius);
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M4 3H33Q37 3 37 7V36' fill='none' stroke='%23DFC087' stroke-width='1.6'/%3E%3Cpath d='M14 7H30Q33 7 33 10V26' fill='none' stroke='%23DFC087' stroke-width='1' opacity='.7'/%3E%3Cpath d='M37 1L39 3L37 5L35 3Z' fill='%23F0DFB8'/%3E%3C/svg%3E") right .25rem top .25rem / 2.5rem no-repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 80' preserveAspectRatio='none'%3E%3Cpath d='M0 80V58L38 34L62 46L104 14L140 42L176 26L214 50L252 30L290 48L320 36V80Z' fill='%2393B4E8' opacity='.08'/%3E%3Cpath d='M0 80V66L52 48L88 60L132 36L170 58L212 44L258 62L296 52L320 58V80Z' fill='%2393B4E8' opacity='.08'/%3E%3C/svg%3E") center bottom / 100% 5rem no-repeat,
+    linear-gradient(to bottom, #13223F, #0B1730);
+  box-shadow: inset 0 0 0 .25rem rgba(8, 16, 34, .55), var(--shadow-1);
+  color: var(--ink);
 }
-.puzzle-caption b { color: var(--gold-300); font-size: var(--fs-caption); }
-.puzzle-caption p { margin: var(--gap-1) 0 0; }
+.puzzle-caption-head {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-3);
+  padding-bottom: var(--gap-4);
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M6 1L11 6L6 11L1 6Z' fill='none' stroke='%23DFC087' stroke-width='1.4'/%3E%3C/svg%3E") right 0 bottom 0 / .75rem no-repeat,
+    linear-gradient(to right, var(--gold-600), rgba(199, 162, 101, .5)) left 0 bottom .34rem / calc(100% - 1rem) 1px no-repeat;
+}
+.puzzle-caption-icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: .125rem solid var(--gold-500);
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 35%, #1D3157, #0B1730);
+  box-shadow: 0 0 0 .1875rem rgba(8, 16, 34, .8), 0 0 0 .25rem rgba(223, 192, 135, .4);
+  color: var(--gold-300);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.375rem;
+  font-weight: 700;
+  line-height: 1;
+}
+.puzzle-caption-head b { color: #F0D58C; font-family: Georgia, 'Times New Roman', serif; font-size: 1.375rem; line-height: 1.2; }
+.puzzle-caption p { margin: var(--gap-4) 0 0; font-size: var(--fs-body); line-height: 1.6; }
 
 /* ---------- Rumpang ---------- */
 .rumpang, .rumpang-main { display: contents; }
@@ -1183,33 +1378,43 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
 .sentence::marker { color: var(--gold-500); font-family: var(--font-mono); font-size: var(--fs-body); }
 .sentence-source { display: block; color: var(--ink-dim); font-size: var(--fs-caption); line-height: 1.4; }
 
+/* Rumpang (owner, 20 October 2026): a dotted line in the sentence, no box and no
+   number. The chosen word sits on the line, so it reads as written above the dots.
+   An empty blank keeps a no-break space (rumpang.js), so the line stays on the
+   text's baseline whether or not a word is in it. */
 .blank {
+  --dots: var(--gold-500);
   position: relative;
-  display: inline-grid;
-  place-items: center;
+  display: inline-flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: var(--gap-1);
   min-width: 7.5rem;
-  min-height: var(--tap);
-  margin: 0 var(--gap-1);
-  padding: 0 var(--gap-3);
-  border: .125rem dashed var(--gold-500);
-  border-radius: var(--radius);
-  background: rgba(223, 192, 135, .08);
+  margin: 0 .25rem;
+  padding: 0 .375rem .4375rem;
+  border: 0;
+  border-radius: .375rem;
+  background: radial-gradient(circle, var(--dots) 0 .1rem, transparent .11rem) left bottom / .5rem .375rem repeat-x;
   color: var(--gold-300);
+  font: inherit;
   font-weight: 700;
-  vertical-align: middle;
-  transition: transform .15s;
+  line-height: 1.25;
+  vertical-align: baseline;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform .15s, background-color .15s;
   -webkit-touch-callout: none;
   user-select: none;
 }
-.blank.is-active { border-style: solid; box-shadow: 0 0 0 .1875rem rgba(223, 192, 135, .35); }
-.blank.is-filled { border-style: solid; background: rgba(223, 192, 135, .18); color: var(--ink); }
-.blank.is-correct { border: .125rem solid var(--ok); background: rgba(143, 209, 79, .14); }
-.blank.is-wrong { border: .125rem solid var(--bad); background: rgba(217, 112, 74, .14); }
-.blank.is-correct::after { content: " ✓"; color: var(--ok); }
-.blank:not(:disabled):active { transform: scale(.96); border-style: solid; }
-.blank.is-wrong::after { content: " ✗"; color: var(--bad); }
+.blank.is-active { --dots: var(--gold-300); background-color: rgba(223, 192, 135, .2); }
+.blank.is-filled { color: var(--ink); }
+.blank.is-correct { --dots: var(--ok); color: var(--ok); }
+.blank.is-wrong { --dots: var(--bad); color: var(--bad); }
+.blank.is-correct::after { content: "✓"; }
+.blank.is-wrong::after { content: "✗"; }
+.blank:not(:disabled):active { transform: scale(.96); }
 
-/* Bacaan rumpang (kelas 5): paragraf utuh, rumpang bernomor di dalam kalimat */
+/* Bacaan rumpang (kelas 5): paragraf utuh, rumpang di dalam kalimat */
 .rumpang-reading {
   display: grid;
   align-content: start;
@@ -1221,29 +1426,11 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
   color: var(--brown-700);
 }
 .rumpang-reading p { margin: 0; font-size: var(--fs-reading); line-height: 2.2; }
-/* The number sits inside the blank's top-left corner as a tab with the
-   blank's own corner radius. It stays outside the <button> (rumpang.js
-   rewrites the button's text), so the wrap hugs the button exactly. */
-.blank-wrap { position: relative; display: inline-flex; margin: 0 .125rem; vertical-align: middle; white-space: nowrap; }
-.blank-no {
-  position: absolute;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  min-width: 1.375rem;
-  padding: .125rem .375rem;
-  border-radius: var(--radius) 0 var(--radius) 0;
-  background: var(--brown-700);
-  color: var(--parchment);
-  font-size: .8125rem;
-  font-weight: 700;
-  line-height: 1.2;
-  text-align: center;
-  pointer-events: none;
-}
-.rumpang-reading .blank { min-width: 7.5rem; min-height: 2.75rem; margin: 0; padding: 0 var(--gap-6); border-color: var(--brown-500); background: rgba(255, 255, 255, .55); color: var(--brown-700); }
-.rumpang-reading .blank.is-active { border-color: var(--gold-600); box-shadow: 0 0 0 .1875rem rgba(178, 130, 52, .35); }
-.rumpang-reading .blank.is-filled { background: #FFF6DF; color: var(--brown-700); }
+.rumpang-reading .blank { --dots: var(--brown-500); color: var(--brown-700); }
+.rumpang-reading .blank.is-active { --dots: var(--gold-600); background-color: rgba(178, 130, 52, .2); }
+.rumpang-reading .blank.is-filled { color: var(--navy-800); }
+.rumpang-reading .blank.is-correct { --dots: var(--ok-ink); color: var(--ok-ink); }
+.rumpang-reading .blank.is-wrong { --dots: var(--bad-ink); color: var(--bad-ink); }
 
 .word-bank {
   display: flex;
@@ -1285,6 +1472,36 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
   transform: translate(-50%, -50%);
 }
 .word.is-used { opacity: .35; text-decoration: line-through; }
+
+/* Answer choices on the navy plate (owner, 20 October 2026): the Isi Rumpang words
+   and the Benar/Salah choices. border-image keeps the plate's ornamented ends at
+   their shape and stretches only the plain middle; each end is as wide as the
+   plate's end at this height (115 of 131 px tall, see Kenali). A picked choice
+   glows gold and keeps its ● mark, so the pick never rests on colour alone. */
+.challenge[style*="--plate-navy"] :is(.word, .choice) {
+  min-height: 0;
+  height: 2.75rem;
+  padding: 0 .25rem;
+  border-style: solid;
+  border-width: 0 2.375rem;
+  border-radius: 0;
+  border-image: var(--plate-navy) 0 115 fill / 0 2.375rem stretch;
+  background: none;
+  color: #F3D58A;
+  text-shadow: 0 1px .1875rem rgba(0, 0, 0, .8);
+  transition: transform .15s, filter .15s, opacity .15s;
+}
+.challenge[style*="--plate-navy"] .choice { display: inline-flex; align-items: center; justify-content: center; gap: .375rem; height: 3rem; border-width: 0 2.625rem; border-image-width: 0 2.625rem; }
+@media (hover: hover) {
+  .challenge[style*="--plate-navy"] :is(.word:not(:disabled), .choice):hover { background: none; color: #FFE7A8; filter: brightness(1.15); }
+}
+.challenge[style*="--plate-navy"] .word:not(:disabled):active,
+.challenge[style*="--plate-navy"] .choice:active { background: none; filter: brightness(1.2); }
+.challenge[style*="--plate-navy"] .choice:has(input:checked) {
+  background: none;
+  color: #FFF3C4;
+  filter: brightness(1.18) drop-shadow(0 0 .375rem rgba(255, 210, 110, .85));
+}
 
 /* ---------- Boleh (Benar / Salah) ---------- */
 .passage {
@@ -1626,6 +1843,9 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
   color: #F6DE9C;
 }
 .kedu-done .icon { width: 1.75rem; height: 1.75rem; stroke-width: 3.2; filter: drop-shadow(0 0 .25rem rgba(246, 222, 156, .6)); }
+/* The owner's green "done" medallion (20 October 2026) replaces the drawn disc and check */
+.kedu-lock.kedu-done.has-badge { width: 3.25rem; height: 3.25rem; border: 0; background: none; box-shadow: none; }
+.kedu-done.has-badge img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 .25rem .375rem rgba(0, 0, 0, .55)); }
 .kedu-unheard {
   position: absolute;
   top: .75rem;
@@ -1780,10 +2000,7 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
 .kedu-panel-progress .kedu-bar { flex: 1; min-width: 8rem; height: 1rem; }
 .kedu-panel-progress .num { flex: none; color: #F3ECD9; }
 .kedu-panel-stars { display: flex; gap: .625rem; margin: .75rem 0 0; }
-.kedu-star { display: grid; place-items: center; width: 2.375rem; height: 2.375rem; object-fit: contain; color: #6F7C99; }
-.kedu-star .icon { width: 100%; height: 100%; fill: none; stroke-width: 1.4; }
-.kedu-star.is-on { color: var(--gold-300); }
-span.kedu-star.is-on .icon { fill: currentColor; }
+.kedu-star { display: block; width: 2.375rem; height: 2.375rem; object-fit: contain; }
 .kedu-panel-hint { display: flex; gap: .5rem; margin: 1.25rem 0 0; color: #B8C8D6; font-size: 1.125rem; line-height: 1.4; }
 .kedu-panel-hint .icon { flex: none; width: 1.25rem; height: 1.25rem; margin-top: .1875rem; }
 
@@ -2016,10 +2233,8 @@ span.kedu-star.is-on .icon { fill: currentColor; }
   gap: 1.25rem;
   margin: 0;
 }
-.result-star { display: grid; place-items: center; width: 3.5833rem; height: 3.5833rem; object-fit: contain; color: #8E9AC4; }
-.result-star .icon { width: 100%; height: 100%; fill: none; stroke-width: 1.4; }
-.result-star.is-on { color: var(--gold-300); }
-span.result-star.is-on .icon { fill: currentColor; filter: drop-shadow(0 0 .375rem var(--glow)); }
+.result-star { display: block; width: 3.5833rem; height: 3.5833rem; object-fit: contain; }
+.result-star.is-on { filter: drop-shadow(0 0 .375rem var(--glow)); }
 
 /* Shard medal and count: 40, 141 inside the panel */
 .result-shards { position: absolute; top: 8.8rem; left: 2.4875rem; width: 30.9167rem; height: 14.1667rem; text-align: left; }
@@ -2656,6 +2871,7 @@ html.js .book-frame img.is-loaded { opacity: 1; }
 .region-badge-art { display: grid; place-items: center; width: 4.5rem; height: 4.5rem; border-radius: 50%; background: rgba(255, 255, 255, .06); }
 .region-badge-art img { width: 4.5rem; height: 4.5rem; object-fit: contain; }
 .region-badge-art .icon { width: 2rem; height: 2rem; }
+.region-badge-art .star-art { width: 3rem; height: 3rem; }
 .region-badge.is-earned .region-badge-art { background: var(--gold-500); color: var(--navy-900); }
 .region-badge.is-earned .region-badge-art .icon { fill: currentColor; }
 .region-badge-name { font-weight: 700; }
@@ -2690,18 +2906,17 @@ html.js .book-frame img.is-loaded { opacity: 1; }
   cursor: pointer;
 }
 .rating-star input { position: absolute; opacity: 0; pointer-events: none; }
-.rating-star .icon { width: 2.5rem; height: 2.5rem; fill: var(--star-fill, none); transition: transform .15s; }
+.rating-star .star-art { width: 2.5rem; height: 2.5rem; transition: transform .15s, filter .15s, opacity .15s; }
 @media (hover: hover) {
-  .rating-star:hover { color: var(--brown-500); }
+  .rating-star:hover .star-art { opacity: .75; }
 }
-.rating-star:active { color: var(--brown-500); }
-.rating-star:active .icon { transform: scale(.9); }
+.rating-star:active .star-art { transform: scale(.9); }
 .rating-star:has(input:focus-visible) { outline: .1875rem solid var(--navy-800); outline-offset: 1px; }
 .rating-stars:has(input[value="1"]:checked) .rating-star:nth-child(-n + 1),
 .rating-stars:has(input[value="2"]:checked) .rating-star:nth-child(-n + 2),
 .rating-stars:has(input[value="3"]:checked) .rating-star:nth-child(-n + 3),
 .rating-stars:has(input[value="4"]:checked) .rating-star:nth-child(-n + 4),
-.rating-stars:has(input[value="5"]:checked) .rating-star:nth-child(-n + 5) { --star-fill: currentColor; color: var(--brown-500); }
+.rating-stars:has(input[value="5"]:checked) .rating-star:nth-child(-n + 5) .star-art { filter: none; opacity: 1; }
 
 /* =========================== PERILAKU JAVASCRIPT (tahap 6) ===========================
    Kelas state yang hanya dipasang JavaScript. Tanpa JavaScript tidak ada yang
@@ -2741,8 +2956,6 @@ html.js .book-frame img.is-loaded { opacity: 1; }
   text-shadow: 0 0 .1875rem var(--navy-900);
 }
 
-/* Rumpang: tanda ✓/✗ (::after) di samping kata, bukan baris baru di dalam kotak */
-.blank.is-correct, .blank.is-wrong { grid-auto-flow: column; gap: var(--gap-1); }
 .blank:disabled { opacity: 1; cursor: default; }
 .word:disabled { cursor: default; }
 
@@ -2779,7 +2992,7 @@ html.js .book-frame img.is-loaded { opacity: 1; }
 
 /* Penanda 3 kesempatan (Dok 2 §5.3): bulatan terisi = sisa kesempatan */
 .chip-tries { gap: var(--gap-2); }
-.tries-label { font-size: var(--fs-caption); }
+.tries-label { font-size: var(--fs-caption); font-weight: 600; }
 .tries-dots { display: inline-flex; gap: .25rem; }
 .tries-dot {
   width: .75rem;
@@ -2815,7 +3028,7 @@ html.js .book-frame img.is-loaded { opacity: 1; }
 
 @media (prefers-reduced-motion: reduce) {
   .confetti { display: none; }
-  .flame-3, .orb, .map-point.is-open .pin-icon, .map-point.is-in_progress .pin-icon, .map-point.is-open .pin-icon.has-art, .map-point.is-in_progress .pin-icon.has-art { animation: none; }
+  .flame-3, .orb, .map-point.is-open .pin-icon, .map-point.is-in_progress .pin-icon, .map-point.is-open .pin-icon.has-art, .map-point.is-in_progress .pin-icon.has-art, .map-point.is-open .pin-icon.has-badge { animation: none; }
   .dialogue-stage .character { transition: none; }
   .object.is-shaking, .lantern.is-updated .lantern-count b { animation: none; }
   /* Phase F1.5: the start button stops pulsing; hover, selection, and press
@@ -2827,7 +3040,7 @@ html.js .book-frame img.is-loaded { opacity: 1; }
   .word:not(:disabled):active, .blank:not(:disabled):active,
   .choice:active, .choice-pill:active, .chip-btn:active, .hunt-zoom:active,
   .embed-play:hover .embed-play-icon, .embed-play:focus-visible .embed-play-icon, .embed-play:active .embed-play-icon,
-  .rating-star:active .icon { transform: none; }
+  .rating-star:active .star-art { transform: none; }
 }
 
 /* Peta Kedu redesign without motion */

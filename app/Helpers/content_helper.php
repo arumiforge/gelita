@@ -541,13 +541,64 @@ if (! function_exists('audio_src')) {
     }
 }
 
+if (! function_exists('status_badge_src')) {
+    /**
+     * The owner's status medallion (20 October 2026) for a challenge on the
+     * maps and in the lantern: `open` (navy), `progress` (gold arc, an
+     * attempt started but not finished), `done` (green with a check).
+     * Locked has none and keeps its lock. Null while the picture
+     * `assets/ui/status-{state}.webp` is not installed: the old mark stays.
+     *
+     * @param array{status?: string, started?: bool} $node
+     */
+    function status_badge_src(array $node): ?string
+    {
+        $state = match ($node['status'] ?? '') {
+            'completed' => 'done',
+            'open'      => ! empty($node['started']) ? 'progress' : 'open',
+            default     => null,
+        };
+
+        if ($state === null || ! is_file(FCPATH . 'assets/ui/status-' . $state . '.webp')) {
+            return null;
+        }
+
+        return game_asset_url('ui/status-' . $state . '.webp');
+    }
+}
+
+if (! function_exists('star_src')) {
+    /**
+     * The game's star picture (owner, 20 October 2026: every star in the
+     * game uses it): the `ui.result-star` slot when installed, else the
+     * same catalogue art shipped as `assets/ui/star.webp`.
+     */
+    function star_src(): string
+    {
+        return media_key_src('ui.result-star') ?? game_asset_url('ui/star.webp');
+    }
+}
+
+if (! function_exists('star_img')) {
+    /**
+     * One star picture, decorative (alt=""): the caller says the count in
+     * text or an aria-label. Not earned → `is-off`, drawn grey and faded by
+     * CSS (same shape, so the count never rests on colour alone).
+     */
+    function star_img(bool $on = true, string $class = 'star-art'): string
+    {
+        return '<img class="' . esc(trim($class . ($on ? '' : ' is-off'))) . '" src="' . esc(star_src(), 'attr')
+            . '" alt="" width="128" height="128" decoding="async" draggable="false">';
+    }
+}
+
 if (! function_exists('stars_html')) {
     /**
-     * Bintang 0..$max sebagai ikon + teks alternatif. Warna bukan satu-satunya
-     * penanda: bintang kosong bergaris, bintang penuh terisi, dan pembaca layar
-     * membaca "2 / 3".
+     * Bintang 0..$max sebagai gambar + teks alternatif. Warna bukan
+     * satu-satunya penanda: bintang kosong pudar keabu-abuan, dan pembaca
+     * layar membaca "2 / 3". `$art = false` keeps the line icon (admin panel).
      */
-    function stars_html(int $stars, int $max = 3): string
+    function stars_html(int $stars, int $max = 3, bool $art = true): string
     {
         if (! function_exists('icon')) {
             helper('ui');
@@ -558,7 +609,7 @@ if (! function_exists('stars_html')) {
         $html  = '<span class="stars" role="img" aria-label="' . esc($stars . ' / ' . $max) . '">';
 
         for ($i = 1; $i <= $max; $i++) {
-            $html .= '<span class="star' . ($i <= $stars ? ' is-on' : '') . '">' . icon('star') . '</span>';
+            $html .= '<span class="star' . ($i <= $stars ? ' is-on' : '') . '">' . ($art ? star_img($i <= $stars) : icon('star')) . '</span>';
         }
 
         return $html . '</span>';

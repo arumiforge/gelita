@@ -10,7 +10,8 @@
  *
  * Tantangan bacaan (config as_reading, kelas 5): semua soal adalah
  * potongan satu bacaan, disambung menjadi paragraf utuh dengan rumpang
- * bernomor di dalam kalimat (App\Libraries\ClozeReading). Selain itu,
+ * di dalam kalimat (App\Libraries\ClozeReading): a dotted line, the chosen
+ * word on it, no box and no number (owner, 20 October 2026). Selain itu,
  * soal tampil sebagai daftar kalimat lepas. Judul variasi (`variant.title`)
  * tampil di atas bacaan.
  *
@@ -33,13 +34,14 @@ if ($variantTitle === $node->text('title', $locale)) {
     $variantTitle = ''; // variasi tanpa judul sendiri: judul node sudah tampil di kepala
 }
 
-// Satu rumpang (tombol bank kata). Dirakit sebagai string agar tidak ada
-// spasi templat di antara rumpang dan tanda baca sesudahnya.
+// One blank (word bank button): a dotted line with no box and no number on
+// screen (owner, 20 October 2026); the number stays in its label for screen
+// readers. Built as a string so no template whitespace sits between the
+// blank and the punctuation after it.
 $blankHtml = static function (int|string $itemId, int $number): string {
     $label = lang('Game.blank', [$number]);
-    $field = '<button type="button" class="blank" data-item="' . esc((string) $itemId, 'attr') . '" aria-label="' . esc($label, 'attr') . '">?</button>';
 
-    return '<span class="blank-wrap"><sup class="blank-no num" aria-hidden="true">' . $number . '</sup>' . $field . '</span>';
+    return '<button type="button" class="blank" data-item="' . esc((string) $itemId, 'attr') . '" aria-label="' . esc($label, 'attr') . '">&nbsp;</button>';
 };
 ?>
 <?= $this->extend('layouts/game') ?>
@@ -80,7 +82,7 @@ $blankHtml = static function (int|string $itemId, int $number): string {
           <?php endif ?>
           <span class="sentence-text">
             <?= esc($parts[0]) ?>
-            <button type="button" class="blank" data-item="<?= esc($item['id'], 'attr') ?>" aria-label="<?= esc($label, 'attr') ?>">?</button>
+            <button type="button" class="blank" data-item="<?= esc($item['id'], 'attr') ?>" aria-label="<?= esc($label, 'attr') ?>">&nbsp;</button>
             <?= esc($parts[1] ?? '') ?>
           </span>
         </li>
@@ -95,10 +97,11 @@ $blankHtml = static function (int|string $itemId, int $number): string {
       <?php endforeach ?>
     </div>
 
+    <?php // Owner's action bar, 20 October 2026: centred gold button between two gold rules (CSS) ?>
     <div class="arena-actions">
-      <button class="btn btn-primary btn-lg" id="btn-check" type="button"><?= icon('check') ?> <?= esc(lang('Game.check')) ?></button>
+      <button class="btn btn-primary btn-lg btn-action" id="btn-check" type="button"><span><?= esc(lang('Game.check')) ?></span> <?= icon('right') ?></button>
       <?php // Shown by challenge.js once the attempt is closed: moves on to the result screen ?>
-      <button class="btn btn-primary btn-lg" id="btn-next" type="button" hidden><?= esc(lang('Game.continue')) ?> <?= icon('right') ?></button>
+      <button class="btn btn-primary btn-lg btn-action" id="btn-next" type="button" hidden><span><?= esc(lang('Game.continue')) ?></span> <?= icon('right') ?></button>
     </div>
   </div>
 </div>

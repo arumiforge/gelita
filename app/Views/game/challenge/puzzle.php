@@ -81,15 +81,17 @@ $clip   = 'pz' . (int) $attempt->id . '-';
       </div>
     </div>
     <?php if ($caption !== ''): ?>
+      <?php // Owner's panel, 20 October 2026: "i" medallion, gold title and rule, white text, mountains (CSS) ?>
       <div class="puzzle-caption stage-scroll" id="puzzle-caption" role="note" hidden>
-        <b><?= esc(lang('Game.puzzleCaption')) ?></b>
+        <div class="puzzle-caption-head"><span class="puzzle-caption-icon" aria-hidden="true">i</span> <b><?= esc(lang('Game.puzzleCaption')) ?></b></div>
         <p><?= esc($caption) ?></p>
       </div>
     <?php endif ?>
+    <?php // Owner's action bar, 20 October 2026: centred gold button between two gold rules (CSS) ?>
     <div class="arena-actions">
-      <button class="btn btn-primary btn-lg" id="btn-check" type="button"><?= icon('puzzle') ?> <?= esc(lang('Game.puzzleCheck')) ?></button>
+      <button class="btn btn-primary btn-lg btn-action" id="btn-check" type="button"><span><?= esc(lang('Game.puzzleCheck')) ?></span> <?= icon('right') ?></button>
       <?php // Shown by challenge.js once the attempt is closed: moves on to the result screen ?>
-      <button class="btn btn-primary btn-lg" id="btn-next" type="button" hidden><?= esc(lang('Game.continue')) ?> <?= icon('right') ?></button>
+      <button class="btn btn-primary btn-lg btn-action" id="btn-next" type="button" hidden><span><?= esc(lang('Game.continue')) ?></span> <?= icon('right') ?></button>
     </div>
   </div>
 <?= $this->endSection() ?>

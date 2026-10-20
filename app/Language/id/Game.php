@@ -51,6 +51,7 @@ return [
     'shardDone'       => 'Selesai',
     'shardOpen'       => 'Terbuka',
     'shardLocked'     => 'Terkunci',
+    'shardStarted'    => 'Sedang dikerjakan',
     'mapKedu'         => 'Peta Kedu',
 
     // Karakter

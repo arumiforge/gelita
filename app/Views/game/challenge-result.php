@@ -33,7 +33,7 @@ $totalNodes = count(service('contentRepository')->nodesForLevel($level->id));
   <?php if ($best !== null): ?>
     <div class="panel result-best">
       <div class="result-best-head">
-        <span class="badge is-completed"><?= icon('star') ?> <?= esc(lang('Game.best')) ?></span>
+        <span class="badge is-completed"><?= star_img() ?> <?= esc(lang('Game.best')) ?></span>
         <?= component('star-rating', ['stars' => (int) $best->stars, 'size' => 'lg']) ?>
       </div>
       <div class="stat-grid">
