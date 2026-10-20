@@ -435,14 +435,21 @@
 :is(body.is-welcome, body.is-gate-art) .scene-img { transition: opacity .6s ease, scale 1.6s ease; }
 .has-parallax .welcome-hero { translate: calc(var(--plx, 0) * 8 * var(--dp)) calc(var(--ply, 0) * 5 * var(--dp)); }
 .has-parallax .gate-jaka { translate: calc(var(--plx, 0) * -18 * var(--dp)) calc(var(--ply, 0) * -6 * var(--dp)); }
-.has-parallax .gate-panel { translate: calc(var(--plx, 0) * 6 * var(--dp)) calc(var(--ply, 0) * 3 * var(--dp)); }
+/* Layers moved every frame by the parallax get their own GPU layer, so a move is not a
+   repaint (the logo carries a drop shadow, a mask, and a blend); the card text stays still */
+.has-parallax :is(.scene-img, .welcome-hero, .gate-jaka) { will-change: translate; }
+/* The WebGL sparks, mist, and rays come in softly instead of appearing at full strength */
+[data-cine] > .screen-fx { animation: cine-hold 2.5s ease both; }
 
 @media (prefers-reduced-motion: no-preference) {
   /* A slow camera drift on the welcome and gate pictures */
   :is(body.is-welcome, body.is-gate-art) .scene { animation: scene-drift 40s ease-in-out infinite alternate; }
 
   /* Logo: floats a little, a warm glow breathes behind it, and a band of light
-     sweeps across it every 7 s, masked by the logo itself (--logo-src, welcome.php) */
+     sweeps across it every 7 s inside .logo-sheen, masked by the logo itself
+     (--logo-src, welcome.php). The band moves by `translate`, which the compositor
+     runs without repainting the logo (an animated background-position repainted
+     the whole logo, mask and blend included, on every frame) */
   .welcome-logo.is-hero { position: relative; isolation: isolate; animation: logo-float 6s ease-in-out infinite; }
   .welcome-logo.is-hero::before {
     content: "";
@@ -454,22 +461,30 @@
     animation: logo-breathe 5s ease-in-out infinite;
     pointer-events: none;
   }
-  .welcome-logo.is-hero[style*="--logo-src"]::after {
+  .welcome-logo.is-hero > .logo-sheen::before {
     content: "";
     position: absolute;
-    inset: 0;
-    background: linear-gradient(105deg, rgba(255, 236, 190, 0) 42%, rgba(255, 236, 190, .6) 50%, rgba(255, 236, 190, 0) 58%) 100% 0 / 250% 100% no-repeat;
-    -webkit-mask: var(--logo-src) center / contain no-repeat;
-    mask: var(--logo-src) center / contain no-repeat;
-    mix-blend-mode: screen;
-    animation: logo-sheen 7s ease-in-out 3.4s infinite;
-    pointer-events: none;
+    inset: 0 auto 0 0;
+    width: 22%;
+    background: linear-gradient(105deg, rgba(255, 236, 190, 0) 15%, rgba(255, 236, 190, .55) 50%, rgba(255, 236, 190, 0) 85%);
+    translate: -100% 0;
+    animation: logo-sheen 7s ease-in-out 4.5s infinite;
   }
 }
 @keyframes scene-drift { from { scale: 1; } to { scale: 1.06; } }
 @keyframes logo-float { 0%, 100% { translate: 0 0; } 50% { translate: 0 -.3125rem; } }
 @keyframes logo-breathe { 0%, 100% { opacity: .55; scale: .96; } 50% { opacity: 1; scale: 1.04; } }
-@keyframes logo-sheen { 0% { background-position: 100% 0; } 28%, 100% { background-position: 0 0; } }
+@keyframes logo-sheen { 0% { translate: -100% 0; } 28%, 100% { translate: 460% 0; } }
+/* The sheen's window: the logo's own shape, blended onto it */
+.logo-sheen {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  -webkit-mask: var(--logo-src) center / contain no-repeat;
+  mask: var(--logo-src) center / contain no-repeat;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
 
 /* Parallax (game/parallax.js: --plx/--ply in -1…1 on #stage): far layers move
    least. The pictures are scaled up a little so their edges never show. */

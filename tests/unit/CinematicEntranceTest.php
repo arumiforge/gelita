@@ -43,6 +43,10 @@ final class CinematicEntranceTest extends CIUnitTestCase
 
         $this->assertStringContainsString("fill: 'backwards'", $script, 'no animation keeps a hold on a part after its cue');
         $this->assertStringNotContainsString('transform:', $script, 'translate/scale/rotate only, so hover and positioning transforms stay');
+        // Smoothness analysis (20 October 2026): an animated blur/brightness re-renders the full-screen picture every frame
+        $this->assertDoesNotMatchRegularExpression('/\bfilter: \[/', $script, 'cues animate only compositor properties');
+        $this->assertStringContainsString('await picturesReady(stage);', $script, 'the picture never pops in halfway through its push-in');
+        $this->assertMatchesRegularExpression('/if \(performance\.now\(\) > LATE_MS\) \{[^}]*is-cine-live/s', $script, 'after the CSS fallback has shown the page, it is never hidden again');
         $this->assertStringContainsString('reducedMotion()', $script);
         $this->assertStringContainsString('sessionStorage', $script, 'the full film once per page and session');
         $this->assertStringContainsString("import('./game/cine.js')", (string) file_get_contents(FCPATH . 'assets/js/game.js'));
@@ -62,11 +66,31 @@ final class CinematicEntranceTest extends CIUnitTestCase
         }
     }
 
-    public function testLogoSheenIsMaskedByTheLogo(): void
+    public function testLogoSheenIsMaskedByTheLogoAndMovesOnTheCompositor(): void
     {
         $view = (string) file_get_contents(APPPATH . 'Views/game/welcome.php');
+        $css  = (string) file_get_contents(FCPATH . 'assets/css/cinematic.css');
 
         $this->assertStringContainsString('style="--logo-src: url(&quot;<?= esc($logo, \'attr\') ?>&quot;)"', $view);
-        $this->assertStringContainsString('mask: var(--logo-src) center / contain no-repeat;', (string) file_get_contents(FCPATH . 'assets/css/cinematic.css'));
+        $this->assertStringContainsString('<span class="logo-sheen" aria-hidden="true"></span>', $view);
+        $this->assertStringContainsString('mask: var(--logo-src) center / contain no-repeat;', $css);
+        $this->assertStringContainsString('@keyframes logo-sheen { 0% { translate: -100% 0; }', $css, 'a translate, not a background-position repaint');
+        $this->assertStringContainsString('.has-parallax :is(.scene-img, .welcome-hero, .gate-jaka) { will-change: translate; }', $css);
+        $this->assertStringContainsString('[data-cine] > .screen-fx { animation: cine-hold 2.5s ease both; }', $css, 'the WebGL layer fades in');
+    }
+
+    /** Owner, 20 October 2026: the welcome page's light comes from the sun of its own picture. */
+    public function testWelcomeLightFollowsTheBackgroundPicture(): void
+    {
+        $script = (string) file_get_contents(FCPATH . 'assets/js/game/cine.js');
+        $fx     = (string) file_get_contents(FCPATH . 'assets/js/game/screen-fx.js');
+
+        $this->assertStringContainsString('export function findLight(img)', $script);
+        $this->assertMatchesRegularExpression("/welcome: \{[^}]*fx: 'sun',\s*light: true,/s", $script);
+        $this->assertStringContainsString('createScreenFx(root, { threeUrl, light, quality: 1 })', $script);
+        // The story scenes keep their source above the top edge and the downward cone
+        $this->assertStringContainsString('new THREE.Vector2(0.5, 1.18)', $fx);
+        $this->assertStringContainsString("uCone: { value: light ? 0 : 1 }", $fx);
+        $this->assertStringContainsString("case 'sun':", $fx);
     }
 }
