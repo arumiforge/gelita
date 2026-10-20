@@ -168,7 +168,8 @@ Decided in an interview with the owner; decisions in the decision log, section *
 
 ## Start-page smoothness and light (owner, 20 October 2026)
 
-- [ ] Analysis of the start-page animation (notes in the decision log) and its fixes: no filter animations, gentler and slower cues, wait for the pictures, no second entrance on slow connections, WebGL fetched during the entrance and faded in at lower quality, the logo sweep on the compositor; the welcome light follows the sun of the background picture (`findLight()`). After merge, **Bangun ulang paket** if package mode is on; owner checks the frame rate on a class tablet
+- [x] Analysis of the start-page animation (notes in the decision log) and its fixes: no filter animations, gentler and slower cues, wait for the pictures, no second entrance on slow connections, WebGL fetched during the entrance and faded in at lower quality, the logo sweep on the compositor; the welcome light follows the sun of the background picture (`findLight()`) (PR #201)
+- [ ] After merge, **Bangun ulang paket** if package mode is on; owner checks the frame rate on a class tablet
 
 ## Active branches
 
@@ -176,5 +177,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `sky/vigilant-cerf-lj5cx0` | Start-page smoothness and light | PR open |
 | `pbb/nice-carson-7yeoiz` | Brighter logo, Mulai plate, lettered form buttons, start-page menu (owner, 20 October 2026) | PR open |

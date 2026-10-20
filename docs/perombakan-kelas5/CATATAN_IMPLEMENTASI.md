@@ -2307,7 +2307,7 @@ Owner question after PR #198, with a close-up of the logo: is the animation too 
 5. *Bug: picture pops in.* On the slow connection the entrance started at 3.3 s while the background picture had not finished loading, so it appeared halfway through its push-in.
 6. *Bug: double entrance on slow connections.* The CSS fallback shows the parts after 4 s if the module has not started. A connection only slightly slower than the test above starts the module after that, which hid the visible page again and replayed the film.
 7. *Light not matched to the picture.* The rays always came from above the top edge (the story-scene default), with a halo mid-screen; the server's welcome picture has its sun low on the left.
-8. Not reproduced: the top of the logo cut off as in the owner's close-up. At 1280 × 720 the logo's top sits at y 104 dp, and the entrance zoom no longer exceeds 1.08. To be checked on the owner's screen.
+8. Not a bug: the top of the logo cut off in the owner's close-up. The owner confirmed the close-up was cropped (20 October 2026); at 1280 × 720 the logo's top sits at y 104 dp, and the entrance zoom no longer exceeds 1.08.
 
 **Changes.**
 - Cues: no `filter` anywhere; the picture rises out of the dark stage with opacity and a 1.1 → 1 push-in; the logo 1.08 → 1 with the flare; gentle ease-out `cubic-bezier(.25, .46, .45, .94)`; welcome about 4 s, gate about 2.7 s, account pages about 2 s.
