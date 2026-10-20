@@ -42,6 +42,7 @@ One concept, one word, in every layer. "UI (id)" is what users read; "Code (en)"
 | papan tombol emas / biru (layar Kenali) | `gold plate`, `navy plate` | `public/assets/ui/kenal-plate-{gold,navy}.webp`; Lanjut gold, Kembali navy on Kenali; the navy plate also backs the challenge answer choices (`--plate-navy`: Isi Rumpang words, Benar/Salah), since 20 Oct 2026 |
 | cincin nomor tantangan | `challenge badge`, `number ring` | `public/assets/ui/challenge-badge.webp`; `.badge-pos` in the challenge header |
 | bilah tombol tantangan | `action bar` | `.arena-actions` (32, 648, 1216 × 56): gold `.btn-action` between two gold rules; `#btn-check`, `#btn-next` |
+| medali status tantangan | `status badge`, `status medallion` | `status_badge_src()`: `public/assets/ui/status-{open,progress,done}.webp` (navy, gold arc, green ✓) on the shard dots, region-map pins, and the Peta Kedu done badge; locked keeps its lock; node flag `started` (attempt `in_progress`), label `Game.shardStarted` |
 | gambar bintang | `star picture` | `star_src()`/`star_img()`/`stars_html()`: slot `ui.result-star`, else `public/assets/ui/star.webp`; empty star `.is-off` (grey, faded); admin keeps the line icon |
 | Wilayah dipilih (panel) | `region panel`, `selected region` | `.kedu-panel`, `data-region-select` |
 | tingkat kesulitan (wilayah) | `difficulty`, `difficulty badge` | stored `mudah`, `sedang`, `sulit` in `levels.difficulty`; `.region-difficulty` (`partials/region-difficulty`) in the HUD section `hudBadge` on `/dialog/{code}` (body class `is-region-dialogue`) |

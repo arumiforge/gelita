@@ -166,7 +166,7 @@ $unheard  = static fn (array $l): bool => ($intros[$l['code']] ?? []) !== [] && 
                 <?= art_or_icon($pinArt ?? ($level['status'] === 'completed' ? star_src() : null), $icons[$level['status']] ?? 'lantern') ?>
                 <?php if ($level['status'] === 'locked'): ?><span class="kedu-lock"><?= icon('lock') ?></span><?php endif ?>
                 <?php // Completed: a gold check badge in the lock badge's place (owner's picture, 18 October 2026) ?>
-                <?php if ($level['status'] === 'completed'): ?><span class="kedu-lock kedu-done"><?= icon('check') ?></span><?php endif ?>
+                <?php if ($level['status'] === 'completed'): ?><?php $doneBadge = status_badge_src(['status' => 'completed']); ?><span class="kedu-lock kedu-done<?= $doneBadge !== null ? ' has-badge' : '' ?>"><?= $doneBadge !== null ? '<img src="' . esc($doneBadge, 'attr') . '" alt="" decoding="async" draggable="false">' : icon('check') ?></span><?php endif ?>
                 <?php if ($unheard($level)): ?><span class="kedu-unheard"></span><?php endif ?>
               </span>
               <span class="kedu-city-caption">

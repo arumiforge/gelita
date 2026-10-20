@@ -11,13 +11,24 @@
  * JavaScript; hud.js (tahap 6) hanya menambah animasi dan pembaruan angka.
  *
  * @var array<string, mixed>                  $progress
- * @var list<array<string, mixed>>|null       $lantern  wilayah → daftar status node
+ * @var list<array<string, mixed>>|null       $lantern  wilayah → daftar status node (+ `started`)
  */
 $shards = (int) ($progress['shards'] ?? 0);
 $total  = (int) ($progress['shards_total'] ?? 0);
 $stage  = max(0, min(3, (int) ($progress['completed_levels'] ?? 0)));
 $fill   = $total > 0 ? (int) round($shards / $total * 100) : 0;
 $status = ['completed' => 'Game.shardDone', 'open' => 'Game.shardOpen', 'locked' => 'Game.shardLocked'];
+// Status word of one node: an open node with an unfinished attempt reads "Sedang dikerjakan"
+$label = static fn (array $node): string => lang(($node['status'] ?? '') === 'open' && ! empty($node['started']) ? 'Game.shardStarted' : ($status[$node['status'] ?? ''] ?? 'Game.shardLocked'));
+// One shard: the owner's status medallion when installed (status_badge_src()), else the CSS dot
+$shard = static function (array $node, string $inner = ''): string {
+    $badge = status_badge_src($node);
+    $class = 'shard is-' . ($node['status'] ?? 'locked') . (! empty($node['started']) ? ' is-started' : '') . ($badge !== null ? ' has-badge' : '');
+
+    return '<span class="' . esc($class) . '" aria-hidden="true">'
+        . ($badge !== null ? '<img src="' . esc($badge, 'attr') . '" alt="" decoding="async" draggable="false">' : '')
+        . '</span>' . $inner;
+};
 ?>
 <details class="lantern" data-shards="<?= $shards ?>" data-total="<?= $total ?>" data-stage="<?= $stage ?>">
   <summary class="lantern-toggle" aria-controls="lantern-detail"
@@ -43,18 +54,18 @@ $status = ['completed' => 'Game.shardDone', 'open' => 'Game.shardOpen', 'locked'
         <span class="lantern-region-name"><?= esc($region['name']) ?></span>
         <ol class="shard-dots">
           <?php foreach ($region['nodes'] as $node): ?>
-            <li class="shard is-<?= esc($node['status'], 'attr') ?>"
-                title="<?= esc($node['sequence'] . '. ' . $node['title'] . ' — ' . lang($status[$node['status']] ?? 'Game.shardLocked'), 'attr') ?>">
-              <span class="visually-hidden"><?= esc($node['sequence'] . '. ' . $node['title'] . ': ' . lang($status[$node['status']] ?? 'Game.shardLocked')) ?></span>
+            <li class="shard-item" title="<?= esc($node['sequence'] . '. ' . $node['title'] . ' — ' . $label($node), 'attr') ?>">
+              <?= $shard($node) ?><span class="visually-hidden"><?= esc($node['sequence'] . '. ' . $node['title'] . ': ' . $label($node)) ?></span>
             </li>
           <?php endforeach ?>
         </ol>
       </div>
     <?php endforeach ?>
     <p class="lantern-legend" aria-hidden="true">
-      <span class="shard is-completed"></span> <?= esc(lang('Game.shardDone')) ?>
-      <span class="shard is-open"></span> <?= esc(lang('Game.shardOpen')) ?>
-      <span class="shard is-locked"></span> <?= esc(lang('Game.shardLocked')) ?>
+      <?= $shard(['status' => 'completed']) ?> <?= esc(lang('Game.shardDone')) ?>
+      <?= $shard(['status' => 'open', 'started' => true]) ?> <?= esc(lang('Game.shardStarted')) ?>
+      <?= $shard(['status' => 'open']) ?> <?= esc(lang('Game.shardOpen')) ?>
+      <?= $shard(['status' => 'locked']) ?> <?= esc(lang('Game.shardLocked')) ?>
     </p>
   </div>
 </details>

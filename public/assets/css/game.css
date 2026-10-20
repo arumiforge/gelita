@@ -156,6 +156,14 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
 .shard.is-locked { border-color: rgba(234, 240, 250, .3); background: rgba(234, 240, 250, .08); }
 .lantern-legend { display: flex; flex-wrap: wrap; align-items: center; gap: var(--gap-1) var(--gap-2); margin: 0; color: var(--ink-dim); font-size: var(--fs-caption); }
 .lantern-legend .shard { width: .75rem; height: .75rem; }
+.shard-item { display: inline-flex; }
+/* Started, not finished: half a dot until the owner's medallion is installed */
+.shard.is-started { border-style: solid; background: linear-gradient(to right, var(--gold-500) 50%, transparent 50%); }
+/* The owner's status medallions (20 October 2026), status_badge_src(): navy = open, gold arc =
+   started, green with a check = done. A locked shard keeps its dot. */
+.shard.has-badge { width: 1.5rem; height: 1.5rem; border: 0; background: none; box-shadow: none; }
+.shard.has-badge img { display: block; width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 .0625rem .125rem rgba(0, 0, 0, .6)); }
+.lantern-legend .shard.has-badge { width: 1.125rem; height: 1.125rem; }
 
 /* =========================== WELCOME =========================== */
 /* Hanya logo dan satu tombol Mulai, di tengah layar (tanpa navigasi bawah) */
@@ -825,6 +833,20 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
 .map-point.is-completed .pin-icon.has-art { background: none; }
 .map-point.is-locked .pin-icon.has-art { background: none; box-shadow: none; }
 .map-point.is-locked .pin-icon.has-art .art { filter: grayscale(1) brightness(.7) drop-shadow(0 .125rem .375rem rgba(11, 19, 32, .8)); }
+/* Status medallion on a region-map pin (owner, 20 October 2026): the picture replaces the
+   gold disc and its icon; open and started pins keep their number on top. Locked stays. */
+.map-point .pin-icon.has-badge { position: relative; border: 0; background: none; box-shadow: none; }
+.pin-badge {
+  position: absolute;
+  inset: -.375rem;
+  width: calc(100% + .75rem);
+  height: calc(100% + .75rem);
+  object-fit: contain;
+  filter: drop-shadow(0 .125rem .375rem rgba(11, 19, 32, .8));
+  -webkit-user-drag: none;
+}
+.pin-icon.has-badge b { position: relative; color: #F6E7C4; text-shadow: 0 .0625rem .25rem rgba(0, 0, 0, .9); }
+.map-point.is-open .pin-icon.has-badge { animation: pin-art-pulse 2s ease-in-out infinite; }
 .pin-mark { position: absolute; right: -.25rem; bottom: -.25rem; display: grid; place-items: center; width: 1.5rem; height: 1.5rem; border: .125rem solid var(--navy-900); border-radius: 50%; background: var(--navy-700); color: var(--ink-dim); }
 .map-point.is-completed .pin-mark { background: var(--gold-300); color: var(--navy-900); }
 .pin-mark .icon { width: .875rem; height: .875rem; }
@@ -1821,6 +1843,9 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
   color: #F6DE9C;
 }
 .kedu-done .icon { width: 1.75rem; height: 1.75rem; stroke-width: 3.2; filter: drop-shadow(0 0 .25rem rgba(246, 222, 156, .6)); }
+/* The owner's green "done" medallion (20 October 2026) replaces the drawn disc and check */
+.kedu-lock.kedu-done.has-badge { width: 3.25rem; height: 3.25rem; border: 0; background: none; box-shadow: none; }
+.kedu-done.has-badge img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 .25rem .375rem rgba(0, 0, 0, .55)); }
 .kedu-unheard {
   position: absolute;
   top: .75rem;
@@ -3003,7 +3028,7 @@ html.js .book-frame img.is-loaded { opacity: 1; }
 
 @media (prefers-reduced-motion: reduce) {
   .confetti { display: none; }
-  .flame-3, .orb, .map-point.is-open .pin-icon, .map-point.is-in_progress .pin-icon, .map-point.is-open .pin-icon.has-art, .map-point.is-in_progress .pin-icon.has-art { animation: none; }
+  .flame-3, .orb, .map-point.is-open .pin-icon, .map-point.is-in_progress .pin-icon, .map-point.is-open .pin-icon.has-art, .map-point.is-in_progress .pin-icon.has-art, .map-point.is-open .pin-icon.has-badge { animation: none; }
   .dialogue-stage .character { transition: none; }
   .object.is-shaking, .lantern.is-updated .lantern-count b { animation: none; }
   /* Phase F1.5: the start button stops pulsing; hover, selection, and press

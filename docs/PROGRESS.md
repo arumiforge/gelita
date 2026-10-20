@@ -132,9 +132,15 @@ Decided in an interview with the owner; decisions in the decision log, section *
 
 - [x] Background music and Kenali title (owner, 19 October 2026): twelve synthesized gamelan tracks (home/account pages, opening, ending, and per region Kenali, dialogue, and region done), music down to about 20 % under a narration voice, the mission card with the challenge music; Kenali title 32 dp; the HUD flag "overflow" was a missing file in the local check, not a bug (PR #173). After merge, on a server with package mode on: `php spark gelita:media:scan`, then **Bangun ulang paket**. Owner: listen on a class device that the music sits well under the recorded voices
 
+## Challenge screen redesign (owner, 20 October 2026)
+
+- [ ] Challenge header (number ring, title, one stats capsule, no region/position line), centred gold action bar, Isi Rumpang dotted blanks without box or number, words and Benar/Salah on the navy plate, "Tentang gambar ini" panel, the star picture for every game star, status medallions on the lantern, region map, and Peta Kedu
+- [ ] Add the owner's three status medallions as `public/assets/ui/status-open.webp`, `status-progress.webp`, `status-done.webp` (until then the old dots and discs show); then **Bangun ulang paket** if package mode is on
+
 ## Active branches
 
 Add a row (branch, owner / scope, status) when a session starts a branch; remove it when its PR is merged.
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `pbb/jolly-heisenberg-5r78py` | Challenge screen redesign, star picture, status medallions | PR open |

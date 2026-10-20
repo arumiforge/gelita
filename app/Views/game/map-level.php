@@ -60,10 +60,16 @@ $points = implode(' ', array_map(static fn (array $n): string => (float) $n['map
               style="left: <?= (float) $node['map_x'] ?>%; top: <?= (float) $node['map_y'] ?>%">
             <a class="map-pin" href="<?= esc($href($node), 'attr') ?>"
                <?= $node['status'] === 'locked' ? 'aria-disabled="true" data-locked-message="' . esc(lang('Game.nodeLocked'), 'attr') . '"' : '' ?>>
-              <span class="pin-icon" aria-hidden="true">
-                <?php if ($node['status'] === 'open'): ?>
+              <?php // The owner's status medallion when installed (20 October 2026); a locked pin keeps its lock ?>
+              <?php $badge = status_badge_src($node); ?>
+              <span class="pin-icon<?= $badge !== null ? ' has-badge' : '' ?><?= ! empty($node['started']) ? ' is-started' : '' ?>" aria-hidden="true">
+                <?php if ($badge !== null): ?>
+                  <img class="pin-badge" src="<?= esc($badge, 'attr') ?>" alt="" decoding="async" draggable="false">
+                <?php endif ?>
+                <?php // The gold "started" medallion has its own arc in the middle: no number on it ?>
+                <?php if ($node['status'] === 'open' && ($badge === null || empty($node['started']))): ?>
                   <b class="num"><?= esc($node['sequence']) ?></b>
-                <?php else: ?>
+                <?php elseif ($badge === null): ?>
                   <?= icon($icons[$node['status']]) ?>
                 <?php endif ?>
               </span>
@@ -72,7 +78,7 @@ $points = implode(' ', array_map(static fn (array $n): string => (float) $n['map
                 <?php if ($node['status'] === 'completed'): ?>
                   <?= stars_html((int) $node['stars']) ?>
                 <?php else: ?>
-                  <small><?= esc(lang($node['status'] === 'locked' ? 'Game.shardLocked' : 'Game.shardOpen')) ?></small>
+                  <small><?= esc(lang($node['status'] === 'locked' ? 'Game.shardLocked' : (! empty($node['started']) ? 'Game.shardStarted' : 'Game.shardOpen'))) ?></small>
                 <?php endif ?>
               </span>
             </a>
