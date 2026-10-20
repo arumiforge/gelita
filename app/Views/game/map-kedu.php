@@ -31,6 +31,11 @@
  * line and links "Lihat cerita pembuka" (the region's opening dialogue,
  * `/dialog/{code}`) under the region name; locked regions have no link.
  *
+ * Owner request (20 October 2026, later): the story bar and the region panel
+ * lose their backdrop and gold frame, and the speaker's name moves out of
+ * the story line onto the navy nameplate over the avatar's lower ring, as on
+ * the Kenali screen (`.kedu-speaker`, `.kenal-nameplate`).
+ *
  * Earlier notes (still true unless replaced above):
  *
  * Tiga titik pada posisi `levels.map_x` / `map_y` (persen). Tujuan tautan
@@ -84,6 +89,10 @@ $heardIds = $heard ?? [];
 $curtainOf = static fn (array $l): string => $l['status'] !== 'locked' && isset($l['curtain'])
     ? region_curtain_attrs($l['curtain'])
     : '';
+// Speaker of the story bar: the round avatar with the name on the navy plate over its lower ring (as on Kenali)
+$speaker = static fn (string $portrait, string $name): string => '<div class="kedu-speaker">' . $portrait
+    . '<span class="kenal-nameplate">' . esc($name) . '</span></div>';
+$plateStyle = ' style="--kenal-plate-navy: url(&quot;' . esc(game_asset_url('ui/kenal-plate-navy.webp'), 'attr') . '&quot;)"';
 ?>
 <?= $this->extend('layouts/game') ?>
 
@@ -247,15 +256,15 @@ $unheard  = static fn (array $l): bool => ($intros[$l['code']] ?? []) !== [] && 
   </div>
 
   <?php if (($story ?? []) === []): ?>
-    <aside class="kedu-story kedu-story-plain stage-box">
-      <?= component('partials/kedu-portrait', ['src' => $jakaSrc, 'name' => lang('Game.char_jaka')]) ?>
-      <?= component('narration', ['text' => lang('Game.mapLead'), 'speaker' => 'jaka', 'tail' => 'down', 'class' => 'stage-scroll']) ?>
+    <aside class="kedu-story kedu-story-plain stage-box"<?= $plateStyle ?>>
+      <?= $speaker(component('partials/kedu-portrait', ['src' => $jakaSrc, 'name' => lang('Game.char_jaka')]), lang('Game.char_jaka')) ?>
+      <?= component('narration', ['text' => lang('Game.mapLead'), 'tail' => 'down', 'class' => 'stage-scroll']) ?>
     </aside>
   <?php else: ?>
     <?php $storyTotal = count($story); ?>
     <aside class="map-story kedu-story narrator stage-box" aria-labelledby="map-story-title"
            data-narrator data-context="map_intro" data-prefix="peta-" data-keyboard="0"
-           data-mode="<?= ! empty($curtain) ? 'external' : 'manual' ?>">
+           data-mode="<?= ! empty($curtain) ? 'external' : 'manual' ?>"<?= $plateStyle ?>>
       <h2 class="visually-hidden" id="map-story-title"><?= esc(lang('Game.mapStoryTitle')) ?></h2>
       <div class="narrator-fx" data-narrator-fx aria-hidden="true"></div>
       <ol class="slides map-story-slides">
@@ -273,13 +282,15 @@ $unheard  = static fn (array $l): bool => ($intros[$l['code']] ?? []) !== [] && 
               data-character="<?= esc($character, 'attr') ?>" data-pose="<?= esc($pose, 'attr') ?>"
               <?= $effect !== '' ? 'data-effect="' . esc($effect, 'attr') . '"' : '' ?>
               aria-label="<?= esc(lang('Game.slideOf', [$n, $storyTotal]), 'attr') ?>">
+            <?php $name = lang_or('Game.char_' . $character, $character); ?>
             <?php if ($character === 'jaka'): ?>
-              <?= component('partials/kedu-portrait', ['src' => $jakaSrc, 'name' => lang('Game.char_jaka')]) ?>
+              <?= $speaker(component('partials/kedu-portrait', ['src' => $jakaSrc, 'name' => $name]), $name) ?>
             <?php elseif ($character !== 'narator'): ?>
-              <span class="kedu-portrait"><?= component('character', ['character' => $character, 'pose' => $pose, 'class' => 'pose-' . $pose]) ?></span>
+              <?= $speaker('<span class="kedu-portrait">' . component('character', ['character' => $character, 'pose' => $pose, 'class' => 'pose-' . $pose]) . '</span>', $name) ?>
             <?php endif ?>
             <blockquote class="narration narration-down map-story-line stage-scroll" data-narrator-advance>
-              <cite><?= esc(lang_or('Game.char_' . $character, $character)) ?><?php if ($title !== ''): ?><span class="map-story-title">· <?= esc($title) ?></span><?php endif ?>
+              <?php // The name is on the speaker's nameplate; only the narrator, who has no avatar, keeps it here ?>
+              <cite><?php if ($character === 'narator'): ?><?= esc($name) ?><?php endif ?><?php if ($title !== ''): ?><span class="map-story-title"><?= $character === 'narator' ? '· ' : '' ?><?= esc($title) ?></span><?php endif ?>
                 <span class="kedu-dots" aria-hidden="true"><?php for ($d = 1; $d <= $storyTotal; $d++): ?><i<?= $d === $n ? ' class="is-on"' : '' ?>></i><?php endfor ?></span></cite>
               <p class="slide-text"><?= esc($text) ?></p>
             </blockquote>

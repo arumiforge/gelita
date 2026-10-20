@@ -571,6 +571,18 @@ final class RegionStoryTest extends CIUnitTestCase
         $this->assertStringNotContainsString('char.jaka.idle', $story);
         // Owner, 19 October 2026: the avatar brings its own gold ring, so the portrait draws none
         $this->assertMatchesRegularExpression('/\.kedu-portrait\.has-art \{[^}]*border: 0;[^}]*background: none;/', (string) file_get_contents(FCPATH . 'assets/css/game.css'));
+        // Owner, 20 October 2026: Jaka's name sits on the navy nameplate over his avatar, as on Kenali,
+        // not in the story line; the story bar and the region panel have no backdrop or gold frame
+        $this->assertMatchesRegularExpression('/<div class="kedu-speaker">(?:<!--[^>]*-->\s*)*<span class="kedu-portrait has-art" aria-hidden="true">.*?<\/span>\s*(?:<!--[^>]*-->\s*)*<span class="kenal-nameplate">' . preg_quote(esc(lang('Game.char_jaka')), '/') . '<\/span><\/div>/s', $story);
+        $this->assertStringContainsString('--kenal-plate-navy: url(&quot;' . esc(game_asset_url('ui/kenal-plate-navy.webp'), 'attr') . '&quot;)', $story);
+        $this->assertDoesNotMatchRegularExpression('/<cite>' . preg_quote(esc(lang('Game.char_jaka')), '/') . '/', $story);
+        $css = (string) file_get_contents(FCPATH . 'assets/css/game.css');
+        $this->assertDoesNotMatchRegularExpression('/\n\.kedu-(?:panel|story) \{[^}]*(?:border|background):/', $css);
+        $this->assertStringNotContainsString('--skin-panel"] .kedu-panel', $css);
+        // Owner, 20 October 2026: every badge picture wears the dark halo that follows its outline
+        foreach (['.shard.has-badge img', '.pin-badge', '.node-badge', '.badge-pos img', '.kedu-done.has-badge img'] as $badge) {
+            $this->assertMatchesRegularExpression('/' . preg_quote($badge, '/') . ' \{[^}]*filter: var\(--badge-halo\);/', $css, $badge);
+        }
         $this->assertMatchesRegularExpression('/<a class="kedu-btn is-primary" href="[^"]*"[^>]*>\s*<span>' . lang('Game.start') . '<\/span>\s*<\/a>/', $page);
 
         // Menu HUD with the title and the shard lantern; Profil is in the menu, not in the page buttons

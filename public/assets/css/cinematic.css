@@ -1315,7 +1315,7 @@ body.has-kenal { overflow: hidden; }
   white-space: nowrap;
   text-shadow: 0 1px .1875rem rgba(0, 0, 0, .8);
 }
-.kenal[style*="--kenal-plate-navy"] .kenal-nameplate { border: 0; border-radius: 0; background: var(--kenal-plate-navy) center / 100% 100% no-repeat; }
+:is(.kenal, .kedu-story)[style*="--kenal-plate-navy"] .kenal-nameplate { border: 0; border-radius: 0; background: var(--kenal-plate-navy) center / 100% 100% no-repeat; }
 /* The title and the dots and Lanjut on one row at the top of the bar */
 .kenal-caption .cine-caption-head { flex-wrap: nowrap; gap: var(--gap-3); min-height: 4rem; }
 .kenal-caption .cine-title { flex: 1 1 auto; min-width: 0; margin: 0; font-size: 1.75rem; }

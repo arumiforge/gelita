@@ -151,3 +151,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `sky/admiring-mendel-am6ed0` | Peta Kedu story bar and region panel without backdrop or frame, Jaka's nameplate on his avatar, black halo on every badge | PR open |
