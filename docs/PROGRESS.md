@@ -147,4 +147,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `pbb/determined-tesla-qpw54u` | Story screens: tap card first, lighter caption | PR open |
+| `pbb/determined-tesla-qpw54u` | Story screens: tap card first, lighter caption | PR #182 open |
