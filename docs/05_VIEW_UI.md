@@ -427,6 +427,8 @@ When the region is complete, `aside.result-kedu` (120, 128, 1040 × 560; large t
 
 Panel `.result-panel` 160, 72, 960 × 576: pengerjaan terbaik `.result-best` (bintang, Berhasil pada Percobaan Pertama, waktu, jumlah cek), tabel semua pengerjaan selesai `.result-table` di `.table-wrap.stage-scroll` (Pengerjaan, Mulai, Durasi, Percobaan, Berhasil pada Percobaan Pertama, Bintang; baris terbaik `.is-best`), catatan `Game.retryNote` (mengulang tidak menghapus catatan lama), dan tombol **Ulangi** (`Game.retry`) ke kartu misi — sehingga tirai tantangan ikut tampil.
 
+*Redesign of 21 October 2026 (owner).* `section.result.result-list`; `.result-panel` (160, 64, 960 × 640) has no box: no background, border, shadow, or rounding. Under the heading `nav.result-list-actions` holds the region name (`btn-quiet`, left arrow, to `/wilayah/{code}`) on the left and **Ulangi** (`btn-primary btn-lg`) on the right; the page has no bottom nav bar. The best play is a slim centred band `section.result-best`, only as wide as its content: `Game.bestResult` and the stars on the left, then three figures (`dl.result-best-stats`: first try, time, tries) between thin gold rules, on a navy band that fades at both ends with gold hairlines above and below. The table keeps its own dark backing; the note follows it.
+
 ### Wilayah tuntas — `game/region-done`
 
 Adegan `level_done` (4 baris) lewat `partials/dialogue-scene` (`data-screen="region-done"`), kartu ketuk varian `done`: eyebrow "Wilayah n · Tuntas", judul `Game.doneTitle` ("Serpihan {wilayah} kembali!"). Slide akhir: **Baca Pustaka {wilayah}** (`Game.readLibraryRegion`, bila ada Pustaka) dan **Lanjut ke {wilayah berikutnya}** (`entry`, tirai wilayah). Wilayah terakhir: **Lanjut** ke `/penutup` bila semua tantangan tuntas, selain itu Peta Kedu. Boleh ditonton ulang; wilayah yang belum tuntas dialihkan ke peta wilayahnya. Nav: kembali ke wilayah (`Game.backToRegion`), Peta Kedu.
@@ -442,6 +444,8 @@ Satu kartu `li.shelf-card.is-{open|locked|unavailable}` per wilayah: sampul `.sh
 * **Terbuka** (wilayah tuntas) → tombol **Baca** (`Game.libraryRead`).
 * **Terkunci** (wilayah terbuka, belum tuntas) → `partials/library-lock` + **Lanjutkan tantangan** (`Game.libraryContinue`) ke `entry` wilayah.
 * **Belum terbuka** → keterangan `Game.libraryUnavailable` saja.
+
+*Redesign of 21 October 2026 (owner).* The Peta Kedu HUD (`hudStyle` = `menu`, `hudLayout` = `title-centre`: shard plate left, title centred, no logo). The lead text is one centred line under the HUD. Cards are dark navy with a thin gold edge: the cover fades into the card, the Pustaka book (`library_icon()`) sits on its lower edge as `.shelf-emblem` (greyed with `.shelf-emblem-lock` while closed), eyebrow, the title in gold, the x/4 of `partials/library-lock` on the bronze track (`--loading-track`), and the one button `.shelf-btn` on the gold plate (`--plate-gold`) at the card's foot. The close button is gone; the only way back is `a.shelf-back` **Peta Kedu** on the navy plate (`--plate-navy`) at the bottom left (24, 640); no nav bar.
 
 Status dihitung `GameProgress::libraryStatus()`: Pustaka sebuah wilayah terbuka setelah **semua** tantangan wilayah itu selesai pada sesi pemain, apa pun mode buka wilayah studinya. Di peta dan rak namanya "Pustaka Kedu" (`Game.library`); di dalam wilayah "Pustaka {wilayah}" (`Game.libraryRegion`).
 
@@ -479,10 +483,11 @@ Layar pemuatan layar penuh `.curtain.curtain-{kind}` (`data-curtain-layer`, `dat
 
 | Jenis | Isi | Durasi | Ketukan | Dipasang di |
 |---|---|---|---|---|
-| `map` | latar `bg.loading`, lentera `.curtain-lantern` dengan cahaya yang membesar mengikuti progres, tiga serpihan mengorbit, judul `Game.curtainMapTitle`, status bergilir `Game.curtainMapStatus1..3`, berkas cahaya `.curtain-beam` (`role="progressbar"`), tombol `Game.curtainMapTap` | progres nyata, ±2,5–8 detik | penutup, membuka kunci audio (`Sfx.unlock()`) | `/peta` dengan flash `curtain=map` |
-| `region` | jejak kaki `partials/footsteps`, judul "Menuju {wilayah}…", tagline, chip tingkat kesulitan (slot `data-curtain-text`) | 1,8–2,4 detik | tidak ada | pin dan kartu wilayah, slide akhir Kenali, "Lanjut ke {wilayah berikutnya}" di layar Selesai dan wilayah tuntas |
+| `map` | latar `bg.loading`, lentera `.curtain-lantern` dengan cahaya yang membesar mengikuti progres, tiga serpihan mengorbit, judul `Game.curtainMapTitle`, status bergilir `Game.curtainMapStatus1..3`, berkas cahaya `.curtain-beam` (`role="progressbar"`), tombol `Game.curtainMapTap` (since 21 Oct 2026 small plain text, no picture or lantern icon) | progres nyata, ±2,5–8 detik | penutup, membuka kunci audio (`Sfx.unlock()`) | `/peta` dengan flash `curtain=map` |
+| `region` | gambar wilayah penuh (`data-curtain-bg`, Ken Burns, vinyet), judul "Menuju {wilayah}…" di papan navy `map-head-plate.webp` (`.has-plate`), tagline, chip tingkat kesulitan (slot `data-curtain-text`), bilah perunggu di kaki layar; tanpa jejak kaki (21 Oct 2026) | 1,8–2,4 detik | tidak ada | pin dan kartu wilayah, slide akhir Kenali, "Lanjut ke {wilayah berikutnya}" di layar Selesai dan wilayah tuntas |
 | `challenge` | `partials/challenge-art` (`data-engine`), label jenis, judul, ajakan, `Game.curtainSkip` | 1,2–1,5 detik | melewati | **Mulai tantangan** di kartu misi |
 
+* *Loading track (21 October 2026).* With `public/assets/ui/loading-track.webp` installed every curtain passes it as `--loading-track` and `.curtain-beam.has-track` draws the owner's bronze bar (1200 × 82); the gold fill runs only in its dark channel (5.84 % in from either end, 24.6–72.9 % down). Without the file the thin gold beam stays.
 * Tautan `a[data-curtain="{kind}"]` memutar tirai dari `<template id="tpl-curtain-{kind}">` sebelum pindah halaman; tanpa template atau tanpa JavaScript tautan berjalan biasa. Satu template `region` melayani semua wilayah; teks dan aset pramuatnya dari atribut tautan.
 * Tanpa JavaScript tirai tidak pernah menutupi halaman (`noscript.css`). Bila modul JavaScript gagal dimuat, animasi pengaman `curtain-failsafe` memudarkan tirai sendiri; `curtain.js` membatalkannya dengan kelas `is-live`.
 
@@ -666,8 +671,8 @@ Semua layar game digambar di **satu panggung tetap 1280 × 720 dp** (dp = *desig
 | Kartu misi | 260, 112, 760 × 536 (medallion above to y 72); deskripsi bergulir; hasil terbaik: bintang + "Berhasil pada Percobaan Pertama x dari y" |
 | Tantangan | kepala 32, 64, 1216 × 56; arena 32, 128, 1216 × 576 — per engine lihat tabel berikut |
 | Selesai | kartu 280, 72, 720 × 576, tanpa Jaka |
-| Hasil | panel 160, 72, 960 × 576, tabel bergulir |
-| Rak Pustaka | keterangan 88, 64, 1104 × 48; kartu 88/464/840, 120, 352 × 440 |
+| Hasil | panel 160, 64, 960 × 640 tanpa kotak, tabel bergulir; tanpa nav bar |
+| Rak Pustaka | HUD 120 (Peta Kedu); keterangan 88, 112, 1104 × 28; kartu 88/464/840, 148, 352 × 480; Peta Kedu 24, 640; tanpa nav bar |
 | Pustaka {wilayah} | buku 64, 80, 1152 × 568: galeri kiri 576 (gulir), teks kanan 576 (isi bergulir, navigasi halaman di bawah); lightbox selebar panggung |
 | Pustaka terkunci | kartu 320, 140, 640 × 420 |
 | Profil | kiri 32, 72, 400 × 576 (identitas, empat ubin); kanan 456, 72, 792 × 576 (lencana + riwayat bergulir) |

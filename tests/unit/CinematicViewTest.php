@@ -247,7 +247,10 @@ final class CinematicViewTest extends CIUnitTestCase
         $this->assertStringContainsString('data-tap="1"', $html);
         $this->assertStringContainsString(esc(json_encode(['/a.png', '/b.mp3'], JSON_UNESCAPED_SLASHES), 'attr'), $html, 'unik, tanpa kosong');
         $this->assertStringContainsString(esc(lang('Game.curtainMapTitle')), $html);
-        $this->assertMatchesRegularExpression('/data-curtain-tap hidden/', $html);
+        // The tap prompt is small plain text: no button picture, no lantern icon (owner, 21 October 2026)
+        $this->assertStringContainsString('<button type="button" class="curtain-tap" data-curtain-tap hidden>' . esc(lang('Game.curtainMapTap')) . '</button>', $html);
+        $this->assertStringContainsString('class="curtain-beam has-track"', $html);
+        $this->assertStringContainsString('--loading-track: url(&quot;' . esc(asset_url_versioned('ui/loading-track.webp'), 'attr') . '&quot;)', $html);
         $this->assertStringContainsString('role="progressbar"', $html);
 
         // Tiga baris status bergilir ada di data-statuses

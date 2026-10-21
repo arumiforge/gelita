@@ -13,10 +13,15 @@
  *
  * - `map`       "Membuka Peta Kedu" (Tahap 2): lentera, serpihan mengorbit,
  *               status bergilir, ketukan penutup.
- * - `region`    "Menuju {wilayah}…" (Tahap 3): jejak kaki kiri–kanan
- *               melintasi layar, tagline, chip tingkat kesulitan; ±1,8 detik
- *               tanpa ketukan. Dirender sekali di <template id="tpl-curtain-region">;
+ * - `region`    "Menuju {wilayah}…" (Tahap 3): the region's picture full
+ *               bleed, the name on the ornate navy head plate, tagline and
+ *               difficulty chip under it (owner, 21 October 2026; no footprints);
+ *               ±1,8 detik tanpa ketukan. Dirender sekali di <template id="tpl-curtain-region">;
  *               teksnya diisi dari tautan (`data-curtain-text`).
+ *
+ * Every kind shows its progress on the owner's bronze loading track
+ * (`assets/ui/loading-track.webp`, `.has-track`) when the picture is
+ * installed; the `map` tap prompt is small plain text (21 October 2026).
  * - `challenge` sebelum /tantangan (Tahap 3): judul node, label engine,
  *               ajakan singkat, dan visual per engine (`data-engine`);
  *               ≤1,5 detik, ketukan melewatinya.
@@ -70,6 +75,14 @@ $timing   = $preset['timing'];
 $preload  = array_values(array_unique(array_filter($preload ?? [], static fn ($url): bool => is_string($url) && $url !== '')));
 $bgSrc    = $kind === 'map' ? media_key_src('bg.loading') : null;
 $engine   = in_array($engine ?? '', config('Gelita')->engineTypes, true) ? $engine : 'puzzle';
+// The owner's pictures: the bronze loading track (every kind) and the navy head plate (`region`)
+$skins = [];
+foreach (['loading-track' => 'loading-track', 'head-plate' => 'map-head-plate'] as $var => $file) {
+    if (is_file(FCPATH . 'assets/ui/' . $file . '.webp')) {
+        $skins[$var] = '--' . $var . ': url(&quot;' . esc(asset_url_versioned('ui/' . $file . '.webp'), 'attr') . '&quot;)';
+    }
+}
+$plated = $kind === 'region' && isset($skins['head-plate']);
 ?>
 <div class="curtain curtain-<?= esc($kind, 'attr') ?>" data-curtain-layer="<?= esc($kind, 'attr') ?>"
      data-tap="<?= $tap ? '1' : '0' ?>"
@@ -78,16 +91,13 @@ $engine   = in_array($engine ?? '', config('Gelita')->engineTypes, true) ? $engi
      <?php if (isset($timing['localMin'])): ?>data-local-min-ms="<?= (int) $timing['localMin'] ?>"<?php endif ?>
      data-preload="<?= esc(json_encode($preload, JSON_UNESCAPED_SLASHES), 'attr') ?>"
      data-statuses="<?= esc(json_encode($statuses, JSON_UNESCAPED_UNICODE), 'attr') ?>"
+     <?= $skins !== [] ? 'style="' . implode('; ', $skins) . '"' : '' ?>
      aria-busy="true">
   <?php if ($bgSrc !== null): ?>
     <img class="curtain-bg" src="<?= esc($bgSrc, 'attr') ?>" alt="" fetchpriority="high">
   <?php elseif ($kind !== 'map'): ?>
     <?php // Filled by core/curtain.js from the link's data-curtain-bg (display plan Phase C) ?>
     <img class="curtain-bg is-deferred" alt="" hidden>
-  <?php endif ?>
-
-  <?php if ($kind === 'region'): ?>
-    <?= component('partials/footsteps', ['steps' => 8, 'class' => 'curtain-trail']) ?>
   <?php endif ?>
 
   <div class="curtain-core">
@@ -104,7 +114,7 @@ $engine   = in_array($engine ?? '', config('Gelita')->engineTypes, true) ? $engi
       <p class="curtain-eyebrow"><?= esc($eyebrow ?? '') ?></p>
     <?php endif ?>
 
-    <h2 class="curtain-title" <?= $kind === 'region' ? 'data-curtain-text="title"' : '' ?>><?= esc($title) ?></h2>
+    <h2 class="curtain-title<?= $plated ? ' has-plate' : '' ?>" <?= $kind === 'region' ? 'data-curtain-text="title"' : '' ?>><?= esc($title) ?></h2>
 
     <?php if ($kind === 'region'): ?>
       <p class="curtain-tagline" data-curtain-text="tagline"<?= ($tagline ?? '') === '' ? ' hidden' : '' ?>><?= esc($tagline ?? '') ?></p>
@@ -116,10 +126,11 @@ $engine   = in_array($engine ?? '', config('Gelita')->engineTypes, true) ? $engi
     <?php if ($statuses !== []): ?>
       <p class="curtain-status" role="status" aria-live="polite" data-curtain-status><?= esc($statuses[0]) ?></p>
     <?php endif ?>
-    <div class="curtain-beam" role="progressbar" aria-label="<?= esc(lang('Game.curtainProgress'), 'attr') ?>"
+    <div class="curtain-beam<?= isset($skins['loading-track']) ? ' has-track' : '' ?>" role="progressbar" aria-label="<?= esc(lang('Game.curtainProgress'), 'attr') ?>"
          aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" data-curtain-beam><i></i></div>
     <?php if ($tap): ?>
-      <button type="button" class="btn btn-primary btn-lg curtain-tap" data-curtain-tap hidden><?= icon('lantern') ?> <?= esc($tapLabel) ?></button>
+      <?php // Small plain text, no button picture (owner, 21 October 2026); the whole curtain takes the tap too ?>
+      <button type="button" class="curtain-tap" data-curtain-tap hidden><?= esc($tapLabel) ?></button>
     <?php elseif ($timing['skip'] ?? false): ?>
       <p class="curtain-skip"><?= esc(lang('Game.curtainSkip')) ?></p>
     <?php endif ?>

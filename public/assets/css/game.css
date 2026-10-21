@@ -2559,7 +2559,8 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
   box-shadow: 0 .25rem .5rem rgba(1, 7, 19, .45);
   transition: filter .15s, transform .15s;
 }
-.kedu-btn.is-primary { color: #0B1B2E; }
+/* Dark text straight on the gold: no shadow inherited from the region panel (owner, 21 October 2026) */
+.kedu-btn.is-primary { color: #0B1B2E; text-shadow: none; }
 .kedu-btn.is-primary::before { border-color: #FFF2BD; background: linear-gradient(to bottom, #FFF0C2, var(--gold-500) 50%, var(--gold-600)); }
 .kedu-skins[style*="--skin-secondary"] .kedu-btn.is-secondary::before { border: 0; border-radius: 0; background: var(--skin-secondary) center / 100% 100% no-repeat; box-shadow: none; }
 .kedu-skins[style*="--skin-primary"] .kedu-btn.is-primary::before { border: 0; border-radius: 0; background: var(--skin-primary) center / 109.69% 122.23% no-repeat; box-shadow: none; }
@@ -2646,9 +2647,9 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
 /* Controls: Previous, Play, Replay, and Next as small round buttons on the HUD skin
    in the top-right corner, level with the dots (owner, 18 October 2026: they were
    80 dp in their own column). 40 dp each, 8 dp apart, 48 dp hit area from
-   .icon-btn::before; Otomatis stays hidden here. Since 21 October 2026 (owner) they sit 20 dp
-   higher, above the first line of the narration rather than beside it */
-.map-kedu .kedu-story .narrator-controls { position: absolute; top: -.5rem; right: 1.25rem; z-index: 2; gap: .5rem; padding: 0; border: 0; background: none; box-shadow: none; }
+   .icon-btn::before; Otomatis stays hidden here. Since 21 October 2026 (owner) they sit
+   above the first line of the narration rather than beside it, 16 dp lower than at first */
+.map-kedu .kedu-story .narrator-controls { position: absolute; top: .5rem; right: 1.25rem; z-index: 2; gap: .5rem; padding: 0; border: 0; background: none; box-shadow: none; }
 .map-kedu .kedu-story .narrator-controls .icon-btn,
 .map-kedu .kedu-story .map-story-nav .icon-btn {
   width: 2.5rem;
@@ -3057,16 +3058,59 @@ html:not(.js) .result-scrim { display: none; }
 }
 
 /* =========================== HASIL =========================== */
-/* Panel 160, 72, 960 × 576: ringkasan terbaik, tabel bergulir, tombol Main lagi */
-.result-panel { display: grid; grid-template-rows: auto auto minmax(0, 1fr) auto auto; gap: var(--gap-3); padding: var(--gap-4) var(--gap-5); }
-.result-head { margin: 0; }
+/* Redesign (owner, 21 October 2026): 160, 64, 960 × 640 with no panel box (no background,
+   border, shadow, or rounding); heading, then Kembali (left) and Ulangi (right), the best
+   play as a slim centred band, the table of every play (scrolls), and the note. No nav bar. */
+.result-list .result-panel {
+  display: grid;
+  grid-template-rows: auto auto auto minmax(0, auto) auto;
+  align-content: start;
+  gap: var(--gap-4);
+  padding: var(--gap-3) var(--gap-4) var(--gap-4);
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+.result-head { margin: 0; text-shadow: 0 .125rem .5rem rgba(4, 10, 20, .9); }
+.result-head .eyebrow { color: var(--gold-300); }
 .result-head h1 { margin: 0; font-size: var(--fs-h2); }
 .result-panel > .empty-state { align-self: start; }
-.result-best { display: grid; gap: var(--gap-3); margin: 0; padding: var(--gap-3) var(--gap-4); }
-.result-best .stat-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.result-actions { justify-content: center; }
-.result-best-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--gap-3); }
-.result-note { display: flex; align-items: flex-start; gap: var(--gap-2); margin: 0; font-size: var(--fs-caption); }
+.result-list-actions { display: flex; align-items: center; justify-content: space-between; gap: var(--gap-4); margin-top: calc(var(--gap-2) * -1); }
+.result-list-actions .btn-quiet { background: rgba(11, 19, 32, .62); -webkit-backdrop-filter: blur(.25rem); backdrop-filter: blur(.25rem); }
+
+/* Best play: stars under a small title on the left, three figures to the right, each
+   between thin gold rules; only as wide as its content, on a band that fades at its ends */
+.result-best {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-self: center;
+  gap: 2.5rem;
+  max-width: 100%;
+  margin: 0;
+  padding: 1rem 3.5rem;
+  background: linear-gradient(to right, rgba(11, 19, 32, 0), rgba(11, 19, 32, .8) 16%, rgba(11, 19, 32, .8) 84%, rgba(11, 19, 32, 0));
+}
+.result-best::before, .result-best::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  left: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(223, 192, 135, .7) 20%, rgba(223, 192, 135, .7) 80%, transparent);
+}
+.result-best::before { top: 0; }
+.result-best::after { bottom: 0; }
+.result-best-crown { display: grid; justify-items: center; gap: .375rem; }
+.result-best-title { margin: 0; color: var(--gold-300); font-family: var(--font-body); font-size: .9375rem; font-weight: 700; letter-spacing: .08em; white-space: nowrap; }
+.result-best-stats { display: flex; margin: 0; }
+.result-best-stats > div { display: grid; justify-items: center; align-content: center; gap: .25rem; min-width: 7.5rem; padding: 0 1.75rem; border-left: 1px solid rgba(223, 192, 135, .35); text-align: center; }
+.result-best-stats dt { max-width: 11rem; color: var(--ink-dim); font-size: .875rem; line-height: 1.25; }
+.result-best-stats dd { margin: 0; color: var(--parchment); font-family: var(--font-display); font-size: 1.75rem; line-height: 1.1; }
+.result-best-stats dd.num { font-family: var(--font-mono); font-size: 1.625rem; font-variant-numeric: tabular-nums; }
+.result-list .table-wrap { align-self: start; max-height: 100%; background: rgba(11, 19, 32, .78); }
+.result-note { display: flex; align-items: flex-start; justify-content: center; gap: var(--gap-2); margin: 0; font-size: var(--fs-caption); text-shadow: 0 .0625rem .25rem rgba(4, 10, 20, .9); }
 
 /* =========================== PUSTAKA =========================== */
 .library-head { display: flex; align-items: center; justify-content: space-between; gap: var(--gap-4); margin-bottom: var(--gap-4); }
@@ -3281,56 +3325,166 @@ html.js .book-frame img.is-loaded { opacity: 1; }
 .lightbox-close { float: right; margin: 0 0 var(--gap-2) var(--gap-2); font-size: 1.6rem; line-height: 1; }
 
 /* ---------- Rak Pustaka Kedu (/pustaka) ---------- */
-.library-lead { max-width: 60ch; margin: 0; color: var(--ink-dim); font-size: var(--fs-caption); line-height: 1.4; }
-.shelf-body .library-lock p, .shelf-note { font-size: var(--fs-caption); }
-.shelf-head { margin: 0; }
+/* Redesign (owner, 21 October 2026): dark navy-and-gold cards like the Peta Kedu panels.
+   The cover fades into the card, the Pustaka book sits on its lower edge as an emblem
+   (a lock on it while closed), the title in gold, x/4 on the bronze track, one button
+   on the gold plate; Peta Kedu on the navy plate is the only way back. */
+.library-lead { max-width: 90ch; margin: 0 auto; color: #E9DDBF; font-size: .9375rem; line-height: 1.4; text-align: center; text-shadow: 0 .125rem .375rem rgba(4, 10, 20, .9); }
+.shelf-head { display: block; margin: 0; }
 .library-shelf { margin: 0; padding: 0; list-style: none; }
 .shelf-card {
   display: grid;
   grid-template-rows: auto minmax(0, 1fr);
   overflow: hidden;
-  border: .125rem solid var(--brown-500);
-  border-radius: var(--radius-lg);
-  background: var(--parchment);
-  box-shadow: var(--shadow-2);
-  color: var(--brown-700);
+  border: 1px solid rgba(223, 192, 135, .55);
+  border-radius: 1rem;
+  background: linear-gradient(to bottom, #13223B, var(--navy-900) 70%);
+  box-shadow: inset 0 0 0 .25rem rgba(8, 15, 28, .9), inset 0 0 0 .3125rem rgba(223, 192, 135, .22), 0 .75rem 1.5rem rgba(2, 6, 14, .6);
+  color: var(--ink);
 }
 .shelf-cover {
   position: relative;
-  aspect-ratio: 16 / 9;
-  overflow: hidden;
-  background: radial-gradient(circle at 30% 20%, rgba(223, 192, 135, .9), transparent 60%), linear-gradient(135deg, var(--brown-500), var(--navy-700));
+  height: 9.5rem;
+  background: radial-gradient(circle at 30% 20%, rgba(223, 192, 135, .5), transparent 60%), linear-gradient(135deg, #3B3A44, var(--navy-700));
 }
-.shelf-cover img { width: 100%; height: 100%; object-fit: cover; }
-.shelf-card:not(.is-open) .shelf-cover img { filter: grayscale(.75) brightness(.8); }
+.shelf-cover:has(> img:not([hidden])) { background: none; }
+.shelf-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent);
+  mask-image: linear-gradient(to bottom, #000 55%, transparent);
+}
+.shelf-card:not(.is-open) .shelf-cover img { filter: grayscale(.7) brightness(.72); }
 .shelf-badge {
   position: absolute;
-  top: var(--gap-2);
-  left: var(--gap-2);
+  top: .75rem;
+  left: .75rem;
   display: inline-flex;
   align-items: center;
   gap: .25rem;
-  padding: .1875rem var(--gap-2);
+  padding: .1875rem .625rem;
+  border: 1px solid rgba(223, 192, 135, .5);
   border-radius: var(--radius-pill);
-  background: rgba(11, 19, 32, .78);
-  color: var(--ink);
-  font-size: .78rem;
+  background: rgba(8, 15, 28, .82);
+  color: #E7D7B0;
+  font-size: .8125rem;
   font-weight: 700;
 }
-.shelf-badge.is-open { background: var(--gold-500); color: var(--navy-900); }
+.shelf-badge.is-open { border-color: #FFF2BD; background: linear-gradient(to bottom, #FFF0C2, var(--gold-500)); color: var(--navy-900); }
 .shelf-badge .icon { width: .875rem; height: .875rem; }
-.shelf-body { display: grid; align-content: start; gap: var(--gap-3); padding: var(--gap-4); }
-.shelf-body h2 { margin: 0; color: var(--brown-700); font-size: var(--fs-h3); }
-.shelf-body .eyebrow { color: var(--brown-500); }
-.shelf-body .btn { justify-self: start; white-space: nowrap; }
-.shelf-note { display: flex; align-items: flex-start; gap: var(--gap-2); margin: 0; color: rgba(74, 50, 24, .75); }
-.shelf-card.is-unavailable { opacity: .78; }
+/* The book emblem on the cover's lower edge, centred */
+.shelf-emblem { position: absolute; bottom: -1.5rem; left: 50%; z-index: 1; width: 4.25rem; translate: -50% 0; }
+.shelf-emblem .library-icon { display: block; width: 100%; height: auto; margin: 0; filter: drop-shadow(0 .375rem .5rem rgba(0, 0, 0, .65)); }
+.shelf-card:not(.is-open) .shelf-emblem .library-icon { filter: drop-shadow(0 .375rem .5rem rgba(0, 0, 0, .65)) grayscale(.6) brightness(.8); }
+.shelf-emblem-lock { position: absolute; right: -.375rem; bottom: .125rem; display: grid; place-items: center; width: 1.75rem; height: 1.75rem; border: .125rem solid var(--gold-500); border-radius: 50%; background: var(--navy-900); color: var(--gold-300); }
+.shelf-emblem-lock .icon { width: .875rem; height: .875rem; }
+/* A column, so the button sits on the card's foot whatever the text above it */
+.shelf-body { display: flex; flex-direction: column; align-items: center; gap: .5rem; padding: 1.875rem 1.375rem 1.25rem; text-align: center; }
+.shelf-body h2 { margin: 0; color: #F3D58C; font-size: 1.625rem; text-shadow: 0 .125rem .25rem rgba(0, 0, 0, .8); }
+.shelf-body .eyebrow { color: #B8C8D6; font-size: .875rem; letter-spacing: .04em; }
+.shelf-note { display: flex; align-items: flex-start; justify-content: center; gap: var(--gap-2); margin: 0; color: #B8C8D6; font-size: .9375rem; line-height: 1.45; }
+.shelf-note .icon { flex: none; width: 1rem; height: 1rem; margin-top: .1875rem; }
+.shelf-card.is-unavailable { opacity: .82; }
+.shelf-card .library-lock { width: 100%; gap: .5rem; }
+.shelf-card .library-lock p { color: #CFD8E2; font-size: .875rem; line-height: 1.4; }
+.shelf-card .library-lock-progress { gap: .625rem; color: #E7C982; font-size: .9375rem; }
+/* x/4 on the owner's bronze track: the fill runs in its dark channel */
+.library-index[style*="--loading-track"] .shelf-card .progress {
+  position: relative;
+  height: auto;
+  aspect-ratio: 1200 / 82;
+  overflow: visible;
+  border-radius: 0;
+  background: var(--loading-track) center / 100% 100% no-repeat;
+  filter: drop-shadow(0 .1875rem .25rem rgba(0, 0, 0, .55));
+}
+.library-index[style*="--loading-track"] .shelf-card .progress > i {
+  position: absolute;
+  inset: 24.6% auto 27.1% 5.84%;
+  max-width: 88.32%;
+  height: auto;
+  border-radius: .125rem;
+  background:
+    linear-gradient(to bottom, rgba(255, 248, 220, .55), rgba(255, 248, 220, 0) 45%, rgba(120, 50, 0, 0) 65%, rgba(120, 50, 0, .4)),
+    linear-gradient(to right, #B4600F, #F0A43A 55%, #FFD27A);
+  box-shadow: 0 0 .375rem rgba(255, 176, 64, .85);
+}
+.library-index[style*="--loading-track"] .shelf-card .progress > i[style*="width: 0%"] { box-shadow: none; }
+.shelf-card .shelf-btn {
+  flex: none;
+  max-width: 100%;
+  min-height: 3.25rem;
+  margin-top: auto;
+  padding: 0 .5rem;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(to bottom, #FFF0C2, var(--gold-500) 50%, var(--gold-600));
+  color: #2E1B08;
+  font-size: 1.0625rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+.shelf-card .shelf-btn > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.library-index[style*="--plate-gold"] .shelf-card .shelf-btn {
+  border-style: solid;
+  border-width: 0 2.5rem;
+  border-radius: 0;
+  border-image: var(--plate-gold) 0 120 fill / 0 2.5rem stretch;
+  background: none;
+  box-shadow: none;
+  filter: drop-shadow(0 .25rem .375rem rgba(0, 0, 0, .5));
+}
+.shelf-card .shelf-btn .icon { width: 1.125rem; height: 1.125rem; }
+@media (hover: hover) {
+  .shelf-card .shelf-btn:hover { background: linear-gradient(to bottom, #FFF0C2, var(--gold-500) 50%, var(--gold-600)); color: #1B0F02; filter: brightness(1.08); }
+  .library-index[style*="--plate-gold"] .shelf-card .shelf-btn:hover { background: none; filter: drop-shadow(0 .25rem .375rem rgba(0, 0, 0, .5)) brightness(1.08); }
+}
+.shelf-card .shelf-btn:active { transform: scale(.97); }
+/* Peta Kedu, bottom left, on the navy plate (as Kembali in the HUD) */
+.shelf-nav { display: flex; align-items: center; }
+.shelf-back {
+  display: inline-flex;
+  align-items: center;
+  gap: .375rem;
+  height: 3.5rem;
+  padding: 0 .5rem;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(to bottom, #1B2A4A, var(--navy-900));
+  box-shadow: inset 0 0 0 .125rem var(--gold-500);
+  color: #F3D58A;
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  text-shadow: 0 1px .1875rem rgba(0, 0, 0, .8);
+  white-space: nowrap;
+  filter: drop-shadow(0 .25rem .375rem rgba(6, 12, 24, .55));
+  -webkit-touch-callout: none;
+  user-select: none;
+  transition: filter .15s, transform .15s;
+}
+.library-index[style*="--plate-navy"] .shelf-back {
+  border-style: solid;
+  border-width: 0 3rem;
+  border-radius: 0;
+  border-image: var(--plate-navy) 0 115 fill / 0 3rem stretch;
+  background: none;
+  box-shadow: none;
+}
+.shelf-back .icon { width: 1.25rem; height: 1.25rem; margin-left: -1.25rem; }
+@media (hover: hover) {
+  .shelf-back:hover { color: #FFE7A8; filter: drop-shadow(0 .25rem .375rem rgba(6, 12, 24, .55)) brightness(1.12); }
+}
+.shelf-back:active { transform: scale(.97); }
+.shelf-back:focus-visible { outline: .1875rem solid var(--gold-300); outline-offset: .125rem; }
 
-/* Penjelasan Pustaka terkunci — kartu rak dan halaman terkunci */
 .library-lock { display: grid; gap: var(--gap-2); }
 .library-lock p { margin: 0; line-height: 1.55; }
 .library-lock-progress { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: var(--gap-3); font-size: var(--fs-caption); font-weight: 700; }
-.shelf-card .progress, .library-locked-card .progress { background: rgba(74, 50, 24, .15); }
+.library-locked-card .progress { background: rgba(74, 50, 24, .15); }
+.shelf-card .progress { background: rgba(255, 255, 255, .12); }
 
 /* ---------- Halaman terkunci (/pustaka/{code}) ---------- */
 .library-locked-card { display: grid; align-content: center; justify-items: center; gap: var(--gap-3); text-align: center; }

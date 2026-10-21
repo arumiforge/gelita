@@ -8,6 +8,7 @@
  *
  * Tombol berpanah kiri ditempatkan di sisi kiri, sisanya di kanan.
  * Layar tantangan mengirim `$nav = []` dan memakai tombol keluar berkonfirmasi.
+ * `icon` = `library` draws the Pustaka book picture (library_icon()) instead of a line icon.
  * `attrs` (opsional) menambah atribut `aria-*`/`data-*` pada tautan, mis.
  * tombol Pustaka wilayah yang masih terkunci (map-level.php).
  *
@@ -32,7 +33,7 @@ $button = static function (array $b): string {
     $html = '<a class="btn btn-' . $style . ($style === 'primary' ? ' btn-lg' : '') . '" href="' . esc($b['href'], 'attr') . '"' . $extra . '>';
 
     if ($icon !== '' && $arrow !== 'right') {
-        $html .= icon($icon);
+        $html .= $icon === 'library' ? library_icon() : icon($icon);
     }
 
     $html .= '<span>' . esc($b['label']) . '</span>';

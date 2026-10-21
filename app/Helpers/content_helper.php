@@ -587,7 +587,7 @@ if (! function_exists('library_icon')) {
         }
 
         return '<img class="' . esc($class, 'attr') . '" src="' . esc(asset_url_versioned('ui/icon-pustaka.webp'), 'attr')
-            . '" alt="" width="192" height="192" decoding="async" draggable="false">';
+            . '" alt="" width="256" height="299" decoding="async" draggable="false">';
     }
 }
 

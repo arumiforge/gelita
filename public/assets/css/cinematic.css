@@ -179,29 +179,64 @@
   animation: beam-shimmer 1.6s ease-in-out infinite;
 }
 .curtain.is-ready .curtain-beam { opacity: .5; transition: opacity .4s ease; }
+/* The owner's bronze loading track (21 October 2026, every curtain): the gold fill runs
+   in its dark channel, which sits 5.84 % in from either end and 24.6 %–72.9 % down */
+.curtain-beam.has-track {
+  width: 32rem;
+  height: auto;
+  aspect-ratio: 1200 / 82;
+  overflow: visible;
+  border-radius: 0;
+  background: var(--loading-track) center / 100% 100% no-repeat;
+  box-shadow: none;
+  filter: drop-shadow(0 .25rem .375rem rgba(0, 0, 0, .6));
+}
+.curtain-beam.has-track i {
+  inset: 24.6% auto 27.1% 5.84%;
+  width: calc(var(--p, 0) * 88.32%);
+  overflow: hidden;
+  border-radius: .125rem;
+  background:
+    linear-gradient(to bottom, rgba(255, 248, 220, .55), rgba(255, 248, 220, 0) 45%, rgba(120, 50, 0, 0) 65%, rgba(120, 50, 0, .4)),
+    linear-gradient(to right, #B4600F, #F0A43A 55%, #FFD27A);
+  box-shadow: 0 0 .375rem rgba(255, 176, 64, .85), 0 0 1rem rgba(255, 140, 30, .4);
+}
+.curtain.is-ready .curtain-beam.has-track { opacity: 1; }
 
 @keyframes beam-shimmer {
   from { transform: translateX(-100%); }
   to { transform: translateX(100%); }
 }
 
+/* Ketuk untuk membuka peta: small plain text that breathes, no button picture or raised
+   look (owner, 21 October 2026). 48 dp tall for the hit area; the whole curtain takes the tap too */
 .curtain-tap {
-  gap: var(--gap-2);
-  animation: tap-pulse 2s ease-in-out infinite;
+  min-height: 3rem;
+  padding: 0 1.5rem;
+  border: 0;
+  background: none;
+  color: var(--gold-300);
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-shadow: 0 .0625rem .25rem rgba(0, 0, 0, .9);
+  cursor: pointer;
+  animation: tap-text-breathe 2.2s ease-in-out infinite;
 }
-/* The button is its picture (`ui.result-button-primary` PNG): no box, frame, or
-   focus ring around it, and the pulse follows the picture's own outline */
-.curtain-tap, .curtain-tap:focus, .curtain-tap:focus-visible { border-color: transparent; outline: none; box-shadow: none; }
-.stage .curtain-tap { box-shadow: none; }
+/* Focus shows as an underline, so the prompt stays plain text (curtain.js focuses it) */
+.curtain-tap:focus { outline: none; }
+.curtain-tap:focus-visible { text-decoration: underline; text-decoration-thickness: .0625rem; text-underline-offset: .375rem; }
 .curtain-tap[hidden] { display: none; }
+
+@keyframes tap-text-breathe {
+  0%, 100% { opacity: .55; }
+  50% { opacity: 1; }
+}
 
 @keyframes glow-breathe {
   0%, 100% { opacity: .55; transform: scale(.94); }
   50% { opacity: 1; transform: scale(1.08); }
-}
-@keyframes tap-pulse {
-  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 0 rgba(223, 192, 135, 0)); }
-  50% { transform: scale(1.05); filter: drop-shadow(0 0 .875rem rgba(255, 226, 150, .85)); }
 }
 @keyframes tap-glow {
   0%, 100% { box-shadow: 0 0 0 0 rgba(223, 192, 135, .45), var(--shadow-1); }
@@ -1445,19 +1480,45 @@ body.has-kenal { overflow: hidden; }
 }
 
 /* ===================== TAHAP 3 · TIRAI WILAYAH ===================== */
+/* Cinematic plate (owner, 21 October 2026): the region's picture full bleed under a
+   slow zoom and a dark vignette, the name on the ornate navy head plate, the tagline
+   and difficulty chip under it, and the bronze track low on the screen */
 .curtain-region {
   background:
-    radial-gradient(ellipse at 50% 120%, rgba(143, 209, 79, .16), transparent 55%),
-    radial-gradient(circle at 50% 40%, rgba(240, 223, 184, calc(.1 + var(--p, 0) * .12)), transparent 45%),
+    radial-gradient(circle at 50% 40%, rgba(240, 223, 184, calc(.06 + var(--p, 0) * .08)), transparent 45%),
     linear-gradient(170deg, var(--navy-700), var(--navy-900) 65%);
 }
-.curtain-trail { position: absolute; top: 68%; right: 0; left: 0; z-index: 1; }
-.curtain-region .curtain-core { gap: var(--gap-3); margin-bottom: 5.4rem; }
-.curtain-tagline { margin: 0; color: var(--gold-300); font-family: var(--font-display); font-size: var(--fs-h3); font-style: italic; }
-.curtain-chip { justify-self: center; border-color: var(--line-strong); background: rgba(11, 19, 32, .6); color: var(--ink); }
-.curtain-region .curtain-title, .curtain-region .curtain-tagline { animation: cine-rise .6s ease both; }
+.curtain-region .curtain-bg.is-deferred.is-in { opacity: .82; }
+.curtain-region::after {
+  background:
+    linear-gradient(to bottom, rgba(5, 10, 20, .55), transparent 22%, transparent 58%, rgba(5, 10, 20, .85)),
+    radial-gradient(ellipse at 50% 42%, transparent 30%, rgba(5, 10, 20, .7) 85%);
+}
+/* The core fills the curtain, so the track can sit at its foot */
+.curtain-region .curtain-core { align-content: center; align-self: stretch; gap: var(--gap-3); width: min(46rem, 100%); }
+.curtain-region .curtain-title.has-plate {
+  display: grid;
+  place-items: center;
+  width: 36rem;
+  aspect-ratio: 1200 / 271;
+  padding: 1.4% 9% 0;
+  background: var(--head-plate) center / 100% 100% no-repeat;
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+  color: #F3D58C;
+  font-size: 2.25rem;
+  line-height: 1;
+  text-shadow: 0 .125rem .25rem rgba(0, 0, 0, .9), 0 0 .75rem rgba(243, 213, 140, .35);
+  filter: drop-shadow(0 .375rem .625rem rgba(0, 0, 0, .6));
+}
+.curtain-tagline { margin: 0; color: #F1E3BF; font-family: var(--font-display); font-size: var(--fs-h3); font-style: italic; text-shadow: 0 .125rem .5rem rgba(0, 0, 0, .9); }
+.curtain-chip { justify-self: center; border-color: var(--line-strong); background: rgba(11, 19, 32, .72); color: var(--ink); }
+.curtain-region .curtain-title, .curtain-region .curtain-tagline, .curtain-region .curtain-chip { animation: cine-rise .6s ease both; }
 .curtain-region .curtain-tagline { animation-delay: .15s; }
+.curtain-region .curtain-chip { animation-delay: .3s; }
 .curtain-region .curtain-beam { width: 16.25rem; height: .25rem; }
+/* The track sits low on the screen, clear of the picture's centre */
+.curtain-region .curtain-beam.has-track { position: absolute; bottom: 3rem; left: 50%; width: 30rem; height: auto; translate: -50% 0; }
 
 /* ==================== TAHAP 3 · TIRAI TANTANGAN ==================== */
 .curtain-challenge { cursor: pointer; }
@@ -1467,6 +1528,7 @@ body.has-kenal { overflow: hidden; }
 .curtain-lead { margin: 0; color: var(--ink); font-size: var(--fs-h3); }
 .curtain-skip { margin: var(--gap-2) 0 0; color: var(--ink-dim); font-size: var(--fs-caption); }
 .curtain-challenge .curtain-beam { width: 15rem; height: .25rem; }
+.curtain-challenge .curtain-beam.has-track { width: 22rem; height: auto; }
 
 .cc-art { position: relative; display: grid; place-items: center; width: 9.375rem; height: 7.5rem; }
 
@@ -1644,7 +1706,7 @@ body.has-kenal { overflow: hidden; }
 
   /* Tahap 3: tanpa gerak, hanya pudar — tiap visual tampil dalam keadaan akhirnya */
   .kenal-dot, .kenal-badge, .kenal-slide, .footstep,
-  .curtain-region .curtain-title, .curtain-region .curtain-tagline,
+  .curtain-region .curtain-title, .curtain-region .curtain-tagline, .curtain-region .curtain-chip,
   .cc-puzzle i, .cc-gap b, .cc-card, .cc-light,
   .dialogue-ambience::after, .dialogue-cine .dialogue-stage > .character.is-speaking::before,
   .dialogue-cine .dialogue-stage .character.is-speaking .character-img, .region-difficulty::after,

@@ -245,6 +245,17 @@ final class LibraryLockTest extends CIUnitTestCase
         $this->assertStringContainsString(esc(lang('Game.libraryUnavailable', ['Wonosobo'])), $page);
         $this->assertStringNotContainsString('wilayah/wonosobo', $page);
         $this->assertStringNotContainsString('dialog/wonosobo', $page);
+
+        // Redesign (owner, 21 October 2026): the Peta Kedu HUD, the book emblem on each cover (a lock while
+        // closed), buttons on the gold plate, x/4 on the bronze track, and one way back on the navy plate
+        $this->assertStringContainsString('<header class="hud hud-menu-style is-title-centre"', $page);
+        $this->assertSame(3, substr_count($page, '<span class="shelf-emblem"><img class="library-icon"'));
+        $this->assertSame(2, substr_count($page, '<span class="shelf-emblem-lock">'));
+        $this->assertSame(2, substr_count($page, '<a class="btn shelf-btn"'));
+        $this->assertStringContainsString('--loading-track: url(&quot;' . esc(asset_url_versioned('ui/loading-track.webp'), 'attr') . '&quot;)', $page);
+        $this->assertStringContainsString('<a class="shelf-back" href="' . base_url('peta') . '">', $page);
+        $this->assertStringNotContainsString('library-close', $page, 'no second way back');
+        $this->assertStringNotContainsString('class="nav-bar"', $page);
     }
 
     public function testRegionMapMarksTheLockedLibraryButton(): void

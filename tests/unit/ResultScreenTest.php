@@ -116,6 +116,34 @@ final class ResultScreenTest extends CIUnitTestCase
         }
     }
 
+    /**
+     * `/hasil/{code}/{n}` (owner, 21 October 2026): no panel box, Kembali (left) and Ulangi (right)
+     * right under the heading, the best play as a slim band of three figures, no nav bar.
+     */
+    public function testAttemptListPutsBothButtonsUnderTheHeading(): void
+    {
+        $best = new ChallengeAttempt();
+        $best->injectRawData(['id' => 105, 'attempt_no' => 1, 'session_id' => 9, 'challenge_node_id' => 11, 'status' => 'completed',
+            'completion_reason' => 'solved', 'stars' => 2, 'duration_ms' => 125000, 'first_pass_correct' => 0, 'final_correct' => 1,
+            'scorable_items' => 1, 'check_count' => 2, 'max_tries' => 3, 'started_at' => '2026-10-21 10:06:00']);
+
+        $page = view('game/challenge-result', $this->hud() + [
+            'level' => $this->level(), 'node' => self::node(1, 'puzzle'), 'sequence' => 1, 'attempts' => [$best], 'best' => $best,
+        ]);
+
+        $this->assertStringContainsString('<div class="result-panel stage-box">', $page, 'no .panel box around the page');
+        $this->assertStringNotContainsString('class="nav-bar"', $page);
+        $this->assertMatchesRegularExpression(
+            '/<\/header>\s*<nav class="result-list-actions"[^>]*>\s*<a class="btn btn-quiet" href="' . preg_quote(base_url('wilayah/temanggung'), '/')
+            . '">.*?<\/a>\s*<a class="btn btn-primary btn-lg" href="' . preg_quote(base_url('misi/temanggung/1'), '/') . '">/s',
+            $page,
+        );
+        $this->assertStringContainsString('<section class="result-best" aria-labelledby="result-best-title">', $page);
+        $this->assertSame(3, substr_count($page, '<div><dt>'), 'three figures: first try, time, tries');
+        $this->assertStringContainsString('<dd class="num">2:05</dd>', $page);
+        $this->assertStringContainsString('<tr class="is-best">', $page);
+    }
+
     /** The owner's shard plate (20 October 2026): the pictures ship with the game, the page draws the fill. */
     public function testShardPlateDrawsTheFillOverTheOwnersFrame(): void
     {

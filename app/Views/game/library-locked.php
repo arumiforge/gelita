@@ -45,6 +45,6 @@ $title  = lang('Game.libraryRegion', [$region]);
 <?= $this->section('nav') ?>
 <?= component('nav-bar', ['nav' => [
     ['label' => $region, 'href' => base_url('wilayah/' . $level->code), 'style' => 'quiet', 'arrow' => 'left'],
-    ['label' => lang('Game.library'), 'href' => base_url('pustaka'), 'style' => 'quiet', 'icon' => 'book'],
+    ['label' => lang('Game.library'), 'href' => base_url('pustaka'), 'style' => 'quiet', 'icon' => 'library'],
 ]]) ?>
 <?= $this->endSection() ?>
