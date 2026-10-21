@@ -102,11 +102,14 @@ final class RegisterWizardTest extends CIUnitTestCase
         foreach (['1', '2', '3'] as $step) {
             $html = (string) $this->send(Method::GET, 'daftar/' . $step)->getBody();
 
-            $this->assertStringContainsString('register-panel ornate-panel stage-box', $html, "step {$step}");
-            $this->assertStringContainsString('class="ornate"', $html, "step {$step}: gold corners");
+            // Owner, 21 October 2026: no fill, border, shadow, or ornaments; the gate picture under a deep dark layer
+            $this->assertStringContainsString('register-panel ornate-panel is-bare stage-box', $html, "step {$step}");
+            $this->assertStringNotContainsString('class="ornate"', $html, "step {$step}: no corner ornaments");
             $this->assertStringNotContainsString('ornate-crest', $html, "step {$step}: no compass crest");
             $this->assertStringNotContainsString('panel-parchment', $html, "step {$step}");
-            $this->assertStringContainsString('src="' . asset_url_versioned('ui/bg-auth-register.webp') . '"', $html, "step {$step}");
+            $this->assertStringContainsString('src="' . asset_url_versioned('ui/bg-mulai.webp') . '"', $html, "step {$step}");
+            $this->assertMatchesRegularExpression('/<body class="game is-dim-art"/', $html, "step {$step}");
+            $this->assertStringContainsString('<p class="eyebrow register-step">' . esc(lang('Game.regStepOf', [$step, 3])) . '</p>', $html, "step {$step}: the step label without GELITA");
             $this->assertStringNotContainsString('data-character="jaka"', $html, "step {$step}: no animated figure");
             $this->assertStringNotContainsString('auth-jaka', $html, "step {$step}: no Jaka");
             $this->assertStringContainsString('class="register-grid', $html, "step {$step}: fields in columns");
@@ -139,23 +142,24 @@ final class RegisterWizardTest extends CIUnitTestCase
         $this->assertLessThan((int) strpos($html, 'id="password"'), (int) strpos($html, 'id="username"'));
     }
 
-    /** Owner, 20 October 2026: Berikutnya and Daftar are the lettered lantern plates, without text of their own. */
-    public function testStepButtonsAreTheLetteredPictures(): void
+    /** Owner, 21 October 2026: Berikutnya and Daftar are the blank gold plates with their word written on them, centred. */
+    public function testStepButtonsAreTheGoldPlates(): void
     {
         $_SESSION[RegisterController::WIZARD] = ['1' => self::ABOUT, '2' => self::SCHOOL];
-        $expect = ['1' => ['btn-next.webp', 'Game.next'], '2' => ['btn-next.webp', 'Game.next'], '3' => ['btn-register.webp', 'Game.registerSubmit']];
+        $expect = ['1' => ['medium', 'plate-gold-1.webp', 'Game.next'], '2' => ['medium', 'plate-gold-1.webp', 'Game.next'], '3' => ['short', 'plate-gold-3.webp', 'Game.registerSubmit']];
 
-        foreach ($expect as $step => [$file, $label]) {
+        foreach ($expect as $step => [$size, $file, $label]) {
             $html    = (string) $this->send(Method::GET, 'daftar/' . $step)->getBody();
             $actions = substr($html, (int) strpos($html, 'register-actions'));
             $actions = substr($actions, 0, (int) strpos($actions, '</div>'));
 
-            $this->assertStringContainsString('<button class="btn-art" type="submit"><img src="' . asset_url_versioned('ui/' . $file) . '" alt="' . lang($label) . '"', $actions, "step {$step}");
+            // The response's HTML is tidied on the way out (quotes may change), so match the parts
+            $this->assertMatchesRegularExpression('~<button class="btn-gold-plate is-' . $size . '" type="submit" style=[\'"]--gold-plate: url\((&quot;|")[^)]*' . preg_quote($file, '~') . '[^)]*\)[\'"]><span>' . preg_quote(esc(lang($label)), '~') . '</span></button>~', $actions, "step {$step}");
             $this->assertStringNotContainsString('btn-primary', $actions, "step {$step}: no plain button");
         }
 
-        foreach (['next', 'next-en', 'register', 'register-en'] as $name) {
-            $this->assertFileExists(FCPATH . 'assets/ui/btn-' . $name . '.webp');
+        foreach (['1', '3'] as $n) {
+            $this->assertFileExists(FCPATH . 'assets/ui/plate-gold-' . $n . '.webp');
         }
     }
 

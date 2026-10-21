@@ -41,7 +41,8 @@
 
   <div class="login-panel stage-box stage-scroll">
     <header class="login-head">
-      <h1><?= esc(lang('Game.loginTitle')) ?></h1>
+      <?php // Owner, 21 October 2026: a warm greeting; the tab title stays "Masuk" ?>
+      <h1><?= esc(lang('Game.loginHeading')) ?></h1>
       <p><?= esc(lang('Game.loginLead')) ?></p>
     </header>
 
@@ -67,7 +68,7 @@
           <?= icon('key', 'input-lead-icon') ?>
           <input type="password" id="password" name="password" required autocomplete="current-password" enterkeyhint="done">
           <button type="button" class="pw-toggle" aria-pressed="false" aria-controls="password"
-                  aria-label="<?= esc(lang('Auth.showPassword'), 'attr') ?>"><?= icon('eye') ?></button>
+                  aria-label="<?= esc(lang('Auth.showPassword'), 'attr') ?>"><?= round_icon('eye', 'pw-toggle-art', 'eye') ?></button>
         </div>
         <p class="pw-caps" hidden><?= icon('warn') ?> <?= esc(lang('Auth.capsLock')) ?></p>
       </div>
@@ -75,8 +76,8 @@
       <input type="hidden" name="device_json" value="">
 
       <div class="form-actions">
-        <?php // The owner's lettered MASUK / LOG IN plate (20 October 2026) ?>
-        <?= picture_button('login', lang('Game.login'), 'btn btn-primary btn-lg btn-block') ?>
+        <?php // The owner's blank gold plate with the word on it (21 October 2026) ?>
+        <?= gold_plate_button(lang('Game.login'), 'short', 'btn btn-primary btn-lg btn-block') ?>
       </div>
     </form>
 

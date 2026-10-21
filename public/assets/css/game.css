@@ -333,13 +333,12 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
 .hunt-side .btn-plate.hunt-next::after { content: ""; position: absolute; inset: -.3125rem 0; } /* 48 dp hit area */
 .btn-art:disabled { cursor: progress; opacity: .7; transform: none; }
 /* While a login or sign-up form is being sent (login.js, register.js set aria-busy): the owner's
-   round loading button (round_style_attr(), 21 October 2026) over the dimmed plate. The carved
+   round loading button (round_style_attr(), 21 October 2026) on the plate in place of its word. The carved
    ring stays still (::before); only its face with the ring of dots turns (::after, clipped to
    the face, which a centred circle keeps through the turn). */
-:is(.login-form, .register-form)[style*="--round-loading"] .btn-art[aria-busy="true"] { position: relative; opacity: 1; }
-:is(.login-form, .register-form)[style*="--round-loading"] .btn-art[aria-busy="true"] img { opacity: .5; }
-:is(.login-form, .register-form)[style*="--round-loading"] .btn-art[aria-busy="true"]::before,
-:is(.login-form, .register-form)[style*="--round-loading"] .btn-art[aria-busy="true"]::after {
+:is(.login-form, .register-form)[style*="--round-loading"] .btn-gold-plate[aria-busy="true"] { color: transparent; text-shadow: none; }
+:is(.login-form, .register-form)[style*="--round-loading"] .btn-gold-plate[aria-busy="true"]::before,
+:is(.login-form, .register-form)[style*="--round-loading"] .btn-gold-plate[aria-busy="true"]::after {
   content: "";
   position: absolute;
   top: 50%;
@@ -351,8 +350,8 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
   background: var(--round-loading) center / contain no-repeat;
   pointer-events: none;
 }
-:is(.login-form, .register-form)[style*="--round-loading"] .btn-art[aria-busy="true"]::before { filter: drop-shadow(0 .1875rem .375rem rgba(0, 0, 0, .55)); }
-:is(.login-form, .register-form)[style*="--round-loading"] .btn-art[aria-busy="true"]::after { clip-path: circle(30%); animation: round-turn 1.2s linear infinite; }
+:is(.login-form, .register-form)[style*="--round-loading"] .btn-gold-plate[aria-busy="true"]::before { filter: drop-shadow(0 .1875rem .375rem rgba(0, 0, 0, .55)); }
+:is(.login-form, .register-form)[style*="--round-loading"] .btn-gold-plate[aria-busy="true"]::after { clip-path: circle(30%); animation: round-turn 1.2s linear infinite; }
 @keyframes round-turn { to { transform: rotate(360deg); } }
 .login-form .form-actions { justify-content: center; }
 /* The MASUK / LOG IN plate is nearly 2:1, so its letters need the extra height */
@@ -368,51 +367,46 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
   color: var(--navy-900);
   font-weight: 600;
 }
-/* Staff login: a small, readable link in the bottom-right corner of the welcome
-   page only. It sits on a dark backing like the HUD text so it stays legible on
-   the background art; its corner coordinates live in stage.css. */
-.welcome-staff {
-  position: absolute;
-  z-index: 2;
-  display: inline-flex;
-  align-items: center;
-  gap: var(--gap-2);
-  padding: 0 var(--gap-4) 0 var(--gap-3);
-  border-radius: var(--radius-pill);
-  background: var(--hud-backing);
-  color: var(--ink);
-  font-size: var(--fs-caption);
-  font-weight: 600;
-  line-height: 1;
-  white-space: nowrap;
-  text-decoration: none;
-  text-shadow: 0 1px .25rem rgba(11, 19, 32, .8);
-  transition: background-color .15s, color .15s;
-}
-.welcome-staff .icon { width: 1.125rem; height: 1.125rem; color: var(--gold-500); }
-/* 40 dp tall; the hit area grows to --tap like the HUD brand link */
-.welcome-staff::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 100%;
-  height: var(--tap);
-  transform: translateY(-50%);
-}
-.welcome-staff:hover, .welcome-staff:focus-visible { background: var(--hud-backing-hover); color: var(--gold-300); }
-.welcome-staff:focus-visible { outline: .1875rem solid var(--gold-500); outline-offset: .125rem; }
 /* Tawaran memasang di layar utama (game/install.js) */
 .welcome-install { display: grid; align-content: center; justify-items: end; gap: var(--gap-2); height: auto; min-height: calc(40 * var(--dp)); }
 .welcome-install-hint { display: flex; align-items: flex-start; gap: var(--gap-2); margin: 0; color: var(--ink-dim); font-size: var(--fs-caption); }
 .welcome-install-hint .icon { margin-top: .125rem; color: var(--gold-500); }
+/* Pasang GELITA on the owner's plate with the download medallion at its right end (866 × 200,
+   21 October 2026): the label sits on the dark stone left of the medallion */
+.btn-install-plate {
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  height: 4rem;
+  aspect-ratio: 866 / 200;
+  padding: 0 32% .0625em 9%;
+  border: 0;
+  background: var(--install-plate) center / 100% 100% no-repeat;
+  color: #F7E3AE;
+  font-family: var(--font-display);
+  font-size: 1.1875rem;
+  font-weight: 700;
+  letter-spacing: .02em;
+  line-height: 1.1;
+  text-shadow: 0 .0625rem 0 #000, 0 0 .5rem rgba(0, 0, 0, .9);
+  white-space: nowrap;
+  cursor: pointer;
+  filter: drop-shadow(0 .25rem .5rem rgba(0, 0, 0, .55));
+  transition: filter .2s, transform .15s;
+  -webkit-touch-callout: none;
+  user-select: none;
+}
+.btn-install-plate[hidden] { display: none; }
+.btn-install-plate > span { flex: 1; text-align: center; }
+@media (hover: hover) {
+  .btn-install-plate:hover { filter: drop-shadow(0 .25rem .5rem rgba(0, 0, 0, .55)) drop-shadow(0 0 .75rem var(--glow)) brightness(1.1); transform: translateY(-.125rem); }
+}
+.btn-install-plate:active { filter: drop-shadow(0 .25rem .5rem rgba(0, 0, 0, .55)) brightness(1.15); transform: scale(.97); }
+.btn-install-plate:focus-visible { outline: .1875rem solid var(--gold-300); outline-offset: .1875rem; border-radius: var(--radius-pill); }
 
 /* =========================== MULAI & GERBANG =========================== */
 /* Owner mockup (9 Oct 2026): Jaka on the left, one ornate dark panel with the
    title and two row cards. Coordinates live in stage.css. */
-.start-jaka { align-items: end; }
-.start-jaka .character-img { height: 100%; max-height: none; object-fit: contain; object-position: bottom; }
-.start-jaka .character-fallback { align-self: center; }
 
 /* Dark panel with gold ornaments (partials/ornate-frame.php). The frame has a
    fixed stage box; its content sits in .ornate-body, which scrolls inside the
@@ -426,6 +420,9 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
   background: linear-gradient(to bottom, rgba(11, 19, 32, .9), rgba(6, 10, 18, .94));
   box-shadow: inset 0 0 0 .3125rem rgba(6, 10, 18, .9), inset 0 0 0 .375rem var(--line-strong), var(--shadow-2);
 }
+/* Bare (owner, 21 October 2026: Mulai, Daftar): no fill, border, or shadow; the content
+   stands straight on the darkened picture (body.is-dim-art) */
+.ornate-panel.is-bare { border: 0; background: none; box-shadow: none; }
 .ornate-body {
   display: flex;
   flex-direction: column;
@@ -789,6 +786,173 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
 .choice-pill-lg { padding: var(--gap-3) var(--gap-5); font-size: var(--fs-h3); }
 .assent-check { align-items: flex-start; font-weight: 600; }
 
+/* ---------- Daftar redesign (owner, 21 October 2026) ----------
+   The panel is bare on the darkened gate picture; head (title | stepper), then "Langkah n dari 3"
+   centred right above the form, then the fields and the centred gold-plate button. Larger
+   labels and inputs, roomier help text with a small gold diamond. */
+.register-panel.is-bare { grid-template-rows: auto auto minmax(0, 1fr); row-gap: var(--gap-2); }
+.register-panel.is-bare .register-head { min-height: 4rem; padding: 0 var(--gap-7) var(--gap-3); border-bottom-color: rgba(223, 192, 135, .28); }
+.register-panel.is-bare .register-head h1 { grid-row: 1; text-shadow: 0 .125rem .75rem rgba(0, 0, 0, .7); }
+.register-panel.is-bare .register-head .reg-stepper { grid-row: 1; }
+.register-step {
+  justify-self: center;
+  margin: 0;
+  color: var(--gold-500);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-align: center;
+  text-shadow: 0 .0625rem .375rem rgba(0, 0, 0, .8);
+}
+.register-panel.is-bare .register-fields { padding-top: var(--gap-3); }
+.register-panel.is-bare .field > label, .register-panel.is-bare .field > .label, .register-panel.is-bare legend.label { font-size: 1.125rem; letter-spacing: .01em; text-shadow: 0 .0625rem .25rem rgba(0, 0, 0, .8); }
+.register-panel.is-bare :is(input[type="text"], input[type="number"], input[type="password"], select) { font-size: 1.125rem; }
+.register-panel.is-bare .field-help {
+  display: flex;
+  align-items: baseline;
+  gap: var(--gap-2);
+  color: rgba(236, 226, 206, .82);
+  font-size: .9375rem;
+  line-height: 1.5;
+  letter-spacing: .01em;
+}
+.register-panel.is-bare .field-help::before {
+  content: "";
+  flex: none;
+  width: .4375rem;
+  height: .4375rem;
+  translate: 0 -.0625rem;
+  rotate: 45deg;
+  background: linear-gradient(135deg, var(--gold-300), var(--gold-600));
+  box-shadow: 0 0 .375rem rgba(223, 192, 135, .5);
+}
+.register-panel.is-bare .register-actions { justify-content: center; border-top-color: rgba(223, 192, 135, .28); }
+/* Notes under a field: the hint to tap Berikutnya (step 1), Central Java and NPSN (step 2), and
+   "is this your school" once the school card shows a school */
+:is(.register-note, .register-next-hint) {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-3);
+  margin: 0;
+  padding: var(--gap-2) var(--gap-3);
+  border-left: .1875rem solid var(--gold-500);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: linear-gradient(to right, rgba(199, 162, 101, .16), rgba(6, 12, 24, .2));
+  color: var(--ink);
+  font-size: 1rem;
+  line-height: 1.45;
+}
+:is(.register-note, .register-next-hint) > img.hint-art { flex: none; width: 2.25rem; height: 2.25rem; filter: drop-shadow(0 .125rem .25rem rgba(0, 0, 0, .5)); }
+.school-npsn:not(:has(.school-card-name)) .school-confirm { display: none; }
+/* Kelas: the owner's round lock */
+.class-fixed > img.class-fixed-art { width: 2.5rem; height: 2.5rem; filter: drop-shadow(0 .125rem .25rem rgba(0, 0, 0, .5)); }
+
+/* Stepper numbers on the owner's round buttons (21 October 2026): the neutral face while a step
+   is not complete (the active one glows), the green ring once it is; the number stays */
+.reg-stepper[style*="--round-neutral"] .reg-stepper-no {
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 0;
+  background: var(--round-neutral) center / contain no-repeat;
+  color: var(--ink-dim);
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 700;
+  text-shadow: 0 .0625rem .25rem rgba(0, 0, 0, .9);
+  filter: drop-shadow(0 .125rem .25rem rgba(0, 0, 0, .5));
+}
+.reg-stepper[style*="--round-neutral"] .reg-stepper-item.is-active .reg-stepper-no {
+  background: var(--round-neutral) center / contain no-repeat;
+  color: var(--gold-300);
+  filter: drop-shadow(0 0 .5rem var(--glow)) drop-shadow(0 .125rem .25rem rgba(0, 0, 0, .5));
+}
+.reg-stepper[style*="--round-ring-green"] .reg-stepper-item.is-done .reg-stepper-no {
+  background: var(--round-ring-green) center / contain no-repeat;
+  color: #C9F2A8;
+}
+.reg-stepper[style*="--round-neutral"] .reg-stepper-item { font-size: 1rem; text-shadow: 0 .0625rem .25rem rgba(0, 0, 0, .8); }
+
+/* Masuk, Daftar, Berikutnya on the owner's blank gold plate (gold_plate_button(), 21 October
+   2026): the picture at its own ratio, the word written on the dark stone between the carved
+   ends, with room around it */
+.btn-gold-plate {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  height: 4rem;
+  padding: 0 19% .0625em;
+  border: 0;
+  background: var(--gold-plate) center / 100% 100% no-repeat;
+  color: #F7E3AE;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  line-height: 1.1;
+  text-shadow: 0 .0625rem 0 #000, 0 0 .5rem rgba(0, 0, 0, .9);
+  white-space: nowrap;
+  cursor: pointer;
+  filter: drop-shadow(0 .25rem .5rem rgba(0, 0, 0, .55));
+  transition: filter .2s, transform .15s;
+  -webkit-touch-callout: none;
+  user-select: none;
+}
+.btn-gold-plate.is-short { aspect-ratio: 818 / 160; }
+.btn-gold-plate.is-medium { aspect-ratio: 882 / 160; }
+@media (hover: hover) {
+  .btn-gold-plate:hover { color: #FFF1C9; filter: drop-shadow(0 .25rem .5rem rgba(0, 0, 0, .55)) drop-shadow(0 0 .75rem var(--glow)) brightness(1.1); transform: translateY(-.125rem); }
+}
+.btn-gold-plate:active { filter: drop-shadow(0 .25rem .5rem rgba(0, 0, 0, .55)) brightness(1.15); transform: scale(.97); }
+.btn-gold-plate:focus-visible { outline: .1875rem solid var(--gold-300); outline-offset: .1875rem; border-radius: var(--radius-pill); }
+.btn-gold-plate:disabled { cursor: progress; transform: none; }
+.login-form .btn-gold-plate { height: 4.25rem; }
+
+/* ---------- Mulai (owner, 21 October 2026) ----------
+   Bare and centred on the darkened gate picture: the title glows over the cards */
+.start-panel.is-bare .start-head h1 { font-size: var(--fs-h1); text-shadow: 0 .125rem .75rem rgba(0, 0, 0, .7), 0 0 1.5rem rgba(223, 192, 135, .3); }
+.start-panel.is-bare .start-card { background: rgba(6, 12, 24, .55); backdrop-filter: blur(.125rem); }
+.start-panel.is-bare .start-card.is-primary { background: linear-gradient(to right, rgba(199, 162, 101, .2), rgba(6, 12, 24, .55) 60%); }
+
+/* ---------- Tentang GELITA `/tentang` (owner, 21 October 2026) ----------
+   The title and lead centred, four cards in a 2 × 2 grid on the darkened gate picture, each
+   with one of the owner's round buttons. Coordinates live in stage.css. */
+.about-panel { display: flex; flex-direction: column; gap: var(--gap-5); padding: var(--gap-2) var(--gap-4); }
+.about-panel > * { flex-shrink: 0; }
+.about-panel > :first-child { margin-top: auto; }
+.about-panel > :last-child { margin-bottom: auto; }
+.about-head { text-align: center; }
+.about-head h1 { margin: 0; color: var(--gold-300); font-size: var(--fs-h1); letter-spacing: .03em; text-shadow: 0 .125rem .75rem rgba(0, 0, 0, .7), 0 0 1.5rem rgba(223, 192, 135, .3); }
+.about-head p { margin: var(--gap-2) 0 0; color: var(--ink-dim); font-size: var(--fs-body); }
+.about-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap-4); }
+.about-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: var(--gap-4);
+  padding: var(--gap-4) var(--gap-5);
+  border: 1px solid rgba(223, 192, 135, .3);
+  border-radius: var(--radius);
+  background: rgba(6, 12, 24, .55);
+  box-shadow: inset 0 0 .75rem rgba(223, 192, 135, .06);
+}
+.about-icon { width: 4rem; height: 4rem; filter: drop-shadow(0 .1875rem .375rem rgba(0, 0, 0, .55)); -webkit-user-drag: none; }
+.about-body h2 { margin: .25rem 0 var(--gap-2); color: var(--gold-300); font-size: var(--fs-h3); }
+.about-body p { margin: 0; color: var(--ink); font-size: 1.0625rem; line-height: 1.5; }
+.about-body ul { display: grid; gap: .375rem; margin: 0; padding: 0; list-style: none; font-size: 1.0625rem; line-height: 1.45; }
+.about-body li { position: relative; padding-left: 1.125rem; }
+.about-body li::before {
+  content: "";
+  position: absolute;
+  top: .55em;
+  left: 0;
+  width: .4375rem;
+  height: .4375rem;
+  rotate: 45deg;
+  background: linear-gradient(135deg, var(--gold-300), var(--gold-600));
+}
+
 .choice-pill {
   align-items: center;
   min-height: var(--tap);
@@ -814,6 +978,16 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
 .avatar-face { display: grid; place-items: center; width: 100%; height: 100%; overflow: hidden; border: .1875rem solid var(--line-strong); border-radius: 50%; background: var(--navy-700); }
 .avatar-face img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .avatar-face.is-initial { background: var(--gold-500); color: var(--navy-900); font-family: var(--font-display); font-size: var(--fs-h3); font-weight: 700; }
+/* A letter avatar on the owner's neutral round button (21 October 2026; --round-neutral on #stage) */
+#stage[style*="--round-neutral"] :is(.avatar-face.is-initial, .user-avatar:not(.has-art), .profile-avatar:not(.has-art)) {
+  border: 0;
+  background: var(--round-neutral) center / contain no-repeat;
+  box-shadow: none;
+  color: var(--gold-300);
+  text-shadow: 0 .0625rem .25rem rgba(0, 0, 0, .9);
+}
+#stage[style*="--round-neutral"] .avatar-tile:has(input:checked) .avatar-face.is-initial,
+#stage[style*="--round-neutral"] .avatar-tile[aria-pressed="true"] .avatar-face.is-initial { box-shadow: 0 0 0 .1875rem rgba(223, 192, 135, .5), 0 0 .75rem var(--glow); }
 .avatar-tile:has(input:checked) .avatar-face, .avatar-tile[aria-pressed="true"] .avatar-face { border-color: var(--gold-300); box-shadow: 0 0 0 .1875rem rgba(223, 192, 135, .35); }
 .avatar-tile:has(input:checked)::after, .avatar-tile[aria-pressed="true"]::after {
   content: "✓";
@@ -4050,7 +4224,7 @@ html.js .book-frame img.is-loaded { opacity: 1; }
   /* Phase F1.5: the start button stops pulsing; hover, selection, and press
      keep their colour cues but do not move or scale */
   .btn-start, .btn-start.is-image { animation: none; }
-  :is(.login-form, .register-form)[style*="--round-loading"] .btn-art[aria-busy="true"]::after { animation: none; }
+  :is(.login-form, .register-form)[style*="--round-loading"] .btn-gold-plate[aria-busy="true"]::after { animation: none; }
   .btn-start:hover, .btn-start:focus-visible, .btn-start:active,
   .btn-art:hover, .btn-art:active,
   .map-pin:hover .pin-icon, .map-pin:active .pin-icon,

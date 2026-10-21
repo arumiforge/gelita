@@ -585,13 +585,38 @@ input[type="checkbox"], input[type="radio"] { width: 1.375rem; height: 1.375rem;
 }
 .pw-caps { display: flex; gap: var(--gap-1); margin: 0; color: var(--warn-ink); font-weight: 700; }
 
-.pw-meter { height: .5rem; border-radius: .25rem; background: rgba(255, 255, 255, .15); overflow: hidden; }
-.pw-meter i { display: block; height: 100%; width: 0; transition: width .2s; }
-.pw-meter i[data-level="weak"] { width: 33%; background: var(--bad); }
-.pw-meter i[data-level="medium"] { width: 66%; background: var(--warn); }
-.pw-meter i[data-level="strong"] { width: 100%; background: var(--ok); }
-.panel-parchment .pw-meter { background: rgba(74, 50, 24, .15); }
+/* Strength meter (owner, 21 October 2026): four segments, clear of the password box, that light
+   up one by one with a soft glow (data-step 0–4 from game/password-meter.js); data-level gives
+   the colour, and a lit segment pops in. The level word pops in under it. */
+.pw-meter { --seg: var(--gold-500); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .375rem; height: .625rem; margin-top: var(--gap-3); }
+.pw-meter[data-level="weak"] { --seg: var(--bad); }
+.pw-meter[data-level="medium"] { --seg: var(--warn); }
+.pw-meter[data-level="strong"] { --seg: var(--ok); }
+.pw-meter i { border-radius: .3125rem; background: rgba(255, 255, 255, .12); box-shadow: inset 0 .0625rem .125rem rgba(0, 0, 0, .45); transition: background-color .25s, box-shadow .25s; }
+.pw-meter[data-step="1"] i:nth-child(-n + 1),
+.pw-meter[data-step="2"] i:nth-child(-n + 2),
+.pw-meter[data-step="3"] i:nth-child(-n + 3),
+.pw-meter[data-step="4"] i {
+  background: var(--seg);
+  box-shadow: 0 0 .5rem var(--seg), inset 0 .0625rem 0 rgba(255, 255, 255, .35);
+  animation: pw-seg-pop .4s cubic-bezier(.3, 1.6, .5, 1) both;
+}
+.pw-meter[data-step="4"] i:nth-child(2) { animation-delay: .06s; }
+.pw-meter[data-step="4"] i:nth-child(3) { animation-delay: .12s; }
+.pw-meter[data-step="4"] i:nth-child(4) { animation-delay: .18s; }
+@keyframes pw-seg-pop { 0% { transform: scaleY(.3); opacity: .3; } 60% { transform: scaleY(1.5); } 100% { transform: none; opacity: 1; } }
+.panel-parchment .pw-meter i { background: rgba(74, 50, 24, .15); }
 .pw-level { min-height: 1.6em; margin: 0; font-weight: 700; }
+/* One keyframe name per level, so a new level word pops in again */
+.pw-level.is-weak { animation: pw-word-a .35s ease-out; }
+.pw-level.is-medium { animation: pw-word-b .35s ease-out; }
+.pw-level.is-strong { animation: pw-word-c .35s ease-out; }
+@keyframes pw-word-a { from { opacity: 0; transform: translateY(-.25rem) scale(.9); } }
+@keyframes pw-word-b { from { opacity: 0; transform: translateY(-.25rem) scale(.9); } }
+@keyframes pw-word-c { from { opacity: 0; transform: translateY(-.25rem) scale(.9); } }
+@media (prefers-reduced-motion: reduce) {
+  .pw-meter i, .pw-level { animation: none !important; }
+}
 
 .pw-rules-title { margin: var(--gap-2) 0 0; font-size: var(--fs-body); font-weight: 700; }
 .pw-rules { display: grid; gap: var(--gap-1); margin: 0; padding-left: 0; list-style: none; font-size: var(--fs-body); }
@@ -600,6 +625,21 @@ input[type="checkbox"], input[type="radio"] { width: 1.375rem; height: 1.375rem;
 .pw-rules li.is-met::before { content: "✓"; color: var(--ok); }
 .panel-parchment .pw-rules li::before { color: rgba(74, 50, 24, .6); }
 .panel-parchment .pw-rules li.is-met, .panel-parchment .pw-rules li.is-met::before { color: var(--ok-ink); }
+/* The owner's round pictures on each rule (21 October 2026; --round-* on .password-field):
+   neutral before typing, the red cross while a rule is not met, the green tick once it is */
+.password-field[style*="--round-neutral"] .pw-rules li { display: flex; align-items: center; gap: var(--gap-2); }
+.password-field[style*="--round-neutral"] .pw-rules li::before {
+  content: "";
+  flex: none;
+  width: 1.75rem;
+  height: 1.75rem;
+  margin: 0;
+  background: var(--round-neutral) center / contain no-repeat;
+  transition: transform .2s;
+}
+.password-field[style*="--round-wrong"] .pw-rules.is-typed li:not(.is-met)::before { background-image: var(--round-wrong); }
+.password-field[style*="--round-right"] .pw-rules li.is-met::before { background-image: var(--round-right); animation: pw-rule-pop .35s cubic-bezier(.3, 1.6, .5, 1); }
+@keyframes pw-rule-pop { from { transform: scale(.5); } }
 .pw-match { min-height: 1.6em; margin: 0; font-weight: 700; }
 
 .pw-level.is-weak { color: var(--bad-ink, var(--bad)); }
@@ -614,6 +654,12 @@ input[type="checkbox"], input[type="radio"] { width: 1.375rem; height: 1.375rem;
 .username-status.is-ok::before { content: "✓ "; }
 .username-status.is-bad::before { content: "✗ "; }
 .pw-toggle.is-on { color: var(--gold-500); }
+/* The owner's round eye button (21 October 2026): the picture is the whole button; shown
+   password = brighter with a glow */
+.pw-toggle:has(> img.pw-toggle-art) { width: var(--tap); padding: 0; border: 0; background: none; }
+.pw-toggle > img.pw-toggle-art { width: 2.75rem; height: 2.75rem; filter: drop-shadow(0 .125rem .25rem rgba(0, 0, 0, .5)) brightness(.9); transition: filter .15s, transform .15s; -webkit-user-drag: none; }
+.pw-toggle.is-on > img.pw-toggle-art { filter: drop-shadow(0 0 .5rem var(--glow)) brightness(1.15); }
+.pw-toggle:active > img.pw-toggle-art { transform: scale(.94); }
 button[aria-busy] { cursor: progress; }
 
 /* ---------- Pemutar audio ---------- */

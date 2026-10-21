@@ -68,6 +68,16 @@ export function bindCapsLock(inputs, notice) {
   }
 }
 
+/**
+ * Lit segments of the four-part meter: 4 only when the password is strong; otherwise 1–3
+ * by the share of rules met, so the bar grows as the student adds what is missing.
+ */
+function meterStep(result, total) {
+  if (result.level === 'strong' && !result.containsUsername) return 4;
+  const met = Object.values(result.criteria || {}).filter(Boolean).length;
+  return Math.min(3, Math.max(1, Math.round((met / Math.max(total, 1)) * 3)));
+}
+
 export function initPasswordField(root) {
   if (!root) return;
 
@@ -83,7 +93,9 @@ export function initPasswordField(root) {
   // Tanpa kebijakan dari server: komponen diam, daftar syarat tetap tampil statis
   if (!policy || !password) return;
 
-  const meter = $('.pw-meter i', root);
+  // Four segments (owner, 21 October 2026): data-step lights 0–4 of them, data-level colours them
+  const meter = $('.pw-meter', root);
+  const rulesList = $('.pw-rules', root);
   const levelText = $('.pw-level', root);
   const match = $('.pw-match', root);
   const rules = $$('.pw-rules [data-rule]', root);
@@ -97,7 +109,9 @@ export function initPasswordField(root) {
 
     if (value === '') {
       rules.forEach((li) => li.classList.remove('is-met'));
+      rulesList?.classList.remove('is-typed');
       meter?.setAttribute('data-level', 'none');
+      meter?.setAttribute('data-step', '0');
       if (levelText) {
         levelText.textContent = '';
         levelText.className = 'pw-level';
@@ -109,7 +123,9 @@ export function initPasswordField(root) {
     for (const li of rules) {
       li.classList.toggle('is-met', Boolean(result.criteria[li.dataset.rule]));
     }
+    rulesList?.classList.add('is-typed');
     meter?.setAttribute('data-level', result.level);
+    meter?.setAttribute('data-step', String(meterStep(result, rules.length)));
 
     if (levelText) {
       // Nama pengguna di dalam sandi tetap diberi tahu walau 5 syarat terpenuhi

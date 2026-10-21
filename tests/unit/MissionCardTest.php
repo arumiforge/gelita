@@ -92,11 +92,12 @@ final class MissionCardTest extends CIUnitTestCase
 
     public function testMainButtonsShareTheGoldSkin(): void
     {
-        $this->assertStringContainsString('<div class="stage" id="stage">', $this->brief(), 'no skin: the gold gradient');
+        // No skin: the gold gradient; the stage only carries the neutral round button for letter avatars (21 October 2026)
+        $this->assertMatchesRegularExpression('/<div class="stage" id="stage" style="--round-neutral: url\(&quot;[^"]*round-neutral\.webp[^"]*&quot;\)">/', $this->brief(), 'no skin: the gold gradient');
 
         $this->media = ['ui.result-button-primary' => 'assets/uploads/ui.result-button-primary.webp'];
         Services::resetSingle('renderer');
-        $this->assertMatchesRegularExpression('/<div class="stage" id="stage" style="--skin-primary: url\(&quot;[^"]*ui\.result-button-primary\.webp&quot;\)">/', $this->brief());
+        $this->assertMatchesRegularExpression('/<div class="stage" id="stage" style="--skin-primary: url\(&quot;[^"]*ui\.result-button-primary\.webp&quot;\); --round-neutral: /', $this->brief());
 
         $css = (string) file_get_contents(FCPATH . 'assets/css/game.css');
         $this->assertStringContainsString('.stage[style*="--skin-primary"] .btn-primary {', $css, 'scoped to the stage: the admin panel keeps its buttons');

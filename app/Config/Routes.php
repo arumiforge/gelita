@@ -19,6 +19,8 @@ $routes->get('manifest.json', 'Game\AppController::manifest');
 $routes->group('', ['namespace' => 'App\Controllers\Game'], static function ($routes): void {
     // Tanpa login
     $routes->get('mulai', 'HomeController::start');
+    // Tentang GELITA: the game in plain words, from the HUD menu (owner, 21 October 2026)
+    $routes->get('tentang', 'HomeController::about');
     // Pendaftaran 3 langkah (Dok 1 §10)
     $routes->get('daftar', 'RegisterController::index');
     $routes->get('daftar/(:num)', 'RegisterController::step/$1');

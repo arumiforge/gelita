@@ -12,7 +12,6 @@ return [
     'previous'        => 'Previous',
     'home'            => 'Home',
     'sound'           => 'Sound',
-    'fullscreen'      => 'Full screen',
     'language'        => 'Language',
     // Each language is named in itself, the same in both locales (switcher labels)
     'lang_id'         => 'Bahasa Indonesia',
@@ -165,7 +164,7 @@ return [
 
     // Log in
     'loginTitle'     => 'Log in',
-    'loginLead'      => 'Welcome back, explorer!',
+    'loginLead'      => 'Log in to your account to continue your adventure with Jaka!',
     'noAccount'      => 'No account yet?',
     'registerLink'   => 'Sign up',
     'forgotPassword' => 'Forgot your password? Ask your teacher to reset it.',
@@ -420,4 +419,26 @@ return [
     'watchEnding'          => 'Watch the closing story',
     'endingTitle'          => 'Ending',
     'endingEmpty'          => 'The ending is not ready yet. Let\'s go to the Reflection Hall!',
+
+    // Tentang GELITA, login heading, sign-up hints (owner, 21 October 2026)
+    'about' => 'About GELITA',
+    'aboutLead' => 'Get to know GELITA!',
+    'aboutWhatTitle' => 'What is GELITA?',
+    'aboutWhatText' => 'GELITA is a reading adventure game. You explore Temanggung, Magelang, and Wonosobo, get to know the culture of the Kedu Plain, and practise reading with care.',
+    'aboutStoryTitle' => 'The story',
+    'aboutStoryText' => 'The Mist of Forgetting broke the Lantern of Kedu, and twelve Shards of Light fell across three regions. With Jaka and Mbah Kedu, you look for the shards one by one until the Light of Kedu shines again.',
+    'aboutPlayTitle' => 'How to play',
+    'aboutPlay1' => 'Choose a region on the Kedu Map, then listen to its story.',
+    'aboutPlay2' => 'Finish the challenges to win shards and stars.',
+    'aboutPlay3' => 'Every challenge gives you 3 chances. Stuck? Tap Hint.',
+    'aboutFeaturesTitle' => 'What is inside GELITA',
+    'aboutFeature1' => 'Four kinds of challenges: Picture Puzzle, Fill the Gaps, True or False, and Find the Object.',
+    'aboutFeature2' => 'The Kedu Library has fun readings about every region.',
+    'aboutFeature3' => 'The Reflection Hall, where you tell how your journey went.',
+    'aboutFeature4' => 'Stories with a voice, in Indonesian and English.',
+    'loginHeading' => 'Welcome Back!',
+    'regStepDone' => 'complete',
+    'regNextHint' => 'When everything is filled in, tap Next.',
+    'regionHint' => 'Is your school in Central Java? Choose the province and regency or city first. Do not type the school name straight away: your school is found with its NPSN.',
+    'schoolConfirmHint' => 'If this is the right school, tap Next.',
 ];

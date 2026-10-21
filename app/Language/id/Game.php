@@ -12,7 +12,6 @@ return [
     'previous'        => 'Sebelumnya',
     'home'            => 'Beranda',
     'sound'           => 'Suara',
-    'fullscreen'      => 'Layar penuh',
     'language'        => 'Bahasa',
     // Each language is named in itself, the same in both locales (switcher labels)
     'lang_id'         => 'Bahasa Indonesia',
@@ -165,7 +164,7 @@ return [
 
     // Masuk
     'loginTitle'     => 'Masuk',
-    'loginLead'      => 'Selamat datang kembali, penjelajah!',
+    'loginLead'      => 'Masuk ke akunmu untuk melanjutkan petualangan bersama Jaka, ya!',
     'noAccount'      => 'Belum punya akun?',
     'registerLink'   => 'Daftar',
     'forgotPassword' => 'Lupa kata sandi? Minta gurumu mengatur ulang.',
@@ -420,4 +419,26 @@ return [
     'watchEnding'          => 'Lihat cerita penutup',
     'endingTitle'          => 'Penutup',
     'endingEmpty'          => 'Penutup cerita belum tersedia. Lanjut ke Balai Refleksi, yuk!',
+
+    // Tentang GELITA, login heading, sign-up hints (owner, 21 October 2026)
+    'about' => 'Tentang GELITA',
+    'aboutLead' => 'Kenalan dulu dengan GELITA, yuk!',
+    'aboutWhatTitle' => 'Apa itu GELITA?',
+    'aboutWhatText' => 'GELITA adalah permainan petualangan membaca. Kamu menjelajahi Temanggung, Magelang, dan Wonosobo sambil mengenal budaya Dataran Kedu dan berlatih membaca dengan teliti.',
+    'aboutStoryTitle' => 'Alur cerita',
+    'aboutStoryText' => 'Kabut Lupa memecahkan Lentera Kedu, dan dua belas Serpihan Cahaya jatuh di tiga wilayah. Bersama Jaka dan Mbah Kedu, kamu mencari serpihan itu satu per satu sampai Cahaya Kedu menyala lagi.',
+    'aboutPlayTitle' => 'Cara bermain',
+    'aboutPlay1' => 'Pilih wilayah di Peta Kedu, lalu dengarkan ceritanya.',
+    'aboutPlay2' => 'Selesaikan tantangan untuk mendapat serpihan dan bintang.',
+    'aboutPlay3' => 'Setiap tantangan punya 3 kesempatan. Bingung? Ketuk Bantuan.',
+    'aboutFeaturesTitle' => 'Yang ada di GELITA',
+    'aboutFeature1' => 'Empat jenis tantangan: Susun Gambar, Isi Rumpang, Benar atau Salah, dan Cari Objek.',
+    'aboutFeature2' => 'Pustaka berisi bacaan seru tentang setiap wilayah.',
+    'aboutFeature3' => 'Balai Refleksi untuk menceritakan pengalamanmu.',
+    'aboutFeature4' => 'Cerita bersuara dalam bahasa Indonesia dan Inggris.',
+    'loginHeading' => 'Selamat Datang!',
+    'regStepDone' => 'sudah lengkap',
+    'regNextHint' => 'Kalau semua isian sudah lengkap, ketuk tombol Berikutnya, ya.',
+    'regionHint' => 'Sekolahmu di Jawa Tengah? Pilih provinsi dan kabupaten/kota dulu, ya. Jangan langsung menulis nama sekolah, karena sekolahmu akan dicari dengan NPSN.',
+    'schoolConfirmHint' => 'Kalau sekolahnya sudah benar, ketuk tombol Berikutnya, ya.',
 ];

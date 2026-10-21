@@ -190,7 +190,7 @@ final class CinematicViewTest extends CIUnitTestCase
         $this->assertStringContainsString('.stage > .scene { opacity: 1 !important; animation: none !important; }', (string) file_get_contents(FCPATH . 'assets/css/noscript.css'));
     }
 
-    /** Owner, 18 October 2026: the intro menu has Profil, Kembali ke awal, Layar penuh, and Keluar, but no Peta Kedu yet. */
+    /** Owner, 18 October 2026: the intro menu has Profil, Kembali ke awal, and Keluar, but no Peta Kedu yet; Layar penuh left the menu and Tentang GELITA joined it (21 October 2026). */
     public function testIntroMenuHasTheAccountRows(): void
     {
         $page = $this->intro(introSeen: false);
@@ -200,7 +200,9 @@ final class CinematicViewTest extends CIUnitTestCase
         $this->assertStringContainsString('href="' . base_url('profil') . '"', $menu);
         $this->assertStringContainsString('href="' . base_url() . '">', $menu);
         $this->assertStringContainsString(esc(lang('Game.backHome')), $menu);
-        $this->assertStringContainsString('id="btn-fullscreen"', $menu);
+        $this->assertStringNotContainsString('btn-fullscreen', $menu);
+        $this->assertStringContainsString('href="' . base_url('tentang') . '"', $menu);
+        $this->assertStringNotContainsString('admin/login', $menu, 'Masuk staf only before a student signs in');
         $this->assertStringContainsString('href="' . base_url('keluar') . '"', $menu);
         $this->assertStringNotContainsString('href="' . base_url('peta') . '"', $menu);
         $this->assertStringNotContainsString('class="hud-shards"', $page);

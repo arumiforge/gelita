@@ -66,7 +66,7 @@ const SHEETS = {
       ['.welcome-tagline', { opacity: [0, 1], translate: ['0 .5rem', '0 0'] }, 2100, 1100],
       ['.welcome-actions', { opacity: [0, 1], translate: ['0 1rem', '0 0'], scale: [0.95, 1] }, 2600, 1100, BACK],
       ['.hud', { opacity: [0, 1] }, 3000, 900],
-      ['.welcome-staff', { opacity: [0, 1] }, 3200, 900],
+      ['.btn-install-plate', { opacity: [0, 1], translate: ['1rem 0', '0 0'] }, 3200, 900],
     ],
   },
   gate: {
@@ -84,7 +84,7 @@ const SHEETS = {
   account: {
     cues: [
       ['.scene', { opacity: [0, 1], scale: [1.05, 1] }, 0, 1900],
-      [':is(.auth-jaka, .start-jaka)', { opacity: [0, 1], translate: ['0 1rem', '0 0'] }, 300, 1300],
+      ['.auth-jaka', { opacity: [0, 1], translate: ['0 1rem', '0 0'] }, 300, 1300],
       [':is(.ornate-panel, .login-panel)', { opacity: [0, 1], translate: ['0 .75rem', '0 0'] }, 400, 1100],
       ['.ornate-crest', { opacity: [0, 1], scale: [0.6, 1], rotate: ['-20deg', '0deg'] }, 900, 1100, BACK],
       ['.hud', { opacity: [0, 1] }, 700, 900],
@@ -93,7 +93,7 @@ const SHEETS = {
 };
 
 /** Parts the CSS holds hidden until `.is-cine-live` (cinematic.css): the quick fade brings them in. */
-const HELD = '.scene, .hud, [data-cine] > :is(.welcome-hero, .welcome-actions, .welcome-staff, .gate-jaka, .gate-panel, .start-jaka, .auth-jaka, .ornate-panel, .login-panel)';
+const HELD = '.scene, .hud, [data-cine] > :is(.welcome-hero, .welcome-actions, .gate-jaka, .gate-panel, .auth-jaka, .ornate-panel, .login-panel)';
 
 function seenBefore(key) {
   try {

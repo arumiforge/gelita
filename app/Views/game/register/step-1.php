@@ -5,6 +5,8 @@
  * Nama lengkap, umur (Config\Gelita::$registrationAge), dan jenis kelamin
  * (dua pilihan). Kelas tidak diisi: server memaksa kelas 5. An optional
  * avatar picker follows once avatars are uploaded (display plan Phase B).
+ * Owner, 21 October 2026: name, age, class, and gender in the first column;
+ * the second holds only the avatar picker, with a hint to tap Berikutnya.
  *
  * @var int                   $step
  * @var list<int>             $done
@@ -22,16 +24,15 @@ $focus   = static fn (string $f): string => $first === $f ? ' autofocus' : '';
 
 <?= $this->section('music') ?>welcome<?= $this->endSection() ?>
 <?= $this->section('title') ?><?= esc(lang('Game.registerTitle')) ?><?= $this->endSection() ?>
-<?= $this->section('background') ?><?= asset_url_versioned('ui/bg-auth-register.webp') ?><?= $this->endSection() ?>
-<?= $this->section('bodyClass') ?>is-auth-art<?= $this->endSection() ?>
+<?= $this->section('background') ?><?= asset_url_versioned('ui/bg-mulai.webp') ?><?= $this->endSection() ?>
+<?= $this->section('bodyClass') ?>is-dim-art<?= $this->endSection() ?>
 <?= $this->section('hudBack') ?><?= base_url('mulai') ?><?= $this->endSection() ?>
 <?= $this->section('hudLayout') ?>logo-centre<?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
 <section class="register" data-step="1" data-package-gate="page" data-package-next="daftar/1" data-cine="account">
-  <div class="register-panel ornate-panel stage-box">
-    <?php // Corner flourishes only: no compass crest on the wide card (owner, 20 October 2026) ?>
-    <?= view('partials/ornate-frame', ['crest' => false]) ?>
+  <div class="register-panel ornate-panel is-bare stage-box">
+    <?php // No fill, border, shadow, or ornaments (owner, 21 October 2026): the form stands on the darkened picture ?>
     <?= $this->include('game/register/_head') ?>
 
     <form method="post" action="<?= base_url('daftar/1') ?>" class="form register-form" data-step="1" autocomplete="off"<?= round_style_attr(['loading']) ?>>
@@ -63,12 +64,9 @@ $focus   = static fn (string $f): string => $first === $f ? ' autofocus' : '';
 
         <div class="field">
           <span class="label"><?= esc(lang('Game.classLevel')) ?></span>
-          <p class="class-fixed"><?= icon('lock') ?> <?= esc(class_label(config('Gelita')->registrationClass, service('request')->getLocale())) ?></p>
+          <p class="class-fixed"><?= round_icon('lock', 'class-fixed-art', 'lock') ?> <?= esc(class_label(config('Gelita')->registrationClass, service('request')->getLocale())) ?></p>
         </div>
       </div>
-      </div>
-
-      <div class="register-col">
 
       <fieldset class="field<?= $invalid('gender') ?>">
         <legend class="label"><?= esc(lang('Game.gender')) ?> <span class="req" aria-hidden="true">*</span></legend>
@@ -82,7 +80,9 @@ $focus   = static fn (string $f): string => $first === $f ? ' autofocus' : '';
         </div>
         <?php if ($err('gender')): ?><p class="field-error"><?= esc($err('gender')) ?></p><?php endif ?>
       </fieldset>
+      </div>
 
+      <div class="register-col">
       <?= component('components/avatar-picker', [
           'mode'    => 'radio',
           'current' => $val('avatar_no') === '' ? null : (int) $val('avatar_no'),
@@ -91,13 +91,14 @@ $focus   = static fn (string $f): string => $first === $f ? ' autofocus' : '';
           'help'    => lang('Game.avatarHelp'),
           'error'   => $err('avatar_no'),
       ]) ?>
+      <p class="register-next-hint"><?= round_icon('info', 'hint-art') ?><span><?= esc(lang('Game.regNextHint')) ?></span></p>
       </div>
       </div>
 
       </div>
 
       <div class="form-actions register-actions">
-        <?= picture_button('next', lang('Game.next')) ?>
+        <?= gold_plate_button(lang('Game.next'), 'medium') ?>
       </div>
     </form>
   </div>

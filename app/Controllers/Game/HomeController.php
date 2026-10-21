@@ -56,6 +56,25 @@ class HomeController extends BaseController
     }
 
     /**
+     * Tentang GELITA (`/tentang`, owner 21 October 2026): what the game is, its
+     * story, how to play, and what is in it, in plain words for children. Open
+     * to everyone from the HUD menu; Back returns to the page the student came
+     * from when that page is part of GELITA, else to the start page.
+     */
+    public function about(): string
+    {
+        $referer = $this->request->getHeaderLine('Referer');
+        $base    = rtrim(base_url(), '/') . '/';
+        $back    = str_starts_with($referer, $base) && ! str_starts_with($referer, $base . 'tentang') ? $referer : base_url();
+
+        return view('game/about', [
+            'locale'      => $this->locale,
+            'participant' => $this->signedInParticipant(),
+            'back'        => $back,
+        ]);
+    }
+
+    /**
      * Ganti bahasa tanpa membuat sesi baru dan tanpa menyentuh progres.
      * Tujuan redirect berasal dari input pengguna, jadi selalu divalidasi
      * sebagai path internal.

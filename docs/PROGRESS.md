@@ -191,7 +191,9 @@ Decided in an interview with the owner; decisions in the decision log, section *
 
 ## Round gold buttons (owner, 21 October 2026)
 
-- [ ] The owner's sheet of 14 round gold buttons cut into `assets/ui/round-*.webp`: HUD language (round flags), sound/mute, menu, and Back beside the controls; Mulai cards (register, login, next arrow; next arrow on Gerbang); narrator ◀ ▶ ↻ and ⏸ while playing; a turning ring on the login and sign-up buttons while the form is sent (branch `claude/ui-redesign-menu-login-2oy59j`)
+- [x] The owner's sheet of 14 round gold buttons cut into `assets/ui/round-*.webp`: HUD language (round flags), sound/mute, menu, and Back beside the controls; Mulai cards (register, login, next arrow; next arrow on Gerbang); narrator ◀ ▶ ↻ and ⏸ while playing; a turning ring on the login and sign-up buttons while the form is sent (PR #210)
+- [ ] Follow-up (owner, same day, with an interview): menu without Layar penuh, with Tentang GELITA (`/tentang`) and Masuk staf (before sign-in only); Pasang GELITA on the owner's plate, bottom-right; Mulai bare and centred on the darkened gate picture, no Jaka; Masuk greets "Selamat Datang!"; Masuk/Daftar/Berikutnya as gold plates with their word; Daftar bare on the gate picture, step label centred above the form, stepper rings, notes for Berikutnya, Jawa Tengah/NPSN, and the school card, four-segment password meter, rule icons, eye, lock, letter avatars; narrator ▶ play from the second icon sheet (branch `claude/ui-redesign-menu-login-2oy59j`)
+- [ ] After merge, **Bangun ulang paket** if package mode is on
 
 ## Active branches
 
@@ -202,5 +204,5 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 | `claude/ui-refinements-gateway-map-challenge-yf9q2i` | Region map follow-up: modal for locked pins, no HUD region name, readable done titles (owner, 21 October 2026) | PR open |
 | `claude/redesain-hasil-tantangan-wilayah-qde0tb` | Attempt list, loading screens, Peta Kedu, Pustaka Kedu (owner, 21 October 2026) | PR open |
 | `sky/vibrant-dijkstra-me4rhv` | Follow-up of PR #207: Bantuan button, region-done scene in the dialogue layout, Kenali band (owner, 21 October 2026) | PR open |
-| `claude/ui-redesign-menu-login-2oy59j` | Round gold buttons in the HUD menu, Mulai, login, and narrator controls (owner, 21 October 2026) | PR open |
+| `claude/ui-redesign-menu-login-2oy59j` | Follow-up of PR #210: menu (Tentang GELITA, Masuk staf, no fullscreen), install plate, bare Mulai and Daftar on the gate picture, gold plate buttons, second icon sheet (owner, 21 October 2026) | PR open |
 | `pbb/nice-carson-7yeoiz` | Brighter logo, Mulai plate, lettered form buttons, start-page menu (owner, 20 October 2026) | PR open |

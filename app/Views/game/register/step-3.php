@@ -26,16 +26,15 @@ $focus   = static fn (string $f): string => $first === $f ? ' autofocus' : '';
 
 <?= $this->section('music') ?>welcome<?= $this->endSection() ?>
 <?= $this->section('title') ?><?= esc(lang('Game.registerTitle')) ?><?= $this->endSection() ?>
-<?= $this->section('background') ?><?= asset_url_versioned('ui/bg-auth-register.webp') ?><?= $this->endSection() ?>
-<?= $this->section('bodyClass') ?>is-auth-art<?= $this->endSection() ?>
+<?= $this->section('background') ?><?= asset_url_versioned('ui/bg-mulai.webp') ?><?= $this->endSection() ?>
+<?= $this->section('bodyClass') ?>is-dim-art<?= $this->endSection() ?>
 <?= $this->section('hudBack') ?><?= base_url('daftar/2') ?><?= $this->endSection() ?>
 <?= $this->section('hudLayout') ?>logo-centre<?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
 <section class="register" data-step="3" data-package-gate="page" data-package-next="daftar/3" data-cine="account">
-  <div class="register-panel ornate-panel stage-box">
-    <?php // Corner flourishes only: no compass crest on the wide card (owner, 20 October 2026) ?>
-    <?= view('partials/ornate-frame', ['crest' => false]) ?>
+  <div class="register-panel ornate-panel is-bare stage-box">
+    <?php // No fill, border, shadow, or ornaments (owner, 21 October 2026): the form stands on the darkened picture ?>
     <?= $this->include('game/register/_head') ?>
 
     <form method="post" action="<?= base_url('daftar/3') ?>" class="form register-form" data-step="3" autocomplete="off"<?= round_style_attr(['loading']) ?>>
@@ -47,7 +46,7 @@ $focus   = static fn (string $f): string => $first === $f ? ' autofocus' : '';
       <div class="register-grid register-grid-account">
       <aside class="why-strong" aria-labelledby="why-strong-title">
         <div class="why-strong-body">
-          <h2 class="why-strong-title" id="why-strong-title"><?= icon('key') ?> <?= esc(lang('Game.whyStrongTitle')) ?></h2>
+          <h2 class="why-strong-title" id="why-strong-title"><?= esc(lang('Game.whyStrongTitle')) ?></h2>
           <p><?= esc(lang('Auth.whyStrong')) ?></p>
           <ul class="why-strong-tips">
             <li><?= esc(lang('Auth.tip1')) ?></li>
@@ -95,7 +94,7 @@ $focus   = static fn (string $f): string => $first === $f ? ' autofocus' : '';
       </div>
 
       <div class="form-actions register-actions">
-        <?= picture_button('register', lang('Game.registerSubmit'), 'btn btn-primary btn-xl') ?>
+        <?= gold_plate_button(lang('Game.registerSubmit'), 'short', 'btn btn-primary btn-xl') ?>
       </div>
     </form>
   </div>

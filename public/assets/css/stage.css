@@ -122,6 +122,9 @@ body.game {
 /* Account pictures (owner, 18 October 2026): the scene on the left stays bright;
    only the empty right side, where the panel sits, is darkened a little more */
 body.is-auth-art .scene::after { background: linear-gradient(to right, transparent 40%, rgba(11, 19, 32, .35) 70%); }
+/* Mulai, Daftar, Tentang (owner, 21 October 2026): the gate picture under a deep dark layer, so
+   the text standing straight on it (no panel fill) stays clearly readable */
+body.is-dim-art .scene::after { background: radial-gradient(ellipse at 50% 45%, rgba(4, 9, 18, .72), rgba(4, 9, 18, .86) 75%); }
 
 /* ---------- HUD: 0, 0, 1280 × 56 ---------- */
 .hud {
@@ -303,8 +306,6 @@ body.is-auth-art .scene::after { background: linear-gradient(to right, transpare
   background: rgba(5, 8, 15, .6);
 }
 .hud-menu > summary { position: relative; z-index: 2; }
-/* Before login on a browser without fullscreen the menu would be empty */
-.hud-menu:not(:has(.hud-sheet-row:not([hidden]))) { display: none; }
 .hud-menu-sheet { top: 8rem; right: 2.1875rem; width: 27.0625rem; gap: .5rem; }
 .hud-sheet-head { display: flex; align-items: center; justify-content: space-between; min-height: 3.5rem; padding: 0 .25rem 0 .5rem; }
 .hud-sheet-head h2 { margin: 0; color: var(--gold-300); font-family: var(--font-body); font-size: 1.75rem; font-weight: 800; }
@@ -343,6 +344,9 @@ body.is-auth-art .scene::after { background: linear-gradient(to right, transpare
 .hud-sheet-row:hover { border-color: var(--gold-500); background: rgba(38, 53, 90, .8); }
 .hud-sheet-row:focus-visible { outline: .1875rem solid var(--gold-300); outline-offset: .125rem; }
 .hud-sheet-row > .icon { width: 2rem; height: 2rem; color: var(--gold-500); }
+/* Row symbols on the owner's round gold buttons (21 October 2026; round_icon()) */
+.hud-sheet-row > img.hud-sheet-art { width: 3rem; height: 3rem; margin: -.375rem 0; filter: drop-shadow(0 .125rem .25rem rgba(1, 7, 19, .5)); -webkit-user-drag: none; }
+.hud-sheet-close > img.hud-sheet-close-art { width: 2.75rem; height: 2.75rem; filter: drop-shadow(0 .125rem .25rem rgba(1, 7, 19, .5)); -webkit-user-drag: none; }
 .hud-sheet-row .hud-sheet-go { width: 1.5rem; height: 1.5rem; color: var(--ink-dim); }
 .hud-sheet-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .hud-lang-row { min-height: 6rem; font-size: 1.625rem; font-weight: 700; }
@@ -602,9 +606,6 @@ body.is-auth-art .scene::after { background: linear-gradient(to right, transpare
 .is-tall .hud-lang-sheet { top: 5.25rem; right: 10rem; }
 .is-tall .hud-menu-sheet { top: 5.5rem; right: .75rem; }
 .is-tall .hud-shards { --plate-w: 22.5rem; top: .875rem; left: 28.75rem; }
-.hud-sheet-row.hud-fullscreen .icon-exit { display: none; }
-.hud-sheet-row.hud-fullscreen[aria-pressed="true"] .icon-enter { display: none; }
-.hud-sheet-row.hud-fullscreen[aria-pressed="true"] .icon-exit { display: block; }
 
 /* ---------- Content area: the whole stage, 0, 0, 1280 × 720 ----------
    <main> covers the stage (inset: 0) with no stacking context, so content
@@ -738,15 +739,13 @@ body.is-auth-art .scene::after { background: linear-gradient(to right, transpare
 /* ---------- Halaman awal `/` ---------- */
 .welcome-hero    { --x: 240; --y: 104; --w: 800; --h: 336; } /* logo 280 dp + tagline (owner, 18 Oct 2026) */
 .welcome-actions { --x: 400; --y: 472; --w: 480; --h: 112; } /* long Mulai plate, 480 × 88 dp (owner, 20 Oct 2026) */
-.welcome-install { --x: 896; --y: 576; --w: 352; --h: 40; }
-/* Staff login link: anchored to the bottom-right corner (24 dp from the right,
-   16 dp from the bottom), its width follows the text. .welcome-install moved up
-   from y 600 to 576 so its two-line Android hint stays clear of this link. */
-.welcome-staff   { right: calc(24 * var(--dp)); bottom: calc(16 * var(--dp)); height: calc(40 * var(--dp)); }
+.welcome-install { --x: 960; --y: 640; --w: 296; --h: 64; } /* bottom-right corner: Pasang GELITA plate (owner, 21 Oct 2026) */
 
 /* ---------- Mulai `/mulai`, Gerbang `/gerbang` ---------- */
-.start-jaka  { --x: 140; --y: 196; --w: 280; --h: 460; }
-.start-panel { --x: 432; --y: 176; --w: 560; --h: 400; }
+/* Mulai (owner, 21 October 2026): no Jaka, the bare panel in the middle of the stage */
+.start-panel { --x: 340; --y: 112; --w: 600; --h: 496; }
+/* Tentang GELITA (owner, 21 October 2026): one wide bare panel under the HUD strip */
+.about-panel { --x: 72; --y: 72; --w: 1136; --h: 624; }
 /* Gerbang (owner redesign, 20 October 2026): Jaka on the path next to the arch, 640 dp tall with
    his darkened feet on the bottom edge; the cards on the plain dark right side of the picture.
    Since 21 October 2026 (owner) both sit 56 dp further left, clear of the right edge */

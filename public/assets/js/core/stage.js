@@ -38,34 +38,6 @@ function updateAppSize() {
 }
 
 /**
- * Tombol layar penuh (Fullscreen API). Tersembunyi bila tidak didukung,
- * mis. Safari iPhone. Layar penuh lepas setiap kali halaman berganti; itu
- * perilaku peramban, karena itu memasang GELITA sebagai aplikasi tetap dianjurkan.
- */
-function initFullscreen() {
-  const button = document.getElementById('btn-fullscreen');
-  const root = document.documentElement;
-  const request = root.requestFullscreen || root.webkitRequestFullscreen;
-  const enabled = document.fullscreenEnabled || document.webkitFullscreenEnabled;
-  if (!button || !request || !enabled) return;
-
-  const current = () => document.fullscreenElement || document.webkitFullscreenElement || null;
-  const sync = () => button.setAttribute('aria-pressed', current() ? 'true' : 'false');
-
-  button.hidden = false;
-  sync();
-  button.addEventListener('click', () => {
-    if (current()) {
-      (document.exitFullscreen || document.webkitExitFullscreen)?.call(document)?.catch?.(() => {});
-    } else {
-      request.call(root, { navigationUI: 'hide' })?.catch?.(() => {});
-    }
-  });
-  document.addEventListener('fullscreenchange', sync);
-  document.addEventListener('webkitfullscreenchange', sync);
-}
-
-/**
  * `viewport_changed` (Dok 1 §11.5, Dok 3 §7): saat halaman dibuka dan setiap
  * ukuran/orientasi berubah, termasuk saat layar putar tampil/hilang;
  * debounce 1 detik, paling sering satu event per 5 detik. Payload kini juga
@@ -117,6 +89,5 @@ export function initStage({ track = false } = {}) {
   updateAppSize();
   window.addEventListener('resize', updateAppSize);
   window.addEventListener('orientationchange', updateAppSize);
-  initFullscreen();
   if (track) initViewportTracking();
 }

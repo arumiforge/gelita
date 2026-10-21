@@ -27,16 +27,15 @@ $country = $val('country_code') ?: 'ID';
 
 <?= $this->section('music') ?>welcome<?= $this->endSection() ?>
 <?= $this->section('title') ?><?= esc(lang('Game.registerTitle')) ?><?= $this->endSection() ?>
-<?= $this->section('background') ?><?= asset_url_versioned('ui/bg-auth-register.webp') ?><?= $this->endSection() ?>
-<?= $this->section('bodyClass') ?>is-auth-art<?= $this->endSection() ?>
+<?= $this->section('background') ?><?= asset_url_versioned('ui/bg-mulai.webp') ?><?= $this->endSection() ?>
+<?= $this->section('bodyClass') ?>is-dim-art<?= $this->endSection() ?>
 <?= $this->section('hudBack') ?><?= base_url('daftar/1') ?><?= $this->endSection() ?>
 <?= $this->section('hudLayout') ?>logo-centre<?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
 <section class="register" data-step="2" data-package-gate="page" data-package-next="daftar/2" data-cine="account">
-  <div class="register-panel ornate-panel stage-box">
-    <?php // Corner flourishes only: no compass crest on the wide card (owner, 20 October 2026) ?>
-    <?= view('partials/ornate-frame', ['crest' => false]) ?>
+  <div class="register-panel ornate-panel is-bare stage-box">
+    <?php // No fill, border, shadow, or ornaments (owner, 21 October 2026): the form stands on the darkened picture ?>
     <?= $this->include('game/register/_head') ?>
 
     <form method="post" action="<?= base_url('daftar/2') ?>" class="form register-form" data-step="2" autocomplete="off"<?= round_style_attr(['loading']) ?>>
@@ -84,6 +83,8 @@ $country = $val('country_code') ?: 'ID';
           <?php if ($err('district_code')): ?><p class="field-error"><?= esc($err('district_code')) ?></p><?php endif ?>
         </div>
       </div>
+      <?php // Owner, 21 October 2026: in Central Java the school comes from its NPSN, so province and city first ?>
+      <p class="register-note region-id"><?= round_icon('info', 'hint-art') ?><span><?= esc(lang('Game.regionHint')) ?></span></p>
 
       <div class="field region-other<?= $invalid('country_other') ?>">
         <label for="country_other"><?= esc(lang('Game.countryOtherName')) ?></label>
@@ -117,6 +118,7 @@ $country = $val('country_code') ?: 'ID';
             <?php endif ?>
           <?php endif ?>
         </div>
+        <p class="register-note school-confirm"><?= round_icon('right', 'hint-art') ?><span><?= esc(lang('Game.schoolConfirmHint')) ?></span></p>
         <?php if ($err('school_npsn')): ?><p class="field-error"><?= esc($err('school_npsn')) ?></p><?php endif ?>
         <div class="school-manual" data-school-manual<?= $npsnNotFound || $val('school_manual') ? '' : ' hidden' ?>>
           <label class="check">
@@ -141,7 +143,7 @@ $country = $val('country_code') ?: 'ID';
       </div>
 
       <div class="form-actions register-actions">
-        <?= picture_button('next', lang('Game.next')) ?>
+        <?= gold_plate_button(lang('Game.next'), 'medium') ?>
       </div>
     </form>
   </div>
