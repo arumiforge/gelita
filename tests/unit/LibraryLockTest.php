@@ -312,7 +312,9 @@ final class LibraryLockTest extends CIUnitTestCase
         $this->assertStringContainsString('<span class="eyebrow">' . esc(lang('Game.engine_rumpang')) . '</span>', $list);
 
         $progress = esc(asset_url_versioned('ui/status-progress.webp'), 'attr');
-        $this->assertStringContainsString('<span class="node-no has-badge" aria-hidden="true"><img class="node-badge" src="' . $progress . '" alt="" decoding="async" draggable="false"><b class="num">2</b></span>', $list);
+        // Owner, 21 October 2026: no number on the open medallion, here or on the pins
+        $this->assertStringContainsString('<span class="node-no has-badge" aria-hidden="true"><img class="node-badge" src="' . $progress . '" alt="" decoding="async" draggable="false"></span>', $list);
+        $this->assertStringNotContainsString('class="num"', $page);
         $this->assertSame(2, substr_count($list, icon('lock', 'badge-lock')), 'locked cards carry a lock on the navy medallion');
         $this->assertSame(4, substr_count($page, 'class="pin-badge"'), 'every pin wears its medallion');
 
@@ -330,11 +332,59 @@ final class LibraryLockTest extends CIUnitTestCase
         $this->assertStringContainsString('--card-frame: url(&quot;' . esc(asset_url_versioned('ui/node-card-frame.webp'), 'attr') . '&quot;)', $page);
         $this->assertSame(4, substr_count($list, ' has-art has-frame"'));
         $this->assertSame(1, substr_count($list, 'class="btn btn-ghost btn-sm node-action is-green"'));
-        $this->assertSame(2, substr_count($list, 'class="badge is-locked node-action is-navy"'));
+        // Owner, 21 October 2026: Terkunci is text only on the navy plate
+        $this->assertSame(2, substr_count($list, '<span class="badge is-locked node-action is-navy">' . esc(lang('Game.shardLocked')) . '</span>'));
         $this->assertStringContainsString('class="hud hud-menu-style is-compact is-tall"', $page);
         $css = (string) file_get_contents(FCPATH . 'assets/css/game.css');
         $this->assertMatchesRegularExpression('/\.node-card\.has-frame \.node-card-art \{[^}]*filter: sepia\(/', $css);
         $this->assertStringContainsString('.map-level .map-frame { --y: 100; }', (string) file_get_contents(FCPATH . 'assets/css/stage.css'));
+    }
+
+    /**
+     * Owner, 21 October 2026: the region name on the ornate navy plate, the progress on the
+     * bronze track with a notch per challenge, the map without a frame, and the card pictures
+     * per status (bright sepia done, dark sepia open, grey locked).
+     */
+    public function testRegionMapHeadAndProgressUseTheOwnersPictures(): void
+    {
+        $nodes = [];
+        foreach ([[1, 'puzzle', 'completed'], [2, 'rumpang', 'open'], [3, 'boleh', 'locked'], [4, 'cari', 'locked']] as [$n, $engine, $status]) {
+            $nodes[] = ['id' => $n, 'sequence' => $n, 'engine_type' => $engine, 'variant' => '', 'title' => lang('Game.engine_' . $engine),
+                'description' => '', 'status' => $status, 'stars' => $status === 'completed' ? 2 : null, 'map_x' => 20 * $n, 'map_y' => 50];
+        }
+
+        $page = view('game/map-level', self::hud() + [
+            'level'        => self::level(2, 'magelang'),
+            'levelSummary' => ['stars' => 2, 'completed_nodes' => 1, 'total_nodes' => 4],
+            'nodes'        => $nodes,
+            'hasLibrary'   => false,
+            'library'      => ['status' => 'locked'],
+        ]);
+
+        foreach (['head-plate' => 'map-head-plate', 'progress-track' => 'map-progress-track'] as $var => $file) {
+            $this->assertFileExists(FCPATH . 'assets/ui/' . $file . '.webp');
+            $this->assertStringContainsString('--' . $var . ': url(&quot;' . esc(asset_url_versioned('ui/' . $file . '.webp'), 'attr') . '&quot;)', $page);
+        }
+        $this->assertStringContainsString('<header class="map-head has-plate">', $page);
+        $this->assertStringContainsString('<div class="map-progress has-track">', $page);
+        $this->assertStringContainsString('<div class="progress" aria-hidden="true" style="--steps: 4"><i style="width: 25%"></i></div>', $page);
+
+        $css = (string) file_get_contents(FCPATH . 'assets/css/game.css');
+        $this->assertStringContainsString('.map-level .map-frame { border: 0; border-radius: 0; background: none; box-shadow: none; }', $css);
+        $this->assertMatchesRegularExpression('/\.map-level \.map-canvas:not\(\.is-drawn\) \.map-img \{[^}]*mask-image:/', $css);
+        $this->assertMatchesRegularExpression('/\.node-card\.has-frame\.is-completed \.node-card-art \{ filter: sepia\([^}]*brightness\(1\.\d+\)/', $css);
+        $this->assertMatchesRegularExpression('/\.node-card\.has-frame\.is-open \.node-card-art \{ filter: sepia\([^}]*brightness\(\.\d+\)/', $css);
+        $this->assertMatchesRegularExpression('/\.node-card\.has-frame\.is-locked \.node-card-art \{ filter: grayscale\(1\)/', $css);
+        $this->assertMatchesRegularExpression('/\.node-card\.has-frame \.node-card-body \.star-art \{[^}]*filter: var\(--star-rim\)/', $css);
+    }
+
+    /** A locked Pustaka link opens its modal only, without the corner toast (owner, 21 October 2026). */
+    public function testLockedLibraryShowsOnlyTheModal(): void
+    {
+        $js = (string) file_get_contents(FCPATH . 'assets/js/game/map.js');
+
+        $this->assertStringContainsString("'a[aria-disabled=\"true\"]:not([data-library-locked])'", $js);
+        $this->assertStringContainsString("on(document, 'click', 'a[data-library-locked]'", $js);
     }
 
     // ------------------------------------------------------------ momen terbuka

@@ -112,8 +112,9 @@ final class StatusBadgeTest extends CIUnitTestCase
         $level = (string) file_get_contents(APPPATH . 'Views/game/map-level.php');
         $this->assertStringContainsString("<?= \$medal(\$node, 'pin-badge') ?>", $level, 'the pin');
         $this->assertStringContainsString("<?= \$medal(\$node, 'node-badge') ?>", $level, 'the challenge list number');
-        $this->assertStringContainsString("'open'   => '<b class=\"num\">' . esc(\$n['sequence']) . '</b>',", $level);
-        $this->assertStringContainsString("'locked' => icon('lock', 'badge-lock'),", $level);
+        // Owner, 21 October 2026: no number on the open medallion
+        $this->assertStringContainsString(". (\$n['status'] === 'locked' ? icon('lock', 'badge-lock') : '');", $level);
+        $this->assertStringNotContainsString("'open'   => '<b class=\"num\">'", $level);
         $this->assertStringNotContainsString('started', $level);
 
         $kedu = (string) file_get_contents(APPPATH . 'Views/game/map-kedu.php');

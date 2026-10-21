@@ -20,6 +20,13 @@
  * Lihat hasil on the green plate, Terkunci on the navy plate, Pustaka
  * {wilayah} on the wide gold plate.
  *
+ * Owner request (21 October 2026): no number on the open medallion (pins and
+ * cards) and no lock icon on Terkunci; the region name on the owner's ornate
+ * navy plate (`assets/ui/map-head-plate.webp`) and the progress on the
+ * owner's bronze track (`assets/ui/map-progress-track.webp`); the map picture
+ * has no frame and its edges fade into the page background; the card pictures
+ * are bright sepia when done, darker when open, grey when locked.
+ *
  * @var App\Entities\Level         $level
  * @var array<string, mixed>       $levelSummary
  * @var list<array<string, mixed>> $nodes
@@ -31,8 +38,9 @@ $region = $level->text('name', $locale);
 $mapSrc = media_exists($level->map_media_id) ? media_src($level->map_media_id) : null;
 $bg     = media_exists($level->background_media_id) ? media_src($level->background_media_id) : '';
 $icons  = ['completed' => 'check', 'open' => 'right', 'locked' => 'lock'];
-// Status medallion with its mark: the number on open, a lock on locked, none on done (the
-// picture has its check). Without the pictures the old marks show.
+// Status medallion with its mark: a lock on locked, none on done (the picture has its check)
+// and none on open (owner, 21 October 2026: no number on the gold arc). Without the pictures
+// the old marks show.
 $medal = static function (array $n, string $class) use ($icons): string {
     $badge = status_badge_src($n);
 
@@ -41,11 +49,7 @@ $medal = static function (array $n, string $class) use ($icons): string {
     }
 
     return '<img class="' . $class . '" src="' . esc($badge, 'attr') . '" alt="" decoding="async" draggable="false">'
-        . match ($n['status']) {
-            'open'   => '<b class="num">' . esc($n['sequence']) . '</b>',
-            'locked' => icon('lock', 'badge-lock'),
-            default  => '',
-        };
+        . ($n['status'] === 'locked' ? icon('lock', 'badge-lock') : '');
 };
 $href   = static fn (array $n): string => base_url(($n['status'] === 'completed' ? 'hasil/' : 'misi/') . $level->code . '/' . $n['sequence']);
 $done   = (int) $levelSummary['completed_nodes'];
@@ -69,14 +73,17 @@ $nextAssets = $nextNode === null ? [] : [
 ];
 $points = implode(' ', array_map(static fn (array $n): string => (float) $n['map_x'] . ',' . (float) $n['map_y'], $nodes));
 // The owner's pictures for the side column (20 October 2026): the green scarf frame of each
-// card, the green plate (Lihat hasil), the navy plate (Terkunci), the wide gold plate (Pustaka)
+// card, the green plate (Lihat hasil), the navy plate (Terkunci), the wide gold plate (Pustaka);
+// since 21 October 2026 the ornate navy plate behind the region name and the bronze progress track
 $plates = [];
-foreach (['card-frame' => 'node-card-frame', 'plate-green' => 'plate-green', 'plate-navy' => 'kenal-plate-navy', 'plate-gold' => 'kenal-plate-gold'] as $var => $file) {
+foreach (['card-frame' => 'node-card-frame', 'plate-green' => 'plate-green', 'plate-navy' => 'kenal-plate-navy', 'plate-gold' => 'kenal-plate-gold', 'head-plate' => 'map-head-plate', 'progress-track' => 'map-progress-track'] as $var => $file) {
     if (is_file(FCPATH . 'assets/ui/' . $file . '.webp')) {
         $plates[] = '--' . $var . ': url(&quot;' . esc(asset_url_versioned('ui/' . $file . '.webp'), 'attr') . '&quot;)';
     }
 }
-$hasFrame = is_file(FCPATH . 'assets/ui/node-card-frame.webp');
+$hasFrame     = is_file(FCPATH . 'assets/ui/node-card-frame.webp');
+$hasHeadPlate = is_file(FCPATH . 'assets/ui/map-head-plate.webp');
+$hasTrack     = is_file(FCPATH . 'assets/ui/map-progress-track.webp');
 ?>
 <?= $this->extend('layouts/game') ?>
 
@@ -119,15 +126,16 @@ $hasFrame = is_file(FCPATH . 'assets/ui/node-card-frame.webp');
   </div>
 
   <aside class="map-side stage-box" aria-label="<?= esc($region, 'attr') ?>">
-    <header class="map-head">
+    <header class="map-head<?= $hasHeadPlate ? ' has-plate' : '' ?>">
       <h1><?= esc($region) ?></h1>
       <?php if ($level->text('focus', $locale) !== ''): ?>
         <p><?= esc($level->text('focus', $locale)) ?></p>
       <?php endif ?>
     </header>
 
-    <div class="map-progress">
-      <div class="progress" aria-hidden="true"><i style="width: <?= $total > 0 ? (int) round($done / $total * 100) : 0 ?>%"></i></div>
+    <?php // On the bronze track the fill runs in its dark channel, one notch per challenge ?>
+    <div class="map-progress<?= $hasTrack ? ' has-track' : '' ?>">
+      <div class="progress" aria-hidden="true" style="--steps: <?= max(1, $total) ?>"><i style="width: <?= $total > 0 ? (int) round($done / $total * 100) : 0 ?>%"></i></div>
       <p><?= esc(lang('Game.nodesDoneOf', [$done, $total])) ?></p>
     </div>
 
@@ -152,7 +160,7 @@ $hasFrame = is_file(FCPATH . 'assets/ui/node-card-frame.webp');
           <?php elseif ($node['status'] === 'open'): ?>
             <a class="btn btn-primary node-action" href="<?= esc($href($node), 'attr') ?>"><?= esc(lang('Game.start')) ?> <?= icon('right') ?></a>
           <?php else: ?>
-            <span class="badge is-locked node-action is-navy"><?= icon('lock') ?> <?= esc(lang('Game.shardLocked')) ?></span>
+            <span class="badge is-locked node-action is-navy"><?= esc(lang('Game.shardLocked')) ?></span>
           <?php endif ?>
         </li>
       <?php endforeach ?>

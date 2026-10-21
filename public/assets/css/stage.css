@@ -703,9 +703,10 @@ body.is-auth-art .scene::after { background: linear-gradient(to right, transpare
 .start-jaka  { --x: 140; --y: 196; --w: 280; --h: 460; }
 .start-panel { --x: 432; --y: 176; --w: 560; --h: 400; }
 /* Gerbang (owner redesign, 20 October 2026): Jaka on the path next to the arch, 640 dp tall with
-   his darkened feet on the bottom edge; the cards on the plain dark right side of the picture */
-.gate-jaka   { --x: 476; --y: 80;  --w: 277; --h: 640; }
-.gate-panel  { --x: 776; --y: 80;  --w: 472; --h: 608; }
+   his darkened feet on the bottom edge; the cards on the plain dark right side of the picture.
+   Since 21 October 2026 (owner) both sit 56 dp further left, clear of the right edge */
+.gate-jaka   { --x: 420; --y: 80;  --w: 277; --h: 640; }
+.gate-panel  { --x: 720; --y: 80;  --w: 472; --h: 608; }
 
 /* ---------- Masuk `/masuk`, Ganti sandi `/ganti-sandi` (owner redesign, 18 October 2026):
    the panel sits in the empty right side of the owner's picture (x ≥ 720), Jaka on the path.

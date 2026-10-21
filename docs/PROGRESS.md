@@ -2,7 +2,7 @@
 
 The single checklist of what is done and what is open. Decisions and their reasons go in `docs/perombakan-kelas5/CATATAN_IMPLEMENTASI.md`; this file only tracks state. Each session updates only its own rows, and ticks an item only once its PR is merged into `main`.
 
-Last updated: 20 October 2026.
+Last updated: 21 October 2026.
 
 ## Kelas 5 overhaul
 
@@ -172,10 +172,16 @@ Decided in an interview with the owner; decisions in the decision log, section *
 - [x] Analysis of the start-page animation (notes in the decision log) and its fixes: no filter animations, gentler and slower cues, wait for the pictures, no second entrance on slow connections, WebGL fetched during the entrance and faded in at lower quality, the logo sweep on the compositor; the welcome light follows the sun of the background picture (`findLight()`) (PR #201)
 - [ ] After merge, **Bangun ulang paket** if package mode is on; owner checks the frame rate on a class tablet
 
+## Gate, Peta Kedu, and region-map refinements (owner, 21 October 2026)
+
+- [ ] Gerbang: Jaka's legs with only a thin shade, Jaka and the cards 56 dp further left; Peta Kedu narrator controls higher; region map: no medallion numbers, frameless map with faded edges, the owner's ornate plate behind the region name and bronze progress track, card pictures per status (bright sepia done, dark sepia open, grey locked), black-rimmed stars, text-only Terkunci, a locked Pustaka shows only the modal
+- [ ] After merge, **Bangun ulang paket** if package mode is on
+
 ## Active branches
 
 Add a row (branch, owner / scope, status) when a session starts a branch; remove it when its PR is merged.
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `claude/ui-refinements-gateway-map-challenge-yf9q2i` | Gate, Peta Kedu, and region-map refinements (owner, 21 October 2026) | PR open |
 | `pbb/nice-carson-7yeoiz` | Brighter logo, Mulai plate, lettered form buttons, start-page menu (owner, 20 October 2026) | PR open |
