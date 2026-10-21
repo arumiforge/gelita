@@ -387,6 +387,38 @@ final class LibraryLockTest extends CIUnitTestCase
         $this->assertStringContainsString("on(document, 'click', 'a[data-library-locked]'", $js);
     }
 
+    /**
+     * Owner, 21 October 2026 (later): on the region map a locked pin opens a modal (its title,
+     * message, and button on the link), the HUD leaves the region name to the head plate, and
+     * a done card's title sits on a parchment veil.
+     */
+    public function testRegionMapLockedPinOpensAModalAndTheHudHasNoRegionName(): void
+    {
+        $nodes = [];
+        foreach ([[1, 'puzzle', 'completed'], [2, 'rumpang', 'open'], [3, 'boleh', 'locked'], [4, 'cari', 'locked']] as [$n, $engine, $status]) {
+            $nodes[] = ['id' => $n, 'sequence' => $n, 'engine_type' => $engine, 'variant' => '', 'title' => lang('Game.engine_' . $engine),
+                'description' => '', 'status' => $status, 'stars' => $status === 'completed' ? 2 : null, 'map_x' => 20 * $n, 'map_y' => 50];
+        }
+
+        $page = view('game/map-level', self::hud() + [
+            'level'        => self::level(2, 'magelang'),
+            'levelSummary' => ['stars' => 2, 'completed_nodes' => 1, 'total_nodes' => 4],
+            'nodes'        => $nodes,
+            'hasLibrary'   => false,
+            'library'      => ['status' => 'locked'],
+        ]);
+
+        $this->assertStringNotContainsString('hud-identity-region', $page);
+        $this->assertSame(2, substr_count($page, 'aria-disabled="true" data-locked-title="' . esc(lang('Game.nodeLockedTitle'), 'attr') . '" data-locked-message="' . esc(lang('Game.nodeLocked'), 'attr') . '" data-locked-ok="' . esc(lang('Game.libraryUnderstood'), 'attr') . '"'));
+
+        $js = (string) file_get_contents(FCPATH . 'assets/js/game/map.js');
+        $this->assertStringContainsString("if (screen.dataset.screen === 'map-level') {", $js);
+        $this->assertMatchesRegularExpression("/showModal\\(\\{ type: 'info', icon: 'lock', title: lockedTitle/", $js);
+
+        $css = (string) file_get_contents(FCPATH . 'assets/css/game.css');
+        $this->assertMatchesRegularExpression('/\\.node-card\\.has-frame\\.is-completed::before \\{[^}]*rgba\\(252, 243, 220, \\.9\\)/', $css);
+    }
+
     // ------------------------------------------------------------ momen terbuka
 
     public function testOnlyTheAttemptThatFinishesTheRegionOpensTheLibrary(): void

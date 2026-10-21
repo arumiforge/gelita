@@ -200,6 +200,7 @@ return [
 
     // Map & challenges — errors
     'levelLocked'          => 'This region is not open yet. Finish the previous region first.',
+    'nodeLockedTitle'      => 'This challenge is still locked',
     'nodeLocked'           => 'This challenge is not open yet. Finish the previous challenge first.',
     'challengeUnavailable' => 'This challenge cannot be opened yet. Please tell your teacher.',
 

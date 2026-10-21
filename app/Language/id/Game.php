@@ -200,6 +200,7 @@ return [
 
     // Peta & tantangan — galat
     'levelLocked'          => 'Wilayah ini belum terbuka. Selesaikan wilayah sebelumnya dulu.',
+    'nodeLockedTitle'      => 'Tantangan masih terkunci',
     'nodeLocked'           => 'Tantangan ini belum terbuka. Selesaikan tantangan sebelumnya dulu.',
     'challengeUnavailable' => 'Tantangan ini belum dapat dibuka. Sampaikan kepada gurumu, ya.',
 

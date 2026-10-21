@@ -2346,3 +2346,14 @@ Owner request with two pictures (a dark bronze bar, an ornate navy plate): on Ge
 - **Checks.** `LibraryLockTest` (`testRegionMapHeadAndProgressUseTheOwnersPictures`, `testLockedLibraryShowsOnlyTheModal`, no number, text-only Terkunci), `StatusBadgeTest`; full suite 820 tests. Chromium on a local SQLite world with the catalogue art: Gerbang, Peta Kedu (story live), region map with done, open, and locked cards.
 - **Deploy:** files come with git. **Bangun ulang paket** if package mode is on (new pictures, CSS, JS, views).
 
+## Region map: modal for locked pins, no HUD region name, readable done titles (21 October 2026, later; branch `claude/ui-refinements-gateway-map-challenge-yf9q2i`)
+
+Owner request after PR #203: on the region page use the modal, not the `toast is-warn`; remove the `hud-identity-region` text; the title of a done card is hard to read on its background, is there a solution?
+
+- **Branch.** The same assigned branch, restarted from `main` after PR #203 and PR #204 were merged.
+- **Locked pin.** The generic locked-link handler in `game/map.js` opens `showModal()` (lock icon, `Game.nodeLockedTitle` "Tantangan masih terkunci" / "This challenge is still locked", the existing `Game.nodeLocked` text, button `Game.libraryUnderstood` "Mengerti") when the screen is `map-level`; the strings ride on the pin as `data-locked-*`, as on the locked Pustaka link. Peta Kedu keeps its toast for a locked region (the request named the region page only).
+- **HUD.** New section `hudRegion` = `off` in `components/hud-menu` leaves the region name out; only the region map sets it, since its head plate shows the name. The result screen, region dialogue, and other pages keep it.
+- **Done card title.** The cause is the bright sepia picture: its lines run behind the dark letters. Chosen fix: a soft parchment veil (cream, 90 % at the centre, fading out) behind the title and stars only, as the top layer of the done card's wash; the rest of the picture stays visible. Considered and not taken: a stronger cream text halo (blurry at 17 dp) and a solid label behind the title (hides more of the picture and changes the card's look).
+- **Checks.** `LibraryLockTest::testRegionMapLockedPinOpensAModalAndTheHudHasNoRegionName`; full suite 821 tests. Chromium on the local world: a locked pin shows 1 modal and 0 toasts (was 1 toast), no region name in the HUD, the done card's title on a clean patch.
+- **Deploy:** files come with git. **Bangun ulang paket** if package mode is on.
+

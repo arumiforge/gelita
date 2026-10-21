@@ -176,6 +176,7 @@ Decided in an interview with the owner; decisions in the decision log, section *
 
 - [x] Gerbang: Jaka's legs with only a thin shade, Jaka and the cards 56 dp further left; Peta Kedu narrator controls higher; region map: no medallion numbers, frameless map with faded edges, the owner's ornate plate behind the region name and bronze progress track, card pictures per status (bright sepia done, dark sepia open, grey locked), black-rimmed stars, text-only Terkunci, a locked Pustaka shows only the modal (PR #203)
 - [ ] After merge, **Bangun ulang paket** if package mode is on
+- [ ] Region map follow-up: a locked pin opens a modal instead of the corner toast, no region name in the HUD, a parchment veil behind a done card's title
 
 ## Active branches
 
@@ -183,4 +184,5 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `claude/ui-refinements-gateway-map-challenge-yf9q2i` | Region map follow-up: modal for locked pins, no HUD region name, readable done titles (owner, 21 October 2026) | PR open |
 | `pbb/nice-carson-7yeoiz` | Brighter logo, Mulai plate, lettered form buttons, start-page menu (owner, 20 October 2026) | PR open |

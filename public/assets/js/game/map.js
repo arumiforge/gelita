@@ -199,11 +199,18 @@ export function initMap() {
   const screen = $('[data-screen="map-kedu"], [data-screen="map-level"]');
   if (!screen) return;
 
-  // A locked Pustaka link has its own modal below; no toast on top of it
+  // A locked Pustaka link has its own modal below; no toast on top of it. On the region map
+  // a locked pin explains itself in a modal too (owner, 21 October 2026), not a corner toast
   on(screen, 'click', 'a[aria-disabled="true"]:not([data-library-locked])', (event, link) => {
     event.preventDefault();
     Sfx.play('lock');
-    toast(link.dataset.lockedMessage || link.textContent.trim(), 'warn');
+    const message = link.dataset.lockedMessage || link.textContent.trim();
+    if (screen.dataset.screen === 'map-level') {
+      const { lockedTitle, lockedOk } = link.dataset;
+      showModal({ type: 'info', icon: 'lock', title: lockedTitle || '', text: message, buttons: [{ label: lockedOk || 'OK', style: 'primary', value: 'ok' }] });
+      return;
+    }
+    toast(message, 'warn');
   });
 
   // Pustaka {wilayah} sits at the bottom of the side column (it used to be in the nav bar)
