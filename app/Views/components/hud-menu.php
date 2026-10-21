@@ -30,13 +30,16 @@
  *        sets section `hudShards` = `off` to leave it out (the result screen
  *        shows shards in its panel).
  * Right: section `hudBadge` first (e.g. the region dialogue's difficulty
- *        badge, partials/region-difficulty), then three round controls on
- *        the `ui.result-hud-control` skin:
- *        - language: popover with the flag icons (`ui.lang.*`), a POST form
+ *        badge, partials/region-difficulty), then three round controls, each
+ *        drawn as the owner's round gold button (`assets/ui/round-*.webp`,
+ *        round_icon(); 21 October 2026), else a line icon on the
+ *        `ui.result-hud-control` skin:
+ *        - language: popover with the round flags (`round-lang-{code}`, else
+ *          the `ui.lang.*` slot icons), a POST form
  *          with class `lang-switch` (game/hud.js, the challenge frame);
  *          hidden during a challenge;
- *        - sound (#btn-sound, game/hud.js);
- *        - menu: profile, Peta Kedu, fullscreen (#btn-fullscreen,
+ *        - sound (#btn-sound, game/hud.js): `round-sound` / `round-mute`;
+ *        - menu (`round-menu`): profile, Peta Kedu, fullscreen (#btn-fullscreen,
  *          core/stage.js; hidden when unsupported), and logout. Signed in
  *          without progress data (the opening story): Kembali ke awal (`/`)
  *          instead of Peta Kedu; on the start page itself (`$homePage`)
@@ -44,7 +47,8 @@
  *          20 October 2026). Before login only fullscreen; the menu hides
  *          itself when it has no row left.
  *        Section `hudBack` (a URL) adds a Back button in the top-right
- *        corner, after the controls (owner, 20 October 2026); the controls
+ *        corner, after the controls (owner, 20 October 2026; the round
+ *        `round-back` button since 21 October 2026); the controls
  *        and Back then share the `.hud-end` row, so the popover sheets stay
  *        anchored to the controls. With `logo-centre` Back sits alone in the
  *        top-left corner on the owner's navy plate instead
@@ -96,7 +100,13 @@ $backEnd   = $back !== '' && ! $logoCentre;
 $badge    = trim($this->renderSection('hudBadge'));
 $shards   = $inGame && ! $logoCentre && ! $regionCentre && trim($this->renderSection('hudShards')) !== 'off';
 $logo     = empty($hideBrand) && ! $titleCentre ? (media_key_src('ui.logo-hero') ?? media_key_src('ui.logo')) : null;
-$flags    = ['id' => media_key_src('ui.lang.id'), 'en' => media_key_src('ui.lang.en')];
+// The owner's round flag buttons (21 October 2026) first, else the uploaded slot icons
+$roundFlag = ['id' => round_icon_src('lang-id'), 'en' => round_icon_src('lang-en')];
+$flags     = [
+    'id' => $roundFlag['id'] ?? media_key_src('ui.lang.id'),
+    'en' => $roundFlag['en'] ?? media_key_src('ui.lang.en'),
+];
+$backArt  = round_icon_src('back');
 
 $langName = static fn (string $code): string => lang_or('Game.lang_' . $code, strtoupper($code));
 $userName = $signedIn ? (string) ($participant['display_name'] ?: $participant['username']) : '';
@@ -132,7 +142,9 @@ $userName = $signedIn ? (string) ($participant['display_name'] ?: $participant['
     <details class="hud-pop hud-lang" data-popover>
       <summary class="hud-ctl" aria-label="<?= esc(lang('Game.language') . ': ' . $langName($locale), 'attr') ?>"
                title="<?= esc(lang('Game.language'), 'attr') ?>">
-        <?php if ($flags[$locale] ?? null): ?>
+        <?php if ($roundFlag[$locale] ?? null): ?>
+          <img class="hud-ctl-art" src="<?= esc($roundFlag[$locale], 'attr') ?>" alt="" draggable="false">
+        <?php elseif ($flags[$locale] ?? null): ?>
           <img class="hud-ctl-flag" src="<?= esc($flags[$locale], 'attr') ?>" alt="" draggable="false">
         <?php else: ?>
           <span class="hud-ctl-code" aria-hidden="true"><?= esc(strtoupper($locale)) ?></span>
@@ -148,7 +160,7 @@ $userName = $signedIn ? (string) ($participant['display_name'] ?: $participant['
             <button type="submit" name="locale" value="<?= esc($code, 'attr') ?>" lang="<?= esc($code, 'attr') ?>"
                     class="hud-sheet-row hud-lang-row<?= $active ? ' is-active' : '' ?>" aria-pressed="<?= $active ? 'true' : 'false' ?>">
               <?php if ($flags[$code] ?? null): ?>
-                <img class="hud-sheet-flag" src="<?= esc($flags[$code], 'attr') ?>" alt="" draggable="false">
+                <img class="hud-sheet-flag<?= ($roundFlag[$code] ?? null) ? ' is-round' : '' ?>" src="<?= esc($flags[$code], 'attr') ?>" alt="" draggable="false">
               <?php else: ?>
                 <span class="hud-sheet-code" aria-hidden="true"><?= esc(strtoupper($code)) ?></span>
               <?php endif ?>
@@ -162,12 +174,12 @@ $userName = $signedIn ? (string) ($participant['display_name'] ?: $participant['
 
     <button type="button" class="hud-ctl" id="btn-sound" aria-pressed="true"
             aria-label="<?= esc(lang('Game.sound'), 'attr') ?>">
-      <?= icon('sound', 'icon-on') ?><?= icon('sound-off', 'icon-off') ?>
+      <?= round_icon('sound', 'hud-ctl-art icon-on', 'sound') ?><?= round_icon('mute', 'hud-ctl-art icon-off', 'sound-off') ?>
     </button>
 
     <details class="hud-pop hud-menu" data-popover>
       <summary class="hud-ctl" aria-label="<?= esc(lang('Game.resultMenu'), 'attr') ?>" title="<?= esc(lang('Game.resultMenu'), 'attr') ?>">
-        <?= icon('menu') ?>
+        <?= round_icon('menu', 'hud-ctl-art', 'menu') ?>
       </summary>
       <div class="hud-sheet hud-menu-sheet" role="group" aria-labelledby="hud-menu-title">
         <div class="hud-sheet-head">
@@ -207,7 +219,12 @@ $userName = $signedIn ? (string) ($participant['display_name'] ?: $participant['
       </div>
     </details>
   </div>
-  <?php if ($backEnd): ?>
+  <?php if ($backEnd && $backArt !== null): ?>
+    <a class="hud-ctl hud-back" href="<?= esc($back, 'attr') ?>" aria-label="<?= esc(lang('Game.back'), 'attr') ?>" title="<?= esc(lang('Game.back'), 'attr') ?>">
+      <img class="hud-ctl-art" src="<?= esc($backArt, 'attr') ?>" alt="" draggable="false">
+    </a>
+  </div>
+  <?php elseif ($backEnd): ?>
     <a class="btn btn-quiet hud-back" href="<?= esc($back, 'attr') ?>"><?= icon('left') ?> <span><?= esc(lang('Game.back')) ?></span></a>
   </div>
   <?php endif ?>

@@ -252,6 +252,27 @@ body.is-auth-art .scene::after { background: linear-gradient(to right, transpare
 .hud-ctl:focus-visible { outline: none; }
 .hud-ctl:focus-visible::before { outline: .1875rem solid var(--gold-300); outline-offset: .1875rem; }
 .hud-pop[open] > .hud-ctl::before { box-shadow: 0 0 0 .1875rem var(--gold-500), 0 0 1rem var(--glow); }
+/* The owner's round gold buttons (21 October 2026; round_icon(), assets/ui/round-*.webp): each
+   picture is the whole button (carved ring, dark face, symbol), so the drawn disc steps aside
+   and hover, press, focus, and open act on the picture. The carved ornaments reach a little
+   past the old disc, hence the slightly larger size. */
+.hud-ctl:has(> img.hud-ctl-art)::before { display: none; }
+.hud-ctl > img.hud-ctl-art {
+  width: 4.625rem;
+  height: 4.625rem;
+  border-radius: 50%;
+  filter: drop-shadow(0 .25rem .5rem rgba(1, 7, 19, .55));
+  transition: transform .15s, filter .15s;
+  -webkit-user-drag: none;
+}
+@media (hover: hover) {
+  .hud-ctl:hover > img.hud-ctl-art { filter: drop-shadow(0 .25rem .5rem rgba(1, 7, 19, .55)) drop-shadow(0 0 .5rem var(--glow)) brightness(1.1); }
+}
+.hud-ctl:active > img.hud-ctl-art { transform: scale(.94); }
+.hud-ctl:focus-visible > img.hud-ctl-art { outline: .1875rem solid var(--gold-300); outline-offset: .0625rem; }
+.hud-pop[open] > .hud-ctl > img.hud-ctl-art { filter: drop-shadow(0 0 .25rem var(--gold-500)) drop-shadow(0 0 .75rem var(--glow)) brightness(1.1); }
+/* Back as a round button beside the controls: none of the old quiet-button backing */
+.hud .hud-ctl.hud-back { min-height: 0; padding: 0; background: none; text-decoration: none; }
 
 /* Popover sheets: language 480 × 240 under its control, menu 433 × 552 with a scrim */
 .hud-sheet {
@@ -326,6 +347,8 @@ body.is-auth-art .scene::after { background: linear-gradient(to right, transpare
 .hud-sheet-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .hud-lang-row { min-height: 6rem; font-size: 1.625rem; font-weight: 700; }
 .hud-sheet-flag { width: 4.25rem; height: 4.25rem; border-radius: 50%; }
+/* The round flag buttons carry their own carved ring, a little past the old flag's edge */
+.hud-sheet-flag.is-round { width: 4.625rem; height: 4.625rem; margin: -.1875rem; filter: drop-shadow(0 .125rem .25rem rgba(1, 7, 19, .5)); }
 .hud-sheet-code { display: grid; place-items: center; width: 4.25rem; height: 4.25rem; border: .125rem solid var(--gold-500); border-radius: 50%; font-weight: 800; }
 .hud-lang-row .hud-sheet-mark { width: 2rem; height: 2rem; color: var(--ok); visibility: hidden; }
 .hud-lang-row.is-active { border-color: var(--gold-500); background: rgba(223, 192, 135, .14); }
@@ -482,6 +505,7 @@ body.is-auth-art .scene::after { background: linear-gradient(to right, transpare
 .is-compact .hud-ctl::before { width: 2.625rem; height: 2.625rem; }
 .is-compact .hud-ctl .icon { width: 1.375rem; height: 1.375rem; }
 .is-compact .hud-ctl-flag { width: 2.625rem; height: 2.625rem; }
+.is-compact .hud-ctl > img.hud-ctl-art { width: 3rem; height: 3rem; }
 .is-compact .hud-lang-sheet { top: 3.75rem; right: 7.5rem; }
 .is-compact .hud-menu-sheet { top: 4rem; right: .5rem; }
 /* The shard plate fits the strip: 256 × 53 dp, centred, 2 dp clear of top and bottom */
@@ -574,6 +598,7 @@ body.is-auth-art .scene::after { background: linear-gradient(to right, transpare
 .is-tall .hud-ctl::before { width: 3.75rem; height: 3.75rem; }
 .is-tall .hud-ctl .icon { width: 1.875rem; height: 1.875rem; }
 .is-tall .hud-ctl-flag { width: 3.75rem; height: 3.75rem; }
+.is-tall .hud-ctl > img.hud-ctl-art { width: 4.125rem; height: 4.125rem; }
 .is-tall .hud-lang-sheet { top: 5.25rem; right: 10rem; }
 .is-tall .hud-menu-sheet { top: 5.5rem; right: .75rem; }
 .is-tall .hud-shards { --plate-w: 22.5rem; top: .875rem; left: 28.75rem; }

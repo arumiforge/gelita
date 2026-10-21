@@ -591,6 +591,70 @@ if (! function_exists('library_icon')) {
     }
 }
 
+if (! function_exists('round_icon_src')) {
+    /**
+     * The owner's round gold buttons (21 October 2026): `assets/ui/round-{name}.webp`,
+     * 256 × 256, each the whole button (carved gold ring, dark face, gold symbol):
+     * `profile`, `login`, `register`, `lang-id`, `lang-en`, `sound`, `mute`, `menu`,
+     * `back`, `next`, `pause`, `loading`, `replay`, and `blank` (the plain gold face).
+     * The versioned URL, or null while the picture is not installed.
+     */
+    function round_icon_src(string $name): ?string
+    {
+        $file = 'ui/round-' . $name . '.webp';
+
+        return is_file(FCPATH . 'assets/' . $file) ? asset_url_versioned($file) : null;
+    }
+}
+
+if (! function_exists('round_icon')) {
+    /**
+     * One of the round gold buttons (round_icon_src()) as a decorative <img>: the control
+     * around it carries the label. While the picture is not installed, the line icon
+     * `$fallback` (with the same class), or nothing without one.
+     */
+    function round_icon(string $name, string $class = 'round-icon', ?string $fallback = null): string
+    {
+        $src = round_icon_src($name);
+
+        if ($src === null) {
+            if ($fallback === null) {
+                return '';
+            }
+            if (! function_exists('icon')) {
+                helper('ui');
+            }
+
+            return icon($fallback, $class);
+        }
+
+        return '<img class="' . esc($class) . '" src="' . esc($src, 'attr')
+            . '" alt="" width="256" height="256" decoding="async" draggable="false">';
+    }
+}
+
+if (! function_exists('round_style_attr')) {
+    /**
+     * The round buttons as CSS custom properties for pictures drawn by CSS (the
+     * turning ring on a busy login or sign-up button): ` style="--round-{name}: url(…)"`,
+     * or '' when none of the pictures is installed (like skin_style_attr()).
+     *
+     * @param list<string> $names
+     */
+    function round_style_attr(array $names): string
+    {
+        $parts = [];
+
+        foreach ($names as $name) {
+            if (($src = round_icon_src($name)) !== null) {
+                $parts[] = '--round-' . $name . ': url("' . str_replace(['"', '\\', "\n"], ['%22', '%5C', ''], $src) . '")';
+            }
+        }
+
+        return $parts === [] ? '' : ' style="' . esc(implode('; ', $parts)) . '"';
+    }
+}
+
 if (! function_exists('picture_button')) {
     /**
      * A submit button drawn as the owner's lettered lantern plate (20 October

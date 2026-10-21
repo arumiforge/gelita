@@ -7,6 +7,8 @@
  * Layout (owner mockup, 9 Oct 2026): Jaka on the left as his own image, one
  * ornate dark panel holding the title and two row cards; the GELITA logo in the
  * HUD centre and Back in its top-right corner (owner, 20 October 2026).
+ * The cards' symbols are the owner's round gold buttons (round_icon(); 21
+ * October 2026): register, login, and the next arrow.
  */
 ?>
 <?= $this->extend('layouts/game') ?>
@@ -32,20 +34,20 @@
 
       <div class="start-cards">
         <a class="start-card is-primary card-link" href="<?= base_url('daftar') ?>">
-          <span class="start-icon" aria-hidden="true"><?= icon('user-plus') ?></span>
+          <span class="start-icon" aria-hidden="true"><?= round_icon('register', 'start-round', 'user-plus') ?></span>
           <div class="start-text">
             <h2><?= esc(lang('Game.startNew')) ?></h2>
             <p><?= esc(lang('Game.startNewText')) ?></p>
           </div>
-          <span class="start-go" aria-hidden="true"><?= icon('right') ?></span>
+          <span class="start-go" aria-hidden="true"><?= round_icon('next', 'start-round', 'right') ?></span>
         </a>
         <a class="start-card card-link" href="<?= base_url('masuk') ?>">
-          <span class="start-icon" aria-hidden="true"><?= icon('login') ?></span>
+          <span class="start-icon" aria-hidden="true"><?= round_icon('login', 'start-round', 'login') ?></span>
           <div class="start-text">
             <h2><?= esc(lang('Game.startReturning')) ?></h2>
             <p><?= esc(lang('Game.startReturningText')) ?></p>
           </div>
-          <span class="start-go" aria-hidden="true"><?= icon('right') ?></span>
+          <span class="start-go" aria-hidden="true"><?= round_icon('next', 'start-round', 'right') ?></span>
         </a>
       </div>
     </div>

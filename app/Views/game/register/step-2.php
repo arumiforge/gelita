@@ -39,7 +39,7 @@ $country = $val('country_code') ?: 'ID';
     <?= view('partials/ornate-frame', ['crest' => false]) ?>
     <?= $this->include('game/register/_head') ?>
 
-    <form method="post" action="<?= base_url('daftar/2') ?>" class="form register-form" data-step="2" autocomplete="off">
+    <form method="post" action="<?= base_url('daftar/2') ?>" class="form register-form" data-step="2" autocomplete="off"<?= round_style_attr(['loading']) ?>>
       <?= csrf_field() ?>
       <div class="register-fields stage-scroll">
       <?= view('partials/form-errors', ['errors' => $errors]) ?>

@@ -38,7 +38,7 @@ $focus   = static fn (string $f): string => $first === $f ? ' autofocus' : '';
     <?= view('partials/ornate-frame', ['crest' => false]) ?>
     <?= $this->include('game/register/_head') ?>
 
-    <form method="post" action="<?= base_url('daftar/3') ?>" class="form register-form" data-step="3" autocomplete="off">
+    <form method="post" action="<?= base_url('daftar/3') ?>" class="form register-form" data-step="3" autocomplete="off"<?= round_style_attr(['loading']) ?>>
       <?= csrf_field() ?>
       <div class="register-fields stage-scroll">
       <?= view('partials/form-errors', ['errors' => $errors]) ?>
