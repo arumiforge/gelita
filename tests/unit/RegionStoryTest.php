@@ -481,7 +481,10 @@ final class RegionStoryTest extends CIUnitTestCase
 
         $this->assertStringContainsString('<template id="tpl-curtain-region">', $page);
         $this->assertMatchesRegularExpression('/<template id="tpl-curtain-region">.*?data-curtain-layer="region"\s+data-tap="0"\s+data-min-ms="1800" data-max-ms="2400" data-skip="0"/s', $page);
-        $this->assertMatchesRegularExpression('/<template id="tpl-curtain-region">.*?class="footsteps curtain-trail"/s', $page);
+        // Cinematic plate (owner, 21 October 2026): the name on the navy head plate, the bronze track, no footprints
+        $this->assertMatchesRegularExpression('/<template id="tpl-curtain-region">.*?class="curtain-title has-plate" data-curtain-text="title"/s', $page);
+        $this->assertMatchesRegularExpression('/<template id="tpl-curtain-region">.*?class="curtain-beam has-track"/s', $page);
+        $this->assertDoesNotMatchRegularExpression('/<template id="tpl-curtain-region">(?:(?!<\/template>).)*curtain-trail/s', $page);
         // Peta Kedu redesign: pins select a region; Lanjut in its panel enters with the curtain; locked does not
         $this->assertSame(1, substr_count($page, $this->href('dialog/magelang') . ' data-curtain="region"'));
         $this->assertSame(1, substr_count($page, $this->href('wilayah/temanggung') . ' data-curtain="region"'));

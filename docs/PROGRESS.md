@@ -178,6 +178,10 @@ Decided in an interview with the owner; decisions in the decision log, section *
 - [ ] After merge, **Bangun ulang paket** if package mode is on
 - [ ] Region map follow-up: a locked pin opens a modal instead of the corner toast, no region name in the HUD, a parchment veil behind a done card's title
 
+## Attempt list, loading screens, Peta Kedu, and Pustaka Kedu (owner, 21 October 2026)
+
+- [ ] Attempt list without a panel box, Kembali and Ulangi under the heading, slim best-play band; Peta Kedu Lanjut without text shadow, narrator controls 16 dp lower, the new Pustaka book everywhere; the bronze loading track on every curtain, the map tap prompt as small text, the region curtain as a cinematic plate; Pustaka Kedu with the Peta Kedu HUD, navy-and-gold cards, one way back (branch `claude/redesain-hasil-tantangan-wilayah-qde0tb`)
+
 ## Active branches
 
 Add a row (branch, owner / scope, status) when a session starts a branch; remove it when its PR is merged.
@@ -185,4 +189,5 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 | Branch | Owner / scope | Status |
 |---|---|---|
 | `claude/ui-refinements-gateway-map-challenge-yf9q2i` | Region map follow-up: modal for locked pins, no HUD region name, readable done titles (owner, 21 October 2026) | PR open |
+| `claude/redesain-hasil-tantangan-wilayah-qde0tb` | Attempt list, loading screens, Peta Kedu, Pustaka Kedu (owner, 21 October 2026) | PR open |
 | `pbb/nice-carson-7yeoiz` | Brighter logo, Mulai plate, lettered form buttons, start-page menu (owner, 20 October 2026) | PR open |

@@ -2,7 +2,8 @@
 /**
  * 13. Hasil Node — `/hasil/{code}/{seq}` → ChallengeController::result
  *
- * Statistik terbaik + tabel seluruh percobaan selesai. Mengulang tidak
+ * Statistik terbaik + tabel seluruh percobaan selesai. Kembali (to the region
+ * map) and Ulangi sit under the heading; the page has no nav bar. Mengulang tidak
  * menghapus catatan lama: setiap percobaan tetap tersimpan sebagai data
  * penelitian.
  *
@@ -23,25 +24,34 @@ $totalNodes = count(service('contentRepository')->nodesForLevel($level->id));
 
 <?= $this->section('content') ?>
 <?php /* Next screen: the region map */ ?>
-<section class="result" data-screen="result"<?= next_assets_attr([media_exists($level->map_media_id) ? media_src($level->map_media_id) : null]) ?>>
-  <div class="panel result-panel stage-box">
+<?php
+// Redesign (owner, 21 October 2026): no panel box, Kembali and Ulangi right under the
+// heading (Kembali left, Ulangi right), the best play as a slim centred band, no nav bar
+?>
+<section class="result result-list" data-screen="result"<?= next_assets_attr([media_exists($level->map_media_id) ? media_src($level->map_media_id) : null]) ?>>
+  <div class="result-panel stage-box">
   <header class="screen-head result-head">
     <span class="eyebrow"><?= esc($region) ?> · <?= esc(lang('Game.challengeOf', [$sequence, $totalNodes])) ?></span>
     <h1><?= esc($node->text('title', $locale)) ?></h1>
   </header>
 
+  <nav class="result-list-actions" aria-label="<?= esc(lang('Game.continue'), 'attr') ?>">
+    <a class="btn btn-quiet" href="<?= base_url('wilayah/' . $level->code) ?>"><?= icon('left') ?><span><?= esc($region) ?></span></a>
+    <a class="btn btn-primary btn-lg" href="<?= base_url('misi/' . $level->code . '/' . $sequence) ?>"><?= icon('replay') ?> <span><?= esc(lang('Game.retry')) ?></span></a>
+  </nav>
+
   <?php if ($best !== null): ?>
-    <div class="panel result-best">
-      <div class="result-best-head">
-        <span class="badge is-completed"><?= star_img() ?> <?= esc(lang('Game.best')) ?></span>
+    <section class="result-best" aria-labelledby="result-best-title">
+      <div class="result-best-crown">
+        <h2 class="result-best-title" id="result-best-title"><?= esc(lang('Game.bestResult')) ?></h2>
         <?= component('star-rating', ['stars' => (int) $best->stars, 'size' => 'lg']) ?>
       </div>
-      <div class="stat-grid">
-        <?= component('stat-tile', ['label' => lang('Game.firstPass'), 'value' => first_pass_text($best, $locale, $node->engine_type), 'icon' => 'target']) ?>
-        <?= component('stat-tile', ['label' => lang('Game.timeSpent'), 'value' => ms_to_human((int) $best->duration_ms), 'icon' => 'clock']) ?>
-        <?= component('stat-tile', ['label' => lang('Game.checks'), 'value' => (string) (int) $best->check_count, 'icon' => 'check']) ?>
-      </div>
-    </div>
+      <dl class="result-best-stats">
+        <div><dt><?= esc(lang('Game.firstPass')) ?></dt><dd><?= esc(first_pass_text($best, $locale, $node->engine_type)) ?></dd></div>
+        <div><dt><?= esc(lang('Game.timeSpent')) ?></dt><dd class="num"><?= esc(ms_to_human((int) $best->duration_ms)) ?></dd></div>
+        <div><dt><?= esc(lang('Game.checks')) ?></dt><dd class="num"><?= esc((string) (int) $best->check_count) ?></dd></div>
+      </dl>
+    </section>
   <?php endif ?>
 
   <?php if ($attempts === []): ?>
@@ -78,16 +88,6 @@ $totalNodes = count(service('contentRepository')->nodesForLevel($level->id));
   <?php endif ?>
 
   <p class="result-note muted"><?= icon('info') ?> <?= esc(lang('Game.retryNote')) ?></p>
-
-  <div class="btn-row result-actions">
-    <a class="btn btn-primary btn-lg" href="<?= base_url('misi/' . $level->code . '/' . $sequence) ?>"><?= icon('replay') ?> <?= esc(lang('Game.retry')) ?></a>
-  </div>
   </div>
 </section>
-<?= $this->endSection() ?>
-
-<?= $this->section('nav') ?>
-<?= component('nav-bar', ['nav' => [
-    ['label' => $region, 'href' => base_url('wilayah/' . $level->code), 'style' => 'quiet', 'arrow' => 'left'],
-]]) ?>
 <?= $this->endSection() ?>

@@ -828,12 +828,13 @@ body.is-auth-art .scene::after { background: linear-gradient(to right, transpare
 /* Region-done modal: large and touch-friendly (owner, 18 Oct 2026), below the HUD controls */
 .result-kedu { --x: 120; --y: 128; --w: 1040; --h: 560; }
 
-/* ---------- Hasil `/hasil/{code}/{n}` ---------- */
-.result-panel { --x: 160; --y: 72; --w: 960; --h: 576; }
+/* ---------- Hasil `/hasil/{code}/{n}` (no nav bar since 21 Oct 2026) ---------- */
+.result-panel { --x: 160; --y: 64; --w: 960; --h: 640; }
 
-/* ---------- Rak Pustaka `/pustaka` ---------- */
-.shelf-head { --x: 88; --y: 64; --w: 1104; --h: 48; }
-.shelf-card { --y: 120; --w: 352; --h: 440; }
+/* ---------- Rak Pustaka `/pustaka` (Peta Kedu HUD, 120 dp, since 21 Oct 2026) ---------- */
+.shelf-head { --x: 88; --y: 112; --w: 1104; --h: 28; }
+.shelf-card { --y: 148; --w: 352; --h: 480; }
+.shelf-nav  { --x: 24; --y: 640; --w: 320; --h: 64; }
 .shelf-card:nth-child(1) { --x: 88; }
 .shelf-card:nth-child(2) { --x: 464; }
 .shelf-card:nth-child(3) { --x: 840; }

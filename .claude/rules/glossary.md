@@ -55,7 +55,8 @@ One concept, one word, in every layer. "UI (id)" is what users read; "Code (en)"
 | efek sinematik pembuka | `cinematic entrance`, `cue sheet` | `game/cine.js`, `data-cine` = `welcome`/`gate`/`account`; `html.cine-ok`, `.is-cine-live`, `.is-cine-done`; session key `gelita.cine.seen` |
 | cahaya gambar latar (matahari) | `picture light`, `light source` | `findLight()` in `game/cine.js`; `createScreenFx(…, { light })`, effect `sun` (welcome page) |
 | papan tombol hijau | `green plate` | `public/assets/ui/plate-green.webp` (`--plate-green`): Lihat hasil on the region map |
-| gambar buku Pustaka | `library icon` | `library_icon()`, `public/assets/ui/icon-pustaka.webp`, `.library-icon`; on the Pustaka buttons |
+| gambar buku Pustaka | `library icon` | `library_icon()`, `public/assets/ui/icon-pustaka.webp` (the owner's round book emblem since 21 Oct 2026, 256 × 299), `.library-icon`; on the Pustaka buttons, the region-library nav (`'icon' => 'library'`), and `.shelf-emblem` on the Pustaka Kedu cards |
+| bilah pemuatan perunggu | `loading track` | `public/assets/ui/loading-track.webp` (`--loading-track`), `.curtain-beam.has-track` on every curtain and `.progress` on the Pustaka Kedu cards; gold fill in its channel, since 21 Oct 2026 |
 | gambar bintang | `star picture` | `star_src()`/`star_img()`/`stars_html()`: slot `ui.result-star`, else `public/assets/ui/star.webp`; empty star `.is-off` (grey, faded); admin keeps the line icon |
 | Wilayah dipilih (panel) | `region panel`, `selected region` | `.kedu-panel`, `data-region-select` |
 | Lihat cerita pembuka (panel wilayah) | `opening story link` | `.kedu-opening` → `/dialog/{code}`, label `Game.watchRegionOpening` |
