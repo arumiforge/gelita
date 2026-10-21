@@ -10,8 +10,9 @@
  * Owner redesign (20 October 2026): the owner's picture (a vine-covered arch
  * at sunset on the left, plain dark teal on the right, `assets/ui/bg-gate.webp`)
  * fills the stage; Jaka waves from the path as one tall still picture
- * (`assets/ui/jaka-gate.webp`, no animation frames, legs and feet darkened in
- * the file so they sink into the path). The cards sit straight on the dark
+ * (`assets/ui/jaka-gate.webp`, no animation frames; since 21 October 2026 his
+ * legs and feet carry only a thin shade in the file, so they sink into the path
+ * without turning black; he and the cards sit 56 dp left of the first layout). The cards sit straight on the dark
  * right side: no panel fill, no corner ornaments, only the compass emblem
  * above the title. The two card icons are the owner's emblems (book, map
  * scroll). HUD: the GELITA logo in the middle instead of the shard plate,

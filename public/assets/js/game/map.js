@@ -199,7 +199,8 @@ export function initMap() {
   const screen = $('[data-screen="map-kedu"], [data-screen="map-level"]');
   if (!screen) return;
 
-  on(screen, 'click', 'a[aria-disabled="true"]', (event, link) => {
+  // A locked Pustaka link has its own modal below; no toast on top of it
+  on(screen, 'click', 'a[aria-disabled="true"]:not([data-library-locked])', (event, link) => {
     event.preventDefault();
     Sfx.play('lock');
     toast(link.dataset.lockedMessage || link.textContent.trim(), 'warn');
