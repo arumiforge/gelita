@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Data cerita GELITA: seluruh baris tabel `dialogues` (88 baris, 6 konteks).
+ * Data cerita GELITA: seluruh baris tabel `dialogues` (91 baris, 7 konteks).
  *
  * Salinan persis docs/naskah-cerita.md — naskah itu sumber tunggal teks,
  * rekaman audio, pose, dan efek. Bila teks perlu diubah, ubah naskahnya dulu,
@@ -13,7 +13,7 @@
  * Kunci setiap baris:
  *   code       nama berkas audio tanpa `.mp3` (narasi/{id|en}/{code}.mp3)
  *   level      kode wilayah, atau null untuk baris global
- *   context    intro | map_intro | region_intro | level_open | level_done | ending
+ *   context    intro | map_intro | region_intro | level_open | level_done | ending | map_done
  *   sequence   urutan di dalam (level, context), mulai 1
  *   character  narator | jaka | mbah_kedu
  *   pose       Config\Gelita::$characterPoses, null untuk narator
@@ -758,5 +758,31 @@ return [
         'title_en' => 'Keepers of the Lantern',
         'text_id'  => 'Mulai hari ini, kamulah Penjaga Lentera, Le. Kamu juga, penjelajah. Bawalah cahaya ini ke sekolahmu, ke rumahmu, dan ke mana pun kamu pergi.',
         'text_en'  => 'From today, you are the Keeper of the Lantern, my boy. And so are you, explorer. Carry this light to your school, to your home, and wherever you go.',
+    ],
+
+    // 7. Peta Kedu after every region is done (map_done; owner, 21 October 2026)
+    [
+        'code' => 'peta-tuntas-01', 'level' => null, 'context' => 'map_done', 'sequence' => 1,
+        'character' => 'jaka', 'pose' => 'happy', 'effect' => 'glow',
+        'title_id' => 'Kabut Sudah Pergi',
+        'title_en' => 'The Mist Is Gone',
+        'text_id'  => 'Lihat! Kabut Lupa sudah hilang dari Dataran Kedu. Temanggung, Magelang, dan Wonosobo bercahaya lagi berkat kerja kerasmu.',
+        'text_en'  => 'Look! The Mist of Forgetting is gone from the Kedu Plain. Temanggung, Magelang, and Wonosobo shine again thanks to your hard work.',
+    ],
+    [
+        'code' => 'peta-tuntas-02', 'level' => null, 'context' => 'map_done', 'sequence' => 2,
+        'character' => 'jaka', 'pose' => 'determined', 'effect' => null,
+        'title_id' => 'Cahaya yang Dijaga',
+        'title_en' => 'A Light to Keep',
+        'text_id'  => 'Kedua belas Serpihan Cahaya sudah kembali. Sekarang tugas kita menjaga cahayanya: terus membaca dengan teliti dan memeriksa sumbernya.',
+        'text_en'  => 'All twelve Shards of Light are back. Now our job is to keep the light shining: keep reading carefully and checking the source.',
+    ],
+    [
+        'code' => 'peta-tuntas-03', 'level' => null, 'context' => 'map_done', 'sequence' => 3,
+        'character' => 'jaka', 'pose' => 'happy', 'effect' => null,
+        'title_id' => 'Jelajahi Lagi',
+        'title_en' => 'Explore Again',
+        'text_id'  => 'Kamu boleh berkeliling lagi kapan saja: baca Pustaka Kedu, lihat lagi cerita penutup, atau ulangi tantangan. Jangan lupa mampir ke Balai Refleksi, ya. Mbah Kedu ingin mendengar ceritamu!',
+        'text_en'  => 'You can look around again any time: read the Kedu Library, watch the closing story again, or replay a challenge. Don\'t forget to stop by the Reflection Hall. Mbah Kedu wants to hear your story!',
     ],
 ];

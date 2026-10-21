@@ -154,8 +154,9 @@ final class CinematicViewTest extends CIUnitTestCase
         $this->assertStringNotContainsString('<span class="eyebrow">', $page);
         // ▶ in the narrator controls reads "Lanjut"; the caption keeps Lanjut only as the no-JS link
         $this->assertStringContainsString('data-narrator="next" aria-label="' . esc(lang('Game.continue'), 'attr') . '"><span class="narrator-next-label"', $page);
-        // The last slide's main button sits outside the caption, in the middle of the page
-        $this->assertMatchesRegularExpression('/id="slide-3".*?<div class="cine-final">\s*<a class="btn btn-primary btn-lg" href="' . preg_quote(esc(base_url('intro/selesai'), 'attr'), '/') . '" data-slide-final>/s', $page);
+        // The last slide's main button sits outside the caption, in the middle of the page,
+        // on the owner's mountain plate (21 October 2026)
+        $this->assertMatchesRegularExpression('/id="slide-3".*?<div class="cine-final">\s*<a ' . preg_quote(plate_attrs('enter', 'is-final'), '/') . ' href="' . preg_quote(esc(base_url('intro/selesai'), 'attr'), '/') . '" data-slide-final><span>' . preg_quote(esc(lang('Game.startJourney')), '/') . '<\/span>/s', $page);
         $this->assertDoesNotMatchRegularExpression('/id="slide-2".*?data-slide-final.*?id="slide-3"/s', $page);
     }
 

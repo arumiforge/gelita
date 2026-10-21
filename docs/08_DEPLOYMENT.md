@@ -570,10 +570,10 @@ Instalasi juga membaca isi bawaan dari repositori, jadi folder `docs/` dan `app/
 | Berkas | Dibaca oleh | Isi |
 |---|---|---|
 | `app/Database/Seeds/data/sekolah-jateng.csv` | `SchoolSeeder`, `gelita:schools:import` | 28.487 sekolah resmi Jawa Tengah (NPSN), dari [`docs/sekolah/`](sekolah/README.md) |
-| `app/Database/Seeds/data/story.php` | `ContentSeeder` | 88 baris cerita (salinan [`docs/naskah-cerita.md`](naskah-cerita.md)) |
+| `app/Database/Seeds/data/story.php` | `ContentSeeder` | 91 baris cerita (salinan [`docs/naskah-cerita.md`](naskah-cerita.md)) |
 | `docs/pustaka/gelita-pustaka.xlsx` | `KontenKelas5Seeder` | Pustaka Kedu: 30 halaman, 48 media ([`docs/pustaka/`](pustaka/README.md)) |
 | `docs/bank-soal/gelita-bank-soal-kelas5.xlsx` | `KontenKelas5Seeder`, `gelita:reset` | bank soal kelas 5: 12 tantangan, 147 soal aktif ([`docs/bank-soal/`](bank-soal/README.md)) |
-| `public/assets/audio/narasi/{id,en}/` (kosong di repositori) | `gelita:narration:import` | folder impor rekaman pengisi suara, 100 per bahasa ([`docs/audio.md`](audio.md)) |
+| `public/assets/audio/narasi/{id,en}/` (kosong di repositori) | `gelita:narration:import` | folder impor rekaman pengisi suara, 103 per bahasa ([`docs/audio.md`](audio.md)) |
 
 ### Ringkasan alur
 
@@ -603,7 +603,7 @@ Instalasi baru adalah satu-satunya cara memasang GELITA. Urutannya sama di kedua
 | `ResearchStudySeeder` | studi aktif `STUDI-KEDU-KELAS5-2026` (`retention_days` 1825) |
 | `LevelSeeder` | tiga wilayah: Temanggung (mudah), Magelang (sedang), Wonosobo (sulit) |
 | `MediaAssetSeeder` | slot media bawaan (sama dengan `gelita:media:scan`) |
-| `ContentSeeder` | 12 tantangan (4 per wilayah: Susun Gambar, Isi Rumpang, Benar atau Salah, Cari Objek) dan 88 baris cerita |
+| `ContentSeeder` | 12 tantangan (4 per wilayah: Susun Gambar, Isi Rumpang, Benar atau Salah, Cari Objek) dan 91 baris cerita |
 | `KontenKelas5Seeder` | impor Pustaka Kedu (30 halaman, 48 media), impor bank soal kelas 5 (126 soal: 108 dinilai + 18 pengecoh, 30 variasi, 9 bacaan Benar atau Salah, 36 petunjuk), lalu 66 gambar contoh (mockup) |
 
 Semua seeder aman dijalankan ulang: baris yang sudah ada tidak ditimpa, dan sandi `admin` yang sudah ada tidak diubah ("Akun admin sudah ada — kata sandi tidak diubah"). Kedua impor dicatat di audit log atas nama akun admin pertama. Gambar contoh ditulis ke `public/assets/uploads/mockup/` dan poster video Pustaka ke `public/assets/uploads/` (lihat [Akses keluar server](#akses-keluar-server-thumbnail-video-pustaka)); karena itu seeder dijalankan sebagai `www-data` di Jalur L.
@@ -661,7 +661,7 @@ exit
 
 - `read -rs` membuat sandi admin tidak tercatat di riwayat shell. Bentuk singkat `GELITA_ADMIN_PASSWORD='…' php spark db:seed DatabaseSeeder` hanya untuk mesin pengembangan.
 - Keluaran langkah 5 menyebut jumlah sekolah resmi, "Akun admin dibuat (username: admin)", hasil impor Pustaka Kedu dan bank soal kelas 5, lalu "Gambar contoh: 66 dibuat, …". Peringatan berwarna kuning (berkas workbook tidak ditemukan, impor gagal, gambar contoh gagal) harus diselesaikan sebelum lanjut; seeder aman diulang.
-- Langkah 6 memetakan 100 rekaman per bahasa (88 baris cerita + 12 petunjuk Cari Objek) ke baris yang dibuat langkah 5, jadi urutannya wajib. Rekaman masuk sebagai **draft** dan belum terdengar pemain sampai disetujui di panel (Langkah terakhir).
+- Langkah 6 memetakan 103 rekaman per bahasa (91 baris cerita + 12 petunjuk Cari Objek) ke baris yang dibuat langkah 5, jadi urutannya wajib. Rekaman masuk sebagai **draft** dan belum terdengar pemain sampai disetujui di panel (Langkah terakhir).
 
 ### Instalasi — Jalur W
 
@@ -1231,7 +1231,7 @@ mysql --defaults-extra-file=/home/deploy/.gelita/backup.cnf gelita -e "
   SELECT l.code, COUNT(*) AS tantangan FROM challenge_nodes n JOIN levels l ON l.id = n.level_id
    WHERE n.is_active = 1 GROUP BY l.code;                                                   -- 4 per wilayah
   SELECT COUNT(*) AS soal, SUM(scorable) AS dinilai FROM challenge_items WHERE is_active = 1; -- 126, 108
-  SELECT COUNT(*) AS dialog FROM dialogues;                                                 -- 88
+  SELECT COUNT(*) AS dialog FROM dialogues;                                                 -- 91
   SELECT COUNT(*) AS pustaka FROM library_pages WHERE is_active = 1;                        -- 30
   SELECT COUNT(*) AS gambar_contoh FROM media_assets WHERE is_placeholder = 1 AND is_active = 1; -- 66, lalu 0
   SELECT locale, approval_status, COUNT(*) FROM audio_assets GROUP BY locale, approval_status; -- 100 approved per bahasa
@@ -1522,7 +1522,7 @@ Hal berikut butuh mesin Windows atau domain sungguhan, dan tetap masuk daftar ve
 Setelah panduan ini dijalankan:
 
 * GELITA berjalan sebagai satu instansi server lewat HTTPS, di Linux (Nginx + PHP-FPM) atau Windows + Laragon (Nginx + php-cgi), dengan header keamanan di setiap respons dan berkas sensitif tidak terlayani.
-* Instalasi baru mengisi 28.487 sekolah resmi, akun admin, tiga wilayah dengan 12 tantangan, 126 soal kelas 5, 88 baris cerita, 30 halaman Pustaka, 66 gambar contoh, dan 100 rekaman narasi per bahasa yang disetujui, lalu lolos verifikasi konten.
+* Instalasi baru mengisi 28.487 sekolah resmi, akun admin, tiga wilayah dengan 12 tantangan, 126 soal kelas 5, 91 baris cerita, 30 halaman Pustaka, 66 gambar contoh, dan 103 rekaman narasi per bahasa yang disetujui, lalu lolos verifikasi konten.
 * Sebelum pengambilan data, gambar contoh diganti gambar asli, daftar siap penelitian hijau, uji asap lolos, data uji coba dikosongkan dengan `gelita:reset`, dan `gelita:content:verify --siap-penelitian` lolos.
 * Pembaruan kode berjalan dengan satu skrip (`deploy.sh` / `deploy.ps1`) yang menolak berjalan saat kelas aktif, membuat backup, memakai mode pemeliharaan, dan hanya membuka situs bila konten lolos verifikasi. Rollback terdokumentasi untuk kedua jalur.
 * Migration dan reset memakai akun DDL terpisah lewat DSN; aplikasi dan backup memakai akun tanpa hak DDL.

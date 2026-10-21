@@ -49,6 +49,7 @@ $engineName  = engine_label($engine, $node->variant_code);
     'engine'  => $engine,
     'eyebrow' => $engineName,
     'title'   => $node->text('title', $locale),
+    'number'  => $sequence,
     'lead'    => lang_or('Game.challengeLead_' . ($node->variant_code ?? ''), lang_or('Game.challengeLead_' . $engine, '')),
 ]) ?></template>
 <?= $this->endSection() ?>

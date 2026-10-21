@@ -40,7 +40,7 @@
  * @var string                     $context  `level_open` | `level_done`
  * @var string                     $screen   nilai data-screen
  * @var array<string, mixed>       $tap      eyebrow, title, label, variant, trail
- * @var array<string, mixed>       $final    url, label, attrs?, icon?, extra?
+ * @var array<string, mixed>       $final    url, label, attrs?, icon?, extra?, plate? (cinematic: plate_attrs() kind)
  * @var string                     $eyebrow  eyebrow kepala layar
  * @var list<string|null>|null     $nextAssets images of the next screen (next_assets_attr())
  * @var bool|null                  $cinematic intro-like layout (see above)
@@ -141,7 +141,11 @@ $cinematic = ! empty($cinematic);
                 <?php foreach ($final['extra'] ?? [] as $button): ?>
                   <a class="btn btn-ghost btn-lg" href="<?= esc($button['href'], 'attr') ?>"<?= $button['attrs'] ?? '' ?>><?php if (! empty($button['icon'])): ?><?= icon($button['icon']) ?> <?php endif ?><?= esc($button['label']) ?></a>
                 <?php endforeach ?>
-                <a class="btn btn-primary btn-lg" href="<?= esc($final['url'], 'attr') ?>" data-slide-final<?= $final['attrs'] ?? '' ?>><?= esc($final['label']) ?></a>
+                <?php if (! empty($final['plate'])): ?>
+                  <a <?= plate_attrs($final['plate'], 'is-final') ?> href="<?= esc($final['url'], 'attr') ?>" data-slide-final<?= $final['attrs'] ?? '' ?>><span><?= esc($final['label']) ?></span></a>
+                <?php else: ?>
+                  <a class="btn btn-primary btn-lg" href="<?= esc($final['url'], 'attr') ?>" data-slide-final<?= $final['attrs'] ?? '' ?>><?= esc($final['label']) ?></a>
+                <?php endif ?>
               </div>
             <?php endif ?>
           <?php else: ?>

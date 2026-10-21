@@ -23,12 +23,12 @@ class MediaUsage
         'level_open'   => '/dialog/{code}',
         'level_done'   => '/tuntas/{code}',
         'ending'       => '/penutup',
+        'map_done'     => '/peta',
     ];
 
     /** Character screens outside the story slides: [character slug, pose, screen, path]. */
     private const CHARACTER_SCREENS = [
         ['jaka', 'bow', 'Daftar langkah 3 (kotak tips kata sandi)', '/daftar/3'],
-        ['kedu', 'smile', 'Balai Refleksi', '/refleksi'],
         ['kedu', 'smile', 'Layar tantangan selesai', '/selesai/1'],
     ];
 

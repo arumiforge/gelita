@@ -88,7 +88,7 @@ final class StorySyncTest extends CIUnitTestCase
         $this->assertSame('same', $status['intro-06']);
         $counts = array_count_values($status);
         ksort($counts);
-        $this->assertSame(['edited' => 1, 'missing' => 1, 'same' => 53, 'update' => 33], $counts);
+        $this->assertSame(['edited' => 1, 'missing' => 1, 'same' => 56, 'update' => 33], $counts);
         $this->assertSame($before, $this->sqlite->table('dialogues')->get()->getResultArray(), 'plan() writes nothing');
     }
 
@@ -117,7 +117,7 @@ final class StorySyncTest extends CIUnitTestCase
         $this->assertSame($this->script['penutup-05']['text_id'], $this->rowOf('penutup-05')['text_id']);
 
         $again = array_count_values(array_column($sync->plan(), 'status'));
-        $this->assertSame(['same' => 87, 'edited' => 1], $again, 'a second run changes nothing');
+        $this->assertSame(['same' => 90, 'edited' => 1], $again, 'a second run changes nothing');
     }
 
     public function testOverwriteReplacesPanelEdits(): void
@@ -129,7 +129,7 @@ final class StorySyncTest extends CIUnitTestCase
 
         $this->assertSame(['intro-03'], $result['overwritten']);
         $this->assertSame($this->script['intro-03']['text_id'], $this->rowOf('intro-03')['text_id']);
-        $this->assertSame(['same' => 88], array_count_values(array_column($sync->plan(), 'status')));
+        $this->assertSame(['same' => 91], array_count_values(array_column($sync->plan(), 'status')));
     }
 
     public function testRowChangedAfterPlanIsNotOverwritten(): void
@@ -154,7 +154,7 @@ final class StorySyncTest extends CIUnitTestCase
         $command = new StorySyncCommand(Services::logger(), Services::commands());
 
         $this->assertSame(EXIT_SUCCESS, $command->run(['dry-run' => null]));
-        $this->assertStringContainsString('88 baris naskah: 54 sudah sama, 33 diperbarui, 0 ditambahkan, 1 disunting di panel (dibiarkan), 0 dilewati.', $io->getOutput());
+        $this->assertStringContainsString('91 baris naskah: 57 sudah sama, 33 diperbarui, 0 ditambahkan, 1 disunting di panel (dibiarkan), 0 dilewati.', $io->getOutput());
         $this->assertStringContainsString('intro-02', $io->getOutput());
         $this->assertStringContainsString('Setujui semua rekaman', $io->getOutput());
         $this->assertNotSame($this->script['intro-01']['text_id'], $this->rowOf('intro-01')['text_id'], 'dry run writes nothing');

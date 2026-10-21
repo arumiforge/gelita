@@ -28,18 +28,34 @@ class MapController extends BaseGameController
         $session = $this->session();
         $locale  = $session->resolvedLocale();
         $levels  = $this->levelOverview($session);
-        $story   = service('contentRepository')->dialogues(null, 'map_intro');
         $curtain = session()->getFlashdata('curtain') === 'map';
+
+        // Once every challenge is done the Mist of Forgetting is gone, so Jaka says the
+        // `map_done` lines instead (owner, 21 October 2026); a server without them keeps `map_intro`
+        $hud          = $this->hudData();
+        $progress     = $hud['progress'] ?? [];
+        $storyContext = 'map_intro';
+        $story        = [];
+
+        if (($progress['shards_total'] ?? 0) > 0 && ($progress['completed_nodes'] ?? 0) >= $progress['shards_total']) {
+            $story        = service('contentRepository')->dialogues(null, 'map_done');
+            $storyContext = $story !== [] ? 'map_done' : 'map_intro';
+        }
+
+        if ($story === []) {
+            $story = service('contentRepository')->dialogues(null, 'map_intro');
+        }
 
         // Tirai wilayah (tpl-curtain-region) pada pin dan kartu wilayah
         foreach ($levels as $index => $row) {
             $levels[$index]['curtain'] = $this->regionCurtain($row, $locale);
         }
 
-        return view('game/map-kedu', $this->hudData() + [
+        return view('game/map-kedu', $hud + [
             'levels'        => $levels,
             'unlockMode'    => $this->unlockMode($session),
             'story'         => $story,
+            'storyContext'  => $storyContext,
             'curtain'       => $curtain,
             'curtainAssets' => $curtain ? $this->mapCurtainAssets($levels, $story, $locale) : [],
             'regionIntros'  => $this->regionIntros($levels),

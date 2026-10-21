@@ -23,6 +23,7 @@ final class StoryDataTest extends CIUnitTestCase
         'level_open'   => 47,
         'level_done'   => 12,
         'ending'       => 5,
+        'map_done'     => 3,
     ];
 
     /** Jumlah per wilayah dan konteks */
@@ -37,7 +38,7 @@ final class StoryDataTest extends CIUnitTestCase
         $story  = (require APPPATH . 'Database/Seeds/data/story.php');
         $counts = array_count_values(array_column($story, 'context'));
 
-        $this->assertCount(88, $story);
+        $this->assertCount(91, $story);
         $this->assertSame(self::CONTEXT_COUNTS, $counts);
         $this->assertSame($this->scriptCounts(), $counts, 'tabel jumlah di naskah');
     }

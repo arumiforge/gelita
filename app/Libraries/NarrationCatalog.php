@@ -25,6 +25,7 @@ final class NarrationCatalog
         'level_open'   => 'Dialog masuk wilayah',
         'level_done'   => 'Wilayah tuntas',
         'ending'       => 'Penutup',
+        'map_done'     => 'Narasi Peta Kedu (semua tuntas)',
         'hunt_clue'    => 'Petunjuk Cari Objek',
     ];
 

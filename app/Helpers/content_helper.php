@@ -618,6 +618,49 @@ if (! function_exists('picture_button')) {
     }
 }
 
+if (! function_exists('picture_link')) {
+    /**
+     * A link drawn as one of the owner's lettered plates, like
+     * picture_button(): `assets/ui/btn-{name}.webp`, `btn-{name}-en.webp` in
+     * English (`reflection`: Balai Refleksi, 21 October 2026). The picture
+     * carries the word, so the label only goes into `alt`. Without the file:
+     * a plain gold link with the label.
+     */
+    function picture_link(string $name, string $href, string $label, string $class = '', string $attrs = ''): string
+    {
+        $locale = service('request')->getLocale();
+        $file   = 'ui/btn-' . $name . ($locale === 'en' ? '-en' : '') . '.webp';
+        $size   = is_file(FCPATH . 'assets/' . $file) ? @getimagesize(FCPATH . 'assets/' . $file) : false;
+
+        if ($size === false) {
+            return '<a class="' . esc(trim('btn btn-primary btn-lg ' . $class)) . '" href="' . esc($href, 'attr') . '"' . $attrs . '>' . esc($label) . '</a>';
+        }
+
+        return '<a class="' . esc(trim('btn-art ' . $class)) . '" href="' . esc($href, 'attr') . '"' . $attrs . '><img src="' . esc(asset_url_versioned($file), 'attr')
+            . '" alt="' . esc($label, 'attr') . '" width="' . $size[0] . '" height="' . $size[1] . '" decoding="async" draggable="false"></a>';
+    }
+}
+
+if (! function_exists('plate_attrs')) {
+    /**
+     * Class and style of a button on one of the owner's carved plates
+     * (21 October 2026), `assets/ui/plate-{kind}.webp`:
+     * - `back`  curved arrow on the left: Kembali and Ulangi;
+     * - `next`  arrow on the right: Lanjut and the other forward buttons;
+     * - `enter` mountain medallion on the right: Mulai petualangan, Masuk ke {wilayah}.
+     * The plate grows with its label: CSS draws it as a border image, so the
+     * carved ends keep their shape and only the plain middle stretches
+     * (`.btn-plate` in game.css). The label stays real text.
+     */
+    function plate_attrs(string $kind, string $class = ''): string
+    {
+        $kind = in_array($kind, ['back', 'next', 'enter'], true) ? $kind : 'next';
+
+        return 'class="' . esc(trim('btn-plate is-' . $kind . ' ' . $class)) . '" style="--plate: url(&quot;'
+            . esc(asset_url_versioned('ui/plate-' . $kind . '.webp'), 'attr') . '&quot;)"';
+    }
+}
+
 if (! function_exists('star_src')) {
     /**
      * The game's star picture (owner, 20 October 2026: every star in the

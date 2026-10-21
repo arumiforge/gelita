@@ -63,7 +63,7 @@ class Gelita extends BaseConfig
      * wilayah. Urutannya mengikuti alur permainan dan naskah.
      */
     public array $dialogueContexts = [
-        'global' => ['intro', 'map_intro', 'ending'],
+        'global' => ['intro', 'map_intro', 'ending', 'map_done'],
         'level'  => ['region_intro', 'level_open', 'level_done'],
     ];
 
@@ -72,7 +72,7 @@ class Gelita extends BaseConfig
      * (`dialogues.background_media_id`, slot DialogueModel::backgroundKey()).
      * A slide without one keeps the default: the story background for
      * `intro`/`ending`, the region background for the region contexts.
-     * `map_intro` plays in the Peta Kedu story bar and has no backdrop.
+     * `map_intro` and `map_done` play in the Peta Kedu story bar and have no backdrop.
      */
     public array $dialogueBackgroundContexts = ['intro', 'ending', 'region_intro', 'level_open', 'level_done'];
 

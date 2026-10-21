@@ -120,8 +120,8 @@ final class ChallengeFrameTest extends CIUnitTestCase
             }
         }
 
-        // The result screen's Mbah Kedu became his avatar (owner, 21 October 2026): reflection and start remain
-        $this->assertGreaterThanOrEqual(2, $found);
+        // The result screen's and Balai Refleksi's Mbah Kedu became his avatar (owner, 21 October 2026)
+        $this->assertGreaterThanOrEqual(1, $found);
     }
 
     /** Owner's header, 20 October 2026: number ring, title, one stats capsule; no visible eyebrow. */
@@ -151,7 +151,8 @@ final class ChallengeFrameTest extends CIUnitTestCase
         foreach (['puzzle', 'rumpang', 'boleh'] as $engine) {
             $view = $this->view('game/challenge/' . $engine);
             $this->assertMatchesRegularExpression('~class="btn btn-primary btn-lg btn-action" id="btn-check" type="button"><span><\?= esc\(lang\(\'Game\.\w+\'\)\) \?></span> <\?= icon\(\'right\'\) \?></button>~', $view, $engine);
-            $this->assertStringContainsString('class="btn btn-primary btn-lg btn-action" id="btn-next" type="button" hidden>', $view, $engine);
+            // Lanjut on the owner's arrow plate (21 October 2026)
+            $this->assertStringContainsString("<button <?= plate_attrs('next', 'btn-action') ?> id=\"btn-next\" type=\"button\" hidden>", $view, $engine);
             $this->assertMatchesRegularExpression('~\.challenge-' . $engine . ' \.arena-actions\s*\{\s*--x:\s*32;\s*--y:\s*648;\s*--w:\s*1216;\s*--h:\s*56;~', $stage, $engine);
         }
 

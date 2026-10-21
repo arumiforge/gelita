@@ -80,10 +80,11 @@ final class NarrationImporter
         'level_open'   => 'dialog',
         'level_done'   => 'tuntas',
         'ending'       => 'penutup',
+        'map_done'     => 'peta-tuntas',
     ];
 
     /** Awalan kode yang tidak memuat wilayah. */
-    private const GLOBAL_PREFIXES = ['intro', 'peta', 'penutup'];
+    private const GLOBAL_PREFIXES = ['intro', 'peta', 'penutup', 'peta-tuntas'];
 
     /** Awalan kode berkas narasi petunjuk arena `cari`: `petunjuk-{node}-NN`. */
     public const CLUE_PREFIX = 'petunjuk';

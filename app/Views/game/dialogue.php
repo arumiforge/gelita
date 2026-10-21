@@ -57,6 +57,8 @@ $region = $level->text('name', $locale);
     'final' => [
         'url'   => base_url('wilayah/' . $level->code),
         'label' => lang('Game.enterRegionName', [$region]),
+        // The owner's mountain plate (21 October 2026)
+        'plate' => 'enter',
     ],
 ]) ?>
 <?= $this->endSection() ?>

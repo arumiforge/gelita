@@ -22,11 +22,12 @@
  *
  * Layout (owner, 19 October 2026), stage coordinates in dp:
  * - `.kenal-head`: a 120 dp band like the HUD. Back (leaves the overlay,
- *   replaces the old cross) at the left, the GELITA logo in the middle, the
+ *   replaces the old cross) at the left, the title in the middle, the
  *   narrator controls at the right, each on the HUD's round
  *   `ui.result-hud-control` skin with no band behind them (cinematic.css);
- * - `.kenal-heading`: "Mengenal {wilayah}" centred under the band in gold
- *   Marcellus letters over a gold rule with an ornament in its middle;
+ * - `.kenal-heading`: "Mengenal {wilayah}" in gold Marcellus letters over a
+ *   gold rule with an ornament in its middle. Since 21 October 2026 (owner)
+ *   it sits in the band where the GELITA logo was; the logo is gone;
  * - `.kenal-caption`: the title shares one row with the page dots and Lanjut
  *   at the right corner; caption and avatar sit at the bottom of the stage.
  *   No "Wilayah n · tingkat" and no "Bagian n dari N" text; the slide's
@@ -49,7 +50,6 @@ $prefix  = 'kenal-' . $code . '-';
 $total   = count($slides);
 $open    = $level['status'] !== 'locked';
 $close   = '#region-' . $code;
-$logo    = media_key_src('ui.logo-hero') ?? media_key_src('ui.logo');
 $avatars = ['mbah_kedu' => media_key_src('ui.kedu-avatar'), 'jaka' => media_key_src('ui.jaka-avatar')];
 // Skins as custom properties (absolute URLs, so the minified mirror and the asset package keep them)
 $skins = [
@@ -79,12 +79,6 @@ foreach ($skins as $name => $src) {
   <img class="kenal-bg" alt="" loading="lazy">
   <header class="kenal-head">
     <a class="btn btn-quiet kenal-back" href="<?= esc($close, 'attr') ?>" data-kenal-close><?= icon('left') ?> <span><?= esc(lang('Game.back')) ?></span></a>
-    <?php if ($logo !== null): ?>
-      <img class="kenal-logo" src="<?= esc($logo, 'attr') ?>" alt="<?= esc(lang('Game.appName'), 'attr') ?>" decoding="async" draggable="false">
-    <?php else: ?>
-      <span class="hud-brand kenal-logo">GELITA</span>
-    <?php endif ?>
-  </header>
   <div class="kenal-heading">
     <h2 class="kenal-title" id="kenal-<?= esc($code, 'attr') ?>-title"><?= esc(lang('Game.kenalTitle', [$region])) ?></h2>
     <span class="kenal-rule" aria-hidden="true">
@@ -94,6 +88,7 @@ foreach ($skins as $name => $src) {
       </svg>
     </span>
   </div>
+  </header>
 
   <div class="narrator-fx" data-narrator-fx aria-hidden="true"></div>
 

@@ -32,8 +32,12 @@
  * @var string                     $prefix
  * @var string                     $finalUrl
  * @var string                     $final
+ * @var string                     $finalPlate optional: `enter`/`next` draws the final button on a
+ *                                             carved plate (plate_attrs()), `reflection` as the
+ *                                             Balai Refleksi picture (owner, 21 October 2026)
  */
-$total = count($slides);
+$total      = count($slides);
+$finalPlate = $finalPlate ?? '';
 ?>
 <ol class="slides cine-slides">
   <?php foreach ($slides as $index => $slide): ?>
@@ -101,7 +105,13 @@ $total = count($slides);
 
       <?php if ($n === $total): ?>
         <div class="cine-final">
-          <a class="btn btn-primary btn-lg" href="<?= esc($finalUrl, 'attr') ?>" data-slide-final><?= esc($final) ?></a>
+          <?php if ($finalPlate === 'reflection'): ?>
+            <?= picture_link('reflection', $finalUrl, $final, 'btn-reflection', ' data-slide-final') ?>
+          <?php elseif ($finalPlate !== ''): ?>
+            <a <?= plate_attrs($finalPlate, 'is-final') ?> href="<?= esc($finalUrl, 'attr') ?>" data-slide-final><span><?= esc($final) ?></span></a>
+          <?php else: ?>
+            <a class="btn btn-primary btn-lg" href="<?= esc($finalUrl, 'attr') ?>" data-slide-final><?= esc($final) ?></a>
+          <?php endif ?>
         </div>
       <?php endif ?>
     </li>

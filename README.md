@@ -31,7 +31,7 @@ Sekilas (keadaan sesudah perombakan kelas 5, Dok 1–3):
 
 - Bank soal final kelas 5: **126 soal** (108 dinilai + 18 benda pengecoh), 30 variasi, 9 bacaan Benar atau Salah, 9 bacaan Isi Rumpang, 36 petunjuk, 12 kata pengecoh, dan 45 slot gambar tantangan. Satu variasi (`a`/`b`/`c`) dipilih acak setiap pengerjaan. Rinciannya di [`docs/bank-soal/README.md`](docs/bank-soal/README.md).
 - Setiap soal paling banyak **3 percobaan** (`Config\Gelita::$maxTries`). Setiap percobaan tercatat satu baris di `item_tries`; pengerjaan ditutup sebagai `solved` atau `tries_exhausted`, lalu diberi bintang. Klien mengirim nomor cek (`check_no`), sehingga cek dari tab lama atau kiriman ulang ditolak `ATTEMPT_CHANGED` tanpa memakan kesempatan.
-- Alur bercerita dari awal sampai akhir: halaman awal → `/mulai` → pendaftaran → cerita pembuka → Peta Kedu → Kenali wilayah → dialog pembuka wilayah → tantangan → wilayah tuntas → Pustaka → … → penutup → Balai Refleksi. Naskahnya 88 baris dwibahasa ([`docs/naskah-cerita.md`](docs/naskah-cerita.md)).
+- Alur bercerita dari awal sampai akhir: halaman awal → `/mulai` → pendaftaran → cerita pembuka → Peta Kedu → Kenali wilayah → dialog pembuka wilayah → tantangan → wilayah tuntas → Pustaka → … → penutup → Balai Refleksi. Naskahnya 91 baris dwibahasa ([`docs/naskah-cerita.md`](docs/naskah-cerita.md)).
 - **Pustaka Kedu**: 30 halaman bacaan dwibahasa dengan 48 gambar/video, terbuka per wilayah setelah wilayahnya tuntas ([`docs/pustaka/README.md`](docs/pustaka/README.md)).
 - Pendaftaran tiga langkah (`/daftar/1`–`3`) dengan centang persetujuan siswa dan kata sandi kuat (bagian dari literasi keamanan digital). Siswa dari Jawa Tengah memilih sekolah lewat **NPSN** dari daftar sekolah resmi ([`docs/sekolah/README.md`](docs/sekolah/README.md)).
 - Semua layar game berada di **panggung 16:9** (`#stage`, 80 × 45 rem = 1280 × 720 dp) yang diperbesar atau diperkecil utuh mengikuti layar, dengan bingkai gelap di sisa layar; teks panjang bergulir di dalam panelnya, halaman tidak pernah bergulir. HUD punya tombol layar penuh. Tata letaknya di [`docs/05_VIEW_UI.md`](docs/05_VIEW_UI.md).
@@ -103,8 +103,8 @@ Di Windows, Laragon (PHP 8.3 + MySQL) memenuhi semua kebutuhan ini. Library fron
    ```
 
    - `migrate` menjalankan 29 migration (satu tabel per berkas, termasuk `ci_sessions`); jangan menjalankan `php spark session:migration`.
-   - `DatabaseSeeder` mengisi daftar sekolah resmi, akun `admin`, pengaturan bawaan (indikator, rilis, studi), tiga wilayah, slot media, 12 tantangan dan 88 baris cerita, lalu `KontenKelas5Seeder` mengimpor Pustaka Kedu, bank soal kelas 5, dan 45 gambar contoh.
-   - `gelita:narration:import` memasang 100 rekaman narasi per bahasa sebagai audio **draft**. Setujui di panel: **Rekaman narasi → Setujui semua rekaman Indonesia / Inggris**.
+   - `DatabaseSeeder` mengisi daftar sekolah resmi, akun `admin`, pengaturan bawaan (indikator, rilis, studi), tiga wilayah, slot media, 12 tantangan dan 91 baris cerita, lalu `KontenKelas5Seeder` mengimpor Pustaka Kedu, bank soal kelas 5, dan 45 gambar contoh.
+   - `gelita:narration:import` memasang 103 rekaman narasi per bahasa sebagai audio **draft**. Setujui di panel: **Rekaman narasi → Setujui semua rekaman Indonesia / Inggris**.
 
 4. Jalankan server pengembangan:
 
@@ -231,7 +231,7 @@ Seluruh audio ikut di repositori dan dibangkitkan oleh [`tools/audio/`](tools/au
 
 - **Musik gamelan** (`public/assets/audio/music/`): `map`, `region`, `challenge`, komposisi dan sintesis orisinal.
 - **Efek suara** (`public/assets/audio/sfx/`): `click`, `correct`, `wrong`, `lock`, `shard`, `region-done`.
-- **Narasi**: 100 rekaman per bahasa (88 baris naskah + 12 petunjuk Cari Objek), direkam pengisi suara. Tidak ikut di repositori (rekaman TTS lama dihapus 17 Oktober 2026). Naskahnya diunduh sebagai PDF di **Rekaman narasi**, rekamannya diunggah di sana (atau diletakkan di `public/assets/audio/narasi/{id,en}/` lalu `php spark gelita:narration:import`) dan disetujui.
+- **Narasi**: 103 rekaman per bahasa (91 baris naskah + 12 petunjuk Cari Objek), direkam pengisi suara. Tidak ikut di repositori (rekaman TTS lama dihapus 17 Oktober 2026). Naskahnya diunduh sebagai PDF di **Rekaman narasi**, rekamannya diunggah di sana (atau diletakkan di `public/assets/audio/narasi/{id,en}/` lalu `php spark gelita:narration:import`) dan disetujui.
 
 Rincian, spesifikasi berkas, dan lisensi model suara ada di [`docs/audio.md`](docs/audio.md).
 
