@@ -712,7 +712,7 @@ body.is-cinematic .scene-img:is(.is-visible, .is-leaving),
 
 /* The HUD band lets taps through to the page dots; its own controls still take them */
 body.is-cinematic .hud { pointer-events: none; }
-body.is-cinematic :is(.hud-identity, .hud-controls, .hud-shards) { pointer-events: auto; }
+body.is-cinematic :is(.hud-identity, .hud-controls, .hud-shards, .hud-back-plate) { pointer-events: auto; }
 
 /* The dots alone, level with the centre of the HUD controls (y 55) */
 .cine-top {
@@ -847,36 +847,18 @@ body.is-cinematic :is(.hud-identity, .hud-controls, .hud-shards) { pointer-event
 .cine .narrator-auto-track i { width: .875rem; height: .875rem; }
 .cine .narrator-auto[aria-pressed="true"] .narrator-auto-track i { transform: translateX(.875rem); }
 
-/* Dialogue scenes (the region-done scene) keep their controls at the top right, right
-   under the HUD menu button and flush with its right edge, with no band behind them
-   (owner, 21 October 2026); the round buttons wear the HUD skin as in the cinematic
-   layouts. The region dialogue's cinematic layout puts them on the caption like the intro. */
+/* Dialogue scenes keep their controls at the top right, under the HUD (y 72);
+   the region dialogue's cinematic layout puts them on the caption like the intro */
 .dialogue:not(.cine) .narrator-controls {
   position: absolute;
-  top: calc(60 * var(--dp));
-  right: calc(16 * var(--dp));
+  top: calc(72 * var(--dp));
+  right: calc(160 * var(--dp));
   z-index: 5;
-  flex-wrap: nowrap;
-  gap: var(--gap-2);
-  padding: 0;
-  border: 0;
-  background: none;
-  box-shadow: none;
+  padding: var(--gap-1);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: rgba(11, 19, 32, .66);
 }
-.dialogue:not(.cine) .narrator-controls .icon-btn { isolation: isolate; border: 0; background: none; color: var(--gold-300); }
-.dialogue:not(.cine) .narrator-controls .icon-btn::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  border: .125rem solid var(--gold-500);
-  border-radius: 50%;
-  background: radial-gradient(circle at 50% 35%, var(--navy-600), var(--navy-900));
-  box-shadow: 0 .25rem .75rem rgba(1, 7, 19, .5);
-}
-.stage[style*="--skin-hud"] .dialogue:not(.cine) .narrator-controls .icon-btn::after { border: 0; background: var(--skin-hud) center / 101.6% 101.6% no-repeat; filter: brightness(.83) saturate(.8); }
-.dialogue:not(.cine) .narrator-controls .icon-btn .icon { filter: drop-shadow(0 1px .1875rem rgba(11, 19, 32, .9)); }
-.dialogue:not(.cine) .narrator-auto { color: var(--gold-300); text-shadow: 0 1px .25rem rgba(11, 19, 32, .95); }
 /* "Lewati" right under the HUD menu button, flush with its right edge */
 body.is-cinematic .nav-bar {
   top: calc(104 * var(--dp));
@@ -1401,6 +1383,16 @@ body.has-kenal { overflow: hidden; }
   padding: var(--gap-3) var(--gap-5) var(--gap-4) calc(var(--kenal-avatar) / 2 + var(--gap-5));
 }
 .kenal-caption :is(.cine-title, .slide-text) { text-shadow: 0 1px .125rem rgba(5, 10, 20, .95), 0 0 .75rem rgba(5, 10, 20, .85); }
+/* A soft dark band along the stage's foot behind the caption (owner, 21 October 2026, later):
+   keeps the text readable on a bright slide picture without drawing a box */
+.kenal-slide::before {
+  content: "";
+  position: absolute;
+  inset: -4rem calc(-1 * env(safe-area-inset-right)) 0 calc(-1 * env(safe-area-inset-left));
+  z-index: -1;
+  background: linear-gradient(to top, rgba(5, 10, 20, .82), rgba(5, 10, 20, .6) 45%, rgba(5, 10, 20, 0));
+  pointer-events: none;
+}
 .kenal-slide.is-narrator .kenal-caption { min-height: 0; margin-left: 0; padding-left: var(--gap-5); }
 .kenal-avatar {
   position: absolute;
