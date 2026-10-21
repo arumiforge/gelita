@@ -47,7 +47,7 @@
 
     <?= $this->include('partials/form-errors') ?>
 
-    <form method="post" action="<?= base_url('masuk') ?>" class="form login-form" data-login-form>
+    <form method="post" action="<?= base_url('masuk') ?>" class="form login-form" data-login-form<?= round_style_attr(['loading']) ?>>
       <?= csrf_field() ?>
 
       <div class="field<?= isset($errors['username']) ? ' has-error' : '' ?>">

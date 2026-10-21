@@ -53,7 +53,7 @@
           <h2><?= esc(lang('Game.watchIntro')) ?></h2>
           <p><?= esc(lang('Game.watchIntroText')) ?></p>
         </div>
-        <span class="start-go" aria-hidden="true"><?= icon('right') ?></span>
+        <span class="start-go" aria-hidden="true"><?= round_icon('next', 'start-round', 'right') ?></span>
       </a>
       <a class="start-card is-primary card-link" href="<?= base_url('gerbang/peta') ?>">
         <img class="start-emblem" src="<?= esc(asset_url_versioned('ui/gate-icon-map.webp'), 'attr') ?>" alt="" width="219" height="256" decoding="async" draggable="false">
@@ -61,7 +61,7 @@
           <h2><?= esc(lang('Game.goToMap')) ?></h2>
           <p><?= esc(lang('Game.goToMapText')) ?></p>
         </div>
-        <span class="start-go" aria-hidden="true"><?= icon('right') ?></span>
+        <span class="start-go" aria-hidden="true"><?= round_icon('next', 'start-round', 'right') ?></span>
       </a>
     </div>
   </div>

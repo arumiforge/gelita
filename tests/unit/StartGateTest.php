@@ -135,7 +135,7 @@ final class StartGateTest extends CIUnitTestCase
 
         $other = view('game/package-inspect');
 
-        $this->assertStringContainsString('class="btn btn-quiet hud-back"', $other, 'pages without logo-centre keep Back beside the controls');
+        $this->assertStringContainsString('<a class="hud-ctl hud-back" href=', $other, 'pages without logo-centre keep Back beside the controls, as the round back button');
         $this->assertStringContainsString('<div class="hud-end">', $other);
         $this->assertStringNotContainsString('hud-back-plate', $other);
     }
@@ -344,19 +344,20 @@ final class StartGateTest extends CIUnitTestCase
         $this->assertStringContainsString($this->attr('assets/ui/btn-start.png'), $this->homeIn('en'));
     }
 
-    /** The HUD language popover (every page since 18 October 2026): flag icons, or the language code while one is missing. */
-    public function testLanguageSwitchUsesIconsOnlyWhenBothExist(): void
+    /**
+     * The HUD language popover (every page since 18 October 2026): the owner's round flag
+     * buttons (21 October 2026), whatever the `ui.lang.*` slots hold; the slots stay the
+     * fallback while a round picture is not installed.
+     */
+    public function testLanguageSwitchUsesTheRoundFlags(): void
     {
-        $text = (new HomeController())->index();
-        $this->assertStringContainsString('<form class="lang-switch hud-lang-list" method="post"', $text);
-        $this->assertMatchesRegularExpression('/<summary class="hud-ctl" aria-label="' . preg_quote(esc(lang('Game.language') . ': Bahasa Indonesia', 'attr'), '/') . '"[^>]*>\s*<span class="hud-ctl-code" aria-hidden="true">ID<\/span>/', $text);
-        $this->assertMatchesRegularExpression('/value="id" lang="id"\s+class="hud-sheet-row hud-lang-row is-active" aria-pressed="true">\s*<span class="hud-sheet-code" aria-hidden="true">ID<\/span>/', $text);
-
         $this->media = ['ui.lang.id' => 'assets/ui/lang-id.webp', 'ui.lang.en' => 'assets/ui/lang-en.webp'];
-        Services::resetSingle('renderer');
-        $page = (new HomeController())->index();
-        $this->assertStringContainsString('<img class="hud-ctl-flag" src="' . $this->attr('assets/ui/lang-id.webp') . '" alt=""', $page, 'the current language on the control');
-        $this->assertStringContainsString('<img class="hud-sheet-flag" src="' . $this->attr('assets/ui/lang-en.webp') . '" alt=""', $page);
+        $page        = (new HomeController())->index();
+
+        $this->assertStringContainsString('<form class="lang-switch hud-lang-list" method="post"', $page);
+        $this->assertMatchesRegularExpression('/<summary class="hud-ctl" aria-label="' . preg_quote(esc(lang('Game.language') . ': Bahasa Indonesia', 'attr'), '/') . '"[^>]*>\s*<img class="hud-ctl-art" src="' . preg_quote(esc(asset_url_versioned('ui/round-lang-id.webp'), 'attr'), '/') . '" alt=""/', $page, 'the current language on the control');
+        $this->assertStringContainsString('<img class="hud-sheet-flag is-round" src="' . esc(asset_url_versioned('ui/round-lang-en.webp'), 'attr') . '" alt=""', $page);
+        $this->assertStringNotContainsString($this->attr('assets/ui/lang-id.webp'), $page, 'the round flags win over the slot icons');
         $this->assertMatchesRegularExpression('/value="en" lang="en"\s+class="hud-sheet-row hud-lang-row" aria-pressed="false">/', $page);
         $this->assertStringContainsString('<span class="hud-sheet-label">English</span>', $page);
 
@@ -466,6 +467,49 @@ final class StartGateTest extends CIUnitTestCase
         $this->assertSame('assets/ui/logo-hero', $slots['ui.logo-hero']);
         $this->assertSame('assets/ui/btn-start', $slots['ui.btn-start']);
         $this->assertSame('assets/ui/btn-start-en', $slots['ui.btn-start.en']);
+    }
+
+    /**
+     * The owner's round gold buttons (21 October 2026, assets/ui/round-*.webp): sound, mute,
+     * and menu in the HUD; register, login, and the next arrow on the Mulai cards; the turning
+     * ring on the login and sign-up buttons while the form is sent.
+     */
+    public function testRoundButtonsDrawTheHudAndTheMulaiCards(): void
+    {
+        $names = ['profile', 'login', 'register', 'lang-id', 'lang-en', 'sound', 'mute', 'menu', 'back', 'next', 'pause', 'loading', 'replay', 'blank'];
+
+        foreach ($names as $name) {
+            $this->assertFileExists(FCPATH . 'assets/ui/round-' . $name . '.webp');
+            $this->assertSame([256, 256], array_slice(getimagesize(FCPATH . 'assets/ui/round-' . $name . '.webp'), 0, 2), $name);
+        }
+
+        $src  = static fn (string $name): string => esc(asset_url_versioned('ui/round-' . $name . '.webp'), 'attr');
+        $page = (new HomeController())->start();
+
+        $this->assertStringContainsString('<img class="hud-ctl-art icon-on" src="' . $src('sound') . '"', $page);
+        $this->assertStringContainsString('<img class="hud-ctl-art icon-off" src="' . $src('mute') . '"', $page);
+        $this->assertMatchesRegularExpression('~<summary class="hud-ctl" aria-label="' . preg_quote(esc(lang('Game.resultMenu'), 'attr'), '~') . '"[^>]*>\s*<img class="hud-ctl-art" src="' . preg_quote($src('menu'), '~') . '"~', $page);
+        $this->assertStringContainsString('<span class="start-icon" aria-hidden="true"><img class="start-round" src="' . $src('register') . '"', $page);
+        $this->assertStringContainsString('<span class="start-icon" aria-hidden="true"><img class="start-round" src="' . $src('login') . '"', $page);
+        $this->assertSame(2, substr_count($page, '<span class="start-go" aria-hidden="true"><img class="start-round" src="' . $src('next') . '"'));
+
+        $login = (new LoginController())->form();
+        $this->assertStringContainsString('class="form login-form" data-login-form style="--round-loading: url(&quot;' . esc(asset_url_versioned('ui/round-loading.webp')) . '&quot;)"', $login);
+    }
+
+    /** Story narrator controls: ◀ ▶ ↻ and ⏸ (while playing) as round buttons; ▶ with its "Lanjut" label and ▶ play keep their look. */
+    public function testNarratorControlsUseTheRoundButtons(): void
+    {
+        $art = static fn (string $name): string => 'has-round-art" style="' . esc('--round-art: url("' . asset_url_versioned('ui/round-' . $name . '.webp') . '")', 'attr') . '" data-narrator=';
+
+        $plain = view('components/narrator-controls');
+        $this->assertStringContainsString('class="icon-btn ' . $art('back') . '"prev"', $plain);
+        $this->assertStringContainsString('class="icon-btn narrator-toggle ' . $art('pause') . '"toggle"', $plain);
+        $this->assertStringContainsString('class="icon-btn ' . $art('replay') . '"replay"', $plain);
+        $this->assertStringContainsString('class="icon-btn ' . $art('next') . '"next"', $plain);
+
+        $labelled = view('components/narrator-controls', ['nextLabel' => true]);
+        $this->assertStringContainsString('class="icon-btn narrator-next has-label" data-narrator="next"', $labelled);
     }
 
     public function testStartPageKeepsTheHudBrand(): void

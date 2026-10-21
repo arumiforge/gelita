@@ -189,6 +189,10 @@ Decided in an interview with the owner; decisions in the decision log, section *
 - [ ] After merge, **Bangun ulang paket** if package mode is on
 - [ ] Follow-up (owner answers, same day): the 💡 button reads "Bantuan"; the region-done scene in the region dialogue's layout (controls with Lanjut in the box), HUD unchanged; a soft dark band behind the Kenali caption (branch `sky/vibrant-dijkstra-me4rhv`)
 
+## Round gold buttons (owner, 21 October 2026)
+
+- [ ] The owner's sheet of 14 round gold buttons cut into `assets/ui/round-*.webp`: HUD language (round flags), sound/mute, menu, and Back beside the controls; Mulai cards (register, login, next arrow; next arrow on Gerbang); narrator ◀ ▶ ↻ and ⏸ while playing; a turning ring on the login and sign-up buttons while the form is sent (branch `claude/ui-redesign-menu-login-2oy59j`)
+
 ## Active branches
 
 Add a row (branch, owner / scope, status) when a session starts a branch; remove it when its PR is merged.
@@ -198,4 +202,5 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 | `claude/ui-refinements-gateway-map-challenge-yf9q2i` | Region map follow-up: modal for locked pins, no HUD region name, readable done titles (owner, 21 October 2026) | PR open |
 | `claude/redesain-hasil-tantangan-wilayah-qde0tb` | Attempt list, loading screens, Peta Kedu, Pustaka Kedu (owner, 21 October 2026) | PR open |
 | `sky/vibrant-dijkstra-me4rhv` | Follow-up of PR #207: Bantuan button, region-done scene in the dialogue layout, Kenali band (owner, 21 October 2026) | PR open |
+| `claude/ui-redesign-menu-login-2oy59j` | Round gold buttons in the HUD menu, Mulai, login, and narrator controls (owner, 21 October 2026) | PR open |
 | `pbb/nice-carson-7yeoiz` | Brighter logo, Mulai plate, lettered form buttons, start-page menu (owner, 20 October 2026) | PR open |

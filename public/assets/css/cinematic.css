@@ -346,6 +346,27 @@
 .narrator-controls .icon-btn[hidden] { display: none; }
 .narrator-controls .icon-btn:disabled { opacity: .35; cursor: default; }
 .narrator-controls .icon-btn .icon { width: 1.25rem; height: 1.25rem; }
+/* The owner's round gold buttons (21 October 2026; components/narrator-controls): ◀, ▶, ↻, and
+   ⏸ while the narration plays are drawn by their picture (--round-art) on the button's disc
+   layer, over every page's own disc or skin; the line icon steps aside. The carved ornaments
+   reach a little past the button's edge. ▶ play has no picture and keeps the page's look. */
+#stage .narrator-controls .icon-btn.has-round-art:is(:not(.narrator-toggle), .is-playing) { isolation: isolate; border: 0; background: none; }
+#stage .narrator-controls .icon-btn.has-round-art:is(:not(.narrator-toggle), .is-playing)::after {
+  content: "";
+  position: absolute;
+  inset: -8%;
+  z-index: -1;
+  border: 0;
+  border-radius: 50%;
+  background: var(--round-art) center / contain no-repeat;
+  box-shadow: none;
+  filter: drop-shadow(0 .1875rem .375rem rgba(1, 7, 19, .55));
+  transition: filter .15s;
+}
+@media (hover: hover) {
+  #stage .narrator-controls .icon-btn.has-round-art:is(:not(.narrator-toggle), .is-playing):not(:disabled):hover::after { filter: drop-shadow(0 .1875rem .375rem rgba(1, 7, 19, .55)) drop-shadow(0 0 .5rem var(--glow)) brightness(1.1); }
+}
+#stage .narrator-controls .icon-btn.has-round-art:is(:not(.narrator-toggle), .is-playing) > .icon { visibility: hidden; }
 .narrator-toggle, .narrator-toggle[aria-pressed="false"] { color: var(--gold-300); }
 .narrator-toggle .icon-pause, .narrator-toggle.is-playing .icon-play { display: none; }
 .narrator-toggle.is-playing .icon-pause { display: block; }

@@ -332,6 +332,28 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
 .hunt-side .btn-plate.hunt-next { --plate-h: 2.6875rem; width: 100%; font-size: 1.125rem; } /* 148 dp column */
 .hunt-side .btn-plate.hunt-next::after { content: ""; position: absolute; inset: -.3125rem 0; } /* 48 dp hit area */
 .btn-art:disabled { cursor: progress; opacity: .7; transform: none; }
+/* While a login or sign-up form is being sent (login.js, register.js set aria-busy): the owner's
+   round loading button (round_style_attr(), 21 October 2026) over the dimmed plate. The carved
+   ring stays still (::before); only its face with the ring of dots turns (::after, clipped to
+   the face, which a centred circle keeps through the turn). */
+:is(.login-form, .register-form)[style*="--round-loading"] .btn-art[aria-busy="true"] { position: relative; opacity: 1; }
+:is(.login-form, .register-form)[style*="--round-loading"] .btn-art[aria-busy="true"] img { opacity: .5; }
+:is(.login-form, .register-form)[style*="--round-loading"] .btn-art[aria-busy="true"]::before,
+:is(.login-form, .register-form)[style*="--round-loading"] .btn-art[aria-busy="true"]::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 3.5rem;
+  height: 3.5rem;
+  z-index: 1; /* above the dimmed plate, which opacity and filter lift into the positioned layer */
+  margin: -1.75rem 0 0 -1.75rem;
+  background: var(--round-loading) center / contain no-repeat;
+  pointer-events: none;
+}
+:is(.login-form, .register-form)[style*="--round-loading"] .btn-art[aria-busy="true"]::before { filter: drop-shadow(0 .1875rem .375rem rgba(0, 0, 0, .55)); }
+:is(.login-form, .register-form)[style*="--round-loading"] .btn-art[aria-busy="true"]::after { clip-path: circle(30%); animation: round-turn 1.2s linear infinite; }
+@keyframes round-turn { to { transform: rotate(360deg); } }
 .login-form .form-actions { justify-content: center; }
 /* The MASUK / LOG IN plate is nearly 2:1, so its letters need the extra height */
 .login-form .btn-art img { height: 5rem; }
@@ -490,6 +512,15 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
 .start-icon .icon { width: 1.75rem; height: 1.75rem; }
 .start-go { color: var(--gold-500); }
 .start-go .icon { width: 1.75rem; height: 1.75rem; }
+/* The owner's round gold buttons (21 October 2026; round_icon()): the picture is the whole
+   badge, so the drawn ring steps aside; the arrow brightens with its card */
+.start-icon:has(> .start-round) { width: auto; height: auto; border: 0; box-shadow: none; }
+img.start-round { width: 4rem; height: 4rem; filter: drop-shadow(0 .1875rem .375rem rgba(0, 0, 0, .5)); transition: filter .15s, transform .15s; user-select: none; -webkit-user-drag: none; }
+.start-go > img.start-round { width: 3.25rem; height: 3.25rem; }
+@media (hover: hover) {
+  .start-card:hover img.start-round { filter: drop-shadow(0 .1875rem .375rem rgba(0, 0, 0, .5)) drop-shadow(0 0 .5rem var(--glow)) brightness(1.1); }
+  .start-card:hover .start-go > img.start-round { transform: translateX(.1875rem); }
+}
 
 /* Gerbang (owner redesign, 20 October 2026): the owner's arch picture, Jaka as one tall still
    picture, and the cards straight on the picture's plain dark right side: no panel fill and no
@@ -4019,6 +4050,7 @@ html.js .book-frame img.is-loaded { opacity: 1; }
   /* Phase F1.5: the start button stops pulsing; hover, selection, and press
      keep their colour cues but do not move or scale */
   .btn-start, .btn-start.is-image { animation: none; }
+  :is(.login-form, .register-form)[style*="--round-loading"] .btn-art[aria-busy="true"]::after { animation: none; }
   .btn-start:hover, .btn-start:focus-visible, .btn-start:active,
   .btn-art:hover, .btn-art:active,
   .map-pin:hover .pin-icon, .map-pin:active .pin-icon,
