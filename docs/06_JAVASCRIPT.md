@@ -417,7 +417,7 @@ stageScale()           // lebar panggung ÷ 1280
 
 - Skrip sebaris di `<head>` `layouts/game.php` mengisi `--app-w`/`--app-h` dari `innerWidth`/`innerHeight` sebelum CSS dimuat (`load`, `resize`, `orientationchange`); `initStage()` melanjutkannya. CSS menghitung sisanya (`--stage-w`, `font-size` akar = lebar panggung ÷ 80), jadi JavaScript tidak pernah menghitung tata letak. `visualViewport` sengaja tidak dipakai: papan ketik layar dan cubit-zoom tidak boleh mengecilkan panggung.
 - `viewport_changed` `{ w, h, orientation, rotate_gate, stage_w, stage_h, scale }` saat halaman dibuka dan setiap ukuran/orientasi berubah, termasuk saat layar putar tampil/hilang (debounce 1 detik, paling sering satu per 5 detik, tanpa kiriman bila nilainya sama). `stage_w`/`stage_h` dalam CSS px, `scale` = `stage_w / 1280` (3 desimal).
-- Tombol **Layar penuh** `#btn-fullscreen` di HUD (Fullscreen API, dengan awalan `webkit`); tersembunyi bila tidak didukung, `aria-pressed` mengikuti `fullscreenchange`. Layar penuh lepas setiap kali halaman berganti (perilaku peramban).
+- No fullscreen button since 21 October 2026 (owner removed **Layar penuh** from the HUD menu; `initFullscreen` is gone).
 - Posisi pointer (seret keping, ketuk benda) memakai `getBoundingClientRect()`, yang sudah menyertakan skala; tidak ada pembagian dengan skala secara manual.
 
 ### `core/device.js`

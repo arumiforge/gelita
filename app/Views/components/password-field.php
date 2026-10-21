@@ -30,6 +30,12 @@
  *                                                column layout (/daftar/3): `.pw-main` (password,
  *                                                meter, level, error) and `.pw-aside` (rules,
  *                                                repeat field); same order for the tab key
+ *
+ * Owner redesign (21 October 2026): the eye is the owner's round eye button;
+ * each rule wears a round picture (neutral before typing, the red cross while
+ * it is not met, the green tick once met; `--round-*` on the root); the meter
+ * is four segments that light up one by one (`data-step` 0–4, `data-level`
+ * for the colour), set by game/password-meter.js.
  */
 $errors = is_array($errors ?? null) ? $errors : [];
 $label  = $label ?? lang('Auth.password');
@@ -39,7 +45,7 @@ $pwError = isset($errors['password'])
     ? '<p class="field-error" id="pw-error">' . esc($errors['password']) . '</p>'
     : '';
 ?>
-<div class="password-field<?= $split ? ' is-split' : '' ?>"
+<div class="password-field<?= $split ? ' is-split' : '' ?>"<?= round_style_attr(['neutral', 'wrong', 'right']) ?>
      data-username-field="<?= esc($usernameField ?? 'username', 'attr') ?>"
      <?= isset($username) ? 'data-username="' . esc($username, 'attr') . '"' : '' ?>
      data-level-weak="<?= esc(lang('Auth.levelWeak'), 'attr') ?>"
@@ -60,12 +66,12 @@ $pwError = isset($errors['password'])
              aria-describedby="pw-rules pw-level<?= isset($errors['password']) ? ' pw-error' : '' ?>"
              <?= isset($errors['password']) ? 'aria-invalid="true"' : '' ?>>
       <button type="button" class="pw-toggle" aria-pressed="false" aria-controls="password"
-              aria-label="<?= esc(lang('Auth.showPassword'), 'attr') ?>"><?= icon('eye') ?></button>
+              aria-label="<?= esc(lang('Auth.showPassword'), 'attr') ?>"><?= round_icon('eye', 'pw-toggle-art', 'eye') ?></button>
     </div>
     <p class="pw-caps" hidden><?= icon('warn') ?> <?= esc(lang('Auth.capsLock')) ?></p>
   </div>
 
-  <div class="pw-meter" aria-hidden="true"><i data-level="none"></i></div>
+  <div class="pw-meter" aria-hidden="true" data-level="none" data-step="0"><i></i><i></i><i></i><i></i></div>
   <p class="pw-level" id="pw-level" aria-live="polite"></p>
   <?php if ($split): ?>
   <?= $pwError ?>

@@ -99,7 +99,6 @@ final class StartGateTest extends CIUnitTestCase
         $this->assertStringNotContainsString('hud-end', $page, 'Back in the top-left corner, not beside the controls');
         $this->assertStringNotContainsString('btn-quiet hud-back', $page);
         $this->assertStringNotContainsString('class="nav-bar"', $page);
-        $this->assertStringContainsString('start-jaka', $page, 'Jaka is his own image, not part of the background');
         $this->assertSame(1, substr_count($page, 'start-card is-primary'));
     }
 
@@ -151,7 +150,6 @@ final class StartGateTest extends CIUnitTestCase
         $this->assertStringNotContainsString('bg.auth.jpg', $page);
         $this->assertStringNotContainsString('bg.welcome.jpg', $page);
         $this->assertFileExists(FCPATH . 'assets/ui/bg-auth-login.webp');
-        $this->assertFileExists(FCPATH . 'assets/ui/bg-auth-register.webp');
         $this->assertFileExists(FCPATH . 'assets/ui/jaka-wave.webp');
     }
 
@@ -314,8 +312,8 @@ final class StartGateTest extends CIUnitTestCase
         $this->assertSame(1, substr_count($page, 'class="btn-start'), 'tepat satu tombol Mulai');
         $this->assertStringContainsString('href="' . base_url('mulai') . '"', $page);
         $this->assertStringNotContainsString('hud-brand', $page, 'merek HUD tidak diulang di halaman awal');
-        // Owner decision 12 October 2026: one thin staff link (welcome-staff), no other admin entry
-        $this->assertSame(1, substr_count($page, base_url('admin/login')), 'only the thin staff link');
+        // Owner, 21 October 2026: the staff entry is the HUD menu's Masuk staf row, not a corner link
+        $this->assertSame(1, substr_count($page, base_url('admin/login')), 'only the menu row');
         $this->assertStringNotContainsString(base_url('masuk'), $page);
     }
 
@@ -400,26 +398,42 @@ final class StartGateTest extends CIUnitTestCase
         $this->assertSame(1, substr_count($in, 'class="btn-start'), 'still one Mulai button');
     }
 
-    /** Owner, 20 October 2026: Masuk is the lettered lantern plate, MASUK or LOG IN by language. */
-    public function testLoginButtonIsTheLetteredPicture(): void
+    /** Owner, 21 October 2026: Masuk is the blank gold plate with the word written on it, so it reads in both languages. */
+    public function testLoginButtonIsTheGoldPlate(): void
     {
-        $id = view('game/login', ['errors' => []]);
-        $this->assertStringContainsString('<button class="btn-art" type="submit"><img src="' . esc(asset_url_versioned('ui/btn-login.webp'), 'attr') . '" alt="' . esc(lang('Game.login'), 'attr') . '"', $id);
+        $plate = esc('--gold-plate: url("' . asset_url_versioned('ui/plate-gold-3.webp') . '")');
+        $id    = view('game/login', ['errors' => []]);
+        $this->assertStringContainsString('<button class="btn-gold-plate is-short" type="submit" style="' . $plate . '"><span>' . esc(lang('Game.login')) . '</span></button>', $id);
         $this->assertStringNotContainsString('btn-block', $id);
 
         Services::resetSingle('renderer');
         service('request')->setLocale('en');
-        $this->assertStringContainsString(esc(asset_url_versioned('ui/btn-login-en.webp'), 'attr'), view('game/login', ['errors' => []]));
-        $this->assertFileExists(FCPATH . 'assets/ui/btn-login-en.webp');
+        service('language')->setLocale('en');
+        $this->assertStringContainsString('<span>Log in</span></button>', view('game/login', ['errors' => []]));
     }
 
-    /** A thin staff login link sits on the welcome page only (owner, 12 October 2026). */
-    public function testStaffLinkOnlyOnTheWelcomePage(): void
+    /** Owner, 21 October 2026: the login head greets ("Selamat Datang!" / "Welcome Back!") and says what to do, in kind words. */
+    public function testLoginHeadGreetsTheStudent(): void
     {
-        $this->assertMatchesRegularExpression('/<a class="welcome-staff" href="[^"]*admin\/login">.*' . preg_quote(lang('Game.staffLogin'), '/') . '<\/a>/s', (new HomeController())->index());
+        $page = (new LoginController())->form();
+
+        $this->assertStringContainsString('<h1>Selamat Datang!</h1>', $page);
+        $this->assertStringContainsString('<p>' . esc(lang('Game.loginLead')) . '</p>', $page);
+        $this->assertStringContainsString('<title>' . esc(lang('Game.loginTitle')), $page, 'the tab still says Masuk');
+    }
+
+    /** Owner, 21 October 2026: staff sign in through the HUD menu, only while no student is signed in; no corner link. */
+    public function testStaffLoginSitsInTheMenuBeforeSignIn(): void
+    {
+        $page = (new HomeController())->index();
+        $menu = substr($page, (int) strpos($page, '<details class="hud-pop hud-menu"'));
+        $this->assertStringNotContainsString('welcome-staff', $page);
+        $this->assertMatchesRegularExpression('~<a class="hud-sheet-row hud-leave hud-staff" href="[^"]*admin/login">.*?' . preg_quote(esc(lang('Game.staffLogin')), '~') . '~s', $menu);
+        $this->assertStringContainsString('href="' . base_url('tentang') . '"', $menu, 'Tentang GELITA for everyone');
+        $this->assertStringNotContainsString('btn-fullscreen', $page, 'no Layar penuh row');
 
         Services::resetSingle('renderer');
-        $this->assertStringNotContainsString('welcome-staff', (new HomeController())->start());
+        $this->assertStringContainsString('hud-staff', (new HomeController())->start());
     }
 
     /** The modal icon sits outside the scrolling card, so it can rise above it without being clipped. */
@@ -497,14 +511,15 @@ final class StartGateTest extends CIUnitTestCase
         $this->assertStringContainsString('class="form login-form" data-login-form style="--round-loading: url(&quot;' . esc(asset_url_versioned('ui/round-loading.webp')) . '&quot;)"', $login);
     }
 
-    /** Story narrator controls: ◀ ▶ ↻ and ⏸ (while playing) as round buttons; ▶ with its "Lanjut" label and ▶ play keep their look. */
+    /** Story narrator controls: ◀ ▶ ↻ and the ⏸/▶ toggle as round buttons; ▶ with its "Lanjut" label keeps its look. */
     public function testNarratorControlsUseTheRoundButtons(): void
     {
         $art = static fn (string $name): string => 'has-round-art" style="' . esc('--round-art: url("' . asset_url_versioned('ui/round-' . $name . '.webp') . '")', 'attr') . '" data-narrator=';
 
         $plain = view('components/narrator-controls');
         $this->assertStringContainsString('class="icon-btn ' . $art('back') . '"prev"', $plain);
-        $this->assertStringContainsString('class="icon-btn narrator-toggle ' . $art('pause') . '"toggle"', $plain);
+        $toggle = esc('--round-art: url("' . asset_url_versioned('ui/round-pause.webp') . '"); --round-art-play: url("' . asset_url_versioned('ui/round-play.webp') . '")', 'attr');
+        $this->assertStringContainsString('class="icon-btn narrator-toggle has-round-art" style="' . $toggle . '" data-narrator="toggle"', $plain, '⏸ while playing, ▶ from the second sheet otherwise');
         $this->assertStringContainsString('class="icon-btn ' . $art('replay') . '"replay"', $plain);
         $this->assertStringContainsString('class="icon-btn ' . $art('next') . '"next"', $plain);
 

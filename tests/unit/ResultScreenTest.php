@@ -92,10 +92,11 @@ final class ResultScreenTest extends CIUnitTestCase
         $this->assertMatchesRegularExpression('/<form class="lang-switch hud-lang-list" method="post" action="[^"]*bahasa"/', $page);
         $this->assertMatchesRegularExpression('/value="id" lang="id"\s+class="hud-sheet-row hud-lang-row is-active" aria-pressed="true"/', $page);
 
-        // Sound stays on the HUD; fullscreen, profile, Peta Kedu, and logout sit in the menu
+        // Sound stays on the HUD; profile, Peta Kedu, Tentang GELITA, and logout sit in the menu (no fullscreen since 21 October 2026)
         $this->assertStringContainsString('id="btn-sound"', $page);
         $menu = substr($page, strpos($page, 'class="hud-pop hud-menu"'));
-        foreach (['id="btn-fullscreen"', 'href="' . base_url('profil') . '"', 'href="' . base_url('peta') . '"', 'href="' . base_url('keluar') . '"', '@jaka'] as $needle) {
+        $this->assertStringNotContainsString('btn-fullscreen', $page);
+        foreach (['href="' . base_url('tentang') . '"', 'href="' . base_url('profil') . '"', 'href="' . base_url('peta') . '"', 'href="' . base_url('keluar') . '"', '@jaka'] as $needle) {
             $this->assertStringContainsString($needle, $menu, $needle);
         }
 

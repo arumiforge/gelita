@@ -418,14 +418,21 @@ if (! function_exists('skin_style_attr')) {
      * can draw a catalogue skin and keep its plain fallback for empty slots
      * (result screen redesign). Empty string when no slot is filled.
      *
-     * @param array<string, string> $vars custom property name (without `--`) → asset key
+     * @param array<string, string>      $vars custom property name (without `--`) → asset key
+     * @param array<string, string|null> $urls custom property name → picture URL already resolved
+     *                                         (null is left out)
      */
-    function skin_style_attr(array $vars): string
+    function skin_style_attr(array $vars, array $urls = []): string
     {
         $parts = [];
+        $srcs  = [];
 
         foreach ($vars as $name => $assetKey) {
-            $src = media_key_src($assetKey);
+            $srcs[$name] = media_key_src($assetKey);
+        }
+
+        // $urls: custom properties whose picture URL is already known (e.g. round_icon_src())
+        foreach ($srcs + $urls as $name => $src) {
 
             if ($src !== null) {
                 $parts[] = '--' . $name . ': url("' . str_replace(['"', '\\', "\n"], ['%22', '%5C', ''], $src) . '")';
@@ -655,21 +662,19 @@ if (! function_exists('round_style_attr')) {
     }
 }
 
-if (! function_exists('picture_button')) {
+if (! function_exists('gold_plate_button')) {
     /**
-     * A submit button drawn as the owner's lettered lantern plate (20 October
-     * 2026): `assets/ui/btn-{name}.webp`, `btn-{name}-en.webp` in English
-     * (`login`, `next`, `register`). The picture carries the word, so the
-     * label only goes into `alt`. Without the file: the plain gold button
-     * with the label and an arrow.
+     * A submit button on the owner's blank gold plate (21 October 2026), with
+     * its label written on it, so it reads in both languages: `short`
+     * (`assets/ui/plate-gold-3.webp`, 818 × 160) for Masuk and Daftar, `medium`
+     * (`plate-gold-1.webp`, 882 × 160) for Berikutnya. Without the picture:
+     * the plain gold button with the label and an arrow.
      */
-    function picture_button(string $name, string $label, string $fallbackClass = 'btn btn-primary btn-lg'): string
+    function gold_plate_button(string $label, string $size = 'short', string $fallbackClass = 'btn btn-primary btn-lg'): string
     {
-        $locale = service('request')->getLocale();
-        $file   = 'ui/btn-' . $name . ($locale === 'en' ? '-en' : '') . '.webp';
-        $size   = is_file(FCPATH . 'assets/' . $file) ? @getimagesize(FCPATH . 'assets/' . $file) : false;
+        $file = 'ui/plate-gold-' . ($size === 'medium' ? '1' : '3') . '.webp';
 
-        if ($size === false) {
+        if (! is_file(FCPATH . 'assets/' . $file)) {
             if (! function_exists('icon')) {
                 helper('ui');
             }
@@ -677,15 +682,17 @@ if (! function_exists('picture_button')) {
             return '<button class="' . esc($fallbackClass, 'attr') . '" type="submit">' . esc($label) . ' ' . icon('right') . '</button>';
         }
 
-        return '<button class="btn-art" type="submit"><img src="' . esc(asset_url_versioned($file), 'attr') . '" alt="'
-            . esc($label, 'attr') . '" width="' . $size[0] . '" height="' . $size[1] . '" decoding="async" draggable="false"></button>';
+        $url = str_replace(['"', '\\', "\n"], ['%22', '%5C', ''], asset_url_versioned($file));
+
+        return '<button class="btn-gold-plate is-' . ($size === 'medium' ? 'medium' : 'short') . '" type="submit" style="'
+            . esc('--gold-plate: url("' . $url . '")') . '"><span>' . esc($label) . '</span></button>';
     }
 }
 
 if (! function_exists('picture_link')) {
     /**
-     * A link drawn as one of the owner's lettered plates, like
-     * picture_button(): `assets/ui/btn-{name}.webp`, `btn-{name}-en.webp` in
+     * A link drawn as one of the owner's lettered plates:
+     * `assets/ui/btn-{name}.webp`, `btn-{name}-en.webp` in
      * English (`reflection`: Balai Refleksi, 21 October 2026). The picture
      * carries the word, so the label only goes into `alt`. Without the file:
      * a plain gold link with the label.

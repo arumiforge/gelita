@@ -4,9 +4,11 @@
  *
  * Dua kartu: "Saya baru" → /daftar; "Saya sudah punya akun" → /masuk.
  *
- * Layout (owner mockup, 9 Oct 2026): Jaka on the left as his own image, one
- * ornate dark panel holding the title and two row cards; the GELITA logo in the
- * HUD centre and Back in its top-right corner (owner, 20 October 2026).
+ * Layout (owner, 21 October 2026): the title and the two row cards alone in the
+ * middle of the stage, with no panel fill, border, shadow, corner ornaments,
+ * compass crest, or Jaka; the gate picture (`assets/ui/bg-mulai.webp`) under a
+ * deep dark layer (`body.is-dim-art`) keeps the text readable. The GELITA logo
+ * in the HUD centre and Back on the navy plate in its top-left corner.
  * The cards' symbols are the owner's round gold buttons (round_icon(); 21
  * October 2026): register, login, and the next arrow.
  */
@@ -15,17 +17,15 @@
 
 <?= $this->section('music') ?>welcome<?= $this->endSection() ?>
 <?= $this->section('title') ?><?= esc(lang('Game.startTitle')) ?><?= $this->endSection() ?>
-<?= $this->section('background') ?><?= media_key_src('bg.welcome') ?? '' ?><?= $this->endSection() ?>
+<?= $this->section('background') ?><?= asset_url_versioned('ui/bg-mulai.webp') ?><?= $this->endSection() ?>
+<?= $this->section('bodyClass') ?>is-dim-art<?= $this->endSection() ?>
 
 <?= $this->section('hudBack') ?><?= base_url() ?><?= $this->endSection() ?>
 <?= $this->section('hudLayout') ?>logo-centre<?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
 <section class="start" data-package-gate="page" data-package-next="mulai" data-cine="account">
-  <?= component('character', ['character' => 'jaka', 'pose' => 'happy', 'class' => 'start-jaka stage-box']) ?>
-
-  <div class="start-panel ornate-panel stage-box">
-    <?= $this->include('partials/ornate-frame') ?>
+  <div class="start-panel ornate-panel is-bare stage-box">
     <div class="ornate-body stage-scroll">
       <header class="start-head">
         <h1><?= esc(lang('Game.startTitle')) ?></h1>

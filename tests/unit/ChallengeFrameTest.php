@@ -120,8 +120,10 @@ final class ChallengeFrameTest extends CIUnitTestCase
             }
         }
 
-        // The result screen's and Balai Refleksi's Mbah Kedu became his avatar (owner, 21 October 2026)
-        $this->assertGreaterThanOrEqual(1, $found);
+        // The result screen's and Balai Refleksi's Mbah Kedu became his avatar, and Mulai lost its Jaka
+        // (owner, 21 October 2026): no view names a literal pose any more. Keep the pattern honest
+        // so a literal pose added later is still checked.
+        $this->assertSame(1, preg_match("~'character'\\s*=>\\s*'(\\w+)',\\s*'pose'\\s*=>\\s*'(\\w+)'~", "['character' => 'jaka', 'pose' => 'happy']"));
     }
 
     /** Owner's header, 20 October 2026: number ring, title, one stats capsule; no visible eyebrow. */

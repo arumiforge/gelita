@@ -3,15 +3,16 @@
  * 1. Welcome — `/` → HomeController::index
  *
  * Panggung 16:9 (Dok 3 §4): logo + tagline 240, 104, 800 × 336; tombol Mulai 400, 472,
- * 480 × 112 (the owner's long carved plate, 480 × 88 dp, 20 October 2026); tombol Pasang GELITA 896, 576, 352 × 40 (stage.css), which reopens the
- * install dialog (game/install.js);
- * staff login link pinned 24 dp from the right and 16 dp from the bottom.
+ * 480 × 112 (the owner's long carved plate, 480 × 88 dp, 20 October 2026); Pasang GELITA
+ * in the bottom-right corner, 960, 640, 296 × 64, on the owner's plate with the download
+ * medallion (`assets/ui/btn-install.webp`, 21 October 2026), which reopens the install
+ * dialog (game/install.js). Masuk staf moved into the HUD menu (owner, 21 October 2026).
  *
  * Logo dan SATU tombol Mulai → `/mulai`, sama untuk siswa yang sudah maupun
  * belum login (`/mulai` yang memilah). HUD dirender tanpa merek
- * (`hideBrand`): logonya sudah besar di sini. Staf masuk lewat `/admin/login`,
- * via the small link in the bottom-right corner (this page only). A signed-in
- * student finds Profil and Keluar in the HUD menu (HomeController::index).
+ * (`hideBrand`): logonya sudah besar di sini. Staff sign in through the HUD
+ * menu's Masuk staf row (`/admin/login`, before a student signs in). A
+ * signed-in student finds Profil and Keluar in the HUD menu (HomeController::index).
  *
  * Cinematic entrance (game/cine.js, `data-cine="welcome"`, owner 20 October
  * 2026): letterbox bars, the background pushing in from dark, the logo coming
@@ -69,9 +70,6 @@ $btnStart = media_key_src_locale('ui.btn-start', $locale);
     <?php endif ?>
   </div>
 
-  <?php // Thin link for teachers and admins, bottom right of the welcome page only (owner, 12 Oct 2026) ?>
-  <a class="welcome-staff" href="<?= base_url('admin/login') ?>"><?= icon('key') ?> <?= esc(lang('Game.staffLogin')) ?></a>
-
   <?php /* Install offer (game/install.js): on phones and tablets a dialog over the blurred stage
            opens first, once per browser session; this button reopens it. The dialog text rides on
            data attributes, so it is only sent with this page. */ ?>
@@ -84,7 +82,11 @@ $btnStart = media_key_src_locale('ui.btn-start', $locale);
        data-install-menu="<?= esc(lang('Game.installMenu'), 'attr') ?>"
        data-install-ios="<?= esc(lang('Game.installIos'), 'attr') ?>"
        data-install-already="<?= esc(lang('Game.installAlready'), 'attr') ?>">
-    <button type="button" class="btn btn-ghost" data-install-button hidden><?= icon('download') ?> <?= esc(lang('Game.installApp')) ?></button>
+    <?php if (is_file(FCPATH . 'assets/ui/btn-install.webp')): ?>
+      <button type="button" class="btn-install-plate" data-install-button hidden style="--install-plate: url(&quot;<?= esc(asset_url_versioned('ui/btn-install.webp'), 'attr') ?>&quot;)"><span><?= esc(lang('Game.installApp')) ?></span></button>
+    <?php else: ?>
+      <button type="button" class="btn btn-ghost" data-install-button hidden><?= icon('download') ?> <?= esc(lang('Game.installApp')) ?></button>
+    <?php endif ?>
   </div>
 </section>
 <?= $this->endSection() ?>

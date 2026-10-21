@@ -39,13 +39,13 @@
  *          with class `lang-switch` (game/hud.js, the challenge frame);
  *          hidden during a challenge;
  *        - sound (#btn-sound, game/hud.js): `round-sound` / `round-mute`;
- *        - menu (`round-menu`): profile, Peta Kedu, fullscreen (#btn-fullscreen,
- *          core/stage.js; hidden when unsupported), and logout. Signed in
- *          without progress data (the opening story): Kembali ke awal (`/`)
- *          instead of Peta Kedu; on the start page itself (`$homePage`)
- *          neither, so it holds profile, fullscreen, and logout (owner,
- *          20 October 2026). Before login only fullscreen; the menu hides
- *          itself when it has no row left.
+ *        - menu (`round-menu`): profile, Peta Kedu, Tentang GELITA
+ *          (`/tentang`), and logout; each row on its round picture (map,
+ *          info, logout). Signed in without progress data (the opening
+ *          story): Kembali ke awal (`/`) instead of Peta Kedu; on the start
+ *          page itself (`$homePage`) neither. Before login: Tentang GELITA
+ *          and Masuk staf (`/admin/login`, the old welcome-page corner link).
+ *          No fullscreen row since 21 October 2026 (owner).
  *        Section `hudBack` (a URL) adds a Back button in the top-right
  *        corner, after the controls (owner, 20 October 2026; the round
  *        `round-back` button since 21 October 2026); the controls
@@ -185,7 +185,7 @@ $userName = $signedIn ? (string) ($participant['display_name'] ?: $participant['
         <div class="hud-sheet-head">
           <h2 id="hud-menu-title"><?= esc(lang('Game.resultMenu')) ?></h2>
           <button type="button" class="hud-sheet-close" data-popover-close hidden
-                  aria-label="<?= esc(lang('Game.close'), 'attr') ?>"><?= icon('cross') ?></button>
+                  aria-label="<?= esc(lang('Game.close'), 'attr') ?>"><?= round_icon('close', 'hud-sheet-close-art', 'cross') ?></button>
         </div>
         <?php if ($signedIn): ?>
           <a class="hud-sheet-row hud-leave hud-profile" href="<?= base_url('profil') ?>"
@@ -199,21 +199,25 @@ $userName = $signedIn ? (string) ($participant['display_name'] ?: $participant['
           </a>
           <?php if ($inGame): ?>
             <a class="hud-sheet-row hud-leave" href="<?= base_url('peta') ?>">
-              <?= icon('home') ?><span class="hud-sheet-label"><?= esc(lang('Game.mapKedu')) ?></span><?= icon('right', 'hud-sheet-go') ?>
+              <?= round_icon('map', 'hud-sheet-art', 'home') ?><span class="hud-sheet-label"><?= esc(lang('Game.mapKedu')) ?></span><?= icon('right', 'hud-sheet-go') ?>
             </a>
           <?php elseif (empty($homePage)): ?>
             <a class="hud-sheet-row hud-leave" href="<?= base_url() ?>">
-              <?= icon('home') ?><span class="hud-sheet-label"><?= esc(lang('Game.backHome')) ?></span><?= icon('right', 'hud-sheet-go') ?>
+              <?= round_icon('back', 'hud-sheet-art', 'home') ?><span class="hud-sheet-label"><?= esc(lang('Game.backHome')) ?></span><?= icon('right', 'hud-sheet-go') ?>
             </a>
           <?php endif ?>
         <?php endif ?>
-        <button type="button" class="hud-sheet-row hud-fullscreen" id="btn-fullscreen" aria-pressed="false" hidden>
-          <?= icon('fullscreen', 'icon-enter') ?><?= icon('fullscreen-exit', 'icon-exit') ?>
-          <span class="hud-sheet-label"><?= esc(lang('Game.fullscreen')) ?></span><?= icon('right', 'hud-sheet-go') ?>
-        </button>
+        <a class="hud-sheet-row hud-leave hud-about" href="<?= base_url('tentang') ?>">
+          <?= round_icon('info', 'hud-sheet-art', 'info') ?><span class="hud-sheet-label"><?= esc(lang('Game.about')) ?></span><?= icon('right', 'hud-sheet-go') ?>
+        </a>
+        <?php if (! $signedIn): ?>
+          <a class="hud-sheet-row hud-leave hud-staff" href="<?= base_url('admin/login') ?>">
+            <?= round_icon('profile', 'hud-sheet-art', 'key') ?><span class="hud-sheet-label"><?= esc(lang('Game.staffLogin')) ?></span><?= icon('right', 'hud-sheet-go') ?>
+          </a>
+        <?php endif ?>
         <?php if ($signedIn): ?>
           <a class="hud-sheet-row hud-leave" href="<?= base_url('keluar') ?>">
-            <?= icon('logout') ?><span class="hud-sheet-label"><?= esc(lang('Game.logout')) ?></span><?= icon('right', 'hud-sheet-go') ?>
+            <?= round_icon('logout', 'hud-sheet-art', 'logout') ?><span class="hud-sheet-label"><?= esc(lang('Game.logout')) ?></span><?= icon('right', 'hud-sheet-go') ?>
           </a>
         <?php endif ?>
       </div>

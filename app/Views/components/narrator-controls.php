@@ -11,24 +11,28 @@
  * is a next slide; it replaces the caption's Lanjut button there.
  *
  * The owner's round gold buttons (21 October 2026, round_icon_src()) draw ◀, ▶
- * (without its "Lanjut" label), ↻, and ⏸ while the narration plays: each
- * button gets class `has-round-art` and its picture as `--round-art`
- * (cinematic.css). ▶ play has no picture and keeps its line icon.
+ * (without its "Lanjut" label), ↻, and the toggle (⏸ while the narration
+ * plays, ▶ play otherwise, from the second icon sheet): each button gets
+ * class `has-round-art` and its picture as `--round-art` (the toggle also
+ * `--round-art-play`; cinematic.css).
  *
  * @var bool|null $nextLabel
  */
 $nextLabel = ! empty($nextLabel);
-// ' class="… has-round-art" style="--round-art: url(…)"' for a button, or '' without the picture
-$art = static function (string $name, string $class): string {
-    $src = round_icon_src($name);
+// ' class="… has-round-art" style="--round-art: url(…)"' for a button, or ' class="…"' without the picture;
+// $play adds the toggle's ▶ picture as --round-art-play
+$art = static function (string $name, string $class, ?string $play = null): string {
+    $src  = round_icon_src($name);
+    $url  = static fn (string $u): string => 'url("' . str_replace(['"', '\\', "\n"], ['%22', '%5C', ''], $u) . '")';
+    $more = $play !== null && ($playSrc = round_icon_src($play)) !== null ? '; --round-art-play: ' . $url($playSrc) : '';
 
     return $src === null ? ' class="' . $class . '"'
-        : ' class="' . $class . ' has-round-art" style="' . esc('--round-art: url("' . str_replace(['"', '\\', "\n"], ['%22', '%5C', ''], $src) . '")', 'attr') . '"';
+        : ' class="' . $class . ' has-round-art" style="' . esc('--round-art: ' . $url($src) . $more, 'attr') . '"';
 };
 ?>
 <div class="narrator-controls" data-narrator-controls role="group" aria-label="<?= esc(lang('Game.narratorControls'), 'attr') ?>" hidden>
   <button type="button"<?= $art('back', 'icon-btn') ?> data-narrator="prev" aria-label="<?= esc(lang('Game.narratorPrev'), 'attr') ?>"><?= icon('left') ?></button>
-  <button type="button"<?= $art('pause', 'icon-btn narrator-toggle') ?> data-narrator="toggle" aria-pressed="false"
+  <button type="button"<?= $art('pause', 'icon-btn narrator-toggle', 'play') ?> data-narrator="toggle" aria-pressed="false"
           data-label-play="<?= esc(lang('Game.narratorPlay'), 'attr') ?>"
           data-label-pause="<?= esc(lang('Game.narratorPause'), 'attr') ?>"
           aria-label="<?= esc(lang('Game.narratorPlay'), 'attr') ?>"><?= icon('play', 'icon-play') ?><?= icon('pause', 'icon-pause') ?></button>

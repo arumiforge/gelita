@@ -346,12 +346,12 @@
 .narrator-controls .icon-btn[hidden] { display: none; }
 .narrator-controls .icon-btn:disabled { opacity: .35; cursor: default; }
 .narrator-controls .icon-btn .icon { width: 1.25rem; height: 1.25rem; }
-/* The owner's round gold buttons (21 October 2026; components/narrator-controls): ◀, ▶, ↻, and
-   ⏸ while the narration plays are drawn by their picture (--round-art) on the button's disc
-   layer, over every page's own disc or skin; the line icon steps aside. The carved ornaments
-   reach a little past the button's edge. ▶ play has no picture and keeps the page's look. */
-#stage .narrator-controls .icon-btn.has-round-art:is(:not(.narrator-toggle), .is-playing) { isolation: isolate; border: 0; background: none; }
-#stage .narrator-controls .icon-btn.has-round-art:is(:not(.narrator-toggle), .is-playing)::after {
+/* The owner's round gold buttons (21 October 2026; components/narrator-controls): ◀, ▶, ↻, and the
+   toggle (⏸ while the narration plays, ▶ play otherwise) are drawn by their picture (--round-art,
+   --round-art-play) on the button's disc layer, over every page's own disc or skin; the line
+   icon steps aside. The carved ornaments reach a little past the button's edge. */
+#stage .narrator-controls .icon-btn.has-round-art { isolation: isolate; border: 0; background: none; }
+#stage .narrator-controls .icon-btn.has-round-art::after {
   content: "";
   position: absolute;
   inset: -8%;
@@ -363,10 +363,14 @@
   filter: drop-shadow(0 .1875rem .375rem rgba(1, 7, 19, .55));
   transition: filter .15s;
 }
+#stage .narrator-controls .narrator-toggle.has-round-art[style*="--round-art-play"]:not(.is-playing)::after { background-image: var(--round-art-play); }
 @media (hover: hover) {
-  #stage .narrator-controls .icon-btn.has-round-art:is(:not(.narrator-toggle), .is-playing):not(:disabled):hover::after { filter: drop-shadow(0 .1875rem .375rem rgba(1, 7, 19, .55)) drop-shadow(0 0 .5rem var(--glow)) brightness(1.1); }
+  #stage .narrator-controls .icon-btn.has-round-art:not(:disabled):hover::after { filter: drop-shadow(0 .1875rem .375rem rgba(1, 7, 19, .55)) drop-shadow(0 0 .5rem var(--glow)) brightness(1.1); }
 }
-#stage .narrator-controls .icon-btn.has-round-art:is(:not(.narrator-toggle), .is-playing) > .icon { visibility: hidden; }
+#stage .narrator-controls .icon-btn.has-round-art > .icon { visibility: hidden; }
+/* Without a play picture (an older install), ▶ play keeps its line icon on the page's skin */
+#stage .narrator-controls .narrator-toggle.has-round-art:not([style*="--round-art-play"]):not(.is-playing)::after { background: none; }
+#stage .narrator-controls .narrator-toggle.has-round-art:not([style*="--round-art-play"]):not(.is-playing) > .icon { visibility: visible; }
 .narrator-toggle, .narrator-toggle[aria-pressed="false"] { color: var(--gold-300); }
 .narrator-toggle .icon-pause, .narrator-toggle.is-playing .icon-play { display: none; }
 .narrator-toggle.is-playing .icon-pause { display: block; }
@@ -462,7 +466,7 @@
    the module adds .is-cine-live and plays its cues; should it never run, they
    fade in after 4 s. Under prefers-reduced-motion nothing is held. */
 .cine-ok .stage:has([data-cine]:not(.is-cine-live)) > :is(.scene, .hud),
-.cine-ok [data-cine]:not(.is-cine-live) > :is(.welcome-hero, .welcome-actions, .welcome-staff, .gate-jaka, .gate-panel, .start-jaka, .auth-jaka, .ornate-panel, .login-panel) {
+.cine-ok [data-cine]:not(.is-cine-live) > :is(.welcome-hero, .welcome-actions, .gate-jaka, .gate-panel, .auth-jaka, .ornate-panel, .login-panel) {
   animation: cine-hold .6s ease 4s both;
 }
 @keyframes cine-hold { from { opacity: 0; } to { opacity: 1; } }
