@@ -396,6 +396,7 @@ return [
     'libraryUnlockedTitle' => 'Pustaka {0} terbuka!',
     'libraryUnlockedText'  => 'Pustaka {0} kini terbuka untukmu. Ada bacaan, gambar, dan video tentang {0}.',
     'libraryReadNow'       => 'Baca Pustaka',
+    'tapToContinue'        => 'Ketuk layar untuk melanjutkan',
     'libraryCredit'        => 'Sumber gambar',
     'libraryViewSource'    => 'Lihat sumber',
     'libraryLoading'       => 'Memuat gambar…',

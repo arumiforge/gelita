@@ -486,6 +486,26 @@ body.is-auth-art .scene::after { background: linear-gradient(to right, transpare
 .is-compact .hud-menu-sheet { top: 4rem; right: .5rem; }
 /* The shard plate fits the strip: 256 × 53 dp, centred, 2 dp clear of top and bottom */
 .is-compact .hud-shards { --plate-w: 16rem; top: .125rem; left: 32rem; }
+/* Section hudLayout `region-centre` (the challenge screens; owner 21 October 2026): the logo
+   stays on the left, the region name sits alone in the middle of the strip where the shard
+   plate was, without the divider rule */
+.hud-region-centre {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  max-width: 34rem;
+  height: var(--hud-h);
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 1.5rem;
+  letter-spacing: .02em;
+  translate: -50% 0;
+}
+.hud-region-centre::before { display: none; }
 /* Section hudBack: the controls and Back share one row in the top-right corner (.hud-end).
    The controls keep their own box, so the popover sheets above stay under their buttons. */
 .hud-end { position: absolute; top: 0; right: .75rem; display: flex; align-items: center; gap: .25rem; height: var(--hud-h); }
@@ -745,6 +765,11 @@ body.is-auth-art .scene::after { background: linear-gradient(to right, transpare
 .dialogue-cine .dialogue-box                  { --y: 520; --h: 176; }
 .dialogue-cine .dialogue-stage > .stage-left  { --x: 0;   --y: 256; --w: 320; --h: 464; }
 .dialogue-cine .dialogue-stage > .stage-right { --x: 960; --y: 256; --w: 320; --h: 464; }
+/* Region-done scene without its nav bar (owner, 21 October 2026): the box 160, 520, 960 × 176
+   as in the region dialogue, the figures' feet on the stage's bottom edge */
+[data-screen="region-done"] .dialogue-box                  { --y: 520; --h: 176; }
+[data-screen="region-done"] .dialogue-stage > .stage-left  { --y: 200; }
+[data-screen="region-done"] .dialogue-stage > .stage-right { --y: 200; }
 
 /* ---------- Peta Kedu `/peta`, peta wilayah `/wilayah/{code}` ---------- */
 .map-frame   { --x: 32;  --y: 72;  --w: 880; --h: 566; }
@@ -773,43 +798,45 @@ body.is-auth-art .scene::after { background: linear-gradient(to right, transpare
 .mission-card { --x: 260; --y: 112; --w: 760; --h: 536; }
 
 /* ---------- Tantangan `/tantangan/{code}/{n}` (Dok 3 §5) ----------
-   Kepala 32, 64, 1216 × 56; arena 32, 128, 1216 × 576 (sampai y 704). */
+   Kepala 32, 64, 1216 × 56; arena 32, 140, 1216 × 564 (sampai y 704). Since
+   21 October 2026 the arena starts 12 dp lower (was 128), under the carved
+   frame that moved away from the header (owner: too close). */
 .challenge-head  { --x: 32; --y: 64;  --w: 1216; --h: 56; }
 .arena-alert,
-.arena-empty     { --x: 32; --y: 128; --w: 1216; --h: 120; }
+.arena-empty     { --x: 32; --y: 140; --w: 1216; --h: 120; }
 
 /* Susun Gambar: panel kiri (instruksi + tips), papan 504², bilah aksi, keterangan kanan.
    The action bar of the three batch engines is one centred bar across the arena
    (owner, 20 October 2026): 32, 648, 1216 × 56. */
-.challenge-puzzle .challenge-aside  { --x: 32;  --y: 128; --w: 332; --h: 512; }
-.challenge-puzzle .puzzle-board     { --x: 388; --y: 136; --w: 504; --h: 504; }
+.challenge-puzzle .challenge-aside  { --x: 32;  --y: 140; --w: 332; --h: 500; }
+.challenge-puzzle .puzzle-board     { --x: 394; --y: 148; --w: 492; --h: 492; }
 .challenge-puzzle .arena-actions    { --x: 32;  --y: 648; --w: 1216; --h: 56; }
-.challenge-puzzle .puzzle-caption   { --x: 916; --y: 128; --w: 332; --h: 512; }
+.challenge-puzzle .puzzle-caption   { --x: 916; --y: 140; --w: 332; --h: 500; }
 
 /* Isi Rumpang: instruksi (baris pertama arena), bacaan gulir, bank kata, bilah aksi */
-.challenge-rumpang .challenge-aside { --x: 96;  --y: 128; --w: 1088; --h: 40; }
+.challenge-rumpang .challenge-aside { --x: 96;  --y: 140; --w: 1088; --h: 40; }
 .challenge-rumpang .rumpang-reading,
-.challenge-rumpang .sentences       { --x: 96;  --y: 176; --w: 1088; --h: 336; }
+.challenge-rumpang .sentences       { --x: 96;  --y: 188; --w: 1088; --h: 324; }
 .challenge-rumpang .rumpang.has-media .rumpang-reading,
 .challenge-rumpang .rumpang.has-media .sentences { --x: 416; --w: 768; }
-.challenge-rumpang .rumpang-media   { --x: 96;  --y: 176; --w: 304; --h: 336; }
+.challenge-rumpang .rumpang-media   { --x: 96;  --y: 188; --w: 304; --h: 324; }
 /* Two rows of words on the navy plate (Wonosobo has 9) fit without scrolling */
 .challenge-rumpang .word-bank       { --x: 96;  --y: 520; --w: 1088; --h: 120; }
 .challenge-rumpang .arena-actions   { --x: 32;  --y: 648; --w: 1216; --h: 56; }
 
 /* Benar atau Salah: bacaan kiri, instruksi + pernyataan kanan, bilah aksi */
-.challenge-boleh .boleh-passages    { --x: 32;  --y: 128; --w: 596; --h: 512; }
-.challenge-boleh .challenge-aside   { --x: 652; --y: 128; --w: 596; --h: 64; }
-.challenge-boleh .boleh-cards       { --x: 652; --y: 200; --w: 596; --h: 440; }
+.challenge-boleh .boleh-passages    { --x: 32;  --y: 140; --w: 596; --h: 500; }
+.challenge-boleh .challenge-aside   { --x: 652; --y: 140; --w: 596; --h: 64; }
+.challenge-boleh .boleh-cards       { --x: 652; --y: 212; --w: 596; --h: 428; }
 .challenge-boleh .arena-actions     { --x: 32;  --y: 648; --w: 1216; --h: 56; }
 
 /* Cari Objek: bilah petunjuk, daftar benda, adegan 16:9, panel kanan (instruksi) */
-.challenge-cari .hunt-clue          { --x: 32;   --y: 128; --w: 1216; --h: 56; }
-.challenge-cari .hunt-side          { --x: 32;   --y: 192; --w: 164;  --h: 486; }
-.challenge-cari .hunt-scene         { --x: 208;  --y: 192; --w: 864;  --h: 486; }
-.challenge-cari .challenge-aside    { --x: 1084; --y: 192; --w: 164;  --h: 486; }
+.challenge-cari .hunt-clue          { --x: 32;   --y: 140; --w: 1216; --h: 60; }
+.challenge-cari .hunt-side          { --x: 32;   --y: 208; --w: 164;  --h: 486; }
+.challenge-cari .hunt-scene         { --x: 208;  --y: 208; --w: 864;  --h: 486; }
+.challenge-cari .challenge-aside    { --x: 1084; --y: 208; --w: 164;  --h: 486; }
 /* "Perbesar adegan" button (Phase F3.2): 48 dp, 8 dp inside the scene's top-right corner */
-.challenge-cari .hunt-zoom          { --x: 1016; --y: 200; --w: 48;   --h: 48; }
+.challenge-cari .hunt-zoom          { --x: 1016; --y: 216; --w: 48;   --h: 48; }
 
 /* Zoomed scene: the whole stage, above the HUD (z 20) and the challenge
    chrome, below the modal (z 50) and toast (z 60) layers. The scene's

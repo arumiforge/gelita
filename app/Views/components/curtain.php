@@ -15,7 +15,8 @@
  *               status bergilir, ketukan penutup.
  * - `region`    "Menuju {wilayah}…" (Tahap 3): the region's picture full
  *               bleed, the name on the ornate navy head plate, tagline and
- *               difficulty chip under it (owner, 21 October 2026; no footprints);
+ *               the difficulty badge of the region dialogue under it (meter
+ *               bars, "Tingkat kesulitan"; owner, 21 October 2026; no footprints);
  *               ±1,8 detik tanpa ketukan. Dirender sekali di <template id="tpl-curtain-region">;
  *               teksnya diisi dari tautan (`data-curtain-text`).
  *
@@ -38,7 +39,8 @@
  * @var string|null         $tapLabel  label tombol ketuk
  * @var string|null         $eyebrow   baris kecil di atas judul (`challenge`: label engine)
  * @var string|null         $tagline   `region`: tagline wilayah
- * @var string|null         $chip      `region`: tingkat kesulitan
+ * @var string|null         $chip      `region`: difficulty name (Mudah, Sedang, Sulit)
+ * @var string|null         $difficulty `region`: stored difficulty code (mudah, sedang, sulit)
  * @var string|null         $lead      `challenge`: ajakan singkat per engine
  * @var string|null         $engine    `challenge`: puzzle | rumpang | boleh | cari
  */
@@ -118,7 +120,19 @@ $plated = $kind === 'region' && isset($skins['head-plate']);
 
     <?php if ($kind === 'region'): ?>
       <p class="curtain-tagline" data-curtain-text="tagline"<?= ($tagline ?? '') === '' ? ' hidden' : '' ?>><?= esc($tagline ?? '') ?></p>
-      <span class="chip curtain-chip" data-curtain-text="chip"<?= ($chip ?? '') === '' ? ' hidden' : '' ?>><?= esc($chip ?? '') ?></span>
+      <?php // The region dialogue's difficulty badge (meter + "Tingkat kesulitan", owner 21 October 2026); core/curtain.js lights the bars from `difficulty` ?>
+      <?php $steps = ['mudah' => 1, 'sedang' => 2, 'sulit' => 3][$difficulty ?? ''] ?? 0; ?>
+      <div class="region-difficulty curtain-difficulty<?= $steps > 0 ? ' is-' . esc($difficulty, 'attr') : '' ?>" data-curtain-difficulty<?= ($chip ?? '') === '' ? ' hidden' : '' ?>>
+        <span class="region-difficulty-meter" aria-hidden="true">
+          <?php for ($i = 1; $i <= 3; $i++): ?>
+            <i<?= $i <= $steps ? ' class="is-on"' : '' ?> style="--i: <?= $i ?>"></i>
+          <?php endfor ?>
+        </span>
+        <span class="region-difficulty-text">
+          <span class="region-difficulty-label"><?= esc(lang('Game.difficultyLabel')) ?></span>
+          <span class="region-difficulty-level" data-curtain-text="chip"><?= esc($chip ?? '') ?></span>
+        </span>
+      </div>
     <?php elseif ($kind === 'challenge'): ?>
       <p class="curtain-lead"><?= esc($lead ?? '') ?></p>
     <?php endif ?>

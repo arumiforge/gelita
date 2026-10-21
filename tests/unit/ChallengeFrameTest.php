@@ -30,7 +30,10 @@ final class ChallengeFrameTest extends CIUnitTestCase
 
     public function testHuntKeepsMbahKeduAvatar(): void
     {
-        $this->assertMatchesRegularExpression("~'character'\\s*=>\\s*'mbah_kedu'~", $this->view('game/challenge/cari'));
+        // His round avatar, not a pose frame (owner, 21 October 2026)
+        $cari = $this->view('game/challenge/cari');
+        $this->assertStringContainsString("media_key_src('ui.kedu-avatar')", $cari);
+        $this->assertStringNotContainsString("component('character'", $cari);
     }
 
     public function testFrameUsesStageCoordinates(): void
@@ -44,6 +47,27 @@ final class ChallengeFrameTest extends CIUnitTestCase
         foreach (['puzzle-board', 'rumpang-reading', 'boleh-passages', 'hunt-scene'] as $panel) {
             $this->assertStringContainsString('.' . $panel, $stage);
         }
+    }
+
+    /** Owner, 21 October 2026: no shard plate on the challenge screens; the region name in its place, the logo left. */
+    public function testChallengeHudShowsTheRegionInTheMiddle(): void
+    {
+        foreach (['puzzle', 'rumpang', 'boleh', 'cari'] as $engine) {
+            $this->assertStringContainsString("<?= \$this->section('hudLayout') ?>region-centre<?= \$this->endSection() ?>", $this->view('game/challenge/' . $engine), $engine);
+        }
+
+        $hud = $this->view('components/hud-menu');
+        $this->assertStringContainsString("\$shards   = \$inGame && ! \$logoCentre && ! \$regionCentre", $hud);
+        $this->assertStringContainsString('<span class="hud-identity-region hud-region-centre">', $hud);
+        $this->assertStringContainsString('.hud-region-centre {', (string) file_get_contents(FCPATH . 'assets/css/stage.css'));
+    }
+
+    /** Owner, 21 October 2026: the header plate starts under the number ring, and the frame keeps clear of it. */
+    public function testHeaderPlateJoinsTheBadgeAndTheFrameKeepsClear(): void
+    {
+        $css = (string) file_get_contents(FCPATH . 'assets/css/game.css');
+        $this->assertMatchesRegularExpression('~\.challenge-head::before \{[^}]*inset: 0 0 0 calc\(var\(--badge\) / 2\);~', $css);
+        $this->assertMatchesRegularExpression('~\.challenge::before \{[^}]*top: calc\(132 \* var\(--dp\)\);~', $css);
     }
 
     public function testCssNoLongerStylesJaka(): void
@@ -82,7 +106,8 @@ final class ChallengeFrameTest extends CIUnitTestCase
             }
         }
 
-        $this->assertGreaterThanOrEqual(3, $found);
+        // The result screen's Mbah Kedu became his avatar (owner, 21 October 2026): reflection and start remain
+        $this->assertGreaterThanOrEqual(2, $found);
     }
 
     /** Owner's header, 20 October 2026: number ring, title, one stats capsule; no visible eyebrow. */

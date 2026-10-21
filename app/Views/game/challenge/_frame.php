@@ -104,7 +104,8 @@ $triesAria  = lang('Game.triesLabel') . ': ' . lang('Game.triesOf', ['{0}', '{1}
     <div class="arena">
       <aside class="challenge-aside stage-box stage-scroll">
         <?php if ($node->text('instruction', $locale) !== ''): ?>
-          <p class="instruction"><?= icon('info') ?> <span><?= esc($node->text('instruction', $locale)) ?></span></p>
+          <?php // The gold "i" medal of the mission card, no box (owner, 21 October 2026) ?>
+          <p class="instruction"><span class="instruction-mark" aria-hidden="true">i</span> <span><?= esc($node->text('instruction', $locale)) ?></span></p>
         <?php endif ?>
         <?= $this->renderSection('aside') ?>
       </aside>

@@ -49,6 +49,8 @@ $blankHtml = static function (int|string $itemId, int $number): string {
 <?= $this->section('title') ?><?= esc($node->text('title', $locale)) ?><?= $this->endSection() ?>
 <?= $this->section('background') ?><?= media_first($node->background_media_id, $level->background_media_id) ?><?= $this->endSection() ?>
 <?= $this->section('bodyClass') ?>is-challenge<?= $this->endSection() ?>
+<?php // Logo left, the region name in the middle, no shard plate (owner, 21 October 2026) ?>
+<?= $this->section('hudLayout') ?>region-centre<?= $this->endSection() ?>
 
 <?= $this->section('arena') ?>
 <div class="rumpang<?= $media ? ' has-media' : '' ?>" data-word-bank="1">

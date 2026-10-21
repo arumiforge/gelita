@@ -87,6 +87,20 @@ function fillText(layer, text) {
   }
 }
 
+/**
+ * Region curtain: lights the difficulty meter from the stored code (`difficulty`:
+ * mudah 1 bar, sedang 2, sulit 3) and hides the badge when the region has no level.
+ */
+function fillDifficulty(layer, text) {
+  const badge = $('[data-curtain-difficulty]', layer);
+  if (!badge || text.chip === undefined) return;
+  const steps = { mudah: 1, sedang: 2, sulit: 3 }[text.difficulty] ?? 0;
+  badge.classList.remove('is-mudah', 'is-sedang', 'is-sulit');
+  if (steps > 0) badge.classList.add(`is-${text.difficulty}`);
+  $$('.region-difficulty-meter > i', badge).forEach((bar, index) => bar.classList.toggle('is-on', index < steps));
+  badge.hidden = text.chip === '';
+}
+
 /** Fades the link's picture in behind a region/challenge curtain once it has loaded. */
 function showBackground(layer, src) {
   const img = $('img.curtain-bg.is-deferred', layer);
@@ -194,7 +208,7 @@ export async function playCurtain(kind, opts = {}) {
     return { loaded: 0, failed: 0, timedOut: false, skipped: true };
   }
 
-  if (opts.text) fillText(layer, opts.text);
+  if (opts.text) { fillText(layer, opts.text); fillDifficulty(layer, opts.text); }
   if (opts.bg) showBackground(layer, opts.bg);
 
   const urls = [...new Set(opts.urls ?? parseList(layer.dataset.preload))];
