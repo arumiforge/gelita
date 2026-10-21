@@ -23,14 +23,16 @@
  *   satu-satunya pengirim `dialogue_advanced` (context = $context).
  * - Kartu ketuk berjudul ($tap) menutupi panggung sampai diketuk.
  *
- * `$cinematic` (the region dialogue, owner 19 October 2026) borrows the
+ * `$cinematic` (the region dialogue, owner 19 October 2026; the region-done
+ * scene too since 21 October 2026) borrows the
  * intro's pieces (full-size HUD, narrator controls with "Lanjut", the last
  * line's main button centred on the page) but keeps the parchment box
  * (owner follow-up, same day): its first row holds the speaker's name, the
  * page dots (no "Bagian n dari N" text), and, at the right, the narrator
  * controls; the two characters stand at the stage's left and right edges.
  * The box's own Kembali/Lanjut links stay as the no-JavaScript fallback.
- * Without it (the region-done scene) the box keeps partials/slide-nav.
+ * Without it the box keeps partials/slide-nav (no page uses that since 21
+ * October 2026).
  *
  * @var App\Entities\Level         $level
  * @var list<array<string, mixed>> $slides

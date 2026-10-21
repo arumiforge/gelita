@@ -70,6 +70,20 @@ final class ChallengeFrameTest extends CIUnitTestCase
         $this->assertMatchesRegularExpression('~\.challenge::before \{[^}]*top: calc\(132 \* var\(--dp\)\);~', $css);
     }
 
+    /** Owner, 21 October 2026: the 💡 button reads "Bantuan"; "Petunjuk" is left to Cari Objek's clues. */
+    public function testHintButtonSaysBantuan(): void
+    {
+        $id = require APPPATH . 'Language/id/Game.php';
+        $js = require APPPATH . 'Language/id/Js.php';
+        $this->assertSame('Bantuan', $id['hint']);
+        $this->assertSame('Bantuan', $js['hintTitle']);
+        $this->assertStringContainsString('Bantuan', $id['puzzleTipHint']);
+
+        foreach (['hintPenalty', 'hintOpen', 'hintAllOpened', 'hintNone', 'hintUsed'] as $key) {
+            $this->assertStringNotContainsStringIgnoringCase('petunjuk', $js[$key], $key);
+        }
+    }
+
     public function testCssNoLongerStylesJaka(): void
     {
         $css = (string) file_get_contents(FCPATH . 'assets/css/game.css');

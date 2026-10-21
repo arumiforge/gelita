@@ -16,7 +16,7 @@ One concept, one word, in every layer. "UI (id)" is what users read; "Code (en)"
 | pengerjaan | `attempt` | `challenge_attempts` |
 | kesempatan | `tries` (limit is 3) | `TRIES_EXHAUSTED`, `TRIES_REMAINING` |
 | percobaan | `try` | `item_tries` |
-| petunjuk (bantuan di tantangan) | `hint` | `hints`, `hint_used` |
+| bantuan (tombol 💡 di tantangan) | `hint` | `hints`, `hint_used`; UI word "Bantuan" since 21 Oct 2026 (was "Petunjuk", which now belongs only to Cari Objek clues); English UI keeps "Hint" |
 | petunjuk Cari Objek | `clue` | `CLUE_CLOSED`, `clue_failed` |
 | bintang | `stars` | rule `bintang-1` |
 | Serpihan Cahaya | `shard` | `shards_total` |

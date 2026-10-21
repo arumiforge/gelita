@@ -765,11 +765,6 @@ body.is-auth-art .scene::after { background: linear-gradient(to right, transpare
 .dialogue-cine .dialogue-box                  { --y: 520; --h: 176; }
 .dialogue-cine .dialogue-stage > .stage-left  { --x: 0;   --y: 256; --w: 320; --h: 464; }
 .dialogue-cine .dialogue-stage > .stage-right { --x: 960; --y: 256; --w: 320; --h: 464; }
-/* Region-done scene without its nav bar (owner, 21 October 2026): the box 160, 520, 960 × 176
-   as in the region dialogue, the figures' feet on the stage's bottom edge */
-[data-screen="region-done"] .dialogue-box                  { --y: 520; --h: 176; }
-[data-screen="region-done"] .dialogue-stage > .stage-left  { --y: 200; }
-[data-screen="region-done"] .dialogue-stage > .stage-right { --y: 200; }
 
 /* ---------- Peta Kedu `/peta`, peta wilayah `/wilayah/{code}` ---------- */
 .map-frame   { --x: 32;  --y: 72;  --w: 880; --h: 566; }

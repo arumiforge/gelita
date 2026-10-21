@@ -329,9 +329,14 @@ final class RegionStoryTest extends CIUnitTestCase
     {
         $page = $this->dialogue(['temanggung' => 'completed', 'magelang' => 'open', 'wonosobo' => 'locked'])->done('temanggung');
 
-        $this->assertStringContainsString('class="story dialogue narrator"', $page);
-        $this->assertStringContainsString('dialogue-box panel-parchment', $page);
-        $this->assertStringContainsString('screen-head dialogue-head stage-box', $page);
+        // The region dialogue's layout (owner, 21 October 2026, later): the parchment box with speaker,
+        // dots, and the narrator controls with Lanjut; the last line's buttons centred on the page
+        $this->assertStringContainsString('class="story dialogue narrator cine dialogue-cine"', $page);
+        $this->assertStringContainsString('dialogue-box panel-parchment dialogue-caption', $page);
+        $this->assertStringContainsString('class="icon-btn narrator-next has-label"', $page);
+        $this->assertStringContainsString('<div class="cine-final">', $page);
+        $this->assertStringNotContainsString('screen-head dialogue-head', $page);
+        $this->assertMatchesRegularExpression('~<body[^>]*class="[^"]*\bis-cinematic\b~', $page);
         // The difficulty badge only on the region curtain (its template), never in the HUD
         $this->assertStringNotContainsString('region-difficulty', (string) preg_replace('~<template id="tpl-curtain-region">.*?</template>~s', '', $page));
 

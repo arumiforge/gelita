@@ -184,8 +184,9 @@ Decided in an interview with the owner; decisions in the decision log, section *
 
 ## Kenali, curtains, mission brief, challenges, and the region-done screens (owner, 21 October 2026)
 
-- [ ] Kenali caption without a box; the region curtain shows the difficulty badge with its meter; mission brief and region-done scene with the logo in the HUD centre and the back plate top left, no nav bar; challenge HUD with the region name in the middle and no shard plate; header plate joined to the number badge and more room above the frame; Cari Objek clue bar without a box, Mbah Kedu's avatar, clue list on the status medals, new instruction look; region-complete card without a frame over a darker blur, Mbah Kedu's avatar and nameplate, "Ketuk layar untuk melanjutkan"; region-done scene without figure names and with the narrator controls under the menu (branch `sky/vibrant-dijkstra-me4rhv`)
+- [x] Kenali caption without a box; the region curtain shows the difficulty badge with its meter; mission brief and region-done scene with the logo in the HUD centre and the back plate top left, no nav bar; challenge HUD with the region name in the middle and no shard plate; header plate joined to the number badge and more room above the frame; Cari Objek clue bar without a box, Mbah Kedu's avatar, clue list on the status medals, new instruction look; region-complete card without a frame over a darker blur, Mbah Kedu's avatar and nameplate, "Ketuk layar untuk melanjutkan"; region-done scene without figure names (PR #207)
 - [ ] After merge, **Bangun ulang paket** if package mode is on
+- [ ] Follow-up (owner answers, same day): the 💡 button reads "Bantuan"; the region-done scene in the region dialogue's layout (controls with Lanjut in the box), HUD unchanged; a soft dark band behind the Kenali caption (branch `sky/vibrant-dijkstra-me4rhv`)
 
 ## Active branches
 
@@ -195,5 +196,5 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 |---|---|---|
 | `claude/ui-refinements-gateway-map-challenge-yf9q2i` | Region map follow-up: modal for locked pins, no HUD region name, readable done titles (owner, 21 October 2026) | PR open |
 | `claude/redesain-hasil-tantangan-wilayah-qde0tb` | Attempt list, loading screens, Peta Kedu, Pustaka Kedu (owner, 21 October 2026) | PR open |
-| `sky/vibrant-dijkstra-me4rhv` | Kenali caption, region curtain badge, mission brief and challenge HUD, Cari Objek, region-done card and scene (owner, 21 October 2026) | PR open |
+| `sky/vibrant-dijkstra-me4rhv` | Follow-up of PR #207: Bantuan button, region-done scene in the dialogue layout, Kenali band (owner, 21 October 2026) | PR open |
 | `pbb/nice-carson-7yeoiz` | Brighter logo, Mulai plate, lettered form buttons, start-page menu (owner, 20 October 2026) | PR open |

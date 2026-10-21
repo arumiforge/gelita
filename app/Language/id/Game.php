@@ -66,7 +66,7 @@ return [
 
     // Permainan
     'check'           => 'Cek jawabanku',
-    'hint'            => 'Petunjuk',
+    'hint'            => 'Bantuan',
     'challengeOf'     => 'Tantangan {0} dari {1}',
     'timeSpent'       => 'Waktu',
     'firstPass'      => 'Berhasil pada Percobaan Pertama',
@@ -220,7 +220,7 @@ return [
     'puzzleHint'        => 'Ketuk dua keping untuk menukarnya, atau seret satu keping ke keping lain. Cocokkan warna dan garis yang bersambung.',
     'puzzleHintJigsaw'  => 'Ketuk dua keping untuk menukarnya, atau seret satu keping ke keping lain. Keping bersisi lurus ada di tepi gambar, dan tonjolan keping harus pas dengan lekukan keping di sebelahnya.',
     'puzzleTipMark'     => 'Sesudah dicek, keping bertanda ✗ belum di tempatnya. Tukar keping itu dulu.',
-    'puzzleTipHint'     => 'Bingung? Ketuk 💡 Petunjuk di bagian atas.',
+    'puzzleTipHint'     => 'Bingung? Ketuk 💡 Bantuan di bagian atas.',
     'puzzleCheck'       => 'Cek gambarku',
     'piece'             => 'Keping di baris {0}, kolom {1}',
     'piecePos'          => 'baris {0} kolom {1}',

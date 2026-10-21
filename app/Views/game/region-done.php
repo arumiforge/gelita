@@ -15,9 +15,11 @@
  * Owner request (21 October 2026): the GELITA logo alone in the middle of the
  * HUD (no shard plate, no region name), "Peta wilayah" on the navy plate in
  * the top-left corner, no nav bar (Peta Kedu is in the HUD menu), no names
- * under the two figures, and the narrator controls right under the menu
- * button with no band behind them. Without the nav bar the box and the
- * figures sit on the stage's foot, as in the region dialogue.
+ * under the two figures. Same day, later (owner: consistent with the region
+ * dialogue): the dialogue's cinematic layout (`cinematic`), so the parchment
+ * box holds the speaker, the page dots, and the narrator controls with
+ * Lanjut, the figures stand at the stage's edges, and the last line's
+ * buttons sit centred on the page; the HUD stays as above.
  *
  * @var App\Entities\Level         $level
  * @var list<array<string, mixed>> $slides
@@ -54,6 +56,7 @@ if ($hasLibrary) {
 <?= $this->section('music') ?><?= esc('tuntas-' . $level->code) ?><?= $this->endSection() ?>
 <?= $this->section('title') ?><?= esc(lang('Game.doneTitle', [$region])) ?><?= $this->endSection() ?>
 <?= $this->section('background') ?><?= $bg ?><?= $this->endSection() ?>
+<?= $this->section('bodyClass') ?>is-cinematic<?= $this->endSection() ?>
 <?php // Logo alone in the middle, "Peta wilayah" on the navy plate top left; Peta Kedu stays in the menu (owner, 21 October 2026) ?>
 <?= $this->section('hudLayout') ?>logo-centre<?= $this->endSection() ?>
 <?= $this->section('hudBack') ?><?= base_url('wilayah/' . $level->code) ?><?= $this->endSection() ?>
@@ -72,6 +75,8 @@ if ($hasLibrary) {
     'locale'  => $locale,
     'context' => 'level_done',
     'screen'  => 'region-done',
+    // The region dialogue's layout (owner, 21 October 2026): speaker, dots, and the narrator controls with Lanjut in the box
+    'cinematic' => true,
     // Next screen: the next region's entry (same assets as its curtain), or the Kedu map
     'nextAssets' => isset($nextRegion['curtain']) ? $nextRegion['curtain']['preload'] : [media_key_src('map.kedu'), media_key_src('bg.map')],
     'eyebrow' => lang('Game.levelOrder', [$level->sequence]) . ' · ' . lang('Game.levelStatus_completed'),
