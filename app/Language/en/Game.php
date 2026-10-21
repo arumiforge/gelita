@@ -417,7 +417,7 @@ return [
     'chapterTap'           => 'Tap to hear the story',
     'doneTitle'            => 'The {0} shards are back!',
     'readLibraryRegion'    => 'Read the {0} Library',
-    'watchEnding'          => 'Watch the ending',
+    'watchEnding'          => 'Watch the closing story',
     'endingTitle'          => 'Ending',
     'endingEmpty'          => 'The ending is not ready yet. Let\'s go to the Reflection Hall!',
 ];

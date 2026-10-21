@@ -150,7 +150,9 @@ final class MediaSlotPagesTest extends CIUnitTestCase
     {
         $uses = (new MediaUsage())->characterUses();
         $this->assertContains('/daftar/3', array_column($uses['char.jaka.bow.1'], 'path'));
-        $this->assertContains('/refleksi', array_column($uses['char.kedu.smile.1'], 'path'));
+        // Balai Refleksi shows Mbah Kedu's avatar since 21 October 2026, not his pose frame
+        $this->assertNotContains('/refleksi', array_column($uses['char.kedu.smile.1'] ?? [], 'path'));
+        $this->assertContains('/selesai/1', array_column($uses['char.kedu.smile.1'], 'path'));
 
         $html = $this->page('admin/media/' . $this->mediaId('char.kedu.weak.1'));
         $this->assertStringContainsString('Mbah Kedu · pose lemah · gambar 1', $html);

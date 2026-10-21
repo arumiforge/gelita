@@ -316,7 +316,7 @@ Yang **tidak** berubah: sesi, progres, pengerjaan, jawaban, dan bintang. Di laya
 
 Peta hanya membaca. Pembukaan wilayah berikutnya ditulis saat sebuah pengerjaan ditutup (FITUR 5a). Kunci wilayah ditegakkan lagi di `ChallengeService::openNode()` dan `POST /api/nodes/{id}/attempts` (409 `LEVEL_LOCKED`); urutan pos di dalam wilayah ditegakkan layar HTML (`ChallengeController`).
 
-**Cerita bernarasi.** Seluruh layar cerita (cerita pembuka, narasi peta, Kenali wilayah, dialog pembuka, wilayah tuntas, penutup) diputar `game/narrator.js` dari tabel `dialogues` (88 baris, `app/Database/Seeds/data/story.php`, salinan [`docs/naskah-cerita.md`](naskah-cerita.md)). Slide berpindah dengan ketukan; bila rekaman narasinya disetujui (FITUR 13a), audio diputar dan slide maju sendiri setelah audio selesai. Setiap perpindahan slide mengirim `dialogue_advanced` {index, total, context, character} (`level_id` untuk konteks wilayah):
+**Cerita bernarasi.** Seluruh layar cerita (cerita pembuka, narasi peta, Kenali wilayah, dialog pembuka, wilayah tuntas, penutup) diputar `game/narrator.js` dari tabel `dialogues` (91 baris, `app/Database/Seeds/data/story.php`, salinan [`docs/naskah-cerita.md`](naskah-cerita.md)). Slide berpindah dengan ketukan; bila rekaman narasinya disetujui (FITUR 13a), audio diputar dan slide maju sendiri setelah audio selesai. Setiap perpindahan slide mengirim `dialogue_advanced` {index, total, context, character} (`level_id` untuk konteks wilayah):
 
 | `context` | Layar | `level_id` |
 |---|---|---|
@@ -1235,7 +1235,7 @@ Unggahan dari editor konten memakai jalur `MediaStore` yang sama. Audio dialog, 
 
 ## FITUR 13a: Narasi — Rekaman, Impor, dan Persetujuan
 
-Seluruh layar cerita bernarasi memakai **100 rekaman per bahasa**: 88 baris naskah (`dialogues`) + 12 petunjuk Cari Objek. Rekaman dibuat pengisi suara dari naskah PDF (`GET /admin/konten/narasi/naskah-pdf?bahasa=id|en|semua`); rekaman sintetis bawaan beserta `produksi.json` dihapus 17 Oktober 2026. Tombol **Batalkan semua rekaman** (`POST /admin/konten/narasi/batalkan`, satu bahasa) melepas semua rekaman dari barisnya, menandainya `rejected`, menonaktifkan berkas impor `audio.narasi.*`, dan menghapus berkasnya; lihat [`docs/audio.md`](audio.md).
+Seluruh layar cerita bernarasi memakai **103 rekaman per bahasa**: 91 baris naskah (`dialogues`) + 12 petunjuk Cari Objek. Rekaman dibuat pengisi suara dari naskah PDF (`GET /admin/konten/narasi/naskah-pdf?bahasa=id|en|semua`); rekaman sintetis bawaan beserta `produksi.json` dihapus 17 Oktober 2026. Tombol **Batalkan semua rekaman** (`POST /admin/konten/narasi/batalkan`, satu bahasa) melepas semua rekaman dari barisnya, menandainya `rejected`, menonaktifkan berkas impor `audio.narasi.*`, dan menghapus berkasnya; lihat [`docs/audio.md`](audio.md).
 
 ```text
  1. Daftar rekaman: GET /admin/konten/narasi/daftar-rekaman (XLSX: kode berkas,

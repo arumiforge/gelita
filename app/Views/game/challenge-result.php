@@ -37,7 +37,8 @@ $totalNodes = count(service('contentRepository')->nodesForLevel($level->id));
 
   <nav class="result-list-actions" aria-label="<?= esc(lang('Game.continue'), 'attr') ?>">
     <a class="btn btn-quiet" href="<?= base_url('wilayah/' . $level->code) ?>"><?= icon('left') ?><span><?= esc($region) ?></span></a>
-    <a class="btn btn-primary btn-lg" href="<?= base_url('misi/' . $level->code . '/' . $sequence) ?>"><?= icon('replay') ?> <span><?= esc(lang('Game.retry')) ?></span></a>
+    <?php // Ulangi on the owner's curved-arrow plate (21 October 2026) ?>
+    <a <?= plate_attrs('back') ?> href="<?= base_url('misi/' . $level->code . '/' . $sequence) ?>"><span><?= esc(lang('Game.retry')) ?></span></a>
   </nav>
 
   <?php if ($best !== null): ?>

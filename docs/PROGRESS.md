@@ -26,7 +26,8 @@ Last updated: 21 October 2026.
 
 ## Before the research starts (after install, done in the panel)
 
-- [ ] Record the voice-over narration (100 lines per language) from the script PDF in **Rekaman narasi**, upload it, listen, and approve it. On a server that still has the old TTS takes, press **Batalkan semua rekaman** for each language first (decision log, 17 October 2026)
+- [ ] Record the voice-over narration (103 lines per language) from the script PDF in **Rekaman narasi**, upload it, listen, and approve it. On a server that still has the old TTS takes, press **Batalkan semua rekaman** for each language first (decision log, 17 October 2026)
+- [ ] Peta Kedu narration after the end (`map_done`, 21 October 2026): on a server installed before it, run `php spark gelita:story:sync` (dry run first) to add the three `peta-tuntas-*` lines; they are part of the 103 lines to record
 - [ ] Install the catalogue art: `php spark gelita:katalog:impor` (dry run first; `docs/08_DEPLOYMENT.md` → *Installing the Katalog Aset images*). This fills every slot with the interim art of [`gelita-katalog/`](../gelita-katalog/README.md); the panel's **Gambar & mockup** replaces any of it later
 - [x] New character frames in the catalogue: 10 poses × 24 frames, red-scarf Jaka and Mbah Kedu (catalogue edition of 12 October 2026). On a server that already ran the import, run `gelita:katalog:impor` again: it replaces the 30 old frames and adds 210
 - [x] Cari Objek objects moved onto the tables and shelves of the three catalogue scenes (question bank layout change, 12 October 2026). On a server that already ran the import, run `gelita:katalog:impor` again (or `gelita:bank:import`) to apply the new positions

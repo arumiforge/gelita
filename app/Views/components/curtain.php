@@ -25,7 +25,13 @@
  * installed; the `map` tap prompt is small plain text (21 October 2026).
  * - `challenge` sebelum /tantangan (Tahap 3): judul node, label engine,
  *               ajakan singkat, dan visual per engine (`data-engine`);
- *               ≤1,5 detik, ketukan melewatinya.
+ *               ≤1,5 detik, ketukan melewatinya. Since 21 October 2026
+ *               (owner) a cinematic plate like `region`: the engine's card
+ *               picture (`node-card-{engine}.webp`) in the green scarf frame
+ *               with the challenge number on its ring, the engine name
+ *               between gold diamonds, the title on the navy head plate, and
+ *               the track at the foot; the CSS engine animation (`.cc-*`)
+ *               stays as the fallback without the pictures.
  *
  * Between-screen curtains (`region`, `challenge`) carry `data-local-min-ms`
  * (600 ms): core/curtain.js uses it when assets are local (asset package
@@ -43,6 +49,7 @@
  * @var string|null         $difficulty `region`: stored difficulty code (mudah, sedang, sulit)
  * @var string|null         $lead      `challenge`: ajakan singkat per engine
  * @var string|null         $engine    `challenge`: puzzle | rumpang | boleh | cari
+ * @var int|null            $number    `challenge`: the challenge's number in its region (ring on the card)
  */
 $kind     = in_array($kind ?? 'map', ['map', 'region', 'challenge'], true) ? ($kind ?? 'map') : 'map';
 $defaults = [
@@ -84,7 +91,15 @@ foreach (['loading-track' => 'loading-track', 'head-plate' => 'map-head-plate'] 
         $skins[$var] = '--' . $var . ': url(&quot;' . esc(asset_url_versioned('ui/' . $file . '.webp'), 'attr') . '&quot;)';
     }
 }
-$plated = $kind === 'region' && isset($skins['head-plate']);
+$plated = in_array($kind, ['region', 'challenge'], true) && isset($skins['head-plate']);
+// `challenge`: the engine's card picture in the scarf frame of the region map (owner, 21 October 2026)
+$card = $kind === 'challenge' && is_file(FCPATH . 'assets/ui/node-card-' . $engine . '.webp') && is_file(FCPATH . 'assets/ui/node-card-frame.webp')
+    ? [
+        'art'   => asset_url_versioned('ui/node-card-' . $engine . '.webp'),
+        'frame' => asset_url_versioned('ui/node-card-frame.webp'),
+        'badge' => is_file(FCPATH . 'assets/ui/challenge-badge.webp') ? asset_url_versioned('ui/challenge-badge.webp') : null,
+    ]
+    : null;
 ?>
 <div class="curtain curtain-<?= esc($kind, 'attr') ?>" data-curtain-layer="<?= esc($kind, 'attr') ?>"
      data-tap="<?= $tap ? '1' : '0' ?>"
@@ -111,9 +126,20 @@ $plated = $kind === 'region' && isset($skins['head-plate']);
         </span>
         <span class="curtain-icon"><?= art_or_icon(region_art_src('lantern'), 'lantern') ?></span>
       </div>
+    <?php elseif ($kind === 'challenge' && $card !== null): ?>
+      <div class="curtain-card" style="--card-frame: url(&quot;<?= esc($card['frame'], 'attr') ?>&quot;)" aria-hidden="true">
+        <img class="curtain-card-art" src="<?= esc($card['art'], 'attr') ?>" alt="" decoding="async" draggable="false">
+        <?php if ((int) ($number ?? 0) > 0): ?>
+          <span class="curtain-card-no">
+            <?php if ($card['badge'] !== null): ?><img src="<?= esc($card['badge'], 'attr') ?>" alt="" decoding="async" draggable="false"><?php endif ?>
+            <b><?= (int) $number ?></b>
+          </span>
+        <?php endif ?>
+      </div>
+      <p class="curtain-eyebrow"><span><?= esc($eyebrow ?? '') ?></span></p>
     <?php elseif ($kind === 'challenge'): ?>
       <?= component('partials/challenge-art', ['engine' => $engine]) ?>
-      <p class="curtain-eyebrow"><?= esc($eyebrow ?? '') ?></p>
+      <p class="curtain-eyebrow"><span><?= esc($eyebrow ?? '') ?></span></p>
     <?php endif ?>
 
     <h2 class="curtain-title<?= $plated ? ' has-plate' : '' ?>" <?= $kind === 'region' ? 'data-curtain-text="title"' : '' ?>><?= esc($title) ?></h2>

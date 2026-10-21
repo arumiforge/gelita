@@ -15,7 +15,7 @@ use Tests\Support\Database\NarrationTables;
  * persetujuan massal (NarrationCatalog).
  *
  * Memakai grup basis data `tests` (SQLite di memori) dengan tabel versi
- * ringkas; baris `dialogues` diisi ContentSeeder dari naskah (88 baris), dan
+ * ringkas; baris `dialogues` diisi ContentSeeder dari naskah (91 baris), dan
  * uji petunjuk arena `cari` menambah node tmg-4 dari bank soal kelas 5 (4
  * benda dicari + 4 pengecoh, seedHuntNode()). Berkas
  * folder ditulis ke folder uji di bawah public/ dan salinan unggahan ke
@@ -128,8 +128,8 @@ final class NarrationImporterTest extends CIUnitTestCase
         $importer = $this->importer();
         $lines    = $importer->lines();
 
-        // 88 baris naskah + 4 petunjuk target tmg-4; keempat pengecoh tanpa kode berkas
-        $this->assertCount(92, $lines);
+        // 91 baris naskah + 4 petunjuk target tmg-4; keempat pengecoh tanpa kode berkas
+        $this->assertCount(95, $lines);
         $clues = array_filter($lines, static fn (array $line): bool => $line['context_code'] === NarrationImporter::CLUE_CONTEXT);
         $this->assertSame(array_map(static fn (int $n): string => sprintf('petunjuk-tmg-4-%02d', $n), range(1, 4)), array_keys($clues));
         $this->assertSame(array_map(static fn (int $n): string => sprintf('tmg-4-a%02d', $n), range(1, 4)), array_column($clues, 'item_key'));
@@ -192,7 +192,7 @@ final class NarrationImporterTest extends CIUnitTestCase
 
         $this->assertSame(['petunjuk-tmg-4-01', 'petunjuk-tmg-4-04'], $id['created']);
         $this->assertSame(['petunjuk-tmg-4-01'], $en['created']);
-        $this->assertCount(90, $id['missing']);
+        $this->assertCount(93, $id['missing']);
         $this->assertContains('petunjuk-tmg-4-02', $id['missing']);
 
         $item    = $this->sqlite->table('challenge_items')->where('item_key', 'tmg-4-a01')->get()->getRowArray();
@@ -260,19 +260,19 @@ final class NarrationImporterTest extends CIUnitTestCase
         $rows     = $catalog->rows();
         $progress = $catalog->progress($rows);
 
-        $this->assertSame(['total' => 92, 'approved' => 0, 'draft' => 1, 'none' => 91], $progress['id']);
-        $this->assertSame(['total' => 92, 'approved' => 0, 'draft' => 0, 'none' => 92], $progress['en']);
+        $this->assertSame(['total' => 95, 'approved' => 0, 'draft' => 1, 'none' => 94], $progress['id']);
+        $this->assertSame(['total' => 95, 'approved' => 0, 'draft' => 0, 'none' => 95], $progress['en']);
 
         $groups = $catalog->groups($rows);
-        $this->assertCount(13, $groups);
+        $this->assertCount(14, $groups);
         $this->assertSame('Petunjuk Cari Objek · Temanggung (tmg-4)', end($groups)['label']);
         $this->assertCount(4, end($groups)['rows']);
 
         $list = $catalog->recordingList();
-        $this->assertCount(92, $list['rows']);
-        $this->assertSame(['petunjuk-tmg-4-03', 'hunt_clue', 'temanggung', 3, 'Mbah Kedu'], array_slice($list['rows'][90], 0, 5));
-        $this->assertSame('Temukan arca lembu Nandi, seperti yang ada di dalam Candi Pringapus.', $list['rows'][90][9]);
-        $this->assertSame(['menunggu persetujuan', 'belum ada'], array_slice($list['rows'][90], 11));
+        $this->assertCount(95, $list['rows']);
+        $this->assertSame(['petunjuk-tmg-4-03', 'hunt_clue', 'temanggung', 3, 'Mbah Kedu'], array_slice($list['rows'][93], 0, 5));
+        $this->assertSame('Temukan arca lembu Nandi, seperti yang ada di dalam Candi Pringapus.', $list['rows'][93][9]);
+        $this->assertSame(['menunggu persetujuan', 'belum ada'], array_slice($list['rows'][93], 11));
 
         $this->assertSame([$manual], $catalog->draftIds('id'));
         $this->assertSame(1, $catalog->approveDrafts('id', 5));
@@ -294,8 +294,8 @@ final class NarrationImporterTest extends CIUnitTestCase
         $this->assertSame(['intro-05', 'kenal-magelang-02'], $id['created']);
         $this->assertSame(['intro-05'], $en['created']);
         $this->assertSame('catatan.txt', $id['unknown'][0]['file']);
-        $this->assertCount(86, $id['missing']);
-        $this->assertCount(87, $en['missing']);
+        $this->assertCount(89, $id['missing']);
+        $this->assertCount(90, $en['missing']);
         $this->assertContains('penutup-05', $id['missing']);
 
         $line    = $this->line(null, 'intro', 5);
@@ -446,7 +446,7 @@ final class NarrationImporterTest extends CIUnitTestCase
 
         $this->assertSame(['intro-01', 'dialog-temanggung-01'], $folder['created']);
         $this->assertSame(['peta-01'], $upload['created']);
-        $this->assertCount(86, $folder['missing']);
+        $this->assertCount(89, $folder['missing']);
         $this->assertSame(0, $this->sqlite->table('media_assets')->countAllResults());
         $this->assertSame(0, $this->sqlite->table('audio_assets')->countAllResults());
         $this->assertSame(0, $this->sqlite->table('dialogues')->where('audio_id_asset_id IS NOT NULL')->countAllResults());
@@ -518,18 +518,18 @@ final class NarrationImporterTest extends CIUnitTestCase
         $rows     = $catalog->rows();
         $progress = $catalog->progress($rows);
 
-        $this->assertSame(['total' => 88, 'approved' => 2, 'draft' => 1, 'none' => 85], $progress['id']);
-        $this->assertSame(['total' => 88, 'approved' => 0, 'draft' => 0, 'none' => 88], $progress['en']);
+        $this->assertSame(['total' => 91, 'approved' => 2, 'draft' => 1, 'none' => 88], $progress['id']);
+        $this->assertSame(['total' => 91, 'approved' => 0, 'draft' => 0, 'none' => 91], $progress['en']);
         $this->assertSame('approved', $rows[0]['audio']['id']['status']);
         $this->assertSame('none', $rows[0]['audio']['en']['status']);
 
         $groups = $catalog->groups($rows);
-        $this->assertCount(12, $groups, 'intro, peta, 3×kenal, 3×dialog, 3×tuntas, penutup');
+        $this->assertCount(13, $groups, 'intro, peta, 3×kenal, 3×dialog, 3×tuntas, penutup, peta (semua tuntas)');
         $this->assertSame('Kenali wilayah · Temanggung', $groups[2]['label']);
 
         $list = $catalog->recordingList();
         $this->assertSame(['kode_berkas', 'konteks', 'wilayah', 'urutan', 'tokoh', 'pose', 'efek', 'judul_id', 'judul_en', 'teks_id', 'teks_en', 'audio_id', 'audio_en'], $list['headers']);
-        $this->assertCount(88, $list['rows']);
+        $this->assertCount(91, $list['rows']);
         $this->assertSame(['intro-03', 'intro', null, 3, 'Narator', null, 'fog'], array_slice($list['rows'][2], 0, 7));
         $this->assertSame(['menunggu persetujuan', 'belum ada'], array_slice($list['rows'][2], 11));
 

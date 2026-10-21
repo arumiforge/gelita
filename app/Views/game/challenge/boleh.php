@@ -84,7 +84,7 @@ $labels   = ['benar' => 'Game.verdictBenar', 'salah' => 'Game.verdictSalah'];
 <div class="arena-actions">
   <button class="btn btn-primary btn-lg btn-action" id="btn-check" type="button"><span><?= esc(lang('Game.check')) ?></span> <?= icon('right') ?></button>
   <?php // Shown by challenge.js once the attempt is closed: moves on to the result screen ?>
-  <button class="btn btn-primary btn-lg btn-action" id="btn-next" type="button" hidden><span><?= esc(lang('Game.continue')) ?></span> <?= icon('right') ?></button>
+  <button <?= plate_attrs('next', 'btn-action') ?> id="btn-next" type="button" hidden><span><?= esc(lang('Game.continue')) ?></span></button>
 </div>
 <?= $this->endSection() ?>
 

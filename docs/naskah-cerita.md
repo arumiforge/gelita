@@ -49,9 +49,10 @@ Repositori sudah membawa **rekaman sintetis (TTS) bawaan** untuk ke-100 baris di
 | `level_open` | `dialog-{wilayah}-NN` | 47 | Saat wilayah baru terbuka |
 | `level_done` | `tuntas-{wilayah}-NN` | 12 | Saat wilayah tuntas |
 | `ending` | `penutup-NN` | 5 | Setelah seluruh wilayah tuntas |
-| **Total naskah** | | **88** | Durasi rekaman sekitar 12–14 menit per bahasa |
+| `map_done` | `peta-tuntas-NN` | 3 | Peta Kedu setelah seluruh wilayah tuntas (menggantikan `map_intro`) |
+| **Total naskah** | | **91** | Durasi rekaman sekitar 12–14 menit per bahasa |
 | `hunt_clue` | `petunjuk-{node}-NN` | 12 | Petunjuk Mbah Kedu di Cari Objek (`tmg-4`, `mgl-4`, `wnb-4`, masing-masing 4), di samping teks petunjuk — teks dari bank soal, bukan naskah ini |
-| **Total rekaman** | | **100** | |
+| **Total rekaman** | | **103** | |
 
 Baris `petunjuk-*` **tidak ada di naskah ini**: teksnya berasal dari bank soal, yaitu kolom pertanyaan (`prompt_id` / `prompt_en`) butir `find_object` target di [`docs/bank-soal/data/`](bank-soal/data/) (node `tmg-4`, `mgl-4`, `wnb-4`). Dibacakan Mbah Kedu. `{node}` = kode tantangan; NN = urutan petunjuk target menurut urutan butir, dimulai 01, sehingga `petunjuk-tmg-4-01` … `-04` sama dengan butir `tmg-4-a01` … `tmg-4-a04`. Benda pengecoh tidak punya petunjuk dan tidak direkam. Teks terkini ada di daftar rekaman XLSX (kelompok "Petunjuk Cari Objek"), karena admin dapat menyuntingnya di bank soal.
 
@@ -659,3 +660,30 @@ Tampil setelah seluruh wilayah tuntas, sebelum Balai Refleksi.
 **ID:** Mulai hari ini, kamulah Penjaga Lentera, Le. Kamu juga, penjelajah. Bawalah cahaya ini ke sekolahmu, ke rumahmu, dan ke mana pun kamu pergi.
 
 **EN:** From today, you are the Keeper of the Lantern, my boy. And so are you, explorer. Carry this light to your school, to your home, and wherever you go.
+
+---
+
+## 7. Narasi Peta Kedu setelah semua wilayah tuntas (`map_done`)
+
+Menggantikan narasi `map_intro` di Peta Kedu begitu kedua belas tantangan tuntas, karena Kabut Lupa sudah hilang. Bila baris ini belum ada di basis data (server lama sebelum `gelita:story:sync`), Peta Kedu tetap memutar `map_intro`.
+
+#### `peta-tuntas-01` · Jaka · pose `happy` · efek `glow`
+**Judul:** Kabut Sudah Pergi / *The Mist Is Gone*
+
+**ID:** Lihat! Kabut Lupa sudah hilang dari Dataran Kedu. Temanggung, Magelang, dan Wonosobo bercahaya lagi berkat kerja kerasmu.
+
+**EN:** Look! The Mist of Forgetting is gone from the Kedu Plain. Temanggung, Magelang, and Wonosobo shine again thanks to your hard work.
+
+#### `peta-tuntas-02` · Jaka · pose `determined`
+**Judul:** Cahaya yang Dijaga / *A Light to Keep*
+
+**ID:** Kedua belas Serpihan Cahaya sudah kembali. Sekarang tugas kita menjaga cahayanya: terus membaca dengan teliti dan memeriksa sumbernya.
+
+**EN:** All twelve Shards of Light are back. Now our job is to keep the light shining: keep reading carefully and checking the source.
+
+#### `peta-tuntas-03` · Jaka · pose `happy`
+**Judul:** Jelajahi Lagi / *Explore Again*
+
+**ID:** Kamu boleh berkeliling lagi kapan saja: baca Pustaka Kedu, lihat lagi cerita penutup, atau ulangi tantangan. Jangan lupa mampir ke Balai Refleksi, ya. Mbah Kedu ingin mendengar ceritamu!
+
+**EN:** You can look around again any time: read the Kedu Library, watch the closing story again, or replay a challenge. Don't forget to stop by the Reflection Hall. Mbah Kedu wants to hear your story!

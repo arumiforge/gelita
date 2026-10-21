@@ -69,13 +69,15 @@
  *   itu pernah didengar sampai slide terakhir ($heard, dari server).
  * - Pin dan kartu wilayah yang terbuka memutar tirai wilayah "Menuju
  *   {wilayah}…" (<template id="tpl-curtain-region">) sebelum berpindah.
- * - Semua tantangan tuntas: "Tonton penutup" di samping Balai Refleksi.
+ * - Semua tantangan tuntas: "Lihat cerita penutup", Pustaka Kedu, dan Balai Refleksi
+ *   bertumpuk di kanan bawah (owner, 21 October 2026).
  *
  * @var list<array<string, mixed>>                 $levels         + `curtain` (GameProgress::regionCurtain())
  * @var array<string, mixed>                       $progress
  * @var string                                     $unlockMode
  * @var string                                     $locale
- * @var list<array<string, mixed>>                 $story          dialogues map_intro
+ * @var list<array<string, mixed>>                 $story          dialogues map_intro, or map_done once every challenge is done
+ * @var string                                     $storyContext   `map_intro` or `map_done`
  * @var bool                                       $curtain        tampilkan tirai peta
  * @var list<string>                               $curtainAssets  URL yang dimuat tirai
  * @var array<string, list<array<string, mixed>>>  $regionIntros   dialogues region_intro per kode wilayah
@@ -269,7 +271,7 @@ $unheard  = static fn (array $l): bool => ($intros[$l['code']] ?? []) !== [] && 
   <?php else: ?>
     <?php $storyTotal = count($story); ?>
     <aside class="map-story kedu-story narrator stage-box" aria-labelledby="map-story-title"
-           data-narrator data-context="map_intro" data-prefix="peta-" data-keyboard="0"
+           data-narrator data-context="<?= esc($storyContext ?? 'map_intro', 'attr') ?>" data-prefix="peta-" data-keyboard="0"
            data-mode="<?= ! empty($curtain) ? 'external' : 'manual' ?>"<?= $plateStyle ?>>
       <h2 class="visually-hidden" id="map-story-title"><?= esc(lang('Game.mapStoryTitle')) ?></h2>
       <div class="narrator-fx" data-narrator-fx aria-hidden="true"></div>
@@ -320,12 +322,18 @@ $unheard  = static fn (array $l): bool => ($intros[$l['code']] ?? []) !== [] && 
   <?php endif ?>
 
   <?php // Page buttons right of the story, under the region panel (owner, 18 October 2026); no bottom nav bar on this page ?>
+  <?php // Once every challenge is done (owner, 21 October 2026): "Lihat cerita penutup" as the panel's opening-story link, then Pustaka Kedu as wide as Balai Refleksi, then Balai Refleksi as the owner's lettered plate ?>
   <nav class="kedu-nav stage-box<?= $allDone ? ' is-all-done' : '' ?>" aria-label="<?= esc(lang('Game.continue'), 'attr') ?>">
-    <a class="kedu-btn is-secondary" href="<?= esc(base_url('pustaka'), 'attr') ?>"><?= library_icon() ?> <span><?= esc(lang('Game.library')) ?></span></a>
     <?php if ($allDone): ?>
       <?php // The ending may be watched again any time once every region is done ?>
-      <a class="kedu-btn is-secondary" href="<?= esc(base_url('penutup'), 'attr') ?>"><?= icon('sparkle') ?> <span><?= esc(lang('Game.watchEnding')) ?></span></a>
-      <a class="kedu-btn is-primary" href="<?= esc(base_url('refleksi'), 'attr') ?>"><span><?= esc(lang('Game.reflection')) ?></span></a>
+      <a class="kedu-opening kedu-ending" href="<?= esc(base_url('penutup'), 'attr') ?>">
+        <span class="kedu-opening-icon" aria-hidden="true"><?= icon('play') ?></span>
+        <span><?= esc(lang('Game.watchEnding')) ?></span>
+      </a>
+    <?php endif ?>
+    <a class="kedu-btn is-secondary" href="<?= esc(base_url('pustaka'), 'attr') ?>"><?= library_icon() ?> <span><?= esc(lang('Game.library')) ?></span></a>
+    <?php if ($allDone): ?>
+      <?= picture_link('reflection', base_url('refleksi'), lang('Game.reflection'), 'kedu-reflection') ?>
     <?php endif ?>
   </nav>
   </div>

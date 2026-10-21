@@ -87,6 +87,8 @@ $firstBg   = $slides === [] ? null : slide_bg_src($slides[0]);
         'prefix'   => 'slide-',
         'finalUrl' => base_url('intro/selesai'),
         'final'    => lang('Game.startJourney'),
+        // The owner's mountain plate (21 October 2026)
+        'finalPlate' => 'enter',
     ]) ?>
 
     <?= component('narrator-controls', ['nextLabel' => true]) ?>

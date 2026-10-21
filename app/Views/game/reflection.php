@@ -7,6 +7,13 @@
  * (radio bawaan, dapat dipakai dengan keyboard) + empat pertanyaan terbuka,
  * minimal dua terisi — diperiksa ulang server.
  *
+ * Redesign (owner, 21 October 2026): the left column is a navy card with a
+ * thin gold edge (as the Pustaka Kedu cards). Its heading is the owner's
+ * lettered Balai Refleksi plate; Mbah Kedu speaks from his round avatar
+ * (`ui.kedu-avatar`, never a pose frame) with plain words and no name line,
+ * since it is clearly him; the per-region and per-challenge bars run on the
+ * bronze track (`loading-track.webp`).
+ *
  * @var array<string, mixed>       $journey
  * @var array<string, mixed>|null  $existing
  * @var array<string, string>      $errors
@@ -14,6 +21,11 @@
  */
 $questions = ['liked_most', 'hardest_part', 'new_learning', 'suggestion'];
 $rating    = (int) old('rating');
+$plate     = 'ui/btn-reflection' . ($locale === 'en' ? '-en' : '') . '.webp';
+$plateSize = is_file(FCPATH . 'assets/' . $plate) ? @getimagesize(FCPATH . 'assets/' . $plate) : false;
+$track     = is_file(FCPATH . 'assets/ui/loading-track.webp')
+    ? ' style="--loading-track: url(&quot;' . esc(asset_url_versioned('ui/loading-track.webp'), 'attr') . '&quot;)"'
+    : '';
 ?>
 <?= $this->extend('layouts/game') ?>
 
@@ -21,15 +33,21 @@ $rating    = (int) old('rating');
 <?= $this->section('background') ?><?= media_key_src('bg.reflection') ?? media_key_src('bg.map') ?? '' ?><?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<section class="reflection" data-screen="reflection">
+<section class="reflection" data-screen="reflection"<?= $track ?>>
   <?php // Kiri 32, 72, 520 × 576: ringkasan + Mbah Kedu; kanan 576, 72, 672 × 576: formulir, Kirim tetap di bawah (Dok 3 §4) ?>
-  <aside class="panel reflection-side stage-box stage-scroll">
+  <aside class="reflection-side stage-box stage-scroll">
   <header class="reflection-hero">
-    <?= component('character', ['character' => 'mbah_kedu', 'pose' => 'smile', 'showName' => true]) ?>
-    <div>
-      <span class="eyebrow"><?= esc(lang('Game.reflection')) ?></span>
-      <h1><?= esc(lang('Game.reflectionTitle')) ?></h1>
-      <?= component('narration', ['text' => lang('Game.reflectionLead'), 'speaker' => 'mbah_kedu']) ?>
+    <h1 class="reflection-plate">
+      <?php if ($plateSize !== false): ?>
+        <img src="<?= esc(asset_url_versioned($plate), 'attr') ?>" alt="<?= esc(lang('Game.reflection'), 'attr') ?>" width="<?= $plateSize[0] ?>" height="<?= $plateSize[1] ?>" decoding="async" draggable="false">
+      <?php else: ?>
+        <?= esc(lang('Game.reflection')) ?>
+      <?php endif ?>
+    </h1>
+    <p class="reflection-title"><?= esc(lang('Game.reflectionTitle')) ?></p>
+    <div class="reflection-speaker">
+      <span class="reflection-avatar"><?= component('partials/kedu-portrait', ['src' => media_key_src('ui.kedu-avatar'), 'name' => lang('Game.char_mbah_kedu')]) ?></span>
+      <p class="reflection-words"><?= esc(lang('Game.reflectionLead')) ?></p>
     </div>
   </header>
 
@@ -41,7 +59,7 @@ $rating    = (int) old('rating');
   </div>
 
   <div class="reflection-bars">
-    <section class="panel">
+    <section>
       <h2><?= esc(lang('Game.perRegion')) ?></h2>
       <ul class="bar-list">
         <?php foreach ($journey['regions'] as $row): ?>
@@ -53,7 +71,7 @@ $rating    = (int) old('rating');
         <?php endforeach ?>
       </ul>
     </section>
-    <section class="panel">
+    <section>
       <h2><?= esc(lang('Game.perEngine')) ?></h2>
       <ul class="bar-list">
         <?php foreach ($journey['engines'] as $row): ?>
@@ -77,7 +95,7 @@ $rating    = (int) old('rating');
 
   </aside>
 
-  <div class="panel-parchment reflection-form stage-box">
+  <div class="reflection-form stage-box">
     <h2><?= icon('message') ?> <?= esc(lang('Game.feedbackTitle')) ?></h2>
 
     <?php if ($existing !== null): ?>

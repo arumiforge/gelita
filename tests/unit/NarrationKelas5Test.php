@@ -8,7 +8,8 @@ use Tests\Support\Database\GradeFiveWorld;
 
 /**
  * Rekaman narasi sesudah perombakan kelas 5 (Dok 2 §11.2): 88 baris naskah
- * + 12 petunjuk Cari Objek (tmg-4, mgl-4, wnb-4 masing-masing 4) = 100
+ * + 12 petunjuk Cari Objek (tmg-4, mgl-4, wnb-4 masing-masing 4) = 100; since
+ * 21 October 2026 three more lines (`map_done`, Peta Kedu once all is done) = 103
  * rekaman per bahasa, tanpa sisa petunjuk lama `petunjuk-tmg-4-05…08`.
  * Since 17 October 2026 no recording ships with the repository (voice-over).
  *
@@ -39,7 +40,7 @@ final class NarrationKelas5Test extends CIUnitTestCase
         $lines = (new NarrationImporter($this->conn))->lines();
         $clues = array_filter($lines, static fn (array $line): bool => $line['context_code'] === NarrationImporter::CLUE_CONTEXT);
 
-        $this->assertCount(100, $lines);
+        $this->assertCount(103, $lines);
         $this->assertCount(12, $clues);
 
         $expected = [];

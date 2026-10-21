@@ -26,6 +26,7 @@ $contextNames   = [
     'intro'        => ['Cerita pembuka', 'Slide cerita yang dilihat siswa sebelum membuka peta Kedu untuk pertama kali.'],
     'map_intro'    => ['Narasi peta', 'Ucapan Jaka saat peta Kedu pertama kali terbuka.'],
     'ending'       => ['Penutup', 'Slide cerita setelah semua wilayah tuntas, sebelum siswa masuk Balai Refleksi.'],
+    'map_done'     => ['Narasi peta (semua tuntas)', 'Ucapan Jaka di peta Kedu setelah semua wilayah tuntas; menggantikan narasi peta karena Kabut Lupa sudah hilang.'],
     'region_intro' => ['Kenali wilayah', 'Cerita Mbah Kedu saat siswa menekan ikon lentera wilayah ini di peta.'],
     'level_open'   => ['Dialog masuk', 'Percakapan yang tampil saat siswa pertama kali masuk wilayah ini; satu slide untuk satu ucapan.'],
     'level_done'   => ['Wilayah tuntas', 'Percakapan setelah siswa menyelesaikan tantangan kelima di wilayah ini.'],

@@ -48,6 +48,8 @@ $firstBg   = $slides === [] ? null : slide_bg_src($slides[0]);
         'prefix'   => 'slide-',
         'finalUrl' => base_url('refleksi'),
         'final'    => lang('Game.reflection'),
+        // The owner's lettered Balai Refleksi plate (21 October 2026)
+        'finalPlate' => 'reflection',
     ]) ?>
 
     <?= component('narrator-controls', ['nextLabel' => true]) ?>

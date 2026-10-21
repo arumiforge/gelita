@@ -50,6 +50,9 @@ final class RegionStoryTest extends CIUnitTestCase
     /** `{context}.{sequence}` → media id of that test slide's own background (ids in mediaMap()) */
     public static array $slideBackgrounds = [];
 
+    /** Contexts lines() returns for Peta Kedu's story bar (empty: the plain balloon) */
+    public static array $mapContexts = [];
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -97,6 +100,7 @@ final class RegionStoryTest extends CIUnitTestCase
         });
 
         self::$slideBackgrounds = [];
+        self::$mapContexts      = [];
         $session                = new GameSession();
         $session->injectRawData(['id' => 9, 'participant_id' => 5, 'locale' => 'id', 'status' => 'active']);
 
@@ -170,7 +174,7 @@ final class RegionStoryTest extends CIUnitTestCase
         $all = ['temanggung' => 'completed', 'magelang' => 'completed', 'wonosobo' => 'completed'];
 
         $page = $this->dialogue($all, allDone: true)->done('wonosobo');
-        $this->assertStringContainsString($this->href('penutup') . ' data-slide-final>' . esc(lang('Game.continue')), $page);
+        $this->assertStringContainsString($this->href('penutup') . ' data-slide-final><span>' . esc(lang('Game.continue')), $page);
         $this->assertStringNotContainsString('tpl-curtain-region', $page, 'wilayah terakhir tanpa tirai wilayah');
 
         // Mode unlock `free`: wilayah terakhir tuntas lebih dulu → kembali ke peta, bukan penutup
@@ -315,7 +319,8 @@ final class RegionStoryTest extends CIUnitTestCase
         $this->assertStringContainsString('data-narrator="next" aria-label="' . esc(lang('Game.continue'), 'attr') . '"><span class="narrator-next-label"', $page);
 
         // The last line's main button sits in the middle of the page
-        $this->assertMatchesRegularExpression('/id="line-' . $total . '".*?<div class="cine-final">\s*<a class="btn btn-primary btn-lg" ' . preg_quote($this->href('wilayah/magelang'), '/') . ' data-slide-final>/s', $page);
+        // On the owner's mountain plate (21 October 2026)
+        $this->assertMatchesRegularExpression('/id="line-' . $total . '".*?<div class="cine-final">\s*<a ' . preg_quote(plate_attrs('enter', 'is-final'), '/') . ' ' . preg_quote($this->href('wilayah/magelang'), '/') . ' data-slide-final>/s', $page);
 
         // Only Lewati at the bottom; Peta Kedu lives in the menu
         $nav = substr($page, (int) strpos($page, '<nav class="nav-bar"'));
@@ -417,12 +422,13 @@ final class RegionStoryTest extends CIUnitTestCase
         $head    = substr($overlay, (int) strpos($overlay, '<header class="kenal-head">'));
         $head    = substr($head, 0, (int) strpos($head, '</header>'));
 
-        // Band: Back (no cross, on the navy plate) and the logo; the title is under the band, not in it
+        // Band: Back (no cross, on the navy plate) and, since 21 October 2026 (owner), the title in
+        // the logo's place; no GELITA logo
         $this->assertStringContainsString('class="btn btn-quiet kenal-back" href="' . esc('#region-temanggung', 'attr') . '" data-kenal-close', $head);
-        $this->assertStringContainsString('<img class="kenal-logo" src="' . esc(base_url('assets/uploads/ui.logo-hero.webp?v=l1'), 'attr') . '"', $head);
+        $this->assertStringNotContainsString('kenal-logo', $overlay);
+        $this->assertStringNotContainsString('ui.logo-hero', $overlay);
         $this->assertStringNotContainsString('icon-btn kenal-close', $overlay);
-        $this->assertStringNotContainsString('<h2', $head);
-        $this->assertMatchesRegularExpression('/<\/header>\s*<div class="kenal-heading">\s*<h2 class="kenal-title" id="kenal-temanggung-title">' . preg_quote(esc(lang('Game.kenalTitle', ['Temanggung'])), '/') . '<\/h2>\s*<span class="kenal-rule" aria-hidden="true">\s*<svg class="kenal-ornament"/', $overlay);
+        $this->assertMatchesRegularExpression('/data-kenal-close>.*?<\/a>\s*<div class="kenal-heading">\s*<h2 class="kenal-title" id="kenal-temanggung-title">' . preg_quote(esc(lang('Game.kenalTitle', ['Temanggung'])), '/') . '<\/h2>\s*<span class="kenal-rule" aria-hidden="true">\s*<svg class="kenal-ornament"/s', $head);
 
         // The plates (shipped pictures) and the HUD skin reach the CSS as custom properties
         foreach (['kenal-plate-gold', 'kenal-plate-navy'] as $plate) {
@@ -449,7 +455,7 @@ final class RegionStoryTest extends CIUnitTestCase
         $this->media = [];
         $plain       = $this->map(['temanggung' => 'open', 'magelang' => 'locked', 'wonosobo' => 'locked'], heard: []);
         $this->assertStringContainsString('<span class="kedu-portrait-initial">M</span>', $plain);
-        $this->assertStringContainsString('<span class="hud-brand kenal-logo">GELITA</span>', $plain);
+        $this->assertStringNotContainsString('kenal-logo', $plain);
         $this->assertStringNotContainsString('--skin-hud', $plain);
 
         $css = (string) file_get_contents(FCPATH . 'assets/css/cinematic.css');
@@ -708,12 +714,52 @@ final class RegionStoryTest extends CIUnitTestCase
     {
         $page = $this->map(['temanggung' => 'completed', 'magelang' => 'completed', 'wonosobo' => 'completed'], heard: [1, 2, 3], allDone: true);
 
-        $this->assertStringContainsString('<nav class="kedu-nav stage-box is-all-done"', $page);
-        $this->assertMatchesRegularExpression('/' . preg_quote($this->href('penutup'), '/') . '><svg[^>]*>.*?<\/svg> <span>' . preg_quote(lang('Game.watchEnding'), '/') . '/s', $page);
-        $this->assertStringContainsString('<a class="kedu-btn is-primary" ' . $this->href('refleksi') . '><span>' . lang('Game.reflection') . '</span></a>', $page);
+        // Owner, 21 October 2026: "Lihat cerita penutup" as the opening-story link, then Pustaka Kedu,
+        // then the lettered Balai Refleksi plate
+        $nav = substr($page, (int) strpos($page, '<nav class="kedu-nav stage-box is-all-done"'));
+        $nav = substr($nav, 0, (int) strpos($nav, '</nav>'));
+        $this->assertNotSame('', $nav);
+        $this->assertSame('Lihat cerita penutup', lang('Game.watchEnding'));
+        $this->assertMatchesRegularExpression('/<a class="kedu-opening kedu-ending" ' . preg_quote($this->href('penutup'), '/') . '>\s*<span class="kedu-opening-icon" aria-hidden="true"><svg[^>]*>.*?<\/svg><\/span>\s*<span>' . preg_quote(lang('Game.watchEnding'), '/') . '<\/span>/s', $nav);
+        $this->assertMatchesRegularExpression('/kedu-ending.*?<a class="kedu-btn is-secondary" ' . preg_quote($this->href('pustaka'), '/') . '>.*?<a class="btn-art kedu-reflection" ' . preg_quote($this->href('refleksi'), '/') . '><img src="[^"]*btn-reflection\.webp[^"]*" alt="' . preg_quote(esc(lang('Game.reflection'), 'attr'), '/') . '"/s', $nav);
+        $this->assertFileExists(FCPATH . 'assets/ui/btn-reflection.webp');
+        $this->assertFileExists(FCPATH . 'assets/ui/btn-reflection-en.webp');
 
         Services::resetSingle('renderer');
         $this->assertStringNotContainsString(base_url('penutup'), $this->map(['temanggung' => 'completed'], heard: []));
+    }
+
+    /**
+     * Owner, 21 October 2026: once every challenge is done the Mist of Forgetting is gone, so
+     * Jaka's Peta Kedu lines come from `map_done`; until then, or when a server has no such
+     * lines yet, they stay `map_intro`.
+     */
+    public function testMapNarrationSwitchesOnceEverythingIsDone(): void
+    {
+        $all = ['temanggung' => 'completed', 'magelang' => 'completed', 'wonosobo' => 'completed'];
+
+        self::$mapContexts = ['map_intro', 'map_done'];
+        $done              = $this->map($all, heard: [1, 2, 3], allDone: true);
+        $this->assertStringContainsString('data-context="map_done" data-prefix="peta-"', $done);
+        $this->assertStringContainsString('Baris map_done.', $done);
+        $this->assertStringNotContainsString('Baris map_intro.', $done);
+
+        Services::resetSingle('renderer');
+        $playing = $this->map(['temanggung' => 'completed', 'magelang' => 'open', 'wonosobo' => 'locked'], heard: []);
+        $this->assertStringContainsString('data-context="map_intro" data-prefix="peta-"', $playing);
+        $this->assertStringNotContainsString('Baris map_done.', $playing);
+
+        Services::resetSingle('renderer');
+        self::$mapContexts = ['map_intro'];
+        $older             = $this->map($all, heard: [1, 2, 3], allDone: true);
+        $this->assertStringContainsString('data-context="map_intro" data-prefix="peta-"', $older, 'no map_done lines yet: the old lines stay');
+
+        // The new context is a global one, with its own recording codes and panel label
+        $this->assertContains('map_done', config('Gelita')->dialogueContexts['global']);
+        $this->assertNotContains('map_done', config('Gelita')->dialogueBackgroundContexts);
+        $this->assertSame('peta-tuntas-03', App\Libraries\NarrationImporter::codeFor('map_done', null, 3));
+        $this->assertNull(App\Libraries\NarrationImporter::codeFor('map_done', 'temanggung', 1));
+        $this->assertArrayHasKey('map_done', App\Libraries\NarrationCatalog::CONTEXT_LABELS);
     }
 
     // ------------------------------------------------------------ layar selesai
@@ -746,7 +792,15 @@ final class RegionStoryTest extends CIUnitTestCase
         $html = component('curtain', ['kind' => 'challenge', 'engine' => 'cari', 'eyebrow' => 'Cari Objek', 'title' => 'Temukan Budaya', 'lead' => lang('Game.challengeLead_cari')]);
 
         $this->assertMatchesRegularExpression('/data-curtain-layer="challenge"\s+data-tap="0"\s+data-min-ms="1200" data-max-ms="1500" data-skip="1"\s+data-engine="cari"/', $html);
-        $this->assertStringContainsString('class="cc-art cc-cari"', $html);
+        // Owner, 21 October 2026: the engine's card in the scarf frame, the number on its ring,
+        // the title on the navy head plate; the CSS animation only without the pictures
+        $numbered = component('curtain', ['kind' => 'challenge', 'engine' => 'cari', 'eyebrow' => 'Cari Objek', 'title' => 'Temukan Budaya', 'number' => 4]);
+        $this->assertStringContainsString('<img class="curtain-card-art" src="' . esc(asset_url_versioned('ui/node-card-cari.webp'), 'attr') . '"', $html);
+        $this->assertStringContainsString('<b>4</b>', $numbered);
+        $this->assertStringNotContainsString('class="curtain-card-no"', $html, 'no number given, no ring');
+        $this->assertStringNotContainsString('class="cc-art', $html);
+        $this->assertStringContainsString('<h2 class="curtain-title has-plate"', $html);
+        $this->assertStringContainsString("'number'  => \$sequence", (string) file_get_contents(APPPATH . 'Views/game/mission-brief.php'));
         $this->assertStringContainsString('Temukan Budaya', $html);
         $this->assertStringContainsString(esc(lang('Game.curtainSkip')), $html);
 
@@ -852,6 +906,9 @@ final class RegionStoryTest extends CIUnitTestCase
                 $row(4, 'jaka', 'bow', null, 'Janji Jaka', 'Aku akan terus membaca.'),
                 $row(5, 'mbah_kedu', 'smile', null, 'Penjaga Lentera', 'Kamulah Penjaga Lentera.'),
             ],
+            'map_intro', 'map_done' => in_array($context, self::$mapContexts, true) ? [
+                $row(1, 'jaka', 'idle', 'fog', $context === 'map_done' ? 'Kabut Sudah Pergi' : 'Dataran Kedu', 'Baris ' . $context . '.'),
+            ] : [],
             default => [],
         };
     }

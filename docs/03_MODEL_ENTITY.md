@@ -548,8 +548,8 @@ Ukuran piksel wajib per pola `asset_key` ada di `Config\Gelita::$assetSizes`.
 
 ### `AudioAssetModel`
 
-Rekaman narasi dan suara, masing-masing menunjuk satu berkas `media_assets` (100 rekaman narasi
-per bahasa: 88 baris cerita + 12 petunjuk Cari Objek).
+Rekaman narasi dan suara, masing-masing menunjuk satu berkas `media_assets` (103 rekaman narasi
+per bahasa: 91 baris cerita + 12 petunjuk Cari Objek).
 
 - allowedFields: `media_asset_id`, `locale`, `character_code`, `context_code`, `transcript`,
   `production_method`, `voice_profile`, `duration_ms`, `approval_status`, `approved_by`, `approved_at`,

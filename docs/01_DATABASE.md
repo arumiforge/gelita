@@ -519,7 +519,7 @@ Minimal salah satu dari `challenge_node_id` / `challenge_item_id` wajib terisi; 
 
 #### `dialogues`
 
-Narasi dan dialog cerita: 88 baris dari `app/Database/Seeds/data/story.php` (salinan persis `docs/naskah-cerita.md`), disisipkan `ContentSeeder::seedDialogues()`.
+Narasi dan dialog cerita: 91 baris dari `app/Database/Seeds/data/story.php` (salinan persis `docs/naskah-cerita.md`), disisipkan `ContentSeeder::seedDialogues()`.
 
 | Kolom | Tipe | Null | Bawaan | Arti |
 |---|---|---|---|---|
@@ -626,7 +626,7 @@ Rekaman suara bertranskrip: narasi cerita, petunjuk Cari Objek, dan rekaman ungg
 | approved_at | DATETIME(6) | ya | NULL | |
 | version | VARCHAR(20) | tidak | `1` | |
 
-Tabel ini tanpa `created_at`/`updated_at`. Hanya rekaman `approved` dengan berkas aktif yang dikirim ke pemain (`audio_src()`). Rekaman narasi pengisi suara (100 per bahasa: 88 baris cerita + 12 petunjuk Cari Objek; rekaman TTS bawaan dihapus 17 Oktober 2026) diunggah di panel atau didaftarkan `php spark gelita:narration:import` sebagai `draft`, lalu disetujui admin di panel **Rekaman narasi**. Importer menautkan rekaman ke `dialogues.audio_id_asset_id` / `audio_en_asset_id` dan, untuk petunjuk `petunjuk-{node}-NN`, ke `challenge_items.audio_prompt_id` / `audio_prompt_en_id`.
+Tabel ini tanpa `created_at`/`updated_at`. Hanya rekaman `approved` dengan berkas aktif yang dikirim ke pemain (`audio_src()`). Rekaman narasi pengisi suara (103 per bahasa: 91 baris cerita + 12 petunjuk Cari Objek; rekaman TTS bawaan dihapus 17 Oktober 2026) diunggah di panel atau didaftarkan `php spark gelita:narration:import` sebagai `draft`, lalu disetujui admin di panel **Rekaman narasi**. Importer menautkan rekaman ke `dialogues.audio_id_asset_id` / `audio_en_asset_id` dan, untuk petunjuk `petunjuk-{node}-NN`, ke `challenge_items.audio_prompt_id` / `audio_prompt_en_id`.
 
 #### `asset_packages`
 
@@ -1148,7 +1148,7 @@ Instalasi baru: `php spark migrate`, lalu `GELITA_ADMIN_PASSWORD='…' php spark
 | `ResearchStudySeeder` | `research_studies`: `STUDI-KEDU-KELAS5-2026`, `active`, `retention_days = 1825`, `unlock_mode = sequential` |
 | `LevelSeeder` | `levels`: tiga wilayah |
 | `MediaAssetSeeder` | `media_assets`: slot aset tetap (latar, tokoh, peta, lencana, UI, musik, efek suara, berkas narasi); slot tanpa berkas `is_active = 0` |
-| `ContentSeeder` | `challenge_nodes`: 12 tantangan dengan judul sementara dan `config_json` bawaan; `dialogues`: 88 baris cerita |
+| `ContentSeeder` | `challenge_nodes`: 12 tantangan dengan judul sementara dan `config_json` bawaan; `dialogues`: 91 baris cerita |
 | `KontenKelas5Seeder` | Impor `docs/pustaka/gelita-pustaka.xlsx` (Pustaka) dan `docs/bank-soal/gelita-bank-soal-kelas5.xlsx` (judul tantangan, variasi, bacaan, soal, petunjuk, slot gambar), lalu 45 gambar contoh |
 
 Jumlah baris yang diharapkan sesudahnya:
@@ -1160,11 +1160,11 @@ Jumlah baris yang diharapkan sesudahnya:
 | `challenge_items` | 126 (108 `scorable = 1`, 18 benda pengecoh) |
 | `reading_passages` | 9 |
 | `hints` | 36 |
-| `dialogues` | 88 |
+| `dialogues` | 91 |
 | `library_pages` / `library_media` | 30 / 48 |
 | `media_assets` dengan `is_placeholder = 1` | 45 |
 | `learning_indicators` / `research_studies` / `game_releases` / `staff_users` | 3 / 1 / 1 / 1 |
-| `audio_assets` | 0; 200 (100 per bahasa) setelah `php spark gelita:narration:import` |
+| `audio_assets` | 0; 206 (103 per bahasa) setelah `php spark gelita:narration:import` |
 | Data penelitian (kelompok D) | 0 |
 
 Kueri pemeriksaan:

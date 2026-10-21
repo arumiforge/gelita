@@ -136,7 +136,7 @@ foreach (service('contentRepository')->levels() as $entity) {
 <?php
 $nav = [['label' => lang('Game.mapKedu'), 'href' => base_url('peta'), 'style' => 'quiet', 'arrow' => 'left']];
 if ($canReflect) {
-    $nav[] = ['label' => lang('Game.reflection'), 'href' => base_url('refleksi'), 'style' => 'primary', 'arrow' => 'right'];
+    $nav[] = ['label' => lang('Game.reflection'), 'href' => base_url('refleksi'), 'picture' => 'reflection'];
 }
 ?>
 <?= component('nav-bar', ['nav' => $nav]) ?>

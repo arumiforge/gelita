@@ -135,7 +135,7 @@ final class ResultScreenTest extends CIUnitTestCase
         $this->assertStringNotContainsString('class="nav-bar"', $page);
         $this->assertMatchesRegularExpression(
             '/<\/header>\s*<nav class="result-list-actions"[^>]*>\s*<a class="btn btn-quiet" href="' . preg_quote(base_url('wilayah/temanggung'), '/')
-            . '">.*?<\/a>\s*<a class="btn btn-primary btn-lg" href="' . preg_quote(base_url('misi/temanggung/1'), '/') . '">/s',
+            . '">.*?<\/a>\s*<a ' . preg_quote(plate_attrs('back'), '/') . ' href="' . preg_quote(base_url('misi/temanggung/1'), '/') . '"><span>' . preg_quote(esc(lang('Game.retry')), '/') . '<\/span>/s',
             $page,
         );
         $this->assertStringContainsString('<section class="result-best" aria-labelledby="result-best-title">', $page);

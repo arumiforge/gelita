@@ -9,10 +9,13 @@
  * Tombol berpanah kiri ditempatkan di sisi kiri, sisanya di kanan.
  * Layar tantangan mengirim `$nav = []` dan memakai tombol keluar berkonfirmasi.
  * `icon` = `library` draws the Pustaka book picture (library_icon()) instead of a line icon.
+ * Owner, 21 October 2026: a button with `arrow` sits on the owner's carved plate
+ * (plate_attrs(): `left` → the back plate, `right` → the next plate), whose medallion
+ * draws the arrow; `picture` = `reflection` draws the lettered Balai Refleksi plate.
  * `attrs` (opsional) menambah atribut `aria-*`/`data-*` pada tautan, mis.
  * tombol Pustaka wilayah yang masih terkunci (map-level.php).
  *
- * @var list<array{label: string, href: string, style?: string, arrow?: string, icon?: string, attrs?: array<string, string>}> $nav
+ * @var list<array{label: string, href: string, style?: string, arrow?: string, icon?: string, picture?: string, attrs?: array<string, string>}> $nav
  */
 $nav   = $nav ?? [];
 $start = array_values(array_filter($nav, static fn (array $b): bool => ($b['arrow'] ?? '') === 'left'));
@@ -28,6 +31,14 @@ $button = static function (array $b): string {
         if (preg_match('/^(aria|data)-[a-z0-9-]+$/', (string) $name)) {
             $extra .= ' ' . $name . '="' . esc((string) $value, 'attr') . '"';
         }
+    }
+
+    if (($b['picture'] ?? '') !== '') {
+        return picture_link((string) $b['picture'], $b['href'], $b['label'], 'nav-picture', $extra);
+    }
+
+    if ($arrow === 'left' || $arrow === 'right') {
+        return '<a ' . plate_attrs($arrow === 'left' ? 'back' : 'next') . ' href="' . esc($b['href'], 'attr') . '"' . $extra . '><span>' . esc($b['label']) . '</span></a>';
     }
 
     $html = '<a class="btn btn-' . $style . ($style === 'primary' ? ' btn-lg' : '') . '" href="' . esc($b['href'], 'attr') . '"' . $extra . '>';

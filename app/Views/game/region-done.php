@@ -36,11 +36,12 @@ if ($nextRegion !== null && $nextRegion['status'] !== 'locked') {
         'url'   => base_url($nextRegion['entry']),
         'label' => lang('Game.goToRegion', [$nextRegion['name']]),
         'attrs' => region_curtain_attrs($nextRegion['curtain'] ?? null),
+        'plate' => 'next',
     ];
 } elseif ($nextRegion === null && $allCompleted) {
-    $final = ['url' => base_url('penutup'), 'label' => lang('Game.continue')];
+    $final = ['url' => base_url('penutup'), 'label' => lang('Game.continue'), 'plate' => 'next'];
 } else {
-    $final = ['url' => base_url('peta'), 'label' => lang('Game.mapKedu'), 'icon' => 'map'];
+    $final = ['url' => base_url('peta'), 'label' => lang('Game.mapKedu'), 'icon' => 'map', 'plate' => 'next'];
 }
 
 if ($hasLibrary) {

@@ -67,11 +67,11 @@ final class NarrationPagesTest extends CIUnitTestCase
         $result->assertOK();
         $html = html_entity_decode((string) $result->getBody(), ENT_QUOTES | ENT_HTML5);
 
-        $this->assertSame(88, substr_count($html, 'Sunting</a>'));
+        $this->assertSame(91, substr_count($html, 'Sunting</a>'));
         $this->assertStringContainsString('<code>kenal-wonosobo-04</code>', $html);
         $this->assertStringContainsString('Kenali wilayah · Magelang', $html);
-        $this->assertStringContainsString('0/88 disetujui, 1 menunggu persetujuan, 87 belum ada', $html);
-        $this->assertStringContainsString('1/88 disetujui, 0 menunggu persetujuan, 87 belum ada', $html);
+        $this->assertStringContainsString('0/91 disetujui, 1 menunggu persetujuan, 90 belum ada', $html);
+        $this->assertStringContainsString('1/91 disetujui, 0 menunggu persetujuan, 90 belum ada', $html);
         $this->assertStringContainsString('admin/konten/dialog/0?konteks=intro#slide-1', $html);
         $this->assertStringContainsString('audio-preview-sm', $html);
         // Tombol massal hanya untuk bahasa yang punya draft
@@ -89,20 +89,20 @@ final class NarrationPagesTest extends CIUnitTestCase
 
         $html = html_entity_decode((string) $this->asAdmin()->call(Method::GET, 'admin/konten/narasi')->getBody(), ENT_QUOTES | ENT_HTML5);
 
-        // 88 baris naskah + 4 petunjuk target tmg-4 (Dok 2 §11.2: 4 per node cari)
-        $this->assertSame(92, substr_count($html, 'Sunting</a>'));
+        // 91 baris naskah + 4 petunjuk target tmg-4 (Dok 2 §11.2: 4 per node cari)
+        $this->assertSame(95, substr_count($html, 'Sunting</a>'));
         $this->assertStringContainsString('Petunjuk Cari Objek · Temanggung (tmg-4)', $html);
         $this->assertStringContainsString('<code>petunjuk-tmg-4-04</code>', $html);
         $this->assertStringNotContainsString('petunjuk-tmg-4-05', $html, 'pengecoh tanpa petunjuk');
         $this->assertStringContainsString('Temukan ikan uceng, ikan sungai kecil yang menjadi makanan khas Temanggung.', $html);
         $this->assertStringContainsString('admin/konten/node/' . $nodeId . '#item-' . $itemId, $html);
         $this->assertStringContainsString('Teks petunjuk berasal dari bank soal', $html);
-        $this->assertStringContainsString('0/92 disetujui, 1 menunggu persetujuan, 91 belum ada', $html);
+        $this->assertStringContainsString('0/95 disetujui, 1 menunggu persetujuan, 94 belum ada', $html);
         $this->assertStringContainsString('Setujui semua rekaman bahasa Indonesia (1)', $html);
 
         $checklist = html_entity_decode((string) $this->asAdmin()->call(Method::GET, 'admin/media/kelengkapan')->getBody(), ENT_QUOTES | ENT_HTML5);
-        $this->assertStringContainsString('0/92 disetujui, 1 menunggu persetujuan, 91 belum ada', $checklist);
-        $this->assertStringContainsString('0/92 disetujui, 0 menunggu persetujuan, 92 belum ada', $checklist);
+        $this->assertStringContainsString('0/95 disetujui, 1 menunggu persetujuan, 94 belum ada', $checklist);
+        $this->assertStringContainsString('0/95 disetujui, 0 menunggu persetujuan, 95 belum ada', $checklist);
     }
 
     public function testTeacherCannotOpenNarrationPages(): void
@@ -228,7 +228,7 @@ final class NarrationPagesTest extends CIUnitTestCase
         // Nothing left: no button, a second run changes nothing, unknown language rejected
         $html = html_entity_decode((string) $this->asAdmin()->call(Method::GET, 'admin/konten/narasi')->getBody(), ENT_QUOTES | ENT_HTML5);
         $this->assertStringNotContainsString('Batalkan semua rekaman bahasa Indonesia', $html);
-        $this->assertStringContainsString('0/92 disetujui, 0 menunggu persetujuan, 92 belum ada', $html);
+        $this->assertStringContainsString('0/95 disetujui, 0 menunggu persetujuan, 95 belum ada', $html);
         $this->assertStringContainsString('admin/konten/node/' . $nodeId, $html);
         $this->asAdmin()->call(Method::POST, 'admin/konten/narasi/batalkan', ['locale' => 'id'] + self::CSRF)
             ->assertSessionHas('message', 'Tidak ada rekaman bahasa Indonesia yang perlu dibatalkan.');
@@ -243,13 +243,13 @@ final class NarrationPagesTest extends CIUnitTestCase
         $pdf = new App\Libraries\NarrationScriptPdf();
 
         $id = $pdf->html('id');
-        $this->assertSame(92, substr_count($id, '<td class="tick">☐</td>'), '88 script lines + 4 clues of tmg-4');
+        $this->assertSame(95, substr_count($id, '<td class="tick">☐</td>'), '91 script lines + 4 clues of tmg-4');
         $this->assertStringContainsString('<td class="code">intro-01</td>', $id);
         $this->assertStringContainsString('Petunjuk Cari Objek · Temanggung (tmg-4) · 4 baris', $id);
         $this->assertStringContainsString('<b>Mbah Kedu</b>', $id);
         $this->assertStringContainsString('Teks bahasa Indonesia', $id);
         $this->assertStringNotContainsString('Teks bahasa Inggris', $id);
-        $this->assertStringContainsString('92 baris (', $id);
+        $this->assertStringContainsString('95 baris (', $id);
         $this->assertLessThan(strpos($id, '>penutup-01<'), strpos($id, '>intro-01<'), 'game order');
 
         $intro = $this->sqlite->table('dialogues')->where(['level_id' => null, 'context_code' => 'intro', 'sequence' => 1])->get()->getRowArray();
@@ -362,7 +362,7 @@ final class NarrationPagesTest extends CIUnitTestCase
         $this->assertStringContainsString('1600 × 600 px', $html);
         $this->assertStringContainsString('700 × 900 px', $html);
         $this->assertStringContainsString('1400 × 900 px', $html, 'peta wilayah');
-        $this->assertStringContainsString('0/88 disetujui, 0 menunggu persetujuan, 88 belum ada', $html);
+        $this->assertStringContainsString('0/91 disetujui, 0 menunggu persetujuan, 91 belum ada', $html);
         $this->assertStringContainsString('admin/media?asset_key=ui.logo-hero', $html);
         $this->assertStringContainsString('admin/konten/level/2', $html);
     }

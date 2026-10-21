@@ -273,6 +273,64 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
 .btn-art:focus-visible img,
 .btn-art:active img { filter: drop-shadow(0 .25rem .625rem rgba(0, 0, 0, .45)) drop-shadow(0 0 1rem var(--glow)) brightness(1.08); }
 .btn-art:active { transform: scale(.96); }
+
+/* Carved plate buttons (owner, 21 October 2026; plate_attrs()): back (curved arrow left;
+   Kembali, Ulangi), next (arrow right; Lanjut), enter (mountain; Mulai petualangan, Masuk ke
+   {wilayah}). Drawn as a border image: the two carved ends (slices in pixels of the 160 px
+   tall picture) keep their shape at the button's height, only the plain middle stretches, so
+   the plate is as wide as its label needs. The label sits on the dark stone, clear of the
+   medallion. --plate-h sets the size; the rest follows it. */
+.btn-plate {
+  --plate-h: 4rem;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  box-sizing: border-box;
+  height: var(--plate-h);
+  min-width: calc(var(--plate-h) * (var(--cap-l) + var(--cap-r)));
+  padding: 0 calc(var(--plate-h) * var(--pad-r)) .0625em calc(var(--plate-h) * var(--pad-l));
+  border: 0 solid transparent;
+  border-image-source: var(--plate);
+  border-image-slice: 0 var(--slice-r) 0 var(--slice-l) fill;
+  border-image-width: 0 calc(var(--plate-h) * var(--cap-r)) 0 calc(var(--plate-h) * var(--cap-l));
+  border-image-repeat: stretch;
+  background: none;
+  color: #F7E3AE;
+  font-family: var(--font-display);
+  font-size: calc(var(--plate-h) * .36);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: .01em;
+  text-decoration: none;
+  text-shadow: 0 .0625rem 0 #000, 0 0 .5rem rgba(0, 0, 0, .9);
+  white-space: nowrap;
+  cursor: pointer;
+  filter: drop-shadow(0 .25rem .5rem rgba(0, 0, 0, .5));
+  transition: filter .2s, transform .15s;
+  -webkit-touch-callout: none;
+  user-select: none;
+}
+.btn-plate.is-back  { --slice-l: 262; --slice-r: 189; --cap-l: 1.6375; --cap-r: 1.18125; --pad-l: 1.12; --pad-r: .5; }
+.btn-plate.is-next  { --slice-l: 238; --slice-r: 310; --cap-l: 1.4875; --cap-r: 1.9375;  --pad-l: .55;  --pad-r: 1.12; }
+.btn-plate.is-enter { --slice-l: 310; --slice-r: 311; --cap-l: 1.9375; --cap-r: 1.94375; --pad-l: .62;  --pad-r: 1.18; }
+.btn-plate > span { min-width: 0; overflow: hidden; line-height: 1.35; text-overflow: ellipsis; }
+.btn-plate .icon { display: none; } /* the medallion already draws the arrow */
+@media (hover: hover) {
+  .btn-plate:hover { filter: drop-shadow(0 .25rem .5rem rgba(0, 0, 0, .5)) drop-shadow(0 0 .75rem var(--glow)) brightness(1.1); transform: translateY(-.125rem); }
+}
+.btn-plate:active { filter: drop-shadow(0 .25rem .5rem rgba(0, 0, 0, .5)) brightness(1.15); transform: scale(.97); }
+.btn-plate:focus-visible { outline: .1875rem solid var(--gold-300); outline-offset: .1875rem; border-radius: var(--radius-pill); }
+.btn-plate[aria-disabled="true"], .btn-plate:disabled { filter: grayscale(.8); opacity: .55; cursor: not-allowed; }
+.btn-plate[hidden] { display: none; }
+/* Sizes per place: the nav bar's 64 dp strip, the challenge action bar (56 dp), the Cari Objek side column */
+.nav-bar .btn-plate { --plate-h: 3.5rem; }
+.nav-bar .nav-picture img { height: 3.5rem; }
+.arena-actions .btn-plate.btn-action { --plate-h: 3.75rem; min-height: 0; font-size: 1.375rem; }
+.arena-actions .btn-plate.btn-action::after { content: none; }
+.hunt-side .btn-plate.hunt-next { --plate-h: 2.6875rem; width: 100%; font-size: 1.125rem; } /* 148 dp column */
+.hunt-side .btn-plate.hunt-next::after { content: ""; position: absolute; inset: -.3125rem 0; } /* 48 dp hit area */
 .btn-art:disabled { cursor: progress; opacity: .7; transform: none; }
 .login-form .form-actions { justify-content: center; }
 /* The MASUK / LOG IN plate is nearly 2:1, so its letters need the extra height */
@@ -2372,7 +2430,56 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
 }
 .kedu-city-caption b { font-size: 1.5rem; line-height: 1.12; }
 .kedu-city-caption small { margin-top: .125rem; color: #DEDACB; font-size: 1.0625rem; }
-.kedu-city[aria-current="true"] { filter: drop-shadow(0 0 .5rem rgba(67, 218, 220, .6)); }
+/* The selected city stands out (owner, 21 October 2026): it comes to the front, its medallion
+   lifts and breathes a gold halo, and a spark of light runs round and round the caption's
+   frame (a conic gradient in a ring mask, turned through the registered --orbit angle), with a
+   blurred copy as its glowing trail. Reduced motion: a still gold ring and halo. */
+@property --orbit {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+.kedu-pin:has(.kedu-city[aria-current="true"]) { z-index: 3; }
+.kedu-city[aria-current="true"] { filter: drop-shadow(0 0 .625rem rgba(255, 211, 119, .55)); }
+.kedu-city[aria-current="true"] .kedu-medal { transform: scale(1.08); }
+.kedu-city[aria-current="true"] .kedu-medal::before {
+  content: "";
+  position: absolute;
+  inset: -1.5rem;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 236, 170, .95) 0, rgba(255, 206, 102, .6) 55%, rgba(255, 196, 92, .2) 78%, transparent);
+  animation: city-halo 2.2s ease-in-out infinite;
+}
+.kedu-city-caption { position: relative; }
+.kedu-city[aria-current="true"] .kedu-city-caption::before,
+.kedu-city[aria-current="true"] .kedu-city-caption::after {
+  content: "";
+  position: absolute;
+  inset: -.75rem;
+  z-index: 1;
+  padding: .3125rem;
+  border-radius: 1.125rem;
+  background: conic-gradient(from var(--orbit), transparent 0 50%, rgba(255, 196, 92, .2) 62%, rgba(255, 221, 140, .95) 84%, #FFFFFF 93%, transparent 95% 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  animation: city-orbit 2.6s linear infinite;
+}
+.kedu-city[aria-current="true"] .kedu-city-caption::after { inset: -1rem; padding: .75rem; border-radius: 1.375rem; filter: blur(.5rem); }
+.kedu-city[aria-current="true"] .kedu-city-caption { filter: brightness(1.12); }
+@keyframes city-orbit { to { --orbit: 360deg; } }
+@keyframes city-halo {
+  0%, 100% { opacity: .55; transform: scale(.94); }
+  50% { opacity: 1; transform: scale(1.06); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .kedu-city[aria-current="true"] .kedu-medal::before { animation: none; opacity: .8; }
+  .kedu-city[aria-current="true"] .kedu-city-caption::before,
+  .kedu-city[aria-current="true"] .kedu-city-caption::after { animation: none; background: linear-gradient(rgba(255, 211, 119, .85), rgba(255, 211, 119, .85)); }
+}
 /* No outline around the caption (owner, 18 October 2026): the selected city glows (above);
    keyboard focus glows gold */
 .kedu-city:focus-visible { outline: none; filter: drop-shadow(0 0 .5rem var(--gold-300)); }
@@ -2637,7 +2744,6 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
 .kedu-btn .icon { width: 1.75rem; height: 1.75rem; flex: none; }
 .kedu-btn.is-secondary .icon { width: 2.125rem; height: 2.125rem; color: var(--gold-300); }
 .kedu-btn .library-icon { width: 3rem; height: 3rem; margin: -.5rem 0; }
-.kedu-nav.is-all-done .kedu-btn .library-icon { width: 2.25rem; height: 2.25rem; }
 .kedu-btn .kenali-art { flex: none; width: 2.5rem; height: 2.5rem; object-fit: contain; filter: drop-shadow(0 .125rem .25rem rgba(0, 0, 0, .5)); }
 .kedu-btn > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 @media (hover: hover) {
@@ -2757,14 +2863,25 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
 .kedu-speaker .kedu-portrait:not(.has-art) { width: 84%; height: 84%; margin: 0 auto; }
 .kedu-speaker .kenal-nameplate { top: 68%; font-size: 1.125rem; }
 
-/* Page buttons right of the story, under the region panel: Pustaka Kedu alone, or with
-   Tonton penutup in one row and Balai Refleksi under them once everything is done */
+/* Page buttons right of the story, under the region panel: Pustaka Kedu alone, or once
+   everything is done (owner, 21 October 2026) three rows: "Lihat cerita penutup" as the panel's
+   opening-story link, Pustaka Kedu as wide as Balai Refleksi, and Balai Refleksi as the owner's
+   lettered plate. The region panel is 16 dp shorter then, and this box starts higher and
+   reaches 8 dp above the stage's foot. */
 .kedu-nav { display: grid; grid-template-columns: minmax(0, 1fr); align-content: center; }
-.kedu-nav.is-all-done { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: .5rem; }
-.kedu-nav.is-all-done .kedu-btn { gap: .25rem; padding: 0 .375rem; font-size: 1.125rem; }
-.kedu-nav.is-all-done .kedu-btn.is-secondary .icon { width: 1.5rem; height: 1.5rem; }
-.kedu-nav.is-all-done .kedu-btn > span { overflow: visible; line-height: 1.1; text-align: center; white-space: normal; } /* a long label (EN) wraps instead of being cut */
-.kedu-nav.is-all-done .kedu-btn.is-primary { grid-column: 1 / -1; }
+.kedu-nav.is-all-done { grid-template-rows: auto 3.875rem auto; align-content: end; justify-items: center; row-gap: .25rem; }
+.kedu-nav.is-all-done .kedu-ending { justify-self: start; min-height: 2.5rem; margin: 0 0 0 .25rem; }
+.kedu-nav.is-all-done .kedu-ending::after { content: ""; position: absolute; inset: -.25rem 0; } /* 48 dp hit area */
+.kedu-nav.is-all-done .kedu-ending { position: relative; }
+.kedu-nav.is-all-done .kedu-btn,
+.kedu-nav.is-all-done .kedu-reflection { width: 22rem; }
+.kedu-nav.is-all-done .kedu-btn { height: 3.875rem; font-size: 1.375rem; }
+.kedu-nav.is-all-done .kedu-btn::before { inset: .1875rem 0; }
+.kedu-nav.is-all-done .kedu-btn .library-icon { width: 2.5rem; height: 2.5rem; }
+.kedu-nav .kedu-reflection { display: block; line-height: 0; }
+.kedu-nav .kedu-reflection img { width: 100%; height: auto; }
+.map-kedu:has(.kedu-nav.is-all-done) .kedu-panels { --h: 412; }
+.map-kedu .kedu-nav.is-all-done { --y: 532; --h: 180; }
 
 /* =========================== SELESAI =========================== */
 /* Result screen redesign, 18 October 2026 (mockup 01, canvas 1920 × 1080 px;
@@ -3682,16 +3799,78 @@ html.js .book-frame img.is-loaded { opacity: 1; }
 .region-badge-name { font-weight: 700; }
 
 /* =========================== BALAI REFLEKSI =========================== */
-.reflection-side { display: grid; align-content: start; gap: var(--gap-4); padding: var(--gap-4); }
-.reflection-side .stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.reflection-hero { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: var(--gap-4); }
-.reflection-hero h1 { margin: 0 0 var(--gap-3); }
-.reflection-hero .character-img { max-height: 10rem; }
-.reflection-hero h1 { font-size: var(--fs-h2); }
-.reflection-hero .narration { font-size: var(--fs-caption); }
-.reflection-bars { display: grid; gap: var(--gap-3); }
+/* Left column (owner, 21 October 2026): a navy card with a thin gold edge, as the Pustaka Kedu
+   cards; the lettered Balai Refleksi plate as its heading, the gold title under it, Mbah Kedu's
+   round avatar beside his words (no balloon, no name line), the four figures, and the bars on
+   the bronze track. */
+.reflection-side {
+  display: grid;
+  align-content: start;
+  gap: var(--gap-4);
+  padding: var(--gap-4) var(--gap-5) var(--gap-5);
+  border: 1px solid rgba(223, 192, 135, .55);
+  border-radius: 1rem;
+  background: linear-gradient(to bottom, rgba(19, 34, 59, .96), rgba(10, 20, 36, .96) 70%);
+  box-shadow: inset 0 0 0 .25rem rgba(8, 15, 28, .9), inset 0 0 0 .3125rem rgba(223, 192, 135, .22), 0 .75rem 1.5rem rgba(2, 6, 14, .6);
+  color: var(--ink);
+}
+.reflection-hero { display: grid; justify-items: center; gap: var(--gap-2); text-align: center; }
+.reflection-plate { margin: 0; color: #F3D58C; font-size: var(--fs-h2); line-height: 0; }
+.reflection-plate img { display: block; width: 25rem; max-width: 100%; height: auto; filter: drop-shadow(0 .375rem .625rem rgba(0, 0, 0, .55)); }
+.reflection-title { margin: 0; color: #F3D58C; font-family: var(--font-display); font-size: 1.75rem; font-weight: 700; line-height: 1.15; text-shadow: 0 .125rem .25rem rgba(0, 0, 0, .8); }
+.reflection-speaker { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: var(--gap-4); width: 100%; margin-top: var(--gap-1); text-align: left; }
+.reflection-avatar { display: block; width: 5.5rem; height: 5.5rem; }
+.reflection-avatar .kedu-portrait { display: block; width: 100%; height: 100%; }
+.reflection-avatar .kedu-portrait-initial { font-size: var(--fs-h3); }
+.reflection-words { margin: 0; color: var(--parchment); font-family: var(--font-display); font-size: 1.3125rem; line-height: 1.4; text-shadow: 0 .125rem .25rem rgba(0, 0, 0, .8); }
+.reflection-side .stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap-2); }
+.reflection-side .stat-tile { padding: var(--gap-3) var(--gap-4); border-color: rgba(223, 192, 135, .35); background: rgba(8, 15, 28, .55); }
+.reflection-side .stat-label { color: #B8C8D6; }
+.reflection-side .stat-value { color: #F3D58C; }
+.reflection-bars { display: grid; gap: var(--gap-4); }
+.reflection-bars > section { padding-top: var(--gap-3); border-top: 1px solid rgba(223, 192, 135, .3); }
 .reflection-side .alert { margin: 0; }
-.reflection-bars h2 { font-size: var(--fs-h3); }
+.reflection-bars h2 { margin: 0 0 var(--gap-2); color: #F3D58C; font-size: var(--fs-h3); }
+.reflection-side .bar-row > span:first-child { color: #E9DDBF; }
+.reflection-side .bar-row { grid-template-columns: 9.5rem minmax(0, 1fr) 5.75rem; }
+.reflection-side .bar-value { display: inline-flex; align-items: center; justify-content: flex-end; gap: .25rem; min-width: 4.5rem; color: #E7C982; white-space: nowrap; }
+.reflection-side .bar-value .star-art { width: 1.125rem; height: 1.125rem; }
+/* Right column: the same navy card; the fields stay light for writing */
+.reflection-form {
+  border: 1px solid rgba(223, 192, 135, .55);
+  border-radius: 1rem;
+  background: linear-gradient(to bottom, rgba(19, 34, 59, .96), rgba(10, 20, 36, .96) 70%);
+  box-shadow: inset 0 0 0 .25rem rgba(8, 15, 28, .9), inset 0 0 0 .3125rem rgba(223, 192, 135, .22), 0 .75rem 1.5rem rgba(2, 6, 14, .6);
+  color: var(--ink);
+}
+.reflection-form h2 { color: #F3D58C; font-family: var(--font-display); font-size: 1.75rem; text-shadow: 0 .125rem .25rem rgba(0, 0, 0, .8); }
+.reflection-form h2 .icon { color: var(--gold-300); }
+.reflection-form :is(label, .label) { color: #E9DDBF; }
+.reflection-form .field-help { color: #B8C8D6; }
+.reflection-form textarea { border-color: rgba(223, 192, 135, .55); background: #FFF9EC; color: #2B1D0E; }
+.reflection-form textarea:focus { border-color: var(--gold-300); }
+/* The bars on the owner's bronze track: the fill runs in its dark channel (as on the Pustaka Kedu cards) */
+.reflection[style*="--loading-track"] .reflection-side .progress {
+  position: relative;
+  height: auto;
+  aspect-ratio: 1200 / 82;
+  overflow: visible;
+  border-radius: 0;
+  background: var(--loading-track) center / 100% 100% no-repeat;
+  filter: drop-shadow(0 .1875rem .25rem rgba(0, 0, 0, .55));
+}
+.reflection[style*="--loading-track"] .reflection-side .progress > i {
+  position: absolute;
+  inset: 24.6% auto 27.1% 5.84%;
+  max-width: 88.32%;
+  height: auto;
+  border-radius: .125rem;
+  background:
+    linear-gradient(to bottom, rgba(255, 248, 220, .55), rgba(255, 248, 220, 0) 45%, rgba(120, 50, 0, 0) 65%, rgba(120, 50, 0, .4)),
+    linear-gradient(to right, #B4600F, #F0A43A 55%, #FFD27A);
+  box-shadow: 0 0 .375rem rgba(255, 176, 64, .85);
+}
+.reflection[style*="--loading-track"] .reflection-side .progress > i[style*="width: 0%"] { box-shadow: none; }
 .reflection-form { display: grid; grid-template-rows: auto auto auto minmax(0, 1fr); gap: var(--gap-3); padding: var(--gap-4) var(--gap-5); }
 .reflection-form > .alert { margin: 0; }
 .reflection-form h2 { display: flex; align-items: center; gap: var(--gap-2); margin: 0; font-size: var(--fs-h3); }

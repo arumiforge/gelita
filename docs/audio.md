@@ -1,6 +1,6 @@
 # Audio GELITA
 
-Audio bawaan permainan yang ikut di repositori: **3 musik gamelan** (plus 12 scene and account tracks since 19 October 2026) dan **6 efek suara**, dibangkitkan oleh [`tools/audio/`](../tools/audio/README.md). Narasi (100 rekaman × 2 bahasa) tidak lagi ikut di repositori: rekaman suara sintetis lama dihapus (17 Oktober 2026) dan diganti rekaman pengisi suara (lihat *Voice-over narration* di bawah).
+Audio bawaan permainan yang ikut di repositori: **3 musik gamelan** (plus 12 scene and account tracks since 19 October 2026) dan **6 efek suara**, dibangkitkan oleh [`tools/audio/`](../tools/audio/README.md). Narasi (103 rekaman × 2 bahasa) tidak lagi ikut di repositori: rekaman suara sintetis lama dihapus (17 Oktober 2026) dan diganti rekaman pengisi suara (lihat *Voice-over narration* di bawah).
 
 - Musik dan efek suara disintesis dari nol, tanpa sampel rekaman, dengan penalaan pelog–slendro. Gendingnya komposisi orisinal.
 - Narasi direkam pengisi suara (suara asli, bukan sintetis) dan diunggah di panel **Rekaman narasi**. Bagian tentang suara sintetis di bawah tinggal sebagai catatan sejarah.
@@ -9,7 +9,7 @@ Audio bawaan permainan yang ikut di repositori: **3 musik gamelan** (plus 12 sce
 |---|---|---|---|
 | Musik | `public/assets/audio/music/` | `map`, `region`, `challenge` (MP3 stereo 128 kbps, loop); since 19 October 2026 also `welcome`, `opening`, `ending`, and `kenal-`/`dialog-`/`tuntas-{wilayah}` (96 kbps, see *Scene and account music*) | `core/audio.js` → `Sfx.music()` |
 | Efek suara | `public/assets/audio/sfx/` | `click`, `correct`, `wrong`, `lock`, `shard`, `region-done` | `core/audio.js` → `Sfx.play()` |
-| Narasi | `public/assets/audio/narasi/{id,en}/` (kosong di repositori) | folder impor rekaman pengisi suara: 88 baris naskah + 12 petunjuk Cari Objek per bahasa | `gelita:narration:import` → `dialogues` / `challenge_items` |
+| Narasi | `public/assets/audio/narasi/{id,en}/` (kosong di repositori) | folder impor rekaman pengisi suara: 91 baris naskah + 12 petunjuk Cari Objek per bahasa | `gelita:narration:import` → `dialogues` / `challenge_items` |
 
 ## Musik gamelan
 

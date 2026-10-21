@@ -417,7 +417,7 @@ return [
     'chapterTap'           => 'Ketuk untuk mendengar kisahnya',
     'doneTitle'            => 'Serpihan {0} kembali!',
     'readLibraryRegion'    => 'Baca Pustaka {0}',
-    'watchEnding'          => 'Tonton penutup',
+    'watchEnding'          => 'Lihat cerita penutup',
     'endingTitle'          => 'Penutup',
     'endingEmpty'          => 'Penutup cerita belum tersedia. Lanjut ke Balai Refleksi, yuk!',
 ];
