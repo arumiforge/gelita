@@ -23,7 +23,11 @@
  * and, when this attempt opened it, the Pustaka highlight (owner decision
  * 18 October 2026). With JavaScript it is a modal over a blurred, dimmed
  * stage and can be closed; without it the card stays and the buttons stay free. CSS confetti stops on
- * prefers-reduced-motion.
+ * prefers-reduced-motion. Since 21 October 2026 (owner) the card has no frame
+ * or backdrop over a darker, blurrier stage, Mbah Kedu speaks from his round
+ * avatar with the navy nameplate (as on Peta Kedu), and "Ketuk layar untuk
+ * melanjutkan" in small thin letters replaces the close cross: a tap anywhere
+ * but the Pustaka button closes it.
  *
  * @var App\Entities\ChallengeAttempt    $attempt
  * @var App\Entities\ChallengeNode|null  $node
@@ -211,15 +215,17 @@ $nextAssets = ! empty($levelCompleted) && isset($nextRegion['curtain'])
   <?php if ($levelCompleted && $level !== null): ?>
     <?php // Blurred, dimmed layer under the card (owner, 18 October 2026); shown only with JavaScript, which can close it ?>
     <div class="result-scrim" aria-hidden="true"></div>
-    <aside class="result-sheet result-kedu stage-box" role="dialog" aria-labelledby="result-kedu-title">
-      <button type="button" class="hud-sheet-close" data-dismiss hidden
-              aria-label="<?= esc(lang('Game.close'), 'attr') ?>"><?= icon('cross') ?></button>
+    <aside class="result-sheet result-kedu stage-box" role="dialog" aria-labelledby="result-kedu-title"
+           style="--kenal-plate-navy: url(&quot;<?= esc(asset_url_versioned('ui/kenal-plate-navy.webp'), 'attr') ?>&quot;)">
       <h2 id="result-kedu-title" class="visually-hidden"><?= esc(lang('Game.regionDone', [$region])) ?></h2>
       <div class="finished-kedu">
-        <?= component('character', ['character' => 'mbah_kedu', 'pose' => 'smile']) ?>
+        <?php // Mbah Kedu's round avatar with his name on the navy plate, as in the Peta Kedu story bar (owner, 21 October 2026) ?>
+        <div class="kedu-speaker">
+          <?= component('partials/kedu-portrait', ['src' => media_key_src('ui.kedu-avatar'), 'name' => lang('Game.char_mbah_kedu')]) ?>
+          <span class="kenal-nameplate"><?= esc(lang('Game.char_mbah_kedu')) ?></span>
+        </div>
         <?= component('narration', [
-            'speaker' => 'mbah_kedu',
-            'text'    => lang('Game.regionDone', [$region]) . ' '
+            'text' => lang('Game.regionDone', [$region]) . ' '
                 . ($allCompleted ? lang('Game.allShardsDone', [$progress['shards_total']]) : lang('Game.nextRegionOpen')),
         ]) ?>
       </div>
@@ -230,9 +236,11 @@ $nextAssets = ! empty($levelCompleted) && isset($nextRegion['curtain'])
             <h3><?= esc(lang('Game.libraryUnlockedTitle', [$region])) ?></h3>
             <p><?= esc(lang('Game.libraryUnlockedText', [$region])) ?></p>
           </div>
-          <a class="btn btn-ghost" href="<?= base_url('pustaka/' . $level->code) ?>"><?= library_icon() ?> <?= esc(lang('Game.libraryReadNow')) ?></a>
+          <a class="btn btn-ghost" href="<?= base_url('pustaka/' . $level->code) ?>"><?= esc(lang('Game.libraryReadNow')) ?></a>
         </div>
       <?php endif ?>
+      <?php // Small thin text instead of the close cross (owner, 21 October 2026); game/finished.js closes on any tap outside the Pustaka button ?>
+      <button type="button" class="result-kedu-tap" data-dismiss hidden><?= esc(lang('Game.tapToContinue')) ?></button>
     </aside>
   <?php endif ?>
 </section>

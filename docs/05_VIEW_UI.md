@@ -403,7 +403,7 @@ Tiap wilayah berisi empat tantangan berurutan: 1 Susun Gambar (`puzzle`), 2 Isi 
 
 **Cari Objek — `cari.php`**
 
-* `.hunt` (pembungkus) › bilah petunjuk `.hunt-clue` 1216 × 56: avatar bulat Mbah Kedu 48 dp (`.hunt-guide`, tetap ada), `.hunt-clue-body` dengan "Petunjuk x dari y" (`Game.clueOf`, `#clue-index`, `#clue-total`), teks petunjuk `#clue-text` (`aria-live`, petunjuk pertama dirender server) dan penanda kesempatan per petunjuk `#clue-tries`.
+* `.hunt` (pembungkus) › bilah petunjuk `.hunt-clue` 1216 × 60 tanpa latar, bingkai, atau bayangan: avatar bulat Mbah Kedu 68 dp (`.hunt-guide`, `ui.kedu-avatar` lewat `partials/kedu-portrait`, bukan frame pose; owner, 21 Oktober 2026), `.hunt-clue-body` dengan "Petunjuk x dari y" (`Game.clueOf`, `#clue-index`, `#clue-total`), teks petunjuk `#clue-text` (`aria-live`, petunjuk pertama dirender server) dan penanda kesempatan per petunjuk `#clue-tries`.
 * `#hunt-scene.hunt-scene` (16:9; tanpa gambar `.is-drawn`) berisi gambar adegan `img.scene-bg` dan `button.object` (`data-object` = token buram per pengerjaan, posisi `left`/`top`/`width` dalam persen, `aria-label` netral "Objek n"). **Benda pengecoh dirender sama persis dengan benda target**, tanpa kelas, atribut, label, atau urutan DOM yang membedakan.
 * `.hunt-side`: `Game.huntList` + `ol#hunt-list` › `li.hunt-target` (`.is-current` untuk petunjuk aktif); `engines/cari.js` mengganti isinya dengan tombol lompat `.hunt-jump` dan menandai petunjuk yang dilewati `.is-skipped` (✗).
 * Narasi petunjuk: bila ada petunjuk dengan rekaman yang disetujui (`clues[i].audio`), `<template id="tpl-clue-voice">` berisi tombol ▶/⏸ (`Game.clueListen`, `Game.audioPause`) yang dipasang `engines/cari.js` di samping teks petunjuk. Template inert: tanpa JavaScript atau tanpa rekaman, tampilannya sama dengan petunjuk teks saja.
@@ -421,7 +421,7 @@ Redesigned 18 October 2026 from catalogue mockup 01 (`gelita-katalog/mockup/gamb
 * `.result-summary`: cards Waktu and Percobaan (`Game.resultTries`, "{cek} dari {max_tries}"), or Ketukan salah for Cari Objek; badge `.result-badge.is-solved` / `.is-saved`; one `.result-message`: `Game.exhaustedNote`, `Game.multiCheckNote`, or `Game.resultFirstTry`;
 * `.result-actions`: `Game.resultRegionMap` to `/wilayah/{code}` (skin `ui.result-button-secondary`), **Detail hasil** `<details class="result-detail" data-popover>` with Berhasil pada Percobaan Pertama (`first_pass_text()`, skin `ui.result-button-detail`), and the main button (skin `ui.result-button-primary`) in this order: this attempt completes the region → **Lanjut** to `/tuntas/{code}`; every challenge done → **Balai Refleksi**; a next challenge → **Berikutnya** to its mission card; replay in a completed region → **Lanjut ke {wilayah berikutnya}** (`entry`, region curtain); region completed → Peta Kedu; else **Berikutnya** to the region map.
 
-When the region is complete, `aside.result-kedu` (120, 128, 1040 × 560; large type, close button 64 dp, Baca Pustaka 72 dp) covers the panel: Mbah Kedu `.finished-kedu` (`Game.regionDone` + `Game.nextRegionOpen` or `Game.allShardsDone`) and, for the attempt that opened it, `.library-unlocked` with Baca Pustaka. Under it, `.result-scrim` blurs and dims the stage (the HUD stays sharp); it is drawn only with JavaScript. `game/finished.js` makes the card a modal (`aria-modal`, the panel `inert`, focus on the close button; close button, Escape, or a tap on the layer close it and focus the main button) and plays `region-done` instead of `shard` (`data-region-done`).
+When the region is complete, `aside.result-kedu` (120, 128, 1040 × 560; large type, Baca Pustaka 72 dp; no frame, backdrop, or shadow since 21 October 2026) covers the panel: `.finished-kedu` with Mbah Kedu's round avatar and his name on the navy plate (`.kedu-speaker`, as on Peta Kedu) and his words as plain large text (`Game.regionDone` + `Game.nextRegionOpen` or `Game.allShardsDone`), for the attempt that opened it `.library-unlocked` with Baca Pustaka, and at the foot `Game.tapToContinue` ("Ketuk layar untuk melanjutkan") in small thin letters instead of a close cross. Under it, `.result-scrim` blurs and darkens the stage (rgba .72, 16 dp blur; the HUD stays sharp); it is drawn only with JavaScript. `game/finished.js` makes the card a modal (`aria-modal`, the panel `inert`, focus on the card itself; the tap prompt, Escape, or a tap on the layer or the card outside its links close it and focus the main button) and plays `region-done` instead of `shard` (`data-region-done`).
 
 ### Hasil tantangan — `game/challenge-result`
 
@@ -669,7 +669,7 @@ Semua layar game digambar di **satu panggung tetap 1280 × 720 dp** (dp = *desig
 | Kenali wilayah | overlay penuh 0, 0, 1280 × 720, isi dan komposisi slide sama |
 | Peta wilayah | HUD 84; peta 32, 100, 880 × 566; panel kanan 936, 100, 312 × 584: judul, fokus, progres (tetap), daftar tantangan (gulir), Pustaka {wilayah} (tetap, di bawah); tanpa nav bar |
 | Kartu misi | 260, 112, 760 × 536 (medallion above to y 72); deskripsi bergulir; hasil terbaik: bintang + "Berhasil pada Percobaan Pertama x dari y" |
-| Tantangan | kepala 32, 64, 1216 × 56; arena 32, 128, 1216 × 576 — per engine lihat tabel berikut |
+| Tantangan | kepala 32, 64, 1216 × 56; bingkai 16, 132, 1248 × 580; arena 32, 140, 1216 × 564 — per engine lihat tabel berikut |
 | Selesai | kartu 280, 72, 720 × 576, tanpa Jaka |
 | Hasil | panel 160, 64, 960 × 640 tanpa kotak, tabel bergulir; tanpa nav bar |
 | Rak Pustaka | HUD 120 (Peta Kedu); keterangan 88, 112, 1104 × 28; kartu 88/464/840, 148, 352 × 480; Peta Kedu 24, 640; tanpa nav bar |
@@ -680,10 +680,10 @@ Semua layar game digambar di **satu panggung tetap 1280 × 720 dp** (dp = *desig
 
 | Engine | Panel (x, y, w, h dp) |
 |---|---|
-| Susun Gambar | instruksi + 3 tips 32, 128, 332 × 512; papan 388, 136, 504 × 504; bilah aksi 388, 648, 504 × 48; keterangan gambar 916, 128, 332 × 512 |
-| Isi Rumpang | instruksi 96, 128, 1088 × 40; bacaan 96, 176, 1088 × 384 (gulir, `--fs-reading`; dengan gambar `.has-media`: gambar 96, 176, 304 × 384 dan bacaan 416, 176, 768 × 384); bank kata 96, 568, 1088 × 72; bilah aksi 96, 648, 1088 × 56 |
-| Benar atau Salah | bacaan 32, 128, 596 × 576 (gulir); instruksi 652, 128, 596 × 64; pernyataan 652, 200, 596 × 440 (gulir; gambar 192 × 144); bilah aksi 652, 648, 596 × 56 |
-| Cari Objek | bilah petunjuk 32, 128, 1216 × 56 (avatar Mbah Kedu 48); daftar benda 32, 192, 164 × 486; adegan 208, 192, 864 × 486; instruksi 1084, 192, 164 × 486 |
+| Susun Gambar | instruksi + 3 tips 32, 140, 332 × 500; papan 394, 148, 492 × 492; bilah aksi 32, 648, 1216 × 56; keterangan gambar 916, 140, 332 × 500 |
+| Isi Rumpang | instruksi 96, 140, 1088 × 40; bacaan 96, 188, 1088 × 324 (gulir, `--fs-reading`; dengan gambar `.has-media`: gambar 96, 188, 304 × 324 dan bacaan 416, 188, 768 × 324); bank kata 96, 520, 1088 × 120; bilah aksi 32, 648, 1216 × 56 |
+| Benar atau Salah | bacaan 32, 140, 596 × 500 (gulir); instruksi 652, 140, 596 × 64; pernyataan 652, 212, 596 × 428 (gulir; gambar 192 × 144); bilah aksi 32, 648, 1216 × 56 |
+| Cari Objek | bilah petunjuk 32, 140, 1216 × 60 (avatar Mbah Kedu 68, tanpa latar); daftar petunjuk 32, 208, 164 × 486 (medali status); adegan 208, 208, 864 × 486; instruksi 1084, 208, 164 × 486 |
 
 **Gulir.** Panggung dan halaman tidak pernah bergulir. Panel yang isinya bisa panjang memakai `.stage-scroll` (tinggi tetap, `overflow-y: auto`); huruf tidak pernah dikecilkan untuk memuatkan teks. `core/dom.js` `scrollToCenter()` menggulir panel `.stage-scroll` terdekat.
 

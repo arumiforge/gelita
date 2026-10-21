@@ -1451,15 +1451,16 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
    §Tantangan; di sini hanya rupa. .arena-panel/.arena/.arena-body hanyalah
    pembungkus (display: contents) agar panel engine memakai koordinat panggung. */
 .challenge { position: absolute; inset: 0; }
-/* Bingkai ukiran di belakang arena: 16, 124, 1248 × 588. The header is a
-   plate of its own above it (owner's header, 20 October 2026). */
+/* Carved frame behind the arena: 16, 132, 1248 × 580. The header is a plate of
+   its own above it (owner's header, 20 October 2026), 8 dp clear of the number
+   ring and 12 dp of the plate (owner, 21 October 2026: it sat too close). */
 .challenge::before {
   content: "";
   position: absolute;
   left: calc(16 * var(--dp));
-  top: calc(124 * var(--dp));
+  top: calc(132 * var(--dp));
   width: calc(1248 * var(--dp));
-  height: calc(588 * var(--dp));
+  height: calc(580 * var(--dp));
   border: .125rem solid var(--gold-600);
   border-radius: var(--radius-lg);
   background: linear-gradient(to bottom, rgba(38, 53, 90, .94), rgba(18, 28, 46, .96));
@@ -1469,22 +1470,32 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
 
 /* Header plate (owner's picture, 20 October 2026): a navy pill with a thin gold
    rim and a blue glow along its lower edge. The number sits on the gold-and-navy
-   ring at the left end; the ring is a little taller than the plate. */
+   ring, a little taller than the plate. Since 21 October 2026 (owner: one piece
+   with the badge) the plate (::before) starts under the ring's centre, so the
+   ring is the plate's left end and no sliver of the pill shows beside it. */
 .challenge-head {
+  --badge: 4rem;
   z-index: 5;
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
   gap: var(--gap-4);
-  padding: 0 var(--gap-2) 0 var(--gap-2);
+  padding: 0 var(--gap-2) 0 0;
+}
+.challenge-head::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 0 calc(var(--badge) / 2);
+  z-index: -1;
   border: 1px solid rgba(223, 192, 135, .7);
-  border-radius: var(--radius-pill);
+  border-left: 0;
+  border-radius: 0 var(--radius-pill) var(--radius-pill) 0;
   background:
     radial-gradient(60% 140% at 50% 120%, rgba(64, 120, 220, .28), transparent 70%),
     linear-gradient(to bottom, #172A4E, #0A1730 70%, #081226);
   box-shadow:
-    inset 0 0 0 .1875rem rgba(8, 18, 38, .9),
-    inset 0 0 0 .25rem rgba(223, 192, 135, .28),
+    inset 0 .1875rem 0 rgba(8, 18, 38, .9), inset 0 -.1875rem 0 rgba(8, 18, 38, .9),
+    inset 0 .25rem 0 rgba(223, 192, 135, .28), inset 0 -.25rem 0 rgba(223, 192, 135, .28),
     0 .375rem 1.25rem rgba(0, 0, 0, .45);
 }
 .challenge-head::after {
@@ -1503,8 +1514,8 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
   position: relative;
   display: grid;
   place-items: center;
-  width: 4rem;
-  height: 4rem;
+  width: var(--badge);
+  height: var(--badge);
   margin: -.25rem 0;
 }
 .badge-pos img {
@@ -1616,20 +1627,42 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
 /* Panel instruksi (tempatnya per engine, stage.css) */
 .challenge-aside { display: grid; align-content: start; gap: var(--gap-3); }
 .challenge-aside:empty { display: none; }
+/* Instruction (owner, 21 October 2026): no box; the gold "i" medal of the mission card
+   beside the text, a thin gold rule under it. In a narrow column (Cari Objek) the medal
+   sits on top and the text is centred. */
 .instruction {
   display: flex;
   align-items: flex-start;
-  gap: var(--gap-2);
+  gap: var(--gap-3);
   margin: 0;
-  padding: var(--gap-2) var(--gap-4);
-  border-radius: var(--radius);
-  background: rgba(223, 192, 135, .1);
-  color: var(--gold-300);
+  padding: 0 0 var(--gap-3);
+  border-bottom: 1px solid;
+  border-image: linear-gradient(to right, rgba(223, 192, 135, .6), transparent) 1;
+  color: #F1E3BF;
   font-size: var(--fs-caption);
   font-weight: 600;
   line-height: 1.45;
 }
-.instruction .icon { margin-top: .125rem; }
+.instruction-mark {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: .125rem solid #F3D58A;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #F6DE9C, #B8893D 70%);
+  box-shadow: 0 0 .5rem rgba(223, 192, 135, .45);
+  color: var(--navy-900);
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1;
+}
+/* A one-line instruction (Isi Rumpang, Benar atau Salah) needs no rule under it */
+:is(.challenge-rumpang, .challenge-boleh) .instruction { align-items: center; padding: 0; border: 0; }
+.challenge-cari .instruction { flex-direction: column; align-items: center; padding: var(--gap-2) var(--gap-1) var(--gap-3); text-align: center; border-image: linear-gradient(to right, transparent, rgba(223, 192, 135, .6), transparent) 1; }
+.challenge-cari .instruction-mark { width: 2.25rem; height: 2.25rem; font-size: 1.375rem; }
 .challenge-tips { display: grid; gap: var(--gap-3); margin: 0; padding: 0 var(--gap-2) 0 var(--gap-6); color: var(--ink); font-size: var(--fs-caption); line-height: 1.5; }
 .challenge-tips li::marker { color: var(--gold-500); }
 .hint-text { margin: 0; color: var(--ink-dim); font-size: var(--fs-caption); text-align: center; }
@@ -2031,23 +2064,21 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
 
 /* ---------- Cari ---------- */
 .hunt { display: contents; }
-/* Bilah petunjuk 1216 × 56: avatar Mbah Kedu 48 | "Petunjuk n dari 4" + ●●○ | teks | ▶ */
+/* Clue bar 1216 × 60 (owner, 21 October 2026): no backdrop, border, or shadow. Mbah Kedu
+   speaks from his round avatar in its gold ring (ui.kedu-avatar) | "Petunjuk n dari 4" over
+   Kesempatan ●●○ | ▶ | the clue in large parchment letters over the dark frame */
 .hunt-clue {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
   gap: var(--gap-3);
-  padding: 0 var(--gap-4) 0 var(--gap-1);
-  border: 1px solid var(--brown-500);
-  border-radius: var(--radius-lg);
-  background: var(--parchment);
-  color: var(--brown-700);
+  padding: 0 var(--gap-4) 0 0;
+  color: var(--parchment);
 }
-.hunt-clue .eyebrow { color: var(--brown-500); }
-.hunt-guide { width: 3rem; height: 3rem; overflow: hidden; border-radius: 50%; }
-.hunt-guide .character-img { width: 100%; height: 100%; max-height: none; object-fit: cover; object-position: 50% 15%; }
-.hunt-guide .character-fallback { width: 3rem; border-width: .125rem; font-size: var(--fs-body); }
-.hunt-guide .character-name { display: none; }
+.hunt-clue .eyebrow { color: var(--gold-500); letter-spacing: .03em; }
+.hunt-guide { display: block; width: 4.25rem; height: 4.25rem; }
+.hunt-guide .kedu-portrait { display: block; width: 100%; height: 100%; }
+.hunt-guide .kedu-portrait-initial { font-size: var(--fs-h3); }
 .hunt-clue-body,
 .hunt-clue-body.has-voice {
   display: grid;
@@ -2062,7 +2093,11 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
 .hunt-clue-body > .clue-voice { grid-column: 2; grid-row: 1 / span 2; }
 .hunt-clue-body > .clue-text,
 .hunt-clue-body.has-voice > .clue-text { grid-column: 3; grid-row: 1 / span 2; }
-.clue-text { display: -webkit-box; margin: 0; overflow: hidden; font-size: 1.125rem; font-weight: 700; line-height: 1.25; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.clue-text { display: -webkit-box; margin: 0; overflow: hidden; font-family: var(--font-display); font-size: 1.3125rem; font-weight: 700; line-height: 1.25; text-shadow: 0 .125rem .375rem rgba(5, 10, 20, .9); text-wrap: pretty; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+/* Kesempatan dots in gold on the dark frame */
+.hunt-clue .clue-tries { color: var(--ink-dim); }
+.hunt-clue .clue-tries .tries-dot { border-color: var(--gold-500); }
+.hunt-clue .clue-tries .tries-dot.is-left { background: var(--gold-500); }
 /* Narasi petunjuk (engines/cari.js): tombol ▶/⏸ di kolom 2, di antara label dan teks, hanya bila ada
    rekaman yang disetujui. An older two-column rule for .has-voice used to follow here and put the
    button and the clue text in the same cell (owner report, 12 October 2026). */
@@ -2073,8 +2108,8 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
 .clue-voice .audio-player[hidden] { display: none; }
 .clue-voice .audio-controls { display: contents; }
 .clue-voice .audio-controls[hidden] { display: none; }
-.clue-voice .audio-btn { width: var(--tap); min-width: 0; padding: 0; border-radius: 50%; background: rgba(74, 50, 24, .12); color: var(--brown-700); }
-.clue-voice .audio-btn[data-action="play"] { background: var(--brown-700); color: var(--parchment); }
+.clue-voice .audio-btn { width: var(--tap); min-width: 0; padding: 0; border-radius: 50%; background: rgba(223, 192, 135, .16); color: var(--gold-300); }
+.clue-voice .audio-btn[data-action="play"] { background: var(--gold-500); color: var(--navy-900); }
 .clue-voice .audio-btn .icon { width: 1.25rem; height: 1.25rem; }
 /* Recording failed: a muted mark keeps the slot; the sentence stays for screen readers only
    (owner report, 12 October 2026: the sentence used to push the clue text onto two lines) */
@@ -2085,9 +2120,9 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
   place-items: center;
   width: var(--tap);
   height: var(--tap);
-  border: .125rem dashed rgba(74, 50, 24, .35);
+  border: .125rem dashed rgba(223, 192, 135, .45);
   border-radius: 50%;
-  color: var(--brown-500);
+  color: var(--gold-300);
   cursor: help;
 }
 .clue-voice-off .icon { width: 1.25rem; height: 1.25rem; }
@@ -2130,14 +2165,46 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
   40%, 80% { transform: translateX(.375rem); }
 }
 
-.hunt-side { display: grid; align-content: start; gap: var(--gap-2); padding: var(--gap-3) var(--gap-2); border: 1px solid var(--line); border-radius: var(--radius); background: rgba(11, 19, 32, .4); }
-.hunt-side .hunt-list-title { font-size: var(--fs-caption); }
+/* Clue list (owner, 21 October 2026): no border on the panel; each clue a row on the
+   status medals of the region map (--medal-*, set by the view): navy with its number while
+   waiting, the gold arc for the clue being looked for, green ✓ once found, navy with a red ✗
+   when its tries ran out. The current row glows softly; no boxes around the rows. */
+.hunt-side { display: grid; align-content: start; gap: var(--gap-2); padding: var(--gap-3) var(--gap-2); border-radius: var(--radius); background: rgba(11, 19, 32, .4); }
+.hunt-side .hunt-list-title { padding: 0 var(--gap-1); font-family: var(--font-display); font-size: 1.0625rem; letter-spacing: .02em; }
 .hunt-list-title { margin: 0; color: var(--gold-300); font-weight: 700; }
-.hunt-list { display: grid; gap: var(--gap-2); margin: 0; padding: 0; list-style: none; }
+.hunt-list { display: grid; gap: var(--gap-1); margin: 0; padding: 0; list-style: none; counter-reset: clue; }
 .hunt-side .hunt-next { width: 100%; margin-top: var(--gap-2); }
-.hunt-target { padding: var(--gap-2) var(--gap-3); border: 1px solid var(--line-ink); border-radius: var(--radius); font-size: var(--fs-caption); }
-.hunt-target.is-current { border-color: var(--gold-500); color: var(--gold-300); font-weight: 700; }
-.hunt-target.is-found { color: var(--ok); text-decoration: line-through; }
+.hunt-target {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr);
+  align-items: center;
+  gap: var(--gap-2);
+  min-height: var(--tap);
+  padding: .25rem var(--gap-2) .25rem .25rem;
+  border-radius: var(--radius-pill);
+  color: var(--ink-dim);
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  counter-increment: clue;
+}
+.hunt-target::before {
+  content: counter(clue);
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  background: var(--medal-open, rgba(11, 19, 32, .8)) center / contain no-repeat;
+  color: var(--gold-300);
+  font-family: var(--font-display);
+  font-size: 1rem;
+  filter: var(--badge-halo);
+}
+.hunt-target.is-current { background: linear-gradient(to right, rgba(223, 192, 135, .26), rgba(223, 192, 135, .04)); color: #F6E7C4; }
+.hunt-target.is-current::before { content: ""; background-image: var(--medal-progress, none); }
+.hunt-target.is-found { color: var(--ok); }
+.hunt-target.is-found::before { content: ""; background-image: var(--medal-done, none); }
+.hunt-target.is-skipped::before { content: "✗"; color: var(--bad); }
 
 /* "Perbesar adegan" (Phase F3.2, engines/cari.js). Coordinates and the zoomed
    layer order live in stage.css; here only the look. */
@@ -2161,12 +2228,14 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
 .hunt-zoom:active { transform: scale(.94); background: rgba(38, 53, 90, .92); }
 .hunt-zoom[aria-pressed="true"] { background: var(--gold-500); color: var(--navy-900); }
 .hunt.is-zoomed .hunt-scene { border: 0; border-radius: 0; }
-/* The clue as a compact ribbon on a semi-opaque navy backing; Mbah Kedu's
-   portrait is dropped to give the text the room */
+/* The clue as a compact ribbon on a semi-opaque navy backing (over the picture it
+   needs one, unlike the bar on the dark frame); Mbah Kedu's portrait is dropped to give the
+   text the room */
 .hunt.is-zoomed .hunt-clue {
   grid-template-columns: minmax(0, 1fr);
   padding: 0 var(--gap-4);
-  border-color: var(--line-strong);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-lg);
   background: rgba(11, 19, 32, .82);
   box-shadow: var(--shadow-2);
   color: var(--ink);
@@ -2178,9 +2247,6 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
 .hunt.is-zoomed .hunt-clue .eyebrow, .hunt.is-zoomed .clue-tries { color: var(--gold-300); }
 .hunt.is-zoomed .clue-tries .tries-dot { border-color: var(--gold-300); }
 .hunt.is-zoomed .clue-tries .tries-dot.is-left { background: var(--gold-300); }
-.hunt.is-zoomed .clue-voice .audio-btn { background: rgba(223, 192, 135, .16); color: var(--gold-300); }
-.hunt.is-zoomed .clue-voice .audio-btn[data-action="play"] { background: var(--gold-500); color: var(--navy-900); }
-.hunt.is-zoomed .clue-voice .audio-player.is-error .clue-voice-off { border-color: rgba(223, 192, 135, .45); color: var(--gold-300); }
 
 /* =========================== PETA KEDU (redesign) =========================== */
 /* Page redesign 2, 18 October 2026: catalogue mockup Peta Kedu candidate 04 with the owner's
@@ -2982,34 +3048,77 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
 .result-detail-list dt { color: var(--ink-dim); font-size: 1.5rem; }
 .result-detail-list dd { margin: .25rem 0 0; color: var(--ink); font-size: 2.25rem; font-weight: 800; }
 
-/* Region-done modal: the stage under it blurred and a little darker (owner,
-   18 October 2026). The HUD (z 20) stays above. Without JavaScript nothing
-   could close it, so the layer is only drawn with JS. */
+/* Region-done modal: the stage under it blurred and darkened (owner, 18 October
+   2026; blurrier and darker since 21 October 2026, as the card lost its own
+   backdrop). The HUD (z 20) stays above. Without JavaScript nothing could close
+   it, so the layer is only drawn with JS. */
 .result-scrim {
   position: fixed;
   inset: 0;
   z-index: 4;
-  background: rgba(5, 8, 15, .4);
-  -webkit-backdrop-filter: blur(.375rem);
-  backdrop-filter: blur(.375rem);
+  background: rgba(5, 8, 15, .72);
+  -webkit-backdrop-filter: blur(1rem);
+  backdrop-filter: blur(1rem);
 }
 html:not(.js) .result-scrim { display: none; }
-/* Large type and targets for touch (owner, 18 Oct 2026): close 64 dp, Baca Pustaka 72 dp */
-.result-kedu { display: grid; align-content: center; gap: 1.5rem; padding: 2rem 2.5rem; }
+/* No frame, backdrop, or shadow of its own (owner, 21 October 2026): Mbah Kedu, his words,
+   and the Pustaka card stand on the dimmed stage. Large type and targets for touch (owner,
+   18 Oct 2026): Baca Pustaka 72 dp. Without JavaScript (no layer) the card keeps a plain
+   dark backing so its text stays readable over the panel. */
+.result-kedu.result-sheet { display: grid; align-content: center; gap: 2rem; padding: 2rem 2.5rem; border: 0; border-radius: 0; background: none; box-shadow: none; }
+html:not(.js) .result-kedu.result-sheet { border-radius: 1.25rem; background: rgba(5, 8, 15, .9); }
 .finished.is-kedu-closed .result-kedu, .finished.is-kedu-closed .result-scrim { display: none; }
-.result-kedu > .hud-sheet-close { position: absolute; top: .75rem; right: .75rem; width: 4rem; height: 4rem; }
-.result-kedu > .hud-sheet-close .icon { width: 2.25rem; height: 2.25rem; }
 .finished-kedu {
   display: grid;
   grid-template-columns: auto 1fr;
   align-items: center;
-  gap: 1.5rem;
-  padding-right: 3.5rem;
+  gap: 2rem;
 }
-.finished-kedu .character-img { max-height: 15rem; }
-.finished-kedu .character-fallback { width: 8rem; font-size: var(--fs-h1); }
-.result-kedu .narration { max-width: none; padding: 1.25rem 1.75rem; font-size: 1.875rem; line-height: 1.4; }
-.result-kedu .narration cite { font-size: 1.25rem; }
+.finished-kedu .kedu-speaker { --kenal-avatar: 11rem; }
+.finished-kedu .kedu-speaker .kenal-nameplate { font-size: 1.1875rem; }
+/* His words as on Peta Kedu: plain light letters, no balloon (the name is on the plate) */
+.result-kedu .narration {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  color: #F3ECD9;
+  font-family: var(--font-display);
+  font-size: 2.125rem;
+  line-height: 1.35;
+  text-shadow: 0 .125rem .5rem rgba(0, 0, 0, .85);
+}
+.result-kedu .narration::before { display: none; }
+/* "Ketuk layar untuk melanjutkan": small thin letters centred at the foot, a soft pulse */
+.result-kedu-tap {
+  justify-self: center;
+  min-height: var(--tap);
+  padding: 0 var(--gap-4);
+  border: 0;
+  background: none;
+  color: rgba(234, 240, 250, .72);
+  font: inherit;
+  font-size: 1.0625rem;
+  font-weight: 400;
+  letter-spacing: .06em;
+  cursor: pointer;
+  animation: tap-pulse 2.4s ease-in-out infinite;
+}
+.result-kedu-tap[hidden] { display: none; }
+.result-kedu-tap:hover { color: var(--ink); }
+/* game/finished.js focuses the card itself when it opens (no ring: it is the whole screen) */
+.result-kedu:focus { outline: none; }
+/* Tabbed to: an underline, not a ring, keeps it a quiet line of text */
+.result-kedu-tap:focus-visible { outline: none; color: var(--ink); text-decoration: underline .0625rem; text-underline-offset: .375rem; }
+@keyframes tap-pulse {
+  50% { opacity: .5; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .result-kedu-tap { animation: none; }
+}
 .result-kedu .library-unlocked { gap: 1.25rem; margin: 0; padding: 1.25rem 1.5rem; }
 .result-kedu .library-unlocked h3 { font-size: 1.75rem; }
 .result-kedu .library-unlocked p { margin-top: .25rem; font-size: 1.25rem; line-height: 1.4; }
@@ -3665,26 +3774,27 @@ html.js .book-frame img.is-loaded { opacity: 1; }
 .passage[open] .passage-read { display: none; }
 
 /* Cari */
-.hunt-target { padding: 0; }
+/* The jump button (engines/cari.js) is the row's label; its ::after spreads the tap over the
+   whole row, medal included */
 .hunt-jump {
-  width: 100%;
-  min-height: var(--tap);
-  padding: var(--gap-2) var(--gap-3);
+  position: static;
+  min-width: 0;
+  padding: 0;
   border: 0;
-  border-radius: var(--radius);
   background: none;
   color: inherit;
   font: inherit;
   text-align: left;
   cursor: pointer;
 }
-.hunt-jump:hover:not(:disabled) { background: rgba(223, 192, 135, .1); }
-.hunt-jump:active:not(:disabled) { background: rgba(223, 192, 135, .18); }
+.hunt-jump::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+.hunt-target:has(.hunt-jump:hover:not(:disabled)) { background-color: rgba(223, 192, 135, .1); }
+.hunt-target:has(.hunt-jump:active:not(:disabled)) { background-color: rgba(223, 192, 135, .18); }
+.hunt-jump:focus-visible { outline: none; }
+.hunt-jump:focus-visible::after { outline: .1875rem solid var(--gold-300); outline-offset: -.125rem; }
 .hunt-jump:disabled { cursor: default; }
-.hunt-target.is-found .hunt-jump::before { content: "✓ "; }
 .object:disabled { cursor: default; }
 .hunt-target.is-skipped { color: var(--ink-dim); }
-.hunt-target.is-skipped .hunt-jump::before { content: "✗ "; color: var(--bad); }
 
 /* Penanda 3 kesempatan (Dok 2 §5.3): bulatan terisi = sisa kesempatan */
 .chip-tries { gap: var(--gap-2); }

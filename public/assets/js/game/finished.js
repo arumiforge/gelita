@@ -4,9 +4,10 @@
  * pada prefers-reduced-motion. Skor dan bintang sudah dirender server.
  *
  * The region-done card (Mbah Kedu, Pustaka) becomes a modal here: the panel
- * under it is inert behind a blurred, dimmed layer, focus starts on its close
- * button, and the close button, Escape, or a tap on the layer closes it and
- * moves focus to the main button. Without JavaScript the card simply stays and
+ * under it is inert behind a blurred, dimmed layer, focus starts on the card
+ * itself, and its "Ketuk layar untuk melanjutkan" button, Escape, or a tap
+ * anywhere on the layer or the card (except a link in it, e.g. Baca Pustaka)
+ * closes it and moves focus to the main button. Without JavaScript the card simply stays and
  * the buttons below it remain free. Detail hasil is a popover handled by
  * game/hud.js.
  */
@@ -31,10 +32,15 @@ function initRegionCard(screen) {
   card.setAttribute('aria-modal', 'true');
   if (panel) panel.inert = true;
   button.hidden = false;
-  button.focus({ preventScroll: true });
+  // Focus on the dialog itself (its title is read out), so the prompt stays a quiet line until tabbed to
+  card.tabIndex = -1;
+  card.focus({ preventScroll: true });
 
   button.addEventListener('click', close);
   $('.result-scrim', screen)?.addEventListener('click', close);
+  card.addEventListener('click', (event) => {
+    if (!event.target.closest('a, button')) close();
+  });
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') close();
   });

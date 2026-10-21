@@ -7,6 +7,10 @@
  * story, the instruction in a hint box, and the gold main button between two
  * flourishes; the best result (replays) sits under the hint box.
  *
+ * HUD (owner, 21 October 2026): the logo alone in the middle (`logo-centre`,
+ * no region name, no shard plate) and Back to the region map on the navy
+ * plate in the top-left corner, in place of the old Back button at the foot.
+ *
  * Tahap 3: "Mulai tantangan" memutar tirai tantangan (≤1,5 detik, ketukan
  * melewatinya) SEBELUM berpindah ke /tantangan. Attempt baru dibuka server
  * saat halaman tantangan dirender (ChallengeService::openNode()), jadi tirai
@@ -35,6 +39,9 @@ $engineName  = engine_label($engine, $node->variant_code);
 <?= $this->section('music') ?>challenge<?= $this->endSection() ?>
 <?= $this->section('title') ?><?= esc($node->text('title', $locale)) ?><?= $this->endSection() ?>
 <?= $this->section('background') ?><?= $bg ?><?= $this->endSection() ?>
+<?php // Logo alone in the middle of the HUD, Back to the region map on the navy plate top left (owner, 21 October 2026) ?>
+<?= $this->section('hudLayout') ?>logo-centre<?= $this->endSection() ?>
+<?= $this->section('hudBack') ?><?= base_url('wilayah/' . $level->code) ?><?= $this->endSection() ?>
 
 <?= $this->section('overlay') ?>
 <template id="tpl-curtain-challenge"><?= component('curtain', [
@@ -109,10 +116,4 @@ $engineName  = engine_label($engine, $node->variant_code);
     </div>
   </article>
 </section>
-<?= $this->endSection() ?>
-
-<?= $this->section('nav') ?>
-<?= component('nav-bar', ['nav' => [
-    ['label' => $region, 'href' => base_url('wilayah/' . $level->code), 'style' => 'quiet', 'arrow' => 'left'],
-]]) ?>
 <?= $this->endSection() ?>

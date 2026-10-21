@@ -15,6 +15,11 @@
  * `{ item_id: <clues[i].item_id>, answer: { object: <data-object> } }`.
  * Petunjuk pertama dirender server agar terbaca tanpa JavaScript.
  *
+ * Layout (owner, 21 October 2026): the clue bar has no backdrop, Mbah Kedu
+ * speaks from his round avatar (`ui.kedu-avatar`, as on Kenali), the clue
+ * list wears the status medals of the region map, and the side panel has no
+ * border.
+ *
  * Kesempatan per petunjuk (Dok 2 §5.3): #clue-tries menampilkan 3 bulatan
  * untuk petunjuk yang sedang dicari; engines/cari.js mengisinya dari
  * `clues[i].state.tries` lalu `tries_left` respons server. Petunjuk yang
@@ -44,11 +49,14 @@ $maxTries = max(1, (int) ($payload['max_tries'] ?? config('Gelita')->maxTries));
 <?= $this->section('title') ?><?= esc($node->text('title', $locale)) ?><?= $this->endSection() ?>
 <?= $this->section('background') ?><?= media_first($node->background_media_id, $level->background_media_id) ?><?= $this->endSection() ?>
 <?= $this->section('bodyClass') ?>is-challenge<?= $this->endSection() ?>
+<?php // Logo left, the region name in the middle, no shard plate (owner, 21 October 2026) ?>
+<?= $this->section('hudLayout') ?>region-centre<?= $this->endSection() ?>
 
 <?= $this->section('arena') ?>
 <div class="hunt">
   <div class="hunt-clue">
-    <?= component('character', ['character' => 'mbah_kedu', 'class' => 'hunt-guide']) ?>
+    <?php // Mbah Kedu's round avatar in its gold ring, not a pose frame (owner, 21 October 2026) ?>
+    <span class="hunt-guide"><?= component('partials/kedu-portrait', ['src' => media_key_src('ui.kedu-avatar'), 'name' => lang('Game.char_mbah_kedu')]) ?></span>
     <div class="hunt-clue-body">
       <span class="eyebrow"><?= str_replace(
           ['{0}', '{1}'],
@@ -98,7 +106,11 @@ $maxTries = max(1, (int) ($payload['max_tries'] ?? config('Gelita')->maxTries));
     <?= icon('fullscreen') ?><span class="visually-hidden" data-hunt-zoom-label><?= esc(lang('Game.huntZoom')) ?></span>
   </button>
 
-  <div class="hunt-side">
+  <?php // Clue list on the owner's status medals (owner, 21 October 2026): navy + number waiting, gold arc current, green ✓ found ?>
+  <div class="hunt-side" style="<?= esc(implode('; ', array_map(
+      static fn (string $state): string => '--medal-' . $state . ': url("' . asset_url_versioned('ui/status-' . $state . '.webp') . '")',
+      ['done', 'progress', 'open'],
+  )), 'attr') ?>">
     <p class="hunt-list-title"><?= esc(lang('Game.huntList')) ?></p>
     <ol class="hunt-list" id="hunt-list">
       <?php for ($i = 1; $i <= $total; $i++): ?>

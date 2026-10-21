@@ -318,6 +318,8 @@ trait GameProgress
                 'title'   => lang('Game.curtainRegionTitle', [(string) $row['name']]),
                 'tagline' => $intro === [] ? '' : tr($intro[0], 'title', $locale),
                 'chip'    => $difficulty === '' ? '' : lang_or('Game.difficulty_' . $difficulty, $difficulty),
+                // Stored code: core/curtain.js lights the difficulty meter's bars from it
+                'difficulty' => $difficulty,
             ],
             'preload' => array_values(array_unique(array_filter($urls, static fn ($url): bool => is_string($url) && $url !== ''))),
             'bg'      => $bg,

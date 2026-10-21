@@ -81,9 +81,10 @@ $cinematic = ! empty($cinematic);
       <div class="dialogue-ambience" aria-hidden="true"></div>
     <?php endif ?>
 
+    <?php // No nameplates under the figures: the box names the speaker (owner, 21 October 2026) ?>
     <div class="dialogue-stage" aria-hidden="true">
-      <?= component('character', ['character' => 'jaka', 'showName' => true, 'class' => 'stage-left']) ?>
-      <?= component('character', ['character' => 'mbah_kedu', 'showName' => true, 'class' => 'stage-right']) ?>
+      <?= component('character', ['character' => 'jaka', 'class' => 'stage-left']) ?>
+      <?= component('character', ['character' => 'mbah_kedu', 'class' => 'stage-right']) ?>
     </div>
 
     <ol class="slides dialogue-lines">

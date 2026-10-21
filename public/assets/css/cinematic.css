@@ -847,18 +847,36 @@ body.is-cinematic :is(.hud-identity, .hud-controls, .hud-shards) { pointer-event
 .cine .narrator-auto-track i { width: .875rem; height: .875rem; }
 .cine .narrator-auto[aria-pressed="true"] .narrator-auto-track i { transform: translateX(.875rem); }
 
-/* Dialogue scenes keep their controls at the top right, under the HUD (y 72);
-   the region dialogue's cinematic layout puts them on the caption like the intro */
+/* Dialogue scenes (the region-done scene) keep their controls at the top right, right
+   under the HUD menu button and flush with its right edge, with no band behind them
+   (owner, 21 October 2026); the round buttons wear the HUD skin as in the cinematic
+   layouts. The region dialogue's cinematic layout puts them on the caption like the intro. */
 .dialogue:not(.cine) .narrator-controls {
   position: absolute;
-  top: calc(72 * var(--dp));
-  right: calc(160 * var(--dp));
+  top: calc(60 * var(--dp));
+  right: calc(16 * var(--dp));
   z-index: 5;
-  padding: var(--gap-1);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-pill);
-  background: rgba(11, 19, 32, .66);
+  flex-wrap: nowrap;
+  gap: var(--gap-2);
+  padding: 0;
+  border: 0;
+  background: none;
+  box-shadow: none;
 }
+.dialogue:not(.cine) .narrator-controls .icon-btn { isolation: isolate; border: 0; background: none; color: var(--gold-300); }
+.dialogue:not(.cine) .narrator-controls .icon-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border: .125rem solid var(--gold-500);
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 35%, var(--navy-600), var(--navy-900));
+  box-shadow: 0 .25rem .75rem rgba(1, 7, 19, .5);
+}
+.stage[style*="--skin-hud"] .dialogue:not(.cine) .narrator-controls .icon-btn::after { border: 0; background: var(--skin-hud) center / 101.6% 101.6% no-repeat; filter: brightness(.83) saturate(.8); }
+.dialogue:not(.cine) .narrator-controls .icon-btn .icon { filter: drop-shadow(0 1px .1875rem rgba(11, 19, 32, .9)); }
+.dialogue:not(.cine) .narrator-auto { color: var(--gold-300); text-shadow: 0 1px .25rem rgba(11, 19, 32, .95); }
 /* "Lewati" right under the HUD menu button, flush with its right edge */
 body.is-cinematic .nav-bar {
   top: calc(104 * var(--dp));
@@ -923,7 +941,6 @@ body.is-cinematic .nav-bar .btn {
 /* Characters at the stage's edges, behind the box; no name labels (the box names the speaker) */
 .dialogue-cine .dialogue-stage > .character { isolation: isolate; }
 .dialogue-cine .dialogue-stage .character-img { width: calc(320 * var(--dp)); }
-.dialogue-cine .dialogue-stage .character-name { display: none; }
 /* The speaker steps forward with a warm halo and breathes slowly */
 .dialogue-cine .dialogue-stage > .character::before {
   content: "";
@@ -1055,6 +1072,9 @@ body.is-cinematic .nav-bar .btn {
   font-weight: 700;
   letter-spacing: .04em;
   filter: drop-shadow(0 .125rem .375rem rgba(11, 19, 32, .8));
+  /* The clipped gradient only paints the box: room for descenders (the g of "Sedang") */
+  padding-bottom: .15em;
+  margin-bottom: -.15em;
 }
 /* Pops in once the chapter card is tapped away (without JavaScript it just stands there) */
 body:has(.dialogue-cine.is-started) .region-difficulty { animation: diff-drop .8s cubic-bezier(.25, 1.5, .45, 1) .15s both; }
@@ -1370,18 +1390,17 @@ body.has-kenal { overflow: hidden; }
   animation: cine-in .6s ease both;
 }
 /* The bar starts under the avatar's centre; the avatar (a full circle, half of
-   it outside the bar) is the bar's visible left end and stands on its bottom */
+   it outside the bar) is the bar's visible left end and stands on its bottom.
+   No backdrop, border, or shadow (owner, 21 October 2026): the text reads over
+   the picture through its own shadow and the dark band at the stage's foot */
 .kenal-caption {
   position: relative;
   box-sizing: border-box;
   min-height: calc(var(--kenal-avatar) * .72);
   margin-left: calc(var(--kenal-avatar) / 2);
   padding: var(--gap-3) var(--gap-5) var(--gap-4) calc(var(--kenal-avatar) / 2 + var(--gap-5));
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  background: linear-gradient(to bottom, rgba(11, 19, 32, .8), rgba(11, 19, 32, .92));
-  box-shadow: var(--shadow-2);
 }
+.kenal-caption :is(.cine-title, .slide-text) { text-shadow: 0 1px .125rem rgba(5, 10, 20, .95), 0 0 .75rem rgba(5, 10, 20, .85); }
 .kenal-slide.is-narrator .kenal-caption { min-height: 0; margin-left: 0; padding-left: var(--gap-5); }
 .kenal-avatar {
   position: absolute;
@@ -1436,7 +1455,7 @@ body.has-kenal { overflow: hidden; }
   white-space: nowrap;
   text-shadow: 0 1px .1875rem rgba(0, 0, 0, .8);
 }
-:is(.kenal, .kedu-story)[style*="--kenal-plate-navy"] .kenal-nameplate { border: 0; border-radius: 0; background: var(--kenal-plate-navy) center / 100% 100% no-repeat; }
+:is(.kenal, .kedu-story, .result-kedu)[style*="--kenal-plate-navy"] .kenal-nameplate { border: 0; border-radius: 0; background: var(--kenal-plate-navy) center / 100% 100% no-repeat; }
 /* The title and the dots and Lanjut on one row at the top of the bar */
 .kenal-caption .cine-caption-head { flex-wrap: nowrap; gap: var(--gap-3); min-height: 4rem; }
 .kenal-caption .cine-title { flex: 1 1 auto; min-width: 0; margin: 0; font-size: 1.75rem; }
@@ -1512,10 +1531,12 @@ body.has-kenal { overflow: hidden; }
   filter: drop-shadow(0 .375rem .625rem rgba(0, 0, 0, .6));
 }
 .curtain-tagline { margin: 0; color: #F1E3BF; font-family: var(--font-display); font-size: var(--fs-h3); font-style: italic; text-shadow: 0 .125rem .5rem rgba(0, 0, 0, .9); }
-.curtain-chip { justify-self: center; border-color: var(--line-strong); background: rgba(11, 19, 32, .72); color: var(--ink); }
-.curtain-region .curtain-title, .curtain-region .curtain-tagline, .curtain-region .curtain-chip { animation: cine-rise .6s ease both; }
+/* The region dialogue's difficulty badge, centred under the tagline (owner, 21 October 2026) */
+.curtain-difficulty { justify-self: center; margin: var(--gap-2) 0 0; }
+.curtain-difficulty[hidden] { display: none; }
+.curtain-region .curtain-title, .curtain-region .curtain-tagline, .curtain-region .curtain-difficulty { animation: cine-rise .6s ease both; }
 .curtain-region .curtain-tagline { animation-delay: .15s; }
-.curtain-region .curtain-chip { animation-delay: .3s; }
+.curtain-region .curtain-difficulty { animation-delay: .3s; }
 .curtain-region .curtain-beam { width: 16.25rem; height: .25rem; }
 /* The track sits low on the screen, clear of the picture's centre */
 .curtain-region .curtain-beam.has-track { position: absolute; bottom: 3rem; left: 50%; width: 30rem; height: auto; translate: -50% 0; }
@@ -1706,7 +1727,7 @@ body.has-kenal { overflow: hidden; }
 
   /* Tahap 3: tanpa gerak, hanya pudar — tiap visual tampil dalam keadaan akhirnya */
   .kenal-dot, .kenal-badge, .kenal-slide, .footstep,
-  .curtain-region .curtain-title, .curtain-region .curtain-tagline, .curtain-region .curtain-chip,
+  .curtain-region .curtain-title, .curtain-region .curtain-tagline, .curtain-region .curtain-difficulty,
   .cc-puzzle i, .cc-gap b, .cc-card, .cc-light,
   .dialogue-ambience::after, .dialogue-cine .dialogue-stage > .character.is-speaking::before,
   .dialogue-cine .dialogue-stage .character.is-speaking .character-img, .region-difficulty::after,

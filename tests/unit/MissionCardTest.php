@@ -102,6 +102,17 @@ final class MissionCardTest extends CIUnitTestCase
         $this->assertStringContainsString('.stage[style*="--skin-primary"] .btn-primary {', $css, 'scoped to the stage: the admin panel keeps its buttons');
     }
 
+    /** Owner, 21 October 2026: the logo alone in the HUD centre and Back to the region map on the plate top left. */
+    public function testHudPutsTheLogoInTheMiddleAndBackInTheCorner(): void
+    {
+        $page = $this->brief();
+
+        $this->assertStringContainsString('<header class="hud hud-menu-style is-compact is-logo-centre"', $page);
+        $this->assertMatchesRegularExpression('~<a class="hud-back-plate" href="' . preg_quote(esc(base_url('wilayah/wonosobo'), 'attr'), '~') . '"[^>]*>.*?<span>' . preg_quote(esc(lang('Game.back')), '~') . '</span></a>~s', $page);
+        $this->assertStringNotContainsString('hud-identity-region', $page);
+        $this->assertStringNotContainsString('<nav class="nav-bar"', $page, 'no Back button at the foot');
+    }
+
     /** Owner, 19 October 2026: the mission card plays the challenge music under its narrated line. */
     public function testCardPlaysTheChallengeMusic(): void
     {

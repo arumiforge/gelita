@@ -208,9 +208,12 @@ final class ResultScreenTest extends CIUnitTestCase
     {
         $page = $this->finished(levelDone: true);
 
-        $this->assertMatchesRegularExpression('/<div class="result-scrim" aria-hidden="true"><\/div>\s*<aside class="result-sheet result-kedu stage-box" role="dialog" aria-labelledby="result-kedu-title">/', $page);
+        $this->assertMatchesRegularExpression('/<div class="result-scrim" aria-hidden="true"><\/div>\s*<aside class="result-sheet result-kedu stage-box" role="dialog" aria-labelledby="result-kedu-title"/', $page);
         $this->assertStringContainsString(lang('Game.regionDone', ['Temanggung']) . ' ' . lang('Game.allShardsDone', [12]), $page);
-        $this->assertMatchesRegularExpression('/class="hud-sheet-close" data-dismiss hidden/', $page, 'the close button needs JavaScript');
+        // Owner request 21 October 2026: "Ketuk layar untuk melanjutkan" instead of the cross; Mbah Kedu's avatar and nameplate
+        $this->assertMatchesRegularExpression('/class="result-kedu-tap" data-dismiss hidden>' . preg_quote(esc(lang('Game.tapToContinue')), '/') . '</', $page, 'the tap prompt needs JavaScript');
+        $this->assertStringNotContainsString('hud-sheet-close" data-dismiss', $page);
+        $this->assertMatchesRegularExpression('/<div class="kedu-speaker">.*<span class="kenal-nameplate">' . preg_quote(lang('Game.char_mbah_kedu'), '/') . '<\/span>/s', $page);
         $this->assertStringNotContainsString('result-scrim', $this->finishedPlain(), 'no layer while the region is open');
     }
 

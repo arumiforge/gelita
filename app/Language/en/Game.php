@@ -396,6 +396,7 @@ return [
     'libraryUnlockedTitle' => 'The {0} Library is open!',
     'libraryUnlockedText'  => 'The {0} Library is now open to you, with readings, pictures, and videos about {0}.',
     'libraryReadNow'       => 'Read the Library',
+    'tapToContinue'        => 'Tap the screen to continue',
     'libraryCredit'        => 'Image source',
     'libraryViewSource'    => 'View source',
     'libraryLoading'       => 'Loading picture…',

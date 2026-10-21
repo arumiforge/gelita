@@ -162,7 +162,7 @@ final class RegionStoryTest extends CIUnitTestCase
         $this->assertStringContainsString($this->href('dialog/magelang') . ' data-slide-final data-curtain="region"', $page);
         $this->assertStringContainsString(esc(lang('Game.goToRegion', ['Magelang'])), $page);
         $this->assertStringContainsString('<template id="tpl-curtain-region">', $page);
-        $this->assertStringContainsString(esc(json_encode(['title' => 'Menuju Magelang…', 'tagline' => 'Tanah Candi Agung', 'chip' => 'Sedang'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), 'attr'), $page);
+        $this->assertStringContainsString(esc(json_encode(['title' => 'Menuju Magelang…', 'tagline' => 'Tanah Candi Agung', 'chip' => 'Sedang', 'difficulty' => 'sedang'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), 'attr'), $page);
     }
 
     public function testLastRegionContinuesToTheEnding(): void
@@ -332,7 +332,17 @@ final class RegionStoryTest extends CIUnitTestCase
         $this->assertStringContainsString('class="story dialogue narrator"', $page);
         $this->assertStringContainsString('dialogue-box panel-parchment', $page);
         $this->assertStringContainsString('screen-head dialogue-head stage-box', $page);
-        $this->assertStringNotContainsString('region-difficulty', $page);
+        // The difficulty badge only on the region curtain (its template), never in the HUD
+        $this->assertStringNotContainsString('region-difficulty', (string) preg_replace('~<template id="tpl-curtain-region">.*?</template>~s', '', $page));
+
+        // Owner request 21 October 2026: logo alone in the HUD centre, "Peta wilayah" on the plate top left,
+        // no nav bar (Peta Kedu is in the menu), no shard plate or region name, no names under the figures
+        $this->assertStringContainsString(' is-logo-centre', $page);
+        $this->assertMatchesRegularExpression('~<a class="hud-back-plate" href="' . preg_quote(esc(base_url('wilayah/temanggung'), 'attr'), '~') . '"[^>]*>.*?<span>' . preg_quote(esc(lang('Game.backToRegion')), '~') . '</span></a>~s', $page);
+        $this->assertStringNotContainsString('<nav class="nav-bar"', $page);
+        $this->assertStringNotContainsString('class="hud-shards"', $page);
+        $this->assertStringNotContainsString('hud-identity-region', $page);
+        $this->assertStringNotContainsString('character-name', $page);
     }
 
     public function testDialogueJsLeavesTheEventToTheNarrator(): void
@@ -485,6 +495,9 @@ final class RegionStoryTest extends CIUnitTestCase
         $this->assertMatchesRegularExpression('/<template id="tpl-curtain-region">.*?class="curtain-title has-plate" data-curtain-text="title"/s', $page);
         $this->assertMatchesRegularExpression('/<template id="tpl-curtain-region">.*?class="curtain-beam has-track"/s', $page);
         $this->assertDoesNotMatchRegularExpression('/<template id="tpl-curtain-region">(?:(?!<\/template>).)*curtain-trail/s', $page);
+        // The region dialogue's difficulty badge instead of the plain chip (owner, 21 October 2026); curtain.js lights its bars
+        $this->assertMatchesRegularExpression('/<template id="tpl-curtain-region">.*?<div class="region-difficulty curtain-difficulty" data-curtain-difficulty hidden>.*?<span class="region-difficulty-level" data-curtain-text="chip">/s', $page);
+        $this->assertStringContainsString('fillDifficulty(layer, opts.text)', (string) file_get_contents(FCPATH . 'assets/js/core/curtain.js'));
         // Peta Kedu redesign: pins select a region; Lanjut in its panel enters with the curtain; locked does not
         $this->assertSame(1, substr_count($page, $this->href('dialog/magelang') . ' data-curtain="region"'));
         $this->assertSame(1, substr_count($page, $this->href('wilayah/temanggung') . ' data-curtain="region"'));
@@ -492,7 +505,7 @@ final class RegionStoryTest extends CIUnitTestCase
         $this->assertStringContainsString($this->href('wilayah/wonosobo') . ' aria-disabled="true" data-locked-message="', $page, 'locked Lanjut only shows the toast');
         $this->assertMatchesRegularExpression('/<a class="kedu-city" href="#region-magelang" data-region-select="magelang"\s+aria-controls="region-magelang" aria-current="true"/', $page, 'the region to play is selected');
         // Tagline & chip dari naskah; aset tujuan dialog: frame tokoh
-        $this->assertStringContainsString(esc(json_encode(['title' => 'Menuju Temanggung…', 'tagline' => 'Di Antara Dua Gunung', 'chip' => 'Mudah'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), 'attr'), $page);
+        $this->assertStringContainsString(esc(json_encode(['title' => 'Menuju Temanggung…', 'tagline' => 'Di Antara Dua Gunung', 'chip' => 'Mudah', 'difficulty' => 'mudah'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), 'attr'), $page);
         $this->assertStringContainsString(esc(json_encode([base_url('assets/char/jaka-idle-1.png')], JSON_UNESCAPED_SLASHES), 'attr'), $page);
     }
 
@@ -940,7 +953,7 @@ final class RegionStoryTest extends CIUnitTestCase
         $node->injectRawData(['id' => 15, 'level_id' => 1, 'sequence' => 4, 'engine_type' => 'cari', 'title_id' => 'Cari Objek Temanggung']);
 
         $next = self::overview(['temanggung' => 'completed', 'magelang' => 'in_progress'])[1];
-        $next['curtain'] = ['text' => ['title' => 'Menuju Magelang…', 'tagline' => 'Tanah Candi Agung', 'chip' => 'Sedang'], 'preload' => []];
+        $next['curtain'] = ['text' => ['title' => 'Menuju Magelang…', 'tagline' => 'Tanah Candi Agung', 'chip' => 'Sedang', 'difficulty' => 'sedang'], 'preload' => []];
 
         return view('game/challenge-finished', self::hud($allDone) + [
             'attempt'         => $attempt,
