@@ -14,7 +14,9 @@
  * Left : the GELITA logo (`ui.logo-hero`, else `ui.logo`, else the text
  *        brand; hidden with `$hideBrand` on the welcome page, whose logo is
  *        already large) and the section `hudTitle` (e.g. Peta Kedu), else the
- *        region name. Section `hudLayout` = `title-centre` drops the logo and
+ *        region name (section `hudRegion` = `off` leaves the region name out:
+ *        the region map shows it on its own head plate, owner 21 October 2026).
+ *        Section `hudLayout` = `title-centre` drops the logo and
  *        centres the title (Peta Kedu, 20 October 2026); `logo-centre` puts
  *        the logo alone in the middle and leaves out the shard plate
  *        (Mulai, Masuk, Daftar, Gerbang; owner, 20 October 2026).
@@ -73,6 +75,9 @@ $locale   = service('request')->getLocale();
 $locales  = config('Gelita')->locales;
 $hudTitle = trim($this->renderSection('hudTitle'));
 $region   = $hudTitle !== '' ? $hudTitle : (isset($level) && $level instanceof \App\Entities\Level ? $level->text('name', $locale) : null);
+if (trim($this->renderSection('hudRegion')) === 'off') {
+    $region = null;
+}
 $back     = trim($this->renderSection('hudBack'));
 // logo-centre: Back on the navy plate in the free top-left corner, not beside the controls
 $backPlate = $back !== '' && $logoCentre;

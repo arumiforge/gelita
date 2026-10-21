@@ -1263,6 +1263,9 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
 .node-card.has-frame.is-completed .node-card-art { filter: sepia(.9) saturate(.7) contrast(.95) brightness(1.18); }
 .node-card.has-frame.is-completed::before {
   background:
+    /* A soft parchment veil behind the title and stars, so the bright picture's lines do not
+       run through the letters (owner, 21 October 2026) */
+    radial-gradient(ellipse 44% 52% at 44% 30%, rgba(252, 243, 220, .9), rgba(252, 243, 220, .7) 55%, rgba(252, 243, 220, 0)),
     radial-gradient(ellipse 75% 85% at 62% 50%, rgba(250, 238, 205, .42), rgba(226, 202, 150, .26) 70%, rgba(110, 72, 30, .38)),
     linear-gradient(rgba(250, 236, 200, .14), rgba(250, 236, 200, .14));
 }

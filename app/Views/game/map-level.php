@@ -25,7 +25,10 @@
  * navy plate (`assets/ui/map-head-plate.webp`) and the progress on the
  * owner's bronze track (`assets/ui/map-progress-track.webp`); the map picture
  * has no frame and its edges fade into the page background; the card pictures
- * are bright sepia when done, darker when open, grey when locked.
+ * are bright sepia when done, darker when open, grey when locked. Later the
+ * same day: no region name in the HUD (section `hudRegion` = `off`), a locked
+ * pin explains itself in a modal instead of a toast, and a soft parchment veil
+ * behind the title of a done card.
  *
  * @var App\Entities\Level         $level
  * @var array<string, mixed>       $levelSummary
@@ -90,6 +93,8 @@ $hasTrack     = is_file(FCPATH . 'assets/ui/map-progress-track.webp');
 <?= $this->section('title') ?><?= esc($region) ?><?= $this->endSection() ?>
 <?php // A taller HUD with larger controls; the map and the side column sit lower (owner, 20 October 2026) ?>
 <?= $this->section('hudStyle') ?>tall<?= $this->endSection() ?>
+<?php // The region name sits on the head plate of the side column, not again in the HUD (owner, 21 October 2026) ?>
+<?= $this->section('hudRegion') ?>off<?= $this->endSection() ?>
 <?= $this->section('background') ?><?= $bg ?><?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
@@ -108,7 +113,7 @@ $hasTrack     = is_file(FCPATH . 'assets/ui/map-progress-track.webp');
           <li class="map-point node-point is-<?= esc($node['status'], 'attr') ?>"
               style="left: <?= (float) $node['map_x'] ?>%; top: <?= (float) $node['map_y'] ?>%">
             <a class="map-pin" href="<?= esc($href($node), 'attr') ?>"
-               <?= $node['status'] === 'locked' ? 'aria-disabled="true" data-locked-message="' . esc(lang('Game.nodeLocked'), 'attr') . '"' : '' ?>>
+               <?= $node['status'] === 'locked' ? 'aria-disabled="true" data-locked-title="' . esc(lang('Game.nodeLockedTitle'), 'attr') . '" data-locked-message="' . esc(lang('Game.nodeLocked'), 'attr') . '" data-locked-ok="' . esc(lang('Game.libraryUnderstood'), 'attr') . '"' : '' ?>>
               <span class="pin-icon<?= status_badge_src($node) !== null ? ' has-badge' : '' ?>" aria-hidden="true"><?= $medal($node, 'pin-badge') ?></span>
               <span class="pin-label">
                 <b><?= esc($node['sequence']) ?>. <?= esc(engine_label($node['engine_type'], $node['variant'])) ?></b>
