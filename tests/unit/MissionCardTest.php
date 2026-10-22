@@ -77,11 +77,12 @@ final class MissionCardTest extends CIUnitTestCase
         $page = $this->brief();
 
         $this->assertStringContainsString('<span class="mission-seal num"><b>3</b><small>/4</small></span>', $page, 'medallion n/total');
-        $this->assertMatchesRegularExpression('/<p class="mission-region">.*?<svg[^>]*>.*?<\/svg> <span>Wonosobo<\/span>/s', $page, 'pin and region');
+        // Owner, 22 October 2026: the round map and "i" of the owner's icon sheets
+        $this->assertMatchesRegularExpression('/<p class="mission-region">.*?<img class="mission-region-art" src="[^"]*round-map\.webp[^"]*"[^>]*> <span>Wonosobo<\/span>/s', $page, 'map and region');
         $this->assertStringContainsString(lang('Game.challengeOf', [3, 4]), $page, 'the position stays readable for screen readers');
         $this->assertStringContainsString('<h1 id="mission-title">Benar atau Salah?</h1>', $page);
         $this->assertStringContainsString('<p class="mission-description">Kabar tentang Dieng beredar cepat.</p>', $page);
-        $this->assertStringContainsString('<p class="mission-instruction"><span class="mission-info" aria-hidden="true">i</span> <span>Setiap pilihan membawamu lebih dekat ke kebenaran.</span></p>', $page);
+        $this->assertMatchesRegularExpression('~<p class="mission-instruction"><img class="mission-info-art" src="[^"]*round-info\.webp[^"]*"[^>]*> <span>Setiap pilihan membawamu lebih dekat ke kebenaran\.</span></p>~', $page);
         $this->assertSame(4, substr_count($page, '<svg class="mission-corner is-'), 'gold corners');
 
         // The gold main button between two flourishes, still opening the challenge curtain
@@ -103,7 +104,7 @@ final class MissionCardTest extends CIUnitTestCase
         }
 
         $css = (string) file_get_contents(FCPATH . 'assets/css/game.css');
-        $this->assertStringContainsString('.stage[style*="--gold-pill-2"] .btn-primary {', $css, 'scoped to the stage: the admin panel keeps its buttons');
+        $this->assertStringContainsString('.stage[style*="--gold-pill-2"] :is(.btn-primary, .btn-danger) {', $css, 'scoped to the stage: the admin panel keeps its buttons');
         $this->assertStringContainsString('border-image: var(--pill) 0 var(--pill-cut) fill / 0 var(--pill-end) stretch;', $css);
     }
 

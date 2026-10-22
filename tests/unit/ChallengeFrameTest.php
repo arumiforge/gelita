@@ -63,11 +63,37 @@ final class ChallengeFrameTest extends CIUnitTestCase
     }
 
     /** Owner, 21 October 2026: the header plate starts under the number ring, and the frame keeps clear of it. */
-    public function testHeaderPlateJoinsTheBadgeAndTheFrameKeepsClear(): void
+    /** Owner, 22 October 2026: no frame box, header plate, or glow line; the stage is darkened instead. */
+    public function testChallengeHasNoFrameBoxButADarkerStage(): void
     {
+        $css = (string) preg_replace('~/\*.*?\*/~s', '', (string) file_get_contents(FCPATH . 'assets/css/game.css'));
+        $this->assertMatchesRegularExpression('~\n\.challenge::before \{[^}]*inset: 0;[^}]*radial-gradient~', $css);
+        preg_match('~\n\.challenge::before \{([^}]*)\}~', $css, $veil);
+        $this->assertDoesNotMatchRegularExpression('~border|box-shadow~', $veil[1]);
+        $this->assertStringNotContainsString('.challenge-head::before', $css);
+        $this->assertStringNotContainsString('.challenge-head::after', $css);
+        $this->assertMatchesRegularExpression('~\n\.chip-tally \{ gap: var\(--gap-2\); \}~', $css, 'the ✓/✗ count has no pill');
+    }
+
+    /** Owner, 22 October 2026: the header and instruction use the round pictures of the owner's sheets. */
+    public function testHeaderAndInstructionUseTheRoundPictures(): void
+    {
+        $frame = (string) file_get_contents(APPPATH . 'Views/game/challenge/_frame.php');
+        foreach (["round_icon('clock', 'stat-art'", "round_icon('right', 'stat-art'", "round_icon('wrong', 'stat-art'", "round_icon('help', 'chip-art'", "round_icon('logout', 'chip-art'", "round_icon('info', 'instruction-art')"] as $call) {
+            $this->assertStringContainsString($call, $frame, $call);
+        }
+        $this->assertStringContainsString("round_icon('info', 'puzzle-caption-art')", (string) file_get_contents(APPPATH . 'Views/game/challenge/puzzle.php'));
+
+        $finished = (string) file_get_contents(APPPATH . 'Views/game/challenge-finished.php');
+        foreach (["round_icon('clock', 'result-stat-art'", "round_icon('wrong', 'result-stat-art'", "round_icon('replay', 'result-stat-art'", "'result-badge-art'"] as $call) {
+            $this->assertStringContainsString($call, $finished, $call);
+        }
+
         $css = (string) file_get_contents(FCPATH . 'assets/css/game.css');
-        $this->assertMatchesRegularExpression('~\.challenge-head::before \{[^}]*inset: 0 0 0 calc\(var\(--badge\) / 2\);~', $css);
-        $this->assertMatchesRegularExpression('~\.challenge::before \{[^}]*top: calc\(132 \* var\(--dp\)\);~', $css);
+        $this->assertStringContainsString('.stage[style*="--round-blank"][style*="--round-neutral"] .tries-dots > .tries-dot.is-left { background-image: var(--round-blank);', $css);
+        $this->assertStringContainsString('.stage[style*="--round-blank"][style*="--round-neutral"] .result-shards-bar i.is-on { background-image: var(--round-blank);', $css);
+        $this->assertMatchesRegularExpression('~\.stage\[style\*="--gold-pill-2"\] \.btn-danger \{[^}]*filter: hue-rotate\(-38deg\)~', $css, 'danger buttons on the gold pill turned red');
+        $this->assertStringContainsString('.stage .modal-layer .modal-text.modal-extra {', (string) file_get_contents(FCPATH . 'assets/css/stage.css'));
     }
 
     /** Owner, 21 October 2026: the 💡 button reads "Bantuan"; "Petunjuk" is left to Cari Objek's clues. */

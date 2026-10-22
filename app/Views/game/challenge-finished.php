@@ -142,17 +142,17 @@ $nextAssets = ! empty($levelCompleted) && isset($nextRegion['curtain'])
     <div class="result-summary">
       <dl class="result-stats">
         <div class="result-stat">
-          <dt><?= icon('clock') ?> <?= esc(lang('Game.timeSpent')) ?></dt>
+          <dt><?= round_icon('clock', 'result-stat-art', 'clock') ?> <?= esc(lang('Game.timeSpent')) ?></dt>
           <dd class="num"><?= esc(ms_to_human((int) $attempt->duration_ms)) ?></dd>
         </div>
         <?php if (($wrongTaps ?? null) !== null): ?>
           <div class="result-stat">
-            <dt><?= icon('cross') ?> <?= esc(lang('Game.wrongTaps')) ?></dt>
+            <dt><?= round_icon('wrong', 'result-stat-art', 'cross') ?> <?= esc(lang('Game.wrongTaps')) ?></dt>
             <dd class="num"><?= (int) $wrongTaps ?></dd>
           </div>
         <?php else: ?>
           <div class="result-stat">
-            <dt><?= icon('replay') ?> <?= esc(lang('Game.resultTries')) ?></dt>
+            <dt><?= round_icon('replay', 'result-stat-art', 'replay') ?> <?= esc(lang('Game.resultTries')) ?></dt>
             <dd class="num is-words"><?= esc(lang('Game.triesOf', [$checks, $maxTries])) ?></dd>
           </div>
         <?php endif ?>
@@ -160,7 +160,7 @@ $nextAssets = ! empty($levelCompleted) && isset($nextRegion['curtain'])
 
       <?php if ($attempt->completion_reason !== null): ?>
         <p class="result-badge <?= $solved ? 'is-solved' : 'is-saved' ?>">
-          <span class="result-badge-mark" aria-hidden="true"><?= icon($solved ? 'check' : 'info') ?></span>
+          <span class="result-badge-mark" aria-hidden="true"><?= round_icon($solved ? 'right' : 'info', 'result-badge-art', $solved ? 'check' : 'info') ?></span>
           <?= esc(lang($solved ? 'Game.completionSolved' : 'Game.completionExhausted')) ?>
         </p>
       <?php endif ?>

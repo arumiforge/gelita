@@ -76,7 +76,7 @@ $engineName  = engine_label($engine, $node->variant_code);
     </div>
     <p class="mission-region">
       <span class="visually-hidden"><?= esc(lang('Game.challengeOf', [$sequence, $totalNodes])) ?> · </span>
-      <?= icon('pin') ?> <span><?= esc($region) ?></span>
+      <?= round_icon('map', 'mission-region-art', 'pin') ?> <span><?= esc($region) ?></span>
     </p>
     <h1 id="mission-title"><?= esc($node->text('title', $locale)) ?></h1>
     <p class="visually-hidden"><?= esc($engineName) ?></p>
@@ -86,7 +86,7 @@ $engineName  = engine_label($engine, $node->variant_code);
         <p class="mission-description"><?= esc($description) ?></p>
       <?php endif ?>
       <?php if ($instruction !== ''): ?>
-        <p class="mission-instruction"><span class="mission-info" aria-hidden="true">i</span> <span><?= esc($instruction) ?></span></p>
+        <p class="mission-instruction"><?= round_icon('info', 'mission-info-art') ?: '<span class="mission-info" aria-hidden="true">i</span>' ?> <span><?= esc($instruction) ?></span></p>
       <?php endif ?>
 
       <?php if (($audioSrc = audio_src($audioId ?: null)) !== null): ?>

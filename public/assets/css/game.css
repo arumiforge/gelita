@@ -1781,6 +1781,9 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
 }
 .mission-region::after { background: linear-gradient(to left, transparent, #8C7550); }
 .mission-region .icon { width: 1.25rem; height: 1.25rem; fill: #2D2A2E; stroke: #F7EEDB; stroke-width: 1.5; }
+/* Round pictures of the owner's sheets on the card (22 October 2026): map by the region, "i" in the hint box */
+.mission-region img.mission-region-art { flex: none; width: 1.875rem; height: 1.875rem; max-width: none; margin: -.25rem 0; filter: drop-shadow(0 .0625rem .1875rem rgba(60, 40, 10, .45)); -webkit-user-drag: none; }
+.mission-instruction img.mission-info-art { flex: none; width: 2.75rem; height: 2.75rem; max-width: none; filter: drop-shadow(0 .125rem .25rem rgba(60, 40, 10, .4)); -webkit-user-drag: none; }
 .mission-card h1 {
   margin: 0;
   color: #0E1A2B;
@@ -1831,64 +1834,30 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
    §Tantangan; di sini hanya rupa. .arena-panel/.arena/.arena-body hanyalah
    pembungkus (display: contents) agar panel engine memakai koordinat panggung. */
 .challenge { position: absolute; inset: 0; }
-/* Carved frame behind the arena: 16, 132, 1248 × 580. The header is a plate of
-   its own above it (owner's header, 20 October 2026), 8 dp clear of the number
-   ring and 12 dp of the plate (owner, 21 October 2026: it sat too close). */
+/* No carved frame behind the arena since 22 October 2026 (owner): no background, border, or
+   shadow of a box. The stage picture is darkened instead, more towards the edges and under the
+   header, so every text on the challenge reads. */
 .challenge::before {
   content: "";
   position: absolute;
-  left: calc(16 * var(--dp));
-  top: calc(132 * var(--dp));
-  width: calc(1248 * var(--dp));
-  height: calc(580 * var(--dp));
-  border: .125rem solid var(--gold-600);
-  border-radius: var(--radius-lg);
-  background: linear-gradient(to bottom, rgba(38, 53, 90, .94), rgba(18, 28, 46, .96));
-  box-shadow: inset 0 0 0 .25rem var(--navy-800), inset 0 0 0 .3125rem var(--line-strong), var(--shadow-2);
+  inset: 0;
+  background:
+    linear-gradient(to bottom, rgba(3, 8, 18, .55), transparent 22%),
+    radial-gradient(130% 100% at 50% 50%, rgba(3, 8, 18, .62), rgba(3, 8, 18, .86) 80%);
+  pointer-events: none;
 }
 .arena-panel, .arena, .arena-body { display: contents; }
 
-/* Header plate (owner's picture, 20 October 2026): a navy pill with a thin gold
-   rim and a blue glow along its lower edge. The number sits on the gold-and-navy
-   ring, a little taller than the plate. Since 21 October 2026 (owner: one piece
-   with the badge) the plate (::before) starts under the ring's centre, so the
-   ring is the plate's left end and no sliver of the pill shows beside it. */
+/* Header (owner, 22 October 2026): no plate and no glow line under it, only the number ring,
+   the title, and the controls on the darkened stage */
 .challenge-head {
   --badge: 4rem;
   z-index: 5;
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  gap: var(--gap-4);
-  padding: 0 var(--gap-2) 0 0;
-}
-.challenge-head::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 0 calc(var(--badge) / 2);
-  z-index: -1;
-  border: 1px solid rgba(223, 192, 135, .7);
-  border-left: 0;
-  border-radius: 0 var(--radius-pill) var(--radius-pill) 0;
-  background:
-    radial-gradient(60% 140% at 50% 120%, rgba(64, 120, 220, .28), transparent 70%),
-    linear-gradient(to bottom, #172A4E, #0A1730 70%, #081226);
-  box-shadow:
-    inset 0 .1875rem 0 rgba(8, 18, 38, .9), inset 0 -.1875rem 0 rgba(8, 18, 38, .9),
-    inset 0 .25rem 0 rgba(223, 192, 135, .28), inset 0 -.25rem 0 rgba(223, 192, 135, .28),
-    0 .375rem 1.25rem rgba(0, 0, 0, .45);
-}
-.challenge-head::after {
-  content: "";
-  position: absolute;
-  right: 22%;
-  bottom: -1px;
-  left: 22%;
-  height: .125rem;
-  border-radius: 50%;
-  background: linear-gradient(to right, transparent, rgba(126, 182, 255, .95), transparent);
-  box-shadow: 0 0 .75rem rgba(90, 150, 255, .75);
-  pointer-events: none;
+  gap: 1.25rem;
+  padding: 0;
 }
 .badge-pos {
   position: relative;
@@ -1921,7 +1890,7 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
   overflow: hidden;
   color: #F6E7C4;
   font-family: var(--font-display);
-  font-size: 1.375rem;
+  font-size: 1.75rem;
   font-weight: 700;
   text-overflow: ellipsis;
   text-shadow: 0 .125rem .25rem rgba(0, 0, 0, .7);
@@ -1958,16 +1927,12 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
 }
 .challenge-stats b { font-size: var(--fs-body); }
 .stat-timer .icon { width: 1.375rem; height: 1.375rem; color: var(--gold-300); }
-.chip-tally {
-  gap: var(--gap-2);
-  height: 2rem;
-  padding: 0 var(--gap-3);
-  border: 1px solid rgba(223, 192, 135, .4);
-  border-radius: var(--radius-pill);
-  background: rgba(255, 255, 255, .04);
-}
+/* Round pictures of the owner's sheets for the timer and the ✓/✗ count (22 October 2026) */
+.challenge-stats img.stat-art { flex: none; width: 1.875rem; height: 1.875rem; max-width: none; margin: -.25rem 0; filter: drop-shadow(0 .0625rem .1875rem rgba(0, 0, 0, .6)); -webkit-user-drag: none; }
+/* ✓/✗ count: no pill of its own (owner, 22 October 2026) */
+.chip-tally { gap: var(--gap-2); }
 .tally-sep { color: var(--ink-dim); font-weight: 400; }
-.tally-ok, .tally-bad { display: inline-flex; align-items: center; gap: .125rem; }
+.tally-ok, .tally-bad { display: inline-flex; align-items: center; gap: .375rem; }
 .tally-ok .icon, .tally-bad .icon { width: 1.125rem; height: 1.125rem; stroke-width: 3; }
 .tally-ok .icon { color: var(--ok); }
 .tally-bad .icon { color: var(--bad); }
@@ -1986,7 +1951,8 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
 }
 
 .confirm-down .confirm-box { top: calc(100% + var(--gap-2)); bottom: auto; }
-.challenge-exit > summary { cursor: pointer; }
+/* A block summary: as an inline button it left a line's descent under it and sat high */
+.challenge-exit > summary { display: flex; cursor: pointer; }
 /* Petunjuk and Keluar right of the capsule, in its navy-and-gold look */
 .challenge-chips .chip-btn,
 .challenge-exit > .btn {
@@ -2003,26 +1969,33 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
   .challenge-chips .chip-btn:hover,
   .challenge-exit > .btn:hover { background: rgba(38, 53, 90, .9); color: #FFE7A8; }
 }
+/* Bantuan (help) and Keluar (logout) wear their round picture, a little past the pill's edge */
+.challenge-chips img.chip-art { flex: none; width: 2.125rem; height: 2.125rem; max-width: none; margin: -.375rem 0 -.375rem -.625rem; filter: drop-shadow(0 .0625rem .1875rem rgba(0, 0, 0, .6)); -webkit-user-drag: none; }
+.challenge-chips :is(.chip-btn, .challenge-exit > .btn):has(> img.chip-art) { gap: .5rem; padding-left: var(--gap-3); }
 
 /* Panel instruksi (tempatnya per engine, stage.css) */
 .challenge-aside { display: grid; align-content: start; gap: var(--gap-3); }
 .challenge-aside:empty { display: none; }
-/* Instruction (owner, 21 October 2026): no box; the gold "i" medal of the mission card
-   beside the text, a thin gold rule under it. In a narrow column (Cari Objek) the medal
-   sits on top and the text is centred. */
+/* Instruction (owner, 22 October 2026): the round "i" button of the owner's sheet beside the
+   text, set in from the top and given air, the whole column used instead of a strip at its top.
+   - Susun Gambar (tall column): the "i" centred above the text, a gold rule with a diamond,
+     then the tips, all centred in the column.
+   - Isi Rumpang (one line across the arena): centred between two gold rules.
+   - Benar atau Salah (two lines above the cards): "i" left, text beside it, centred in its band.
+   - Cari Objek (narrow column): "i" on top, the text centred under it, in the middle of the column. */
+.challenge-aside { align-content: safe center; }
 .instruction {
   display: flex;
-  align-items: flex-start;
-  gap: var(--gap-3);
+  align-items: center;
+  gap: .875rem;
   margin: 0;
-  padding: 0 0 var(--gap-3);
-  border-bottom: 1px solid;
-  border-image: linear-gradient(to right, rgba(223, 192, 135, .6), transparent) 1;
   color: #F1E3BF;
-  font-size: var(--fs-caption);
+  font-size: 1.0625rem;
   font-weight: 600;
-  line-height: 1.45;
+  line-height: 1.5;
+  text-shadow: 0 .0625rem .25rem rgba(0, 0, 0, .7);
 }
+.instruction img.instruction-art { flex: none; width: 2.5rem; height: 2.5rem; max-width: none; filter: drop-shadow(0 .125rem .25rem rgba(0, 0, 0, .55)); -webkit-user-drag: none; }
 .instruction-mark {
   display: grid;
   flex: none;
@@ -2039,11 +2012,30 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
   font-weight: 700;
   line-height: 1;
 }
-/* A one-line instruction (Isi Rumpang, Benar atau Salah) needs no rule under it */
-:is(.challenge-rumpang, .challenge-boleh) .instruction { align-items: center; padding: 0; border: 0; }
-.challenge-cari .instruction { flex-direction: column; align-items: center; padding: var(--gap-2) var(--gap-1) var(--gap-3); text-align: center; border-image: linear-gradient(to right, transparent, rgba(223, 192, 135, .6), transparent) 1; }
+/* A gold rule ending in a diamond, under the instruction where tips follow */
+.challenge-puzzle .instruction::after {
+  content: "";
+  align-self: stretch;
+  height: .75rem;
+  margin-top: .25rem;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M6 1L11 6L6 11L1 6Z' fill='%23DFC087'/%3E%3C/svg%3E") center / .75rem no-repeat,
+    linear-gradient(to right, transparent, rgba(223, 192, 135, .7) 30%, transparent 46%, transparent 54%, rgba(223, 192, 135, .7) 70%, transparent) center / 100% 1px no-repeat;
+}
+.challenge-puzzle .challenge-aside { gap: 1.5rem; padding: 1rem .75rem 1rem .25rem; }
+.challenge-puzzle .instruction { flex-direction: column; gap: .75rem; font-size: 1.125rem; text-align: center; }
+.challenge-puzzle .instruction img.instruction-art { width: 3.25rem; height: 3.25rem; }
+.challenge-rumpang .instruction { justify-content: center; font-size: 1rem; line-height: 1.35; text-align: center; }
+.challenge-rumpang .instruction::before,
+.challenge-rumpang .instruction::after { content: ""; flex: 0 1 5rem; min-width: 1.5rem; height: 1px; background: linear-gradient(to right, transparent, rgba(223, 192, 135, .7)); }
+.challenge-rumpang .instruction::after { background: linear-gradient(to left, transparent, rgba(223, 192, 135, .7)); }
+.challenge-rumpang .instruction img.instruction-art { width: 2.25rem; height: 2.25rem; }
+.challenge-boleh .instruction { padding: 0 .5rem; font-size: 1rem; line-height: 1.45; }
+.challenge-cari .challenge-aside { padding: .5rem .25rem; }
+.challenge-cari .instruction { flex-direction: column; gap: .75rem; font-size: 1rem; text-align: center; }
+.challenge-cari .instruction img.instruction-art { width: 3rem; height: 3rem; }
 .challenge-cari .instruction-mark { width: 2.25rem; height: 2.25rem; font-size: 1.375rem; }
-.challenge-tips { display: grid; gap: var(--gap-3); margin: 0; padding: 0 var(--gap-2) 0 var(--gap-6); color: var(--ink); font-size: var(--fs-caption); line-height: 1.5; }
+.challenge-tips { display: grid; gap: 1rem; margin: 0; padding: 0 var(--gap-2) 0 var(--gap-6); color: var(--ink); font-size: 1.0625rem; line-height: 1.55; }
 .challenge-tips li::marker { color: var(--gold-500); }
 .hint-text { margin: 0; color: var(--ink-dim); font-size: var(--fs-caption); text-align: center; }
 /* Action bar of the batch engines (owner's picture, 20 October 2026): the gold
@@ -2206,6 +2198,7 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
   font-weight: 700;
   line-height: 1;
 }
+.puzzle-caption-head img.puzzle-caption-art { flex: none; width: 2.75rem; height: 2.75rem; max-width: none; filter: drop-shadow(0 .125rem .25rem rgba(0, 0, 0, .55)); -webkit-user-drag: none; }
 .puzzle-caption-head b { color: #F0D58C; font-family: var(--font-display); font-size: 1.375rem; line-height: 1.2; }
 .puzzle-caption p { margin: var(--gap-4) 0 0; font-size: var(--fs-body); line-height: 1.6; }
 
@@ -3333,6 +3326,10 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
 }
 .result-shards-bar i { flex: 1; border-radius: .25rem; background: #24345A; }
 .result-shards-bar i.is-on { background: linear-gradient(to bottom, #FFF2BD, var(--gold-500)); box-shadow: 0 0 .375rem var(--glow); }
+/* One round face per shard (22 October 2026): gold when earned, dark when not, like the tries */
+.stage[style*="--round-blank"][style*="--round-neutral"] .result-shards-bar { align-items: center; justify-content: space-between; gap: .125rem; padding: 0 .375rem; }
+.stage[style*="--round-blank"][style*="--round-neutral"] .result-shards-bar i { flex: 0 1 1.0625rem; aspect-ratio: 1; min-width: 0; border-radius: 50%; background: var(--round-neutral) center / contain no-repeat; box-shadow: none; filter: grayscale(.6) brightness(.8); }
+.stage[style*="--round-blank"][style*="--round-neutral"] .result-shards-bar i.is-on { background-image: var(--round-blank); filter: drop-shadow(0 0 .25rem rgba(255, 206, 105, .6)); }
 
 /* Cards, badge, message: 557, 178 inside the panel */
 .result-summary {
@@ -3367,6 +3364,7 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
 }
 .result-stat dt { display: flex; align-items: center; gap: .5833rem; color: var(--ink-dim); font-size: 1.0833rem; line-height: 1.8333rem; }
 .result-stat dt .icon { width: 1.8333rem; height: 1.8333rem; color: var(--gold-500); }
+.result-stat dt img.result-stat-art { flex: none; width: 2.25rem; height: 2.25rem; max-width: none; margin: -.2083rem 0; filter: drop-shadow(0 .0625rem .1875rem rgba(0, 0, 0, .6)); -webkit-user-drag: none; }
 .result-stat dd { margin: .3333rem 0 0 2.8333rem; color: var(--ink); font-size: 2.5rem; font-weight: 800; line-height: 1.1; white-space: nowrap; }
 .result-stat dd.is-words { margin-top: .7rem; font-size: 1.75rem; }
 .result-badge {
@@ -3395,6 +3393,9 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
 .result-badge-mark .icon { width: 1.25rem; height: 1.25rem; stroke-width: 3; }
 .result-badge.is-saved { border-color: rgba(240, 168, 104, .75); background: rgba(70, 42, 16, .55); color: var(--warn); }
 .result-badge.is-saved .result-badge-mark { background: var(--warn); }
+/* The round ✓ or "i" of the owner's sheets carries its own face (22 October 2026) */
+.result-badge .result-badge-mark:has(> img) { width: 2.25rem; height: 2.25rem; background: none; }
+.result-badge-mark img.result-badge-art { width: 100%; height: 100%; max-width: none; filter: drop-shadow(0 .0625rem .1875rem rgba(0, 0, 0, .6)); }
 .result-message {
   position: absolute;
   top: 10.8333rem;
@@ -4359,6 +4360,18 @@ html.js .book-frame img.is-loaded { opacity: 1; }
 .clue-tries { display: inline-flex; align-items: center; gap: var(--gap-2); margin-top: var(--gap-1); color: var(--brown-500); font-size: var(--fs-caption); }
 .clue-tries .tries-dot { border-color: var(--brown-500); }
 .clue-tries .tries-dot.is-left { background: var(--brown-500); }
+/* Tries as the owner's round faces (22 October 2026): the gold face for a try left, the dark face
+   for a used one; the gold one glows. Also on the Cari Objek clue. */
+.stage[style*="--round-blank"][style*="--round-neutral"] .tries-dots > .tries-dot {
+  width: 1.375rem;
+  height: 1.375rem;
+  border: 0;
+  border-radius: 50%;
+  background: var(--round-neutral) center / contain no-repeat;
+  transition: filter .3s, transform .3s;
+}
+.stage[style*="--round-blank"][style*="--round-neutral"] .tries-dots > .tries-dot.is-left { background-image: var(--round-blank); filter: drop-shadow(0 0 .25rem rgba(255, 206, 105, .55)); }
+.stage[style*="--round-blank"][style*="--round-neutral"] .tries-dots > .tries-dot:not(.is-left) { filter: grayscale(.6) brightness(.8); transform: scale(.88); }
 .cards-heading { display: flex; align-items: center; gap: var(--gap-2); margin: 0; color: var(--gold-300); font-size: var(--fs-body); }
 .rumpang-title { margin: 0; color: var(--brown-700); font-size: var(--fs-h3); }
 
@@ -4405,6 +4418,7 @@ html.js .book-frame img.is-loaded { opacity: 1; }
 }
 
 /* =========================== MAIN BUTTONS =========================== */
+/* (.btn-danger shares the pill since 22 October 2026, tinted red: see below) */
 /* Every main button on a game page (Mulai tantangan, Cek jawabanku, Ulangi, Lanjut, the
    dialog buttons, …) stands on one of the owner's gold pill plates (22 October 2026; they
    replace the `ui.result-button-primary` skin): assets/ui/gold-pill-{1..4}.webp, passed on
@@ -4421,7 +4435,7 @@ html.js .book-frame img.is-loaded { opacity: 1; }
   font-weight: 800;
   box-shadow: 0 .25rem .5rem rgba(1, 7, 19, .45);
 }
-.stage[style*="--gold-pill-2"] .btn-primary {
+.stage[style*="--gold-pill-2"] :is(.btn-primary, .btn-danger) {
   --pill: var(--gold-pill-2);
   --pill-cut: 175;
   --pill-end: 2.625rem;
@@ -4435,15 +4449,25 @@ html.js .book-frame img.is-loaded { opacity: 1; }
   filter: drop-shadow(0 .25rem .375rem rgba(1, 7, 19, .5));
   transition: transform .15s, filter .2s;
 }
-.stage[style*="--gold-pill-1"] :is(.btn-lg, .btn-xl).btn-primary { --pill: var(--gold-pill-1); --pill-cut: 185; --pill-end: 2.75rem; }
-.stage[style*="--gold-pill-1"] .btn-xl.btn-primary { --pill-end: 3.125rem; }
-.stage[style*="--gold-pill-3"] .btn-block.btn-primary { --pill: var(--gold-pill-3); --pill-cut: 165; --pill-end: 3.25rem; }
-.stage[style*="--gold-pill-4"] .btn-sm.btn-primary { --pill: var(--gold-pill-4); --pill-cut: 150; --pill-end: 3rem; }
+.stage[style*="--gold-pill-1"] :is(.btn-lg, .btn-xl):is(.btn-primary, .btn-danger) { --pill: var(--gold-pill-1); --pill-cut: 185; --pill-end: 2.75rem; }
+.stage[style*="--gold-pill-1"] .btn-xl:is(.btn-primary, .btn-danger) { --pill-end: 3.125rem; }
+.stage[style*="--gold-pill-3"] .btn-block:is(.btn-primary, .btn-danger) { --pill: var(--gold-pill-3); --pill-cut: 165; --pill-end: 3.25rem; }
+.stage[style*="--gold-pill-4"] .btn-sm:is(.btn-primary, .btn-danger) { --pill: var(--gold-pill-4); --pill-cut: 150; --pill-end: 3rem; }
+/* Danger buttons (Ya, keluar; Hapus, …) on the same gold pill turned red (owner, 22 October
+   2026): a hue shift of the gold, light lettering, and on hover or press a deeper red with a red
+   glow, so the plate visibly reddens under the finger. */
+.stage[style*="--gold-pill-2"] .btn-danger {
+  color: #FFF4EA;
+  text-shadow: 0 .0625rem .1875rem rgba(70, 4, 0, .9);
+  filter: hue-rotate(-38deg) saturate(2.1) brightness(.84) drop-shadow(0 .25rem .375rem rgba(1, 7, 19, .5));
+}
 .stage .btn-primary .icon { stroke-width: 2.6; }
 @media (hover: hover) {
   .stage .btn-primary:hover { color: #0B1B2E; filter: brightness(1.12); }
   .stage:not([style*="--gold-pill-2"]) .btn-primary:hover { background: linear-gradient(to bottom, #FFF0C2, var(--gold-500) 50%, var(--gold-600)); }
   .stage[style*="--gold-pill-2"] .btn-primary:hover { background: none; filter: drop-shadow(0 .25rem .375rem rgba(1, 7, 19, .5)) drop-shadow(0 0 .625rem var(--glow)) brightness(1.1); }
+  .stage[style*="--gold-pill-2"] .btn-danger:hover { background: none; color: #FFFFFF; filter: hue-rotate(-42deg) saturate(2.8) brightness(.9) drop-shadow(0 .25rem .375rem rgba(1, 7, 19, .5)) drop-shadow(0 0 .75rem rgba(255, 70, 50, .65)); }
 }
+.stage[style*="--gold-pill-2"] .btn-danger:active { background: none; filter: hue-rotate(-42deg) saturate(3) brightness(.95) drop-shadow(0 0 .875rem rgba(255, 70, 50, .75)); }
 .stage .btn-primary:active { filter: brightness(1.18); }
 .stage[style*="--gold-pill-2"] .btn-primary:active { background: none; filter: drop-shadow(0 .125rem .25rem rgba(1, 7, 19, .5)) brightness(1.18); }
