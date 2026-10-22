@@ -64,10 +64,13 @@ export async function reportFields(fields) {
   for (const field of fields) field.box?.classList.add('has-error');
 
   const missing = fields.filter((field) => field.missing).map((field) => field.name).filter(Boolean);
-  const wrong = fields.filter((field) => !field.missing).map((field) => field.name).filter(Boolean);
+  // A field with its own message (setCustomValidity, e.g. the full name) says it in its own words
+  const explained = fields.filter((field) => !field.missing && field.control.validity.customError && field.control.validationMessage);
+  const wrong = fields.filter((field) => !field.missing && !explained.includes(field)).map((field) => field.name).filter(Boolean);
   const text = [];
   if (missing.length) text.push(t('formMissingText', joinNames(missing)));
   if (wrong.length) text.push(t('formInvalidText', joinNames(wrong)));
+  explained.forEach((field) => text.push(field.control.validationMessage));
 
   await showModal({
     type: 'info',

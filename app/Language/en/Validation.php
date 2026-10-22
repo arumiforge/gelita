@@ -11,6 +11,8 @@ return [
     'item_in_attempt'       => 'This question is not part of this attempt.',
     'json_max_bytes'        => 'The data sent is too large.',
     'valid_username'        => 'Username may only use lowercase letters, numbers, dots, or underscores (3–30 characters).',
+    'no_name_period'        => '{field} must be written in full, without a full stop.',
+    'valid_person_name'     => '{field} may only use letters, spaces, and an apostrophe (\').',
     'not_reserved_username' => 'That username cannot be used. Choose another one.',
     'strong_password'       => 'Your password is not strong yet. Meet all five rules and do not include your username.',
 ];

@@ -45,10 +45,13 @@ $focus   = static fn (string $f): string => $first === $f ? ' autofocus' : '';
       <div class="register-col">
       <div class="field<?= $invalid('display_name') ?>">
         <label for="display_name"><?= esc(lang('Game.displayName')) ?> <span class="req" aria-hidden="true">*</span></label>
+        <?php // Capitals as the student types, letters, spaces, and ' only, no period (owner, 22 October 2026); game/register.js checks live, the server decides ?>
         <input type="text" id="display_name" name="display_name" required minlength="2" maxlength="150"
-               aria-describedby="display_name-help" enterkeyhint="next" value="<?= esc($val('display_name'), 'attr') ?>"<?= $focus('display_name') ?>>
+               autocapitalize="characters" spellcheck="false" data-person-name
+               data-error-period="<?= esc(lang('Game.displayNamePeriod'), 'attr') ?>" data-error-chars="<?= esc(lang('Game.displayNameChars'), 'attr') ?>"
+               aria-describedby="display_name-help display_name-error" enterkeyhint="next" value="<?= esc($val('display_name'), 'attr') ?>"<?= $focus('display_name') ?>>
         <p class="field-help" id="display_name-help"><?= esc(lang('Game.displayNameHelp')) ?></p>
-        <?php if ($err('display_name')): ?><p class="field-error"><?= esc($err('display_name')) ?></p><?php endif ?>
+        <p class="field-error" id="display_name-error" aria-live="polite"<?= $err('display_name') ? '' : ' hidden' ?>><?= esc($err('display_name') ?? '') ?></p>
       </div>
 
       <div class="field-row">

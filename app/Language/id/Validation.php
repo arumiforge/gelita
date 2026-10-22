@@ -67,6 +67,8 @@ return [
     'item_in_attempt'       => 'Soal ini tidak termasuk dalam tantangan yang sedang dikerjakan.',
     'json_max_bytes'        => 'Data yang dikirim terlalu besar.',
     'valid_username'        => 'Nama pengguna hanya boleh huruf kecil, angka, titik, atau garis bawah (3–30 karakter).',
+    'no_name_period'        => '{field} harus ditulis lengkap tanpa titik.',
+    'valid_person_name'     => '{field} hanya boleh berisi huruf, spasi, dan tanda petik satu (\').',
     'not_reserved_username' => 'Nama pengguna itu tidak boleh dipakai. Pilih yang lain.',
     'strong_password'       => 'Kata sandi belum kuat. Penuhi kelima syarat dan jangan memuat nama penggunamu.',
 ];

@@ -38,7 +38,8 @@
  *   the ring's lower part. Never an animation frame;
  * - Back and the previous-slide Kembali sit on the owner's navy plate, Lanjut
  *   and the final button on the gold plate (`assets/ui/kenal-plate-*.webp`,
- *   Kenali only; other pages keep `ui.result-button-primary`).
+ *   Kenali only; other pages put their main buttons on the gold pills,
+ *   `assets/ui/gold-pill-*.webp`, since 22 October 2026).
  *
  * @var array<string, mixed>       $level  baris levelOverview() + `curtain`
  * @var list<array<string, mixed>> $slides dialogues region_intro wilayah itu

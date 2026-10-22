@@ -105,7 +105,6 @@ $nextAssets = ! empty($levelCompleted) && isset($nextRegion['curtain'])
 <section class="finished" data-screen="finished" data-attempt="<?= esc($attempt->id, 'attr') ?>"<?= $levelCompleted ? ' data-region-done' : '' ?><?= next_assets_attr($nextAssets) ?>>
   <article class="result-card stage-box" aria-labelledby="result-title"<?= skin_style_attr([
       'skin-panel'     => 'ui.result-panel',
-      'skin-primary'   => 'ui.result-button-primary',
       'skin-secondary' => 'ui.result-button-secondary',
       'skin-detail'    => 'ui.result-button-detail',
   ]) ?>>

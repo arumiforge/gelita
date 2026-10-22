@@ -815,7 +815,7 @@ body.is-cinematic :is(.hud-identity, .hud-controls, .hud-shards, .hud-back-plate
 /* Narrator controls on the caption's first row, at the right (owner, 20 October
    2026): no band behind them; 40 dp round buttons on the HUD's skin
    (`ui.result-hud-control`, else a navy disc with a gold ring) and "Lanjut" on
-   the main-button skin (`ui.result-button-primary`), 40 dp tall. The 48 dp hit
+   the slim gold pill (`gold-pill-3`, since 22 October 2026), 40 dp tall. The 48 dp hit
    areas (.icon-btn::before) with the 8 dp gap end at the neighbour's edge. */
 .cine { --cine-controls-w: 11.5rem; }
 /* With narration audio the controls also hold ⏸/▶, ↻, and Otomatis (narrator.js sets .has-audio) */
@@ -870,9 +870,13 @@ body.is-cinematic :is(.hud-identity, .hud-controls, .hud-shards, .hud-back-plate
   font-size: var(--fs-caption);
   font-weight: 800;
 }
-.stage[style*="--skin-primary"] .cine .narrator-next.has-label:not(:disabled) {
-  border-radius: 0;
-  background: var(--skin-primary) 50% 50% / 109.69% 122.23% no-repeat;
+/* On the slim gold pill since 22 October 2026 (game.css MAIN BUTTONS), 40 dp tall */
+.stage[style*="--gold-pill-3"] .cine .narrator-next.has-label:not(:disabled) {
+  padding: 0 1.75rem 0 2rem;
+  border: 0 solid transparent;
+  border-image: var(--gold-pill-3) 0 165 fill / 0 2.5rem stretch;
+  background: none;
+  color: #13223D;
 }
 .cine .narrator-next.has-label:not(:disabled)::after { display: none; }
 .cine .narrator-next.has-label:not(:disabled) .icon { filter: none; }

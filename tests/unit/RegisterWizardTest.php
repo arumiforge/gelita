@@ -215,6 +215,39 @@ final class RegisterWizardTest extends CIUnitTestCase
         $this->assertSame([], array_diff_key($_SESSION[RegisterController::WIZARD]['1'], array_flip(['display_name', 'age', 'gender', 'avatar_no'])), 'hanya isian langkah 1');
     }
 
+    public function testFullNameIsCapitalsWithLettersSpacesAndApostropheOnly(): void
+    {
+        // Owner, 22 October 2026: capitals, no digits or symbols but ', no period (a shortened name)
+        $refused = [
+            'M. Rizki'      => 'Game.displayNamePeriod',
+            'Rizki.'        => 'Game.displayNamePeriod',
+            'Sekar 2'       => 'Game.displayNameChars',
+            'Sekar-Ayu'     => 'Game.displayNameChars',
+            'Sekar_Ayu'     => 'Game.displayNameChars',
+            'Ayu@'          => 'Game.displayNameChars',
+            "''"            => 'Game.displayNameChars',
+        ];
+
+        foreach ($refused as $name => $key) {
+            $_SESSION = [];
+            $this->assertRedirectsTo('daftar/1', $this->send(Method::POST, 'daftar/1', ['display_name' => $name] + self::ABOUT), $name);
+            $this->assertSame(lang($key), $_SESSION['errors']['display_name'] ?? null, $name);
+        }
+
+        $accepted = [
+            "  ma’ruf   amin " => "MA'RUF AMIN",
+            "Nur'aini"         => "NUR'AINI",
+            'Ni Luh Putu Éka'  => 'NI LUH PUTU ÉKA',
+            'sekar ayu'        => 'SEKAR AYU',
+        ];
+
+        foreach ($accepted as $name => $stored) {
+            $_SESSION = [];
+            $this->assertRedirectsTo('daftar/2', $this->send(Method::POST, 'daftar/1', ['display_name' => $name] + self::ABOUT), $name);
+            $this->assertSame($stored, $_SESSION[RegisterController::WIZARD]['1']['display_name'], $name);
+        }
+    }
+
     public function testErrorsNameTheFieldAsShownOnScreen(): void
     {
         // A name of only spaces passes the browser's `required` but is empty after trimming
@@ -276,7 +309,7 @@ final class RegisterWizardTest extends CIUnitTestCase
 
         $participant = $this->conn->table('participants')->get()->getRowArray();
         $this->assertSame('GLT-000001', $participant['participant_code']);
-        $this->assertSame(['sekar_ayu', 'Sekar Ayu', 10, 'perempuan', '5'], [
+        $this->assertSame(['sekar_ayu', 'SEKAR AYU', 10, 'perempuan', '5'], [
             $participant['username'], $participant['display_name'], (int) $participant['age'], $participant['gender'], $participant['class_level'],
         ]);
         $this->assertNotNull($participant['assented_at']);

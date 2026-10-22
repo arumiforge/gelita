@@ -2,7 +2,7 @@
 
 The single checklist of what is done and what is open. Decisions and their reasons go in `docs/perombakan-kelas5/CATATAN_IMPLEMENTASI.md`; this file only tracks state. Each session updates only its own rows, and ticks an item only once its PR is merged into `main`.
 
-Last updated: 21 October 2026.
+Last updated: 22 October 2026.
 
 ## Kelas 5 overhaul
 
@@ -195,6 +195,11 @@ Decided in an interview with the owner; decisions in the decision log, section *
 - [ ] Follow-up (owner, same day, with an interview): menu without Layar penuh, with Tentang GELITA (`/tentang`) and Masuk staf (before sign-in only); Pasang GELITA on the owner's plate, bottom-right; Mulai bare and centred on the darkened gate picture, no Jaka; Masuk greets "Selamat Datang!"; Masuk/Daftar/Berikutnya as gold plates with their word; Daftar bare on the gate picture, step label centred above the form, stepper rings, notes for Berikutnya, Jawa Tengah/NPSN, and the school card, four-segment password meter, rule icons, eye, lock, letter avatars; narrator ▶ play from the second icon sheet (branch `claude/ui-redesign-menu-login-2oy59j`)
 - [ ] After merge, **Bangun ulang paket** if package mode is on
 
+## Framed dialogs, gold pills, dropdown, full-name rule (owner, 22 October 2026)
+
+- [ ] Every game dialog (core/modal.js, picture viewer) drawn as the owner's navy-and-gold frame, 4:3-sheet or 16:9-sheet frame picked by content, round icons from the owner's sheets; every main button (`.btn-primary`, Peta Kedu Lanjut/Mulai, result screen, narrator Lanjut) on the new gold pills instead of the `ui.result-button-primary` skin; Daftar step 2 dropdowns rebuilt with search and the gold triangle; full name in capitals, letters/spaces/apostrophe only, no period; HUD menu close button kept square on phones (branch `sky/bold-franklin-n3z6xh`)
+- [ ] After merge, **Bangun ulang paket** if package mode is on
+
 ## Active branches
 
 Add a row (branch, owner / scope, status) when a session starts a branch; remove it when its PR is merged.
@@ -205,4 +210,5 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 | `claude/redesain-hasil-tantangan-wilayah-qde0tb` | Attempt list, loading screens, Peta Kedu, Pustaka Kedu (owner, 21 October 2026) | PR open |
 | `sky/vibrant-dijkstra-me4rhv` | Follow-up of PR #207: Bantuan button, region-done scene in the dialogue layout, Kenali band (owner, 21 October 2026) | PR open |
 | `claude/ui-redesign-menu-login-2oy59j` | Follow-up of PR #210: menu (Tentang GELITA, Masuk staf, no fullscreen), install plate, bare Mulai and Daftar on the gate picture, gold plate buttons, second icon sheet (owner, 21 October 2026) | PR open |
+| `sky/bold-franklin-n3z6xh` | Framed dialogs, gold pill buttons, game dropdown, full-name rule, square menu close button (owner, 22 October 2026) | PR open |
 | `pbb/nice-carson-7yeoiz` | Brighter logo, Mulai plate, lettered form buttons, start-page menu (owner, 20 October 2026) | PR open |

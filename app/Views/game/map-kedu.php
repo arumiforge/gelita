@@ -145,7 +145,6 @@ $unheard  = static fn (array $l): bool => ($intros[$l['code']] ?? []) !== [] && 
   <?php // Skins of the result screen redesign, shared here (ui.result-*); empty slots keep the plain look ?>
   <div class="kedu-skins"<?= skin_style_attr([
       'skin-panel'     => 'ui.result-panel',
-      'skin-primary'   => 'ui.result-button-primary',
       'skin-secondary' => 'ui.result-button-secondary',
       'skin-detail'    => 'ui.result-button-detail',
       'skin-hud'       => 'ui.result-hud-control',

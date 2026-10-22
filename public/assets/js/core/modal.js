@@ -22,6 +22,30 @@ function layer() {
   return document.getElementById('modal-layer');
 }
 
+// Framed dialog sizes, in rem (owner, 22 October 2026): the compact frame first, then the wide one, growing
+const FRAME_STEPS = [['compact', 30], ['compact', 35], ['wide', 45], ['wide', 52], ['wide', 60], ['wide', 68], ['wide', 76]];
+
+/**
+ * The game stage draws the dialog as the owner's frame picture at its own
+ * ratio (stage.css, `--modal-frame-compact`/`--modal-frame-wide` on #stage).
+ * Picks the smallest step whose card shows everything without scrolling;
+ * past the last one the card scrolls. The panel has no frame: nothing to do.
+ */
+function fitFrame(modal) {
+  const stage = modal.closest('.stage');
+  if (!stage || !getComputedStyle(stage).getPropertyValue('--modal-frame-compact').trim()) return;
+
+  const card = modal.querySelector('.modal-card');
+  const wide = getComputedStyle(stage).getPropertyValue('--modal-frame-wide').trim() !== '';
+  const steps = FRAME_STEPS.filter(([frame]) => wide || frame === 'compact');
+
+  for (const [frame, width] of steps) {
+    modal.dataset.frame = frame;
+    modal.style.setProperty('--modal-w', `${width}rem`);
+    if (card.scrollHeight <= card.clientHeight + 1 && card.scrollWidth <= card.clientWidth + 1) return;
+  }
+}
+
 function buildFromTemplate() {
   const tpl = document.getElementById('tpl-modal');
   if (tpl) return tpl.content.firstElementChild.cloneNode(true);
@@ -140,6 +164,8 @@ export function showModal({ type = 'info', icon = null, character = null, title 
     document.body.classList.add('has-modal');
     document.addEventListener('keydown', onKey, true);
     host.addEventListener('click', onBackdrop);
+
+    fitFrame(modal);
 
     current = { resolve, trigger, onKey, onBackdrop };
     (actions.querySelector('button, a') || modal).focus();
