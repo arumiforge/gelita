@@ -70,12 +70,12 @@ $triesAria  = lang('Game.triesLabel') . ': ' . lang('Game.triesOf', ['{0}', '{1}
       <div class="challenge-chips">
         <div class="challenge-stats">
           <span class="stat-timer" title="<?= esc(lang('Game.timer'), 'attr') ?>">
-            <?= icon('clock') ?><span class="visually-hidden"><?= esc(lang('Game.timer')) ?></span> <b id="timer" class="num">0:00</b>
+            <?= round_icon('clock', 'stat-art', 'clock') ?><span class="visually-hidden"><?= esc(lang('Game.timer')) ?></span> <b id="timer" class="num">0:00</b>
           </span>
           <span class="chip-tally">
-            <span class="tally-ok"><?= icon('check') ?><span class="visually-hidden"><?= esc(lang('Game.countCorrect')) ?></span> <b id="count-correct" class="num">0</b></span>
+            <span class="tally-ok"><?= round_icon('right', 'stat-art', 'check') ?><span class="visually-hidden"><?= esc(lang('Game.countCorrect')) ?></span> <b id="count-correct" class="num">0</b></span>
             <span class="tally-sep" aria-hidden="true">/</span>
-            <span class="tally-bad"><?= icon('cross') ?><span class="visually-hidden"><?= esc(lang('Game.countWrong')) ?></span> <b id="count-wrong" class="num">0</b></span>
+            <span class="tally-bad"><?= round_icon('wrong', 'stat-art', 'cross') ?><span class="visually-hidden"><?= esc(lang('Game.countWrong')) ?></span> <b id="count-wrong" class="num">0</b></span>
           </span>
           <?php if ($engine !== 'cari'): ?>
             <?php // Penanda 3 kesempatan engine batch (Dok 2 §5.3): bulatan terisi = sisa ?>
@@ -88,10 +88,10 @@ $triesAria  = lang('Game.triesLabel') . ': ' . lang('Game.triesOf', ['{0}', '{1}
           <?php endif ?>
         </div>
         <button type="button" class="chip chip-btn" id="btn-hint" data-hints="<?= $hints ?>" hidden>
-          <?= icon('hint') ?> <?= esc(lang('Game.hint')) ?>
+          <?= round_icon('help', 'chip-art', 'hint') ?> <?= esc(lang('Game.hint')) ?>
         </button>
         <details class="confirm confirm-down challenge-exit">
-          <summary class="btn btn-quiet btn-sm"><?= icon('logout') ?> <?= esc(lang('Game.exitChallenge')) ?></summary>
+          <summary class="btn btn-quiet btn-sm"><?= round_icon('logout', 'chip-art', 'logout') ?> <?= esc(lang('Game.exitChallenge')) ?></summary>
           <div class="confirm-box" role="group" aria-labelledby="exit-title">
             <h2 id="exit-title"><?= esc(lang('Game.exitConfirmTitle')) ?></h2>
             <p><?= esc(lang('Game.exitConfirmText')) ?></p>
@@ -104,8 +104,8 @@ $triesAria  = lang('Game.triesLabel') . ': ' . lang('Game.triesOf', ['{0}', '{1}
     <div class="arena">
       <aside class="challenge-aside stage-box stage-scroll">
         <?php if ($node->text('instruction', $locale) !== ''): ?>
-          <?php // The gold "i" medal of the mission card, no box (owner, 21 October 2026) ?>
-          <p class="instruction"><span class="instruction-mark" aria-hidden="true">i</span> <span><?= esc($node->text('instruction', $locale)) ?></span></p>
+          <?php // The round "i" button of the owner's sheet beside the text (owner, 22 October 2026) ?>
+          <p class="instruction"><?= round_icon('info', 'instruction-art') ?: '<span class="instruction-mark" aria-hidden="true">i</span>' ?> <span class="instruction-text"><?= esc($node->text('instruction', $locale)) ?></span></p>
         <?php endif ?>
         <?= $this->renderSection('aside') ?>
       </aside>

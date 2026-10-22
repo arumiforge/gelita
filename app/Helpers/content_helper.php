@@ -636,7 +636,9 @@ if (! function_exists('stage_picture_urls')) {
      *   from the owner's 4:3 and 16:9 sheets (core/modal.js picks one by its content);
      * - `--select-arrow`: the gold triangle of the dropdowns (core/select.js);
      * - `--modal-plate-navy`: the navy plate behind a dialog's quiet button;
-     * - `--round-close`: the round close button of the picture viewer (core/lightbox.js).
+     * - `--round-close`: the round close button of the picture viewer (core/lightbox.js);
+     * - `--round-blank`: the plain gold face, a try left or a shard earned (with the dark
+     *   `--round-neutral` face for a used try or a missing shard, 22 October 2026).
      *
      * @return array<string, ?string>
      */
@@ -654,6 +656,7 @@ if (! function_exists('stage_picture_urls')) {
             'select-arrow'        => ui_picture_src('select-arrow.webp'),
             'modal-plate-navy'    => ui_picture_src('kenal-plate-navy.webp'),
             'round-close'         => round_icon_src('close'),
+            'round-blank'         => round_icon_src('blank'),
         ];
     }
 }

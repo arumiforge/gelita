@@ -714,6 +714,32 @@ body.is-dim-art .scene::after { background: radial-gradient(ellipse at 50% 45%, 
 .stage .modal-layer .modal-title { color: var(--gold-300); font-size: 1.75rem; line-height: 1.2; text-shadow: 0 .125rem .375rem rgba(0, 0, 0, .6); }
 .stage .modal-layer .modal-text { color: var(--ink); font-size: var(--fs-body); line-height: 1.45; }
 .stage .modal-layer .modal-actions { margin-top: var(--gap-3); }
+/* A further paragraph (Kesempatanmu tinggal 2 lagi, a hint's penalty, …; owner, 22 October
+   2026) reads as a note set apart from the main text: a soft gold band fading out at both
+   ends, a glowing diamond before it, gold lettering a size smaller. */
+.stage .modal-layer .modal-text.modal-extra {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .625rem;
+  justify-self: center;
+  margin-top: .125rem;
+  padding: .375rem 1.75rem .4375rem;
+  background: linear-gradient(to right, transparent, rgba(223, 192, 135, .18) 18%, rgba(223, 192, 135, .18) 82%, transparent);
+  color: #F3D58A;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: .01em;
+}
+.stage .modal-layer .modal-text.modal-extra::before {
+  content: "";
+  flex: none;
+  width: .5rem;
+  height: .5rem;
+  background: var(--gold-300);
+  box-shadow: 0 0 .5rem var(--glow);
+  transform: rotate(45deg);
+}
 /* The round icon from the owner's sheets, on the frame's top edge */
 .stage .modal > .modal-icon.is-round {
   position: absolute;
@@ -925,7 +951,8 @@ body.is-dim-art .scene::after { background: radial-gradient(ellipse at 50% 45%, 
 .challenge-puzzle .puzzle-caption   { --x: 916; --y: 140; --w: 332; --h: 500; }
 
 /* Isi Rumpang: instruksi (baris pertama arena), bacaan gulir, bank kata, bilah aksi */
-.challenge-rumpang .challenge-aside { --x: 96;  --y: 140; --w: 1088; --h: 40; }
+/* Since 22 October 2026 the instruction band is 52 dp (two lines fit), centred over the reading */
+.challenge-rumpang .challenge-aside { --x: 96;  --y: 132; --w: 1088; --h: 52; }
 .challenge-rumpang .rumpang-reading,
 .challenge-rumpang .sentences       { --x: 96;  --y: 188; --w: 1088; --h: 324; }
 .challenge-rumpang .rumpang.has-media .rumpang-reading,

@@ -85,7 +85,7 @@ $clip   = 'pz' . (int) $attempt->id . '-';
     <?php if ($caption !== ''): ?>
       <?php // Owner's panel, 20 October 2026: "i" medallion, gold title and rule, white text, mountains (CSS) ?>
       <div class="puzzle-caption stage-scroll" id="puzzle-caption" role="note" hidden>
-        <div class="puzzle-caption-head"><span class="puzzle-caption-icon" aria-hidden="true">i</span> <b><?= esc(lang('Game.puzzleCaption')) ?></b></div>
+        <div class="puzzle-caption-head"><?= round_icon('info', 'puzzle-caption-art') ?: '<span class="puzzle-caption-icon" aria-hidden="true">i</span>' ?> <b><?= esc(lang('Game.puzzleCaption')) ?></b></div>
         <p><?= esc($caption) ?></p>
       </div>
     <?php endif ?>

@@ -81,7 +81,8 @@ One concept, one word, in every layer. "UI (id)" is what users read; "Code (en)"
 | efek layar 3D | `screen effects`, `screen fx` | `game/screen-fx.js` (three.js); `data-fx3d`, `screen_fx_attr()`, `.has-fx3d`; switch `Config\Gelita::$screenFx` |
 | paralaks | `parallax` | `game/parallax.js`; `--plx`/`--ply` and `.has-parallax` on `#stage` |
 | bingkai dialog | `dialog frame`, `framed dialog` | `public/assets/ui/modal-frame-4x3.webp` (`--modal-frame-compact`) and `modal-frame-16x9.webp` (`--modal-frame-wide`), cut from the owner's 4:3 and 16:9 sheets; `data-frame` and `--modal-w` set by `fitFrame()` in `core/modal.js`; game only, also the picture viewer (since 22 Oct 2026) |
-| papan emas kapsul (tombol utama) | `gold pill` | `public/assets/ui/gold-pill-{1..4}.webp` (`--gold-pill-n` on `#stage`, `stage_picture_urls()`): the face of every `.btn-primary` and gold main button since 22 Oct 2026, replacing the `ui.result-button-primary` skin |
+| papan emas kapsul (tombol utama) | `gold pill` | `public/assets/ui/gold-pill-{1..4}.webp` (`--gold-pill-n` on `#stage`, `stage_picture_urls()`): the face of every `.btn-primary` and gold main button since 22 Oct 2026, replacing the `ui.result-button-primary` skin; `.btn-danger` wears it turned red by a filter (same day) |
+| koin kesempatan, koin serpihan | `try coin`, `shard coin` | `.tries-dot`, `.result-shards-bar i`: the round `blank` face (`--round-blank`) left/earned, the `neutral` face used/missing (since 22 Oct 2026) |
 | daftar pilihan (dropdown) | `dropdown`, `fancy select` | `core/select.js`, `select[data-fancy-select]`, `.fancy-select-*`; gold triangle `public/assets/ui/select-arrow.webp` (`--select-arrow`) |
 | salinan ringkas (JS/CSS) | `minified mirror`, `minified assets` | `public/assets/min/{version}/`; command `gelita:aset:minify`; `AssetMinifier`; switch `Config\Gelita::$minifyAssets` |
 

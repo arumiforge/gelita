@@ -31,7 +31,7 @@ final class DialogFrameTest extends CIUnitTestCase
 
         $urls = stage_picture_urls();
         $this->assertSame(
-            ['gold-pill-1', 'gold-pill-2', 'gold-pill-3', 'gold-pill-4', 'modal-frame-compact', 'modal-frame-wide', 'select-arrow', 'modal-plate-navy', 'round-close'],
+            ['gold-pill-1', 'gold-pill-2', 'gold-pill-3', 'gold-pill-4', 'modal-frame-compact', 'modal-frame-wide', 'select-arrow', 'modal-plate-navy', 'round-close', 'round-blank'],
             array_keys($urls),
         );
         $this->assertNotContains(null, $urls);
