@@ -59,6 +59,28 @@ class GelitaRules
         return (bool) preg_match('/^[a-z0-9._]{3,30}$/', strtolower(trim((string) $str)));
     }
 
+    /**
+     * A student's full name holds no period (owner, 22 October 2026): a
+     * period means a shortened name ("M. RIZKI"), and the class list needs
+     * the full one. Checked before valid_person_name for its own message.
+     */
+    public function no_name_period(?string $str): bool
+    {
+        return ! str_contains((string) $str, '.');
+    }
+
+    /**
+     * A student's full name: letters (any script, with their accents),
+     * spaces, and the apostrophe of names such as MA'RUF; at least one
+     * letter. Digits and every other symbol are refused.
+     */
+    public function valid_person_name(?string $str): bool
+    {
+        $str = (string) $str;
+
+        return preg_match("/^[\\p{L}\\p{M}' ]+$/u", $str) === 1 && preg_match('/\p{L}/u', $str) === 1;
+    }
+
     public function not_reserved_username(?string $str): bool
     {
         return ! in_array(strtolower(trim((string) $str)), config('Gelita')->reservedUsernames, true);

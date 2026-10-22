@@ -48,7 +48,7 @@ $country = $val('country_code') ?: 'ID';
       <div class="register-col">
       <div class="field<?= $invalid('country_code') ?>">
         <label for="country_code"><?= esc(lang('Game.country')) ?> <span class="req" aria-hidden="true">*</span></label>
-        <select id="country_code" name="country_code" required data-region-country>
+        <select id="country_code" name="country_code" required data-region-country data-fancy-select>
           <option value="ID" <?= $country === 'ID' ? 'selected' : '' ?>>Indonesia</option>
           <option value="XX" <?= $country !== 'ID' ? 'selected' : '' ?>><?= esc(lang('Game.countryOther')) ?></option>
         </select>
@@ -57,7 +57,7 @@ $country = $val('country_code') ?: 'ID';
       <div class="field-row region-id">
         <div class="field<?= $invalid('province_code') ?>">
           <label for="province_code"><?= esc(lang('Game.province')) ?> <span class="req" aria-hidden="true">*</span></label>
-          <select id="province_code" name="province_code" data-region-province>
+          <select id="province_code" name="province_code" data-region-province data-fancy-select>
             <option value=""><?= esc(lang('Game.choose')) ?></option>
             <?php foreach ($provinces as $province): ?>
               <option value="<?= esc($province['code'], 'attr') ?>" <?= $val('province_code') === $province['code'] ? 'selected' : '' ?><?= in_array($province['code'], $schoolProvinces, true) ? ' data-directory' : '' ?>>
@@ -70,7 +70,7 @@ $country = $val('country_code') ?: 'ID';
 
         <div class="field<?= $invalid('district_code') ?>">
           <label for="district_code"><?= esc(lang('Game.district')) ?> <span class="req" aria-hidden="true">*</span></label>
-          <select id="district_code" name="district_code" data-region-district>
+          <select id="district_code" name="district_code" data-region-district data-fancy-select>
             <option value=""><?= esc(lang('Game.chooseProvince')) ?></option>
             <?php foreach ($provinces as $province): ?>
               <optgroup label="<?= esc($province['name'], 'attr') ?>" data-province="<?= esc($province['code'], 'attr') ?>">

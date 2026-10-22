@@ -235,7 +235,7 @@ class RegisterController extends BaseController
 
         if ($n === 1) {
             return $this->withLabels([
-                'display_name' => 'required|min_length[2]|max_length[150]',
+                'display_name' => 'required|min_length[2]|max_length[150]|no_name_period|valid_person_name',
                 'age'          => 'required|integer|greater_than_equal_to[' . $minAge . ']|less_than_equal_to[' . $maxAge . ']',
                 'gender'       => 'required|in_list[' . implode(',', $config->genders) . ']',
                 // Optional; only an uploaded avatar can be chosen (display plan Phase B)
@@ -315,6 +315,10 @@ class RegisterController extends BaseController
             'age' => [
                 'greater_than_equal_to' => lang('Game.ageRange', config('Gelita')->registrationAge),
                 'less_than_equal_to'    => lang('Game.ageRange', config('Gelita')->registrationAge),
+            ],
+            'display_name' => [
+                'no_name_period'    => lang('Game.displayNamePeriod'),
+                'valid_person_name' => lang('Game.displayNameChars'),
             ],
             'gender' => [
                 'in_list' => lang('Game.genderRequired'),
@@ -402,12 +406,29 @@ class RegisterController extends BaseController
             $out[$field] = is_scalar($value) ? trim((string) $value) : '';
         }
 
+        if ($n === 1) {
+            $out['display_name'] = self::normalizeName($out['display_name']);
+        }
+
         if ($n === 2) {
             $out['school_npsn']  = (string) preg_replace('/\s+/', '', $out['school_npsn']);
             $out['country_code'] = $out['country_code'] !== '' ? $out['country_code'] : 'ID';
         }
 
         return $out;
+    }
+
+    /**
+     * A full name as stored (owner, 22 October 2026): capital letters only,
+     * one space between words, and the curly apostrophes a phone keyboard
+     * types (’ ‘ `) turned into the plain one, so MA’RUF passes the rule.
+     */
+    public static function normalizeName(string $name): string
+    {
+        $name = str_replace(["\u{2019}", "\u{2018}", "\u{02BC}", '`'], "'", $name);
+        $name = trim((string) preg_replace('/\s+/u', ' ', $name));
+
+        return mb_strtoupper($name, 'UTF-8');
     }
 
     /**

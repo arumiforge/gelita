@@ -23,7 +23,11 @@ export function createLightbox({ closeLabel = 'Tutup', loadingLabel = '', varian
   const dialog = el('dialog', { class: `lightbox${variant ? ` is-${variant}` : ''}` }, close, stage, caption);
   (document.getElementById('stage') || document.body).append(dialog);
 
-  const ready = () => dialog.classList.remove('is-loading');
+  // The owner's dialog frame (game.css): the wide one for a picture wider than 2 : 1
+  const ready = () => {
+    dialog.classList.remove('is-loading');
+    if (image.naturalWidth > 0) dialog.dataset.frame = image.naturalWidth / image.naturalHeight > 2 ? 'wide' : 'compact';
+  };
   image.addEventListener('load', ready);
   image.addEventListener('error', ready);
 

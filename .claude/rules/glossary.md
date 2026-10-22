@@ -34,7 +34,7 @@ One concept, one word, in every layer. "UI (id)" is what users read; "Code (en)"
 | Detail hasil | `result details` | popover on the result screen |
 | menu (HUD baru) | `menu HUD`, `compact HUD` | `components/hud-menu` on every page: full size with section `hudStyle` = `menu`, else `.is-compact`; `hudShards` = `off` hides the shard pill; `hudRegion` = `off` hides the region name (region map, since 21 Oct 2026) |
 | kartu misi | `mission card`, `brief` | `game/mission-brief`, `.mission-card`, `.mission-seal` |
-| tombol utama | `main button` | `.btn-primary` on `#stage`, skin `ui.result-button-primary` |
+| tombol utama | `main button` | `.btn-primary` on `#stage`, on the gold pills (`gold-pill-*`, since 22 Oct 2026; the `ui.result-button-primary` skin no longer shows) |
 | diorama Peta Kedu (peta pulau) | `diorama`, `island map` | slot `map.kedu-diorama` (the owner's island picture since 20 Oct 2026, catalogue `mockup/…/peta-kedu/revisi-05`); `Config\Gelita::$mapDiorama` |
 | bagian wilayah yang terkunci (gelap) | `region shade`, `region mask` | `img.kedu-shade` through `public/assets/ui/kedu-region-{wilayah}.webp` (feathered land mask, rivers as borders) |
 | avatar Jaka (potret cerita Peta Kedu, layar Kenali) | `Jaka avatar`, `portrait` | slot `ui.jaka-avatar`, the owner's framed picture `gelita-katalog/mockup/gambar-mockup/kenali/aset/` (since 19 Oct 2026; was `reference.03`); `partials/kedu-portrait` |
@@ -80,6 +80,9 @@ One concept, one word, in every layer. "UI (id)" is what users read; "Code (en)"
 | musik mengecil saat narasi | `ducking` | `core/audio.js` `DUCKED` (0.2), `narrationChanged()` |
 | efek layar 3D | `screen effects`, `screen fx` | `game/screen-fx.js` (three.js); `data-fx3d`, `screen_fx_attr()`, `.has-fx3d`; switch `Config\Gelita::$screenFx` |
 | paralaks | `parallax` | `game/parallax.js`; `--plx`/`--ply` and `.has-parallax` on `#stage` |
+| bingkai dialog | `dialog frame`, `framed dialog` | `public/assets/ui/modal-frame-4x3.webp` (`--modal-frame-compact`) and `modal-frame-16x9.webp` (`--modal-frame-wide`), cut from the owner's 4:3 and 16:9 sheets; `data-frame` and `--modal-w` set by `fitFrame()` in `core/modal.js`; game only, also the picture viewer (since 22 Oct 2026) |
+| papan emas kapsul (tombol utama) | `gold pill` | `public/assets/ui/gold-pill-{1..4}.webp` (`--gold-pill-n` on `#stage`, `stage_picture_urls()`): the face of every `.btn-primary` and gold main button since 22 Oct 2026, replacing the `ui.result-button-primary` skin |
+| daftar pilihan (dropdown) | `dropdown`, `fancy select` | `core/select.js`, `select[data-fancy-select]`, `.fancy-select-*`; gold triangle `public/assets/ui/select-arrow.webp` (`--select-arrow`) |
 | salinan ringkas (JS/CSS) | `minified mirror`, `minified assets` | `public/assets/min/{version}/`; command `gelita:aset:minify`; `AssetMinifier`; switch `Config\Gelita::$minifyAssets` |
 
 ## People, data, and the panel

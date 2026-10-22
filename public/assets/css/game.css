@@ -807,6 +807,121 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
 .register-panel.is-bare .register-fields { padding-top: var(--gap-3); }
 .register-panel.is-bare .field > label, .register-panel.is-bare .field > .label, .register-panel.is-bare legend.label { font-size: 1.125rem; letter-spacing: .01em; text-shadow: 0 .0625rem .25rem rgba(0, 0, 0, .8); }
 .register-panel.is-bare :is(input[type="text"], input[type="number"], input[type="password"], select) { font-size: 1.125rem; }
+
+/* ---------- Dropdown (core/select.js, owner 22 October 2026) ----------
+   The hidden native <select> keeps the value; the button shows it with the owner's gold
+   triangle (--select-arrow), which turns when the list opens. The list lives on #stage
+   (the form scrolls and would clip it), opens with a short drop, lights the option under
+   the finger or the arrow keys with a gold bar, and marks the chosen one with a gold dot. */
+.fancy-select { position: relative; }
+.fancy-select > .fancy-select-native { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; pointer-events: none; }
+.fancy-select-button {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  width: 100%;
+  min-height: var(--tap);
+  padding: .5rem .875rem .5rem 1rem;
+  border: 1px solid rgba(223, 192, 135, .45);
+  border-radius: var(--radius);
+  background: linear-gradient(to bottom, rgba(27, 42, 74, .96), rgba(11, 19, 32, .96));
+  box-shadow: inset 0 1px 0 rgba(255, 240, 200, .1), 0 .25rem .5rem rgba(0, 0, 0, .35);
+  color: var(--ink);
+  font: inherit;
+  font-size: 1.125rem;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color .2s, box-shadow .2s, transform .15s;
+  -webkit-tap-highlight-color: transparent;
+}
+@media (hover: hover) {
+  .fancy-select-button:hover:not(:disabled) { border-color: var(--gold-500); box-shadow: inset 0 1px 0 rgba(255, 240, 200, .1), 0 .25rem .5rem rgba(0, 0, 0, .35), 0 0 .875rem rgba(223, 192, 135, .28); }
+}
+.fancy-select-button:active:not(:disabled) { transform: scale(.985); }
+.fancy-select-button:focus-visible { outline: none; border-color: var(--gold-300); box-shadow: 0 0 0 .1875rem rgba(223, 192, 135, .4); }
+.fancy-select.is-open .fancy-select-button { border-color: var(--gold-300); box-shadow: 0 0 0 .125rem rgba(223, 192, 135, .25), 0 0 1rem rgba(223, 192, 135, .25); }
+.fancy-select-value { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fancy-select.is-placeholder .fancy-select-value { color: rgba(234, 240, 250, .6); }
+.fancy-select-arrow {
+  flex: none;
+  width: 1.375rem;
+  height: 1.25rem;
+  background: var(--select-arrow) center / contain no-repeat;
+  filter: drop-shadow(0 .125rem .1875rem rgba(0, 0, 0, .6));
+  transition: transform .3s cubic-bezier(.3, 1.4, .5, 1);
+}
+.stage:not([style*="--select-arrow"]) .fancy-select-arrow { width: 0; height: 0; border: .4375rem solid transparent; border-top: .5625rem solid var(--gold-300); border-bottom: 0; background: none; }
+.fancy-select.is-open .fancy-select-arrow { transform: rotate(180deg); }
+.fancy-select.is-disabled .fancy-select-button { opacity: .5; cursor: not-allowed; }
+.has-error .fancy-select-button { border: .125rem solid var(--bad); }
+
+.fancy-select-pop {
+  position: absolute;
+  z-index: 45; /* above the page and HUD, below the dialog (50) and toast (60) layers */
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  padding: .5rem;
+  border: .125rem solid var(--gold-500);
+  border-radius: 1rem;
+  background: linear-gradient(to bottom, var(--navy-700), var(--navy-900));
+  box-shadow: inset 0 0 0 .25rem rgba(11, 19, 32, .9), inset 0 0 0 .3125rem rgba(223, 192, 135, .3), 0 1rem 2rem rgba(0, 0, 0, .55);
+  color: var(--ink);
+  font-family: var(--font-body);
+  transform-origin: top center;
+  animation: fancy-drop .2s cubic-bezier(.2, .9, .3, 1.1);
+}
+.fancy-select-pop[hidden] { display: none; }
+.fancy-select-pop.is-up { transform-origin: bottom center; animation-name: fancy-rise; }
+@keyframes fancy-drop { from { opacity: 0; transform: translateY(-.5rem) scaleY(.9); } }
+@keyframes fancy-rise { from { opacity: 0; transform: translateY(.5rem) scaleY(.9); } }
+.fancy-select-search {
+  flex: none;
+  min-height: 2.75rem;
+  border-color: rgba(223, 192, 135, .4);
+  background: rgba(5, 10, 20, .75);
+  font-size: 1.0625rem;
+}
+.fancy-select-search[hidden] { display: none; }
+.fancy-select-list {
+  flex: 1;
+  min-height: 0;
+  margin: 0;
+  padding: 0 .25rem 0 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  list-style: none;
+  outline: none;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold-600) transparent;
+}
+.fancy-select-option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  min-height: 2.75rem;
+  padding: .375rem .75rem .375rem 1.25rem;
+  border-radius: .625rem;
+  font-size: 1.125rem;
+  line-height: 1.25;
+  cursor: pointer;
+  transition: background-color .12s, color .12s, padding-left .15s;
+}
+.fancy-select-option[hidden] { display: none; }
+.fancy-select-option.is-active { padding-left: 1.5rem; background: linear-gradient(to right, rgba(223, 192, 135, .3), rgba(223, 192, 135, .06)); color: #FFF1C9; }
+.fancy-select-option.is-active::before { content: ""; position: absolute; top: 22%; bottom: 22%; left: .4375rem; width: .1875rem; border-radius: .125rem; background: var(--gold-300); box-shadow: 0 0 .5rem var(--glow); }
+.fancy-select-option[aria-selected="true"] { color: var(--gold-300); font-weight: 800; }
+.fancy-select-option[aria-selected="true"]::after { content: ""; flex: none; width: .625rem; height: .625rem; margin-left: auto; border-radius: 50%; background: var(--gold-300); box-shadow: 0 0 .5rem var(--glow); }
+.fancy-select-option[aria-disabled="true"] { opacity: .45; cursor: not-allowed; }
+.fancy-select-label { min-width: 0; }
+.fancy-select-option mark { background: none; color: var(--gold-300); font-weight: 800; text-decoration: underline; text-underline-offset: .2em; }
+.fancy-select-group { padding: .5rem .75rem .25rem; color: var(--ink-dim); font-size: .875rem; letter-spacing: .04em; }
+.fancy-select-empty { margin: 0; padding: .75rem; color: var(--ink-dim); font-size: 1rem; text-align: center; }
+@media (prefers-reduced-motion: reduce) {
+  .fancy-select-pop { animation: none; }
+  .fancy-select-arrow, .fancy-select-option, .fancy-select-button { transition: none; }
+}
 .register-panel.is-bare .field-help {
   display: flex;
   align-items: baseline;
@@ -1576,6 +1691,8 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
   .map-level .node-action.is-green:hover { background-color: transparent; color: #FFF4D6; filter: drop-shadow(0 .1875rem .3125rem rgba(0, 0, 0, .5)) brightness(1.15); }
 }
 .map-level .node-card.has-frame .btn-primary.node-action { min-height: 2.5rem; padding: .25rem 1.125rem; font-size: 1rem; }
+/* On the slim gold pill (22 October 2026): its carved ends need room beside the label */
+.stage[style*="--gold-pill-3"] .map-level .node-card.has-frame .btn-primary.node-action { --pill: var(--gold-pill-3); --pill-cut: 165; --pill-end: 2.125rem; padding-inline: 1.875rem 1.625rem; }
 /* Pustaka {wilayah} on the wide gold plate */
 .map-side .map-library.is-gold-plate {
   min-height: 3.5rem;
@@ -2941,10 +3058,11 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
 .kedu-btn.is-primary { color: #0B1B2E; text-shadow: none; }
 .kedu-btn.is-primary::before { border-color: #FFF2BD; background: linear-gradient(to bottom, #FFF0C2, var(--gold-500) 50%, var(--gold-600)); }
 .kedu-skins[style*="--skin-secondary"] .kedu-btn.is-secondary::before { border: 0; border-radius: 0; background: var(--skin-secondary) center / 100% 100% no-repeat; box-shadow: none; }
-.kedu-skins[style*="--skin-primary"] .kedu-btn.is-primary::before { border: 0; border-radius: 0; background: var(--skin-primary) center / 109.69% 122.23% no-repeat; box-shadow: none; }
+/* On the gold pill since 22 October 2026 (see MAIN BUTTONS): 64 dp tall here, the tallest plate */
+.stage[style*="--gold-pill-1"] .kedu-btn.is-primary::before { border: 0 solid transparent; border-image: var(--gold-pill-1) 0 185 fill / 0 3.125rem stretch; background: none; box-shadow: none; }
 /* In the region panel Lanjut is as tall as Kenali beside it (owner, 18 October 2026): the
    primary picture fills more of its box than the secondary one, so its box is lower */
-.kedu-skins[style*="--skin-primary"] .kedu-panel-actions .kedu-btn.is-primary::before { inset: 1.1875rem 0; }
+.stage[style*="--gold-pill-2"] .kedu-panel-actions .kedu-btn.is-primary::before { inset: 1.1875rem 0; border-image: var(--gold-pill-2) 0 175 fill / 0 2.75rem stretch; }
 .kedu-btn[aria-disabled="true"] { filter: grayscale(.8); opacity: .55; }
 .kedu-btn .icon { width: 1.75rem; height: 1.75rem; flex: none; }
 .kedu-btn.is-secondary .icon { width: 2.125rem; height: 2.125rem; color: var(--gold-300); }
@@ -3341,7 +3459,9 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
 .result-btn.is-primary .icon { width: 2.25rem; height: 2.25rem; stroke-width: 2.6; }
 .result-card[style*="--skin-secondary"] .result-btn.is-secondary::before { border: 0; border-radius: 0; background: var(--skin-secondary) 50% 50% / 102.13% 127.27% no-repeat; box-shadow: none; }
 .result-card[style*="--skin-detail"] .result-btn.is-detail::before { border: 0; border-radius: 0; background: var(--skin-detail) 50% 50% / 101.27% 143.59% no-repeat; box-shadow: none; }
-.result-card[style*="--skin-primary"] .result-btn.is-primary::before { border: 0; border-radius: 0; background: var(--skin-primary) 50% 50% / 109.69% 122.23% no-repeat; box-shadow: none; }
+/* On the tallest gold pill since 22 October 2026 (see MAIN BUTTONS) */
+.stage[style*="--gold-pill-1"] .result-btn.is-primary::before { border: 0 solid transparent; border-image: var(--gold-pill-1) 0 185 fill / 0 3.5rem stretch; background: none; box-shadow: none; }
+.stage[style*="--gold-pill-1"] .result-btn.is-primary { padding-inline: 2.75rem; color: #13223D; text-shadow: 0 .0625rem 0 rgba(255, 244, 214, .6); }
 @media (hover: hover) {
   .result-btn:hover::before { filter: brightness(1.15); }
 }
@@ -3754,6 +3874,49 @@ html.js .book-frame img.is-loaded { opacity: 1; }
 @keyframes book-spin { to { transform: rotate(360deg); } }
 .lightbox-caption { margin: var(--gap-2) 0 0; font-size: var(--fs-caption); text-align: center; }
 .lightbox-close { float: right; margin: 0 0 var(--gap-2) var(--gap-2); font-size: 1.6rem; line-height: 1; }
+/* In the owner's dialog frame (22 October 2026; see the framed dialog in stage.css): the
+   picture is fitted inside the frame's navy face, the compact frame for most pictures and
+   the wide one for a wide picture (core/lightbox.js sets data-frame); the close button is
+   the round one from the owner's sheet. No border, background, or shadow of its own. */
+.stage[style*="--modal-frame-compact"] .lightbox {
+  --lb-w: 70rem;
+  --frame-x: .07;
+  width: var(--lb-w);
+  max-width: none;
+  max-height: none;
+  aspect-ratio: 1428 / 822;
+  padding: calc(var(--lb-w) * .045) calc(var(--lb-w) * var(--frame-x)) calc(var(--lb-w) * .05);
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: var(--modal-frame-compact) center / 100% 100% no-repeat;
+  filter: drop-shadow(0 1rem 1.5rem rgba(0, 0, 0, .55));
+}
+.stage[style*="--modal-frame-wide"] .lightbox[data-frame="wide"] { --lb-w: 76rem; --frame-x: .06; aspect-ratio: 1672 / 698; background-image: var(--modal-frame-wide); }
+.stage[style*="--modal-frame-compact"] .lightbox[open] { display: flex; flex-direction: column; }
+.stage[style*="--modal-frame-compact"] .lightbox .lightbox-stage { flex: 1; min-height: 0; }
+.stage[style*="--modal-frame-compact"] .lightbox img,
+.stage[style*="--modal-frame-compact"] .lightbox.is-card img { position: absolute; inset: 0; width: 100%; height: 100%; max-height: none; object-fit: contain; }
+.stage[style*="--modal-frame-compact"] .lightbox-caption { flex: none; }
+.stage[style*="--round-close"] .lightbox-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  float: none;
+  width: 3.5rem;
+  height: 3.5rem;
+  margin: 0;
+  border: 0;
+  background: var(--round-close) center / contain no-repeat;
+  color: transparent;
+  font-size: 0;
+  transform: translate(25%, -25%);
+  filter: drop-shadow(0 .25rem .375rem rgba(0, 0, 0, .55));
+}
+@media (hover: hover) {
+  .stage[style*="--round-close"] .lightbox-close:hover { background: var(--round-close) center / contain no-repeat; filter: drop-shadow(0 .25rem .375rem rgba(0, 0, 0, .55)) brightness(1.15); }
+}
 
 /* ---------- Rak Pustaka Kedu (/pustaka) ---------- */
 /* Redesign (owner, 21 October 2026): dark navy-and-gold cards like the Peta Kedu panels.
@@ -4242,10 +4405,15 @@ html.js .book-frame img.is-loaded { opacity: 1; }
 }
 
 /* =========================== MAIN BUTTONS =========================== */
-/* Every main button on a game page (Mulai tantangan, Cek jawabanku, Ulangi, Lanjut, Masuk, …)
-   takes the look of Lanjut on Peta Kedu and Balai Refleksi on the result screen (owner,
-   18 October 2026): the `ui.result-button-primary` skin set on #stage by the layout, else
-   the same light-gold gradient. Scoped to .stage, so the admin panel keeps its buttons. */
+/* Every main button on a game page (Mulai tantangan, Cek jawabanku, Ulangi, Lanjut, the
+   dialog buttons, …) stands on one of the owner's gold pill plates (22 October 2026; they
+   replace the `ui.result-button-primary` skin): assets/ui/gold-pill-{1..4}.webp, passed on
+   #stage by the layout (stage_picture_urls()). Drawn as a border image, so the carved ends
+   keep their shape and only the plain middle stretches with the label: each end is as wide
+   as the plate's end is at the button's height (--pill-cut px of the picture, --pill-end on
+   screen). Tallest plate for the large buttons, the slim ones for small and full-width
+   buttons. Without the pictures: the light-gold gradient. Scoped to .stage, so the admin
+   panel keeps its buttons. */
 .stage .btn-primary {
   border-color: #FFF2BD;
   background: linear-gradient(to bottom, #FFF0C2, var(--gold-500) 50%, var(--gold-600));
@@ -4253,16 +4421,29 @@ html.js .book-frame img.is-loaded { opacity: 1; }
   font-weight: 800;
   box-shadow: 0 .25rem .5rem rgba(1, 7, 19, .45);
 }
-.stage[style*="--skin-primary"] .btn-primary {
-  border-color: transparent;
-  border-radius: 0;
-  background: var(--skin-primary) 50% 50% / 109.69% 122.23% no-repeat;
+.stage[style*="--gold-pill-2"] .btn-primary {
+  --pill: var(--gold-pill-2);
+  --pill-cut: 175;
+  --pill-end: 2.625rem;
+  padding-inline: max(var(--gap-5), calc(var(--pill-end) * .92));
+  border: 0 solid transparent;
+  border-image: var(--pill) 0 var(--pill-cut) fill / 0 var(--pill-end) stretch;
+  background: none;
   box-shadow: none;
+  color: #13223D;
+  text-shadow: 0 .0625rem 0 rgba(255, 244, 214, .6);
+  filter: drop-shadow(0 .25rem .375rem rgba(1, 7, 19, .5));
+  transition: transform .15s, filter .2s;
 }
+.stage[style*="--gold-pill-1"] :is(.btn-lg, .btn-xl).btn-primary { --pill: var(--gold-pill-1); --pill-cut: 185; --pill-end: 2.75rem; }
+.stage[style*="--gold-pill-1"] .btn-xl.btn-primary { --pill-end: 3.125rem; }
+.stage[style*="--gold-pill-3"] .btn-block.btn-primary { --pill: var(--gold-pill-3); --pill-cut: 165; --pill-end: 3.25rem; }
+.stage[style*="--gold-pill-4"] .btn-sm.btn-primary { --pill: var(--gold-pill-4); --pill-cut: 150; --pill-end: 3rem; }
 .stage .btn-primary .icon { stroke-width: 2.6; }
 @media (hover: hover) {
   .stage .btn-primary:hover { color: #0B1B2E; filter: brightness(1.12); }
-  .stage:not([style*="--skin-primary"]) .btn-primary:hover { background: linear-gradient(to bottom, #FFF0C2, var(--gold-500) 50%, var(--gold-600)); }
+  .stage:not([style*="--gold-pill-2"]) .btn-primary:hover { background: linear-gradient(to bottom, #FFF0C2, var(--gold-500) 50%, var(--gold-600)); }
+  .stage[style*="--gold-pill-2"] .btn-primary:hover { background: none; filter: drop-shadow(0 .25rem .375rem rgba(1, 7, 19, .5)) drop-shadow(0 0 .625rem var(--glow)) brightness(1.1); }
 }
 .stage .btn-primary:active { filter: brightness(1.18); }
-.stage[style*="--skin-primary"] .btn-primary:active { background: var(--skin-primary) 50% 50% / 109.69% 122.23% no-repeat; }
+.stage[style*="--gold-pill-2"] .btn-primary:active { background: none; filter: drop-shadow(0 .125rem .25rem rgba(1, 7, 19, .5)) brightness(1.18); }

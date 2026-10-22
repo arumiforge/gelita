@@ -614,6 +614,50 @@ if (! function_exists('round_icon_src')) {
     }
 }
 
+if (! function_exists('ui_picture_src')) {
+    /**
+     * A shipped interface picture `assets/ui/{file}` as a versioned URL, or
+     * null while the file is not installed (CSS then keeps its plain look).
+     */
+    function ui_picture_src(string $file): ?string
+    {
+        return is_file(FCPATH . 'assets/ui/' . $file) ? asset_url_versioned('ui/' . $file) : null;
+    }
+}
+
+if (! function_exists('stage_picture_urls')) {
+    /**
+     * The interface pictures every game page draws from CSS, passed on #stage
+     * as custom properties (skin_style_attr()):
+     * - `--gold-pill-1` … `--gold-pill-4`: the owner's gold pill plates (22 October 2026),
+     *   the face of every main button (.btn-primary and the other gold buttons), tallest
+     *   first; they replace the `ui.result-button-primary` skin;
+     * - `--modal-frame-compact`, `--modal-frame-wide`: the navy-and-gold dialog frames cut
+     *   from the owner's 4:3 and 16:9 sheets (core/modal.js picks one by its content);
+     * - `--select-arrow`: the gold triangle of the dropdowns (core/select.js);
+     * - `--modal-plate-navy`: the navy plate behind a dialog's quiet button;
+     * - `--round-close`: the round close button of the picture viewer (core/lightbox.js).
+     *
+     * @return array<string, ?string>
+     */
+    function stage_picture_urls(): array
+    {
+        $urls = [];
+
+        foreach (range(1, 4) as $n) {
+            $urls['gold-pill-' . $n] = ui_picture_src('gold-pill-' . $n . '.webp');
+        }
+
+        return $urls + [
+            'modal-frame-compact' => ui_picture_src('modal-frame-4x3.webp'),
+            'modal-frame-wide'    => ui_picture_src('modal-frame-16x9.webp'),
+            'select-arrow'        => ui_picture_src('select-arrow.webp'),
+            'modal-plate-navy'    => ui_picture_src('kenal-plate-navy.webp'),
+            'round-close'         => round_icon_src('close'),
+        ];
+    }
+}
+
 if (! function_exists('round_icon')) {
     /**
      * One of the round gold buttons (round_icon_src()) as a decorative <img>: the control

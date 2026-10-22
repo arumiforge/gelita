@@ -90,17 +90,21 @@ final class MissionCardTest extends CIUnitTestCase
         $this->assertStringNotContainsString('class="mission-best"', $page, 'no best result before a first try');
     }
 
-    public function testMainButtonsShareTheGoldSkin(): void
+    public function testMainButtonsShareTheGoldPill(): void
     {
-        // No skin: the gold gradient; the stage only carries the neutral round button for letter avatars (21 October 2026)
-        $this->assertMatchesRegularExpression('/<div class="stage" id="stage" style="--round-neutral: url\(&quot;[^"]*round-neutral\.webp[^"]*&quot;\)">/', $this->brief(), 'no skin: the gold gradient');
-
+        // Owner, 22 October 2026: the shipped gold pills replace the ui.result-button-primary skin, even when that slot is filled
         $this->media = ['ui.result-button-primary' => 'assets/uploads/ui.result-button-primary.webp'];
         Services::resetSingle('renderer');
-        $this->assertMatchesRegularExpression('/<div class="stage" id="stage" style="--skin-primary: url\(&quot;[^"]*ui\.result-button-primary\.webp&quot;\); --round-neutral: /', $this->brief());
+        $page = $this->brief();
+        $this->assertMatchesRegularExpression('/<div class="stage" id="stage" style="--round-neutral: url\(&quot;[^"]*round-neutral\.webp[^"]*&quot;\); --gold-pill-1: url\(&quot;[^"]*gold-pill-1\.webp/', $page);
+        $this->assertStringNotContainsString('--skin-primary', $page);
+        foreach (['gold-pill-2', 'gold-pill-3', 'gold-pill-4', 'modal-frame-compact', 'modal-frame-wide', 'select-arrow'] as $var) {
+            $this->assertStringContainsString('--' . $var . ': url(&quot;', $page, $var);
+        }
 
         $css = (string) file_get_contents(FCPATH . 'assets/css/game.css');
-        $this->assertStringContainsString('.stage[style*="--skin-primary"] .btn-primary {', $css, 'scoped to the stage: the admin panel keeps its buttons');
+        $this->assertStringContainsString('.stage[style*="--gold-pill-2"] .btn-primary {', $css, 'scoped to the stage: the admin panel keeps its buttons');
+        $this->assertStringContainsString('border-image: var(--pill) 0 var(--pill-cut) fill / 0 var(--pill-end) stretch;', $css);
     }
 
     /** Owner, 21 October 2026: the logo alone in the HUD centre and Back to the region map on the plate top left. */

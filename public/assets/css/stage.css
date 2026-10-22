@@ -313,8 +313,10 @@ body.is-dim-art .scene::after { background: radial-gradient(ellipse at 50% 45%, 
   position: relative;
   display: grid;
   place-items: center;
+  flex: none;
   width: var(--tap);
   height: var(--tap);
+  padding: 0;
   border: 0;
   border-radius: 50%;
   background: none;
@@ -346,7 +348,10 @@ body.is-dim-art .scene::after { background: radial-gradient(ellipse at 50% 45%, 
 .hud-sheet-row > .icon { width: 2rem; height: 2rem; color: var(--gold-500); }
 /* Row symbols on the owner's round gold buttons (21 October 2026; round_icon()) */
 .hud-sheet-row > img.hud-sheet-art { width: 3rem; height: 3rem; margin: -.375rem 0; filter: drop-shadow(0 .125rem .25rem rgba(1, 7, 19, .5)); -webkit-user-drag: none; }
-.hud-sheet-close > img.hud-sheet-close-art { width: 2.75rem; height: 2.75rem; filter: drop-shadow(0 .125rem .25rem rgba(1, 7, 19, .5)); -webkit-user-drag: none; }
+/* Always square (owner, 22 October 2026): on a phone 1rem is about 10 px, and the browser's own
+   button padding (iOS: 6 px a side) left less room than the picture's height, so the base
+   `max-width: 100%` squeezed it into an oval. No padding, no max-width, a fixed 1 : 1 box. */
+.hud-sheet-close > img.hud-sheet-close-art { flex: none; width: 2.75rem; height: 2.75rem; max-width: none; aspect-ratio: 1; object-fit: contain; filter: drop-shadow(0 .125rem .25rem rgba(1, 7, 19, .5)); -webkit-user-drag: none; }
 .hud-sheet-row .hud-sheet-go { width: 1.5rem; height: 1.5rem; color: var(--ink-dim); }
 .hud-sheet-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .hud-lang-row { min-height: 6rem; font-size: 1.625rem; font-weight: 700; }
@@ -661,6 +666,93 @@ body.is-dim-art .scene::after { background: radial-gradient(ellipse at 50% 45%, 
 .modal-layer .modal-card { max-height: 35rem; overflow-y: auto; overscroll-behavior: contain; }
 /* Blurred stage behind a dialog that should hold all attention (install offer) */
 .modal-layer.is-blur { background: var(--veil); -webkit-backdrop-filter: blur(.5rem); backdrop-filter: blur(.5rem); }
+
+/* ---------- Framed dialog (owner, 22 October 2026) ----------
+   The dialog is the owner's navy-and-gold frame picture instead of a box with
+   a background, border, and shadow: `--modal-frame-compact` (cut from the 4:3
+   sheet, 1428 × 822) or `--modal-frame-wide` (from the 16:9 sheet, 1672 × 698),
+   always at the picture's own ratio. core/modal.js picks the frame and width
+   (`data-frame`, `--modal-w`): the compact frame while everything fits, else
+   the wide one, growing up to 76 × 31.7 rem; past that the text scrolls.
+   The card lies on the frame's navy face, inside its gold border; the round
+   icon sits on the top edge, half above it. */
+.stage[style*="--modal-frame-compact"] .modal-layer > .modal {
+  --modal-w: 30rem;
+  --frame-x: .07;
+  --frame-bottom: .05;
+  display: block;
+  width: var(--modal-w);
+  max-width: none;
+  aspect-ratio: 1428 / 822;
+  background: var(--modal-frame-compact) center / 100% 100% no-repeat;
+  filter: drop-shadow(0 1rem 1.5rem rgba(0, 0, 0, .55));
+}
+.stage[style*="--modal-frame-wide"] .modal-layer > .modal[data-frame="wide"] {
+  --frame-x: .06;
+  --frame-bottom: .035;
+  aspect-ratio: 1672 / 698;
+  background-image: var(--modal-frame-wide);
+}
+.stage[style*="--modal-frame-compact"] .modal-layer > .modal > .modal-card {
+  position: absolute;
+  inset: max(2.75rem, calc(var(--modal-w) * .05)) calc(var(--modal-w) * var(--frame-x)) calc(var(--modal-w) * var(--frame-bottom));
+  width: auto;
+  max-height: none;
+  align-content: safe center;
+  gap: var(--gap-2);
+  /* Room for the buttons' focus ring, which the scrolling card would clip */
+  padding: .375rem var(--gap-2);
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold-600) transparent;
+}
+.stage .modal > .modal-icon:empty { display: none; }
+.stage[style*="--modal-frame-compact"] .modal-layer > .modal > .modal-icon:empty + .modal-card { inset-block-start: calc(var(--modal-w) * .05); }
+.stage .modal-layer .modal-title { color: var(--gold-300); font-size: 1.75rem; line-height: 1.2; text-shadow: 0 .125rem .375rem rgba(0, 0, 0, .6); }
+.stage .modal-layer .modal-text { color: var(--ink); font-size: var(--fs-body); line-height: 1.45; }
+.stage .modal-layer .modal-actions { margin-top: var(--gap-3); }
+/* The round icon from the owner's sheets, on the frame's top edge */
+.stage .modal > .modal-icon.is-round {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 2;
+  width: 4.5rem;
+  height: 4.5rem;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  color: var(--gold-300);
+  transform: translate(-50%, -42%);
+  filter: drop-shadow(0 .25rem .375rem rgba(0, 0, 0, .55));
+}
+.stage .modal > .modal-icon.is-round > img.modal-icon-art,
+.modal-icon-stack > img.modal-icon-art { display: block; width: 100%; height: 100%; max-width: none; aspect-ratio: 1; -webkit-user-drag: none; }
+.modal-icon-stack { position: relative; display: block; width: 100%; height: 100%; }
+.modal-icon-stack > .icon { position: absolute; top: 50%; left: 50%; width: 42%; height: 42%; transform: translate(-50%, -50%); }
+/* Without the frame pictures the icon keeps the card's top edge as before */
+.stage:not([style*="--modal-frame-compact"]) .modal > .modal-icon.is-round { position: relative; transform: none; margin-bottom: -2rem; }
+/* Quiet dialog buttons (Batal, Tidak) on the navy plate beside the gold pill */
+.stage[style*="--modal-plate-navy"] .modal-actions .btn-quiet {
+  padding-inline: 2.25rem;
+  border: 0 solid transparent;
+  border-radius: var(--radius-pill);
+  border-image: var(--modal-plate-navy) 0 115 fill / 0 2.625rem stretch;
+  background: none;
+  color: #F3D58A;
+  font-weight: 700;
+  text-shadow: 0 1px .1875rem rgba(0, 0, 0, .8);
+  filter: drop-shadow(0 .25rem .375rem rgba(1, 7, 19, .5));
+}
+@media (hover: hover) {
+  .stage[style*="--modal-plate-navy"] .modal-actions .btn-quiet:hover { background: none; color: #FFE7A8; filter: drop-shadow(0 .25rem .375rem rgba(1, 7, 19, .5)) brightness(1.15); }
+}
+.stage[style*="--modal-plate-navy"] .modal-actions .btn-quiet:active { background: none; filter: brightness(1.2); }
 
 /* ---------- Toast: x 856, y 72, w 400 ----------
    Above the modal veil (z 60 over 50): errors must be seen. Only the card

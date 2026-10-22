@@ -180,6 +180,7 @@ final class ImageSlots
             'transparent' => true,
             'fallback'    => 'Tombol emas biasa',
             'priority'    => 'opsional',
+            'tips'        => 'Sejak 22 Oktober 2026 tombol utama di seluruh permainan memakai papan emas bawaan GELITA (assets/ui/gold-pill-1 sampai 4), jadi gambar di slot ini tidak tampil lagi.',
         ],
         'ui.result-button-secondary' => [
             'group'       => 'result',

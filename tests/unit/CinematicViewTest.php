@@ -180,7 +180,7 @@ final class CinematicViewTest extends CIUnitTestCase
         $this->assertStringContainsString('background: none;', $controls[1]);
         $this->assertStringContainsString('box-shadow: none;', $controls[1]);
         $this->assertStringContainsString('.stage[style*="--skin-hud"] .cine .narrator-controls .icon-btn::after {', $css);
-        $this->assertStringContainsString('.stage[style*="--skin-primary"] .cine .narrator-next.has-label:not(:disabled) {', $css);
+        $this->assertStringContainsString('.stage[style*="--gold-pill-3"] .cine .narrator-next.has-label:not(:disabled) {', $css);
         $this->assertMatchesRegularExpression('/\n\.cine \.narrator-controls \.icon-btn \{[^}]*width: 2\.5rem;[^}]*height: 2\.5rem;/', $css);
         $this->assertStringNotContainsString('.cine-top .eyebrow', $css);
 
@@ -237,7 +237,7 @@ final class CinematicViewTest extends CIUnitTestCase
         $intro = (string) file_get_contents(FCPATH . 'assets/js/game/intro.js');
         $this->assertStringContainsString("$('.welcome-card', screen)", $intro);
         $this->assertStringContainsString("icon: 'key'", $intro);
-        $this->assertStringContainsString('<template data-modal-icon="key">', (string) file_get_contents(APPPATH . 'Views/components/modal.php'));
+        $this->assertStringContainsString('<template data-modal-icon="key">', view('components/modal', ['roundArt' => true]));
     }
 
     // ------------------------------------------------------------- tirai

@@ -3,7 +3,7 @@
  * langkah; server menyimpan isian langkah 1–2 dan menjaga urutannya).
  * Perilaku dipasang menurut `data-step` formulir:
  *
- *   langkah 1  tandai kolom wajib kosong
+ *   langkah 1  tandai kolom wajib kosong; nama lengkap kapital, tanpa angka/simbol/titik
  *   langkah 2  filter wilayah + NPSN
  *   langkah 3  cek nama pengguna, pengukur sandi, `device_json` (core/device.js)
  *
@@ -35,9 +35,55 @@ import { apiRequest } from '../core/api.js';
 import { initPasswordField } from './password-meter.js';
 import { attachDeviceField } from '../core/device.js';
 import { checkBeforeSubmit } from './form-check.js';
+import { enhanceSelects } from '../core/select.js';
 
 const USERNAME_PATTERN = /^[a-z0-9._]{3,30}$/;
 const NPSN_PATTERN = /^\d{8}$/;
+
+// Letters of any script with their accents, spaces, and the plain apostrophe (GelitaRules::valid_person_name)
+const NAME_CHARS = /^[\p{L}\p{M}' ]*$/u;
+
+/**
+ * Full name (owner, 22 October 2026): capital letters as the student types,
+ * and a message as soon as a period (a shortened name), a digit, or another
+ * symbol appears. The value is not rewritten while a phone keyboard is still
+ * composing a word (that duplicates letters on Android): the word turns into
+ * capitals when it is done, and the server stores the name in capitals anyway.
+ */
+function initName(form) {
+  const input = $('[data-person-name]', form);
+  const message = input ? $(`#${CSS.escape(input.id)}-error`, form) : null;
+  if (!input) return;
+
+  const errorFor = (value) => {
+    if (value.includes('.')) return input.dataset.errorPeriod;
+    if (!NAME_CHARS.test(value)) return input.dataset.errorChars;
+    return '';
+  };
+
+  const sync = (rewrite) => {
+    if (rewrite) {
+      const next = input.value.replace(/[\u2018\u2019\u02BC`]/g, "'").toLocaleUpperCase('id');
+      if (next !== input.value) {
+        const { selectionStart: start, selectionEnd: end } = input;
+        input.value = next;
+        input.setSelectionRange(start, end);
+      }
+    }
+    const error = errorFor(input.value);
+    input.setCustomValidity(error);
+    if (message) {
+      message.textContent = error;
+      message.hidden = !error;
+    }
+    input.closest('.field')?.classList.toggle('has-error', Boolean(error));
+  };
+
+  input.addEventListener('input', (event) => sync(!event.isComposing));
+  input.addEventListener('compositionend', () => sync(true));
+  input.addEventListener('blur', () => sync(true));
+  if (input.value) sync(true);
+}
 
 function initRegion(form) {
   const country = $('[data-region-country]', form);
@@ -72,9 +118,10 @@ function initRegion(form) {
     const indonesia = country.value === 'ID';
     province.required = indonesia;
     district.required = indonesia;
-    if (!indonesia) {
+    if (!indonesia && province.value !== '') {
+      // Through `change`, so the dropdown (core/select.js) and the school check follow
       province.value = '';
-      syncDistricts();
+      province.dispatchEvent(new Event('change'));
     }
   };
 
@@ -285,9 +332,12 @@ export function initRegister() {
   // device.js or the double-submit guard run (no reload just to say "empty")
   checkBeforeSubmit(form);
 
+  if (step === '1') initName(form);
+
   if (step === '2') {
     initRegion(form);
     initSchool(form);
+    enhanceSelects(form); // after the region filter has set the city list
   }
 
   if (step === '3') {
