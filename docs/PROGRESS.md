@@ -8,7 +8,7 @@ Last updated: 23 October 2026.
 
 Documentation only, in `docs/revisi-10-analitik/` (Indonesian, at the owner's request): no game or system change yet. The owner finishes the revision documents elsewhere; the complete implementation document comes after that, and implementation only after it is approved.
 
-- [ ] Revision documents: main document with the 10 analytics, constructs, admin/researcher split, log cleanup, token, participant code, and the 15 later system changes (`01`), field sheets L0–L7 (`02`), codes and meanings (`03`), decision record (`04`), three diagrams in `gambar/` (branch `sky/clever-fermat-v0jqng`)
+- [x] Revision documents: main document with the 10 analytics, constructs, admin/researcher split, log cleanup, token, participant code, and the 15 later system changes (`01`), field sheets L0–L7 (`02`), codes and meanings (`03`), decision record (`04`), three diagrams in `gambar/` (PR #214). The owner continues the revision separately from here
 - [ ] Owner and team settle the open questions in `01_REVISI_10_ANALITIK.md` → *Pertanyaan yang masih terbuka* (constructs with three dimensions, token, participant code `S03-A07`, `guru` role)
 - [ ] Complete implementation document, after the revision documents are final
 - [ ] Implementation of the 15 system changes, one short-lived branch each, after the implementation document is approved
