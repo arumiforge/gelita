@@ -2,7 +2,7 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 25 Oktober 2026 (nama fiktif dicek) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Dasar: [06_KISI_KISI_BANK_SOAL.md](06_KISI_KISI_BANK_SOAL.md) (disetujui pemilik proyek 25 Oktober 2026) · Status semua butir: **`needs_verification`**
+Per 25 Oktober 2026 (nama fiktif dicek; telaah pendahuluan T6 sudah dijalankan, lihat [09](09_TELAAH_PENDAHULUAN_BANK_SOAL.md)) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Dasar: [06_KISI_KISI_BANK_SOAL.md](06_KISI_KISI_BANK_SOAL.md) (disetujui pemilik proyek 25 Oktober 2026) · Status semua butir: **`needs_verification`**
 
 Ini isi bank soal baru, ditulis mengikuti kisi-kisi. Dokumen ini masih **draf untuk telaah dan validasi ahli**. Bentuknya dokumen supaya mudah dibaca ahli. Setelah lolos validasi, isinya dipindah ke berkas data [`docs/bank-soal/`](../bank-soal/README.md) dan diterjemahkan ke bahasa Inggris. Belum ada yang diubah di sistem atau di workbook.
 
@@ -60,18 +60,18 @@ Level utama: menemukan informasi (L1) · Bloom C1–C2 · Skenario: tanda bahaya
 
 > Kabupaten Temanggung di Jawa Tengah diapit dua gunung api, yaitu Gunung Sindoro dan Gunung Sumbing. Orang menyebut keduanya gunung kembar karena bentuknya mirip. Tinggi Gunung Sindoro 3.136 meter, sedangkan Gunung **(1)** tingginya 3.371 meter. Dahulu kedua gunung itu pernah meletus dan menyebarkan **(2)**. Abu itu membuat tanah di lerengnya subur. Di tanah yang **(3)** itu, petani menanam kopi arabika. Kopi itu tumbuh di ketinggian lebih dari 900 meter. Jadi, kebun kopinya berada di tempat yang **(4)**.
 
-Panjang ± 75 kata · Pengecoh bank kata: *Sindoro*, *tandus*
+Panjang ± 75 kata · Pengecoh bank kata: *Sindoro*, *pasir*
 
 | Kode | Rumpang | Kunci | Sub | AKM | Bloom | Pengecoh sasaran | Catatan |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | tmg-2-a01 | (1) | Sumbing | D1a | L1 | C1 | *Sindoro* → INF-LIT | Nama sudah disebut di kalimat pertama; perbaikan tmg-2-a01 lama |
-| tmg-2-a02 | (2) | abu | D1a | L1 | C1 | — | Jawaban ada di kalimat berikutnya ("Abu itu …") |
-| tmg-2-a03 | (3) | subur | D1a | L1 | C1 | *tandus* → INF-LIT | Tersurat di kalimat sebelumnya |
+| tmg-2-a02 | (2) | abu | D1a | L1 | C1 | *pasir* → INF-HUB | Jawaban ada di kalimat berikutnya ("Abu itu …"); *pasir* menangkap siswa yang tidak menghubungkan dua kalimat |
+| tmg-2-a03 | (3) | subur | D1a | L1 | C1 | — | Tersurat di kalimat sebelumnya; *tinggi* tetap bersaing |
 | tmg-2-a04 | (4) | tinggi | D1a | L2 | C2 | — | Menyimpulkan dari "lebih dari 900 meter" |
 
 Judul diganti dari "Gunung Kembar" supaya jawaban tidak bocor (05, daftar perbaikan).
 
-### Variasi b: Umbul Jumprit
+### Variasi b: Mata Air di Lereng Sindoro
 
 > Di lereng Gunung Sindoro ada mata air bernama Umbul Jumprit. Airnya jernih dan tidak pernah kering, bahkan pada musim **(1)**. Musim kemarau adalah musim ketika hujan jarang turun. Air dari Umbul **(2)** mengalir menjadi hulu Sungai Progo. Mata air ini juga penting bagi umat Buddha. Setiap Waisak, mereka mengambil air suci dari sini. Air **(3)** itu lalu dibawa ke Candi Borobudur. Warga menjaga pepohonan di sekitar mata air, karena akar pohon membantu menyimpan air. Kalau pohon-pohon itu ditebang, mata air bisa **(4)**.
 
@@ -102,7 +102,7 @@ Panjang ± 80 kata · Pengecoh bank kata: *hujan*, *penuh*
 | --- | --- | --- | --- | --- | --- | --- |
 | tmg-3-a01 | Situs Liyangan ditemukan pada tahun 2008. | benar | D1a | L1 | C1 | INF-LIT |
 | tmg-3-a02 | Situs Liyangan tertimbun pasir dan batu dari letusan Gunung Merapi. | salah | D1a | L1 | C1 | INF-LIT |
-| tmg-3-a03 | Layar informasi ini dipasang oleh para peneliti Situs Liyangan. | salah | D1b | L1 | C1 | INF-SUM |
+| tmg-3-a03 | Layar ini tidak menyebutkan siapa pemasangnya, jadi kita tidak tahu siapa yang bisa ditanya kalau isinya keliru. | salah | D1b | L1 | C2 | INF-SUM |
 | tmg-3-a04 | [Gambar: butir padi hangus] Gambar ini menunjukkan salah satu benda yang ditemukan di Situs Liyangan. | benar | D1a | L1 | C2 | INF-LIT |
 
 ### Variasi b: Candi Pringapus dan Prasasti Gondosuli
@@ -116,7 +116,7 @@ Panjang ± 80 kata · Pengecoh bank kata: *hujan*, *penuh*
 | --- | --- | --- | --- | --- | --- | --- |
 | tmg-3-b01 | Candi Pringapus adalah candi Buddha. | salah | D1a | L1 | C1 | INF-LIT |
 | tmg-3-b02 | Prasasti Gondosuli dibuat pada tahun 832 Masehi. | benar | D1a | L1 | C1 | INF-LIT |
-| tmg-3-b03 | Layar informasi ini dipasang oleh pengelola Candi Pringapus. | salah | D1b | L1 | C1 | INF-SUM |
+| tmg-3-b03 | Layar ini dipasang tanpa nama pemasang, jadi isinya tidak bisa ditanyakan kepada siapa pun. | salah | D1b | L1 | C2 | INF-SUM |
 | tmg-3-b04 | [Gambar: arca lembu duduk dari batu] Gambar ini menunjukkan arca yang ada di dalam ruang Candi Pringapus. | benar | D1a | L1 | C2 | INF-LIT |
 
 Kedua variasi punya struktur yang sama: dua butir tersurat, satu butir penanda sumber yang kuncinya *salah*, satu butir gambar yang kuncinya *benar*. Urutan kunci: a = B S S B, b = S B S B.
@@ -174,8 +174,8 @@ Pengecoh: angklung, ondel-ondel, perahu pinisi, sasando, semuanya **INF-BUD**.
 
 | Kode | Jenis | Petunjuk | Kunci | Pengecoh utama | Bloom |
 | --- | --- | --- | --- | --- | --- |
-| tmg-4-a01 | Atribusi | Foto ini dibuat oleh sebuah sanggar. Ketuk tulisan yang menunjukkan siapa pembuat fotonya. | A2 | A1 → BUD-ATR; A4 → BUD-ATR | C2 |
-| tmg-4-a02 | Representasi | Bacalah papan informasi. Ketuk keterangan unggahan yang tidak sesuai dengan papan itu. | A3 | A4 → BUD-REP; A5 → BUD-REP | C2 |
+| tmg-4-a01 | Atribusi | Foto ini bukan buatan pemilik akun. Ketuk tulisan yang menunjukkan siapa pembuat fotonya. | A2 | A1 → BUD-ATR; A4 → BUD-ATR | C2 |
+| tmg-4-a02 | Representasi | Bacalah papan informasi. Ketuk bagian unggahan yang isinya tidak sesuai dengan papan itu. | A3 | A4 → BUD-REP; A6 → BUD-ETK | C2 |
 | tmg-4-a03 | Izin | Kamu ingin memasang foto ini di majalah dinding kelas. Ketuk langkah pertama yang tepat. | A7 | A8 → BUD-IZN; A1 → BUD-IZN | C2 |
 | tmg-4-a04 | Menghargai tradisi | Ketuk komentar yang menghargai kesenian ini. | A5 | A6 → BUD-ETK; A3 → BUD-ETK | C2 |
 
@@ -194,8 +194,8 @@ Pengecoh: angklung, ondel-ondel, perahu pinisi, sasando, semuanya **INF-BUD**.
 
 | Kode | Jenis | Petunjuk | Kunci | Pengecoh utama | Bloom |
 | --- | --- | --- | --- | --- | --- |
-| tmg-4-b01 | Atribusi | Video ini dibuat oleh sebuah warung. Ketuk tulisan yang menunjukkan siapa pembuat videonya. | B2 | B1 → BUD-ATR; B4 → BUD-ATR | C2 |
-| tmg-4-b02 | Representasi | Bacalah papan informasi. Ketuk keterangan unggahan yang tidak sesuai dengan papan itu. | B3 | B4 → BUD-REP; B5 → BUD-REP | C2 |
+| tmg-4-b01 | Atribusi | Video ini bukan buatan pemilik akun. Ketuk tulisan yang menunjukkan siapa pembuat videonya. | B2 | B1 → BUD-ATR; B4 → BUD-ATR | C2 |
+| tmg-4-b02 | Representasi | Bacalah papan informasi. Ketuk bagian unggahan yang isinya tidak sesuai dengan papan itu. | B3 | B4 → BUD-REP; B6 → BUD-ETK | C2 |
 | tmg-4-b03 | Izin | Kamu ingin memakai video ini untuk tugas kelas. Ketuk langkah pertama yang tepat. | B7 | B8 → BUD-IZN; B1 → BUD-IZN | C2 |
 | tmg-4-b04 | Menghargai tradisi | Ketuk komentar yang menghargai makanan khas ini. | B5 | B6 → BUD-ETK; B3 → BUD-ETK | C2 |
 
@@ -212,51 +212,51 @@ Pengecoh: angklung, ondel-ondel, perahu pinisi, sasando, semuanya **INF-BUD**.
 
 | Tindakan | Skor | Kode | Umpan balik |
 | --- | --- | --- | --- |
-| Isi semuanya supaya bisa ikut undian | 0 | DIG-PRI | Alamat rumah dan nama sekolah bisa dipakai orang yang tidak kita kenal untuk menemukanmu. Data seperti itu sebaiknya disimpan. |
-| Tutup situsnya, lalu tanyakan ke orang tua | 2 | — | Pilihan yang aman. Orang tua bisa membantu memeriksa apakah kuis itu sungguhan. |
-| Tutup saja situsnya | 1 | DIG-PSF | Kamu sudah aman. Akan lebih baik lagi kalau kamu cerita ke orang tua, supaya mereka tahu ada situs seperti itu. |
+| Isi nama, alamat, dan sekolah supaya bisa ikut undian | 0 | DIG-PRI | Alamat rumah dan nama sekolah bisa dipakai orang yang tidak kita kenal untuk menemukanmu. Data seperti itu sebaiknya disimpan. |
+| Tutup situsnya dan cerita ke orang tua | 2 | — | Pilihan yang aman. Orang tua bisa membantu memeriksa apakah kuis itu sungguhan. |
+| Tutup situsnya dan lanjut bermain yang lain | 1 | DIG-PSF | Kamu sudah aman. Akan lebih baik lagi kalau kamu cerita ke orang tua, supaya mereka tahu ada situs seperti itu. |
 
 | Alasan | Kode |
 | --- | --- |
-| Alamat dan sekolahku bisa dipakai orang yang tidak kukenal | R-RISK |
+| Alamat dan sekolahku bisa dipakai orang asing | R-RISK |
 | Pokoknya tidak boleh mengisi apa pun di internet | R-ATUR |
-| Teman-temanku sudah ikut semua | R-SOS |
+| Teman-temanku sudah ikut semua undian itu | R-SOS |
 
 **tmg-5-a02 · Kata sandi.** Kamu sedang bermain game di tablet. Seseorang yang tidak kamu kenal mengirim pesan: "Aku bisa bikin levelmu naik cepat. Kirim kata sandimu, ya!"
 
 | Tindakan | Skor | Kode | Umpan balik |
 | --- | --- | --- | --- |
-| Kirim kata sandinya supaya level naik | 0 | DIG-SAN | Orang yang tahu kata sandimu bisa masuk dan memakai akunmu. Kata sandi hanya untuk pemilik akun. |
-| Jangan kirim, tunjukkan pesannya ke orang tua, lalu laporkan akun itu | 2 | — | Tepat sekali. Kata sandimu aman, dan orang dewasa bisa membantu melapor. |
-| Jangan kirim, lalu tutup game-nya | 1 | DIG-PSF | Kata sandimu aman. Ceritakan juga ke orang tua supaya akun itu bisa dilaporkan. |
+| Kirim kata sandinya supaya levelmu cepat naik | 0 | DIG-SAN | Orang yang tahu kata sandimu bisa masuk dan memakai akunmu. Kata sandi hanya untuk pemilik akun. |
+| Tunjukkan pesan itu ke orang tua, lalu laporkan | 2 | — | Tepat sekali. Kata sandimu aman, dan orang dewasa bisa membantu melapor. |
+| Tidak membalas, lalu keluar dari game itu | 1 | DIG-PSF | Kata sandimu aman. Ceritakan juga ke orang tua supaya akun itu bisa dilaporkan. |
 
 | Alasan | Kode |
 | --- | --- |
-| Orang yang tahu kata sandiku bisa memakai akunku | R-RISK |
+| Orang yang tahu sandiku bisa memakai akunku | R-RISK |
 | Kata guru, kata sandi tidak boleh diberikan | R-ATUR |
-| Aku sedang malas bermain game | R-ACAK |
+| Aku sedang malas bermain game hari ini | R-ACAK |
 
 **tmg-5-a03 · Izin membagikan foto diri.** Kamu punya foto dirimu saat menari kuda lumping. Kamu ingin mengunggahnya ke akun media sosial milik ibumu. Ibumu sedang memasak di dapur.
 
 | Tindakan | Skor | Kode | Umpan balik |
 | --- | --- | --- | --- |
-| Unggah sendiri pakai HP ibu tanpa bilang | 0 | DIG-IZN | Akun itu milik ibumu. Sebelum mengunggah apa pun di akun orang lain, kita perlu izin pemiliknya. |
-| Tanya kakakmu boleh atau tidak | 1 | DIG-IZN | Bertanya itu bagus. Tapi yang punya akun adalah ibumu, jadi izinnya perlu dari ibu. |
-| Tunggu ibu selesai memasak, lalu tanyakan apakah boleh diunggah | 2 | — | Tepat. Ibu bisa memutuskan, dan bisa membantu memilih siapa saja yang boleh melihat foto itu. |
+| Unggah sendiri lewat HP ibu, nanti baru bilang | 0 | DIG-IZN | Akun itu milik ibumu. Sebelum mengunggah apa pun di akun orang lain, kita perlu izin pemiliknya. |
+| Tanya kakakmu dulu, boleh diunggah atau tidak | 1 | DIG-IZN | Bertanya itu bagus. Tapi yang punya akun adalah ibumu, jadi izinnya perlu dari ibu. |
+| Tunggu ibu selesai memasak, lalu tanya ibu | 2 | — | Tepat. Ibu bisa memutuskan, dan bisa membantu memilih siapa saja yang boleh melihat foto itu. |
 
 | Alasan | Kode |
 | --- | --- |
-| Akun itu milik ibu, jadi ibu yang berhak memutuskan | R-ETIK |
-| Kalau ketahuan, nanti aku dimarahi | R-ATUR |
-| Biar teman-temanku melihat aku menari | R-SOS |
+| Ibu pemilik akunnya, jadi ibu yang memutuskan | R-ETIK |
+| Kalau ketahuan tanpa izin, nanti aku dimarahi | R-ATUR |
+| Biar teman-temanku cepat melihat aku menari | R-SOS |
 
 **tmg-5-a04 · Kabar bohong.** Di grup keluarga muncul pesan: "Mulai besok semua sekolah di Temanggung libur seminggu! Sebarkan ke semua grup!" Pesan itu tidak menyebut siapa pembuatnya.
 
 | Tindakan | Skor | Kode | Umpan balik |
 | --- | --- | --- | --- |
-| Teruskan ke grup kelas | 0 | DIG-HOX | Kabar tanpa sumber belum tentu benar. Kalau diteruskan, banyak teman bisa ikut bingung. |
-| Tanyakan dulu ke wali kelas atau orang tua apakah kabar itu benar | 2 | — | Tepat. Guru dan orang tua bisa memeriksa ke sumber yang jelas, misalnya pengumuman sekolah. |
-| Diamkan saja | 1 | DIG-PSF | Kamu tidak ikut menyebarkan, bagus. Bertanya ke guru atau orang tua akan lebih membantu. |
+| Teruskan ke grup kelas supaya teman-teman tahu | 0 | DIG-HOX | Kabar tanpa sumber belum tentu benar. Kalau diteruskan, banyak teman bisa ikut bingung. |
+| Tanyakan dulu ke wali kelas apakah itu benar | 2 | — | Tepat. Guru dan orang tua bisa memeriksa ke sumber yang jelas, misalnya pengumuman sekolah. |
+| Tidak meneruskan dan tidak bertanya ke siapa pun | 1 | DIG-PSF | Kamu tidak ikut menyebarkan, bagus. Bertanya ke guru atau orang tua akan lebih membantu. |
 
 | Alasan | Kode |
 | --- | --- |
@@ -270,57 +270,57 @@ Pengecoh: angklung, ondel-ondel, perahu pinisi, sasando, semuanya **INF-BUD**.
 
 | Tindakan | Skor | Kode | Umpan balik |
 | --- | --- | --- | --- |
-| Isi semuanya supaya bisa ikut lomba | 0 | DIG-PRI | Nomor HP orang tua dan alamat rumah adalah data pribadi. Jangan diberikan ke penyelenggara yang tidak jelas. |
-| Berhenti mengisi, lalu tanyakan ke orang tua | 2 | — | Pilihan yang aman. Orang tua bisa mencari tahu siapa penyelenggaranya. |
-| Berhenti mengisi saja | 1 | DIG-PSF | Datamu aman. Akan lebih baik kalau orang tua juga tahu. |
+| Isi semua data supaya bisa langsung ikut lomba | 0 | DIG-PRI | Nomor HP orang tua dan alamat rumah adalah data pribadi. Jangan diberikan ke penyelenggara yang tidak jelas. |
+| Berhenti mengisi dan tanya orang tua dulu | 2 | — | Pilihan yang aman. Orang tua bisa mencari tahu siapa penyelenggaranya. |
+| Berhenti mengisi, lalu cari lomba yang lain | 1 | DIG-PSF | Datamu aman. Akan lebih baik kalau orang tua juga tahu. |
 
 | Alasan | Kode |
 | --- | --- |
-| Data pribadi bisa dipakai orang yang tidak kukenal | R-RISK |
-| Pokoknya tidak boleh mengisi formulir | R-ATUR |
-| Aku tidak suka menggambar | R-ACAK |
+| Data pribadi bisa dipakai orang asing | R-RISK |
+| Pokoknya tidak boleh mengisi formulir apa pun | R-ATUR |
+| Aku memang tidak terlalu suka menggambar | R-ACAK |
 
 **tmg-5-b02 · Kata sandi.** Di ruang obrolan game, akun yang tidak kamu kenal menulis: "Halo, aku bisa kasih koin gratis. Tulis kata sandimu di sini, ya!"
 
 | Tindakan | Skor | Kode | Umpan balik |
 | --- | --- | --- | --- |
-| Tulis kata sandinya supaya dapat koin | 0 | DIG-SAN | Kata sandi yang ditulis di ruang obrolan bisa dibaca orang lain. Akunmu bisa diambil alih. |
-| Jangan tulis, tunjukkan ke orang tua, lalu laporkan akun itu | 2 | — | Tepat. Akunmu aman dan akun itu bisa dilaporkan. |
-| Jangan tulis, lalu keluar dari ruang obrolan | 1 | DIG-PSF | Akunmu aman. Ceritakan juga ke orang tua, ya. |
+| Tulis kata sandinya supaya dapat koin gratis | 0 | DIG-SAN | Kata sandi yang ditulis di ruang obrolan bisa dibaca orang lain. Akunmu bisa diambil alih. |
+| Tunjukkan ke orang tua, lalu laporkan akunnya | 2 | — | Tepat. Akunmu aman dan akun itu bisa dilaporkan. |
+| Tidak menjawab, lalu keluar dari ruang obrolan | 1 | DIG-PSF | Akunmu aman. Ceritakan juga ke orang tua, ya. |
 
 | Alasan | Kode |
 | --- | --- |
-| Orang yang tahu kata sandiku bisa mengambil akunku | R-RISK |
-| Kata guru, kata sandi itu rahasia | R-ATUR |
+| Orang yang tahu sandiku bisa mengambil akunku | R-RISK |
+| Kata guru, kata sandi itu harus dirahasiakan | R-ATUR |
 | Teman-temanku juga tidak menulis kata sandi | R-SOS |
 
 **tmg-5-b03 · Izin membagikan foto diri.** Kamu punya video dirimu sedang belajar menari. Kamu ingin mengunggahnya ke akun media sosial milik ayahmu. Ayahmu sedang di kebun kopi.
 
 | Tindakan | Skor | Kode | Umpan balik |
 | --- | --- | --- | --- |
-| Unggah sendiri pakai HP ayah tanpa bilang | 0 | DIG-IZN | Akun itu milik ayahmu. Perlu izin pemiliknya dulu sebelum mengunggah. |
-| Tanya temanmu boleh atau tidak | 1 | DIG-IZN | Bertanya itu bagus. Tapi yang berhak memberi izin adalah pemilik akun, yaitu ayahmu. |
-| Tunggu ayah pulang, lalu tanyakan apakah boleh diunggah | 2 | — | Tepat. Ayah bisa memutuskan dan membantu mengatur siapa yang boleh menonton. |
+| Unggah sendiri lewat HP ayah, nanti baru bilang | 0 | DIG-IZN | Akun itu milik ayahmu. Perlu izin pemiliknya dulu sebelum mengunggah. |
+| Tanya temanmu dulu, boleh diunggah atau tidak | 1 | DIG-IZN | Bertanya itu bagus. Tapi yang berhak memberi izin adalah pemilik akun, yaitu ayahmu. |
+| Tunggu ayah pulang, lalu tanya ayah | 2 | — | Tepat. Ayah bisa memutuskan dan membantu mengatur siapa yang boleh menonton. |
 
 | Alasan | Kode |
 | --- | --- |
-| Akun itu milik ayah, jadi ayah yang berhak memutuskan | R-ETIK |
-| Kalau ketahuan, nanti aku dimarahi | R-ATUR |
-| Biar banyak orang menyukai videoku | R-SOS |
+| Ayah pemilik akunnya, jadi ayah yang memutuskan | R-ETIK |
+| Kalau ketahuan tanpa izin, nanti aku dimarahi | R-ATUR |
+| Biar banyak orang menyukai video menariku | R-SOS |
 
 **tmg-5-b04 · Kabar bohong.** Di grup kelas ada pesan: "Minum kopi bikin anak-anak jadi pintar! Sebarkan ke semua teman!" Pesan itu tidak menyebut siapa pembuatnya.
 
 | Tindakan | Skor | Kode | Umpan balik |
 | --- | --- | --- | --- |
-| Teruskan ke grup lain | 0 | DIG-HOX | Kabar tanpa sumber belum tentu benar. Kopi mengandung kafein dan bukan minuman untuk anak-anak. |
-| Tanyakan dulu ke guru atau orang tua apakah kabar itu benar | 2 | — | Tepat. Guru dan orang tua bisa membantu mencari sumber yang dapat dipercaya. |
-| Diamkan saja | 1 | DIG-PSF | Kamu tidak ikut menyebarkan, bagus. Bertanya akan lebih membantu teman-temanmu. |
+| Teruskan ke grup lain supaya banyak yang tahu | 0 | DIG-HOX | Kabar tanpa sumber belum tentu benar. Kopi mengandung kafein dan bukan minuman untuk anak-anak. |
+| Tanyakan dulu ke guru apakah itu benar | 2 | — | Tepat. Guru dan orang tua bisa membantu mencari sumber yang dapat dipercaya. |
+| Tidak meneruskan dan tidak bertanya ke siapa pun | 1 | DIG-PSF | Kamu tidak ikut menyebarkan, bagus. Bertanya akan lebih membantu teman-temanmu. |
 
 | Alasan | Kode |
 | --- | --- |
 | Kabar tanpa sumber belum tentu benar | R-RISK |
-| Ibu melarangku membuka grup | R-ATUR |
-| Aku tidak suka kopi | R-ACAK |
+| Ibu melarangku membuka pesan di grup kelas | R-ATUR |
+| Aku memang tidak suka minum kopi | R-ACAK |
 
 Kopi untuk orang dewasa, bukan anak-anak: dari bacaan lama `tmg-3-c` (rujukan Dinas Pertanian Kab. Temanggung).
 
@@ -353,7 +353,7 @@ Fakta relief sudah dibetulkan sesuai 05: 2.672 panel, 1.460 bercerita, 1.212 hia
 
 ### Variasi b: Tari Topeng Ireng
 
-> Topeng Ireng adalah tari rakyat dari Kabupaten Magelang. Tarian ini mulai tumbuh sekitar tahun 1950-an di Desa Tuksongo, Kecamatan Borobudur. Penarinya memakai kuluk, yaitu hiasan kepala dari bulu yang berwarna-warni. Saat penari melompat, bulu-bulu pada **(1)** itu ikut bergoyang. Di pergelangan kaki penari terpasang lonceng kecil. Setiap kali kaki dihentakkan, lonceng itu **(2)**. Satu kelompok bisa berisi puluhan penari yang bergerak serempak. Kalau ada satu penari yang bergerak lebih cepat daripada teman-temannya, tarian mereka menjadi tidak **(3)**. Tarian ini lahir di desa lereng gunung yang warganya banyak bertani. Gerakannya yang tegas menggambarkan semangat para **(4)** itu. Dalam pertunjukan di lapangan desa, panitia memasang tali pembatas karena penari melompat ke segala arah. Penonton yang duduk di belakang tali tidak akan **(5)** penari.
+> Topeng Ireng adalah tari rakyat dari Kabupaten Magelang. Tarian ini mulai tumbuh sekitar tahun 1950-an di Desa Tuksongo, Kecamatan Borobudur. Penarinya memakai kuluk, yaitu hiasan kepala dari bulu yang berwarna-warni. Saat penari melompat, bulu-bulu pada **(1)** itu ikut bergoyang. Di pergelangan kaki penari terpasang lonceng kecil. Setiap kali kaki dihentakkan, lonceng itu **(2)**. Satu kelompok bisa berisi puluhan penari yang bergerak serempak. Kalau ada satu penari yang bergerak lebih cepat daripada teman-temannya, tarian mereka menjadi tidak **(3)**. Tarian ini lahir di desa lereng gunung yang warganya banyak bertani. Gerakannya yang tegas menggambarkan semangat para **(4)** itu. Dalam pertunjukan di lapangan desa, panitia memasang tali pembatas karena penari melompat ke segala arah. Penonton yang duduk di belakang tali tetap **(5)** dari lompatan penari.
 
 Panjang ± 120 kata · Pengecoh bank kata: *diam*, *nelayan*
 
@@ -363,7 +363,7 @@ Panjang ± 120 kata · Pengecoh bank kata: *diam*, *nelayan*
 | mgl-2-b02 | (2) | berbunyi | D1a | L2 | C2 | *diam* → INF-HUB | Sebab–akibat |
 | mgl-2-b03 | (3) | kompak | D1a | L2 | C2 | — | Menyimpulkan dari "bergerak serempak" |
 | mgl-2-b04 | (4) | petani | D1a | L2 | C2 | *nelayan* → INF-LIT | Dari "warganya banyak bertani" |
-| mgl-2-b05 | (5) | tertabrak | D1a | L2 | C3 | — | Sebab–akibat dari tali pembatas; mengganti mgl-2-b05 lama ("mengganggu") yang terjawab dari norma |
+| mgl-2-b05 | (5) | aman | D1a | L2 | C3 | — | Sebab–akibat dari tali pembatas; *diam* dan *kompak* tetap bersaing secara bentuk kata. Mengganti mgl-2-b05 lama ("mengganggu") yang terjawab dari norma |
 
 Pertunjukan di lapangan desa adalah contoh situasi, bukan klaim tentang setiap pertunjukan Topeng Ireng.
 
@@ -382,7 +382,7 @@ Pertunjukan di lapangan desa adalah contoh situasi, bukan klaim tentang setiap p
 >
 > Mari jaga Borobudur bersama. Ikuti rute dan aturan dari pengelola. Jangan memanjat stupa dan jangan menyentuh relief, sebab minyak dan keringat tangan dapat merusak batu. Jangan mencoret dinding dan jangan membuang sampah sembarangan.
 >
-> 💬 **Dimas:** Menurut saya, Borobudur candi paling indah di dunia! 😍
+> 💬 **Dimas:** Borobudur candi paling indah di dunia! 😍
 > 💬 **Bu Rina:** Borobudur ditetapkan sebagai Warisan Dunia pada tahun 1991.
 > 💬 **Nanda:** Katanya boleh kok pegang relief, asal pelan-pelan.
 
@@ -403,7 +403,7 @@ Panjang ± 125 kata
 
 > **@infowisata.kotamagelang** ✓ akun resmi · 11 April
 >
-> Di tengah Kota Magelang ada bukit hijau bernama Gunung Tidar. Tingginya sekitar 503 meter di atas permukaan laut. Banyak orang mendaki tangganya untuk berolahraga. Pendaki diminta tetap berjalan di jalur tangga. Dalam cerita rakyat, Gunung Tidar disebut paku tanah Jawa. Cerita seperti ini disebut legenda, bukan penjelasan ilmiah.
+> Di tengah Kota Magelang ada bukit hijau bernama Gunung Tidar. Tingginya sekitar 503 meter di atas permukaan laut. Banyak orang mendaki tangganya untuk berolahraga. Pendaki diminta tetap berjalan di jalur tangga. Dalam cerita rakyat, Gunung Tidar disebut paku tanah Jawa. Konon, Pulau Jawa dulu bergoyang-goyang, lalu dipaku di Gunung Tidar agar tenang. Cerita seperti ini disebut legenda, bukan penjelasan ilmiah.
 >
 > Di lembah Gunung Tidar berdiri Akademi Militer sejak tahun 1957. Kota Magelang berulang tahun setiap tanggal 11 April. Tanggal itu diambil dari Prasasti Mantyasih yang dibuat pada tahun 907 Masehi.
 >
@@ -417,7 +417,7 @@ Panjang ± 125 kata
 | --- | --- | --- | --- | --- | --- | --- |
 | mgl-3-b01 | Paragraf pertama unggahan terutama menceritakan Gunung Tidar. | benar | D1a | L2 | C2 | INF-REL |
 | mgl-3-b02 | Prasasti Mantyasih dibuat sesudah Akademi Militer berdiri. | salah | D1a | L2 | C4 | INF-HUB |
-| mgl-3-b03 | Menurut unggahan, cerita Gunung Tidar sebagai paku tanah Jawa adalah penjelasan ilmiah. | salah | D1a | L2 | C2 | INF-LIT |
+| mgl-3-b03 | Menurut unggahan, Pulau Jawa benar-benar pernah bergoyang lalu dipaku di Gunung Tidar. | salah | D1a | L2 | C2 | INF-LIT |
 | mgl-3-b04 | Komentar Kak Dewi berisi fakta. | salah | D1b | L3 | C4 | INF-FOP |
 | mgl-3-b05 | Komentar Pak Anton berisi fakta. | benar | D1b | L3 | C4 | INF-FOP |
 | mgl-3-b06 | Tentang jalur mendaki Gunung Tidar, unggahan akun resmi lebih dapat dipercaya daripada komentar Raffi. | benar | D1b | L3 | C4 | INF-SUM |
@@ -488,7 +488,7 @@ Pengecoh: kuda kepang bambu, manisan carica, dadak merak Reog, angklung, bakpia,
 | mgl-4-a01 | Atribusi | Ketuk tulisan yang menunjukkan siapa pembuat video ini. | C2 | C1 → BUD-ATR; C3 → BUD-ATR; C4 → BUD-ATR | C3 |
 | mgl-4-a02 | Representasi | Bandingkan keterangan video dengan kartu informasi. Ketuk komentar yang membetulkan keterangan itu dengan benar dan sopan. | C6 | C8 → BUD-REP; C3 → BUD-REP; C7 → BUD-ETK | C4 |
 | mgl-4-a03 | Izin | Kamu ingin memakai video ini untuk tugas kelompok. Ketuk langkah pertama yang tepat. | C10 | C9 → BUD-IZN; C1 → BUD-IZN; C5 → BUD-IZN | C3 |
-| mgl-4-a04 | Menghargai tradisi | Ketuk komentar yang kurang menghargai para penari, walaupun terdengar seperti bercanda. | C7 | C8 → BUD-ETK; C6 → BUD-ETK; C3 → BUD-REP | C4 |
+| mgl-4-a04 | Menghargai tradisi | Ketuk komentar yang kurang menghargai para penari. | C7 | C8 → BUD-ETK; C6 → BUD-ETK; C3 → BUD-REP | C4 |
 
 #### Variasi b: Unggahan foto gerabah Klipoh
 
@@ -510,7 +510,7 @@ Pengecoh: kuda kepang bambu, manisan carica, dadak merak Reog, angklung, bakpia,
 | mgl-4-b01 | Atribusi | Ketuk tulisan yang menunjukkan siapa pembuat foto ini. | D2 | D1 → BUD-ATR; D3 → BUD-ATR; D4 → BUD-ATR | C3 |
 | mgl-4-b02 | Representasi | Bandingkan keterangan foto dengan kartu informasi. Ketuk komentar yang membetulkan keterangan itu dengan benar dan sopan. | D6 | D8 → BUD-REP; D3 → BUD-REP; D7 → BUD-ETK | C4 |
 | mgl-4-b03 | Izin | Kamu ingin memakai foto ini untuk tugas kelompok. Ketuk langkah pertama yang tepat. | D10 | D9 → BUD-IZN; D1 → BUD-IZN; D5 → BUD-IZN | C3 |
-| mgl-4-b04 | Menghargai tradisi | Ketuk komentar yang kurang menghargai kerajinan ini, walaupun terdengar seperti bercanda. | D7 | D8 → BUD-ETK; D6 → BUD-ETK; D3 → BUD-REP | C4 |
+| mgl-4-b04 | Menghargai tradisi | Ketuk komentar yang kurang menghargai kerajinan ini. | D7 | D8 → BUD-ETK; D6 → BUD-ETK; D3 → BUD-REP | C4 |
 
 **Rujukan:** Topeng Ireng dari Tuksongo: GNFI (2024), dicek di 05. Dusun Klipoh dekat Borobudur dan hasil gerabahnya: Kompas Travel (2022) *Desa Klipoh*; Badan Otorita Borobudur. Akun, sanggar, dan rumah gerabah fiktif.
 
@@ -524,17 +524,17 @@ Pengecoh: kuda kepang bambu, manisan carica, dadak merak Reog, angklung, bakpia,
 
 | Tindakan | Skor | Kode | Umpan balik |
 | --- | --- | --- | --- |
-| Isi semuanya supaya hasilnya keluar | 0 | DIG-PRI | Tanggal lahir dan nama ibu sering dipakai untuk membuka akun. Data itu bisa disalahgunakan. |
+| Isi semuanya supaya hasil kuisnya cepat keluar | 0 | DIG-PRI | Tanggal lahir dan nama ibu sering dipakai untuk membuka akun. Data itu bisa disalahgunakan. |
 | Isi tanggal lahir saja, yang lain dikosongkan | 0 | DIG-PRI | Tanggal lahir juga data pribadi. Kuis untuk hiburan tidak perlu data seperti itu. |
-| Berhenti, lalu tanyakan ke orang tua apakah aplikasi itu aman | 2 | — | Tepat. Kuis yang meminta data pribadi patut dicurigai, dan orang tua bisa membantu memeriksanya. |
+| Berhenti, lalu tanya orang tua apakah aman | 2 | — | Tepat. Kuis yang meminta data pribadi patut dicurigai, dan orang tua bisa membantu memeriksanya. |
 | Berhenti main tanpa cerita ke siapa pun | 1 | DIG-PSF | Datamu aman. Cerita ke orang tua akan membantu kalau aplikasi itu nanti muncul lagi. |
 
 | Alasan | Kode |
 | --- | --- |
-| Data seperti nama ibu dan tanggal lahir bisa dipakai orang lain untuk membuka akun | R-RISK |
-| Ibu melarangku bermain kuis | R-ATUR |
+| Data itu bisa dipakai orang untuk membobol akun | R-RISK |
+| Ibu melarangku bermain kuis di aplikasi apa pun | R-ATUR |
 | Teman-temanku sudah membagikan hasil kuisnya | R-SOS |
-| Aku tidak terlalu suka wayang | R-ACAK |
+| Aku memang tidak terlalu suka cerita wayang | R-ACAK |
 
 **mgl-5-a02 · Kata sandi.** Sahabatmu, Laras, berkata, "Pinjam akun game-mu, dong. Kasih tahu kata sandinya, aku cuma mau lihat-lihat."
 
@@ -542,47 +542,47 @@ Pengecoh: kuda kepang bambu, manisan carica, dadak merak Reog, angklung, bakpia,
 | --- | --- | --- | --- |
 | Beri tahu kata sandinya karena Laras sahabatmu | 0 | DIG-SAN | Walaupun sahabat, kata sandi tetap untuk pemilik akun. Kata sandi yang sudah dibagikan bisa tersebar tanpa sengaja. |
 | Beri tahu sekarang, nanti kata sandinya diganti | 0 | DIG-SAN | Selama belum diganti, akunmu bisa dipakai orang lain. Lebih aman kalau tidak dibagikan sama sekali. |
-| Tolak dengan ramah, lalu ajak Laras bermain bersama di perangkatmu | 2 | — | Tepat. Akunmu aman dan persahabatan kalian tetap terjaga. |
-| Tolak, lalu tidak mau berteman lagi dengan Laras | 1 | DIG-ETK | Menolak memberi kata sandi itu benar. Tapi Laras tetap sahabatmu; kamu bisa menolak dengan cara yang ramah. |
+| Tolak dengan ramah, lalu ajak main bersama | 2 | — | Tepat. Akunmu aman dan persahabatan kalian tetap terjaga. |
+| Tolak tanpa menjelaskan apa pun ke Laras | 1 | DIG-PSF | Menolak memberi kata sandi itu benar. Menjelaskan alasannya dengan ramah membuat Laras mengerti dan tidak salah paham. |
 
 | Alasan | Kode |
 | --- | --- |
-| Kata sandi hanya untuk pemilik akun; siapa pun bisa tidak sengaja menyebarkannya | R-RISK |
-| Kata guru, kata sandi itu rahasia | R-ATUR |
-| Nanti Laras marah kalau tidak kuberi | R-SOS |
-| Level akunku masih rendah | R-ACAK |
+| Kata sandi bisa tersebar walau tidak sengaja | R-RISK |
+| Kata guru, kata sandi itu harus dirahasiakan | R-ATUR |
+| Nanti Laras marah kalau tidak kuberi tahu | R-SOS |
+| Level akunku memang masih rendah sekali | R-ACAK |
 
 **mgl-5-a03 · Izin membagikan foto teman.** Saat lomba tari di sekolah, kamu memotret Dimas yang terpeleset dan jatuh terduduk di panggung. Fotonya lucu. Kamu ingin mengirimnya ke grup kelas.
 
 | Tindakan | Skor | Kode | Umpan balik |
 | --- | --- | --- | --- |
-| Kirim ke grup kelas | 0 | DIG-IZN | Foto itu tentang Dimas. Membagikannya tanpa izin bisa membuatnya malu. |
+| Kirim ke grup kelas supaya semua ikut tertawa | 0 | DIG-IZN | Foto itu tentang Dimas. Membagikannya tanpa izin bisa membuatnya malu. |
 | Tunjukkan ke teman-teman sambil tertawa | 0 | DIG-ETK | Menertawakan teman yang jatuh bisa menyakiti hatinya, walaupun fotonya tidak dikirim. |
-| Tanya Dimas dulu; kalau ia tidak mau, hapus fotonya | 2 | — | Tepat. Foto orang lain hanya dibagikan kalau orangnya setuju. |
-| Simpan saja fotonya di HP | 1 | DIG-PSF | Kamu tidak membagikannya, bagus. Lebih baik lagi kalau kamu bertanya ke Dimas, karena itu fotonya. |
+| Tanya Dimas dulu, boleh dibagikan atau tidak | 2 | — | Tepat. Foto orang lain hanya dibagikan kalau orangnya setuju. |
+| Simpan fotonya di HP tanpa bertanya ke Dimas | 1 | DIG-PSF | Kamu tidak membagikannya, bagus. Lebih baik lagi kalau kamu bertanya ke Dimas, karena itu fotonya. |
 
 | Alasan | Kode |
 | --- | --- |
-| Dimas mungkin malu; fotonya boleh dibagikan hanya kalau ia setuju | R-ETIK |
+| Dimas mungkin malu kalau fotonya disebar | R-ETIK |
 | Di sekolah ada aturan tidak boleh memotret | R-ATUR |
-| Teman-teman pasti suka foto lucu | R-SOS |
-| Memori HP-ku hampir penuh | R-ACAK |
+| Teman-teman pasti suka melihat foto lucu | R-SOS |
+| Memori HP-ku sebentar lagi hampir penuh | R-ACAK |
 
 **mgl-5-a04 · Pesan berantai.** Di grup kelas, seorang teman meneruskan pesan: "Info dari teman ibuku: tiket masuk Candi Borobudur gratis untuk anak SD selama bulan ini! Sebarkan!" Pesan itu tidak menyebut lembaga atau sumber resmi.
 
 | Tindakan | Skor | Kode | Umpan balik |
 | --- | --- | --- | --- |
-| Teruskan ke grup keluarga | 0 | DIG-HOX | Kabar ini belum jelas sumbernya. Kalau ternyata tidak benar, banyak keluarga bisa kecewa. |
+| Teruskan ke grup keluarga supaya semua kebagian | 0 | DIG-HOX | Kabar ini belum jelas sumbernya. Kalau ternyata tidak benar, banyak keluarga bisa kecewa. |
 | Ajak teman-teman langsung berangkat besok | 0 | DIG-HOX | Sebaiknya kabar dicek dulu sebelum dipakai untuk membuat rencana. |
-| Jangan teruskan; bersama orang tua, cek dulu di akun atau situs resmi pengelola candi | 2 | — | Tepat. Sumber resmi bisa memastikan benar atau tidaknya kabar itu. |
-| Tidak meneruskan, tapi diam saja | 1 | DIG-PSF | Kamu tidak ikut menyebarkan, bagus. Mengecek ke sumber resmi akan membantu teman-temanmu juga. |
+| Cek dulu di situs resmi candi bersama orang tua | 2 | — | Tepat. Sumber resmi bisa memastikan benar atau tidaknya kabar itu. |
+| Tidak meneruskan dan tidak menanggapi apa pun | 1 | DIG-PSF | Kamu tidak ikut menyebarkan, bagus. Mengecek ke sumber resmi akan membantu teman-temanmu juga. |
 
 | Alasan | Kode |
 | --- | --- |
-| Kabar tanpa sumber yang jelas belum tentu benar | R-RISK |
-| Ayah melarangku membuka grup kelas | R-ATUR |
+| Kabar tanpa sumber jelas belum tentu benar | R-RISK |
+| Ayah melarangku membuka pesan di grup kelas | R-ATUR |
 | Biar aku dianggap tahu banyak informasi | R-SOS |
-| Aku sudah pernah ke Borobudur | R-ACAK |
+| Aku sudah pernah berkunjung ke Borobudur | R-ACAK |
 
 ### Variasi b
 
@@ -590,16 +590,16 @@ Pengecoh: kuda kepang bambu, manisan carica, dadak merak Reog, angklung, bakpia,
 
 | Tindakan | Skor | Kode | Umpan balik |
 | --- | --- | --- | --- |
-| Sebut nama lengkap dan alamat rumah | 0 | DIG-PRI | Video di akun umum bisa ditonton siapa saja. Alamat rumah sebaiknya tidak disebutkan. |
+| Sebut nama lengkap dan alamat rumah sesuai aturan | 0 | DIG-PRI | Video di akun umum bisa ditonton siapa saja. Alamat rumah sebaiknya tidak disebutkan. |
 | Sebut nama lengkap dan nama sekolah saja | 0 | DIG-PRI | Nama lengkap dan sekolah juga bisa dipakai orang asing untuk menemukanmu. |
-| Tanyakan ke orang tua; kalau ikut, cukup sebut nama panggilan tanpa alamat | 2 | — | Tepat. Kamu tetap bisa ikut lomba tanpa membuka data pribadi. |
+| Tanya orang tua; sebut nama panggilan saja | 2 | — | Tepat. Kamu tetap bisa ikut lomba tanpa membuka data pribadi. |
 | Tidak jadi ikut tanpa cerita ke siapa pun | 1 | DIG-PSF | Datamu aman. Orang tua mungkin bisa membantumu ikut lomba dengan cara yang aman. |
 
 | Alasan | Kode |
 | --- | --- |
-| Alamat rumah di video umum bisa diketahui orang yang tidak kukenal | R-RISK |
+| Orang asing bisa tahu alamat rumahku | R-RISK |
 | Pokoknya tidak boleh ikut lomba di internet | R-ATUR |
-| Peserta lain juga menyebut alamat | R-SOS |
+| Peserta lain juga menyebut alamat rumahnya | R-SOS |
 | Aku lebih suka getuk daripada jajanan lain | R-ACAK |
 
 **mgl-5-b02 · Kata sandi.** Teman sekelompokmu, Arif, berkata, "Kasih tahu kata sandi akun belajarmu, ya. Biar aku yang mengerjakan tugas kelompok dari rumahku."
@@ -608,47 +608,47 @@ Pengecoh: kuda kepang bambu, manisan carica, dadak merak Reog, angklung, bakpia,
 | --- | --- | --- | --- |
 | Beri tahu kata sandinya supaya tugas cepat selesai | 0 | DIG-SAN | Akun belajarmu berisi data dan nilaimu. Kata sandi tetap untuk pemilik akun. |
 | Beri tahu sekarang, nanti kata sandinya diganti | 0 | DIG-SAN | Selama belum diganti, akunmu bisa dipakai orang lain. Lebih aman tidak dibagikan. |
-| Tolak dengan ramah, lalu ajak Arif membagi tugas atau mengerjakannya bersama | 2 | — | Tepat. Akunmu aman dan tugas kelompok tetap jalan. |
-| Tolak, lalu keluarkan Arif dari kelompok | 1 | DIG-ETK | Menolak memberi kata sandi itu benar. Tapi Arif tetap anggota kelompok; tolak dengan cara yang ramah. |
+| Tolak dengan ramah, lalu ajak kerja bersama | 2 | — | Tepat. Akunmu aman dan tugas kelompok tetap jalan. |
+| Tolak tanpa menjelaskan apa pun ke Arif | 1 | DIG-PSF | Menolak memberi kata sandi itu benar. Menjelaskan alasannya dengan ramah membuat Arif mengerti dan tugas tetap jalan. |
 
 | Alasan | Kode |
 | --- | --- |
-| Kata sandi hanya untuk pemilik akun; siapa pun bisa tidak sengaja menyebarkannya | R-RISK |
-| Kata guru, kata sandi itu rahasia | R-ATUR |
+| Kata sandi bisa tersebar walau tidak sengaja | R-RISK |
+| Kata guru, kata sandi itu harus dirahasiakan | R-ATUR |
 | Nanti Arif tidak mau berteman lagi denganku | R-SOS |
-| Tugas kelompoknya sulit | R-ACAK |
+| Tugas kelompok kali ini memang sulit | R-ACAK |
 
 **mgl-5-b03 · Izin membagikan foto teman.** Kamu memotret teman-teman saat latihan Topeng Ireng. Di foto itu, Sekar belum memakai kuluk dan rambutnya berantakan. Kamu ingin mengunggah foto itu ke akun kelas.
 
 | Tindakan | Skor | Kode | Umpan balik |
 | --- | --- | --- | --- |
-| Unggah ke akun kelas | 0 | DIG-IZN | Sekar ada di foto itu. Sebelum diunggah, ia perlu ditanya dulu. |
+| Unggah ke akun kelas karena fotonya ramai | 0 | DIG-IZN | Sekar ada di foto itu. Sebelum diunggah, ia perlu ditanya dulu. |
 | Kirim ke beberapa teman sambil mengejek rambut Sekar | 0 | DIG-ETK | Mengejek penampilan teman bisa menyakiti hatinya. |
-| Tunjukkan dulu ke Sekar; kalau ia tidak mau, pilih foto lain | 2 | — | Tepat. Setiap orang di foto berhak setuju atau tidak. |
-| Simpan saja fotonya di HP | 1 | DIG-PSF | Kamu tidak membagikannya, bagus. Bertanya ke Sekar akan lebih baik. |
+| Tanya Sekar dulu, atau pilih foto yang lain | 2 | — | Tepat. Setiap orang di foto berhak setuju atau tidak. |
+| Simpan fotonya di HP tanpa bertanya ke Sekar | 1 | DIG-PSF | Kamu tidak membagikannya, bagus. Bertanya ke Sekar akan lebih baik. |
 
 | Alasan | Kode |
 | --- | --- |
-| Sekar mungkin malu; foto itu boleh dibagikan hanya kalau ia setuju | R-ETIK |
-| Di sekolah ada aturan tidak boleh mengunggah foto | R-ATUR |
-| Akun kelas kita jadi ramai kalau ada foto lucu | R-SOS |
-| Kameraku baru | R-ACAK |
+| Sekar mungkin malu kalau fotonya diunggah | R-ETIK |
+| Di sekolah ada aturan tidak boleh mengunggah | R-ATUR |
+| Akun kelas jadi ramai kalau ada foto lucu | R-SOS |
+| Kamera HP-ku baru dan hasilnya bagus | R-ACAK |
 
 **mgl-5-b04 · Pesan berantai.** Di grup kelas ada pesan: "Info dari teman pamanku: getuk yang dijual di pasar minggu ini bikin sakit perut! Jangan beli, sebarkan!" Pesan itu tidak menyebut sumber atau bukti.
 
 | Tindakan | Skor | Kode | Umpan balik |
 | --- | --- | --- | --- |
-| Teruskan ke grup keluarga | 0 | DIG-HOX | Kabar tanpa bukti bisa merugikan para penjual getuk yang tidak bersalah. |
+| Teruskan ke grup keluarga supaya semua waspada | 0 | DIG-HOX | Kabar tanpa bukti bisa merugikan para penjual getuk yang tidak bersalah. |
 | Unggah tulisan "Jangan beli getuk!" di media sosial | 0 | DIG-HOX | Sebelum menyebarkan peringatan, kabarnya perlu dicek dulu. |
-| Jangan teruskan; tanyakan ke orang tua dan cek di berita atau lembaga yang dapat dipercaya | 2 | — | Tepat. Mengecek ke sumber yang jelas mencegah kabar bohong menyebar. |
-| Tidak meneruskan, tapi diam saja | 1 | DIG-PSF | Kamu tidak ikut menyebarkan, bagus. Mengecek dan memberi tahu teman akan lebih membantu. |
+| Cek dulu di berita tepercaya bersama orang tua | 2 | — | Tepat. Mengecek ke sumber yang jelas mencegah kabar bohong menyebar. |
+| Tidak meneruskan dan tidak menanggapi apa pun | 1 | DIG-PSF | Kamu tidak ikut menyebarkan, bagus. Mengecek dan memberi tahu teman akan lebih membantu. |
 
 | Alasan | Kode |
 | --- | --- |
-| Kabar tanpa bukti belum tentu benar dan bisa merugikan orang lain | R-RISK |
-| Ibu melarangku membuka grup | R-ATUR |
-| Biar aku yang pertama memberi tahu teman-teman | R-SOS |
-| Aku jarang ke pasar | R-ACAK |
+| Kabar tanpa bukti bisa merugikan penjual | R-RISK |
+| Ibu melarangku membuka pesan di grup kelas | R-ATUR |
+| Biar aku yang pertama memberi tahu teman | R-SOS |
+| Aku jarang sekali pergi ke pasar | R-ACAK |
 
 ---
 
@@ -687,10 +687,10 @@ Rumpang "hangat" di bank lama tidak dipakai (7 → 6 rumpang); kalimatnya tetap 
 ### Variasi b: Embun Upas
 
 > 🌐 `jelajah-dieng.example` › Cerita Pemandu
-> **Embun Upas, Es di Pagi Hari**
+> **Embun Upas di Dieng**
 > Ditulis oleh Kak Laras, pemandu wisata · 20 Juli
 >
-> Pada musim kemarau, langit Dataran Tinggi Dieng sering sangat cerah. Pada malam hari, panas bumi cepat lepas ke angkasa **(1)** tidak ada awan yang menahannya. Udara dingin lalu turun dan terkumpul di cekungan dataran tinggi, **(2)** suhu di dekat tanah bisa turun di bawah 0 °C. Saat suhu serendah itu, embun pagi **(3)** menjadi es tipis. Warga Dieng menyebut es tipis itu embun upas.
+> Pada musim kemarau, langit Dataran Tinggi Dieng sering sangat cerah. Pada malam hari, panas bumi cepat lepas ke angkasa **(1)** tidak ada awan yang menahannya. Udara dingin **(2)** turun dan terkumpul di cekungan dataran tinggi. Suhu di dekat tanah bisa turun di bawah 0 °C, **(3)** embun pagi membeku menjadi es tipis. Warga Dieng menyebut es tipis itu embun upas.
 >
 > Bagi wisatawan, embun upas tampak indah, **(4)** bagi petani es itu bisa merusak daun kentang. Wisatawan yang ingin melihat embun upas harus datang pada **(5)** hari, karena es itu cepat mencair saat matahari mulai terik. Dari semua keterangan itu, embun upas paling mudah terbentuk setelah malam yang **(6)**.
 
@@ -699,15 +699,15 @@ Panjang ± 120 kata · Pengecoh bank kata: *siang*, *berawan*
 | Kode | Rumpang | Kunci | Sub | AKM | Bloom | Pengecoh sasaran | Catatan |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | wnb-2-b01 | (1) | karena | D1a | L2 | C3 | — | Sebab |
-| wnb-2-b02 | (2) | sehingga | D1a | L2 | C3 | — | Akibat |
-| wnb-2-b03 | (3) | membeku | D1a | L2 | C3 | — | Dari "di bawah 0 °C" dan "es tipis" |
+| wnb-2-b02 | (2) | lalu | D1a | L2 | C3 | — | Urutan |
+| wnb-2-b03 | (3) | sehingga | D1a | L2 | C3 | — | Akibat. Mengganti rumpang "membeku", satu-satunya kata kerja di bank kata, yang bisa diisi tanpa membaca |
 | wnb-2-b04 | (4) | tetapi | D1a | L2 | C3 | — | Pertentangan |
 | wnb-2-b05 | (5) | pagi | D1a | L2 | C4 | *siang* → INF-LIT | Dari "cepat mencair saat matahari mulai terik" |
 | wnb-2-b06 | (6) | cerah | D1a | L2 | C4 | *berawan* → INF-HUB | Simpulan sebab–akibat dari paragraf pertama |
 
 Rumpang "layu" di bank lama tidak dipakai, karena sebagian bergantung pada pengetahuan tanaman (05).
 
-Kedua variasi setara: tiga kata penghubung (sebab, akibat, pertentangan) dan tiga simpulan dari teks.
+Kedua variasi setara dalam level dan sub-aspek. Variasi a punya tiga kata penghubung dan tiga simpulan; variasi b punya empat kata penghubung (sebab, urutan, akibat, pertentangan) dan dua simpulan.
 
 **Rujukan:** variasi a: Wikipedia *Dataran Tinggi Dieng*; Tempo dan Kompas Travel (Desa Sembungan). Variasi b: BMKG melalui Kompas.com (Juli 2026) dan detikEdu (*embun upas*). Situs dan penulis fiktif.
 
@@ -732,11 +732,11 @@ Panjang ± 95 kata
 | Kode | Pernyataan | Kunci | Sub | AKM | Bloom | Kode salah |
 | --- | --- | --- | --- | --- | --- | --- |
 | wnb-3-a01 | Kedua kabar sama-sama membicarakan air Telaga Warna, tetapi isinya bertentangan. | benar | D1a | L2 | C4 | INF-LIT |
-| wnb-3-a02 | Kedua kabar sama-sama menyarankan pengunjung meminum air telaga. | salah | D1a | L2 | C4 | INF-KAT |
-| wnb-3-a03 | Unggahan pengelola lebih dapat dipercaya daripada pesan berantai karena pembuat dan tanggalnya jelas. | benar | D1b | L3 | C5 | INF-SUM |
-| wnb-3-a04 | Pesan berantai itu pasti benar karena sudah diteruskan berkali-kali. | salah | D1b | L3 | C5 | INF-SUM |
+| wnb-3-a02 | Pesan berantai itu pasti benar karena sudah diteruskan berkali-kali. | salah | D1b | L3 | C5 | INF-SUM |
+| wnb-3-a03 | Hanya satu dari dua kabar itu yang menyarankan orang meminum air telaga. | benar | D1a | L2 | C4 | INF-LIT |
+| wnb-3-a04 | Unggahan pengelola lebih dapat dipercaya daripada pesan berantai karena pembuat dan tanggalnya jelas. | benar | D1b | L3 | C5 | INF-SUM |
 | wnb-3-a05 | Bertanya kepada Dito sama membantunya dengan bertanya kepada guru. | salah | D1b | L3 | C5 | INF-SUM |
-| wnb-3-a06 | Berdasarkan bukti dalam bacaan, langkah yang tepat saat berkunjung ke Telaga Warna adalah membawa air minum sendiri. | benar | D1b | L3 | C5 | INF-SUM |
+| wnb-3-a06 | Berdasarkan bukti dalam bacaan, pengunjung yang haus boleh meminum air Telaga Warna asalkan airnya tampak jernih. | salah | D1b | L3 | C5 | INF-GEN |
 
 `wnb-3-a05` dirumuskan ulang sesuai 05: yang dibandingkan sekarang guru dengan sepupu yang **juga hanya membaca pesan berantai itu**, jadi kuncinya tidak bisa diperdebatkan.
 
@@ -764,7 +764,7 @@ Panjang ± 90 kata
 | wnb-3-b05 | Rambu dan pagar dari petugas lebih pantas diikuti daripada pesan berantai, karena petugas mengetahui bahaya gas di kawah. | benar | D1b | L3 | C5 | INF-SUM |
 | wnb-3-b06 | Berdasarkan bukti dalam bacaan, keluarga Dinda harus membatalkan wisata karena pengumuman resmi melarang pengunjung datang ke kawah. | salah | D1b | L3 | C5 | INF-GEN |
 
-Variasi `b` lama (Bukit Sikunir, sumber lisan) tidak dipakai; dua variasi yang tersisa sama-sama memakai dua sumber digital (05, prioritas tinggi). Urutan kunci: a = B S B S S B, b = B S S B B S.
+Variasi `b` lama (Bukit Sikunir, sumber lisan) tidak dipakai; dua variasi yang tersisa sama-sama memakai dua sumber digital (05, prioritas tinggi). Urutan kunci: a = B S B B S S, b = B S S B B S.
 
 **Rujukan:** Telaga Warna dan belerang: Indonesia Travel, Suara.com (dicek di 01); kawah dan gas di Dieng: laman PVMBG/MAGMA Indonesia; panduan cek fakta Siberkreasi dan Mafindo. Akun pengelola fiktif; lembaga pemantau gunung api ditulis tanpa nama dan logo.
 
@@ -821,7 +821,7 @@ Pengecoh: pepaya biasa, rigen, semangkuk mi ongklok, angklung, sasando, biji kop
 | Kode | Jenis | Petunjuk | Kunci | Pengecoh utama | Bloom |
 | --- | --- | --- | --- | --- | --- |
 | wnb-4-a01 | Atribusi | Pengunggah menulis bahwa ia membuat video ini sendiri. Ketuk tanda yang menunjukkan siapa pembuat video yang sebenarnya. | E2 | E1 → BUD-ATR; E3 → BUD-ATR; E4 → BUD-ATR | C4 |
-| wnb-4-a02 | Representasi | Keterangan video ini disukai 8.000 orang. Bandingkan dengan papan informasi, lalu ketuk bagian yang perlu dibetulkan. | E3 | E5 → BUD-REP; E4 → BUD-REP; E9 → BUD-REP | C5 |
+| wnb-4-a02 | Representasi | Unggahan ini disukai 8.000 orang, tapi ada yang keliru. Bandingkan dengan papan informasi, lalu ketuk bagian yang paling perlu dibetulkan supaya orang lain tidak ikut salah paham. | E3 | E5 → BUD-REP; E8 → BUD-REP; E9 → BUD-REP | C5 |
 | wnb-4-a03 | Izin | Kamu ingin memakai video ini untuk tugas sekolah yang dikumpulkan besok. Ketuk langkah pertama yang tepat. | E12 | E11 → BUD-IZN; E10 → BUD-IZN; E1 → BUD-IZN | C4 |
 | wnb-4-a04 | Menghargai tradisi | Ketuk komentar yang membetulkan keterangan dengan benar, sopan, dan menyebut sumbernya. | E6 | E7 → BUD-ETK; E8 → BUD-REP; E9 → BUD-REP | C5 |
 
@@ -845,7 +845,7 @@ Pengecoh: pepaya biasa, rigen, semangkuk mi ongklok, angklung, sasando, biji kop
 | Kode | Jenis | Petunjuk | Kunci | Pengecoh utama | Bloom |
 | --- | --- | --- | --- | --- | --- |
 | wnb-4-b01 | Atribusi | Pengunggah menulis bahwa ia membuat video ini sendiri. Ketuk tanda yang menunjukkan siapa pembuat video yang sebenarnya. | F2 | F1 → BUD-ATR; F3 → BUD-ATR; F4 → BUD-ATR | C4 |
-| wnb-4-b02 | Representasi | Keterangan video ini disukai 7.500 orang. Bandingkan dengan papan informasi, lalu ketuk bagian yang perlu dibetulkan. | F3 | F5 → BUD-REP; F4 → BUD-REP; F9 → BUD-REP | C5 |
+| wnb-4-b02 | Representasi | Unggahan ini disukai 7.500 orang, tapi ada yang keliru. Bandingkan dengan papan informasi, lalu ketuk bagian yang paling perlu dibetulkan supaya orang lain tidak ikut salah paham. | F3 | F5 → BUD-REP; F8 → BUD-REP; F9 → BUD-REP | C5 |
 | wnb-4-b03 | Izin | Kamu ingin memakai video ini untuk tugas sekolah yang dikumpulkan besok. Ketuk langkah pertama yang tepat. | F12 | F11 → BUD-IZN; F10 → BUD-IZN; F1 → BUD-IZN | C4 |
 | wnb-4-b04 | Menghargai tradisi | Ketuk komentar yang membetulkan keterangan dengan benar, sopan, dan menyebut sumbernya. | F6 | F7 → BUD-ETK; F8 → BUD-REP; F9 → BUD-REP | C5 |
 
@@ -861,17 +861,17 @@ Pengecoh: pepaya biasa, rigen, semangkuk mi ongklok, angklung, sasando, biji kop
 
 | Tindakan | Skor | Kode | Umpan balik |
 | --- | --- | --- | --- |
-| Langsung kirim sebelum kuotanya habis | 0 | DIG-PRI | Hadiah dari orang tak dikenal bisa jadi tipuan untuk mengambil data. Desakan "tinggal 3" adalah tanda bahaya. |
-| Balas dulu, tanya dia siapa | 0 | DIG-ASG | Membalas membuat orang asing tahu akunmu aktif, dan ia bisa terus membujukmu. |
-| Jangan dibalas; tunjukkan ke orang tua, lalu blokir dan laporkan akunnya | 2 | — | Tepat. Datamu aman, dan akun penipu bisa dihentikan. |
+| Langsung kirim fotonya sebelum kuotanya habis | 0 | DIG-PRI | Hadiah dari orang tak dikenal bisa jadi tipuan untuk mengambil data. Desakan "tinggal 3" adalah tanda bahaya. |
+| Balas dulu untuk menanyakan dia itu siapa | 0 | DIG-ASG | Membalas membuat orang asing tahu akunmu aktif, dan ia bisa terus membujukmu. |
+| Tunjukkan ke orang tua, lalu blokir akunnya | 2 | — | Tepat. Datamu aman, dan akun penipu bisa dihentikan. |
 | Diamkan saja tanpa cerita ke siapa pun | 1 | DIG-PSF | Datamu aman. Cerita ke orang tua akan membantu melindungi orang lain juga. |
 
 | Alasan | Kode |
 | --- | --- |
-| Hadiah dari orang yang tidak dikenal bisa jadi tipuan untuk mengambil data | R-RISK |
-| Data orang tua bukan milikku untuk dibagikan tanpa izin | R-ETIK |
+| Hadiah dari orang asing bisa jadi tipuan | R-RISK |
+| Data orang tua bukan milikku untuk dibagikan | R-ETIK |
 | Kata guru tidak boleh membalas orang asing | R-ATUR |
-| Teman-temanku juga ikut mengirim | R-SOS |
+| Teman-temanku juga ikut mengirim datanya | R-SOS |
 | Aku memang tidak terlalu suka jalan-jalan | R-ACAK |
 
 Skenario ini diambil dari contoh di 01; kalimat tanya alasannya dibuat netral.
@@ -882,16 +882,16 @@ Skenario ini diambil dari contoh di 01; kalimat tanya alasannya dibuat netral.
 | --- | --- | --- | --- |
 | Cepat kirim kodenya supaya akun tidak dihapus | 0 | DIG-SAN | Kode seperti itu adalah kunci akun. Tim yang asli tidak pernah memintanya, walaupun akunnya bertanda centang. |
 | Balas dulu, tanya apakah mereka benar tim resmi | 0 | DIG-ASG | Penipu akan selalu menjawab "benar". Membalas membuatmu terus dibujuk. |
-| Jangan kirim; tunjukkan pesan dan SMS-nya ke ibu, lalu laporkan akun itu | 2 | — | Tepat. Kode tetap aman, dan ibu tahu ada yang mencoba masuk ke akunnya. |
-| Hapus pesannya saja tanpa cerita | 1 | DIG-PSF | Kodenya aman. Ibu perlu tahu, karena kode itu masuk ke HP-nya. |
+| Tunjukkan pesan dan SMS-nya ke ibu | 2 | — | Tepat. Kode tetap aman, ibu tahu ada yang mencoba masuk ke akunnya, dan kalian bisa melaporkan akun itu bersama. |
+| Hapus pesan itu dan tidak cerita ke ibu | 1 | DIG-PSF | Kodenya aman. Ibu perlu tahu, karena kode itu masuk ke HP-nya. |
 
 | Alasan | Kode |
 | --- | --- |
-| Kode itu kunci akun; tim resmi tidak pernah memintanya | R-RISK |
-| Kode itu dikirim ke HP ibu, jadi bukan milikku untuk dibagikan | R-ETIK |
-| Di sekolah dilarang membalas pesan dari orang tak dikenal | R-ATUR |
-| Temanku pernah mengirim kode dan akunnya baik-baik saja | R-SOS |
-| Aku jarang main game itu | R-ACAK |
+| Tim resmi tidak pernah meminta kode itu | R-RISK |
+| Kode itu masuk ke HP ibu, bukan milikku | R-ETIK |
+| Aku dilarang membalas pesan orang tak dikenal | R-ATUR |
+| Temanku pernah mengirim kode dan aman saja | R-SOS |
+| Aku sebenarnya jarang main game itu | R-ACAK |
 
 "Game Bintang" fiktif. Sengaja tidak memakai nama GELITA, supaya siswa tidak mengira tim GELITA bisa menghubungi mereka lewat pesan.
 
@@ -901,33 +901,33 @@ Skenario ini diambil dari contoh di 01; kalimat tanya alasannya dibuat netral.
 | --- | --- | --- | --- |
 | Teruskan tangkapan layar obrolan Bima ke grup | 0 | DIG-IZN | Obrolan pribadi Bima hanya boleh dibagikan kalau ia setuju. Tangkapan layar bisa tersebar ke mana-mana. |
 | Ceritakan isi obrolannya di grup dengan kata-katamu sendiri | 0 | DIG-ETK | Walaupun tanpa tangkapan layar, cerita pribadi Bima tetap tersebar tanpa izinnya. |
-| Jawab di grup "Tanya Bima langsung saja, ya", lalu tanya Bima apakah ia butuh teman cerita | 2 | — | Tepat. Rahasia Bima terjaga, dan kamu tetap peduli padanya. |
-| Tidak menjawab grup sama sekali | 1 | DIG-PSF | Rahasia Bima aman. Menyapa Bima secara pribadi akan membuatnya merasa ditemani. |
+| Minta grup bertanya langsung ke Bima, lalu sapa Bima | 2 | — | Tepat. Rahasia Bima terjaga, dan kamu tetap peduli padanya. |
+| Tidak menjawab grup dan tidak menyapa Bima | 1 | DIG-PSF | Rahasia Bima aman. Menyapa Bima secara pribadi akan membuatnya merasa ditemani. |
 
 | Alasan | Kode |
 | --- | --- |
-| Bima bercerita hanya kepadaku; ceritanya boleh dibagikan kalau ia setuju | R-ETIK |
-| Tangkapan layar bisa tersebar dan tidak bisa ditarik lagi | R-RISK |
+| Bima belum tentu mau ceritanya disebar | R-ETIK |
+| Tangkapan layar bisa tersebar ke mana-mana | R-RISK |
 | Ada aturan kelas tidak boleh bergosip di grup | R-ATUR |
-| Teman-teman di grup sudah penasaran | R-SOS |
-| Aku juga suka bundengan | R-ACAK |
+| Teman-teman di grup sudah sangat penasaran | R-SOS |
+| Aku juga suka mendengar bunyi bundengan | R-ACAK |
 
 **wnb-5-a04 · Kabar bohong, dua langkah.** Di grup kelas beredar pesan dengan foto jalan rusak: "Jalan ke Telaga Warna putus karena longsor hari ini! Sebarkan!" Temanmu, Fikri, membalas: "Sudah kusebar ke grup keluarga." Lalu kamu melihat foto yang sama di sebuah berita lama dari daerah lain.
 
 | Tindakan | Skor | Kode | Umpan balik |
 | --- | --- | --- | --- |
-| Ikut menyebarkan ke grup lain | 0 | DIG-HOX | Fotonya ternyata foto lama dari tempat lain. Menyebarkannya membuat lebih banyak orang salah paham. |
+| Ikut menyebarkan ke grup lain supaya orang berhati-hati | 0 | DIG-HOX | Fotonya ternyata foto lama dari tempat lain. Menyebarkannya membuat lebih banyak orang salah paham. |
 | Balas di grup: "Fikri bodoh, itu hoaks!" | 0 | DIG-ETK | Kamu benar soal fotonya, tapi kata-kata kasar membuat Fikri malu dan teman lain enggan mendengar. |
-| Beri tahu dengan sopan bahwa fotonya foto lama, ajak cek ke akun resmi pengelola, dan minta Fikri menarik pesannya | 2 | — | Tepat. Kabar bohong berhenti, dan Fikri tetap dihargai. |
-| Tidak ikut menyebarkan, tapi diam saja | 1 | DIG-PSF | Kamu tidak ikut menyebarkan, bagus. Memberi tahu dengan sopan bisa menghentikan kabar bohong itu. |
+| Beri tahu Fikri dengan sopan bahwa itu foto lama | 2 | — | Tepat. Kabar bohong bisa berhenti, dan Fikri tetap dihargai. Ajak juga mengecek akun resmi pengelola. |
+| Tidak menyebarkan dan tidak menanggapi apa pun | 1 | DIG-PSF | Kamu tidak ikut menyebarkan, bagus. Memberi tahu dengan sopan bisa menghentikan kabar bohong itu. |
 
 | Alasan | Kode |
 | --- | --- |
-| Foto lama bisa membuat orang percaya pada kejadian yang tidak terjadi | R-RISK |
-| Fikri temanku; memberi tahu dengan sopan membuatnya tidak malu | R-ETIK |
+| Foto lama bisa membuat orang salah paham | R-RISK |
+| Kalau ditegur dengan sopan, Fikri tidak malu | R-ETIK |
 | Guru bilang tidak boleh menyebarkan berita | R-ATUR |
-| Semua orang di grup sudah percaya | R-SOS |
-| Aku belum pernah ke Telaga Warna | R-ACAK |
+| Semua orang di grup sudah percaya kabar itu | R-SOS |
+| Aku belum pernah pergi ke Telaga Warna | R-ACAK |
 
 ### Variasi b
 
@@ -936,67 +936,67 @@ Skenario ini diambil dari contoh di 01; kalimat tanya alasannya dibuat netral.
 | Tindakan | Skor | Kode | Umpan balik |
 | --- | --- | --- | --- |
 | Kirim foto Kartu Keluarga supaya bisa ikut | 0 | DIG-PRI | Kartu Keluarga memuat data seluruh keluargamu. Undian sungguhan tidak memintanya. |
-| Kirim nomor HP orang tua saja dulu | 0 | DIG-PRI | Nomor HP orang tua juga data pribadi yang bisa dipakai untuk menipu. |
-| Jangan kirim apa pun; tunjukkan pengumuman itu ke orang tua, dan sarankan Sinta bercerita ke orang tuanya | 2 | — | Tepat. Datamu aman, dan kamu ikut menolong Sinta. |
-| Tidak ikut, tapi diam saja | 1 | DIG-PSF | Datamu aman. Sinta mungkin perlu bantuan karena sudah mengirim datanya. |
+| Kirim nomor HP orang tua dulu, foto KK menyusul | 0 | DIG-PRI | Nomor HP orang tua juga data pribadi yang bisa dipakai untuk menipu. |
+| Tunjukkan ke orang tua, dan ingatkan Sinta juga | 2 | — | Tepat. Datamu aman, dan kamu ikut menolong Sinta. |
+| Tidak ikut, dan tidak membahasnya dengan Sinta | 1 | DIG-PSF | Datamu aman. Sinta mungkin perlu bantuan karena sudah mengirim datanya. |
 
 | Alasan | Kode |
 | --- | --- |
-| Data keluarga bisa disalahgunakan orang yang tidak kukenal | R-RISK |
-| Data di Kartu Keluarga milik seluruh keluarga, bukan hanya milikku | R-ETIK |
+| Data keluarga bisa disalahgunakan orang asing | R-RISK |
+| Kartu Keluarga memuat data seluruh keluargaku | R-ETIK |
 | Kata guru tidak boleh ikut undian di internet | R-ATUR |
-| Sinta sudah ikut, jadi pasti aman | R-SOS |
-| Aku sudah punya sepeda | R-ACAK |
+| Sinta sudah ikut, jadi pasti aman-aman saja | R-SOS |
+| Aku sudah punya sepeda di rumah | R-ACAK |
 
 **wnb-5-b02 · Kata sandi.** Kamu mendapat pesan dari "Admin Sekolah": "Akun belajarmu akan diblokir. Masuk ulang lewat `sekolah-kita.example/masuk` dan tulis kata sandimu." Kamu melihat alamat itu berbeda dari alamat situs sekolah yang biasa kamu pakai.
 
 | Tindakan | Skor | Kode | Umpan balik |
 | --- | --- | --- | --- |
-| Buka tautannya dan tulis kata sandimu | 0 | DIG-SAN | Alamat yang berbeda adalah tanda bahaya. Situs palsu bisa mencuri kata sandimu. |
+| Buka tautannya dan tulis kata sandimu di sana | 0 | DIG-SAN | Alamat yang berbeda adalah tanda bahaya. Situs palsu bisa mencuri kata sandimu. |
 | Balas pesannya, tanya apakah benar admin sekolah | 0 | DIG-ASG | Pengirim palsu akan menjawab "benar". Lebih aman bertanya langsung ke guru. |
-| Jangan buka tautannya; tunjukkan pesan itu ke guru atau orang tua, lalu laporkan | 2 | — | Tepat. Guru bisa memastikan, dan teman-teman lain bisa diperingatkan. |
-| Hapus pesannya saja | 1 | DIG-PSF | Kata sandimu aman. Memberi tahu guru akan melindungi teman-temanmu juga. |
+| Tunjukkan pesan itu ke guru tanpa membukanya | 2 | — | Tepat. Guru bisa memastikan, dan teman-teman lain bisa diperingatkan. |
+| Hapus pesannya dan tidak cerita ke siapa pun | 1 | DIG-PSF | Kata sandimu aman. Memberi tahu guru akan melindungi teman-temanmu juga. |
 
 | Alasan | Kode |
 | --- | --- |
-| Alamat situsnya berbeda, jadi bisa jadi situs palsu pencuri kata sandi | R-RISK |
-| Kalau akunku dibobol, data teman sekelasku juga bisa terlihat | R-ETIK |
-| Aku dilarang membuka tautan apa pun | R-ATUR |
+| Alamatnya berbeda, bisa jadi situs palsu | R-RISK |
+| Data teman sekelas bisa ikut terlihat | R-ETIK |
+| Aku dilarang membuka tautan apa pun di HP | R-ATUR |
 | Teman-teman lain sepertinya sudah masuk ulang | R-SOS |
-| Aku sedang tidak ada tugas | R-ACAK |
+| Aku sedang tidak ada tugas sekolah | R-ACAK |
 
 **wnb-5-b03 · Izin membagikan foto teman.** Saat studi wisata ke Dieng, kamu memotret Nadia yang tertidur di bus dengan mulut terbuka. Teman-teman di grup kelas tahu, lalu menulis: "Kirim dong fotonya, pasti lucu!"
 
 | Tindakan | Skor | Kode | Umpan balik |
 | --- | --- | --- | --- |
-| Kirim fotonya ke grup | 0 | DIG-IZN | Nadia tidak tahu dirinya difoto. Foto itu hanya boleh dibagikan kalau ia setuju. |
+| Kirim fotonya ke grup karena teman-teman meminta | 0 | DIG-IZN | Nadia tidak tahu dirinya difoto. Foto itu hanya boleh dibagikan kalau ia setuju. |
 | Jadikan stiker lucu, lalu kirim ke grup | 0 | DIG-ETK | Stiker dari foto orang yang sedang tidur bisa membuatnya malu dan terus beredar. |
-| Tulis di grup bahwa foto itu tidak akan dikirim tanpa izin Nadia, lalu hapus fotonya atau tanyakan ke Nadia | 2 | — | Tepat. Kamu menjaga perasaan Nadia walaupun teman-teman mendesak. |
-| Tidak menjawab grup | 1 | DIG-PSF | Fotonya tidak tersebar, bagus. Menjelaskan alasanmu bisa membuat teman lain ikut berpikir. |
+| Bilang di grup bahwa kamu perlu izin Nadia dulu | 2 | — | Tepat. Kamu menjaga perasaan Nadia walaupun teman-teman mendesak. |
+| Tidak menjawab grup dan tetap menyimpan fotonya | 1 | DIG-PSF | Fotonya tidak tersebar, bagus. Menjelaskan alasanmu bisa membuat teman lain ikut berpikir. |
 
 | Alasan | Kode |
 | --- | --- |
-| Nadia mungkin malu; fotonya boleh dibagikan hanya kalau ia setuju | R-ETIK |
-| Foto yang sudah dikirim bisa tersebar dan tidak bisa ditarik lagi | R-RISK |
-| Guru melarang memotret di bus | R-ATUR |
-| Teman-teman sudah memintanya | R-SOS |
-| Perjalanan ke Dieng memang jauh | R-ACAK |
+| Nadia belum tentu mau fotonya disebar | R-ETIK |
+| Foto yang terkirim bisa tersebar ke mana-mana | R-RISK |
+| Guru melarang memotret teman di dalam bus | R-ATUR |
+| Teman-teman di grup sudah memintanya | R-SOS |
+| Perjalanan ke Dieng memang jauh sekali | R-ACAK |
 
 **wnb-5-b04 · Kabar bohong, dua langkah.** Di grup kelas ada video berjudul "Embun upas bisa membuat orang sakit, jangan keluar rumah pagi-pagi!" Video itu tidak menyebut sumber. Temanmu, Fikri, membalas: "Sudah kukirim ke grup keluarga."
 
 | Tindakan | Skor | Kode | Umpan balik |
 | --- | --- | --- | --- |
-| Ikut mengirim ke grup lain | 0 | DIG-HOX | Video tanpa sumber belum tentu benar. Menyebarkannya bisa membuat banyak orang cemas. |
+| Ikut mengirim ke grup lain supaya orang berhati-hati | 0 | DIG-HOX | Video tanpa sumber belum tentu benar. Menyebarkannya bisa membuat banyak orang cemas. |
 | Balas di grup: "Fikri bodoh, mana ada begitu!" | 0 | DIG-ETK | Mengingatkan itu bagus, tapi kata-kata kasar membuat Fikri malu. |
-| Beri tahu dengan sopan bahwa videonya tanpa sumber, ajak cek ke berita atau lembaga cuaca resmi, dan minta Fikri menunggu sebelum menyebarkan lagi | 2 | — | Tepat. Kabar dicek dulu, dan Fikri tetap dihargai. |
-| Tidak ikut mengirim, tapi diam saja | 1 | DIG-PSF | Kamu tidak ikut menyebarkan, bagus. Memberi tahu dengan sopan bisa menghentikan kabar itu. |
+| Ingatkan Fikri dengan sopan untuk cek sumbernya | 2 | — | Tepat. Kabar dicek dulu, dan Fikri tetap dihargai. |
+| Tidak mengirim dan tidak menanggapi apa pun | 1 | DIG-PSF | Kamu tidak ikut menyebarkan, bagus. Memberi tahu dengan sopan bisa menghentikan kabar itu. |
 
 | Alasan | Kode |
 | --- | --- |
-| Video tanpa sumber belum tentu benar dan bisa membuat orang cemas | R-RISK |
-| Fikri temanku; memberi tahu dengan sopan membuatnya tidak malu | R-ETIK |
+| Video tanpa sumber bisa membuat orang cemas | R-RISK |
+| Kalau ditegur dengan sopan, Fikri tidak malu | R-ETIK |
 | Guru bilang tidak boleh menonton video di grup | R-ATUR |
-| Banyak orang di grup sudah percaya | R-SOS |
+| Banyak orang di grup sudah percaya video itu | R-SOS |
 | Aku belum pernah melihat embun upas | R-ACAK |
 
 ---
@@ -1058,7 +1058,7 @@ Skenario ini diambil dari contoh di 01; kalimat tanya alasannya dibuat netral.
 
 Sebelum pengambilan data, satu orang tim tetap disarankan mengetik setiap nama akun di kolom cari Instagram dan TikTok. Kalau ada akun nyata yang aktif dengan nama sama persis, namanya diganti.
 
-**Fakta yang dipakai ulang dari bank lama dan masih perlu dicek ahli:** perkebunan teh Tambi sejak 1865; Gunung Tidar sekitar 503 m; Akademi Militer di lembah Tidar sejak 1957; Prasasti Mantyasih 907 M; Borobudur "candi Buddha terbesar di dunia"; air suci Waisak dari Umbul Jumprit; Dusun Klipoh sekitar 3 km dari Borobudur.
+**Fakta yang dipakai ulang dari bank lama** sudah dicek di telaah pendahuluan T6 ([09_TELAAH_PENDAHULUAN_BANK_SOAL.md](09_TELAAH_PENDAHULUAN_BANK_SOAL.md), bagian C.5): semuanya didukung sumber. Satu catatan: tahun berdirinya perkebunan teh Tambi umumnya ditulis 1865, tapi ada sumber yang menulis 1885; ahli budaya memutuskan apakah angka tahun tetap dipakai di petunjuk `wnb-4-x04`.
 
 **Fakta yang sengaja tidak dipakai** karena sumbernya belum meyakinkan: apakah penari Topeng Ireng memakai topeng (sumber tidak menyebutnya), dan asal tari lengger (sebagian sumber menyebut Wonosobo, sebagian Banyumas). Karena itu Periksa Unggahan Wonosobo memakai bundengan dan mi ongklok, bukan lengger.
 
