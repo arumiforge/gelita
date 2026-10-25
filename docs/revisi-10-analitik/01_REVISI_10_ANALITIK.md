@@ -4,7 +4,7 @@
 
 Per 23 Oktober 2026 · Dokumen revisi, belum implementasi
 
-Mulai sekarang, 10 analitik penelitian jadi pegangan kita untuk GELITA. Sesuai judul penelitian, literasi digital jadi konstruk utama dengan tiga dimensi, dan Skenario Digital masuk sebagai tantangan kelima. Admin dan peneliti jadi dua peran yang terpisah, dan log yang tidak dibutuhkan dihapus. Data yang tidak bisa direkam game kita kumpulkan lewat lembar lapangan L0–L7 ([02_LEMBAR_LAPANGAN.md](02_LEMBAR_LAPANGAN.md)). Arti semua kode ada di [03_KODE_DAN_ARTI.md](03_KODE_DAN_ARTI.md), dan riwayat keputusan di [04_CATATAN_KEPUTUSAN.md](04_CATATAN_KEPUTUSAN.md). Telaah setiap butir terhadap dimensinya ada di [05_TELAAH_BUTIR_DAN_DIMENSI.md](05_TELAAH_BUTIR_DAN_DIMENSI.md). Kisi-kisi bank soal baru ada di [06_KISI_KISI_BANK_SOAL.md](06_KISI_KISI_BANK_SOAL.md), telaah instrumen validasi ahli di [07_TELAAH_INSTRUMEN_VALIDASI.md](07_TELAAH_INSTRUMEN_VALIDASI.md), draf bank soal baru di [08_DRAF_BANK_SOAL.md](08_DRAF_BANK_SOAL.md), telaah pendahuluan bank soal di [09_TELAAH_PENDAHULUAN_BANK_SOAL.md](09_TELAAH_PENDAHULUAN_BANK_SOAL.md), dan telaah pendahuluan media di [10_TELAAH_PENDAHULUAN_MEDIA.md](10_TELAAH_PENDAHULUAN_MEDIA.md).
+Mulai sekarang, 10 analitik penelitian jadi pegangan kita untuk GELITA. Sesuai judul penelitian, literasi digital jadi konstruk utama dengan tiga dimensi, dan Skenario Digital masuk sebagai tantangan kelima. Admin dan peneliti jadi dua peran yang terpisah, dan log yang tidak dibutuhkan dihapus. Status setiap dokumen dan urutan bacanya ada di [00_INDEKS.md](00_INDEKS.md). Data yang tidak bisa direkam game kita kumpulkan lewat lembar lapangan L0–L7 ([02_LEMBAR_LAPANGAN.md](02_LEMBAR_LAPANGAN.md)). Arti semua kode ada di [03_KODE_DAN_ARTI.md](03_KODE_DAN_ARTI.md), dan riwayat keputusan di [04_CATATAN_KEPUTUSAN.md](04_CATATAN_KEPUTUSAN.md). Telaah setiap butir terhadap dimensinya ada di [05_TELAAH_BUTIR_DAN_DIMENSI.md](05_TELAAH_BUTIR_DAN_DIMENSI.md). Kisi-kisi bank soal baru ada di [06_KISI_KISI_BANK_SOAL.md](06_KISI_KISI_BANK_SOAL.md), telaah instrumen validasi ahli di [07_TELAAH_INSTRUMEN_VALIDASI.md](07_TELAAH_INSTRUMEN_VALIDASI.md), draf bank soal baru di [08_DRAF_BANK_SOAL.md](08_DRAF_BANK_SOAL.md), telaah pendahuluan bank soal di [09_TELAAH_PENDAHULUAN_BANK_SOAL.md](09_TELAAH_PENDAHULUAN_BANK_SOAL.md), dan telaah pendahuluan media di [10_TELAAH_PENDAHULUAN_MEDIA.md](10_TELAAH_PENDAHULUAN_MEDIA.md).
 
 Dokumen ini belum mengubah sistem apa pun. Isinya rencana kerja tim; dokumen implementasi yang lengkap disusun setelah revisi ini selesai.
 
@@ -370,12 +370,12 @@ Ahli media menilai dalam dua langkah (diputuskan 25 Oktober 2026): di tahap 2, g
 | No | Pekerjaan | Tahap | Penanggung jawab | Status |
 | --- | --- | --- | --- | --- |
 | 1 | Setujui penyelarasan konstruk: literasi digital dengan tiga dimensi | 1 | Pemilik proyek | Selesai |
-| 2 | Bekukan peta bukti dan definisi 10 analitik | 1 | | Belum mulai |
+| 2 | Bekukan peta bukti dan definisi 10 analitik di kamus data (`11_KAMUS_DATA.md`) | 1 | Claude (draf), pemilik proyek | Berikutnya |
 | 3 | Beri label level AKM dan dimensi pada semua butir yang dinilai (dua penilai; label pengembang sudah ada di 08) | 1 | | Belum mulai |
 | 4 | Periksa ulang label Bloom, terutama Cari Objek dan Benar atau Salah C5 | 1 | | Belum mulai |
 | 5 | Beri kode kesalahan pada kata pengecoh, benda pengecoh, dan pernyataan | 1 | Claude | Selesai di draf 08, menunggu validasi |
-| 6 | Tulis Skenario Digital untuk tiga wilayah, lengkap dengan pilihan tindakan dan alasan berkode | 1 | | Belum mulai |
-| 7 | Tulis cerita penghubung dan narasi untuk tantangan kelima | 1 | | Belum mulai |
+| 6 | Tulis Skenario Digital untuk tiga wilayah, lengkap dengan pilihan tindakan dan alasan berkode | 1 | Claude | Selesai di draf 08, menunggu validasi |
+| 7 | Tulis cerita penghubung dan narasi untuk tantangan kelima | 1 | Claude (draf), pemilik proyek (persetujuan) | Belum mulai |
 | 8 | Tentukan 4–6 butir jangkar | 1 | Claude | Selesai di draf 08 (6 butir), menunggu validasi |
 | 9 | Susun tes literasi membaca dan tes literasi digital, bentuk A dan B: bagian membaca diadaptasi dari contoh soal AKM/ANBK yang terbuka untuk umum, bagian D2 dan D3 disusun sendiri dan tidak sama dengan butir game | 1 | | Belum mulai |
 | 10 | Susun angket akses digital | 1 | | Belum mulai |
@@ -406,7 +406,7 @@ Pertanyaan ini perlu dijawab sebelum desain instrumen dibekukan. Centang kalau t
 - [x] Di luar sesi, apakah Pustaka dan Profil tetap boleh dibuka, atau semuanya tertutup? **Diputuskan (25 Oktober 2026): semuanya tertutup sampai penelitian selesai.**
 - [x] Format kode peserta `S03-A07` disetujui? **Diputuskan (25 Oktober 2026): ya.**
 - [x] Berapa pertemuan per kelas, dan tantangan mana yang dibuka di tiap pertemuan? **Diputuskan (25 Oktober 2026): lima pertemuan; satu wilayah per pertemuan (lihat [06](06_KISI_KISI_BANK_SOAL.md#waktu-bermain)).**
-- [ ] Siapa yang menulis skenario dan cerita penghubungnya (Mbah Kedu dan Jaka), dan siapa yang mengisi suara narasinya?
+- [x] Siapa yang menulis skenario dan cerita penghubungnya (Mbah Kedu dan Jaka), dan siapa yang mengisi suara narasinya? **Diputuskan (25 Oktober 2026): skenario sudah ada di draf 08; cerita penghubung dan narasinya didraf Claude dan disetujui pemilik proyek; suaranya direkam pengisi suara yang sama dengan narasi lain, di sesi rekaman yang sama.**
 - [ ] Siapa validator ahlinya: isi budaya Kedu, bahasa anak, literasi digital, pengukuran, dan media? (Panel ahli materi lima orang, lihat [07](07_TELAAH_INSTRUMEN_VALIDASI.md).)
 - [x] Tes awal dan akhir disusun sendiri atau mengadaptasi contoh soal AKM/TKA yang terbuka untuk umum? **Diputuskan (25 Oktober 2026): bagian literasi membaca diadaptasi dari contoh soal AKM/ANBK yang terbuka; bagian D2 dan D3 disusun sendiri, sejajar dengan kisi-kisi tapi tidak sama dengan butir game; divalidasi bersama bank di tahap 2.**
 - [x] Berapa sekolah, kelas, dan siswa dalam sampel? **Diputuskan (25 Oktober 2026): target 300 siswa yang datanya bisa dianalisis, merekrut sekitar 360 (± 13 kelas). Jumlah sekolah mengikuti ketersediaan kelas.**
@@ -414,7 +414,7 @@ Pertanyaan ini perlu dijawab sebelum desain instrumen dibekukan. Centang kalau t
 - [ ] Izin etik diajukan ke komisi etik mana, dan kapan?
 - [x] Skema kesalahan dan rencana analisis dipra-registrasi (misalnya di OSF) atau tidak? **Diputuskan (25 Oktober 2026): ya, di OSF pada gerbang G4.**
 - [x] Indikator `sikap` dipakai (misalnya lewat Balai Refleksi) atau dihapus? **Diputuskan (25 Oktober 2026): dipakai sebagai skala pendamping sikap lewat Balai Refleksi, di luar skor literasi digital; instrumennya disusun di tahap 1 dan divalidasi di tahap 2.**
-- [ ] Kapan skala sikap diisi: hanya di P5 setelah cerita penutup, atau juga di P1 sebagai data awal?
+- [x] Kapan skala sikap diisi: hanya di P5 setelah cerita penutup, atau juga di P1 sebagai data awal? **Diputuskan (25 Oktober 2026): hanya di P5, di Balai Refleksi.**
 - [x] Ambang waktu tidak aktif (usulan 60 detik) dan tebakan cepat (usulan 1,5 detik) ditetapkan setelah uji coba? **Ya: mengikuti tahap 4 peta jalan, yang urutannya dikukuhkan 25 Oktober 2026.**
 - [x] Karena sistem baru diubah setelah G2, bagaimana ahli media menilai layar baru (Skenario Digital, *Periksa Unggahan*, token) sebelum uji coba? **Diputuskan (25 Oktober 2026): dua langkah, mock-up di tahap 2 dan layar jadi di instalasi uji sebelum uji coba (G3).**
 

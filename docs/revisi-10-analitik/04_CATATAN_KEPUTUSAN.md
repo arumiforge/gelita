@@ -38,6 +38,16 @@ Tahap 4, operasional penelitian:
 - **Pra-registrasi di OSF** untuk skema kesalahan dan rencana analisis, di gerbang G4 (setelah uji coba, sebelum pengambilan data utama).
 - **Ahli media menilai dalam dua langkah:** tahap 2 menilai game sekarang ditambah mock-up layar baru (daftar kerja no. 20); setelah tahap 3, telaah singkat layar jadi di instalasi uji sebelum uji coba (no. 21, bagian gerbang G3). Gambar peta jalan disesuaikan, sekaligus angka lamanya ("129 butir", "15 perubahan") diganti rumusan tanpa angka.
 
+Tahap 5, rencana dokumen:
+
+- **Cerita penghubung dan narasi tantangan kelima didraf Claude** dari skenario di 08, disetujui pemilik proyek, dan direkam pengisi suara yang sama dengan narasi lain di sesi rekaman yang sama.
+- **Skala sikap diisi sekali, di P5**, di Balai Refleksi setelah cerita penutup.
+- **Dokumen berikutnya: kamus data** (`11_KAMUS_DATA.md`, daftar kerja no. 2), yang membekukan definisi 10 analitik, "dilewati", waktu aktif, tersensor, dan kode. Dokumen tahap 1 lain merujuk ke sana.
+- **Aturan menjaga konteks** dicatat di `.claude/rules/revisi-10.md` (dimuat saat berkas di folder ini disentuh), dan [00_INDEKS.md](00_INDEKS.md) memuat status setiap dokumen, urutan baca, dan tahap dokumen yang tersisa.
+- **Status lama dibetulkan:** daftar kerja no. 6 (Skenario Digital) sudah selesai di draf 08.
+
+Masih terbuka dan butuh informasi dari pemilik proyek, bukan pilihan: siapa validator ahlinya, dan ke komisi etik mana serta kapan izin etik diajukan.
+
 **Keputusan pemilik proyek: kisi-kisi, draf bank soal, dan telaah pendahuluan T6** (sesi `kisi-kisi-bank-soal`)
 
 - **Kisi-kisi bank soal ([06](06_KISI_KISI_BANK_SOAL.md)) disetujui seluruhnya**, termasuk semua bagian yang semula bertanda "usulan". Dengan begitu rumusan keputusan di [05](05_TELAAH_BUTIR_DAN_DIMENSI.md) ikut berlaku:

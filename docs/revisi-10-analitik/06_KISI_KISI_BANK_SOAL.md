@@ -182,7 +182,7 @@ Perkiraan dibuat untuk siswa kelas 5 (10–11 tahun) yang membaca **60–90 kata
 | P2 | Wilayah Temanggung |
 | P3 | Wilayah Magelang |
 | P4 | Wilayah Wonosobo |
-| P5 | Menyelesaikan tantangan yang tertinggal (paling lama 20 menit), cerita penutup, tes akhir, wawancara L5 |
+| P5 | Menyelesaikan tantangan yang tertinggal (paling lama 20 menit), cerita penutup, skala sikap di Balai Refleksi, tes akhir, wawancara L5 |
 
 Jeda peregangan singkat (2 menit) diberikan setelah tantangan ketiga di setiap pertemuan. Siswa yang belum selesai melanjutkan di pertemuan berikutnya; jam lanjutnya dicatat di L1, dan nomor pertemuan dipakai sebagai kovariat.
 

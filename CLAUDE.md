@@ -1,11 +1,12 @@
 # GELITA — working rules for Claude Code
 
 Topic rules live in `.claude/rules/` and load automatically:
-`language.md` (chat, code, routes, docs), `ui-copy.md` (UI text and local formats, loads when editing UI files), `glossary.md` (Indonesian ↔ English terms), `parallel-agents.md` (subagents and file ownership).
+`language.md` (chat, code, routes, docs), `ui-copy.md` (UI text and local formats, loads when editing UI files), `glossary.md` (Indonesian ↔ English terms), `parallel-agents.md` (subagents and file ownership), `revisi-10.md` (keeping research-revision sessions small, loads with `docs/revisi-10-analitik/`).
 
 ## Where things stand (read first)
 - **Progress checklist:** `docs/PROGRESS.md` — what is done, what is open, who owns which branch.
 - **Decision log:** `docs/perombakan-kelas5/CATATAN_IMPLEMENTASI.md` — record every decision or deviation from the plan documents there.
+- **Research revision (current focus):** start with `docs/revisi-10-analitik/00_INDEKS.md` (reading order, document status, remaining document stages); its decisions go in `04_CATATAN_KEPUTUSAN.md` there.
 - Auto memory does not survive cloud sessions. Anything worth remembering goes into this file, `.claude/rules/`, `docs/PROGRESS.md`, or the decision log, and is committed.
 
 ## Identity and attribution
