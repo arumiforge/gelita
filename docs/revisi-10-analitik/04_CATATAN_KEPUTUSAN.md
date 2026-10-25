@@ -6,6 +6,15 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 25 Oktober 2026
 
+**Keputusan pemilik proyek: media**
+
+Keempat usulan dari telaah pendahuluan media ([10](10_TELAAH_PENDAHULUAN_MEDIA.md)) disetujui:
+
+- **Tanpa ponsel.** Pengambilan data hanya memakai laptop, Chromebook, atau tablet mendatar berlayar 10 inci atau lebih. Di ponsel, sebagian besar teks tampil di bawah 12 px, sehingga skor membaca ikut bergantung pada perangkat. Aturan ini masuk daftar periksa L0, dan game menolak atau memberi peringatan pada sesi penelitian di layar kecil.
+- **Area ketuk Cari Objek tidak boleh bertumpuk.** Adegan Magelang dan Wonosobo ditata ulang supaya area ketuk tidak bersentuhan (jarak minimal setara 24 dp). Aturan bank soal mendapat pemeriksaan otomatis yang sama, berlaku untuk babak 1 dan babak 2 (*Periksa Unggahan*).
+- **Jam disembunyikan selama penelitian.** Waktu tetap direkam server. Hitungan benar/salah boleh tampil setelah Cek pertama sebagai umpan balik. Diatur lewat mode penelitian di konfigurasi studi.
+- **Aturan narasi.** Bacaan dan pernyataan D1 tidak pernah dibacakan. Situasi Skenario Digital (D2) dan petunjuk *Periksa Unggahan* (D3) boleh dibacakan lewat tombol ▶, tidak diputar otomatis, dan pemutarannya tercatat. Kalimat kisi-kisi "teks di layar game tetap dibacakan narasi seperti sekarang" dibaca dengan aturan ini.
+
 **Telaah pendahuluan media (Claude, bukan validasi ahli)**
 
 - Media game ditelaah di instalasi uji lokal: [10_TELAAH_PENDAHULUAN_MEDIA.md](10_TELAAH_PENDAHULUAN_MEDIA.md). Tiga temuan berkode V dan keparahan 3 perlu keputusan pemilik proyek sebelum uji coba:

@@ -6,6 +6,8 @@ Per 25 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md
 
 > **Status: telaah pendahuluan berbantuan AI oleh tim pengembang, bukan validasi ahli.** Temuan di sini tidak ikut dihitung dalam Aiken's V, CVI, atau kesepakatan antarvalidator. Gunanya: masalah yang jelas sudah diperbaiki sebelum media dinilai ahli media sungguhan, sehingga waktu ahli dipakai untuk hal yang perlu penilaian manusia.
 
+**Keputusan pemilik proyek (25 Oktober 2026):** keempat usulan disetujui: tanpa ponsel untuk pengambilan data (M-01), area ketuk Cari Objek ditata ulang dan diperiksa otomatis (M-02), jam disembunyikan selama penelitian (M-03), dan aturan narasi (kebutuhan no. 5). Lihat [catatan keputusan](04_CATATAN_KEPUTUSAN.md) dan perubahan sistem no. 16–19 di [dokumen utama](01_REVISI_10_ANALITIK.md).
+
 ## Ringkasan
 
 Media GELITA sekarang sudah kokoh untuk **laptop, Chromebook, dan tablet mendatar**:
