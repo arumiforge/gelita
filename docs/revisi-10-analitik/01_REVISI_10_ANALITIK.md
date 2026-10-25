@@ -4,7 +4,7 @@
 
 Per 23 Oktober 2026 · Dokumen revisi, belum implementasi
 
-Mulai sekarang, 10 analitik penelitian jadi pegangan kita untuk GELITA. Sesuai judul penelitian, literasi digital jadi konstruk utama dengan tiga dimensi, dan Skenario Digital masuk sebagai tantangan kelima. Admin dan peneliti jadi dua peran yang terpisah, dan log yang tidak dibutuhkan dihapus. Data yang tidak bisa direkam game kita kumpulkan lewat lembar lapangan L0–L7 ([02_LEMBAR_LAPANGAN.md](02_LEMBAR_LAPANGAN.md)). Arti semua kode ada di [03_KODE_DAN_ARTI.md](03_KODE_DAN_ARTI.md), dan riwayat keputusan di [04_CATATAN_KEPUTUSAN.md](04_CATATAN_KEPUTUSAN.md). Telaah setiap butir terhadap dimensinya ada di [05_TELAAH_BUTIR_DAN_DIMENSI.md](05_TELAAH_BUTIR_DAN_DIMENSI.md). Kisi-kisi bank soal baru ada di [06_KISI_KISI_BANK_SOAL.md](06_KISI_KISI_BANK_SOAL.md), telaah instrumen validasi ahli di [07_TELAAH_INSTRUMEN_VALIDASI.md](07_TELAAH_INSTRUMEN_VALIDASI.md), dan telaah pendahuluan media di [10_TELAAH_PENDAHULUAN_MEDIA.md](10_TELAAH_PENDAHULUAN_MEDIA.md).
+Mulai sekarang, 10 analitik penelitian jadi pegangan kita untuk GELITA. Sesuai judul penelitian, literasi digital jadi konstruk utama dengan tiga dimensi, dan Skenario Digital masuk sebagai tantangan kelima. Admin dan peneliti jadi dua peran yang terpisah, dan log yang tidak dibutuhkan dihapus. Data yang tidak bisa direkam game kita kumpulkan lewat lembar lapangan L0–L7 ([02_LEMBAR_LAPANGAN.md](02_LEMBAR_LAPANGAN.md)). Arti semua kode ada di [03_KODE_DAN_ARTI.md](03_KODE_DAN_ARTI.md), dan riwayat keputusan di [04_CATATAN_KEPUTUSAN.md](04_CATATAN_KEPUTUSAN.md). Telaah setiap butir terhadap dimensinya ada di [05_TELAAH_BUTIR_DAN_DIMENSI.md](05_TELAAH_BUTIR_DAN_DIMENSI.md). Kisi-kisi bank soal baru ada di [06_KISI_KISI_BANK_SOAL.md](06_KISI_KISI_BANK_SOAL.md), telaah instrumen validasi ahli di [07_TELAAH_INSTRUMEN_VALIDASI.md](07_TELAAH_INSTRUMEN_VALIDASI.md), draf bank soal baru di [08_DRAF_BANK_SOAL.md](08_DRAF_BANK_SOAL.md), telaah pendahuluan bank soal di [09_TELAAH_PENDAHULUAN_BANK_SOAL.md](09_TELAAH_PENDAHULUAN_BANK_SOAL.md), dan telaah pendahuluan media di [10_TELAAH_PENDAHULUAN_MEDIA.md](10_TELAAH_PENDAHULUAN_MEDIA.md).
 
 Dokumen ini belum mengubah sistem apa pun. Isinya rencana kerja tim; dokumen implementasi yang lengkap disusun setelah revisi ini selesai.
 
@@ -29,13 +29,13 @@ Karena guru tidak ikut, bantuan guru pada isi soal harus dicegah lewat arahan se
 
 ## Judul penelitian dan konstruk
 
-Judulnya menyebut GELITA sebagai **model asesmen literasi digital**. Jadi yang kita ukur adalah literasi digital siswa, dan Kedu adalah konteks budayanya. Literasi membaca dan pengetahuan budaya tidak lagi berdiri sebagai konstruk sendiri; keduanya jadi dimensi literasi digital. Penyelarasan ini usulan dari judul dan masih perlu disetujui tim (lihat *Pertanyaan yang masih terbuka*).
+Judulnya menyebut GELITA sebagai **model asesmen literasi digital**. Jadi yang kita ukur adalah literasi digital siswa, dan Kedu adalah konteks budayanya. Literasi membaca dan pengetahuan budaya tidak lagi berdiri sebagai konstruk sendiri; keduanya jadi dimensi literasi digital. Penyelarasan ini sudah disetujui pemilik proyek (25 Oktober 2026), bersama rumusan dimensi di [05](05_TELAAH_BUTIR_DAN_DIMENSI.md) dan kisi-kisi di [06](06_KISI_KISI_BANK_SOAL.md).
 
 | Dimensi | Artinya | Pilar Komdigi | Area DigComp 3.0 | Diukur lewat | Kode kesalahan | Acuan level |
 | --- | --- | --- | --- | --- | --- | --- |
-| D1 Literasi informasi | Menemukan, menafsirkan, dan menilai informasi dari teks dan gambar di layar | Cakap Bermedia Digital | Literasi informasi dan data | Isi Rumpang, Benar atau Salah, Cari Objek | INF-* | Level AKM, padanan PIRLS 2026 |
-| D2 Aman dan etis | Menjaga data pribadi dan kata sandi, minta izin sebelum berbagi, menghadapi orang asing dan kabar bohong | Aman dan Etis Bermedia Digital | Keamanan; komunikasi dan kolaborasi | Skenario Digital, metrik kata sandi saat daftar | DIG-*, R-* | Kerumitan skenario per wilayah |
-| D3 Budaya digital Kedu | Mengenal dan menghargai budaya Kedu, termasuk saat memakai dan membagikannya di ruang digital | Budaya Bermedia Digital | Hak, pilihan, dan tanggung jawab digital | Cari Objek, butir budaya di bacaan, skenario izin karya budaya | INF-BUD, DIG-IZN, DIG-ETK | Level AKM dan Bloom untuk butir budaya |
+| D1 Literasi informasi | Bertumpu pada literasi membaca: menemukan, menafsirkan, dan menilai informasi dari teks dan gambar di layar, termasuk teks bergenre digital. Sub-aspek D1a memahami informasi dan D1b menilai informasi dan sumber | Cakap Bermedia Digital | 1 *Information search, evaluation and management* (1.1, 1.2) | Isi Rumpang, Benar atau Salah, kartu jangkar | INF-* | Level AKM, padanan PIRLS 2026 |
+| D2 Aman dan etis | Menjaga data pribadi, kata sandi, dan OTP; minta izin sebelum membagikan foto atau obrolan diri sendiri dan teman; menghadapi orang asing dan kabar bohong | Aman dan Etis Bermedia Digital | 4 *Safety, wellbeing and responsible use* (4.2, 4.3); 2.2 *Sharing* | Skenario Digital (tindakan diskor 0–1–2); metrik kata sandi saat daftar sebagai bukti validitas eksternal | DIG-*, R-* | Kerumitan skenario per wilayah |
+| D3 Partisipasi dan representasi budaya Kedu di ruang digital | Atribusi, representasi akurat, izin pelaku dan pemilik karya, dan sikap menghargai tradisi saat budaya Kedu tampil di ruang digital | Budaya Bermedia Digital | 2 *Communication and collaboration* (2.2, 2.3, 2.5); 3.3 *Copyright and licences* | Cari Objek babak 2 *Periksa Unggahan*. Babak 1 jadi skala pendamping Pengetahuan Budaya Kedu (PBK) | BUD-* | Kerumitan adegan per wilayah |
 
 Kerangka payungnya: empat pilar literasi digital Komdigi dan Siberkreasi, dengan DigComp 3.0 (Joint Research Centre, 2025) sebagai padanan internasional. Untuk dimensi D1, level kognitifnya tetap mengikuti AKM dan PIRLS 2026.
 
@@ -181,10 +181,10 @@ Urutan Temanggung (mudah), Magelang (sedang), Wonosobo (sulit) tetap dipakai. Be
 
 **Lima langkah supaya klaim tingkat kesulitan bisa dipertahankan:**
 
-1. Dua penilai ahli memberi label level AKM pada 129 butir yang dinilai secara terpisah, dengan kesepakatan minimal κ = 0,70. Label Bloom diperiksa ulang. Misalnya, petunjuk Cari Objek berlabel C3 sebenarnya lebih dekat ke C1–C2, dan C5 di kartu Benar atau Salah sulit dipertahankan.
-2. Tambahkan **butir jangkar**: 4–6 butir membaca yang sama persis muncul di ketiga wilayah, supaya kemampuan siswa bisa diletakkan di satu skala.
+1. Dua penilai ahli memberi label level AKM pada semua butir yang dinilai (116 butir literasi digital, lihat [06](06_KISI_KISI_BANK_SOAL.md) dan [08](08_DRAF_BANK_SOAL.md)) secara terpisah, dengan kesepakatan minimal κ = 0,70. Label Bloom diperiksa ulang. Misalnya, petunjuk Cari Objek berlabel C3 sebenarnya lebih dekat ke C1–C2, dan C5 di kartu Benar atau Salah sulit dipertahankan.
+2. Tambahkan **butir jangkar**: 6 pernyataan D1 (2 per wilayah) di kartu jangkar yang sama untuk variasi a dan b, supaya kedua variasi tersambung di satu skala. Diputuskan 25 Oktober 2026 menggantikan rencana awal (butir yang diulang di ketiga wilayah), karena siswa yang sama memainkan ketiga wilayah; lihat [06](06_KISI_KISI_BANK_SOAL.md#butir-jangkar-usulan).
 3. Catat beban permukaan sebagai variabel sendiri: jumlah rumpang, jumlah kata pengecoh, panjang bacaan (kata), jumlah benda pengecoh, dan ukuran kotak Susun Gambar.
-4. Setelah data terkumpul, jalankan model Rasch pada ketepatan percobaan pertama, per dimensi (atau model Rasch multidimensi). Periksa urutan kesulitan butir dibandingkan wilayah dan level AKM, kecocokan butir, dan kesetaraan variasi a–c (DIF).
+4. Setelah data terkumpul, jalankan model Rasch pada ketepatan percobaan pertama, per dimensi (atau model Rasch multidimensi). Periksa urutan kesulitan butir dibandingkan wilayah dan level AKM, kecocokan butir, dan kesetaraan variasi a dan b (DIF).
 5. Urutan wilayah tidak bisa diacak karena mengikuti cerita. Ini kita tulis sebagai keterbatasan, dengan waktu aktif kumulatif dan nomor pertemuan sebagai kovariat.
 
 ## Admin dan peneliti: dua peran berbeda
@@ -364,14 +364,14 @@ Tanggal tiap tahap belum ditetapkan dan perlu diisi tim. Daftar kerja di bawah m
 
 | No | Pekerjaan | Tahap | Penanggung jawab | Status |
 | --- | --- | --- | --- | --- |
-| 1 | Setujui penyelarasan konstruk: literasi digital dengan tiga dimensi | 1 | | Belum mulai |
+| 1 | Setujui penyelarasan konstruk: literasi digital dengan tiga dimensi | 1 | Pemilik proyek | Selesai |
 | 2 | Bekukan peta bukti dan definisi 10 analitik | 1 | | Belum mulai |
-| 3 | Beri label level AKM dan dimensi pada 129 butir yang dinilai (dua penilai) | 1 | | Belum mulai |
+| 3 | Beri label level AKM dan dimensi pada semua butir yang dinilai (dua penilai; label pengembang sudah ada di 08) | 1 | | Belum mulai |
 | 4 | Periksa ulang label Bloom, terutama Cari Objek dan Benar atau Salah C5 | 1 | | Belum mulai |
-| 5 | Beri kode kesalahan pada kata pengecoh, benda pengecoh, dan pernyataan | 1 | | Belum mulai |
+| 5 | Beri kode kesalahan pada kata pengecoh, benda pengecoh, dan pernyataan | 1 | Claude | Selesai di draf 08, menunggu validasi |
 | 6 | Tulis Skenario Digital untuk tiga wilayah, lengkap dengan pilihan tindakan dan alasan berkode | 1 | | Belum mulai |
 | 7 | Tulis cerita penghubung dan narasi untuk tantangan kelima | 1 | | Belum mulai |
-| 8 | Tentukan 4–6 butir jangkar | 1 | | Belum mulai |
+| 8 | Tentukan 4–6 butir jangkar | 1 | Claude | Selesai di draf 08 (6 butir), menunggu validasi |
 | 9 | Susun tes literasi membaca dan tes literasi digital, bentuk A dan B | 1 | | Belum mulai |
 | 10 | Susun angket akses digital | 1 | | Belum mulai |
 | 11 | Finalkan lembar L0–L7 | 1 | | Belum mulai |
@@ -389,7 +389,7 @@ Pertanyaan ini perlu dijawab sebelum desain instrumen dibekukan. Centang kalau t
 
 - [x] Skenario Digital jadi tantangan kelima atau menggantikan Susun Gambar? **Diputuskan: tantangan kelima.**
 - [x] Admin dan peneliti satu peran atau dipisah? **Diputuskan: dua peran berbeda.**
-- [x] Setuju literasi digital jadi konstruk utama dengan tiga dimensi? **Diputuskan (25 Oktober 2026): ya, model multidimensi *between-item*, D1 bertumpu pada literasi membaca dengan sub-aspek D1a dan D1b. Nama dan letak D3 masih dibahas (lihat [05](05_TELAAH_BUTIR_DAN_DIMENSI.md)).**
+- [x] Setuju literasi digital jadi konstruk utama dengan tiga dimensi? **Diputuskan (25 Oktober 2026): ya, model multidimensi *between-item*, D1 bertumpu pada literasi membaca dengan sub-aspek D1a dan D1b. D3 menjadi *Partisipasi dan Representasi Budaya Kedu di Ruang Digital* di Cari Objek babak 2 (lihat [05](05_TELAAH_BUTIR_DAN_DIMENSI.md) dan [06](06_KISI_KISI_BANK_SOAL.md)).**
 - [x] Berapa variasi per tantangan? **Diputuskan (25 Oktober 2026): dua (a/b).**
 - [x] Ahli media ikut memvalidasi (daftar kerja no. 14)? **Diputuskan (25 Oktober 2026): ya.**
 - [ ] Peran `guru` dinonaktifkan selama penelitian, atau dihapus sama sekali?
@@ -397,11 +397,11 @@ Pertanyaan ini perlu dijawab sebelum desain instrumen dibekukan. Centang kalau t
 - [ ] Token sesi dipakai? Usulan: ya, versi ringan.
 - [ ] Di luar sesi, apakah Pustaka dan Profil tetap boleh dibuka, atau semuanya tertutup?
 - [ ] Format kode peserta `S03-A07` disetujui?
-- [ ] Berapa pertemuan per kelas, dan tantangan mana yang dibuka di tiap pertemuan?
+- [x] Berapa pertemuan per kelas, dan tantangan mana yang dibuka di tiap pertemuan? **Diputuskan (25 Oktober 2026): lima pertemuan; satu wilayah per pertemuan (lihat [06](06_KISI_KISI_BANK_SOAL.md#waktu-bermain)).**
 - [ ] Siapa yang menulis skenario dan cerita penghubungnya (Mbah Kedu dan Jaka), dan siapa yang mengisi suara narasinya?
 - [ ] Siapa validator ahlinya: isi budaya Kedu, bahasa anak, literasi digital, pengukuran, dan media? (Panel ahli materi lima orang, lihat [07](07_TELAAH_INSTRUMEN_VALIDASI.md).)
 - [ ] Tes awal dan akhir disusun sendiri atau mengadaptasi contoh soal AKM/TKA yang terbuka untuk umum?
-- [ ] Berapa sekolah, kelas, dan siswa dalam sampel?
+- [x] Berapa sekolah, kelas, dan siswa dalam sampel? **Diputuskan (25 Oktober 2026): target 300 siswa yang datanya bisa dianalisis, merekrut sekitar 360 (± 13 kelas). Jumlah sekolah mengikuti ketersediaan kelas.**
 - [ ] Berapa peneliti per kelas: tiga (ideal) atau dua?
 - [ ] Izin etik diajukan ke komisi etik mana, dan kapan?
 - [ ] Skema kesalahan dan rencana analisis dipra-registrasi (misalnya di OSF) atau tidak?
@@ -433,6 +433,7 @@ Belum ada yang dikerjakan sekarang. Daftar ini jadi bahan dokumen implementasi d
 | 17 | Pemeriksaan otomatis area ketuk Cari Objek | 2, 6 | Area ketuk tidak boleh bersentuhan (jarak minimal setara 24 dp) di aturan bank soal, untuk babak 1 dan *Periksa Unggahan*; adegan Magelang dan Wonosobo ditata ulang |
 | 18 | Aturan narasi | 7 | Bacaan dan pernyataan D1 tidak pernah dibacakan; situasi Skenario Digital dan petunjuk *Periksa Unggahan* hanya lewat tombol ▶ dan tercatat |
 | 19 | Perbaikan media lain dari telaah pendahuluan | semua | Temuan M-04 sampai M-11 di [10_TELAAH_PENDAHULUAN_MEDIA.md](10_TELAAH_PENDAHULUAN_MEDIA.md): nama berkas gambar benda yang acak, antrean event saat keluar, ukuran petunjuk, dua pelanggaran axe, kode penelitian di Profil, data pendaftaran |
+| 20 | Bank soal baru dari kisi-kisi | 2, 3, 6, 10 | Cari Objek dua babak, kartu jangkar, variasi dari buklet B1–B4, aturan `DifficultyRules` baru, kolom dan sheet workbook baru; daftar lengkapnya di [06](06_KISI_KISI_BANK_SOAL.md#yang-perlu-disiapkan-sistem-nanti). Isi bank ada di [08](08_DRAF_BANK_SOAL.md) |
 
 Laporan kelas untuk guru tetap tercatat sebagai gagasan di luar penelitian dan tidak masuk daftar ini.
 

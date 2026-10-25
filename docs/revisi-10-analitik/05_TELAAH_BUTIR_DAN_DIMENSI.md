@@ -2,7 +2,7 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 25 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Status: **telaah awal, menunggu keputusan pemilik proyek**
+Per 25 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Status: **rumusan keputusan berlaku** sejak kisi-kisi [06](06_KISI_KISI_BANK_SOAL.md) disetujui pemilik proyek (25 Oktober 2026); perbaikan butir sudah dimasukkan ke draf bank soal [08](08_DRAF_BANK_SOAL.md)
 
 Dokumen ini menelaah usulan keputusan pemilik proyek tentang tiga dimensi dan penskoran (25 Oktober 2026), lalu menilai keterkaitan setiap butir bank soal dengan dimensi utamanya. Telaah ini berperan sebagai penyaringan awal sebelum validasi ahli. Telaah ini **tidak** menggantikan penilaian dua ahli dan tidak mengubah sistem apa pun.
 

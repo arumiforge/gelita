@@ -1,10 +1,29 @@
 # Catatan Keputusan Revisi 10 Analitik
 
-Per 23 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 25 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk implementasi nanti dicatat di dokumen implementasi dan di catatan keputusan perombakan kelas 5 saat pekerjaannya dimulai.
 
 ## 25 Oktober 2026
+
+**Keputusan pemilik proyek: kisi-kisi, draf bank soal, dan telaah pendahuluan T6** (sesi `kisi-kisi-bank-soal`)
+
+- **Kisi-kisi bank soal ([06](06_KISI_KISI_BANK_SOAL.md)) disetujui seluruhnya**, termasuk semua bagian yang semula bertanda "usulan". Dengan begitu rumusan keputusan di [05](05_TELAAH_BUTIR_DAN_DIMENSI.md) ikut berlaku:
+  - D3 = *Partisipasi dan Representasi Budaya Kedu di Ruang Digital*, diukur lewat Cari Objek babak 2 *Periksa Unggahan* (12 butir per siswa). Cari Objek babak 1 jadi skala pendamping *Pengetahuan Budaya Kedu* (PBK), di luar skor literasi digital.
+  - D2: tindakan Skenario Digital diskor 0–1–2; alasan hanya data diagnosis dan tidak masuk skor utama di versi pertama.
+  - Kode BUD-ATR, BUD-REP, BUD-IZN, BUD-ETK, BUD-LAIN untuk D3. INF-BUD hanya untuk PBK; DIG-IZN dan DIG-ETK hanya untuk D2.
+  - Isi Rumpang Temanggung memakai dua kata pengecoh.
+  - Per siswa di pengerjaan pertama: 61 butir literasi digital (37 D1 = 26 D1a + 11 D1b; 12 D2; 12 D3) ditambah 12 butir PBK. Isi Rumpang 4/5/6 rumpang, Benar atau Salah 4/6/6 pernyataan.
+  - Desain **empat buklet (B1–B4)** per kursi untuk pengerjaan pertama, menggantikan pengacakan variasi; pengerjaan ulang tetap bebas.
+  - **Butir jangkar antarvariasi**: 6 pernyataan D1 (2 per wilayah) di kartu jangkar yang sama untuk variasi a dan b, bukan butir yang diulang di tiga wilayah.
+  - **Sampel**: target 300 siswa yang datanya bisa dianalisis, merekrut sekitar 360 (± 13 kelas).
+  - **Lima pertemuan per kelas**: tes awal; Temanggung; Magelang; Wonosobo; susulan, cerita penutup, dan tes akhir.
+  - Opsi tiga pilihan ("tidak bisa dipastikan dari teks") untuk D1b Wonosobo ditunda sampai setelah uji coba.
+- **Penyimpangan dari kisi-kisi yang disetujui** (06 sudah disesuaikan): sebaran kode kesalahan dihitung per wilayah, bukan per variasi; panjang teks `wnb-3` 90–150 kata dan kartu jangkar Wonosobo 25–50 kata.
+- **Draf bank soal baru** disusun di [08](08_DRAF_BANK_SOAL.md): 116 butir literasi digital dalam variasi a/b ditambah 6 butir jangkar dan 12 butir PBK, semua berstatus `needs_verification`. Terjemahan bahasa Inggris dikerjakan pemilik proyek nanti.
+- **Nama fiktif dicek di web.** "Sanggar Turangga Muda" diganti "Sanggar Kuda Pelangi" karena mirip nama kelompok kuda lumping nyata. Semua unggahan tampil di aplikasi media sosial fiktif *Kedugram*, dan komentator ditulis dengan nama depan saja. Pencarian manual nama akun di Instagram dan TikTok masih perlu dilakukan satu orang tim.
+- **Telaah pendahuluan T6** dijalankan ([09](09_TELAAH_PENDAHULUAN_BANK_SOAL.md)); 2 temuan sistematis (pilihan tepat dan alasan yang diharapkan selalu paling panjang) dan 13 temuan per butir dibetulkan di 08. Sisa temuan R1–R4 disetujui sesuai usulan: rumpang yang hanya punya satu calon dibiarkan dan dipantau di uji coba (R1); label D1b Temanggung diputuskan ahli (R2); pola kalimat pilihan "kurang tepat" dinilai ahli bahasa anak (R3); kunci Periksa Unggahan Wonosobo dipertahankan dan dipastikan ahli (R4).
+- **Cek fakta C.5**: semua fakta bank lama didukung sumber; tahun perkebunan teh Tambi (1865 atau 1885) diserahkan ke ahli budaya.
 
 **Keputusan pemilik proyek: media**
 
@@ -38,14 +57,14 @@ Keempat usulan dari telaah pendahuluan media ([10](10_TELAAH_PENDAHULUAN_MEDIA.m
 - Analisis memakai **model multidimensi *between-item***: setiap butir punya tepat satu dimensi utama.
 - **D1 bertumpu pada literasi membaca**, dengan dua label sub-aspek: D1a memahami informasi dan D1b menilai informasi dan sumber. Jumlah butir D1 **tidak dibatasi 29**; lebih banyak tidak masalah.
 - Beberapa bacaan diubah menjadi **teks bergenre digital**.
-- Kisi-kisi bank soal baru disusun di sesi terpisah, di [06_KISI_KISI_BANK_SOAL.md](06_KISI_KISI_BANK_SOAL.md) (branch `kisi-kisi-bank-soal`).
+- Kisi-kisi bank soal baru disusun di sesi terpisah, di [06_KISI_KISI_BANK_SOAL.md](06_KISI_KISI_BANK_SOAL.md) (branch `kisi-kisi-bank-soal`). Disetujui pada hari yang sama (lihat di atas).
 - Draf instrumen validasi ahli (r10 untuk ahli materi dan pengamat budaya, serta instrumen ahli media) ditelaah di [07_TELAAH_INSTRUMEN_VALIDASI.md](07_TELAAH_INSTRUMEN_VALIDASI.md). Versi 1.0 instrumen ahli materi sudah digantikan r10.
 - Seluruh isi bank soal yang ada terbuka untuk diubah, diperbaiki, dihapus, dan ditambah sesuai kebutuhan penelitian. Bank soal baru disusun bersama Claude. Batas yang tetap berlaku hanya batas teknis penelitian: kunci jawaban tetap di server, butir baru atau yang diubah berstatus `needs_verification` sampai divalidasi, dan kode butir yang sudah punya data siswa tidak dipakai ulang untuk isi yang berbeda.
 
-**Telaah, menunggu keputusan pemilik proyek**
+**Telaah butir dan dimensi** (rumusan keputusannya berlaku sejak kisi-kisi 06 disetujui, lihat di atas)
 
 - Pemilik proyek mengusulkan rumusan keputusan dimensi dan penskoran: satu dimensi utama per butir, D1 sekitar 29 butir, D2 sekitar 12 butir, D3 diubah menjadi *Partisipasi dan Representasi Budaya Kedu di Ruang Digital*, skor utama dari percobaan pertama.
-- Telaah butir dan dimensi disusun di [05_TELAAH_BUTIR_DAN_DIMENSI.md](05_TELAAH_BUTIR_DAN_DIMENSI.md): 99 butir dinilai ditelaah satu per satu, ada rumusan keputusan yang sudah disesuaikan, dan daftar perbaikan butir. Rumusan itu belum berlaku sampai disetujui pemilik proyek.
+- Telaah butir dan dimensi disusun di [05_TELAAH_BUTIR_DAN_DIMENSI.md](05_TELAAH_BUTIR_DAN_DIMENSI.md): 99 butir dinilai ditelaah satu per satu, ada rumusan keputusan yang sudah disesuaikan, dan daftar perbaikan butir. Rumusan itu berlaku sejak kisi-kisi 06 disetujui.
 
 ## 23 Oktober 2026
 
