@@ -49,7 +49,7 @@ Gerbang G1: tim menyetujui konstruk, dan dua penilai sepakat pada label AKM dan 
 
 **Tahap dokumen 2: validasi ahli dan izin etik (sampai gerbang G2)**
 
-Paket validasi untuk panel ahli (bank, tes, skala sikap, mock-up), permohonan izin etik, dan surat izin orang tua (L7). Setelah itu bank dan instrumen direvisi dari hasil validasi.
+Paket validasi untuk tujuh validator (nama samaran sementara di [03](03_KODE_DAN_ARTI.md#peran)), permohonan izin etik (komisi etiknya belum ditetapkan), dan surat izin orang tua (L7). Setelah itu bank dan instrumen direvisi dari hasil validasi.
 
 **Tahap dokumen 3: dokumen implementasi (tahap 3, setelah gerbang G2)**
 

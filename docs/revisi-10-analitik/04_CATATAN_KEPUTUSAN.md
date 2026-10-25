@@ -46,7 +46,10 @@ Tahap 5, rencana dokumen:
 - **Aturan menjaga konteks** dicatat di `.claude/rules/revisi-10.md` (dimuat saat berkas di folder ini disentuh), dan [00_INDEKS.md](00_INDEKS.md) memuat status setiap dokumen, urutan baca, dan tahap dokumen yang tersisa.
 - **Status lama dibetulkan:** daftar kerja no. 6 (Skenario Digital) sudah selesai di draf 08.
 
-Masih terbuka dan butuh informasi dari pemilik proyek, bukan pilihan: siapa validator ahlinya, dan ke komisi etik mana serta kapan izin etik diajukan.
+Validator dan komisi etik belum bisa ditetapkan pemilik proyek. Sementara:
+
+- **Tujuh validator dengan nama samaran**, sesuai komposisi panel di 07 yang sudah diterima: Ahli Bahasa Anak 1 dan 2, Ahli Literasi Digital 1 dan 2, Ahli Pengukuran (panel ahli materi lima orang), Ahli Budaya Kedu (pengamat budaya), dan Ahli Media Pembelajaran. Nama samaran dicatat di 03 dan dipakai di instrumen dan paket validasi sampai orangnya ditetapkan.
+- **Komisi etik ditulis "Komisi Etik (belum ditetapkan)"** dan harus diputuskan sebelum tahap 2.
 
 **Keputusan pemilik proyek: kisi-kisi, draf bank soal, dan telaah pendahuluan T6** (sesi `kisi-kisi-bank-soal`)
 
