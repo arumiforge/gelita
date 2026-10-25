@@ -5,7 +5,7 @@ paths:
 
 # Research revision sessions (`docs/revisi-10-analitik/`)
 
-The folder is about 320 KB, roughly 150k tokens. Reading it whole fills a session, so keep each session small.
+The folder is about 370 KB, roughly 170k tokens. Reading it whole fills a session, so keep each session small.
 
 ## Start
 - Read `00_INDEKS.md`, the newest entry in `04_CATATAN_KEPUTUSAN.md`, the *Pertanyaan yang masih terbuka* and *Peta jalan dan daftar kerja* sections of `01`, and the research-revision rows in `docs/PROGRESS.md`. Nothing else up front.

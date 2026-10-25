@@ -4,7 +4,7 @@
 
 Per 25 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
-Semua kode yang dipakai di dokumen revisi, lembar lapangan, dan data penelitian dikumpulkan di sini. Kode yang sudah tersimpan di data game (misalnya `tmg-2-a01` atau `bintang-1`) tidak diganti; kode baru di revisi ini ditandai "usulan" sampai disetujui tim.
+Semua kode yang dipakai di dokumen revisi, lembar lapangan, dan data penelitian dikumpulkan di sini. Aturan memakai kode di data dan nilai kolom data turunan (misalnya status penyelesaian dan jenis "dilewati") ada di [kamus data](11_KAMUS_DATA.md). Kode yang sudah tersimpan di data game (misalnya `tmg-2-a01` atau `bintang-1`) tidak diganti; kode baru di revisi ini ditandai "usulan" sampai disetujui tim.
 
 ## Peran
 
@@ -46,9 +46,9 @@ Semua kode yang dipakai di dokumen revisi, lembar lapangan, dan data penelitian 
 | 5 | Waktu pengerjaan (waktu aktif) | D1–D3 |
 | 6 | Pola kesalahan | D1–D3 |
 | 7 | Penggunaan bantuan | D1–D3 |
-| 8 | Navigasi permainan | D1, D3 |
+| 8 | Navigasi permainan | D1–D3 |
 | 9 | Perubahan setelah umpan balik | D1–D3 |
-| 10 | Pilihan dan alasan di skenario digital | D2, D3 |
+| 10 | Pilihan dan alasan di skenario digital | D2 |
 
 ## Wilayah dan tantangan
 
@@ -104,7 +104,7 @@ Semua kode yang dipakai di dokumen revisi, lembar lapangan, dan data penelitian 
 | DIG-SAN | Membagikan kata sandi atau kode OTP (berisiko) | D2 |
 | DIG-IZN | Membagikan foto atau obrolan diri sendiri atau teman tanpa izin (berisiko) | D2 |
 | DIG-ASG | Menanggapi orang asing (berisiko) | D2 |
-| DIG-HOX | Meneruskan kabar yang belum dicek (berisiko) | D2, D1 |
+| DIG-HOX | Meneruskan kabar yang belum dicek (berisiko) | D2 |
 | DIG-ETK | Berkomunikasi tidak etis (berisiko) | D2 |
 | DIG-PSF | Terlalu pasif, tidak melapor (kurang tepat) | D2 |
 | DIG-LAIN | Kesalahan tindakan yang tidak cocok dengan kode lain; dikode manual | D2 |

@@ -23,6 +23,8 @@ Documentation only, in `docs/revisi-10-analitik/` (Indonesian, at the owner's re
   - [x] AI-assisted media pre-review on a local test install (`10_TELAAH_PENDAHULUAN_MEDIA.md`)
   - [x] Owner approved the media decisions (25 October 2026): no phones for data collection, re-laid Cari Objek tap areas with an automatic overlap check, timer hidden during the study, narration rule (D1 never read aloud). Added as system changes 16–19 in `01` and to the L0 checklist
 - [ ] Data dictionary `11_KAMUS_DATA.md` (work item 2 in `01`), the next stage-1 document; the remaining stage-1 documents are listed in `00_INDEKS.md`
+  - [x] Draft written: evidence map (diagram updated), scored items and first attempt, missing data and analysis flags, frozen definitions of the 10 analytics, item and participant variables, field-sheet join rules, data requirements for stage 3; `03` and the raw-data example in `01` aligned
+  - [ ] Owner decides the four questions at the end of `11` (other tap areas in *Periksa Unggahan*, idle-gap rule for active time, which students count as analysable, rapid guesses in the main analysis), then the draft becomes `kamus-1.0`
 - [ ] Complete implementation document, after the revision documents are final and gate G2 (expert validation and ethics approval) is passed
 - [ ] Implementation of the system changes listed in `01` (21 so far), one short-lived branch each, after the implementation document is approved
 
@@ -73,3 +75,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 | Branch | Owner / scope | Status |
 |---|---|---|
 | `pbb/eloquent-sagan-j40sg8` | Pre-stage-1 check of the research revision docs | PR open |
+| `sky/optimistic-carson-kkpbcv` | Data dictionary `11_KAMUS_DATA.md` (research revision, work item 2) | PR open |

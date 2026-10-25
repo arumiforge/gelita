@@ -4,7 +4,7 @@
 
 Per 23 Oktober 2026 · Dokumen revisi, belum implementasi
 
-Mulai sekarang, 10 analitik penelitian jadi pegangan kita untuk GELITA. Sesuai judul penelitian, literasi digital jadi konstruk utama dengan tiga dimensi, dan Skenario Digital masuk sebagai tantangan kelima. Admin dan peneliti jadi dua peran yang terpisah, dan log yang tidak dibutuhkan dihapus. Status setiap dokumen dan urutan bacanya ada di [00_INDEKS.md](00_INDEKS.md). Data yang tidak bisa direkam game kita kumpulkan lewat lembar lapangan L0–L7 ([02_LEMBAR_LAPANGAN.md](02_LEMBAR_LAPANGAN.md)). Arti semua kode ada di [03_KODE_DAN_ARTI.md](03_KODE_DAN_ARTI.md), dan riwayat keputusan di [04_CATATAN_KEPUTUSAN.md](04_CATATAN_KEPUTUSAN.md). Telaah setiap butir terhadap dimensinya ada di [05_TELAAH_BUTIR_DAN_DIMENSI.md](05_TELAAH_BUTIR_DAN_DIMENSI.md). Kisi-kisi bank soal baru ada di [06_KISI_KISI_BANK_SOAL.md](06_KISI_KISI_BANK_SOAL.md), telaah instrumen validasi ahli di [07_TELAAH_INSTRUMEN_VALIDASI.md](07_TELAAH_INSTRUMEN_VALIDASI.md), draf bank soal baru di [08_DRAF_BANK_SOAL.md](08_DRAF_BANK_SOAL.md), telaah pendahuluan bank soal di [09_TELAAH_PENDAHULUAN_BANK_SOAL.md](09_TELAAH_PENDAHULUAN_BANK_SOAL.md), dan telaah pendahuluan media di [10_TELAAH_PENDAHULUAN_MEDIA.md](10_TELAAH_PENDAHULUAN_MEDIA.md).
+Mulai sekarang, 10 analitik penelitian jadi pegangan kita untuk GELITA. Sesuai judul penelitian, literasi digital jadi konstruk utama dengan tiga dimensi, dan Skenario Digital masuk sebagai tantangan kelima. Admin dan peneliti jadi dua peran yang terpisah, dan log yang tidak dibutuhkan dihapus. Status setiap dokumen dan urutan bacanya ada di [00_INDEKS.md](00_INDEKS.md). Data yang tidak bisa direkam game kita kumpulkan lewat lembar lapangan L0–L7 ([02_LEMBAR_LAPANGAN.md](02_LEMBAR_LAPANGAN.md)). Arti semua kode ada di [03_KODE_DAN_ARTI.md](03_KODE_DAN_ARTI.md), dan riwayat keputusan di [04_CATATAN_KEPUTUSAN.md](04_CATATAN_KEPUTUSAN.md). Telaah setiap butir terhadap dimensinya ada di [05_TELAAH_BUTIR_DAN_DIMENSI.md](05_TELAAH_BUTIR_DAN_DIMENSI.md). Kisi-kisi bank soal baru ada di [06_KISI_KISI_BANK_SOAL.md](06_KISI_KISI_BANK_SOAL.md), telaah instrumen validasi ahli di [07_TELAAH_INSTRUMEN_VALIDASI.md](07_TELAAH_INSTRUMEN_VALIDASI.md), draf bank soal baru di [08_DRAF_BANK_SOAL.md](08_DRAF_BANK_SOAL.md), telaah pendahuluan bank soal di [09_TELAAH_PENDAHULUAN_BANK_SOAL.md](09_TELAAH_PENDAHULUAN_BANK_SOAL.md), telaah pendahuluan media di [10_TELAAH_PENDAHULUAN_MEDIA.md](10_TELAAH_PENDAHULUAN_MEDIA.md), dan cara menghitung setiap data penelitian di kamus data [11_KAMUS_DATA.md](11_KAMUS_DATA.md).
 
 Dokumen ini belum mengubah sistem apa pun. Isinya rencana kerja tim; dokumen implementasi yang lengkap disusun setelah revisi ini selesai.
 
@@ -53,7 +53,7 @@ Dari 10 analitik, 3 sudah terekam penuh, 5 baru sebagian, dan 2 belum ada sama s
 
 | No | Analitik | Definisi operasional (revisi) | Makna bagi penelitian | Sumber data | Status di sistem | Yang perlu dilakukan |
 | --- | --- | --- | --- | --- | --- | --- |
-| 1 | Penyelesaian aktivitas | Tantangan tuntas per wilayah. "Dilewati" dipecah tiga: (a) petunjuk Cari Objek gagal 3 kali, (b) pengerjaan ditinggal dan tidak dilanjutkan di sesi yang sama, (c) tantangan yang sudah terbuka tapi tidak pernah dimulai sampai pengambilan data selesai. | Seberapa banyak dan seberapa tekun siswa menyelesaikan; dasar untuk menentukan data siswa lengkap atau tidak | Log game + L1 | Sebagian | Tulis definisi "dilewati" di kamus data dan hitung tiga jenisnya terpisah |
+| 1 | Penyelesaian aktivitas | Tantangan tuntas per wilayah. "Dilewati" dipecah tiga: (a) petunjuk Cari Objek gagal 3 kali, (b) pengerjaan ditinggal dan tidak dilanjutkan di sesi yang sama, (c) tantangan yang sudah terbuka tapi tidak pernah dimulai sampai pengambilan data selesai. | Seberapa banyak dan seberapa tekun siswa menyelesaikan; dasar untuk menentukan data siswa lengkap atau tidak | Log game + L1 | Sebagian | Definisi "dilewati" dan tiga jenisnya ada di [kamus data](11_KAMUS_DATA.md#analitik-1-penyelesaian-aktivitas) |
 | 2 | Ketepatan jawaban | Benar atau salah akhir per butir, dikelompokkan per dimensi (D1–D3) dan per level AKM | Indikator yang sudah atau belum dikuasai | Log game | Sebagian | Susun indikator per dimensi, beri label level AKM per butir. Indikator `sikap` jadi skala pendamping lewat Balai Refleksi (diputuskan 25 Oktober 2026) |
 | 3 | Ketepatan percobaan pertama | Jawaban di Cek pertama (Susun Gambar, Isi Rumpang, Benar atau Salah), ketukan pertama per petunjuk (Cari Objek), atau pilihan pertama (Skenario Digital), sebelum ada umpan balik | Ukuran utama kemampuan awal; data inti untuk uji Rasch | Log game | Sudah | Ingat peluang tebakan 50% di Benar atau Salah; butir level tinggi sebaiknya punya 3 pilihan atau lebih |
 | 4 | Jumlah percobaan | Percobaan ke berapa butir jadi benar (1, 2, 3), atau "belum berhasil setelah 3" | Butir yang butuh pengulangan | Log game | Sudah | Saat analisis, "belum berhasil" diperlakukan sebagai data tersensor, bukan angka 3 |
@@ -161,18 +161,18 @@ Setiap pilihan salah diberi satu kode **sebelum** data diambil, lalu kode itu ik
 
 **Validasi:** dua pengode bekerja terpisah pada sampel 20% jawaban dan semua transkrip berpikir lantang (L5). Kesepakatan minimal Cohen's κ = 0,70. Kalau beda, didiskusikan dan dicatat. Skema dan rencana analisis didaftarkan lebih dulu (pra-registrasi di OSF) di gerbang G4, setelah uji coba dan sebelum pengambilan data utama (diputuskan 25 Oktober 2026).
 
-**Contoh data mentah** (bentuk ekspor percobaan dengan dua kolom baru, `error_code` dan `reason_code`, memakai format kode peserta baru):
+**Contoh data mentah** (bentuk ekspor percobaan dengan kolom baru `error_code`, `reason_code`, dan `rapid_guess`, memakai format kode peserta baru). Kode kesalahan dari bank tidak pernah ditimpa; tebakan cepat (NON-TEB) menjadi penanda tersendiri. Semua kolom dan aturannya dibekukan di [kamus data](11_KAMUS_DATA.md#analitik-6-pola-kesalahan).
 
 ```csv
-participant_code,item_key,try_no,answer,is_correct,error_code,reason_code,hint_before,last_input_ms
-S03-A07,wnb-2-a01,1,karena,0,INF-HUB,,0,14200
-S03-A07,wnb-2-a01,2,sehingga,1,,,1,9800
-S03-A07,wnb-3-a01,1,salah,0,INF-SUM,,0,21500
-S03-A07,wnb-4-x03,1,tap:angklung,0,INF-BUD,,0,6100
-S03-A07,wnb-5-a01,1,kirim_data,0,DIG-PRI,R-SOS,0,18300
-S03-A07,wnb-5-a01,2,lapor_ortu,1,,R-RISK,0,7400
-S03-A12,wnb-5-a02,1,diamkan,0,DIG-PSF,R-ATUR,0,5200
-S03-A12,mgl-3-b02,1,benar,0,NON-TEB,,0,900
+participant_code,item_key,try_no,answer,is_correct,error_code,reason_code,rapid_guess,hint_before,last_input_ms
+S03-A07,wnb-2-a01,1,karena,0,INF-HUB,,0,0,14200
+S03-A07,wnb-2-a01,2,sehingga,1,,,0,1,9800
+S03-A07,wnb-3-a01,1,salah,0,INF-LIT,,0,0,21500
+S03-A07,wnb-4-x03,1,tap:angklung,0,INF-BUD,,0,0,6100
+S03-A07,wnb-5-a01,1,kirim_data,0,DIG-PRI,R-SOS,0,0,18300
+S03-A07,wnb-5-a01,2,lapor_ortu,1,,R-RISK,0,0,7400
+S03-A12,wnb-5-a02,1,diamkan,0,DIG-PSF,R-ATUR,0,0,5200
+S03-A12,mgl-3-b02,1,benar,0,INF-HUB,,1,0,900
 ```
 
 Contoh ringkasan untuk laporan penelitian: "Di wilayah Wonosobo, kesalahan terbanyak adalah INF-HUB (34%) dan INF-SUM (22%). Sebanyak 41% siswa memilih tindakan aman di skenario orang asing, tapi dengan alasan R-ATUR." Angka ini cuma ilustrasi.
@@ -382,7 +382,7 @@ Ahli media menilai dalam dua langkah (diputuskan 25 Oktober 2026): di tahap 2, g
 | No | Pekerjaan | Tahap | Penanggung jawab | Status |
 | --- | --- | --- | --- | --- |
 | 1 | Setujui penyelarasan konstruk: literasi digital dengan tiga dimensi | 1 | Pemilik proyek | Selesai |
-| 2 | Bekukan peta bukti dan definisi 10 analitik di kamus data (`11_KAMUS_DATA.md`) | 1 | Claude (draf), pemilik proyek | Berikutnya |
+| 2 | Bekukan peta bukti dan definisi 10 analitik di kamus data ([11](11_KAMUS_DATA.md)) | 1 | Claude (draf), pemilik proyek | Draf, menunggu empat keputusan pemilik proyek |
 | 3 | Pelabelan buta level AKM dan dimensi pada semua butir yang dinilai oleh dua ahli (B.5a di [07](07_TELAAH_INSTRUMEN_VALIDASI.md)); label pengembang sudah ada di 08 | 2 | | Belum mulai |
 | 4 | Periksa ulang label Bloom, terutama Cari Objek dan Benar atau Salah C5 | 1 | | Belum mulai |
 | 5 | Beri kode kesalahan pada kata pengecoh, benda pengecoh, dan pernyataan | 1 | Claude | Selesai di draf 08, menunggu validasi |

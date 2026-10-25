@@ -6,6 +6,25 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 25 Oktober 2026
 
+**Draf kamus data** (sesi `sky/optimistic-carson-kkpbcv`, daftar kerja no. 2)
+
+- Kamus data disusun di [11_KAMUS_DATA.md](11_KAMUS_DATA.md): peta bukti, butir yang dinilai, pengerjaan pertama, data hilang, penanda analisis, definisi beku 10 analitik, variabel butir dan peserta, aturan gabung lembar, dan syarat data untuk tahap 3. Statusnya draf sampai pemilik proyek memutuskan empat pertanyaan di bagian akhir dokumen itu:
+  1. kode bagian ketuk lain di *Periksa Unggahan*
+  2. cara memotong jeda di waktu aktif
+  3. definisi data siswa yang bisa dianalisis
+  4. perlakuan tebakan cepat di analisis utama
+- **Penegasan yang diusulkan bersama draf** (tafsiran dokumen sebelumnya, bisa dikoreksi pemilik proyek):
+  - Pengerjaan pertama yang terputus dilanjutkan, bukan dibuat baru. Syarat ini ditambahkan ke mode penelitian (perubahan sistem no. 16).
+  - "Dilewati" jenis (a) juga mencakup skenario yang ditutup setelah kesempatan ketiga.
+  - "Dibantu" di analisis utama hanya bantuan isi L3 (ISI, STR, BHS).
+  - Ketukan di tempat kosong tidak memakai kesempatan; ketukan dekat kunci dihitung sebagai NON-SEN di luar percobaan.
+  - Benda sasaran petunjuk lain di Temukan Benda diberi INF-LIT.
+  - Kode kesalahan bank tidak pernah ditimpa: NON-TEB dan NON-HABIS menjadi penanda tersendiri, dan `*-LAIN` dari pengodean manual disimpan di kolom lain.
+- **Perbaikan tanpa keputusan baru:**
+  - Di 03, DIG-HOX hanya D2, analitik 8 berlaku untuk D1–D3, dan analitik 10 hanya D2, karena dimensi ikut butir (model *between-item*).
+  - Gambar peta bukti disesuaikan dengan kisi-kisi yang disetujui: nama D3, Isi Rumpang dan Benar atau Salah hanya D1, Cari Objek babak 2 D3 dengan babak 1 PBK, Skenario Digital hanya D2, dan kode BUD di pola kesalahan.
+  - Contoh data mentah di 01 mendapat kolom `rapid_guess`. Baris tebakan cepat kini memakai kode bank butir itu (INF-HUB), dan `wnb-3-a01` memakai INF-LIT sesuai 08.
+
 **Pemeriksaan sebelum tahap dokumen 1** (sesi `pbb/eloquent-sagan-j40sg8`)
 
 - **Keputusan pemilik proyek: pelabelan buta hanya sekali, oleh dua ahli di tahap 2** (B.5a di 07). Kesepakatan κ ≥ 0,70 pindah dari gerbang G1 ke G2. G1 kini berarti konstruk disetujui dan semua dokumen tahap 1 selesai dan disetujui pemilik proyek. Daftar kerja no. 3 pindah ke tahap 2. Alasannya: pelabelan ganda memakan waktu, dan anggota tim yang sudah melihat label pengembang di 08 tidak bisa melabel secara buta.
