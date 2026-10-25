@@ -22,7 +22,7 @@ Ada sepuluh keputusan dari pemilik proyek. Semuanya berlaku mulai dokumen ini.
 | Log yang tidak dibutuhkan **dihapus**, sisanya **dipisah** | Setiap log masuk salah satu dari tiga: dihapus, hanya untuk admin, atau untuk peneliti. Lihat bagian *Log: dihapus atau dipisah*. |
 | Guru **tidak ikut** dalam penelitian | Guru cukup membantu menyiapkan perangkat dan internet. Kolom "Informasi bagi guru" kita ganti jadi "Makna bagi penelitian". Semua pengamatan dilakukan peneliti. |
 | Laporan untuk guru cuma **ide tambahan** | Laporan kelas untuk guru di luar lingkup penelitian. Kita simpan sebagai gagasan pengembangan nanti. |
-| Semua yang ada di game **boleh dirombak total** | Tidak ada fitur yang wajib dipertahankan. Batasnya hanya kebutuhan penelitian: kunci jawaban tetap di server, kode butir tidak bergeser, dan data mentah tetap lengkap. |
+| Semua yang ada di game **boleh dirombak total** | Tidak ada fitur yang wajib dipertahankan. Batasnya hanya kebutuhan penelitian: kunci jawaban tetap di server, kode butir yang sudah punya data siswa tidak dipakai ulang untuk isi lain, dan data mentah tetap lengkap. |
 | **Belum ada implementasi** di sistem | Sekarang fokusnya desain instrumen, validasi, dan persiapan lapangan. Perubahan sistem dicatat di bagian akhir dan baru dikerjakan setelah desainnya disetujui. |
 
 Karena guru tidak ikut, bantuan guru pada isi soal harus dicegah lewat arahan sebelum sesi. Kalau tetap terjadi, kita catat di lembar L3.
@@ -262,14 +262,14 @@ Saran kita: **dua-duanya, dengan batas yang jelas.** Sistem tetap menghasilkan d
 
 ## Token sesi: perlu atau tidak?
 
-Saran kita: **perlu, tapi versi ringan.** Bukan sistem ujian seperti ANBK, cukup konsep tokennya. GELITA bukan untuk umum, dan data kita hanya bersih kalau siswa bermain di sesi yang kita amati.
+**Diputuskan (25 Oktober 2026): dipakai, versi ringan, dan token sekaligus mengatur wilayah yang dibuka di tiap pertemuan.** Bukan sistem ujian seperti ANBK, cukup konsep tokennya. GELITA bukan untuk umum, dan data kita hanya bersih kalau siswa bermain di sesi yang kita amati.
 
 **Yang kita dapat dari token sesi:**
 
 - Siswa hanya bisa bermain di sesi yang diamati peneliti, jadi tidak ada data dari rumah yang dibantu orang tua atau kakak dan tidak tercatat di lembar lapangan.
 - Setiap sesi game otomatis tersambung ke sesi lapangan (L1), jadi penggabungan dengan lembar tidak perlu dicocokkan manual.
 - Token membawa sekolah dan rombel. Saat siswa mendaftar dengan token, sekolah dan kelasnya terisi sendiri: tidak perlu mengetik NPSN, dan peran guru makin sedikit.
-- Kalau mau, token juga bisa mengatur wilayah atau tantangan mana yang dibuka di pertemuan itu, supaya laju bermain antar kelas setara.
+- Token juga mengatur wilayah yang dibuka di pertemuan itu, supaya laju bermain antar kelas setara: P1 pendaftaran dan cerita pembuka, P2 Temanggung, P3 Magelang, P4 Wonosobo, P5 tantangan yang tertinggal dan cerita penutup.
 
 **Cara kerjanya:**
 
@@ -277,7 +277,7 @@ Saran kita: **perlu, tapi versi ringan.** Bukan sistem ujian seperti ANBK, cukup
 2. Sistem membuat token 6 huruf tanpa huruf yang mudah tertukar (tanpa O, 0, I, 1), misalnya `KD7RMA`. P1 menulisnya di papan tulis.
 3. Siswa masuk atau daftar, lalu mengetik token sekali per sesi.
 4. Token hanya berlaku di jam sesi itu. P1 bisa menutupnya lebih awal atau membuat token baru kalau token bocor.
-5. Di luar sesi, game menampilkan pesan ramah: "Permainan dibuka waktu sesi bersama kakak peneliti, ya."
+5. Di luar sesi, seluruh game tertutup sampai penelitian selesai, termasuk Pustaka dan Profil. Game menampilkan pesan ramah: "Permainan dibuka waktu sesi bersama kakak peneliti, ya." Setelah status studi ditutup, game terbuka seperti biasa.
 
 **Bedanya dengan ANBK:** tidak ada aplikasi ujian khusus, tidak ada proktor, dan token tidak berganti tiap 15 menit. Itu wajar untuk ujian berisiko tinggi, tapi berlebihan untuk penelitian kita.
 
@@ -285,7 +285,7 @@ Saran kita: **perlu, tapi versi ringan.** Bukan sistem ujian seperti ANBK, cukup
 
 Usulan kode peserta yang memuat sekolah dan nomor urut bisa dipakai, dengan satu tambahan: huruf rombel. Satu sekolah bisa punya dua kelas 5, masing-masing sampai 50 siswa, jadi nomor urut per sekolah saja bisa lewat dari 99.
 
-**Format usulan: `S03-A07`**
+**Format: `S03-A07`** (disetujui pemilik proyek, 25 Oktober 2026)
 
 | Bagian | Arti | Contoh |
 | --- | --- | --- |
@@ -356,7 +356,7 @@ Data inti analisis adalah ketepatan percobaan pertama. Lembar lapangan dipakai s
 
 ## Peta jalan dan daftar kerja
 
-Pekerjaan berjalan dalam enam tahap. Tahap berikutnya baru dimulai setelah gerbangnya terpenuhi. Sistem baru diubah di tahap 3, setelah instrumen lolos validasi ahli dan izin etik.
+Pekerjaan berjalan dalam enam tahap. Tahap berikutnya baru dimulai setelah gerbangnya terpenuhi. Sistem baru diubah di tahap 3, setelah instrumen lolos validasi ahli dan izin etik. Urutan ini dikukuhkan pemilik proyek pada 25 Oktober 2026: dokumen implementasi dan perubahan sistem tidak dimulai sebelum gerbang G2.
 
 ![Peta jalan: enam tahap, lima gerbang](gambar/peta-jalan.svg)
 
@@ -394,9 +394,9 @@ Pertanyaan ini perlu dijawab sebelum desain instrumen dibekukan. Centang kalau t
 - [x] Ahli media ikut memvalidasi (daftar kerja no. 14)? **Diputuskan (25 Oktober 2026): ya.**
 - [ ] Peran `guru` dinonaktifkan selama penelitian, atau dihapus sama sekali?
 - [ ] Skenario Digital memakai aturan 3 kesempatan, atau satu pilihan lalu umpan balik? Usulan: boleh mencoba lagi, yang dianalisis pilihan pertama.
-- [ ] Token sesi dipakai? Usulan: ya, versi ringan.
-- [ ] Di luar sesi, apakah Pustaka dan Profil tetap boleh dibuka, atau semuanya tertutup?
-- [ ] Format kode peserta `S03-A07` disetujui?
+- [x] Token sesi dipakai? **Diputuskan (25 Oktober 2026): ya, versi ringan, dan token mengatur wilayah yang dibuka di tiap pertemuan.**
+- [x] Di luar sesi, apakah Pustaka dan Profil tetap boleh dibuka, atau semuanya tertutup? **Diputuskan (25 Oktober 2026): semuanya tertutup sampai penelitian selesai.**
+- [x] Format kode peserta `S03-A07` disetujui? **Diputuskan (25 Oktober 2026): ya.**
 - [x] Berapa pertemuan per kelas, dan tantangan mana yang dibuka di tiap pertemuan? **Diputuskan (25 Oktober 2026): lima pertemuan; satu wilayah per pertemuan (lihat [06](06_KISI_KISI_BANK_SOAL.md#waktu-bermain)).**
 - [ ] Siapa yang menulis skenario dan cerita penghubungnya (Mbah Kedu dan Jaka), dan siapa yang mengisi suara narasinya?
 - [ ] Siapa validator ahlinya: isi budaya Kedu, bahasa anak, literasi digital, pengukuran, dan media? (Panel ahli materi lima orang, lihat [07](07_TELAAH_INSTRUMEN_VALIDASI.md).)
@@ -407,6 +407,7 @@ Pertanyaan ini perlu dijawab sebelum desain instrumen dibekukan. Centang kalau t
 - [ ] Skema kesalahan dan rencana analisis dipra-registrasi (misalnya di OSF) atau tidak?
 - [ ] Indikator `sikap` dipakai (misalnya lewat Balai Refleksi) atau dihapus?
 - [ ] Ambang waktu tidak aktif (usulan 60 detik) dan tebakan cepat (usulan 1,5 detik) ditetapkan setelah uji coba?
+- [ ] Karena sistem baru diubah setelah G2, bagaimana ahli media menilai layar baru (Skenario Digital, *Periksa Unggahan*, token) sebelum uji coba?
 
 ## Catatan perubahan sistem untuk tahap nanti
 
@@ -417,14 +418,14 @@ Belum ada yang dikerjakan sekarang. Daftar ini jadi bahan dokumen implementasi d
 | 1 | Kode kesalahan pada setiap kata pengecoh, benda pengecoh, pernyataan, dan pilihan skenario | 6, 9 | Kolom baru di workbook bank soal; sistem menurunkan kode ke setiap percobaan salah (`item_tries`); kode tidak pernah dikirim ke browser |
 | 2 | Tantangan kelima Skenario Digital di tiga wilayah | 10 | Engine baru dua langkah (tindakan, alasan), simpan `reason_code`; cerita, narasi, gambar, peta; Serpihan Cahaya jadi 15 |
 | 3 | Label level AKM dan dimensi per butir; indikator per dimensi | 2, 3 | Kolom baru di bank soal dan ekspor butir; label Bloom tetap ada |
-| 4 | Butir jangkar di ketiga wilayah | 2, 3 | Kode butir lama tidak boleh bergeser; pakai kode eksplisit |
+| 4 | Butir jangkar antarvariasi | 2, 3 | Kartu jangkar di Benar atau Salah, 2 pernyataan per wilayah, sama untuk variasi a dan b; butir berkode `x` (lihat [06](06_KISI_KISI_BANK_SOAL.md#butir-jangkar-usulan)) |
 | 5 | Waktu aktif | 5 | Dihitung dari selang layar tersembunyi dan jeda tanpa sentuhan; ambangnya dari hasil uji coba |
 | 6 | Narasi instruksi dengan kode konteks sendiri | 7 | Supaya "mengulang instruksi" terpisah dari "memutar narasi soal" |
 | 7 | Pembersihan log | semua | Hapus event dan kolom bertanda "Dihapus" di bagian *Log: dihapus atau dipisah*; pindahkan yang bertanda "Admin" keluar dari ekspor penelitian |
 | 8 | Variabel beban permukaan per tantangan | 2, 5 | Jumlah rumpang, pengecoh, panjang bacaan, benda pengecoh, ukuran kotak di ekspor butir |
 | 9 | Lapis data turunan | 1, 4, 5, 6, 9 | Satu tempat menghitung kode kesalahan, waktu aktif, "dilewati", tersensor, tebakan cepat; berversi dan diuji otomatis |
 | 10 | Peran `peneliti` terpisah dari `admin` | semua | Hak akses sesuai tabel *Admin dan peneliti*; peneliti hanya melihat data pseudonim; admin tidak mengunduh data penelitian; peran `guru` nonaktif |
-| 11 | Token sesi lapangan | semua | Sesi lapangan di panel peneliti (sekolah, rombel, pertemuan, jam buka–tutup), token 6 huruf, sesi game tersambung ke sesi lapangan |
+| 11 | Token sesi lapangan | semua | Sesi lapangan di panel peneliti (sekolah, rombel, pertemuan, wilayah yang dibuka, jam buka–tutup), token 6 huruf, sesi game tersambung ke sesi lapangan; di luar sesi seluruh game tertutup sampai studi ditutup |
 | 12 | Kode peserta baru `S03-A07` dan rombel | semua | Daftar kode sekolah penelitian; sekolah dan rombel dari token; nomor urut per rombel dibuat dengan aman saat banyak siswa mendaftar bersamaan |
 | 13 | Panel pemantauan lapangan | 1 | Siapa belum selesai, sesi aktif, event hilang; hanya untuk operasional |
 | 14 | Kamus data dan ekspor penelitian | semua | Ekspor hanya berisi data bertanda "Peneliti"; kamus data memuat definisi "dilewati", waktu aktif, dimensi, dan kode |

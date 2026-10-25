@@ -31,7 +31,7 @@ L0 mencegah data cacat sejak awal. P1 mencentang setiap baris di H-1 dan sekali 
 - [ ] Setiap perangkat diberi stiker nomor (P01, P02, …) dan denah kursi L2 sudah digambar
 - [ ] Semua perangkat siswa adalah laptop, Chromebook, atau tablet mendatar berlayar 10 inci atau lebih; tidak ada ponsel (keputusan 25 Oktober 2026)
 - [ ] Rilis dan paket aset game yang aktif sudah dicatat; sama untuk semua kelas penelitian
-- [ ] Sesi lapangan dan token sudah dibuat di panel peneliti (kalau token dipakai)
+- [ ] Sesi lapangan dan token sudah dibuat di panel peneliti, dengan wilayah yang dibuka untuk pertemuan ini
 - [ ] Lembar L1–L5 dicetak, papan jalan dan pulpen siap
 - [ ] Pengamat L4 sudah lulus pelatihan (lihat L4)
 - [ ] Guru sudah diberi arahan: cukup membantu perangkat dan internet
@@ -54,12 +54,12 @@ L1 menjelaskan konteks di balik angka log. Misalnya, waktu yang lama bisa karena
 <!-- lembar: L1-kondisi -->
 | Isian | Cara mengisi | Contoh | Isi di sini |
 | --- | --- | --- | --- |
-| Kode sesi lapangan | Sekolah-rombel-pertemuan (sama dengan sesi di panel peneliti kalau token dipakai) | S03-A-P1 | |
+| Kode sesi lapangan | Sekolah-rombel-pertemuan (sama dengan sesi di panel peneliti) | S03-A-P1 | |
 | Token | Token yang ditulis di papan tulis | KD7RMA | |
 | Tanggal; jam mulai dan selesai | Jam WIB sampai detik dari ponsel yang sudah disamakan | 4 Nov 2026; 08:02:15–09:10:40 | |
 | Pengamat | Inisial dan peran | AR (P1), DS (P2), MN (P3) | |
 | Siswa hadir / berizin / bermain | Tiga angka | 28 / 26 / 26 | |
-| Ruang dan perangkat | Kelas atau lab; tablet, laptop, atau HP; milik sekolah atau pribadi | Lab; tablet sekolah | |
+| Ruang dan perangkat | Kelas atau lab; laptop, Chromebook, atau tablet (tanpa ponsel); milik sekolah atau pribadi | Lab; tablet sekolah | |
 | Internet | Jenis, hasil uji tiga titik (Baik, Lambat, Putus) | Wi-Fi sekolah; Baik, Baik, Lambat | |
 | Headset | Jumlah siswa yang memakai headset | 20 dari 26 | |
 | Kebisingan | 1 tenang, 2 sedang, 3 bising | 2 | |
