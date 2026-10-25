@@ -45,11 +45,11 @@ Urutan kerja mengikuti peta jalan di 01, yang dikukuhkan pemilik proyek pada 25 
 | Lembar L0–L7 final | no. 11 | | Belum mulai |
 | Instrumen validasi r10 v2.1 dan media v1.1 | [07](07_TELAAH_INSTRUMEN_VALIDASI.md#langkah-berikutnya) | | Belum mulai |
 
-Gerbang G1: tim menyetujui konstruk, dan dua penilai sepakat pada label AKM dan kode kesalahan (κ ≥ 0,70).
+Gerbang G1: konstruk disetujui, dan semua dokumen tahap 1 selesai dan disetujui pemilik proyek.
 
 **Tahap dokumen 2: validasi ahli dan izin etik (sampai gerbang G2)**
 
-Paket validasi untuk tujuh validator (nama samaran sementara di [03](03_KODE_DAN_ARTI.md#peran)), permohonan izin etik ke *Lembaga Komite Etik* (nama samaran; diajukan minggu kedua–keempat November 2026), dan surat izin orang tua (L7). Setelah itu bank dan instrumen direvisi dari hasil validasi.
+Pelabelan buta oleh dua ahli (B.5a di [07](07_TELAAH_INSTRUMEN_VALIDASI.md)), dengan kesepakatan κ ≥ 0,70 sebagai bagian gerbang G2. Paket validasi untuk tujuh validator (nama samaran sementara di [03](03_KODE_DAN_ARTI.md#peran)), permohonan izin etik ke *Lembaga Komite Etik* (nama samaran; diajukan minggu kedua–keempat November 2026), dan surat izin orang tua (L7). Setelah itu bank dan instrumen direvisi dari hasil validasi.
 
 **Tahap dokumen 3: dokumen implementasi (tahap 3, setelah gerbang G2)**
 

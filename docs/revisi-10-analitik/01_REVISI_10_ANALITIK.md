@@ -70,13 +70,13 @@ Kolom status bisa diubah tim seiring pekerjaan berjalan.
 
 Sudah diputuskan: tiap wilayah dapat tantangan kelima, **Skenario Digital** (kode kerja `tmg-5`, `mgl-5`, `wnb-5`). Isinya mengacu ke empat pilar literasi digital dari Komdigi dan Siberkreasi: Cakap, Etis, Aman, dan Budaya Bermedia Digital. Sekarang game baru merekam literasi digital dari pembuatan kata sandi waktu daftar; tantangan literasi digital yang lama sudah dihapus saat perombakan kelas 5.
 
-**Topiknya sama di tiap wilayah, kerumitannya yang naik.** Keempat topik dari analitik 10 muncul di setiap wilayah, jadi topik tidak tercampur dengan tingkat kesulitan.
+**Topiknya sama di tiap wilayah, kerumitannya yang naik.** Keempat topik dari analitik 10 muncul di setiap wilayah, jadi topik tidak tercampur dengan tingkat kesulitan. Izin atas karya dan tradisi budaya pindah ke D3 (*Periksa Unggahan*, BUD-IZN), jadi topik izin di D2 cukup foto dan obrolan diri sendiri atau teman ([06](06_KISI_KISI_BANK_SOAL.md#topik-skenario-digital-d2)).
 
 | Topik (pilar) | Temanggung (mudah) | Magelang (sedang) | Wonosobo (sulit) |
 | --- | --- | --- | --- |
 | Data pribadi (Aman) | Tanda bahayanya jelas | Tanda bahayanya samar | Ada hadiah yang menggoda |
 | Kata sandi dan kode OTP (Aman) | Orang asing yang minta | Teman dekat yang minta | Permintaannya kelihatan resmi |
-| Izin berbagi foto atau karya (Etis, Budaya) | Foto diri sendiri | Foto orang lain | Karya budaya milik orang lain |
+| Izin membagikan foto atau obrolan (Etis) | Foto diri sendiri | Foto teman | Tangkapan layar obrolan teman mau diteruskan ke grup |
 | Pesan orang asing dan kabar bohong (Aman, Cakap) | Pesannya jelas mencurigakan | Pesan berantai dari grup | Situasinya berkembang dua langkah |
 | Jumlah pilihan tindakan | 3 | 4 | 4 |
 | Jumlah pilihan alasan | 3 | 4 | 5 |
@@ -110,7 +110,7 @@ Latar contoh ini sudah dicek: Telaga Warna memang ada di Wonosobo. Contoh sebelu
 
 ## Skema kategori kesalahan
 
-Setiap pilihan salah diberi satu kode **sebelum** data diambil, lalu kode itu ikut tercatat di setiap percobaan yang salah. Skema ini dibekukan setelah uji coba dan tidak diubah selama pengambilan data utama. Kode INF masuk dimensi D1 (INF-BUD juga D3), kode DIG masuk D2 (DIG-IZN dan DIG-ETK juga D3).
+Setiap pilihan salah diberi satu kode **sebelum** data diambil, lalu kode itu ikut tercatat di setiap percobaan yang salah. Skema ini dibekukan setelah uji coba dan tidak diubah selama pengambilan data utama. Kode INF masuk dimensi D1, kecuali di Cari Objek babak 1 yang menjadi skala pendamping PBK; INF-BUD hanya dipakai di sana. Kode DIG hanya masuk D2, termasuk DIG-IZN dan DIG-ETK. Kode BUD masuk D3. Arti setiap kode ada di [03](03_KODE_DAN_ARTI.md).
 
 **A. Salah memilih informasi (INF)**
 
@@ -137,15 +137,25 @@ Setiap pilihan salah diberi satu kode **sebelum** data diambil, lalu kode itu ik
 | DIG-ETK | Berkomunikasi tidak etis | Mengejek tradisi ruwatan rambut gimbal Dieng di kolom komentar | berisiko |
 | DIG-PSF | Terlalu pasif, tidak melapor | Mendiamkan orang asing tapi tidak cerita ke orang tua atau guru | kurang tepat |
 
-**C. Prosedural (NON):** NON-TEB menebak cepat (menjawab kurang dari 1,5 detik tanpa membaca; ambangnya diuji saat uji coba), NON-SEN salah ketuk di dekat sasaran, NON-HABIS jawaban terakhir saat kesempatan habis. Kesalahan yang tidak cocok dengan kode mana pun diberi INF-LAIN atau DIG-LAIN, lalu dikode manual.
+**C. Budaya digital Kedu (BUD)**, untuk D3 di Cari Objek babak 2 *Periksa Unggahan*
 
-**D. Alasan di Skenario Digital (R):** R-RISK paham risikonya, R-ETIK empati atau izin, R-ATUR "karena disuruh atau dilarang", R-SOS tekanan teman atau ingin disukai, R-ACAK alasannya tidak nyambung.
+| Kode | Kategori |
+| --- | --- |
+| BUD-ATR | Tidak mencantumkan atau salah menunjuk pembuat dan sumber karya budaya |
+| BUD-REP | Menerima atau menyebarkan keterangan budaya yang keliru |
+| BUD-IZN | Mengunggah ulang penampilan atau karya budaya tanpa izin |
+| BUD-ETK | Menanggapi tradisi dengan cara yang tidak menghormati |
+
+**D. Prosedural (NON):** NON-TEB menebak cepat (menjawab kurang dari 1,5 detik tanpa membaca; ambangnya diuji saat uji coba), NON-SEN salah ketuk di dekat sasaran, NON-HABIS jawaban terakhir saat kesempatan habis. Kesalahan yang tidak cocok dengan kode mana pun diberi INF-LAIN, DIG-LAIN, atau BUD-LAIN, lalu dikode manual.
+
+**E. Alasan di Skenario Digital (R):** R-RISK paham risikonya, R-ETIK empati atau izin, R-ATUR "karena disuruh atau dilarang", R-SOS tekanan teman atau ingin disukai, R-ACAK alasannya tidak nyambung.
 
 **Cara kode menempel di tiap jenis tantangan:**
 
 - Isi Rumpang: matriks rumpang × kata. Setiap pasangan "kata ini di rumpang itu" punya satu kode, termasuk kata yang sebenarnya benar untuk rumpang lain.
 - Benar atau Salah: setiap pernyataan punya satu kode jebakan. Kalau siswa keliru menilai pernyataan itu, kodenya yang dipakai.
-- Cari Objek: setiap benda pengecoh punya satu kode; mengetuk tempat kosong di dekat sasaran = NON-SEN.
+- Cari Objek babak 1 (*Temukan Benda*, PBK): setiap benda pengecoh punya satu kode (INF-BUD atau INF-LIT); mengetuk tempat kosong di dekat sasaran = NON-SEN.
+- Cari Objek babak 2 (*Periksa Unggahan*, D3): setiap bagian unggahan yang salah untuk sebuah petunjuk punya satu kode BUD; bagian netral (misalnya jumlah suka) = NON-SEN.
 - Skenario Digital: setiap pilihan tindakan dan setiap alasan punya satu kode.
 - Susun Gambar: tidak dikode, karena dipakai sebagai pemanasan.
 
@@ -158,7 +168,7 @@ participant_code,item_key,try_no,answer,is_correct,error_code,reason_code,hint_b
 S03-A07,wnb-2-a01,1,karena,0,INF-HUB,,0,14200
 S03-A07,wnb-2-a01,2,sehingga,1,,,1,9800
 S03-A07,wnb-3-a01,1,salah,0,INF-SUM,,0,21500
-S03-A07,wnb-4-a01,1,tap:angklung,0,INF-BUD,,0,6100
+S03-A07,wnb-4-x03,1,tap:angklung,0,INF-BUD,,0,6100
 S03-A07,wnb-5-a01,1,kirim_data,0,DIG-PRI,R-SOS,0,18300
 S03-A07,wnb-5-a01,2,lapor_ortu,1,,R-RISK,0,7400
 S03-A12,wnb-5-a02,1,diamkan,0,DIG-PSF,R-ATUR,0,5200
@@ -259,7 +269,7 @@ Saran kita: **dua-duanya, dengan batas yang jelas.** Sistem tetap menghasilkan d
 | 2. Data turunan | Sistem GELITA | Kode kesalahan per percobaan, waktu aktif, tiga jenis "dilewati", penanda tersensor, penanda tebakan cepat, label level AKM dan dimensi | Aturannya bergantung pada logika game, yang paling dipahami sistem. Dihitung sekali, sama untuk semua peneliti, bisa diuji otomatis, dan dijelaskan di kamus data |
 | 3. Analisis | R, jamovi, Winsteps, atau Python | Rasch, model campuran, κ, grafik, tabel untuk naskah | Reviewer jurnal mengharapkan perangkat lunak statistik standar dan skrip yang bisa diulang. Membangun statistik di dalam game mahal dan rawan salah |
 
-**Lembar lapangan** diketik ke templat spreadsheet atau ke situs statis revisi ini, lalu digabung dengan data di lapis 3 lewat skrip. Kuncinya kode peserta dan jam WIB, atau kode sesi kalau token sesi dipakai. Mengimpor lembar ke sistem itu opsional dan bisa nanti.
+**Lembar lapangan** diketik ke templat spreadsheet atau ke situs statis revisi ini, lalu digabung dengan data di lapis 3 lewat skrip. Kuncinya kode peserta, jam WIB, dan kode sesi. Mengimpor lembar ke sistem itu opsional dan bisa nanti.
 
 **Yang tetap perlu ada di sistem** adalah panel pemantauan sederhana selama pengambilan data: siapa yang belum selesai, sesi mana yang aktif, dan apakah ada event yang hilang. Panel ini untuk operasional di lapangan, bukan untuk hasil penelitian.
 
@@ -323,7 +333,7 @@ Pengambilan data utama memakai **tiga peneliti per kelas** (diputuskan 25 Oktobe
 
 **Alur satu pertemuan:**
 
-1. **H-7 sampai H-1.** Kumpulkan izin orang tua (L7). Tempel stiker nomor di setiap perangkat. Cetak lembar. Jalankan daftar periksa L0. Kalau token sesi dipakai, buat sesi lapangannya di panel peneliti.
+1. **H-7 sampai H-1.** Kumpulkan izin orang tua (L7). Tempel stiker nomor di setiap perangkat. Cetak lembar. Jalankan daftar periksa L0. Buat sesi lapangannya di panel peneliti, termasuk wilayah yang dibuka.
 2. **Sebelum siswa masuk.** Samakan jam: semua pengamat memakai jam ponsel yang diatur otomatis dari jaringan (WIB), dicatat sampai detik. Uji internet dan isi bagian atas L1.
 3. **Pembukaan (5 menit).** P1 memberi arahan ke siswa dan guru, lalu menulis token di papan tulis.
 4. **Masuk atau daftar.** Setelah siswa masuk, P1 menyalin kode peserta dari halaman Profil siswa ("kode penelitian", misalnya S03-A07) ke L2, di samping nomor kursi dan nomor perangkat.
@@ -365,13 +375,15 @@ Pekerjaan berjalan dalam enam tahap. Tahap berikutnya baru dimulai setelah gerba
 
 Tanggal tiap tahap belum ditetapkan dan perlu diisi tim. Daftar kerja di bawah memuat pekerjaan tahap 1 sampai 4, kecuali perubahan sistem (lihat bagian terakhir).
 
+Gerbang G1 berarti konstruk disetujui dan semua dokumen tahap 1 selesai dan disetujui pemilik proyek. Kesepakatan dua penilai pada label (κ ≥ 0,70) diperiksa sekali saja, pada pelabelan buta dua ahli di tahap 2, dan menjadi bagian gerbang G2 (diputuskan 25 Oktober 2026).
+
 Ahli media menilai dalam dua langkah (diputuskan 25 Oktober 2026): di tahap 2, game yang ada sekarang ditambah rancangan layar baru (Skenario Digital, *Periksa Unggahan*, token) berupa papan cerita atau mock-up; setelah tahap 3, telaah singkat layar yang sudah jadi di instalasi uji sebelum uji coba, sebagai bagian gerbang G3.
 
 | No | Pekerjaan | Tahap | Penanggung jawab | Status |
 | --- | --- | --- | --- | --- |
 | 1 | Setujui penyelarasan konstruk: literasi digital dengan tiga dimensi | 1 | Pemilik proyek | Selesai |
 | 2 | Bekukan peta bukti dan definisi 10 analitik di kamus data (`11_KAMUS_DATA.md`) | 1 | Claude (draf), pemilik proyek | Berikutnya |
-| 3 | Beri label level AKM dan dimensi pada semua butir yang dinilai (dua penilai; label pengembang sudah ada di 08) | 1 | | Belum mulai |
+| 3 | Pelabelan buta level AKM dan dimensi pada semua butir yang dinilai oleh dua ahli (B.5a di [07](07_TELAAH_INSTRUMEN_VALIDASI.md)); label pengembang sudah ada di 08 | 2 | | Belum mulai |
 | 4 | Periksa ulang label Bloom, terutama Cari Objek dan Benar atau Salah C5 | 1 | | Belum mulai |
 | 5 | Beri kode kesalahan pada kata pengecoh, benda pengecoh, dan pernyataan | 1 | Claude | Selesai di draf 08, menunggu validasi |
 | 6 | Tulis Skenario Digital untuk tiga wilayah, lengkap dengan pilihan tindakan dan alasan berkode | 1 | Claude | Selesai di draf 08, menunggu validasi |
