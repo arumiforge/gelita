@@ -2,7 +2,7 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 25 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Status: **draf kisi-kisi, menunggu keputusan pemilik proyek pada bagian bertanda "usulan"**
+Per 25 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Status: **disetujui pemilik proyek (25 Oktober 2026)**, termasuk semua bagian yang semula bertanda "usulan". Isi bank yang mengikuti kisi-kisi ini ada di [08_DRAF_BANK_SOAL.md](08_DRAF_BANK_SOAL.md).
 
 Kisi-kisi ini jadi cetak biru bank soal baru: berapa butir, di tantangan mana, mengukur dimensi apa, di level apa, dengan bacaan seperti apa, dan kode kesalahan apa yang dibawa setiap pilihan. Dokumen ini meneruskan [05_TELAAH_BUTIR_DAN_DIMENSI.md](05_TELAAH_BUTIR_DAN_DIMENSI.md) dan tidak mengulang telaahnya. Belum ada yang diubah di sistem atau di [`docs/bank-soal/`](../bank-soal/README.md).
 
@@ -358,7 +358,7 @@ Daftar ini hanya catatan untuk dokumen implementasi; belum ada yang dikerjakan.
 
 ## Pertanyaan untuk pemilik proyek
 
-Setiap pertanyaan sudah punya jawaban bawaan (usulan) di kisi-kisi ini.
+**Semua usulan di bawah disetujui pemilik proyek pada 25 Oktober 2026**, termasuk butir 9 (tiga pilihan untuk D1b Wonosobo ditunda sampai setelah uji coba).
 
 1. **Di mana D3?** Usulan: Cari Objek babak 2 *Periksa Unggahan*; babak 1 jadi skala pendamping PBK. Pilihan lain: D3 masuk Skenario Digital (tantangan kelima jadi 8 skenario per wilayah, terlalu panjang).
 2. **Pengecoh kedua di bank kata Temanggung?** Usulan: ya, 2 pengecoh, supaya rumpang terakhir tidak tinggal satu pilihan.
