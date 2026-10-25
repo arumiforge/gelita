@@ -15,7 +15,7 @@ Documentation only, in `docs/revisi-10-analitik/` (Indonesian, at the owner's re
   - [x] Owner accepted the expert-instrument review (`07_TELAAH_INSTRUMEN_VALIDASI.md`) and added the media expert (25 October 2026)
   - [ ] Rewrite the instruments once as r10 v2.1 and media v1.1, after the blueprint and the D3 decision
   - [x] AI-assisted media pre-review on a local test install (`10_TELAAH_PENDAHULUAN_MEDIA.md`)
-  - [ ] Owner decides the three research-data media findings: no phones for data collection, re-laid Cari Objek tap areas with an automatic overlap check, timer hidden during the study; and the narration rule (D1 never read aloud)
+  - [x] Owner approved the media decisions (25 October 2026): no phones for data collection, re-laid Cari Objek tap areas with an automatic overlap check, timer hidden during the study, narration rule (D1 never read aloud). Added as system changes 16–19 in `01` and to the L0 checklist
 - [ ] Complete implementation document, after the revision documents are final
 - [ ] Implementation of the 15 system changes, one short-lived branch each, after the implementation document is approved
 

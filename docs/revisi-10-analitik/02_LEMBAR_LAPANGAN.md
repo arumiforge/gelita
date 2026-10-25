@@ -29,6 +29,7 @@ L0 mencegah data cacat sejak awal. P1 mencentang setiap baris di H-1 dan sekali 
 
 - [ ] Daftar siswa yang sudah dapat izin orang tua (L7) lengkap; siswa tanpa izin sudah diketahui
 - [ ] Setiap perangkat diberi stiker nomor (P01, P02, …) dan denah kursi L2 sudah digambar
+- [ ] Semua perangkat siswa adalah laptop, Chromebook, atau tablet mendatar berlayar 10 inci atau lebih; tidak ada ponsel (keputusan 25 Oktober 2026)
 - [ ] Rilis dan paket aset game yang aktif sudah dicatat; sama untuk semua kelas penelitian
 - [ ] Sesi lapangan dan token sudah dibuat di panel peneliti (kalau token dipakai)
 - [ ] Lembar L1–L5 dicetak, papan jalan dan pulpen siap
