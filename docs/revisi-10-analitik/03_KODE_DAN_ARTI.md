@@ -2,7 +2,7 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 23 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 25 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Semua kode yang dipakai di dokumen revisi, lembar lapangan, dan data penelitian dikumpulkan di sini. Kode yang sudah tersimpan di data game (misalnya `tmg-2-a01` atau `bintang-1`) tidak diganti; kode baru di revisi ini ditandai "usulan" sampai disetujui tim.
 
@@ -21,9 +21,12 @@ Semua kode yang dipakai di dokumen revisi, lembar lapangan, dan data penelitian 
 
 | Kode | Arti | Pilar Komdigi |
 | --- | --- | --- |
-| D1 | Literasi informasi: menemukan, menafsirkan, dan menilai informasi | Cakap Bermedia Digital |
-| D2 | Aman dan etis: data pribadi, kata sandi, izin, orang asing, kabar bohong | Aman dan Etis Bermedia Digital |
-| D3 | Budaya digital Kedu: mengenal dan menghargai budaya Kedu di ruang digital | Budaya Bermedia Digital |
+| D1 | Literasi informasi, bertumpu pada literasi membaca: menemukan, menafsirkan, dan menilai informasi | Cakap Bermedia Digital |
+| D1a | Sub-aspek D1: memahami informasi (menemukan; interpretasi dan integrasi) | Cakap Bermedia Digital |
+| D1b | Sub-aspek D1: menilai informasi dan sumber (fakta dan pendapat, kredibilitas, kabar bertentangan) | Cakap Bermedia Digital |
+| D2 | Aman dan etis: data pribadi, kata sandi dan OTP, orang asing, kabar bohong, izin membagikan foto atau obrolan diri sendiri dan teman | Aman dan Etis Bermedia Digital |
+| D3 | Partisipasi dan representasi budaya Kedu di ruang digital: atribusi, representasi akurat, izin pelaku dan pemilik karya, menghargai tradisi | Budaya Bermedia Digital |
+| PBK | Pengetahuan Budaya Kedu: skala pendamping dari Cari Objek babak 1, di luar skor literasi digital | — |
 
 ## Sepuluh analitik
 
@@ -50,9 +53,13 @@ Semua kode yang dipakai di dokumen revisi, lembar lapangan, dan data penelitian 
 | tmg-1, mgl-1, wnb-1 | Susun Gambar (`puzzle`), pemanasan | Kode tersimpan |
 | tmg-2, mgl-2, wnb-2 | Isi Rumpang (`rumpang`) | Kode tersimpan |
 | tmg-3, mgl-3, wnb-3 | Benar atau Salah (`boleh`) | Kode tersimpan |
-| tmg-4, mgl-4, wnb-4 | Cari Objek (`cari`) | Kode tersimpan |
-| tmg-5, mgl-5, wnb-5 | Skenario Digital, tantangan kelima | Usulan |
-| a, b, c, … j | Variasi soal dalam satu tantangan; pengerjaan pertama selalu a–c | Kode tersimpan |
+| tmg-4, mgl-4, wnb-4 | Cari Objek (`cari`): babak 1 *Temukan Benda* (PBK), babak 2 *Periksa Unggahan* (D3) | Kode tersimpan; babak 2 baru |
+| tmg-5, mgl-5, wnb-5 | Skenario Digital, tantangan kelima (D2) | Disetujui |
+| a, b | Variasi soal dalam tantangan yang dinilai; pengerjaan pertama memakai variasi dari buklet siswa | Disetujui 25 Oktober 2026 (dulu a–c) |
+| x | Butir yang dipakai semua buklet: kartu jangkar (mis. `tmg-3-x01`) dan Temukan Benda (mis. `wnb-4-x03`) | Disetujui |
+| c … j | Variasi Susun Gambar untuk pengerjaan ulang | Kode tersimpan |
+| B1–B4 | Buklet: kombinasi variasi per wilayah (B1 a-a-a, B2 b-b-b, B3 a-b-a, B4 b-a-b), dibagikan per kursi lewat denah L2 | Disetujui |
+| Kedugram | Aplikasi media sosial fiktif tempat semua unggahan di bacaan digital dan *Periksa Unggahan* tampil | Disetujui |
 | tmg-2-a01 | Kode butir: tantangan `tmg-2`, variasi `a`, butir ke-01 | Kode tersimpan |
 
 ## Peserta, sekolah, dan sesi
@@ -78,7 +85,7 @@ Semua kode yang dipakai di dokumen revisi, lembar lapangan, dan data penelitian 
 | INF-HUB | Salah menghubungkan informasi (sebab-akibat, urutan) | D1 |
 | INF-SUM | Salah menilai sumber | D1 |
 | INF-FOP | Mencampur fakta dan pendapat | D1 |
-| INF-BUD | Tertukar benda budaya yang mirip | D1, D3 |
+| INF-BUD | Tertukar benda budaya yang mirip | PBK (Cari Objek babak 1) |
 | INF-GEN | Menggeneralisasi berlebihan | D1 |
 | INF-LAIN | Kesalahan informasi yang tidak cocok dengan kode lain; dikode manual | D1 |
 
@@ -88,12 +95,22 @@ Semua kode yang dipakai di dokumen revisi, lembar lapangan, dan data penelitian 
 | --- | --- | --- |
 | DIG-PRI | Membagikan data pribadi berlebihan (berisiko) | D2 |
 | DIG-SAN | Membagikan kata sandi atau kode OTP (berisiko) | D2 |
-| DIG-IZN | Membagikan tanpa izin (berisiko) | D2, D3 |
+| DIG-IZN | Membagikan foto atau obrolan diri sendiri atau teman tanpa izin (berisiko) | D2 |
 | DIG-ASG | Menanggapi orang asing (berisiko) | D2 |
 | DIG-HOX | Meneruskan kabar yang belum dicek (berisiko) | D2, D1 |
-| DIG-ETK | Berkomunikasi tidak etis (berisiko) | D2, D3 |
+| DIG-ETK | Berkomunikasi tidak etis (berisiko) | D2 |
 | DIG-PSF | Terlalu pasif, tidak melapor (kurang tepat) | D2 |
 | DIG-LAIN | Kesalahan tindakan yang tidak cocok dengan kode lain; dikode manual | D2 |
+
+## Kode kesalahan: budaya digital (BUD)
+
+| Kode | Arti | Dimensi |
+| --- | --- | --- |
+| BUD-ATR | Tidak mencantumkan atau salah menunjuk pembuat dan sumber karya budaya | D3 |
+| BUD-REP | Menerima atau menyebarkan keterangan budaya yang keliru | D3 |
+| BUD-IZN | Mengunggah ulang penampilan atau karya budaya tanpa izin | D3 |
+| BUD-ETK | Menanggapi tradisi dengan cara yang tidak menghormati | D3 |
+| BUD-LAIN | Kesalahan budaya digital yang tidak cocok dengan kode lain; dikode manual | D3 |
 
 ## Kode kesalahan: prosedural (NON)
 
@@ -174,6 +191,7 @@ Semua kode yang dipakai di dokumen revisi, lembar lapangan, dan data penelitian 
 
 | Kode | Arti | Kerangka |
 | --- | --- | --- |
+| L1, L2, L3 | Singkatan level AKM di kisi-kisi dan bank soal: menemukan informasi, interpretasi dan integrasi, evaluasi dan refleksi | AKM |
 | Menemukan informasi | Mencari dan mengambil informasi tersurat | AKM, Temanggung |
 | Interpretasi dan integrasi | Memahami informasi tersirat dan memadukan antarbagian teks | AKM, Magelang |
 | Evaluasi dan refleksi | Menilai isi dan kredibilitas teks, mengaitkan dengan hal di luar teks | AKM, Wonosobo |

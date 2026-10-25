@@ -2,7 +2,7 @@
 
 The single checklist of what is done and what is open. Decisions and their reasons go in `docs/perombakan-kelas5/CATATAN_IMPLEMENTASI.md` (and, for the research revision, `docs/revisi-10-analitik/04_CATATAN_KEPUTUSAN.md`); this file only tracks state. Each session updates only its own rows, and ticks an item only once its PR is merged into `main`. Finished work is summed up in one line per area under *Done*; the details live in the PRs, the git history, and the decision log.
 
-Last updated: 23 October 2026.
+Last updated: 25 October 2026.
 
 ## Research revision: 10 analytics (owner, 23 October 2026)
 
@@ -10,14 +10,19 @@ Documentation only, in `docs/revisi-10-analitik/` (Indonesian, at the owner's re
 
 - [x] Revision documents: main document with the 10 analytics, constructs, admin/researcher split, log cleanup, token, participant code, and the 15 later system changes (`01`), field sheets L0–L7 (`02`), codes and meanings (`03`), decision record (`04`), three diagrams in `gambar/` (PR #214). The owner continues the revision separately from here
 - [ ] Owner and team settle the open questions in `01_REVISI_10_ANALITIK.md` → *Pertanyaan yang masih terbuka* (constructs with three dimensions, token, participant code `S03-A07`, `guru` role)
-  - [ ] Owner decides the rest of the item and dimension review (`05_TELAAH_BUTIR_DAN_DIMENSI.md`): where D3 lives (Cari Objek in two rounds), D2 scoring, the adjusted decision text, and the item fixes. Already decided on 25 October 2026: two variants (a/b), between-item model, D1 on reading literacy with D1a/D1b, more than 29 D1 items allowed, digital-genre passages
-  - [ ] Test blueprint for the new bank (`06_KISI_KISI_BANK_SOAL.md`, branch `kisi-kisi-bank-soal`, separate session)
+  - [x] Owner decided the item and dimension review (`05_TELAAH_BUTIR_DAN_DIMENSI.md`) by approving the blueprint (25 October 2026): D3 in Cari Objek round 2 *Periksa Unggahan*, round 1 as the Pengetahuan Budaya Kedu scale, D2 actions scored 0–1–2, BUD-* codes; item fixes carried into the draft bank
+  - [x] Test blueprint for the new bank (`06_KISI_KISI_BANK_SOAL.md`), approved in full by the owner (25 October 2026): 61 digital-literacy items per student, four booklets, between-variant anchors, 300 analysable students, five meetings (PR #219, #221)
+  - [x] Draft of the new question bank (`08_DRAF_BANK_SOAL.md`): 116 digital-literacy items in variants a/b, 6 anchors, 12 PBK items, all `needs_verification`; fictional names checked, posts on the fictional app *Kedugram* (PR #220, #221)
+  - [x] AI-assisted preliminary review T6 of the draft bank (`09_TELAAH_PENDAHULUAN_BANK_SOAL.md`), fixes applied; residual findings R1–R4 approved by the owner (PR #222, #225)
+  - [ ] Owner writes the English translation of the new bank (after validation)
+  - [ ] Someone on the team searches every uploader handle in `08` on Instagram and TikTok and renames any that belong to a real, active account
+  - [ ] Expert validation of the new bank: blind labelling (B.5a) and relevance ratings (B.5b), with the R1–R4 questions from `08`/`09`
   - [x] Owner accepted the expert-instrument review (`07_TELAAH_INSTRUMEN_VALIDASI.md`) and added the media expert (25 October 2026)
   - [ ] Rewrite the instruments once as r10 v2.1 and media v1.1, after the blueprint and the D3 decision
   - [x] AI-assisted media pre-review on a local test install (`10_TELAAH_PENDAHULUAN_MEDIA.md`)
   - [x] Owner approved the media decisions (25 October 2026): no phones for data collection, re-laid Cari Objek tap areas with an automatic overlap check, timer hidden during the study, narration rule (D1 never read aloud). Added as system changes 16–19 in `01` and to the L0 checklist
 - [ ] Complete implementation document, after the revision documents are final
-- [ ] Implementation of the 15 system changes, one short-lived branch each, after the implementation document is approved
+- [ ] Implementation of the system changes listed in `01` (20 so far), one short-lived branch each, after the implementation document is approved
 
 ## Before the research starts
 
