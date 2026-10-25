@@ -72,4 +72,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `pbb/eloquent-sagan-j40sg8` | Owner interview on the open questions in `01` (research revision), in rounds | Rounds 1–5 recorded; index `00_INDEKS.md` and rule `.claude/rules/revisi-10.md` added; round 1 merged in PR #227, rounds 2–5 in PR #228 |
