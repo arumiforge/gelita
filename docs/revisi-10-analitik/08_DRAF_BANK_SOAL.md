@@ -1099,6 +1099,7 @@ Teks digital (layar informasi, unggahan, grup, hasil pencarian) dibangun sebagai
 - Penari Topeng Ireng (memakai topeng atau tidak) dan asal tari lengger tidak dipakai sebagai fakta di bank, karena sumbernya belum meyakinkan.
 - Skenario OTP memakai nama game fiktif "Game Bintang", bukan GELITA.
 - Lembaga resmi di bacaan ditulis tanpa nama dan logo (misalnya "akun resmi badan pemantau gunung api").
+- Telaah pendahuluan T6 sudah dijalankan ([09](09_TELAAH_PENDAHULUAN_BANK_SOAL.md)); sisa temuan R1–R4 disetujui pemilik proyek sesuai usulan pada 25 Oktober 2026. Berkas untuk ahli memuat empat pertanyaan khusus: rumpang `tmg-2-b02`, `mgl-2-a02`, `mgl-2-a05` (R1), label D1b `tmg-3-a03`/`tmg-3-b03` (R2), pola pilihan "kurang tepat" (R3), dan kunci `wnb-4-a02`/`wnb-4-b02` (R4).
 
 # Rujukan tambahan (dibuka 25 Oktober 2026)
 
