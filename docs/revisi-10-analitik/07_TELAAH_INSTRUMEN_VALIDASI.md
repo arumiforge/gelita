@@ -128,8 +128,8 @@ Bagian-bagian ini sebaiknya ditulis ulang **sekali**, setelah pemilik proyek mem
 | Kode BUD-* dan label tunggal | Tabel B4, F5 ahli materi, C.2, C8–C9 pengamat budaya | INF-BUD hanya D1 dan skala pendamping; DIG-IZN dan DIG-ETK hanya D2; BUD-ATR, BUD-REP, BUD-IZN, BUD-ETK untuk D3 |
 | Skor tindakan Skenario Digital 0–1–2, alasan sebagai diagnosis | Aspek E, B.6, H4 | Tambahkan butir: "Pilihan 'kurang tepat' sungguh berada di antara 'tepat' dan 'berisiko', sehingga skor 0–1–2 masuk akal". Ubah E4: R-ATUR disebut "penalaran berbasis aturan" (wajar dan aman pada usia 10–11 tahun), bukan "kepatuhan semata". Tambahkan di B.6 kolom "Alasan netral terhadap tindakan (Y/T)": pilihan alasan masuk akal apa pun tindakan yang dipilih |
 | Butir D3 baru | B.6 (telaah skenario), C.5 (matriks objek) | Tambahkan lembar telaah *Periksa Unggahan* (12 butir), dan baris matriks untuk setiap unggahan tiruan dan sanggar atau pelaku budaya yang disebut |
-| Indikator sikap | G3 pengamat budaya | Tetap MENUNGGU KEPUTUSAN TIM |
-| Aturan kesempatan Skenario Digital | Aspek E, B.6 | Tetap MENUNGGU KEPUTUSAN TIM |
+| Indikator sikap | G3 pengamat budaya | Diputuskan 25 Oktober 2026: dipakai sebagai skala pendamping sikap lewat Balai Refleksi. G3 menilai butir skala itu setelah disusun |
+| Aturan kesempatan Skenario Digital | Aspek E, B.6 | Diputuskan 25 Oktober 2026: tiga kesempatan seperti tantangan lain; yang dinilai tindakan dan alasan pertama; "kurang tepat" memakai satu kesempatan |
 | Butir jangkar, tes L6 | C5, aspek J ahli materi | Diisi TD sampai tersedia (sudah tertulis) |
 | Jumlah butir, bacaan, dan pengecoh per wilayah | Tabel B2–B3, C3 ahli materi, B.6 baris | Disalin dari kisi-kisi 06 |
 
@@ -168,6 +168,7 @@ Semuanya cocok.
 1. ~~Pemilik proyek memutuskan T1–T6 dan ahli media.~~ Diterima seluruhnya pada 25 Oktober 2026.
 2. Setelah kisi-kisi 06 dan keputusan D3 selesai, instrumen r10 dan media ditulis ulang sekali sebagai versi 2.1 dan 1.1, dengan semua perubahan di dokumen ini.
 3. Setelah draf bank soal baru ada, Claude menjalankan telaah pendahuluan (T6) sebelum berkas dikirim ke ahli.
+4. Ahli media menilai dalam dua langkah (keputusan 25 Oktober 2026): di tahap 2, game sekarang ditambah mock-up layar baru; setelah tahap 3, telaah singkat layar jadi di instalasi uji sebelum uji coba. Instrumen media v1.1 perlu memuat bagian untuk mock-up.
 
 ## Rujukan tambahan
 

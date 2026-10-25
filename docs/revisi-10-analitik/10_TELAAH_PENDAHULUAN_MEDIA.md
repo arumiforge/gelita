@@ -140,7 +140,7 @@ Media sekarang terbuka untuk diubah (keputusan 25 Oktober 2026). Selain perbaika
 
 | No | Kebutuhan | Dari | Catatan untuk desain |
 | --- | --- | --- | --- |
-| 1 | **Mode penelitian**: jam disembunyikan, cek perangkat, layar kecil ditolak atau diberi peringatan | M-01, M-03 | Satu sakelar di konfigurasi studi, supaya mode latihan atau di luar penelitian tetap bisa menampilkan jam |
+| 1 | **Mode penelitian**: jam disembunyikan, cek perangkat, sesi penelitian di layar kecil ditolak dengan pesan ramah (keputusan 25 Oktober 2026) | M-01, M-03 | Satu sakelar di konfigurasi studi, supaya mode latihan atau di luar penelitian tetap bisa menampilkan jam |
 | 2 | **Komponen teks bergenre digital**: papan informasi digital, unggahan akun resmi dengan komentar, halaman situs, pesan grup, hasil pencarian, unggahan bersponsor | Kisi-kisi, genre teks | Platform dan akun fiktif tanpa logo merek nyata; tetap dikenali anak sebagai unggahan atau pesan; ukuran teks sama dengan bacaan biasa; bisa tampil di panel bacaan Isi Rumpang dan Benar atau Salah |
 | 3 | **Cari Objek babak 2 *Periksa Unggahan*** (bila D3 disetujui) | Kisi-kisi, D3 | Bagian yang diketuk berupa blok teks (nama akun, keterangan, komentar, tombol), jadi butuh aturan sendiri: tinggi area ketuk minimal 48 dp, tidak bersentuhan, dan perbesar adegan tetap ada. Nama berkas dan atribut tidak boleh membedakan sasaran (M-04) |
 | 4 | **Engine Skenario Digital** dua langkah | Kisi-kisi, D2 | Urutan pilihan diacak; tidak ada isyarat visual pada pilihan tepat; langkah alasan selalu muncul dan kalimatnya netral terhadap tindakan; umpan balik tanpa kata "salah" atau "gagal" |
@@ -154,7 +154,7 @@ Media sekarang terbuka untuk diubah (keputusan 25 Oktober 2026). Selain perbaika
 
 - Semua butir yang di sini bertanda TD: perangkat nyata, audio dan narasi, waktu muat di internet sekolah, keyboard dan pembaca layar.
 - Kontras teks di atas gambar (sekitar 350 elemen, banyak yang berulang), mutu ilustrasi (A7), dan kesesuaian dengan dunia anak (N2).
-- Rancangan layar Revisi 10 (Skenario Digital, *Periksa Unggahan*, token) setelah dibuat.
+- Rancangan layar Revisi 10 (Skenario Digital, *Periksa Unggahan*, token), dalam dua langkah: mock-up di tahap 2, lalu layar jadi di instalasi uji sebelum uji coba (keputusan 25 Oktober 2026).
 - Penilaian ulang temuan di atas, termasuk keparahannya.
 
 Tangkapan layar lengkap dihasilkan ulang dengan `node tools/qa/stage-check.mjs` pada instalasi uji (tersimpan di `writable/qa/stage/`, tidak di-commit).

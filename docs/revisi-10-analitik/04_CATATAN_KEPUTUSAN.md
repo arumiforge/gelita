@@ -16,6 +16,38 @@ Tahap 1, urutan kerja dan akses:
 - **Kode peserta `S03-A07` disetujui** dengan aturannya di 01: kode sekolah dari daftar peneliti, awalan `U` untuk sekolah uji coba, tanpa `GLT-`, dibuat sistem saat daftar dari token, tidak pernah diubah setelah ada data.
 - **Perbaikan dokumen tanpa keputusan baru:** kalimat "kode butir tidak bergeser" di 01 diselaraskan dengan keputusan bank baru (kode yang sudah punya data siswa tidak dipakai ulang); perubahan sistem no. 4 di 01 kini menyebut butir jangkar antarvariasi; L1 di 02 tidak lagi menyebut HP sebagai perangkat.
 
+Tahap 2, aturan game selama penelitian:
+
+- **Skenario Digital memakai tiga kesempatan**, sama seperti tantangan lain. Setiap kesempatan berisi pilihan tindakan dan alasan; yang dinilai tindakan dan alasan pertama. Tafsiran yang dipakai: skenario selesai saat tindakan yang tepat dipilih, pilihan "kurang tepat" (skor 1) memakai satu kesempatan, dan setelah kesempatan ketiga tindakan yang aman ditampilkan dan dijelaskan.
+- **Buklet dimasukkan P1 dari L2.** Sesudah pertemuan P1, koordinator memasukkan buklet per kode peserta di panel peneliti; panel memeriksa keseimbangan B1–B4 per rombel. Siswa duduk di kursi yang sama di P2–P4; buklet melekat pada siswa. L2 di 02 mendapat kolom Buklet.
+- **Layar terlalu kecil saat studi berjalan: sesi ditolak dengan pesan ramah.** Di luar studi cukup peringatan. Ini memperjelas keputusan media sebelumnya ("ditolak atau diberi peringatan").
+- **Pengerjaan ulang selama studi** baru terbuka setelah kelima tantangan wilayah pertemuan itu tuntas, hanya di dalam sesi. Datanya disimpan tapi tidak dinilai.
+
+Tahap 3, akun dan data:
+
+- **Peran `guru` dihapus seluruhnya**, termasuk halaman dan hak aksesnya, bukan hanya dinonaktifkan. Kalau laporan guru dibuat nanti, perannya dibangun ulang dengan hak baru. Kolom Guru di tabel peran 01 dihapus.
+- **Lupa kata sandi di lapangan: P1 me-reset lewat kode peserta** dari panel peneliti (kode dicari di L2). Sistem memberi kata sandi sementara dan mencatatnya di log audit; peneliti tetap tidak melihat nama, dan admin tidak perlu hadir.
+- **Nama lengkap siswa tetap disimpan di akun, hanya terlihat oleh admin**, sesuai rencana di 01 (usulan nama panggilan saja tidak dipilih).
+- **Indikator `sikap` dipakai sebagai skala pendamping sikap menjaga warisan lewat Balai Refleksi**, di luar skor literasi digital, seperti PBK. Saat ini Balai Refleksi hanya berisi ringkasan perjalanan dan kritik dan saran, jadi skala ini instrumen baru: disusun di tahap 1 (daftar kerja no. 19), divalidasi di tahap 2 (G3 pengamat budaya), dan menjadi perubahan sistem no. 21. Waktu pengisiannya masuk pertanyaan terbuka.
+- **Ambang waktu tidak aktif dan tebakan cepat ditetapkan setelah uji coba**, mengikuti tahap 4 peta jalan yang urutannya sudah dikukuhkan di tahap 1 wawancara.
+
+Tahap 4, operasional penelitian:
+
+- **Tiga peneliti per kelas** (P1, P2, P3) di pengambilan data utama. Kalau pada hari itu satu berhalangan, P1 juga mengisi L3, L5 dipindah, dan penyimpangannya dicatat di L1.
+- **Tes awal dan akhir:** bagian literasi membaca diadaptasi dari contoh soal AKM/ANBK yang terbuka untuk umum; bagian D2 dan D3 disusun sendiri, sejajar dengan kisi-kisi tapi tidak sama dengan butir game; divalidasi bersama bank di tahap 2.
+- **Pra-registrasi di OSF** untuk skema kesalahan dan rencana analisis, di gerbang G4 (setelah uji coba, sebelum pengambilan data utama).
+- **Ahli media menilai dalam dua langkah:** tahap 2 menilai game sekarang ditambah mock-up layar baru (daftar kerja no. 20); setelah tahap 3, telaah singkat layar jadi di instalasi uji sebelum uji coba (no. 21, bagian gerbang G3). Gambar peta jalan disesuaikan, sekaligus angka lamanya ("129 butir", "15 perubahan") diganti rumusan tanpa angka.
+
+Tahap 5, rencana dokumen:
+
+- **Cerita penghubung dan narasi tantangan kelima didraf Claude** dari skenario di 08, disetujui pemilik proyek, dan direkam pengisi suara yang sama dengan narasi lain di sesi rekaman yang sama.
+- **Skala sikap diisi sekali, di P5**, di Balai Refleksi setelah cerita penutup.
+- **Dokumen berikutnya: kamus data** (`11_KAMUS_DATA.md`, daftar kerja no. 2), yang membekukan definisi 10 analitik, "dilewati", waktu aktif, tersensor, dan kode. Dokumen tahap 1 lain merujuk ke sana.
+- **Aturan menjaga konteks** dicatat di `.claude/rules/revisi-10.md` (dimuat saat berkas di folder ini disentuh), dan [00_INDEKS.md](00_INDEKS.md) memuat status setiap dokumen, urutan baca, dan tahap dokumen yang tersisa.
+- **Status lama dibetulkan:** daftar kerja no. 6 (Skenario Digital) sudah selesai di draf 08.
+
+Masih terbuka dan butuh informasi dari pemilik proyek, bukan pilihan: siapa validator ahlinya, dan ke komisi etik mana serta kapan izin etik diajukan.
+
 **Keputusan pemilik proyek: kisi-kisi, draf bank soal, dan telaah pendahuluan T6** (sesi `kisi-kisi-bank-soal`)
 
 - **Kisi-kisi bank soal ([06](06_KISI_KISI_BANK_SOAL.md)) disetujui seluruhnya**, termasuk semua bagian yang semula bertanda "usulan". Dengan begitu rumusan keputusan di [05](05_TELAAH_BUTIR_DAN_DIMENSI.md) ikut berlaku:

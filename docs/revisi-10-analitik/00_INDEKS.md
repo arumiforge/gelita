@@ -1,0 +1,56 @@
+# Indeks Revisi 10 Analitik
+
+Per 25 Oktober 2026 · Pintu masuk untuk setiap sesi baru di [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+
+Folder ini sekitar 320 KB, kira-kira 150 ribu token kalau dibaca utuh. Satu sesi tidak perlu membaca semuanya. Aturan menjaga konteks ada di `.claude/rules/revisi-10.md` dan dimuat otomatis saat berkas di folder ini dibuka.
+
+## Mulai sesi baru di sini
+
+1. Baca berkas ini.
+2. Baca entri teratas [04_CATATAN_KEPUTUSAN.md](04_CATATAN_KEPUTUSAN.md) (keputusan terbaru).
+3. Di [01](01_REVISI_10_ANALITIK.md), baca bagian *Pertanyaan yang masih terbuka* dan *Peta jalan dan daftar kerja* saja. Cari judulnya, jangan baca seluruh berkas.
+4. Baca baris revisi di `docs/PROGRESS.md`.
+
+Dokumen lain dibaca per bagian sesuai tugas.
+
+## Daftar dokumen
+
+| Berkas | Isi | Status | Kapan dibaca | Ukuran |
+| --- | --- | --- | --- | --- |
+| [01](01_REVISI_10_ANALITIK.md) | Dokumen utama: konstruk, 10 analitik, Skenario Digital, skema kesalahan, peran, log, token, kode peserta, peta jalan, pertanyaan terbuka, 21 perubahan sistem | Aktif | Selalu, per bagian | 56 KB |
+| [02](02_LEMBAR_LAPANGAN.md) | Lembar lapangan L0–L7 | Draf, difinalkan di tahap 1 (daftar kerja no. 11) | Saat menyusun lembar atau alur lapangan | 16 KB |
+| [03](03_KODE_DAN_ARTI.md) | Arti semua kode | Rujukan | Cari kode yang dibutuhkan saja | 11 KB |
+| [04](04_CATATAN_KEPUTUSAN.md) | Riwayat keputusan, terbaru di atas | Aktif | Selalu, entri teratas | 18 KB |
+| [05](05_TELAAH_BUTIR_DAN_DIMENSI.md) | Telaah butir bank lama terhadap dimensi | Selesai; keputusannya masuk 06 | Hanya untuk menelusuri alasan | 40 KB |
+| [06](06_KISI_KISI_BANK_SOAL.md) | Kisi-kisi bank soal baru, buklet, jangkar, waktu bermain | Disetujui 25 Oktober 2026 | Per bagian, saat menulis butir, tes, atau dokumen implementasi | 41 KB |
+| [07](07_TELAAH_INSTRUMEN_VALIDASI.md) | Telaah instrumen validasi ahli | Diterima; instrumen v2.1 dan media v1.1 belum ditulis | Saat menulis ulang instrumen | 20 KB |
+| [08](08_DRAF_BANK_SOAL.md) | Draf bank soal baru: 116 butir variasi a/b, 6 jangkar, 12 PBK | Draf, `needs_verification` | Cari per kode butir (misalnya `wnb-3-a02`) | 80 KB |
+| [09](09_TELAAH_PENDAHULUAN_BANK_SOAL.md) | Telaah pendahuluan T6 atas draf 08 | Selesai; R1–R4 disetujui | Saat menyiapkan paket validasi | 20 KB |
+| [10](10_TELAAH_PENDAHULUAN_MEDIA.md) | Telaah pendahuluan media | Selesai; keputusan masuk 01 | Saat menyiapkan mock-up dan instrumen media | 19 KB |
+| `gambar/` | Peta bukti, lapis data, peta jalan, buklet, tangkapan layar telaah media | Rujukan | Saat dokumen yang memakainya diubah | — |
+
+## Tahap dokumen yang tersisa sebelum implementasi
+
+Urutan kerja mengikuti peta jalan di 01, yang dikukuhkan pemilik proyek pada 25 Oktober 2026: sistem baru diubah di tahap 3, setelah gerbang G2. Jadi masih ada **tiga tahap dokumen**.
+
+**Tahap dokumen 1: desain instrumen (sekarang, sampai gerbang G1)**
+
+| Dokumen | Daftar kerja di 01 | Penyusun | Status |
+| --- | --- | --- | --- |
+| `11_KAMUS_DATA.md`: definisi beku 10 analitik, "dilewati", waktu aktif, tersensor, dan kode | no. 2 | Claude (draf), pemilik proyek | Berikutnya |
+| Cerita penghubung dan narasi tantangan kelima | no. 7 | Claude (draf), pemilik proyek | Belum mulai |
+| Tes awal–akhir bentuk A dan B, dan angket akses digital | no. 9, 10 | | Belum mulai |
+| Skala sikap untuk Balai Refleksi | no. 19 | | Belum mulai |
+| Mock-up layar baru untuk ahli media langkah 1 | no. 20 | | Belum mulai |
+| Lembar L0–L7 final | no. 11 | | Belum mulai |
+| Instrumen validasi r10 v2.1 dan media v1.1 | [07](07_TELAAH_INSTRUMEN_VALIDASI.md#langkah-berikutnya) | | Belum mulai |
+
+Gerbang G1: tim menyetujui konstruk, dan dua penilai sepakat pada label AKM dan kode kesalahan (κ ≥ 0,70).
+
+**Tahap dokumen 2: validasi ahli dan izin etik (sampai gerbang G2)**
+
+Paket validasi untuk panel ahli (bank, tes, skala sikap, mock-up), permohonan izin etik, dan surat izin orang tua (L7). Setelah itu bank dan instrumen direvisi dari hasil validasi.
+
+**Tahap dokumen 3: dokumen implementasi (tahap 3, setelah gerbang G2)**
+
+Dokumen implementasi lengkap dari 21 perubahan sistem di 01, dibagi per bagian seperti Dok 1–3 perombakan kelas 5. Implementasi baru dimulai setelah dokumen ini disetujui.

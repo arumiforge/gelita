@@ -12,7 +12,7 @@ Semua kode yang dipakai di dokumen revisi, lembar lapangan, dan data penelitian 
 | --- | --- | --- |
 | Admin | Pengelola sistem: akun, identitas, konten, rilis, log teknis. Tidak mengunduh data penelitian | Sistem, panel admin |
 | Peneliti | Pemegang data penelitian pseudonim: sesi lapangan, token, ekspor, data turunan | Sistem, panel peneliti (usulan) |
-| Guru | Guru kelas. Tidak punya akun selama penelitian; cukup membantu perangkat dan internet | Lapangan |
+| Guru | Guru kelas. Tidak punya akun; peran `guru` di sistem dihapus (keputusan 25 Oktober 2026). Cukup membantu perangkat dan internet | Lapangan |
 | P1 | Koordinator sesi: membuka sesi, token, L0, L1, L2, L7 | Lapangan |
 | P2 | Pengamat keterlibatan: L4 | Lapangan |
 | P3 | Pengamat bantuan dan pewawancara: L3, L5 | Lapangan |
@@ -27,6 +27,7 @@ Semua kode yang dipakai di dokumen revisi, lembar lapangan, dan data penelitian 
 | D2 | Aman dan etis: data pribadi, kata sandi dan OTP, orang asing, kabar bohong, izin membagikan foto atau obrolan diri sendiri dan teman | Aman dan Etis Bermedia Digital |
 | D3 | Partisipasi dan representasi budaya Kedu di ruang digital: atribusi, representasi akurat, izin pelaku dan pemilik karya, menghargai tradisi | Budaya Bermedia Digital |
 | PBK | Pengetahuan Budaya Kedu: skala pendamping dari Cari Objek babak 1, di luar skor literasi digital | — |
+| sikap | Sikap menjaga warisan: skala pendamping lewat Balai Refleksi, di luar skor literasi digital (keputusan 25 Oktober 2026) | — |
 
 ## Sepuluh analitik
 

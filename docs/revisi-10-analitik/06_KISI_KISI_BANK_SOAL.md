@@ -182,7 +182,7 @@ Perkiraan dibuat untuk siswa kelas 5 (10–11 tahun) yang membaca **60–90 kata
 | P2 | Wilayah Temanggung |
 | P3 | Wilayah Magelang |
 | P4 | Wilayah Wonosobo |
-| P5 | Menyelesaikan tantangan yang tertinggal (paling lama 20 menit), cerita penutup, tes akhir, wawancara L5 |
+| P5 | Menyelesaikan tantangan yang tertinggal (paling lama 20 menit), cerita penutup, skala sikap di Balai Refleksi, tes akhir, wawancara L5 |
 
 Jeda peregangan singkat (2 menit) diberikan setelah tantangan ketiga di setiap pertemuan. Siswa yang belum selesai melanjutkan di pertemuan berikutnya; jam lanjutnya dicatat di L1, dan nomor pertemuan dipakai sebagai kovariat.
 
@@ -240,7 +240,8 @@ Usulannya **empat buklet**. Buklet menentukan variasi di setiap wilayah dan berl
 - Tetangga kiri–kanan selalu berbeda variasi di ketiga wilayah.
 - Setiap variasi ada di dua buklet, jadi tetap dikerjakan setengah sampel.
 - Setiap pasangan dimensi dan wilayah tersambung lewat buklet yang berbagi variasi (misalnya `tmg-5-a` dikerjakan B1 dan B3, `mgl-5-b` dikerjakan B2 dan B3). Jadi semua butir di setiap dimensi masuk satu skala, tanpa perlu butir jangkar D2 dan D3.
-- Buklet dibagikan P1 lewat denah L2 dan ikut tercatat di data sesi. Pengerjaan ulang tidak mengikuti buklet.
+- Buklet dibagikan P1 lewat denah L2 dan ikut tercatat di data sesi. Sesudah pertemuan P1, koordinator memasukkan buklet per kode peserta di panel peneliti dari L2, dan panel memeriksa keseimbangan B1–B4 per rombel. Siswa diminta duduk di kursi yang sama di P2–P4; buklet melekat pada siswa, jadi pindah kursi tidak mengubah variasinya dan cukup dicatat di L2 (diputuskan 25 Oktober 2026).
+- Pengerjaan ulang tidak mengikuti buklet. Selama studi, pengerjaan ulang baru terbuka setelah kelima tantangan wilayah pertemuan itu tuntas, hanya di dalam sesi; datanya disimpan tapi tidak dinilai (diputuskan 25 Oktober 2026).
 - Karena urutan wilayah tetap, buklet tidak mengacak urutan. Ini tetap dicatat sebagai keterbatasan.
 
 ### Butir jangkar (usulan)
@@ -348,7 +349,7 @@ Daftar ini hanya catatan untuk dokumen implementasi; belum ada yang dikerjakan.
 | 1 | Engine Skenario Digital | Dua langkah (tindakan, alasan), skor 0–1–2 di server, simpan `reason_code`; pilihan diacak per pengerjaan |
 | 2 | Cari Objek dua babak | Babak 2 dengan adegan per variasi; satu tantangan, dua kelompok butir; babak 1 tanpa variasi |
 | 3 | Kartu jangkar di Benar atau Salah | Bacaan kedua di satu tantangan; butir `x` dipakai semua variasi |
-| 4 | Variasi dari buklet | Pengerjaan pertama memakai variasi dari buklet siswa (dari token atau L2), bukan acak; `BankRules::FIRST_ATTEMPT_GROUPS` jadi `a`, `b` |
+| 4 | Variasi dari buklet | Pengerjaan pertama memakai variasi dari buklet siswa (dimasukkan P1 di panel peneliti dari L2), bukan acak; `BankRules::FIRST_ATTEMPT_GROUPS` jadi `a`, `b` |
 | 5 | `DifficultyRules` baru | Isi Rumpang 4/5/6 rumpang, pengecoh 2/2/2; Benar atau Salah 4/6/6 pernyataan dan genre baru; Cari Objek babak 2 (petunjuk, bagian ketuk); Skenario Digital (skenario, jumlah tindakan 3/4/4, alasan 3/4/5); variasi tepat 2 |
 | 6 | Keterampilan Benar atau Salah | Tambah kode keterampilan D1b, misalnya `mengenali_penanda_sumber`, `menilai_kredibilitas`, `mengenali_iklan` |
 | 7 | Kolom workbook baru | `dimension` (D1, D2, D3, PBK), `subaspect` (D1a, D1b), `akm_level`, `pirls_process`, `text_genre`, `testlet_key`, `booklet_shared` (butir `x`), `error_code` per pengecoh dan per sel rumpang × kata, `reason_code` per alasan, `score` per tindakan, `reference_source` wajib |

@@ -4,7 +4,7 @@
 
 Per 23 Oktober 2026 · Dokumen revisi, belum implementasi
 
-Mulai sekarang, 10 analitik penelitian jadi pegangan kita untuk GELITA. Sesuai judul penelitian, literasi digital jadi konstruk utama dengan tiga dimensi, dan Skenario Digital masuk sebagai tantangan kelima. Admin dan peneliti jadi dua peran yang terpisah, dan log yang tidak dibutuhkan dihapus. Data yang tidak bisa direkam game kita kumpulkan lewat lembar lapangan L0–L7 ([02_LEMBAR_LAPANGAN.md](02_LEMBAR_LAPANGAN.md)). Arti semua kode ada di [03_KODE_DAN_ARTI.md](03_KODE_DAN_ARTI.md), dan riwayat keputusan di [04_CATATAN_KEPUTUSAN.md](04_CATATAN_KEPUTUSAN.md). Telaah setiap butir terhadap dimensinya ada di [05_TELAAH_BUTIR_DAN_DIMENSI.md](05_TELAAH_BUTIR_DAN_DIMENSI.md). Kisi-kisi bank soal baru ada di [06_KISI_KISI_BANK_SOAL.md](06_KISI_KISI_BANK_SOAL.md), telaah instrumen validasi ahli di [07_TELAAH_INSTRUMEN_VALIDASI.md](07_TELAAH_INSTRUMEN_VALIDASI.md), draf bank soal baru di [08_DRAF_BANK_SOAL.md](08_DRAF_BANK_SOAL.md), telaah pendahuluan bank soal di [09_TELAAH_PENDAHULUAN_BANK_SOAL.md](09_TELAAH_PENDAHULUAN_BANK_SOAL.md), dan telaah pendahuluan media di [10_TELAAH_PENDAHULUAN_MEDIA.md](10_TELAAH_PENDAHULUAN_MEDIA.md).
+Mulai sekarang, 10 analitik penelitian jadi pegangan kita untuk GELITA. Sesuai judul penelitian, literasi digital jadi konstruk utama dengan tiga dimensi, dan Skenario Digital masuk sebagai tantangan kelima. Admin dan peneliti jadi dua peran yang terpisah, dan log yang tidak dibutuhkan dihapus. Status setiap dokumen dan urutan bacanya ada di [00_INDEKS.md](00_INDEKS.md). Data yang tidak bisa direkam game kita kumpulkan lewat lembar lapangan L0–L7 ([02_LEMBAR_LAPANGAN.md](02_LEMBAR_LAPANGAN.md)). Arti semua kode ada di [03_KODE_DAN_ARTI.md](03_KODE_DAN_ARTI.md), dan riwayat keputusan di [04_CATATAN_KEPUTUSAN.md](04_CATATAN_KEPUTUSAN.md). Telaah setiap butir terhadap dimensinya ada di [05_TELAAH_BUTIR_DAN_DIMENSI.md](05_TELAAH_BUTIR_DAN_DIMENSI.md). Kisi-kisi bank soal baru ada di [06_KISI_KISI_BANK_SOAL.md](06_KISI_KISI_BANK_SOAL.md), telaah instrumen validasi ahli di [07_TELAAH_INSTRUMEN_VALIDASI.md](07_TELAAH_INSTRUMEN_VALIDASI.md), draf bank soal baru di [08_DRAF_BANK_SOAL.md](08_DRAF_BANK_SOAL.md), telaah pendahuluan bank soal di [09_TELAAH_PENDAHULUAN_BANK_SOAL.md](09_TELAAH_PENDAHULUAN_BANK_SOAL.md), dan telaah pendahuluan media di [10_TELAAH_PENDAHULUAN_MEDIA.md](10_TELAAH_PENDAHULUAN_MEDIA.md).
 
 Dokumen ini belum mengubah sistem apa pun. Isinya rencana kerja tim; dokumen implementasi yang lengkap disusun setelah revisi ini selesai.
 
@@ -54,7 +54,7 @@ Dari 10 analitik, 3 sudah terekam penuh, 5 baru sebagian, dan 2 belum ada sama s
 | No | Analitik | Definisi operasional (revisi) | Makna bagi penelitian | Sumber data | Status di sistem | Yang perlu dilakukan |
 | --- | --- | --- | --- | --- | --- | --- |
 | 1 | Penyelesaian aktivitas | Tantangan tuntas per wilayah. "Dilewati" dipecah tiga: (a) petunjuk Cari Objek gagal 3 kali, (b) pengerjaan ditinggal dan tidak dilanjutkan di sesi yang sama, (c) tantangan yang sudah terbuka tapi tidak pernah dimulai sampai pengambilan data selesai. | Seberapa banyak dan seberapa tekun siswa menyelesaikan; dasar untuk menentukan data siswa lengkap atau tidak | Log game + L1 | Sebagian | Tulis definisi "dilewati" di kamus data dan hitung tiga jenisnya terpisah |
-| 2 | Ketepatan jawaban | Benar atau salah akhir per butir, dikelompokkan per dimensi (D1–D3) dan per level AKM | Indikator yang sudah atau belum dikuasai | Log game | Sebagian | Susun indikator per dimensi, beri label level AKM per butir, dan putuskan nasib indikator `sikap` yang belum dipakai |
+| 2 | Ketepatan jawaban | Benar atau salah akhir per butir, dikelompokkan per dimensi (D1–D3) dan per level AKM | Indikator yang sudah atau belum dikuasai | Log game | Sebagian | Susun indikator per dimensi, beri label level AKM per butir. Indikator `sikap` jadi skala pendamping lewat Balai Refleksi (diputuskan 25 Oktober 2026) |
 | 3 | Ketepatan percobaan pertama | Jawaban di Cek pertama (Susun Gambar, Isi Rumpang, Benar atau Salah), ketukan pertama per petunjuk (Cari Objek), atau pilihan pertama (Skenario Digital), sebelum ada umpan balik | Ukuran utama kemampuan awal; data inti untuk uji Rasch | Log game | Sudah | Ingat peluang tebakan 50% di Benar atau Salah; butir level tinggi sebaiknya punya 3 pilihan atau lebih |
 | 4 | Jumlah percobaan | Percobaan ke berapa butir jadi benar (1, 2, 3), atau "belum berhasil setelah 3" | Butir yang butuh pengulangan | Log game | Sudah | Saat analisis, "belum berhasil" diperlakukan sebagai data tersensor, bukan angka 3 |
 | 5 | Waktu pengerjaan | Waktu aktif = waktu total dikurangi (a) selang layar tersembunyi dan (b) jeda tanpa sentuhan lebih dari 60 detik (ambang awal, diuji saat uji coba). Waktu per butir di tantangan yang dicek bersamaan hanya perkiraan | Tugas yang makan waktu lebih lama | Log game + L3 | Sebagian | Hitung waktu aktif; laporkan waktu total dan waktu aktif berdampingan |
@@ -87,7 +87,7 @@ Sudah diputuskan: tiap wilayah dapat tantangan kelima, **Skenario Digital** (kod
 2. Langkah 1, pilih tindakan. Satu pilihan aman dan tepat, satu kurang tepat (aman tapi belum lengkap), sisanya berisiko. Setiap pilihan punya kode kesalahan.
 3. Langkah 2, pilih alasan. Ditanyakan apa pun tindakan yang dipilih, supaya "tindakannya benar, alasannya keliru" kelihatan.
 4. Umpan balik yang ramah tentang akibat pilihannya, tanpa kata "salah" atau "gagal".
-5. Yang dianalisis adalah pilihan dan alasan **pertama**. Siswa boleh mencoba lagi untuk belajar (aturan kesempatannya masih perlu diputuskan tim).
+5. Yang dianalisis adalah pilihan dan alasan **pertama**. Siswa boleh mencoba lagi untuk belajar dengan aturan yang sama seperti tantangan lain: **tiga kesempatan** (diputuskan 25 Oktober 2026). Setiap kesempatan berisi pilihan tindakan dan alasan. Skenario selesai saat tindakan yang tepat dipilih; pilihan "kurang tepat" mendapat umpan balik dan memakai satu kesempatan. Setelah kesempatan ketiga, tindakan yang aman ditampilkan dan dijelaskan.
 
 **Contoh skenario Wonosobo (pesan orang asing, sulit).** Akun yang tidak kamu kenal mengirim pesan: "Selamat! Kamu menang wisata gratis ke Telaga Warna untuk sekeluarga. Kirim foto kartu pelajar dan nomor HP orang tuamu sekarang, kuotanya tinggal 3!"
 
@@ -149,7 +149,7 @@ Setiap pilihan salah diberi satu kode **sebelum** data diambil, lalu kode itu ik
 - Skenario Digital: setiap pilihan tindakan dan setiap alasan punya satu kode.
 - Susun Gambar: tidak dikode, karena dipakai sebagai pemanasan.
 
-**Validasi:** dua pengode bekerja terpisah pada sampel 20% jawaban dan semua transkrip berpikir lantang (L5). Kesepakatan minimal Cohen's κ = 0,70. Kalau beda, didiskusikan dan dicatat. Skema bisa kita daftarkan lebih dulu (pra-registrasi, misalnya di OSF) sebelum pengambilan data utama.
+**Validasi:** dua pengode bekerja terpisah pada sampel 20% jawaban dan semua transkrip berpikir lantang (L5). Kesepakatan minimal Cohen's κ = 0,70. Kalau beda, didiskusikan dan dicatat. Skema dan rencana analisis didaftarkan lebih dulu (pra-registrasi di OSF) di gerbang G4, setelah uji coba dan sebelum pengambilan data utama (diputuskan 25 Oktober 2026).
 
 **Contoh data mentah** (bentuk ekspor percobaan dengan dua kolom baru, `error_code` dan `reason_code`, memakai format kode peserta baru):
 
@@ -189,29 +189,31 @@ Urutan Temanggung (mudah), Magelang (sedang), Wonosobo (sulit) tetap dipakai. Be
 
 ## Admin dan peneliti: dua peran berbeda
 
-Admin dan peneliti adalah dua entitas yang berbeda. **Admin** menjaga sistem berjalan dan memegang identitas. **Peneliti** memegang data penelitian yang sudah disamarkan (pseudonim). Sekarang sistem baru punya dua peran staf: `admin` yang bisa melihat semuanya, termasuk nama siswa, dan `guru` yang melihat data sekolahnya sendiri tanpa nama. Revisi ini memisahkan keduanya dan menambah peran `peneliti`.
+Admin dan peneliti adalah dua entitas yang berbeda. **Admin** menjaga sistem berjalan dan memegang identitas. **Peneliti** memegang data penelitian yang sudah disamarkan (pseudonim). Sekarang sistem baru punya dua peran staf: `admin` yang bisa melihat semuanya, termasuk nama siswa, dan `guru` yang melihat data sekolahnya sendiri tanpa nama. Revisi ini menambah peran `peneliti` dan menghapus peran `guru` seluruhnya (diputuskan 25 Oktober 2026).
 
-| Fitur atau data | Admin | Peneliti | Guru |
-| --- | --- | --- | --- |
-| Akun staf (buat, nonaktifkan, ganti peran) | Ya | — | — |
-| Akun siswa, reset kata sandi, nama dan nama pengguna | Ya | — | — |
-| Daftar sekolah, NPSN, dan pemetaan ke kode sekolah | Ya | Kode sekolah saja | — |
-| Konten, bank soal, media, narasi | Ya | Lihat saja (untuk validasi) | — |
-| Rilis dan paket aset | Ya | — | — |
-| Log teknis: perangkat, paket, event hilang, audit | Ya | Ringkasan event hilang di panel pemantauan | — |
-| Sesi lapangan dan token | — | Ya | — |
-| Panel pemantauan lapangan | Lihat | Ya | — |
-| Data penelitian (jawaban, percobaan, navigasi, bantuan, waktu) dan ekspornya | — | Ya, dengan kode peserta | — |
-| Data turunan dan kamus data | — | Ya | — |
-| Penelitian (studi) dan statusnya | — | Ya | — |
-| Permintaan hapus data peserta | Menjalankan | Mengajukan | — |
+| Fitur atau data | Admin | Peneliti |
+| --- | --- | --- |
+| Akun staf (buat, nonaktifkan, ganti peran) | Ya | — |
+| Akun siswa, reset kata sandi, nama dan nama pengguna | Ya | Reset kata sandi lewat kode peserta saja, tanpa melihat nama |
+| Daftar sekolah, NPSN, dan pemetaan ke kode sekolah | Ya | Kode sekolah saja |
+| Konten, bank soal, media, narasi | Ya | Lihat saja (untuk validasi) |
+| Rilis dan paket aset | Ya | — |
+| Log teknis: perangkat, paket, event hilang, audit | Ya | Ringkasan event hilang di panel pemantauan |
+| Sesi lapangan dan token | — | Ya |
+| Panel pemantauan lapangan | Lihat | Ya |
+| Data penelitian (jawaban, percobaan, navigasi, bantuan, waktu) dan ekspornya | — | Ya, dengan kode peserta |
+| Data turunan dan kamus data | — | Ya |
+| Penelitian (studi) dan statusnya | — | Ya |
+| Permintaan hapus data peserta | Menjalankan | Mengajukan |
 
 **Aturan pemisahan:**
 
 - Peneliti tidak pernah melihat nama atau nama pengguna siswa di sistem. Nama hanya ada di akun (dikelola admin) dan di lembar L7 di kertas, yang dipegang P1 dan ketua peneliti.
 - Admin tidak mengunduh data penelitian. Kalau admin butuh memeriksa masalah teknis, cukup log teknis.
 - Satu orang boleh memegang dua peran, tapi lewat dua akun terpisah, supaya jejak audit jelas.
-- Peran `guru` dinonaktifkan selama penelitian. Kalau nanti laporan untuk guru dibuat, perannya diaktifkan lagi dengan hak yang baru.
+- Peran `guru` dihapus seluruhnya, termasuk halaman dan hak aksesnya (diputuskan 25 Oktober 2026). Kalau nanti laporan untuk guru dibuat, perannya dibangun ulang dengan hak yang baru.
+- Nama lengkap siswa tetap disimpan di akun dan hanya terlihat oleh admin (dikukuhkan 25 Oktober 2026).
+- Siswa yang lupa kata sandi di lapangan: P1 mencari kode pesertanya di L2, lalu me-reset kata sandi dari panel peneliti lewat kode itu. Sistem memberi kata sandi sementara dan mencatatnya di log audit; peneliti tetap tidak melihat nama.
 
 ## Log: dihapus atau dipisah
 
@@ -231,6 +233,7 @@ Log yang tidak menjawab 10 analitik dihapus, bukan cuma disembunyikan. Log yang 
 | `dialogue_advanced` | Setiap geser slide cerita | Dihapus | Tidak dipakai 10 analitik |
 | `locale_changed` | Ganti bahasa | Peneliti | Kovariat bahasa |
 | `feedback_submitted` dan isi kritik dan saran | Masukan siswa | Peneliti | Pelengkap kualitatif, bukan 10 analitik |
+| Jawaban skala sikap di Balai Refleksi | Skala pendamping sikap menjaga warisan | Peneliti | Skala pendamping, di luar skor literasi digital (keputusan 25 Oktober 2026) |
 | `password_changed` | Kata sandi diganti | Admin | Urusan akun |
 | `viewport_changed`, `package_changed`, `clock_offset_ms` | Ukuran layar berubah, paket aset berganti, selisih jam perangkat | Admin | Teknis; koreksi jam tetap dipakai server untuk data peneliti |
 | `events_dropped` | Event yang hilang di perangkat | Admin | Mutu data; jumlahnya tampil di panel pemantauan peneliti |
@@ -316,7 +319,7 @@ Log game hanya melihat apa yang terjadi di layar. Lembar lapangan mengisi yang t
 | P3 Pengamat bantuan | Mencatat setiap bantuan dan gangguan; setelah sesi mewawancarai beberapa siswa | L3, L5 |
 | Guru kelas | Menyiapkan perangkat dan internet; diminta tidak membantu isi soal | — |
 
-Kalau cuma ada dua peneliti, P1 juga mengisi L3, dan wawancara L5 dipindah ke pertemuan lain.
+Pengambilan data utama memakai **tiga peneliti per kelas** (diputuskan 25 Oktober 2026). Kalau pada hari itu satu peneliti berhalangan, P1 juga mengisi L3, wawancara L5 dipindah ke pertemuan lain, dan penyimpangannya dicatat di L1.
 
 **Alur satu pertemuan:**
 
@@ -360,19 +363,21 @@ Pekerjaan berjalan dalam enam tahap. Tahap berikutnya baru dimulai setelah gerba
 
 ![Peta jalan: enam tahap, lima gerbang](gambar/peta-jalan.svg)
 
-Tanggal tiap tahap belum ditetapkan dan perlu diisi tim. Daftar kerja di bawah memuat pekerjaan tahap 1, 2, dan 4.
+Tanggal tiap tahap belum ditetapkan dan perlu diisi tim. Daftar kerja di bawah memuat pekerjaan tahap 1 sampai 4, kecuali perubahan sistem (lihat bagian terakhir).
+
+Ahli media menilai dalam dua langkah (diputuskan 25 Oktober 2026): di tahap 2, game yang ada sekarang ditambah rancangan layar baru (Skenario Digital, *Periksa Unggahan*, token) berupa papan cerita atau mock-up; setelah tahap 3, telaah singkat layar yang sudah jadi di instalasi uji sebelum uji coba, sebagai bagian gerbang G3.
 
 | No | Pekerjaan | Tahap | Penanggung jawab | Status |
 | --- | --- | --- | --- | --- |
 | 1 | Setujui penyelarasan konstruk: literasi digital dengan tiga dimensi | 1 | Pemilik proyek | Selesai |
-| 2 | Bekukan peta bukti dan definisi 10 analitik | 1 | | Belum mulai |
+| 2 | Bekukan peta bukti dan definisi 10 analitik di kamus data (`11_KAMUS_DATA.md`) | 1 | Claude (draf), pemilik proyek | Berikutnya |
 | 3 | Beri label level AKM dan dimensi pada semua butir yang dinilai (dua penilai; label pengembang sudah ada di 08) | 1 | | Belum mulai |
 | 4 | Periksa ulang label Bloom, terutama Cari Objek dan Benar atau Salah C5 | 1 | | Belum mulai |
 | 5 | Beri kode kesalahan pada kata pengecoh, benda pengecoh, dan pernyataan | 1 | Claude | Selesai di draf 08, menunggu validasi |
-| 6 | Tulis Skenario Digital untuk tiga wilayah, lengkap dengan pilihan tindakan dan alasan berkode | 1 | | Belum mulai |
-| 7 | Tulis cerita penghubung dan narasi untuk tantangan kelima | 1 | | Belum mulai |
+| 6 | Tulis Skenario Digital untuk tiga wilayah, lengkap dengan pilihan tindakan dan alasan berkode | 1 | Claude | Selesai di draf 08, menunggu validasi |
+| 7 | Tulis cerita penghubung dan narasi untuk tantangan kelima | 1 | Claude (draf), pemilik proyek (persetujuan) | Belum mulai |
 | 8 | Tentukan 4–6 butir jangkar | 1 | Claude | Selesai di draf 08 (6 butir), menunggu validasi |
-| 9 | Susun tes literasi membaca dan tes literasi digital, bentuk A dan B | 1 | | Belum mulai |
+| 9 | Susun tes literasi membaca dan tes literasi digital, bentuk A dan B: bagian membaca diadaptasi dari contoh soal AKM/ANBK yang terbuka untuk umum, bagian D2 dan D3 disusun sendiri dan tidak sama dengan butir game | 1 | | Belum mulai |
 | 10 | Susun angket akses digital | 1 | | Belum mulai |
 | 11 | Finalkan lembar L0–L7 | 1 | | Belum mulai |
 | 12 | Buat daftar kode sekolah penelitian (S01, S02, …) | 1 | | Belum mulai |
@@ -381,7 +386,10 @@ Tanggal tiap tahap belum ditetapkan dan perlu diisi tim. Daftar kerja di bawah m
 | 15 | Ajukan izin etik dan siapkan surat izin orang tua | 2 | | Belum mulai |
 | 16 | Latih pengamat L4 sampai κ ≥ 0,60 | 4 | | Belum mulai |
 | 17 | Uji coba satu kelas dengan semua lembar | 4 | | Belum mulai |
-| 18 | Pra-registrasi skema kesalahan dan rencana analisis, kalau disetujui | 4 | | Belum mulai |
+| 18 | Pra-registrasi skema kesalahan dan rencana analisis di OSF, di gerbang G4 | 4 | | Belum mulai |
+| 19 | Susun skala pendamping sikap menjaga warisan untuk Balai Refleksi, lalu masukkan ke validasi ahli (no. 14) | 1 | | Belum mulai |
+| 20 | Buat papan cerita atau mock-up layar baru (Skenario Digital, *Periksa Unggahan*, token) untuk ahli media langkah 1 | 1 | | Belum mulai |
+| 21 | Telaah ahli media langkah 2 pada layar jadi di instalasi uji, sebelum uji coba (G3) | 3 | | Belum mulai |
 
 ## Pertanyaan yang masih terbuka
 
@@ -392,22 +400,23 @@ Pertanyaan ini perlu dijawab sebelum desain instrumen dibekukan. Centang kalau t
 - [x] Setuju literasi digital jadi konstruk utama dengan tiga dimensi? **Diputuskan (25 Oktober 2026): ya, model multidimensi *between-item*, D1 bertumpu pada literasi membaca dengan sub-aspek D1a dan D1b. D3 menjadi *Partisipasi dan Representasi Budaya Kedu di Ruang Digital* di Cari Objek babak 2 (lihat [05](05_TELAAH_BUTIR_DAN_DIMENSI.md) dan [06](06_KISI_KISI_BANK_SOAL.md)).**
 - [x] Berapa variasi per tantangan? **Diputuskan (25 Oktober 2026): dua (a/b).**
 - [x] Ahli media ikut memvalidasi (daftar kerja no. 14)? **Diputuskan (25 Oktober 2026): ya.**
-- [ ] Peran `guru` dinonaktifkan selama penelitian, atau dihapus sama sekali?
-- [ ] Skenario Digital memakai aturan 3 kesempatan, atau satu pilihan lalu umpan balik? Usulan: boleh mencoba lagi, yang dianalisis pilihan pertama.
+- [x] Peran `guru` dinonaktifkan selama penelitian, atau dihapus sama sekali? **Diputuskan (25 Oktober 2026): dihapus seluruhnya.**
+- [x] Skenario Digital memakai aturan 3 kesempatan, atau satu pilihan lalu umpan balik? **Diputuskan (25 Oktober 2026): tiga kesempatan; yang dinilai tindakan dan alasan pertama.**
 - [x] Token sesi dipakai? **Diputuskan (25 Oktober 2026): ya, versi ringan, dan token mengatur wilayah yang dibuka di tiap pertemuan.**
 - [x] Di luar sesi, apakah Pustaka dan Profil tetap boleh dibuka, atau semuanya tertutup? **Diputuskan (25 Oktober 2026): semuanya tertutup sampai penelitian selesai.**
 - [x] Format kode peserta `S03-A07` disetujui? **Diputuskan (25 Oktober 2026): ya.**
 - [x] Berapa pertemuan per kelas, dan tantangan mana yang dibuka di tiap pertemuan? **Diputuskan (25 Oktober 2026): lima pertemuan; satu wilayah per pertemuan (lihat [06](06_KISI_KISI_BANK_SOAL.md#waktu-bermain)).**
-- [ ] Siapa yang menulis skenario dan cerita penghubungnya (Mbah Kedu dan Jaka), dan siapa yang mengisi suara narasinya?
+- [x] Siapa yang menulis skenario dan cerita penghubungnya (Mbah Kedu dan Jaka), dan siapa yang mengisi suara narasinya? **Diputuskan (25 Oktober 2026): skenario sudah ada di draf 08; cerita penghubung dan narasinya didraf Claude dan disetujui pemilik proyek; suaranya direkam pengisi suara yang sama dengan narasi lain, di sesi rekaman yang sama.**
 - [ ] Siapa validator ahlinya: isi budaya Kedu, bahasa anak, literasi digital, pengukuran, dan media? (Panel ahli materi lima orang, lihat [07](07_TELAAH_INSTRUMEN_VALIDASI.md).)
-- [ ] Tes awal dan akhir disusun sendiri atau mengadaptasi contoh soal AKM/TKA yang terbuka untuk umum?
+- [x] Tes awal dan akhir disusun sendiri atau mengadaptasi contoh soal AKM/TKA yang terbuka untuk umum? **Diputuskan (25 Oktober 2026): bagian literasi membaca diadaptasi dari contoh soal AKM/ANBK yang terbuka; bagian D2 dan D3 disusun sendiri, sejajar dengan kisi-kisi tapi tidak sama dengan butir game; divalidasi bersama bank di tahap 2.**
 - [x] Berapa sekolah, kelas, dan siswa dalam sampel? **Diputuskan (25 Oktober 2026): target 300 siswa yang datanya bisa dianalisis, merekrut sekitar 360 (± 13 kelas). Jumlah sekolah mengikuti ketersediaan kelas.**
-- [ ] Berapa peneliti per kelas: tiga (ideal) atau dua?
+- [x] Berapa peneliti per kelas: tiga (ideal) atau dua? **Diputuskan (25 Oktober 2026): tiga (P1, P2, P3).**
 - [ ] Izin etik diajukan ke komisi etik mana, dan kapan?
-- [ ] Skema kesalahan dan rencana analisis dipra-registrasi (misalnya di OSF) atau tidak?
-- [ ] Indikator `sikap` dipakai (misalnya lewat Balai Refleksi) atau dihapus?
-- [ ] Ambang waktu tidak aktif (usulan 60 detik) dan tebakan cepat (usulan 1,5 detik) ditetapkan setelah uji coba?
-- [ ] Karena sistem baru diubah setelah G2, bagaimana ahli media menilai layar baru (Skenario Digital, *Periksa Unggahan*, token) sebelum uji coba?
+- [x] Skema kesalahan dan rencana analisis dipra-registrasi (misalnya di OSF) atau tidak? **Diputuskan (25 Oktober 2026): ya, di OSF pada gerbang G4.**
+- [x] Indikator `sikap` dipakai (misalnya lewat Balai Refleksi) atau dihapus? **Diputuskan (25 Oktober 2026): dipakai sebagai skala pendamping sikap lewat Balai Refleksi, di luar skor literasi digital; instrumennya disusun di tahap 1 dan divalidasi di tahap 2.**
+- [x] Kapan skala sikap diisi: hanya di P5 setelah cerita penutup, atau juga di P1 sebagai data awal? **Diputuskan (25 Oktober 2026): hanya di P5, di Balai Refleksi.**
+- [x] Ambang waktu tidak aktif (usulan 60 detik) dan tebakan cepat (usulan 1,5 detik) ditetapkan setelah uji coba? **Ya: mengikuti tahap 4 peta jalan, yang urutannya dikukuhkan 25 Oktober 2026.**
+- [x] Karena sistem baru diubah setelah G2, bagaimana ahli media menilai layar baru (Skenario Digital, *Periksa Unggahan*, token) sebelum uji coba? **Diputuskan (25 Oktober 2026): dua langkah, mock-up di tahap 2 dan layar jadi di instalasi uji sebelum uji coba (G3).**
 
 ## Catatan perubahan sistem untuk tahap nanti
 
@@ -424,17 +433,18 @@ Belum ada yang dikerjakan sekarang. Daftar ini jadi bahan dokumen implementasi d
 | 7 | Pembersihan log | semua | Hapus event dan kolom bertanda "Dihapus" di bagian *Log: dihapus atau dipisah*; pindahkan yang bertanda "Admin" keluar dari ekspor penelitian |
 | 8 | Variabel beban permukaan per tantangan | 2, 5 | Jumlah rumpang, pengecoh, panjang bacaan, benda pengecoh, ukuran kotak di ekspor butir |
 | 9 | Lapis data turunan | 1, 4, 5, 6, 9 | Satu tempat menghitung kode kesalahan, waktu aktif, "dilewati", tersensor, tebakan cepat; berversi dan diuji otomatis |
-| 10 | Peran `peneliti` terpisah dari `admin` | semua | Hak akses sesuai tabel *Admin dan peneliti*; peneliti hanya melihat data pseudonim; admin tidak mengunduh data penelitian; peran `guru` nonaktif |
-| 11 | Token sesi lapangan | semua | Sesi lapangan di panel peneliti (sekolah, rombel, pertemuan, wilayah yang dibuka, jam buka–tutup), token 6 huruf, sesi game tersambung ke sesi lapangan; di luar sesi seluruh game tertutup sampai studi ditutup |
+| 10 | Peran `peneliti` terpisah dari `admin` | semua | Hak akses sesuai tabel *Admin dan peneliti*; peneliti hanya melihat data pseudonim dan bisa me-reset kata sandi siswa lewat kode peserta; admin tidak mengunduh data penelitian; peran `guru` dihapus seluruhnya |
+| 11 | Token sesi lapangan | semua | Sesi lapangan di panel peneliti (sekolah, rombel, pertemuan, wilayah yang dibuka, jam buka–tutup); buklet per kode peserta dimasukkan P1 dari L2 dan panel memeriksa keseimbangannya per rombel; token 6 huruf, sesi game tersambung ke sesi lapangan; di luar sesi seluruh game tertutup sampai studi ditutup |
 | 12 | Kode peserta baru `S03-A07` dan rombel | semua | Daftar kode sekolah penelitian; sekolah dan rombel dari token; nomor urut per rombel dibuat dengan aman saat banyak siswa mendaftar bersamaan |
 | 13 | Panel pemantauan lapangan | 1 | Siapa belum selesai, sesi aktif, event hilang; hanya untuk operasional |
 | 14 | Kamus data dan ekspor penelitian | semua | Ekspor hanya berisi data bertanda "Peneliti"; kamus data memuat definisi "dilewati", waktu aktif, dimensi, dan kode |
 | 15 | Templat spreadsheet lembar lapangan L1–L7 | semua | Kolomnya sama dengan [02_LEMBAR_LAPANGAN.md](02_LEMBAR_LAPANGAN.md), kuncinya kode peserta, jam WIB, dan kode sesi |
-| 16 | Mode penelitian: jam disembunyikan, sesi di layar kecil ditolak atau diberi peringatan | 5, semua | Sakelar di konfigurasi studi; waktu tetap direkam server; ambang layar kecil ditetapkan dari ukuran panggung (keputusan media, 25 Oktober 2026) |
+| 16 | Mode penelitian: jam disembunyikan, sesi penelitian di layar kecil ditolak dengan pesan ramah (di luar studi cukup peringatan), pengerjaan ulang baru terbuka setelah kelima tantangan wilayah pertemuan itu tuntas | 5, semua | Sakelar di konfigurasi studi; data pengerjaan ulang disimpan tapi tidak dinilai; waktu tetap direkam server; ambang layar kecil ditetapkan dari ukuran panggung (keputusan media, 25 Oktober 2026) |
 | 17 | Pemeriksaan otomatis area ketuk Cari Objek | 2, 6 | Area ketuk tidak boleh bersentuhan (jarak minimal setara 24 dp) di aturan bank soal, untuk babak 1 dan *Periksa Unggahan*; adegan Magelang dan Wonosobo ditata ulang |
 | 18 | Aturan narasi | 7 | Bacaan dan pernyataan D1 tidak pernah dibacakan; situasi Skenario Digital dan petunjuk *Periksa Unggahan* hanya lewat tombol ▶ dan tercatat |
 | 19 | Perbaikan media lain dari telaah pendahuluan | semua | Temuan M-04 sampai M-11 di [10_TELAAH_PENDAHULUAN_MEDIA.md](10_TELAAH_PENDAHULUAN_MEDIA.md): nama berkas gambar benda yang acak, antrean event saat keluar, ukuran petunjuk, dua pelanggaran axe, kode penelitian di Profil, data pendaftaran |
 | 20 | Bank soal baru dari kisi-kisi | 2, 3, 6, 10 | Cari Objek dua babak, kartu jangkar, variasi dari buklet B1–B4, aturan `DifficultyRules` baru, kolom dan sheet workbook baru; daftar lengkapnya di [06](06_KISI_KISI_BANK_SOAL.md#yang-perlu-disiapkan-sistem-nanti). Isi bank ada di [08](08_DRAF_BANK_SOAL.md) |
+| 21 | Skala pendamping sikap di Balai Refleksi | pendamping | Butir skala dan jawabannya berkode sendiri (`sikap`), masuk ekspor peneliti, bukan bagian skor literasi digital (keputusan 25 Oktober 2026) |
 
 Laporan kelas untuk guru tetap tercatat sebagai gagasan di luar penelitian dan tidak masuk daftar ini.
 
