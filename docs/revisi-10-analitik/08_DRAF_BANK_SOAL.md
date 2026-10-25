@@ -2,7 +2,7 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 25 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Dasar: [06_KISI_KISI_BANK_SOAL.md](06_KISI_KISI_BANK_SOAL.md) (disetujui pemilik proyek 25 Oktober 2026) · Status semua butir: **`needs_verification`**
+Per 25 Oktober 2026 (nama fiktif dicek) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Dasar: [06_KISI_KISI_BANK_SOAL.md](06_KISI_KISI_BANK_SOAL.md) (disetujui pemilik proyek 25 Oktober 2026) · Status semua butir: **`needs_verification`**
 
 Ini isi bank soal baru, ditulis mengikuti kisi-kisi. Dokumen ini masih **draf untuk telaah dan validasi ahli**. Bentuknya dokumen supaya mudah dibaca ahli. Setelah lolos validasi, isinya dipindah ke berkas data [`docs/bank-soal/`](../bank-soal/README.md) dan diterjemahkan ke bahasa Inggris. Belum ada yang diubah di sistem atau di workbook.
 
@@ -29,7 +29,7 @@ Ini isi bank soal baru, ditulis mengikuti kisi-kisi. Dokumen ini masih **draf un
 
 **Skenario Digital.** Skor tindakan: tepat = 2, kurang tepat = 1, berisiko = 0. Alasan tidak diskor, hanya dikode. Kalimat tanya alasan selalu sama: **"Yang paling penting kupikirkan di sini adalah …"**. Pilihan tindakan dan alasan diacak per pengerjaan. Umpan balik tidak memakai kata "salah" atau "gagal".
 
-**Nama dan alamat tiruan.** Semua akun, sanggar, warung, situs, dan tokoh di bacaan digital adalah fiktif. Alamat situs memakai domain `.example`. Sebelum dipakai, setiap nama dicek bahwa tidak sama dengan akun, sanggar, atau usaha nyata (lihat *Yang harus dicek sebelum validasi*).
+**Nama dan alamat tiruan.** Semua akun, sanggar, warung, situs, dan tokoh di bacaan digital adalah fiktif. Unggahan tampil di aplikasi media sosial fiktif **Kedugram**, jadi nama akun di game tidak merujuk ke akun di platform sungguhan. Komentator ditulis dengan nama depan saja, tanpa @. Alamat situs memakai domain `.example`. Sebelum dipakai, setiap nama dicek bahwa tidak sama dengan akun, sanggar, atau usaha nyata (lihat *Yang harus dicek sebelum validasi*).
 
 **Gambar.** Bacaan digital tampil sebagai tangkapan layar tiruan (papan informasi, unggahan, grup percakapan, hasil pencarian). Teksnya tetap teks biasa supaya bisa dibacakan narasi dan diperbesar. Daftar gambar baru ada di bagian akhir.
 
@@ -164,11 +164,11 @@ Pengecoh: angklung, ondel-ondel, perahu pinisi, sasando, semuanya **INF-BUD**.
 | No | Bagian ketuk | Isi |
 | --- | --- | --- |
 | A1 | Nama akun pengunggah | `@jalan2_bima` |
-| A2 | Tulisan kecil di pojok foto | "Foto: Sanggar Turangga Muda" |
+| A2 | Tulisan kecil di pojok foto | "Foto: Sanggar Kuda Pelangi" |
 | A3 | Keterangan unggahan | "Tari kuda lumping di lapangan desa! Kuda-kudaannya dari kayu jati 😍" |
 | A4 | Papan informasi pameran | "Kuda lumping memakai kuda-kudaan dari anyaman bambu yang dicat warna-warni." |
-| A5 | Komentar 1 | `@nadia`: "Keren! Terima kasih sudah berbagi foto kesenian Temanggung 👏" |
-| A6 | Komentar 2 | `@doni`: "Tarian kuno, nggak zaman! 😝" |
+| A5 | Komentar 1 | **Nadia**: "Keren! Terima kasih sudah berbagi foto kesenian Temanggung 👏" |
+| A6 | Komentar 2 | **Doni**: "Tarian kuno, nggak zaman! 😝" |
 | A7 | Tombol | "Kirim pesan ke sanggar" |
 | A8 | Tombol | "Bagikan" |
 
@@ -187,8 +187,8 @@ Pengecoh: angklung, ondel-ondel, perahu pinisi, sasando, semuanya **INF-BUD**.
 | B2 | Tulisan kecil di pojok video | "Video: Warung Tepi Kali Bu Tini" |
 | B3 | Keterangan unggahan | "Uceng goreng, ikan laut khas Temanggung. Kriuk! 😋" |
 | B4 | Papan informasi pameran | "Ikan uceng adalah ikan sungai kecil, makanan khas Temanggung." |
-| B5 | Komentar 1 | `@raka`: "Wah, jadi pengin coba. Terima kasih infonya 🙏" |
-| B6 | Komentar 2 | `@tio`: "Ih, ikan kecil gitu, jijik! 🤢" |
+| B5 | Komentar 1 | **Raka**: "Wah, jadi pengin coba. Terima kasih infonya 🙏" |
+| B6 | Komentar 2 | **Tio**: "Ih, ikan kecil gitu, jijik! 🤢" |
 | B7 | Tombol | "Kirim pesan ke warung" |
 | B8 | Tombol | "Bagikan" |
 
@@ -382,9 +382,9 @@ Pertunjukan di lapangan desa adalah contoh situasi, bukan klaim tentang setiap p
 >
 > Mari jaga Borobudur bersama. Ikuti rute dan aturan dari pengelola. Jangan memanjat stupa dan jangan menyentuh relief, sebab minyak dan keringat tangan dapat merusak batu. Jangan mencoret dinding dan jangan membuang sampah sembarangan.
 >
-> 💬 **@dimas_mgl:** Menurut saya, Borobudur candi paling indah di dunia! 😍
-> 💬 **@bu.rina:** Borobudur ditetapkan sebagai Warisan Dunia pada tahun 1991.
-> 💬 **@nanda.27:** Katanya boleh kok pegang relief, asal pelan-pelan.
+> 💬 **Dimas:** Menurut saya, Borobudur candi paling indah di dunia! 😍
+> 💬 **Bu Rina:** Borobudur ditetapkan sebagai Warisan Dunia pada tahun 1991.
+> 💬 **Nanda:** Katanya boleh kok pegang relief, asal pelan-pelan.
 
 Panjang ± 125 kata
 
@@ -393,9 +393,9 @@ Panjang ± 125 kata
 | mgl-3-a01 | Paragraf kedua unggahan terutama menjelaskan cara menjaga Candi Borobudur. | benar | D1a | L2 | C2 | INF-REL |
 | mgl-3-a02 | Menurut unggahan, semua relief Borobudur bercerita. | salah | D1a | L2 | C3 | INF-GEN |
 | mgl-3-a03 | Pengunjung boleh menyentuh relief asalkan tangannya sudah dicuci bersih. | salah | D1a | L2 | C3 | INF-HUB |
-| mgl-3-a04 | Komentar @dimas_mgl berisi pendapat. | benar | D1b | L3 | C4 | INF-FOP |
-| mgl-3-a05 | Komentar @bu.rina berisi pendapat. | salah | D1b | L3 | C4 | INF-FOP |
-| mgl-3-a06 | Tentang boleh tidaknya menyentuh relief, unggahan akun resmi lebih dapat dipercaya daripada komentar @nanda.27. | benar | D1b | L3 | C4 | INF-SUM |
+| mgl-3-a04 | Komentar Dimas berisi pendapat. | benar | D1b | L3 | C4 | INF-FOP |
+| mgl-3-a05 | Komentar Bu Rina berisi pendapat. | salah | D1b | L3 | C4 | INF-FOP |
+| mgl-3-a06 | Tentang boleh tidaknya menyentuh relief, unggahan akun resmi lebih dapat dipercaya daripada komentar Nanda. | benar | D1b | L3 | C4 | INF-SUM |
 
 `mgl-3-a03` menggantikan butir lama "membawa pulang sampah" (terjawab dari norma). Kuncinya *salah* karena larangan di unggahan berlaku tanpa syarat ("jangan menyentuh relief"), dan alasannya minyak serta keringat tangan, bukan kotoran. Siswa yang menambahkan syarat sendiri terjebak.
 
@@ -407,9 +407,9 @@ Panjang ± 125 kata
 >
 > Di lembah Gunung Tidar berdiri Akademi Militer sejak tahun 1957. Kota Magelang berulang tahun setiap tanggal 11 April. Tanggal itu diambil dari Prasasti Mantyasih yang dibuat pada tahun 907 Masehi.
 >
-> 💬 **@kak.dewi:** Pemandangan dari Gunung Tidar paling indah saat pagi! 🌄
-> 💬 **@pak.anton:** Prasasti Mantyasih dibuat pada tahun 907 Masehi.
-> 💬 **@raffi_09:** Katanya boleh lewat jalan pintas di hutan biar cepat sampai atas.
+> 💬 **Kak Dewi:** Pemandangan dari Gunung Tidar paling indah saat pagi! 🌄
+> 💬 **Pak Anton:** Prasasti Mantyasih dibuat pada tahun 907 Masehi.
+> 💬 **Raffi:** Katanya boleh lewat jalan pintas di hutan biar cepat sampai atas.
 
 Panjang ± 125 kata
 
@@ -418,9 +418,9 @@ Panjang ± 125 kata
 | mgl-3-b01 | Paragraf pertama unggahan terutama menceritakan Gunung Tidar. | benar | D1a | L2 | C2 | INF-REL |
 | mgl-3-b02 | Prasasti Mantyasih dibuat sesudah Akademi Militer berdiri. | salah | D1a | L2 | C4 | INF-HUB |
 | mgl-3-b03 | Menurut unggahan, cerita Gunung Tidar sebagai paku tanah Jawa adalah penjelasan ilmiah. | salah | D1a | L2 | C2 | INF-LIT |
-| mgl-3-b04 | Komentar @kak.dewi berisi fakta. | salah | D1b | L3 | C4 | INF-FOP |
-| mgl-3-b05 | Komentar @pak.anton berisi fakta. | benar | D1b | L3 | C4 | INF-FOP |
-| mgl-3-b06 | Tentang jalur mendaki Gunung Tidar, unggahan akun resmi lebih dapat dipercaya daripada komentar @raffi_09. | benar | D1b | L3 | C4 | INF-SUM |
+| mgl-3-b04 | Komentar Kak Dewi berisi fakta. | salah | D1b | L3 | C4 | INF-FOP |
+| mgl-3-b05 | Komentar Pak Anton berisi fakta. | benar | D1b | L3 | C4 | INF-FOP |
+| mgl-3-b06 | Tentang jalur mendaki Gunung Tidar, unggahan akun resmi lebih dapat dipercaya daripada komentar Raffi. | benar | D1b | L3 | C4 | INF-SUM |
 
 Kunci `mgl-3-b01` dirumuskan ulang sesuai 05 ("terutama menceritakan Gunung Tidar", tanpa "dan legendanya"). Pernyataan "berulang tahun 11 April = fakta" yang terlalu mudah diganti dengan komentar berisi fakta.
 
@@ -477,9 +477,9 @@ Pengecoh: kuda kepang bambu, manisan carica, dadak merak Reog, angklung, bakpia,
 | C3 | Keterangan unggahan | "Tari Topeng Ireng, kesenian khas Temanggung! 🔥" |
 | C4 | Kartu informasi | "Topeng Ireng: tari rakyat yang tumbuh sekitar tahun 1950-an di Desa Tuksongo, Kecamatan Borobudur, Magelang." |
 | C5 | Jumlah suka | "540 suka" |
-| C6 | Komentar 1 | `@salsa`: "Bukan dari Temanggung, Kak. Di kartu info tertulis dari Tuksongo, Magelang 🙏" |
-| C7 | Komentar 2 | `@bayu`: "Haha, kostumnya kayak ayam jago 🐔" |
-| C8 | Komentar 3 | `@lina`: "Keren! Temanggung memang hebat 👍" |
+| C6 | Komentar 1 | **Salsa**: "Bukan dari Temanggung, Kak. Di kartu info tertulis dari Tuksongo, Magelang 🙏" |
+| C7 | Komentar 2 | **Bayu**: "Haha, kostumnya kayak ayam jago 🐔" |
+| C8 | Komentar 3 | **Lina**: "Keren! Temanggung memang hebat 👍" |
 | C9 | Tombol | "Unduh" |
 | C10 | Tombol | "Kirim pesan ke sanggar" |
 
@@ -499,9 +499,9 @@ Pengecoh: kuda kepang bambu, manisan carica, dadak merak Reog, angklung, bakpia,
 | D3 | Keterangan unggahan | "Gerabah cantik dari Dusun Klipoh, Wonosobo! 🏺" |
 | D4 | Kartu informasi | "Dusun Klipoh berada sekitar 3 km dari Candi Borobudur, Magelang. Warganya membuat kendil, cobek, dan kuali dari tanah liat." |
 | D5 | Jumlah suka | "610 suka" |
-| D6 | Komentar 1 | `@tegar`: "Klipoh itu di Magelang, Kak, dekat Borobudur. Ada di kartu info 🙏" |
-| D7 | Komentar 2 | `@rani`: "Wkwk kendil jadul, siapa yang masih pakai 😂" |
-| D8 | Komentar 3 | `@ayu`: "Cantik! Wonosobo memang keren 👍" |
+| D6 | Komentar 1 | **Tegar**: "Klipoh itu di Magelang, Kak, dekat Borobudur. Ada di kartu info 🙏" |
+| D7 | Komentar 2 | **Rani**: "Wkwk kendil jadul, siapa yang masih pakai 😂" |
+| D8 | Komentar 3 | **Ayu**: "Cantik! Wonosobo memang keren 👍" |
 | D9 | Tombol | "Unduh" |
 | D10 | Tombol | "Kirim pesan ke rumah gerabah" |
 
@@ -810,10 +810,10 @@ Pengecoh: pepaya biasa, rigen, semangkuk mi ongklok, angklung, sasando, biji kop
 | E3 | Keterangan unggahan | "Angklung khas Jawa Barat, keren banget! 🎶 Video bikinan aku sendiri, lho." |
 | E4 | Papan informasi Rumah Budaya | "Bundengan adalah alat musik dari Wonosobo. Bentuknya berasal dari kowangan, tudung bambu para penggembala bebek." |
 | E5 | Jumlah suka | "8.000 suka" |
-| E6 | Komentar 1 | `@wulan`: "Itu bundengan dari Wonosobo, Kak. Ada di papan Rumah Budaya 🙏" |
-| E7 | Komentar 2 | `@galih`: "SALAH! Gitu aja nggak tahu, malu-maluin! 😡" |
-| E8 | Komentar 3 | `@putra`: "Wkwk sama aja lah, sama-sama dari bambu." |
-| E9 | Komentar 4 | `@intan`: "Aku juga kira angklung 😅" |
+| E6 | Komentar 1 | **Wulan**: "Itu bundengan dari Wonosobo, Kak. Ada di papan Rumah Budaya 🙏" |
+| E7 | Komentar 2 | **Galih**: "SALAH! Gitu aja nggak tahu, malu-maluin! 😡" |
+| E8 | Komentar 3 | **Putra**: "Wkwk sama aja lah, sama-sama dari bambu." |
+| E9 | Komentar 4 | **Intan**: "Aku juga kira angklung 😅" |
 | E10 | Tombol | "Bagikan" |
 | E11 | Tombol | "Unduh" |
 | E12 | Tombol | "Kirim pesan ke sanggar" |
@@ -834,10 +834,10 @@ Pengecoh: pepaya biasa, rigen, semangkuk mi ongklok, angklung, sasando, biji kop
 | F3 | Keterangan unggahan | "Mi ongklok, kuliner khas Magelang! 😋 Video bikinan aku sendiri, lho." |
 | F4 | Papan informasi Rumah Budaya | "Mi ongklok adalah makanan khas Wonosobo. Namanya berasal dari ongklok, keranjang bambu kecil untuk merebus mi." |
 | F5 | Jumlah suka | "7.500 suka" |
-| F6 | Komentar 1 | `@dewi`: "Mi ongklok itu dari Wonosobo, Kak. Ada di papan Rumah Budaya 🙏" |
-| F7 | Komentar 2 | `@aldi`: "NGACO! Makanya belajar dulu! 😡" |
-| F8 | Komentar 3 | `@yoga`: "Wkwk sama aja lah, sama-sama mi." |
-| F9 | Komentar 4 | `@nisa`: "Aku juga kira dari Magelang 😅" |
+| F6 | Komentar 1 | **Dewi**: "Mi ongklok itu dari Wonosobo, Kak. Ada di papan Rumah Budaya 🙏" |
+| F7 | Komentar 2 | **Aldi**: "NGACO! Makanya belajar dulu! 😡" |
+| F8 | Komentar 3 | **Yoga**: "Wkwk sama aja lah, sama-sama mi." |
+| F9 | Komentar 4 | **Nisa**: "Aku juga kira dari Magelang 😅" |
 | F10 | Tombol | "Bagikan" |
 | F11 | Tombol | "Unduh" |
 | F12 | Tombol | "Kirim pesan ke warung" |
@@ -1023,7 +1023,7 @@ Skenario ini diambil dari contoh di 01; kalimat tanya alasannya dibuat netral.
 | Magelang | LIT, KAT, REL, HUB, GEN, FOP, SUM | ATR, REP, IZN, ETK | PRI, SAN, IZN, ETK, HOX, PSF |
 | Wonosobo | LIT, KAT, REL, HUB, GEN, SUM | ATR, REP, IZN, ETK | PRI, SAN, IZN, ASG, ETK, HOX, PSF |
 
-**Penyesuaian dari kisi-kisi.** Kisi-kisi meminta setiap kode INF muncul minimal dua kali per wilayah. Itu tidak masuk akal untuk semua kode: INF-FOP (fakta dan pendapat) memang bukan tugas Temanggung, dan INF-GEN jarang cocok di level menemukan informasi. Aturan yang dipakai di draf ini (usulan): setiap kode yang cocok dengan level wilayah muncul paling sedikit sekali di wilayah itu, dan setiap kode INF muncul di minimal dua wilayah, kecuali INF-FOP yang memang khusus Magelang. DIG-ASG hanya muncul di Wonosobo, tempat situasi orang asing paling rumit.
+**Penyesuaian dari kisi-kisi.** Kisi-kisi meminta setiap kode INF muncul minimal dua kali per wilayah. Itu tidak masuk akal untuk semua kode: INF-FOP (fakta dan pendapat) memang bukan tugas Temanggung, dan INF-GEN jarang cocok di level menemukan informasi. Aturan yang dipakai di draf ini (disetujui pemilik proyek 25 Oktober 2026, dan kisi-kisi 06 sudah disesuaikan): setiap kode yang cocok dengan level wilayah muncul paling sedikit sekali di wilayah itu, dan setiap kode INF muncul di minimal dua wilayah, kecuali INF-FOP yang memang khusus Magelang. DIG-ASG hanya muncul di Wonosobo, tempat situasi orang asing paling rumit.
 
 ## Panjang teks
 
@@ -1036,19 +1036,27 @@ Skenario ini diambil dari contoh di 01; kalimat tanya alasannya dibuat netral.
 | `mgl-3` | 110–140 | ± 110–125 | Sesuai |
 | Jangkar MGL | 40–50 | ± 55 | Sedikit di atas |
 | `wnb-2` | 110–130 | ± 120–125 (isi) | Sesuai |
-| `wnb-3` | 120–150 | **± 90–95** | Di bawah rentang. Enam pernyataan tetap bisa dijawab dari teks, dan beban baca turun. Usulan: rentang kisi-kisi diubah jadi 90–150 |
-| Jangkar WNB | 40–50 | **± 25** | Di bawah rentang; unggahan iklan memang pendek. Usulan: rentang diubah jadi 25–50 |
+| `wnb-3` | 90–150 | ± 90–95 | Di bawah rentang. Enam pernyataan tetap bisa dijawab dari teks, dan beban baca turun. Rentang kisi-kisi diubah jadi 90–150 (disetujui) |
+| Jangkar WNB | 25–50 | ± 25 | Unggahan iklan memang pendek. Rentang diubah jadi 25–50 (disetujui) |
 
 # Yang harus dicek sebelum validasi ahli
 
-**Nama fiktif.** Setiap nama di bawah dicari di internet dan media sosial. Kalau ternyata dipakai akun, sanggar, warung, atau sekolah nyata, namanya diganti.
+**Nama fiktif (dicek 25 Oktober 2026).** Setiap nama dicari di web dengan tanda kutip, ditambah kata kunci daerah atau jenis usahanya.
 
-| Jenis | Nama |
-| --- | --- |
-| Akun | `@jalan2_bima`, `@sekar.kuliner`, `@vlog.arka`, `@dapur.nayla`, `@jelajah.awan`, `@makan.terus`, `@pengelola.candi`, `@infowisata.kotamagelang`, `@pengelola.telagawarna`, `@carica.mantap`, nama akun komentar |
-| Sanggar dan usaha | Sanggar Turangga Muda (**prioritas**: nama seperti ini lazim dipakai kelompok kuda lumping), Sanggar Cahya Kuluk, Sanggar Sekar Kowangan, Warung Tepi Kali Bu Tini, Warung Kabut Pagi, Rumah Gerabah Sekar Lempung |
-| Lain-lain | SD Lereng Sindoro, Game Bintang, Undian Carica Dieng, Rumah Budaya |
-| Situs | Semua memakai domain `.example` (dicadangkan, RFC 2606) |
+| Nama | Hasil | Tindakan |
+| --- | --- | --- |
+| Sanggar Turangga Muda | Tidak ada yang persis sama, tapi nama yang hampir sama dipakai beberapa kelompok kuda lumping nyata (Paguyuban Turonggo Mudo di Dharmasraya, Sekar Turonggo Mudo di Kampar, Sanggar Turonggo Satrio Mudo di Blitar) | **Diganti** menjadi Sanggar Kuda Pelangi (tidak ditemukan) |
+| Sanggar Kuda Pelangi, Sanggar Cahya Kuluk, Sanggar Sekar Kowangan, Rumah Gerabah Sekar Lempung | Tidak ditemukan | Dipakai |
+| Warung Tepi Kali Bu Tini, Warung Kabut Pagi | Tidak ditemukan | Dipakai |
+| SD Lereng Sindoro, Undian Carica Dieng | Tidak ditemukan | Dipakai |
+| Game Bintang | Tidak ada game dengan nama ini; yang muncul hanya acara televisi "Liga Bintang Juara" | Dipakai |
+| Kedugram (nama aplikasi media sosial fiktif) | Tidak ditemukan | Dipakai |
+| Rumah Budaya | Kata benda umum, bukan nama lembaga tertentu | Dipakai |
+| Akun pengunggah (`@jalan2_bima`, `@sekar.kuliner`, `@vlog.arka`, `@dapur.nayla`, `@jelajah.awan`, `@makan.terus`) dan akun resmi tiruan (`@pengelola.candi`, `@infowisata.kotamagelang`, `@pengelola.telagawarna`, `@carica.mantap`) | Tidak ditemukan di web. **Catatan:** mesin pencari tidak mengindeks Instagram dan TikTok dengan lengkap, jadi hasil ini belum membuktikan nama itu kosong | Dipakai, karena semua unggahan tampil di aplikasi fiktif *Kedugram* dan tidak merujuk ke platform nyata |
+| Nama komentator | Nama depan umum tidak menunjuk orang tertentu | `@nama` diganti nama depan saja (misalnya **Nadia**, **Pak Anton**) |
+| Situs | Semua memakai domain `.example` (dicadangkan, RFC 2606) | Dipakai |
+
+Sebelum pengambilan data, satu orang tim tetap disarankan mengetik setiap nama akun di kolom cari Instagram dan TikTok. Kalau ada akun nyata yang aktif dengan nama sama persis, namanya diganti.
 
 **Fakta yang dipakai ulang dari bank lama dan masih perlu dicek ahli:** perkebunan teh Tambi sejak 1865; Gunung Tidar sekitar 503 m; Akademi Militer di lembah Tidar sejak 1957; Prasasti Mantyasih 907 M; Borobudur "candi Buddha terbesar di dunia"; air suci Waisak dari Umbul Jumprit; Dusun Klipoh sekitar 3 km dari Borobudur.
 
@@ -1075,7 +1083,7 @@ Teks digital (layar informasi, unggahan, grup, hasil pencarian) dibangun sebagai
 # Langkah berikutnya
 
 1. Pemilik proyek menelaah draf ini.
-2. Cek nama fiktif dan fakta di bagian *Yang harus dicek*.
+2. Cek fakta di bagian *Yang harus dicek* (nama fiktif sudah dicek; tinggal pencarian manual akun di Instagram dan TikTok).
 3. Validasi ahli (I-CVI atau V Aiken) dengan instrumen yang sedang disiapkan sesi koordinator.
 4. Terjemahan bahasa Inggris untuk setiap teks yang tampil di game.
 5. Pindahkan isi ke berkas data `docs/bank-soal/` dengan kolom baru dari kisi-kisi. Ini pekerjaan tahap implementasi.
@@ -1085,8 +1093,9 @@ Teks digital (layar informasi, unggahan, grup, hasil pencarian) dibangun sebagai
 - Draf bank soal baru disusun di `08_DRAF_BANK_SOAL.md`: 116 butir literasi digital dan 12 butir PBK, semua berstatus `needs_verification`.
 - Dari bank lama, variasi yang dipakai ulang (dengan perbaikan): `tmg-2` a (Sindoro–Sumbing) dan b (Umbul Jumprit); `tmg-3` a (Liyangan) dan b (Pringapus–Gondosuli); `mgl-2` a (Borobudur) dan b (Topeng Ireng); `mgl-3` a (Borobudur) dan c (Gunung Tidar, sekarang b); `wnb-2` a (Dieng) dan c (embun upas, sekarang b); `wnb-3` a (Telaga Warna) dan c (kawah, sekarang b). Tidak dipakai: `tmg-2-c`, `tmg-3-c`, `mgl-2-c`, `mgl-3-b`, `wnb-2-b`, `wnb-3-b`.
 - Semua perbaikan butir di 05 sudah dimasukkan, kecuali `mgl-3-b04` (memotret Waisak), yang tidak dipakai karena variasinya tidak dipilih.
-- Usulan perubahan aturan sebaran kode di kisi-kisi: setiap kode INF yang cocok dengan level wilayah muncul paling sedikit sekali di wilayah itu, dan setiap kode INF muncul di minimal dua wilayah (kecuali INF-FOP, khusus Magelang).
-- Usulan perubahan rentang panjang teks: `wnb-3` 90–150 kata, kartu jangkar Wonosobo 25–50 kata.
+- **Disetujui pemilik proyek (25 Oktober 2026):** aturan sebaran kode di kisi-kisi diubah: setiap kode INF yang cocok dengan level wilayah muncul paling sedikit sekali di wilayah itu, dan setiap kode INF muncul di minimal dua wilayah (kecuali INF-FOP, khusus Magelang).
+- **Disetujui pemilik proyek (25 Oktober 2026):** rentang panjang teks `wnb-3` jadi 90–150 kata dan kartu jangkar Wonosobo 25–50 kata. Kisi-kisi 06 sudah disesuaikan.
+- Nama fiktif sudah dicek di web (25 Oktober 2026). "Sanggar Turangga Muda" diganti "Sanggar Kuda Pelangi" karena mirip nama kelompok kuda lumping nyata. Semua unggahan tampil di aplikasi fiktif *Kedugram*, dan komentator ditulis dengan nama depan saja.
 - Penari Topeng Ireng (memakai topeng atau tidak) dan asal tari lengger tidak dipakai sebagai fakta di bank, karena sumbernya belum meyakinkan.
 - Skenario OTP memakai nama game fiktif "Game Bintang", bukan GELITA.
 - Lembaga resmi di bacaan ditulis tanpa nama dan logo (misalnya "akun resmi badan pemantau gunung api").
@@ -1096,3 +1105,4 @@ Teks digital (layar informasi, unggahan, grup, hasil pencarian) dibangun sebagai
 - Bundengan mengiringi lengger, dan asal lengger yang diperdebatkan: [Wikipedia: Lengger](https://en.wikipedia.org/wiki/Lengger); [GNFI 2019](https://www.goodnewsfromindonesia.id/2019/10/14/bundenga-alat-musik-tradisional-yang-berawal-dari-pelindung-gembala); [Katadata](https://katadata.co.id/amp/berita/daerah/631075f2df535/memahami-sejarah-dan-makna-tari-tradisional-lengger/).
 - Topeng Ireng: asal nama dan kostum, tanpa keterangan tentang topeng: [VOI](https://voinews.id/index.php/component/k2/item/3189-topeng-ireng-dance).
 - Rujukan isi bacaan lainnya sama dengan bank lama ([`docs/bank-soal/data/`](../bank-soal/data/)) dan cek fakta di [01](01_REVISI_10_ANALITIK.md#cek-fakta-dan-rujukan) dan [05](05_TELAAH_BUTIR_DAN_DIMENSI.md#rujukan).
+- Cek nama fiktif (25 Oktober 2026): kelompok kuda lumping bernama mirip "Turonggo Mudo": [Avant-Garde UNP](https://avant-garde.ppj.unp.ac.id/index.php/avant-garde/article/view/213), [Jurnal Tata Rias Unesa](https://ejournal.unesa.ac.id/index.php/jurnal-tata-rias/article/view/33731), [Repository UIR](https://repository.uir.ac.id/25977/).
