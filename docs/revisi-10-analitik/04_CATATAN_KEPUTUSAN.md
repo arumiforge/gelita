@@ -23,6 +23,14 @@ Tahap 2, aturan game selama penelitian:
 - **Layar terlalu kecil saat studi berjalan: sesi ditolak dengan pesan ramah.** Di luar studi cukup peringatan. Ini memperjelas keputusan media sebelumnya ("ditolak atau diberi peringatan").
 - **Pengerjaan ulang selama studi** baru terbuka setelah kelima tantangan wilayah pertemuan itu tuntas, hanya di dalam sesi. Datanya disimpan tapi tidak dinilai.
 
+Tahap 3, akun dan data:
+
+- **Peran `guru` dihapus seluruhnya**, termasuk halaman dan hak aksesnya, bukan hanya dinonaktifkan. Kalau laporan guru dibuat nanti, perannya dibangun ulang dengan hak baru. Kolom Guru di tabel peran 01 dihapus.
+- **Lupa kata sandi di lapangan: P1 me-reset lewat kode peserta** dari panel peneliti (kode dicari di L2). Sistem memberi kata sandi sementara dan mencatatnya di log audit; peneliti tetap tidak melihat nama, dan admin tidak perlu hadir.
+- **Nama lengkap siswa tetap disimpan di akun, hanya terlihat oleh admin**, sesuai rencana di 01 (usulan nama panggilan saja tidak dipilih).
+- **Indikator `sikap` dipakai sebagai skala pendamping sikap menjaga warisan lewat Balai Refleksi**, di luar skor literasi digital, seperti PBK. Saat ini Balai Refleksi hanya berisi ringkasan perjalanan dan kritik dan saran, jadi skala ini instrumen baru: disusun di tahap 1 (daftar kerja no. 19), divalidasi di tahap 2 (G3 pengamat budaya), dan menjadi perubahan sistem no. 21. Waktu pengisiannya masuk pertanyaan terbuka.
+- **Ambang waktu tidak aktif dan tebakan cepat ditetapkan setelah uji coba**, mengikuti tahap 4 peta jalan yang urutannya sudah dikukuhkan di tahap 1 wawancara.
+
 **Keputusan pemilik proyek: kisi-kisi, draf bank soal, dan telaah pendahuluan T6** (sesi `kisi-kisi-bank-soal`)
 
 - **Kisi-kisi bank soal ([06](06_KISI_KISI_BANK_SOAL.md)) disetujui seluruhnya**, termasuk semua bagian yang semula bertanda "usulan". Dengan begitu rumusan keputusan di [05](05_TELAAH_BUTIR_DAN_DIMENSI.md) ikut berlaku:

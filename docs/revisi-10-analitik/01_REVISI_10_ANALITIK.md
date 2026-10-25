@@ -54,7 +54,7 @@ Dari 10 analitik, 3 sudah terekam penuh, 5 baru sebagian, dan 2 belum ada sama s
 | No | Analitik | Definisi operasional (revisi) | Makna bagi penelitian | Sumber data | Status di sistem | Yang perlu dilakukan |
 | --- | --- | --- | --- | --- | --- | --- |
 | 1 | Penyelesaian aktivitas | Tantangan tuntas per wilayah. "Dilewati" dipecah tiga: (a) petunjuk Cari Objek gagal 3 kali, (b) pengerjaan ditinggal dan tidak dilanjutkan di sesi yang sama, (c) tantangan yang sudah terbuka tapi tidak pernah dimulai sampai pengambilan data selesai. | Seberapa banyak dan seberapa tekun siswa menyelesaikan; dasar untuk menentukan data siswa lengkap atau tidak | Log game + L1 | Sebagian | Tulis definisi "dilewati" di kamus data dan hitung tiga jenisnya terpisah |
-| 2 | Ketepatan jawaban | Benar atau salah akhir per butir, dikelompokkan per dimensi (D1–D3) dan per level AKM | Indikator yang sudah atau belum dikuasai | Log game | Sebagian | Susun indikator per dimensi, beri label level AKM per butir, dan putuskan nasib indikator `sikap` yang belum dipakai |
+| 2 | Ketepatan jawaban | Benar atau salah akhir per butir, dikelompokkan per dimensi (D1–D3) dan per level AKM | Indikator yang sudah atau belum dikuasai | Log game | Sebagian | Susun indikator per dimensi, beri label level AKM per butir. Indikator `sikap` jadi skala pendamping lewat Balai Refleksi (diputuskan 25 Oktober 2026) |
 | 3 | Ketepatan percobaan pertama | Jawaban di Cek pertama (Susun Gambar, Isi Rumpang, Benar atau Salah), ketukan pertama per petunjuk (Cari Objek), atau pilihan pertama (Skenario Digital), sebelum ada umpan balik | Ukuran utama kemampuan awal; data inti untuk uji Rasch | Log game | Sudah | Ingat peluang tebakan 50% di Benar atau Salah; butir level tinggi sebaiknya punya 3 pilihan atau lebih |
 | 4 | Jumlah percobaan | Percobaan ke berapa butir jadi benar (1, 2, 3), atau "belum berhasil setelah 3" | Butir yang butuh pengulangan | Log game | Sudah | Saat analisis, "belum berhasil" diperlakukan sebagai data tersensor, bukan angka 3 |
 | 5 | Waktu pengerjaan | Waktu aktif = waktu total dikurangi (a) selang layar tersembunyi dan (b) jeda tanpa sentuhan lebih dari 60 detik (ambang awal, diuji saat uji coba). Waktu per butir di tantangan yang dicek bersamaan hanya perkiraan | Tugas yang makan waktu lebih lama | Log game + L3 | Sebagian | Hitung waktu aktif; laporkan waktu total dan waktu aktif berdampingan |
@@ -189,29 +189,31 @@ Urutan Temanggung (mudah), Magelang (sedang), Wonosobo (sulit) tetap dipakai. Be
 
 ## Admin dan peneliti: dua peran berbeda
 
-Admin dan peneliti adalah dua entitas yang berbeda. **Admin** menjaga sistem berjalan dan memegang identitas. **Peneliti** memegang data penelitian yang sudah disamarkan (pseudonim). Sekarang sistem baru punya dua peran staf: `admin` yang bisa melihat semuanya, termasuk nama siswa, dan `guru` yang melihat data sekolahnya sendiri tanpa nama. Revisi ini memisahkan keduanya dan menambah peran `peneliti`.
+Admin dan peneliti adalah dua entitas yang berbeda. **Admin** menjaga sistem berjalan dan memegang identitas. **Peneliti** memegang data penelitian yang sudah disamarkan (pseudonim). Sekarang sistem baru punya dua peran staf: `admin` yang bisa melihat semuanya, termasuk nama siswa, dan `guru` yang melihat data sekolahnya sendiri tanpa nama. Revisi ini menambah peran `peneliti` dan menghapus peran `guru` seluruhnya (diputuskan 25 Oktober 2026).
 
-| Fitur atau data | Admin | Peneliti | Guru |
-| --- | --- | --- | --- |
-| Akun staf (buat, nonaktifkan, ganti peran) | Ya | — | — |
-| Akun siswa, reset kata sandi, nama dan nama pengguna | Ya | — | — |
-| Daftar sekolah, NPSN, dan pemetaan ke kode sekolah | Ya | Kode sekolah saja | — |
-| Konten, bank soal, media, narasi | Ya | Lihat saja (untuk validasi) | — |
-| Rilis dan paket aset | Ya | — | — |
-| Log teknis: perangkat, paket, event hilang, audit | Ya | Ringkasan event hilang di panel pemantauan | — |
-| Sesi lapangan dan token | — | Ya | — |
-| Panel pemantauan lapangan | Lihat | Ya | — |
-| Data penelitian (jawaban, percobaan, navigasi, bantuan, waktu) dan ekspornya | — | Ya, dengan kode peserta | — |
-| Data turunan dan kamus data | — | Ya | — |
-| Penelitian (studi) dan statusnya | — | Ya | — |
-| Permintaan hapus data peserta | Menjalankan | Mengajukan | — |
+| Fitur atau data | Admin | Peneliti |
+| --- | --- | --- |
+| Akun staf (buat, nonaktifkan, ganti peran) | Ya | — |
+| Akun siswa, reset kata sandi, nama dan nama pengguna | Ya | Reset kata sandi lewat kode peserta saja, tanpa melihat nama |
+| Daftar sekolah, NPSN, dan pemetaan ke kode sekolah | Ya | Kode sekolah saja |
+| Konten, bank soal, media, narasi | Ya | Lihat saja (untuk validasi) |
+| Rilis dan paket aset | Ya | — |
+| Log teknis: perangkat, paket, event hilang, audit | Ya | Ringkasan event hilang di panel pemantauan |
+| Sesi lapangan dan token | — | Ya |
+| Panel pemantauan lapangan | Lihat | Ya |
+| Data penelitian (jawaban, percobaan, navigasi, bantuan, waktu) dan ekspornya | — | Ya, dengan kode peserta |
+| Data turunan dan kamus data | — | Ya |
+| Penelitian (studi) dan statusnya | — | Ya |
+| Permintaan hapus data peserta | Menjalankan | Mengajukan |
 
 **Aturan pemisahan:**
 
 - Peneliti tidak pernah melihat nama atau nama pengguna siswa di sistem. Nama hanya ada di akun (dikelola admin) dan di lembar L7 di kertas, yang dipegang P1 dan ketua peneliti.
 - Admin tidak mengunduh data penelitian. Kalau admin butuh memeriksa masalah teknis, cukup log teknis.
 - Satu orang boleh memegang dua peran, tapi lewat dua akun terpisah, supaya jejak audit jelas.
-- Peran `guru` dinonaktifkan selama penelitian. Kalau nanti laporan untuk guru dibuat, perannya diaktifkan lagi dengan hak yang baru.
+- Peran `guru` dihapus seluruhnya, termasuk halaman dan hak aksesnya (diputuskan 25 Oktober 2026). Kalau nanti laporan untuk guru dibuat, perannya dibangun ulang dengan hak yang baru.
+- Nama lengkap siswa tetap disimpan di akun dan hanya terlihat oleh admin (dikukuhkan 25 Oktober 2026).
+- Siswa yang lupa kata sandi di lapangan: P1 mencari kode pesertanya di L2, lalu me-reset kata sandi dari panel peneliti lewat kode itu. Sistem memberi kata sandi sementara dan mencatatnya di log audit; peneliti tetap tidak melihat nama.
 
 ## Log: dihapus atau dipisah
 
@@ -231,6 +233,7 @@ Log yang tidak menjawab 10 analitik dihapus, bukan cuma disembunyikan. Log yang 
 | `dialogue_advanced` | Setiap geser slide cerita | Dihapus | Tidak dipakai 10 analitik |
 | `locale_changed` | Ganti bahasa | Peneliti | Kovariat bahasa |
 | `feedback_submitted` dan isi kritik dan saran | Masukan siswa | Peneliti | Pelengkap kualitatif, bukan 10 analitik |
+| Jawaban skala sikap di Balai Refleksi | Skala pendamping sikap menjaga warisan | Peneliti | Skala pendamping, di luar skor literasi digital (keputusan 25 Oktober 2026) |
 | `password_changed` | Kata sandi diganti | Admin | Urusan akun |
 | `viewport_changed`, `package_changed`, `clock_offset_ms` | Ukuran layar berubah, paket aset berganti, selisih jam perangkat | Admin | Teknis; koreksi jam tetap dipakai server untuk data peneliti |
 | `events_dropped` | Event yang hilang di perangkat | Admin | Mutu data; jumlahnya tampil di panel pemantauan peneliti |
@@ -382,6 +385,7 @@ Tanggal tiap tahap belum ditetapkan dan perlu diisi tim. Daftar kerja di bawah m
 | 16 | Latih pengamat L4 sampai κ ≥ 0,60 | 4 | | Belum mulai |
 | 17 | Uji coba satu kelas dengan semua lembar | 4 | | Belum mulai |
 | 18 | Pra-registrasi skema kesalahan dan rencana analisis, kalau disetujui | 4 | | Belum mulai |
+| 19 | Susun skala pendamping sikap menjaga warisan untuk Balai Refleksi, lalu masukkan ke validasi ahli (no. 14) | 1 | | Belum mulai |
 
 ## Pertanyaan yang masih terbuka
 
@@ -392,7 +396,7 @@ Pertanyaan ini perlu dijawab sebelum desain instrumen dibekukan. Centang kalau t
 - [x] Setuju literasi digital jadi konstruk utama dengan tiga dimensi? **Diputuskan (25 Oktober 2026): ya, model multidimensi *between-item*, D1 bertumpu pada literasi membaca dengan sub-aspek D1a dan D1b. D3 menjadi *Partisipasi dan Representasi Budaya Kedu di Ruang Digital* di Cari Objek babak 2 (lihat [05](05_TELAAH_BUTIR_DAN_DIMENSI.md) dan [06](06_KISI_KISI_BANK_SOAL.md)).**
 - [x] Berapa variasi per tantangan? **Diputuskan (25 Oktober 2026): dua (a/b).**
 - [x] Ahli media ikut memvalidasi (daftar kerja no. 14)? **Diputuskan (25 Oktober 2026): ya.**
-- [ ] Peran `guru` dinonaktifkan selama penelitian, atau dihapus sama sekali?
+- [x] Peran `guru` dinonaktifkan selama penelitian, atau dihapus sama sekali? **Diputuskan (25 Oktober 2026): dihapus seluruhnya.**
 - [x] Skenario Digital memakai aturan 3 kesempatan, atau satu pilihan lalu umpan balik? **Diputuskan (25 Oktober 2026): tiga kesempatan; yang dinilai tindakan dan alasan pertama.**
 - [x] Token sesi dipakai? **Diputuskan (25 Oktober 2026): ya, versi ringan, dan token mengatur wilayah yang dibuka di tiap pertemuan.**
 - [x] Di luar sesi, apakah Pustaka dan Profil tetap boleh dibuka, atau semuanya tertutup? **Diputuskan (25 Oktober 2026): semuanya tertutup sampai penelitian selesai.**
@@ -405,8 +409,9 @@ Pertanyaan ini perlu dijawab sebelum desain instrumen dibekukan. Centang kalau t
 - [ ] Berapa peneliti per kelas: tiga (ideal) atau dua?
 - [ ] Izin etik diajukan ke komisi etik mana, dan kapan?
 - [ ] Skema kesalahan dan rencana analisis dipra-registrasi (misalnya di OSF) atau tidak?
-- [ ] Indikator `sikap` dipakai (misalnya lewat Balai Refleksi) atau dihapus?
-- [ ] Ambang waktu tidak aktif (usulan 60 detik) dan tebakan cepat (usulan 1,5 detik) ditetapkan setelah uji coba?
+- [x] Indikator `sikap` dipakai (misalnya lewat Balai Refleksi) atau dihapus? **Diputuskan (25 Oktober 2026): dipakai sebagai skala pendamping sikap lewat Balai Refleksi, di luar skor literasi digital; instrumennya disusun di tahap 1 dan divalidasi di tahap 2.**
+- [ ] Kapan skala sikap diisi: hanya di P5 setelah cerita penutup, atau juga di P1 sebagai data awal?
+- [x] Ambang waktu tidak aktif (usulan 60 detik) dan tebakan cepat (usulan 1,5 detik) ditetapkan setelah uji coba? **Ya: mengikuti tahap 4 peta jalan, yang urutannya dikukuhkan 25 Oktober 2026.**
 - [ ] Karena sistem baru diubah setelah G2, bagaimana ahli media menilai layar baru (Skenario Digital, *Periksa Unggahan*, token) sebelum uji coba?
 
 ## Catatan perubahan sistem untuk tahap nanti
@@ -424,7 +429,7 @@ Belum ada yang dikerjakan sekarang. Daftar ini jadi bahan dokumen implementasi d
 | 7 | Pembersihan log | semua | Hapus event dan kolom bertanda "Dihapus" di bagian *Log: dihapus atau dipisah*; pindahkan yang bertanda "Admin" keluar dari ekspor penelitian |
 | 8 | Variabel beban permukaan per tantangan | 2, 5 | Jumlah rumpang, pengecoh, panjang bacaan, benda pengecoh, ukuran kotak di ekspor butir |
 | 9 | Lapis data turunan | 1, 4, 5, 6, 9 | Satu tempat menghitung kode kesalahan, waktu aktif, "dilewati", tersensor, tebakan cepat; berversi dan diuji otomatis |
-| 10 | Peran `peneliti` terpisah dari `admin` | semua | Hak akses sesuai tabel *Admin dan peneliti*; peneliti hanya melihat data pseudonim; admin tidak mengunduh data penelitian; peran `guru` nonaktif |
+| 10 | Peran `peneliti` terpisah dari `admin` | semua | Hak akses sesuai tabel *Admin dan peneliti*; peneliti hanya melihat data pseudonim dan bisa me-reset kata sandi siswa lewat kode peserta; admin tidak mengunduh data penelitian; peran `guru` dihapus seluruhnya |
 | 11 | Token sesi lapangan | semua | Sesi lapangan di panel peneliti (sekolah, rombel, pertemuan, wilayah yang dibuka, jam buka–tutup); buklet per kode peserta dimasukkan P1 dari L2 dan panel memeriksa keseimbangannya per rombel; token 6 huruf, sesi game tersambung ke sesi lapangan; di luar sesi seluruh game tertutup sampai studi ditutup |
 | 12 | Kode peserta baru `S03-A07` dan rombel | semua | Daftar kode sekolah penelitian; sekolah dan rombel dari token; nomor urut per rombel dibuat dengan aman saat banyak siswa mendaftar bersamaan |
 | 13 | Panel pemantauan lapangan | 1 | Siapa belum selesai, sesi aktif, event hilang; hanya untuk operasional |
@@ -435,6 +440,7 @@ Belum ada yang dikerjakan sekarang. Daftar ini jadi bahan dokumen implementasi d
 | 18 | Aturan narasi | 7 | Bacaan dan pernyataan D1 tidak pernah dibacakan; situasi Skenario Digital dan petunjuk *Periksa Unggahan* hanya lewat tombol ▶ dan tercatat |
 | 19 | Perbaikan media lain dari telaah pendahuluan | semua | Temuan M-04 sampai M-11 di [10_TELAAH_PENDAHULUAN_MEDIA.md](10_TELAAH_PENDAHULUAN_MEDIA.md): nama berkas gambar benda yang acak, antrean event saat keluar, ukuran petunjuk, dua pelanggaran axe, kode penelitian di Profil, data pendaftaran |
 | 20 | Bank soal baru dari kisi-kisi | 2, 3, 6, 10 | Cari Objek dua babak, kartu jangkar, variasi dari buklet B1–B4, aturan `DifficultyRules` baru, kolom dan sheet workbook baru; daftar lengkapnya di [06](06_KISI_KISI_BANK_SOAL.md#yang-perlu-disiapkan-sistem-nanti). Isi bank ada di [08](08_DRAF_BANK_SOAL.md) |
+| 21 | Skala pendamping sikap di Balai Refleksi | pendamping | Butir skala dan jawabannya berkode sendiri (`sikap`), masuk ekspor peneliti, bukan bagian skor literasi digital (keputusan 25 Oktober 2026) |
 
 Laporan kelas untuk guru tetap tercatat sebagai gagasan di luar penelitian dan tidak masuk daftar ini.
 
