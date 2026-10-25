@@ -73,8 +73,8 @@ Level utama: **evaluasi dan refleksi** (Benar atau Salah, kartu jangkar, D3) · 
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `wnb-1` Susun Gambar | `puzzle` | — (pemanasan) | — | — | — | 1 papan 4 × 4 jigsaw | — | — | — |
 | `wnb-2` Isi Rumpang | `rumpang` | D1 | 6 D1a | **L2** / *interpret, integrate* | C3–C4 | 6 rumpang (turun dari 7) | 1 bacaan, 110–130 kata | **Artikel situs wisata** (judul, nama penulis, tanggal) | Bank kata 8: 6 jawaban + 2 pengecoh |
-| `wnb-3` Benar atau Salah | `boleh` | D1 | 2 D1a, 4 D1b | D1a L2; D1b L3 / *evaluate* | C4–C5 | 6 pernyataan, kunci 3 : 3 | 3 bagian, 120–150 kata | **Dua sumber digital bertentangan:** pesan berantai di grup dan pengumuman akun resmi lembaga | 2 |
-| Kartu jangkar Wonosobo | `boleh` | D1 | 2 D1b | L3 | C4–C5 | 2 pernyataan, kunci 1 : 1 | 1 kartu, 40–50 kata | **Unggahan bersponsor (iklan)** | 2 |
+| `wnb-3` Benar atau Salah | `boleh` | D1 | 2 D1a, 4 D1b | D1a L2; D1b L3 / *evaluate* | C4–C5 | 6 pernyataan, kunci 3 : 3 | 3 bagian, 90–150 kata | **Dua sumber digital bertentangan:** pesan berantai di grup dan pengumuman akun resmi lembaga | 2 |
+| Kartu jangkar Wonosobo | `boleh` | D1 | 2 D1b | L3 | C4–C5 | 2 pernyataan, kunci 1 : 1 | 1 kartu, 25–50 kata | **Unggahan bersponsor (iklan)** | 2 |
 | `wnb-4` babak 1 *Temukan Benda* | `cari` | PBK | — | — | C3–C4 | 4 petunjuk | — | — | 12 bagian ketuk (4 + 8) |
 | `wnb-4` babak 2 *Periksa Unggahan* (usulan) | `cari` | D3 | — | Nilai yang bertentangan; padanan L3 | C4–C5 | 4 petunjuk | Unggahan + papan museum, 50–70 kata | Unggahan video tiruan dengan komentar dan tombol Bagikan | 12 bagian ketuk; 3 pengecoh utama per petunjuk |
 | `wnb-5` Skenario Digital | baru | D2 | — | Situasi berkembang dua langkah | C4–C5 | 4 skenario | Situasi 50–70 kata, dua langkah | Pesan resmi palsu, grup, layar aplikasi | Tindakan 4 (1 tepat, 1 kurang tepat, 2 berisiko); alasan 5 |
@@ -290,7 +290,7 @@ Setiap pilihan salah membawa **tepat satu kode** sebelum data diambil. Kode `*-L
 
 Dengan pembagian ini, label ganda di [03](03_KODE_DAN_ARTI.md) tidak diperlukan lagi: INF-BUD hanya untuk PBK, DIG-IZN dan DIG-ETK hanya untuk D2.
 
-**Sebaran kode yang dituju.** Supaya analitik 6 (pola kesalahan) punya isi, setiap kode INF dipakai paling sedikit dua kali di setiap wilayah per variasi, dan setiap kode BUD dan DIG berisiko muncul di ketiga wilayah. Tabel sebaran kode jadi lampiran wajib saat bank ditulis.
+**Sebaran kode yang dituju.** Supaya analitik 6 (pola kesalahan) punya isi, setiap kode INF yang cocok dengan level wilayah muncul paling sedikit sekali di wilayah itu, dan setiap kode INF muncul di minimal dua wilayah, kecuali INF-FOP yang khusus Magelang. Setiap kode BUD dan kode DIG berisiko utama (PRI, SAN, IZN, HOX) muncul di ketiga wilayah; DIG-ASG cukup di Wonosobo. (Diubah 25 Oktober 2026 atas persetujuan pemilik proyek; aturan awal "dua kali per wilayah per variasi" tidak cocok untuk semua kode.)
 
 **Pertanyaan alasan.** Kalimat tanya alasan netral terhadap tindakan, misalnya "Yang paling penting kupikirkan di sini adalah …". Setiap set alasan memuat R-RISK atau R-ETIK (yang diharapkan), R-ATUR, dan minimal satu R-SOS atau R-ACAK. Di Wonosobo, kelima kode muncul.
 
@@ -307,7 +307,7 @@ Aturan ini dipetik dari telaah 05 dan berlaku untuk semua butir baru.
 7. **Setiap fakta punya sumber.** Setiap bacaan dan setiap fakta budaya di petunjuk D3 punya rujukan di kolom `reference_source`. Fakta yang belum dicek tidak dipakai. Contoh koreksi: jumlah relief Borobudur yang bercerita (1.460 dari 2.672 panel).
 8. **Pengetahuan untuk D3 disediakan di tugas.** Petunjuk Periksa Unggahan memuat fakta budaya yang dibutuhkan atau menyediakan sumber pembanding di adegan, supaya yang diukur memeriksa dan merepresentasikan, bukan mengingat.
 9. **Skenario ramah anak.** Tidak menakut-nakuti, tidak ada kekerasan atau isi dewasa, tidak mempermalukan siapa pun. Umpan balik menjelaskan akibat tanpa kata "salah" atau "gagal".
-10. **Tidak ada tautan, akun, atau nomor sungguhan.** Alamat situs memakai domain contoh yang dicadangkan (`.example`, misalnya `wisata-dieng.example`). Nomor telepon disamarkan (`08xx-xxxx-xxxx`). Nama akun dan sanggar fiktif, dan dicek bahwa nama itu tidak dipakai akun atau sanggar nyata. Lembaga resmi boleh disebut dengan nama aslinya hanya kalau isinya benar dan netral, misalnya nama dinas tanpa logo.
+10. **Tidak ada tautan, akun, atau nomor sungguhan.** Alamat situs memakai domain contoh yang dicadangkan (`.example`, misalnya `wisata-dieng.example`). Nomor telepon disamarkan (`08xx-xxxx-xxxx`). Nama akun dan sanggar fiktif, dan dicek bahwa nama itu tidak dipakai akun atau sanggar nyata. Lembaga resmi boleh disebut dengan nama aslinya hanya kalau isinya benar dan netral, misalnya nama dinas tanpa logo. Unggahan tampil di aplikasi media sosial fiktif *Kedugram*, dan nama komentator ditulis dengan nama depan saja, tanpa @.
 11. **Tokoh fiktif, tidak meniru anak nyata.** Nama tokoh dipilih umum dan beragam; foto wajah anak sungguhan tidak dipakai.
 12. **Satu butir, satu dimensi.** Kalau sebuah butir terasa mengukur dua dimensi, pecah atau pindahkan. Label sekunder (Bloom, kode kesalahan) hanya untuk diagnosis.
 13. **Bahasa sesuai kelas 5.** Kalimat pendek, satu gagasan per kalimat, kosakata sehari-hari. Kata serapan digital (*unggah*, *tautan*, *akun*) dipakai konsisten dan dijelaskan sekali di Pustaka.
