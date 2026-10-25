@@ -14,7 +14,8 @@ Documentation only, in `docs/revisi-10-analitik/` (Indonesian, at the owner's re
   - [ ] Test blueprint for the new bank (`06_KISI_KISI_BANK_SOAL.md`, branch `kisi-kisi-bank-soal`, separate session)
   - [x] Owner accepted the expert-instrument review (`07_TELAAH_INSTRUMEN_VALIDASI.md`) and added the media expert (25 October 2026)
   - [ ] Rewrite the instruments once as r10 v2.1 and media v1.1, after the blueprint and the D3 decision
-  - [ ] AI-assisted media pre-review on a local test install (branch `pbb/eloquent-ritchie-wz20bn`)
+  - [x] AI-assisted media pre-review on a local test install (`10_TELAAH_PENDAHULUAN_MEDIA.md`)
+  - [ ] Owner decides the three research-data media findings: no phones for data collection, re-laid Cari Objek tap areas with an automatic overlap check, timer hidden during the study; and the narration rule (D1 never read aloud)
 - [ ] Complete implementation document, after the revision documents are final
 - [ ] Implementation of the 15 system changes, one short-lived branch each, after the implementation document is approved
 
