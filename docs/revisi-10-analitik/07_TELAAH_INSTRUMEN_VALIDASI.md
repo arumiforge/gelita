@@ -2,7 +2,7 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 25 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Status: **telaah atas draf pemilik proyek**
+Per 25 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Status: **diterima pemilik proyek (25 Oktober 2026)**; instrumen ditulis ulang setelah kisi-kisi 06 disetujui
 
 Dokumen ini menelaah dua draf instrumen validasi ahli milik pemilik proyek, lalu mengusulkan perbaikannya. Perbaikan yang sudah pasti ditulis sebagai teks pengganti yang siap ditempel. Perbaikan yang masih bergantung pada keputusan atau kisi-kisi ditandai.
 
@@ -165,7 +165,7 @@ Semuanya cocok.
 
 ## Langkah berikutnya
 
-1. Pemilik proyek memutuskan: (a) T1–T5 diterima, (b) ahli media masuk daftar kerja no. 14, dan (c) peran Claude sesuai T6.
+1. ~~Pemilik proyek memutuskan T1–T6 dan ahli media.~~ Diterima seluruhnya pada 25 Oktober 2026.
 2. Setelah kisi-kisi 06 dan keputusan D3 selesai, instrumen r10 dan media ditulis ulang sekali sebagai versi 2.1 dan 1.1, dengan semua perubahan di dokumen ini.
 3. Setelah draf bank soal baru ada, Claude menjalankan telaah pendahuluan (T6) sebelum berkas dikirim ke ahli.
 

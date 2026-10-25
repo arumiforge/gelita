@@ -8,6 +8,14 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 **Keputusan pemilik proyek**
 
+- Media game yang ada sekarang (tampilan, layar, interaksi, audio, gambar) juga terbuka untuk diubah, ditambah, dan dihapus sesuai kebutuhan Revisi 10.
+- Telaah instrumen validasi ([07](07_TELAAH_INSTRUMEN_VALIDASI.md)) diterima seluruhnya:
+  - B.5 dipecah menjadi B.5a (pelabelan buta, dua ahli) dan B.5b (relevansi dan kejelasan, semua ahli menilai semua butir, minimal tiga penilaian non-TD per butir).
+  - Panel ahli materi lima orang, dengan matriks penugasan aspek.
+  - κ berbobot untuk level AKM.
+  - Perkiraan beban kerja dicantumkan di surat permohonan.
+- Ahli media masuk daftar bidang validasi (daftar kerja no. 14).
+- Claude berperan sebagai penelaah pendahuluan berbantuan AI, bukan validator: skornya tidak dihitung dan Claude tidak melakukan pelabelan buta. Telaah pendahuluan media dikerjakan di instalasi uji lokal.
 - Belum ada data siswa asli di server. Bank soal baru boleh memakai susunan kode butir yang baru.
 - Setiap tantangan yang dinilai cukup punya **dua variasi (a/b)**, bukan tiga.
 - Analisis memakai **model multidimensi *between-item***: setiap butir punya tepat satu dimensi utama.
