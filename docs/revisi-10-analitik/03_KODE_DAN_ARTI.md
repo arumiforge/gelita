@@ -16,6 +16,12 @@ Semua kode yang dipakai di dokumen revisi, lembar lapangan, dan data penelitian 
 | P1 | Koordinator sesi: membuka sesi, token, L0, L1, L2, L7 | Lapangan |
 | P2 | Pengamat keterlibatan: L4 | Lapangan |
 | P3 | Pengamat bantuan dan pewawancara: L3, L5 | Lapangan |
+| Ahli Bahasa Anak 1, 2 | Nama samaran validator: literasi membaca dan bahasa Indonesia SD (panel ahli materi) | Validasi, tahap 2 |
+| Ahli Literasi Digital 1, 2 | Nama samaran validator: literasi digital anak (panel ahli materi) | Validasi, tahap 2 |
+| Ahli Pengukuran | Nama samaran validator: evaluasi dan pengukuran (panel ahli materi) | Validasi, tahap 2 |
+| Ahli Budaya Kedu | Nama samaran validator: pengamat budaya | Validasi, tahap 2 |
+| Ahli Media Pembelajaran | Nama samaran validator: ahli media, dua langkah (mock-up, lalu layar jadi) | Validasi, tahap 2 dan 3 |
+| Lembaga Komite Etik | Nama samaran komite etik penelitian; pengajuan minggu kedua–keempat November 2026, persetujuan paling lambat akhir September–minggu pertama November 2027 | Izin etik, tahap 2 |
 
 ## Dimensi literasi digital
 

@@ -67,6 +67,7 @@ Level AKM (MI < II < ER) berurutan. Tidak sepakat antara MI dan ER jauh lebih se
 Instrumen ahli materi mencakup empat bidang sekaligus: literasi membaca, literasi digital anak, bahasa anak, dan pengukuran. Dengan tiga ahli, hampir pasti banyak butir diisi TD, lalu n per butir turun di bawah tiga. Usulan:
 - Tambahkan **matriks penugasan** di A.3: aspek mana yang wajib diisi oleh ahli bidang apa. Contohnya: aspek C dan I wajib diisi ahli pengukuran; aspek E dan F wajib diisi ahli literasi digital; aspek G wajib diisi ahli bahasa.
 - Komposisi panel ahli materi yang disarankan (lima orang): 2 literasi membaca/bahasa Indonesia SD, 2 literasi digital anak, 1 evaluasi atau pengukuran.
+- Sampai orangnya ditetapkan, validator memakai nama samaran (keputusan 25 Oktober 2026): Ahli Bahasa Anak 1 dan 2, Ahli Literasi Digital 1 dan 2, Ahli Pengukuran, ditambah Ahli Budaya Kedu (pengamat budaya) dan Ahli Media Pembelajaran. Di matriks penugasan: aspek C dan I wajib Ahli Pengukuran, aspek E dan F wajib Ahli Literasi Digital 1 dan 2, aspek G wajib Ahli Bahasa Anak 1 dan 2.
 
 ### T5. Beban kerja validator
 
