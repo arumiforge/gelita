@@ -87,7 +87,7 @@ Sudah diputuskan: tiap wilayah dapat tantangan kelima, **Skenario Digital** (kod
 2. Langkah 1, pilih tindakan. Satu pilihan aman dan tepat, satu kurang tepat (aman tapi belum lengkap), sisanya berisiko. Setiap pilihan punya kode kesalahan.
 3. Langkah 2, pilih alasan. Ditanyakan apa pun tindakan yang dipilih, supaya "tindakannya benar, alasannya keliru" kelihatan.
 4. Umpan balik yang ramah tentang akibat pilihannya, tanpa kata "salah" atau "gagal".
-5. Yang dianalisis adalah pilihan dan alasan **pertama**. Siswa boleh mencoba lagi untuk belajar (aturan kesempatannya masih perlu diputuskan tim).
+5. Yang dianalisis adalah pilihan dan alasan **pertama**. Siswa boleh mencoba lagi untuk belajar dengan aturan yang sama seperti tantangan lain: **tiga kesempatan** (diputuskan 25 Oktober 2026). Setiap kesempatan berisi pilihan tindakan dan alasan. Skenario selesai saat tindakan yang tepat dipilih; pilihan "kurang tepat" mendapat umpan balik dan memakai satu kesempatan. Setelah kesempatan ketiga, tindakan yang aman ditampilkan dan dijelaskan.
 
 **Contoh skenario Wonosobo (pesan orang asing, sulit).** Akun yang tidak kamu kenal mengirim pesan: "Selamat! Kamu menang wisata gratis ke Telaga Warna untuk sekeluarga. Kirim foto kartu pelajar dan nomor HP orang tuamu sekarang, kuotanya tinggal 3!"
 
@@ -393,7 +393,7 @@ Pertanyaan ini perlu dijawab sebelum desain instrumen dibekukan. Centang kalau t
 - [x] Berapa variasi per tantangan? **Diputuskan (25 Oktober 2026): dua (a/b).**
 - [x] Ahli media ikut memvalidasi (daftar kerja no. 14)? **Diputuskan (25 Oktober 2026): ya.**
 - [ ] Peran `guru` dinonaktifkan selama penelitian, atau dihapus sama sekali?
-- [ ] Skenario Digital memakai aturan 3 kesempatan, atau satu pilihan lalu umpan balik? Usulan: boleh mencoba lagi, yang dianalisis pilihan pertama.
+- [x] Skenario Digital memakai aturan 3 kesempatan, atau satu pilihan lalu umpan balik? **Diputuskan (25 Oktober 2026): tiga kesempatan; yang dinilai tindakan dan alasan pertama.**
 - [x] Token sesi dipakai? **Diputuskan (25 Oktober 2026): ya, versi ringan, dan token mengatur wilayah yang dibuka di tiap pertemuan.**
 - [x] Di luar sesi, apakah Pustaka dan Profil tetap boleh dibuka, atau semuanya tertutup? **Diputuskan (25 Oktober 2026): semuanya tertutup sampai penelitian selesai.**
 - [x] Format kode peserta `S03-A07` disetujui? **Diputuskan (25 Oktober 2026): ya.**
@@ -425,12 +425,12 @@ Belum ada yang dikerjakan sekarang. Daftar ini jadi bahan dokumen implementasi d
 | 8 | Variabel beban permukaan per tantangan | 2, 5 | Jumlah rumpang, pengecoh, panjang bacaan, benda pengecoh, ukuran kotak di ekspor butir |
 | 9 | Lapis data turunan | 1, 4, 5, 6, 9 | Satu tempat menghitung kode kesalahan, waktu aktif, "dilewati", tersensor, tebakan cepat; berversi dan diuji otomatis |
 | 10 | Peran `peneliti` terpisah dari `admin` | semua | Hak akses sesuai tabel *Admin dan peneliti*; peneliti hanya melihat data pseudonim; admin tidak mengunduh data penelitian; peran `guru` nonaktif |
-| 11 | Token sesi lapangan | semua | Sesi lapangan di panel peneliti (sekolah, rombel, pertemuan, wilayah yang dibuka, jam buka–tutup), token 6 huruf, sesi game tersambung ke sesi lapangan; di luar sesi seluruh game tertutup sampai studi ditutup |
+| 11 | Token sesi lapangan | semua | Sesi lapangan di panel peneliti (sekolah, rombel, pertemuan, wilayah yang dibuka, jam buka–tutup); buklet per kode peserta dimasukkan P1 dari L2 dan panel memeriksa keseimbangannya per rombel; token 6 huruf, sesi game tersambung ke sesi lapangan; di luar sesi seluruh game tertutup sampai studi ditutup |
 | 12 | Kode peserta baru `S03-A07` dan rombel | semua | Daftar kode sekolah penelitian; sekolah dan rombel dari token; nomor urut per rombel dibuat dengan aman saat banyak siswa mendaftar bersamaan |
 | 13 | Panel pemantauan lapangan | 1 | Siapa belum selesai, sesi aktif, event hilang; hanya untuk operasional |
 | 14 | Kamus data dan ekspor penelitian | semua | Ekspor hanya berisi data bertanda "Peneliti"; kamus data memuat definisi "dilewati", waktu aktif, dimensi, dan kode |
 | 15 | Templat spreadsheet lembar lapangan L1–L7 | semua | Kolomnya sama dengan [02_LEMBAR_LAPANGAN.md](02_LEMBAR_LAPANGAN.md), kuncinya kode peserta, jam WIB, dan kode sesi |
-| 16 | Mode penelitian: jam disembunyikan, sesi di layar kecil ditolak atau diberi peringatan | 5, semua | Sakelar di konfigurasi studi; waktu tetap direkam server; ambang layar kecil ditetapkan dari ukuran panggung (keputusan media, 25 Oktober 2026) |
+| 16 | Mode penelitian: jam disembunyikan, sesi penelitian di layar kecil ditolak dengan pesan ramah (di luar studi cukup peringatan), pengerjaan ulang baru terbuka setelah kelima tantangan wilayah pertemuan itu tuntas | 5, semua | Sakelar di konfigurasi studi; data pengerjaan ulang disimpan tapi tidak dinilai; waktu tetap direkam server; ambang layar kecil ditetapkan dari ukuran panggung (keputusan media, 25 Oktober 2026) |
 | 17 | Pemeriksaan otomatis area ketuk Cari Objek | 2, 6 | Area ketuk tidak boleh bersentuhan (jarak minimal setara 24 dp) di aturan bank soal, untuk babak 1 dan *Periksa Unggahan*; adegan Magelang dan Wonosobo ditata ulang |
 | 18 | Aturan narasi | 7 | Bacaan dan pernyataan D1 tidak pernah dibacakan; situasi Skenario Digital dan petunjuk *Periksa Unggahan* hanya lewat tombol ▶ dan tercatat |
 | 19 | Perbaikan media lain dari telaah pendahuluan | semua | Temuan M-04 sampai M-11 di [10_TELAAH_PENDAHULUAN_MEDIA.md](10_TELAAH_PENDAHULUAN_MEDIA.md): nama berkas gambar benda yang acak, antrean event saat keluar, ukuran petunjuk, dua pelanggaran axe, kode penelitian di Profil, data pendaftaran |

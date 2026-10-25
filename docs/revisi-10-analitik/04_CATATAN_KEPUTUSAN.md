@@ -16,6 +16,13 @@ Tahap 1, urutan kerja dan akses:
 - **Kode peserta `S03-A07` disetujui** dengan aturannya di 01: kode sekolah dari daftar peneliti, awalan `U` untuk sekolah uji coba, tanpa `GLT-`, dibuat sistem saat daftar dari token, tidak pernah diubah setelah ada data.
 - **Perbaikan dokumen tanpa keputusan baru:** kalimat "kode butir tidak bergeser" di 01 diselaraskan dengan keputusan bank baru (kode yang sudah punya data siswa tidak dipakai ulang); perubahan sistem no. 4 di 01 kini menyebut butir jangkar antarvariasi; L1 di 02 tidak lagi menyebut HP sebagai perangkat.
 
+Tahap 2, aturan game selama penelitian:
+
+- **Skenario Digital memakai tiga kesempatan**, sama seperti tantangan lain. Setiap kesempatan berisi pilihan tindakan dan alasan; yang dinilai tindakan dan alasan pertama. Tafsiran yang dipakai: skenario selesai saat tindakan yang tepat dipilih, pilihan "kurang tepat" (skor 1) memakai satu kesempatan, dan setelah kesempatan ketiga tindakan yang aman ditampilkan dan dijelaskan.
+- **Buklet dimasukkan P1 dari L2.** Sesudah pertemuan P1, koordinator memasukkan buklet per kode peserta di panel peneliti; panel memeriksa keseimbangan B1–B4 per rombel. Siswa duduk di kursi yang sama di P2–P4; buklet melekat pada siswa. L2 di 02 mendapat kolom Buklet.
+- **Layar terlalu kecil saat studi berjalan: sesi ditolak dengan pesan ramah.** Di luar studi cukup peringatan. Ini memperjelas keputusan media sebelumnya ("ditolak atau diberi peringatan").
+- **Pengerjaan ulang selama studi** baru terbuka setelah kelima tantangan wilayah pertemuan itu tuntas, hanya di dalam sesi. Datanya disimpan tapi tidak dinilai.
+
 **Keputusan pemilik proyek: kisi-kisi, draf bank soal, dan telaah pendahuluan T6** (sesi `kisi-kisi-bank-soal`)
 
 - **Kisi-kisi bank soal ([06](06_KISI_KISI_BANK_SOAL.md)) disetujui seluruhnya**, termasuk semua bagian yang semula bertanda "usulan". Dengan begitu rumusan keputusan di [05](05_TELAAH_BUTIR_DAN_DIMENSI.md) ikut berlaku:

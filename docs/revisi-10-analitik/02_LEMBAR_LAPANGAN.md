@@ -88,14 +88,15 @@ L2 adalah kunci penggabungan: tanpa L2, catatan L3 dan L4 tidak bisa dipasangkan
 2. Setelah siswa masuk, minta dia membuka halaman Profil. Salin kode di bawah namanya (misalnya S03-A07), bukan nama atau nama pengguna.
 3. Kalau satu perangkat dipakai dua siswa, tulis "Ya" dan kode keduanya. Kalau siswa pindah perangkat, tulis jam dan nomor perangkat barunya.
 4. Siswa yang lupa kata sandi lalu dibantu reset (oleh admin) ditandai di kolom catatan.
+5. Tulis buklet tiap siswa menurut letak kursinya ([06](06_KISI_KISI_BANK_SOAL.md#desain-buklet-usulan)): B1 baris ganjil kursi ganjil, B2 baris ganjil kursi genap, B3 baris genap kursi ganjil, B4 baris genap kursi genap. Sesudah pertemuan P1, buklet disalin ke panel peneliti. Di P2–P4 siswa duduk di kursi yang sama; kalau pindah, bukletnya tetap dan pindahnya dicatat.
 
 <!-- lembar: L2-kursi -->
-| Kursi | Perangkat | Kode peserta | Jam masuk (WIB) | Pakai bareng | Pindah perangkat | Catatan |
-| --- | --- | --- | --- | --- | --- | --- |
-| 01 | P01 | S03-A07 | 08:05:40 | Tidak | — | — |
-| 02 | P02 | S03-A12 | 08:06:12 | Tidak | 08:40 ke P15 (baterai habis) | — |
-| 03 | P03 | S03-A15 + S03-A16 | 08:07:30 | Ya | — | Satu tablet rusak; bergantian |
-| 04 | P04 | S03-A04 | 08:12:05 | Tidak | — | Lupa kata sandi; direset admin |
+| Kursi | Perangkat | Kode peserta | Buklet | Jam masuk (WIB) | Pakai bareng | Pindah perangkat | Catatan |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 01 | P01 | S03-A07 | B1 | 08:05:40 | Tidak | — | — |
+| 02 | P02 | S03-A12 | B2 | 08:06:12 | Tidak | 08:40 ke P15 (baterai habis) | — |
+| 03 | P03 | S03-A15 + S03-A16 | B1 + B1 | 08:07:30 | Ya | — | Satu tablet rusak; bergantian |
+| 04 | P04 | S03-A04 | B2 | 08:12:05 | Tidak | — | Lupa kata sandi; direset admin |
 
 ## L3 Log bantuan dan gangguan
 
