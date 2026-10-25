@@ -1082,7 +1082,7 @@ Teks digital (layar informasi, unggahan, grup, hasil pencarian) dibangun sebagai
 
 # Untuk dicatat di catatan keputusan
 
-- Draf bank soal baru disusun di `07_DRAF_BANK_SOAL.md`: 116 butir literasi digital dan 12 butir PBK, semua berstatus `needs_verification`.
+- Draf bank soal baru disusun di `08_DRAF_BANK_SOAL.md`: 116 butir literasi digital dan 12 butir PBK, semua berstatus `needs_verification`.
 - Dari bank lama, variasi yang dipakai ulang (dengan perbaikan): `tmg-2` a (Sindoro–Sumbing) dan b (Umbul Jumprit); `tmg-3` a (Liyangan) dan b (Pringapus–Gondosuli); `mgl-2` a (Borobudur) dan b (Topeng Ireng); `mgl-3` a (Borobudur) dan c (Gunung Tidar, sekarang b); `wnb-2` a (Dieng) dan c (embun upas, sekarang b); `wnb-3` a (Telaga Warna) dan c (kawah, sekarang b). Tidak dipakai: `tmg-2-c`, `tmg-3-c`, `mgl-2-c`, `mgl-3-b`, `wnb-2-b`, `wnb-3-b`.
 - Semua perbaikan butir di 05 sudah dimasukkan, kecuali `mgl-3-b04` (memotret Waisak), yang tidak dipakai karena variasinya tidak dipilih.
 - Usulan perubahan aturan sebaran kode di kisi-kisi: setiap kode INF yang cocok dengan level wilayah muncul paling sedikit sekali di wilayah itu, dan setiap kode INF muncul di minimal dua wilayah (kecuali INF-FOP, khusus Magelang).

@@ -2,7 +2,7 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 25 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Status: **disetujui pemilik proyek (25 Oktober 2026)**, termasuk semua bagian yang semula bertanda "usulan". Isi bank yang mengikuti kisi-kisi ini ada di [07_DRAF_BANK_SOAL.md](07_DRAF_BANK_SOAL.md).
+Per 25 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Status: **disetujui pemilik proyek (25 Oktober 2026)**, termasuk semua bagian yang semula bertanda "usulan". Isi bank yang mengikuti kisi-kisi ini ada di [08_DRAF_BANK_SOAL.md](08_DRAF_BANK_SOAL.md).
 
 Kisi-kisi ini jadi cetak biru bank soal baru: berapa butir, di tantangan mana, mengukur dimensi apa, di level apa, dengan bacaan seperti apa, dan kode kesalahan apa yang dibawa setiap pilihan. Dokumen ini meneruskan [05_TELAAH_BUTIR_DAN_DIMENSI.md](05_TELAAH_BUTIR_DAN_DIMENSI.md) dan tidak mengulang telaahnya. Belum ada yang diubah di sistem atau di [`docs/bank-soal/`](../bank-soal/README.md).
 
