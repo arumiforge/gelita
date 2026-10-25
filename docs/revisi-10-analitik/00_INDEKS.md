@@ -27,7 +27,7 @@ Dokumen lain dibaca per bagian sesuai tugas.
 | [08](08_DRAF_BANK_SOAL.md) | Draf bank soal baru: 116 butir variasi a/b, 6 jangkar, 12 PBK | Draf, `needs_verification` | Cari per kode butir (misalnya `wnb-3-a02`) | 80 KB |
 | [09](09_TELAAH_PENDAHULUAN_BANK_SOAL.md) | Telaah pendahuluan T6 atas draf 08 | Selesai; R1–R4 disetujui | Saat menyiapkan paket validasi | 20 KB |
 | [10](10_TELAAH_PENDAHULUAN_MEDIA.md) | Telaah pendahuluan media | Selesai; keputusan masuk 01 | Saat menyiapkan mock-up dan instrumen media | 19 KB |
-| [11](11_KAMUS_DATA.md) | Kamus data: peta bukti, definisi beku 10 analitik, data yang dinilai, "dilewati", waktu aktif, tersensor, tebakan cepat, kode, aturan gabung lembar | Draf, menunggu empat keputusan pemilik proyek | Saat menulis instrumen, lembar, pra-registrasi, atau dokumen implementasi; cari per analitik | 39 KB |
+| [11](11_KAMUS_DATA.md) | Kamus data: peta bukti, definisi beku 10 analitik, data yang dinilai, "dilewati", waktu aktif, tersensor, tebakan cepat, kode, aturan gabung lembar | Draf, menunggu empat keputusan pemilik proyek | Saat menulis instrumen, lembar, pra-registrasi, atau dokumen implementasi; cari per analitik | 41 KB |
 | `gambar/` | Peta bukti, lapis data, peta jalan, buklet, tangkapan layar telaah media | Rujukan | Saat dokumen yang memakainya diubah | — |
 
 ## Tahap dokumen yang tersisa sebelum implementasi

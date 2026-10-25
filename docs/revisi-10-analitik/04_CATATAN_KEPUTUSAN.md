@@ -19,11 +19,16 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
   - "Dibantu" di analisis utama hanya bantuan isi L3 (ISI, STR, BHS).
   - Ketukan di tempat kosong tidak memakai kesempatan; ketukan dekat kunci dihitung sebagai NON-SEN di luar percobaan.
   - Benda sasaran petunjuk lain di Temukan Benda diberi INF-LIT.
+  - NON-TEB tidak dihitung untuk Isi Rumpang.
+  - Token yang membuka wilayah sebuah pertemuan melewati aturan buka berurutan antarwilayah; tantangan yang tertinggal dikerjakan di pertemuan 5.
+  - Perpindahan setelah umpan balik di Skenario Digital dinilai dari pilihan tindakan, bukan kodenya, karena dua pilihan bisa berbagi kode.
   - Kode kesalahan bank tidak pernah ditimpa: NON-TEB dan NON-HABIS menjadi penanda tersendiri, dan `*-LAIN` dari pengodean manual disimpan di kolom lain.
 - **Perbaikan tanpa keputusan baru:**
   - Di 03, DIG-HOX hanya D2, analitik 8 berlaku untuk D1–D3, dan analitik 10 hanya D2, karena dimensi ikut butir (model *between-item*).
   - Gambar peta bukti disesuaikan dengan kisi-kisi yang disetujui: nama D3, Isi Rumpang dan Benar atau Salah hanya D1, Cari Objek babak 2 D3 dengan babak 1 PBK, Skenario Digital hanya D2, dan kode BUD di pola kesalahan.
-  - Contoh data mentah di 01 mendapat kolom `rapid_guess`. Baris tebakan cepat kini memakai kode bank butir itu (INF-HUB), dan `wnb-3-a01` memakai INF-LIT sesuai 08.
+  - Contoh data mentah di 01 mendapat kolom `rapid_guess` (kosong untuk Isi Rumpang). Baris tebakan cepat kini memakai kode bank butir itu (INF-HUB), dan `wnb-3-a01` memakai INF-LIT sesuai 08.
+  - Analitik 3 di 01 tidak lagi menyebut Susun Gambar (tidak dinilai sejak kisi-kisi 06), dan catatan perubahan sistem no. 14 menunjuk ke syarat data di 11.
+  - Di 06, siswa yang belum selesai melanjutkan di pertemuan 5 (susulan), sesuai keputusan token.
 
 **Pemeriksaan sebelum tahap dokumen 1** (sesi `pbb/eloquent-sagan-j40sg8`)
 

@@ -339,9 +339,9 @@ Event yang ditandai "Dihapus" di 01 (`answer_changed`, `answer_selected`, `dialo
 | `no_second_try` | Tidak ada percobaan kedua (butir ditinggal) |
 
 - `answer_unchanged` = 1 kalau jawaban percobaan kedua persis sama dengan percobaan pertama (penting di Isi Rumpang dan Benar atau Salah, tempat siswa bisa menekan Cek tanpa mengubah jawaban). Di Benar atau Salah, `same_error` selalu berarti jawaban tidak diubah.
-- Untuk D2: dari skor 1 ke 2 = `fixed`; dari skor 1 ke 0 = `other_error`; dari skor 0 ke tindakan berisiko yang sama = `same_error`.
+- Untuk D2, perpindahan dinilai dari **pilihan tindakan**, bukan dari kodenya, karena di 08 dua pilihan bisa berbagi kode (misalnya pilihan skor 0 dan skor 1 di `tmg-5-a03` sama-sama DIG-IZN): tindakan tepat = `fixed`, pilihan yang sama dengan percobaan pertama = `same_error`, pilihan lain yang belum tepat = `other_error`. Perpindahan skor (misalnya 0 ke 1) dicatat di `score_change`.
 - Perpindahan percobaan kedua ke ketiga dihitung dengan aturan yang sama di kolom `change_after_feedback_2`, dan dilaporkan sebagai pelengkap.
-- Dasarnya `error_code` mentah, bukan `error_code_analysis`.
+- Untuk tantangan lain, dasarnya `error_code` mentah, bukan `error_code_analysis`.
 
 ### Analitik 10 Pilihan dan alasan di Skenario Digital
 
@@ -398,7 +398,7 @@ Ekspor butir (perubahan sistem no. 3, 8, dan 20) memuat satu baris per butir.
 | Sesi lapangan | `field_session_code`, `meeting_no`, `region_opened`, tanggal, jam buka dan tutup | Panel peneliti |
 | | Internet, kebisingan, kehadiran guru, `headset_share`, menit tersedia dan dipakai | L1 |
 | Sesi game | `session_code`, `locale` *(ada)* | Log |
-| | `device_type`, `screen_size`, `package_mode` *(ada)* | Log (kovariat; rincian perangkat lain hanya untuk admin, 01) |
+| | `device_type`, `screen_size` *(ada)* | Log (kovariat). Nama dan versi OS dan peramban, serta mode dan pergantian paket aset, hanya untuk admin; rincian perangkat lain dihapus (01) |
 
 Nama, nama pengguna, nama sekolah, dan NPSN tidak pernah masuk data peneliti (01, *Admin dan peneliti*).
 
@@ -407,7 +407,7 @@ Nama, nama pengguna, nama sekolah, dan NPSN tidak pernah masuk data peneliti (01
 | Lembar | Kunci | Aturan | Hasil di data turunan |
 | --- | --- | --- | --- |
 | L1 bagian atas | Kode sesi lapangan | Satu baris per sesi lapangan | Kovariat sesi |
-| L1 penyimpangan | Kode sesi lapangan, jam | Mengenai siswa di kolom "Siswa terdampak" dari jam kejadian sampai 5 menit sesudahnya, atau sampai akhir lama kejadian kalau lamanya ditulis | `deviation_code` per percobaan |
+| L1 penyimpangan | Kode sesi lapangan, jam | Mengenai siswa di kolom "Siswa terdampak" (nomor kursi dicocokkan ke kode peserta lewat L2; "semua" berarti semua siswa sesi itu) dari jam kejadian sampai 5 menit sesudahnya, atau sampai akhir lama kejadian kalau lamanya ditulis | `deviation_code` per percobaan |
 | L2 | Kode peserta, kode sesi lapangan | Menghubungkan kursi, perangkat, dan buklet; jam pindah perangkat memotong jendela | `booklet`, `shared_device` |
 | L3 | Kode peserta, jam | Percobaan siswa itu dari 1 menit sebelum jam kejadian sampai 2 menit sesudahnya. Kalau jam selesai ditulis (kejadian lebih dari 2 menit), jendelanya dari 1 menit sebelum jam mulai sampai 2 menit sesudah jam selesai. Baris untuk beberapa kursi berlaku untuk setiap siswa di kursi itu | `helped_content`, `helped_technical`, `encouraged`, `disturbed` |
 | L4 | Kode peserta, jam | Satu pengamatan menutup 20 detik sejak jamnya, dipasangkan dengan pengerjaan dan butir yang aktif di selang itu | Kode perilaku dan emosi per pengamatan |
@@ -424,12 +424,13 @@ Kamus ini menambah syarat data berikut ke [Catatan perubahan sistem](01_REVISI_1
 | `error_code`, `reason_code`, dan skor tindakan disimpan di setiap percobaan | Analitik 6, 9, 10 | no. 1, 2 |
 | Pengerjaan pertama yang terputus dilanjutkan, bukan dibuat baru | Data inti | no. 16 |
 | Setiap jeda masukan 20 detik atau lebih dicatat; selang narasi diputar bisa dibaca dari log | Analitik 5 | no. 5 |
-| Saat butir bisa dijawab dicatat (petunjuk aktif, pilihan tindakan dan alasan tampil, kartu Benar atau Salah disentuh pertama) | Waktu putus, NON-TEB | no. 5, 9 |
-| Ketukan di luar bagian ketuk dicatat dengan jaraknya ke kunci petunjuk aktif | NON-SEN | no. 17 |
-| Event membuka lagi bacaan di dalam tantangan | Analitik 8 | no. 7 |
+| Saat butir bisa dijawab dicatat (petunjuk aktif, pilihan tindakan dan alasan tampil, kartu Benar atau Salah disentuh pertama) | Waktu putus, NON-TEB | no. 14 |
+| Ketukan di luar bagian ketuk dicatat dengan jaraknya ke kunci petunjuk aktif | NON-SEN | no. 14 |
+| Event membuka lagi bacaan di dalam tantangan | Analitik 8 | no. 14 |
 | Event penutupan skenario setelah kesempatan ketiga (setara `clue_failed`) | Analitik 1 jenis (a) | no. 2 |
 | Kode konteks narasi instruksi | Analitik 7 | no. 6 |
 | Sesi game menyimpan `field_session_code` dan nomor pertemuan | Semua | no. 11 |
+| Wilayah yang dibuka token terbuka untuk semua siswa sesi itu, walaupun wilayah sebelumnya belum tuntas; tantangan di dalam wilayah tetap terbuka berurutan | Analitik 1 (`locked`) | no. 11 |
 | Lapis turunan menyimpan `dictionary_version` dan diuji otomatis dengan contoh data yang hasilnya dihitung tangan dari kamus ini | Semua | no. 9 |
 | Lembar *Kamus Data* di ekspor peneliti diturunkan dari kamus ini | Semua | no. 14 |
 
@@ -439,6 +440,8 @@ Perubahan tanpa keputusan baru, ikut dikerjakan bersama kamus ini:
 
 - **03:** DIG-HOX hanya D2 (bukan "D2, D1"); analitik 8 berlaku untuk D1–D3, analitik 10 hanya D2. Alasannya model *between-item*: dimensi ikut butir, bukan kode.
 - **Gambar peta bukti:** D3 memakai nama yang disetujui; Isi Rumpang dan Benar atau Salah hanya D1, Cari Objek babak 2 D3 dengan babak 1 sebagai PBK, Skenario Digital hanya D2; pola kesalahan menyebut kode BUD.
+- **01:** analitik 3 tidak lagi menyebut Susun Gambar, yang tidak dinilai sejak kisi-kisi 06. Contoh data mentah mendapat kolom `rapid_guess` (kosong untuk Isi Rumpang) dan memakai kode bank. Catatan perubahan sistem no. 14 menyebut syarat data dari kamus ini.
+- **06:** siswa yang belum selesai melanjutkan di pertemuan 5 (susulan), bukan "di pertemuan berikutnya", sesuai keputusan token (P5 untuk tantangan yang tertinggal).
 
 Menunggu keputusan pemilik proyek:
 
@@ -450,6 +453,8 @@ Penegasan yang menafsirkan dokumen sebelumnya. Mohon dikoreksi kalau tafsirannya
 - "Dibantu" untuk analisis utama hanya bantuan isi (ISI, STR, BHS). Bantuan teknis, semangat, dan gangguan dicatat terpisah sebagai kovariat.
 - Ketukan di tempat kosong tidak memakai kesempatan, seperti game sekarang, yang hanya mengirim ketukan pada benda.
 - Benda sasaran petunjuk lain di Temukan Benda diberi INF-LIT, karena kisi-kisi hanya mengizinkan INF-BUD dan INF-LIT di babak 1.
+- NON-TEB tidak dihitung untuk Isi Rumpang (01 dan 03 tidak menyebut pengecualian), karena kata-kata satu bacaan diseret berturut-turut dan selang antarseretan bukan waktu memutuskan. `rapid_guess` di Isi Rumpang dibiarkan kosong.
+- Token yang membuka wilayah sebuah pertemuan juga melewati aturan buka berurutan antarwilayah, supaya siswa yang belum menuntaskan wilayah sebelumnya tetap bisa bermain bersama kelasnya; sisanya dikerjakan di pertemuan 5.
 
 ## Pertanyaan untuk pemilik proyek
 
