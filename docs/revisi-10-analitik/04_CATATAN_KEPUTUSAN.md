@@ -6,6 +6,17 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 25 Oktober 2026
 
+**Pemeriksaan sebelum tahap dokumen 1** (sesi `pbb/eloquent-sagan-j40sg8`)
+
+- **Keputusan pemilik proyek: pelabelan buta hanya sekali, oleh dua ahli di tahap 2** (B.5a di 07). Kesepakatan κ ≥ 0,70 pindah dari gerbang G1 ke G2. G1 kini berarti konstruk disetujui dan semua dokumen tahap 1 selesai dan disetujui pemilik proyek. Daftar kerja no. 3 pindah ke tahap 2. Alasannya: pelabelan ganda memakan waktu, dan anggota tim yang sudah melihat label pengembang di 08 tidak bisa melabel secara buta.
+- **Perbaikan 01 tanpa keputusan baru**, supaya sejalan dengan kisi-kisi 06 yang sudah disetujui sebelum kamus data disusun:
+  - Tabel topik Skenario Digital: izin atas karya budaya pindah ke D3, topik izin D2 cukup foto dan obrolan diri sendiri atau teman.
+  - Skema kesalahan mendapat bagian kode BUD (bagian C; NON jadi D, alasan R jadi E). Kalimat "INF-BUD juga D3" dan "DIG-IZN dan DIG-ETK juga D3" diganti pembagian yang disetujui.
+  - Cara kode menempel kini memisahkan Cari Objek babak 1 (PBK) dan babak 2 (*Periksa Unggahan*, D3).
+  - Contoh data mentah memakai kode `x` untuk butir Temukan Benda.
+  - Dua kalimat "kalau token sesi dipakai" dihapus.
+- Gambar peta jalan dan 00 disesuaikan.
+
 **Keputusan pemilik proyek: wawancara pertanyaan terbuka** (sesi `pbb/eloquent-sagan-j40sg8`, bertahap)
 
 Tahap 1, urutan kerja dan akses:
