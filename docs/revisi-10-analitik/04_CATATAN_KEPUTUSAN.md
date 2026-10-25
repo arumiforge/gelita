@@ -6,6 +6,14 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 25 Oktober 2026
 
+**Telaah pendahuluan media (Claude, bukan validasi ahli)**
+
+- Media game ditelaah di instalasi uji lokal: [10_TELAAH_PENDAHULUAN_MEDIA.md](10_TELAAH_PENDAHULUAN_MEDIA.md). Tiga temuan berkode V dan keparahan 3 perlu keputusan pemilik proyek sebelum uji coba:
+  - pengambilan data tidak memakai ponsel
+  - area ketuk Cari Objek yang bertumpuk ditata ulang dan diperiksa otomatis
+  - jam disembunyikan selama penelitian
+- Usulan aturan narasi: bacaan dan pernyataan D1 tidak pernah dibacakan; situasi Skenario Digital dan petunjuk *Periksa Unggahan* boleh dibacakan lewat tombol ▶.
+
 **Keputusan pemilik proyek**
 
 - Media game yang ada sekarang (tampilan, layar, interaksi, audio, gambar) juga terbuka untuk diubah, ditambah, dan dihapus sesuai kebutuhan Revisi 10.
