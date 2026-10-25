@@ -4,7 +4,7 @@
 
 Per 23 Oktober 2026 · Dokumen revisi, belum implementasi
 
-Mulai sekarang, 10 analitik penelitian jadi pegangan kita untuk GELITA. Sesuai judul penelitian, literasi digital jadi konstruk utama dengan tiga dimensi, dan Skenario Digital masuk sebagai tantangan kelima. Admin dan peneliti jadi dua peran yang terpisah, dan log yang tidak dibutuhkan dihapus. Data yang tidak bisa direkam game kita kumpulkan lewat lembar lapangan L0–L7 ([02_LEMBAR_LAPANGAN.md](02_LEMBAR_LAPANGAN.md)). Arti semua kode ada di [03_KODE_DAN_ARTI.md](03_KODE_DAN_ARTI.md), dan riwayat keputusan di [04_CATATAN_KEPUTUSAN.md](04_CATATAN_KEPUTUSAN.md). Telaah setiap butir terhadap dimensinya ada di [05_TELAAH_BUTIR_DAN_DIMENSI.md](05_TELAAH_BUTIR_DAN_DIMENSI.md).
+Mulai sekarang, 10 analitik penelitian jadi pegangan kita untuk GELITA. Sesuai judul penelitian, literasi digital jadi konstruk utama dengan tiga dimensi, dan Skenario Digital masuk sebagai tantangan kelima. Admin dan peneliti jadi dua peran yang terpisah, dan log yang tidak dibutuhkan dihapus. Data yang tidak bisa direkam game kita kumpulkan lewat lembar lapangan L0–L7 ([02_LEMBAR_LAPANGAN.md](02_LEMBAR_LAPANGAN.md)). Arti semua kode ada di [03_KODE_DAN_ARTI.md](03_KODE_DAN_ARTI.md), dan riwayat keputusan di [04_CATATAN_KEPUTUSAN.md](04_CATATAN_KEPUTUSAN.md). Telaah setiap butir terhadap dimensinya ada di [05_TELAAH_BUTIR_DAN_DIMENSI.md](05_TELAAH_BUTIR_DAN_DIMENSI.md). Kisi-kisi bank soal baru ada di [06_KISI_KISI_BANK_SOAL.md](06_KISI_KISI_BANK_SOAL.md), dan telaah instrumen validasi ahli di [07_TELAAH_INSTRUMEN_VALIDASI.md](07_TELAAH_INSTRUMEN_VALIDASI.md).
 
 Dokumen ini belum mengubah sistem apa pun. Isinya rencana kerja tim; dokumen implementasi yang lengkap disusun setelah revisi ini selesai.
 
@@ -389,7 +389,9 @@ Pertanyaan ini perlu dijawab sebelum desain instrumen dibekukan. Centang kalau t
 
 - [x] Skenario Digital jadi tantangan kelima atau menggantikan Susun Gambar? **Diputuskan: tantangan kelima.**
 - [x] Admin dan peneliti satu peran atau dipisah? **Diputuskan: dua peran berbeda.**
-- [ ] Setuju literasi digital jadi konstruk utama dengan tiga dimensi (D1 literasi informasi, D2 aman dan etis, D3 budaya digital Kedu)?
+- [x] Setuju literasi digital jadi konstruk utama dengan tiga dimensi? **Diputuskan (25 Oktober 2026): ya, model multidimensi *between-item*, D1 bertumpu pada literasi membaca dengan sub-aspek D1a dan D1b. Nama dan letak D3 masih dibahas (lihat [05](05_TELAAH_BUTIR_DAN_DIMENSI.md)).**
+- [x] Berapa variasi per tantangan? **Diputuskan (25 Oktober 2026): dua (a/b).**
+- [ ] Ahli media ikut memvalidasi (daftar kerja no. 14)? Usulan: ya (lihat [07](07_TELAAH_INSTRUMEN_VALIDASI.md)).
 - [ ] Peran `guru` dinonaktifkan selama penelitian, atau dihapus sama sekali?
 - [ ] Skenario Digital memakai aturan 3 kesempatan, atau satu pilihan lalu umpan balik? Usulan: boleh mencoba lagi, yang dianalisis pilihan pertama.
 - [ ] Token sesi dipakai? Usulan: ya, versi ringan.

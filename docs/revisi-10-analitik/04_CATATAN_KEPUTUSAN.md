@@ -8,6 +8,13 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 **Keputusan pemilik proyek**
 
+- Belum ada data siswa asli di server. Bank soal baru boleh memakai susunan kode butir yang baru.
+- Setiap tantangan yang dinilai cukup punya **dua variasi (a/b)**, bukan tiga.
+- Analisis memakai **model multidimensi *between-item***: setiap butir punya tepat satu dimensi utama.
+- **D1 bertumpu pada literasi membaca**, dengan dua label sub-aspek: D1a memahami informasi dan D1b menilai informasi dan sumber. Jumlah butir D1 **tidak dibatasi 29**; lebih banyak tidak masalah.
+- Beberapa bacaan diubah menjadi **teks bergenre digital**.
+- Kisi-kisi bank soal baru disusun di sesi terpisah, di [06_KISI_KISI_BANK_SOAL.md](06_KISI_KISI_BANK_SOAL.md) (branch `kisi-kisi-bank-soal`).
+- Draf instrumen validasi ahli (r10 untuk ahli materi dan pengamat budaya, serta instrumen ahli media) ditelaah di [07_TELAAH_INSTRUMEN_VALIDASI.md](07_TELAAH_INSTRUMEN_VALIDASI.md). Versi 1.0 instrumen ahli materi sudah digantikan r10.
 - Seluruh isi bank soal yang ada terbuka untuk diubah, diperbaiki, dihapus, dan ditambah sesuai kebutuhan penelitian. Bank soal baru disusun bersama Claude. Batas yang tetap berlaku hanya batas teknis penelitian: kunci jawaban tetap di server, butir baru atau yang diubah berstatus `needs_verification` sampai divalidasi, dan kode butir yang sudah punya data siswa tidak dipakai ulang untuk isi yang berbeda.
 
 **Telaah, menunggu keputusan pemilik proyek**
