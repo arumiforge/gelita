@@ -13,7 +13,7 @@ Telaah ini adalah **penyaringan awal berbantuan AI oleh tim pengembang**, bukan 
 3. **13 temuan per butir lain dibetulkan langsung di 08:** jawaban bocor lewat petunjuk atau judul (5), rumpang yang hanya bisa diisi satu kata menurut bentuk katanya (3), penanda pendapat yang membuat butir terlalu mudah (1), label level yang tidak cocok (2), butir D1b yang hanya menemukan informasi (1), dan pilihan "kurang tepat" yang sebenarnya tidak etis (1).
 4. **Hasil B.5b setelah perbaikan:** 65 butir relevansi 4, 49 butir relevansi 3, **2 butir relevansi 2**. Kedua butir relevansi 2 adalah rumpang yang masih bisa diisi dari bentuk kata (sisa temuan R1, butuh keputusan pemilik proyek).
 5. **Semua fakta dari bank lama didukung sumber.** Satu catatan: tahun berdirinya perkebunan teh Tambi tertulis 1865 di sebagian besar sumber, tapi 1885 di satu sumber.
-6. **Empat sisa temuan diserahkan ke pemilik proyek dan ahli** (bagian *Sisa temuan*).
+6. **Empat sisa temuan (R1–R4) sudah diputuskan pemilik proyek pada 25 Oktober 2026**: semuanya mengikuti usulan (bagian *Sisa temuan*).
 
 ## Cara menelaah
 
@@ -48,12 +48,20 @@ Untuk butir D1b, "bisa ditebak dari pengetahuan umum tentang sumber" (misalnya a
 
 ## Sisa temuan untuk pemilik proyek dan ahli
 
+**Keputusan pemilik proyek (25 Oktober 2026): R1–R4 disetujui sesuai usulan.** Rinciannya ada di bawah tabel.
+
 | No | Temuan | Butir | Usulan |
 | --- | --- | --- | --- |
 | R1 | Dengan dua kata pengecoh, sebagian rumpang tetap hanya punya satu calon jawaban menurut bentuk katanya, terutama nama diri dan istilah | `tmg-2-b02` (*Jumprit*), `mgl-2-a02` (*stupa*), `mgl-2-a05` (*dilarang*, pesaing lemah) | Pilih salah satu: (a) biarkan, karena ketiganya butir L1 yang jawabannya memang tersurat; tandai relevansi 2 dan lihat hasil uji coba; (b) tambah pengecoh ketiga yang sejenis (nama diri atau istilah) di wilayah itu. Pilihan (b) mengubah jumlah pengecoh yang sudah disetujui di kisi-kisi. **Usulan: (a)** |
 | R2 | Butir D1b di Temanggung berada di batas bawah D1b | `tmg-3-a03`, `tmg-3-b03` | Ahli menilai apakah tetap D1b atau dipindah ke D1a. Kalau dipindah, D1b per siswa menjadi 10 |
 | R3 | Pilihan "kurang tepat" kini sering berpola "tidak … dan tidak … apa pun" | Sebagian besar `*-5-*` | Polanya tidak menunjuk jawaban tepat, tapi bisa dikenali anak sebagai "jawaban tengah". Ahli bahasa anak diminta menilai; kalau perlu, variasikan kalimatnya setelah uji coba |
 | R4 | Kunci Periksa Unggahan Wonosobo bergantung pada kata "paling perlu dibetulkan" | `wnb-4-a02`, `wnb-4-b02` | Keterangan unggahan adalah sumber kekeliruan dan dilihat paling banyak orang, jadi kuncinya bisa dipertahankan. Tetap minta ahli memeriksa apakah ada jawaban lain yang sama-sama benar |
+
+Artinya:
+- **R1:** ketiga rumpang dibiarkan seperti sekarang, dengan relevansi 2 tercatat. Jumlah pengecoh tetap sesuai kisi-kisi. Ketiganya diperhatikan khusus di uji coba (proporsi benar, waktu jawab, dan tebakan cepat).
+- **R2:** `tmg-3-a03` dan `tmg-3-b03` tetap berlabel D1b sampai ahli menilainya. Pertanyaan "tetap D1b atau pindah ke D1a" dimasukkan ke berkas ahli.
+- **R3:** pola kalimat pilihan "kurang tepat" diserahkan ke ahli bahasa anak. Kalimatnya baru divariasikan kalau ahli memintanya atau uji coba menunjukkan pola itu dikenali.
+- **R4:** kunci `wnb-4-a02` dan `wnb-4-b02` dipertahankan. Ahli diminta memastikan tidak ada jawaban lain yang sama-sama benar.
 
 ## B.6: Skenario Digital
 
@@ -227,5 +235,5 @@ Butir D1a diberi 3 karena menuntut proses membaca yang menjadi dasar D1, tapi be
 - Cacat sistematis "pilihan tepat selalu paling panjang" di Skenario Digital dibetulkan (24 dari 24 → 3 dari 24), begitu juga panjang alasan (23 dari 24 → 11 dari 24).
 - 2 temuan sistematis dan 13 temuan per butir dibetulkan langsung di 08; daftarnya di bagian *Temuan yang sudah dibetulkan*.
 - Pilihan "kurang tepat" di skenario kata sandi Magelang diganti dari "memutus pertemanan" (DIG-ETK) menjadi "menolak tanpa menjelaskan" (DIG-PSF).
-- Empat sisa temuan (R1–R4) menunggu keputusan pemilik proyek atau penilaian ahli; usulan untuk R1: rumpang yang hanya punya satu calon dibiarkan dan dilihat hasil uji coba.
+- **Disetujui pemilik proyek (25 Oktober 2026):** R1–R4 sesuai usulan. R1: rumpang yang hanya punya satu calon dibiarkan dan dipantau di uji coba, jumlah pengecoh tidak berubah. R2: label D1b Temanggung diputuskan ahli. R3: pola kalimat "kurang tepat" dinilai ahli bahasa anak. R4: kunci Periksa Unggahan Wonosobo dipertahankan, ahli memastikan.
 - Cek fakta C.5: semua fakta bank lama didukung sumber; tahun perkebunan Tambi (1865 atau 1885) diserahkan ke ahli budaya.
