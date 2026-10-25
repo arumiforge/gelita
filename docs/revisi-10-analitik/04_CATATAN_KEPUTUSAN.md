@@ -49,7 +49,8 @@ Tahap 5, rencana dokumen:
 Validator dan komisi etik belum bisa ditetapkan pemilik proyek. Sementara:
 
 - **Tujuh validator dengan nama samaran**, sesuai komposisi panel di 07 yang sudah diterima: Ahli Bahasa Anak 1 dan 2, Ahli Literasi Digital 1 dan 2, Ahli Pengukuran (panel ahli materi lima orang), Ahli Budaya Kedu (pengamat budaya), dan Ahli Media Pembelajaran. Nama samaran dicatat di 03 dan dipakai di instrumen dan paket validasi sampai orangnya ditetapkan.
-- **Komisi etik ditulis "Komisi Etik (belum ditetapkan)"** dan harus diputuskan sebelum tahap 2.
+- **Komite etik memakai nama samaran *Lembaga Komite Etik*.** Izin etik diajukan pada minggu kedua sampai keempat November 2026. Persetujuan diperoleh sebelum kegiatan yang mensyaratkannya dimulai, paling lambat antara akhir September dan minggu pertama November 2027.
+- **Gerbang G2 tetap menunggu persetujuan etik.** Dengan jadwal di atas, dokumen implementasi dan perubahan sistem (tahap 3) bisa baru dimulai sekitar akhir 2027. Usulan memulai tahap 3 setelah izin diajukan tidak dipilih; pemilik proyek tetap pada urutan ketat dari tahap 1 wawancara. Uji keterbacaan dengan anak (tahap 2), uji coba, dan pengambilan data juga menunggu persetujuan.
 
 **Keputusan pemilik proyek: kisi-kisi, draf bank soal, dan telaah pendahuluan T6** (sesi `kisi-kisi-bank-soal`)
 

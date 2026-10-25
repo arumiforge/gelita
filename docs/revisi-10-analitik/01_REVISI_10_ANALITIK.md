@@ -359,7 +359,7 @@ Data inti analisis adalah ketepatan percobaan pertama. Lembar lapangan dipakai s
 
 ## Peta jalan dan daftar kerja
 
-Pekerjaan berjalan dalam enam tahap. Tahap berikutnya baru dimulai setelah gerbangnya terpenuhi. Sistem baru diubah di tahap 3, setelah instrumen lolos validasi ahli dan izin etik. Urutan ini dikukuhkan pemilik proyek pada 25 Oktober 2026: dokumen implementasi dan perubahan sistem tidak dimulai sebelum gerbang G2.
+Pekerjaan berjalan dalam enam tahap. Tahap berikutnya baru dimulai setelah gerbangnya terpenuhi. Sistem baru diubah di tahap 3, setelah instrumen lolos validasi ahli dan izin etik. Urutan ini dikukuhkan pemilik proyek pada 25 Oktober 2026: dokumen implementasi dan perubahan sistem tidak dimulai sebelum gerbang G2, termasuk persetujuan etik. Izin etik diajukan minggu kedua–keempat November 2026 dan persetujuannya ditargetkan paling lambat akhir September sampai minggu pertama November 2027, jadi tahap 3 bisa baru dimulai sekitar waktu itu. Pemilik proyek memilih tetap menunggu persetujuan (25 Oktober 2026). Uji keterbacaan dengan anak di tahap 2, uji coba, dan pengambilan data juga baru boleh berjalan setelah persetujuan terbit.
 
 ![Peta jalan: enam tahap, lima gerbang](gambar/peta-jalan.svg)
 
@@ -383,7 +383,7 @@ Ahli media menilai dalam dua langkah (diputuskan 25 Oktober 2026): di tahap 2, g
 | 12 | Buat daftar kode sekolah penelitian (S01, S02, …) | 1 | | Belum mulai |
 | 13 | Tentukan siapa pemegang akun admin dan akun peneliti | 1 | | Belum mulai |
 | 14 | Validasi ahli: budaya Kedu, bahasa anak, literasi digital, pengukuran, media | 2 | | Belum mulai |
-| 15 | Ajukan izin etik dan siapkan surat izin orang tua | 2 | | Belum mulai |
+| 15 | Ajukan izin etik ke *Lembaga Komite Etik* (nama samaran) pada minggu kedua–keempat November 2026, dan siapkan surat izin orang tua | 2 | | Belum mulai |
 | 16 | Latih pengamat L4 sampai κ ≥ 0,60 | 4 | | Belum mulai |
 | 17 | Uji coba satu kelas dengan semua lembar | 4 | | Belum mulai |
 | 18 | Pra-registrasi skema kesalahan dan rencana analisis di OSF, di gerbang G4 | 4 | | Belum mulai |
@@ -411,7 +411,7 @@ Pertanyaan ini perlu dijawab sebelum desain instrumen dibekukan. Centang kalau t
 - [x] Tes awal dan akhir disusun sendiri atau mengadaptasi contoh soal AKM/TKA yang terbuka untuk umum? **Diputuskan (25 Oktober 2026): bagian literasi membaca diadaptasi dari contoh soal AKM/ANBK yang terbuka; bagian D2 dan D3 disusun sendiri, sejajar dengan kisi-kisi tapi tidak sama dengan butir game; divalidasi bersama bank di tahap 2.**
 - [x] Berapa sekolah, kelas, dan siswa dalam sampel? **Diputuskan (25 Oktober 2026): target 300 siswa yang datanya bisa dianalisis, merekrut sekitar 360 (± 13 kelas). Jumlah sekolah mengikuti ketersediaan kelas.**
 - [x] Berapa peneliti per kelas: tiga (ideal) atau dua? **Diputuskan (25 Oktober 2026): tiga (P1, P2, P3).**
-- [ ] Izin etik diajukan ke komisi etik mana, dan kapan? **Belum bisa dijawab (25 Oktober 2026); sementara ditulis "Komisi Etik (belum ditetapkan)". Harus diputuskan sebelum tahap 2.**
+- [ ] Izin etik diajukan ke komisi etik mana, dan kapan? **Sementara (25 Oktober 2026): nama samaran *Lembaga Komite Etik*; diajukan minggu kedua sampai keempat November 2026; persetujuan diperoleh sebelum kegiatan yang mensyaratkannya dimulai, paling lambat antara akhir September dan minggu pertama November 2027. Nama komite sebenarnya belum ditetapkan.**
 - [x] Skema kesalahan dan rencana analisis dipra-registrasi (misalnya di OSF) atau tidak? **Diputuskan (25 Oktober 2026): ya, di OSF pada gerbang G4.**
 - [x] Indikator `sikap` dipakai (misalnya lewat Balai Refleksi) atau dihapus? **Diputuskan (25 Oktober 2026): dipakai sebagai skala pendamping sikap lewat Balai Refleksi, di luar skor literasi digital; instrumennya disusun di tahap 1 dan divalidasi di tahap 2.**
 - [x] Kapan skala sikap diisi: hanya di P5 setelah cerita penutup, atau juga di P1 sebagai data awal? **Diputuskan (25 Oktober 2026): hanya di P5, di Balai Refleksi.**

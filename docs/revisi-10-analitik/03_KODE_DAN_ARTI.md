@@ -21,6 +21,7 @@ Semua kode yang dipakai di dokumen revisi, lembar lapangan, dan data penelitian 
 | Ahli Pengukuran | Nama samaran validator: evaluasi dan pengukuran (panel ahli materi) | Validasi, tahap 2 |
 | Ahli Budaya Kedu | Nama samaran validator: pengamat budaya | Validasi, tahap 2 |
 | Ahli Media Pembelajaran | Nama samaran validator: ahli media, dua langkah (mock-up, lalu layar jadi) | Validasi, tahap 2 dan 3 |
+| Lembaga Komite Etik | Nama samaran komite etik penelitian; pengajuan minggu kedua–keempat November 2026, persetujuan paling lambat akhir September–minggu pertama November 2027 | Izin etik, tahap 2 |
 
 ## Dimensi literasi digital
 
