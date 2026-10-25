@@ -31,6 +31,13 @@ Tahap 3, akun dan data:
 - **Indikator `sikap` dipakai sebagai skala pendamping sikap menjaga warisan lewat Balai Refleksi**, di luar skor literasi digital, seperti PBK. Saat ini Balai Refleksi hanya berisi ringkasan perjalanan dan kritik dan saran, jadi skala ini instrumen baru: disusun di tahap 1 (daftar kerja no. 19), divalidasi di tahap 2 (G3 pengamat budaya), dan menjadi perubahan sistem no. 21. Waktu pengisiannya masuk pertanyaan terbuka.
 - **Ambang waktu tidak aktif dan tebakan cepat ditetapkan setelah uji coba**, mengikuti tahap 4 peta jalan yang urutannya sudah dikukuhkan di tahap 1 wawancara.
 
+Tahap 4, operasional penelitian:
+
+- **Tiga peneliti per kelas** (P1, P2, P3) di pengambilan data utama. Kalau pada hari itu satu berhalangan, P1 juga mengisi L3, L5 dipindah, dan penyimpangannya dicatat di L1.
+- **Tes awal dan akhir:** bagian literasi membaca diadaptasi dari contoh soal AKM/ANBK yang terbuka untuk umum; bagian D2 dan D3 disusun sendiri, sejajar dengan kisi-kisi tapi tidak sama dengan butir game; divalidasi bersama bank di tahap 2.
+- **Pra-registrasi di OSF** untuk skema kesalahan dan rencana analisis, di gerbang G4 (setelah uji coba, sebelum pengambilan data utama).
+- **Ahli media menilai dalam dua langkah:** tahap 2 menilai game sekarang ditambah mock-up layar baru (daftar kerja no. 20); setelah tahap 3, telaah singkat layar jadi di instalasi uji sebelum uji coba (no. 21, bagian gerbang G3). Gambar peta jalan disesuaikan, sekaligus angka lamanya ("129 butir", "15 perubahan") diganti rumusan tanpa angka.
+
 **Keputusan pemilik proyek: kisi-kisi, draf bank soal, dan telaah pendahuluan T6** (sesi `kisi-kisi-bank-soal`)
 
 - **Kisi-kisi bank soal ([06](06_KISI_KISI_BANK_SOAL.md)) disetujui seluruhnya**, termasuk semua bagian yang semula bertanda "usulan". Dengan begitu rumusan keputusan di [05](05_TELAAH_BUTIR_DAN_DIMENSI.md) ikut berlaku:

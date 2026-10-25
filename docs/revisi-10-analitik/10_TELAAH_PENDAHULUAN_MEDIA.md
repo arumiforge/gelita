@@ -154,7 +154,7 @@ Media sekarang terbuka untuk diubah (keputusan 25 Oktober 2026). Selain perbaika
 
 - Semua butir yang di sini bertanda TD: perangkat nyata, audio dan narasi, waktu muat di internet sekolah, keyboard dan pembaca layar.
 - Kontras teks di atas gambar (sekitar 350 elemen, banyak yang berulang), mutu ilustrasi (A7), dan kesesuaian dengan dunia anak (N2).
-- Rancangan layar Revisi 10 (Skenario Digital, *Periksa Unggahan*, token) setelah dibuat.
+- Rancangan layar Revisi 10 (Skenario Digital, *Periksa Unggahan*, token), dalam dua langkah: mock-up di tahap 2, lalu layar jadi di instalasi uji sebelum uji coba (keputusan 25 Oktober 2026).
 - Penilaian ulang temuan di atas, termasuk keparahannya.
 
 Tangkapan layar lengkap dihasilkan ulang dengan `node tools/qa/stage-check.mjs` pada instalasi uji (tersimpan di `writable/qa/stage/`, tidak di-commit).

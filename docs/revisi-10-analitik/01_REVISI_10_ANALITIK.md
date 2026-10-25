@@ -149,7 +149,7 @@ Setiap pilihan salah diberi satu kode **sebelum** data diambil, lalu kode itu ik
 - Skenario Digital: setiap pilihan tindakan dan setiap alasan punya satu kode.
 - Susun Gambar: tidak dikode, karena dipakai sebagai pemanasan.
 
-**Validasi:** dua pengode bekerja terpisah pada sampel 20% jawaban dan semua transkrip berpikir lantang (L5). Kesepakatan minimal Cohen's κ = 0,70. Kalau beda, didiskusikan dan dicatat. Skema bisa kita daftarkan lebih dulu (pra-registrasi, misalnya di OSF) sebelum pengambilan data utama.
+**Validasi:** dua pengode bekerja terpisah pada sampel 20% jawaban dan semua transkrip berpikir lantang (L5). Kesepakatan minimal Cohen's κ = 0,70. Kalau beda, didiskusikan dan dicatat. Skema dan rencana analisis didaftarkan lebih dulu (pra-registrasi di OSF) di gerbang G4, setelah uji coba dan sebelum pengambilan data utama (diputuskan 25 Oktober 2026).
 
 **Contoh data mentah** (bentuk ekspor percobaan dengan dua kolom baru, `error_code` dan `reason_code`, memakai format kode peserta baru):
 
@@ -319,7 +319,7 @@ Log game hanya melihat apa yang terjadi di layar. Lembar lapangan mengisi yang t
 | P3 Pengamat bantuan | Mencatat setiap bantuan dan gangguan; setelah sesi mewawancarai beberapa siswa | L3, L5 |
 | Guru kelas | Menyiapkan perangkat dan internet; diminta tidak membantu isi soal | — |
 
-Kalau cuma ada dua peneliti, P1 juga mengisi L3, dan wawancara L5 dipindah ke pertemuan lain.
+Pengambilan data utama memakai **tiga peneliti per kelas** (diputuskan 25 Oktober 2026). Kalau pada hari itu satu peneliti berhalangan, P1 juga mengisi L3, wawancara L5 dipindah ke pertemuan lain, dan penyimpangannya dicatat di L1.
 
 **Alur satu pertemuan:**
 
@@ -363,7 +363,9 @@ Pekerjaan berjalan dalam enam tahap. Tahap berikutnya baru dimulai setelah gerba
 
 ![Peta jalan: enam tahap, lima gerbang](gambar/peta-jalan.svg)
 
-Tanggal tiap tahap belum ditetapkan dan perlu diisi tim. Daftar kerja di bawah memuat pekerjaan tahap 1, 2, dan 4.
+Tanggal tiap tahap belum ditetapkan dan perlu diisi tim. Daftar kerja di bawah memuat pekerjaan tahap 1 sampai 4, kecuali perubahan sistem (lihat bagian terakhir).
+
+Ahli media menilai dalam dua langkah (diputuskan 25 Oktober 2026): di tahap 2, game yang ada sekarang ditambah rancangan layar baru (Skenario Digital, *Periksa Unggahan*, token) berupa papan cerita atau mock-up; setelah tahap 3, telaah singkat layar yang sudah jadi di instalasi uji sebelum uji coba, sebagai bagian gerbang G3.
 
 | No | Pekerjaan | Tahap | Penanggung jawab | Status |
 | --- | --- | --- | --- | --- |
@@ -375,7 +377,7 @@ Tanggal tiap tahap belum ditetapkan dan perlu diisi tim. Daftar kerja di bawah m
 | 6 | Tulis Skenario Digital untuk tiga wilayah, lengkap dengan pilihan tindakan dan alasan berkode | 1 | | Belum mulai |
 | 7 | Tulis cerita penghubung dan narasi untuk tantangan kelima | 1 | | Belum mulai |
 | 8 | Tentukan 4–6 butir jangkar | 1 | Claude | Selesai di draf 08 (6 butir), menunggu validasi |
-| 9 | Susun tes literasi membaca dan tes literasi digital, bentuk A dan B | 1 | | Belum mulai |
+| 9 | Susun tes literasi membaca dan tes literasi digital, bentuk A dan B: bagian membaca diadaptasi dari contoh soal AKM/ANBK yang terbuka untuk umum, bagian D2 dan D3 disusun sendiri dan tidak sama dengan butir game | 1 | | Belum mulai |
 | 10 | Susun angket akses digital | 1 | | Belum mulai |
 | 11 | Finalkan lembar L0–L7 | 1 | | Belum mulai |
 | 12 | Buat daftar kode sekolah penelitian (S01, S02, …) | 1 | | Belum mulai |
@@ -384,8 +386,10 @@ Tanggal tiap tahap belum ditetapkan dan perlu diisi tim. Daftar kerja di bawah m
 | 15 | Ajukan izin etik dan siapkan surat izin orang tua | 2 | | Belum mulai |
 | 16 | Latih pengamat L4 sampai κ ≥ 0,60 | 4 | | Belum mulai |
 | 17 | Uji coba satu kelas dengan semua lembar | 4 | | Belum mulai |
-| 18 | Pra-registrasi skema kesalahan dan rencana analisis, kalau disetujui | 4 | | Belum mulai |
+| 18 | Pra-registrasi skema kesalahan dan rencana analisis di OSF, di gerbang G4 | 4 | | Belum mulai |
 | 19 | Susun skala pendamping sikap menjaga warisan untuk Balai Refleksi, lalu masukkan ke validasi ahli (no. 14) | 1 | | Belum mulai |
+| 20 | Buat papan cerita atau mock-up layar baru (Skenario Digital, *Periksa Unggahan*, token) untuk ahli media langkah 1 | 1 | | Belum mulai |
+| 21 | Telaah ahli media langkah 2 pada layar jadi di instalasi uji, sebelum uji coba (G3) | 3 | | Belum mulai |
 
 ## Pertanyaan yang masih terbuka
 
@@ -404,15 +408,15 @@ Pertanyaan ini perlu dijawab sebelum desain instrumen dibekukan. Centang kalau t
 - [x] Berapa pertemuan per kelas, dan tantangan mana yang dibuka di tiap pertemuan? **Diputuskan (25 Oktober 2026): lima pertemuan; satu wilayah per pertemuan (lihat [06](06_KISI_KISI_BANK_SOAL.md#waktu-bermain)).**
 - [ ] Siapa yang menulis skenario dan cerita penghubungnya (Mbah Kedu dan Jaka), dan siapa yang mengisi suara narasinya?
 - [ ] Siapa validator ahlinya: isi budaya Kedu, bahasa anak, literasi digital, pengukuran, dan media? (Panel ahli materi lima orang, lihat [07](07_TELAAH_INSTRUMEN_VALIDASI.md).)
-- [ ] Tes awal dan akhir disusun sendiri atau mengadaptasi contoh soal AKM/TKA yang terbuka untuk umum?
+- [x] Tes awal dan akhir disusun sendiri atau mengadaptasi contoh soal AKM/TKA yang terbuka untuk umum? **Diputuskan (25 Oktober 2026): bagian literasi membaca diadaptasi dari contoh soal AKM/ANBK yang terbuka; bagian D2 dan D3 disusun sendiri, sejajar dengan kisi-kisi tapi tidak sama dengan butir game; divalidasi bersama bank di tahap 2.**
 - [x] Berapa sekolah, kelas, dan siswa dalam sampel? **Diputuskan (25 Oktober 2026): target 300 siswa yang datanya bisa dianalisis, merekrut sekitar 360 (± 13 kelas). Jumlah sekolah mengikuti ketersediaan kelas.**
-- [ ] Berapa peneliti per kelas: tiga (ideal) atau dua?
+- [x] Berapa peneliti per kelas: tiga (ideal) atau dua? **Diputuskan (25 Oktober 2026): tiga (P1, P2, P3).**
 - [ ] Izin etik diajukan ke komisi etik mana, dan kapan?
-- [ ] Skema kesalahan dan rencana analisis dipra-registrasi (misalnya di OSF) atau tidak?
+- [x] Skema kesalahan dan rencana analisis dipra-registrasi (misalnya di OSF) atau tidak? **Diputuskan (25 Oktober 2026): ya, di OSF pada gerbang G4.**
 - [x] Indikator `sikap` dipakai (misalnya lewat Balai Refleksi) atau dihapus? **Diputuskan (25 Oktober 2026): dipakai sebagai skala pendamping sikap lewat Balai Refleksi, di luar skor literasi digital; instrumennya disusun di tahap 1 dan divalidasi di tahap 2.**
 - [ ] Kapan skala sikap diisi: hanya di P5 setelah cerita penutup, atau juga di P1 sebagai data awal?
 - [x] Ambang waktu tidak aktif (usulan 60 detik) dan tebakan cepat (usulan 1,5 detik) ditetapkan setelah uji coba? **Ya: mengikuti tahap 4 peta jalan, yang urutannya dikukuhkan 25 Oktober 2026.**
-- [ ] Karena sistem baru diubah setelah G2, bagaimana ahli media menilai layar baru (Skenario Digital, *Periksa Unggahan*, token) sebelum uji coba?
+- [x] Karena sistem baru diubah setelah G2, bagaimana ahli media menilai layar baru (Skenario Digital, *Periksa Unggahan*, token) sebelum uji coba? **Diputuskan (25 Oktober 2026): dua langkah, mock-up di tahap 2 dan layar jadi di instalasi uji sebelum uji coba (G3).**
 
 ## Catatan perubahan sistem untuk tahap nanti
 
