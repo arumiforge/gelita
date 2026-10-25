@@ -10,7 +10,11 @@ Documentation only, in `docs/revisi-10-analitik/` (Indonesian, at the owner's re
 
 - [x] Revision documents: main document with the 10 analytics, constructs, admin/researcher split, log cleanup, token, participant code, and the 15 later system changes (`01`), field sheets L0–L7 (`02`), codes and meanings (`03`), decision record (`04`), three diagrams in `gambar/` (PR #214). The owner continues the revision separately from here
 - [ ] Owner and team settle the open questions in `01_REVISI_10_ANALITIK.md` → *Pertanyaan yang masih terbuka* (constructs with three dimensions, token, participant code `S03-A07`, `guru` role)
-  - [ ] Owner decides on the item and dimension review (`05_TELAAH_BUTIR_DAN_DIMENSI.md`, branch `pbb/eloquent-ritchie-wz20bn`): three dimensions with the new D3, Cari Objek in two rounds, the adjusted decision text, and the item fixes
+  - [ ] Owner decides the rest of the item and dimension review (`05_TELAAH_BUTIR_DAN_DIMENSI.md`): where D3 lives (Cari Objek in two rounds), D2 scoring, the adjusted decision text, and the item fixes. Already decided on 25 October 2026: two variants (a/b), between-item model, D1 on reading literacy with D1a/D1b, more than 29 D1 items allowed, digital-genre passages
+  - [ ] Test blueprint for the new bank (`06_KISI_KISI_BANK_SOAL.md`, branch `kisi-kisi-bank-soal`, separate session)
+  - [x] Owner accepted the expert-instrument review (`07_TELAAH_INSTRUMEN_VALIDASI.md`) and added the media expert (25 October 2026)
+  - [ ] Rewrite the instruments once as r10 v2.1 and media v1.1, after the blueprint and the D3 decision
+  - [ ] AI-assisted media pre-review on a local test install (branch `pbb/eloquent-ritchie-wz20bn`)
 - [ ] Complete implementation document, after the revision documents are final
 - [ ] Implementation of the 15 system changes, one short-lived branch each, after the implementation document is approved
 
