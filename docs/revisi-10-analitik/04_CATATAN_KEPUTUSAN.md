@@ -6,6 +6,16 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 25 Oktober 2026
 
+**Keputusan pemilik proyek: wawancara pertanyaan terbuka** (sesi `pbb/eloquent-sagan-j40sg8`, bertahap)
+
+Tahap 1, urutan kerja dan akses:
+
+- **Urutan kerja tetap seperti peta jalan di 01.** Dokumen implementasi dan perubahan sistem baru dimulai di tahap 3, setelah validasi ahli dan izin etik (gerbang G2). Akibatnya, layar baru (Skenario Digital, *Periksa Unggahan*, token) belum ada saat ahli media menilai di tahap 2; cara menilainya masuk pertanyaan terbuka di 01.
+- **Token sesi dipakai, versi ringan, dan sekaligus mengatur wilayah yang dibuka.** P1 pendaftaran dan cerita pembuka, P2 Temanggung, P3 Magelang, P4 Wonosobo, P5 tantangan yang tertinggal dan cerita penutup.
+- **Di luar sesi lapangan, seluruh game tertutup sampai penelitian selesai**, termasuk Pustaka dan Profil. Siswa melihat pesan ramah. Setelah status studi ditutup, game terbuka seperti biasa.
+- **Kode peserta `S03-A07` disetujui** dengan aturannya di 01: kode sekolah dari daftar peneliti, awalan `U` untuk sekolah uji coba, tanpa `GLT-`, dibuat sistem saat daftar dari token, tidak pernah diubah setelah ada data.
+- **Perbaikan dokumen tanpa keputusan baru:** kalimat "kode butir tidak bergeser" di 01 diselaraskan dengan keputusan bank baru (kode yang sudah punya data siswa tidak dipakai ulang); perubahan sistem no. 4 di 01 kini menyebut butir jangkar antarvariasi; L1 di 02 tidak lagi menyebut HP sebagai perangkat.
+
 **Keputusan pemilik proyek: kisi-kisi, draf bank soal, dan telaah pendahuluan T6** (sesi `kisi-kisi-bank-soal`)
 
 - **Kisi-kisi bank soal ([06](06_KISI_KISI_BANK_SOAL.md)) disetujui seluruhnya**, termasuk semua bagian yang semula bertanda "usulan". Dengan begitu rumusan keputusan di [05](05_TELAAH_BUTIR_DAN_DIMENSI.md) ikut berlaku:

@@ -10,6 +10,7 @@ Documentation only, in `docs/revisi-10-analitik/` (Indonesian, at the owner's re
 
 - [x] Revision documents: main document with the 10 analytics, constructs, admin/researcher split, log cleanup, token, participant code, and the 15 later system changes (`01`), field sheets L0–L7 (`02`), codes and meanings (`03`), decision record (`04`), three diagrams in `gambar/` (PR #214). The owner continues the revision separately from here
 - [ ] Owner and team settle the open questions in `01_REVISI_10_ANALITIK.md` → *Pertanyaan yang masih terbuka* (constructs with three dimensions, token, participant code `S03-A07`, `guru` role)
+  - [ ] Owner interview on the remaining open questions, five rounds (`04`, 25 October 2026). Round 1 decided: strict stage order (no implementation before gate G2), light session token that also opens one region per meeting, game fully closed outside sessions until the study ends, participant code `S03-A07`
   - [x] Owner decided the item and dimension review (`05_TELAAH_BUTIR_DAN_DIMENSI.md`) by approving the blueprint (25 October 2026): D3 in Cari Objek round 2 *Periksa Unggahan*, round 1 as the Pengetahuan Budaya Kedu scale, D2 actions scored 0–1–2, BUD-* codes; item fixes carried into the draft bank
   - [x] Test blueprint for the new bank (`06_KISI_KISI_BANK_SOAL.md`), approved in full by the owner (25 October 2026): 61 digital-literacy items per student, four booklets, between-variant anchors, 300 analysable students, five meetings (PR #219, #221)
   - [x] Draft of the new question bank (`08_DRAF_BANK_SOAL.md`): 116 digital-literacy items in variants a/b, 6 anchors, 12 PBK items, all `needs_verification`; fictional names checked, posts on the fictional app *Kedugram* (PR #220, #221)
@@ -70,3 +71,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `pbb/eloquent-sagan-j40sg8` | Owner interview on the open questions in `01` (research revision), in rounds | Round 1 recorded; rounds 2–5 open |

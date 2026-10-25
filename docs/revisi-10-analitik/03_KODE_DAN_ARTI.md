@@ -66,12 +66,12 @@ Semua kode yang dipakai di dokumen revisi, lembar lapangan, dan data penelitian 
 
 | Kode | Arti | Catatan |
 | --- | --- | --- |
-| S03-A07 | Kode peserta: sekolah penelitian `S03`, rombel `A`, siswa ke-`07` | Usulan, mengganti `GLT-000123` |
-| S03 | Kode sekolah penelitian, dari daftar peneliti (bukan NPSN) | Usulan |
-| U01-A03 | Kode peserta di sekolah uji coba (awalan `U`) | Usulan |
-| A, B | Rombel kelas 5 di satu sekolah | Usulan |
-| S03-A-P1 | Kode sesi lapangan: sekolah, rombel, pertemuan ke-1 | Usulan |
-| KD7RMA | Contoh token sesi: 6 huruf dan angka tanpa O, 0, I, 1 | Usulan |
+| S03-A07 | Kode peserta: sekolah penelitian `S03`, rombel `A`, siswa ke-`07` | Disetujui 25 Oktober 2026, mengganti `GLT-000123` |
+| S03 | Kode sekolah penelitian, dari daftar peneliti (bukan NPSN) | Disetujui 25 Oktober 2026 |
+| U01-A03 | Kode peserta di sekolah uji coba (awalan `U`) | Disetujui 25 Oktober 2026 |
+| A, B | Rombel kelas 5 di satu sekolah | Disetujui 25 Oktober 2026 |
+| S03-A-P1 | Kode sesi lapangan: sekolah, rombel, pertemuan ke-1 | Disetujui 25 Oktober 2026 |
+| KD7RMA | Contoh token sesi: 6 huruf dan angka tanpa O, 0, I, 1 | Disetujui 25 Oktober 2026 |
 | GLT-000123 | Kode peserta lama | Diganti |
 | P01, P02, … | Nomor stiker perangkat | Lapangan |
 
