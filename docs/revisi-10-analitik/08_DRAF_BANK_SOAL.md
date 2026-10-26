@@ -16,7 +16,7 @@ Ini isi bank soal baru, ditulis mengikuti kisi-kisi. Dokumen ini masih **draf un
 | Kunci | Jawaban yang benar. Kunci hanya ada di server, tidak pernah dikirim ke browser |
 | Sub | Sub-aspek D1: D1a memahami informasi, D1b menilai informasi dan sumber |
 | AKM | L1 menemukan informasi, L2 interpretasi dan integrasi, L3 evaluasi dan refleksi |
-| Bloom | Label kedua (C1–C6) |
+| Bloom | Label kedua (C1–C6, taksonomi Bloom revisi), hanya untuk diagnosis; label pengembang diperiksa di [19](19_TELAAH_LABEL_BLOOM.md) |
 | Kode salah | Kode kesalahan yang dicatat kalau siswa keliru |
 
 **Aturan kode di Isi Rumpang.** Setiap pasangan rumpang × kata salah punya satu kode. Supaya tabelnya tidak terlalu panjang, dipakai tiga aturan tetap:
@@ -51,7 +51,7 @@ Susun Gambar (tantangan 1, pemanasan) tidak ditulis ulang di draf ini. Keteranga
 
 # Temanggung (mudah)
 
-Level utama: menemukan informasi (L1) · Bloom C1–C2 · Skenario: tanda bahaya jelas
+Level utama: menemukan informasi (L1) · Bloom C1–C3 · Skenario: tanda bahaya jelas
 
 ## `tmg-2` Isi Rumpang
 
@@ -145,12 +145,12 @@ Panjang ± 35 kata
 
 Diambil dari bank lama tanpa perubahan isi: adegan *Pasar Budaya Temanggung*, 4 petunjuk, 4 pengecoh.
 
-| Kode | Petunjuk | Kunci |
-| --- | --- | --- |
-| tmg-4-x01 | Temukan kuda-kudaan dari anyaman bambu yang dipakai untuk menari kuda lumping. | kuda kepang bambu |
-| tmg-4-x02 | Temukan biji kopi yang tumbuh di lereng Gunung Sindoro dan Sumbing. | biji kopi |
-| tmg-4-x03 | Temukan arca lembu Nandi, seperti yang ada di dalam Candi Pringapus. | arca Nandi |
-| tmg-4-x04 | Temukan ikan uceng, ikan sungai kecil yang menjadi makanan khas Temanggung. | ikan uceng |
+| Kode | Petunjuk | Kunci | Bloom |
+| --- | --- | --- | --- |
+| tmg-4-x01 | Temukan kuda-kudaan dari anyaman bambu yang dipakai untuk menari kuda lumping. | kuda kepang bambu | C1 |
+| tmg-4-x02 | Temukan biji kopi yang tumbuh di lereng Gunung Sindoro dan Sumbing. | biji kopi | C1 |
+| tmg-4-x03 | Temukan arca lembu Nandi, seperti yang ada di dalam Candi Pringapus. | arca Nandi | C1 |
+| tmg-4-x04 | Temukan ikan uceng, ikan sungai kecil yang menjadi makanan khas Temanggung. | ikan uceng | C1 |
 
 Pengecoh: angklung, ondel-ondel, perahu pinisi, sasando, semuanya **INF-BUD**.
 
@@ -178,7 +178,7 @@ Pengecoh: angklung, ondel-ondel, perahu pinisi, sasando, semuanya **INF-BUD**.
 | --- | --- | --- | --- | --- | --- |
 | tmg-4-a01 | Atribusi | Foto ini bukan buatan pemilik akun. Ketuk tulisan yang menunjukkan siapa pembuat fotonya. | A2 | A1 → BUD-ATR; A4 → BUD-ATR | C2 |
 | tmg-4-a02 | Representasi | Bacalah papan informasi. Ketuk bagian unggahan yang isinya tidak sesuai dengan papan itu. | A3 | A4 → BUD-REP; A6 → BUD-ETK | C2 |
-| tmg-4-a03 | Izin | Kamu ingin memasang foto ini di majalah dinding kelas. Ketuk langkah pertama yang tepat. | A7 | A8 → BUD-IZN; A1 → BUD-IZN | C2 |
+| tmg-4-a03 | Izin | Kamu ingin memasang foto ini di majalah dinding kelas. Ketuk langkah pertama yang tepat. | A7 | A8 → BUD-IZN; A1 → BUD-IZN | C3 |
 | tmg-4-a04 | Menghargai tradisi | Ketuk komentar yang menghargai kesenian ini. | A5 | A6 → BUD-ETK; A3 → BUD-ETK | C2 |
 
 #### Variasi b: Unggahan video ikan uceng
@@ -198,7 +198,7 @@ Pengecoh: angklung, ondel-ondel, perahu pinisi, sasando, semuanya **INF-BUD**.
 | --- | --- | --- | --- | --- | --- |
 | tmg-4-b01 | Atribusi | Video ini bukan buatan pemilik akun. Ketuk tulisan yang menunjukkan siapa pembuat videonya. | B2 | B1 → BUD-ATR; B4 → BUD-ATR | C2 |
 | tmg-4-b02 | Representasi | Bacalah papan informasi. Ketuk bagian unggahan yang isinya tidak sesuai dengan papan itu. | B3 | B4 → BUD-REP; B6 → BUD-ETK | C2 |
-| tmg-4-b03 | Izin | Kamu ingin memakai video ini untuk tugas kelas. Ketuk langkah pertama yang tepat. | B7 | B8 → BUD-IZN; B1 → BUD-IZN | C2 |
+| tmg-4-b03 | Izin | Kamu ingin memakai video ini untuk tugas kelas. Ketuk langkah pertama yang tepat. | B7 | B8 → BUD-IZN; B1 → BUD-IZN | C3 |
 | tmg-4-b04 | Menghargai tradisi | Ketuk komentar yang menghargai makanan khas ini. | B5 | B6 → BUD-ETK; B3 → BUD-ETK | C2 |
 
 **Rujukan:** kuda kepang dari anyaman bambu: DPRD Jateng (*Kuda Lumping, Kesenian Khas Temanggung*); uceng ikan sungai dan makanan khas Temanggung: DJKI (indikasi geografis), Antara Jateng (dicek di 05). Akun, sanggar, dan warung fiktif.
@@ -207,6 +207,7 @@ Pengecoh: angklung, ondel-ondel, perahu pinisi, sasando, semuanya **INF-BUD**.
 
 **Instruksi:** "Bacalah ceritanya. Pilih apa yang akan kamu lakukan, lalu pilih alasanmu."
 **Tingkat:** tanda bahaya jelas · 4 skenario per variasi · 3 tindakan · 3 alasan
+**Bloom:** C3 untuk kedelapan skenario (variasi a dan b)
 
 ### Variasi a
 
@@ -348,7 +349,7 @@ Panjang ± 120 kata · Pengecoh bank kata: *enam*, *sedikit*
 | mgl-2-a01 | (1) | sembilan | D1a | L2 | C2 | *enam* → INF-KAT | Memadukan dua angka; *enam* menangkap siswa yang hanya mencocokkan kata di kalimat sebelumnya |
 | mgl-2-a02 | (2) | stupa | D1a | L1 | C2 | — | Istilah didefinisikan di kalimat sebelumnya |
 | mgl-2-a03 | (3) | 72 | D1a | L2 | C2 | — | Satu arca di setiap stupa |
-| mgl-2-a04 | (4) | banyak | D1a | L2 | C3 | *sedikit* → INF-HUB | Membandingkan 1.460 dan 1.212; mengganti mgl-2-a03 lama ("relief") yang butuh kosakata awal |
+| mgl-2-a04 | (4) | banyak | D1a | L2 | C2 | *sedikit* → INF-HUB | Membandingkan 1.460 dan 1.212; mengganti mgl-2-a03 lama ("relief") yang butuh kosakata awal |
 | mgl-2-a05 | (5) | dilarang | D1a | L2 | C2 | — | Sebab–akibat |
 
 Fakta relief sudah dibetulkan sesuai 05: 2.672 panel, 1.460 bercerita, 1.212 hiasan.
@@ -365,7 +366,7 @@ Panjang ± 120 kata · Pengecoh bank kata: *diam*, *nelayan*
 | mgl-2-b02 | (2) | berbunyi | D1a | L2 | C2 | *diam* → INF-HUB | Sebab–akibat |
 | mgl-2-b03 | (3) | kompak | D1a | L2 | C2 | — | Menyimpulkan dari "bergerak serempak" |
 | mgl-2-b04 | (4) | petani | D1a | L2 | C2 | *nelayan* → INF-LIT | Dari "warganya banyak bertani" |
-| mgl-2-b05 | (5) | aman | D1a | L2 | C3 | — | Sebab–akibat dari tali pembatas; *diam* dan *kompak* tetap bersaing secara bentuk kata. Mengganti mgl-2-b05 lama ("mengganggu") yang terjawab dari norma |
+| mgl-2-b05 | (5) | aman | D1a | L2 | C2 | — | Sebab–akibat dari tali pembatas; *diam* dan *kompak* tetap bersaing secara bentuk kata. Mengganti mgl-2-b05 lama ("mengganggu") yang terjawab dari norma |
 
 Pertunjukan di lapangan desa adalah contoh situasi, bukan klaim tentang setiap pertunjukan Topeng Ireng.
 
@@ -393,10 +394,10 @@ Panjang ± 125 kata
 | Kode | Pernyataan | Kunci | Sub | AKM | Bloom | Kode salah |
 | --- | --- | --- | --- | --- | --- | --- |
 | mgl-3-a01 | Paragraf kedua unggahan terutama menjelaskan cara menjaga Candi Borobudur. | benar | D1a | L2 | C2 | INF-REL |
-| mgl-3-a02 | Menurut unggahan, semua relief Borobudur bercerita. | salah | D1a | L2 | C3 | INF-GEN |
-| mgl-3-a03 | Pengunjung boleh menyentuh relief asalkan tangannya sudah dicuci bersih. | salah | D1a | L2 | C3 | INF-HUB |
-| mgl-3-a04 | Komentar Dimas berisi pendapat. | benar | D1b | L3 | C4 | INF-FOP |
-| mgl-3-a05 | Komentar Bu Rina berisi pendapat. | salah | D1b | L3 | C4 | INF-FOP |
+| mgl-3-a02 | Menurut unggahan, semua relief Borobudur bercerita. | salah | D1a | L2 | C2 | INF-GEN |
+| mgl-3-a03 | Pengunjung boleh menyentuh relief asalkan tangannya sudah dicuci bersih. | salah | D1a | L2 | C2 | INF-HUB |
+| mgl-3-a04 | Komentar Dimas berisi pendapat. | benar | D1b | L3 | C2 | INF-FOP |
+| mgl-3-a05 | Komentar Bu Rina berisi pendapat. | salah | D1b | L3 | C2 | INF-FOP |
 | mgl-3-a06 | Tentang boleh tidaknya menyentuh relief, unggahan akun resmi lebih dapat dipercaya daripada komentar Nanda. | benar | D1b | L3 | C4 | INF-SUM |
 
 `mgl-3-a03` menggantikan butir lama "membawa pulang sampah" (terjawab dari norma). Kuncinya *salah* karena larangan di unggahan berlaku tanpa syarat ("jangan menyentuh relief"), dan alasannya minyak serta keringat tangan, bukan kotoran. Siswa yang menambahkan syarat sendiri terjebak.
@@ -418,10 +419,10 @@ Panjang ± 125 kata
 | Kode | Pernyataan | Kunci | Sub | AKM | Bloom | Kode salah |
 | --- | --- | --- | --- | --- | --- | --- |
 | mgl-3-b01 | Paragraf pertama unggahan terutama menceritakan Gunung Tidar. | benar | D1a | L2 | C2 | INF-REL |
-| mgl-3-b02 | Prasasti Mantyasih dibuat sesudah Akademi Militer berdiri. | salah | D1a | L2 | C4 | INF-HUB |
+| mgl-3-b02 | Prasasti Mantyasih dibuat sesudah Akademi Militer berdiri. | salah | D1a | L2 | C2 | INF-HUB |
 | mgl-3-b03 | Menurut unggahan, Pulau Jawa benar-benar pernah bergoyang lalu dipaku di Gunung Tidar. | salah | D1a | L2 | C2 | INF-LIT |
-| mgl-3-b04 | Komentar Kak Dewi berisi fakta. | salah | D1b | L3 | C4 | INF-FOP |
-| mgl-3-b05 | Komentar Pak Anton berisi fakta. | benar | D1b | L3 | C4 | INF-FOP |
+| mgl-3-b04 | Komentar Kak Dewi berisi fakta. | salah | D1b | L3 | C2 | INF-FOP |
+| mgl-3-b05 | Komentar Pak Anton berisi fakta. | benar | D1b | L3 | C2 | INF-FOP |
 | mgl-3-b06 | Tentang jalur mendaki Gunung Tidar, unggahan akun resmi lebih dapat dipercaya daripada komentar Raffi. | benar | D1b | L3 | C4 | INF-SUM |
 
 Kunci `mgl-3-b01` dirumuskan ulang sesuai 05 ("terutama menceritakan Gunung Tidar", tanpa "dan legendanya"). Pernyataan "berulang tahun 11 April = fakta" yang terlalu mudah diganti dengan komentar berisi fakta.
@@ -447,7 +448,7 @@ Panjang ± 55 kata
 
 | Kode | Pernyataan | Kunci | Sub | AKM | Bloom | Kode salah |
 | --- | --- | --- | --- | --- | --- | --- |
-| mgl-3-x01 | Dari tiga hasil pencarian itu, hanya satu yang menjawab dengan jelas dari mana Topeng Ireng berasal. | benar | D1a | L2 | C3 | INF-REL |
+| mgl-3-x01 | Dari tiga hasil pencarian itu, hanya satu yang menjawab dengan jelas dari mana Topeng Ireng berasal. | benar | D1a | L2 | C2 | INF-REL |
 | mgl-3-x02 | Hasil pertama paling dapat dipercaya karena letaknya paling atas. | salah | D1b | L3 | C4 | INF-SUM |
 
 ## `mgl-4` Cari Objek
@@ -456,12 +457,12 @@ Panjang ± 55 kata
 
 Diambil dari bank lama tanpa perubahan isi: adegan *Galeri Budaya Magelang*.
 
-| Kode | Petunjuk | Kunci |
-| --- | --- | --- |
-| mgl-4-x01 | Temukan bangunan kecil berbentuk lonceng yang berlubang-lubang. Di teras bundar Borobudur ada 72 bangunan seperti ini. | stupa berlubang |
-| mgl-4-x02 | Temukan hiasan kepala dari bulu warna-warni yang dipakai penari tari rakyat dari Desa Tuksongo, Magelang. | kuluk Topeng Ireng |
-| mgl-4-x03 | Temukan jajanan dari singkong yang dikukus, ditumbuk, lalu diberi gula. Jajanan ini membuat Magelang punya julukan khusus. | getuk |
-| mgl-4-x04 | Temukan benda dari tanah liat yang dibentuk lalu dibakar, buatan warga Dusun Klipoh. | kendil gerabah |
+| Kode | Petunjuk | Kunci | Bloom |
+| --- | --- | --- | --- |
+| mgl-4-x01 | Temukan bangunan kecil berbentuk lonceng yang berlubang-lubang. Di teras bundar Borobudur ada 72 bangunan seperti ini. | stupa berlubang | C2 |
+| mgl-4-x02 | Temukan hiasan kepala dari bulu warna-warni yang dipakai penari tari rakyat dari Desa Tuksongo, Magelang. | kuluk Topeng Ireng | C2 |
+| mgl-4-x03 | Temukan jajanan dari singkong yang dikukus, ditumbuk, lalu diberi gula. Jajanan ini membuat Magelang punya julukan khusus. | getuk | C2 |
+| mgl-4-x04 | Temukan benda dari tanah liat yang dibentuk lalu dibakar, buatan warga Dusun Klipoh. | kendil gerabah | C2 |
 
 Pengecoh: kuda kepang bambu, manisan carica, dadak merak Reog, angklung, bakpia, panci logam, semuanya **INF-BUD**.
 
@@ -487,10 +488,10 @@ Pengecoh: kuda kepang bambu, manisan carica, dadak merak Reog, angklung, bakpia,
 
 | Kode | Jenis | Petunjuk | Kunci | Pengecoh utama | Bloom |
 | --- | --- | --- | --- | --- | --- |
-| mgl-4-a01 | Atribusi | Ketuk tulisan yang menunjukkan siapa pembuat video ini. | C2 | C1 → BUD-ATR; C3 → BUD-ATR; C4 → BUD-ATR | C3 |
+| mgl-4-a01 | Atribusi | Ketuk tulisan yang menunjukkan siapa pembuat video ini. | C2 | C1 → BUD-ATR; C3 → BUD-ATR; C4 → BUD-ATR | C2 |
 | mgl-4-a02 | Representasi | Bandingkan keterangan video dengan kartu informasi. Ketuk komentar yang membetulkan keterangan itu dengan benar dan sopan. | C6 | C8 → BUD-REP; C3 → BUD-REP; C7 → BUD-ETK | C4 |
 | mgl-4-a03 | Izin | Kamu ingin memakai video ini untuk tugas kelompok. Ketuk langkah pertama yang tepat. | C10 | C9 → BUD-IZN; C1 → BUD-IZN; C5 → BUD-IZN | C3 |
-| mgl-4-a04 | Menghargai tradisi | Ketuk komentar yang kurang menghargai para penari. | C7 | C8 → BUD-ETK; C6 → BUD-ETK; C3 → BUD-REP | C4 |
+| mgl-4-a04 | Menghargai tradisi | Ketuk komentar yang kurang menghargai para penari. | C7 | C8 → BUD-ETK; C6 → BUD-ETK; C3 → BUD-REP | C2 |
 
 #### Variasi b: Unggahan foto gerabah Klipoh
 
@@ -509,16 +510,17 @@ Pengecoh: kuda kepang bambu, manisan carica, dadak merak Reog, angklung, bakpia,
 
 | Kode | Jenis | Petunjuk | Kunci | Pengecoh utama | Bloom |
 | --- | --- | --- | --- | --- | --- |
-| mgl-4-b01 | Atribusi | Ketuk tulisan yang menunjukkan siapa pembuat foto ini. | D2 | D1 → BUD-ATR; D3 → BUD-ATR; D4 → BUD-ATR | C3 |
+| mgl-4-b01 | Atribusi | Ketuk tulisan yang menunjukkan siapa pembuat foto ini. | D2 | D1 → BUD-ATR; D3 → BUD-ATR; D4 → BUD-ATR | C2 |
 | mgl-4-b02 | Representasi | Bandingkan keterangan foto dengan kartu informasi. Ketuk komentar yang membetulkan keterangan itu dengan benar dan sopan. | D6 | D8 → BUD-REP; D3 → BUD-REP; D7 → BUD-ETK | C4 |
 | mgl-4-b03 | Izin | Kamu ingin memakai foto ini untuk tugas kelompok. Ketuk langkah pertama yang tepat. | D10 | D9 → BUD-IZN; D1 → BUD-IZN; D5 → BUD-IZN | C3 |
-| mgl-4-b04 | Menghargai tradisi | Ketuk komentar yang kurang menghargai kerajinan ini. | D7 | D8 → BUD-ETK; D6 → BUD-ETK; D3 → BUD-REP | C4 |
+| mgl-4-b04 | Menghargai tradisi | Ketuk komentar yang kurang menghargai kerajinan ini. | D7 | D8 → BUD-ETK; D6 → BUD-ETK; D3 → BUD-REP | C2 |
 
 **Rujukan:** Topeng Ireng dari Tuksongo: GNFI (2024), dicek di 05. Dusun Klipoh dekat Borobudur dan hasil gerabahnya: Kompas Travel (2022) *Desa Klipoh*; Badan Otorita Borobudur. Akun, sanggar, dan rumah gerabah fiktif.
 
 ## `mgl-5` Skenario Digital
 
 **Tingkat:** tanda bahaya samar · 4 skenario per variasi · 4 tindakan (1 tepat, 1 kurang tepat, 2 berisiko) · 4 alasan
+**Bloom:** C3 untuk kedelapan skenario (variasi a dan b)
 
 ### Variasi a
 
@@ -656,7 +658,7 @@ Pengecoh: kuda kepang bambu, manisan carica, dadak merak Reog, angklung, bakpia,
 
 # Wonosobo (sulit)
 
-Level utama: evaluasi dan refleksi (L3) untuk Benar atau Salah, kartu jangkar, dan Periksa Unggahan; Isi Rumpang L2 · Bloom C3–C5 · Skenario: situasi berkembang dua langkah
+Level utama: evaluasi dan refleksi (L3) untuk Benar atau Salah, kartu jangkar, dan Periksa Unggahan; Isi Rumpang L2 · Bloom C2–C5 · Skenario: situasi berkembang dua langkah
 
 ## `wnb-2` Isi Rumpang
 
@@ -680,8 +682,8 @@ Panjang ± 125 kata · Pengecoh bank kata: *agar*, *panas* · Kode khusus: *agar
 | wnb-2-a01 | (1) | sehingga | D1a | L2 | C3 | *agar* → INF-HUB | Akibat, bukan tujuan |
 | wnb-2-a02 | (2) | karena | D1a | L2 | C3 | — | Sebab |
 | wnb-2-a03 | (3) | tetapi | D1a | L2 | C3 | — | Pertentangan |
-| wnb-2-a04 | (4) | dapat | D1a | L2 | C4 | — | Membandingkan 2.300 dengan rentang 1.400–2.400 |
-| wnb-2-a05 | (5) | sulit | D1a | L2 | C4 | — | Menerapkan keterangan dataran rendah |
+| wnb-2-a04 | (4) | dapat | D1a | L2 | C3 | — | Membandingkan 2.300 dengan rentang 1.400–2.400 |
+| wnb-2-a05 | (5) | sulit | D1a | L2 | C3 | — | Menerapkan keterangan dataran rendah |
 | wnb-2-a06 | (6) | sejuk | D1a | L2 | C4 | *panas* → INF-LIT | Simpulan dari seluruh teks |
 
 Rumpang "hangat" di bank lama tidak dipakai (7 → 6 rumpang); kalimatnya tetap ada sebagai isi bacaan.
@@ -704,7 +706,7 @@ Panjang ± 120 kata · Pengecoh bank kata: *siang*, *berawan*
 | wnb-2-b02 | (2) | lalu | D1a | L2 | C3 | — | Urutan |
 | wnb-2-b03 | (3) | sehingga | D1a | L2 | C3 | — | Akibat. Mengganti rumpang "membeku", satu-satunya kata kerja di bank kata, yang bisa diisi tanpa membaca |
 | wnb-2-b04 | (4) | tetapi | D1a | L2 | C3 | — | Pertentangan |
-| wnb-2-b05 | (5) | pagi | D1a | L2 | C4 | *siang* → INF-LIT | Dari "cepat mencair saat matahari mulai terik" |
+| wnb-2-b05 | (5) | pagi | D1a | L2 | C2 | *siang* → INF-LIT | Dari "cepat mencair saat matahari mulai terik" |
 | wnb-2-b06 | (6) | cerah | D1a | L2 | C4 | *berawan* → INF-HUB | Simpulan sebab–akibat dari paragraf pertama |
 
 Rumpang "layu" di bank lama tidak dipakai, karena sebagian bergantung pada pengetahuan tanaman (05).
@@ -733,11 +735,11 @@ Panjang ± 95 kata
 
 | Kode | Pernyataan | Kunci | Sub | AKM | Bloom | Kode salah |
 | --- | --- | --- | --- | --- | --- | --- |
-| wnb-3-a01 | Kedua kabar sama-sama membicarakan air Telaga Warna, tetapi isinya bertentangan. | benar | D1a | L2 | C4 | INF-LIT |
-| wnb-3-a02 | Pesan berantai itu pasti benar karena sudah diteruskan berkali-kali. | salah | D1b | L3 | C5 | INF-SUM |
-| wnb-3-a03 | Hanya satu dari dua kabar itu yang menyarankan orang meminum air telaga. | benar | D1a | L2 | C4 | INF-LIT |
-| wnb-3-a04 | Unggahan pengelola lebih dapat dipercaya daripada pesan berantai karena pembuat dan tanggalnya jelas. | benar | D1b | L3 | C5 | INF-SUM |
-| wnb-3-a05 | Bertanya kepada Dito sama membantunya dengan bertanya kepada guru. | salah | D1b | L3 | C5 | INF-SUM |
+| wnb-3-a01 | Kedua kabar sama-sama membicarakan air Telaga Warna, tetapi isinya bertentangan. | benar | D1a | L2 | C2 | INF-LIT |
+| wnb-3-a02 | Pesan berantai itu pasti benar karena sudah diteruskan berkali-kali. | salah | D1b | L3 | C4 | INF-SUM |
+| wnb-3-a03 | Hanya satu dari dua kabar itu yang menyarankan orang meminum air telaga. | benar | D1a | L2 | C2 | INF-LIT |
+| wnb-3-a04 | Unggahan pengelola lebih dapat dipercaya daripada pesan berantai karena pembuat dan tanggalnya jelas. | benar | D1b | L3 | C4 | INF-SUM |
+| wnb-3-a05 | Bertanya kepada Dito sama membantunya dengan bertanya kepada guru. | salah | D1b | L3 | C4 | INF-SUM |
 | wnb-3-a06 | Berdasarkan bukti dalam bacaan, pengunjung yang haus boleh meminum air Telaga Warna asalkan airnya tampak jernih. | salah | D1b | L3 | C5 | INF-GEN |
 
 `wnb-3-a05` dirumuskan ulang sesuai 05: yang dibandingkan sekarang guru dengan sepupu yang **juga hanya membaca pesan berantai itu**, jadi kuncinya tidak bisa diperdebatkan.
@@ -759,11 +761,11 @@ Panjang ± 90 kata
 
 | Kode | Pernyataan | Kunci | Sub | AKM | Bloom | Kode salah |
 | --- | --- | --- | --- | --- | --- | --- |
-| wnb-3-b01 | Pesan berantai dan pengumuman resmi memberi saran yang berbeda tentang mendekati kawah. | benar | D1a | L2 | C4 | INF-LIT |
-| wnb-3-b02 | Menurut bacaan, gas di sekitar kawah aman bagi kesehatan. | salah | D1a | L2 | C4 | INF-KAT |
-| wnb-3-b03 | Pesan berantai itu dapat dipercaya karena sudah banyak beredar. | salah | D1b | L3 | C5 | INF-SUM |
-| wnb-3-b04 | Pengumuman resmi dapat dipercaya karena lembaga pembuatnya jelas. | benar | D1b | L3 | C5 | INF-SUM |
-| wnb-3-b05 | Rambu dan pagar dari petugas lebih pantas diikuti daripada pesan berantai, karena petugas mengetahui bahaya gas di kawah. | benar | D1b | L3 | C5 | INF-SUM |
+| wnb-3-b01 | Pesan berantai dan pengumuman resmi memberi saran yang berbeda tentang mendekati kawah. | benar | D1a | L2 | C2 | INF-LIT |
+| wnb-3-b02 | Menurut bacaan, gas di sekitar kawah aman bagi kesehatan. | salah | D1a | L2 | C2 | INF-KAT |
+| wnb-3-b03 | Pesan berantai itu dapat dipercaya karena sudah banyak beredar. | salah | D1b | L3 | C4 | INF-SUM |
+| wnb-3-b04 | Pengumuman resmi dapat dipercaya karena lembaga pembuatnya jelas. | benar | D1b | L3 | C4 | INF-SUM |
+| wnb-3-b05 | Rambu dan pagar dari petugas lebih pantas diikuti daripada pesan berantai, karena petugas mengetahui bahaya gas di kawah. | benar | D1b | L3 | C4 | INF-SUM |
 | wnb-3-b06 | Berdasarkan bukti dalam bacaan, keluarga Dinda harus membatalkan wisata karena pengumuman resmi melarang pengunjung datang ke kawah. | salah | D1b | L3 | C5 | INF-GEN |
 
 Variasi `b` lama (Bukit Sikunir, sumber lisan) tidak dipakai; dua variasi yang tersisa sama-sama memakai dua sumber digital (05, prioritas tinggi). Urutan kunci: a = B S B B S S, b = B S S B B S.
@@ -780,8 +782,8 @@ Panjang ± 25 kata
 
 | Kode | Pernyataan | Kunci | Sub | AKM | Bloom | Kode salah |
 | --- | --- | --- | --- | --- | --- | --- |
-| wnb-3-x01 | Unggahan ini adalah iklan, terlihat dari tanda "Bersponsor". | benar | D1b | L3 | C4 | INF-SUM |
-| wnb-3-x02 | Karena disukai 2.300 orang, isi unggahan itu pasti benar. | salah | D1b | L3 | C5 | INF-SUM |
+| wnb-3-x01 | Unggahan ini adalah iklan, terlihat dari tanda "Bersponsor". | benar | D1b | L3 | C2 | INF-SUM |
+| wnb-3-x02 | Karena disukai 2.300 orang, isi unggahan itu pasti benar. | salah | D1b | L3 | C4 | INF-SUM |
 
 ## `wnb-4` Cari Objek
 
@@ -789,12 +791,12 @@ Panjang ± 25 kata
 
 Diambil dari bank lama tanpa perubahan isi: adegan *Pasar Oleh-oleh Dieng*.
 
-| Kode | Petunjuk | Kunci |
-| --- | --- | --- |
-| wnb-4-x01 | Temukan alat musik berbentuk tudung lengkung dari anyaman bambu. Dulu tudung itu melindungi penggembala bebek dari panas dan hujan, lalu diberi senar untuk dipetik. | bundengan |
-| wnb-4-x02 | Temukan buah pegunungan yang mirip pepaya, tetapi ukurannya kecil. Buah ini tumbuh baik di udara sejuk dan sering dibuat manisan. | carica |
-| wnb-4-x03 | Temukan keranjang bambu kecil yang dicelup-celupkan ke air mendidih. Nama alat ini dipakai untuk menamai mi khas Wonosobo. | ongklok |
-| wnb-4-x04 | Temukan daun yang diseduh menjadi minuman hangat. Daun ini dipetik di perkebunan Tambi yang sudah ada sejak tahun 1865. | daun teh |
+| Kode | Petunjuk | Kunci | Bloom |
+| --- | --- | --- | --- |
+| wnb-4-x01 | Temukan alat musik berbentuk tudung lengkung dari anyaman bambu. Dulu tudung itu melindungi penggembala bebek dari panas dan hujan, lalu diberi senar untuk dipetik. | bundengan | C2 |
+| wnb-4-x02 | Temukan buah pegunungan yang mirip pepaya, tetapi ukurannya kecil. Buah ini tumbuh baik di udara sejuk dan sering dibuat manisan. | carica | C2 |
+| wnb-4-x03 | Temukan keranjang bambu kecil yang dicelup-celupkan ke air mendidih. Nama alat ini dipakai untuk menamai mi khas Wonosobo. | ongklok | C2 |
+| wnb-4-x04 | Temukan daun yang diseduh menjadi minuman hangat. Daun ini dipetik di perkebunan Tambi yang sudah ada sejak tahun 1865. | daun teh | C2 |
 
 Pengecoh: pepaya biasa, rigen, semangkuk mi ongklok, angklung, sasando, biji kopi, kuluk Topeng Ireng, getuk, semuanya **INF-BUD**. Fakta "Tambi sejak 1865" tetap perlu dicek ahli (05).
 
@@ -822,10 +824,10 @@ Pengecoh: pepaya biasa, rigen, semangkuk mi ongklok, angklung, sasando, biji kop
 
 | Kode | Jenis | Petunjuk | Kunci | Pengecoh utama | Bloom |
 | --- | --- | --- | --- | --- | --- |
-| wnb-4-a01 | Atribusi | Pengunggah menulis bahwa ia membuat video ini sendiri. Ketuk tanda yang menunjukkan siapa pembuat video yang sebenarnya. | E2 | E1 → BUD-ATR; E3 → BUD-ATR; E4 → BUD-ATR | C4 |
-| wnb-4-a02 | Representasi | Unggahan ini disukai 8.000 orang, tapi ada yang keliru. Bandingkan dengan papan informasi, lalu ketuk bagian yang paling perlu dibetulkan supaya orang lain tidak ikut salah paham. | E3 | E5 → BUD-REP; E8 → BUD-REP; E9 → BUD-REP | C5 |
-| wnb-4-a03 | Izin | Kamu ingin memakai video ini untuk tugas sekolah yang dikumpulkan besok. Ketuk langkah pertama yang tepat. | E12 | E11 → BUD-IZN; E10 → BUD-IZN; E1 → BUD-IZN | C4 |
-| wnb-4-a04 | Menghargai tradisi | Ketuk komentar yang membetulkan keterangan dengan benar, sopan, dan menyebut sumbernya. | E6 | E7 → BUD-ETK; E8 → BUD-REP; E9 → BUD-REP | C5 |
+| wnb-4-a01 | Atribusi | Pengunggah menulis bahwa ia membuat video ini sendiri. Ketuk tanda yang menunjukkan siapa pembuat video yang sebenarnya. | E2 | E1 → BUD-ATR; E3 → BUD-ATR; E4 → BUD-ATR | C2 |
+| wnb-4-a02 | Representasi | Unggahan ini disukai 8.000 orang, tapi ada yang keliru. Bandingkan dengan papan informasi, lalu ketuk bagian yang paling perlu dibetulkan supaya orang lain tidak ikut salah paham. | E3 | E5 → BUD-REP; E8 → BUD-REP; E9 → BUD-REP | C4 |
+| wnb-4-a03 | Izin | Kamu ingin memakai video ini untuk tugas sekolah yang dikumpulkan besok. Ketuk langkah pertama yang tepat. | E12 | E11 → BUD-IZN; E10 → BUD-IZN; E1 → BUD-IZN | C3 |
+| wnb-4-a04 | Menghargai tradisi | Ketuk komentar yang membetulkan keterangan dengan benar, sopan, dan menyebut sumbernya. | E6 | E7 → BUD-ETK; E8 → BUD-REP; E9 → BUD-REP | C4 |
 
 #### Variasi b: Unggahan video mi ongklok
 
@@ -846,16 +848,17 @@ Pengecoh: pepaya biasa, rigen, semangkuk mi ongklok, angklung, sasando, biji kop
 
 | Kode | Jenis | Petunjuk | Kunci | Pengecoh utama | Bloom |
 | --- | --- | --- | --- | --- | --- |
-| wnb-4-b01 | Atribusi | Pengunggah menulis bahwa ia membuat video ini sendiri. Ketuk tanda yang menunjukkan siapa pembuat video yang sebenarnya. | F2 | F1 → BUD-ATR; F3 → BUD-ATR; F4 → BUD-ATR | C4 |
-| wnb-4-b02 | Representasi | Unggahan ini disukai 7.500 orang, tapi ada yang keliru. Bandingkan dengan papan informasi, lalu ketuk bagian yang paling perlu dibetulkan supaya orang lain tidak ikut salah paham. | F3 | F5 → BUD-REP; F8 → BUD-REP; F9 → BUD-REP | C5 |
-| wnb-4-b03 | Izin | Kamu ingin memakai video ini untuk tugas sekolah yang dikumpulkan besok. Ketuk langkah pertama yang tepat. | F12 | F11 → BUD-IZN; F10 → BUD-IZN; F1 → BUD-IZN | C4 |
-| wnb-4-b04 | Menghargai tradisi | Ketuk komentar yang membetulkan keterangan dengan benar, sopan, dan menyebut sumbernya. | F6 | F7 → BUD-ETK; F8 → BUD-REP; F9 → BUD-REP | C5 |
+| wnb-4-b01 | Atribusi | Pengunggah menulis bahwa ia membuat video ini sendiri. Ketuk tanda yang menunjukkan siapa pembuat video yang sebenarnya. | F2 | F1 → BUD-ATR; F3 → BUD-ATR; F4 → BUD-ATR | C2 |
+| wnb-4-b02 | Representasi | Unggahan ini disukai 7.500 orang, tapi ada yang keliru. Bandingkan dengan papan informasi, lalu ketuk bagian yang paling perlu dibetulkan supaya orang lain tidak ikut salah paham. | F3 | F5 → BUD-REP; F8 → BUD-REP; F9 → BUD-REP | C4 |
+| wnb-4-b03 | Izin | Kamu ingin memakai video ini untuk tugas sekolah yang dikumpulkan besok. Ketuk langkah pertama yang tepat. | F12 | F11 → BUD-IZN; F10 → BUD-IZN; F1 → BUD-IZN | C3 |
+| wnb-4-b04 | Menghargai tradisi | Ketuk komentar yang membetulkan keterangan dengan benar, sopan, dan menyebut sumbernya. | F6 | F7 → BUD-ETK; F8 → BUD-REP; F9 → BUD-REP | C4 |
 
 **Rujukan:** bundengan dari kowangan, Wonosobo: GNFI (2019, 2025), dicek di 01. Mi ongklok dan keranjang ongklok: Indonesia Kaya; Pemkab Wonosobo (kuliner). Akun, sanggar, warung, dan Rumah Budaya fiktif. Telaah 05 memakai contoh sanggar dan museum yang namanya perlu diganti; di sini keduanya sudah diganti nama fiktif.
 
 ## `wnb-5` Skenario Digital
 
 **Tingkat:** situasi berkembang dua langkah · 4 skenario per variasi · 4 tindakan (1 tepat, 1 kurang tepat, 2 berisiko) · 5 alasan (semua kode R muncul)
+**Bloom:** C4, kecuali `wnb-5-a03` dan `wnb-5-b03` C5
 
 ### Variasi a
 
@@ -1015,7 +1018,7 @@ Skenario ini diambil dari contoh di 01; kalimat tanya alasannya dibuat netral.
 | Skenario Digital | Setiap skenario punya tepat satu tindakan tepat (2) dan satu kurang tepat (1); tindakan 3/4/4 dan alasan 3/4/5 sesuai wilayah |
 | Alasan | Setiap set memuat R-RISK atau R-ETIK, R-ATUR, dan R-SOS atau R-ACAK; di Wonosobo kelima kode muncul |
 | Periksa Unggahan | Setiap variasi memuat empat jenis (atribusi, representasi, izin, menghargai tradisi); bagian ketuk 8/10/12 |
-| Bloom | Semua butir di dalam rentang wilayah |
+| Bloom | Semua butir di dalam rentang wilayah yang direvisi 26 Oktober 2026 (Temanggung C1–C3, Magelang C2–C4, Wonosobo C2–C5); telaah per butir di [19](19_TELAAH_LABEL_BLOOM.md) |
 
 ## Kode kesalahan yang dipakai
 

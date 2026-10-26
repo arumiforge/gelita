@@ -33,6 +33,7 @@ Dokumen lain dibaca per bagian sesuai tugas.
 | [14](14_TES_BAGIAN_MEMBACA.md) | Tes Bagian 1 Membaca (D1), bentuk A dan B: teks, butir, kunci, kode kesalahan, sumber adaptasi AKM/ANBK | Draf, `needs_verification` | Cari per kode butir (misalnya `tes-mb-A07`) | 63 KB |
 | [15](15_TES_BAGIAN_DIGITAL.md) | Tes Bagian 2 Aman dan etis (D2) dan Bagian 3 Budaya digital (D3), bentuk A dan B | Draf, `needs_verification` | Cari per kode butir (misalnya `tes-ae-B03`) | 66 KB |
 | [16](16_ANGKET_AKSES_DIGITAL.md) | Angket akses digital dan butir risiko daring P5: butir, kode jawaban, variabel, pelaksanaan, etika | Draf; keputusan pemilik proyek 26 Oktober 2026 (di modul, tidak dibacakan; butir risiko daring di P5); menunggu validasi ahli | Saat menyusun lembar L6, izin etik, atau variabel peserta | 45 KB |
+| [19](19_TELAAH_LABEL_BLOOM.md) | Telaah label Bloom pengembang per butir (116 butir literasi digital, 12 PBK), pola sistematis, rentang wilayah baru | Selesai; keputusan pemilik proyek 26 Oktober 2026 masuk 08 dan 06 | Saat menelusuri alasan label Bloom atau menyiapkan B.5a | 25 KB |
 | `gambar/` | Peta bukti, lapis data, peta jalan, buklet, tangkapan layar telaah media | Rujukan | Saat dokumen yang memakainya diubah | — |
 | [dokumen-pendukung-peneliti/](dokumen-pendukung-peneliti/README.md) | Bacaan untuk peneliti dan tim, **bukan dokumen implementasi**: model penelitian dan pengembangan (PDF), dengan rujukan yang dicek ke sumber asli | Rujukan; model Plomp dan aturan I-CVI Lynn diputuskan 26 Oktober 2026 | Saat menulis Bab III atau bagian metodologi; tidak dibaca untuk implementasi | 390 KB (PDF dan sumbernya) |
 
@@ -47,6 +48,7 @@ Urutan kerja mengikuti peta jalan di 01, yang dikukuhkan pemilik proyek pada 25 
 | [11_KAMUS_DATA.md](11_KAMUS_DATA.md): definisi beku 10 analitik, "dilewati", waktu aktif, tersensor, dan kode | no. 2 | Claude (draf), pemilik proyek | Selesai (`kamus-1.0`, 26 Oktober 2026) |
 | [12_CERITA_PENGHUBUNG_DAN_NARASI.md](12_CERITA_PENGHUBUNG_DAN_NARASI.md): cerita penghubung dan narasi tantangan kelima | no. 7 | Claude (draf), pemilik proyek | Selesai (disetujui 26 Oktober 2026) |
 | [13](13_TES_AWAL_AKHIR.md)–[16](16_ANGKET_AKSES_DIGITAL.md): tes awal–akhir bentuk A dan B, dan angket akses digital | no. 9, 10 | Claude (draf), pemilik proyek | Draf; keputusan pemilik proyek diambil 26 Oktober 2026 ([13](13_TES_AWAL_AKHIR.md#keputusan-pemilik-proyek)); menunggu validasi ahli |
+| [19_TELAAH_LABEL_BLOOM.md](19_TELAAH_LABEL_BLOOM.md): telaah label Bloom | no. 4 | Claude (telaah), pemilik proyek | Selesai (26 Oktober 2026); 08 dan 06 diperbarui |
 | Skala sikap untuk Balai Refleksi | no. 19 | | Belum mulai |
 | Mock-up layar baru untuk ahli media langkah 1 | no. 20 | | Belum mulai |
 | [02_LEMBAR_LAPANGAN.md](02_LEMBAR_LAPANGAN.md): lembar L0–L7 final | no. 11 | Claude (draf), pemilik proyek | Selesai (disetujui 26 Oktober 2026) |
