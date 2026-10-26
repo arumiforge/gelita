@@ -18,7 +18,7 @@ Pemilik proyek menyetujui seluruh draf [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md) 
 
 Penyesuaian di dokumen lain: 06 (urutan P5; baris waktu "Cerita wilayah: pembuka, penghubung, tuntas" 4–5 menit, sehingga waktu bermain menjadi ± 29–36, 36–44, dan 43–52 menit), 02 (aturan tes akhir), 01 (daftar kerja no. 7 selesai; perubahan sistem no. 16), dan 00. Pemetaan narasi `petunjuk-*` ke butir `x01`–`x04` dibetulkan di tahap 3, karena pemetaan sekarang masih benar untuk bank yang terpasang.
 
-Lanjutan di sesi yang sama: keterangan Susun Gambar diperiksa terhadap 08 dan ditulis di [08](08_DRAF_BANK_SOAL.md#susun-gambar-selama-studi). Usulannya (selama studi hanya variasi yang tidak membocorkan butir) menunggu keputusan pemilik proyek.
+**Keputusan pemilik proyek: Susun Gambar selama studi.** Keterangan kesepuluh variasi Susun Gambar per wilayah diperiksa terhadap 08 ([08](08_DRAF_BANK_SOAL.md#susun-gambar-selama-studi)). Sebagian besar membocorkan butir D1, kunci D3, atau petunjuk PBK yang dikerjakan tepat sesudahnya di pertemuan yang sama. Diputuskan: selama studi, Susun Gambar hanya memakai variasi yang tidak membocorkan apa pun, yaitu Temanggung i (Pasar Papringan), Magelang c dan e (Candi Mendut, Candi Pawon), dan Wonosobo d (Kompleks Candi Arjuna). Di luar studi semua variasi tetap dipakai, dan tidak ada keterangan yang ditulis ulang. Pilihan menyembunyikan keterangan atau menulis ulang keterangan tidak dipilih. Masuk perubahan sistem no. 16 di 01.
 
 **Draf cerita penghubung dan narasi tantangan kelima** (sesi `sky/optimistic-bardeen-4zx8ob`, daftar kerja no. 7)
 

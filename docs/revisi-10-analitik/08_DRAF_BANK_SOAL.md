@@ -1003,7 +1003,7 @@ Skenario ini diambil dari contoh di 01; kalimat tanya alasannya dibuat netral.
 
 # Susun Gambar selama studi
 
-Ditambahkan 26 Oktober 2026 · **usulan, menunggu keputusan pemilik proyek**
+Ditambahkan 26 Oktober 2026 · **diputuskan pemilik proyek 26 Oktober 2026**
 
 Susun Gambar (tantangan 1) adalah pemanasan dan tidak dinilai, jadi tidak ada di dokumen ini. Tapi keterangan gambarnya dibaca siswa tepat sebelum Isi Rumpang dan Benar atau Salah di pertemuan yang sama. Bank yang terpasang punya 10 variasi gambar per wilayah (a–j), masing-masing dengan keterangan ([`docs/bank-soal/data/`](../bank-soal/data/)). Semua keterangan diperiksa terhadap butir yang dinilai dan butir PBK di dokumen ini, memakai aturan menulis butir no. 2 di [06](06_KISI_KISI_BANK_SOAL.md#aturan-menulis-butir) dan aturan cerita di [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md#aturan-menulis-cerita-untuk-penelitian). Pemeriksaan ini ditemukan saat menyusun 12.
 
@@ -1052,7 +1052,7 @@ Susun Gambar (tantangan 1) adalah pemanasan dan tidak dinilai, jadi tidak ada di
 | i | Tari Topeng Lengger | Tidak ada, tapi keterangan menyebut lengger "tari khas Wonosobo", yang asalnya diperdebatkan (lihat *Yang harus dicek sebelum validasi ahli*) | — |
 | j | Embun Upas | Suhu pagi di bawah 0 °C sehingga embun membeku | `wnb-2-b03`, `b05` |
 
-**Usulan:** selama studi, Susun Gambar hanya memakai variasi yang tidak membocorkan apa pun: **Temanggung i** (Pasar Papringan), **Magelang c dan e** (Candi Mendut, Candi Pawon), dan **Wonosobo d** (Kompleks Candi Arjuna). Di luar studi, semua variasi tetap dipakai seperti sekarang. Keterangan variasi Wonosobo i (lengger) dicek ahli budaya, terlepas dari keputusan ini.
+**Keputusan pemilik proyek (26 Oktober 2026):** selama studi, Susun Gambar hanya memakai variasi yang tidak membocorkan apa pun: **Temanggung i** (Pasar Papringan), **Magelang c dan e** (Candi Mendut, Candi Pawon), dan **Wonosobo d** (Kompleks Candi Arjuna). Di luar studi, semua variasi tetap dipakai seperti sekarang. Keterangan tidak ada yang ditulis ulang. Keterangan variasi Wonosobo i (lengger) tetap dicek ahli budaya. Pilihan lain yang tidak dipilih: menyembunyikan keterangan selama studi, atau menulis ulang keterangan yang bocor.
 
 ---
 
