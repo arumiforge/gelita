@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Panel peneliti: sesi lapangan dan token</title>
+<link rel="stylesheet" href="../../../../../public/assets/css/admin.css">
+<link rel="stylesheet" href="_mock.css">
+<style>
+  /* Mock-up only: researcher panel (system changes 10 and 11), admin look */
+  .rp-grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 16px; align-items: start; }
+  .rp-form { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 16px; }
+  .rp-form .span-all { grid-column: 1 / -1; }
+  .rp-form input, .rp-form select { width: 100%; }
+  .rp-token { display: flex; align-items: center; gap: 16px; margin: 4px 0 12px; }
+  .rp-token b { font: 600 40px/1 var(--mono); letter-spacing: .14em; color: var(--text); }
+  .rp-status { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: 999px; background: var(--ok-soft); color: var(--ok); font-size: 13px; font-weight: 700; }
+  .rp-dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; margin: 0 0 14px; font-size: 14px; }
+  .rp-dl dt { color: var(--text-dim); }
+  .rp-dl dd { margin: 0; }
+  .rp-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .rp-note { margin: 12px 0 0; color: var(--text-dim); font-size: 13px; }
+  .admin-main { padding-top: 16px; }
+</style>
+</head>
+<body class="admin" data-code="mk-tk-05">
+<div class="admin-shell">
+  <aside class="admin-sidebar">
+    <div class="sidebar-brand"><span class="sidebar-mark">G</span><span class="sidebar-brand-text">GELITA · Peneliti</span></div>
+    <div class="sidebar-group">
+      <p class="sidebar-label">Lapangan</p>
+      <ul class="sidebar-list">
+        <li><a class="sidebar-link is-active" href="#">Sesi lapangan</a></li>
+        <li><a class="sidebar-link" href="#">Peserta dan buklet</a></li>
+        <li><a class="sidebar-link" href="#">Pemantauan</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-group">
+      <p class="sidebar-label">Data</p>
+      <ul class="sidebar-list">
+        <li><a class="sidebar-link" href="#">Unduh data penelitian</a></li>
+      </ul>
+    </div>
+  </aside>
+  <div class="admin-column">
+    <header class="admin-topbar">
+      <nav class="breadcrumb"><ol><li><a href="#">Panel peneliti</a></li><li><span aria-current="page">Sesi lapangan</span></li></ol></nav>
+      <span class="topbar-study"><i class="dot is-ok"></i>studi-r10</span>
+      <span class="account-menu"><span class="avatar">P</span><span class="account-name"><b>Peneliti P1</b><small>Peneliti</small></span></span>
+    </header>
+    <main class="admin-main">
+      <div class="page-head"><div class="page-head-text"><h1>Sesi lapangan</h1><p class="muted">Buat sesi sebelum pertemuan. Token hanya berlaku di jam sesi dan membuka wilayah atau modul tes pertemuan itu.</p></div></div>
+      <div class="rp-grid">
+        <section class="panel">
+          <h2 class="panel-title">Sesi baru</h2>
+          <div class="rp-form">
+            <div class="field"><label>Sekolah</label><select><option>S03</option></select></div>
+            <div class="field"><label>Rombel</label><select><option>A</option></select></div>
+            <div class="field span-all"><label>Pertemuan</label><select><option>P2 · Wilayah Temanggung</option></select><p class="field-help">P1 dan P5 membuka modul tes; P2–P4 membuka satu wilayah.</p></div>
+            <div class="field"><label>Tanggal</label><input type="text" value="Senin, 6 Maret 2028 (contoh)"></div>
+            <div class="field"><label>Jam buka–tutup (WIB)</label><input type="text" value="07.30–09.30"></div>
+          </div>
+          <div class="form-actions"><button class="btn btn-primary" type="button">Buat sesi dan token</button></div>
+        </section>
+        <section class="panel">
+          <div class="panel-head"><h2 class="panel-title">Sesi berjalan</h2><span class="rp-status">● Buka</span></div>
+          <div class="rp-token"><b>KD7RMA</b></div>
+          <dl class="rp-dl">
+            <dt>Sekolah · rombel</dt><dd>S03 · A</dd>
+            <dt>Pertemuan</dt><dd>P2 · Temanggung</dd>
+            <dt>Jam</dt><dd>07.30–09.30 WIB</dd>
+            <dt>Sudah masuk</dt><dd>24 dari 28 siswa</dd>
+          </dl>
+          <div class="rp-actions"><button class="btn" type="button">Buat token baru</button><button class="btn btn-danger" type="button">Tutup sesi sekarang</button></div>
+          <p class="rp-note">Token tanpa huruf O, I dan angka 0, 1. Tulis di papan tulis; buat token baru kalau token bocor.</p>
+        </section>
+      </div>
+    </main>
+  </div>
+</div>
+<script src="_mock.js"></script>
+</body>
+</html>

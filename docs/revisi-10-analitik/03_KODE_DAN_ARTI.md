@@ -154,6 +154,19 @@ Dari [13](13_TES_AWAL_AKHIR.md#kode-butir) dan [16](16_ANGKET_AKSES_DIGITAL.md).
 | 9 / 8 / 7 | Jawaban angket: tidak tahu atau tidak ingat / tidak berlaku / tidak mau menjawab (7 hanya di ang-21 sampai ang-23) | 16 |
 | `not_reached` | Butir tes yang belum pernah tampil saat bagiannya ditutup batas waktu; data hilang di analisis Rasch | 13 |
 
+## Gambar mock-up
+
+Dari [18](18_MOCKUP_LAYAR_BARU.md). Kode gambar mock-up untuk ahli media langkah 1; berkasnya `gambar/mockup/{kode}.webp`, sumbernya `gambar/mockup/src/{kode}.html`.
+
+| Kode | Arti | Catatan |
+| --- | --- | --- |
+| mk-sd-01 … 05 | Skenario Digital (tantangan kelima) | 18 |
+| mk-pu-01 … 04 | Cari Objek babak 2 *Periksa Unggahan* | 18 |
+| mk-tk-01 … 05 | Token sesi, di luar sesi, layar kecil, panel peneliti | 18 |
+| mk-mt-01 … 06 | Modul tes dan angket | 18 |
+| mk-ss-01 … 04 | Skala sikap di Balai Refleksi: petunjuk, contoh soal, satu pernyataan, layar kirim | 18 |
+| mk-cr-01 … 02 | Cerita penghubung *Kabut di Layar* dan kartu misi tantangan kelima | 18 |
+
 ## Skala sikap menjaga warisan
 
 Dari [17](17_SKALA_SIKAP.md). Usulan; dibekukan sebagai `sikap-1.0` di G4.

@@ -6,6 +6,24 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 26 Oktober 2026
 
+**Keputusan pemilik proyek: mock-up layar baru untuk ahli media langkah 1** (cabang `r10-mockup-media`, daftar kerja no. 20, [18](18_MOCKUP_LAYAR_BARU.md))
+
+Putaran 1, sebelum menggambar:
+
+1. **Mock-up memakai tampilan game sungguhan**: halaman HTML statis dengan CSS, huruf, dan gambar UI game, digambar ke WebP 1280 × 720. Sumbernya di `gambar/mockup/src/` supaya bisa dipakai lagi di tahap 3.
+2. **Skenario Digital digambar dalam lima keadaan**: situasi dengan ▶, tindakan dipilih, langkah alasan, umpan balik "kurang tepat" dengan kesempatan tersisa, dan kesempatan habis.
+3. **Layar token digambar semua**: masukkan token, token keliru, di luar sesi, layar kecil ditolak, dan panel peneliti membuat sesi.
+4. **Cerita penghubung dan kartu misi tantangan kelima ikut digambar**, satu gambar masing-masing.
+
+Putaran 2, setelah melihat 23 gambar:
+
+1. **Gambar disetujui apa adanya** untuk paket ahli media langkah 1. Gambar skala sikap (`mk-ss-01`) masih placeholder dan diperbarui setelah `17_SKALA_SIKAP.md` final.
+2. **Penjelasan setelah kesempatan Skenario Digital habis ditulis sebagai satu kalimat tersendiri per skenario di 08** (24 kalimat), tidak memakai umpan balik pilihan tepat yang dipotong. Dikerjakan di sisi bank sebelum validasi ahli.
+3. **Lapisan pemeriksaan area ketuk (`mk-pu-02`) ikut dikirim ke ahli media**, bertanda tidak tampil ke siswa.
+4. **Draf salinan di 18** (token keliru, layar kecil, ketukan keliru di *Periksa Unggahan*, pengingat lima menit, kalimat kesempatan habis) **diterima sebagai teks awal**; kalimat akhirnya ditetapkan di dokumen implementasi setelah telaah ahli dan uji keterbacaan.
+
+Akibatnya: 18 ditulis; 00, 01 (daftar kerja no. 20), dan 03 (kode `mk-*`) diperbarui. Atas permintaan pemilik proyek di sesi yang sama, 24 kalimat *Penjelasan setelah kesempatan habis* ditulis di 08 (satu per skenario, dengan aturannya di *Cara membaca*: menyebut risikonya lalu mengapa tindakan tepat aman, tanpa kata "tepat", "salah", atau "gagal", tidak dibacakan, tidak diskor), dan `mk-sd-05` digambar ulang. Kalimatnya ikut validasi ahli bersama bank. Setelah 17 masuk `main` (PR #253), placeholder `mk-ss-01` diganti empat gambar `mk-ss-01`–`04` (petunjuk, contoh soal, `skp-03`, layar kirim) dengan format jawaban dari 17, jadi 18 kini memuat 26 gambar. Celah lain yang ditemukan dicatat di 18 → *Celah yang ditemukan di dokumen lain*.
+
 **Keputusan pemilik proyek: pertanyaan terbuka skala sikap** (sesi `r10-skala-sikap`, menjawab pertanyaan terbuka di [17](17_SKALA_SIKAP.md#pertanyaan-yang-masih-terbuka))
 
 1. **Butir bahasa daerah (skp-10) adil** untuk siswa yang bahasa ibunya bukan bahasa Jawa, karena menyebut "bahasa daerah" umum. Butir tetap dipakai.
