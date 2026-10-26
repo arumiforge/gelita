@@ -6,6 +6,22 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 26 Oktober 2026
 
+**Draf cerita penghubung dan narasi tantangan kelima** (sesi `sky/optimistic-bardeen-4zx8ob`, daftar kerja no. 7)
+
+- Cerita penghubung, kartu misi, baris lama yang berubah, dan daftar rekaman disusun di [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md). Statusnya draf sampai pemilik proyek menjawab empat pertanyaan di bagian akhir dokumen itu:
+  1. kapan cerita penghubung diputar
+  2. Kenali wilayah selama studi (usulan: baru terbuka setelah wilayahnya tuntas, karena fakta budayanya adalah kunci butir *Periksa Unggahan* dan Temukan Benda)
+  3. kabar berantai Wonosobo: tetap kawah atau ganti ramalan gempa
+  4. yang dibacakan di Skenario Digital
+- **Usulan yang ikut draf** (bisa dikoreksi pemilik proyek):
+  - Serpihan kelima setiap wilayah disembunyikan Kabut Lupa di dalam layar (*Kabut di Layar*). Konteks dialog baru `scenario_open`, berkas `layar-{wilayah}-NN`, 6 baris per wilayah.
+  - Sebelas aturan menulis cerita untuk penelitian. Intinya: cerita sebelum tantangan tidak menyebut jawaban, tindakan kunci, atau ciri jebakan, dan tidak mendorong ke arah sebaliknya; pelajaran datang di cerita tuntas dan hanya mengulang umpan balik; cerita tuntas tidak menyebut jumlah serpihan seluruhnya, karena ada siswa susulan.
+  - Kode berkas baru `skenario-{kode butir}` (Narator) dan `unggahan-{kode butir}` (Mbah Kedu), dengan arahan suara datar supaya nada bicara tidak membocorkan jawaban.
+  - Kartu misi tantangan kelima, dan tujuh kartu lama disesuaikan dengan bentuk teks bank baru, sama untuk variasi a dan b.
+  - Naskah menjadi 112 baris per bahasa (21 baru, 32 diubah); dengan situasi, petunjuk *Periksa Unggahan*, dan instruksi, rekaman menjadi ± 187 per bahasa. Waktu cerita per pertemuan wilayah naik sekitar satu menit.
+- **Temuan pemeriksaan naskah lama terhadap 08** (subagen, dicek ulang): 9 baris menyebut jawaban butir D1 atau tindakan kunci D2, terutama di Kenali dan dialog masuk Wonosobo; dua fakta Kenali bertentangan dengan 08; 12 baris masih menyebut 12 serpihan atau 4 tantangan. Draf 12 lalu ditelaah ulang secara terpisah; temuannya (antara lain kata "katanya" sebagai penanda jebakan, desakan waktu, dan "putuskan sendiri" sebelum skenario yang kuncinya melibatkan orang dewasa) sudah dimasukkan. Naskah aktif (`docs/naskah-cerita.md`) belum diubah; isinya dipasang di tahap 3.
+- **Di luar dokumen itu:** keterangan Susun Gambar (tantangan 1) memuat jawaban butir D1 Temanggung, dan pemetaan narasi `petunjuk-*` ke butir `a01`–`a04` sudah usang; keduanya perlu dibereskan di bank sebelum validasi ahli. Diusulkan juga tes akhir dikerjakan sebelum cerita penutup di P5, yang mengubah urutan di 06 dan menunggu persetujuan pemilik proyek.
+
 **Keputusan pemilik proyek: kamus data** (sesi `sky/optimistic-carson-kkpbcv`)
 
 Empat pertanyaan di draf [11](11_KAMUS_DATA.md#keputusan-pemilik-proyek) diputuskan, dan kamus menjadi `kamus-1.0`:
