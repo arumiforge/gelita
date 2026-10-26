@@ -34,6 +34,11 @@ Documentation only, in `docs/revisi-10-analitik/` (Indonesian, at the owner's re
     - [ ] Catalogue team makes the new Wayang Kedu picture and the replacement Candi Pawon picture (briefs in `08`), then both are re-checked against `08`
     - [ ] Researcher checks the facts of Papringan, Pawon, and Arjuna, and Lengger's 2020 listing year
     - [x] Outdated `petunjuk-*` narration mapping: moved to stage 3 (`12`, stage-3 list item 3), because the current mapping is right for the bank installed today
+- [ ] Pre/post test, forms A and B, and the digital-access questionnaire (work items 9 and 10 in `01`): drafts in `13`–`16`, written in parallel by three subagents on one blueprint
+  - [x] Blueprint `13`: three parts matching the dimensions (D1 reading 16 items from 4 texts, D2 8 scenarios, D3 8 items from 2 scenes; 32 items, max 40 points), item-by-item parallel forms, checkerboard form assignment, paper administration, random-groups Rasch equating without shared items, validity and change analyses
+  - [x] Item drafts: reading part adapted from official AKM/ANBK samples (`14`), D2 and D3 parts (`15`), questionnaire (`16`), all `needs_verification`
+  - [ ] Owner decides the four questions in `13`: P1 and P5 at 3 JP each (the post-test does not fit a 2-JP P5), paper, topics outside Kedu, no online-risk items in the questionnaire
+  - [ ] After the decisions: align `02` (L6, done with work item 11), `06` (P1/P5), `11` (test and questionnaire variables), `03` (codes), and the r10 v2.1 instrument (`07`)
 - [ ] Complete implementation document, after the revision documents are final and gate G2 (expert validation and ethics approval) is passed
 - [ ] Implementation of the system changes listed in `01` (21 so far), one short-lived branch each, after the implementation document is approved
 
@@ -85,3 +90,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 |---|---|---|
 | `pbb/eloquent-sagan-j40sg8` | Pre-stage-1 check of the research revision docs | PR open |
 | `sky/festive-hopper-cl6p65` | Susun Gambar caption leaks checked against the draft bank (`08`) | PR open |
+| `sky/brave-tesla-8owq5a` | Pre/post test forms A and B and the digital-access questionnaire (`13`–`16`) | In progress |
