@@ -99,4 +99,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `r10-skala-sikap` | Claude session / attitude scale, work item 19 (`17_SKALA_SIKAP.md`) | Draft done, owner decisions recorded; PR open |
