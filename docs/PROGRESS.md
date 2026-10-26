@@ -2,7 +2,7 @@
 
 The single checklist of what is done and what is open. Decisions and their reasons go in `docs/perombakan-kelas5/CATATAN_IMPLEMENTASI.md` (and, for the research revision, `docs/revisi-10-analitik/04_CATATAN_KEPUTUSAN.md`); this file only tracks state. Each session updates only its own rows, and ticks an item only once its PR is merged into `main`. Finished work is summed up in one line per area under *Done*; the details live in the PRs, the git history, and the decision log.
 
-Last updated: 25 October 2026.
+Last updated: 26 October 2026.
 
 ## Research revision: 10 analytics (owner, 23 October 2026)
 
@@ -25,6 +25,11 @@ Documentation only, in `docs/revisi-10-analitik/` (Indonesian, at the owner's re
 - [x] Data dictionary `11_KAMUS_DATA.md` (work item 2 in `01`), approved by the owner as `kamus-1.0` (26 October 2026); the remaining stage-1 documents are listed in `00_INDEKS.md`
   - [x] Draft written: evidence map (diagram updated), scored items and first attempt, missing data and analysis flags, frozen definitions of the 10 analytics, item and participant variables, field-sheet join rules, data requirements for stage 3; `03` and the raw-data example in `01` aligned
   - [x] Owner decided the four questions (26 October 2026): other tap areas in *Periksa Unggahan* get the clue type's BUD code (`08` updated); idle gaps cut only above a provisional 3-minute threshold; analysable = consent, not pilot, first try on at least 80% of the 61 items; rapid guesses kept as given in the main analysis with a provisional threshold under 3 seconds. Both thresholds are study settings, re-set after the pilot
+- [ ] Story links and narration for the fifth challenge (`12_CERITA_PENGHUBUNG_DAN_NARASI.md`, work item 7 in `01`)
+  - [x] Draft written: *Kabut di Layar* link scene per region (new context `scenario_open`), mission cards, 32 rewritten old lines (15 shards, answer leaks found by checking the script against the draft bank), recording list (about 187 per language) and voice direction
+  - [ ] Owner answers the four questions at the end of `12` (when the link scene plays, Kenali during the study, Wonosobo chain message, what Skenario Digital reads aloud) and approves the story
+  - [ ] Fix the leaks outside the story found by the same check: Susun Gambar captions that repeat D1 answers, and the outdated `petunjuk-*` mapping (bank side, before expert validation)
+  - [ ] Owner decides the proposed P5 order change in `12` (post-test before the closing story), which changes the meeting plan in `06`
 - [ ] Complete implementation document, after the revision documents are final and gate G2 (expert validation and ethics approval) is passed
 - [ ] Implementation of the system changes listed in `01` (21 so far), one short-lived branch each, after the implementation document is approved
 
@@ -34,7 +39,7 @@ A server is always set up as a fresh install (`docs/08_DEPLOYMENT.md` → *Insta
 
 **Content and art**
 
-- [ ] Record the voice-over narration (103 lines per language today, plus the lines the Skenario Digital challenge will add) from the script PDF in **Rekaman narasi**, upload it, listen, and approve it. On a server that still has old TTS takes, press **Batalkan semua rekaman** for each language first (decision log, 17 October 2026)
+- [ ] Record the voice-over narration (103 lines per language today; about 187 after the research revision, see `docs/revisi-10-analitik/12_CERITA_PENGHUBUNG_DAN_NARASI.md`) from the script PDF in **Rekaman narasi**, upload it, listen, and approve it. On a server that still has old TTS takes, press **Batalkan semua rekaman** for each language first (decision log, 17 October 2026)
 - [ ] The researcher checks every `needs_verification` item of the question bank and the facts in `gelita-katalog/update/telaah-draf-1-naskah-bank-soal.md` §6
 - [ ] The researcher checks the Susun Gambar pictures against the reference photos and has two people assemble each puzzle
 - [ ] Art for the region story slides `bg.cerita-{kenal,dialog,tuntas}-{wilayah}-NN` (catalogue team); until it exists every slide shows the region background
@@ -75,3 +80,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 | Branch | Owner / scope | Status |
 |---|---|---|
 | `pbb/eloquent-sagan-j40sg8` | Pre-stage-1 check of the research revision docs | PR open |
+| `sky/optimistic-bardeen-4zx8ob` | Story links and narration for the fifth challenge (`12`) | PR open |

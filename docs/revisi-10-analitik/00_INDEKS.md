@@ -2,7 +2,7 @@
 
 Per 26 Oktober 2026 · Pintu masuk untuk setiap sesi baru di [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
-Folder ini sekitar 370 KB, kira-kira 170 ribu token kalau dibaca utuh. Satu sesi tidak perlu membaca semuanya. Aturan menjaga konteks ada di `.claude/rules/revisi-10.md` dan dimuat otomatis saat berkas di folder ini dibuka.
+Folder ini sekitar 430 KB, kira-kira 200 ribu token kalau dibaca utuh. Satu sesi tidak perlu membaca semuanya. Aturan menjaga konteks ada di `.claude/rules/revisi-10.md` dan dimuat otomatis saat berkas di folder ini dibuka.
 
 ## Mulai sesi baru di sini
 
@@ -28,6 +28,7 @@ Dokumen lain dibaca per bagian sesuai tugas.
 | [09](09_TELAAH_PENDAHULUAN_BANK_SOAL.md) | Telaah pendahuluan T6 atas draf 08 | Selesai; R1–R4 disetujui | Saat menyiapkan paket validasi | 20 KB |
 | [10](10_TELAAH_PENDAHULUAN_MEDIA.md) | Telaah pendahuluan media | Selesai; keputusan masuk 01 | Saat menyiapkan mock-up dan instrumen media | 19 KB |
 | [11](11_KAMUS_DATA.md) | Kamus data: peta bukti, definisi beku 10 analitik, data yang dinilai, "dilewati", waktu aktif, tersensor, tebakan cepat, kode, aturan gabung lembar | Disetujui 26 Oktober 2026 (`kamus-1.0`); ambang jeda dan tebakan cepat masih sementara | Saat menulis instrumen, lembar, pra-registrasi, atau dokumen implementasi; cari per analitik | 41 KB |
+| [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md) | Cerita penghubung dan narasi tantangan kelima, penyesuaian cerita lama, kartu misi, daftar rekaman, hasil pemeriksaan kebocoran cerita | Draf, menunggu empat jawaban pemilik proyek | Saat menyetujui cerita, menyiapkan rekaman, atau menulis dokumen implementasi perubahan no. 2 | 52 KB |
 | `gambar/` | Peta bukti, lapis data, peta jalan, buklet, tangkapan layar telaah media | Rujukan | Saat dokumen yang memakainya diubah | — |
 
 ## Tahap dokumen yang tersisa sebelum implementasi
@@ -39,7 +40,7 @@ Urutan kerja mengikuti peta jalan di 01, yang dikukuhkan pemilik proyek pada 25 
 | Dokumen | Daftar kerja di 01 | Penyusun | Status |
 | --- | --- | --- | --- |
 | [11_KAMUS_DATA.md](11_KAMUS_DATA.md): definisi beku 10 analitik, "dilewati", waktu aktif, tersensor, dan kode | no. 2 | Claude (draf), pemilik proyek | Selesai (`kamus-1.0`, 26 Oktober 2026) |
-| Cerita penghubung dan narasi tantangan kelima | no. 7 | Claude (draf), pemilik proyek | Belum mulai |
+| [12_CERITA_PENGHUBUNG_DAN_NARASI.md](12_CERITA_PENGHUBUNG_DAN_NARASI.md): cerita penghubung dan narasi tantangan kelima | no. 7 | Claude (draf), pemilik proyek | Draf, menunggu persetujuan |
 | Tes awal–akhir bentuk A dan B, dan angket akses digital | no. 9, 10 | | Belum mulai |
 | Skala sikap untuk Balai Refleksi | no. 19 | | Belum mulai |
 | Mock-up layar baru untuk ahli media langkah 1 | no. 20 | | Belum mulai |
