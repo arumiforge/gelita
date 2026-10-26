@@ -17,7 +17,7 @@ Topik teks memakai budaya Nusantara di luar Kedu, sesuai pilihan yang disarankan
 5. **Kunci tersebar seimbang.** Kunci PG di setiap bentuk: A 3, B 2, C 2, D 3. Letak kunci, pola PGK, dan pasangan menjodohkan berbeda antara A dan B, karena setiap siswa mengerjakan kedua bentuk (satu di tes awal, satu di tes akhir).
 6. **Setiap pilihan salah punya satu kode INF**, dan setiap pernyataan PGK punya satu kode jebakan. Jenis kode di setiap nomor sama di A dan B.
 7. **Tidak ada topik, tempat, tokoh, akun, atau kalimat yang sama** dengan bank [08](08_DRAF_BANK_SOAL.md), cerita [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md), naskah aktif, Pustaka, atau bank yang sekarang terpasang. Hasil grep ada di [Pemeriksaan tumpang tindih](#pemeriksaan-tumpang-tindih-dengan-game).
-8. **Yang masih perlu dicek:** semua fakta budaya, nama akun dan buletin fiktif, beberapa butir yang ditandai di [catatan](#catatan-untuk-peneliti-dan-validator), dan tiga hal di dokumen 13 dan 11.
+8. **Yang masih perlu dicek:** semua fakta budaya, nama akun dan buletin fiktif, beberapa butir yang ditandai di [catatan](#catatan-untuk-peneliti-dan-validator). Tiga catatan untuk dokumen 13 dan 11 sudah dimasukkan ke 13 (26 Oktober 2026).
 
 ## Cara membaca
 
@@ -182,7 +182,7 @@ Panjang 152 kata, 22 kalimat (rata-rata 6,9 kata per kalimat). Gambar: satu ilus
 | tes-mb-B01 | D1a · L1 · PG | Menurut teks, benda apa yang ditepuk pemain didong untuk membuat irama? A. papan kayu · B. batang bambu · C. bantal kecil · D. ikat kepala | C | A INF-LIT · B INF-LIT · D INF-LIT |
 | tes-mb-B02 | D1a · L1 · PG | Menurut teks, siapa yang disebut ceh? A. beberapa pemain yang melantunkan syair · B. pelatih yang mengajari para pemain · C. kelompok lawan dalam didong jalu · D. orang yang menuliskan syair di buku | A | B INF-LIT · C INF-REL · D INF-KAT |
 | tes-mb-B03 | D1a · L2 · PGK B/S | Menurut teks, mengapa masyarakat Gayo terus menjaga didong? (1) Karena syair didong dipakai untuk menyampaikan pesan kepada warga. (2) Karena lewat didong, anak-anak muda belajar menyusun kata dengan cermat. (3) Karena para pemainnya menepuk bantal kecil. | B–B–S | (1) INF-HUB · (2) INF-LIT · (3) INF-REL |
-| tes-mb-B04 | D1a · L2 · Menjodohkan | Pasangkan setiap paragraf dengan isi pokoknya. Kiri: 1 Paragraf 2 · 2 Paragraf 3 · 3 Paragraf 4. Kanan: A. didong di acara warga dan pertandingan · B. manfaat didong dan alasan didong terus dijaga · C. cara membuat bantal kecil · D. cara didong dimainkan | 1A 2D 3B | C (pengecoh) INF-KAT · pilihan milik paragraf lain INF-REL |
+| tes-mb-B04 | D1a · L2 · Menjodohkan | Pasangkan setiap paragraf dengan isi pokoknya. Kiri: 1 Paragraf 2 · 2 Paragraf 3 · 3 Paragraf 4. Kanan: A. didong di acara warga dan pertandingan · B. manfaat didong dan alasan didong terus dijaga · C. cara didong dimainkan · D. cara membuat bantal kecil | 1A 2C 3B | D (pengecoh) INF-KAT · pilihan milik paragraf lain INF-REL |
 
 Catatan butir: di B02, pilihan D memancing lewat kata "syair" dari kalimat definisi, tetapi ceh melantunkan syair, bukan menuliskannya di buku. Paragraf 2 dan 3 bentuk B bertukar urutan dibanding bentuk A, jadi kunci B04 tidak bisa diingat dari bentuk A.
 
@@ -456,7 +456,7 @@ Panjang 133 kata (rata-rata 9,5 kata per kalimat).
 
 | Pasangan | Genre (sama di A dan B) | Kata A | Kata B | Selisih | Level butir | Kunci A | Kunci B |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| M1 | Teks informasi (artikel), 5 paragraf | 160 | 152 | 5,0% | L1, L1, L2, L2 | B · D · B–S–B · 1C 2D 3A | C · A · B–B–S · 1A 2D 3B |
+| M1 | Teks informasi (artikel), 5 paragraf | 160 | 152 | 5,0% | L1, L1, L2, L2 | B · D · B–S–B · 1C 2D 3A | C · A · B–B–S · 1A 2C 3B |
 | M2 | Teks informasi + tabel 4 × 3 + kaki infografik | 132 (teks 111, kaki 21); tabel 42 | 128 (teks 111, kaki 17); tabel 46 | 3,0%; tabel 8,7% | L1, L2, L2, L1 | A · B–S–S · 1B 2D 3A · C | D · S–B–S · 1D 2C 3B · B |
 | M3 | Unggahan *Kedugram* akun resmi, 3 komentar | 122 | 113 | 7,4% | L1, L2, L3, L3 | D · A · P–F–F · C | A · C · F–F–P · D |
 | M4 | Pesan diteruskan + pengumuman akun resmi + 3 pendapat anak | 122 | 133 | 8,3% | L2, L3, L3, L3 | B · D · S–B–S · A | A · B · B–S–S · D |
@@ -518,7 +518,7 @@ Diperiksa 26 Oktober 2026 dengan grep, tanpa membaca dokumen sumber secara utuh.
 
 **Kesimpulan.** Tidak ada topik budaya, tempat, tokoh, akun, nama buletin, atau kalimat penanda yang sama dengan game. Yang sama hanya genre (unggahan akun resmi dengan komentar, pesan diteruskan dan akun resmi), yang memang bagian konstruk dan boleh sama menurut aturan tes no. 1. Tidak ada fakta tes yang menjawab butir game, karena semua fakta budaya tes berasal dari luar Kedu. Butir D1b memang melatih kecakapan yang sama dengan `mgl-3` dan `wnb-3` (memilah fakta dan pendapat, menilai sumber); itu tumpang tindih konstruk yang dituju, bukan tumpang tindih isi.
 
-**Belum dicek:** apakah nama akun, grup, dan buletin fiktif di atas dipakai akun atau terbitan sungguhan (perlu dicek seperti nama di 08), dan `docs/pustaka/gelita-pustaka.xlsx` (berkas biner; isinya dibangun dari `data/*.php` yang sudah di-grep). Nama tokoh di dokumen 15 belum ada untuk dibandingkan; penulis 15 perlu menghindari 14 nama tokoh di atas.
+**Belum dicek:** apakah nama akun, grup, dan buletin fiktif di atas dipakai akun atau terbitan sungguhan (perlu dicek seperti nama di 08), dan `docs/pustaka/gelita-pustaka.xlsx` (berkas biner; isinya dibangun dari `data/*.php` yang sudah di-grep). **Pemeriksaan silang dengan 15 dan 16 (26 Oktober 2026).** Empat nama di atas (Mira, Farhan, Rendi, Okta) juga dipakai 15 dan sudah diganti di sana. Kain sasirangan (M3 bentuk A) juga menjadi topik adegan D3 bentuk A di 15, dan keterangan keliru kedua adegan D3 G1 sama dengan komentar Yogi dan Farhan di M3. Adegan itu diganti di 15, jadi Bagian 1 tidak menjawab Bagian 3. Tidak ada topik, tokoh, atau akun dokumen ini di 16.
 
 ## Catatan untuk peneliti dan validator
 
@@ -539,17 +539,17 @@ Diperiksa 26 Oktober 2026 dengan grep, tanpa membaca dokumen sumber secara utuh.
 3. **B10 mungkin lebih mudah daripada A10.** Benang emas yang berkilau bisa ditebak dari pengetahuan umum, sedangkan pencelupan dengan ikatan benang tidak. Kalau selisih proporsi benar besar di uji coba, B10 diganti prediksi lain yang lebih bergantung pada teks.
 4. **A05 dan B05** bisa sebagian ditebak tanpa teks, karena bekal memang biasanya awet atau ringan. Pilihan lain dibuat masuk akal supaya tebakan tidak mudah.
 5. **Butir D1b L3 (12, 14, 15, 16)** sebagian bisa dijawab dari norma umum ("akun resmi lebih bisa dipercaya"). Uji tutup teks 06 no. 1 lebih lemah untuk butir evaluasi; ini sama dengan butir D1b di `wnb-3`. Butir 14 dan 16 juga saling berkaitan (keduanya mengarah ke akun resmi), jadi perlu dicek ketergantungan lokalnya di analisis Rasch, sama seperti testlet di game.
-6. **A04 dan B04.** Paragraf 4 (manfaat dan alasan dijaga) ada di nomor yang sama di kedua bentuk. Siswa yang ingat bentuk A bisa menebak satu dari tiga pasangan di bentuk B, tetapi skor butir hanya 1 kalau ketiganya tepat.
+6. **A04 dan B04.** Paragraf 4 (manfaat dan alasan dijaga) ada di nomor yang sama di kedua bentuk. Siswa yang ingat bentuk A bisa menebak satu dari tiga pasangan di bentuk B, tetapi skor butir hanya 1 kalau ketiganya tepat. Huruf pasangan 2 semula sama di kedua bentuk (D), sehingga menyalin tetangga yang berbeda bentuk menolong; sejak 26 Oktober 2026 pilihan C dan D bentuk B ditukar, dan kunci B04 menjadi `1A 2C 3B`.
 7. **PGK F/P (11).** Kalau pemilik proyek ingin semua PGK berupa tabel Benar/Salah, nomor 11 bisa diubah menjadi "Kalimat ini berisi pendapat. Benar atau Salah?" untuk setiap kalimat, tanpa mengubah isi dan kode.
 
 **Keterbacaan (dicek di uji keterbacaan bersama bank)**
 
 1. Kata yang mungkin asing: *silek*, *galembong*, *ceh*, *syair*, *forna*, *kapurung*, *dipipil*, *disangrai*, *kenari*, *jelujur*, *sulam*, *cucuk*, *kolope*. Yang ditanyakan butir (anak randai, ceh, sirang, cucuk) sudah dijelaskan di teks; sisanya cukup dipahami dari kalimatnya. Catat kata yang membuat anak berhenti lama.
-2. Teks M1 paling panjang (152–160 kata) dan paling padat istilah. Kalau waktu Bagian 1 (22 menit) tidak cukup di uji coba, M1 adalah kandidat pertama untuk dipendekkan, tetap di atas 150 kata sesuai 13.
+2. Teks M1 paling panjang (152–160 kata) dan paling padat istilah. Kalau waktu Bagian 1 (30 menit) tidak cukup di uji coba, M1 adalah kandidat pertama untuk dipendekkan, tetap di atas 150 kata sesuai 13.
 3. Tabel M2 dan kaki infografik perlu dicek terbaca di cetakan hitam putih, terutama ukuran huruf kaki (paling kecil 10 pt).
 4. Ucapan anak di M4 memakai ragam lisan ("tentu benar", "tidak usah dipercaya"). Itu disengaja, tetapi tetap dicek apakah anak paham bahwa ucapan itu pendapat tokoh, bukan petunjuk soal.
 
-**Catatan untuk dokumen 13 dan 11 (tidak diubah di sini)**
+**Catatan untuk dokumen 13 dan 11 (sudah dimasukkan ke 13 pada 26 Oktober 2026)**
 
 1. **PGK jenis (a) di 13** meminta 4–5 pernyataan. Kaidah di lampiran *Framework AKM* menetapkan 3 pernyataan untuk PGK pilihan jamak di kelas 1–6. Dokumen ini hanya memakai jenis (b) dengan 3 pernyataan, yang sesuai dengan keduanya.
 2. **"Dua teks pertama diadaptasi dari contoh soal AKM/ANBK level 3"** di 13 tidak bisa dipenuhi apa adanya. Contoh teks informasi level 3 yang terbuka hanya *Talasemia* (saintifik). M1 dan M2 diadaptasi dari contoh level 2 bertopik sosial budaya, lalu dinaikkan ke level 3.

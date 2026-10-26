@@ -13,10 +13,10 @@ Belum ada yang diubah di sistem. Topik budaya D3 memakai usulan **budaya Nusanta
 1. **Isi per bentuk:** 8 skenario D2 (skor 0–1–2, maks. 16) dan 2 adegan D3 dengan 4 butir per adegan (skor 0–1, maks. 8). Ditambah 2 contoh soal yang tidak diskor dan sama di kedua bentuk (`tes-ct-04`, `tes-ct-05`).
 2. **Setiap nomor mengisi sel yang ditetapkan 13:** topik dan kerumitan D2 per nomor, kode berisiko utama, serta jenis butir D3 (ATR, REP, IZN, ETK) per adegan G1 dan G2.
 3. **Tindakan kunci D2 berbeda di setiap nomor:** memberi tahu orang tua, berbagi data seperlunya, melapor dan memblokir bersama orang tua, menolak dengan ramah, menghormati penolakan teman, meminta izin, menunjukkan ke orang tua atau guru, dan mengecek sumber resmi. Orang dewasa hanya ada di kunci 3 dari 8 nomor.
-4. **Topik D3 di luar Kedu, sama asingnya di A dan B:** G1 kain tradisional (sasirangan dari Kalimantan Selatan di A, besurek dari Bengkulu di B); G2 tari bertema padi (Tari Gantar dari Kalimantan Timur di A, Tari Maengket dari Sulawesi Utara di B). Semua fakta yang dibutuhkan ada di adegan, dan setiap fakta punya rujukan yang sudah dibuka.
-5. **Pasangan setara:** situasi D2 berselisih paling banyak 6,5% (batas 15%), adegan D3 paling banyak 1,6%. Di setiap bagian, setiap huruf menjadi kunci tepat dua kali per bentuk. Huruf kunci bentuk A dan B tidak pernah sama di nomor yang sama, jadi tetangga yang berbeda bentuk tidak bisa dicontek. Pilihan kunci menjadi pilihan terpanjang hanya di 2 dari 8 butir per bagian.
+4. **Topik D3 di luar Kedu, sama asingnya di A dan B:** G1 kain tradisional (karawo dari Gorontalo di A, besurek dari Bengkulu di B); G2 tari bertema padi (Tari Gantar dari Kalimantan Timur di A, Tari Maengket dari Sulawesi Utara di B). Semua fakta yang dibutuhkan ada di adegan, dan setiap fakta punya rujukan yang sudah dibuka.
+5. **Pasangan setara:** situasi D2 berselisih paling banyak 6,5% (batas 15%), adegan D3 paling banyak 1,3%. Di setiap bagian, setiap huruf menjadi kunci tepat dua kali per bentuk. Huruf kunci bentuk A dan B tidak pernah sama di nomor yang sama, jadi tetangga yang berbeda bentuk tidak bisa dicontek. Pilihan kunci menjadi pilihan terpanjang hanya di 2 dari 8 butir per bagian.
 6. **Tidak tumpang tindih dengan game:** peminta, latar, platform, dan umpan setiap skenario berbeda dari 24 skenario game; topik, akun, nama, dan sanggar D3 tidak ada di 08, 12, naskah aktif, maupun Pustaka (dicek dengan grep). Beberapa tindakan kunci sekeluarga dengan kunci game karena tindakan aman memang terbatas; semuanya dicatat di [pemeriksaan tumpang tindih](#pemeriksaan-tumpang-tindih-dengan-game).
-7. **Temuan untuk 13:** waktu 18 menit untuk Bagian 2 dan 3 hanya cukup untuk membaca situasi dan adegan. Kalau pilihan dan kalimat soal ikut dihitung, perkiraannya 22–28 menit. Rinciannya di [Catatan untuk peneliti dan validator](#perkiraan-waktu-kerja); 13 tidak diubah di sini.
+7. **Temuan untuk 13:** waktu 18 menit untuk Bagian 2 dan 3 hanya cukup untuk membaca situasi dan adegan. Kalau pilihan dan kalimat soal ikut dihitung, perkiraannya 22–28 menit. Rinciannya di [Catatan untuk peneliti dan validator](#perkiraan-waktu-kerja). Sejak 26 Oktober 2026, 13 memakai hitungan ini (Bagian 2 dan 3: 28 menit).
 
 ## Cara membaca
 
@@ -40,7 +40,7 @@ Belum ada yang diubah di sistem. Topik budaya D3 memakai usulan **budaya Nusanta
 
 > **Bagian 2.** Baca setiap cerita dan gambar layarnya. Lalu lingkari huruf tindakan yang paling baik. Setiap soal hanya punya satu jawaban.
 >
-> **Bagian 3.** Lihat unggahan dan papan atau kartu di sebelahnya. Lalu jawab soal di bawahnya. Lingkari satu huruf untuk setiap soal. *Kedugram* adalah aplikasi khayalan, khusus untuk soal ini.
+> **Bagian 3.** Lihat unggahan dan papan atau kartu di sebelahnya. Lalu jawab soal di bawahnya. Lingkari satu huruf untuk setiap soal. *Kedugram* adalah aplikasi khayalan.
 
 Petunjuk ini ditulis berbeda dari instruksi game ("Bacalah ceritanya. Pilih apa yang akan kamu lakukan, lalu pilih alasanmu.") dan dari cerita penghubung 12, sesuai aturan tes no. 1 di 13.
 
@@ -67,7 +67,7 @@ P1 menunjukkan cara melingkari huruf A, dan cara mengganti jawaban (coret ✗, l
 
 ### `tes-ct-05` · Contoh Bagian 3
 
-**Adegan (17 kata).** Unggahan Kedugram: nama akun `@pojok.kebun`; gambar tiga buah tomat merah di tanaman tomat dalam pot; keterangan "Tomat di pot kelas kami sudah merah! 🍅"; "♡ 24 suka"; komentar **Okta**: "Wah, segar sekali!"; tombol "Suka", "Komentar", "Bagikan". Tanpa sumber pembanding.
+**Adegan (17 kata).** Unggahan Kedugram: nama akun `@pojok.kebun`; gambar tiga buah tomat merah di tanaman tomat dalam pot; keterangan "Tomat di pot kelas kami sudah merah! 🍅"; "♡ 24 suka"; komentar **Nayla**: "Wah, segar sekali!"; tombol "Suka", "Komentar", "Bagikan". Tanpa sumber pembanding.
 
 **Pertanyaan:** Apa yang ada di gambar unggahan ini?
 
@@ -382,31 +382,33 @@ Dua adegan per bentuk, empat butir per adegan, satu dari setiap jenis D3 di [06]
 
 | Adegan | Bentuk A | Bentuk B | Kunci A (butir 1–4) | Kunci B (butir 1–4) |
 | --- | --- | --- | --- | --- |
-| G1 | Kain sasirangan, Kalimantan Selatan | Kain besurek, Bengkulu | C, A, D, B | B, D, A, C |
+| G1 | Kain karawo, Gorontalo | Kain besurek, Bengkulu | C, A, D, B | B, D, A, C |
 | G2 | Tari Gantar, Kalimantan Timur | Tari Maengket, Sulawesi Utara | D, C, B, A | A, B, D, C |
 
 **Tampilan unggahan (sama untuk keempat adegan).** Kartu unggahan Kedugram: baris atas berisi lingkaran foto profil polos, nama akun tebal, dan "· 2 hari"; lalu gambar atau cuplikan video (video diberi ikon ▶); lalu "♡ … suka"; lalu keterangan; lalu komentar dengan nama depan tebal; paling bawah deretan tombol bergaris dengan label. Sumber pembanding diletakkan di sebelah kanan unggahan (di buklet: di bawahnya kalau halaman sempit), diberi judul tebal supaya jelas terpisah dari unggahan.
 
 ### Adegan G1 · tanda keliru jelas
 
-#### `tes-bd-A-G1` · Kain sasirangan
+#### `tes-bd-A-G1` · Kain karawo
 
 **Pengantar untuk siswa** (tidak dihitung): Lihat unggahan di Kedugram ini. Kartu keterangan di sebelahnya dipasang di pameran, di samping kain yang sama.
 
 | Unsur | Isi | Tampilan |
 | --- | --- | --- |
 | Nama akun pengunggah | `@rak.kain.tia` | Tebal, di baris atas |
-| Gambar | Selembar kain terbentang dengan motif garis berkelok-kelok yang bertumpuk | Ilustrasi; motif terlihat dari garis, bukan warna |
+| Gambar | Selembar kain terbentang dengan motif bunga yang tersusun dari kotak-kotak kecil berlubang halus | Ilustrasi; motif terlihat dari garis, bukan warna |
 | Tulisan di foto | "Foto: Galeri Kain Kenari Biru" | Pita hitam di bawah foto, huruf putih sebesar huruf keterangan |
 | Jumlah suka | "♡ 126 suka" | — |
-| Keterangan | "Kain sasirangan dari Kalimantan Selatan. Motifnya dilukis pakai kuas, ya! 🎨" | — |
-| Komentar 1 | **Mira**: "Cantik sekali! Terima kasih sudah berbagi 👏" | — |
-| Komentar 2 | **Farhan**: "Motifnya kayak cacing, wkwk 😝" | — |
+| Keterangan | "Kain karawo dari Gorontalo. Motifnya digambar pakai spidol, ya! 🖍️" | — |
+| Komentar 1 | **Citra**: "Cantik sekali! Terima kasih sudah berbagi 👏" | — |
+| Komentar 2 | **Danu**: "Motifnya kayak sarang laba-laba, wkwk 😝" | — |
 | Tombol | "Suka", "Komentar", "Bagikan", "Kirim pesan ke galeri" | "Kirim pesan ke galeri" berbingkai |
-| Kartu keterangan pameran (pembanding) | "**Kain Sasirangan** · Kalimantan Selatan. Kain ini dijahit jelujur mengikuti pola. Benangnya ditarik dan diikat kuat, lalu kain dicelup ke pewarna. *Sirang* artinya jelujur." | Kartu putih berbingkai hitam tebal, judul tebal |
+| Kartu keterangan pameran (pembanding) | "**Kain Karawo** · Gorontalo. Kain ini disulam dengan tangan. Sebelum disulam, benang kainnya diiris dan dicabut mengikuti pola. *Karawo* berasal dari kata *mokarawo*, artinya mengiris." | Kartu putih berbingkai hitam tebal, judul tebal |
 
-**Jumlah kata:** 60 (rentang G1: 50–80).
-**Rujukan fakta:** asal Kalimantan Selatan, *sirang* berarti jelujur, dibuat dengan dijelujur, diikat, lalu dicelup: DJKN Kemenkeu, KPKNL Banjarmasin (2022), *Sasirangan Aset Kebanggaan Bangsa*; Dinas Kebudayaan dan Pariwisata Kabupaten Banjar, *Teknologi Tradisional*. Akun, galeri, dan pameran fiktif.
+**Jumlah kata:** 61 (rentang G1: 50–80).
+**Rujukan fakta:** asal Gorontalo; sulaman tangan yang dibuat dengan mengiris dan mencabut benang kain mengikuti pola, lalu menyulamnya; *karawo* dari kata *mokarawo*, yang dapat diartikan mengiris atau melubangi: Peraturan Gubernur Gorontalo Nomor 9 Tahun 2014 tentang Hari Karawo, Pasal 1 angka 4. Akun, galeri, dan pameran fiktif.
+
+**Diganti 26 Oktober 2026.** Draf pertama adegan ini memakai kain sasirangan dengan keterangan keliru "dilukis pakai kuas". Keduanya sudah ada di teks M3 bentuk A di [14](14_TES_BAGIAN_MEMBACA.md#bentuk-a-kain-sasirangan), termasuk komentar Yogi yang tidak bisa dipercaya, sehingga Bagian 1 menjawab butir representasi di bawah. Lihat [Kesetaraan pasangan](#bagian-3-pasangan-adegan).
 
 **`tes-bd-A01` · Atribusi · kunci C**
 Siapa yang membuat foto kain di unggahan ini?
@@ -414,7 +416,7 @@ Siapa yang membuat foto kain di unggahan ini?
 | Huruf | Pilihan | Kode |
 | --- | --- | --- |
 | A | `@rak.kain.tia`, pemilik akun yang mengunggah | BUD-ATR |
-| B | Mira, yang menulis komentar pertama | BUD-ATR |
+| B | Citra, yang menulis komentar pertama | BUD-ATR |
 | **C** | **Galeri Kain Kenari Biru, sesuai tulisan di foto** | kunci |
 | D | Panitia pameran yang menulis kartu keterangan | BUD-ATR |
 
@@ -423,10 +425,10 @@ Bacalah kartu keterangan. Kalimat mana yang tepat untuk membetulkan keterangan u
 
 | Huruf | Pilihan | Kode |
 | --- | --- | --- |
-| **A** | **Motifnya dijahit jelujur, diikat, lalu dicelup** | kunci |
-| B | Motifnya dilukis pakai kuas, seperti tulisan pengunggah | BUD-REP |
+| **A** | **Motifnya disulam setelah benangnya diiris dan dicabut** | kunci |
+| B | Motifnya digambar pakai spidol, seperti tulisan pengunggah | BUD-REP |
 | C | Motifnya ditenun dengan benang emas | BUD-REP |
-| D | Motifnya disulam dengan manik-manik warna-warni | BUD-REP |
+| D | Motifnya dicap dengan stempel karet | BUD-REP |
 
 **`tes-bd-A03` · Izin · kunci D**
 Kamu ingin memasang foto kain ini di poster pameran budaya kelasmu. Apa yang sebaiknya kamu lakukan lebih dulu?
@@ -439,13 +441,13 @@ Kamu ingin memasang foto kain ini di poster pameran budaya kelasmu. Apa yang seb
 | **D** | **Minta izin dulu ke Galeri Kain Kenari Biru** | kunci |
 
 **`tes-bd-A04` · Menghargai tradisi · kunci B**
-Kamu ingin menulis komentar. Komentar mana yang menghargai kain sasirangan ini?
+Kamu ingin menulis komentar. Komentar mana yang menghargai kain karawo ini?
 
 | Huruf | Pilihan | Kode |
 | --- | --- | --- |
-| A | "Iya, kayak cacing! Farhan benar, wkwk" | BUD-ETK |
+| A | "Iya, kayak sarang laba-laba! Danu benar, wkwk" | BUD-ETK |
 | **B** | **"Motifnya indah. Pasti butuh ketelitian dan kesabaran, ya 👏"** | kunci |
-| C | "Keren! Hebat sekali bisa melukis pakai kuas 🎨" | BUD-REP |
+| C | "Keren! Hebat sekali bisa menggambar pakai spidol 🖍️" | BUD-REP |
 | D | "Kain kuno, mending pakai kaus biasa 😝" | BUD-ETK |
 
 #### `tes-bd-B-G1` · Kain besurek
@@ -458,9 +460,9 @@ Kamu ingin menulis komentar. Komentar mana yang menghargai kain sasirangan ini?
 | Gambar | Selembar kain terbentang dengan motif hiasan mirip huruf Arab dan bunga besar | Ilustrasi; motif terlihat dari garis, bukan warna |
 | Tulisan di foto | "Foto: Galeri Kain Camar Putih" | Pita hitam di bawah foto, huruf putih sebesar huruf keterangan |
 | Jumlah suka | "♡ 131 suka" | — |
-| Keterangan | "Kain besurek dari Bengkulu. Motifnya dicetak pakai mesin, ya! 🖨️" | — |
+| Keterangan | "Kain besurek dari Bengkulu. Motifnya disemprot pakai cat, ya! 🎨" | — |
 | Komentar 1 | **Lusi**: "Bagus sekali! Terima kasih sudah berbagi 👏" | — |
-| Komentar 2 | **Rendi**: "Motifnya kayak coretan anak TK, wkwk 😝" | — |
+| Komentar 2 | **Bimo**: "Motifnya kayak coretan anak TK, wkwk 😝" | — |
 | Tombol | "Suka", "Komentar", "Bagikan", "Kirim pesan ke galeri" | "Kirim pesan ke galeri" berbingkai |
 | Kartu keterangan pameran (pembanding) | "**Kain Besurek** · Bengkulu. Kain ini dibatik dengan tangan. Motifnya digambar dengan canting berisi lilin panas, lalu kain dicelup ke pewarna. *Besurek* artinya bertulisan." | Kartu putih berbingkai hitam tebal, judul tebal |
 
@@ -482,7 +484,7 @@ Bacalah kartu keterangan. Kalimat mana yang tepat untuk membetulkan keterangan u
 
 | Huruf | Pilihan | Kode |
 | --- | --- | --- |
-| A | Motifnya dicetak pakai mesin, seperti tulisan pengunggah | BUD-REP |
+| A | Motifnya disemprot pakai cat, seperti tulisan pengunggah | BUD-REP |
 | B | Motifnya ditenun dengan benang perak | BUD-REP |
 | C | Motifnya ditempel dari potongan kain | BUD-REP |
 | **D** | **Motifnya dicanting dengan lilin, lalu dicelup** | kunci |
@@ -503,9 +505,9 @@ Kamu ingin menulis komentar. Komentar mana yang menghargai kain besurek ini?
 | Huruf | Pilihan | Kode |
 | --- | --- | --- |
 | A | "Kain jadul, siapa yang mau pakai? 😝" | BUD-ETK |
-| B | "Keren! Hebat sekali bisa dicetak pakai mesin 🖨️" | BUD-REP |
+| B | "Keren! Hebat sekali bisa disemprot pakai cat 🎨" | BUD-REP |
 | **C** | **"Kainnya indah. Membuatnya pasti perlu ketekunan tinggi, ya 👏"** | kunci |
-| D | "Iya, kayak coretan! Rendi benar, wkwk" | BUD-ETK |
+| D | "Iya, kayak coretan! Bimo benar, wkwk" | BUD-ETK |
 
 ### Adegan G2 · tanda keliru samar dan nilai bertentangan
 
@@ -654,10 +656,11 @@ Semua angka dihitung dengan skrip dari teks di atas.
 
 | Adegan | Bentuk A | Bentuk B | Kata A | Kata B | Selisih | Unsur digital (sama di A dan B) |
 | --- | --- | --- | --- | --- | --- | --- |
-| G1 | Kain sasirangan: keterangan keliru tentang cara membuat motif (dilukis, padahal dijelujur dan dicelup) | Kain besurek: keterangan keliru tentang cara membuat motif (dicetak mesin, padahal dibatik) | 60 | 61 | 1,6% | 1 nama akun, tulisan pembuat besar di foto, ± 130 suka, 2 komentar (1 memuji, 1 mengejek), 4 tombol termasuk "Kirim pesan ke galeri", kartu keterangan 23 kata |
+| G1 | Kain karawo: keterangan keliru tentang cara membuat motif (digambar pakai spidol, padahal benangnya diiris, dicabut, lalu disulam) | Kain besurek: keterangan keliru tentang cara membuat motif (disemprot cat, padahal dibatik) | 61 | 61 | 0% | 1 nama akun, tulisan pembuat besar di foto, ± 130 suka, 2 komentar (1 memuji, 1 mengejek), 4 tombol termasuk "Kirim pesan ke galeri", kartu keterangan 23–24 kata |
 | G2 | Tari Gantar: keterangan keliru tentang makna tari (tari nelayan, padahal menanam padi) | Tari Maengket: keterangan keliru tentang makna tari (menyambut raja, padahal syukur panen padi) | 75 | 76 | 1,3% | 1 nama akun yang mengaku merekam sendiri, tulisan pembuat kecil di pojok, ± 9.000 suka, 3 komentar (membenarkan, benar tapi kasar, "yang suka ribuan pasti benar"), 4 tombol tanpa tombol ke pembuat, papan informasi 26 kata |
 
 - **Topik sama asingnya:** G1 memakai dua kain tradisional dari provinsi di luar Jawa, keduanya punya arti nama yang tertulis di kartu. G2 memakai dua tari bertema padi dari luar Jawa (Kalimantan dan Sulawesi). Asal daerah di keterangan unggahan selalu benar, jadi siswa tidak bisa menjawab dari pengetahuan peta; yang keliru adalah cara membuat (G1) atau makna (G2), yang hanya ada di sumber pembanding. Tingkat keakraban perlu dinilai ahli (lihat catatan).
+- **Tidak dijawab Bagian 1.** Topik dan keterangan keliru G1 dipilih supaya tidak ada di teks M3 [14](14_TES_BAGIAN_MEMBACA.md#m3-unggahan-akun-resmi-dengan-komentar). Draf pertama memakai sasirangan di A-G1 (juga topik M3 bentuk A), dan keterangan keliru kedua adegan G1 sama dengan komentar yang tidak bisa dipercaya di M3: "dilukis pakai kuas" (Yogi, sasirangan) dan "dicetak pakai mesin" (Farhan, tapis). Siswa yang sudah membaca M3 bisa menjawab butir representasi dan menghargai tradisi dari Bagian 1. Sejak 26 Oktober 2026 A-G1 memakai karawo, dan keterangan keliru G1 menjadi "digambar pakai spidol" (A) dan "disemprot pakai cat" (B).
 - **Butir sejajar:** jenis, kalimat soal, dan peran setiap pengecoh sama di A dan B. Pengecoh yang menyalin keterangan keliru selalu diberi BUD-REP, juga di butir ETK. Pengecoh "tangkap atau rekam layar" di butir izin diberi BUD-ATR karena menghapus atau salah menyebut pembuat.
 - **Panjang pilihan:** 3–9 kata di kedua bentuk. Kunci menjadi pilihan terpanjang hanya di butir 1 dan 4 (G1 atribusi dan menghargai tradisi); di butir 5 (G2 atribusi) kunci paling pendek.
 
@@ -723,7 +726,7 @@ Dibandingkan dengan 24 skenario dan 6 adegan *Periksa Unggahan* di [08](08_DRAF_
 
 | Adegan tes | Adegan game terdekat | Yang berbeda |
 | --- | --- | --- |
-| `tes-bd-A-G1` sasirangan | `tmg-4-a` kuda lumping (pola G1), `mgl-4-b` gerabah Klipoh (kerajinan) | Topik kain dari Kalimantan Selatan; keliru soal cara membuat, bukan bahan (`tmg-4-a`) atau asal daerah (`mgl-4-b`); kartu keterangan pameran; nama akun, galeri, komentator baru; butir PG, bukan ketuk |
+| `tes-bd-A-G1` karawo | `tmg-4-a` kuda lumping (pola G1), `mgl-4-b` gerabah Klipoh (kerajinan) | Topik kain dari Gorontalo; keliru soal cara membuat, bukan bahan (`tmg-4-a`) atau asal daerah (`mgl-4-b`); kartu keterangan pameran; nama akun, galeri, komentator baru; butir PG, bukan ketuk |
 | `tes-bd-B-G1` besurek | `tmg-4-a`, `mgl-4-b` | Topik kain dari Bengkulu; sama seperti di atas |
 | `tes-bd-A-G2` Tari Gantar | `wnb-4-a` bundengan (pola G2), `mgl-4-a` Topeng Ireng (tari) | Topik tari dari Kalimantan Timur; keliru soal makna tari, bukan asal daerah atau nama alat; papan festival, bukan Rumah Budaya atau kartu informasi; komentar "yang suka ribuan pasti benar" tidak ada di game; kalimat soal dan komentar ditulis baru |
 | `tes-bd-B-G2` Tari Maengket | `wnb-4-b` mi ongklok, `mgl-4-a` Topeng Ireng | Topik tari dari Sulawesi Utara; sama seperti di atas |
@@ -737,13 +740,15 @@ Latar cerita penghubung 12 (anak-anak dengan tablet di bawah pohon, rumah baca d
 | Jenis | Yang dipakai |
 | --- | --- |
 | Tokoh D2 | Kirana, Bagas, Yasmin, Galang, Rara, Hendra, Yudha, Rio |
-| Komentator D3 dan contoh | Mira, Farhan, Lusi, Rendi, Kevin, Tasya, Wina, Jihan, Bonar, Ratih, Okta |
+| Komentator D3 dan contoh | Citra, Danu, Lusi, Bimo, Kevin, Tasya, Wina, Jihan, Bonar, Ratih, Nayla |
 | Akun pengunggah | `@rak.kain.tia`, `@lemari.ilham`, `@kamera.ryan`, `@tontonan.dina`, `@pojok.kebun` (contoh) |
 | Galeri dan sanggar | Galeri Kain Kenari Biru, Galeri Kain Camar Putih, Sanggar Lima Purnama, Sanggar Tujuh Pelita |
 | Situs | `kartu-ultah.example`, `warnai-yuk.example` |
 | Grup dan fitur aplikasi (umum) | Les Renang Sore, Ekskul Pramuka Kelas 5, Grup Les Menggambar, Grup Ekskul Futsal, Papan Pembaca Hebat, Galeri Juara |
 
-Dicek 26 Oktober 2026 dengan `grep -c -w` per nama (dan grep biasa untuk akun, galeri, sanggar, situs, grup, fitur) di `08_DRAF_BANK_SOAL.md`, `12_CERITA_PENGHUBUNG_DAN_NARASI.md`, dan `docs/naskah-cerita.md`: **0 kemunculan** untuk semuanya. Nama yang sempat dipertimbangkan lalu dibuang karena sudah ada di 08: Nanda, Raffi, dan Doni (mirip Dodi). Kata topik D3 (sasirangan, besurek, Gantar, Maengket, Kutai, Minahasa, Bengkulu) juga tidak ada di `docs/` (termasuk `docs/pustaka/`) dan `app/Database/`. Nama di 14 dan 16 belum bisa dicek karena dokumen itu belum ada saat dokumen ini ditulis; pemeriksaan silang dilakukan setelah keduanya selesai.
+Dicek 26 Oktober 2026 dengan `grep -c -w` per nama (dan grep biasa untuk akun, galeri, sanggar, situs, grup, fitur) di `08_DRAF_BANK_SOAL.md`, `12_CERITA_PENGHUBUNG_DAN_NARASI.md`, dan `docs/naskah-cerita.md`: **0 kemunculan** untuk semuanya. Nama yang sempat dipertimbangkan lalu dibuang karena sudah ada di 08: Nanda, Raffi, dan Doni (mirip Dodi). Kata topik D3 (karawo, mokarawo, Gorontalo, besurek, Gantar, Maengket, Kutai, Minahasa, Bengkulu) juga tidak ada di `docs/` (termasuk `docs/pustaka/`) dan `app/Database/`, kecuali di dokumen ini.
+
+**Pemeriksaan silang dengan 14 dan 16 (26 Oktober 2026).** Empat komentator semula (Mira, Farhan, Rendi, Okta) juga tokoh di [14](14_TES_BAGIAN_MEMBACA.md), jadi diganti Citra, Danu, Bimo, dan Nayla. Keempat nama baru 0 kemunculan di 08, 12, naskah aktif, Pustaka, bank terpasang, dan 13–16. Nama, akun, galeri, sanggar, situs, dan grup lain di dokumen ini tidak ada di 14 dan 16. Topik dan keterangan keliru adegan G1 juga diganti, karena sama dengan teks M3 di 14 (lihat [Bagian 3: pasangan adegan](#bagian-3-pasangan-adegan)).
 
 ## Catatan untuk peneliti dan validator
 
@@ -751,18 +756,18 @@ Dicek 26 Oktober 2026 dengan `grep -c -w` per nama (dan grep biasa untuk akun, g
 
 | Adegan | Fakta di adegan | Yang perlu diperhatikan |
 | --- | --- | --- |
-| A-G1 | Sasirangan dari Kalimantan Selatan; dijahit jelujur, diikat, dicelup; *sirang* = jelujur | Sumber menyebut *sa* = satu dan *sirang* = jelujur, atau *manyirang* = menjelujur. Kartu memakai bentuk paling sederhana |
-| B-G1 | Besurek dari Bengkulu; dibatik dengan canting dan lilin; *besurek* = bertulisan | Besurek kini juga dibuat dengan cap atau cetak. Kartu sengaja menyebut "kain **ini** dibatik dengan tangan", jadi kunci bergantung pada kartu, bukan pada anggapan bahwa semua besurek dibatik tulis. Ahli diminta memastikan kalimat ini tidak menyesatkan |
+| A-G1 | Karawo dari Gorontalo; disulam dengan tangan setelah benang kain diiris dan dicabut mengikuti pola; *karawo* dari *mokarawo* = mengiris | Pergub menyebut *mokarawo* "dapat diartikan mengiris atau melubang"; kartu hanya memakai *mengiris*. Pergub menyebut karawo dikenal sejak 1713, sumber lain abad ke-17 atau ke-18; tahun tidak dipakai di adegan. Gambar perlu dicek ahli supaya motif karawo (bidang kotak-kotak halus) tidak tampak seperti batik atau tenun |
+| B-G1 | Besurek dari Bengkulu; dibatik dengan canting dan lilin; *besurek* = bertulisan | Besurek kini juga dibuat dengan cap atau cetak. Kartu sengaja menyebut "kain **ini** dibatik dengan tangan", jadi kunci bergantung pada kartu, bukan pada anggapan bahwa semua besurek dibatik tulis. Ahli diminta memastikan kalimat ini tidak menyesatkan. Sejak keterangan keliru diganti "disemprot pakai cat" (26 Oktober 2026), keterangan pengunggah tidak lagi sebagian benar |
 | A-G2 | Tari Gantar dari Kutai Barat; gerak menanam padi; tongkat melubangi tanah; bambu berisi biji = benih padi | Sebagian sumber menyebut tongkat sebagai alat penumbuk padi, dan fungsi tari kini terutama menyambut tamu. Karena itu keterangan keliru di unggahan dipilih "tari nelayan", yang tidak cocok dengan sumber mana pun, bukan "tari menyambut tamu" |
 | B-G2 | Tari Maengket dari Minahasa; menari sambil bernyanyi dipimpin pemimpin lagu; awalnya syukur atas panen padi | Maengket punya tiga babak (panen padi, rumah baru, pergaulan muda-mudi). Papan hanya menyebut asal-usulnya ("awalnya"), sesuai Kompas.com dan BPNB Manado. Keterangan keliru "menyambut raja" tidak cocok dengan babak mana pun |
 
 ### Hal yang diminta dinilai ahli
 
-1. **Keakraban topik** (skala 1–4 per topik, oleh ahli dan guru kelas 5 di Kedu): sasirangan vs besurek, Tari Gantar vs Tari Maengket. Kalau satu topik jauh lebih dikenal, ganti dengan topik lain dari daerah yang sama tidak terkenalnya.
+1. **Keakraban topik** (skala 1–4 per topik, oleh ahli dan guru kelas 5 di Kedu): karawo vs besurek, Tari Gantar vs Tari Maengket. Kalau satu topik jauh lebih dikenal, ganti dengan topik lain dari daerah yang sama tidak terkenalnya.
 2. **Pilihan kurang tepat yang bisa diperdebatkan:** A02/B02 (nama lengkap saja: skor 1), A04/B04 (menolak dengan ketus: skor 1, DIG-ETK), A05/B05 (menutup wajah atau hanya suara: skor 1), A08/B08 (tidak meneruskan tapi diam: skor 1). Kalau dua penelaah tidak sepakat soal skornya, rumusannya diubah (06 aturan 4).
 3. **Kunci nomor 2 dan `mgl-5-b01`.** Kedua kunci memakai gagasan "nama panggilan saja". Kalau ahli menilai ini membuat butir tes terjawab oleh umpan balik game (aturan tes no. 2 di 13), kunci nomor 2 diganti, misalnya menjadi "ikut menyapa tanpa menulis data diri", dan pilihan lain disesuaikan.
 4. **Ramah anak:** ajakan "Jangan bilang orang tuamu" dan "Ini rahasia kita berdua" di nomor 7 adalah tanda bahaya yang umum diajarkan dalam pendidikan keselamatan anak, tanpa ancaman. Komentar kasar di D3 ("kayak cacing", "coretan anak TK", "Ngawur") sengaja ringan dan tanpa kata kotor. Ahli diminta memastikan tidak ada yang terasa menakutkan atau mempermalukan.
-5. **Keterbacaan** di uji keterbacaan 3–5 anak: *jelujur*, *canting*, *pewarna*, *siaran langsung*, *kolom obrolan*, *kanal*, *ekskul*, *fitur*, *kode masuk*, *pesan berantai*, *diteruskan berkali-kali*, *wkwk*. Kata yang tidak dipahami diganti, bukan dijelaskan saat tes (siswa tidak boleh bertanya arti kata di teks).
+5. **Keterbacaan** di uji keterbacaan 3–5 anak: *diiris*, *dicabut*, *disulam*, *stempel*, *canting*, *pewarna*, *siaran langsung*, *kolom obrolan*, *kanal*, *ekskul*, *fitur*, *kode masuk*, *pesan berantai*, *diteruskan berkali-kali*, *wkwk*. Kata yang tidak dipahami diganti, bukan dijelaskan saat tes (siswa tidak boleh bertanya arti kata di teks).
 6. **Kesetaraan pasangan** masuk butir telaah baru di instrumen r10 v2.1, seperti di 13.
 
 ### Akun dan nama yang harus dicari tim sebelum dipakai
@@ -770,24 +775,25 @@ Dicek 26 Oktober 2026 dengan `grep -c -w` per nama (dan grep biasa untuk akun, g
 - **Instagram dan TikTok:** `@rak.kain.tia`, `@lemari.ilham`, `@kamera.ryan`, `@tontonan.dina`, `@pojok.kebun`. Kalau ada akun nyata yang aktif, terutama akun anak atau akun budaya, nama diganti dan grep di atas diulang.
 - **Usaha, galeri, dan sanggar nyata** (Google, Google Maps, Instagram): Galeri Kain Kenari Biru, Galeri Kain Camar Putih, Sanggar Lima Purnama, Sanggar Tujuh Pelita. Pencarian web awal pada 26 Oktober 2026 tidak menemukan nama yang persis sama, tetapi itu belum cukup.
 - **Situs:** `kartu-ultah.example` dan `warnai-yuk.example` memakai domain cadangan, jadi tidak perlu dicek.
-- **Nama tokoh dan komentator** sudah dicek terhadap 08, 12, dan naskah aktif; tetap dicek terhadap 14, 16, dan daftar siswa uji coba (nama siswa nyata di kelas yang sama sebaiknya tidak dipakai).
+- **Nama tokoh dan komentator** sudah dicek terhadap 08, 12, naskah aktif, 14, dan 16; tetap dicek terhadap daftar siswa uji coba (nama siswa nyata di kelas yang sama sebaiknya tidak dipakai).
 
 ### Perkiraan waktu kerja
 
 Dengan aturan hitung waktu di 13 (60–90 kata per menit, ± 30 detik per pilihan tindakan, ± 40 detik per butir), dan menghitung semua yang dibaca siswa:
 
-| Bagian | Kata yang dibaca per bentuk | Perkiraan | Waktu di 13 |
+| Bagian | Kata yang dibaca per bentuk | Perkiraan | Waktu di draf pertama 13 |
 | --- | --- | --- | --- |
 | 2 (D2) | ± 640 (situasi ± 355, pertanyaan 40, pilihan ± 248) | 11–15 menit | 10 menit |
 | 3 (D3) | ± 460 (adegan ± 136, kalimat soal ± 108, pilihan ± 218) | 10,5–13 menit | 8 menit |
 | **Jumlah** | | **22–28 menit** | **18 menit** |
 
-Kalau hanya situasi dan adegan yang dihitung, hasilnya 8–10 menit dan 7–8 menit, sama dengan angka di 13. Jadi kemungkinan pilihan dan kalimat soal belum ikut dihitung. Situasi D2 di sini sudah di batas bawah (41–48 dari 40–70 kata), jadi waktu tidak bisa banyak dihemat dari teks. Pilihannya untuk pemilik proyek dan penulis 13: menambah waktu Bagian 2–3 menjadi ± 25 menit (cocok dengan usulan P1 dan P5 3 JP), atau mengurangi skenario D2. Angka akhirnya diambil dari uji keterbacaan dan uji coba.
+Kalau hanya situasi dan adegan yang dihitung, hasilnya 8–10 menit dan 7–8 menit, sama dengan angka di draf pertama 13. Jadi kemungkinan pilihan dan kalimat soal belum ikut dihitung. Situasi D2 di sini sudah di batas bawah (41–48 dari 40–70 kata), jadi waktu tidak bisa banyak dihemat dari teks. Pilihannya untuk pemilik proyek dan penulis 13: menambah waktu Bagian 2–3 menjadi ± 25 menit (cocok dengan usulan P1 dan P5 3 JP), atau mengurangi skenario D2. Angka akhirnya diambil dari uji keterbacaan dan uji coba.
+
+**Tindak lanjut di 13 (26 Oktober 2026).** 13 memakai batas atas perkiraan ini (Bagian 2 15 menit, Bagian 3 13 menit) dan menghitung ulang Bagian 1 dengan cara yang sama (30 menit). Tes menjadi ± 67 menit dengan petunjuk, jadi usulan P1 dan P5 3 JP tidak lagi cukup untuk P5; pilihannya ada di [pertanyaan 1 di 13](13_TES_AWAL_AKHIR.md#pertanyaan-untuk-pemilik-proyek).
 
 ## Rujukan
 
-- DJKN Kementerian Keuangan, KPKNL Banjarmasin (2022), [*Sasirangan Aset Kebanggaan Bangsa*](https://www.djkn.kemenkeu.go.id/kpknl-banjarmasin/baca-artikel/15490/Sasirangan-Aset-Kebanggaan-Bangsa.html): kain tradisional khas Kalimantan Selatan; *sirang* berarti menjelujur; motif dibuat dengan jahitan jelujur.
-- Dinas Kebudayaan dan Pariwisata Kabupaten Banjar, [*Teknologi Tradisional*](https://simdapokbud.banjarkab.go.id/teknologi-tradisional): *sasirangan* dari *manyirang* (menjelujur); dijelujur, diikat dengan tali, lalu dicelup ke pewarna.
+- Peraturan Gubernur Gorontalo Nomor 9 Tahun 2014 tentang Hari Karawo, [JDIH Provinsi Gorontalo](https://jdih.gorontaloprov.go.id/storage/2014pg750009.pdf) (dibuka 26 Oktober 2026), Pasal 1 angka 4: karawo adalah kerajinan sulaman tradisional; dari kata *mokarawo* yang dapat diartikan "mengiris atau melubang"; serat benang kain diiris atau dilubangi dengan mencabut serat benang pada bidang tertentu, lalu disulam.
 - Kemendikbud, Warisan Budaya Takbenda Indonesia, [*Kain Besurek*](https://budaya.data.kemdikbud.go.id/wbtb/objek/AA000280) (SK 186/M/2015): Kota Bengkulu; *be* = ber-, *surek* = surat atau tulisan.
 - Kompas.id (22 November 2023), [*Geliat Batik Besurek di "Bumi Rafflesia"*](https://www.kompas.id/artikel/geliat-batik-besurek-di-bumi-rafflesia): besurek berarti bersurat; proses membatik; batik tulis; motif khas kaligrafi Arab.
 - Julianti (2023), [*Form of Gantar Dance Performance Zamrud Nusantara Event in Yogyakarta*](https://ijmmu.com/ijmmu/article/view/4573), International Journal of Multicultural and Multireligious Understanding: Dayak Tunjung dan Benuaq, Kutai Barat; tongkat untuk melubangi tanah; bambu berisi biji melambangkan benih padi.

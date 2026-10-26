@@ -406,7 +406,7 @@ Teks di sampul lembar angket, dibacakan koordinator sesi:
 
 ## Cara pelaksanaan
 
-1. **Waktu dan urutan.** Di P1, langsung setelah tes awal dan peregangan singkat, sebelum cerita pembuka ([13](13_TES_AWAL_AKHIR.md#waktu-di-p1-dan-p5)). Lama ± 10 menit: petunjuk ± 1 menit, 17 butir ± 9 menit. Kalau pemilik proyek memilih pilihan 2 di pertanyaan 1 dokumen 13, angket pindah ke awal P2, tetap sebelum game dimainkan.
+1. **Waktu dan urutan.** Di P1, langsung setelah tes awal dan peregangan singkat, sebelum cerita pembuka ([13](13_TES_AWAL_AKHIR.md#waktu-di-p1-dan-p5)). Lama ± 10 menit: petunjuk ± 1 menit, 17 butir ± 9 menit. P1 memakai hampir seluruh 3 JP (hitungan di 13), jadi kalau waktunya lewat, angket pindah ke awal P2, tetap sebelum game dimainkan.
 2. **Lembar.** Terpisah dari buklet tes, sama untuk semua siswa, ± 4 halaman A4. Huruf paling kecil 14 poin, kotak centang besar, kode kecil abu-abu, dan tetap terbaca kalau dicetak hitam putih.
 3. **Kode di sampul.** Lembar angket dibagikan sebelum buklet tes dikumpulkan. Siswa menyalin kode peserta dan nomor kursi dari sampul buklet, lalu buklet dikumpulkan. Koordinator mencocokkan kode dengan denah L2 saat mengumpulkan angket.
 4. **Dibacakan.** Koordinator sesi (peran P1 di [01](01_REVISI_10_ANALITIK.md#kerja-lapangan-cara-kerjanya)) membacakan petunjuk, setiap pertanyaan, dan semua pilihannya. Di butir tabel, ia membaca baris demi baris. Ia menunggu sampai sebagian besar siswa selesai sebelum lanjut, dengan nada datar yang tidak menunjukkan jawaban mana yang lebih baik.
