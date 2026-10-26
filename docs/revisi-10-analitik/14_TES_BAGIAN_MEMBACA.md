@@ -6,7 +6,7 @@ Per 26 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md
 
 Dokumen ini memuat Bagian 1 Membaca tes awal–akhir, bentuk A dan B: empat pasang teks, 16 butir per bentuk, kunci, kode kesalahan, dan sumber adaptasinya. Kisi-kisi, aturan kesetaraan, pelaksanaan, penskoran, dan analisis ada di [13](13_TES_AWAL_AKHIR.md); dokumen ini mengikutinya dan tidak mengubahnya.
 
-Topik teks memakai budaya Nusantara di luar Kedu, sesuai pilihan yang disarankan di pertanyaan 3 dokumen 13. Pertanyaan itu belum diputuskan pemilik proyek. Kalau pilihan lain yang dipilih, teks perlu ditulis ulang, tetapi bentuk butir, level, dan kodenya tetap bisa dipakai. Belum ada yang diubah di sistem.
+Topik teks memakai budaya Nusantara di luar Kedu, sesuai keputusan pemilik proyek 26 Oktober 2026 ([13](13_TES_AWAL_AKHIR.md#keputusan-pemilik-proyek)). Tes dikerjakan di modul tes GELITA, jadi petunjuk di bawah ditulis untuk layar. Belum ada yang diubah di sistem.
 
 ## Ringkasan
 
@@ -21,7 +21,7 @@ Topik teks memakai budaya Nusantara di luar Kedu, sesuai pilihan yang disarankan
 
 ## Cara membaca
 
-**Susunan setiap pasangan teks.** Setiap bagian `## M…` berisi bentuk A lalu bentuk B. Untuk setiap bentuk ada: teks untuk siswa (dalam kutipan), tata letak untuk tim katalog (khusus teks digital), panjang, rujukan fakta, dan tabel butir. Nomor butir di buklet berjalan 1–16 dan sama dengan dua angka terakhir kode butir.
+**Susunan setiap pasangan teks.** Setiap bagian `## M…` berisi bentuk A lalu bentuk B. Untuk setiap bentuk ada: teks untuk siswa (dalam kutipan), tata letak untuk tim katalog (khusus teks digital), panjang, rujukan fakta, dan tabel butir. Nomor butir di modul berjalan 1–16 dan sama dengan dua angka terakhir kode butir.
 
 **Kolom di tabel butir**
 
@@ -35,18 +35,18 @@ Topik teks memakai budaya Nusantara di luar Kedu, sesuai pilihan yang disarankan
 
 Label Bloom tidak dipakai, sesuai aturan menulis butir tes di 13.
 
-**Bentuk butir dan petunjuk di buklet**
+**Bentuk butir dan petunjuk di layar**
 
-| Bentuk | Yang dikerjakan siswa | Petunjuk tercetak di atas soal |
+| Bentuk | Yang dikerjakan siswa | Petunjuk di atas soal |
 | --- | --- | --- |
-| PG | Satu dari 4 pilihan (A–D) | "Lingkarilah satu jawaban yang paling tepat." |
-| PGK B/S | Tabel 3 pernyataan, kolom Benar dan Salah | "Berilah tanda centang (✓) pada kolom Benar atau Salah untuk setiap pernyataan." |
-| PGK F/P | Tabel 3 kalimat, kolom Fakta dan Pendapat | "Berilah tanda centang (✓) pada kolom Fakta atau Pendapat untuk setiap kalimat." |
-| Menjodohkan | 3 pernyataan di kiri (1–3), 4 pilihan di kanan (A–D) | "Tulislah huruf pilihan yang cocok di kotak setiap pernyataan. Ada satu pilihan yang tidak dipakai." |
+| PG | Satu dari 4 pilihan (A–D) | "Pilihlah satu jawaban yang paling tepat." |
+| PGK B/S | Tabel 3 pernyataan, kolom Benar dan Salah | "Pilihlah Benar atau Salah untuk setiap pernyataan." |
+| PGK F/P | Tabel 3 kalimat, kolom Fakta dan Pendapat | "Pilihlah Fakta atau Pendapat untuk setiap kalimat." |
+| Menjodohkan | 3 pernyataan di kiri (1–3), 4 pilihan di kanan (A–D) | "Pilihlah huruf pasangan yang cocok untuk setiap pernyataan. Ada satu pilihan yang tidak dipakai." |
 
-Jumlah pilihan dan pernyataan mengikuti kaidah penulisan soal di lampiran *Framework AKM*: 4 pilihan PG untuk kelas 4–9, 3 pernyataan PGK Benar/Salah untuk kelas 5–10, dan 3 pernyataan menjodohkan untuk kelas 1–6 dengan pilihan lebih banyak daripada pernyataan. Semua PGK di sini memakai jenis (b) dari 13, yaitu tabel. PGK F/P adalah tabel kategori, salah satu ragam jenis (b) di *Framework AKM* ("Ya/Tidak, Benar/Salah, atau kategori lain"), dan dipakai di nomor 11 kedua bentuk. Jawaban mentahnya diketik sebagai pola huruf, misalnya `BSB` atau `PFF`.
+Jumlah pilihan dan pernyataan mengikuti kaidah penulisan soal di lampiran *Framework AKM*: 4 pilihan PG untuk kelas 4–9, 3 pernyataan PGK Benar/Salah untuk kelas 5–10, dan 3 pernyataan menjodohkan untuk kelas 1–6 dengan pilihan lebih banyak daripada pernyataan. Semua PGK di sini memakai jenis (b) dari 13, yaitu tabel. PGK F/P adalah tabel kategori, salah satu ragam jenis (b) di *Framework AKM* ("Ya/Tidak, Benar/Salah, atau kategori lain"), dan dipakai di nomor 11 kedua bentuk. Jawaban mentahnya disimpan modul sebagai pola huruf, misalnya `BSB` atau `PFF`.
 
-Sebelum setiap teks tercetak: "Bacalah teks di bawah ini. Lalu, jawablah soal nomor … sampai …."
+Di atas setiap teks: "Bacalah teks di bawah ini. Lalu, jawablah soal nomor … sampai …."
 
 **Kode kesalahan** (arti lengkap di [03](03_KODE_DAN_ARTI.md#kode-kesalahan-salah-memilih-informasi-inf))
 
@@ -101,7 +101,7 @@ Tiga contoh tidak diskor, sama di bentuk A dan B, satu untuk setiap bentuk butir
 >
 > Siram tanaman pukul 07.00, sebelum bel masuk. Ambil air dari ember biru di dekat pagar.
 
-Panjang 32 kata. Teks dicetak sebagai papan pengumuman sederhana berbingkai garis.
+Panjang 32 kata. Teks tampil sebagai papan pengumuman sederhana berbingkai garis.
 
 | Kode | Bentuk | Pokok soal dan pilihan | Kunci |
 | --- | --- | --- | --- |
@@ -197,7 +197,7 @@ Genre di 13: teks informasi dengan tabel atau infografik, 100–150 kata ditamba
 3. Tabel 4 kolom × 3 baris: *Makanan*, *Bahan utama*, *Cara memasak*, *Hasilnya*. Baris kepala tebal dengan latar abu-abu muda (± 20%), garis tabel hitam. Di kolom *Makanan*, gambar garis kecil makanan itu di kiri namanya, tanpa warna dan tanpa tulisan lain.
 4. Garis pemisah tipis, lalu kaki infografik satu baris, paling kecil 10 pt (butir 08 menanyakannya).
 
-Tidak ada informasi yang hanya dibedakan dengan warna, jadi halaman tetap terbaca kalau dicetak hitam putih.
+Tidak ada informasi yang hanya dibedakan dengan warna, jadi tabel tetap terbaca oleh anak yang sulit membedakan warna dan di layar yang redup.
 
 ### Bentuk A: Dari Sagu Jadi Apa Saja?
 
@@ -373,7 +373,7 @@ Genre di 13: dua sumber digital, 100–150 kata. Dari dua pilihan di 13, kedua b
 
 **Tata letak untuk tim katalog (sama di A dan B).** Tiga bagian, dari atas ke bawah:
 
-1. **Layar 1, aplikasi pesan tanpa merek:** bilah atas berisi ikon grup dan nama grup. Satu gelembung pesan masuk; di atasnya ikon panah kecil dan tulisan miring *Diteruskan*. Tidak ada nama pengirim asli, tanggal, atau jam. Kata pembuka pesan dicetak dengan huruf kapital, seperti di teks.
+1. **Layar 1, aplikasi pesan tanpa merek:** bilah atas berisi ikon grup dan nama grup. Satu gelembung pesan masuk; di atasnya ikon panah kecil dan tulisan miring *Diteruskan*. Tidak ada nama pengirim asli, tanggal, atau jam. Kata pembuka pesan ditulis dengan huruf kapital, seperti di teks.
 2. **Layar 2, *Kedugram*:** kepala unggahan seperti di M3 (nama akun panitia, nama pengguna, lencana centang beserta tulisan "akun resmi", tanggal), gambar garis tanpa tulisan, lalu teks pengumuman.
 3. **Kotak cerita di bawah kedua layar:** satu kalimat pengantar, lalu tiga baris ucapan anak dengan ikon kepala sederhana (bukan foto wajah) dan nama di depan ucapan.
 
@@ -545,8 +545,8 @@ Diperiksa 26 Oktober 2026 dengan grep, tanpa membaca dokumen sumber secara utuh.
 **Keterbacaan (dicek di uji keterbacaan bersama bank)**
 
 1. Kata yang mungkin asing: *silek*, *galembong*, *ceh*, *syair*, *forna*, *kapurung*, *dipipil*, *disangrai*, *kenari*, *jelujur*, *sulam*, *cucuk*, *kolope*. Yang ditanyakan butir (anak randai, ceh, sirang, cucuk) sudah dijelaskan di teks; sisanya cukup dipahami dari kalimatnya. Catat kata yang membuat anak berhenti lama.
-2. Teks M1 paling panjang (152–160 kata) dan paling padat istilah. Kalau waktu Bagian 1 (30 menit) tidak cukup di uji coba, M1 adalah kandidat pertama untuk dipendekkan, tetap di atas 150 kata sesuai 13.
-3. Tabel M2 dan kaki infografik perlu dicek terbaca di cetakan hitam putih, terutama ukuran huruf kaki (paling kecil 10 pt).
+2. Teks M1 paling panjang (152–160 kata) dan paling padat istilah. Kalau batas Bagian 1 (± 40 menit) tidak cukup di uji coba, M1 adalah kandidat pertama untuk dipendekkan, tetap di atas 150 kata sesuai 13.
+3. Tabel M2 dan kaki infografik perlu dicek terbaca di layar perangkat kelas yang paling kecil, terutama ukuran huruf kaki.
 4. Ucapan anak di M4 memakai ragam lisan ("tentu benar", "tidak usah dipercaya"). Itu disengaja, tetapi tetap dicek apakah anak paham bahwa ucapan itu pendapat tokoh, bukan petunjuk soal.
 
 **Catatan untuk dokumen 13 dan 11 (sudah dimasukkan ke 13 pada 26 Oktober 2026)**

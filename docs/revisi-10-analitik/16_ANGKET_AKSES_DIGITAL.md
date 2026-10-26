@@ -2,32 +2,32 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 26 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Daftar kerja no. 10 · Status: **draf**, menunggu keputusan pemilik proyek ([pertanyaan 4](#pertanyaan-untuk-pemilik-proyek)) dan validasi ahli
+Per 26 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Daftar kerja no. 10 · Status: **draf**; keputusan pemilik proyek diambil 26 Oktober 2026 ([bagian akhir](#keputusan-pemilik-proyek)); menunggu validasi ahli
 
-Dokumen ini berisi angket akses digital yang diisi siswa kelas 5 di atas kertas setelah tes awal: butir, kode jawaban, nama variabel, gunanya, sumber, pelaksanaan, pemasukan data, etika, dan validasinya. Rancangan tesnya ada di [13](13_TES_AWAL_AKHIR.md).
+Dokumen ini berisi angket akses digital yang diisi siswa kelas 5 di layar modul tes GELITA, langsung setelah tes awal, ditambah dua–tiga butir pengalaman risiko daring yang diisi di P5 setelah tes akhir: butir, kode jawaban, nama variabel, gunanya, sumber, pelaksanaan, pemasukan data, etika, dan validasinya. Rancangan tesnya ada di [13](13_TES_AWAL_AKHIR.md).
 
-Belum ada yang diubah di sistem. Angket tidak mengukur literasi digital dan tidak diskor. Jawabannya menjadi variabel peserta (kovariat) yang digabung lewat kode peserta ([11](11_KAMUS_DATA.md#aturan-gabung-lembar-lapangan)).
+Belum ada yang diubah di sistem; modulnya dibangun di tahap 3 (perubahan sistem no. 22 di [01](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti)). Angket tidak mengukur literasi digital dan tidak diskor. Jawabannya menjadi variabel peserta (kovariat) yang digabung lewat kode peserta ([11](11_KAMUS_DATA.md#aturan-gabung-lembar-lapangan)).
 
 ## Ringkasan
 
 1. **Gunanya tiga:** menggambarkan akses dan kebiasaan digital sampel, menjadi kovariat dan kelompok DIF di analisis, dan membantu menafsirkan jawaban D2 dan D3.
 2. **17 butir dalam delapan bagian:** perangkat dan internet di rumah, lama memakai, kegiatan, akun dan media sosial, pendampingan orang tua, belajar tentang internet, membaca di layar, serta bahasa dan buku di rumah. Empat isi wajib L6 ada di ang-01, ang-06, ang-08, dan ang-09–10.
-3. **Dibacakan, ± 10 menit.** Koordinator sesi membacakan setiap pertanyaan dan pilihannya, jadi kemampuan membaca tidak memengaruhi jawaban.
-4. **Kotak centang, tanpa isian.** Setiap kotak punya kode angka kecil untuk pengetik. "Tidak tahu" atau "Tidak ingat" ada di butir yang mungkin tidak diketahui anak.
+3. **Dibaca sendiri di layar, ± 10 menit** (diputuskan 26 Oktober 2026). Koordinator sesi tidak membacakan pertanyaan. Karena itu kalimatnya dibuat sangat sederhana, penjelasan baku tampil sebagai keterangan kecil di bawah pertanyaan, dan keterbacaannya diuji di tahap 2.
+4. **Pilihan di layar, tanpa isian.** Siswa memilih satu jawaban atau mencentang beberapa kotak; kodenya tersimpan otomatis dan tidak tampil. "Tidak tahu" atau "Tidak ingat" ada di butir yang mungkin tidak diketahui anak.
 5. **Diadaptasi dari angket anak yang sudah dipakai luas:** PIRLS 2021, Global Kids Online, EU Kids Online 2017, dan ICILS 2023, lalu disesuaikan dengan keadaan Indonesia (HP dipakai bersama, WhatsApp, game daring).
-6. **Yang tidak ditanyakan:** penghasilan, pekerjaan atau pendidikan orang tua, agama, keterampilan digital menurut diri sendiri, dan topik butir D2 dan D3 di game. Pengalaman risiko daring juga tidak, kecuali pemilik proyek memutuskan lain di pertanyaan 4.
-7. **Diisi langsung setelah tes awal di P1,** supaya pertanyaannya tidak memengaruhi tes. Siswa absen ikut susulan dalam tiga hari, bersama tes susulan.
+6. **Yang tidak ditanyakan:** penghasilan, pekerjaan atau pendidikan orang tua, agama, keterampilan digital menurut diri sendiri, dan topik butir D2 dan D3 di game. Pengalaman risiko daring tidak ditanyakan di P1; dua–tiga butirnya diisi sendiri di layar di P5 setelah tes akhir (diputuskan 26 Oktober 2026).
+7. **Diisi langsung setelah tes awal di P1, di modul yang sama,** supaya pertanyaannya tidak memengaruhi tes. Siswa absen ikut susulan dalam tiga hari, bersama tes susulan.
 
 ## Dasar yang sudah diputuskan
 
 | Keputusan | Akibatnya untuk angket |
 | --- | --- |
-| L6: angket diisi siswa di kelas, ± 10 menit; isinya paling sedikit punya HP sendiri, memakai media sosial, didampingi orang tua, dan lama main game per hari ([02](02_LEMBAR_LAPANGAN.md#l6-log-tes-awalakhir-dan-angket-akses-digital)) | 17 butir yang muat dalam 10 menit kalau dibacakan; empat isi wajib ada di ang-01, ang-08, ang-09–10, dan ang-06 |
+| L6: angket diisi siswa di kelas, ± 10 menit; isinya paling sedikit punya HP sendiri, memakai media sosial, didampingi orang tua, dan lama main game per hari ([02](02_LEMBAR_LAPANGAN.md#l6-log-tes-awalakhir-dan-angket-akses-digital)) | 17 butir, ± 10 menit dibaca sendiri; empat isi wajib ada di ang-01, ang-08, ang-09–10, dan ang-06 |
 | Data L6 menjadi variabel peserta dengan kunci kode peserta ([11](11_KAMUS_DATA.md#aturan-gabung-lembar-lapangan)) | Satu baris per siswa; nama variabel bahasa Inggris, sama dengan kolom lain di kamus |
 | Usia, jenis kelamin, dan kelas sudah direkam saat daftar ([11](11_KAMUS_DATA.md#variabel-peserta-dan-sesi)) | Angket tidak menanyakannya lagi |
-| Nama siswa hanya di L7 ([01](01_REVISI_10_ANALITIK.md#kerja-lapangan-cara-kerjanya)) | Lembar angket hanya memuat kode peserta dan nomor kursi |
+| Nama siswa hanya di L7 ([01](01_REVISI_10_ANALITIK.md#kerja-lapangan-cara-kerjanya)) | Layar angket hanya menampilkan kode peserta |
 | Surat izin orang tua menyebut angket sebagai data yang dikumpulkan ([02, L7](02_LEMBAR_LAPANGAN.md#l7-izin-orang-tua-dan-status-peserta)) | Hanya siswa yang punya izin yang mengisi; yang lain ikut kegiatan pengganti |
-| Usulan 13: kertas, angket langsung sesudah tes awal di P1, kode `ang-{nn}`, dan pertanyaan pemilik proyek no. 4 untuk angket ([13](13_TES_AWAL_AKHIR.md#waktu-di-p1-dan-p5)) | Pelaksanaan dan kode mengikuti 13. Kalau media tes berubah (13, pertanyaan 2), angket tetap bisa di kertas karena dibacakan |
+| Keputusan pemilik proyek 26 Oktober 2026: angket di modul tes GELITA, langsung setelah tes awal, hanya di layar dan tidak dibacakan; dua–tiga butir risiko daring di P5 setelah tes akhir ([13](13_TES_AWAL_AKHIR.md#keputusan-pemilik-proyek)) | Pelaksanaan dan pemasukan data mengikuti modul; kode `ang-{nn}` tetap |
 | Tes dan game tidak boleh saling menjawab ([13](13_TES_AWAL_AKHIR.md#aturan-menulis-butir-tes)) | Angket tidak memuat topik dan tindakan kunci D2 dan D3 (lihat [Etika](#etika)) |
 | Data yang bisa dianalisis ditentukan izin dan percobaan pertama, bukan angket ([11](11_KAMUS_DATA.md#data-siswa-yang-bisa-dianalisis)) | Siswa tanpa angket tetap masuk analisis utama; ia hanya hilang di analisis yang memakai variabel angket |
 
@@ -42,8 +42,9 @@ Angket tidak menjawab pertanyaan penelitian sendiri. Ia melengkapi analisis di [
 | *Tugas mana yang lama?* (model campuran) | `access_index`, `school_device_use`, `digital_quiz_exp`, `game_time_school` | Kovariat di tingkat siswa: anak yang jarang memakai perangkat mungkin lebih lama karena alatnya, bukan karena soalnya |
 | *Apakah bantuan menolong?* (regresi logistik campuran) | `access_index`, `digital_quiz_exp` | Kovariat |
 | *Bagaimana pemahaman keamanan dan etika digital siswa?* (01 sudah menyebut angket di baris ini) | `social_media_own`, `own_accounts`, `parent_active`, `parent_rules`, `safety_info_*`, `act_post` | Tabulasi silang pilihan dan alasan Skenario Digital (D2) serta kode BUD di Periksa Unggahan (D3) per kelompok. Eksploratif, tanpa klaim sebab-akibat |
-| *Apakah skor game sejalan dengan kemampuan nyata?* | `game_time_school`, `game_time_holiday`, `access_index`, `read_medium_pref` | Bukti diskriminan: korelasi kemampuan game dengan kebiasaan main game seharusnya lebih rendah daripada korelasinya dengan tes. Kalau tidak, game mungkin ikut mengukur kebiasaan main game. `read_medium_pref` membantu menafsirkan korelasi D1 tes (kertas) dan D1 game (layar) |
+| *Apakah skor game sejalan dengan kemampuan nyata?* | `game_time_school`, `game_time_holiday`, `access_index`, `read_medium_pref` | Bukti diskriminan: korelasi kemampuan game dengan kebiasaan main game seharusnya lebih rendah daripada korelasinya dengan tes. Kalau tidak, game mungkin ikut mengukur kebiasaan main game. Tes dan game kini sama-sama di layar, jadi `read_medium_pref` menjadi kovariat membaca di layar untuk keduanya |
 | Perubahan tes awal–akhir (13, model campuran) | `access_index`, `parent_active`, `safety_info_sources` | Kovariat, bersama urutan bentuk tes |
+| Deskripsi pengalaman risiko daring (butir P5) | `risk_upset`, `risk_stranger_contact`, `support_*` | Deskripsi sampel dan tabulasi eksploratif dengan pilihan D2 tentang orang asing; hanya angka gabungan, tidak pernah per siswa |
 
 Catatan untuk semua analisis di atas:
 
@@ -55,10 +56,10 @@ Catatan untuk semua analisis di atas:
 
 ### Aturan umum
 
-- **Satu lembar untuk semua siswa,** tanpa bentuk A dan B. Lembar terpisah dari buklet tes.
-- **Kode angka** dicetak kecil dan abu-abu di samping setiap kotak, untuk pengetik. Siswa tidak perlu memperhatikannya.
+- **Satu angket untuk semua siswa,** tanpa bentuk A dan B, di layar terpisah dari tes.
+- **Kode angka** tersimpan otomatis di belakang setiap pilihan dan tidak tampil di layar.
 - **Kode khusus:** `9` = tidak tahu atau tidak ingat, `8` = tidak berlaku (misalnya "Aku tidak memakai HP atau internet di rumah").
-- **Tanpa pilihan "Tidak mau menjawab".** Global Kids Online menyarankan pilihan *Tidak tahu* dan *Tidak mau menjawab* di semua butir. Di sini *Tidak tahu* hanya ada di butir yang mungkin tidak diketahui anak, dan *Tidak mau menjawab* diganti izin mengosongkan butir (dibacakan di petunjuk), supaya lembar tetap pendek. Butir angket utama tidak sensitif.
+- **Tanpa pilihan "Tidak mau menjawab".** Global Kids Online menyarankan pilihan *Tidak tahu* dan *Tidak mau menjawab* di semua butir. Di sini *Tidak tahu* hanya ada di butir yang mungkin tidak diketahui anak, dan *Tidak mau menjawab* diganti izin melewati butir (tertulis di petunjuk), supaya angket tetap pendek. Butir angket utama tidak sensitif.
 - **Urutan pilihan** mengikuti cara anak membaca, bukan urutan kode. Kodenya tetap: angka lebih besar berarti lebih banyak, lebih sering, atau lebih lama.
 
 ### Ringkasan butir
@@ -97,7 +98,7 @@ Pilihan jawaban disusun dengan memperhatikan data anak Indonesia berikut. Tidak 
 
 > **1. Apakah kamu punya HP sendiri?** *Pilih satu.*
 
-| Kode | Pilihan yang dicetak |
+| Kode | Pilihan di layar |
 | --- | --- |
 | 2 | Ya, aku punya HP sendiri |
 | 1 | Tidak, tapi aku memakai HP orang lain di rumah (misalnya HP ayah, ibu, atau kakak) |
@@ -111,7 +112,7 @@ Pilihan jawaban disusun dengan memperhatikan data anak Indonesia berikut. Tidak 
 
 > **2. Di rumahmu, ada alat apa saja yang bisa kamu pakai?** *Centang semua yang ada.*
 
-| Kotak yang dicetak | Variabel (1 = dicentang, 0 = tidak) |
+| Kotak di layar | Variabel (1 = dicentang, 0 = tidak) |
 | --- | --- |
 | HP (punyamu atau punya keluargamu) | `home_phone` |
 | Tablet | `home_tablet` |
@@ -126,7 +127,7 @@ Pilihan jawaban disusun dengan memperhatikan data anak Indonesia berikut. Tidak 
 
 > **3. Kalau kamu ingin memakai internet di rumah, apakah bisa?** *Pilih satu.*
 
-| Kode | Pilihan yang dicetak |
+| Kode | Pilihan di layar |
 | --- | --- |
 | 3 | Hampir selalu bisa |
 | 2 | Kadang-kadang bisa |
@@ -144,7 +145,7 @@ Pilihan jawaban disusun dengan memperhatikan data anak Indonesia berikut. Tidak 
 
 > **4. Sejak kapan kamu mulai memakai HP atau tablet?** *Pilih satu.*
 
-| Kode | Pilihan yang dicetak |
+| Kode | Pilihan di layar |
 | --- | --- |
 | 4 | Sebelum masuk SD |
 | 3 | Kelas 1 atau kelas 2 |
@@ -161,7 +162,7 @@ Pilihan jawaban disusun dengan memperhatikan data anak Indonesia berikut. Tidak 
 
 > **5. Berapa lama kamu biasanya memakai HP, tablet, atau komputer di luar jam sekolah?** *Pilih satu di setiap kolom.*
 
-| Kode | Pilihan yang dicetak | Hari sekolah | Hari Minggu atau hari libur |
+| Kode | Pilihan di layar | Hari sekolah | Hari Minggu atau hari libur |
 | --- | --- | --- | --- |
 | 0 | Tidak memakai | ☐ | ☐ |
 | 1 | Kurang dari 1 jam | ☐ | ☐ |
@@ -178,7 +179,7 @@ Pilihan jawaban disusun dengan memperhatikan data anak Indonesia berikut. Tidak 
 
 > **6. Berapa lama kamu biasanya bermain game di HP, tablet, komputer, atau konsol?** *Pilih satu di setiap kolom.*
 
-| Kode | Pilihan yang dicetak | Hari sekolah | Hari Minggu atau hari libur |
+| Kode | Pilihan di layar | Hari sekolah | Hari Minggu atau hari libur |
 | --- | --- | --- | --- |
 | 0 | Tidak bermain game | ☐ | ☐ |
 | 1 | Kurang dari setengah jam | ☐ | ☐ |
@@ -197,7 +198,7 @@ Pilihan jawaban disusun dengan memperhatikan data anak Indonesia berikut. Tidak 
 
 > **7. Seberapa sering kamu melakukan hal-hal ini di HP, tablet, atau komputer?** *Pilih satu di setiap baris.*
 
-| Kegiatan yang dicetak | Hampir setiap hari (2) | Kadang-kadang (1) | Tidak pernah (0) | Tidak tahu (9) | Variabel |
+| Kegiatan di layar | Hampir setiap hari (2) | Kadang-kadang (1) | Tidak pernah (0) | Tidak tahu (9) | Variabel |
 | --- | --- | --- | --- | --- | --- |
 | a. Menonton video (misalnya di YouTube atau TikTok) | ☐ | ☐ | ☐ | ☐ | `act_video` |
 | b. Bermain game | ☐ | ☐ | ☐ | ☐ | `act_game` |
@@ -218,7 +219,7 @@ Pilihan jawaban disusun dengan memperhatikan data anak Indonesia berikut. Tidak 
 >
 > **8. Bagaimana denganmu?** *Pilih satu di setiap baris.*
 
-| Aplikasi yang dicetak | Tidak memakai (0) | Memakai, tapi bukan akunku sendiri (1) | Punya akun sendiri (2) | Tidak tahu (9) | Variabel |
+| Aplikasi di layar | Tidak memakai (0) | Memakai, tapi bukan akunku sendiri (1) | Punya akun sendiri (2) | Tidak tahu (9) | Variabel |
 | --- | --- | --- | --- | --- | --- |
 | a. WhatsApp | ☐ | ☐ | ☐ | ☐ | `acct_whatsapp` |
 | b. YouTube | ☐ | ☐ | ☐ | ☐ | `acct_youtube` |
@@ -232,13 +233,13 @@ Pilihan jawaban disusun dengan memperhatikan data anak Indonesia berikut. Tidak 
 
 ### E. Pendampingan orang tua
 
-Kalimat yang dicetak di atas bagian ini: *"Orang tua di sini artinya ayah, ibu, atau orang dewasa yang merawatmu di rumah (misalnya kakek, nenek, om, atau tante)."*
+Kalimat di layar, di atas bagian ini: *"Orang tua di sini artinya ayah, ibu, atau orang dewasa yang merawatmu di rumah (misalnya kakek, nenek, om, atau tante)."*
 
 #### ang-09 Ditemani
 
 > **9. Saat kamu memakai HP atau internet di rumah, seberapa sering orang tuamu menemanimu?** *Pilih satu.*
 
-| Kode | Pilihan yang dicetak |
+| Kode | Pilihan di layar |
 | --- | --- |
 | 3 | Hampir selalu |
 | 2 | Kadang-kadang |
@@ -265,7 +266,7 @@ Pilihan dan kodenya sama dengan ang-09.
 
 > **11. Apakah orang tuamu punya aturan tentang hal-hal ini?** *Pilih satu di setiap baris.*
 
-| Aturan yang dicetak | Ada aturan (1) | Tidak ada aturan (0) | Tidak tahu (9) | Variabel |
+| Aturan di layar | Ada aturan (1) | Tidak ada aturan (0) | Tidak tahu (9) | Variabel |
 | --- | --- | --- | --- | --- |
 | a. Berapa lama kamu boleh memakai HP atau internet | ☐ | ☐ | ☐ | `parent_rule_time` |
 | b. Aplikasi, game, atau tontonan yang boleh kamu buka | ☐ | ☐ | ☐ | `parent_rule_content` |
@@ -279,7 +280,7 @@ Pilihan dan kodenya sama dengan ang-09.
 
 > **12. Siapa saja yang pernah memberi tahu kamu cara memakai internet dengan aman?** *Centang semua yang benar.*
 
-| Kotak yang dicetak | Variabel (1 = dicentang, 0 = tidak) |
+| Kotak di layar | Variabel (1 = dicentang, 0 = tidak) |
 | --- | --- |
 | Orang tua | `safety_info_parent` |
 | Guru | `safety_info_teacher` |
@@ -296,7 +297,7 @@ Pilihan dan kodenya sama dengan ang-09.
 
 > **13. Di sekolah, seberapa sering kamu memakai komputer, laptop, atau tablet untuk belajar?** *Pilih satu.*
 
-| Kode | Pilihan yang dicetak |
+| Kode | Pilihan di layar |
 | --- | --- |
 | 2 | Hampir setiap minggu |
 | 1 | Kadang-kadang |
@@ -311,7 +312,7 @@ Pilihan dan kodenya sama dengan ang-09.
 
 > **14. Pernahkah kamu mengerjakan kuis atau soal di HP, tablet, atau komputer? (Misalnya kuis di kelas, Kahoot, atau latihan ANBK.)** *Pilih satu.*
 
-| Kode | Pilihan yang dicetak |
+| Kode | Pilihan di layar |
 | --- | --- |
 | 2 | Sering |
 | 1 | Pernah, satu atau dua kali |
@@ -330,7 +331,7 @@ Kebiasaan membaca di layar juga tercatat di ang-07 baris f.
 
 > **15. Menurutmu, membaca di mana yang lebih mudah?** *Pilih satu.*
 
-| Kode | Pilihan yang dicetak |
+| Kode | Pilihan di layar |
 | --- | --- |
 | 1 | Di kertas atau buku |
 | 2 | Sama saja |
@@ -338,7 +339,7 @@ Kebiasaan membaca di layar juga tercatat di ang-07 baris f.
 | 9 | Tidak tahu |
 
 - **Variabel:** `read_medium_pref`
-- **Gunanya:** tes awal–akhir dikerjakan di kertas, sedangkan D1 di game dibaca di layar. Butir ini membantu menafsirkan korelasi D1 tes dan D1 game, dan menjadi kovariat di analisis D1.
+- **Gunanya:** tes awal–akhir dan D1 di game sama-sama dibaca di layar. Butir ini menjadi kovariat di analisis D1: anak yang lebih mudah membaca di kertas mungkin dirugikan di kedua instrumen.
 - **Sumber:** ditulis sendiri.
 
 ### H. Bahasa dan buku di rumah
@@ -347,7 +348,7 @@ Kebiasaan membaca di layar juga tercatat di ang-07 baris f.
 
 > **16. Seberapa sering kamu memakai bahasa Indonesia saat berbicara di rumah?** *Pilih satu.*
 
-| Kode | Pilihan yang dicetak |
+| Kode | Pilihan di layar |
 | --- | --- |
 | 3 | Selalu |
 | 2 | Hampir selalu |
@@ -362,7 +363,7 @@ Kebiasaan membaca di layar juga tercatat di ang-07 baris f.
 
 > **17. Kira-kira ada berapa buku di rumahmu? Jangan hitung majalah, koran, dan buku pelajaran sekolahmu.** *Pilih satu.*
 
-| Kode | Pilihan yang dicetak (masing-masing dengan gambar kecil rak atau lemari) |
+| Kode | Pilihan di layar (masing-masing dengan gambar kecil rak atau lemari) |
 | --- | --- |
 | 1 | Tidak ada atau sangat sedikit (0–10 buku) |
 | 2 | Cukup untuk satu rak (11–25 buku) |
@@ -383,69 +384,65 @@ Kebiasaan membaca di layar juga tercatat di ang-07 baris f.
 | Pekerjaan dan pendidikan orang tua, penghasilan, barang mewah di rumah | ICILS 2023 Q9–Q14; Framework Survei Lingkungan Belajar | Sensitif, dan anak kelas 5 sering tidak tahu jawabannya. Diganti ang-17 |
 | Agama, suku, siapa saja yang tinggal di rumah | — | Sensitif dan tidak dibutuhkan analisis |
 | Keterampilan digital menurut diri sendiri (misalnya "Aku tahu cara mengatur privasi", "Mudah bagiku memeriksa apakah informasi benar") | Global Kids Online Q6Skills; EU Kids Online 2017 QE | Tumpang tindih dengan yang diukur game dan tes, dan bisa memancing jawaban D1b dan D2 |
-| Pengalaman risiko daring | Global Kids Online Q7Harm dan Q8Risks | Diputuskan di [pertanyaan 4](#pertanyaan-untuk-pemilik-proyek) |
+| Pengalaman risiko daring | Global Kids Online Q7Harm dan Q8Risks | Tidak di angket P1, supaya tidak memancing D2 sebelum game; dua–tiga butirnya diisi di P5 ([Keputusan pemilik proyek](#keputusan-pemilik-proyek)) |
 | Hambatan memakai internet (biaya, sinyal) | Global Kids Online Q2Barriers | Biaya menyentuh keadaan ekonomi keluarga; ang-03 sudah cukup |
 | Aplikasi yang paling sering dipakai (isian) | EU Kids Online 2017 QD1 | Isian sulit ditulis anak dan sulit dikode; ang-08 sudah cukup |
 
 ## Petunjuk untuk siswa
 
-Teks di sampul lembar angket, dibacakan koordinator sesi:
+Teks di layar pembuka angket. Siswa membacanya sendiri; koordinator sesi tidak membacakannya:
 
-> **Kode penelitian:** ☐☐☐-☐☐☐ **Nomor kursi:** ☐☐
->
-> Halo! Lembar ini berisi pertanyaan tentang kebiasaanmu memakai HP, komputer, dan internet. Ini bukan tes. Tidak ada jawaban yang benar atau salah, dan tidak ada nilainya.
+> Halo! Bagian ini berisi pertanyaan tentang kebiasaanmu memakai HP, komputer, dan internet. Ini bukan tes. Tidak ada jawaban yang benar atau salah, dan tidak ada nilainya.
 >
 > Guru dan orang tuamu tidak akan melihat jawabanmu. Jawabanmu hanya dibaca tim peneliti, dan namamu tidak ditulis di mana pun.
 >
-> Jawablah sesuai keadaanmu yang sebenarnya, ya. Kalau ada pertanyaan yang tidak ingin kamu jawab, kosongkan saja. Tidak apa-apa.
+> Jawablah sesuai keadaanmu yang sebenarnya, ya. Kalau ada pertanyaan yang tidak ingin kamu jawab, lewati saja. Tidak apa-apa.
 >
-> 1. Tulis kode penelitianmu dan nomor kursimu di kotak di atas. Jangan tulis namamu.
-> 2. Kakak peneliti akan membacakan setiap pertanyaan. Dengarkan, lalu beri tanda centang (✓) di kotak jawabanmu.
-> 3. Kalau kamu tidak tahu atau tidak ingat, centang kotak *Tidak tahu* atau *Tidak ingat*. Itu juga jawaban yang baik.
-> 4. Kalau ingin mengganti jawaban, coret kotak yang lama dengan tanda ✗, lalu centang kotak yang baru.
+> 1. Baca setiap pertanyaan, lalu pilih jawabanmu.
+> 2. Kalau kamu tidak tahu atau tidak ingat, pilih *Tidak tahu* atau *Tidak ingat*. Itu juga jawaban yang baik.
+> 3. Kalau ada kata yang kurang jelas, baca keterangan kecil di bawah pertanyaan, atau angkat tangan.
+> 4. Kamu boleh kembali ke pertanyaan sebelumnya dan mengganti jawaban sebelum menekan *Selesai*.
 
 ## Cara pelaksanaan
 
-1. **Waktu dan urutan.** Di P1, langsung setelah tes awal dan peregangan singkat, sebelum cerita pembuka ([13](13_TES_AWAL_AKHIR.md#waktu-di-p1-dan-p5)). Lama ± 10 menit: petunjuk ± 1 menit, 17 butir ± 9 menit. P1 memakai hampir seluruh 3 JP (hitungan di 13), jadi kalau waktunya lewat, angket pindah ke awal P2, tetap sebelum game dimainkan.
-2. **Lembar.** Terpisah dari buklet tes, sama untuk semua siswa, ± 4 halaman A4. Huruf paling kecil 14 poin, kotak centang besar, kode kecil abu-abu, dan tetap terbaca kalau dicetak hitam putih.
-3. **Kode di sampul.** Lembar angket dibagikan sebelum buklet tes dikumpulkan. Siswa menyalin kode peserta dan nomor kursi dari sampul buklet, lalu buklet dikumpulkan. Koordinator mencocokkan kode dengan denah L2 saat mengumpulkan angket.
-4. **Dibacakan.** Koordinator sesi (peran P1 di [01](01_REVISI_10_ANALITIK.md#kerja-lapangan-cara-kerjanya)) membacakan petunjuk, setiap pertanyaan, dan semua pilihannya. Di butir tabel, ia membaca baris demi baris. Ia menunggu sampai sebagian besar siswa selesai sebelum lanjut, dengan nada datar yang tidak menunjukkan jawaban mana yang lebih baik.
-5. **Penjelasan baku.** Hanya penjelasan ini yang boleh ditambahkan, kalau siswa bertanya:
+1. **Waktu dan urutan.** Di P1, langsung setelah Bagian 3 tes awal dikirim, di modul yang sama, sebelum cerita pembuka ([13](13_TES_AWAL_AKHIR.md#waktu-di-p1-dan-p5)). Lama ± 10 menit, tanpa batas waktu. Siswa yang belum selesai saat P1 berakhir melanjutkan di awal P2, sebelum game dimainkan.
+2. **Layar.** Tampilan Bootstrap modul tes, tanpa unsur game. Satu bagian angket (A–H) per layar, huruf besar, tombol pilihan dan kotak centang besar, dan penanda bagian yang sedang dikerjakan (misalnya "Bagian 3 dari 8").
+3. **Kode peserta.** Tersimpan otomatis dari akun siswa. Tidak ada yang perlu ditulis atau dicocokkan dengan L2.
+4. **Tidak dibacakan** (diputuskan 26 Oktober 2026). Siswa membaca sendiri. Kalau siswa bertanya, koordinator sesi, P2, atau P3 hanya memberi penjelasan baku di bawah, pelan-pelan dan hanya kepada siswa itu, dengan nada datar yang tidak menunjukkan jawaban mana yang lebih baik. Karena angket tidak dibacakan, kemampuan membaca bisa ikut memengaruhi jawaban; ini dikurangi dengan kalimat sederhana dan keterangan di layar, dan dicek di uji keterbacaan.
+5. **Penjelasan baku.** Tampil sebagai keterangan kecil di bawah pertanyaan yang memakainya, dan hanya ini yang boleh diucapkan kalau siswa bertanya:
    - "Orang tua artinya ayah, ibu, atau orang dewasa yang merawatmu di rumah, misalnya kakek, nenek, om, atau tante."
    - "Akun sendiri artinya akun yang dibuat untukmu dan biasanya hanya kamu yang memakainya."
    - "Satu jam itu, misalnya, dari pukul empat sampai pukul lima sore."
    - "Hari sekolah artinya hari ketika kamu masuk sekolah. Hari libur artinya hari Minggu atau hari ketika sekolah libur."
-   - "Kalau tidak tahu, centang *Tidak tahu*. Kalau tidak ingin menjawab, kosongkan saja."
-6. **Peneliti lain dan guru.** P2 dan P3 berkeliling hanya untuk membantu cara mencentang, tidak membaca atau mengomentari jawaban. Guru kelas diminta tidak berkeliling melihat lembar siswa. Siswa boleh menutup lembarnya dengan tangan atau buku.
-7. **Selesai.** Siswa membalik lembarnya. Koordinator mengumpulkan, mencocokkan dengan L2, lalu menyimpannya di amplop per rombel bersama buklet tes, di lemari terkunci. Lembar tidak dibawa pulang dan tidak difoto.
-8. **Catatan di L6.** Kolom *Angket* diisi `sudah`, `susulan` dengan tanggalnya, atau `hilang`. P3 mencatat jam mulai dan selesai serta pertanyaan yang sering ditanyakan siswa di kolom *Catatan*. Catatan ini dipakai di uji coba.
-9. **Siswa absen.** Ikut susulan dalam tiga hari, sesudah tes susulan, dibacakan peneliti untuk kelompok kecil. Kalau baru bisa setelah siswa mulai bermain di P2, angket masih boleh diisi sampai P5 dan ditandai `questionnaire_late = 1`. Kalau tidak sama sekali, ditandai `hilang`.
+   - "Kalau tidak tahu, pilih *Tidak tahu*. Kalau tidak ingin menjawab, lewati saja."
+6. **Peneliti lain dan guru.** P2 dan P3 berkeliling hanya untuk membantu cara memilih jawaban di layar, tidak membaca atau mengomentari jawaban. Guru kelas diminta tidak berkeliling melihat layar siswa.
+7. **Selesai.** Siswa menekan *Selesai*, dan modul menampilkan layar terima kasih. Tidak ada lembar yang perlu dikumpulkan atau disimpan.
+8. **Catatan di L6.** Status angket (`sudah`, `susulan` dengan tanggalnya, atau `hilang`) dibaca dari modul. P3 mencatat pertanyaan yang sering ditanyakan siswa di kolom *Catatan*. Catatan ini dipakai di uji coba.
+9. **Siswa absen.** Ikut susulan dalam tiga hari, sesudah tes susulan; peneliti membuka angket di modul untuk kelompok kecil itu. Kalau baru bisa setelah siswa mulai bermain di P2, angket masih boleh diisi sampai P5 dan ditandai `questionnaire_late = 1`. Kalau tidak sama sekali, ditandai `hilang`.
 10. **Siswa tanpa izin.** Tidak mengisi angket dan ikut kegiatan pengganti sesuai L7.
 
 ## Pemasukan data dan variabel turunan
 
-### Aturan ketik
+### Data dari modul
 
-Templat berisi satu baris per siswa: `participant_code`, `questionnaire_date`, `questionnaire_makeup`, `questionnaire_late`, lalu satu kolom per variabel butir menurut urutan ang-01 sampai ang-17 (41 kolom).
+Modul menyimpan satu baris per siswa: `participant_code`, `questionnaire_date`, `questionnaire_makeup`, `questionnaire_late`, `questionnaire_minutes`, lalu satu kolom per variabel butir menurut urutan ang-01 sampai ang-17 (41 kolom).
 
-| Yang terlihat di lembar | Diketik |
+| Yang dilakukan siswa | Disimpan |
 | --- | --- |
-| Satu kotak dicentang (butir pilih satu atau satu baris tabel) | Kode kecil di samping kotak |
-| Tidak ada kotak yang dicentang | `-` |
-| Lebih dari satu kotak dicentang di butir pilih satu atau satu baris | `*` |
-| Kotak dicoret ✗ lalu kotak lain dicentang | Kode kotak yang baru |
+| Memilih satu jawaban (butir pilih satu atau satu baris tabel) | Kode pilihan itu |
+| Melewati butir atau baris | `-` |
+| Mengganti jawaban | Kode jawaban terakhir; jumlah penggantian dicatat |
 | Butir centang semua (ang-02, ang-12) | `1` untuk kotak yang dicentang, `0` untuk yang tidak. Kalau tidak ada satu kotak pun yang dicentang, semua kolom butir itu `-` |
-| Tulisan atau gambar di luar kotak | Diabaikan |
 
-Data mentah diketik apa adanya dan tidak diperbaiki. Pemeriksaan di bawah hanya mengisi kolom penanda `q_flags` (daftar kode butir yang isinya bertentangan):
+Kode `*` (lebih dari satu jawaban) tidak muncul lagi, karena butir pilih satu memakai tombol pilihan yang hanya menerima satu jawaban. Data mentah disimpan apa adanya dan tidak diperbaiki. Pemeriksaan di bawah hanya mengisi kolom penanda `q_flags` (daftar kode butir yang isinya bertentangan):
 
-- ang-02: *Tidak ada satu pun* dicentang bersama alat lain.
+- ang-02: *Tidak ada satu pun* dicentang bersama alat lain. Modul tidak mencegahnya, supaya jawaban anak tetap terekam apa adanya.
 - ang-12: *Belum ada yang pernah memberi tahu* atau *Tidak ingat* dicentang bersama sumber lain.
 - ang-01 = 0 tetapi ang-08 punya akun sendiri, atau ang-06 = 0 di kedua kolom tetapi ang-07b = 2. Ini tidak selalu salah (akun bisa dibuka di tablet), jadi hanya dihitung dan dilaporkan.
 
-**Kode khusus di analisis.** `-`, `*`, `8`, dan `9` diperlakukan sebagai hilang untuk skala urut, tetapi jumlahnya dilaporkan per butir. Di deskripsi sampel, `8` di ang-09 dan ang-10 ditampilkan sebagai kategori sendiri ("tidak memakai di rumah").
+**Kode khusus di analisis.** `-`, `8`, dan `9` diperlakukan sebagai hilang untuk skala urut, tetapi jumlahnya dilaporkan per butir. Di deskripsi sampel, `8` di ang-09 dan ang-10 ditampilkan sebagai kategori sendiri ("tidak memakai di rumah").
 
-**Ketik ulang 10%** lembar oleh orang lain, seperti buklet tes dan lembar lapangan lain. Selisih diperbaiki dengan melihat lembarnya. Usulan: kalau selisih lebih dari 1% sel di satu rombel, semua lembar rombel itu diketik ulang.
+Tidak ada pengetikan, jadi ketik ulang 10% tidak diperlukan. Sebagai gantinya, penyimpanan kode diuji otomatis di tahap 3 dengan jawaban contoh untuk setiap butir.
 
 ### Variabel turunan
 
@@ -474,24 +471,30 @@ Ditambahkan ke [11, *Variabel peserta dan sesi*](11_KAMUS_DATA.md#variabel-peser
 
 | Satuan | Kolom | Isi |
 | --- | --- | --- |
-| Peserta | `questionnaire_status`, `questionnaire_date`, `questionnaire_makeup`, `questionnaire_late` | Status, tanggal, susulan, dan diisi setelah mulai bermain |
-| | `phone_access` … `books_home` (41 kolom, urutan ang-01 sampai ang-17) | Jawaban mentah berkode, termasuk `-`, `*`, `8`, `9` |
+| Peserta | `questionnaire_status`, `questionnaire_date`, `questionnaire_makeup`, `questionnaire_late`, `questionnaire_minutes` | Status, tanggal, susulan, diisi setelah mulai bermain, dan lama mengisi |
+| | `phone_access` … `books_home` (41 kolom, urutan ang-01 sampai ang-17) | Jawaban mentah berkode, termasuk `-`, `8`, `9` |
 | | `own_phone`, `device_count`, `access_index`, `activity_breadth`, `own_accounts`, `social_media_own`, `social_media_use`, `parent_active`, `parent_rules`, `safety_info_sources`, `game_time_group` | Variabel turunan |
 | | `q_flags` | Kode butir yang isinya bertentangan |
+| | `risk_status`, `risk_upset`, `risk_stranger_contact`, `support_parent` … `support_na` | Butir risiko daring di P5 (ang-21 sampai ang-23), termasuk kode `7` (tidak mau menjawab). Penanda rujukan tidak disimpan di data penelitian; lihat [Etika](#etika) |
 
 ## Etika
 
 1. **Izin.** Hanya siswa dengan izin orang tua dan persetujuan siswa di L7 yang mengisi. Surat izin orang tua sebaiknya menyebut topik angket: HP dan internet di rumah, media sosial, game, pendampingan orang tua, serta bahasa dan buku di rumah.
-2. **Kerahasiaan.** Lembar hanya memuat kode peserta dan nomor kursi. Jawaban dibaca tim peneliti saja. Guru dan orang tua tidak melihat jawaban per siswa. Laporan ke sekolah hanya berisi angka gabungan, tidak pernah per siswa, dan tidak untuk kelompok yang berisi kurang dari 5 siswa. Angket tidak dipakai untuk menilai siswa, guru, atau sekolah.
+2. **Kerahasiaan.** Layar hanya menampilkan kode peserta. Jawaban dibaca tim peneliti saja. Guru dan orang tua tidak melihat jawaban per siswa. Laporan ke sekolah hanya berisi angka gabungan, tidak pernah per siswa, dan tidak untuk kelompok yang berisi kurang dari 5 siswa. Angket tidak dipakai untuk menilai siswa, guru, atau sekolah.
 3. **Tidak ada pertanyaan sensitif.** Tidak ada pertanyaan tentang penghasilan keluarga, pekerjaan atau pendidikan orang tua, agama, suku, keadaan keluarga, kesehatan, atau pengalaman buruk (lihat [Yang sengaja tidak ditanyakan](#yang-sengaja-tidak-ditanyakan)). Banyaknya buku di rumah (ang-17) adalah satu-satunya penanda latar belakang rumah, dan pilihannya tidak menyebut kaya atau miskin.
 4. **Kalimat tidak menghakimi.** Menurut PP Tunas, anak usia 13 tahun ke bawah hanya boleh memakai platform berisiko rendah dengan persetujuan orang tua, tetapi siswa kelas 5 yang punya akun media sosial tetap akan ada. Pertanyaan tidak boleh membuat mereka merasa ketahuan:
    - ang-08 dibuka dengan kalimat bahwa semua jawaban boleh.
-   - Kata "dilarang", "melanggar", "seharusnya", dan "boleh tidak" tidak dipakai di lembar.
+   - Kata "dilarang", "melanggar", "seharusnya", dan "boleh tidak" tidak dipakai di angket.
    - Pilihan seperti "Lebih dari 4 jam" atau "Tidak ada aturan" tidak diberi tanda bahwa itu buruk.
    - Koordinator tidak menanggapi jawaban siswa, dan tidak ada tindak lanjut ke guru atau orang tua.
-5. **Tidak mengajarkan jawaban game.** Angket diisi sebelum game dan sebelum tes akhir, jadi tidak ada butir yang menyebut topik atau tindakan kunci D2 dan D3: data pribadi (DIG-PRI), kata sandi dan kode OTP (DIG-SAN), izin membagikan foto atau obrolan (DIG-IZN, DIG-ETK), orang asing (DIG-ASG), kabar bohong (DIG-HOX), atribusi (BUD-ATR), keterangan budaya yang keliru (BUD-REP), izin pelaku dan pemilik karya (BUD-IZN), dan menghargai tradisi (BUD-ETK). Butir seperti "Pernahkah kamu memberikan kode OTP?" atau "Apakah kamu memeriksa kebenaran berita?" tidak dipakai. Satu-satunya rujukan ke keamanan adalah frasa umum "memakai internet dengan aman" di ang-12, yang juga sudah ada di sampul buklet tes.
-6. **Boleh tidak menjawab.** Setiap butir boleh dikosongkan, dan ini dibacakan di petunjuk. Siswa yang ingin berhenti boleh berhenti tanpa akibat.
-7. **Kalau anak bercerita.** Angket utama tidak menanyakan pengalaman buruk, jadi kecil kemungkinan anak bercerita hal yang mengkhawatirkan. Kalau itu terjadi, peneliti mengikuti protokol etik: koordinator melapor ke ketua peneliti, yang menjalankan langkah rujukan di protokol. Ceritanya tidak dicatat sebagai data angket.
+5. **Tidak mengajarkan jawaban game.** Angket diisi sebelum game dan sebelum tes akhir, jadi tidak ada butir yang menyebut topik atau tindakan kunci D2 dan D3: data pribadi (DIG-PRI), kata sandi dan kode OTP (DIG-SAN), izin membagikan foto atau obrolan (DIG-IZN, DIG-ETK), orang asing (DIG-ASG), kabar bohong (DIG-HOX), atribusi (BUD-ATR), keterangan budaya yang keliru (BUD-REP), izin pelaku dan pemilik karya (BUD-IZN), dan menghargai tradisi (BUD-ETK). Butir seperti "Pernahkah kamu memberikan kode OTP?" atau "Apakah kamu memeriksa kebenaran berita?" tidak dipakai. Satu-satunya rujukan ke keamanan adalah frasa umum "memakai internet dengan aman" di ang-12, yang juga sudah ada di layar pembuka tes.
+6. **Boleh tidak menjawab.** Setiap butir boleh dilewati, dan ini tertulis di petunjuk. Siswa yang ingin berhenti boleh berhenti tanpa akibat.
+7. **Kalau anak bercerita.** Angket P1 tidak menanyakan pengalaman buruk, jadi kecil kemungkinan anak bercerita hal yang mengkhawatirkan saat itu. Kalau itu terjadi, peneliti mengikuti protokol etik: koordinator melapor ke ketua peneliti, yang menjalankan langkah rujukan di protokol. Ceritanya tidak dicatat sebagai data angket.
+8. **Butir risiko daring di P5** (diputuskan 26 Oktober 2026). Syaratnya:
+   - Butir ini disebut di permohonan izin etik dan di surat izin orang tua. Siswa yang orang tuanya tidak setuju dengan butir ini tidak melihatnya.
+   - Diisi sendiri di layar, tidak dibacakan, dan tidak ada orang lain yang melihat layar siswa. Denah papan catur dan jarak antarperangkat ikut menjaga privasi.
+   - Setelah butir ini, semua siswa, apa pun jawabannya, melihat pesan yang sama tentang kepada siapa bisa bercerita (orang tua, guru, atau kakak peneliti). Dengan begitu, tidak ada siswa yang terlihat berbeda.
+   - Prosedur rujukan ditulis di protokol etik: siapa yang melihat jawaban yang perlu ditindaklanjuti, kapan, dan bagaimana kode dihubungkan dengan nama di L7 (hanya oleh ketua peneliti). Penanda rujukan dan catatan tindak lanjut disimpan di luar data penelitian.
 
 ## Validasi dan uji coba
 
@@ -499,51 +502,42 @@ Ditambahkan ke [11, *Variabel peserta dan sesi*](11_KAMUS_DATA.md#variabel-peser
 | --- | --- | --- |
 | 2 | Telaah isi: relevansi setiap butir dengan gunanya di analisis, butir yang kurang atau berlebih, butir yang bisa memancing jawaban D2 atau D3, dan kepekaan kalimat | Ahli Literasi Digital 1 dan 2 |
 | 2 | Telaah bahasa: kata yang sulit, panjang kalimat, pilihan yang tumpang tindih, dan nada yang menghakimi | Ahli Bahasa Anak 1 dan 2 |
-| 2 | Uji keterbacaan dengan 3–5 anak kelas 5 setelah izin etik terbit, bersama uji keterbacaan bank dan tes. Anak diminta menjelaskan dengan kata-katanya sendiri arti "akun sendiri", "menemanimu", "hari sekolah", dan "1 jam" | Peneliti |
-| 4 | Uji coba satu kelas, dibacakan seperti pelaksanaan sebenarnya. Yang dilihat: waktu total (sasaran ≤ 10 menit), butir yang sering kosong atau `*`, butir dengan banyak *Tidak tahu*, pilihan yang tidak pernah dipilih, pertanyaan yang sering ditanyakan siswa (catatan P3 di L6), dan isian yang bertentangan (`q_flags`) | Peneliti |
+| 2 | Uji keterbacaan dengan 3–5 anak kelas 5 setelah izin etik terbit, bersama uji keterbacaan bank dan tes, di mock-up layar modul. Karena angket tidak dibacakan, anak membaca sendiri, lalu diminta menjelaskan dengan kata-katanya sendiri arti "akun sendiri", "menemanimu", "hari sekolah", dan "1 jam", dan butir risiko daring | Peneliti |
+| 2 | Mock-up layar angket ikut ditelaah ahli media langkah 1 | Ahli Media Pembelajaran |
+| 4 | Uji coba satu kelas di modul, dibaca sendiri seperti pelaksanaan sebenarnya. Yang dilihat: waktu total (sasaran ≤ 10 menit), butir yang sering dilewati, butir dengan banyak *Tidak tahu*, pilihan yang tidak pernah dipilih, pertanyaan yang sering ditanyakan siswa (catatan P3 di L6), dan isian yang bertentangan (`q_flags`) | Peneliti |
 | G4 | Angket final dan batas kelompok DIF dibekukan bersama pra-registrasi | Pemilik proyek |
 
 Usulan patokan uji coba: butir yang kosong pada lebih dari 10% siswa, atau dijawab *Tidak tahu* oleh lebih dari 20% siswa, ditulis ulang atau dibuang. Satu kelas uji coba hanya berisi ± 28 siswa, jadi angka ini hanya petunjuk kasar.
 
 ## Penyesuaian di dokumen lain
 
-Dikerjakan setelah pemilik proyek menyetujui dokumen ini:
+Keputusan pemilik proyek 26 Oktober 2026 membuat penyesuaian ini bisa dikerjakan:
 
-- **02, L6:** baris angket di tabel instrumen merujuk ke 16 (17 butir, dibacakan, ± 10 menit); kolom *Angket* di `L6-tes` berisi `sudah`, `susulan`, atau `hilang`. Bagian dari daftar kerja no. 11 (lembar final).
-- **02, L7, dan surat izin orang tua:** topik angket disebut.
+- **02, L6:** baris angket di tabel instrumen merujuk ke 16 (17 butir di modul, dibaca sendiri, ± 10 menit, ditambah butir risiko daring di P5); status angket dibaca dari modul. Bagian dari daftar kerja no. 11 (lembar final).
+- **02, L7, dan surat izin orang tua:** topik angket disebut, termasuk butir risiko daring di P5 dan persetujuan terpisahnya.
 - **11:** variabel angket di *Variabel peserta dan sesi*.
 - **03:** pola kode `ang-*` serta kode jawaban `8` dan `9`.
 - **07:** angket masuk paket validasi tahap 2 (telaah isi dan bahasa).
 - **01 dan 00:** status daftar kerja no. 10.
 
-## Pertanyaan untuk pemilik proyek
+## Keputusan pemilik proyek
 
-Satu pertanyaan. Nomornya **4**, melanjutkan pertanyaan 1–3 di [13](13_TES_AWAL_AKHIR.md#pertanyaan-untuk-pemilik-proyek). Pilihan yang disarankan ada di urutan pertama.
+Pertanyaan 4 di draf ini (pengalaman risiko daring) dan media angket diputuskan pemilik proyek pada 26 Oktober 2026, bersama pertanyaan 1–3 di [13](13_TES_AWAL_AKHIR.md#keputusan-pemilik-proyek). Rinciannya di [04](04_CATATAN_KEPUTUSAN.md).
 
-**4. Pengalaman risiko daring di angket**
+1. **Angket di modul tes GELITA**, langsung setelah tes awal, hanya di layar dan tidak dibacakan koordinator sesi.
+2. **Dua–tiga butir pengalaman risiko daring diisi di P5 setelah tes akhir**, sendiri di layar. Di P5 tes dan game sudah selesai, jadi butir ini tidak memancing D2. Syarat etiknya ada di [Etika](#etika) no. 8. Butirnya ang-21 sampai ang-23 di bawah; jumlah akhirnya (dua atau tiga) ditetapkan setelah telaah ahli dan uji keterbacaan. Tambahannya ± 3 menit di P5.
 
-Apakah angket memuat 2–3 butir tentang pengalaman risiko daring, misalnya dihubungi orang yang tidak dikenal atau melihat sesuatu yang membuat tidak nyaman?
+Pertimbangan yang dicatat sebelum keputusan, dan yang masih berlaku: anak 10–11 tahun bisa merasa sedih atau malu, jadi butir harus diisi secara privat; jawaban "pernah" mewajibkan tindak lanjut; angka pengalaman buruk kemungkinan kurang dilaporkan, sehingga hasilnya hanya deskriptif.
 
-1. *(Disarankan)* **Tidak dimasukkan.** Alasannya:
-   - *Etika.* Angket diisi bersama di kelas dan dibacakan keras. Global Kids Online meminta pertanyaan risiko diajukan secara privat, misalnya diisi sendiri. Di kelas dengan tetangga sebangku, itu tidak terjamin, dan anak 10–11 tahun bisa merasa sedih atau malu.
-   - *Kewajiban menindaklanjuti.* Kalau seorang anak menjawab pernah dihubungi orang asing atau melihat hal yang mengganggu, peneliti wajib menindaklanjuti. Itu butuh prosedur rujukan, membuka hubungan kode dan nama di L7, dan telaah etik yang lebih berat.
-   - *Memancing D2.* Orang asing (DIG-ASG) adalah topik Skenario Digital. Bertanya tentang orang asing sebelum game sama dengan memberi tahu bahwa topik itu penting.
-   - *Tidak dibutuhkan analisis.* Tidak ada analisis di 01 dan 13 yang membutuhkan data paparan risiko.
-   - *Datanya lemah.* Disrupting Harm mencatat bahwa angka pengalaman buruk kemungkinan kurang dilaporkan. Dengan ± 300 siswa, jawaban "ya" akan sedikit dan sulit dianalisis.
-2. **Dua–tiga butir di lembar terpisah, diisi di P5 setelah tes akhir.** Tidak memancing tes atau game, karena keduanya sudah selesai. Syaratnya: izin etik yang menyebut butir ini, kalimat di surat izin orang tua, prosedur rujukan tertulis, lembar yang dimasukkan sendiri oleh siswa ke amplop tertutup, dan tambahan ± 3 menit di P5, yang menurut [13](13_TES_AWAL_AKHIR.md#waktu-di-p1-dan-p5) sudah padat.
-3. **Satu butir umum di P5** (hanya ang-21). Lebih ringan daripada pilihan 2, tetapi tetap butuh prosedur rujukan, dan hasilnya hanya satu angka gambaran.
+> *Pertanyaan berikut tentang hal-hal yang bisa terjadi di internet. Kalau tidak ingin menjawab, pilih "Tidak mau menjawab" atau lewati saja.*
 
-**Draf butir untuk pilihan 2 dan 3 (bukan bagian angket utama).** Butir ini hanya dipakai kalau pemilik proyek memilih pilihan 2 atau 3. Nomor 18–20 sengaja dikosongkan supaya tidak tercampur dengan butir utama.
+| Kode | Pertanyaan di layar | Pilihan dan kode | Variabel | Sumber |
+| --- | --- | --- | --- | --- |
+| ang-21 | Dalam setahun ini, pernahkah ada sesuatu di internet atau HP yang membuatmu tidak nyaman, takut, atau sedih? | 0 Tidak pernah · 1 Pernah, sekali atau dua kali · 2 Beberapa kali atau lebih · 9 Tidak tahu · 7 Tidak mau menjawab | `risk_upset` | Global Kids Online Q7Harm |
+| ang-22 | Dalam setahun ini, pernahkah orang yang tidak kamu kenal di dunia nyata mengirim pesan kepadamu lewat internet atau HP? | 0 Tidak · 1 Ya · 9 Tidak tahu · 7 Tidak mau menjawab | `risk_stranger_contact` | Global Kids Online Q8Risks butir a |
+| ang-23 | Kalau ada sesuatu di internet yang membuatmu tidak nyaman, kepada siapa kamu biasanya bercerita? *Centang semua yang benar.* | Orang tua · Kakak atau saudara · Teman · Guru · Orang dewasa lain · Aku tidak bercerita kepada siapa pun · Belum pernah ada hal seperti itu (masing-masing 1/0) | `support_parent`, `support_family`, `support_friend`, `support_teacher`, `support_adult`, `support_none`, `support_na` | Global Kids Online Q11Support; EU Kids Online 2017 QF04 |
 
-> *Pertanyaan berikut tentang hal-hal yang bisa terjadi di internet. Kalau tidak ingin menjawab, centang "Tidak mau menjawab" atau kosongkan saja.*
-
-| Kode | Pertanyaan yang dicetak | Pilihan dan kode | Variabel | Sumber | Dipakai di pilihan |
-| --- | --- | --- | --- | --- | --- |
-| ang-21 | Dalam setahun ini, pernahkah ada sesuatu di internet atau HP yang membuatmu tidak nyaman, takut, atau sedih? | 0 Tidak pernah · 1 Pernah, sekali atau dua kali · 2 Beberapa kali atau lebih · 9 Tidak tahu · 7 Tidak mau menjawab | `risk_upset` | Global Kids Online Q7Harm | 2 dan 3 |
-| ang-22 | Dalam setahun ini, pernahkah orang yang tidak kamu kenal di dunia nyata mengirim pesan kepadamu lewat internet atau HP? | 0 Tidak · 1 Ya · 9 Tidak tahu · 7 Tidak mau menjawab | `risk_stranger_contact` | Global Kids Online Q8Risks butir a | 2 |
-| ang-23 | Kalau ada sesuatu di internet yang membuatmu tidak nyaman, kepada siapa kamu biasanya bercerita? *Centang semua yang benar.* | Orang tua · Kakak atau saudara · Teman · Guru · Orang dewasa lain · Aku tidak bercerita kepada siapa pun · Belum pernah ada hal seperti itu (masing-masing 1/0) | `support_parent`, `support_family`, `support_friend`, `support_teacher`, `support_adult`, `support_none`, `support_na` | Global Kids Online Q11Support; EU Kids Online 2017 QF04 | 2 |
-
-Kode `7` (tidak mau menjawab) hanya dipakai di butir ini. Kalau pilihan 2 atau 3 dipilih, 02 (L6, L7) dan protokol etik ikut disesuaikan.
+Kode `7` (tidak mau menjawab) hanya dipakai di butir ini. Nomor 18–20 sengaja dikosongkan supaya butir P5 tidak tercampur dengan butir angket utama. `risk_status` di data mencatat `sudah`, `tanpa_izin` (orang tua tidak setuju dengan butir ini), atau `hilang`.
 
 ## Rujukan
 

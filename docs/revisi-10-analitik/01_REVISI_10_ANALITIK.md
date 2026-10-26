@@ -364,7 +364,7 @@ Data inti analisis adalah ketepatan percobaan pertama. Lembar lapangan dipakai s
 | Tugas mana yang lama? | Waktu aktif | Median dan rentang antarkuartil; model campuran dengan efek acak siswa dan rombel |
 | Apakah bantuan menolong? | Bantuan dibuka sebelum percobaan | Regresi logistik campuran |
 | Bagaimana pemahaman keamanan dan etika digital siswa? | Pilihan dan alasan skenario, angket | Tabulasi silang tindakan × alasan; proporsi "tindakannya benar, alasannya keliru" |
-| Apakah skor game sejalan dengan kemampuan nyata? | Kemampuan Rasch, tes awal dan akhir | Korelasi; uji beda tes awal dan akhir |
+| Apakah skor game sejalan dengan kemampuan nyata? | Kemampuan Rasch game, tes awal dan akhir per bagian ([13](13_TES_AWAL_AKHIR.md#analisis)) | Pola korelasi tes awal per bagian dengan kemampuan game per dimensi; perubahan tes awal–akhir per bagian, dilaporkan sebagai perubahan, bukan pengaruh game |
 | Apakah data pengamatan bisa dipercaya? | L4, pengodean kesalahan | Cohen's κ; reliabilitas orang di model Rasch |
 
 ## Peta jalan dan daftar kerja
@@ -389,8 +389,8 @@ Ahli media menilai dalam dua langkah (diputuskan 25 Oktober 2026): di tahap 2, g
 | 6 | Tulis Skenario Digital untuk tiga wilayah, lengkap dengan pilihan tindakan dan alasan berkode | 1 | Claude | Selesai di draf 08, menunggu validasi |
 | 7 | Tulis cerita penghubung dan narasi untuk tantangan kelima | 1 | Claude (draf), pemilik proyek (persetujuan) | Selesai: [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md) disetujui 26 Oktober 2026 |
 | 8 | Tentukan 4–6 butir jangkar | 1 | Claude | Selesai di draf 08 (6 butir), menunggu validasi |
-| 9 | Susun tes literasi membaca dan tes literasi digital, bentuk A dan B: bagian membaca diadaptasi dari contoh soal AKM/ANBK yang terbuka untuk umum, bagian D2 dan D3 disusun sendiri dan tidak sama dengan butir game | 1 | Claude (draf), pemilik proyek | Draf di [13](13_TES_AWAL_AKHIR.md), [14](14_TES_BAGIAN_MEMBACA.md), dan [15](15_TES_BAGIAN_DIGITAL.md), menunggu keputusan pemilik proyek |
-| 10 | Susun angket akses digital | 1 | Claude (draf), pemilik proyek | Draf di [16](16_ANGKET_AKSES_DIGITAL.md), menunggu keputusan pemilik proyek |
+| 9 | Susun tes literasi membaca dan tes literasi digital, bentuk A dan B: bagian membaca diadaptasi dari contoh soal AKM/ANBK yang terbuka untuk umum, bagian D2 dan D3 disusun sendiri dan tidak sama dengan butir game | 1 | Claude (draf), pemilik proyek | Draf di [13](13_TES_AWAL_AKHIR.md), [14](14_TES_BAGIAN_MEMBACA.md), dan [15](15_TES_BAGIAN_DIGITAL.md); keputusan pemilik proyek 26 Oktober 2026 (modul tes GELITA, batas waktu longgar, topik di luar Kedu); menunggu validasi |
+| 10 | Susun angket akses digital | 1 | Claude (draf), pemilik proyek | Draf di [16](16_ANGKET_AKSES_DIGITAL.md); keputusan pemilik proyek 26 Oktober 2026 (di modul, tidak dibacakan; butir risiko daring di P5); menunggu validasi |
 | 11 | Finalkan lembar L0–L7 | 1 | | Belum mulai |
 | 12 | Buat daftar kode sekolah penelitian (S01, S02, …) | 1 | | Belum mulai |
 | 13 | Tentukan siapa pemegang akun admin dan akun peneliti | 1 | | Belum mulai |
@@ -400,7 +400,7 @@ Ahli media menilai dalam dua langkah (diputuskan 25 Oktober 2026): di tahap 2, g
 | 17 | Uji coba satu kelas dengan semua lembar | 4 | | Belum mulai |
 | 18 | Pra-registrasi skema kesalahan dan rencana analisis di OSF, di gerbang G4 | 4 | | Belum mulai |
 | 19 | Susun skala pendamping sikap menjaga warisan untuk Balai Refleksi, lalu masukkan ke validasi ahli (no. 14) | 1 | | Belum mulai |
-| 20 | Buat papan cerita atau mock-up layar baru (Skenario Digital, *Periksa Unggahan*, token) untuk ahli media langkah 1 | 1 | | Belum mulai |
+| 20 | Buat papan cerita atau mock-up layar baru (Skenario Digital, *Periksa Unggahan*, token, modul tes dan angket) untuk ahli media langkah 1 | 1 | | Belum mulai |
 | 21 | Telaah ahli media langkah 2 pada layar jadi di instalasi uji, sebelum uji coba (G3) | 3 | | Belum mulai |
 
 ## Pertanyaan yang masih terbuka
@@ -460,6 +460,7 @@ Belum ada yang dikerjakan sekarang. Daftar ini jadi bahan dokumen implementasi d
 | 19 | Perbaikan media lain dari telaah pendahuluan | semua | Temuan M-04 sampai M-11 di [10_TELAAH_PENDAHULUAN_MEDIA.md](10_TELAAH_PENDAHULUAN_MEDIA.md): nama berkas gambar benda yang acak, antrean event saat keluar, ukuran petunjuk, dua pelanggaran axe, kode penelitian di Profil, data pendaftaran |
 | 20 | Bank soal baru dari kisi-kisi | 2, 3, 6, 10 | Cari Objek dua babak, kartu jangkar, variasi dari buklet B1–B4, aturan `DifficultyRules` baru, kolom dan sheet workbook baru; daftar lengkapnya di [06](06_KISI_KISI_BANK_SOAL.md#yang-perlu-disiapkan-sistem-nanti). Isi bank ada di [08](08_DRAF_BANK_SOAL.md). Selama studi, Susun Gambar diacak dari dua variasi yang keterangannya bersih dari kunci, termasuk satu gambar baru Temanggung ([08](08_DRAF_BANK_SOAL.md#susun-gambar-selama-studi)) |
 | 21 | Skala pendamping sikap di Balai Refleksi | pendamping | Butir skala dan jawabannya berkode sendiri (`sikap`), masuk ekspor peneliti, bukan bagian skor literasi digital (keputusan 25 Oktober 2026) |
+| 22 | Modul tes awal–akhir dan angket akses digital ([13](13_TES_AWAL_AKHIR.md#modul-tes-di-gelita), [16](16_ANGKET_AKSES_DIGITAL.md); keputusan 26 Oktober 2026) | bukti validitas, kovariat | Tampilan Bootstrap tanpa unsur game; Bootstrap disimpan lokal berversi di `public/assets/vendor/`, tanpa CDN. Dibuka token sesi P1 dan P5; bentuk A/B ditetapkan panel peneliti dari denah L2. Satu bagian dalam satu waktu, boleh kembali sebelum dikirim; urutan pilihan tetap. Batas waktu per bagian tersembunyi, berupa pengaturan di konfigurasi studi. Jawaban tersimpan per butir di server; kunci dan skor tidak pernah dikirim ke browser. Waktu tampil per butir dan penggantian jawaban dicatat. Angket langsung setelah tes awal; butir risiko daring setelah tes akhir, hanya untuk siswa yang izinnya mencakup butir itu. Susulan dibuka peneliti. Jawaban, skor, dan variabel masuk ekspor peneliti sesuai [11](11_KAMUS_DATA.md) |
 
 Laporan kelas untuk guru tetap tercatat sebagai gagasan di luar penelitian dan tidak masuk daftar ini.
 

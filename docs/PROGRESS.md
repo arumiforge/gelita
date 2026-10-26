@@ -41,10 +41,11 @@ Documentation only, in `docs/revisi-10-analitik/` (Indonesian, at the owner's re
   - [x] Item drafts: reading part adapted from official samples in the *Framework AKM* (`14`), D2 and D3 parts (`15`), questionnaire (`16`), all `needs_verification`
   - [x] Consistency check of `13` against `14`–`16` (26 October 2026). `13` now matches the drafts (sources, answer formats, five sample items, `error_codes` as a list, no repeats inside the test, open issues listed). Test time recounted from every word students read: about 67 minutes with instructions, not 47, so question 1 was rewritten. `15`: the form-A D3 scene moved from sasirangan to karawo and both G1 captions changed, because `14`'s M3 texts gave away their answers; four commenter names shared with `14` replaced. `14`: matching item B04 re-lettered so no pair shares a key letter with A04
   - [x] Owner decided the four questions in `13` (26 October 2026, `04`): meeting length follows the test's needs, not school periods (the study may use all periods and after-school time), with generous hidden caps per part (about 40 and 35 minutes); the test and the questionnaire run in a GELITA module with a plain Bootstrap look, not a game look (system change 22); topics are Nusantara culture outside Kedu; 2–3 online-risk items are answered privately on screen at P5 after the post-test; the questionnaire follows the pre-test on screen, not read aloud
-  - [ ] Carry the decisions into `13`–`16` (screen instead of paper, timing, automatic data entry)
+  - [x] Decisions carried into `13`–`16` (26 October 2026): module section and timing in `13`; on-screen instructions in `14` and `15`; questionnaire on screen, P5 risk items with ethics conditions, and automatic data in `16`; system change 22 (test and questionnaire module, Bootstrap kept locally) in `01`
+  - [ ] Align `02` (L6), `06` (P1/P5), `11` (test and questionnaire variables), `03` (codes), and `07` (validation package) with the decisions
   - [ ] After the decisions: align `02` (L6, done with work item 11), `06` (P1/P5), `11` (test and questionnaire variables), `03` (codes), and the r10 v2.1 instrument (`07`)
 - [ ] Complete implementation document, after the revision documents are final and gate G2 (expert validation and ethics approval) is passed
-- [ ] Implementation of the system changes listed in `01` (21 so far), one short-lived branch each, after the implementation document is approved
+- [ ] Implementation of the system changes listed in `01` (22 so far), one short-lived branch each, after the implementation document is approved
 
 ## Before the research starts
 

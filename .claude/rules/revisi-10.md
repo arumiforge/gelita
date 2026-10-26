@@ -5,7 +5,7 @@ paths:
 
 # Research revision sessions (`docs/revisi-10-analitik/`)
 
-The Markdown documents total about 660 KB, roughly 290k tokens. Reading them whole fills a session, so keep each session small.
+The Markdown documents total about 670 KB, roughly 290k tokens. Reading them whole fills a session, so keep each session small.
 
 `dokumen-pendukung-peneliti/` holds reading material for researchers and the team (methodology, theory, references checked against their sources). It is not an implementation source: do not read it up front, and do not plan system changes from it. Decisions that come out of it are recorded in `04`.
 
