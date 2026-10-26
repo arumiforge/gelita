@@ -193,7 +193,7 @@ Semua bertanda "Peneliti" dan masuk ekspor peneliti, tidak masuk skor literasi d
 
 Telaah bahasa dari Ahli Bahasa Anak dicatat sebagai saran per butir (jelas Ya/Tidak, usulan kalimat). Telaah ini tidak masuk I-CVI, tapi kalimat baru dikirim ulang ke keempat penilai.
 
-Lembar penilaiannya masuk paket validasi instrumen r10 v2.1 (lihat [Akibat ke dokumen lain](#akibat-ke-dokumen-lain)).
+Lembar penilaiannya adalah B.8 di instrumen r10 v2.1, siap ditempel dari [07](07_TELAAH_INSTRUMEN_VALIDASI.md#lembar-penilaian-skala-sikap-b8).
 
 ### Tahap 2: uji keterbacaan dengan anak
 
@@ -235,7 +235,7 @@ Dokumen-dokumen ini tidak diubah di sesi ini; penyesuaiannya dikerjakan pemilik 
 | [02](02_LEMBAR_LAPANGAN.md) (sesi `r10-lembar-lapangan`) | L1: catatan susulan skala dan tanggalnya. L3: bantuan membaca satu kata di skala sikap tercatat dengan kode yang ada (`PNL` + `BHS`). L7: surat izin orang tua menyebut skala sikap dalam satu kalimat |
 | [03](03_KODE_DAN_ARTI.md) | Kode baru dari skala ini: `skp-01` … `skp-12`, `skp-ct-01`, SK1–SK4, kode jawaban 1–4 (sudah ditambahkan di sesi ini) |
 | [06](06_KISI_KISI_BANK_SOAL.md), baris P5 | Skala sikap sebelum kritik dan saran; susulan skala paling lama 7 hari setelah P5 |
-| [07](07_TELAAH_INSTRUMEN_VALIDASI.md) (instrumen r10 v2.1) | Lembar penilaian skala sikap: relevansi 1–4 untuk Ahli Budaya Kedu (G3), Ahli Pengukuran, Ahli Bahasa Anak 1 dan 2; telaah bahasa untuk Ahli Bahasa Anak; catatan Ya/Tidak tumpang tindih D3 untuk Ahli Literasi Digital 1 dan 2. Baris "Indikator sikap" di tabel *perubahan yang menunggu keputusan* diperbarui ke dokumen ini |
+| [07](07_TELAAH_INSTRUMEN_VALIDASI.md) (instrumen r10 v2.1) | **Sudah dikerjakan (26 Oktober 2026):** lembar B.8 di [07](07_TELAAH_INSTRUMEN_VALIDASI.md#lembar-penilaian-skala-sikap-b8). Lembar penilaian skala sikap: relevansi 1–4 untuk Ahli Budaya Kedu (G3), Ahli Pengukuran, Ahli Bahasa Anak 1 dan 2; telaah bahasa untuk Ahli Bahasa Anak; catatan Ya/Tidak tumpang tindih D3 untuk Ahli Literasi Digital 1 dan 2. Baris "Indikator sikap" di tabel *perubahan yang menunggu keputusan* diperbarui ke dokumen ini |
 | [11](11_KAMUS_DATA.md) | Di `kamus-1.1` setelah uji coba: variabel di [Variabel untuk kamus data](#variabel-untuk-kamus-data), termasuk `feedback_rating` sebagai data kepraktisan. `kamus-1.0` tidak diubah |
 | [Dokumen pendukung peneliti](dokumen-pendukung-peneliti/README.md) | **Sudah dikerjakan (26 Oktober 2026).** Usulan "kepraktisan diukur dari log dan lembar L1, L3, L4" yang belum diputuskan: tambahkan bintang 1–5 di kritik dan saran sebagai sumber kepraktisan dari siswa |
 | [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md) | Periksa apakah baris terakhir cerita penutup memuji sikap siswa terhadap warisan Kedu tepat sebelum skala; kalau ya, pertimbangkan kalimat yang lebih netral. Pengantar Balai Refleksi (`Game.reflectionLead`) baru tampil setelah skala |

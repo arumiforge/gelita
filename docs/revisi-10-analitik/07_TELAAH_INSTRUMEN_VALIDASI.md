@@ -2,7 +2,7 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 25 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Status: **diterima pemilik proyek (25 Oktober 2026)**; instrumen ditulis ulang setelah kisi-kisi 06 disetujui
+Per 26 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Status: **diterima pemilik proyek (25 Oktober 2026)**; instrumen ditulis ulang setelah kisi-kisi 06 disetujui
 
 Dokumen ini menelaah dua draf instrumen validasi ahli milik pemilik proyek, lalu mengusulkan perbaikannya. Perbaikan yang sudah pasti ditulis sebagai teks pengganti yang siap ditempel. Perbaikan yang masih bergantung pada keputusan atau kisi-kisi ditandai.
 
@@ -129,10 +129,89 @@ Bagian-bagian ini sebaiknya ditulis ulang **sekali**, setelah pemilik proyek mem
 | Kode BUD-* dan label tunggal | Tabel B4, F5 ahli materi, C.2, C8–C9 pengamat budaya | INF-BUD hanya D1 dan skala pendamping; DIG-IZN dan DIG-ETK hanya D2; BUD-ATR, BUD-REP, BUD-IZN, BUD-ETK untuk D3 |
 | Skor tindakan Skenario Digital 0–1–2, alasan sebagai diagnosis | Aspek E, B.6, H4 | Tambahkan butir: "Pilihan 'kurang tepat' sungguh berada di antara 'tepat' dan 'berisiko', sehingga skor 0–1–2 masuk akal". Ubah E4: R-ATUR disebut "penalaran berbasis aturan" (wajar dan aman pada usia 10–11 tahun), bukan "kepatuhan semata". Tambahkan di B.6 kolom "Alasan netral terhadap tindakan (Y/T)": pilihan alasan masuk akal apa pun tindakan yang dipilih |
 | Butir D3 baru | B.6 (telaah skenario), C.5 (matriks objek) | Tambahkan lembar telaah *Periksa Unggahan* (12 butir), dan baris matriks untuk setiap unggahan tiruan dan sanggar atau pelaku budaya yang disebut |
-| Indikator sikap | G3 pengamat budaya | Diputuskan 25 Oktober 2026: dipakai sebagai skala pendamping sikap lewat Balai Refleksi. G3 menilai butir skala itu setelah disusun |
+| Indikator sikap | G3 pengamat budaya, lembar baru B.8 | Diputuskan 25 Oktober 2026: dipakai sebagai skala pendamping sikap lewat Balai Refleksi. Skalanya sudah disusun di [17](17_SKALA_SIKAP.md) (26 Oktober 2026); G3 menunjuk ke lembar B.8 di bagian [Lembar penilaian skala sikap](#lembar-penilaian-skala-sikap-b8) |
 | Aturan kesempatan Skenario Digital | Aspek E, B.6 | Diputuskan 25 Oktober 2026: tiga kesempatan seperti tantangan lain; yang dinilai tindakan dan alasan pertama; "kurang tepat" memakai satu kesempatan |
 | Butir jangkar, tes awal–akhir | C5, aspek J ahli materi | Butir jangkar ada di draf 08. Butir tes ada di 14 dan 15 (26 Oktober 2026) dan ditelaah bersama bank: pelabelan buta, relevansi, dan butir telaah baru tentang kesetaraan pasangan A dan B ([13](13_TES_AWAL_AKHIR.md#validasi-dan-uji-coba)) |
 | Jumlah butir, bacaan, dan pengecoh per wilayah | Tabel B2–B3, C3 ahli materi, B.6 baris | Disalin dari kisi-kisi 06 |
+
+## Lembar penilaian skala sikap (B.8)
+
+Teks ini siap ditempel ke instrumen r10 v2.1 sebagai lembar baru **B.8 Telaah skala pendamping sikap menjaga warisan**. Isinya mengikuti keputusan 25 dan 26 Oktober 2026 di [17](17_SKALA_SIKAP.md#rencana-validasi). Butir G3 di instrumen pengamat budaya cukup berbunyi: "Isi lembar B.8."
+
+### Penilai dan bagian yang diisi
+
+| Kolom atau bagian | Ahli Budaya Kedu | Ahli Pengukuran | Ahli Bahasa Anak 1, 2 | Ahli Literasi Digital 1, 2 |
+| --- | --- | --- | --- | --- |
+| B.8a Relevansi 1–4 (masuk I-CVI) | Wajib | Wajib | Wajib | — |
+| B.8a Indikator tepat (Y/T) | Wajib | Wajib | — | — |
+| B.8a Arah negatif terbaca jelas (Y/T) | — | Wajib | Wajib | — |
+| B.8a Contoh budaya tepat untuk Kedu (Y/T) | Wajib | — | — | — |
+| B.8a Telaah bahasa (kata sulit, kalimat terlalu panjang, usulan kalimat) | — | — | Wajib | — |
+| B.8a Tumpang tindih dengan D3 (Y/T) | — | — | — | Wajib |
+| B.8b Penilaian skala secara keseluruhan | Wajib | Wajib | Wajib | — |
+
+Ahli Literasi Digital 1 dan 2 tidak memberi skor relevansi dan tidak masuk hitungan I-CVI. Catatan Y/T mereka dipakai untuk menjaga skala sikap tetap terpisah dari D3. Perkiraan waktu: 30–45 menit untuk penilai relevansi, 10 menit untuk Ahli Literasi Digital.
+
+### Bahan yang dilampirkan
+
+1. Definisi konstruk dan tabel *Beda dengan PBK dan D3* dari [17](17_SKALA_SIKAP.md#konstruk).
+2. Kisi-kisi SK1–SK4 dari [17](17_SKALA_SIKAP.md#kisi-kisi).
+3. 12 pernyataan (skp-01 sampai skp-12), dengan indikator dan arahnya. Contoh soal `skp-ct-01` tidak dinilai.
+4. Format jawaban, petunjuk untuk siswa, dan gambar layar dari mock-up (daftar kerja no. 20), kalau sudah ada.
+
+### Jangkar relevansi
+
+Jangkar ini menyesuaikan T2 untuk skala sikap. Yang dinilai adalah kecocokan pernyataan dengan sikap pada indikatornya, bukan benar–salahnya isi.
+
+| Skor | Relevansi terhadap sikap menjaga warisan dan indikatornya |
+| --- | --- |
+| 4 | Sangat relevan: pernyataan langsung mengungkap sikap pada indikatornya (menghargai, ingin tahu, mau ikut merawat, atau bangga) terhadap warisan budaya Kedu |
+| 3 | Relevan: pernyataan mengungkap sikap menjaga warisan, tapi lebih cocok untuk indikator lain atau terlalu umum |
+| 2 | Kurang relevan: pernyataan lebih mengukur pengetahuan budaya (PBK), perilaku di ruang digital (D3), atau kesukaan umum yang tidak berkaitan dengan warisan |
+| 1 | Tidak relevan untuk sikap menjaga warisan |
+
+### B.8a Telaah per pernyataan
+
+| Kode | Pernyataan | Indikator | Arah | Relevansi (1–4) | Indikator tepat? (Y/T) | Arah negatif jelas? (Y/T) | Contoh budaya tepat? (Y/T) | Tumpang tindih D3? (Y/T) | Kata sulit atau usulan kalimat | Catatan |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| skp-01 | Aku bangga pada budaya daerah Kedu. | SK4 | + | | | — | | | | |
+| skp-02 | Candi di daerah Kedu adalah warisan yang berharga. | SK1 | + | | | — | | | | |
+| skp-03 | Belajar tentang candi dan tari itu membosankan. | SK2 | − | | | | | | | |
+| skp-04 | Aku mau ikut menjaga kebersihan saat berkunjung ke candi. | SK3 | + | | | — | | | | |
+| skp-05 | Aku ingin tahu lebih banyak tentang budaya Kedu. | SK2 | + | | | — | | | | |
+| skp-06 | Tradisi lama sudah kuno, jadi boleh dilupakan. | SK1 | − | | | | | | | |
+| skp-07 | Aku senang menceritakan budaya Kedu kepada teman. | SK4 | + | | | — | | | | |
+| skp-08 | Merawat warisan budaya itu urusan orang dewasa saja. | SK3 | − | | | | | | | |
+| skp-09 | Kesenian dari daerah Kedu penting untuk dijaga. | SK1 | + | | | — | | | | |
+| skp-10 | Aku malu memakai bahasa daerah di depan teman. | SK4 | − | | | | | | | |
+| skp-11 | Aku suka bertanya tentang tradisi kepada orang yang lebih tua. | SK2 | + | | | — | | | | |
+| skp-12 | Aku mau ikut acara budaya seperti merti desa dan kirab. | SK3 | + | | | — | | | | |
+
+Petunjuk kolom:
+- **Arah negatif jelas?** Hanya untuk empat butir negatif. Isi T kalau siswa yang sikapnya positif bisa salah memilih *Setuju*, misalnya karena ingkaran ganda atau kalimat yang bisa dibaca dua arah.
+- **Contoh budaya tepat?** Isi T kalau benda, kesenian, atau acara yang disebut tidak dikenal di salah satu wilayah (Temanggung, Magelang, Wonosobo), atau menyinggung kelompok tertentu. Untuk skp-12, pastikan merti desa dan kirab dikenal di ketiganya.
+- **Tumpang tindih D3?** Isi Y kalau pernyataan menyangkut perilaku di ruang digital (mengunggah, membagikan, berkomentar, menyebut sumber, meminta izin pemilik karya).
+
+### B.8b Penilaian skala secara keseluruhan
+
+| No | Pertanyaan | Ya/Tidak | Catatan |
+| --- | --- | --- | --- |
+| 1 | Empat indikator (SK1–SK4) bersama-sama mewakili sikap menjaga warisan untuk anak kelas 5 | | |
+| 2 | Ada indikator penting yang belum terwakili | | Sebutkan |
+| 3 | Empat pilihan tanpa titik tengah (*Tidak setuju · Kurang setuju · Setuju · Sangat setuju*) mudah dibedakan anak 10–11 tahun | | |
+| 4 | Petunjuk untuk siswa jelas dan tidak memancing jawaban yang "baik" | | |
+| 5 | Butir negatif cukup tersebar dan tidak membingungkan | | |
+| 6 | Ada pernyataan yang bisa membuat siswa dari latar budaya atau bahasa tertentu merasa disudutkan | | Sebutkan kodenya |
+
+### Aturan keputusan
+
+- **I-CVI dengan aturan Lynn (1986):** empat penilai relevansi, jadi butir lolos hanya kalau keempatnya memberi skor 3 atau 4 (I-CVI = 1,00). Satu skor 1 atau 2 berarti butir direvisi atau diganti, lalu dinilai ulang oleh keempatnya.
+- **S-CVI/Ave** dilaporkan, sasaran ≥ 0,90.
+- **Indikator tepat:** dua T dari Ahli Budaya Kedu dan Ahli Pengukuran berarti butir dipindah indikator atau ditulis ulang.
+- **Arah negatif jelas:** satu T berarti kalimat ditelaah ulang sebelum uji keterbacaan dengan anak.
+- **Tumpang tindih D3:** satu Y dari Ahli Literasi Digital berarti butir ditulis ulang tanpa latar digital.
+- **Batas akhir:** paling sedikit 10 butir, dua per indikator, dengan butir negatif di setidaknya tiga indikator. Kalau kurang, butir pengganti ditulis dan dinilai ulang.
+- Usulan kalimat dari Ahli Bahasa Anak tidak masuk I-CVI, tapi kalimat baru dikirim ulang ke keempat penilai relevansi.
 
 ## Instrumen ahli media: telaah
 
@@ -172,6 +251,7 @@ Semuanya cocok.
 3. Setelah draf bank soal baru ada, Claude menjalankan telaah pendahuluan (T6) sebelum berkas dikirim ke ahli.
 4. Ahli media menilai dalam dua langkah (keputusan 25 Oktober 2026): di tahap 2, game sekarang ditambah mock-up layar baru; setelah tahap 3, telaah singkat layar jadi di instalasi uji sebelum uji coba. Instrumen media v1.1 perlu memuat bagian untuk mock-up. Mock-up dan layar jadi itu juga mencakup modul tes dan angket (perubahan sistem no. 22), yang sengaja bertampilan Bootstrap, bukan tampilan game, jadi aspek game di instrumen media tidak berlaku untuknya.
 5. Angket akses digital ([16](16_ANGKET_AKSES_DIGITAL.md)) masuk paket validasi tahap 2: telaah isi oleh Ahli Literasi Digital 1 dan 2, dan telaah bahasa oleh Ahli Bahasa Anak 1 dan 2, termasuk kepekaan butir risiko daring di P5.
+6. Skala sikap ([17](17_SKALA_SIKAP.md)) masuk paket validasi tahap 2 sebagai lembar B.8 di instrumen r10 v2.1 (lihat [Lembar penilaian skala sikap](#lembar-penilaian-skala-sikap-b8)): relevansi oleh Ahli Budaya Kedu, Ahli Pengukuran, dan Ahli Bahasa Anak 1 dan 2; telaah bahasa oleh Ahli Bahasa Anak; catatan tumpang tindih D3 oleh Ahli Literasi Digital 1 dan 2.
 
 ## Rujukan tambahan
 

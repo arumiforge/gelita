@@ -23,7 +23,7 @@ Dokumen lain dibaca per bagian sesuai tugas.
 | [04](04_CATATAN_KEPUTUSAN.md) | Riwayat keputusan, terbaru di atas | Aktif | Selalu, entri teratas | 37 KB |
 | [05](05_TELAAH_BUTIR_DAN_DIMENSI.md) | Telaah butir bank lama terhadap dimensi | Selesai; keputusannya masuk 06 | Hanya untuk menelusuri alasan | 39 KB |
 | [06](06_KISI_KISI_BANK_SOAL.md) | Kisi-kisi bank soal baru, buklet, jangkar, waktu bermain | Disetujui 25 Oktober 2026 | Per bagian, saat menulis butir, tes, atau dokumen implementasi | 42 KB |
-| [07](07_TELAAH_INSTRUMEN_VALIDASI.md) | Telaah instrumen validasi ahli | Diterima; instrumen v2.1 dan media v1.1 belum ditulis | Saat menulis ulang instrumen | 22 KB |
+| [07](07_TELAAH_INSTRUMEN_VALIDASI.md) | Telaah instrumen validasi ahli; lembar penilaian skala sikap B.8 siap tempel (26 Oktober 2026) | Diterima; instrumen v2.1 dan media v1.1 belum ditulis | Saat menulis ulang instrumen | 28 KB |
 | [08](08_DRAF_BANK_SOAL.md) | Draf bank soal baru: 116 butir variasi a/b, 6 jangkar, 12 PBK; pemeriksaan kebocoran keterangan Susun Gambar | Draf, `needs_verification`; variasi Susun Gambar diputuskan 26 Oktober 2026 (gambar baru Wayang Kedu dan Candi Pawon menyusul) | Cari per kode butir (misalnya `wnb-3-a02`) atau judul bagian | 95 KB |
 | [09](09_TELAAH_PENDAHULUAN_BANK_SOAL.md) | Telaah pendahuluan T6 atas draf 08 | Selesai; R1–R4 disetujui | Saat menyiapkan paket validasi | 20 KB |
 | [10](10_TELAAH_PENDAHULUAN_MEDIA.md) | Telaah pendahuluan media | Selesai; keputusan masuk 01 | Saat menyiapkan mock-up dan instrumen media | 18 KB |
