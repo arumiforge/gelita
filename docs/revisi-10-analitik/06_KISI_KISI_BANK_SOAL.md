@@ -135,7 +135,7 @@ Perbandingan dengan bank sekarang: D1 naik dari 29 menjadi 37 butir per siswa, d
 | Periksa Unggahan | 4 per wilayah | a, b | **24** petunjuk, 6 adegan |
 | **Literasi digital** | | | **116** |
 | Temukan Benda (PBK) | 4 per wilayah | satu adegan | 12, diambil dari bank lama |
-| Susun Gambar | — | 10 per wilayah boleh tetap | Gambar lama tetap dipakai; Temanggung mendapat satu gambar baru (Wayang Kedu). Pengerjaan pertama selama studi memakai dua variasi yang bersih dari kunci, lihat [08](08_DRAF_BANK_SOAL.md#susun-gambar-selama-studi) |
+| Susun Gambar | — | 10 per wilayah boleh tetap | Gambar lama tetap dipakai; Temanggung mendapat satu gambar baru (Wayang Kedu), dan gambar Candi Pawon diganti. Pengerjaan pertama selama studi memakai dua variasi yang bersih dari kunci, lihat [08](08_DRAF_BANK_SOAL.md#susun-gambar-selama-studi) |
 
 Bacaan yang ada boleh dipakai ulang sebagai bahan, dengan perbaikan dari [daftar perbaikan butir](05_TELAAH_BUTIR_DAN_DIMENSI.md#daftar-perbaikan-butir) di 05. Dari tiga variasi lama, dua yang paling setara dipilih per tantangan, lalu bentuk teksnya disesuaikan dengan genre di kisi-kisi.
 

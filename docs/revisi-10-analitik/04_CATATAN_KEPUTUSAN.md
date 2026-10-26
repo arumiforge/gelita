@@ -6,6 +6,13 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 26 Oktober 2026
 
+**Konfirmasi pemilik proyek: fakta dan gambar Susun Gambar** (sesi `sky/festive-hopper-cl6p65`)
+
+- **Wayang Kedu Temanggungan** adalah varian tradisi wayang kulit asli dari wilayah Kedu, Jawa Tengah, yang berkembang khusus di Kabupaten Temanggung. Keterangan gambar baru Temanggung ditulis dari fakta ini. Kalimat tentang Warisan Budaya Takbenda dihapus dari draf, karena surat penetapannya belum ditemukan.
+- **Topeng Lengger berasal dari Wonosobo**, jadi syarat Lengger sebagai variasi `b` Wonosobo terpenuhi. Bukit Sikunir tidak dipakai di pengerjaan pertama. Tahun penetapan 2020 di keterangannya tetap dicek peneliti.
+- **Gambar baru Wayang Kedu dibuat tim katalog dan dicek ulang nanti.** Yang diperlukan sekarang hanya konsepnya, dan arahannya sudah ada di 08.
+- **Gambar Candi Pawon diganti**, karena gambar sekarang menonjolkan stupa kecil di atap yang mirip sasaran PBK `mgl-4-x01`. Arahan gambar baru ada di 08, dan gambarnya dicek ulang setelah dibuat.
+
 **Keputusan pemilik proyek: variasi Susun Gambar selama studi** (sesi `sky/festive-hopper-cl6p65`, dua pertanyaan di [08](08_DRAF_BANK_SOAL.md#keputusan-pemilik-proyek-26-oktober-2026) dan empat pertanyaan lanjutan)
 
 1. **Cara memperbaiki: dua variasi bersih diacak**, bukan satu variasi tetap per wilayah (usulan awal). Kedua variasi menjadi `a` dan `b`, sesuai `FIRST_ATTEMPT_GROUPS` di 06, dan Susun Gambar tidak mengikuti buklet. Variasi lain hanya untuk pengerjaan ulang.
