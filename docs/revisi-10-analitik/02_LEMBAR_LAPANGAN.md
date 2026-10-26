@@ -33,7 +33,7 @@ Satu kelas ikut lima pertemuan, satu wilayah per pertemuan ([06](06_KISI_KISI_BA
 | P2 | S03-A-P2 | Wilayah Temanggung | Bermain ± 90 menit, ditambah pembukaan, masuk dan token, penutupan | L0–L5 |
 | P3 | S03-A-P3 | Wilayah Magelang | Sama | L0–L5 |
 | P4 | S03-A-P4 | Wilayah Wonosobo | Sama | L0–L5 |
-| P5 | S03-A-P5 | Tantangan susulan (paling lama 20 menit), tes akhir, butir risiko daring (hanya dengan izin terpisah), cerita penutup, skala sikap di Balai Refleksi | Mengikuti kebutuhan, paling lama ± 134 menit | L0, L1, L2, L3, L4 (saat susulan), L6, L7 |
+| P5 | S03-A-P5 | Tantangan susulan (paling lama 20 menit), tes akhir, butir risiko daring (hanya dengan izin terpisah), cerita penutup, skala sikap dan kritik dan saran di Balai Refleksi | Mengikuti kebutuhan, paling lama ± 139 menit | L0, L1, L2, L3, L4 (saat susulan), L6, L7 |
 | Susulan | S03-A-P3-S | Siswa yang absen di satu pertemuan, dalam tiga hari: wilayah pertemuan itu, atau tes dan angket | Sesuai isinya | L0, L1, L2, L3 (sedikitnya satu peneliti), L6 kalau susulan tes |
 
 Siswa tanpa izin orang tua tidak punya akun GELITA dan ikut kegiatan pengganti di ruang yang sama (keputusan 26 Oktober 2026). Mereka tidak masuk L2–L6.
