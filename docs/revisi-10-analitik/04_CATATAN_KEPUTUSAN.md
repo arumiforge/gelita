@@ -23,6 +23,19 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 3. **Yang menyusul:** draf keterangan Wayang Kedu dan arahan gambar (usulan prompt TMG-P11) ada di 08, menunggu cek fakta dan gambar dari tim katalog. Fakta Papringan, Pawon, Arjuna, dan Lengger dicek peneliti sebelum validasi ahli.
 
 Disesuaikan di dokumen lain: 06 (perubahan sistem no. 4, tabel kode, tabel "Yang harus ditulis") dan 01 (perubahan sistem no. 20). Rujukan "perubahan sistem no. 4 di 01" di entri sebelumnya keliru dan sudah dibetulkan: pemilihan variasi ada di no. 20 di 01, yang merujuk ke no. 4 di 06.
+**Keputusan pemilik proyek: cerita penghubung dan narasi tantangan kelima** (sesi `sky/optimistic-bardeen-4zx8ob`)
+
+Pemilik proyek menyetujui seluruh draf [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md) beserta semua usulannya:
+
+1. **Cerita penghubung diputar sekali**, saat tantangan kelima pertama kali dibuka, sebelum kartu misinya.
+2. **Selama studi, Kenali wilayah baru terbuka setelah wilayahnya tuntas**, seperti Pustaka. Di luar studi tetap seperti sekarang. Masuk perubahan sistem no. 16 di 01.
+3. **Kabar berantai Wonosobo menjadi ramalan gempa**, bukan kawah akan meletus.
+4. **Di Skenario Digital hanya situasi yang dibacakan**, lewat tombol ▶.
+5. **Urutan P5:** tantangan susulan, tes akhir, cerita penutup, skala sikap di Balai Refleksi, wawancara L5. Tes akhir kini sebelum cerita penutup.
+
+Penyesuaian di dokumen lain: 06 (urutan P5; baris waktu "Cerita wilayah: pembuka, penghubung, tuntas" 4–5 menit, sehingga waktu bermain menjadi ± 29–36, 36–44, dan 43–52 menit), 02 (aturan tes akhir), 01 (daftar kerja no. 7 selesai; perubahan sistem no. 16), dan 00. Pemetaan narasi `petunjuk-*` ke butir `x01`–`x04` dibetulkan di tahap 3, karena pemetaan sekarang masih benar untuk bank yang terpasang.
+
+Keterangan Susun Gambar diperiksa dan diputuskan di sesi lain (dua entri di atas). Karena asal Topeng Lengger dari Wonosobo sudah dikonfirmasi pemilik proyek, `kenal-wonosobo-04` di 12 kembali ke teks lama dan tetap menyebut Lengger; yang dibetulkan di Kenali tinggal jumlah relief yang bercerita (`kenal-magelang-02`). Naskah menjadi 21 baris baru dan 31 baris diubah. Pemetaan narasi `petunjuk-*` ke butir `x01`–`x04` dikerjakan di tahap 3 (12, daftar tahap 3 butir 3).
 
 **Pemeriksaan keterangan Susun Gambar terhadap draf bank soal** (sesi `sky/festive-hopper-cl6p65`, menindaklanjuti *Di luar dokumen ini* di [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md#di-luar-dokumen-ini))
 

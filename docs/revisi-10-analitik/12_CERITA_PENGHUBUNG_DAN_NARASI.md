@@ -2,22 +2,22 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 26 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Daftar kerja no. 7 · **Draf**, menunggu persetujuan pemilik proyek
+Per 26 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Daftar kerja no. 7 · **Disetujui pemilik proyek 26 Oktober 2026**
 
 Dokumen ini berisi cerita penghubung dan narasi untuk tantangan kelima, Skenario Digital (`tmg-5`, `mgl-5`, `wnb-5`), beserta penyesuaian cerita lama yang ikut diperlukan. Skenarionya sendiri sudah ada di [08](08_DRAF_BANK_SOAL.md). Pemilik proyek membuka cerita lama untuk diubah bila perlu, jadi setiap baris lama yang diubah di sini punya alasan: jumlah serpihan, jawaban yang bocor lewat cerita, atau kesinambungan dengan tantangan kelima.
 
-Naskah aktif ([`docs/naskah-cerita.md`](../naskah-cerita.md)) dan `app/Database/Seeds/data/story.php` **belum diubah**. Isi dokumen ini dipasang di tahap 3 bersama perubahan sistem no. 2, setelah disetujui. Format setiap baris sama dengan naskah aktif: kode berkas audio · tokoh · pose · efek, lalu teks Indonesia dan Inggris.
+Naskah aktif ([`docs/naskah-cerita.md`](../naskah-cerita.md)) dan `app/Database/Seeds/data/story.php` **belum diubah**. Isi dokumen ini dipasang di tahap 3 bersama perubahan sistem no. 2. Format setiap baris sama dengan naskah aktif: kode berkas audio · tokoh · pose · efek, lalu teks Indonesia dan Inggris.
 
 ## Ringkasan
 
-1. **Serpihan kelima setiap wilayah disembunyikan Kabut Lupa di layar.** Cerita penghubung baru, *Kabut di Layar*, terdiri dari 6 baris per wilayah (± 1 menit). Usulannya diputar sekali, saat tantangan kelima pertama kali dibuka.
+1. **Serpihan kelima setiap wilayah disembunyikan Kabut Lupa di layar.** Cerita penghubung baru, *Kabut di Layar*, terdiri dari 6 baris per wilayah (± 1 menit), diputar sekali saat tantangan kelima pertama kali dibuka.
 2. **Lima belas serpihan, lima per wilayah.** Semua baris yang menyebut 12 serpihan atau 4 tantangan disesuaikan, dan cerita wilayah tuntas kini diputar setelah tantangan kelima.
 3. **Cerita sebelum tantangan tidak boleh membocorkan jawaban** (aturan menulis butir no. 2 di [06](06_KISI_KISI_BANK_SOAL.md#aturan-menulis-butir)). Pemeriksaan naskah lama terhadap 08 menemukan 9 baris yang menyebut jawaban butir, ditambah beberapa baris yang menuntun; draf ini lalu ditelaah ulang dengan cara yang sama. Baris dialog yang bermasalah ditulis ulang, dan nasihat yang menyebut tindakan kunci Skenario Digital dipindah ke cerita tuntas, setelah tantangannya selesai.
-4. **Selama studi, Kenali wilayah diusulkan baru terbuka setelah wilayahnya tuntas.** Fakta budaya di Kenali (misalnya asal bundengan dan mi ongklok) adalah kunci butir *Periksa Unggahan* dan Temukan Benda, jadi menulis ulang saja tidak cukup. Teks Kenali hanya dibetulkan di dua fakta yang bertentangan dengan 08 (jumlah relief yang bercerita, asal tari Lengger).
-5. **Kabar berantai Wonosobo diusulkan berganti** dari "kawah akan meletus" menjadi ramalan gempa, karena `wnb-3-b` sudah memakai kawah, pesan berantai, dan akun resmi.
-6. **Naskah menjadi 112 baris per bahasa** (dulu 91): 21 baris baru dan 32 baris diubah. Ditambah situasi Skenario Digital (24, Narator) dan petunjuk *Periksa Unggahan* (24, Mbah Kedu), yang teksnya dari bank dan hanya diputar lewat tombol ▶, serta narasi instruksi. Totalnya ± 187 rekaman per bahasa.
+4. **Selama studi, Kenali wilayah baru terbuka setelah wilayahnya tuntas.** Fakta budaya di Kenali (misalnya asal bundengan dan mi ongklok) adalah kunci butir *Periksa Unggahan* dan Temukan Benda, jadi menulis ulang saja tidak cukup. Teks Kenali hanya dibetulkan di satu fakta yang bertentangan dengan 08 (jumlah relief yang bercerita).
+5. **Kabar berantai Wonosobo berganti** dari "kawah akan meletus" menjadi ramalan gempa, karena `wnb-3-b` sudah memakai kawah, pesan berantai, dan akun resmi.
+6. **Naskah menjadi 112 baris per bahasa** (dulu 91): 21 baris baru dan 31 baris diubah. Ditambah situasi Skenario Digital (24, Narator) dan petunjuk *Periksa Unggahan* (24, Mbah Kedu), yang teksnya dari bank dan hanya diputar lewat tombol ▶, serta narasi instruksi. Totalnya ± 187 rekaman per bahasa.
 7. **Waktu cerita per pertemuan wilayah naik sekitar satu menit**, dari ± 3 menjadi ± 4 menit. Sebagian tertutup karena dialog masuk Magelang dan Wonosobo jadi lebih pendek setelah kalimat yang bocor dihapus.
-8. **Empat pertanyaan untuk pemilik proyek** ada di bagian akhir. Draf ini sudah ditulis memakai pilihan yang diusulkan.
+8. **Pemilik proyek menyetujui semua usulan** (26 Oktober 2026), termasuk tes akhir sebelum cerita penutup di P5. Keputusannya ada di bagian akhir.
 
 ## Dasar yang sudah diputuskan
 
@@ -62,10 +62,10 @@ Penutup: kelima belas serpihan menyatu, Mbah Kedu pulih, dan Jaka bersama penjel
 
 | Langkah | Layar | Cerita | Kapan diputar |
 | ---: | --- | --- | --- |
-| 1 | Peta Kedu | Kenali wilayah (`region_intro`) | Pilihan; selama studi baru terbuka setelah wilayahnya tuntas (pertanyaan 2) |
+| 1 | Peta Kedu | Kenali wilayah (`region_intro`) | Pilihan; selama studi baru terbuka setelah wilayahnya tuntas (keputusan 2) |
 | 2 | `/dialog/{wilayah}` | Dialog masuk wilayah (`level_open`) | Sekali, saat wilayah pertama kali dibuka |
 | 3 | Tantangan 1–4 | Kartu misi | Setiap tantangan dibuka |
-| 4 | Tantangan 5 dibuka | **Cerita penghubung (`scenario_open`), baru** | Sekali, sebelum kartu misi tantangan kelima (pertanyaan 1) |
+| 4 | Tantangan 5 dibuka | **Cerita penghubung (`scenario_open`), baru** | Sekali, sebelum kartu misi tantangan kelima (keputusan 1) |
 | 5 | Kartu misi tantangan 5, lalu Skenario Digital | Situasi lewat tombol ▶ | Kalau siswa mengetuk ▶ |
 | 6 | Setelah tantangan 5 tuntas | Wilayah tuntas (`level_done`) | Dulu setelah tantangan keempat |
 
@@ -245,9 +245,9 @@ Lima serpihan per wilayah. "Lentera di bagian atas layar" diganti papan Serpihan
 
 ### Kenali wilayah (`region_intro`)
 
-Kenali bisa didengar kapan saja, juga sebelum wilayah mana pun dimasuki. Isinya memuat fakta yang diuji butir D1 dan, yang lebih sulit dihindari, fakta budaya yang menjadi kunci *Periksa Unggahan* dan Temukan Benda. Contohnya asal bundengan dan mi ongklok, yang justru dikelirukan keterangan unggahan di `wnb-4-a02` dan `b02`. Menghapus semua fakta itu akan mengosongkan Kenali. Karena itu usulannya: **selama studi, Kenali sebuah wilayah baru terbuka setelah wilayah itu tuntas**, seperti Pustaka (pertanyaan 2). Di luar studi, Kenali tetap terbuka seperti sekarang.
+Kenali bisa didengar kapan saja, juga sebelum wilayah mana pun dimasuki. Isinya memuat fakta yang diuji butir D1 dan, yang lebih sulit dihindari, fakta budaya yang menjadi kunci *Periksa Unggahan* dan Temukan Benda. Contohnya asal bundengan dan mi ongklok, yang justru dikelirukan keterangan unggahan di `wnb-4-a02` dan `b02`. Menghapus semua fakta itu akan mengosongkan Kenali. Karena itu **selama studi, Kenali sebuah wilayah baru terbuka setelah wilayah itu tuntas**, seperti Pustaka (keputusan 2). Di luar studi, Kenali tetap terbuka seperti sekarang.
 
-Dengan usulan itu, teks Kenali hanya dibetulkan di dua fakta yang bertentangan dengan 08. Sepuluh baris lain tetap.
+Dengan keputusan itu, teks Kenali hanya dibetulkan di satu fakta yang bertentangan dengan 08. Sebelas baris lain tetap. Asal Topeng Lengger di `kenal-wonosobo-04` sempat dianggap diperdebatkan, tapi pemilik proyek mengonfirmasi asalnya dari Wonosobo (26 Oktober 2026, [08](08_DRAF_BANK_SOAL.md#susun-gambar-selama-studi)), jadi baris itu tetap.
 
 #### `kenal-magelang-02` · Mbah Kedu · pose `idle`
 "Setiap panel adalah bagian dari sebuah cerita" bertentangan dengan 08: dari 2.672 panel, 1.460 bercerita dan sisanya hiasan.
@@ -256,14 +256,7 @@ Dengan usulan itu, teks Kenali hanya dibetulkan di dua fakta yang bertentangan d
 
 **EN:** Borobudur's walls are decorated with 2,672 relief panels, and more than half of them tell stories. Reading those reliefs is like reading a giant book made of stone: the order must be right for the story to make sense.
 
-#### `kenal-wonosobo-04` · Mbah Kedu · pose `worried` · efek `fog`
-Dihapus: tari Topeng Lengger. Asalnya diperdebatkan (Wonosobo atau Banyumas), dan 08 sengaja tidak menyebutnya.
-
-**ID:** Di sini ada bundengan, alat musik dari tudung bambu penggembala bebek. Tapi di sinilah Kabut Lupa paling tebal, Le. Kamu akan menemukan banyak kabar, dan tidak semuanya benar. Periksa sumbernya, timbang alasannya, lalu putuskan dengan bijak.
-
-**EN:** Here you will find the bundengan, an instrument made from a duck herder's bamboo hood. But this is also where the Mist of Forgetting is thickest, my boy. You will come across a lot of news, and not all of it is true. Check the source, weigh the reasons, then decide wisely.
-
-**Kalau Kenali tetap terbuka sebelum wilayah** (pilihan lain di pertanyaan 2), sebagian besar baris Kenali harus ditulis ulang: tanpa fakta D1 (Umbul Jumprit sebagai hulu Sungai Progo, tanah yang subur, letusan Sindoro di Situs Liyangan, Prasasti Gondosuli tahun 832, arca Nandi, kuluk, air suci Waisak, warna Telaga Warna karena belerang), tanpa asal ikon budaya yang dikelirukan di *Periksa Unggahan* (ikan uceng dari sungai, Topeng Ireng dari Magelang, bundengan dan mi ongklok dari Wonosobo), dan tanpa kalimat yang sama dengan petunjuk Temukan Benda. Yang tersisa kira-kira hanya geografi dan pesan keterampilan tiap wilayah.
+**Kalau kelak Kenali dibuka sebelum wilayah selama studi** (pilihan yang tidak dipilih di keputusan 2), sebagian besar baris Kenali harus ditulis ulang: tanpa fakta D1 (Umbul Jumprit sebagai hulu Sungai Progo, tanah yang subur, letusan Sindoro di Situs Liyangan, Prasasti Gondosuli tahun 832, arca Nandi, kuluk, air suci Waisak, warna Telaga Warna karena belerang), tanpa asal ikon budaya yang dikelirukan di *Periksa Unggahan* (ikan uceng dari sungai, Topeng Ireng dari Magelang, bundengan dan mi ongklok dari Wonosobo), dan tanpa kalimat yang sama dengan petunjuk Temukan Benda. Yang tersisa kira-kira hanya geografi dan pesan keterampilan tiap wilayah.
 
 ### Dialog masuk wilayah (`level_open`)
 
@@ -292,7 +285,7 @@ Dihapus: dua contoh fakta dan pendapat. Polanya sama dengan komentar di `mgl-3-a
 **EN:** Remember my advice: find the main idea, put things in order, and separate facts from opinions. Five shards of Magelang are waiting for you.
 
 #### `dialog-wonosobo-04` · Mbah Kedu · pose `worried`
-Kawah diganti ramalan gempa (pertanyaan 3). Dihapus: "Tak ada nama pengirim, tak ada sumber resmi", ukuran yang diuji `wnb-3-a02`, `a04`, `b03`, `b04`.
+Kawah diganti ramalan gempa (keputusan 3). Dihapus: "Tak ada nama pengirim, tak ada sumber resmi", ukuran yang diuji `wnb-3-a02`, `a04`, `b03`, `b04`.
 
 **ID:** Mereka menerima pesan berantai: "Besok pagi akan ada gempa besar di Dieng! Cepat mengungsi! Sebarkan ke semua orang!"
 
@@ -439,7 +432,7 @@ Nasihat dari `dialog-wonosobo-12` lama, kini setelah semua tantangan Wonosobo se
 
 ### Penutup (`ending`)
 
-Penutup diputar di P5, sebelum skala sikap dan tes akhir. Isinya hanya merangkum sikap yang sudah muncul di umpan balik dan cerita tuntas, tanpa fakta atau tindakan baru. Usulan mengubah urutan P5 ada di *Di luar dokumen ini*.
+Penutup diputar di P5, setelah tes akhir dan sebelum skala sikap (keputusan 5). Isinya hanya merangkum sikap yang sudah muncul di umpan balik dan cerita tuntas, tanpa fakta atau tindakan baru.
 
 #### `penutup-01` · Narator · efek `glow`
 **ID:** Di puncak bukit, Jaka mengangkat lenteranya tinggi-tinggi. Kelima belas serpihan menyatu, dan cahaya keemasan memancar ke seluruh Dataran Kedu.
@@ -457,7 +450,7 @@ Penutup diputar di P5, sebelum skala sikap dan tes akhir. Isinya hanya merangkum
 **EN:** I feel strong again, my boy! But remember, this light does not belong to the lantern alone. It lives every time someone reads with care and shares wisely.
 
 #### `penutup-04` · Jaka · pose `bow`
-Janji Jaka kini mencakup ketiga dimensi, tapi tanpa daftar tindakan, karena penutup diputar dekat tes akhir.
+Janji Jaka kini mencakup ketiga dimensi, tanpa daftar tindakan.
 
 **ID:** Aku akan terus menjaga cahaya ini, Mbah: saat membaca, saat memakai layar, dan saat bercerita tentang budaya Kedu. Supaya Kabut Lupa tidak pernah kembali.
 
@@ -481,8 +474,8 @@ Diputar setelah kelima belas tantangan tuntas.
 | Cerita penghubung | Ya, otomatis seperti cerita lain | Jaka, Mbah Kedu | `layar-{wilayah}-NN` | Dokumen ini |
 | Instruksi | Ya (perubahan sistem no. 6) | Narator | `instruksi-{tantangan}`, misalnya `instruksi-tmg-5` | Bank (kolom instruksi) |
 | Situasi | Hanya lewat tombol ▶, tercatat | Narator | `skenario-{kode butir}`, misalnya `skenario-tmg-5-a01` | 08 |
-| Pilihan tindakan dan alasan | Tidak (pertanyaan 4) | — | — | — |
-| Umpan balik | Tidak (pertanyaan 4) | — | — | — |
+| Pilihan tindakan dan alasan | Tidak (keputusan 4) | — | — | — |
+| Umpan balik | Tidak (keputusan 4) | — | — | — |
 
 Narator membaca situasi karena sudut pandangnya "kamu" dan isinya bukan dialog tokoh. Kode berkas memakai kode butir, bukan nomor urut, supaya tidak ada yang tertukar antara variasi a dan b. Nama berkas tidak memuat petunjuk jawaban.
 
@@ -507,7 +500,7 @@ Nada bicara bisa membocorkan jawaban, sama seperti teks. Untuk situasi Skenario 
 | Instruksi tantangan | `instruksi-{tantangan}` | Narator | — | 15 | Bank; jumlah pasti mengikuti dokumen implementasi |
 | **Jumlah** | | | **103** | **± 187** | |
 
-Naskah cerita per konteks: `intro` 9, `map_intro` 3, `region_intro` 12, `level_open` 47, `scenario_open` 18 (baru), `level_done` 15 (dulu 12), `ending` 5, `map_done` 3. Dari 112 baris, 21 baru dan 32 diubah; 59 tetap, dua di antaranya hanya bergeser kode (`tuntas-*`).
+Naskah cerita per konteks: `intro` 9, `map_intro` 3, `region_intro` 12, `level_open` 47, `scenario_open` 18 (baru), `level_done` 15 (dulu 12), `ending` 5, `map_done` 3. Dari 112 baris, 21 baru dan 31 diubah; 60 tetap, dua di antaranya hanya bergeser kode (`tuntas-*`).
 
 Perkiraan lama rekaman tambahan per bahasa (± 120 kata per menit): situasi ± 10 menit, petunjuk *Periksa Unggahan* ± 3 menit, instruksi ± 2 menit, dan cerita baru ± 3 menit. Semuanya direkam di sesi yang sama dengan naskah cerita (keputusan 25 Oktober 2026).
 
@@ -521,7 +514,7 @@ Dihitung dari jumlah kata teks Indonesia, ± 120 kata per menit, ditambah 1,5 de
 | Magelang | 3,2 menit | 4,1 menit | + 0,9 |
 | Wonosobo | 3,1 menit | 4,1 menit | + 1,0 |
 
-[06](06_KISI_KISI_BANK_SOAL.md#waktu-bermain) menghitung "Cerita pembuka wilayah 2–3 menit" dan belum memasukkan cerita tuntas. Dengan tambahan di atas, Wonosobo menjadi ± 42–51 menit dari 50 menit bermain bersih. 06 sudah mencatat Wonosobo pas-pasan untuk pembaca lambat, dan sisanya dilanjutkan di P5. Angka ini dicek ulang dengan waktu aktif saat uji coba.
+[06](06_KISI_KISI_BANK_SOAL.md#waktu-bermain) menghitung "Cerita pembuka wilayah 2–3 menit" dan belum memasukkan cerita tuntas. 06 kini memakai baris "Cerita wilayah: pembuka, penghubung, tuntas" 4–5 menit, jadi Wonosobo menjadi ± 43–52 menit dari 50 menit bermain bersih. Pembaca lambat bisa melewati 50 menit; sisanya dilanjutkan di P5. Angka ini dicek ulang dengan waktu aktif saat uji coba.
 
 ## Hasil pemeriksaan naskah lama terhadap bank soal
 
@@ -529,18 +522,18 @@ Naskah aktif diperiksa baris demi baris terhadap semua butir yang dinilai di 08,
 
 | Temuan | Baris | Butir | Tindakan di dokumen ini |
 | --- | --- | --- | --- |
-| Fakta yang diuji D1 disebut di Kenali | `kenal-temanggung-01`, `-02`, `-03`; `kenal-magelang-03`, `-04`; `kenal-wonosobo-02` | `tmg-2-a03`, `b02`, `b03`; `tmg-3-a02`, `b02`, `b04`; `mgl-2-b01`; `wnb-3-a04`, `a06` | Kenali baru terbuka setelah wilayah tuntas selama studi (pertanyaan 2) |
+| Fakta yang diuji D1 disebut di Kenali | `kenal-temanggung-01`, `-02`, `-03`; `kenal-magelang-03`, `-04`; `kenal-wonosobo-02` | `tmg-2-a03`, `b02`, `b03`; `tmg-3-a02`, `b02`, `b04`; `mgl-2-b01`; `wnb-3-a04`, `a06` | Kenali baru terbuka setelah wilayah tuntas selama studi (keputusan 2) |
 | Asal ikon budaya yang dikelirukan unggahan D3, dan kalimat petunjuk PBK, disebut di Kenali | `kenal-temanggung-02`, `-04`; `kenal-magelang-04`; `kenal-wonosobo-03`, `-04` | `tmg-4-b02`; `mgl-4-a02`; `wnb-4-a02`, `b02`, `a04`, `b04`; 9 dari 12 petunjuk PBK | Sama |
-| Fakta Kenali bertentangan dengan 08 | `kenal-magelang-02`, `kenal-wonosobo-04` | `mgl-3-a02` | Dibetulkan |
+| Fakta Kenali bertentangan dengan 08 | `kenal-magelang-02` | `mgl-3-a02` | Dibetulkan. Asal Lengger di `kenal-wonosobo-04` dikonfirmasi pemilik proyek, jadi baris itu tetap |
 | Contoh fakta dan pendapat sepola dengan butir | `dialog-magelang-08` | `mgl-3-a04`, `a05`, `b04`, `b05` | Contoh dihapus; definisinya tetap, sama dengan instruksi `mgl-3` |
 | Penanda jebakan "katanya" dan alasan kunci perbandingan sumber | `dialog-magelang-06`, `tuntas-magelang-01`; `dialog-wonosobo-04` | `mgl-3-a06`, `b06`, `x01`; `wnb-3-a02`, `a04`, `b03`, `b04`; `wnb-5-b01` | Kata "katanya" dan kalimat penilaiannya dihapus |
 | Tindakan kunci D2 disebut sebelum tantangan | `dialog-wonosobo-12`, `-13` | `wnb-5-a01`, `a02`, `b01`, `b02`, `b04`; `wnb-3-a05`, `b05` | Dipindah ke `tuntas-wonosobo-03` |
 | Alasan pilihan berisiko disuarakan lalu dijawab cerita | `dialog-wonosobo-05`, `-06` | `wnb-5-a04`, `b04` | Ditulis ulang |
-| Topik kabar sama dengan satu variasi | `dialog-wonosobo-04`, `tuntas-wonosobo-01` (kawah) | `wnb-3-b` | Diganti ramalan gempa (pertanyaan 3) |
+| Topik kabar sama dengan satu variasi | `dialog-wonosobo-04`, `tuntas-wonosobo-01` (kawah) | `wnb-3-b` | Diganti ramalan gempa (keputusan 3) |
 | Nasihat yang menuntun ke kunci kabar bohong | `intro-08` | `tmg-5-a04`, `b04`; `mgl-5-a04`, `b04` | Ditulis ulang |
 | Sikap umum yang juga ada di instruksi | `dialog-temanggung-08`, `-10`; `dialog-magelang-08`, `-15`; `intro-03`, `-08`, `-09` | Banyak | Dibiarkan (aturan cerita no. 2); cerita pembuka diputar seminggu sebelum wilayah pertama |
 | Hitungan 12 serpihan atau 4 tantangan | 12 baris | — | Disesuaikan; cerita tuntas tidak menyebut jumlah total (aturan cerita no. 11) |
-| Cerita penutup merangkum pelajaran tepat sebelum tes akhir | `penutup-04`, `peta-tuntas-02` | Tes akhir | Janji Jaka dibuat umum; urutan P5 di *Di luar dokumen ini* |
+| Cerita penutup merangkum pelajaran tepat sebelum tes akhir | `penutup-04`, `peta-tuntas-02` | Tes akhir | Janji Jaka dibuat umum; tes akhir kini sebelum cerita penutup (keputusan 5) |
 
 Tidak ada baris yang menyebut memblokir, melapor, meminta izin pemilik, atau menolak memberi kata sandi dengan ramah sebelum tantangannya.
 
@@ -548,42 +541,32 @@ Tidak ada baris yang menyebut memblokir, melapor, meminta izin pemilik, atau men
 
 Catatan untuk dokumen implementasi, bagian dari perubahan sistem no. 2 di [01](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti):
 
-1. **Konteks dialog baru `scenario_open`** per wilayah, berkas `layar-{wilayah}-NN`, diputar sekali sebagai gerbang saat tantangan kelima pertama kali dibuka (atau sesuai jawaban pertanyaan 1). Daftar konteks di `Config\Gelita`, editor dialog di panel, `ContentRepository`, latar slide `bg.story.scenario_open.{wilayah}.{n}`, dan musik adegan (cukup memakai lagu `dialog-{wilayah}`).
+1. **Konteks dialog baru `scenario_open`** per wilayah, berkas `layar-{wilayah}-NN`, diputar sekali sebagai gerbang saat tantangan kelima pertama kali dibuka (keputusan 1). Daftar konteks di `Config\Gelita`, editor dialog di panel, `ContentRepository`, latar slide `bg.story.scenario_open.{wilayah}.{n}`, dan musik adegan (cukup memakai lagu `dialog-{wilayah}`).
 2. **`level_done` dipicu tantangan kelima**, dan `map_done` setelah 15 tantangan.
 3. **Naskah aktif dan `data/story.php` diperbarui bersama** (`StoryDataTest`): benang merah, tabel jumlah per konteks (112 baris), judul bagian 5 ("tantangan kelima") dan 7 ("kelima belas tantangan"), dan pemetaan `petunjuk-{tantangan}-NN` ke butir `x01`–`x04` (bukan lagi `a01`–`a04`). Rilis selalu instalasi baru, jadi kode yang bergeser di `tuntas-*` tidak perlu dipetakan ke baris lama.
 4. **Impor narasi mengenali awalan baru** `layar-`, `unggahan-`, `skenario-`, dan `instruksi-`, termasuk di daftar rekaman XLSX dan naskah PDF untuk pengisi suara. `docs/audio.md` mengikuti jumlah baru.
 5. **Kartu misi 15 tantangan** masuk sheet `nodes` workbook bank soal, termasuk tiga kartu baru dan tujuh kartu yang berubah di atas.
 6. **Gambar latar cerita penghubung** untuk tim katalog: satu gambar per wilayah cukup (anak-anak dengan tablet di bawah pohon; rumah baca di ujung jalan; tepi Telaga Warna berkabut). Kode katalog `bg.cerita-layar-{wilayah}-NN`.
-7. **Kenali selama studi** (kalau usulan pertanyaan 2 disetujui) baru terbuka setelah wilayahnya tuntas, sebagai bagian mode penelitian (perubahan sistem no. 16). Lencana Kenali di peta sekarang membaca event `dialogue_advanced`, yang ditandai *Dihapus* di pembersihan log (no. 7), jadi dokumen implementasi perlu menggantinya.
+7. **Kenali selama studi** baru terbuka setelah wilayahnya tuntas (keputusan 2), sebagai bagian mode penelitian (perubahan sistem no. 16). Lencana Kenali di peta sekarang membaca event `dialogue_advanced`, yang ditandai *Dihapus* di pembersihan log (no. 7), jadi dokumen implementasi perlu menggantinya.
 8. **Glosarium** (`.claude/rules/glossary.md`) mendapat baris *cerita penghubung* → `scenario_open`.
 
 ## Di luar dokumen ini
 
 Temuan yang menyangkut dokumen lain, dicatat supaya tidak hilang:
 
-- **Keterangan Susun Gambar membocorkan butir D1.** Tantangan 1 (pemanasan) diputar tepat sebelum tantangan 2 dan 3 di pertemuan yang sama, dan beberapa variasi gambarnya memuat keterangan yang hampir sama dengan bacaan D1. Contoh: keterangan *Situs Liyangan* menyebut tahun 2008, padi hangus, dan letusan Gunung Sindoro (semua jawaban `tmg-3-a`); *Prasasti Gondosuli* menyebut tahun 832 (`tmg-3-b02`); *Candi Pringapus* menyebut arca Nandi (`tmg-3-b04`); *Umbul Jumprit* menyebut hulu Sungai Progo dan air suci (`tmg-2-b02`, `b03`). Variasi Susun Gambar belum dibahas di 08, jadi perlu diperiksa dengan aturan yang sama sebelum validasi ahli.
-- **Narasi petunjuk Temukan Benda** (`petunjuk-*`) di naskah aktif masih dipetakan ke butir `a01`–`a04`; di 08 nomor itu kini milik *Periksa Unggahan*.
-- **Urutan P5.** Cerita penutup dan narasi Peta Kedu setelah semua tuntas diputar tepat sebelum skala sikap dan tes akhir ([06](06_KISI_KISI_BANK_SOAL.md#waktu-bermain)). Janji Jaka sudah dibuat umum, tapi usulannya tetap: **tes akhir dikerjakan sebelum cerita penutup**, supaya tes akhir tidak ikut mengukur pengingat yang baru saja didengar. Skala sikap tetap setelah cerita penutup, sesuai keputusan 25 Oktober 2026. Ini mengubah urutan P5 di 06, jadi perlu persetujuan pemilik proyek.
+- **Keterangan Susun Gambar membocorkan butir D1.** Tantangan 1 (pemanasan) diputar tepat sebelum tantangan 2 dan 3 di pertemuan yang sama, dan beberapa variasi gambarnya memuat keterangan yang hampir sama dengan bacaan D1. Contoh: keterangan *Situs Liyangan* menyebut tahun 2008, padi hangus, dan letusan Gunung Sindoro (semua jawaban `tmg-3-a`); *Prasasti Gondosuli* menyebut tahun 832 (`tmg-3-b02`); *Candi Pringapus* menyebut arca Nandi (`tmg-3-b04`); *Umbul Jumprit* menyebut hulu Sungai Progo dan air suci (`tmg-2-b02`, `b03`). Semua variasi sudah diperiksa di [08](08_DRAF_BANK_SOAL.md#susun-gambar-selama-studi) oleh sesi lain, dengan koreksi: pengerjaan pertama hanya memakai variasi a–c, jadi ketiga contoh pertama di atas (variasi d–j) hanya muncul di pengerjaan ulang. Diputuskan 26 Oktober 2026: selama studi, pengerjaan pertama diacak dari dua variasi bersih per wilayah (Pasar Papringan dan gambar baru Wayang Kedu; Candi Mendut dan Candi Pawon; Kompleks Candi Arjuna dan Tari Topeng Lengger).
+- **Narasi petunjuk Temukan Benda** (`petunjuk-*`): naskah aktif memetakannya ke butir `a01`–`a04`, yang benar untuk bank yang terpasang sekarang. Dengan bank baru, pemetaannya menjadi `x01`–`x04`, karena `a01`–`a04` milik *Periksa Unggahan*. Dibetulkan di tahap 3 (butir 3 di atas).
+- **Urutan P5 (keputusan 5).** Cerita penutup dan narasi Peta Kedu setelah semua tuntas merangkum pelajaran, jadi tes akhir dikerjakan lebih dulu, supaya tes akhir tidak ikut mengukur pengingat yang baru saja didengar. Skala sikap tetap setelah cerita penutup, sesuai keputusan 25 Oktober 2026. Urutan P5 di [06](06_KISI_KISI_BANK_SOAL.md#waktu-bermain) dan aturan tes di [02](02_LEMBAR_LAPANGAN.md) sudah disesuaikan.
 
-## Pertanyaan untuk pemilik proyek
+## Keputusan pemilik proyek
 
-Draf di atas memakai pilihan pertama di setiap pertanyaan.
+Pemilik proyek menyetujui semua usulan pada 26 Oktober 2026. Pilihan lain yang tidak dipilih ada di versi draf dokumen ini (riwayat git).
 
-1. **Kapan cerita penghubung diputar?**
-   - **Usulan:** sekali, saat tantangan kelima pertama kali dibuka, sebelum kartu misinya, seperti dialog masuk wilayah. Siswa yang baru sampai di tantangan kelima pada P5 tetap melihatnya.
-   - Langsung setelah layar hasil tantangan keempat. Siswa yang berhenti di situ akan menonton cerita yang tantangannya baru dibuka seminggu kemudian.
-   - Tanpa adegan; cukup kartu misi yang lebih panjang. Lebih hemat waktu (± 1 menit), tapi kehilangan momen "serpihan kelima ada di layar".
-2. **Kenali wilayah selama studi?**
-   - **Usulan:** baru terbuka setelah wilayahnya tuntas, seperti Pustaka. Tidak ada siswa yang mendengar kunci butir D1, D3, atau PBK lewat Kenali sebelum mengerjakannya, dan isi Kenali tetap utuh. Di luar studi, Kenali tetap terbuka sebelum wilayah.
-   - Tetap terbuka sebelum wilayah, dan Kenali ditulis ulang tanpa fakta D1, tanpa asal ikon budaya yang dikelirukan di *Periksa Unggahan*, dan tanpa kalimat petunjuk PBK. Isinya tinggal geografi dan pesan keterampilan tiap wilayah, dan tanda "sudah didengar" dipakai sebagai kovariat.
-   - Wajib diputar di awal pertemuan wilayahnya. Paparannya sama untuk semua siswa, tapi kunci butir tetap terdengar sebelum tantangan, jadi tidak disarankan.
-3. **Kabar berantai di Wonosobo?**
-   - **Usulan:** ganti "kawah akan meletus" dengan ramalan gempa. `wnb-3-b` sudah memakai kawah, pesan berantai, dan akun resmi, jadi siswa variasi b mendapat bocoran topik yang tidak didapat siswa variasi a. Tidak ada butir tentang gempa.
-   - Tetap kawah. Ukuran menilai sumbernya sudah dipindah ke setelah tantangan, tapi kesamaan topik dengan `wnb-3-b` tetap ada.
-4. **Yang dibacakan di Skenario Digital?**
-   - **Usulan:** situasi saja, sesuai keputusan media 25 Oktober 2026.
-   - Situasi dan umpan balik. Umpan balik muncul setelah pilihan pertama, jadi data yang dinilai tidak berubah; tambah 88 rekaman per bahasa.
-   - Situasi, pilihan tindakan, dan pilihan alasan. Beban membaca di D2 berkurang, jadi skor D2 lebih sedikit dipengaruhi kemampuan membaca; tambah 184 rekaman per bahasa, dan aturan narasi perlu diputuskan ulang.
+1. **Cerita penghubung diputar sekali, saat tantangan kelima pertama kali dibuka**, sebelum kartu misinya, seperti dialog masuk wilayah. Siswa yang baru sampai di tantangan kelima pada P5 tetap melihatnya; pengerjaan ulang tidak memutarnya lagi.
+2. **Selama studi, Kenali wilayah baru terbuka setelah wilayahnya tuntas**, seperti Pustaka. Di luar studi, Kenali tetap terbuka sebelum wilayah. Masuk perubahan sistem no. 16 di [01](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti).
+3. **Kabar berantai Wonosobo menjadi ramalan gempa**, bukan "kawah akan meletus", karena `wnb-3-b` sudah memakai kawah, pesan berantai, dan akun resmi.
+4. **Yang dibacakan di Skenario Digital hanya situasinya**, lewat tombol ▶, sesuai keputusan media 25 Oktober 2026. Pilihan tindakan, pilihan alasan, dan umpan balik tidak dibacakan.
+5. **Urutan P5:** tantangan susulan (paling lama 20 menit), tes akhir, cerita penutup, skala sikap di Balai Refleksi, wawancara L5.
 
 ## Rujukan
 

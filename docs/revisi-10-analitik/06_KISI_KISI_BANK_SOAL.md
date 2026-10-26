@@ -12,7 +12,7 @@ Kisi-kisi ini jadi cetak biru bank soal baru: berapa butir, di tantangan mana, m
 2. **Per siswa di pengerjaan pertama: 61 butir literasi digital** (37 D1, 12 D2, 12 D3) ditambah 12 butir PBK. D1 terdiri dari 26 butir D1a dan 11 butir D1b, dua kali lipat bukti menilai sumber dibanding bank sekarang (± 5).
 3. **Bank yang perlu ditulis: 116 butir literasi digital** (68 D1, 24 skenario D2, 24 petunjuk D3), dalam dua variasi (a/b) per tantangan dinilai, ditambah 6 butir jangkar yang dipakai kedua variasi. 12 petunjuk PBK bisa diambil dari bank lama.
 4. **Tujuh dari sembilan teks D1 seorang siswa bergenre digital:** papan informasi digital, unggahan akun resmi dengan komentar, halaman situs, pesan grup, hasil pencarian, dan unggahan bersponsor. Bentuk teks selalu sama di variasi a dan b.
-5. **Waktu bermain: sekitar 27–34 menit (Temanggung), 34–42 menit (Magelang), dan 41–50 menit (Wonosobo).** Satu wilayah muat di satu pertemuan 2 JP (70 menit). Usulan: lima pertemuan per kelas.
+5. **Waktu bermain: sekitar 29–36 menit (Temanggung), 36–44 menit (Magelang), dan 43–52 menit (Wonosobo).** Satu wilayah muat di satu pertemuan 2 JP (70 menit), kecuali pembaca lambat di Wonosobo, yang melanjutkan sisanya di P5. Usulan: lima pertemuan per kelas.
 6. **Desain empat buklet (usulan).** Tetangga sebangku selalu mendapat variasi berbeda, tapi semua buklet tetap tersambung, jadi seluruh butir bisa ditaruh di satu skala Rasch. Setiap butir variasi dikerjakan setengah sampel; butir jangkar dikerjakan semuanya.
 7. **Sampel minimal usulan: 300 siswa yang datanya bisa dianalisis** (150 per butir variasi), artinya merekrut sekitar 360 siswa.
 
@@ -163,16 +163,16 @@ Perkiraan dibuat untuk siswa kelas 5 (10–11 tahun) yang membaca **60–90 kata
 
 | Bagian | Temanggung | Magelang | Wonosobo | Dasar hitungan |
 | --- | --- | --- | --- | --- |
-| Cerita pembuka wilayah | 2–3 | 2–3 | 2–3 | Seperti sekarang |
+| Cerita wilayah: pembuka, penghubung, tuntas | 4–5 | 4–5 | 4–5 | Dihitung di [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md#waktu-cerita-per-pertemuan) (disesuaikan 26 Oktober 2026; dulu hanya cerita pembuka, 2–3) |
 | Susun Gambar | 2–3 | 3–4 | 4–5 | Ukuran papan |
 | Isi Rumpang | 4–5 | 5–7 | 7–8 | Membaca + 20–35 detik per rumpang + Cek ulang |
 | Benar atau Salah + kartu jangkar | 4–5 | 7–8 | 8–10 | Membaca + 20–40 detik per pernyataan |
 | Cari Objek, dua babak | 5–6 | 6–7 | 7–9 | Babak 1 ± 25 detik per petunjuk; babak 2 membaca unggahan + 40–60 detik per petunjuk |
 | Skenario Digital | 6–7 | 7–8 | 9–10 | Per skenario: membaca, tindakan, alasan, umpan balik |
 | Kartu misi dan layar hasil (5 tantangan) | 4–5 | 4–5 | 4–5 | ± 1 menit per tantangan |
-| **Jumlah (menit)** | **± 27–34** | **± 34–42** | **± 41–50** | |
+| **Jumlah (menit)** | **± 29–36** | **± 36–44** | **± 43–52** | |
 
-**Satu pertemuan = satu wilayah.** Satu JP di SD dihitung 35 menit, jadi pertemuan 2 JP = 70 menit. Setelah pembukaan (5 menit), masuk dan token (5–10 menit), dan penutupan (5 menit), waktu bermain bersih sekitar 50 menit. Temanggung dan Magelang longgar; Wonosobo pas-pasan untuk pembaca lambat.
+**Satu pertemuan = satu wilayah.** Satu JP di SD dihitung 35 menit, jadi pertemuan 2 JP = 70 menit. Setelah pembukaan (5 menit), masuk dan token (5–10 menit), dan penutupan (5 menit), waktu bermain bersih sekitar 50 menit. Temanggung dan Magelang longgar. Wonosobo pas-pasan: pembaca lambat bisa melewati 50 menit, dan sisanya dilanjutkan di P5.
 
 **Usulan pembagian pertemuan:**
 
@@ -182,7 +182,7 @@ Perkiraan dibuat untuk siswa kelas 5 (10–11 tahun) yang membaca **60–90 kata
 | P2 | Wilayah Temanggung |
 | P3 | Wilayah Magelang |
 | P4 | Wilayah Wonosobo |
-| P5 | Menyelesaikan tantangan yang tertinggal (paling lama 20 menit), cerita penutup, skala sikap di Balai Refleksi, tes akhir, wawancara L5 |
+| P5 | Menyelesaikan tantangan yang tertinggal (paling lama 20 menit), tes akhir, cerita penutup, skala sikap di Balai Refleksi, wawancara L5 (tes akhir sebelum cerita penutup: keputusan 26 Oktober 2026, [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md#keputusan-pemilik-proyek)) |
 
 Jeda peregangan singkat (2 menit) diberikan setelah tantangan ketiga di setiap pertemuan. Siswa yang belum selesai melanjutkan di pertemuan 5 (susulan), karena token hanya membuka wilayah pertemuan itu; jam lanjutnya dicatat di L1, dan nomor pertemuan dipakai sebagai kovariat.
 
