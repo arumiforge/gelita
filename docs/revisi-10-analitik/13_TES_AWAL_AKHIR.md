@@ -189,12 +189,13 @@ Lama P1 dan P5 mengikuti kebutuhan, tidak terikat JP sekolah: penelitian sudah m
 | Tes: petunjuk dan lima contoh soal 7, Bagian 1 paling lama 40, peregangan 2, Bagian 2–3 paling lama 35 | paling lama 84 | paling lama 84 |
 | Angket akses digital (P1) atau butir risiko daring (P5), langsung di modul | ± 10 | ± 3 |
 | Cerita pembuka (P1) atau cerita penutup dan skala sikap (P5) | 5 | 12 |
+| Kritik dan saran di Balai Refleksi, sesudah skala sikap; semua isian boleh kosong ([17](17_SKALA_SIKAP.md#pelaksanaan-di-p5)) | — | ± 5 |
 | Penutupan | 5 | 5 |
-| **Jumlah paling lama** | **± 124** | **± 134** |
+| **Jumlah paling lama** | **± 124** | **± 139** |
 
 Kebanyakan siswa selesai lebih cepat: dengan waktu kerja menurut perkiraan (45–58 menit), tes memakai ± 54–67 menit. Kalau istirahat sekolah jatuh di tengah pertemuan, istirahat diambil di antara Bagian 1 dan Bagian 2–3 atau sesudah tes, tidak di tengah bagian, dan dicatat di L1.
 
-Urutan P1: pembukaan, daftar akun, baris dan kursi dimasukkan ke panel, tes awal, angket, cerita pembuka. Angket sesudah tes, supaya pertanyaan tentang kebiasaan digital tidak memengaruhi jawaban tes. Urutan P5: susulan, tes akhir, butir risiko daring, cerita penutup, skala sikap. Wawancara L5 berjalan di P2–P4, bukan di P5 (diputuskan 26 Oktober 2026). Siswa yang tidak punya tantangan susulan boleh membuka pengerjaan ulang di game sampai semua siap. Tes akhir dimulai bersama, supaya semua siswa mengerjakannya dalam kondisi yang sama.
+Urutan P1: pembukaan, daftar akun, baris dan kursi dimasukkan ke panel, tes awal, angket, cerita pembuka. Angket sesudah tes, supaya pertanyaan tentang kebiasaan digital tidak memengaruhi jawaban tes. Urutan P5: susulan, tes akhir, butir risiko daring, cerita penutup, skala sikap, kritik dan saran. Siswa yang tantangannya belum tuntas di akhir susulan tidak membuka Balai Refleksi, jadi skala sikap dan kritik dan saran mereka kosong (data apa adanya, [17](17_SKALA_SIKAP.md#pelaksanaan-di-p5)). Wawancara L5 berjalan di P2–P4, bukan di P5 (diputuskan 26 Oktober 2026). Siswa yang tidak punya tantangan susulan boleh membuka pengerjaan ulang di game sampai semua siap. Tes akhir dimulai bersama, supaya semua siswa mengerjakannya dalam kondisi yang sama.
 
 ### Pembagian bentuk: denah papan catur
 

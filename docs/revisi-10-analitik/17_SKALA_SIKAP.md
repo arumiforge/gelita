@@ -239,7 +239,7 @@ Dokumen-dokumen ini tidak diubah di sesi ini; penyesuaiannya dikerjakan pemilik 
 | [11](11_KAMUS_DATA.md) | Di `kamus-1.1` setelah uji coba: variabel di [Variabel untuk kamus data](#variabel-untuk-kamus-data), termasuk `feedback_rating` sebagai data kepraktisan. `kamus-1.0` tidak diubah |
 | [Dokumen pendukung peneliti](dokumen-pendukung-peneliti/README.md) | **Sudah dikerjakan (26 Oktober 2026).** Usulan "kepraktisan diukur dari log dan lembar L1, L3, L4" yang belum diputuskan: tambahkan bintang 1–5 di kritik dan saran sebagai sumber kepraktisan dari siswa |
 | [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md) | Periksa apakah baris terakhir cerita penutup memuji sikap siswa terhadap warisan Kedu tepat sebelum skala; kalau ya, pertimbangkan kalimat yang lebih netral. Pengantar Balai Refleksi (`Game.reflectionLead`) baru tampil setelah skala |
-| [13](13_TES_AWAL_AKHIR.md), tabel waktu P5 | Baris "cerita penutup dan skala sikap" (12 menit) belum memuat kritik dan saran (± 3–5 menit); jumlah paling lama P5 naik menjadi ± 139 menit |
+| [13](13_TES_AWAL_AKHIR.md), tabel waktu P5 | **Sudah dikerjakan (26 Oktober 2026).** Baris "cerita penutup dan skala sikap" (12 menit) belum memuat kritik dan saran (± 3–5 menit); jumlah paling lama P5 naik menjadi ± 139 menit |
 | 18 (mock-up, sesi `r10-mockup-media`) | Mock-up layar skala sikap (petunjuk, contoh, satu pernyataan dengan empat pilihan bertitik, layar kirim) untuk ahli media langkah 1 dan uji keterbacaan |
 | Permohonan izin etik | Sebut skala sikap dan tujuannya |
 
