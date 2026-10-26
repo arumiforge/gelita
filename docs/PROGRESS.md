@@ -28,7 +28,10 @@ Documentation only, in `docs/revisi-10-analitik/` (Indonesian, at the owner's re
 - [ ] Story links and narration for the fifth challenge (`12_CERITA_PENGHUBUNG_DAN_NARASI.md`, work item 7 in `01`)
   - [x] Draft written: *Kabut di Layar* link scene per region (new context `scenario_open`), mission cards, 32 rewritten old lines (15 shards, answer leaks found by checking the script against the draft bank), recording list (about 187 per language) and voice direction
   - [ ] Owner answers the four questions at the end of `12` (when the link scene plays, Kenali during the study, Wonosobo chain message, what Skenario Digital reads aloud) and approves the story
-  - [ ] Fix the leaks outside the story found by the same check: Susun Gambar captions that repeat D1 answers, and the outdated `petunjuk-*` mapping (bank side, before expert validation)
+  - [ ] Fix the leaks outside the story found by the same check (bank side, before expert validation)
+    - [x] Susun Gambar captions: all 30 checked against `08` (section *Susun Gambar selama studi*). 22 leak or cue a D1 key, D3 key, or PBK clue, including 7 of the 9 first-attempt variants a–c; d–j appear only on replays, which open after the region is done, so they are harmless during the study. Proposal: one fixed clean variant per region during the study (Pasar Papringan, Candi Mendut, Kompleks Candi Arjuna)
+    - [ ] Owner answers the two Susun Gambar questions in `08`; then system change 4 in `01`/`06` follows the answer
+    - [ ] Outdated `petunjuk-*` narration mapping
   - [ ] Owner decides the proposed P5 order change in `12` (post-test before the closing story), which changes the meeting plan in `06`
 - [ ] Complete implementation document, after the revision documents are final and gate G2 (expert validation and ethics approval) is passed
 - [ ] Implementation of the system changes listed in `01` (21 so far), one short-lived branch each, after the implementation document is approved
@@ -81,3 +84,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 |---|---|---|
 | `pbb/eloquent-sagan-j40sg8` | Pre-stage-1 check of the research revision docs | PR open |
 | `sky/optimistic-bardeen-4zx8ob` | Story links and narration for the fifth challenge (`12`) | PR open |
+| `sky/festive-hopper-cl6p65` | Susun Gambar caption leaks checked against the draft bank (`08`) | PR open |
