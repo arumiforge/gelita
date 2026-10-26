@@ -36,6 +36,12 @@ Documentation only, in `docs/revisi-10-analitik/` (Indonesian, at the owner's re
     - [x] Outdated `petunjuk-*` narration mapping: moved to stage 3 (`12`, stage-3 list item 3), because the current mapping is right for the bank installed today
 - [x] Research and development model decided by the owner (26 October 2026): Plomp's educational design research (2013), development-study type, with ECD inside it; Lynn's I-CVI rule kept (`04`, `07`). The supporting brief, with every reference checked against its source, is in `dokumen-pendukung-peneliti/` (reading for researchers and the team, not an implementation document). Reference errors found by that check fixed in `01`, `05`, `06`, `07`
   - [ ] Owner decides the brief's open proposals: pre/post difference test reported as exploratory, practicality measured from logs and L1/L3/L4, preliminary research written up as its own phase, prototypes numbered I–III
+- [ ] Pre/post test, forms A and B, and the digital-access questionnaire (work items 9 and 10 in `01`): drafts in `13`–`16`, written in parallel by three subagents on one blueprint
+  - [x] Blueprint `13`: three parts matching the dimensions (D1 reading 16 items from 4 texts, D2 8 scenarios, D3 8 items from 2 scenes; 32 items, max 40 points), item-by-item parallel forms, checkerboard form assignment, paper administration, random-groups Rasch equating without shared items, validity and change analyses
+  - [x] Item drafts: reading part adapted from official samples in the *Framework AKM* (`14`), D2 and D3 parts (`15`), questionnaire (`16`), all `needs_verification`
+  - [x] Consistency check of `13` against `14`–`16` (26 October 2026). `13` now matches the drafts (sources, answer formats, five sample items, `error_codes` as a list, no repeats inside the test, open issues listed). Test time recounted from every word students read: about 67 minutes with instructions, not 47, so question 1 was rewritten. `15`: the form-A D3 scene moved from sasirangan to karawo and both G1 captions changed, because `14`'s M3 texts gave away their answers; four commenter names shared with `14` replaced. `14`: matching item B04 re-lettered so no pair shares a key letter with A04
+  - [ ] Owner decides the four questions in `13`: P1 at 3 JP and P5 at 4 JP (the 32-item test takes about 67 minutes, so it fits neither a 2-JP nor a 3-JP P5), paper, topics outside Kedu, no online-risk items in the questionnaire
+  - [ ] After the decisions: align `02` (L6, done with work item 11), `06` (P1/P5), `11` (test and questionnaire variables), `03` (codes), and the r10 v2.1 instrument (`07`)
 - [ ] Complete implementation document, after the revision documents are final and gate G2 (expert validation and ethics approval) is passed
 - [ ] Implementation of the system changes listed in `01` (21 so far), one short-lived branch each, after the implementation document is approved
 
@@ -87,3 +93,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 |---|---|---|
 | `pbb/eloquent-sagan-j40sg8` | Pre-stage-1 check of the research revision docs | PR open |
 | `sky/festive-hopper-cl6p65` | Susun Gambar caption leaks checked against the draft bank (`08`) | PR open |
+| `pbb/magical-hamilton-4f6l98` | Pre/post test forms A and B and the digital-access questionnaire (`13`–`16`); continues `sky/brave-tesla-8owq5a` (PR #239) | PR #242 open |

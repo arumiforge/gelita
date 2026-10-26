@@ -389,8 +389,8 @@ Ahli media menilai dalam dua langkah (diputuskan 25 Oktober 2026): di tahap 2, g
 | 6 | Tulis Skenario Digital untuk tiga wilayah, lengkap dengan pilihan tindakan dan alasan berkode | 1 | Claude | Selesai di draf 08, menunggu validasi |
 | 7 | Tulis cerita penghubung dan narasi untuk tantangan kelima | 1 | Claude (draf), pemilik proyek (persetujuan) | Selesai: [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md) disetujui 26 Oktober 2026 |
 | 8 | Tentukan 4–6 butir jangkar | 1 | Claude | Selesai di draf 08 (6 butir), menunggu validasi |
-| 9 | Susun tes literasi membaca dan tes literasi digital, bentuk A dan B: bagian membaca diadaptasi dari contoh soal AKM/ANBK yang terbuka untuk umum, bagian D2 dan D3 disusun sendiri dan tidak sama dengan butir game | 1 | | Belum mulai |
-| 10 | Susun angket akses digital | 1 | | Belum mulai |
+| 9 | Susun tes literasi membaca dan tes literasi digital, bentuk A dan B: bagian membaca diadaptasi dari contoh soal AKM/ANBK yang terbuka untuk umum, bagian D2 dan D3 disusun sendiri dan tidak sama dengan butir game | 1 | Claude (draf), pemilik proyek | Draf di [13](13_TES_AWAL_AKHIR.md), [14](14_TES_BAGIAN_MEMBACA.md), dan [15](15_TES_BAGIAN_DIGITAL.md), menunggu keputusan pemilik proyek |
+| 10 | Susun angket akses digital | 1 | Claude (draf), pemilik proyek | Draf di [16](16_ANGKET_AKSES_DIGITAL.md), menunggu keputusan pemilik proyek |
 | 11 | Finalkan lembar L0–L7 | 1 | | Belum mulai |
 | 12 | Buat daftar kode sekolah penelitian (S01, S02, …) | 1 | | Belum mulai |
 | 13 | Tentukan siapa pemegang akun admin dan akun peneliti | 1 | | Belum mulai |

@@ -2,7 +2,7 @@
 
 Per 26 Oktober 2026 · Pintu masuk untuk setiap sesi baru di [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
-Dokumen Markdown di folder ini sekitar 460 KB, kira-kira 200 ribu token kalau dibaca utuh. Satu sesi tidak perlu membaca semuanya. Aturan menjaga konteks ada di `.claude/rules/revisi-10.md` dan dimuat otomatis saat berkas di folder ini dibuka.
+Dokumen Markdown di folder ini sekitar 660 KB, kira-kira 290 ribu token kalau dibaca utuh. Satu sesi tidak perlu membaca semuanya. Aturan menjaga konteks ada di `.claude/rules/revisi-10.md` dan dimuat otomatis saat berkas di folder ini dibuka.
 
 ## Mulai sesi baru di sini
 
@@ -29,6 +29,10 @@ Dokumen lain dibaca per bagian sesuai tugas.
 | [10](10_TELAAH_PENDAHULUAN_MEDIA.md) | Telaah pendahuluan media | Selesai; keputusan masuk 01 | Saat menyiapkan mock-up dan instrumen media | 19 KB |
 | [11](11_KAMUS_DATA.md) | Kamus data: peta bukti, definisi beku 10 analitik, data yang dinilai, "dilewati", waktu aktif, tersensor, tebakan cepat, kode, aturan gabung lembar | Disetujui 26 Oktober 2026 (`kamus-1.0`); ambang jeda dan tebakan cepat masih sementara | Saat menulis instrumen, lembar, pra-registrasi, atau dokumen implementasi; cari per analitik | 41 KB |
 | [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md) | Cerita penghubung dan narasi tantangan kelima, penyesuaian cerita lama, kartu misi, daftar rekaman, hasil pemeriksaan kebocoran cerita | Disetujui 26 Oktober 2026 | Saat menyiapkan rekaman, menulis dokumen implementasi perubahan no. 2 dan no. 16, atau mengubah cerita | 52 KB |
+| [13](13_TES_AWAL_AKHIR.md) | Rancangan tes awal–akhir: kisi-kisi tiga bagian (D1, D2, D3), kesetaraan bentuk A dan B, kode butir, pelaksanaan di P1 dan P5, penskoran, analisis, validasi | Draf, diselaraskan dengan 14–16 (26 Oktober 2026); menunggu empat keputusan pemilik proyek | Saat menyusun paket validasi, lembar L6, atau jadwal pertemuan | 34 KB |
+| [14](14_TES_BAGIAN_MEMBACA.md) | Tes Bagian 1 Membaca (D1), bentuk A dan B: teks, butir, kunci, kode kesalahan, sumber adaptasi AKM/ANBK | Draf, `needs_verification` | Cari per kode butir (misalnya `tes-mb-A07`) | 64 KB |
+| [15](15_TES_BAGIAN_DIGITAL.md) | Tes Bagian 2 Aman dan etis (D2) dan Bagian 3 Budaya digital (D3), bentuk A dan B | Draf, `needs_verification` | Cari per kode butir (misalnya `tes-ae-B03`) | 66 KB |
+| [16](16_ANGKET_AKSES_DIGITAL.md) | Angket akses digital: butir, kode jawaban, variabel, pelaksanaan, etika | Draf, menunggu keputusan pemilik proyek | Saat menyusun lembar L6, izin etik, atau variabel peserta | 44 KB |
 | `gambar/` | Peta bukti, lapis data, peta jalan, buklet, tangkapan layar telaah media | Rujukan | Saat dokumen yang memakainya diubah | — |
 | [dokumen-pendukung-peneliti/](dokumen-pendukung-peneliti/README.md) | Bacaan untuk peneliti dan tim, **bukan dokumen implementasi**: model penelitian dan pengembangan (PDF), dengan rujukan yang dicek ke sumber asli | Rujukan; model Plomp dan aturan I-CVI Lynn diputuskan 26 Oktober 2026 | Saat menulis Bab III atau bagian metodologi; tidak dibaca untuk implementasi | 390 KB (PDF dan sumbernya) |
 
@@ -42,7 +46,7 @@ Urutan kerja mengikuti peta jalan di 01, yang dikukuhkan pemilik proyek pada 25 
 | --- | --- | --- | --- |
 | [11_KAMUS_DATA.md](11_KAMUS_DATA.md): definisi beku 10 analitik, "dilewati", waktu aktif, tersensor, dan kode | no. 2 | Claude (draf), pemilik proyek | Selesai (`kamus-1.0`, 26 Oktober 2026) |
 | [12_CERITA_PENGHUBUNG_DAN_NARASI.md](12_CERITA_PENGHUBUNG_DAN_NARASI.md): cerita penghubung dan narasi tantangan kelima | no. 7 | Claude (draf), pemilik proyek | Selesai (disetujui 26 Oktober 2026) |
-| Tes awal–akhir bentuk A dan B, dan angket akses digital | no. 9, 10 | | Belum mulai |
+| [13](13_TES_AWAL_AKHIR.md)–[16](16_ANGKET_AKSES_DIGITAL.md): tes awal–akhir bentuk A dan B, dan angket akses digital | no. 9, 10 | Claude (draf), pemilik proyek | Draf, menunggu empat keputusan pemilik proyek ([13](13_TES_AWAL_AKHIR.md#pertanyaan-untuk-pemilik-proyek)) |
 | Skala sikap untuk Balai Refleksi | no. 19 | | Belum mulai |
 | Mock-up layar baru untuk ahli media langkah 1 | no. 20 | | Belum mulai |
 | Lembar L0–L7 final | no. 11 | | Belum mulai |
