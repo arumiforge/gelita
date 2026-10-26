@@ -45,6 +45,9 @@ Documentation only, in `docs/revisi-10-analitik/` (Indonesian, at the owner's re
   - [x] Owner follow-up decisions (26 October 2026, `04`): test and questionnaire variables enter the data dictionary at `kamus-1.1` after the pilot (`kamus-1.0` untouched); region meetings P2–P4 also drop the 2-JP limit, with about 90 minutes of play and leftovers still in the P5 make-up; the P5 online-risk items get a separate parental consent tick
   - [x] Shared docs aligned (26 October 2026): `02` L6 becomes a run log (answers live in the module) and L7 gets the separate risk-item consent; `06` meeting times (P1/P5 by need, about 90 minutes of play in P2–P4); `03` test and questionnaire codes; `07` validation package (test items, A/B equivalence, module mock-ups, questionnaire review). `11` waits for `kamus-1.1`
   - [ ] After the decisions: align `02` (L6, done with work item 11), `06` (P1/P5), `11` (test and questionnaire variables), `03` (codes), and the r10 v2.1 instrument (`07`)
+- [ ] Bloom label review (work item 4 in `01`, `19_TELAAH_LABEL_BLOOM.md`)
+  - [x] Every scored item checked against Anderson & Krathwohl (2001): 116 digital-literacy items and 12 PBK items; the owner approved all four proposals (26 October 2026, `04`): Cari Objek clues labelled by process (no C5), Benar atau Salah capped at C4 except two evidence-checking cards, Skenario Digital labelled per item (C3/C3/C4, two C5), region ranges revised to C1–C3, C2–C4, C2–C5
+  - [x] Applied: 39 of 92 old labels changed and 36 new labels written in `08`; challenge and region ranges and rule 14 in `06`; the region table and step 1 in `01`
 - [ ] Complete implementation document, after the revision documents are final and gate G2 (expert validation and ethics approval) is passed
 - [ ] Implementation of the system changes listed in `01` (22 so far), one short-lived branch each, after the implementation document is approved
 
@@ -94,3 +97,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `r10-label-bloom` | Claude, work item 4 in `docs/revisi-10-analitik/01`: Bloom label review (`19`), labels in `08`, ranges in `06` | PR open |

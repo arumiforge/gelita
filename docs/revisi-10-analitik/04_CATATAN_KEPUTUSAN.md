@@ -6,6 +6,15 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 26 Oktober 2026
 
+**Keputusan pemilik proyek: label Bloom pengembang** (sesi `r10-label-bloom`, daftar kerja no. 4, telaah di [19](19_TELAAH_LABEL_BLOOM.md))
+
+1. **Petunjuk Cari Objek diberi label menurut proses yang dilakukan siswa.** PBK: C1 kalau petunjuk menyebut nama bendanya (Temanggung), C2 kalau hanya mendeskripsikannya (Magelang, Wonosobo). Periksa Unggahan per jenis petunjuk: atribusi C2, izin C3, representasi C2 di Temanggung dan C4 di Magelang dan Wonosobo, menghargai tradisi C2 di Temanggung dan Magelang dan C4 di Wonosobo. Tidak ada C5 di Cari Objek.
+2. **Benar atau Salah paling tinggi C4, kecuali dua butir C5.** Membandingkan isi dua teks dan menggolongkan fakta atau pendapat menjadi C2 (mengikuti Anderson & Krathwohl, bukan daftar kata kerja operasional yang menaruh "membedakan" di C4). Menilai kepercayaan sumber dari penanda yang diberikan, atau menolak alasan popularitas dan posisi, menjadi C4. C5 hanya untuk `wnb-3-a06` dan `wnb-3-b06`, yang memeriksa apakah simpulan didukung bukti.
+3. **Skenario Digital diberi label per butir di 08.** Temanggung dan Magelang C3, Wonosobo C4, kecuali `wnb-5-a03` dan `wnb-5-b03` C5 (menimbang privasi teman melawan tekanan grup).
+4. **Rentang Bloom wilayah direvisi, butir tidak ditulis ulang:** Temanggung C1–C3, Magelang C2–C4, Wonosobo C2–C5. Aturan no. 14 di 06 kini menyebut bahwa Bloom menggambarkan proses berpikir, bukan tingkat kesulitan; kesulitan ditunjukkan level AKM dan data Rasch.
+
+Akibatnya: 39 dari 92 label lama di 08 berubah, dan 36 label baru ditulis (12 PBK, 24 skenario). Rentang per tantangan dan per wilayah di 06 serta tabel pelevelan wilayah di 01 disesuaikan. Ini label pengembang; label ahli dari pelabelan buta B.5a di tahap 2 menggantikannya.
+
 **Keputusan pemilik proyek: penyelarasan dokumen bersama setelah keputusan tes** (sesi `pbb/magical-hamilton-4f6l98`, wawancara lanjutan)
 
 1. **Variabel tes dan angket masuk kamus data di `kamus-1.1`, setelah uji coba.** `kamus-1.0` di [11](11_KAMUS_DATA.md) tidak diubah sekarang. Sampai saat itu, daftar variabelnya ada di [13](13_TES_AWAL_AKHIR.md#penskoran-dan-pemasukan-data) dan [16](16_ANGKET_AKSES_DIGITAL.md#variabel-untuk-kamus-data).
