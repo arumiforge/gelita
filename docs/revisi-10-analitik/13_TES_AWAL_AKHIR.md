@@ -237,7 +237,7 @@ Teks untuk siswa (dijelaskan koordinator sesi):
 - **Tidak sampai:** butir yang belum pernah tampil di layar siswa saat bagiannya ditutup batas waktu ditandai `not_reached`. Di analisis Rasch, butir yang tidak sampai dianggap data hilang, bukan salah. Butir yang sudah tampil tapi tidak dijawab dihitung dilewati.
 - **Tebakan cepat:** waktu tampil per butir di bawah ambang tebakan cepat di [11](11_KAMUS_DATA.md) ditandai `rapid_guess`. Jawabannya tetap dinilai apa adanya, sama seperti di game; penandanya dipakai di analisis kepekaan. Ambang untuk tes ditinjau setelah uji coba, karena beberapa butir tampil bersama satu teks dan waktu membaca teksnya jatuh ke butir pertama.
 - **Skor mentah per bagian:** D1 0–16, D2 0–16, D3 0–8. Skor total 0–40 hanya untuk gambaran; analisis memakai skor per bagian.
-- **Variabel baru** untuk [11](11_KAMUS_DATA.md#variabel-peserta-dan-sesi):
+- **Variabel baru**, yang masuk [11](11_KAMUS_DATA.md#variabel-peserta-dan-sesi) di `kamus-1.1` setelah uji coba (keputusan 26 Oktober 2026); `kamus-1.0` tidak diubah:
 
 | Satuan | Kolom | Isi |
 | --- | --- | --- |
@@ -275,14 +275,14 @@ Satu kelas uji coba hanya memberi ± 14 siswa per bentuk, jadi angka butir di uj
 
 ## Penyesuaian di dokumen lain
 
-Keputusan pemilik proyek 26 Oktober 2026 membuat penyesuaian ini bisa dikerjakan:
+Status per 26 Oktober 2026, setelah keputusan pemilik proyek:
 
-- **01:** perubahan sistem no. 22 (modul tes dan angket), status daftar kerja no. 9 dan 10, dan baris "Apakah skor game sejalan dengan kemampuan nyata?" di *Rencana analisis singkat*.
-- **02, L6:** L6 menjadi catatan pelaksanaan, bukan lembar jawaban, karena jawaban tersimpan di modul: tabel instrumen merujuk ke 13–16; tes awal "di P1, sebelum P2"; kolom bentuk, susulan, status, perangkat cadangan, dan catatan bantuan. Bagian dari daftar kerja no. 11 (lembar final).
-- **06, *Waktu bermain*:** isi dan lama P1 dan P5 mengikuti [Waktu di P1 dan P5](#waktu-di-p1-dan-p5), tanpa batas JP.
-- **11:** variabel tes dan angket di *Variabel peserta dan sesi*, termasuk `error_codes` berupa daftar kode; jawaban tes dan angket dari modul, bukan dari lembar ketik, di *Aturan gabung lembar lapangan*.
-- **03:** pola kode `tes-*` dan `ang-*`.
-- **07 dan instrumen r10 v2.1:** butir tes dan butir telaah kesetaraan A dan B masuk paket validasi; mock-up modul masuk telaah ahli media langkah 1.
+- **01:** selesai. Perubahan sistem no. 22 (modul tes dan angket), daftar kerja no. 9, 10, dan 20, dan baris "Apakah skor game sejalan dengan kemampuan nyata?" di *Rencana analisis singkat*.
+- **02, L6 dan L7:** selesai. L6 menjadi catatan pelaksanaan, karena jawaban tersimpan di modul; L7 dan surat izin orang tua mendapat izin terpisah untuk butir risiko daring. Lembar finalnya tetap bagian daftar kerja no. 11.
+- **06, *Waktu bermain*:** selesai. P1 dan P5 mengikuti [Waktu di P1 dan P5](#waktu-di-p1-dan-p5), dan pertemuan wilayah memberi waktu bermain ± 90 menit, tidak terikat JP.
+- **03:** selesai. Pola kode `tes-*` dan `ang-*`, serta kode jawaban angket.
+- **07:** selesai. Butir tes dan butir telaah kesetaraan A dan B masuk paket validasi; mock-up modul masuk telaah ahli media. Instrumen r10 v2.1 dan media v1.1 sendiri belum ditulis.
+- **11:** menunggu `kamus-1.1` setelah uji coba (keputusan 26 Oktober 2026): variabel tes dan angket di *Variabel peserta dan sesi*, termasuk `error_codes` berupa daftar kode, dan jawaban dari modul di *Aturan gabung lembar lapangan*.
 
 ## Keputusan pemilik proyek
 
@@ -292,6 +292,8 @@ Empat pertanyaan di draf dokumen ini diputuskan pemilik proyek pada 26 Oktober 2
 2. **Media tes.** Modul tes di GELITA, dengan tampilan Bootstrap yang tidak dibuat seperti game ([Modul tes di GELITA](#modul-tes-di-gelita)). Kertas dan formulir daring tidak dipakai.
 3. **Topik.** Budaya Nusantara di luar Kedu, seperti draf 14 dan 15.
 4. **Angket.** Angket akses digital masuk modul yang sama, langsung setelah tes awal, hanya di layar dan tidak dibacakan. Dua–tiga butir pengalaman risiko daring diisi sendiri di layar di P5 setelah tes akhir ([16](16_ANGKET_AKSES_DIGITAL.md#keputusan-pemilik-proyek)).
+
+Keputusan lanjutan di hari yang sama: variabel tes dan angket masuk kamus data di `kamus-1.1` setelah uji coba; pertemuan wilayah P2–P4 memberi waktu bermain ± 90 menit, tidak terikat JP, dengan sisa tantangan tetap di susulan P5; dan butir risiko daring memakai izin orang tua terpisah.
 
 ## Hal terbuka dari 14 dan 15
 

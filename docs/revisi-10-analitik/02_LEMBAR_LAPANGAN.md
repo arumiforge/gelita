@@ -181,40 +181,42 @@ Baris yang tidak sepakat dibahas bersama. Baris kedua di atas memperlihatkan ala
 
 ## L6 Log tes awal–akhir dan angket akses digital
 
-Game menunjukkan unjuk kerja di dalam game, bukan peningkatan belajar. Kita butuh tes di luar game untuk menguji apakah skor game sejalan dengan kemampuan nyata (validitas) dan apakah ada peningkatan. Instrumennya masih harus disusun tim; L6 mencatat pelaksanaannya.
+Game menunjukkan unjuk kerja di dalam game, bukan peningkatan belajar. Kita butuh tes di luar game untuk menguji apakah skor game sejalan dengan kemampuan nyata (validitas) dan apakah ada perubahan. Instrumennya ada di [13](13_TES_AWAL_AKHIR.md)–[16](16_ANGKET_AKSES_DIGITAL.md) dan dikerjakan di modul tes GELITA (keputusan 26 Oktober 2026). Jawaban, skor, bentuk, dan jam tersimpan di modul; L6 hanya mencatat pelaksanaan yang tidak terlihat modul.
 
 **Instrumen yang disiapkan**
 
 | Instrumen | Isi | Bentuk |
 | --- | --- | --- |
-| Tes literasi membaca teks budaya (D1, D3) | 20–25 butir berformat AKM (pilihan ganda, pilihan ganda kompleks, menjodohkan) | Dua bentuk setara, A dan B, dipakai bergantian untuk tes awal dan tes akhir |
-| Tes literasi digital (D2) | 10–12 skenario pilihan, setara tapi tidak sama dengan skenario di game | Dua bentuk setara, A dan B |
-| Angket akses digital | Punya HP sendiri, memakai media sosial, didampingi orang tua, lama main game per hari | Diisi siswa di kelas, sekitar 10 menit |
+| Tes Bagian 1 Membaca (D1) | 16 butir dari 4 teks berformat AKM: pilihan ganda, pilihan ganda kompleks, menjodohkan ([14](14_TES_BAGIAN_MEMBACA.md)) | Dua bentuk setara, A dan B, dipakai bergantian untuk tes awal dan tes akhir |
+| Tes Bagian 2 Aman dan etis (D2) dan Bagian 3 Budaya digital (D3) | 8 skenario dan 8 butir dari 2 adegan unggahan, setara tapi tidak sama dengan game ([15](15_TES_BAGIAN_DIGITAL.md)) | Dua bentuk setara, A dan B |
+| Angket akses digital | 17 butir, di antaranya punya HP sendiri, memakai media sosial, didampingi orang tua, dan lama main game per hari ([16](16_ANGKET_AKSES_DIGITAL.md)) | Di modul, langsung setelah tes awal, dibaca sendiri, ± 10 menit |
+| Butir risiko daring | 2–3 butir (ang-21 sampai ang-23 di [16](16_ANGKET_AKSES_DIGITAL.md#keputusan-pemilik-proyek)) | Di modul, P5 setelah tes akhir, hanya untuk siswa dengan izin terpisah di L7 |
 
 **Aturan pelaksanaan**
 
-- Tes awal paling lambat sehari sebelum pertemuan game pertama. Tes akhir di P5, setelah tantangan susulan dan sebelum cerita penutup (keputusan 26 Oktober 2026), supaya cerita penutup tidak ikut memengaruhi tes akhir.
-- Separuh kelas dapat bentuk A di tes awal dan bentuk B di tes akhir; separuh lainnya kebalikannya.
-- Siswa yang absen ikut susulan dalam tiga hari. Kalau tidak, ditandai "hilang".
+- Tes awal di P1, sebelum P2, karena P1 juga memuat daftar akun dan cerita pembuka. Tes akhir di P5, setelah tantangan susulan dan sebelum cerita penutup (keputusan 26 Oktober 2026), supaya cerita penutup tidak ikut memengaruhi tes akhir.
+- Bentuk mengikuti denah papan catur ([13](13_TES_AWAL_AKHIR.md#pembagian-bentuk-denah-papan-catur)): panel peneliti menetapkannya dari nomor baris dan kursi di L2, dan tes akhir memakai bentuk kebalikannya.
+- Siswa yang absen ikut susulan dalam tiga hari; peneliti membuka modul untuk mereka. Kalau tidak, ditandai "hilang". Angket boleh menyusul sampai P5.
+- Batas waktu, penilaian, dan penyimpanan jawaban diurus modul. L6 mencatat perangkat cadangan, bantuan, gangguan, dan pertanyaan yang sering diajukan siswa. Status di kolom tes, angket, dan butir risiko disalin dari panel peneliti.
 
 <!-- lembar: L6-tes -->
-| Kode peserta | Tes awal (tanggal, bentuk, skor) | Tes akhir (tanggal, bentuk, skor) | Angket | Catatan |
-| --- | --- | --- | --- | --- |
-| S03-A07 | 3 Nov 2026, A, 14/24 | 18 Nov 2026, B, 19/24 | Sudah | — |
-| S03-A12 | 3 Nov 2026, B, 9/24 | susulan 20 Nov 2026, A, 12/24 | Sudah | Sakit saat tes akhir |
+| Kode peserta | Tes awal (tanggal, bentuk, status) | Tes akhir (tanggal, bentuk, status) | Angket | Butir risiko P5 | Catatan |
+| --- | --- | --- | --- | --- | --- |
+| S03-A07 | 3 Nov 2026, A, selesai | 18 Nov 2026, B, selesai | Sudah | Sudah | — |
+| S03-A12 | 3 Nov 2026, B, selesai | susulan 20 Nov 2026, A, selesai | Sudah | Tanpa izin | Pindah ke perangkat cadangan P07 di tes awal, 4 menit; sakit saat tes akhir |
 
 ## L7 Izin orang tua dan status peserta
 
 L7 menentukan data siapa yang boleh dianalisis. Ini satu-satunya lembar yang memuat nama siswa. Centang persetujuan di halaman daftar GELITA sudah merekam persetujuan siswa, tapi izin orang tua tetap harus dikumpulkan secara tertulis.
 
-**Isi surat izin orang tua (dokumen terpisah):** tujuan penelitian; data yang dikumpulkan (catatan permainan, pengamatan, tes, angket); pilihan terpisah untuk rekaman suara wawancara; hak mengundurkan diri kapan saja tanpa akibat; kontak peneliti; nomor persetujuan etik.
+**Isi surat izin orang tua (dokumen terpisah):** tujuan penelitian; data yang dikumpulkan (catatan permainan, pengamatan, tes, angket); pilihan terpisah untuk rekaman suara wawancara; pilihan terpisah untuk butir pengalaman risiko daring di P5 (2–3 pertanyaan yang diisi sendiri di layar, dengan prosedur rujukan; keputusan 26 Oktober 2026); hak mengundurkan diri kapan saja tanpa akibat; kontak peneliti; nomor persetujuan etik.
 
 <!-- lembar: L7-izin -->
-| No | Nama siswa | Kelas | Izin orang tua | Izin rekaman suara | Persetujuan siswa (game + lisan) | Kode peserta | Status |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | (nama) | 5A | Ya, 28 Okt 2026 | Ya | Ya | S03-A07 | Aktif |
-| 2 | (nama) | 5A | Belum kembali | — | — | — | Kegiatan pengganti |
-| 3 | (nama) | 5A | Ya, 29 Okt 2026 | Tidak | Ya | S03-A12 | Aktif, tanpa wawancara terekam |
-| 4 | (nama) | 5A | Ya, 28 Okt 2026 | Ya | Ya | S03-A04 | Mengundurkan diri 10 Nov 2026; data dihapus |
+| No | Nama siswa | Kelas | Izin orang tua | Izin rekaman suara | Izin butir risiko daring | Persetujuan siswa (game + lisan) | Kode peserta | Status |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | (nama) | 5A | Ya, 28 Okt 2026 | Ya | Ya | Ya | S03-A07 | Aktif |
+| 2 | (nama) | 5A | Belum kembali | — | — | — | — | Kegiatan pengganti |
+| 3 | (nama) | 5A | Ya, 29 Okt 2026 | Tidak | Tidak | Ya | S03-A12 | Aktif, tanpa wawancara terekam dan tanpa butir risiko daring |
+| 4 | (nama) | 5A | Ya, 28 Okt 2026 | Ya | Ya | Ya | S03-A04 | Mengundurkan diri 10 Nov 2026; data dihapus |
 
 **Penyimpanan:** lembar kertas disimpan di lemari terkunci, terpisah dari lembar lain, bersama pemetaan NPSN ke kode sekolah. Salinan digitalnya dienkripsi dan hanya bisa dibuka P1 dan ketua peneliti. Lembar dimusnahkan sesuai masa simpan di protokol etik. Situs statis revisi ini menyimpan isian di browser perangkat yang dipakai, jadi isi L7 sebaiknya hanya di laptop yang aman dan terkunci.

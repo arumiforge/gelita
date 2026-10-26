@@ -6,6 +6,14 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 26 Oktober 2026
 
+**Keputusan pemilik proyek: penyelarasan dokumen bersama setelah keputusan tes** (sesi `pbb/magical-hamilton-4f6l98`, wawancara lanjutan)
+
+1. **Variabel tes dan angket masuk kamus data di `kamus-1.1`, setelah uji coba.** `kamus-1.0` di [11](11_KAMUS_DATA.md) tidak diubah sekarang. Sampai saat itu, daftar variabelnya ada di [13](13_TES_AWAL_AKHIR.md#penskoran-dan-pemasukan-data) dan [16](16_ANGKET_AKSES_DIGITAL.md#variabel-untuk-kamus-data).
+2. **Pertemuan wilayah (P2–P4) juga tidak terikat 2 JP: waktu bermain ± 90 menit.** Tantangan yang belum selesai tetap dilanjutkan di susulan P5 (paling lama 20 menit). Dengan perkiraan 29–52 menit per wilayah di [06](06_KISI_KISI_BANK_SOAL.md#waktu-bermain), hampir semua siswa selesai di pertemuannya.
+3. **Butir risiko daring di P5 memakai izin orang tua terpisah.** Surat izin orang tua dan L7 punya centang sendiri untuk butir ini. Tanpa centang itu, siswa tidak melihat butir tersebut, tetapi tetap ikut kegiatan lain.
+
+Akibatnya: 02 (L6 dan L7), 06 (waktu bermain dan pembagian pertemuan), 03 (kode tes dan angket), 07 (paket validasi), 13, dan 16 disesuaikan.
+
 **Keputusan pemilik proyek: tes awal–akhir dan angket akses digital** (sesi `pbb/magical-hamilton-4f6l98`, menjawab empat pertanyaan di [13](13_TES_AWAL_AKHIR.md#keputusan-pemilik-proyek) dan satu putaran wawancara lanjutan)
 
 1. **Lama tes mengikuti kebutuhan, tidak terikat jam pelajaran sekolah.** Penelitian sudah mendapat izin memakai seluruh JP, bahkan sampai setelah jam sekolah. Jadi lama P1 dan P5 mengikuti kebutuhan tes dan kegiatan lain; pilihan 3 JP dan 4 JP di 13 tidak dipakai lagi.
