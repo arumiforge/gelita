@@ -16,6 +16,7 @@ Documentation only, in `docs/revisi-10-analitik/` (Indonesian, at the owner's re
   - [x] Draft of the new question bank (`08_DRAF_BANK_SOAL.md`): 116 digital-literacy items in variants a/b, 6 anchors, 12 PBK items, all `needs_verification`; fictional names checked, posts on the fictional app *Kedugram* (PR #220, #221)
   - [x] AI-assisted preliminary review T6 of the draft bank (`09_TELAAH_PENDAHULUAN_BANK_SOAL.md`), fixes applied; residual findings R1–R4 approved by the owner (PR #222, #225)
   - [ ] Owner writes the English translation of the new bank (after validation)
+  - [ ] Rewrite `wnb-3-b02` so it needs an inference (AKM stays L2), then re-check its Bloom label (owner, 26 October 2026; note in `08` → *Yang harus dicek sebelum validasi ahli*)
   - [ ] Someone on the team searches every uploader handle in `08` on Instagram and TikTok and renames any that belong to a real, active account
   - [ ] Expert validation of the new bank: blind labelling (B.5a) and relevance ratings (B.5b), with the R1–R4 questions from `08`/`09`
   - [x] Owner accepted the expert-instrument review (`07_TELAAH_INSTRUMEN_VALIDASI.md`) and added the media expert (25 October 2026)

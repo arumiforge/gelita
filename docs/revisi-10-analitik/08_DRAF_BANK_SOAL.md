@@ -1186,6 +1186,8 @@ Sebelum pengambilan data, satu orang tim tetap disarankan mengetik setiap nama a
 
 **Skenario.** Setiap skenario dibaca ulang oleh ahli bahasa anak dan ahli literasi digital: apakah tindakan "tepat" memang paling tepat, apakah tindakan "kurang tepat" memang aman tapi belum lengkap, dan apakah umpan baliknya tidak menakut-nakuti.
 
+**Butir yang perlu ditulis ulang (keputusan pemilik proyek 26 Oktober 2026).** `wnb-3-b02` ("Menurut bacaan, gas di sekitar kawah aman bagi kesehatan.") terjawab dari kalimat tersurat "gas yang berbahaya bagi kesehatan", jadi lebih dekat ke L1 daripada L2. Level AKM-nya tetap L2 sesuai kisi-kisi Wonosobo; pernyataannya ditulis ulang di sesi bank berikutnya supaya siswa perlu menyimpulkan (misalnya parafrase atau memadukan dua kalimat), lalu label Bloom-nya diperiksa lagi ([19](19_TELAAH_LABEL_BLOOM.md)). Kunci *salah* dan kode INF-KAT dipertahankan bila memungkinkan.
+
 # Gambar yang dibutuhkan
 
 Teks digital (layar informasi, unggahan, grup, hasil pencarian) dibangun sebagai tampilan di game, bukan gambar, supaya teksnya bisa dibacakan dan diperbesar. Yang perlu gambar:
