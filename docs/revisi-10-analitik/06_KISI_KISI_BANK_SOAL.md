@@ -2,7 +2,7 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 25 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Status: **disetujui pemilik proyek (25 Oktober 2026)**, termasuk semua bagian yang semula bertanda "usulan". Isi bank yang mengikuti kisi-kisi ini ada di [08_DRAF_BANK_SOAL.md](08_DRAF_BANK_SOAL.md).
+Per 26 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Status: **disetujui pemilik proyek (25 Oktober 2026)**, termasuk semua bagian yang semula bertanda "usulan". Variasi Susun Gambar disesuaikan dengan keputusan 26 Oktober 2026 di [08](08_DRAF_BANK_SOAL.md#susun-gambar-selama-studi). Isi bank yang mengikuti kisi-kisi ini ada di [08_DRAF_BANK_SOAL.md](08_DRAF_BANK_SOAL.md).
 
 Kisi-kisi ini jadi cetak biru bank soal baru: berapa butir, di tantangan mana, mengukur dimensi apa, di level apa, dengan bacaan seperti apa, dan kode kesalahan apa yang dibawa setiap pilihan. Dokumen ini meneruskan [05_TELAAH_BUTIR_DAN_DIMENSI.md](05_TELAAH_BUTIR_DAN_DIMENSI.md) dan tidak mengulang telaahnya. Belum ada yang diubah di sistem atau di [`docs/bank-soal/`](../bank-soal/README.md).
 
@@ -135,7 +135,7 @@ Perbandingan dengan bank sekarang: D1 naik dari 29 menjadi 37 butir per siswa, d
 | Periksa Unggahan | 4 per wilayah | a, b | **24** petunjuk, 6 adegan |
 | **Literasi digital** | | | **116** |
 | Temukan Benda (PBK) | 4 per wilayah | satu adegan | 12, diambil dari bank lama |
-| Susun Gambar | — | 10 per wilayah boleh tetap | Gambar lama tetap dipakai |
+| Susun Gambar | — | 10 per wilayah boleh tetap | Gambar lama tetap dipakai; Temanggung mendapat satu gambar baru (Wayang Kedu). Pengerjaan pertama selama studi memakai dua variasi yang bersih dari kunci, lihat [08](08_DRAF_BANK_SOAL.md#susun-gambar-selama-studi) |
 
 Bacaan yang ada boleh dipakai ulang sebagai bahan, dengan perbaikan dari [daftar perbaikan butir](05_TELAAH_BUTIR_DAN_DIMENSI.md#daftar-perbaikan-butir) di 05. Dari tiga variasi lama, dua yang paling setara dipilih per tantangan, lalu bentuk teksnya disesuaikan dengan genre di kisi-kisi.
 
@@ -336,7 +336,7 @@ Karena belum ada data siswa sungguhan, bank baru boleh memakai set kode baru den
 | Butir variasi | `a`, `b` | `mgl-3-a04`, `wnb-5-b02` |
 | Butir yang dipakai bersama semua buklet | `x` | Kartu jangkar `tmg-3-x01`; Temukan Benda `wnb-4-x03` |
 | Periksa Unggahan | `a`, `b` di tantangan 4 | `mgl-4-a02` |
-| Susun Gambar | `a`–`j` seperti sekarang | `tmg-1-d01` |
+| Susun Gambar | `a`, `b` = dua variasi bersih untuk pengerjaan pertama; huruf berikutnya untuk pengerjaan ulang ([08](08_DRAF_BANK_SOAL.md#keputusan-pemilik-proyek-26-oktober-2026)) | `tmg-1-a01`, `tmg-1-k01` |
 
 Setelah uji coba memakai suatu kode, kode itu dibekukan dan tidak dipakai untuk isi yang berbeda.
 
@@ -349,7 +349,7 @@ Daftar ini hanya catatan untuk dokumen implementasi; belum ada yang dikerjakan.
 | 1 | Engine Skenario Digital | Dua langkah (tindakan, alasan), skor 0–1–2 di server, simpan `reason_code`; pilihan diacak per pengerjaan |
 | 2 | Cari Objek dua babak | Babak 2 dengan adegan per variasi; satu tantangan, dua kelompok butir; babak 1 tanpa variasi |
 | 3 | Kartu jangkar di Benar atau Salah | Bacaan kedua di satu tantangan; butir `x` dipakai semua variasi |
-| 4 | Variasi dari buklet | Pengerjaan pertama memakai variasi dari buklet siswa (dimasukkan P1 di panel peneliti dari L2), bukan acak; `BankRules::FIRST_ATTEMPT_GROUPS` jadi `a`, `b` |
+| 4 | Variasi dari buklet | Pengerjaan pertama memakai variasi dari buklet siswa (dimasukkan P1 di panel peneliti dari L2), bukan acak; `BankRules::FIRST_ATTEMPT_GROUPS` jadi `a`, `b`. Susun Gambar tidak mengikuti buklet: pengerjaan pertama diacak dari `a` dan `b`, dua variasi yang keterangannya bersih dari kunci ([08](08_DRAF_BANK_SOAL.md#keputusan-pemilik-proyek-26-oktober-2026)) |
 | 5 | `DifficultyRules` baru | Isi Rumpang 4/5/6 rumpang, pengecoh 2/2/2; Benar atau Salah 4/6/6 pernyataan dan genre baru; Cari Objek babak 2 (petunjuk, bagian ketuk); Skenario Digital (skenario, jumlah tindakan 3/4/4, alasan 3/4/5); variasi tepat 2 |
 | 6 | Keterampilan Benar atau Salah | Tambah kode keterampilan D1b, misalnya `mengenali_penanda_sumber`, `menilai_kredibilitas`, `mengenali_iklan` |
 | 7 | Kolom workbook baru | `dimension` (D1, D2, D3, PBK), `subaspect` (D1a, D1b), `akm_level`, `pirls_process`, `text_genre`, `testlet_key`, `booklet_shared` (butir `x`), `error_code` per pengecoh dan per sel rumpang × kata, `reason_code` per alasan, `score` per tindakan, `reference_source` wajib |
