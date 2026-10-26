@@ -1,8 +1,8 @@
 # Mock-up Layar Baru untuk Ahli Media Langkah 1
 
-Per 26 Oktober 2026 · Daftar kerja no. 20 di [01](01_REVISI_10_ANALITIK.md#peta-jalan-dan-daftar-kerja) · Disusun Claude, disetujui pemilik proyek 26 Oktober 2026 (gambar skala sikap menyusul 17)
+Per 26 Oktober 2026 · Daftar kerja no. 20 di [01](01_REVISI_10_ANALITIK.md#peta-jalan-dan-daftar-kerja) · Disusun Claude, disetujui pemilik proyek 26 Oktober 2026; gambar skala sikap digambar ulang dari 17 di hari yang sama
 
-Dokumen ini menjelaskan 23 gambar mock-up layar baru Revisi 10 di folder [`gambar/mockup/`](gambar/mockup/). Gambar ini bahan ahli media langkah 1 di tahap 2: ahli menilai game yang ada sekarang ditambah rancangan layar baru, karena sistem baru diubah di tahap 3, setelah gerbang G2 (keputusan 25 Oktober 2026). Langkah 2, telaah singkat layar jadi di instalasi uji sebelum uji coba, adalah daftar kerja no. 21 dan bagian gerbang G3.
+Dokumen ini menjelaskan 26 gambar mock-up layar baru Revisi 10 di folder [`gambar/mockup/`](gambar/mockup/). Gambar ini bahan ahli media langkah 1 di tahap 2: ahli menilai game yang ada sekarang ditambah rancangan layar baru, karena sistem baru diubah di tahap 3, setelah gerbang G2 (keputusan 25 Oktober 2026). Langkah 2, telaah singkat layar jadi di instalasi uji sebelum uji coba, adalah daftar kerja no. 21 dan bagian gerbang G3.
 
 Setiap gambar diberi label merah **"Mock-up — bukan tampilan akhir"** dan kodenya (`mk-…`). Instrumen media v1.1 ([07](07_TELAAH_INSTRUMEN_VALIDASI.md#langkah-berikutnya)) bisa menyusun bagian mock-up langsung dari tabel di bawah: satu baris per layar, dengan keadaan yang ditampilkan dan pertanyaan untuk ahli.
 
@@ -14,15 +14,15 @@ Setiap gambar diberi label merah **"Mock-up — bukan tampilan akhir"** dan kode
 | Cari Objek babak 2 *Periksa Unggahan* | `mk-pu-01` … `mk-pu-04` | 4 | 08 (`tmg-4-a01`, `tmg-4-a02`), perubahan sistem no. 17, 18, 20 |
 | Token sesi ringan, layar di luar sesi, layar kecil, panel peneliti | `mk-tk-01` … `mk-tk-05` | 5 | 01 *Token sesi*, perubahan sistem no. 10, 11, 16 |
 | Modul tes dan angket | `mk-mt-01` … `mk-mt-06` | 6 | 13, 14 (`tes-mb-A01`), 16 (ang-01–03, ang-21), perubahan sistem no. 22 |
-| Skala sikap di Balai Refleksi (placeholder) | `mk-ss-01` | 1 | Perubahan sistem no. 21; isinya menunggu `17_SKALA_SIKAP.md` |
+| Skala sikap di Balai Refleksi | `mk-ss-01` … `mk-ss-04` | 4 | [17](17_SKALA_SIKAP.md) (`skp-ct-01`, `skp-03`), perubahan sistem no. 21 |
 | Cerita penghubung dan kartu misi tantangan kelima | `mk-cr-01`, `mk-cr-02` | 2 | 12 (`layar-temanggung-02`, kartu misi `tmg-5`) |
 
-Ukuran gambar 27–111 KB (WebP, jumlah ± 1,6 MB). Semua layar game digambar di panggung 1280 × 720 (16:9), kecuali `mk-tk-04` (jendela ponsel 844 × 390) dan beberapa layar modul yang lebih tinggi karena halamannya bergulir.
+Ukuran gambar 27–111 KB (WebP, jumlah ± 1,7 MB). Semua layar game digambar di panggung 1280 × 720 (16:9), kecuali `mk-tk-04` (jendela ponsel 844 × 390) dan beberapa layar modul yang lebih tinggi karena halamannya bergulir.
 
 ## Cara mock-up dibuat
 
 - **Tampilan game sungguhan** (keputusan pemilik proyek, 26 Oktober 2026). Sumbernya halaman HTML statis di [`gambar/mockup/src/`](gambar/mockup/src/) yang memakai CSS, huruf, dan gambar UI game yang sebenarnya dari `public/assets/` dan `gelita-katalog/assets/`, dengan susunan markup yang sama dengan view game (`_frame`, `boleh`, `cari`, `login`, `mission-brief`, `reflection`). Bagian yang belum ada di game ditulis di `src/_mock.css`. HUD dan label mock-up dibuat `src/_mock.js`.
-- **Isi kata demi kata dari dokumen sumber.** Satu butir nyata per layar diambil dari draf 08, 12, 13, 14, dan 16 tanpa diubah. Teks yang belum ada di dokumen mana pun (pesan galat, pengingat waktu, dan sebagainya) ditandai *draf salinan* di bawah dan didaftar di [Celah yang ditemukan](#celah-yang-ditemukan-di-dokumen-lain).
+- **Isi kata demi kata dari dokumen sumber.** Satu butir nyata per layar diambil dari draf 08, 12, 13, 14, 16, dan 17 tanpa diubah. Teks yang belum ada di dokumen mana pun (pesan galat, pengingat waktu, dan sebagainya) ditandai *draf salinan* di bawah dan didaftar di [Celah yang ditemukan](#celah-yang-ditemukan-di-dokumen-lain).
 - **Gambar ulang.** Jalankan dari akar repo: `node docs/revisi-10-analitik/gambar/mockup/src/render.mjs` (semua) atau dengan nama berkas, misalnya `… render.mjs mk-sd-01`. Skrip memakai Playwright Chromium yang sudah terpasang (jangan `playwright install`) dan Pillow untuk WebP. Sumber ini bisa dipakai lagi di tahap 3 sebagai rujukan tata letak.
 - **Tanpa CDN.** Modul tes meniru gaya bawaan Bootstrap 5 dengan beberapa aturan di `src/_modul.css`. Repo belum punya salinan Bootstrap; perubahan sistem no. 22 menyimpannya lokal di `public/assets/vendor/` saat modul dibangun di tahap 3.
 - **Bukan bagian app.** Tidak ada berkas di `app/` atau `public/` yang berubah.
@@ -137,13 +137,29 @@ Ukuran gambar 27–111 KB (WebP, jumlah ± 1,6 MB). Semua layar game digambar di
 - Apakah pengingat waktu tanpa jam terasa menenangkan, bukan membuat panik?
 - Apakah layar butir risiko daring cukup privat (tanpa warna mencolok atau ilustrasi yang menarik perhatian teman sebelah) dan pilihan "Tidak mau menjawab" mudah ditemukan?
 
-### 5. Skala sikap di Balai Refleksi (`mk-ss-01`, placeholder)
+### 5. Skala sikap di Balai Refleksi (`mk-ss-01` … `mk-ss-04`)
 
-**Tujuannya.** Skala pendamping sikap menjaga warisan diisi sekali di P5, di Balai Refleksi, di luar skor literasi digital (perubahan sistem no. 21; keputusan 25 Oktober 2026).
+**Tujuannya.** Skala pendamping sikap menjaga warisan diisi sekali di P5, di Balai Refleksi, sebelum kritik dan saran, di luar skor literasi digital (perubahan sistem no. 21). Format dan tampilannya mengikuti keputusan pemilik proyek di [17](17_SKALA_SIKAP.md#format-jawaban-dan-tampilan): empat pilihan tanpa titik tengah (*Tidak setuju · Kurang setuju · Setuju · Sangat setuju*), kata dengan titik emas yang makin besar, tanpa wajah; satu pernyataan per layar; urutan tetap; boleh kembali dan melewati sebelum dikirim; bilah kemajuan perunggu; tidak dibacakan.
 
-**Status: placeholder.** `17_SKALA_SIKAP.md` (daftar kerja no. 19) dikerjakan sesi paralel di cabang `r10-skala-sikap` dan belum masuk `main` saat mock-up ini dibuat. Gambar [`mk-ss-01`](gambar/mockup/mk-ss-01.webp) hanya menunjukkan tempat skala di Balai Refleksi (panel kiri dengan papan judul dan Mbah Kedu, panel kanan berisi pernyataan), dengan tulisan besar **PLACEHOLDER**. Pernyataan, jumlah pilihan, dan bentuk pilihannya sengaja dikosongkan. **Gambar ini diperbarui setelah 17 final**, sebelum paket validasi dikirim ke ahli media; sumbernya `src/mk-ss-01.html`.
+**Isi.** Petunjuk layar pertama, contoh soal `skp-ct-01`, dan butir `skp-03` dari 17 kata demi kata. `skp-03` dipilih karena butir negatif (dibalik): di sinilah format tanpa wajah diuji, karena wajah senang di *Setuju* akan memberi isyarat yang keliru.
 
-**Yang dinilai ahli media (setelah diperbarui).** Apakah format jawaban skala mudah dipahami anak, cocok dengan suasana Balai Refleksi, dan tidak terasa seperti tes.
+**Tata letak.** Tampilan game (bukan Bootstrap seperti modul tes), di latar Balai Refleksi, dalam satu kartu biru tua di tengah panggung. Pilihan memakai titik emas berukuran naik di atas katanya; pilihan terpilih bercahaya dan bertanda ●, jadi tidak bergantung pada warna saja. Mbah Kedu dan kalimat pujiannya (`Game.reflectionLead`) **tidak** tampil di layar skala; menurut 17, pujian itu baru tampil setelah skala dikirim. Tidak ada bintang, serpihan, atau umpan balik setelah menjawab.
+
+| Gambar | Keadaan |
+| --- | --- |
+| [`mk-ss-01`](gambar/mockup/mk-ss-01.webp) | Petunjuk layar pertama (judul "Pendapatmu tentang budaya Kedu" dan tiga paragraf dari 17), tombol *Coba contoh* |
+| [`mk-ss-02`](gambar/mockup/mk-ss-02.webp) | Contoh soal "Aku suka makan buah." bertanda *Contoh*, tanpa bilah kemajuan; *Setuju* dipilih; *Lewati* dan *Lanjut* |
+| [`mk-ss-03`](gambar/mockup/mk-ss-03.webp) | Pernyataan 3/12 "Belajar tentang candi dan tari itu membosankan." dengan *Kurang setuju* dipilih, bilah kemajuan 3/12, *Kembali*, *Lewati*, *Lanjut* |
+| [`mk-ss-04`](gambar/mockup/mk-ss-04.webp) | Layar terakhir: berapa pernyataan sudah dijawab (11 dari 12, satu dilewati), *Kembali* atau *Kirim* |
+
+*Draf salinan:* tombol *Coba contoh*, label *Contoh*, dan teks layar kirim ("Kamu sudah menjawab 11 dari 12 kalimat. Satu kalimat kamu lewati. Kalau mau, kamu masih bisa kembali dan menjawabnya. Setelah dikirim, jawabanmu tidak bisa diganti lagi."). 17 hanya menyebut bahwa layar terakhir menunjukkan berapa pernyataan sudah dijawab, lalu *Kirim*.
+
+**Yang dinilai ahli media.**
+- Apakah titik yang makin besar dengan kata di bawahnya mudah dipahami anak sebagai "makin setuju", tanpa wajah?
+- Apakah empat pilihan cukup besar dan terpisah untuk diketuk, dan pilihan terpilih jelas tanpa bergantung pada warna?
+- Apakah *Lewati* cukup terlihat (sesuai prinsip etik) tanpa mengundang siswa melewati semua pernyataan?
+- Apakah layar ini terasa bagian dari Balai Refleksi, dan tidak terasa seperti tes?
+- Apakah pernyataan berukuran besar terbaca nyaman, termasuk pernyataan terpanjang (skp-11, sepuluh kata)?
 
 ### 6. Cerita penghubung dan kartu misi tantangan kelima (`mk-cr-01`, `mk-cr-02`, pelengkap)
 
@@ -160,7 +176,7 @@ Ukuran gambar 27–111 KB (WebP, jumlah ± 1,6 MB). Semua layar game digambar di
 
 Usulan bagian mock-up di instrumen media v1.1 (ditulis di 07 → *Langkah berikutnya*, bukan di dokumen ini):
 
-1. Satu baris penilaian per layar di atas (enam layar), dengan gambar yang disebut dan pertanyaan *Yang dinilai ahli media* sebagai petunjuk butir. Layar 5 dinilai setelah gambarnya diperbarui dari 17.
+1. Satu baris penilaian per layar di atas (enam layar), dengan gambar yang disebut dan pertanyaan *Yang dinilai ahli media* sebagai petunjuk butir. Layar 5 memakai format jawaban dari 17.
 2. Butir A9 dan C10 usulan 07 dinilai pada `mk-pu-01`–`mk-pu-04`.
 3. Untuk layar 4 (modul) dan `mk-tk-05` (panel peneliti), aspek game ditandai "tidak berlaku".
 4. Catatan di sampul: gambar adalah mock-up statis, jadi gerak, suara, waktu muat, dan papan ketik sentuh dinilai di langkah 2 (daftar kerja no. 21) pada layar jadi.
@@ -188,7 +204,7 @@ Putaran 1 (26 Oktober 2026), sebelum menggambar:
 
 Putaran 2 (26 Oktober 2026), setelah melihat gambar:
 
-1. **Gambar disetujui apa adanya** untuk paket ahli media langkah 1. `mk-ss-01` diperbarui setelah 17 final.
+1. **Gambar disetujui apa adanya** untuk paket ahli media langkah 1. `mk-ss-01` diperbarui setelah 17 final (dikerjakan hari yang sama: placeholder diganti empat gambar `mk-ss-01`–`04` dari 17).
 2. **Penjelasan setelah kesempatan Skenario Digital habis: satu kalimat per skenario di 08**, bukan umpan balik pilihan tepat yang dipotong. Ke-24 kalimatnya sudah ditulis di 08, dan `mk-sd-05` sudah digambar ulang dengan kalimat `tmg-5-a02`.
 3. **Lapisan pemeriksaan area ketuk (`mk-pu-02`) ikut dikirim ke ahli media**, bertanda jelas tidak tampil ke siswa.
 4. **Draf salinan di dokumen ini diterima sebagai teks awal.** Kalimat akhirnya ditetapkan di dokumen implementasi, setelah telaah ahli media dan uji keterbacaan dengan anak.

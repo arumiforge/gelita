@@ -59,7 +59,7 @@ Documentation only, in `docs/revisi-10-analitik/` (Indonesian, at the owner's re
   - [x] 23 WebP mock-ups in `gambar/mockup/` from static HTML on the game's real CSS and UI pictures (sources in `gambar/mockup/src/`, `render.mjs`): Skenario Digital (5 states), *Periksa Unggahan* (4, incl. a tap-area check layer), token and research-mode screens (5, incl. the researcher panel), test and questionnaire module (6), attitude scale (placeholder), link scene and mission card; `03` gets the `mk-*` codes
   - [x] Owner decided two rounds (26 October 2026, `04`): real-game fidelity, all states and token screens, story screens included; pictures approved, the tap-area layer goes to the expert, draft copy accepted as starting text
   - [x] One explanation line per Skenario Digital scenario written in `08` for the tries-exhausted screen (24 lines, rule in *Cara membaca*; owner, 26 October 2026), `mk-sd-05` redrawn; the lines go to expert validation with the bank
-  - [ ] Redraw `mk-ss-01` once `17_SKALA_SIKAP.md` is final
+  - [x] Attitude-scale placeholder replaced once `17` merged (PR #253): `mk-ss-01`–`04` (instructions, practice item, `skp-03`, send screen) in the format from `17`; 26 pictures in all
 - [ ] Complete implementation document, after the revision documents are final and gate G2 (expert validation and ethics approval) is passed
 - [ ] Implementation of the system changes listed in `01` (22 so far), one short-lived branch each, after the implementation document is approved
 
