@@ -49,7 +49,7 @@ Supaya ketiganya tetap terpisah:
 - **Tidak ada butir yang menanyakan fakta budaya**, jadi siswa yang belum tahu banyak tentang Kedu tetap bisa menjawab jujur.
 - **Tidak ada butir yang mengulang tindakan kunci D3** (menyebut sumber, meminta izin pemilik karya, membetulkan keterangan yang keliru, tidak mengejek ritual di komentar).
 
-Di analisis, korelasi skala sikap dengan PBK dan dengan skor D3 diharapkan positif tapi lemah sampai sedang. Korelasi yang sangat tinggi (misalnya r ≥ 0,70) berarti skala ini tidak membedakan dirinya, dan dicatat sebagai temuan.
+Di analisis, korelasi skala sikap dengan PBK dan dengan skor D3 diharapkan **positif dan sedang: cukup kuat, tapi tidak berlebihan** (keputusan pemilik proyek, 26 Oktober 2026). Usulan patokannya r ≈ 0,30–0,50. Korelasi yang sangat tinggi (r ≥ 0,70) berarti skala ini tidak membedakan dirinya dari PBK atau D3, dan korelasi mendekati nol (r < 0,10) berarti hubungannya tidak terlihat; keduanya dicatat sebagai temuan. Batas pastinya ditulis di pra-registrasi OSF di G4.
 
 ## Kisi-kisi
 
@@ -86,9 +86,9 @@ Aturan menulis:
 | 7 | skp-07 | SK4 | + | Aku senang menceritakan budaya Kedu kepada teman. | Bercerita langsung, bukan di internet |
 | 8 | skp-08 | SK3 | − | Merawat warisan budaya itu urusan orang dewasa saja. | |
 | 9 | skp-09 | SK1 | + | Kesenian dari daerah Kedu penting untuk dijaga. | |
-| 10 | skp-10 | SK4 | − | Aku malu memakai bahasa daerah di depan teman. | Cek kepekaan untuk siswa yang bahasa ibunya bukan bahasa Jawa ([pertanyaan terbuka](#pertanyaan-yang-masih-terbuka)) |
+| 10 | skp-10 | SK4 | − | Aku malu memakai bahasa daerah di depan teman. | "Bahasa daerah" umum, bukan "bahasa Jawa"; pemilik proyek menilai butir ini adil untuk siswa yang bahasa ibunya bukan bahasa Jawa (26 Oktober 2026) |
 | 11 | skp-11 | SK2 | + | Aku suka bertanya tentang tradisi kepada orang yang lebih tua. | "Orang yang lebih tua", bukan "orang tua", supaya cocok untuk anak yang tinggal dengan kakek-nenek atau wali |
-| 12 | skp-12 | SK3 | + | Aku mau ikut acara budaya di daerahku. | Cek apakah perlu contoh (misalnya merti desa, kirab) |
+| 12 | skp-12 | SK3 | + | Aku mau ikut acara budaya seperti merti desa dan kirab. | Contoh acara setempat disebut (keputusan pemilik proyek, 26 Oktober 2026); Ahli Budaya Kedu memastikan keduanya dikenal di Temanggung, Magelang, dan Wonosobo |
 
 **Contoh soal (tidak diskor):** `skp-ct-01` "Aku suka makan buah." Tampil sebelum skp-01, supaya siswa mencoba empat pilihan sekali dengan pernyataan yang tidak ada hubungannya dengan budaya. Jawabannya disimpan tapi tidak dianalisis.
 
@@ -146,11 +146,11 @@ Skor tidak tampil untuk siswa, guru, atau sekolah.
 | Hal | Ketentuan |
 | --- | --- |
 | Letak | Balai Refleksi, langsung setelah cerita penutup. Urutan di Balai Refleksi: skala sikap → kirim → ringkasan perjalanan dan kritik dan saran |
-| Kritik dan saran | Tetap ada sesudah skala. Bintang 1–5 dan empat pertanyaan terbuka boleh dikosongkan semua selama penelitian (aturan "minimal dua" tidak dipakai), supaya siswa yang lelah tidak terbebani |
+| Kritik dan saran | Tetap ada sesudah skala. Bintang 1–5 dan empat pertanyaan terbuka boleh dikosongkan semua selama penelitian (aturan "minimal dua" tidak dipakai), supaya siswa yang lelah tidak terbebani. Bintang 1–5 ("Seberapa senang kamu bermain GELITA?") dipakai sebagai data kepraktisan (keputusan pemilik proyek, 26 Oktober 2026); jawaban terbuka tetap masukan untuk tim |
 | Waktu | ± 5 menit: petunjuk dan contoh ± 1 menit, 12 pernyataan × ± 15 detik ± 3 menit, cadangan 1 menit. Kritik dan saran ± 3–5 menit sesudahnya. Waktu sebenarnya diukur di uji coba |
 | Dibacakan? | **Tidak.** Pernyataan hanya tampil di layar dan tidak ada rekaman narasi. Kalau siswa bertanya arti satu kata, P3 boleh membacakan atau menjelaskan kata itu saja dengan suara pelan, tanpa menafsirkan pernyataan, dan mencatatnya di L3 (`PNL` + `BHS`). Ini sejalan dengan angket di [16](16_ANGKET_AKSES_DIGITAL.md) dan aturan narasi (perubahan sistem no. 18) |
 | Privasi | Siswa mengisi sendiri; koordinator dan pengamat tidak melihat layar siswa dan tidak menanggapi jawaban |
-| Siswa yang belum menamatkan cerita penutup | Balai Refleksi terbuka setelah semua tantangan tuntas (aturan sekarang). Siswa yang tantangannya belum tuntas di akhir susulan P5 tetap diarahkan ke cerita penutup dan skala oleh mode penelitian, supaya data skala tidak hilang hanya karena satu tantangan; aturan ini diputuskan di dokumen implementasi |
+| Siswa yang belum tuntas di akhir P5 | **Data apa adanya** (keputusan pemilik proyek, 26 Oktober 2026). Balai Refleksi tetap terbuka setelah semua tantangan tuntas (aturan sekarang), tanpa jalur khusus. Siswa yang tantangannya belum tuntas di akhir susulan P5 tidak mengisi skala; skalanya kosong dengan alasan `belum_tuntas`, dan data tantangannya dipakai seperti adanya (tersensor menurut [11](11_KAMUS_DATA.md)). Susulan 7 hari di baris berikut hanya untuk siswa yang tidak hadir di P5 |
 | Tidak hadir di P5 | Peneliti membuka sesi susulan **paling lama 7 hari** setelah P5, dengan urutan yang sama (cerita penutup, lalu skala). Data diberi penanda `sikap_makeup`. Lewat dari 7 hari, skala dibiarkan kosong (tidak diisi dengan perkiraan), dan siswa tetap ikut analisis lain |
 | Diisi ulang | Skala hanya bisa dikirim sekali. Setelah dikirim, layar tidak membukanya lagi |
 
@@ -169,10 +169,12 @@ Masuk `kamus-1.1` setelah uji coba, sama seperti variabel tes dan angket. `kamus
 | `sikap_n_answered` | Jumlah butir yang dijawab (0–12) | Turunan |
 | `sikap_flag_straight` | 1 kalau 12 jawaban mentah sama | Turunan, penanda |
 | `sikap_makeup` | 1 kalau diisi di susulan | Mentah |
+| `sikap_missing_reason` | Alasan skala kosong: `absen` (tidak hadir di P5 dan susulan), `belum_tuntas` (tantangan belum tuntas di akhir P5), `tanpa_izin` (tidak ada izin di L7); kosong kalau skala diisi | Turunan |
+| `feedback_rating` | Bintang 1–5 di kritik dan saran, kosong kalau dilewati; data kepraktisan, bukan bagian skala sikap | Mentah |
 | `sikap_submitted_at` | Waktu kirim (WIB) | Mentah |
 | `sikap_version` | Versi skala (`sikap-1.0` setelah dibekukan di G4) | Mentah |
 
-Semua bertanda "Peneliti" dan masuk ekspor peneliti, tidak masuk skor literasi digital.
+Semua bertanda "Peneliti" dan masuk ekspor peneliti, tidak masuk skor literasi digital. `feedback_rating` sudah tersimpan di sistem sekarang (`participant_feedback.rating`); yang baru hanya penandanya sebagai data penelitian.
 
 ## Rencana validasi
 
@@ -220,7 +222,7 @@ Dengan ± 300 siswa: analisis faktor konfirmatori satu faktor untuk data ordinal
 2. **Tidak ada jawaban benar atau salah**, dan ini tertulis di petunjuk. Jawaban tidak memengaruhi bintang, serpihan, atau nilai sekolah.
 3. **Kerahasiaan.** Layar hanya menampilkan kode peserta. Jawaban per siswa hanya dibaca tim peneliti. Laporan ke sekolah hanya angka gabungan, tidak untuk kelompok kurang dari 5 siswa.
 4. **Boleh dilewati.** Setiap pernyataan boleh dilewati, dan siswa boleh berhenti tanpa akibat.
-5. **Tidak menyudutkan.** Butir tentang bahasa daerah (skp-10) tidak boleh membuat siswa yang tidak berbahasa Jawa merasa salah. Kalimatnya menyebut "bahasa daerah" secara umum, dan Ahli Bahasa Anak serta Ahli Budaya Kedu diminta menilai kepekaannya.
+5. **Tidak menyudutkan.** Butir tentang bahasa daerah (skp-10) tidak boleh membuat siswa yang tidak berbahasa Jawa merasa salah. Kalimatnya menyebut "bahasa daerah" secara umum, sehingga bahasa daerah apa pun yang dipakai siswa termasuk; pemilik proyek menilai butir ini adil (26 Oktober 2026). Ahli Bahasa Anak dan Ahli Budaya Kedu tetap menilainya seperti butir lain.
 6. **Tanpa tanggapan.** Koordinator dan pengamat tidak menanggapi jawaban, dan layar tidak memberi umpan balik setelah skala.
 
 ## Akibat ke dokumen lain
@@ -229,12 +231,13 @@ Dokumen-dokumen ini tidak diubah di sesi ini; penyesuaiannya dikerjakan pemilik 
 
 | Dokumen | Yang perlu diubah |
 | --- | --- |
-| [01](01_REVISI_10_ANALITIK.md), perubahan sistem no. 21 | Lengkapi catatan pengembang: layar skala di Balai Refleksi sebelum kritik dan saran, satu pernyataan per layar dengan *Lewati* dan *Kembali*, contoh soal, urutan tetap, sekali kirim, jawaban per butir disimpan di server, waktu tampil per butir dan penggantian jawaban dicatat, pengantar Mbah Kedu yang memuji tampil setelah skala, aturan "minimal dua" kritik dan saran tidak dipakai selama penelitian, susulan paling lama 7 hari dibuka peneliti, siswa yang belum tuntas di akhir P5 tetap diarahkan ke cerita penutup dan skala |
+| [01](01_REVISI_10_ANALITIK.md), perubahan sistem no. 21 | Lengkapi catatan pengembang: layar skala di Balai Refleksi sebelum kritik dan saran, satu pernyataan per layar dengan *Lewati* dan *Kembali*, contoh soal, urutan tetap, sekali kirim, jawaban per butir disimpan di server, waktu tampil per butir dan penggantian jawaban dicatat, pengantar Mbah Kedu yang memuji tampil setelah skala, aturan "minimal dua" kritik dan saran tidak dipakai selama penelitian, susulan paling lama 7 hari dibuka peneliti untuk siswa yang tidak hadir di P5, tanpa jalur khusus untuk siswa yang belum tuntas (data apa adanya), alasan skala kosong dan bintang kritik dan saran masuk ekspor peneliti |
 | [02](02_LEMBAR_LAPANGAN.md) (sesi `r10-lembar-lapangan`) | L1: catatan susulan skala dan tanggalnya. L3: bantuan membaca satu kata di skala sikap tercatat dengan kode yang ada (`PNL` + `BHS`). L7: surat izin orang tua menyebut skala sikap dalam satu kalimat |
 | [03](03_KODE_DAN_ARTI.md) | Kode baru dari skala ini: `skp-01` … `skp-12`, `skp-ct-01`, SK1–SK4, kode jawaban 1–4 (sudah ditambahkan di sesi ini) |
 | [06](06_KISI_KISI_BANK_SOAL.md), baris P5 | Skala sikap sebelum kritik dan saran; susulan skala paling lama 7 hari setelah P5 |
 | [07](07_TELAAH_INSTRUMEN_VALIDASI.md) (instrumen r10 v2.1) | Lembar penilaian skala sikap: relevansi 1–4 untuk Ahli Budaya Kedu (G3), Ahli Pengukuran, Ahli Bahasa Anak 1 dan 2; telaah bahasa untuk Ahli Bahasa Anak; catatan Ya/Tidak tumpang tindih D3 untuk Ahli Literasi Digital 1 dan 2. Baris "Indikator sikap" di tabel *perubahan yang menunggu keputusan* diperbarui ke dokumen ini |
-| [11](11_KAMUS_DATA.md) | Di `kamus-1.1` setelah uji coba: variabel di [Variabel untuk kamus data](#variabel-untuk-kamus-data). `kamus-1.0` tidak diubah |
+| [11](11_KAMUS_DATA.md) | Di `kamus-1.1` setelah uji coba: variabel di [Variabel untuk kamus data](#variabel-untuk-kamus-data), termasuk `feedback_rating` sebagai data kepraktisan. `kamus-1.0` tidak diubah |
+| [Dokumen pendukung peneliti](dokumen-pendukung-peneliti/README.md) | Usulan "kepraktisan diukur dari log dan lembar L1, L3, L4" yang belum diputuskan: tambahkan bintang 1–5 di kritik dan saran sebagai sumber kepraktisan dari siswa |
 | [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md) | Periksa apakah baris terakhir cerita penutup memuji sikap siswa terhadap warisan Kedu tepat sebelum skala; kalau ya, pertimbangkan kalimat yang lebih netral. Pengantar Balai Refleksi (`Game.reflectionLead`) baru tampil setelah skala |
 | [13](13_TES_AWAL_AKHIR.md), tabel waktu P5 | Baris "cerita penutup dan skala sikap" (12 menit) belum memuat kritik dan saran (± 3–5 menit); jumlah paling lama P5 naik menjadi ± 139 menit |
 | 18 (mock-up, sesi `r10-mockup-media`) | Mock-up layar skala sikap (petunjuk, contoh, satu pernyataan dengan empat pilihan bertitik, layar kirim) untuk ahli media langkah 1 dan uji keterbacaan |
@@ -242,11 +245,11 @@ Dokumen-dokumen ini tidak diubah di sesi ini; penyesuaiannya dikerjakan pemilik 
 
 ## Pertanyaan yang masih terbuka
 
-- [ ] **Butir bahasa daerah (skp-10).** Tetap memakai "bahasa daerah" umum, atau diganti butir lain kalau di sekolah penelitian ada siswa yang bahasa ibunya bukan bahasa Jawa? Diputuskan setelah telaah Ahli Budaya Kedu dan Ahli Bahasa Anak.
-- [ ] **Contoh di skp-12.** Perlu contoh acara budaya setempat (merti desa, kirab, sadranan) di dalam kalimat, atau dibiarkan umum?
-- [ ] **Bintang 1–5 di kritik dan saran** ("Seberapa senang kamu bermain GELITA?") dipakai sebagai data kepraktisan atau hanya masukan? Bergantung pada usulan dokumen pendukung yang belum diputuskan (kepraktisan dari log dan L1, L3, L4).
-- [ ] **Siswa yang belum tuntas di akhir P5** tetap diarahkan ke cerita penutup dan skala (usulan di atas), atau skalanya dibuka terpisah dari cerita penutup? Diputuskan di dokumen implementasi.
-- [ ] **Hipotesis di pra-registrasi:** besaran korelasi sikap dengan PBK dan D3 yang diharapkan, ditetapkan di G4.
+- [x] **Butir bahasa daerah (skp-10).** **Diputuskan (26 Oktober 2026): adil, tetap dipakai dengan "bahasa daerah" umum.**
+- [x] **Contoh di skp-12.** **Diputuskan (26 Oktober 2026): ya, disebut: "Aku mau ikut acara budaya seperti merti desa dan kirab."**
+- [x] **Bintang 1–5 di kritik dan saran** dipakai sebagai data kepraktisan? **Diputuskan (26 Oktober 2026): ya (`feedback_rating`).**
+- [x] **Siswa yang belum tuntas di akhir P5.** **Diputuskan (26 Oktober 2026): data apa adanya; tanpa jalur khusus, skala kosong dengan alasan `belum_tuntas`.**
+- [x] **Besaran korelasi sikap dengan PBK dan D3.** **Diputuskan (26 Oktober 2026): sedang, cukup kuat tapi tidak berlebihan (usulan r ≈ 0,30–0,50); batas pastinya di pra-registrasi G4.**
 - [ ] Terjemahan bahasa Inggris, setelah validasi.
 
 ## Keputusan pemilik proyek
@@ -263,3 +266,13 @@ Diambil 26 Oktober 2026, dua putaran wawancara (sesi `r10-skala-sikap`). Semua u
 | Penilai ahli | Ahli Budaya Kedu, Ahli Pengukuran, Ahli Bahasa Anak 1 dan 2 untuk I-CVI (aturan Lynn); Ahli Literasi Digital 1 dan 2 hanya catatan tumpang tindih D3 |
 | Tidak hadir di P5 | Susulan paling lama 7 hari, ditandai; sesudahnya kosong, tanpa perkiraan |
 | Tampilan | Satu pernyataan per layar, boleh kembali sebelum kirim, urutan tetap, bilah kemajuan |
+
+Putaran lanjutan, 26 Oktober 2026 (menjawab pertanyaan terbuka di atas):
+
+| Pertanyaan | Keputusan |
+| --- | --- |
+| Butir bahasa daerah (skp-10) | Adil; tetap dipakai |
+| Contoh acara di skp-12 | Disebut: merti desa dan kirab |
+| Bintang 1–5 di kritik dan saran | Data kepraktisan (`feedback_rating`) |
+| Siswa yang belum tuntas di akhir P5 | Data apa adanya; skala kosong dengan alasan `belum_tuntas` |
+| Korelasi dengan PBK dan D3 | Sedang: cukup kuat, tidak berlebihan (usulan r ≈ 0,30–0,50), batas pasti di G4 |
