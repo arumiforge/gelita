@@ -4,7 +4,7 @@
 
 Per 23 Oktober 2026 · Dokumen revisi, belum implementasi
 
-Mulai sekarang, 10 analitik penelitian jadi pegangan kita untuk GELITA. Sesuai judul penelitian, literasi digital jadi konstruk utama dengan tiga dimensi, dan Skenario Digital masuk sebagai tantangan kelima. Admin dan peneliti jadi dua peran yang terpisah, dan log yang tidak dibutuhkan dihapus. Status setiap dokumen dan urutan bacanya ada di [00_INDEKS.md](00_INDEKS.md). Data yang tidak bisa direkam game kita kumpulkan lewat lembar lapangan L0–L7 ([02_LEMBAR_LAPANGAN.md](02_LEMBAR_LAPANGAN.md)). Arti semua kode ada di [03_KODE_DAN_ARTI.md](03_KODE_DAN_ARTI.md), dan riwayat keputusan di [04_CATATAN_KEPUTUSAN.md](04_CATATAN_KEPUTUSAN.md). Telaah setiap butir terhadap dimensinya ada di [05_TELAAH_BUTIR_DAN_DIMENSI.md](05_TELAAH_BUTIR_DAN_DIMENSI.md). Kisi-kisi bank soal baru ada di [06_KISI_KISI_BANK_SOAL.md](06_KISI_KISI_BANK_SOAL.md), telaah instrumen validasi ahli di [07_TELAAH_INSTRUMEN_VALIDASI.md](07_TELAAH_INSTRUMEN_VALIDASI.md), draf bank soal baru di [08_DRAF_BANK_SOAL.md](08_DRAF_BANK_SOAL.md), telaah pendahuluan bank soal di [09_TELAAH_PENDAHULUAN_BANK_SOAL.md](09_TELAAH_PENDAHULUAN_BANK_SOAL.md), telaah pendahuluan media di [10_TELAAH_PENDAHULUAN_MEDIA.md](10_TELAAH_PENDAHULUAN_MEDIA.md), cara menghitung setiap data penelitian di kamus data [11_KAMUS_DATA.md](11_KAMUS_DATA.md), dan cerita penghubung serta narasi tantangan kelima di [12_CERITA_PENGHUBUNG_DAN_NARASI.md](12_CERITA_PENGHUBUNG_DAN_NARASI.md).
+Mulai sekarang, 10 analitik penelitian jadi pegangan kita untuk GELITA. Sesuai judul penelitian, literasi digital jadi konstruk utama dengan tiga dimensi, dan Skenario Digital masuk sebagai tantangan kelima. Admin dan peneliti jadi dua peran yang terpisah, dan log yang tidak dibutuhkan dihapus. Status setiap dokumen dan urutan bacanya ada di [00_INDEKS.md](00_INDEKS.md). Data yang tidak bisa direkam game kita kumpulkan lewat lembar lapangan L0–L8 ([02_LEMBAR_LAPANGAN.md](02_LEMBAR_LAPANGAN.md)). Arti semua kode ada di [03_KODE_DAN_ARTI.md](03_KODE_DAN_ARTI.md), dan riwayat keputusan di [04_CATATAN_KEPUTUSAN.md](04_CATATAN_KEPUTUSAN.md). Telaah setiap butir terhadap dimensinya ada di [05_TELAAH_BUTIR_DAN_DIMENSI.md](05_TELAAH_BUTIR_DAN_DIMENSI.md). Kisi-kisi bank soal baru ada di [06_KISI_KISI_BANK_SOAL.md](06_KISI_KISI_BANK_SOAL.md), telaah instrumen validasi ahli di [07_TELAAH_INSTRUMEN_VALIDASI.md](07_TELAAH_INSTRUMEN_VALIDASI.md), draf bank soal baru di [08_DRAF_BANK_SOAL.md](08_DRAF_BANK_SOAL.md), telaah pendahuluan bank soal di [09_TELAAH_PENDAHULUAN_BANK_SOAL.md](09_TELAAH_PENDAHULUAN_BANK_SOAL.md), telaah pendahuluan media di [10_TELAAH_PENDAHULUAN_MEDIA.md](10_TELAAH_PENDAHULUAN_MEDIA.md), cara menghitung setiap data penelitian di kamus data [11_KAMUS_DATA.md](11_KAMUS_DATA.md), dan cerita penghubung serta narasi tantangan kelima di [12_CERITA_PENGHUBUNG_DAN_NARASI.md](12_CERITA_PENGHUBUNG_DAN_NARASI.md).
 
 Dokumen ini belum mengubah sistem apa pun. Isinya rencana kerja tim; dokumen implementasi yang lengkap disusun setelah revisi ini selesai.
 
@@ -366,7 +366,7 @@ Data inti analisis adalah ketepatan percobaan pertama. Lembar lapangan dipakai s
 | Tugas mana yang lama? | Waktu aktif | Median dan rentang antarkuartil; model campuran dengan efek acak siswa dan rombel |
 | Apakah bantuan menolong? | Bantuan dibuka sebelum percobaan | Regresi logistik campuran |
 | Bagaimana pemahaman keamanan dan etika digital siswa? | Pilihan dan alasan skenario, angket | Tabulasi silang tindakan × alasan; proporsi "tindakannya benar, alasannya keliru" |
-| Apakah skor game sejalan dengan kemampuan nyata? | Kemampuan Rasch game, tes awal dan akhir per bagian ([13](13_TES_AWAL_AKHIR.md#analisis)) | Pola korelasi tes awal per bagian dengan kemampuan game per dimensi; perubahan tes awal–akhir per bagian, dilaporkan sebagai perubahan, bukan pengaruh game |
+| Apakah skor game sejalan dengan kemampuan nyata? | Kemampuan Rasch game, tes awal dan akhir per bagian ([13](13_TES_AWAL_AKHIR.md#analisis)) | Pola korelasi tes awal per bagian dengan kemampuan game per dimensi; perubahan tes awal–akhir per bagian dengan ukuran efek, dilaporkan sebagai perubahan eksploratif, bukan pengaruh game (26 Oktober 2026) |
 | Apakah data pengamatan bisa dipercaya? | L4, pengodean kesalahan | Cohen's κ; reliabilitas orang di model Rasch |
 
 ## Peta jalan dan daftar kerja
@@ -374,6 +374,18 @@ Data inti analisis adalah ketepatan percobaan pertama. Lembar lapangan dipakai s
 Pekerjaan berjalan dalam enam tahap. Tahap berikutnya baru dimulai setelah gerbangnya terpenuhi. Sistem baru diubah di tahap 3, setelah instrumen lolos validasi ahli dan izin etik. Urutan ini dikukuhkan pemilik proyek pada 25 Oktober 2026: dokumen implementasi dan perubahan sistem tidak dimulai sebelum gerbang G2, termasuk persetujuan etik. Izin etik diajukan minggu kedua–keempat November 2026 dan persetujuannya ditargetkan paling lambat akhir September sampai minggu pertama November 2027, jadi tahap 3 bisa baru dimulai sekitar waktu itu. Pemilik proyek memilih tetap menunggu persetujuan (25 Oktober 2026). Uji keterbacaan dengan anak di tahap 2, uji coba, dan pengambilan data juga baru boleh berjalan setelah persetujuan terbit.
 
 ![Peta jalan: enam tahap, lima gerbang](gambar/peta-jalan.svg)
+
+**Model penelitian dan fasenya** (diputuskan 26 Oktober 2026, rinciannya di [dokumen pendukung peneliti](dokumen-pendukung-peneliti/README.md) dan [04](04_CATATAN_KEPUTUSAN.md)). Penelitian ini penelitian desain pendidikan model Plomp (2013), jenis studi pengembangan, dengan tiga fase:
+
+| Fase Plomp | Tahap GELITA | Prototipe | Isi |
+| --- | --- | --- | --- |
+| Penelitian pendahuluan | sebelum tahap 1 | — (usulan desain) | Analisis kebutuhan dan konteks, kajian pustaka, kerangka konseptual: konstruk dan peta bukti di dokumen ini, telaah butir lama ([05](05_TELAAH_BUTIR_DAN_DIMENSI.md)), telaah media pendahuluan ([10](10_TELAAH_PENDAHULUAN_MEDIA.md)), game kelas 5 yang ada sekarang, dan data konteks sekolah sasaran dari lembar L8 Profil sekolah ([02](02_LEMBAR_LAPANGAN.md#l8-profil-sekolah)) |
+| Prototipe | 1–2 (G1, G2) | **Prototipe I**: bank, instrumen, dan mock-up berbasis kertas | Telaah pendahuluan, validasi ahli, uji keterbacaan |
+| Prototipe | 3 (G3) | **Prototipe II**: sistem di instalasi uji | Ahli media langkah 2, uji delapan perangkat, tes otomatis |
+| Prototipe | 4 (G4) | **Prototipe III**: lengkap | Berpikir lantang, uji coba satu kelas |
+| Penilaian | 5–6 | Produk final dan prinsip desain | Pengambilan data utama, analisis, prinsip desain |
+
+Setiap entri di 04 yang merevisi produk menyebut prototipe yang direvisinya (misalnya "Prototipe I, revisi dari validasi ahli"), supaya iterasinya bisa ditelusuri ke buktinya.
 
 Tanggal tiap tahap belum ditetapkan dan perlu diisi tim. Daftar kerja di bawah memuat pekerjaan tahap 1 sampai 4, kecuali perubahan sistem (lihat bagian terakhir).
 
@@ -404,6 +416,7 @@ Ahli media menilai dalam dua langkah (diputuskan 25 Oktober 2026): di tahap 2, g
 | 19 | Susun skala pendamping sikap menjaga warisan untuk Balai Refleksi, lalu masukkan ke validasi ahli (no. 14) | 1 | Claude (draf), pemilik proyek | Draf di [17](17_SKALA_SIKAP.md); keputusan pemilik proyek 26 Oktober 2026 (12 butir empat pilihan tanpa titik tengah, 4 butir dibalik, hanya di layar, sebelum kritik dan saran); menunggu validasi |
 | 20 | Buat papan cerita atau mock-up layar baru (Skenario Digital, *Periksa Unggahan*, token, modul tes dan angket) untuk ahli media langkah 1 | 1 | Claude (draf), pemilik proyek | Selesai: [18](18_MOCKUP_LAYAR_BARU.md) disetujui 26 Oktober 2026 (27 gambar, termasuk layar skala sikap dari [17](17_SKALA_SIKAP.md)) |
 | 21 | Telaah ahli media langkah 2 pada layar jadi di instalasi uji, sebelum uji coba (G3) | 3 | | Belum mulai |
+| 22 | Tulis penelitian pendahuluan sebagai fase tersendiri dari bahan yang ada, dan isi L8 Profil sekolah untuk setiap sekolah sasaran (draf lembar di [02](02_LEMBAR_LAPANGAN.md#l8-profil-sekolah)) | pendahuluan | Claude (draf), pemilik proyek; L8 diisi P1 | Lembar L8 draf (26 Oktober 2026); menunggu daftar kode sekolah (no. 12) |
 
 ## Pertanyaan yang masih terbuka
 
@@ -434,6 +447,10 @@ Pertanyaan ini perlu dijawab sebelum desain instrumen dibekukan. Centang kalau t
 - [ ] Izin etik diajukan ke komisi etik mana, dan kapan? **Sementara (25 Oktober 2026): nama samaran *Lembaga Komite Etik*; diajukan minggu kedua sampai keempat November 2026; persetujuan diperoleh sebelum kegiatan yang mensyaratkannya dimulai, paling lambat antara akhir September dan minggu pertama November 2027. Nama komite sebenarnya belum ditetapkan.**
 - [x] Skema kesalahan dan rencana analisis dipra-registrasi (misalnya di OSF) atau tidak? **Diputuskan (25 Oktober 2026): ya, di OSF pada gerbang G4.**
 - [x] Indikator `sikap` dipakai (misalnya lewat Balai Refleksi) atau dihapus? **Diputuskan (25 Oktober 2026): dipakai sebagai skala pendamping sikap lewat Balai Refleksi, di luar skor literasi digital; instrumennya disusun di tahap 1 dan divalidasi di tahap 2.**
+- [x] Uji beda tes awal–akhir: temuan utama atau eksploratif? **Diputuskan (26 Oktober 2026): tes awal–akhir terutama bukti validitas kriteria; uji bedanya dengan ukuran efek dilaporkan sebagai perubahan eksploratif ([13](13_TES_AWAL_AKHIR.md#analisis)).**
+- [x] Kepraktisan diukur dari mana, karena guru tidak ikut? **Diputuskan (26 Oktober 2026): log, L1, L3, L4, dan bintang 1–5 di kritik dan saran (`feedback_rating`) cukup untuk sekarang. Perlu tidaknya pertanyaan kepraktisan tambahan untuk siswa diputuskan setelah uji coba tahap 4, dengan data berpikir lantang (L5) sebagai bahan kualitatif.**
+- [x] Penelitian pendahuluan ditulis sebagai fase tersendiri? **Diputuskan (26 Oktober 2026): ya, ditambah lembar L8 Profil sekolah untuk data konteks sekolah sasaran (daftar kerja no. 22).**
+- [x] Prototipe diberi nomor? **Diputuskan (26 Oktober 2026): ya, Prototipe I (tahap 1–2), II (tahap 3), III (tahap 4); lihat [Peta jalan](#peta-jalan-dan-daftar-kerja).**
 - [x] Kapan skala sikap diisi: hanya di P5 setelah cerita penutup, atau juga di P1 sebagai data awal? **Diputuskan (25 Oktober 2026): hanya di P5, di Balai Refleksi.**
 - [x] Ambang waktu tidak aktif (usulan 60 detik) dan tebakan cepat (usulan 1,5 detik) ditetapkan setelah uji coba? **Ya: mengikuti tahap 4 peta jalan, yang urutannya dikukuhkan 25 Oktober 2026. Sampai uji coba, ambang sementaranya jeda 3 menit dan tebakan cepat di bawah 3 detik (26 Oktober 2026); keduanya pengaturan yang mudah diubah.**
 - [x] Karena sistem baru diubah setelah G2, bagaimana ahli media menilai layar baru (Skenario Digital, *Periksa Unggahan*, token) sebelum uji coba? **Diputuskan (25 Oktober 2026): dua langkah, mock-up di tahap 2 dan layar jadi di instalasi uji sebelum uji coba (G3).**
