@@ -95,4 +95,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `r10-lembar-lapangan` | Final field sheets L0–L7, work item 11 (`02`) | PR open; approved by the owner |
+| `r10-lembar-lapangan` | Final field sheets L0–L7, work item 11 (`02`) | PR #250 open; approved by the owner |
