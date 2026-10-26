@@ -6,7 +6,7 @@ Folder ini berisi **bacaan untuk peneliti dan tim**: landasan metodologi, teori,
 
 | Berkas | Isi | Status |
 | --- | --- | --- |
-| [model-penelitian-pengembangan.pdf](model-penelitian-pengembangan.pdf) | Model penelitian dan pengembangan GELITA, 12 halaman. Isinya: model Plomp (2013) jenis studi pengembangan, dengan ECD, evaluasi formatif Tessmer dan Nieveen & Folmer, dan empat kriteria mutu; alasan memilihnya dan perbandingan dengan ADDIE, 4D, Borg & Gall, dan Sugiyono; pemetaan ke enam tahap dan lima gerbang; kriteria mutu untuk GELITA; tabel ringkasan model, metode, dan teori; rincian yang mudah keliru dikutip; daftar pustaka dengan tanda tingkat pengecekan | Model dan aturan I-CVI Lynn diputuskan 26 Oktober 2026 |
+| [model-penelitian-pengembangan.pdf](model-penelitian-pengembangan.pdf) | Model penelitian dan pengembangan GELITA, 12 halaman. Isinya: model Plomp (2013) jenis studi pengembangan, dengan ECD, evaluasi formatif Tessmer dan Nieveen & Folmer, dan empat kriteria mutu; alasan memilihnya dan perbandingan dengan ADDIE, 4D, Borg & Gall, dan Sugiyono; pemetaan ke enam tahap dan lima gerbang; kriteria mutu untuk GELITA; tabel ringkasan model, metode, dan teori; rincian yang mudah keliru dikutip; daftar pustaka dengan tanda tingkat pengecekan | Model dan aturan I-CVI Lynn diputuskan 26 Oktober 2026; empat usulan (uji beda eksploratif, kepraktisan, fase penelitian pendahuluan dengan L8, prototipe I–III) diputuskan hari yang sama |
 | [model-penelitian-pengembangan.html](model-penelitian-pengembangan.html) | Sumber PDF di atas | — |
 
 ## Memperbarui PDF

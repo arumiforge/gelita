@@ -1,8 +1,8 @@
-# Lembar Lapangan L0–L7
+# Lembar Lapangan L0–L8
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 26 Oktober 2026 · **Status: final, disetujui pemilik proyek 26 Oktober 2026** (daftar kerja no. 11) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 26 Oktober 2026 · **Status: L0–L7 final, disetujui pemilik proyek 26 Oktober 2026** (daftar kerja no. 11); **L8 Profil sekolah draf** (ditambahkan 26 Oktober 2026, keputusan pemilik proyek tentang penelitian pendahuluan di [04](04_CATATAN_KEPUTUSAN.md)) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Lembar lapangan mengisi yang tidak terlihat oleh log game dan modul tes: siapa yang dibantu, perangkat yang dipakai bareng, kondisi kelas, emosi siswa, dan alasan di balik jawaban. Semua lembar diisi **peneliti**, bukan guru. Setiap lembar memakai kunci yang sama dengan log, sesuai [aturan gabung di kamus data](11_KAMUS_DATA.md#aturan-gabung-lembar-lapangan) (`kamus-1.0`): **kode peserta** (misalnya S03-A07), **kode sesi lapangan** (misalnya S03-A-P2), dan **jam WIB** sampai detik. Cara kerja di lapangan dan peran P1–P3 ada di dokumen utama, bagian *Kerja lapangan*.
 
@@ -10,7 +10,7 @@ Kode sekolah di semua contoh (`S03`) hanya contoh. Daftar kode sekolah penelitia
 
 ## Daftar lembar
 
-Ada delapan lembar. L0–L4 diisi di setiap sesi lapangan, L5 untuk tiga siswa per pertemuan wilayah, dan L6–L7 satu untuk setiap kelas.
+Ada sembilan lembar. L0–L4 diisi di setiap sesi lapangan, L5 untuk tiga siswa per pertemuan wilayah, L6–L7 satu untuk setiap kelas, dan L8 satu untuk setiap sekolah.
 
 | Lembar | Isinya | Kapan | Pengisi | Satu lembar untuk | Analitik yang didukung |
 | --- | --- | --- | --- | --- | --- |
@@ -22,6 +22,7 @@ Ada delapan lembar. L0–L4 diisi di setiap sesi lapangan, L5 untuk tiga siswa p
 | L5 Wawancara retrospektif | Alasan siswa di balik jawabannya | setelah bermain di P2–P4 | P3 | satu siswa | 6, 10 |
 | L6 Log tes awal–akhir dan angket | Pelaksanaan tes dan angket di modul tes GELITA | P1, P5, dan susulan | P1 (catatan pertanyaan: P3) | satu kelas | validitas, 2, 10 |
 | L7 Izin dan status | Izin orang tua, persetujuan siswa, status peserta | sebelum P1, diperbarui sampai studi selesai | P1 | satu kelas | semua (etika) |
+| L8 Profil sekolah (draf) | Konteks sekolah sasaran: letak, jumlah kelas 5, perangkat, internet, listrik, pengalaman asesmen dan pelajaran digital | saat sekolah setuju ikut, sebelum uji coba atau P1 | P1, dari operator sekolah dan data sekolah | satu sekolah | penelitian pendahuluan, deskripsi sampel |
 
 ## Pertemuan dan lembar yang dipakai
 
@@ -40,7 +41,7 @@ Siswa tanpa izin orang tua tidak punya akun GELITA dan ikut kegiatan pengganti d
 
 ## Cara mencetak dan mengisi
 
-- **Kertas A4.** L0, L5, dan L7 dicetak tegak; L1, L2, L3, L4, dan L6 mendatar. Ukuran huruf isian paling kecil 10 pt.
+- **Kertas A4.** L0, L5, L7, dan L8 dicetak tegak; L1, L2, L3, L4, dan L6 mendatar. Ukuran huruf isian paling kecil 10 pt.
 - **Kepala setiap halaman:** kode sesi lapangan (L7 dan L6: sekolah dan rombel), tanggal, inisial pengisi, dan "Halaman __ dari __". Lembar kosong dicetak dengan baris kosong saja; baris contoh di dokumen ini tidak ikut dicetak.
 - **Jumlah baris kosong per halaman:** L1 penyimpangan 12, L2 30 (satu kelas), L3 15, L4 30 (satu putaran per halaman), L5 6, L6 30, L7 30.
 - **Menulis:** huruf cetak, pulpen bertinta hitam. Jam ditulis `JJ:MM:SS` dari ponsel yang sudah disamakan. Isian yang tidak ada ditulis "—", bukan dikosongkan. Salah tulis dicoret satu garis, ditulis yang benar di sampingnya, dan diparaf; tidak memakai penghapus cair.
@@ -334,6 +335,36 @@ Sekolah: ______ (kode sekolah: **menunggu daftar kerja no. 12**) · Rombel: ___ 
 | 4 | (nama) | 5A | Ya, 1 Nov 2027 | Ya | Ya | Ya | S03-A04 | Mengundurkan diri 18 Nov 2027; permintaan hapus diajukan |
 
 **Penyimpanan:** lembar kertas disimpan di lemari terkunci, terpisah dari lembar lain, bersama pemetaan NPSN ke kode sekolah. Salinan digitalnya dienkripsi dan hanya bisa dibuka P1 dan ketua peneliti. Lembar dimusnahkan sesuai masa simpan di protokol etik. Situs statis revisi ini menyimpan isian di peramban perangkat yang dipakai, jadi L7 hanya diisi di laptop yang aman dan terkunci.
+
+## L8 Profil sekolah
+
+**Status: draf (26 Oktober 2026).** L8 mengisi data konteks sekolah sasaran untuk fase penelitian pendahuluan (model Plomp: analisis kebutuhan dan konteks) dan untuk deskripsi sampel di bab hasil. Lembar ini mencatat fakta tentang sekolah, bukan pendapat orang: tidak ada nama guru atau siswa, dan guru tidak dinilai. Kondisi pada hari pertemuan tetap dicatat di L0 dan L1; jawaban siswa tentang perangkat di rumah dan di sekolah tetap dari angket ([16](16_ANGKET_AKSES_DIGITAL.md), terutama ang-13).
+
+**Cara mengisi**
+
+- Diisi P1 sekali per sekolah, saat sekolah sudah setuju ikut dan sebelum kegiatan pertama di sekolah itu (uji coba di tahap 4 atau P1 di tahap 5). Sumbernya operator atau kepala sekolah, ditambah data sekolah yang terbuka (Dapodik, profil sekolah di laman Kemendikdasmen); Rapor Pendidikan hanya kalau sekolah bersedia membagikannya.
+- Perangkat dan internet dicek langsung di ruang yang akan dipakai, dengan uji yang sama seperti L0 (*Sebelum siswa masuk*), bukan hanya ditanyakan.
+- Kode sekolah dari daftar kerja no. 12; NPSN hanya ada di pemetaan NPSN ke kode sekolah yang disimpan bersama L7.
+- Kalau sekolah memakai lebih dari satu ruang, baris perangkat dan internet diisi per ruang.
+
+Kode sekolah: ______ (**menunggu daftar kerja no. 12**) · Tanggal: __________ · Inisial P1: ______ · Sumber: operator / kepala sekolah / data terbuka
+
+<!-- lembar: L8-profil-sekolah -->
+| Bagian | Isian | Contoh |
+| --- | --- | --- |
+| Letak | Kabupaten/kota; kota atau desa | Kabupaten Temanggung; desa |
+| Status sekolah | Negeri atau swasta | Negeri |
+| Kelas 5 | Jumlah rombel dan siswa per rombel | 2 rombel; 28 dan 27 siswa |
+| Bahasa sehari-hari di kelas | Bahasa yang paling sering dipakai guru dan siswa | Bahasa Indonesia dan bahasa Jawa |
+| Perangkat sekolah | Jenis dan jumlah yang layak pakai (laptop, Chromebook, tablet 10 inci atau lebih); ruang komputer ada atau tidak | 20 Chromebook layak, ruang komputer tidak ada |
+| Perangkat yang cukup untuk penelitian | Perangkat sekolah ditambah perangkat yang dibawa peneliti, terhadap jumlah siswa terbesar per rombel | 20 + 10 dari peneliti = 30 (cukup) |
+| Internet | Jenis (kabel, wifi, data seluler), hasil uji di tiga titik ruangan | Wifi; 12, 9, dan 4 Mbps |
+| Listrik | Stopkontak di ruang yang dipakai cukup atau tidak; pemadaman dalam sebulan terakhir | Cukup; tidak ada |
+| Pengalaman asesmen di layar | ANBK atau asesmen sekolah di layar dalam dua tahun terakhir (ya/tidak, kelas berapa) | ANBK kelas 5, 2026 |
+| Pelajaran digital | Ada atau tidak pelajaran atau ekstrakurikuler komputer dan internet di kelas 4–5 | Ekstrakurikuler komputer, kelas 5 |
+| Catatan | Hal lain yang memengaruhi jalannya sesi (jadwal sekolah, ruang, kebiasaan memakai gawai) | Ruang kelas dipakai bergantian dengan kelas 4 |
+
+**Pemakaian datanya:** ringkasan per sekolah (tanpa NPSN dan nama sekolah) masuk penelitian pendahuluan di Bab III dan deskripsi sampel di bab hasil. Variabelnya masuk kamus data di `kamus-1.1`, bersama variabel tes dan angket; `kamus-1.0` tidak diubah. Butir lembar ini dicek pemilik proyek, lalu dibaca Ahli Media Pembelajaran di paket validasi tahap 2 (bagian perangkat dan internet).
 
 ## Perubahan dari draf
 
