@@ -271,7 +271,7 @@ Kolom: kode, engine, label lama, label baru, proses kognitif yang dilakukan sisw
 
 Hal di 08 yang terlihat selama telaah, tetapi di luar wewenang sesi ini:
 
-- `wnb-3-b02` berlevel AKM L2, padahal jawabannya tersurat ("gas yang berbahaya bagi kesehatan"); lebih dekat ke L1. Perlu diputuskan di pelabelan AKM.
+- `wnb-3-b02` berlevel AKM L2, padahal jawabannya tersurat ("gas yang berbahaya bagi kesehatan"); lebih dekat ke L1. **Diputuskan pemilik proyek (26 Oktober 2026):** level AKM tetap L2, pernyataannya ditulis ulang di sesi bank berikutnya supaya siswa perlu menyimpulkan, lalu label Bloom-nya diperiksa lagi (catatan di 08, *Yang harus dicek sebelum validasi ahli*).
 - `mgl-2-a02` dan `mgl-2-b01` berlevel AKM L1 tetapi berlabel Bloom C2. Ini tidak bertentangan, karena siswa mengaitkan definisi dengan istilah. Ahli bisa memeriksanya di B.5a.
 
 ## Rujukan
