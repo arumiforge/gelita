@@ -93,4 +93,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 |---|---|---|
 | `pbb/eloquent-sagan-j40sg8` | Pre-stage-1 check of the research revision docs | PR open |
 | `sky/festive-hopper-cl6p65` | Susun Gambar caption leaks checked against the draft bank (`08`) | PR open |
-| `pbb/magical-hamilton-4f6l98` | Pre/post test forms A and B and the digital-access questionnaire (`13`–`16`); continues `sky/brave-tesla-8owq5a` (PR #239) | PR #242 open |
