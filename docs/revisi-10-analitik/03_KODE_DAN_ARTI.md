@@ -123,7 +123,7 @@ Semua kode yang dipakai di dokumen revisi, lembar lapangan, dan data penelitian 
 
 | Kode | Arti | Catatan |
 | --- | --- | --- |
-| NON-TEB | Menebak cepat: menjawab kurang dari 1,5 detik tanpa membaca | Ambang diuji saat uji coba |
+| NON-TEB | Menebak cepat: menjawab kurang dari 3 detik tanpa membaca | Ambang sementara (26 Oktober 2026), ditetapkan ulang setelah uji coba |
 | NON-SEN | Salah ketuk di dekat sasaran (Cari Objek) | — |
 | NON-HABIS | Jawaban terakhir saat kesempatan habis | — |
 

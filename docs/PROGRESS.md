@@ -22,9 +22,9 @@ Documentation only, in `docs/revisi-10-analitik/` (Indonesian, at the owner's re
   - [ ] Rewrite the instruments once as r10 v2.1 and media v1.1, after the blueprint and the D3 decision
   - [x] AI-assisted media pre-review on a local test install (`10_TELAAH_PENDAHULUAN_MEDIA.md`)
   - [x] Owner approved the media decisions (25 October 2026): no phones for data collection, re-laid Cari Objek tap areas with an automatic overlap check, timer hidden during the study, narration rule (D1 never read aloud). Added as system changes 16–19 in `01` and to the L0 checklist
-- [ ] Data dictionary `11_KAMUS_DATA.md` (work item 2 in `01`), the next stage-1 document; the remaining stage-1 documents are listed in `00_INDEKS.md`
+- [x] Data dictionary `11_KAMUS_DATA.md` (work item 2 in `01`), approved by the owner as `kamus-1.0` (26 October 2026); the remaining stage-1 documents are listed in `00_INDEKS.md`
   - [x] Draft written: evidence map (diagram updated), scored items and first attempt, missing data and analysis flags, frozen definitions of the 10 analytics, item and participant variables, field-sheet join rules, data requirements for stage 3; `03` and the raw-data example in `01` aligned
-  - [ ] Owner decides the four questions at the end of `11` (other tap areas in *Periksa Unggahan*, idle-gap rule for active time, which students count as analysable, rapid guesses in the main analysis), then the draft becomes `kamus-1.0`
+  - [x] Owner decided the four questions (26 October 2026): other tap areas in *Periksa Unggahan* get the clue type's BUD code (`08` updated); idle gaps cut only above a provisional 3-minute threshold; analysable = consent, not pilot, first try on at least 80% of the 61 items; rapid guesses kept as given in the main analysis with a provisional threshold under 3 seconds. Both thresholds are study settings, re-set after the pilot
 - [ ] Complete implementation document, after the revision documents are final and gate G2 (expert validation and ethics approval) is passed
 - [ ] Implementation of the system changes listed in `01` (21 so far), one short-lived branch each, after the implementation document is approved
 

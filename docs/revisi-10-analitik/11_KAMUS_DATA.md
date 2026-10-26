@@ -2,28 +2,28 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 25 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Draf, menunggu persetujuan pemilik proyek (daftar kerja no. 2)
+Per 26 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · `kamus-1.0`, disetujui pemilik proyek 26 Oktober 2026 (daftar kerja no. 2); ambang jeda dan tebakan cepat masih sementara
 
 Kamus ini membekukan **cara menghitung** setiap data penelitian: peta bukti, 10 analitik, butir yang dinilai, "dilewati", waktu aktif, data tersensor, tebakan cepat, kode, dan aturan menggabungkan log dengan lembar lapangan. Dokumen [01](01_REVISI_10_ANALITIK.md) menjelaskan *apa* yang diukur dan *kenapa*; kamus ini menjelaskan *bagaimana* angkanya didapat, sampai bisa dihitung ulang orang lain dari data mentah. Arti setiap kode tetap di [03](03_KODE_DAN_ARTI.md); di sini hanya aturan memakainya.
 
-Kamus ini belum mengubah sistem. Nama kolom ditulis dalam bahasa Inggris karena nanti menjadi nama kolom di lapis data turunan dan ekspor peneliti (tahap 3, perubahan sistem no. 9 dan 14). Kolom yang **sudah ada** di sistem sekarang ditandai *(ada)*; sisanya baru. Bagian yang masih menunggu keputusan ditandai **usulan** dan dikumpulkan di [Pertanyaan untuk pemilik proyek](#pertanyaan-untuk-pemilik-proyek).
+Kamus ini belum mengubah sistem. Nama kolom ditulis dalam bahasa Inggris karena nanti menjadi nama kolom di lapis data turunan dan ekspor peneliti (tahap 3, perubahan sistem no. 9 dan 14). Kolom yang **sudah ada** di sistem sekarang ditandai *(ada)*; sisanya baru. Keputusan pemilik proyek atas draf kamus ini dikumpulkan di [Keputusan pemilik proyek](#keputusan-pemilik-proyek).
 
 ## Ringkasan
 
 1. **Data inti analisis adalah percobaan pertama di pengerjaan pertama**, yaitu pengerjaan yang memakai variasi buklet siswa. Pengerjaan ulang disimpan, tapi tidak dinilai.
 2. **Butir tanpa percobaan adalah data hilang, bukan salah.** Butir yang belum berhasil setelah tiga kesempatan adalah data **tersensor**, bukan angka 3.
 3. **"Dilewati" dihitung dalam tiga jenis terpisah:** (a) butir ditutup setelah kesempatan habis di tantangan yang kesempatannya per butir (Cari Objek dan Skenario Digital), (b) pengerjaan ditinggal dan tidak dilanjutkan di sesi lapangan yang sama, (c) tantangan yang sudah terbuka tapi tidak pernah dimulai.
-4. **Waktu aktif** = waktu total dikurangi selang layar tersembunyi dan kelebihan jeda tanpa masukan di atas ambang (usulan 60 detik). Narasi yang sedang diputar dihitung aktif.
+4. **Waktu aktif** = waktu total dikurangi selang layar tersembunyi dan bagian jeda tanpa masukan yang melebihi ambang (sementara 3 menit). Narasi yang sedang diputar dihitung aktif.
 5. **Setiap percobaan salah membawa tepat satu kode isi** dari bank soal. Tebakan cepat (NON-TEB) dan jawaban terakhir saat kesempatan habis (NON-HABIS) adalah penanda tambahan yang dihitung sistem, bukan pengganti kode di data mentah.
-6. **Ambang yang masih usulan** (jeda 60 detik, tebakan cepat 1,5 detik) ditetapkan setelah uji coba dan dibekukan di gerbang G4 bersama pra-registrasi.
+6. **Ambang masih sementara:** jeda 3 menit dan tebakan cepat di bawah 3 detik. Keduanya pengaturan yang mudah diubah tanpa mengubah sistem, ditetapkan ulang setelah uji coba, lalu dibekukan di gerbang G4 bersama pra-registrasi.
 
 ## Versi dan cara berubah
 
 | Versi | Kapan | Isi |
 | --- | --- | --- |
-| Draf | Sekarang | Disusun Claude, menunggu persetujuan pemilik proyek |
-| `kamus-1.0` | Setelah disetujui (gerbang G1) | Semua definisi beku kecuali ambang yang ditandai "setelah uji coba" |
-| `kamus-1.1` | Setelah uji coba (tahap 4), sebelum G4 | Ambang jeda, tebakan cepat, dan urutan alasan ditetapkan dari data uji coba |
+| Draf | 25 Oktober 2026 | Disusun Claude, dengan empat pertanyaan untuk pemilik proyek |
+| `kamus-1.0` | 26 Oktober 2026, disetujui pemilik proyek | Semua definisi beku. Ambang jeda (3 menit) dan tebakan cepat (3 detik) masih sementara |
+| `kamus-1.1` | Setelah uji coba (tahap 4), sebelum G4 | Ambang jeda dan tebakan cepat ditetapkan ulang, dan urutan alasan ditetapkan, dari data uji coba |
 | Beku | Sejak G4 sampai analisis selesai | Tidak diubah selama pengambilan data utama. Kesalahan yang ketahuan kemudian dicatat sebagai penyimpangan, dan analisisnya dijalankan dengan aturan lama dan baru |
 
 Setiap tabel data turunan menyimpan kolom `dictionary_version`, supaya angka di naskah bisa ditelusuri ke versi kamus yang dipakai. Setiap perubahan dicatat di [04](04_CATATAN_KEPUTUSAN.md).
@@ -142,11 +142,11 @@ Penanda tidak mengubah data mentah. Tiga penanda mengeluarkan data dari analisis
 | `is_retake` | Pengerjaan | Pengerjaan ulang | Log |
 | `outside_session` | Event | Data di luar sesi lapangan | Log |
 
-Analisis utama yang dijalankan dua kali: tanpa dan dengan percobaan `helped_content = 1`, dan tanpa dan dengan `shared_device = 1` (01). Penanda `helped_technical`, `encouraged`, dan `disturbed` dipakai sebagai kovariat, tidak untuk mengeluarkan data. Perlakuan `rapid_guess` di analisis utama masih **usulan** (pertanyaan 4).
+Analisis utama yang dijalankan dua kali: tanpa dan dengan percobaan `helped_content = 1`, dan tanpa dan dengan `shared_device = 1` (01). Penanda `helped_technical`, `encouraged`, dan `disturbed` dipakai sebagai kovariat, tidak untuk mengeluarkan data. Percobaan `rapid_guess = 1` dipakai apa adanya di analisis utama; analisis kedua memperlakukannya sebagai data hilang (keputusan 26 Oktober 2026).
 
-### Data siswa yang bisa dianalisis (usulan)
+### Data siswa yang bisa dianalisis
 
-Target sampel 300 siswa yang datanya bisa dianalisis ([06](06_KISI_KISI_BANK_SOAL.md#setengah-sampel-per-butir-variasi)) butuh definisi. Usulan (pertanyaan 3):
+Target sampel 300 siswa yang datanya bisa dianalisis ([06](06_KISI_KISI_BANK_SOAL.md#setengah-sampel-per-butir-variasi)) didefinisikan begini (keputusan 26 Oktober 2026):
 
 - `analysable = 1` kalau `consent_ok = 1`, `is_pilot = 0`, dan siswa punya percobaan pertama yang **tidak** bertanda `shared_device` pada **sedikitnya 80% butir literasi digital** (49 dari 61).
 - `complete = 1` kalau ke-61 butir punya percobaan pertama. Angka ini dilaporkan, tapi tidak menjadi syarat analisis, karena model Rasch bisa memakai data yang tidak lengkap.
@@ -234,7 +234,7 @@ Jenis (b) tetap terhitung walaupun tantangannya kemudian dilanjutkan dan tuntas 
 | --- | --- |
 | `total_ms` | Jumlah (selesai − mulai) setiap potongan |
 | `hidden_ms` | Jumlah selang `page_hidden` sampai `page_visible` berikutnya (atau sampai selesai) *(event ada)* |
-| `idle_excess_ms` | Untuk setiap jeda tanpa masukan yang lebih panjang dari ambang **T_idle**, bagian yang melebihi T_idle (**usulan**, pertanyaan 2) |
+| `idle_excess_ms` | Untuk setiap jeda tanpa masukan yang lebih panjang dari ambang **T_idle**, bagian yang melebihi T_idle (keputusan 26 Oktober 2026). Jeda 5 menit dengan T_idle 3 menit menyumbang 3 menit aktif |
 | `active_ms` | `total_ms − hidden_ms − idle_excess_ms` |
 
 **Aturan jeda tanpa masukan:**
@@ -242,8 +242,9 @@ Jenis (b) tetap terhitung walaupun tantangannya kemudian dilanjutkan dan tuntas 
 - **Masukan** = sentuhan atau klik, tombol keyboard, gulir, dan seret. Gerakan tetikus tanpa klik tidak dihitung, supaya laptop dan tablet diperlakukan sama.
 - Selang saat **narasi sedang diputar** tidak pernah dihitung jeda (siswa sedang mendengarkan).
 - Selang yang sudah masuk `hidden_ms` tidak dihitung lagi sebagai jeda.
-- **T_idle usulan 60 detik**, ditetapkan setelah uji coba. Uji coba juga memeriksa apakah layar dengan bacaan panjang butuh ambang yang lebih besar.
+- **T_idle sementara 3 menit** (keputusan 26 Oktober 2026). Uji coba memeriksa nilainya, termasuk apakah layar dengan bacaan panjang butuh ambang lain.
 - Supaya ambang bisa ditetapkan sesudah uji coba tanpa kehilangan data, sistem mencatat **setiap jeda masukan 20 detik atau lebih** (jam mulai dan jam akhir) di data mentah.
+- **Ambang adalah pengaturan, bukan angka di kode.** T_idle dan T_teb disimpan di konfigurasi studi. Mengubahnya tidak butuh perubahan sistem: lapis turunan dihitung ulang dari data mentah, dan nilai ambang yang dipakai tercatat bersama `dictionary_version`.
 
 **Waktu per butir:**
 
@@ -268,7 +269,7 @@ Jenis (b) tetap terhitung walaupun tantangannya kemudian dilanjutkan dan tuntas 
 | Isi Rumpang | Sel rumpang × kata di matriks kode (`cloze_matrix`), dengan tiga aturan tetap di [08](08_DRAF_BANK_SOAL.md#cara-membaca) | INF-LIT, INF-KAT, INF-REL, INF-HUB, INF-GEN |
 | Benar atau Salah, kartu jangkar | Kode jebakan pernyataan; dipakai setiap kali pernyataan itu dinilai keliru | D1a: INF-LIT, INF-KAT, INF-REL, INF-HUB. D1b: INF-SUM, INF-FOP, INF-GEN |
 | Temukan Benda (PBK) | Kode benda pengecoh. Benda sasaran petunjuk lain = INF-LIT | INF-BUD, INF-LIT |
-| Periksa Unggahan (D3) | Kode pengecoh utama di tabel petunjuk. Bagian ketuk lain, termasuk kunci petunjuk lain = kode jenis petunjuk itu (**usulan**, pertanyaan 1) | BUD-ATR, BUD-REP, BUD-IZN, BUD-ETK |
+| Periksa Unggahan (D3) | Kode pengecoh utama di tabel petunjuk. Bagian ketuk lain, termasuk kunci petunjuk lain = kode jenis petunjuk itu (keputusan 26 Oktober 2026) | BUD-ATR, BUD-REP, BUD-IZN, BUD-ETK |
 | Skenario Digital, tindakan | Kode pilihan tindakan dengan skor 0 atau 1 | DIG-PRI, DIG-SAN, DIG-IZN, DIG-ASG, DIG-HOX, DIG-ETK, DIG-PSF |
 | Susun Gambar | Tidak dikode | — |
 
@@ -280,7 +281,7 @@ Kode `*-LAIN` tidak pernah ada di bank. Kode itu hanya diberikan saat pengodean 
 
 | Kode | Kolom | Aturan |
 | --- | --- | --- |
-| NON-TEB | `rapid_guess` | 1 kalau **waktu putus** (`decision_ms`) kurang dari ambang **T_teb** (usulan 1,5 detik, ditetapkan setelah uji coba). Dihitung untuk Benar atau Salah, kartu jangkar, Cari Objek, dan tindakan Skenario Digital. Untuk alasan Skenario Digital dicatat di `reason_rapid`. Tidak dihitung untuk Isi Rumpang, karena menyeret beberapa kata berturut-turut setelah membaca satu bacaan bukan keputusan yang terpisah |
+| NON-TEB | `rapid_guess` | 1 kalau **waktu putus** (`decision_ms`) kurang dari ambang **T_teb** (sementara 3 detik, keputusan 26 Oktober 2026; pengaturan yang ditetapkan ulang setelah uji coba). Dihitung untuk Benar atau Salah, kartu jangkar, Cari Objek, dan tindakan Skenario Digital. Untuk alasan Skenario Digital dicatat di `reason_rapid`. Tidak dihitung untuk Isi Rumpang, karena menyeret beberapa kata berturut-turut setelah membaca satu bacaan bukan keputusan yang terpisah |
 | NON-HABIS | `last_try_exhausted` | 1 pada percobaan salah yang menghabiskan kesempatan terakhir butir itu |
 | NON-SEN | `near_miss_count` (per butir) | Banyak ketukan di luar semua bagian ketuk, yang jaraknya paling jauh 24 dp dari bagian ketuk kunci petunjuk yang aktif. Bukan percobaan dan tidak memakai kesempatan. Ketukan kosong yang lebih jauh dihitung di `empty_tap_count` |
 
@@ -431,23 +432,22 @@ Kamus ini menambah syarat data berikut ke [Catatan perubahan sistem](01_REVISI_1
 | Kode konteks narasi instruksi | Analitik 7 | no. 6 |
 | Sesi game menyimpan `field_session_code` dan nomor pertemuan | Semua | no. 11 |
 | Wilayah yang dibuka token terbuka untuk semua siswa sesi itu, walaupun wilayah sebelumnya belum tuntas; tantangan di dalam wilayah tetap terbuka berurutan | Analitik 1 (`locked`) | no. 11 |
+| Ambang T_idle dan T_teb disimpan di konfigurasi studi dan bisa diubah tanpa mengubah kode; lapis turunan dihitung ulang dengan ambang baru | Analitik 5, 6 | no. 9, 16 |
 | Lapis turunan menyimpan `dictionary_version` dan diuji otomatis dengan contoh data yang hasilnya dihitung tangan dari kamus ini | Semua | no. 9 |
 | Lembar *Kamus Data* di ekspor peneliti diturunkan dari kamus ini | Semua | no. 14 |
 
 ## Penyesuaian di dokumen lain
 
-Perubahan tanpa keputusan baru, ikut dikerjakan bersama kamus ini:
+Perubahan yang ikut dikerjakan bersama kamus ini:
 
 - **03:** DIG-HOX hanya D2 (bukan "D2, D1"); analitik 8 berlaku untuk D1–D3, analitik 10 hanya D2. Alasannya model *between-item*: dimensi ikut butir, bukan kode.
 - **Gambar peta bukti:** D3 memakai nama yang disetujui; Isi Rumpang dan Benar atau Salah hanya D1, Cari Objek babak 2 D3 dengan babak 1 sebagai PBK, Skenario Digital hanya D2; pola kesalahan menyebut kode BUD.
 - **01:** analitik 3 tidak lagi menyebut Susun Gambar, yang tidak dinilai sejak kisi-kisi 06. Contoh data mentah mendapat kolom `rapid_guess` (kosong untuk Isi Rumpang) dan memakai kode bank. Catatan perubahan sistem no. 14 menyebut syarat data dari kamus ini.
 - **06:** siswa yang belum selesai melanjutkan di pertemuan 5 (susulan), bukan "di pertemuan berikutnya", sesuai keputusan token (P5 untuk tantangan yang tertinggal).
+- **08:** aturan kode *Periksa Unggahan* di *Cara membaca* tidak lagi memakai INF-REL: bagian ketuk lain diberi kode jenis petunjuknya, dan ketukan di tempat kosong dekat kunci = NON-SEN tanpa memakai kesempatan (keputusan 26 Oktober 2026).
+- **01 dan 03:** ambang sementara jeda 3 menit dan tebakan cepat di bawah 3 detik (keputusan 26 Oktober 2026).
 
-Menunggu keputusan pemilik proyek:
-
-- **08:** aturan "Mengetuk bagian adegan lain → INF-REL" di *Periksa Unggahan* bertentangan dengan 01 dan 06, yang hanya mengizinkan kode BUD di D3 dan NON-SEN untuk bagian netral. Usulan perbaikannya di pertanyaan 1.
-
-Penegasan yang menafsirkan dokumen sebelumnya. Mohon dikoreksi kalau tafsirannya keliru:
+Penegasan yang menafsirkan dokumen sebelumnya. Tafsiran ini tidak dikoreksi pemilik proyek saat menyetujui kamus, jadi ikut berlaku:
 
 - "Dilewati" jenis (a) juga mencakup skenario yang ditutup setelah kesempatan ketiga, karena aturan tiga kesempatannya sama dengan petunjuk Cari Objek (keputusan 25 Oktober 2026).
 - "Dibantu" untuk analisis utama hanya bantuan isi (ISI, STR, BHS). Bantuan teknis, semangat, dan gangguan dicatat terpisah sebagai kovariat.
@@ -456,11 +456,11 @@ Penegasan yang menafsirkan dokumen sebelumnya. Mohon dikoreksi kalau tafsirannya
 - NON-TEB tidak dihitung untuk Isi Rumpang (01 dan 03 tidak menyebut pengecualian), karena kata-kata satu bacaan diseret berturut-turut dan selang antarseretan bukan waktu memutuskan. `rapid_guess` di Isi Rumpang dibiarkan kosong.
 - Token yang membuka wilayah sebuah pertemuan juga melewati aturan buka berurutan antarwilayah, supaya siswa yang belum menuntaskan wilayah sebelumnya tetap bisa bermain bersama kelasnya; sisanya dikerjakan di pertemuan 5.
 
-## Pertanyaan untuk pemilik proyek
+## Keputusan pemilik proyek
 
-Empat keputusan yang dibutuhkan sebelum kamus ini menjadi `kamus-1.0`. Pilihan yang diusulkan ditulis pertama.
+Empat pertanyaan di draf diputuskan pemilik proyek pada 26 Oktober 2026:
 
-1. **Kode bagian lain di *Periksa Unggahan*.** Usulan: mengetuk bagian ketuk yang bukan kunci dan bukan pengecoh utama (termasuk kunci petunjuk lain) diberi kode **jenis petunjuk itu** (atribusi → BUD-ATR, representasi → BUD-REP, izin → BUD-IZN, menghargai tradisi → BUD-ETK); mengetuk di luar bagian ketuk mana pun = NON-SEN dan tidak memakai kesempatan. 08 disesuaikan. Pilihan lain: tetap INF-REL seperti di 08, dengan pengecualian bahwa INF-REL di babak 2 dihitung untuk D3.
-2. **Jeda tanpa masukan di waktu aktif.** Usulan: setiap jeda hanya dipotong **bagian yang melebihi** ambang (jeda 90 detik dengan ambang 60 detik menyumbang 60 detik aktif), karena siswa yang membaca bacaan panjang bisa tidak menyentuh layar lebih dari semenit. Pilihan lain: seluruh jeda yang melebihi ambang dibuang, sesuai bacaan harfiah 01.
-3. **Data siswa yang bisa dianalisis.** Usulan: izin lengkap, bukan sekolah uji coba, dan punya percobaan pertama yang bukan dari perangkat bersama pada **sedikitnya 80% butir literasi digital** (49 dari 61). Pilihan lain: ke-61 butir lengkap, atau sedikitnya satu wilayah lengkap.
-4. **Tebakan cepat di analisis utama.** Usulan: analisis utama memakai jawaban apa adanya; analisis kedua memperlakukan percobaan `rapid_guess` sebagai data hilang, sama seperti cara 01 menangani percobaan yang dibantu. Pilihan lain: kebalikannya (analisis utama tanpa tebakan cepat, yang lazim di asesmen berisiko rendah), dengan risiko ambang 1,5 detik belum teruji.
+1. **Kode bagian lain di *Periksa Unggahan*: setuju dengan usulan.** Mengetuk bagian ketuk yang bukan kunci dan bukan pengecoh utama (termasuk kunci petunjuk lain) diberi kode jenis petunjuk itu: atribusi BUD-ATR, representasi BUD-REP, izin BUD-IZN, menghargai tradisi BUD-ETK. Mengetuk di luar bagian ketuk mana pun = NON-SEN dan tidak memakai kesempatan. 08 sudah disesuaikan.
+2. **Jeda tanpa masukan: ambang sementara 3 menit.** Hanya bagian jeda yang melebihi ambang yang dipotong dari waktu aktif. Ambangnya harus mudah diubah, jadi disimpan sebagai pengaturan dan ditetapkan ulang setelah uji coba.
+3. **Data siswa yang bisa dianalisis: setuju dengan usulan.** Izin lengkap, bukan sekolah uji coba, dan percobaan pertama yang bukan dari perangkat bersama pada sedikitnya 80% butir literasi digital (49 dari 61).
+4. **Tebakan cepat: dipakai apa adanya di analisis utama**, dengan ambang sementara di bawah 3 detik. Analisis kedua memperlakukan tebakan cepat sebagai data hilang.
