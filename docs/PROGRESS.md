@@ -27,7 +27,10 @@ Documentation only, in `docs/revisi-10-analitik/` (Indonesian, at the owner's re
   - [x] Owner decided the four questions (26 October 2026): other tap areas in *Periksa Unggahan* get the clue type's BUD code (`08` updated); idle gaps cut only above a provisional 3-minute threshold; analysable = consent, not pilot, first try on at least 80% of the 61 items; rapid guesses kept as given in the main analysis with a provisional threshold under 3 seconds. Both thresholds are study settings, re-set after the pilot
 - [x] Story links and narration for the fifth challenge (`12_CERITA_PENGHUBUNG_DAN_NARASI.md`, work item 7 in `01`), approved by the owner with all proposals (26 October 2026): the link scene plays once when challenge 5 is first opened, Kenali opens only after its region is done during the study, the Wonosobo chain message becomes an earthquake-prediction hoax, only situations are read aloud, and the post-test comes before the closing story in P5 (`06` and `02` aligned)
   - [x] Draft written: *Kabut di Layar* link scene per region (new context `scenario_open`), mission cards, 32 rewritten old lines (15 shards, answer leaks found by checking the script against the draft bank), recording list (about 187 per language) and voice direction
-  - [x] Susun Gambar captions checked against `08` (new section *Susun Gambar selama studi*): most variants repeat D1, D3, or PBK answers, so the owner decided (26 October 2026) that the study uses only the leak-free variants (Temanggung i, Magelang c and e, Wonosobo d); added to system change 16. The `petunjuk-*` mapping is fixed in stage 3, with the new bank
+  - [ ] Fix the leaks outside the story found by the same check (bank side, before expert validation)
+    - [x] Susun Gambar captions: all 30 checked against `08` (section *Susun Gambar selama studi*). 22 leak or cue a D1 key, D3 key, or PBK clue, including 7 of the 9 first-attempt variants a–c; d–j appear only on replays, which open after the region is done, so they are harmless during the study. Proposal: one fixed clean variant per region during the study (Pasar Papringan, Candi Mendut, Kompleks Candi Arjuna)
+    - [ ] Owner answers the two Susun Gambar questions in `08`; then system change 4 in `01`/`06` follows the answer
+    - [ ] Outdated `petunjuk-*` narration mapping
 - [ ] Complete implementation document, after the revision documents are final and gate G2 (expert validation and ethics approval) is passed
 - [ ] Implementation of the system changes listed in `01` (21 so far), one short-lived branch each, after the implementation document is approved
 
@@ -78,4 +81,5 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 | Branch | Owner / scope | Status |
 |---|---|---|
 | `pbb/eloquent-sagan-j40sg8` | Pre-stage-1 check of the research revision docs | PR open |
-| `sky/optimistic-bardeen-4zx8ob` | Owner approval of `12`; Susun Gambar caption check in `08` | PR open |
+| `sky/optimistic-bardeen-4zx8ob` | Owner approval of `12` | PR open |
+| `sky/festive-hopper-cl6p65` | Susun Gambar caption leaks checked against the draft bank (`08`) | PR open |

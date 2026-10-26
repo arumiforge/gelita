@@ -18,7 +18,19 @@ Pemilik proyek menyetujui seluruh draf [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md) 
 
 Penyesuaian di dokumen lain: 06 (urutan P5; baris waktu "Cerita wilayah: pembuka, penghubung, tuntas" 4–5 menit, sehingga waktu bermain menjadi ± 29–36, 36–44, dan 43–52 menit), 02 (aturan tes akhir), 01 (daftar kerja no. 7 selesai; perubahan sistem no. 16), dan 00. Pemetaan narasi `petunjuk-*` ke butir `x01`–`x04` dibetulkan di tahap 3, karena pemetaan sekarang masih benar untuk bank yang terpasang.
 
-**Keputusan pemilik proyek: Susun Gambar selama studi.** Keterangan kesepuluh variasi Susun Gambar per wilayah diperiksa terhadap 08 ([08](08_DRAF_BANK_SOAL.md#susun-gambar-selama-studi)). Sebagian besar membocorkan butir D1, kunci D3, atau petunjuk PBK yang dikerjakan tepat sesudahnya di pertemuan yang sama. Diputuskan: selama studi, Susun Gambar hanya memakai variasi yang tidak membocorkan apa pun, yaitu Temanggung i (Pasar Papringan), Magelang c dan e (Candi Mendut, Candi Pawon), dan Wonosobo d (Kompleks Candi Arjuna). Di luar studi semua variasi tetap dipakai, dan tidak ada keterangan yang ditulis ulang. Pilihan menyembunyikan keterangan atau menulis ulang keterangan tidak dipilih. Masuk perubahan sistem no. 16 di 01.
+Keterangan Susun Gambar diperiksa sesi lain (entri berikut). Pemilik proyek memutuskan menunggu sesi itu selesai sebelum memilih cara perbaikannya.
+
+**Pemeriksaan keterangan Susun Gambar terhadap draf bank soal** (sesi `sky/festive-hopper-cl6p65`, menindaklanjuti *Di luar dokumen ini* di [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md#di-luar-dokumen-ini))
+
+- Ketiga puluh keterangan Susun Gambar (`*-1`, variasi a–j) dicocokkan dengan semua butir D1, kunci D3, dan petunjuk PBK di [08](08_DRAF_BANK_SOAL.md#susun-gambar-selama-studi). Hasilnya: 22 keterangan bocor atau memberi isyarat. Kedua belas petunjuk PBK dan keenam butir representasi D3 masing-masing punya keterangan yang sepadan. Skenario D2 tidak terkena.
+- **Koreksi atas 12:** variasi d–j hanya muncul di pengerjaan ulang, yang selama studi baru terbuka setelah wilayahnya tuntas. Jadi Situs Liyangan, Prasasti Gondosuli, dan Umbul Jumprit tidak bocor selama studi, dan tidak ada keterangan yang bocor ke wilayah sesudahnya. Yang berlaku adalah variasi a–c di pengerjaan pertama: 7 dari 9 bocor (`tmg-1-a`, `b`, `c`; `mgl-1-a`, `b`; `wnb-1-a`, `c`). Tiga gambarnya juga foto unggahan *Periksa Unggahan* di wilayah yang sama.
+- **Usulan** (menunggu dua jawaban pemilik proyek di 08):
+  - Selama studi, pengerjaan pertama Susun Gambar memakai satu variasi tetap per wilayah dari keterangan yang bersih: Pasar Papringan, Candi Mendut, dan Kompleks Candi Arjuna.
+  - Ke-27 variasi lain tetap untuk pengerjaan ulang. Tidak ada keterangan atau gambar yang diubah.
+  - Setelah diputuskan, perubahan sistem no. 4 di 01 dan 06 (pemilihan variasi pengerjaan pertama) dan kode Susun Gambar di 06 disesuaikan.
+- Petunjuk PBK dihitung sebagai kebocoran, sejalan dengan usulan Kenali di 12 (pertanyaan 2).
+- Dua fakta keterangan dicatat untuk peneliti: asal Topeng Lengger di `wnb-1-i` (sengaja tidak dipakai di 08), dan tahun Tambi di `wnb-1-h`.
+- Pemetaan narasi `petunjuk-*` yang usang (temuan kedua di 12) belum dikerjakan di sesi ini.
 
 **Draf cerita penghubung dan narasi tantangan kelima** (sesi `sky/optimistic-bardeen-4zx8ob`, daftar kerja no. 7)
 
