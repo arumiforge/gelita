@@ -167,6 +167,17 @@ Dari [18](18_MOCKUP_LAYAR_BARU.md). Kode gambar mock-up untuk ahli media langkah
 | mk-ss-01 | Skala sikap di Balai Refleksi (placeholder sampai 17 final) | 18 |
 | mk-cr-01 … 02 | Cerita penghubung *Kabut di Layar* dan kartu misi tantangan kelima | 18 |
 
+## Skala sikap menjaga warisan
+
+Dari [17](17_SKALA_SIKAP.md). Usulan; dibekukan sebagai `sikap-1.0` di G4.
+
+| Kode | Arti | Catatan |
+| --- | --- | --- |
+| skp-01 … skp-12 | Butir skala sikap, nomor urut tampil | Butir negatif (dibalik): skp-03, skp-06, skp-08, skp-10 |
+| skp-ct-01 | Contoh soal skala sikap, tidak diskor | |
+| SK1–SK4 | Indikator: SK1 menghargai, SK2 ingin tahu, SK3 mau ikut merawat, SK4 bangga | Bukan kode sekolah (`S01`, dua angka) |
+| 1 / 2 / 3 / 4 | Jawaban: Tidak setuju / Kurang setuju / Setuju / Sangat setuju; butir negatif diskor 5 − kode | `-` = dilewati |
+
 ## Lembar lapangan
 
 | Kode | Arti | Pengisi |

@@ -24,6 +24,28 @@ Putaran 2, setelah melihat 23 gambar:
 
 Akibatnya: 18 ditulis; 00, 01 (daftar kerja no. 20), dan 03 (kode `mk-*`) diperbarui. Atas permintaan pemilik proyek di sesi yang sama, 24 kalimat *Penjelasan setelah kesempatan habis* ditulis di 08 (satu per skenario, dengan aturannya di *Cara membaca*: menyebut risikonya lalu mengapa tindakan tepat aman, tanpa kata "tepat", "salah", atau "gagal", tidak dibacakan, tidak diskor), dan `mk-sd-05` digambar ulang. Kalimatnya ikut validasi ahli bersama bank. Celah lain yang ditemukan dicatat di 18 → *Celah yang ditemukan di dokumen lain*.
 
+**Keputusan pemilik proyek: pertanyaan terbuka skala sikap** (sesi `r10-skala-sikap`, menjawab pertanyaan terbuka di [17](17_SKALA_SIKAP.md#pertanyaan-yang-masih-terbuka))
+
+1. **Butir bahasa daerah (skp-10) adil** untuk siswa yang bahasa ibunya bukan bahasa Jawa, karena menyebut "bahasa daerah" umum. Butir tetap dipakai.
+2. **skp-12 menyebut contoh acara setempat:** "Aku mau ikut acara budaya seperti merti desa dan kirab." Ahli Budaya Kedu memastikan keduanya dikenal di tiga wilayah.
+3. **Bintang 1–5 di kritik dan saran menjadi data kepraktisan** (`feedback_rating`, masuk `kamus-1.1`).
+4. **Siswa yang belum tuntas di akhir P5: data apa adanya.** Tidak ada jalur khusus ke Balai Refleksi; skalanya kosong dengan alasan `belum_tuntas`, dan data tantangannya dipakai seperti adanya. Susulan 7 hari hanya untuk siswa yang tidak hadir di P5.
+5. **Korelasi sikap dengan PBK dan D3 diharapkan sedang: cukup kuat, tidak berlebihan** (usulan r ≈ 0,30–0,50; r ≥ 0,70 atau r < 0,10 dicatat sebagai temuan). Batas pastinya ditulis di pra-registrasi OSF di G4.
+
+Akibatnya: [17](17_SKALA_SIKAP.md) diperbarui (butir, pelaksanaan, variabel `sikap_missing_reason` dan `feedback_rating`, akibat ke 01 dan dokumen pendukung peneliti).
+
+**Keputusan pemilik proyek: skala sikap menjaga warisan** (sesi `r10-skala-sikap`, dua putaran wawancara; semua usulan disetujui)
+
+1. **Format jawaban: empat pilihan tanpa titik tengah** (*Tidak setuju · Kurang setuju · Setuju · Sangat setuju*), kata dengan titik emas yang makin besar, tanpa wajah.
+2. **12 butir, empat indikator × tiga:** menghargai (SK1), ingin tahu (SK2), mau ikut merawat (SK3), bangga (SK4). Satu butir per indikator berarah negatif dan dibalik skornya, ditulis tanpa "tidak" atau "bukan". Semua butir berlatar dunia nyata, tanpa ruang digital, supaya terpisah dari D3 dan PBK.
+3. **Tidak dibacakan:** hanya di layar, tanpa rekaman. P3 boleh menjelaskan satu kata, dicatat di L3.
+4. **Kritik dan saran yang ada sekarang tetap**, sesudah skala; selama penelitian semua isiannya boleh kosong.
+5. **Penilai ahli:** Ahli Budaya Kedu, Ahli Pengukuran, Ahli Bahasa Anak 1 dan 2 menilai relevansi (I-CVI, aturan Lynn: keempatnya harus memberi 3 atau 4); Ahli Bahasa Anak juga menelaah bahasa; Ahli Literasi Digital 1 dan 2 hanya memberi catatan tumpang tindih D3.
+6. **Tidak hadir di P5:** susulan paling lama 7 hari, ditandai; sesudahnya kosong, tanpa perkiraan.
+7. **Tampilan:** satu pernyataan per layar, boleh kembali sebelum kirim, urutan tetap, bilah kemajuan.
+
+Akibatnya: [17](17_SKALA_SIKAP.md) ditulis; kode skala masuk 03. Penyesuaian 01 (perubahan sistem no. 21), 02 (L1, L3, L7), 06 (baris P5), 07 (lembar penilaian v2.1), 11 (`kamus-1.1`), 12, 13 (waktu P5), dan mock-up 18 tercatat di [17](17_SKALA_SIKAP.md#akibat-ke-dokumen-lain).
+
 **Keputusan pemilik proyek: lembar lapangan final, putaran 1** (sesi `r10-lembar-lapangan`, daftar kerja no. 11)
 
 1. **Siswa tanpa izin orang tua tidak punya akun GELITA.** Mereka ikut kegiatan pengganti yang setara di ruang yang sama, disiapkan guru (misalnya membaca buku), jadi tidak ada data tentang mereka. Pilihan bermain lalu datanya dihapus, atau mode tamu tanpa penyimpanan, tidak dipakai.
@@ -39,7 +61,7 @@ Akibatnya: 18 ditulis; 00, 01 (daftar kerja no. 20), dan 03 (kode `mk-*`) diperb
 - Kelompok nilai tes awal untuk L5 adalah sepertiga terbawah, tengah, dan teratas di rombel.
 - Contoh tanggal fiktif, sesudah perkiraan persetujuan etik.
 
-Akibatnya: 02 final; 03 mendapat kode sesi susulan, DEV-TIM, dan arti L5 yang baru. Yang perlu disesuaikan di dokumen lain dicatat di [02](02_LEMBAR_LAPANGAN.md#perubahan-dari-draf).
+Akibatnya: 02 final; 03 mendapat kode sesi susulan, DEV-TIM, dan arti L5 yang baru. Sesudah persetujuan, 01 (*Kerja lapangan*, perubahan sistem no. 11 dan no. 22), 06 (pembagian pertemuan, buklet), dan 13 (waktu P1 menjadi ± 124 menit, urutan P5, bantuan saat tes di L3) disesuaikan. Urutan P5 di catatan keputusan 12 dibiarkan sebagai riwayat. Yang tersisa: 11 di `kamus-1.1`. Yang perlu disesuaikan di dokumen lain dicatat di [02](02_LEMBAR_LAPANGAN.md#perubahan-dari-draf).
 
 **Keputusan pemilik proyek: label Bloom pengembang** (sesi `r10-label-bloom`, daftar kerja no. 4, telaah di [19](19_TELAAH_LABEL_BLOOM.md))
 
@@ -48,6 +70,7 @@ Akibatnya: 02 final; 03 mendapat kode sesi susulan, DEV-TIM, dan arti L5 yang ba
 3. **Skenario Digital diberi label per butir di 08.** Temanggung dan Magelang C3, Wonosobo C4, kecuali `wnb-5-a03` dan `wnb-5-b03` C5 (menimbang privasi teman melawan tekanan grup).
 4. **Rentang Bloom wilayah direvisi, butir tidak ditulis ulang:** Temanggung C1–C3, Magelang C2–C4, Wonosobo C2–C5. Aturan no. 14 di 06 kini menyebut bahwa Bloom menggambarkan proses berpikir, bukan tingkat kesulitan; kesulitan ditunjukkan level AKM dan data Rasch.
 5. **Lima perubahan label Isi Rumpang dipertahankan** (ditanyakan sesudah wawancara): `mgl-2-a04`, `mgl-2-b05`, dan `wnb-2-b05` menjadi C2 (perbandingan angka atau sebab–akibat langsung, sama dengan butir serupa di wilayah lain); `wnb-2-a04` dan `wnb-2-a05` menjadi C3 (menerapkan keterangan rentang ketinggian).
+6. **`wnb-3-b02` ditulis ulang, level AKM tetap L2** (ditanyakan setelah PR #247 digabung). Jawabannya tersurat, jadi lebih dekat ke L1; daripada memasang L1 di Wonosobo, pernyataannya ditulis ulang di sesi bank berikutnya supaya perlu inferensi. Catatannya ada di 08 (*Yang harus dicek sebelum validasi ahli*). Atas permintaan pemilik proyek, butir itu langsung ditulis ulang di hari yang sama: "Menurut bacaan, petugas memasang pagar pembatas karena kawah di Dieng terlalu panas untuk didekati." Kunci tetap *salah*, kode salah menjadi INF-HUB (sebab yang keliru), Bloom tetap C2.
 
 Akibatnya: 39 dari 92 label lama di 08 berubah, dan 36 label baru ditulis (12 PBK, 24 skenario). Rentang per tantangan dan per wilayah di 06 serta tabel pelevelan wilayah di 01 disesuaikan. Ini label pengembang; label ahli dari pelabelan buta B.5a di tahap 2 menggantikannya.
 
@@ -98,7 +121,7 @@ Akibatnya: 13, 14, 15, dan 16 disesuaikan dengan modul layar (petunjuk menjawab,
 
 Usulan dokumen itu yang belum diputuskan:
 - uji beda tes awal–akhir dilaporkan sebagai temuan eksploratif, karena desain satu kelompok tanpa kontrol tidak bisa menunjukkan sebab-akibat;
-- kepraktisan diukur dari log dan lembar L1, L3, dan L4, karena guru tidak ikut;
+- kepraktisan diukur dari log dan lembar L1, L3, dan L4, karena guru tidak ikut (ditambah bintang 1–5 di kritik dan saran sebagai pendapat siswa, sesuai keputusan skala sikap 26 Oktober 2026);
 - penelitian pendahuluan ditulis sebagai fase tersendiri;
 - prototipe diberi nomor I–III.
 
