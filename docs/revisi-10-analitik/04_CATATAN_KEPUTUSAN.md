@@ -6,6 +6,18 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 26 Oktober 2026
 
+**Keputusan pemilik proyek: tes awal–akhir dan angket akses digital** (sesi `pbb/magical-hamilton-4f6l98`, menjawab empat pertanyaan di [13](13_TES_AWAL_AKHIR.md#keputusan-pemilik-proyek) dan satu putaran wawancara lanjutan)
+
+1. **Lama tes mengikuti kebutuhan, tidak terikat jam pelajaran sekolah.** Penelitian sudah mendapat izin memakai seluruh JP, bahkan sampai setelah jam sekolah. Jadi lama P1 dan P5 mengikuti kebutuhan tes dan kegiatan lain; pilihan 3 JP dan 4 JP di 13 tidak dipakai lagi.
+   - Setiap bagian tes diberi batas waktu longgar di atas perkiraan: Bagian 1 ± 40 menit, Bagian 2 dan 3 ± 35 menit. Jam tidak tampil di layar, sama seperti di game.
+   - Waktu selesai setiap siswa dicatat, dan batas akhirnya ditetapkan dari uji coba.
+2. **Media tes: modul tes di GELITA**, dengan tampilan Bootstrap yang sederhana dan tidak dibuat seperti game. Tes tidak memakai kertas, dan jawaban tidak diketik ulang. Modul ini menjadi perubahan sistem no. 22 di [01](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti) dan dibangun di tahap 3, setelah G2.
+3. **Topik teks dan adegan tes: budaya Nusantara di luar Kedu**, seperti draf [14](14_TES_BAGIAN_MEMBACA.md) dan [15](15_TES_BAGIAN_DIGITAL.md).
+4. **Angket akses digital masuk modul yang sama**, langsung setelah tes awal di P1. Pertanyaannya hanya tampil di layar dan tidak dibacakan koordinator sesi.
+5. **Pengalaman risiko daring: 2–3 butir di angket, diisi di P5 setelah tes akhir**, sendiri di layar (ang-21 sampai ang-23 di [16](16_ANGKET_AKSES_DIGITAL.md)). Syaratnya: butir ini disebut di permohonan izin etik dan surat izin orang tua, dan ada prosedur rujukan tertulis untuk anak yang menjawab pernah mengalami hal yang mengganggu.
+
+Akibatnya: 13, 14, 15, dan 16 disesuaikan dengan modul layar (petunjuk menjawab, waktu, pemasukan data otomatis, kode butir tetap). 02 (L6), 06 (isi P1 dan P5), 11 (variabel tes dan angket), 03 (pola kode), dan 07 (paket validasi) diselaraskan sesudahnya.
+
 **Keputusan pemilik proyek: model penelitian dan pengembangan, dan aturan I-CVI** (sesi `sky/peaceful-curie-68ufr5`)
 
 1. **Model penelitian dan pengembangan: penelitian desain pendidikan model Plomp (2013), jenis studi pengembangan.**

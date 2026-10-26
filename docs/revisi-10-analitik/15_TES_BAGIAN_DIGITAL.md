@@ -6,7 +6,7 @@ Per 26 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md
 
 Dokumen ini berisi butir lengkap Bagian 2 *Aman dan etis* (D2) dan Bagian 3 *Budaya digital* (D3) untuk tes awal–akhir, bentuk A dan B, beserta kunci, skor, dan kode kesalahan. Kisi-kisi, aturan kesetaraan, kode butir, pelaksanaan, dan penskoran ada di [13](13_TES_AWAL_AKHIR.md); dokumen ini mengikutinya sel demi sel. Bagian 1 Membaca ada di [14](14_TES_BAGIAN_MEMBACA.md).
 
-Belum ada yang diubah di sistem. Topik budaya D3 memakai usulan **budaya Nusantara di luar Kedu** (pertanyaan 3 di [13](13_TES_AWAL_AKHIR.md#pertanyaan-untuk-pemilik-proyek)), yang belum diputuskan pemilik proyek. Kalau pemilik proyek memilih pilihan lain, hanya keempat adegan D3 yang perlu ditulis ulang; skenario D2 tidak memakai topik budaya.
+Belum ada yang diubah di sistem. Topik budaya D3 memakai **budaya Nusantara di luar Kedu**, sesuai keputusan pemilik proyek 26 Oktober 2026 ([13](13_TES_AWAL_AKHIR.md#keputusan-pemilik-proyek)); skenario D2 tidak memakai topik budaya. Tes dikerjakan di modul tes GELITA, jadi petunjuk di bawah ditulis untuk layar.
 
 ## Ringkasan
 
@@ -16,7 +16,7 @@ Belum ada yang diubah di sistem. Topik budaya D3 memakai usulan **budaya Nusanta
 4. **Topik D3 di luar Kedu, sama asingnya di A dan B:** G1 kain tradisional (karawo dari Gorontalo di A, besurek dari Bengkulu di B); G2 tari bertema padi (Tari Gantar dari Kalimantan Timur di A, Tari Maengket dari Sulawesi Utara di B). Semua fakta yang dibutuhkan ada di adegan, dan setiap fakta punya rujukan yang sudah dibuka.
 5. **Pasangan setara:** situasi D2 berselisih paling banyak 6,5% (batas 15%), adegan D3 paling banyak 1,3%. Di setiap bagian, setiap huruf menjadi kunci tepat dua kali per bentuk. Huruf kunci bentuk A dan B tidak pernah sama di nomor yang sama, jadi tetangga yang berbeda bentuk tidak bisa dicontek. Pilihan kunci menjadi pilihan terpanjang hanya di 2 dari 8 butir per bagian.
 6. **Tidak tumpang tindih dengan game:** peminta, latar, platform, dan umpan setiap skenario berbeda dari 24 skenario game; topik, akun, nama, dan sanggar D3 tidak ada di 08, 12, naskah aktif, maupun Pustaka (dicek dengan grep). Beberapa tindakan kunci sekeluarga dengan kunci game karena tindakan aman memang terbatas; semuanya dicatat di [pemeriksaan tumpang tindih](#pemeriksaan-tumpang-tindih-dengan-game).
-7. **Temuan untuk 13:** waktu 18 menit untuk Bagian 2 dan 3 hanya cukup untuk membaca situasi dan adegan. Kalau pilihan dan kalimat soal ikut dihitung, perkiraannya 22–28 menit. Rinciannya di [Catatan untuk peneliti dan validator](#perkiraan-waktu-kerja). Sejak 26 Oktober 2026, 13 memakai hitungan ini (Bagian 2 dan 3: 28 menit).
+7. **Temuan untuk 13:** waktu 18 menit untuk Bagian 2 dan 3 hanya cukup untuk membaca situasi dan adegan. Kalau pilihan dan kalimat soal ikut dihitung, perkiraannya 22–28 menit. Rinciannya di [Catatan untuk peneliti dan validator](#perkiraan-waktu-kerja). Sejak 26 Oktober 2026, 13 memakai hitungan ini, dan batas Bagian 2 dan 3 menjadi ± 35 menit tanpa jam di layar.
 
 ## Cara membaca
 
@@ -24,7 +24,7 @@ Belum ada yang diubah di sistem. Topik budaya D3 memakai usulan **budaya Nusanta
 
 | Kolom | Arti |
 | --- | --- |
-| Huruf | Letak pilihan di buklet. Urutan pilihan tetap seperti tertulis (tes kertas, tidak diacak). Baris kunci ditulis tebal |
+| Huruf | Letak pilihan di layar. Urutan pilihan tetap seperti tertulis dan tidak diacak, supaya sebaran huruf kunci terjaga. Baris kunci ditulis tebal |
 | Skor | D2: tepat 2, kurang tepat 1, berisiko 0. D3: kunci 1, pilihan lain 0 |
 | Kode | Kode kesalahan yang dicatat kalau siswa memilih pilihan itu ([03](03_KODE_DAN_ARTI.md)). Pilihan tepat dan kunci tanpa kode. Tidak ada kode NON, sesuai 13 |
 
@@ -32,15 +32,15 @@ Belum ada yang diubah di sistem. Topik budaya D3 memakai usulan **budaya Nusanta
 
 **Cara menghitung kata.** Dihitung dengan skrip, bukan perkiraan. Satu kata adalah satu potongan teks di antara spasi yang memuat huruf atau angka. Kata berulang dan kata bersambung (*teman-teman*, *HP-mu*), angka (*9.400*), dan nama akun dihitung satu kata. Emoji dan tanda baca yang berdiri sendiri tidak dihitung. Situasi D2 dihitung dari cerita dan tulisan di layar. Adegan D3 dihitung dari semua tulisan yang tampak: nama akun, tulisan di foto, keterangan, jumlah suka, komentar beserta nama komentator, label tombol, dan sumber pembanding. Selisih pasangan = |A − B| ÷ yang lebih panjang.
 
-**Layar tiruan.** Setiap layar dijelaskan cukup rinci untuk digambar tim katalog: unsur, urutan, dan label. Semua arti dibawa tulisan, bingkai, dan ikon bergaris, bukan warna, jadi layar tetap terbaca kalau buklet dicetak hitam putih. Tidak ada logo platform sungguhan. Wajah orang digambar sebagai ilustrasi, bukan foto anak sungguhan (06 aturan 11). Emoji dicetak sebagai ikon kecil hitam putih dan tidak dibutuhkan untuk menjawab.
+**Layar tiruan.** Setiap layar dijelaskan cukup rinci untuk digambar tim katalog: unsur, urutan, dan label. Semua arti dibawa tulisan, bingkai, dan ikon bergaris, bukan warna, jadi layar tetap terbaca oleh anak yang sulit membedakan warna. Tidak ada logo platform sungguhan. Wajah orang digambar sebagai ilustrasi, bukan foto anak sungguhan (06 aturan 11). Emoji tampil sebagai ikon kecil dan tidak dibutuhkan untuk menjawab.
 
 **Nama dan alamat tiruan.** Semua tokoh, akun, galeri, sanggar, grup, dan situs fiktif. Alamat situs memakai domain `.example`. Komentator ditulis dengan nama depan saja, tanpa @. Nama penonton dan pengirim yang tidak dikenal ditampilkan sebagai garis abu-abu, supaya tidak ada nama atau akun tambahan.
 
-**Petunjuk bagian untuk siswa** (dicetak di awal bagian; tidak dihitung):
+**Petunjuk bagian untuk siswa** (tampil di awal bagian; tidak dihitung):
 
-> **Bagian 2.** Baca setiap cerita dan gambar layarnya. Lalu lingkari huruf tindakan yang paling baik. Setiap soal hanya punya satu jawaban.
+> **Bagian 2.** Baca setiap cerita dan gambar layarnya. Lalu pilih tindakan yang paling baik. Setiap soal hanya punya satu jawaban.
 >
-> **Bagian 3.** Lihat unggahan dan papan atau kartu di sebelahnya. Lalu jawab soal di bawahnya. Lingkari satu huruf untuk setiap soal. *Kedugram* adalah aplikasi khayalan.
+> **Bagian 3.** Lihat unggahan dan papan atau kartu di sebelahnya. Lalu jawab soal di bawahnya. Pilih satu jawaban untuk setiap soal. *Kedugram* adalah aplikasi khayalan.
 
 Petunjuk ini ditulis berbeda dari instruksi game ("Bacalah ceritanya. Pilih apa yang akan kamu lakukan, lalu pilih alasanmu.") dan dari cerita penghubung 12, sesuai aturan tes no. 1 di 13.
 
@@ -63,7 +63,7 @@ Dua contoh ini dikerjakan bersama P1 saat petunjuk umum, tidak diskor, dan sama 
 | C | Taruh tablet di bawah mejamu | contoh |
 | D | Pinjamkan tablet ke kelas sebelah | contoh |
 
-P1 menunjukkan cara melingkari huruf A, dan cara mengganti jawaban (coret ✗, lingkari yang baru).
+P1 menunjukkan cara memilih jawaban A, dan cara menggantinya dengan memilih jawaban lain.
 
 ### `tes-ct-05` · Contoh Bagian 3
 
@@ -789,7 +789,7 @@ Dengan aturan hitung waktu di 13 (60–90 kata per menit, ± 30 detik per piliha
 
 Kalau hanya situasi dan adegan yang dihitung, hasilnya 8–10 menit dan 7–8 menit, sama dengan angka di draf pertama 13. Jadi kemungkinan pilihan dan kalimat soal belum ikut dihitung. Situasi D2 di sini sudah di batas bawah (41–48 dari 40–70 kata), jadi waktu tidak bisa banyak dihemat dari teks. Pilihannya untuk pemilik proyek dan penulis 13: menambah waktu Bagian 2–3 menjadi ± 25 menit (cocok dengan usulan P1 dan P5 3 JP), atau mengurangi skenario D2. Angka akhirnya diambil dari uji keterbacaan dan uji coba.
 
-**Tindak lanjut di 13 (26 Oktober 2026).** 13 memakai batas atas perkiraan ini (Bagian 2 15 menit, Bagian 3 13 menit) dan menghitung ulang Bagian 1 dengan cara yang sama (30 menit). Tes menjadi ± 67 menit dengan petunjuk, jadi usulan P1 dan P5 3 JP tidak lagi cukup untuk P5; pilihannya ada di [pertanyaan 1 di 13](13_TES_AWAL_AKHIR.md#pertanyaan-untuk-pemilik-proyek).
+**Tindak lanjut di 13 (26 Oktober 2026).** 13 memakai perkiraan ini dan menghitung ulang Bagian 1 dengan cara yang sama. Pemilik proyek memutuskan batas longgar tanpa jam di layar (Bagian 2 dan 3 ± 35 menit) dan lama pertemuan yang mengikuti kebutuhan, tidak terikat JP ([13](13_TES_AWAL_AKHIR.md#keputusan-pemilik-proyek)). Skenario D2 tidak perlu dikurangi.
 
 ## Rujukan
 
