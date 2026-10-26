@@ -193,7 +193,7 @@ Game menunjukkan unjuk kerja di dalam game, bukan peningkatan belajar. Kita butu
 
 **Aturan pelaksanaan**
 
-- Tes awal paling lambat sehari sebelum pertemuan game pertama. Tes akhir paling lama tiga hari setelah pertemuan terakhir.
+- Tes awal paling lambat sehari sebelum pertemuan game pertama. Tes akhir di P5, setelah tantangan susulan dan sebelum cerita penutup (keputusan 26 Oktober 2026), supaya cerita penutup tidak ikut memengaruhi tes akhir.
 - Separuh kelas dapat bentuk A di tes awal dan bentuk B di tes akhir; separuh lainnya kebalikannya.
 - Siswa yang absen ikut susulan dalam tiga hari. Kalau tidak, ditandai "hilang".
 

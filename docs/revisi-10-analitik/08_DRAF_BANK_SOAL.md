@@ -1001,6 +1001,61 @@ Skenario ini diambil dari contoh di 01; kalimat tanya alasannya dibuat netral.
 
 ---
 
+# Susun Gambar selama studi
+
+Ditambahkan 26 Oktober 2026 · **usulan, menunggu keputusan pemilik proyek**
+
+Susun Gambar (tantangan 1) adalah pemanasan dan tidak dinilai, jadi tidak ada di dokumen ini. Tapi keterangan gambarnya dibaca siswa tepat sebelum Isi Rumpang dan Benar atau Salah di pertemuan yang sama. Bank yang terpasang punya 10 variasi gambar per wilayah (a–j), masing-masing dengan keterangan ([`docs/bank-soal/data/`](../bank-soal/data/)). Semua keterangan diperiksa terhadap butir yang dinilai dan butir PBK di dokumen ini, memakai aturan menulis butir no. 2 di [06](06_KISI_KISI_BANK_SOAL.md#aturan-menulis-butir) dan aturan cerita di [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md#aturan-menulis-cerita-untuk-penelitian). Pemeriksaan ini ditemukan saat menyusun 12.
+
+**Temanggung**
+
+| Variasi | Gambar | Yang dibocorkan keterangan | Butir |
+| --- | --- | --- | --- |
+| a | Gunung Sindoro dan Sumbing | Tinggi Sumbing 3.371 m; tanahnya subur | `tmg-2-a01`, `a03` |
+| b | Candi Pringapus | Candi Hindu; arca Nandi di dalamnya | `tmg-3-b01`, `b04`; PBK `tmg-4-x03` |
+| c | Kuda Lumping | Kuda-kudaan dari anyaman bambu | `tmg-4-a02` (D3); PBK `tmg-4-x01` |
+| d | Situs Liyangan | Tahun 2008, padi hangus, letusan Sindoro | `tmg-3-a01`, `a02`, `a04` |
+| e | Prasasti Gondosuli | Tahun 832; arti prasasti | `tmg-3-b02` |
+| f | Umbul Jumprit | Nama mata air, hulu Sungai Progo, air suci, "tidak pernah kering" | `tmg-2-b01`–`b04` |
+| g | Panen Kopi di Lereng Sindoro–Sumbing | Kopi di ketinggian lebih dari 900 m | `tmg-2-a04`; PBK `tmg-4-x02` |
+| h | Ikan Uceng dan Sungai Jernih | Ikan sungai kecil, makanan khas Temanggung | `tmg-4-b02` (D3); PBK `tmg-4-x04` |
+| i | Pasar Papringan | Tidak ada | — |
+| j | Perajin Kuda Kepang | Kuda kepang dari anyaman bambu | `tmg-4-a02` (D3); PBK `tmg-4-x01` |
+
+**Magelang**
+
+| Variasi | Gambar | Yang dibocorkan keterangan | Butir |
+| --- | --- | --- | --- |
+| a | Stupa Borobudur | 72 stupa berlubang, masing-masing berisi arca Buddha | `mgl-2-a02`, `a03`; PBK `mgl-4-x01` |
+| b | Penari Topeng Ireng | Hiasan kepala dari bulu, lonceng di kaki, asal Desa Tuksongo | `mgl-2-b01`, `b02`; `mgl-3-x01`; `mgl-4-a02` (D3); PBK `mgl-4-x02` |
+| c | Candi Mendut | Tidak ada | — |
+| d | Relief Borobudur | Relief tidak boleh disentuh | `mgl-3-a03`; dekat dengan `mgl-2-a05` |
+| e | Candi Pawon | Tidak ada | — |
+| f | Gunung Tidar | Bukit di tengah kota, tangga untuk olahraga, legenda paku tanah Jawa | `mgl-3-b01`, `b03` |
+| g | Getuk Magelang | Kota Getuk; singkong dikukus, ditumbuk, diberi gula | PBK `mgl-4-x03` |
+| h | Gerabah Klipoh | Dusun Klipoh dekat Borobudur; tanah liat dibentuk lalu dibakar | `mgl-4-b02` (D3); PBK `mgl-4-x04` |
+| i | Perjalanan Waisak | Air suci dari Umbul Jumprit | `tmg-2-b03`, hanya untuk siswa susulan Temanggung |
+| j | Borobudur di Antara Dua Pasang Gunung Kembar | Sindoro–Sumbing disebut gunung kembar | `tmg-2-a`, hanya untuk siswa susulan Temanggung |
+
+**Wonosobo**
+
+| Variasi | Gambar | Yang dibocorkan keterangan | Butir |
+| --- | --- | --- | --- |
+| a | Telaga Warna | Air mengandung belerang dan tidak untuk diminum | `wnb-3-a01`–`a06` |
+| b | Matahari Terbit di Sikunir | Desa Sembungan sekitar 2.300 m, angka yang dipakai bernalar di butir | `wnb-2-a04` |
+| c | Mi Ongklok | Keranjang ongklok; makanan khas Wonosobo | `wnb-4-b02` (D3); PBK `wnb-4-x03` |
+| d | Kompleks Candi Arjuna | Tidak ada | — |
+| e | Kawah di Dieng: Tetap di Balik Pagar | Gas di sekitar kawah berbahaya; ikuti rambu dan pagar | `wnb-3-b02`, `b05`, `b06` |
+| f | Carica, Pepaya Gunung | Tumbuh di 1.400–2.400 m dan di udara sejuk | `wnb-2-a04`–`a06`; PBK `wnb-4-x02` |
+| g | Bundengan | Alat musik khas Wonosobo dari tudung penggembala bebek | `wnb-4-a02` (D3); PBK `wnb-4-x01` |
+| h | Kebun Teh Tambi | Kebun teh sejak 1865 | PBK `wnb-4-x04` |
+| i | Tari Topeng Lengger | Tidak ada, tapi keterangan menyebut lengger "tari khas Wonosobo", yang asalnya diperdebatkan (lihat *Yang harus dicek sebelum validasi ahli*) | — |
+| j | Embun Upas | Suhu pagi di bawah 0 °C sehingga embun membeku | `wnb-2-b03`, `b05` |
+
+**Usulan:** selama studi, Susun Gambar hanya memakai variasi yang tidak membocorkan apa pun: **Temanggung i** (Pasar Papringan), **Magelang c dan e** (Candi Mendut, Candi Pawon), dan **Wonosobo d** (Kompleks Candi Arjuna). Di luar studi, semua variasi tetap dipakai seperti sekarang. Keterangan variasi Wonosobo i (lengger) dicek ahli budaya, terlepas dari keputusan ini.
+
+---
+
 # Pemeriksaan terhadap kisi-kisi
 
 ## Jumlah dan sebaran

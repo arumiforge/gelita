@@ -25,11 +25,9 @@ Documentation only, in `docs/revisi-10-analitik/` (Indonesian, at the owner's re
 - [x] Data dictionary `11_KAMUS_DATA.md` (work item 2 in `01`), approved by the owner as `kamus-1.0` (26 October 2026); the remaining stage-1 documents are listed in `00_INDEKS.md`
   - [x] Draft written: evidence map (diagram updated), scored items and first attempt, missing data and analysis flags, frozen definitions of the 10 analytics, item and participant variables, field-sheet join rules, data requirements for stage 3; `03` and the raw-data example in `01` aligned
   - [x] Owner decided the four questions (26 October 2026): other tap areas in *Periksa Unggahan* get the clue type's BUD code (`08` updated); idle gaps cut only above a provisional 3-minute threshold; analysable = consent, not pilot, first try on at least 80% of the 61 items; rapid guesses kept as given in the main analysis with a provisional threshold under 3 seconds. Both thresholds are study settings, re-set after the pilot
-- [ ] Story links and narration for the fifth challenge (`12_CERITA_PENGHUBUNG_DAN_NARASI.md`, work item 7 in `01`)
+- [x] Story links and narration for the fifth challenge (`12_CERITA_PENGHUBUNG_DAN_NARASI.md`, work item 7 in `01`), approved by the owner with all proposals (26 October 2026): the link scene plays once when challenge 5 is first opened, Kenali opens only after its region is done during the study, the Wonosobo chain message becomes an earthquake-prediction hoax, only situations are read aloud, and the post-test comes before the closing story in P5 (`06` and `02` aligned)
   - [x] Draft written: *Kabut di Layar* link scene per region (new context `scenario_open`), mission cards, 32 rewritten old lines (15 shards, answer leaks found by checking the script against the draft bank), recording list (about 187 per language) and voice direction
-  - [ ] Owner answers the four questions at the end of `12` (when the link scene plays, Kenali during the study, Wonosobo chain message, what Skenario Digital reads aloud) and approves the story
-  - [ ] Fix the leaks outside the story found by the same check: Susun Gambar captions that repeat D1 answers, and the outdated `petunjuk-*` mapping (bank side, before expert validation)
-  - [ ] Owner decides the proposed P5 order change in `12` (post-test before the closing story), which changes the meeting plan in `06`
+  - [ ] Susun Gambar captions checked against `08` (new section *Susun Gambar selama studi*): most variants repeat D1, D3, or PBK answers; the proposal (the study uses only the leak-free variants) waits for the owner. The `petunjuk-*` mapping is fixed in stage 3, with the new bank
 - [ ] Complete implementation document, after the revision documents are final and gate G2 (expert validation and ethics approval) is passed
 - [ ] Implementation of the system changes listed in `01` (21 so far), one short-lived branch each, after the implementation document is approved
 
@@ -80,4 +78,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 | Branch | Owner / scope | Status |
 |---|---|---|
 | `pbb/eloquent-sagan-j40sg8` | Pre-stage-1 check of the research revision docs | PR open |
-| `sky/optimistic-bardeen-4zx8ob` | Story links and narration for the fifth challenge (`12`) | PR open |
+| `sky/optimistic-bardeen-4zx8ob` | Owner approval of `12`; Susun Gambar caption check in `08` | PR open |

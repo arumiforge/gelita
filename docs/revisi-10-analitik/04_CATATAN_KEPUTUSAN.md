@@ -6,6 +6,20 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 26 Oktober 2026
 
+**Keputusan pemilik proyek: cerita penghubung dan narasi tantangan kelima** (sesi `sky/optimistic-bardeen-4zx8ob`)
+
+Pemilik proyek menyetujui seluruh draf [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md) beserta semua usulannya:
+
+1. **Cerita penghubung diputar sekali**, saat tantangan kelima pertama kali dibuka, sebelum kartu misinya.
+2. **Selama studi, Kenali wilayah baru terbuka setelah wilayahnya tuntas**, seperti Pustaka. Di luar studi tetap seperti sekarang. Masuk perubahan sistem no. 16 di 01.
+3. **Kabar berantai Wonosobo menjadi ramalan gempa**, bukan kawah akan meletus.
+4. **Di Skenario Digital hanya situasi yang dibacakan**, lewat tombol ▶.
+5. **Urutan P5:** tantangan susulan, tes akhir, cerita penutup, skala sikap di Balai Refleksi, wawancara L5. Tes akhir kini sebelum cerita penutup.
+
+Penyesuaian di dokumen lain: 06 (urutan P5; baris waktu "Cerita wilayah: pembuka, penghubung, tuntas" 4–5 menit, sehingga waktu bermain menjadi ± 29–36, 36–44, dan 43–52 menit), 02 (aturan tes akhir), 01 (daftar kerja no. 7 selesai; perubahan sistem no. 16), dan 00. Pemetaan narasi `petunjuk-*` ke butir `x01`–`x04` dibetulkan di tahap 3, karena pemetaan sekarang masih benar untuk bank yang terpasang.
+
+Lanjutan di sesi yang sama: keterangan Susun Gambar diperiksa terhadap 08 dan ditulis di [08](08_DRAF_BANK_SOAL.md#susun-gambar-selama-studi). Usulannya (selama studi hanya variasi yang tidak membocorkan butir) menunggu keputusan pemilik proyek.
+
 **Draf cerita penghubung dan narasi tantangan kelima** (sesi `sky/optimistic-bardeen-4zx8ob`, daftar kerja no. 7)
 
 - Cerita penghubung, kartu misi, baris lama yang berubah, dan daftar rekaman disusun di [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md). Statusnya draf sampai pemilik proyek menjawab empat pertanyaan di bagian akhir dokumen itu:
