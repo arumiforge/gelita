@@ -34,7 +34,7 @@ Satu kelas ikut lima pertemuan, satu wilayah per pertemuan ([06](06_KISI_KISI_BA
 | P3 | S03-A-P3 | Wilayah Magelang | Sama | L0–L5 |
 | P4 | S03-A-P4 | Wilayah Wonosobo | Sama | L0–L5 |
 | P5 | S03-A-P5 | Tantangan susulan (paling lama 20 menit), tes akhir, butir risiko daring (hanya dengan izin terpisah), cerita penutup, skala sikap dan kritik dan saran di Balai Refleksi | Mengikuti kebutuhan, paling lama ± 139 menit | L0, L1, L2, L3, L4 (saat susulan), L6, L7 |
-| Susulan | S03-A-P3-S | Siswa yang absen di satu pertemuan, dalam tiga hari: wilayah pertemuan itu, atau tes dan angket | Sesuai isinya | L0, L1, L2, L3 (sedikitnya satu peneliti), L6 kalau susulan tes |
+| Susulan | S03-A-P3-S | Siswa yang absen di satu pertemuan, dalam tiga hari: wilayah pertemuan itu, atau tes dan angket. Untuk P5, cerita penutup dan skala sikap boleh disusulkan paling lama 7 hari setelah P5 ([17](17_SKALA_SIKAP.md#pelaksanaan-di-p5)) | Sesuai isinya | L0, L1, L2, L3 (sedikitnya satu peneliti), L6 kalau susulan tes |
 
 Siswa tanpa izin orang tua tidak punya akun GELITA dan ikut kegiatan pengganti di ruang yang sama (keputusan 26 Oktober 2026). Mereka tidak masuk L2–L6.
 
@@ -102,7 +102,8 @@ L1 menjelaskan konteks di balik angka log. Misalnya, waktu yang lama bisa karena
 | Isian | Cara mengisi | Contoh | Isi di sini |
 | --- | --- | --- | --- |
 | Kode sesi lapangan | Sekolah-rombel-pertemuan, sama dengan sesi di panel peneliti; susulan berakhiran `-S` | S03-A-P2 | |
-| Isi pertemuan | Wilayah, atau tes dan angket (lihat *Pertemuan dan lembar*) | Temanggung | |
+| Isi pertemuan | Wilayah, atau tes dan angket (lihat *Pertemuan dan lembar*). Untuk susulan P5, tulis juga "skala sikap" kalau siswa mengisinya di sesi ini | Temanggung | |
+| Tanggal P5 (hanya susulan skala sikap) | Tanggal P5 rombel ini; susulan skala sikap paling lama 7 hari sesudahnya. Lewat 7 hari, skala tidak dibuka dan siswa tercatat `absen` | 22 Nov 2027 | |
 | Token | Token yang ditulis di papan tulis; kalau diganti, tulis keduanya dan jamnya | KD7RMA | |
 | Tanggal; jam mulai dan selesai | Jam WIB sampai detik | 15 Nov 2027; 07:32:15–09:28:40 | |
 | Peneliti | Inisial dan peran | AR (P1), DS (P2), MN (P3) | |
@@ -179,9 +180,10 @@ ISI, STR, dan BHS menandai percobaan sebagai "dibantu" (`helped_content`); TKN, 
 **Aturan mengisi**
 
 - Jam mulai dicatat saat kejadian mulai. Kalau berlangsung lebih dari 2 menit, tulis juga jam selesainya.
-- *Di layar*: kode tantangan (misalnya `tmg-2`), bagian tes (`tes-mb`, `tes-ae`, `tes-bd`), angket (`ang`), atau layar lain (Peta, Pustaka, cerita, Balai Refleksi).
+- *Di layar*: kode tantangan (misalnya `tmg-2`), bagian tes (`tes-mb`, `tes-ae`, `tes-bd`), angket (`ang`), skala sikap (`skp`), atau layar lain (Peta, Pustaka, cerita, Balai Refleksi).
 - Untuk beberapa siswa sekaligus, tulis rentang kursinya; aturan gabung berlaku untuk setiap siswa di kursi itu.
 - Peneliti tidak membantu isi soal dan tidak membacakan bacaan, pernyataan, butir tes, atau angket. Kalau siswa bertanya di game, jawab: "Coba pakai tombol Bantuan, ya." Di tes: "Kerjakan sesuai yang kamu pahami, ya. Soal yang sulit boleh dilewati dulu." Di angket, hanya penjelasan baku di [16](16_ANGKET_AKSES_DIGITAL.md#cara-pelaksanaan).
+- Di skala sikap (`skp`), pernyataan tidak dibacakan. Kalau siswa bertanya arti satu kata, P3 boleh membacakan atau menjelaskan kata itu saja dengan suara pelan, tanpa menafsirkan pernyataan dan tanpa menanggapi jawaban, lalu mencatatnya sebagai PNL + BHS dengan kode pernyataan di *Uraian singkat* (misalnya `skp-06`, kata "kuno") ([17](17_SKALA_SIKAP.md#pelaksanaan-di-p5)).
 
 <!-- lembar: L3-bantuan -->
 | Jam mulai (WIB) | Jam selesai (WIB) | Kursi | Kode peserta | Di layar | Pemberi | Jenis | Diminta siswa? | Uraian singkat |
@@ -306,7 +308,7 @@ L7 menentukan data siapa yang boleh dianalisis (`consent_ok`). Ini satu-satunya 
 **Isi surat izin orang tua (dokumen terpisah, bagian permohonan izin etik):**
 
 - tujuan penelitian, lima pertemuan, dan siapa penelitinya;
-- data yang dikumpulkan: catatan permainan, tes awal dan akhir, angket akses digital (topik: HP dan internet di rumah, media sosial, game, pendampingan orang tua, bahasa dan buku di rumah), skala sikap, pengamatan peneliti, dan wawancara singkat;
+- data yang dikumpulkan: catatan permainan, tes awal dan akhir, angket akses digital (topik: HP dan internet di rumah, media sosial, game, pendampingan orang tua, bahasa dan buku di rumah), skala sikap (pendapat anak tentang budaya daerah Kedu, 12 pernyataan singkat setuju–tidak setuju di akhir P5, tanpa jawaban benar atau salah dan tidak dinilai), pengamatan peneliti, dan wawancara singkat;
 - bahwa nama anak hanya ada di lembar izin dan di akun yang dikelola admin, dan data penelitian hanya memakai kode;
 - **pilihan terpisah** untuk rekaman suara wawancara;
 - **pilihan terpisah** untuk butir pengalaman risiko daring di P5: 2–3 pertanyaan yang diisi sendiri di layar, dengan prosedur rujukan;

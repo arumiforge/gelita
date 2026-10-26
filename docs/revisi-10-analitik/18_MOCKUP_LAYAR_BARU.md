@@ -2,7 +2,7 @@
 
 Per 26 Oktober 2026 · Daftar kerja no. 20 di [01](01_REVISI_10_ANALITIK.md#peta-jalan-dan-daftar-kerja) · Disusun Claude, disetujui pemilik proyek 26 Oktober 2026; gambar skala sikap digambar ulang dari 17 di hari yang sama
 
-Dokumen ini menjelaskan 26 gambar mock-up layar baru Revisi 10 di folder [`gambar/mockup/`](gambar/mockup/). Gambar ini bahan ahli media langkah 1 di tahap 2: ahli menilai game yang ada sekarang ditambah rancangan layar baru, karena sistem baru diubah di tahap 3, setelah gerbang G2 (keputusan 25 Oktober 2026). Langkah 2, telaah singkat layar jadi di instalasi uji sebelum uji coba, adalah daftar kerja no. 21 dan bagian gerbang G3.
+Dokumen ini menjelaskan 27 gambar mock-up layar baru Revisi 10 di folder [`gambar/mockup/`](gambar/mockup/). Gambar ini bahan ahli media langkah 1 di tahap 2: ahli menilai game yang ada sekarang ditambah rancangan layar baru, karena sistem baru diubah di tahap 3, setelah gerbang G2 (keputusan 25 Oktober 2026). Langkah 2, telaah singkat layar jadi di instalasi uji sebelum uji coba, adalah daftar kerja no. 21 dan bagian gerbang G3.
 
 Setiap gambar diberi label merah **"Mock-up — bukan tampilan akhir"** dan kodenya (`mk-…`). Instrumen media v1.1 ([07](07_TELAAH_INSTRUMEN_VALIDASI.md#langkah-berikutnya)) bisa menyusun bagian mock-up langsung dari tabel di bawah: satu baris per layar, dengan keadaan yang ditampilkan dan pertanyaan untuk ahli.
 
@@ -14,10 +14,10 @@ Setiap gambar diberi label merah **"Mock-up — bukan tampilan akhir"** dan kode
 | Cari Objek babak 2 *Periksa Unggahan* | `mk-pu-01` … `mk-pu-04` | 4 | 08 (`tmg-4-a01`, `tmg-4-a02`), perubahan sistem no. 17, 18, 20 |
 | Token sesi ringan, layar di luar sesi, layar kecil, panel peneliti | `mk-tk-01` … `mk-tk-05` | 5 | 01 *Token sesi*, perubahan sistem no. 10, 11, 16 |
 | Modul tes dan angket | `mk-mt-01` … `mk-mt-06` | 6 | 13, 14 (`tes-mb-A01`), 16 (ang-01–03, ang-21), perubahan sistem no. 22 |
-| Skala sikap di Balai Refleksi | `mk-ss-01` … `mk-ss-04` | 4 | [17](17_SKALA_SIKAP.md) (`skp-ct-01`, `skp-03`), perubahan sistem no. 21 |
+| Skala sikap di Balai Refleksi, lalu kritik dan saran | `mk-ss-01` … `mk-ss-05` | 5 | [17](17_SKALA_SIKAP.md) (`skp-ct-01`, `skp-03`), perubahan sistem no. 21 |
 | Cerita penghubung dan kartu misi tantangan kelima | `mk-cr-01`, `mk-cr-02` | 2 | 12 (`layar-temanggung-02`, kartu misi `tmg-5`) |
 
-Ukuran gambar 27–111 KB (WebP, jumlah ± 1,7 MB). Semua layar game digambar di panggung 1280 × 720 (16:9), kecuali `mk-tk-04` (jendela ponsel 844 × 390) dan beberapa layar modul yang lebih tinggi karena halamannya bergulir.
+Ukuran gambar 27–111 KB (WebP, jumlah ± 1,8 MB). Semua layar game digambar di panggung 1280 × 720 (16:9), kecuali `mk-tk-04` (jendela ponsel 844 × 390) dan beberapa layar modul yang lebih tinggi karena halamannya bergulir.
 
 ## Cara mock-up dibuat
 
@@ -137,7 +137,7 @@ Ukuran gambar 27–111 KB (WebP, jumlah ± 1,7 MB). Semua layar game digambar di
 - Apakah pengingat waktu tanpa jam terasa menenangkan, bukan membuat panik?
 - Apakah layar butir risiko daring cukup privat (tanpa warna mencolok atau ilustrasi yang menarik perhatian teman sebelah) dan pilihan "Tidak mau menjawab" mudah ditemukan?
 
-### 5. Skala sikap di Balai Refleksi (`mk-ss-01` … `mk-ss-04`)
+### 5. Skala sikap di Balai Refleksi (`mk-ss-01` … `mk-ss-05`)
 
 **Tujuannya.** Skala pendamping sikap menjaga warisan diisi sekali di P5, di Balai Refleksi, sebelum kritik dan saran, di luar skor literasi digital (perubahan sistem no. 21). Format dan tampilannya mengikuti keputusan pemilik proyek di [17](17_SKALA_SIKAP.md#format-jawaban-dan-tampilan): empat pilihan tanpa titik tengah (*Tidak setuju · Kurang setuju · Setuju · Sangat setuju*), kata dengan titik emas yang makin besar, tanpa wajah; satu pernyataan per layar; urutan tetap; boleh kembali dan melewati sebelum dikirim; bilah kemajuan perunggu; tidak dibacakan.
 
@@ -151,8 +151,9 @@ Ukuran gambar 27–111 KB (WebP, jumlah ± 1,7 MB). Semua layar game digambar di
 | [`mk-ss-02`](gambar/mockup/mk-ss-02.webp) | Contoh soal "Aku suka makan buah." bertanda *Contoh*, tanpa bilah kemajuan; *Setuju* dipilih; *Lewati* dan *Lanjut* |
 | [`mk-ss-03`](gambar/mockup/mk-ss-03.webp) | Pernyataan 3/12 "Belajar tentang candi dan tari itu membosankan." dengan *Kurang setuju* dipilih, bilah kemajuan 3/12, *Kembali*, *Lewati*, *Lanjut* |
 | [`mk-ss-04`](gambar/mockup/mk-ss-04.webp) | Layar terakhir: berapa pernyataan sudah dijawab (11 dari 12, satu dilewati), *Kembali* atau *Kirim* |
+| [`mk-ss-05`](gambar/mockup/mk-ss-05.webp) | Balai Refleksi setelah skala dikirim (ditambahkan 26 Oktober 2026): kalimat pujian Mbah Kedu baru tampil di sini; ringkasan perjalanan tanpa ubin *Total waktu* (jam disembunyikan selama studi, perubahan sistem no. 16) dan bintang per wilayah dari 15; kritik dan saran dengan bintang 1–5 (data kepraktisan, `feedback_rating`) dan empat pertanyaan terbuka yang semuanya boleh kosong |
 
-*Draf salinan:* tombol *Coba contoh*, label *Contoh*, dan teks layar kirim ("Kamu sudah menjawab 11 dari 12 kalimat. Satu kalimat kamu lewati. Kalau mau, kamu masih bisa kembali dan menjawabnya. Setelah dikirim, jawabanmu tidak bisa diganti lagi."). 17 hanya menyebut bahwa layar terakhir menunjukkan berapa pernyataan sudah dijawab, lalu *Kirim*.
+*Draf salinan:* pesan "Pendapatmu tentang budaya Kedu sudah terkirim. Terima kasih!" dan petunjuk "Semua pertanyaan boleh dikosongkan." di `mk-ss-05` (menggantikan "Isi minimal dua pertanyaan, ya."); tombol *Coba contoh*, label *Contoh*, dan teks layar kirim ("Kamu sudah menjawab 11 dari 12 kalimat. Satu kalimat kamu lewati. Kalau mau, kamu masih bisa kembali dan menjawabnya. Setelah dikirim, jawabanmu tidak bisa diganti lagi."). 17 hanya menyebut bahwa layar terakhir menunjukkan berapa pernyataan sudah dijawab, lalu *Kirim*.
 
 **Yang dinilai ahli media.**
 - Apakah titik yang makin besar dengan kata di bawahnya mudah dipahami anak sebagai "makin setuju", tanpa wajah?
@@ -160,6 +161,7 @@ Ukuran gambar 27–111 KB (WebP, jumlah ± 1,7 MB). Semua layar game digambar di
 - Apakah *Lewati* cukup terlihat (sesuai prinsip etik) tanpa mengundang siswa melewati semua pernyataan?
 - Apakah layar ini terasa bagian dari Balai Refleksi, dan tidak terasa seperti tes?
 - Apakah pernyataan berukuran besar terbaca nyaman, termasuk pernyataan terpanjang (skp-11, sepuluh kata)?
+- Di `mk-ss-05`: apakah jelas bagi anak bahwa kritik dan saran boleh dikosongkan, tanpa membuatnya terasa tidak penting?
 
 ### 6. Cerita penghubung dan kartu misi tantangan kelima (`mk-cr-01`, `mk-cr-02`, pelengkap)
 
@@ -192,6 +194,7 @@ Ditemukan saat menggambar; tidak diperbaiki di sini karena berkasnya milik dokum
 5. **Urutan token saat daftar di P1.** 01 menulis "Siswa masuk atau daftar, lalu mengetik token", tetapi juga "Saat siswa mendaftar dengan token, sekolah dan kelasnya terisi sendiri". Artinya di P1 token diketik sebelum akun ada (di awal pendaftaran), sedangkan P2–P5 sesudah masuk. Mock-up menggambar yang kedua. Urutan di P1 perlu ditulis tegas di dokumen implementasi perubahan no. 11 dan 12.
 6. **Bantuan (💡) di Skenario Digital.** Tidak ada dokumen yang menyebut apakah tantangan kelima punya tombol Bantuan. Mock-up tidak menampilkannya.
 7. **Penghitung ✓/✗ di kepala Skenario Digital.** Kerangka tantangan menghitung butir benar dan salah, tetapi di Skenario Digital belum ditetapkan apakah "kurang tepat" dihitung salah. Mock-up menghitung skenario yang sudah selesai dengan tepat.
+8. **Kolom bintang per wilayah di Balai Refleksi terlalu sempit untuk 15 tantangan.** "13 dari 15" bertumpuk dengan bilahnya di lebar kolom sekarang (`.reflection-side .bar-row`, 5,75rem); `mk-ss-05` melebarkannya hanya di halaman mock-up. Perlu dicatat di dokumen implementasi perubahan sistem no. 2 (lima belas tantangan) atau no. 21.
 
 ## Keputusan pemilik proyek
 

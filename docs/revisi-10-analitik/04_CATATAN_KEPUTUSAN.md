@@ -6,6 +6,12 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 26 Oktober 2026
 
+**Keputusan pemilik proyek: baris penutup sebelum skala sikap** (sesi `r10-skala-sikap`, pemeriksaan cerita penutup di [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md#penutup-ending) terhadap [17](17_SKALA_SIKAP.md))
+
+1. **`penutup-04` diubah.** "…saat membaca, saat memakai layar, dan saat bercerita tentang budaya Kedu" menjadi "…saat membaca, saat memakai layar, dan saat budaya Kedu tampil di layar" (EN: "…and when Kedu's culture appears on a screen"). Kalimat lama memperagakan butir `skp-07` ("Aku senang menceritakan budaya Kedu kepada teman") beberapa menit sebelum siswa menjawabnya; kalimat baru tetap mencakup tiga dimensi, dengan bagian ketiga merujuk D3. Tidak ada baris penutup lain yang memuji siswa; pujian Mbah Kedu di Balai Refleksi sudah dipindah ke sesudah skala.
+
+Akibatnya: 12 diperbarui (baris dan keputusan no. 6). Pada hari yang sama, akibat skala sikap ke dokumen lain diselesaikan: 02 (susulan skala di L1 dan tabel pertemuan, aturan bantuan kata di L3, kalimat skala di surat izin L7), 18 (`mk-ss-05`, Balai Refleksi dengan kritik dan saran), dan 17 (teks siap tempel untuk permohonan izin etik).
+
 **Keputusan pemilik proyek: mock-up layar baru untuk ahli media langkah 1** (cabang `r10-mockup-media`, daftar kerja no. 20, [18](18_MOCKUP_LAYAR_BARU.md))
 
 Putaran 1, sebelum menggambar:

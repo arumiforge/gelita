@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html class="game-stage" lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Balai Refleksi setelah skala sikap: kritik dan saran</title>
+<link rel="stylesheet" href="../../../../../public/assets/css/tokens.css">
+<link rel="stylesheet" href="../../../../../public/assets/css/base.css">
+<link rel="stylesheet" href="../../../../../public/assets/css/stage.css">
+<link rel="stylesheet" href="../../../../../public/assets/css/components.css">
+<link rel="stylesheet" href="../../../../../public/assets/css/game.css">
+<link rel="stylesheet" href="_mock.css">
+<!-- Mock-up only: 15 challenges make "13 dari 15" wider than the current star column -->
+<style>.reflection-side .bar-row { grid-template-columns: 8rem minmax(0, 1fr) 7.75rem; }</style>
+</head>
+<!-- Markup follows app/Views/game/reflection.php; lead line and questions word for word from app/Language/id/Game.php.
+     Study changes from 17_SKALA_SIKAP.md: shown after the scale is sent, every field optional, no time tile (system change 16). -->
+<body class="game" data-hud="region-centre" data-region="Balai Refleksi" data-code="mk-ss-05">
+<div class="stage-frame"><div class="stage" id="stage">
+  <div class="scene" aria-hidden="true"><img class="scene-img is-visible" src="../../../../../gelita-katalog/assets/latar/bg.reflection.webp" alt=""></div>
+  <main id="app" class="stage-main">
+  <section class="reflection" data-screen="reflection" style="--loading-track: url(&quot;../../../../../public/assets/ui/loading-track.webp&quot;)">
+    <aside class="reflection-side stage-box stage-scroll">
+      <header class="reflection-hero">
+        <h1 class="reflection-plate"><img src="../../../../../public/assets/ui/btn-reflection.webp" alt="Balai Refleksi"></h1>
+        <p class="reflection-title">Perjalananmu Sudah Lengkap</p>
+        <div class="reflection-speaker">
+          <span class="reflection-avatar"><span class="kedu-portrait has-art" aria-hidden="true"><img class="kedu-avatar" src="../../../../../gelita-katalog/assets/referensi/reference.02.webp" alt=""></span></span>
+          <p class="reflection-words">Mbah Kedu bangga padamu. Lihat lagi perjalananmu, lalu ceritakan pengalamanmu.</p>
+        </div>
+      </header>
+      <div class="stat-grid">
+        <div class="stat-tile"><span class="stat-label"><svg class="icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg> Berhasil pada Percobaan Pertama</span><p class="stat-value">48 dari 61</p></div>
+        <div class="stat-tile"><span class="stat-label"><svg class="icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg> Tantangan selesai</span><p class="stat-value">15</p></div>
+      </div>
+      <div class="reflection-bars"><section><h2>Bintang per wilayah</h2><ul class="bar-list"><li class="bar-row"><span>Temanggung</span><span class="progress" aria-hidden="true"><i style="width: 86.7%"></i></span><span class="bar-value"><img class="star-art" src="../../../../../public/assets/ui/star.webp" alt="" width="128" height="128"> 13 dari 15</span></li><li class="bar-row"><span>Magelang</span><span class="progress" aria-hidden="true"><i style="width: 80.0%"></i></span><span class="bar-value"><img class="star-art" src="../../../../../public/assets/ui/star.webp" alt="" width="128" height="128"> 12 dari 15</span></li><li class="bar-row"><span>Wonosobo</span><span class="progress" aria-hidden="true"><i style="width: 73.3%"></i></span><span class="bar-value"><img class="star-art" src="../../../../../public/assets/ui/star.webp" alt="" width="128" height="128"> 11 dari 15</span></li></ul></section></div>
+    </aside>
+    <div class="reflection-form stage-box">
+      <h2><svg class="icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L3 21l1.9-6.4A8 8 0 1 1 21 12z"/></svg> Kritik &amp; saran</h2>
+      <div class="alert alert-ok" role="status"><svg class="icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><p>Pendapatmu tentang budaya Kedu sudah terkirim. Terima kasih!</p></div>
+      <form class="form reflection-fields-form">
+        <div class="reflection-fields stage-scroll">
+          <fieldset class="rating"><legend class="label">Seberapa senang kamu bermain GELITA?</legend><div class="rating-stars"><label class="rating-star"><img class="star-art is-off" src="../../../../../public/assets/ui/star.webp" alt="" width="128" height="128"></label><label class="rating-star"><img class="star-art is-off" src="../../../../../public/assets/ui/star.webp" alt="" width="128" height="128"></label><label class="rating-star"><img class="star-art is-off" src="../../../../../public/assets/ui/star.webp" alt="" width="128" height="128"></label><label class="rating-star"><img class="star-art is-off" src="../../../../../public/assets/ui/star.webp" alt="" width="128" height="128"></label><label class="rating-star"><img class="star-art is-off" src="../../../../../public/assets/ui/star.webp" alt="" width="128" height="128"></label></div></fieldset>
+          <div class="field"><label for="liked_most">Bagian apa yang paling kamu sukai?</label><textarea id="liked_most" rows="2"></textarea></div><div class="field"><label for="hardest_part">Bagian apa yang paling sulit?</label><textarea id="hardest_part" rows="2"></textarea></div><div class="field"><label for="new_learning">Hal baru apa yang kamu pelajari?</label><textarea id="new_learning" rows="2"></textarea></div><div class="field"><label for="suggestion">Saranmu untuk permainan ini?</label><textarea id="suggestion" rows="2"></textarea></div>
+          <p class="field-help"><svg class="icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6"/><path d="M12 7h.01"/></svg> Semua pertanyaan boleh dikosongkan.</p>
+        </div>
+        <div class="form-actions"><button class="btn btn-primary btn-lg" type="button"><svg class="icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L3 21l1.9-6.4A8 8 0 1 1 21 12z"/></svg> Kirim masukan</button></div>
+      </form>
+    </div>
+  </section>
+  </main>
+</div></div>
+<script src="_mock.js"></script>
+</body>
+</html>
