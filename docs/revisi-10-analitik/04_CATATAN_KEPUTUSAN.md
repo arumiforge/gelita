@@ -6,6 +6,37 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 26 Oktober 2026
 
+**Keputusan pemilik proyek: model penelitian dan pengembangan, dan aturan I-CVI** (sesi `sky/peaceful-curie-68ufr5`)
+
+1. **Model penelitian dan pengembangan: penelitian desain pendidikan model Plomp (2013), jenis studi pengembangan.**
+   - ECD menjadi metode merancang asesmen di dalamnya.
+   - Lapis evaluasi formatif Tessmer (1993) dan tabel metode Nieveen & Folmer (2013) menentukan cara menguji setiap prototipe.
+   - Empat kriteria mutu (relevansi, konsistensi, kepraktisan, keefektifan) menjadi ukuran mutu produk.
+   - Peta jalan enam tahap dan lima gerbang di 01 tidak berubah. Tahap 1–4 adalah iterasi fase prototipe, dan tahap 5–6 adalah fase penilaian.
+   - Alasannya:
+     - GELITA adalah alat ukur, jadi keefektifan diartikan sebagai mutu pengukuran, bukan peningkatan hasil belajar.
+     - Prototipe awal boleh berupa kertas, sesuai aturan "sistem diubah setelah G2".
+     - Model ini menghasilkan prinsip desain sebagai sumbangan teoretis.
+   - ADDIE, 4D, Borg & Gall, dan Sugiyono dibandingkan dan tidak dipilih.
+   - Rinciannya, dengan setiap rujukan dicek ke sumber asli, ada di [dokumen pendukung peneliti](dokumen-pendukung-peneliti/README.md). Folder itu adalah bacaan untuk peneliti dan tim, bukan dokumen implementasi.
+2. **Aturan I-CVI: aturan Lynn (1986) tetap dipakai.**
+   - Dengan lima ahli atau kurang, butir hanya lolos kalau semua ahli memberi skor 3 atau 4 (I-CVI = 1,00).
+   - Aturan Polit, Beck, & Owen (2007) yang lebih longgar tidak dipakai.
+   - Dicatat di 07 (*Koreksi kecil*) dan ditulis di D.6 instrumen v2.1.
+3. **Rujukan dibetulkan setelah dicek ke sumber asli:**
+   - PIRLS 2026: editornya "Kennedy, A." (bukan "A. M."), ditambah DOI, di 01 dan 06.
+   - Judul DigComp 3.0 tanpa "The", ditambah DOI, di 01, 05, dan 06.
+   - Laporan Kominfo & Katadata terbit 2023, dengan istilah pilarnya sendiri (Kecakapan, Etika, Keamanan, Budaya Digital), di 05, 06, dan 07.
+   - Webb (1999) ditambahkan di 01 sebagai sumber level DOK.
+   - Judul Cohen (1968) dibetulkan di 07.
+   - Judul "Rujukan metode (klasik, tidak dicek ulang)" di 01 diganti, karena semuanya sudah dicek.
+
+Usulan dokumen itu yang belum diputuskan:
+- uji beda tes awal–akhir dilaporkan sebagai temuan eksploratif, karena desain satu kelompok tanpa kontrol tidak bisa menunjukkan sebab-akibat;
+- kepraktisan diukur dari log dan lembar L1, L3, dan L4, karena guru tidak ikut;
+- penelitian pendahuluan ditulis sebagai fase tersendiri;
+- prototipe diberi nomor I–III.
+
 **Konfirmasi pemilik proyek: fakta dan gambar Susun Gambar** (sesi `sky/festive-hopper-cl6p65`)
 
 - **Wayang Kedu Temanggungan** adalah varian tradisi wayang kulit asli dari wilayah Kedu, Jawa Tengah, yang berkembang khusus di Kabupaten Temanggung. Keterangan gambar baru Temanggung ditulis dari fakta ini. Kalimat tentang Warisan Budaya Takbenda dihapus dari draf, karena surat penetapannya belum ditemukan.

@@ -2,7 +2,7 @@
 
 Per 26 Oktober 2026 · Pintu masuk untuk setiap sesi baru di [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
-Folder ini sekitar 430 KB, kira-kira 200 ribu token kalau dibaca utuh. Satu sesi tidak perlu membaca semuanya. Aturan menjaga konteks ada di `.claude/rules/revisi-10.md` dan dimuat otomatis saat berkas di folder ini dibuka.
+Dokumen Markdown di folder ini sekitar 460 KB, kira-kira 200 ribu token kalau dibaca utuh. Satu sesi tidak perlu membaca semuanya. Aturan menjaga konteks ada di `.claude/rules/revisi-10.md` dan dimuat otomatis saat berkas di folder ini dibuka.
 
 ## Mulai sesi baru di sini
 
@@ -30,6 +30,7 @@ Dokumen lain dibaca per bagian sesuai tugas.
 | [11](11_KAMUS_DATA.md) | Kamus data: peta bukti, definisi beku 10 analitik, data yang dinilai, "dilewati", waktu aktif, tersensor, tebakan cepat, kode, aturan gabung lembar | Disetujui 26 Oktober 2026 (`kamus-1.0`); ambang jeda dan tebakan cepat masih sementara | Saat menulis instrumen, lembar, pra-registrasi, atau dokumen implementasi; cari per analitik | 41 KB |
 | [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md) | Cerita penghubung dan narasi tantangan kelima, penyesuaian cerita lama, kartu misi, daftar rekaman, hasil pemeriksaan kebocoran cerita | Disetujui 26 Oktober 2026 | Saat menyiapkan rekaman, menulis dokumen implementasi perubahan no. 2 dan no. 16, atau mengubah cerita | 52 KB |
 | `gambar/` | Peta bukti, lapis data, peta jalan, buklet, tangkapan layar telaah media | Rujukan | Saat dokumen yang memakainya diubah | — |
+| [dokumen-pendukung-peneliti/](dokumen-pendukung-peneliti/README.md) | Bacaan untuk peneliti dan tim, **bukan dokumen implementasi**: model penelitian dan pengembangan (PDF), dengan rujukan yang dicek ke sumber asli | Rujukan; model Plomp dan aturan I-CVI Lynn diputuskan 26 Oktober 2026 | Saat menulis Bab III atau bagian metodologi; tidak dibaca untuk implementasi | 390 KB (PDF dan sumbernya) |
 
 ## Tahap dokumen yang tersisa sebelum implementasi
 

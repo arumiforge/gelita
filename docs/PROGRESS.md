@@ -34,6 +34,8 @@ Documentation only, in `docs/revisi-10-analitik/` (Indonesian, at the owner's re
     - [ ] Catalogue team makes the new Wayang Kedu picture and the replacement Candi Pawon picture (briefs in `08`), then both are re-checked against `08`
     - [ ] Researcher checks the facts of Papringan, Pawon, and Arjuna, and Lengger's 2020 listing year
     - [x] Outdated `petunjuk-*` narration mapping: moved to stage 3 (`12`, stage-3 list item 3), because the current mapping is right for the bank installed today
+- [x] Research and development model decided by the owner (26 October 2026): Plomp's educational design research (2013), development-study type, with ECD inside it; Lynn's I-CVI rule kept (`04`, `07`). The supporting brief, with every reference checked against its source, is in `dokumen-pendukung-peneliti/` (reading for researchers and the team, not an implementation document). Reference errors found by that check fixed in `01`, `05`, `06`, `07`
+  - [ ] Owner decides the brief's open proposals: pre/post difference test reported as exploratory, practicality measured from logs and L1/L3/L4, preliminary research written up as its own phase, prototypes numbered I–III
 - [ ] Complete implementation document, after the revision documents are final and gate G2 (expert validation and ethics approval) is passed
 - [ ] Implementation of the system changes listed in `01` (21 so far), one short-lived branch each, after the implementation document is approved
 
@@ -85,3 +87,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 |---|---|---|
 | `pbb/eloquent-sagan-j40sg8` | Pre-stage-1 check of the research revision docs | PR open |
 | `sky/festive-hopper-cl6p65` | Susun Gambar caption leaks checked against the draft bank (`08`) | PR open |
+| `sky/peaceful-curie-68ufr5` | R&D model brief for researchers, Lynn's I-CVI rule, reference fixes in the research revision docs | PR open |
