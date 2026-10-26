@@ -762,7 +762,7 @@ Panjang ± 90 kata
 | Kode | Pernyataan | Kunci | Sub | AKM | Bloom | Kode salah |
 | --- | --- | --- | --- | --- | --- | --- |
 | wnb-3-b01 | Pesan berantai dan pengumuman resmi memberi saran yang berbeda tentang mendekati kawah. | benar | D1a | L2 | C2 | INF-LIT |
-| wnb-3-b02 | Menurut bacaan, gas di sekitar kawah aman bagi kesehatan. | salah | D1a | L2 | C2 | INF-KAT |
+| wnb-3-b02 | Menurut bacaan, petugas memasang pagar pembatas karena kawah di Dieng terlalu panas untuk didekati. | salah | D1a | L2 | C2 | INF-HUB |
 | wnb-3-b03 | Pesan berantai itu dapat dipercaya karena sudah banyak beredar. | salah | D1b | L3 | C4 | INF-SUM |
 | wnb-3-b04 | Pengumuman resmi dapat dipercaya karena lembaga pembuatnya jelas. | benar | D1b | L3 | C4 | INF-SUM |
 | wnb-3-b05 | Rambu dan pagar dari petugas lebih pantas diikuti daripada pesan berantai, karena petugas mengetahui bahaya gas di kawah. | benar | D1b | L3 | C4 | INF-SUM |
@@ -1100,7 +1100,7 @@ Lemah: `mgl-1-a` memakai kata "stupa" (`mgl-2-a02`, istilahnya didefinisikan di 
 | `wnb-1-b` Matahari Terbit di Sikunir | Pertama | — | — |
 | `wnb-1-c` Mi Ongklok | Pertama | PBK `wnb-4-x03` | D3 `wnb-4-b02`, `b04` (khas Wonosobo); gambarnya `wnb-1-07` juga dipakai untuk foto unggahan `wnb-4` babak 2 b |
 | `wnb-1-d` Kompleks Candi Arjuna | Ulang | — | — |
-| `wnb-1-e` Kawah di Dieng | Ulang | `wnb-3-b02` (gas di sekitar kawah berbahaya) | `wnb-3-b05`, `b06`; judul variasi "Tetap di Balik Pagar" |
+| `wnb-1-e` Kawah di Dieng | Ulang | `wnb-3-b02` (gas di sekitar kawah berbahaya, sebab pagar dipasang) | `wnb-3-b05`, `b06`; judul variasi "Tetap di Balik Pagar" |
 | `wnb-1-f` Carica | Ulang | `wnb-2-a06` (udara sejuk), PBK `wnb-4-x02` | `wnb-2-a04`, `a05` (rentang 1.400–2.400 meter) |
 | `wnb-1-g` Bundengan | Ulang | PBK `wnb-4-x01` | D3 `wnb-4-a02`, `a04`; gambarnya `wnb-1-g01` juga dipakai untuk foto unggahan `wnb-4` babak 2 a |
 | `wnb-1-h` Kebun Teh Tambi | Ulang | PBK `wnb-4-x04` (sejak 1865) | — |
@@ -1186,7 +1186,7 @@ Sebelum pengambilan data, satu orang tim tetap disarankan mengetik setiap nama a
 
 **Skenario.** Setiap skenario dibaca ulang oleh ahli bahasa anak dan ahli literasi digital: apakah tindakan "tepat" memang paling tepat, apakah tindakan "kurang tepat" memang aman tapi belum lengkap, dan apakah umpan baliknya tidak menakut-nakuti.
 
-**Butir yang perlu ditulis ulang (keputusan pemilik proyek 26 Oktober 2026).** `wnb-3-b02` ("Menurut bacaan, gas di sekitar kawah aman bagi kesehatan.") terjawab dari kalimat tersurat "gas yang berbahaya bagi kesehatan", jadi lebih dekat ke L1 daripada L2. Level AKM-nya tetap L2 sesuai kisi-kisi Wonosobo; pernyataannya ditulis ulang di sesi bank berikutnya supaya siswa perlu menyimpulkan (misalnya parafrase atau memadukan dua kalimat), lalu label Bloom-nya diperiksa lagi ([19](19_TELAAH_LABEL_BLOOM.md)). Kunci *salah* dan kode INF-KAT dipertahankan bila memungkinkan.
+**Butir yang perlu ditulis ulang (keputusan pemilik proyek 26 Oktober 2026).** `wnb-3-b02` ("Menurut bacaan, gas di sekitar kawah aman bagi kesehatan.") terjawab dari kalimat tersurat "gas yang berbahaya bagi kesehatan", jadi lebih dekat ke L1 daripada L2. Level AKM-nya tetap L2 sesuai kisi-kisi Wonosobo. **Sudah ditulis ulang (26 Oktober 2026):** "Menurut bacaan, petugas memasang pagar pembatas karena kawah di Dieng terlalu panas untuk didekati." Siswa perlu menghubungkan dua kalimat: pagar dipasang agar pengunjung berada pada jarak aman dari gas yang berbahaya, bukan karena panas. Bacaan tidak menyebut panas kawah, jadi kuncinya tetap *salah*. Kodenya menjadi INF-HUB (salah menghubungkan sebab–akibat), karena pengecohnya sekarang sebab yang keliru, bukan kesamaan kata. Bloom tetap C2 (menjelaskan sebab), urutan kunci variasi b tidak berubah ([19](19_TELAAH_LABEL_BLOOM.md)).
 
 # Gambar yang dibutuhkan
 

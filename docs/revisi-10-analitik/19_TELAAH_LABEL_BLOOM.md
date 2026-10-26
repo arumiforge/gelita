@@ -227,7 +227,7 @@ Kolom: kode, engine, label lama, label baru, proses kognitif yang dilakukan sisw
 | wnb-3-a05 | Benar atau Salah | C5 | **C4** | Mengatribusikan | Dito hanya membaca pesan berantai; guru punya pengetahuan (aturan 3) |
 | wnb-3-a06 | Benar atau Salah | C5 | C5 | Memeriksa | Apakah simpulan "boleh diminum asal jernih" didukung bukti |
 | wnb-3-b01 | Benar atau Salah | C4 | **C2** | Membandingkan | Saran dua kabar (aturan 1) |
-| wnb-3-b02 | Benar atau Salah | C4 | **C2** | Menafsirkan | Teks menyebut gas berbahaya |
+| wnb-3-b02 | Benar atau Salah | C4 | **C2** | Menjelaskan sebab | Pernyataan ditulis ulang 26 Oktober 2026: pagar dipasang karena gas berbahaya, bukan karena panas; siswa menghubungkan dua kalimat |
 | wnb-3-b03 | Benar atau Salah | C5 | **C4** | Mengatribusikan | Menolak alasan popularitas |
 | wnb-3-b04 | Benar atau Salah | C5 | **C4** | Mengatribusikan | Lembaga pembuat jelas |
 | wnb-3-b05 | Benar atau Salah | C5 | **C4** | Mengatribusikan | Keahlian petugas sebagai alasan kepercayaan |
@@ -271,7 +271,7 @@ Kolom: kode, engine, label lama, label baru, proses kognitif yang dilakukan sisw
 
 Hal di 08 yang terlihat selama telaah, tetapi di luar wewenang sesi ini:
 
-- `wnb-3-b02` berlevel AKM L2, padahal jawabannya tersurat ("gas yang berbahaya bagi kesehatan"); lebih dekat ke L1. **Diputuskan pemilik proyek (26 Oktober 2026):** level AKM tetap L2, pernyataannya ditulis ulang di sesi bank berikutnya supaya siswa perlu menyimpulkan, lalu label Bloom-nya diperiksa lagi (catatan di 08, *Yang harus dicek sebelum validasi ahli*).
+- `wnb-3-b02` berlevel AKM L2, padahal jawabannya tersurat ("gas yang berbahaya bagi kesehatan"); lebih dekat ke L1. **Diputuskan pemilik proyek (26 Oktober 2026):** level AKM tetap L2, pernyataannya ditulis ulang supaya siswa perlu menyimpulkan. Sudah ditulis ulang di hari yang sama: "Menurut bacaan, petugas memasang pagar pembatas karena kawah di Dieng terlalu panas untuk didekati." (salah, INF-HUB). Label Bloom-nya diperiksa lagi dan tetap C2 (catatan di 08, *Yang harus dicek sebelum validasi ahli*).
 - `mgl-2-a02` dan `mgl-2-b01` berlevel AKM L1 tetapi berlabel Bloom C2. Ini tidak bertentangan, karena siswa mengaitkan definisi dengan istilah. Ahli bisa memeriksanya di B.5a.
 
 ## Rujukan
