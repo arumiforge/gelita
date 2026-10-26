@@ -2,7 +2,7 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 26 Oktober 2026 (nama fiktif dicek; telaah pendahuluan T6 sudah dijalankan, lihat [09](09_TELAAH_PENDAHULUAN_BANK_SOAL.md); keterangan Susun Gambar diperiksa, lihat [Susun Gambar selama studi](#susun-gambar-selama-studi)) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Dasar: [06_KISI_KISI_BANK_SOAL.md](06_KISI_KISI_BANK_SOAL.md) (disetujui pemilik proyek 25 Oktober 2026) · Status semua butir: **`needs_verification`**
+Per 26 Oktober 2026 (nama fiktif dicek; telaah pendahuluan T6 sudah dijalankan, lihat [09](09_TELAAH_PENDAHULUAN_BANK_SOAL.md); keterangan Susun Gambar diperiksa dan variasinya selama studi diputuskan, lihat [Susun Gambar selama studi](#susun-gambar-selama-studi)) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Dasar: [06_KISI_KISI_BANK_SOAL.md](06_KISI_KISI_BANK_SOAL.md) (disetujui pemilik proyek 25 Oktober 2026) · Status semua butir: **`needs_verification`**
 
 Ini isi bank soal baru, ditulis mengikuti kisi-kisi. Dokumen ini masih **draf untuk telaah dan validasi ahli**. Bentuknya dokumen supaya mudah dibaca ahli. Setelah lolos validasi, isinya dipindah ke berkas data [`docs/bank-soal/`](../bank-soal/README.md) dan diterjemahkan ke bahasa Inggris. Belum ada yang diubah di sistem atau di workbook.
 
@@ -45,7 +45,7 @@ Ini isi bank soal baru, ditulis mengikuti kisi-kisi. Dokumen ini masih **draf un
 | **Butir literasi digital** | **34** | **40** | **42** | **116** |
 | Temukan Benda (PBK, dari bank lama) | 4 | 4 | 4 | 12 |
 
-Susun Gambar (tantangan 1, pemanasan) tidak ditulis ulang di draf ini. Keterangannya diperiksa terhadap butir di sini, hasil dan usulannya ada di [Susun Gambar selama studi](#susun-gambar-selama-studi).
+Susun Gambar (tantangan 1, pemanasan) tidak ditulis ulang di draf ini. Keterangannya diperiksa terhadap butir di sini, hasil dan keputusannya ada di [Susun Gambar selama studi](#susun-gambar-selama-studi).
 
 ---
 
@@ -1087,7 +1087,7 @@ Lemah: gambar `tmg-1-a` memuat kebun kopi di latar depan (PBK `tmg-4-x02`).
 | `mgl-1-i` Perjalanan Waisak | Ulang | — | — (Umbul Jumprit milik Temanggung, yang sudah dikerjakan di pertemuan sebelumnya) |
 | `mgl-1-j` Dua Pasang Gunung Kembar | Ulang | — | — |
 
-Lemah: `mgl-1-a` memakai kata "stupa" (`mgl-2-a02`, istilahnya didefinisikan di bacaan); `mgl-1-b` menyebut lonceng kecil di kaki (`mgl-2-b02`) dan asal tarinya (jangkar `mgl-3-x01`); `mgl-1-f` (`mgl-3-b01`).
+Lemah: `mgl-1-a` memakai kata "stupa" (`mgl-2-a02`, istilahnya didefinisikan di bacaan); `mgl-1-b` menyebut lonceng kecil di kaki (`mgl-2-b02`) dan asal tarinya (jangkar `mgl-3-x01`); `mgl-1-f` (`mgl-3-b01`); gambar `mgl-1-e` memuat stupa kecil di atap candi, sedangkan PBK `mgl-4-x01` meminta stupa berlubang dari teras bundar Borobudur. Gambar itu diganti (lihat keputusan di bawah).
 
 ### Wonosobo
 
@@ -1108,52 +1108,55 @@ Lemah: `wnb-1-b` menyebut Desa Sembungan sekitar 2.300 meter, yang juga ada di b
 
 **Ringkasan.** 22 dari 30 keterangan bocor atau memberi isyarat, termasuk 7 dari 9 variasi a–c yang dipakai di pengerjaan pertama sekarang. Kedua belas petunjuk PBK dan keenam butir representasi D3 masing-masing punya keterangan yang sepadan; petunjuk Temukan Benda di bank lama memang hampir sama kata per kata dengan keterangan Susun Gambar. Delapan keterangan bersih: `tmg-1-i`, `mgl-1-c`, `mgl-1-e`, `mgl-1-i`, `mgl-1-j`, `wnb-1-b`, `wnb-1-d`, dan `wnb-1-i`.
 
-**Fakta yang perlu dicek peneliti.** `wnb-1-i` menyebut Topeng Lengger "tari khas Wonosobo", padahal asal lengger sengaja tidak dipakai di draf ini karena sumbernya diperdebatkan (lihat *Yang harus dicek sebelum validasi ahli*). Tahun Tambi (1865 atau 1885) juga ada di `wnb-1-h`, bukan hanya di `wnb-4-x04`.
+**Fakta yang perlu dicek peneliti.** `wnb-1-i` menyebut Topeng Lengger "tari khas Wonosobo", padahal asal lengger sengaja tidak dipakai di draf ini karena sumbernya diperdebatkan (lihat *Yang harus dicek sebelum validasi ahli*). Asal Wonosobo itu kemudian dikonfirmasi pemilik proyek pada 26 Oktober 2026. Tahun Tambi (1865 atau 1885) juga ada di `wnb-1-h`, bukan hanya di `wnb-4-x04`.
 
-## Usulan perbaikan
+## Keputusan pemilik proyek (26 Oktober 2026)
 
-**Usulan: satu variasi tetap per wilayah selama studi.** Pengerjaan pertama Susun Gambar memakai variasi yang sama untuk semua siswa, dipilih dari keterangan yang bersih:
+Pemilik proyek memilih **dua variasi bersih yang diacak**, bukan satu variasi tetap. Selama studi, pengerjaan pertama Susun Gambar diambil acak dari dua variasi yang keterangan dan gambarnya tidak memuat kunci D1, kunci D3, atau petunjuk PBK. Variasi lain hanya untuk pengerjaan ulang, yang baru terbuka setelah wilayahnya tuntas. Susun Gambar tidak mengikuti buklet.
 
-| Wilayah | Variasi tetap | Status fakta |
-| --- | --- | --- |
-| Temanggung | `tmg-1-i` Pasar Papringan | `needs_verification`; seluruh isi keterangan dicek (sumber GNFI 2022). Satu-satunya keterangan Temanggung yang bersih |
-| Magelang | `mgl-1-c` Candi Mendut | `verified`, sudah termasuk variasi a–c sekarang |
-| Wonosobo | `wnb-1-d` Kompleks Candi Arjuna | `needs_verification` |
+| Wilayah | Variasi `a` | Variasi `b` | Yang masih dikerjakan |
+| --- | --- | --- | --- |
+| Temanggung | Pasar Papringan (sekarang `tmg-1-i`) | **Gambar dan keterangan baru: Wayang Kedu** | Gambar baru dari tim katalog, lalu dicek ulang; asal Wayang Kedu sudah dikonfirmasi |
+| Magelang | Candi Mendut (sekarang `mgl-1-c`) | Candi Pawon (sekarang `mgl-1-e`), **gambar diganti** | Gambar Pawon baru dari tim katalog, lalu dicek ulang; cek fakta Pawon |
+| Wonosobo | Kompleks Candi Arjuna (sekarang `wnb-1-d`) | Tari Topeng Lengger (sekarang `wnb-1-i`) | Cek fakta Arjuna dan tahun penetapan Lengger; asal Lengger dari Wonosobo sudah dikonfirmasi |
 
-Alasannya:
+- **Huruf variasi.** Kedua variasi bersih menjadi `a` dan `b`, sesuai `FIRST_ATTEMPT_GROUPS` = `a`, `b` di 06. Variasi lain memakai huruf berikutnya, jadi Temanggung punya 11 variasi (`a`–`k`). Pemetaan huruf lama ke huruf baru ditulis di dokumen implementasi. Susun Gambar tidak dinilai, jadi menukar huruf tidak menyentuh data penelitian.
+- **Temanggung: gambar baru Wayang Kedu.** Satu-satunya keterangan Temanggung yang bersih adalah Pasar Papringan, dan setiap topik lama menyentuh butir lewat bacaan, petunjuk PBK, atau foto unggahan. Karena itu dipilih topik yang tidak dipakai butir mana pun: wayang kulit gaya Kedu dari Temanggung.
+  - **Fakta dikonfirmasi pemilik proyek (26 Oktober 2026):** Wayang Kedu Temanggungan adalah varian tradisi wayang kulit asli dari wilayah Kedu, Jawa Tengah, yang berkembang khusus di Kabupaten Temanggung.
+  - Keterangan (`needs_verification` sampai validasi ahli): *"Wayang Kedu adalah wayang kulit asli wilayah Kedu yang berkembang di Temanggung. Dalang memainkan wayang di balik kelir, yaitu kain putih yang disinari lampu, dengan iringan gamelan."*
+  - Status Warisan Budaya Takbenda tidak ditulis di keterangan, karena surat penetapannya belum ditemukan (berita Agustus 2026 hanya menyebut usulannya lolos). Kalimat itu boleh ditambahkan setelah penetapannya dicek. Keterangan wajib menyebut Temanggung, karena Wonosobo punya gaya sendiri (Wayang Kedu *gagrag Wonosaban*).
+  - Arahan gambar untuk tim katalog (usulan prompt TMG-P11): pertunjukan wayang kulit di pendapa desa, dalang dewasa di balik kelir yang disinari lampu, bayangan wayang di kelir, pemain gamelan, dan anak-anak menonton sambil duduk. Tanpa gunung, kebun kopi, candi, kuda kepang, ikan, dan tulisan, supaya gambarnya juga bersih. Gambar harus lulus uji keping otomatis dan uji susun oleh dua orang.
+- **Wonosobo: syarat Lengger terpenuhi.** Pemilik proyek mengonfirmasi bahwa Topeng Lengger berasal dari Wonosobo (26 Oktober 2026), jadi Lengger menjadi variasi `b` dan Bukit Sikunir tidak dipakai di pengerjaan pertama. Tahun penetapan Warisan Budaya Takbenda (2020) di keterangannya tetap dicek peneliti; kalau tidak cocok, kalimat itu dihapus.
+- **Magelang: gambar Pawon diganti.** Gambar `mgl-1-e` sekarang menonjolkan stupa kecil di atap candi, yang mirip sasaran PBK `mgl-4-x01`. Tim katalog membuat gambar baru, lalu gambarnya dicek ulang. Arahan: Candi Pawon dari sudut dekat ke tangga, pintu, dan panel berukir, dengan atap dan stupanya terpotong bingkai atau jauh di latar; tanpa stupa berlubang dan tanpa Borobudur. Keterangannya tidak berubah.
+- **Yang tidak berubah.** Ke-25 variasi lama lainnya tetap dipakai untuk pengerjaan ulang, tanpa perubahan keterangan atau gambar.
+- **Gambar baru dicek ulang.** Kedua gambar baru (Wayang Kedu dan Candi Pawon) dicek ulang terhadap butir di draf ini setelah dibuat, sebelum validasi ahli.
 
-- Susun Gambar tidak dinilai, jadi tidak butuh variasi. Tetangga sebangku yang menyusun gambar yang sama tidak mengubah data apa pun.
-- Paparan sebelum tantangan dinilai sama untuk semua siswa. Dengan pengambilan acak, hanya sebagian siswa yang membaca kunci, misalnya `tmg-3-b04` terbaca oleh siswa yang mendapat Candi Pringapus dan berguna hanya kalau bukletnya mendapat `tmg-3-b`. Variasi Susun Gambar lalu ikut menjadi sumber selisih skor.
-- Tidak ada keterangan yang perlu ditulis ulang, dan tidak ada gambar baru. Ke-27 variasi lain tetap dipakai untuk pengerjaan ulang setelah wilayahnya tuntas, saat keterangannya justru menjadi pengulangan yang berguna. Di luar studi, aturan pengambilan variasi tidak berubah.
-- Gambar yang juga dipakai sebagai foto *Periksa Unggahan* (kuda lumping, Topeng Ireng, gerabah Klipoh, bundengan, mi ongklok) tidak pernah disusun siswa sebelum babak 2.
+**Untuk dokumen implementasi** (perubahan sistem no. 20 di [01](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti), no. 4 di daftar [06](06_KISI_KISI_BANK_SOAL.md#yang-perlu-disiapkan-sistem-nanti)):
 
-**Pilihan lain yang dibandingkan**
+- Pengerjaan pertama Susun Gambar diacak dari `a` dan `b`, tidak dari buklet; buklet hanya berlaku untuk tantangan yang dinilai.
+- `BankRules` yang sekarang mewajibkan variasi a, b, dan c untuk Susun Gambar diubah menjadi a dan b.
+- Pemeriksaan bank (no. 9 di 06) mendapat satu cek tambahan: keterangan variasi `a` dan `b` Susun Gambar tidak memuat kunci D1, kunci D3, atau petunjuk PBK wilayahnya dan wilayah sesudahnya.
+- Gambar baru Temanggung masuk Katalog Aset dan dipasang seperti gambar Susun Gambar lain (`gelita:katalog:impor`).
 
-| Pilihan | Kelebihan | Kekurangan |
-| --- | --- | --- |
-| Dua variasi bersih diacak, sesuai perubahan sistem no. 4 (`a`, `b`) | Variasi tetap ada | Temanggung hanya punya satu keterangan bersih, jadi satu keterangan ditulis ulang (misalnya `tmg-1-a` tanpa ketinggian dan tanpa "subur") dan dicek ulang; paparan tetap berbeda antarsiswa |
-| Tulis ulang 22 keterangan yang bocor, pengambilan acak tetap | Semua variasi aman di mana pun | Pekerjaan paling banyak, dan setiap keterangan baru perlu dicek. Fakta yang cocok dengan gambarnya (arca Nandi, stupa berisi arca Buddha, warna Telaga Warna) hilang, dan gambar yang sama dengan foto unggahan tetap muncul |
-| Keterangan disembunyikan selama studi sampai wilayahnya tuntas | Satu aturan, tanpa menulis ulang | Gambar tetap memberi isyarat (arca Buddha di dalam stupa, warna Telaga Warna, foto unggahan yang sama), dan Susun Gambar kehilangan bacaannya |
+**Pilihan yang dibandingkan**
 
-**Untuk dokumen implementasi** (perubahan sistem no. 4 di [01](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti) dan [06](06_KISI_KISI_BANK_SOAL.md#yang-perlu-disiapkan-sistem-nanti)):
+| Pilihan | Kelebihan | Kekurangan | Keputusan |
+| --- | --- | --- | --- |
+| Satu variasi tetap per wilayah (usulan awal) | Paparan sama untuk semua siswa, tanpa tulis ulang | Tidak ada variasi | Tidak dipilih |
+| Dua variasi bersih diacak | Variasi tetap ada, dan tidak ada siswa yang membaca kunci | Temanggung butuh satu gambar dan keterangan baru | **Dipilih** |
+| Tulis ulang 22 keterangan yang bocor, pengambilan acak tetap | Semua variasi aman di mana pun | Pekerjaan paling banyak; fakta yang cocok dengan gambarnya hilang, dan gambar yang sama dengan foto unggahan tetap muncul | Tidak dipilih |
+| Keterangan disembunyikan selama studi sampai wilayahnya tuntas | Satu aturan, tanpa menulis ulang | Gambar tetap memberi isyarat, dan Susun Gambar kehilangan bacaannya | Tidak dipilih |
 
-- Mode penelitian memilih variasi tetap Susun Gambar per wilayah, bukan acak dan bukan dari buklet. Caranya (kolom penanda di sheet `nodes`, atau variasi tetap diberi huruf `a`) diputuskan di dokumen implementasi; kode Susun Gambar tidak dinilai, jadi menukar huruf tidak menyentuh data penelitian.
-- `BankRules` yang sekarang mewajibkan variasi a, b, dan c untuk Susun Gambar ikut disesuaikan.
-- Pemeriksaan bank (no. 9 di 06) mendapat satu cek tambahan: keterangan variasi tetap tidak memuat kunci D1, kunci D3, atau petunjuk PBK wilayahnya dan wilayah sesudahnya.
+**Jawaban pemilik proyek** atas dua pertanyaan di draf bagian ini dan empat pertanyaan lanjutan:
 
-## Pertanyaan untuk pemilik proyek
+1. Cara memperbaiki: dua variasi bersih diacak.
+2. Variasi bersih: Pasar Papringan, Candi Mendut, dan Kompleks Candi Arjuna, masing-masing satu dari dua variasi di wilayahnya.
+3. Variasi kedua Temanggung: gambar dan keterangan baru, bukan menulis ulang `tmg-1-a` (Sindoro–Sumbing tanpa ketinggian) atau `tmg-1-e` (Gondosuli tanpa tahun).
+4. Topik gambar baru: Wayang Kedu, bukan matahari terbit di Posong (topik gunungnya sama dengan bacaan `tmg-2-a`).
+5. Pasangan Candi Mendut: Candi Pawon, bukan Perjalanan Waisak atau Dua Pasang Gunung Kembar.
+6. Pasangan Kompleks Candi Arjuna: Tari Topeng Lengger, setelah asalnya dibenarkan; bukan Bukit Sikunir yang dipangkas.
 
-Bagian ini memakai pilihan pertama di setiap pertanyaan.
-
-1. **Bagaimana kebocoran Susun Gambar diperbaiki selama studi?**
-   - **Usulan:** satu variasi tetap per wilayah dari keterangan yang bersih; variasi lain hanya untuk pengerjaan ulang.
-   - Dua variasi bersih diacak; satu keterangan Temanggung ditulis ulang.
-   - Ke-22 keterangan yang bocor ditulis ulang.
-   - Keterangan disembunyikan sampai wilayahnya tuntas.
-2. **Variasi tetap mana yang dipakai** (kalau usulan pertanyaan 1 dipilih)?
-   - **Usulan:** Pasar Papringan, Candi Mendut, Kompleks Candi Arjuna.
-   - Pasar Papringan, Candi Mendut, dan Matahari Terbit di Sikunir tanpa angka ketinggian Desa Sembungan. Sikunir sudah termasuk variasi a–c sekarang.
-   - Dipilih ahli budaya saat validasi dari delapan keterangan yang bersih.
+Sesudahnya pemilik proyek mengonfirmasi asal Wayang Kedu Temanggungan dan asal Topeng Lengger dari Wonosobo, dan memutuskan gambar Candi Pawon diganti.
 
 # Yang harus dicek sebelum validasi ahli
 
@@ -1176,7 +1179,7 @@ Sebelum pengambilan data, satu orang tim tetap disarankan mengetik setiap nama a
 
 **Fakta yang dipakai ulang dari bank lama** sudah dicek di telaah pendahuluan T6 ([09_TELAAH_PENDAHULUAN_BANK_SOAL.md](09_TELAAH_PENDAHULUAN_BANK_SOAL.md), bagian C.5): semuanya didukung sumber. Satu catatan: tahun berdirinya perkebunan teh Tambi umumnya ditulis 1865, tapi ada sumber yang menulis 1885; ahli budaya memutuskan apakah angka tahun tetap dipakai di petunjuk `wnb-4-x04`.
 
-**Fakta yang sengaja tidak dipakai** karena sumbernya belum meyakinkan: apakah penari Topeng Ireng memakai topeng (sumber tidak menyebutnya), dan asal tari lengger (sebagian sumber menyebut Wonosobo, sebagian Banyumas). Karena itu Periksa Unggahan Wonosobo memakai bundengan dan mi ongklok, bukan lengger.
+**Fakta yang sengaja tidak dipakai** karena sumbernya belum meyakinkan: apakah penari Topeng Ireng memakai topeng (sumber tidak menyebutnya), dan asal tari lengger (sebagian sumber menyebut Wonosobo, sebagian Banyumas). Karena itu Periksa Unggahan Wonosobo memakai bundengan dan mi ongklok, bukan lengger. (Asal lengger dari Wonosobo dikonfirmasi pemilik proyek pada 26 Oktober 2026 untuk keterangan Susun Gambar `wnb-1-i`; Periksa Unggahan tetap seperti ini.)
 
 **Skenario.** Setiap skenario dibaca ulang oleh ahli bahasa anak dan ahli literasi digital: apakah tindakan "tepat" memang paling tepat, apakah tindakan "kurang tepat" memang aman tapi belum lengkap, dan apakah umpan baliknya tidak menakut-nakuti.
 
@@ -1194,12 +1197,14 @@ Teks digital (layar informasi, unggahan, grup, hasil pencarian) dibangun sebagai
 | `mgl-4` babak 2 b | Gerabah Klipoh | `mgl-1-h01` |
 | `wnb-4` babak 2 a | Pemain bundengan | `wnb-1-g01` |
 | `wnb-4` babak 2 b | Semangkuk mi ongklok | `wnb-1-07` |
+| Susun Gambar Temanggung, variasi `b` baru | Pertunjukan Wayang Kedu (arahan di [keputusan Susun Gambar](#keputusan-pemilik-proyek-26-oktober-2026)) | Baru (tim katalog, usulan prompt TMG-P11) |
+| Susun Gambar Magelang, Candi Pawon | Pawon tanpa stupa yang menonjol (arahan di [keputusan Susun Gambar](#keputusan-pemilik-proyek-26-oktober-2026)) | Pengganti `mgl-1-e01` (tim katalog) |
 | `tmg-5`, `mgl-5`, `wnb-5` | Satu ilustrasi per skenario (24), opsional | Jaka dan teman-teman dengan perangkat; tanpa layar sungguhan |
 
 # Langkah berikutnya
 
 1. Pemilik proyek menelaah draf ini.
-2. Pemilik proyek menjawab dua pertanyaan di [Susun Gambar selama studi](#pertanyaan-untuk-pemilik-proyek).
+2. Gambar baru Susun Gambar Wayang Kedu dan Candi Pawon dari tim katalog, dicek ulang terhadap butir; cek fakta Papringan, Pawon, Arjuna, dan tahun penetapan Lengger ([keputusan 26 Oktober 2026](#keputusan-pemilik-proyek-26-oktober-2026)).
 3. Cek fakta di bagian *Yang harus dicek* (nama fiktif sudah dicek; tinggal pencarian manual akun di Instagram dan TikTok), ditambah fakta keterangan Susun Gambar yang dipilih.
 4. Validasi ahli (I-CVI atau V Aiken) dengan instrumen yang sedang disiapkan sesi koordinator.
 5. Terjemahan bahasa Inggris untuk setiap teks yang tampil di game.
@@ -1216,7 +1221,7 @@ Teks digital (layar informasi, unggahan, grup, hasil pencarian) dibangun sebagai
 - Penari Topeng Ireng (memakai topeng atau tidak) dan asal tari lengger tidak dipakai sebagai fakta di bank, karena sumbernya belum meyakinkan.
 - Skenario OTP memakai nama game fiktif "Game Bintang", bukan GELITA.
 - Lembaga resmi di bacaan ditulis tanpa nama dan logo (misalnya "akun resmi badan pemantau gunung api").
-- Keterangan Susun Gambar diperiksa terhadap draf ini (26 Oktober 2026): 22 dari 30 keterangan bocor atau memberi isyarat ke butir D1, kunci D3, atau petunjuk PBK, termasuk 7 dari 9 variasi a–c di pengerjaan pertama. Usulannya satu variasi tetap per wilayah selama studi (Pasar Papringan, Candi Mendut, Kompleks Candi Arjuna), menunggu jawaban pemilik proyek.
+- Keterangan Susun Gambar diperiksa terhadap draf ini (26 Oktober 2026): 22 dari 30 keterangan bocor atau memberi isyarat ke butir D1, kunci D3, atau petunjuk PBK, termasuk 7 dari 9 variasi a–c di pengerjaan pertama. **Diputuskan pemilik proyek (26 Oktober 2026):** selama studi, pengerjaan pertama Susun Gambar diacak dari dua variasi bersih per wilayah: Pasar Papringan dan gambar baru Wayang Kedu (Temanggung), Candi Mendut dan Candi Pawon (Magelang), Kompleks Candi Arjuna dan Tari Topeng Lengger (Wonosobo). Asal Wayang Kedu Temanggungan dan asal Lengger dari Wonosobo dikonfirmasi pemilik proyek; gambar Candi Pawon diganti.
 - Telaah pendahuluan T6 sudah dijalankan ([09](09_TELAAH_PENDAHULUAN_BANK_SOAL.md)); sisa temuan R1–R4 disetujui pemilik proyek sesuai usulan pada 25 Oktober 2026. Berkas untuk ahli memuat empat pertanyaan khusus: rumpang `tmg-2-b02`, `mgl-2-a02`, `mgl-2-a05` (R1), label D1b `tmg-3-a03`/`tmg-3-b03` (R2), pola pilihan "kurang tepat" (R3), dan kunci `wnb-4-a02`/`wnb-4-b02` (R4).
 
 # Rujukan tambahan (dibuka 25 Oktober 2026)
@@ -1224,4 +1229,5 @@ Teks digital (layar informasi, unggahan, grup, hasil pencarian) dibangun sebagai
 - Bundengan mengiringi lengger, dan asal lengger yang diperdebatkan: [Wikipedia: Lengger](https://en.wikipedia.org/wiki/Lengger); [GNFI 2019](https://www.goodnewsfromindonesia.id/2019/10/14/bundenga-alat-musik-tradisional-yang-berawal-dari-pelindung-gembala); [Katadata](https://katadata.co.id/amp/berita/daerah/631075f2df535/memahami-sejarah-dan-makna-tari-tradisional-lengger/).
 - Topeng Ireng: asal nama dan kostum, tanpa keterangan tentang topeng: [VOI](https://voinews.id/index.php/component/k2/item/3189-topeng-ireng-dance).
 - Rujukan isi bacaan lainnya sama dengan bank lama ([`docs/bank-soal/data/`](../bank-soal/data/)) dan cek fakta di [01](01_REVISI_10_ANALITIK.md#cek-fakta-dan-rujukan) dan [05](05_TELAAH_BUTIR_DAN_DIMENSI.md#rujukan).
+- Wayang Kedu (gambar baru Susun Gambar Temanggung; asal dikonfirmasi pemilik proyek 26 Oktober 2026, status Warisan Budaya Takbenda belum dicek): usulan Warisan Budaya Takbenda yang lolos, [afu.id (Agustus 2026)](https://afu.id/humaniora/tradisi-kupat-sewu-diusulkan-jadi-warisan-budaya-tak-benda-temanggung); gaya Kedu Temanggungan, [skripsi UMN, Bab II](https://kc.umn.ac.id/id/eprint/49205/3/BAB_II.pdf); Wayang Kedu *gagrag Wonosaban* dari Wonosobo, [Popmama (2025)](https://www.popmama.com/life/health/karya-budaya-wonosobo-masuk-warisan-budaya-takbenda-indonesia-2025-00-kd2wt-2dkw3l).
 - Cek nama fiktif (25 Oktober 2026): kelompok kuda lumping bernama mirip "Turonggo Mudo": [Avant-Garde UNP](https://avant-garde.ppj.unp.ac.id/index.php/avant-garde/article/view/213), [Jurnal Tata Rias Unesa](https://ejournal.unesa.ac.id/index.php/jurnal-tata-rias/article/view/33731), [Repository UIR](https://repository.uir.ac.id/25977/).

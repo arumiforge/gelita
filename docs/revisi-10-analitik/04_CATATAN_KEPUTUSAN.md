@@ -6,6 +6,23 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 26 Oktober 2026
 
+**Konfirmasi pemilik proyek: fakta dan gambar Susun Gambar** (sesi `sky/festive-hopper-cl6p65`)
+
+- **Wayang Kedu Temanggungan** adalah varian tradisi wayang kulit asli dari wilayah Kedu, Jawa Tengah, yang berkembang khusus di Kabupaten Temanggung. Keterangan gambar baru Temanggung ditulis dari fakta ini. Kalimat tentang Warisan Budaya Takbenda dihapus dari draf, karena surat penetapannya belum ditemukan.
+- **Topeng Lengger berasal dari Wonosobo**, jadi syarat Lengger sebagai variasi `b` Wonosobo terpenuhi. Bukit Sikunir tidak dipakai di pengerjaan pertama. Tahun penetapan 2020 di keterangannya tetap dicek peneliti.
+- **Gambar baru Wayang Kedu dibuat tim katalog dan dicek ulang nanti.** Yang diperlukan sekarang hanya konsepnya, dan arahannya sudah ada di 08.
+- **Gambar Candi Pawon diganti**, karena gambar sekarang menonjolkan stupa kecil di atap yang mirip sasaran PBK `mgl-4-x01`. Arahan gambar baru ada di 08, dan gambarnya dicek ulang setelah dibuat.
+
+**Keputusan pemilik proyek: variasi Susun Gambar selama studi** (sesi `sky/festive-hopper-cl6p65`, dua pertanyaan di [08](08_DRAF_BANK_SOAL.md#keputusan-pemilik-proyek-26-oktober-2026) dan empat pertanyaan lanjutan)
+
+1. **Cara memperbaiki: dua variasi bersih diacak**, bukan satu variasi tetap per wilayah (usulan awal). Kedua variasi menjadi `a` dan `b`, sesuai `FIRST_ATTEMPT_GROUPS` di 06, dan Susun Gambar tidak mengikuti buklet. Variasi lain hanya untuk pengerjaan ulang.
+2. **Pasangan per wilayah:**
+   - Temanggung: Pasar Papringan, ditambah gambar dan keterangan baru tentang **Wayang Kedu** (topik yang tidak dipakai butir mana pun). Menulis ulang `tmg-1-a` atau `tmg-1-e` tidak dipilih, dan Posong ditolak karena topik gunungnya sama dengan `tmg-2-a`.
+   - Magelang: Candi Mendut dan Candi Pawon.
+   - Wonosobo: Kompleks Candi Arjuna dan Tari Topeng Lengger. Lengger dipakai hanya kalau ahli budaya membenarkan asalnya dari Wonosobo; kalau tidak, pemilik proyek memilih ulang, dan Bukit Sikunir yang dipangkas menjadi satu-satunya sisa.
+3. **Yang menyusul:** draf keterangan Wayang Kedu dan arahan gambar (usulan prompt TMG-P11) ada di 08, menunggu cek fakta dan gambar dari tim katalog. Fakta Papringan, Pawon, Arjuna, dan Lengger dicek peneliti sebelum validasi ahli.
+
+Disesuaikan di dokumen lain: 06 (perubahan sistem no. 4, tabel kode, tabel "Yang harus ditulis") dan 01 (perubahan sistem no. 20). Rujukan "perubahan sistem no. 4 di 01" di entri sebelumnya keliru dan sudah dibetulkan: pemilihan variasi ada di no. 20 di 01, yang merujuk ke no. 4 di 06.
 **Keputusan pemilik proyek: cerita penghubung dan narasi tantangan kelima** (sesi `sky/optimistic-bardeen-4zx8ob`)
 
 Pemilik proyek menyetujui seluruh draf [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md) beserta semua usulannya:
@@ -18,7 +35,7 @@ Pemilik proyek menyetujui seluruh draf [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md) 
 
 Penyesuaian di dokumen lain: 06 (urutan P5; baris waktu "Cerita wilayah: pembuka, penghubung, tuntas" 4–5 menit, sehingga waktu bermain menjadi ± 29–36, 36–44, dan 43–52 menit), 02 (aturan tes akhir), 01 (daftar kerja no. 7 selesai; perubahan sistem no. 16), dan 00. Pemetaan narasi `petunjuk-*` ke butir `x01`–`x04` dibetulkan di tahap 3, karena pemetaan sekarang masih benar untuk bank yang terpasang.
 
-Keterangan Susun Gambar diperiksa sesi lain (entri berikut). Pemilik proyek memutuskan menunggu sesi itu selesai sebelum memilih cara perbaikannya.
+Keterangan Susun Gambar diperiksa dan diputuskan di sesi lain (dua entri di atas). Karena asal Topeng Lengger dari Wonosobo sudah dikonfirmasi pemilik proyek, `kenal-wonosobo-04` di 12 kembali ke teks lama dan tetap menyebut Lengger; yang dibetulkan di Kenali tinggal jumlah relief yang bercerita (`kenal-magelang-02`). Naskah menjadi 21 baris baru dan 31 baris diubah. Pemetaan narasi `petunjuk-*` ke butir `x01`–`x04` dikerjakan di tahap 3 (12, daftar tahap 3 butir 3).
 
 **Pemeriksaan keterangan Susun Gambar terhadap draf bank soal** (sesi `sky/festive-hopper-cl6p65`, menindaklanjuti *Di luar dokumen ini* di [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md#di-luar-dokumen-ini))
 
@@ -27,7 +44,7 @@ Keterangan Susun Gambar diperiksa sesi lain (entri berikut). Pemilik proyek memu
 - **Usulan** (menunggu dua jawaban pemilik proyek di 08):
   - Selama studi, pengerjaan pertama Susun Gambar memakai satu variasi tetap per wilayah dari keterangan yang bersih: Pasar Papringan, Candi Mendut, dan Kompleks Candi Arjuna.
   - Ke-27 variasi lain tetap untuk pengerjaan ulang. Tidak ada keterangan atau gambar yang diubah.
-  - Setelah diputuskan, perubahan sistem no. 4 di 01 dan 06 (pemilihan variasi pengerjaan pertama) dan kode Susun Gambar di 06 disesuaikan.
+  - Setelah diputuskan, pemilihan variasi pengerjaan pertama (perubahan sistem no. 20 di 01, no. 4 di daftar 06) dan kode Susun Gambar di 06 disesuaikan.
 - Petunjuk PBK dihitung sebagai kebocoran, sejalan dengan usulan Kenali di 12 (pertanyaan 2).
 - Dua fakta keterangan dicatat untuk peneliti: asal Topeng Lengger di `wnb-1-i` (sengaja tidak dipakai di 08), dan tahun Tambi di `wnb-1-h`.
 - Pemetaan narasi `petunjuk-*` yang usang (temuan kedua di 12) belum dikerjakan di sesi ini.
