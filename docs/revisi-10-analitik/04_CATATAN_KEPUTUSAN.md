@@ -32,7 +32,55 @@ Isi instrumen mengikuti semua perubahan di 07. Yang berbeda dari tulisan di 07, 
 - Ponsel dihapus dari matriks perangkat ahli media.
 - Letak kompleks Candi Arjuna dan tahun kebun teh Tambi ditanyakan ke pengamat budaya.
 
+Instrumen ini dipakai untuk menilai prototipe I (tahap 1–2, berbasis kertas dan mock-up), sesuai penomoran prototipe di entri berikutnya.
+
+Sekalian dikerjakan dari entri *empat usulan dokumen model penelitian* di bawah, karena berkasnya dipegang cabang ini:
+- "L0–L7" di 00 diganti "L0–L8", dan baris 02 di 00 ditambah "L8 draf".
+- L8 Profil sekolah (bagian perangkat dan internet) masuk paket berkas ahli media (D.3 media v1.1).
+
+`gambar/peta-jalan.svg`, `gambar/lapis-data.svg`, dan variabel L8 di `kamus-1.1` masih menyusul.
+
 Status: draf, menunggu persetujuan pemilik proyek. Kotak status di sampul dihapus sebelum dicetak untuk validator.
+
+**Keputusan pemilik proyek: empat usulan dokumen model penelitian** (cabang `r10-usulan-model-penelitian`, usulan yang belum diputuskan di entri *model penelitian dan pengembangan, dan aturan I-CVI* di bawah; alasannya di [dokumen pendukung peneliti](dokumen-pendukung-peneliti/README.md), bagian 7–9)
+
+1. **Tes awal–akhir terutama bukti validitas kriteria; uji bedanya eksploratif.**
+   - Kegunaan utama tes adalah korelasi skor tes per bagian dengan kemampuan Rasch game per dimensi.
+   - Uji berpasangan, ukuran efek, dan model campuran tetap dijalankan dan dilaporkan lengkap, sebagai "perubahan" yang **eksploratif**, bukan pengaruh game dan bukan jawaban pertanyaan penelitian utama.
+   - Alasannya: desain satu kelompok dengan tes awal dan akhir adalah desain pra-eksperimen (Campbell & Stanley, 1963).
+   - Tidak dipilih: uji beda sebagai temuan utama dengan paragraf keterbatasan, dan menghapus uji beda.
+2. **Kepraktisan: log, L1, L3, L4, dan bintang 1–5 di kritik dan saran sudah cukup untuk sekarang.**
+   - Tidak ada butir baru untuk siswa sekarang, jadi 17 dan 11 tidak berubah.
+   - Perlu tidaknya pertanyaan kepraktisan tambahan diputuskan setelah uji coba tahap 4. Bahan kualitatifnya dari berpikir lantang (L5).
+   - Tidak dipilih: 2–3 butir kepraktisan sekarang, karena perlu validasi ahli di tahap 2 dan menambah beban P5.
+3. **Penelitian pendahuluan ditulis sebagai fase tersendiri, ditambah lembar konteks sekolah.**
+   - Bahannya dari 01, 05, 10, dan game kelas 5 yang ada sekarang (daftar kerja no. 22 baru di 01).
+   - Data konteks sekolah sasaran dari lembar baru **L8 Profil sekolah** di [02](02_LEMBAR_LAPANGAN.md#l8-profil-sekolah), satu per sekolah, diisi P1 saat sekolah setuju ikut. Isinya fakta sekolah (letak, rombel kelas 5, perangkat, internet, listrik, pengalaman ANBK, pelajaran digital), tanpa nama guru atau siswa.
+   - L0 tetap daftar periksa persiapan, dan angket akses digital (16) tetap sumber data akses tiap siswa. Keduanya tidak diubah.
+   - Pemilik proyek memilih pilihan ini, bukan usulan awal (fase tersendiri tanpa lembar baru, konteks dari data sekolah terbuka dan ringkasan angket). Melebur ke tahap 1 tidak dipilih.
+4. **Prototipe diberi nomor I–III, mengikuti tabel bagian 7 dokumen pendukung.**
+   - Prototipe I: tahap 1–2, berbasis kertas dan mock-up.
+   - Prototipe II: tahap 3, instalasi uji.
+   - Prototipe III: tahap 4, uji coba.
+   - Produk final: tahap 5.
+   - Mulai sekarang, setiap entri di catatan ini yang merevisi produk menyebut prototipe yang direvisinya.
+   - Tidak dipilih: hanya nama tahap.
+
+Akibatnya:
+- **13** (*Apa yang diukur*, *Analisis*, keputusan pemilik proyek, rujukan Campbell & Stanley) diperbarui.
+- **01** diperbarui:
+  - tabel fase dan prototipe di *Peta jalan*;
+  - daftar kerja no. 22;
+  - empat pertanyaan terbuka yang dicentang;
+  - baris uji beda di *Rencana analisis*;
+  - "L0–L8" di pembuka.
+- **02** mendapat L8 (draf).
+- **Dokumen pendukung peneliti** diperbarui: HTML, PDF, dan README.
+
+Yang menyusul, karena berkasnya sedang dipakai sesi lain atau belum waktunya:
+- "L0–L7" di 00, `gambar/peta-jalan.svg`, dan `gambar/lapis-data.svg` diganti "L0–L8". Baris 02 di 00 ditambah "L8 draf".
+- Paket validasi di 07 menyertakan L8 untuk dibaca Ahli Media Pembelajaran (bagian perangkat dan internet).
+- Variabel L8 masuk `kamus-1.1`.
 
 **Keputusan pemilik proyek: baris penutup sebelum skala sikap** (sesi `r10-skala-sikap`, pemeriksaan cerita penutup di [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md#penutup-ending) terhadap [17](17_SKALA_SIKAP.md))
 
@@ -153,11 +201,11 @@ Akibatnya: 13, 14, 15, dan 16 disesuaikan dengan modul layar (petunjuk menjawab,
    - Judul Cohen (1968) dibetulkan di 07.
    - Judul "Rujukan metode (klasik, tidak dicek ulang)" di 01 diganti, karena semuanya sudah dicek.
 
-Usulan dokumen itu yang belum diputuskan:
-- uji beda tes awal–akhir dilaporkan sebagai temuan eksploratif, karena desain satu kelompok tanpa kontrol tidak bisa menunjukkan sebab-akibat;
-- kepraktisan diukur dari log dan lembar L1, L3, dan L4, karena guru tidak ikut (ditambah bintang 1–5 di kritik dan saran sebagai pendapat siswa, sesuai keputusan skala sikap 26 Oktober 2026);
-- penelitian pendahuluan ditulis sebagai fase tersendiri;
-- prototipe diberi nomor I–III.
+Usulan dokumen itu yang belum diputuskan (semuanya **diputuskan 26 Oktober 2026**, lihat entri *empat usulan dokumen model penelitian* di atas):
+- uji beda tes awal–akhir dilaporkan sebagai temuan eksploratif, karena desain satu kelompok tanpa kontrol tidak bisa menunjukkan sebab-akibat; **diputuskan: ya, dan tes terutama menjadi bukti validitas kriteria**;
+- kepraktisan diukur dari log dan lembar L1, L3, dan L4, karena guru tidak ikut (ditambah bintang 1–5 di kritik dan saran sebagai pendapat siswa, sesuai keputusan skala sikap 26 Oktober 2026); **diputuskan: cukup untuk sekarang, ditinjau lagi setelah uji coba**;
+- penelitian pendahuluan ditulis sebagai fase tersendiri; **diputuskan: ya, ditambah lembar L8 Profil sekolah**;
+- prototipe diberi nomor I–III; **diputuskan: ya**.
 
 **Konfirmasi pemilik proyek: fakta dan gambar Susun Gambar** (sesi `sky/festive-hopper-cl6p65`)
 

@@ -272,7 +272,7 @@ Semua perubahan di dokumen ini masuk. Yang berbeda dari tulisan di atas, atau ya
 5. **INF-BUD hanya untuk skala PBK**, sesuai 03 dan 06; tabel "menunggu keputusan" di atas masih menulis "D1 dan skala pendamping".
 6. **Butir PBK** (12) dinilai relevansinya oleh pengamat budaya (B.6b, aturan Lynn dengan tiga penilai), bukan di B.5a/B.5b ahli materi. Pengamat budaya mendapat aspek baru I untuk PBK, menggantikan F2 lama.
 7. **Butir baru di luar usulan di atas:** ahli materi A7 (pemisahan skala pendamping), B7 (umpan balik dan 24 kalimat penjelasan Skenario Digital), J5 (butir risiko daring), dan pertanyaan khusus R1–R5 (dari 09) serta T1–T5 (dari 13–15); pengamat budaya A8 (cerita bingkai fiktif) dan C10 (keterangan asal yang sengaja keliru), dan C7 tembakau diganti kabar bohong tentang tempat dan produk nyata; ahli media H9 (tanpa jam selama studi) dan I6 (privasi layar butir risiko daring).
-8. **Ahli media:** ponsel dihapus dari matriks perangkat sesuai keputusan media 25 Oktober 2026; ambang waktu mengikuti *kamus-1.0* (3 menit dan 3 detik), bukan 60 detik dan 1,5 detik di draf v1.0.
+8. **Ahli media:** ponsel dihapus dari matriks perangkat sesuai keputusan media 25 Oktober 2026; ambang waktu mengikuti *kamus-1.0* (3 menit dan 3 detik), bukan 60 detik dan 1,5 detik di draf v1.0. Paket berkasnya (D.3) memuat lembar L8 Profil sekolah, bagian perangkat dan internet (keputusan model penelitian, 26 Oktober 2026).
 9. **Ditanyakan ke ahli, belum diputuskan:** letak kompleks Candi Arjuna (gambar Susun Gambar Wonosobo, padahal tabel perubahan pasti di atas menyebutnya di sisi Banjarnegara) dan tahun kebun teh Tambi (1865 atau 1885), keduanya di lembar B.7 pengamat budaya.
 
 ## Rujukan tambahan

@@ -48,7 +48,7 @@ Di dokumen ini P1–P5 berarti pertemuan ke-1 sampai ke-5. Peran P1 di [01](01_R
 | Klaim | Bukti dari tes | Analisis |
 | --- | --- | --- |
 | Skor game per dimensi mencerminkan kemampuan yang sama di luar game | Skor tes awal per bagian | Korelasi dengan kemampuan Rasch game per dimensi; korelasi dimensi yang sama harus lebih tinggi daripada dimensi lain |
-| Ada perubahan kemampuan selama lima pertemuan | Skor tes awal dan tes akhir per bagian | Perbandingan berpasangan, dengan keterbatasan desain satu kelompok |
+| Ada perubahan kemampuan selama lima pertemuan (**eksploratif**) | Skor tes awal dan tes akhir per bagian | Perbandingan berpasangan dengan ukuran efek, dengan keterbatasan desain satu kelompok; dilaporkan sebagai temuan eksploratif, bukan klaim utama |
 
 Yang **tidak** diukur tes ini: Pengetahuan Budaya Kedu (PBK, skala pendamping di game), sikap menjaga warisan (skala Balai Refleksi, daftar kerja no. 19), dan akses digital (angket di [16](16_ANGKET_AKSES_DIGITAL.md)). Karena tes tidak memuat isi budaya Kedu, korelasinya dengan PBK diharapkan rendah, dan itu ikut menjadi bukti bahwa tes mengukur literasi, bukan pengetahuan Kedu.
 
@@ -257,8 +257,8 @@ Teks untuk siswa (dijelaskan koordinator sesi):
 - **Kalibrasi.** Model Rasch per bagian: dikotomus untuk D1 dan D3, *partial credit* untuk D2. Kedua bentuk dikalibrasi dengan data tes awal. Karena denah papan catur membagi siswa di setiap kelas secara seimbang, kelompok bentuk A dan bentuk B di tes awal dianggap setara (desain kelompok setara). Rata-rata kemampuan kedua kelompok disamakan, sehingga butir kedua bentuk berada di satu skala. Parameter butir itu dipakai lagi untuk tes akhir.
 - **Mengapa tanpa butir bersama.** Butir yang sama di kedua bentuk akan dikerjakan dua kali oleh setiap siswa dengan jarak sekitar dua minggu, dan teks bacaan mudah diingat. Desain kelompok setara menghindari itu, dengan syarat pembagian bentuk benar-benar seimbang per kelas. Keseimbangannya dicek: proporsi bentuk A per rombel dan beda rata-rata skor game per kelompok.
 - **Reliabilitas** per bagian: KR-20 atau alfa, dan reliabilitas orang Rasch. Sasaran D1 ≥ 0,70. D2 dan D3 kemungkinan lebih rendah, jadi dilaporkan di tingkat kelompok, seperti di game ([06](06_KISI_KISI_BANK_SOAL.md#batas-reliabilitas-d2-dan-d3)). Korelasi dilaporkan apa adanya dan setelah koreksi atenuasi.
-- **Validitas.** Korelasi skor tes awal per bagian dengan kemampuan Rasch game per dimensi. Polanya diharapkan: D1 tes paling dekat dengan D1 game, D2 dengan D2, D3 dengan D3, dan semuanya rendah dengan PBK. Yang dilaporkan adalah pola matriksnya, bukan satu angka korelasi.
-- **Perubahan.** Selisih tes akhir dan tes awal per bagian, dengan uji berpasangan dan ukuran efek, lalu model campuran dengan efek acak siswa dan rombel serta urutan bentuk sebagai kovariat. Desainnya satu kelompok tanpa pembanding, jadi perubahan bisa juga datang dari kebiasaan mengerjakan tes, pelajaran sekolah, atau kematangan. Laporan menyebutnya "perubahan", bukan "pengaruh game".
+- **Validitas (kegunaan utama tes).** Tes awal–akhir terutama menjadi bukti validitas kriteria skor game (keputusan pemilik proyek 26 Oktober 2026, [04](04_CATATAN_KEPUTUSAN.md)). Korelasi skor tes awal per bagian dengan kemampuan Rasch game per dimensi. Polanya diharapkan: D1 tes paling dekat dengan D1 game, D2 dengan D2, D3 dengan D3, dan semuanya rendah dengan PBK. Yang dilaporkan adalah pola matriksnya, bukan satu angka korelasi.
+- **Perubahan.** Selisih tes akhir dan tes awal per bagian, dengan uji berpasangan dan ukuran efek, lalu model campuran dengan efek acak siswa dan rombel serta urutan bentuk sebagai kovariat. Desainnya satu kelompok tanpa pembanding, jadi perubahan bisa juga datang dari kebiasaan mengerjakan tes, pelajaran sekolah, atau kematangan. Laporan menyebutnya "perubahan", bukan "pengaruh game", dan menempatkannya sebagai **temuan eksploratif**: desain satu kelompok dengan tes awal dan akhir adalah desain pra-eksperimen (Campbell & Stanley, 1963), jadi tidak bisa menunjukkan sebab-akibat. Uji berpasangan, ukuran efek, dan model campuran tetap dijalankan dan dilaporkan lengkap, tapi tidak menjawab pertanyaan penelitian utama.
 - **Siapa yang masuk.** Siswa yang datanya bisa dianalisis menurut [11](11_KAMUS_DATA.md#data-siswa-yang-bisa-dianalisis). Analisis perubahan memakai siswa dengan `test_status` = `lengkap`; siswa dengan satu tes saja dilaporkan jumlahnya.
 
 ## Validasi dan uji coba
@@ -297,6 +297,8 @@ Empat pertanyaan di draf dokumen ini diputuskan pemilik proyek pada 26 Oktober 2
 
 Keputusan lanjutan di hari yang sama: variabel tes dan angket masuk kamus data di `kamus-1.1` setelah uji coba; pertemuan wilayah P2–P4 memberi waktu bermain ± 90 menit, tidak terikat JP, dengan sisa tantangan tetap di susulan P5; dan butir risiko daring memakai izin orang tua terpisah.
 
+Keputusan berikutnya di hari yang sama, dari usulan dokumen model penelitian ([04](04_CATATAN_KEPUTUSAN.md)): **tes awal–akhir terutama dipakai sebagai bukti validitas kriteria** (korelasi dengan kemampuan Rasch game per dimensi), dan **uji beda tes awal–akhir dilaporkan sebagai temuan eksploratif** dengan ukuran efeknya ([Analisis](#analisis)).
+
 ## Hal terbuka dari 14 dan 15
 
 Tidak perlu diputuskan pemilik proyek sekarang. Semuanya dinilai ahli di tahap 2 atau dicek di uji coba.
@@ -312,3 +314,4 @@ Tidak perlu diputuskan pemilik proyek sekarang. Semuanya dinilai ahli di tahap 2
 - Pusat Asesmen Pendidikan (Pusmendik), [*Asesmen Kompetensi Minimum*](https://pusmendik.kemdikbud.go.id/an/page/asesmen_kompetensi_minimum): bentuk soal (pilihan ganda, pilihan ganda kompleks, menjodohkan, isian singkat, uraian), konten teks informasi dan fiksi, konteks personal, sosial-budaya, dan saintifik, serta 30 soal literasi membaca untuk murid kelas V.
 - Pusat Asesmen dan Pembelajaran, Balitbangbuk Kemendikbud, [*Framework Asesmen Kompetensi Minimum (AKM)*](https://repositori.kemendikdasmen.go.id/33375/1/FRAMEWORK%20ASESMEN%20KOMPETENSI%20MINIMUM.pdf) (salinan di Repositori Kemendikdasmen, diunggah 2023) dan [versi 31 Maret 2022](https://pusmendik.kemdikbud.go.id/an/Framework_AKM_31032022.pdf): level kognitif literasi membaca, level 3 untuk kelas 5–6, kaidah penulisan soal, dan dua contoh soal level 2 yang diadaptasi di 14.
 - Sumber contoh soal yang diadaptasi dicatat per teks di [14](14_TES_BAGIAN_MEMBACA.md).
+- Campbell, D. T., & Stanley, J. C. (1963). *Experimental and quasi-experimental designs for research*. Rand McNally: desain satu kelompok dengan tes awal dan akhir sebagai desain pra-eksperimen, dan ancaman sejarah, kematangan, efek tes, instrumentasi, dan regresi (hlm. 7–10). Dicek di [dokumen pendukung peneliti](dokumen-pendukung-peneliti/README.md).

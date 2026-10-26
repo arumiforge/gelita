@@ -18,7 +18,7 @@ Dokumen lain dibaca per bagian sesuai tugas.
 | Berkas | Isi | Status | Kapan dibaca | Ukuran |
 | --- | --- | --- | --- | --- |
 | [01](01_REVISI_10_ANALITIK.md) | Dokumen utama: konstruk, 10 analitik, Skenario Digital, skema kesalahan, peran, log, token, kode peserta, peta jalan, pertanyaan terbuka, 22 perubahan sistem | Aktif | Selalu, per bagian | 62 KB |
-| [02](02_LEMBAR_LAPANGAN.md) | Lembar lapangan L0–L7 | Final, disetujui 26 Oktober 2026 (daftar kerja no. 11); daftar kode sekolah (no. 12) dan pemegang akun (no. 13) masih ditandai kosong | Saat menyusun lembar atau alur lapangan | 17 KB |
+| [02](02_LEMBAR_LAPANGAN.md) | Lembar lapangan L0–L8 | L0–L7 final, disetujui 26 Oktober 2026 (daftar kerja no. 11); L8 Profil sekolah draf (26 Oktober 2026); daftar kode sekolah (no. 12) dan pemegang akun (no. 13) masih ditandai kosong | Saat menyusun lembar atau alur lapangan | 17 KB |
 | [03](03_KODE_DAN_ARTI.md) | Arti semua kode | Rujukan | Cari kode yang dibutuhkan saja | 13 KB |
 | [04](04_CATATAN_KEPUTUSAN.md) | Riwayat keputusan, terbaru di atas | Aktif | Selalu, entri teratas | 37 KB |
 | [05](05_TELAAH_BUTIR_DAN_DIMENSI.md) | Telaah butir bank lama terhadap dimensi | Selesai; keputusannya masuk 06 | Hanya untuk menelusuri alasan | 39 KB |
@@ -54,7 +54,7 @@ Urutan kerja mengikuti peta jalan di 01, yang dikukuhkan pemilik proyek pada 25 
 | [17_SKALA_SIKAP.md](17_SKALA_SIKAP.md): skala sikap menjaga warisan untuk Balai Refleksi | no. 19 | Claude (draf), pemilik proyek | Draf; keputusan pemilik proyek diambil 26 Oktober 2026 ([17](17_SKALA_SIKAP.md#keputusan-pemilik-proyek)); menunggu validasi ahli |
 | [19_TELAAH_LABEL_BLOOM.md](19_TELAAH_LABEL_BLOOM.md): telaah label Bloom | no. 4 | Claude (telaah), pemilik proyek | Selesai (26 Oktober 2026); 08 dan 06 diperbarui |
 | [18_MOCKUP_LAYAR_BARU.md](18_MOCKUP_LAYAR_BARU.md): mock-up layar baru untuk ahli media langkah 1 (27 gambar di `gambar/mockup/`) | no. 20 | Claude (draf), pemilik proyek | Selesai (disetujui 26 Oktober 2026; gambar skala sikap dari 17) |
-| [02_LEMBAR_LAPANGAN.md](02_LEMBAR_LAPANGAN.md): lembar L0–L7 final | no. 11 | Claude (draf), pemilik proyek | Selesai (disetujui 26 Oktober 2026) |
+| [02_LEMBAR_LAPANGAN.md](02_LEMBAR_LAPANGAN.md): lembar L0–L7 final (L8 Profil sekolah menyusul sebagai draf) | no. 11 | Claude (draf), pemilik proyek | Selesai (disetujui 26 Oktober 2026) |
 | Instrumen validasi ahli materi v2.1, pengamat budaya v2.1, dan ahli media v1.1 ([dokumen-pdf/](dokumen-pdf/README.md)) | [07](07_TELAAH_INSTRUMEN_VALIDASI.md#instrumen-versi-21-dan-11) | Claude (draf), pemilik proyek | Draf selesai 26 Oktober 2026; menunggu persetujuan pemilik proyek |
 
 Gerbang G1: konstruk disetujui, dan semua dokumen tahap 1 selesai dan disetujui pemilik proyek.
