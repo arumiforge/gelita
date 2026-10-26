@@ -12,6 +12,7 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 2. **Benar atau Salah paling tinggi C4, kecuali dua butir C5.** Membandingkan isi dua teks dan menggolongkan fakta atau pendapat menjadi C2 (mengikuti Anderson & Krathwohl, bukan daftar kata kerja operasional yang menaruh "membedakan" di C4). Menilai kepercayaan sumber dari penanda yang diberikan, atau menolak alasan popularitas dan posisi, menjadi C4. C5 hanya untuk `wnb-3-a06` dan `wnb-3-b06`, yang memeriksa apakah simpulan didukung bukti.
 3. **Skenario Digital diberi label per butir di 08.** Temanggung dan Magelang C3, Wonosobo C4, kecuali `wnb-5-a03` dan `wnb-5-b03` C5 (menimbang privasi teman melawan tekanan grup).
 4. **Rentang Bloom wilayah direvisi, butir tidak ditulis ulang:** Temanggung C1–C3, Magelang C2–C4, Wonosobo C2–C5. Aturan no. 14 di 06 kini menyebut bahwa Bloom menggambarkan proses berpikir, bukan tingkat kesulitan; kesulitan ditunjukkan level AKM dan data Rasch.
+5. **Lima perubahan label Isi Rumpang dipertahankan** (ditanyakan sesudah wawancara): `mgl-2-a04`, `mgl-2-b05`, dan `wnb-2-b05` menjadi C2 (perbandingan angka atau sebab–akibat langsung, sama dengan butir serupa di wilayah lain); `wnb-2-a04` dan `wnb-2-a05` menjadi C3 (menerapkan keterangan rentang ketinggian).
 
 Akibatnya: 39 dari 92 label lama di 08 berubah, dan 36 label baru ditulis (12 PBK, 24 skenario). Rentang per tantangan dan per wilayah di 06 serta tabel pelevelan wilayah di 01 disesuaikan. Ini label pengembang; label ahli dari pelabelan buta B.5a di tahap 2 menggantikannya.
 

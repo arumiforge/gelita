@@ -74,7 +74,7 @@ Hasilnya: tidak ada C5 lain di Benar atau Salah. C5 sebelumnya ada di 9 kartu Wo
 
 ### Isi Rumpang
 
-Sebagian besar label lama sudah tepat. Perubahan hanya untuk menyamakan proses yang sama di wilayah berbeda:
+Sebagian besar label lama sudah tepat. Perubahan hanya untuk menyamakan proses yang sama di wilayah berbeda. Kelima perubahan ini tidak termasuk pertanyaan wawancara; pemilik proyek menyetujuinya sesudahnya (26 Oktober 2026):
 
 - Membandingkan dua angka atau sebab–akibat langsung → C2, sama dengan `tmg-2-a04` dan `mgl-2-a05`: `mgl-2-a04` (C3 → C2), `mgl-2-b05` (C3 → C2), `wnb-2-b05` (C4 → C2).
 - Menerapkan keterangan rentang ketinggian pada desa atau pantai → C3 (*implementing*): `wnb-2-a04`, `wnb-2-a05` (C4 → C3).
