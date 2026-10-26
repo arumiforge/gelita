@@ -394,9 +394,9 @@ Usulan yang perlu masuk [04_CATATAN_KEPUTUSAN.md](04_CATATAN_KEPUTUSAN.md) setel
 
 **Kerangka (dibuka 25 Oktober 2026)**
 
-- Cosgrove, J., & Cachia, R. (2025). *DigComp 3.0: The European Digital Competence Framework* (edisi ke-5). Joint Research Centre. Nama area, nama kompetensi 1.1, 1.2, 2.2, 2.3, 2.5, 3.3, 4.2, 4.3, dan empat tingkat kecakapan dicek dari Tabel 2 dan ringkasan eksekutif: [PDF](https://digitalekompetenzen.oead.at/fileadmin/Dokumente/oead.at/Bildung_Digital/Digitale_Kompetenzen/NRDK/2025_DigComp_3.0_European_Digital_Competence_Framework.pdf), [repositori JRC](https://publications.jrc.ec.europa.eu/repository/handle/JRC144121).
-- von Davier, M., & Kennedy, A. M. (Eds.). (2024). *PIRLS 2026 Assessment Frameworks*. TIMSS & PIRLS International Study Center: [situs resmi](https://timssandpirls.bc.edu/pirls2026/frameworks/index.html).
-- Kementerian Kominfo & Katadata Insight Center. (2022). *Status Literasi Digital di Indonesia 2022* (empat pilar): [PDF](https://cdn1.katadata.co.id/media/microsites/litdik/ReportSurveiStatusLiterasiDigitalIndonesia2022.pdf).
+- Cosgrove, J., & Cachia, R. (2025). *DigComp 3.0: European Digital Competence Framework* (edisi ke-5). Joint Research Centre, [DOI](https://doi.org/10.2760/0001149). Nama area, nama kompetensi 1.1, 1.2, 2.2, 2.3, 2.5, 3.3, 4.2, 4.3, dan empat tingkat kecakapan dicek dari Tabel 2 dan ringkasan eksekutif: [PDF](https://digitalekompetenzen.oead.at/fileadmin/Dokumente/oead.at/Bildung_Digital/Digitale_Kompetenzen/NRDK/2025_DigComp_3.0_European_Digital_Competence_Framework.pdf), [repositori JRC](https://publications.jrc.ec.europa.eu/repository/handle/JRC144121).
+- von Davier, M., & Kennedy, A. (Eds.). (2024). *PIRLS 2026 Assessment Frameworks*. TIMSS & PIRLS International Study Center, Boston College: [DOI](https://doi.org/10.6017/lse.tpisc.tr2103.kb4199), [situs resmi](https://timssandpirls.bc.edu/pirls2026/frameworks/index.html).
+- Kementerian Kominfo & Katadata Insight Center. (2023). *Status Literasi Digital di Indonesia 2022* (empat pilar: Kecakapan, Etika, Keamanan, dan Budaya Digital; diluncurkan Februari 2023): [PDF](https://cdn1.katadata.co.id/media/microsites/litdik/ReportSurveiStatusLiterasiDigitalIndonesia2022.pdf).
 - Level kognitif AKM: lihat rujukan di [01](01_REVISI_10_ANALITIK.md#cek-fakta-dan-rujukan); dokumen kerangka resminya tetap perlu diunduh dari Pusmendik.
 
 **Pengukuran**
