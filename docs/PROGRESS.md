@@ -75,4 +75,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 | Branch | Owner / scope | Status |
 |---|---|---|
 | `pbb/eloquent-sagan-j40sg8` | Pre-stage-1 check of the research revision docs | PR open |
-| `sky/optimistic-carson-kkpbcv` | Data dictionary `11_KAMUS_DATA.md` (research revision, work item 2) | PR open |
