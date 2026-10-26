@@ -87,4 +87,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 |---|---|---|
 | `pbb/eloquent-sagan-j40sg8` | Pre-stage-1 check of the research revision docs | PR open |
 | `sky/festive-hopper-cl6p65` | Susun Gambar caption leaks checked against the draft bank (`08`) | PR open |
-| `sky/peaceful-curie-68ufr5` | R&D model brief for researchers, Lynn's I-CVI rule, reference fixes in the research revision docs | PR open |
