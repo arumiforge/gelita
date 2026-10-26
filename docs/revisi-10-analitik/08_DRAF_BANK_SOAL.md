@@ -2,7 +2,7 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 25 Oktober 2026 (nama fiktif dicek; telaah pendahuluan T6 sudah dijalankan, lihat [09](09_TELAAH_PENDAHULUAN_BANK_SOAL.md)) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Dasar: [06_KISI_KISI_BANK_SOAL.md](06_KISI_KISI_BANK_SOAL.md) (disetujui pemilik proyek 25 Oktober 2026) · Status semua butir: **`needs_verification`**
+Per 26 Oktober 2026 (nama fiktif dicek; telaah pendahuluan T6 sudah dijalankan, lihat [09](09_TELAAH_PENDAHULUAN_BANK_SOAL.md); keterangan Susun Gambar diperiksa, lihat [Susun Gambar selama studi](#susun-gambar-selama-studi)) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Dasar: [06_KISI_KISI_BANK_SOAL.md](06_KISI_KISI_BANK_SOAL.md) (disetujui pemilik proyek 25 Oktober 2026) · Status semua butir: **`needs_verification`**
 
 Ini isi bank soal baru, ditulis mengikuti kisi-kisi. Dokumen ini masih **draf untuk telaah dan validasi ahli**. Bentuknya dokumen supaya mudah dibaca ahli. Setelah lolos validasi, isinya dipindah ke berkas data [`docs/bank-soal/`](../bank-soal/README.md) dan diterjemahkan ke bahasa Inggris. Belum ada yang diubah di sistem atau di workbook.
 
@@ -44,6 +44,8 @@ Ini isi bank soal baru, ditulis mengikuti kisi-kisi. Dokumen ini masih **draf un
 | Skenario Digital (D2) | 4 × 2 | 4 × 2 | 4 × 2 | 24 |
 | **Butir literasi digital** | **34** | **40** | **42** | **116** |
 | Temukan Benda (PBK, dari bank lama) | 4 | 4 | 4 | 12 |
+
+Susun Gambar (tantangan 1, pemanasan) tidak ditulis ulang di draf ini. Keterangannya diperiksa terhadap butir di sini, hasil dan usulannya ada di [Susun Gambar selama studi](#susun-gambar-selama-studi).
 
 ---
 
@@ -1039,6 +1041,120 @@ Skenario ini diambil dari contoh di 01; kalimat tanya alasannya dibuat netral.
 | `wnb-3` | 90–150 | ± 90–95 | Di bawah rentang. Enam pernyataan tetap bisa dijawab dari teks, dan beban baca turun. Rentang kisi-kisi diubah jadi 90–150 (disetujui) |
 | Jangkar WNB | 25–50 | ± 25 | Unggahan iklan memang pendek. Rentang diubah jadi 25–50 (disetujui) |
 
+# Susun Gambar selama studi
+
+Diperiksa 26 Oktober 2026, menindaklanjuti temuan di [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md#di-luar-dokumen-ini). Susun Gambar tidak dinilai, tapi keterangannya tampil di layar begitu gambar utuh, juga saat kesempatan habis dan gambar disusun otomatis, lalu sekali lagi di jendela hasil. Semua siswa membacanya tepat sebelum tantangan 2–4 di pertemuan yang sama.
+
+Ketiga puluh keterangan di [`docs/bank-soal/data/`](../bank-soal/data/) (`*-1`, variasi a–j, beserta judul dan isi gambarnya) dicocokkan dengan semua butir D1, kunci D3, dan petunjuk PBK di draf ini, memakai aturan menulis butir no. 1 dan 2 di [06](06_KISI_KISI_BANK_SOAL.md#aturan-menulis-butir). Petunjuk PBK ikut dihitung, sejalan dengan usulan Kenali di 12 (pertanyaan 2): tidak ada siswa yang membaca kunci D1, D3, atau PBK sebelum mengerjakannya. Skenario D2 juga dicek. Beberapa topiknya sama (Telaga Warna, embun upas, getuk, kopi), tapi tidak ada keterangan yang menentukan tindakan kuncinya.
+
+**Variasi yang benar-benar dilihat siswa.** Di aplikasi sekarang, pengerjaan pertama Susun Gambar diambil acak dari variasi a–c (`BankRules::FIRST_ATTEMPT_GROUPS`); variasi d–j hanya muncul di pengerjaan ulang. Selama studi, pengerjaan ulang baru terbuka setelah kelima tantangan wilayah itu tuntas ([06](06_KISI_KISI_BANK_SOAL.md#desain-buklet-usulan)). Jadi keterangan d–j tidak bisa lagi memengaruhi data yang dinilai di wilayahnya sendiri, dan tidak ada keterangan yang bocor ke wilayah sesudahnya. Kebocoran yang berlaku selama studi ada di variasi a–c. Tiga contoh di 12 (Situs Liyangan, Prasasti Gondosuli, Umbul Jumprit) termasuk d–j; Candi Pringapus termasuk a–c. Kalau perubahan sistem no. 4 di 06 (`FIRST_ATTEMPT_GROUPS` jadi `a`, `b`) juga berlaku untuk Susun Gambar, keadaannya lebih buruk: di Temanggung dan Magelang, variasi a dan b sama-sama bocor.
+
+**Tingkat temuan.** *Bocor*: keterangan menyebut kunci atau fakta yang langsung menentukannya. *Isyarat*: keterangan memberi fakta yang membuat kunci mudah ditebak tanpa membaca teks atau adegannya, misalnya asal budaya yang dikelirukan di *Periksa Unggahan*. *Lemah*: topik atau kata sama, tapi kunci tidak ikut tertebak; hanya dicatat di bawah tabel.
+
+## Hasil pemeriksaan
+
+"Pertama" = variasi a–c, bisa muncul di pengerjaan pertama. "Ulang" = variasi d–j, hanya untuk pengerjaan ulang.
+
+### Temanggung
+
+| Variasi | Dilihat | Bocor | Isyarat |
+| --- | --- | --- | --- |
+| `tmg-1-a` Gunung Sindoro dan Sumbing | Pertama | `tmg-2-a01` (Sumbing dipasangkan dengan 3.371 m), `tmg-2-a03` ("membuat tanahnya subur") | "disebut gunung kembar", judul bacaan lama yang sengaja diganti di `tmg-2-a` |
+| `tmg-1-b` Candi Pringapus | Pertama | `tmg-3-b01` (candi Hindu), `tmg-3-b04` (arca Nandi, arca lembu di ruang candi), PBK `tmg-4-x03` | — |
+| `tmg-1-c` Kuda Lumping | Pertama | PBK `tmg-4-x01` (kuda-kudaan dari anyaman bambu) | D3 `tmg-4-a02` (unggahan menulis "kayu jati"); gambarnya `tmg-1-04` juga dipakai untuk foto unggahan `tmg-4` babak 2 a |
+| `tmg-1-d` Situs Liyangan | Ulang | `tmg-3-a01` (2008), `tmg-3-a02` (letusan Sindoro, bukan Merapi), `tmg-3-a04` (padi hangus) | — |
+| `tmg-1-e` Prasasti Gondosuli | Ulang | `tmg-3-b02` (832 Masehi) | — |
+| `tmg-1-f` Umbul Jumprit | Ulang | `tmg-2-b03` ("air suci") | `tmg-2-b02` (nama mata air), `tmg-2-b04` ("tidak pernah kering") |
+| `tmg-1-g` Panen Kopi | Ulang | PBK `tmg-4-x02` (kopi di lereng Sindoro–Sumbing) | `tmg-2-a04` ("di ketinggian lebih dari 900 meter") |
+| `tmg-1-h` Ikan Uceng | Ulang | PBK `tmg-4-x04` | D3 `tmg-4-b02` (ikan sungai; unggahan menulis "ikan laut") |
+| `tmg-1-i` Pasar Papringan | Ulang | — | — |
+| `tmg-1-j` Perajin Kuda Kepang | Ulang | PBK `tmg-4-x01` | D3 `tmg-4-a02` |
+
+Lemah: gambar `tmg-1-a` memuat kebun kopi di latar depan (PBK `tmg-4-x02`).
+
+### Magelang
+
+| Variasi | Dilihat | Bocor | Isyarat |
+| --- | --- | --- | --- |
+| `mgl-1-a` Stupa Borobudur | Pertama | `mgl-2-a03` (72 stupa, masing-masing berisi arca Buddha), PBK `mgl-4-x01` | — |
+| `mgl-1-b` Penari Topeng Ireng | Pertama | PBK `mgl-4-x02` (hiasan kepala dari bulu, Desa Tuksongo) | D3 `mgl-4-a02` (asal Tuksongo, Magelang); gambarnya `mgl-1-02` juga dipakai untuk foto unggahan `mgl-4` babak 2 a |
+| `mgl-1-c` Candi Mendut | Pertama | — | — |
+| `mgl-1-d` Relief Borobudur | Ulang | `mgl-3-a03` ("tidak boleh menyentuhnya") | `mgl-3-a06` |
+| `mgl-1-e` Candi Pawon | Ulang | — | — |
+| `mgl-1-f` Gunung Tidar | Ulang | — | `mgl-3-b03` ("dalam legenda … paku tanah Jawa") |
+| `mgl-1-g` Getuk Magelang | Ulang | PBK `mgl-4-x03` | — |
+| `mgl-1-h` Gerabah Klipoh | Ulang | PBK `mgl-4-x04` | D3 `mgl-4-b02` (Klipoh dekat Candi Borobudur); gambarnya `mgl-1-h01` juga dipakai untuk foto unggahan `mgl-4` babak 2 b |
+| `mgl-1-i` Perjalanan Waisak | Ulang | — | — (Umbul Jumprit milik Temanggung, yang sudah dikerjakan di pertemuan sebelumnya) |
+| `mgl-1-j` Dua Pasang Gunung Kembar | Ulang | — | — |
+
+Lemah: `mgl-1-a` memakai kata "stupa" (`mgl-2-a02`, istilahnya didefinisikan di bacaan); `mgl-1-b` menyebut lonceng kecil di kaki (`mgl-2-b02`) dan asal tarinya (jangkar `mgl-3-x01`); `mgl-1-f` (`mgl-3-b01`).
+
+### Wonosobo
+
+| Variasi | Dilihat | Bocor | Isyarat |
+| --- | --- | --- | --- |
+| `wnb-1-a` Telaga Warna | Pertama | `wnb-3-a06` ("Airnya tidak untuk diminum") | `wnb-3-a03`, `a04`: keterangan hampir sama dengan unggahan pengelola, jadi siswa sudah tahu kabar mana yang benar sebelum menilai sumbernya |
+| `wnb-1-b` Matahari Terbit di Sikunir | Pertama | — | — |
+| `wnb-1-c` Mi Ongklok | Pertama | PBK `wnb-4-x03` | D3 `wnb-4-b02`, `b04` (khas Wonosobo); gambarnya `wnb-1-07` juga dipakai untuk foto unggahan `wnb-4` babak 2 b |
+| `wnb-1-d` Kompleks Candi Arjuna | Ulang | — | — |
+| `wnb-1-e` Kawah di Dieng | Ulang | `wnb-3-b02` (gas di sekitar kawah berbahaya) | `wnb-3-b05`, `b06`; judul variasi "Tetap di Balik Pagar" |
+| `wnb-1-f` Carica | Ulang | `wnb-2-a06` (udara sejuk), PBK `wnb-4-x02` | `wnb-2-a04`, `a05` (rentang 1.400–2.400 meter) |
+| `wnb-1-g` Bundengan | Ulang | PBK `wnb-4-x01` | D3 `wnb-4-a02`, `a04`; gambarnya `wnb-1-g01` juga dipakai untuk foto unggahan `wnb-4` babak 2 a |
+| `wnb-1-h` Kebun Teh Tambi | Ulang | PBK `wnb-4-x04` (sejak 1865) | — |
+| `wnb-1-i` Tari Topeng Lengger | Ulang | — | — |
+| `wnb-1-j` Embun Upas | Ulang | `wnb-2-b03` (kalimat yang sama, memakai "sehingga") | `wnb-2-b05` ("suhu pagi"), `wnb-2-a02` (sebab–akibat yang sama) |
+
+Lemah: `wnb-1-b` menyebut Desa Sembungan sekitar 2.300 meter, yang juga ada di bacaan `wnb-2-a`; kunci `wnb-2-a04` tetap butuh rentang carica dari bacaan.
+
+**Ringkasan.** 22 dari 30 keterangan bocor atau memberi isyarat, termasuk 7 dari 9 variasi a–c yang dipakai di pengerjaan pertama sekarang. Kedua belas petunjuk PBK dan keenam butir representasi D3 masing-masing punya keterangan yang sepadan; petunjuk Temukan Benda di bank lama memang hampir sama kata per kata dengan keterangan Susun Gambar. Delapan keterangan bersih: `tmg-1-i`, `mgl-1-c`, `mgl-1-e`, `mgl-1-i`, `mgl-1-j`, `wnb-1-b`, `wnb-1-d`, dan `wnb-1-i`.
+
+**Fakta yang perlu dicek peneliti.** `wnb-1-i` menyebut Topeng Lengger "tari khas Wonosobo", padahal asal lengger sengaja tidak dipakai di draf ini karena sumbernya diperdebatkan (lihat *Yang harus dicek sebelum validasi ahli*). Tahun Tambi (1865 atau 1885) juga ada di `wnb-1-h`, bukan hanya di `wnb-4-x04`.
+
+## Usulan perbaikan
+
+**Usulan: satu variasi tetap per wilayah selama studi.** Pengerjaan pertama Susun Gambar memakai variasi yang sama untuk semua siswa, dipilih dari keterangan yang bersih:
+
+| Wilayah | Variasi tetap | Status fakta |
+| --- | --- | --- |
+| Temanggung | `tmg-1-i` Pasar Papringan | `needs_verification`; seluruh isi keterangan dicek (sumber GNFI 2022). Satu-satunya keterangan Temanggung yang bersih |
+| Magelang | `mgl-1-c` Candi Mendut | `verified`, sudah termasuk variasi a–c sekarang |
+| Wonosobo | `wnb-1-d` Kompleks Candi Arjuna | `needs_verification` |
+
+Alasannya:
+
+- Susun Gambar tidak dinilai, jadi tidak butuh variasi. Tetangga sebangku yang menyusun gambar yang sama tidak mengubah data apa pun.
+- Paparan sebelum tantangan dinilai sama untuk semua siswa. Dengan pengambilan acak, hanya sebagian siswa yang membaca kunci, misalnya `tmg-3-b04` terbaca oleh siswa yang mendapat Candi Pringapus dan berguna hanya kalau bukletnya mendapat `tmg-3-b`. Variasi Susun Gambar lalu ikut menjadi sumber selisih skor.
+- Tidak ada keterangan yang perlu ditulis ulang, dan tidak ada gambar baru. Ke-27 variasi lain tetap dipakai untuk pengerjaan ulang setelah wilayahnya tuntas, saat keterangannya justru menjadi pengulangan yang berguna. Di luar studi, aturan pengambilan variasi tidak berubah.
+- Gambar yang juga dipakai sebagai foto *Periksa Unggahan* (kuda lumping, Topeng Ireng, gerabah Klipoh, bundengan, mi ongklok) tidak pernah disusun siswa sebelum babak 2.
+
+**Pilihan lain yang dibandingkan**
+
+| Pilihan | Kelebihan | Kekurangan |
+| --- | --- | --- |
+| Dua variasi bersih diacak, sesuai perubahan sistem no. 4 (`a`, `b`) | Variasi tetap ada | Temanggung hanya punya satu keterangan bersih, jadi satu keterangan ditulis ulang (misalnya `tmg-1-a` tanpa ketinggian dan tanpa "subur") dan dicek ulang; paparan tetap berbeda antarsiswa |
+| Tulis ulang 22 keterangan yang bocor, pengambilan acak tetap | Semua variasi aman di mana pun | Pekerjaan paling banyak, dan setiap keterangan baru perlu dicek. Fakta yang cocok dengan gambarnya (arca Nandi, stupa berisi arca Buddha, warna Telaga Warna) hilang, dan gambar yang sama dengan foto unggahan tetap muncul |
+| Keterangan disembunyikan selama studi sampai wilayahnya tuntas | Satu aturan, tanpa menulis ulang | Gambar tetap memberi isyarat (arca Buddha di dalam stupa, warna Telaga Warna, foto unggahan yang sama), dan Susun Gambar kehilangan bacaannya |
+
+**Untuk dokumen implementasi** (perubahan sistem no. 4 di [01](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti) dan [06](06_KISI_KISI_BANK_SOAL.md#yang-perlu-disiapkan-sistem-nanti)):
+
+- Mode penelitian memilih variasi tetap Susun Gambar per wilayah, bukan acak dan bukan dari buklet. Caranya (kolom penanda di sheet `nodes`, atau variasi tetap diberi huruf `a`) diputuskan di dokumen implementasi; kode Susun Gambar tidak dinilai, jadi menukar huruf tidak menyentuh data penelitian.
+- `BankRules` yang sekarang mewajibkan variasi a, b, dan c untuk Susun Gambar ikut disesuaikan.
+- Pemeriksaan bank (no. 9 di 06) mendapat satu cek tambahan: keterangan variasi tetap tidak memuat kunci D1, kunci D3, atau petunjuk PBK wilayahnya dan wilayah sesudahnya.
+
+## Pertanyaan untuk pemilik proyek
+
+Bagian ini memakai pilihan pertama di setiap pertanyaan.
+
+1. **Bagaimana kebocoran Susun Gambar diperbaiki selama studi?**
+   - **Usulan:** satu variasi tetap per wilayah dari keterangan yang bersih; variasi lain hanya untuk pengerjaan ulang.
+   - Dua variasi bersih diacak; satu keterangan Temanggung ditulis ulang.
+   - Ke-22 keterangan yang bocor ditulis ulang.
+   - Keterangan disembunyikan sampai wilayahnya tuntas.
+2. **Variasi tetap mana yang dipakai** (kalau usulan pertanyaan 1 dipilih)?
+   - **Usulan:** Pasar Papringan, Candi Mendut, Kompleks Candi Arjuna.
+   - Pasar Papringan, Candi Mendut, dan Matahari Terbit di Sikunir tanpa angka ketinggian Desa Sembungan. Sikunir sudah termasuk variasi a–c sekarang.
+   - Dipilih ahli budaya saat validasi dari delapan keterangan yang bersih.
+
 # Yang harus dicek sebelum validasi ahli
 
 **Nama fiktif (dicek 25 Oktober 2026).** Setiap nama dicari di web dengan tanda kutip, ditambah kata kunci daerah atau jenis usahanya.
@@ -1083,10 +1199,11 @@ Teks digital (layar informasi, unggahan, grup, hasil pencarian) dibangun sebagai
 # Langkah berikutnya
 
 1. Pemilik proyek menelaah draf ini.
-2. Cek fakta di bagian *Yang harus dicek* (nama fiktif sudah dicek; tinggal pencarian manual akun di Instagram dan TikTok).
-3. Validasi ahli (I-CVI atau V Aiken) dengan instrumen yang sedang disiapkan sesi koordinator.
-4. Terjemahan bahasa Inggris untuk setiap teks yang tampil di game.
-5. Pindahkan isi ke berkas data `docs/bank-soal/` dengan kolom baru dari kisi-kisi. Ini pekerjaan tahap implementasi.
+2. Pemilik proyek menjawab dua pertanyaan di [Susun Gambar selama studi](#pertanyaan-untuk-pemilik-proyek).
+3. Cek fakta di bagian *Yang harus dicek* (nama fiktif sudah dicek; tinggal pencarian manual akun di Instagram dan TikTok), ditambah fakta keterangan Susun Gambar yang dipilih.
+4. Validasi ahli (I-CVI atau V Aiken) dengan instrumen yang sedang disiapkan sesi koordinator.
+5. Terjemahan bahasa Inggris untuk setiap teks yang tampil di game.
+6. Pindahkan isi ke berkas data `docs/bank-soal/` dengan kolom baru dari kisi-kisi. Ini pekerjaan tahap implementasi.
 
 # Untuk dicatat di catatan keputusan
 
@@ -1099,6 +1216,7 @@ Teks digital (layar informasi, unggahan, grup, hasil pencarian) dibangun sebagai
 - Penari Topeng Ireng (memakai topeng atau tidak) dan asal tari lengger tidak dipakai sebagai fakta di bank, karena sumbernya belum meyakinkan.
 - Skenario OTP memakai nama game fiktif "Game Bintang", bukan GELITA.
 - Lembaga resmi di bacaan ditulis tanpa nama dan logo (misalnya "akun resmi badan pemantau gunung api").
+- Keterangan Susun Gambar diperiksa terhadap draf ini (26 Oktober 2026): 22 dari 30 keterangan bocor atau memberi isyarat ke butir D1, kunci D3, atau petunjuk PBK, termasuk 7 dari 9 variasi a–c di pengerjaan pertama. Usulannya satu variasi tetap per wilayah selama studi (Pasar Papringan, Candi Mendut, Kompleks Candi Arjuna), menunggu jawaban pemilik proyek.
 - Telaah pendahuluan T6 sudah dijalankan ([09](09_TELAAH_PENDAHULUAN_BANK_SOAL.md)); sisa temuan R1–R4 disetujui pemilik proyek sesuai usulan pada 25 Oktober 2026. Berkas untuk ahli memuat empat pertanyaan khusus: rumpang `tmg-2-b02`, `mgl-2-a02`, `mgl-2-a05` (R1), label D1b `tmg-3-a03`/`tmg-3-b03` (R2), pola pilihan "kurang tepat" (R3), dan kunci `wnb-4-a02`/`wnb-4-b02` (R4).
 
 # Rujukan tambahan (dibuka 25 Oktober 2026)
