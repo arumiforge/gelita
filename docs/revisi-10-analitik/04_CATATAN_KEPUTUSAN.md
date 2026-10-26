@@ -1,10 +1,47 @@
 # Catatan Keputusan Revisi 10 Analitik
 
-Per 25 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 26 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk implementasi nanti dicatat di dokumen implementasi dan di catatan keputusan perombakan kelas 5 saat pekerjaannya dimulai.
 
+## 26 Oktober 2026
+
+**Keputusan pemilik proyek: kamus data** (sesi `sky/optimistic-carson-kkpbcv`)
+
+Empat pertanyaan di draf [11](11_KAMUS_DATA.md#keputusan-pemilik-proyek) diputuskan, dan kamus menjadi `kamus-1.0`:
+
+1. **Kode bagian lain di *Periksa Unggahan*: sesuai usulan.** Bagian ketuk yang bukan kunci dan bukan pengecoh utama diberi kode jenis petunjuknya (BUD-ATR, BUD-REP, BUD-IZN, BUD-ETK), bukan INF-REL. Ketukan di tempat kosong dekat kunci = NON-SEN dan tidak memakai kesempatan. Aturan di 08 disesuaikan.
+2. **Ambang jeda tanpa masukan: 3 menit, sementara.** Hanya bagian jeda yang melebihi ambang yang dipotong dari waktu aktif. Pemilik proyek meminta durasinya mudah diubah, jadi ambang disimpan sebagai pengaturan di konfigurasi studi, dan lapis turunan dihitung ulang dari data mentah tanpa mengubah sistem.
+3. **Data siswa yang bisa dianalisis: sesuai usulan.** Izin lengkap, bukan sekolah uji coba, dan percobaan pertama yang bukan dari perangkat bersama pada sedikitnya 80% butir literasi digital (49 dari 61).
+4. **Tebakan cepat dipakai apa adanya di analisis utama**; analisis kedua memperlakukannya sebagai data hilang. Ambang sementaranya di bawah 3 detik (usulan awal 1,5 detik), juga berupa pengaturan.
+
+Ambang 3 menit dan 3 detik menggantikan angka usulan lama (60 detik dan 1,5 detik) di 01 dan 03, dan tetap ditetapkan ulang setelah uji coba (`kamus-1.1`). Penegasan yang menyertai draf tidak dikoreksi, jadi ikut berlaku.
+
 ## 25 Oktober 2026
+
+**Draf kamus data** (sesi `sky/optimistic-carson-kkpbcv`, daftar kerja no. 2)
+
+- Kamus data disusun di [11_KAMUS_DATA.md](11_KAMUS_DATA.md): peta bukti, butir yang dinilai, pengerjaan pertama, data hilang, penanda analisis, definisi beku 10 analitik, variabel butir dan peserta, aturan gabung lembar, dan syarat data untuk tahap 3. Statusnya draf sampai pemilik proyek memutuskan empat pertanyaan di bagian akhir dokumen itu:
+  1. kode bagian ketuk lain di *Periksa Unggahan*
+  2. cara memotong jeda di waktu aktif
+  3. definisi data siswa yang bisa dianalisis
+  4. perlakuan tebakan cepat di analisis utama
+- **Penegasan yang diusulkan bersama draf** (tafsiran dokumen sebelumnya, bisa dikoreksi pemilik proyek):
+  - Pengerjaan pertama yang terputus dilanjutkan, bukan dibuat baru. Syarat ini ditambahkan ke mode penelitian (perubahan sistem no. 16).
+  - "Dilewati" jenis (a) juga mencakup skenario yang ditutup setelah kesempatan ketiga.
+  - "Dibantu" di analisis utama hanya bantuan isi L3 (ISI, STR, BHS).
+  - Ketukan di tempat kosong tidak memakai kesempatan; ketukan dekat kunci dihitung sebagai NON-SEN di luar percobaan.
+  - Benda sasaran petunjuk lain di Temukan Benda diberi INF-LIT.
+  - NON-TEB tidak dihitung untuk Isi Rumpang.
+  - Token yang membuka wilayah sebuah pertemuan melewati aturan buka berurutan antarwilayah; tantangan yang tertinggal dikerjakan di pertemuan 5.
+  - Perpindahan setelah umpan balik di Skenario Digital dinilai dari pilihan tindakan, bukan kodenya, karena dua pilihan bisa berbagi kode.
+  - Kode kesalahan bank tidak pernah ditimpa: NON-TEB dan NON-HABIS menjadi penanda tersendiri, dan `*-LAIN` dari pengodean manual disimpan di kolom lain.
+- **Perbaikan tanpa keputusan baru:**
+  - Di 03, DIG-HOX hanya D2, analitik 8 berlaku untuk D1–D3, dan analitik 10 hanya D2, karena dimensi ikut butir (model *between-item*).
+  - Gambar peta bukti disesuaikan dengan kisi-kisi yang disetujui: nama D3, Isi Rumpang dan Benar atau Salah hanya D1, Cari Objek babak 2 D3 dengan babak 1 PBK, Skenario Digital hanya D2, dan kode BUD di pola kesalahan.
+  - Contoh data mentah di 01 mendapat kolom `rapid_guess` (kosong untuk Isi Rumpang). Baris tebakan cepat kini memakai kode bank butir itu (INF-HUB), dan `wnb-3-a01` memakai INF-LIT sesuai 08.
+  - Analitik 3 di 01 tidak lagi menyebut Susun Gambar (tidak dinilai sejak kisi-kisi 06), dan catatan perubahan sistem no. 14 menunjuk ke syarat data di 11.
+  - Di 06, siswa yang belum selesai melanjutkan di pertemuan 5 (susulan), sesuai keputusan token.
 
 **Pemeriksaan sebelum tahap dokumen 1** (sesi `pbb/eloquent-sagan-j40sg8`)
 

@@ -25,7 +25,7 @@ Ini isi bank soal baru, ditulis mengikuti kisi-kisi. Dokumen ini masih **draf un
 2. Kata pengecoh di rumpang sasarannya → kode yang ditulis di tabel (kolom "Pengecoh sasaran").
 3. Kata pengecoh di rumpang lain → **INF-LIT**, kecuali ditulis lain di baris "Kode khusus".
 
-**Aturan kode di Periksa Unggahan (babak 2 Cari Objek).** Setiap petunjuk punya beberapa *pengecoh utama*, bagian adegan yang sengaja dibuat menggoda; kodenya ditulis di tabel. Mengetuk bagian adegan lain → **INF-REL**. Mengetuk tempat kosong di dekat sasaran → **NON-SEN**.
+**Aturan kode di Periksa Unggahan (babak 2 Cari Objek).** Setiap petunjuk punya beberapa *pengecoh utama*, bagian adegan yang sengaja dibuat menggoda; kodenya ditulis di tabel. Mengetuk bagian ketuk lain, termasuk kunci petunjuk lain → **kode jenis petunjuk itu**: atribusi BUD-ATR, representasi BUD-REP, izin BUD-IZN, menghargai tradisi BUD-ETK. Mengetuk tempat kosong di dekat kunci → **NON-SEN**, bukan percobaan dan tidak memakai kesempatan (keputusan 26 Oktober 2026, [kamus data](11_KAMUS_DATA.md#analitik-6-pola-kesalahan)).
 
 **Skenario Digital.** Skor tindakan: tepat = 2, kurang tepat = 1, berisiko = 0. Alasan tidak diskor, hanya dikode. Kalimat tanya alasan selalu sama: **"Yang paling penting kupikirkan di sini adalah …"**. Pilihan tindakan dan alasan diacak per pengerjaan. Umpan balik tidak memakai kata "salah" atau "gagal".
 
