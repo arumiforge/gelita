@@ -94,4 +94,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `pbb/magical-hamilton-4f6l98` | Shared docs (`02`, `06`, `03`, `07`) aligned with the test and questionnaire decisions | In progress |
