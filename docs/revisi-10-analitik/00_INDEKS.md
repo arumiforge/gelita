@@ -18,7 +18,7 @@ Dokumen lain dibaca per bagian sesuai tugas.
 | Berkas | Isi | Status | Kapan dibaca | Ukuran |
 | --- | --- | --- | --- | --- |
 | [01](01_REVISI_10_ANALITIK.md) | Dokumen utama: konstruk, 10 analitik, Skenario Digital, skema kesalahan, peran, log, token, kode peserta, peta jalan, pertanyaan terbuka, 22 perubahan sistem | Aktif | Selalu, per bagian | 62 KB |
-| [02](02_LEMBAR_LAPANGAN.md) | Lembar lapangan L0–L7 | Draf, difinalkan di tahap 1 (daftar kerja no. 11) | Saat menyusun lembar atau alur lapangan | 17 KB |
+| [02](02_LEMBAR_LAPANGAN.md) | Lembar lapangan L0–L7 | Final, disetujui 26 Oktober 2026 (daftar kerja no. 11); daftar kode sekolah (no. 12) dan pemegang akun (no. 13) masih ditandai kosong | Saat menyusun lembar atau alur lapangan | 17 KB |
 | [03](03_KODE_DAN_ARTI.md) | Arti semua kode | Rujukan | Cari kode yang dibutuhkan saja | 13 KB |
 | [04](04_CATATAN_KEPUTUSAN.md) | Riwayat keputusan, terbaru di atas | Aktif | Selalu, entri teratas | 37 KB |
 | [05](05_TELAAH_BUTIR_DAN_DIMENSI.md) | Telaah butir bank lama terhadap dimensi | Selesai; keputusannya masuk 06 | Hanya untuk menelusuri alasan | 39 KB |
@@ -51,7 +51,7 @@ Urutan kerja mengikuti peta jalan di 01, yang dikukuhkan pemilik proyek pada 25 
 | [19_TELAAH_LABEL_BLOOM.md](19_TELAAH_LABEL_BLOOM.md): telaah label Bloom | no. 4 | Claude (telaah), pemilik proyek | Selesai (26 Oktober 2026); 08 dan 06 diperbarui |
 | Skala sikap untuk Balai Refleksi | no. 19 | | Belum mulai |
 | Mock-up layar baru untuk ahli media langkah 1 | no. 20 | | Belum mulai |
-| Lembar L0–L7 final | no. 11 | | Belum mulai |
+| [02_LEMBAR_LAPANGAN.md](02_LEMBAR_LAPANGAN.md): lembar L0–L7 final | no. 11 | Claude (draf), pemilik proyek | Selesai (disetujui 26 Oktober 2026) |
 | Instrumen validasi r10 v2.1 dan media v1.1 | [07](07_TELAAH_INSTRUMEN_VALIDASI.md#langkah-berikutnya) | | Belum mulai |
 
 Gerbang G1: konstruk disetujui, dan semua dokumen tahap 1 selesai dan disetujui pemilik proyek.

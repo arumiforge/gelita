@@ -6,6 +6,23 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 26 Oktober 2026
 
+**Keputusan pemilik proyek: lembar lapangan final, putaran 1** (sesi `r10-lembar-lapangan`, daftar kerja no. 11)
+
+1. **Siswa tanpa izin orang tua tidak punya akun GELITA.** Mereka ikut kegiatan pengganti yang setara di ruang yang sama, disiapkan guru (misalnya membaca buku), jadi tidak ada data tentang mereka. Pilihan bermain lalu datanya dihapus, atau mode tamu tanpa penyimpanan, tidak dipakai.
+2. **Di P1, baris dan kursi dimasukkan langsung setelah pendaftaran.** Siswa mendaftar lalu menunggu di layar pembuka modul tes. P1 mengetik kode peserta → baris dan kursi untuk seluruh kelas di panel peneliti (± 5 menit), bersama buklet. P3 mencocokkan kode dengan L2. Setelah itu tes awal dimulai bersama. Buklet tidak lagi dimasukkan "sesudah pertemuan P1".
+3. **Wawancara retrospektif L5 di P2–P4, tiga siswa per pertemuan**, satu dari setiap kelompok nilai tes awal (rendah, sedang, tinggi). Setiap siswa diwawancarai paling banyak sekali, jadi ± 9 siswa per kelas. Wawancara di P5 tidak dijadwalkan.
+4. **Siswa yang absen di pertemuan wilayah ikut sesi susulan dalam tiga hari**, seperti susulan tes. P1 membuka sesi lapangan susulan untuk wilayah itu dengan token sendiri (kode sesi berakhiran `-S`, misalnya `S03-A-P3-S`), diamati sedikitnya satu peneliti yang mengisi L1–L3. Sisa tantangan tetap dilanjutkan di susulan P5.
+
+**Persetujuan:** pemilik proyek menyetujui lembar L0–L7 final di [02](02_LEMBAR_LAPANGAN.md) apa adanya, termasuk pilihan yang menyertainya:
+- L3 juga dipakai saat tes dan angket, menggantikan kolom catatan L6 di 13.
+- L4 hanya selama waktu bermain.
+- Kode penyimpangan baru DEV-TIM (peneliti kurang dari tiga).
+- L2 satu baris per siswa, dengan kolom baris dan kursi di baris.
+- Kelompok nilai tes awal untuk L5 adalah sepertiga terbawah, tengah, dan teratas di rombel.
+- Contoh tanggal fiktif, sesudah perkiraan persetujuan etik.
+
+Akibatnya: 02 final; 03 mendapat kode sesi susulan, DEV-TIM, dan arti L5 yang baru. Yang perlu disesuaikan di dokumen lain dicatat di [02](02_LEMBAR_LAPANGAN.md#perubahan-dari-draf).
+
 **Keputusan pemilik proyek: label Bloom pengembang** (sesi `r10-label-bloom`, daftar kerja no. 4, telaah di [19](19_TELAAH_LABEL_BLOOM.md))
 
 1. **Petunjuk Cari Objek diberi label menurut proses yang dilakukan siswa.** PBK: C1 kalau petunjuk menyebut nama bendanya (Temanggung), C2 kalau hanya mendeskripsikannya (Magelang, Wonosobo). Periksa Unggahan per jenis petunjuk: atribusi C2, izin C3, representasi C2 di Temanggung dan C4 di Magelang dan Wonosobo, menghargai tradisi C2 di Temanggung dan Magelang dan C4 di Wonosobo. Tidak ada C5 di Cari Objek.
