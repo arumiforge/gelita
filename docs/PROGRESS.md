@@ -31,8 +31,9 @@ Documentation only, in `docs/revisi-10-analitik/` (Indonesian, at the owner's re
   - [ ] Fix the leaks outside the story found by the same check (bank side, before expert validation)
     - [x] Susun Gambar captions: all 30 checked against `08` (section *Susun Gambar selama studi*). 22 leak or cue a D1 key, D3 key, or PBK clue, including 7 of the 9 first-attempt variants a–c; d–j appear only on replays, which open after the region is done, so they are harmless during the study
     - [x] Owner decided (26 October 2026): during the study the first attempt is drawn at random from two leak-free variants per region (Pasar Papringan + a new Wayang Kedu picture, Candi Mendut + Candi Pawon, Kompleks Candi Arjuna + Tari Topeng Lengger); `06` (system change 4, code table) and `01` (system change 20) updated
-    - [ ] New Temanggung Susun Gambar picture and caption (Wayang Kedu): facts checked, caption finalised, art by the catalogue team (draft caption and art brief in `08`)
-    - [ ] Culture expert confirms Topeng Lengger comes from Wonosobo (`wnb-1-i`), otherwise the owner picks Wonosobo's second variant again; the researcher checks the facts of Papringan, Pawon, and Arjuna
+    - [x] Owner confirmed (26 October 2026): Wayang Kedu Temanggungan's origin (caption written in `08`, World Heritage line left out until the decree is found) and Topeng Lengger's origin in Wonosobo; the Candi Pawon picture gets replaced
+    - [ ] Catalogue team makes the new Wayang Kedu picture and the replacement Candi Pawon picture (briefs in `08`), then both are re-checked against `08`
+    - [ ] Researcher checks the facts of Papringan, Pawon, and Arjuna, and Lengger's 2020 listing year
     - [ ] Outdated `petunjuk-*` narration mapping
   - [ ] Owner decides the proposed P5 order change in `12` (post-test before the closing story), which changes the meeting plan in `06`
 - [ ] Complete implementation document, after the revision documents are final and gate G2 (expert validation and ethics approval) is passed
