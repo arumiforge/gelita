@@ -49,6 +49,11 @@ Documentation only, in `docs/revisi-10-analitik/` (Indonesian, at the owner's re
 - [x] Bloom label review (work item 4 in `01`, `19_TELAAH_LABEL_BLOOM.md`), PR #247
   - [x] Every scored item checked against Anderson & Krathwohl (2001): 116 digital-literacy items and 12 PBK items; the owner approved all four proposals (26 October 2026, `04`): Cari Objek clues labelled by process (no C5), Benar atau Salah capped at C4 except two evidence-checking cards, Skenario Digital labelled per item (C3/C3/C4, two C5), region ranges revised to C1–C3, C2–C4, C2–C5
   - [x] Applied: 39 of 92 old labels changed and 36 new labels written in `08`; challenge and region ranges and rule 14 in `06`; the region table and step 1 in `01`
+- [ ] Companion attitude scale *sikap menjaga warisan* for Balai Refleksi (work item 19 in `01`): draft `17_SKALA_SIKAP.md`
+  - [x] Draft written: construct kept apart from PBK and D3, four indicators SK1–SK4, 12 items (4 reverse-keyed, no "tidak"/"bukan"), scoring, P5 administration, variables for `kamus-1.1`, validation plan, ethics, knock-on changes; codes added to `03`
+  - [x] Owner decided two interview rounds (26 October 2026, `04`): 4-point words-and-dots format without a midpoint or faces, on screen only, one statement per screen with back allowed, scale before the existing feedback form (feedback all optional during the study), raters Ahli Budaya Kedu, Ahli Pengukuran, Ahli Bahasa Anak 1 and 2 (Lynn's I-CVI), make-up within 7 days
+  - [x] Owner settled the scale's open questions (26 October 2026, `04`): the regional-language item stays, `skp-12` names merti desa and kirab, the feedback star rating counts as practicality data, students unfinished at the end of P5 keep their data as is (scale missing as `belum_tuntas`), and a moderate correlation with PBK and D3 is expected (exact band at G4)
+  - [ ] Expert validation and child readability check (stage 2); knock-on changes in `01` (system change 21), `02`, `06`, `07`, `11`, `12`, `13`, and `18` listed in `17` → *Akibat ke dokumen lain*
 - [ ] Complete implementation document, after the revision documents are final and gate G2 (expert validation and ethics approval) is passed
 - [ ] Implementation of the system changes listed in `01` (22 so far), one short-lived branch each, after the implementation document is approved
 

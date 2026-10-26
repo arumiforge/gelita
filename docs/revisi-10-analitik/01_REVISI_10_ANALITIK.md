@@ -401,7 +401,7 @@ Ahli media menilai dalam dua langkah (diputuskan 25 Oktober 2026): di tahap 2, g
 | 16 | Latih pengamat L4 sampai κ ≥ 0,60 | 4 | | Belum mulai |
 | 17 | Uji coba satu kelas dengan semua lembar | 4 | | Belum mulai |
 | 18 | Pra-registrasi skema kesalahan dan rencana analisis di OSF, di gerbang G4 | 4 | | Belum mulai |
-| 19 | Susun skala pendamping sikap menjaga warisan untuk Balai Refleksi, lalu masukkan ke validasi ahli (no. 14) | 1 | | Belum mulai |
+| 19 | Susun skala pendamping sikap menjaga warisan untuk Balai Refleksi, lalu masukkan ke validasi ahli (no. 14) | 1 | Claude (draf), pemilik proyek | Draf di [17](17_SKALA_SIKAP.md); keputusan pemilik proyek 26 Oktober 2026 (12 butir empat pilihan tanpa titik tengah, 4 butir dibalik, hanya di layar, sebelum kritik dan saran); menunggu validasi |
 | 20 | Buat papan cerita atau mock-up layar baru (Skenario Digital, *Periksa Unggahan*, token, modul tes dan angket) untuk ahli media langkah 1 | 1 | | Belum mulai |
 | 21 | Telaah ahli media langkah 2 pada layar jadi di instalasi uji, sebelum uji coba (G3) | 3 | | Belum mulai |
 

@@ -6,6 +6,28 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 26 Oktober 2026
 
+**Keputusan pemilik proyek: pertanyaan terbuka skala sikap** (sesi `r10-skala-sikap`, menjawab pertanyaan terbuka di [17](17_SKALA_SIKAP.md#pertanyaan-yang-masih-terbuka))
+
+1. **Butir bahasa daerah (skp-10) adil** untuk siswa yang bahasa ibunya bukan bahasa Jawa, karena menyebut "bahasa daerah" umum. Butir tetap dipakai.
+2. **skp-12 menyebut contoh acara setempat:** "Aku mau ikut acara budaya seperti merti desa dan kirab." Ahli Budaya Kedu memastikan keduanya dikenal di tiga wilayah.
+3. **Bintang 1–5 di kritik dan saran menjadi data kepraktisan** (`feedback_rating`, masuk `kamus-1.1`).
+4. **Siswa yang belum tuntas di akhir P5: data apa adanya.** Tidak ada jalur khusus ke Balai Refleksi; skalanya kosong dengan alasan `belum_tuntas`, dan data tantangannya dipakai seperti adanya. Susulan 7 hari hanya untuk siswa yang tidak hadir di P5.
+5. **Korelasi sikap dengan PBK dan D3 diharapkan sedang: cukup kuat, tidak berlebihan** (usulan r ≈ 0,30–0,50; r ≥ 0,70 atau r < 0,10 dicatat sebagai temuan). Batas pastinya ditulis di pra-registrasi OSF di G4.
+
+Akibatnya: [17](17_SKALA_SIKAP.md) diperbarui (butir, pelaksanaan, variabel `sikap_missing_reason` dan `feedback_rating`, akibat ke 01 dan dokumen pendukung peneliti).
+
+**Keputusan pemilik proyek: skala sikap menjaga warisan** (sesi `r10-skala-sikap`, dua putaran wawancara; semua usulan disetujui)
+
+1. **Format jawaban: empat pilihan tanpa titik tengah** (*Tidak setuju · Kurang setuju · Setuju · Sangat setuju*), kata dengan titik emas yang makin besar, tanpa wajah.
+2. **12 butir, empat indikator × tiga:** menghargai (SK1), ingin tahu (SK2), mau ikut merawat (SK3), bangga (SK4). Satu butir per indikator berarah negatif dan dibalik skornya, ditulis tanpa "tidak" atau "bukan". Semua butir berlatar dunia nyata, tanpa ruang digital, supaya terpisah dari D3 dan PBK.
+3. **Tidak dibacakan:** hanya di layar, tanpa rekaman. P3 boleh menjelaskan satu kata, dicatat di L3.
+4. **Kritik dan saran yang ada sekarang tetap**, sesudah skala; selama penelitian semua isiannya boleh kosong.
+5. **Penilai ahli:** Ahli Budaya Kedu, Ahli Pengukuran, Ahli Bahasa Anak 1 dan 2 menilai relevansi (I-CVI, aturan Lynn: keempatnya harus memberi 3 atau 4); Ahli Bahasa Anak juga menelaah bahasa; Ahli Literasi Digital 1 dan 2 hanya memberi catatan tumpang tindih D3.
+6. **Tidak hadir di P5:** susulan paling lama 7 hari, ditandai; sesudahnya kosong, tanpa perkiraan.
+7. **Tampilan:** satu pernyataan per layar, boleh kembali sebelum kirim, urutan tetap, bilah kemajuan.
+
+Akibatnya: [17](17_SKALA_SIKAP.md) ditulis; kode skala masuk 03. Penyesuaian 01 (perubahan sistem no. 21), 02 (L1, L3, L7), 06 (baris P5), 07 (lembar penilaian v2.1), 11 (`kamus-1.1`), 12, 13 (waktu P5), dan mock-up 18 tercatat di [17](17_SKALA_SIKAP.md#akibat-ke-dokumen-lain).
+
 **Keputusan pemilik proyek: lembar lapangan final, putaran 1** (sesi `r10-lembar-lapangan`, daftar kerja no. 11)
 
 1. **Siswa tanpa izin orang tua tidak punya akun GELITA.** Mereka ikut kegiatan pengganti yang setara di ruang yang sama, disiapkan guru (misalnya membaca buku), jadi tidak ada data tentang mereka. Pilihan bermain lalu datanya dihapus, atau mode tamu tanpa penyimpanan, tidak dipakai.
