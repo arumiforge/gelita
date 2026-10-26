@@ -22,7 +22,7 @@ Putaran 2, setelah melihat 23 gambar:
 3. **Lapisan pemeriksaan area ketuk (`mk-pu-02`) ikut dikirim ke ahli media**, bertanda tidak tampil ke siswa.
 4. **Draf salinan di 18** (token keliru, layar kecil, ketukan keliru di *Periksa Unggahan*, pengingat lima menit, kalimat kesempatan habis) **diterima sebagai teks awal**; kalimat akhirnya ditetapkan di dokumen implementasi setelah telaah ahli dan uji keterbacaan.
 
-Akibatnya: 18 ditulis; 00, 01 (daftar kerja no. 20), dan 03 (kode `mk-*`) diperbarui. 08 perlu kalimat penjelasan per skenario (celah no. 1 di 18). Celah lain yang ditemukan dicatat di 18 → *Celah yang ditemukan di dokumen lain*.
+Akibatnya: 18 ditulis; 00, 01 (daftar kerja no. 20), dan 03 (kode `mk-*`) diperbarui. Atas permintaan pemilik proyek di sesi yang sama, 24 kalimat *Penjelasan setelah kesempatan habis* ditulis di 08 (satu per skenario, dengan aturannya di *Cara membaca*: menyebut risikonya lalu mengapa tindakan tepat aman, tanpa kata "tepat", "salah", atau "gagal", tidak dibacakan, tidak diskor), dan `mk-sd-05` digambar ulang. Kalimatnya ikut validasi ahli bersama bank. Celah lain yang ditemukan dicatat di 18 → *Celah yang ditemukan di dokumen lain*.
 
 **Keputusan pemilik proyek: lembar lapangan final, putaran 1** (sesi `r10-lembar-lapangan`, daftar kerja no. 11)
 

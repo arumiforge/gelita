@@ -27,7 +27,7 @@ Ini isi bank soal baru, ditulis mengikuti kisi-kisi. Dokumen ini masih **draf un
 
 **Aturan kode di Periksa Unggahan (babak 2 Cari Objek).** Setiap petunjuk punya beberapa *pengecoh utama*, bagian adegan yang sengaja dibuat menggoda; kodenya ditulis di tabel. Mengetuk bagian ketuk lain, termasuk kunci petunjuk lain → **kode jenis petunjuk itu**: atribusi BUD-ATR, representasi BUD-REP, izin BUD-IZN, menghargai tradisi BUD-ETK. Mengetuk tempat kosong di dekat kunci → **NON-SEN**, bukan percobaan dan tidak memakai kesempatan (keputusan 26 Oktober 2026, [kamus data](11_KAMUS_DATA.md#analitik-6-pola-kesalahan)).
 
-**Skenario Digital.** Skor tindakan: tepat = 2, kurang tepat = 1, berisiko = 0. Alasan tidak diskor, hanya dikode. Kalimat tanya alasan selalu sama: **"Yang paling penting kupikirkan di sini adalah …"**. Pilihan tindakan dan alasan diacak per pengerjaan. Umpan balik tidak memakai kata "salah" atau "gagal".
+**Skenario Digital.** Skor tindakan: tepat = 2, kurang tepat = 1, berisiko = 0. Alasan tidak diskor, hanya dikode. Kalimat tanya alasan selalu sama: **"Yang paling penting kupikirkan di sini adalah …"**. Pilihan tindakan dan alasan diacak per pengerjaan. Umpan balik tidak memakai kata "salah" atau "gagal". **Penjelasan setelah kesempatan habis** tampil sekali, setelah kesempatan ketiga habis tanpa tindakan tepat: tindakan tepat ditampilkan, lalu satu kalimat penjelasan dari baris ini (keputusan pemilik proyek 26 Oktober 2026, [18](18_MOCKUP_LAYAR_BARU.md)). Kalimatnya menyebut apa yang membuat situasi itu berisiko, lalu mengapa tindakan tepat itu aman; tidak memakai kata "tepat", "salah", atau "gagal", tidak dibacakan, dan tidak diskor.
 
 **Nama dan alamat tiruan.** Semua akun, sanggar, warung, situs, dan tokoh di bacaan digital adalah fiktif. Unggahan tampil di aplikasi media sosial fiktif **Kedugram**, jadi nama akun di game tidak merujuk ke akun di platform sungguhan. Komentator ditulis dengan nama depan saja, tanpa @. Alamat situs memakai domain `.example`. Sebelum dipakai, setiap nama dicek bahwa tidak sama dengan akun, sanggar, atau usaha nyata (lihat *Yang harus dicek sebelum validasi*).
 
@@ -219,6 +219,8 @@ Pengecoh: angklung, ondel-ondel, perahu pinisi, sasando, semuanya **INF-BUD**.
 | Tutup situsnya dan cerita ke orang tua | 2 | — | Pilihan yang aman. Orang tua bisa membantu memeriksa apakah kuis itu sungguhan. |
 | Tutup situsnya dan lanjut bermain yang lain | 1 | DIG-PSF | Kamu sudah aman. Akan lebih baik lagi kalau kamu cerita ke orang tua, supaya mereka tahu ada situs seperti itu. |
 
+**Penjelasan setelah kesempatan habis:** Situs yang tidak jelas pembuatnya bisa memakai alamat dan nama sekolahmu. Dengan menutup situs dan bercerita ke orang tua, datamu aman dan orang tua bisa memeriksa kuis itu.
+
 | Alasan | Kode |
 | --- | --- |
 | Alamat dan sekolahku bisa dipakai orang asing | R-RISK |
@@ -232,6 +234,8 @@ Pengecoh: angklung, ondel-ondel, perahu pinisi, sasando, semuanya **INF-BUD**.
 | Kirim kata sandinya supaya levelmu cepat naik | 0 | DIG-SAN | Orang yang tahu kata sandimu bisa masuk dan memakai akunmu. Kata sandi hanya untuk pemilik akun. |
 | Tunjukkan pesan itu ke orang tua, lalu laporkan | 2 | — | Tepat sekali. Kata sandimu aman, dan orang dewasa bisa membantu melapor. |
 | Tidak membalas, lalu keluar dari game itu | 1 | DIG-PSF | Kata sandimu aman. Ceritakan juga ke orang tua supaya akun itu bisa dilaporkan. |
+
+**Penjelasan setelah kesempatan habis:** Kata sandi hanya untuk pemilik akun. Dengan menunjukkan pesan ke orang tua lalu melapor, kata sandimu aman dan orang dewasa bisa membantu menghentikan akun itu.
 
 | Alasan | Kode |
 | --- | --- |
@@ -247,6 +251,8 @@ Pengecoh: angklung, ondel-ondel, perahu pinisi, sasando, semuanya **INF-BUD**.
 | Tanya kakakmu dulu, boleh diunggah atau tidak | 1 | DIG-IZN | Bertanya itu bagus. Tapi yang punya akun adalah ibumu, jadi izinnya perlu dari ibu. |
 | Tunggu ibu selesai memasak, lalu tanya ibu | 2 | — | Tepat. Ibu bisa memutuskan, dan bisa membantu memilih siapa saja yang boleh melihat foto itu. |
 
+**Penjelasan setelah kesempatan habis:** Akun itu milik ibumu, jadi ibu yang berhak memutuskan. Dengan menunggu lalu bertanya ke ibu, kamu meminta izin kepada pemilik akunnya.
+
 | Alasan | Kode |
 | --- | --- |
 | Ibu pemilik akunnya, jadi ibu yang memutuskan | R-ETIK |
@@ -260,6 +266,8 @@ Pengecoh: angklung, ondel-ondel, perahu pinisi, sasando, semuanya **INF-BUD**.
 | Teruskan ke grup kelas supaya teman-teman tahu | 0 | DIG-HOX | Kabar tanpa sumber belum tentu benar. Kalau diteruskan, banyak teman bisa ikut bingung. |
 | Tanyakan dulu ke wali kelas apakah itu benar | 2 | — | Tepat. Guru dan orang tua bisa memeriksa ke sumber yang jelas, misalnya pengumuman sekolah. |
 | Tidak meneruskan dan tidak bertanya ke siapa pun | 1 | DIG-PSF | Kamu tidak ikut menyebarkan, bagus. Bertanya ke guru atau orang tua akan lebih membantu. |
+
+**Penjelasan setelah kesempatan habis:** Kabar tanpa pembuat belum tentu benar. Dengan bertanya dulu ke wali kelas, kamu tahu kebenarannya dari sumber yang jelas sebelum ada yang ikut bingung.
 
 | Alasan | Kode |
 | --- | --- |
@@ -277,6 +285,8 @@ Pengecoh: angklung, ondel-ondel, perahu pinisi, sasando, semuanya **INF-BUD**.
 | Berhenti mengisi dan tanya orang tua dulu | 2 | — | Pilihan yang aman. Orang tua bisa mencari tahu siapa penyelenggaranya. |
 | Berhenti mengisi, lalu cari lomba yang lain | 1 | DIG-PSF | Datamu aman. Akan lebih baik kalau orang tua juga tahu. |
 
+**Penjelasan setelah kesempatan habis:** Penyelenggara lomba ini tidak jelas, padahal ia meminta nomor HP orang tua dan alamat rumah. Dengan berhenti dan bertanya ke orang tua, datamu aman dan orang tua bisa mencari tahu siapa penyelenggaranya.
+
 | Alasan | Kode |
 | --- | --- |
 | Data pribadi bisa dipakai orang asing | R-RISK |
@@ -290,6 +300,8 @@ Pengecoh: angklung, ondel-ondel, perahu pinisi, sasando, semuanya **INF-BUD**.
 | Tulis kata sandinya supaya dapat koin gratis | 0 | DIG-SAN | Kata sandi yang ditulis di ruang obrolan bisa dibaca orang lain. Akunmu bisa diambil alih. |
 | Tunjukkan ke orang tua, lalu laporkan akunnya | 2 | — | Tepat. Akunmu aman dan akun itu bisa dilaporkan. |
 | Tidak menjawab, lalu keluar dari ruang obrolan | 1 | DIG-PSF | Akunmu aman. Ceritakan juga ke orang tua, ya. |
+
+**Penjelasan setelah kesempatan habis:** Kata sandi yang ditulis di ruang obrolan bisa dibaca orang lain. Dengan menunjukkan ke orang tua lalu melaporkan akunnya, akunmu aman dan akun itu bisa dihentikan.
 
 | Alasan | Kode |
 | --- | --- |
@@ -305,6 +317,8 @@ Pengecoh: angklung, ondel-ondel, perahu pinisi, sasando, semuanya **INF-BUD**.
 | Tanya temanmu dulu, boleh diunggah atau tidak | 1 | DIG-IZN | Bertanya itu bagus. Tapi yang berhak memberi izin adalah pemilik akun, yaitu ayahmu. |
 | Tunggu ayah pulang, lalu tanya ayah | 2 | — | Tepat. Ayah bisa memutuskan dan membantu mengatur siapa yang boleh menonton. |
 
+**Penjelasan setelah kesempatan habis:** Akun itu milik ayahmu, jadi ayah yang berhak memberi izin. Dengan menunggu ayah pulang lalu bertanya, kamu meminta izin kepada pemilik akunnya.
+
 | Alasan | Kode |
 | --- | --- |
 | Ayah pemilik akunnya, jadi ayah yang memutuskan | R-ETIK |
@@ -318,6 +332,8 @@ Pengecoh: angklung, ondel-ondel, perahu pinisi, sasando, semuanya **INF-BUD**.
 | Teruskan ke grup lain supaya banyak yang tahu | 0 | DIG-HOX | Kabar tanpa sumber belum tentu benar. Kopi mengandung kafein dan bukan minuman untuk anak-anak. |
 | Tanyakan dulu ke guru apakah itu benar | 2 | — | Tepat. Guru dan orang tua bisa membantu mencari sumber yang dapat dipercaya. |
 | Tidak meneruskan dan tidak bertanya ke siapa pun | 1 | DIG-PSF | Kamu tidak ikut menyebarkan, bagus. Bertanya akan lebih membantu teman-temanmu. |
+
+**Penjelasan setelah kesempatan habis:** Pesan tanpa pembuat belum tentu benar. Dengan bertanya dulu ke guru, kamu tidak ikut menyebarkan kabar yang belum pasti.
 
 | Alasan | Kode |
 | --- | --- |
@@ -533,6 +549,8 @@ Pengecoh: kuda kepang bambu, manisan carica, dadak merak Reog, angklung, bakpia,
 | Berhenti, lalu tanya orang tua apakah aman | 2 | — | Tepat. Kuis yang meminta data pribadi patut dicurigai, dan orang tua bisa membantu memeriksanya. |
 | Berhenti main tanpa cerita ke siapa pun | 1 | DIG-PSF | Datamu aman. Cerita ke orang tua akan membantu kalau aplikasi itu nanti muncul lagi. |
 
+**Penjelasan setelah kesempatan habis:** Kuis ini meminta tanggal lahir dan nama lengkap ibumu, padahal data itu tidak perlu untuk sebuah kuis. Dengan berhenti dan bertanya ke orang tua, datamu tetap aman.
+
 | Alasan | Kode |
 | --- | --- |
 | Data itu bisa dipakai orang untuk membobol akun | R-RISK |
@@ -548,6 +566,8 @@ Pengecoh: kuda kepang bambu, manisan carica, dadak merak Reog, angklung, bakpia,
 | Beri tahu sekarang, nanti kata sandinya diganti | 0 | DIG-SAN | Selama belum diganti, akunmu bisa dipakai orang lain. Lebih aman kalau tidak dibagikan sama sekali. |
 | Tolak dengan ramah, lalu ajak main bersama | 2 | — | Tepat. Akunmu aman dan persahabatan kalian tetap terjaga. |
 | Tolak tanpa menjelaskan apa pun ke Laras | 1 | DIG-PSF | Menolak memberi kata sandi itu benar. Menjelaskan alasannya dengan ramah membuat Laras mengerti dan tidak salah paham. |
+
+**Penjelasan setelah kesempatan habis:** Kata sandi hanya untuk pemilik akun, walaupun yang meminta sahabatmu sendiri. Dengan menolak dengan ramah lalu mengajak main bersama, akunmu aman dan kalian tetap bersahabat.
 
 | Alasan | Kode |
 | --- | --- |
@@ -565,6 +585,8 @@ Pengecoh: kuda kepang bambu, manisan carica, dadak merak Reog, angklung, bakpia,
 | Tanya Dimas dulu, boleh dibagikan atau tidak | 2 | — | Tepat. Foto orang lain hanya dibagikan kalau orangnya setuju. |
 | Simpan fotonya di HP tanpa bertanya ke Dimas | 1 | DIG-PSF | Kamu tidak membagikannya, bagus. Lebih baik lagi kalau kamu bertanya ke Dimas, karena itu fotonya. |
 
+**Penjelasan setelah kesempatan habis:** Dimas mungkin malu kalau foto itu tersebar. Dengan bertanya dulu ke Dimas, kamu hanya membagikan fotonya kalau ia setuju.
+
 | Alasan | Kode |
 | --- | --- |
 | Dimas mungkin malu kalau fotonya disebar | R-ETIK |
@@ -580,6 +602,8 @@ Pengecoh: kuda kepang bambu, manisan carica, dadak merak Reog, angklung, bakpia,
 | Ajak teman-teman langsung berangkat besok | 0 | DIG-HOX | Sebaiknya kabar dicek dulu sebelum dipakai untuk membuat rencana. |
 | Cek dulu di situs resmi candi bersama orang tua | 2 | — | Tepat. Sumber resmi bisa memastikan benar atau tidaknya kabar itu. |
 | Tidak meneruskan dan tidak menanggapi apa pun | 1 | DIG-PSF | Kamu tidak ikut menyebarkan, bagus. Mengecek ke sumber resmi akan membantu teman-temanmu juga. |
+
+**Penjelasan setelah kesempatan habis:** Pesan itu tidak menyebut sumber resmi. Dengan mengecek situs resmi candi bersama orang tua, kamu tahu benar atau tidaknya sebelum ikut menyebarkan.
 
 | Alasan | Kode |
 | --- | --- |
@@ -599,6 +623,8 @@ Pengecoh: kuda kepang bambu, manisan carica, dadak merak Reog, angklung, bakpia,
 | Tanya orang tua; sebut nama panggilan saja | 2 | — | Tepat. Kamu tetap bisa ikut lomba tanpa membuka data pribadi. |
 | Tidak jadi ikut tanpa cerita ke siapa pun | 1 | DIG-PSF | Datamu aman. Orang tua mungkin bisa membantumu ikut lomba dengan cara yang aman. |
 
+**Penjelasan setelah kesempatan habis:** Video itu bisa dilihat siapa saja, jadi nama lengkap dan alamat rumahmu bisa diketahui orang asing. Dengan bertanya ke orang tua dan menyebut nama panggilan saja, kamu tetap bisa ikut lomba dengan aman.
+
 | Alasan | Kode |
 | --- | --- |
 | Orang asing bisa tahu alamat rumahku | R-RISK |
@@ -614,6 +640,8 @@ Pengecoh: kuda kepang bambu, manisan carica, dadak merak Reog, angklung, bakpia,
 | Beri tahu sekarang, nanti kata sandinya diganti | 0 | DIG-SAN | Selama belum diganti, akunmu bisa dipakai orang lain. Lebih aman tidak dibagikan. |
 | Tolak dengan ramah, lalu ajak kerja bersama | 2 | — | Tepat. Akunmu aman dan tugas kelompok tetap jalan. |
 | Tolak tanpa menjelaskan apa pun ke Arif | 1 | DIG-PSF | Menolak memberi kata sandi itu benar. Menjelaskan alasannya dengan ramah membuat Arif mengerti dan tugas tetap jalan. |
+
+**Penjelasan setelah kesempatan habis:** Kata sandi hanya untuk pemilik akun, walaupun yang meminta teman sekelompok. Dengan menolak dengan ramah dan mengajak kerja bersama, akunmu aman dan tugas tetap selesai.
 
 | Alasan | Kode |
 | --- | --- |
@@ -631,6 +659,8 @@ Pengecoh: kuda kepang bambu, manisan carica, dadak merak Reog, angklung, bakpia,
 | Tanya Sekar dulu, atau pilih foto yang lain | 2 | — | Tepat. Setiap orang di foto berhak setuju atau tidak. |
 | Simpan fotonya di HP tanpa bertanya ke Sekar | 1 | DIG-PSF | Kamu tidak membagikannya, bagus. Bertanya ke Sekar akan lebih baik. |
 
+**Penjelasan setelah kesempatan habis:** Sekar mungkin tidak ingin fotonya dilihat banyak orang dalam keadaan begitu. Dengan bertanya ke Sekar dulu atau memilih foto lain, kamu menghargai perasaannya.
+
 | Alasan | Kode |
 | --- | --- |
 | Sekar mungkin malu kalau fotonya diunggah | R-ETIK |
@@ -646,6 +676,8 @@ Pengecoh: kuda kepang bambu, manisan carica, dadak merak Reog, angklung, bakpia,
 | Unggah tulisan "Jangan beli getuk!" di media sosial | 0 | DIG-HOX | Sebelum menyebarkan peringatan, kabarnya perlu dicek dulu. |
 | Cek dulu di berita tepercaya bersama orang tua | 2 | — | Tepat. Mengecek ke sumber yang jelas mencegah kabar bohong menyebar. |
 | Tidak meneruskan dan tidak menanggapi apa pun | 1 | DIG-PSF | Kamu tidak ikut menyebarkan, bagus. Mengecek dan memberi tahu teman akan lebih membantu. |
+
+**Penjelasan setelah kesempatan habis:** Pesan itu tidak menyebut sumber atau bukti. Dengan mengecek berita tepercaya bersama orang tua, kamu tidak ikut menyebarkan kabar yang belum pasti.
 
 | Alasan | Kode |
 | --- | --- |
@@ -871,6 +903,8 @@ Pengecoh: pepaya biasa, rigen, semangkuk mi ongklok, angklung, sasando, biji kop
 | Tunjukkan ke orang tua, lalu blokir akunnya | 2 | — | Tepat. Datamu aman, dan akun penipu bisa dihentikan. |
 | Diamkan saja tanpa cerita ke siapa pun | 1 | DIG-PSF | Datamu aman. Cerita ke orang tua akan membantu melindungi orang lain juga. |
 
+**Penjelasan setelah kesempatan habis:** Hadiah dari akun yang tidak dikenal, apalagi yang mendesak, bisa jadi tipuan untuk mengambil data. Dengan menunjukkan ke orang tua lalu memblokir akunnya, data keluargamu aman.
+
 | Alasan | Kode |
 | --- | --- |
 | Hadiah dari orang asing bisa jadi tipuan | R-RISK |
@@ -889,6 +923,8 @@ Skenario ini diambil dari contoh di 01; kalimat tanya alasannya dibuat netral.
 | Balas dulu, tanya apakah mereka benar tim resmi | 0 | DIG-ASG | Penipu akan selalu menjawab "benar". Membalas membuatmu terus dibujuk. |
 | Tunjukkan pesan dan SMS-nya ke ibu | 2 | — | Tepat. Kode tetap aman, ibu tahu ada yang mencoba masuk ke akunnya, dan kalian bisa melaporkan akun itu bersama. |
 | Hapus pesan itu dan tidak cerita ke ibu | 1 | DIG-PSF | Kodenya aman. Ibu perlu tahu, karena kode itu masuk ke HP-nya. |
+
+**Penjelasan setelah kesempatan habis:** Kode dari SMS adalah kunci untuk masuk ke akun, dan akun yang tampak resmi pun bisa palsu. Dengan menunjukkan pesan dan SMS-nya ke ibu, kode tetap aman dan kalian bisa melapor bersama.
 
 | Alasan | Kode |
 | --- | --- |
@@ -909,6 +945,8 @@ Skenario ini diambil dari contoh di 01; kalimat tanya alasannya dibuat netral.
 | Minta grup bertanya langsung ke Bima, lalu sapa Bima | 2 | — | Tepat. Rahasia Bima terjaga, dan kamu tetap peduli padanya. |
 | Tidak menjawab grup dan tidak menyapa Bima | 1 | DIG-PSF | Rahasia Bima aman. Menyapa Bima secara pribadi akan membuatnya merasa ditemani. |
 
+**Penjelasan setelah kesempatan habis:** Cerita Bima di pesan pribadi adalah rahasianya. Dengan meminta teman-teman bertanya langsung ke Bima, rahasia Bima terjaga dan kamu tetap bisa menyapanya.
+
 | Alasan | Kode |
 | --- | --- |
 | Bima belum tentu mau ceritanya disebar | R-ETIK |
@@ -925,6 +963,8 @@ Skenario ini diambil dari contoh di 01; kalimat tanya alasannya dibuat netral.
 | Balas di grup: "Fikri bodoh, itu hoaks!" | 0 | DIG-ETK | Kamu benar soal fotonya, tapi kata-kata kasar membuat Fikri malu dan teman lain enggan mendengar. |
 | Beri tahu Fikri dengan sopan bahwa itu foto lama | 2 | — | Tepat. Kabar bohong bisa berhenti, dan Fikri tetap dihargai. Ajak juga mengecek akun resmi pengelola. |
 | Tidak menyebarkan dan tidak menanggapi apa pun | 1 | DIG-PSF | Kamu tidak ikut menyebarkan, bagus. Memberi tahu dengan sopan bisa menghentikan kabar bohong itu. |
+
+**Penjelasan setelah kesempatan habis:** Foto yang sama ada di berita lama dari daerah lain, jadi kabar itu belum tentu benar. Dengan memberi tahu Fikri dengan sopan, kabar itu bisa berhenti tanpa membuat Fikri malu.
 
 | Alasan | Kode |
 | --- | --- |
@@ -945,6 +985,8 @@ Skenario ini diambil dari contoh di 01; kalimat tanya alasannya dibuat netral.
 | Tunjukkan ke orang tua, dan ingatkan Sinta juga | 2 | — | Tepat. Datamu aman, dan kamu ikut menolong Sinta. |
 | Tidak ikut, dan tidak membahasnya dengan Sinta | 1 | DIG-PSF | Datamu aman. Sinta mungkin perlu bantuan karena sudah mengirim datanya. |
 
+**Penjelasan setelah kesempatan habis:** Kartu Keluarga dan nomor HP orang tua adalah data pribadi keluarga, walaupun temanmu bilang aman. Dengan menunjukkan ke orang tua dan mengingatkan Sinta, kamu menjaga datamu dan menolong temanmu.
+
 | Alasan | Kode |
 | --- | --- |
 | Data keluarga bisa disalahgunakan orang asing | R-RISK |
@@ -961,6 +1003,8 @@ Skenario ini diambil dari contoh di 01; kalimat tanya alasannya dibuat netral.
 | Balas pesannya, tanya apakah benar admin sekolah | 0 | DIG-ASG | Pengirim palsu akan menjawab "benar". Lebih aman bertanya langsung ke guru. |
 | Tunjukkan pesan itu ke guru tanpa membukanya | 2 | — | Tepat. Guru bisa memastikan, dan teman-teman lain bisa diperingatkan. |
 | Hapus pesannya dan tidak cerita ke siapa pun | 1 | DIG-PSF | Kata sandimu aman. Memberi tahu guru akan melindungi teman-temanmu juga. |
+
+**Penjelasan setelah kesempatan habis:** Alamat situs itu berbeda dari situs sekolah yang biasa, jadi pesannya belum tentu dari sekolah. Dengan menunjukkan pesan ke guru tanpa membukanya, kata sandimu aman dan guru bisa memastikan.
 
 | Alasan | Kode |
 | --- | --- |
@@ -979,6 +1023,8 @@ Skenario ini diambil dari contoh di 01; kalimat tanya alasannya dibuat netral.
 | Bilang di grup bahwa kamu perlu izin Nadia dulu | 2 | — | Tepat. Kamu menjaga perasaan Nadia walaupun teman-teman mendesak. |
 | Tidak menjawab grup dan tetap menyimpan fotonya | 1 | DIG-PSF | Fotonya tidak tersebar, bagus. Menjelaskan alasanmu bisa membuat teman lain ikut berpikir. |
 
+**Penjelasan setelah kesempatan habis:** Nadia tidak tahu dirinya difoto dan mungkin malu kalau foto itu tersebar. Dengan mengatakan di grup bahwa kamu perlu izin Nadia dulu, kamu menjaga perasaannya walaupun teman-teman mendesak.
+
 | Alasan | Kode |
 | --- | --- |
 | Nadia belum tentu mau fotonya disebar | R-ETIK |
@@ -995,6 +1041,8 @@ Skenario ini diambil dari contoh di 01; kalimat tanya alasannya dibuat netral.
 | Balas di grup: "Fikri bodoh, mana ada begitu!" | 0 | DIG-ETK | Mengingatkan itu bagus, tapi kata-kata kasar membuat Fikri malu. |
 | Ingatkan Fikri dengan sopan untuk cek sumbernya | 2 | — | Tepat. Kabar dicek dulu, dan Fikri tetap dihargai. |
 | Tidak mengirim dan tidak menanggapi apa pun | 1 | DIG-PSF | Kamu tidak ikut menyebarkan, bagus. Memberi tahu dengan sopan bisa menghentikan kabar itu. |
+
+**Penjelasan setelah kesempatan habis:** Video tanpa sumber belum tentu benar, dan sudah mulai tersebar. Dengan mengingatkan Fikri dengan sopan untuk mengecek sumbernya, kabar itu bisa dicek dulu sebelum menyebar lebih jauh.
 
 | Alasan | Kode |
 | --- | --- |

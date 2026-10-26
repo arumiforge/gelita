@@ -56,7 +56,7 @@ Ukuran gambar 27–111 KB (WebP, jumlah ± 1,6 MB). Semua layar game digambar di
 | [`mk-sd-04`](gambar/mockup/mk-sd-04.webp) | Umpan balik setelah pilihan "kurang tepat", kesempatan tersisa 2 dari 3. Tanpa kata "salah" atau "gagal", tanpa warna merah; tombol *Coba lagi* |
 | [`mk-sd-05`](gambar/mockup/mk-sd-05.webp) | Kesempatan ketiga habis: tindakan yang aman ditampilkan dan dijelaskan, tombol *Lanjut* ke cerita berikutnya |
 
-*Draf salinan* (belum ada di dokumen sumber): "Kamu masih punya 2 kesempatan. Pilih lagi tindakan dan alasanmu.", "Ini tindakan yang aman", "Kesempatanmu untuk cerita ini sudah habis. Ayo lanjut ke cerita berikutnya.", dan penjelasan tindakan aman di `mk-sd-05`, yang sementara memakai umpan balik pilihan tepat tanpa "Tepat sekali.". Pemilik proyek memutuskan penjelasan ini ditulis sebagai satu kalimat tersendiri per skenario di 08 (celah no. 1); gambarnya diganti setelah kalimat `tmg-5-a02` ada.
+*Draf salinan* (belum ada di dokumen sumber): "Kamu masih punya 2 kesempatan. Pilih lagi tindakan dan alasanmu.", "Ini tindakan yang aman", "Kesempatanmu untuk cerita ini sudah habis. Ayo lanjut ke cerita berikutnya.", Penjelasan tindakan aman di `mk-sd-05` bukan draf: itu baris *Penjelasan setelah kesempatan habis* `tmg-5-a02` di 08, kata demi kata (celah no. 1).
 
 **Yang dinilai ahli media.**
 - Apakah dua langkah (tindakan, lalu alasan) jelas bagi anak kelas 5, dan langkah alasan tidak terasa seperti soal kedua yang membingungkan?
@@ -169,7 +169,7 @@ Usulan bagian mock-up di instrumen media v1.1 (ditulis di 07 → *Langkah beriku
 
 Ditemukan saat menggambar; tidak diperbaiki di sini karena berkasnya milik dokumen lain.
 
-1. **Penjelasan setelah kesempatan Skenario Digital habis.** 01 menulis "tindakan yang aman ditampilkan dan dijelaskan", tetapi 08 hanya punya umpan balik per pilihan. Umpan balik pilihan tepat diawali "Tepat sekali." atau "Tepat.", yang janggal kalau siswa tidak memilihnya. **Diputuskan (26 Oktober 2026): satu kalimat penjelasan per skenario ditulis di 08** (24 kalimat, kolom atau baris baru), divalidasi bersama bank. Dikerjakan di sisi bank, bukan di sesi ini.
+1. **Penjelasan setelah kesempatan Skenario Digital habis.** 01 menulis "tindakan yang aman ditampilkan dan dijelaskan", tetapi 08 hanya punya umpan balik per pilihan. Umpan balik pilihan tepat diawali "Tepat sekali." atau "Tepat.", yang janggal kalau siswa tidak memilihnya. **Diputuskan (26 Oktober 2026): satu kalimat penjelasan per skenario ditulis di 08** (24 kalimat, kolom atau baris baru), divalidasi bersama bank. **Selesai:** 24 baris *Penjelasan setelah kesempatan habis* ditulis di 08, dengan aturannya di *Cara membaca*, dan `mk-sd-05` digambar ulang.
 2. **Pesan ketukan keliru di *Periksa Unggahan*.** Pesan Cari Objek sekarang menyebut *benda*. Babak 2 butuh kalimat sendiri; usulan di layar 2.
 3. **Salinan modul tes.** 13 menetapkan pengingat lima menit dan daftar nomor soal, tetapi tidak menulis kalimatnya. Usulan di layar 4 perlu masuk 13 atau dokumen implementasi, lalu ikut uji keterbacaan.
 4. **Salinan token dan layar penelitian.** 01 hanya menulis pesan di luar sesi. Pesan token keliru, token lewat jam, dan layar kecil belum ada; usulan di layar 3.
@@ -189,6 +189,6 @@ Putaran 1 (26 Oktober 2026), sebelum menggambar:
 Putaran 2 (26 Oktober 2026), setelah melihat gambar:
 
 1. **Gambar disetujui apa adanya** untuk paket ahli media langkah 1. `mk-ss-01` diperbarui setelah 17 final.
-2. **Penjelasan setelah kesempatan Skenario Digital habis: satu kalimat per skenario di 08**, bukan umpan balik pilihan tepat yang dipotong. Sampai kalimat itu ada, `mk-sd-05` memakai umpan balik pilihan tepat tanpa kata pembukanya.
+2. **Penjelasan setelah kesempatan Skenario Digital habis: satu kalimat per skenario di 08**, bukan umpan balik pilihan tepat yang dipotong. Ke-24 kalimatnya sudah ditulis di 08, dan `mk-sd-05` sudah digambar ulang dengan kalimat `tmg-5-a02`.
 3. **Lapisan pemeriksaan area ketuk (`mk-pu-02`) ikut dikirim ke ahli media**, bertanda jelas tidak tampil ke siswa.
 4. **Draf salinan di dokumen ini diterima sebagai teks awal.** Kalimat akhirnya ditetapkan di dokumen implementasi, setelah telaah ahli media dan uji keterbacaan dengan anak.
