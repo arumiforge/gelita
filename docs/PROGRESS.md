@@ -45,6 +45,11 @@ Documentation only, in `docs/revisi-10-analitik/` (Indonesian, at the owner's re
   - [x] Owner follow-up decisions (26 October 2026, `04`): test and questionnaire variables enter the data dictionary at `kamus-1.1` after the pilot (`kamus-1.0` untouched); region meetings P2–P4 also drop the 2-JP limit, with about 90 minutes of play and leftovers still in the P5 make-up; the P5 online-risk items get a separate parental consent tick
   - [x] Shared docs aligned (26 October 2026): `02` L6 becomes a run log (answers live in the module) and L7 gets the separate risk-item consent; `06` meeting times (P1/P5 by need, about 90 minutes of play in P2–P4); `03` test and questionnaire codes; `07` validation package (test items, A/B equivalence, module mock-ups, questionnaire review). `11` waits for `kamus-1.1`
   - [ ] After the decisions: align `02` (L6, done with work item 11), `06` (P1/P5), `11` (test and questionnaire variables), `03` (codes), and the r10 v2.1 instrument (`07`)
+- [ ] Mock-ups of the new screens for media expert step 1 (`18_MOCKUP_LAYAR_BARU.md`, work item 20 in `01`), branch `r10-mockup-media`
+  - [x] 23 WebP mock-ups in `gambar/mockup/` from static HTML on the game's real CSS and UI pictures (sources in `gambar/mockup/src/`, `render.mjs`): Skenario Digital (5 states), *Periksa Unggahan* (4, incl. a tap-area check layer), token and research-mode screens (5, incl. the researcher panel), test and questionnaire module (6), attitude scale (placeholder), link scene and mission card; `03` gets the `mk-*` codes
+  - [x] Owner decided two rounds (26 October 2026, `04`): real-game fidelity, all states and token screens, story screens included; pictures approved, the tap-area layer goes to the expert, draft copy accepted as starting text
+  - [ ] Write one explanation line per Skenario Digital scenario in `08` for the tries-exhausted screen (owner, 26 October 2026), then redraw `mk-sd-05`
+  - [ ] Redraw `mk-ss-01` once `17_SKALA_SIKAP.md` is final
 - [ ] Complete implementation document, after the revision documents are final and gate G2 (expert validation and ethics approval) is passed
 - [ ] Implementation of the system changes listed in `01` (22 so far), one short-lived branch each, after the implementation document is approved
 
@@ -94,3 +99,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `r10-mockup-media` | Claude session, research revision work item 20: `18_MOCKUP_LAYAR_BARU.md` and `gambar/mockup/` | PR open |

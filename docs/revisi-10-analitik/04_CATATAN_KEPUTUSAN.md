@@ -6,6 +6,24 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 26 Oktober 2026
 
+**Keputusan pemilik proyek: mock-up layar baru untuk ahli media langkah 1** (cabang `r10-mockup-media`, daftar kerja no. 20, [18](18_MOCKUP_LAYAR_BARU.md))
+
+Putaran 1, sebelum menggambar:
+
+1. **Mock-up memakai tampilan game sungguhan**: halaman HTML statis dengan CSS, huruf, dan gambar UI game, digambar ke WebP 1280 × 720. Sumbernya di `gambar/mockup/src/` supaya bisa dipakai lagi di tahap 3.
+2. **Skenario Digital digambar dalam lima keadaan**: situasi dengan ▶, tindakan dipilih, langkah alasan, umpan balik "kurang tepat" dengan kesempatan tersisa, dan kesempatan habis.
+3. **Layar token digambar semua**: masukkan token, token keliru, di luar sesi, layar kecil ditolak, dan panel peneliti membuat sesi.
+4. **Cerita penghubung dan kartu misi tantangan kelima ikut digambar**, satu gambar masing-masing.
+
+Putaran 2, setelah melihat 23 gambar:
+
+1. **Gambar disetujui apa adanya** untuk paket ahli media langkah 1. Gambar skala sikap (`mk-ss-01`) masih placeholder dan diperbarui setelah `17_SKALA_SIKAP.md` final.
+2. **Penjelasan setelah kesempatan Skenario Digital habis ditulis sebagai satu kalimat tersendiri per skenario di 08** (24 kalimat), tidak memakai umpan balik pilihan tepat yang dipotong. Dikerjakan di sisi bank sebelum validasi ahli.
+3. **Lapisan pemeriksaan area ketuk (`mk-pu-02`) ikut dikirim ke ahli media**, bertanda tidak tampil ke siswa.
+4. **Draf salinan di 18** (token keliru, layar kecil, ketukan keliru di *Periksa Unggahan*, pengingat lima menit, kalimat kesempatan habis) **diterima sebagai teks awal**; kalimat akhirnya ditetapkan di dokumen implementasi setelah telaah ahli dan uji keterbacaan.
+
+Akibatnya: 18 ditulis; 00, 01 (daftar kerja no. 20), dan 03 (kode `mk-*`) diperbarui. 08 perlu kalimat penjelasan per skenario (celah no. 1 di 18). Celah lain yang ditemukan dicatat di 18 → *Celah yang ditemukan di dokumen lain*.
+
 **Keputusan pemilik proyek: penyelarasan dokumen bersama setelah keputusan tes** (sesi `pbb/magical-hamilton-4f6l98`, wawancara lanjutan)
 
 1. **Variabel tes dan angket masuk kamus data di `kamus-1.1`, setelah uji coba.** `kamus-1.0` di [11](11_KAMUS_DATA.md) tidak diubah sekarang. Sampai saat itu, daftar variabelnya ada di [13](13_TES_AWAL_AKHIR.md#penskoran-dan-pemasukan-data) dan [16](16_ANGKET_AKSES_DIGITAL.md#variabel-untuk-kamus-data).
