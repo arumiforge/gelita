@@ -44,7 +44,8 @@ Documentation only, in `docs/revisi-10-analitik/` (Indonesian, at the owner's re
   - [x] Decisions carried into `13`–`16` (26 October 2026): module section and timing in `13`; on-screen instructions in `14` and `15`; questionnaire on screen, P5 risk items with ethics conditions, and automatic data in `16`; system change 22 (test and questionnaire module, Bootstrap kept locally) in `01`
   - [x] Owner follow-up decisions (26 October 2026, `04`): test and questionnaire variables enter the data dictionary at `kamus-1.1` after the pilot (`kamus-1.0` untouched); region meetings P2–P4 also drop the 2-JP limit, with about 90 minutes of play and leftovers still in the P5 make-up; the P5 online-risk items get a separate parental consent tick
   - [x] Shared docs aligned (26 October 2026): `02` L6 becomes a run log (answers live in the module) and L7 gets the separate risk-item consent; `06` meeting times (P1/P5 by need, about 90 minutes of play in P2–P4); `03` test and questionnaire codes; `07` validation package (test items, A/B equivalence, module mock-ups, questionnaire review). `11` waits for `kamus-1.1`
-  - [ ] After the decisions: align `02` (L6, done with work item 11), `06` (P1/P5), `11` (test and questionnaire variables), `03` (codes), and the r10 v2.1 instrument (`07`)
+  - [x] Final field sheets L0–L7 (`02`, work item 11), approved by the owner (26 October 2026): sheets keyed by participant code, field-session code, and WIB time per `11`; A4 print rules; students without consent get no account; P1 enters row, seat, and booklet right after registration; L5 interviews 3 per meeting in P2–P4; make-up session within 3 days (`-S` code); new code DEV-TIM. Placeholders for school codes (item 12) and account holders (item 13). Follow-ups for `01`, `06`, `13`, and `11` listed in `02` → *Perubahan dari draf*
+- [ ] After the decisions: align `06` (P1/P5), `11` (test and questionnaire variables), `03` (codes), and the r10 v2.1 instrument (`07`)
 - [ ] Complete implementation document, after the revision documents are final and gate G2 (expert validation and ethics approval) is passed
 - [ ] Implementation of the system changes listed in `01` (22 so far), one short-lived branch each, after the implementation document is approved
 
@@ -94,3 +95,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `r10-lembar-lapangan` | Final field sheets L0–L7, work item 11 (`02`) | PR open; approved by the owner |

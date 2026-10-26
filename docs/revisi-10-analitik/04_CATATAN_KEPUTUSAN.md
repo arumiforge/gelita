@@ -13,7 +13,15 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 3. **Wawancara retrospektif L5 di P2–P4, tiga siswa per pertemuan**, satu dari setiap kelompok nilai tes awal (rendah, sedang, tinggi). Setiap siswa diwawancarai paling banyak sekali, jadi ± 9 siswa per kelas. Wawancara di P5 tidak dijadwalkan.
 4. **Siswa yang absen di pertemuan wilayah ikut sesi susulan dalam tiga hari**, seperti susulan tes. P1 membuka sesi lapangan susulan untuk wilayah itu dengan token sendiri (kode sesi berakhiran `-S`, misalnya `S03-A-P3-S`), diamati sedikitnya satu peneliti yang mengisi L1–L3. Sisa tantangan tetap dilanjutkan di susulan P5.
 
-Akibatnya: 02 difinalkan dengan keputusan ini; 03 mendapat kode sesi susulan. Yang perlu disesuaikan di dokumen lain dicatat di [02](02_LEMBAR_LAPANGAN.md#perubahan-dari-draf).
+**Persetujuan:** pemilik proyek menyetujui lembar L0–L7 final di [02](02_LEMBAR_LAPANGAN.md) apa adanya, termasuk pilihan yang menyertainya:
+- L3 juga dipakai saat tes dan angket, menggantikan kolom catatan L6 di 13.
+- L4 hanya selama waktu bermain.
+- Kode penyimpangan baru DEV-TIM (peneliti kurang dari tiga).
+- L2 satu baris per siswa, dengan kolom baris dan kursi di baris.
+- Kelompok nilai tes awal untuk L5 adalah sepertiga terbawah, tengah, dan teratas di rombel.
+- Contoh tanggal fiktif, sesudah perkiraan persetujuan etik.
+
+Akibatnya: 02 final; 03 mendapat kode sesi susulan, DEV-TIM, dan arti L5 yang baru. Yang perlu disesuaikan di dokumen lain dicatat di [02](02_LEMBAR_LAPANGAN.md#perubahan-dari-draf).
 
 **Keputusan pemilik proyek: penyelarasan dokumen bersama setelah keputusan tes** (sesi `pbb/magical-hamilton-4f6l98`, wawancara lanjutan)
 
