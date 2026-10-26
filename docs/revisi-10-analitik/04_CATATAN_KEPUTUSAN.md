@@ -103,7 +103,7 @@ Akibatnya: 13, 14, 15, dan 16 disesuaikan dengan modul layar (petunjuk menjawab,
 
 Usulan dokumen itu yang belum diputuskan:
 - uji beda tes awal–akhir dilaporkan sebagai temuan eksploratif, karena desain satu kelompok tanpa kontrol tidak bisa menunjukkan sebab-akibat;
-- kepraktisan diukur dari log dan lembar L1, L3, dan L4, karena guru tidak ikut;
+- kepraktisan diukur dari log dan lembar L1, L3, dan L4, karena guru tidak ikut (ditambah bintang 1–5 di kritik dan saran sebagai pendapat siswa, sesuai keputusan skala sikap 26 Oktober 2026);
 - penelitian pendahuluan ditulis sebagai fase tersendiri;
 - prototipe diberi nomor I–III.
 
